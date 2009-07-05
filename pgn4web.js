@@ -1,5 +1,5 @@
 /*
- *   HOW TO USE pgn4we.js
+ *   HOW TO USE pgn4web.js
  *
  *   add a SCRIPT instance at the top of your HTML file:
  *
@@ -63,8 +63,8 @@ SetPgnUrl("");
  * DONT CHANGE AFTER HERE 
  */
 
-var version = '1.10'
-var about = '\tpgn4web v' + version + '\n\thttp://code.google.com/p/pgn4web/\n';
+var version = '1.11'
+var about = '\tpgn4web v' + version + '\n\thttp://pgn4web.casaschi.net\n';
 var help = '\th\tgame start' + '\n' +
            '\tj\tmove backward' + '\n' +
            '\tk\tmove forward' + '\n' +
