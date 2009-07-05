@@ -3,12 +3,12 @@
 <ModulePrefs
    title="Paolo's chess games"
    description="Paolo's chess games"
-   thumbnail="http://pgn4web.googlecode.com/svn/trunk/pawns.png"
+   thumbnail="pawns.png"
    author="Paolo Casaschi"
    author_email="paolo@casaschi.net"
    author_link="http://www.casaschi.net"
    width="800"
    height="575"
    category="funandgames"/>
-<Content type="url" href="http://pgn4web.googlecode.com/svn/trunk/paolo-chess-games.html"/>
+<Content type="url" href="paolo-chess-games.html"/>
 </Module>

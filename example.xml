@@ -3,12 +3,12 @@
 <ModulePrefs
    title="pgn4web example"
    description="pgn4web example"
-   thumbnail="http://pgn4web.googlecode.com/svn/trunk/pawns.png"
+   thumbnail="pawns.png"
    author="Paolo Casaschi"
    author_email="paolo@casaschi.net"
    author_link="http://www.casaschi.net"
-   width="1000"
+   width="900"
    height="1200"
    category="funandgames"/>
-<Content type="url" href="http://pgn4web.googlecode.com/svn/trunk/example.html"/>
+<Content type="url" href="example.html"/>
 </Module>
