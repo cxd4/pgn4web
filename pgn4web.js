@@ -1784,8 +1784,11 @@ function ParsePGNGameString(gameString){
     switch (ss.charAt(start)){
 
       case ' ':
+      case '\b':
+      case '\f':
       case '\n':
       case '\r':
+      case '\t':
         break;
 
       case '$':
@@ -1890,12 +1893,14 @@ function ParsePGNGameString(gameString){
         if (end < 0) end = ss.length;
         move = ss.substring(start,end);
         Moves[StartPly+PlyNumber] = ClearMove(move);
-        if (ss.charAt(end) == ' ') start = end; else start = end -1;
+        if (ss.charAt(end) == ' ') start = end; else start = end - 1;
+        MoveComments[StartPly+PlyNumber] = MoveComments[StartPly+PlyNumber].replace(/[ \b\f\n\r\t]+$/, '');
         PlyNumber++;
         MoveComments[StartPly+PlyNumber]='';
         break;
     }
   }
+  MoveComments[StartPly+PlyNumber]=''; //PAOLO
 }
 
 /******************************************************************************
