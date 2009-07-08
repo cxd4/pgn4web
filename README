@@ -51,9 +51,12 @@ Example:
     SetSquareSize(42);
     SetHighlightOption(true) // true or false
     SetGameSelectorString("Select a game...");
-    SetAutoplayDelay(1000); // milliseconds
     SetCommentsIntoMoveText(false)
     SetCommentsOnSeparateLines(false)
+    SetAutoplayDelay(1000); // milliseconds
+    SetAutostartAutoplay(false);
+    SetInitialGame(0); // number of game to be shown at load, starting from 1
+    SetInitialHalfmove(0); // halfmove number to be shown at load, 0 for the initial position
   </script>
  
 Then the script will automagically add content into your HTML file 
