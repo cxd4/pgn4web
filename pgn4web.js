@@ -1683,7 +1683,8 @@ function MoveToNextComment()
     if (MoveComments[ii] != '') {
       MoveForward[ii - currentPly];
       break;
-  {
+    }
+  }
 }
 
 /******************************************************************************
@@ -1700,7 +1701,8 @@ function MoveToPrevComment()
     if (MoveComments[ii] != '') {
       MoveBackward[currentPly - ii];
       break;
-  {
+    }
+  }
 }
 
 /******************************************************************************
