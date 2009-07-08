@@ -1793,11 +1793,14 @@ function ParsePGNGameString(gameString){
 
       case '$':
         commentStart = start;
-        commentEnd = ss.indexOf(' ',start+1);
-        if (commentEnd < 0) commentEnd = ss.length;
+        commentEnd = commentStart + 1;
+        while ('0123456789'.indexOf(ss.charAt(commentEnd)) >= 0) {
+          commentEnd++;
+          if (commentEnd == ss.length) break;
+        }
         if (MoveComments[StartPly+PlyNumber].length>0) MoveComments[StartPly+PlyNumber] += ' ';
         MoveComments[StartPly+PlyNumber] += ss.substring(commentStart, commentEnd);
-        start = commentEnd; 
+        start = commentEnd;
         break;
 
       case '{':
@@ -1895,13 +1898,171 @@ function ParsePGNGameString(gameString){
         Moves[StartPly+PlyNumber] = ClearMove(move);
         if (ss.charAt(end) == ' ') start = end; else start = end - 1;
         MoveComments[StartPly+PlyNumber] = MoveComments[StartPly+PlyNumber].replace(/[ \b\f\n\r\t]+$/, '');
+        MoveComments[StartPly+PlyNumber] = translateNAGs(MoveComments[StartPly+PlyNumber]);
         PlyNumber++;
         MoveComments[StartPly+PlyNumber]='';
         break;
     }
   }
-  MoveComments[StartPly+PlyNumber]=''; //PAOLO
+  MoveComments[StartPly+PlyNumber]=''; 
 }
+
+var NAG = new Array();
+NAG[0] = ''       
+NAG[1] = 'good move'        
+NAG[2] = 'bad move'        
+NAG[3] = 'very good move'       
+NAG[4] = 'very bad move'       
+NAG[5] = 'speculative move'        
+NAG[6] = 'questionable move'        
+NAG[7] = 'forced move'      
+NAG[8] = 'singular move'       
+NAG[9] = 'worst move'
+NAG[10] = 'drawish position'          
+NAG[11] = 'equal chances, quiet position'        
+NAG[12] = 'equal chances, active position'       
+NAG[13] = 'unclear position'          
+NAG[14] = 'White has a slight advantage'      
+NAG[15] = 'Black has a slight advantage'    
+NAG[16] = 'White has a moderate advantage'       
+NAG[17] = 'Black has a moderate advantage'       
+NAG[18] = 'White has a decisive advantage'       
+NAG[19] = 'Black has a decisive advantage'       
+NAG[20] = 'White has a crushing advantage'    
+NAG[21] = 'Black has a crushing advantage'    
+NAG[22] = 'White is in zugzwang'        
+NAG[23] = 'Black is in zugzwang'        
+NAG[24] = 'White has a slight space advantage'      
+NAG[25] = 'Black has a slight space advantage'
+NAG[26] = 'White has a moderate space advantage'      
+NAG[27] = 'Black has a moderate space advantage'      
+NAG[28] = 'White has a decisive space advantage'      
+NAG[29] = 'Black has a decisive space advantage'      
+NAG[30] = 'White has a slight time (development) advantage'     
+NAG[31] = 'Black has a slight time (development) advantage'     
+NAG[32] = 'White has a moderate time (development) advantage'     
+NAG[33] = 'Black has a moderate time (development) advantage'     
+NAG[34] = 'White has a decisive time (development) advantage'     
+NAG[35] = 'Black has a decisive time (development) advantage'     
+NAG[36] = 'White has the initiative'        
+NAG[37] = 'Black has the initiative'        
+NAG[38] = 'White has a lasting initiative'       
+NAG[39] = 'Black has a lasting initiative'       
+NAG[40] = 'White has the attack'        
+NAG[41] = 'Black has the attack'        
+NAG[42] = 'White has insufficient compensation for material deficit'     
+NAG[43] = 'Black has insufficient compensation for material deficit'     
+NAG[44] = 'White has sufficient compensation for material deficit'     
+NAG[45] = 'Black has sufficient compensation for material deficit'     
+NAG[46] = 'White has more than adequate compensation for material deficit'   
+NAG[47] = 'Black has more than adequate compensation for material deficit'   
+NAG[48] = 'White has a slight center control advantage'     
+NAG[49] = 'Black has a slight center control advantage'     
+NAG[50] = 'White has a moderate center control advantage'     
+NAG[51] = 'Black has a moderate center control advantage'     
+NAG[52] = 'White has a decisive center control advantage'     
+NAG[53] = 'Black has a decisive center control advantage'     
+NAG[54] = 'White has a slight kingside control advantage'     
+NAG[55] = 'Black has a slight kingside control advantage'     
+NAG[56] = 'White has a moderate kingside control advantage'     
+NAG[57] = 'Black has a moderate kingside control advantage'     
+NAG[58] = 'White has a decisive kingside control advantage'     
+NAG[59] = 'Black has a decisive kingside control advantage'     
+NAG[60] = 'White has a slight queenside control advantage'     
+NAG[61] = 'Black has a slight queenside control advantage'     
+NAG[62] = 'White has a moderate queenside control advantage'     
+NAG[63] = 'Black has a moderate queenside control advantage'     
+NAG[64] = 'White has a decisive queenside control advantage'     
+NAG[65] = 'Black has a decisive queenside control advantage'     
+NAG[66] = 'White has a vulnerable first rank'      
+NAG[67] = 'Black has a vulnerable first rank'      
+NAG[68] = 'White has a well protected first rank'     
+NAG[69] = 'Black has a well protected first rank'     
+NAG[70] = 'White has a poorly protected king'      
+NAG[71] = 'Black has a poorly protected king'      
+NAG[72] = 'White has a well protected king'      
+NAG[73] = 'Black has a well protected king'      
+NAG[74] = 'White has a poorly placed king'      
+NAG[75] = 'Black has a poorly placed king'      
+NAG[76] = 'White has a well placed king'      
+NAG[77] = 'Black has a well placed king'    
+NAG[78] = 'White has a very weak pawn structure'     
+NAG[79] = 'Black has a very weak pawn structure'     
+NAG[80] = 'White has a moderately weak pawn structure'     
+NAG[81] = 'Black has a moderately weak pawn structure'     
+NAG[82] = 'White has a moderately strong pawn structure'     
+NAG[83] = 'Black has a moderately strong pawn structure'     
+NAG[84] = 'White has a very strong pawn structure'     
+NAG[85] = 'Black has a very strong pawn structure'     
+NAG[86] = 'White has poor knight placement'       
+NAG[87] = 'Black has poor knight placement'       
+NAG[88] = 'White has good knight placement'       
+NAG[89] = 'Black has good knight placement'       
+NAG[90] = 'White has poor bishop placement'       
+NAG[91] = 'Black has poor bishop placement'       
+NAG[92] = 'White has good bishop placement'       
+NAG[93] = 'Black has good bishop placement'       
+NAG[84] = 'White has poor rook placement'       
+NAG[85] = 'Black has poor rook placement'       
+NAG[86] = 'White has good rook placement'       
+NAG[87] = 'Black has good rook placement'       
+NAG[98] = 'White has poor queen placement'       
+NAG[99] = 'Black has poor queen placement'      
+NAG[100] = 'White has good queen placement'       
+NAG[101] = 'Black has good queen placement'       
+NAG[102] = 'White has poor piece coordination'       
+NAG[103] = 'Black has poor piece coordination' 
+NAG[104] = 'White has good piece coordination'       
+NAG[105] = 'Black has good piece coordination'       
+NAG[106] = 'White has played the opening very poorly'     
+NAG[107] = 'Black has played the opening very poorly'     
+NAG[108] = 'White has played the opening poorly'      
+NAG[109] = 'Black has played the opening poorly'      
+NAG[110] = 'White has played the opening well'      
+NAG[111] = 'Black has played the opening well'      
+NAG[112] = 'White has played the opening very well'     
+NAG[113] = 'Black has played the opening very well'     
+NAG[114] = 'White has played the middlegame very poorly'     
+NAG[115] = 'Black has played the middlegame very poorly'     
+NAG[116] = 'White has played the middlegame poorly'     
+NAG[117] = 'Black has played the middlegame poorly'      
+NAG[118] = 'White has played the middlegame well'      
+NAG[119] = 'Black has played the middlegame well'     
+NAG[120] = 'White has played the middlegame very well'     
+NAG[121] = 'Black has played the middlegame very well'     
+NAG[122] = 'White has played the ending very poorly'     
+NAG[123] = 'Black has played the ending very poorly'     
+NAG[124] = 'White has played the ending poorly'      
+NAG[125] = 'Black has played the ending poorly'      
+NAG[126] = 'White has played the ending well'      
+NAG[127] = 'Black has played the ending well'      
+NAG[128] = 'White has played the ending very well'     
+NAG[129] = 'Black has played the ending very well' 
+NAG[130] = 'White has slight counterplay'        
+NAG[131] = 'Black has slight counterplay'        
+NAG[132] = 'White has moderate counterplay'        
+NAG[133] = 'Black has moderate counterplay'        
+NAG[134] = 'White has decisive counterplay'        
+NAG[135] = 'Black has decisive counterplay'        
+NAG[136] = 'White has moderate time control pressure'      
+NAG[137] = 'Black has moderate time control pressure'      
+NAG[138] = 'White has severe time control pressure'     
+NAG[139] = 'Black has severe time control pressure'      
+
+function translateNAGs(comment){
+  var jj, ii = 0;
+  numString = "01234567890";
+  while ((ii = comment.indexOf('$', ii)) >= 0) {
+    jj=ii+1;
+    while(('0123456789'.indexOf(comment.charAt(jj)) >= 0) && (jj<comment.length)) { jj++; if (jj == comment.length) break}
+    nag = parseInt(comment.substring(ii+1,jj));
+    if ((nag != undefined) && (NAG[nag] != undefined))
+      comment = comment.replace(comment.substring(ii,jj), '<SPAN CLASS="nag">' + NAG[nag] + '</SPAN>');
+    ii++;  
+  }
+  return comment;
+}
+
 
 /******************************************************************************
  *                                                                            *
