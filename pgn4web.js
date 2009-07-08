@@ -755,7 +755,7 @@ function ClearMove(move){
 }
 
 function GoToMove(thisMove){
-  var currentPly = document.HiddenBoardForm.CurrentPly.value;
+  var currentPly = parseInt(document.HiddenBoardForm.CurrentPly.value);
   var diff       = thisMove - currentPly;
   if (diff > 0){
     MoveForward(diff);
@@ -795,7 +795,7 @@ function HighlightLastMove(){
    * we are at the starting position and nothing is to be highlighted and
    * the header on top of the board is removed.
    */
-  var showThisMove = document.HiddenBoardForm.CurrentPly.value - 1;
+  var showThisMove = parseInt(document.HiddenBoardForm.CurrentPly.value) - 1;
   if (showThisMove > StartPly + PlyNumber) showThisMove = StartPly + PlyNumber;
 
   var theShowCommentTextObject = document.getElementById("GameLastComment");
@@ -854,7 +854,7 @@ function HighlightLastMove(){
     theShowMoveTextObject.className = 'GameLastMove';
   }
 
-  if (showThisMove >= StartPly){
+  if (showThisMove >= (StartPly-1)){
     showThisMove++;
     anchorName          = 'Mv' + showThisMove;
     theAnchor           = document.getElementById(anchorName);
@@ -1558,7 +1558,7 @@ function MoveBackward(diff){
    * document.HiddenBoardForm.CurrentPly.value contains the ply number counting
    * from 1.
    */
-  var currentPly = document.HiddenBoardForm.CurrentPly.value;
+  var currentPly = parseInt(document.HiddenBoardForm.CurrentPly.value);
   var goFromPly  = currentPly - 1;
   var goToPly    = goFromPly  - diff;
   if (goToPly < StartPly) goToPly = StartPly-1;
@@ -1636,9 +1636,8 @@ function MoveForward(diff){
    * document.HiddenBoardForm.CurrentPly.value contains the ply number counting
    * from 1.
    */
-  var currentPly = document.HiddenBoardForm.CurrentPly.value;
-  var goToPly    = parseInt(currentPly);
-  goToPly       += parseInt(diff);
+  var currentPly = parseInt(document.HiddenBoardForm.CurrentPly.value);
+  goToPly        = currentPly + parseInt(diff);
 
   if (goToPly > (StartPly+PlyNumber)) goToPly = StartPly+PlyNumber;
   var ii;
@@ -1678,10 +1677,10 @@ function MoveForward(diff){
  ******************************************************************************/
 function MoveToNextComment()
 {
-  var currentPly = document.HiddenBoardForm.CurrentPly.value;
-  for(ii=currentPly+1; ii<StartPly+PlyNumber; ii++){
+  var currentPly = parseInt(document.HiddenBoardForm.CurrentPly.value);
+  for(ii=currentPly+1; ii<=StartPly+PlyNumber; ii++){
     if (MoveComments[ii] != '') {
-      MoveForward[ii - currentPly];
+      GoToMove(ii);
       break;
     }
   }
@@ -1696,10 +1695,10 @@ function MoveToNextComment()
  ******************************************************************************/
 function MoveToPrevComment()
 {
-  var currentPly = document.HiddenBoardForm.CurrentPly.value;
-  for(ii=currentPly-1; ii>=0; ii--){
+  var currentPly = parseInt(document.HiddenBoardForm.CurrentPly.value);
+  for(ii=(currentPly-1); ii>=0; ii--){
     if (MoveComments[ii] != '') {
-      MoveBackward[currentPly - ii];
+      GoToMove(ii);
       break;
     }
   }
