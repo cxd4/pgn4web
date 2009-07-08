@@ -8,16 +8,19 @@
 
 <script src="pgn4web.js" type="text/javascript"></script>
 <script>
-  SetPgnUrl("wchmal08.pgn");
-  SetImagePath ("uscf/40"); // use "" path if images are in the same folder as this javascript file
-  SetImageType("png");
-  SetImageSize(40);
-  SetSquareSize(44);
-  SetHighlightOption(true) // true or false
-  SetGameSelectorString("Select a game...");
-  SetAutoplayDelay(5000); // milliseconds
-  SetCommentsIntoMoveText(true);
-  SetCommentsOnSeparateLines(true);
+   SetPgnUrl("wchmal08.pgn");
+   SetImagePath ("uscf/40"); // use "" path if images are in the same folder as this javascript file
+   SetImageType("png");
+   SetImageSize(40);
+   SetSquareSize(44);
+   SetHighlightOption(true) // true or false
+   SetGameSelectorString("Select a game...");
+   SetCommentsIntoMoveText(true);
+   SetCommentsOnSeparateLines(true);
+   SetAutoplayDelay(5000); // milliseconds
+   SetAutostartAutoplay(false);
+   SetInitialGame(3); // number of game to be shown at load, starting from 1
+   SetInitialHalfmove(21); // halfmove number to be shown at load, 0 for the initial position
 </script>
 
 </head>

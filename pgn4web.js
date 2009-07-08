@@ -17,9 +17,12 @@
  *        SetSquareSize(42);
  *        SetHighlightOption(true) // true or false
  *        SetGameSelectorString("Select a game...");
+ *        SetCommentsIntoMoveText(false);
+ *        SetCommentsOnSeparateLines(false);
  *        SetAutoplayDelay(1000); // milliseconds
- *        SetCommentsIntoMoveText(false)
- *        SetCommentsOnSeparateLines(false)
+ *        SetAutostartAutoplay(false);
+ *        SetInitialGame(1); // number of game to be shown at load, from 1
+ *        SetInitialHalfmove(0); // halfmove number to be shown at load, 0 for start position
  *      </script>
  * 
  *   Then the script will automagically add content into your HTML file 
@@ -50,11 +53,14 @@ SetPgnUrl("");
 // SetImageType("png");
 // SetImageSize(40);
 // SetSquareSize(42);
-// SetHighlightOption(true) // true or false
+// SetHighlightOption(true); // true or false
 // SetGameSelectorString("Select a game...");
-// SetAutoplayDelay(1000); // milliseconds
 // SetCommentsIntoMoveText(true);
 // SetCommentsOnSeparateLines(true);
+// SetAutoplayDelay(1000); // milliseconds
+// SetAutostartAutoplay(false);
+// SetInitialGame(0); // number of game to be shown at load
+// SetInitialHalfmove(0); // halfmove number to be shown at load
 
 
 /*********************************************************************/
@@ -365,6 +371,10 @@ var oldAnchor = -1;
 var isAutoPlayOn = false;
 var AutoPlayInterval;
 var Delay = 1000;
+var autostartAutoplay = false;
+
+var initialGame = 0;
+var initialHalfmove = 0;
 
 var MaxMove = 500;
 
@@ -772,6 +782,18 @@ function SetCommentsOnSeparateLines(onOff){
   commentsOnSeparateLines = onOff;
 }
 
+function SetAutostartAutoplay(onOff){
+  autostartAutoplay = onOff;
+}
+
+function SetInitialHalfmove(number){
+  initialHalfmove = number;
+}
+
+function SetInitialGame(number){
+  initialGame = number - 1;
+}
+
 /******************************************************************************
  *                                                                            *
  * Function HighlightLastMove:                                                *
@@ -1070,13 +1092,18 @@ function createBoardFromPgnUrl(){
  *                                                                            *
  ******************************************************************************/
 function Init(){
+  if (currentGame < 0) firstStart = true;
+  else firstStart = false;
+
   InitImages();
   if (isAutoPlayOn) SetAutoPlay(false);
 
-  if (currentGame < 0){
+  if (firstStart){
     numberOfGames = pgnGame.length;
     LoadGameHeaders();
-    currentGame=0;
+    if (initialGame < 0) initialGame = 0;
+    if (initialGame < numberOfGames) currentGame = initialGame;
+    else currentGame = numberOfGames - 1;
   }
 
   InitFEN(gameFEN[currentGame]);
@@ -1096,7 +1123,12 @@ function Init(){
 
   RefreshBoard();
   document.HiddenBoardForm.CurrentPly.value = StartPly;
-  HighlightLastMove(); 
+  HighlightLastMove();
+  if (firstStart){
+    if (initialHalfmove < 0) initialHalfmove = 0;
+    GoToMove(initialHalfmove);
+    if (autostartAutoplay) SetAutoPlay(true);
+  }
 }
 /******************************************************************************
  *                                                                            *

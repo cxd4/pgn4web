@@ -8,16 +8,19 @@
 
 <script src="pgn4web.js" type="text/javascript"></script>
 <script type="text/javascript">
-  SetPgnUrl("paolo-chess-games.pgn");
-  SetImagePath ("alpha/32"); // use "" path if images are in the same folder as this javascript file
-  SetImageType("png");
-  SetImageSize(32);
-  SetSquareSize(36);
-  SetHighlightOption(false) // true or false
-  SetGameSelectorString("Select from Paolo's games...");
-  SetAutoplayDelay(2000); // milliseconds]
-  SetCommentsIntoMoveText(true)
-  SetCommentsOnSeparateLines(false)
+   SetPgnUrl("paolo-chess-games.pgn");
+   SetImagePath ("alpha/32"); // use "" path if images are in the same folder as this javascript file
+   SetImageType("png");
+   SetImageSize(32);
+   SetSquareSize(36);
+   SetHighlightOption(false); // true or false
+   SetGameSelectorString("Select from Paolo's games...");
+   SetCommentsIntoMoveText(true);
+   SetCommentsOnSeparateLines(false);
+   SetAutoplayDelay(2000); // milliseconds
+// SetAutostartAutoplay(false);
+// SetInitialGame(0); // number of game to be shown at load, starting from 1
+   SetInitialHalfmove(1); // halfmove number to be shown at load, 0 for the initial position
 </script>
 
 </head>
