@@ -2129,38 +2129,40 @@ function PrintHTML(){
   theObject = document.getElementById("GameButtons");
   if (theObject != null) theObject.innerHTML = text; 
 
-  if (numberOfGames > 1){
-    nameLength = 15;
-    blanks = '';
-    for (ii=0; ii<nameLength; ii++)
-      blanks+='&nbsp';
-    text = '<FORM NAME="GameSel"> ' +
-           '<SELECT CLASS="select" WIDTH="' + tableSize + '" ' +
-           'STYLE="width: ' + tableSize + 'px; font-family: monospace;" ' +
-           'ONCHANGE="if(this.value >= 0) { currentGame=this.value; Init(); }">' +
-           '<OPTION value=-1>' + gameSelectorString;
-    if(textSelectOptions == ''){
-      for (ii=0; ii<numberOfGames; ii++){
-        textSelectOptions += '<OPTION value=' + ii + '>';
-        if (numberOfGames < gamesLimitForSelectFormatting){
-          textSelectOptions += gameWhite[ii].substring(0, nameLength);
-          howManyBlanks = nameLength - gameWhite[ii].length;
-          if (howManyBlanks > 0) textSelectOptions += blanks.substring(0, 5*howManyBlanks);
-          textSelectOptions += '&nbsp;-&nbsp;' + gameBlack[ii].substring(0, nameLength);
-          howManyBlanks = nameLength - gameBlack[ii].length;
-          if (howManyBlanks > 0) textSelectOptions += blanks.substring(0, 5*howManyBlanks);
-          textSelectOptions += '&nbsp;&nbsp;' + gameDate[ii]; 
-        }else{
-          textSelectOptions += gameWhite[ii] + '&nbsp;-&nbsp;' + gameBlack[ii] + '&nbsp;&nbsp;' + gameDate[ii];
-        }
-      }
-    }
-      text += textSelectOptions + '</SELECT></FORM>';
   /*
    * Show the HTML for the Game Selector
    */
-    theObject = document.getElementById("GameSelector");
-    if (theObject != null) theObject.innerHTML = text; 
+  theObject = document.getElementById("GameSelector");
+  if (theObject != null){
+    if (numberOfGames > 1){
+      nameLength = 15;
+      blanks = '';
+      for (ii=0; ii<nameLength; ii++)
+        blanks+='&nbsp';
+      text = '<FORM NAME="GameSel"> ' +
+             '<SELECT CLASS="select" WIDTH="' + tableSize + '" ' +
+             'STYLE="width: ' + tableSize + 'px; font-family: monospace;" ' +
+             'ONCHANGE="if(this.value >= 0) { currentGame=this.value; Init(); }">' +
+             '<OPTION value=-1>' + gameSelectorString;
+      if(textSelectOptions == ''){
+        for (ii=0; ii<numberOfGames; ii++){
+          textSelectOptions += '<OPTION value=' + ii + '>';
+          if (numberOfGames < gamesLimitForSelectFormatting){
+            textSelectOptions += gameWhite[ii].substring(0, nameLength);
+            howManyBlanks = nameLength - gameWhite[ii].length;
+            if (howManyBlanks > 0) textSelectOptions += blanks.substring(0, 5*howManyBlanks);
+            textSelectOptions += '&nbsp;-&nbsp;' + gameBlack[ii].substring(0, nameLength);
+            howManyBlanks = nameLength - gameBlack[ii].length;
+            if (howManyBlanks > 0) textSelectOptions += blanks.substring(0, 5*howManyBlanks);
+            textSelectOptions += '&nbsp;&nbsp;' + gameDate[ii]; 
+          }else{
+            textSelectOptions += gameWhite[ii] + '&nbsp;-&nbsp;' + gameBlack[ii] + '&nbsp;&nbsp;' + gameDate[ii];
+          }
+        }
+      }
+      text += textSelectOptions + '</SELECT></FORM>';
+      theObject.innerHTML = text; 
+    }
   }
 
   /*
