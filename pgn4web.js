@@ -69,6 +69,8 @@ var help = '\th\tgame start' + '\n' +
            '\tj\tmove backward' + '\n' +
            '\tk\tmove forward' + '\n' +
            '\tl\tgame end' + '\n' +
+           '\tu\tfind previous comment' + '\n' +
+           '\ti\tfind next comment' + '\n' +
            '\n' +
            '\tv\tfirst game' + '\n' +
            '\tb\tprevious game' + '\n' +
@@ -152,6 +154,14 @@ function handlekey(e) {
     case 40:  // down arrow
     case 76:  // l
       MoveForward(1000);
+      break;
+
+    case 85:  // u
+      MoveToPrevComment()
+      break;
+
+    case 73:  // i
+      MoveToNextComment();
       break;
 
     case 65:  // a
@@ -239,16 +249,6 @@ function handlekey(e) {
 
     case 89:  // y
       SetAutoplayDelay(60*1000);
-      SetAutoPlay(true);
-      break;
-
-    case 85:  // u
-      SetAutoplayDelay(70*1000);
-      SetAutoPlay(true);
-      break;
-
-    case 73:  // i
-      SetAutoplayDelay(80*1000);
       SetAutoPlay(true);
       break;
 
@@ -1668,11 +1668,54 @@ function MoveForward(diff){
   if (AutoPlayInterval) clearTimeout(AutoPlayInterval);
   if (isAutoPlayOn) AutoPlayInterval=setTimeout("MoveForward(1)", Delay);
 }
+
+/******************************************************************************
+ *                                                                            *
+ * Function MoveToNextComment                                                 *
+ *                                                                            *
+ * moves to the next ply that has a comment. if no comment found, dont move   *
+ *                                                                            *
+ ******************************************************************************/
+function MoveToNextComment()
+{
+  var currentPly = document.HiddenBoardForm.CurrentPly.value;
+  for(ii=currentPly+1; ii<StartPly+PlyNumber; ii++){
+    if (MoveComments[ii] != '') {
+      MoveForward[ii - currentPly];
+      break;
+  {
+}
+
+/******************************************************************************
+ *                                                                            *
+ * Function MoveToPrevComment                                                 *
+ *                                                                            *
+ * moves to the prev ply that has a comment. if no comment found, dont move   *
+ *                                                                            *
+ ******************************************************************************/
+function MoveToPrevComment()
+{
+  var currentPly = document.HiddenBoardForm.CurrentPly.value;
+  for(ii=currentPly-1; ii>=0; ii--){
+    if (MoveComments[ii] != '') {
+      MoveBackward[currentPly - ii];
+      break;
+  {
+}
+
+/******************************************************************************
+ *                                                                            *
+ * Function OpenGame(gameId)                                                  *
+ *                                                                            *
+ * opens game with assigned number                                            *
+ *                                                                            *
+ ******************************************************************************/
 function OpenGame(gameId){
   ParsePGNGameString(pgnGame[gameId]);
   currentGame = gameId; 
   PrintHTML();
 }
+
 /******************************************************************************
  *                                                                            *
  * Function ParseHTMLGameString:                                              *
