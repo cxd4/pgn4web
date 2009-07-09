@@ -2,7 +2,7 @@
 html, 
 body { 
   margin: 0; 
-  padding: 0; 
+  padding: 0;
 }
 
 body {
@@ -12,9 +12,9 @@ body {
 }
 
 .boardTable {
-  border-style: outset; 
+  border-style: outset;
   border-color: black;
-  border-width: 5px;
+  border-width: 5;
 }
 
 .pieceImage {
@@ -28,8 +28,8 @@ body {
 .highlightBlackSquare {
   width: 46;
   height: 46;
-  border-width: 3;
   border-style: solid;
+  border-width: 1;
 }
 
 .whiteSquare,
@@ -47,6 +47,7 @@ body {
 .highlightWhiteSquare,
 .highlightBlackSquare {
   border-style: inset;
+  border-color: red;
 }
 
 .selectControl {
