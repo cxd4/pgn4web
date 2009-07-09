@@ -14,7 +14,7 @@ body {
 .boardTable {
   border-style: outset;
   border-color: black;
-  border-width: 0;
+  border-width: 7;
 }
 
 .pieceImage {
@@ -26,10 +26,10 @@ body {
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 46 !important ;
-  height: 46 !important ;
+  width: 46;
+  height: 46;
   border-style: solid;
-  border-width: 2 !important ;
+  border-width: 2;
 }
 
 .whiteSquare,
