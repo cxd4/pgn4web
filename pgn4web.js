@@ -13,8 +13,6 @@
  *        SetPgnUrl("http://yoursite/yourpath/yourfile.pgn");
  *        SetImagePath (""); // use "" path if images are in the same folder as this javascript file
  *        SetImageType("png");
- *        SetImageSize(40);
- *        SetSquareSize(42);
  *        SetHighlightOption(true) // true or false
  *        SetGameSelectorString("Select a game...");
  *        SetCommentsIntoMoveText(false);
@@ -51,8 +49,6 @@
 SetPgnUrl("");
 // SetImagePath (""); // use "" path if images are in the same folder as this javascript file
 // SetImageType("png");
-// SetImageSize(40);
-// SetSquareSize(42);
 // SetHighlightOption(true); // true or false
 // SetGameSelectorString("Select a game...");
 // SetCommentsIntoMoveText(true);
@@ -92,9 +88,6 @@ var help = '\th\tgame start' + '\n' +
            '\tf\tflip board' + '\n' +
            '\td\twhite on bottom' + '\n' +
            '\tg\ttoggle highlighting' + '\n' +
-           '\tc\tincrease board size' + '\n' + 
-           '\tz\tdecrease board size' + '\n' + 
-           '\tx\trestore original board size' + '\n' +
            '\tp\ttoggle showing comments' + '\n' +
            '\to\ttoggle showing comments on separate lines' + '\n' +
            '';
@@ -303,35 +296,21 @@ function handlekey(e) {
       break;
 
     case 90: // z
-      if (squareSize > 16) {
-        if (startingSquareSize == -1) { 
-          startingSquareSize = squareSize;
-          startingImageSize = imageSize;
-        }
-        squareSize /= 1.10;
-        imageSize /= 1.10;
-        Init();
-      };
       break;
 
     case 67: // c
-      if (squareSize < 400) {
-        if (startingSquareSize == -1) { 
-          startingSquareSize = squareSize;
-          startingImageSize = imageSize;
-        }
-        squareSize *= 1.10;
-        imageSize *= 1.10;
-        Init();
-      };
       break;
 
     case 88: // x
-      if (startingImageSize != -1) {
-        imageSize = startingImageSize;
-        squareSize = startingSquareSize;
-        Init();
-      };
+//PAOLO
+text = '';
+for(ii=0; ii<8; ii++){
+  for(jj=0; jj<8; jj++){
+    ID='tcol' + ii + 'trow' + jj;
+    text += document.getElementById(ID).offsetHeight + ' ' +  document.getElementById(ID).offsetWidth + ' ';
+  }
+}
+alert(text)
       break;
 
     case 79:  // o
@@ -449,14 +428,13 @@ var ImageOffset = -1;
 var ImagePath = '';                                                 
 var ImagePathOld;
 var imageType = 'png';
-var imageSize = 40;
+
+var defaultImagesSize = 40;
 
 var highlightOption = true;
 
 var commentsIntoMoveText = true;
 var commentsOnSeparateLines = false;
-
-var squareSize = 41;
 
 var pgnUrl = '';
 
@@ -880,7 +858,7 @@ function HighlightLastMove(){
     showThisMove++;
     anchorName          = 'Mv' + showThisMove;
     theAnchor           = document.getElementById(anchorName);
-    if (theAnchor != null) theAnchor.className = 'moveOn';
+    if (theAnchor != null) theAnchor.className = 'move moveOn';
     oldAnchor           = showThisMove;
 
     if (highlightOption){
@@ -973,7 +951,10 @@ function highlightSquare(col, row, on){
   else{trow = 7 - row; tcol = col;}
 
   if (on) {
-    document.getElementById('tcol' + tcol + 'trow' + trow).className = "highlightSquare";
+    if ((trow+tcol)%2 == 0)
+      document.getElementById('tcol' + tcol + 'trow' + trow).className = "highlightWhiteSquare";
+    else
+      document.getElementById('tcol' + tcol + 'trow' + trow).className = "highlightBlackSquare";
   } else {
     if ((trow+tcol)%2 == 0)
       document.getElementById('tcol' + tcol + 'trow' + trow).className = "whiteSquare";
@@ -1409,14 +1390,6 @@ function InitFEN(startingFEN){
 
 function SetImageType(extension){
   imageType = extension;
-}
-
-function SetImageSize(size){
-  imageSize = size;
-}
-
-function SetSquareSize(size){
-  squareSize = size;
 }
 
 /******************************************************************************
@@ -2301,33 +2274,27 @@ function PrintHTML(){
   var ii, jj;
   var text;
 
-  if (squareSize < imageSize) {
-    alert('Configuration error: squareSize (' + squareSize + ') must not be smaller than imageSize (' + imageSize + ')');
-    return;
-  }
-
-  tableSize = squareSize*8;
-  if (squareSize == imageSize) tableSize += 6;
-
   /*
    * Show the board as a 8x8 table.
    */
   text =  '<FORM NAME="HiddenBoardForm">' +
           '<INPUT TYPE="HIDDEN" VALUE="" NAME="CurrentPly">' +
           '</FORM>' +
-          '<TABLE CLASS="boardTable" STYLE="border-style: double; border-color: black; border-width: 3px;" HEIGHT="' + tableSize + '" WIDTH="' + tableSize + '" CELLSPACING=0 CELLPADDING=0>';
+          '<TABLE CLASS="boardTable" ID="boardTable" CELLSPACING=0 CELLPADDING=0>';
 
   for (ii = 0; ii < 8; ++ii){
     text += '<TR>';
     for (jj = 0; jj < 8; ++jj){
+      squareId = 'tcol' + jj + 'trow' + ii;
+      imageId = 'img_' + squareId;
       if ((ii+jj)%2 == 0){
-	text += '<TD CLASS="whiteSquare" ID="tcol' + jj + 'trow' + ii + '" BGCOLOR="white" ALIGN="center" VALIGN="middle" WIDTH="' +squareSize + '" HEIGHT="' + squareSize + '">';
+	text += '<TD CLASS="whiteSquare" ID="' + squareId + '" BGCOLOR="white" ALIGN="center" VALIGN="middle">';
       } else{
-	text += '<TD CLASS="blackSquare" ID="tcol' + jj + 'trow' + ii + '" BGCOLOR="gray" ALIGN="center" VALIGN="middle" WIDTH="' +squareSize + '" HEIGHT="' + squareSize + '">';
-      }
-      text += '<IMG CLASS="pieceImage" WIDTH="' + imageSize + '" HEIGHT="' + imageSize + '" SRC="'+ImagePath+'clear.'+imageType+'"></TD>';
+	text += '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="gray" ALIGN="center" VALIGN="middle">';
+      } //PAOLO
+      text += '<IMG CLASS="pieceImage" ID="' + imageId + '" SRC="'+ImagePath+'clear.'+imageType+'"></TD>';
     }
-   text += '</TR>';
+    text += '</TR>';
   }
   text += '</TABLE>';
 
@@ -2336,7 +2303,19 @@ function PrintHTML(){
    */
   theObject = document.getElementById("GameBoard");
   if (theObject != null) theObject.innerHTML = text; 
-
+   
+  tableSize = document.getElementById("boardTable").offsetWidth;
+ 
+//PAOLO
+text = '';
+for(ii=0; ii<8; ii++){
+  for(jj=0; jj<8; jj++){
+    ID='tcol' + ii + 'trow' + jj;
+    text += document.getElementById(ID).offsetHeight + ' ' +  document.getElementById(ID).offsetWidth + ' ';
+  }
+}
+alert(text)
+ 
   numberOfButtons=5;
   spaceSize=3;
   buttonSize=(tableSize - spaceSize*(numberOfButtons - 1))/numberOfButtons;
@@ -2344,23 +2323,23 @@ function PrintHTML(){
           '<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>' +
           '<TR>' +
           '<TD>' +
-          '<INPUT CLASS="button" TYPE="BUTTON" VALUE="&#124;&lt;" WIDTH="' + buttonSize + '" STYLE="width:' + buttonSize + 'px"' +
+          '<INPUT TYPE="BUTTON" VALUE="&#124;&lt;" STYLE="width: ' + buttonSize + '"; CLASS="buttonControl" ' +
           ' ID="btnInit" onClick="javascript:Init()">' +
-          '<TD WIDTH="' + spaceSize + '">' +
+          '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
-          '<INPUT CLASS="button" TYPE="BUTTON" VALUE="&lt;" WIDTH="' + buttonSize + '" STYLE="width:' + buttonSize + 'px"' +
+          '<INPUT TYPE="BUTTON" VALUE="&lt;" STYLE="width: ' + buttonSize + '"; CLASS="buttonControl" ' +
           ' ID="btnMB1" onClick="javascript:MoveBackward(1)">' +
-          '<TD WIDTH="' + spaceSize + '">' +
+          '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
-          '<INPUT CLASS="button" TYPE="BUTTON" VALUE="play" WIDTH="' + buttonSize + '" STYLE="width:' + buttonSize + 'px"' +
+          '<INPUT TYPE="BUTTON" VALUE="play" STYLE="width: ' + buttonSize + '"; CLASS="buttonControl" ' +
           ' ID="btnPlay" NAME="AutoPlay" onClick="javascript:SwitchAutoPlay()">' +
-          '<TD WIDTH="' + spaceSize + '">' +
+          '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
-          '<INPUT CLASS="button" TYPE="BUTTON" VALUE="&gt;" WIDTH="' + buttonSize + '" STYLE="width:' + buttonSize + 'px"' +
+          '<INPUT TYPE="BUTTON" VALUE="&gt;" STYLE="width: ' + buttonSize + '"; CLASS="buttonControl" ' +
           ' ID="btnMF1" onClick="javascript:MoveForward(1)">' +
-          '<TD WIDTH="' + spaceSize + '">' +
+          '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
-          '<INPUT CLASS="button" TYPE="BUTTON" VALUE="&gt;&#124;" WIDTH="' + buttonSize + '" STYLE="width:' + buttonSize + 'px"' +
+          '<INPUT TYPE="BUTTON" VALUE="&gt;&#124;" STYLE="width: ' + buttonSize + '"; CLASS="buttonControl" ' +
           ' ID="btnMF1000" onClick="javascript:MoveForward(1000)">' +
           '</TR>' + 
           '</TABLE>' +
@@ -2382,8 +2361,7 @@ function PrintHTML(){
       for (ii=0; ii<nameLength; ii++)
         blanks+='&nbsp';
       text = '<FORM NAME="GameSel"> ' +
-             '<SELECT CLASS="select" WIDTH="' + tableSize + '" ' +
-             'STYLE="width: ' + tableSize + 'px; font-family: monospace;" ' +
+             '<SELECT STYLE="font-family: monospace; width: ' + tableSize + ';" CLASS="selectControl" ' +
              'ONCHANGE="if(this.value >= 0) { currentGame=this.value; Init(); }">' +
              '<OPTION value=-1>' + gameSelectorString;
       if(textSelectOptions == ''){

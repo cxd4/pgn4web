@@ -1,5 +1,6 @@
 
-html, body { 
+html, 
+body { 
   margin: 0; 
   padding: 0; 
 }
@@ -11,46 +12,69 @@ body {
 }
 
 .boardTable {
-  border-style: double; 
+  border-style: outset; 
   border-color: black;
-  border-width: 3px;
+  border-width: 5px;
 }
 
-.whiteSquare {
+.pieceImage {
+  width: 40;
+  height: 40;
+}
+
+.whiteSquare,
+.blackSquare,
+.highlightWhiteSquare,
+.highlightBlackSquare {
+  width: 46;
+  height: 46;
+  border-width: 3;
+  border-style: solid;
+}
+
+.whiteSquare,
+.highlightWhiteSquare {
+  border-color: #f2d798;
   background: #f2d798;
 }
 
-.blackSquare {
+.blackSquare,
+.highlightBlackSquare {
+  border-color: #c9ad6f;
   background: #c9ad6f;
 }
 
-.highlightSquare {
-  background: #ffffaa;
+.highlightWhiteSquare,
+.highlightBlackSquare {
+  border-style: inset;
 }
 
-
-.button {
+.selectControl {
+/* a "width" attribute here must use the !important flag to override default settings */
 }
 
-.select {
+.buttonControl {
+/* a "width" attribute here must use the !important flag to override default settings */
 }
 
-.move {
+.buttonControlSpace {
+/* a "width" attribute here must use the !important flag to override default settings */
+}
+
+.move,
+.moveOn {
   color: black;
   font-weight: normal;
   text-decoration: none;   
 }
 
-
 .moveOn {
-  color: black;
-  font-weight: normal;
-  text-decoration: none;
-  background: yellow;
+  background: #DAF4D7;
 }
 
-
-.comment {
+.comment,
+.nag
+{
   color: gray;
 }
 
