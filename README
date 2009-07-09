@@ -18,7 +18,7 @@ Features:
   selection menu, PGN header info, game text, game comment and more)
   can be displayed (or hidden) at pleasure in your html file
 - support different chess bitmaps (even custom bitmaps) and different
-  chessboard sizes (allowing even for runtime resize of the board)
+  chessboard sizes
 
 Limitations:
 - variations are displayed as comment, it's not possible to display
@@ -50,7 +50,7 @@ Example:
     SetImageSize(40);
     SetSquareSize(42);
     SetHighlightOption(true) // true or false
-    SetGameSelectorString("Select a game...");
+    SetGameSelectorOptions("Select a game...", true, 0, 0, 0, 15, 15, 0, 10); // (head, mono, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
     SetCommentsIntoMoveText(false)
     SetCommentsOnSeparateLines(false)
     SetAutoplayDelay(1000); // milliseconds

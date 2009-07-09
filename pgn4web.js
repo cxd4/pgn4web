@@ -14,8 +14,8 @@
  *        SetImagePath (""); // use "" path if images are in the same folder as this javascript file
  *        SetImageType("png");
  *        SetHighlightOption(true) // true or false
- *        SetGameSelectorString("Select a game...");
  *        SetCommentsIntoMoveText(false);
+ *        SetGameSelectorOptions(head, mono, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate); // default: ("Select a game...", true, 0, 0, 0, 15, 15, 0, 10)
  *        SetCommentsOnSeparateLines(false);
  *        SetAutoplayDelay(1000); // milliseconds
  *        SetAutostartAutoplay(false);
@@ -50,7 +50,7 @@ SetPgnUrl("");
 // SetImagePath (""); // use "" path if images are in the same folder as this javascript file
 // SetImageType("png");
 // SetHighlightOption(true); // true or false
-// SetGameSelectorString("Select a game...");
+// SetGameSelectorOptions(head, mono, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate); // default: ("Select a game...", true, 0, 0, 0, 15, 15, 0, 10)
 // SetCommentsIntoMoveText(true);
 // SetCommentsOnSeparateLines(true);
 // SetAutoplayDelay(1000); // milliseconds
@@ -454,7 +454,15 @@ ClearImg  = new Image();
 
 DocumentImages = new Array();
 
-var gameSelectorString='Select a game...';
+var gameSelectorHead     = 'Select a game...';
+var gameSelectorMono     = true;
+var gameSelectorChEvent  = 0;
+var gameSelectorChSite   = 0;
+var gameSelectorChRound  = 0;
+var gameSelectorChWhite  = 15;
+var gameSelectorChBlack  = 15;
+var gameSelectorChResult = 0;
+var gameSelectorChDate   = 10;
 
 function CheckLegality(what, plyCount){
   var retVal;
@@ -2259,11 +2267,18 @@ function ParseMove(move, plyCount){
   return true;
 }
 
-function SetGameSelectorString(string){
-  gameSelectorString = string;
+function SetGameSelectorOptions(head, mono, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate){
+  gameSelectorHead     = head;
+  gameSelectorMono     = mono;
+  gameSelectorChEvent  = chEvent; if (gameSelectorChEvent > 32) gameSelectorChEvent = 32;
+  gameSelectorChSite   = chSite; if (gameSelectorChSite > 32) gameSelectorChSite = 32;
+  gameSelectorChRound  = chRound; if (gameSelectorChRound > 32) gameSelectorChRound = 32;
+  gameSelectorChWhite  = chWhite; if (gameSelectorChWhite > 32) gameSelectorChWhite = 32;
+  gameSelectorChBlack  = chBlack; if (gameSelectorChBlack > 32) gameSelectorChBlack = 32;
+  gameSelectorChResult = chResult; if (gameSelectorChResult > 32) gameSelectorChResult = 32;
+  gameSelectorChDate   = chDate; if (gameSelectorChDate > 32) gameSelectorChDate = 32;
 }
 
-var gamesLimitForSelectFormatting = 500;
 var textSelectOptions = '';
 /******************************************************************************
  *                                                                            *
@@ -2306,16 +2321,6 @@ function PrintHTML(){
    
   tableSize = document.getElementById("boardTable").offsetWidth;
  
-//PAOLO
-text = '';
-for(ii=0; ii<8; ii++){
-  for(jj=0; jj<8; jj++){
-    ID='tcol' + ii + 'trow' + jj;
-    text += document.getElementById(ID).offsetHeight + ' ' +  document.getElementById(ID).offsetWidth + ' ';
-  }
-}
-alert(text)
- 
   numberOfButtons=5;
   spaceSize=3;
   buttonSize=(tableSize - spaceSize*(numberOfButtons - 1))/numberOfButtons;
@@ -2356,27 +2361,67 @@ alert(text)
   theObject = document.getElementById("GameSelector");
   if (theObject != null){
     if (numberOfGames > 1){
-      nameLength = 15;
-      blanks = '';
-      for (ii=0; ii<nameLength; ii++)
-        blanks+='&nbsp';
       text = '<FORM NAME="GameSel"> ' +
              '<SELECT STYLE="font-family: monospace; width: ' + tableSize + ';" CLASS="selectControl" ' +
              'ONCHANGE="if(this.value >= 0) { currentGame=this.value; Init(); }">' +
-             '<OPTION value=-1>' + gameSelectorString;
+             '<OPTION value=-1>' + gameSelectorHead;
       if(textSelectOptions == ''){
+        blanks = ''; for (ii=0; ii<32; ii++) blanks += ' ';
         for (ii=0; ii<numberOfGames; ii++){
           textSelectOptions += '<OPTION value=' + ii + '>';
-          if (numberOfGames < gamesLimitForSelectFormatting){
-            textSelectOptions += gameWhite[ii].substring(0, nameLength);
-            howManyBlanks = nameLength - gameWhite[ii].length;
-            if (howManyBlanks > 0) textSelectOptions += blanks.substring(0, 5*howManyBlanks);
-            textSelectOptions += '&nbsp;-&nbsp;' + gameBlack[ii].substring(0, nameLength);
-            howManyBlanks = nameLength - gameBlack[ii].length;
-            if (howManyBlanks > 0) textSelectOptions += blanks.substring(0, 5*howManyBlanks);
-            textSelectOptions += '&nbsp;&nbsp;' + gameDate[ii]; 
+          if (gameSelectorMono){
+            textSO = '';
+            if (gameSelectorChEvent > 0) {
+              textSO += ' ' + gameEvent[ii].substring(0, gameSelectorChEvent);
+              howManyBlanks = gameSelectorChEvent - gameEvent[ii].length;
+              if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+              textSO += ' ';
+            }
+            if (gameSelectorChSite > 0) {
+              textSO += ' ' + gameSite[ii].substring(0, gameSelectorChSite);
+              howManyBlanks = gameSelectorChSite - gameSite[ii].length;
+              if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+              textSO += ' ';
+            }
+            if (gameSelectorChRound > 0) {
+              textSO += ' ' + gameRound[ii].substring(0, gameSelectorChRound);
+              howManyBlanks = gameSelectorChRound - gameRound[ii].length;
+              if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+              textSO += ' ';
+            }
+            if (gameSelectorChWhite > 0) {
+              textSO += ' ' + gameWhite[ii].substring(0, gameSelectorChWhite);
+              howManyBlanks = gameSelectorChWhite - gameWhite[ii].length;
+              if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+              textSO += ' ';
+            }
+            if (gameSelectorChBlack > 0) {
+              textSO += ' ' + gameBlack[ii].substring(0, gameSelectorChBlack);
+              howManyBlanks = gameSelectorChBlack - gameBlack[ii].length;
+              if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+              textSO += ' ';
+            }
+            if (gameSelectorChResult > 0) {
+              textSO += ' ' + gameResult[ii].substring(0, gameSelectorChResult);
+              howManyBlanks = gameSelectorChResult - gameResult[ii].length;
+              if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+              textSO += ' ';
+            }
+            if (gameSelectorChDate > 0) {
+              textSO += ' ' + gameDate[ii].substring(0, gameSelectorChDate);
+              howManyBlanks = gameSelectorChDate - gameDate[ii].length;
+              if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+              textSO += ' ';
+            }
+            textSelectOptions += textSO.replace(/ /g,'&nbsp;');
           }else{
-            textSelectOptions += gameWhite[ii] + '&nbsp;-&nbsp;' + gameBlack[ii] + '&nbsp;&nbsp;' + gameDate[ii];
+            if (gameSelectorChEvent > 0) textSelectOptions += ' ' + gameEvent[ii].substring(0, gameSelectorChEvent) + ' ';
+            if (gameSelectorChSite > 0) textSelectOptions += ' ' + gameSite[ii].substring(0, gameSelectorChSite) + ' ';
+            if (gameSelectorChRound > 0) textSelectOptions += ' ' + gameRound[ii].substring(0, gameSelectorChRound) + ' ';
+            if (gameSelectorChWhite > 0) textSelectOptions += ' ' + gameWhite[ii].substring(0, gameSelectorChWhite) + ' ';
+            if (gameSelectorChBlack > 0) textSelectOptions += ' ' + gameBlack[ii].substring(0, gameSelectorChBlack) + ' ';
+            if (gameSelectorChResult > 0) textSelectOptions += ' ' + gameResult[ii].substring(0, gameSelectorChResult) + ' ';
+            if (gameSelectorChDate > 0) textSelectOptions += ' ' + gameDate[ii].substring(0, gameSelectorChDate) + ' ';
           }
         }
       }
