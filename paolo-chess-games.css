@@ -46,8 +46,7 @@ body {
 
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  border-style: inset;
-  border-color: gray;
+  border-color: cyan;
 }
 
 .selectControl {

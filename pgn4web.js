@@ -2320,6 +2320,7 @@ function PrintHTML(){
   if (theObject != null) theObject.innerHTML = text; 
    
   tableSize = document.getElementById("boardTable").offsetWidth;
+  document.getElementById("boardTable").style.height = tableSize;
  
   numberOfButtons=5;
   spaceSize=3;
