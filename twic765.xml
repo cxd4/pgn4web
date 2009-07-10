@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+<ModulePrefs
+   title="pgn4web twic765 example"
+   description="pgn4web twic765 example"
+   thumbnail="pawns.png"
+   author="Paolo Casaschi"
+   author_email="paolo@casaschi.net"
+   author_link="http://www.casaschi.net"
+   width="900"
+   height="1200"
+   category="funandgames"/>
+<Content type="url" href="twic765.html"/>
+</Module>

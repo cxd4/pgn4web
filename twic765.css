@@ -51,7 +51,7 @@ body {
 }
 
 .selectControl {
-  width: 100% !important;
+  width: 90% !important;
 /* a "width" attribute here must use the !important flag to override default settings */
 }
 
@@ -71,7 +71,7 @@ body {
 }
 
 .moveOn {
-  background: #DAF4D7;
+  background: yellow;
 }
 
 .comment,
