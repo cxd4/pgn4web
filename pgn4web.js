@@ -1040,15 +1040,19 @@ function loadPgnFromPgnUrl(pgnUrl){
       }
     }
   if (!http_request){
-    alert('Error reading PGN file from URL');
+    alert('Error with XMLHttpRequest for reading PGN file from URL');
     return false; 
   }
-  http_request.open("GET", pgnUrl, false); 
-  http_request.send(null);
-  if((http_request.readyState  == 4) && ((http_request.status  == 200) || (http_request.status  == 0))){ 
+
+  try {
+    http_request.open("GET", pgnUrl, false); 
+    http_request.send(null);
+  } catch(e) {}
+
+  if((http_request.readyState  == 4) && ((http_request.status  == 200) || (http_request.status  == 0))){
     return pgnGameFromPgnText(http_request.responseText);
   }else{ 
-    alert('Error reading PGN file from URL: ' + http_request.status);
+    alert('Error reading PGN file from URL:\n' + pgnUrl);
     return false;
   }
 }
@@ -1071,10 +1075,11 @@ function createBoardFromPgnUrl(){
   }
 
   theObject = document.getElementById("GameBoard");
-  if (theObject != null) theObject.innerHTML = "Please wait while loading PGN file..."; 
+  if (theObject != null) theObject.innerHTML = '<SPAN STYLE="font-style: italic;">Please wait while loading PGN file...</SPAN>'; 
 
   if ( loadPgnFromPgnUrl(pgnUrl) ) 
     Init();
+  else if (theObject != null) theObject.innerHTML = '<SPAN STYLE="color: red; font-style: italic; font-weight: bold;">Failed to load PGN file:<br>' + pgnUrl + '</SPAN>';
 }
 
 /******************************************************************************
