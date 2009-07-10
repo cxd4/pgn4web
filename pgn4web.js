@@ -302,15 +302,6 @@ function handlekey(e) {
       break;
 
     case 88: // x
-//PAOLO
-text = '';
-for(ii=0; ii<8; ii++){
-  for(jj=0; jj<8; jj++){
-    ID='tcol' + ii + 'trow' + jj;
-    text += document.getElementById(ID).offsetHeight + ' ' +  document.getElementById(ID).offsetWidth + ' ';
-  }
-}
-alert(text)
       break;
 
     case 79:  // o
