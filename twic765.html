@@ -12,7 +12,7 @@
    SetImagePath ("merida/36"); // use "" path if images are in the same folder as this javascript file
    SetImageType("png");
    SetHighlightOption(true) // true or false
-   SetGameSelectorOptions(" Event       Site        Rd  White            Black            Date", true, 10, 10, 2, 15, 15, 0, 10); // (head, mono, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);   
+   SetGameSelectorOptions(" Event       Site        Rd  White            Black            Result   Date", true, 10, 10, 2, 15, 15, 7, 10); // (head, mono, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);   
    SetCommentsIntoMoveText(true);
    SetCommentsOnSeparateLines(true);
    SetAutoplayDelay(1000); // milliseconds
@@ -36,21 +36,21 @@ The Week In Chess #765
 
 <tr valign=bottom>
 
-<td width=5%></td>
+<td width=3%></td>
 
 <td colspan=5>
 <span align="center" id="GameSelector"></span>
 </td>
 
-<td width=5%></td>
+<td width=3%></td>
 
 </tr>
 
 <tr valign=top>
 
-<td width=5%></td>
+<td width=3%></td>
 
-<td width=20%>
+<td width=32%>
 &nbsp;<br>
 Event: <b><span id="GameEvent"></span></b>
 <br>
@@ -78,9 +78,9 @@ Move comment:<br><b><span id="GameLastComment"><b></span>
 -->
 </td>
 
-<td width=5%></td>
+<td width=4%></td>
 
-<td align="center" width=35%>
+<td align="center" width=22%>
 <div id="GameBoard"></div>
 <p>
 <div id="GameButtons"></div>
@@ -88,14 +88,14 @@ Move comment:<br><b><span id="GameLastComment"><b></span>
 <small><i>hit escape for shortcut keys help</i></small>
 </td>
 
-<td width=5%></td>
+<td width=4%></td>
 
-<td width=20%>
+<td width=32%>
 &nbsp;<br>
-<span style="text-align: justify" id="GameText"></span></span>
+<span style="text-align: justify; font-size: 85%" id="GameText"></span></span>
 </td>
 
-<td width=5%></td>
+<td width=3%></td>
 
 </tr>
 </table>

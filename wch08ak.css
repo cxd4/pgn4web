@@ -14,7 +14,7 @@ body {
 .boardTable {
   border-style: outset;
   border-color: #c9ad6f;
-  border-width: 5;
+  border-width: 2;
 }
 
 .pieceImage {
