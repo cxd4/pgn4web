@@ -1,0 +1,85 @@
+
+html, 
+body { 
+  margin: 0; 
+  padding: 0;
+}
+
+body {
+  font-family: sans-serif;
+  color: black;
+  background: white;
+}
+
+.boardTable {
+  border-style: double;
+  border-color: black;
+  border-width: 3;
+}
+
+.pieceImage {
+  width: 36;
+  height: 36;
+}
+
+.whiteSquare,
+.blackSquare,
+.highlightWhiteSquare,
+.highlightBlackSquare {
+  width: 42;
+  height: 42;
+  border-style: solid;
+  border-width: 1;
+}
+
+.whiteSquare,
+.highlightWhiteSquare {
+  border-color: #f2d798;
+  background: #f2d798;
+}
+
+.blackSquare,
+.highlightBlackSquare {
+  border-color: #c9ad6f;
+  background: #c9ad6f;
+}
+
+.highlightWhiteSquare,
+.highlightBlackSquare {
+  border-color: red;
+}
+
+.selectControl {
+  width: 100% !important;
+/* a "width" attribute here must use the !important flag to override default settings */
+}
+
+.buttonControl {
+/* a "width" attribute here must use the !important flag to override default settings */
+}
+
+.buttonControlSpace {
+/* a "width" attribute here must use the !important flag to override default settings */
+}
+
+.move,
+.moveOn {
+  color: black;
+  font-weight: normal;
+  text-decoration: none;   
+}
+
+.moveOn {
+  background: #DAF4D7;
+}
+
+.comment,
+.nag
+{
+  color: gray;
+}
+
+.nag {
+  font-style: italic;
+}
+

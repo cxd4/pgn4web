@@ -2363,9 +2363,13 @@ function PrintHTML(){
   if (theObject != null){
     if (numberOfGames > 1){
       text = '<FORM NAME="GameSel"> ' +
-             '<SELECT STYLE="font-family: monospace; width: ' + tableSize + ';" CLASS="selectControl" ' +
+             '<SELECT STYLE="width: ' + tableSize + ';';
+      if (gameSelectorMono) text+= 'font-family: monospace;';
+      text += '" CLASS="selectControl" ' +
              'ONCHANGE="if(this.value >= 0) { currentGame=this.value; Init(); }">' +
-             '<OPTION value=-1>' + gameSelectorHead;
+             '<OPTION value=-1>';
+      if (gameSelectorMono) text += gameSelectorHead.replace(/ /g,'&nbsp;');
+      else text += gameSelectorHead;
       if(textSelectOptions == ''){
         blanks = ''; for (ii=0; ii<32; ii++) blanks += ' ';
         for (ii=0; ii<numberOfGames; ii++){
