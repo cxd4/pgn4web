@@ -77,9 +77,9 @@ to any <div> or <span> containers with the following IDs:
   <div id="GameResult"></div>
   <div id="GameText"></div>
 
-The file pgn4web.css shows a list of customization style options.
+The file template.css shows a list of customization style options.
 
-See pgn4web.html file for an example.
+See template.html file for an example.
 
 
 CREDITS
