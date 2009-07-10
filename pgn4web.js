@@ -356,7 +356,7 @@ var AutoPlayInterval;
 var Delay = 1000;
 var autostartAutoplay = false;
 
-var initialGame = 1;
+var initialGame = 0;
 var initialHalfmove = 0;
 
 var MaxMove = 500;
@@ -1689,7 +1689,12 @@ function MoveForward(diff){
    * Set a new timeout if in autoplay mode.
    */
   if (AutoPlayInterval) clearTimeout(AutoPlayInterval);
-  if (isAutoPlayOn) AutoPlayInterval=setTimeout("MoveForward(1)", Delay);
+  if (isAutoPlayOn) {
+    if (currentPly < StartPly + PlyNumber - 1)
+      AutoPlayInterval=setTimeout("MoveForward(1)", Delay);
+    else
+      SetAutoPlay(false);
+  }
 }
 
 /******************************************************************************
