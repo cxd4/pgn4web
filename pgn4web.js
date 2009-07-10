@@ -20,7 +20,8 @@
  *        SetAutoplayDelay(1000); // milliseconds
  *        SetAutostartAutoplay(false);
  *        SetInitialGame(1); // number of game to be shown at load, from 1 (default); if 0 a random game is loaded
- *        SetInitialHalfmove(0); // halfmove number to be shown at load, 0 for start position
+ *        SetInitialHalfmove(0); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
+
  *      </script>
  * 
  *   Then the script will automagically add content into your HTML file 
@@ -56,7 +57,8 @@ SetPgnUrl("");
 // SetAutoplayDelay(1000); // milliseconds
 // SetAutostartAutoplay(false);
 // SetInitialGame(1); // number of game to be shown at load, from 1 (default); if 0 a random game is loaded
-// SetInitialHalfmove(0); // halfmove number to be shown at load, 0 for start position
+// SetInitialHalfmove(0); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
+
 
 
 /*********************************************************************/
@@ -134,6 +136,9 @@ function handlekey(e) {
     case 46:  // delete
     case 92:  // super
     case 93:  // menu
+      break;
+
+    case 90: // z
       break;
 
     case 37:  // left arrow  
@@ -264,6 +269,14 @@ function handlekey(e) {
       if (IsRotated) FlipBoard();
       break;
 
+    case 88: // x
+      if (numberOfGames > 1){
+        currentGame = Math.floor(Math.random()*numberOfGames);
+        Init();
+        GoToMove(StartPly + Math.floor(Math.random()*(StartPly+PlyNumber)));
+      }
+      break;
+
     case 67: // c
       if (numberOfGames > 1){
         currentGame = Math.floor(Math.random()*numberOfGames);
@@ -301,12 +314,6 @@ function handlekey(e) {
 
     case 27: // escape
       displayHelp();
-      break;
-
-    case 90: // z
-      break;
-
-    case 88: // x
       break;
 
     case 79:  // o
@@ -1111,7 +1118,8 @@ function Init(){
   document.HiddenBoardForm.CurrentPly.value = StartPly;
   HighlightLastMove();
   if (firstStart){
-    if (initialHalfmove < 0) initialHalfmove = 0;
+    if (initialHalfmove < -1) initialHalfmove = 0;
+    if (initialHalfmove == -1) initialHalfmove = StartPly + Math.floor(Math.random()*(StartPly+PlyNumber));
     GoToMove(initialHalfmove);
     if (autostartAutoplay) SetAutoPlay(true);
   }
@@ -2303,7 +2311,7 @@ function PrintHTML(){
 	text += '<TD CLASS="whiteSquare" ID="' + squareId + '" BGCOLOR="white" ALIGN="center" VALIGN="middle">';
       } else{
 	text += '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="gray" ALIGN="center" VALIGN="middle">';
-      } //PAOLO
+      } 
       text += '<IMG CLASS="pieceImage" ID="' + imageId + '" SRC="'+ImagePath+'clear.'+imageType+'"></TD>';
     }
     text += '</TR>';
