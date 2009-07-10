@@ -2311,7 +2311,7 @@ function PrintHTML(){
       if ((ii+jj)%2 == 0){
 	text += '<TD CLASS="whiteSquare" ID="' + squareId + '" BGCOLOR="white" ALIGN="center" VALIGN="middle">';
       } else{
-	text += '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="gray" ALIGN="center" VALIGN="middle">';
+	text += '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="lightgray" ALIGN="center" VALIGN="middle">';
       } 
       text += '<IMG CLASS="pieceImage" ID="' + imageId + '" SRC="'+ImagePath+'clear.'+imageType+'"></TD>';
     }
