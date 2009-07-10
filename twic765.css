@@ -51,7 +51,7 @@ body {
 }
 
 .selectControl {
-  width: 90% !important;
+  width: 100% !important;
 /* a "width" attribute here must use the !important flag to override default settings */
 }
 
