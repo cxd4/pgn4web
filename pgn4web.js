@@ -81,6 +81,7 @@ var help = '\th\tgame start' + '\n' +
            '\tn\tnext game' + '\n' +
            '\tm\tlast game' + '\n' +
            '\tc\trandom game' + '\n' +
+           '\tx\trandom game at random position' + '\n' +
            '\n' +
            '\ta\tstart autoplay' + '\n' +
            '\ts\tstop autoplay' + '\n' +
