@@ -19,7 +19,7 @@
  *        SetCommentsOnSeparateLines(false);
  *        SetAutoplayDelay(1000); // milliseconds
  *        SetAutostartAutoplay(false);
- *        SetInitialGame(1); // number of game to be shown at load, from 1
+ *        SetInitialGame(1); // number of game to be shown at load, from 1 (default); if 0 a random game is loaded
  *        SetInitialHalfmove(0); // halfmove number to be shown at load, 0 for start position
  *      </script>
  * 
@@ -55,8 +55,8 @@ SetPgnUrl("");
 // SetCommentsOnSeparateLines(true);
 // SetAutoplayDelay(1000); // milliseconds
 // SetAutostartAutoplay(false);
-// SetInitialGame(0); // number of game to be shown at load
-// SetInitialHalfmove(0); // halfmove number to be shown at load
+// SetInitialGame(1); // number of game to be shown at load, from 1 (default); if 0 a random game is loaded
+// SetInitialHalfmove(0); // halfmove number to be shown at load, 0 for start position
 
 
 /*********************************************************************/
@@ -78,6 +78,7 @@ var help = '\th\tgame start' + '\n' +
            '\tb\tprevious game' + '\n' +
            '\tn\tnext game' + '\n' +
            '\tm\tlast game' + '\n' +
+           '\tc\trandom game' + '\n' +
            '\n' +
            '\ta\tstart autoplay' + '\n' +
            '\ts\tstop autoplay' + '\n' +
@@ -263,30 +264,37 @@ function handlekey(e) {
       if (IsRotated) FlipBoard();
       break;
 
+    case 67: // c
+      if (numberOfGames > 1){
+        currentGame = Math.floor(Math.random()*numberOfGames);
+        Init();
+      }
+      break;
+
     case 86:  // v
       if (numberOfGames > 1){
-	  currentGame = 0;
+	currentGame = 0;
         Init();
       }
       break;
 
     case 66:  // b
       if (currentGame > 0){
-	  currentGame--;
+        currentGame--;
         Init();
       }
       break;
 
     case 78:  // n
       if (numberOfGames > currentGame){
-	  currentGame++;
+        currentGame++;
         Init();
       }
       break;
 
     case 77:  // m
       if (numberOfGames > 1){
-	  currentGame = numberOfGames - 1;
+        currentGame = numberOfGames - 1;
         Init();
       }
       break;
@@ -296,9 +304,6 @@ function handlekey(e) {
       break;
 
     case 90: // z
-      break;
-
-    case 67: // c
       break;
 
     case 88: // x
@@ -343,7 +348,7 @@ var AutoPlayInterval;
 var Delay = 1000;
 var autostartAutoplay = false;
 
-var initialGame = 0;
+var initialGame = 1;
 var initialHalfmove = 0;
 
 var MaxMove = 500;
@@ -1081,8 +1086,9 @@ function Init(){
   if (firstStart){
     numberOfGames = pgnGame.length;
     LoadGameHeaders();
-    if (initialGame < 0) initialGame = 0;
-    if (initialGame < numberOfGames) currentGame = initialGame;
+    if (initialGame < -1) currentGame = 0;
+    else if (initialGame == -1) currentGame = Math.floor(Math.random()*numberOfGames);
+    else if (initialGame < numberOfGames) currentGame = initialGame;
     else currentGame = numberOfGames - 1;
   }
 
@@ -2346,7 +2352,7 @@ function PrintHTML(){
    */
   theObject = document.getElementById("GameButtons");
   if (theObject != null) theObject.innerHTML = text; 
-
+  
   /*
    * Show the HTML for the Game Selector
    */
