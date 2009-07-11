@@ -140,6 +140,7 @@ function handlekey(e) {
       break;
 
     case 90: // z
+      window.open('http://pgn4web.casaschi.net'); 
       break;
 
     case 37:  // left arrow  
