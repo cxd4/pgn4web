@@ -2345,23 +2345,33 @@ function PrintHTML(){
           '<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>' +
           '<TR>' +
           '<TD>' +
-          '<INPUT TYPE="BUTTON" VALUE="&#124;&lt;" STYLE="width: ' + buttonSize + '"; CLASS="buttonControl" ' +
+          '<INPUT TYPE="BUTTON" VALUE="&#124;&lt;" STYLE="';
+  if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
+  text += '"; CLASS="buttonControl" ' +
           ' ID="btnInit" onClick="javascript:Init()">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
-          '<INPUT TYPE="BUTTON" VALUE="&lt;" STYLE="width: ' + buttonSize + '"; CLASS="buttonControl" ' +
+          '<INPUT TYPE="BUTTON" VALUE="&lt;" STYLE="';
+  if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
+  text += '"; CLASS="buttonControl" ' +
           ' ID="btnMB1" onClick="javascript:MoveBackward(1)">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
-          '<INPUT TYPE="BUTTON" VALUE="play" STYLE="width: ' + buttonSize + '"; CLASS="buttonControl" ' +
+          '<INPUT TYPE="BUTTON" VALUE="play" STYLE="';
+  if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
+  text += '"; CLASS="buttonControl" ' +
           ' ID="btnPlay" NAME="AutoPlay" onClick="javascript:SwitchAutoPlay()">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
-          '<INPUT TYPE="BUTTON" VALUE="&gt;" STYLE="width: ' + buttonSize + '"; CLASS="buttonControl" ' +
+          '<INPUT TYPE="BUTTON" VALUE="&gt;" STYLE="';
+  if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
+  text += '"; CLASS="buttonControl" ' +
           ' ID="btnMF1" onClick="javascript:MoveForward(1)">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
-          '<INPUT TYPE="BUTTON" VALUE="&gt;&#124;" STYLE="width: ' + buttonSize + '"; CLASS="buttonControl" ' +
+          '<INPUT TYPE="BUTTON" VALUE="&gt;&#124;" STYLE="';
+  if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
+  text += '"; CLASS="buttonControl" ' +
           ' ID="btnMF1000" onClick="javascript:MoveForward(1000)">' +
           '</TR>' + 
           '</TABLE>' +
@@ -2376,79 +2386,78 @@ function PrintHTML(){
    * Show the HTML for the Game Selector
    */
   theObject = document.getElementById("GameSelector");
-  if (theObject != null){
-    if (numberOfGames > 1){
-      text = '<FORM NAME="GameSel"> ' +
-             '<SELECT STYLE="width: ' + tableSize + ';';
-      if (gameSelectorMono) text+= 'font-family: monospace;';
-      text += '" CLASS="selectControl" ' +
-             'ONCHANGE="if(this.value >= 0) { currentGame=this.value; Init(); }">' +
-             '<OPTION value=-1>';
-      if (gameSelectorMono) text += gameSelectorHead.replace(/ /g,'&nbsp;');
-      else text += gameSelectorHead;
-      if(textSelectOptions == ''){
-        blanks = ''; for (ii=0; ii<32; ii++) blanks += ' ';
-        for (ii=0; ii<numberOfGames; ii++){
-          textSelectOptions += '<OPTION value=' + ii + '>';
-          if (gameSelectorMono){
-            textSO = '';
-            if (gameSelectorChEvent > 0) {
-              textSO += ' ' + gameEvent[ii].substring(0, gameSelectorChEvent);
-              howManyBlanks = gameSelectorChEvent - gameEvent[ii].length;
-              if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
-              textSO += ' ';
-            }
-            if (gameSelectorChSite > 0) {
-              textSO += ' ' + gameSite[ii].substring(0, gameSelectorChSite);
-              howManyBlanks = gameSelectorChSite - gameSite[ii].length;
-              if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
-              textSO += ' ';
-            }
-            if (gameSelectorChRound > 0) {
-              textSO += ' ' + gameRound[ii].substring(0, gameSelectorChRound);
-              howManyBlanks = gameSelectorChRound - gameRound[ii].length;
-              if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
-              textSO += ' ';
-            }
-            if (gameSelectorChWhite > 0) {
-              textSO += ' ' + gameWhite[ii].substring(0, gameSelectorChWhite);
-              howManyBlanks = gameSelectorChWhite - gameWhite[ii].length;
-              if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
-              textSO += ' ';
-            }
-            if (gameSelectorChBlack > 0) {
-              textSO += ' ' + gameBlack[ii].substring(0, gameSelectorChBlack);
-              howManyBlanks = gameSelectorChBlack - gameBlack[ii].length;
-              if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
-              textSO += ' ';
-            }
-            if (gameSelectorChResult > 0) {
-              textSO += ' ' + gameResult[ii].substring(0, gameSelectorChResult);
-              howManyBlanks = gameSelectorChResult - gameResult[ii].length;
-              if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
-              textSO += ' ';
-            }
-            if (gameSelectorChDate > 0) {
-              textSO += ' ' + gameDate[ii].substring(0, gameSelectorChDate);
-              howManyBlanks = gameSelectorChDate - gameDate[ii].length;
-              if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
-              textSO += ' ';
-            }
-            textSelectOptions += textSO.replace(/ /g,'&nbsp;');
-          }else{
-            if (gameSelectorChEvent > 0) textSelectOptions += ' ' + gameEvent[ii].substring(0, gameSelectorChEvent) + ' ';
-            if (gameSelectorChSite > 0) textSelectOptions += ' ' + gameSite[ii].substring(0, gameSelectorChSite) + ' ';
-            if (gameSelectorChRound > 0) textSelectOptions += ' ' + gameRound[ii].substring(0, gameSelectorChRound) + ' ';
-            if (gameSelectorChWhite > 0) textSelectOptions += ' ' + gameWhite[ii].substring(0, gameSelectorChWhite) + ' ';
-            if (gameSelectorChBlack > 0) textSelectOptions += ' ' + gameBlack[ii].substring(0, gameSelectorChBlack) + ' ';
-            if (gameSelectorChResult > 0) textSelectOptions += ' ' + gameResult[ii].substring(0, gameSelectorChResult) + ' ';
-            if (gameSelectorChDate > 0) textSelectOptions += ' ' + gameDate[ii].substring(0, gameSelectorChDate) + ' ';
+  if ((theObject != null) && (numberOfGames > 1) && (textSelectOptions=='')){
+    text = '<FORM NAME="GameSel"> ' +
+           '<SELECT NAME="GameSelSelect" STYLE='
+    if ((tableSize != undefined) && (tableSize > 0)) text += '"width: ' + tableSize + ';';
+    if (gameSelectorMono) text+= 'font-family: monospace;';
+    text += '" CLASS="selectControl" ' + 
+           'ONCHANGE="if(this.value >= 0) {currentGame=this.value; document.GameSel.GameSelSelect.value = -1; Init();}">' +
+           '<OPTION value=-1>';
+    if (gameSelectorMono) text += gameSelectorHead.replace(/ /g,'&nbsp;');
+    else text += gameSelectorHead;
+    if(textSelectOptions == ''){
+      blanks = ''; for (ii=0; ii<32; ii++) blanks += ' ';
+      for (ii=0; ii<numberOfGames; ii++){
+        textSelectOptions += '<OPTION value=' + ii + '>';
+        if (gameSelectorMono){
+          textSO = '';
+          if (gameSelectorChEvent > 0) {
+            textSO += ' ' + gameEvent[ii].substring(0, gameSelectorChEvent);
+            howManyBlanks = gameSelectorChEvent - gameEvent[ii].length;
+            if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+            textSO += ' ';
           }
+          if (gameSelectorChSite > 0) {
+            textSO += ' ' + gameSite[ii].substring(0, gameSelectorChSite);
+            howManyBlanks = gameSelectorChSite - gameSite[ii].length;
+            if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+            textSO += ' ';
+          }
+          if (gameSelectorChRound > 0) {
+            textSO += ' ' + gameRound[ii].substring(0, gameSelectorChRound);
+            howManyBlanks = gameSelectorChRound - gameRound[ii].length;
+            if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+            textSO += ' ';
+          }
+          if (gameSelectorChWhite > 0) {
+            textSO += ' ' + gameWhite[ii].substring(0, gameSelectorChWhite);
+            howManyBlanks = gameSelectorChWhite - gameWhite[ii].length;
+            if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+            textSO += ' ';
+          }
+          if (gameSelectorChBlack > 0) {
+            textSO += ' ' + gameBlack[ii].substring(0, gameSelectorChBlack);
+            howManyBlanks = gameSelectorChBlack - gameBlack[ii].length;
+            if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+            textSO += ' ';
+          }
+          if (gameSelectorChResult > 0) {
+            textSO += ' ' + gameResult[ii].substring(0, gameSelectorChResult);
+            howManyBlanks = gameSelectorChResult - gameResult[ii].length;
+            if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+            textSO += ' ';
+          }
+          if (gameSelectorChDate > 0) {
+            textSO += ' ' + gameDate[ii].substring(0, gameSelectorChDate);
+            howManyBlanks = gameSelectorChDate - gameDate[ii].length;
+            if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+            textSO += ' ';
+          }
+          textSelectOptions += textSO.replace(/ /g,'&nbsp;');
+        }else{
+          if (gameSelectorChEvent > 0) textSelectOptions += ' ' + gameEvent[ii].substring(0, gameSelectorChEvent) + ' ';
+          if (gameSelectorChSite > 0) textSelectOptions += ' ' + gameSite[ii].substring(0, gameSelectorChSite) + ' ';
+          if (gameSelectorChRound > 0) textSelectOptions += ' ' + gameRound[ii].substring(0, gameSelectorChRound) + ' ';
+          if (gameSelectorChWhite > 0) textSelectOptions += ' ' + gameWhite[ii].substring(0, gameSelectorChWhite) + ' ';
+          if (gameSelectorChBlack > 0) textSelectOptions += ' ' + gameBlack[ii].substring(0, gameSelectorChBlack) + ' ';
+          if (gameSelectorChResult > 0) textSelectOptions += ' ' + gameResult[ii].substring(0, gameSelectorChResult) + ' ';
+          if (gameSelectorChDate > 0) textSelectOptions += ' ' + gameDate[ii].substring(0, gameSelectorChDate) + ' ';
         }
       }
-      text += textSelectOptions + '</SELECT></FORM>';
-      theObject.innerHTML = text; 
     }
+    text += textSelectOptions + '</SELECT></FORM>';
+    theObject.innerHTML = text; 
   }
 
   /*
