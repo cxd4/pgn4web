@@ -67,7 +67,7 @@ SetPgnUrl("");
  * DONT CHANGE AFTER HERE 
  */
 
-var version = '1.15+';
+var version = '1.16';
 var about = '\tpgn4web v' + version + '\n\thttp://pgn4web.casaschi.net\n';
 var help = '\th\tgame start' + '\n' +
            '\tj\tmove backward' + '\n' +
@@ -301,7 +301,7 @@ function handlekey(e) {
       break;
 
     case 78:  // n
-      if (numberOfGames > currentGame){
+      if (numberOfGames > currentGame + 1){
         currentGame++;
         Init();
       }
