@@ -12,14 +12,13 @@
    SetImagePath ("uscf/36"); // use "" path if images are in the same folder as this javascript file
    SetImageType("png");
    SetHighlightOption(true) // true or false
-   SetGameSelectorOptions("Select a game...", true, 0, 0, 2, 10, 10, 0, 10); // (head, mono, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);   
+   SetGameSelectorOptions("Select a game...", false, 0, 0, 0, 2, 10, 10, 0, 10); // (head, num, gameNum, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);   
    SetCommentsIntoMoveText(true);
    SetCommentsOnSeparateLines(true);
    SetAutoplayDelay(5000); // milliseconds
    SetAutostartAutoplay(false);
    SetInitialGame(3); // number of game to be shown at load, from 1 (default); if 0 a random game is loaded
    SetInitialHalfmove(28); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
-
 </script>
 
 </head>
