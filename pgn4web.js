@@ -150,7 +150,7 @@ function handlekey(e) {
 
     case 38:  // up arrow
     case 72:  // h
-      Init();
+      GoToMove(StartPly);
       break;
 
     case 39:  // right arrow
@@ -160,7 +160,7 @@ function handlekey(e) {
 
     case 40:  // down arrow
     case 76:  // l
-      MoveForward(1000);
+      GoToMove(StartPly + PlyNumber);
       break;
 
     case 85:  // u
@@ -275,7 +275,7 @@ function handlekey(e) {
       if (numberOfGames > 1){
         currentGame = Math.floor(Math.random()*numberOfGames);
         Init();
-        GoToMove(StartPly + Math.floor(Math.random()*(StartPly+PlyNumber)));
+        GoToMove(StartPly + Math.floor(Math.random()*(StartPly + PlyNumber + 1)));
       }
       break;
 
@@ -1655,7 +1655,12 @@ function MoveBackward(diff){
    * Set a new timeout if in autoplay mode.
    */
   if (AutoPlayInterval) clearTimeout(AutoPlayInterval);
-  if (isAutoPlayOn) AutoPlayInterval=setTimeout("MoveBackward(1)", Delay);
+  if (isAutoPlayOn) {
+    if(goToPly >= StartPly)
+      AutoPlayInterval=setTimeout("MoveBackward(1)", Delay);
+    else
+      SetAutoPlay(false);
+  } 
 }
 /******************************************************************************
  *                                                                            *
@@ -1701,10 +1706,11 @@ function MoveForward(diff){
    */
   if (AutoPlayInterval) clearTimeout(AutoPlayInterval);
   if (isAutoPlayOn) {
-    if (currentPly < StartPly + PlyNumber - 1)
+    if (goToPly < StartPly + PlyNumber)
       AutoPlayInterval=setTimeout("MoveForward(1)", Delay);
-    else
+    else {
       SetAutoPlay(false);
+    }
   }
 }
 
@@ -2359,13 +2365,13 @@ function PrintHTML(){
           '<INPUT TYPE="BUTTON" VALUE="&#124;&lt;" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
   text += '"; CLASS="buttonControl" ' +
-          ' ID="btnInit" onClick="javascript:Init()">' +
+          ' ID="btnGoToStart" onClick="javascript:GoToMove(StartPly)">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
           '<INPUT TYPE="BUTTON" VALUE="&lt;" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
   text += '"; CLASS="buttonControl" ' +
-          ' ID="btnMB1" onClick="javascript:MoveBackward(1)">' +
+          ' ID="btnMoveBackward1" onClick="javascript:MoveBackward(1)">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
           '<INPUT TYPE="BUTTON" VALUE="play" STYLE="';
@@ -2377,13 +2383,13 @@ function PrintHTML(){
           '<INPUT TYPE="BUTTON" VALUE="&gt;" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
   text += '"; CLASS="buttonControl" ' +
-          ' ID="btnMF1" onClick="javascript:MoveForward(1)">' +
+          ' ID="btnMoveForward1" onClick="javascript:MoveForward(1)">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
           '<INPUT TYPE="BUTTON" VALUE="&gt;&#124;" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
   text += '"; CLASS="buttonControl" ' +
-          ' ID="btnMF1000" onClick="javascript:MoveForward(1000)">' +
+          ' ID="btnGoToEnd" onClick="javascript:GoToMove(StartPly + PlyNumber)">' +
           '</TR>' + 
           '</TABLE>' +
           '</FORM>';
