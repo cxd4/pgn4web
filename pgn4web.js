@@ -2395,12 +2395,11 @@ function PrintHTML(){
   if ((theObject != null) && (numberOfGames > 1) && (textSelectOptions=='')){
     if (gameSelectorNum) gameSelectorNumLenght = Math.floor(Math.log(numberOfGames)/Math.log(10)) + 1;
     text = '<FORM NAME="GameSel"> ' +
-           '<SELECT NAME="GameSelSelect" STYLE='
-    if ((tableSize != undefined) && (tableSize > 0)) text += '"width: ' + tableSize + ';';
-    text+= 'font-family: monospace;';
-    text += '" CLASS="selectControl" ' + 
-           'ONCHANGE="if(this.value >= 0) {currentGame=this.value; document.GameSel.GameSelSelect.value = -1; Init();}">' +
-           '<OPTION value=-1>';
+           '<SELECT NAME="GameSelSelect" STYLE="'
+    if ((tableSize != undefined) && (tableSize > 0)) text += 'width: ' + tableSize + '; ';
+    text += 'font-family: monospace;" CLASS="selectControl" ' + 
+            'ONCHANGE="if(this.value >= 0) {currentGame=this.value; document.GameSel.GameSelSelect.value = -1; Init();}">' +
+            '<OPTION value=-1>';
 
     blanks = ''; for (ii=0; ii<32; ii++) blanks += ' ';
     if (gameSelectorNum) gameSelectorHead = blanks.substring(0, gameSelectorNumLenght) + '# ' + gameSelectorHead;
