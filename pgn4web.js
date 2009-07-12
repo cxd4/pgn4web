@@ -21,7 +21,6 @@
  *        SetAutostartAutoplay(false);
  *        SetInitialGame(1); // number of game to be shown at load, from 1 (default); if 0 a random game is loaded
  *        SetInitialHalfmove(0); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
-
  *      </script>
  * 
  *   Then the script will automagically add content into your HTML file 
@@ -69,28 +68,18 @@ SetPgnUrl("");
 
 var version = '1.16+';
 var about = '\tpgn4web v' + version + '\n\thttp://pgn4web.casaschi.net\n';
-var help = '\th\tgame start' + '\n' +
-           '\tj\tmove backward' + '\n' +
-           '\tk\tmove forward' + '\n' +
-           '\tl\tgame end' + '\n' +
-           '\tu\tfind previous comment' + '\n' +
-           '\ti\tfind next comment' + '\n' +
+var help = '\th, l\tgame start/end' + '\n' +
+           '\tj, k\tmove backward/forward' + '\n' +
+           '\tu, i\tfind previous/next comment' + '\n' +
            '\n' +
-           '\tv\tfirst game' + '\n' +
-           '\tb\tprevious game' + '\n' +
-           '\tn\tnext game' + '\n' +
-           '\tm\tlast game' + '\n' +
-           '\tc\trandom game' + '\n' +
-           '\tx\trandom game at random position' + '\n' +
+           '\tv, m\tfirst/last game' + '\n' +
+           '\tb, n\tprevious/next game' + '\n' +
+           '\tc, x\trandom game at start/random position' + '\n' +
            '\n' +
-           '\ta\tstart autoplay' + '\n' +
-           '\ts\tstop autoplay' + '\n' +
-           '\t1\tautoplay 1s' + '\n' +
-           '\t3\tautoplay 3s' + '\n' +
-           '\t9\tautoplay 3s' + '\n' +
+           '\ta, 2\tstart/stop autoplay' + '\n' +
+           '\t1,[n]\tautoplay 1 sec, [n] sec' + '\n' +
            '\n' +
-           '\tf\tflip board' + '\n' +
-           '\td\twhite on bottom' + '\n' +
+           '\tf, d\tflip board / white on bottom' + '\n' +
            '\tg\ttoggle highlighting' + '\n' +
            '\tp\ttoggle showing comments' + '\n' +
            '\to\ttoggle showing comments on separate lines' + '\n' +
