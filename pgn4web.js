@@ -76,7 +76,7 @@ var help = '\th, l\tgame start/end' + '\n' +
            '\tb, n\tprevious/next game' + '\n' +
            '\tc, x\trandom game at start/random position' + '\n' +
            '\n' +
-           '\ta, 2\tstart/stop autoplay' + '\n' +
+           '\ta, s\tstart/stop autoplay' + '\n' +
            '\t1,[n]\tautoplay 1 sec, [n] sec' + '\n' +
            '\n' +
            '\tf, d\tflip board / white on bottom' + '\n' +
