@@ -1685,8 +1685,8 @@ function MoveForward(diff){
     var move  = Moves[thisPly];
     var parse = ParseMove(move, thisPly);
     if (!parse) {
-      if ((currentPly % 2) == 0) text = (Math.floor(currentPly / 2) + 1) + '. ';
-      else text = (Math.floor(currentPly / 2) + 1) + '... ';
+      if ((thisPly % 2) == 0) text = (Math.floor(thisPly / 2) + 1) + '. ';
+      else text = (Math.floor(thisPly / 2) + 1) + '... ';
       alert('Error on ply ' + text + move);
       break;
     }
