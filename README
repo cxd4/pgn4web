@@ -57,6 +57,7 @@ Example:
     SetAutostartAutoplay(false);
     SetInitialGame(1); // number of game to be shown at load, from 1 (default); if 0 a random game is loaded
     SetInitialHalfmove(0); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
+    SetShortcutKeysEnabled(true);
   </script>
  
 Then the script will automagically add content into your HTML file 

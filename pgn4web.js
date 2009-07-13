@@ -21,6 +21,7 @@
  *        SetAutostartAutoplay(false);
  *        SetInitialGame(1); // number of game to be shown at load, from 1 (default); if 0 a random game is loaded
  *        SetInitialHalfmove(0); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
+ *        SetShortcutKeysEnabled(true);
  *      </script>
  * 
  *   Then the script will automagically add content into your HTML file 
@@ -57,7 +58,7 @@ SetPgnUrl("");
 // SetAutostartAutoplay(false);
 // SetInitialGame(1); // number of game to be shown at load, from 1 (default); if 0 a random game is loaded
 // SetInitialHalfmove(0); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
-
+// SetShortcutKeysEnabled(true);
 
 
 /*********************************************************************/
@@ -94,7 +95,9 @@ var credits = 'javascript modifications of Paolo Casaschi (pgn4web@casaschi.net)
               '';
 
 function displayHelp(){
-  text = about + '\nHELP\n\n' + help + '\nCREDITS\n\n' + credits + '\n';
+  if (shortcutKeysEnabled) keysEnabled = ' (shorcut keys enabled, disable with SHIFT followed by ESCAPE)\n\n';
+  else  keysEnabled = ' (shorcut keys disabled, enable with SHIFT followed by ESCAPE)\n\n';
+  text = about + '\nHELP' + keysEnabled + help + '\nCREDITS\n\n' + credits + '\n';
   alert(text);
 }
 
@@ -102,13 +105,28 @@ window.onload = createBoardFromPgnUrl;
 
 document.onkeydown = handlekey;
 
+var shortcutKeysEnabled = true;
+var firstStepKeyToggle = false;
 function handlekey(e) { 
   var keycode;
+  var firstStepKeyToggleKey = 16; // shift
+  var secondStepKeyToggleKey = 27; // escape
 
   if (!e) e = window.event;
   keycode = e.keyCode
   
-//  alert(keycode);
+  //alert(keycode);
+
+  // shift key (keycode 16) followed by escape (27) toogle the usage of shortcut keys 
+  if ((keycode == secondStepKeyToggleKey) && (firstStepKeyToggle)) {
+    firstStepKeyToggle = false;
+    SetShortcutKeysEnabled(!shortcutKeysEnabled)
+  }
+  if (keycode == firstStepKeyToggleKey) firstStepKeyToggle = true;
+  else firstStepKeyToggle = false;
+
+  // escape is always enabled to show help
+  if ((keycode != 27) && (shortcutKeysEnabled == false)) return;
 
   switch(keycode)
   {
@@ -754,6 +772,10 @@ function GoToMove(thisMove){
   } else{
     MoveBackward(-diff);
   }
+}
+
+function SetShortcutKeysEnabled(onOff){
+  shortcutKeysEnabled = onOff;
 }
 
 function SetCommentsIntoMoveText(onOff){
