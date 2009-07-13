@@ -1676,17 +1676,19 @@ function MoveForward(diff){
   goToPly        = currentPly + parseInt(diff);
 
   if (goToPly > (StartPly+PlyNumber)) goToPly = StartPly+PlyNumber;
-  var ii;
+  var thisPly;
   /*
    * Loop over all moves till the selected one is reached. Check that
    * every move is legal and if yes update the board.
    */
-  for(ii = currentPly; ii < goToPly; ++ii){
-    var move  = Moves[ii];
-    var parse = ParseMove(move, ii);
+  for(thisPly = currentPly; thisPly < goToPly; ++thisPly){
+    var move  = Moves[thisPly];
+    var parse = ParseMove(move, thisPly);
     if (!parse) {
-      alert('Error on ply ' + move);
-      return;
+      if ((currentPly % 2) == 0) text = (Math.floor(currentPly / 2) + 1) + '. ';
+      else text = (Math.floor(currentPly / 2) + 1) + '... ';
+      alert('Error on ply ' + text + move);
+      break;
     }
     MoveColor = 1-MoveColor; 
   }
@@ -1694,18 +1696,21 @@ function MoveForward(diff){
    * Once the desired position is reached refresh the board and update the 
    * ply count on the HTML.
    */
-  document.HiddenBoardForm.CurrentPly.value = goToPly;
+  document.HiddenBoardForm.CurrentPly.value = thisPly;
   RefreshBoard();
   HighlightLastMove(); 
+
   /*
-   * Set a new timeout if in autoplay mode.
+   * Set a new timeout if in autoplay mode and if all parsing was successful
    */
   if (AutoPlayInterval) clearTimeout(AutoPlayInterval);
-  if (isAutoPlayOn) {
-    if (goToPly < StartPly + PlyNumber)
-      AutoPlayInterval=setTimeout("MoveForward(1)", Delay);
-    else {
-      SetAutoPlay(false);
+  if (thisPly == goToPly) {
+    if (isAutoPlayOn) {
+      if (goToPly < StartPly + PlyNumber)
+        AutoPlayInterval=setTimeout("MoveForward(1)", Delay);
+      else {
+        SetAutoPlay(false);
+      }
     }
   }
 }
