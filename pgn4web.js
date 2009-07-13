@@ -1546,6 +1546,13 @@ function LoadGameHeaders(){
     var lastKet = ss.lastIndexOf(']');
     var header  = ss.substring(0, ++lastKet);
     var parse;
+    gameEvent[ii] = "?";
+    gameSite[ii] = "?";
+    gameRound[ii] = "?";
+    gameWhite[ii] = "?";
+    gameBlack[ii] = "?";
+    gameResult[ii] = "?";
+    gameDate[ii] = "?";
     while ((parse = tag.exec(ss)) != null){
       if (parse[1] == 'Event'){
 	gameEvent[ii]  = parse[2];
@@ -1809,7 +1816,7 @@ function ParsePGNGameString(gameString){
 //  ss = ss.replace(/1\/2-1\/2/, '');
 //  ss = ss.replace(/\*/, '');
   ss = ss.replace(/\s$/, '');
-
+  
   PlyNumber = 0;
   for (ii=0; ii<StartPly; ii++) Moves[ii]='';
   MoveComments[StartPly+PlyNumber]='';
@@ -2391,6 +2398,7 @@ function PrintHTML(){
   /*
    * Show the HTML for the Game Selector
    */
+
   theObject = document.getElementById("GameSelector");
   if ((theObject != null) && (numberOfGames > 1) && (textSelectOptions=='')){
     if (gameSelectorNum) gameSelectorNumLenght = Math.floor(Math.log(numberOfGames)/Math.log(10)) + 1;
