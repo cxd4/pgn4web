@@ -1902,7 +1902,7 @@ function ParsePGNGameString(gameString){
           nextOpen = ss.indexOf('(', variationEnd);
           nextClosed = ss.indexOf(')', variationEnd);
           if (nextClosed < 0) {
-            alert('Error parsing PGN: missing end variation char }');
+            alert('Error parsing PGN: missing end variation char )');
             return
           }
           if ((nextOpen >= 0) && (nextOpen < nextClosed)) {
