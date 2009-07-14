@@ -67,7 +67,7 @@ SetPgnUrl("");
  * DONT CHANGE AFTER HERE 
  */
 
-var version = '1.18+';
+var version = '1.18';
 var about = '\tpgn4web v' + version + '\n\thttp://pgn4web.casaschi.net\n';
 var help = '\th, l\tgame start/end' + '\n' +
            '\tj, k\tmove backward/forward' + '\n' +
@@ -990,67 +990,6 @@ function highlightSquare(col, row, on){
   return true;
 }
 
-// Workaround to cope with the bug happening with square brackets [ ] occurring in comments.
-// Workaround is to strip square brackets from comments and replace the with spaces.
-function stripSquareBracketsFromComments(pgnText) {
-  var ii, jj, commentStart, commentEnd;
-
-  for (ii=0; ii<pgnText.length; ii++){
-  
-    switch (pgnText.charAt(ii)){
-
-      case '{':
-        commentStart = ii+1;
-        commentEnd = pgnText.indexOf('}',ii+1);
-        if (commentEnd < 0) {commentEnd = pgnText.length}
-        while ((jj = pgnText.indexOf('[', commentStart)) < commentEnd) pgntext[jj]=' ';  
-        while ((jj = pgnText.indexOf(']', commentStart)) < commentEnd) pgntext[jj]=' ';  
-        ii = commentEnd;
-        break;
-
-      case ';':
-        commentStart = ii+1;
-        commentEnd = pgnText.indexOf('\n',ii+1);
-        if (commentEnd < 0) {commentEnd = pgnText.length}
-        while ((jj = pgnText.indexOf('[', commentStart)) < commentEnd) pgntext[jj]=' ';  
-        while ((jj = pgnText.indexOf(']', commentStart)) < commentEnd) pgntext[jj]=' ';  
-        ii = commentEnd;
-        break;
-
-      case '(':
-        openVariation = 1;
-        variationStart = ii;
-        variationEnd = ii+1;
-        while ((openVariation > 0) && (variationEnd<pgnText.length)) {
-          nextOpen = pgnText.indexOf('(', variationEnd);
-          nextClosed = pgnText.indexOf(')', variationEnd);
-          if (nextClosed < 0) {
-            variationEnd = pgnText.length;
-            break;
-          }
-          if ((nextOpen >= 0) && (nextOpen < nextClosed)) {
-            openVariation++;
-            variationEnd = nextOpen+1;
-          }else{
-            openVariation--;
-            variationEnd = nextClosed+1;
-          }
-        }
-        while ((jj = pgnText.indexOf('[', variationStart)) < variationEnd) pgntext[jj]=' ';  
-        while ((jj = pgnText.indexOf(']', variationStart)) < variationEnd) pgntext[jj]=' ';  
-        ii = variationEnd;
-        break;
-
-      default:
-        break;
-    }
-  }
-
-  return pgnText;
-}
-
-
-
 /******************************************************************************
  *                                                                            *
  * Function pgnGameFromPgnText:                                               *
@@ -1059,11 +998,6 @@ function stripSquareBracketsFromComments(pgnText) {
  *                                                                            *
  ******************************************************************************/
 function pgnGameFromPgnText(pgnText){
-
-// Workaround to cope with the bug happening with square brackets [ ] occurring in comments.
-// Workaround is to strip square brackets from comments and replace the with spaces.
-  pgnText = stripSquareBracketsFromComments(pgnText);
-
   pgnGame = new Array();
   lines=pgnText.split("\n");
   inGameHeader = false;
@@ -1968,7 +1902,7 @@ function ParsePGNGameString(gameString){
           nextOpen = ss.indexOf('(', variationEnd);
           nextClosed = ss.indexOf(')', variationEnd);
           if (nextClosed < 0) {
-            alert('Error parsing PGN: missing end variation char )');
+            alert('Error parsing PGN: missing end variation char }');
             return
           }
           if ((nextOpen >= 0) && (nextOpen < nextClosed)) {
