@@ -990,6 +990,12 @@ function highlightSquare(col, row, on){
   return true;
 }
 
+function setCharAt(str,index,chr) {
+	if(index > str.length-1) return str;
+	return str.substr(0,index) + chr + str.substr(index+1);
+}
+var lastFoundValidBracketWasOpen = false;
+
 /******************************************************************************
  *                                                                            *
  * Function pgnGameFromPgnText:                                               *
@@ -998,6 +1004,62 @@ function highlightSquare(col, row, on){
  *                                                                            *
  ******************************************************************************/
 function pgnGameFromPgnText(pgnText){
+
+
+/*******************************************************************************/
+//workaround to cope with the issue of square brackets inside comments
+  for(ii=0; ii<pgnText.length; ii++) {
+    openB = pgnText.indexOf('[',ii);
+    closedB = pgnText.indexOf(']',ii);
+
+    // no more brackets found
+    if ((openB < 0) && (closedB < 0)) {
+      break;
+    } 
+    
+    // found a closed bracket but no open 
+    // check if the last valid was closed and in case delete this bracket
+    // continue to se if other closed are there 
+    if ((openB < 0) && (closedB >= 0)) { 
+      if (lastFoundValidBracketWasOpen == false) { pgnText=setCharAt(pgnText, closedB, '<'); }
+      else { lastFoundValidBracketWasOpen = false }
+      ii = closedB;
+      continue;
+    } 
+    
+    // found an open bracket but no closed delete this bracket
+    // continue to se if other open are there 
+    if ((openB >= 0) && (closedB < 0)) { 
+      pgnText=setCharAt(pgnText, openB, '>');
+      ii = openB;
+      continue; 
+    }
+
+    // both an open and a closed bracket are found at this point
+    // if the first one is closed
+    // check if the last was closed and in case delete this bracket
+    if (closedB < openB) { 
+      if (lastFoundValidBracketWasOpen == false) { pgnText=setCharAt(pgnText, closedB, '>'); }
+      else { lastFoundValidBracketWasOpen = false }
+      ii = closedB;
+      continue;
+    } else {
+    // if the first one is open
+    // check if the last was open and in case delete this bracket
+      if (lastFoundValidBracketWasOpen == true) { pgnText=setCharAt(pgnText, openB, '<'); }
+      // if an open bracket is found (and not the first one) 
+      // and it's not at the beginning of the line then delete this bracket
+      else if ((openB > 0) && (pgnText.charAt(openB - 1) != '\n')) { pgnText=setCharAt(pgnText, openB, '<'); }
+      else { lastFoundValidBracketWasOpen = true }
+      ii = openB;
+      continue;
+    }
+  
+  }
+
+/*******************************************************************************/
+
+
   pgnGame = new Array();
   lines=pgnText.split("\n");
   inGameHeader = false;
