@@ -26,6 +26,12 @@ Limitations:
 - only one chessboard for html file (use frames if you need to display
   more in the same view)
 
+Bugs: 
+- if square brackets are present in the comments (or the game text) then 
+the game parsing is badly broken. If your PGN file is not displayed properly,
+please check for characters "[" and "]" in the comments and try removing 
+them. Otherwise send me the PGN file for review. 
+
 Enjoy!
 
 
