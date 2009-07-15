@@ -1726,7 +1726,8 @@ function MoveForward(diff){
    * Set a new timeout if in autoplay mode and if all parsing was successful
    */
   if (AutoPlayInterval) clearTimeout(AutoPlayInterval);
-  if ((thisPly == goToPly) && (parse)) {
+  if (!parse) { SetAutoPlay(false); } 
+  else if (thisPly == goToPly) {
     if (isAutoPlayOn) {
       if (goToPly < StartPly + PlyNumber)
         AutoPlayInterval=setTimeout("MoveForward(1)", Delay);
