@@ -67,7 +67,7 @@ SetPgnUrl("");
  * DONT CHANGE AFTER HERE 
  */
 
-var version = '1.19';
+var version = '1.19+';
 var about = '\tpgn4web v' + version + '\n\thttp://pgn4web.casaschi.net\n';
 var help = '\th, l\tgame start/end' + '\n' +
            '\tj, k\tmove backward/forward' + '\n' +
