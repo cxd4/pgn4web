@@ -2215,6 +2215,8 @@ function ParseMove(move, plyCount){
 	  return false;
 	}
       }
+    } else{
+    retrun false;
     }
   }
   /*
