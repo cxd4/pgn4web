@@ -9,6 +9,7 @@
    author_link="http://www.casaschi.net"
    width="800"
    height="575"
+   scrolling="auto"
    category="funandgames"/>
 <Content type="url" href="paolo-chess-games.html"/>
 </Module>
