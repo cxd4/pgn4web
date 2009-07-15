@@ -2190,8 +2190,8 @@ function ParseMove(move, plyCount){
         mvPiece      = 1;
         mvPieceId    = 0;
         mvPieceOnTo  = 1;
-	  mvFromCol    = 4;
-	  mvToCol      = 2;
+        mvFromCol    = 4;
+        mvToCol      = 2;
         mvFromRow    = 7*MoveColor;
         mvToRow      = 7*MoveColor;
 	if (CheckLegality('O-O-O', plyCount)){
@@ -2201,12 +2201,12 @@ function ParseMove(move, plyCount){
 	}
       }
       if ((move.indexOf('O-O') >= 0) || (move.indexOf('0-0') >= 0)){
-	  mvIsCastling = 1;
+         mvIsCastling = 1;
         mvPiece      = 1;
         mvPieceId    = 0;
         mvPieceOnTo  = 1;
-	  mvFromCol    = 4;
-	  mvToCol      = 6;
+	mvFromCol    = 4;
+	mvToCol      = 6;
         mvFromRow    = 7*MoveColor;
         mvToRow      = 7*MoveColor;
 	if (CheckLegality('O-O', plyCount)){
@@ -2215,6 +2215,7 @@ function ParseMove(move, plyCount){
 	  return false;
 	}
       }
+      return false;
     } else{
       return false;
     }
