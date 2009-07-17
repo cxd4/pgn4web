@@ -1009,7 +1009,7 @@ function pgnGameFromPgnText(pgnText){
     // according to the PGN standard lines starting with % should be ignored
     if(lines[ii].charAt(0) == '%') continue;
 
-    if(lines[ii].charAt(0) == '['){
+    if(lines[ii].indexOf('[') >= 0){
       if(! inGameHeader){
         gameIndex++;
       }
