@@ -100,7 +100,8 @@ to any <div> or <span> containers with the following IDs:
 The file template.css shows a list of customization style options.
 
 See template.html file for an example.
-
+See *mini.html* for an example of embedding the PGN content into the HTML file.
+See http://www.casaschi.net/chess for an implementation. 
 
 CREDITS
 
