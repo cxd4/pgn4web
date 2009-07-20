@@ -41,16 +41,29 @@ add a SCRIPT instance at the top of your HTML file:
 
   <script src="pgn4web.js" type="text/javascript"></script>
 
-then add another SCRIPT instance with at least the call to 
+The PGN input can be specified either as URL within another SCRIPT instance 
+with at least the call to 
 
   SetPgnUrl("http://yoursite/yourpath/yourfile.pgn")
 
 and optionally any of the other calls listed below.  
 
+Or the PGN file can be pasted in the HTML file within a SCRIPT statement with 
+the ID pgnText:
+
+  <script type="text/processing" id="pgnText">
+  % paste your PGN below and make sure you dont specify an external source with SetPgnUrl()
+  
+  ... your PGN text ...
+
+  % paste your PGN above and make sure you dont specify an external source with SetPgnUrl()
+  </script>
+
+
 Example:
 
   <script yype="text/javascript>
-    SetPgnUrl("http://yoursite/yourpath/yourfile.pgn");
+    SetPgnUrl("http://yoursite/yourpath/yourfile.pgn"); // if set, this has precedence over the inline PGN in the HTML file
     SetImagePath (""); // use "" path if images are in the same folder as this javascript file
     SetImageType("png");
     SetImageSize(40);

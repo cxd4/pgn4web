@@ -8,19 +8,98 @@
 
 <script src="pgn4web.js" type="text/javascript"></script>
 <script>
-   SetPgnUrl("wch08ak.pgn");
+// SetPgnUrl(""); // if set, this has precedence over the inline PGN below
    SetImagePath ("alpha/24"); // use "" path if images are in the same folder as this javascript file
    SetImageType("png");
 // SetHighlightOption(true) // true or false
-   SetGameSelectorOptions("Select a game...", false, 0, 0, 2, 10, 10, 0, 0); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
+   SetGameSelectorOptions("Select a KK brilliancy...", false, 0, 8, 2, 0, 0, 0, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
 // SetCommentsIntoMoveText(true)
    SetCommentsOnSeparateLines(true)
    SetAutostartAutoplay(true);
    SetAutoplayDelay(4000); // milliseconds
    SetAutostartAutoplay(true);
-   SetInitialGame(5); // number of game to be shown at load, from 1 (default); if 0 a random game is loaded
+   SetInitialGame(0); // number of game to be shown at load, from 1 (default); if 0 a random game is loaded
 // SetInitialHalfmove(0); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
    SetShortcutKeysEnabled(false);
+</script>
+
+<script type="text/processing" id="pgnText">
+% paste your PGN below and make sure you dont specify an external source with SetPgnUrl()
+
+
+[Event "Wch"]
+[Site "Moscow"]
+[Date "1985.01.17"]
+[Round "16"]
+[Result "0-1"]
+[White "Karpov"]
+[Black "Kasparov"]
+
+1.e4 c5 2.Nf3 e6 3.d4 cxd4 4.Nxd4 Nc6 5.Nb5 d6 6.c4 Nf6 7.N1c3
+a6 8.Na3 d5 9.cxd5 exd5 10.exd5 Nb4 11.Be2 Bc5 12.O-O O-O
+13.Bf3 Bf5 14.Bg5 Re8 15.Qd2 b5 16.Rad1 Nd3 17.Nab1 h6 18.Bh4
+b4 19.Na4 Bd6 20.Bg3 Rc8 21.b3 g5 22.Bxd6 Qxd6 23.g3 Nd7
+24.Bg2 Qf6 25.a3 a5 26.axb4 axb4 27.Qa2 Bg6 28.d6 g4 29.Qd2
+Kg7 30.f3 Qxd6 31.fxg4 Qd4+ 32.Kh1 Nf6 33.Rf4 Ne4 34.Qxd3 Nf2+
+35.Rxf2 Bxd3 36.Rfd2 Qe3 37.Rxd3 Rc1 38.Nb2 Qf2 39.Nd2 Rxd1+
+40.Nxd1 Re1+ 0-1
+
+[Event "Wch"]
+[Site "Sevilla"]
+[Date "1987.01.17"]
+[Round "16"]
+[Result "0-1"]
+[White "Kasparov"]
+[Black "Karpov"]
+
+1.c4 e5 2.Nc3 Nf6 3.Nf3 Nc6 4.g3 Bb4 5.Bg2 O-O 6.O-O Re8 7.d3
+Bxc3 8.bxc3 e4 9.Nd4 h6 10.dxe4 Nxe4 11.Qc2 d5 12.cxd5 Qxd5
+13.e3 Na5 14.f3 Nd6 15.e4 Qc5 16.Be3 Ndc4 17.Bf2 Qe7 18.Rad1
+Bd7 19.f4 Rad8 20.e5 Bg4 21.Nf5 Qe6 22.Rxd8 Rxd8 23.Nd4 Qc8
+24.f5 c5 25.Qe4 cxd4 26.Qxg4 Nxe5 27.Qe2 Nec6 28.cxd4 Nxd4
+29.Bxd4 Rxd4 30.f6 Qe6 31.Qb2 Qe3+ 32.Kh1 b6 33.fxg7 Nc4
+34.Qc2 Kxg7 35.Bd5 Nd6 36.Qb2 Qe5 37.Bb3 a5 38.Qf2 f5 39.Qb2
+b5 40.a3 Kg6 41.Qf2 0-1
+
+[Event "Wch"]
+[Site "Sevilla"]
+[Date "1987.01.24"]
+[Round "23"]
+[Result "1-0"]
+[White "Karpov"]
+[Black "Kasparov"]
+
+1.c4 c5 2.Nf3 Nf6 3.Nc3 d5 4.cxd5 Nxd5 5.d4 Nxc3 6.bxc3 g6
+7.e3 Bg7 8.Bd3 O-O 9.O-O Qc7 10.Rb1 b6 11.Qe2 Rd8 12.Be4 Ba6
+13.c4 Nc6 14.d5 f5 15.Bd3 e5 16.e4 Nd4 17.Nxd4 cxd4 18.Bg5 Rf8
+19.Rfc1 Rac8 20.Bd2 Rf7 21.a4 fxe4 22.Qxe4 Rcf8 23.f3 Bc8
+24.a5 Bf5 25.Qe2 Re8 26.Be4 Bf8 27.Qd3 Bc5 28.Ra1 Qd7 29.Re1
+Qc8 30.Kh1 Rc7 31.Rab1 Kg7 32.Rec1 Bxe4 33.fxe4 Rf7 34.Qg3
+bxa5 35.Bxa5 Rf4 36.Re1 Qa6 37.Bd2 Rf7 38.Qd3 Ref8 39.h3 Rf2
+40.Ra1 Qf6 41.Rg1 h5 42.Ra5 Qe7 43.Rb1 h4 44.Ra6 R8f7 45.Rc6
+Qf8 46.Rg1 Be7 47.Re6 Kh7 48.Be1 Rf1 49.Bd2 Bc5 50.Rc6 R7f3
+51.gxf3 Rxf3 52.Rc7+ Kh8 53.Bh6 Rxd3 54.Bxf8 Rxh3+ 55.Kg2 Rg3+
+56.Kh2 Rxg1 57.Bxc5 d3 1-0
+
+[Event "Wch"]
+[Site "New York"]
+[Date "1990.01.03"]
+[Round "20"]
+[Result "1-0"]
+[White "Kasparov"]
+[Black "Karpov"]
+
+1.e4 e5 2.Nf3 Nc6 3.Bb5 a6 4.Ba4 Nf6 5.O-O Be7 6.Re1 b5 7.Bb3
+d6 8.c3 O-O 9.h3 Bb7 10.d4 Re8 11.Nbd2 Bf8 12.a4 h6 13.Bc2
+exd4 14.cxd4 Nb4 15.Bb1 bxa4 16.Rxa4 a5 17.Ra3 Ra6 18.Nh2 g6
+19.f3 Qd7 20.Nc4 Qb5 21.Rc3 Bc8 22.Be3 Kh7 23.Qc1 c6 24.Ng4
+Ng8 25.Bxh6 Bxh6 26.Nxh6 Nxh6 27.Nxd6 Qb6 28.Nxe8 Qxd4+ 29.Kh1
+Qd8 30.Rd1 Qxe8 31.Qg5 Ra7 32.Rd8 Qe6 33.f4 Ba6 34.f5 Qe7
+35.Qd2 Qe5 36.Qf2 Qe7 37.Qd4 Ng8 38.e5 Nd5 39.fxg6 fxg6
+40.Rxc6 Qxd8 41.Qxa7+ Nde7 42.Rxa6 Qd1+ 43.Qg1 Qd2 44.Qf1 1-0
+
+
+% paste your PGN above and make sure you dont specify an external source with SetPgnUrl()
 </script>
 
 </head>
@@ -28,8 +107,6 @@
 <body>
 
 <center>
-<b>2008 WCC game <span id="GameRound"></span></b>
-<br>
 <b><span id="GameWhite"></span>&nbsp;-&nbsp<span id="GameBlack"></span>&nbsp;&nbsp;<span id="GameResult"></span></b>
 <p>
 <div id="GameBoard"></div>

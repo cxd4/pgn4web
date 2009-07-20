@@ -10,7 +10,7 @@
  *   Example:
  *
  *      <script yype="text/javascript>
- *        SetPgnUrl("http://yoursite/yourpath/yourfile.pgn");
+ *        SetPgnUrl("http://yoursite/yourpath/yourfile.pgn");  // if set, this has precedence over the inline PGN in the HTML file
  *        SetImagePath (""); // use "" path if images are in the same folder as this javascript file
  *        SetImageType("png");
  *        SetHighlightOption(true) // true or false
@@ -47,7 +47,7 @@
  *   See pgn4web.html file for an example.
  */
 
-SetPgnUrl("");
+// SetPgnUrl("");  // if set, this has precedence over the inline PGN in the HTML file
 // SetImagePath (""); // use "" path if images are in the same folder as this javascript file
 // SetImageType("png");
 // SetHighlightOption(true); // true or false
@@ -67,7 +67,7 @@ SetPgnUrl("");
  * DONT CHANGE AFTER HERE 
  */
 
-var version = '1.21+';
+var version = '1.22';
 var about = '\tpgn4web v' + version + '\n\thttp://pgn4web.casaschi.net\n';
 var help = '\th, l\tgame start/end' + '\n' +
            '\tj, k\tmove backward/forward' + '\n' +
@@ -101,7 +101,7 @@ function displayHelp(){
   alert(text);
 }
 
-window.onload = createBoardFromPgnUrl;
+window.onload = createBoard;
 
 document.onkeydown = handlekey;
 
@@ -1081,23 +1081,32 @@ function SetPgnUrl(url){
 
 /******************************************************************************
  *                                                                            *
- * Function createBoardFromPgnUrl:                                            *
+ * Function createBoard:                                                      *
  *                                                                            *
- * Load the games from the specified URL.                                     *
+ * Load the games from the specified URL or from the pgnText html object      *
  *                                                                            *
  ******************************************************************************/
-function createBoardFromPgnUrl(){
-  if ( pgnUrl == ''){
-    alert('Error: missing PGN URL location.\n\nUse:\n\n  SetPgnUrl("http://yoursite/yourpath/yourfile.pgn")\n\n in a SCRIPT statement of your HTML file');
+function createBoard(){
+
+  if (( pgnUrl.length == 0) && (! document.getElementById('pgnText'))) {
+    alert('Error: missing PGN URL location or pgnText.\n\nIn your HTML file, either use in a SCRIPT statement:\n\n  SetPgnUrl("http://yoursite/yourpath/yourfile.pgn")\n\nor embed the PGN text as\n\n  <script type="text/processing" id="pgnText">\n\n    ... paste your PGN here ...\n\n  </script>');
     return 
   }
 
   theObject = document.getElementById("GameBoard");
-  if (theObject != null) theObject.innerHTML = '<SPAN STYLE="font-style: italic;">Please wait while loading PGN file...</SPAN>'; 
+  if (theObject != null) theObject.innerHTML = '<SPAN STYLE="font-style: italic;">Please wait while loading PGN data...</SPAN>'; 
 
-  if ( loadPgnFromPgnUrl(pgnUrl) ) 
-    Init();
-  else if (theObject != null) theObject.innerHTML = '<SPAN STYLE="color: red; font-style: italic; font-weight: bold;">Failed loading games from PGN file:<br>' + pgnUrl + '</SPAN>';
+  if (pgnUrl.length > 0) {
+    if ( loadPgnFromPgnUrl(pgnUrl) ) Init();
+    return;
+  } else if ( document.getElementById('pgnText') ) {
+    if ( pgnGameFromPgnText(document.getElementById('pgnText').textContent) ) Init();
+    return;
+  } 
+
+  if (theObject != null) 
+    theObject.innerHTML = '<SPAN STYLE="color: red; font-style: italic; font-weight: bold;">' + 
+                          'Failed loading games from PGN file:<br>' + pgnUrl + '</SPAN>';
 }
 
 /******************************************************************************
