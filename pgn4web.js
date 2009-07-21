@@ -1906,6 +1906,7 @@ function ParsePGNGameString(gameString){
         break;
 
       case '%':
+        alert(start);//PAOLO
         // % must be first char of the line
         if ((start > 0) && (ss.charAt(start-1) != '\n')) { break; }
         commentStart = start+1;
