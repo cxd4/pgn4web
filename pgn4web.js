@@ -1089,7 +1089,7 @@ function SetPgnUrl(url){
 function createBoard(){
 
   if (( pgnUrl.length == 0) && (! document.getElementById('pgnText'))) {
-    alert('Error: missing PGN URL location or pgnText.\n\nIn your HTML file, either use in a SCRIPT statement:\n\n  SetPgnUrl("http://yoursite/yourpath/yourfile.pgn")\n\nor embed the PGN text as\n\n  <script type="text/processing" id="pgnText">\n\n    ... paste your PGN here ...\n\n  </script>');
+    alert('Error: missing PGN URL location or pgnText.\n\nIn your HTML file, either use in a SCRIPT statement:\n\n  SetPgnUrl("http://yoursite/yourpath/yourfile.pgn")\n\nor embed the PGN text as hidden element, such as a SPAN element with style display:none\n');
     return 
   }
 
@@ -1100,7 +1100,7 @@ function createBoard(){
     if ( loadPgnFromPgnUrl(pgnUrl) ) Init();
     return;
   } else if ( document.getElementById('pgnText') ) {
-    if ( pgnGameFromPgnText(document.getElementById('pgnText').textContent) ) Init();
+    if ( pgnGameFromPgnText(document.getElementById('pgnText').innerHTML) ) Init();
     return;
   } 
 
