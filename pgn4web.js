@@ -1905,6 +1905,18 @@ function ParsePGNGameString(gameString){
         }
         break;
 
+      case '%':
+        // % must be first char of the line
+        if ((start > 0) && (ss.charAt(start-1) != '\n\)) { break; }
+        commentStart = start+1;
+        commentEnd = ss.indexOf('\n',start+1);
+        if (commentEnd < 0) {commentEnd = ss.length}
+        // dont store % lines as comments
+        // if (MoveComments[StartPly+PlyNumber].length>0) MoveComments[StartPly+PlyNumber] += ' ';
+        // MoveComments[StartPly+PlyNumber] += ss.substring(commentStart, commentEnd); 
+        start = commentEnd;
+        break;
+
       case ';':
         commentStart = start+1;
         commentEnd = ss.indexOf('\n',start+1);
