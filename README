@@ -48,17 +48,16 @@ with at least the call to
 
 and optionally any of the other calls listed below.  
 
-Or the PGN file can be pasted in the HTML file within a SCRIPT statement with 
-the ID pgnText:
+Or the PGN file can be pasted in the body of the HTML file 
+within a SPAN statement with the ID pgnText:
 
-  <script type="text/processing" id="pgnText">
-  % <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl()
-  
+  <span style="display:none" id="pgnText">
+  % paste your PGN below and make sure you dont specify an external source with SetPgnUrl()
+
   ... your PGN text ...
 
   % paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
-  </script>
-
+  </span>
 
 Example:
 

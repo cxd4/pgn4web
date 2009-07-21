@@ -1100,8 +1100,17 @@ function createBoard(){
   if (pgnUrl) {
     if ( loadPgnFromPgnUrl(pgnUrl) ) Init();
     return;
-  } else if ( document.getElementById("pgnText") ) {
-    if ( pgnGameFromPgnText(document.getElementById("pgnText").innerHTML) ) Init();
+  } 
+  
+  if ( document.getElementById("pgnText") ) {
+    tmpText = document.getElementById("pgnText").innerHTML;
+    // if no html header is present, add []\n at the top
+    if (tmpText.indexOf(']') < 0) { tmpText = "[]\n" + tmpText }
+    // fixes issue with some browser removing \n from innerHTML
+    if (tmpText.indexOf('\n') < 0) { tmpText = tmpText.replace(/((\[[^\[\]]*\]\s*)+)/g, "\n$1\n"); }
+    // fixes issue with some browser replacing quotes with &quot;
+    if (tmpText.indexOf('"') < 0) { tmpText = tmpText.replace(/(&quot;)/g, "\""); }
+    if ( pgnGameFromPgnText(tmpText) ) Init();
     return;
   } 
 
