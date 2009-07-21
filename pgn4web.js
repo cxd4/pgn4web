@@ -1983,7 +1983,6 @@ function ParsePGNGameString(gameString){
         break;
     }
   }
-  MoveComments[StartPly+PlyNumber]=''; 
 }
 
 var NAG = new Array();
