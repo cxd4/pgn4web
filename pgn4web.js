@@ -1907,7 +1907,7 @@ function ParsePGNGameString(gameString){
 
       case '%':
         // % must be first char of the line
-        if ((start > 0) && (ss.charAt(start-1) != '\n\)) { break; }
+        if ((start > 0) && (ss.charAt(start-1) != '\n')) { break; }
         commentStart = start+1;
         commentEnd = ss.indexOf('\n',start+1);
         if (commentEnd < 0) {commentEnd = ss.length}
