@@ -42,9 +42,10 @@
  *      <div id="GameResult"></div>
  *      <div id="GameText"></div>
  *
- *   The file pgn4web.css shows a list of customization style options.
+ *   The file template.css shows a list of customization style options.
  *
- *   See pgn4web.html file for an example.
+ *   See template.html file for an example.
+ *   See mini.html for an example of embedding the PGN within the HTML file.
  */
 
 // SetPgnUrl("");  // if set, this has precedence over the inline PGN in the HTML file
@@ -1088,7 +1089,7 @@ function SetPgnUrl(url){
  ******************************************************************************/
 function createBoard(){
 
-  if (( pgnUrl.length == 0) && (! document.getElementById('pgnText'))) {
+  if ((! pgnUrl) && (! document.getElementById("pgnText"))) {
     alert('Error: missing PGN URL location or pgnText.\n\nIn your HTML file, either use in a SCRIPT statement:\n\n  SetPgnUrl("http://yoursite/yourpath/yourfile.pgn")\n\nor embed the PGN text as hidden element, such as a SPAN element with style display:none\n');
     return 
   }
@@ -1096,11 +1097,11 @@ function createBoard(){
   theObject = document.getElementById("GameBoard");
   if (theObject != null) theObject.innerHTML = '<SPAN STYLE="font-style: italic;">Please wait while loading PGN data...</SPAN>'; 
 
-  if (pgnUrl.length > 0) {
+  if (pgnUrl) {
     if ( loadPgnFromPgnUrl(pgnUrl) ) Init();
     return;
-  } else if ( document.getElementById('pgnText') ) {
-    if ( pgnGameFromPgnText(document.getElementById('pgnText').innerHTML) ) Init();
+  } else if ( document.getElementById("pgnText") ) {
+    if ( pgnGameFromPgnText(document.getElementById("pgnText").innerHTML) ) Init();
     return;
   } 
 
