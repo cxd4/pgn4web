@@ -13,8 +13,8 @@ body {
 
 .boardTable {
   border-style: outset; 
-  border-color: black;
-  border-width: 3px;
+  border-color: #DAE1D7;
+  border-width: 2px;
 }
 
 .pieceImage {
