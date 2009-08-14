@@ -41,14 +41,16 @@ body {
 .blackSquare,
 .highlightBlackSquare {
   background: #C6CEC3;
-  border-color: #C6CEC3
+  border-color: #C6CEC3;
 }
 
 .highlightWhiteSquare {
-  border-color: #C6CEC3
+  border-style: dotted;
+  border-color: #C6CEC3;
 }
 
 .highlightBlackSquare {
+  border-style: dotted;
   border-color: #EFF4EC;
 }
 
