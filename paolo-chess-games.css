@@ -47,6 +47,7 @@ body {
 .highlightWhiteSquare,
 .highlightBlackSquare {
   border-color: DarkCyan;
+  border-style: inset;
 }
 
 .selectControl {
@@ -69,7 +70,7 @@ body {
 }
 
 .moveOn {
-  color: DarkCyan;
+  background: DarkCyan;
 }
 
 .comment,
