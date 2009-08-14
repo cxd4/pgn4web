@@ -44,9 +44,12 @@ body {
   border-color: #C6CEC3
 }
 
-.highlightWhiteSquare,
+.highlightWhiteSquare {
+  border-color: #C6CEC3
+}
+
 .highlightBlackSquare {
-  border-color: gray;
+  border-color: #EFF4EC;
 }
 
 .selectControl {
