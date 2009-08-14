@@ -29,7 +29,7 @@ body {
   width: 35;
   height: 35;
   border-style: solid;
-  border-width: 1;
+  border-width: 2;
 }
 
 .whiteSquare,
@@ -70,7 +70,7 @@ body {
 }
 
 .moveOn {
-  background: DarkCyan;
+  background: cyan;
 }
 
 .comment,
