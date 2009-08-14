@@ -2537,43 +2537,43 @@ function PrintHTML(){
    * Show the HTML for the Game Event
    */
   theObject = document.getElementById("GameEvent");
-  if (theObject != null) theObject.innerHTML = gameEvent[currentGame].replace("-"/g, "&#8209;").replace(" "/g, "&nbsp;"); 
+  if (theObject != null) theObject.innerHTML = gameEvent[currentGame].replace(/-/g, "&#8209;").replace(/ /g, "&nbsp;"); 
 
   /*
    * Show the HTML for the Game Site
    */
   theObject = document.getElementById("GameSite");
-  if (theObject != null) theObject.innerHTML = gameSite[currentGame].replace("-"/g, "&#8209;").replace(" "/g, "&nbsp;"); 
+  if (theObject != null) theObject.innerHTML = gameSite[currentGame].replace(/-/g, "&#8209;").replace(/ /g, "&nbsp;"); 
 
   /*
    * Show the HTML for the Game Round
    */
   theObject = document.getElementById("GameRound");
-  if (theObject != null) theObject.innerHTML = gameRound[currentGame].replace("-"/g, "&#8209;").replace(" "/g, "&nbsp;"); 
+  if (theObject != null) theObject.innerHTML = gameRound[currentGame].replace(/-/g, "&#8209;").replace(/ /g, "&nbsp;"); 
 
   /*
    * Show the HTML for the Game Date
    */
   theObject = document.getElementById("GameDate");
-  if (theObject != null) theObject.innerHTML = gameDate[currentGame].replace("-"/g, "&#8209;").replace(" "/g, "&nbsp;"); 
+  if (theObject != null) theObject.innerHTML = gameDate[currentGame].replace(/-/g, "&#8209;").replace(/ /g, "&nbsp;"); 
 
   /*
    * Show the HTML for the Game White Player
    */
   theObject = document.getElementById("GameWhite");
-  if (theObject != null) theObject.innerHTML = gameWhite[currentGame].replace("-"/g, "&#8209;").replace(" "/g, "&nbsp;"); 
+  if (theObject != null) theObject.innerHTML = gameWhite[currentGame].replace(/-/g, "&#8209;").replace(/ /g, "&nbsp;"); 
 
   /*
    * Show the HTML for the Game Black Player
    */
   theObject = document.getElementById("GameBlack");
-  if (theObject != null) theObject.innerHTML = gameBlack[currentGame].replace("-"/g, "&#8209;").replace(" "/g, "&nbsp;"); 
+  if (theObject != null) theObject.innerHTML = gameBlack[currentGame].replace(/-/g, "&#8209;").replace(/ /g, "&nbsp;"); 
 
   /*
    * Show the HTML for the Game Result
    */
   theObject = document.getElementById("GameResult");
-  if (theObject != null) theObject.innerHTML = gameResult[currentGame].replace("-"/g, "&#8209;").replace(" "/g, "&nbsp;"); 
+  if (theObject != null) theObject.innerHTML = gameResult[currentGame].replace(/-/g, "&#8209;").replace(/ /g, "&nbsp;"); 
   
   text = '<DIV ID="ShowPgnText">';
   for (ii = StartPly; ii < StartPly+PlyNumber; ++ii){
@@ -2592,7 +2592,7 @@ function PrintHTML(){
     }
     jj = ii+1;
     text += '<A HREF="javascript:GoToMove(' + jj + 
-      ')" CLASS="move" ID="Mv' + jj + '">' + Moves[ii].replace("-"/g, "&#8209;") + '</A> ';
+      ')" CLASS="move" ID="Mv' + jj + '">' + Moves[ii].replace(/-/g, "&#8209;") + '</A> ';
   }
   if (commentsIntoMoveText && (MoveComments[StartPly+PlyNumber] != '')){
     if (commentsOnSeparateLines) text += '<P>';
