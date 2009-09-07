@@ -113,4 +113,11 @@ viewer at http://www.lutanho.net/pgn/pgnviewer.html
 PNG images from http://ixian.com/chess/jin-piece-sets (creative commons 
 attribution-share alike 3.0 unported license)
 
+Some of the PGN files for the examples are coming from "The Week in Chess" at http://www.chesscenter.com/twic/twic.html (files wch08ak.pgn and twic765.pgn) and from the scid project at http://scid.sourceforge.net (file tactics.pgn).
+
+TECHNICAL NOTES ABOUT WEB BROWSERS
+
+pgn4web.js is developed and tested with a variety of browsers (Arora, Chrome, Epiphany, Firefox, Internet Explorer, Safari) on a variety of platforms (Linux/Debian, MacOS, Windows). Not every browser version and every combination of browser/platform has been tested. If you have any issue with using pgn4web on your platform, please email pgn4web@casaschi.net
+
+Note about Internet Explorer v7 and above: under some circumstances you might experience problems when testing HTML pages from your local computer while developing your site. If this happens to you, read notes at http://code.google.com/p/pgn4web/issues/detail?id=23 
 
