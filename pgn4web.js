@@ -882,22 +882,27 @@ function HighlightLastMove(){
   }
 
   if (showThisMove >= (StartPly-1)){
-    showThisMove++;
-    anchorName          = 'Mv' + showThisMove;
+    anchorName          = 'Mv' + (showThisMove + 1);
     theAnchor           = document.getElementById(anchorName);
     if (theAnchor != null) theAnchor.className = 'move moveOn';
-    oldAnchor           = showThisMove;
+    oldAnchor           = showThisMove + 1;
 
     if (highlightOption){
-      highlightColFrom = HistCol[0][showThisMove - 1];
-      if (highlightColFrom == undefined) highlightColFrom = -1;
-      highlightRowFrom = HistRow[0][showThisMove - 1];
-      if (highlightRowFrom == undefined) highlightRowFrom = -1;
-      highlightColTo = HistCol[2][showThisMove - 1];
-      if (highlightColTo == undefined) highlightColTo = -1;
-      highlightRowTo = HistRow[2][showThisMove - 1];
-      if (highlightRowTo == undefined) highlightRowTo = -1;
-
+      if (showThisMove < StartPly) {
+        highlightColFrom = -1;
+        highlightRowFrom = -1;
+        highlightColTo = -1;
+        highlightRowTo = -1;
+      } else {
+        highlightColFrom = HistCol[0][showThisMove];
+        if (highlightColFrom == undefined) highlightColFrom = -1;
+        highlightRowFrom = HistRow[0][showThisMove];
+        if (highlightRowFrom == undefined) highlightRowFrom = -1;
+        highlightColTo = HistCol[2][showThisMove];
+        if (highlightColTo == undefined) highlightColTo = -1;
+        highlightRowTo = HistRow[2][showThisMove];
+        if (highlightRowTo == undefined) highlightRowTo = -1;
+      }
       highlightMove(highlightColFrom, highlightRowFrom, highlightColTo, highlightRowTo);
     }
   }
@@ -1955,6 +1960,8 @@ function ParsePGNGameString(gameString){
         if (ss.indexOf(searchThis,start)==start){
           start += searchThis.length;
           MoveComments[StartPly+PlyNumber] += ss.substring(start, ss.length);
+          MoveComments[StartPly+PlyNumber] = MoveComments[StartPly+PlyNumber].replace(/[ \b\f\n\r\t]+$/g, '');
+          MoveComments[StartPly+PlyNumber] = translateNAGs(MoveComments[StartPly+PlyNumber]);
           start = ss.length;
           break;
         }
@@ -1963,6 +1970,8 @@ function ParsePGNGameString(gameString){
         if (ss.indexOf(searchThis,start)==start){
           start += searchThis.length;
           MoveComments[StartPly+PlyNumber] += ss.substring(start, ss.length);
+          MoveComments[StartPly+PlyNumber] = MoveComments[StartPly+PlyNumber].replace(/[ \b\f\n\r\t]+$/g, '');
+          MoveComments[StartPly+PlyNumber] = translateNAGs(MoveComments[StartPly+PlyNumber]);
           start = ss.length;
           break;
         }
@@ -1971,6 +1980,8 @@ function ParsePGNGameString(gameString){
         if (ss.indexOf(searchThis,start)==start){
           start += searchThis.length;
           MoveComments[StartPly+PlyNumber] += ss.substring(start, ss.length);
+          MoveComments[StartPly+PlyNumber] = MoveComments[StartPly+PlyNumber].replace(/[ \b\f\n\r\t]+$/g, '');
+          MoveComments[StartPly+PlyNumber] = translateNAGs(MoveComments[StartPly+PlyNumber]);
           start = ss.length;
           break;
         }
@@ -1979,6 +1990,8 @@ function ParsePGNGameString(gameString){
         if (ss.indexOf(searchThis,start)==start){
           start += searchThis.length;
           MoveComments[StartPly+PlyNumber] += ss.substring(start, ss.length);
+          MoveComments[StartPly+PlyNumber] = MoveComments[StartPly+PlyNumber].replace(/[ \b\f\n\r\t]+$/g, '');
+          MoveComments[StartPly+PlyNumber] = translateNAGs(MoveComments[StartPly+PlyNumber]);
           start = ss.length;
           break;
         }
