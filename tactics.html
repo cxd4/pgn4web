@@ -58,7 +58,7 @@ tactics pgn file from the <a target=_blank href=http://scid.sourceforge.net>scid
 <form>
 <tr>
 <td width=80px valign=top>
-	<input type=button value="move back" alt="click here to move back one ply when looking at the solution" style="font-size: 10; width: 80px" onClick="javascript: if (currentPly == StartPly) {document.getElementById('task').style.visibility = 'hidden';} MoveBackward(1)">
+	<input type=button value="move back" alt="click here to move back one ply when looking at the solution" style="font-size: 10; width: 80px" onClick="javascript: if (StartPly == parseInt(document.HiddenBoardForm.CurrentPly.value)) {document.getElementById('task').style.visibility = 'visible';} MoveBackward(1)">
 </td>
 <td width=4px>
 </td>
@@ -68,7 +68,7 @@ tactics pgn file from the <a target=_blank href=http://scid.sourceforge.net>scid
 <td width=4px>
 </td>
 <td width=80px valign=top>
-<input type=button value="next puzzle" alt="click here to load the next puzzle" style="font-size: 10; width: 80px" onClick="javascript: document.getElementById('GameText').style.visibility = 'hidden'; document.getElementById('task').style.visibility = 'hidden'; currentGame = Math.floor(Math.random()*numberOfGames);Init();">
+<input type=button value="next puzzle" alt="click here to load the next puzzle" style="font-size: 10; width: 80px" onClick="javascript: document.getElementById('GameText').style.visibility = 'hidden'; document.getElementById('task').style.visibility = 'visible'; currentGame = Math.floor(Math.random()*numberOfGames);Init();">
 </td>
 </tr>
 </form>
