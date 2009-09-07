@@ -39,6 +39,9 @@
 <tr>
 <td width=246 valign=top>
 <div id="GameBoard"></div>
+<font size=1>
+tactics pgn file from the <a target=_blank href=http://scid.sourceforge.net>scid</a> project
+</font>
 <div>&nbsp;</div>
 </td>
 
@@ -48,44 +51,36 @@
 <td width=246 valign=top>
 <div>&nbsp;</div>
 
-<table cellspacing=0 cellpadding=0 border=0 width=246>
-<tr>
-<td align=left>
-<div style="font-size: 14;">solve chess tactics</div>
-</td>
-<td align=right>
-<div style="font-size: 14; font-weight: bold;"><span id="GameSideToMove"></span>&nbsp;to&nbsp;move</div>
-</td>
-</tr>
-</table>
-
-<font size=1>
-pgn from the <a target=_blank href=http://scid.sourceforge.net>scid</a> project
-</font>
-
+<div id=task style="font-size: 14; font-weight: bold; text-align: right; background: yellow"><span id="GameSideToMove"></span>&nbsp;to&nbsp;move</div>
 <div>&nbsp;</div>
+
 <table cellspacing=0 cellpadding=0 border=0>
 <form>
 <tr>
 <td width=80px valign=top>
-<input type=button value="move back" alt="click here to move back one ply when looking at the solution" style="font-size: 10; width: 80px" onClick="javascript:MoveBackward(1)">
+	<input type=button value="move back" alt="click here to move back one ply when looking at the solution" style="font-size: 10; width: 80px" onClick="javascript: if (currentPly == StartPly) {document.getElementById('task').style.visibility = 'hidden';} MoveBackward(1)">
 </td>
 <td width=4px>
 </td>
 <td width=80px valign=top>
-<input type=button value="show solution" alt="click here to show the solution and step through the main line" style="font-size: 10; width: 80px" onClick="javascript:MoveForward(1); document.getElementById('GameText').style.visibility = 'visible';">
+<input type=button value="show solution" alt="click here to show the solution and step through the main line" style="font-size: 10; width: 80px" onClick="javascript:MoveForward(1); document.getElementById('solution').style.visibility = 'visible';document.getElementById('task').style.visibility = 'hidden';">
 </td>
 <td width=4px>
 </td>
 <td width=80px valign=top>
-<input type=button value="next puzzle" alt="click here to load the next puzzle" style="font-size: 10; width: 80px" onClick="javascript: document.getElementById('GameText').style.visibility = 'hidden'; currentGame = Math.floor(Math.random()*numberOfGames);Init();">
+<input type=button value="next puzzle" alt="click here to load the next puzzle" style="font-size: 10; width: 80px" onClick="javascript: document.getElementById('GameText').style.visibility = 'hidden'; document.getElementById('task').style.visibility = 'hidden'; currentGame = Math.floor(Math.random()*numberOfGames);Init();">
 </td>
 </tr>
 </form>
 </table>
 
 <div>&nbsp;</div>
-<div style="text-align: left"><div id="GameText" style="visibility: hidden"></div></div>
+<div id=solution style="text-align: left; visibility: hidden">
+<div id="GameText">
+</div>
+<div id="GameResult">
+</div>
+</div>
 </td>
 
 </tr>
