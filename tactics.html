@@ -51,14 +51,14 @@ tactics pgn file from the <a target=_blank href=http://scid.sourceforge.net>scid
 <td width=246 valign=top>
 <div>&nbsp;</div>
 
-<div id=task style="font-size: 14; font-weight: bold; text-align: right; background: yellow"><span id="GameSideToMove"></span>&nbsp;to&nbsp;move</div>
+<div id=task style="font-size: 14; font-weight: bold; text-align: right;"><span id="GameSideToMove"></span>&nbsp;to&nbsp;move</div>
 <div>&nbsp;</div>
 
 <table cellspacing=0 cellpadding=0 border=0>
 <form>
 <tr>
 <td width=80px valign=top>
-	<input type=button value="move back" alt="click here to move back one ply when looking at the solution" style="font-size: 10; width: 80px" onClick="javascript: if (StartPly == parseInt(document.HiddenBoardForm.CurrentPly.value)) {document.getElementById('task').style.visibility = 'visible';} MoveBackward(1)">
+	<input type=button value="move back" alt="click here to move back one ply when looking at the solution" style="font-size: 10; width: 80px" onClick="javascript: MoveBackward(1); if (StartPly == parseInt(document.HiddenBoardForm.CurrentPly.value)) {document.getElementById('task').style.visibility = 'visible';}">
 </td>
 <td width=4px>
 </td>
@@ -68,19 +68,19 @@ tactics pgn file from the <a target=_blank href=http://scid.sourceforge.net>scid
 <td width=4px>
 </td>
 <td width=80px valign=top>
-<input type=button value="next puzzle" alt="click here to load the next puzzle" style="font-size: 10; width: 80px" onClick="javascript: document.getElementById('GameText').style.visibility = 'hidden'; document.getElementById('task').style.visibility = 'visible'; currentGame = Math.floor(Math.random()*numberOfGames);Init();">
+<input type=button value="next puzzle" alt="click here to load the next puzzle" style="font-size: 10; width: 80px" onClick="javascript: document.getElementById('solution').style.visibility = 'hidden'; document.getElementById('task').style.visibility = 'visible'; currentGame = Math.floor(Math.random()*numberOfGames);Init();">
 </td>
 </tr>
 </form>
 </table>
 
 <div>&nbsp;</div>
-<div id=solution style="text-align: left; visibility: hidden">
+<span id="solution" style="font-size: 14; text-align: left; visibility: hidden">
 <div id="GameText">
 </div>
 <div id="GameResult">
 </div>
-</div>
+</span>
 </td>
 
 </tr>
