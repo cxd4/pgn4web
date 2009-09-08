@@ -18,7 +18,7 @@
    SetAutostartAutoplay(true);
    SetAutoplayDelay(2500); // milliseconds
    SetAutostartAutoplay(true);
-   SetInitialGame(0); // number of game to be shown at load, from 1 (default); if 0 a random game is loaded
+   SetInitialGame(2); // number of game to be shown at load, from 1 (default); if 0 a random game is loaded
 // SetInitialHalfmove(0); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
    SetShortcutKeysEnabled(false);
 </script>
@@ -153,30 +153,22 @@ Be7 42.Rc7 Bd8 43.Rxf7 Qxf7 44.Qf4 Qd7 45.Rc6 Be7 46.Qxh6 Qxg4 47.Rc7 1-0
 <table cellpadding=10 cellspacing=10>
 
   <tr>
-    <td width=360>
+    <td width=360 valign=top>
       <div id="GameBoard"></div>
     </td>
     <td align=left valign=top>
-      &nbsp;<p>
-      <div style="text-align:left; font-size: 133%; font-weight: bold">Tilburg Fontys 1998 round 2</div>
+      <div style="text-align:right; font-size: 133%; font-weight: bold">Tilburg Fontys 1998 round 2</div>
       <div style="text-align:left;">
-      <p><a style="color:black" href="javascript:currentGame=0;Init();SetAutoPlay(true);">Kortschnoj, Viktor - Adams, Michael</a>
-      <p><a style="color:black" href="javascript:currentGame=1;Init();SetAutoPlay(true);">Anand, Viswanathan - Kramnik, Vladimir</a>
-      <p><a style="color:black" href="javascript:currentGame=2;Init();SetAutoPlay(true);">Lautier, Joel - Van Wely, Loek</a>
-      <p><a style="color:black" href="javascript:currentGame=3;Init();SetAutoPlay(true);">Sadler, Matthew - Topalov, Veselin</a>
-      <p><a style="color:black" href="javascript:currentGame=4;Init();SetAutoPlay(true);">Zvjaginsev, Vadim - Leko, Peter</a>
-      <p><a style="color:black" href="javascript:currentGame=5;Init();SetAutoPlay(true);">Svidler, Peter - Piket, Jeroen</a>
+      <p><a id="game0" style="color:black" href="javascript:document.getElementById('game'+currentGame).style.fontWeight = 'normal';currentGame=0;document.getElementById('game'+currentGame).style.fontWeight = 'bold';Init();SetAutoPlay(true);">Viktor Kortschnoj - Michael Adams&nbsp; &nbsp;0-1</a>
+      <br><a id="game1" style="color:black; font-weight:bold;" href="javascript:document.getElementById('game'+currentGame).style.fontWeight = 'normal';currentGame=1;document.getElementById('game'+currentGame).style.fontWeight = 'bold';Init();SetAutoPlay(true);">Viswanathan Anand - Vladimir Kramnik&nbsp; &nbsp;1-0</a>
+      <br><a id="game2" style="color:black" href="javascript:document.getElementById('game'+currentGame).style.fontWeight = 'normal';currentGame=2;document.getElementById('game'+currentGame).style.fontWeight = 'bold';Init();SetAutoPlay(true);">Joel Lautier - Loek Van Wely&nbsp; &nbsp;1/2-1/2</a>
+      <br><a id="game3" style="color:black" href="javascript:document.getElementById('game'+currentGame).style.fontWeight = 'normal';currentGame=3;document.getElementById('game'+currentGame).style.fontWeight = 'bold';Init();SetAutoPlay(true);">Mattew Sadler - Veselin Topalov&nbsp; &nbsp;1/2-1/2</a>
+      <br><a id="game4" style="color:black" href="javascript:document.getElementById('game'+currentGame).style.fontWeight = 'normal';currentGame=4;document.getElementById('game'+currentGame).style.fontWeight = 'bold';Init();SetAutoPlay(true);">Vadim Zvjaginsev - Peter Leko&nbsp; &nbsp;1/2-1/2</a>
+      <br><a id="game5" style="color:black" href="javascript:document.getElementById('game'+currentGame).style.fontWeight = 'normal';currentGame=5;document.getElementById('game'+currentGame).style.fontWeight = 'bold';Init();SetAutoPlay(true);">Peter Svidler - Jeroen Piket&nbsp; &nbsp;1-0</a>
+      <p>
+      <div style="text-align:justify; font-size: 67%;"><span id="GameText"></span><span id="GameResult"></span></div>
       </div>
       
-    </td>
-  </tr>
-
-  <tr>
-    <td colspan=2>
-      <p>
-      <b><span id="GameWhite"></span>&nbsp;-&nbsp<span id="GameBlack"></span>&nbsp;&nbsp;<span id="GameResult"></span></b>
-      <p>
-      <div id="GameText"></div>
     </td>
   </tr>
 

@@ -12,7 +12,7 @@
    SetImagePath ("merida/36"); // use "" path if images are in the same folder as this javascript file
    SetImageType("png");
    SetHighlightOption(true) // true or false
-   SetGameSelectorOptions(" Event       Site        Rd  White            Black            Result   Date", true, 10, 10, 2, 15, 15, 7, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);   
+   SetGameSelectorOptions(" Event         Site          Rd  White            Black            Res  Date", true, 12, 12, 2, 15, 15, 3, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);   
    SetCommentsIntoMoveText(true);
    SetCommentsOnSeparateLines(true);
    SetAutoplayDelay(1000); // milliseconds
@@ -57,7 +57,6 @@ The Week In Chess #765
 <td width=4%></td>
 
 <td width=28%>
-&nbsp;<br>
 Event: <b><span id="GameEvent"></span></b>
 <br>
 Site: <b><span id="GameSite"></span></b>
@@ -97,7 +96,6 @@ Move comment:<br><b><span id="GameLastComment"><b></span>
 <td width=4%></td>
 
 <td width=28%>
-&nbsp;<br>
 <span style="text-align: justify; font-size: 85%" id="GameText"></span></span>
 </td>
 

@@ -32,33 +32,41 @@
 </span>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
-<div>&nbsp;</div>
 <center>
-<table cellspacing=0 cellpadding=0 border=0>
+<table width=508 cellspacing=0 cellpadding=0 border=0>
 
 <tr>
-<td width=246 valign=top>
+<td width=246 rowspan=3 valign=top>
 <div id="GameBoard"></div>
-<font size=1>
-tactics pgn file from the <a target=_blank href=http://scid.sourceforge.net>scid</a> project
-</font>
-<div>&nbsp;</div>
 </td>
 
-<td width=16>
+<td width=16 rowspan=3>
 </td>
 
-<td width=246 valign=top>
-<div>&nbsp;</div>
+<td width=246 height=40 valign=top>
 
 <div style="text-align: right">&nbsp;<span id="task" style="font-size: 14; font-weight: bold; background: yellow;">&nbsp;<span id="GameSideToMove"></span>&nbsp;to&nbsp;move&nbsp;</span></div>
-<div>&nbsp;</div>
+
+</td>
+
+<tr>
+<td width=246 height=166 valign=middle>
+<span id="solution" style="font-size: 14; text-align: left; visibility: hidden">
+<span id="GameText"></span><span id="GameResult"></span>
+</span>
+</div>
+
+</td>
+</tr>
+
+<tr>
+<td width=246 height=40 valign=bottom>
 
 <table cellspacing=0 cellpadding=0 border=0>
 <form>
 <tr>
 <td width=80px valign=top>
-	<input type=button value="move back" alt="click here to move back one ply when looking at the solution" style="font-size: 10; width: 80px" onClick="javascript: MoveBackward(1); if (StartPly == parseInt(document.HiddenBoardForm.CurrentPly.value)) {document.getElementById('task').style.visibility = 'visible';}">
+	<input type=button value="move back" alt="click here to move back one ply when looking at the solution" style="font-size: 10; width: 80px" onClick="javascript: MoveBackward(1); if (StartPly == CurrentPly) {document.getElementById('task').style.visibility = 'visible';}">
 </td>
 <td width=4px>
 </td>
@@ -74,12 +82,18 @@ tactics pgn file from the <a target=_blank href=http://scid.sourceforge.net>scid
 </form>
 </table>
 
-<div>&nbsp;</div>
-<div id="solution" style="font-size: 14; text-align: left; visibility: hidden">
-<span id="GameText"></span><br><span id="GameResult"></span>
-</div>
 </td>
+</tr>
 
+<tr>
+<td>
+
+<font size=1>
+tactics pgn file from the <a target=_blank href=http://scid.sourceforge.net>scid</a> project
+</font>
+<div>&nbsp;</div>
+
+</td>
 </tr>
 
 </table>

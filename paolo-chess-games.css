@@ -26,10 +26,8 @@ body {
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 35;
-  height: 35;
-  border-style: solid;
-  border-width: 1;
+  width: 36;
+  height: 36;
 }
 
 .whiteSquare,
@@ -46,7 +44,7 @@ body {
 
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  border-color: DarkSlateGray;
+  background: #DAF4D7;
 }
 
 .selectControl {

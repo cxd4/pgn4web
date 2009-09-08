@@ -68,7 +68,7 @@
  * DONT CHANGE AFTER HERE 
  */
 
-var version = '1.32+';
+var version = '1.33';
 var about = '\tpgn4web v' + version + '\n\thttp://pgn4web.casaschi.net\n';
 var help = '\th, l\tgame start/end' + '\n' +
            '\tj, k\tmove backward/forward' + '\n' +
@@ -460,6 +460,7 @@ var MoveColor;
 var MoveCount;
 var PlyNumber;
 var StartPly;
+var CurrentPly;
 
 var IsRotated = false;
 
@@ -766,8 +767,7 @@ function ClearMove(move){
 }
 
 function GoToMove(thisMove){
-  var currentPly = parseInt(document.HiddenBoardForm.CurrentPly.value);
-  var diff       = thisMove - currentPly;
+  var diff       = thisMove - CurrentPly;
   if (diff > 0){
     MoveForward(diff);
   } else{
@@ -822,7 +822,7 @@ function HighlightLastMove(){
    * we are at the starting position and nothing is to be highlighted and
    * the header on top of the board is removed.
    */
-  var showThisMove = parseInt(document.HiddenBoardForm.CurrentPly.value) - 1;
+  var showThisMove = CurrentPly - 1;
   if (showThisMove > StartPly + PlyNumber) showThisMove = StartPly + PlyNumber;
 
   var theShowCommentTextObject = document.getElementById("GameLastComment");
@@ -1167,7 +1167,7 @@ function Init(){
   }
 
   RefreshBoard();
-  document.HiddenBoardForm.CurrentPly.value = StartPly;
+  CurrentPly = StartPly;
   HighlightLastMove();
   if (firstStart){
     if (initialHalfmove < -1) initialHalfmove = 0;
@@ -1632,11 +1632,9 @@ function LoadGameHeaders(){
 function MoveBackward(diff){
   /*
    * First of all find to which ply we have to go back. Remember that
-   * document.HiddenBoardForm.CurrentPly.value contains the ply number counting
-   * from 1.
+   * CurrentPly contains the ply number counting from 1.
    */
-  var currentPly = parseInt(document.HiddenBoardForm.CurrentPly.value);
-  var goFromPly  = currentPly - 1;
+  var goFromPly  = CurrentPly - 1;
   var goToPly    = goFromPly  - diff;
   if (goToPly < StartPly) goToPly = StartPly-1;
   /*
@@ -1644,7 +1642,7 @@ function MoveBackward(diff){
    */
   var thisPly;
   for(thisPly = goFromPly; thisPly > goToPly; --thisPly){
-    currentPly--;
+    CurrentPly--;
     MoveColor = 1-MoveColor;
     /*
      * Reposition the moved piece on the original square.
@@ -1690,7 +1688,6 @@ function MoveBackward(diff){
    * Now that we have the old position refresh the board and update the 
    * ply count on the HTML.
    */
-  document.HiddenBoardForm.CurrentPly.value = currentPly;
   RefreshBoard();
   HighlightLastMove(); 
   /*
@@ -1715,11 +1712,9 @@ function MoveBackward(diff){
 function MoveForward(diff){
   /*
    * First of all find to which ply we have to go back. Remember that
-   * document.HiddenBoardForm.CurrentPly.value contains the ply number counting
-   * from 1.
+   * CurrentPly contains the ply number counting from 1.
    */
-  var currentPly = parseInt(document.HiddenBoardForm.CurrentPly.value);
-  goToPly        = currentPly + parseInt(diff);
+  goToPly        = CurrentPly + parseInt(diff);
 
   if (goToPly > (StartPly+PlyNumber)) goToPly = StartPly+PlyNumber;
   var thisPly;
@@ -1727,7 +1722,7 @@ function MoveForward(diff){
    * Loop over all moves till the selected one is reached. Check that
    * every move is legal and if yes update the board.
    */
-  for(thisPly = currentPly; thisPly < goToPly; ++thisPly){
+  for(thisPly = CurrentPly; thisPly < goToPly; ++thisPly){
     var move  = Moves[thisPly];
     var parse = ParseMove(move, thisPly);
     if (!parse) {
@@ -1742,7 +1737,7 @@ function MoveForward(diff){
    * Once the desired position is reached refresh the board and update the 
    * ply count on the HTML.
    */
-  document.HiddenBoardForm.CurrentPly.value = thisPly;
+  CurrentPly = thisPly;
   RefreshBoard();
   HighlightLastMove(); 
 
@@ -1771,8 +1766,7 @@ function MoveForward(diff){
  ******************************************************************************/
 function MoveToNextComment()
 {
-  var currentPly = parseInt(document.HiddenBoardForm.CurrentPly.value);
-  for(ii=currentPly+1; ii<=StartPly+PlyNumber; ii++){
+  for(ii=CurrentPly+1; ii<=StartPly+PlyNumber; ii++){
     if (MoveComments[ii] != '') {
       GoToMove(ii);
       break;
@@ -1789,8 +1783,7 @@ function MoveToNextComment()
  ******************************************************************************/
 function MoveToPrevComment()
 {
-  var currentPly = parseInt(document.HiddenBoardForm.CurrentPly.value);
-  for(ii=(currentPly-1); ii>=0; ii--){
+  for(ii=(CurrentPly-1); ii>=0; ii--){
     if (MoveComments[ii] != '') {
       GoToMove(ii);
       break;
@@ -2395,10 +2388,7 @@ function PrintHTML(){
   /*
    * Show the board as a 8x8 table.
    */
-  text =  '<FORM NAME="HiddenBoardForm">' +
-          '<INPUT TYPE="HIDDEN" VALUE="" NAME="CurrentPly">' +
-          '</FORM>' +
-          '<TABLE CLASS="boardTable" ID="boardTable" CELLSPACING=0 CELLPADDING=0>';
+  text = '<TABLE CLASS="boardTable" ID="boardTable" CELLSPACING=0 CELLPADDING=0>';
 
   for (ii = 0; ii < 8; ++ii){
     text += '<TR>';
@@ -2588,7 +2578,7 @@ function PrintHTML(){
   theObject = document.getElementById("GameResult");
   if (theObject != null) theObject.innerHTML = gameResult[currentGame].replace(/-/g, "&#8209;").replace(/ /g, "&nbsp;"); 
   
-  text = '<DIV ID="ShowPgnText">';
+  text = '<SPAN ID="ShowPgnText">';
   for (ii = StartPly; ii < StartPly+PlyNumber; ++ii){
     printedComment = false;
     if (commentsIntoMoveText && (MoveComments[ii] != '')){
@@ -2611,7 +2601,7 @@ function PrintHTML(){
     if (commentsOnSeparateLines) text += '<P>';
     text += '<SPAN CLASS="comment">' + MoveComments[StartPly+PlyNumber] + '</SPAN>';
   }
-  text += '</DIV>';
+  text += '</SPAN>';
 
   /*
    * Show the HTML for the Game Text
