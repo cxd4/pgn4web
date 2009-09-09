@@ -2418,35 +2418,35 @@ function PrintHTML(){
   numberOfButtons=5;
   spaceSize=3;
   buttonSize=(tableSize - spaceSize*(numberOfButtons - 1))/numberOfButtons;
-  text =  '<FORM NAME="GameButtonsForm">' +
+  text =  '<FORM NAME="GameButtonsForm" STYLE="display:inline;">' +
           '<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>' +
           '<TR>' +
           '<TD>' +
-          '<INPUT TYPE="BUTTON" VALUE="&#124;&lt;" STYLE="';
+          '<INPUT ID="startButton" TYPE="BUTTON" VALUE="&#124;&lt;" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
   text += '"; CLASS="buttonControl" ' +
           ' ID="btnGoToStart" onClick="javascript:GoToMove(StartPly)">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
-          '<INPUT TYPE="BUTTON" VALUE="&lt;" STYLE="';
+          '<INPUT ID="backButton" TYPE="BUTTON" VALUE="&lt;" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
   text += '"; CLASS="buttonControl" ' +
           ' ID="btnMoveBackward1" onClick="javascript:MoveBackward(1)">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
-          '<INPUT TYPE="BUTTON" VALUE="play" STYLE="';
+          '<INPUT ID="autoplayButton" TYPE="BUTTON" VALUE="play" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
   text += '"; CLASS="buttonControl" ' +
           ' ID="btnPlay" NAME="AutoPlay" onClick="javascript:SwitchAutoPlay()">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
-          '<INPUT TYPE="BUTTON" VALUE="&gt;" STYLE="';
+          '<INPUT ID="forwardButton" TYPE="BUTTON" VALUE="&gt;" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
   text += '"; CLASS="buttonControl" ' +
           ' ID="btnMoveForward1" onClick="javascript:MoveForward(1)">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
-          '<INPUT TYPE="BUTTON" VALUE="&gt;&#124;" STYLE="';
+          '<INPUT ID="endButton" TYPE="BUTTON" VALUE="&gt;&#124;" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
   text += '"; CLASS="buttonControl" ' +
           ' ID="btnGoToEnd" onClick="javascript:GoToMove(StartPly + PlyNumber)">' +
@@ -2466,8 +2466,8 @@ function PrintHTML(){
   theObject = document.getElementById("GameSelector");
   if ((theObject != null) && (numberOfGames > 1) && (textSelectOptions=='')){
     if (gameSelectorNum) gameSelectorNumLenght = Math.floor(Math.log(numberOfGames)/Math.log(10)) + 1;
-    text = '<FORM NAME="GameSel"> ' +
-           '<SELECT NAME="GameSelSelect" STYLE="'
+    text = '<FORM NAME="GameSel" STYLE="display:inline;"> ' +
+           '<SELECT ID="GameSelSelect" NAME="GameSelSelect" STYLE="'
     if ((tableSize != undefined) && (tableSize > 0)) text += 'width: ' + tableSize + '; ';
     text += 'font-family: monospace;" CLASS="selectControl" ' + 
             'ONCHANGE="if(this.value >= 0) {currentGame=this.value; document.GameSel.GameSelSelect.value = -1; Init();}">' +

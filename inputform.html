@@ -31,12 +31,13 @@
 </span>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
-<table cellspacing=0 cellpadding=0 border=0>
+<table id=chessboardTable cellspacing=0 cellpadding=0 border=0>
 
 <tr>
 
 <td width=230 valign=top align=left>
-<span id="GameBoard"></span>
+<div id="GameBoard"></div>
+<br>
 </td>
 
 <td width=20>
@@ -62,35 +63,68 @@ Next move: <span style="font-weight: bold" id="GameNextMove"></span>
 
 <tr>
 
-<td align=center valign=bottom>
-<br>
+<td align=center valign=top>
 <span id="GameButtons"></span>
+<br>
 </td>
 
 <td width=20>
 </td>
 
-<td align=center valign=bottom>
-<br>
+<td align=left valign=top>
 <span id="GameSelector"></span>
+<br>
 </td>
 
 </tr>
 
 </table>
 
-<form style="display:inline;"><input id=pgnButton type=button value="show games from PGN" onClick="javascript: 
-  document.getElementById('pgnText').innerHTML = document.getElementById('pgnForm').value; 
-  currentGame = -1; 
+<table id=fileTable cellspacing=0 cellpadding=0 border=0>
+<tr>
+<form id=fileForm style="display:inline;">
+<td id=fileBrowserTable align=left>
+<input id=fileBrowser type=file> 
+</td>
+<td align=right>
+<input id=fileButton type=button value="load local PGN file" onClick="javascript:
+  SetPgnUrl(document.getElementById('fileBrowser').value);
+  currentGame = -1;
   textSelectOptions = '';
   theObject = document.getElementById('GameSelector');
   if (theObject != null) theObject.innerHTML = '';
   createBoard();
+  theObject = document.getElementById('GameSelSelect');
+  if (theObject != null) theObject.style.width = document.getElementById('pgnForm').offsetWidth - 20 - 230;
+">
+</td>
+</tr>
+</table>
+</form>
+
+<p>
+
+<form style="display:inline;">
+<input id=pgnButton type=button value="show games from PGN text box" onClick="javascript: 
+  document.getElementById('pgnText').innerHTML = document.getElementById('pgnForm').value; 
+  currentGame = -1; 
+  textSelectOptions = '';
+  theObject = document.getElementById('GameSelect');
+  if (theObject != null) theObject.innerHTML = '';
+  createBoard();
+  theObject = document.getElementById('GameSelSelector');
+  if (theObject != null) theObject.style.width = document.getElementById('pgnForm').offsetWidth - 20 -230;
 ">
 <br>
-<textarea id="pgnForm" rows=10 cols=80></textarea></form>
+<textarea id="pgnForm" rows=9 cols=80></textarea>
+</form>
 
-<script>document.getElementById('pgnButton').style.width = document.getElementById('pgnForm').offsetWidth;</script>
+<script>
+document.getElementById('pgnButton').style.width = document.getElementById('pgnForm').offsetWidth;
+document.getElementById('fileButton').style.width = document.getElementById('pgnForm').offsetWidth - document.getElementById('fileBrowser').offsetWidth - 20;
+document.getElementById('chessboardTable').style.width = document.getElementById('pgnForm').offsetWidth;
+document.getElementById('fileTable').style.width = document.getElementById('pgnForm').offsetWidth;
+</script>
 
 </body>
 
