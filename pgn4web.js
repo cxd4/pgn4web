@@ -68,7 +68,7 @@
  * DONT CHANGE AFTER HERE 
  */
 
-var version = '1.34+';
+var version = '1.35';
 var about = '\tpgn4web v' + version + '\n\thttp://pgn4web.casaschi.net\n';
 var help = '\th, l\tgame start/end' + '\n' +
            '\tj, k\tmove backward/forward' + '\n' +
@@ -102,9 +102,17 @@ function displayHelp(){
   alert(text);
 }
 
-window.onload = createBoard;
+window.onload = start_pgn4web;
 
 document.onkeydown = handlekey;
+
+function start_pgn4web() {
+  currentGame = -1;
+  textSelectOptions = '';
+  theObject = document.getElementById('GameSelector');
+  if (theObject != null) theObject.innerHTML = '';
+  createBoard();
+}
 
 var shortcutKeysEnabled = true;
 var firstStepKeyToggle = false;
