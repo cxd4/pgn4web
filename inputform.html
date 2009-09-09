@@ -80,44 +80,20 @@ Next move: <span style="font-weight: bold" id="GameNextMove"></span>
 
 </table>
 
-<table id=fileTable cellspacing=0 cellpadding=0 border=0>
-<tr>
-<form id=fileForm style="display:inline;">
-<td id=fileBrowserTable align=left>
-<input id=fileBrowser type=file> 
-</td>
-<td align=right>
-<input id=fileButton type=button value="load local PGN file" onClick="javascript:
-  SetPgnUrl(document.getElementById('fileBrowser').value);
-  document.getElementById('pgnText').innerHTML = ''; 
-  start_pgn4web();
-  theObject = document.getElementById('GameSelSelect');
-  if (theObject != null) theObject.style.width = document.getElementById('pgnForm').offsetWidth - 20 - 230;
-">
-</td>
-</tr>
-</table>
-</form>
-
-<p>
-
 <form style="display:inline;">
 <input id=pgnButton type=button value="show games from PGN text box" onClick="javascript: 
-  SetPgnUrl('');
   document.getElementById('pgnText').innerHTML = document.getElementById('pgnForm').value; 
   start_pgn4web();
   theObject = document.getElementById('GameSelSelector');
   if (theObject != null) theObject.style.width = document.getElementById('pgnForm').offsetWidth - 20 -230;
 ">
 <br>
-<textarea id="pgnForm" rows=9 cols=80></textarea>
+<textarea id="pgnForm" rows=11 cols=80></textarea>
 </form>
 
 <script>
 document.getElementById('pgnButton').style.width = document.getElementById('pgnForm').offsetWidth;
-document.getElementById('fileButton').style.width = document.getElementById('pgnForm').offsetWidth - document.getElementById('fileBrowser').offsetWidth - 20;
 document.getElementById('chessboardTable').style.width = document.getElementById('pgnForm').offsetWidth;
-document.getElementById('fileTable').style.width = document.getElementById('pgnForm').offsetWidth;
 </script>
 
 </body>
