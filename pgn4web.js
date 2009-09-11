@@ -1054,7 +1054,7 @@ function loadPgnFromPgnUrl(pgnUrl){
   var GET_error_debug_message = 'DEBUG information for web site developers\n\n' + 
     'Failed to GET the PGN file at the URL:\n' + pgnUrl + '\n\n' + 
     '1) Make sure that the PGN URL is correct, that the PGN file is available and supported by the web host. Some web hosts do not allow files with arbitary extensions; in that case try renaming your .pgn file as .txt or another extension supported by your web host. You can check for all the above by typing the PGN URL in your web browser, if the browser does not download the file, some of the above issues are likely to apply.\n\n' +
-    '2) Make sure that the PGN file is on the same server/domain as the javascript file pgb4web.js since the javascript cannot load files from a different server/domain.\n\n' +
+    '2) Make sure that your PGN file is on the same server/domain as your HTML file since javascript cannot load files from a different server/domain.\n\n' +
     '3) If you are testing your HTML pages from your local computer and you are using Internet Explorer 7 (or above) please make sure the "Enable native XMLHTTP support" option is NOT enabled (see Control Panel, Internet Options, Advanced). A "feature" of IE7, when this option is enabled, stops javascript from loading local files.';
 
   var http_request = false;
