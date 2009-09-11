@@ -1051,6 +1051,12 @@ function pgnGameFromPgnText(pgnText){
  ******************************************************************************/
 function loadPgnFromPgnUrl(pgnUrl){
   
+  var GET_error_debug_message = 'DEBUG information for web site developers\n\n' + 
+    'Failed to GET the PGN file at the URL:\n' + pgnUrl + '\n\n' + 
+    '1) Make sure that the PGN URL is correct, that the PGN file is available and supported by the web host. Some web hosts do not allow files with arbitary extensions; in that case try renaming your .pgn file as .txt or another extension supported by your web host. You can check for all the above by typing the PGN URL in your web browser, if the browser does not download the file, some of the above issues are likely to apply.\n\n' +
+    '2) Make sure that the PGN file is on the same server/domain as the javascript file pgb4web.js since the javascript cannot load files from a different server/domain.\n\n' +
+    '3) If you are testing your HTML pages from your local computer and you are using Internet Explorer 7 (or above) please make sure the "Enable native XMLHTTP support" option is NOT enabled (see Control Panel, Internet Options, Advanced). A "feature" of IE7, when this option is enabled, stops javascript from loading local files.';
+
   var http_request = false;
     if (window.XMLHttpRequest) { // Mozilla, Safari, ...
       http_request = new XMLHttpRequest();
@@ -1063,7 +1069,7 @@ function loadPgnFromPgnUrl(pgnUrl){
       } catch (e) {
         try {
           http_request = new ActiveXObject("Microsoft.XMLHTTP");
-        } catch (e) {}
+        } catch (e) { }
       }
     }
   if (!http_request){
@@ -1074,7 +1080,11 @@ function loadPgnFromPgnUrl(pgnUrl){
   try {
     http_request.open("GET", pgnUrl, false); 
     http_request.send(null);
-  } catch(e) {}
+  } catch(e) {
+      var answer = confirm("Error with GET request for PGN URL:\n" + pgnUrl + "\n\nPress OK for web developer DEBUG information.");
+      if (answer) alert(GET_error_debug_message);
+      return false;
+}
 
   if((http_request.readyState  == 4) && ((http_request.status  == 200) || (http_request.status  == 0))){
     if (! pgnGameFromPgnText(http_request.responseText)) {
@@ -1112,6 +1122,7 @@ function createBoard(){
 
   if (pgnUrl) {
     if ( loadPgnFromPgnUrl(pgnUrl) ) Init();
+    else  if (theObject != null) theObject.innerHTML = '<SPAN STYLE="font-style: italic;">ERROR: failed loading PGN data!</SPAN>';
     return;
   } 
   
