@@ -18,16 +18,16 @@ body {
 }
 
 .pieceImage {
-  width: 36;
-  height: 36;
+  width: 40;
+  height: 40;
 }
 
 .whiteSquare,
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 44;
-  height: 44;
+  width: 48;
+  height: 48;
   border-style: solid;
   border-width: 2;
 }
@@ -56,10 +56,12 @@ body {
 
 .buttonControl {
 /* a "width" attribute here must use the !important flag to override default settings */
+  width: 84px !important;
 }
 
 .buttonControlSpace {
 /* a "width" attribute here must use the !important flag to override default settings */
+  width: 0px !important;
 }
 
 .move,

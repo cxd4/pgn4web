@@ -9,7 +9,7 @@
 <script src="pgn4web.js" type="text/javascript"></script>
 <script>
    SetPgnUrl("wch08ak.pgn"); // if set, this has precedence over the inline PGN in the HTML file
-   SetImagePath ("uscf/36"); // use "" path if images are in the same folder as this javascript file
+   SetImagePath ("uscf/40"); // use "" path if images are in the same folder as this javascript file
    SetImageType("png");
    SetHighlightOption(true) // true or false
    SetGameSelectorOptions("Select a game...", false, 0, 0, 2, 10, 10, 0, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);   
@@ -41,11 +41,13 @@ Anand - Kramnik
 <table cellspacing=10>
 <tr valign=top>
 
-<td>
+<td align=center>
+
+<table cellspacing=0 cellpadding=0 border=1 style="border-style: solid; border-color: lightgray; border-width: 10;"><tr><td>	
 <div id="GameSelector"></div>
 <div id="GameBoard"></div>
-<p>
 <div id="GameButtons"></div>
+</td></tr></table>
 <p>
 
 <small><i><a href="javascript:displayHelp()">hit escape for shortcut keys help</a></i></small>
