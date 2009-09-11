@@ -68,7 +68,7 @@
  * DONT CHANGE AFTER HERE 
  */
 
-var version = '1.40+';
+var version = '1.40';
 var about = '\tpgn4web v' + version + '\n\thttp://pgn4web.casaschi.net\n';
 var help = '\th, l\tgame start/end' + '\n' +
            '\tj, k\tmove backward/forward' + '\n' +
@@ -1549,7 +1549,7 @@ function IsCheck(col, row, color){
    * Any pawn giving check?
    */
   for (ii = -1; ii <= 1; ii += 2){
-    if (SquareOnBoard(col+ii, row+sign)){
+    if (SquareOnBoard(col+ii, row-sign)){
       if (Board[col+ii][row-sign] == sign*6) return true;
     }
   }
