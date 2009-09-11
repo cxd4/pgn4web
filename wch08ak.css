@@ -52,11 +52,15 @@ body {
 
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
+  background-color: Wheat;
+  border-color: Wheat;
 }
 
 .buttonControl {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 84px !important;
+  background-color: Wheat;
+  border-color: Wheat;
 }
 
 .buttonControlSpace {
