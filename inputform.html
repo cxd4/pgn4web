@@ -114,6 +114,11 @@ if ((newPgnText = gup("pgnText")) != "") {
   newPgnText = newPgnText.replace(/\]\[/g,"]\n[");
   newPgnText = newPgnText.replace(/ \[/g,"\n\n[");
   newPgnText = newPgnText.replace(/\] /g,"]\n\n");
+  newPgnText = newPgnText.replace(/\]1/g,"] \n\n1");
+  newPgnText = newPgnText.replace(/0\[/g,"0\n\n[");
+  newPgnText = newPgnText.replace(/1\[/g,"1\n\n[");
+  newPgnText = newPgnText.replace(/2\[/g,"2\n\n[");
+  newPgnText = newPgnText.replace(/\*\[/g,"*\n\n[");
 
   document.getElementById('pgnText').innerHTML = newPgnText;
   document.getElementById('pgnForm').value = newPgnText;
