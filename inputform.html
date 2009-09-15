@@ -104,7 +104,7 @@ function gup( name ){
   else    return results[1];
 } 
 
-if ((newPgnText = gup("pgn")) != "") {
+if ((newPgnText = gup("pgnText")) != "") {
   newPgnText = newPgnText.replace(/%20/g," ");
   newPgnText = newPgnText.replace(/%22/g,"\"");
   newPgnText = newPgnText.replace(/%0A/g,"\n");
