@@ -105,10 +105,14 @@ function gup( name ){
 } 
 
 if ((newPgnText = gup("pgnText")) != "") {
-  newPgnText = newPgnText.replace(/%20/g," ");
-  newPgnText = newPgnText.replace(/%22/g,"\"");
   newPgnText = newPgnText.replace(/%0A/g,"\n");
   newPgnText = newPgnText.replace(/%0D/g,"\n");
+  newPgnText = newPgnText.replace(/%20/g," ");
+  newPgnText = newPgnText.replace(/%22/g,"\"");
+  newPgnText = newPgnText.replace(/%5B/g,"[");
+  newPgnText = newPgnText.replace(/%5D/g,"]");
+  newPgnText = newPgnText.replace(/%7B/g,"{");
+  newPgnText = newPgnText.replace(/%7D/g,"}");
   newPgnText = newPgnText.replace(/&#8209;/g,"-");
 
   newPgnText = newPgnText.replace(/\]\[/g,"]\n[");
