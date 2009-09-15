@@ -83,17 +83,46 @@ Next move: <span style="font-weight: bold" id="GameNextMove"></span>
 <form style="display:inline;">
 <input id=pgnButton type=button value="show games from PGN text box" onClick="javascript: 
   document.getElementById('pgnText').innerHTML = document.getElementById('pgnForm').value; 
-  start_pgn4web();
-  theObject = document.getElementById('GameSelSelect');
-  if (theObject != null) theObject.style.width = document.getElementById('pgnForm').offsetWidth - 20 -230;
 ">
 <br>
 <textarea id="pgnForm" rows=11 cols=80></textarea>
 </form>
 
 <script>
+
+function new_start_pgn4web() {
+  start_pgn4web();
+  theObject = document.getElementById('GameSelSelect');
+  if (theObject != null) theObject.style.width = document.getElementById('pgnForm').offsetWidth - 20 -230;
+}
+
+function gup( name ){
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regexS = "[\\?&]"+name+"=([^&#]*)";  var regex = new RegExp( regexS );
+  var results = regex.exec( window.location.href );
+  if( results == null )    return "";
+  else    return results[1];
+} 
+
+if ((newPgnText = gup("pgn")) != "") {
+  newPgnText = newPgnText.replace(/%20/g," ");
+  newPgnText = newPgnText.replace(/%22/g,"\"");
+  newPgnText = newPgnText.replace(/%0A/g,"\n");
+  newPgnText = newPgnText.replace(/%0D/g,"\n");
+  newPgnText = newPgnText.replace(/&#8209;/g,"-");
+
+  newPgnText = newPgnText.replace(/\]\[/g,"]\n[");
+  newPgnText = newPgnText.replace(/ \[/g,"\n\n[");
+  newPgnText = newPgnText.replace(/\] /g,"]\n\n");
+
+  document.getElementById('pgnText').innerHTML = newPgnText;
+  document.getElementById('pgnForm').value = newPgnText;
+
+  window.onload = new_start_pgn4web;
+}
 document.getElementById('pgnButton').style.width = document.getElementById('pgnForm').offsetWidth;
 document.getElementById('chessboardTable').style.width = document.getElementById('pgnForm').offsetWidth;
+
 </script>
 
 </body>
