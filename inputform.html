@@ -82,7 +82,8 @@ Next move: <span style="font-weight: bold" id="GameNextMove"></span>
 
 <form style="display:inline;">
 <input id=pgnButton type=button value="show games from PGN text box" onClick="javascript: 
-  document.getElementById('pgnText').innerHTML = document.getElementById('pgnForm').value; 
+  document.getElementById('pgnText').innerHTML = document.getElementById('pgnForm').value;
+  new_start_pgn4web();
 ">
 <br>
 <textarea id="pgnForm" rows=11 cols=80></textarea>
