@@ -494,7 +494,7 @@ function CheckLegality(what, plyCount){
    * Is it a castling move/
    */
   if (what == 'O-O'){
-    retVal = CheckLegalityOO();
+    if (!CheckLegalityOO()) return false;
     var start = PieceCol[MoveColor][0];
     var end   = 6;
     while(start < end){
@@ -503,9 +503,9 @@ function CheckLegality(what, plyCount){
       ++start;
     }
     StoreMove(plyCount);
-    return retVal;
+    return true;
   } else if (what == 'O-O-O'){
-    retVal = CheckLegalityOOO();
+    if (!CheckLegalityOOO()) return false;
     var start = PieceCol[MoveColor][0];
     var end   = 2;
     while(start > end){
@@ -514,7 +514,7 @@ function CheckLegality(what, plyCount){
       --start;
     }
     StoreMove(plyCount);
-    return retVal;
+    return true;
   } 
   /*
    * Some checks common to all pieces:
