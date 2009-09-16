@@ -83,7 +83,7 @@ Next move: <span style="font-weight: bold" id="GameNextMove"></span>
 <form style="display:inline;">
 <input id=pgnButton type=button value="show games from PGN text box" onClick="javascript: 
   document.getElementById('pgnText').innerHTML = document.getElementById('pgnForm').value;
-  new_start_pgn4web();
+  new_start_pgn4web(); 
 ">
 <br>
 <textarea id="pgnForm" rows=11 cols=80></textarea>
@@ -106,24 +106,17 @@ function gup( name ){
 } 
 
 if ((newPgnText = gup("pgnText")) != "") {
-  newPgnText = newPgnText.replace(/%0A/g,"\n");
-  newPgnText = newPgnText.replace(/%0D/g,"\n");
-  newPgnText = newPgnText.replace(/%20/g," ");
-  newPgnText = newPgnText.replace(/%22/g,"\"");
-  newPgnText = newPgnText.replace(/%5B/g,"[");
-  newPgnText = newPgnText.replace(/%5D/g,"]");
-  newPgnText = newPgnText.replace(/%7B/g,"{");
-  newPgnText = newPgnText.replace(/%7D/g,"}");
+  // remove URL escape chars such as %20 replaced by space
+  newPgnText = unescape(newPgnText);
+  // replaces the non-breaking-hyphen with a normal hyphen
   newPgnText = newPgnText.replace(/&#8209;/g,"-");
 
-  newPgnText = newPgnText.replace(/\]\[/g,"]\n[");
-  newPgnText = newPgnText.replace(/ \[/g,"\n\n[");
-  newPgnText = newPgnText.replace(/\] /g,"]\n\n");
-  newPgnText = newPgnText.replace(/\]1/g,"] \n\n1");
-  newPgnText = newPgnText.replace(/0\[/g,"0\n\n[");
-  newPgnText = newPgnText.replace(/1\[/g,"1\n\n[");
-  newPgnText = newPgnText.replace(/2\[/g,"2\n\n[");
-  newPgnText = newPgnText.replace(/\*\[/g,"*\n\n[");
+  // cleans the PGN text
+  newPgnText = newPgnText.replace(/\[/g,"\n\n[");
+  newPgnText = newPgnText.replace(/\]/g,"]\n\n");
+  newPgnText = newPgnText.replace(/([012\*])([\s]*)(\[)/g,"$1\n\n$3");
+  newPgnText = newPgnText.replace(/\]([\s]*)\[/g,"]\n[");
+  newPgnText = newPgnText.replace(/^([\s]*)\[/g,"[");
 
   document.getElementById('pgnText').innerHTML = newPgnText;
   document.getElementById('pgnForm').value = newPgnText;
@@ -138,4 +131,6 @@ document.getElementById('chessboardTable').style.width = document.getElementById
 </body>
 
 </html>
+
+
 
