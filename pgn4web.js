@@ -68,7 +68,7 @@
  * DONT CHANGE AFTER HERE 
  */
 
-var version = '1.40+';
+var version = '1.41';
 var about = '\tpgn4web v' + version + '\n\thttp://pgn4web.casaschi.net\n';
 var help = '\th, l\tgame start/end' + '\n' +
            '\tj, k\tmove backward/forward' + '\n' +
@@ -392,8 +392,10 @@ var mvPieceOnTo   = -1;
 var mvCaptured    = -1;
 var mvCapturedId  = -1;
 
-var enPassant    =  false;
-var enPassantCol = -1;
+var enPassant =  new Array(MaxMove);
+enPassant[0] =  false;
+var enPassantCol = new Array(MaxMove);
+enPassantCol[0] = -1;
 
 Board = new Array(8);
 for(i=0; i<8; ++i){
@@ -530,7 +532,7 @@ function CheckLegality(what, plyCount){
     if (Board[mvToCol][mvToRow] !=0) return false;
   }
   if ((mvCapture) && (Color(Board[mvToCol][mvToRow]) != 1-MoveColor)){
-    if ((mvPiece != 6) || (!enPassant) || (enPassantCol != mvToCol) ||
+    if ((mvPiece != 6) || (!enPassant[plyCount-1]) || (enPassantCol[plyCount-1] != mvToCol) ||
 	(mvToRow != 5-3*MoveColor)) return false;
   }
   if (mvIsPromotion){
@@ -1224,7 +1226,10 @@ function InitFEN(startingFEN){
   StartPly  = 0;
   MoveCount = StartPly;
   MoveColor = StartPly % 2;
-  enPassant = false;
+
+  var newEnPassant = false;
+  var newEnPassantCol;
+
   for (ii = 0; ii < 2; ii++){
     CastlingLong[ii]  = 1;
     CastlingShort[ii] = 1;
@@ -1430,12 +1435,11 @@ function InitFEN(startingFEN){
         Init('standard');
         return;
       }
-      enPassant=false;
       cc=FenString.charAt(ll++);
       while (cc!=" ")
       { if ((cc.charCodeAt(0)-97>=0)&&(cc.charCodeAt(0)-97<=7)) {
-          enPassant = true;
-          enPassantCol=cc.charCodeAt(0)-97; 
+          newEnPassant = true;
+          newEnPassantCol=cc.charCodeAt(0)-97; 
         }
         if (ll<FenString.length) 
           cc=FenString.charAt(ll++);
@@ -1471,6 +1475,9 @@ function InitFEN(startingFEN){
         return;
       }
       StartPly+=2*(parseInt(cc)-1);
+
+      enPassant[StartPly-1] = newEnPassant;
+      enPassantCol[StartPly-1] = newEnPassantCol;
   }
 }
 
@@ -2307,7 +2314,7 @@ function ParseMove(move, plyCount){
   if (Board[mvToCol][mvToRow] != 0){
     mvCapture = 1;
   } else{
-    if ((mvPiece == 6) && (enPassant) && (mvToCol == enPassantCol) &&
+    if ((mvPiece == 6) && (enPassant[plyCount-1]) && (mvToCol == enPassantCol[plyCount-1]) &&
 	(mvToRow == 5-3*MoveColor)){
       mvCapture = 1;
     }
@@ -2350,7 +2357,7 @@ function ParseMove(move, plyCount){
 	--mvCapturedId;
       }
     }
-    if ((mvPiece == 6) && (mvCapturedId < 1) && (enPassant)){
+    if ((mvPiece == 6) && (mvCapturedId < 1) && (enPassant[plyCount-1])){
       mvCapturedId = 15;
       while((mvCapturedId >= 0) && (mvCaptured < 0)){
         if ((PieceType[1-MoveColor][mvCapturedId] == 6)       &&
@@ -2373,12 +2380,12 @@ function ParseMove(move, plyCount){
    * If a pawn was moved check if it enables the en-passant capture on next
    * move;
    */
-  enPassant    = false;
-  enPassantCol = -1;
+  enPassant[plyCount]    = false;
+  enPassantCol[plyCount] = -1;
   if (mvPiece == 6){
      if (Math.abs(HistRow[0][plyCount]-mvToRow) == 2){
-       enPassant    = true;
-       enPassantCol = mvToCol;
+       enPassant[plyCount]    = true;
+       enPassantCol[plyCount] = mvToCol;
      }
   }
   return true;
