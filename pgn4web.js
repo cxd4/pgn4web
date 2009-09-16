@@ -1433,9 +1433,11 @@ function InitFEN(startingFEN){
       enPassant=false;
       cc=FenString.charAt(ll++);
       while (cc!=" ")
-      { if ((cc.charCodeAt(0)-97>=0)&&(cc.charCodeAt(0)-97<=7))
+      { if ((cc.charCodeAt(0)-97>=0)&&(cc.charCodeAt(0)-97<=7)) {
+          enPassant = true;
           enPassantCol=cc.charCodeAt(0)-97; 
-        if (ll<FenString.length)
+        }
+        if (ll<FenString.length) 
           cc=FenString.charAt(ll++);
         else cc=" ";
       }
