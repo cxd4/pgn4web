@@ -20,7 +20,21 @@
    SetInitialGame(0); // number of game to be shown at load, from 1 (default); if 0 a random game is loaded
 // SetInitialHalfmove(0); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
    SetShortcutKeysEnabled(false);
-</script>
+
+function gup( name ){
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regexS = "[\\?&]"+name+"=([^&#]*)";  var regex = new RegExp( regexS );
+  var results = regex.exec( window.location.href );
+  if( results == null )    return "";
+  else    return results[1];
+}
+
+initial_puzzle = gup('n');
+
+if ((initial_puzzle <= 928)&&(initial_puzzle > 0))
+  SetInitialGame(initial_puzzle);	
+
+</script>		  
 
 </head>
 
