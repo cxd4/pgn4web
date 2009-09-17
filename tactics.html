@@ -29,10 +29,7 @@ function gup( name ){
   else    return results[1];
 }
 
-initial_puzzle = gup('n');
-
-if ((initial_puzzle <= 928)&&(initial_puzzle > 0))
-  SetInitialGame(initial_puzzle);	
+SetInitialGame(gup('n'));	
 
 </script>		  
 
