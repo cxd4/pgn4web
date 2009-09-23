@@ -2727,14 +2727,14 @@ function SetAutoPlay(vv){
   if (isAutoPlayOn){
     if ((document.GameButtonsForm) && (document.GameButtonsForm.AutoPlay)){
       document.GameButtonsForm.AutoPlay.value="stop";
-      document.GameButtonsForm.AutoPlay.class="buttonControlStop";
+      document.GameButtonsForm.AutoPlay.className="buttonControlStop";
     }
-    if (CurrentPly < StartPly+PlyNumber) MoveForward(1);
-    else if (autoplayNextGame) AutoplayNextGame();
+    if (CurrentPly < StartPly+PlyNumber) { MoveForward(1); }
+    else { if (autoplayNextGame) AutoplayNextGame(); }
   } else { 
     if ((document.GameButtonsForm)&&(document.GameButtonsForm.AutoPlay))
       document.GameButtonsForm.AutoPlay.value="play";
-      document.GameButtonsForm.AutoPlay.class="buttonControlPlay";
+      document.GameButtonsForm.AutoPlay.className="buttonControlPlay";
   }
 }
 /******************************************************************************
