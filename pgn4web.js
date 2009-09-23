@@ -1796,7 +1796,7 @@ function MoveForward(diff){
 function AutoplayNextGame(){
   if (++currentGame >= numberOfGames) currentGame = 0;
   Init();
-  AutoPlayInterval=setTimeout("SetAutoPlay(true)", Delay);
+  SetAutoPlay(true);
 }
 
 /******************************************************************************
@@ -2731,9 +2731,10 @@ function SetAutoPlay(vv){
         document.GameButtonsForm.AutoPlay.className="buttonControlStop";
       }
     }
-    if (CurrentPly < StartPly+PlyNumber) { MoveForward(1); }
-    else if (autoplayNextGame) { AutoplayNextGame(); }
-    else { SetAutoPlay(false) }
+    if (CurrentPly < StartPly+PlyNumber) { AutoPlayInterval=setTimeout("MoveForward(1)", Delay); }
+    else { if (autoplayNextGame) { AutoplayNextGame(); }
+           else { SetAutoPlay(false); }
+    }
   } else { 
     if (document.GameButtonsForm) {
       if (document.GameButtonsForm.AutoPlay) {
@@ -2788,6 +2789,7 @@ function SwitchAutoPlay(){
   if (isAutoPlayOn){
     SetAutoPlay(false);
   } else{
+    MoveForward(1);
     SetAutoPlay(true);
   }
 }
