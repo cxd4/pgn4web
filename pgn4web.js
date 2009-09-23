@@ -2732,7 +2732,8 @@ function SetAutoPlay(vv){
       }
     }
     if (CurrentPly < StartPly+PlyNumber) { MoveForward(1); }
-    else { if (autoplayNextGame) AutoplayNextGame(); }
+    else if (autoplayNextGame) { AutoplayNextGame(); }
+    else { SetAutoPlay(false) }
   } else { 
     if (document.GameButtonsForm) {
       if (document.GameButtonsForm.AutoPlay) {
