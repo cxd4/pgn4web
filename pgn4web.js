@@ -2725,16 +2725,21 @@ function SetAutoPlay(vv){
    * If switched on start  moving forward. Also change the button value.
    */
   if (isAutoPlayOn){
-    if ((document.GameButtonsForm) && (document.GameButtonsForm.AutoPlay)){
-      document.GameButtonsForm.AutoPlay.value="stop";
-      document.GameButtonsForm.AutoPlay.className="buttonControlStop";
+    if (document.GameButtonsForm) {
+      if (document.GameButtonsForm.AutoPlay){
+        document.GameButtonsForm.AutoPlay.value="stop";
+        document.GameButtonsForm.AutoPlay.className="buttonControlStop";
+      }
     }
     if (CurrentPly < StartPly+PlyNumber) { MoveForward(1); }
     else { if (autoplayNextGame) AutoplayNextGame(); }
   } else { 
-    if ((document.GameButtonsForm)&&(document.GameButtonsForm.AutoPlay))
-      document.GameButtonsForm.AutoPlay.value="play";
-      document.GameButtonsForm.AutoPlay.className="buttonControlPlay";
+    if (document.GameButtonsForm) {
+      if (document.GameButtonsForm.AutoPlay)) {
+        document.GameButtonsForm.AutoPlay.value="play";
+        document.GameButtonsForm.AutoPlay.className="buttonControlPlay";
+      }
+    }
   }
 }
 /******************************************************************************
