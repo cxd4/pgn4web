@@ -56,6 +56,8 @@ body {
   border-color: Wheat;
 }
 
+.buttonControlPlay,
+.buttonControlStop,
 .buttonControl {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 84px !important;

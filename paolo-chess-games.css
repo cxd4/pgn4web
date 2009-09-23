@@ -51,6 +51,8 @@ body {
 /* a "width" attribute here must use the !important flag to override default settings */
 }
 
+.buttonControlPlay,
+.buttonControlStop,
 .buttonControl {
 /* a "width" attribute here must use the !important flag to override default settings */
 }

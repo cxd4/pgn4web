@@ -2478,7 +2478,7 @@ function PrintHTML(){
           '<TD>' +
           '<INPUT ID="autoplayButton" TYPE="BUTTON" VALUE="play" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
-  text += '"; CLASS="buttonControl" ' +
+  text += '"; CLASS="buttonControlStop" ' +
           ' ID="btnPlay" NAME="AutoPlay" onClick="javascript:SwitchAutoPlay()">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
@@ -2727,12 +2727,14 @@ function SetAutoPlay(vv){
   if (isAutoPlayOn){
     if ((document.GameButtonsForm) && (document.GameButtonsForm.AutoPlay)){
       document.GameButtonsForm.AutoPlay.value="stop";
+      document.GameButtonsForm.AutoPlay.class="buttonControlStop";
     }
     if (CurrentPly < StartPly+PlyNumber) MoveForward(1);
     else if (autoplayNextGame) AutoplayNextGame();
   } else { 
     if ((document.GameButtonsForm)&&(document.GameButtonsForm.AutoPlay))
       document.GameButtonsForm.AutoPlay.value="play";
+      document.GameButtonsForm.AutoPlay.class="buttonControlPlay";
   }
 }
 /******************************************************************************
