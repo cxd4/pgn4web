@@ -2735,7 +2735,7 @@ function SetAutoPlay(vv){
     else { if (autoplayNextGame) AutoplayNextGame(); }
   } else { 
     if (document.GameButtonsForm) {
-      if (document.GameButtonsForm.AutoPlay)) {
+      if (document.GameButtonsForm.AutoPlay) {
         document.GameButtonsForm.AutoPlay.value="play";
         document.GameButtonsForm.AutoPlay.className="buttonControlPlay";
       }
