@@ -73,6 +73,7 @@ Example:
     SetCommentsOnSeparateLines(false)
     SetAutoplayDelay(1000); // milliseconds
     SetAutostartAutoplay(false);
+    SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
     SetInitialGame(1); // number of game to be shown at load, from 1 (default); if 0 a random game is loaded
     SetInitialHalfmove(0); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
     SetShortcutKeysEnabled(true);
@@ -117,7 +118,7 @@ Some of the PGN files for the examples are coming from "The Week in Chess" at ht
 
 TECHNICAL NOTES ABOUT WEB BROWSERS
 
-pgn4web.js is developed and tested with a variety of browsers (Arora, Chrome, Epiphany, Firefox, Internet Explorer, Safari) on a variety of platforms (Linux/Debian, MacOS, Windows). Not every browser version and every combination of browser/platform has been tested. If you have any issue with using pgn4web on your platform, please email pgn4web@casaschi.net
+pgn4web.js is developed and tested with a variety of browsers (Arora, Chrome, Epiphany, Firefox, Internet Explorer, Opera, Safari) on a variety of platforms (Linux/Debian, MacOS, Windows). Not every browser version and every combination of browser/platform has been tested. If you have any issue with using pgn4web on your platform, please email pgn4web@casaschi.net
 
 Note about Internet Explorer v7 and above: under some circumstances you might experience problems when testing HTML pages from your local computer while developing your site. If this happens to you, read notes at http://code.google.com/p/pgn4web/issues/detail?id=23 
 

@@ -19,6 +19,7 @@
  *        SetCommentsOnSeparateLines(false);
  *        SetAutoplayDelay(1000); // milliseconds
  *        SetAutostartAutoplay(false);
+ *        SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
  *        SetInitialGame(1); // number of game to be shown at load, from 1 (default); if 0 a random game is loaded
  *        SetInitialHalfmove(0); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
  *        SetShortcutKeysEnabled(true);
@@ -57,6 +58,7 @@
 // SetCommentsOnSeparateLines(true);
 // SetAutoplayDelay(1000); // milliseconds
 // SetAutostartAutoplay(false);
+// SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
 // SetInitialGame(1); // number of game to be shown at load, from 1 (default); if 0 a random game is loaded
 // SetInitialHalfmove(0); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
 // SetShortcutKeysEnabled(true);
@@ -372,6 +374,7 @@ var isAutoPlayOn = false;
 var AutoPlayInterval;
 var Delay = 1000;
 var autostartAutoplay = false;
+var autoplayNextGame = false;
 
 var initialGame = 0;
 var initialHalfmove = 0;
@@ -391,11 +394,6 @@ var mvPieceId     = -1;
 var mvPieceOnTo   = -1;
 var mvCaptured    = -1;
 var mvCapturedId  = -1;
-
-var enPassant =  new Array(MaxMove);
-enPassant[0] =  false;
-var enPassantCol = new Array(MaxMove);
-enPassantCol[0] = -1;
 
 Board = new Array(8);
 for(i=0; i<8; ++i){
@@ -430,6 +428,11 @@ for(i=0; i<3; ++i){
   HistCol[i]     = new Array(MaxMove);
   HistRow[i]     = new Array(MaxMove);
 }
+
+HistEnPassant =  new Array(MaxMove);
+HistEnPassant[0] =  false;
+HistEnPassantCol = new Array(MaxMove);
+HistEnPassantCol[0] = -1;
 
 startingSquareSize = -1;
 startingImageSize = -1;
@@ -532,7 +535,7 @@ function CheckLegality(what, plyCount){
     if (Board[mvToCol][mvToRow] !=0) return false;
   }
   if ((mvCapture) && (Color(Board[mvToCol][mvToRow]) != 1-MoveColor)){
-    if ((mvPiece != 6) || (!enPassant[plyCount-1]) || (enPassantCol[plyCount-1] != mvToCol) ||
+    if ((mvPiece != 6) || (!HistEnPassant[plyCount-1]) || (HistEnPassantCol[plyCount-1] != mvToCol) ||
 	(mvToRow != 5-3*MoveColor)) return false;
   }
   if (mvIsPromotion){
@@ -799,6 +802,10 @@ function SetCommentsOnSeparateLines(onOff){
 
 function SetAutostartAutoplay(onOff){
   autostartAutoplay = onOff;
+}
+
+function SetAutoplayNextGame(onOff){
+  autoplayNextGame = onOff;
 }
 
 function SetInitialHalfmove(number){
@@ -1476,8 +1483,8 @@ function InitFEN(startingFEN){
       }
       StartPly+=2*(parseInt(cc)-1);
 
-      enPassant[StartPly-1] = newEnPassant;
-      enPassantCol[StartPly-1] = newEnPassantCol;
+      HistEnPassant[StartPly-1] = newEnPassant;
+      HistEnPassantCol[StartPly-1] = newEnPassantCol;
   }
 }
 
@@ -1779,10 +1786,17 @@ function MoveForward(diff){
       if (goToPly < StartPly + PlyNumber)
         AutoPlayInterval=setTimeout("MoveForward(1)", Delay);
       else {
-        SetAutoPlay(false);
+        if (autoplayNextGame) AutoPlayInterval=setTimeout("AutoplayNextGame()", Delay);
+        else SetAutoPlay(false);
       }
     }
   }
+}
+
+function AutoplayNextGame(){
+  if (++currentGame >= numberOfGames) currentGame = 0;
+  Init();
+  AutoPlayInterval=setTimeout("SetAutoPlay(true)", Delay);
 }
 
 /******************************************************************************
@@ -2314,7 +2328,7 @@ function ParseMove(move, plyCount){
   if (Board[mvToCol][mvToRow] != 0){
     mvCapture = 1;
   } else{
-    if ((mvPiece == 6) && (enPassant[plyCount-1]) && (mvToCol == enPassantCol[plyCount-1]) &&
+    if ((mvPiece == 6) && (HistEnPassant[plyCount-1]) && (mvToCol == HistEnPassantCol[plyCount-1]) &&
 	(mvToRow == 5-3*MoveColor)){
       mvCapture = 1;
     }
@@ -2357,7 +2371,7 @@ function ParseMove(move, plyCount){
 	--mvCapturedId;
       }
     }
-    if ((mvPiece == 6) && (mvCapturedId < 1) && (enPassant[plyCount-1])){
+    if ((mvPiece == 6) && (mvCapturedId < 1) && (HistEnPassant[plyCount-1])){
       mvCapturedId = 15;
       while((mvCapturedId >= 0) && (mvCaptured < 0)){
         if ((PieceType[1-MoveColor][mvCapturedId] == 6)       &&
@@ -2380,12 +2394,12 @@ function ParseMove(move, plyCount){
    * If a pawn was moved check if it enables the en-passant capture on next
    * move;
    */
-  enPassant[plyCount]    = false;
-  enPassantCol[plyCount] = -1;
+  HistEnPassant[plyCount]    = false;
+  HistEnPassantCol[plyCount] = -1;
   if (mvPiece == 6){
      if (Math.abs(HistRow[0][plyCount]-mvToRow) == 2){
-       enPassant[plyCount]    = true;
-       enPassantCol[plyCount] = mvToCol;
+       HistEnPassant[plyCount]    = true;
+       HistEnPassantCol[plyCount] = mvToCol;
      }
   }
   return true;
@@ -2714,7 +2728,8 @@ function SetAutoPlay(vv){
     if ((document.GameButtonsForm) && (document.GameButtonsForm.AutoPlay)){
       document.GameButtonsForm.AutoPlay.value="stop";
     }
-    MoveForward(1);
+    if (CurrentPly < StartPly+PlyNumber) MoveForward(1);
+    else if (autoplayNextGame) AutoplayNextGame();
   } else { 
     if ((document.GameButtonsForm)&&(document.GameButtonsForm.AutoPlay))
       document.GameButtonsForm.AutoPlay.value="play";
