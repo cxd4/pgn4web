@@ -103,7 +103,7 @@ The file template.css shows a list of customization style options.
 See template.html file for an example.
 See *mini.html* for an example of embedding the PGN content into the HTML file.
 See http://www.casaschi.net/chess for an implementation. 
-See http://blog.casaschi.net/search?q=pgn4web for an example of usage within a blog using the iframe html tag. 
+See http://blog.casaschi.net/search?label=pgn4web for an example of usage within a blog using the iframe html tag. 
 
 CREDITS
 
