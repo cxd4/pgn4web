@@ -30,7 +30,7 @@ a.gamelist:link, a.gamelist:visited, a.gamelist:hover, a.gamelist:active
    SetAutostartAutoplay(true);
 // SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
    SetInitialGame(2); // number of game to be shown at load, from 1 (default); if 0 a random game is loaded
-// SetInitialHalfmove(0); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
+   SetInitialHalfmove(1); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
    SetShortcutKeysEnabled(false);
 </script>
 
@@ -170,12 +170,13 @@ Be7 42.Rc7 Bd8 43.Rxf7 Qxf7 44.Qf4 Qd7 45.Rc6 Be7 46.Qxh6 Qxg4 47.Rc7 1-0
     <td align=left valign=top>
       <div style="text-align:right; font-size: 140%; font-weight: bold">Tilburg Fontys 1998 round 2</div>
       <div style="text-align:left;">
-      <p> <a id="game0" class=gamelist         href="javascript:document.getElementById('game'+currentGame).className='gamelist';currentGame=0;document.getElementById('game'+currentGame).className='gamelistselected moveOn';Init();SetAutoPlay(true);">&nbsp;Viktor Kortschnoj&nbsp; &#8209; &nbsp;Michael Adams&nbsp; &nbsp;0&#8209;1&nbsp;</a>
-      <br><a id="game1" class="gamelistselected moveOn" href="javascript:document.getElementById('game'+currentGame).className='gamelist';currentGame=1;document.getElementById('game'+currentGame).className='gamelistselected moveOn';Init();SetAutoPlay(true);">&nbsp;Viswanathan Anand&nbsp; &#8209; &nbsp;Vladimir Kramnik&nbsp; &nbsp;1&#8209;0&nbsp;</a>
-      <br><a id="game2" class=gamelist         href="javascript:document.getElementById('game'+currentGame).className='gamelist';currentGame=2;document.getElementById('game'+currentGame).className='gamelistselected moveOn';Init();SetAutoPlay(true);">&nbsp;Joel Lautier&nbsp; &#8209; &nbsp;Loek Van Wely&nbsp; &nbsp;1/2&#8209;1/2&nbsp;</a>
-      <br><a id="game3" class=gamelist         href="javascript:document.getElementById('game'+currentGame).className='gamelist';currentGame=3;document.getElementById('game'+currentGame).className='gamelistselected moveOn';Init();SetAutoPlay(true);">&nbsp;Mattew Sadler&nbsp; &#8209; &nbsp;Veselin Topalov&nbsp; &nbsp;1/2&#8209;1/2&nbsp;</a>
-      <br><a id="game4" class=gamelist         href="javascript:document.getElementById('game'+currentGame).className='gamelist';currentGame=4;document.getElementById('game'+currentGame).className='gamelistselected moveOn';Init();SetAutoPlay(true);">&nbsp;Vadim Zvjaginsev&nbsp; &#8209; &nbsp;Peter Leko&nbsp; &nbsp;1/2&#8209;1/2&nbsp;</a>
-      <br><a id="game5" class=gamelist         href="javascript:document.getElementById('game'+currentGame).className='gamelist';currentGame=5;document.getElementById('game'+currentGame).className='gamelistselected moveOn';Init();SetAutoPlay(true);">&nbsp;Peter Svidler&nbsp; &#8209; &nbsp;Jeroen Piket&nbsp; &nbsp;1&#8209;0&nbsp;</a>
+      <p>
+      <br><a id="game5" class=gamelist         href="javascript:document.getElementById('game'+currentGame).className='gamelist';currentGame=5;document.getElementById('game'+currentGame).className='gamelistselected moveOn';Init();MoveForward(1);SetAutoPlay(true);">&nbsp;Peter Svidler&nbsp; &#8209; &nbsp;Jeroen Piket&nbsp; &nbsp;1&#8209;0&nbsp;</a>
+      <br><a id="game1" class="gamelistselected moveOn" href="javascript:document.getElementById('game'+currentGame).className='gamelist';currentGame=1;document.getElementById('game'+currentGame).className='gamelistselected moveOn';Init();MoveForward(1);SetAutoPlay(true);">&nbsp;Viswanathan Anand&nbsp; &#8209; &nbsp;Vladimir Kramnik&nbsp; &nbsp;1&#8209;0&nbsp;</a>
+      <br><a id="game3" class=gamelist         href="javascript:document.getElementById('game'+currentGame).className='gamelist';currentGame=3;document.getElementById('game'+currentGame).className='gamelistselected moveOn';Init();MoveForward(1);SetAutoPlay(true);">&nbsp;Mattew Sadler&nbsp; &#8209; &nbsp;Veselin Topalov&nbsp; &nbsp;1/2&#8209;1/2&nbsp;</a>
+      <br><a id="game4" class=gamelist         href="javascript:document.getElementById('game'+currentGame).className='gamelist';currentGame=4;document.getElementById('game'+currentGame).className='gamelistselected moveOn';Init();MoveForward(1);SetAutoPlay(true);">&nbsp;Vadim Zvjaginsev&nbsp; &#8209; &nbsp;Peter Leko&nbsp; &nbsp;1/2&#8209;1/2&nbsp;</a>
+      <br><a id="game2" class=gamelist         href="javascript:document.getElementById('game'+currentGame).className='gamelist';currentGame=2;document.getElementById('game'+currentGame).className='gamelistselected moveOn';Init();MoveForward(1);SetAutoPlay(true);">&nbsp;Joel Lautier&nbsp; &#8209; &nbsp;Loek Van Wely&nbsp; &nbsp;1/2&#8209;1/2&nbsp;</a>
+      <br> <a id="game0" class=gamelist         href="javascript:document.getElementById('game'+currentGame).className='gamelist';currentGame=0;document.getElementById('game'+currentGame).className='gamelistselected moveOn';Init();MoveForward(1);SetAutoPlay(true);">&nbsp;Viktor Kortschnoj&nbsp; &#8209; &nbsp;Michael Adams&nbsp; &nbsp;0&#8209;1&nbsp;</a>
     </td>
   </tr>
   <tr>

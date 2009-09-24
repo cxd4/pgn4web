@@ -190,6 +190,7 @@ function handlekey(e) {
       break;
 
     case 65:  // a
+      MoveForward(1);
       SetAutoPlay(true);
       break;
 
@@ -203,76 +204,91 @@ function handlekey(e) {
       break;
 
     case 49:  // 1
+      MoveForward(1);
       SetAutoplayDelay( 1*1000);
       SetAutoPlay(true);
       break;
 
     case 50:  // 2
+      MoveForward(1);
       SetAutoplayDelay( 2*1000);
       SetAutoPlay(true);
       break;
 
     case 51:  // 3
+      MoveForward(1);
       SetAutoplayDelay( 3*1000);
       SetAutoPlay(true);
       break;
 
     case 52:  // 4
+      MoveForward(1);
       SetAutoplayDelay( 4*1000);
       SetAutoPlay(true);
       break;
 
     case 53:  // 5
+      MoveForward(1);
       SetAutoplayDelay( 5*1000);
       SetAutoPlay(true);
       break;
 
     case 54:  // 6
+      MoveForward(1);
       SetAutoplayDelay( 6*1000);
       SetAutoPlay(true);
       break;
 
     case 55:  // 7
+      MoveForward(1);
       SetAutoplayDelay( 7*1000);
       SetAutoPlay(true);
       break;
 
     case 56:  // 8
+      MoveForward(1);
       SetAutoplayDelay( 8*1000);
       SetAutoPlay(true);
       break;
 
     case 57:  // 9
+      MoveForward(1);
       SetAutoplayDelay( 9*1000);
       SetAutoPlay(true);
       break;
 
     case 81:  // q
+      MoveForward(1);
       SetAutoplayDelay(10*1000);
       SetAutoPlay(true);
       break;
 
     case 87:  // w
+      MoveForward(1);
       SetAutoplayDelay(20*1000);
       SetAutoPlay(true);
       break;
 
     case 69:  // e
+      MoveForward(1);
       SetAutoplayDelay(30*1000);
       SetAutoPlay(true);
       break;
 
     case 82:  // r
+      MoveForward(1);
       SetAutoplayDelay(40*1000);
       SetAutoPlay(true);
       break;
 
     case 84:  // t
+      MoveForward(1);
       SetAutoplayDelay(50*1000);
       SetAutoPlay(true);
       break;
 
     case 89:  // y
+      MoveForward(1);
       SetAutoplayDelay(60*1000);
       SetAutoPlay(true);
       break;
