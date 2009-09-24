@@ -1,0 +1,63 @@
+<html>
+
+<head>
+
+<title>chess</title>
+
+<link href="board.css" type="text/css" rel="stylesheet"></link>
+
+<script src="pgn4web.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+
+<!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
+<span style="display:none" id="pgnText">
+
+</span>
+<!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
+
+<script>
+
+function gup( name ){
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regexS = "[\\?&]"+name+"=([^&#]*)";  var regex = new RegExp( regexS );
+  var results = regex.exec( window.location.href );
+  if( results == null )    return "";
+  else    return results[1];
+}
+
+   SetImagePath ("alpha/24"); 
+   SetAutostartAutoplay(true);
+   SetAutoplayDelay(2500); // milliseconds
+   SetShortcutKeysEnabled(false);
+
+if ((newPgnText = gup("pgnText")) != "") {
+
+  // remove URL escape chars such as %20 replaced by space
+  newPgnText = unescape(newPgnText);
+  // replaces the non-breaking-hyphen with a normal hyphen
+  newPgnText = newPgnText.replace(/&#8209;/g,"-");
+
+  // cleans the PGN text
+  newPgnText = newPgnText.replace(/\[/g,"\n\n[");
+  newPgnText = newPgnText.replace(/\]/g,"]\n\n");
+  newPgnText = newPgnText.replace(/([012\*])([\s]*)(\[)/g,"$1\n\n$3");
+  newPgnText = newPgnText.replace(/\]([\s]*)\[/g,"]\n[");
+  newPgnText = newPgnText.replace(/^([\s]*)\[/g,"[");
+
+  document.getElementById('pgnText').innerHTML = newPgnText;
+}
+
+</script>
+
+<center>
+<div id="GameBoard"></div>
+</center>
+
+</body>
+
+</html>
+
