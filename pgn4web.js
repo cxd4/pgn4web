@@ -2748,7 +2748,7 @@ function SetAutoPlay(vv){
       }
     }
     if (CurrentPly < StartPly+PlyNumber) { AutoPlayInterval=setTimeout("MoveForward(1)", Delay); }
-    else { if (autoplayNextGame) { AutoplayNextGame(); }
+    else { if (autoplayNextGame) { AutoPlayInterval=setTimeout("AutoplayNextGame()", Delay); }
            else { SetAutoPlay(false); }
     }
   } else { 
