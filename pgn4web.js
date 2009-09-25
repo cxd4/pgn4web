@@ -72,22 +72,41 @@
 
 var version = '1.44+';
 var about = '\tpgn4web v' + version + '\n\thttp://pgn4web.casaschi.net\n';
-var help = '\th, l\tgame start/end' + '\n' +
-           '\tj, k\tmove backward/forward' + '\n' +
-           '\tu, i\tfind previous/next comment' + '\n' +
-           '\n' +
-           '\tv, m\tfirst/last game' + '\n' +
-           '\tb, n\tprevious/next game' + '\n' +
-           '\tc, x\trandom game at start/random position' + '\n' +
-           '\n' +
-           '\ta, s\tstart/stop autoplay' + '\n' +
-           '\t1,[n]\tautoplay 1 sec, [n] sec' + '\n' +
-           '\n' +
-           '\tf, d\tflip board / white on bottom' + '\n' +
-           '\tg\ttoggle highlighting' + '\n' +
-           '\tp\ttoggle showing comments' + '\n' +
-           '\to\ttoggle showing comments on separate lines' + '\n' +
-           '';
+
+var keyhelp = 'h, l\tgame start/end' + '\n' +
+              'j, k\tmove backward/forward' + '\n' +
+              'u, i\tfind previous/next comment' + '\n' +
+              '\n' +
+              'v, m\tfirst/last game' + '\n' +
+              'b, n\tprevious/next game' + '\n' +
+              'c, x\trandom game at start/random ply' + '\n' +
+              '\n' +
+              'a, s\tstart/stop autoplay' + '\n' +
+              '1,[n]\tautoplay 1 sec, [n] sec' + '\n' +
+              '\n' +
+              'f, d\tflip board / white on bottom' + '\n' +
+              'g\ttoggle highlighting' + '\n' +
+              'p\ttoggle comments' + '\n' +
+              'o\ttoggle comments on separate lines' + '\n' +
+              '';
+
+var squarehelp = 'A1, H1\tgame start/end' + '\n' +
+                 'B1, G1\tfind previous/next comment' + '\n' +
+                 'C1, F1\tmove 3 half-moves back/forward' + '\n' +
+                 'D1, E1\tmove back/forward' + '\n' +
+                 '\n' +
+                 'A2    \tstop autoplay' + '\n' + 
+                 'B2, C2...\tautoplay 1 sec, 2 sec...' + '\n' +
+                 '\n' +
+                 'A3, H3\tfirst/last game' + '\n' +
+                 'B3, G3\ttprevious/next game' + '\n' +
+                 'D3, E3\trandom game at start/random ply' + '\n' +
+                 '\n' +
+                 'A7    \ttoggle comments' + '\n' +
+                 'B7    \ttoggle comments on separate lines' + '\n' +
+                 'A8    \ttoggle highlighting' + '\n' +
+                 'B8, C8\tflip board / white on bottom' + '\n' + 
+                 '';
 
 var credits = 'javascript modifications of Paolo Casaschi (pgn4web@casaschi.net) ' +
               'on code from the http://ficsgames.com database, ' +
@@ -98,9 +117,21 @@ var credits = 'javascript modifications of Paolo Casaschi (pgn4web@casaschi.net)
               '';
 
 function displayHelp(){
-  if (shortcutKeysEnabled) keysEnabled = ' (shorcut keys enabled, disable with SHIFT followed by ESCAPE)\n\n';
-  else  keysEnabled = ' (shorcut keys disabled, enable with SHIFT followed by ESCAPE)\n\n';
-  text = about + '\nHELP' + keysEnabled + help + '\nCREDITS\n\n' + credits + '\n';
+  if (shortcutKeysEnabled) keysEnabled = 'shorcut keys enabled, disable with SHIFT followed by ESCAPE\n';
+  else  keysEnabled = 'shorcut keys disabled, enable with SHIFT followed by ESCAPE\n';
+  text = about + '\nCREDITS\n\n' + credits + '\nSHORTCUT SQUARES\n\nClick on the G8 square for help on shortcut squares\n\nSHORTCUT KEYS\n\n' + keysEnabled + 'Press OK if you want help on shortcut keys...';
+  if (confirm(text)) { displayKeyHelp() }
+}
+
+function displayKeyHelp(){
+  if (shortcutKeysEnabled) keysEnabled = 'shorcut keys enabled, disable with SHIFT followed by ESCAPE\n\n';
+  else  keysEnabled = 'shorcut keys disabled, enable with SHIFT followed by ESCAPE\n\n';
+  text = about + '\nSHORTCUT KEYS HELP\n\n' + keysEnabled + keyhelp + '\n';
+  alert(text);
+}
+
+function displaySquareHelp(){
+  text = about + '\nSHORTCUT SQUARES HELP\n\n' + squarehelp + '\n';
   alert(text);
 }
 
@@ -368,6 +399,202 @@ function handlekey(e) {
 
 }
 
+boardAlt = new Array(64);
+
+// cells count from the top left (A8 is row0 col0)
+
+// A8
+function boardOnClickCol0Row0() { SetHighlight(!highlightOption); };
+boardAlt[0 + 0 * 8] = "toggle highlight last move";
+// B8
+function boardOnClickCol1Row0() { FlipBoard(); };
+boardAlt[1 + 0 * 8] = "flib board";
+// C8
+function boardOnClickCol2Row0() { if (IsRotated) FlipBoard(); };
+boardAlt[2 + 0 * 8] = "show white on bottom";
+// D8
+function boardOnClickCol3Row0() { };
+boardAlt[3 + 0 * 8] = "";
+// E8
+function boardOnClickCol4Row0() { SetShortcutKeysEnabled(!shortcutKeysEnabled); displayKeyHelp(); }
+boardAlt[4 + 0 * 8] = "toggle enabling keys shortcuts";
+// F8
+function boardOnClickCol5Row0() { displayKeyHelp(); };
+boardAlt[5 + 0 * 8] = "show keys shortcuts";
+// G8
+function boardOnClickCol6Row0() { displaySquareHelp(); };
+boardAlt[6 + 0 * 8] = "show square shortcuts";
+// H8
+function boardOnClickCol7Row0() { displayHelp(); };
+boardAlt[7 + 0 * 8] = "help";
+// A7
+function boardOnClickCol0Row1() { SetCommentsIntoMoveText(!commentsIntoMoveText); Init(); };
+boardAlt[0 + 1 * 8] = "toggle show comments in game text";
+// B7
+function boardOnClickCol1Row1() { SetCommentsOnSeparateLines(!commentsOnSeparateLines); Init(); };
+boardAlt[1 + 1 * 8] = "toggle show comments on separate lines in game text";
+// C7
+function boardOnClickCol2Row1() { };
+boardAlt[2 + 1 * 8] = "";
+// D7
+function boardOnClickCol3Row1() { };
+boardAlt[3 + 1 * 8] = "";
+// E7
+function boardOnClickCol4Row1() { };
+boardAlt[4 + 1 * 8] = "";
+// F7
+function boardOnClickCol5Row1() { };
+boardAlt[5 + 1 * 8] = "";
+// G7
+function boardOnClickCol6Row1() { };
+boardAlt[6 + 1 * 8] = "";
+// H7
+function boardOnClickCol7Row1() { };
+boardAlt[7 + 1 * 8] = "";
+// A6
+function boardOnClickCol0Row2() { };
+boardAlt[0 + 2 * 8] = "";
+// B6
+function boardOnClickCol1Row2() { };
+boardAlt[1 + 2 * 8] = "";
+// C6
+function boardOnClickCol2Row2() { };
+boardAlt[2 + 2 * 8] = "";
+// D6
+function boardOnClickCol3Row2() { };
+boardAlt[3 + 2 * 8] = "";
+// E6
+function boardOnClickCol4Row2() { };
+boardAlt[4 + 2 * 8] = "";
+// F6
+function boardOnClickCol5Row2() { };
+boardAlt[5 + 2 * 8] = "";
+// G6
+function boardOnClickCol6Row2() { };
+boardAlt[6 + 2 * 8] = "";
+// H5
+function boardOnClickCol7Row2() { };
+boardAlt[7 + 2 * 8] = "";
+// A5
+function boardOnClickCol0Row3() { };
+boardAlt[0 + 3 * 8] = "";
+// B5
+function boardOnClickCol1Row3() { };
+boardAlt[1 + 3 * 8] = "";
+// C5
+function boardOnClickCol2Row3() { };
+boardAlt[2 + 3 * 8] = "";
+// D5
+function boardOnClickCol3Row3() { };
+boardAlt[3 + 3 * 8] = "";
+// E5
+function boardOnClickCol4Row3() { };
+boardAlt[4 + 3 * 8] = "";
+// F5
+function boardOnClickCol5Row3() { };
+boardAlt[5 + 3 * 8] = "";
+// G5
+function boardOnClickCol6Row3() { };
+boardAlt[6 + 3 * 8] = "";
+// H5
+function boardOnClickCol7Row3() { };
+boardAlt[7 + 3 * 8] = "";
+// A4
+function boardOnClickCol0Row4() { };
+boardAlt[0 + 4 * 8] = "";
+// B4
+function boardOnClickCol1Row4() { };
+boardAlt[1 + 4 * 8] = "";
+// C4
+function boardOnClickCol2Row4() { };
+boardAlt[2 + 4 * 8] = "";
+// D4
+function boardOnClickCol3Row4() { };
+boardAlt[3 + 4 * 8] = "";
+// E4
+function boardOnClickCol4Row4() { };
+boardAlt[4 + 4 * 8] = "";
+// F4
+function boardOnClickCol5Row4() { };
+boardAlt[5 + 4 * 8] = "";
+// G4
+function boardOnClickCol6Row4() { };
+boardAlt[6 + 4 * 8] = "";
+// H4
+function boardOnClickCol7Row4() { };
+boardAlt[7 + 4 * 8] = "";
+// A3
+function boardOnClickCol0Row5() { if (numberOfGames > 1) { currentGame = 0; Init(); } };
+boardAlt[0 + 5 * 8] = "load first game";
+// B3
+function boardOnClickCol1Row5() { if (currentGame > 0){ currentGame--; Init(); } };
+boardAlt[1 + 5 * 8] = "load previous game";
+// C3
+function boardOnClickCol2Row5() { if (currentGame > 0){ currentGame--; Init(); } };
+boardAlt[2 + 5 * 8] = "load previous game";
+// D3
+function boardOnClickCol3Row5() {  if (numberOfGames > 1) { currentGame = Math.floor(Math.random()*numberOfGames); Init(); } };
+boardAlt[3 + 5 * 8] = "load random game";
+// E3
+function boardOnClickCol4Row5() { if (numberOfGames > 1) { currentGame = Math.floor(Math.random()*numberOfGames); Init(); GoToMove(StartPly + Math.floor(Math.random()*(StartPly + PlyNumber + 1))); } };
+boardAlt[4 + 5 * 8] = "load random game at random position";
+// F3
+function boardOnClickCol5Row5() { if (numberOfGames > 1) { currentGame = numberOfGames - 1; Init(); } };
+boardAlt[5 + 5 * 8] = "load next game";
+// G3
+function boardOnClickCol6Row5() { if (numberOfGames > 1) { currentGame = numberOfGames - 1; Init(); } };
+boardAlt[6 + 5 * 8] = "load next game";
+// H3
+function boardOnClickCol7Row5() { if (numberOfGames > 1) { currentGame = numberOfGames - 1; Init(); } };
+boardAlt[7 + 5 * 8] = "load last game";
+// A2
+function boardOnClickCol0Row6() { SetAutoPlay(false); };
+boardAlt[0 + 6 * 8] = "stop autoplay";
+// B2
+function boardOnClickCol1Row6() { MoveForward(1); SetAutoplayDelay( 1*1000); SetAutoPlay(true); };
+boardAlt[1 + 6 * 8] = "autoplay 1 second";
+// C2
+function boardOnClickCol2Row6() { MoveForward(1); SetAutoplayDelay( 2*1000); SetAutoPlay(true); };
+boardAlt[2 + 6 * 8] = "autoplay 2 seconds";
+// D2
+function boardOnClickCol3Row6() { MoveForward(1); SetAutoplayDelay( 3*1000); SetAutoPlay(true); };
+boardAlt[3 + 6 * 8] = "autoplay 3 seconds";
+// E2
+function boardOnClickCol4Row6() { MoveForward(1); SetAutoplayDelay( 5*1000); SetAutoPlay(true); };
+boardAlt[4 + 6 * 8] = "autoplay 5 seconds";
+// F2
+function boardOnClickCol5Row6() { MoveForward(1); SetAutoplayDelay(10*1000); SetAutoPlay(true); };
+boardAlt[5 + 6 * 8] = "autoplay 10 seconds";
+// G2
+function boardOnClickCol6Row6() { MoveForward(1); SetAutoplayDelay(20*1000); SetAutoPlay(true); };
+boardAlt[6 + 6 * 8] = "autoplay 20 seconds";
+// H2
+function boardOnClickCol7Row6() { MoveForward(1); SetAutoplayDelay(30*1000); SetAutoPlay(true); };
+boardAlt[7 + 6 * 8] = "autoplay 30 seconds";
+// A1
+function boardOnClickCol0Row7() { GoToMove(StartPly); };
+boardAlt[0 + 7 * 8] = "go to game start";
+// B1
+function boardOnClickCol1Row7() { MoveToPrevComment(); };
+boardAlt[1 + 7 * 8] = "go to previous comment";
+// C1
+function boardOnClickCol2Row7() { MoveBackward(6); };
+boardAlt[2 + 7 * 8] = "move 6 half-moves backward";
+// D1
+function boardOnClickCol3Row7() { MoveBackward(1); };
+boardAlt[3 + 7 * 8] = "move backward";
+// E1
+function boardOnClickCol4Row7() { MoveForward(1)};
+boardAlt[4 + 7 * 8] = "move forward";
+// F1
+function boardOnClickCol5Row7() { MoveForward(6) };
+boardAlt[5 + 7 * 8] = "move 6 half-moves forward";
+// G1
+function boardOnClickCol6Row7() { MoveToNextComment() };
+boardAlt[6 + 7 * 8] = "go to next comment";
+// H1
+function boardOnClickCol7Row7() { GoToMove(StartPly + PlyNumber); };
+boardAlt[7 + 7 * 8] = "go to game end";
 var pgnGame;
 var numberOfGames = -1; 
 var currentGame   = -1;
@@ -2446,8 +2673,7 @@ function PrintHTML(){
   /*
    * Show the board as a 8x8 table.
    */
-  text = '<TABLE CLASS="boardTable" ID="boardTable" CELLSPACING=0 CELLPADDING=0' +
-         ' onClick="javascript: if ((CurrentPly == StartPly + PlyNumber) && (!autoplayNextGame)) { GoToMove(0) } else { SwitchAutoPlay(); }">';
+  text = '<TABLE CLASS="boardTable" ID="boardTable" CELLSPACING=0 CELLPADDING=0>';
   for (ii = 0; ii < 8; ++ii){
     text += '<TR>';
     for (jj = 0; jj < 8; ++jj){
@@ -2458,7 +2684,10 @@ function PrintHTML(){
       } else{
 	text += '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="lightgray" ALIGN="center" VALIGN="middle">';
       } 
-      text += '<IMG CLASS="pieceImage" ID="' + imageId + '" SRC="'+ImagePath+'clear.'+imageType+'"></TD>';
+      text += '<A HREF="javascript:boardOnClickCol' + jj + 'Row' + ii + '()" ' + 
+              'TITLE="' + boardAlt[jj + ii * 8] + '" STYLE="text-decoration: none">' + 
+              '<IMG CLASS="pieceImage" ID="' + imageId + '" ' + 
+              ' SRC="'+ImagePath+'clear.'+imageType+'" BORDER=0></A></TD>';
     }
     text += '</TR>';
   }
