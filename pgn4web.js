@@ -117,15 +117,15 @@ var credits = 'javascript modifications of Paolo Casaschi (pgn4web@casaschi.net)
               '';
 
 function displayHelp(){
-  if (shortcutKeysEnabled) keysEnabled = 'shorcut keys enabled, disable with SHIFT followed by ESCAPE\n';
-  else  keysEnabled = 'shorcut keys disabled, enable with SHIFT followed by ESCAPE\n';
+  if (shortcutKeysEnabled) keysEnabled = 'shorcut keys ENABLED, disable with SHIFT followed by ESCAPE\n';
+  else  keysEnabled = 'shorcut keys DISABLED, enable with SHIFT followed by ESCAPE\n';
   text = about + '\nCREDITS\n\n' + credits + '\nSHORTCUT SQUARES\n\nClick on the G8 square for help on shortcut squares\n\nSHORTCUT KEYS\n\n' + keysEnabled + 'Press OK if you want help on shortcut keys...';
   if (confirm(text)) { displayKeyHelp() }
 }
 
 function displayKeyHelp(){
-  if (shortcutKeysEnabled) keysEnabled = 'shorcut keys enabled, disable with SHIFT followed by ESCAPE\n\n';
-  else  keysEnabled = 'shorcut keys disabled, enable with SHIFT followed by ESCAPE\n\n';
+  if (shortcutKeysEnabled) keysEnabled = 'shorcut keys ENABLED, disable with SHIFT followed by ESCAPE\n\n';
+  else  keysEnabled = 'shorcut keys DISABLED, enable with SHIFT followed by ESCAPE\n\n';
   text = about + '\nSHORTCUT KEYS HELP\n\n' + keysEnabled + keyhelp + '\n';
   alert(text);
 }
