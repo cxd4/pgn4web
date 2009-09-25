@@ -13,7 +13,8 @@ Contact: pgn4web@casaschi.net
 Features:
 - display chess games form a PGN file on a chessboard on the webpage
 - shortcut keys for navigating through the game, for selecting the
-  game from the file and much more (hit escape for help)
+  game from the file and much more; also uses chessboard squares as 
+  input buttons (hit escape for help)
 - fully customizable display. Each item (board, button bar, game
   selection menu, PGN header info, game text, game comment and more)
   can be displayed (or hidden) at pleasure in your html file
