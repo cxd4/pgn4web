@@ -1,0 +1,235 @@
+<html>
+
+<head>
+
+<title>chess</title>
+
+<style type="text/css"> 
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: white;
+}
+
+.boardTable {
+  border-style: double;
+  border-color: black;
+  border-width: 3px;
+}
+
+.pieceImage {
+}
+
+.whiteSquare {
+}
+
+.blackSquare {
+}
+
+.highlightWhiteSquare {
+}
+
+.highlightBlackSquare {
+}
+
+</style>
+
+<script src="pgn4web.js" type="text/javascript"></script>
+
+</head>
+
+<body onClick="javascript: if ((CurrentPly == StartPly + PlyNumber) && (!autoplayNextGame)) { GoToMove(0) } else { SwitchAutoPlay(); }">
+
+
+<!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
+<span style="display:none" id="pgnText">
+
+</span>
+<!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
+
+<script>
+
+function new_start_pgn4web() {
+
+  rule = getCSSRule('.pieceImage');
+  rule.style.width = pieceSize;
+  rule.style.height = pieceSize;
+  rule = getCSSRule('.whiteSquare');
+  rule.style.width = squareSize;	
+  rule.style.height = squareSize;
+  rule.style.background = lightColor;
+  rule = getCSSRule('.blackSquare');
+  rule.style.width = squareSize;	
+  rule.style.height = squareSize;
+  rule.style.background = darkColor;
+  rule = getCSSRule('.highlightWhiteSquare');
+  rule.style.width = squareSize;	
+  rule.style.height = squareSize;
+  rule.style.background = highlightLightColor;
+  rule = getCSSRule('.highlightBlackSquare');
+  rule.style.width = squareSize;	
+  rule.style.height = squareSize;
+  rule.style.background = highlightDarkColor;
+
+  start_pgn4web();
+}
+
+window.onload = new_start_pgn4web;
+
+function getCSSRule(ruleName, deleteFlag) {               // Return requested style obejct
+   ruleName=ruleName.toLowerCase();                       // Convert test string to lower case.
+   if (document.styleSheets) {                            // If browser can play with stylesheets
+      for (var i=0; i<document.styleSheets.length; i++) { // For each stylesheet
+         var styleSheet=document.styleSheets[i];          // Get the current Stylesheet
+         var ii=0;                                        // Initialize subCounter.
+         var cssRule=false;                               // Initialize cssRule. 
+         do {                                             // For each rule in stylesheet
+            if (styleSheet.cssRules) {                    // Browser uses cssRules?
+               cssRule = styleSheet.cssRules[ii];         // Yes --Mozilla Style
+            } else {                                      // Browser usses rules?
+               cssRule = styleSheet.rules[ii];            // Yes IE style. 
+            }                                             // End IE check.
+	    if (cssRule)  {                               // If we found a rule...
+     	      if (cssRule.selectorText.toLowerCase()==ruleName) { //  match ruleName?
+  	        if (deleteFlag=='delete') {             // Yes.  Are we deleteing?
+                     if (styleSheet.cssRules) {           // Yes, deleting...
+                        styleSheet.deleteRule(ii);        // Delete rule, Moz Style
+                     } else {                             // Still deleting.
+                        styleSheet.removeRule(ii);        // Delete rule IE style.
+                     }                                    // End IE check.
+                     return true;                         // return true, class deleted.
+                  } else {                                // found and not deleting.
+                     return cssRule;                      // return the style object.
+                  }                                       // End delete Check
+               }                                          // End found rule name
+            }                                             // end found cssRule
+            ii++;                                         // Increment sub-counter
+         } while (cssRule)                                // end While loop
+      }                                                   // end For loop
+   }                                                      // end styleSheet ability check
+   return false;                                          // we found NOTHING!
+}                                                         // end getCSSRule 
+
+function killCSSRule(ruleName) {                          // Delete a CSS rule   
+   return getCSSRule(ruleName,'delete');                  // just call getCSSRule w/delete flag.
+}                                                         // end killCSSRule
+
+function addCSSRule(ruleName) {                           // Create a new css rule
+   if (document.styleSheets) {                            // Can browser do styleSheets?
+      if (!getCSSRule(ruleName)) {                        // if rule doesn't exist...
+         if (document.styleSheets[0].addRule) {           // Browser is IE?
+            document.styleSheets[0].addRule(ruleName, null,0);      // Yes, add IE style
+         } else {                                         // Browser is IE?
+            document.styleSheets[0].insertRule(ruleName+' { }', 0); // Yes, add Moz style.
+         }                                                // End browser check
+      }                                                   // End already exist check.
+   }                                                      // End browser ability check.
+   return getCSSRule(ruleName);                           // return rule we just created.
+} 
+
+
+
+function gup( name ){
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regexS = "[\\?&]"+name+"=([^&#]*)";  var regex = new RegExp( regexS );
+  var results = regex.exec( window.location.href );
+  if( results == null )    return "";
+  else    return results[1];
+}
+
+SetHighlightOption(true);
+SetAutostartAutoplay(true);
+SetShortcutKeysEnabled(false);
+
+if ((font = gup("font")) == "") { font = "alpha"; }
+
+if ((pieceSize = gup("pieceSize")) == "") { pieceSize = 24; }
+
+SetImagePath(font + "/" + pieceSize);
+
+if ((squareSize = gup("squareSize")) == "") { squareSize = 28; }
+
+if (pieceSize > squareSize) { alert("ERROR: pieceSize (" + pieceSize + ") should not be bigger than squareSize (" + squareSize + ")" ); }
+
+if ((lightColor = gup("lightColorName")) == "") {if ((lightColor = "#" + gup("lightColorHex")) == "#") lightColor = "#EFF4EC"}
+if ((darkColor  = gup("darkColorName"))  == "") {if ((darkColor  = "#" + gup("darkColorHex"))  == "#") darkColor  = "#C6CEC3"}
+if ((highlightColor  = gup("highlightColorName"))  == "") {if ((highlightColor  = "#" + gup("highlightColorHex"))  == "#") highlightColor  = "#DAF4D7"}
+if (highlightColor == "none") {
+  highlightLightColor = lightColor;
+  highlightDarkColor = darkColor;
+} else { 
+  highlightLightColor = highlightColor;
+  highlightDarkColor = highlightColor;
+}
+
+if (gup("loop") == "true") { SetAutoplayNextGame(true); }
+else { SetAutoplayNextGame(false); }
+
+if (gup("delay") == "") SetAutoplayDelay(1000);
+else SetAutoplayDelay(gup("delay"));
+
+if ((newPgnText = gup("pgnText")) != "") {
+
+  // remove URL escape chars such as %20 replaced by space
+  newPgnText = unescape(newPgnText);
+  // replaces the non-breaking-hyphen with a normal hyphen
+  newPgnText = newPgnText.replace(/&#8209;/g,"-");
+
+  // cleans the PGN text
+  newPgnText = newPgnText.replace(/\[/g,"\n\n[");
+  newPgnText = newPgnText.replace(/\]/g,"]\n\n");
+  newPgnText = newPgnText.replace(/([012\*])([\s]*)(\[)/g,"$1\n\n$3");
+  newPgnText = newPgnText.replace(/\]([\s]*)\[/g,"]\n[");
+  newPgnText = newPgnText.replace(/^([\s]*)\[/g,"[");
+
+  document.getElementById('pgnText').innerHTML = newPgnText;
+}
+
+if ((fenString = gup("fenString")) != "") {
+  // remove URL escape chars such as %20 replaced by space
+  fenString = unescape(fenString);
+  document.getElementById('pgnText').innerHTML = '[FEN "' + fenString + '"]';
+}
+
+if ((fenString != "") && (newPgnText != "")) {
+  alert("ERROR: both fenString and pgnText assigned. pgnText value will be ignored.");
+}
+
+if (gup("help") != "") {
+  document.write("<PRE>");
+  document.write("URL parameters\n\n");
+  document.write(" - pgnText = PGN string\n");
+  document.write(" - fenString = FEN string (if set then pgnText is ignored)\n");
+  document.write(" - delay = autoplay delay\n");
+  document.write(" - loop = if set true, loop indefinitely through games\n");
+  document.write(" - font = alpha | merida | uscf\n");
+  document.write(" - pieceSize = size of pieces\n");
+  document.write(" - squareSize = size of square (frame size = squareSize * 8 + 6) = " + (squareSize * 8 + 6) + "\n");
+  document.write(" - lightColorName = light square color name, like red\n");
+  document.write(" - darkColorName = dark square color name, like red\n");
+  document.write(" - highlightColorName = highlight color name, like red\n");
+  document.write(" - lightColorHex = light square color hex code, like FF0000\n");
+  document.write(" - darkColorHex = dark square color hex code, like FF0000\n");
+  document.write(" - highlightColorHex = highlight color hex code, like FF0000\n");
+  document.write("\nMouse clicks\n\n");
+  document.write(" - click on the chessboard to start/stop autoplay\n");
+  document.write(" - if loop is not set, clicking at the end of the game moves back to the initial position\n");
+  document.write("<PRE>");
+  window.onload = "";
+}
+
+</script>
+
+<center>
+<div id="GameBoard"></div>
+</center>
+
+</body>
+
+</html>
+
