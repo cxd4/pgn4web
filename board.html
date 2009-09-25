@@ -159,7 +159,7 @@ if (pieceSize > squareSize) { alert("ERROR: pieceSize (" + pieceSize + ") should
 if ((lightColor = gup("lightColorName")) == "") {if ((lightColor = "#" + gup("lightColorHex")) == "#") lightColor = "#EFF4EC"}
 if ((darkColor  = gup("darkColorName"))  == "") {if ((darkColor  = "#" + gup("darkColorHex"))  == "#") darkColor  = "#C6CEC3"}
 if ((highlightColor  = gup("highlightColorName"))  == "") {if ((highlightColor  = "#" + gup("highlightColorHex"))  == "#") highlightColor  = "#DAF4D7"}
-if (highlightColor == "none") {
+if ((highlightColor == 'none') || (highlightColor == '#none')) {
   highlightLightColor = lightColor;
   highlightDarkColor = darkColor;
 } else { 
@@ -212,10 +212,10 @@ if (gup("help") != "") {
   document.write(" - squareSize = size of square (frame size = squareSize * 8 + 6) = " + (squareSize * 8 + 6) + "\n");
   document.write(" - lightColorName = light square color name, like red\n");
   document.write(" - darkColorName = dark square color name, like red\n");
-  document.write(" - highlightColorName = highlight color name, like red\n");
+  document.write(" - highlightColorName = highlight color name, like red ('none' for no highligh)\n");
   document.write(" - lightColorHex = light square color hex code, like FF0000\n");
   document.write(" - darkColorHex = dark square color hex code, like FF0000\n");
-  document.write(" - highlightColorHex = highlight color hex code, like FF0000\n");
+  document.write(" - highlightColorHex = highlight color hex code, like FF0000 ('none' for no highligh)\n");
   document.write("\nMouse clicks\n\n");
   document.write(" - click on the chessboard to start/stop autoplay\n");
   document.write(" - if loop is not set, clicking at the end of the game moves back to the initial position\n");
