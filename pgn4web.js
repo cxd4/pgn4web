@@ -539,10 +539,10 @@ boardAlt[3 + 5 * 8] = "load random game";
 function boardOnClickCol4Row5() { if (numberOfGames > 1) { currentGame = Math.floor(Math.random()*numberOfGames); Init(); GoToMove(StartPly + Math.floor(Math.random()*(StartPly + PlyNumber + 1))); } };
 boardAlt[4 + 5 * 8] = "load random game at random position";
 // F3
-function boardOnClickCol5Row5() { if (numberOfGames > 1) { currentGame = numberOfGames - 1; Init(); } };
+function boardOnClickCol5Row5() { if (numberOfGames > currentGame + 1){ currentGame++; Init(); } };
 boardAlt[5 + 5 * 8] = "load next game";
 // G3
-function boardOnClickCol6Row5() { if (numberOfGames > 1) { currentGame = numberOfGames - 1; Init(); } };
+function boardOnClickCol6Row5() { if (numberOfGames > currentGame + 1){ currentGame++; Init(); } };
 boardAlt[6 + 5 * 8] = "load next game";
 // H3
 function boardOnClickCol7Row5() { if (numberOfGames > 1) { currentGame = numberOfGames - 1; Init(); } };
