@@ -2446,8 +2446,8 @@ function PrintHTML(){
   /*
    * Show the board as a 8x8 table.
    */
-  text = '<TABLE CLASS="boardTable" ID="boardTable" CELLSPACING=0 CELLPADDING=0>';
-
+  text = '<TABLE CLASS="boardTable" ID="boardTable" CELLSPACING=0 CELLPADDING=0' +
+         ' onClick="javascript: if ((CurrentPly == StartPly + PlyNumber) && (!autoplayNextGame)) { GoToMove(0) } else { SwitchAutoPlay(); }">';
   for (ii = 0; ii < 8; ++ii){
     text += '<TR>';
     for (jj = 0; jj < 8; ++jj){
@@ -2477,8 +2477,7 @@ function PrintHTML(){
   spaceSize=3;
   buttonSize=(tableSize - spaceSize*(numberOfButtons - 1))/numberOfButtons;
   text =  '<FORM NAME="GameButtonsForm" STYLE="display:inline;">' +
-          '<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0' + 
-          ' onClick="javascript: if ((CurrentPly == StartPly + PlyNumber) && (!autoplayNextGame)) { GoToMove(0) } else { SwitchAutoPlay(); }">' +
+          '<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>' + 
           '<TR>' +
           '<TD>' +
           '<INPUT ID="startButton" TYPE="BUTTON" VALUE="&#124;&lt;" STYLE="';
