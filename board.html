@@ -85,11 +85,11 @@ function new_start_pgn4web() {
   rule.style.background = highlightDarkColor;
 
   rule = getCSSRule('.buttonControl');
-  rule.style.width = ((8 * squareSize + 6) / 5);
+  rule.style.setProperty('width', ((8 * squareSize + 6) / 5), "important");
   rule = getCSSRule('.buttonControlPlay');
-  rule.style.width = ((8 * squareSize + 6) / 5);
+  rule.style.setProperty('width', ((8 * squareSize + 6) / 5), "important");
   rule = getCSSRule('.buttonControlStop');
-  rule.style.width = ((8 * squareSize + 6) / 5);
+  rule.style.setProperty('width', ((8 * squareSize + 6) / 5), "important");
 
   start_pgn4web();
 
