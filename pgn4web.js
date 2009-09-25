@@ -2685,7 +2685,7 @@ function PrintHTML(){
 	text += '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="lightgray" ALIGN="center" VALIGN="middle">';
       } 
       text += '<A HREF="javascript:boardOnClickCol' + jj + 'Row' + ii + '()" ' + 
-              'TITLE="' + boardAlt[jj + ii * 8] + '" STYLE="text-decoration: none">' + 
+              'TITLE="' + boardAlt[jj + ii * 8] + '" STYLE="text-decoration: none; outline: none;">' + 
               '<IMG CLASS="pieceImage" ID="' + imageId + '" ' + 
               ' SRC="'+ImagePath+'clear.'+imageType+'" BORDER=0></A></TD>';
     }
