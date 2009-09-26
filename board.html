@@ -172,10 +172,12 @@ SetShortcutKeysEnabled(false);
 if ((font = gup("font")) == "") { font = "alpha"; }
 
 if ((pieceSize = gup("pieceSize")) == "") { pieceSize = 24; }
+else { pieceSize = parseInt(pieceSize); }
 
 SetImagePath(font + "/" + pieceSize);
 
 if ((squareSize = gup("squareSize")) == "") { squareSize = 28; }
+else { squareSize = parseInt(squareSize); }
 
 if (pieceSize > squareSize) { alert("ERROR: pieceSize (" + pieceSize + ") should not be bigger than squareSize (" + squareSize + ")" ); }
 
