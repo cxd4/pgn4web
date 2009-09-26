@@ -102,10 +102,12 @@ var squarehelp = 'A1, H1\tgame start/end' + '\n' +
                  'B3, G3\ttprevious/next game' + '\n' +
                  'D3, E3\trandom game at start/random ply' + '\n' +
                  '\n' +
-                 'A7    \ttoggle comments' + '\n' +
-                 'B7    \ttoggle comments on separate lines' + '\n' +
-                 'A8    \ttoggle highlighting' + '\n' +
-                 'B8, C8\tflip board / white on bottom' + '\n' + 
+                 'A7     \ttoggle comments' + '\n' +
+                 'B7     \ttoggle comments on separate lines' + '\n' +
+                 'A8     \ttoggle highlighting' + '\n' +
+                 'B8, C8\tflip board / white on bottom' + '\n' +
+                 '\n' +
+                 'squares always labeled as if white is at the bottom\n' + 
                  '';
 
 var credits = 'javascript modifications of Paolo Casaschi (pgn4web@casaschi.net) ' +
