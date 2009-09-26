@@ -85,13 +85,10 @@ function new_start_pgn4web() {
 
   rule = getCSSRule('.buttonControl');
   rule.style.cssText = 'width: ' + ((8 * squareSize + 6) / 5) + "px !important;";
-//  rule.style.setProperty('width', ((8 * squareSize + 6) / 5), "!important");
   rule = getCSSRule('.buttonControlPlay');
   rule.style.cssText = 'width: ' + ((8 * squareSize + 6) / 5) + "px !important;";
-//  rule.style.setProperty('width', ((8 * squareSize + 6) / 5), "!important");
   rule = getCSSRule('.buttonControlStop');
   rule.style.cssText = 'width: ' + ((8 * squareSize + 6) / 5) + "px !important;";
-//  rule.style.setProperty('width', ((8 * squareSize + 6) / 5), "!important");
 
   start_pgn4web();
 
@@ -169,7 +166,6 @@ function gup( name ){
 }
 
 SetHighlightOption(true);
-SetAutostartAutoplay(true);
 SetShortcutKeysEnabled(false);
 
 if ((font = gup("font")) == "") { font = "alpha"; }
@@ -195,6 +191,9 @@ if ((highlightColor == 'none') || (highlightColor == '#none')) {
   highlightDarkColor = highlightColor;
 }
 
+if (gup("auto") == "false") { SetAutostartAutoplay(false); }
+else { SetAutostartAutoplay(true); }
+ 
 if (gup("loop") == "true") { SetAutoplayNextGame(true); }
 else { SetAutoplayNextGame(false); }
 
@@ -235,19 +234,20 @@ if (gup("help") != "") {
   document.write("<PRE>");
   document.write("URL parameters\n\n");
   document.write(" - pgnText = PGN string\n");
-  document.write(" - fenString = FEN string (if set then pgnText is ignored)\n");
-  document.write(" - delay = autoplay delay\n");
-  document.write(" - loop = if set true, loop indefinitely through games\n");
-  document.write(" - font = alpha | merida | uscf\n");
-  document.write(" - pieceSize = size of pieces\n");
-  document.write(" - squareSize = size of square\n");
+  document.write(" - fenString = FEN string, if set then pgnText is ignored\n");
+  document.write(" - auto = if set true, autoplays game, otherwise if false (default true)\n");
+  document.write(" - delay = autoplay delay in ms (default 1000)\n");
+  document.write(" - loop = if set true, loop indefinitely through games (default false)\n");
+  document.write(" - font = alpha | merida | uscf (default alpha)\n");
+  document.write(" - pieceSize = size of pieces (default 24)\n");
+  document.write(" - squareSize = size of square (default 28)\n");
   document.write(" - lightColorName = light square color name, like red\n");
   document.write(" - darkColorName = dark square color name, like red\n");
-  document.write(" - highlightColorName = highlight color name, like red ('none' for no highligh)\n");
-  document.write(" - lightColorHex = light square color hex code, like FF0000\n");
-  document.write(" - darkColorHex = dark square color hex code, like FF0000\n");
-  document.write(" - highlightColorHex = highlight color hex code, like FF0000 ('none' for no highligh)\n");
-  document.write(" - showButtons = if set true, prints control buttons\n");
+  document.write(" - highlightColorName = highlight color name, like red, 'none' for no highligh\n");
+  document.write(" - lightColorHex = light square color hex code, like FF0000 (default EFF4EC)\n");
+  document.write(" - darkColorHex = dark square color hex code, like FF0000 (default C6CEC3)\n");
+  document.write(" - highlightColorHex = highlight color hex code, like FF0000, 'none' for no highligh (default DAF4D7)\n");
+  document.write(" - showButtons = if set true, prints control buttons (default false)\n");
   document.write("</PRE>\n\n");
 }
 
