@@ -107,7 +107,8 @@ var squarehelp = 'A1, H1\tgame start/end' + '\n' +
                  'A8     \ttoggle highlighting' + '\n' +
                  'B8, C8\tflip board / white on bottom' + '\n' +
                  '\n' +
-                 'squares always labeled as if white is at the bottom\n' + 
+                 'squares always labeled as if white is at the bottom\n' +
+                 'list above contains default values, those might have been altered by your web page' + 
                  '';
 
 var credits = 'javascript modifications of Paolo Casaschi (pgn4web@casaschi.net) ' +
@@ -410,7 +411,7 @@ function boardOnClickCol0Row0() { SetHighlight(!highlightOption); };
 boardAlt[0 + 0 * 8] = "toggle highlight last move";
 // B8
 function boardOnClickCol1Row0() { FlipBoard(); };
-boardAlt[1 + 0 * 8] = "flib board";
+boardAlt[1 + 0 * 8] = "flip board";
 // C8
 function boardOnClickCol2Row0() { if (IsRotated) FlipBoard(); };
 boardAlt[2 + 0 * 8] = "show white on bottom";
@@ -597,6 +598,8 @@ boardAlt[6 + 7 * 8] = "go to next comment";
 // H1
 function boardOnClickCol7Row7() { GoToMove(StartPly + PlyNumber); };
 boardAlt[7 + 7 * 8] = "go to game end";
+
+
 var pgnGame;
 var numberOfGames = -1; 
 var currentGame   = -1;
