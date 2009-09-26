@@ -2685,7 +2685,9 @@ function PrintHTML(){
 	text += '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="lightgray" ALIGN="center" VALIGN="middle">';
       } 
       text += '<A HREF="javascript:boardOnClickCol' + jj + 'Row' + ii + '()" ' + 
-              'TITLE="' + boardAlt[jj + ii * 8] + '" STYLE="text-decoration: none; outline: none;">' + 
+              'TITLE="' + boardAlt[jj + ii * 8] + '" ' +
+              'STYLE="text-decoration: none; outline: none;"' +
+              'ONFOCUS="this.blur()">' + 
               '<IMG CLASS="pieceImage" ID="' + imageId + '" ' + 
               ' SRC="'+ImagePath+'clear.'+imageType+'" BORDER=0></A></TD>';
     }
@@ -2882,7 +2884,7 @@ function PrintHTML(){
     }
     jj = ii+1;
     text += '<A HREF="javascript:GoToMove(' + jj + 
-      ')" CLASS="move" ID="Mv' + jj + '">' + Moves[ii].replace(/-/g, "&#8209;") + '</A> ';
+      ')" CLASS="move" ID="Mv' + jj + '" ONFOCUS="this.blur()">' + Moves[ii].replace(/-/g, "&#8209;") + '</A> ';
   }
   if (commentsIntoMoveText && (MoveComments[StartPly+PlyNumber] != '')){
     if (commentsOnSeparateLines) text += '<P>';
