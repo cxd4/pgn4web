@@ -530,8 +530,8 @@ boardAlt[7 + 4 * 8] = "";
 function boardOnClickCol0Row5() { if (numberOfGames > 1) { currentGame = 0; Init(); } };
 boardAlt[0 + 5 * 8] = "load first game";
 // B3
-function boardOnClickCol1Row5() { if (currentGame > 0){ currentGame--; Init(); } };
-boardAlt[1 + 5 * 8] = "load previous game";
+function boardOnClickCol1Row5() { if (currentGame >= 50){ currentGame -= 50; Init(); }else{ if (numberOfGames > 1) { currentGame = 0; Init(); } } };
+boardAlt[1 + 5 * 8] = "jump 50 games backward";
 // C3
 function boardOnClickCol2Row5() { if (currentGame > 0){ currentGame--; Init(); } };
 boardAlt[2 + 5 * 8] = "load previous game";
@@ -545,8 +545,8 @@ boardAlt[4 + 5 * 8] = "load random game at random position";
 function boardOnClickCol5Row5() { if (numberOfGames > currentGame + 1){ currentGame++; Init(); } };
 boardAlt[5 + 5 * 8] = "load next game";
 // G3
-function boardOnClickCol6Row5() { if (numberOfGames > currentGame + 1){ currentGame++; Init(); } };
-boardAlt[6 + 5 * 8] = "load next game";
+function boardOnClickCol6Row5() { if (numberOfGames > currentGame + 50){ currentGame += 50; Init(); }else{ if (numberOfGames > 1) { currentGame = numberOfGames - 1; Init(); } } };
+boardAlt[6 + 5 * 8] = "jump 50 games forward";
 // H3
 function boardOnClickCol7Row5() { if (numberOfGames > 1) { currentGame = numberOfGames - 1; Init(); } };
 boardAlt[7 + 5 * 8] = "load last game";
