@@ -95,8 +95,8 @@ var squarehelp = 'A1, H1\tgame start/end' + '\n' +
                  'C1, F1\tmove 3 half-moves back/forward' + '\n' +
                  'D1, E1\tmove back/forward' + '\n' +
                  '\n' +
-                 'A2    \tstop autoplay' + '\n' + 
-                 'B2, C2...\tautoplay 1 sec, 2 sec...' + '\n' +
+                 'A2, B2\tstop/toggle autoplay' + '\n' + 
+                 'C2, D2...\tautoplay 1 sec, 2 sec...' + '\n' +
                  '\n' +
                  'A3, H3\tfirst/last game' + '\n' +
                  'B3, G3\ttprevious/next game' + '\n' +
@@ -551,23 +551,23 @@ boardAlt[7 + 5 * 8] = "load last game";
 function boardOnClickCol0Row6() { SetAutoPlay(false); };
 boardAlt[0 + 6 * 8] = "stop autoplay";
 // B2
-function boardOnClickCol1Row6() { MoveForward(1); SetAutoplayDelay( 1*1000); SetAutoPlay(true); };
-boardAlt[1 + 6 * 8] = "autoplay 1 second";
+function boardOnClickCol1Row6() { SwitchAutoPlay(); };
+boardAlt[1 + 6 * 8] = "toggle autoplay";
 // C2
-function boardOnClickCol2Row6() { MoveForward(1); SetAutoplayDelay( 2*1000); SetAutoPlay(true); };
-boardAlt[2 + 6 * 8] = "autoplay 2 seconds";
+function boardOnClickCol2Row6() { MoveForward(1); SetAutoplayDelay( 1*1000); SetAutoPlay(true); };
+boardAlt[2 + 6 * 8] = "autoplay 1 seconds";
 // D2
-function boardOnClickCol3Row6() { MoveForward(1); SetAutoplayDelay( 3*1000); SetAutoPlay(true); };
-boardAlt[3 + 6 * 8] = "autoplay 3 seconds";
+function boardOnClickCol3Row6() { MoveForward(1); SetAutoplayDelay( 2*1000); SetAutoPlay(true); };
+boardAlt[3 + 6 * 8] = "autoplay 2 seconds";
 // E2
-function boardOnClickCol4Row6() { MoveForward(1); SetAutoplayDelay( 5*1000); SetAutoPlay(true); };
-boardAlt[4 + 6 * 8] = "autoplay 5 seconds";
+function boardOnClickCol4Row6() { MoveForward(1); SetAutoplayDelay( 3*1000); SetAutoPlay(true); };
+boardAlt[4 + 6 * 8] = "autoplay 3 seconds";
 // F2
-function boardOnClickCol5Row6() { MoveForward(1); SetAutoplayDelay(10*1000); SetAutoPlay(true); };
-boardAlt[5 + 6 * 8] = "autoplay 10 seconds";
+function boardOnClickCol5Row6() { MoveForward(1); SetAutoplayDelay( 5*1000); SetAutoPlay(true); };
+boardAlt[5 + 6 * 8] = "autoplay 5 seconds";
 // G2
-function boardOnClickCol6Row6() { MoveForward(1); SetAutoplayDelay(20*1000); SetAutoPlay(true); };
-boardAlt[6 + 6 * 8] = "autoplay 20 seconds";
+function boardOnClickCol6Row6() { MoveForward(1); SetAutoplayDelay(10*1000); SetAutoPlay(true); };
+boardAlt[6 + 6 * 8] = "autoplay 10 seconds";
 // H2
 function boardOnClickCol7Row6() { MoveForward(1); SetAutoplayDelay(30*1000); SetAutoPlay(true); };
 boardAlt[7 + 6 * 8] = "autoplay 30 seconds";
