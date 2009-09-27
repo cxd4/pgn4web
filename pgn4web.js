@@ -92,7 +92,7 @@ var keyhelp = 'h, l\tgame start/end' + '\n' +
 
 var squarehelp = 'A1, H1\tgame start/end' + '\n' +
                  'B1, G1\tfind previous/next comment' + '\n' +
-                 'C1, F1\tmove 3 half-moves back/forward' + '\n' +
+                 'C1, F1\tmove 6 half-moves back/forward' + '\n' +
                  'D1, E1\tmove back/forward' + '\n' +
                  '\n' +
                  'A2, B2\tstop/toggle autoplay' + '\n' + 
@@ -2716,31 +2716,31 @@ function PrintHTML(){
           '<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>' + 
           '<TR>' +
           '<TD>' +
-          '<INPUT ID="startButton" TYPE="BUTTON" VALUE="&#124;&lt;" STYLE="';
+          '<INPUT ID="startButton" TYPE="BUTTON" VALUE="&#124;&lt;" ONFOCUS="this.blur()" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
   text += '"; CLASS="buttonControl" ' +
           ' ID="btnGoToStart" onClick="javascript:GoToMove(StartPly)">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
-          '<INPUT ID="backButton" TYPE="BUTTON" VALUE="&lt;" STYLE="';
+          '<INPUT ID="backButton" TYPE="BUTTON" VALUE="&lt;" ONFOCUS="this.blur()" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
   text += '"; CLASS="buttonControl" ' +
           ' ID="btnMoveBackward1" onClick="javascript:MoveBackward(1)">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
-          '<INPUT ID="autoplayButton" TYPE="BUTTON" VALUE="play" STYLE="';
+          '<INPUT ID="autoplayButton" TYPE="BUTTON" VALUE="play" ONFOCUS="this.blur()" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
   text += '"; CLASS="buttonControlStop" ' +
           ' ID="btnPlay" NAME="AutoPlay" onClick="javascript:SwitchAutoPlay()">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
-          '<INPUT ID="forwardButton" TYPE="BUTTON" VALUE="&gt;" STYLE="';
+          '<INPUT ID="forwardButton" TYPE="BUTTON" VALUE="&gt;" ONFOCUS="this.blur()" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
   text += '"; CLASS="buttonControl" ' +
           ' ID="btnMoveForward1" onClick="javascript:MoveForward(1)">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
-          '<INPUT ID="endButton" TYPE="BUTTON" VALUE="&gt;&#124;" STYLE="';
+          '<INPUT ID="endButton" TYPE="BUTTON" VALUE="&gt;&#124;" ONFOCUS="this.blur()" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
   text += '"; CLASS="buttonControl" ' +
           ' ID="btnGoToEnd" onClick="javascript:GoToMove(StartPly + PlyNumber)">' +
@@ -2761,7 +2761,7 @@ function PrintHTML(){
   if ((theObject != null) && (numberOfGames > 1) && (textSelectOptions=='')){
     if (gameSelectorNum) gameSelectorNumLenght = Math.floor(Math.log(numberOfGames)/Math.log(10)) + 1;
     text = '<FORM NAME="GameSel" STYLE="display:inline;"> ' +
-           '<SELECT ID="GameSelSelect" NAME="GameSelSelect" STYLE="'
+           '<SELECT ID="GameSelSelect" NAME="GameSelSelect" ONFOCUS="this.blur()" STYLE="'
     if ((tableSize != undefined) && (tableSize > 0)) text += 'width: ' + tableSize + '; ';
     text += 'font-family: monospace;" CLASS="selectControl" ' + 
             'ONCHANGE="if(this.value >= 0) {currentGame=this.value; document.GameSel.GameSelSelect.value = -1; Init();}">' +
