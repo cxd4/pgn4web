@@ -18,16 +18,18 @@ body {
 }
 
 .pieceImage {
-  width: 30;
-  height: 30;
+  width: 34px;
+  height: 34px;
 }
 
 .whiteSquare,
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 36;
-  height: 36;
+  width: 35px;
+  height: 35px;
+  border-width: 2px;
+  border-style: solid;
 }
 
 .whiteSquare,
@@ -44,13 +46,13 @@ body {
 
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  background: lightyellow;
+  border-color: yellow;
 }
 
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 450px !important;
-  font-size: small;
+  width: 456px !important;
+  font-size: x-small;
 }
 
 .buttonControlPlay,
