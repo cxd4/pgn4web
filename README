@@ -4,10 +4,10 @@ PGN4WEB
 ABOUT
 
 PGN4WEB is a javascript tool to display chess games from a PGN file.
-The tool has been designed to make it easier to add chess games to 
-your web pages and blogs, without requiring much knowledge of HTML or 
-any other technicality. It also allows for frequent updates of the PGN 
-file without the need of manually generating new web pages each time.
+It has been designed to make it easier adding chess games to your web 
+pages and blogs, without the need of much knowledge of HTML or any 
+other technicality. It also allows for frequent updates of the PGN file 
+without the need of manually generating new web pages at every update.
 
 Project homepage: http://code.google.com/p/pgn4web
 Contact: pgn4web@casaschi.net
