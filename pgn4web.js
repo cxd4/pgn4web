@@ -122,7 +122,7 @@ var creditsAndLicense = 'javascript modifications of Paolo Casaschi (pgn4web@cas
               'Remaining pgn4web code is Copyright (C) 2009 Paolo Casaschi ' +
               'licensed under the terms of the GNU General Public License version 2 ' + 
               'as published by the Free Software Foundation; either version 2 of the ' +
-              'License, or (at your option) any later version.' +
+              'License, or (at your option) any later version.\n' +
               '';
 
 function displayHelp(){
