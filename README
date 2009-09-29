@@ -118,7 +118,16 @@ viewer at http://www.lutanho.net/pgn/pgnviewer.html
 PNG images from http://ixian.com/chess/jin-piece-sets (creative commons 
 attribution-share alike 3.0 unported license)
 
-Some of the PGN files for the examples are coming from "The Week in Chess" at http://www.chesscenter.com/twic/twic.html (files wch08ak.pgn and twic765.pgn) and from the scid project at http://scid.sourceforge.net (file tactics.pgn).
+Some of the PGN files for the examples are coming from "The Week in Chess" at 
+http://www.chesscenter.com/twic/twic.html (files wch08ak.pgn and twic765.pgn) and 
+from the scid project at http://scid.sourceforge.net (file tactics.pgn).
+
+You are free to use pgn4web in your website or blog; you are not required to
+acknowledge the pgn4we project, but if you want to do so the following line
+might be used:
+javascript PGN viewer courtesy of <a href=http://pgn4web.casaschi.net>pgn4web</a>
+
+You are also encouraged to notify pgn4web@casaschi.net that you are using pgn4web.
 
 TECHNICAL NOTES ABOUT WEB BROWSERS
 
