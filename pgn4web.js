@@ -111,18 +111,23 @@ var squarehelp = 'A1, H1\tgame start/end' + '\n' +
                  'list above contains default values, those might have been altered by your web page' + 
                  '';
 
-var credits = 'javascript modifications of Paolo Casaschi (pgn4web@casaschi.net) ' +
+var creditsAndLicense = 'javascript modifications of Paolo Casaschi (pgn4web@casaschi.net) ' +
               'on code from the http://ficsgames.com database, ' +
               'in turn likely based on code from the LT PGN viewer at ' +
               'http://www.lutanho.net/pgn/pgnviewer.html' + '\n' + '\n' +
               'PNG images from http://ixian.com/chess/jin-piece-sets ' +
               '(creative commons attribution-share alike 3.0 unported license)' + '\n' +
+              '\n' +
+              'Remaining pgn4web code is Copyright (C) 2009 Paolo Casaschi\n' +
+              'licensed under the terms of the GNU General Public License version 2\n' + 
+              'as published by the Free Software Foundation; either version 2 of the\n' +
+              'License, or (at your option) any later version.\n' +
               '';
 
 function displayHelp(){
   if (shortcutKeysEnabled) keysEnabled = 'shorcut keys ENABLED, disable with SHIFT followed by ESCAPE\n';
   else  keysEnabled = 'shorcut keys DISABLED, enable with SHIFT followed by ESCAPE\n';
-  text = about + '\nCREDITS\n\n' + credits + '\nSHORTCUT SQUARES\n\nClick on the G8 square for help on shortcut squares\n\nSHORTCUT KEYS\n\n' + keysEnabled + 'Press OK if you want help on shortcut keys...';
+  text = about + '\nCREDITS AND LICENSE\n\n' + creditsAndLicense + '\nSHORTCUT SQUARES\n\nClick on the G8 square for help on shortcut squares\n\nSHORTCUT KEYS\n\n' + keysEnabled + 'Press OK if you want help on shortcut keys...';
   if (confirm(text)) { displayKeyHelp() }
 }
 

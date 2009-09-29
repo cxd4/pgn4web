@@ -107,31 +107,63 @@ The file template.css shows a list of customization style options.
 See template.html file for an example.
 See *mini.html* for an example of embedding the PGN content into the HTML file.
 See http://www.casaschi.net/chess for an implementation. 
-See http://blog.casaschi.net/search?label=pgn4web for an example of usage within a blog using the iframe html tag. 
+See http://blog.casaschi.net/search?label=pgn4web for an example of usage
+within a blog using the iframe html tag. 
 
-CREDITS
+TECHNICAL NOTES ABOUT WEB BROWSERS
 
-javascript modifications of Paolo Casaschi (pgn4web@casaschi.net) on code from 
-the http://ficsgames.com database, in turn likely based on code from the LT PGN 
-viewer at http://www.lutanho.net/pgn/pgnviewer.html
+pgn4web.js is developed and tested with a variety of browsers (Arora, 
+Blackberry browser, Chrome, Epiphany, Firefox, Internet Explorer, Opera, 
+Safari) on a variety of platforms (Linux/Debian, MacOS, Windows). Not every 
+browser version and every combination of browser/platform has been tested. 
+If you have any issue with using pgn4web on your platform, please email 
+pgn4web@casaschi.net
+
+Note about Internet Explorer v7 and above: under some circumstances you might
+experience problems when testing HTML pages from your local computer while 
+developing your site. If this happens to you, read notes at 
+http://code.google.com/p/pgn4web/issues/detail?id=23 
+
+CREDITS AND LICENSE
+
+javascript modifications of Paolo Casaschi (pgn4web@casaschi.net) on code 
+from the http://ficsgames.com database, in turn likely based on code from the 
+LT PGN viewer at http://www.lutanho.net/pgn/pgnviewer.html
 
 PNG images from http://ixian.com/chess/jin-piece-sets (creative commons 
 attribution-share alike 3.0 unported license)
 
 Some of the PGN files for the examples are coming from "The Week in Chess" at 
-http://www.chesscenter.com/twic/twic.html (files wch08ak.pgn and twic765.pgn) and 
-from the scid project at http://scid.sourceforge.net (file tactics.pgn).
+http://www.chesscenter.com/twic/twic.html (files wch08ak.pgn and twic765.pgn) 
+and from the scid project at http://scid.sourceforge.net (file tactics.pgn).
+
+The above remains subject to their original licenses (if any).
+
+Remaining pgn4web code is Copyright (C) 2009 Paolo Casaschi
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+See license-gpl-2.0.txt license file.
 
 You are free to use pgn4web in your website or blog; you are not required to
 acknowledge the pgn4we project, but if you want to do so the following line
 might be used:
 javascript chess viewer courtesy of <a href=http://pgn4web.casaschi.net>pgn4web</a>
 
-You are also encouraged to notify pgn4web@casaschi.net that you are using pgn4web.
+You are also encouraged to notify pgn4web@casaschi.net that you are using 
+pgn4web.
 
-TECHNICAL NOTES ABOUT WEB BROWSERS
-
-pgn4web.js is developed and tested with a variety of browsers (Arora, Blackberry browser, Chrome, Epiphany, Firefox, Internet Explorer, Opera, Safari) on a variety of platforms (Linux/Debian, MacOS, Windows). Not every browser version and every combination of browser/platform has been tested. If you have any issue with using pgn4web on your platform, please email pgn4web@casaschi.net
-
-Note about Internet Explorer v7 and above: under some circumstances you might experience problems when testing HTML pages from your local computer while developing your site. If this happens to you, read notes at http://code.google.com/p/pgn4web/issues/detail?id=23 
+END
 
