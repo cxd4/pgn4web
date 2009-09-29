@@ -126,15 +126,15 @@ var creditsAndLicense = 'Javascript modifications of Paolo Casaschi (pgn4web@cas
               '';
 
 function displayHelp(){
-  if (shortcutKeysEnabled) keysEnabled = 'shorcut keys ENABLED, disable with SHIFT followed by ESCAPE\n';
-  else  keysEnabled = 'shorcut keys DISABLED, enable with SHIFT followed by ESCAPE\n';
-  text = about + '\nCREDITS AND LICENSE\n\n' + creditsAndLicense + '\nSHORTCUT SQUARES HELP\n\nClick on the G8 square for help on shortcut squares\n\nSHORTCUT KEYS HELP\n\n' + keysEnabled + 'Press OK if you want help on shortcut keys...';
+  if (shortcutKeysEnabled) keysEnabled = 'Shorcut keys ENABLED, disable with SHIFT followed by ESCAPE.\n';
+  else  keysEnabled = 'Shorcut keys DISABLED, enable with SHIFT followed by ESCAPE.\n';
+  text = about + '\nCREDITS AND LICENSE\n\n' + creditsAndLicense + '\nSHORTCUT SQUARES HELP\n\nClick on the G8 square for help on shortcut squares.\n\nSHORTCUT KEYS HELP\n\n' + keysEnabled + 'Press OK if you want help on shortcut keys.';
   if (confirm(text)) { displayKeyHelp() }
 }
 
 function displayKeyHelp(){
-  if (shortcutKeysEnabled) keysEnabled = 'shorcut keys ENABLED, disable with SHIFT followed by ESCAPE\n\n';
-  else  keysEnabled = 'shorcut keys DISABLED, enable with SHIFT followed by ESCAPE\n\n';
+  if (shortcutKeysEnabled) keysEnabled = 'Shorcut keys ENABLED, disable with SHIFT followed by ESCAPE.\n\n';
+  else  keysEnabled = 'Shorcut keys DISABLED, enable with SHIFT followed by ESCAPE.\n\n';
   text = about + '\nSHORTCUT KEYS HELP\n\n' + keysEnabled + keyhelp + '\n';
   alert(text);
 }
