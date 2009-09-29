@@ -118,7 +118,7 @@ var creditsAndLicense = 'javascript modifications of Paolo Casaschi (pgn4web@cas
               '\n' + '\n' +
               'PNG images from http://ixian.com/chess/jin-piece-sets ' +
               '(creative commons attribution-share alike 3.0 unported license)' +
-              '\n' +
+              '\n' + '\n' +
               'Remaining pgn4web code is Copyright (C) 2009 Paolo Casaschi ' +
               'licensed under the terms of the GNU General Public License version 2 ' + 
               'as published by the Free Software Foundation; either version 2 of the ' +
