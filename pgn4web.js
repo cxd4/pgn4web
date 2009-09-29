@@ -107,17 +107,17 @@ var squarehelp = 'A1, H1\tgame start/end' + '\n' +
                  'A8     \ttoggle highlighting' + '\n' +
                  'B8, C8\tflip board / white on bottom' + '\n' +
                  '\n' +
-                 'squares always labeled as if white is at the bottom\n' +
-                 'list above contains default values, those might have been altered by your web page' + 
+                 'Squares always labeled as if white is at the bottom.\n' +
+                 'List above contains default values, those might have been altered by your web page.' + 
                  '';
 
-var creditsAndLicense = 'javascript modifications of Paolo Casaschi (pgn4web@casaschi.net) ' +
+var creditsAndLicense = 'Javascript modifications of Paolo Casaschi (pgn4web@casaschi.net) ' +
               'on code from the http://ficsgames.com database, ' +
               'in turn likely based on code from the LT PGN viewer at ' +
               'http://www.lutanho.net/pgn/pgnviewer.html ' + 
               '\n' + '\n' +
               'PNG images from http://ixian.com/chess/jin-piece-sets ' +
-              '(creative commons attribution-share alike 3.0 unported license)' +
+              '(creative commons attribution-share alike 3.0 unported license).' +
               '\n' + '\n' +
               'Remaining pgn4web code is Copyright (C) 2009 Paolo Casaschi and ' +
               'licensed under the terms of the GNU General Public License version 2 ' + 
