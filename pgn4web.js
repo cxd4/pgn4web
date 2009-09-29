@@ -128,7 +128,7 @@ var creditsAndLicense = 'javascript modifications of Paolo Casaschi (pgn4web@cas
 function displayHelp(){
   if (shortcutKeysEnabled) keysEnabled = 'shorcut keys ENABLED, disable with SHIFT followed by ESCAPE\n';
   else  keysEnabled = 'shorcut keys DISABLED, enable with SHIFT followed by ESCAPE\n';
-  text = about + '\nCREDITS AND LICENSE\n\n' + creditsAndLicense + '\nSHORTCUT SQUARES\n\nClick on the G8 square for help on shortcut squares\n\nSHORTCUT KEYS\n\n' + keysEnabled + 'Press OK if you want help on shortcut keys...';
+  text = about + '\nCREDITS AND LICENSE\n\n' + creditsAndLicense + '\nSHORTCUT SQUARES HELP\n\nClick on the G8 square for help on shortcut squares\n\nSHORTCUT KEYS HELP\n\n' + keysEnabled + 'Press OK if you want help on shortcut keys...';
   if (confirm(text)) { displayKeyHelp() }
 }
 
