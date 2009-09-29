@@ -114,14 +114,15 @@ var squarehelp = 'A1, H1\tgame start/end' + '\n' +
 var creditsAndLicense = 'javascript modifications of Paolo Casaschi (pgn4web@casaschi.net) ' +
               'on code from the http://ficsgames.com database, ' +
               'in turn likely based on code from the LT PGN viewer at ' +
-              'http://www.lutanho.net/pgn/pgnviewer.html' + '\n' + '\n' +
+              'http://www.lutanho.net/pgn/pgnviewer.html ' + 
+              '\n' + '\n' +
               'PNG images from http://ixian.com/chess/jin-piece-sets ' +
-              '(creative commons attribution-share alike 3.0 unported license)' + '\n' +
+              '(creative commons attribution-share alike 3.0 unported license)' +
               '\n' +
-              'Remaining pgn4web code is Copyright (C) 2009 Paolo Casaschi\n' +
-              'licensed under the terms of the GNU General Public License version 2\n' + 
-              'as published by the Free Software Foundation; either version 2 of the\n' +
-              'License, or (at your option) any later version.\n' +
+              'Remaining pgn4web code is Copyright (C) 2009 Paolo Casaschi ' +
+              'licensed under the terms of the GNU General Public License version 2 ' + 
+              'as published by the Free Software Foundation; either version 2 of the ' +
+              'License, or (at your option) any later version.' +
               '';
 
 function displayHelp(){
