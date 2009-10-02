@@ -10,6 +10,8 @@ html,
 body {
   margin: 0;
   padding: 0;
+  font-family: sans-serif;
+  color: black;
 }
 
 body {
@@ -43,7 +45,33 @@ body {
 .buttonControl {}
 .buttonControlSpace { width:0 !important }
 /* a "width" attribute here must use the !important flag to override default settings */
- 
+
+.header {
+  color: black;
+  font-weight: bold;
+}
+
+.move {
+  color: black;
+  text-decoration: none;   
+}
+
+.moveOn {
+  color: black;
+  text-decoration: none;   
+  background: #DAF4D7;
+}
+
+.comment
+{
+  color: gray;
+}
+
+.nag {
+  color: gray;
+  font-style: italic;
+}
+
 </style>
 
 <script src="pgn4web.js" type="text/javascript"></script>
@@ -62,6 +90,8 @@ body {
 
 function new_start_pgn4web() {
 
+  document.body.style.background = backgroundColor;
+  
   rule = getCSSRule('.pieceImage');
   rule.style.width = pieceSize;
   rule.style.height = pieceSize;
@@ -83,6 +113,28 @@ function new_start_pgn4web() {
   rule.style.height = squareSize + 'px';
   rule.style.background = highlightDarkColor;
 
+  rule = getCSSRule('.move');
+  rule.style.color = fontMovesColor;
+  rule.style.fontSize = fontMovesSize;
+
+  rule = getCSSRule('.moveOn');
+  if (highlightMoveColor == 'none') { rule.style.background = backgroundColor; }
+  else { rule.style.background = highlightMoveColor; }
+  rule.style.color = fontMovesColor;
+  rule.style.fontSize = fontMovesSize;
+
+  rule = getCSSRule('.header');
+  rule.style.color = fontHeaderColor;
+  rule.style.fontSize = fontHeaderSize;
+
+  rule = getCSSRule('.comment');
+  rule.style.color = fontCommentsColor;
+  rule.style.fontSize = fontCommentsSize;
+
+  rule = getCSSRule('.nag');
+  rule.style.color = fontCommentsColor;
+  rule.style.fontSize = fontCommentsSize;
+
   rule = getCSSRule('.buttonControl');
   rule.style.cssText = 'width: ' + ((8 * squareSize + 6) / 5) + "px !important;";
   rule = getCSSRule('.buttonControlPlay');
@@ -93,11 +145,11 @@ function new_start_pgn4web() {
   start_pgn4web();
 
   if (gup("help") != "") {
-    frameWidth = document.getElementById("boardTable").offsetWidth;
-    frameHeight = document.getElementById("boardTable").offsetHeight;
-    if (showButtons) { frameHeight += document.getElementById("autoplayButton").offsetHeight }
-    if (showButtons && (numberOfGames > 1)) { frameHeight += document.getElementById("GameSelector").offsetHeight }
-    alert("iFrame size: " + frameWidth + "x" + frameHeight);
+    boardWidth = document.getElementById("boardTable").offsetWidth;
+    boardHeight = document.getElementById("boardTable").offsetHeight;
+    if (showButtons) { boardHeight += document.getElementById("autoplayButton").offsetHeight }
+    if (showButtons && (numberOfGames > 1)) { boardHeight += document.getElementById("GameSelector").offsetHeight }
+    alert("board size: " + boardWidth + "x" + boardHeight);
   }
 
 }
@@ -191,6 +243,19 @@ if ((highlightColor == 'none') || (highlightColor == '#none')) {
   highlightDarkColor = highlightColor;
 }
 
+if ((highlightMoveColor  = gup("highlightMoveColorName"))  == "") {if ((highlightMoveColor  = "#" + gup("highlightMoveColorHex"))  == "#") highlightMoveColor  = "#DAF4D7"}
+
+if ((backgroundColor = gup("backgroundColorName")) == "") {if ((backgroundColor = "#" + gup("backgroundColorHex")) == "#") backgroundColor = "#FFFFFF"}
+
+if ((fontHeaderSize = gup("fontHeaderSize")) == "") { fontHeaderSize = "100%"; }
+if ((fontHeaderColor = gup("fontHeaderColorName")) == "") {if ((fontHeaderColor = "#" + gup("fontHeaderColorHex")) == "#") fontHeaderColor = "black"}
+
+if ((fontMovesSize = gup("fontMovesSize")) == "") { fontMovesSize = "100%"; }
+if ((fontMovesColor = gup("fontMovesColorName")) == "") {if ((fontMovesColor = "#" + gup("fontMovesColorHex")) == "#") fontMovesColor = "black"}
+
+if ((fontCommentsSize = gup("fontCommentsSize")) == "") { fontCommentsSize = "100%"; }
+if ((fontCommentsColor = gup("fontCommentsColorName")) == "") {if ((fontCommentsColor = "#" + gup("fontCommentsColorHex")) == "#") fontCommentsColor = "gray"}
+
 if (gup("auto") == "false") { SetAutostartAutoplay(false); }
 else { SetAutostartAutoplay(true); }
  
@@ -202,6 +267,9 @@ else SetAutoplayDelay(gup("delay"));
 
 if (gup("showButtons") == "true") { showButtons = true }
 else { showButtons = false }
+
+if (gup("showComments") == "false") { SetCommentsIntoMoveText(false); }
+if (gup("showCommentsOnSeparateLines") == "true") { SetCommentsOnSeparateLines(true); }
 
 if ((newPgnText = gup("pgnText")) != "") {
 
@@ -230,6 +298,15 @@ if ((fenString != "") && (newPgnText != "")) {
   alert("ERROR: both fenString and pgnText assigned. pgnText value will be ignored.");
 }
 
+if (gup("showHeader") == "true") { showHeader = true }
+else { showHeader = false }
+
+if (gup("showMoves") == "true") { showMoves = true }
+else { showMoves = false }
+
+if ((textHeight = gup("textHeight")) == "") { textHeight="100%" }
+if ((textWidth = gup("textWidth")) == "") { textWidth="100%" }
+
 if (gup("help") != "") {
   document.write("<PRE>");
   document.write("URL parameters\n\n");
@@ -248,7 +325,7 @@ if (gup("help") != "") {
   document.write(" - darkColorHex = dark square color hex code, like FF0000 (default C6CEC3)\n");
   document.write(" - highlightColorHex = highlight color hex code, like FF0000, 'none' for no highligh (default DAF4D7)\n");
   document.write(" - showButtons = if set true, prints control buttons (default false)\n");
-  document.write("</PRE>\n\n");
+  document.write("</PRE>\n<HR>\n");
 }
 
 </script>
@@ -260,7 +337,45 @@ if (showButtons) {
 } else {
   document.write("<span id='GameBoard'></span>")
 }
+
+if ((showHeader) || (showMoves)) {
+  document.write("<br><div style='overflow:auto; height: " + textHeight + "; width: " + textWidth + "'>")
+} 
+
+if (showHeader) {
+  document.write("<table width=100% cellpadding=0 cellspacing=0 border=0> \
+                  <tr> \
+                  <td width=48% align=left><div class='header' id=GameWhite></div></td> \
+                  <td width=4%>&nbsp;</td> \
+                  <td width=48% align=right><div class='header' id=GameDate></div></td> \
+                  </tr> \
+                  <tr> \ <td align=left><div class='header' id=GameBlack></div></td> \
+                  <td></td> \
+                  <td align=right><div class='header' id=GameSite></div></td> \
+                  </tr> \
+                  <tr> \
+                  <td align=left><div class='header' id=GameResult></div></td> \
+                  <td></td> \
+                  <td align=right><div class='header' id=GameEvent></div></td> \
+                  </tr> \
+                  </table> \
+                 ") 
+}
+
+if ((showHeader) && (showMoves)) {
+  document.write("<br>")
+} 
+
+if (showMoves) {
+  document.write("<div style='text-align: justify' id=GameText></div>");
+}
+
+if ((showHeader) || (showMoves)) {
+  document.write("</div>")
+} 
+
 </script>
+
 </center>
 
 </body>
