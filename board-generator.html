@@ -8,8 +8,6 @@
 
 html,
 body {
-  margin: 0;
-  padding: 0;
   font-family: sans-serif;
   color: black;
   background: white;
@@ -25,7 +23,192 @@ body {
 
 <form>
 
-<textarea id=pgnText cols=80 rows=20></textarea>
+<h2>chess game notation in PGN format</h2>
+
+<textarea id=pgnText cols=80 rows=15></textarea>
+
+<h2>game replay options</h2>
+autoplay game on page load:
+<input type="checkbox" id="auto" name="auto" value="auto" />
+<br>
+
+autoplay delay (seconds): 
+<select id="delay" name="delay">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="5">5</option>
+<option value="10">10</option>
+<option value="30">30</option>
+</select>
+<br>
+loop through games at game end: 
+<input type="checkbox" id="loop" name="loop" value="loop" />
+
+<h2>chessboard options</h2>
+
+piece font:
+<select id="pieceFont" name="pieceFont">
+<option value="alpha">alpha</option>
+<option value="merida">merida</option>
+<option value="uscf">uscf</option>
+</select>
+<br>
+
+piece size:
+<select id="pieceSize" name="pieceSize">
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+<option value="26">26</option>
+<option value="27">27</option>
+<option value="28">28</option>
+<option value="29">29</option>
+<option value="30">30</option>
+<option value="31">31</option>
+<option value="32">32</option>
+<option value="33">33</option>
+<option value="34">34</option>
+<option value="35">35</option>
+<option value="36">36</option>
+<option value="37">37</option>
+<option value="38">38</option>
+<option value="39">39</option>
+<option value="40">40</option>
+<option value="41">41</option>
+<option value="42">42</option>
+<option value="43">43</option>
+<option value="44">44</option>
+<option value="45">45</option>
+<option value="46">46</option>
+<option value="47">47</option>
+<option value="48">48</option>
+<option value="52">52</option>
+<option value="56">56</option>
+<option value="60">60</option>
+<option value="64">64</option>
+<option value="72">72</option>
+<option value="80">80</option>
+<option value="88">88</option>
+<option value="96">96</option>
+<option value="112">112</option>
+<option value="128">128</option>
+<option value="144">144</option>
+<option value="300">300</option>
+</select>
+<br>
+
+square size:
+<input type="text" id="squareSize" name="squareSize" value="" size="3" />
+<br>
+<br>
+
+light squares color:
+<input type="text" id="lightColorHex" name="lightColorHex" value="" size="6">
+<br>
+
+dark squares color:
+<input type="text" id="darkColorHex" name="darkColorHex" value="" size="6">
+<br>
+
+highlight squares color:
+<input type="text" id="highlightColorHex" name="highlightColorHex" value="" size="6">
+<br>
+<br>
+
+show control buttons:
+<input type="checkbox" id="showButtons" name="showButtons" value="showButtons" />
+<br>
+
+<h2>header and moves options</h2>
+
+show game header:
+<input type="checkbox" id="showHeader" name="showHeader" value="showHeader" />
+<br>
+
+show game moves:
+<input type="checkbox" id="showMoves" name="showMoves" value="showMoves" />
+<br>
+<br>
+
+header and moves text area height:
+<input type="text" id="textHeight" name="textHeight" value="" size="4" />
+<br>
+
+header and moves text area width:
+<input type="text" id="textWidth" name="textWidth" value="" size="4" />
+<br>
+<br>
+
+show game comments:
+<input type="checkbox" id="showComments" name="showComments" value="showComments" />
+<br>
+
+show game comments on separate lines:
+<input type="checkbox" id="showCommentsOnSeparateLines" name="showCommentsOnSeparateLines" value="showCommentsOnSeparateLines" />
+<br>
+<br>
+
+header font color:
+<input type="text" id="fontHeaderColorHex" name="fontHeaderColorHex" value="" size="6" />
+<br>
+
+moves font color:
+<input type="text" id="fontMovesColorHex" name="fontMovesColorHex" value="" size="6" />
+<br>
+
+comments font color:
+<input type="text" id="fontCommentsColorHex" name="fontCommentsColorHex" value="" size="6" />
+<br>
+
+highlight move color:
+<input type="text" id="highlightMoveColorHex" name="highlightMoveColorHex" value="" size="6" />
+<br>
+<br>
+
+header font size:
+<input type="text" id="headerFontSize" name="headerFontSize" value="" size="3" />
+<br>
+
+moves font size:
+<input type="text" id="movesFontSize" name="movesFontSize" value="" size="3" />
+<br>
+
+header font size:
+<input type="text" id="movesFontSize" name="movesFontSize" value="" size="3" />
+<br>
+
+<h2>page options</h2>
+background color:
+<input type="text" id="backgroundColorHex" name="backgroundColorHex" value="" size="6" />
+<br>
+
+<h2>URL options</h2>
+
+base URL:
+<input type="text" id="baseURL" name="baseURL" value="" size="80" />
+<br>
+<br>
+
+<hr>
+
+<h2>actions</h2>
+
+<input type="submit" id="preview_iframe" name="preview_iframe" value="Preview iFrame in a separate browser window" onClick="preview_iframe();" />
+<br>
+<br>
+<input type="submit" id="generate_iframe" name="generate_iframe" value="Generate iFrame tag for my web page or blog" onClick="generate_iframe();" />
+<br>
+<br>
+<div id="iframe_tag">&nbsp;</div>
+<div id="iframe_tag_status">&nbsp;</div>
+<br>
+<br>
+
+<hr>
 
 </form>
 
