@@ -21,25 +21,162 @@ body {
 
 <script>
 
+pgnText_default = '[White " "]\n[Black " "]\n[Result " "]\n[Date " "]\n[Event " "]\n[Site " "]\n[Round " "]\n\n';
+auto_default = "t";
+delay_default = 1000;
+loop_default = "f";
+pieceFont_default = "alpha";
+pieceSize_default = 24;
+squareSize_default = 28;
+
+lightColorHex_default = "EFF4EC";
+darkColorHex_default = "C6CEC3";
+highlightColorHex_default = "DAF4D7";
+showButtons_default = "f";
+showHeader_default = "t";
+showMoves_default = "t";
+textHeight_default = "200";
+textWidth_default = "100%";
+showComments_default = "f"; 
+showCommentsOnSeparateLines_default = "f"; 
+fontHeaderColorHex_default = "000000";
+fontMovesColorHex_default = "000000";
+fontCommentsColorHex_default = "C0C0C0";
+highlightMoveColorHex_default = "DAF4D7";
+headerFontSize_default = "100%";
+movesFontSize_default = "100%";
+commentsFontSize_default = "100%";
+backgroundColorHex_default = "FFFFFF";
+baseUrl_default = "http://go.casaschi.net/pgn4web-board";
+
 function set_defaults() {
+  document.getElementById('iframe_tag').value = '';
+  document.board.boardHeight.value = "";
+  document.getElementById('iframe_tag_status').innerHTML = 'Enter the PGN text, customize options, then press the "Preview iFrame" button and take note of the BOARD HEIGHT value';
 
+  if ((pgnText_value = gup("pgnText")) == "") { pgnText_value = pgnText_default }
+  document.getElementById('pgnText').value = pgnText_value;
 
-  generate_iframe();
+  if ((auto_value = gup("auto")) == "") { auto_value = auto_default }
+  document.board.auto.checked = (auto_value == "t");
+
+  if ((delay_value = gup("delay")) == "") { delay_value = delay_default }
+  document.board.delay.value = delay_value;
+
+  if ((loop_value = gup("loop")) == "") { loop_value = loop_default }
+  document.board.loop.checked = (loop_value == "t");
+
+  if ((pieceFont_value = gup("pieceFont")) == "") { pieceFont_value = pieceFont_default }
+  document.board.pieceFont.value = pieceFont_value;
+
+  if ((pieceSize_value = gup("pieceSize")) == "") { pieceSize_value = pieceSize_default }
+  document.getElementById('pieceSize').value = pieceSize_value;
+
+  if ((squareSize_value = gup("squareSize")) == "") { squareSize_value = squareSize_default }
+  document.getElementById('squareSize').value = squareSize_value;
+
 }
 
 function reset_form() {
   if (confirm("do you really want to reset the form to the default values?\nAll your options including the PGN text will be lost!")) { set_defaults(); }
 }
 
-function generate_iframe() {
+function calculate_iframe() {
 
+  // this must be the firts item
+  baseUrl_value = document.board.baseUrl.value;
+  iframeUrl = baseUrl_value + "?";
+
+  if (document.board.auto.checked) { auto_value = "t" } else { auto_value = "f" }
+  delay_value = parseInt(document.board.delay.value);
+  if (document.board.loop.checked) { loop_value = "t" } else { loop_value = "f" }
+  iframeUrl += "&a=" + auto_value + "&d=" + delay_value + "&l=" + loop_value;
+
+  pieceFont_value = document.board.pieceFont.value;
+  pieceSize_value = parseInt(document.board.pieceSize.value);
+  squareSize_value = parseInt(document.board.squareSize.value);
+  if (pieceSize_value > squareSize_value) { alert("Error: the piece size (" + pieceSize_value + ") can not be bigger than the square size (" + squareSize_value + ")"); }
+  iframeUrl += "&pf=" + pieceFont_value + "&ps=" + pieceSize_value + "&ss=" + squareSize_value;
+
+  lightColorHex_value = document.board.lightColorHex.value; 
+  darkColorHex_value = document.board.darkColorHex.value; 
+  highlightColorHex_value = document.board.highlightColorHex.value; 
+  iframeUrl += "&lch=" + lightColorHex_value + "&dch=" + darkColorHex_value + "&hch=" + highlightColorHex_value;
+
+  if (document.board.showButtons.checked) { showButtons_value = "t" } else { showButtons_value = "f" }
+  iframeUrl += "&sb=" + showButtons_value;
+
+  if (document.board.showHeader.checked) { showHeader_value = "t" } else { showHeader_value = "f" }
+  if (document.board.showMoves.checked) { showMoves_value = "t" } else { showMoves_value = "f" }
+  iframeUrl += "&sh=" + showHeader_value + "&sm=" + showMoves_value;
+
+  if (document.board.showHeader.checked || document.board.showMoves.checked) {
+
+    textHeight_value = parseInt(document.board.textHeight.value);
+    textWidth_value = document.board.textWidth.value;
+    iframeUrl += "&th=" + textHeight_value + "&tw=100%";
+
+    if (document.board.showComments.checked) { showComments_value = "t" } else { showComments_value = "f" } 
+    if (document.board.showCommentsOnSeparateLines.checked) { showCommentsOnSeparateLines_value = "t" } else { showCommentsOnSeparateLines_value = "f" }
+    iframeUrl += "&sc=" + showComments_value + "&scosl=" + showCommentsOnSeparateLines_value;
+
+    fontHeaderColorHex_value =  document.board.fontHeaderColorHex.value
+    fontMovesColorHex_value =  document.board.fontMovesColorHex.value
+    fontCommentsColorHex_value =  document.board.fontCommentsColorHex.value
+    highlightMoveColorHex_value =  document.board.highlightMoveColorHex.value
+    iframeUrl += "&fhch=" + fontHeaderColorHex_value + "&fmch=" + fontMovesColorHex_value + "&fcch=" + fontCommentsColorHex_value + "&hmch=" + highlightMoveColorHex_value;
+
+    headerFontSize_value =  document.board.headerFontSize.value
+    movesFontSize_value =  document.board.movesFontSize.value
+    commentsFontSize_value =  document.board.commentsFontSize.value
+    iframeUrl += "&hfs=" + headerFontSize_value + "&mfs=" + movesFontSize_value + "&cfs" + commentsFontSize_value;
+
+  } else {
+     textHeight_value = 0;
+  }
+
+  backgroundColorHex_value = document.board.backgroundColorHex.value;
+  iframeUrl += "bch=" + backgroundColorHex_value;
+
+  // better to keep this as last
+  pgnText_value = document.getElementById('pgnText').value;
+  iframeUrl += "&pt=" + pgnText_value.replace(/\n/g," ");
+
+  iframeHeight_value = parseInt(document.board.boardHeight.value) + textHeight_value;
+  iframeWidth_value = "100%";
 
 }
 
+function generate_iframe() {
+
+  calculate_iframe();
+
+  if (!iframeHeight_value) {
+    alert("Error: the BOARD HEIGHT box needs the value copied after pushing the preview button");
+  } else {
+
+    document.getElementById('iframe_tag').value = '<iframe frameborder=0 height=' + iframeHeight_value +' width=' + iframeWidth_value +' scrolling=auto src="' + iframeUrl + '">your web browser does not support iframes as required to display the chessboard</iframe>';
+
+    if (iframeUrl.length < 2000) {
+      document.getElementById('iframe_tag_status').innerHTML = "Now you can copy the iFrame URL form the textbox in your website or blog";
+      document.getElementById('iframe_tag_status').style.color = "black";
+      document.getElementById('iframe_tag_status').style.fontWeight = "normal";
+    } else {
+      document.getElementById('iframe_tag_status').innerHTML = "WARNING: iframe URL lenght is " + iframeUrl.length + " thus larger than 2000 and as such might not be accepted by browser (note that some redirection might make your URL even longer)";
+      document.getElementById('iframe_tag_status').style.color = "red";
+      document.getElementById('iframe_tag_status').style.fontWeight = "bold";
+    }  
+
+  }
+
+}  
+
 function preview_iframe() {
-  generate_iframe();
-
-
+  calculate_iframe();
+  window.open(iframeUrl + "&shw=t", "iframe_preview");
+  document.getElementById('iframe_tag').value = '';
+  document.board.boardHeight.value = "";
+  document.getElementById('iframe_tag_status').innerHTML = 'Now you need to type the BOARD HEIGHT number in the textbox above and then press the "Generate iFrame" button';
 }
 
 function gup( name ){
@@ -93,20 +230,21 @@ window.onload = set_defaults;
 </ol>
 <hr>
 
-<form>
+<form id="board" name="board">
 
 <h2>actions</h2>
 
 <input type="button" id="reset_defaults_button" name="reset_defaults_button" value="Reset form to default value" onClick="reset_form()" />
 <br>
 <br>
-<input type="button" id="preview_iframe_button" name="preview_iframe_button" value="Preview iFrame in a separate browser window" onClick="preview_iframe()" />
+<input type="button" id="preview_iframe_button" name="preview_iframe_button" value="Preview iFrame in a separate browser window" onClick="preview_iframe()" /> and then type the BOARD HEIGHT value here: <input type="text" id="boardHeight" name="boardHeight" size="5" value="">
 <br>
 <br>
 <input type="button" id="generate_iframe_button" name="generate_iframe_button" value="Generate iFrame HTML code for my web page or blog" onClick="generate_iframe()" />
 <br>
 <br>
-<b>iFrame HTML code:</b><span id="iframe_tag">&nbsp;</span>
+<b>iFrame HTML code:</b><input type=text id="iframe_tag" name="iframe_tag" size=80 />
+<br>
 <br>
 <div id="iframe_tag_status">&nbsp;</div>
 <br>
@@ -122,14 +260,14 @@ autoplay game on page load:
 <input type="checkbox" id="auto" name="auto" value="auto" />
 <br>
 
-autoplay delay (seconds): 
+autoplay delay (sec): 
 <select id="delay" name="delay">
-<option value="1">1</option>
-<option value="2">2</option>
-<option value="3">3</option>
-<option value="5">5</option>
-<option value="10">10</option>
-<option value="30">30</option>
+<option value="1000">1</option>
+<option value="2000">2</option>
+<option value="3000">3</option>
+<option value="5000">5</option>
+<option value="10000">10</option>
+<option value="300000">30</option>
 </select>
 <br>
 loop through games at game end: 
@@ -192,20 +330,20 @@ piece size:
 <br>
 
 square size:
-<input type="text" id="squareSize" name="squareSize" value="" size="3" />
+<input type="text" id="squareSize" name="squareSize" value="" size="4" />
 <br>
 <br>
 
 light squares color:
-<input type="text" id="lightColorHex" name="lightColorHex" value="" size="6">
+<input type="text" id="lightColorHex" name="lightColorHex" value="" size="7">
 <br>
 
 dark squares color:
-<input type="text" id="darkColorHex" name="darkColorHex" value="" size="6">
+<input type="text" id="darkColorHex" name="darkColorHex" value="" size="7">
 <br>
 
 highlight squares color:
-<input type="text" id="highlightColorHex" name="highlightColorHex" value="" size="6">
+<input type="text" id="highlightColorHex" name="highlightColorHex" value="" size="7">
 <br>
 <br>
 
@@ -225,11 +363,11 @@ show game moves:
 <br>
 
 header and moves text area height:
-<input type="text" id="textHeight" name="textHeight" value="" size="4" />
+<input type="text" id="textHeight" name="textHeight" value="" size="5" />
 <br>
 
 header and moves text area width:
-<input type="text" id="textWidth" name="textWidth" value="" size="4" />
+<input type="text" id="textWidth" name="textWidth" value="" size="5" />
 <br>
 <br>
 
@@ -243,43 +381,43 @@ show game comments on separate lines:
 <br>
 
 header font color:
-<input type="text" id="fontHeaderColorHex" name="fontHeaderColorHex" value="" size="6" />
+<input type="text" id="fontHeaderColorHex" name="fontHeaderColorHex" value="" size="7" />
 <br>
 
 moves font color:
-<input type="text" id="fontMovesColorHex" name="fontMovesColorHex" value="" size="6" />
+<input type="text" id="fontMovesColorHex" name="fontMovesColorHex" value="" size="7" />
 <br>
 
 comments font color:
-<input type="text" id="fontCommentsColorHex" name="fontCommentsColorHex" value="" size="6" />
+<input type="text" id="fontCommentsColorHex" name="fontCommentsColorHex" value="" size="7" />
 <br>
 
 highlight move color:
-<input type="text" id="highlightMoveColorHex" name="highlightMoveColorHex" value="" size="6" />
+<input type="text" id="highlightMoveColorHex" name="highlightMoveColorHex" value="" size="7" />
 <br>
 <br>
 
 header font size:
-<input type="text" id="headerFontSize" name="headerFontSize" value="" size="3" />
+<input type="text" id="headerFontSize" name="headerFontSize" value="" size="4" />
 <br>
 
 moves font size:
-<input type="text" id="movesFontSize" name="movesFontSize" value="" size="3" />
+<input type="text" id="movesFontSize" name="movesFontSize" value="" size="4" />
 <br>
 
-header font size:
-<input type="text" id="movesFontSize" name="movesFontSize" value="" size="3" />
+comments font size:
+<input type="text" id="commentsFontSize" name="commentsFontSize" value="" size="4" />
 <br>
 
 <h2>page options</h2>
 background color:
-<input type="text" id="backgroundColorHex" name="backgroundColorHex" value="" size="6" />
+<input type="text" id="backgroundColorHex" name="backgroundColorHex" value="" size="7" />
 <br>
 
 <h2>URL options</h2>
 
 base URL:
-<input type="text" id="baseURL" name="baseURL" value="" size="80" />
+<input type="text" id="baseUrl" name="baseUrl" value="" size="80" />
 <br>
 <br>
 

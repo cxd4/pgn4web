@@ -141,12 +141,12 @@ function new_start_pgn4web() {
 
   start_pgn4web();
 
-  if (gup("help") != "") {
+  if (gup("showHeightWidth") != "") {
     boardWidth = document.getElementById("boardTable").offsetWidth;
     boardHeight = document.getElementById("boardTable").offsetHeight;
     if (showButtons) { boardHeight += document.getElementById("autoplayButton").offsetHeight }
     if (showButtons && (numberOfGames > 1)) { boardHeight += document.getElementById("GameSelector").offsetHeight }
-    alert("board size: " + boardWidth + "x" + boardHeight);
+    alert("board - width: " + boardWidth + " - height: " + boardHeight);
   }
 
 }
@@ -365,16 +365,19 @@ if (gup("help") != "") {
   document.write(" - fontMovesColorName = moves color name, like red (default black)\n");
   document.write(" - fontCommentsColorName = comments color name, like red (default gray)\n");
   document.write(" - highlightMoveColorName = background color name to highlight current move, like red, 'none' for no highligh\n");
-  document.write(" - fontHeaderColorHex = header color hex code, like FFFF00 \n");
-  document.write(" - fontMovesColorHex = moves color hex code, like FFFF00 \n");
-  document.write(" - fontCommentsColorHex = commentss color hex code, like FFFF00 \n");
+  document.write(" - fontHeaderColorHex = header color hex code, like FF0000\n");
+  document.write(" - fontMovesColorHex = moves color hex code, like FF0000\n");
+  document.write(" - fontCommentsColorHex = commentss color hex code, like FF0000\n");
   document.write(" - highlightMoveColorHex = background color hex code to highlight current move, like FF0000, 'none' for no highligh (default DAF4D7)\n");
   document.write(" - fontHeaderSize = header font size, like 20 or 120% (default 100%)\n");
   document.write(" - fontMovesSize = header font size, like 20 or 120% (default 100%)\n");
   document.write(" - fontCommentsSize = header font size, like 20 or 120% (default 100%)\n");
   document.write("\n");
-  document.write(" - backgroundColorName = page background color name, like red \n");
+  document.write(" - backgroundColorName = page background color name, like red\n");
   document.write(" - backgroundColorHex = page background color hex code, like FF0000\n");
+  document.write("\n");
+  document.write(" - showHeightWidth = if set true, calculates optimal iframe dimensions (default false)\n");
+  document.write(" - help = if set true, shows help info (default false)\n");
   document.write("\n");
   document.write("URL parameters can be shortened: for example squareSize => sq, auto => a, highlightMoveColorHex => hmch\n");
   document.write("Also values true and false can be shortened: true => t, false => f\n");
