@@ -220,12 +220,13 @@ function gup( name ){
 SetHighlightOption(true);
 SetShortcutKeysEnabled(false);
 
-if ((font = gup("font")) == "") { font = "alpha"; }
+if ((font = gup("font")) == "") { chessFont = "alpha"; } // left for compatibility with older version
+if ((font = gup("chessFont")) == "") { chessFont = "alpha"; }
 
 if ((pieceSize = gup("pieceSize")) == "") { pieceSize = 24; }
 else { pieceSize = parseInt(pieceSize); }
 
-SetImagePath(font + "/" + pieceSize);
+SetImagePath(chessFont + "/" + pieceSize);
 
 if ((squareSize = gup("squareSize")) == "") { squareSize = 28; }
 else { squareSize = parseInt(squareSize); }
@@ -309,13 +310,16 @@ if ((textWidth = gup("textWidth")) == "") { textWidth="100%" }
 
 if (gup("help") != "") {
   document.write("<PRE>");
-  document.write("URL parameters\n\n");
+  document.write("URL parameters\n");
+  document.write("\n");
   document.write(" - pgnText = PGN string\n");
   document.write(" - fenString = FEN string, if set then pgnText is ignored\n");
+  document.write("\n");
   document.write(" - auto = if set true, autoplays game, otherwise if false (default true)\n");
   document.write(" - delay = autoplay delay in ms (default 1000)\n");
   document.write(" - loop = if set true, loop indefinitely through games (default false)\n");
-  document.write(" - font = alpha | merida | uscf (default alpha)\n");
+  document.write("\n");
+  document.write(" - chessFont = alpha | merida | uscf (default alpha)\n");
   document.write(" - pieceSize = size of pieces (default 24)\n");
   document.write(" - squareSize = size of square (default 28)\n");
   document.write(" - lightColorName = light square color name, like red\n");
@@ -325,6 +329,27 @@ if (gup("help") != "") {
   document.write(" - darkColorHex = dark square color hex code, like FF0000 (default C6CEC3)\n");
   document.write(" - highlightColorHex = highlight color hex code, like FF0000, 'none' for no highligh (default DAF4D7)\n");
   document.write(" - showButtons = if set true, prints control buttons (default false)\n");
+  document.write("\n");
+  document.write(" - textHeight = set height of the textual section, header and/or moves text (default 100%)\n");
+  document.write(" - textWidth = set width of the textual section, header and/or moves text (default 100%)\n");
+  document.write(" - showHeader = if set true, displays game header text (default false)\n");
+  document.write(" - showMoves = if set true, displays moves text (default false)\n");
+  document.write(" - showComments = if set false, removes comments when displaying moves text (default true)\n");
+  document.write(" - showCommentsOnSeparateLines = if set true, add newlines chars when displaying comments (default false)\n"); 
+  document.write(" - fontHeaderColorName = header color name, like red (default black)\n");
+  document.write(" - fontMovesColorName = moves color name, like red (default black)\n");
+  document.write(" - fontCommentsColorName = comments color name, like red (default gray)\n");
+  document.write(" - highlightMoveColorName = background color name to highlight current move, like red, 'none' for no highligh\n");
+  document.write(" - fontHeaderColorHex = header color hex code, like FFFF00 \n");
+  document.write(" - fontMovesColorHex = moves color hex code, like FFFF00 \n");
+  document.write(" - fontCommentsColorHex = commentss color hex code, like FFFF00 \n");
+  document.write(" - highlightMoveColorHex = background color hex code to highlight current move, like FF0000, 'none' for no highligh (default DAF4D7)\n");
+  document.write(" - fontHeaderSize = header font size, like 20 or 120% (default 100%)\n");
+  document.write(" - fontMovesSize = header font size, like 20 or 120% (default 100%)\n");
+  document.write(" - fontCommentsSize = header font size, like 20 or 120% (default 100%)\n");
+  document.write("\n");
+  document.write(" - backgroundColorName = page background color name, like red \n");
+  document.write(" - backgroundColorHex = page background color hex code, like FF0000\n");
   document.write("</PRE>\n<HR>\n");
 }
 
