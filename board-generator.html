@@ -75,6 +75,62 @@ function set_defaults() {
   if ((squareSize_value = gup("squareSize")) == "") { squareSize_value = squareSize_default }
   document.getElementById('squareSize').value = squareSize_value;
 
+  if ((lightColorHex_value = gup("lightColorHex")) == "") { lightColorHex_value = lightColorHex_default }
+  document.board.lightColorHex.value = lightColorHex_value;
+
+  if ((darkColorHex_value = gup("darkColorHex")) == "") { darkColorHex_value = darkColorHex_default }
+  document.board.darkColorHex.value = darkColorHex_value;
+
+  if ((highlightColorHex_value = gup("highlightColorHex")) == "") { highlightColorHex_value = highlightColorHex_default }
+  document.board.highlightColorHex.value = highlightColorHex_value;
+
+  if ((showButtons_value = gup("showButtons")) == "") { showButtons_value = showButtons_default }
+  document.board.showButtons.checked = (showButtons_value == "t");
+
+  if ((showHeader_value = gup("showHeader")) == "") { showHeader_value = showHeader_default }
+  document.board.showHeader.checked = (showHeader_value == "t");
+
+  if ((showMoves_value = gup("showMoves")) == "") { showMoves_value = showMoves_default }
+  document.board.showMoves.checked = (showMoves_value == "t");
+
+  if ((textHeight_value = gup("textHeight")) == "") { textHeight_value = textHeight_default }
+  document.board.textHeight.value = textHeight_value;
+
+  if ((textWidth_value = gup("textWidth")) == "") { textWidth_value = textWidth_default }
+  document.board.textWidth.value = textWidth_value;
+
+  if ((showComments_value = gup("showComments")) == "") { showComments_value = showComments_default }
+  document.board.showComments.checked = (showComments_value == "t");
+
+  if ((showCommentsOnSeparateLines_value = gup("showCommentsOnSeparateLines")) == "") { showCommentsOnSeparateLines_value = showCommentsOnSeparateLines_default }
+  document.board.showCommentsOnSeparateLines.checked = (showCommentsOnSeparateLines_value == "t");
+
+  if ((fontHeaderColorHex_value = gup("fontHeaderColorHex")) == "") { fontHeaderColorHex_value = fontHeaderColorHex_default }
+  document.board.fontHeaderColorHex.value = fontHeaderColorHex_value;
+
+  if ((fontMovesColorHex_value = gup("fontMovesColorHex")) == "") { fontMovesColorHex_value = fontMovesColorHex_default }
+  document.board.fontMovesColorHex.value = fontMovesColorHex_value;
+
+  if ((fontCommentsColorHex_value = gup("fontCommentsColorHex")) == "") { fontCommentsColorHex_value = fontCommentsColorHex_default }
+  document.board.fontCommentsColorHex.value = fontCommentsColorHex_value;
+
+  if ((highlightMoveColorHex_value = gup("highlightMoveColorHex")) == "") { highlightMoveColorHex_value = highlightMoveColorHex_default }
+  document.board.highlightMoveColorHex.value = highlightMoveColorHex_value;
+
+  if ((headerFontSize_value = gup("headerFontSize")) == "") { headerFontSize_value = headerFontSize_default }
+  document.board.headerFontSize.value = headerFontSize_value;
+
+  if ((movesFontSize_value = gup("movesFontSize")) == "") { movesFontSize_value = movesFontSize_default }
+  document.board.movesFontSize.value = movesFontSize_value;
+
+  if ((commentsFontSize_value = gup("commentsFontSize")) == "") { commentsFontSize_value = commentsFontSize_default }
+  document.board.commentsFontSize.value = commentsFontSize_value;
+
+  if ((backgroundColorHex_value = gup("backgroundColorHex")) == "") { backgroundColorHex_value = backgroundColorHex_default }
+  document.board.backgroundColorHex.value = backgroundColorHex_value;
+
+  if ((baseUrl_value = gup("baseUrl")) == "") { baseUrl_value = baseUrl_default }
+  document.board.baseUrl.value = baseUrl_value;
 }
 
 function reset_form() {
