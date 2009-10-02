@@ -37,11 +37,11 @@ showHeader_default = "t";
 showMoves_default = "t";
 textHeight_default = "200";
 textWidth_default = "100%";
-showComments_default = "f"; 
+showComments_default = "t"; 
 showCommentsOnSeparateLines_default = "f"; 
 fontHeaderColorHex_default = "000000";
 fontMovesColorHex_default = "000000";
-fontCommentsColorHex_default = "C0C0C0";
+fontCommentsColorHex_default = "808080";
 highlightMoveColorHex_default = "DAF4D7";
 headerFontSize_default = "100%";
 movesFontSize_default = "100%";
@@ -170,7 +170,7 @@ function calculate_iframe() {
 
     textHeight_value = parseInt(document.board.textHeight.value);
     textWidth_value = document.board.textWidth.value;
-    iframeUrl += "&th=" + textHeight_value + "&tw=100%";
+    iframeUrl += "&th=" + textHeight_value + "&tw=" + textWidth_value;
 
     if (document.board.showComments.checked) { showComments_value = "t" } else { showComments_value = "f" } 
     if (document.board.showCommentsOnSeparateLines.checked) { showCommentsOnSeparateLines_value = "t" } else { showCommentsOnSeparateLines_value = "f" }
@@ -199,7 +199,7 @@ function calculate_iframe() {
   iframeUrl += "&pt=" + pgnText_value.replace(/\n/g," ");
 
   iframeHeight_value = parseInt(document.board.boardHeight.value) + textHeight_value;
-  iframeWidth_value = "100%";
+  iframeWidth_value = textWidth_value;
 
 }
 
@@ -211,7 +211,7 @@ function generate_iframe() {
     alert("Error: the BOARD HEIGHT box needs the value copied after pushing the preview button");
   } else {
 
-    document.getElementById('iframe_tag').value = '<iframe frameborder=0 height=' + iframeHeight_value +' width=' + iframeWidth_value +' scrolling=auto src="' + iframeUrl + '">your web browser does not support iframes as required to display the chessboard</iframe>';
+    document.getElementById('iframe_tag').value = "<iframe frameborder=0 height=" + iframeHeight_value +" width=" + iframeWidth_value +" scrolling=auto src='" + iframeUrl + "'>your web browser does not support iframes as required to display the chessboard</iframe>";
 
     if (iframeUrl.length < 2000) {
       document.getElementById('iframe_tag_status').innerHTML = "Now you can copy the iFrame URL form the textbox in your website or blog";
