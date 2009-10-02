@@ -100,7 +100,9 @@ function new_start_pgn4web() {
 
 function gup( name ){
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-  var regexS = "[\\?&]"+name+"=([^&#]*)";  var regex = new RegExp( regexS );
+  var regexS = "[\\?&]"+name+"=([^&#]*)";  
+  regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
+  var regex = new RegExp( regexS );
   var results = regex.exec( window.location.href );
   if( results == null )    return "";
   else    return results[1];

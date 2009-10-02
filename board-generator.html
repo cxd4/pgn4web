@@ -45,7 +45,9 @@ function preview_iframe() {
 function gup( name ){
 
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-  var regexS = "[\\?&]"+name+"=([^&#]*)";  var regex = new RegExp( regexS );
+  var regexS = "[\\?&]"+name+"=([^&#]*)";  
+  regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
+  var regex = new RegExp( regexS );
   var results = regex.exec( window.location.href );
   if( results != null ) { switch (results[1]) {
     case "t": case "T": return "true";  break;
@@ -61,7 +63,9 @@ function gup( name ){
   name = compact_name;
 
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-  var regexS = "[\\?&]"+name+"=([^&#]*)";  var regex = new RegExp( regexS );
+  var regexS = "[\\?&]"+name+"=([^&#]*)";  
+  regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
+  var regex = new RegExp( regexS );
   var results = regex.exec( window.location.href );
   if( results != null ) { switch (results[1]) {
     case "t": case "T": return "true";  break;
