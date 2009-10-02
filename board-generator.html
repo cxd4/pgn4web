@@ -24,20 +24,20 @@ body {
 function set_defaults() {
 
 
-
   generate_iframe();
 }
 
 function reset_form() {
-  if (confirm("do you really want to reset the form to the default values?\nAll your options beside the PGN text will be lost!")) { set_defaults(); }
+  if (confirm("do you really want to reset the form to the default values?\nAll your options including the PGN text will be lost!")) { set_defaults(); }
 }
 
 function generate_iframe() {
+
+
 }
 
 function preview_iframe() {
   generate_iframe();
-
 
 
 }
@@ -84,8 +84,8 @@ window.onload = set_defaults;
 <ol type="1">
 <li>enter your PGN text</li>
 <li>modify any of the options</li>
-<li>you can preview the chessboard page to check the output</li>
-<li>you can generate the HTML code for your iFrame that you can cut&paste in your web page or your blog</li>
+<li>preview the chessboard page to check the output</li>
+<li>generate the HTML code for your iFrame that you can cut&paste in your web page or your blog</li>
 </ol>
 <hr>
 
@@ -93,13 +93,13 @@ window.onload = set_defaults;
 
 <h2>actions</h2>
 
-<input type="submit" id="reset_defaults" name="reset_defaults" value="Reset form to default value" onClick="reset_form();" />
+<input type="button" id="reset_defaults_button" name="reset_defaults_button" value="Reset form to default value" onClick="reset_form()" />
 <br>
 <br>
-<input type="submit" id="preview_iframe" name="preview_iframe" value="Preview iFrame in a separate browser window" onClick="preview_iframe();" />
+<input type="button" id="preview_iframe_button" name="preview_iframe_button" value="Preview iFrame in a separate browser window" onClick="preview_iframe()" />
 <br>
 <br>
-<input type="submit" id="generate_iframe" name="generate_iframe" value="Generate iFrame HTML code for my web page or blog" onClick="generate_iframe();" />
+<input type="button" id="generate_iframe_button" name="generate_iframe_button" value="Generate iFrame HTML code for my web page or blog" onClick="generate_iframe()" />
 <br>
 <br>
 <b>iFrame HTML code:</b><span id="iframe_tag">&nbsp;</span>
