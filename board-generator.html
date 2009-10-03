@@ -258,8 +258,10 @@ function calculate_iframe() {
 
   // better to keep this as last
   pgnText_value = document.getElementById('pgnText').value;
-  iframeUrl += "&pt=" + pgnText_value.replace(/#/g," ").replace(/\n/g," ");
-
+  pgnText_value = pgnText_value.replace(/#/g,"++");
+  pgnText_value = pgnText_value.replace(/'/g,"`");
+  pgnText_value = pgnText_value.replace(/&/g," and ");
+  iframeUrl += "&pt=" + pgnText_value.replace(/\n/g," ");
 }
 
 function generate_iframe() {
@@ -371,7 +373,7 @@ window.onload = set_defaults;
 
 <h3>chess game notation in PGN format</h3>
 
-<textarea id=pgnText cols=80 rows=15></textarea>
+<textarea id=pgnText cols=100 rows=15></textarea>
 <p>
 <br>
 
