@@ -23,6 +23,10 @@ body {
 
 <script  type="text/javascript">
 
+// CUSTOMIZATION INSTRUCTIONS
+// if you customize the board-generator.html file for your site 
+// you probably want to customize the default values
+
 pgnText_default = '[White " "]\n[Black " "]\n[Result " "]\n[Date " "]\n[Event " "]\n[Site " "]\n[Round " "]\n\n';
 auto_default = "t";
 delay_default = 1000;
@@ -30,7 +34,6 @@ loop_default = "f";
 pieceFont_default = "alpha";
 pieceSize_default = 24;
 squareSize_default = 28;
-
 lightColorHex_default = "EFF4EC";
 darkColorHex_default = "C6CEC3";
 highlightColorHex_default = "DAF4D7";
@@ -49,7 +52,7 @@ headerFontSize_default = "100%";
 movesFontSize_default = "100%";
 commentsFontSize_default = "100%";
 backgroundColorHex_default = "FFFFFF";
-baseUrl_default = "http://go.casaschi.net/pgn4web-board";
+baseUrl_default = location.protocol + "//" + location.hostname+location.pathname.substr(0, location.pathname.lastIndexOf("/")) + "/board.html";
 
 function set_defaults() {
   document.getElementById('iframe_tag').value = '';
