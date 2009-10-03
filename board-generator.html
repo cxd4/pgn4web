@@ -150,7 +150,7 @@ function reset_form() {
 
 function update_suggested_iframe_dimensions() {
 
-  boardWidth = 8 * squareSize_value + 6; 
+  boardWidth = 8 * document.board.squareSize.value + 6; 
   suggested_frameWidth = boardWidth;
   suggested_frameHeight = boardWidth;
   
@@ -410,7 +410,7 @@ piece size:
 <br>
 
 square size:
-<input type="text" id="squareSize" name="squareSize" value="" size="4" />
+<input type="text" id="squareSize" name="squareSize" value="" size="4" onChange="update_suggested_iframe_dimensions()" />
 <br>
 <br>
 
@@ -428,17 +428,17 @@ highlight squares color:
 <br>
 
 show control buttons:
-<input type="checkbox" id="showButtons" name="showButtons" value="showButtons" />
+<input type="checkbox" id="showButtons" name="showButtons" value="showButtons" onChange="update_suggested_iframe_dimensions()" />
 <br>
 
 <h3>header and moves options</h3>
 
 show game header:
-<input type="checkbox" id="showHeader" name="showHeader" value="showHeader" />
+<input type="checkbox" id="showHeader" name="showHeader" value="showHeader" onChange="update_suggested_iframe_dimensions()" />
 <br>
 
 show game moves:
-<input type="checkbox" id="showMoves" name="showMoves" value="showMoves" />
+<input type="checkbox" id="showMoves" name="showMoves" value="showMoves" onChange="update_suggested_iframe_dimensions()" />
 <br>
 <br>
 
