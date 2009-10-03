@@ -40,8 +40,8 @@ highlightColorHex_default = "DAF4D7";
 showButtons_default = "f";
 showHeader_default = "t";
 showMoves_default = "t";
-textHeight_default = "200";
-textWidth_default = "100%";
+frameHeight_default = "";
+frameWidth_default = "";
 showComments_default = "t"; 
 showCommentsOnSeparateLines_default = "f"; 
 fontHeaderColorHex_default = "000000";
@@ -52,11 +52,11 @@ headerFontSize_default = "100%";
 movesFontSize_default = "100%";
 commentsFontSize_default = "100%";
 backgroundColorHex_default = "FFFFFF";
+previewBackgroundColorHex_default = "CCCCCC";
 baseUrl_default = location.protocol + "//" + location.hostname+location.pathname.substr(0, location.pathname.lastIndexOf("/")) + "/board.html";
 
 function set_defaults() {
   document.getElementById('iframe_tag').value = '';
-  document.board.boardHeight.value = "";
   document.getElementById('iframe_tag_status').innerHTML = 'Enter the PGN text, customize options, then press the "Preview iFrame" button and take note of the BOARD HEIGHT value';
 
   if ((pgnText_value = gup("pgnText")) == "") { pgnText_value = pgnText_default }
@@ -98,12 +98,6 @@ function set_defaults() {
   if ((showMoves_value = gup("showMoves")) == "") { showMoves_value = showMoves_default }
   document.board.showMoves.checked = (showMoves_value == "t");
 
-  if ((textHeight_value = gup("textHeight")) == "") { textHeight_value = textHeight_default }
-  document.board.textHeight.value = textHeight_value;
-
-  if ((textWidth_value = gup("textWidth")) == "") { textWidth_value = textWidth_default }
-  document.board.textWidth.value = textWidth_value;
-
   if ((showComments_value = gup("showComments")) == "") { showComments_value = showComments_default }
   document.board.showComments.checked = (showComments_value == "t");
 
@@ -134,12 +128,47 @@ function set_defaults() {
   if ((backgroundColorHex_value = gup("backgroundColorHex")) == "") { backgroundColorHex_value = backgroundColorHex_default }
   document.board.backgroundColorHex.value = backgroundColorHex_value;
 
+  if ((previewBackgroundColorHex_value = gup("previewBackgroundColorHex")) == "") { previewBackgroundColorHex_value = previewBackgroundColorHex_default }
+  document.board.previewBackgroundColorHex.value = previewBackgroundColorHex_value;
+
+  if ((frameHeight_value = gup("frameHeight")) == "") { frameHeight_value = frameHeight_default }
+  document.board.frameHeight.value = frameHeight_value;
+
+  if ((frameWidth_value = gup("frameWidth")) == "") { frameWidth_value = frameWidth_default }
+  document.board.frameWidth.value = frameWidth_value;
+
   if ((baseUrl_value = gup("baseUrl")) == "") { baseUrl_value = baseUrl_default }
   document.board.baseUrl.value = baseUrl_value;
+
+  generate_iframe();
 }
 
 function reset_form() {
   if (confirm("do you really want to reset the form to the default values?\nAll your options including the PGN text will be lost!")) { set_defaults(); }
+}
+
+
+function update_suggested_iframe_dimensions() {
+
+  boardWidth = 8 * squareSize_value + 6; 
+  suggested_frameWidth = boardWidth;
+  suggested_frameHeight = boardWidth;
+  
+  if (document.board.showButtons.checked) { suggested_frameHeight += 50; }
+
+  if (document.board.showHeader.checked) { suggested_frameHeight += 100; }
+  if (document.board.showMoves.checked) { suggested_frameHeight += 200; }
+  if (document.board.showHeader.checked || document.board.showMoves.checked) {
+    suggested_frameHeight = Math.max(suggested_frameHeight, 2 * boardWidth);
+  }
+
+  if (document.board.showHeader.checked || document.board.showMoves.checked) {
+    suggested_frameWidth = Math.max (suggested_frameWidth, 400);
+  }
+
+  document.getElementById('frameHeight_helpText').innerHTML = "if blank the frame height will be set at the automatically calculated value of " + suggested_frameHeight;
+  document.getElementById('frameWidth_helpText').innerHTML = "if blank the frame width will be set at the automatically calculated value of " + suggested_frameWidth;
+
 }
 
 function calculate_iframe() {
@@ -173,10 +202,6 @@ function calculate_iframe() {
 
   if (document.board.showHeader.checked || document.board.showMoves.checked) {
 
-    textHeight_value = parseInt(document.board.textHeight.value);
-    textWidth_value = document.board.textWidth.value;
-    iframeUrl += "&th=" + textHeight_value + "&tw=" + textWidth_value;
-
     if (document.board.showComments.checked) { showComments_value = "t" } else { showComments_value = "f" } 
     if (document.board.showCommentsOnSeparateLines.checked) { showCommentsOnSeparateLines_value = "t" } else { showCommentsOnSeparateLines_value = "f" }
     iframeUrl += "&sc=" + showComments_value + "&scosl=" + showCommentsOnSeparateLines_value;
@@ -192,19 +217,22 @@ function calculate_iframe() {
     commentsFontSize_value =  document.board.commentsFontSize.value
     iframeUrl += "&hfs=" + headerFontSize_value + "&mfs=" + movesFontSize_value + "&cfs" + commentsFontSize_value;
 
-  } else {
-     textHeight_value = 0;
-  }
+  } 
 
   backgroundColorHex_value = document.board.backgroundColorHex.value;
   iframeUrl += "&bch=" + backgroundColorHex_value;
 
+  // this does not go in the iframee
+  previewBackgroundColorHex_value = document.board.previewBackgroundColorHex.value;
+
+  update_suggested_iframe_dimensions();
+  if ((frameHeight_value = document.board.frameHeight.value) == "") { frameHeight_value = suggested_frameHeight }
+  if ((frameWidth_value = document.board.frameWidth.value) == "") { frameWidth_value = suggested_frameWidth }
+  iframeUrl += "&fh=" + frameHeight_value + "&fw=" + frameWidth_value;
+
   // better to keep this as last
   pgnText_value = document.getElementById('pgnText').value;
   iframeUrl += "&pt=" + pgnText_value.replace(/\n/g," ");
-
-  iframeHeight_value = parseInt(document.board.boardHeight.value) + textHeight_value;
-  iframeWidth_value = textWidth_value;
 
 }
 
@@ -212,32 +240,21 @@ function generate_iframe() {
 
   calculate_iframe();
 
-  if (!iframeHeight_value) {
-    alert("Error: the BOARD HEIGHT box needs the value copied after pushing the preview button");
+  iframe_tag_string = "<iframe frameborder=0 height=" + frameHeight_value +" width=" + frameWidth_value +" scrolling=auto src='" + iframeUrl + "'>your web browser does not support iframes as required to display the chessboard</iframe>";
+
+  document.getElementById('iframe_tag').value = iframe_tag_string;
+  document.getElementById('preview').innerHTML = "<table bgcolor=#" + previewBackgroundColorHex_value + " width=100% cellpadding=20><tr><td align=center valign=middle> " + iframe_tag_string + "</td></tr></table>";
+
+  if (iframeUrl.length < 2000) {
+    document.getElementById('iframe_tag_status').innerHTML = "iFrame URL looks fine";
+    document.getElementById('iframe_tag_status').style.color = "gray";
+    document.getElementById('iframe_tag_status').style.fontWeight = "normal";
   } else {
+    document.getElementById('iframe_tag_status').innerHTML = "WARNING: iframe URL lenght is " + iframeUrl.length + " thus larger than 2000 and as such might not be accepted by browser (note that some redirection might make your URL even longer)";
+    document.getElementById('iframe_tag_status').style.color = "red";
+    document.getElementById('iframe_tag_status').style.fontWeight = "bold";
+  }  
 
-    document.getElementById('iframe_tag').value = "<iframe frameborder=0 height=" + iframeHeight_value +" width=" + iframeWidth_value +" scrolling=auto src='" + iframeUrl + "'>your web browser does not support iframes as required to display the chessboard</iframe>";
-
-    if (iframeUrl.length < 2000) {
-      document.getElementById('iframe_tag_status').innerHTML = "Now you can copy the iFrame URL form the textbox in your website or blog";
-      document.getElementById('iframe_tag_status').style.color = "black";
-      document.getElementById('iframe_tag_status').style.fontWeight = "normal";
-    } else {
-      document.getElementById('iframe_tag_status').innerHTML = "WARNING: iframe URL lenght is " + iframeUrl.length + " thus larger than 2000 and as such might not be accepted by browser (note that some redirection might make your URL even longer)";
-      document.getElementById('iframe_tag_status').style.color = "red";
-      document.getElementById('iframe_tag_status').style.fontWeight = "bold";
-    }  
-
-  }
-
-}  
-
-function preview_iframe() {
-  calculate_iframe();
-  window.open(iframeUrl + "&shw=t", "iframe_preview");
-  document.getElementById('iframe_tag').value = '';
-  document.board.boardHeight.value = "";
-  document.getElementById('iframe_tag_status').innerHTML = 'Now you need to type the BOARD HEIGHT number in the textbox above and then press the "Generate iFrame" button';
 }
 
 function gup( name ){
@@ -286,22 +303,19 @@ window.onload = set_defaults;
 <ol type="1">
 <li>enter your PGN text</li>
 <li>modify any of the options</li>
-<li>preview the chessboard page to check the output</li>
-<li>generate the HTML code for your iFrame that you can cut&paste in your web page or your blog</li>
+<li>generate the HTML code and preview the iFrame</li>
+<li>tune options, especially the frame height/width (remember some browser might render some items slightly bigger or smaller)</li>
+<li>cut & paste the iFrame HTML code in your web page or your blog</li>
 </ol>
-<hr>
 
-<form id="board" name="board">
+<form id="board" name="board" action="javascript:generate_iframe()">
 
 <h2>actions</h2>
 
 <input type="button" id="reset_defaults_button" name="reset_defaults_button" value="Reset form to default value" onClick="reset_form()" />
 <br>
 <br>
-<input type="button" id="preview_iframe_button" name="preview_iframe_button" value="Preview iFrame in a separate browser window" onClick="preview_iframe()" /> and then type the BOARD HEIGHT value here: <input type="text" id="boardHeight" name="boardHeight" size="5" value="">
-<br>
-<br>
-<input type="button" id="generate_iframe_button" name="generate_iframe_button" value="Generate iFrame HTML code for my web page or blog" onClick="generate_iframe()" />
+<input type="button" id="generate_iframe_button" name="generate_iframe_button" value="Generate iFrame HTML code for my web page or blog and update preview" onClick="generate_iframe()" />
 <br>
 <br>
 <b>iFrame HTML code:</b><input type=text id="iframe_tag" name="iframe_tag" size=80 />
@@ -310,13 +324,20 @@ window.onload = set_defaults;
 <div id="iframe_tag_status">&nbsp;</div>
 <br>
 
+<h2>preview</h2>
+<hr>
+<center>
+<div id='preview'></div>
+</center>
 <hr>
 
-<h2>chess game notation in PGN format</h2>
+<h2>options</h2>
+
+<h3>chess game notation in PGN format</h3>
 
 <textarea id=pgnText cols=80 rows=15></textarea>
 
-<h2>game replay options</h2>
+<h3>game replay options</h3>
 autoplay game on page load:
 <input type="checkbox" id="auto" name="auto" value="auto" />
 <br>
@@ -334,7 +355,7 @@ autoplay delay (sec):
 loop through games at game end: 
 <input type="checkbox" id="loop" name="loop" value="loop" />
 
-<h2>chessboard options</h2>
+<h3>chessboard options</h3>
 
 piece font:
 <select id="pieceFont" name="pieceFont">
@@ -412,7 +433,7 @@ show control buttons:
 <input type="checkbox" id="showButtons" name="showButtons" value="showButtons" />
 <br>
 
-<h2>header and moves options</h2>
+<h3>header and moves options</h3>
 
 show game header:
 <input type="checkbox" id="showHeader" name="showHeader" value="showHeader" />
@@ -420,15 +441,6 @@ show game header:
 
 show game moves:
 <input type="checkbox" id="showMoves" name="showMoves" value="showMoves" />
-<br>
-<br>
-
-header and moves text area height:
-<input type="text" id="textHeight" name="textHeight" value="" size="5" />
-<br>
-
-header and moves text area width:
-<input type="text" id="textWidth" name="textWidth" value="" size="5" />
 <br>
 <br>
 
@@ -473,6 +485,18 @@ comments font size:
 <h2>page options</h2>
 background color:
 <input type="text" class="color" id="backgroundColorHex" name="backgroundColorHex" value="" size="7" />
+<br>
+preview background color:
+<input type="text" class="color" id="previewBackgroundColorHex" name="previewBackgroundColorHex" value="" size="7" /> (not actually used in the iframe, just for the preview)
+<br>
+
+iFrame height:
+<input type="text" id="frameHeight" name="frameHeight" value="" size="5" /> <span id="frameHeight_helpText"></span>
+<br>
+
+iFrame width:
+<input type="text" id="frameWidth" name="frameWidth" value="" size="5" /> <span id="frameWidth_helpText"></span>
+<br>
 <br>
 
 <h2>URL options</h2>
