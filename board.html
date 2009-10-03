@@ -141,11 +141,21 @@ function new_start_pgn4web() {
 
   start_pgn4web();
 
-  if (gup("showHeightWidth") != "") {
-    boardWidth = document.getElementById("boardTable").offsetWidth;
-    boardHeight = document.getElementById("boardTable").offsetHeight;
-    if (showButtons) { boardHeight += document.getElementById("autoplayButton").offsetHeight }
-    if (showButtons && (numberOfGames > 1)) { boardHeight += document.getElementById("GameSelector").offsetHeight }
+  boardWidth = document.getElementById("boardTable").offsetWidth;
+  boardHeight = document.getElementById("boardTable").offsetHeight;
+  if (showButtons) { boardHeight += document.getElementById("autoplayButton").offsetHeight }
+  if (showButtons && (numberOfGames > 1)) { boardHeight += document.getElementById("GameSelector").offsetHeight }
+
+  theObject = document.getElementById("headerMoves");
+  if (theObject != null) { 
+    if (frameWidth == "") { document.getElementById("headerMoves").style.width = textWidth; }
+    else { document.getElementById("headerMoves").style.width = frameWidth; }
+	  
+    if (frameHeight == "") { document.getElementById("headerMoves").style.height = textHeight; }
+    else { document.getElementById("headerMoves").style.height = frameHeight - boardHeight; }
+  }
+
+  if (gup("showHeightWidth") != "") { 
     alert("board dimensions\n\nwidth: " + boardWidth + "\nheight: " + boardHeight);
   }
 
@@ -333,6 +343,9 @@ else { showMoves = false }
 if ((textHeight = gup("textHeight")) == "") { textHeight="100%" }
 if ((textWidth = gup("textWidth")) == "") { textWidth="100%" }
 
+frameHeight = gup("frameHeight");
+frameWidth = gup("frameWidth");
+
 if (gup("help") != "") {
   document.write("<PRE>");
   document.write("URL parameters\n");
@@ -357,8 +370,8 @@ if (gup("help") != "") {
   document.write("\n");
   document.write(" - showHeader = if set true, displays game header text (default false)\n");
   document.write(" - showMoves = if set true, displays moves text (default false)\n");
-  document.write(" - textHeight = set height of the textual section, header and/or moves text (default 100%)\n");
-  document.write(" - textWidth = set width of the textual section, header and/or moves text (default 100%)\n");
+  document.write(" - textHeight = set height of the textual section, header and/or moves text, might be ingored if frameHeight is set (default 100%)\n");
+  document.write(" - textWidth = set width of the textual section, header and/or moves text, might be ignored if frameWidth is set (default 100%)\n");
   document.write(" - showComments = if set false, removes comments when displaying moves text (default true)\n");
   document.write(" - showCommentsOnSeparateLines = if set true, add newlines chars when displaying comments (default false)\n"); 
   document.write(" - fontHeaderColorName = header color name, like red (default black)\n");
@@ -375,6 +388,8 @@ if (gup("help") != "") {
   document.write("\n");
   document.write(" - backgroundColorName = page background color name, like red\n");
   document.write(" - backgroundColorHex = page background color hex code, like FF0000\n");
+  document.write(" - frameHeight = set height of the total page, overriding textHeight (default not set)\n");
+  document.write(" - frameWidth = set width of the total page, overriding textWidth (default not set)\n");
   document.write("\n");
   document.write(" - showHeightWidth = if set true, calculates optimal iframe dimensions (default false)\n");
   document.write(" - help = if set true, shows help info (default false)\n");
@@ -395,7 +410,7 @@ if (showButtons) {
 }
 
 if ((showHeader) || (showMoves)) {
-  document.write("<div style='overflow:auto; height: " + textHeight + "; width: " + textWidth + "'><br>")
+  document.write("<div id='headerMoves' style='overflow:auto; height: " + textHeight + "; width: " + textWidth + "'><br>")
 } 
 
 if (showHeader) {
