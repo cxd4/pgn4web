@@ -258,7 +258,7 @@ function calculate_iframe() {
 
   // better to keep this as last
   pgnText_value = document.getElementById('pgnText').value;
-  iframeUrl += "&pt=" + pgnText_value.replace(/\n/g," ");
+  iframeUrl += "&pt=" + pgnText_value.replace(/#/g," ").replace(/\n/g," ");
 
 }
 
