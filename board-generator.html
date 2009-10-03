@@ -147,6 +147,14 @@ function reset_form() {
   if (confirm("do you really want to reset the form to the default values?\nAll your options including the PGN text will be lost!")) { set_defaults(); }
 }
 
+function update_header_text_controls() {
+  update_disabled_controls();	
+  update_suggested_iframe_dimensions();
+}
+
+
+function update_disabled_controls() {
+}
 
 function update_suggested_iframe_dimensions() {
 
@@ -434,11 +442,11 @@ show control buttons:
 <h3>header and moves options</h3>
 
 show game header:
-<input type="checkbox" id="showHeader" name="showHeader" value="showHeader" onChange="update_suggested_iframe_dimensions()" />
+<input type="checkbox" id="showHeader" name="showHeader" value="showHeader" onChange="update_header_text_controls()" />
 <br>
 
 show game moves:
-<input type="checkbox" id="showMoves" name="showMoves" value="showMoves" onChange="update_suggested_iframe_dimensions()" />
+<input type="checkbox" id="showMoves" name="showMoves" value="showMoves" onChange="update_header_text_controls()" />
 <br>
 <br>
 
