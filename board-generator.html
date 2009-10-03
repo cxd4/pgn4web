@@ -154,6 +154,16 @@ function update_header_text_controls() {
 
 
 function update_disabled_controls() {
+
+  document.board.showComments.disabled = !document.board.showMoves.checked;
+  document.board.showCommentsOnSeparateLines.disabled = !document.board.showMoves.checked;
+  document.board.fontHeaderColorHex.disabled = !document.board.showHeader.checked;
+  document.board.fontMovesColorHex.disabled = !document.board.showMoves.checked;
+  document.board.fontCommentsColorHex.disabled = !document.board.showMoves.checked;
+  document.board.highlightMoveColorHex.disabled = !document.board.showMoves.checked;
+  document.board.headerFontSize.disabled = !document.board.showHeader.checked;
+  document.board.movesFontSize.disabled = !document.board.showMoves.checked;
+  document.board.commentsFontSize.disabled = !document.board.showMoves.checked;
 }
 
 function update_suggested_iframe_dimensions() {
@@ -208,22 +218,30 @@ function calculate_iframe() {
   if (document.board.showMoves.checked) { showMoves_value = "t" } else { showMoves_value = "f" }
   iframeUrl += "&sh=" + showHeader_value + "&sm=" + showMoves_value;
 
-  if (document.board.showHeader.checked || document.board.showMoves.checked) {
-
+  if (document.board.showHeader.checked) {
+		  
     if (document.board.showComments.checked) { showComments_value = "t" } else { showComments_value = "f" } 
     if (document.board.showCommentsOnSeparateLines.checked) { showCommentsOnSeparateLines_value = "t" } else { showCommentsOnSeparateLines_value = "f" }
     iframeUrl += "&sc=" + showComments_value + "&scosl=" + showCommentsOnSeparateLines_value;
 
     fontHeaderColorHex_value =  document.board.fontHeaderColorHex.value
+    iframeUrl += "&fhch=" + fontHeaderColorHex_value;
+
+    headerFontSize_value =  document.board.headerFontSize.value
+    iframeUrl += "&hfs=" + headerFontSize_value;
+
+  }
+		  
+  if (document.board.showMoves.checked) {
+
     fontMovesColorHex_value =  document.board.fontMovesColorHex.value
     fontCommentsColorHex_value =  document.board.fontCommentsColorHex.value
     highlightMoveColorHex_value =  document.board.highlightMoveColorHex.value
-    iframeUrl += "&fhch=" + fontHeaderColorHex_value + "&fmch=" + fontMovesColorHex_value + "&fcch=" + fontCommentsColorHex_value + "&hmch=" + highlightMoveColorHex_value;
+    iframeUrl += "&fmch=" + fontMovesColorHex_value + "&fcch=" + fontCommentsColorHex_value + "&hmch=" + highlightMoveColorHex_value;
 
-    headerFontSize_value =  document.board.headerFontSize.value
     movesFontSize_value =  document.board.movesFontSize.value
     commentsFontSize_value =  document.board.commentsFontSize.value
-    iframeUrl += "&hfs=" + headerFontSize_value + "&mfs=" + movesFontSize_value + "&cfs" + commentsFontSize_value;
+    iframeUrl += "&mfs=" + movesFontSize_value + "&cfs" + commentsFontSize_value;
 
   } 
 
@@ -445,47 +463,45 @@ show game header:
 <input type="checkbox" id="showHeader" name="showHeader" value="showHeader" onChange="update_header_text_controls()" />
 <br>
 
+header font size:
+<input type="text" id="headerFontSize" name="headerFontSize" value="" size="4" />
+<br>
+
+header font color:
+<input type="text" class="color" id="fontHeaderColorHex" name="fontHeaderColorHex" value="" size="7" />
+<br>
+<br>
+
 show game moves:
 <input type="checkbox" id="showMoves" name="showMoves" value="showMoves" onChange="update_header_text_controls()" />
-<br>
 <br>
 
 show game comments:
 <input type="checkbox" id="showComments" name="showComments" value="showComments" />
 <br>
 
-show game comments on separate lines:
+show comments on separate lines:
 <input type="checkbox" id="showCommentsOnSeparateLines" name="showCommentsOnSeparateLines" value="showCommentsOnSeparateLines" />
-<br>
-<br>
-
-header font color:
-<input type="text" class="color" id="fontHeaderColorHex" name="fontHeaderColorHex" value="" size="7" />
-<br>
-
-moves font color:
-<input type="text" class="color" id="fontMovesColorHex" name="fontMovesColorHex" value="" size="7" />
-<br>
-
-comments font color:
-<input type="text" class="color" id="fontCommentsColorHex" name="fontCommentsColorHex" value="" size="7" />
-<br>
-
-highlight move color:
-<input type="text" class="color" id="highlightMoveColorHex" name="highlightMoveColorHex" value="" size="7" />
-<br>
-<br>
-
-header font size:
-<input type="text" id="headerFontSize" name="headerFontSize" value="" size="4" />
 <br>
 
 moves font size:
 <input type="text" id="movesFontSize" name="movesFontSize" value="" size="4" />
 <br>
 
+moves font color:
+<input type="text" class="color" id="fontMovesColorHex" name="fontMovesColorHex" value="" size="7" />
+<br>
+
+highlight move color:
+<input type="text" class="color" id="highlightMoveColorHex" name="highlightMoveColorHex" value="" size="7" />
+<br>
+
 comments font size:
 <input type="text" id="commentsFontSize" name="commentsFontSize" value="" size="4" />
+<br>
+
+comments font color:
+<input type="text" class="color" id="fontCommentsColorHex" name="fontCommentsColorHex" value="" size="7" />
 <br>
 
 <h3>page options</h3>
