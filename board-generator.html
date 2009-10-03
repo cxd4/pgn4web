@@ -61,6 +61,7 @@ function set_defaults() {
 
   if ((pgnText_value = gup("pgnText")) == "") { pgnText_value = pgnText_default }
   document.getElementById('pgnText').value = pgnText_value;
+  update_pgnTextLength();
 
   if ((auto_value = gup("auto")) == "") { auto_value = auto_default }
   document.board.auto.checked = (auto_value == "t");
@@ -188,6 +189,11 @@ function update_suggested_iframe_dimensions() {
   document.getElementById('frameWidth_helpText').innerHTML = "if blank the frame width will be set at the automatically calculated value of " + suggested_frameWidth;
 
 }
+
+function update_pgnTextLength() {
+ document.getElementById('pgnTextLength').innerHTML = "PGN text length is " + document.getElementById('pgnText').value.length;
+}
+
 
 function calculate_iframe() {
 
@@ -373,7 +379,8 @@ window.onload = set_defaults;
 
 <h3>chess game notation in PGN format</h3>
 
-<textarea id=pgnText cols=100 rows=15></textarea>
+<textarea id=pgnText cols=100 rows=15 onChange="update_pgnTextLength()"></textarea>
+<div id="pgnTextLength" style="color: gray; font-size: small;"></div>
 <p>
 <br>
 
@@ -545,12 +552,18 @@ iFrame width:
 <p>
 <br>
 
+<!--
+
 <h3>URL options</h3>
 
 base URL:
 <input type="text" id="baseUrl" name="baseUrl" value="" size="80" />
 <p>
 <br>
+
+-->
+
+<input type="hidden" id="baseUrl" name="baseUrl" value="" size="80" />
 
 </form>
 
