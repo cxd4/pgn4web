@@ -143,8 +143,9 @@ function new_start_pgn4web() {
 
   start_pgn4web();
 
-  boardWidth = document.getElementById("boardTable").offsetWidth;
   boardHeight = document.getElementById("boardTable").offsetHeight;
+  document.getElementById("boardTable").style.width = boardHeight;
+  boardWidth = document.getElementById("boardTable").offsetWidth;
   if (showButtons) { boardHeight += document.getElementById("autoplayButton").offsetHeight }
   if (showButtons && (numberOfGames > 1)) { boardHeight += document.getElementById("GameSelector").offsetHeight }
 
