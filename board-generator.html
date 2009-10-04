@@ -48,9 +48,9 @@ fontHeaderColorHex_default = "000000";
 fontMovesColorHex_default = "000000";
 fontCommentsColorHex_default = "808080";
 highlightMoveColorHex_default = "DAF4D7";
-headerFontSize_default = "100%";
-movesFontSize_default = "100%";
-commentsFontSize_default = "100%";
+fontHeaderSize_default = "100%";
+fontMovesSize_default = "100%";
+fontCommentsSize_default = "100%";
 backgroundColorHex_default = "FFFFFF";
 previewBackgroundColorHex_default = "CCCCCC";
 baseUrl_default = location.protocol + "//" + location.hostname+location.pathname.substr(0, location.pathname.lastIndexOf("/")) + "/board.html";
@@ -117,14 +117,14 @@ function set_defaults() {
   if ((highlightMoveColorHex_value = gup("highlightMoveColorHex")) == "") { highlightMoveColorHex_value = highlightMoveColorHex_default }
   document.board.highlightMoveColorHex.value = highlightMoveColorHex_value;
 
-  if ((headerFontSize_value = gup("headerFontSize")) == "") { headerFontSize_value = headerFontSize_default }
-  document.board.headerFontSize.value = headerFontSize_value;
+  if ((fontHeaderSize_value = gup("fontHeaderSize")) == "") { fontHeaderSize_value = fontHeaderSize_default }
+  document.board.fontHeaderSize.value = fontHeaderSize_value;
 
-  if ((movesFontSize_value = gup("movesFontSize")) == "") { movesFontSize_value = movesFontSize_default }
-  document.board.movesFontSize.value = movesFontSize_value;
+  if ((fontMovesSize_value = gup("fontMovesSize")) == "") { fontMovesSize_value = fontMovesSize_default }
+  document.board.fontMovesSize.value = fontMovesSize_value;
 
-  if ((commentsFontSize_value = gup("commentsFontSize")) == "") { commentsFontSize_value = commentsFontSize_default }
-  document.board.commentsFontSize.value = commentsFontSize_value;
+  if ((fontCommentsSize_value = gup("fontCommentsSize")) == "") { fontCommentsSize_value = fontCommentsSize_default }
+  document.board.fontCommentsSize.value = fontCommentsSize_value;
 
   if ((backgroundColorHex_value = gup("backgroundColorHex")) == "") { backgroundColorHex_value = backgroundColorHex_default }
   document.board.backgroundColorHex.value = backgroundColorHex_value;
@@ -162,9 +162,9 @@ function update_disabled_controls() {
   document.board.fontMovesColorHex.disabled = !document.board.showMoves.checked;
   document.board.fontCommentsColorHex.disabled = !document.board.showMoves.checked;
   document.board.highlightMoveColorHex.disabled = !document.board.showMoves.checked;
-  document.board.headerFontSize.disabled = !document.board.showHeader.checked;
-  document.board.movesFontSize.disabled = !document.board.showMoves.checked;
-  document.board.commentsFontSize.disabled = !document.board.showMoves.checked;
+  document.board.fontHeaderSize.disabled = !document.board.showHeader.checked;
+  document.board.fontMovesSize.disabled = !document.board.showMoves.checked;
+  document.board.fontCommentsSize.disabled = !document.board.showMoves.checked;
 }
 
 function update_suggested_iframe_dimensions() {
@@ -233,8 +233,8 @@ function calculate_iframe() {
     fontHeaderColorHex_value =  document.board.fontHeaderColorHex.value
     iframeUrl += "&fhch=" + fontHeaderColorHex_value;
 
-    headerFontSize_value =  document.board.headerFontSize.value
-    iframeUrl += "&hfs=" + headerFontSize_value;
+    fontHeaderSize_value =  document.board.fontHeaderSizevalue
+    iframeUrl += "&fhs=" + fontHeaderSize_value;
 
   }
 		  
@@ -245,9 +245,9 @@ function calculate_iframe() {
     highlightMoveColorHex_value =  document.board.highlightMoveColorHex.value
     iframeUrl += "&fmch=" + fontMovesColorHex_value + "&fcch=" + fontCommentsColorHex_value + "&hmch=" + highlightMoveColorHex_value;
 
-    movesFontSize_value =  document.board.movesFontSize.value
-    commentsFontSize_value =  document.board.commentsFontSize.value
-    iframeUrl += "&mfs=" + movesFontSize_value + "&cfs" + commentsFontSize_value;
+    fontMovesSize_value =  document.board.fontMovesSize.value
+    fontCommentsSize_value =  document.board.fontCommentsSize.value
+    iframeUrl += "&fms=" + fontMovesSize_value + "&fcs" + fontCommentsSize_value;
 
   } 
 
@@ -491,7 +491,7 @@ show control buttons:
 <p>
 
 header font size:
-<input type="text" id="headerFontSize" name="headerFontSize" value="" size="4" />
+<input type="text" id="fontHeaderSize" name="fontHeaderSize" value="" size="4" />
 <p>
 
 header font color:
@@ -512,7 +512,7 @@ show comments on separate lines:
 <p>
 
 moves font size:
-<input type="text" id="movesFontSize" name="movesFontSize" value="" size="4" />
+<input type="text" id="fontMovesSize" name="fontMovesSize" value="" size="4" />
 <p>
 
 moves font color:
@@ -524,7 +524,7 @@ highlight move color:
 <p>
 
 comments font size:
-<input type="text" id="commentsFontSize" name="commentsFontSize" value="" size="4" />
+<input type="text" id="fontCommentsSize" name="fontCommentsSize" value="" size="4" />
 <p>
 
 comments font color:
