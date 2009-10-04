@@ -247,14 +247,14 @@ function calculate_iframe() {
 
     fontMovesSize_value =  document.board.fontMovesSize.value
     fontCommentsSize_value =  document.board.fontCommentsSize.value
-    iframeUrl += "&fms=" + fontMovesSize_value + "&fcs" + fontCommentsSize_value;
+    iframeUrl += "&fms=" + fontMovesSize_value + "&fcs=" + fontCommentsSize_value;
 
   } 
 
   backgroundColorHex_value = document.board.backgroundColorHex.value;
   iframeUrl += "&bch=" + backgroundColorHex_value;
 
-  // this does not go in the iframee
+  // this does not go in the iframe
   previewBackgroundColorHex_value = document.board.previewBackgroundColorHex.value;
 
   update_suggested_iframe_dimensions();
