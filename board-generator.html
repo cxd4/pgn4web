@@ -180,7 +180,7 @@ function update_suggested_iframe_dimensions() {
   if (document.board.showButtons.checked) { suggested_frameHeight += 50; }
 
   if (document.board.showHeader.checked) { suggested_frameHeight += Math.round(0.3 * boardWidth); }
-  if (document.board.showMoves.checked) { suggested_frameHeight += Math.round(1.5 * boardWidth); }
+  if (document.board.showMoves.checked) { suggested_frameHeight += Math.round(0.7 * boardWidth); }
 
   document.getElementById('frameHeight_helpText').innerHTML = "if blank the frame height will be set at the automatically calculated value of " + suggested_frameHeight;
   document.getElementById('frameWidth_helpText').innerHTML = "if blank the frame width will be set at the automatically calculated value of " + suggested_frameWidth;
