@@ -2900,7 +2900,7 @@ function PrintHTML(){
   }
   if (commentsIntoMoveText && (MoveComments[StartPly+PlyNumber] != '')){
     if (commentsOnSeparateLines) text += '<P>';
-    text += '<SPAN CLASS="comment">' + MoveComments[StartPly+PlyNumber] + '</SPAN>';
+    text += '<SPAN CLASS="comment">' + MoveComments[StartPly+PlyNumber] + '</SPAN><SPAN CLASS="move"> </SPAN>';
   }
   text += '</SPAN>';
 
