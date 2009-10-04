@@ -2883,7 +2883,7 @@ function PrintHTML(){
     printedComment = false;
     if (commentsIntoMoveText && (MoveComments[ii] != '')){
       if (commentsOnSeparateLines) text += '<P>';
-      text += '<SPAN CLASS="comment">' + MoveComments[ii] + '&nbsp;</SPAN>';
+      text += '<SPAN CLASS="comment">' + MoveComments[ii] + '</SPAN><SPAN CLASS="move"> </SPAN>';
       if (commentsOnSeparateLines) text += '<P>';
       printedComment = true;
     }
@@ -2900,7 +2900,7 @@ function PrintHTML(){
   }
   if (commentsIntoMoveText && (MoveComments[StartPly+PlyNumber] != '')){
     if (commentsOnSeparateLines) text += '<P>';
-    text += '<SPAN CLASS="comment">' + MoveComments[StartPly+PlyNumber] + '</SPAN><SPAN CLASS="move"> </SPAN>';
+    text += '<SPAN CLASS="comment">' + MoveComments[StartPly+PlyNumber] + '</SPAN>';
   }
   text += '</SPAN>';
 
