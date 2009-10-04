@@ -281,7 +281,7 @@ if ((highlightColor == 'none') || (highlightColor == '#none')) {
   highlightDarkColor = highlightColor;
 }
 
-if ((boardBorderColor = gup("boardBorderColorName")) == "") {if ((boardBorderColor = gup("boardBorderColorHex")) == "#") boardBorderColor = "#000000"}
+if ((boardBorderColor = gup("boardBorderColorName")) == "") {if ((boardBorderColor = "#" + gup("boardBorderColorHex")) == "#") boardBorderColor = "#000000"}
 
 if ((highlightMoveColor  = gup("highlightMoveColorName"))  == "") {if ((highlightMoveColor  = "#" + gup("highlightMoveColorHex"))  == "#") highlightMoveColor  = "#DAF4D7"}
 
