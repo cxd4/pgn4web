@@ -32,8 +32,8 @@ auto_default = "t";
 delay_default = 1000;
 loop_default = "f";
 pieceFont_default = "alpha";
-pieceSize_default = 24;
-squareSize_default = 28;
+pieceSize_default = 40;
+squareSize_default = 50;
 lightColorHex_default = "EFF4EC";
 darkColorHex_default = "C6CEC3";
 boardBorderColorHex_default = "000000";
@@ -49,9 +49,9 @@ fontHeaderColorHex_default = "000000";
 fontMovesColorHex_default = "000000";
 fontCommentsColorHex_default = "808080";
 highlightMoveColorHex_default = "DAF4D7";
-fontHeaderSize_default = "100%";
-fontMovesSize_default = "100%";
-fontCommentsSize_default = "100%";
+fontHeaderSize_default = "85%";
+fontMovesSize_default = "85%";
+fontCommentsSize_default = "85%";
 backgroundColorHex_default = "FFFFFF";
 previewBackgroundColorHex_default = "CCCCCC";
 baseUrl_default = location.protocol + "//" + location.hostname+location.pathname.substr(0, location.pathname.lastIndexOf("/")) + "/board.html";
@@ -174,13 +174,13 @@ function update_disabled_controls() {
 function update_suggested_iframe_dimensions() {
 
   boardWidth = 8 * document.board.squareSize.value + 6; 
-  suggested_frameWidth = 2 * boardWidth;
-  suggested_frameHeight = Math.round(1.1 * boardWidth);
+  suggested_frameWidth = boardWidth;
+  suggested_frameHeight = boardWidth;
   
   if (document.board.showButtons.checked) { suggested_frameHeight += 50; }
 
-  if (document.board.showHeader.checked) { suggested_frameHeight += Math.round(0.3 * boardWidth); }
-  if (document.board.showMoves.checked) { suggested_frameHeight += Math.round(0.7 * boardWidth); }
+  if (document.board.showHeader.checked) { suggested_frameHeight += Math.max(100, Math.round(0.2 * boardWidth)); }
+  if (document.board.showMoves.checked) { suggested_frameHeight += Math.max(300, Math.round(0.8 * boardWidth); }
 
   document.getElementById('frameHeight_helpText').innerHTML = "if blank the frame height will be set at the automatically calculated value of " + suggested_frameHeight;
   document.getElementById('frameWidth_helpText').innerHTML = "if blank the frame width will be set at the automatically calculated value of " + suggested_frameWidth;
