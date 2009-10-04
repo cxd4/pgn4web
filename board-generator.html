@@ -32,8 +32,8 @@ auto_default = "t";
 delay_default = 1000;
 loop_default = "f";
 pieceFont_default = "alpha";
-pieceSize_default = 38;
-squareSize_default = 46;
+pieceSize_default = 30;
+squareSize_default = 40;
 lightColorHex_default = "EFF4EC";
 darkColorHex_default = "C6CEC3";
 boardBorderColorHex_default = "000000";
@@ -49,9 +49,9 @@ fontHeaderColorHex_default = "000000";
 fontMovesColorHex_default = "000000";
 fontCommentsColorHex_default = "808080";
 highlightMoveColorHex_default = "DAF4D7";
-fontHeaderSize_default = "80%";
-fontMovesSize_default = "80%";
-fontCommentsSize_default = "80%";
+fontHeaderSize_default = "100%";
+fontMovesSize_default = "100%";
+fontCommentsSize_default = "100%";
 backgroundColorHex_default = "FFFFFF";
 previewBackgroundColorHex_default = "CCCCCC";
 baseUrl_default = location.protocol + "//" + location.hostname+location.pathname.substr(0, location.pathname.lastIndexOf("/")) + "/board.html";
@@ -182,6 +182,10 @@ function update_suggested_iframe_dimensions() {
 
   if (document.board.showHeader.checked) { suggested_frameHeight += Math.max(100, Math.round(0.2 * boardWidth)); }
   if (document.board.showMoves.checked) { suggested_frameHeight += Math.max(300, Math.round(0.8 * boardWidth)); }
+
+  if (document.board.showHeader.checked || document.board.showMoves.checked) {
+    suggested_frameWidth = Math.max(400, Math.round(1.5 * boardWidth));
+  }
 
   document.getElementById('frameHeight_helpText').innerHTML = "if blank the frame height will be set at the automatically calculated value of " + suggested_frameHeight;
   document.getElementById('frameWidth_helpText').innerHTML = "if blank the frame width will be set at the automatically calculated value of " + suggested_frameWidth;
