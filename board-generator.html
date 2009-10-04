@@ -174,20 +174,13 @@ function update_disabled_controls() {
 function update_suggested_iframe_dimensions() {
 
   boardWidth = 8 * document.board.squareSize.value + 6; 
-  suggested_frameWidth = boardWidth;
-  suggested_frameHeight = boardWidth;
+  suggested_frameWidth = 2 * boardWidth;
+  suggested_frameHeight = Math.round(1.1 * boardWidth);
   
   if (document.board.showButtons.checked) { suggested_frameHeight += 50; }
 
-  if (document.board.showHeader.checked) { suggested_frameHeight += 100; }
-  if (document.board.showMoves.checked) { suggested_frameHeight += 200; }
-  if (document.board.showHeader.checked || document.board.showMoves.checked) {
-    suggested_frameHeight = Math.max(suggested_frameHeight, 2 * boardWidth);
-  }
-
-  if (document.board.showHeader.checked || document.board.showMoves.checked) {
-    suggested_frameWidth = Math.max (suggested_frameWidth, 400);
-  }
+  if (document.board.showHeader.checked) { suggested_frameHeight += Math.round(0.3 * boardWidth); }
+  if (document.board.showMoves.checked) { suggested_frameHeight += Math.round(1.5 * boardWidth); }
 
   document.getElementById('frameHeight_helpText').innerHTML = "if blank the frame height will be set at the automatically calculated value of " + suggested_frameHeight;
   document.getElementById('frameWidth_helpText').innerHTML = "if blank the frame width will be set at the automatically calculated value of " + suggested_frameWidth;
