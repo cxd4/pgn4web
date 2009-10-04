@@ -13,6 +13,11 @@ body {
   background: white;
 }
 
+a {
+  text-decoration: none;
+  color: black;
+}
+
 </style>
 
 </head>
@@ -178,7 +183,7 @@ function update_suggested_iframe_dimensions() {
   suggested_frameWidth = boardWidth;
   suggested_frameHeight = boardWidth;
   
-  if (document.board.showButtons.checked) { suggested_frameHeight += 50; }
+  if (document.board.showButtons.checked) { suggested_frameHeight += 50 }
 
   if (document.board.showHeader.checked) { suggested_frameHeight += Math.max(100, Math.round(0.2 * boardWidth)); }
   if (document.board.showMoves.checked) { suggested_frameHeight += Math.max(300, Math.round(0.8 * boardWidth)); }
@@ -188,7 +193,7 @@ function update_suggested_iframe_dimensions() {
   }
 
   document.getElementById('frameHeight_helpText').innerHTML = "if blank the frame height will be set at the automatically calculated value of " + suggested_frameHeight;
-  document.getElementById('frameWidth_helpText').innerHTML = "if blank the frame width will be set at the automatically calculated value of " + suggested_frameWidth;
+  document.getElementById('frameWidth_helpText').innerHTML = "if blank the frame width will be set at the automatically calculated value of " + suggested_frameWidth + " (board height is " + boardWidth + ")";
 
 }
 
@@ -283,7 +288,7 @@ function generate_iframe() {
   document.getElementById('preview').innerHTML = "<table bgcolor=#" + previewBackgroundColorHex_value + " width=100% cellpadding=20><tr><td align=center valign=middle> " + iframe_tag_string + "</td></tr></table>";
 
   if (iframeUrl.length < 2000) {
-    document.getElementById('iframe_tag_status').innerHTML = "iFrame URL looks ok: length is " +  iframeUrl.length;
+    document.getElementById('iframe_tag_status').innerHTML = "iFrame URL ok with " +  iframeUrl.length + " chars, please copy ALL the text from the yellow box above into your web page or blog to show the chessboard.";
     document.getElementById('iframe_tag_status').style.color = "gray";
     document.getElementById('iframe_tag_status').style.fontWeight = "normal";
   } else {
@@ -348,7 +353,7 @@ window.onload = set_defaults;
 &nbsp; &nbsp;<a href=#actions>actions</a>
 &nbsp; &nbsp;<a href=#game_preview>preview</a>
 &nbsp; &nbsp;<a href=#pgn_form>PGN</a>
-&nbsp; &nbsp;-&nbsp; &nbsp; options:&nbsp; &nbsp;<a href=#replay_options>replay</a>
+&nbsp; &nbsp;-&nbsp; &nbsp; <span style="color:gray">options:</span>&nbsp; &nbsp;<a href=#replay_options>replay</a>
 &nbsp; &nbsp;<a href=#board_options>board</a>
 &nbsp; &nbsp;<a href=#header_options>header</a>
 &nbsp; &nbsp;<a href=#moves_options>moves</a>
@@ -377,7 +382,7 @@ window.onload = set_defaults;
 &nbsp; &nbsp;<a href=#actions>actions</a>
 &nbsp; &nbsp;<a href=#game_preview>preview</a>
 &nbsp; &nbsp;<a href=#pgn_form>PGN</a>
-&nbsp; &nbsp;-&nbsp; &nbsp; options:&nbsp; &nbsp;<a href=#replay_options>replay</a>
+&nbsp; &nbsp;-&nbsp; &nbsp; <span style="color:gray">options:</span>&nbsp; &nbsp;<a href=#replay_options>replay</a>
 &nbsp; &nbsp;<a href=#board_options>board</a>
 &nbsp; &nbsp;<a href=#header_options>header</a>
 &nbsp; &nbsp;<a href=#moves_options>moves</a>
@@ -393,7 +398,7 @@ window.onload = set_defaults;
 </td></tr></table>
 <p>
 
-<b>iFrame HTML code: </b><input type=text id="iframe_tag" name="iframe_tag" size=80 />
+<b>iFrame HTML code: </b><input type=text id="iframe_tag" name="iframe_tag" size=80 style="background-color: #FFFF66;" />
 <p>
 
 <div id="iframe_tag_status">&nbsp;</div>
@@ -408,7 +413,7 @@ window.onload = set_defaults;
 &nbsp; &nbsp;<a href=#actions>actions</a>
 &nbsp; &nbsp;<a href=#game_preview>preview</a>
 &nbsp; &nbsp;<a href=#pgn_form>PGN</a>
-&nbsp; &nbsp;-&nbsp; &nbsp; options:&nbsp; &nbsp;<a href=#replay_options>replay</a>
+&nbsp; &nbsp;-&nbsp; &nbsp; <span style="color:gray">options:</span>&nbsp; &nbsp;<a href=#replay_options>replay</a>
 &nbsp; &nbsp;<a href=#board_options>board</a>
 &nbsp; &nbsp;<a href=#header_options>header</a>
 &nbsp; &nbsp;<a href=#moves_options>moves</a>
@@ -432,7 +437,7 @@ window.onload = set_defaults;
 &nbsp; &nbsp;<a href=#actions>actions</a>
 &nbsp; &nbsp;<a href=#game_preview>preview</a>
 &nbsp; &nbsp;<a href=#pgn_form>PGN</a>
-&nbsp; &nbsp;-&nbsp; &nbsp; options:&nbsp; &nbsp;<a href=#replay_options>replay</a>
+&nbsp; &nbsp;-&nbsp; &nbsp; <span style="color:gray">options:</span>&nbsp; &nbsp;<a href=#replay_options>replay</a>
 &nbsp; &nbsp;<a href=#board_options>board</a>
 &nbsp; &nbsp;<a href=#header_options>header</a>
 &nbsp; &nbsp;<a href=#moves_options>moves</a>
@@ -441,7 +446,7 @@ window.onload = set_defaults;
 </td></tr></table>
 
 <textarea id=pgnText cols=100 rows=15 onChange="update_pgnTextLength()"></textarea>
-<div id="pgnTextLength" style="color: gray; font-size: small;"></div>
+<div id="pgnTextLength" style="color: gray;"></div>
 <p>
 <br>
 
@@ -453,7 +458,7 @@ window.onload = set_defaults;
 &nbsp; &nbsp;<a href=#actions>actions</a>
 &nbsp; &nbsp;<a href=#game_preview>preview</a>
 &nbsp; &nbsp;<a href=#pgn_form>PGN</a>
-&nbsp; &nbsp;-&nbsp; &nbsp; options:&nbsp; &nbsp;<a href=#replay_options>replay</a>
+&nbsp; &nbsp;-&nbsp; &nbsp; <span style="color:gray">options:</span>&nbsp; &nbsp;<a href=#replay_options>replay</a>
 &nbsp; &nbsp;<a href=#board_options>board</a>
 &nbsp; &nbsp;<a href=#header_options>header</a>
 &nbsp; &nbsp;<a href=#moves_options>moves</a>
@@ -489,7 +494,7 @@ loop through games at game end:
 &nbsp; &nbsp;<a href=#actions>actions</a>
 &nbsp; &nbsp;<a href=#game_preview>preview</a>
 &nbsp; &nbsp;<a href=#pgn_form>PGN</a>
-&nbsp; &nbsp;-&nbsp; &nbsp; options:&nbsp; &nbsp;<a href=#replay_options>replay</a>
+&nbsp; &nbsp;-&nbsp; &nbsp; <span style="color:gray">options:</span>&nbsp; &nbsp;<a href=#replay_options>replay</a>
 &nbsp; &nbsp;<a href=#board_options>board</a>
 &nbsp; &nbsp;<a href=#header_options>header</a>
 &nbsp; &nbsp;<a href=#moves_options>moves</a>
@@ -582,21 +587,20 @@ show control buttons:
 
 <table width=100% cellspacing=0 cellpadding=0><tr><td>
 <a name=header_options><b>show game header:</b></a>
+<input type="checkbox" id="showHeader" name="showHeader" value="showHeader" onChange="update_header_text_controls()" />
 </td><td valign=top>
 <div style="font-size: x-small; text-align: right">
 <a href=#instructions>instructions</a>
 &nbsp; &nbsp;<a href=#actions>actions</a>
 &nbsp; &nbsp;<a href=#game_preview>preview</a>
 &nbsp; &nbsp;<a href=#pgn_form>PGN</a>
-&nbsp; &nbsp;-&nbsp; &nbsp; options:&nbsp; &nbsp;<a href=#replay_options>replay</a>
+&nbsp; &nbsp;-&nbsp; &nbsp; <span style="color:gray">options:</span>&nbsp; &nbsp;<a href=#replay_options>replay</a>
 &nbsp; &nbsp;<a href=#board_options>board</a>
 &nbsp; &nbsp;<a href=#header_options>header</a>
 &nbsp; &nbsp;<a href=#moves_options>moves</a>
 &nbsp; &nbsp;<a href=#page_options>page</a>
 </div>
 </td></tr></table>
-
-<input type="checkbox" id="showHeader" name="showHeader" value="showHeader" onChange="update_header_text_controls()" />
 <p>
 
 header font size:
@@ -610,21 +614,20 @@ header font color:
 
 <table width=100% cellspacing=0 cellpadding=0><tr><td>
 <a name=moves_options><b>show game moves:</b></a>
+<input type="checkbox" id="showMoves" name="showMoves" value="showMoves" onChange="update_header_text_controls()" />
 </td><td valign=top>
 <div style="font-size: x-small; text-align: right">
 <a href=#instructions>instructions</a>
 &nbsp; &nbsp;<a href=#actions>actions</a>
 &nbsp; &nbsp;<a href=#game_preview>preview</a>
 &nbsp; &nbsp;<a href=#pgn_form>PGN</a>
-&nbsp; &nbsp;-&nbsp; &nbsp; options:&nbsp; &nbsp;<a href=#replay_options>replay</a>
+&nbsp; &nbsp;-&nbsp; &nbsp; <span style="color:gray">options:</span>&nbsp; &nbsp;<a href=#replay_options>replay</a>
 &nbsp; &nbsp;<a href=#board_options>board</a>
 &nbsp; &nbsp;<a href=#header_options>header</a>
 &nbsp; &nbsp;<a href=#moves_options>moves</a>
 &nbsp; &nbsp;<a href=#page_options>page</a>
 </div>
 </td></tr></table>
-
-<input type="checkbox" id="showMoves" name="showMoves" value="showMoves" onChange="update_header_text_controls()" />
 <p>
 
 show game comments:
@@ -664,7 +667,7 @@ comments font color:
 &nbsp; &nbsp;<a href=#actions>actions</a>
 &nbsp; &nbsp;<a href=#game_preview>preview</a>
 &nbsp; &nbsp;<a href=#pgn_form>PGN</a>
-&nbsp; &nbsp;-&nbsp; &nbsp; options:&nbsp; &nbsp;<a href=#replay_options>replay</a>
+&nbsp; &nbsp;-&nbsp; &nbsp; <span style="color:gray">options:</span>&nbsp; &nbsp;<a href=#replay_options>replay</a>
 &nbsp; &nbsp;<a href=#board_options>board</a>
 &nbsp; &nbsp;<a href=#header_options>header</a>
 &nbsp; &nbsp;<a href=#moves_options>moves</a>
@@ -677,16 +680,16 @@ background color:
 <p>
 
 preview background:
-<input type="text" class="color" id="previewBackgroundColorHex" name="previewBackgroundColorHex" value="" size="7" /> (not actually used in the iframe, just for the preview)
+<input type="text" class="color" id="previewBackgroundColorHex" name="previewBackgroundColorHex" value="" size="7" /> <span style="color: gray">(not actually used in the iframe, just for the preview)</span>
 <p>
 <br>
 
 iFrame height:
-<input type="text" id="frameHeight" name="frameHeight" value="" size="5" /> <span id="frameHeight_helpText"></span>
+<input type="text" id="frameHeight" name="frameHeight" value="" size="5" /> <span id="frameHeight_helpText" style="color: gray"></span>
 <p>
 
 iFrame width:
-<input type="text" id="frameWidth" name="frameWidth" value="" size="5" /> <span id="frameWidth_helpText"></span>
+<input type="text" id="frameWidth" name="frameWidth" value="" size="5" /> <span id="frameWidth_helpText" style="color: gray"></span>
 <p>
 <br>
 

@@ -409,9 +409,9 @@ if (gup("help") != "") {
 document.write("<table cellspacing=0 cellpadding=0 width=100%><tr><td align=center>");
 
 if (showButtons) {
-  document.write("<span style='text-align:center' id='GameSelector'></span><span style='text-align:center' id='GameBoard'></span><span style='text-align:center' id='GameButtons'></span>") 
+  document.write("<div id='GameSelector'></div></td></tr><tr><td align=center><div id='GameBoard'></div></td></tr><tr><td align=center><div id='GameButtons'></div>") 
 } else {
-  document.write("<span id='GameBoard'></span>")
+  document.write("<div id='GameBoard'></div>")
 }
 
 if ((showHeader) || (showMoves)) {
