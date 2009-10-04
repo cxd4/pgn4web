@@ -109,6 +109,8 @@ function new_start_pgn4web() {
   rule.style.width = squareSize + 'px';	
   rule.style.height = squareSize + 'px';
   rule.style.background = highlightDarkColor;
+  rule = getCSSRule('.boardTable');
+  rule.style.borderColor = boardBorderColor;
 
   rule = getCSSRule('.move');
   rule.style.color = fontMovesColor;
@@ -279,6 +281,8 @@ if ((highlightColor == 'none') || (highlightColor == '#none')) {
   highlightDarkColor = highlightColor;
 }
 
+if ((boardBorderColor = gup("boardBorderColorName")) == "") {if ((boardBorderColor = gup("boardBorderColorHex")) == "#") boardBorderColor = "#000000"}
+
 if ((highlightMoveColor  = gup("highlightMoveColorName"))  == "") {if ((highlightMoveColor  = "#" + gup("highlightMoveColorHex"))  == "#") highlightMoveColor  = "#DAF4D7"}
 
 if ((backgroundColor = gup("backgroundColorName")) == "") {if ((backgroundColor = "#" + gup("backgroundColorHex")) == "#") backgroundColor = "#FFFFFF"}
@@ -363,9 +367,11 @@ if (gup("help") != "") {
   document.write(" - lightColorName = light square color name, like red\n");
   document.write(" - darkColorName = dark square color name, like red\n");
   document.write(" - highlightColorName = highlight color name, like red, 'none' for no highligh\n");
+  document.write(" - boardBorderColorName = board border color name, like red, 'none' for no highligh\n");
   document.write(" - lightColorHex = light square color hex code, like FF0000 (default EFF4EC)\n");
   document.write(" - darkColorHex = dark square color hex code, like FF0000 (default C6CEC3)\n");
   document.write(" - highlightColorHex = highlight color hex code, like FF0000, 'none' for no highligh (default DAF4D7)\n");
+  document.write(" - boardBorderColorHex = board border color hex code, like FF0000, 'none' for no highligh (default 000000)\n");
   document.write(" - showButtons = if set true, prints control buttons (default false)\n");
   document.write("\n");
   document.write(" - showHeader = if set true, displays game header text (default false)\n");
