@@ -406,10 +406,10 @@ if (gup("help") != "") {
   document.write("</PRE>\n<HR>\n");
 }
 
-document.write("<center>");
+document.write("<table cellspacing=0 cellpadding=0 width=100%><tr><td align=center>");
 
 if (showButtons) {
-  document.write("<span id='GameSelector'></span><span id='GameBoard'></span><span id='GameButtons'></span>") 
+  document.write("<span style='text-align:center' id='GameSelector'></span><span style='text-align:center' id='GameBoard'></span><span style='text-align:center' id='GameButtons'></span>") 
 } else {
   document.write("<span id='GameBoard'></span>")
 }
@@ -450,8 +450,10 @@ if ((showHeader) || (showMoves)) {
   document.write("</div>")
 } 
 
-document.write("</center>");
+document.write("</div>");
 
+document.write("</td></tr></table>");
+		
 </script>
 
 </body>
