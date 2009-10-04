@@ -2895,7 +2895,8 @@ function PrintHTML(){
     }
     jj = ii+1;
     text += '<A HREF="javascript:GoToMove(' + jj + 
-      ')" CLASS="move" ID="Mv' + jj + '" ONFOCUS="this.blur()">' + Moves[ii].replace(/-/g, "&#8209;") + ' </A>';
+      ')" CLASS="move" ID="Mv' + jj + '" ONFOCUS="this.blur()">' + Moves[ii].replace(/-/g, "&#8209;") + 
+      '</A> <SPAN CLASS="move"> </SPAN>';
   }
   if (commentsIntoMoveText && (MoveComments[StartPly+PlyNumber] != '')){
     if (commentsOnSeparateLines) text += '<P>';
