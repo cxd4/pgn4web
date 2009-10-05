@@ -193,7 +193,7 @@ function update_suggested_iframe_dimensions() {
   }
 
   document.getElementById('frameHeight_helpText').innerHTML = "if blank the frame height will be set at the automatically calculated value of " + suggested_frameHeight;
-  document.getElementById('frameWidth_helpText').innerHTML = "if blank the frame width will be set at the automatically calculated value of " + suggested_frameWidth + " (board height is " + boardWidth + ")";
+  document.getElementById('frameWidth_helpText').innerHTML = "if blank the frame width will be set at the automatically calculated value of " + suggested_frameWidth + " (board width is " + boardWidth + ")";
 
 }
 
@@ -268,7 +268,8 @@ function calculate_iframe() {
   update_suggested_iframe_dimensions();
   if ((frameHeight_value = document.board.frameHeight.value) == "") { frameHeight_value = suggested_frameHeight }
   if ((frameWidth_value = document.board.frameWidth.value) == "") { frameWidth_value = suggested_frameWidth }
-  iframeUrl += "&fh=" + frameHeight_value + "&fw=" + frameWidth_value;
+
+  iframeUrl += "&fh=" + (frameHeight_value - 1) + "&fw=" + "100%";
 
   // better to keep this as last
   pgnText_value = document.getElementById('pgnText').value;
