@@ -307,8 +307,8 @@ function gup( name ){
   var regex = new RegExp( regexS );
   var results = regex.exec( window.location.href );
   if( results != null ) { switch (results[1]) {
-    case "t": case "T": return "true";  break;
-    case "f": case "F": return "false"; break;
+    case "true": case "T": return "t";  break;
+    case "false": case "F": return "f"; break;
     default: return results[1];
   } }
 
@@ -325,8 +325,8 @@ function gup( name ){
   var regex = new RegExp( regexS );
   var results = regex.exec( window.location.href );
   if( results != null ) { switch (results[1]) {
-    case "t": case "T": return "true";  break;
-    case "f": case "F": return "false"; break;
+    case "true": case "T": return "t";  break;
+    case "false": case "F": return "f"; break;
     default: return results[1];
   } }
 
