@@ -269,7 +269,7 @@ function calculate_iframe() {
   if ((frameHeight_value = document.board.frameHeight.value) == "") { frameHeight_value = suggested_frameHeight }
   if ((frameWidth_value = document.board.frameWidth.value) == "") { frameWidth_value = suggested_frameWidth }
 
-  iframeUrl += "&fh=" + (frameHeight_value - 1) + "&fw=" + "100%";
+  iframeUrl += "&fh=" + frameHeight_value + "&fw=" + "100%";
 
   // better to keep this as last
   pgnText_value = document.getElementById('pgnText').value;
@@ -283,7 +283,7 @@ function generate_iframe() {
 
   calculate_iframe();
 
-  iframe_tag_string = "<iframe frameborder=0 height=" + frameHeight_value +" width=" + frameWidth_value +" scrolling=auto src='" + iframeUrl + "'>your web browser does not support iframes as required to display the chessboard</iframe>";
+  iframe_tag_string = "<iframe frameborder=0 height=" + frameHeight_value +" width=" + frameWidth_value +" scrolling=no marginwidth=0 marginheight=0 src='" + iframeUrl + "'>your web browser does not support iframes as required to display the chessboard</iframe>";
 
   document.getElementById('iframe_tag').value = iframe_tag_string;
   document.getElementById('preview').innerHTML = "<table bgcolor=#" + previewBackgroundColorHex_value + " width=100% cellpadding=20><tr><td align=center valign=middle> " + iframe_tag_string + "</td></tr></table>";
