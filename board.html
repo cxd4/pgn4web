@@ -415,10 +415,11 @@ if (showButtons) {
 }
 
 if ((showHeader) || (showMoves)) {
-  document.write("<div id='headerMoves' style='overflow:auto; height: " + textHeight + "; width: " + textWidth + "'><br>")
+  document.write("<div id='headerMoves' style='overflow:auto; height: " + textHeight + "; width: " + textWidth + "'>")
 } 
 
 if (showHeader) {
+  document.write("<div class='header'>&nbsp<br></div>");
   document.write("<table width=100% cellpadding=0 cellspacing=0 border=0> \
                   <tr> \
                   <td width=48% align=left><div class='header' id=GameWhite></div></td> \
@@ -438,11 +439,8 @@ if (showHeader) {
                  ") 
 }
 
-if ((showHeader) && (showMoves)) {
-  document.write("<br>")
-} 
-
 if (showMoves) {
+  document.write("<div class='move'>&nbsp<br></div>");
   document.write("<div style='text-align: justify' id=GameText></div>");
 }
 
