@@ -65,7 +65,7 @@ function set_defaults() {
   document.getElementById('iframe_tag').value = '';
   document.getElementById('iframe_tag_status').innerHTML = 'Enter the PGN text, customize options, then press the "Preview iFrame" button and take note of the BOARD HEIGHT value';
 
-  if ((pgnText_value = gup("pgnText")) == "") { pgnText_value = pgnText_default }
+  if ((pgnText_value = unescape(gup("pgnText"))) == "") { pgnText_value = pgnText_default }
   document.getElementById('pgnText').value = pgnText_value;
   update_pgnTextLength();
 
@@ -276,7 +276,9 @@ function calculate_iframe() {
   pgnText_value = pgnText_value.replace(/#/g,"++");
   pgnText_value = pgnText_value.replace(/'/g,"`");
   pgnText_value = pgnText_value.replace(/&/g," and ");
-  iframeUrl += "&pt=" + pgnText_value.replace(/\n/g," ");
+  pgnText_value = pgnText_value.replace(/\n/g," ");
+//  pgnText_value = escape(pgnText_value);
+  iframeUrl += "&pt=" + pgnText_value;
 }
 
 function generate_iframe() {
@@ -363,7 +365,7 @@ window.onload = set_defaults;
 </td></tr></table>
 
 <ol type="1">
-<li>enter your PGN text in the large textbox below</li>
+<li>enter your PGN text in the large textbox below (remember that besides the header info, the square brackets chars "[" "]" are not allowed in the pgn4web PGN text)</li>
 <li>modify any of the options</li>
 <li>generate the HTML code and preview the iFrame with the action button</li>
 <li>tune options, especially the frame height/width (some browser might render some items slightly bigger or smaller)</li>
