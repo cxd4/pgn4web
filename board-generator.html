@@ -375,7 +375,7 @@ window.onload = set_defaults;
 </td></tr></table>
 
 <ol type="1">
-<li><b>enter your PGN text</b> in the large textbox below; remember that besides the header info, the square brackets chars "[" "]" are not allowed in the pgn4web PGN text; keep in mind the board generator only allows for short PGN fils, there is a technical limitation in the total size of the resulting iFrame URL</li>
+<li><b>enter your PGN text</b> in the large textbox below; remember that besides the header info, the square brackets chars "[" "]" are not allowed in the pgn4web PGN text; keep in mind the board generator only allows for short PGN files, there is a technical limitation in the total size of the resulting iFrame URL</li>
 <li><b>modify any of the options</b>, layout, colors and fonts</li>
 <li><b>generate the HTML code</b> with the action button and <b>preview your chessboard</b>; if the resulting iFrame URL is too long you should get a warning</li>
 <li><b>tune the options</b> to your liking; check carefully the frame height/width values and remember that some browser might render some items slightly bigger or smaller, so you should keep some margins</li>
@@ -406,13 +406,16 @@ window.onload = set_defaults;
 
 <table width=100% cellspacing=0 cellpadding=0><tr>
 <td align=left valign=middle>
-<input type="button" id="generate_iframe_button" name="generate_iframe_button" value="generate iFrame HTML code and update preview" onClick="generate_iframe()" />
+<input type="button" id="generate_iframe_button" name="generate_iframe_button" value="     generate iFrame HTML code and update preview     " onClick="generate_iframe()" />
 </td><td align=right valign=middle>
-<input type="button" id="reset_defaults_button" name="reset_defaults_button" value="reset form to default value" onClick="reset_form()" />
+<input type="button" id="reset_defaults_button" name=" reset_defaults_button " value="reset form to default value" onClick="reset_form()" />
 </td></tr></table>
 <p>
 
-<b>iFrame HTML code: </b><input type=text id="iframe_tag" name="iframe_tag" size=80 style="background-color: #FFFF66;" />
+
+<b><i>automatically generated iFrame HTML code</b></i>
+<br>
+<input type=text id="iframe_tag" name="iframe_tag" style="width: 100%; background-color: #FFFF66;" />
 <p>
 
 <div id="iframe_tag_status">&nbsp;</div>
