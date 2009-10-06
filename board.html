@@ -88,6 +88,7 @@ body {
 function new_start_pgn4web() {
 
   document.body.style.background = backgroundColor;
+  document.body.style.padding = framePadding;
   
   rule = getCSSRule('.pieceImage');
   rule.style.width = pieceSize;
@@ -155,7 +156,7 @@ function new_start_pgn4web() {
     else { document.getElementById("headerMoves").style.width = frameWidth; }
 	  
     if (frameHeight == "") { document.getElementById("headerMoves").style.height = textHeight; }
-    else { document.getElementById("headerMoves").style.height = frameHeight - boardHeight; }
+    else { document.getElementById("headerMoves").style.height = frameHeight - boardHeight - 2 * framePadding; }
   }
 
   if (gup("showHeightWidth") != "") { 
@@ -288,6 +289,8 @@ if ((highlightMoveColor  = gup("highlightMoveColorName"))  == "") {if ((highligh
 
 if ((backgroundColor = gup("backgroundColorName")) == "") {if ((backgroundColor = "#" + gup("backgroundColorHex")) == "#") backgroundColor = "#FFFFFF"}
 
+if ((framePadding = gup("framePadding")) == "") { framePadding = 0;}
+
 if ((fontHeaderSize = gup("fontHeaderSize")) == "") { fontHeaderSize = "100%"; }
 if ((fontHeaderColor = gup("fontHeaderColorName")) == "") {if ((fontHeaderColor = "#" + gup("fontHeaderColorHex")) == "#") fontHeaderColor = "black"}
 
@@ -397,6 +400,7 @@ if (gup("help") != "") {
   document.write(" - backgroundColorHex = page background color hex code, like FF0000\n");
   document.write(" - frameHeight = set height of the total page, overriding textHeight (default not set)\n");
   document.write(" - frameWidth = set width of the total page, overriding textWidth (default not set)\n");
+  document.write(" - framePadding = padding within the frame (default 0)\n");
   document.write("\n");
   document.write(" - showHeightWidth = if set true, calculates optimal iframe dimensions (default false)\n");
   document.write(" - help = if set true, shows help info (default false)\n");

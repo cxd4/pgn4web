@@ -48,6 +48,7 @@ showHeader_default = "t";
 showMoves_default = "t";
 frameHeight_default = "";
 frameWidth_default = "";
+framePadding_default = 0;
 showComments_default = "t"; 
 showCommentsOnSeparateLines_default = "f"; 
 fontHeaderColorHex_default = "000000";
@@ -147,6 +148,9 @@ function set_defaults() {
   if ((frameWidth_value = gup("frameWidth")) == "") { frameWidth_value = frameWidth_default }
   document.board.frameWidth.value = frameWidth_value;
 
+  if ((framePadding_value = gup("framePadding")) == "") { framePadding_value = framePadding_default }
+  document.board.framePadding.value = framePadding_value;
+
   if ((baseUrl_value = gup("baseUrl")) == "") { baseUrl_value = baseUrl_default }
   document.board.baseUrl.value = baseUrl_value;
 
@@ -180,8 +184,8 @@ function update_disabled_controls() {
 function update_suggested_iframe_dimensions() {
 
   boardWidth = 8 * document.board.squareSize.value + 6; 
-  suggested_frameWidth = boardWidth;
-  suggested_frameHeight = boardWidth;
+  suggested_frameWidth = boardWidth; 
+  suggested_frameHeight = boardWidth; 
   
   if (document.board.showButtons.checked) { suggested_frameHeight += 50 }
 
@@ -191,6 +195,9 @@ function update_suggested_iframe_dimensions() {
   if (document.board.showHeader.checked || document.board.showMoves.checked) {
     suggested_frameWidth = Math.max(400, Math.round(1.5 * boardWidth));
   }
+
+  suggested_frameWidth += 2 * parseInt(document.board.framePadding.value);
+  suggested_frameHeight += 2 * parseInt(document.board.framePadding.value);
 
   document.getElementById('frameHeight_helpText').innerHTML = "if blank the frame height will be set at the automatically calculated value of " + suggested_frameHeight;
   document.getElementById('frameWidth_helpText').innerHTML = "if blank the frame width will be set at the automatically calculated value of " + suggested_frameWidth + " (board width is " + boardWidth + ")";
@@ -270,6 +277,9 @@ function calculate_iframe() {
   if ((frameWidth_value = document.board.frameWidth.value) == "") { frameWidth_value = suggested_frameWidth }
 
   iframeUrl += "&fh=" + frameHeight_value + "&fw=" + "100%";
+
+  framePadding_value = parseInt(document.board.framePadding.value);
+  iframeUrl += "&fp=" + framePadding_value;
 
   // better to keep this as last
   pgnText_value = document.getElementById('pgnText').value;
@@ -707,6 +717,10 @@ iFrame height:
 
 iFrame width:
 <input type="text" id="frameWidth" name="frameWidth" value="" size="5" /> <span id="frameWidth_helpText" style="color: gray"></span>
+<p>
+
+iFrame padding:
+<input type="text" id="framePadding" name="framePadding" value="" size="5" onChange="update_suggested_iframe_dimensions()"/> 
 <p>
 <br>
 
