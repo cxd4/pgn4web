@@ -359,10 +359,23 @@ function gup( name ){
 function bug_report() {
   var email = "pgn4web@casaschi.net";
   var subject = "pgn4web board generator bug report";
-  var body_message = escape("\npgn4web board generator bug report\n\nuser agent:\n\n" + window.navigator.userAgent+ "\n\niFrame HTML code:\n\n" + iframe_tag_string + "\n\ndont forget to attach the screenshot...\n");
-  mailto_link = 'mailto:' + email + '?subject=' + subject + '&body=' + body_message;
-  win = window.open(mailto_link);
-//  if (win && win.open && !win.closed) win.close(); 
+  var bug_info = "pgn4web board generator bug report\n\nURL\n\n" + window.location + "\n\nuser agent:\n\n" + window.navigator.userAgent+ "\n\niFrame HTML code:\n\n" + iframe_tag_string + "\n\ndont forget to attach the screenshot...\n";
+  mailto_link = 'mailto:' + email + '?subject=' + subject + '&body=' + escape(bug_info);
+
+  win = window.open("", "bug_report", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no"); 
+  with (win.document) {
+    open("text/html", "replace");
+    write("<html>");
+    write("<head><title>pgn4web bug report</title><style type='text/css'> html, body { font-family: sans-serif;  color: black; background: white } a {text-decoration: none; color: black; } </style></head>");
+    write("<body>");
+    write("<h1>pgn4web bug report</h1>please email ALL the the debug information below and a screenshot to <a href=mailto:pgn4web@casaschi.net>pgn4web@casaschi.net</a>");
+    write("<hr>");
+    write("<pre><code>" + bug_info.replace(/</g,"&lt;").replace(/>/g,"&gt;") + "</code></pre>");
+    write("<hr>");
+    write("</body>");
+    write("<html>");
+    close();
+  }
 }
 
 window.onload = set_defaults;
@@ -401,7 +414,7 @@ window.onload = set_defaults;
 <li><b>tune the options</b> to your liking; check carefully the frame height/width values and remember that some browser might render some items slightly bigger or smaller, so you should keep some margins</li>
 <li>once happy with the preview chessboard, just <b>cut & paste the content of the iFrame HTML code</b> from the yellow box into your web page or your blog</li>
 <li>email to <a href=mailto:pgn4web@casaschi.net>pgn4web@casaschi.net</a> the address of your website or your blog</li>
-<li>if something goes wrong... and you want to <b>file a bug report</b>, you can to email <i><a href=mailto:pgn4web@casaschi.net>pgn4web@casaschi.net</a></i> the iFrame HTML code, the type and version of your web browser and operating system and possibly attach a screenshot. If your email is properly configured, <i><a href="javascript:bug_report()">clicking here should collect all the required info</a></i> beside the screenshots into a preformatted email, otherwise you'd have to write the email manually.</li>
+<li>if something goes wrong... you might want to <i><a href="javascript:bug_report()">click here and <b>file a bug report</b></a></li>
 </ol>
 <p>
 <br>
