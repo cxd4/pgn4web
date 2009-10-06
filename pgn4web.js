@@ -2671,6 +2671,23 @@ function SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, ch
   gameSelectorChDate   = chDate; if (gameSelectorChDate > 32) gameSelectorChDate = 32;
 }
 
+function clickedSquare(ii, jj) {
+  squareId = 'tcol' + jj + 'trow' + ii;
+  theObject = document.getElementById(squareId);
+  originalClass = theObject.className;
+  if ((ii+jj)%2 == 0){ newClass = "blackSquare";
+  } else { newClass = "whiteSquare"; }
+  theObject.className = newClass;
+  setTimeout("reset_after_click(" + ii + "," + jj + ",'" + originalClass + "','" + newClass + "')", 77);
+}
+
+function reset_after_click (ii, jj, originalClass, newClass) {
+  squareId = 'tcol' + jj + 'trow' + ii;
+  theObject = document.getElementById(squareId);
+  // if the square class has been changed by pgn4web already (due to autoplay for instance) dont touch it anymore
+  if (theObject.className == newClass) {theObject.className = originalClass}
+}
+
 var textSelectOptions = '';
 /******************************************************************************
  *                                                                            *
@@ -2691,9 +2708,9 @@ function PrintHTML(){
       squareId = 'tcol' + jj + 'trow' + ii;
       imageId = 'img_' + squareId;
       if ((ii+jj)%2 == 0){
-	text += '<TD CLASS="whiteSquare" ID="' + squareId + '" BGCOLOR="white" ALIGN="center" VALIGN="middle">';
+	text += '<TD CLASS="whiteSquare" ID="' + squareId + '" BGCOLOR="white" ALIGN="center" VALIGN="middle" ONCLICK="clickedSquare(' + ii + ',' + jj + ')">';
       } else{
-	text += '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="lightgray" ALIGN="center" VALIGN="middle">';
+	text += '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="lightgray" ALIGN="center" VALIGN="middle" ONCLICK="clickedSquare(' + ii + ',' + jj + ')">';
       } 
       text += '<A HREF="javascript:boardOnClickCol' + jj + 'Row' + ii + '()" ' + 
               'TITLE="' + boardAlt[jj + ii * 8] + '" ' +
