@@ -44,6 +44,7 @@ darkColorHex_default = "C6CEC3";
 boardBorderColorHex_default = "000000";
 highlightColorHex_default = "DAF4D7";
 showButtons_default = "f";
+textMargin_default = 0;
 showHeader_default = "t";
 showMoves_default = "t";
 frameHeight_default = "";
@@ -102,6 +103,9 @@ function set_defaults() {
 
   if ((showButtons_value = gup("showButtons")) == "") { showButtons_value = showButtons_default }
   document.board.showButtons.checked = (showButtons_value == "t");
+
+  if ((textMargin_value = gup("textMargin")) == "") { textMargin_value = textMargin_default }
+  document.getElementById('textMargin').value = textMargin_value;
 
   if ((showHeader_value = gup("showHeader")) == "") { showHeader_value = showHeader_default }
   document.board.showHeader.checked = (showHeader_value == "t");
@@ -170,6 +174,7 @@ function update_header_text_controls() {
 
 function update_disabled_controls() {
 
+  document.board.textMargin.disabled = (!document.board.showMoves.checked && !document.board.showHeader.checked);
   document.board.showComments.disabled = !document.board.showMoves.checked;
   document.board.showCommentsOnSeparateLines.disabled = !document.board.showMoves.checked;
   document.board.fontHeaderColorHex.disabled = !document.board.showHeader.checked;
@@ -238,6 +243,11 @@ function calculate_iframe() {
   if (document.board.showHeader.checked) { showHeader_value = "t" } else { showHeader_value = "f" }
   if (document.board.showMoves.checked) { showMoves_value = "t" } else { showMoves_value = "f" }
   iframeUrl += "&sh=" + showHeader_value + "&sm=" + showMoves_value;
+
+  if (document.board.showHeader.checked || document.board.showMoves.checked) {
+    textMargin_value = document.board.textMargin.value;
+    iframeUrl += "&tm=" + textMargin_value;
+  }
 
   if (document.board.showHeader.checked) {
 		  
@@ -611,6 +621,11 @@ show control buttons:
 <br>
 
 <h3>header and moves options</h3>
+
+text margin:
+<input type="text" id="textMargin" name="textMargin" value="" size="4">
+<p>
+<br>
 
 <table width=100% cellspacing=0 cellpadding=0><tr><td>
 <a name=header_options><b>show game header:</b></a>

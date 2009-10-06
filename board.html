@@ -350,6 +350,7 @@ else { showMoves = false }
 
 if ((textHeight = gup("textHeight")) == "") { textHeight="100%" }
 if ((textWidth = gup("textWidth")) == "") { textWidth="100%" }
+if ((textMargin = gup("textMargin")) == "") { textMargin=0 }
 
 frameHeight = gup("frameHeight");
 frameWidth = gup("frameWidth");
@@ -382,6 +383,7 @@ if (gup("help") != "") {
   document.write(" - showMoves = if set true, displays moves text (default false)\n");
   document.write(" - textHeight = set height of the textual section, header and/or moves text, might be ingored if frameHeight is set (default 100%)\n");
   document.write(" - textWidth = set width of the textual section, header and/or moves text, might be ignored if frameWidth is set (default 100%)\n");
+  document.write(" - textMargin = set left/right margin width of the  textual section, header and/or moves text (default 0)\n");
   document.write(" - showComments = if set false, removes comments when displaying moves text (default true)\n");
   document.write(" - showCommentsOnSeparateLines = if set true, add newlines chars when displaying comments (default false)\n"); 
   document.write(" - fontHeaderColorName = header color name, like red (default black)\n");
@@ -419,25 +421,32 @@ if (showButtons) {
 }
 
 if ((showHeader) || (showMoves)) {
-  document.write("<div id='headerMoves' style='overflow:auto; height: " + textHeight + "; width: " + textWidth + "'>")
+  document.write("<div id='headerMoves' style='overflow:auto; height: " + textHeight + "; width: " + textWidth + ";'>")
 } 
 
 if (showHeader) {
   document.write("<div class='header'>&nbsp;<br></div>");
   document.write("<table width=100% cellpadding=0 cellspacing=0 border=0> \
                   <tr> \
-                  <td width=48% align=left><div class='header' id=GameWhite></div></td> \
+		  <td width=48% align=left> \
+		  <div class='header' style=' margin-left:" + textMargin + ";' id=GameWhite></div></td> \
                   <td width=4%>&nbsp;</td> \
-                  <td width=48% align=right><div class='header' id=GameDate></div></td> \
+		  <td width=48% align=right> \
+		  <div class='header' style=' margin-right:" + textMargin + ";' id=GameDate></div></td> \
                   </tr> \
-                  <tr> \ <td align=left><div class='header' id=GameBlack></div></td> \
+		  <tr> \
+		  <td align=left> \
+		  <div class='header' style=' margin-left:" + textMargin + ";' id=GameBlack></div></td> \
                   <td></td> \
-                  <td align=right><div class='header' id=GameSite></div></td> \
+		  <td align=right> \
+		  <div class='header' style=' margin-right:" + textMargin + ";' id=GameSite></div></td> \
                   </tr> \
                   <tr> \
-                  <td align=left><div class='header' id=GameResult></div></td> \
+		  <td align=left> \
+		  <div class='header' style=' margin-left:" + textMargin + ";' id=GameResult></div></td> \
                   <td></td> \
-                  <td align=right><div class='header' id=GameEvent></div></td> \
+		  <td align=right> \
+		  <div class='header' style=' margin-right:" + textMargin + ";' id=GameEvent></div></td> \
                   </tr> \
                   </table> \
                  ") 
@@ -445,7 +454,7 @@ if (showHeader) {
 
 if (showMoves) {
   document.write("<div class='move'>&nbsp;<br></div>");
-  document.write("<div style='text-align: justify' id=GameText></div>");
+  document.write("<div style='text-align: justify; margin-right:" + textMargin + "; margin-left:" + textMargin + ";' id=GameText></div>");
 }
 
 if ((showHeader) || (showMoves)) {
