@@ -61,7 +61,7 @@ fontHeaderSize_default = "100%";
 fontMovesSize_default = "100%";
 fontCommentsSize_default = "100%";
 backgroundColorHex_default = "FFFFFF";
-previewBackgroundColorHex_default = "CCCCCC";
+previewBackgroundColorHex_default = "DDDDDD";
 baseUrl_default = location.protocol + "//" + location.hostname+location.pathname.substr(0, location.pathname.lastIndexOf("/")) + "/board.html";
 
 function set_defaults() {
@@ -544,24 +544,24 @@ piece size: &nbsp;&nbsp;
 <p>
 
 square size: &nbsp;&nbsp;
-<input type="text" id="squareSize" name="squareSize" value="" size="6" onChange="update_suggested_iframe_dimensions()" />
+<input type="text" id="squareSize" name="squareSize" value="" size="7" onChange="update_suggested_iframe_dimensions()" />
 <p>
 <br>
 
 light squares color: &nbsp;&nbsp;
-<input type="text" class="color" id="lightColorHex" name="lightColorHex" value="" size="6">
+<input type="text" class="color" id="lightColorHex" name="lightColorHex" value="" size="7>
 <p>
 
 dark squares color: &nbsp;&nbsp;
-<input type="text" class="color" id="darkColorHex" name="darkColorHex" value="" size="6">
+<input type="text" class="color" id="darkColorHex" name="darkColorHex" value="" size="7">
 <p>
 
 board border color: &nbsp;&nbsp;
-<input type="text" class="color" id="boardBorderColorHex" name="boardBorderColorHex" value="" size="6">
+<input type="text" class="color" id="boardBorderColorHex" name="boardBorderColorHex" value="" size="7">
 <p>
 
 highlight squares color: &nbsp;&nbsp;
-<input type="text" class="color" id="highlightColorHex" name="highlightColorHex" value="" size="6">
+<input type="text" class="color" id="highlightColorHex" name="highlightColorHex" value="" size="7">
 <p>
 <br>
 
@@ -574,7 +574,7 @@ show control buttons: &nbsp;&nbsp;
 <script>print_menu("header_moves_options", 3, "header and moves options");</script>
 
 text margin: &nbsp;&nbsp;
-<input type="text" id="textMargin" name="textMargin" value="" size="6">
+<input type="text" id="textMargin" name="textMargin" value="" size="7">
 &nbsp;&nbsp;<span style="color:gray">margin at the left/right of the header and moves section, nice to have if the text overflows with scrollbars</span>
 <p>
 <br>
@@ -584,11 +584,11 @@ text margin: &nbsp;&nbsp;
 <p>
 
 header font size: &nbsp;&nbsp;
-<input type="text" id="fontHeaderSize" name="fontHeaderSize" value="" size="6" />
+<input type="text" id="fontHeaderSize" name="fontHeaderSize" value="" size="7" />
 <p>
 
 header font color: &nbsp;&nbsp;
-<input type="text" class="color" id="fontHeaderColorHex" name="fontHeaderColorHex" value="" size="6" />
+<input type="text" class="color" id="fontHeaderColorHex" name="fontHeaderColorHex" value="" size="7" />
 <p>
 <br>
 
@@ -605,49 +605,49 @@ show comments on separate lines: &nbsp;&nbsp;
 <p>
 
 moves font size: &nbsp;&nbsp;
-<input type="text" id="fontMovesSize" name="fontMovesSize" value="" size="6" />
+<input type="text" id="fontMovesSize" name="fontMovesSize" value="" size="7" />
 <p>
 
 moves font color: &nbsp;&nbsp;
-<input type="text" class="color" id="fontMovesColorHex" name="fontMovesColorHex" value="" size="6" />
+<input type="text" class="color" id="fontMovesColorHex" name="fontMovesColorHex" value="" size="7" />
 <p>
 
 highlight move color: &nbsp;&nbsp;
-<input type="text" class="color" id="highlightMoveColorHex" name="highlightMoveColorHex" value="" size="6" />
+<input type="text" class="color" id="highlightMoveColorHex" name="highlightMoveColorHex" value="" size="7" />
 <p>
 
 comments font size: &nbsp;&nbsp;
-<input type="text" id="fontCommentsSize" name="fontCommentsSize" value="" size="6" />
+<input type="text" id="fontCommentsSize" name="fontCommentsSize" value="" size="7" />
 <p>
 
 comments font color: &nbsp;&nbsp;
-<input type="text" class="color" id="fontCommentsColorHex" name="fontCommentsColorHex" value="" size="6" />
+<input type="text" class="color" id="fontCommentsColorHex" name="fontCommentsColorHex" value="" size="7" />
 <p>
 <br>
 
 <script>print_menu("page_options", 3, "web page options");</script>
 
 background color: &nbsp;&nbsp;
-<input type="text" class="color" id="backgroundColorHex" name="backgroundColorHex" value="" size="6" />
+<input type="text" class="color" id="backgroundColorHex" name="backgroundColorHex" value="" size="7" />
 <p>
 
 preview background: &nbsp;&nbsp;
-<input type="text" class="color" id="previewBackgroundColorHex" name="previewBackgroundColorHex" value="" size="6" /> 
+<input type="text" class="color" id="previewBackgroundColorHex" name="previewBackgroundColorHex" value="" size="7" /> 
 &nbsp;&nbsp;<span style="color: gray"> not actually used in the HTML code, just for the preview</span>
 <p>
 <br>
 
 iFrame height: &nbsp;&nbsp;
-<input type="text" id="frameHeight" name="frameHeight" value="" size="6" /> <span id="frameHeight_helpText" style="color: gray"></span>
+<input type="text" id="frameHeight" name="frameHeight" value="" size="7" /> <span id="frameHeight_helpText" style="color: gray"></span>
 <p>
 
 iFrame width: &nbsp;&nbsp;
-<input type="text" id="frameWidth" name="frameWidth" value="" size="6" /> 
+<input type="text" id="frameWidth" name="frameWidth" value="" size="7" /> 
 &nbsp;&nbsp;<span id="frameWidth_helpText" style="color: gray"></span>
 <p>
 
 iFrame padding: &nbsp;&nbsp;
-<input type="text" id="framePadding" name="framePadding" value="" size="6" onChange="update_suggested_iframe_dimensions()"/>
+<input type="text" id="framePadding" name="framePadding" value="" size="7" onChange="update_suggested_iframe_dimensions()"/>
 &nbsp;&nbsp;<span style="color:gray">border padding around the iframe, included within the iFrame width value
 <p>
 <br>
