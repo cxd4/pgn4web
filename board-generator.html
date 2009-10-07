@@ -206,12 +206,12 @@ function update_suggested_iframe_dimensions() {
   suggested_frameHeight += 2 * parseInt(document.board.framePadding.value);
 
   document.getElementById('frameHeight_helpText').innerHTML = "if blank the frame height will be set at the automatically calculated value of " + suggested_frameHeight;
-  document.getElementById('frameWidth_helpText').innerHTML = "if blank the frame width will be set at the automatically calculated value of " + suggested_frameWidth + " (board width is " + boardWidth + ")";
+  document.getElementById('frameWidth_helpText').innerHTML = "if blank the frame width will be set at the automatically calculated value of " + suggested_frameWidth + " while the board width is " + boardWidth;
 
 }
 
 function update_pgnTextLength() {
- document.getElementById('pgnTextLength').innerHTML = "PGN text length is " + document.getElementById('pgnText').value.length;
+ document.getElementById('pgnTextLength').innerHTML = document.getElementById('pgnText').value.length + " chars";
 }
 
 
@@ -461,7 +461,10 @@ window.onload = set_defaults;
 <script>print_menu("pgn_form", 3, "chess game notation in PGN format");</script>
 
 <textarea id=pgnText style="width: 100%;" rows=15 onChange="update_pgnTextLength()"></textarea>
-<div id="pgnTextLength" style="color: gray;"></div>
+<table cellspacing="0" cellpadding="0" width="100%"><tr>
+<td align=left style="color: gray;">to avoid printing an header item please set the value to a space</td>
+<td align=right style="color: gray;"><div id="pgnTextLength"></div></td>
+</tr></table>
 <p>
 <br>
 
@@ -549,7 +552,7 @@ square size: &nbsp;&nbsp;
 <br>
 
 light squares color: &nbsp;&nbsp;
-<input type="text" class="color" id="lightColorHex" name="lightColorHex" value="" size="7>
+<input type="text" class="color" id="lightColorHex" name="lightColorHex" value="" size="7">
 <p>
 
 dark squares color: &nbsp;&nbsp;
