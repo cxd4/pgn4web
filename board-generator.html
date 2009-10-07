@@ -65,8 +65,8 @@ previewBackgroundColorHex_default = "CCCCCC";
 baseUrl_default = location.protocol + "//" + location.hostname+location.pathname.substr(0, location.pathname.lastIndexOf("/")) + "/board.html";
 
 function set_defaults() {
-  document.getElementById('iframe_tag').value = '';
-  document.getElementById('iframe_tag_status').innerHTML = 'Enter the PGN text, customize options, then press the "Preview iFrame" button and take note of the BOARD HEIGHT value';
+  document.getElementById('html_code').value = '';
+  document.getElementById('html_code_status').innerHTML = 'Enter the PGN text, customize options, then press the "generate" button';
 
   if ((pgnText_value = unescape(gup("pgnText"))) == "") { pgnText_value = pgnText_default }
   document.getElementById('pgnText').value = pgnText_value;
@@ -159,7 +159,7 @@ function set_defaults() {
   if ((baseUrl_value = gup("baseUrl")) == "") { baseUrl_value = baseUrl_default }
   document.board.baseUrl.value = baseUrl_value;
 
-  generate_iframe();
+  generate_html_code();
   update_header_text_controls();
 }
 
@@ -215,7 +215,7 @@ function update_pgnTextLength() {
 }
 
 
-function calculate_iframe() {
+function calculate_html_code() {
 
   // this must be the firts item
   baseUrl_value = document.board.baseUrl.value;
@@ -298,27 +298,26 @@ function calculate_iframe() {
   pgnText_value = pgnText_value.replace(/'/g,"`");
   pgnText_value = pgnText_value.replace(/&/g," and ");
   pgnText_value = pgnText_value.replace(/\n/g," ");
-//  pgnText_value = escape(pgnText_value);
   iframeUrl += "&pt=" + pgnText_value;
 }
 
-function generate_iframe() {
+function generate_html_code() {
 
-  calculate_iframe();
+  calculate_html_code();
 
-  iframe_tag_string = "<iframe frameborder=0 height=" + frameHeight_value +" width=" + frameWidth_value +" scrolling=no marginwidth=0 marginheight=0 src='" + iframeUrl + "'>your web browser does not support iframes as required to display the chessboard</iframe>";
+  html_code_string = "<iframe frameborder=0 height=" + frameHeight_value +" width=" + frameWidth_value +" scrolling=no marginwidth=0 marginheight=0 src='" + iframeUrl + "'>your web browser does not support iframes as required to display the chessboard</iframe>";
 
-  document.getElementById('iframe_tag').value = iframe_tag_string;
-  document.getElementById('preview').innerHTML = "<table bgcolor=#" + previewBackgroundColorHex_value + " width=100% cellpadding=20><tr><td align=center valign=middle> " + iframe_tag_string + "</td></tr></table>";
+  document.getElementById('html_code').value = html_code_string;
+  document.getElementById('preview').innerHTML = "<table bgcolor=#" + previewBackgroundColorHex_value + " width=100% cellpadding=20><tr><td align=center valign=middle> " + html_code_string + "</td></tr></table>";
 
   if (iframeUrl.length < 2000) {
-    document.getElementById('iframe_tag_status').innerHTML = "iFrame URL ok with " +  iframeUrl.length + " chars, please copy ALL the text from the yellow box above into your web page or blog to show the chessboard.";
-    document.getElementById('iframe_tag_status').style.color = "gray";
-    document.getElementById('iframe_tag_status').style.fontWeight = "normal";
+    document.getElementById('html_code_status').innerHTML = "please copy ALL the text from the yellow box above into your web page or blog to show the chessboard (iFrame URL is " +  iframeUrl.length + " chars)";
+    document.getElementById('html_code_status').style.color = "gray";
+    document.getElementById('html_code_status').style.fontWeight = "normal";
   } else {
-    document.getElementById('iframe_tag_status').innerHTML = "WARNING: iframe URL lenght is " + iframeUrl.length + " thus larger than 2000 and as such might not be accepted by browser (note that some redirection might make your URL even longer)";
-    document.getElementById('iframe_tag_status').style.color = "red";
-    document.getElementById('iframe_tag_status').style.fontWeight = "bold";
+    document.getElementById('html_code_status').innerHTML = "WARNING: iframe URL lenght is " + iframeUrl.length + " thus larger than 2000 and as such might not be accepted by browser (note that some redirection might make your URL even longer)";
+    document.getElementById('html_code_status').style.color = "red";
+    document.getElementById('html_code_status').style.fontWeight = "bold";
   }  
 
 }
@@ -360,7 +359,7 @@ function gup( name ){
 function bug_report() {
   var email = "pgn4web@casaschi.net";
   var subject = "pgn4web board generator bug report";
-  var bug_info = "pgn4web board generator bug report\n\nURL: " + window.location + "\n\nuser agent: " + window.navigator.userAgent+ "\n\npgn4wev version: " + version + "\n\niFrame HTML code:\n\n" + iframe_tag_string + "\n\nPlease add a description of the bug and dont forget to attach the screenshot.\n\n\n\n\n";
+  var bug_info = "pgn4web board generator bug report\n\nURL: " + window.location + "\n\nuser agent: " + window.navigator.userAgent+ "\n\npgn4wev version: " + version + "\n\niFrame HTML code:\n\n" + html_code_string + "\n\nPlease add a description of the bug and dont forget to attach the screenshot.\n\n\n\n\n";
   mailto_link = 'mailto:' + email + '?subject=' + subject + '&body=' + escape(bug_info);
 
   win = window.open("", "bug_report", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no"); 
@@ -380,6 +379,26 @@ function bug_report() {
   }
 }
 
+function print_menu( item, level, title ) {
+
+  menu =  '<table width=100% cellspacing=0 cellpadding=0><tr><td>';
+  menu += '<h' + level + '><a name=' + item + '>' + title + '</a></h' + level + '>';
+  menu += '</td><td valign=top>';
+  menu += '<div style="font-size: x-small; text-align: right">';
+  menu += '<a href=#instructions>instructions</a>';
+  menu += '&nbsp; &nbsp;<a href=#generate>generate</a>';
+  menu += '&nbsp; &nbsp;<a href=#game_preview>preview</a>';
+  menu += '&nbsp; &nbsp;-&nbsp; &nbsp; <span style="color:gray">config:</span>';
+  menu += '&nbsp; &nbsp;<a href=#pgn_form>PGN</a>';
+  menu += '&nbsp; &nbsp;<a href=#replay_options>replay</a>';
+  menu += '&nbsp; &nbsp;<a href=#board_options>board</a>';
+  menu += '&nbsp; &nbsp;<a href=#header_moves_options>header&moves</a>';
+  menu += '&nbsp; &nbsp;<a href=#page_options>page</a>';
+  menu += '</div>';
+  menu += '</td></tr></table>';
+  document.write(menu); 
+}
+
 window.onload = set_defaults;
 
 </script>
@@ -393,27 +412,13 @@ window.onload = set_defaults;
 <p>
 <br>
 
-<table width=100% cellspacing=0 cellpadding=0><tr><td>
-<h2><a name=instructions>instructions</a></h2>
-</td><td valign=top>
-<div style="font-size: x-small; text-align: right">
-<a href=#instructions>instructions</a>
-&nbsp; &nbsp;<a href=#actions>actions</a>
-&nbsp; &nbsp;<a href=#game_preview>preview</a>
-&nbsp; &nbsp;<a href=#pgn_form>PGN</a>
-&nbsp; &nbsp;-&nbsp; &nbsp; <span style="color:gray">options:</span>&nbsp; &nbsp;<a href=#replay_options>replay</a>
-&nbsp; &nbsp;<a href=#board_options>board</a>
-&nbsp; &nbsp;<a href=#header_options>header</a>
-&nbsp; &nbsp;<a href=#moves_options>moves</a>
-&nbsp; &nbsp;<a href=#page_options>page</a>
-</div>
-</td></tr></table>
+<script>print_menu("instructions", 2, "instructions");</script>
 
 <ol type="1">
 <li><b>enter your PGN text</b> in the large textbox below; remember that besides the header info, the square brackets chars "[" "]" are not allowed in the pgn4web PGN text; keep in mind the board generator only allows for short PGN files, there is a technical limitation in the total size of the resulting iFrame URL</li>
-<li><b>modify any of the options</b>, layout, colors and fonts</li>
-<li><b>generate the HTML code</b> with the action button and <b>preview your chessboard</b>; if the resulting iFrame URL is too long you should get a warning</li>
-<li><b>tune the options</b> to your liking; check carefully the frame height/width values and remember that some browser might render some items slightly bigger or smaller, so you should keep some margins</li>
+<li><b>modify any of the configuration options</b>, layout, colors and fonts</li>
+<li><b>generate the HTML code</b> and <b>preview your chessboard</b>; if the resulting iFrame URL is too long you should get a warning</li>
+<li><b>tune the configuration options</b> to your liking; check carefully the frame height/width values and remember that some browser might render some items slightly bigger or smaller, so you should keep some margins</li>
 <li>once happy with the preview chessboard, just <b>cut & paste the content of the iFrame HTML code</b> from the yellow box into your web page or your blog</li>
 <li>email to <a href=mailto:pgn4web@casaschi.net>pgn4web@casaschi.net</a> the address of your website or your blog</li>
 <li>if something goes wrong... you might want to <i><a href="javascript:bug_report()">click here and <b>file a bug report</b></a></i></li>
@@ -421,57 +426,29 @@ window.onload = set_defaults;
 <p>
 <br>
 
-<form id="board" name="board" style="display:inline;" action="javascript:generate_iframe()">
+<form id="board" name="board" style="display:inline;" action="javascript:generate_html_code()">
 
-<table width=100% cellspacing=0 cellpadding=0><tr><td>
-<h2><a name=actions>actions</a></h2>
-</td><td valign=top>
-<div style="font-size: x-small; text-align: right">
-<a href=#instructions>instructions</a>
-&nbsp; &nbsp;<a href=#actions>actions</a>
-&nbsp; &nbsp;<a href=#game_preview>preview</a>
-&nbsp; &nbsp;<a href=#pgn_form>PGN</a>
-&nbsp; &nbsp;-&nbsp; &nbsp; <span style="color:gray">options:</span>&nbsp; &nbsp;<a href=#replay_options>replay</a>
-&nbsp; &nbsp;<a href=#board_options>board</a>
-&nbsp; &nbsp;<a href=#header_options>header</a>
-&nbsp; &nbsp;<a href=#moves_options>moves</a>
-&nbsp; &nbsp;<a href=#page_options>page</a>
-</div>
-</td></tr></table>
+<script>print_menu("generate HTML code", 2, "generate");</script>
 
 <table width=100% cellspacing=0 cellpadding=0><tr>
 <td align=left valign=middle>
-<input type="button" id="generate_iframe_button" name="generate_iframe_button" value="     generate iFrame HTML code and update preview     " onClick="generate_iframe()" />
+<input type="button" id="generate_html_code_button" name="generate_html_code_button" value="     generate HTML code and update preview     " onClick="generate_html_code()" />
 </td><td align=right valign=middle>
 <input type="button" id="reset_defaults_button" name=" reset_defaults_button " value="reset form to default value" onClick="reset_form()" />
 </td></tr></table>
 <p>
 
 
-<b><i>automatically generated iFrame HTML code</b></i>
+<b><i>automatically generated HTML code</b></i>
 <br>
-<input type=text id="iframe_tag" name="iframe_tag" style="width: 100%; background-color: #FFFF66;" />
+<input type=text id="html_code" name="html_code" style="width: 100%; background-color: #FFFF66;" />
 <p>
 
-<div id="iframe_tag_status">&nbsp;</div>
+<div id="html_code_status">&nbsp;</div>
 <p>
 <br>
 
-<table width=100% cellspacing=0 cellpadding=0><tr><td>
-<h2><a name=game_preview>preview</a></h2>
-</td><td valign=top>
-<div style="font-size: x-small; text-align: right">
-<a href=#instructions>instructions</a>
-&nbsp; &nbsp;<a href=#actions>actions</a>
-&nbsp; &nbsp;<a href=#game_preview>preview</a>
-&nbsp; &nbsp;<a href=#pgn_form>PGN</a>
-&nbsp; &nbsp;-&nbsp; &nbsp; <span style="color:gray">options:</span>&nbsp; &nbsp;<a href=#replay_options>replay</a>
-&nbsp; &nbsp;<a href=#board_options>board</a>
-&nbsp; &nbsp;<a href=#header_options>header</a>
-&nbsp; &nbsp;<a href=#moves_options>moves</a>
-&nbsp; &nbsp;<a href=#page_options>page</a>
-</div>
-</td></tr></table>
+<script>print_menu("game_preview", 2, "preview");</script>
 
 <center>
 <div id='preview'></div>
@@ -479,44 +456,16 @@ window.onload = set_defaults;
 <p>
 <br>
 
-<h2>options</h2>
+<h2>configuration options</h2>
 
-<table width=100% cellspacing=0 cellpadding=0><tr><td>
-<h3><a name=pgn_form>chess game notation in PGN format</a></h3>
-</td><td valign=top>
-<div style="font-size: x-small; text-align: right">
-<a href=#instructions>instructions</a>
-&nbsp; &nbsp;<a href=#actions>actions</a>
-&nbsp; &nbsp;<a href=#game_preview>preview</a>
-&nbsp; &nbsp;<a href=#pgn_form>PGN</a>
-&nbsp; &nbsp;-&nbsp; &nbsp; <span style="color:gray">options:</span>&nbsp; &nbsp;<a href=#replay_options>replay</a>
-&nbsp; &nbsp;<a href=#board_options>board</a>
-&nbsp; &nbsp;<a href=#header_options>header</a>
-&nbsp; &nbsp;<a href=#moves_options>moves</a>
-&nbsp; &nbsp;<a href=#page_options>page</a>
-</div>
-</td></tr></table>
+<script>print_menu("pgn_form", 3, "chess game notation in PGN format");</script>
 
-<textarea id=pgnText cols=100 rows=15 onChange="update_pgnTextLength()"></textarea>
+<textarea id=pgnText style="width: 100%;" rows=15 onChange="update_pgnTextLength()"></textarea>
 <div id="pgnTextLength" style="color: gray;"></div>
 <p>
 <br>
 
-<table width=100% cellspacing=0 cellpadding=0><tr><td>
-<h3><a name=replay_options>game replay options</a></h3>
-</td><td valign=top>
-<div style="font-size: x-small; text-align: right">
-<a href=#instructions>instructions</a>
-&nbsp; &nbsp;<a href=#actions>actions</a>
-&nbsp; &nbsp;<a href=#game_preview>preview</a>
-&nbsp; &nbsp;<a href=#pgn_form>PGN</a>
-&nbsp; &nbsp;-&nbsp; &nbsp; <span style="color:gray">options:</span>&nbsp; &nbsp;<a href=#replay_options>replay</a>
-&nbsp; &nbsp;<a href=#board_options>board</a>
-&nbsp; &nbsp;<a href=#header_options>header</a>
-&nbsp; &nbsp;<a href=#moves_options>moves</a>
-&nbsp; &nbsp;<a href=#page_options>page</a>
-</div>
-</td></tr></table>
+<script>print_menu("replay_options", 3, "game replay options");</script>
 
 autoplay game on page load:
 <input type="checkbox" id="auto" name="auto" value="auto" />
@@ -538,21 +487,7 @@ loop through games at game end:
 <p>
 <br>
 
-<table width=100% cellspacing=0 cellpadding=0><tr><td>
-<h3><a name=board_options>chessboard options</a></h3>
-</td><td valign=top>
-<div style="font-size: x-small; text-align: right">
-<a href=#instructions>instructions</a>
-&nbsp; &nbsp;<a href=#actions>actions</a>
-&nbsp; &nbsp;<a href=#game_preview>preview</a>
-&nbsp; &nbsp;<a href=#pgn_form>PGN</a>
-&nbsp; &nbsp;-&nbsp; &nbsp; <span style="color:gray">options:</span>&nbsp; &nbsp;<a href=#replay_options>replay</a>
-&nbsp; &nbsp;<a href=#board_options>board</a>
-&nbsp; &nbsp;<a href=#header_options>header</a>
-&nbsp; &nbsp;<a href=#moves_options>moves</a>
-&nbsp; &nbsp;<a href=#page_options>page</a>
-</div>
-</td></tr></table>
+<script>print_menu("board_options", 3, "chessboard options");</script>
 
 piece font:
 <select id="pieceFont" name="pieceFont">
@@ -635,29 +570,15 @@ show control buttons:
 <p>
 <br>
 
-<h3>header and moves options</h3>
+<script>print_menu("header_moves_options", 3, "header and moves options");</script>
 
 text margin:
-<input type="text" id="textMargin" name="textMargin" value="" size="4">
+<input type="text" id="textMargin" name="textMargin" value="" size="4"> <span style="color:gray">margin at the left/right of the header and moves section, nice to have if the text overflows with scrollbars</span>
 <p>
 <br>
 
-<table width=100% cellspacing=0 cellpadding=0><tr><td>
-<a name=header_options><b>show game header:</b></a>
+<b>show game header:</b>
 <input type="checkbox" id="showHeader" name="showHeader" value="showHeader" onChange="update_header_text_controls()" />
-</td><td valign=top>
-<div style="font-size: x-small; text-align: right">
-<a href=#instructions>instructions</a>
-&nbsp; &nbsp;<a href=#actions>actions</a>
-&nbsp; &nbsp;<a href=#game_preview>preview</a>
-&nbsp; &nbsp;<a href=#pgn_form>PGN</a>
-&nbsp; &nbsp;-&nbsp; &nbsp; <span style="color:gray">options:</span>&nbsp; &nbsp;<a href=#replay_options>replay</a>
-&nbsp; &nbsp;<a href=#board_options>board</a>
-&nbsp; &nbsp;<a href=#header_options>header</a>
-&nbsp; &nbsp;<a href=#moves_options>moves</a>
-&nbsp; &nbsp;<a href=#page_options>page</a>
-</div>
-</td></tr></table>
 <p>
 
 header font size:
@@ -669,22 +590,8 @@ header font color:
 <p>
 <br>
 
-<table width=100% cellspacing=0 cellpadding=0><tr><td>
-<a name=moves_options><b>show game moves:</b></a>
+<b>show game moves:</b>
 <input type="checkbox" id="showMoves" name="showMoves" value="showMoves" onChange="update_header_text_controls()" />
-</td><td valign=top>
-<div style="font-size: x-small; text-align: right">
-<a href=#instructions>instructions</a>
-&nbsp; &nbsp;<a href=#actions>actions</a>
-&nbsp; &nbsp;<a href=#game_preview>preview</a>
-&nbsp; &nbsp;<a href=#pgn_form>PGN</a>
-&nbsp; &nbsp;-&nbsp; &nbsp; <span style="color:gray">options:</span>&nbsp; &nbsp;<a href=#replay_options>replay</a>
-&nbsp; &nbsp;<a href=#board_options>board</a>
-&nbsp; &nbsp;<a href=#header_options>header</a>
-&nbsp; &nbsp;<a href=#moves_options>moves</a>
-&nbsp; &nbsp;<a href=#page_options>page</a>
-</div>
-</td></tr></table>
 <p>
 
 show game comments:
@@ -716,28 +623,14 @@ comments font color:
 <p>
 <br>
 
-<table width=100% cellspacing=0 cellpadding=0><tr><td>
-<h3><a name=page_options>page options</a></h3>
-</td><td valign=top>
-<div style="font-size: x-small; text-align: right">
-<a href=#instructions>instructions</a>
-&nbsp; &nbsp;<a href=#actions>actions</a>
-&nbsp; &nbsp;<a href=#game_preview>preview</a>
-&nbsp; &nbsp;<a href=#pgn_form>PGN</a>
-&nbsp; &nbsp;-&nbsp; &nbsp; <span style="color:gray">options:</span>&nbsp; &nbsp;<a href=#replay_options>replay</a>
-&nbsp; &nbsp;<a href=#board_options>board</a>
-&nbsp; &nbsp;<a href=#header_options>header</a>
-&nbsp; &nbsp;<a href=#moves_options>moves</a>
-&nbsp; &nbsp;<a href=#page_options>page</a>
-</div>
-</td></tr></table>
+<script>print_menu("page_options", 3, "web page options");</script>
 
 background color:
 <input type="text" class="color" id="backgroundColorHex" name="backgroundColorHex" value="" size="7" />
 <p>
 
 preview background:
-<input type="text" class="color" id="previewBackgroundColorHex" name="previewBackgroundColorHex" value="" size="7" /> <span style="color: gray"> not actually used in the iframe, just for the preview</span>
+<input type="text" class="color" id="previewBackgroundColorHex" name="previewBackgroundColorHex" value="" size="7" /> <span style="color: gray"> not actually used in the HTML code, just for the preview</span>
 <p>
 <br>
 
@@ -750,7 +643,7 @@ iFrame width:
 <p>
 
 iFrame padding:
-<input type="text" id="framePadding" name="framePadding" value="" size="5" onChange="update_suggested_iframe_dimensions()"/> 
+<input type="text" id="framePadding" name="framePadding" value="" size="5" onChange="update_suggested_iframe_dimensions()"/> <span style="color:gray">border padding around the iframe, included within the iFrame width value
 <p>
 <br>
 
