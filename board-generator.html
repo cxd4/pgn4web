@@ -385,11 +385,12 @@ function print_menu( item, level, title ) {
   menu =  '<table width=100% cellspacing=0 cellpadding=0><tr><td>';
   menu += '<h' + level + '><a name=' + item + '>' + title + '</a></h' + level + '>';
   menu += '</td><td valign=top>';
-  menu += '<div style="font-size: x-small; text-align: right">';
+  menu += '<div style="font-size: 66%; text-align: right">';
   menu += '<a href=#instructions>instructions</a>';
+  menu += '&nbsp; &nbsp;<span style="color:gray">actions:</span>';
   menu += '&nbsp; &nbsp;<a href=#generate>generate</a>';
   menu += '&nbsp; &nbsp;<a href=#game_preview>preview</a>';
-  menu += '&nbsp; &nbsp;-&nbsp; &nbsp; <span style="color:gray">config:</span>';
+  menu += '&nbsp; &nbsp;<span style="color:gray">config:</span>';
   menu += '&nbsp; &nbsp;<a href=#pgn_form>PGN</a>';
   menu += '&nbsp; &nbsp;<a href=#replay_options>replay</a>';
   menu += '&nbsp; &nbsp;<a href=#board_options>board</a>';
@@ -416,13 +417,13 @@ window.onload = set_defaults;
 <script>print_menu("instructions", 2, "instructions");</script>
 
 <ol type="1">
-<li><b>enter your PGN text</b> in the large textbox below; remember that besides the header info, the square brackets chars "[" "]" are not allowed in the pgn4web PGN text; keep in mind the board generator only allows for short PGN files, there is a technical limitation in the total size of the resulting iFrame URL</li>
+<li><b>enter your PGN text</b> in the large textbox below; please note that the square brackets chars "[" "]" are not allowed by pgn4web in the PGN text outside the PGN header</li>
 <li><b>modify any of the configuration options</b>, layout, colors and fonts</li>
-<li><b>generate the HTML code</b> and <b>preview your chessboard</b>; if the resulting iFrame URL is too long you should get a warning</li>
-<li><b>tune the configuration options</b> to your liking; check carefully the frame height/width values and remember that some browser might render some items slightly bigger or smaller, so you should keep some margins</li>
-<li>once happy with the preview chessboard, just <b>cut & paste the content of the iFrame HTML code</b> from the yellow box into your web page or your blog</li>
-<li>email to <a href=mailto:pgn4web@casaschi.net>pgn4web@casaschi.net</a> the address of your website or your blog</li>
-<li>if something goes wrong... you might want to <i><a href="javascript:bug_report()">click here and <b>file a bug report</b></a></i></li>
+<li><b>generate the HTML code</b> and <b>preview your chessboard</b></li>
+<li><b>tune the configuration options</b> to your liking; check carefully the frame height/width values and be aware that different browser might render some items slightly bigger or smaller, so you should keep some margins</li>
+<li>once happy with the preview chessboard, just <b>cut & paste the HTML code</b> from the yellow box into your web page or your blog</li>
+<li>email to <i><a href=mailto:pgn4web@casaschi.net>pgn4web@casaschi.net</a></i> the address of your website or your blog</li>
+<li>if something goes wrong, you might want to <i><a href="javascript:bug_report()">click here and <b>file a bug report</b></a></i></li>
 </ol>
 <p>
 <br>
