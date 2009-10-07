@@ -430,21 +430,21 @@ window.onload = set_defaults;
 
 <script>print_menu("generate HTML code", 2, "generate");</script>
 
-<table width=100% cellspacing=0 cellpadding=0><tr>
-<td align=left valign=middle>
-<input type="button" id="generate_html_code_button" name="generate_html_code_button" value="     generate HTML code and update preview     " onClick="generate_html_code()" />
-</td><td align=right valign=middle>
-<input type="button" id="reset_defaults_button" name=" reset_defaults_button " value="reset form to default value" onClick="reset_form()" />
-</td></tr></table>
-<p>
-
-
 <b><i>automatically generated HTML code</b></i>
 <br>
 <input type=text id="html_code" name="html_code" style="width: 100%; background-color: #FFFF66;" />
 <p>
 
 <div id="html_code_status">&nbsp;</div>
+<p>
+
+<table width=100% cellspacing=0 cellpadding=0><tr>
+<td align=left valign=middle width="50%">
+<input type="button" id="generate_html_code_button" name="generate_html_code_button" value="generate HTML code and update preview" onClick="generate_html_code()" style="width: 100%;"/>
+</td><td width="25%">
+</td><td align=right valign=middle width="25%">
+<input type="button" id="reset_defaults_button" name="reset_defaults_button" value="reset form to default value" onClick="reset_form()" style="width: 100%;"/>
+</td></tr></table>
 <p>
 <br>
 
@@ -467,11 +467,11 @@ window.onload = set_defaults;
 
 <script>print_menu("replay_options", 3, "game replay options");</script>
 
-autoplay game on page load:
+autoplay game on page load: &nbsp;&nbsp;
 <input type="checkbox" id="auto" name="auto" value="auto" />
 <p>
 
-autoplay delay (sec): 
+autoplay delay (sec): &nbsp;&nbsp;
 <select id="delay" name="delay">
 <option value="1000">1</option>
 <option value="2000">2</option>
@@ -482,14 +482,14 @@ autoplay delay (sec):
 </select>
 <p>
 
-loop through games at game end: 
+loop through games at game end: &nbsp;&nbsp;
 <input type="checkbox" id="loop" name="loop" value="loop" />
 <p>
 <br>
 
 <script>print_menu("board_options", 3, "chessboard options");</script>
 
-piece font:
+piece font: &nbsp;&nbsp;
 <select id="pieceFont" name="pieceFont">
 <option value="alpha">alpha</option>
 <option value="merida">merida</option>
@@ -497,7 +497,7 @@ piece font:
 </select>
 <p>
 
-piece size:
+piece size: &nbsp;&nbsp;
 <select id="pieceSize" name="pieceSize">
 <option value="20">20</option>
 <option value="21">21</option>
@@ -543,107 +543,112 @@ piece size:
 </select>
 <p>
 
-square size:
-<input type="text" id="squareSize" name="squareSize" value="" size="4" onChange="update_suggested_iframe_dimensions()" />
+square size: &nbsp;&nbsp;
+<input type="text" id="squareSize" name="squareSize" value="" size="6" onChange="update_suggested_iframe_dimensions()" />
 <p>
 <br>
 
-light squares color:
-<input type="text" class="color" id="lightColorHex" name="lightColorHex" value="" size="7">
+light squares color: &nbsp;&nbsp;
+<input type="text" class="color" id="lightColorHex" name="lightColorHex" value="" size="6">
 <p>
 
-dark squares color:
-<input type="text" class="color" id="darkColorHex" name="darkColorHex" value="" size="7">
+dark squares color: &nbsp;&nbsp;
+<input type="text" class="color" id="darkColorHex" name="darkColorHex" value="" size="6">
 <p>
 
-board border color:
-<input type="text" class="color" id="boardBorderColorHex" name="boardBorderColorHex" value="" size="7">
+board border color: &nbsp;&nbsp;
+<input type="text" class="color" id="boardBorderColorHex" name="boardBorderColorHex" value="" size="6">
 <p>
 
-highlight squares color:
-<input type="text" class="color" id="highlightColorHex" name="highlightColorHex" value="" size="7">
+highlight squares color: &nbsp;&nbsp;
+<input type="text" class="color" id="highlightColorHex" name="highlightColorHex" value="" size="6">
 <p>
 <br>
 
-show control buttons:
-<input type="checkbox" id="showButtons" name="showButtons" value="showButtons" onChange="update_suggested_iframe_dimensions()" /> <span style="color:gray"> note that you might not need control buttons, try clicking the G8 square with the mouse</span>
+show control buttons: &nbsp;&nbsp;
+<input type="checkbox" id="showButtons" name="showButtons" value="showButtons" onChange="update_suggested_iframe_dimensions()" />
+&nbsp;&nbsp;<span style="color:gray"> note that you might not need control buttons, try clicking the G8 square with the mouse</span>
 <p>
 <br>
 
 <script>print_menu("header_moves_options", 3, "header and moves options");</script>
 
-text margin:
-<input type="text" id="textMargin" name="textMargin" value="" size="4"> <span style="color:gray">margin at the left/right of the header and moves section, nice to have if the text overflows with scrollbars</span>
+text margin: &nbsp;&nbsp;
+<input type="text" id="textMargin" name="textMargin" value="" size="6">
+&nbsp;&nbsp;<span style="color:gray">margin at the left/right of the header and moves section, nice to have if the text overflows with scrollbars</span>
 <p>
 <br>
 
-<b>show game header:</b>
+<b>show game header:</b> &nbsp;&nbsp;
 <input type="checkbox" id="showHeader" name="showHeader" value="showHeader" onChange="update_header_text_controls()" />
 <p>
 
-header font size:
-<input type="text" id="fontHeaderSize" name="fontHeaderSize" value="" size="4" />
+header font size: &nbsp;&nbsp;
+<input type="text" id="fontHeaderSize" name="fontHeaderSize" value="" size="6" />
 <p>
 
-header font color:
-<input type="text" class="color" id="fontHeaderColorHex" name="fontHeaderColorHex" value="" size="7" />
+header font color: &nbsp;&nbsp;
+<input type="text" class="color" id="fontHeaderColorHex" name="fontHeaderColorHex" value="" size="6" />
 <p>
 <br>
 
-<b>show game moves:</b>
+<b>show game moves:</b> &nbsp;&nbsp;
 <input type="checkbox" id="showMoves" name="showMoves" value="showMoves" onChange="update_header_text_controls()" />
 <p>
 
-show game comments:
+show game comments: &nbsp;&nbsp;
 <input type="checkbox" id="showComments" name="showComments" value="showComments" />
 <p>
 
-show comments on separate lines:
+show comments on separate lines: &nbsp;&nbsp;
 <input type="checkbox" id="showCommentsOnSeparateLines" name="showCommentsOnSeparateLines" value="showCommentsOnSeparateLines" />
 <p>
 
-moves font size:
-<input type="text" id="fontMovesSize" name="fontMovesSize" value="" size="4" />
+moves font size: &nbsp;&nbsp;
+<input type="text" id="fontMovesSize" name="fontMovesSize" value="" size="6" />
 <p>
 
-moves font color:
-<input type="text" class="color" id="fontMovesColorHex" name="fontMovesColorHex" value="" size="7" />
+moves font color: &nbsp;&nbsp;
+<input type="text" class="color" id="fontMovesColorHex" name="fontMovesColorHex" value="" size="6" />
 <p>
 
-highlight move color:
-<input type="text" class="color" id="highlightMoveColorHex" name="highlightMoveColorHex" value="" size="7" />
+highlight move color: &nbsp;&nbsp;
+<input type="text" class="color" id="highlightMoveColorHex" name="highlightMoveColorHex" value="" size="6" />
 <p>
 
-comments font size:
-<input type="text" id="fontCommentsSize" name="fontCommentsSize" value="" size="4" />
+comments font size: &nbsp;&nbsp;
+<input type="text" id="fontCommentsSize" name="fontCommentsSize" value="" size="6" />
 <p>
 
-comments font color:
-<input type="text" class="color" id="fontCommentsColorHex" name="fontCommentsColorHex" value="" size="7" />
+comments font color: &nbsp;&nbsp;
+<input type="text" class="color" id="fontCommentsColorHex" name="fontCommentsColorHex" value="" size="6" />
 <p>
 <br>
 
 <script>print_menu("page_options", 3, "web page options");</script>
 
-background color:
-<input type="text" class="color" id="backgroundColorHex" name="backgroundColorHex" value="" size="7" />
+background color: &nbsp;&nbsp;
+<input type="text" class="color" id="backgroundColorHex" name="backgroundColorHex" value="" size="6" />
 <p>
 
-preview background:
-<input type="text" class="color" id="previewBackgroundColorHex" name="previewBackgroundColorHex" value="" size="7" /> <span style="color: gray"> not actually used in the HTML code, just for the preview</span>
+preview background: &nbsp;&nbsp;
+<input type="text" class="color" id="previewBackgroundColorHex" name="previewBackgroundColorHex" value="" size="6" /> 
+&nbsp;&nbsp;<span style="color: gray"> not actually used in the HTML code, just for the preview</span>
 <p>
 <br>
 
-iFrame height:
-<input type="text" id="frameHeight" name="frameHeight" value="" size="5" /> <span id="frameHeight_helpText" style="color: gray"></span>
+iFrame height: &nbsp;&nbsp;
+<input type="text" id="frameHeight" name="frameHeight" value="" size="6" /> <span id="frameHeight_helpText" style="color: gray"></span>
 <p>
 
-iFrame width:
-<input type="text" id="frameWidth" name="frameWidth" value="" size="5" /> <span id="frameWidth_helpText" style="color: gray"></span>
+iFrame width: &nbsp;&nbsp;
+<input type="text" id="frameWidth" name="frameWidth" value="" size="6" /> 
+&nbsp;&nbsp;<span id="frameWidth_helpText" style="color: gray"></span>
 <p>
 
-iFrame padding:
-<input type="text" id="framePadding" name="framePadding" value="" size="5" onChange="update_suggested_iframe_dimensions()"/> <span style="color:gray">border padding around the iframe, included within the iFrame width value
+iFrame padding: &nbsp;&nbsp;
+<input type="text" id="framePadding" name="framePadding" value="" size="6" onChange="update_suggested_iframe_dimensions()"/>
+&nbsp;&nbsp;<span style="color:gray">border padding around the iframe, included within the iFrame width value
 <p>
 <br>
 
@@ -651,17 +656,18 @@ iFrame padding:
 
 <h3><a name=url_options>URL options</a></h3>
 
-base URL:
-<input type="text" id="baseUrl" name="baseUrl" value="" size="80" />
+base URL: &nbsp;&nbsp;
+<input type="text" id="baseUrl" name="baseUrl" value="" style="width: 100%" />
 <p>
 <br>
 
 -->
 
-<input type="hidden" id="baseUrl" name="baseUrl" value="" size="80" />
+<input type="hidden" id="baseUrl" name="baseUrl" value="" style="width: 100%" />
 
 </form>
 
 </body>
 
 </html>
+
