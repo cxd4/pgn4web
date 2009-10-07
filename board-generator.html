@@ -206,8 +206,8 @@ function update_suggested_iframe_dimensions() {
   suggested_frameWidth += 2 * parseInt(document.board.framePadding.value);
   suggested_frameHeight += 2 * parseInt(document.board.framePadding.value);
 
-  document.getElementById('frameHeight_helpText').innerHTML = "if blank the frame height will be set at the automatically calculated value of " + suggested_frameHeight;
-  document.getElementById('frameWidth_helpText').innerHTML = "if blank the frame width will be set at the automatically calculated value of " + suggested_frameWidth + " while the board width is " + boardWidth;
+  document.getElementById('frameHeight_helpText').innerHTML = "if blank the frame height will be automatically assigned as " + suggested_frameHeight;
+  document.getElementById('frameWidth_helpText').innerHTML = "if blank the frame width will be automatically assigned as " + suggested_frameWidth + " with a board width of " + boardWidth;
 
 }
 
@@ -572,7 +572,7 @@ window.onload = set_defaults;
 
 <input type="checkbox" id="showButtons" name="showButtons" value="showButtons" onChange="update_suggested_iframe_dimensions()" />
 &nbsp;&nbsp; show control buttons &nbsp;&nbsp;
-<span style="color:gray">note that you might not need control buttons, try clicking the G8 square with the mouse</span>
+<span style="color:gray">note that you might not need control buttons, just try clicking the G8 square</span>
 <p>
 <br>
 
@@ -580,7 +580,7 @@ window.onload = set_defaults;
 
 <input type="text" id="textMargin" name="textMargin" value="" size="7">
 &nbsp;&nbsp; text margin &nbsp;&nbsp;
-<span style="color:gray">margin at the left/right of the header and moves section, nice to have if the text overflows with scrollbars</span>
+<span style="color:gray">margin at the left/right of the header/moves, nice to have if the text overflows with scrollbars</span>
 <p>
 <br>
 
