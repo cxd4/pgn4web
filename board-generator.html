@@ -396,7 +396,7 @@ function print_menu( item, level, title ) {
   menu += '&nbsp; &nbsp;<a href=#header_moves_options>header&moves</a>';
   menu += '&nbsp; &nbsp;<a href=#page_options>page</a>';
   menu += '</div>';
-  menu += '</td></tr></table>';
+  menu += '</td></tr></table><p>';
   document.write(menu); 
 }
 
@@ -571,7 +571,7 @@ window.onload = set_defaults;
 
 <input type="checkbox" id="showButtons" name="showButtons" value="showButtons" onChange="update_suggested_iframe_dimensions()" />
 &nbsp;&nbsp; show control buttons &nbsp;&nbsp;
-&nbsp;&nbsp; <span style="color:gray">note that you might not need control buttons, try clicking the G8 square with the mouse</span>
+<span style="color:gray">note that you might not need control buttons, try clicking the G8 square with the mouse</span>
 <p>
 <br>
 
@@ -579,7 +579,7 @@ window.onload = set_defaults;
 
 <input type="text" id="textMargin" name="textMargin" value="" size="7">
 &nbsp;&nbsp; text margin &nbsp;&nbsp;
-&nbsp;&nbsp; <div style="color:gray">margin at the left/right of the header and moves section, nice to have if the text overflows with scrollbars</div>
+<span style="color:gray">margin at the left/right of the header and moves section, nice to have if the text overflows with scrollbars</span>
 <p>
 <br>
 
@@ -637,23 +637,23 @@ window.onload = set_defaults;
 
 <input type="text" class="color" id="previewBackgroundColorHex" name="previewBackgroundColorHex" value="" size="7" /> 
 &nbsp;&nbsp; preview background &nbsp;&nbsp;
-&nbsp;&nbsp; <span style="color: gray">not actually used in the HTML code, just for the preview</span>
+<span style="color: gray">not actually used in the HTML code, just for the preview</span>
 <p>
 <br>
 
 <input type="text" id="frameHeight" name="frameHeight" value="" size="7" />
 &nbsp;&nbsp; iFrame height &nbsp;&nbsp;
-&nbsp;&nbsp; <span id="frameHeight_helpText" style="color: gray"></span>
+<span id="frameHeight_helpText" style="color: gray"></span>
 <p>
 
 <input type="text" id="frameWidth" name="frameWidth" value="" size="7" /> 
 &nbsp;&nbsp; iFrame width &nbsp;&nbsp;
-&nbsp;&nbsp; <span id="frameWidth_helpText" style="color: gray"></span>
+<span id="frameWidth_helpText" style="color: gray"></span>
 <p>
 
 <input type="text" id="framePadding" name="framePadding" value="" size="7" onChange="update_suggested_iframe_dimensions()"/>
 &nbsp;&nbsp; iFrame padding &nbsp;&nbsp;
-&nbsp;&nbsp; <span style="color:gray">border padding around the iframe, included within the iFrame width value</span>
+<span style="color:gray">border padding around the iframe, included within the iFrame width value</span>
 <p>
 <br>
 
@@ -671,11 +671,19 @@ base URL: &nbsp;&nbsp;
 <input type="hidden" id="baseUrl" name="baseUrl" value="" style="width: 100%" />
 
 <script>
-document.getElementById('delay').style.width = document.getElementById('framePadding').offsetWidth;
-document.getElementById('pieceFont').style.width = document.getElementById('framePadding').offsetWidth;
-document.getElementById('pieceSize').style.width = document.getElementById('framePadding').offsetWidth;
+inputWidth = document.getElementById('framePadding').offsetWidth;
+document.getElementById('delay').style.width = inputWidth;
+document.getElementById('pieceFont').style.width = inputWidth;
+document.getElementById('pieceSize').style.width = inputWidth;
 
 checkboxWidth = document.getElementById('showCommentsOnSeparateLines').offsetWidth;
+document.getElementById('auto').style.marginLeft = inputWidth - checkboxWidth;
+document.getElementById('loop').style.marginLeft = inputWidth - checkboxWidth;
+document.getElementById('showButtons').style.marginLeft = inputWidth - checkboxWidth;
+document.getElementById('showHeader').style.marginLeft = inputWidth - checkboxWidth;
+document.getElementById('showMoves').style.marginLeft = inputWidth - checkboxWidth;
+document.getElementById('showComments').style.marginLeft = inputWidth - checkboxWidth;
+document.getElementById('showCommentsOnSeparateLines').style.marginLeft = inputWidth - checkboxWidth;
 
 document.write("<div style='text-align: right; color: gray;'>pgn4web v" + version + "</div>")
 </script>
