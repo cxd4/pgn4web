@@ -77,7 +77,7 @@ previewBackgroundColorHex_default = "DDDDDD";
 baseUrl_default = location.protocol + "//" + location.hostname+location.pathname.substr(0, location.pathname.lastIndexOf("/")) + "/board.html";
 
 function set_defaults() {
-  document.getElementById('html_code').value = '';
+  document.getElementById('html_code').innerHTML = '';
   document.getElementById('html_code_status').innerHTML = '&nbsp;';
 
   if ((pgnText_value = unescape(gup("pgnText"))) == "") { pgnText_value = pgnText_default }
@@ -319,7 +319,7 @@ function generate_html_code() {
 
   html_code_string = "<iframe frameborder=0 height=" + frameHeight_value +" width=" + frameWidth_value +" scrolling=no marginwidth=0 marginheight=0 src='" + iframeUrl + "'>your web browser does not support iframes as required to display the chessboard</iframe>";
 
-  document.getElementById('html_code').value = html_code_string;
+  document.getElementById('html_code').innerHTML = html_code_string;
   document.getElementById('preview').innerHTML = "<table bgcolor=#" + previewBackgroundColorHex_value + " width=100% cellpadding=20><tr><td align=center valign=middle> " + html_code_string + "</td></tr></table>";
 
   if (iframeUrl.length < 2000) {
@@ -441,13 +441,12 @@ window.onload = set_defaults;
 
 <script>print_menu("generate HTML code", 2, "generate");</script>
 
-<b><i>automatically generated HTML code</b></i>
+<div style="font-style: italic; font-weight: bold; text-align: center; margin-bottom:6;">automatically generated HTML code for your web page or blog</div>
+<textarea type=text id="html_code" name="html_code" rows=15 style="width: 100%; background-color: #FFFFAA"></textarea>
 <br>
-<input type=text id="html_code" name="html_code" style="width: 100%; background-color: #FFFF66;" />
+<span id="html_code_status">&nbsp;</span>
 <p>
-
-<div id="html_code_status">&nbsp;</div>
-<p>
+<br>
 
 <table width=100% cellspacing=0 cellpadding=0><tr>
 <td align=left valign=middle width="50%">
