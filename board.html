@@ -314,26 +314,6 @@ else { showButtons = false }
 if (gup("showComments") == "false") { SetCommentsIntoMoveText(false); }
 if (gup("showCommentsOnSeparateLines") == "true") { SetCommentsOnSeparateLines(true); }
 
-if ((pgnPointer = gup("pgnPointer")) != "") {
-  theObject = parent.document.getElementById(pgnPointer);
-  if (theObject == null) { 
-    theOtherObject = parent.document.useDiv;
-    if (theOtherObject != null) {
-      if (theOtherObject == true) {
-        alert("PGN content missing for ID:" + pgnPointer); 
-      }
-    }
-  } else {
-    newPgnText = theObject.innerHTML;
-    // remove URL escape chars such as %20 replaced by space
-    newPgnText = unescape(newPgnText);
-    // replaces the non-breaking-hyphen with a normal hyphen
-    newPgnText = newPgnText.replace(/&#8209;/g,"-");
-
-    document.getElementById('pgnText').innerHTML = newPgnText;
-  }
-}
-
 if ((fenString = gup("fenString")) != "") {
   // remove URL escape chars such as %20 replaced by space
   fenString = unescape(fenString);
@@ -361,16 +341,6 @@ if ((fenString != "") && (newPgnText != "")) {
   alert("ERROR: both fenString and pgnText assigned, fenString value ignored.");
 }
 
-if (pgnPointer != "") {
-  if (newPgnText != "") {
-    alert("ERROR: both pgnPointer and pgnText assigned, pgnPointer ignored.");
-  } else {
-    if (fenString != "") {
-      alert("ERROR: both pgnPointer and fenString assigned, pgnPointer ignored.");
-    }
-  }
-}
-
 if (gup("showHeader") == "true") { showHeader = true }
 else { showHeader = false }
 
@@ -390,7 +360,6 @@ if (gup("help") != "") {
   document.write("\n");
   document.write(" - pgnText = PGN games to display\n");
   document.write(" - fenString = FEN position to display, superceded by pgnText if set\n");
-  document.write(" - pgnPointer = pointer to PGN games, used only by the board-generator tool, superceded by pgnText and/or fenString if set\n");
   document.write("\n");
   document.write(" - auto = if set true, autoplays game, otherwise if false (default true)\n");
   document.write(" - delay = autoplay delay in ms (default 1000)\n");
