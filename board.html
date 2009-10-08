@@ -315,6 +315,27 @@ else { showButtons = false }
 if (gup("showComments") == "false") { SetCommentsIntoMoveText(false); }
 if (gup("showCommentsOnSeparateLines") == "true") { SetCommentsOnSeparateLines(true); }
 
+if ((pgnId = gup("pgnId")) != "") {
+  theObject = parent.document.getElementById(pgnId);
+  if (theObject == null) { 
+    alert("PGN content missing for ID:" + pgnId); 
+  } else {
+    newPgnText = theObject.innerHTML;
+    // remove URL escape chars such as %20 replaced by space
+    newPgnText = unescape(newPgnText);
+    // replaces the non-breaking-hyphen with a normal hyphen
+    newPgnText = newPgnText.replace(/&#8209;/g,"-");
+
+    document.getElementById('pgnText').innerHTML = newPgnText;
+  }
+}
+
+if ((fenString = gup("fenString")) != "") {
+  // remove URL escape chars such as %20 replaced by space
+  fenString = unescape(fenString);
+  document.getElementById('pgnText').innerHTML = '[FEN "' + fenString + '"]';
+}
+
 if ((newPgnText = gup("pgnText")) != "") {
 
   // remove URL escape chars such as %20 replaced by space
@@ -330,16 +351,20 @@ if ((newPgnText = gup("pgnText")) != "") {
   newPgnText = newPgnText.replace(/^([\s]*)\[/g,"[");
 
   document.getElementById('pgnText').innerHTML = newPgnText;
-}
-
-if ((fenString = gup("fenString")) != "") {
-  // remove URL escape chars such as %20 replaced by space
-  fenString = unescape(fenString);
-  document.getElementById('pgnText').innerHTML = '[FEN "' + fenString + '"]';
-}
+} 
 
 if ((fenString != "") && (newPgnText != "")) {
-  alert("ERROR: both fenString and pgnText assigned. pgnText value will be ignored.");
+  alert("ERROR: both fenString and pgnText assigned. fenString value will be ignored.");
+}
+
+if (pgnId != "") {
+  if (newPgnText != "") {
+    alert("ERROR: both pgnId and pgnText assigned. pgnId value will be ignored.");
+  } else {
+    if (fenString != "") {
+      alert("ERROR: both pgnId and fenString assigned. pgnId value will be ignored.");
+    }
+  }
 }
 
 if (gup("showHeader") == "true") { showHeader = true }
