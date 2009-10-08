@@ -328,7 +328,7 @@ function generate_html_code() {
   if (iframeUrl.length < iframeUrl_max) {
     html_code_status_string += "<span class='helptext'>HTML code ready to cut and paste in your web page or blog</span>";
   } else {
-    html_code_status_string += "<span style='color: red'>URL (" + iframeUrl.length + " chars) is longer than " + iframeUrl_max + " chars and might be rejected by some web browsers, try shortening your PGN data</span>";
+    html_code_status_string += "<span style='color: red'>URL (" + iframeUrl.length + " chars) is longer than " + iframeUrl_max + " chars and might be rejected by some web browser/server, try shortening your PGN data</span>";
   }  
   html_code_status_string += "</td><td align=right valign=top>";
   html_code_status_string += "<span class='helptext'>&nbsp;&nbsp;&nbsp;" + document.getElementById('pgnText').value.length + "p&nbsp;" + iframeUrl.length + "u</span>";
@@ -434,7 +434,7 @@ window.onload = set_defaults;
 <li><b><a href=#pgn_form>enter your PGN text</a></b> in the large textbox below 
   <ul type="square">
   <li>square brackets chars "[" "]" are not allowed by pgn4web in the PGN text outside the PGN header</li>
-  <li>due to a browser limitation with the URL length, only short PGN texts are allowed and a warning is issued if the max URL length is exceeded; also beware of possible URL redirections extending your URL length.</li>
+  <li>due to a limitation of web browsers and web servers with the URL length, only short PGN texts are allowed and a warning is issued if the max URL length is exceeded; also beware of possible URL redirections extending your URL length.</li>
   </ul>
   </li>
 <li><b><a href=#replay_options>modify any of the configuration options</a></b>, layout, colors and fonts</li>
