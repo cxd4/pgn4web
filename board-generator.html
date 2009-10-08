@@ -365,7 +365,7 @@ function generate_html_code() {
   html_code_status_string += "HTML code ready to cut and paste in your page";
 
   if ((tryPgnUrl_value == "t") && useDiv) {
-    html_code_status_string += ", but PGN too long to embed in URL, separate tag used instead";
+    html_code_status_string += ", but PGN too long to embed in URL, separate tag used";
   }
 
   if ( (document.getElementById('html_code').value.substring(document.getElementById('html_code').value.length - 61) != html_code_string.substring(html_code_string.length - 61)) || (document.getElementById('pgnText').value.length > pgn_textarea_max) ) {
