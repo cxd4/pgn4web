@@ -1,9 +1,16 @@
 PGN4WEB
-
+display chess games on web pages using javascript
 
 ABOUT
 
-PGN4WEB is a javascript tool to display chess games from a PGN file.
+PGN4WEB is a javascript tool showing chess PGN games as a graphical
+chessboard in websites and blogs. 
+
+It comes as software package you can to your website or blogsite, but also
+provides a very simple board generator web tool helping you adding chess 
+games to your website or blog without any html/javascript coding from your 
+side.
+ 
 It has been designed to make it easier adding chess games to your web 
 pages and blogs, without the need of much knowledge of HTML or any 
 other technicality. It also allows for frequent updates of the PGN file 
@@ -23,6 +30,9 @@ Features:
   can be displayed (or hidden) at pleasure in your html file
 - support different chess bitmaps (even custom bitmaps) and different
   chessboard sizes
+- provides a very simple board generator web tool helping you adding chess 
+  games to your website or blog without any html/javascript coding (see 
+  http://go.casaschi.net/pgn4web-board-generator
 
 Limitations:
 - variations are displayed as comment, it's not possible to display
@@ -108,6 +118,20 @@ See http://www.casaschi.net/chess for an implementation.
 See http://blog.casaschi.net/search?label=pgn4web for an example of usage
 within a blog using the iframe html tag. 
 
+
+THE BOARD GENERATOR WEB TOOL
+
+The board widget allows showing games and positions in web pages and blogs, 
+without any html coding for each game, where the chessboard widget is created 
+using a given HTML code within the web page or blog. 
+
+Just go to the board widget generator site on 
+  http://go.casaschi.net/pgn4web-board-generator
+the enter your PGN games and configure the options. The tool will 
+automatically generate some HTML code that you can cut and paste in your web 
+page or your blog.
+
+
 TECHNICAL NOTES ABOUT WEB BROWSERS
 
 pgn4web.js is developed and tested with a variety of browsers (Arora, 
@@ -122,6 +146,7 @@ experience problems when testing HTML pages from your local computer while
 developing your site. If this happens to you, read notes at 
 http://code.google.com/p/pgn4web/issues/detail?id=23 
 
+
 CREDITS AND LICENSE
 
 javascript modifications of Paolo Casaschi (pgn4web@casaschi.net) on code 
@@ -135,7 +160,12 @@ Some of the PGN files for the examples are coming from "The Week in Chess" at
 http://www.chesscenter.com/twic/twic.html (files wch08ak.pgn and twic765.pgn) 
 and from the scid project at http://scid.sourceforge.net (file tactics.pgn).
 
-The above remains subject to their original licenses (if any).
+The jscolor javascript code is  maintained by Honza Odvarko 
+(honza@odvarko.cz) and released under the GNU Lesser General Public License 
+(http://www.gnu.org/copyleft/lesser.html)
+See http://jscolor.com/
+
+The above items remains subject to their original licenses (if any).
 
 Remaining pgn4web code is Copyright (C) 2009 Paolo Casaschi
 
