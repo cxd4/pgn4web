@@ -46,6 +46,7 @@ a {
 // you probably want to customize the default values
 
 pgnText_default = '[White " "]\n[Black " "]\n[Result " "]\n[Date " "]\n[Event " "]\n[Site " "]\n[Round " "]\n\n';
+tryPgnUrl_default = "t";
 auto_default = "t";
 delay_default = 1000;
 loop_default = "f";
@@ -76,6 +77,9 @@ backgroundColorHex_default = "FFFFFF";
 previewBackgroundColorHex_default = "DDDDDD";
 baseUrl_default = location.protocol + "//" + location.hostname+location.pathname.substr(0, location.pathname.lastIndexOf("/")) + "/board.html";
 
+
+iframeUrl_max = 2000; // max length of the iframeUrl, if this is exceeded the PGN text will be placed in a separate tag rather than in the URL even in tryPgnUrl is set 
+
 function set_defaults() {
   document.getElementById('html_code').innerHTML = '';
   document.getElementById('html_code_status').innerHTML = '&nbsp;';
@@ -83,6 +87,9 @@ function set_defaults() {
   if ((pgnText_value = unescape(gup("pgnText"))) == "") { pgnText_value = pgnText_default }
   document.getElementById('pgnText').value = pgnText_value;
   update_pgnTextLength();
+
+  if ((tryPgnUrl_value = gup("tryPgnUrl")) == "") { tryPgnUrl_value = tryPgnUrl_default }
+  document.board.tryPgnUrl.checked = (tryPgnUrl_value == "t");
 
   if ((auto_value = gup("auto")) == "") { auto_value = auto_default }
   document.board.auto.checked = (auto_value == "t");
@@ -304,25 +311,48 @@ function calculate_html_code() {
   framePadding_value = parseInt(document.board.framePadding.value);
   iframeUrl += "&fp=" + framePadding_value;
 
-  // better to keep this as last
+  if (document.board.tryPgnUrl.checked) { tryPgnUrl_value = "t" } else { tryPgnUrl_value = "f" }
+
   pgnText_value = document.getElementById('pgnText').value;
-  pgnText_value = pgnText_value.replace(/#/g,"++");
-  pgnText_value = pgnText_value.replace(/'/g,"`");
-  pgnText_value = pgnText_value.replace(/&/g," and ");
-  pgnText_value = pgnText_value.replace(/\n/g," ");
-  iframeUrl += "&pt=" + pgnText_value;
+}
+
+function pgnTextFixForUrl ( text ) {
+  text = text.replace(/#/g,"++");
+  text = text.replace(/'/g,"`");
+  text = text.replace(/&/g," and ");
+  text = text.replace(/\n/g," ");
+  return text;
 }
 
 function generate_html_code() {
 
   calculate_html_code();
 
-  html_code_string = "<iframe frameborder=0 height=" + frameHeight_value +" width=" + frameWidth_value +" scrolling=no marginwidth=0 marginheight=0 src='" + iframeUrl + "'>your web browser does not support iframes as required to display the chessboard</iframe>";
+  // here I have pgnText_value (without the necessary modifications to be in a URL), tryPgnText_value and iframeUrl (without the pgnText parameter
+
+  useDiv = (tryPgnUrl_value != "t");
+
+  if (tryPgnUrl_value == "t") {
+    try_iframeUrl = iframeUrl + "&pt=" + pgnTextFixForUrl(pgnText_value);
+    if (try_iframeUrl.length > iframeUrl_max) {
+      useDiv = true;
+    } else {
+      iframeUrl = try_iframeUrl;
+    }
+  }
+
+  if (useDiv) { iframeUrl += "&pi=PAOLO" }
+
+  html_code_string = "<iframe frameborder=0 height=" + frameHeight_value +" width=" + frameWidth_value +" scrolling=no marginwidth=0 marginheight=0 src='" + iframeUrl + "'>your web browser does not support iframes as required to display the chessboard</iframe>\n";
+
+  if (useDiv) {
+	  html_code_string += "\n<div id='PAOLO' style='display: none'>\n\n" + pgnText_value + "\n\n</div>\n";
+  }
 
   document.getElementById('html_code').innerHTML = html_code_string;
   document.getElementById('preview').innerHTML = "<table bgcolor=#" + previewBackgroundColorHex_value + " width=100% cellpadding=20><tr><td align=center valign=middle> " + html_code_string + "</td></tr></table>";
 
-  if (iframeUrl.length < 2000) {
+  if (iframeUrl.length < iframeUrl_max) {
     document.getElementById('html_code_status').innerHTML = "please copy ALL the text from the yellow box above into your web page or blog to show the chessboard (iFrame URL is " +  iframeUrl.length + " chars)";
     document.getElementById('html_code_status').className = "helptext";
   } else {
@@ -442,7 +472,7 @@ window.onload = set_defaults;
 <script>print_menu("generate HTML code", 2, "generate");</script>
 
 <div style="font-style: italic; font-weight: bold; text-align: center; margin-bottom:6;">automatically generated HTML code for your web page or blog</div>
-<textarea type=text id="html_code" name="html_code" rows=15 style="width: 100%; background-color: #FFFFAA"></textarea>
+<textarea readonly id="html_code" name="html_code" rows=15 style="width: 100%; background-color: #FFFFAA"></textarea>
 <br>
 <span id="html_code_status">&nbsp;</span>
 <p>
@@ -475,6 +505,10 @@ window.onload = set_defaults;
 <td align="left"><div class='helptext'>to avoid printing an header item please set the value to a space</div></td>
 <td align="right"><div class="helptext" id="pgnTextLength"></div></td>
 </tr></table>
+<p>
+<input type="checkbox" id="tryPgnUrl" name="tryPgnUrl" value="tryPgnUrl" />
+&nbsp;&nbsp; try embedding PGN text in the URL &nbsp;&nbsp;
+<span class="helptext"">if the URL is less than 2000 then embed the PGN in the URL without a separate tag</span>
 <p>
 <br>
 
@@ -686,6 +720,7 @@ document.getElementById('pieceFont').style.width = inputWidth;
 document.getElementById('pieceSize').style.width = inputWidth;
 
 checkboxWidth = document.getElementById('showCommentsOnSeparateLines').offsetWidth;
+document.getElementById('tryPgnUrl').style.marginLeft = inputWidth - checkboxWidth;
 document.getElementById('auto').style.marginLeft = inputWidth - checkboxWidth;
 document.getElementById('loop').style.marginLeft = inputWidth - checkboxWidth;
 document.getElementById('showButtons').style.marginLeft = inputWidth - checkboxWidth;
