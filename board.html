@@ -384,8 +384,9 @@ if (gup("help") != "") {
   document.write("<PRE>");
   document.write("URL parameters\n");
   document.write("\n");
-  document.write(" - pgnText = PGN string\n");
-  document.write(" - fenString = FEN string, if set then pgnText is ignored\n");
+  document.write(" - pgnText = PGN games to display\n");
+  document.write(" - fenString = FEN position to display, superceded by pgnText if set\n");
+  document.write(" - pgnId = pointer to PGN games, used only by the board-generator tool, superceded by pgnText and/or fenString if set\n");
   document.write("\n");
   document.write(" - auto = if set true, autoplays game, otherwise if false (default true)\n");
   document.write(" - delay = autoplay delay in ms (default 1000)\n");
