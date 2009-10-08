@@ -19,6 +19,17 @@ a {
   color: black;
 }
 
+.helptext,
+.warningtext {
+  color: gray;
+  font-weight: normal;
+}
+
+.warningtext {
+  color: red;
+  font-weight: bold;
+}
+
 </style>
 
 </head>
@@ -67,7 +78,7 @@ baseUrl_default = location.protocol + "//" + location.hostname+location.pathname
 
 function set_defaults() {
   document.getElementById('html_code').value = '';
-  document.getElementById('html_code_status').innerHTML = 'Enter the PGN text, customize options, then press the "generate" button';
+  document.getElementById('html_code_status').innerHTML = '&nbsp;';
 
   if ((pgnText_value = unescape(gup("pgnText"))) == "") { pgnText_value = pgnText_default }
   document.getElementById('pgnText').value = pgnText_value;
@@ -313,12 +324,10 @@ function generate_html_code() {
 
   if (iframeUrl.length < 2000) {
     document.getElementById('html_code_status').innerHTML = "please copy ALL the text from the yellow box above into your web page or blog to show the chessboard (iFrame URL is " +  iframeUrl.length + " chars)";
-    document.getElementById('html_code_status').style.color = "gray";
-    document.getElementById('html_code_status').style.fontWeight = "normal";
+    document.getElementById('html_code_status').className = "helptext";
   } else {
     document.getElementById('html_code_status').innerHTML = "WARNING: iframe URL lenght is " + iframeUrl.length + " thus larger than 2000 and as such might not be accepted by browser (note that some redirection might make your URL even longer)";
-    document.getElementById('html_code_status').style.color = "red";
-    document.getElementById('html_code_status').style.fontWeight = "bold";
+    document.getElementById('html_code_status').className = "warningtext";
   }  
 
 }
@@ -464,8 +473,8 @@ window.onload = set_defaults;
 
 <textarea id=pgnText style="width: 100%;" rows=15 onChange="update_pgnTextLength()"></textarea>
 <table cellspacing="0" cellpadding="0" width="100%"><tr>
-<td align=left style="color: gray;">to avoid printing an header item please set the value to a space</td>
-<td align=right style="color: gray;"><div id="pgnTextLength"></div></td>
+<td align="left"><div class='helptext'>to avoid printing an header item please set the value to a space</div></td>
+<td align="right"><div class="helptext" id="pgnTextLength"></div></td>
 </tr></table>
 <p>
 <br>
@@ -572,7 +581,7 @@ window.onload = set_defaults;
 
 <input type="checkbox" id="showButtons" name="showButtons" value="showButtons" onChange="update_suggested_iframe_dimensions()" />
 &nbsp;&nbsp; show control buttons &nbsp;&nbsp;
-<span style="color:gray">note that you might not need control buttons, just try clicking the G8 square</span>
+<span class="helptext">note that you might not need control buttons, just try clicking the G8 square</span>
 <p>
 <br>
 
@@ -580,7 +589,7 @@ window.onload = set_defaults;
 
 <input type="text" id="textMargin" name="textMargin" value="" size="7">
 &nbsp;&nbsp; text margin &nbsp;&nbsp;
-<span style="color:gray">margin at the left/right of the header/moves, nice to have if the text overflows with scrollbars</span>
+<span class="helptext"">margin at the left/right of the header/moves, nice to have if the text overflows with scrollbars</span>
 <p>
 <br>
 
@@ -638,23 +647,23 @@ window.onload = set_defaults;
 
 <input type="text" class="color" id="previewBackgroundColorHex" name="previewBackgroundColorHex" value="" size="7" /> 
 &nbsp;&nbsp; preview background &nbsp;&nbsp;
-<span style="color: gray">not actually used in the HTML code, just for the preview</span>
+<span class="helptext"">not actually used in the HTML code, just for the preview</span>
 <p>
 <br>
 
 <input type="text" id="frameHeight" name="frameHeight" value="" size="7" />
 &nbsp;&nbsp; iFrame height &nbsp;&nbsp;
-<span id="frameHeight_helpText" style="color: gray"></span>
+<span id="frameHeight_helpText" class="helptext"></span>
 <p>
 
 <input type="text" id="frameWidth" name="frameWidth" value="" size="7" /> 
 &nbsp;&nbsp; iFrame width &nbsp;&nbsp;
-<span id="frameWidth_helpText" style="color: gray"></span>
+<span id="frameWidth_helpText" class="helptext"></span>
 <p>
 
 <input type="text" id="framePadding" name="framePadding" value="" size="7" onChange="update_suggested_iframe_dimensions()"/>
 &nbsp;&nbsp; iFrame padding &nbsp;&nbsp;
-<span style="color:gray">border padding around the iframe, included within the iFrame width value</span>
+<span class="helptext">border padding around the iframe, included within the iFrame width value</span>
 <p>
 <br>
 
@@ -686,7 +695,7 @@ document.getElementById('showMoves').style.marginLeft = inputWidth - checkboxWid
 document.getElementById('showComments').style.marginLeft = inputWidth - checkboxWidth;
 document.getElementById('showCommentsOnSeparateLines').style.marginLeft = inputWidth - checkboxWidth;
 
-document.write("<div style='text-align: right; color: gray;'>pgn4web v" + version + "</div>")
+document.write("<div style='text-align: right;' class='helptext'>pgn4web v" + version + "</div>")
 </script>
 
 </form>
