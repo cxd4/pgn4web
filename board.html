@@ -131,9 +131,9 @@ function new_start_pgn4web() {
   rule.style.color = fontCommentsColor;
   rule.style.fontSize = fontCommentsSize;
 
-  rule = getCSSRule('.nag');
-  rule.style.color = fontCommentsColor;
-  rule.style.fontSize = fontCommentsSize;
+//  rule = getCSSRule('.nag');
+//  rule.style.color = fontCommentsColor;
+//  rule.style.fontSize = fontCommentsSize;
 
   rule = getCSSRule('.buttonControl');
   rule.style.cssText = 'width: ' + ((8 * squareSize + 6) / 5) + "px !important;";
@@ -162,7 +162,6 @@ function new_start_pgn4web() {
   if (gup("showHeightWidth") != "") { 
     alert("board dimensions\n\nwidth: " + boardWidth + "\nheight: " + boardHeight);
   }
-
 }
 
 window.onload = new_start_pgn4web;
