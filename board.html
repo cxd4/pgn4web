@@ -314,10 +314,10 @@ else { showButtons = false }
 if (gup("showComments") == "false") { SetCommentsIntoMoveText(false); }
 if (gup("showCommentsOnSeparateLines") == "true") { SetCommentsOnSeparateLines(true); }
 
-if ((pgnId = gup("pgnId")) != "") {
-  theObject = parent.document.getElementById(pgnId);
+if ((pgnPointer = gup("pgnPointer")) != "") {
+  theObject = parent.document.getElementById(pgnPointer);
   if (theObject == null) { 
-    alert("PGN content missing for ID:" + pgnId); 
+    alert("PGN content missing for ID:" + pgnPointer); 
   } else {
     newPgnText = theObject.innerHTML;
     // remove URL escape chars such as %20 replaced by space
@@ -353,15 +353,15 @@ if ((newPgnText = gup("pgnText")) != "") {
 } 
 
 if ((fenString != "") && (newPgnText != "")) {
-  alert("ERROR: both fenString and pgnText assigned. fenString value will be ignored.");
+  alert("ERROR: both fenString and pgnText assigned, fenString value ignored.");
 }
 
-if (pgnId != "") {
+if (pgnPointer != "") {
   if (newPgnText != "") {
-    alert("ERROR: both pgnId and pgnText assigned. pgnId value will be ignored.");
+    alert("ERROR: both pgnPointer and pgnText assigned, pgnPointer ignored.");
   } else {
     if (fenString != "") {
-      alert("ERROR: both pgnId and fenString assigned. pgnId value will be ignored.");
+      alert("ERROR: both pgnPointer and fenString assigned, pgnPointer ignored.");
     }
   }
 }
@@ -385,7 +385,7 @@ if (gup("help") != "") {
   document.write("\n");
   document.write(" - pgnText = PGN games to display\n");
   document.write(" - fenString = FEN position to display, superceded by pgnText if set\n");
-  document.write(" - pgnId = pointer to PGN games, used only by the board-generator tool, superceded by pgnText and/or fenString if set\n");
+  document.write(" - pgnPointer = pointer to PGN games, used only by the board-generator tool, superceded by pgnText and/or fenString if set\n");
   document.write("\n");
   document.write(" - auto = if set true, autoplays game, otherwise if false (default true)\n");
   document.write(" - delay = autoplay delay in ms (default 1000)\n");

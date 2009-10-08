@@ -324,6 +324,13 @@ function pgnTextFixForUrl ( text ) {
   return text;
 }
 
+function new_pgnPointer () {
+  date_key = new Date();
+  digits_key = 10;
+  random_key = Math.floor((Math.pow(10, digits_key) - Math.pow(10, digits_key - 1)) * Math.random() + Math.pow(10, digits_key - 1) );
+  return date_key.getTime() + version + random_key;
+}
+
 function generate_html_code() {
 
   calculate_html_code();
@@ -341,12 +348,15 @@ function generate_html_code() {
     }
   }
 
-  if (useDiv) { iframeUrl += "&pi=PAOLO" }
+  if (useDiv) {
+    pgnPointer_value = new_pgnPointer();
+    iframeUrl += "&pp=" + pgnPointer_value;
+  }
 
   html_code_string = "<iframe frameborder=0 height=" + frameHeight_value +" width=" + frameWidth_value +" scrolling=no marginwidth=0 marginheight=0 src='" + iframeUrl + "'>your web browser does not support iframes as required to display the chessboard</iframe>\n";
 
   if (useDiv) {
-	  html_code_string += "\n<div id='PAOLO' style='display: none'>\n\n" + pgnText_value + "\n\n</div>\n";
+	  html_code_string += "\n<div id='" + pgnPointer_value + "' style='display: none'>\n\n" + pgnText_value + "\n\n</div>\n";
   }
 
   document.getElementById('html_code').innerHTML = html_code_string;
@@ -460,7 +470,7 @@ window.onload = set_defaults;
 <li><b>modify any of the configuration options</b>, layout, colors and fonts</li>
 <li><b>generate the HTML code</b> and <b>preview your chessboard</b></li>
 <li><b>tune the configuration options</b> to your liking; check carefully the frame height/width values and be aware that different browser might render some items slightly bigger or smaller, so you should keep some margins</li>
-<li>once happy with the preview chessboard, just <b>cut & paste the HTML code</b> from the yellow box into your web page or your blog</li>
+<li>once happy with the preview chessboard, just <b>cut and paste the HTML code</b> from the yellow box into your web page or your blog</li>
 <li>email to <i><a href=mailto:pgn4web@casaschi.net>pgn4web@casaschi.net</a></i> the address of your website or your blog</li>
 <li>if something goes wrong, you might want to <i><a href="javascript:bug_report()">click here and <b>file a bug report</b></a></i></li>
 </ol>
