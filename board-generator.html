@@ -220,7 +220,7 @@ function update_suggested_iframe_dimensions() {
 }
 
 function update_pgnTextLength() {
- document.getElementById('pgnTextLength').innerHTML = document.getElementById('pgnText').value.length + " chars";
+ document.getElementById('pgnTextLength').innerHTML = "&nbsp;&nbsp;&nbsp;" + document.getElementById('pgnText').value.length + " chars";
 }
 
 
@@ -324,14 +324,14 @@ function generate_html_code() {
 
   document.getElementById('preview').innerHTML = "<table bgcolor=#" + previewBackgroundColorHex_value + " width=100% cellpadding=20><tr><td align=center valign=middle> " + html_code_string + "</td></tr></table>";
 
-  html_code_status_string = "<table width='100%' cellspacing=5><tr><td align=left valign=top>";
+  html_code_status_string = "<table width='100%' cellspacing=0 cellpadding=0><tr><td align=left valign=top>";
   if (iframeUrl.length < iframeUrl_max) {
     html_code_status_string += "<span class='helptext'>HTML code ready to cut and paste in your web page or blog</span>";
   } else {
     html_code_status_string += "<span style='color: red'>URL (" + iframeUrl.length + " chars) is longer than " + iframeUrl_max + " chars and might be rejected by some web browsers, try shortening your PGN data</span>";
   }  
   html_code_status_string += "</td><td align=right valign=top>";
-  html_code_status_string += "<span class='helptext'>&nbsp;" + document.getElementById('pgnText').value.length + "p&nbsp;" + iframeUrl.length + "u</span>";
+  html_code_status_string += "<span class='helptext'>&nbsp;&nbsp;&nbsp;" + document.getElementById('pgnText').value.length + "p&nbsp;" + iframeUrl.length + "u</span>";
 
   html_code_status_string += "</td></tr></table>";
   document.getElementById('html_code_status').innerHTML = html_code_status_string;
@@ -431,20 +431,20 @@ window.onload = set_defaults;
 <script>print_menu("instructions", 2, "instructions");</script>
 
 <ol type="1">
-<li><b>enter your PGN text</b> in the large textbox below 
+<li><b><a href=#pgn_form>enter your PGN text</a></b> in the large textbox below 
   <ul>
   <li>square brackets chars "[" "]" are not allowed by pgn4web in the PGN text outside the PGN header</li>
   <li>due to a browser limitation with the URL length, only short PGN texts are allowed and a warning is issued if the max URL length is exceeded.</li>
   </ul>
   </li>
-<li><b>modify any of the configuration options</b>, layout, colors and fonts</li>
-<li><b>generate the HTML code</b> and <b>preview your chessboard</b></li>
-<li><b>tune the configuration options</b> to your liking
+<li><b><a href=#replay_options>modify any of the configuration options</a></b>, layout, colors and fonts</li>
+<li><b><a href=#generate>generate the HTML code</a></b> and <b><a href=#game_preview>preview your chessboard</a></b></li>
+<li><b><a href=#replay_options>tune the configuration options</a></b> to your liking
   <ul>
-  <li>check carefully the frame height/width values and be aware that different browser might render some items slightly bigger or smaller, so you should keep some margins</li>
+  <li><a href=#page_options>check carefully the frame height/width values</a> and be aware that different browser might render some items slightly bigger or smaller, so you should keep some margins</li>
   </ul>
   </li>
-<li>once happy with the preview chessboard, just <b>cut and paste the HTML code</b> from the yellow box into your web page or your blog</li>
+  <li>once happy with the preview chessboard, just <a href=#generate><b>cut and paste the HTML code</b> from the yellow box</a> into your web page or your blog</li>
 <li>email to <i><a href=mailto:pgn4web@casaschi.net>pgn4web@casaschi.net</a></i> the address of your website or your blog</li>
 <li>if something goes wrong, you might want to <i><a href="javascript:bug_report()">click here and <b>file a bug report</b></a></i></li>
 </ol>
