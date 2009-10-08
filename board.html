@@ -317,7 +317,12 @@ if (gup("showCommentsOnSeparateLines") == "true") { SetCommentsOnSeparateLines(t
 if ((pgnPointer = gup("pgnPointer")) != "") {
   theObject = parent.document.getElementById(pgnPointer);
   if (theObject == null) { 
-    alert("PGN content missing for ID:" + pgnPointer); 
+    theOtherObject = parent.document.useDiv;
+    if (theOtherObject != null) {
+      if (theOtherObject == true) {
+        alert("PGN content missing for ID:" + pgnPointer); 
+      }
+    }
   } else {
     newPgnText = theObject.innerHTML;
     // remove URL escape chars such as %20 replaced by space

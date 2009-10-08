@@ -74,6 +74,9 @@ baseUrl_default = location.protocol + "//" + location.hostname+location.pathname
 // max length of the iframeUrl, if this is exceeded the PGN text will be placed in a separate tag rather than in the URL even in tryPgnUrl is set 
 iframeUrl_max = 2000;
 
+// set here to prevent reload false error message from board.html
+useDiv = false;
+
 // max length of the PGN textarea before triggering a warning
 pgn_textarea_max = 32767 - 500;
 
