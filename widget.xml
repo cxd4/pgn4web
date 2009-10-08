@@ -11,5 +11,5 @@
    height="400"
    scrolling="auto"
    category="funandgames"/>
-<Content type="url" href="widget.xml"/>
+<Content type="url" href="widget.html"/>
 </Module>
