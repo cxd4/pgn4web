@@ -419,7 +419,7 @@ function print_menu( item, level, title ) {
   menu += '&nbsp; &nbsp;<a href=#header_moves_options>header&moves</a>';
   menu += '&nbsp; &nbsp;<a href=#page_options>page</a>';
   menu += '</div>';
-  menu += '</td></tr></table><p>';
+  menu += '</td></tr></table>';
   document.write(menu); 
 }
 
@@ -433,9 +433,8 @@ window.onload = set_defaults;
 </td><td align=right valign=middle>
 <a href=http://pgn4web.casaschi.net><img src=pawns.png border=0></a>
 </td></tr></table>
-<p>
-<br>
 
+<div style="height: 1em">&nbsp</div>
 <script>print_menu("instructions", 2, "instructions");</script>
 
 <ul type="square">
@@ -456,12 +455,12 @@ window.onload = set_defaults;
 <li>email to <i><a href=mailto:pgn4web@casaschi.net>pgn4web@casaschi.net</a></i> the address of your website or your blog</li>
 <li>if something goes wrong, you might want to <i><a href="javascript:bug_report()">click here and <b>file a bug report</b></a></i></li>
 </ul>
-<p>
-<br>
 
 <form id="board" name="board" style="display:inline;" action="javascript:generate_html_code()">
 
+<div style="height: 3em">&nbsp</div>
 <script>print_menu("generate HTML code", 2, "generate");</script>
+<div style="height: 1em">&nbsp;</div>
 
 <div style="font-style: italic; font-weight: bold; text-align: center; margin-bottom:6;">automatically generated HTML code for your web page or blog</div>
 <textarea readonly id="html_code" name="html_code" rows=15 style="width: 100%; background-color: #FFFFAA"></textarea>
@@ -474,32 +473,33 @@ window.onload = set_defaults;
 <input type="button" id="generate_html_code_button" name="generate_html_code_button" value="generate HTML code and update preview" onClick="generate_html_code()" style="width: 100%;"/>
 </td><td width="25%">
 </td><td align=right valign=middle width="25%">
-<input type="button" id="reset_defaults_button" name="reset_defaults_button" value="reset form to default value" onClick="reset_form()" style="width: 100%;"/>
+<input type="button" id="reset_defaults_button" name="reset_defaults_button" value="reset form to default values" onClick="reset_form()" style="width: 100%;"/>
 </td></tr></table>
-<p>
-<br>
 
+<div style="height: 3em">&nbsp</div>
 <script>print_menu("game_preview", 2, "preview");</script>
+<div style="height: 1em">&nbsp;</div>
 
 <center>
 <div id='preview'></div>
 </center>
-<p>
-<br>
 
+<div style="height: 2em">&nbsp</div>
 <h2>configuration options</h2>
 
+<div style="height: 2em">&nbsp</div>
 <script>print_menu("pgn_form", 3, "chess game notation in PGN format");</script>
+<div style="height: 1em">&nbsp;</div>
 
 <textarea id=pgnText style="width: 100%;" rows=15 onChange="update_pgnTextLength()"></textarea>
 <table cellspacing="0" cellpadding="0" width="100%"><tr>
 <td align="left"><div class='helptext'>to avoid printing an header item please set the value to a space</div></td>
 <td align="right"><div class="helptext" id="pgnTextLength"></div></td>
 </tr></table>
-<p>
-<br>
 
+<div style="height: 3em">&nbsp</div>
 <script>print_menu("replay_options", 3, "game replay options");</script>
+<div style="height: 1em">&nbsp;</div>
 
 <input class="checkbox" type="checkbox" id="auto" name="auto" value="auto" />
 &nbsp;&nbsp; autoplay game on page load &nbsp;&nbsp;
@@ -518,10 +518,10 @@ window.onload = set_defaults;
 
 <input class="checkbox" type="checkbox" id="loop" name="loop" value="loop" />
 &nbsp;&nbsp; loop through games at game end &nbsp;&nbsp;
-<p>
-<br>
 
+<div style="height: 3em">&nbsp</div>
 <script>print_menu("board_options", 3, "chessboard options");</script>
+<div style="height: 1em">&nbsp;</div>
 
 <select class="input" id="pieceFont" name="pieceFont">
 <option value="alpha">alpha</option>
@@ -602,10 +602,10 @@ window.onload = set_defaults;
 <input class"checkbox" type="checkbox" id="showButtons" name="showButtons" value="showButtons" onChange="update_suggested_iframe_dimensions()" />
 &nbsp;&nbsp; show control buttons &nbsp;&nbsp;
 <span class="helptext">note that you might not need control buttons, just try clicking the G8 square</span>
-<p>
-<br>
 
+<div style="height: 3em">&nbsp</div>
 <script>print_menu("header_moves_options", 3, "header and moves options");</script>
+<div style="height: 1em">&nbsp;</div>
 
 <input class="input" type="text" id="textMargin" name="textMargin" value="" size="7">
 &nbsp;&nbsp; text margin &nbsp;&nbsp;
@@ -656,10 +656,10 @@ window.onload = set_defaults;
 
 <input class="color input" type="text" id="fontCommentsColorHex" name="fontCommentsColorHex" value="" size="7" />
 &nbsp;&nbsp; comments font color &nbsp;&nbsp;
-<p>
-<br>
 
+<div style="height: 3em">&nbsp</div>
 <script>print_menu("page_options", 3, "web page options");</script>
+<div style="height: 1em">&nbsp;</div>
 
 <input class="color input" type="text" id="backgroundColorHex" name="backgroundColorHex" value="" size="7" />
 &nbsp;&nbsp; background color &nbsp;&nbsp;
