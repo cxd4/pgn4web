@@ -499,7 +499,7 @@ window.onload = set_defaults;
 
 <script>print_menu("replay_options", 3, "game replay options");</script>
 
-<input type="checkbox" id="auto" name="auto" value="auto" />
+<input class="checkbox" type="checkbox" id="auto" name="auto" value="auto" />
 &nbsp;&nbsp; autoplay game on page load &nbsp;&nbsp;
 <p>
 
@@ -514,7 +514,7 @@ window.onload = set_defaults;
 &nbsp;&nbsp; autoplay delay (sec) &nbsp;&nbsp;
 <p>
 
-<input class=".checkbox" type="checkbox" id="loop" name="loop" value="loop" />
+<input class="checkbox" type="checkbox" id="loop" name="loop" value="loop" />
 &nbsp;&nbsp; loop through games at game end &nbsp;&nbsp;
 <p>
 <br>
@@ -597,7 +597,7 @@ window.onload = set_defaults;
 <p>
 <br>
 
-<input class".checkbox" type="checkbox" id="showButtons" name="showButtons" value="showButtons" onChange="update_suggested_iframe_dimensions()" />
+<input class"checkbox" type="checkbox" id="showButtons" name="showButtons" value="showButtons" onChange="update_suggested_iframe_dimensions()" />
 &nbsp;&nbsp; show control buttons &nbsp;&nbsp;
 <span class="helptext">note that you might not need control buttons, just try clicking the G8 square</span>
 <p>
@@ -611,7 +611,7 @@ window.onload = set_defaults;
 <p>
 <br>
 
-<input class=".checkbox" type="checkbox" id="showHeader" name="showHeader" value="showHeader" onChange="update_header_text_controls()" />
+<input class="checkbox" type="checkbox" id="showHeader" name="showHeader" value="showHeader" onChange="update_header_text_controls()" />
 &nbsp;&nbsp; <b>show game header</b> &nbsp;&nbsp;
 <p>
 
@@ -624,15 +624,15 @@ window.onload = set_defaults;
 <p>
 <br>
 
-<input class=".checkbox" type="checkbox" id="showMoves" name="showMoves" value="showMoves" onChange="update_header_text_controls()" />
+<input class="checkbox" type="checkbox" id="showMoves" name="showMoves" value="showMoves" onChange="update_header_text_controls()" />
 &nbsp;&nbsp; <b>show game moves</b> &nbsp;&nbsp;
 <p>
 
-<input class=".checkbox" type="checkbox" id="showComments" name="showComments" value="showComments" />
+<input class="checkbox" type="checkbox" id="showComments" name="showComments" value="showComments" />
 &nbsp;&nbsp; show game comments &nbsp;&nbsp;
 <p>
 
-<input class=".checkbox" type="checkbox" id="showCommentsOnSeparateLines" name="showCommentsOnSeparateLines" value="showCommentsOnSeparateLines" />
+<input class="checkbox" type="checkbox" id="showCommentsOnSeparateLines" name="showCommentsOnSeparateLines" value="showCommentsOnSeparateLines" />
 &nbsp;&nbsp; show comments on separate lines &nbsp;&nbsp;
 <p>
 
@@ -699,19 +699,21 @@ base URL: &nbsp;&nbsp;
 <input type="hidden" id="baseUrl" name="baseUrl" value="" style="width: 100%" />
 
 <script>
+
 inputWidth = document.getElementById('framePadding').offsetWidth;
 document.getElementById('delay').style.width = inputWidth;
 document.getElementById('pieceFont').style.width = inputWidth;
 document.getElementById('pieceSize').style.width = inputWidth;
 
 checkboxWidth = document.getElementById('showCommentsOnSeparateLines').offsetWidth;
-document.getElementById('auto').style.marginLeft += inputWidth - checkboxWidth;
-document.getElementById('loop').style.marginLeft += inputWidth - checkboxWidth;
-document.getElementById('showButtons').style.marginLeft += inputWidth - checkboxWidth;
-document.getElementById('showHeader').style.marginLeft += inputWidth - checkboxWidth;
-document.getElementById('showMoves').style.marginLeft += inputWidth - checkboxWidth;
-document.getElementById('showComments').style.marginLeft += inputWidth - checkboxWidth;
-document.getElementById('showCommentsOnSeparateLines').style.marginLeft += inputWidth - checkboxWidth;
+// the last number added to marginLeft should be equal to the value of the .checkbox style at the top
+document.getElementById('auto').style.marginLeft += inputWidth - checkboxWidth + 22;
+document.getElementById('loop').style.marginLeft += inputWidth - checkboxWidth + 22;
+document.getElementById('showButtons').style.marginLeft += inputWidth - checkboxWidth + 22;
+document.getElementById('showHeader').style.marginLeft += inputWidth - checkboxWidth + 22;
+document.getElementById('showMoves').style.marginLeft += inputWidth - checkboxWidth + 22;
+document.getElementById('showComments').style.marginLeft += inputWidth - checkboxWidth + 22;
+document.getElementById('showCommentsOnSeparateLines').style.marginLeft += inputWidth - checkboxWidth + 22;
 
 document.write("<table width=100% cellspacing=0 cellpadding=0><tr><td align=left valign=bottom>");
 document.write("<a href=http://pgn4web.casaschi.net><div class='helptext'>pgn4web v" + version + "</div></a>");
