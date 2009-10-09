@@ -22,6 +22,10 @@ a {
   color: gray;
 }
 
+.input, .checkbox {
+  margin-left: 22;
+}
+
 </style>
 
 </head>
@@ -499,7 +503,7 @@ window.onload = set_defaults;
 &nbsp;&nbsp; autoplay game on page load &nbsp;&nbsp;
 <p>
 
-<select id="delay" name="delay">
+<select class="input" id="delay" name="delay">
 <option value="1000">1</option>
 <option value="2000">2</option>
 <option value="3000">3</option>
@@ -510,14 +514,14 @@ window.onload = set_defaults;
 &nbsp;&nbsp; autoplay delay (sec) &nbsp;&nbsp;
 <p>
 
-<input type="checkbox" id="loop" name="loop" value="loop" />
+<input class=".checkbox" type="checkbox" id="loop" name="loop" value="loop" />
 &nbsp;&nbsp; loop through games at game end &nbsp;&nbsp;
 <p>
 <br>
 
 <script>print_menu("board_options", 3, "chessboard options");</script>
 
-<select id="pieceFont" name="pieceFont">
+<select class="input" id="pieceFont" name="pieceFont">
 <option value="alpha">alpha</option>
 <option value="merida">merida</option>
 <option value="uscf">uscf</option>
@@ -525,7 +529,7 @@ window.onload = set_defaults;
 &nbsp;&nbsp; piece font &nbsp;&nbsp;
 <p>
 
-<select id="pieceSize" name="pieceSize">
+<select class="input" id="pieceSize" name="pieceSize">
 <option value="20">20</option>
 <option value="21">21</option>
 <option value="22">22</option>
@@ -571,29 +575,29 @@ window.onload = set_defaults;
 &nbsp;&nbsp; piece size &nbsp;&nbsp;
 <p>
 
-<input type="text" id="squareSize" name="squareSize" value="" size="7" onChange="update_suggested_iframe_dimensions()" />
+<input class="input" type="text" id="squareSize" name="squareSize" value="" size="7" onChange="update_suggested_iframe_dimensions()" />
 &nbsp;&nbsp; square size &nbsp;&nbsp;
 <p>
 <br>
 
-<input type="text" class="color" id="lightColorHex" name="lightColorHex" value="" size="7">
+<input class="color input" type="text" id="lightColorHex" name="lightColorHex" value="" size="7">
 &nbsp;&nbsp; light squares color &nbsp;&nbsp;
 <p>
 
-<input type="text" class="color" id="darkColorHex" name="darkColorHex" value="" size="7">
+<input class="color input" type="text" id="darkColorHex" name="darkColorHex" value="" size="7">
 &nbsp;&nbsp; dark squares color &nbsp;&nbsp;
 <p>
 
-<input type="text" class="color" id="boardBorderColorHex" name="boardBorderColorHex" value="" size="7">
+<input class="color input" type="text" id="boardBorderColorHex" name="boardBorderColorHex" value="" size="7">
 &nbsp;&nbsp; board border color &nbsp;&nbsp;
 <p>
 
-<input type="text" class="color" id="highlightColorHex" name="highlightColorHex" value="" size="7">
+<input class="color input" type="text" id="highlightColorHex" name="highlightColorHex" value="" size="7">
 &nbsp;&nbsp; highlight squares color &nbsp;&nbsp;
 <p>
 <br>
 
-<input type="checkbox" id="showButtons" name="showButtons" value="showButtons" onChange="update_suggested_iframe_dimensions()" />
+<input class".checkbox" type="checkbox" id="showButtons" name="showButtons" value="showButtons" onChange="update_suggested_iframe_dimensions()" />
 &nbsp;&nbsp; show control buttons &nbsp;&nbsp;
 <span class="helptext">note that you might not need control buttons, just try clicking the G8 square</span>
 <p>
@@ -601,81 +605,81 @@ window.onload = set_defaults;
 
 <script>print_menu("header_moves_options", 3, "header and moves options");</script>
 
-<input type="text" id="textMargin" name="textMargin" value="" size="7">
+<input class="input" type="text" id="textMargin" name="textMargin" value="" size="7">
 &nbsp;&nbsp; text margin &nbsp;&nbsp;
 <span class="helptext"">margin at the left/right of the header/moves, nice to have if the text overflows with scrollbars</span>
 <p>
 <br>
 
-<input type="checkbox" id="showHeader" name="showHeader" value="showHeader" onChange="update_header_text_controls()" />
+<input class=".checkbox" type="checkbox" id="showHeader" name="showHeader" value="showHeader" onChange="update_header_text_controls()" />
 &nbsp;&nbsp; <b>show game header</b> &nbsp;&nbsp;
 <p>
 
-<input type="text" id="fontHeaderSize" name="fontHeaderSize" value="" size="7" />
+<input class="input" type="text" id="fontHeaderSize" name="fontHeaderSize" value="" size="7" />
 &nbsp;&nbsp; header font size &nbsp;&nbsp;
 <p>
 
-<input type="text" class="color" id="fontHeaderColorHex" name="fontHeaderColorHex" value="" size="7" />
+<input class="color input" type="text" id="fontHeaderColorHex" name="fontHeaderColorHex" value="" size="7" />
 &nbsp;&nbsp; header font color &nbsp;&nbsp;
 <p>
 <br>
 
-<input type="checkbox" id="showMoves" name="showMoves" value="showMoves" onChange="update_header_text_controls()" />
+<input class=".checkbox" type="checkbox" id="showMoves" name="showMoves" value="showMoves" onChange="update_header_text_controls()" />
 &nbsp;&nbsp; <b>show game moves</b> &nbsp;&nbsp;
 <p>
 
-<input type="checkbox" id="showComments" name="showComments" value="showComments" />
+<input class=".checkbox" type="checkbox" id="showComments" name="showComments" value="showComments" />
 &nbsp;&nbsp; show game comments &nbsp;&nbsp;
 <p>
 
-<input type="checkbox" id="showCommentsOnSeparateLines" name="showCommentsOnSeparateLines" value="showCommentsOnSeparateLines" />
+<input class=".checkbox" type="checkbox" id="showCommentsOnSeparateLines" name="showCommentsOnSeparateLines" value="showCommentsOnSeparateLines" />
 &nbsp;&nbsp; show comments on separate lines &nbsp;&nbsp;
 <p>
 
-<input type="text" id="fontMovesSize" name="fontMovesSize" value="" size="7" />
+<input class="input" type="text" id="fontMovesSize" name="fontMovesSize" value="" size="7" />
 &nbsp;&nbsp; moves font size &nbsp;&nbsp;
 <p>
 
-<input type="text" class="color" id="fontMovesColorHex" name="fontMovesColorHex" value="" size="7" />
+<input class="color input" type="text" id="fontMovesColorHex" name="fontMovesColorHex" value="" size="7" />
 &nbsp;&nbsp; moves font color &nbsp;&nbsp;
 <p>
 
-<input type="text" class="color" id="highlightMoveColorHex" name="highlightMoveColorHex" value="" size="7" />
+<input class="color input" type="text" id="highlightMoveColorHex" name="highlightMoveColorHex" value="" size="7" />
 &nbsp;&nbsp; highlight move color &nbsp;&nbsp;
 <p>
 
-<input type="text" id="fontCommentsSize" name="fontCommentsSize" value="" size="7" />
+<input class="input" type="text" id="fontCommentsSize" name="fontCommentsSize" value="" size="7" />
 &nbsp;&nbsp; comments font size &nbsp;&nbsp;
 <p>
 
-<input type="text" class="color" id="fontCommentsColorHex" name="fontCommentsColorHex" value="" size="7" />
+<input class="color input" type="text" id="fontCommentsColorHex" name="fontCommentsColorHex" value="" size="7" />
 &nbsp;&nbsp; comments font color &nbsp;&nbsp;
 <p>
 <br>
 
 <script>print_menu("page_options", 3, "web page options");</script>
 
-<input type="text" class="color" id="backgroundColorHex" name="backgroundColorHex" value="" size="7" />
+<input class="color input" type="text" id="backgroundColorHex" name="backgroundColorHex" value="" size="7" />
 &nbsp;&nbsp; background color &nbsp;&nbsp;
 <p>
 
-<input type="text" class="color" id="previewBackgroundColorHex" name="previewBackgroundColorHex" value="" size="7" /> 
+<input class="color input" type="text" id="previewBackgroundColorHex" name="previewBackgroundColorHex" value="" size="7" /> 
 &nbsp;&nbsp; preview background &nbsp;&nbsp;
 <span class="helptext"">not actually used in the HTML code, just for the preview</span>
 <p>
 <br>
 
-<input type="text" id="frameHeight" name="frameHeight" value="" size="7" />
+<input class="input" type="text" id="frameHeight" name="frameHeight" value="" size="7" />
 &nbsp;&nbsp; iFrame height &nbsp;&nbsp;
 <span id="frameHeight_helpText" class="helptext"></span>
 <p>
 
-<input type="text" id="frameWidth" name="frameWidth" value="" size="7" /> 
+<input class="input" type="text" id="frameWidth" name="frameWidth" value="" size="7" /> 
 &nbsp;&nbsp; iFrame width &nbsp;&nbsp;
 <span id="frameWidth_helpText" class="helptext"></span>
 <p>
 
-<input type="text" id="framePadding" name="framePadding" value="" size="7" onChange="update_suggested_iframe_dimensions()"/>
+<input class="input" type="text" id="framePadding" name="framePadding" value="" size="7" onChange="update_suggested_iframe_dimensions()"/>
 &nbsp;&nbsp; iFrame padding &nbsp;&nbsp;
 <span class="helptext">border padding around the iframe, included within the iFrame width value</span>
 <p>
@@ -701,13 +705,13 @@ document.getElementById('pieceFont').style.width = inputWidth;
 document.getElementById('pieceSize').style.width = inputWidth;
 
 checkboxWidth = document.getElementById('showCommentsOnSeparateLines').offsetWidth;
-document.getElementById('auto').style.marginLeft = inputWidth - checkboxWidth;
-document.getElementById('loop').style.marginLeft = inputWidth - checkboxWidth;
-document.getElementById('showButtons').style.marginLeft = inputWidth - checkboxWidth;
-document.getElementById('showHeader').style.marginLeft = inputWidth - checkboxWidth;
-document.getElementById('showMoves').style.marginLeft = inputWidth - checkboxWidth;
-document.getElementById('showComments').style.marginLeft = inputWidth - checkboxWidth;
-document.getElementById('showCommentsOnSeparateLines').style.marginLeft = inputWidth - checkboxWidth;
+document.getElementById('auto').style.marginLeft += inputWidth - checkboxWidth;
+document.getElementById('loop').style.marginLeft += inputWidth - checkboxWidth;
+document.getElementById('showButtons').style.marginLeft += inputWidth - checkboxWidth;
+document.getElementById('showHeader').style.marginLeft += inputWidth - checkboxWidth;
+document.getElementById('showMoves').style.marginLeft += inputWidth - checkboxWidth;
+document.getElementById('showComments').style.marginLeft += inputWidth - checkboxWidth;
+document.getElementById('showCommentsOnSeparateLines').style.marginLeft += inputWidth - checkboxWidth;
 
 document.write("<table width=100% cellspacing=0 cellpadding=0><tr><td align=left valign=bottom>");
 document.write("<a href=http://pgn4web.casaschi.net><div class='helptext'>pgn4web v" + version + "</div></a>");
