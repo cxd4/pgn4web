@@ -324,7 +324,7 @@ function generate_html_code() {
 
   calculate_html_code();
 
-  html_code_string = "<iframe \n\tframeborder=0 \n\theight=" + frameHeight_value +" \n\twidth=" + frameWidth_value +" \n\tscrolling=no \n\tmarginwidth=0 \n\tmarginheight=0 \n\tsrc='" + iframeUrl + "'\n\n>\n\tyour web browser does not support iframes as required to display the chessboard\n</iframe>";
+  html_code_string = "<iframe \n\tframeborder=0 \n\theight=" + frameHeight_value +" \n\twidth=" + frameWidth_value +" \n\tscrolling=no \n\tmarginwidth=0 \n\tmarginheight=0 \n\tsrc='" + iframeUrl + "'\n>\n\tyour web browser does not support iframes as required to display the chessboard\n</iframe>";
   
   document.getElementById('html_code').value = html_code_string;
 
