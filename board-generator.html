@@ -304,6 +304,9 @@ function calculate_html_code() {
   // better to keep this as last item
   pgnText_value = document.getElementById('pgnText').value;
   iframeUrl += "&pt=" + pgnTextFixForUrl(pgnText_value);
+
+  // every parameter had an &xxx= format,now we need to remove the first &
+  iframeUrl = iframeUrl.replace(/\?&/,"?");
 }
 
 function pgnTextFixForUrl ( text ) {
