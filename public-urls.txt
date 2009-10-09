@@ -1,0 +1,18 @@
+
+project site
+ http://pgn4web.casaschi.net
+
+demo site
+ http://go.casaschi.net/pgn4web
+
+board widget
+ http://go.casaschi.net/pgn4web-board
+ (should be a plain forwarding)
+
+board generator site
+ http://go.casaschi.net/pgn4web-board-generator : board generator
+ (should be a masked forwarding with the parameter ?bu=http://go.casaschi.net/pgn4web-board)
+
+blog
+ http://blog.casaschi.net/search?label=pgn4web
+
