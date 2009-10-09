@@ -424,31 +424,30 @@ if ((showHeader) || (showMoves)) {
 } 
 
 if (showHeader) {
+
   document.write("<div class='header'>&nbsp;<br></div>");
-  document.write("<table width=100% cellpadding=0 cellspacing=0 border=0> \
-                  <tr> \
-		  <td width=48% align=left> \
-		  <div class='header' style=' margin-left:" + textMargin + ";' id=GameWhite></div></td> \
-                  <td width=4%>&nbsp;</td> \
-		  <td width=48% align=right> \
-		  <div class='header' style=' margin-right:" + textMargin + ";' id=GameDate></div></td> \
-                  </tr> \
-		  <tr> \
-		  <td align=left> \
-		  <div class='header' style=' margin-left:" + textMargin + ";' id=GameBlack></div></td> \
-                  <td></td> \
-		  <td align=right> \
-		  <div class='header' style=' margin-right:" + textMargin + ";' id=GameSite></div></td> \
-                  </tr> \
-                  <tr> \
-		  <td align=left> \
-		  <div class='header' style=' margin-left:" + textMargin + ";' id=GameResult></div></td> \
-                  <td></td> \
-		  <td align=right> \
-		  <div class='header' style=' margin-right:" + textMargin + ";' id=GameEvent></div></td> \
-                  </tr> \
-                  </table> \
-                 ") 
+
+  document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
+  document.write("<td width=48% align=left>");
+  document.write("<div class='header' style=' margin-left:" + textMargin + ";' id=GameWhite></div>");
+  document.write("</td><td width=4%>&nbsp;</td><td width=48% align=right>");
+  document.write("<div class='header' style=' margin-right:" + textMargin + ";' id=GameDate></div>");
+  document.write("</td></tr></table>");
+
+  document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
+  document.write("<td width=48% align=left>");
+  document.write("<div class='header' style=' margin-left:" + textMargin + ";' id=GameBlack></div>");
+  document.write("</td><td width=4%>&nbsp;</td><td width=48% align=right>");
+  document.write("<div class='header' style=' margin-right:" + textMargin + ";' id=GameSite></div>");
+  document.write("</td></tr></table>");
+
+  document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
+  document.write("<td width=48% align=left>");
+  document.write("<div class='header' style=' margin-left:" + textMargin + ";' id=GameResult></div>");
+  document.write("</td><td width=4%>&nbsp;</td><td width=48% align=right>");
+  document.write("<div class='header' style=' margin-right:" + textMargin + ";' id=GameEvent></div>");
+  document.write("</td></tr></table>");
+
 }
 
 if (showMoves) {
