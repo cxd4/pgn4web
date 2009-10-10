@@ -108,7 +108,9 @@ function gup( name ){
   else    return results[1];
 } 
 
-if ((newPgnText = gup("pgnText")) != "") {
+newPgnText = gup("pgnText");
+if (newPgnText == "") { newPgnText = gup("pt"); }
+if (newPgnText != "") {
   // remove URL escape chars such as %20 replaced by space
   newPgnText = unescape(newPgnText);
   // replaces the non-breaking-hyphen with a normal hyphen
