@@ -20,8 +20,8 @@
  *        SetAutoplayDelay(1000); // milliseconds
  *        SetAutostartAutoplay(false);
  *        SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
- *        SetInitialGame(1); // number of game to be shown at load, from 1 (default); if 0 a random game is loaded
- *        SetInitialHalfmove(0); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
+ *        SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are also acceptted
+ *        SetInitialHalfmove(0,false); // halfmove number to be shown at load, 0 for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only.
  *        SetShortcutKeysEnabled(true);
  *      </script>
  * 
@@ -59,8 +59,9 @@
 // SetAutoplayDelay(1000); // milliseconds
 // SetAutostartAutoplay(false);
 // SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
-// SetInitialGame(1); // number of game to be shown at load, from 1 (default); if 0 a random game is loaded
-// SetInitialHalfmove(0); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
+// SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes)
+of "first", "last", "random" are also acceptted
+// SetInitialHalfmove(0,false); // halfmove number to be shown at load, 0 for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only.
 // SetShortcutKeysEnabled(true);
 
 
@@ -632,6 +633,7 @@ var autoplayNextGame = false;
 
 var initialGame = 0;
 var initialHalfmove = 0;
+var alwaysInitialHalfmove = false;
 
 var MaxMove = 500;
 
@@ -1062,12 +1064,13 @@ function SetAutoplayNextGame(onOff){
   autoplayNextGame = onOff;
 }
 
-function SetInitialHalfmove(number){
+function SetInitialHalfmove(number, always){
   initialHalfmove = number;
+  if (always == true) { alwaysInitialHalfmove = true}
 }
 
 function SetInitialGame(number){
-  initialGame = number - 1;
+  initialGame = number;
 }
 
 /******************************************************************************
@@ -1427,10 +1430,27 @@ function Init(){
       return;
     }
     LoadGameHeaders();
-    if (initialGame < -1) currentGame = 0;
-    else if (initialGame == -1) currentGame = Math.floor(Math.random()*numberOfGames);
-    else if (initialGame < numberOfGames) currentGame = initialGame;
-    else currentGame = numberOfGames - 1;
+
+    switch (initialGame) {
+      case "first":
+        currentGame = 0;
+        break;
+      case "last":
+        currentGame = numberOfGames - 1;
+        break;
+      case "random":
+        currentGame = Math.floor(Math.random()*numberOfGames);
+        break;
+      default:
+        if (isNaN(initialGame)) { currentGame = 0 }
+        else {
+          initialGame -= 1;
+          if (initialGame < -1) { currentGame = 0 }
+          else if (initialGame == -1) { currentGame = Math.floor(Math.random()*numberOfGames); }
+          else if (initialGame < numberOfGames) { currentGame = initialGame } 
+          else { currentGame = numberOfGames - 1; }
+        }
+    }
   }
 
   InitFEN(gameFEN[currentGame]);
@@ -1451,12 +1471,32 @@ function Init(){
   RefreshBoard();
   CurrentPly = StartPly;
   HighlightLastMove();
-  if (firstStart){
-    if (initialHalfmove < -1) initialHalfmove = 0;
-    if (initialHalfmove == -1) initialHalfmove = StartPly + Math.floor(Math.random()*(StartPly+PlyNumber));
-    GoToMove(initialHalfmove);
-    if (autostartAutoplay) SetAutoPlay(true);
+  if (firstStart || alwaysInitialHalfmove){
+    switch (initialHalfmove) {
+      case "start":
+        GoToMove(0);
+        break;
+      case "end":
+        GoToMove(StartPly+PlyNumber);
+        break;
+      case "random":
+        GoToMove(StartPly + Math.floor(Math.random()*(StartPly+PlyNumber)));
+        break;
+      case "comment":
+        GoToMove(0);
+        MoveToNextComment();
+        break;
+      default:
+        if (isNaN(initialHalfmove)) { initialHalfmove = 0 }
+        else { 
+          if (initialHalfmove < -2) { initialHalfmove = 0 }
+          else if (initialHalfmove == -2) { GoToMove(0); MoveToNextComment(); }
+          else if (initialHalfmove == -1) { GoToMove(StartPly + Math.floor(Math.random()*(StartPly+PlyNumber))); }
+          else { GoToMove(initialHalfmove); }
+       }
+    }
   }
+  if (firstStart) { if (autostartAutoplay) SetAutoPlay(true); }
 }
 /******************************************************************************
  *                                                                            *
