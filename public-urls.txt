@@ -3,16 +3,16 @@ project site
  http://pgn4web.casaschi.net
 
 demo site
- http://go.casaschi.net/pgn4web
+ http://pgn4web-demo.casaschi.net
 
 board widget
- http://go.casaschi.net/pgn4web-board
+ http://pgn4web-board.casaschi.net
  (should be a plain forwarding)
 
 board generator site
- http://go.casaschi.net/pgn4web-board-generator : board generator
- (should be a masked forwarding with the parameter ?baseUrl=http://go.casaschi.net/pgn4web-board)
+ http://pgn4web-board-generator.casaschi.net
+ (should be a masked forwarding with the parameter ?baseUrl=http://pgn4web-board.casaschi.net)
 
 blog
- http://blog.casaschi.net/search?label=pgn4web
+ http://pgn4web-blog.casaschi.net
 

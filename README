@@ -16,7 +16,7 @@ pages and blogs, without the need of much knowledge of HTML or any
 other technicality. It also allows for frequent updates of the PGN file 
 without the need of manually generating new web pages at every update.
 
-Project homepage: http://code.google.com/p/pgn4web
+Project homepage: http://pgn4web.casaschi.net
 Contact: pgn4web@casaschi.net
 
 Features:
@@ -32,7 +32,7 @@ Features:
   chessboard sizes
 - provides a very simple board generator web tool helping you adding chess 
   games to your website or blog without any html/javascript coding (see 
-  http://go.casaschi.net/pgn4web-board-generator
+  http://pgn4web-board-generator.casaschi.net
 
 Limitations:
 - variations are displayed as comment, it's not possible to display
@@ -126,7 +126,7 @@ without any html coding for each game, where the chessboard widget is created
 using a given HTML code within the web page or blog. 
 
 Just go to the board widget generator site on 
-  http://go.casaschi.net/pgn4web-board-generator
+  http://pgn4web-board-generator.casaschi.net
 the enter your PGN games and configure the options. The tool will 
 automatically generate some HTML code that you can cut and paste in your web 
 page or your blog.
