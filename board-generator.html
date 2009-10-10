@@ -326,13 +326,13 @@ function generate_html_code() {
 
   calculate_html_code();
 
-  html_code_string = "<iframe \n\tstyle='height: " + frameHeight_value + "; width: " + frameWidth_value + "; border-style: none; overflow: hidden; margin: 0;' \n\tsrc='" + iframeUrl + "'\n>\n\tyour web browser and/or your host do not support iframes as required to display the chessboard\n</iframe>";
+  html_code_string = "<iframe \n\theight=" + frameHeight_value + " width=" + frameWidth_value + " frameborder=0 scrolling=no marginheight=0 marginwidth=0\n\tsrc='" + iframeUrl + "'\n>\n\tyour web browser and/or your host do not support iframes as required to display the chessboard\n</iframe>";
   
   document.getElementById('html_code').value = html_code_string;
 
-  document.getElementById('preview').innerHTML = "<table style='border-style: none; background-color: " + previewBackgroundColorHex_value + "; width:100%; padding:25;'><tr><td align=center valign=middle> " + html_code_string + "</td></tr></table>";
+  document.getElementById('preview').innerHTML = "<table border='0' bgcolor='#" + previewBackgroundColorHex_value + "' width='100%' cellpadding='25'><tr><td align='center' valign='middle'> " + html_code_string + "</td></tr></table>";
 
-  html_code_status_string = "<table width='100%' cellspacing=0 cellpadding=0><tr><td align=left valign=top>";
+  html_code_status_string = "<table width='100%' cellspacing='0' cellpadding='0'><tr><td align='left' valign='top'>";
   if (iframeUrl.length < iframeUrl_max) {
     html_code_status_string += "<span class='helptext'>HTML code ready to cut and paste in your web page or blog</span>";
   } else {
