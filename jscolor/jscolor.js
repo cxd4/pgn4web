@@ -1,11 +1,11 @@
 /**
  * jscolor, JavaScript Color Picker
  *
- * @version 1.2.3
- * @license http://www.gnu.org/copyleft/lesser.html  GNU Lesser General Public License
- * @author  Honza Odvarko <honza@odvarko.cz>
+ * @version 1.2.4
+ * @license GNU Lesser General Public License, http://www.gnu.org/copyleft/lesser.html
+ * @author  Honza Odvarko http://odvarko.cz
  * @created 2008-06-15
- * @updated 2009-02-25
+ * @updated 2009-10-07
  * @link    http://jscolor.com
  */
 
