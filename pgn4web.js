@@ -630,7 +630,7 @@ var Delay = 1000;
 var autostartAutoplay = false;
 var autoplayNextGame = false;
 
-var initialGame = 0;
+var initialGame = 1;
 var initialHalfmove = 0;
 var alwaysInitialHalfmove = false;
 
