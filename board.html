@@ -316,7 +316,7 @@ if (gup("showCommentsOnSeparateLines") == "true") { SetCommentsOnSeparateLines(t
 
 if ((fenString = gup("fenString")) != "") {
   // remove URL escape chars such as %20 replaced by space
-  fenString = unescape(fenString);
+  fenString = decodeURIComponent(fenString);
   document.getElementById('pgnText').innerHTML = '[FEN "' + fenString + '"]';
 }
 
