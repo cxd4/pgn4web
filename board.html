@@ -323,7 +323,7 @@ if ((fenString = gup("fenString")) != "") {
 if ((newPgnText = gup("pgnText")) != "") {
 
   // remove URL escape chars such as %20 replaced by space
-  newPgnText = unescape(newPgnText);
+  newPgnText = decodeURIComponent(newPgnText);
 
   // cleans the PGN text
   newPgnText = newPgnText.replace(/\[/g,"\n\n[");

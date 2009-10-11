@@ -82,7 +82,7 @@ function set_defaults() {
   document.getElementById('html_code').innerHTML = '';
   document.getElementById('html_code_status').innerHTML = '&nbsp;';
 
-  if ((pgnText_value = unescape(gup("pgnText"))) == "") { pgnText_value = pgnText_default }
+  if ((pgnText_value = decodeURIComponent(gup("pgnText"))) == "") { pgnText_value = pgnText_default }
   document.getElementById('pgnText').value = pgnText_value;
   update_pgnTextLength();
 
