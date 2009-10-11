@@ -113,8 +113,6 @@ if (newPgnText == "") { newPgnText = gup("pt"); }
 if (newPgnText != "") {
   // remove URL escape chars such as %20 replaced by space
   newPgnText = unescape(newPgnText);
-  // replaces the non-breaking-hyphen with a normal hyphen
-  newPgnText = newPgnText.replace(/&#8209;/g,"-");
 
   // cleans the PGN text
   newPgnText = newPgnText.replace(/\[/g,"\n\n[");

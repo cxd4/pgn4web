@@ -1399,6 +1399,10 @@ function createBoard(){
     if (tmpText.indexOf('\n') < 0) { tmpText = tmpText.replace(/((\[[^\[\]]*\]\s*)+)/g, "\n$1\n"); }
     // fixes issue with some browser replacing quotes with &quot;
     if (tmpText.indexOf('"') < 0) { tmpText = tmpText.replace(/(&quot;)/g, "\""); }
+    // replaces non-breaking hyphens with normal dashes, first substitution works with IE, second with FF
+    tmpText = tmpText.replace(/\u2011/g,"-");
+    tmpText = tmpText.replace(/\xE2\x80\x91/g,"-");
+
     if ( pgnGameFromPgnText(tmpText) ) Init();
     return;
   } 
