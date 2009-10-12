@@ -382,7 +382,7 @@ function gup( name ){
 function bug_report() {
   var email = "pgn4web@casaschi.net";
   var subject = "pgn4web board generator bug report";
-  var bug_info = "pgn4web board generator bug report\n\nURL: " + window.location + "\n\nuser agent: " + window.navigator.userAgent+ "\n\npgn4wev version: " + version + "\n\niFrame HTML code:\n\n" + html_code_string + "\n\nPlease add a description of the bug and dont forget to attach the screenshot.\n\n\n\n\n";
+  var bug_info = "pgn4web board generator bug report\n\n-------- automatically generated debug info: start --------\n\nURL: " + window.location + "\n\nuser agent: " + window.navigator.userAgent+ "\n\npgn4web version: " + version + "\n\niFrame HTML code:\n\n" + html_code_string + "\n\n-------- automatically generated debug info: end   --------\n\nPlease add below a description of the bug and attach a screenshot if possible.\n\n\n\n\n";
   mailto_link = 'mailto:' + email + '?subject=' + subject + '&body=' + escape(bug_info);
 
   win = window.open("", "bug_report", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no"); 
