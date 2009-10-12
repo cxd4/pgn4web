@@ -1031,10 +1031,6 @@ function ClearMove(move){
     }
     ++ii;
   }
-  // Normalize the castling notation to use capital letter O and to
-  // accept some (illigal) variations like OO and OOO
-  if (mm.match(/[Oo0].*[Oo0].*[Oo0]/)) { mm = mm.replace(/[Oo0].*[Oo0].*[Oo0]/,"O-O-O"); }
-  else if (mm.match(/[Oo0].*[Oo0]/)) { mm = mm.replace(/[Oo0].*[Oo0]/,"O-O"); }
   return mm;
 }
 
@@ -1403,8 +1399,6 @@ function createBoard(){
     if (tmpText.indexOf('\n') < 0) { tmpText = tmpText.replace(/((\[[^\[\]]*\]\s*)+)/g, "\n$1\n"); }
     // fixes issue with some browser replacing quotes with &quot;
     if (tmpText.indexOf('"') < 0) { tmpText = tmpText.replace(/(&quot;)/g, "\""); }
-    // replaces non-breaking hyphens with normal dashes
-    tmpText = tmpText.replace(/\u2011/g,"-");
 
     if ( pgnGameFromPgnText(tmpText) ) Init();
     return;
@@ -2903,43 +2897,64 @@ function PrintHTML(){
    * Show the HTML for the Game Event
    */
   theObject = document.getElementById("GameEvent");
-  if (theObject != null) theObject.innerHTML = gameEvent[currentGame].replace(/-/g, "&#8209;").replace(/ /g, "&nbsp;"); 
+  if (theObject != null) {
+    theObject.innerHTML = gameEvent[currentGame];
+    theObject.style.whiteSpace = "pre";
+  } 
 
   /*
    * Show the HTML for the Game Site
    */
   theObject = document.getElementById("GameSite");
-  if (theObject != null) theObject.innerHTML = gameSite[currentGame].replace(/-/g, "&#8209;").replace(/ /g, "&nbsp;"); 
+  if (theObject != null) {
+    theObject.innerHTML = gameSite[currentGame]; 
+    theObject.style.whiteSpace = "pre";
+  } 
 
   /*
    * Show the HTML for the Game Round
    */
   theObject = document.getElementById("GameRound");
-  if (theObject != null) theObject.innerHTML = gameRound[currentGame].replace(/-/g, "&#8209;").replace(/ /g, "&nbsp;"); 
+  if (theObject != null) {
+    theObject.innerHTML = gameRound[currentGame]; 
+    theObject.style.whiteSpace = "pre";
+  } 
 
   /*
    * Show the HTML for the Game Date
    */
   theObject = document.getElementById("GameDate");
-  if (theObject != null) theObject.innerHTML = gameDate[currentGame].replace(/-/g, "&#8209;").replace(/ /g, "&nbsp;"); 
+  if (theObject != null) {
+    theObject.innerHTML = gameDate[currentGame]; 
+    theObject.style.whiteSpace = "pre";
+  } 
 
   /*
    * Show the HTML for the Game White Player
    */
   theObject = document.getElementById("GameWhite");
-  if (theObject != null) theObject.innerHTML = gameWhite[currentGame].replace(/-/g, "&#8209;").replace(/ /g, "&nbsp;"); 
+  if (theObject != null) {
+    theObject.innerHTML = gameWhite[currentGame]; 
+    theObject.style.whiteSpace = "pre";
+  } 
 
   /*
    * Show the HTML for the Game Black Player
    */
   theObject = document.getElementById("GameBlack");
-  if (theObject != null) theObject.innerHTML = gameBlack[currentGame].replace(/-/g, "&#8209;").replace(/ /g, "&nbsp;"); 
+  if (theObject != null) {
+    theObject.innerHTML = gameBlack[currentGame]; 
+    theObject.style.whiteSpace = "pre";
+  } 
 
   /*
    * Show the HTML for the Game Result
    */
   theObject = document.getElementById("GameResult");
-  if (theObject != null) theObject.innerHTML = gameResult[currentGame].replace(/-/g, "&#8209;").replace(/ /g, "&nbsp;"); 
+  if (theObject != null) {
+    theObject.innerHTML = gameResult[currentGame]; 
+    theObject.style.whiteSpace = "pre";
+  } 
   
   text = '<SPAN ID="ShowPgnText">';
   for (ii = StartPly; ii < StartPly+PlyNumber; ++ii){
@@ -2951,15 +2966,16 @@ function PrintHTML(){
       printedComment = true;
     }
     var moveCount = Math.floor(ii/2)+1;
+    text += '<SPAN CLASS="move" STYLE="white-space: pre;">';
     if (ii%2 == 0){
-      text += '<SPAN CLASS="move">' + moveCount + '.&nbsp;</SPAN>';
+      text += moveCount + '.&nbsp;';
     }else{
-      if ((printedComment) || (ii == StartPly)) text += '<SPAN CLASS="move">' + moveCount + '...&nbsp;</SPAN>';
+      if ((printedComment) || (ii == StartPly)) text += moveCount + '...&nbsp;';
     }
     jj = ii+1;
     text += '<A HREF="javascript:GoToMove(' + jj + 
-      ')" CLASS="move" ID="Mv' + jj + '" ONFOCUS="this.blur()">' + Moves[ii].replace(/-/g, "&#8209;") + 
-      '</A><SPAN CLASS="move"> </SPAN>';
+      ')" CLASS="move" ID="Mv' + jj + '" ONFOCUS="this.blur()">' + Moves[ii] +
+      '</A></SPAN><SPAN CLASS="move"> </SPAN>';
   }
   if (commentsIntoMoveText && (MoveComments[StartPly+PlyNumber] != '')){
     if (commentsOnSeparateLines) text += '<P>';
