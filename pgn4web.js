@@ -2973,9 +2973,9 @@ function PrintHTML(){
       if ((printedComment) || (ii == StartPly)) text += moveCount + '...&nbsp;';
     }
     jj = ii+1;
-    text += '<A HREF="javascript:GoToMove(' + jj + 
-      ')" CLASS="move" ID="Mv' + jj + '" ONFOCUS="this.blur()">' + Moves[ii] +
-      '</A></SPAN><SPAN CLASS="move"> </SPAN>';
+    text += '<A HREF="javascript:GoToMove(' + jj + ')" ID="Mv' + jj + 
+            '" ONFOCUS="this.blur()">' + Moves[ii] + '</A></SPAN>' +
+            '<SPAN CLASS="move"> </SPAN>';
   }
   if (commentsIntoMoveText && (MoveComments[StartPly+PlyNumber] != '')){
     if (commentsOnSeparateLines) text += '<P>';
