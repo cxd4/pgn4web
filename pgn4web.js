@@ -1133,6 +1133,7 @@ function HighlightLastMove(){
     }
     theShowMoveTextObject.innerHTML = text; 
     theShowMoveTextObject.className = 'GameNextMove';
+    theShowMoveTextObject.style.whiteSpace = 'pre';
   }
 
   var theShowMoveTextObject = document.getElementById("GameLastMove");
@@ -1152,6 +1153,7 @@ function HighlightLastMove(){
     }
     theShowMoveTextObject.innerHTML = text; 
     theShowMoveTextObject.className = 'GameLastMove';
+    theShowMoveTextObject.style.whiteSpace = 'pre';
   }
 
   if (showThisMove >= (StartPly-1)){
@@ -2966,14 +2968,14 @@ function PrintHTML(){
       printedComment = true;
     }
     var moveCount = Math.floor(ii/2)+1;
-    text += '<SPAN CLASS="move" STYLE="white-space: pre;">';
+    text += '<SPAN STYLE="white-space: pre;">';
     if (ii%2 == 0){
-      text += moveCount + '.&nbsp;';
+      text += '<SPAN CLASS="move">' + moveCount + '.&nbsp;</SPAN>';
     }else{
-      if ((printedComment) || (ii == StartPly)) text += moveCount + '...&nbsp;';
+      if ((printedComment) || (ii == StartPly)) text += '<SPAN CLASS="move">' + moveCount + '...&nbsp;</SPAN>';
     }
     jj = ii+1;
-    text += '<A HREF="javascript:GoToMove(' + jj + ')" ID="Mv' + jj + 
+    text += '<A HREF="javascript:GoToMove(' + jj + ')" CLASS="move" ID="Mv' + jj + 
             '" ONFOCUS="this.blur()">' + Moves[ii] + '</A></SPAN>' +
             '<SPAN CLASS="move"> </SPAN>';
   }
