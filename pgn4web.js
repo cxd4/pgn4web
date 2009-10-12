@@ -1031,6 +1031,10 @@ function ClearMove(move){
     }
     ++ii;
   }
+  // Normalize the castling notation to use capital letter O and to
+  // accept some (illigal) variations like OO and OOO
+  if (mm.match(/[Oo0].*[Oo0].*[Oo0]/)) { mm = mm.replace(/[Oo0].*[Oo0].*[Oo0]/,"O-O-O"); }
+  else if (mm.match(/[Oo0].*[Oo0]/)) { mm = mm.replace(/[Oo0].*[Oo0]/,"O-O"); }
   return mm;
 }
 
