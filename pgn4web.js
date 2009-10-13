@@ -2556,7 +2556,7 @@ function ParseMove(move, plyCount){
    * The final square did not make sense, maybe it is a castle.
    */
   if ((mvToCol < 0) || (mvToCol > 7) || (mvToRow < 0) || (mvToRow > 7)){
-    if ((move.indexOf('O') >= 0) || (move.indexOf('0') >= 0)){
+    if ((move.indexOf('O') >= 0) || (move.indexOf('o') >= 0) || (move.indexOf('0') >= 0)){
       /*
        * Do long castling first since looking for o-o will get it too.
        */
@@ -2576,7 +2576,7 @@ function ParseMove(move, plyCount){
 	}
       }
       if ((move.indexOf('O-O') >= 0) || (move.indexOf('o-o') >= 0) || (move.indexOf('0-0') >= 0)){
-         mvIsCastling = 1;
+        mvIsCastling = 1;
         mvPiece      = 1;
         mvPieceId    = 0;
         mvPieceOnTo  = 1;
