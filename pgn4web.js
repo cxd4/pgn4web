@@ -1133,7 +1133,7 @@ function HighlightLastMove(){
     }
     theShowMoveTextObject.innerHTML = text; 
     theShowMoveTextObject.className = 'GameNextMove';
-    theShowMoveTextObject.style.whiteSpace = 'pre';
+    theShowMoveTextObject.style.whiteSpace = 'nowrap';
   }
 
   var theShowMoveTextObject = document.getElementById("GameLastMove");
@@ -1153,7 +1153,7 @@ function HighlightLastMove(){
     }
     theShowMoveTextObject.innerHTML = text; 
     theShowMoveTextObject.className = 'GameLastMove';
-    theShowMoveTextObject.style.whiteSpace = 'pre';
+    theShowMoveTextObject.style.whiteSpace = 'nowrap';
   }
 
   if (showThisMove >= (StartPly-1)){
@@ -2560,7 +2560,7 @@ function ParseMove(move, plyCount){
       /*
        * Do long castling first since looking for o-o will get it too.
        */
-      if ((move.indexOf('O-O-O') >= 0) || (move.indexOf('o-o-o') || (move.indexOf('0-0-0') >= 0)){
+      if ((move.indexOf('O-O-O') >= 0) || (move.indexOf('o-o-o') >= 0) || (move.indexOf('0-0-0') >= 0)){
 	mvIsCastling = 1;
         mvPiece      = 1;
         mvPieceId    = 0;
@@ -2575,7 +2575,7 @@ function ParseMove(move, plyCount){
 	  return false;
 	}
       }
-      if ((move.indexOf('O-O') >= 0) || (move.indexOf('o-o') || (move.indexOf('0-0') >= 0)){
+      if ((move.indexOf('O-O') >= 0) || (move.indexOf('o-o') >= 0) || (move.indexOf('0-0') >= 0)){
          mvIsCastling = 1;
         mvPiece      = 1;
         mvPieceId    = 0;
@@ -2901,7 +2901,7 @@ function PrintHTML(){
   theObject = document.getElementById("GameEvent");
   if (theObject != null) {
     theObject.innerHTML = gameEvent[currentGame];
-    // theObject.style.whiteSpace = "pre";
+    // theObject.style.whiteSpace = "nowrap";
   }
 
   /*
@@ -2910,7 +2910,7 @@ function PrintHTML(){
   theObject = document.getElementById("GameSite");
   if (theObject != null) {
     theObject.innerHTML = gameSite[currentGame]; 
-    // theObject.style.whiteSpace = "pre";
+    // theObject.style.whiteSpace = "nowrap";
   } 
 
   /*
@@ -2919,7 +2919,7 @@ function PrintHTML(){
   theObject = document.getElementById("GameRound");
   if (theObject != null) {
     theObject.innerHTML = gameRound[currentGame]; 
-    theObject.style.whiteSpace = "pre";
+    theObject.style.whiteSpace = "nowrap";
   } 
 
   /*
@@ -2928,7 +2928,7 @@ function PrintHTML(){
   theObject = document.getElementById("GameDate");
   if (theObject != null) {
     theObject.innerHTML = gameDate[currentGame]; 
-    theObject.style.whiteSpace = "pre";
+    theObject.style.whiteSpace = "nowrap";
   } 
 
   /*
@@ -2937,7 +2937,7 @@ function PrintHTML(){
   theObject = document.getElementById("GameWhite");
   if (theObject != null) {
     theObject.innerHTML = gameWhite[currentGame]; 
-    // theObject.style.whiteSpace = "pre";
+    // theObject.style.whiteSpace = "nowrap";
   } 
 
   /*
@@ -2946,7 +2946,7 @@ function PrintHTML(){
   theObject = document.getElementById("GameBlack");
   if (theObject != null) {
     theObject.innerHTML = gameBlack[currentGame]; 
-    // theObject.style.whiteSpace = "pre";
+    // theObject.style.whiteSpace = "nowrap";
   } 
 
   /*
@@ -2955,7 +2955,7 @@ function PrintHTML(){
   theObject = document.getElementById("GameResult");
   if (theObject != null) {
     theObject.innerHTML = gameResult[currentGame]; 
-    theObject.style.whiteSpace = "pre";
+    theObject.style.whiteSpace = "nowrap";
   } 
   
   text = '<SPAN ID="ShowPgnText">';
@@ -2968,7 +2968,7 @@ function PrintHTML(){
       printedComment = true;
     }
     var moveCount = Math.floor(ii/2)+1;
-    text += '<SPAN STYLE="white-space: pre;">';
+    text += '<SPAN STYLE="white-space: nowrap;">';
     if (ii%2 == 0){
       text += '<SPAN CLASS="move">' + moveCount + '.&nbsp;</SPAN>';
     }else{
