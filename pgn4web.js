@@ -2901,8 +2901,8 @@ function PrintHTML(){
   theObject = document.getElementById("GameEvent");
   if (theObject != null) {
     theObject.innerHTML = gameEvent[currentGame];
-    theObject.style.whiteSpace = "pre";
-  } 
+    // theObject.style.whiteSpace = "pre";
+  }
 
   /*
    * Show the HTML for the Game Site
@@ -2910,7 +2910,7 @@ function PrintHTML(){
   theObject = document.getElementById("GameSite");
   if (theObject != null) {
     theObject.innerHTML = gameSite[currentGame]; 
-    theObject.style.whiteSpace = "pre";
+    // theObject.style.whiteSpace = "pre";
   } 
 
   /*
@@ -2937,7 +2937,7 @@ function PrintHTML(){
   theObject = document.getElementById("GameWhite");
   if (theObject != null) {
     theObject.innerHTML = gameWhite[currentGame]; 
-    theObject.style.whiteSpace = "pre";
+    // theObject.style.whiteSpace = "pre";
   } 
 
   /*
@@ -2946,7 +2946,7 @@ function PrintHTML(){
   theObject = document.getElementById("GameBlack");
   if (theObject != null) {
     theObject.innerHTML = gameBlack[currentGame]; 
-    theObject.style.whiteSpace = "pre";
+    // theObject.style.whiteSpace = "pre";
   } 
 
   /*
