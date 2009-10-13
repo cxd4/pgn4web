@@ -2560,7 +2560,7 @@ function ParseMove(move, plyCount){
       /*
        * Do long castling first since looking for o-o will get it too.
        */
-      if ((move.indexOf('O-O-O') >= 0) || (move.indexOf('0-0-0') >= 0)){
+      if ((move.indexOf('O-O-O') >= 0) || (move.indexOf('o-o-o') || (move.indexOf('0-0-0') >= 0)){
 	mvIsCastling = 1;
         mvPiece      = 1;
         mvPieceId    = 0;
@@ -2575,7 +2575,7 @@ function ParseMove(move, plyCount){
 	  return false;
 	}
       }
-      if ((move.indexOf('O-O') >= 0) || (move.indexOf('0-0') >= 0)){
+      if ((move.indexOf('O-O') >= 0) || (move.indexOf('o-o') || (move.indexOf('0-0') >= 0)){
          mvIsCastling = 1;
         mvPiece      = 1;
         mvPieceId    = 0;
