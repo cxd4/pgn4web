@@ -218,6 +218,11 @@ function addCSSRule(ruleName) {                           // Create a new css ru
 } 
 
 
+function percentFixFromUrl ( text ) {
+  text += ''; // makes sure text is a string
+  return text.replace(/pct$/,'%');
+}
+
 
 function gup( name ){
 
@@ -288,15 +293,15 @@ if ((highlightMoveColor  = gup("highlightMoveColorName"))  == "") {if ((highligh
 
 if ((backgroundColor = gup("backgroundColorName")) == "") {if ((backgroundColor = "#" + gup("backgroundColorHex")) == "#") backgroundColor = "#FFFFFF"}
 
-if ((framePadding = gup("framePadding")) == "") { framePadding = 0;}
+if ((framePadding = percentFixFromUrl( gup("framePadding") )) == "") { framePadding = 0;}
 
-if ((fontHeaderSize = gup("fontHeaderSize")) == "") { fontHeaderSize = "100%"; }
+if ((fontHeaderSize = percentFixFromUrl( gup("fontHeaderSize") )) == "") { fontHeaderSize = "100%"; }
 if ((fontHeaderColor = gup("fontHeaderColorName")) == "") {if ((fontHeaderColor = "#" + gup("fontHeaderColorHex")) == "#") fontHeaderColor = "black"}
 
-if ((fontMovesSize = gup("fontMovesSize")) == "") { fontMovesSize = "100%"; }
+if ((fontMovesSize = percentFixFromUrl( gup("fontMovesSize") )) == "") { fontMovesSize = "100%"; }
 if ((fontMovesColor = gup("fontMovesColorName")) == "") {if ((fontMovesColor = "#" + gup("fontMovesColorHex")) == "#") fontMovesColor = "black"}
 
-if ((fontCommentsSize = gup("fontCommentsSize")) == "") { fontCommentsSize = "100%"; }
+if ((fontCommentsSize = percentFixFromUrl( gup("fontCommentsSize") )) == "") { fontCommentsSize = "100%"; }
 if ((fontCommentsColor = gup("fontCommentsColorName")) == "") {if ((fontCommentsColor = "#" + gup("fontCommentsColorHex")) == "#") fontCommentsColor = "gray"}
 
 if (gup("auto") == "false") { SetAutostartAutoplay(false); }
@@ -345,12 +350,12 @@ else { showHeader = false }
 if (gup("showMoves") == "true") { showMoves = true }
 else { showMoves = false }
 
-if ((textHeight = gup("textHeight")) == "") { textHeight="100%" }
-if ((textWidth = gup("textWidth")) == "") { textWidth="100%" }
-if ((textMargin = gup("textMargin")) == "") { textMargin=0 }
+if ((textHeight = percentFixFromUrl( gup("textHeight") )) == "") { textHeight="100%" }
+if ((textWidth = percentFixFromUrl( gup("textWidth") )) == "") { textWidth="100%" }
+if ((textMargin = percentFixFromUrl( gup("textMargin") )) == "") { textMargin=0 }
 
-frameHeight = gup("frameHeight");
-frameWidth = gup("frameWidth");
+frameHeight = percentFixFromUrl( gup("frameHeight") );
+frameWidth = percentFixFromUrl( gup("frameWidth") );
 
 if (gup("help") != "") {
   document.write("<PRE>");

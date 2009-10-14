@@ -261,33 +261,33 @@ function calculate_html_code() {
 
   if (document.board.showHeader.checked || document.board.showMoves.checked) {
     textMargin_value = document.board.textMargin.value;
-    iframeUrl += "&tm=" + textMargin_value;
+    iframeUrl += "&tm=" + percentFixForUrl( textMargin_value );
   }
 
   if (document.board.showHeader.checked) {
 		  
-    if (document.board.showComments.checked) { showComments_value = "t" } else { showComments_value = "f" } 
-    if (document.board.showCommentsOnSeparateLines.checked) { showCommentsOnSeparateLines_value = "t" } else { showCommentsOnSeparateLines_value = "f" }
-    iframeUrl += "&sc=" + showComments_value + "&scosl=" + showCommentsOnSeparateLines_value;
-
-    fontHeaderColorHex_value =  document.board.fontHeaderColorHex.value
+    fontHeaderColorHex_value =  document.board.fontHeaderColorHex.value;
     iframeUrl += "&fhch=" + fontHeaderColorHex_value;
 
-    fontHeaderSize_value =  document.board.fontHeaderSize.value
-    iframeUrl += "&fhs=" + fontHeaderSize_value;
+    fontHeaderSize_value = document.board.fontHeaderSize.value;
+    iframeUrl += "&fhs=" + percentFixForUrl( fontHeaderSize_value );
 
   }
 		  
   if (document.board.showMoves.checked) {
 
-    fontMovesColorHex_value =  document.board.fontMovesColorHex.value
-    fontCommentsColorHex_value =  document.board.fontCommentsColorHex.value
-    highlightMoveColorHex_value =  document.board.highlightMoveColorHex.value
+    fontMovesColorHex_value =  document.board.fontMovesColorHex.value;
+    fontCommentsColorHex_value =  document.board.fontCommentsColorHex.value;
+    highlightMoveColorHex_value =  document.board.highlightMoveColorHex.value;
     iframeUrl += "&fmch=" + fontMovesColorHex_value + "&fcch=" + fontCommentsColorHex_value + "&hmch=" + highlightMoveColorHex_value;
 
-    fontMovesSize_value =  document.board.fontMovesSize.value
-    fontCommentsSize_value =  document.board.fontCommentsSize.value
-    iframeUrl += "&fms=" + fontMovesSize_value + "&fcs=" + fontCommentsSize_value;
+    fontMovesSize_value = document.board.fontMovesSize.value;
+    fontCommentsSize_value = document.board.fontCommentsSize.value;
+    iframeUrl += "&fms=" + percentFixForUrl( fontMovesSize_value ) + "&fcs=" + percentFixForUrl( fontCommentsSize_value );
+
+    if (document.board.showComments.checked) { showComments_value = "t" } else { showComments_value = "f" } 
+    if (document.board.showCommentsOnSeparateLines.checked) { showCommentsOnSeparateLines_value = "t" } else { showCommentsOnSeparateLines_value = "f" }
+    iframeUrl += "&sc=" + showComments_value + "&scosl=" + showCommentsOnSeparateLines_value;
 
   } 
 
@@ -301,7 +301,7 @@ function calculate_html_code() {
   if ((frameHeight_value = document.board.frameHeight.value) == "") { frameHeight_value = suggested_frameHeight }
   if ((frameWidth_value = document.board.frameWidth.value) == "") { frameWidth_value = suggested_frameWidth }
 
-  iframeUrl += "&fh=" + frameHeight_value + "&fw=" + "100%";
+  iframeUrl += "&fh=" + percentFixForUrl( frameHeight_value ) + "&fw=" + "100pct";
 
   framePadding_value = parseInt(document.board.framePadding.value);
   iframeUrl += "&fp=" + framePadding_value;
@@ -328,6 +328,11 @@ function pgnTextFixForUrl ( text ) {
   text = text.replace(/\s/g," ");
 
   return text;
+}
+
+function percentFixForUrl ( text ) {
+  text += ''; // makes sure text is a string
+  return text.replace(/%$/,'pct');
 }
 
 function generate_html_code() {
