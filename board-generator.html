@@ -219,8 +219,8 @@ function update_suggested_iframe_dimensions() {
   suggested_frameWidth += 2 * parseInt(document.board.framePadding.value);
   suggested_frameHeight += 2 * parseInt(document.board.framePadding.value);
 
-  document.getElementById('frameHeight_helpText').innerHTML = "if blank the frame height will be automatically assigned as " + suggested_frameHeight;
-  document.getElementById('frameWidth_helpText').innerHTML = "if blank the frame width will be automatically assigned as " + suggested_frameWidth + " with a board width of " + boardWidth;
+  document.getElementById('frameHeight_helpText').innerHTML = "a number; if blank frame height is assigned to " + suggested_frameHeight;
+  document.getElementById('frameWidth_helpText').innerHTML = "a number or a percentage; if blank frame width is assigned to " + suggested_frameWidth + " corresponding to a board width of " + boardWidth;
 
 }
 
@@ -597,6 +597,7 @@ window.onload = set_defaults;
 
 <input class="input" type="text" id="squareSize" name="squareSize" value="" size="7" onChange="update_suggested_iframe_dimensions()" />
 &nbsp;&nbsp; square size &nbsp;&nbsp;
+<span class="helptext"">a number; must be larger than the piece size</span>
 <p>
 <br>
 
@@ -619,7 +620,7 @@ window.onload = set_defaults;
 
 <input class"checkbox" type="checkbox" id="showButtons" name="showButtons" value="showButtons" onChange="update_suggested_iframe_dimensions()" />
 &nbsp;&nbsp; show control buttons &nbsp;&nbsp;
-<span class="helptext">note that you might not need control buttons, just try clicking the G8 square</span>
+<span class="helptext">control buttons might not be necessary, just try clicking the G8 square</span>
 
 <div style="height: 3em">&nbsp</div>
 <script>print_menu("header_moves_options", 3, "header and moves options");</script>
@@ -627,7 +628,7 @@ window.onload = set_defaults;
 
 <input class="input" type="text" id="textMargin" name="textMargin" value="" size="7">
 &nbsp;&nbsp; text margin &nbsp;&nbsp;
-<span class="helptext"">margin at the left/right of the header/moves, nice to have if the text overflows with scrollbars</span>
+<span class="helptext"">a number or a percentage; header/moves section margin, nice to have if text overflows with scrollbars</span>
 <p>
 <br>
 
@@ -637,7 +638,7 @@ window.onload = set_defaults;
 
 <input class="input" type="text" id="fontHeaderSize" name="fontHeaderSize" value="" size="7" />
 &nbsp;&nbsp; header font size &nbsp;&nbsp;
-<span class="helptext"">if the left and right header columns touch in the middle, unwanted effects might show</span>
+<span class="helptext"">a number or a percentage; make sure left/right columns dont touch in the middle</span>
 <p>
 
 <input class="color input" type="text" id="fontHeaderColorHex" name="fontHeaderColorHex" value="" size="7" />
@@ -659,6 +660,7 @@ window.onload = set_defaults;
 
 <input class="input" type="text" id="fontMovesSize" name="fontMovesSize" value="" size="7" />
 &nbsp;&nbsp; moves font size &nbsp;&nbsp;
+<span class="helptext"">a number or a percentage</span>
 <p>
 
 <input class="color input" type="text" id="fontMovesColorHex" name="fontMovesColorHex" value="" size="7" />
@@ -671,6 +673,7 @@ window.onload = set_defaults;
 
 <input class="input" type="text" id="fontCommentsSize" name="fontCommentsSize" value="" size="7" />
 &nbsp;&nbsp; comments font size &nbsp;&nbsp;
+<span class="helptext"">a number or a percentage</span>
 <p>
 
 <input class="color input" type="text" id="fontCommentsColorHex" name="fontCommentsColorHex" value="" size="7" />
@@ -702,7 +705,7 @@ window.onload = set_defaults;
 
 <input class="input" type="text" id="framePadding" name="framePadding" value="" size="7" onChange="update_suggested_iframe_dimensions()"/>
 &nbsp;&nbsp; iFrame padding &nbsp;&nbsp;
-<span class="helptext">border padding around the iframe, included within the iFrame width value</span>
+<span class="helptext">a number; border padding around the iframe, included within the iFrame width value</span>
 <p>
 <br>
 
