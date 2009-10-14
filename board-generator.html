@@ -315,10 +315,18 @@ function calculate_html_code() {
 }
 
 function pgnTextFixForUrl ( text ) {
-  text = text.replace(/#/g,"++");
+
+  // the "'" char is used in the iframe statement
   text = text.replace(/'/g,"`");
+
+  // the "#" "&" "%" dont work well in URLs
+  text = text.replace(/#/g,"++");
   text = text.replace(/&/g," and ");
-  text = text.replace(/\n/g," ");
+  text = text.replace(/%/g,"pc");
+
+  // we need everything on a single line
+  text = text.replace(/\s/g," ");
+
   return text;
 }
 
