@@ -119,7 +119,7 @@ function set_defaults() {
   if ((showButtons_value = gup("showButtons")) == "") { showButtons_value = showButtons_default }
   document.board.showButtons.checked = (showButtons_value == "t");
 
-  if ((textMargin_value = gup("textMargin")) == "") { textMargin_value = textMargin_default }
+  if ((textMargin_value = percentFixFromUrl( gup("textMargin") )) == "") { textMargin_value = textMargin_default }
   document.getElementById('textMargin').value = textMargin_value;
 
   if ((showHeader_value = gup("showHeader")) == "") { showHeader_value = showHeader_default }
@@ -146,13 +146,13 @@ function set_defaults() {
   if ((highlightMoveColorHex_value = gup("highlightMoveColorHex")) == "") { highlightMoveColorHex_value = highlightMoveColorHex_default }
   document.board.highlightMoveColorHex.value = highlightMoveColorHex_value;
 
-  if ((fontHeaderSize_value = gup("fontHeaderSize")) == "") { fontHeaderSize_value = fontHeaderSize_default }
+  if ((fontHeaderSize_value = percentFixFromUrl( gup("fontHeaderSize") )) == "") { fontHeaderSize_value = fontHeaderSize_default }
   document.board.fontHeaderSize.value = fontHeaderSize_value;
 
-  if ((fontMovesSize_value = gup("fontMovesSize")) == "") { fontMovesSize_value = fontMovesSize_default }
+  if ((fontMovesSize_value = percentFixFromUrl( gup("fontMovesSize") )) == "") { fontMovesSize_value = fontMovesSize_default }
   document.board.fontMovesSize.value = fontMovesSize_value;
 
-  if ((fontCommentsSize_value = gup("fontCommentsSize")) == "") { fontCommentsSize_value = fontCommentsSize_default }
+  if ((fontCommentsSize_value = percentFixFromUrl( gup("fontCommentsSize") )) == "") { fontCommentsSize_value = fontCommentsSize_default }
   document.board.fontCommentsSize.value = fontCommentsSize_value;
 
   if ((backgroundColorHex_value = gup("backgroundColorHex")) == "") { backgroundColorHex_value = backgroundColorHex_default }
@@ -161,10 +161,10 @@ function set_defaults() {
   if ((previewBackgroundColorHex_value = gup("previewBackgroundColorHex")) == "") { previewBackgroundColorHex_value = previewBackgroundColorHex_default }
   document.board.previewBackgroundColorHex.value = previewBackgroundColorHex_value;
 
-  if ((frameHeight_value = gup("frameHeight")) == "") { frameHeight_value = frameHeight_default }
+  if ((frameHeight_value = percentFixFromUrl( gup("frameHeight") )) == "") { frameHeight_value = frameHeight_default }
   document.board.frameHeight.value = frameHeight_value;
 
-  if ((frameWidth_value = gup("frameWidth")) == "") { frameWidth_value = frameWidth_default }
+  if ((frameWidth_value = percentFixFromUrl( gup("frameWidth") )) == "") { frameWidth_value = frameWidth_default }
   document.board.frameWidth.value = frameWidth_value;
 
   if ((framePadding_value = gup("framePadding")) == "") { framePadding_value = framePadding_default }
@@ -333,6 +333,11 @@ function pgnTextFixForUrl ( text ) {
 function percentFixForUrl ( text ) {
   text += ''; // makes sure text is a string
   return text.replace(/%$/,'pct');
+}
+
+function percentFixFromUrl ( text ) {
+  text += ''; // makes sure text is a string
+  return text.replace(/pct$/,'%');
 }
 
 function generate_html_code() {
