@@ -70,7 +70,7 @@
  * DONT CHANGE AFTER HERE 
  */
 
-var version = '1.56+';
+var version = '1.57';
 var about = '\tpgn4web v' + version + '\n\thttp://pgn4web.casaschi.net\n';
 
 var keyhelp = 'h, l\tgame start/end' + '\n' +
