@@ -6,6 +6,21 @@
 
 <link href="tactics.css" type="text/css" rel="stylesheet"></link>
 
+<style type="text/css">
+
+.newButton {
+  font-size: 9; 
+  width: 80px;
+  vertical-align: middle;
+  text-align: center;
+  background-color: #f2d798; 
+  border-color: #c9ad6f; 
+  border-style: double;
+  border-width: 3;
+}
+
+</style>
+
 <script src="pgn4web.js" type="text/javascript"></script>
 <script>
    SetPgnUrl("tactics.pgn"); // if set, this has precedence over the inline PGN in the HTML file
@@ -191,17 +206,17 @@ SetInitialGame(gup('n'));
 <form>
 <tr>
 <td width=80px valign=top>
-<input type=button value="move back" alt="click here to move back one ply when looking at the solution" style="font-size: 10; width: 80px; background-color: #f2d798; border-color: #f2d798; border-style: solid;" onClick="javascript: MoveBackward(1); if (StartPly == CurrentPly) {document.getElementById('task').style.visibility = 'visible';}">
+<input type=button value="move back" title="click here to move back one ply when looking at the solution" class="newButton" onClick="javascript: MoveBackward(1); if (StartPly == CurrentPly) {document.getElementById('task').style.visibility = 'visible';}" onFocus="this.blur()">
 </td>
 <td width=4px>
 </td>
 <td width=80px valign=top>
-<input type=button value="show solution" alt="click here to show the solution and step through the main line" style="font-size: 10; width: 80px; background-color: #f2d798; border-color: #f2d798; border-style: solid;" onClick="javascript:MoveForward(1); document.getElementById('solution').style.visibility = 'visible';document.getElementById('task').style.visibility = 'hidden';">
+<input type=button value="show solution" title="click here to show the solution and step through the main line" class="newButton" onClick="javascript:MoveForward(1); document.getElementById('solution').style.visibility = 'visible';document.getElementById('task').style.visibility = 'hidden';" onFocus="this.blur()">
 </td>
 <td width=4px>
 </td>
 <td width=80px valign=top>
-<input type=button value="next puzzle" alt="click here to load the next puzzle" style="font-size: 10; width: 80px; background-color: #f2d798; border-color: #f2d798; border-style: solid;" onClick="javascript: document.getElementById('solution').style.visibility = 'hidden'; document.getElementById('task').style.visibility = 'visible'; currentGame = Math.floor(Math.random()*numberOfGames);Init();">
+<input type=button value="next puzzle" title="click here to load the next puzzle" class="newButton" onClick="javascript: document.getElementById('solution').style.visibility = 'hidden'; document.getElementById('task').style.visibility = 'visible'; currentGame = Math.floor(Math.random()*numberOfGames);Init();" onFocus="this.blur()">
 </td>
 </tr>
 </form>

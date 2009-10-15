@@ -13,8 +13,9 @@ body {
 
 .boardTable {
   border-style: double; 
-  border-color: black;
+  border-color: #c9ad6f;
   border-width: 3px;
+  background-color: #f2d798;
 }
 
 .pieceImage {
