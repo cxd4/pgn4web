@@ -2599,12 +2599,24 @@ function ParseMove(move, plyCount){
    * Now extract the piece and the origin square. If it is a capture (the 'x'
    * is present) mark the as such.
    */
-  mvPiece = 6;
-  ll = reminder.length; 
-  if (ll > 0){
-    for(ii = 1; ii < 6; ++ii){
-      if (reminder.charAt(0) == PieceCode[ii-1]) mvPiece = ii;
-    }
+  
+  ll = reminder.length;
+
+  if (ll > 3) { return false; }
+
+  mvPiece = -1; // make sure mvPiece is assigned to something sensible later
+
+  if (ll == 0){
+
+    mvPiece = 6;
+
+  } else {
+
+    for(ii = 1; ii < 6; ++ii) { if (reminder.charAt(0) == PieceCode[ii-1]) mvPiece = ii; }
+
+    if (mvPiece == -1) { if ('abcdefgh'.indexOf(reminder.charAt(0)) >= 0) mvPiece = 6; }
+
+    if (mvPiece == -1) { return false; }
 
     if (reminder.charAt(ll-1) == 'x') mvCapture = 1;
 
@@ -2615,7 +2627,12 @@ function ParseMove(move, plyCount){
       mvFromRow = move.charAt(ll-1-mvCapture) - 1;
       if ((mvFromRow < 0) || (mvFromRow > 7)) mvFromRow = -1;
     }
+    
+    if ( (ll > 1) && (!mvCapture) && (mvFromCol == -1) && (mvFromRow == -1) ) { return false; }
+    if ( (mvPiece == 6) && (!mvCapture) && (mvFromCol == -1) && (mvFromRow == -1) ) { return false; }
+    if ( (mvPiece == 6) && (mvFromCol == mvToCol) ) { return false; }
   }
+
   mvPieceOnTo = mvPiece;
   /*
    * If the to square is occupied mark the move as capture. Take care of
