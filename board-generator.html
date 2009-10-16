@@ -22,7 +22,13 @@ a {
   color: gray;
 }
 
-.input, .checkbox {
+.input, .textbox {
+  border-width: 2;
+  border-style: inset;
+  border-color: #CCCCCC;
+}
+
+.input, .checkbox, .dropdown {
 /* if the margin-left value below is changed from 22 
    then the corresponding value at the end of the file needs to be changed accordingly */      
   margin-left: 22;
@@ -30,9 +36,6 @@ a {
 
 .textbox {
   width: 100%;
-  border-width: 2;
-  border-style: inset;
-  border-color: #CCCCCC;
 }
 
 </style>
@@ -227,7 +230,7 @@ function update_suggested_iframe_dimensions() {
   suggested_frameHeight += 2 * parseInt(document.board.framePadding.value);
 
   document.getElementById('frameHeight_helpText').innerHTML = "a number; if blank frame height is assigned to " + suggested_frameHeight;
-  document.getElementById('frameWidth_helpText').innerHTML = "a number or a percentage; if blank frame width is assigned to " + suggested_frameWidth + " corresponding to a board width of " + boardWidth;
+  document.getElementById('frameWidth_helpText').innerHTML = "a number or a percentage; if blank frame width assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
 
 }
 
@@ -533,7 +536,7 @@ window.onload = set_defaults;
 &nbsp;&nbsp; autoplay game on page load &nbsp;&nbsp;
 <p>
 
-<select class="input" id="delay" name="delay">
+<select class="dropdown" id="delay" name="delay">
 <option value="1000">1</option>
 <option value="2000">2</option>
 <option value="3000">3</option>
@@ -551,7 +554,7 @@ window.onload = set_defaults;
 <script>print_menu("board_options", 3, "chessboard options");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<select class="input" id="pieceFont" name="pieceFont">
+<select class="dropdown" id="pieceFont" name="pieceFont">
 <option value="alpha">alpha</option>
 <option value="merida">merida</option>
 <option value="uscf">uscf</option>
@@ -559,7 +562,7 @@ window.onload = set_defaults;
 &nbsp;&nbsp; piece font &nbsp;&nbsp;
 <p>
 
-<select class="input" id="pieceSize" name="pieceSize">
+<select class="dropdown" id="pieceSize" name="pieceSize">
 <option value="20">20</option>
 <option value="21">21</option>
 <option value="22">22</option>
