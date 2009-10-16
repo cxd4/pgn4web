@@ -458,21 +458,21 @@ window.onload = set_defaults;
 <script>print_menu("instructions", 2, "instructions");</script>
 
 <ul type="square">
-<li><a href=#pgn_form><b>enter your PGN text</b> in the large green textbox below</a> 
+<li><a href=#pgn_form><b>enter your PGN text</b> in the green textbox below</a>
   <ul type="square">
   <li>square brackets chars "[" "]" are not allowed by pgn4web in the PGN text outside the PGN header</li>
-  <li>the comment tag ";" will flag as a comment the remaining of the PGN data rather than up to the end of line only; please replace the ";" comment tag with the "{" comment tag and close the comment with "}" at the end of the line.</li>
-  <li>due to a limitation of web browsers and web servers with the URL length, only short PGN texts are allowed and a warning is issued if the max URL length is exceeded; also beware of possible URL redirections extending your URL length.</li>
+  <li>within the board generator, the comment tag ";" will flag as a comment the remaining of the PGN data rather than up to the end of line only; please replace the ";" comment tag with the "{" comment tag and close the comment with "}" at the end of the line</li>
+  <li>due to a limitation of web browsers and web servers with the URL length, only short PGN texts are allowed and a warning is issued if the max URL length is exceeded; also beware of possible hidden URL redirections extending your URL length further</li>
   </ul>
   </li>
 <li><b><a href=#replay_options>modify any of the configuration options</a></b>, layout, colors and fonts</li>
 <li><b><a href=#generate>generate the HTML code</a></b> and <b><a href=#game_preview>preview your chessboard</a></b></li>
 <li><b><a href=#replay_options>fine tune configuration options</a></b> to your liking
   <ul type="square">
-  <li><a href=#page_options>check carefully the frame height/width values</a> and be aware that different browser might render some items slightly bigger or smaller, so you should keep some margins</li>
+  <li><a href=#page_options>check carefully the frame height/width values</a>; different browsers might render some items slightly bigger or smaller, so <a href=#page_options>leave some empty space at the bottom of the frame by increasing the height</a></li>
   </ul>
   </li>
-  <li>once happy with <a href=#game_preview>the preview chessboard</a>, just <a href=#generate><b>cut and paste the HTML code</b> from the yellow box</a> into your web page or your blog; when entering the code in your website or blog, please make sure you are using the HTML editing option, otherwise the enhanced editor might alter the code you enter.</li>
+  <li>once happy with <a href=#game_preview>the preview chessboard</a>, just <a href=#generate><b>cut and paste the HTML code</b> from the yellow box</a> into your web page or your blog; when entering the code in your website or blog, please make sure you are using the HTML editing option, otherwise the enhanced editor might alter the code you enter</li>
 <li>email to <i><a href=mailto:pgn4web@casaschi.net>pgn4web@casaschi.net</a></i> the address of your website or your blog</li>
 <li>if something goes wrong, you might want to <i><a href="javascript:bug_report()">click here and file a bug report</a></i></li>
 </ul>
@@ -484,7 +484,7 @@ window.onload = set_defaults;
 <div style="height: 1em">&nbsp;</div>
 
 <div style="font-style: italic; font-weight: bold; text-align: center; margin-bottom:6;">automatically generated HTML code for your web page or blog</div>
-<textarea readonly id="html_code" name="html_code" rows=15 style="width: 100%; background-color: #FFFFAA"></textarea>
+<textarea readonly id="html_code" name="html_code" rows=15 style="width: 100%; background-color: #FFFFCC"></textarea>
 <div id="html_code_status">&nbsp;</div>
 <p>
 <br>
@@ -512,7 +512,7 @@ window.onload = set_defaults;
 <script>print_menu("pgn_form", 3, "chess game notation in PGN format");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<textarea id=pgnText style="width: 100%; background-color: #F1FFE6" rows=15 onChange="update_pgnTextLength()"></textarea>
+<textarea id=pgnText style="width: 100%; background-color: #F3FFF3" rows=15 onChange="update_pgnTextLength()"></textarea>
 <table cellspacing="0" cellpadding="0" width="100%"><tr>
 <td align="left"><div class='helptext'>to avoid printing an header item please set the value to a space</div></td>
 <td align="right"><div class="helptext" id="pgnTextLength"></div></td>
