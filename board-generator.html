@@ -28,6 +28,13 @@ a {
   margin-left: 22;
 }
 
+.textbox {
+  width: 100%;
+  border-width: 1;
+  border-style: solid;
+  border-color: gray;
+}
+
 </style>
 
 </head>
@@ -225,7 +232,7 @@ function update_suggested_iframe_dimensions() {
 }
 
 function update_pgnTextLength() {
- document.getElementById('pgnTextLength').innerHTML = "&nbsp;&nbsp;&nbsp;" + document.getElementById('pgnText').value.length + " chars";
+ document.getElementById('pgnTextLength').innerHTML = "&nbsp;&nbsp;&nbsp;" + document.getElementById('pgnText').value.length + "p";
 }
 
 
@@ -484,7 +491,7 @@ window.onload = set_defaults;
 <div style="height: 1em">&nbsp;</div>
 
 <div style="font-style: italic; font-weight: bold; text-align: center; margin-bottom:6;">automatically generated HTML code for your web page or blog</div>
-<textarea readonly id="html_code" name="html_code" rows=15 style="width: 100%; background-color: #FFFFCC"></textarea>
+<textarea readonly id="html_code" name="html_code" rows=15 class="textbox" style="background-color: #FFFFCC;"></textarea>
 <div id="html_code_status">&nbsp;</div>
 <p>
 <br>
@@ -502,7 +509,7 @@ window.onload = set_defaults;
 <div style="height: 1em">&nbsp;</div>
 
 <center>
-<div id='preview'></div>
+<div class="textbox" id=preview>&nbsp;</div>
 </center>
 
 <div style="height: 2em">&nbsp</div>
@@ -512,9 +519,9 @@ window.onload = set_defaults;
 <script>print_menu("pgn_form", 3, "chess game notation in PGN format");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<textarea id=pgnText style="width: 100%; background-color: #F3FFF3" rows=15 onChange="update_pgnTextLength()"></textarea>
+<textarea id=pgnText class="textbox" style="background-color: #F3FFF3;" rows=15 onChange="update_pgnTextLength()"></textarea>
 <table cellspacing="0" cellpadding="0" width="100%"><tr>
-<td align="left"><div class='helptext'>to avoid printing an header item please set the value to a space</div></td>
+<td align="left"><div class='helptext'>enter PGN data; to avoid printing an header item please set the value to a space</div></td>
 <td align="right"><div class="helptext" id="pgnTextLength"></div></td>
 </tr></table>
 
