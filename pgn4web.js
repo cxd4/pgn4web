@@ -2852,7 +2852,7 @@ function PrintHTML(){
            '<SELECT ID="GameSelSelect" NAME="GameSelSelect" STYLE="'
     if ((tableSize != undefined) && (tableSize > 0)) text += 'width: ' + tableSize + '; ';
     text += 'font-family: monospace;" CLASS="selectControl" ' + 
-            'ONCHANGE="if(this.value >= 0) {currentGame=this.value; document.GameSel.GameSelSelect.value = -1; Init();}">' +
+            'ONCHANGE="this.blur(); if(this.value >= 0) {currentGame=this.value; document.GameSel.GameSelSelect.value = -1; Init();}">' +
             '<OPTION value=-1>';
 
     blanks = ''; for (ii=0; ii<32; ii++) blanks += ' ';
