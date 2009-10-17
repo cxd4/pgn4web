@@ -189,6 +189,7 @@ function handlekey(e) {
   {
     case  8:  // backspace
     case  9:  // tab
+    case 13:  // enter
     case 16:  // shift
     case 17:  // ctrl
     case 18:  // alt
@@ -238,10 +239,6 @@ function handlekey(e) {
     case 65:  // a
       MoveForward(1);
       SetAutoPlay(true);
-      break;
-
-    case 13:  // enter
-      SwitchAutoPlay();
       break;
 
     case 48:  // 0
