@@ -1929,13 +1929,13 @@ function LoadGameHeaders(){
     var lastKet = ss.lastIndexOf(']');
     var header  = ss.substring(0, ++lastKet);
     var parse;
-    gameEvent[ii] = "?";
-    gameSite[ii] = "?";
-    gameRound[ii] = "?";
-    gameWhite[ii] = "?";
-    gameBlack[ii] = "?";
-    gameResult[ii] = "?";
-    gameDate[ii] = "?";
+    gameEvent[ii] = " ";
+    gameSite[ii] = " ";
+    gameRound[ii] = " ";
+    gameWhite[ii] = " ";
+    gameBlack[ii] = " ";
+    gameResult[ii] = " ";
+    gameDate[ii] = " ";
     while ((parse = tag.exec(ss)) != null){
       if (parse[1] == 'Event'){
 	gameEvent[ii]  = parse[2];

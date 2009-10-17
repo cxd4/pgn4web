@@ -53,7 +53,7 @@ a {
 // if you customize the board-generator.html file for your site 
 // you probably want to customize the default values
 
-pgnText_default = '[White " "]\n[Black " "]\n[Result " "]\n[Date " "]\n[Event " "]\n[Site " "]\n[Round " "]\n\n';
+pgnText_default = '[White "?"]\n[Black "?"]\n[Result "?"]\n[Date "?"]\n[Event "?"]\n[Site "?"]\n[Round "?"]\n\n';
 auto_default = "t";
 delay_default = 1000;
 loop_default = "f";
@@ -551,7 +551,7 @@ chessboard generator</h1>
 
 <textarea id=pgnText class="textbox" style="background-color: #DDFFDD; scrollbar-base-color: #DDFFDD;" rows=15 onChange="update_pgnTextLength()"></textarea>
 <table cellspacing="0" cellpadding="0" width="100%"><tr>
-<td align="left"><div class='helptext'>enter PGN data; to avoid printing an header item please set the value to a space</div></td>
+<td align="left"><div class='helptext'>enter PGN data</div></td>
 <td align="right"><div class="helptext" id="pgnTextLength"></div></td>
 </tr></table>
 
