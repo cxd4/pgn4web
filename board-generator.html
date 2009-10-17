@@ -65,7 +65,7 @@ darkColorHex_default = "C6CEC3";
 boardBorderColorHex_default = "000000";
 highlightColorHex_default = "DAF4D7";
 showButtons_default = "f";
-controlBackgroundColorHex_default = "none";
+controlBackgroundColorHex_default = "default";
 controlTextColorHex_default = "000000";
 textMargin_default = 0;
 showHeader_default = "t";
@@ -207,7 +207,7 @@ function update_controls() {
 function update_disabled_controls() {
 
   document.board.controlBackgroundColorHex.disabled = (!document.board.showButtons.checked);
-  document.board.controlTextColorHex.disabled = ((!document.board.showButtons.checked) || (document.board.controlBackgroundColorHex.value == "none"));
+  document.board.controlTextColorHex.disabled = ((!document.board.showButtons.checked) || (document.board.controlBackgroundColorHex.value == "default"));
   document.board.textMargin.disabled = (!document.board.showMoves.checked && !document.board.showHeader.checked);
   document.board.showComments.disabled = !document.board.showMoves.checked;
   document.board.showCommentsOnSeparateLines.disabled = !document.board.showMoves.checked;
@@ -226,7 +226,15 @@ function update_suggested_iframe_dimensions() {
   suggested_frameWidth = boardWidth; 
   suggested_frameHeight = boardWidth; 
   
-  if (document.board.showButtons.checked) { suggested_frameHeight += 50 }
+  if (document.board.showButtons.checked) {
+    if (document.board.controlBackgroundColorHex.value != "default") {
+      // in this case control size grows with squareSize  
+      suggested_frameHeight += (30 + parseInt(document.board.squareSize.value));
+    } else {
+      // in this case the size of the controls cant be predicted, so a safe number is set
+      suggested_frameHeight += 50;
+    } 
+  }
 
   if (document.board.showHeader.checked) { suggested_frameHeight += Math.max(100, Math.round(0.2 * boardWidth)); }
   if (document.board.showMoves.checked) { suggested_frameHeight += Math.max(300, Math.round(0.8 * boardWidth)); }
@@ -274,7 +282,7 @@ function calculate_html_code() {
   if (document.board.showButtons.checked) { showButtons_value = "t" } else { showButtons_value = "f" }
   iframeUrl += "&sb=" + showButtons_value;
 
-  if ((document.board.showButtons.checked) && (document.board.controlBackgroundColorHex.value != "none")) {
+  if ((document.board.showButtons.checked) && (document.board.controlBackgroundColorHex.value != "default")) {
     controlBackgroundColorHex_value = document.board.controlBackgroundColorHex.value; 
     controlTextColorHex_value = document.board.controlTextColorHex.value;
     iframeUrl += "&cbch=" + controlBackgroundColorHex_value + "&ctch=" + controlTextColorHex_value;
@@ -653,7 +661,7 @@ window.onload = set_defaults;
 
 <input class="color {adjust:false} input" type="text" id="controlBackgroundColorHex" name="controlBackgroundColorHex" value="" size="7" onChange="update_controls()">
 &nbsp;&nbsp; control buttons background color &nbsp;&nbsp;
-<span class="helptext">set to <i>none</i> in order to use standard buttons</span>
+<span class="helptext">set to <i>default</i> in order to use standard buttons</span>
 <p>
 
 <input class="color input" type="text" id="controlTextColorHex" name="controlTextColorHex" value="" size="7">

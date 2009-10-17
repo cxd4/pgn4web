@@ -136,7 +136,15 @@ function new_start_pgn4web() {
 //  rule.style.fontSize = fontCommentsSize;
 
   controlStyle = 'width: ' + ((8 * squareSize + 6) / 5) + 'px !important;';
-  if ((controlBackgroundColor != 'none') && (controlBackgroundColor != '#none')) { controlStyle += ' border-style: solid; border-width: 3px; background-color: ' + controlBackgroundColor + '; border-color: ' + backgroundColor + '; color: ' + controlTextColor + ';'}
+  if ((controlBackgroundColor != 'default') && (controlBackgroundColor != '#default')) { 
+    controlStyle += ' border-style: solid;'
+    controlStyle += ' border-width: 3px;'
+    controlStyle += ' background-color: ' + controlBackgroundColor + ';'
+    controlStyle += ' border-color: ' + backgroundColor + ';'
+    controlStyle += ' color: ' + controlTextColor + ';'
+    controlFontSize = squareSize / 2.5;
+    controlStyle += ' font-size: ' + controlFontSize + ';'
+  }
   rule = getCSSRule('.buttonControl');
   rule.style.cssText = controlStyle;
   rule = getCSSRule('.buttonControlPlay');
@@ -144,13 +152,14 @@ function new_start_pgn4web() {
   rule = getCSSRule('.buttonControlStop');
   rule.style.cssText = controlStyle;
 
-  if ((controlBackgroundColor != 'none') && (controlBackgroundColor != '#none')) {
+  if ((controlBackgroundColor != 'default') && (controlBackgroundColor != '#default')) {
     rule = getCSSRule('.selectControl');
     rule.style.borderStyle = 'solid';
     rule.style.borderWidth = '3px';
     rule.style.backgroundColor = controlBackgroundColor;
     rule.style.borderColor = backgroundColor;
     rule.style.color = controlTextColor;
+    rule.style.fontSize = controlFontSize;
   }
 
   start_pgn4web();
@@ -327,7 +336,7 @@ else SetAutoplayDelay(gup("delay"));
 if (gup("showButtons") == "true") { showButtons = true }
 else { showButtons = false }
 
-if ((controlBackgroundColor = gup("controlBackgroundColorName")) == "") {if ((controlBackgroundColor = "#" + gup("controlBackgroundColorHex")) == "#") controlBackgroundColor = "none"}
+if ((controlBackgroundColor = gup("controlBackgroundColorName")) == "") {if ((controlBackgroundColor = "#" + gup("controlBackgroundColorHex")) == "#") controlBackgroundColor = "default"}
 if ((controlTextColor = gup("controlTextColorName")) == "") {if ((controlTextColor = "#" + gup("controlTextColorHex")) == "#") controlTextColor = "black"}
 
 if (gup("showComments") == "false") { SetCommentsIntoMoveText(false); }
@@ -394,10 +403,10 @@ if (gup("help") != "") {
   document.write(" - highlightColorHex = highlight color hex code, like FF0000, 'none' for no highligh (default DAF4D7)\n");
   document.write(" - boardBorderColorHex = board border color hex code, like FF0000, 'none' for no highligh (default 000000)\n");
   document.write(" - showButtons = if set true, prints control buttons (default false)\n");
-  document.write(" - controlBackgroundColorName = control buttons background color name, like red, or 'none' (default 'none')\n");
-  document.write(" - controlBackgroundColorHex = control buttons background color hex code, like FF0000, or 'none'\n");
-  document.write(" - controlTextColorName = control buttons text color name, like red, or 'none' (default black)\n");
-  document.write(" - controlTextColorHex = control buttons text color hex code, like FF0000, or 'none'\n");
+  document.write(" - controlBackgroundColorName = control buttons background color name, like red, or 'default' (default 'default')\n");
+  document.write(" - controlBackgroundColorHex = control buttons background color hex code, like FF0000, or 'default'\n");
+  document.write(" - controlTextColorName = control buttons text color name, like red (default black)\n");
+  document.write(" - controlTextColorHex = control buttons text color hex code, like FF0000\n");
   document.write("\n");
   document.write(" - showHeader = if set true, displays game header text (default false)\n");
   document.write(" - showMoves = if set true, displays moves text (default false)\n");
