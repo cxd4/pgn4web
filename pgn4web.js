@@ -71,7 +71,12 @@
  */
 
 var version = '1.57+';
-var about = '\tpgn4web v' + version + '\n\thttp://pgn4web.casaschi.net\n';
+
+var project_url = 'http://pgn4web.casaschi.net';
+var project_email = 'pgn4web@casaschi.net';
+var project_author = 'Paolo Casaschi';
+
+var about = '\tpgn4web v' + version + '\n\t' + project_url + '\n';
 
 var keyhelp = 'h, l\tgame start/end' + '\n' +
               'j, k\tmove backward/forward' + '\n' +
@@ -111,7 +116,8 @@ var squarehelp = 'A1, H1\tgame start/end' + '\n' +
                  'List above contains default values, those might have been altered by your web page.' + 
                  '';
 
-var creditsAndLicense = 'Javascript modifications of Paolo Casaschi (pgn4web@casaschi.net) ' +
+var creditsAndLicense = 'Javascript modifications of '+ project_author +
+              ' (' + project_email + ') ' +
               'on code from the http://ficsgames.com database, ' +
               'in turn likely based on code from the LT PGN viewer at ' +
               'http://www.lutanho.net/pgn/pgnviewer.html ' + 
@@ -119,8 +125,8 @@ var creditsAndLicense = 'Javascript modifications of Paolo Casaschi (pgn4web@cas
               'PNG images from http://ixian.com/chess/jin-piece-sets ' +
               '(creative commons attribution-share alike 3.0 unported license).' +
               '\n' + '\n' +
-              'Remaining pgn4web code is Copyright (C) 2009 Paolo Casaschi and ' +
-              'licensed under the terms of the GNU General Public License version 2 ' + 
+              'Remaining pgn4web code is Copyright (C) 2009 ' + project_author + 
+              'and licensed under the terms of the GNU General Public License version 2 ' + 
               'as published by the Free Software Foundation; either version 2 of the ' +
               'License, or (at your option) any later version.\n' +
               '';
@@ -198,7 +204,7 @@ function handlekey(e) {
       break;
 
     case 90: // z
-      window.open('http://pgn4web.casaschi.net'); 
+      window.open(project_url); 
       break;
 
     case 37:  // left arrow  
