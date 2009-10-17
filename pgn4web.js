@@ -2801,31 +2801,31 @@ function PrintHTML(){
           '<INPUT ID="startButton" TYPE="BUTTON" VALUE="&#124;&lt;" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
   text += '"; CLASS="buttonControl" ' +
-          ' ID="btnGoToStart" onClick="javascript:GoToMove(StartPly)">' +
+          ' ID="btnGoToStart" onClick="javascript:GoToMove(StartPly)" ONFOCUS="this.blur()">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
           '<INPUT ID="backButton" TYPE="BUTTON" VALUE="&lt;" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
   text += '"; CLASS="buttonControl" ' +
-          ' ID="btnMoveBackward1" onClick="javascript:MoveBackward(1)">' +
+          ' ID="btnMoveBackward1" onClick="javascript:MoveBackward(1)" ONFOCUS="this.blur()">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
           '<INPUT ID="autoplayButton" TYPE="BUTTON" VALUE="play" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
   text += '"; CLASS="buttonControlStop" ' +
-          ' ID="btnPlay" NAME="AutoPlay" onClick="javascript:SwitchAutoPlay()">' +
+          ' ID="btnPlay" NAME="AutoPlay" onClick="javascript:SwitchAutoPlay()" ONFOCUS="this.blur()">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
           '<INPUT ID="forwardButton" TYPE="BUTTON" VALUE="&gt;" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
   text += '"; CLASS="buttonControl" ' +
-          ' ID="btnMoveForward1" onClick="javascript:MoveForward(1)">' +
+          ' ID="btnMoveForward1" onClick="javascript:MoveForward(1)" ONFOCUS="this.blur()">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
           '<INPUT ID="endButton" TYPE="BUTTON" VALUE="&gt;&#124;" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
   text += '"; CLASS="buttonControl" ' +
-          ' ID="btnGoToEnd" onClick="javascript:GoToMove(StartPly + PlyNumber)">' +
+          ' ID="btnGoToEnd" onClick="javascript:GoToMove(StartPly + PlyNumber)" ONFOCUS="this.blur()">' +
           '</TR>' + 
           '</TABLE>' +
           '</FORM>';

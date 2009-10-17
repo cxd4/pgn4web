@@ -65,6 +65,8 @@ darkColorHex_default = "C6CEC3";
 boardBorderColorHex_default = "000000";
 highlightColorHex_default = "DAF4D7";
 showButtons_default = "f";
+controlBackgroundColorHex_default = "none";
+controlTextColorHex_default = "000000";
 textMargin_default = 0;
 showHeader_default = "t";
 showMoves_default = "t";
@@ -129,6 +131,12 @@ function set_defaults() {
   if ((showButtons_value = gup("showButtons")) == "") { showButtons_value = showButtons_default }
   document.board.showButtons.checked = (showButtons_value == "t");
 
+  if ((controlBackgroundColorHex_value = gup("controlBackgroundColorHex")) == "") { controlBackgroundColorHex_value = controlBackgroundColorHex_default }
+  document.board.controlBackgroundColorHex.value = controlBackgroundColorHex_value;
+
+  if ((controlTextColorHex_value = gup("controlTextColorHex")) == "") { controlTextColorHex_value = controlTextColorHex_default }
+  document.board.controlTextColorHex.value = controlTextColorHex_value;
+
   if ((textMargin_value = percentFixFromUrl( gup("textMargin") )) == "") { textMargin_value = textMargin_default }
   document.getElementById('textMargin').value = textMargin_value;
 
@@ -184,21 +192,22 @@ function set_defaults() {
   document.board.baseUrl.value = baseUrl_value;
 
   generate_html_code();
-  update_header_text_controls();
+  update_controls();
 }
 
 function reset_form() {
   if (confirm("do you really want to reset the form to the default values?\nAll your options including the PGN text will be lost!")) { set_defaults(); }
 }
 
-function update_header_text_controls() {
+function update_controls() {
   update_disabled_controls();	
   update_suggested_iframe_dimensions();
 }
 
-
 function update_disabled_controls() {
 
+  document.board.controlBackgroundColorHex.disabled = (!document.board.showButtons.checked);
+  document.board.controlTextColorHex.disabled = (!document.board.showButtons.checked);
   document.board.textMargin.disabled = (!document.board.showMoves.checked && !document.board.showHeader.checked);
   document.board.showComments.disabled = !document.board.showMoves.checked;
   document.board.showCommentsOnSeparateLines.disabled = !document.board.showMoves.checked;
@@ -264,6 +273,12 @@ function calculate_html_code() {
 
   if (document.board.showButtons.checked) { showButtons_value = "t" } else { showButtons_value = "f" }
   iframeUrl += "&sb=" + showButtons_value;
+
+  if (document.board.showButtons.checked) {
+    controlBackgroundColorHex_value = document.board.controlBackgroundColorHex.value; 
+    controlTextColorHex_value = document.board.controlTextColorHex.value;
+    iframeUrl += "&cbch=" + controlBackgroundColorHex_value + "&ctch=" + controlTextColorHex_value;
+  }
 
   if (document.board.showHeader.checked) { showHeader_value = "t" } else { showHeader_value = "f" }
   if (document.board.showMoves.checked) { showMoves_value = "t" } else { showMoves_value = "f" }
@@ -631,9 +646,18 @@ window.onload = set_defaults;
 <p>
 <br>
 
-<input class"checkbox" type="checkbox" id="showButtons" name="showButtons" value="showButtons" onChange="update_suggested_iframe_dimensions()" />
+<input class"checkbox" type="checkbox" id="showButtons" name="showButtons" value="showButtons" onChange="update_controls()" />
 &nbsp;&nbsp; show control buttons &nbsp;&nbsp;
 <span class="helptext">control buttons might not be necessary, just try clicking the G8 square</span>
+<p>
+
+<input class="color {adjust:false} input" type="text" id="controlBackgroundColorHex" name="controlBackgroundColorHex" value="" size="7">
+&nbsp;&nbsp; control buttons background color &nbsp;&nbsp;
+<span class="helptext">set to <i>none</i> in order to use standard buttons</span>
+<p>
+
+<input class="color input" type="text" id="controlTextColorHex" name="controlTextColorHex" value="" size="7">
+&nbsp;&nbsp; cocontrol buttons text color &nbsp;&nbsp;
 
 <div style="height: 3em">&nbsp</div>
 <script>print_menu("header_moves_options", 3, "header and moves options");</script>
@@ -641,11 +665,11 @@ window.onload = set_defaults;
 
 <input class="input" type="text" id="textMargin" name="textMargin" value="" size="7">
 &nbsp;&nbsp; text margin &nbsp;&nbsp;
-<span class="helptext"">a number or a percentage; header/moves section margin, nice to have if text overflows with scrollbars</span>
+<span class="helptext"">a number or a percentage; header/moves margin, nice to have if text overflows with scrollbars</span>
 <p>
 <br>
 
-<input class="checkbox" type="checkbox" id="showHeader" name="showHeader" value="showHeader" onChange="update_header_text_controls()" />
+<input class="checkbox" type="checkbox" id="showHeader" name="showHeader" value="showHeader" onChange="update_controls()" />
 &nbsp;&nbsp; <b>show game header</b> &nbsp;&nbsp;
 <p>
 
@@ -659,7 +683,7 @@ window.onload = set_defaults;
 <p>
 <br>
 
-<input class="checkbox" type="checkbox" id="showMoves" name="showMoves" value="showMoves" onChange="update_header_text_controls()" />
+<input class="checkbox" type="checkbox" id="showMoves" name="showMoves" value="showMoves" onChange="update_controls()" />
 &nbsp;&nbsp; <b>show game moves</b> &nbsp;&nbsp;
 <p>
 
