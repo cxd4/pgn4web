@@ -482,9 +482,11 @@ window.onload = set_defaults;
 
 <table width=100% cellspacing=0 cellpadding=0><tr>
 <td align=left valign=middle>
-<h1 style="color: red;"><a style="color: red;" href=http://pgn4web.casaschi.net target=_blank>pgn4web</a> chessboard generator</h1>
+<h1 style="color: red;"> 
+<script>document.write('<a style="color: red;" href=' + project_url + ' target=_blank>pgn4web</a>')</script> 
+chessboard generator</h1>
 </td><td align=right valign=middle>
-<a href=http://pgn4web.casaschi.net target=_blank><img src=pawns.png border=0></a>
+<script>document.write('<a href=' + project_url + ' target=_blank><img src=pawns.png border=0></a>')</script>
 </td></tr></table>
 
 <div style="height: 1em">&nbsp</div>
@@ -506,7 +508,9 @@ window.onload = set_defaults;
   </ul>
   </li>
   <li>once happy with <a href=#game_preview>the preview chessboard</a>, just <a href=#generate><b>cut and paste the HTML code</b> from the yellow box</a> into your web page or your blog; when entering the code in your website or blog, please make sure you are using the HTML editing option, otherwise the enhanced editor might alter the code you enter</li>
-<li>email to <i><a href=mailto:pgn4web@casaschi.net>pgn4web@casaschi.net</a></i> the address of your website or your blog</li>
+<li>email to <i>
+<script>document.write('<a href=mailto:' + project_email + '>' + project_email + '</a>')</script>
+</i> the address of your website or your blog</li>
 <li>if something goes wrong, you might want to <i><a href="javascript:bug_report()">click here and file a bug report</a></i></li>
 </ul>
 
