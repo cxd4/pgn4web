@@ -433,7 +433,7 @@ function gup( name ){
 }
 
 function bug_report() {
-  var email = "pgn4web@casaschi.net";
+  var email = project_email;
   var subject = "pgn4web board generator bug report";
   var bug_info = "pgn4web board generator bug report\n\n-------- automatically generated debug info: start --------\n\nURL: " + window.location + "\n\nuser agent: " + window.navigator.userAgent+ "\n\npgn4web version: " + version + "\n\niFrame HTML code:\n\n" + html_code_string + "\n\n-------- automatically generated debug info: end   --------\n\nPlease add below a description of the bug and attach a screenshot if possible.\n\n\n\n\n";
   mailto_link = 'mailto:' + email + '?subject=' + subject + '&body=' + escape(bug_info);
@@ -444,11 +444,11 @@ function bug_report() {
     write("<html>");
     write("<head><title>pgn4web bug report</title><style type='text/css'> html, body { font-family: sans-serif;  color: black; background: white } a {text-decoration: none; color: black; } </style></head>");
     write("<body>");
-    write("<table width=100% cellspacing=0 cellpadding=0><tr><td align=left valign=middle><h1><a href=http://pgn4web.casaschi.net target=_blank>pgn4web</a> bug report</h1></td><td align=right valign=middle><a href=http://pgn4web.casaschi.net target=_blank><img src=pawns.png border=0></a></td></tr></table><p>please make sure that:<ul type='square'><li>you are using the same web browser where you noticed the bug in the pgn4web board generator</li><li>you opened this bug report window from the pgn4web board generator page configured with all the parameter that result in the bug condition</li></ul>Then please email ALL the the debug information below and possibly a screenshot to <i><a href=mailto:pgn4web@casaschi.net>pgn4web@casaschi.net</a></i><p>");
+    write("<table width=100% cellspacing=0 cellpadding=0><tr><td align=left valign=middle><h1><a " + project_url + " target=_blank>pgn4web</a> bug report</h1></td><td align=right valign=middle><a " + project_url + " target=_blank><img src=pawns.png border=0></a></td></tr></table><p>please make sure that:<ul type='square'><li>you are using the same web browser where you noticed the bug in the pgn4web board generator</li><li>you opened this bug report window from the pgn4web board generator page configured with all the parameter that result in the bug condition</li></ul>Then please email ALL the the debug information below and possibly a screenshot to <i><a href=mailto:" + project_email + ">" + project_email + "</a></i><p>");
     write("<hr>");
     write("<pre><code>" + bug_info.replace(/</g,"&lt;").replace(/>/g,"&gt;") + "</code></pre>");
     write("<hr>");
-    write("<p>If your email client is properly configured, you can try to <i><a href='" + mailto_link + "'>click here and automatically compose the email in your default client</a></i>; this might not work, in case you have to manually copy the above information into an <i><a href=mailto:pgn4web@casaschi.net>email to pgn4web@casaschi.net</a></i>.<p>");
+    write("<p>If your email client is properly configured, you can try to <i><a href='" + mailto_link + "'>click here and automatically compose the email in your default client</a></i>; this might not work, in case you have to manually copy the above information into an <i><a href=mailto:" + project_email + ">email to " + project_email + "</a></i>.<p>");
     write("</body>");
     write("<html>");
     close();
@@ -785,9 +785,9 @@ document.getElementById('showComments').style.marginLeft += inputWidth - checkbo
 document.getElementById('showCommentsOnSeparateLines').style.marginLeft += inputWidth - checkboxWidth + 22;
 
 document.write("<table width=100% cellspacing=0 cellpadding=0><tr><td align=left valign=bottom>");
-document.write("<a href=http://pgn4web.casaschi.net target=_blank><div class='helptext'>pgn4web v" + version + "</div></a>");
+document.write("<a " + project_url + " target=_blank><div class='helptext'>pgn4web v" + version + "</div></a>");
 document.write("</td><td align=right valign=middle>");
-document.write("<a href=http://pgn4web.casaschi.net target=_blank><img src=pawns.png border=0></a>");
+document.write("<a " + project_url + " target=_blank><img src=pawns.png border=0></a>");
 document.write("</td></tr></table>");
 
 </script>
