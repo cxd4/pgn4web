@@ -330,14 +330,14 @@ function calculate_html_code() {
   // this does not go in the iframe
   previewBackgroundColorHex_value = document.board.previewBackgroundColorHex.value;
 
+  framePadding_value = parseInt(document.board.framePadding.value);
+  iframeUrl += "&fp=" + framePadding_value;
+
   update_suggested_iframe_dimensions();
   if ((frameHeight_value = document.board.frameHeight.value) == "") { frameHeight_value = suggested_frameHeight }
   if ((frameWidth_value = document.board.frameWidth.value) == "") { frameWidth_value = suggested_frameWidth }
 
   iframeUrl += "&fh=" + percentFixForUrl( frameHeight_value ) + "&fw=" + "100pct";
-
-  framePadding_value = parseInt(document.board.framePadding.value);
-  iframeUrl += "&fp=" + framePadding_value;
 
   // better to keep this as last item
   pgnText_value = document.getElementById('pgnText').value;
