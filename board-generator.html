@@ -207,7 +207,7 @@ function update_controls() {
 function update_disabled_controls() {
 
   document.board.controlBackgroundColorHex.disabled = (!document.board.showButtons.checked);
-  document.board.controlTextColorHex.disabled = (!document.board.showButtons.checked);
+  document.board.controlTextColorHex.disabled = ((!document.board.showButtons.checked) || (document.board.controlBackgroundColorHex.value == "none"));
   document.board.textMargin.disabled = (!document.board.showMoves.checked && !document.board.showHeader.checked);
   document.board.showComments.disabled = !document.board.showMoves.checked;
   document.board.showCommentsOnSeparateLines.disabled = !document.board.showMoves.checked;
@@ -274,7 +274,7 @@ function calculate_html_code() {
   if (document.board.showButtons.checked) { showButtons_value = "t" } else { showButtons_value = "f" }
   iframeUrl += "&sb=" + showButtons_value;
 
-  if (document.board.showButtons.checked) {
+  if ((document.board.showButtons.checked) && (document.board.controlBackgroundColorHex.value != "none")) {
     controlBackgroundColorHex_value = document.board.controlBackgroundColorHex.value; 
     controlTextColorHex_value = document.board.controlTextColorHex.value;
     iframeUrl += "&cbch=" + controlBackgroundColorHex_value + "&ctch=" + controlTextColorHex_value;
@@ -623,7 +623,7 @@ window.onload = set_defaults;
 &nbsp;&nbsp; piece size &nbsp;&nbsp;
 <p>
 
-<input class="input" type="text" id="squareSize" name="squareSize" value="" size="7" onChange="update_suggested_iframe_dimensions()" />
+<input class="input" type="text" id="squareSize" name="squareSize" value="" size="7" onChange="update_suggested_iframe_dimensions()">
 &nbsp;&nbsp; square size &nbsp;&nbsp;
 <span class="helptext"">a number; must be larger than the piece size</span>
 <p>
@@ -646,18 +646,18 @@ window.onload = set_defaults;
 <p>
 <br>
 
-<input class"checkbox" type="checkbox" id="showButtons" name="showButtons" value="showButtons" onChange="update_controls()" />
+<input class"checkbox" type="checkbox" id="showButtons" name="showButtons" value="showButtons" onChange="update_controls()">
 &nbsp;&nbsp; show control buttons &nbsp;&nbsp;
 <span class="helptext">control buttons might not be necessary, just try clicking the G8 square</span>
 <p>
 
-<input class="color {adjust:false} input" type="text" id="controlBackgroundColorHex" name="controlBackgroundColorHex" value="" size="7">
+<input class="color {adjust:false} input" type="text" id="controlBackgroundColorHex" name="controlBackgroundColorHex" value="" size="7" onChange="update_controls()">
 &nbsp;&nbsp; control buttons background color &nbsp;&nbsp;
 <span class="helptext">set to <i>none</i> in order to use standard buttons</span>
 <p>
 
 <input class="color input" type="text" id="controlTextColorHex" name="controlTextColorHex" value="" size="7">
-&nbsp;&nbsp; cocontrol buttons text color &nbsp;&nbsp;
+&nbsp;&nbsp; control buttons text color &nbsp;&nbsp;
 
 <div style="height: 3em">&nbsp</div>
 <script>print_menu("header_moves_options", 3, "header and moves options");</script>
@@ -669,78 +669,78 @@ window.onload = set_defaults;
 <p>
 <br>
 
-<input class="checkbox" type="checkbox" id="showHeader" name="showHeader" value="showHeader" onChange="update_controls()" />
+<input class="checkbox" type="checkbox" id="showHeader" name="showHeader" value="showHeader" onChange="update_controls()">
 &nbsp;&nbsp; <b>show game header</b> &nbsp;&nbsp;
 <p>
 
-<input class="input" type="text" id="fontHeaderSize" name="fontHeaderSize" value="" size="7" />
+<input class="input" type="text" id="fontHeaderSize" name="fontHeaderSize" value="" size="7">
 &nbsp;&nbsp; header font size &nbsp;&nbsp;
 <span class="helptext"">a number or a percentage; make sure left/right columns dont touch in the middle</span>
 <p>
 
-<input class="color input" type="text" id="fontHeaderColorHex" name="fontHeaderColorHex" value="" size="7" />
+<input class="color input" type="text" id="fontHeaderColorHex" name="fontHeaderColorHex" value="" size="7">
 &nbsp;&nbsp; header font color &nbsp;&nbsp;
 <p>
 <br>
 
-<input class="checkbox" type="checkbox" id="showMoves" name="showMoves" value="showMoves" onChange="update_controls()" />
+<input class="checkbox" type="checkbox" id="showMoves" name="showMoves" value="showMoves" onChange="update_controls()">
 &nbsp;&nbsp; <b>show game moves</b> &nbsp;&nbsp;
 <p>
 
-<input class="checkbox" type="checkbox" id="showComments" name="showComments" value="showComments" />
+<input class="checkbox" type="checkbox" id="showComments" name="showComments" value="showComments">
 &nbsp;&nbsp; show game comments &nbsp;&nbsp;
 <p>
 
-<input class="checkbox" type="checkbox" id="showCommentsOnSeparateLines" name="showCommentsOnSeparateLines" value="showCommentsOnSeparateLines" />
+<input class="checkbox" type="checkbox" id="showCommentsOnSeparateLines" name="showCommentsOnSeparateLines" value="showCommentsOnSeparateLines">
 &nbsp;&nbsp; show comments on separate lines &nbsp;&nbsp;
 <p>
 
-<input class="input" type="text" id="fontMovesSize" name="fontMovesSize" value="" size="7" />
+<input class="input" type="text" id="fontMovesSize" name="fontMovesSize" value="" size="7">
 &nbsp;&nbsp; moves font size &nbsp;&nbsp;
 <span class="helptext"">a number or a percentage</span>
 <p>
 
-<input class="color input" type="text" id="fontMovesColorHex" name="fontMovesColorHex" value="" size="7" />
+<input class="color input" type="text" id="fontMovesColorHex" name="fontMovesColorHex" value="" size="7">
 &nbsp;&nbsp; moves font color &nbsp;&nbsp;
 <p>
 
-<input class="color input" type="text" id="highlightMoveColorHex" name="highlightMoveColorHex" value="" size="7" />
+<input class="color input" type="text" id="highlightMoveColorHex" name="highlightMoveColorHex" value="" size="7">
 &nbsp;&nbsp; highlight move color &nbsp;&nbsp;
 <p>
 
-<input class="input" type="text" id="fontCommentsSize" name="fontCommentsSize" value="" size="7" />
+<input class="input" type="text" id="fontCommentsSize" name="fontCommentsSize" value="" size="7">
 &nbsp;&nbsp; comments font size &nbsp;&nbsp;
 <span class="helptext"">a number or a percentage</span>
 <p>
 
-<input class="color input" type="text" id="fontCommentsColorHex" name="fontCommentsColorHex" value="" size="7" />
+<input class="color input" type="text" id="fontCommentsColorHex" name="fontCommentsColorHex" value="" size="7">
 &nbsp;&nbsp; comments font color &nbsp;&nbsp;
 
 <div style="height: 3em">&nbsp</div>
 <script>print_menu("page_options", 3, "web page options");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<input class="color input" type="text" id="backgroundColorHex" name="backgroundColorHex" value="" size="7" />
+<input class="color input" type="text" id="backgroundColorHex" name="backgroundColorHex" value="" size="7">
 &nbsp;&nbsp; background color &nbsp;&nbsp;
 <p>
 
-<input class="color input" type="text" id="previewBackgroundColorHex" name="previewBackgroundColorHex" value="" size="7" /> 
+<input class="color input" type="text" id="previewBackgroundColorHex" name="previewBackgroundColorHex" value="" size="7"> 
 &nbsp;&nbsp; preview background &nbsp;&nbsp;
 <span class="helptext"">not actually used in the HTML code, just for the preview</span>
 <p>
 <br>
 
-<input class="input" type="text" id="frameHeight" name="frameHeight" value="" size="7" />
+<input class="input" type="text" id="frameHeight" name="frameHeight" value="" size="7">
 &nbsp;&nbsp; iFrame height &nbsp;&nbsp;
 <span id="frameHeight_helpText" class="helptext"></span>
 <p>
 
-<input class="input" type="text" id="frameWidth" name="frameWidth" value="" size="7" /> 
+<input class="input" type="text" id="frameWidth" name="frameWidth" value="" size="7"> 
 &nbsp;&nbsp; iFrame width &nbsp;&nbsp;
 <span id="frameWidth_helpText" class="helptext"></span>
 <p>
 
-<input class="input" type="text" id="framePadding" name="framePadding" value="" size="7" onChange="update_suggested_iframe_dimensions()"/>
+<input class="input" type="text" id="framePadding" name="framePadding" value="" size="7" onChange="update_suggested_iframe_dimensions()">
 &nbsp;&nbsp; iFrame padding &nbsp;&nbsp;
 <span class="helptext">a number; border padding around the iframe, included within the iFrame width value</span>
 <p>
