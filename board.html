@@ -150,8 +150,6 @@ function new_start_pgn4web() {
     rule1.style.fontSize = rule2.style.fontSize = rule3.style.fontSize = controlFontSize;
   }
 
-  theObject = document.getElementById("GameSelector");
-  if (theObject) { theObject.style.paddingBottom = paddingControlHeight; }
   if ((controlBackgroundColor != 'default') && (controlBackgroundColor != '#default')) {
     rule = getCSSRule('.selectControl');
     rule.style.borderStyle = 'solid';
@@ -163,6 +161,9 @@ function new_start_pgn4web() {
   }
 
   start_pgn4web();
+
+  theObject = document.getElementById("GameSelector");
+  if (theObject) { if (theObject.innerHTML != "") { theObject.style.paddingBottom = paddingControlHeight; } }
 
   boardHeight = document.getElementById("boardTable").offsetHeight;
   document.getElementById("boardTable").style.width = boardHeight;
