@@ -39,7 +39,7 @@ body {
 .buttonControlPlay {}
 .buttonControlStop {}
 .buttonControl {}
-.buttonControlSpace { width:0 !important }
+.buttonControlSpace {}
 /* a "width" attribute here must use the !important flag to override default settings */
 
 .header {
@@ -134,29 +134,30 @@ function new_start_pgn4web() {
 //  rule.style.color = fontCommentsColor;
 //  rule.style.fontSize = fontCommentsSize;
 
-  controlStyle = 'width: ' + ((8 * squareSize + 6) / 5) + 'px !important;';
+  paddingControlHeight = squareSize / 2.5;
+  theObject = document.getElementById("GameButtons");
+  if (theObject) { theObject.style.paddingTop = paddingControlHeight; }
   if ((controlBackgroundColor != 'default') && (controlBackgroundColor != '#default')) { 
-    controlStyle += ' border-style: solid;'
-    controlStyle += ' border-width: 3px;'
-    controlStyle += ' background-color: ' + controlBackgroundColor + ';'
-    controlStyle += ' border-color: ' + backgroundColor + ';'
-    controlStyle += ' color: ' + controlTextColor + ';'
+    rule1 = getCSSRule('.buttonControl');
+    rule2 = getCSSRule('.buttonControlPlay');
+    rule3 = getCSSRule('.buttonControlStop');
+    rule1.style.borderStyle = rule2.style.borderStyle = rule3.style.borderStyle = 'solid';
+    rule1.style.borderWidth = rule2.style.borderWidth = rule3.style.borderWidth = '0px';
+    rule1.style.borderColor = rule2.style.borderColor = rule3.style.borderColor = backgroundColor;
+    rule1.style.backgroundColor = rule2.style.backgroundColor = rule3.style.backgroundColor = controlBackgroundColor;
+    rule1.style.color = rule2.style.color = rule3.style.color = controlTextColor;
     controlFontSize = squareSize / 2.5;
-    controlStyle += ' font-size: ' + controlFontSize + ';'
+    rule1.style.fontSize = rule2.style.fontSize = rule3.style.fontSize = controlFontSize;
   }
-  rule = getCSSRule('.buttonControl');
-  rule.style.cssText = controlStyle;
-  rule = getCSSRule('.buttonControlPlay');
-  rule.style.cssText = controlStyle;
-  rule = getCSSRule('.buttonControlStop');
-  rule.style.cssText = controlStyle;
 
+  theObject = document.getElementById("GameSelector");
+  if (theObject) { theObject.style.paddingBottom = paddingControlHeight; }
   if ((controlBackgroundColor != 'default') && (controlBackgroundColor != '#default')) {
     rule = getCSSRule('.selectControl');
     rule.style.borderStyle = 'solid';
-    rule.style.borderWidth = '3px';
-    rule.style.backgroundColor = controlBackgroundColor;
+    rule.style.borderWidth = '0px';
     rule.style.borderColor = backgroundColor;
+    rule.style.backgroundColor = controlBackgroundColor;
     rule.style.color = controlTextColor;
     rule.style.fontSize = controlFontSize;
   }

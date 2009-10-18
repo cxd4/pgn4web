@@ -228,11 +228,12 @@ function update_suggested_iframe_dimensions() {
   
   if (document.board.showButtons.checked) {
     if (document.board.controlBackgroundColorHex.value != "default") {
-      // in this case control size grows with squareSize  
-      suggested_frameHeight += (30 + parseInt(document.board.squareSize.value));
+      // in this case both control size and control padding grow with squareSize  
+      suggested_frameHeight += (20 + 2 * parseInt(document.board.squareSize.value));
     } else {
-      // in this case the size of the controls cant be predicted, so a safe number is set
-      suggested_frameHeight += 50;
+      // in this case control padding grows with squareSize 
+      // while the size of the controls cant be predicted, so a safe number is set
+      suggested_frameHeight += 50 + parseInt(document.board.squareSize.value);
     } 
   }
 
