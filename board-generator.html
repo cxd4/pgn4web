@@ -256,7 +256,6 @@ function update_pgnTextLength() {
  document.getElementById('pgnTextLength').innerHTML = "&nbsp;&nbsp;&nbsp;" + document.getElementById('pgnText').value.length + "p";
 }
 
-
 function calculate_html_code() {
 
   // this must be the firts item
@@ -397,6 +396,75 @@ function generate_html_code() {
 
   html_code_status_string += "</td></tr></table>";
   document.getElementById('html_code_status').innerHTML = html_code_status_string;
+}
+
+function validate_color(object, name, def) {
+  if ((object.value.match(/[^0-9A-Fa-f]+/)) || (object.value.length != 6)) {
+    alert('error: the ' + name + ' must be an hexadecimal color code, like FF0000');
+    object.value = def;
+    return false;    
+  } else { return true; }
+}
+
+function validate_color_default(object, name, def) {
+  if (object.value == 'default') { return true; }
+  else if ((object.value.match(/[^0-9A-Fa-f]+/)) || (object.value.length != 6)) {
+    alert('error: the ' + name + ' must be \'default\' or an hexadecimal color code, like FF0000');
+    object.value = def;
+    return false;    
+  } else { return true; }
+}
+
+function validate_number(object, name, def) {
+  if (object.value.match(/[^0-9]+/)) {
+    alert('error: the ' + name + ' must be a non negative number');
+    object.value = def;
+    return false;    
+  } else { return true; }
+}
+
+function validate_number_blank(object, name, def) {
+  if (object.value == "") { return true; }
+  if (object.value.match(/[^0-9]+/)) {
+    alert('error: the ' + name + ' must be blank or a non negative number');
+    object.value = def;
+    return false;    
+  } else { return true; }
+}
+
+function validate_number_percentage(object, name, def) {
+  if (!object.value.match(/[0-9]+(%$|pct$|$)/)) {
+    alert('error: the ' + name + ' must be a non negative number or percentage');
+    object.value = def;
+    return false;    
+  } else { return true; }
+}
+
+function validate_number_percentage_blank(object, name, def) {
+  if (object.value == "") { return true; }
+  if (!object.value.match(/[0-9]+(%$|pct$|$)/)) {
+    alert('error: the ' + name + ' must be blank or a non negative number or percentage');
+    object.value = def;
+    return false;    
+  } else { return true; }
+}
+
+function validate_pieceSize() {
+  if (document.getElementById('squareSize').value < document.getElementById('pieceSize').value) {
+    alert('error: piece size must be no bigger than the square size');
+    document.getElementById('pieceSize').value = 20;
+    return false;
+  } else { return true; }
+}
+
+function validate_squareSize() {
+  if (!validate_number(document.getElementById('squareSize'), 'square size', document.getElementById('pieceSize').value)) {
+    return false;
+  } else if (document.getElementById('squareSize').value < document.getElementById('pieceSize').value) {
+    alert('error: square size must be at least as big as the piece size');
+    document.getElementById('squareSize').value = document.getElementById('pieceSize').value;
+    return false;
+  } else { return true; }
 }
 
 function gup( name ){
@@ -590,7 +658,7 @@ chessboard generator</h1>
 &nbsp;&nbsp; piece font &nbsp;&nbsp;
 <p>
 
-<select class="dropdown" id="pieceSize" name="pieceSize">
+<select class="dropdown" id="pieceSize" name="pieceSize" onChange="validate_pieceSize();">
 <option value="20">20</option>
 <option value="21">21</option>
 <option value="22">22</option>
@@ -636,25 +704,25 @@ chessboard generator</h1>
 &nbsp;&nbsp; piece size &nbsp;&nbsp;
 <p>
 
-<input class="input" type="text" id="squareSize" name="squareSize" value="" size="7" onChange="update_suggested_iframe_dimensions()">
+<input class="input" type="text" id="squareSize" name="squareSize" value="" size="7" onChange="validate_squareSize(); update_suggested_iframe_dimensions()">
 &nbsp;&nbsp; square size &nbsp;&nbsp;
 <span class="helptext"">a number; must be larger than the piece size</span>
 <p>
 <br>
 
-<input class="color input" type="text" id="lightColorHex" name="lightColorHex" value="" size="7">
+<input class="color input" type="text" id="lightColorHex" name="lightColorHex" value="" size="7" onChange="validate_color(this, 'light squares color', lightColorHex_default)">
 &nbsp;&nbsp; light squares color &nbsp;&nbsp;
 <p>
 
-<input class="color input" type="text" id="darkColorHex" name="darkColorHex" value="" size="7">
+<input class="color input" type="text" id="darkColorHex" name="darkColorHex" value="" size="7" onChange="validate_color(this, 'dark squares color', darkColorHex_default)">
 &nbsp;&nbsp; dark squares color &nbsp;&nbsp;
 <p>
 
-<input class="color input" type="text" id="boardBorderColorHex" name="boardBorderColorHex" value="" size="7">
+<input class="color input" type="text" id="boardBorderColorHex" name="boardBorderColorHex" value="" size="7" onChange="validate_color(this, 'board border color', boardBorderColorHex_default)">
 &nbsp;&nbsp; board border color &nbsp;&nbsp;
 <p>
 
-<input class="color input" type="text" id="highlightColorHex" name="highlightColorHex" value="" size="7">
+<input class="color input" type="text" id="highlightColorHex" name="highlightColorHex" value="" size="7" onChange="validate_color(this, 'highlight squares color', highlightColorHex_default)">
 &nbsp;&nbsp; highlight squares color &nbsp;&nbsp;
 <p>
 <br>
@@ -664,19 +732,19 @@ chessboard generator</h1>
 <span class="helptext">control buttons might not be necessary, just try clicking the G8 square</span>
 <p>
 
-<input class="color {adjust:false} input" type="text" id="controlBackgroundColorHex" name="controlBackgroundColorHex" value="" size="7" onChange="update_controls()">
+<input class="color {adjust:false} input" type="text" id="controlBackgroundColorHex" name="controlBackgroundColorHex" value="" size="7" onChange="validate_color_default(this, 'control buttons background color', 'default'); update_controls()">
 &nbsp;&nbsp; control buttons background color &nbsp;&nbsp;
 <span class="helptext">set to <i>default</i> in order to use standard buttons from the browser</span>
 <p>
 
-<input class="color input" type="text" id="controlTextColorHex" name="controlTextColorHex" value="" size="7">
+<input class="color input" type="text" id="controlTextColorHex" name="controlTextColorHex" value="" size="7" onChange="validate_color(this, 'control buttons text color', controlTextColorHex_default)">
 &nbsp;&nbsp; control buttons text color &nbsp;&nbsp;
 
 <div style="height: 3em">&nbsp</div>
 <script>print_menu("header_moves_options", 3, "header and moves options");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<input class="input" type="text" id="textMargin" name="textMargin" value="" size="7">
+<input class="input" type="text" id="textMargin" name="textMargin" value="" size="7" onChange="validate_number_percentage(this, 'text margin', textMargin_default);">
 &nbsp;&nbsp; text margin &nbsp;&nbsp;
 <span class="helptext"">a number or a percentage; header/moves margin, nice to have if text overflows with scrollbars</span>
 <p>
@@ -686,12 +754,12 @@ chessboard generator</h1>
 &nbsp;&nbsp; <b>show game header</b> &nbsp;&nbsp;
 <p>
 
-<input class="input" type="text" id="fontHeaderSize" name="fontHeaderSize" value="" size="7">
+<input class="input" type="text" id="fontHeaderSize" name="fontHeaderSize" value="" size="7" onChange="validate_number_percentage(this, 'header font size', fontHeaderSize_default);">
 &nbsp;&nbsp; header font size &nbsp;&nbsp;
 <span class="helptext"">a number or a percentage; make sure left/right columns dont touch in the middle</span>
 <p>
 
-<input class="color input" type="text" id="fontHeaderColorHex" name="fontHeaderColorHex" value="" size="7">
+<input class="color input" type="text" id="fontHeaderColorHex" name="fontHeaderColorHex" value="" size="7" onChange="validate_color(this, 'header font color', fontHeaderColorHex_default)">
 &nbsp;&nbsp; header font color &nbsp;&nbsp;
 <p>
 <br>
@@ -708,52 +776,52 @@ chessboard generator</h1>
 &nbsp;&nbsp; show comments on separate lines &nbsp;&nbsp;
 <p>
 
-<input class="input" type="text" id="fontMovesSize" name="fontMovesSize" value="" size="7">
+<input class="input" type="text" id="fontMovesSize" name="fontMovesSize" value="" size="7" onChange="validate_number_percentage(this, 'moves font size', fontMovesSize_default);">
 &nbsp;&nbsp; moves font size &nbsp;&nbsp;
 <span class="helptext"">a number or a percentage</span>
 <p>
 
-<input class="color input" type="text" id="fontMovesColorHex" name="fontMovesColorHex" value="" size="7">
+<input class="color input" type="text" id="fontMovesColorHex" name="fontMovesColorHex" value="" size="7" onChange="validate_color(this, 'moves font color', fontMovesColorHex_default)">
 &nbsp;&nbsp; moves font color &nbsp;&nbsp;
 <p>
 
-<input class="color input" type="text" id="highlightMoveColorHex" name="highlightMoveColorHex" value="" size="7">
+<input class="color input" type="text" id="highlightMoveColorHex" name="highlightMoveColorHex" value="" size="7" onChange="validate_color(this, 'highlight move color', highlightMoveColorHex_default)">
 &nbsp;&nbsp; highlight move color &nbsp;&nbsp;
 <p>
 
-<input class="input" type="text" id="fontCommentsSize" name="fontCommentsSize" value="" size="7">
+<input class="input" type="text" id="fontCommentsSize" name="fontCommentsSize" value="" size="7" onChange="validate_number_percentage(this, 'comments font size', fontCommentsSize_default);">
 &nbsp;&nbsp; comments font size &nbsp;&nbsp;
 <span class="helptext"">a number or a percentage</span>
 <p>
 
-<input class="color input" type="text" id="fontCommentsColorHex" name="fontCommentsColorHex" value="" size="7">
+<input class="color input" type="text" id="fontCommentsColorHex" name="fontCommentsColorHex" value="" size="7" onChange="validate_color(this, 'comments font color', fontCommentsColorHex_default)">
 &nbsp;&nbsp; comments font color &nbsp;&nbsp;
 
 <div style="height: 3em">&nbsp</div>
 <script>print_menu("page_options", 3, "web page options");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<input class="color input" type="text" id="backgroundColorHex" name="backgroundColorHex" value="" size="7">
+<input class="color input" type="text" id="backgroundColorHex" name="backgroundColorHex" value="" size="7" onChange="validate_color(this, 'background color', backgroundColorHex_default)">
 &nbsp;&nbsp; background color &nbsp;&nbsp;
 <p>
 
-<input class="color input" type="text" id="previewBackgroundColorHex" name="previewBackgroundColorHex" value="" size="7"> 
-&nbsp;&nbsp; preview background &nbsp;&nbsp;
+<input class="color input" type="text" id="previewBackgroundColorHex" name="previewBackgroundColorHex" value="" size="7" onChange="validate_color(this, 'preview background color', previewBackgroundColorHex_default)"> 
+&nbsp;&nbsp; preview background color &nbsp;&nbsp;
 <span class="helptext"">not actually used in the HTML code, just for the preview</span>
 <p>
 <br>
 
-<input class="input" type="text" id="frameHeight" name="frameHeight" value="" size="7">
+<input class="input" type="text" id="frameHeight" name="frameHeight" value="" size="7" onChange="validate_number_blank(this, 'iFrame height', '')">
 &nbsp;&nbsp; iFrame height &nbsp;&nbsp;
 <span id="frameHeight_helpText" class="helptext"></span>
 <p>
 
-<input class="input" type="text" id="frameWidth" name="frameWidth" value="" size="7"> 
+<input class="input" type="text" id="frameWidth" name="frameWidth" value="" size="7" onChange="validate_number_percentage_blank(this, 'iFrame width', '');"> 
 &nbsp;&nbsp; iFrame width &nbsp;&nbsp;
 <span id="frameWidth_helpText" class="helptext"></span>
 <p>
 
-<input class="input" type="text" id="framePadding" name="framePadding" value="" size="7" onChange="update_suggested_iframe_dimensions()">
+<input class="input" type="text" id="framePadding" name="framePadding" value="" size="7" onChange="validate_number(this, 'frame padding', framePadding_default); update_suggested_iframe_dimensions();">
 &nbsp;&nbsp; iFrame padding &nbsp;&nbsp;
 <span class="helptext">a number; border padding around the iframe, included within the iFrame width value</span>
 <p>

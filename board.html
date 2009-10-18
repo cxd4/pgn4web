@@ -244,7 +244,6 @@ function percentFixFromUrl( text ) {
   return text.replace(/pct$/,'%');
 }
 
-
 function gup( name ){
 
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
@@ -294,8 +293,6 @@ SetImagePath(pieceFont + "/" + pieceSize);
 
 if ((squareSize = gup("squareSize")) == "") { squareSize = 28; }
 else { squareSize = parseInt(squareSize); }
-
-if (pieceSize > squareSize) { alert("ERROR: pieceSize (" + pieceSize + ") should not be bigger than squareSize (" + squareSize + ")" ); }
 
 if ((lightColor = gup("lightColorName")) == "") {if ((lightColor = "#" + gup("lightColorHex")) == "#") lightColor = "#EFF4EC"}
 if ((darkColor  = gup("darkColorName"))  == "") {if ((darkColor  = "#" + gup("darkColorHex"))  == "#") darkColor  = "#C6CEC3"}
