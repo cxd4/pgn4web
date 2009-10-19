@@ -464,8 +464,8 @@ boardAlt[6 + 1 * 8] = "";
 function boardOnClickCol7Row1() { };
 boardAlt[7 + 1 * 8] = "";
 // A6
-function boardOnClickCol0Row2() { };
-boardAlt[0 + 2 * 8] = "";
+function boardOnClickCol0Row2() { refreshPGNsource(); };
+boardAlt[0 + 2 * 8] = "refresh board during live broadcast";
 // B6
 function boardOnClickCol1Row2() { };
 boardAlt[1 + 2 * 8] = "";
@@ -1371,6 +1371,35 @@ function loadPgnFromPgnUrl(pgnUrl){
 
 function SetPgnUrl(url){
   pgnUrl = url;
+}
+
+
+/******************************************************************************
+ *                                                                            *
+ * Function refreshPGNsource:                                                 *
+ *                                                                            *
+ * reload the games from the specified URL during live broadcast              *
+ *                                                                            *
+ ******************************************************************************/
+function refreshPGNsource() {
+  
+  // cancel the old timer if any
+
+//  if (liveBroadcastDelay == 0) return;
+
+  initialGame = currentGame;
+
+  if (CurrentPly != StartPly + PlyNumber) { oldCurrentPly = CurrentPly; }
+  else {oldCurrentPly = -1}
+
+  if ( loadPgnFromPgnUrl(pgnUrl) ) { Init(); }
+  else { return; }
+
+  if (oldCurrentPly >= 0) { GoToMove(oldCurrentPly); }
+
+  // set the new timer
+
+  // more things to do: deal with autoplay
 }
 
 /******************************************************************************
