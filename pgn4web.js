@@ -637,8 +637,8 @@ var initialGame = 1;
 var initialHalfmove = 0;
 var alwaysInitialHalfmove = false;
 
-var liveBroadcastDelay = 0;
-var liveBroadcastDemo = false;
+var LiveBroadcastDelay = 0;
+var LiveBroadcastDemo = false;
 
 var MaxMove = 500;
 
@@ -1388,7 +1388,7 @@ function refreshPGNsource() {
   
   // cancel the old timer if any
 
-  if (liveBroadcastDelay == 0) return;
+  if (LiveBroadcastDelay == 0) return;
 
   initialGame = currentGame;
 
@@ -3138,6 +3138,7 @@ function SetAutoPlay(vv){
     }
   }
 }
+
 /******************************************************************************
  *                                                                            *
  * Function SetAutoplayDelay:                                                 *
@@ -3148,6 +3149,20 @@ function SetAutoPlay(vv){
 function SetAutoplayDelay(vv){
   Delay = vv;
 }
+
+/******************************************************************************
+ *                                                                            *
+ * Function SetLiveBroadcast(delay, demo)                                     *
+ *                                                                            *
+ * Change the delay of the live broadcast (delay = 0 means no broadcast).     *
+ * Optionally sets demo moder.                                                *
+ *                                                                            *
+ ******************************************************************************/
+function SetLiveBroadcast(delay, demo) {
+  LiveBroadcastDelay = delay;
+  LiveBroadcastDemo = (demo == true);
+}
+
 /******************************************************************************
  *                                                                            *
  * Function SetImage:                                                         *
