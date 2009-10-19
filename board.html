@@ -114,27 +114,32 @@ function new_start_pgn4web() {
 
   rule = getCSSRule('.move');
   rule.style.color = fontMovesColor;
+  if (!fontMovesSize.match(/[^0-9]/)) { fontMovesSize += 'px'; }
   rule.style.fontSize = fontMovesSize;
 
   rule = getCSSRule('.moveOn');
   if (highlightMoveColor == 'none') { rule.style.background = backgroundColor; }
   else { rule.style.background = highlightMoveColor; }
   rule.style.color = fontMovesColor;
+  if (!fontMovesSize.match(/[^0-9]/)) { fontMovesSize += 'px'; }
   rule.style.fontSize = fontMovesSize;
 
   rule = getCSSRule('.header');
   rule.style.color = fontHeaderColor;
+  if (!fontHeaderSize.match(/[^0-9]/)) { fontHeaderSize += 'px'; }
   rule.style.fontSize = fontHeaderSize;
 
   rule = getCSSRule('.comment');
   rule.style.color = fontCommentsColor;
+  rule.style.fontSize = fontCommentsSize;
+  if (!fontCommentsSize.match(/[^0-9]/)) { fontCommentsSize += 'px'; }
   rule.style.fontSize = fontCommentsSize;
 
 //  rule = getCSSRule('.nag');
 //  rule.style.color = fontCommentsColor;
 //  rule.style.fontSize = fontCommentsSize;
 
-  paddingControlHeight = squareSize / 2.5;
+  paddingControlHeight = Math.floor(squareSize / 2.5);
   theObject = document.getElementById("GameButtons");
   if (theObject) { theObject.style.paddingTop = paddingControlHeight; }
   if ((controlBackgroundColor != 'default') && (controlBackgroundColor != '#default')) { 
@@ -146,8 +151,8 @@ function new_start_pgn4web() {
     rule1.style.borderColor = rule2.style.borderColor = rule3.style.borderColor = backgroundColor;
     rule1.style.backgroundColor = rule2.style.backgroundColor = rule3.style.backgroundColor = controlBackgroundColor;
     rule1.style.color = rule2.style.color = rule3.style.color = controlTextColor;
-    controlFontSize = squareSize / 2.5;
-    rule1.style.fontSize = rule2.style.fontSize = rule3.style.fontSize = controlFontSize;
+    controlFontSize = Math.floor(squareSize / 2.5);
+    rule1.style.fontSize = rule2.style.fontSize = rule3.style.fontSize = controlFontSize + 'px';
   }
 
   if ((controlBackgroundColor != 'default') && (controlBackgroundColor != '#default')) {
@@ -157,7 +162,7 @@ function new_start_pgn4web() {
     rule.style.borderColor = backgroundColor;
     rule.style.backgroundColor = controlBackgroundColor;
     rule.style.color = controlTextColor;
-    rule.style.fontSize = controlFontSize;
+    rule.style.fontSize = controlFontSize + 'px';
   }
 
   start_pgn4web();

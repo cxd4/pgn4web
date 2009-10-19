@@ -416,7 +416,7 @@ function validate_color_default(object, name, def) {
 }
 
 function validate_number(object, name, def) {
-  if (object.value.match(/[^0-9]+/)) {
+  if (object.value.match(/[^0-9]+(px$|$)/)) {
     alert('error: the ' + name + ' must be a non negative number');
     object.value = def;
     return false;    
@@ -425,7 +425,7 @@ function validate_number(object, name, def) {
 
 function validate_number_blank(object, name, def) {
   if (object.value == "") { return true; }
-  if (object.value.match(/[^0-9]+/)) {
+  if (object.value.match(/[^0-9]+(px$|$)/)) {
     alert('error: the ' + name + ' must be blank or a non negative number');
     object.value = def;
     return false;    
@@ -433,7 +433,7 @@ function validate_number_blank(object, name, def) {
 }
 
 function validate_number_percentage(object, name, def) {
-  if (!object.value.match(/[0-9]+(%$|pct$|$)/)) {
+  if (!object.value.match(/[0-9]+(%$|pct$|px$|$)/)) {
     alert('error: the ' + name + ' must be a non negative number or percentage');
     object.value = def;
     return false;    
@@ -442,7 +442,7 @@ function validate_number_percentage(object, name, def) {
 
 function validate_number_percentage_blank(object, name, def) {
   if (object.value == "") { return true; }
-  if (!object.value.match(/[0-9]+(%$|pct$|$)/)) {
+  if (!object.value.match(/[0-9]+(%$|pct$|px$|$)/)) {
     alert('error: the ' + name + ' must be blank or a non negative number or percentage');
     object.value = def;
     return false;    
