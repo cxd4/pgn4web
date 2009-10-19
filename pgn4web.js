@@ -637,6 +637,9 @@ var initialGame = 1;
 var initialHalfmove = 0;
 var alwaysInitialHalfmove = false;
 
+var liveBroadcastDelay = 0;
+var liveBroadcastDemo = false;
+
 var MaxMove = 500;
 
 var castleRook    = -1;
@@ -1385,7 +1388,7 @@ function refreshPGNsource() {
   
   // cancel the old timer if any
 
-//  if (liveBroadcastDelay == 0) return;
+  if (liveBroadcastDelay == 0) return;
 
   initialGame = currentGame;
 
