@@ -1400,9 +1400,11 @@ function refreshPGNsource() {
 
   if (oldCurrentPly >= 0) { GoToMove(oldCurrentPly); }
 
-  // set the new timer
+  // if any of the games has a "*" result, restart the timer
 
-  // more things to do: deal with autoplay
+  // more things to do: 
+  //   deal with autoplay
+  //   try to guess clock times from comments by matching /^[0-9:\.]*(\s|$)/
 }
 
 /******************************************************************************
