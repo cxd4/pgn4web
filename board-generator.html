@@ -109,36 +109,49 @@ function set_defaults() {
 
   if ((pieceFont_value = gup("pieceFont")) == "") { pieceFont_value = pieceFont_default }
   document.board.pieceFont.value = pieceFont_value;
-
-  if ((pieceSize_value = gup("pieceSize")) == "") { pieceSize_value = pieceSize_default }
-  document.getElementById('pieceSize').value = pieceSize_value;
+  if (!((pieceFont_value == "alpha") || (pieceFont_value == "merida") || (pieceFont_value == "uscf"))) {
+    alert('error: the piece font must me either \'alpha\' or \'merida\' or \'uscf\'');
+    document.board.pieceFont.value = pieceFont_value = pieceFont_default;
+  }
 
   if ((squareSize_value = gup("squareSize")) == "") { squareSize_value = squareSize_default }
   document.getElementById('squareSize').value = squareSize_value;
+  validate_squareSize();
+
+  if ((pieceSize_value = gup("pieceSize")) == "") { pieceSize_value = pieceSize_default }
+  document.getElementById('pieceSize').value = pieceSize_value;
+  validate_pieceSize();
 
   if ((lightColorHex_value = gup("lightColorHex")) == "") { lightColorHex_value = lightColorHex_default }
   document.board.lightColorHex.value = lightColorHex_value;
+  validate_color(document.board.lightColorHex, 'light squares color', lightColorHex_default);
 
   if ((darkColorHex_value = gup("darkColorHex")) == "") { darkColorHex_value = darkColorHex_default }
   document.board.darkColorHex.value = darkColorHex_value;
+  validate_color(document.board.darkColorHex, 'dark squares color', darkColorHex_default)
 
   if ((boardBorderColorHex_value = gup("boardBorderColorHex")) == "") { boardBorderColorHex_value = boardBorderColorHex_default }
   document.board.boardBorderColorHex.value = boardBorderColorHex_value;
+  validate_color(document.board.boardBorderColorHex, 'board border color', boardBorderColorHex_default);
 
   if ((highlightColorHex_value = gup("highlightColorHex")) == "") { highlightColorHex_value = highlightColorHex_default }
   document.board.highlightColorHex.value = highlightColorHex_value;
+  validate_color(document.board.highlightColorHex, 'highlight squares color', highlightColorHex_default);
 
   if ((showButtons_value = gup("showButtons")) == "") { showButtons_value = showButtons_default }
   document.board.showButtons.checked = (showButtons_value == "t");
 
   if ((controlBackgroundColorHex_value = gup("controlBackgroundColorHex")) == "") { controlBackgroundColorHex_value = controlBackgroundColorHex_default }
   document.board.controlBackgroundColorHex.value = controlBackgroundColorHex_value;
+  validate_color_default(document.board.controlBackgroundColorHex, 'control buttons background color', 'default');
 
   if ((controlTextColorHex_value = gup("controlTextColorHex")) == "") { controlTextColorHex_value = controlTextColorHex_default }
   document.board.controlTextColorHex.value = controlTextColorHex_value;
+  validate_color(document.board.controlTextColorHex, 'control buttons text color', controlTextColorHex_default)
 
   if ((textMargin_value = percentFixFromUrl( gup("textMargin") )) == "") { textMargin_value = textMargin_default }
   document.getElementById('textMargin').value = textMargin_value;
+  validate_number_percentage(document.getElementById('textMargin'), 'text margin', textMargin_default);
 
   if ((showHeader_value = gup("showHeader")) == "") { showHeader_value = showHeader_default }
   document.board.showHeader.checked = (showHeader_value == "t");
@@ -154,39 +167,51 @@ function set_defaults() {
 
   if ((fontHeaderColorHex_value = gup("fontHeaderColorHex")) == "") { fontHeaderColorHex_value = fontHeaderColorHex_default }
   document.board.fontHeaderColorHex.value = fontHeaderColorHex_value;
+  validate_color(document.board.fontHeaderColorHex, 'header font color', fontHeaderColorHex_default);
 
   if ((fontMovesColorHex_value = gup("fontMovesColorHex")) == "") { fontMovesColorHex_value = fontMovesColorHex_default }
   document.board.fontMovesColorHex.value = fontMovesColorHex_value;
+  validate_color(document.board.fontMovesColorHex, 'moves font color', fontMovesColorHex_default)
 
   if ((fontCommentsColorHex_value = gup("fontCommentsColorHex")) == "") { fontCommentsColorHex_value = fontCommentsColorHex_default }
   document.board.fontCommentsColorHex.value = fontCommentsColorHex_value;
+  validate_color(document.board.fontCommentsColorHex, 'comments font color', fontCommentsColorHex_default);
 
   if ((highlightMoveColorHex_value = gup("highlightMoveColorHex")) == "") { highlightMoveColorHex_value = highlightMoveColorHex_default }
   document.board.highlightMoveColorHex.value = highlightMoveColorHex_value;
+  validate_color(document.board.highlightMoveColorHex, 'highlight move color', highlightMoveColorHex_default);
 
   if ((fontHeaderSize_value = percentFixFromUrl( gup("fontHeaderSize") )) == "") { fontHeaderSize_value = fontHeaderSize_default }
   document.board.fontHeaderSize.value = fontHeaderSize_value;
+  validate_number_percentage(document.board.fontHeaderSize, 'header font size', fontHeaderSize_default);
 
   if ((fontMovesSize_value = percentFixFromUrl( gup("fontMovesSize") )) == "") { fontMovesSize_value = fontMovesSize_default }
   document.board.fontMovesSize.value = fontMovesSize_value;
+  validate_number_percentage(document.board.fontMovesSize, 'moves font size', fontMovesSize_default);
 
   if ((fontCommentsSize_value = percentFixFromUrl( gup("fontCommentsSize") )) == "") { fontCommentsSize_value = fontCommentsSize_default }
   document.board.fontCommentsSize.value = fontCommentsSize_value;
+  validate_number_percentage(document.board.fontCommentsSize, 'comments font size', fontCommentsSize_default);
 
   if ((backgroundColorHex_value = gup("backgroundColorHex")) == "") { backgroundColorHex_value = backgroundColorHex_default }
   document.board.backgroundColorHex.value = backgroundColorHex_value;
+  validate_color(document.board.backgroundColorHex, 'background color', backgroundColorHex_default);
 
   if ((previewBackgroundColorHex_value = gup("previewBackgroundColorHex")) == "") { previewBackgroundColorHex_value = previewBackgroundColorHex_default }
   document.board.previewBackgroundColorHex.value = previewBackgroundColorHex_value;
+  validate_color(document.board.previewBackgroundColorHex, 'preview background color', previewBackgroundColorHex_default);
 
   if ((frameHeight_value = percentFixFromUrl( gup("frameHeight") )) == "") { frameHeight_value = frameHeight_default }
   document.board.frameHeight.value = frameHeight_value;
+  validate_number_blank(document.board.frameHeight, 'iFrame height', '');
 
   if ((frameWidth_value = percentFixFromUrl( gup("frameWidth") )) == "") { frameWidth_value = frameWidth_default }
   document.board.frameWidth.value = frameWidth_value;
+  validate_number_percentage_blank(document.board.frameWidth, 'iFrame width', '');
 
   if ((framePadding_value = gup("framePadding")) == "") { framePadding_value = framePadding_default }
   document.board.framePadding.value = framePadding_value;
+  validate_number(document.board.framePadding, 'frame padding', framePadding_default);
 
   if ((baseUrl_value = gup("baseUrl")) == "") { baseUrl_value = baseUrl_default }
   document.board.baseUrl.value = baseUrl_value;
@@ -423,7 +448,7 @@ function generate_html_code() {
 
 function validate_color(object, name, def) {
   if ((object.value.match(/[^0-9A-Fa-f]+/)) || (object.value.length != 6)) {
-    alert('error: the ' + name + ' must be an hexadecimal color code, like FF0000');
+    alert('error: the ' + name + ' must be a six digits hexadecimal color code, like FF0000');
     object.value = def;
     return false;    
   } else { return true; }
@@ -432,7 +457,7 @@ function validate_color(object, name, def) {
 function validate_color_default(object, name, def) {
   if (object.value == 'default') { return true; }
   else if ((object.value.match(/[^0-9A-Fa-f]+/)) || (object.value.length != 6)) {
-    alert('error: the ' + name + ' must be \'default\' or an hexadecimal color code, like FF0000');
+    alert('error: the ' + name + ' must be \'default\' or a six digits hexadecimal color code, like FF0000');
     object.value = def;
     return false;    
   } else { return true; }
