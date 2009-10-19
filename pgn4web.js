@@ -1386,8 +1386,6 @@ function SetPgnUrl(url){
  ******************************************************************************/
 function refreshPGNsource() {
   
-  // cancel the old timer if any
-
   if (LiveBroadcastDelay == 0) return;
 
   initialGame = currentGame;
@@ -1400,12 +1398,6 @@ function refreshPGNsource() {
 
   if (oldCurrentPly >= 0) { GoToMove(oldCurrentPly); }
 
-  // if any of the games has a "*" result, restart the timer
-
-  // more things to do: 
-  //   avoid caching (add a timestamp to the URL and or xmlHttpReq.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2005 00:00:00 GMT");
-  //   deal with autoplay
-  //   try to guess clock times from comments by matching /^[0-9:\.]*(\s|$)/
 }
 
 /******************************************************************************
