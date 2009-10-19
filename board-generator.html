@@ -237,6 +237,12 @@ function update_suggested_iframe_dimensions() {
     } 
   }
 
+  suggested_frameWidth += 2 * parseInt(document.board.framePadding.value);
+  suggested_frameHeight += 2 * parseInt(document.board.framePadding.value);
+
+  min_frameWidth = suggested_frameWidth;
+  min_frameHeight = suggested_frameHeight;
+
   if (document.board.showHeader.checked) { suggested_frameHeight += Math.max(100, Math.round(0.2 * boardWidth)); }
   if (document.board.showMoves.checked) { suggested_frameHeight += Math.max(300, Math.round(0.8 * boardWidth)); }
 
@@ -244,11 +250,28 @@ function update_suggested_iframe_dimensions() {
     suggested_frameWidth = Math.max(400, Math.round(1.5 * boardWidth));
   }
 
-  suggested_frameWidth += 2 * parseInt(document.board.framePadding.value);
-  suggested_frameHeight += 2 * parseInt(document.board.framePadding.value);
+  document.getElementById('frameHeight_helpText').innerHTML = "a number; min " + min_frameHeight + "; if blank frame height is assigned to " + suggested_frameHeight;
+  document.getElementById('frameWidth_helpText').innerHTML = "a number or a percentage; min " + min_frameWidth + "; if blank frame width assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
 
-  document.getElementById('frameHeight_helpText').innerHTML = "a number; if blank frame height is assigned to " + suggested_frameHeight;
-  document.getElementById('frameWidth_helpText').innerHTML = "a number or a percentage; if blank frame width assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
+  theObject = document.getElementById('frameWidth');
+  if (theObject.value != "") { 
+    if (!theObject.value.match('/[^0-9]/')) { 
+      if (theObject.value < min_frameWidth) { 
+        alert('error: iFrame width too small');
+        theObject.value = "";
+      }
+    }
+  } 
+  
+  theObject = document.getElementById('frameHeight');
+  if (theObject.value != "") { 
+    if (!theObject.value.match('/[^0-9]/')) { 
+      if (theObject.value < min_frameHeight) { 
+        alert('error: iFrame height too small');
+        theObject.value = "";
+      }
+    }
+  }
 
 }
 
@@ -811,12 +834,12 @@ chessboard generator</h1>
 <p>
 <br>
 
-<input class="input" type="text" id="frameHeight" name="frameHeight" value="" size="7" onChange="validate_number_blank(this, 'iFrame height', '')">
+<input class="input" type="text" id="frameHeight" name="frameHeight" value="" size="7" onChange="validate_number_blank(this, 'iFrame height', ''); update_suggested_iframe_dimensions();">
 &nbsp;&nbsp; iFrame height &nbsp;&nbsp;
 <span id="frameHeight_helpText" class="helptext"></span>
 <p>
 
-<input class="input" type="text" id="frameWidth" name="frameWidth" value="" size="7" onChange="validate_number_percentage_blank(this, 'iFrame width', '');"> 
+<input class="input" type="text" id="frameWidth" name="frameWidth" value="" size="7" onChange="validate_number_percentage_blank(this, 'iFrame width', ''); update_suggested_iframe_dimensions();"> 
 &nbsp;&nbsp; iFrame width &nbsp;&nbsp;
 <span id="frameWidth_helpText" class="helptext"></span>
 <p>
