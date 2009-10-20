@@ -5,7 +5,7 @@
 
 pgn_file=live.pgn
 pgn_file_tmp=live_tmp.pgn
-delay=3
+delay=20
 
 # dont touch after this line
 

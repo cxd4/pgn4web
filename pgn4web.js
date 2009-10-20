@@ -642,6 +642,8 @@ var LiveBroadcastInterval;
 var LiveBroadcastDelay = 0; // minutes
 var LiveBroadcastDemo = false;
 
+var StartClock = "";
+
 var MaxMove = 500;
 
 var castleRook    = -1;
@@ -1118,11 +1120,39 @@ function HighlightLastMove(){
   /*
    * Show the side to move
    */ 
-  if ((showThisMove+1)%2==0) text='white';
+  if ((showThisMove+1)%2==0) text='white'; // black has just moved
   else text='black';
  
   theObject = document.getElementById("GameSideToMove");
   if (theObject != null) theObject.innerHTML = text; 
+
+  /*
+   * Show the clock (if suitable info is found in the game comment)
+   */
+  
+  if (showThisMove+1 > StartPly) { lastClock = MoveComments[showThisMove+1].match(/^\s*[0-9:\.]+/); } 
+  else { lastClock = StartClock; }
+  if (showThisMove+1 > StartPly+1) { beforeLastClock = MoveComments[showThisMove].match(/^\s*[0-9:\.]+/); } 
+  else { beforeLastClock = StartClock; }
+
+  if (!lastClock) { lastClock = ""; }
+  if (!beforeLastClock) { beforeLastClock = ""; }
+
+  if ((showThisMove+1)%2==1) { // white has just moved
+    theObject = document.getElementById("GameWhiteClock");
+    if (theObject != null) { theObject.innerHTML = lastClock; }
+    theObject = document.getElementById("GameBlackClock");
+    if (theObject != null) { theObject.innerHTML = beforeLastClock; }
+  } else {
+    theObject = document.getElementById("GameBlackClock");
+    if (theObject != null) { theObject.innerHTML = lastClock; }
+    theObject = document.getElementById("GameWhiteClock");
+    if (theObject != null) { theObject.innerHTML = beforeLastClock; }
+  }
+
+  /*
+   * Show the next move
+   */
 
   var theShowMoveTextObject = document.getElementById("GameNextMove");
   if (theShowMoveTextObject != null){
@@ -3199,6 +3229,18 @@ function SetAutoplayDelay(vv){
 function SetLiveBroadcast(delay, demo) {
   LiveBroadcastDelay = delay;
   LiveBroadcastDemo = (demo == true);
+}
+
+/******************************************************************************
+ *                                                                            *
+ * Function SetStartClock(clock)                                              *
+ *                                                                            *
+ * Sets the initial value for the clocks (mainly used for live broadcasts,    *
+ * when the PGN will contain clock times as comments                          *
+ *                                                                            *
+ ******************************************************************************/
+function SetStartClock(clock) {
+  StartClock = clock;
 }
 
 /******************************************************************************
