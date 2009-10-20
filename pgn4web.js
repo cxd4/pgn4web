@@ -163,6 +163,12 @@ function start_pgn4web() {
   if (LiveBroadcastDelay > 0) { restartLiveBroadcastTimeout(); }
 }
 
+function myAlert(msg) {
+  if ((LiveBroadcastDelay == 0) || (LiveBroadcastAlert == true)) {
+    alert(msg);
+  }
+}
+
 var shortcutKeysEnabled = true;
 var firstStepKeyToggle = false;
 function handlekey(e) { 
@@ -173,7 +179,7 @@ function handlekey(e) {
   if (!e) e = window.event;
   keycode = e.keyCode
   
-  //alert(keycode);
+  //myAlert(keycode);
 
   // shift key (keycode 16) followed by escape (27) toogle the usage of shortcut keys 
   if ((keycode == secondStepKeyToggleKey) && (firstStepKeyToggle)) {
@@ -640,6 +646,7 @@ var alwaysInitialHalfmove = false;
 
 var LiveBroadcastInterval;
 var LiveBroadcastDelay = 0; // minutes
+var LiveBroadcastAlert = false;
 var LiveBroadcastDemo = false;
 
 var StartClock = "";
@@ -1378,7 +1385,7 @@ function loadPgnFromPgnUrl(pgnUrl){
       }
     }
   if (!http_request){
-    alert('Error with XMLHttpRequest for reading PGN file from URL');
+    myAlert('Error with XMLHttpRequest for reading PGN file from URL');
     return false; 
   }
 
@@ -1397,17 +1404,17 @@ function loadPgnFromPgnUrl(pgnUrl){
     http_request.send(null);
   } catch(e) {
       var answer = confirm("Error with request for PGN URL:\n" + pgnUrl + "\n\nPress OK for web developer DEBUG information.");
-      if (answer) alert(XMLrequest_error_debug_message);
+      if (answer) myAlert(XMLrequest_error_debug_message);
       return false;
 }
 
   if((http_request.readyState  == 4) && ((http_request.status  == 200) || (http_request.status  == 0))){
     if (! pgnGameFromPgnText(http_request.responseText)) {
-      alert('Error: no games found in PGN file');
+      myAlert('Error: no games found in PGN file');
       return false;
     }
   }else{ 
-    alert('Error reading PGN file from URL:\n' + pgnUrl);
+    myAlert('Error reading PGN file from URL:\n' + pgnUrl);
     return false;
   }
 
@@ -1484,7 +1491,7 @@ function refreshPGNsource() {
 function createBoard(){
 
   if ((! pgnUrl) && (! document.getElementById("pgnText"))) {
-    alert('Error: missing PGN URL location or pgnText.\n\nIn your HTML file, either use in a SCRIPT statement:\n\n  SetPgnUrl("http://yoursite/yourpath/yourfile.pgn")\n\nor embed the PGN text as hidden element, such as a SPAN element with style display:none\n');
+    myAlert('Error: missing PGN URL location or pgnText.\n\nIn your HTML file, either use in a SCRIPT statement:\n\n  SetPgnUrl("http://yoursite/yourpath/yourfile.pgn")\n\nor embed the PGN text as hidden element, such as a SPAN element with style display:none\n');
     return 
   }
 
@@ -1532,7 +1539,7 @@ function Init(){
   if (firstStart){
     numberOfGames = pgnGame.length;
     if (numberOfGames == 0) {
-      alert("No games found in the PGN file");
+      myAlert("No games found in the PGN file");
       return;
     }
     LoadGameHeaders();
@@ -1674,7 +1681,7 @@ function InitFEN(startingFEN){
         var col = PieceCol[color][ii];
         var row = PieceRow[color][ii];
         Board[col][row] = (1-2*color)*PieceType[color][ii];
-        // alert("Standard FEN: Setting "+(1-2*color)*PieceType[color][ii]+ " at "+col+" / "+row);
+        // myAlert("Standard FEN: Setting "+(1-2*color)*PieceType[color][ii]+ " at "+col+" / "+row);
       }
     }
   } else{
@@ -1691,7 +1698,7 @@ function InitFEN(startingFEN){
       while (cc!=" ")
       { if (cc=="/")
         { if (ii!=8)
-          { alert("Invalid FEN [1]: char "+ll+" in "+FenString);
+          { myAlert("Invalid FEN [1]: char "+ll+" in "+FenString);
             Init('standard');
             return;
           }
@@ -1699,21 +1706,21 @@ function InitFEN(startingFEN){
           jj--;
         }
         if (ii==8) 
-        { alert("Invalid FEN [2]: char "+ll+" in "+FenString);
+        { myAlert("Invalid FEN [2]: char "+ll+" in "+FenString);
           Init('standard');
           return;
         }
         if (! isNaN(cc))
         { ii+=parseInt(cc);
           if ((ii<0)||(ii>8))
-          { alert("Invalid FEN [3]: char "+ll+" in "+FenString);
+          { myAlert("Invalid FEN [3]: char "+ll+" in "+FenString);
             return;
           }
         }
         var PieceName = "KQRBNP";
         if (cc.charCodeAt(0)==PieceName.toUpperCase().charCodeAt(0))
         { if (PieceType[0][0]!=-1)
-          { alert("Invalid FEN [4]: char "+ll+" in "+FenString);
+          { myAlert("Invalid FEN [4]: char "+ll+" in "+FenString);
             return;
           }     
           PieceType[0][0]=1;
@@ -1723,7 +1730,7 @@ function InitFEN(startingFEN){
         }
         if (cc.charCodeAt(0)==PieceName.toLowerCase().charCodeAt(0))
         { if (PieceType[1][0]!=-1)
-          { alert("Invalid FEN [5]: char "+ll+" in "+FenString);
+          { myAlert("Invalid FEN [5]: char "+ll+" in "+FenString);
             return;
           }  
           PieceType[1][0]=1;
@@ -1734,7 +1741,7 @@ function InitFEN(startingFEN){
         for (kk=1; kk<6; kk++)
         { if (cc.charCodeAt(0)==PieceName.toUpperCase().charCodeAt(kk))
           { if (nn==16)
-            { alert("Invalid FEN [6]: char "+ll+" in "+FenString);
+            { myAlert("Invalid FEN [6]: char "+ll+" in "+FenString);
               return;
             }          
             PieceType[0][nn]=kk+1;
@@ -1745,7 +1752,7 @@ function InitFEN(startingFEN){
           }
           if (cc.charCodeAt(0)==PieceName.toLowerCase().charCodeAt(kk))
           { if (mm==16)
-            { alert("Invalid FEN [7]: char "+ll+" in "+FenString);
+            { myAlert("Invalid FEN [7]: char "+ll+" in "+FenString);
               return;
             }  
             PieceType[1][mm]=kk+1;
@@ -1760,11 +1767,11 @@ function InitFEN(startingFEN){
         else cc=" ";
       }
       if ((ii!=8)||(jj!=0))
-      { alert("Invalid FEN [8]: char "+ll+" in "+FenString);
+      { myAlert("Invalid FEN [8]: char "+ll+" in "+FenString);
         return;
       }
       if ((PieceType[0][0]==-1)||(PieceType[1][0]==-1))
-      { alert("Invalid FEN [9]: char "+ll+" missing king");
+      { myAlert("Invalid FEN [9]: char "+ll+" missing king");
         return;
       }
       if (ll==FenString.length)
@@ -1787,14 +1794,14 @@ function InitFEN(startingFEN){
         }
       }
       else
-      { alert("Invalid FEN [11]: char "+ll+" invalid active color");
+      { myAlert("Invalid FEN [11]: char "+ll+" invalid active color");
         Init('standard');
         return;
       }
 
       ll++;
       if (ll>=FenString.length)
-      { alert("Invalid FEN [12]: char "+ll+" missing castling availability");
+      { myAlert("Invalid FEN [12]: char "+ll+" missing castling availability");
         Init('standard');
         return;
       }
@@ -1831,14 +1838,14 @@ function InitFEN(startingFEN){
           if (PieceType[color][ii]!=-1){
    	     var col = PieceCol[color][ii];
 	     var row = PieceRow[color][ii];
-	     // alert("given FEN: Setting "+(1-2*color)*(PieceType[color][ii])+ " at "+col+" / "+row);
+	     // myAlert("given FEN: Setting "+(1-2*color)*(PieceType[color][ii])+ " at "+col+" / "+row);
 	     Board[col][row] = (1-2*color)*(PieceType[color][ii]);
 	  }
        }
       }
           
       if (ll==FenString.length)
-      { alert("Invalid FEN [13]: char "+ll+" missing en passant target square");
+      { myAlert("Invalid FEN [13]: char "+ll+" missing en passant target square");
         Init('standard');
         return;
       }
@@ -1853,14 +1860,14 @@ function InitFEN(startingFEN){
         else cc=" ";
       }
       if (ll==FenString.length)
-      { alert("Invalid FEN [14]: char "+ll+" missing halfmove clock");
+      { myAlert("Invalid FEN [14]: char "+ll+" missing halfmove clock");
         return;
       }
       HalfMove=0;
       cc=FenString.charAt(ll++);
       while (cc!=" ")
       { if (isNaN(cc))
-        { alert("Invalid FEN [15]: char "+ll+" invalid halfmove clock");
+        { myAlert("Invalid FEN [15]: char "+ll+" invalid halfmove clock");
           return;
         }
         HalfMove=HalfMove*10+parseInt(cc);
@@ -1869,16 +1876,16 @@ function InitFEN(startingFEN){
         else cc=" ";
       }
       if (ll==FenString.length)
-      { alert("Invalid FEN [16]: char "+ll+" missing fullmove number");
+      { myAlert("Invalid FEN [16]: char "+ll+" missing fullmove number");
         return;
       }
       cc=FenString.substring(ll++);
       if (isNaN(cc))
-      { alert("Invalid FEN [17]: char "+ll+" invalid fullmove number");
+      { myAlert("Invalid FEN [17]: char "+ll+" invalid fullmove number");
         return;
       }
       if (cc<=0)
-      { alert("Invalid FEN [18]: char "+ll+" invalid fullmove number");
+      { myAlert("Invalid FEN [18]: char "+ll+" invalid fullmove number");
         return;
       }
       StartPly+=2*(parseInt(cc)-1);
@@ -2163,7 +2170,7 @@ function MoveForward(diff){
     if (!parse) {
       if ((thisPly % 2) == 0) text = (Math.floor(thisPly / 2) + 1) + '. ';
       else text = (Math.floor(thisPly / 2) + 1) + '... ';
-      alert('Error on ply ' + text + move);
+      myAlert('Error on ply ' + text + move);
       break;
     }
     MoveColor = 1-MoveColor; 
@@ -2340,7 +2347,7 @@ function ParsePGNGameString(gameString){
           MoveComments[StartPly+PlyNumber] += ss.substring(commentStart, commentEnd); 
           start = commentEnd;
         }else{
-          alert('Error parsing PGN: missing end comment char }');
+          myAlert('Error parsing PGN: missing end comment char }');
           return;
         }
         break;
@@ -2374,7 +2381,7 @@ function ParsePGNGameString(gameString){
           nextOpen = ss.indexOf('(', variationEnd);
           nextClosed = ss.indexOf(')', variationEnd);
           if (nextClosed < 0) {
-            alert('Error parsing PGN: missing end variation char )');
+            myAlert('Error parsing PGN: missing end variation char )');
             return
           }
           if ((nextOpen >= 0) && (nextOpen < nextClosed)) {
@@ -3223,12 +3230,13 @@ function SetAutoplayDelay(vv){
  *                                                                            *
  * Change the delay (in minutes) of the live broadcast (delay = 0 means       *
  * no broadcast).                                                             *
- * Optionally sets demo moder.                                                *
+ * Optionally sets demo mode.                                                *
  *                                                                            *
  ******************************************************************************/
-function SetLiveBroadcast(delay, demo) {
+function SetLiveBroadcast(delay, alertFlag, demoFlag) {
   LiveBroadcastDelay = delay;
-  LiveBroadcastDemo = (demo == true);
+  LiveBroadcastAlert = alertFlag;
+  LiveBroadcastDemo = (demoFlag == true);
 }
 
 /******************************************************************************
