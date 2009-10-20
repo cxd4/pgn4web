@@ -1395,12 +1395,12 @@ function restartLiveBroadcastTimeout() {
   needRestart = false;
   for (ii=0; ii<numberOfGames; ii++) {
     if (gameResult[ii].indexOf('*') >= 0) {
-      need_restart = true;
+      needRestart = true;
       break;
     }
   }
 
-  if (need_restart) {
+  if (needRestart == true) {
     LiveBroadcastInterval = setTimeout("refreshPGNsource()", LiveBroadcastDelay * 60000);
   }
 
@@ -1414,12 +1414,14 @@ function restartLiveBroadcastTimeout() {
  *                                                                            *
  ******************************************************************************/
 function refreshPGNsource() {
-  
+ 
   if (LiveBroadcastDelay == 0) return;
 
   if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); }
 
-  initialGame = currentGame;
+  initialGame = currentGame + 1;
+  currentGame = -1;
+  textSelectOptions = '';
 
   if (CurrentPly != StartPly + PlyNumber) { oldCurrentPly = CurrentPly; }
   else {oldCurrentPly = -1}
