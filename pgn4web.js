@@ -160,6 +160,7 @@ function start_pgn4web() {
   theObject = document.getElementById('GameSelector');
   if (theObject != null) theObject.innerHTML = '';
   createBoard();
+  if (LiveBroadcastDelay > 0) { restartLiveBroadcastTimeout(); }
 }
 
 var shortcutKeysEnabled = true;
@@ -629,7 +630,7 @@ var oldAnchor = -1;
 
 var isAutoPlayOn = false;
 var AutoPlayInterval;
-var Delay = 1000;
+var Delay = 1000; // milliseconds
 var autostartAutoplay = false;
 var autoplayNextGame = false;
 
@@ -637,7 +638,8 @@ var initialGame = 1;
 var initialHalfmove = 0;
 var alwaysInitialHalfmove = false;
 
-var LiveBroadcastDelay = 0;
+var LiveBroadcastInterval;
+var LiveBroadcastDelay = 0; // minutes
 var LiveBroadcastDemo = false;
 
 var MaxMove = 500;
@@ -1351,7 +1353,17 @@ function loadPgnFromPgnUrl(pgnUrl){
   }
 
   try {
-    http_request.open("GET", pgnUrl, false); 
+    // anti-caching tecnique number 1: add a random parameter to the URL
+    if (LiveBroadcastDelay > 0) {
+      dd = new Date();
+      http_request.open("GET", pgnUrl + "?nocahce=" + Math.random(), false); 
+    } else {
+      http_request.open("GET", pgnUrl, false); 
+    }
+    // anti-caching tecnique number 2: add header option
+    if (LiveBroadcastDelay > 0) { 
+      http_request.setRequestHeader( "If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT" ); 
+    }
     http_request.send(null);
   } catch(e) {
       var answer = confirm("Error with request for PGN URL:\n" + pgnUrl + "\n\nPress OK for web developer DEBUG information.");
@@ -1376,6 +1388,23 @@ function SetPgnUrl(url){
   pgnUrl = url;
 }
 
+function restartLiveBroadcastTimeout() {
+
+  if (LiveBroadcastDelay == 0) { return; }
+
+  needRestart = false;
+  for (ii=0; ii<numberOfGames; ii++) {
+    if (gameResult[ii].indexOf('*') >= 0) {
+      need_restart = true;
+      break;
+    }
+  }
+
+  if (need_restart) {
+    LiveBroadcastInterval = setTimeout("refreshPGNsource()", LiveBroadcastDelay * 60000);
+  }
+
+}
 
 /******************************************************************************
  *                                                                            *
@@ -1388,15 +1417,28 @@ function refreshPGNsource() {
   
   if (LiveBroadcastDelay == 0) return;
 
+  if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); }
+
   initialGame = currentGame;
 
   if (CurrentPly != StartPly + PlyNumber) { oldCurrentPly = CurrentPly; }
   else {oldCurrentPly = -1}
 
+  if (isAutoPlayOn) {
+    SetAutoPlay(false);
+    oldAutoplay = true;
+  } else {
+    oldAutoplay = false; 
+  }
+
   if ( loadPgnFromPgnUrl(pgnUrl) ) { Init(); }
   else { return; }
 
   if (oldCurrentPly >= 0) { GoToMove(oldCurrentPly); }
+
+  restartLiveBroadcastTimeout();
+
+  if (oldAutoplay) { SetAutoPlay(true); }
 
 }
 
@@ -3147,7 +3189,8 @@ function SetAutoplayDelay(vv){
  *                                                                            *
  * Function SetLiveBroadcast(delay, demo)                                     *
  *                                                                            *
- * Change the delay of the live broadcast (delay = 0 means no broadcast).     *
+ * Change the delay (in minutes) of the live broadcast (delay = 0 means       *
+ * no broadcast).                                                             *
  * Optionally sets demo moder.                                                *
  *                                                                            *
  ******************************************************************************/
