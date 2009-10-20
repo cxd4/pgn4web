@@ -4,6 +4,7 @@
 # more realistic than simulating the live broadcast within pgn4web
 
 pgn_file=live.pgn
+pgn_file_tmp=live_tmp.pgn
 delay=20
 
 # dont touch after this line
@@ -33,7 +34,7 @@ game1_moves[18]="18.Kxf2"
 game1_moves[19]="Qh2 19.Bxc6 bxc6"
 game1_moves[20]="20.Qxc6 f4"
 game1_moves[21]="21.Qxd5+"
-game1_moves[22]="Qxd5+ Kh8 22.Qxh5"
+game1_moves[22]="Kh8 22.Qxh5"
 game1_moves[23]="f3"
 game1_moves[24]="23.Qxf3 Rxf3+"
 game1_moves[25]="24.Kxf3 Rf8+ 25.Ke2"
@@ -89,58 +90,59 @@ steps=33
 
 echo Generating PGN file $pgn_file simulating live game broadcast
 
-echo > "tmp_"$pgn_file
-echo -e $game1_header_live >> "tmp_"$pgn_file
-echo >> "tmp_"$pgn_file
-echo -e $game2_header_live >> "tmp_"$pgn_file
-mv "tmp_"$pgn_file $pgn_file
+echo > $pgn_file_tmp
+echo -e $game1_header_live >> $pgn_file_tmp
+echo >> $pgn_file_tmp
+echo -e $game2_header_live >> $pgn_file_tmp
+mv $pgn_file_tmp $pgn_file
 sleep $delay
 
 upto=0;
 while [ $upto -le $steps ]
 do
 	echo " step $upto of $steps"
-	echo > "tmp_"$pgn_file
+	echo > $pgn_file_tmp
 
-	echo -e $game1_header_live >> "tmp_"$pgn_file
+	echo -e $game1_header_live >> $pgn_file_tmp
 	move=0
 	while [ $move -le $upto ]
 	do
-		echo ${game1_moves[$move]} >> "tmp_"$pgn_file
+		echo ${game1_moves[$move]} >> $pgn_file_tmp
 		let "move+=1"
 	done
 
-	echo >> "tmp_"$pgn_file
+	echo >> $pgn_file_tmp
 
-	echo -e $game2_header_live >> "tmp_"$pgn_file
+	echo -e $game2_header_live >> $pgn_file_tmp
 	move=0
 	while [ $move -le $upto ]
 	do
-		echo ${game2_moves[$move]} >> "tmp_"$pgn_file
+		echo ${game2_moves[$move]} >> $pgn_file_tmp
 		let "move+=1"
 	done
 
-	mv "tmp_"$pgn_file $pgn_file
-	let "upto+=1"
-
+	mv $pgn_file_tmp $pgn_file
 	sleep $delay
+
+	let "upto+=1"
 done
 
-echo > "tmp_"$pgn_file
-echo -e $game1_header_end >> "tmp_"$pgn_file
+echo > $pgn_file_tmp
+echo -e $game1_header_end >> $pgn_file_tmp
 move=0
 while [ $move -le $upto ]
 do
-	echo ${game1_moves[$move]} >> "tmp_"$pgn_file
+	echo ${game1_moves[$move]} >> $pgn_file_tmp
 	let "move+=1"
 done
-echo >> "tmp_"$pgn_file
-echo -e $game2_header_end >> "tmp_"$pgn_file
+echo >> $pgn_file_tmp
+echo -e $game2_header_end >> $pgn_file_tmp
 move=0
 while [ $move -le $upto ]
 do
-	echo ${game2_moves[$move]} >> "tmp_"$pgn_file
+	echo ${game2_moves[$move]} >> $pgn_file_tmp
 	let "move+=1"
 done
+mv $pgn_file_tmp $pgn_file
 echo done
 
