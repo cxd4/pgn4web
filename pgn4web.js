@@ -648,6 +648,8 @@ var LiveBroadcastInterval;
 var LiveBroadcastDelay = 0; // minutes
 var LiveBroadcastAlert = false;
 var LiveBroadcastDemo = false;
+var gameDemoEnd = new Array();
+var gameDemoMaxPly = new Array();
 
 var StartClock = "";
 
@@ -1451,10 +1453,17 @@ function restartLiveBroadcastTimeout() {
  *                                                                            *
  ******************************************************************************/
 function refreshPGNsource() {
- 
+
   if (LiveBroadcastDelay == 0) return;
 
   if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); }
+
+  if (LiveBroadcastDemo) {
+    for(ii=0;ii<numberOfGames;ii++) {
+      if (Math.random() < 0.5) { gameDemoMaxPly[ii] += Math.floor(3 * Math.random()) + 1; }
+      if (Math.random() < 0.001) { gameDemoEnd[ii] = true; }
+    }   
+  }
 
   initialGame = currentGame + 1;
   currentGame = -1;
@@ -2061,6 +2070,15 @@ function LoadGameHeaders(){
       }
     }
   }
+
+  if (LiveBroadcastDemo) {
+    for (ii = 0; ii < numberOfGames; ++ii) {
+       if (gameDemoMaxPly[ii] == undefined) { gameDemoMaxPly[ii] = 0; }
+       if (gameDemoEnd[ii] == undefined) { gameDemoEnd[ii] = false; }
+       if (!gameDemoEnd[ii]) { gameResult[ii] = '*'; }
+    }
+  }
+
   return;
 }
 /******************************************************************************
@@ -2249,7 +2267,13 @@ function MoveToPrevComment()
  ******************************************************************************/
 function OpenGame(gameId){
   ParsePGNGameString(pgnGame[gameId]);
-  currentGame = gameId; 
+  currentGame = gameId;
+ 
+  if ( (LiveBroadcastDemo) && (!gameDemoEnd[gameId]) ) {
+    if (gameDemoMaxPly[gameId] <= PlyNumber) { PlyNumber = gameDemoMaxPly[gameId]; }
+    else { gameDemoEnd[gameId] = true; } 
+  }
+ 
   PrintHTML();
 }
 
