@@ -85,16 +85,21 @@ game2_moves[31]="Ng8"
 game2_moves[32]=""
 game2_moves[33]="20.Bc1"
 
+steps=33
+
+echo Generating PGN file $pgn_file simulating live game broadcast
+
 echo > "tmp_"$pgn_file
 echo -e $game1_header_live >> "tmp_"$pgn_file
 echo >> "tmp_"$pgn_file
 echo -e $game2_header_live >> "tmp_"$pgn_file
 mv "tmp_"$pgn_file $pgn_file
+sleep $delay
 
 upto=0;
-while [ $upto -le 33 ]
+while [ $upto -le $steps ]
 do
-        sleep $delay
+	echo " step $upto of $steps"
 	echo > "tmp_"$pgn_file
 
 	echo -e $game1_header_live >> "tmp_"$pgn_file
@@ -117,9 +122,10 @@ do
 
 	mv "tmp_"$pgn_file $pgn_file
 	let "upto+=1"
+
+	sleep $delay
 done
 
-sleep $delay
 echo > "tmp_"$pgn_file
 echo -e $game1_header_end >> "tmp_"$pgn_file
 move=0
@@ -136,4 +142,5 @@ do
 	echo ${game2_moves[$move]} >> "tmp_"$pgn_file
 	let "move+=1"
 done
+echo done
 
