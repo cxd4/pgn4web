@@ -3,8 +3,8 @@
 # bash script to create a pgn file over time, same as a live broadcast
 # more realistic than simulating the live broadcast within pgn4web
 
-pgn_file=live.pgn
-pgn_file_tmp=live_tmp.pgn
+pgn_file=live-simulation.pgn
+pgn_file_tmp=live-simulation-tmp.pgn
 delay=17
 
 # dont touch after this line
@@ -144,5 +144,9 @@ do
 	let "move+=1"
 done
 mv $pgn_file_tmp $pgn_file
-echo done
+echo done with games... waiting for a while before deleting $pgn_file
+
+sleep 3600
+rm $pgn_file
+
 
