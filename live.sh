@@ -9,7 +9,7 @@ delay=17
 
 # dont touch after this line
 
-game1_header="[Event \"Tilburg Fontys\"]\n[Site \"Tilburg\"]\n[Date \"1998.10.24\"]\n[Round \"2\"]\n[White \"Anand, Viswanathan\"]\n[Black \"Kramnik, Vladimir\"]\n[WhiteClock \"2:00:00\"]\n[BlackClock \"2:00:00\"]'
+game1_header="[Event \"Tilburg Fontys\"]\n[Site \"Tilburg\"]\n[Date \"1998.10.24\"]\n[Round \"2\"]\n[White \"Anand, Viswanathan\"]\n[Black \"Kramnik, Vladimir\"]\n[WhiteClock \"2:00:00\"]\n[BlackClock \"2:00:00\"]"
 game1_header_live="$game1_header\n[Result \"*\"]\n"
 game1_header_end="$game1_header\n[Result \"1-0\"]\n"
 
