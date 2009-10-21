@@ -3,8 +3,8 @@
 # bash script to create a pgn file over time, same as a live broadcast
 # more realistic than simulating the live broadcast within pgn4web
 
-pgn_file=live-simulation.pgn
-pgn_file_tmp=live-simulation-tmp.pgn
+pgn_file=live.pgn
+pgn_file_tmp=live-tmp.pgn
 delay=17
 
 # dont touch after this line
