@@ -649,6 +649,7 @@ var LiveBroadcastDelay = 0; // minutes
 var LiveBroadcastPlaceholderResult = 'wait for live broadcast start';
 var LiveBroadcastAlert = false;
 var LiveBroadcastDemo = false;
+var LiveBroadcastUpdateInProgress = false;
 var gameDemoMaxPly = new Array();
 var gameDemoLength = new Array();
 
@@ -1455,7 +1456,8 @@ function restartLiveBroadcastTimeout() {
  ******************************************************************************/
 function refreshPGNsource() {
 
-  if (LiveBroadcastDelay == 0) return;
+  if (LiveBroadcastDelay == 0) { return; }
+  else { LiveBroadcastUpdateInProgress = true; }
 
   if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); }
 
@@ -1493,6 +1495,7 @@ function refreshPGNsource() {
 
   if (oldAutoplay) { SetAutoPlay(true); }
 
+  LiveBroadcastUpdateInProgress = false;
 }
 
 /******************************************************************************
@@ -2294,7 +2297,7 @@ function MoveToPrevComment()
  ******************************************************************************/
 function OpenGame(gameId){
   ParsePGNGameString(pgnGame[gameId]);
-  currentGame = gameId;
+  currentGame = parseInt(gameId);
  
   if (LiveBroadcastDemo) {
     if (gameDemoMaxPly[gameId] <= PlyNumber) { PlyNumber = gameDemoMaxPly[gameId]; }
