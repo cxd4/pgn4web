@@ -150,6 +150,22 @@ function displaySquareHelp(){
   alert(text);
 }
 
+
+/******************************************************************************
+ *                                                                            *
+ * function customFunctionOnPgnTextLoad()                                     *
+ * function customFunctionOnPgnGameLoad()                                     *
+ *                                                                            *
+ * Custom functions executed each time a PGN text is loaded and each time a   *
+ * PGN game is loaded. They are intentionally empty here so that can be       *
+ * customized in the HTML file by redefining them AFTER loading pgn4web.js    *
+ *                                                                            *
+ ******************************************************************************/
+
+function customFunctionOnPgnTextLoad() {}
+function customFunctionOnPgnGameLoad() {}
+
+
 window.onload = start_pgn4web;
 
 document.onkeydown = handlekey;
@@ -1493,6 +1509,8 @@ function refreshPGNsource() {
 
   if ( !loadPgnFromPgnUrl(pgnUrl) ) {
     pgnGameFromPgnText('[Result "' + LiveBroadcastPlaceholderResult + '"]');
+  } else {
+    customFunctionOnPgnTextLoad();
   }
   Init();
 
@@ -1527,6 +1545,7 @@ function createBoard(){
 
   if (pgnUrl) {
     if ( loadPgnFromPgnUrl(pgnUrl) ) {
+      customFunctionOnPgnTextLoad();
       Init();
       return;
     } else {
@@ -1555,7 +1574,10 @@ function createBoard(){
     // fixes issue with some browser replacing quotes with &quot;
     if (tmpText.indexOf('"') < 0) { tmpText = tmpText.replace(/(&quot;)/g, "\""); }
 
-    if ( pgnGameFromPgnText(tmpText) ) Init();
+    if ( pgnGameFromPgnText(tmpText) ) {
+      customFunctionOnPgnTextLoad();
+      Init();
+    }
     return;
   } 
 
@@ -1650,6 +1672,8 @@ function Init(){
     }
   }
   if (firstStart) { if (autostartAutoplay) SetAutoPlay(true); }
+
+  customFunctionOnPgnGameLoad();
 
   firstStart = false;
 }
