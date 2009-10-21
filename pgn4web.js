@@ -3290,7 +3290,7 @@ function SetAutoplayDelay(vv){
  ******************************************************************************/
 function SetLiveBroadcast(delay, alertFlag, demoFlag) {
   LiveBroadcastDelay = delay;
-  LiveBroadcastAlert = alertFlag;
+  LiveBroadcastAlert = (alertFlag == true);
   LiveBroadcastDemo = (demoFlag == true);
 }
 
