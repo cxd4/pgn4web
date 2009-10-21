@@ -155,8 +155,6 @@ window.onload = start_pgn4web;
 document.onkeydown = handlekey;
 
 function start_pgn4web() {
-  currentGame = -1;
-  textSelectOptions = '';
   theObject = document.getElementById('GameSelector');
   if (theObject != null) theObject.innerHTML = '';
   createBoard();
@@ -619,6 +617,8 @@ boardAlt[7 + 7 * 8] = "go to game end";
 var pgnGame;
 var numberOfGames = -1; 
 var currentGame   = -1;
+
+var firstStart = true;
 
 /*
  * Global variables holding game tags.
@@ -1471,7 +1471,7 @@ function refreshPGNsource() {
   }
 
   initialGame = currentGame + 1;
-  currentGame = -1;
+  firstStart = true;
   textSelectOptions = '';
 
   if (CurrentPly != StartPly + PlyNumber) { oldCurrentPly = CurrentPly; }
@@ -1565,8 +1565,6 @@ function createBoard(){
  *                                                                            *
  ******************************************************************************/
 function Init(){
-  if (currentGame < 0) firstStart = true;
-  else firstStart = false;
 
   InitImages();
   if (isAutoPlayOn) SetAutoPlay(false);
@@ -1645,6 +1643,8 @@ function Init(){
     }
   }
   if (firstStart) { if (autostartAutoplay) SetAutoPlay(true); }
+
+  firstStart = false;
 }
 /******************************************************************************
  *                                                                            *
@@ -2911,7 +2911,6 @@ function reset_after_click (ii, jj, originalClass, newClass) {
   if (theObject.className == newClass) {theObject.className = originalClass}
 }
 
-var textSelectOptions = '';
 /******************************************************************************
  *                                                                            *
  * Function PrintHTML:                                                        *
@@ -3003,6 +3002,7 @@ function PrintHTML(){
    * Show the HTML for the Game Selector
    */
 
+  if (firstStart) { textSelectOptions=''; }
   theObject = document.getElementById("GameSelector");
   if ((theObject != null) && (numberOfGames > 1) && (textSelectOptions=='')){
     if (gameSelectorNum) gameSelectorNumLenght = Math.floor(Math.log(numberOfGames)/Math.log(10)) + 1;
