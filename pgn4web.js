@@ -646,10 +646,11 @@ var alwaysInitialHalfmove = false;
 
 var LiveBroadcastInterval;
 var LiveBroadcastDelay = 0; // minutes
+var LiveBroadcastPlaceholderResult = 'wait for live broadcast start';
 var LiveBroadcastAlert = false;
 var LiveBroadcastDemo = false;
-var gameDemoEnd = new Array();
 var gameDemoMaxPly = new Array();
+var gameDemoLength = new Array();
 
 var StartClock = "";
 
@@ -1433,7 +1434,7 @@ function restartLiveBroadcastTimeout() {
 
   needRestart = false;
   for (ii=0; ii<numberOfGames; ii++) {
-    if (gameResult[ii].indexOf('*') >= 0) {
+    if ((gameResult[ii].indexOf('*') >= 0) || (gameResult[ii] == LiveBroadcastPlaceholderResult)) {
       needRestart = true;
       break;
     }
@@ -1460,9 +1461,11 @@ function refreshPGNsource() {
 
   if (LiveBroadcastDemo) {
     for(ii=0;ii<numberOfGames;ii++) {
-      if (Math.random() < 0.5) { gameDemoMaxPly[ii] += Math.floor(3 * Math.random()) + 1; }
-      if (Math.random() < 0.001) { gameDemoEnd[ii] = true; }
-    }   
+      rnd = Math.random();
+      if (rnd <= 0.05)      { gameDemoMaxPly[ii] += 3; } //  5% of times add 3 ply
+      else if (rnd <= 0.20) { gameDemoMaxPly[ii] += 2; } // 15% of times add 2 ply
+      else if (rnd <= 0.60) { gameDemoMaxPly[ii] += 2; } // 40% of times add 1 ply
+    }                                                    // 40% of times add 0 ply
   }
 
   initialGame = currentGame + 1;
@@ -1479,8 +1482,10 @@ function refreshPGNsource() {
     oldAutoplay = false; 
   }
 
-  if ( loadPgnFromPgnUrl(pgnUrl) ) { Init(); }
-  else { return; }
+  if ( !loadPgnFromPgnUrl(pgnUrl) ) {
+    pgnGameFromPgnText('[Result "' + LiveBroadcastPlaceholderResult + '"]');
+  }
+  Init();
 
   if (oldCurrentPly >= 0) { GoToMove(oldCurrentPly); }
 
@@ -1505,12 +1510,30 @@ function createBoard(){
   }
 
   theObject = document.getElementById("GameBoard");
-  if (theObject != null) theObject.innerHTML = '<SPAN STYLE="font-style: italic;">Please wait while loading PGN data...</SPAN>'; 
+  if (theObject != null) {
+    theObject.innerHTML = '<SPAN STYLE="font-style: italic;">' +
+                          'Please wait while loading PGN data...</SPAN>'; 
+  }
 
   if (pgnUrl) {
-    if ( loadPgnFromPgnUrl(pgnUrl) ) Init();
-    else  if (theObject != null) theObject.innerHTML = '<SPAN STYLE="font-style: italic;">ERROR: failed loading PGN data!</SPAN>';
-    return;
+    if ( loadPgnFromPgnUrl(pgnUrl) ) {
+      Init();
+      return;
+    } else {
+      if (LiveBroadcastDelay == 0) {
+        theObject = document.getElementById("GameBoard");
+        if (theObject != null) {
+          theObject.innerHTML = '<SPAN STYLE="font-style: italic;">' + 
+                                'Failed loading games from PGN file<br>' + 
+                                pgnUrl + '</SPAN>';
+        }
+        return;
+      } else { // live broadcast case, wait for live show to start
+        pgnGameFromPgnText('[Result "' + LiveBroadcastPlaceholderResult + '"]'); 
+        Init();
+        return;
+      }
+    }
   } 
   
   if ( document.getElementById("pgnText") ) {
@@ -1527,8 +1550,8 @@ function createBoard(){
   } 
 
   if (theObject != null) 
-    theObject.innerHTML = '<SPAN STYLE="color: red; font-style: italic; font-weight: bold;">' + 
-                          'Failed loading games from PGN file:<br>' + pgnUrl + '</SPAN>';
+    theObject.innerHTML = '<SPAN STYLE="font-style: italic;">' + 
+                          'Missing PGN data</SPAN>';
 }
 
 /******************************************************************************
@@ -2071,11 +2094,15 @@ function LoadGameHeaders(){
     }
   }
 
-  if (LiveBroadcastDemo) {
+  if ((LiveBroadcastDemo) && (gameResult[0] != LiveBroadcastPlaceholderResult)) {
     for (ii = 0; ii < numberOfGames; ++ii) {
+       if (gameDemoLength[ii] == undefined) { 
+         ParsePGNGameString(pgnGame[ii]); 
+         gameDemoLength[ii] = PlyNumber; 
+       }
        if (gameDemoMaxPly[ii] == undefined) { gameDemoMaxPly[ii] = 0; }
-       if (gameDemoEnd[ii] == undefined) { gameDemoEnd[ii] = false; }
-       if (!gameDemoEnd[ii]) { gameResult[ii] = '*'; }
+
+       if (gameDemoMaxPly[ii] <= gameDemoLength[ii]) { gameResult[ii] = '*'; }
     }
   }
 
@@ -2269,9 +2296,8 @@ function OpenGame(gameId){
   ParsePGNGameString(pgnGame[gameId]);
   currentGame = gameId;
  
-  if ( (LiveBroadcastDemo) && (!gameDemoEnd[gameId]) ) {
+  if (LiveBroadcastDemo) {
     if (gameDemoMaxPly[gameId] <= PlyNumber) { PlyNumber = gameDemoMaxPly[gameId]; }
-    else { gameDemoEnd[gameId] = true; } 
   }
  
   PrintHTML();
@@ -3250,11 +3276,13 @@ function SetAutoplayDelay(vv){
 
 /******************************************************************************
  *                                                                            *
- * Function SetLiveBroadcast(delay, demo)                                     *
+ * Function SetLiveBroadcast(delay, alert, demo)                              *
  *                                                                            *
- * Change the delay (in minutes) of the live broadcast (delay = 0 means       *
- * no broadcast).                                                             *
- * Optionally sets demo mode.                                                *
+ * Change the delay (in minutes) of the live broadcast                        *
+ * (delay = 0 means no broadcast).                                            *
+ * By default suppresses alerts during live broadcasts                        *
+ * (alert = true enables alerts during live broadcasts for testing            *
+ * Optionally sets demo mode.                                                 *
  *                                                                            *
  ******************************************************************************/
 function SetLiveBroadcast(delay, alertFlag, demoFlag) {
