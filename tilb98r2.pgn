@@ -5,6 +5,8 @@
 [White "Kortschnoj, Viktor"]
 [Black "Adams, Michael"]
 [Result "0-1"]
+[WhiteClock "2:00:00"]
+[BlackClock "2:00:00"]
 
 1.Nf3 {1:59:01} Nf6 {1:58:02} 2.c4 {1:57:03} e6 {1:56:04}
 3.g3 {1.55:05} d5 {1:54:04} 4.Bg2 {1:53:07} Be7 {1:52:08}
@@ -58,6 +60,8 @@
 [White "Anand, Viswanathan"]
 [Black "Kramnik, Vladimir"]
 [Result "1-0"]
+[WhiteClock "2:00:00"]
+[BlackClock "2:00:00"]
 
 1.e4 {1:59:59} e5 {1:58:58} 2.Nf3 {1:57:57} Nf6 {1:56:56} 
 3.Nxe5 {1:55:55} d6 {1:54:54} 4.Nf3 {1:53:53} Nxe4 {1:52:52} 
@@ -85,6 +89,8 @@
 [White "Lautier, Joel"]
 [Black "Van Wely, Loek"]
 [Result "1/2-1/2"]
+[WhiteClock "2:00:00"]
+[BlackClock "2:00:00"]
 
 1.d4 {1:59:59} Nf6 {1:59:58} 2.c4 {1:58:57} c5 {1:58:56} 
 3.d5 {1:57:55} b5 {1:57:54} 4.Nf3 {1:56:53} Bb7 {1:56:52} 
@@ -105,6 +111,8 @@
 [White "Sadler, Matthew"]
 [Black "Topalov, Veselin"]
 [Result "1/2-1/2"]
+[WhiteClock "2:00:00"]
+[BlackClock "2:00:00"]
 
 1.d4 {1:59:59} Nf6 {1:59:58} 2.c4 {1:59:57} e6 {1:58:56} 
 3.Nc3 {1:58:55} Bb4 {1:58:54} 4.e3 {1:57:53} c5 {1:57:52} 
@@ -132,6 +140,8 @@
 [White "Zvjaginsev, Vadim"]
 [Black "Leko, Peter"]
 [Result "1/2-1/2"]
+[WhiteClock "2:00:00"]
+[BlackClock "2:00:00"]
 
 1.Nf3 {1:59:59} Nf6 {1:59:58} 2.d4 {1:59:57} g6 {1:59:56} 
 3.c4 {1:58:55} Bg7 {1:58:54} 4.Nc3 {1:58:53} d5 {1:58:52} 
@@ -159,6 +169,8 @@
 [White "Svidler, Peter"]
 [Black "Piket, Jeroen"]
 [Result "1-0"]
+[WhiteClock "2:00:00"]
+[BlackClock "2:00:00"]
 
 1.e4 {1:59:59} e5 {1:59:58} 2.Nf3 {1:59:57} Nc6 {1:59:56} 
 3.Bb5 {1:59:55} a6 {1:58:54} 4.Ba4 {1:58:53} Nf6 {1:58:52} 

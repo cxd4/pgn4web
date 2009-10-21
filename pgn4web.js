@@ -631,6 +631,8 @@ var gameSite;
 var gameRound;
 var gameResult;
 var gameFEN;
+var gameInitialWhiteClock;
+var gameInitialBlackClock;
 
 var oldAnchor = -1;
 
@@ -652,8 +654,6 @@ var LiveBroadcastDemo = false;
 var LiveBroadcastUpdateInProgress = false;
 var gameDemoMaxPly = new Array();
 var gameDemoLength = new Array();
-
-var StartClock = "";
 
 var MaxMove = 500;
 
@@ -1141,24 +1141,31 @@ function HighlightLastMove(){
    * Show the clock (if suitable info is found in the game comment)
    */
   
-  if (showThisMove+1 > StartPly) { lastClock = MoveComments[showThisMove+1].match(/^\s*[0-9:\.]+/); } 
-  else { lastClock = StartClock; }
-  if (showThisMove+1 > StartPly+1) { beforeLastClock = MoveComments[showThisMove].match(/^\s*[0-9:\.]+/); } 
-  else { beforeLastClock = StartClock; }
-
-  if (!lastClock) { lastClock = ""; }
-  if (!beforeLastClock) { beforeLastClock = ""; }
-
   if ((showThisMove+1)%2==1) { // white has just moved
-    theObject = document.getElementById("GameWhiteClock");
-    if (theObject != null) { theObject.innerHTML = lastClock; }
-    theObject = document.getElementById("GameBlackClock");
-    if (theObject != null) { theObject.innerHTML = beforeLastClock; }
+    lastMoverClockObject = document.getElementById("GameWhiteClock");
+    initialLastMoverClock = gameInitialWhiteClock[currentGame];
+    beforeLastMoverClockObject = document.getElementById("GameBlackClock"); 
+    initialBeforeLastMoverClock = gameInitialBlackClock[currentGame];
   } else {
-    theObject = document.getElementById("GameBlackClock");
-    if (theObject != null) { theObject.innerHTML = lastClock; }
-    theObject = document.getElementById("GameWhiteClock");
-    if (theObject != null) { theObject.innerHTML = beforeLastClock; }
+    lastMoverClockObject = document.getElementById("GameBlackClock");
+    initialLastMoverClock = gameInitialBlackClock[currentGame];
+    beforeLastMoverClockObject = document.getElementById("GameWhiteClock"); 
+    initialBeforeLastMoverClock = gameInitialWhiteClock[currentGame];
+  }
+
+  if (lastMoverClockObject != null) {
+    if (showThisMove+1 > StartPly) { 
+      lastMoverClockObject.innerHTML = MoveComments[showThisMove+1].match(/^\s*[0-9:\.]+/); 
+    } else {
+      lastMoverClockObject.innerHTML = initialLastMoverClock;
+    }
+  }
+  if (beforeLastMoverClockObject != null) {
+    if (showThisMove+1 > StartPly+1) { 
+      beforeLastMoverClockObject.innerHTML = MoveComments[showThisMove].match(/^\s*[0-9:\.]+/); 
+    } else {
+      beforeLastMoverClockObject.innerHTML = initialBeforeLastMoverClock;
+    }
   }
 
   /*
@@ -2060,6 +2067,9 @@ function LoadGameHeaders(){
   gameSite        = new Array(numberOfGames);
   gameRound       = new Array(numberOfGames);
   gameResult      = new Array(numberOfGames);
+  gameInitialWhiteClock = new Array(numberOfGames);
+  gameInitialBlackClock = new Array(numberOfGames);
+
   /*
    * Read the headers of all games and store the information in te global
    * arrays.
@@ -2069,13 +2079,15 @@ function LoadGameHeaders(){
     var lastKet = ss.lastIndexOf(']');
     var header  = ss.substring(0, ++lastKet);
     var parse;
-    gameEvent[ii] = " ";
-    gameSite[ii] = " ";
-    gameRound[ii] = " ";
-    gameWhite[ii] = " ";
-    gameBlack[ii] = " ";
-    gameResult[ii] = " ";
-    gameDate[ii] = " ";
+    gameEvent[ii] = "";
+    gameSite[ii] = "";
+    gameRound[ii] = "";
+    gameWhite[ii] = "";
+    gameBlack[ii] = "";
+    gameResult[ii] = "";
+    gameDate[ii] = "";
+    gameInitialWhiteClock[ii] = "";
+    gameInitialBlackClock[ii] = "";
     while ((parse = tag.exec(ss)) != null){
       if (parse[1] == 'Event'){
 	gameEvent[ii]  = parse[2];
@@ -2093,10 +2105,13 @@ function LoadGameHeaders(){
 	gameFEN[ii]  = parse[2];
       } else if  (parse[1] == 'Result'){
 	gameResult[ii] = parse[2];
+      } else if  (parse[1] == 'WhiteClock'){
+	gameInitialWhiteClock[ii] = parse[2];
+      } else if  (parse[1] == 'BlackClock'){
+	gameInitialBlackClock[ii] = parse[2];
       }
     }
   }
-
   if ((LiveBroadcastDemo) && (gameResult[0] != LiveBroadcastPlaceholderResult)) {
     for (ii = 0; ii < numberOfGames; ++ii) {
        if (gameDemoLength[ii] == undefined) { 
@@ -3296,18 +3311,6 @@ function SetLiveBroadcast(delay, alertFlag, demoFlag) {
 
 /******************************************************************************
  *                                                                            *
- * Function SetStartClock(clock)                                              *
- *                                                                            *
- * Sets the initial value for the clocks (mainly used for live broadcasts,    *
- * when the PGN will contain clock times as comments                          *
- *                                                                            *
- ******************************************************************************/
-function SetStartClock(clock) {
-  StartClock = clock;
-}
-
-/******************************************************************************
- *                                                                            *
  * Function SetImage:                                                         *
  *                                                                            *
  * Given a square and an image show it on the board. To make it faster check  *
@@ -3320,6 +3323,7 @@ function SetImage(square, image){
   document.images[square+ImageOffset].src = image;
   DocumentImages[square]                  = image;   // Store the new image.
 }
+
 /******************************************************************************
  *                                                                            *
  * Function SetImagePath:                                                     *

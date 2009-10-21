@@ -9,7 +9,7 @@ delay=17
 
 # dont touch after this line
 
-game1_header="[Event \"Tilburg Fontys\"]\n[Site \"Tilburg\"]\n[Date \"1998.10.24\"]\n[Round \"2\"]\n[White \"Anand, Viswanathan\"]\n[Black \"Kramnik, Vladimir\"]"
+game1_header="[Event \"Tilburg Fontys\"]\n[Site \"Tilburg\"]\n[Date \"1998.10.24\"]\n[Round \"2\"]\n[White \"Anand, Viswanathan\"]\n[Black \"Kramnik, Vladimir\"]\n[WhiteClock \"2:00:00\"]\n[BlackClock \"2:00:00\"]'
 game1_header_live="$game1_header\n[Result \"*\"]\n"
 game1_header_end="$game1_header\n[Result \"1-0\"]\n"
 
@@ -47,7 +47,7 @@ game1_moves[31]="Nxe4 {57:57} h4 {56:56} 33.Ng5 {55:55}"
 game1_moves[32]="Qh5 {54:54} 34.Re3 {53:53} Kg8 {52:52}"
 game1_moves[33]="35.c4 {51:51}"
 
-game2_header="[Event \"Tilburg Fontys\"]\n[Site \"Tilburg\"]\n[Date \"1998.10.24\"]\n[Round \"2\"]\n[White \"Lautier, Joel\"]\n[Black \"Van Wely, Loek\"]"
+game2_header="[Event \"Tilburg Fontys\"]\n[Site \"Tilburg\"]\n[Date \"1998.10.24\"]\n[Round \"2\"]\n[White \"Lautier, Joel\"]\n[Black \"Van Wely, Loek\"]\n[WhiteClock \"2:00:00\"]\n[BlackClock \"2:00:00\"]"
 game2_header_live="$game2_header\n[Result \"*\"]\n"
 game2_header_end="$game2_header\n[Result \"1/2-1/2\"]\n"
 
