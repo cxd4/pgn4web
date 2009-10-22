@@ -77,21 +77,23 @@ within a SPAN statement with the ID pgnText:
 Example:
 
   <script yype="text/javascript>
+
     SetPgnUrl("http://yoursite/yourpath/yourfile.pgn"); // if set, this has precedence over the inline PGN in the HTML file
     SetImagePath (""); // use "" path if images are in the same folder as this javascript file
     SetImageType("png");
-    SetHighlightOption(true) // true or false
+    SetHighlightOption(true); // true or false
     SetGameSelectorOptions("Select a game...", false, 0, 0, 0, 15, 15, 0, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
-    SetCommentsIntoMoveText(false)
-    SetCommentsOnSeparateLines(false)
+    SetCommentsIntoMoveText(false);
+    SetCommentsOnSeparateLines(false);
     SetAutoplayDelay(1000); // milliseconds
     SetAutostartAutoplay(false);
     SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
     SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are also accepted
-    SetInitialHalfmove(0,false); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only.
+    SetInitialHalfmove(0,false); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only
     SetShortcutKeysEnabled(true);
 
     SetLiveBroadcast(0.25, true, true); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false)
+
   </script>
  
 Then the script will automagically add content into your HTML file 
@@ -120,9 +122,10 @@ The file template.css shows a list of customization style options.
 
 See template.html file for an example.
 See *mini.html* for an example of embedding the PGN content into the HTML file.
-See http://www.casaschi.net/chess for an implementation. 
-See http://pgn4web-demo.casaschi.net for an example of usage
-within a blog using the iframe html tag. 
+See http://pgn4web-demo.casaschi.net usage example, including a live broadcast
+demo.
+See http://pgn4web-blog.casaschi for a usage example within a blog using the
+iframe html tag. 
 
 
 THE BOARD GENERATOR WEB TOOL
@@ -141,7 +144,7 @@ page or your blog.
 THE LIVE BROADCAST OF GAMES
 
 By setting the SetLiveBroadcast() option in the HTML file, pgn4web will
-periodically refresh the PGN file, showing the live progress of the game.
+periodically refresh the PGN file, showing the live progress of the games.
 The shell script live-grab.sh, executed on your server allows for grabbing
 the updated game source from anywhere on the Internet to your server.
 The live broadcast stops refreshing once all games are ended.
@@ -158,6 +161,9 @@ provided, the tool will simulate a slow progress of the game. See live-demo.html
 for an example.
 Alternatively, for a more realistic simulation, the shell script 
 live-simulation.sh slowly updates the live.pgn file, simulating a real event.
+
+http://pgn4web-live.casaschi.net will occasionally broadcast live major chess
+events.
 
 
 CUSTOMIZATION FUNCTIONS

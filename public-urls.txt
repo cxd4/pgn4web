@@ -16,3 +16,6 @@ board generator site
 blog
  http://pgn4web-blog.casaschi.net
 
+live broadcast
+ http://pgn4web-live.casaschi.net
+
