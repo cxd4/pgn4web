@@ -153,8 +153,9 @@ function displaySquareHelp(){
 
 /******************************************************************************
  *                                                                            *
- * function customFunctionOnPgnTextLoad()                                     *
- * function customFunctionOnPgnGameLoad()                                     *
+ * function customFunctionOnPgnTextLoad() {}                                  *
+ * function customFunctionOnPgnGameLoad() {}                                  *
+ * function customFunctionOnMove()        {}                                  *
  *                                                                            *
  * Custom functions executed each time a PGN text is loaded and each time a   *
  * PGN game is loaded. They are intentionally empty here so that can be       *
@@ -164,6 +165,7 @@ function displaySquareHelp(){
 
 function customFunctionOnPgnTextLoad() {}
 function customFunctionOnPgnGameLoad() {}
+function customFunctionOnMove()        {}
 
 
 window.onload = start_pgn4web;
@@ -1509,10 +1511,9 @@ function refreshPGNsource() {
 
   if ( !loadPgnFromPgnUrl(pgnUrl) ) {
     pgnGameFromPgnText('[Result "' + LiveBroadcastPlaceholderResult + '"]');
-  } else {
-    customFunctionOnPgnTextLoad();
   }
   Init();
+  customFunctionOnPgnTextLoad();
 
   if (oldCurrentPly >= 0) { GoToMove(oldCurrentPly); }
 
@@ -1545,8 +1546,8 @@ function createBoard(){
 
   if (pgnUrl) {
     if ( loadPgnFromPgnUrl(pgnUrl) ) {
-      customFunctionOnPgnTextLoad();
       Init();
+      customFunctionOnPgnTextLoad();
       return;
     } else {
       if (LiveBroadcastDelay == 0) {
@@ -1575,8 +1576,8 @@ function createBoard(){
     if (tmpText.indexOf('"') < 0) { tmpText = tmpText.replace(/(&quot;)/g, "\""); }
 
     if ( pgnGameFromPgnText(tmpText) ) {
-      customFunctionOnPgnTextLoad();
       Init();
+      customFunctionOnPgnTextLoad();
     }
     return;
   } 
@@ -1595,8 +1596,8 @@ function createBoard(){
  ******************************************************************************/
 function Init(){
 
-  InitImages();
   if (isAutoPlayOn) SetAutoPlay(false);
+  InitImages();
 
   if (firstStart){
     numberOfGames = pgnGame.length;
@@ -1673,6 +1674,7 @@ function Init(){
   }
   if (firstStart) { if (autostartAutoplay) SetAutoPlay(true); }
 
+  customFunctionOnMove();
   customFunctionOnPgnGameLoad();
 
   firstStart = false;
@@ -2229,6 +2231,7 @@ function MoveBackward(diff){
     else
       SetAutoPlay(false);
   } 
+  customFunctionOnMove();
 }
 /******************************************************************************
  *                                                                            *
@@ -2285,6 +2288,7 @@ function MoveForward(diff){
       }
     }
   }
+  customFunctionOnMove();
 }
 
 function AutoplayNextGame(){
@@ -2336,7 +2340,7 @@ function MoveToPrevComment()
  ******************************************************************************/
 function OpenGame(gameId){
   ParsePGNGameString(pgnGame[gameId]);
-  currentGame = parseInt(gameId);
+  currentGame = gameId;
  
   if (LiveBroadcastDemo) {
     if (gameDemoMaxPly[gameId] <= PlyNumber) { PlyNumber = gameDemoMaxPly[gameId]; }
@@ -3049,7 +3053,7 @@ function PrintHTML(){
            '<SELECT ID="GameSelSelect" NAME="GameSelSelect" STYLE="'
     if ((tableSize != undefined) && (tableSize > 0)) text += 'width: ' + tableSize + '; ';
     text += 'font-family: monospace;" CLASS="selectControl" ' + 
-            'ONCHANGE="this.blur(); if(this.value >= 0) {currentGame=this.value; document.GameSel.GameSelSelect.value = -1; Init();}">' +
+            'ONCHANGE="this.blur(); if(this.value >= 0) {currentGame=parseInt(this.value); document.GameSel.GameSelSelect.value = -1; Init();}">' +
             '<OPTION value=-1>';
 
     blanks = ''; for (ii=0; ii<32; ii++) blanks += ' ';

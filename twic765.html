@@ -21,6 +21,14 @@
    SetInitialGame(0); // number of game to be shown at load, from 1 (default); if 0 a random game is loaded
    SetInitialHalfmove(-1); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
    SetShortcutKeysEnabled(true);
+
+   function customFunctionOnPgnTextLoad() { document.getElementById('numGm').innerHTML = numberOfGames; }
+   function customFunctionOnPgnGameLoad() { 
+     document.getElementById('currGm').innerHTML = currentGame+1;
+     document.getElementById('numPly').innerHTML = PlyNumber; 
+   }
+   function customFunctionOnMove() { document.getElementById('currPly').innerHTML = CurrentPly; }
+
 </script>
 
 </head>
@@ -45,6 +53,10 @@ The Week In Chess #765
 
 <td colspan=3>
 <div align="center" id="GameSelector"></div>
+<div style="text-align: right; color: gray; font-size: 85%;">
+ply:<span id=currPly>0</span>/<span id=numPly>0</span>
+game:<span id=currGm>0</span>/<span id=numGm>0</span>
+</div>
 </td>
 
 </tr>
