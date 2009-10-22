@@ -11,15 +11,15 @@
   SetPgnUrl("tilb98r2.pgn"); // if set, this has precedence over the inline PGN in the HTML file
   SetImagePath ("uscf/24"); // use "" path if images are in the same folder as this javascript file
   SetImageType("png");
-  SetHighlightOption(true) // true or false
-  SetGameSelectorOptions("Select a game...", true, 0, 0, 0, 15, 15, 3, 0); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
-  SetCommentsIntoMoveText(false)
-  SetCommentsOnSeparateLines(false)
+  SetHighlightOption(true); // true or false
+  SetGameSelectorOptions("Select a game...", true, 0, 0, 0, 15, 15, 3, 0); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate)
+  SetCommentsIntoMoveText(false);
+  SetCommentsOnSeparateLines(false);
   SetAutoplayDelay(3000); // milliseconds
   SetAutostartAutoplay(false);
   SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
   SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are also accepted
-  SetInitialHalfmove("end",true); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default).
+  SetInitialHalfmove("end",true); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default)
   SetShortcutKeysEnabled(false);
   SetLiveBroadcast(0.25, true, true); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false)
 
