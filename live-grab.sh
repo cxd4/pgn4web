@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # bash script to grab a PGN file from a remote location for a
 # pgn4web live broadcast

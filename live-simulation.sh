@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # bash script to create a pgn file over time, same as a live broadcast
 # more realistic than simulating the live broadcast within pgn4web
@@ -108,7 +108,7 @@ do
 	while [ $move -le $upto ]
 	do
 		echo ${game1_moves[$move]} >> $pgn_file_tmp
-		let "move+=1"
+		move=$(($move + 1))
 	done
 
 	echo >> $pgn_file_tmp
@@ -118,13 +118,13 @@ do
 	while [ $move -le $upto ]
 	do
 		echo ${game2_moves[$move]} >> $pgn_file_tmp
-		let "move+=1"
+		move=$(($move + 1))
 	done
 
 	mv $pgn_file_tmp $pgn_file
 	sleep $delay
 
-	let "upto+=1"
+	upto=$(($upto + 1))
 done
 
 echo > $pgn_file_tmp
@@ -133,7 +133,7 @@ move=0
 while [ $move -le $upto ]
 do
 	echo ${game1_moves[$move]} >> $pgn_file_tmp
-	let "move+=1"
+	move=$(($move + 1))
 done
 echo >> $pgn_file_tmp
 echo -e $game2_header_end >> $pgn_file_tmp
@@ -141,7 +141,7 @@ move=0
 while [ $move -le $upto ]
 do
 	echo ${game2_moves[$move]} >> $pgn_file_tmp
-	let "move+=1"
+	move=$(($move + 1))
 done
 mv $pgn_file_tmp $pgn_file
 echo done with games... waiting for a while before deleting $pgn_file
