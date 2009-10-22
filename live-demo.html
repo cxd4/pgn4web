@@ -2,7 +2,7 @@
 
 <head>
 
-<title>pgn4web live demo</title>
+<title>pgn4web live broadcast demo</title>
 
 <link href="live-demo.css" type="text/css" rel="stylesheet"></link>
 
@@ -22,6 +22,14 @@
   SetInitialHalfmove("end",true); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default).
   SetShortcutKeysEnabled(false);
   SetLiveBroadcast(0.25, true, true); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false)
+
+  originalTitle = document.title;
+  function customFunctionOnPgnTextLoad() {
+    if ((gameEvent[0] != undefined) && (gameEvent[0] != "")) { 
+      document.title = originalTitle + ": " + gameEvent[0]; 
+    }
+  }
+
 </script>
 
 </head>
