@@ -150,6 +150,8 @@ If your live PGN contains clock info as comments after each game, the clock
 information is displayed in the <div id="GameWhiteClock"></div> and 
 <div id="GameBlackClock"></div> sections.
 
+Clicking on the A6 square will force a refresh of the PGN source.
+
 A demo facility is available to test the live broadcast functionality.
 If the demo flag is set in SetLiveBroadcast() and a set of full games is 
 provided, the tool will simulate a slow progress of the game. See live-demo.html
