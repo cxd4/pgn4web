@@ -3057,8 +3057,9 @@ function PrintHTML(){
             '<OPTION value=-1>';
 
     blanks = ''; for (ii=0; ii<32; ii++) blanks += ' ';
-    if (gameSelectorNum) gameSelectorHead = blanks.substring(0, gameSelectorNumLenght) + '# ' + gameSelectorHead;
-    text += gameSelectorHead.replace(/ /g,'&nbsp;');
+    if (gameSelectorNum) { gameSelectorHeadDisplay = blanks.substring(0, gameSelectorNumLenght) + '# ' + gameSelectorHead; }
+    else { gameSelectorHeadDisplay = gameSelectorHead; }
+    text += gameSelectorHeadDisplay.replace(/ /g,'&nbsp;');
 
     if(textSelectOptions == ''){
       for (ii=0; ii<numberOfGames; ii++){
