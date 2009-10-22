@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+<ModulePrefs
+   title="pgn4web example"
+   description="pgn4web example"
+   thumbnail="pawns.png"
+   author="pgn4web"
+   author_email="pgn4web@casaschi.net"
+   author_link="http://pgn4web.casaschi.net"
+   width="480"
+   height="480"
+   scrolling="auto"
+   category="funandgames"/>
+<Content type="url" href="live.html"/>
+</Module>
