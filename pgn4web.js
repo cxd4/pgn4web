@@ -13,7 +13,7 @@
  *        SetPgnUrl("http://yoursite/yourpath/yourfile.pgn");  // if set, this has precedence over the inline PGN in the HTML file
  *        SetImagePath (""); // use "" path if images are in the same folder as this javascript file
  *        SetImageType("png");
- *        SetHighlightOption(true) // true or false
+ *        SetHighlightOption(true); // true or false
  *        SetCommentsIntoMoveText(false);
  *        SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate); // default: ("Select a game...", false, 0, 0, 0, 15, 15, 0, 10)
  *        SetCommentsOnSeparateLines(false);
@@ -21,8 +21,10 @@
  *        SetAutostartAutoplay(false);
  *        SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
  *        SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are also acceptted
- *        SetInitialHalfmove(0,false); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default).
+ *        SetInitialHalfmove(0,false); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default)
  *        SetShortcutKeysEnabled(true);
+ *
+ *        SetLiveBroadcast(0.25, true, true); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false)
  *      </script>
  * 
  *   Then the script will automagically add content into your HTML file 
@@ -42,6 +44,9 @@
  *      <div id="GameBlack"></div>
  *      <div id="GameResult"></div>
  *      <div id="GameText"></div>
+ *
+ *      <div id="GameWhiteClock"></div>
+ *      <div id="GameBlackClock"></div>
  *
  *   The file template.css shows a list of customization style options.
  *
