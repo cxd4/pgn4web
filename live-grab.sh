@@ -4,7 +4,7 @@
 # pgn4web live broadcast
 
 localPgnFile_default=live.pgn
-refreshSeconds_default=29
+refreshSeconds_default=49
 timeoutHours_default=12
 
 function print_help() {
