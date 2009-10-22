@@ -7,7 +7,7 @@ localPgnFile_default=live.pgn
 refreshSeconds_default=49
 timeoutHours_default=12
 
-function print_help() {
+print_help() {
 
   echo
   echo $(basename $0) remotePgnUrl localPgnFile refreshSeconds timeoutHours
@@ -100,7 +100,7 @@ do
 	then
 		mv "$tmpLocalPgnFile" "$localPgnFile"
 	fi
-	let "step+=1"
+	step=$(($step +1))
 	sleep $refreshSeconds
 done
 
