@@ -1,0 +1,136 @@
+<html>
+
+<head>
+
+<title>pgn4web live boradcast</title>
+
+<link href="live.css" type="text/css" rel="stylesheet"></link>
+
+<script src="pgn4web.js" type="text/javascript"></script>
+<script>
+  SetPgnUrl("live.pgn"); // if set, this has precedence over the inline PGN in the HTML file
+  SetImagePath ("uscf/24"); // use "" path if images are in the same folder as this javascript file
+  SetImageType("png");
+  SetHighlightOption(true); // true or false
+  SetGameSelectorOptions("Select a game...", true, 0, 0, 0, 15, 15, 3, 0); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate)
+  SetCommentsIntoMoveText(false);
+  SetCommentsOnSeparateLines(false);
+  SetAutoplayDelay(3000); // milliseconds
+  SetAutostartAutoplay(false);
+  SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
+  SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are also accepted
+  SetInitialHalfmove("end",true); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default)
+  SetShortcutKeysEnabled(false);
+  SetLiveBroadcast(1, false, false); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false)
+
+  originalTitle = document.title;
+  function customFunctionOnPgnTextLoad() {
+    if ((gameEvent[0] != undefined) && (gameEvent[0] != "")) {
+      document.title = originalTitle + ": " + gameEvent[0];
+    }
+    if ((gameRound[0] != undefined) && (gameRound[0] != "")) {
+      document.getElementById("roundDetails").innerHTML = "round ";
+    } else {
+      document.getElementById("roundDetails").innerHTML = "";
+    }
+    if ((gameWhite[0] != undefined) && (gameWhite[0] != "")) {
+      document.getElementById("whiteDetails").style.backgroundColor = "#FFBA76";
+    } else {
+      document.getElementById("whiteDetails").style.backgroundColor = "#FFFFFF";
+    }
+    if ((gameBlack[0] != undefined) && (gameBlack[0] != "")) {
+      document.getElementById("blackDetails").style.backgroundColor = "#FFBA76";
+    } else {
+      document.getElementById("blackDetails").style.backgroundColor = "#FFFFFF";
+    }
+    document.getElementById("refreshTime").innerHTML = Date();
+  }
+
+</script>
+
+</head>
+
+<body>
+
+<!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
+<span style="display:none" id="pgnText">
+
+</span>
+<!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
+
+<center>
+
+<table id="liveTable" width=460px cellpadding=0 cellspacing=5 border=0>
+
+<tr>
+
+<td colspan=2>
+<div id="GameSelector"></div>
+</td>
+
+</tr>
+
+<tr valign=top>
+
+<td width=246px align=center>
+<span id="GameBoard"></span>
+</td>
+
+<td width=199 valign=top align=center>
+
+<table cellpadding=3 cellspacing=0 width=199px><tr><td align=left>
+<span style="font-size: 75%" id="GameEvent"></span>
+</td><td align=right>
+<span style="font-size: 75%"><span id="roundDetails"></span><span id="GameRound"></span></span>
+</td></tr></table>
+
+<table cellpadding=3 cellspacing=0 width=199px><tr><td align=left>
+<span style="font-size: 75%" id="GameSite"></span>
+</td><td align=right>
+<span style="font-size: 75%" id="GameDate"></span>
+</td></tr></table>
+
+<div>&nbsp;</div>
+
+<table id="whiteDetails" cellpadding=3 cellspacing=0 width=199px><tr><td align=left>
+<span style="font-size: 75%" id="GameWhite"></span>
+</td><td align=right>
+<span style="font-size: 75%" id="GameWhiteClock"></span>
+</td></tr></table>
+
+<table id="blackDetails" cellpadding=3 cellspacing=0 width=199px><tr><td align=left>
+<span style="font-size: 75%" id="GameBlack"></span>
+</td><td align=right>
+<span style="font-size: 75%" id="GameBlackClock"></span>
+</td></tr></table>
+
+<div>&nbsp;</div>
+
+<table cellpadding=3 cellspacing=0 width=199px><tr><td align=left>
+<span style="font-size: 75%" id="GameResult"></span>
+</td><td align=right>
+</td></tr></table>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td colspan=2>
+<div>&nbsp;</div>
+<div style="font-size: 75%" id="GameText"></div>
+<div>&nbsp;</div>
+<div id="refreshTime" style="font-size: 75%; text-align: right; color: lightgray;"></div>
+</td>
+
+</tr>
+
+</table>
+
+</center>
+
+</body>
+
+</html>
+
