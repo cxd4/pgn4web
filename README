@@ -145,7 +145,7 @@ THE LIVE BROADCAST OF GAMES
 
 By setting the SetLiveBroadcast() option in the HTML file, pgn4web will
 periodically refresh the PGN file, showing the live progress of the games.
-The shell script live-grab.sh, executed on your server allows for grabbing
+The bash shell script live-grab.sh, executed on your server allows for grabbing
 the updated game source from anywhere on the Internet to your server.
 The live broadcast stops refreshing once all games are ended.
 
