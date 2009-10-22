@@ -30,13 +30,20 @@
     }
     if ((gameRound[0] != undefined) && (gameRound[0] != "")) {
       document.getElementById("roundDetails").innerHTML = "round ";
+    } else {
+      document.getElementById("roundDetails").innerHTML = "";
     }
     if ((gameWhite[0] != undefined) && (gameWhite[0] != "")) {
       document.getElementById("whiteDetails").style.backgroundColor = "#FFBA76";
+    } else {
+      document.getElementById("whiteDetails").style.backgroundColor = "#FFFFFF";
     }
     if ((gameBlack[0] != undefined) && (gameBlack[0] != "")) {
       document.getElementById("blackDetails").style.backgroundColor = "#FFBA76";
+    } else {
+      document.getElementById("blackDetails").style.backgroundColor = "#FFFFFF";
     }
+    document.getElementById("refreshTime").innerHTML = Date();
   }
 
 </script>
@@ -113,6 +120,8 @@
 <td colspan=2>
 <div>&nbsp;</div>
 <div style="font-size: 75%" id="GameText"></div>
+<div>&nbsp;</div>
+<div id="refreshTime" style="font-size: 75%; text-align: right; color: lightgray;"></div>
 </td>
 
 </tr>

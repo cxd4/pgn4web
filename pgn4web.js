@@ -1561,6 +1561,7 @@ function createBoard(){
       } else { // live broadcast case, wait for live show to start
         pgnGameFromPgnText('[Result "' + LiveBroadcastPlaceholderResult + '"]'); 
         Init();
+        customFunctionOnPgnTextLoad();
         return;
       }
     }
