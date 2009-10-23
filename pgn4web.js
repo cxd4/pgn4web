@@ -99,6 +99,8 @@ var keyhelp = 'h, l\tgame start/end' + '\n' +
               'g\ttoggle highlighting' + '\n' +
               'p\ttoggle comments' + '\n' +
               'o\ttoggle comments on separate lines' + '\n' +
+              '\n' +
+              'y\trefresh games during live broadcast' + '\n' +
               '';
 
 var squarehelp = 'A1, H1\tgame start/end' + '\n' +
@@ -117,6 +119,8 @@ var squarehelp = 'A1, H1\tgame start/end' + '\n' +
                  'B7     \ttoggle comments on separate lines' + '\n' +
                  'A8     \ttoggle highlighting' + '\n' +
                  'B8, C8\tflip board / white on bottom' + '\n' +
+                 '\n' +
+                 'A6     \trefresh games during live broadcast' + '\n' +
                  '\n' +
                  'Squares always labeled as if white is at the bottom.\n' +
                  'List above contains default values, those might have been altered by your web page.' + 
@@ -360,9 +364,7 @@ function handlekey(e) {
       break;
 
     case 89:  // y
-      MoveForward(1);
-      SetAutoplayDelay(60*1000);
-      SetAutoPlay(true);
+      refreshPGNsource();
       break;
 
     case 70:  // f
