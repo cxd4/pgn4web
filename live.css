@@ -34,7 +34,7 @@ body {
 
 .whiteSquare,
 .highlightWhiteSquare {
-  border-color: #EEEEE4;
+  border-color: #EEEEEE;
   background: #EEEEEE;
 }
 
@@ -47,12 +47,13 @@ body {
 .highlightWhiteSquare,
 .highlightBlackSquare {
   border-style: solid;
-  border-color: #F5B371;
+  border-color: #F5D98E
 }
 
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 454px !important;
+  color: #888888;
   background-color: #DDDDDD;
   border-width: 0px;
   border-color: #DDDDDD;
@@ -80,7 +81,7 @@ body {
 }
 
 .moveOn {
-  background: #FFBA76
+  background: #F5D98E
 }
 
 .comment,
