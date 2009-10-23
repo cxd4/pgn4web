@@ -11,9 +11,9 @@
 
   if ((pgnFile = gup("pgnFile")) == "") { pgnFile = "live.pgn"; }
   if ((refreshMinutes = gup("refreshMinutes")) == "") { refreshMinutes = 1; }
-  if (gup("demoMode") == "true") { demoFlag = true; alertFlag = true; }
+  if (gup("demo") == "true") { demoFlag = true; alertFlag = true; }
   else { demoFlag = false; alertFlag = false; }
-  //PAOLO add help
+  if (gup("help") == "true") { print_help(); }
 
   SetPgnUrl(pgnFile); 
   SetImagePath ("uscf/24"); 
@@ -92,6 +92,14 @@ function gup( name ){
   } }
 
   return "";
+}
+
+function print_help() {
+  alert("pgn4web live.html parameters" + "\n" + 
+        " - pgnFile = PGN file to load (default live.pgn)" + "\n" + 
+        " - refreshMinutes = refresh interval in minutes, decimals allowed (default 1)" + "\n" +
+        " - demo = if set true, sets live demo mode (default false)" + "\n" +
+        " - help = if set true, prints this help (default false)");
 }
 
 </script>
