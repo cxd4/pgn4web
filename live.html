@@ -86,8 +86,8 @@ function gup( name ){
 
   var results = regex.exec( window.location.href );
   if( results != null ) { switch (results[1]) {
-    case "true":  case "t": case "T": return "true";  break;
-    case "false": case "f": case "F": return "false"; break;
+    case "t": case "T": return "true";  break;
+    case "f": case "F": return "false"; break;
     default: return results[1];
   } }
 
