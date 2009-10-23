@@ -54,7 +54,9 @@ body {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 450px !important;
   background-color: #E4E4E4;
-  border-width: 0px;
+  border-width: 1px;
+  border-color: #E4E4E4;
+  border-style: solid;
 }
 
 .buttonControlPlay,
