@@ -13,7 +13,7 @@ body {
 
 .boardTable {
   border-style: double; 
-  border-color: black;
+  border-color: #C4C4C4;
   border-width: 3px;
 }
 
@@ -40,8 +40,8 @@ body {
 
 .blackSquare,
 .highlightBlackSquare {
-  border-color: #D4D4D4;
-  background: #D4D4D4;
+  border-color: #C4C4C4;
+  background: #C4C4C4;
 }
 
 .highlightWhiteSquare,
@@ -53,6 +53,8 @@ body {
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 450px !important;
+  background-color: #E4E4E4;
+  border-width: 0px;
 }
 
 .buttonControlPlay,
