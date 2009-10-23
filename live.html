@@ -86,8 +86,8 @@ function gup( name ){
 
   var results = regex.exec( window.location.href );
   if( results != null ) { switch (results[1]) {
-    case "t": case "T": return "true";  break;
-    case "f": case "F": return "false"; break;
+    case "true":  case "t": case "T": return "true";  break;
+    case "false": case "f": case "F": return "false"; break;
     default: return results[1];
   } }
 
@@ -96,9 +96,9 @@ function gup( name ){
 
 function print_help() {
   alert("pgn4web live.html parameters" + "\n" + 
-        " - pgnFile = PGN file to load (default live.pgn)" + "\n" + 
-        " - refreshMinutes = refresh interval in minutes, decimals allowed (default 1)" + "\n" +
-        " - demo = if set true, sets live demo mode (default false)" + "\n" +
+        " - pgnFile = " + pgnFile + "; PGN file to load (default live.pgn)" + "\n" + 
+        " - refreshMinutes = " + refreshMinutes + "; refresh interval in minutes, decimals allowed (default 1)" + "\n" +
+        " - demo = " + demoFlag + "; if set true, sets live demo mode (default false)" + "\n" +
         " - help = if set true, prints this help (default false)");
 }
 
