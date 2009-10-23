@@ -37,9 +37,9 @@
       document.title = originalTitle + ": " + gameEvent[0];
     }
     if ((!LiveBroadcastStarted) || (LiveBroadcastEnded)) {
-      document.getElementById("liveStatusDetails").style.background = #F5B371;
+      document.getElementById("liveStatusDetails").style.background = "#F5B371";
     } else {
-      document.getElementById("liveStatusDetails").style.background = black;
+      document.getElementById("liveStatusDetails").style.background = "#EEEEEE";
     }
     if ((gameRound[0] != undefined) && (gameRound[0] != "")) {
       document.getElementById("roundDetails").innerHTML = "round ";
@@ -47,14 +47,14 @@
       document.getElementById("roundDetails").innerHTML = "";
     }
     if ((gameWhite[0] != undefined) && (gameWhite[0] != "")) {
-      document.getElementById("whiteDetails").style.background = #F5B371;
+      document.getElementById("whiteDetails").style.background = "#F5B371";
     } else {
-      document.getElementById("whiteDetails").style.background = black;
+      document.getElementById("whiteDetails").style.background = "#EEEEEE";
     }
     if ((gameBlack[0] != undefined) && (gameBlack[0] != "")) {
-      document.getElementById("blackDetails").style.background = #F5B371;
+      document.getElementById("blackDetails").style.background = "#F5B371";
     } else {
-      document.getElementById("blackDetails").style.background = black;
+      document.getElementById("blackDetails").style.background = "#EEEEEE";
     }
     document.getElementById("refreshTime").innerHTML = Date();
   }
