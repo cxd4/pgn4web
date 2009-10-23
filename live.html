@@ -10,9 +10,10 @@
 <script>
 
   if ((pgnFile = gup("pgnFile")) == "") { pgnFile = "live.pgn"; }
-  if ((refreshSeconds = gup("refreshSeconds")) == "") { refreshMinutes = 1; }
-  if ((demoMode = gup("demoMode")) == "true") { demoFlag = true; alertFlag = true; }
+  if ((refreshMinutes = gup("refreshMinutes")) == "") { refreshMinutes = 1; }
+  if (gup("demoMode") == "true") { demoFlag = true; alertFlag = true; }
   else { demoFlag = false; alertFlag = false; }
+  //PAOLO add help
 
   SetPgnUrl(pgnFile); 
   SetImagePath ("uscf/24"); 
