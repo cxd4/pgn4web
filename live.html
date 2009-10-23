@@ -29,6 +29,11 @@
     if ((gameEvent[0] != undefined) && (gameEvent[0] != "")) {
       document.title = originalTitle + ": " + gameEvent[0];
     }
+    if ((gameResult[0] != undefined) && (gameResult[0].match("waiting"))) {
+      document.getElementById("GameResult").style.backgroundColor = "#FFBA76";
+    } else {
+      document.getElementById("GameResult").style.backgroundColor = "#E4E4E4";
+    }
     if ((gameRound[0] != undefined) && (gameRound[0] != "")) {
       document.getElementById("roundDetails").innerHTML = "round ";
     } else {
