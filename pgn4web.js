@@ -1466,6 +1466,8 @@ function SetPgnUrl(url){
 function restartLiveBroadcastTimeout() {
 
   if (LiveBroadcastDelay == 0) { return; }
+
+  if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); }
   
   if (LiveBroadcastStarted == false) { 
     // no games, live broadcast has not started yet
