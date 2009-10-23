@@ -37,9 +37,9 @@
       document.title = originalTitle + ": " + gameEvent[0];
     }
     if ((!LiveBroadcastStarted) || (LiveBroadcastEnded)) {
-      document.getElementById("liveStatusDetails").className = "moveOn";
+      document.getElementById("liveStatusDetails").style.background = #F5B371;
     } else {
-      document.getElementById("liveStatusDetails").className = "move";
+      document.getElementById("liveStatusDetails").style.background = black;
     }
     if ((gameRound[0] != undefined) && (gameRound[0] != "")) {
       document.getElementById("roundDetails").innerHTML = "round ";
@@ -47,14 +47,14 @@
       document.getElementById("roundDetails").innerHTML = "";
     }
     if ((gameWhite[0] != undefined) && (gameWhite[0] != "")) {
-      document.getElementById("whiteDetails").className = "moveOn";
+      document.getElementById("whiteDetails").style.background = #F5B371;
     } else {
-      document.getElementById("whiteDetails").className = "move";
+      document.getElementById("whiteDetails").style.background = black;
     }
     if ((gameBlack[0] != undefined) && (gameBlack[0] != "")) {
-      document.getElementById("blackDetails").className = "moveOn";
+      document.getElementById("blackDetails").style.background = #F5B371;
     } else {
-      document.getElementById("blackDetails").className = "move";
+      document.getElementById("blackDetails").style.background = black;
     }
     document.getElementById("refreshTime").innerHTML = Date();
   }
