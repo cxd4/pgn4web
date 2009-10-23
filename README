@@ -176,6 +176,7 @@ For instance, make sure that the file myGames.pgn on your server is periodically
 refreshed with the live games, then add the following iframe to your page:
 <iframe frameborder=0 width=480 height=500 src=live.html?pgnFile=myGames.pgn>
 </iframe>
+Of course live.html can be edited to customize colors, layout and every detail.
 
 http://pgn4web-live.casaschi.net will occasionally broadcast live major chess
 events.
