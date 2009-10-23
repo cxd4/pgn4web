@@ -117,6 +117,7 @@ to any <div> or <span> containers with the following IDs:
 
   <div id="GameWhiteClock"></div>
   <div id="GameBlackClock"></div>
+  <div id="GameLiveStatus"></div>
 
 The file template.css shows a list of customization style options.
 
@@ -152,8 +153,13 @@ The live broadcast stops refreshing once all games are ended.
 If your live PGN contains clock info as comments after each game, the clock
 information is displayed in the <div id="GameWhiteClock"></div> and 
 <div id="GameBlackClock"></div> sections.
+The section <div id="GameLiveStatus"></div> displays the status of the live
+boradcast.
 
 Clicking on the A6 square will force a refresh of the PGN source.
+
+The file live-template.html shows a very basic example.
+The file live.html is a much more sophisticated example.
 
 A demo facility is available to test the live broadcast functionality.
 If the demo flag is set in SetLiveBroadcast() and a set of full games is 

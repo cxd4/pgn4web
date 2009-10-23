@@ -47,6 +47,7 @@
  *
  *      <div id="GameWhiteClock"></div>
  *      <div id="GameBlackClock"></div>
+ *      <div id="GameLiveStatus"></div>
  *
  *   The file template.css shows a list of customization style options.
  *
