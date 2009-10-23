@@ -52,7 +52,7 @@ body {
 
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 450px !important;
+  width: 460px !important;
   background-color: #E4E4E4;
   border-width: 1px;
   border-color: #E4E4E4;
