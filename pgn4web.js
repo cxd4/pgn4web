@@ -76,7 +76,7 @@
  * DONT CHANGE AFTER HERE 
  */
 
-var version = '1.60+';
+var version = '1.61';
 
 var project_url = 'http://pgn4web.casaschi.net';
 var project_email = 'pgn4web@casaschi.net';
@@ -1516,7 +1516,7 @@ function refreshPGNsource() {
       rnd = Math.random();
       if (rnd <= 0.05)      { gameDemoMaxPly[ii] += 3; } //  5% of times add 3 ply
       else if (rnd <= 0.20) { gameDemoMaxPly[ii] += 2; } // 15% of times add 2 ply
-      else if (rnd <= 0.60) { gameDemoMaxPly[ii] += 2; } // 40% of times add 1 ply
+      else if (rnd <= 0.60) { gameDemoMaxPly[ii] += 1; } // 40% of times add 1 ply
     }                                                    // 40% of times add 0 ply
   }
 
