@@ -29,10 +29,10 @@
     if ((gameEvent[0] != undefined) && (gameEvent[0] != "")) {
       document.title = originalTitle + ": " + gameEvent[0];
     }
-    if ((gameResult[0] != undefined) && (gameResult[0].match("waiting"))) {
-      document.getElementById("GameResult").style.backgroundColor = "#FFBA76";
+    if ((!LiveBroadcastStarted) || (LiveBroadcastEnded)) {
+      document.getElementById("liveStatusDetails").style.backgroundColor = "#FFBA76";
     } else {
-      document.getElementById("GameResult").style.backgroundColor = "#FFFFFF";
+      document.getElementById("liveStatusDetails").style.backgroundColor = "#FFFFFF";
     }
     if ((gameRound[0] != undefined) && (gameRound[0] != "")) {
       document.getElementById("roundDetails").innerHTML = "round ";
@@ -114,6 +114,13 @@
 
 <table cellpadding=3 cellspacing=0 width=199px><tr><td align=left>
 <span style="font-size: 75%" id="GameResult"></span>
+</td><td align=right>
+</td></tr></table>
+
+<div>&nbsp;</div>
+
+<table id="liveStatusDetails" cellpadding=3 cellspacing=0 width=199px><tr><td align=left>
+<span style="font-size: 75%" id="GameLiveStatus"></span>
 </td><td align=right>
 </td></tr></table>
 

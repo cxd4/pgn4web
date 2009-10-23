@@ -671,10 +671,11 @@ var alwaysInitialHalfmove = false;
 
 var LiveBroadcastInterval;
 var LiveBroadcastDelay = 0; // minutes
-var LiveBroadcastPlaceholderResult = 'waiting for live broadcast start';
 var LiveBroadcastAlert = false;
 var LiveBroadcastDemo = false;
 var LiveBroadcastUpdateInProgress = false;
+var LiveBroadcastStarted = false;
+var LiveBroadcastEnded = false;
 var gameDemoMaxPly = new Array();
 var gameDemoLength = new Array();
 
@@ -1462,14 +1463,28 @@ function SetPgnUrl(url){
 function restartLiveBroadcastTimeout() {
 
   if (LiveBroadcastDelay == 0) { return; }
-
-  needRestart = false;
-  for (ii=0; ii<numberOfGames; ii++) {
-    if ((gameResult[ii].indexOf('*') >= 0) || (gameResult[ii] == LiveBroadcastPlaceholderResult)) {
-      needRestart = true;
-      break;
+  
+  if (LiveBroadcastStarted == false) { 
+    // no games, live broadcast has not started yet
+    gameLiveStatus = "waiting for live broadcast start";
+    needRestart = true;
+  } else {
+    liveGamesRunning = 0;
+    for (ii=0; ii<numberOfGames; ii++) {
+      if (gameResult[ii].indexOf('*') >= 0) { liveGamesRunning++ }
     }
+    LiveBroadcastEnded = (liveGamesRunning == 0);
+    if (LiveBroadcastEnded) {
+      gameLiveStatus = "live broadcast ended";
+      customFunctionOnPgnTextLoad(); // this should not really be called here, but this allows notifying the HTML that broadcast has ended
+    } else {
+      gameLiveStatus = "live games: " + liveGamesRunning + " &nbsp; ended: " + (numberOfGames - liveGamesRunning);
+    }
+    needRestart = !LiveBroadcastEnded; 
   }
+  
+  theObject = document.getElementById("GameLiveStatus");
+  if (theObject != null) { theObject.innerHTML = gameLiveStatus; }
 
   if (needRestart == true) {
     LiveBroadcastInterval = setTimeout("refreshPGNsource()", LiveBroadcastDelay * 60000);
@@ -1514,9 +1529,12 @@ function refreshPGNsource() {
     oldAutoplay = false; 
   }
 
-  if ( !loadPgnFromPgnUrl(pgnUrl) ) {
-    pgnGameFromPgnText('[Result "' + LiveBroadcastPlaceholderResult + '"]');
-  }
+  if ( loadPgnFromPgnUrl(pgnUrl) ) {
+    LiveBroadcastStarted = true; 
+  } else {
+    LiveBroadcastStarted = false;
+    pgnGameFromPgnText('[]'); 
+  } 
   Init();
   customFunctionOnPgnTextLoad();
 
@@ -1551,6 +1569,7 @@ function createBoard(){
 
   if (pgnUrl) {
     if ( loadPgnFromPgnUrl(pgnUrl) ) {
+      if (LiveBroadcastDelay > 0) { LiveBroadcastStarted = true; }
       Init();
       customFunctionOnPgnTextLoad();
       return;
@@ -1564,7 +1583,8 @@ function createBoard(){
         }
         return;
       } else { // live broadcast case, wait for live show to start
-        pgnGameFromPgnText('[Result "' + LiveBroadcastPlaceholderResult + '"]'); 
+        LiveBroadcastStarted = false;
+        pgnGameFromPgnText('[]'); 
         Init();
         customFunctionOnPgnTextLoad();
         return;
@@ -2144,7 +2164,7 @@ function LoadGameHeaders(){
       }
     }
   }
-  if ((LiveBroadcastDemo) && (gameResult[0] != LiveBroadcastPlaceholderResult)) {
+  if ((LiveBroadcastDemo) && (numberOfGames > 0)) {
     for (ii = 0; ii < numberOfGames; ++ii) {
        if (gameDemoLength[ii] == undefined) { 
          ParsePGNGameString(pgnGame[ii]); 
