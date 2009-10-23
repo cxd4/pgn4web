@@ -136,7 +136,7 @@ function set_defaults() {
 
   if ((highlightColorHex_value = gup("highlightColorHex")) == "") { highlightColorHex_value = highlightColorHex_default }
   document.board.highlightColorHex.value = highlightColorHex_value;
-  validate_color(document.board.highlightColorHex, 'highlight squares color', highlightColorHex_default);
+  validate_color_none(document.board.highlightColorHex, 'highlight squares color', highlightColorHex_default);
 
   if ((showButtons_value = gup("showButtons")) == "") { showButtons_value = showButtons_default }
   document.board.showButtons.checked = (showButtons_value == "t");
@@ -463,6 +463,15 @@ function validate_color_default(object, name, def) {
   } else { return true; }
 }
 
+function validate_color_none(object, name, def) {
+  if (object.value == 'none') { return true; }
+  else if ((object.value.match(/[^0-9A-Fa-f]+/)) || (object.value.length != 6)) {
+    alert('error: the ' + name + ' must be \'none\' or a six digits hexadecimal color code, like FF0000');
+    object.value = def;
+    return false;    
+  } else { return true; }
+}
+
 function validate_number(object, name, def) {
   if (object.value.match(/[^0-9]+(px$|$)/)) {
     alert('error: the ' + name + ' must be a non negative number');
@@ -770,8 +779,9 @@ chessboard generator</h1>
 &nbsp;&nbsp; board border color &nbsp;&nbsp;
 <p>
 
-<input class="color input" type="text" id="highlightColorHex" name="highlightColorHex" value="" size="7" onChange="validate_color(this, 'highlight squares color', highlightColorHex_default)">
+<input class="color {adjust:false} input" type="text" id="highlightColorHex" name="highlightColorHex" value="" size="7" onChange="validate_color_none(this, 'highlight squares color', highlightColorHex_default)">
 &nbsp;&nbsp; highlight squares color &nbsp;&nbsp;
+<span class="helptext">set to <i>none</i> in order to disable square highlighting</span>
 <p>
 <br>
 
