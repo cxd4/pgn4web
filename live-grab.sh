@@ -16,7 +16,7 @@ print_help() {
   echo
   echo Parameters:
   echo - remotePgnUrl: URL to fetch
-  echo - localPgnFile: local PGN filename \(default: $pgnFile_default\)
+  echo - localPgnFile: local PGN filename \(default: $localPgnFile_default\)
   echo - refreshSeconds: refresh rate in seconds \(default: $refreshSeconds_default\)
   echo - timeoutHours: timeout in hours for stopping the process \(default: $timeoutHours_default\)
   echo
