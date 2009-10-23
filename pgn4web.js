@@ -671,7 +671,7 @@ var alwaysInitialHalfmove = false;
 
 var LiveBroadcastInterval;
 var LiveBroadcastDelay = 0; // minutes
-var LiveBroadcastPlaceholderResult = 'wait for live broadcast start';
+var LiveBroadcastPlaceholderResult = 'waiting for live broadcast start';
 var LiveBroadcastAlert = false;
 var LiveBroadcastDemo = false;
 var LiveBroadcastUpdateInProgress = false;
