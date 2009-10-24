@@ -1123,8 +1123,8 @@ function SetInitialGame(number){
 // the clock value is detected with two options: first the DGT sequence [%clk 01:02] is checked (remember though that pgn4web has replaced "[%xxx]" with "<%xxx>"). If this fails, then look for the beginning of the comment for a sequence of numbers and ":" and "." characters.
   
 function clockFromComment(comment){
-  clock = comment.replace(/<%clk\s*([^<>]*)>/,"$1");
-  if (clock == "") { clock = comment.match(/^\s*[0-9:\.]+/); }
+  if (DGTclock = comment.match(/<%clk\s*([^<>]*)>/)) { clock = DGTclock[1]; }
+  else { clock = comment.match(/^\s*[0-9:\.]+/); }
   return clock;
 }
 
