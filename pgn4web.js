@@ -112,7 +112,7 @@ var squarehelp = 'A1, H1\tgame start/end' + '\n' +
                  'C2, D2...\tautoplay 1 sec, 2 sec...' + '\n' +
                  '\n' +
                  'A3, H3\tfirst/last game' + '\n' +
-                 'B3, G3\ttprevious/next game' + '\n' +
+                 'B3, G3\tprevious/next game' + '\n' +
                  'D3, E3\trandom game at start/random ply' + '\n' +
                  '\n' +
                  'A7     \ttoggle comments' + '\n' +

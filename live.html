@@ -13,7 +13,7 @@
   if ((refreshMinutes = gup("refreshMinutes")) == "") { refreshMinutes = 1; }
   if (gup("demo") == "true") { demoFlag = true; alertFlag = true; }
   else { demoFlag = false; alertFlag = false; }
-  if (gup("help") == "true") { print_help(); }
+  if (gup("help") == "true") { developer_help(); }
 
   SetPgnUrl(pgnFile); 
   SetImagePath ("uscf/24"); 
@@ -32,6 +32,14 @@
   SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false)
 
   originalTitle = document.title;
+  ticker_length = 5;
+  ticker_string =  new Array(ticker_length);
+  ticker_string[0] = "help";
+  ticker_string[1] = "Help";
+  ticker_string[2] = "hElp";
+  ticker_string[3] = "heLp";
+  ticker_string[4] = "helP";
+  ticker_counter = 0;
   function customFunctionOnPgnTextLoad() {
     if ((gameEvent[0] != undefined) && (gameEvent[0] != "")) {
       document.title = originalTitle + ": " + gameEvent[0];
@@ -41,7 +49,9 @@
     } else {
       document.getElementById("liveStatusDetails").style.background = "#EEEEEE";
     }
-    document.getElementById("refreshTime").innerHTML = Date();
+
+    document.getElementById("ticker").innerHTML = ticker_string[ticker_counter];
+    ticker_counter = (ticker_counter + 1) % ticker_length;
   }
 
   function customFunctionOnPgnGameLoad() {
@@ -106,12 +116,48 @@ function gup( name ){
   return "";
 }
 
-function print_help() {
+function developer_help() {
   alert("pgn4web live.html parameters" + "\n" + 
         " - pgnFile = " + pgnFile + "; PGN file to load (default live.pgn)" + "\n" + 
         " - refreshMinutes = " + refreshMinutes + "; refresh interval in minutes, decimals allowed (default 1)" + "\n" +
         " - demo = " + demoFlag + "; if set true, sets live demo mode (default false)" + "\n" +
         " - help = if set true, prints this help (default false)");
+}
+
+function user_help() {
+
+  if (refreshMinutes != 1) { plural = "s"; }
+  else { plural = ""; }
+
+  if (demoFlag) { demoString = " (demo mode)"; }
+  else { demoString = ""; }
+
+  helpText = "pgn4web chess games live broadcast" + demoString + "\n" + 
+             "\n" + 
+	     "Chess games live broadcast using pgn4web v" + version + "\n" +
+	     "\n" +
+	     "Games are automatically updated every " + 
+	     refreshMinutes + " minute" + plural  + " from " + pgnFile + ". " + "\n" +
+	     "If the shown game is at the last available move, " +
+	     "on refresh the position is updated again to the last available move. " +
+	     "The refresh stops once all games are ended. " +
+	     "If no games are shown, just wait for the live broadcast to start. " +
+	     "There is no need to reload the webpage to refresh games; " +
+	     "to manually force a refresh, click on square A6." + "\n" + 
+	     "\n" +
+	     "Chessboard squares are input buttons to control the display:" + "\n" +
+	     "\n" +
+	     "\tD1 / E1\tmove back / forwards" + "\n" +
+	     "\tA1 / H1\tgame start / end" + "\n" + 
+	     "\tC3 / F3\tprevious / next game" + "\n" +
+	     "\tA1 / H1\tfirst / last game" + "\n" +
+	     "\tA6     \tforce game refresh" + "\n" +
+	     "\tG8 / H8\tshortcuts help / pgn4web help" + "\n" +
+	     "\n" + 
+	     "Press OK to visit the pgn4web project website " + project_url +
+	     "\n\t";
+
+  if (confirm(helpText)) { window.open(project_url); }
 }
 
 </script>
@@ -190,7 +236,11 @@ function print_help() {
 <tr>
 
 <td width=246px align=left>
-<span style="margin-left: 3px; font-size: 75%" id="GameResult"></span>
+<table width=246px cellpadding=3 cellspacing=0><tr><td align=left>
+<span style="font-size: 75%" id="GameResult"></span>
+</td><td align=right>
+<a id="ticker" style="color: #CCCCCC; font-family: monospace; font-size: 100%; font-weight: normal; text-decoration: none;" href="javascript: user_help();">help</a>
+</td></tr></table>
 </td>
 
 <td id="liveStatusDetails" width=199px align=center>
@@ -199,24 +249,9 @@ function print_help() {
 
 </tr>
 
-<tr>
-
-<td align=left width=246px>
-<span id="refreshTime" style="text-align: right; font-size: 50%; color: #CCCCCC;"></span>
-</td>
-<td width=199px align=center>
-<a id="pgn4webLink" style="color: #CCCCCC; text-decoration: none; font-size: 50%;" target=_blank href=http://pgn4web.casaschi.net>pgn4web live</a>
-</td>
-
-</tr>
-
 </table>
 
 </center>
-
-<script>
-if (demoFlag) { document.getElementById("pgn4webLink").innerHTML += " demo"; }
-</script>
 
 </body>
 
