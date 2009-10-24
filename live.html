@@ -41,22 +41,26 @@
     } else {
       document.getElementById("liveStatusDetails").style.background = "#EEEEEE";
     }
-    if ((gameRound[0] != undefined) && (gameRound[0] != "")) {
+    document.getElementById("refreshTime").innerHTML = Date();
+  }
+
+  function customFunctionOnPgnGameLoad() {
+    if ((gameRound[currentGame] != undefined) && (gameRound[currentGame] != "") && (gameRound[currentGame] != "?")) {
       document.getElementById("roundDetails").innerHTML = "round ";
     } else {
       document.getElementById("roundDetails").innerHTML = "";
+      document.getElementById("GameRound").innerHTML = "";
     }
-    if ((gameWhite[0] != undefined) && (gameWhite[0] != "")) {
+    if ((gameWhite[currentGame] != undefined) && (gameWhite[currentGame] != "") && (gameWhite[currentGame] != "?")) {
       document.getElementById("whiteDetails").style.background = "#F5B371";
     } else {
       document.getElementById("whiteDetails").style.background = "#EEEEEE";
     }
-    if ((gameBlack[0] != undefined) && (gameBlack[0] != "")) {
+    if ((gameBlack[currentGame] != undefined) && (gameBlack[currentGame] != "") && (gameBlack[currentGame] != "?")) {
       document.getElementById("blackDetails").style.background = "#F5B371";
     } else {
       document.getElementById("blackDetails").style.background = "#EEEEEE";
     }
-    document.getElementById("refreshTime").innerHTML = Date();
   }
 
 // disable A7 and B7 shortcut squares usually allowing showing move comments

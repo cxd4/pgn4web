@@ -1124,7 +1124,7 @@ function SetInitialGame(number){
   
 function clockFromComment(comment){
   if (DGTclock = comment.match(/<%clk\s*([^<>]*)>/)) { clock = DGTclock[1]; }
-  else { clock = comment.match(/^\s*[0-9:\.]+/); }
+  else { if (!(clock = comment.match(/^\s*[0-9:\.]+/))) {clock = ""; } }
   return clock;
 }
 
