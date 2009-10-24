@@ -69,6 +69,8 @@
     ticker_counter = (ticker_counter + 1) % ticker_length;
   }
 
+  lastRefreshTime = "";
+
   function customFunctionOnPgnGameLoad() {
     if ((gameRound[currentGame] != undefined) && (gameRound[currentGame] != "") && (gameRound[currentGame] != "?")) {
       document.getElementById("roundDetails").innerHTML = "round ";
@@ -86,6 +88,7 @@
     } else {
       document.getElementById("blackDetails").style.background = "#EEEEEE";
     }
+    lastRefreshTime = Date();
   }
 
 // disable A7 and B7 shortcut squares usually allowing showing move comments
@@ -171,7 +174,7 @@ function user_help() {
 	     "\tA6     \tforce game refresh" + "\n" +
 	     "\tG8 / H8\tshortcuts help / pgn4web help" + "\n" +
 	     "\n" +
-	     "Last refresh: " + Date() + "\n" +
+	     "Last refresh: " + lastRefreshTime + "\n" +
 	     "\n" + 
 	     "Press OK to visit the pgn4web project website " + project_url +
 	     "\n\t";
