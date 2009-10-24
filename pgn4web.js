@@ -1120,6 +1120,14 @@ function SetInitialGame(number){
   initialGame = number;
 }
 
+// the clock value is detected with two options: first the DGT sequence [%clk 01:02] is checked (remember though that pgn4web has replaced "[%xxx]" with "<%xxx>"). If this fails, then look for the beginning of the comment for a sequence of numbers and ":" and "." characters.
+  
+function clockFromComment(comment){
+  clock = comment.replace(/<%clk\s*([^<>]*)>/,"$1");
+  if (clock == "") { clock = comment.match(/^\s*[0-9:\.]+/); }
+  return clock;
+}
+
 /******************************************************************************
  *                                                                            *
  * Function HighlightLastMove:                                                *
@@ -1182,14 +1190,14 @@ function HighlightLastMove(){
 
   if (lastMoverClockObject != null) {
     if (showThisMove+1 > StartPly) { 
-      lastMoverClockObject.innerHTML = MoveComments[showThisMove+1].match(/^\s*[0-9:\.]+/); 
+      lastMoverClockObject.innerHTML = clockFromComment(MoveComments[showThisMove+1]); 
     } else {
       lastMoverClockObject.innerHTML = initialLastMoverClock;
     }
   }
   if (beforeLastMoverClockObject != null) {
     if (showThisMove+1 > StartPly+1) { 
-      beforeLastMoverClockObject.innerHTML = MoveComments[showThisMove].match(/^\s*[0-9:\.]+/); 
+      beforeLastMoverClockObject.innerHTML = clockFromComment(MoveComments[showThisMove]); 
     } else {
       beforeLastMoverClockObject.innerHTML = initialBeforeLastMoverClock;
     }
@@ -1362,6 +1370,10 @@ function highlightSquare(col, row, on){
  *                                                                            *
  ******************************************************************************/
 function pgnGameFromPgnText(pgnText){
+
+  // in order to cope with DGT clock extensions to PGN like {[%command value]} and considering the pgn4web bug with square brackets in the PGN text, any sequence "[%xxx]" is replaced by "<%xxx>".
+  pgnText = pgnText.replace(/\[+%([^\[\]]*)\]+/g, "<%$1>");
+
   pgnGame = new Array();
   lines=pgnText.split("\n");
   inGameHeader = false;
