@@ -144,17 +144,31 @@ page or your blog.
 
 THE LIVE BROADCAST OF GAMES
 
-By setting the SetLiveBroadcast() option in the HTML file, pgn4web will
-periodically refresh the PGN file, showing the live progress of the games.
+By setting the SetLiveBroadcast(delay, alertFlag, demoFlag) option in the 
+HTML file, pgn4web will periodically refresh the PGN file, showing the live 
+progress of the games. PGN files produced by the DGT chessboards are supported.
+
+SetLiveBroadcast(delay, alertFlag, demoFlag) parameters:
+ - delay = refresh interval in minutes, decimals allowed (default 1)
+ - alertFlag = if set true, shows alert debug messages (default false)
+ - demoFlag = if set true, sets live demo mode (default false)
+
 The bash shell script live-grab.sh, executed on your server allows for grabbing
 the updated game source from anywhere on the Internet to your server.
 The live broadcast stops refreshing once all games are ended.
 
-If your live PGN contains clock info as comments after each game, the clock
-information is displayed in the <div id="GameWhiteClock"></div> and 
-<div id="GameBlackClock"></div> sections.
-The section <div id="GameLiveStatus"></div> displays the status of the live
-broadcast.
+If your live PGN contains clock info as comments after each game such as
+{1:59:59}, the clock information is displayed in the following sections:
+
+  <div id="GameWhiteClock"></div>
+  <div id="GameBlackClock"></div>
+
+Clock information provided by the DGT chessboards (like {[%clk 1:59:59]}) is
+also supported.
+
+The status of the live broadcast is displayed in the following section: 
+
+  <div id="GameLiveStatus"></div>
 
 Clicking on the A6 square will force a refresh of the PGN source.
 
