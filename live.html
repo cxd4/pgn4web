@@ -59,6 +59,14 @@
     document.getElementById("refreshTime").innerHTML = Date();
   }
 
+// disable A7 and B7 shortcut squares usually allowing showing move comments
+// A7
+function boardOnClickCol0Row1() { };
+boardAlt[0 + 1 * 8] = "";
+// B7
+function boardOnClickCol1Row1() { };
+boardAlt[1 + 1 * 8] = "";
+
 function gup( name ){
 
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
@@ -169,7 +177,7 @@ function print_help() {
 </td>
 
 <td width=199px valign=top align=left>
-<div style="height: 246px; overflow: auto; font-size: 75%; scrollbar-base-color: #E4E4E4;" id="GameText"></div>
+<div style="height: 246px; overflow: auto; margin-left: 3px; font-size: 66%; scrollbar-base-color: #E4E4E4;" id="GameText"></div>
 </td>
 
 <tr>
