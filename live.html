@@ -157,7 +157,7 @@ function user_help() {
 	     "Chess games live broadcast using pgn4web v" + version + "\n" +
 	     "\n" +
 	     "Games are automatically updated every " + 
-	     refreshMinutes + " minute" + plural  + " from " + pgnFile + ". " + "\n" +
+	     refreshMinutes + " minute" + plural  + " from remote file " + pgnFile + ". " + "\n" +
 	     "If the shown game is at the last available move, " +
 	     "on refresh the position is updated again to the last available move. " +
 	     "The refresh stops once all games are ended. " +
@@ -165,13 +165,13 @@ function user_help() {
 	     "There is no need to reload the webpage to refresh games; " +
 	     "to manually force a refresh, click on square A6." + "\n" + 
 	     "\n" +
-	     "Chessboard squares are input buttons to control the display:" + "\n" +
+	     "Chessboard squares are input buttons to control the games display:" + "\n" +
 	     "\n" +
 	     "\tD1 / E1\tmove back / forwards" + "\n" +
 	     "\tA1 / H1\tgame start / end" + "\n" + 
 	     "\tC3 / F3\tprevious / next game" + "\n" +
-	     "\tA1 / H1\tfirst / last game" + "\n" +
-	     "\tA6     \tforce game refresh" + "\n" +
+	     "\tA3 / H3\tfirst / last game" + "\n" +
+	     "\tA6     \tforce games refresh" + "\n" +
 	     "\tG8 / H8\tshortcuts help / pgn4web help" + "\n" +
 	     "\n" +
 	     "Last refresh: " + lastRefreshTime + "\n" +
