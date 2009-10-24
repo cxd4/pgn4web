@@ -100,7 +100,8 @@ function gup( name ){
 
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
   var regexS = "[\\?&]"+name+"=([^&#]*)";
-  regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
+  // commented below to match first occurrence (to avoid users overruling setting)
+  // regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   var regex = new RegExp( regexS );
   var results = regex.exec( window.location.href );
   if( results != null ) { switch (results[1]) {
@@ -118,7 +119,8 @@ function gup( name ){
 
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
   var regexS = "[\\?&]"+name+"=([^&#]*)";
-  regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
+  // commented below to match first occurrence (to avoid users overruling setting)
+  // regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   var regex = new RegExp( regexS );
 
   var results = regex.exec( window.location.href );
