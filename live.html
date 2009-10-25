@@ -21,13 +21,29 @@
     testMinutes = refreshMinutes + "";
     if ((testMinutes.match(/[^0-9\.]/)) || (refreshMinutes == 0)) {
       if (alertFlag) { 
-	      alert("ERROR: refreshMinutes parameter must be a positive number.\nSupplied " + 
-		     testMinutes + "; defaulting to 1."); 
+	      alert("ERROR: refreshMinutes parameter must be a positive number.\n" +
+		    "Supplied " + testMinutes + "; defaulting to 1."); 
       }
       refreshMinutes = 1;
     }
   }
 
+  if ((iniGame = gup("initialGame")) == "") {iniGame = 1; }
+  iniGameError = "ERROR: initialGam parameter must be a positive number or " +
+                 "'first', 'last' or 'random'.\n" +
+                 "Supplied " + iniGame + "; defaulting to 1.";
+  if (parseInt(iniGame)) {
+    if (parseInt(iniGame) < 1) { 
+      if (alertFlag) { alert(iniGameError); }
+      iniGame = 1; 
+    }
+  } else {
+    if ((iniGame != "first") && (iniGame != "last") && (iniGame != "random")) { 
+      if (alertFlag) { alert(iniGameError); }
+      iniGame = 1; 
+    }
+  }
+  
   if (gup("help") == "true") { developer_help(); }
 
   SetPgnUrl(pgnFile); 
@@ -40,7 +56,7 @@
   SetAutoplayDelay(3000); // milliseconds
   SetAutostartAutoplay(false);
   SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
-  SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are also accepted
+  SetInitialGame(iniGame); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are also accepted
   SetInitialHalfmove("end",true); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default)
   SetShortcutKeysEnabled(false);
 
@@ -91,6 +107,9 @@
     } else {
       document.getElementById("blackDetails").style.background = "#EEEEEE";
     }
+    // if ((gameResult[currentGame] != undefined) && ((gameResult[currentGame] == "*") || (gameResult[currentGame] == "?"))) {
+    //  document.getElementById("GameResult").innerHTML = "";
+    // }
   }
 
 // disable A7 and B7 shortcut squares usually allowing showing move comments
@@ -140,7 +159,8 @@ function gup( name ){
 
 function developer_help() {
   alert("pgn4web live.html parameters" + "\n" + 
-        " - pgnFile = " + pgnFile + "; PGN file to load (default live.pgn)" + "\n" + 
+        " - pgnFile = " + pgnFile + "; PGN file to load (default live.pgn)" + "\n" +
+        " - initialGame = " + iniGame + "; initial game to load, a number or first, last, random (default 1)" + "\n" +
         " - refreshMinutes = " + refreshMinutes + "; refresh interval in minutes, decimals allowed (default 1)" + "\n" +
         " - demo = " + demoFlag + "; if set true, sets live demo mode (default false)" + "\n" +
         " - help = if set true, prints this help (default false)");
