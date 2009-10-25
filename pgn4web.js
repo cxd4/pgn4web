@@ -100,7 +100,8 @@ var keyhelp = 'h, l\tgame start/end' + '\n' +
               'p\ttoggle comments' + '\n' +
               'o\ttoggle comments on separate lines' + '\n' +
               '\n' +
-              'y\trefresh games during live broadcast' + '\n' +
+              'r\tforce games refresh during live broadcast' + '\n' +
+              't, y\tpause/restart live broadcast automatic refresh' + '\n' +
               '';
 
 var squarehelp = 'A1, H1\tgame start/end' + '\n' +
@@ -120,7 +121,8 @@ var squarehelp = 'A1, H1\tgame start/end' + '\n' +
                  'A8     \ttoggle highlighting' + '\n' +
                  'B8, C8\tflip board / white on bottom' + '\n' +
                  '\n' +
-                 'A6     \trefresh games during live broadcast' + '\n' +
+                 'A6     \tforce games refresh during live broadcast' + '\n' +
+                 'B6, C6\tpause/restart live broadcast automatic refresh' + '\n' + 
                  '\n' +
                  'Squares always labeled as if white is at the bottom.\n' +
                  'List above contains default values, those might have been altered by your web page.' + 
@@ -352,19 +354,15 @@ function handlekey(e) {
       break;
 
     case 82:  // r
-      MoveForward(1);
-      SetAutoplayDelay(40*1000);
-      SetAutoPlay(true);
+      refreshPGNsource();
       break;
 
     case 84:  // t
-      MoveForward(1);
-      SetAutoplayDelay(50*1000);
-      SetAutoPlay(true);
+      pauseLiveBroadcast();
       break;
 
     case 89:  // y
-      refreshPGNsource();
+      resumeLiveBroadcast();
       break;
 
     case 70:  // f
@@ -496,13 +494,13 @@ function boardOnClickCol7Row1() { };
 boardAlt[7 + 1 * 8] = "";
 // A6
 function boardOnClickCol0Row2() { refreshPGNsource(); };
-boardAlt[0 + 2 * 8] = "refresh board during live broadcast";
+boardAlt[0 + 2 * 8] = "force games refresh during live broadcast";
 // B6
-function boardOnClickCol1Row2() { };
-boardAlt[1 + 2 * 8] = "";
+function boardOnClickCol1Row2() { pauseLiveBroadcast(); };
+boardAlt[1 + 2 * 8] = "pause live broadcast";
 // C6
-function boardOnClickCol2Row2() { };
-boardAlt[2 + 2 * 8] = "";
+function boardOnClickCol2Row2() { restartLiveBroadcast(); };
+boardAlt[2 + 2 * 8] = "restart live broadcast";
 // D6
 function boardOnClickCol3Row2() { };
 boardAlt[3 + 2 * 8] = "";
@@ -672,13 +670,14 @@ var initialGame = 1;
 var initialHalfmove = 0;
 var alwaysInitialHalfmove = false;
 
-var LiveBroadcastInterval;
+var LiveBroadcastInterval = null;
 var LiveBroadcastDelay = 0; // minutes
 var LiveBroadcastAlert = false;
 var LiveBroadcastDemo = false;
 var LiveBroadcastUpdateInProgress = false;
 var LiveBroadcastStarted = false;
 var LiveBroadcastEnded = false;
+var LiveBroadcastPaused = false;
 var gameDemoMaxPly = new Array();
 var gameDemoLength = new Array();
 
@@ -1475,6 +1474,18 @@ function SetPgnUrl(url){
   pgnUrl = url;
 }
 
+function pauseLiveBroadcast() {
+  if (LiveBroadcastDelay == 0) { return; }
+  LiveBroadcastPaused = true;
+  clearTimeout(LiveBroadcastInterval);
+}
+
+function restartLiveBroadcast() {
+  if (LiveBroadcastDelay == 0) { return; }
+  LiveBroadcastPaused = false;
+  refreshPGNsource();
+}
+
 function restartLiveBroadcastTimeout() {
 
   if (LiveBroadcastDelay == 0) { return; }
@@ -1503,7 +1514,7 @@ function restartLiveBroadcastTimeout() {
   theObject = document.getElementById("GameLiveStatus");
   if (theObject != null) { theObject.innerHTML = gameLiveStatus; }
 
-  if (needRestart == true) {
+  if ((needRestart == true) && (!LiveBroadcastPaused)){
     LiveBroadcastInterval = setTimeout("refreshPGNsource()", LiveBroadcastDelay * 60000);
   }
 
@@ -1511,7 +1522,7 @@ function restartLiveBroadcastTimeout() {
 
 /******************************************************************************
  *                                                                            *
- * Function refreshPGNsource:                                                 *
+ * Function refreshPGNsource():                                                 *
  *                                                                            *
  * reload the games from the specified URL during live broadcast              *
  *                                                                            *

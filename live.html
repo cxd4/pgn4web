@@ -81,7 +81,6 @@
     } else {
       document.getElementById("liveStatusDetails").style.background = "#EEEEEE";
     }
-
     document.getElementById("ticker").innerHTML = ticker_string[ticker_counter];
     ticker_counter = (ticker_counter + 1) % ticker_length;
 
@@ -193,10 +192,15 @@ function user_help() {
 	     "\tA1 / H1\tgame start / end" + "\n" + 
 	     "\tC3 / F3\tprevious / next game" + "\n" +
 	     "\tA3 / H3\tfirst / last game" + "\n" +
-	     "\tA6     \tforce games refresh" + "\n" +
+	     "\tA6     \tforce games refresh during live broadcast" + "\n" +
+	     "\tB6 / C6\tpause / restart live broadcast automatic refresh" + "\n" +
 	     "\tG8 / H8\tshortcuts help / pgn4web help" + "\n" +
 	     "\n" +
-	     "Last refresh: " + lastRefreshTime + "\n" +
+	     "Status info:" + "\n" + 
+	     "- last refresh: " + lastRefreshTime + "\n" +
+	     "- live broadcast started:" + LiveBroadcastStarted + 
+	     " ended:" + LiveBroadcastEnded + 
+	     " paused:" + LiveBroadcastPaused + "\n" +
 	     "\n" + 
 	     "Press OK to visit the pgn4web project website " + project_url +
 	     "\n\t";
