@@ -1494,7 +1494,7 @@ function restartLiveBroadcastTimeout() {
   
   if (LiveBroadcastStarted == false) { 
     // no games, live broadcast has not started yet
-    gameLiveStatus = "waiting for live broadcast start";
+    gameLiveStatus = "live broadcast yet to start";
     needRestart = true;
   } else {
     liveGamesRunning = 0;
