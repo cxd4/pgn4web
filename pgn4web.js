@@ -100,8 +100,8 @@ var keyhelp = 'h, l\tgame start/end' + '\n' +
               'p\ttoggle comments' + '\n' +
               'o\ttoggle comments on separate lines' + '\n' +
               '\n' +
-              'r\tforce games refresh during live broadcast' + '\n' +
-              't, y\tpause/restart live broadcast automatic refresh' + '\n' +
+              't\tforce games refresh during live broadcast' + '\n' +
+              'r, y\tpause/restart live broadcast automatic refresh' + '\n' +
               '';
 
 var squarehelp = 'A1, H1\tgame start/end' + '\n' +
@@ -121,8 +121,8 @@ var squarehelp = 'A1, H1\tgame start/end' + '\n' +
                  'A8     \ttoggle highlighting' + '\n' +
                  'B8, C8\tflip board / white on bottom' + '\n' +
                  '\n' +
-                 'A6     \tforce games refresh during live broadcast' + '\n' +
-                 'B6, C6\tpause/restart live broadcast automatic refresh' + '\n' + 
+                 'B6     \tforce games refresh during live broadcast' + '\n' +
+                 'A6, C6\tpause/restart live broadcast automatic refresh' + '\n' + 
                  '\n' +
                  'Squares always labeled as if white is at the bottom.\n' +
                  'List above contains default values, those might have been altered by your web page.' + 
@@ -354,11 +354,11 @@ function handlekey(e) {
       break;
 
     case 82:  // r
-      refreshPGNsource();
+      pauseLiveBroadcast();
       break;
 
     case 84:  // t
-      pauseLiveBroadcast();
+      refreshPGNsource();
       break;
 
     case 89:  // y
@@ -493,11 +493,11 @@ boardAlt[6 + 1 * 8] = "";
 function boardOnClickCol7Row1() { };
 boardAlt[7 + 1 * 8] = "";
 // A6
-function boardOnClickCol0Row2() { refreshPGNsource(); };
-boardAlt[0 + 2 * 8] = "force games refresh during live broadcast";
+function boardOnClickCol0Row2() { pauseLiveBroadcast(); };
+boardAlt[0 + 2 * 8] = "pause live broadcast automatic refresh";
 // B6
-function boardOnClickCol1Row2() { pauseLiveBroadcast(); };
-boardAlt[1 + 2 * 8] = "pause live broadcast automatic refresh";
+function boardOnClickCol1Row2() { refreshPGNsource(); };
+boardAlt[1 + 2 * 8] = "force games refresh during live broadcast";
 // C6
 function boardOnClickCol2Row2() { restartLiveBroadcast(); };
 boardAlt[2 + 2 * 8] = "restart live broadcast automatic refresh";
