@@ -64,14 +64,15 @@
 
   originalTitle = document.title;
 
-  ticker_length = 5;
-  ticker_string =  new Array(ticker_length);
-  ticker_string[0] = "help";
-  ticker_string[1] = "Help";
-  ticker_string[2] = "hElp";
-  ticker_string[3] = "heLp";
-  ticker_string[4] = "helP";
+  ticker_string = " help";
   ticker_counter = 0;
+  function update_ticker() {
+    document.getElementById("ticker").innerHTML = ticker_string.substring(0, ticker_counter) +
+      ticker_string.substring(ticker_counter, ticker_counter + 1).toUpperCase() +
+      ticker_string.substring(ticker_counter + 1);
+    ticker_counter = (ticker_counter + 1) % ticker_string.length;
+  }
+
   function customFunctionOnPgnTextLoad() {
     if ((gameEvent[0] != undefined) && (gameEvent[0] != "")) {
       document.title = originalTitle + ": " + gameEvent[0];
@@ -81,8 +82,8 @@
     } else {
       document.getElementById("liveStatusDetails").style.background = "#EEEEEE";
     }
-    document.getElementById("ticker").innerHTML = ticker_string[ticker_counter];
-    ticker_counter = (ticker_counter + 1) % ticker_length;
+
+    update_ticker();
 
     lastRefreshTime = Date();
   }
