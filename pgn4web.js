@@ -497,10 +497,10 @@ function boardOnClickCol0Row2() { refreshPGNsource(); };
 boardAlt[0 + 2 * 8] = "force games refresh during live broadcast";
 // B6
 function boardOnClickCol1Row2() { pauseLiveBroadcast(); };
-boardAlt[1 + 2 * 8] = "pause live broadcast";
+boardAlt[1 + 2 * 8] = "pause live broadcast automatic refresh";
 // C6
 function boardOnClickCol2Row2() { restartLiveBroadcast(); };
-boardAlt[2 + 2 * 8] = "restart live broadcast";
+boardAlt[2 + 2 * 8] = "restart live broadcast automatic refresh";
 // D6
 function boardOnClickCol3Row2() { };
 boardAlt[3 + 2 * 8] = "";
