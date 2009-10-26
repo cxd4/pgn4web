@@ -54,6 +54,7 @@ body {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 450px !important;
   color: #7D7A6C;
+  font-size: 90%;
   background-color: #E8E3D0;
   border-width: 0px;
   border-color: #E8E3D0;
