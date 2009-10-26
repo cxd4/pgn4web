@@ -73,13 +73,29 @@ body {
 /* a "width" attribute here must use the !important flag to override default settings */
 }
 
+.header,
+.headerHighlighted,
 .move,
 .moveOn {
-  color: #888888;
-  font-weight: normal;
   text-decoration: none;   
 }
 
+.header,
+.headerHighlighted {
+  font-size: 75%;
+}
+
+.move,
+.moveOn {
+  font-size: 66%;
+}
+
+.header,
+.move {
+  color: #888888;
+}
+
+.headerHighlighted,
 .moveOn {
   color: black;
   background: #F5B371;

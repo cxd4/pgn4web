@@ -73,22 +73,21 @@
     ticker_counter = (ticker_counter + 1) % ticker_string.length;
   }
 
+  lastRefreshTime = "";
   function customFunctionOnPgnTextLoad() {
     if ((gameEvent[0] != undefined) && (gameEvent[0] != "")) {
       document.title = originalTitle + ": " + gameEvent[0];
     }
     if ((!LiveBroadcastStarted) || (LiveBroadcastEnded)) {
-      document.getElementById("liveStatusDetails").style.background = "#F5B371";
+      document.getElementById("liveStatusDetails").className = "headerHighlighted";
     } else {
-      document.getElementById("liveStatusDetails").style.background = "#EEEEEE";
+      document.getElementById("liveStatusDetails").className = "header";
     }
 
     update_ticker();
 
     lastRefreshTime = Date();
   }
-
-  lastRefreshTime = "";
 
   function customFunctionOnPgnGameLoad() {
     if ((gameRound[currentGame] != undefined) && (gameRound[currentGame] != "") && (gameRound[currentGame] != "?")) {
@@ -98,17 +97,19 @@
       document.getElementById("GameRound").innerHTML = "";
     }
     if ((gameWhite[currentGame] != undefined) && (gameWhite[currentGame] != "") && (gameWhite[currentGame] != "?")) {
-      document.getElementById("whiteDetails").style.background = "#F5B371";
+      document.getElementById("whiteDetails").className = "headerHighlighted";
     } else {
-      document.getElementById("whiteDetails").style.background = "#EEEEEE";
+      document.getElementById("whiteDetails").className = "header";
     }
     if ((gameBlack[currentGame] != undefined) && (gameBlack[currentGame] != "") && (gameBlack[currentGame] != "?")) {
-      document.getElementById("blackDetails").style.background = "#F5B371";
+      document.getElementById("blackDetails").className = "headerHighlighted";
     } else {
-      document.getElementById("blackDetails").style.background = "#EEEEEE";
+      document.getElementById("blackDetails").className = "header";
     }
     // if ((gameResult[currentGame] != undefined) && ((gameResult[currentGame] == "*") || (gameResult[currentGame] == "?"))) {
-    //  document.getElementById("GameResult").innerHTML = "";
+    //  document.getElementById("resultDetails").className = "header";
+    // } else {
+    //  document.getElementById("resultDetails").className = "headerHighlighted";
     // }
   }
 
@@ -177,13 +178,15 @@ function user_help() {
   helpText = "Chess games live broadcast using pgn4web v" + version + "\n" +
 	     "\n" +
 	     "Games are automatically updated every " + 
-	     refreshMinutes + " minute" + plural  + " from remote file " + pgnFile + ". " + "\n" +
-	     "If the shown game is at the last available move, " +
-	     "on refresh the position is updated again to the last available move. " +
-	     "The refresh stops once all games are ended. " +
+	     refreshMinutes + " minute" + plural  + " from the remote file " +
+	     "(" + pgnFile + "). " +
+	     "If the shown game is kept at the last available move, " +
+	     "upon refresh the chessboard steps forward automatically " +
+	     "to the game's latest position. " + 
+	     "The refresh stops once all games are ended. " + 
 	     "If no games are shown, just wait for the live broadcast to start. " +
-	     "There is no need to reload the webpage to refresh games; " +
-	     "to manually force a refresh, click on square A6." + "\n" + 
+	     "There is no need to reload the webpage to refresh games, " +
+	     "but it's possible to manually force a refresh by clicking on square A6." + "\n" + 
 	     "\n" +
 	     "Chessboard squares are input buttons to control the games display:" + "\n" +
 	     "\n" +
@@ -236,32 +239,32 @@ function user_help() {
 
 <td width=246px align=left>
 
-<table id="whiteDetails" cellpadding=3 cellspacing=0 width=246px><tr><td align=left>
-<span style="font-size: 75%" id="GameWhite"></span>
+<table class="header" id="whiteDetails" cellpadding=3 cellspacing=0 width=246px><tr><td align=left>
+<span id="GameWhite"></span>
 </td><td align=right>
-<span style="font-size: 75%" id="GameWhiteClock"></span>
+<span id="GameWhiteClock"></span>
 </td></tr></table>
 
-<table id="blackDetails" cellpadding=3 cellspacing=0 width=246px><tr><td align=left>
-<span style="font-size: 75%" id="GameBlack"></span>
+<table class="header" id="blackDetails" cellpadding=3 cellspacing=0 width=246px><tr><td align=left>
+<span id="GameBlack"></span>
 </td><td align=right>
-<span style="font-size: 75%" id="GameBlackClock"></span>
+<span id="GameBlackClock"></span>
 </td></tr></table>
 
 </td>
 
 <td width=199px align=left>
 
-<table cellpadding=3 cellspacing=0 width=199px><tr><td align=left>
-<span style="font-size: 75%" id="GameEvent"></span>
+<table class="header" cellpadding=3 cellspacing=0 width=199px><tr><td align=left>
+<span id="GameEvent"></span>
 </td><td align=right>
-<span style="font-size: 75%"><span id="roundDetails"></span><span id="GameRound"></span></span>
+<span id="roundDetails"></span><span id="GameRound"></span>
 </td></tr></table>
 
-<table cellpadding=3 cellspacing=0 width=199px><tr><td align=left>
-<span style="font-size: 75%" id="GameSite"></span>
+<table class="header" cellpadding=3 cellspacing=0 width=199px><tr><td align=left>
+<span id="GameSite"></span>
 </td><td align=right>
-<span style="font-size: 75%" id="GameDate"></span>
+<span id="GameDate"></span>
 </td></tr></table>
 
 </td>
@@ -275,22 +278,22 @@ function user_help() {
 </td>
 
 <td width=199px align=left valign=top>	
-<div id="GameText" style="height: 243px; font-size: 66%; padding-left: 3px; padding-right: 3px; overflow: auto; scrollbar-base-color: #E4E4E4;">
+<div id="GameText" style="height: 243px; padding-left: 3px; padding-right: 3px; overflow: auto; scrollbar-base-color: #E4E4E4;">
 </div>
 </td>
 
 <tr>
 
 <td width=246px align=left valign=middle>
-<table width=246px cellpadding=0 cellspacing=0><tr><td align=left valign=middle>
-<span style="padding-left: 3px; font-size: 75%" id="GameResult"></span>
+<table width=246px cellpadding=0 cellspacing=0><tr><td id="resultDetails" class="header" width=50% align=left valign=middle>
+<span style="padding-left: 3px;" id="GameResult"></span>
 </td><td align=right valign=middle>
-<a id="ticker" style="padding-right: 3px; color: #CCCCCC; font-family: monospace; font-size: 75%; font-weight: normal; text-decoration: none;" href="javascript: user_help();" onFocus="this.blur()" title="pgn4web live broadcast help">HELP</a>
+<a id="ticker" style="padding-right: 3px; color: #CCCCCC; font-family: monospace; text-decoration: none;" href="javascript: user_help();" onFocus="this.blur()" title="pgn4web live broadcast help">HELP</a>
 </td></tr></table>
 </td>
 
-<td id="liveStatusDetails" width=199px align=center valign=middle>
-<span style="font-size: 75%;" id="GameLiveStatus"></span>
+<td class="header" id="liveStatusDetails" width=199px align=center valign=middle>
+<span id="GameLiveStatus"></span>
 </td>
 
 </tr>
