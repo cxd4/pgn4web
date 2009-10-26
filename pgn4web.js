@@ -185,8 +185,6 @@ window.onload = start_pgn4web;
 document.onkeydown = handlekey;
 
 function start_pgn4web() {
-  theObject = document.getElementById('GameSelector');
-  if (theObject != null) theObject.innerHTML = '';
   createBoard();
   if (LiveBroadcastDelay > 0) { restartLiveBroadcastTimeout(); }
 }
@@ -1670,7 +1668,7 @@ function Init(){
   InitImages();
 
   if (firstStart){
-    numberOfGames = pgnGame.length;
+    numberOfGames = pgnGame.length; 
     if (numberOfGames == 0) {
       myAlert("No games found in the PGN file");
       return;
@@ -3118,25 +3116,27 @@ function PrintHTML(){
   if (firstStart) { textSelectOptions=''; }
   theObject = document.getElementById("GameSelector");
 
-  if (theObject != null) { 
+  if (theObject != null) {
     if (numberOfGames < 2) {
-      text = '';
+      theObject.innerHTML = ''; 
+      textSelectOptions = '';
     } else {
-      if (gameSelectorNum) gameSelectorNumLenght = Math.floor(Math.log(numberOfGames)/Math.log(10)) + 1;
-      text = '<FORM NAME="GameSel" STYLE="display:inline;"> ' +
-             '<SELECT ID="GameSelSelect" NAME="GameSelSelect" STYLE="'
-      if ((tableSize != undefined) && (tableSize > 0)) text += 'width: ' + tableSize + '; ';
-      text += 'font-family: monospace;" CLASS="selectControl" ' + 
-              'ONCHANGE="this.blur(); if(this.value >= 0) {currentGame=parseInt(this.value); ' +
-              'document.GameSel.GameSelSelect.value = -1; Init();}">' +
-              '<OPTION value=-1>';
+      if(textSelectOptions == '') {
+        if (gameSelectorNum) gameSelectorNumLenght = Math.floor(Math.log(numberOfGames)/Math.log(10)) + 1;
+        text = '<FORM NAME="GameSel" STYLE="display:inline;"> ' +
+               '<SELECT ID="GameSelSelect" NAME="GameSelSelect" STYLE="'
+        if ((tableSize != undefined) && (tableSize > 0)) text += 'width: ' + tableSize + '; ';
+        text += 'font-family: monospace;" CLASS="selectControl" ' + 
+                'ONCHANGE="this.blur(); if(this.value >= 0) {currentGame=parseInt(this.value); ' +
+                'document.GameSel.GameSelSelect.value = -1; Init();}">' +
+                '<OPTION value=-1>';
 
-      blanks = ''; for (ii=0; ii<32; ii++) blanks += ' ';
-      if (gameSelectorNum) { gameSelectorHeadDisplay = blanks.substring(0, gameSelectorNumLenght) + '# ' + gameSelectorHead; }
-      else { gameSelectorHeadDisplay = gameSelectorHead; }
-      text += gameSelectorHeadDisplay.replace(/ /g,'&nbsp;');
+        blanks = ''; for (ii=0; ii<32; ii++) blanks += ' ';
+        if (gameSelectorNum) { 
+          gameSelectorHeadDisplay = blanks.substring(0, gameSelectorNumLenght) + '# ' + gameSelectorHead; 
+        } else { gameSelectorHeadDisplay = gameSelectorHead; }
+        text += gameSelectorHeadDisplay.replace(/ /g,'&nbsp;');
 
-      if(textSelectOptions == ''){
         for (ii=0; ii<numberOfGames; ii++){
           textSelectOptions += '<OPTION value=' + ii + '>';
           textSO = '';
@@ -3187,13 +3187,13 @@ function PrintHTML(){
             howManyBlanks = gameSelectorChDate - gameDate[ii].length;
             if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
             textSO += ' ';
-          }
-          textSelectOptions += textSO.replace(/ /g,'&nbsp;');
+           }
+           textSelectOptions += textSO.replace(/ /g,'&nbsp;');
         }
+      text += textSelectOptions + '</SELECT></FORM>';
+      theObject.innerHTML = text; 
       }
-       text += textSelectOptions + '</SELECT></FORM>';
     }
-    theObject.innerHTML = text; 
   }
 
   /*

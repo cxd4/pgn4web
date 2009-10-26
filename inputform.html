@@ -84,6 +84,7 @@ Next move: <span style="font-weight: bold" id="GameNextMove"></span>
 
 <form style="display:inline;">
 <input id=pgnButton type=button value="show games from PGN text box" onClick="javascript: 
+  firstStart = true;
   document.getElementById('pgnText').innerHTML = document.getElementById('pgnForm').value;
   new_start_pgn4web(); 
 ">
@@ -96,7 +97,7 @@ Next move: <span style="font-weight: bold" id="GameNextMove"></span>
 function new_start_pgn4web() {
   start_pgn4web();
   theObject = document.getElementById('GameSelSelect');
-  if (theObject != null) theObject.style.width = document.getElementById('pgnForm').offsetWidth - 20 -230;
+  if (theObject != null) theObject.style.width = document.getElementById('pgnForm').offsetWidth - 20 - 230;
 }
 
 function gup( name ){
