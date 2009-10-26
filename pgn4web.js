@@ -137,7 +137,7 @@ var creditsAndLicense = 'Javascript modifications of '+ project_author +
               'PNG images from http://ixian.com/chess/jin-piece-sets ' +
               '(creative commons attribution-share alike 3.0 unported license).' +
               '\n' + '\n' +
-              'Remaining pgn4web code is Copyright (C) 2009 ' + project_author + 
+              'Remaining pgn4web code is Copyright (C) 2009 ' + project_author + ' ' +
               'and licensed under the terms of the GNU General Public License version 2 ' + 
               'as published by the Free Software Foundation; either version 2 of the ' +
               'License, or (at your option) any later version.\n' +
@@ -638,7 +638,7 @@ function boardOnClickCol7Row7() { GoToMove(StartPly + PlyNumber); };
 boardAlt[7 + 7 * 8] = "go to game end";
 
 
-var pgnGame;
+var pgnGame = new Array();
 var numberOfGames = -1; 
 var currentGame   = -1;
 
@@ -647,16 +647,16 @@ var firstStart = true;
 /*
  * Global variables holding game tags.
  */
-var gameDate;
-var gameWhite;
-var gameBlack;
-var gameEvent;
-var gameSite;
-var gameRound;
-var gameResult;
-var gameFEN;
-var gameInitialWhiteClock;
-var gameInitialBlackClock;
+var gameDate = new Array();
+var gameWhite = new Array();
+var gameBlack = new Array();
+var gameEvent = new Array();
+var gameSite = new Array();
+var gameRound = new Array();
+var gameResult = new Array();
+var gameFEN = new Array();
+var gameInitialWhiteClock = new Array();
+var gameInitialBlackClock = new Array();
 
 var oldAnchor = -1;
 
@@ -1373,12 +1373,11 @@ function pgnGameFromPgnText(pgnText){
   // in order to cope with DGT clock extensions to PGN like {[%command value]} and considering the pgn4web bug with square brackets in the PGN text, any sequence "[%xxx]" is replaced by "<%xxx>".
   pgnText = pgnText.replace(/\[+%([^\[\]]*)\]+/g, "<%$1>");
 
-  pgnGame = new Array();
   lines=pgnText.split("\n");
   inGameHeader = false;
   inGameBody = false;
   gameIndex = -1;
-  pgnGame.lenght = 0;
+  pgnGame.length = 0;
   for(ii in lines){
 
     // according to the PGN standard lines starting with % should be ignored
@@ -1387,6 +1386,7 @@ function pgnGameFromPgnText(pgnText){
     if(lines[ii].indexOf('[') >= 0){
       if(! inGameHeader){
         gameIndex++;
+        pgnGame[gameIndex] = '';
       }
       inGameHeader=true
       inGameBody=false
@@ -1398,8 +1398,7 @@ function pgnGameFromPgnText(pgnText){
     }
     if (gameIndex >= 0)
       pgnGame[gameIndex] += lines[ii] + ' \n'; 
-  }  
-  
+  }
   return (gameIndex >= 0);
 }
 
@@ -1486,6 +1485,25 @@ function restartLiveBroadcast() {
   refreshPGNsource();
 }
 
+function checkLiveBroadcastEnded() {
+  if (LiveBroadcastDelay == 0) { 
+    LiveBroadcastEnded = false;
+    return; 
+  }
+
+  // check for odd situations where no PGN file is found and fake '[]' game is injected
+  if ((pgnGame == undefined) || ((pgnGame.length == 1) && (pgnGame[0] == '[] \n'))) {
+    LiveBroadcastEnded = false;
+    return;
+  }
+
+  liveGamesRunning = 0;
+  for (ii=0; ii<numberOfGames; ii++) {
+    if (gameResult[ii].indexOf('*') >= 0) { liveGamesRunning++ }
+  }
+  LiveBroadcastEnded = (liveGamesRunning == 0);
+}
+
 function restartLiveBroadcastTimeout() {
 
   if (LiveBroadcastDelay == 0) { return; }
@@ -1497,14 +1515,9 @@ function restartLiveBroadcastTimeout() {
     gameLiveStatus = "live broadcast yet to start";
     needRestart = true;
   } else {
-    liveGamesRunning = 0;
-    for (ii=0; ii<numberOfGames; ii++) {
-      if (gameResult[ii].indexOf('*') >= 0) { liveGamesRunning++ }
-    }
-    LiveBroadcastEnded = (liveGamesRunning == 0);
+    checkLiveBroadcastEnded() // redundant here, bt nevertheless
     if (LiveBroadcastEnded) {
       gameLiveStatus = "live broadcast ended";
-      customFunctionOnPgnTextLoad(); // this should not really be called here, but this allows notifying the HTML that broadcast has ended
     } else {
       gameLiveStatus = "live games: " + liveGamesRunning + " &nbsp; ended: " + (numberOfGames - liveGamesRunning);
     }
@@ -1564,6 +1577,7 @@ function refreshPGNsource() {
     pgnGameFromPgnText('[]'); 
   } 
   Init();
+  checkLiveBroadcastEnded();
   customFunctionOnPgnTextLoad();
 
   if (oldCurrentPly >= 0) { GoToMove(oldCurrentPly); }
@@ -1599,6 +1613,7 @@ function createBoard(){
     if ( loadPgnFromPgnUrl(pgnUrl) ) {
       if (LiveBroadcastDelay > 0) { LiveBroadcastStarted = true; }
       Init();
+      if (LiveBroadcastDelay > 0) { checkLiveBroadcastEnded(); }
       customFunctionOnPgnTextLoad();
       return;
     } else {
@@ -1614,6 +1629,7 @@ function createBoard(){
         LiveBroadcastStarted = false;
         pgnGameFromPgnText('[]'); 
         Init();
+	checkLiveBroadcastEnded();
         customFunctionOnPgnTextLoad();
         return;
       }
@@ -1630,7 +1646,7 @@ function createBoard(){
     if (tmpText.indexOf('"') < 0) { tmpText = tmpText.replace(/(&quot;)/g, "\""); }
 
     if ( pgnGameFromPgnText(tmpText) ) {
-      Init();
+      Init(); 
       customFunctionOnPgnTextLoad();
     }
     return;
@@ -2139,16 +2155,16 @@ function LoadGameHeaders(){
   /*
    * Initialize the global arrays to the number of games length.
    */
-  gameDate        = new Array(numberOfGames); 
-  gameWhite       = new Array(numberOfGames);
-  gameBlack       = new Array(numberOfGames);
-  gameFEN         = new Array(numberOfGames);
-  gameEvent       = new Array(numberOfGames);
-  gameSite        = new Array(numberOfGames);
-  gameRound       = new Array(numberOfGames);
-  gameResult      = new Array(numberOfGames);
-  gameInitialWhiteClock = new Array(numberOfGames);
-  gameInitialBlackClock = new Array(numberOfGames);
+  gameDate.length = 0; 
+  gameWhite.length = 0;
+  gameBlack.length = 0;
+  gameFEN.length = 0;
+  gameEvent.length = 0;
+  gameSite.length = 0;
+  gameRound.length = 0;
+  gameResult.length = 0;
+  gameInitialWhiteClock.length = 0;
+  gameInitialBlackClock.length = 0;
 
   /*
    * Read the headers of all games and store the information in te global
@@ -3101,76 +3117,82 @@ function PrintHTML(){
 
   if (firstStart) { textSelectOptions=''; }
   theObject = document.getElementById("GameSelector");
-  if ((theObject != null) && (numberOfGames > 1) && (textSelectOptions=='')){
-    if (gameSelectorNum) gameSelectorNumLenght = Math.floor(Math.log(numberOfGames)/Math.log(10)) + 1;
-    text = '<FORM NAME="GameSel" STYLE="display:inline;"> ' +
-           '<SELECT ID="GameSelSelect" NAME="GameSelSelect" STYLE="'
-    if ((tableSize != undefined) && (tableSize > 0)) text += 'width: ' + tableSize + '; ';
-    text += 'font-family: monospace;" CLASS="selectControl" ' + 
-            'ONCHANGE="this.blur(); if(this.value >= 0) {currentGame=parseInt(this.value); document.GameSel.GameSelSelect.value = -1; Init();}">' +
-            '<OPTION value=-1>';
 
-    blanks = ''; for (ii=0; ii<32; ii++) blanks += ' ';
-    if (gameSelectorNum) { gameSelectorHeadDisplay = blanks.substring(0, gameSelectorNumLenght) + '# ' + gameSelectorHead; }
-    else { gameSelectorHeadDisplay = gameSelectorHead; }
-    text += gameSelectorHeadDisplay.replace(/ /g,'&nbsp;');
+  if (theObject != null) { 
+    if (numberOfGames < 2) {
+      text = '';
+    } else {
+      if (gameSelectorNum) gameSelectorNumLenght = Math.floor(Math.log(numberOfGames)/Math.log(10)) + 1;
+      text = '<FORM NAME="GameSel" STYLE="display:inline;"> ' +
+             '<SELECT ID="GameSelSelect" NAME="GameSelSelect" STYLE="'
+      if ((tableSize != undefined) && (tableSize > 0)) text += 'width: ' + tableSize + '; ';
+      text += 'font-family: monospace;" CLASS="selectControl" ' + 
+              'ONCHANGE="this.blur(); if(this.value >= 0) {currentGame=parseInt(this.value); ' +
+              'document.GameSel.GameSelSelect.value = -1; Init();}">' +
+              '<OPTION value=-1>';
 
-    if(textSelectOptions == ''){
-      for (ii=0; ii<numberOfGames; ii++){
-        textSelectOptions += '<OPTION value=' + ii + '>';
-        textSO = '';
-        if (gameSelectorNum) {
-          numText = ' ' + (ii+1);
-          howManyBlanks = gameSelectorNumLenght - (numText.length - 1);
-          if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
-          textSO += numText + ' ';
+      blanks = ''; for (ii=0; ii<32; ii++) blanks += ' ';
+      if (gameSelectorNum) { gameSelectorHeadDisplay = blanks.substring(0, gameSelectorNumLenght) + '# ' + gameSelectorHead; }
+      else { gameSelectorHeadDisplay = gameSelectorHead; }
+      text += gameSelectorHeadDisplay.replace(/ /g,'&nbsp;');
+
+      if(textSelectOptions == ''){
+        for (ii=0; ii<numberOfGames; ii++){
+          textSelectOptions += '<OPTION value=' + ii + '>';
+          textSO = '';
+          if (gameSelectorNum) {
+            numText = ' ' + (ii+1);
+            howManyBlanks = gameSelectorNumLenght - (numText.length - 1);
+            if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+            textSO += numText + ' ';
+          }
+          if (gameSelectorChEvent > 0) {
+            textSO += ' ' + gameEvent[ii].substring(0, gameSelectorChEvent);
+            howManyBlanks = gameSelectorChEvent - gameEvent[ii].length;
+            if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+            textSO += ' ';
+          }
+          if (gameSelectorChSite > 0) {
+            textSO += ' ' + gameSite[ii].substring(0, gameSelectorChSite);
+            howManyBlanks = gameSelectorChSite - gameSite[ii].length;
+            if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+            textSO += ' ';
+          }
+          if (gameSelectorChRound > 0) {
+            textSO += ' ' + gameRound[ii].substring(0, gameSelectorChRound);
+            howManyBlanks = gameSelectorChRound - gameRound[ii].length;
+            if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+            textSO += ' ';
+          }
+          if (gameSelectorChWhite > 0) {
+            textSO += ' ' + gameWhite[ii].substring(0, gameSelectorChWhite);
+            howManyBlanks = gameSelectorChWhite - gameWhite[ii].length;
+            if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+            textSO += ' ';
+          }
+          if (gameSelectorChBlack > 0) {
+            textSO += ' ' + gameBlack[ii].substring(0, gameSelectorChBlack);
+            howManyBlanks = gameSelectorChBlack - gameBlack[ii].length;
+            if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+            textSO += ' ';
+          }
+          if (gameSelectorChResult > 0) {
+            textSO += ' ' + gameResult[ii].substring(0, gameSelectorChResult);
+            howManyBlanks = gameSelectorChResult - gameResult[ii].length;
+            if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+            textSO += ' ';
+          }
+          if (gameSelectorChDate > 0) {
+            textSO += ' ' + gameDate[ii].substring(0, gameSelectorChDate);
+            howManyBlanks = gameSelectorChDate - gameDate[ii].length;
+            if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+            textSO += ' ';
+          }
+          textSelectOptions += textSO.replace(/ /g,'&nbsp;');
         }
-        if (gameSelectorChEvent > 0) {
-          textSO += ' ' + gameEvent[ii].substring(0, gameSelectorChEvent);
-          howManyBlanks = gameSelectorChEvent - gameEvent[ii].length;
-          if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
-          textSO += ' ';
-        }
-        if (gameSelectorChSite > 0) {
-          textSO += ' ' + gameSite[ii].substring(0, gameSelectorChSite);
-          howManyBlanks = gameSelectorChSite - gameSite[ii].length;
-          if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
-          textSO += ' ';
-        }
-        if (gameSelectorChRound > 0) {
-          textSO += ' ' + gameRound[ii].substring(0, gameSelectorChRound);
-          howManyBlanks = gameSelectorChRound - gameRound[ii].length;
-          if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
-          textSO += ' ';
-        }
-        if (gameSelectorChWhite > 0) {
-          textSO += ' ' + gameWhite[ii].substring(0, gameSelectorChWhite);
-          howManyBlanks = gameSelectorChWhite - gameWhite[ii].length;
-          if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
-          textSO += ' ';
-        }
-        if (gameSelectorChBlack > 0) {
-          textSO += ' ' + gameBlack[ii].substring(0, gameSelectorChBlack);
-          howManyBlanks = gameSelectorChBlack - gameBlack[ii].length;
-          if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
-          textSO += ' ';
-        }
-        if (gameSelectorChResult > 0) {
-          textSO += ' ' + gameResult[ii].substring(0, gameSelectorChResult);
-          howManyBlanks = gameSelectorChResult - gameResult[ii].length;
-          if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
-          textSO += ' ';
-        }
-        if (gameSelectorChDate > 0) {
-          textSO += ' ' + gameDate[ii].substring(0, gameSelectorChDate);
-          howManyBlanks = gameSelectorChDate - gameDate[ii].length;
-          if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
-          textSO += ' ';
-        }
-        textSelectOptions += textSO.replace(/ /g,'&nbsp;');
       }
+       text += textSelectOptions + '</SELECT></FORM>';
     }
-    text += textSelectOptions + '</SELECT></FORM>';
     theObject.innerHTML = text; 
   }
 

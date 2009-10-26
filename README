@@ -178,7 +178,9 @@ The file live-template.html shows a very basic example.
 A demo facility is available to test the live broadcast functionality.
 If the demo flag is set in SetLiveBroadcast() and a set of full games is 
 provided, the tool will simulate a slow progress of the game. Set the
-proper flag in live-template.html for an example.
+proper flag in live-template.html for an example. Please note, even during
+a demo, the PGN file is actually refreshed from the server for a more
+accurate testing.
 Alternatively, for a more realistic simulation, the bash shell script 
 live-simulation.sh slowly updates the live.pgn file, simulating a real event.
 
