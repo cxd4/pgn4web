@@ -7,13 +7,13 @@ body {
 
 body {
   font-family: sans-serif;
-  color: black;
-  background: #EEEEEE;
+  color: #7D7A6C;
+  background: #EDE8D5;
 }
 
 .boardTable {
   border-style: double; 
-  border-color: #CCCCCC;
+  border-color: #CFCBB3;
   border-width: 3px;
 }
 
@@ -34,14 +34,14 @@ body {
 
 .whiteSquare,
 .highlightWhiteSquare {
-  border-color: #EEEEEE;
-  background: #EEEEEE;
+  border-color: #EDE8D5;
+  background: #EDE8D5;
 }
 
 .blackSquare,
 .highlightBlackSquare {
-  border-color: #CCCCCC;
-  background: #CCCCCC;
+  border-color: #CFCBB3;
+  background: #CFCBB3;
 }
 
 .highlightWhiteSquare,
@@ -53,10 +53,10 @@ body {
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 450px !important;
-  color: #888888;
-  background-color: #E4E4E4;
+  color: #7D7A6C;
+  background-color: #E8E3D0;
   border-width: 0px;
-  border-color: #CCCCCC;
+  border-color: #E8E3D0;
   border-style: solid;
 }
 
@@ -92,7 +92,7 @@ body {
 
 .header,
 .move {
-  color: #888888;
+  color: #7D7A6C;
 }
 
 .headerHighlighted,
