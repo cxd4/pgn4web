@@ -171,12 +171,10 @@ function user_help() {
   if (refreshMinutes != 1) { plural = "s"; }
   else { plural = ""; }
 
-  if (demoFlag) { demoString = " (demo mode)"; }
+  if (demoFlag) { demoString = "- demo mode enabled" + "\n"; }
   else { demoString = ""; }
 
-  helpText = "pgn4web chess games live broadcast" + demoString + "\n" + 
-             "\n" + 
-	     "Chess games live broadcast using pgn4web v" + version + "\n" +
+  helpText = "Chess games live broadcast using pgn4web v" + version + "\n" +
 	     "\n" +
 	     "Games are automatically updated every " + 
 	     refreshMinutes + " minute" + plural  + " from remote file " + pgnFile + ". " + "\n" +
@@ -197,7 +195,8 @@ function user_help() {
 	     "\tA6 / C6\tpause / restart live broadcast automatic refresh" + "\n" +
 	     "\tG8 / H8\tshortcuts help / pgn4web help" + "\n" +
 	     "\n" +
-	     "Status info:" + "\n" + 
+	     "Status:" + "\n" + 
+	     demoString +
 	     "- last refresh: " + lastRefreshTime + "\n" +
 	     "- live broadcast started:" + LiveBroadcastStarted + 
 	     " ended:" + LiveBroadcastEnded + 
