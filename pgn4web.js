@@ -1,4 +1,11 @@
 /*
+ *  pgn4web javascript chessboard
+ *  copyright (C) 2009 Paolo Casaschi
+ *  see README file and http://pgn4web.casaschi.net
+ *  for credits, license and more details
+ */
+
+/*
  *   HOW TO USE pgn4web.js
  *
  *   add a SCRIPT instance at the top of your HTML file:
