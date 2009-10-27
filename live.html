@@ -57,7 +57,7 @@
   SetImagePath ("uscf/24"); 
   SetImageType("png");
   SetHighlightOption(true); // true or false
-  SetGameSelectorOptions("Select a live game...", true, 0, 0, 0, 15, 15, 3, 0); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate)
+  SetGameSelectorOptions("Select a game...", true, 0, 0, 0, 15, 15, 3, 0); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate)
   SetCommentsIntoMoveText(false);
   SetCommentsOnSeparateLines(false);
   SetAutoplayDelay(3000); // milliseconds
@@ -121,13 +121,13 @@
     // }
   }
 
-// redefine B3 and G3 to load the next/previous unfinished game
+// redefine B3 and G3 to load the next/previous live game
 // B3
 function boardOnClickCol1Row5() { for (ii=currentGame-1; ii>=0; ii--) { if ((gameResult[ii] != undefined) && ((gameResult[ii]=="*") || (gameResult[ii]=="?"))) { break; }} if (ii>=0) { currentGame = ii; Init();} };
-boardAlt[1 + 5 * 8] = "load the previous unfinished game";
+boardAlt[1 + 5 * 8] = "load the previous live game";
 // G3
 function boardOnClickCol6Row5() { for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((gameResult[ii] != undefined) && ((gameResult[ii]=="*") || (gameResult[ii]=="?"))) { break; }} if (ii<numberOfGames) { currentGame = ii; Init();} };
-boardAlt[6 + 5 * 8] = "load the next unfinished game";
+boardAlt[6 + 5 * 8] = "load the next live game";
 
 // disable A7 and B7 shortcut squares usually allowing showing move comments
 // A7
@@ -209,7 +209,7 @@ function user_help() {
 	     "\tD1 / E1\tmove back / forwards" + "\n" +
 	     "\tA1 / H1\tgame start / end" + "\n" + 
 	     "\tC3 / F3\tprevious / next game" + "\n" +
-	     "\tB3 / G3\tprevious / next unfinished game (redefined from usual)" + "\n" +
+	     "\tB3 / G3\tprevious / next live game (redefined from usual)" + "\n" +
 	     "\tA3 / H3\tfirst / last game" + "\n" +
 	     "\tB6     \tforce games refresh during live broadcast" + "\n" +
 	     "\tA6 / C6\tpause / restart live broadcast automatic refresh" + "\n" +
