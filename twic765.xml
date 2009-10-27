@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  pgn4web javascript chessboard
+  copyright (C) 2009 Paolo Casaschi
+  see README file and http://pgn4web.casaschi.net
+  for credits, license and more details
+-->
+
 <Module>
 <ModulePrefs
    title="pgn4web twic765 example"
