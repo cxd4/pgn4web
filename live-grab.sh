@@ -11,10 +11,25 @@
 localPgnFile_default=live.pgn
 refreshSeconds_default=49
 timeoutHours_default=12
-logFile_default=/dev/stdout
+
+print_log() {
+	if [ -n "$1" ]
+	then
+		echo "$(date) $(basename $0) ($$) LOG: $1" >> $logFile
+	else
+		echo >> $logFile
+	fi
+}
+
+print_error() {
+        if [ "$logFile" != "/dev/stdout" ]
+        then
+		echo $(date) $(basename $0) ERROR: $1 >> $logFile
+	fi
+	echo $(basename $0) ERROR: $1 > /dev/stderr
+}
 
 print_help() {
-
   echo
   echo $(basename $0) remotePgnUrl localPgnFile refreshSeconds timeoutHours logFile
   echo 
@@ -29,23 +44,63 @@ print_help() {
   echo
 }
 
+if [ -z "$1" ]
+then 
+	print_help
+	exit
+else
+	remotePgnUrl=$1
+fi
+
 if [ -z "$5" ]
 then
-	logFile=$logFile_default
+	logFile=/dev/stdout
 else
+	if [ -e "$5" ]
+	then
+		echo "$(date) $(basename $0) ERROR: logFile exists" > /dev/stderr
+		echo "$(date) $(basename $0) ERROR: delete the file or choose another filename and restart" > /dev/stderr
+		exit
+	fi
 	logFile=$5
 fi
-echo "pgn4web $(basename $0) logfile" > $logFile
+print_log
+print_log "pgn4web $(basename $0) logfile"
+print_log
 
-if [ -z "$(which tee)" ]
+if [ -z "$2" ]
 then
-	if [ "$logFile" != "$logFile_default" ]
-	then
-		echo $(basename $0) ERROR: missing utility tee \(execution aborted\) > $logFile
-	fi
-	echo $(basename $0) ERROR: missing utility tee \(execution aborted\) > /dev/stderr
+	localPgnFile=$localPgnFile_default
+else
+	localPgnFile=$2
+fi
+if [ -e "$localPgnFile" ]
+then
+	print_error "localPgnFile $localPgnFile exists"
+	print_error "delete the file or choose another filename and restart"
 	exit
 fi
+if [ $(echo "$localPgnFile" | grep "\*") ] 
+then
+	print_error "localPgnFile should not contain \"*\"" 
+	exit
+fi
+if [ $(echo "$localPgnFile" | grep "\?") ] 
+then
+	print_error "localPgnFile should not contain \"?\""
+	exit
+fi
+if [ $(echo "$localPgnFile" | grep "\[") ] 
+then
+	print_error "localPgnFile should not contain \"[\""
+	exit
+fi
+if [ $(echo "$localPgnFile" | grep "\]") ] 
+then
+	print_error "localPgnFile should not contain \"]\""
+	exit
+fi
+tmpLocalPgnFile=$localPgnFile.$RANDOM.pgn
 
 if [ -z "$3" ]
 then
@@ -62,53 +117,12 @@ else
 fi
 timeoutSteps=$((3600*$timeoutHours/$refreshSeconds))
 
-if [ -z "$2" ]
-then
-	localPgnFile=$localPgnFile_default
-else
-	localPgnFile=$2
-fi
-if [ -e "$localPgnFile" ]
-then
-	echo $(basename $0) ERROR: localPgnFile $localPgnFile exists | tee -a $logFile 
-	echo Delete the file or choose another filename and restart $(basename $0) | tee -a $logFile 
-	exit
-fi
-if [ $(echo "$localPgnFile" | grep "\*") ] 
-then
-	echo $(basename $0) ERROR: localPgnFile should not contain \"*\" | tee -a $logFile
-	exit
-fi
-if [ $(echo "$localPgnFile" | grep "\?") ] 
-then
-	echo $(basename $0) ERROR: localPgnFile should not contain \"?\" | tee -a $logFile
-	exit
-fi
-if [ $(echo "$localPgnFile" | grep "\[") ] 
-then
-	echo $(basename $0) ERROR: localPgnFile should not contain \"[\" | tee -a $logFile
-	exit
-fi
-if [ $(echo "$localPgnFile" | grep "\]") ] 
-then
-	echo $(basename $0) ERROR: localPgnFile should not contain \"]\" | tee -a $logFile
-	exit
-fi
-tmpLocalPgnFile=$localPgnFile.$RANDOM.pgn
-
-if [ -z "$1" ]
-then 
-	print_help
-	exit
-else
-	remotePgnUrl=$1
-fi
-
 if [ -z "$(which curl)" ]
 then
 	if [ -z "$(which wget)" ]
 	then
-		echo $(basename $0) ERROR: missing both curl and wget \(execution aborted\) | tee -a $logFile
+		print_error "missing both curl and wget"
+		exit
 	else
 		grabCmdLine="wget -qrO $tmpLocalPgnFile $remotePgnUrl"
 	fi
@@ -116,18 +130,24 @@ else
 	grabCmdLine="curl -so $tmpLocalPgnFile --url $remotePgnUrl"
 fi
 
+print_log "remoteUrl: $remotePgnUrl"
+print_log "localPgnFile: $localPgnFile"
+print_log "refreshSeconds: $refreshSeconds"
+print_log "timeoutHours: $timeoutHours"
+print_log 
+
 step=0
 while [ $step -le $timeoutSteps ] 
 do
-	echo $(date) $(basename $0): step $step of $timeoutSteps \($remotePgnUrl, $localPgnFile, $refreshSeconds, $timeoutHours\) >> $logFile
+	print_log "step $step of $timeoutSteps"
 	$grabCmdLine 
 	if [ -e "$tmpLocalPgnFile" ]
 	then
-		mv "$tmpLocalPgnFile" "$localPgnFile" >> $logFile
+		mv "$tmpLocalPgnFile" "$localPgnFile"
 	fi
 	step=$(($step +1))
 	sleep $refreshSeconds
 done
 
-echo $(date) $(basename $0): done >> $logFile
+print_log "done"
 
