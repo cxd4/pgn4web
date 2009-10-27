@@ -74,21 +74,31 @@ body {
 /* a "width" attribute here must use the !important flag to override default settings */
 }
 
+.helplink,
 .header,
 .headerHighlighted,
 .move,
-.moveOn {
+.moveOn,
+.comment,
+.nag {
   text-decoration: none;   
 }
 
+.helplink,
 .header,
 .headerHighlighted {
   font-size: 75%;
 }
 
 .move,
-.moveOn {
+.moveOn,
+.comment,
+.nag {
   font-size: 66%;
+}
+
+.helplink {
+  color: #BFBAA5;
 }
 
 .header,
@@ -105,10 +115,14 @@ body {
 .comment,
 .nag
 {
-  color: gray;
+  color: #A19D8B;
 }
 
 .nag {
   font-style: italic;
+}
+
+.movebox {
+  scrollbar-base-color: #E8E3D0;
 }
 
