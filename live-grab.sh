@@ -11,11 +11,12 @@
 localPgnFile_default=live.pgn
 refreshSeconds_default=49
 timeoutHours_default=12
+logFile_default=/dev/stdout
 
 print_help() {
 
   echo
-  echo $(basename $0) remotePgnUrl localPgnFile refreshSeconds timeoutHours
+  echo $(basename $0) remotePgnUrl localPgnFile refreshSeconds timeoutHours logFile
   echo 
   echo Periodically fetches a remote PGN file for a pgn4web live broadcast.
   echo
@@ -24,50 +25,27 @@ print_help() {
   echo - localPgnFile: local PGN filename \(default: $localPgnFile_default\)
   echo - refreshSeconds: refresh rate in seconds \(default: $refreshSeconds_default\)
   echo - timeoutHours: timeout in hours for stopping the process \(default: $timeoutHours_default\)
+  echo - logFile: log file name \(default /dev/stdout\)
   echo
 }
 
-if [ -z "$1" ]
-then 
-	print_help
-	exit
+if [ -z "$5" ]
+then
+	logFile=$logFile_default
 else
-	remotePgnUrl=$1
+	logFile=$5
 fi
+echo "pgn4web $(basename $0) logfile" > $logFile
 
-if [ -z "$2" ]
+if [ -z "$(which tee)" ]
 then
-	localPgnFile=$localPgnFile_default
-else
-	localPgnFile=$2
-fi
-if [ -e "$localPgnFile" ]
-then
-	echo $(basename $0) ERROR: localPgnFile $localPgnFile exists
-	echo Delete the file or choose another filename and restart $(basename $0)
+	if [ "$logFile" != "$logFile_default" ]
+	then
+		echo $(basename $0) ERROR: missing utility tee \(execution aborted\) > $logFile
+	fi
+	echo $(basename $0) ERROR: missing utility tee \(execution aborted\) > /dev/stderr
 	exit
 fi
-if [ $(echo "$localPgnFile" | grep "\*") ] 
-then
-	echo $(basename $0) ERROR: localPgnFile should not contain \"*\"
-	exit
-fi
-if [ $(echo "$localPgnFile" | grep "\?") ] 
-then
-	echo $(basename $0) ERROR: localPgnFile should not contain \"?\"
-	exit
-fi
-if [ $(echo "$localPgnFile" | grep "\[") ] 
-then
-	echo $(basename $0) ERROR: localPgnFile should not contain \"[\"
-	exit
-fi
-if [ $(echo "$localPgnFile" | grep "\]") ] 
-then
-	echo $(basename $0) ERROR: localPgnFile should not contain \"]\"
-	exit
-fi
-tmpLocalPgnFile=$localPgnFile.$RANDOM.pgn
 
 if [ -z "$3" ]
 then
@@ -84,11 +62,53 @@ else
 fi
 timeoutSteps=$((3600*$timeoutHours/$refreshSeconds))
 
+if [ -z "$2" ]
+then
+	localPgnFile=$localPgnFile_default
+else
+	localPgnFile=$2
+fi
+if [ -e "$localPgnFile" ]
+then
+	echo $(basename $0) ERROR: localPgnFile $localPgnFile exists | tee -a $logFile 
+	echo Delete the file or choose another filename and restart $(basename $0) | tee -a $logFile 
+	exit
+fi
+if [ $(echo "$localPgnFile" | grep "\*") ] 
+then
+	echo $(basename $0) ERROR: localPgnFile should not contain \"*\" | tee -a $logFile
+	exit
+fi
+if [ $(echo "$localPgnFile" | grep "\?") ] 
+then
+	echo $(basename $0) ERROR: localPgnFile should not contain \"?\" | tee -a $logFile
+	exit
+fi
+if [ $(echo "$localPgnFile" | grep "\[") ] 
+then
+	echo $(basename $0) ERROR: localPgnFile should not contain \"[\" | tee -a $logFile
+	exit
+fi
+if [ $(echo "$localPgnFile" | grep "\]") ] 
+then
+	echo $(basename $0) ERROR: localPgnFile should not contain \"]\" | tee -a $logFile
+	exit
+fi
+tmpLocalPgnFile=$localPgnFile.$RANDOM.pgn
+
+if [ -z "$1" ]
+then 
+	print_help
+	exit
+else
+	remotePgnUrl=$1
+fi
+
 if [ -z "$(which curl)" ]
 then
 	if [ -z "$(which wget)" ]
 	then
-		echo $(basename $0) ERROR: missing both curl and wget \(execution aborted\)
+		echo $(basename $0) ERROR: missing both curl and wget \(execution aborted\) | tee -a $logFile
 	else
 		grabCmdLine="wget -qrO $tmpLocalPgnFile $remotePgnUrl"
 	fi
@@ -99,13 +119,15 @@ fi
 step=0
 while [ $step -le $timeoutSteps ] 
 do
-	echo $(basename $0): step $step of $timeoutSteps \($remotePgnUrl, $localPgnFile, $refreshSeconds, $timeoutHours\)
-	$grabCmdLine
+	echo $(date) $(basename $0): step $step of $timeoutSteps \($remotePgnUrl, $localPgnFile, $refreshSeconds, $timeoutHours\) >> $logFile
+	$grabCmdLine 
 	if [ -e "$tmpLocalPgnFile" ]
 	then
-		mv "$tmpLocalPgnFile" "$localPgnFile"
+		mv "$tmpLocalPgnFile" "$localPgnFile" >> $logFile
 	fi
 	step=$(($step +1))
 	sleep $refreshSeconds
 done
+
+echo $(date) $(basename $0): done >> $logFile
 
