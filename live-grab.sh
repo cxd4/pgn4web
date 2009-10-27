@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#  pgn4web javascript chessboard
+#  copyright (C) 2009 Paolo Casaschi
+#  see README file and http://pgn4web.casaschi.net
+#  for credits, license and more details
+
 # bash script to grab a PGN file from a remote location for a
 # pgn4web live broadcast
 
