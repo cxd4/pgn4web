@@ -94,6 +94,7 @@
     update_ticker();
 
     lastRefreshTime = Date();
+
   }
 
   function customFunctionOnPgnGameLoad() {
@@ -230,6 +231,8 @@ function user_help() {
 </span>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
+<table width=460px height=360px cellpadding=0 cellspacing=0 border=0>
+<tr><td align=center valign=top>
 <center>
 
 <table id="liveTable" width=460px cellpadding=0 cellspacing=5 border=0>
@@ -291,7 +294,7 @@ function user_help() {
 
 <tr>
 
-<td width=246px align=left valign=middle style="padding-bottom: 1px; padding-top: 1px;">
+<td width=246px align=left valign=middle>
 <table width=246px cellpadding=0 cellspacing=0><tr><td id="resultDetails" class="header" width="50%" align=left valign=middle>
 <span style="padding-left: 3px;" id="GameResult"></span>
 </td><td width="50%" align=right valign=middle>
@@ -299,7 +302,7 @@ function user_help() {
 </td></tr></table>
 </td>
 
-<td class="header" id="liveStatusDetails" width=199px align=center valign=middle style="padding-bottom: 1px; padding-top: 1px;">
+<td class="header" id="liveStatusDetails" width=199px align=center valign=middle">
 <span id="GameLiveStatus"></span>
 </td>
 
@@ -308,6 +311,8 @@ function user_help() {
 </table>
 
 </center>
+</td></tr>
+</table>
 
 </body>
 
