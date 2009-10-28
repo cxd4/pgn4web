@@ -29,13 +29,13 @@ fi
 if [ "$1" == "--guess" ]
 then
 	pgn4web_log=$(ps -wo pid,command | awk '$3=="live-grab.sh" {print $8; exit}')
-else
-	pgn4web_log=$1
 	pgn4web_dir=$(dirname $0)
 	if [ -n "$pgn4web_dir" ]
 	then
 		pgn4web_log=$pgn4web_dir"/"$pgn4web_log
 	fi
+else
+	pgn4web_log=$1
 fi
 
 pgn4web_pid=$(ps -wo pid,command | awk '$3=="live-grab.sh" {print $1; exit}')
@@ -52,7 +52,12 @@ then
 else
 	if [ -n "$pgn4web_pid" ]
 	then
-		echo "pgn4web live-grab running; pid:$pgn4web_pid; logFile not found"
+		if [ "$1" == "--guess" ] 
+		then
+			echo "pgn4web live-grab running; pid:$pgn4web_pid; failed to guess logFile"
+		else
+			echo "pgn4web live-grab running; pid:$pgn4web_pid; logFile $pgn4web_log not found"
+		fi
 	else
 		echo "pgn4web live-grab not found"
 	fi
