@@ -71,14 +71,13 @@ function gup( name ){
 }
 
 function print_menu( item, level, title ) {
-
-  menu =  '<table width=100% cellspacing=0 cellpadding=0><tr><td>';
-  menu += '<h' + level + '><a name=' + item + '>' + title + '</a></h' + level + '>';
+  menu  = '<table width=100% cellspacing=0 cellpadding=0><tr><td>';
+  menu += '<h' + level + '>' + title + '</a></h' + level + '>';
   menu += '</td><td valign=top>';
-  menu += '<div style="font-size: 66%; text-align: right">';
-  menu += '<a href=#credits>credits and license</a>';
-  menu += '&nbsp; &nbsp;<a href=#squares>shortcut squares</a>';
-  menu += '&nbsp; &nbsp;<a href=#keys>shortcut keys</a>';
+  menu += '<div style="font-size: 60%; text-align: right">';
+  menu += '<a name="' + item + '" href=#credits>credits&nbsp;&amp;&nbsp;license</a>';
+  menu += '&nbsp; &nbsp;<a href=#squares>shortcut&nbsp;squares</a>';
+  menu += '&nbsp; &nbsp;<a href=#keys>shortcut&nbsp;keys</a>';
   menu += '</div>';
   menu += '</td></tr></table>';
   document.write(menu); 
@@ -123,17 +122,17 @@ help</h1>
 
 <div style="height: 1em">&nbsp</div>
 
-<script>print_menu("credits", 2, "credits and license");</script>
+<script>print_menu("credits", 2, "credits&nbsp;&amp;&nbsp;license");</script>
 
 Javascript modifications of <a href=mailto:pgn4web@casaschi.net target=_blank>Paolo Casaschi (pgn4web@casaschi.net)</a> on code from the http://ficsgames.com database, in turn likely based on code from the LT PGN viewer at http://www.lutanho.net/pgn/pgnviewer.html
 <p>
-PNG images from http://ixian.com/chess/jin-piece-sets (creative commons attribution-share alike 3.0 unported license).
+PNG images from http://ixian.com/chess/jin-piece-sets (<a href=http://creativecommons.org/licenses/by-sa/3.0/>creative commons attribution-share alike 3.0 unported license</a>).
 <p>
 Remaining pgn4web code is copyright (C) 2009 <a href=mailto:pgn4web@casaschi.net target=_blank>Paolo Casaschi (pgn4web@casaschi.net)</a> and licensed under the terms of the <a href=license-gpl-2.0.txt>GNU General Public License version 2</a> as published by the <a href=http://www.fsf.org target=_blank>Free Software Foundation</a>; either <a href=license-gpl-2.0.txt>version 2 of the License</a>, or (at your option) any later version.
 <p>
 <br>
 
-<script>print_menu("squares", 2, "shortcut squares");</script>
+<script>print_menu("squares", 2, "shortcut&nbsp;squares");</script>
 
 <table style="padding:0;" border=0>
 <script>
@@ -163,10 +162,10 @@ print_help_row("&nbsp;", "");
 print_help_row("A8", "toggle highlighting");
 print_help_row("B8 / C8", "flip board / white on bottom");
 print_help_row("&nbsp;", "");
-print_help_row("D8", "toggle enabling keys shortcuts");
+print_help_row("D8", "toggle enabling shortcut keys");
 print_help_row("&nbsp;", "");
 print_help_row("E8", "go to pgn4web website");
-print_help_row("F8 / G8 / H8", "keys shorcuts help / square shortcuts help / pgn4web help");
+print_help_row("F8 / G8 / H8", "shortcut keys help / shortcut square help / pgn4web help");
 </script>
 </table>
 
@@ -180,7 +179,7 @@ The list above contains default values, those might have been altered by your we
 <p>
 <br>
 
-<script>print_menu("keys", 2, "shortcut keys");</script>
+<script>print_menu("keys", 2, "shortcut&nbsp;keys");</script>
 
 <table style="padding:0;" border=0>
 <script>

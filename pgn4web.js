@@ -394,16 +394,16 @@ function boardOnClickCol2Row0() { if (IsRotated) FlipBoard(); };
 boardAlt[2 + 0 * 8] = "show white on bottom";
 // D8
 function boardOnClickCol3Row0() { SetShortcutKeysEnabled(!shortcutKeysEnabled); };
-boardAlt[3 + 0 * 8] = "toggle enabling keys shortcuts";
+boardAlt[3 + 0 * 8] = "toggle enabling shortcut keys";
 // E8
 function boardOnClickCol4Row0() { window.open(project_url); }
 boardAlt[4 + 0 * 8] = "go to pgn4web website";
 // F8
 function boardOnClickCol5Row0() { displayHelp("keys"); };
-boardAlt[5 + 0 * 8] = "keys shortcuts help";
+boardAlt[5 + 0 * 8] = "shortcut keys help";
 // G8
 function boardOnClickCol6Row0() { displayHelp("squares"); };
-boardAlt[6 + 0 * 8] = "squares shortcuts help";
+boardAlt[6 + 0 * 8] = "shortcut squares help";
 // H8
 function boardOnClickCol7Row0() { displayHelp(); };
 boardAlt[7 + 0 * 8] = "pgn4web help";
