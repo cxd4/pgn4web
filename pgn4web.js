@@ -92,12 +92,15 @@ var project_author = 'Paolo Casaschi';
 var about = '\tpgn4web v' + version + '\n\t' + project_url + '\n';
 
 function displayHelp(section){
-  if (section) { sectionFlag = "#" + section; }
-  else { sectionFlag = ""; }
+  if ((!section) && (section != "credits") && (section != "squares") && (section != "keys") && (section != "top") ) { 
+    section = "top"; 
+  }
+  sectionFlag = "#" + section;
   versionParameter = "&version=" + version;
   if (shortcutKeysEnabled) { keysParameter = "&keysEnabled=true"; }
   else { keysParameter = "&keysEnabled=false"; }
-  window.open("help.html?" + versionParameter + keysParameter + sectionFlag, "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
+  helpWin = window.open("help.html?" + versionParameter + keysParameter + sectionFlag, "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
+  if (window.focus) { helpWin.focus(); }
 }
 
 
