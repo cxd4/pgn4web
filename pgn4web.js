@@ -465,11 +465,11 @@ boardAlt[1 + 3 * 8] = "";
 function boardOnClickCol2Row3() { };
 boardAlt[2 + 3 * 8] = "";
 // D5
-function boardOnClickCol3Row3() { };
-boardAlt[3 + 3 * 8] = "";
+function boardOnClickCol3Row3() { for (ii=currentGame-1; ii>=0; ii--) { if ((gameResult[ii] != undefined) && ((gameResult[ii]=="*") || (gameResult[ii]=="?"))) { break; }} if (ii>=0) { currentGame = ii; Init();} };
+boardAlt[3 + 3 * 8] = "load previous unfinished game";
 // E5
-function boardOnClickCol4Row3() { };
-boardAlt[4 + 3 * 8] = "";
+function boardOnClickCol4Row3() { for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((gameResult[ii] != undefined) && ((gameResult[ii]=="*") || (gameResult[ii]=="?"))) { break; }} if (ii<numberOfGames) { currentGame = ii; Init();} };
+boardAlt[4 + 3 * 8] = "load next unfinished game";
 // F5
 function boardOnClickCol5Row3() { };
 boardAlt[5 + 3 * 8] = "";
