@@ -465,11 +465,11 @@ boardAlt[1 + 3 * 8] = "";
 function boardOnClickCol2Row3() { };
 boardAlt[2 + 3 * 8] = "";
 // D5
-function boardOnClickCol3Row3() { for (ii=currentGame-1; ii>=0; ii--) { if ((gameResult[ii] != undefined) && ((gameResult[ii]=="*") || (gameResult[ii]=="?"))) { break; }} if (ii>=0) { currentGame = ii; Init();} };
-boardAlt[3 + 3 * 8] = "load previous unfinished game";
+function boardOnClickCol3Row3() { };
+boardAlt[3 + 3 * 8] = "";
 // E5
-function boardOnClickCol4Row3() { for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((gameResult[ii] != undefined) && ((gameResult[ii]=="*") || (gameResult[ii]=="?"))) { break; }} if (ii<numberOfGames) { currentGame = ii; Init();} };
-boardAlt[4 + 3 * 8] = "load next unfinished game";
+function boardOnClickCol4Row3() { };
+boardAlt[4 + 3 * 8] = "";
 // F5
 function boardOnClickCol5Row3() { };
 boardAlt[5 + 3 * 8] = "";
@@ -481,28 +481,28 @@ function boardOnClickCol7Row3() { };
 boardAlt[7 + 3 * 8] = "";
 // A4
 function boardOnClickCol0Row4() { };
-boardAlt[0 + 4 * 8] = "";
+boardAlt[0 + 4 * 8] = "jump to previous event";
 // B4
 function boardOnClickCol1Row4() { };
-boardAlt[1 + 4 * 8] = "";
+boardAlt[1 + 4 * 8] = "jump to previous round";
 // C4
-function boardOnClickCol2Row4() { };
-boardAlt[2 + 4 * 8] = "";
+function boardOnClickCol2Row4() { for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameResult[ii])) && (gameResult[ii]!="*")) { break; }} if (ii>=0) { currentGame = ii; Init();} };
+boardAlt[2 + 4 * 8] = "load previous finished game";
 // D4
-function boardOnClickCol3Row4() { };
-boardAlt[3 + 4 * 8] = "";
+function boardOnClickCol3Row4() { for (ii=currentGame-1; ii>=0; ii--) { if ((!checkHeaderDefined(gameResult[ii])) || (gameResult[ii]=="*")) { break; }} if (ii>=0) { currentGame = ii; Init();} };
+boardAlt[3 + 4 * 8] = "load previous unfinished game";
 // E4
-function boardOnClickCol4Row4() { };
-boardAlt[4 + 4 * 8] = "";
+function boardOnClickCol4Row4() { for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((!checkHeaderDefined(gameResult[ii])) || (gameResult[ii]=="*")) { break; }} if (ii<numberOfGames) { currentGame = ii; Init();} };
+boardAlt[4 + 4 * 8] = "load next unfinished game";
 // F4
-function boardOnClickCol5Row4() { };
-boardAlt[5 + 4 * 8] = "";
+function boardOnClickCol5Row4() { for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameResult[ii])) && (gameResult[ii]!="*")) { break; }} if (ii<numberOfGames) { currentGame = ii; Init();} };
+boardAlt[5 + 4 * 8] = "load next finished game";
 // G4
 function boardOnClickCol6Row4() { };
-boardAlt[6 + 4 * 8] = "";
+boardAlt[6 + 4 * 8] = "jump to next round";
 // H4
 function boardOnClickCol7Row4() { };
-boardAlt[7 + 4 * 8] = "";
+boardAlt[7 + 4 * 8] = "jump to next event";
 // A3
 function boardOnClickCol0Row5() { if (numberOfGames > 1) { currentGame = 0; Init(); } };
 boardAlt[0 + 5 * 8] = "load first game";
@@ -1458,7 +1458,7 @@ function restartLiveBroadcastTimeout() {
     if (LiveBroadcastEnded) {
       gameLiveStatus = "live broadcast ended";
     } else {
-      gameLiveStatus = "live games: " + liveGamesRunning + " &nbsp; ended: " + (numberOfGames - liveGamesRunning);
+      gameLiveStatus = "live games: " + liveGamesRunning + " &nbsp; finished: " + (numberOfGames - liveGamesRunning);
     }
     needRestart = !LiveBroadcastEnded; 
   }
@@ -2079,6 +2079,11 @@ function IsCheck(col, row, color){
   }
   return false;
 }
+
+function checkHeaderDefined(headerValue) {
+  return ((headerValue != undefined) && (headerValue != "") && (headerValue != " ") && (headerValue != "?"));
+}
+
 /******************************************************************************
  *                                                                            *
  * Function LoadGameHeaders:                                                  *
