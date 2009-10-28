@@ -1,0 +1,164 @@
+<html>
+
+<!--
+  pgn4web javascript chessboard
+  copyright (C) 2009 Paolo Casaschi
+  see README file and http://pgn4web.casaschi.net
+  for credits, license and more details
+-->
+
+<head>
+
+<title>pgn4web help</title>
+
+<style type="text/css">
+
+html,
+body {
+  font-family: sans-serif;
+  color: black;
+  background: white;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<script  type="text/javascript">
+
+function print_menu( item, level, title ) {
+
+  menu =  '<table width=100% cellspacing=0 cellpadding=0><tr><td>';
+  menu += '<h' + level + '><a name=' + item + '>' + title + '</a></h' + level + '>';
+  menu += '</td><td valign=top>';
+  menu += '<div style="font-size: 66%; text-align: right">';
+  menu += '<a href=#credits>credits and license</a>';
+  menu += '&nbsp; &nbsp;<a href=#squares>shortcut squares</a>';
+  menu += '&nbsp; &nbsp;<a href=#keys>shortcut keys</a>';
+  menu += '</div>';
+  menu += '</td></tr></table>';
+  document.write(menu); 
+}
+
+function print_help_row (one, two) {
+  document.write("<tr><td style='padding-left:30'>" + one + "</td><td>" + two + "</td></tr>");
+}
+
+if (parent.version == undefined) {
+  project_url = 'http://pgn4web.casaschi.net';
+  displayVersion = '';
+  keysString = '';
+} else {
+  displayVersion = 'v' + parent.version;
+  if (parent.shortcutKeysEnabled) { 
+    keysString = '<b>Shorcut keys enabled</b>, disable with <b>shift</b> followed by <b>escape<b>.\n';
+  } else {
+    keysString = '<b>Shorcut keys disabled</b>, enable with <b>shift</b> followed by <b>escape<b>.\n';
+  }
+}
+
+</script>
+
+<table width=100% cellspacing=0 cellpadding=0><tr>
+<td align=left valign=middle>
+<h1> 
+<script>document.write('<a href=' + project_url + ' target=_blank>pgn4web</a>')</script> 
+help</h1>
+</td><td align=right valign=middle>
+<script>document.write('<a href=' + project_url + ' target=_blank><img src=pawns.png border=0></a>')</script>
+</td></tr></table>
+
+<div style="height: 1em">&nbsp</div>
+
+<script>print_menu("credits", 2, "credits and license");</script>
+
+Javascript modifications of <a href=mailto:pgn4web@casaschi.net>Paolo Casaschi (pgn4web@casaschi.net)</a> on code from the http://ficsgames.com databas, in turn likely based on code from the LT PGN viewer at http://www.lutanho.net/pgn/pgnviewer.html
+<p>
+PNG images from http://ixian.com/chess/jin-piece-sets (creative commons attribution-share alike 3.0 unported license).
+<p>
+Remaining pgn4web code is Copyright (C) 2009 Paolo Casaschi and licensed under the terms of the GNU General Public License version 2 as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+<p>
+
+<script>print_menu("squares", 2, "shortcut squares");</script>
+
+<table style="padding-left:10; padding-right:0; padding-top:0; padding-bottom:0;" border=0>
+<script>
+print_help_row("A1 / H1", "game start / end");
+print_help_row("B1 / G1", "find previous / next comment");
+print_help_row("C1 / F1", "move 6 half-moves back / forward");
+print_help_row("D1 / E1", "move back / forward");
+print_help_row("&nbsp;", "");
+print_help_row("A2 / B2", "stop / toggle autoplay");
+print_help_row("C2 / D2...", "autoplay 1 sec / 2 sec...");
+print_help_row("&nbsp;", "");
+print_help_row("A3 / H3", "first / last game");
+print_help_row("A3 / H3", "previous 50th / next 50th game");
+print_help_row("B3 / G3", "previous / next game");
+print_help_row("D3 / E3", "random game at start / random ply");
+print_help_row("&nbsp;", "");
+print_help_row("A7", "toggle comments");
+print_help_row("B7", "toggle comments on separate lines");
+print_help_row("&nbsp;", "");
+print_help_row("A8", "toggle highlighting");
+print_help_row("B8 / C8", "flip board / white on bottom");
+print_help_row("&nbsp;", "");
+print_help_row("B6", "force games refresh during live broadcast");
+print_help_row("A6 / C6", "pause / restart live broadcast automatic refresh");
+</script>
+</table>
+
+<p>
+
+Squares always labeled as if white is at the bottom.
+<br>
+The list above contains default values, those might have been altered by your web page
+<p>
+
+<script>print_menu("keys", 2, "shortcut keys");</script>
+
+<script>document.write(keysString)</script>
+
+<table style="padding-left:10; padding-right:0; padding-top:0; padding-bottom:0;" border=0>
+<script>
+print_help_row("h, l", "game start, end");
+print_help_row("j, k", "move backward, forward");
+print_help_row("u, i", "find previous, next comment");
+print_help_row("&nbsp;", "");
+print_help_row("v, m", "first, last game");
+print_help_row("b, n", "previous, next game");
+print_help_row("c, x", "random game at start, random ply");
+print_help_row("&nbsp;", "");
+print_help_row("a, s", "start, stop autoplay");
+print_help_row("1, 2...", "autoplay 1 sec, 2 sec...");
+print_help_row("&nbsp;", "");
+print_help_row("f, d", "flip board, white on bottom");
+print_help_row("g", "toggle highlighting");
+print_help_row("&nbsp;", "");
+print_help_row("p", "toggle comments");
+print_help_row("o", "toggle comments on separate lines");
+print_help_row("&nbsp;", "");
+print_help_row("t", "force games refresh during live broadcast");
+print_help_row("r, y", "pause, restart live broadcast automatic refreash");
+</script>
+</table>
+
+<p>
+
+<table width=100% cellspacing=0 cellpadding=0><tr>
+<td align=left valign=middle>
+<script>document.write("<b>pgn4web" + displayVersion + ": more info at <a href=" + project_url + ">" + project_url + "</a></b>")</script>
+</td><td align=right valign=middle>
+<script>document.write('<a href=' + project_url + ' target=_blank><img src=pawns.png border=0></a>')</script>
+</td></tr></table>
+
+</body>
+
+</html>
+
