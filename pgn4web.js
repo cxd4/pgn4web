@@ -91,16 +91,13 @@ var project_author = 'Paolo Casaschi';
 
 var about = '\tpgn4web v' + version + '\n\t' + project_url + '\n';
 
-function displayHelp(){
-  window.open("help.html", "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
-}
-
-function displayKeyHelp(){
-  window.open("help.html#keys", "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
-}
-
-function displaySquareHelp(){
-  window.open("help.html#squares", "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
+function displayHelp(section){
+  if (section) { sectionFlag = "#" + section; }
+  else { sectionFlag = ""; }
+  versionParameter = "&version=" + version;
+  if (shortcutKeysEnabled) { keysParameter = "&keysEnabled=true"; }
+  else { keysParameter = "&keysEnabled=false"; }
+  window.open("help.html?" + versionParameter + keysParameter + sectionFlag, "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
 }
 
 
@@ -399,10 +396,10 @@ boardAlt[3 + 0 * 8] = "";
 function boardOnClickCol4Row0() { SetShortcutKeysEnabled(!shortcutKeysEnabled); }
 boardAlt[4 + 0 * 8] = "toggle enabling keys shortcuts";
 // F8
-function boardOnClickCol5Row0() { displayKeyHelp(); };
+function boardOnClickCol5Row0() { displayHelp("keys"); };
 boardAlt[5 + 0 * 8] = "show keys shortcuts";
 // G8
-function boardOnClickCol6Row0() { displaySquareHelp(); };
+function boardOnClickCol6Row0() { displayHelp("squares"); };
 boardAlt[6 + 0 * 8] = "show square shortcuts";
 // H8
 function boardOnClickCol7Row0() { displayHelp(); };
