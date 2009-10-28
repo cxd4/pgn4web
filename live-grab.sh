@@ -15,14 +15,20 @@ timeoutHours_default=12
 print_log() {
 	if [ -n "$1" ]
 	then
-		echo "$(date) $(basename $0) ($$) LOG: $1" >> $logFile
+		log="$(date) $(basename $0) ($$) LOG: $1"
 	else
-		echo >> $logFile
+		log=""
+	fi
+	if [ -n "$logFile" ]
+	then
+		echo $log >> $logFile
+	else
+		echo $log
 	fi
 }
 
 print_error() {
-        if [ "$logFile" != "/dev/stdout" ]
+        if [ -n "$logFile" ]
         then
 		echo $(date) $(basename $0) ERROR: $1 >> $logFile
 	fi
@@ -31,16 +37,16 @@ print_error() {
 
 print_help() {
   echo
-  echo $(basename $0) remotePgnUrl localPgnFile refreshSeconds timeoutHours logFile
+  echo "$(basename $0) remotePgnUrl localPgnFile refreshSeconds timeoutHours logFile"
   echo 
-  echo Periodically fetches a remote PGN file for a pgn4web live broadcast.
+  echo "Periodically fetches a remote PGN file for a pgn4web live broadcast."
   echo
-  echo Parameters:
-  echo - remotePgnUrl: URL to fetch
-  echo - localPgnFile: local PGN filename \(default: $localPgnFile_default\)
-  echo - refreshSeconds: refresh rate in seconds \(default: $refreshSeconds_default\)
-  echo - timeoutHours: timeout in hours for stopping the process \(default: $timeoutHours_default\)
-  echo - logFile: log file name \(default /dev/stdout\)
+  echo "Parameters:"
+  echo "  remotePgnUrl: URL to fetch"
+  echo "  localPgnFile: local PGN filename (default: $localPgnFile_default)"
+  echo "  refreshSeconds: refresh rate in seconds (default: $refreshSeconds_default)"
+  echo "  timeoutHours: timeout in hours for stopping the process (default: $timeoutHours_default)"
+  echo "  logFile: log file name (default /dev/stdout)"
   echo
 }
 
@@ -52,10 +58,8 @@ else
 	remotePgnUrl=$1
 fi
 
-if [ -z "$5" ]
+if [ -n "$5" ]
 then
-	logFile=/dev/stdout
-else
 	if [ -e "$5" ]
 	then
 		echo "$(date) $(basename $0) ERROR: logFile exists" > /dev/stderr
