@@ -71,10 +71,10 @@ function gup( name ){
 }
 
 function print_menu( item, level, title ) {
-  menu  = '<table width=100% cellspacing=0 cellpadding=0><tr><td>';
+  menu  = '<table width=100% cellspacing=0 cellpadding=0><tr><td valign=top>';
   menu += '<h' + level + '>' + title + '</a></h' + level + '>';
   menu += '</td><td valign=top>';
-  menu += '<div style="font-size: 60%; text-align: right">';
+  menu += '<div style="font-size: 66%; text-align: right">';
   menu += '<a name="' + item + '" href=#credits>credits&nbsp;&amp;&nbsp;license</a>';
   menu += '&nbsp; &nbsp;<a href=#squares>shortcut&nbsp;squares</a>';
   menu += '&nbsp; &nbsp;<a href=#keys>shortcut&nbsp;keys</a>';
@@ -217,7 +217,7 @@ print_help_row("esc", "pgn4web help");
 
 <table width=100% cellspacing=0 cellpadding=0><tr>
 <td align=left valign=middle>
-<script>document.write("<b>more info at <a href=" + project_url + " target=_blank>" + project_url + "</a><br>pgn4web " + displayVersion + "</b>")</script>
+<script>document.write("<b>pgn4web " + displayVersion + "<br><a href=" + project_url + " target=_blank>" + project_url + "</a></b>")</script>
 </td><td align=right valign=middle>
 <script>document.write('<a href=' + project_url + ' target=_blank><img src=pawns.png border=0></a>')</script>
 </td></tr></table>
