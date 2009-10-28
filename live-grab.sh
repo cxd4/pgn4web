@@ -8,6 +8,12 @@
 # bash script to grab a PGN file from a remote location for a
 # pgn4web live broadcast
 
+if [ "$(basename $SHELL)" != "bash" ]
+then
+	echo "ERROR: $(basename $0) should be run with bash"
+	exit
+fi
+
 localPgnFile_default=live.pgn
 refreshSeconds_default=49
 timeoutHours_default=12

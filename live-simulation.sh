@@ -8,6 +8,12 @@
 # bash script to create a pgn file over time, same as a live broadcast
 # more realistic than simulating the live broadcast within pgn4web
 
+if [ "$(basename $SHELL)" != "bash" ]
+then
+	echo "ERROR: $(basename $0) should be run with bash"
+	exit
+fi
+
 pgn_file=live.pgn
 pgn_file_tmp=live-tmp.pgn
 delay=17

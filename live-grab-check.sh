@@ -7,16 +7,22 @@
 
 # bash script to check status of live-grab.sh
 
+if [ "$(basename $SHELL)" != "bash" ]
+then
+	echo "ERROR: $(basename $0) should be run with bash"
+	exit
+fi
+
 if [ -z "$1" ] 
 then
 	echo
-	echo "$(basename $0) [ logFile | --guess ]"
+	echo "$(basename $0) [ logFile | --guessLogFile ]"
 	echo 
 	echo "Checks live-gram.sh logfile"
 	echo
 	echo "Parameters:"
 	echo "  logFile: full filename and path of the logfile created by live-grab.sh"
-	echo "  --guess: if specified, $(basename $0) will try to guess logFile"
+	echo "  --guessLogFile: if specified, $(basename $0) will try to guess logFile"
 	echo
 	exit
 fi
@@ -26,7 +32,7 @@ then
 	echo "ERROR: missing awk"
 fi
 
-if [ "$1" == "--guess" ]
+if [ "$1" == "--guessLogFile" ]
 then
 	pgn4web_log=$(ps -wo pid,command | awk '$3=="live-grab.sh" {print $8; exit}')
 	pgn4web_dir=$(dirname $0)
@@ -52,14 +58,19 @@ then
 else
 	if [ -n "$pgn4web_pid" ]
 	then
-		if [ "$1" == "--guess" ] 
+		if [ "$1" == "--guessLogFile" ] 
 		then
 			echo "pgn4web live-grab running; pid:$pgn4web_pid; failed to guess logFile"
 		else
 			echo "pgn4web live-grab running; pid:$pgn4web_pid; logFile $pgn4web_log not found"
 		fi
 	else
-		echo "pgn4web live-grab not found"
+		if [ "$1" == "--guessLogFile" ] 
+		then
+			echo "pgn4web live-grab not found"
+		else
+			echo "pgn4web live-grab not found for logFile $pgn4web_log"
+		fi
 	fi
 fi
 
