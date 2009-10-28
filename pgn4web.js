@@ -396,7 +396,7 @@ boardAlt[2 + 0 * 8] = "show white on bottom";
 function boardOnClickCol3Row0() { };
 boardAlt[3 + 0 * 8] = "";
 // E8
-function boardOnClickCol4Row0() { SetShortcutKeysEnabled(!shortcutKeysEnabled); displayKeyHelp(); }
+function boardOnClickCol4Row0() { SetShortcutKeysEnabled(!shortcutKeysEnabled); }
 boardAlt[4 + 0 * 8] = "toggle enabling keys shortcuts";
 // F8
 function boardOnClickCol5Row0() { displayKeyHelp(); };
