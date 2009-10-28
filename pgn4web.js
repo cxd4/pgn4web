@@ -151,15 +151,15 @@ var creditsAndLicense = 'Javascript modifications of '+ project_author +
               '';
 
 function displayHelp(){
-  window.open("help.html", "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no");
+  window.open("help.html", "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
 }
 
 function displayKeyHelp(){
-  window.open("help.html#keys", "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no");
+  window.open("help.html#keys", "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
 }
 
 function displaySquareHelp(){
-  window.open("help.html#squares", "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no");
+  window.open("help.html#squares", "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
 }
 
 
