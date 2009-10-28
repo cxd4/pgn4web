@@ -400,10 +400,10 @@ function boardOnClickCol4Row0() { SetShortcutKeysEnabled(!shortcutKeysEnabled); 
 boardAlt[4 + 0 * 8] = "toggle enabling keys shortcuts";
 // F8
 function boardOnClickCol5Row0() { displayHelp("keys"); };
-boardAlt[5 + 0 * 8] = "show keys shortcuts";
+boardAlt[5 + 0 * 8] = "keys shortcuts help";
 // G8
 function boardOnClickCol6Row0() { displayHelp("squares"); };
-boardAlt[6 + 0 * 8] = "show square shortcuts";
+boardAlt[6 + 0 * 8] = "squares shortcuts help";
 // H8
 function boardOnClickCol7Row0() { displayHelp(); };
 boardAlt[7 + 0 * 8] = "help";
