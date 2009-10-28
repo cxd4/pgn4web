@@ -205,6 +205,7 @@ function user_help() {
 	     "but it's possible to manually force a refresh by clicking on square B6." + "\n" + 
 	     "\n" +
 	     "Chessboard squares are input buttons to control the games display:" + "\n" +
+	     "\n" +
 	     "  D1 / E1: move back / forwards" + "\n" +
 	     "  A1 / H1: game start / end" + "\n" + 
 	     "  C3 / F3: previous / next game" + "\n" +
@@ -215,14 +216,15 @@ function user_help() {
 	     "  G8 / H8: shortcuts help / pgn4web help" + "\n" +
 	     "\n" +
 	     "Status:" + "\n" + 
+	     "\n" +
 	     demoString +
 	     "  last refresh: " + lastRefreshTime + "\n" +
 	     "  live broadcast started:" + LiveBroadcastStarted + 
 	     " ended:" + LiveBroadcastEnded + 
 	     " paused:" + LiveBroadcastPaused + "\n" +
 	     "\n" + 
-	     "Press OK for pgn4web help information" +
-	     "\n";
+	     "Press OK for more pgn4web help information" +
+	     "\n ";
 
   if (confirm(helpText)) { displayHelp(); }
 }

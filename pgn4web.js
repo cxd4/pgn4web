@@ -91,65 +91,6 @@ var project_author = 'Paolo Casaschi';
 
 var about = '\tpgn4web v' + version + '\n\t' + project_url + '\n';
 
-var keyhelp = 'h, l\tgame start/end' + '\n' +
-              'j, k\tmove backward/forward' + '\n' +
-              'u, i\tfind previous/next comment' + '\n' +
-              '\n' +
-              'v, m\tfirst/last game' + '\n' +
-              'b, n\tprevious/next game' + '\n' +
-              'c, x\trandom game at start/random ply' + '\n' +
-              '\n' +
-              'a, s\tstart/stop autoplay' + '\n' +
-              '1,[n]\tautoplay 1 sec, [n] sec' + '\n' +
-              '\n' +
-              'f, d\tflip board / white on bottom' + '\n' +
-              'g\ttoggle highlighting' + '\n' +
-              'p\ttoggle comments' + '\n' +
-              'o\ttoggle comments on separate lines' + '\n' +
-              '\n' +
-              't\tforce games refresh during live broadcast' + '\n' +
-              'r, y\tpause/restart live broadcast automatic refresh' + '\n' +
-              '';
-
-var squarehelp = 'A1, H1\tgame start/end' + '\n' +
-                 'B1, G1\tfind previous/next comment' + '\n' +
-                 'C1, F1\tmove 6 half-moves back/forward' + '\n' +
-                 'D1, E1\tmove back/forward' + '\n' +
-                 '\n' +
-                 'A2, B2\tstop/toggle autoplay' + '\n' + 
-                 'C2, D2...\tautoplay 1 sec, 2 sec...' + '\n' +
-                 '\n' +
-                 'A3, H3\tfirst/last game' + '\n' +
-                 'B3, G3\tprevious/next game' + '\n' +
-                 'D3, E3\trandom game at start/random ply' + '\n' +
-                 '\n' +
-                 'A7     \ttoggle comments' + '\n' +
-                 'B7     \ttoggle comments on separate lines' + '\n' +
-                 'A8     \ttoggle highlighting' + '\n' +
-                 'B8, C8\tflip board / white on bottom' + '\n' +
-                 '\n' +
-                 'B6     \tforce games refresh during live broadcast' + '\n' +
-                 'A6, C6\tpause/restart live broadcast automatic refresh' + '\n' + 
-                 '\n' +
-                 'Squares always labeled as if white is at the bottom.\n' +
-                 'List above contains default values, those might have been altered by your web page.' + 
-                 '';
-
-var creditsAndLicense = 'Javascript modifications of '+ project_author +
-              ' (' + project_email + ') ' +
-              'on code from the http://ficsgames.com database, ' +
-              'in turn likely based on code from the LT PGN viewer at ' +
-              'http://www.lutanho.net/pgn/pgnviewer.html ' + 
-              '\n' + '\n' +
-              'PNG images from http://ixian.com/chess/jin-piece-sets ' +
-              '(creative commons attribution-share alike 3.0 unported license).' +
-              '\n' + '\n' +
-              'Remaining pgn4web code is Copyright (C) 2009 ' + project_author + ' ' +
-              'and licensed under the terms of the GNU General Public License version 2 ' + 
-              'as published by the Free Software Foundation; either version 2 of the ' +
-              'License, or (at your option) any later version.\n' +
-              '';
-
 function displayHelp(){
   window.open("help.html", "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
 }
