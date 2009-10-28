@@ -180,7 +180,7 @@ function user_help() {
   if (refreshMinutes != 1) { plural = "s"; }
   else { plural = ""; }
 
-  if (demoFlag) { demoString = "  demo mode enabled" + "\n"; }
+  if (demoFlag) { demoString = "demo mode enabled" + "\n"; }
   else { demoString = ""; }
 
   helpText = "Chess games live broadcast using pgn4web v" + version + "\n" +
@@ -198,21 +198,21 @@ function user_help() {
 	     "\n" +
 	     "Chessboard squares are input buttons to control the games display:" + "\n" +
 	     "\n" +
-	     "  A1 / H1: game start / end" + "\n" + 
-	     "  D1 / E1: move back / forwards" + "\n" +
-	     "  A3 / H3: load first / last game" + "\n" +
-	     "  C3 / F3: load previous / next game" + "\n" +
-	     "  C4 / F4: jump to previous / next finished game" + "\n" +
-	     "  D4 / E4: jump to previous / next unfinished game" + "\n" +
-	     "  A6 / C6: pause / restart live broadcast automatic refresh" + "\n" +
-	     "  B6: force games refresh during live broadcast" + "\n" +
-	     "  G8 / H8: shortcuts help / pgn4web help" + "\n" +
+	     "A1 / H1: game start / end" + "\n" + 
+	     "D1 / E1: move back / forwards" + "\n" +
+	     "A3 / H3: load first / last game" + "\n" +
+	     "C3 / F3: load previous / next game" + "\n" +
+	     "C4 / F4: jump to previous / next finished game" + "\n" +
+	     "D4 / E4: jump to previous / next unfinished game" + "\n" +
+	     "A6 / C6: pause / restart live broadcast automatic refresh" + "\n" +
+	     "B6: force games refresh during live broadcast" + "\n" +
+	     "G8 / H8: shortcuts help / pgn4web help" + "\n" +
 	     "\n" +
 	     "Status:" + "\n" + 
 	     "\n" +
 	     demoString +
-	     "  last refresh: " + lastRefreshTime + "\n" +
-	     "  live broadcast started:" + LiveBroadcastStarted + 
+	     "last refresh: " + lastRefreshTime + "\n" +
+	     "live broadcast started:" + LiveBroadcastStarted + 
 	     " ended:" + LiveBroadcastEnded + 
 	     " paused:" + LiveBroadcastPaused + "\n" +
 	     "\n" + 
