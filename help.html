@@ -85,7 +85,7 @@ function print_menu( item, level, title ) {
 }
 
 function print_help_row (one, two) {
-  document.write("<tr><td style='padding-left:30'>" + one + "</td><td>" + two + "</td></tr>");
+  document.write("<tr><td style='text-align: left; vertical-align: top; padding-left:40'>" + one + "</td><td style='text-align: left; vertical-align: top; padding-left:10'>" + two + "</td></tr>");
 }
 
 project_url = 'http://pgn4web.casaschi.net';
@@ -135,7 +135,7 @@ Remaining pgn4web code is copyright (C) 2009 <a href=mailto:pgn4web@casaschi.net
 
 <script>print_menu("squares", 2, "shortcut squares");</script>
 
-<table style="padding-left:10; padding-right:0; padding-top:0; padding-bottom:0;" border=0>
+<table style="padding:0;" border=0>
 <script>
 print_help_row("A1 / H1", "game start / end");
 print_help_row("B1 / G1", "find previous / next comment");
@@ -181,7 +181,7 @@ The list above contains default values, those might have been altered by your we
 
 <script>print_menu("keys", 2, "shortcut keys");</script>
 
-<table style="padding-left:10; padding-right:0; padding-top:0; padding-bottom:0;" border=0>
+<table style="padding:0;" border=0>
 <script>
 print_help_row("h, l", "game start, end");
 print_help_row("j, k", "move backward, forward");
