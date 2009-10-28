@@ -393,11 +393,11 @@ boardAlt[1 + 0 * 8] = "flip board";
 function boardOnClickCol2Row0() { if (IsRotated) FlipBoard(); };
 boardAlt[2 + 0 * 8] = "show white on bottom";
 // D8
-function boardOnClickCol3Row0() { };
-boardAlt[3 + 0 * 8] = "";
+function boardOnClickCol3Row0() { SetShortcutKeysEnabled(!shortcutKeysEnabled); };
+boardAlt[3 + 0 * 8] = "toggle enabling keys shortcuts";
 // E8
-function boardOnClickCol4Row0() { SetShortcutKeysEnabled(!shortcutKeysEnabled); }
-boardAlt[4 + 0 * 8] = "toggle enabling keys shortcuts";
+function boardOnClickCol4Row0() { window.open(project_url); }
+boardAlt[4 + 0 * 8] = "go to pgn4web website";
 // F8
 function boardOnClickCol5Row0() { displayHelp("keys"); };
 boardAlt[5 + 0 * 8] = "keys shortcuts help";
@@ -406,7 +406,7 @@ function boardOnClickCol6Row0() { displayHelp("squares"); };
 boardAlt[6 + 0 * 8] = "squares shortcuts help";
 // H8
 function boardOnClickCol7Row0() { displayHelp(); };
-boardAlt[7 + 0 * 8] = "help";
+boardAlt[7 + 0 * 8] = "pgn4web help";
 // A7
 function boardOnClickCol0Row1() { SetCommentsIntoMoveText(!commentsIntoMoveText); Init(); };
 boardAlt[0 + 1 * 8] = "toggle show comments in game text";
