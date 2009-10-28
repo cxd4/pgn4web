@@ -151,22 +151,15 @@ var creditsAndLicense = 'Javascript modifications of '+ project_author +
               '';
 
 function displayHelp(){
-  if (shortcutKeysEnabled) keysEnabled = 'Shorcut keys ENABLED, disable with SHIFT followed by ESCAPE.\n';
-  else  keysEnabled = 'Shorcut keys DISABLED, enable with SHIFT followed by ESCAPE.\n';
-  text = about + '\nCREDITS AND LICENSE\n\n' + creditsAndLicense + '\nSHORTCUT SQUARES HELP\n\nClick on the G8 square for help on shortcut squares.\n\nSHORTCUT KEYS HELP\n\n' + keysEnabled + 'Press OK if you want help on shortcut keys.';
-  if (confirm(text)) { displayKeyHelp() }
+  window.open("help.html", "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no");
 }
 
 function displayKeyHelp(){
-  if (shortcutKeysEnabled) keysEnabled = 'Shorcut keys ENABLED, disable with SHIFT followed by ESCAPE.\n\n';
-  else  keysEnabled = 'Shorcut keys DISABLED, enable with SHIFT followed by ESCAPE.\n\n';
-  text = about + '\nSHORTCUT KEYS HELP\n\n' + keysEnabled + keyhelp + '\n';
-  alert(text);
+  window.open("help.html#keys", "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no");
 }
 
 function displaySquareHelp(){
-  text = about + '\nSHORTCUT SQUARES HELP\n\n' + squarehelp + '\n';
-  alert(text);
+  window.open("help.html#squares", "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no");
 }
 
 
