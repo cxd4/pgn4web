@@ -5,8 +5,24 @@
 #  see README file and http://pgn4web.casaschi.net
 #  for credits, license and more details
 
-# bash script to grab a PGN file from a remote location for a
-# pgn4web live broadcast
+if [ -z "$1" ] || [ "$1" == "--help" ]
+then
+  echo
+  echo "$(basename $0) remotePgnUrl localPgnFile refreshSeconds timeoutHours logFile"
+  echo 
+  echo "Shell script periodically fetching a PGN file for a pgn4web live broadcast."
+  echo
+  echo "Parameters:"
+  echo "  remotePgnUrl: URL to fetch"
+  echo "  localPgnFile: local PGN filename (default: $localPgnFile_default)"
+  echo "  refreshSeconds: refresh rate in seconds (default: $refreshSeconds_default)"
+  echo "  timeoutHours: timeout in hours for stopping the process (default: $timeoutHours_default)"
+  echo "  logFile: log file name (default /dev/stdout)"
+  echo
+  echo "Needs to be run using bash and requires either curl or wget"
+  echo
+  exit
+fi
 
 if [ "$(basename $SHELL)" != "bash" ]
 then
@@ -41,24 +57,8 @@ print_error() {
 	echo $(basename $0) ERROR: $1 > /dev/stderr
 }
 
-print_help() {
-  echo
-  echo "$(basename $0) remotePgnUrl localPgnFile refreshSeconds timeoutHours logFile"
-  echo 
-  echo "Periodically fetches a remote PGN file for a pgn4web live broadcast."
-  echo
-  echo "Parameters:"
-  echo "  remotePgnUrl: URL to fetch"
-  echo "  localPgnFile: local PGN filename (default: $localPgnFile_default)"
-  echo "  refreshSeconds: refresh rate in seconds (default: $refreshSeconds_default)"
-  echo "  timeoutHours: timeout in hours for stopping the process (default: $timeoutHours_default)"
-  echo "  logFile: log file name (default /dev/stdout)"
-  echo
-}
-
 if [ -z "$1" ]
 then 
-	print_help
 	exit
 else
 	remotePgnUrl=$1

@@ -8,6 +8,19 @@
 # bash script to create a pgn file over time, same as a live broadcast
 # more realistic than simulating the live broadcast within pgn4web
 
+if [ "$1" == "--help" ]
+then
+	echo
+	echo "$(basename $0)"
+	echo
+	echo "Shell script to create a pgn file over time, same as a live broadcast"
+	echo "and more realistic than simulating the live broadcast within pgn4web"
+	echo
+	echo "Needs to be run using bash"
+	echo
+	exit
+fi
+
 if [ "$(basename $SHELL)" != "bash" ]
 then
 	echo "ERROR: $(basename $0) should be run with bash"
@@ -101,8 +114,8 @@ steps=33
 
 if [ -e "$pgn_file" ]
 then
-	echo $(basename $0) ERROR: $pgn_file exists
-        echo Delete the file or choose another filename and restart $(basename $0)
+	echo "ERROR: $(basename $0): $pgn_file exists"
+        echo "Delete the file or choose another filename and restart $(basename $0)"
         exit
 fi
 

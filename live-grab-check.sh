@@ -5,25 +5,24 @@
 #  see README file and http://pgn4web.casaschi.net
 #  for credits, license and more details
 
-# bash script to check status of live-grab.sh
+if [ "$1" == "--help" ]
+then
+	echo
+	echo "$(basename $0)"
+	echo 
+	echo "Shell script to check status of live-grab.sh processes"
+	echo
+	echo "Note: note it assumes that live-grab.sh is always starter from its own"
+	echo "directory so that the logFile path (if any) is relative to that directory"
+	echo
+	echo "Needs to be run using bash and requires awk"
+	echo
+	exit
+fi
 
 if [ "$(basename $SHELL)" != "bash" ]
 then
 	echo "ERROR: $(basename $0) should be run with bash"
-	exit
-fi
-
-if [ -z "$1" ] 
-then
-	echo
-	echo "$(basename $0) [ logFile | --guessLogFile ]"
-	echo 
-	echo "Checks live-gram.sh logfile"
-	echo
-	echo "Parameters:"
-	echo "  logFile: full filename and path of the logfile created by live-grab.sh"
-	echo "  --guessLogFile: if specified, $(basename $0) will try to guess logFile"
-	echo
 	exit
 fi
 
@@ -32,45 +31,35 @@ then
 	echo "ERROR: missing awk"
 fi
 
-if [ "$1" == "--guessLogFile" ]
+pgn4web_scan=$(ps -wo pid,command | awk 'BEGIN {c=0} $3=="live-grab.sh" {if ($8=="") {$8="/dev/stdout"}; printf("pgn4web_pid[%d]=\"%s\";pgn4web_log[%d]=\"%s\";",c,$1,c,$8); c++}')
+
+eval $pgn4web_scan
+
+length=${#pgn4web_pid[@]}
+if [ $length -gt 0 ]
 then
-	pgn4web_log=$(ps -wo pid,command | awk '$3=="live-grab.sh" {print $8; exit}')
-	pgn4web_dir=$(dirname $0)
+	echo pgn4web live-grab.sh processes: $length 
+fi
+
+pgn4web_dir=$(dirname $0)
+
+for ((i=0; i<length; i++))
+do
 	if [ -n "$pgn4web_dir" ]
 	then
-		pgn4web_log=$pgn4web_dir"/"$pgn4web_log
-	fi
-else
-	pgn4web_log=$1
-fi
-
-pgn4web_pid=$(ps -wo pid,command | awk '$3=="live-grab.sh" {print $1; exit}')
-
-if [ -f "$pgn4web_log" ]
-then
-	if [ -n "$pgn4web_pid" ]
-	then
-		pgn4web_steps=$(cat $pgn4web_log | awk 'END { print "step:" $11 "/" $13 }')
-		echo "pgn4web live-grab running; pid:$pgn4web_pid; $pgn4web_steps"
-	else
-		echo "pgn4web live-grab not running anymore"
-	fi
-else
-	if [ -n "$pgn4web_pid" ]
-	then
-		if [ "$1" == "--guessLogFile" ] 
+		if [[ ${pgn4web_log[i]} != /* ]]
 		then
-			echo "pgn4web live-grab running; pid:$pgn4web_pid; failed to guess logFile"
-		else
-			echo "pgn4web live-grab running; pid:$pgn4web_pid; logFile $pgn4web_log not found"
-		fi
-	else
-		if [ "$1" == "--guessLogFile" ] 
-		then
-			echo "pgn4web live-grab not found"
-		else
-			echo "pgn4web live-grab not found for logFile $pgn4web_log"
+			pgn4web_log[$i]=$pgn4web_dir"/"${pgn4web_log[i]}
 		fi
 	fi
-fi
+
+	echo -n "  pid:${pgn4web_pid[$i]}; log:${pgn4web_log[$i]}"
+	if [ -f "${pgn4web_log[$i]}" ]
+	then
+		pgn4web_steps[i]=$(cat ${pgn4web_log[$i]} | awk 'END { print "step:" $11 "/" $13 }')
+		echo "; steps:${pgn4web_steps[$i]};"
+	else
+		echo " unavailable;"
+	fi
+done
 
