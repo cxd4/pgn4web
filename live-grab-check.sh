@@ -31,7 +31,7 @@ then
 	echo "ERROR: missing awk"
 fi
 
-pgn4web_scan=$(ps -wo pid,command | awk 'BEGIN {c=0} $3=="live-grab.sh" {if ($8=="") {$8="/dev/stdout"}; printf("pgn4web_pid[%d]=\"%s\";pgn4web_log[%d]=\"%s\";",c,$1,c,$8); c++}')
+pgn4web_scan=$(ps -U $USER -w -o pid,command | awk 'BEGIN {c=0} $3=="live-grab.sh" {if ($8=="") {$8="/dev/stdout"}; printf("pgn4web_pid[%d]=\"%s\";pgn4web_log[%d]=\"%s\";",c,$1,c,$8); c++}')
 
 eval $pgn4web_scan
 
@@ -53,13 +53,12 @@ do
 		fi
 	fi
 
-	echo -n "  pid:${pgn4web_pid[$i]}; log:${pgn4web_log[$i]}"
 	if [ -f "${pgn4web_log[$i]}" ]
 	then
-		pgn4web_steps[i]=$(cat ${pgn4web_log[$i]} | awk 'END { print "step:" $11 "/" $13 }')
-		echo "; steps:${pgn4web_steps[$i]};"
+		pgn4web_steps[i]=$(cat ${pgn4web_log[$i]} | awk 'END { printf("%4d of %4d", $11, $13) }')
 	else
-		echo " unavailable;"
+		pgn4web_steps[i]="unavaiable  "
 	fi
+	echo "  pid: ${pgn4web_pid[$i]}  steps: ${pgn4web_steps[$i]}  log: ${pgn4web_log[$i]}"
 done
 
