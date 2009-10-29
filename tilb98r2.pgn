@@ -80,8 +80,23 @@ Qf2+ {[%clk 00:08]} 87.Kh3 {[%clk 00:07]} Qf5 {[%clk 00:06]}
 [BlackClock "2:00:00"]
 
 1.e4 {1:59:59} e5 {1:58:58} 2.Nf3 {1:57:57} Nf6 {1:56:56} 
-3.Nxe5 {1:55:55} d6 {1:54:54} 4.Nf3 {1:53:53} Nxe4 {1:52:52} 
-5.d4 {1:51:51} d5 {1:50:50} 6.Bd3 {1:49:49} Nc6 {1:48:48} 
+{[%pgn4web add live comments here]}
+3.Nxe5 {1:55:55} 
+{[%pgn4web add live comments here]}
+d6 {1:54:54} 
+{[%pgn4web add live comments here]}
+4.Nf3 {1:53:53} 
+{[%pgn4web add live comments here]}
+Nxe4 {1:52:52} 
+{[%pgn4web add live comments here]}
+5.d4 {1:51:51} 
+{[%pgn4web add live comments here]}
+d5 {1:50:50} 
+{[%pgn4web add live comments here]}
+6.Bd3 {1:49:49} 
+{[%pgn4web add live comments here]}
+Nc6 {1:48:48} 
+{[%pgn4web add live comments here]}
 7.O-O {1:47:47} Be7 {1:46:46} 8.Re1 {1:45:45} Bg4 {1:44:44} 
 9.c3 {1:43:43} f5 {1:42:42} 10.Qb3 {1:41:41} O-O {1:40:40} 
 11.Nbd2 {1:39:39} Na5 {1:38:38} 12.Qa4 {1:37:37} Nc6 {1:36:36} 
