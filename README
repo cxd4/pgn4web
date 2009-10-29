@@ -50,9 +50,10 @@ Limitations:
 
 Bugs: 
 - if square brackets are present in the comments (or the game text) then 
-the game parsing is badly broken. If your PGN file is not displayed properly,
+the game parsing is broken. If your PGN file is not displayed properly,
 please check for characters "[" and "]" in the comments and try removing 
-them. Otherwise send me the PGN file for review. 
+them. Please email me for review at pgn4web@casaschi.net any PGN file that 
+pgn4web fails parsing correctly.  
 
 Enjoy!
 
@@ -231,6 +232,31 @@ Note about Internet Explorer v7 and above: under some circumstances you might
 experience problems when testing HTML pages from your local computer while 
 developing your site. If this happens to you, read notes at 
 http://code.google.com/p/pgn4web/issues/detail?id=23 
+
+
+PGN STANDARD SUPPORT
+
+pgn4web mostly supports the PGN standard for chess games notation (see 
+http://www.tim-mann.org/Standard). Notable exceptions and limitations:
+
+- variations are not parsed as such, but stored as comments; support for 
+browsing variations is planned for a future release
+- if square brackets are present in the comments (or the game text) then 
+the game parsing is broken. If your PGN file is not displayed properly, 
+please check for characters [ and ] and try removing them. 
+
+pgn4web also follows a set of proposed extensions to the PGN standard
+(see http://www.enpassant.dk/chess/palview/enhancedpgn.htm), more 
+specifically:
+
+- understands the [%clk 1:59:58] tag in the PGN comment section as the 
+  clock time after each move
+- understands the PGN tags [WhiteClock "2:00:00"] and 
+  [BlackClock "2:00:00"]` as the clock times at the beginning of the game
+- defines the [%pgn4web internal comment] tag in the PGN comment section 
+and stores the internal comment value for internal use. 
+
+Please email me for review any PGN file that pgn4web fails parsing correctly. 
 
 
 CREDITS AND LICENSE
