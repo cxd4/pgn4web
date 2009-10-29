@@ -617,6 +617,7 @@ var LiveBroadcastUpdateInProgress = false;
 var LiveBroadcastStarted = false;
 var LiveBroadcastEnded = false;
 var LiveBroadcastPaused = false;
+var LiveBroadcastStatusString = "";
 var gameDemoMaxPly = new Array();
 var gameDemoLength = new Array();
 
@@ -709,6 +710,7 @@ CastlingLong  = new Array(2);
 CastlingShort = new Array(2);
 Moves = new Array(MaxMove);
 MoveComments = new Array(MaxMove);
+pgn4webMoveComments = new Array(MaxMove);
 
 var MoveColor;
 var MoveCount;
@@ -1424,15 +1426,19 @@ function restartLiveBroadcast() {
   refreshPGNsource();
 }
 
-function checkLiveBroadcastEnded() {
+function checkLiveBroadcastStatus() {
+
   if (LiveBroadcastDelay == 0) { 
     LiveBroadcastEnded = false;
+    LiveBroadcastStatusString = "";
     return; 
   }
 
+  // check if broadcast did not start yet
   // check for odd situations where no PGN file is found and fake '[]' game is injected
-  if ((pgnGame == undefined) || ((pgnGame.length == 1) && (pgnGame[0] == '[] \n'))) {
+  if ((LiveBroadcastStarted == false) || ((pgnGame == undefined) || ((pgnGame.length == 1) && (pgnGame[0] == '[] \n')))) {
     LiveBroadcastEnded = false;
+    LiveBroadcastStatusString = "live broadcast yet to start";
     return;
   }
 
@@ -1441,6 +1447,16 @@ function checkLiveBroadcastEnded() {
     if (gameResult[ii].indexOf('*') >= 0) { liveGamesRunning++ }
   }
   LiveBroadcastEnded = (liveGamesRunning == 0);
+
+  if (LiveBroadcastEnded) {
+    LiveBroadcastStatusString = "live broadcast ended";
+  } else {
+    LiveBroadcastStatusString = "live games: " + liveGamesRunning + " &nbsp; finished: " + (numberOfGames - liveGamesRunning);
+  }
+
+  theObject = document.getElementById("GameLiveStatus");
+  if (theObject != null) { theObject.innerHTML = LiveBroadcastStatusString; }
+
 }
 
 function restartLiveBroadcastTimeout() {
@@ -1448,24 +1464,11 @@ function restartLiveBroadcastTimeout() {
   if (LiveBroadcastDelay == 0) { return; }
 
   if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); }
-  
-  if (LiveBroadcastStarted == false) { 
-    // no games, live broadcast has not started yet
-    gameLiveStatus = "live broadcast yet to start";
-    needRestart = true;
-  } else {
-    checkLiveBroadcastEnded() // redundant here, bt nevertheless
-    if (LiveBroadcastEnded) {
-      gameLiveStatus = "live broadcast ended";
-    } else {
-      gameLiveStatus = "live games: " + liveGamesRunning + " &nbsp; finished: " + (numberOfGames - liveGamesRunning);
-    }
-    needRestart = !LiveBroadcastEnded; 
-  }
-  
-  theObject = document.getElementById("GameLiveStatus");
-  if (theObject != null) { theObject.innerHTML = gameLiveStatus; }
+ 
+  checkLiveBroadcastStatus();
 
+  needRestart = (!LiveBroadcastEnded)
+  
   if ((needRestart == true) && (!LiveBroadcastPaused)){
     LiveBroadcastInterval = setTimeout("refreshPGNsource()", LiveBroadcastDelay * 60000);
   }
@@ -1516,7 +1519,7 @@ function refreshPGNsource() {
     pgnGameFromPgnText('[]'); 
   } 
   Init();
-  checkLiveBroadcastEnded();
+  checkLiveBroadcastStatus();
   customFunctionOnPgnTextLoad();
 
   if (oldCurrentPly >= 0) { GoToMove(oldCurrentPly); }
@@ -1552,7 +1555,7 @@ function createBoard(){
     if ( loadPgnFromPgnUrl(pgnUrl) ) {
       if (LiveBroadcastDelay > 0) { LiveBroadcastStarted = true; }
       Init();
-      if (LiveBroadcastDelay > 0) { checkLiveBroadcastEnded(); }
+      if (LiveBroadcastDelay > 0) { checkLiveBroadcastStatus(); }
       customFunctionOnPgnTextLoad();
       return;
     } else {
@@ -1568,7 +1571,7 @@ function createBoard(){
         LiveBroadcastStarted = false;
         pgnGameFromPgnText('[]'); 
         Init();
-	checkLiveBroadcastEnded();
+	checkLiveBroadcastStatus();
         customFunctionOnPgnTextLoad();
         return;
       }
@@ -2512,8 +2515,6 @@ function ParsePGNGameString(gameString){
         if (ss.indexOf(searchThis,start)==start){
           start += searchThis.length;
           MoveComments[StartPly+PlyNumber] += ss.substring(start, ss.length);
-          MoveComments[StartPly+PlyNumber] = MoveComments[StartPly+PlyNumber].replace(/[ \b\f\n\r\t]+$/g, '');
-          MoveComments[StartPly+PlyNumber] = translateNAGs(MoveComments[StartPly+PlyNumber]);
           start = ss.length;
           break;
         }
@@ -2522,8 +2523,6 @@ function ParsePGNGameString(gameString){
         if (ss.indexOf(searchThis,start)==start){
           start += searchThis.length;
           MoveComments[StartPly+PlyNumber] += ss.substring(start, ss.length);
-          MoveComments[StartPly+PlyNumber] = MoveComments[StartPly+PlyNumber].replace(/[ \b\f\n\r\t]+$/g, '');
-          MoveComments[StartPly+PlyNumber] = translateNAGs(MoveComments[StartPly+PlyNumber]);
           start = ss.length;
           break;
         }
@@ -2532,8 +2531,6 @@ function ParsePGNGameString(gameString){
         if (ss.indexOf(searchThis,start)==start){
           start += searchThis.length;
           MoveComments[StartPly+PlyNumber] += ss.substring(start, ss.length);
-          MoveComments[StartPly+PlyNumber] = MoveComments[StartPly+PlyNumber].replace(/[ \b\f\n\r\t]+$/g, '');
-          MoveComments[StartPly+PlyNumber] = translateNAGs(MoveComments[StartPly+PlyNumber]);
           start = ss.length;
           break;
         }
@@ -2542,8 +2539,6 @@ function ParsePGNGameString(gameString){
         if (ss.indexOf(searchThis,start)==start){
           start += searchThis.length;
           MoveComments[StartPly+PlyNumber] += ss.substring(start, ss.length);
-          MoveComments[StartPly+PlyNumber] = MoveComments[StartPly+PlyNumber].replace(/[ \b\f\n\r\t]+$/g, '');
-          MoveComments[StartPly+PlyNumber] = translateNAGs(MoveComments[StartPly+PlyNumber]);
           start = ss.length;
           break;
         }
@@ -2563,12 +2558,17 @@ function ParsePGNGameString(gameString){
         move = ss.substring(start,end);
         Moves[StartPly+PlyNumber] = ClearMove(move);
         if (ss.charAt(end) == ' ') start = end; else start = end - 1;
-        MoveComments[StartPly+PlyNumber] = MoveComments[StartPly+PlyNumber].replace(/[ \b\f\n\r\t]+$/g, '');
-        MoveComments[StartPly+PlyNumber] = translateNAGs(MoveComments[StartPly+PlyNumber]);
         PlyNumber++;
         MoveComments[StartPly+PlyNumber]='';
         break;
     }
+  }
+  for (ii=StartPly; ii<=PlyNumber; ii++) {
+    pgn4webCommentTmp = MoveComments[ii].match(/<%pgn4web\s*([^<>]*)>/);
+    if (pgn4webCommentTmp) { pgn4webMoveComments[ii] = pgn4webCommentTmp[1]; } 
+    else { pgn4webMoveComments[ii] = ""; }
+    MoveComments[ii] = translateNAGs(MoveComments[ii]);
+    MoveComments[ii] = MoveComments[ii].replace(/[ \b\f\n\r\t]+$/g, '');
   }
 }
 

@@ -121,6 +121,20 @@
     // }
   }
 
+  function customFunctionOnMove() {
+    if (pgn4webMoveComments[CurrentPly] != "") {
+      document.getElementById("GameLiveStatus").style.display = "none";
+      document.getElementById("pgn4webComment").style.display = "inline";
+      document.getElementById("pgn4webComment").innerHTML = pgn4webMoveComments[CurrentPly];
+    } else {
+      document.getElementById("pgn4webComment").style.display = "none";
+      document.getElementById("pgn4webComment").innerHTML = "";
+      document.getElementById("GameLiveStatus").style.display = "inline";
+    }
+  }
+
+  defaultStatusChanged = false;
+
 // disable A7 and B7 shortcut squares usually allowing showing move comments
 // A7
 function boardOnClickCol0Row1() { };
@@ -306,7 +320,8 @@ function user_help() {
 </td>
 
 <td class="header" id="liveStatusDetails" width=199px align=center valign=middle">
-<span id="GameLiveStatus"></span>
+<span style="display: none;" id="pgn4webComment"></span>
+<span style="display: inline;" id="GameLiveStatus"></span>
 </td>
 
 </tr>
