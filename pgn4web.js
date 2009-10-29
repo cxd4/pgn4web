@@ -1477,7 +1477,7 @@ function restartLiveBroadcastTimeout() {
 
 /******************************************************************************
  *                                                                            *
- * Function refreshPGNsource():                                                 *
+ * Function refreshPGNsource():                                               *
  *                                                                            *
  * reload the games from the specified URL during live broadcast              *
  *                                                                            *
@@ -1497,6 +1497,13 @@ function refreshPGNsource() {
       else if (rnd <= 0.60) { gameDemoMaxPly[ii] += 1; } // 40% of times add 1 ply
     }                                                    // 40% of times add 0 ply
   }
+
+  oldGameWhite = gameWhite[currentGame];
+  oldGameBlack = gameBlack[currentGame];
+  oldGameEvent = gameEvent[currentGame];
+  oldGameRound = gameRound[currentGame];
+  oldGameSite  = gameSite[currentGame];
+  oldGameDate  = gameDate[currentGame];
 
   initialGame = currentGame + 1;
   firstStart = true;
@@ -1519,14 +1526,24 @@ function refreshPGNsource() {
     pgnGameFromPgnText('[]'); 
   } 
   Init();
+
+  foundOldGame = false;
+  for (ii=0; ii<numberOfGames; ii++) {
+    foundOldGame = (gameWhite[ii]==oldGameWhite) && (gameBlack[ii]==oldGameBlack) &&
+                   (gameEvent[ii]==oldGameEvent) && (gameRound[ii]==oldGameRound) &&
+                   (gameSite[ii] ==oldGameSite ) && (gameDate[ii] ==oldGameDate );
+    if (foundOldGame) { break }
+  }
+  if (foundOldGame) {currentGame = ii; Init(); }
+
   checkLiveBroadcastStatus();
   customFunctionOnPgnTextLoad();
 
-  if (oldCurrentPly >= 0) { GoToMove(oldCurrentPly); }
+  if ((foundOldGame) && (oldCurrentPly >= 0)) { GoToMove(oldCurrentPly); }
 
   restartLiveBroadcastTimeout();
 
-  if (oldAutoplay) { SetAutoPlay(true); }
+  if ((foundOldGame) && (oldAutoplay)) { SetAutoPlay(true); }
 
   LiveBroadcastUpdateInProgress = false;
 }
