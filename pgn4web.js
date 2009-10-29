@@ -1439,24 +1439,24 @@ function checkLiveBroadcastStatus() {
   if ((LiveBroadcastStarted == false) || ((pgnGame == undefined) || ((pgnGame.length == 1) && (pgnGame[0] == '[] \n')))) {
     LiveBroadcastEnded = false;
     LiveBroadcastStatusString = "live broadcast yet to start";
-    return;
-  }
-
-  liveGamesRunning = 0;
-  for (ii=0; ii<numberOfGames; ii++) {
-    if (gameResult[ii].indexOf('*') >= 0) { liveGamesRunning++ }
-  }
-  LiveBroadcastEnded = (liveGamesRunning == 0);
-
-  if (LiveBroadcastEnded) {
-    LiveBroadcastStatusString = "live broadcast ended";
   } else {
-    LiveBroadcastStatusString = "live games: " + liveGamesRunning + " &nbsp; finished: " + (numberOfGames - liveGamesRunning);
+    // broadcast started with a good PGN
+    liveGamesRunning = 0;
+    for (ii=0; ii<numberOfGames; ii++) {
+      if (gameResult[ii].indexOf('*') >= 0) { liveGamesRunning++ }
+    }
+    LiveBroadcastEnded = (liveGamesRunning == 0);
+
+    if (LiveBroadcastEnded) {
+      LiveBroadcastStatusString = "live broadcast ended";
+    } else {
+      LiveBroadcastStatusString = "live games: " + liveGamesRunning + 
+                                  " &nbsp; finished: " + (numberOfGames - liveGamesRunning);
+    }
   }
 
   theObject = document.getElementById("GameLiveStatus");
   if (theObject != null) { theObject.innerHTML = LiveBroadcastStatusString; }
-
 }
 
 function restartLiveBroadcastTimeout() {
