@@ -5,6 +5,10 @@
 #  see README file and http://pgn4web.casaschi.net
 #  for credits, license and more details
 
+localPgnFile_default=live.pgn
+refreshSeconds_default=49
+timeoutHours_default=12
+
 if [ -z "$1" ] || [ "$1" == "--help" ]
 then
   echo
@@ -17,7 +21,7 @@ then
   echo "  localPgnFile: local PGN filename (default: $localPgnFile_default)"
   echo "  refreshSeconds: refresh rate in seconds (default: $refreshSeconds_default)"
   echo "  timeoutHours: timeout in hours for stopping the process (default: $timeoutHours_default)"
-  echo "  logFile: log file name (default /dev/stdout)"
+  echo "  logFile: log file name (default: standard output)"
   echo
   echo "Needs to be run using bash and requires either curl or wget"
   echo
@@ -29,10 +33,6 @@ then
 	echo "ERROR: $(basename $0) should be run with bash"
 	exit
 fi
-
-localPgnFile_default=live.pgn
-refreshSeconds_default=49
-timeoutHours_default=12
 
 print_log() {
 	if [ -n "$1" ]
