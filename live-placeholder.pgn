@@ -1,0 +1,11 @@
+% this is a placeholder pgn file for the live boradcast
+% it allows to announce the next broadcast on live.html
+% if the Result tag is set to "*" live.html will automatically refresh games
+
+[White "next live event on April 15th"]
+[Black "best chess event ever"]
+% [Result "*"]
+
+{[%pgn4web reload page at 1PM GMT]}
+
+
