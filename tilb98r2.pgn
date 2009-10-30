@@ -10,7 +10,9 @@
 
 1.Nf3 {[%clk 1:59:01]} Nf6 {[%clk 1:58:02]} 2.c4 {[%clk 1:57:03]}
 e6 {[%clk 1:56:04]} 3.g3 {[%clk 1.55:05]} d5 {[%clk 1:54:04]} 
-4.Bg2 {[%clk 1:53:07]} Be7 {[%clk 1:52:08]} 5.O-O {[%clk 1:51:09]} 
+4.Bg2 {[%clk 1:53:07] [%pgn4web add live comments here]} 
+Be7 {[%pgn4web add live comments here] [%clk 1:52:08]} 
+5.O-O {[%clk 1:51:09] [%pgn4web add live comments here]} 
 O-O {[%clk 1:50:10]} 6.b3 {[%clk 1:49:11]} b6 {[%clk 1:48:12]}
 7.Bb2 {[%clk 1:47:13]} Bb7 {[%clk 1:46:14]} 8.e3 {[%clk 1:45:15]} 
 Nbd7 {[%clk 1:44:16]} 9.Nc3 {[%clk 1:43:17]} Ne4 {[%clk 1:42:18]} 
@@ -79,24 +81,16 @@ Qf2+ {[%clk 00:08]} 87.Kh3 {[%clk 00:07]} Qf5 {[%clk 00:06]}
 [WhiteClock "2:00:00"]
 [BlackClock "2:00:00"]
 
-1.e4 {1:59:59} e5 {1:58:58} 2.Nf3 {1:57:57} Nf6 {1:56:56} 
-{[%pgn4web add live comments here]}
-3.Nxe5 {1:55:55} 
-{[%pgn4web add live comments here]}
-d6 {1:54:54} 
-{[%pgn4web add live comments here]}
-4.Nf3 {1:53:53} 
-{[%pgn4web add live comments here]}
-Nxe4 {1:52:52} 
-{[%pgn4web add live comments here]}
-5.d4 {1:51:51} 
-{[%pgn4web add live comments here]}
-d5 {1:50:50} 
-{[%pgn4web add live comments here]}
-6.Bd3 {1:49:49} 
-{[%pgn4web add live comments here]}
-Nc6 {1:48:48} 
-{[%pgn4web add live comments here]}
+1.e4 {1:59:59} e5 {1:58:58} 2.Nf3 {1:57:57} Nf6 
+{1:56:56 [%pgn4web add live comments here]}
+3.Nxe5 {1:55:55 [%pgn4web add live comments here]} 
+d6 {1:54:54 [%pgn4web add live comments here]}
+4.Nf3 {1:53:53 [%pgn4web add live comments here]}
+Nxe4 {1:52:52} {[%pgn4web add live comments here]}
+5.d4 {1:51:51} {[%pgn4web add live comments here]}
+d5 {1:50:50} {[%pgn4web add live comments here]}
+6.Bd3 {1:49:49} {[%pgn4web add live comments here]}
+Nc6 {1:48:48} {[%pgn4web add live comments here]}
 7.O-O {1:47:47} Be7 {1:46:46} 8.Re1 {1:45:45} Bg4 {1:44:44} 
 9.c3 {1:43:43} f5 {1:42:42} 10.Qb3 {1:41:41} O-O {1:40:40} 
 11.Nbd2 {1:39:39} Na5 {1:38:38} 12.Qa4 {1:37:37} Nc6 {1:36:36} 

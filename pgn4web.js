@@ -1066,11 +1066,14 @@ function SetInitialGame(number){
   initialGame = number;
 }
 
-// the clock value is detected with two options: first the DGT sequence [%clk 01:02] is checked (remember though that pgn4web has replaced "[%xxx]" with "<%xxx>"). If this fails, then look for the beginning of the comment for a sequence of numbers and ":" and "." characters.
+// the clock value is detected with two options: first the DGT sequence [%clk 01:02] 
+// is checked (remember though that pgn4web has replaced "[%xxx]" with "<@xxx@>"). 
+// If this fails, then look for the beginning of the comment for a sequence of numbers 
+// and ":" and "." characters.
   
 function clockFromComment(comment){
-  // remember pgn4web replaces "[%...]" with "<%...>"
-  if (DGTclock = comment.match(/<%clk\s*([^<>]*)>/)) { clock = DGTclock[1]; }
+  // remember pgn4web replaces "[%...]" with "<@...@>"
+  if (DGTclock = comment.match(/<@clk\s*(.*?)@>/)) { clock = DGTclock[1]; }
   else { if (!(clock = comment.match(/^\s*[0-9:\.]+/))) {clock = ""; } }
   return clock;
 }
@@ -1105,8 +1108,8 @@ function HighlightLastMove(){
   if (theShowCommentTextObject != null) {
     if (MoveComments[showThisMove+1] != undefined) {
       // remove PGN extension tags
-      // remember pgn4web replaces "[%...]" with "<%...>"
-      thisComment = MoveComments[showThisMove+1].replace(/<%[^<>]*>\s*/g,''); // note trailing spaces are removed also
+      // remember pgn4web replaces "[%...]" with "<@...@>"
+      thisComment = MoveComments[showThisMove+1].replace(/<@.*?@>\s*/g,''); // note trailing spaces are removed also
       // remove comments that are all spaces
       if (thisComment.match(/^\s*$/)) {thisComment = ''};
     } else {
@@ -1327,9 +1330,10 @@ function highlightSquare(col, row, on){
  ******************************************************************************/
 function pgnGameFromPgnText(pgnText){
 
-  // in order to cope with DGT clock extensions to PGN like {[%command value]} and considering the pgn4web bug with square brackets in the PGN text, any sequence "[%xxx]" is replaced by "<%xxx>".
-  // remember pgn4web replaces "[%...]" with "<%...>"
-  pgnText = pgnText.replace(/\[+%([^\[\]]*)\]+/g, "<%$1>");
+  // in order to cope with DGT clock extensions to PGN like {[%command value]} and considering the pgn4web bug with square brackets in the PGN text, any sequence "[%xxx]" is replaced by "<@xxx@>".
+  // remember pgn4web replaces "[%...]" with "<@...@>"
+  // note that strictly the "+" is the regular expression should not be there, but this accomodates with erroneus repeat characters like "[[[%%command parameter]]"
+  pgnText = pgnText.replace(/\[+%+(.*?)\]+/g, "<@$1@>");
 
   lines=pgnText.split("\n");
   inGameHeader = false;
@@ -2600,8 +2604,8 @@ function ParsePGNGameString(gameString){
     }
   }
   for (ii=StartPly; ii<=PlyNumber; ii++) {
-    // remember pgn4web replaces "[%...]" with "<%...>"
-    pgn4webCommentTmp = MoveComments[ii].match(/<%pgn4web\s*([^<>]*)>/);
+    // remember pgn4web replaces "[%...]" with "<@...@>"
+    pgn4webCommentTmp = MoveComments[ii].match(/<@pgn4web\s*(.*?)@>/);
     if (pgn4webCommentTmp) { pgn4webMoveComments[ii] = pgn4webCommentTmp[1]; } 
     else { pgn4webMoveComments[ii] = ""; }
     MoveComments[ii] = translateNAGs(MoveComments[ii]);
@@ -3246,8 +3250,8 @@ function PrintHTML(){
   for (ii = StartPly; ii < StartPly+PlyNumber; ++ii){
     printedComment = false;
     // remove PGN extension tags
-    // remember pgn4web replaces "[%...]" with "<%...>"
-    thisComment = MoveComments[ii].replace(/<%[^<>]*>\s*/g,''); // note trailing spaces are removed also
+    // remember pgn4web replaces "[%...]" with "<@...@>"
+    thisComment = MoveComments[ii].replace(/<@.*?@>\s*/g,''); // note trailing spaces are removed also
     // remove comments that are all spaces
     if (thisComment.match(/^\s*$/)) {thisComment = ''};
     if (commentsIntoMoveText && (thisComment != '')){
@@ -3269,8 +3273,8 @@ function PrintHTML(){
             '<SPAN CLASS="move"> </SPAN>';
   }
   // remove PGN extension tags
-  // remember pgn4web replaces "[%...]" with "<%...>"
-  thisComment = MoveComments[StartPly+PlyNumber].replace(/<%[^<>]*>\s*/g,''); // note trailing spaces are removed also
+  // remember pgn4web replaces "[%...]" with "<@...@>"
+  thisComment = MoveComments[StartPly+PlyNumber].replace(/<@.*?@>\s*/g,''); // note trailing spaces are removed also
   // remove comments that are all spaces
   if (thisComment.match(/^\s*$/)) {thisComment = ''};
   if (commentsIntoMoveText && (thisComment != '')){
