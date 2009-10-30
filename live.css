@@ -41,7 +41,7 @@ body {
 .whiteSquare,
 .highlightWhiteSquare {
   border-color: #EDE8D5;
-  background: #EDE8D5;
+  background: #EDE8D5; 
 }
 
 .blackSquare,
@@ -58,13 +58,12 @@ body {
 
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 450px !important;
+  width: 448px !important;
   color: #7D7A6C;
   font-size: 90%;
   background-color: #E8E3D0;
-  border-width: 0px;
+  border-width: 1px;
   border-color: #E8E3D0;
-  border-style: solid;
 }
 
 .buttonControlPlay,
@@ -90,7 +89,6 @@ body {
   text-decoration: none;   
 }
 
-.helplink,
 .header,
 .headerHighlighted {
   font-size: 75%;

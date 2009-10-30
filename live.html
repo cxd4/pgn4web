@@ -99,20 +99,15 @@
 
   function customFunctionOnPgnGameLoad() {
     if ((gameRound[currentGame] != undefined) && (gameRound[currentGame] != "") && (gameRound[currentGame] != "?")) {
-      document.getElementById("roundDetails").innerHTML = "round ";
+      document.getElementById("roundDetails").innerHTML = " - round ";
     } else {
       document.getElementById("roundDetails").innerHTML = "";
       document.getElementById("GameRound").innerHTML = "";
     }
-    if ((gameWhite[currentGame] != undefined) && (gameWhite[currentGame] != "") && (gameWhite[currentGame] != "?")) {
-      document.getElementById("whiteDetails").className = "headerHighlighted";
+    if (LiveBroadcastStarted) { 
+      document.getElementById("playersDetails").className = "headerHighlighted";
     } else {
       document.getElementById("whiteDetails").className = "header";
-    }
-    if ((gameBlack[currentGame] != undefined) && (gameBlack[currentGame] != "") && (gameBlack[currentGame] != "?")) {
-      document.getElementById("blackDetails").className = "headerHighlighted";
-    } else {
-      document.getElementById("blackDetails").className = "header";
     }
     // if ((gameResult[currentGame] != undefined) && ((gameResult[currentGame] == "*") || (gameResult[currentGame] == "?"))) {
     //  document.getElementById("resultDetails").className = "header";
@@ -250,108 +245,98 @@ function user_help() {
 
 <center>
 
+<!-- need the external table to force height of 360 (see blackberry background issue -->
 <!-- 460 is the max width for a 480 wide screen (like the blackberry 8900) allowing for scrollbars -->
 <!-- 360 is the max height for a 260 tall screen (like the blackberry 8900) -->
-<table width=460px height=360px cellpadding=0 cellspacing=0 border=0>
+<table id="outerTable" width=450px height=360px cellpadding=5 cellspacing=0 border=0>
 <tr><td align=center valign=top>
 
-<!-- same width as abobe with cellspacing 5 (over 2 columns) -->
-<table id="liveTable" width=460px cellpadding=0 cellspacing=5 border=0>
-
+<!-- width 450 = 460 outerTable width - 2 * 5 cellpadding -->
+<table width=450px cellpadding=0 cellspacing=0 border=0>
 <tr>
-
-<!-- width is 450 = (460 table width) - (2 columns) * (5 cellspacing) --> 
-<!-- padding-top 4 -->
-<td align=left colspan=2 width=450px style="padding-top: 4px;">
+<td style="padding-bottom: 4px; text-align: center; vertical-align: middle;">
 <div id="GameSelector"></div>
 </td>
-
 </tr>
+</table>
 
+<!-- same 450 width as above -->
+<table id="eventDetails" class="header" width=450px cellpadding=0 cellspacing=0 border=0>
 <tr>
-
-<!-- left column width 246 (chessboard size) = 8 * (26 square size + 2 * (2 square border)) + 2 * (3 chessboard border) -->
-<td width=246px align=left>
-
-<!-- left column width 246, 3 cellpadding -->
-<table class="header" id="whiteDetails" width=246px cellpadding=3 cellspacing=0><tr><td align=left>
-<span id="GameWhite"></span>
-</td><td align=right>
-<span id="GameWhiteClock"></span>
-</td></tr></table>
-
-<!-- left column width 246, 3 cellpadding -->
-<table class="header" id="blackDetails" width=246px cellpadding=3 cellspacing=0><tr><td align=left>
-<span id="GameBlack"></span>
-</td><td align=right>
-<span id="GameBlackClock"></span>
-</td></tr></table>
-
-</td>
-
-<!-- right column width 199 = (460 table width) - (246 left column width) - (3 * (5 cellspacing)) -->
-<td width=199px align=left>
-
-<!-- right column width 199, cellpadding = 3 -->
-<table class="header" width=199px cellpadding=3 cellspacing=0><tr><td align=left>
-<span id="GameEvent"></span>
-</td><td align=right>
-<span id="roundDetails"></span><span id="GameRound"></span>
-</td></tr></table>
-
-<!-- right column width 199, cellpadding = 3 -->
-<table class="header" width=199px cellpadding=3 cellspacing=0><tr><td align=left>
+<td width=100px style="padding: 3px; text-align: left; vertical-align: middle;">
 <span id="GameSite"></span>
-</td><td align=right>
-<span id="GameDate"></span>
-</td></tr></table>
-
 </td>
-
+<td width=250px style="padding: 3px; text-align: center; vertical-align: middle;">
+<span id="GameEvent"></span><span id="roundDetails"></span><span id="GameRound"></span>
+</td>
+<td width=100px style="padding: 3px; text-align: right; vertical-align: middle;">
+<span id="GameDate"></span>
+</td>
 </tr>
+</table>
 
-<tr valign=top>
+<!-- same 450 width as above -->
+<table id="playersDetails" class="header" width=450px cellpadding=0 cellspacing=0 border=0>
+<tr>
+<td width=65px style="padding: 3px; text-align: left; vertical-align: middle;">
+<span id="GameWhiteClock"></span>
+</td>
+<td width=320px style="padding: 3px; text-align: center; vertical-align: middle;">
+<span id="GameWhite"></span>
+&nbsp;&nbsp;&nbsp;
+<span id="GameBlack"></span>
+</td>
+<td width=65px style="padding: 3px; text-align: right; vertical-align: middle;">
+<span id="GameBlackClock"></span>
+</td>
+</tr>
+</table>
 
-<!-- left column width 246 -->
-<td width=246px align=left>
+<!-- same 450 width as above -->
+<table width=450px cellpadding=0 cellspacing=0 border=0>
+<tr>
+<!-- 426 chessboard size = 8 * (26 square size + 2 * (2 square border)) + 2 * (3 chessboard border) -->
+<td width=246px style="padding-top: 6px; padding-bottom: 6px; padding-left: 0px; padding-right: 0px; text-align: left; vertical-align: middle;">
 <span id="GameBoard"></span>
 </td>
 
-<!-- right column width 199 -->
-<td width=199px align=left valign=top>
-<!-- padding left/right 3, height 243 = (246 chessboard size) - (3 padding) -->
-<div class="movebox" id="GameText" style="height: 243px; padding-left: 3px; padding-right: 3px; overflow: auto;">
+<!-- right column width 204 = (450 outer cell width) - (246 left column width) -->
+<td width=204px style="padding-top: 6px; padding-bottom: 6px; text-align: right; vertical-align: middle;">
+<!-- padding left 7, right 3, height 243 = (246 chessboard size) - (3 padding) -->
+<div class="movebox" id="GameText" style="height: 243px; padding-left: 6px; padding-right: 3px; padding-top: 3px; overflow: auto;">
 </div>
 </td>
-
 <tr>
+</table>
 
-<!-- left column width 246 -->
-<td width=246px align=left valign=middle>
-
-<!-- left column width 246 -->
-<table width=246px cellpadding=0 cellspacing=0><tr><td id="resultDetails" class="header" width="50%" align=left valign=middle>
-<!-- padding left 3 -->
-<span style="padding-left: 3px;" id="GameResult"></span>
-</td><td width="50%" align=right valign=middle>
-<!-- padding right 3 -->
-<a class="helplink" id="ticker" style="padding-right: 3px;" href="javascript: user_help();" onFocus="this.blur()" title="pgn4web live broadcast help">HELP</a>
-</td></tr></table>
+<!-- same 450 width as above -->
+<table id="liveStatusDetails" class="header" width=450px cellpadding=0 cellspacing=0 border=0>
+<tr">
+<td width=150px style="padding-top: 3px; padding-bottom: 3px; text-align: left; vertical-align: middle;">
+<span style="padding-left: 3px" id="GameResult"></span>
 </td>
-
-<!-- right column width 199 -->
-<td class="header" id="liveStatusDetails" width=199px align=center valign=middle">
+<!-- width 99 = 246 chessboard width - 150 width above + 3 padding -->
+<td width=99px style="padding-top: 3px; padding-bottom: 3px; text-align: right; vertical-align: middle;">
+<a class="helplink" style="padding-right: 6px;" id="ticker" href="javascript: user_help();" onFocus="this.blur()" title="pgn4web live broadcast help">HELP</a>
+</td>
+<!-- right width = right column width 204 - 3 padding -->
+<td width=201px style="padding-top: 3px; padding-bottom: 3px;" align=center valign=middle>
+<div>
 <span style="display: none;" id="pgn4webComment"></span>
 <span style="display: inline;" id="GameLiveStatus"></span>
+</div>
 </td>
-
 </tr>
-
 </table>
 
 </td></tr>
 </table>
 </center>
+
+<!---
+<script>document.write(document.getElementById("outerTable").offsetWidth + "x" + 
+ document.getElementById("outerTable").offsetHeight)</script>
+-->
 
 </body>
 
