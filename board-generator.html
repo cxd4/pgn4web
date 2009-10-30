@@ -60,7 +60,7 @@ a {
 // if you customize the board-generator.html file for your site 
 // you probably want to customize the default values
 
-pgnText_default = '[White "?"]\n[Black "?"]\n[Result "?"]\n[Date "?"]\n[Event "?"]\n[Site "?"]\n[Round "?"]\n\n';
+pgnText_default = templatePgnHeader + '\n';
 auto_default = "t";
 delay_default = 1000;
 loop_default = "f";
@@ -571,7 +571,7 @@ function bug_report() {
   var bug_info = "pgn4web board generator bug report\n\n-------- automatically generated debug info: start --------\n\nURL: " + window.location + "\n\nuser agent: " + window.navigator.userAgent+ "\n\npgn4web version: " + version + "\n\niFrame HTML code:\n\n" + html_code_string + "\n\n-------- automatically generated debug info: end   --------\n\nPlease add below a description of the bug and attach a screenshot if possible.\n\n\n\n\n";
   mailto_link = 'mailto:' + email + '?subject=' + subject + '&body=' + escape(bug_info);
 
-  win = window.open("", "bug_report", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no",status=no"); 
+  win = window.open("", "bug_report", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no"); 
   with (win.document) {
     open("text/html", "replace");
     write("<html>");

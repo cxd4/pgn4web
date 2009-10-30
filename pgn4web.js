@@ -618,6 +618,8 @@ var LiveBroadcastStarted = false;
 var LiveBroadcastEnded = false;
 var LiveBroadcastPaused = false;
 var LiveBroadcastStatusString = "";
+var LiveBroadcastPlaceholderEvent = 'pgn4web live broadcast';
+var LiveBroadcastPlaceholderPgn = '[Event "' + LiveBroadcastPlaceholderEvent + '"]';
 var gameDemoMaxPly = new Array();
 var gameDemoLength = new Array();
 
@@ -723,6 +725,10 @@ var IsRotated = false;
 ClearImg  = new Image();
 
 DocumentImages = new Array();
+
+var emptyPgnHeader = '[White ""]\n[Black ""]\n[Result ""]\n[Date ""]\n[Event ""]\n[Site ""]\n[Round ""]\n';
+var templatePgnHeader = '[White "?"]\n[Black "?"]\n[Result "?"]\n[Date "?"]\n[Event "?"]\n[Site "?"]\n[Round "?"]\n';
+
 
 var gameSelectorHead      = 'Select a game...';
 var gameSelectorMono      = true;
@@ -1446,8 +1452,10 @@ function checkLiveBroadcastStatus() {
   }
 
   // check if broadcast did not start yet
-  // check for odd situations where no PGN file is found and fake '[]' game is injected
-  if ((LiveBroadcastStarted == false) || ((pgnGame == undefined) || ((pgnGame.length == 1) && (pgnGame[0] == '[] \n')))) {
+  // check for odd situations where no PGN file is found and fake LiveBroadcastPlaceholderPgn game is injected
+  if ((LiveBroadcastStarted == false) || 
+      ((pgnGame == undefined) || 
+      ((numberOfGames == 1) && (gameEvent[0] == LiveBroadcastPlaceholderEvent)))) {
     LiveBroadcastEnded = false;
     LiveBroadcastStatusString = "live broadcast yet to start";
   } else {
@@ -1534,7 +1542,7 @@ function refreshPGNsource() {
     LiveBroadcastStarted = true; 
   } else {
     LiveBroadcastStarted = false;
-    pgnGameFromPgnText('[]'); 
+    pgnGameFromPgnText(LiveBroadcastPlaceholderPgn); 
   } 
   Init();
 
@@ -1597,7 +1605,7 @@ function createBoard(){
         return;
       } else { // live broadcast case, wait for live show to start
         LiveBroadcastStarted = false;
-        pgnGameFromPgnText('[]'); 
+        pgnGameFromPgnText(LiveBroadcastPlaceholderPgn); 
         Init();
 	checkLiveBroadcastStatus();
         customFunctionOnPgnTextLoad();
@@ -1608,8 +1616,8 @@ function createBoard(){
   
   if ( document.getElementById("pgnText") ) {
     tmpText = document.getElementById("pgnText").innerHTML;
-    // if no html header is present, add []\n at the top
-    if (tmpText.indexOf(']') < 0) { tmpText = "[]\n" + tmpText }
+    // if no html header is present, add emptyPgnHeader at the top
+    if (tmpText.indexOf(']') < 0) { tmpText = emptyPgnHeader + tmpText }
     // fixes issue with some browser removing \n from innerHTML
     if (tmpText.indexOf('\n') < 0) { tmpText = tmpText.replace(/((\[[^\[\]]*\]\s*)+)/g, "\n$1\n"); }
     // fixes issue with some browser replacing quotes with &quot;
