@@ -243,7 +243,7 @@ http://www.tim-mann.org/Standard). Notable exceptions and limitations:
 browsing variations is planned for a future release
 - if square brackets are present in the comments (or the game text) then 
 the game parsing is broken. If your PGN file is not displayed properly, 
-please check for characters [ and ] and try removing them. 
+please check for characters "[" and "]" and try removing them. 
 
 pgn4web also follows a set of proposed extensions to the PGN standard
 (see http://www.enpassant.dk/chess/palview/enhancedpgn.htm), more 
@@ -252,9 +252,13 @@ specifically:
 - understands the [%clk 1:59:58] tag in the PGN comment section as the 
   clock time after each move
 - understands the PGN tags [WhiteClock "2:00:00"] and 
-  [BlackClock "2:00:00"]` as the clock times at the beginning of the game
+  [BlackClock "2:00:00"] as the clock times at the beginning of the game
 - defines the [%pgn4web internal comment] tag in the PGN comment section 
 and stores the internal comment value for internal use. 
+
+For pgn4web internal reasons, at the moment, the text between the extension 
+markers "[%" and "]" must not contain anywhere the character "[" (not even 
+in quotes as supported by the proposed PGN extension) or the sequence "@>"
 
 Please email me for review any PGN file that pgn4web fails parsing correctly. 
 
