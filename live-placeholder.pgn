@@ -2,8 +2,8 @@
 % it allows to announce the next broadcast on live.html
 % if the Result tag is set to "*" live.html will automatically refresh games
 
-[White "next event: Apr 15th 1PM GMT"]
-[Black "best chess games ever"]
+[White "next event, date and time"]
+[Black "event detail and notes"]
 % [Result "*"]
 
 {[%pgn4web click square C6 to restart]}
