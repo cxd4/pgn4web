@@ -1063,6 +1063,7 @@ function SetInitialGame(number){
 // the clock value is detected with two options: first the DGT sequence [%clk 01:02] is checked (remember though that pgn4web has replaced "[%xxx]" with "<%xxx>"). If this fails, then look for the beginning of the comment for a sequence of numbers and ":" and "." characters.
   
 function clockFromComment(comment){
+  // remember pgn4web replaces "[%...]" with "<%...>"
   if (DGTclock = comment.match(/<%clk\s*([^<>]*)>/)) { clock = DGTclock[1]; }
   else { if (!(clock = comment.match(/^\s*[0-9:\.]+/))) {clock = ""; } }
   return clock;
@@ -1095,8 +1096,17 @@ function HighlightLastMove(){
   if (showThisMove > StartPly + PlyNumber) showThisMove = StartPly + PlyNumber;
 
   var theShowCommentTextObject = document.getElementById("GameLastComment");
-  if (theShowCommentTextObject != null){
-    if ((MoveComments[showThisMove+1] != '') && (MoveComments[showThisMove+1] != undefined))
+  if (theShowCommentTextObject != null) {
+    if (MoveComments[showThisMove+1] != undefined) {
+      // remove PGN extension tags
+      // remember pgn4web replaces "[%...]" with "<%...>"
+      thisComment = MoveComments[showThisMove+1].replace(/<%[^<>]*>\s*/g,''); // note trailing spaces are removed also
+      // remove comments that are all spaces
+      if (thisComment.match(/^\s*$/)) {thisComment = ''};
+    } else {
+      thisComment = '';
+    }
+    if (thisComment != '')
       theShowCommentTextObject.innerHTML = MoveComments[showThisMove+1]; 
     else
       theShowCommentTextObject.innerHTML = '-';
@@ -1312,6 +1322,7 @@ function highlightSquare(col, row, on){
 function pgnGameFromPgnText(pgnText){
 
   // in order to cope with DGT clock extensions to PGN like {[%command value]} and considering the pgn4web bug with square brackets in the PGN text, any sequence "[%xxx]" is replaced by "<%xxx>".
+  // remember pgn4web replaces "[%...]" with "<%...>"
   pgnText = pgnText.replace(/\[+%([^\[\]]*)\]+/g, "<%$1>");
 
   lines=pgnText.split("\n");
@@ -2581,6 +2592,7 @@ function ParsePGNGameString(gameString){
     }
   }
   for (ii=StartPly; ii<=PlyNumber; ii++) {
+    // remember pgn4web replaces "[%...]" with "<%...>"
     pgn4webCommentTmp = MoveComments[ii].match(/<%pgn4web\s*([^<>]*)>/);
     if (pgn4webCommentTmp) { pgn4webMoveComments[ii] = pgn4webCommentTmp[1]; } 
     else { pgn4webMoveComments[ii] = ""; }
@@ -3225,9 +3237,14 @@ function PrintHTML(){
   text = '<SPAN ID="ShowPgnText">';
   for (ii = StartPly; ii < StartPly+PlyNumber; ++ii){
     printedComment = false;
-    if (commentsIntoMoveText && (MoveComments[ii] != '')){
+    // remove PGN extension tags
+    // remember pgn4web replaces "[%...]" with "<%...>"
+    thisComment = MoveComments[ii].replace(/<%[^<>]*>\s*/g,''); // note trailing spaces are removed also
+    // remove comments that are all spaces
+    if (thisComment.match(/^\s*$/)) {thisComment = ''};
+    if (commentsIntoMoveText && (thisComment != '')){
       if (commentsOnSeparateLines) text += '<P>';
-      text += '<SPAN CLASS="comment">' + MoveComments[ii] + '</SPAN><SPAN CLASS="move"> </SPAN>';
+      text += '<SPAN CLASS="comment">' + thisComment + '</SPAN><SPAN CLASS="move"> </SPAN>';
       if (commentsOnSeparateLines) text += '<P>';
       printedComment = true;
     }
@@ -3243,9 +3260,14 @@ function PrintHTML(){
             '" ONFOCUS="this.blur()">' + Moves[ii] + '</A></SPAN>' +
             '<SPAN CLASS="move"> </SPAN>';
   }
-  if (commentsIntoMoveText && (MoveComments[StartPly+PlyNumber] != '')){
+  // remove PGN extension tags
+  // remember pgn4web replaces "[%...]" with "<%...>"
+  thisComment = MoveComments[StartPly+PlyNumber].replace(/<%[^<>]*>\s*/g,''); // note trailing spaces are removed also
+  // remove comments that are all spaces
+  if (thisComment.match(/^\s*$/)) {thisComment = ''};
+  if (commentsIntoMoveText && (thisComment != '')){
     if (commentsOnSeparateLines) text += '<P>';
-    text += '<SPAN CLASS="comment">' + MoveComments[StartPly+PlyNumber] + '</SPAN>';
+    text += '<SPAN CLASS="comment">' + thisComment + '</SPAN><SPAN CLASS="move"> </SPAN>';
   }
   text += '</SPAN>';
 
