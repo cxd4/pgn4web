@@ -82,7 +82,7 @@
 
   lastRefreshTime = "";
   function customFunctionOnPgnTextLoad() {
-    if ((gameEvent[0] != undefined) && (gameEvent[0] != "")) {
+    if ((LiveBroadcastStarted) && (gameEvent[0] != undefined) && (gameEvent[0] != "")) {
       document.title = originalTitle + ": " + gameEvent[0];
     }
     if ((!LiveBroadcastStarted) || (LiveBroadcastEnded)) {
