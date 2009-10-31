@@ -297,7 +297,7 @@ function handlekey(e) {
       break;
 
     case 84:  // t
-      refreshPGNsource();
+      refreshPgnSource();
       break;
 
     case 89:  // y
@@ -435,7 +435,7 @@ boardAlt[7 + 1 * 8] = "";
 function boardOnClickCol0Row2() { pauseLiveBroadcast(); };
 boardAlt[0 + 2 * 8] = "pause live broadcast automatic refresh";
 // B6
-function boardOnClickCol1Row2() { refreshPGNsource(); };
+function boardOnClickCol1Row2() { refreshPgnSource(); };
 boardAlt[1 + 2 * 8] = "force games refresh during live broadcast";
 // C6
 function boardOnClickCol2Row2() { restartLiveBroadcast(); };
@@ -1444,7 +1444,7 @@ function pauseLiveBroadcast() {
 function restartLiveBroadcast() {
   if (LiveBroadcastDelay == 0) { return; }
   LiveBroadcastPaused = false;
-  refreshPGNsource();
+  refreshPgnSource();
 }
 
 function checkLiveBroadcastStatus() {
@@ -1493,19 +1493,19 @@ function restartLiveBroadcastTimeout() {
   needRestart = (!LiveBroadcastEnded)
   
   if ((needRestart == true) && (!LiveBroadcastPaused)){
-    LiveBroadcastInterval = setTimeout("refreshPGNsource()", LiveBroadcastDelay * 60000);
+    LiveBroadcastInterval = setTimeout("refreshPgnSource()", LiveBroadcastDelay * 60000);
   }
 
 }
 
 /******************************************************************************
  *                                                                            *
- * Function refreshPGNsource():                                               *
+ * Function refreshPgnSource():                                               *
  *                                                                            *
  * reload the games from the specified URL during live broadcast              *
  *                                                                            *
  ******************************************************************************/
-function refreshPGNsource() {
+function refreshPgnSource() {
 
   if (LiveBroadcastDelay == 0) { return; }
   else { LiveBroadcastUpdateInProgress = true; }

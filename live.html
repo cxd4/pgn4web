@@ -134,6 +134,12 @@
 
   defaultStatusChanged = false;
 
+  function checkForNewLiveBroadcast() {
+    document.getElementById("messageLine").style.display = "none";
+    refreshPgnSource();
+    document.getElementById("messageLine").style.display = "inline";
+  }
+
 // disable A7 and B7 shortcut squares usually allowing showing move comments
 // A7
 function boardOnClickCol0Row1() { };
@@ -324,10 +330,10 @@ function user_help() {
 </div>
 </td>
 <td width=340px style="padding: 3px;" align=center valign=middle>
-<div style="width: 334px; height: 1.3em; line-height: 1.3em; overflow: hidden;">
+<div id="messageLine" style="width: 334px; height: 1.3em; line-height: 1.3em; overflow: hidden;">
 <span style="display: none;" id="pgn4webComment"></span>
 <span style="display: inline;" id="extendedGameLiveStatus">
-<span style="display: inline;" id="GameLiveStatus"></span><span style="display: none;" id="refreshLink">, <a href='javascript: refreshPGNsource();' onFocus='this.blur();' title='click here to check for the start of a new live broadcast event' style='color: inherit;'>click here to check for a new event</a></span>
+<span style="display: inline;" id="GameLiveStatus"></span><span style="display: none;" id="refreshLink">, <a href='javascript: checkForNewLiveBroadcast();' onFocus='this.blur();' title='click here to check for the start of a new live broadcast event' style='color: inherit;'>click here to check for a new event</a></span>
 </span>
 </div>
 </td>
