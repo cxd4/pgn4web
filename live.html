@@ -133,8 +133,8 @@
   function customFunctionOnMove() {
     if (pgn4webMoveComments[CurrentPly] != "") {
       document.getElementById("extendedGameLiveStatus").style.display = "none";
-      document.getElementById("pgn4webComment").style.display = "inline";
       document.getElementById("pgn4webComment").innerHTML = pgn4webMoveComments[CurrentPly];
+      document.getElementById("pgn4webComment").style.display = "inline";
     } else {
       document.getElementById("pgn4webComment").style.display = "none";
       document.getElementById("pgn4webComment").innerHTML = "";
@@ -145,9 +145,11 @@
   defaultStatusChanged = false;
 
   function checkForNewLiveBroadcast() {
-    document.getElementById("messageLine").style.display = "none";
+    document.getElementById("pgn4webComment").style.display = "none";
+    document.getElementById("GameLiveStatus").innerHTML = "";
+    document.getElementById("additionalStatusInfo").innerHTML = "please wait...";
+    document.getElementById("extendedGameLiveStatus").style.display = "inline";
     refreshPgnSource();
-    document.getElementById("messageLine").style.display = "inline";
   }
 
 // disable A7 and B7 shortcut squares usually allowing showing move comments
