@@ -5,6 +5,6 @@
 [White "next event, date and time"]
 % [Result "*"]
 
-{[%pgn4web <a href="javascript: refreshPGNsource();" onfocus="this.blur();">click here to check for live broadcast start</a>]}
+{[%pgn4web <a href="javascript: refreshPGNsource();" onfocus="this.blur();" title="click here to check for the start of a new live broadcast event">click here to check for live broadcast start</a>]}
 
 

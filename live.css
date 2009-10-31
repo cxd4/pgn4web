@@ -63,12 +63,13 @@ a {
 
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 448px !important;
+  width: 446px !important;
   color: #7D7A6C;
   font-size: 90%;
-  background-color: #E8E3D0;
+  padding: 2px;
   border-width: 1px;
   border-color: #E8E3D0;
+  background-color: #E8E3D0;
 }
 
 .buttonControlPlay,
