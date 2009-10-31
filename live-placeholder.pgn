@@ -5,6 +5,5 @@
 [White "next event, date and time"]
 % [Result "*"]
 
-{[%pgn4web <a href="javascript: checkForNewLiveBroadcast();" onfocus="this.blur();" title="click here to check for the start of a new live broadcast event" style="color: inherit;">click here to check for live broadcast start</a>]}
-
+{[%pgn4web <a href="javascript: checkForNewLiveBroadcast();" onfocus="this.blur();" title="click here to check for the start of the live broadcast event" style="color: inherit;">click here to check for live broadcast start</a>]}
 

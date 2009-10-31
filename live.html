@@ -81,6 +81,8 @@
   }
 
   lastRefreshTime = "";
+  additionalStatusInfo_wait = ", please wait";
+  additionalStatusInfo_refresh = ", <a href='javascript: checkForNewLiveBroadcast();' onFocus='this.blur();' title='click here to check for the start of a new live broadcast event' style='color: inherit;'>click here to check for a new event</a>";
   function customFunctionOnPgnTextLoad() {
     if ((LiveBroadcastStarted) && (gameEvent[0] != undefined) && (gameEvent[0] != "")) {
       document.title = originalTitle + ": " + gameEvent[0];
@@ -90,13 +92,21 @@
     } else {
       document.getElementById("liveStatusDetails").className = "header";
     }
-    update_ticker();
+    if ((!LiveBroadcastStarted) && (!LiveBroadcastPaused)) {
+	    //PAOLO
+    }
     if (LiveBroadcastEnded) {
-      document.getElementById("refreshLink").style.display = "inline";
+      document.getElementById("additionalStatusInfo").innerHTML = "";
+      document.getElementById("additionalStatusInfo").innerHTML = additionalStatusInfo_refresh;
     } else {
-      document.getElementById("refreshLink").style.display = "none";
+      if ((!LiveBroadcastStarted) && (!LiveBroadcastPaused)) {
+        document.getElementById("additionalStatusInfo").innerHTML = additionalStatusInfo_wait;
+      } else {
+        document.getElementById("additionalStatusInfo").innerHTML = "";
+      }
     }
 
+    update_ticker();
     lastRefreshTime = Date();
 
   }
@@ -333,7 +343,7 @@ function user_help() {
 <div id="messageLine" style="width: 334px; height: 1.3em; line-height: 1.3em; overflow: hidden;">
 <span style="display: none;" id="pgn4webComment"></span>
 <span style="display: inline;" id="extendedGameLiveStatus">
-<span style="display: inline;" id="GameLiveStatus"></span><span style="display: none;" id="refreshLink">, <a href='javascript: checkForNewLiveBroadcast();' onFocus='this.blur();' title='click here to check for the start of a new live broadcast event' style='color: inherit;'>click here to check for a new event</a></span>
+<span id="GameLiveStatus"></span><span id="additionalStatusInfo"></span>
 </span>
 </div>
 </td>
