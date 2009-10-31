@@ -90,8 +90,12 @@
     } else {
       document.getElementById("liveStatusDetails").className = "header";
     }
-
     update_ticker();
+    if (LiveBroadcastEnded) {
+      document.getElementById("refreshLink").style.display = "inline";
+    } else {
+      document.getElementById("refreshLink").style.display = "none";
+    }
 
     lastRefreshTime = Date();
 
@@ -109,22 +113,22 @@
     } else {
       document.getElementById("whiteDetails").className = "header";
     }
-    // if ((gameResult[currentGame] != undefined) && ((gameResult[currentGame] == "*") || (gameResult[currentGame] == "?"))) {
-    //  document.getElementById("resultDetails").className = "header";
-    // } else {
-    //  document.getElementById("resultDetails").className = "headerHighlighted";
-    // }
+    if ((gameResult[currentGame] != undefined) && ((gameResult[currentGame] == "*") || (gameResult[currentGame] == "?"))) {
+      document.getElementById("GameResult").className = "headerNosize";
+    } else {
+      document.getElementById("GameResult").className = "headerHighlightedNosize";
+    }
   }
 
   function customFunctionOnMove() {
     if (pgn4webMoveComments[CurrentPly] != "") {
-      document.getElementById("GameLiveStatus").style.display = "none";
+      document.getElementById("extendedGameLiveStatus").style.display = "none";
       document.getElementById("pgn4webComment").style.display = "inline";
       document.getElementById("pgn4webComment").innerHTML = pgn4webMoveComments[CurrentPly];
     } else {
       document.getElementById("pgn4webComment").style.display = "none";
       document.getElementById("pgn4webComment").innerHTML = "";
-      document.getElementById("GameLiveStatus").style.display = "inline";
+      document.getElementById("extendedGameLiveStatus").style.display = "inline";
     }
   }
 
@@ -314,20 +318,22 @@ function user_help() {
 <!-- same 450 width as above -->
 <table id="liveStatusDetails" class="header" width=450px cellpadding=0 cellspacing=0 border=0>
 <tr">
-<td width=150px style="padding-top: 3px; padding-bottom: 3px; text-align: left; vertical-align: middle;">
-<div style="width: 147px; height: 1.3em; line-height: 1.3em; overflow: hidden; padding-left: 3px" id="GameResult"></div>
-</td>
-<!-- width 99 = 246 chessboard width - 150 width above + 3 padding -->
-<td width=99px style="padding-top: 3px; padding-bottom: 3px; text-align: right; vertical-align: middle;">
-<div style="width: 99px; height: 1.3em; line-height: 1.3em; overflow: hidden;">
-<a class="helplink" style="padding-right: 6px;" id="ticker" href="javascript: user_help();" onFocus="this.blur()" title="pgn4web live broadcast help">HELP</a>
+<td width=55px style="padding: 3px; text-align: left; vertical-align: middle;">
+<div style="width: 49px; height: 1.3em; line-height: 1.3em; overflow: hidden;"
+<span id="GameResult" class="headerNosize" style="width: 59px; height: 1.3em; line-height: 1.3em; overflow: hidden;"></span>
 </div>
 </td>
-<!-- right width = right column width 204 - 3 padding -->
-<td width=201px style="padding: 3px;" align=center valign=middle>
-<div style="width: 195px; height: 1.3em; line-height: 1.3em; overflow: hidden;">
+<td width=340px style="padding: 3px;" align=center valign=middle>
+<div style="width: 334px; height: 1.3em; line-height: 1.3em; overflow: hidden;">
 <span style="display: none;" id="pgn4webComment"></span>
-<span style="display: inline;" id="GameLiveStatus"></span>
+<span style="display: inline;" id="extendedGameLiveStatus">
+<span style="display: inline;" id="GameLiveStatus"></span><span style="display: none;" id="refreshLink">, <a href='javascript: refreshPGNsource();' onFocus='this.blur();'>click here to check new event</a></span>
+</span>
+</div>
+</td>
+<td width=55px style="padding: 3px; text-align: right; vertical-align: middle;">
+<div style="width: 49px; height: 1.3em; line-height: 1.3em; overflow: hidden;">
+<a id="ticker" class="helplinkNosize" href="javascript: user_help();" onFocus="this.blur()" title="pgn4web live broadcast help">HELP</a>
 </div>
 </td>
 </tr>

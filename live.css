@@ -17,6 +17,11 @@ body {
   background: #EDE8D5;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .boardTable {
   border-style: double; 
   border-color: #CFCBB3;
@@ -79,9 +84,11 @@ body {
 /* a "width" attribute here must use the !important flag to override default settings */
 }
 
-.helplink,
+.helplinkNosize,
 .header,
+.headerNosize,
 .headerHighlighted,
+.headerHighlightedNosize,
 .move,
 .moveOn,
 .comment,
@@ -101,16 +108,18 @@ body {
   font-size: 66%;
 }
 
-.helplink {
+.helplinkNosize {
   color: #BFBAA5;
 }
 
 .header,
+.headerNosize,
 .move {
   color: #7D7A6C;
 }
 
 .headerHighlighted,
+.headerHighlightedNosize,
 .moveOn {
   color: black;
   background: #F5B371;
