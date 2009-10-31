@@ -165,7 +165,8 @@ function new_start_pgn4web() {
   if ((controlBackgroundColor != 'default') && (controlBackgroundColor != '#default')) {
     rule = getCSSRule('.selectControl');
     rule.style.borderStyle = 'solid';
-    rule.style.borderWidth = '0px';
+    rule.style.padding = '3px';
+    rule.style.borderWidth = '1px';
     rule.style.borderColor = backgroundColor;
     rule.style.backgroundColor = controlBackgroundColor;
     rule.style.color = controlTextColor;

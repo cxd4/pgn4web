@@ -63,10 +63,10 @@ a {
 
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 446px !important;
+  width: 450px !important;
   color: #7D7A6C;
   font-size: 90%;
-  padding: 2px;
+  padding: 3px;
   border-width: 1px;
   border-color: #E8E3D0;
   background-color: #E8E3D0;
