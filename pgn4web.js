@@ -1461,7 +1461,7 @@ function checkLiveBroadcastStatus() {
       ((pgnGame == undefined) || 
       ((numberOfGames == 1) && (gameEvent[0] == LiveBroadcastPlaceholderEvent)))) {
     LiveBroadcastEnded = false;
-    LiveBroadcastStatusString = "live broadcast yet to start";
+    LiveBroadcastStatusString = "live broadcast yet to start, plase wait";
   } else {
     // broadcast started with a good PGN
     liveGamesRunning = 0;
