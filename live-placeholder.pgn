@@ -3,7 +3,6 @@
 % if the Result tag is set to "*" live.html will automatically refresh games
 
 [White "next event, date and time"]
-[Black "event detail and notes"]
 % [Result "*"]
 
 {[%pgn4web click square C6 to restart]}

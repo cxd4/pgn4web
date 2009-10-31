@@ -264,13 +264,13 @@ function user_help() {
 <table id="eventDetails" class="header" width=450px cellpadding=0 cellspacing=0 border=0>
 <tr>
 <td width=100px style="padding: 3px; text-align: left; vertical-align: middle;">
-<span id="GameSite"></span>
+<div id="GameSite" style="width: 94px; height: 1.3em; line-height: 1.3em; overflow: hidden"></div>
 </td>
 <td width=250px style="padding: 3px; text-align: center; vertical-align: middle;">
-<span id="GameEvent"></span><span id="roundDetails"></span><span id="GameRound"></span>
+<div style="width: 244px; height: 1.3em; line-height: 1.3em; overflow: hidden;"><span id="GameEvent"></span><span id="roundDetails"></span><span id="GameRound"></span></div>
 </td>
 <td width=100px style="padding: 3px; text-align: right; vertical-align: middle;">
-<span id="GameDate"></span>
+<div id="GameDate" style="width: 94px; height: 1.3em; line-height: 1.3em; overflow: hidden"></div>
 </td>
 </tr>
 </table>
@@ -279,15 +279,17 @@ function user_help() {
 <table id="playersDetails" class="header" width=450px cellpadding=0 cellspacing=0 border=0>
 <tr>
 <td width=65px style="padding: 3px; text-align: left; vertical-align: middle;">
-<span id="GameWhiteClock"></span>
+<div id="GameWhiteClock" style="width: 59px; height: 1.3em; line-height: 1.3em; overflow: hidden;"></div>
 </td>
 <td width=320px style="padding: 3px; text-align: center; vertical-align: middle;">
+<div style="width: 314px; height: 1.3em; line-height: 1.3em; overflow: hidden;">
 <span id="GameWhite"></span>
 &nbsp;&nbsp;&nbsp;
 <span id="GameBlack"></span>
+</div>
 </td>
 <td width=65px style="padding: 3px; text-align: right; vertical-align: middle;">
-<span id="GameBlackClock"></span>
+<div id="GameBlackClock" style="width: 59px; height: 1.3em; line-height: 1.3em; overflow: hidden;"></div>
 </td>
 </tr>
 </table>
@@ -313,15 +315,17 @@ function user_help() {
 <table id="liveStatusDetails" class="header" width=450px cellpadding=0 cellspacing=0 border=0>
 <tr">
 <td width=150px style="padding-top: 3px; padding-bottom: 3px; text-align: left; vertical-align: middle;">
-<span style="padding-left: 3px" id="GameResult"></span>
+<div style="width: 147px; height: 1.3em; line-height: 1.3em; overflow: hidden; padding-left: 3px" id="GameResult"></div>
 </td>
 <!-- width 99 = 246 chessboard width - 150 width above + 3 padding -->
 <td width=99px style="padding-top: 3px; padding-bottom: 3px; text-align: right; vertical-align: middle;">
+<div style="width: 99px; height: 1.3em; line-height: 1.3em; overflow: hidden;">
 <a class="helplink" style="padding-right: 6px;" id="ticker" href="javascript: user_help();" onFocus="this.blur()" title="pgn4web live broadcast help">HELP</a>
+</div>
 </td>
 <!-- right width = right column width 204 - 3 padding -->
-<td width=201px style="padding-top: 3px; padding-bottom: 3px;" align=center valign=middle>
-<div>
+<td width=201px style="padding: 3px;" align=center valign=middle>
+<div style="width: 195px; height: 1.3em; line-height: 1.3em; overflow: hidden;">
 <span style="display: none;" id="pgn4webComment"></span>
 <span style="display: inline;" id="GameLiveStatus"></span>
 </div>
@@ -333,7 +337,7 @@ function user_help() {
 </table>
 </center>
 
-<!---
+<!--
 <script>document.write(document.getElementById("outerTable").offsetWidth + "x" + 
  document.getElementById("outerTable").offsetHeight)</script>
 -->
