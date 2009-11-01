@@ -600,7 +600,7 @@ var gameInitialBlackClock = new Array();
 var oldAnchor = -1;
 
 var isAutoPlayOn = false;
-var AutoPlayInterval;
+var AutoPlayInterval = null;
 var Delay = 1000; // milliseconds
 var autostartAutoplay = false;
 var autoplayNextGame = false;
@@ -1439,6 +1439,7 @@ function pauseLiveBroadcast() {
   if (LiveBroadcastDelay == 0) { return; }
   LiveBroadcastPaused = true;
   clearTimeout(LiveBroadcastInterval);
+  LiveBroadcastInterval = null;
 }
 
 function restartLiveBroadcast() {
@@ -1486,7 +1487,7 @@ function restartLiveBroadcastTimeout() {
 
   if (LiveBroadcastDelay == 0) { return; }
 
-  if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); }
+  if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); LiveBroadcastInterval = null; }
  
   checkLiveBroadcastStatus();
 
@@ -1506,11 +1507,11 @@ function restartLiveBroadcastTimeout() {
  *                                                                            *
  ******************************************************************************/
 function refreshPgnSource() {
-
-  if (LiveBroadcastDelay == 0) { return; }
+                                // second check needed on slow systems
+  if ((LiveBroadcastDelay == 0) || (LiveBroadcastUpdateInProgress == true)) { return; }
   else { LiveBroadcastUpdateInProgress = true; }
 
-  if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); }
+  if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); LiveBroadcastInterval = null; }
 
   if (LiveBroadcastDemo) {
     for(ii=0;ii<numberOfGames;ii++) {
@@ -2281,7 +2282,7 @@ function MoveBackward(diff){
   /*
    * Set a new timeout if in autoplay mode.
    */
-  if (AutoPlayInterval) clearTimeout(AutoPlayInterval);
+  if (AutoPlayInterval) { clearTimeout(AutoPlayInterval); AutoPlayInterval = null; }
   if (isAutoPlayOn) {
     if(goToPly >= StartPly)
       AutoPlayInterval=setTimeout("MoveBackward(1)", Delay);
@@ -2333,7 +2334,7 @@ function MoveForward(diff){
   /*
    * Set a new timeout if in autoplay mode and if all parsing was successful
    */
-  if (AutoPlayInterval) clearTimeout(AutoPlayInterval);
+  if (AutoPlayInterval) { clearTimeout(AutoPlayInterval); AutoPlayInterval = null; }
   if (!parse) { SetAutoPlay(false); } 
   else if (thisPly == goToPly) {
     if (isAutoPlayOn) {
@@ -3358,7 +3359,7 @@ function SetAutoPlay(vv){
   /*
    * No matter what clear the timeout.
    */
-  if (AutoPlayInterval) clearTimeout(AutoPlayInterval);
+  if (AutoPlayInterval) { clearTimeout(AutoPlayInterval); AutoPlayInterval = null; }
   /*
    * If switched on start  moving forward. Also change the button value.
    */
