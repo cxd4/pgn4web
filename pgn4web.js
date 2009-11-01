@@ -613,7 +613,6 @@ var LiveBroadcastInterval = null;
 var LiveBroadcastDelay = 0; // minutes
 var LiveBroadcastAlert = false;
 var LiveBroadcastDemo = false;
-var LiveBroadcastUpdateInProgress = false;
 var LiveBroadcastStarted = false;
 var LiveBroadcastEnded = false;
 var LiveBroadcastPaused = false;
@@ -1510,9 +1509,8 @@ function restartLiveBroadcastTimeout() {
  *                                                                            *
  ******************************************************************************/
 function refreshPgnSource() {
-                                // second check needed on slow systems
-  if ((LiveBroadcastDelay == 0) || (LiveBroadcastUpdateInProgress == true)) { return; }
-  else { LiveBroadcastUpdateInProgress = true; }
+
+  if (LiveBroadcastDelay == 0) { return; }
 
   if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); LiveBroadcastInterval = null; }
 
@@ -1574,7 +1572,6 @@ function refreshPgnSource() {
 
   if ((foundOldGame == true) && (oldAutoplay)) { SetAutoPlay(true); }
 
-  LiveBroadcastUpdateInProgress = false;
 }
 
 /******************************************************************************
