@@ -99,7 +99,14 @@
       document.getElementById("statusDetails").className = "header";
     }
 
+//    if (LiveBroadcastEnded) {
+//      document.getElementById("additionalMessage").innerHTML = ", <a href='javascript: checkForNewLiveBroadcast();' onFocus='this.blur();' title='click here to check for the start of a new live broadcast event' style='color: inherit;'>click here to check for a new event</a>";
+//    } else {
+//      document.getElementById("additionalMessage").innerHTML = "";
+//    }
+
     update_ticker();
+
     lastRefreshTime = Date();
 
   }
@@ -121,14 +128,15 @@
     } else {
       document.getElementById("GameResult").className = "headerHighlightedNosize";
     }
+    
   }
 
   function customFunctionOnMove() {
     document.getElementById("pgn4webMessage").innerHTML = pgn4webMoveComments[CurrentPly];
     if (pgn4webMoveComments[CurrentPly] != "") {
-      document.getElementById("GameLiveStatus").style.display = "none";
+      document.getElementById("systemMessage").style.display = "none";
     } else {
-      document.getElementById("GameLiveStatus").style.display = "inline";
+      document.getElementById("systemMessage").style.display = "inline";
     }
   }
 
@@ -329,7 +337,8 @@ function user_help() {
 </td>
 <td width=340px style="padding: 3px;" align=center valign=middle>
 <div id="messageLine" style="width: 334px; height: 1.3em; line-height: 1.3em; overflow: hidden;">
-<span id="pgn4webMessage"></span><span id="GameLiveStatus"></span>
+<span id="pgn4webMessage"></span>
+<span id="systemMessage"><span id="GameLiveStatus"></span><span id="additionalMessage"></span></span>
 </div>
 </td>
 <td width=55px style="padding: 3px; text-align: right; vertical-align: middle;">
