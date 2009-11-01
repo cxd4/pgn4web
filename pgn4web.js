@@ -1361,6 +1361,9 @@ function pgnGameFromPgnText(pgnText){
     if (gameIndex >= 0)
       pgnGame[gameIndex] += lines[ii] + ' \n'; 
   }
+
+  numberOfGames = pgnGame.length;
+
   return (gameIndex >= 0);
 }
 
@@ -1549,25 +1552,27 @@ function refreshPgnSource() {
     LiveBroadcastStarted = false;
     pgnGameFromPgnText(LiveBroadcastPlaceholderPgn); 
   } 
-  Init();
 
+  LoadGameHeaders();
   foundOldGame = false;
   for (ii=0; ii<numberOfGames; ii++) {
-    foundOldGame = (gameWhite[ii]==oldGameWhite) && (gameBlack[ii]==oldGameBlack) &&
-                   (gameEvent[ii]==oldGameEvent) && (gameRound[ii]==oldGameRound) &&
-                   (gameSite[ii] ==oldGameSite ) && (gameDate[ii] ==oldGameDate );
-    if (foundOldGame) { break }
+    foundOldGame = ( (gameWhite[ii]==oldGameWhite) && (gameBlack[ii]==oldGameBlack) &&
+                     (gameEvent[ii]==oldGameEvent) && (gameRound[ii]==oldGameRound) &&
+                     (gameSite[ii] ==oldGameSite ) && (gameDate[ii] ==oldGameDate ) );
+    if (foundOldGame == true) { break; }
   }
-  if (foundOldGame) {currentGame = ii; Init(); }
+  if (foundOldGame == true) { initialGame = ii + 1; }
+
+  Init();
 
   checkLiveBroadcastStatus();
   customFunctionOnPgnTextLoad();
 
-  if ((foundOldGame) && (oldCurrentPly >= 0)) { GoToMove(oldCurrentPly); }
+  if ((foundOldGame == true) && (oldCurrentPly >= 0)) { GoToMove(oldCurrentPly); }
 
   restartLiveBroadcastTimeout();
 
-  if ((foundOldGame) && (oldAutoplay)) { SetAutoPlay(true); }
+  if ((foundOldGame == true) && (oldAutoplay)) { SetAutoPlay(true); }
 
   LiveBroadcastUpdateInProgress = false;
 }
@@ -1631,7 +1636,10 @@ function createBoard(){
     if ( pgnGameFromPgnText(tmpText) ) {
       Init(); 
       customFunctionOnPgnTextLoad();
-    }
+    } else {
+      myAlert('Error: no games found in PGN text');
+      return false;
+    }   
     return;
   } 
 
@@ -1651,13 +1659,8 @@ function Init(){
 
   if (isAutoPlayOn) SetAutoPlay(false);
   InitImages();
-
   if (firstStart){
-    numberOfGames = pgnGame.length; 
-    if (numberOfGames == 0) {
-      myAlert("No games found in the PGN file");
-      return;
-    }
+
     LoadGameHeaders();
 
     switch (initialGame) {
@@ -3051,8 +3054,10 @@ function PrintHTML(){
   if (theObject != null) theObject.innerHTML = text; 
    
   tableSize = document.getElementById("boardTable").offsetWidth;
-  document.getElementById("boardTable").style.height = tableSize;
- 
+  if (tableSize > 0) { // check to cope with some browser returning always 0 to offsetWidth
+    document.getElementById("boardTable").style.height = tableSize;
+  }
+
   numberOfButtons=5;
   spaceSize=3;
   buttonSize=(tableSize - spaceSize*(numberOfButtons - 1))/numberOfButtons;
