@@ -81,29 +81,22 @@
   }
 
   lastRefreshTime = "";
-  additionalStatusInfo_wait = ", please wait";
-  additionalStatusInfo_refresh = ", <a href='javascript: checkForNewLiveBroadcast();' onFocus='this.blur();' title='click here to check for the start of a new live broadcast event' style='color: inherit;'>click here to check for a new event</a>";
   function customFunctionOnPgnTextLoad() {
-    if ((LiveBroadcastStarted) && (gameEvent[0] != undefined) && (gameEvent[0] != "")) {
+      
+    if ((LiveBroadcastStarted) && 
+        (gameEvent[0] != undefined) && (gameEvent[0] != "")) {
       document.title = originalTitle + ": " + gameEvent[0];
     }
+    if (LiveBroadcastStarted) { 
+      document.getElementById("playersDetails").className = "headerHighlighted";
+    } else {
+      document.getElementById("playersDetails").className = "header";
+    }
+
     if ((!LiveBroadcastStarted) || (LiveBroadcastEnded)) {
-      document.getElementById("liveStatusDetails").className = "headerHighlighted";
+      document.getElementById("statusDetails").className = "headerHighlighted";
     } else {
-      document.getElementById("liveStatusDetails").className = "header";
-    }
-    if ((!LiveBroadcastStarted) && (!LiveBroadcastPaused)) {
-	    //PAOLO
-    }
-    if (LiveBroadcastEnded) {
-      document.getElementById("additionalStatusInfo").innerHTML = "";
-      document.getElementById("additionalStatusInfo").innerHTML = additionalStatusInfo_refresh;
-    } else {
-      if ((!LiveBroadcastStarted) && (!LiveBroadcastPaused)) {
-        document.getElementById("additionalStatusInfo").innerHTML = additionalStatusInfo_wait;
-      } else {
-        document.getElementById("additionalStatusInfo").innerHTML = "";
-      }
+      document.getElementById("statusDetails").className = "header";
     }
 
     update_ticker();
@@ -112,18 +105,18 @@
   }
 
   function customFunctionOnPgnGameLoad() {
-    if ((gameRound[currentGame] != undefined) && (gameRound[currentGame] != "") && (gameRound[currentGame] != "?")) {
+
+    if ((gameRound[currentGame] != undefined) && 
+        (gameRound[currentGame] != "") && 
+	(gameRound[currentGame] != "?")) {
       document.getElementById("roundDetails").innerHTML = " - round ";
     } else {
       document.getElementById("roundDetails").innerHTML = "";
       document.getElementById("GameRound").innerHTML = "";
     }
-    if (LiveBroadcastStarted) { 
-      document.getElementById("playersDetails").className = "headerHighlighted";
-    } else {
-      document.getElementById("playersDetails").className = "header";
-    }
-    if ((gameResult[currentGame] != undefined) && ((gameResult[currentGame] == "*") || (gameResult[currentGame] == "?"))) {
+
+    if ((gameResult[currentGame] != undefined) && 
+        ((gameResult[currentGame] == "*") || (gameResult[currentGame] == "?"))) {
       document.getElementById("GameResult").className = "headerNosize";
     } else {
       document.getElementById("GameResult").className = "headerHighlightedNosize";
@@ -131,25 +124,18 @@
   }
 
   function customFunctionOnMove() {
+    document.getElementById("pgn4webMessage").innerHTML = pgn4webMoveComments[CurrentPly];
     if (pgn4webMoveComments[CurrentPly] != "") {
-      document.getElementById("extendedGameLiveStatus").style.display = "none";
-      document.getElementById("pgn4webComment").innerHTML = pgn4webMoveComments[CurrentPly];
-      document.getElementById("pgn4webComment").style.display = "inline";
+      document.getElementById("GameLiveStatus").style.display = "none";
     } else {
-      document.getElementById("pgn4webComment").style.display = "none";
-      document.getElementById("pgn4webComment").innerHTML = "";
-      document.getElementById("extendedGameLiveStatus").style.display = "inline";
+      document.getElementById("GameLiveStatus").style.display = "inline";
     }
   }
 
-  defaultStatusChanged = false;
-
   function checkForNewLiveBroadcast() {
-    document.getElementById("pgn4webComment").style.display = "none";
-    document.getElementById("GameLiveStatus").innerHTML = "";
-    document.getElementById("additionalStatusInfo").innerHTML = "please wait...";
-    document.getElementById("extendedGameLiveStatus").style.display = "inline";
+    document.getElementById("messageLine").style.visibility = "hidden";  
     refreshPgnSource();
+    document.getElementById("messageLine").style.visibility = "visible";  
   }
 
 // disable A7 and B7 shortcut squares usually allowing showing move comments
@@ -334,7 +320,7 @@ function user_help() {
 </table>
 
 <!-- same 450 width as above -->
-<table id="liveStatusDetails" class="header" width=450px cellpadding=0 cellspacing=0 border=0>
+<table id="statusDetails" class="header" width=450px cellpadding=0 cellspacing=0 border=0>
 <tr">
 <td width=55px style="padding: 3px; text-align: left; vertical-align: middle;">
 <div style="width: 49px; height: 1.3em; line-height: 1.3em; overflow: hidden;"
@@ -343,10 +329,7 @@ function user_help() {
 </td>
 <td width=340px style="padding: 3px;" align=center valign=middle>
 <div id="messageLine" style="width: 334px; height: 1.3em; line-height: 1.3em; overflow: hidden;">
-<span style="display: none;" id="pgn4webComment"></span>
-<span style="display: inline;" id="extendedGameLiveStatus">
-<span id="GameLiveStatus"></span><span id="additionalStatusInfo"></span>
-</span>
+<span id="pgn4webMessage"></span><span id="GameLiveStatus"></span>
 </div>
 </td>
 <td width=55px style="padding: 3px; text-align: right; vertical-align: middle;">
