@@ -84,7 +84,7 @@ within a SPAN statement with the ID pgnText:
 
 Example:
 
-  <script yype="text/javascript>
+  <script type="text/javascript>
 
     SetPgnUrl("http://yoursite/yourpath/yourfile.pgn"); // if set, this has precedence over the inline PGN in the HTML file
     SetImagePath (""); // use "" path if images are in the same folder as this javascript file
