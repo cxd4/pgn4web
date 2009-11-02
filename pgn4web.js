@@ -3290,9 +3290,21 @@ function PrintHTML(){
    * Show the HTML for the Game Text
    */
   theObject = document.getElementById("GameText");
+  if (LiveBroadcastDelay > 0) {
+    oldScrollHeight = theObject.scrollHeight;
+    oldScrollTop = theObject.scrollTop;
+    oldOffsetHeight = theObject.offsetHeight;
+  }
   if (theObject != null) theObject.innerHTML = text; 
+  if (LiveBroadcastDelay > 0) {
+    if ((currentGame != oldGame) || 
+        ((oldScrollTop > 0) && ((oldScrollHeight - oldScrollTop) == oldOffsetHeight))) {
+      theObject.scrollTop = theObject.scrollHeight;
+    }
+    oldGame = currentGame;
+  }
 }
-
+oldGame = -1;
 
 function FlipBoard(){
   tmpHighlightOption = highlightOption;
