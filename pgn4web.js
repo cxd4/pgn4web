@@ -1561,12 +1561,18 @@ function refreshPgnSource() {
   }
   if (foundOldGame == true) { initialGame = ii + 1; }
 
+  if ((foundOldGame == true) && (oldCurrentPly >= 0)) { 
+    oldInitialHalfmove = initialHalfmove; 
+    initialHalfmove = oldCurrentPly; }
+  
   Init();
 
+  if ((foundOldGame == true) && (oldCurrentPly >= 0)) { 
+    initialHalfmove = oldInitialHalfmove 
+  }
+  
   checkLiveBroadcastStatus();
   customFunctionOnPgnTextLoad();
-
-  if ((foundOldGame == true) && (oldCurrentPly >= 0)) { GoToMove(oldCurrentPly); }
 
   restartLiveBroadcastTimeout();
 
@@ -3290,26 +3296,10 @@ function PrintHTML(){
    * Show the HTML for the Game Text
    */
   theObject = document.getElementById("GameText");
-  if (theObject != null) {
-    if (LiveBroadcastDelay > 0) {
-      oldScrollHeight = theObject.scrollHeight;
-      oldScrollTop = theObject.scrollTop;
-      oldOffsetHeight = theObject.offsetHeight;
-    }
+  if (theObject != null) { theObject.innerHTML = text; }
 
-    theObject.innerHTML = text;
-
-    if ((LiveBroadcastDelay > 0) && (oldOffsetHeight != undefined) &&
-        (oldScrollTop != undefined) && (oldOffsetHeight != undefined)) { // all checks due to BB bug
-      if ((currentGame != oldGame) || 
-          ((oldScrollHeight - oldScrollTop) == oldOffsetHeight)) {
-        theObject.scrollTop = theObject.scrollHeight;
-      }
-      oldGame = currentGame;
-    }
-  }
 }
-oldGame = -1;
+
 
 function FlipBoard(){
   tmpHighlightOption = highlightOption;

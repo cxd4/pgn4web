@@ -129,6 +129,12 @@
       document.getElementById("GameResult").className = "headerHighlightedNosize";
     }
 
+    theObject = document.getElementById("GameText");
+    if ((theObject != null) && (theObject.scrollHeight != undefined) &&
+	(CurrentPly == StartPly + PlyNumber)) {
+      theObject.scrollTop = theObject.scrollHeight;
+    }
+
   }
 
   function customFunctionOnMove() {
