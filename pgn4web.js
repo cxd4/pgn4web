@@ -587,7 +587,6 @@ function detectHelpLocation() {
     }
   }
 
-  alert(helppath);
   return helppath; 
 }
 
