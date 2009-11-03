@@ -408,10 +408,10 @@ boardAlt[6 + 0 * 8] = "shortcut squares help";
 function boardOnClickCol7Row0() { displayHelp(); };
 boardAlt[7 + 0 * 8] = "pgn4web help";
 // A7
-function boardOnClickCol0Row1() { SetCommentsIntoMoveText(!commentsIntoMoveText); Init(); };
+function boardOnClickCol0Row1() { SetCommentsIntoMoveText(!commentsIntoMoveText); thisPly = CurrentPly; Init(); GoToMove(thisPly); };
 boardAlt[0 + 1 * 8] = "toggle show comments in game text";
 // B7
-function boardOnClickCol1Row1() { SetCommentsOnSeparateLines(!commentsOnSeparateLines); Init(); };
+function boardOnClickCol1Row1() { SetCommentsOnSeparateLines(!commentsOnSeparateLines); thisPly = CurrentPly; Init(); GoToMove(thisPly); };
 boardAlt[1 + 1 * 8] = "toggle show comments on separate lines in game text";
 // C7
 function boardOnClickCol2Row1() { };
