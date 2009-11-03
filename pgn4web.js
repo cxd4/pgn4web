@@ -577,11 +577,11 @@ function boardOnClickCol7Row7() { GoToMove(StartPly + PlyNumber); };
 boardAlt[7 + 7 * 8] = "go to game end";
 
 
-function detectJavascriptBaseLocation() {
+function detectJavascriptLocation() {
   var e = document.getElementsByTagName('script');
   for(var i=0; i<e.length; i++) {
     if ((e[i].src) && (e[i].src.match(/pgn4web\.js/))) {
-      jspath = e[i].src.replace(/pgn4web\.js/, ""); 
+      jspath = e[i].src; 
     }
   }
   return jspath;
@@ -590,17 +590,28 @@ function detectJavascriptBaseLocation() {
 
 function detectHelpLocation() {
   helpfile = "help.html";
-  return detectJavascriptBaseLocation() + helppath; 
+  return detectJavascriptLocation().replace(/pgn4web\.js/, helpfile); 
 }
 
 
 function displayDebugInfo() {
-  debugInfo = 'pgn4web v' + version + '\n' +
-              '\n' +
-              'URL: ' + location.href + '\n' +
-              'Javascript base: ' + detectJavascriptBaseLocation() + '\n' +
-              'PGN URL: ' + pgnUrl + '\n' +
-              '\n';
+  debugInfo = 'pgn4web v' + version + '\n\n' +
+              'HTML URL: ' + location.href + '\n\n' +
+              'javascript URL: ' + detectJavascriptLocation() + '\n\n';
+  if (pgnUrl != "") { debugInfo += 'PGN URL: ' + pgnUrl + '\n\n'; }
+  else { debugInfo += 'PGN URL: none' + '\n\n'; }
+  if (document.getElementById("pgnText") != null) { 
+    debugInfo += 'PGN text: ' + document.getElementById("pgnText").innerHTML.length + '\n\n';
+  } else {
+    debugInfo += 'PGN text: undefined' + '\n\n';
+  }
+  debugInfo += 'games: current=' + currentGame + ' number=' + numberOfGames + '\n\n' +
+               'ply: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber;
+  if (isAutoPlayOn) { debugInfo += ' autoplay=' + Delay + 'ms' + '\n\n'; }
+  else { debugInfo += ' autoplay=off' + '\n\n'; }
+  if (LiveBroadcastDelay > 0) { debugInfo += 'live broadcast: delay=' + LiveBroadcastDelay + 
+                                             'm demo=' + LiveBroadcastDemo + '\n\n'; }
+  else { debugInfo += 'live broadcast: off' + '\n\n'; }
   alert(debugInfo);
 }
 
