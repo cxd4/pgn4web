@@ -2601,12 +2601,12 @@ function ParsePGNGameString(gameString){
 
 var NAG = new Array();
 NAG[0] = ''       
-NAG[1] = 'good move'        
-NAG[2] = 'bad move'        
-NAG[3] = 'very good move'       
-NAG[4] = 'very bad move'       
-NAG[5] = 'speculative move'        
-NAG[6] = 'questionable move'        
+NAG[1] = '!'  // 'good move'        
+NAG[2] = '?'  // 'bad move'        
+NAG[3] = '!!' // 'very good move'       
+NAG[4] = '??' // 'very bad move'       
+NAG[5] = '!?' // 'speculative move'        
+NAG[6] = '?!' // 'questionable move'        
 NAG[7] = 'forced move'      
 NAG[8] = 'singular move'       
 NAG[9] = 'worst move'
