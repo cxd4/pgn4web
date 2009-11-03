@@ -429,8 +429,8 @@ boardAlt[5 + 1 * 8] = "";
 function boardOnClickCol6Row1() { };
 boardAlt[6 + 1 * 8] = "";
 // H7
-function boardOnClickCol7Row1() { };
-boardAlt[7 + 1 * 8] = "";
+function boardOnClickCol7Row1() { displayDebugInfo(); };
+boardAlt[7 + 1 * 8] = "debug info";
 // A6
 function boardOnClickCol0Row2() { pauseLiveBroadcast(); };
 boardAlt[0 + 2 * 8] = "pause live broadcast automatic refresh";
@@ -577,17 +577,31 @@ function boardOnClickCol7Row7() { GoToMove(StartPly + PlyNumber); };
 boardAlt[7 + 7 * 8] = "go to game end";
 
 
-function detectHelpLocation() {
-  helpfile = "help.html";
-
+function detectJavascriptBaseLocation() {
   var e = document.getElementsByTagName('script');
   for(var i=0; i<e.length; i++) {
     if ((e[i].src) && (e[i].src.match(/pgn4web\.js/))) {
-      helppath = e[i].src.replace(/pgn4web\.js/, helpfile); 
+      jspath = e[i].src.replace(/pgn4web\.js/, ""); 
     }
   }
+  return jspath;
+}
 
-  return helppath; 
+
+function detectHelpLocation() {
+  helpfile = "help.html";
+  return detectJavascriptBaseLocation() + helppath; 
+}
+
+
+function displayDebugInfo() {
+  debugInfo = 'pgn4web v' + version + '\n' +
+              '\n' +
+              'URL: ' + location.href + '\n' +
+              'Javascript base: ' + detectJavascriptBaseLocation() + '\n' +
+              'PGN URL: ' + pgnUrl + '\n' +
+              '\n';
+  alert(debugInfo);
 }
 
 
