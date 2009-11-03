@@ -68,7 +68,7 @@ a {
   font-size: 90%;
   padding: 2px;
   border-width: 1px;
-  border-color: #EDE8D5;
+  border-color: #CFCBB3;
   background-color: #EDE8D5;
 }
 
@@ -85,11 +85,11 @@ a {
 /* a "width" attribute here must use the !important flag to override default settings */
 }
 
-.helplinkNosize,
 .header,
 .headerNosize,
 .headerHighlighted,
 .headerHighlightedNosize,
+.helplinkNosize,
 .move,
 .moveOn,
 .comment,

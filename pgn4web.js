@@ -1706,7 +1706,7 @@ function Init(){
   RefreshBoard();
   CurrentPly = StartPly;
   HighlightLastMove();
-  if (firstStart || alwaysInitialHalfmove){
+  if (firstStart || alwaysInitialHalfmove) {
     switch (initialHalfmove) {
       case "start":
         GoToMove(0);
@@ -1723,17 +1723,17 @@ function Init(){
         break;
       default:
         if (isNaN(initialHalfmove)) { initialHalfmove = 0 }
-        else { 
-          if (initialHalfmove < -2) { initialHalfmove = 0 }
-          else if (initialHalfmove == -2) { GoToMove(0); MoveToNextComment(); }
-          else if (initialHalfmove == -1) { GoToMove(StartPly + Math.floor(Math.random()*(StartPly+PlyNumber))); }
-          else { GoToMove(initialHalfmove); }
-       }
+        if (initialHalfmove < -2) { initialHalfmove = 0 }
+        if (initialHalfmove == -2) { GoToMove(0); MoveToNextComment(); }
+        else if (initialHalfmove == -1) { GoToMove(StartPly + Math.floor(Math.random()*(StartPly+PlyNumber))); }
+        else { GoToMove(initialHalfmove); }
     }
+  } else {
+    // added here customFunctionOnMove for consistency, as a null move starting a new game
+    customFunctionOnMove();
   }
   if (firstStart) { if (autostartAutoplay) SetAutoPlay(true); }
 
-  customFunctionOnMove();
   customFunctionOnPgnGameLoad();
 
   firstStart = false;

@@ -130,7 +130,9 @@
     }
 
     theObject = document.getElementById("GameText");
-    if ((theObject != null) && (theObject.scrollHeight != undefined) &&
+    if ((theObject != null) && 
+        (theObject.scrollHeight != undefined) && 
+	(theObject.scrollTop != undefined) &&
 	(CurrentPly == StartPly + PlyNumber)) {
       theObject.scrollTop = theObject.scrollHeight;
     }
@@ -359,8 +361,8 @@ function user_help() {
 </center>
 
 <!--
-<script>document.write(document.getElementById("outerTable").offsetWidth + "x" + 
- document.getElementById("outerTable").offsetHeight)</script>
+<script>document.write(document.getElementById("outerTable").offsetWidth + 
+ "x" + document.getElementById("outerTable").offsetHeight)</script>
 -->
 
 </body>
