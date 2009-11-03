@@ -99,7 +99,7 @@ function displayHelp(section){
   versionParameter = "&version=" + version;
   if (shortcutKeysEnabled) { keysParameter = "&keysEnabled=true"; }
   else { keysParameter = "&keysEnabled=false"; }
-  helpWin = window.open("help.html?" + versionParameter + keysParameter + sectionFlag, "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
+  helpWin = window.open(detectHelpLocation() + "?" + versionParameter + keysParameter + sectionFlag, "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if (window.focus) { helpWin.focus(); }
 }
 
@@ -575,6 +575,30 @@ boardAlt[6 + 7 * 8] = "go to next comment";
 // H1
 function boardOnClickCol7Row7() { GoToMove(StartPly + PlyNumber); };
 boardAlt[7 + 7 * 8] = "go to game end";
+
+
+function detectHelpLocation() {
+  helpfile = "help.html";
+
+  var e = document.getElementsByTagName('script');
+  for(var i=0; i<e.length; i++) {
+    if ((e[i].src) && (matchjspath = e[i].src.match(/(.*)pgn4web\.js/))) {
+      jspath = matchjspath[1];
+    }
+  }
+
+  if (jspath.match(/^\w*:\/\//)) {        // if jspath is absolute
+    helppath = jspath + helpfile; 
+  } else {                                // if jspath is relative, check is a base is defined
+    basesrc = "";
+    var e = document.getElementsByTagName('base');
+    for(var i=0; i<e.length; i++) { if(e[i].href) { basesrc = e[i].href } }
+    baseDomainPath = basesrc.match(/.*\//);
+    helppath = baseDomain + jspath + helpfile;
+  }
+
+  return helppath;
+}
 
 
 var pgnGame = new Array();
@@ -3422,8 +3446,8 @@ function SetImage(square, image){
  * Define the path to the directory containing the chess men images.          *
  *                                                                            *
  ******************************************************************************/
-function SetImagePath(path){ 
-  ImagePath=path;
+function SetImagePath(path){
+  ImagePath = path;
 }
 /******************************************************************************
  *                                                                            *
