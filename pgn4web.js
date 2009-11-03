@@ -582,22 +582,13 @@ function detectHelpLocation() {
 
   var e = document.getElementsByTagName('script');
   for(var i=0; i<e.length; i++) {
-    if ((e[i].src) && (matchjspath = e[i].src.match(/(.*)pgn4web\.js/))) {
-      jspath = matchjspath[1];
+    if ((e[i].src) && (e[i].src.match(/pgn4web\.js/))) {
+      helppath = e[i].src.replace(/pgn4web\.js/, helpfile); 
     }
   }
 
-  if (jspath.match(/^\w*:\/\//)) {        // if jspath is absolute
-    helppath = jspath + helpfile; 
-  } else {                                // if jspath is relative, check is a base is defined
-    basesrc = "";
-    var e = document.getElementsByTagName('base');
-    for(var i=0; i<e.length; i++) { if(e[i].href) { basesrc = e[i].href } }
-    baseDomainPath = basesrc.match(/.*\//);
-    helppath = baseDomain + jspath + helpfile;
-  }
-
-  return helppath;
+  alert(helppath);
+  return helppath; 
 }
 
 
