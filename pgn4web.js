@@ -2415,40 +2415,6 @@ function OpenGame(gameId){
 
 /******************************************************************************
  *                                                                            *
- * Function ParseHTMLGameString:                                              *
- *                                                                            *
- * Extract all moves from the HTML string and store them. Moves are           *
- * identified by a string like:                                               *
- *                                                                            *
- * <A HREF="javascript:GoToMove(16)" CLASS="move" Id="MvXXX">h6</A>           *
- *                                                                            *
- ******************************************************************************/
-function ParseHTMLGameString(gameString){
-  var ss = gameString;
-  
-  var end, move, length;
-  var start       = 0;
-  var searchStart = '>';    // Start of move marker
-  var searchEnd   = '</';  // End of move marker
-  PlyNumber = 0;
-  while(1){
-    start = ss.indexOf(searchStart, start);
-    if (start < 0) break;                     // Nothing more found --> leave.
-    end   = ss.indexOf(searchEnd, start);
-    if (end   < 0) break;                     // Nothing more found --> leave.
-    length = end-start-1;
-    if (length <= 0) break;                   // Nothing more found --> leave.
-    move = ss.substr(start+1, length);
-    move = move.replace(/\s+/g, '');
-    Moves[StartPly+PlyNumber++] = ClearMove(move);
-
-    start = end+4;
-    if (start > ss.length) break;             // End of string --> leave.
-  }
-}
-
-/******************************************************************************
- *                                                                            *
  * Function ParsePGNGameString:                                               *
  *                                                                            *
  * Extract all moves from the PGN string and store them.                      *
@@ -2494,6 +2460,16 @@ function ParsePGNGameString(gameString){
           commentEnd++;
           if (commentEnd == ss.length) break;
         }
+        if (MoveComments[StartPly+PlyNumber].length>0) MoveComments[StartPly+PlyNumber] += ' ';
+        MoveComments[StartPly+PlyNumber] += ss.substring(commentStart, commentEnd);
+        start = commentEnd;
+        break;
+      
+      case '!':
+      case '?':
+        commentStart = start;
+        if ((ss.charAt(start+1) == '?') || (ss.charAt(start+1) == '!')) { commentEnd = commentStart + 2; }
+        else { commentEnd = commentStart + 1; }
         if (MoveComments[StartPly+PlyNumber].length>0) MoveComments[StartPly+PlyNumber] += ' ';
         MoveComments[StartPly+PlyNumber] += ss.substring(commentStart, commentEnd);
         start = commentEnd;
@@ -2601,10 +2577,13 @@ function ParsePGNGameString(gameString){
         end2 = ss.indexOf('{',start); if ((end2 > 0) && (end2 < end)) end = end2;
         end2 = ss.indexOf(';',start); if ((end2 > 0) && (end2 < end)) end = end2;
         end2 = ss.indexOf('(',start); if ((end2 > 0) && (end2 < end)) end = end2;
+        end2 = ss.indexOf('!',start); if ((end2 > 0) && (end2 < end)) end = end2;
+        end2 = ss.indexOf('?',start); if ((end2 > 0) && (end2 < end)) end = end2;
         if (end < 0) end = ss.length;
         move = ss.substring(start,end);
         Moves[StartPly+PlyNumber] = ClearMove(move);
-        if (ss.charAt(end) == ' ') start = end; else start = end - 1;
+        if (ss.charAt(end) == ' ') { start = end; } 
+        else { start = end - 1; }
         PlyNumber++;
         MoveComments[StartPly+PlyNumber]='';
         break;
