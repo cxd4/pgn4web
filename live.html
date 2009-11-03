@@ -148,9 +148,12 @@
     document.getElementById("pgn4webMessage").innerHTML = pgn4webMoveComments[CurrentPly];
   }
 
+  var checkForNewLiveEventInterval = null;
   function checkForNewLiveEvent() {
-    document.getElementById("statusDetails").className = "header";
-    refreshPgnSource();
+    document.getElementById("messageLine").style.visibility = "hidden";
+    if (checkForNewLiveEventInterval) { clearTimeout(checkForNewLiveEventInterval); }
+    // started as timeout otherwise some browser could suppress visual feedback
+    checkForNewLiveEventInterval = setTimeout('refreshPgnSource();document.getElementById("messageLine").style.visibility = "visible";', 111);
   }
 
 // disable A7 and B7 shortcut squares usually allowing showing move comments
