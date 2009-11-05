@@ -141,9 +141,9 @@ function new_start_pgn4web() {
   if (!fontCommentsSize.match(/[^0-9]/)) { fontCommentsSize += 'px'; }
   rule.style.fontSize = fontCommentsSize;
 
-//  rule = getCSSRule('.nag');
-//  rule.style.color = fontCommentsColor;
-//  rule.style.fontSize = fontCommentsSize;
+  rule = getCSSRule('.nag');
+  rule.style.color = fontCommentsColor;
+//  rule.style.fontSize = fontCommentsSize; // the nag is always embedded in the comment
 
   paddingControlHeight = Math.floor(squareSize / 2.5);
   theObject = document.getElementById("GameButtons");
