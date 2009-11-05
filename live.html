@@ -122,11 +122,15 @@
       document.getElementById("GameRound").innerHTML = "";
     }
 
-    if ((gameResult[currentGame] != undefined) && 
-        ((gameResult[currentGame] == "*") || (gameResult[currentGame] == "?"))) {
-      document.getElementById("GameResult").className = "headerNosize";
+    if (gameResult[currentGame] != undefined) { 
+      if ((gameResult[currentGame] == "*") || (gameResult[currentGame] == "?")) {
+        document.getElementById("GameResult").className = "headerNosize";
+      } else {
+        document.getElementById("GameResult").className = "headerHighlightedNosize";
+      }
     } else {
-      document.getElementById("GameResult").className = "headerHighlightedNosize";
+      document.getElementById("GameResult").className = "headerNosize";
+      document.getElementById("GameResult").innerHTML = "";
     }
 
     theObject = document.getElementById("GameText");
