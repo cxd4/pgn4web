@@ -578,6 +578,7 @@ boardAlt[7 + 7 * 8] = "go to game end";
 
 
 function detectJavascriptLocation() {
+  jspath = "";
   var e = document.getElementsByTagName('script');
   for(var i=0; i<e.length; i++) {
     if ((e[i].src) && (e[i].src.match(/pgn4web\.js/))) {
@@ -594,9 +595,22 @@ function detectHelpLocation() {
 }
 
 
+function detectBaseLocation() {
+  base = "";
+  var e = document.getElementsByTagName('base');
+  for(var i=0; i<e.length; i++) {
+    if (e[i].href) {
+      base = e[i].href; 
+    }
+  }
+  return base;
+}
+
+
 function displayDebugInfo() {
   debugInfo = 'pgn4web v' + version + '\n\n' +
               'HTML URL: ' + location.href + '\n\n' +
+              'base URL: ' + detectBaseLocation() + '\n\n' +
               'javascript URL: ' + detectJavascriptLocation() + '\n\n';
   if (pgnUrl != "") { debugInfo += 'PGN URL: ' + pgnUrl + '\n\n'; }
   else { debugInfo += 'PGN URL: none' + '\n\n'; }
