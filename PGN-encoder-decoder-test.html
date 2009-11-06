@@ -15,7 +15,7 @@
 
 <script>
 
-var charSet = "$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
+var encodingCharSet = "$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
 var encodingVersion = 1;
 
 function BitsToBytes(i) {
@@ -26,7 +26,7 @@ function BitsToBytes(i) {
   if (i.charAt(3) == '1') { o +=  4; }
   if (i.charAt(4) == '1') { o +=  2; }
   if (i.charAt(5) == '1') { o +=  1; }
-  return charSet.charAt(o);
+  return encodingCharSet.charAt(o);
 }
 
 
@@ -697,10 +697,10 @@ function EncodePGN(ov) {
     y = x & 0x3F;
     x >>= 6;
     x &= 0x3F;
-    encodedNodes += charSet.charAt(x) + charSet.charAt(y);
+    encodedNodes += encodingCharSet.charAt(x) + encodingCharSet.charAt(y);
   }
 
-  bytes += charSet.charAt(encodingVersion);
+  bytes += encodingCharSet.charAt(encodingVersion);
 
   return new Array (bytes, encodedNodes, LetterCodes)
 }
@@ -710,16 +710,16 @@ function EncodePGN(ov) {
 //          Make sure this is taken into account when encoding/decoding
 function DecodePGN(bytes, encodedNodes) {
 
-  if (bytes.charAt(bytes.length - 1) != charSet.charAt(encodingVersion)) {
+  if (bytes.charAt(bytes.length - 1) != encodingCharSet.charAt(encodingVersion)) {
     alert("ERROR: PGN encoding version mismatch (e:" + 
-           bytes.charAt(bytes.length - 1) + " d:" + charSet.charAt(encodingVersion) + ")");
+           bytes.charAt(bytes.length - 1) + " d:" + encodingCharSet.charAt(encodingVersion) + ")");
   } else {
     bytes.length--;
   }
 
   l = new Array();
   while(encodedNodes.length) { 
-    l.push((charSet.indexOf(encodedNodes.charAt(0))<<6)+charSet.indexOf(encodedNodes.charAt(1))-512);
+    l.push((encodingCharSet.indexOf(encodedNodes.charAt(0))<<6)+encodingCharSet.indexOf(encodedNodes.charAt(1))-512);
     encodedNodes = encodedNodes.slice(2,encodedNodes.length) 
   }
 
@@ -1240,7 +1240,7 @@ function DecodePGN(bytes, encodedNodes) {
   e=b=a=0;
   o="";
 
-  function B() { if(a==0) { b=charSet.indexOf(bytes.charAt(e++)); a=6; } return ((b>>--a)&0x01); }
+  function B() { if(a==0) { b=encodingCharSet.indexOf(bytes.charAt(e++)); a=6; } return ((b>>--a)&0x01); }
   
   while(e<bytes.length) { i=0; 
     while(l[i]<0) { 
@@ -1370,7 +1370,7 @@ function testPGNencode() {
   document.getElementById("codingSet").innerHTML = test_encodedNodes + "<br><br>"
   l = new Array();
   while(test_encodedNodes.length) {
-    l.push((charSet.indexOf(test_encodedNodes.charAt(0))<<6)+charSet.indexOf(test_encodedNodes.charAt(1))-512);
+    l.push((encodingCharSet.indexOf(test_encodedNodes.charAt(0))<<6)+encodingCharSet.indexOf(test_encodedNodes.charAt(1))-512);
     test_encodedNodes = test_encodedNodes.slice(2,test_encodedNodes.length)
   }
   o = "";
