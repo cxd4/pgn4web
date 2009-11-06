@@ -1320,13 +1320,13 @@ function testPGNencode() {
   original_var = document.getElementById("original").innerHTML;
   ret = new Array(3);
   ret = EncodePGN(original_var);
-  bytes = ret[0];
-  encodedNodes = ret[1];
-  LetterCodes = ret[2];
+  test_bytes = ret[0];
+  test_encodedNodes = ret[1];
+  test_LetterCodes = ret[2];
 
   document.getElementById("encoded").innerHTML = bytes;
 
-  document.getElementById("decoded").innerHTML = DecodePGN(bytes, encodedNodes);
+  document.getElementById("decoded").innerHTML = DecodePGN(test_bytes, test_encodedNodes);
 
   different = false;
   lengthDiff = Math.abs(document.getElementById("original").innerHTML.length -
@@ -1353,11 +1353,11 @@ function testPGNencode() {
 
   document.getElementById("encodedLetters").innerHTML = letter_frequency(document.getElementById("encoded").innerHTML)
 
-  document.getElementById("codingSet").innerHTML = encodedNodes + "<br><br>"
+  document.getElementById("codingSet").innerHTML = test_encodedNodes + "<br><br>"
   l = new Array();
-  while(encodedNodes.length) {
-    l.push((charSet.indexOf(encodedNodes.charAt(0))<<6)+charSet.indexOf(encodedNodes.charAt(1))-512);
-    encodedNodes = encodedNodes.slice(2,encodedNodes.length)
+  while(test_encodedNodes.length) {
+    l.push((charSet.indexOf(test_encodedNodes.charAt(0))<<6)+charSet.indexOf(test_encodedNodes.charAt(1))-512);
+    test_encodedNodes = test_encodedNodes.slice(2,test_encodedNodes.length)
   }
   o = "";
   for(i=0; i<l.length; i++) {
@@ -1366,8 +1366,8 @@ function testPGNencode() {
   document.getElementById("codingSet").innerHTML += o;
 
   o = "";
-  for (i=0; i<LetterCodes.length; i++) {
-    o += "<br>LetterCodes[" + i + "] = '" + LetterCodes[i] + "';";
+  for (i=0; i<test_LetterCodes.length; i++) {
+    o += "<br>test_LetterCodes[" + i + "] = '" + test_LetterCodes[i] + "';";
   }
   document.getElementById("LetterCodes").innerHTML = o;
 }
