@@ -15,7 +15,8 @@
 
 <script>
 
-var charSet = "+-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+var charSet = "$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
+var encodingVersion = 1;
 
 function BitsToBytes(i) {
   o = 0;
@@ -699,6 +700,8 @@ function EncodePGN(ov) {
     encodedNodes += charSet.charAt(x) + charSet.charAt(y);
   }
 
+  bytes += charSet.charAt(encodingVersion);
+
   return new Array (bytes, encodedNodes, LetterCodes)
 }
 
@@ -706,6 +709,13 @@ function EncodePGN(ov) {
 // WARNING: DecodePGN might add/remove one char at the end of the original string
 //          Make sure this is taken into account when encoding/decoding
 function DecodePGN(bytes, encodedNodes) {
+
+  if (bytes.charAt(bytes.length - 1) != charSet.charAt(encodingVersion)) {
+    alert("ERROR: PGN encoding version mismatch (e:" + 
+           bytes.charAt(bytes.length - 1) + " d:" + charSet.charAt(encodingVersion) + ")");
+  } else {
+    bytes.length--;
+  }
 
   l = new Array();
   while(encodedNodes.length) { 
@@ -1345,8 +1355,12 @@ function testPGNencode() {
     alertText += "decoded (" + document.getElementById("decoded").innerHTML.length +
                  ") different (" + document.getElementById("original").innerHTML.length + ") from encoded!\n"; 
   }
-  alertText += "original:" + document.getElementById("original").innerHTML.length +
-               "\nencoded:" + document.getElementById("encoded").innerHTML.length;
+  compressPerc = Math.floor(100 * (document.getElementById("original").innerHTML.length - 
+			           document.getElementById("encoded").innerHTML.length) 
+		                / document.getElementById("original").innerHTML.length);
+  alertText += "original:" + document.getElementById("original").innerHTML.length + "\n" +
+               "encoded:" + document.getElementById("encoded").innerHTML.length + "\n" +
+	       "compress:" + compressPerc + "%";
   alert(alertText);
 
   document.getElementById("originalLetters").innerHTML = letter_frequency(document.getElementById("original").innerHTML)
