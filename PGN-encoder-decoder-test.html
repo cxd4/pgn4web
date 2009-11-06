@@ -17,6 +17,12 @@
 
 var encodingCharSet = "$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
 var encodingVersion = 1;
+// version 1 of PGN encoding:
+//   encodedPGN = nnn*xxx0
+//   nnn = number representing bytes length of the decoded message
+//   * = star char
+//   xxx = encoded text (using LetterCodes below)
+//   0 = zero char (version marker)
 
 function BitsToBytes(i) {
   o = 0;
@@ -679,7 +685,7 @@ function EncodePGN(ov) {
   // Build resulting data stream
   // The bits string could get very large
   bits = "";
-  bytes = "";
+  bytes = ov.length + "*";
   for (i = 0; i < ov.length; i ++) {
     bits += LetterCodes[ov.charCodeAt(i)];
     while (bits.length > 5) {
@@ -687,7 +693,6 @@ function EncodePGN(ov) {
       bits = bits.slice(6, bits.length);
     }
   }
-  // bytes.append(BitsToBytes(bits));
   bytes += BitsToBytes(bits);
 
   encodedNodes = "";
@@ -706,8 +711,6 @@ function EncodePGN(ov) {
 }
 
 
-// WARNING: DecodePGN might add/remove one char at the end of the original string
-//          Make sure this is taken into account when encoding/decoding
 function DecodePGN(bytes, encodedNodes) {
 
   if (bytes.charAt(bytes.length - 1) != encodingCharSet.charAt(encodingVersion)) {
@@ -716,6 +719,9 @@ function DecodePGN(bytes, encodedNodes) {
   } else {
     bytes.length--;
   }
+
+  originalLength = parseInt(bytes.match(/^[0-9]*/));
+  bytes = bytes.replace(/^[0-9]*\*/,"");
 
   l = new Array();
   while(encodedNodes.length) { 
@@ -1242,12 +1248,13 @@ function DecodePGN(bytes, encodedNodes) {
 
   function B() { if(a==0) { b=encodingCharSet.indexOf(bytes.charAt(e++)); a=6; } return ((b>>--a)&0x01); }
   
-  while(e<bytes.length) { i=0; 
+  while(originalLength>0) { i=0; 
     while(l[i]<0) { 
       if(B()) i=-l[i];
       else i++;
     }
     o+=String.fromCharCode(l[i]);
+    originalLength--;
   }
 
   return o;
@@ -1338,22 +1345,10 @@ function testPGNencode() {
 
   document.getElementById("decoded").innerHTML = DecodePGN(test_bytes, test_encodedNodes);
 
-  different = false;
-  lengthDiff = Math.abs(document.getElementById("original").innerHTML.length -
-                        document.getElementById("decoded").innerHTML.length);
-  if (lengthDiff > 1) { 	 
-    different = true;
+  if (document.getElementById("decoded").innerHTML != document.getElementById("original").innerHTML) {
+    alertText = "ERROR: decoded different from encoded!\n";
   } else {
-    lengthMin = Math.min(document.getElementById("original").innerHTML.length,
-                         document.getElementById("decoded").innerHTML.length);
-    different = (document.getElementById("original").innerHTML.substring(0, lengthMin) !=
-                 document.getElementById("decoded").innerHTML.substring(0, lengthMin))
-  }
-
-  alertText = "";
-  if (different) {
-    alertText += "decoded (" + document.getElementById("decoded").innerHTML.length +
-                 ") different (" + document.getElementById("original").innerHTML.length + ") from encoded!\n"; 
+    alertText = "";
   }
   compressPerc = Math.floor(100 * (document.getElementById("original").innerHTML.length - 
 			           document.getElementById("encoded").innerHTML.length) 

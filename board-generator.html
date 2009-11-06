@@ -403,8 +403,7 @@ function calculate_html_code() {
   pgnText_value = document.getElementById('pgnText').value;
   if ((document.board.encodePgn.checked) && (pgnText_value != previousPgnTextToEncode)) {
     previousPgnTextToEncode = pgnText_value;
-    // need to add "% " to the PGN before encoding in order to cope with the decoding last char issue
-    pgnTextEncoded = EncodePGN(pgnText_value + "\n% "); 
+    pgnTextEncoded = EncodePGN(pgnText_value);
   }
   if (document.board.encodePgn.checked) { iframeUrl += "&pe=" + pgnTextEncoded; }
   else { iframeUrl += "&pt=" + pgnTextFixForUrl(pgnText_value); }
@@ -545,6 +544,12 @@ function validate_squareSize() {
 
 var encodingCharSet = "$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
 var encodingVersion = 1;
+// version 1 of PGN encoding:
+//   encodedPGN = nnn*xxx0
+//   nnn = number representing bytes length of the decoded message
+//   * = star char
+//   xxx = encoded text (using LetterCodes below)
+//   0 = zero char (version marker)
 
 function BitsToBytes(i) {
   o = 0;
@@ -820,7 +825,7 @@ function EncodePGN(ov) {
   // Build resulting data stream
   // The bits string could get very large
   bits = "";
-  bytes = "";
+  bytes = ov.length + "*";
   for (i = 0; i < ov.length; i ++) {
     bits += LetterCodes[ov.charCodeAt(i)];
     while (bits.length > 5) {
@@ -828,7 +833,6 @@ function EncodePGN(ov) {
       bits = bits.slice(6, bits.length);
     }
   }
-  // bytes.append(BitsToBytes(bits));
   bytes += BitsToBytes(bits);
 
   bytes += encodingCharSet.charAt(encodingVersion);
