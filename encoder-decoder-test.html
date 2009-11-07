@@ -18,9 +18,9 @@
 var encodingCharSet = "$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
 var encodingVersion = 1;
 // version 1 of PGN encoding:
-//   encodedPGN = nnn*xxx0
+//   encodedPGN = nnn-xxx0
 //   nnn = number representing bytes length of the decoded message
-//   * = star char
+//   - = dash char (delimiter for length info)
 //   xxx = encoded text (using LetterCodes below)
 //   0 = zero char (version marker)
 
@@ -685,7 +685,7 @@ function EncodePGN(ov) {
   // Build resulting data stream
   // The bits string could get very large
   bits = "";
-  bytes = ov.length + "*";
+  bytes = ov.length + "-";
   for (i = 0; i < ov.length; i ++) {
     bits += LetterCodes[ov.charCodeAt(i)];
     while (bits.length > 5) {
@@ -721,7 +721,7 @@ function DecodePGN(bytes, encodedNodes) {
   }
 
   originalLength = parseInt(bytes.match(/^[0-9]*/));
-  bytes = bytes.replace(/^[0-9]*\*/,"");
+  bytes = bytes.replace(/^[0-9]*-/,"");
 
   l = new Array();
   while(encodedNodes.length) { 
