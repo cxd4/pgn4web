@@ -15,6 +15,13 @@
 
 <script>
 
+// fix this to use customized letter distribution
+var USE_PRESET_LETTER_DISTRIBUTION = true;
+// fix this once you have the letter codes corresponding to the letter distribution above
+var USE_PRESET_LETTER_CODES = true;
+// fix this once you have the decoding values l[] corresponding to the letter codes above
+var USE_PRESET_DECODING_SET = true;
+
 var encodingCharSet = "$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
 var encodingVersion = 1;
 // version 1 of PGN encoding:
@@ -44,7 +51,7 @@ function EncodePGN(ov) {
   for (i = 0; i < 256; i ++) { Letters[i] = 0; }
   for (i = 0; i < ov.length; i ++) { Letters[ov.charCodeAt(i)]++; }
 
-  if (true) {
+  if (USE_PRESET_LETTER_DISTRIBUTION) {
   Letters[0] = 1;
   Letters[1] = 1;
   Letters[2] = 1;
@@ -423,7 +430,7 @@ function EncodePGN(ov) {
   }
 
 
-  if (true) {
+  if (USE_PRESET_LETTER_CODES) {
   LetterCodes[0]   = '00111111111111110';
   LetterCodes[1]   = '0101101';
   LetterCodes[2]   = '00111111111111111';
@@ -729,7 +736,7 @@ function DecodePGN(bytes, encodedNodes) {
     encodedNodes = encodedNodes.slice(2,encodedNodes.length) 
   }
 
-  if (true) {
+  if (USE_PRESET_DECODING_SET) {
   l[0] = -146;
   l[1] = -111;
   l[2] = -66;
@@ -1322,19 +1329,19 @@ function DecodePGN(bytes, encodedNodes) {
 </tr>
 <tr>
 <td>
-<textarea id="originalLetters" readonly style="height:300px; width:185px;">
+<textarea id="originalLetters" readonly style="height:300px; width:195px;">
 </textarea>
 </td>
 <td>
-<textarea id="LetterCodes" readonly style="height:300px; width:350px;">
+<textarea id="LetterCodes" readonly style="height:300px; width:335px;">
 </textarea>
 </td>
 <td>
-<textarea id="decodingValues" readonly style="height:300px; width:170px;">
+<textarea id="decodingValues" readonly style="height:300px; width:165px;">
 </textarea>
 </td>
 <td>
-<textarea id="encodedLetters" readonly style="height:300px; width:185px;">
+<textarea id="encodedLetters" readonly style="height:300px; width:195px;">
 </textarea>
 </td>
 </tr>
@@ -1389,13 +1396,19 @@ function testPGNencode() {
   }
   o = "";
   for(i=0; i<l.length; i++) {
-    o += "l[" + i + "] = " + l[i] + ";\n";
+    o += "l[" + i + "]";
+    if (i < 10) { o += "  "; } else
+    { if (i < 100) { o += " "; } }
+    o += " = " + l[i] + ";\n";
   }
   document.getElementById("decodingValues").value = o;
 
   o = "";
   for (i=0; i<test_LetterCodes.length; i++) {
-    o += "LetterCodes[" + i + "] = '" + test_LetterCodes[i] + "';\n";
+    o += "LetterCodes[" + i + "]"
+    if (i < 10) { o += "  "; } else
+    { if (i < 100) { o += " "; } }
+    o += " = '" + test_LetterCodes[i] + "';\n";
   }
   document.getElementById("LetterCodes").innerHTML = o;
 }
@@ -1406,8 +1419,11 @@ function letter_frequency(s) {
   var o = "";
   for (i = 0; i < s.length; i ++) { thisLetters[s.charCodeAt(i)]++; }
   for (i = 0; i < thisLetters.length; i ++) {
-    o += "Letters[" + i + "] = " + thisLetters[i] + ";";
-    if (i > 32) { o += "&nbsp;&nbsp;&nbsp; // " + String.fromCharCode(i) }
+    o += "Letters[" + i + "]";
+    if (i < 10) { o += "  "; } else
+    { if (i < 100) { o += " "; } }
+    o += " = " + thisLetters[i] + ";";
+    if (i > 32) { o += "   // " + String.fromCharCode(i) }
     o += "\n";
   }
   return o;
