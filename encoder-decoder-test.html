@@ -1270,34 +1270,41 @@ function DecodePGN(bytes, encodedNodes) {
 
 <center>
 
-<textarea id="textArea" style="height:300px; width:800px;"></textarea>
+<textarea id="textArea" style="height:300px; width:900px;"></textarea>
 <form>
-<input type="button" style="width:600px;" onClick="javascript: testPGNencode();" value="pgn4web PGN encoder/decoder test">
+<input type="button" style="width:700px;" onClick="javascript: testPGNencode();" value="pgn4web PGN encoder/decoder test">
 <input type="button" style="width:200px;" onClick="javascript: document.getElementById('textArea').value = '';" value="clear form">
 </form>
-<table border=1> 
+<table cellspacing=2 cellpadding=0 border=1> 
 <tr style="font-weight: bold; text-align: center;">
 <td>original</td>
 <td>decoded</td>
-<td>encoded</td>
 </tr>
 <tr>
 <td>
-<div id="original" style="height:300px; width:250px; overflow:auto;">
-</div>
+<textarea id="original" readonly style="height:300px; width:447px;">
+</textarea>
 </td>
 <td>
-<div id="decoded" style="height:300px; width:250px; overflow:auto;">
-</div>
-</td>
-<td>
-<div id="encoded" style="height:300px; width:250px; overflow:auto;">
-</div>
+<textarea id="decoded" readonly style="height:300px; width:447px;">
+</textarea>
 </td>
 </tr>
 </table>
 <br>
-<table border=1>
+<table cellspacing=2 cellpadding=0 border=1>
+<tr style="font-weight: bold; text-align: center;">
+<td>encoded</td>
+</tr>
+<tr>
+<td>
+<textarea id="encoded" readonly style="height:80px; width:896px;">
+</textarea>
+</td>
+</tr>
+</table>
+<br>
+<table cellspacing=2 cellpadding=0 border=1>
 <tr style="font-weight: bold; text-align: center;">
 <td>original letters</td>
 <td>letter codes</td>
@@ -1306,23 +1313,24 @@ function DecodePGN(bytes, encodedNodes) {
 </tr>
 <tr>
 <td>
-<div id="originalLetters" style="height:300px; width:200px; overflow:auto;">
-</div>
+<textarea id="originalLetters" readonly style="height:300px; width:222.5px;">
+</textarea>
 </td>
 <td>
-<div id="LetterCodes" style="height:300px; width:200px; overflow:auto;">
-</div>
+<textarea id="LetterCodes" readonly style="height:300px; width:222.5px;">
+</textarea>
 </td>
 <td>
-<div id="codingSet" style="height:300px; width:200px; overflow:auto;">
-</div>
+<textarea id="codingSet" readonly style="height:300px; width:222.5px;">
+</textarea>
 </td>
 <td>
-<div id="encodedLetters" style="height:300px; width:200px; overflow:auto;">
-</div>
+<textarea id="encodedLetters" readonly style="height:300px; width:222.5px;">
+</textarea>
 </td>
 </tr>
 </table>
+<br>
 
 </center>
 
@@ -1331,39 +1339,39 @@ function DecodePGN(bytes, encodedNodes) {
 function testPGNencode() {
       
   if (document.getElementById("textArea").value == "") {
-    document.getElementById("original").innerHTML = document.getElementById("originalInput").innerHTML;
+    document.getElementById("original").value = document.getElementById("originalInput").innerHTML;
   } else {
-    document.getElementById("original").innerHTML = document.getElementById("textArea").value;
+    document.getElementById("original").value = document.getElementById("textArea").value;
   }
-  original_var = document.getElementById("original").innerHTML;
+  original_var = document.getElementById("original").value;
   ret = new Array(3);
   ret = EncodePGN(original_var);
   test_bytes = ret[0];
   test_encodedNodes = ret[1];
   test_LetterCodes = ret[2];
 
-  document.getElementById("encoded").innerHTML = bytes;
+  document.getElementById("encoded").value = bytes;
 
-  document.getElementById("decoded").innerHTML = DecodePGN(test_bytes, test_encodedNodes);
+  document.getElementById("decoded").value = DecodePGN(test_bytes, test_encodedNodes);
 
-  if (document.getElementById("decoded").innerHTML != document.getElementById("original").innerHTML) {
+  if (document.getElementById("decoded").value != document.getElementById("original").value) {
     alertText = "ERROR: decoded different from encoded!\n";
   } else {
     alertText = "";
   }
-  compressPerc = Math.floor(100 * (document.getElementById("original").innerHTML.length - 
-			           document.getElementById("encoded").innerHTML.length) 
-		                / document.getElementById("original").innerHTML.length);
-  alertText += "original:" + document.getElementById("original").innerHTML.length + "\n" +
-               "encoded:" + document.getElementById("encoded").innerHTML.length + "\n" +
+  compressPerc = Math.floor(100 * (document.getElementById("original").value.length - 
+			           document.getElementById("encoded").value.length) 
+		                / document.getElementById("original").value.length);
+  alertText += "original:" + document.getElementById("original").value.length + "\n" +
+               "encoded:" + document.getElementById("encoded").value.length + "\n" +
 	       "compress:" + compressPerc + "%";
   alert(alertText);
 
-  document.getElementById("originalLetters").innerHTML = letter_frequency(document.getElementById("original").innerHTML)
+  document.getElementById("originalLetters").value = letter_frequency(document.getElementById("original").value)
 
-  document.getElementById("encodedLetters").innerHTML = letter_frequency(document.getElementById("encoded").innerHTML)
+  document.getElementById("encodedLetters").value = letter_frequency(document.getElementById("encoded").value)
 
-  document.getElementById("codingSet").innerHTML = test_encodedNodes + "<br><br>"
+  document.getElementById("codingSet").value = test_encodedNodes + "\n\n"
   l = new Array();
   while(test_encodedNodes.length) {
     l.push((encodingCharSet.indexOf(test_encodedNodes.charAt(0))<<6)+encodingCharSet.indexOf(test_encodedNodes.charAt(1))-512);
@@ -1371,13 +1379,13 @@ function testPGNencode() {
   }
   o = "";
   for(i=0; i<l.length; i++) {
-    o += "<br>l[" + i + "] = " + l[i] + ";";
+    o += "l[" + i + "] = " + l[i] + ";\n";
   }
-  document.getElementById("codingSet").innerHTML += o;
+  document.getElementById("codingSet").value += o;
 
   o = "";
   for (i=0; i<test_LetterCodes.length; i++) {
-    o += "<br>test_LetterCodes[" + i + "] = '" + test_LetterCodes[i] + "';";
+    o += "test_LetterCodes[" + i + "] = '" + test_LetterCodes[i] + "';\n";
   }
   document.getElementById("LetterCodes").innerHTML = o;
 }
@@ -1388,8 +1396,9 @@ function letter_frequency(s) {
   var o = "";
   for (i = 0; i < s.length; i ++) { thisLetters[s.charCodeAt(i)]++; }
   for (i = 0; i < thisLetters.length; i ++) {
-    o += "<br>Letters[" + i + "] = " + thisLetters[i] + ";";
+    o += "Letters[" + i + "] = " + thisLetters[i] + ";";
     if (i > 32) { o += "&nbsp;&nbsp;&nbsp; // " + String.fromCharCode(i) }
+    o += "\n";
   }
   return o;
 }
