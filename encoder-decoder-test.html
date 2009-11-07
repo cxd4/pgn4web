@@ -1302,30 +1302,39 @@ function DecodePGN(bytes, encodedNodes) {
 </textarea>
 </td>
 </tr>
+<tr style="font-weight: bold; text-align: center;">
+<td>decoding key</td>
+</tr>
+<tr>
+<td>
+<textarea id="decodingKey" readonly style="height:80px; width:896px;">
+</textarea>
+</td>
+</tr>
 </table>
 <br>
 <table cellspacing=2 cellpadding=0 border=1>
 <tr style="font-weight: bold; text-align: center;">
 <td>original letters</td>
 <td>letter codes</td>
-<td>decoded coding set</td>
+<td>decoding values</td>
 <td>encoded letters</td>
 </tr>
 <tr>
 <td>
-<textarea id="originalLetters" readonly style="height:300px; width:222.5px;">
+<textarea id="originalLetters" readonly style="height:300px; width:185px;">
 </textarea>
 </td>
 <td>
-<textarea id="LetterCodes" readonly style="height:300px; width:222.5px;">
+<textarea id="LetterCodes" readonly style="height:300px; width:350px;">
 </textarea>
 </td>
 <td>
-<textarea id="codingSet" readonly style="height:300px; width:222.5px;">
+<textarea id="decodingValues" readonly style="height:300px; width:170px;">
 </textarea>
 </td>
 <td>
-<textarea id="encodedLetters" readonly style="height:300px; width:222.5px;">
+<textarea id="encodedLetters" readonly style="height:300px; width:185px;">
 </textarea>
 </td>
 </tr>
@@ -1371,7 +1380,8 @@ function testPGNencode() {
 
   document.getElementById("encodedLetters").value = letter_frequency(document.getElementById("encoded").value)
 
-  document.getElementById("codingSet").value = test_encodedNodes + "\n\n"
+  document.getElementById("decodingKey").value = test_encodedNodes;
+
   l = new Array();
   while(test_encodedNodes.length) {
     l.push((encodingCharSet.indexOf(test_encodedNodes.charAt(0))<<6)+encodingCharSet.indexOf(test_encodedNodes.charAt(1))-512);
@@ -1381,11 +1391,11 @@ function testPGNencode() {
   for(i=0; i<l.length; i++) {
     o += "l[" + i + "] = " + l[i] + ";\n";
   }
-  document.getElementById("codingSet").value += o;
+  document.getElementById("decodingValues").value = o;
 
   o = "";
   for (i=0; i<test_LetterCodes.length; i++) {
-    o += "test_LetterCodes[" + i + "] = '" + test_LetterCodes[i] + "';\n";
+    o += "LetterCodes[" + i + "] = '" + test_LetterCodes[i] + "';\n";
   }
   document.getElementById("LetterCodes").innerHTML = o;
 }
