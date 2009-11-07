@@ -462,7 +462,9 @@ function generate_html_code() {
     html_code_status_string += "<span style='color: red'>URL (" + iframeUrl.length + " chars) is longer than " + iframeUrl_max + " chars and might be rejected by some web browser/server, try shortening your PGN data</span>";
   }  
   html_code_status_string += "</td><td align=right valign=top>";
-  html_code_status_string += "<span class='helptext'>&nbsp;&nbsp;&nbsp;" + document.getElementById('pgnText').value.length + "p&nbsp;" + iframeUrl.length + "u</span>";
+  html_code_status_string += "<span class='helptext'>&nbsp;&nbsp;&nbsp;" + document.getElementById('pgnText').value.length + "p";
+  if (document.board.encodePgn.checked) { html_code_status_string += "&nbsp;" + pgnTextEncoded.length + "e"; } 
+  html_code_status_string += "&nbsp;" + iframeUrl.length + "u</span>";
 
   html_code_status_string += "</td></tr></table>";
   document.getElementById('html_code_status').innerHTML = html_code_status_string;
