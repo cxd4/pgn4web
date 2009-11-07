@@ -266,9 +266,9 @@ function percentFixFromUrl( text ) {
 var encodingCharSet = "$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
 var encodingVersion = 1;
 // version 1 of PGN encoding:
-//   encodedPGN = nnn-xxx0
+//   encodedPGN = nnn$xxx0
 //   nnn = number representing bytes length of the decoded message
-//   - = dash char (delimiter for length info)
+//   $ = dollar char (delimiter for length info)
 //   xxx = encoded text (using LetterCodes below)
 //   0 = zero char (version marker)
 
@@ -282,7 +282,7 @@ function DecodePGN(bytes) {
   }
 
   originalLength = parseInt(bytes.match(/^[0-9]*/));
-  bytes = bytes.replace(/^[0-9]*-/,"");
+  bytes = bytes.replace(/^[0-9]*\$/,"");
 
   l = new Array();
   l[0] = -146;
