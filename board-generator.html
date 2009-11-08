@@ -424,13 +424,14 @@ function pgnTextFixForUrl( text ) {
   // we need everything on a single line, please note this breaks the ";" comment detection leading to threat everything after a ";" as comment
   text = text.replace(/\s/g," ");
 
-  // the "#" "&" "%" dont work well in URLs
-  text = text.replace(/#/g,"++");
-  text = text.replace(/&/g," and ");
-  text = text.replace(/%/g,"pc");
+  // some chars dont work well in URLs
+  text = text.replace(/%/g,"%25");
+  text = text.replace(/#/g,"%23");
+  text = text.replace(/&/g,"%26");
+  text = text.replace(/\?/g,"%3F");
 
   // the "'" char is used in the iframe statement
-  text = text.replace(/'/g,"`");
+  text = text.replace(/'/g,"%27");
 
   return text;
 }
@@ -1779,6 +1780,7 @@ document.getElementById('pieceSize').style.width = inputWidth;
 
 checkboxWidth = document.getElementById('showCommentsOnSeparateLines').offsetWidth;
 // the last number added to marginLeft should be equal to the value of the .checkbox style at the top
+document.getElementById('encodePgn').style.marginLeft += inputWidth - checkboxWidth + 22;
 document.getElementById('auto').style.marginLeft += inputWidth - checkboxWidth + 22;
 document.getElementById('loop').style.marginLeft += inputWidth - checkboxWidth + 22;
 document.getElementById('showButtons').style.marginLeft += inputWidth - checkboxWidth + 22;
