@@ -1,7 +1,8 @@
 <html> 
 <head>
 <script>
-window.location = "../board.html" + window.location.search;
+if ((par = window.location.href.match(/\?.*$/)) == null) { par = ""; }
+window.location = "../board.html" + par;
 </script>
 </head>
 </html>
