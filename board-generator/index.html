@@ -6,9 +6,8 @@
 // please change http://pgn4web-board.casaschi.net
 // to the location of the board widget on your site
 
-if ((par = window.location.href.match(/\?.*$/)) == null ) { par = ""; }
-else { par = par.replace(/^\?/,"&"); }
-window.location = "../board-generator.html?bu=http://pgn4web-board.casaschi.net/" + par;
+window.location = "../board-generator.html?bu=http://pgn4web-board.casaschi.net/" + 
+                  window.location.search.replace(/^\?/,"&");
 
 </script>
 </head>
