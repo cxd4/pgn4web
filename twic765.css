@@ -76,7 +76,7 @@ body {
 .move,
 .moveOn {
   color: black;
-  font-family: ArialChessUsual, sans-serif;
+  font-family: ChessSansUsual, sans-serif;
   font-weight: normal;
   text-decoration: none;   
 }

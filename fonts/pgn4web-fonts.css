@@ -7,56 +7,56 @@
  *
  *  allows using the following chess figurine font-family setting for the chess moves:
  *
- *  ArialChessAlpha
- *  ArialChessMerida
- *  ArialChessPiratf
- *  ArialChessUscf
- *  ArialChessUsual
+ *  ChessSansAlpha
+ *  ChessSansMerida
+ *  ChessSansPiratf
+ *  ChessSansUscf
+ *  ChessSansUsual
  *
  */
 
 @font-face {
-  font-family: ArialChessAlpha;
-  src: url("ArialChessAlpha.eot") /* EOT file for IE */
+  font-family: ChessSansAlpha;
+  src: url("ChessSansAlpha.eot") /* EOT file for IE */
 }
 @font-face {
-  font-family: ArialChessAlpha;
-  src: url("ArialChessAlpha.ttf") /* TTF file for CSS3 browsers */
-}
-
-@font-face {
-  font-family: ArialChessMerida;
-  src: url("ArialChessMerida.eot") /* EOT file for IE */
-}
-@font-face {
-  font-family: ArialChessMerida;
-  src: url("ArialChessMerida.ttf") /* TTF file for CSS3 browsers */
+  font-family: ChessSansAlpha;
+  src: url("ChessSansAlpha.ttf") /* TTF file for CSS3 browsers */
 }
 
 @font-face {
-  font-family: ArialChessPiratf;
-  src: url("ArialChessPiratf.eot") /* EOT file for IE */
+  font-family: ChessSansMerida;
+  src: url("ChessSansMerida.eot") /* EOT file for IE */
 }
 @font-face {
-  font-family: ArialChessPiratf;
-  src: url("ArialChessPiratf.ttf") /* TTF file for CSS3 browsers */
-}
-
-@font-face {
-  font-family: ArialChessUscf;
-  src: url("ArialChessUscf.eot") /* EOT file for IE */
-}
-@font-face {
-  font-family: ArialChessUscf;
-  src: url("ArialChessUscf.ttf") /* TTF file for CSS3 browsers */
+  font-family: ChessSansMerida;
+  src: url("ChessSansMerida.ttf") /* TTF file for CSS3 browsers */
 }
 
 @font-face {
-  font-family: ArialChessUsual;
-  src: url("ArialChessUsual.eot") /* EOT file for IE */
+  font-family: ChessSansPiratf;
+  src: url("ChessSansPiratf.eot") /* EOT file for IE */
 }
 @font-face {
-  font-family: ArialChessUsual;
-  src: url("ArialChessUsual.ttf") /* TTF file for CSS3 browsers */
+  font-family: ChessSansPiratf;
+  src: url("ChessSansPiratf.ttf") /* TTF file for CSS3 browsers */
+}
+
+@font-face {
+  font-family: ChessSansUscf;
+  src: url("ChessSansUscf.eot") /* EOT file for IE */
+}
+@font-face {
+  font-family: ChessSansUscf;
+  src: url("ChessSansUscf.ttf") /* TTF file for CSS3 browsers */
+}
+
+@font-face {
+  font-family: ChessSansUsual;
+  src: url("ChessSansUsual.eot") /* EOT file for IE */
+}
+@font-face {
+  font-family: ChessSansUsual;
+  src: url("ChessSansUsual.ttf") /* TTF file for CSS3 browsers */
 }
 
