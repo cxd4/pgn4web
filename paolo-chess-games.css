@@ -79,7 +79,7 @@ body {
 .move,
 .moveOn {
   color: black;
-  font-family: ArialChessPiratf;
+  font-family: ArialChessPiratfi, sans-serif;
   font-weight: normal;
   text-decoration: none;   
 }
