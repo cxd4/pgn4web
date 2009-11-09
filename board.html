@@ -54,13 +54,25 @@ body {
   font-weight: bold;
 }
 
+@font-face {
+  font-family: ArialChessPiratf;
+  src: url("fonts/ArialChessPiratf.eot") /* EOT file for IE */
+}
+
+@font-face {
+  font-family: ArialChessPiratf;
+  src: url("fonts/ArialChessPiratf.ttf") /* TTF file for CSS3 browsers */
+}
+
 .move {
   color: black;
+  font-family: ArialChessPiratf, sans-serif;
   text-decoration: none;   
 }
 
 .moveOn {
   color: black;
+  font-family: ArialChessPiratf, sans-serif;
   text-decoration: none;   
   background: #DAF4D7;
 }
@@ -218,9 +230,9 @@ function getCSSRule(ruleName, deleteFlag) {               // Return requested st
             } else {                                      // Browser usses rules?
                cssRule = styleSheet.rules[ii];            // Yes IE style. 
             }                                             // End IE check.
-	    if (cssRule)  {                               // If we found a rule...
+	    if (cssRule && (cssRule.selectorText != undefined))  { // If we found a rule...
      	      if (cssRule.selectorText.toLowerCase()==ruleName) { //  match ruleName?
-  	        if (deleteFlag=='delete') {             // Yes.  Are we deleteing?
+  	        if (deleteFlag=='delete') {               // Yes.  Are we deleteing?
                      if (styleSheet.cssRules) {           // Yes, deleting...
                         styleSheet.deleteRule(ii);        // Delete rule, Moz Style
                      } else {                             // Still deleting.
