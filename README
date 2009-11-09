@@ -277,6 +277,13 @@ LT PGN viewer at http://www.lutanho.net/pgn/pgnviewer.html
 PNG images from http://ixian.com/chess/jin-piece-sets (creative commons 
 attribution-share alike 3.0 unported license)
 
+The figurine fonts are derived from the stadard Arial font with the addition
+of pieces from the alpha2 font (Peter Strickland), the good companion font 
+(David L. Brown), the merida font (Armando H. Marroquin), the pirate font
+(Klaus Wolf) and the chess usual font (Armando H. Marroquin). The original 
+fonts and more details are available at 
+http://www.enpassant.dk/chess/fonteng.htm
+ 
 Some of the PGN files for the examples are coming from "The Week in Chess" at 
 http://www.chesscenter.com/twic/twic.html (files wch08ak.pgn and twic765.pgn) 
 and from the scid project at http://scid.sourceforge.net (file tactics.pgn).
