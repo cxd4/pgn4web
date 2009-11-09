@@ -1,3 +1,20 @@
+/*
+ *  pgn4web javascript chessboard
+ *  copyright (C) 2009 Paolo Casaschi
+ *  see README file and http://pgn4web.casaschi.net
+ *  for credits, license and more details
+ */
+
+/*
+ *  allows using the following chess figurine font-family setting for the chess moves:
+ *
+ *  ArialChessAlpha
+ *  ArialChessMerida
+ *  ArialChessPiratf
+ *  ArialChessUscf
+ *  ArialChessUsual
+ *
+ */
 
 @font-face {
   font-family: ArialChessAlpha;

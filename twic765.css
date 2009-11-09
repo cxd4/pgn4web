@@ -5,6 +5,8 @@
  *  for credits, license and more details
  */
 
+@import url("fonts/pgn4web-fonts.css");
+
 html, 
 body { 
   margin: 0; 
@@ -69,15 +71,6 @@ body {
 
 .buttonControlSpace {
 /* a "width" attribute here must use the !important flag to override default settings */
-}
-
-@font-face {
-  font-family: ArialChessUsual;
-  src: url("fonts/ArialChessUsual.eot") /* EOT file for IE */
-  }
-@font-face {
-  font-family: ArialChessUsual;
-  src: url("fonts/ArialChessUsual.ttf") /* TTF file for CSS3 browsers */
 }
 
 .move,

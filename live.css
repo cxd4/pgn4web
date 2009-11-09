@@ -5,6 +5,8 @@
  *  for credits, license and more details
  */
 
+@import url("fonts/pgn4web-fonts.css");
+
 html, 
 body { 
   margin: 0; 
@@ -101,15 +103,6 @@ a {
 .header,
 .headerHighlighted {
   font-size: 75%;
-}
-
-@font-face {
-  font-family: ArialChessUscf;
-  src: url("fonts/ArialChessUscf.eot") /* EOT file for IE */
-}
-@font-face {
-  font-family: ArialChessUscf;
-  src: url("fonts/ArialChessUscf.ttf") /* TTF file for CSS3 browsers */
 }
 
 .move,
