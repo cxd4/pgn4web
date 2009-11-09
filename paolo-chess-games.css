@@ -67,9 +67,19 @@ body {
 /* a "width" attribute here must use the !important flag to override default settings */
 }
 
+@font-face {
+  font-family: ArialChessPiratf;
+  src: url("fonts/ArialChessPiratf.eot") /* EOT file for IE */
+}
+  @font-face {
+  font-family: ArialChessPiratf;
+  src: url("fonts/ArialChessPiratf.ttf") /* TTF file for CSS3 browsers */
+}
+
 .move,
 .moveOn {
   color: black;
+  font-family: ArialChessPiratf;
   font-weight: normal;
   text-decoration: none;   
 }
