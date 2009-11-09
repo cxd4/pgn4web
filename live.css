@@ -103,10 +103,20 @@ a {
   font-size: 75%;
 }
 
+@font-face {
+  font-family: ArialChessUscf;
+  src: url("fonts/ArialChessUscf.eot") /* EOT file for IE */
+}
+@font-face {
+  font-family: ArialChessUscf;
+  src: url("fonts/ArialChessUscf.ttf") /* TTF file for CSS3 browsers */
+}
+
 .move,
 .moveOn,
 .comment {
   font-size: 66%; 
+  font-family: ArialChessUscf, sans-serif;
 }
 
 .helplinkNosize {
