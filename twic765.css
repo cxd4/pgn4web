@@ -93,8 +93,11 @@ body {
 }
 
 .comment,
-.nag
-{
+.nag {
+  color: gray;
+}
+
+.label {
   color: gray;
 }
 
