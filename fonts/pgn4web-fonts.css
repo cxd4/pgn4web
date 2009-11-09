@@ -1,0 +1,46 @@
+
+@font-face {
+  font-family: ArialChessAlpha;
+  src: url("ArialChessAlpha.eot") /* EOT file for IE */
+}
+@font-face {
+  font-family: ArialChessAlpha;
+  src: url("ArialChessAlpha.ttf") /* TTF file for CSS3 browsers */
+}
+
+@font-face {
+  font-family: ArialChessMerida;
+  src: url("ArialChessMerida.eot") /* EOT file for IE */
+}
+@font-face {
+  font-family: ArialChessMerida;
+  src: url("ArialChessMerida.ttf") /* TTF file for CSS3 browsers */
+}
+
+@font-face {
+  font-family: ArialChessPiratf;
+  src: url("ArialChessPiratf.eot") /* EOT file for IE */
+}
+@font-face {
+  font-family: ArialChessPiratf;
+  src: url("ArialChessPiratf.ttf") /* TTF file for CSS3 browsers */
+}
+
+@font-face {
+  font-family: ArialChessUscf;
+  src: url("ArialChessUscf.eot") /* EOT file for IE */
+}
+@font-face {
+  font-family: ArialChessUscf;
+  src: url("ArialChessUscf.ttf") /* TTF file for CSS3 browsers */
+}
+
+@font-face {
+  font-family: ArialChessUsual;
+  src: url("ArialChessUsual.eot") /* EOT file for IE */
+}
+@font-face {
+  font-family: ArialChessUsual;
+  src: url("ArialChessUsual.ttf") /* TTF file for CSS3 browsers */
+}
+
