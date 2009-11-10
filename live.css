@@ -15,7 +15,7 @@ body {
 
 body {
   font-family: sans-serif;
-  color: #7D7A6C;
+  color: #615F54;
   background: #EDE8D5;
 }
 
@@ -66,7 +66,7 @@ a {
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 450px !important;
-  color: #7D7A6C;
+  color: #615F54;
   font-size: 90%;
   padding: 2px;
   border-width: 1px;
@@ -124,7 +124,7 @@ a {
 .header,
 .headerNosize,
 .move {
-  color: #7D7A6C;
+  color: #615F54;
 }
 
 .headerHighlighted,
