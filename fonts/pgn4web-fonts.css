@@ -14,7 +14,9 @@
  *  ChessSansUsual
  *
  *  make sure you include this CSS file into your HTML file or your CSS file, then set
- *  the font-family for the .move class to the chess font of your choice
+ *  the font-family for the .move class to the chess font of your choice.
+ *  The standard LiberationSans font is also supplied to allow for consistent display
+ *  of header and text with the moves.
  */
 
 @font-face {
@@ -60,5 +62,32 @@
 @font-face {
   font-family: ChessSansUsual;
   src: url("ChessSansUsual.ttf") /* TTF file for CSS3 browsers */
+}
+
+/* 
+ * below is the standard Liberation Sans font definition, 
+ * supplied here to allow for a consistent display of game header
+ * and comments with the above fonts used for the moves
+ */
+
+@font-face {
+  font-family: "Liberation Sans";
+  font-weight: normal;
+  src: local(LiberationSans-Regular), url("LiberationSans-Regular.eot") /* EOT file for IE */
+}
+@font-face {
+  font-family: "Liberation Sans";
+  font-weight: normal;
+  src: local(LiberationSans-Regular), url("LiberationSans-Regular.ttf") /* TTF file for CSS3 browsers */
+}
+@font-face {
+  font-family: "Liberation Sans";
+  font-weight: bold;
+  src: local(LiberationSans-Bold), url("LiberationSans-Bold.eot") /* EOT file for IE */
+}
+@font-face {
+  font-family: "Liberation Sans";
+  font-weight: bold;
+  src: local(LiberationSans-Bold), url("LiberationSans-Bold.ttf") /* TTF file for CSS3 browsers */
 }
 

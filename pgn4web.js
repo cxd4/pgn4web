@@ -3302,9 +3302,9 @@ function PrintHTML(){
     // remove comments that are all spaces
     if (thisComment.match(/^\s*$/)) {thisComment = ''};
     if (commentsIntoMoveText && (thisComment != '')){
-      if (commentsOnSeparateLines && (ii > StartPly)) text += '<P></P>';
+      if (commentsOnSeparateLines && (ii > StartPly)) text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
       text += '<SPAN CLASS="comment">' + thisComment + '</SPAN><SPAN CLASS="move"> </SPAN>';
-      if (commentsOnSeparateLines) text += '<P></P>';
+      if (commentsOnSeparateLines) text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
       printedComment = true;
     }
     var moveCount = Math.floor(ii/2)+1;
@@ -3325,7 +3325,7 @@ function PrintHTML(){
   // remove comments that are all spaces
   if (thisComment.match(/^\s*$/)) {thisComment = ''};
   if (commentsIntoMoveText && (thisComment != '')){
-    if (commentsOnSeparateLines) text += '<P></P>';
+    if (commentsOnSeparateLines) text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
     text += '<SPAN CLASS="comment">' + thisComment + '</SPAN><SPAN CLASS="move"> </SPAN>';
   }
   text += '</SPAN>';

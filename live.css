@@ -14,7 +14,7 @@ body {
 }
 
 body {
-  font-family: sans-serif;
+  font-family: "Liberation Sans", sans-serif;
   color: #615F54;
   background: #EDE8D5;
 }
@@ -137,6 +137,7 @@ a {
 .comment,
 .nag {
   color: #A19D8B;
+  line-height: 1.4em;
 }
 
 .movebox {
