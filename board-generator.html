@@ -1437,11 +1437,11 @@ function bug_report() {
     write("<html>");
     write("<head><title>pgn4web bug report</title><style type='text/css'> html, body { font-family: sans-serif;  color: black; background: white } a {text-decoration: none; color: black; } </style></head>");
     write("<body>");
-    write("<table width=100% cellspacing=0 cellpadding=0><tr><td align=left valign=middle><h1><a " + project_url + " target=_blank>pgn4web</a> bug report</h1></td><td align=right valign=middle><a " + project_url + " target=_blank><img src=pawns.png border=0></a></td></tr></table><p>please make sure that:<ul type='square'><li>you are using the same web browser where you noticed the bug in the pgn4web board generator</li><li>you opened this bug report window from the pgn4web board generator page configured with all the parameter that result in the bug condition</li></ul>Then please email ALL the the debug information below and possibly a screenshot to <i><a href=mailto:" + project_email + ">" + project_email + "</a></i><p>");
+    write("<table width=100% cellspacing=0 cellpadding=0><tr><td align=left valign=middle><h1><a " + project_url + " target=_blank>pgn4web</a> bug report</h1></td><td align=right valign=middle><a " + project_url + " target=_blank><img src=pawns.png border=0></a></td></tr></table><p></p>please make sure that:<ul type='square'><li>you are using the same web browser where you noticed the bug in the pgn4web board generator</li><li>you opened this bug report window from the pgn4web board generator page configured with all the parameter that result in the bug condition</li></ul>Then please email ALL the the debug information below and possibly a screenshot to <i><a href=mailto:" + project_email + ">" + project_email + "</a></i><p></p>");
     write("<hr>");
     write("<pre><code>" + bug_info.replace(/</g,"&lt;").replace(/>/g,"&gt;") + "</code></pre>");
     write("<hr>");
-    write("<p>If your email client is properly configured, you can try to <i><a href='" + mailto_link + "'>click here and automatically compose the email in your default client</a></i>; this might not work, in case you have to manually copy the above information into an <i><a href=mailto:" + project_email + ">email to " + project_email + "</a></i>.<p>");
+    write("<p></p>If your email client is properly configured, you can try to <i><a href='" + mailto_link + "'>click here and automatically compose the email in your default client</a></i>; this might not work, in case you have to manually copy the above information into an <i><a href=mailto:" + project_email + ">email to " + project_email + "</a></i>.<p></p>");
     write("</body>");
     write("<html>");
     close();
@@ -1516,7 +1516,7 @@ chessboard generator</h1>
 <div style="font-style: italic; font-weight: bold; text-align: center; margin-bottom:6;">automatically generated HTML code for your web page or blog</div>
 <textarea readonly id="html_code" name="html_code" rows=15 class="textbox" style="background-color: #FFFFCC; scrollbar-base-color: #FFFFCC;"></textarea>
 <div id="html_code_status">&nbsp;</div>
-<p>
+<p></p>
 <br>
 
 <table width=100% cellspacing=0 cellpadding=0><tr>
@@ -1547,12 +1547,12 @@ chessboard generator</h1>
 <td align="left"><div class='helptext'>enter PGN data</div></td>
 <td align="right"><div class="helptext" id="pgnTextLength"></div></td>
 </tr></table>
-<p>
+<p></p>
 
 <input class="checkbox" type="checkbox" id="encodePgn" name="encodePgn" value="encodePgn" />
 &nbsp;&nbsp; encode PGN text &nbsp;&nbsp;
 <span class="helptext"">encode the PGN text to a URL friendly format (this should be normally enabled)</span>
-<p>
+<p></p>
 
 <div style="height: 3em">&nbsp</div>
 <script>print_menu("replay_options", 3, "game replay options");</script>
@@ -1560,7 +1560,7 @@ chessboard generator</h1>
 
 <input class="checkbox" type="checkbox" id="auto" name="auto" value="auto" />
 &nbsp;&nbsp; autoplay game on page load &nbsp;&nbsp;
-<p>
+<p></p>
 
 <select class="dropdown" id="delay" name="delay">
 <option value="1000">1</option>
@@ -1571,7 +1571,7 @@ chessboard generator</h1>
 <option value="300000">30</option>
 </select>
 &nbsp;&nbsp; autoplay delay (sec) &nbsp;&nbsp;
-<p>
+<p></p>
 
 <input class="checkbox" type="checkbox" id="loop" name="loop" value="loop" />
 &nbsp;&nbsp; loop through games at game end &nbsp;&nbsp;
@@ -1586,7 +1586,7 @@ chessboard generator</h1>
 <option value="uscf">uscf</option>
 </select>
 &nbsp;&nbsp; piece font &nbsp;&nbsp;
-<p>
+<p></p>
 
 <select class="dropdown" id="pieceSize" name="pieceSize" onChange="validate_pieceSize();">
 <option value="20">20</option>
@@ -1632,41 +1632,41 @@ chessboard generator</h1>
 <option value="300">300</option>
 </select>
 &nbsp;&nbsp; piece size &nbsp;&nbsp;
-<p>
+<p></p>
 
 <input class="input" type="text" id="squareSize" name="squareSize" value="" size="7" onChange="validate_squareSize(); update_suggested_iframe_dimensions()">
 &nbsp;&nbsp; square size &nbsp;&nbsp;
 <span class="helptext"">a number; must be larger than the piece size</span>
-<p>
+<p></p>
 <br>
 
 <input class="color input" type="text" id="lightColorHex" name="lightColorHex" value="" size="7" onChange="validate_color(this, 'light squares color', lightColorHex_default)">
 &nbsp;&nbsp; light squares color &nbsp;&nbsp;
-<p>
+<p></p>
 
 <input class="color input" type="text" id="darkColorHex" name="darkColorHex" value="" size="7" onChange="validate_color(this, 'dark squares color', darkColorHex_default)">
 &nbsp;&nbsp; dark squares color &nbsp;&nbsp;
-<p>
+<p></p>
 
 <input class="color input" type="text" id="boardBorderColorHex" name="boardBorderColorHex" value="" size="7" onChange="validate_color(this, 'board border color', boardBorderColorHex_default)">
 &nbsp;&nbsp; board border color &nbsp;&nbsp;
-<p>
+<p></p>
 
 <input class="color {adjust:false} input" type="text" id="highlightColorHex" name="highlightColorHex" value="" size="7" onChange="validate_color_none(this, 'highlight squares color', highlightColorHex_default)">
 &nbsp;&nbsp; highlight squares color &nbsp;&nbsp;
 <span class="helptext">set to <i>none</i> in order to disable square highlighting</span>
-<p>
+<p></p>
 <br>
 
 <input class"checkbox" type="checkbox" id="showButtons" name="showButtons" value="showButtons" onChange="update_controls()">
 &nbsp;&nbsp; show control buttons &nbsp;&nbsp;
 <span class="helptext">control buttons might not be necessary, just try clicking the G8 square</span>
-<p>
+<p></p>
 
 <input class="color {adjust:false} input" type="text" id="controlBackgroundColorHex" name="controlBackgroundColorHex" value="" size="7" onChange="validate_color_default(this, 'control buttons background color', 'default'); update_controls()">
 &nbsp;&nbsp; control buttons background color &nbsp;&nbsp;
 <span class="helptext">set to <i>default</i> in order to use standard buttons from the browser</span>
-<p>
+<p></p>
 
 <input class="color input" type="text" id="controlTextColorHex" name="controlTextColorHex" value="" size="7" onChange="validate_color(this, 'control buttons text color', controlTextColorHex_default)">
 &nbsp;&nbsp; control buttons text color &nbsp;&nbsp;
@@ -1678,52 +1678,52 @@ chessboard generator</h1>
 <input class="input" type="text" id="textMargin" name="textMargin" value="" size="7" onChange="validate_number_percentage(this, 'text margin', textMargin_default);">
 &nbsp;&nbsp; text margin &nbsp;&nbsp;
 <span class="helptext"">a number or a percentage; header/moves margin, nice to have if text overflows with scrollbars</span>
-<p>
+<p></p>
 <br>
 
 <input class="checkbox" type="checkbox" id="showHeader" name="showHeader" value="showHeader" onChange="update_controls()">
 &nbsp;&nbsp; <b>show game header</b> &nbsp;&nbsp;
-<p>
+<p></p>
 
 <input class="input" type="text" id="fontHeaderSize" name="fontHeaderSize" value="" size="7" onChange="validate_number_percentage(this, 'header font size', fontHeaderSize_default);">
 &nbsp;&nbsp; header font size &nbsp;&nbsp;
 <span class="helptext"">a number or a percentage; make sure left/right columns dont touch in the middle</span>
-<p>
+<p></p>
 
 <input class="color input" type="text" id="fontHeaderColorHex" name="fontHeaderColorHex" value="" size="7" onChange="validate_color(this, 'header font color', fontHeaderColorHex_default)">
 &nbsp;&nbsp; header font color &nbsp;&nbsp;
-<p>
+<p></p>
 <br>
 
 <input class="checkbox" type="checkbox" id="showMoves" name="showMoves" value="showMoves" onChange="update_controls()">
 &nbsp;&nbsp; <b>show game moves</b> &nbsp;&nbsp;
-<p>
+<p></p>
 
 <input class="checkbox" type="checkbox" id="showComments" name="showComments" value="showComments">
 &nbsp;&nbsp; show game comments &nbsp;&nbsp;
-<p>
+<p></p>
 
 <input class="checkbox" type="checkbox" id="showCommentsOnSeparateLines" name="showCommentsOnSeparateLines" value="showCommentsOnSeparateLines">
 &nbsp;&nbsp; show comments on separate lines &nbsp;&nbsp;
-<p>
+<p></p>
 
 <input class="input" type="text" id="fontMovesSize" name="fontMovesSize" value="" size="7" onChange="validate_number_percentage(this, 'moves font size', fontMovesSize_default);">
 &nbsp;&nbsp; moves font size &nbsp;&nbsp;
 <span class="helptext"">a number or a percentage</span>
-<p>
+<p></p>
 
 <input class="color input" type="text" id="fontMovesColorHex" name="fontMovesColorHex" value="" size="7" onChange="validate_color(this, 'moves font color', fontMovesColorHex_default)">
 &nbsp;&nbsp; moves font color &nbsp;&nbsp;
-<p>
+<p></p>
 
 <input class="color input" type="text" id="highlightMoveColorHex" name="highlightMoveColorHex" value="" size="7" onChange="validate_color(this, 'highlight move color', highlightMoveColorHex_default)">
 &nbsp;&nbsp; highlight move color &nbsp;&nbsp;
-<p>
+<p></p>
 
 <input class="input" type="text" id="fontCommentsSize" name="fontCommentsSize" value="" size="7" onChange="validate_number_percentage(this, 'comments font size', fontCommentsSize_default);">
 &nbsp;&nbsp; comments font size &nbsp;&nbsp;
 <span class="helptext"">a number or a percentage</span>
-<p>
+<p></p>
 
 <input class="color input" type="text" id="fontCommentsColorHex" name="fontCommentsColorHex" value="" size="7" onChange="validate_color(this, 'comments font color', fontCommentsColorHex_default)">
 &nbsp;&nbsp; comments font color &nbsp;&nbsp;
@@ -1734,28 +1734,28 @@ chessboard generator</h1>
 
 <input class="color input" type="text" id="backgroundColorHex" name="backgroundColorHex" value="" size="7" onChange="validate_color(this, 'background color', backgroundColorHex_default)">
 &nbsp;&nbsp; background color &nbsp;&nbsp;
-<p>
+<p></p>
 
 <input class="color input" type="text" id="previewBackgroundColorHex" name="previewBackgroundColorHex" value="" size="7" onChange="validate_color(this, 'preview background color', previewBackgroundColorHex_default)"> 
 &nbsp;&nbsp; preview background color &nbsp;&nbsp;
 <span class="helptext"">not actually used in the HTML code, just for the preview</span>
-<p>
+<p></p>
 <br>
 
 <input class="input" type="text" id="frameHeight" name="frameHeight" value="" size="7" onChange="validate_number_blank(this, 'iFrame height', ''); update_suggested_iframe_dimensions();">
 &nbsp;&nbsp; iFrame height &nbsp;&nbsp;
 <span id="frameHeight_helpText" class="helptext"></span>
-<p>
+<p></p>
 
 <input class="input" type="text" id="frameWidth" name="frameWidth" value="" size="7" onChange="validate_number_percentage_blank(this, 'iFrame width', ''); update_suggested_iframe_dimensions();"> 
 &nbsp;&nbsp; iFrame width &nbsp;&nbsp;
 <span id="frameWidth_helpText" class="helptext"></span>
-<p>
+<p></p>
 
 <input class="input" type="text" id="framePadding" name="framePadding" value="" size="7" onChange="validate_number(this, 'frame padding', framePadding_default); update_suggested_iframe_dimensions();">
 &nbsp;&nbsp; iFrame padding &nbsp;&nbsp;
 <span class="helptext">a number; border padding around the iframe, included within the iFrame width value</span>
-<p>
+<p></p>
 <br>
 
 <!--
@@ -1764,7 +1764,7 @@ chessboard generator</h1>
 
 base URL: &nbsp;&nbsp;
 <input type="text" id="baseUrl" name="baseUrl" value="" style="width: 100%" />
-<p>
+<p></p>
 <br>
 
 -->
