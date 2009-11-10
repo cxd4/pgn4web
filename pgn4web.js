@@ -3043,7 +3043,7 @@ function clickedSquare(ii, jj) {
   if ((ii+jj)%2 == 0){ newClass = "blackSquare";
   } else { newClass = "whiteSquare"; }
   theObject.className = newClass;
-  clickedSquareInterval = setTimeout("reset_after_click(" + ii + "," + jj + ",'" + originalClass + "','" + newClass + "')", 33);
+  clickedSquareInterval = setTimeout("reset_after_click(" + ii + "," + jj + ",'" + originalClass + "','" + newClass + "')", 66);
 }
 
 function reset_after_click (ii, jj, originalClass, newClass) {
