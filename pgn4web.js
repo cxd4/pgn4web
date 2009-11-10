@@ -3299,7 +3299,7 @@ function PrintHTML(){
     // remove comments that are all spaces
     if (thisComment.match(/^\s*$/)) {thisComment = ''};
     if (commentsIntoMoveText && (thisComment != '')){
-      if (commentsOnSeparateLines) text += '<P>';
+      if (commentsOnSeparateLines && (ii > StartPly)) text += '<P>';
       text += '<SPAN CLASS="comment">' + thisComment + '</SPAN><SPAN CLASS="move"> </SPAN>';
       if (commentsOnSeparateLines) text += '<P>';
       printedComment = true;
