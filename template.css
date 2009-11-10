@@ -5,6 +5,8 @@
  *  for credits, license and more details
  */
 
+@import url("fonts/pgn4web-fonts.css");
+
 html, 
 body { 
   margin: 0; 
@@ -73,6 +75,7 @@ body {
 .move,
 .moveOn {
   color: black;
+  font-family: ChessSansUsual, sans-serif;
   font-weight: normal;
   text-decoration: none;   
 }
@@ -81,6 +84,7 @@ body {
   background: #DAF4D7;
 }
 
+.label,
 .comment,
 .nag
 {
