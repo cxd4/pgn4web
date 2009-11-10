@@ -59,6 +59,8 @@ body {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 456px !important;
   font-size: x-small;
+  border-width: 0px;
+  padding: 2px;
 }
 
 .buttonControlPlay,
