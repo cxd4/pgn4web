@@ -452,7 +452,7 @@ boardAlt[5 + 2 * 8] = "";
 // G6
 function boardOnClickCol6Row2() { };
 boardAlt[6 + 2 * 8] = "";
-// H5
+// H6
 function boardOnClickCol7Row2() { };
 boardAlt[7 + 2 * 8] = "";
 // A5
@@ -3034,14 +3034,16 @@ function SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, ch
   gameSelectorChDate   = chDate; if (gameSelectorChDate > 32) gameSelectorChDate = 32;
 }
 
+var clickedSquareInterval = null;
 function clickedSquare(ii, jj) {
+  if (clickedSquareInterval) { return; } // make sure you dont trigger the effect twice by mistake
   squareId = 'tcol' + jj + 'trow' + ii;
   theObject = document.getElementById(squareId);
   originalClass = theObject.className;
   if ((ii+jj)%2 == 0){ newClass = "blackSquare";
   } else { newClass = "whiteSquare"; }
   theObject.className = newClass;
-  setTimeout("reset_after_click(" + ii + "," + jj + ",'" + originalClass + "','" + newClass + "')", 77);
+  clickedSquareInterval = setTimeout("reset_after_click(" + ii + "," + jj + ",'" + originalClass + "','" + newClass + "')", 33);
 }
 
 function reset_after_click (ii, jj, originalClass, newClass) {
@@ -3049,6 +3051,7 @@ function reset_after_click (ii, jj, originalClass, newClass) {
   theObject = document.getElementById(squareId);
   // if the square class has been changed by pgn4web already (due to autoplay for instance) dont touch it anymore
   if (theObject.className == newClass) {theObject.className = originalClass}
+  clickedSquareInterval = null;
 }
 
 /******************************************************************************
