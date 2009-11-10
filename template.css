@@ -86,8 +86,7 @@ body {
 
 .label,
 .comment,
-.nag
-{
+.nag {
   color: gray;
 }
 
