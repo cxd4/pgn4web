@@ -13,6 +13,8 @@
  *  ChessSansUscf
  *  ChessSansUsual
  *
+ *  make sure you include this CSS file into your HTML file or your CSS file, then set
+ *  the font-family for the .move class to the chess font of your choice
  */
 
 @font-face {
