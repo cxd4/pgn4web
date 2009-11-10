@@ -109,6 +109,10 @@ a {
 .moveOn,
 .comment {
   font-size: 66%; 
+}
+
+.move,
+.moveOn {
   font-family: ChessSansUscf, sans-serif;
 }
 
