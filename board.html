@@ -1049,30 +1049,31 @@ if (showHeader) {
 }
 
 if ((showHeader) || (showMoves)) {
-  document.write("<div id='headerMoves' style='overflow:auto; height: " + textHeight + "; width: " + textWidth + "; scrollbar-base-color: " + backgroundColor + ";'>")
+	document.write("<div id='headerMoves' style='overflow:auto; height: " + textHeight + "; width: " + textWidth + "; scrollbar-base-color: " + backgroundColor + ";'>")
+  document.write("<div style=' margin-left:" + textMargin + "; margin-right:" + textMargin + ";'>");
 } 
 
 if (showHeader) {
 
   document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
   document.write("<td width=48% align=left>");
-  document.write("<div class='header' style=' margin-left:" + textMargin + "; white-space: nowrap;' id=GameWhite></div>");
+  document.write("<div class='header' style='white-space: nowrap;' id=GameWhite></div>");
   document.write("</td><td width=4%><div class='header'></div></td><td width=48% align=right>");
-  document.write("<div class='header' style=' margin-right:" + textMargin + ";' id=GameDate></div>");
+  document.write("<div class='header' style='white-space: nowrap;' id=GameDate></div>");
   document.write("</td></tr></table>");
 
   document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
   document.write("<td width=48% align=left>");
-  document.write("<div class='header' style=' margin-left:" + textMargin + "; white-space: nowrap;' id=GameBlack></div>");
+  document.write("<div class='header' style='white-space: nowrap;' id=GameBlack></div>");
   document.write("</td><td width=4%><div class='header'></div></td><td width=48% align=right>");
-  document.write("<div class='header' style=' margin-right:" + textMargin + "; white-space: nowrap;' id=GameSite></div>");
+  document.write("<div class='header' style='white-space: nowrap;' id=GameSite></div>");
   document.write("</td></tr></table>");
 
   document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
   document.write("<td width=48% align=left>");
-  document.write("<div class='header' style=' margin-left:" + textMargin + ";' id=GameResult></div>");
+  document.write("<div class='header' style='white-space: nowrap;' id=GameResult></div>");
   document.write("</td><td width=4%><div class='header'></div></td><td width=48% align=right>");
-  document.write("<div class='header' style=' margin-right:" + textMargin + "; white-space: nowrap;' id=GameEvent></div>");
+  document.write("<div class='header' style='white-space: nowrap;' id=GameEvent></div>");
   document.write("</td></tr></table>");
 
 }
@@ -1082,10 +1083,11 @@ if ((showHeader) && (showMoves)) {
 }
 
 if (showMoves) {
-  document.write("<div style='text-align: justify; margin-right:" + textMargin + "; margin-left:" + textMargin + ";' id=GameText></div>");
+  document.write("<div style='text-align: justify;' id=GameText></div>");
 }
 
 if ((showHeader) || (showMoves)) {
+  document.write("</div>")
   document.write("</div>")
 } 
 
