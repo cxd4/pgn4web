@@ -969,9 +969,12 @@ else { showHeader = false }
 if (gup("showMoves") == "true") { showMoves = true }
 else { showMoves = false }
 
-if ((textHeight = percentFixFromUrl( gup("textHeight") )) == "") { textHeight="100%" }
-if ((textWidth = percentFixFromUrl( gup("textWidth") )) == "") { textWidth="100%" }
-if ((textMargin = percentFixFromUrl( gup("textMargin") )) == "") { textMargin=0 }
+if ((textHeight = percentFixFromUrl( gup("textHeight") )) == "") { textHeight = "100%"; }
+if ((textWidth = percentFixFromUrl( gup("textWidth") )) == "") { textWidth = "100%"; }
+
+if ((textMargin = gup("textMargin")) == "") { textMargin = 0; }
+else { textMargin = parseInt(textMargin); }
+
 
 frameHeight = percentFixFromUrl( gup("frameHeight") );
 frameWidth = percentFixFromUrl( gup("frameWidth") );
@@ -1055,30 +1058,35 @@ if (showHeader) {
 
 if ((showHeader) || (showMoves)) {
 	document.write("<div id='headerMoves' style='overflow:auto; height: " + textHeight + "; width: " + textWidth + "; scrollbar-base-color: " + backgroundColor + ";'>")
-  document.write("<div style=' margin-left:" + textMargin + "; margin-right:" + textMargin + ";'>");
 } 
 
 if (showHeader) {
 
   document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
-  document.write("<td width=48% align=left>");
-  document.write("<div class='header' style='white-space: nowrap;' id=GameWhite></div>");
-  document.write("</td><td width=4%><div class='header'></div></td><td width=48% align=right>");
-  document.write("<div class='header' style='white-space: nowrap;' id=GameDate></div>");
+  document.write("<td align=left>");
+  document.write("<div class='header' style='white-space: nowrap; margin-left: "  + textMargin + 
+                 "; margin-right: 3%;' id=GameWhite></div>");
+  document.write("</td><td align=right>");
+  document.write("<div class='header' style='white-space: nowrap; margin-right: " + textMargin +
+                 "; margin-left: 3%;'  id=GameDate></div>");
   document.write("</td></tr></table>");
 
   document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
-  document.write("<td width=48% align=left>");
-  document.write("<div class='header' style='white-space: nowrap;' id=GameBlack></div>");
-  document.write("</td><td width=4%><div class='header'></div></td><td width=48% align=right>");
-  document.write("<div class='header' style='white-space: nowrap;' id=GameSite></div>");
+  document.write("<td align=left>");
+  document.write("<div class='header' style='white-space: nowrap; margin-left: "  + textMargin + 
+                 "; margin-right: 3%;' id=GameBlack></div>");
+  document.write("</td><td align=right>");
+  document.write("<div class='header' style='white-space: nowrap; margin-right: " + textMargin +
+                 "; margin-left: 3%;'  id=GameSite></div>");
   document.write("</td></tr></table>");
 
   document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
-  document.write("<td width=48% align=left>");
-  document.write("<div class='header' style='white-space: nowrap;' id=GameResult></div>");
-  document.write("</td><td width=4%><div class='header'></div></td><td width=48% align=right>");
-  document.write("<div class='header' style='white-space: nowrap;' id=GameEvent></div>");
+  document.write("<td align=left>");
+  document.write("<div class='header' style='white-space: nowrap; margin-left: "  + textMargin + 
+                 "; margin-right: 3%;' id=GameResult></div>");
+  document.write("</td><td align=right>");
+  document.write("<div class='header' style='white-space: nowrap; margin-right: " + textMargin +
+                 "; margin-left: 3%;'  id=GameEvent></div>");
   document.write("</td></tr></table>");
 
 }
@@ -1088,11 +1096,11 @@ if ((showHeader) && (showMoves)) {
 }
 
 if (showMoves) {
-  document.write("<div style='text-align: justify;' id=GameText></div>");
+  document.write("<div style='margin-left:" + textMargin + "; margin-right:" + textMargin + 
+                 "; text-align: justify;' id=GameText></div>");
 }
 
 if ((showHeader) || (showMoves)) {
-  document.write("</div>")
   document.write("</div>")
 } 
 

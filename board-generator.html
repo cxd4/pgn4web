@@ -166,9 +166,9 @@ function set_defaults() {
   document.board.controlTextColorHex.value = controlTextColorHex_value;
   validate_color(document.board.controlTextColorHex, 'control buttons text color', controlTextColorHex_default)
 
-  if ((textMargin_value = percentFixFromUrl( gup("textMargin") )) == "") { textMargin_value = textMargin_default }
+  if ((textMargin_value = gup("textMargin")) == "") { textMargin_value = textMargin_default }
   document.getElementById('textMargin').value = textMargin_value;
-  validate_number_percentage(document.getElementById('textMargin'), 'text margin', textMargin_default);
+  validate_number(document.getElementById('textMargin'), 'text margin', textMargin_default);
 
   if ((showHeader_value = gup("showHeader")) == "") { showHeader_value = showHeader_default }
   document.board.showHeader.checked = (showHeader_value == "t");
@@ -358,8 +358,8 @@ function calculate_html_code() {
   iframeUrl += "&sh=" + showHeader_value + "&sm=" + showMoves_value;
 
   if (document.board.showHeader.checked || document.board.showMoves.checked) {
-    textMargin_value = document.board.textMargin.value;
-    iframeUrl += "&tm=" + percentFixForUrl( textMargin_value );
+    textMargin_value = parseInt(document.board.textMargin.value);
+    iframeUrl += "&tm=" + textMargin_value;
   }
 
   if (document.board.showHeader.checked) {
@@ -1675,9 +1675,9 @@ chessboard generator</h1>
 <script>print_menu("header_moves_options", 3, "header and moves options");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<input class="input" type="text" id="textMargin" name="textMargin" value="" size="7" onChange="validate_number_percentage(this, 'text margin', textMargin_default);">
+<input class="input" type="text" id="textMargin" name="textMargin" value="" size="7" onChange="validate_number(this, 'text margin', textMargin_default);">
 &nbsp;&nbsp; text margin &nbsp;&nbsp;
-<span class="helptext"">a number or a percentage; header/moves margin, nice to have if text overflows with scrollbars</span>
+<span class="helptext"">a number; header/moves margin, nice to have if text overflows with scrollbars</span>
 <p></p>
 <br>
 
