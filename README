@@ -249,6 +249,11 @@ browsing variations is planned for a future release
 - if square brackets are present in the comments (or the game text) then 
 the game parsing is broken. If your PGN file is not displayed properly, 
 please check for characters "[" and "]" and try removing them. 
+- only pieces initials in the English language are supported, the use of
+alternative languages as specified by the PGN standard is not supported
+(pgn4web can however display chess moves text using figurine notation, so
+the language issue should not be much of a problem, just make sure your
+chess software produces PGN data with English pieces initials).
 
 pgn4web also follows a set of proposed extensions to the PGN standard
 (see http://www.enpassant.dk/chess/palview/enhancedpgn.htm), more 
