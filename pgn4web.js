@@ -3299,9 +3299,9 @@ function PrintHTML(){
     // remove comments that are all spaces
     if (thisComment.match(/^\s*$/)) {thisComment = ''};
     if (commentsIntoMoveText && (thisComment != '')){
-      if (commentsOnSeparateLines && (ii > StartPly)) text += '<P>';
+      if (commentsOnSeparateLines && (ii > StartPly)) text += '<P></P>';
       text += '<SPAN CLASS="comment">' + thisComment + '</SPAN><SPAN CLASS="move"> </SPAN>';
-      if (commentsOnSeparateLines) text += '<P>';
+      if (commentsOnSeparateLines) text += '<P></P>';
       printedComment = true;
     }
     var moveCount = Math.floor(ii/2)+1;
@@ -3322,7 +3322,7 @@ function PrintHTML(){
   // remove comments that are all spaces
   if (thisComment.match(/^\s*$/)) {thisComment = ''};
   if (commentsIntoMoveText && (thisComment != '')){
-    if (commentsOnSeparateLines) text += '<P>';
+    if (commentsOnSeparateLines) text += '<P></P>';
     text += '<SPAN CLASS="comment">' + thisComment + '</SPAN><SPAN CLASS="move"> </SPAN>';
   }
   text += '</SPAN>';
