@@ -80,14 +80,4 @@
   font-weight: normal;
   src: local(LiberationSans-Regular), url("LiberationSans-Regular.ttf") /* TTF file for CSS3 browsers */
 }
-@font-face {
-  font-family: "Liberation Sans";
-  font-weight: bold;
-  src: local(LiberationSans-Bold), url("LiberationSans-Bold.eot") /* EOT file for IE */
-}
-@font-face {
-  font-family: "Liberation Sans";
-  font-weight: bold;
-  src: local(LiberationSans-Bold), url("LiberationSans-Bold.ttf") /* TTF file for CSS3 browsers */
-}
 
