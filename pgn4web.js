@@ -1370,7 +1370,7 @@ function highlightSquare(col, row, on) {
     else { theObject.className = "highlightBlackSquare"; }
   } else {
     if ((trow+tcol)%2 == 0) { theObject.className = "whiteSquare"; }
-    elsei { theObject.className = "blackSquare"; }
+    else { theObject.className = "blackSquare"; }
   }
   return true;
 }
