@@ -1354,24 +1354,23 @@ function highlightMove(colFrom, rowFrom, colTo, rowTo){
  * if row/col From/To are -1 or undefined returns false                       *
  *                                                                            *
  ******************************************************************************/
-function highlightSquare(col, row, on){
-  if ((col == undefined) || (row == undefined)) return false;
-  if (! SquareOnBoard(col, row)) return false;
+function highlightSquare(col, row, on) {
+  if ((col == undefined) || (row == undefined)) { return false; }
+  if (! SquareOnBoard(col, row)) { return false; }
 
   // locates coordinates on the HTML table
-  if (IsRotated){trow = row; tcol = 7 - col;}
-  else{trow = 7 - row; tcol = col;}
+  if (IsRotated) { trow = row; tcol = 7 - col; }
+  else { trow = 7 - row; tcol = col; }
+
+  theObject = document.getElementById('tcol' + tcol + 'trow' + trow);
+  if (theObject == null) { return false; }
 
   if (on) {
-    if ((trow+tcol)%2 == 0)
-      document.getElementById('tcol' + tcol + 'trow' + trow).className = "highlightWhiteSquare";
-    else
-      document.getElementById('tcol' + tcol + 'trow' + trow).className = "highlightBlackSquare";
+    if ((trow+tcol)%2 == 0) { theObject.className = "highlightWhiteSquare"; }
+    else { theObject.className = "highlightBlackSquare"; }
   } else {
-    if ((trow+tcol)%2 == 0)
-      document.getElementById('tcol' + tcol + 'trow' + trow).className = "whiteSquare";
-    else
-      document.getElementById('tcol' + tcol + 'trow' + trow).className = "blackSquare";
+    if ((trow+tcol)%2 == 0) { theObject.className = "whiteSquare"; }
+    elsei { theObject.className = "blackSquare"; }
   }
   return true;
 }
@@ -3093,10 +3092,13 @@ function PrintHTML(){
    */
   theObject = document.getElementById("GameBoard");
   if (theObject != null) theObject.innerHTML = text; 
-   
-  tableSize = document.getElementById("boardTable").offsetWidth;
-  if (tableSize > 0) { // check to cope with some browser returning always 0 to offsetWidth
-    document.getElementById("boardTable").style.height = tableSize;
+  
+  theObject = document.getElementById("boardTable"); 
+  if (theObject != null) {
+    tableSize = theObject.offsetWidth;
+    if (tableSize > 0) { // check to cope with some browser returning always 0 to offsetWidth
+      theObject.style.height = tableSize;
+    }
   }
 
   numberOfButtons=5;
