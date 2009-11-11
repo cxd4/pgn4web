@@ -73,9 +73,22 @@
 @font-face {
   font-family: "Liberation Sans";
   src: local(LiberationSans-Regular), url("LiberationSans-Regular.eot") /* EOT file for IE */
+  font-weight: normal;
 }
 @font-face {
   font-family: "Liberation Sans";
   src: local(LiberationSans-Regular), url("LiberationSans-Regular.ttf") /* TTF file for CSS3 browsers */
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Liberation Sans";
+  src: local(LiberationSans-Bold), url("LiberationSans-Bold.eot") /* EOT file for IE */
+  font-weight: bold;
+}
+@font-face {
+  font-family: "Liberation Sans";
+  src: local(LiberationSans-Bold), url("LiberationSans-Bold.ttf") /* TTF file for CSS3 browsers */
+  font-weight: bold;
 }
 
