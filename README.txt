@@ -23,8 +23,9 @@ pages and blogs, without the need of much knowledge of HTML or any
 other technicality. It also allows for frequent updates of the PGN file 
 without the need of manually generating new web pages at every update.
 
-Project homepage: http://pgn4web.casaschi.net
-Contact: pgn4web@casaschi.net
+Project homepage: http://pgn4web.casaschi.net (including downloads and
+support wiki)
+Contact email: pgn4web@casaschi.net
 
 Features:
 - display chess games form a PGN file on a dynamic chessboard on your
