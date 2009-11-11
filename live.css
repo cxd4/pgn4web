@@ -113,7 +113,7 @@ a {
 
 .move,
 .moveOn {
-  font-family: ChessSansUscf, sans-serif;
+  font-family: ChessSansUscf, "Liberation Sans", sans-serif;
   line-height: 1.4em;
 }
 
