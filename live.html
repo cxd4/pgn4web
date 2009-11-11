@@ -71,7 +71,9 @@
 
   originalTitle = document.title;
 
-  ticker_string = " help";
+  if (demoFlag == true) { ticker_string = " demo"; }
+  else { ticker_string = " help"; }
+  
   ticker_counter = 0;
   function update_ticker() {
     document.getElementById("ticker").innerHTML = ticker_string.substring(0, ticker_counter) +
