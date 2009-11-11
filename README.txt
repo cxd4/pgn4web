@@ -140,9 +140,9 @@ iframe html tag.
 CHESS FIGURINE DISPLAY OF MOVES
 
 pgn4web allows displaying chess moves text using the supplied figurine fonts: 
-ChessSansAlpha, ChessSansMerida, ChessSansPiratf, ChessSansUscf and
-ChessSansUsual. These fonts are based on the Liberation Sans font, see credits
-section for more details.
+'pgn4web ChessSansAlpha', 'pgn4web ChessSansMerida', 'pgn4web ChessSansPiratf',
+'pgn4web ChessSansUscf' and 'pgn4web ChessSansUsual'. These fonts are based on
+the Liberation Sans font, see credits section for more details.
 To enable figurine display of chess moves text, make sure you include the
 fonts/pgn4web-fonts.css file into your HTML file:
   <link href="fonts/pgn4web-fonts.css" type="text/css" rel="stylesheet"></link> 

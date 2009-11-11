@@ -14,7 +14,7 @@ body {
 }
 
 body {
-  font-family: "Liberation Sans", sans-serif;
+  font-family: 'pgn4web Liberation Sans', sans-serif;
   color: #615F54;
   background: #EDE8D5;
 }
@@ -113,7 +113,7 @@ a {
 
 .move,
 .moveOn {
-  font-family: ChessSansUscf, "Liberation Sans", sans-serif;
+  font-family: 'pgn4web ChessSansUscf', 'pgn4web Liberation Sans', sans-serif;
   line-height: 1.4em;
 }
 

@@ -7,11 +7,11 @@
  *
  *  allows using the following chess figurine font-family setting for the chess moves:
  *
- *  ChessSansAlpha
- *  ChessSansMerida
- *  ChessSansPiratf
- *  ChessSansUscf
- *  ChessSansUsual
+ *  'pgn4web ChessSansAlpha'
+ *  'pgn4web ChessSansMerida'
+ *  'pgn4web ChessSansPiratf'
+ *  'pgn4web ChessSansUscf'
+ *  'pgn4web ChessSansUsual'
  *
  *  make sure you include this CSS file into your HTML file or your CSS file, then set
  *  the font-family for the .move class to the chess font of your choice.
@@ -20,48 +20,33 @@
  */
 
 @font-face {
-  font-family: ChessSansAlpha;
-  src: url("ChessSansAlpha.eot") /* EOT file for IE */
-}
-@font-face {
-  font-family: ChessSansAlpha;
-  src: url("ChessSansAlpha.ttf") /* TTF file for CSS3 browsers */
+  font-family: 'pgn4web ChessSansAlpha';
+  src: url('ChessSansAlpha.eot');
+  src: local('ChessSansAlpha Regular'), local('ChessSansAlpha'), url('ChessSansAlpha.woff') format('woff'), url('ChessSansAlpha.ttf') format('truetype'), url('ChessSansAlpha.svg#ChessSansAlpha') format('svg');
 }
 
 @font-face {
-  font-family: ChessSansMerida;
-  src: url("ChessSansMerida.eot") /* EOT file for IE */
-}
-@font-face {
-  font-family: ChessSansMerida;
-  src: url("ChessSansMerida.ttf") /* TTF file for CSS3 browsers */
+  font-family: 'pgn4web ChessSansMerida';
+  src: url('ChessSansMerida.eot');
+  src: local('ChessSansMerida Regular'), local('ChessSansMerida'), url('ChessSansMerida.woff') format('woff'), url('ChessSansMerida.ttf') format('truetype'), url('ChessSansMerida.svg#ChessSansMerida') format('svg');
 }
 
 @font-face {
-  font-family: ChessSansPiratf;
-  src: url("ChessSansPiratf.eot") /* EOT file for IE */
-}
-@font-face {
-  font-family: ChessSansPiratf;
-  src: url("ChessSansPiratf.ttf") /* TTF file for CSS3 browsers */
+  font-family: 'pgn4web ChessSansPiratf';
+  src: url('ChessSansPiratf.eot');
+  src: local('ChessSansPiratf Regular'), local('ChessSansPiratf'), url('ChessSansPiratf.woff') format('woff'), url('ChessSansPiratf.ttf') format('truetype'), url('ChessSansPiratf.svg#ChessSansPiratf') format('svg');
 }
 
 @font-face {
-  font-family: ChessSansUscf;
-  src: url("ChessSansUscf.eot") /* EOT file for IE */
-}
-@font-face {
-  font-family: ChessSansUscf;
-  src: url("ChessSansUscf.ttf") /* TTF file for CSS3 browsers */
+  font-family: 'pgn4web ChessSansUscf';
+  src: url('ChessSansUscf.eot');
+  src: local('ChessSansUscf Regular'), local('ChessSansUscf'), url('ChessSansUscf.woff') format('woff'), url('ChessSansUscf.ttf') format('truetype'), url('ChessSansUscf.svg#ChessSansUscf') format('svg');
 }
 
 @font-face {
-  font-family: ChessSansUsual;
-  src: url("ChessSansUsual.eot") /* EOT file for IE */
-}
-@font-face {
-  font-family: ChessSansUsual;
-  src: url("ChessSansUsual.ttf") /* TTF file for CSS3 browsers */
+  font-family: 'pgn4web ChessSansUsual';
+  src: url('ChessSansUsual.eot');
+  src: local('ChessSansUsual Regular'), local('ChessSansUsual'), url('ChessSansUsual.woff') format('woff'), url('ChessSansUsual.ttf') format('truetype'), url('ChessSansUsual.svg#ChessSansUsual') format('svg');
 }
 
 /* 
@@ -71,24 +56,15 @@
  */
 
 @font-face {
-  font-family: "Liberation Sans";
-  src: local(LiberationSans-Regular), url("LiberationSans-Regular.eot") /* EOT file for IE */
-  font-weight: normal;
-}
-@font-face {
-  font-family: "Liberation Sans";
-  src: local(LiberationSans-Regular), url("LiberationSans-Regular.ttf") /* TTF file for CSS3 browsers */
-  font-weight: normal;
+  font-family: 'pgn4web Liberation Sans';
+  src: local('Liberation Sans Bold'), local('LiberationSans-Bold'), url('LiberationSans-Bold.woff') format('woff'), url('LiberationSans-Bold.ttf') format('truetype'), url('LiberationSans-Bold.svg#LiberationSans-Bold') format('svg');
+  font-weight: bold;
 }
 
 @font-face {
-  font-family: "Liberation Sans";
-  src: local(LiberationSans-Bold), url("LiberationSans-Bold.eot") /* EOT file for IE */
-  font-weight: bold;
-}
-@font-face {
-  font-family: "Liberation Sans";
-  src: local(LiberationSans-Bold), url("LiberationSans-Bold.ttf") /* TTF file for CSS3 browsers */
-  font-weight: bold;
+  font-family: 'pgn4web Liberation Sans';
+  src: url('LiberationSans-Regular.eot');
+  src: local('Liberation Sans Regular'), local('Liberation Sans'), local('LiberationSans'), url('LiberationSans-Regular.woff') format('woff'), url('LiberationSans-Regular.ttf') format('truetype'), url('LiberationSans-Regular.svg#LiberationSans') format('svg');
+  font-weight: normal;
 }
 
