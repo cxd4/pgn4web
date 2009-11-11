@@ -149,6 +149,10 @@ fonts/pgn4web-fonts.css file into your HTML file:
 or into your CSS file:
   @import url("fonts/pgn4web-fonts.css");
 Then set the font-family for the .move class to the chess font of your choice.
+For example in your CSS file:
+  .move {
+    font-family: 'pgn4web ChessSansPiratf', 'pgn4web Liberation Sans', sans-serif;
+  }
 See the template.html and template.css files for an example.
 
 
