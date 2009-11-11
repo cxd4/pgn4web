@@ -72,12 +72,10 @@
 
 @font-face {
   font-family: "Liberation Sans";
-  font-weight: normal;
   src: local(LiberationSans-Regular), url("LiberationSans-Regular.eot") /* EOT file for IE */
 }
 @font-face {
   font-family: "Liberation Sans";
-  font-weight: normal;
   src: local(LiberationSans-Regular), url("LiberationSans-Regular.ttf") /* TTF file for CSS3 browsers */
 }
 
