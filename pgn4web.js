@@ -1405,12 +1405,12 @@ function pgnGameFromPgnText(pgnText){
         gameIndex++;
         pgnGame[gameIndex] = '';
       }
-      inGameHeader=true
-      inGameBody=false
+      inGameHeader=true;
+      inGameBody=false;
     }else{
       if(inGameHeader){
-        inGameHeader=false
-        inGameBody=true
+        inGameHeader=false;
+        inGameBody=true;
       }
     }
     if (gameIndex >= 0) { pgnGame[gameIndex] += lines[ii] + ' \n'; }
@@ -1524,7 +1524,7 @@ function checkLiveBroadcastStatus() {
     // broadcast started with a good PGN
     liveGamesRunning = 0;
     for (ii=0; ii<numberOfGames; ii++) {
-      if (gameResult[ii].indexOf('*') >= 0) { liveGamesRunning++ }
+      if (gameResult[ii].indexOf('*') >= 0) { liveGamesRunning++; }
     }
     LiveBroadcastEnded = (liveGamesRunning === 0);
 
@@ -1548,7 +1548,7 @@ function restartLiveBroadcastTimeout() {
  
   checkLiveBroadcastStatus();
 
-  needRestart = (!LiveBroadcastEnded)
+  needRestart = (!LiveBroadcastEnded);
   
   if ((needRestart === true) && (!LiveBroadcastPaused)){
     LiveBroadcastInterval = setTimeout("refreshPgnSource()", LiveBroadcastDelay * 60000);
@@ -1590,7 +1590,7 @@ function refreshPgnSource() {
   textSelectOptions = '';
 
   if (CurrentPly != StartPly + PlyNumber) { oldCurrentPly = CurrentPly; }
-  else {oldCurrentPly = -1}
+  else {oldCurrentPly = -1;}
 
   if (isAutoPlayOn) {
     SetAutoPlay(false);
@@ -1623,7 +1623,7 @@ function refreshPgnSource() {
   Init();
 
   if ((foundOldGame === true) && (oldCurrentPly >= 0)) { 
-    initialHalfmove = oldInitialHalfmove 
+    initialHalfmove = oldInitialHalfmove; 
   }
   
   checkLiveBroadcastStatus();
@@ -1685,7 +1685,7 @@ function createBoard(){
   if ( document.getElementById("pgnText") ) {
     tmpText = document.getElementById("pgnText").innerHTML;
     // if no html header is present, add emptyPgnHeader at the top
-    if (tmpText.indexOf(']') < 0) { tmpText = emptyPgnHeader + tmpText }
+    if (tmpText.indexOf(']') < 0) { tmpText = emptyPgnHeader + tmpText; }
     // fixes issue with some browser removing \n from innerHTML
     if (tmpText.indexOf('\n') < 0) { tmpText = tmpText.replace(/((\[[^\[\]]*\]\s*)+)/g, "\n$1\n"); }
     // fixes issue with some browser replacing quotes with &quot;
@@ -1733,12 +1733,12 @@ function Init(){
         currentGame = Math.floor(Math.random()*numberOfGames);
         break;
       default:
-        if (isNaN(initialGame)) { currentGame = 0 }
+        if (isNaN(initialGame)) { currentGame = 0; }
         else {
           initialGame -= 1;
-          if (initialGame < -1) { currentGame = 0 }
+          if (initialGame < -1) { currentGame = 0; }
           else if (initialGame == -1) { currentGame = Math.floor(Math.random()*numberOfGames); }
-          else if (initialGame < numberOfGames) { currentGame = initialGame } 
+          else if (initialGame < numberOfGames) { currentGame = initialGame; } 
           else { currentGame = numberOfGames - 1; }
         }
         break;
@@ -1779,8 +1779,8 @@ function Init(){
         MoveToNextComment();
         break;
       default:
-        if (isNaN(initialHalfmove)) { initialHalfmove = 0 }
-        if (initialHalfmove < -2) { initialHalfmove = 0 }
+        if (isNaN(initialHalfmove)) { initialHalfmove = 0; }
+        if (initialHalfmove < -2) { initialHalfmove = 0; }
         if (initialHalfmove == -2) { GoToMove(0); MoveToNextComment(); }
         else if (initialHalfmove == -1) { GoToMove(StartPly + Math.floor(Math.random()*(StartPly+PlyNumber))); }
         else { GoToMove(initialHalfmove); }
@@ -2551,7 +2551,7 @@ function ParsePGNGameString(gameString){
         if ((start > 0) && (ss.charAt(start-1) != '\n')) { break; }
         commentStart = start+1;
         commentEnd = ss.indexOf('\n',start+1);
-        if (commentEnd < 0) {commentEnd = ss.length}
+        if (commentEnd < 0) { commentEnd = ss.length; }
         // dont store % lines as comments
         // if (MoveComments[StartPly+PlyNumber].length>0) { MoveComments[StartPly+PlyNumber] += ' '; }
         // MoveComments[StartPly+PlyNumber] += ss.substring(commentStart, commentEnd); 
@@ -2561,7 +2561,7 @@ function ParsePGNGameString(gameString){
       case ';':
         commentStart = start+1;
         commentEnd = ss.indexOf('\n',start+1);
-        if (commentEnd < 0) {commentEnd = ss.length}
+        if (commentEnd < 0) { commentEnd = ss.length; }
         if (MoveComments[StartPly+PlyNumber].length>0) { MoveComments[StartPly+PlyNumber] += ' '; }
         MoveComments[StartPly+PlyNumber] += ss.substring(commentStart, commentEnd); 
         start = commentEnd;
@@ -2628,7 +2628,7 @@ function ParsePGNGameString(gameString){
         searchThis = moveCount+'.';
         if(ss.indexOf(searchThis,start)==start){
           start += searchThis.length;
-          while ((ss.charAt(start) == '.') || (ss.charAt(start) == ' ')  || (ss.charAt(start) == '\n') || (ss.charAt(start) == '\r')){start++}
+          while ((ss.charAt(start) == '.') || (ss.charAt(start) == ' ')  || (ss.charAt(start) == '\n') || (ss.charAt(start) == '\r')){start++;}
         }
         end = ss.indexOf(' ',start);
         end2 = ss.indexOf('$',start); if ((end2 > 0) && (end2 < end)) { end = end2; }
@@ -3056,7 +3056,7 @@ function reset_after_click (ii, jj, originalClass, newClass) {
   squareId = 'tcol' + jj + 'trow' + ii;
   theObject = document.getElementById(squareId);
   // if the square class has been changed by pgn4web already (due to autoplay for instance) dont touch it anymore
-  if (theObject.className == newClass) {theObject.className = originalClass}
+  if (theObject.className == newClass) { theObject.className = originalClass; }
   clickedSquareInterval = null;
 }
 
@@ -3167,7 +3167,7 @@ function PrintHTML(){
       if(textSelectOptions === '') {
         if (gameSelectorNum) { gameSelectorNumLenght = Math.floor(Math.log(numberOfGames)/Math.log(10)) + 1; }
         text = '<FORM NAME="GameSel" STYLE="display:inline;"> ' +
-               '<SELECT ID="GameSelSelect" NAME="GameSelSelect" STYLE="'
+               '<SELECT ID="GameSelSelect" NAME="GameSelSelect" STYLE="';
         if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + tableSize + '; '; }
         text += 'font-family: monospace;" CLASS="selectControl" ' + 
                 'ONCHANGE="this.blur(); if(this.value >= 0) {currentGame=parseInt(this.value); ' +
@@ -3309,7 +3309,7 @@ function PrintHTML(){
     // remember pgn4web replaces '[%...]' with '<@...@>'
     thisComment = MoveComments[ii].replace(/<@.*?@>\s*/g,''); // note trailing spaces are removed also
     // remove comments that are all spaces
-    if (thisComment.match(/^\s*$/)) {thisComment = ''}
+    if (thisComment.match(/^\s*$/)) { thisComment = ''; }
     if (commentsIntoMoveText && (thisComment !== '')){
       if (commentsOnSeparateLines && (ii > StartPly)) { 
         text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
@@ -3336,7 +3336,7 @@ function PrintHTML(){
   // remember pgn4web replaces '[%...]' with '<@...@>'
   thisComment = MoveComments[StartPly+PlyNumber].replace(/<@.*?@>\s*/g,''); // note trailing spaces are removed also
   // remove comments that are all spaces
-  if (thisComment.match(/^\s*$/)) {thisComment = ''}
+  if (thisComment.match(/^\s*$/)) { thisComment = ''; }
   if (commentsIntoMoveText && (thisComment !== '')){
     if (commentsOnSeparateLines) { text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>'; }
     text += '<SPAN CLASS="comment">' + thisComment + '</SPAN><SPAN CLASS="move"> </SPAN>';
