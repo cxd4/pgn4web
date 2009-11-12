@@ -102,135 +102,135 @@ function set_defaults() {
   document.getElementById('html_code').innerHTML = '';
   document.getElementById('html_code_status').innerHTML = '&nbsp;';
   
-  if ((pgnTextEncoded = gup("pgnEncoded")) != "") {
+  if ((pgnTextEncoded = gup("pgnEncoded")) !== "") {
     pgnText_value = DecodePGN(pgnTextEncoded);
     previousPgnTextToEncode = pgnText_value;
   } else {
-    if ((pgnText_value = decodeURIComponent(gup("pgnText"))) == "") { pgnText_value = pgnText_default }
+    if ((pgnText_value = decodeURIComponent(gup("pgnText"))) === "") { pgnText_value = pgnText_default; }
     previousPgnTextToEncode = "";
   }
   document.getElementById('pgnText').value = pgnText_value;
   update_pgnTextLength();
 
-  if ((encodePgn_value = gup("encodePgn")) == "") { encodePgn_value = encodePgn_default }
+  if ((encodePgn_value = gup("encodePgn")) === "") { encodePgn_value = encodePgn_default; }
   document.board.encodePgn.checked = (encodePgn_value == "t");
 
-  if ((auto_value = gup("auto")) == "") { auto_value = auto_default }
+  if ((auto_value = gup("auto")) === "") { auto_value = auto_default; }
   document.board.auto.checked = (auto_value == "t");
 
-  if ((delay_value = gup("delay")) == "") { delay_value = delay_default }
+  if ((delay_value = gup("delay")) === "") { delay_value = delay_default; }
   document.board.delay.value = delay_value;
 
-  if ((loop_value = gup("loop")) == "") { loop_value = loop_default }
+  if ((loop_value = gup("loop")) === "") { loop_value = loop_default; }
   document.board.loop.checked = (loop_value == "t");
 
-  if ((pieceFont_value = gup("pieceFont")) == "") { pieceFont_value = pieceFont_default }
+  if ((pieceFont_value = gup("pieceFont")) === "") { pieceFont_value = pieceFont_default; }
   document.board.pieceFont.value = pieceFont_value;
   if (!((pieceFont_value == "alpha") || (pieceFont_value == "merida") || (pieceFont_value == "uscf"))) {
     alert('error: the piece font must me either \'alpha\' or \'merida\' or \'uscf\'');
     document.board.pieceFont.value = pieceFont_value = pieceFont_default;
   }
 
-  if ((squareSize_value = gup("squareSize")) == "") { squareSize_value = squareSize_default }
+  if ((squareSize_value = gup("squareSize")) === "") { squareSize_value = squareSize_default; }
   document.getElementById('squareSize').value = squareSize_value;
   validate_squareSize();
 
-  if ((pieceSize_value = gup("pieceSize")) == "") { pieceSize_value = pieceSize_default }
+  if ((pieceSize_value = gup("pieceSize")) === "") { pieceSize_value = pieceSize_default; }
   document.getElementById('pieceSize').value = pieceSize_value;
   validate_pieceSize();
 
-  if ((lightColorHex_value = gup("lightColorHex")) == "") { lightColorHex_value = lightColorHex_default }
+  if ((lightColorHex_value = gup("lightColorHex")) === "") { lightColorHex_value = lightColorHex_default; }
   document.board.lightColorHex.value = lightColorHex_value;
   validate_color(document.board.lightColorHex, 'light squares color', lightColorHex_default);
 
-  if ((darkColorHex_value = gup("darkColorHex")) == "") { darkColorHex_value = darkColorHex_default }
+  if ((darkColorHex_value = gup("darkColorHex")) === "") { darkColorHex_value = darkColorHex_default; }
   document.board.darkColorHex.value = darkColorHex_value;
-  validate_color(document.board.darkColorHex, 'dark squares color', darkColorHex_default)
+  validate_color(document.board.darkColorHex, 'dark squares color', darkColorHex_default);
 
-  if ((boardBorderColorHex_value = gup("boardBorderColorHex")) == "") { boardBorderColorHex_value = boardBorderColorHex_default }
+  if ((boardBorderColorHex_value = gup("boardBorderColorHex")) === "") { boardBorderColorHex_value = boardBorderColorHex_default; }
   document.board.boardBorderColorHex.value = boardBorderColorHex_value;
   validate_color(document.board.boardBorderColorHex, 'board border color', boardBorderColorHex_default);
 
-  if ((highlightColorHex_value = gup("highlightColorHex")) == "") { highlightColorHex_value = highlightColorHex_default }
+  if ((highlightColorHex_value = gup("highlightColorHex")) === "") { highlightColorHex_value = highlightColorHex_default; }
   document.board.highlightColorHex.value = highlightColorHex_value;
   validate_color_none(document.board.highlightColorHex, 'highlight squares color', highlightColorHex_default);
 
-  if ((showButtons_value = gup("showButtons")) == "") { showButtons_value = showButtons_default }
+  if ((showButtons_value = gup("showButtons")) === "") { showButtons_value = showButtons_default; }
   document.board.showButtons.checked = (showButtons_value == "t");
 
-  if ((controlBackgroundColorHex_value = gup("controlBackgroundColorHex")) == "") { controlBackgroundColorHex_value = controlBackgroundColorHex_default }
+  if ((controlBackgroundColorHex_value = gup("controlBackgroundColorHex")) === "") { controlBackgroundColorHex_value = controlBackgroundColorHex_default; }
   document.board.controlBackgroundColorHex.value = controlBackgroundColorHex_value;
   validate_color_default(document.board.controlBackgroundColorHex, 'control buttons background color', 'default');
 
-  if ((controlTextColorHex_value = gup("controlTextColorHex")) == "") { controlTextColorHex_value = controlTextColorHex_default }
+  if ((controlTextColorHex_value = gup("controlTextColorHex")) === "") { controlTextColorHex_value = controlTextColorHex_default; }
   document.board.controlTextColorHex.value = controlTextColorHex_value;
-  validate_color(document.board.controlTextColorHex, 'control buttons text color', controlTextColorHex_default)
+  validate_color(document.board.controlTextColorHex, 'control buttons text color', controlTextColorHex_default);
 
-  if ((textMargin_value = gup("textMargin")) == "") { textMargin_value = textMargin_default }
+  if ((textMargin_value = gup("textMargin")) === "") { textMargin_value = textMargin_default; }
   document.getElementById('textMargin').value = textMargin_value;
   validate_number(document.getElementById('textMargin'), 'text margin', textMargin_default);
 
-  if ((showHeader_value = gup("showHeader")) == "") { showHeader_value = showHeader_default }
+  if ((showHeader_value = gup("showHeader")) === "") { showHeader_value = showHeader_default; }
   document.board.showHeader.checked = (showHeader_value == "t");
 
-  if ((showMoves_value = gup("showMoves")) == "") { showMoves_value = showMoves_default }
+  if ((showMoves_value = gup("showMoves")) === "") { showMoves_value = showMoves_default; }
   document.board.showMoves.checked = (showMoves_value == "t");
 
-  if ((showComments_value = gup("showComments")) == "") { showComments_value = showComments_default }
+  if ((showComments_value = gup("showComments")) === "") { showComments_value = showComments_default; }
   document.board.showComments.checked = (showComments_value == "t");
 
-  if ((showCommentsOnSeparateLines_value = gup("showCommentsOnSeparateLines")) == "") { showCommentsOnSeparateLines_value = showCommentsOnSeparateLines_default }
+  if ((showCommentsOnSeparateLines_value = gup("showCommentsOnSeparateLines")) === "") { showCommentsOnSeparateLines_value = showCommentsOnSeparateLines_default; }
   document.board.showCommentsOnSeparateLines.checked = (showCommentsOnSeparateLines_value == "t");
 
-  if ((fontHeaderColorHex_value = gup("fontHeaderColorHex")) == "") { fontHeaderColorHex_value = fontHeaderColorHex_default }
+  if ((fontHeaderColorHex_value = gup("fontHeaderColorHex")) === "") { fontHeaderColorHex_value = fontHeaderColorHex_default; }
   document.board.fontHeaderColorHex.value = fontHeaderColorHex_value;
   validate_color(document.board.fontHeaderColorHex, 'header font color', fontHeaderColorHex_default);
 
-  if ((fontMovesColorHex_value = gup("fontMovesColorHex")) == "") { fontMovesColorHex_value = fontMovesColorHex_default }
+  if ((fontMovesColorHex_value = gup("fontMovesColorHex")) === "") { fontMovesColorHex_value = fontMovesColorHex_default; }
   document.board.fontMovesColorHex.value = fontMovesColorHex_value;
-  validate_color(document.board.fontMovesColorHex, 'moves font color', fontMovesColorHex_default)
+  validate_color(document.board.fontMovesColorHex, 'moves font color', fontMovesColorHex_default);
 
-  if ((fontCommentsColorHex_value = gup("fontCommentsColorHex")) == "") { fontCommentsColorHex_value = fontCommentsColorHex_default }
+  if ((fontCommentsColorHex_value = gup("fontCommentsColorHex")) === "") { fontCommentsColorHex_value = fontCommentsColorHex_default; }
   document.board.fontCommentsColorHex.value = fontCommentsColorHex_value;
   validate_color(document.board.fontCommentsColorHex, 'comments font color', fontCommentsColorHex_default);
 
-  if ((highlightMoveColorHex_value = gup("highlightMoveColorHex")) == "") { highlightMoveColorHex_value = highlightMoveColorHex_default }
+  if ((highlightMoveColorHex_value = gup("highlightMoveColorHex")) === "") { highlightMoveColorHex_value = highlightMoveColorHex_default; }
   document.board.highlightMoveColorHex.value = highlightMoveColorHex_value;
   validate_color(document.board.highlightMoveColorHex, 'highlight move color', highlightMoveColorHex_default);
 
-  if ((fontHeaderSize_value = percentFixFromUrl( gup("fontHeaderSize") )) == "") { fontHeaderSize_value = fontHeaderSize_default }
+  if ((fontHeaderSize_value = percentFixFromUrl( gup("fontHeaderSize") )) === "") { fontHeaderSize_value = fontHeaderSize_default; }
   document.board.fontHeaderSize.value = fontHeaderSize_value;
   validate_number_percentage(document.board.fontHeaderSize, 'header font size', fontHeaderSize_default);
 
-  if ((fontMovesSize_value = percentFixFromUrl( gup("fontMovesSize") )) == "") { fontMovesSize_value = fontMovesSize_default }
+  if ((fontMovesSize_value = percentFixFromUrl( gup("fontMovesSize") )) === "") { fontMovesSize_value = fontMovesSize_default; }
   document.board.fontMovesSize.value = fontMovesSize_value;
   validate_number_percentage(document.board.fontMovesSize, 'moves font size', fontMovesSize_default);
 
-  if ((fontCommentsSize_value = percentFixFromUrl( gup("fontCommentsSize") )) == "") { fontCommentsSize_value = fontCommentsSize_default }
+  if ((fontCommentsSize_value = percentFixFromUrl( gup("fontCommentsSize") )) === "") { fontCommentsSize_value = fontCommentsSize_default; }
   document.board.fontCommentsSize.value = fontCommentsSize_value;
   validate_number_percentage(document.board.fontCommentsSize, 'comments font size', fontCommentsSize_default);
 
-  if ((backgroundColorHex_value = gup("backgroundColorHex")) == "") { backgroundColorHex_value = backgroundColorHex_default }
+  if ((backgroundColorHex_value = gup("backgroundColorHex")) === "") { backgroundColorHex_value = backgroundColorHex_default; }
   document.board.backgroundColorHex.value = backgroundColorHex_value;
   validate_color(document.board.backgroundColorHex, 'background color', backgroundColorHex_default);
 
-  if ((previewBackgroundColorHex_value = gup("previewBackgroundColorHex")) == "") { previewBackgroundColorHex_value = previewBackgroundColorHex_default }
+  if ((previewBackgroundColorHex_value = gup("previewBackgroundColorHex")) === "") { previewBackgroundColorHex_value = previewBackgroundColorHex_default; }
   document.board.previewBackgroundColorHex.value = previewBackgroundColorHex_value;
   validate_color(document.board.previewBackgroundColorHex, 'preview background color', previewBackgroundColorHex_default);
 
-  if ((frameHeight_value = percentFixFromUrl( gup("frameHeight") )) == "") { frameHeight_value = frameHeight_default }
+  if ((frameHeight_value = percentFixFromUrl( gup("frameHeight") )) === "") { frameHeight_value = frameHeight_default; }
   document.board.frameHeight.value = frameHeight_value;
   validate_number_blank(document.board.frameHeight, 'iFrame height', '');
 
-  if ((frameWidth_value = percentFixFromUrl( gup("frameWidth") )) == "") { frameWidth_value = frameWidth_default }
+  if ((frameWidth_value = percentFixFromUrl( gup("frameWidth") )) === "") { frameWidth_value = frameWidth_default; }
   document.board.frameWidth.value = frameWidth_value;
   validate_number_percentage_blank(document.board.frameWidth, 'iFrame width', '');
 
-  if ((framePadding_value = gup("framePadding")) == "") { framePadding_value = framePadding_default }
+  if ((framePadding_value = gup("framePadding")) === "") { framePadding_value = framePadding_default; }
   document.board.framePadding.value = framePadding_value;
   validate_number(document.board.framePadding, 'frame padding', framePadding_default);
 
-  if ((baseUrl_value = gup("baseUrl")) == "") { baseUrl_value = baseUrl_default }
+  if ((baseUrl_value = gup("baseUrl")) === "") { baseUrl_value = baseUrl_default; }
   document.board.baseUrl.value = baseUrl_value;
 
   generate_html_code();
@@ -271,16 +271,16 @@ function update_suggested_iframe_dimensions() {
   if (document.board.showButtons.checked) {
     if (document.board.controlBackgroundColorHex.value != "default") {
       // in this case both control size and control padding grow with squareSize  
-      suggested_frameHeight += (20 + 2 * parseInt(document.board.squareSize.value));
+      suggested_frameHeight += (20 + 2 * parseInt(document.board.squareSize.value, 10));
     } else {
       // in this case control padding grows with squareSize 
       // while the size of the controls cant be predicted, so a safe number is set
-      suggested_frameHeight += 50 + parseInt(document.board.squareSize.value);
+      suggested_frameHeight += 50 + parseInt(document.board.squareSize.value, 10);
     } 
   }
 
-  suggested_frameWidth += 2 * parseInt(document.board.framePadding.value);
-  suggested_frameHeight += 2 * parseInt(document.board.framePadding.value);
+  suggested_frameWidth += 2 * parseInt(document.board.framePadding.value, 10);
+  suggested_frameHeight += 2 * parseInt(document.board.framePadding.value, 10);
 
   min_frameWidth = suggested_frameWidth;
   min_frameHeight = suggested_frameHeight;
@@ -296,7 +296,7 @@ function update_suggested_iframe_dimensions() {
   document.getElementById('frameWidth_helpText').innerHTML = "a number or a percentage; min " + min_frameWidth + "; if blank frame width assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
 
   theObject = document.getElementById('frameWidth');
-  if (theObject.value != "") { 
+  if (theObject.value !== "") { 
     if (!theObject.value.match('/[^0-9]/')) { 
       if (theObject.value < min_frameWidth) { 
         alert('error: iFrame width too small');
@@ -306,7 +306,7 @@ function update_suggested_iframe_dimensions() {
   } 
   
   theObject = document.getElementById('frameHeight');
-  if (theObject.value != "") { 
+  if (theObject.value !== "") { 
     if (!theObject.value.match('/[^0-9]/')) { 
       if (theObject.value < min_frameHeight) { 
         alert('error: iFrame height too small');
@@ -327,14 +327,14 @@ function calculate_html_code() {
   baseUrl_value = document.board.baseUrl.value;
   iframeUrl = baseUrl_value + "?";
 
-  if (document.board.auto.checked) { auto_value = "t" } else { auto_value = "f" }
-  delay_value = parseInt(document.board.delay.value);
-  if (document.board.loop.checked) { loop_value = "t" } else { loop_value = "f" }
+  if (document.board.auto.checked) { auto_value = "t"; } else { auto_value = "f"; }
+  delay_value = parseInt(document.board.delay.value, 10);
+  if (document.board.loop.checked) { loop_value = "t"; } else { loop_value = "f"; }
   iframeUrl += "&a=" + auto_value + "&d=" + delay_value + "&l=" + loop_value;
 
   pieceFont_value = document.board.pieceFont.value;
-  pieceSize_value = parseInt(document.board.pieceSize.value);
-  squareSize_value = parseInt(document.board.squareSize.value);
+  pieceSize_value = parseInt(document.board.pieceSize.value, 10);
+  squareSize_value = parseInt(document.board.squareSize.value, 10);
   if (pieceSize_value > squareSize_value) { alert("Error: the piece size (" + pieceSize_value + ") can not be bigger than the square size (" + squareSize_value + ")"); }
   iframeUrl += "&pf=" + pieceFont_value + "&ps=" + pieceSize_value + "&ss=" + squareSize_value;
 
@@ -344,7 +344,7 @@ function calculate_html_code() {
   highlightColorHex_value = document.board.highlightColorHex.value; 
   iframeUrl += "&lch=" + lightColorHex_value + "&dch=" + darkColorHex_value + "&bbch=" + boardBorderColorHex_value + "&hch=" + highlightColorHex_value;
 
-  if (document.board.showButtons.checked) { showButtons_value = "t" } else { showButtons_value = "f" }
+  if (document.board.showButtons.checked) { showButtons_value = "t"; } else { showButtons_value = "f"; }
   iframeUrl += "&sb=" + showButtons_value;
 
   if ((document.board.showButtons.checked) && (document.board.controlBackgroundColorHex.value != "default")) {
@@ -353,12 +353,12 @@ function calculate_html_code() {
     iframeUrl += "&cbch=" + controlBackgroundColorHex_value + "&ctch=" + controlTextColorHex_value;
   }
 
-  if (document.board.showHeader.checked) { showHeader_value = "t" } else { showHeader_value = "f" }
-  if (document.board.showMoves.checked) { showMoves_value = "t" } else { showMoves_value = "f" }
+  if (document.board.showHeader.checked) { showHeader_value = "t"; } else { showHeader_value = "f"; }
+  if (document.board.showMoves.checked) { showMoves_value = "t"; } else { showMoves_value = "f"; }
   iframeUrl += "&sh=" + showHeader_value + "&sm=" + showMoves_value;
 
   if (document.board.showHeader.checked || document.board.showMoves.checked) {
-    textMargin_value = parseInt(document.board.textMargin.value);
+    textMargin_value = parseInt(document.board.textMargin.value, 10);
     iframeUrl += "&tm=" + textMargin_value;
   }
 
@@ -383,8 +383,8 @@ function calculate_html_code() {
     fontCommentsSize_value = document.board.fontCommentsSize.value;
     iframeUrl += "&fms=" + percentFixForUrl( fontMovesSize_value ) + "&fcs=" + percentFixForUrl( fontCommentsSize_value );
 
-    if (document.board.showComments.checked) { showComments_value = "t" } else { showComments_value = "f" } 
-    if (document.board.showCommentsOnSeparateLines.checked) { showCommentsOnSeparateLines_value = "t" } else { showCommentsOnSeparateLines_value = "f" }
+    if (document.board.showComments.checked) { showComments_value = "t"; } else { showComments_value = "f"; } 
+    if (document.board.showCommentsOnSeparateLines.checked) { showCommentsOnSeparateLines_value = "t"; } else { showCommentsOnSeparateLines_value = "f"; }
     iframeUrl += "&sc=" + showComments_value + "&scosl=" + showCommentsOnSeparateLines_value;
 
   } 
@@ -395,12 +395,12 @@ function calculate_html_code() {
   // this does not go in the iframe
   previewBackgroundColorHex_value = document.board.previewBackgroundColorHex.value;
 
-  framePadding_value = parseInt(document.board.framePadding.value);
+  framePadding_value = parseInt(document.board.framePadding.value, 10);
   iframeUrl += "&fp=" + framePadding_value;
 
   update_suggested_iframe_dimensions();
-  if ((frameHeight_value = document.board.frameHeight.value) == "") { frameHeight_value = suggested_frameHeight }
-  if ((frameWidth_value = document.board.frameWidth.value) == "") { frameWidth_value = suggested_frameWidth }
+  if ((frameHeight_value = document.board.frameHeight.value) === "") { frameHeight_value = suggested_frameHeight; }
+  if ((frameWidth_value = document.board.frameWidth.value) === "") { frameWidth_value = suggested_frameWidth; }
 
   iframeUrl += "&fh=" + percentFixForUrl( frameHeight_value ) + "&fw=" + "100pct";
 
@@ -506,7 +506,7 @@ function validate_number(object, name, def) {
 }
 
 function validate_number_blank(object, name, def) {
-  if (object.value == "") { return true; }
+  if (object.value === "") { return true; }
   if (object.value.match(/[^0-9]+(px$|$)/)) {
     alert('error: the ' + name + ' must be blank or a non negative number');
     object.value = def;
@@ -523,7 +523,7 @@ function validate_number_percentage(object, name, def) {
 }
 
 function validate_number_percentage_blank(object, name, def) {
-  if (object.value == "") { return true; }
+  if (object.value === "") { return true; }
   if (!object.value.match(/[0-9]+(%$|pct$|px$|$)/)) {
     alert('error: the ' + name + ' must be blank or a non negative number or percentage');
     object.value = def;
@@ -857,7 +857,7 @@ function DecodePGN(bytes) {
     bytes.length--;
   }
 
-  originalLength = parseInt(bytes.match(/^[0-9]*/));
+  originalLength = parseInt(bytes.match(/^[0-9]*/), 10);
   bytes = bytes.replace(/^[0-9]*\$/,"");
 
   l = new Array();
@@ -1376,12 +1376,12 @@ function DecodePGN(bytes) {
   e=b=a=0;
   o="";
 
-  function B() { if(a==0) { b=encodingCharSet.indexOf(bytes.charAt(e++)); a=6; } return ((b>>--a)&0x01); }
+  function B() { if(a===0) { b=encodingCharSet.indexOf(bytes.charAt(e++)); a=6; } return ((b>>--a)&0x01); }
   
   while(originalLength>0) { i=0; 
     while(l[i]<0) { 
-      if(B()) i=-l[i];
-      else i++;
+      if(B()) { i=-l[i]; }
+      else { i++; }
     }
     o+=String.fromCharCode(l[i]);
     originalLength--;
@@ -1398,7 +1398,7 @@ function gup( name ){
   regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   var regex = new RegExp( regexS );
   var results = regex.exec( window.location.href );
-  if( results != null ) { switch (results[1]) {
+  if( results !== null ) { switch (results[1]) {
     case "true": case "T": return "t";  break;
     case "false": case "F": return "f"; break;
     default: return results[1];
@@ -1412,11 +1412,11 @@ function gup( name ){
   name = compact_name;
 
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-  var regexS = "[\\?&]"+name+"=([^&#]*)";  
+  regexS = "[\\?&]"+name+"=([^&#]*)";  
   regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
-  var regex = new RegExp( regexS );
-  var results = regex.exec( window.location.href );
-  if( results != null ) { switch (results[1]) {
+  regex = new RegExp( regexS );
+  results = regex.exec( window.location.href );
+  if( results !== null ) { switch (results[1]) {
     case "true": case "T": return "t";  break;
     case "false": case "F": return "f"; break;
     default: return results[1];
@@ -1432,20 +1432,18 @@ function bug_report() {
   mailto_link = 'mailto:' + email + '?subject=' + subject + '&body=' + escape(bug_info);
 
   win = window.open("", "bug_report", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no"); 
-  with (win.document) {
-    open("text/html", "replace");
-    write("<html>");
-    write("<head><title>pgn4web bug report</title><style type='text/css'> html, body { font-family: sans-serif;  color: black; background: white } a {text-decoration: none; color: black; } </style></head>");
-    write("<body>");
-    write("<table width=100% cellspacing=0 cellpadding=0><tr><td align=left valign=middle><h1><a " + project_url + " target=_blank>pgn4web</a> bug report</h1></td><td align=right valign=middle><a " + project_url + " target=_blank><img src=pawns.png border=0></a></td></tr></table><p></p>please make sure that:<ul type='square'><li>you are using the same web browser where you noticed the bug in the pgn4web board generator</li><li>you opened this bug report window from the pgn4web board generator page configured with all the parameter that result in the bug condition</li></ul>Then please email ALL the the debug information below and possibly a screenshot to <i><a href=mailto:" + project_email + ">" + project_email + "</a></i><p></p>");
-    write("<hr>");
-    write("<pre><code>" + bug_info.replace(/</g,"&lt;").replace(/>/g,"&gt;") + "</code></pre>");
-    write("<hr>");
-    write("<p></p>If your email client is properly configured, you can try to <i><a href='" + mailto_link + "'>click here and automatically compose the email in your default client</a></i>; this might not work, in case you have to manually copy the above information into an <i><a href=mailto:" + project_email + ">email to " + project_email + "</a></i>.<p></p>");
-    write("</body>");
-    write("<html>");
-    close();
-  }
+  win.document.open("text/html", "replace");
+  win.document.write("<html>");
+  win.document.write("<head><title>pgn4web bug report</title><style type='text/css'> html, body { font-family: sans-serif;  color: black; background: white } a {text-decoration: none; color: black; } </style></head>");
+  win.document.write("<body>");
+  win.document.write("<table width=100% cellspacing=0 cellpadding=0><tr><td align=left valign=middle><h1><a " + project_url + " target=_blank>pgn4web</a> bug report</h1></td><td align=right valign=middle><a " + project_url + " target=_blank><img src=pawns.png border=0></a></td></tr></table><p></p>please make sure that:<ul type='square'><li>you are using the same web browser where you noticed the bug in the pgn4web board generator</li><li>you opened this bug report window from the pgn4web board generator page configured with all the parameter that result in the bug condition</li></ul>Then please email ALL the the debug information below and possibly a screenshot to <i><a href=mailto:" + project_email + ">" + project_email + "</a></i><p></p>");
+  win.document.write("<hr>");
+  win.document.write("<pre><code>" + bug_info.replace(/</g,"&lt;").replace(/>/g,"&gt;") + "</code></pre>");
+  win.document.write("<hr>");
+  win.document.write("<p></p>If your email client is properly configured, you can try to <i><a href='" + mailto_link + "'>click here and automatically compose the email in your default client</a></i>; this might not work, in case you have to manually copy the above information into an <i><a href=mailto:" + project_email + ">email to " + project_email + "</a></i>.<p></p>");
+  win.document.write("</body>");
+  win.document.write("<html>");
+  win.document.close();
 }
 
 function print_menu( item, level, title ) {
@@ -1476,10 +1474,10 @@ window.onload = set_defaults;
 <table width=100% cellspacing=0 cellpadding=0><tr>
 <td align=left valign=middle>
 <h1 style="color: red;"> 
-<script>document.write('<a style="color: red;" href=' + project_url + ' target=_blank>pgn4web</a>')</script> 
+<script>document.write('<a style="color: red;" href=' + project_url + ' target=_blank>pgn4web</a>');</script> 
 chessboard generator</h1>
 </td><td align=right valign=middle>
-<script>document.write('<a href=' + project_url + ' target=_blank><img src=pawns.png border=0></a>')</script>
+<script>document.write('<a href=' + project_url + ' target=_blank><img src=pawns.png border=0></a>');</script>
 </td></tr></table>
 
 <div style="height: 1em">&nbsp</div>
@@ -1502,7 +1500,7 @@ chessboard generator</h1>
   </li>
   <li>once happy with <a href=#game_preview>the preview chessboard</a>, just <a href=#generate><b>cut and paste the HTML code</b> from the yellow box</a> into your web page or your blog; when entering the code in your website or blog, please make sure you are using the HTML editing option, otherwise the enhanced editor might alter the code you enter</li>
 <li>email to <i>
-<script>document.write('<a href=mailto:' + project_email + '>' + project_email + '</a>')</script>
+<script>document.write('<a href=mailto:' + project_email + '>' + project_email + '</a>');</script>
 </i> the address of your website or your blog</li>
 <li>if something goes wrong, you might want to <i><a href="javascript:bug_report()">click here and file a bug report</a></i></li>
 </ul>

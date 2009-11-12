@@ -47,103 +47,102 @@
 
 
 // A8
-function boardOnClickCol0Row0() { };
+function boardOnClickCol0Row0() { }
 boardAlt[0 + 0 * 8] = "";
 // B8
-function boardOnClickCol1Row0() { };
+function boardOnClickCol1Row0() { }
 boardAlt[1 + 0 * 8] = "";
 // C8
-function boardOnClickCol2Row0() { };
+function boardOnClickCol2Row0() { }
 boardAlt[2 + 0 * 8] = "";
 // D8
-function boardOnClickCol3Row0() { };
+function boardOnClickCol3Row0() { }
 boardAlt[3 + 0 * 8] = "";
 // E8
 function boardOnClickCol4Row0() { }
 boardAlt[4 + 0 * 8] = "";
 
 // A7
-function boardOnClickCol0Row1() { };
+function boardOnClickCol0Row1() { }
 boardAlt[0 + 1 * 8] = "";
 // B7
-function boardOnClickCol1Row1() { };
+function boardOnClickCol1Row1() { }
 boardAlt[1 + 1 * 8] = "";
 
 // A3
-function boardOnClickCol0Row5() { };
+function boardOnClickCol0Row5() { }
 boardAlt[0 + 5 * 8] = "";
 // B3
-function boardOnClickCol1Row5() { };
+function boardOnClickCol1Row5() { }
 boardAlt[1 + 5 * 8] = "";
 // C3
-function boardOnClickCol2Row5() { };
+function boardOnClickCol2Row5() { }
 boardAlt[2 + 5 * 8] = "";
 // D3
-function boardOnClickCol3Row5() { };
+function boardOnClickCol3Row5() { }
 boardAlt[3 + 5 * 8] = "";
 // E3
-function boardOnClickCol4Row5() { };
+function boardOnClickCol4Row5() { }
 boardAlt[4 + 5 * 8] = "";
 // F3
-function boardOnClickCol5Row5() { };
+function boardOnClickCol5Row5() { }
 boardAlt[5 + 5 * 8] = "";
 // G3
-function boardOnClickCol6Row5() { };
+function boardOnClickCol6Row5() { }
 boardAlt[6 + 5 * 8] = "";
 // H3
-function boardOnClickCol7Row5() { };
+function boardOnClickCol7Row5() { }
 boardAlt[7 + 5 * 8] = "";
 
 // A2
-function boardOnClickCol0Row6() { };
+function boardOnClickCol0Row6() { }
 boardAlt[0 + 6 * 8] = "";
 // B2
-function boardOnClickCol1Row6() { };
+function boardOnClickCol1Row6() { }
 boardAlt[1 + 6 * 8] = "";
 // C2
-function boardOnClickCol2Row6() { };
+function boardOnClickCol2Row6() { }
 boardAlt[2 + 6 * 8] = "";
 // D2
-function boardOnClickCol3Row6() { };
+function boardOnClickCol3Row6() { }
 boardAlt[3 + 6 * 8] = "";
 // E2
-function boardOnClickCol4Row6() { };
+function boardOnClickCol4Row6() { }
 boardAlt[4 + 6 * 8] = "";
 // F2
-function boardOnClickCol5Row6() { };
+function boardOnClickCol5Row6() { }
 boardAlt[5 + 6 * 8] = "";
 // G2
-function boardOnClickCol6Row6() { };
+function boardOnClickCol6Row6() { }
 boardAlt[6 + 6 * 8] = "";
 // H2
-function boardOnClickCol7Row6() { };
+function boardOnClickCol7Row6() { }
 boardAlt[7 + 6 * 8] = "";
 
 // A1
-function boardOnClickCol0Row7() { };
+function boardOnClickCol0Row7() { }
 boardAlt[0 + 7 * 8] = "";
 // B1
-function boardOnClickCol1Row7() { };
+function boardOnClickCol1Row7() { }
 boardAlt[1 + 7 * 8] = "";
 // C1
-function boardOnClickCol2Row7() { };
+function boardOnClickCol2Row7() { }
 boardAlt[2 + 7 * 8] = "";
 // D1
-function boardOnClickCol3Row7() { };
+function boardOnClickCol3Row7() { }
 boardAlt[3 + 7 * 8] = "";
 // E1
-function boardOnClickCol4Row7() { };
+function boardOnClickCol4Row7() { }
 boardAlt[4 + 7 * 8] = "";
 // F1
-function boardOnClickCol5Row7() { };
+function boardOnClickCol5Row7() { }
 boardAlt[5 + 7 * 8] = "";
 // G1
-function boardOnClickCol6Row7() { };
+function boardOnClickCol6Row7() { }
 boardAlt[6 + 7 * 8] = "";
 // H1
-function boardOnClickCol7Row7() { };
+function boardOnClickCol7Row7() { }
 boardAlt[7 + 7 * 8] = "";
-
 
 
 function gup( name ){
@@ -152,8 +151,8 @@ function gup( name ){
   regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   var regex = new RegExp( regexS );
   var results = regex.exec( window.location.href );
-  if( results == null )    return "";
-  else    return results[1];
+  if( results === null ) { return ""; }
+  else { return results[1]; }
 }
 
 SetInitialGame(gup('n'));	

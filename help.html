@@ -41,7 +41,7 @@ function gup( name ){
   // regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   var regex = new RegExp( regexS );
   var results = regex.exec( window.location.href );
-  if( results != null ) { switch (results[1]) {
+  if( results !== null ) { switch (results[1]) {
     case "t": case "T": return "true";  break;
     case "f": case "F": return "false"; break;
     default: return results[1];
@@ -55,13 +55,13 @@ function gup( name ){
   name = compact_name;
 
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-  var regexS = "[\\?&]"+name+"=([^&#]*)";
+  regexS = "[\\?&]"+name+"=([^&#]*)";
   // commented below to match first occurrence (to avoid users overruling setting)
   // regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
-  var regex = new RegExp( regexS );
+  regex = new RegExp( regexS );
 
-  var results = regex.exec( window.location.href );
-  if( results != null ) { switch (results[1]) {
+  results = regex.exec( window.location.href );
+  if( results !== null ) { switch (results[1]) {
     case "t": case "T": return "true";  break;
     case "f": case "F": return "false"; break;
     default: return results[1];
@@ -89,13 +89,13 @@ function print_help_row (one, two) {
 
 project_url = 'http://pgn4web.casaschi.net';
 
-if ((version = gup("version")) == "") {
+if ((version = gup("version")) === "") {
   displayVersion = '';
 } else {
   displayVersion = 'v' + version;
 }
 
-if ((keysEnabled = gup("keysEnabled")) == "") {
+if ((keysEnabled = gup("keysEnabled")) === "") {
   keysString = '';
 } else {
   if (keysEnabled == "true") {
@@ -114,10 +114,10 @@ if ((keysEnabled = gup("keysEnabled")) == "") {
 <table name="top" width=100% cellspacing=0 cellpadding=0><tr>
 <td align=left valign=middle>
 <h1> 
-<script>document.write('<a href=' + project_url + ' target=_blank>pgn4web</a>')</script> 
+<script>document.write('<a href=' + project_url + ' target=_blank>pgn4web</a>');</script> 
 help</h1>
 </td><td align=right valign=middle>
-<script>document.write('<a href=' + project_url + ' target=_blank><img src=pawns.png border=0></a>')</script>
+<script>document.write('<a href=' + project_url + ' target=_blank><img src=pawns.png border=0></a>');</script>
 </td></tr></table>
 
 <div style="height: 1em">&nbsp</div>
@@ -218,9 +218,9 @@ print_help_row("esc", "pgn4web help");
 
 <table width=100% cellspacing=0 cellpadding=0><tr>
 <td align=left valign=middle>
-<script>document.write("<b>pgn4web " + displayVersion + "<br><a href=" + project_url + " target=_blank>" + project_url + "</a></b>")</script>
+<script>document.write("<b>pgn4web " + displayVersion + "<br><a href=" + project_url + " target=_blank>" + project_url + "</a></b>");</script>
 </td><td align=right valign=middle>
-<script>document.write('<a href=' + project_url + ' target=_blank><img src=pawns.png border=0></a>')</script>
+<script>document.write('<a href=' + project_url + ' target=_blank><img src=pawns.png border=0></a>');</script>
 </td></tr></table>
 
 </body>

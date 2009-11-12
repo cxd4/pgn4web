@@ -19,14 +19,14 @@
   if (gup("demo") == "true") { demoFlag = true; alertFlag = true; }
   else { demoFlag = false; alertFlag = false; }
 
-  if ((pgnFile = gup("pgnFile")) == "") { pgnFile = "live.pgn"; }
+  if ((pgnFile = gup("pgnFile")) === "") { pgnFile = "live.pgn"; }
 
-  if ((refreshMinutes = gup("refreshMinutes")) == "") { 
+  if ((refreshMinutes = gup("refreshMinutes")) === "") { 
     refreshMinutes = 1;
   }
   else {
     testMinutes = refreshMinutes + "";
-    if ((testMinutes.match(/[^0-9\.]/)) || (refreshMinutes == 0)) {
+    if ((testMinutes.match(/[^0-9\.]/)) || (refreshMinutes === 0)) {
       if (alertFlag) { 
 	      alert("ERROR: refreshMinutes parameter must be a positive number.\n" +
 		    "Supplied " + testMinutes + "; defaulting to 1."); 
@@ -35,12 +35,12 @@
     }
   }
 
-  if ((iniGame = gup("initialGame")) == "") {iniGame = 1; }
+  if ((iniGame = gup("initialGame")) === "") {iniGame = 1; }
   iniGameError = "ERROR: initialGame parameter must be a positive number or " +
                  "'first', 'last' or 'random'.\n" +
                  "Supplied " + iniGame + "; defaulting to 1.";
-  if (parseInt(iniGame)) {
-    if (parseInt(iniGame) < 1) { 
+  if (parseInt(iniGame, 10)) {
+    if (parseInt(iniGame, 10) < 1) { 
       if (alertFlag) { alert(iniGameError); }
       iniGame = 1; 
     }
@@ -71,7 +71,7 @@
 
   originalTitle = document.title;
 
-  if (demoFlag == true) { ticker_string = " demo"; }
+  if (demoFlag === true) { ticker_string = " demo"; }
   else { ticker_string = " help"; }
   
   ticker_counter = 0;
@@ -86,7 +86,7 @@
   function customFunctionOnPgnTextLoad() {
       
     if ((LiveBroadcastStarted) && 
-        (gameEvent[0] != undefined) && (gameEvent[0] != "")) {
+        (gameEvent[0] != undefined) && (gameEvent[0] !== "")) {
       document.title = originalTitle + ": " + gameEvent[0];
     }
     if (LiveBroadcastStarted) { 
@@ -115,9 +115,9 @@
 
   function customFunctionOnPgnGameLoad() {
 
-    if ((gameRound[currentGame] != undefined) && 
-        (gameRound[currentGame] != "") && 
-	(gameRound[currentGame] != "?")) {
+    if ((gameRound[currentGame] !=  undefined) && 
+        (gameRound[currentGame] !== "") && 
+	(gameRound[currentGame] !=  "?")) {
       document.getElementById("roundDetails").innerHTML = " - round ";
     } else {
       document.getElementById("roundDetails").innerHTML = "";
@@ -136,7 +136,7 @@
     }
 
     theObject = document.getElementById("GameText");
-    if ((theObject != null) && 
+    if ((theObject !== null) && 
         (theObject.scrollHeight != undefined) && 
 	(theObject.scrollTop != undefined) &&
 	(CurrentPly == StartPly + PlyNumber)) {
@@ -146,7 +146,7 @@
   }
 
   function customFunctionOnMove() {
-    if (pgn4webMoveComments[CurrentPly] != "") {
+    if (pgn4webMoveComments[CurrentPly] !== "") {
       document.getElementById("systemMessage").style.display = "none";
     } else {
       document.getElementById("systemMessage").style.display = "inline";
@@ -171,7 +171,7 @@ function gup( name ){
   // regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   var regex = new RegExp( regexS );
   var results = regex.exec( window.location.href );
-  if( results != null ) { switch (results[1]) {
+  if( results !== null ) { switch (results[1]) {
     case "t": case "T": return "true";  break;
     case "f": case "F": return "false"; break;
     default: return results[1];
@@ -185,13 +185,13 @@ function gup( name ){
   name = compact_name;
 
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-  var regexS = "[\\?&]"+name+"=([^&#]*)";
+  regexS = "[\\?&]"+name+"=([^&#]*)";
   // commented below to match first occurrence (to avoid users overruling setting)
   // regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
-  var regex = new RegExp( regexS );
+  regex = new RegExp( regexS );
 
-  var results = regex.exec( window.location.href );
-  if( results != null ) { switch (results[1]) {
+  results = regex.exec( window.location.href );
+  if( results !== null ) { switch (results[1]) {
     case "t": case "T": return "true";  break;
     case "f": case "F": return "false"; break;
     default: return results[1];
@@ -364,7 +364,7 @@ function user_help() {
 
 <!--
 <script>document.write(document.getElementById("outerTable").offsetWidth + 
- "x" + document.getElementById("outerTable").offsetHeight)</script>
+ "x" + document.getElementById("outerTable").offsetHeight);</script>
 -->
 
 </body>

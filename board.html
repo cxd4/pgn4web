@@ -187,27 +187,27 @@ function new_start_pgn4web() {
   start_pgn4web();
 
   theObject = document.getElementById("GameSelector");
-  if (theObject) { if (theObject.innerHTML != "") { theObject.style.paddingBottom = paddingControlHeight; } }
+  if (theObject) { if (theObject.innerHTML !== "") { theObject.style.paddingBottom = paddingControlHeight; } }
 
   boardHeight = document.getElementById("boardTable").offsetHeight;
   document.getElementById("boardTable").style.width = boardHeight;
   boardWidth = document.getElementById("boardTable").offsetWidth;
-  if (showButtons) { boardHeight += document.getElementById("GameButtons").offsetHeight }
-  if (showButtons && (numberOfGames > 1)) { boardHeight += document.getElementById("GameSelector").offsetHeight }
+  if (showButtons) { boardHeight += document.getElementById("GameButtons").offsetHeight; }
+  if (showButtons && (numberOfGames > 1)) { boardHeight += document.getElementById("GameSelector").offsetHeight; }
 
   theObject = document.getElementById("headerMoves");
-  if (theObject != null) { 
-    if (frameWidth == "") { document.getElementById("headerMoves").style.width = textWidth; }
+  if (theObject !== null) { 
+    if (frameWidth === "") { document.getElementById("headerMoves").style.width = textWidth; }
     else { document.getElementById("headerMoves").style.width = frameWidth; }
 
-    if (frameHeight == "") { document.getElementById("headerMoves").style.height = textHeight; }
+    if (frameHeight === "") { document.getElementById("headerMoves").style.height = textHeight; }
     else { 
       headerMovesPaddingHeight = document.getElementById("headerMovesPadding").offsetHeight;
       document.getElementById("headerMoves").style.height = frameHeight - boardHeight - 2 * framePadding - headerMovesPaddingHeight; 
     }
   }
 
-  if (gup("showHeightWidth") != "") { 
+  if (gup("showHeightWidth") !== "") { 
     alert("board dimensions\n\nwidth: " + boardWidth + "\nheight: " + boardHeight);
   }
 }
@@ -290,7 +290,7 @@ function DecodePGN(bytes) {
     bytes.length--;
   }
 
-  originalLength = parseInt(bytes.match(/^[0-9]*/));
+  originalLength = parseInt(bytes.match(/^[0-9]*/), 10);
   bytes = bytes.replace(/^[0-9]*\$/,"");
 
   l = new Array();
@@ -809,12 +809,12 @@ function DecodePGN(bytes) {
   e=b=a=0;
   o="";
 
-  function B() { if(a==0) { b=encodingCharSet.indexOf(bytes.charAt(e++)); a=6; } return ((b>>--a)&0x01); }
+  function B() { if(a===0) { b=encodingCharSet.indexOf(bytes.charAt(e++)); a=6; } return ((b>>--a)&0x01); }
   
   while(originalLength>0) { i=0; 
     while(l[i]<0) { 
-      if(B()) i=-l[i];
-      else i++;
+      if(B()) { i=-l[i]; }
+      else { i++; }
     }
     o+=String.fromCharCode(l[i]);
     originalLength--;
@@ -831,7 +831,7 @@ function gup( name ){
   regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   var regex = new RegExp( regexS );
   var results = regex.exec( window.location.href );
-  if( results != null ) { switch (results[1]) {
+  if( results !== null ) { switch (results[1]) {
     case "t": case "T": return "true";  break;
     case "f": case "F": return "false"; break;
     default: return results[1]; 
@@ -845,12 +845,12 @@ function gup( name ){
   name = compact_name;
   
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-  var regexS = "[\\?&]"+name+"=([^&#]*)";  
+  regexS = "[\\?&]"+name+"=([^&#]*)";  
   regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
-  var regex = new RegExp( regexS );
+  regex = new RegExp( regexS );
 
-  var results = regex.exec( window.location.href );
-  if( results != null ) { switch (results[1]) {
+  results = regex.exec( window.location.href );
+  if( results !== null ) { switch (results[1]) {
     case "t": case "T": return "true";  break;
     case "f": case "F": return "false"; break;
     default: return results[1]; 
@@ -862,21 +862,27 @@ function gup( name ){
 SetHighlightOption(true);
 SetShortcutKeysEnabled(false);
 
-if ((pieceFont = gup("pieceFont")) == "")
-  if ((pieceFont = gup("font")) == "") 
+if ((pieceFont = gup("pieceFont")) === "") {
+  if ((pieceFont = gup("font")) === "") 
     { pieceFont = "alpha"; } // left for compatibility with older version
-
-if ((pieceSize = gup("pieceSize")) == "") { pieceSize = 24; }
-else { pieceSize = parseInt(pieceSize); }
+}
+if ((pieceSize = gup("pieceSize")) === "") { pieceSize = 24; }
+else { pieceSize = parseInt(pieceSize, 10); }
 
 SetImagePath(pieceFont + "/" + pieceSize);
 
-if ((squareSize = gup("squareSize")) == "") { squareSize = 28; }
-else { squareSize = parseInt(squareSize); }
+if ((squareSize = gup("squareSize")) === "") { squareSize = 28; }
+else { squareSize = parseInt(squareSize, 10); }
 
-if ((lightColor = gup("lightColorName")) == "") {if ((lightColor = "#" + gup("lightColorHex")) == "#") lightColor = "#EFF4EC"}
-if ((darkColor  = gup("darkColorName"))  == "") {if ((darkColor  = "#" + gup("darkColorHex"))  == "#") darkColor  = "#C6CEC3"}
-if ((highlightColor  = gup("highlightColorName"))  == "") {if ((highlightColor  = "#" + gup("highlightColorHex"))  == "#") highlightColor  = "#DAF4D7"}
+if ((lightColor = gup("lightColorName")) === "") { 
+  if ((lightColor = "#" + gup("lightColorHex")) == "#") { lightColor = "#EFF4EC"; }
+}
+if ((darkColor  = gup("darkColorName"))  === "") {
+  if ((darkColor  = "#" + gup("darkColorHex"))  == "#") { darkColor  = "#C6CEC3"; }
+}
+if ((highlightColor  = gup("highlightColorName")) === "") {
+  if ((highlightColor  = "#" + gup("highlightColorHex"))  == "#") { highlightColor  = "#DAF4D7"; }
+}
 if ((highlightColor == 'none') || (highlightColor == '#none')) {
   highlightLightColor = lightColor;
   highlightDarkColor = darkColor;
@@ -885,22 +891,34 @@ if ((highlightColor == 'none') || (highlightColor == '#none')) {
   highlightDarkColor = highlightColor;
 }
 
-if ((boardBorderColor = gup("boardBorderColorName")) == "") {if ((boardBorderColor = "#" + gup("boardBorderColorHex")) == "#") boardBorderColor = "#000000"}
+if ((boardBorderColor = gup("boardBorderColorName")) === "") {
+  if ((boardBorderColor = "#" + gup("boardBorderColorHex")) == "#") { boardBorderColor = "#000000"; }
+}
 
-if ((highlightMoveColor  = gup("highlightMoveColorName"))  == "") {if ((highlightMoveColor  = "#" + gup("highlightMoveColorHex"))  == "#") highlightMoveColor  = "#DAF4D7"}
+if ((highlightMoveColor  = gup("highlightMoveColorName")) === "") {
+  if ((highlightMoveColor  = "#" + gup("highlightMoveColorHex"))  == "#") { highlightMoveColor  = "#DAF4D7"; }
+}
 
-if ((backgroundColor = gup("backgroundColorName")) == "") {if ((backgroundColor = "#" + gup("backgroundColorHex")) == "#") backgroundColor = "#FFFFFF"}
+if ((backgroundColor = gup("backgroundColorName")) === "") {
+ if ((backgroundColor = "#" + gup("backgroundColorHex")) == "#") { backgroundColor = "#FFFFFF"; }
+}
 
-if ((framePadding = percentFixFromUrl( gup("framePadding") )) == "") { framePadding = 0;}
+if ((framePadding = percentFixFromUrl( gup("framePadding") )) === "") { framePadding = 0;}
 
-if ((fontHeaderSize = percentFixFromUrl( gup("fontHeaderSize") )) == "") { fontHeaderSize = "100%"; }
-if ((fontHeaderColor = gup("fontHeaderColorName")) == "") {if ((fontHeaderColor = "#" + gup("fontHeaderColorHex")) == "#") fontHeaderColor = "black"}
+if ((fontHeaderSize = percentFixFromUrl( gup("fontHeaderSize") )) === "") { fontHeaderSize = "100%"; }
+if ((fontHeaderColor = gup("fontHeaderColorName")) === "") {
+  if ((fontHeaderColor = "#" + gup("fontHeaderColorHex")) == "#") { fontHeaderColor = "black"; }
+}
 
-if ((fontMovesSize = percentFixFromUrl( gup("fontMovesSize") )) == "") { fontMovesSize = "100%"; }
-if ((fontMovesColor = gup("fontMovesColorName")) == "") {if ((fontMovesColor = "#" + gup("fontMovesColorHex")) == "#") fontMovesColor = "black"}
+if ((fontMovesSize = percentFixFromUrl( gup("fontMovesSize") )) === "") { fontMovesSize = "100%"; }
+if ((fontMovesColor = gup("fontMovesColorName")) === "") {
+  if ((fontMovesColor = "#" + gup("fontMovesColorHex")) == "#") { fontMovesColor = "black";} 
+}
 
-if ((fontCommentsSize = percentFixFromUrl( gup("fontCommentsSize") )) == "") { fontCommentsSize = "100%"; }
-if ((fontCommentsColor = gup("fontCommentsColorName")) == "") {if ((fontCommentsColor = "#" + gup("fontCommentsColorHex")) == "#") fontCommentsColor = "gray"}
+if ((fontCommentsSize = percentFixFromUrl( gup("fontCommentsSize") )) === "") { fontCommentsSize = "100%"; }
+if ((fontCommentsColor = gup("fontCommentsColorName")) === "") {
+  if ((fontCommentsColor = "#" + gup("fontCommentsColorHex")) == "#") { fontCommentsColor = "gray"; }
+}
 
 if (gup("auto") == "false") { SetAutostartAutoplay(false); }
 else { SetAutostartAutoplay(true); }
@@ -908,25 +926,29 @@ else { SetAutostartAutoplay(true); }
 if (gup("loop") == "true") { SetAutoplayNextGame(true); }
 else { SetAutoplayNextGame(false); }
 
-if (gup("delay") == "") SetAutoplayDelay(1000);
-else SetAutoplayDelay(gup("delay"));
+if (gup("delay") === "") { SetAutoplayDelay(1000); }
+else { SetAutoplayDelay(gup("delay")); }
 
-if (gup("showButtons") == "true") { showButtons = true }
-else { showButtons = false }
+if (gup("showButtons") == "true") { showButtons = true; }
+else { showButtons = false; }
 
-if ((controlBackgroundColor = gup("controlBackgroundColorName")) == "") {if ((controlBackgroundColor = "#" + gup("controlBackgroundColorHex")) == "#") controlBackgroundColor = "default"}
-if ((controlTextColor = gup("controlTextColorName")) == "") {if ((controlTextColor = "#" + gup("controlTextColorHex")) == "#") controlTextColor = "black"}
+if ((controlBackgroundColor = gup("controlBackgroundColorName")) === "") {
+  if ((controlBackgroundColor = "#" + gup("controlBackgroundColorHex")) == "#") { controlBackgroundColor = "default"; }
+}
+if ((controlTextColor = gup("controlTextColorName")) === "") {
+  if ((controlTextColor = "#" + gup("controlTextColorHex")) == "#") { controlTextColor = "black"; } 
+}
 
 if (gup("showComments") == "false") { SetCommentsIntoMoveText(false); }
 if (gup("showCommentsOnSeparateLines") == "true") { SetCommentsOnSeparateLines(true); }
 
-if ((fenString = gup("fenString")) != "") {
+if ((fenString = gup("fenString")) !== "") {
   // remove URL escape chars such as %20 replaced by space
   fenString = decodeURIComponent(fenString);
   document.getElementById('pgnText').innerHTML = '[FEN "' + fenString + '"]';
 }
 
-if ((newPgnText = gup("pgnText")) != "") {
+if ((newPgnText = gup("pgnText")) !== "") {
 
   // remove URL escape chars such as %20 replaced by space
   newPgnText = decodeURIComponent(newPgnText);
@@ -941,7 +963,7 @@ if ((newPgnText = gup("pgnText")) != "") {
   document.getElementById('pgnText').innerHTML = newPgnText;
 } 
 
-if ((newPgnEncoded = gup("pgnEncoded")) != "") {
+if ((newPgnEncoded = gup("pgnEncoded")) !== "") {
 
   newPgnDecoded = DecodePGN(newPgnEncoded);
 
@@ -955,31 +977,31 @@ if ((newPgnEncoded = gup("pgnEncoded")) != "") {
   document.getElementById('pgnText').innerHTML = newPgnDecoded;
 } 
 
-if ((newPgnEncoded != "") && ((newPgnText != "") || (fenString != ""))) {
+if ((newPgnEncoded !== "") && ((newPgnText !== "") || (fenString !== ""))) {
   alert("WARNING: pgnEncoded value superseeds pgnText and/or fenString values.");
 }
 
-if ((fenString != "") && (newPgnText != "")) {
+if ((fenString !== "") && (newPgnText !== "")) {
   alert("WARNING: pgnText value superseeds fenString value.");
 }
 
-if (gup("showHeader") == "true") { showHeader = true }
-else { showHeader = false }
+if (gup("showHeader") == "true") { showHeader = true; }
+else { showHeader = false; }
 
-if (gup("showMoves") == "true") { showMoves = true }
-else { showMoves = false }
+if (gup("showMoves") == "true") { showMoves = true; }
+else { showMoves = false; }
 
-if ((textHeight = percentFixFromUrl( gup("textHeight") )) == "") { textHeight = "100%"; }
-if ((textWidth = percentFixFromUrl( gup("textWidth") )) == "") { textWidth = "100%"; }
+if ((textHeight = percentFixFromUrl( gup("textHeight") )) === "") { textHeight = "100%"; }
+if ((textWidth = percentFixFromUrl( gup("textWidth") )) === "") { textWidth = "100%"; }
 
-if ((textMargin = gup("textMargin")) == "") { textMargin = 0; }
-else { textMargin = parseInt(textMargin); }
+if ((textMargin = gup("textMargin")) === "") { textMargin = 0; }
+else { textMargin = parseInt(textMargin, 10); }
 
 
 frameHeight = percentFixFromUrl( gup("frameHeight") );
 frameWidth = percentFixFromUrl( gup("frameWidth") );
 
-if (gup("help") != "") {
+if (gup("help") !== "") {
   document.write("<PRE>");
   document.write("URL parameters\n");
   document.write("\n");
@@ -1045,9 +1067,9 @@ if (gup("help") != "") {
 document.write("<table cellspacing=0 cellpadding=0 width=100%><tr><td align=center>");
 
 if (showButtons) {
-  document.write("<div id='GameSelector'></div></td></tr><tr><td align=center><div id='GameBoard'></div></td></tr><tr><td align=center><div id='GameButtons'></div>") 
+  document.write("<div id='GameSelector'></div></td></tr><tr><td align=center><div id='GameBoard'></div></td></tr><tr><td align=center><div id='GameButtons'></div>"); 
 } else {
-  document.write("<div id='GameBoard'></div>")
+  document.write("<div id='GameBoard'></div>");
 }
 
 if (showHeader) {
@@ -1057,7 +1079,7 @@ if (showHeader) {
 }
 
 if ((showHeader) || (showMoves)) {
-	document.write("<div id='headerMoves' style='overflow:auto; height: " + textHeight + "; width: " + textWidth + "; scrollbar-base-color: " + backgroundColor + ";'>")
+	document.write("<div id='headerMoves' style='overflow:auto; height: " + textHeight + "; width: " + textWidth + "; scrollbar-base-color: " + backgroundColor + ";'>");
 } 
 
 if (showHeader) {
@@ -1101,7 +1123,7 @@ if (showMoves) {
 }
 
 if ((showHeader) || (showMoves)) {
-  document.write("</div>")
+  document.write("</div>");
 } 
 
 document.write("</div>");

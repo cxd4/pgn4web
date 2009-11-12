@@ -131,7 +131,7 @@ function start_pgn4web() {
 }
 
 function myAlert(msg) {
-  if ((LiveBroadcastDelay == 0) || (LiveBroadcastAlert == true)) {
+  if ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) {
     alert(msg);
   }
 }
@@ -143,21 +143,21 @@ function handlekey(e) {
   var firstStepKeyToggleKey = 16; // shift
   var secondStepKeyToggleKey = 27; // escape
 
-  if (!e) e = window.event;
-  keycode = e.keyCode
+  if (!e) { e = window.event; }
+  keycode = e.keyCode;
   
   //myAlert(keycode);
 
   // shift key (keycode 16) followed by escape (27) toogle the usage of shortcut keys 
   if ((keycode == secondStepKeyToggleKey) && (firstStepKeyToggle)) {
     firstStepKeyToggle = false;
-    SetShortcutKeysEnabled(!shortcutKeysEnabled)
+    SetShortcutKeysEnabled(!shortcutKeysEnabled);
   }
-  if (keycode == firstStepKeyToggleKey) firstStepKeyToggle = true;
-  else firstStepKeyToggle = false;
+  if (keycode == firstStepKeyToggleKey) { firstStepKeyToggle = true; }
+  else { firstStepKeyToggle = false; }
 
   // escape is always enabled to show help
-  if ((keycode != 27) && (shortcutKeysEnabled == false)) return;
+  if ((keycode != 27) && (shortcutKeysEnabled === false)) { return; }
 
   switch(keycode)
   {
@@ -203,7 +203,7 @@ function handlekey(e) {
       break;
 
     case 85:  // u
-      MoveToPrevComment()
+      MoveToPrevComment();
       break;
 
     case 73:  // i
@@ -313,7 +313,7 @@ function handlekey(e) {
       break;
 
     case 68:  // d
-      if (IsRotated) FlipBoard();
+      if (IsRotated) { FlipBoard(); }
       break;
 
     case 88: // x
@@ -384,196 +384,196 @@ boardAlt = new Array(64);
 // cells count from the top left (A8 is row0 col0)
 
 // A8
-function boardOnClickCol0Row0() { SetHighlight(!highlightOption); };
+function boardOnClickCol0Row0() { SetHighlight(!highlightOption); }
 boardAlt[0 + 0 * 8] = "toggle highlight last move";
 // B8
-function boardOnClickCol1Row0() { FlipBoard(); };
+function boardOnClickCol1Row0() { FlipBoard(); }
 boardAlt[1 + 0 * 8] = "flip board";
 // C8
-function boardOnClickCol2Row0() { if (IsRotated) FlipBoard(); };
+function boardOnClickCol2Row0() { if (IsRotated) { FlipBoard(); } }
 boardAlt[2 + 0 * 8] = "show white on bottom";
 // D8
-function boardOnClickCol3Row0() { SetShortcutKeysEnabled(!shortcutKeysEnabled); };
+function boardOnClickCol3Row0() { SetShortcutKeysEnabled(!shortcutKeysEnabled); }
 boardAlt[3 + 0 * 8] = "toggle enabling shortcut keys";
 // E8
 function boardOnClickCol4Row0() { window.open(project_url); }
 boardAlt[4 + 0 * 8] = "go to pgn4web website";
 // F8
-function boardOnClickCol5Row0() { displayHelp("keys"); };
+function boardOnClickCol5Row0() { displayHelp("keys"); }
 boardAlt[5 + 0 * 8] = "shortcut keys help";
 // G8
-function boardOnClickCol6Row0() { displayHelp("squares"); };
+function boardOnClickCol6Row0() { displayHelp("squares"); }
 boardAlt[6 + 0 * 8] = "shortcut squares help";
 // H8
-function boardOnClickCol7Row0() { displayHelp(); };
+function boardOnClickCol7Row0() { displayHelp(); }
 boardAlt[7 + 0 * 8] = "pgn4web help";
 // A7
-function boardOnClickCol0Row1() { SetCommentsIntoMoveText(!commentsIntoMoveText); thisPly = CurrentPly; Init(); GoToMove(thisPly); };
+function boardOnClickCol0Row1() { SetCommentsIntoMoveText(!commentsIntoMoveText); thisPly = CurrentPly; Init(); GoToMove(thisPly); }
 boardAlt[0 + 1 * 8] = "toggle show comments in game text";
 // B7
-function boardOnClickCol1Row1() { SetCommentsOnSeparateLines(!commentsOnSeparateLines); thisPly = CurrentPly; Init(); GoToMove(thisPly); };
+function boardOnClickCol1Row1() { SetCommentsOnSeparateLines(!commentsOnSeparateLines); thisPly = CurrentPly; Init(); GoToMove(thisPly); }
 boardAlt[1 + 1 * 8] = "toggle show comments on separate lines in game text";
 // C7
-function boardOnClickCol2Row1() { };
+function boardOnClickCol2Row1() { }
 boardAlt[2 + 1 * 8] = "";
 // D7
-function boardOnClickCol3Row1() { };
+function boardOnClickCol3Row1() { }
 boardAlt[3 + 1 * 8] = "";
 // E7
-function boardOnClickCol4Row1() { };
+function boardOnClickCol4Row1() { }
 boardAlt[4 + 1 * 8] = "";
 // F7
-function boardOnClickCol5Row1() { };
+function boardOnClickCol5Row1() { }
 boardAlt[5 + 1 * 8] = "";
 // G7
-function boardOnClickCol6Row1() { };
+function boardOnClickCol6Row1() { }
 boardAlt[6 + 1 * 8] = "";
 // H7
-function boardOnClickCol7Row1() { displayDebugInfo(); };
+function boardOnClickCol7Row1() { displayDebugInfo(); }
 boardAlt[7 + 1 * 8] = "debug info";
 // A6
-function boardOnClickCol0Row2() { pauseLiveBroadcast(); };
+function boardOnClickCol0Row2() { pauseLiveBroadcast(); }
 boardAlt[0 + 2 * 8] = "pause live broadcast automatic refresh";
 // B6
-function boardOnClickCol1Row2() { refreshPgnSource(); };
+function boardOnClickCol1Row2() { refreshPgnSource(); }
 boardAlt[1 + 2 * 8] = "force games refresh during live broadcast";
 // C6
-function boardOnClickCol2Row2() { restartLiveBroadcast(); };
+function boardOnClickCol2Row2() { restartLiveBroadcast(); }
 boardAlt[2 + 2 * 8] = "restart live broadcast automatic refresh";
 // D6
-function boardOnClickCol3Row2() { };
+function boardOnClickCol3Row2() { }
 boardAlt[3 + 2 * 8] = "";
 // E6
-function boardOnClickCol4Row2() { };
+function boardOnClickCol4Row2() { }
 boardAlt[4 + 2 * 8] = "";
 // F6
-function boardOnClickCol5Row2() { };
+function boardOnClickCol5Row2() { }
 boardAlt[5 + 2 * 8] = "";
 // G6
-function boardOnClickCol6Row2() { };
+function boardOnClickCol6Row2() { }
 boardAlt[6 + 2 * 8] = "";
 // H6
-function boardOnClickCol7Row2() { };
+function boardOnClickCol7Row2() { }
 boardAlt[7 + 2 * 8] = "";
 // A5
-function boardOnClickCol0Row3() { };
+function boardOnClickCol0Row3() { }
 boardAlt[0 + 3 * 8] = "";
 // B5
-function boardOnClickCol1Row3() { };
+function boardOnClickCol1Row3() { }
 boardAlt[1 + 3 * 8] = "";
 // C5
-function boardOnClickCol2Row3() { };
+function boardOnClickCol2Row3() { }
 boardAlt[2 + 3 * 8] = "";
 // D5
-function boardOnClickCol3Row3() { };
+function boardOnClickCol3Row3() { }
 boardAlt[3 + 3 * 8] = "";
 // E5
-function boardOnClickCol4Row3() { };
+function boardOnClickCol4Row3() { }
 boardAlt[4 + 3 * 8] = "";
 // F5
-function boardOnClickCol5Row3() { };
+function boardOnClickCol5Row3() { }
 boardAlt[5 + 3 * 8] = "";
 // G5
-function boardOnClickCol6Row3() { };
+function boardOnClickCol6Row3() { }
 boardAlt[6 + 3 * 8] = "";
 // H5
-function boardOnClickCol7Row3() { };
+function boardOnClickCol7Row3() { }
 boardAlt[7 + 3 * 8] = "";
 // A4
-function boardOnClickCol0Row4() { for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameEvent[ii])) && (gameEvent[ii] != gameEvent[currentGame])) { break; } } if (ii>=0) { currentGame = ii; Init();} };
+function boardOnClickCol0Row4() { for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameEvent[ii])) && (gameEvent[ii] != gameEvent[currentGame])) { break; } } if (ii>=0) { currentGame = ii; Init();} }
 boardAlt[0 + 4 * 8] = "jump to previous event";
 // B4
-function boardOnClickCol1Row4() { for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameRound[ii])) && (gameEvent[ii] == gameEvent[currentGame]) && (gameRound[ii] != gameRound[currentGame])) { break; } } if (ii>=0) { currentGame = ii; Init();} };
+function boardOnClickCol1Row4() { for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameRound[ii])) && (gameEvent[ii] == gameEvent[currentGame]) && (gameRound[ii] != gameRound[currentGame])) { break; } } if (ii>=0) { currentGame = ii; Init();} }
 boardAlt[1 + 4 * 8] = "jump to previous round of same event";
 // C4
-function boardOnClickCol2Row4() { for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameResult[ii])) && (gameResult[ii]!="*")) { break; } } if (ii>=0) { currentGame = ii; Init();} };
+function boardOnClickCol2Row4() { for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameResult[ii])) && (gameResult[ii]!="*")) { break; } } if (ii>=0) { currentGame = ii; Init();} }
 boardAlt[2 + 4 * 8] = "load previous finished game";
 // D4
-function boardOnClickCol3Row4() { for (ii=currentGame-1; ii>=0; ii--) { if ((!checkHeaderDefined(gameResult[ii])) || (gameResult[ii]=="*")) { break; } } if (ii>=0) { currentGame = ii; Init();} };
+function boardOnClickCol3Row4() { for (ii=currentGame-1; ii>=0; ii--) { if ((!checkHeaderDefined(gameResult[ii])) || (gameResult[ii]=="*")) { break; } } if (ii>=0) { currentGame = ii; Init();} }
 boardAlt[3 + 4 * 8] = "load previous unfinished game";
 // E4
-function boardOnClickCol4Row4() { for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((!checkHeaderDefined(gameResult[ii])) || (gameResult[ii]=="*")) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} };
+function boardOnClickCol4Row4() { for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((!checkHeaderDefined(gameResult[ii])) || (gameResult[ii]=="*")) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} }
 boardAlt[4 + 4 * 8] = "load next unfinished game";
 // F4
-function boardOnClickCol5Row4() { for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameResult[ii])) && (gameResult[ii]!="*")) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} };
+function boardOnClickCol5Row4() { for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameResult[ii])) && (gameResult[ii]!="*")) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} }
 boardAlt[5 + 4 * 8] = "load next finished game";
 // G4
-function boardOnClickCol6Row4() { for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameRound[ii])) && (gameEvent[ii] == gameEvent[currentGame]) && (gameRound[ii] != gameRound[currentGame])) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} };
+function boardOnClickCol6Row4() { for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameRound[ii])) && (gameEvent[ii] == gameEvent[currentGame]) && (gameRound[ii] != gameRound[currentGame])) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} }
 boardAlt[6 + 4 * 8] = "jump to next round of same event";
 // H4
-function boardOnClickCol7Row4() { for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameEvent[ii])) && (gameEvent[ii] != gameEvent[currentGame])) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} };
+function boardOnClickCol7Row4() { for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameEvent[ii])) && (gameEvent[ii] != gameEvent[currentGame])) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} }
 boardAlt[7 + 4 * 8] = "jump to next event";
 // A3
-function boardOnClickCol0Row5() { if (numberOfGames > 1) { currentGame = 0; Init(); } };
+function boardOnClickCol0Row5() { if (numberOfGames > 1) { currentGame = 0; Init(); } }
 boardAlt[0 + 5 * 8] = "load first game";
 // B3
-function boardOnClickCol1Row5() { if (currentGame >= 50){ currentGame -= 50; Init(); }else{ if (numberOfGames > 1) { currentGame = 0; Init(); } } };
+function boardOnClickCol1Row5() { if (currentGame >= 50){ currentGame -= 50; Init(); }else{ if (numberOfGames > 1) { currentGame = 0; Init(); } } }
 boardAlt[1 + 5 * 8] = "jump 50 games backward";
 // C3
-function boardOnClickCol2Row5() { if (currentGame > 0){ currentGame--; Init(); } };
+function boardOnClickCol2Row5() { if (currentGame > 0){ currentGame--; Init(); } }
 boardAlt[2 + 5 * 8] = "load previous game";
 // D3
-function boardOnClickCol3Row5() {  if (numberOfGames > 1) { currentGame = Math.floor(Math.random()*numberOfGames); Init(); } };
+function boardOnClickCol3Row5() {  if (numberOfGames > 1) { currentGame = Math.floor(Math.random()*numberOfGames); Init(); } }
 boardAlt[3 + 5 * 8] = "load random game";
 // E3
-function boardOnClickCol4Row5() { if (numberOfGames > 1) { currentGame = Math.floor(Math.random()*numberOfGames); Init(); GoToMove(StartPly + Math.floor(Math.random()*(StartPly + PlyNumber + 1))); } };
+function boardOnClickCol4Row5() { if (numberOfGames > 1) { currentGame = Math.floor(Math.random()*numberOfGames); Init(); GoToMove(StartPly + Math.floor(Math.random()*(StartPly + PlyNumber + 1))); } }
 boardAlt[4 + 5 * 8] = "load random game at random position";
 // F3
-function boardOnClickCol5Row5() { if (numberOfGames > currentGame + 1){ currentGame++; Init(); } };
+function boardOnClickCol5Row5() { if (numberOfGames > currentGame + 1){ currentGame++; Init(); } }
 boardAlt[5 + 5 * 8] = "load next game";
 // G3
-function boardOnClickCol6Row5() { if (numberOfGames > currentGame + 50){ currentGame += 50; Init(); }else{ if (numberOfGames > 1) { currentGame = numberOfGames - 1; Init(); } } };
+function boardOnClickCol6Row5() { if (numberOfGames > currentGame + 50){ currentGame += 50; Init(); }else{ if (numberOfGames > 1) { currentGame = numberOfGames - 1; Init(); } } }
 boardAlt[6 + 5 * 8] = "jump 50 games forward";
 // H3
-function boardOnClickCol7Row5() { if (numberOfGames > 1) { currentGame = numberOfGames - 1; Init(); } };
+function boardOnClickCol7Row5() { if (numberOfGames > 1) { currentGame = numberOfGames - 1; Init(); } }
 boardAlt[7 + 5 * 8] = "load last game";
 // A2
-function boardOnClickCol0Row6() { SetAutoPlay(false); };
+function boardOnClickCol0Row6() { SetAutoPlay(false); }
 boardAlt[0 + 6 * 8] = "stop autoplay";
 // B2
-function boardOnClickCol1Row6() { SwitchAutoPlay(); };
+function boardOnClickCol1Row6() { SwitchAutoPlay(); }
 boardAlt[1 + 6 * 8] = "toggle autoplay";
 // C2
-function boardOnClickCol2Row6() { MoveForward(1); SetAutoplayDelay( 1*1000); SetAutoPlay(true); };
+function boardOnClickCol2Row6() { MoveForward(1); SetAutoplayDelay( 1*1000); SetAutoPlay(true); }
 boardAlt[2 + 6 * 8] = "autoplay 1 seconds";
 // D2
-function boardOnClickCol3Row6() { MoveForward(1); SetAutoplayDelay( 2*1000); SetAutoPlay(true); };
+function boardOnClickCol3Row6() { MoveForward(1); SetAutoplayDelay( 2*1000); SetAutoPlay(true); }
 boardAlt[3 + 6 * 8] = "autoplay 2 seconds";
 // E2
-function boardOnClickCol4Row6() { MoveForward(1); SetAutoplayDelay( 3*1000); SetAutoPlay(true); };
+function boardOnClickCol4Row6() { MoveForward(1); SetAutoplayDelay( 3*1000); SetAutoPlay(true); }
 boardAlt[4 + 6 * 8] = "autoplay 3 seconds";
 // F2
-function boardOnClickCol5Row6() { MoveForward(1); SetAutoplayDelay( 5*1000); SetAutoPlay(true); };
+function boardOnClickCol5Row6() { MoveForward(1); SetAutoplayDelay( 5*1000); SetAutoPlay(true); }
 boardAlt[5 + 6 * 8] = "autoplay 5 seconds";
 // G2
-function boardOnClickCol6Row6() { MoveForward(1); SetAutoplayDelay(10*1000); SetAutoPlay(true); };
+function boardOnClickCol6Row6() { MoveForward(1); SetAutoplayDelay(10*1000); SetAutoPlay(true); }
 boardAlt[6 + 6 * 8] = "autoplay 10 seconds";
 // H2
-function boardOnClickCol7Row6() { MoveForward(1); SetAutoplayDelay(30*1000); SetAutoPlay(true); };
+function boardOnClickCol7Row6() { MoveForward(1); SetAutoplayDelay(30*1000); SetAutoPlay(true); }
 boardAlt[7 + 6 * 8] = "autoplay 30 seconds";
 // A1
-function boardOnClickCol0Row7() { GoToMove(StartPly); };
+function boardOnClickCol0Row7() { GoToMove(StartPly); }
 boardAlt[0 + 7 * 8] = "go to game start";
 // B1
-function boardOnClickCol1Row7() { MoveToPrevComment(); };
+function boardOnClickCol1Row7() { MoveToPrevComment(); }
 boardAlt[1 + 7 * 8] = "go to previous comment";
 // C1
-function boardOnClickCol2Row7() { MoveBackward(6); };
+function boardOnClickCol2Row7() { MoveBackward(6); }
 boardAlt[2 + 7 * 8] = "move 6 half-moves backward";
 // D1
-function boardOnClickCol3Row7() { MoveBackward(1); };
+function boardOnClickCol3Row7() { MoveBackward(1); }
 boardAlt[3 + 7 * 8] = "move backward";
 // E1
-function boardOnClickCol4Row7() { MoveForward(1)};
+function boardOnClickCol4Row7() { MoveForward(1); }
 boardAlt[4 + 7 * 8] = "move forward";
 // F1
-function boardOnClickCol5Row7() { MoveForward(6) };
+function boardOnClickCol5Row7() { MoveForward(6); }
 boardAlt[5 + 7 * 8] = "move 6 half-moves forward";
 // G1
-function boardOnClickCol6Row7() { MoveToNextComment() };
+function boardOnClickCol6Row7() { MoveToNextComment(); }
 boardAlt[6 + 7 * 8] = "go to next comment";
 // H1
-function boardOnClickCol7Row7() { GoToMove(StartPly + PlyNumber); };
+function boardOnClickCol7Row7() { GoToMove(StartPly + PlyNumber); }
 boardAlt[7 + 7 * 8] = "go to game end";
 
 
@@ -612,9 +612,9 @@ function displayDebugInfo() {
               'HTML URL: ' + location.href + '\n\n' +
               'base URL: ' + detectBaseLocation() + '\n\n' +
               'javascript URL: ' + detectJavascriptLocation() + '\n\n';
-  if (pgnUrl != "") { debugInfo += 'PGN URL: ' + pgnUrl + '\n\n'; }
+  if (pgnUrl !== "") { debugInfo += 'PGN URL: ' + pgnUrl + '\n\n'; }
   else { debugInfo += 'PGN URL: none' + '\n\n'; }
-  if (document.getElementById("pgnText") != null) { 
+  if (document.getElementById("pgnText") !== null) { 
     debugInfo += 'PGN text: ' + document.getElementById("pgnText").innerHTML.length + '\n\n';
   } else {
     debugInfo += 'PGN text: undefined' + '\n\n';
@@ -737,7 +737,7 @@ startingSquareSize = -1;
 startingImageSize = -1;
 
 PiecePicture = new Array(2);
-for(i=0; i<2; ++i) PiecePicture[i] = new Array(6);
+for(i=0; i<2; ++i) { PiecePicture[i] = new Array(6); }
 
 PieceCode    = new Array(6);
 PieceCode[0] = "K";
@@ -799,27 +799,30 @@ var gameSelectorChDate    = 10;
 
 function CheckLegality(what, plyCount){
   var retVal;
+  var start;
+  var end;
+  var isCheck;
   /*
    * Is it a castling move/
    */
   if (what == 'O-O'){
-    if (!CheckLegalityOO()) return false;
-    var start = PieceCol[MoveColor][0];
-    var end   = 6;
+    if (!CheckLegalityOO()) { return false; }
+    start = PieceCol[MoveColor][0];
+    end   = 6;
     while(start < end){
-      var isCheck = IsCheck(start, MoveColor*7, MoveColor);
-      if (isCheck) return false;
+      isCheck = IsCheck(start, MoveColor*7, MoveColor);
+      if (isCheck) { return false; }
       ++start;
     }
     StoreMove(plyCount);
     return true;
   } else if (what == 'O-O-O'){
-    if (!CheckLegalityOOO()) return false;
-    var start = PieceCol[MoveColor][0];
-    var end   = 2;
+    if (!CheckLegalityOOO()) { return false; }
+    start = PieceCol[MoveColor][0];
+    end   = 2;
     while(start > end){
-      var isCheck = IsCheck(start, MoveColor*7, MoveColor);
-      if (isCheck) return false;
+      isCheck = IsCheck(start, MoveColor*7, MoveColor);
+      if (isCheck) { return false; }
       --start;
     }
     StoreMove(plyCount);
@@ -836,16 +839,16 @@ function CheckLegality(what, plyCount){
    *
    */
   if (!mvCapture){
-    if (Board[mvToCol][mvToRow] !=0) return false;
+    if (Board[mvToCol][mvToRow] !== 0) { return false; }
   }
   if ((mvCapture) && (Color(Board[mvToCol][mvToRow]) != 1-MoveColor)){
     if ((mvPiece != 6) || (!HistEnPassant[plyCount-1]) || (HistEnPassantCol[plyCount-1] != mvToCol) ||
-	(mvToRow != 5-3*MoveColor)) return false;
+	(mvToRow != 5-3*MoveColor)) { return false; }
   }
   if (mvIsPromotion){
-    if (mvPiece     != 6)               return false;
-    if (mvPieceOnTo >= 6)               return false;
-    if (mvToRow     != 7*(1-MoveColor)) return false;
+    if (mvPiece     != 6)               { return false; }
+    if (mvPieceOnTo >= 6)               { return false; }
+    if (mvToRow     != 7*(1-MoveColor)) { return false; }
   }
   /*
    * It is a piece move. Loop over all pieces and find the ones of the same
@@ -874,8 +877,7 @@ function CheckLegality(what, plyCount){
         * Now that the board is updated check if the king is in check.
         */
         StoreMove(plyCount);
-	var isCheck = IsCheck(PieceCol[MoveColor][0], PieceRow[MoveColor][0],
-			      MoveColor);
+        isCheck = IsCheck(PieceCol[MoveColor][0], PieceRow[MoveColor][0], MoveColor);
 	if (!isCheck){
 	  return true;
 	} else{
@@ -889,98 +891,98 @@ function CheckLegality(what, plyCount){
 
 function CheckLegalityKing(thisKing){
   if ((mvFromCol >= 0) &&
-      (mvFromCol != PieceCol[MoveColor][thisKing])) return false;
+      (mvFromCol != PieceCol[MoveColor][thisKing])) { return false; }
   if ((mvFromRow > 0) &&
-      (mvFromRow != PieceRow[MoveColor][thisKing])) return false;
+      (mvFromRow != PieceRow[MoveColor][thisKing])) { return false; }
 
-  if (Math.abs(PieceCol[MoveColor][thisKing]-mvToCol) > 1) return false;
-  if (Math.abs(PieceRow[MoveColor][thisKing]-mvToRow) > 1) return false;
+  if (Math.abs(PieceCol[MoveColor][thisKing]-mvToCol) > 1) { return false; }
+  if (Math.abs(PieceRow[MoveColor][thisKing]-mvToRow) > 1) { return false; }
 
   return true;
 }
 
 function CheckLegalityQueen(thisQueen){
   if ((mvFromCol >= 0) &&
-      (mvFromCol != PieceCol[MoveColor][thisQueen])) return false;
+      (mvFromCol != PieceCol[MoveColor][thisQueen])) { return false; }
   if ((mvFromRow >= 0) &&
-      (mvFromRow != PieceRow[MoveColor][thisQueen])) return false;
+      (mvFromRow != PieceRow[MoveColor][thisQueen])) { return false; }
 
   if (((PieceCol[MoveColor][thisQueen]-mvToCol)*
-       (PieceRow[MoveColor][thisQueen]-mvToRow) != 0) &&
+       (PieceRow[MoveColor][thisQueen]-mvToRow) !== 0) &&
       (Math.abs(PieceCol[MoveColor][thisQueen]-mvToCol) !=
-       Math.abs(PieceRow[MoveColor][thisQueen]-mvToRow))) return false;
+       Math.abs(PieceRow[MoveColor][thisQueen]-mvToRow))) { return false; }
 
   var clearWay = CheckClearWay(thisQueen);
-  if (!clearWay) return false;
+  if (!clearWay) { return false; }
 
   return true;
 }
 
 function CheckLegalityRook(thisRook){
   if ((mvFromCol >= 0) &&
-      (mvFromCol != PieceCol[MoveColor][thisRook])) return false;
+      (mvFromCol != PieceCol[MoveColor][thisRook])) { return false; }
   if ((mvFromRow >= 0) &&
-      (mvFromRow != PieceRow[MoveColor][thisRook])) return false;
+      (mvFromRow != PieceRow[MoveColor][thisRook])) { return false; }
 
   if ((PieceCol[MoveColor][thisRook]-mvToCol)*
-      (PieceRow[MoveColor][thisRook]-mvToRow) != 0) return false;
+      (PieceRow[MoveColor][thisRook]-mvToRow) !== 0) { return false; }
 
   var clearWay = CheckClearWay(thisRook);
-  if (!clearWay) return false;
+  if (!clearWay) { return false; }
 
   return true;
 }
 
 function CheckLegalityBishop(thisBishop){
   if ((mvFromCol >= 0) &&
-      (mvFromCol != PieceCol[MoveColor][thisBishop])) return false;
+      (mvFromCol != PieceCol[MoveColor][thisBishop])) { return false; }
   if ((mvFromRow >= 0) &&
-      (mvFromRow != PieceRow[MoveColor][thisBishop])) return false;
+      (mvFromRow != PieceRow[MoveColor][thisBishop])) { return false; }
 
   if (Math.abs(PieceCol[MoveColor][thisBishop]-mvToCol) !=
-      Math.abs(PieceRow[MoveColor][thisBishop]-mvToRow)) return false;
+      Math.abs(PieceRow[MoveColor][thisBishop]-mvToRow)) { return false; }
 
   var clearWay = CheckClearWay(thisBishop);
-  if (!clearWay) return false;
+  if (!clearWay) { return false; }
 
   return true;
 }
 
 function CheckLegalityKnight(thisKnight){
   if ((mvFromCol >= 0) &&
-      (mvFromCol != PieceCol[MoveColor][thisKnight])) return false;
+      (mvFromCol != PieceCol[MoveColor][thisKnight])) { return false; }
   if ((mvFromRow >= 0) &&
-      (mvFromRow != PieceRow[MoveColor][thisKnight])) return false;
+      (mvFromRow != PieceRow[MoveColor][thisKnight])) { return false; }
 
   if (Math.abs(PieceCol[MoveColor][thisKnight]-mvToCol)*
-      Math.abs(PieceRow[MoveColor][thisKnight]-mvToRow) != 2) return false;
+      Math.abs(PieceRow[MoveColor][thisKnight]-mvToRow) != 2) { return false; }
   return true;
 }
 function CheckLegalityPawn(thisPawn){
   if ((mvFromCol >= 0) &&
-      (mvFromCol != PieceCol[MoveColor][thisPawn])) return false;
+      (mvFromCol != PieceCol[MoveColor][thisPawn])) { return false; }
   if ((mvFromRow >= 0) &&
-      (mvFromRow != PieceRow[MoveColor][thisPawn])) return false;
+      (mvFromRow != PieceRow[MoveColor][thisPawn])) { return false; }
 
   if (Math.abs(PieceCol[MoveColor][thisPawn]-mvToCol) != mvCapture)
-     return false;
+  { return false; }
 
   if (mvCapture){
-    if (PieceRow[MoveColor][thisPawn]-mvToRow != 2*MoveColor-1) return false;
+    if (PieceRow[MoveColor][thisPawn]-mvToRow != 2*MoveColor-1) { return false; }
   } else{
     if (PieceRow[MoveColor][thisPawn]-mvToRow == 4*MoveColor-2){
-      if (PieceRow[MoveColor][thisPawn] != 1+5*MoveColor) return false;
-      if (Board[mvToCol][mvToRow+2*MoveColor-1] != 0)     return false;
+      if (PieceRow[MoveColor][thisPawn] != 1+5*MoveColor) { return false; }
+      if (Board[mvToCol][mvToRow+2*MoveColor-1] !== 0)    { return false; }
     } else{
-      if (PieceRow[MoveColor][thisPawn]-mvToRow != 2*MoveColor-1) return false;
+      if (PieceRow[MoveColor][thisPawn]-mvToRow != 2*MoveColor-1) { return false; }
     }
   }
   return true;
 }
 
 function CheckLegalityOO(){
-  if (CastlingShort[MoveColor] == 0) return false;
-  if (PieceMoveCounter[MoveColor][0] > 0) return false;
+  if (CastlingShort[MoveColor] === 0) { return false; }
+  if (PieceMoveCounter[MoveColor][0] > 0) { return false; }
   /*
    * Find which rook was involved in the castling.
    */
@@ -995,8 +997,8 @@ function CheckLegalityOO(){
     }
     ++thisRook;
   }
-  if (!legal) return false;
-  if (PieceMoveCounter[MoveColor][thisRook] > 0) return false;
+  if (!legal) { return false; }
+  if (PieceMoveCounter[MoveColor][thisRook] > 0) { return false; }
   /*
    * Check no piece is between the king and the rook. To make it compatible
    * with fisher-random rules clear the king and rook squares now.
@@ -1004,9 +1006,9 @@ function CheckLegalityOO(){
   Board[PieceCol[MoveColor][0]][MoveColor*7]        = 0;
   Board[PieceCol[MoveColor][thisRook]][MoveColor*7] = 0;
   var col = PieceRow[MoveColor][thisRook];
-  if (col < 6) col = 6;
+  if (col < 6) { col = 6; }
   while ((col > PieceCol[MoveColor][0]) || (col >= 5)){
-    if (Board[col][MoveColor*7] != 0){
+    if (Board[col][MoveColor*7] !== 0){
       return false;
     }
     --col;
@@ -1016,8 +1018,8 @@ function CheckLegalityOO(){
 }
 
 function CheckLegalityOOO(){
-  if (CastlingLong[MoveColor] == 0) return false;
-  if (PieceMoveCounter[MoveColor][0] > 0) return false;
+  if (CastlingLong[MoveColor] === 0) { return false; }
+  if (PieceMoveCounter[MoveColor][0] > 0) { return false; }
   /*
    * Find which rook was involved in the castling.
    */
@@ -1032,8 +1034,8 @@ function CheckLegalityOOO(){
     }
     ++thisRook;
   }
-  if (!legal) return false;
-  if (PieceMoveCounter[MoveColor][thisRook] > 0) return false;
+  if (!legal) { return false; }
+  if (PieceMoveCounter[MoveColor][thisRook] > 0) { return false; }
   /*
    * Check no piece is between the king and the rook. To make it compatible
    * with fisher-random rules clear the king and rook squares now.
@@ -1041,9 +1043,9 @@ function CheckLegalityOOO(){
   Board[PieceCol[MoveColor][0]][MoveColor*7]        = 0;
   Board[PieceCol[MoveColor][thisRook]][MoveColor*7] = 0;
   var col = PieceRow[MoveColor][thisRook];
-  if (col > 2) col = 2;
+  if (col > 2) { col = 2; }
   while ((col > PieceCol[MoveColor][0]) || (col <= 3)){
-    if (Board[col][MoveColor*7] != 0){
+    if (Board[col][MoveColor*7] !== 0){
       return false;
     }
     ++col;
@@ -1060,7 +1062,7 @@ function CheckClearWay(thisPiece){
   var startRow = PieceRow[MoveColor][thisPiece]+stepRow;
 
   while ((startCol != mvToCol) || (startRow != mvToRow)){
-    if (Board[startCol][startRow] != 0) return false;
+    if (Board[startCol][startRow] !== 0) { return false; }
     startCol += stepCol;
     startRow += stepRow;
   }
@@ -1114,7 +1116,7 @@ function SetAutoplayNextGame(onOff){
 
 function SetInitialHalfmove(number, always){
   initialHalfmove = number;
-  if (always == true) { alwaysInitialHalfmove = true}
+  if (always === true) { alwaysInitialHalfmove = true; }
 }
 
 function SetInitialGame(number){
@@ -1122,13 +1124,13 @@ function SetInitialGame(number){
 }
 
 // the clock value is detected with two options: first the DGT sequence [%clk 01:02] 
-// is checked (remember though that pgn4web has replaced "[%xxx]" with "<@xxx@>"). 
+// is checked (remember though that pgn4web has replaced '[%xxx]' with '<@xxx@>'). 
 // If this fails, then look for the beginning of the comment for a sequence of numbers 
-// and ":" and "." characters.
+// and ':' and '.' characters.
   
 function clockFromComment(comment){
-  // remember pgn4web replaces "[%...]" with "<@...@>"
-  if (DGTclock = comment.match(/<@clk\s*(.*?)@>/)) { clock = DGTclock[1]; }
+  // remember pgn4web replaces '[%...]' with '<@...@>'
+  if ((DGTclock = comment.match(/<@clk\s*(.*?)@>/)) !== null) { clock = DGTclock[1]; }
   else { if (!(clock = comment.match(/^\s*[0-9:\.]+/))) {clock = ""; } }
   return clock;
 }
@@ -1147,9 +1149,9 @@ function HighlightLastMove(){
    * Remove the highlighting from the old anchor if any.
    */
   if (oldAnchor >= 0){
-    var anchorName      = 'Mv'+oldAnchor;
-    theAnchor           = document.getElementById(anchorName);
-    if (theAnchor != null) theAnchor.className = 'move';
+    anchorName = 'Mv'+oldAnchor;
+    theAnchor = document.getElementById(anchorName);
+    if (theAnchor !== null) { theAnchor.className = 'move'; }
   }
   /*
    * Find which move has to be highlighted. If the move number is negative
@@ -1157,40 +1159,41 @@ function HighlightLastMove(){
    * the header on top of the board is removed.
    */
   var showThisMove = CurrentPly - 1;
-  if (showThisMove > StartPly + PlyNumber) showThisMove = StartPly + PlyNumber;
+  if (showThisMove > StartPly + PlyNumber) { showThisMove = StartPly + PlyNumber; }
 
   var theShowCommentTextObject = document.getElementById("GameLastComment");
-  if (theShowCommentTextObject != null) {
+  if (theShowCommentTextObject !== null) {
     if (MoveComments[showThisMove+1] != undefined) {
       // remove PGN extension tags
-      // remember pgn4web replaces "[%...]" with "<@...@>"
+      // remember pgn4web replaces '[%...]' with '<@...@>'
       thisComment = MoveComments[showThisMove+1].replace(/<@.*?@>\s*/g,''); // note trailing spaces are removed also
       // remove comments that are all spaces
-      if (thisComment.match(/^\s*$/)) {thisComment = ''};
+      if (thisComment.match(/^\s*$/)) { thisComment = ''; }
     } else {
       thisComment = '';
     }
-    if (thisComment != '')
+    if (thisComment !== '') {
       theShowCommentTextObject.innerHTML = MoveComments[showThisMove+1]; 
-    else
+    } else {
       theShowCommentTextObject.innerHTML = '-';
+    }
     theShowCommentTextObject.className = 'GameLastComment';
   }
   
   /*
    * Show the side to move
    */ 
-  if ((showThisMove+1)%2==0) text='white'; // black has just moved
-  else text='black';
+  if ((showThisMove+1)%2 === 0) { text='white'; } // black has just moved
+  else { text='black'; }
  
   theObject = document.getElementById("GameSideToMove");
-  if (theObject != null) theObject.innerHTML = text; 
+  if (theObject !== null) { theObject.innerHTML = text; }
 
   /*
    * Show the clock (if suitable info is found in the game comment)
    */
   
-  if ((showThisMove+1)%2==1) { // white has just moved
+  if ((showThisMove+1)%2 == 1) { // white has just moved
     lastMoverClockObject = document.getElementById("GameWhiteClock");
     initialLastMoverClock = gameInitialWhiteClock[currentGame];
     beforeLastMoverClockObject = document.getElementById("GameBlackClock"); 
@@ -1202,14 +1205,14 @@ function HighlightLastMove(){
     initialBeforeLastMoverClock = gameInitialWhiteClock[currentGame];
   }
 
-  if (lastMoverClockObject != null) {
+  if (lastMoverClockObject !== null) {
     if (showThisMove+1 > StartPly) { 
       lastMoverClockObject.innerHTML = clockFromComment(MoveComments[showThisMove+1]); 
     } else {
       lastMoverClockObject.innerHTML = initialLastMoverClock;
     }
   }
-  if (beforeLastMoverClockObject != null) {
+  if (beforeLastMoverClockObject !== null) {
     if (showThisMove+1 > StartPly+1) { 
       beforeLastMoverClockObject.innerHTML = clockFromComment(MoveComments[showThisMove]); 
     } else {
@@ -1222,14 +1225,14 @@ function HighlightLastMove(){
    */
 
   var theShowMoveTextObject = document.getElementById("GameNextMove");
-  if (theShowMoveTextObject != null){
+  if (theShowMoveTextObject !== null){
     if (showThisMove+1 >= (StartPly+PlyNumber)){
       text = gameResult[currentGame];
     }else{
       move = Moves[showThisMove+1];
-      var text = '';
-      var mvNum = Math.floor((showThisMove+1)/2) + 1;
-      if ((showThisMove+1) % 2 == 0){
+      text = '';
+      mvNum = Math.floor((showThisMove+1)/2) + 1;
+      if ((showThisMove+1) % 2 === 0){
         text += mvNum + '. ';
       } else{
         text += mvNum + '... ';
@@ -1241,15 +1244,15 @@ function HighlightLastMove(){
     theShowMoveTextObject.style.whiteSpace = 'nowrap';
   }
 
-  var theShowMoveTextObject = document.getElementById("GameLastMove");
-  if (theShowMoveTextObject != null){
+  theShowMoveTextObject = document.getElementById("GameLastMove");
+  if (theShowMoveTextObject !== null){
     if (showThisMove < StartPly){
       text = '-';
     }else{
       move = Moves[showThisMove];
       var text = '';
       var mvNum = Math.floor(showThisMove/2) + 1;
-      if (showThisMove % 2 == 0){
+      if (showThisMove % 2 === 0){
         text += mvNum + '. ';
       } else{
         text += mvNum + '... ';
@@ -1262,10 +1265,10 @@ function HighlightLastMove(){
   }
 
   if (showThisMove >= (StartPly-1)){
-    anchorName          = 'Mv' + (showThisMove + 1);
-    theAnchor           = document.getElementById(anchorName);
-    if (theAnchor != null) theAnchor.className = 'move moveOn';
-    oldAnchor           = showThisMove + 1;
+    anchorName = 'Mv' + (showThisMove + 1);
+    theAnchor = document.getElementById(anchorName);
+    if (theAnchor !== null) { theAnchor.className = 'move moveOn'; }
+    oldAnchor = showThisMove + 1;
 
     if (highlightOption){
       if (showThisMove < StartPly) {
@@ -1275,13 +1278,13 @@ function HighlightLastMove(){
         highlightRowTo = -1;
       } else {
         highlightColFrom = HistCol[0][showThisMove];
-        if (highlightColFrom == undefined) highlightColFrom = -1;
+        if (highlightColFrom == undefined) { highlightColFrom = -1; }
         highlightRowFrom = HistRow[0][showThisMove];
-        if (highlightRowFrom == undefined) highlightRowFrom = -1;
+        if (highlightRowFrom == undefined) { highlightRowFrom = -1; }
         highlightColTo = HistCol[2][showThisMove];
-        if (highlightColTo == undefined) highlightColTo = -1;
+        if (highlightColTo == undefined) { highlightColTo = -1; }
         highlightRowTo = HistRow[2][showThisMove];
-        if (highlightRowTo == undefined) highlightRowTo = -1;
+        if (highlightRowTo == undefined) { highlightRowTo = -1; }
       }
       highlightMove(highlightColFrom, highlightRowFrom, highlightColTo, highlightRowTo);
     }
@@ -1303,10 +1306,8 @@ function SetHighlightOption(on){
  ******************************************************************************/
 function SetHighlight(on){
   SetHighlightOption(on);
-  if (on)
-    HighlightLastMove();
-  else
-    highlightMove(-1, -1, -1, -1);
+  if (on) { HighlightLastMove(); }
+  else { highlightMove(-1, -1, -1, -1); }
 }
 
 // global vars to remember last highlighted square
@@ -1363,13 +1364,13 @@ function highlightSquare(col, row, on) {
   else { trow = 7 - row; tcol = col; }
 
   theObject = document.getElementById('tcol' + tcol + 'trow' + trow);
-  if (theObject == null) { return false; }
+  if (theObject === null) { return false; }
 
   if (on) {
-    if ((trow+tcol)%2 == 0) { theObject.className = "highlightWhiteSquare"; }
+    if ((trow+tcol)%2 === 0) { theObject.className = "highlightWhiteSquare"; }
     else { theObject.className = "highlightBlackSquare"; }
   } else {
-    if ((trow+tcol)%2 == 0) { theObject.className = "whiteSquare"; }
+    if ((trow+tcol)%2 === 0) { theObject.className = "whiteSquare"; }
     else { theObject.className = "blackSquare"; }
   }
   return true;
@@ -1384,9 +1385,9 @@ function highlightSquare(col, row, on) {
  ******************************************************************************/
 function pgnGameFromPgnText(pgnText){
 
-  // in order to cope with DGT clock extensions to PGN like {[%command value]} and considering the pgn4web bug with square brackets in the PGN text, any sequence "[%xxx]" is replaced by "<@xxx@>".
-  // remember pgn4web replaces "[%...]" with "<@...@>"
-  // note that strictly the "+" is the regular expression should not be there, but this accomodates with erroneus repeat characters like "[[[%%command parameter]]"
+  // in order to cope with DGT clock extensions to PGN like {[%command value]} and considering the pgn4web bug with square brackets in the PGN text, any sequence "[%xxx]" is replaced by '<@xxx@>'.
+  // remember pgn4web replaces '[%...]' with '<@...@>'
+  // note that strictly the '+' is the regular expression should not be there, but this accomodates with erroneus repeat characters like '[[[%%command parameter]]'
   pgnText = pgnText.replace(/\[+%+(.*?)\]+/g, "<@$1@>");
 
   lines=pgnText.split("\n");
@@ -1397,7 +1398,7 @@ function pgnGameFromPgnText(pgnText){
   for(ii in lines){
 
     // according to the PGN standard lines starting with % should be ignored
-    if(lines[ii].charAt(0) == '%') continue;
+    if(lines[ii].charAt(0) == '%') { continue; }
 
     if(lines[ii].indexOf('[') >= 0){
       if(! inGameHeader){
@@ -1412,8 +1413,7 @@ function pgnGameFromPgnText(pgnText){
         inGameBody=true
       }
     }
-    if (gameIndex >= 0)
-      pgnGame[gameIndex] += lines[ii] + ' \n'; 
+    if (gameIndex >= 0) { pgnGame[gameIndex] += lines[ii] + ' \n'; }
   }
 
   numberOfGames = pgnGame.length;
@@ -1471,11 +1471,11 @@ function loadPgnFromPgnUrl(pgnUrl){
     http_request.send(null);
   } catch(e) {
       var answer = confirm("Error with request for PGN URL:\n" + pgnUrl + "\n\nPress OK for web developer DEBUG information.");
-      if (answer) myAlert(XMLrequest_error_debug_message);
+      if (answer) { myAlert(XMLrequest_error_debug_message); }
       return false;
 }
 
-  if((http_request.readyState  == 4) && ((http_request.status  == 200) || (http_request.status  == 0))){
+  if((http_request.readyState == 4) && ((http_request.status == 200) || (http_request.status === 0))){
     if (! pgnGameFromPgnText(http_request.responseText)) {
       myAlert('Error: no games found in PGN file');
       return false;
@@ -1493,21 +1493,21 @@ function SetPgnUrl(url){
 }
 
 function pauseLiveBroadcast() {
-  if (LiveBroadcastDelay == 0) { return; }
+  if (LiveBroadcastDelay === 0) { return; }
   LiveBroadcastPaused = true;
   clearTimeout(LiveBroadcastInterval);
   LiveBroadcastInterval = null;
 }
 
 function restartLiveBroadcast() {
-  if (LiveBroadcastDelay == 0) { return; }
+  if (LiveBroadcastDelay === 0) { return; }
   LiveBroadcastPaused = false;
   refreshPgnSource();
 }
 
 function checkLiveBroadcastStatus() {
 
-  if (LiveBroadcastDelay == 0) { 
+  if (LiveBroadcastDelay === 0) { 
     LiveBroadcastEnded = false;
     LiveBroadcastStatusString = "";
     return; 
@@ -1515,7 +1515,7 @@ function checkLiveBroadcastStatus() {
 
   // check if broadcast did not start yet
   // check for odd situations where no PGN file is found and fake LiveBroadcastPlaceholderPgn game is injected
-  if ((LiveBroadcastStarted == false) || 
+  if ((LiveBroadcastStarted === false) || 
       ((pgnGame == undefined) || 
       ((numberOfGames == 1) && (gameEvent[0] == LiveBroadcastPlaceholderEvent)))) {
     LiveBroadcastEnded = false;
@@ -1526,7 +1526,7 @@ function checkLiveBroadcastStatus() {
     for (ii=0; ii<numberOfGames; ii++) {
       if (gameResult[ii].indexOf('*') >= 0) { liveGamesRunning++ }
     }
-    LiveBroadcastEnded = (liveGamesRunning == 0);
+    LiveBroadcastEnded = (liveGamesRunning === 0);
 
     if (LiveBroadcastEnded) {
       LiveBroadcastStatusString = "live broadcast ended";
@@ -1537,12 +1537,12 @@ function checkLiveBroadcastStatus() {
   }
 
   theObject = document.getElementById("GameLiveStatus");
-  if (theObject != null) { theObject.innerHTML = LiveBroadcastStatusString; }
+  if (theObject !== null) { theObject.innerHTML = LiveBroadcastStatusString; }
 }
 
 function restartLiveBroadcastTimeout() {
 
-  if (LiveBroadcastDelay == 0) { return; }
+  if (LiveBroadcastDelay === 0) { return; }
 
   if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); LiveBroadcastInterval = null; }
  
@@ -1550,7 +1550,7 @@ function restartLiveBroadcastTimeout() {
 
   needRestart = (!LiveBroadcastEnded)
   
-  if ((needRestart == true) && (!LiveBroadcastPaused)){
+  if ((needRestart === true) && (!LiveBroadcastPaused)){
     LiveBroadcastInterval = setTimeout("refreshPgnSource()", LiveBroadcastDelay * 60000);
   }
 
@@ -1565,7 +1565,7 @@ function restartLiveBroadcastTimeout() {
  ******************************************************************************/
 function refreshPgnSource() {
 
-  if (LiveBroadcastDelay == 0) { return; }
+  if (LiveBroadcastDelay === 0) { return; }
 
   if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); LiveBroadcastInterval = null; }
 
@@ -1612,17 +1612,17 @@ function refreshPgnSource() {
     foundOldGame = ( (gameWhite[ii]==oldGameWhite) && (gameBlack[ii]==oldGameBlack) &&
                      (gameEvent[ii]==oldGameEvent) && (gameRound[ii]==oldGameRound) &&
                      (gameSite[ii] ==oldGameSite ) && (gameDate[ii] ==oldGameDate ) );
-    if (foundOldGame == true) { break; }
+    if (foundOldGame === true) { break; }
   }
-  if (foundOldGame == true) { initialGame = ii + 1; }
+  if (foundOldGame === true) { initialGame = ii + 1; }
 
-  if ((foundOldGame == true) && (oldCurrentPly >= 0)) { 
+  if ((foundOldGame === true) && (oldCurrentPly >= 0)) { 
     oldInitialHalfmove = initialHalfmove; 
     initialHalfmove = oldCurrentPly; }
   
   Init();
 
-  if ((foundOldGame == true) && (oldCurrentPly >= 0)) { 
+  if ((foundOldGame === true) && (oldCurrentPly >= 0)) { 
     initialHalfmove = oldInitialHalfmove 
   }
   
@@ -1631,7 +1631,7 @@ function refreshPgnSource() {
 
   restartLiveBroadcastTimeout();
 
-  if ((foundOldGame == true) && (oldAutoplay)) { SetAutoPlay(true); }
+  if ((foundOldGame === true) && (oldAutoplay)) { SetAutoPlay(true); }
 
 }
 
@@ -1646,11 +1646,11 @@ function createBoard(){
 
   if ((! pgnUrl) && (! document.getElementById("pgnText"))) {
     myAlert('Error: missing PGN URL location or pgnText.\n\nIn your HTML file, either use in a SCRIPT statement:\n\n  SetPgnUrl("http://yoursite/yourpath/yourfile.pgn")\n\nor embed the PGN text as hidden element, such as a SPAN element with style display:none\n');
-    return 
+    return; 
   }
 
   theObject = document.getElementById("GameBoard");
-  if (theObject != null) {
+  if (theObject !== null) {
     theObject.innerHTML = '<SPAN STYLE="font-style: italic;">' +
                           'Please wait while loading PGN data...</SPAN>'; 
   }
@@ -1663,9 +1663,9 @@ function createBoard(){
       customFunctionOnPgnTextLoad();
       return;
     } else {
-      if (LiveBroadcastDelay == 0) {
+      if (LiveBroadcastDelay === 0) {
         theObject = document.getElementById("GameBoard");
-        if (theObject != null) {
+        if (theObject !== null) {
           theObject.innerHTML = '<SPAN STYLE="font-style: italic;">' + 
                                 'Failed loading games from PGN file<br>' + 
                                 pgnUrl + '</SPAN>';
@@ -1696,14 +1696,15 @@ function createBoard(){
       customFunctionOnPgnTextLoad();
     } else {
       myAlert('Error: no games found in PGN text');
-      return false;
+      return;
     }   
     return;
   } 
 
-  if (theObject != null) 
+  if (theObject !== null) {
     theObject.innerHTML = '<SPAN STYLE="font-style: italic;">' + 
                           'Missing PGN data</SPAN>';
+  }
 }
 
 /******************************************************************************
@@ -1715,7 +1716,7 @@ function createBoard(){
  ******************************************************************************/
 function Init(){
 
-  if (isAutoPlayOn) SetAutoPlay(false);
+  if (isAutoPlayOn) { SetAutoPlay(false); }
   InitImages();
   if (firstStart){
 
@@ -1740,6 +1741,7 @@ function Init(){
           else if (initialGame < numberOfGames) { currentGame = initialGame } 
           else { currentGame = numberOfGames - 1; }
         }
+        break;
     }
   }
 
@@ -1782,12 +1784,13 @@ function Init(){
         if (initialHalfmove == -2) { GoToMove(0); MoveToNextComment(); }
         else if (initialHalfmove == -1) { GoToMove(StartPly + Math.floor(Math.random()*(StartPly+PlyNumber))); }
         else { GoToMove(initialHalfmove); }
+        break;
     }
   } else {
     // added here customFunctionOnMove for consistency, as a null move starting a new game
     customFunctionOnMove();
   }
-  if (firstStart) { if (autostartAutoplay) SetAutoPlay(true); }
+  if ((firstStart) && (autostartAutoplay)) { SetAutoPlay(true); }
 
   customFunctionOnPgnGameLoad();
 
@@ -1867,7 +1870,7 @@ function InitFEN(startingFEN){
       }
     }
   } else{
-    var cc, ii, jj, kk, ll, nn, mm;
+    var cc, kk, ll, nn, mm;
     for (ii=0; ii<2; ii++)
       { for (jj=0; jj<16; jj++)
         { PieceType[ii][jj]=-1;
@@ -1893,7 +1896,7 @@ function InitFEN(startingFEN){
           return;
         }
         if (! isNaN(cc))
-        { ii+=parseInt(cc);
+        { ii+=parseInt(cc, 10);
           if ((ii<0)||(ii>8))
           { myAlert("Invalid FEN [3]: char "+ll+" in "+FenString);
             return;
@@ -1944,11 +1947,10 @@ function InitFEN(startingFEN){
             ii++;
           }
         }
-        if (ll<FenString.length)
-          cc=FenString.charAt(ll++);
-        else cc=" ";
+        if (ll<FenString.length) { cc=FenString.charAt(ll++); }
+        else { cc=" "; }
       }
-      if ((ii!=8)||(jj!=0))
+      if ((ii!=8)||(jj!==0))
       { myAlert("Invalid FEN [8]: char "+ll+" in "+FenString);
         return;
       }
@@ -1991,24 +1993,25 @@ function InitFEN(startingFEN){
       cc=FenString.charAt(ll++);
       while (cc!=" ")
       { if (cc.charCodeAt(0)==PieceName.toUpperCase().charCodeAt(0))
-          CastlingShort[0]=1; 
+        { CastlingShort[0]=1; }
         if (cc.charCodeAt(0)==PieceName.toUpperCase().charCodeAt(1))
-          CastlingLong[0]=1; 
+        { CastlingLong[0]=1; }
         if (cc.charCodeAt(0)==PieceName.toLowerCase().charCodeAt(0))
-          CastlingShort[1]=1; 
+        { CastlingShort[1]=1; }
         if (cc.charCodeAt(0)==PieceName.toLowerCase().charCodeAt(1))
-          CastlingLong[1]=1; 
+        { CastlingLong[1]=1; }
         if ((cc=="E")||(cc=="F")||(cc=="G")||(cc=="H")) //for Chess960
-          CastlingShort[0]=1;
+        { CastlingShort[0]=1; }
         if ((cc=="A")||(cc=="B")||(cc=="C")||(cc=="D"))
-          CastlingLong[0]=1;
+        { CastlingLong[0]=1; }
         if ((cc=="e")||(cc=="f")||(cc=="g")||(cc=="h"))
-          CastlingShort[1]=1;
+        { CastlingShort[1]=1; }
         if ((cc=="a")||(cc=="b")||(cc=="c")||(cc=="d"))
-          CastlingLong[1]=1;      
+        { CastlingLong[1]=1; }   
         if (ll<FenString.length)
-          cc=FenString.charAt(ll++);
-        else cc=" ";
+        { cc=FenString.charAt(ll++); }
+        else 
+        { cc=" "; }
       }
 
       /*
@@ -2018,8 +2021,8 @@ function InitFEN(startingFEN){
       for (color = 0; color < 2; ++color){
        for (ii = 0; ii < 16; ii++){
           if (PieceType[color][ii]!=-1){
-   	     var col = PieceCol[color][ii];
-	     var row = PieceRow[color][ii];
+   	     col = PieceCol[color][ii];
+	     row = PieceRow[color][ii];
 	     // myAlert("given FEN: Setting "+(1-2*color)*(PieceType[color][ii])+ " at "+col+" / "+row);
 	     Board[col][row] = (1-2*color)*(PieceType[color][ii]);
 	  }
@@ -2037,9 +2040,8 @@ function InitFEN(startingFEN){
           newEnPassant = true;
           newEnPassantCol=cc.charCodeAt(0)-97; 
         }
-        if (ll<FenString.length) 
-          cc=FenString.charAt(ll++);
-        else cc=" ";
+        if (ll<FenString.length) { cc=FenString.charAt(ll++); }
+        else { cc=" "; }
       }
       if (ll==FenString.length)
       { myAlert("Invalid FEN [14]: char "+ll+" missing halfmove clock");
@@ -2052,10 +2054,9 @@ function InitFEN(startingFEN){
         { myAlert("Invalid FEN [15]: char "+ll+" invalid halfmove clock");
           return;
         }
-        HalfMove=HalfMove*10+parseInt(cc);
-        if (ll<FenString.length)
-          cc=FenString.charAt(ll++);
-        else cc=" ";
+        HalfMove=HalfMove*10+parseInt(cc, 10);
+        if (ll<FenString.length) { cc=FenString.charAt(ll++); }
+        else { cc=" "; }
       }
       if (ll==FenString.length)
       { myAlert("Invalid FEN [16]: char "+ll+" missing fullmove number");
@@ -2070,7 +2071,7 @@ function InitFEN(startingFEN){
       { myAlert("Invalid FEN [18]: char "+ll+" invalid fullmove number");
         return;
       }
-      StartPly+=2*(parseInt(cc)-1);
+      StartPly+=2*(parseInt(cc, 10)-1);
 
       HistEnPassant[StartPly-1] = newEnPassant;
       HistEnPassantCol[StartPly-1] = newEnPassantCol;
@@ -2096,11 +2097,12 @@ function InitImages(){
   /*
    * No need if the directory where we pick images is not changed.
    */
-  if (ImagePathOld == ImagePath) return;
+  if (ImagePathOld == ImagePath) { return; }
 
   /* adds a trailing / to ImagePath if missing and if path not blank */
-  if ((ImagePath.length > 0) && (ImagePath[ImagePath.length-1] != '/'))
+  if ((ImagePath.length > 0) && (ImagePath[ImagePath.length-1] != '/')) {
     ImagePath += '/';
+  }
 
   /*
    * No image.
@@ -2136,17 +2138,17 @@ function IsCheck(col, row, color){
    * Is the other king giving check?
    */
   if ((Math.abs(PieceCol[1-color][0]-col)<=1) &&
-      (Math.abs(PieceRow[1-color][0]-row)<=1)) return true;
+      (Math.abs(PieceRow[1-color][0]-row)<=1)) { return true; }
   /*
    * Any knight giving check?
    */
   for (ii = -2; ii <= 2; ii += 4){
     for(jj = -1; jj <= 1; jj += 2){
       if (SquareOnBoard(col+ii, row+jj)){
-	if (Board[col+ii][row+jj] == sign*5) return true;
+	if (Board[col+ii][row+jj] == sign*5) { return true; }
       }
       if (SquareOnBoard(col+jj, row+ii)){
-	if (Board[col+jj][row+ii] == sign*5) return true;
+	if (Board[col+jj][row+ii] == sign*5) { return true; }
       }
     }
   }
@@ -2155,7 +2157,7 @@ function IsCheck(col, row, color){
    */
   for (ii = -1; ii <= 1; ii += 2){
     if (SquareOnBoard(col+ii, row-sign)){
-      if (Board[col+ii][row-sign] == sign*6) return true;
+      if (Board[col+ii][row-sign] == sign*6) { return true; }
     }
   }
   /*
@@ -2163,20 +2165,20 @@ function IsCheck(col, row, color){
    */
   for (ii = -1; ii <= 1; ++ii){
     for (jj = -1; jj <= 1; ++jj){
-      if ((ii != 0) || (jj != 0)){
+      if ((ii !== 0) || (jj !== 0)){
 	var checkCol  = col+ii;
 	var checkRow  = row+jj;
 	var thisPiece = 0;
 
-	while (SquareOnBoard(checkCol, checkRow) && (thisPiece == 0)){
+	while (SquareOnBoard(checkCol, checkRow) && (thisPiece === 0)){
 	  thisPiece = Board[checkCol][checkRow];
-	  if (thisPiece == 0){
+	  if (thisPiece === 0){
 	    checkCol += ii;
 	    checkRow += jj;
 	  } else{
-	    if (thisPiece  == sign*2)                              return true;
-	    if ((thisPiece == sign*3) && ((ii == 0) || (jj == 0))) return true;
-	    if ((thisPiece == sign*4) && ((ii != 0) && (jj != 0))) return true;
+	    if (thisPiece  == sign*2)                                { return true; }
+	    if ((thisPiece == sign*3) && ((ii === 0) || (jj === 0))) { return true; }
+	    if ((thisPiece == sign*4) && ((ii !== 0) && (jj !== 0))) { return true; }
 	  }
 	}
       }
@@ -2186,7 +2188,7 @@ function IsCheck(col, row, color){
 }
 
 function checkHeaderDefined(headerValue) {
-  return ((headerValue != undefined) && (headerValue != "") && (headerValue != " ") && (headerValue != "?"));
+  return ((headerValue != undefined) && (headerValue !== "") && (headerValue != " ") && (headerValue != "?"));
 }
 
 /******************************************************************************
@@ -2233,7 +2235,7 @@ function LoadGameHeaders(){
     gameDate[ii] = "";
     gameInitialWhiteClock[ii] = "";
     gameInitialBlackClock[ii] = "";
-    while ((parse = tag.exec(ss)) != null){
+    while ((parse = tag.exec(ss)) !== null){
       if (parse[1] == 'Event'){
 	gameEvent[ii]  = parse[2];
       } else if  (parse[1] == 'Site'){
@@ -2286,7 +2288,7 @@ function MoveBackward(diff){
    */
   var goFromPly  = CurrentPly - 1;
   var goToPly    = goFromPly  - diff;
-  if (goToPly < StartPly) goToPly = StartPly-1;
+  if (goToPly < StartPly) { goToPly = StartPly-1; }
   /*
    * Loop back to reconstruct the old position one ply at the time.
    */
@@ -2345,10 +2347,11 @@ function MoveBackward(diff){
    */
   if (AutoPlayInterval) { clearTimeout(AutoPlayInterval); AutoPlayInterval = null; }
   if (isAutoPlayOn) {
-    if(goToPly >= StartPly)
+    if(goToPly >= StartPly) {
       AutoPlayInterval=setTimeout("MoveBackward(1)", Delay);
-    else
+    } else {
       SetAutoPlay(false);
+    }
   } 
   customFunctionOnMove();
 }
@@ -2365,9 +2368,9 @@ function MoveForward(diff){
    * First of all find to which ply we have to go back. Remember that
    * CurrentPly contains the ply number counting from 1.
    */
-  goToPly        = CurrentPly + parseInt(diff);
+  goToPly        = CurrentPly + parseInt(diff, 10);
 
-  if (goToPly > (StartPly+PlyNumber)) goToPly = StartPly+PlyNumber;
+  if (goToPly > (StartPly+PlyNumber)) { goToPly = StartPly+PlyNumber; }
   var thisPly;
   /*
    * Loop over all moves till the selected one is reached. Check that
@@ -2377,8 +2380,8 @@ function MoveForward(diff){
     var move  = Moves[thisPly];
     var parse = ParseMove(move, thisPly);
     if (!parse) {
-      if ((thisPly % 2) == 0) text = (Math.floor(thisPly / 2) + 1) + '. ';
-      else text = (Math.floor(thisPly / 2) + 1) + '... ';
+      if ((thisPly % 2) === 0) { text = (Math.floor(thisPly / 2) + 1) + '. '; }
+      else { text = (Math.floor(thisPly / 2) + 1) + '... '; }
       myAlert('Error on ply ' + text + move);
       break;
     }
@@ -2399,11 +2402,11 @@ function MoveForward(diff){
   if (!parse) { SetAutoPlay(false); } 
   else if (thisPly == goToPly) {
     if (isAutoPlayOn) {
-      if (goToPly < StartPly + PlyNumber)
+      if (goToPly < StartPly + PlyNumber) {
         AutoPlayInterval=setTimeout("MoveForward(1)", Delay);
-      else {
-        if (autoplayNextGame) AutoPlayInterval=setTimeout("AutoplayNextGame()", Delay);
-        else SetAutoPlay(false);
+      } else {
+        if (autoplayNextGame) { AutoPlayInterval=setTimeout("AutoplayNextGame()", Delay); }
+        else { SetAutoPlay(false); }
       }
     }
   }
@@ -2411,7 +2414,7 @@ function MoveForward(diff){
 }
 
 function AutoplayNextGame(){
-  if (++currentGame >= numberOfGames) currentGame = 0;
+  if (++currentGame >= numberOfGames) { currentGame = 0; }
   Init();
   SetAutoPlay(true);
 }
@@ -2426,7 +2429,7 @@ function AutoplayNextGame(){
 function MoveToNextComment()
 {
   for(ii=CurrentPly+1; ii<=StartPly+PlyNumber; ii++){
-    if (MoveComments[ii] != '') {
+    if (MoveComments[ii] !== '') {
       GoToMove(ii);
       break;
     }
@@ -2443,7 +2446,7 @@ function MoveToNextComment()
 function MoveToPrevComment()
 {
   for(ii=(CurrentPly-1); ii>=0; ii--){
-    if (MoveComments[ii] != '') {
+    if (MoveComments[ii] !== '') {
       GoToMove(ii);
       break;
     }
@@ -2493,7 +2496,7 @@ function ParsePGNGameString(gameString){
   ss = ss.replace(/\s$/, '');
   
   PlyNumber = 0;
-  for (ii=0; ii<StartPly; ii++) Moves[ii]='';
+  for (ii=0; ii<StartPly; ii++) { Moves[ii]=''; }
   MoveComments[StartPly+PlyNumber]='';
 
   for (start=0; start<ss.length; start++){
@@ -2513,9 +2516,9 @@ function ParsePGNGameString(gameString){
         commentEnd = commentStart + 1;
         while ('0123456789'.indexOf(ss.charAt(commentEnd)) >= 0) {
           commentEnd++;
-          if (commentEnd == ss.length) break;
+          if (commentEnd == ss.length) { break; }
         }
-        if (MoveComments[StartPly+PlyNumber].length>0) MoveComments[StartPly+PlyNumber] += ' ';
+        if (MoveComments[StartPly+PlyNumber].length>0) { MoveComments[StartPly+PlyNumber] += ' '; }
         MoveComments[StartPly+PlyNumber] += ss.substring(commentStart, commentEnd);
         start = commentEnd;
         break;
@@ -2525,7 +2528,7 @@ function ParsePGNGameString(gameString){
         commentStart = start;
         if ((ss.charAt(start+1) == '?') || (ss.charAt(start+1) == '!')) { commentEnd = commentStart + 2; }
         else { commentEnd = commentStart + 1; }
-        if (MoveComments[StartPly+PlyNumber].length>0) MoveComments[StartPly+PlyNumber] += ' ';
+        if (MoveComments[StartPly+PlyNumber].length>0) { MoveComments[StartPly+PlyNumber] += ' '; }
         MoveComments[StartPly+PlyNumber] += ss.substring(commentStart, commentEnd);
         start = commentEnd;
         break;
@@ -2534,7 +2537,7 @@ function ParsePGNGameString(gameString){
         commentStart = start+1;
         commentEnd = ss.indexOf('}',start+1);
         if (commentEnd > 0){
-          if (MoveComments[StartPly+PlyNumber].length>0) MoveComments[StartPly+PlyNumber] += ' ';
+          if (MoveComments[StartPly+PlyNumber].length>0) { MoveComments[StartPly+PlyNumber] += ' '; }
           MoveComments[StartPly+PlyNumber] += ss.substring(commentStart, commentEnd); 
           start = commentEnd;
         }else{
@@ -2550,7 +2553,7 @@ function ParsePGNGameString(gameString){
         commentEnd = ss.indexOf('\n',start+1);
         if (commentEnd < 0) {commentEnd = ss.length}
         // dont store % lines as comments
-        // if (MoveComments[StartPly+PlyNumber].length>0) MoveComments[StartPly+PlyNumber] += ' ';
+        // if (MoveComments[StartPly+PlyNumber].length>0) { MoveComments[StartPly+PlyNumber] += ' '; }
         // MoveComments[StartPly+PlyNumber] += ss.substring(commentStart, commentEnd); 
         start = commentEnd;
         break;
@@ -2559,7 +2562,7 @@ function ParsePGNGameString(gameString){
         commentStart = start+1;
         commentEnd = ss.indexOf('\n',start+1);
         if (commentEnd < 0) {commentEnd = ss.length}
-        if (MoveComments[StartPly+PlyNumber].length>0) MoveComments[StartPly+PlyNumber] += ' ';
+        if (MoveComments[StartPly+PlyNumber].length>0) { MoveComments[StartPly+PlyNumber] += ' '; }
         MoveComments[StartPly+PlyNumber] += ss.substring(commentStart, commentEnd); 
         start = commentEnd;
         break;
@@ -2573,7 +2576,7 @@ function ParsePGNGameString(gameString){
           nextClosed = ss.indexOf(')', variationEnd);
           if (nextClosed < 0) {
             myAlert('Error parsing PGN: missing end variation char )');
-            return
+            return;
           }
           if ((nextOpen >= 0) && (nextOpen < nextClosed)) {
             openVariation++;
@@ -2625,16 +2628,16 @@ function ParsePGNGameString(gameString){
         searchThis = moveCount+'.';
         if(ss.indexOf(searchThis,start)==start){
           start += searchThis.length;
-          while ((ss.charAt(start) == '.') || (ss.charAt(start) == ' ')  || (ss.charAt(start) == '\n') || (ss.charAt(start) == '\r')){start++};
+          while ((ss.charAt(start) == '.') || (ss.charAt(start) == ' ')  || (ss.charAt(start) == '\n') || (ss.charAt(start) == '\r')){start++}
         }
         end = ss.indexOf(' ',start);
-        end2 = ss.indexOf('$',start); if ((end2 > 0) && (end2 < end)) end = end2;
-        end2 = ss.indexOf('{',start); if ((end2 > 0) && (end2 < end)) end = end2;
-        end2 = ss.indexOf(';',start); if ((end2 > 0) && (end2 < end)) end = end2;
-        end2 = ss.indexOf('(',start); if ((end2 > 0) && (end2 < end)) end = end2;
-        end2 = ss.indexOf('!',start); if ((end2 > 0) && (end2 < end)) end = end2;
-        end2 = ss.indexOf('?',start); if ((end2 > 0) && (end2 < end)) end = end2;
-        if (end < 0) end = ss.length;
+        end2 = ss.indexOf('$',start); if ((end2 > 0) && (end2 < end)) { end = end2; }
+        end2 = ss.indexOf('{',start); if ((end2 > 0) && (end2 < end)) { end = end2; } 
+        end2 = ss.indexOf(';',start); if ((end2 > 0) && (end2 < end)) { end = end2; }
+        end2 = ss.indexOf('(',start); if ((end2 > 0) && (end2 < end)) { end = end2; } 
+        end2 = ss.indexOf('!',start); if ((end2 > 0) && (end2 < end)) { end = end2; }
+        end2 = ss.indexOf('?',start); if ((end2 > 0) && (end2 < end)) { end = end2; }
+        if (end < 0) { end = ss.length; }
         move = ss.substring(start,end);
         Moves[StartPly+PlyNumber] = ClearMove(move);
         if (ss.charAt(end) == ' ') { start = end; } 
@@ -2645,7 +2648,7 @@ function ParsePGNGameString(gameString){
     }
   }
   for (ii=StartPly; ii<=PlyNumber; ii++) {
-    // remember pgn4web replaces "[%...]" with "<@...@>"
+    // remember pgn4web replaces '[%...]' with '<@...@>'
     pgn4webCommentTmp = MoveComments[ii].match(/<@pgn4web\s*(.*?)@>/);
     if (pgn4webCommentTmp) { pgn4webMoveComments[ii] = pgn4webCommentTmp[1]; } 
     else { pgn4webMoveComments[ii] = ""; }
@@ -2655,156 +2658,160 @@ function ParsePGNGameString(gameString){
 }
 
 var NAG = new Array();
-NAG[0] = ''       
-NAG[1] = '!'  // 'good move'        
-NAG[2] = '?'  // 'bad move'        
-NAG[3] = '!!' // 'very good move'       
-NAG[4] = '??' // 'very bad move'       
-NAG[5] = '!?' // 'speculative move'        
-NAG[6] = '?!' // 'questionable move'        
-NAG[7] = 'forced move'      
-NAG[8] = 'singular move'       
-NAG[9] = 'worst move'
-NAG[10] = 'drawish position'          
-NAG[11] = 'equal chances, quiet position'        
-NAG[12] = 'equal chances, active position'       
-NAG[13] = 'unclear position'          
-NAG[14] = 'White has a slight advantage'      
-NAG[15] = 'Black has a slight advantage'    
-NAG[16] = 'White has a moderate advantage'       
-NAG[17] = 'Black has a moderate advantage'       
-NAG[18] = 'White has a decisive advantage'       
-NAG[19] = 'Black has a decisive advantage'       
-NAG[20] = 'White has a crushing advantage'    
-NAG[21] = 'Black has a crushing advantage'    
-NAG[22] = 'White is in zugzwang'        
-NAG[23] = 'Black is in zugzwang'        
-NAG[24] = 'White has a slight space advantage'      
-NAG[25] = 'Black has a slight space advantage'
-NAG[26] = 'White has a moderate space advantage'      
-NAG[27] = 'Black has a moderate space advantage'      
-NAG[28] = 'White has a decisive space advantage'      
-NAG[29] = 'Black has a decisive space advantage'      
-NAG[30] = 'White has a slight time (development) advantage'     
-NAG[31] = 'Black has a slight time (development) advantage'     
-NAG[32] = 'White has a moderate time (development) advantage'     
-NAG[33] = 'Black has a moderate time (development) advantage'     
-NAG[34] = 'White has a decisive time (development) advantage'     
-NAG[35] = 'Black has a decisive time (development) advantage'     
-NAG[36] = 'White has the initiative'        
-NAG[37] = 'Black has the initiative'        
-NAG[38] = 'White has a lasting initiative'       
-NAG[39] = 'Black has a lasting initiative'       
-NAG[40] = 'White has the attack'        
-NAG[41] = 'Black has the attack'        
-NAG[42] = 'White has insufficient compensation for material deficit'     
-NAG[43] = 'Black has insufficient compensation for material deficit'     
-NAG[44] = 'White has sufficient compensation for material deficit'     
-NAG[45] = 'Black has sufficient compensation for material deficit'     
-NAG[46] = 'White has more than adequate compensation for material deficit'   
-NAG[47] = 'Black has more than adequate compensation for material deficit'   
-NAG[48] = 'White has a slight center control advantage'     
-NAG[49] = 'Black has a slight center control advantage'     
-NAG[50] = 'White has a moderate center control advantage'     
-NAG[51] = 'Black has a moderate center control advantage'     
-NAG[52] = 'White has a decisive center control advantage'     
-NAG[53] = 'Black has a decisive center control advantage'     
-NAG[54] = 'White has a slight kingside control advantage'     
-NAG[55] = 'Black has a slight kingside control advantage'     
-NAG[56] = 'White has a moderate kingside control advantage'     
-NAG[57] = 'Black has a moderate kingside control advantage'     
-NAG[58] = 'White has a decisive kingside control advantage'     
-NAG[59] = 'Black has a decisive kingside control advantage'     
-NAG[60] = 'White has a slight queenside control advantage'     
-NAG[61] = 'Black has a slight queenside control advantage'     
-NAG[62] = 'White has a moderate queenside control advantage'     
-NAG[63] = 'Black has a moderate queenside control advantage'     
-NAG[64] = 'White has a decisive queenside control advantage'     
-NAG[65] = 'Black has a decisive queenside control advantage'     
-NAG[66] = 'White has a vulnerable first rank'      
-NAG[67] = 'Black has a vulnerable first rank'      
-NAG[68] = 'White has a well protected first rank'     
-NAG[69] = 'Black has a well protected first rank'     
-NAG[70] = 'White has a poorly protected king'      
-NAG[71] = 'Black has a poorly protected king'      
-NAG[72] = 'White has a well protected king'      
-NAG[73] = 'Black has a well protected king'      
-NAG[74] = 'White has a poorly placed king'      
-NAG[75] = 'Black has a poorly placed king'      
-NAG[76] = 'White has a well placed king'      
-NAG[77] = 'Black has a well placed king'    
-NAG[78] = 'White has a very weak pawn structure'     
-NAG[79] = 'Black has a very weak pawn structure'     
-NAG[80] = 'White has a moderately weak pawn structure'     
-NAG[81] = 'Black has a moderately weak pawn structure'     
-NAG[82] = 'White has a moderately strong pawn structure'     
-NAG[83] = 'Black has a moderately strong pawn structure'     
-NAG[84] = 'White has a very strong pawn structure'     
-NAG[85] = 'Black has a very strong pawn structure'     
-NAG[86] = 'White has poor knight placement'       
-NAG[87] = 'Black has poor knight placement'       
-NAG[88] = 'White has good knight placement'       
-NAG[89] = 'Black has good knight placement'       
-NAG[90] = 'White has poor bishop placement'       
-NAG[91] = 'Black has poor bishop placement'       
-NAG[92] = 'White has good bishop placement'       
-NAG[93] = 'Black has good bishop placement'       
-NAG[84] = 'White has poor rook placement'       
-NAG[85] = 'Black has poor rook placement'       
-NAG[86] = 'White has good rook placement'       
-NAG[87] = 'Black has good rook placement'       
-NAG[98] = 'White has poor queen placement'       
-NAG[99] = 'Black has poor queen placement'      
-NAG[100] = 'White has good queen placement'       
-NAG[101] = 'Black has good queen placement'       
-NAG[102] = 'White has poor piece coordination'       
-NAG[103] = 'Black has poor piece coordination' 
-NAG[104] = 'White has good piece coordination'       
-NAG[105] = 'Black has good piece coordination'       
-NAG[106] = 'White has played the opening very poorly'     
-NAG[107] = 'Black has played the opening very poorly'     
-NAG[108] = 'White has played the opening poorly'      
-NAG[109] = 'Black has played the opening poorly'      
-NAG[110] = 'White has played the opening well'      
-NAG[111] = 'Black has played the opening well'      
-NAG[112] = 'White has played the opening very well'     
-NAG[113] = 'Black has played the opening very well'     
-NAG[114] = 'White has played the middlegame very poorly'     
-NAG[115] = 'Black has played the middlegame very poorly'     
-NAG[116] = 'White has played the middlegame poorly'     
-NAG[117] = 'Black has played the middlegame poorly'      
-NAG[118] = 'White has played the middlegame well'      
-NAG[119] = 'Black has played the middlegame well'     
-NAG[120] = 'White has played the middlegame very well'     
-NAG[121] = 'Black has played the middlegame very well'     
-NAG[122] = 'White has played the ending very poorly'     
-NAG[123] = 'Black has played the ending very poorly'     
-NAG[124] = 'White has played the ending poorly'      
-NAG[125] = 'Black has played the ending poorly'      
-NAG[126] = 'White has played the ending well'      
-NAG[127] = 'Black has played the ending well'      
-NAG[128] = 'White has played the ending very well'     
-NAG[129] = 'Black has played the ending very well' 
-NAG[130] = 'White has slight counterplay'        
-NAG[131] = 'Black has slight counterplay'        
-NAG[132] = 'White has moderate counterplay'        
-NAG[133] = 'Black has moderate counterplay'        
-NAG[134] = 'White has decisive counterplay'        
-NAG[135] = 'Black has decisive counterplay'        
-NAG[136] = 'White has moderate time control pressure'      
-NAG[137] = 'Black has moderate time control pressure'      
-NAG[138] = 'White has severe time control pressure'     
-NAG[139] = 'Black has severe time control pressure'      
+NAG[0] = '';       
+NAG[1] = '!';  // 'good move'        
+NAG[2] = '?';  // 'bad move'        
+NAG[3] = '!!'; // 'very good move'       
+NAG[4] = '??'; // 'very bad move'       
+NAG[5] = '!?'; // 'speculative move'        
+NAG[6] = '?!'; // 'questionable move'        
+NAG[7] = 'forced move';
+NAG[8] = 'singular move';
+NAG[9] = 'worst move';
+NAG[10] = 'drawish position';
+NAG[11] = 'equal chances, quiet position';
+NAG[12] = 'equal chances, active position';
+NAG[13] = 'unclear position';
+NAG[14] = 'White has a slight advantage';
+NAG[15] = 'Black has a slight advantage';
+NAG[16] = 'White has a moderate advantage';
+NAG[17] = 'Black has a moderate advantage';
+NAG[18] = 'White has a decisive advantage';
+NAG[19] = 'Black has a decisive advantage';
+NAG[20] = 'White has a crushing advantage';
+NAG[21] = 'Black has a crushing advantage';
+NAG[22] = 'White is in zugzwang';
+NAG[23] = 'Black is in zugzwang';
+NAG[24] = 'White has a slight space advantage';
+NAG[25] = 'Black has a slight space advantage';
+NAG[26] = 'White has a moderate space advantage';
+NAG[27] = 'Black has a moderate space advantage';
+NAG[28] = 'White has a decisive space advantage';
+NAG[29] = 'Black has a decisive space advantage';
+NAG[30] = 'White has a slight time (development) advantage';
+NAG[31] = 'Black has a slight time (development) advantage';
+NAG[32] = 'White has a moderate time (development) advantage';
+NAG[33] = 'Black has a moderate time (development) advantage';
+NAG[34] = 'White has a decisive time (development) advantage';
+NAG[35] = 'Black has a decisive time (development) advantage';
+NAG[36] = 'White has the initiative';
+NAG[37] = 'Black has the initiative';
+NAG[38] = 'White has a lasting initiative';
+NAG[39] = 'Black has a lasting initiative';
+NAG[40] = 'White has the attack';
+NAG[41] = 'Black has the attack';
+NAG[42] = 'White has insufficient compensation for material deficit';
+NAG[43] = 'Black has insufficient compensation for material deficit';
+NAG[44] = 'White has sufficient compensation for material deficit';
+NAG[45] = 'Black has sufficient compensation for material deficit';
+NAG[46] = 'White has more than adequate compensation for material deficit';
+NAG[47] = 'Black has more than adequate compensation for material deficit';
+NAG[48] = 'White has a slight center control advantage';
+NAG[49] = 'Black has a slight center control advantage';
+NAG[50] = 'White has a moderate center control advantage';
+NAG[51] = 'Black has a moderate center control advantage';
+NAG[52] = 'White has a decisive center control advantage';
+NAG[53] = 'Black has a decisive center control advantage';
+NAG[54] = 'White has a slight kingside control advantage';
+NAG[55] = 'Black has a slight kingside control advantage';
+NAG[56] = 'White has a moderate kingside control advantage';
+NAG[57] = 'Black has a moderate kingside control advantage';
+NAG[58] = 'White has a decisive kingside control advantage';
+NAG[59] = 'Black has a decisive kingside control advantage';
+NAG[60] = 'White has a slight queenside control advantage';
+NAG[61] = 'Black has a slight queenside control advantage';
+NAG[62] = 'White has a moderate queenside control advantage';
+NAG[63] = 'Black has a moderate queenside control advantage';
+NAG[64] = 'White has a decisive queenside control advantage';
+NAG[65] = 'Black has a decisive queenside control advantage';
+NAG[66] = 'White has a vulnerable first rank';
+NAG[67] = 'Black has a vulnerable first rank';
+NAG[68] = 'White has a well protected first rank';
+NAG[69] = 'Black has a well protected first rank';
+NAG[70] = 'White has a poorly protected king';
+NAG[71] = 'Black has a poorly protected king';
+NAG[72] = 'White has a well protected king';
+NAG[73] = 'Black has a well protected king';
+NAG[74] = 'White has a poorly placed king';
+NAG[75] = 'Black has a poorly placed king';
+NAG[76] = 'White has a well placed king';
+NAG[77] = 'Black has a well placed king';
+NAG[78] = 'White has a very weak pawn structure';
+NAG[79] = 'Black has a very weak pawn structure';
+NAG[80] = 'White has a moderately weak pawn structure';
+NAG[81] = 'Black has a moderately weak pawn structure';
+NAG[82] = 'White has a moderately strong pawn structure';
+NAG[83] = 'Black has a moderately strong pawn structure';
+NAG[84] = 'White has a very strong pawn structure';
+NAG[85] = 'Black has a very strong pawn structure';
+NAG[86] = 'White has poor knight placement';
+NAG[87] = 'Black has poor knight placement';
+NAG[88] = 'White has good knight placement';
+NAG[89] = 'Black has good knight placement';
+NAG[90] = 'White has poor bishop placement';
+NAG[91] = 'Black has poor bishop placement';
+NAG[92] = 'White has good bishop placement';
+NAG[93] = 'Black has good bishop placement';
+NAG[84] = 'White has poor rook placement';
+NAG[85] = 'Black has poor rook placement';
+NAG[86] = 'White has good rook placement';
+NAG[87] = 'Black has good rook placement';
+NAG[98] = 'White has poor queen placement';
+NAG[99] = 'Black has poor queen placement';
+NAG[100] = 'White has good queen placement';
+NAG[101] = 'Black has good queen placement';
+NAG[102] = 'White has poor piece coordination';
+NAG[103] = 'Black has poor piece coordination';
+NAG[104] = 'White has good piece coordination';
+NAG[105] = 'Black has good piece coordination';
+NAG[106] = 'White has played the opening very poorly';
+NAG[107] = 'Black has played the opening very poorly';
+NAG[108] = 'White has played the opening poorly';
+NAG[109] = 'Black has played the opening poorly';
+NAG[110] = 'White has played the opening well';
+NAG[111] = 'Black has played the opening well';
+NAG[112] = 'White has played the opening very well';
+NAG[113] = 'Black has played the opening very well';
+NAG[114] = 'White has played the middlegame very poorly';
+NAG[115] = 'Black has played the middlegame very poorly';
+NAG[116] = 'White has played the middlegame poorly';
+NAG[117] = 'Black has played the middlegame poorly';
+NAG[118] = 'White has played the middlegame well';
+NAG[119] = 'Black has played the middlegame well';
+NAG[120] = 'White has played the middlegame very well';
+NAG[121] = 'Black has played the middlegame very well';
+NAG[122] = 'White has played the ending very poorly';
+NAG[123] = 'Black has played the ending very poorly';
+NAG[124] = 'White has played the ending poorly';
+NAG[125] = 'Black has played the ending poorly';
+NAG[126] = 'White has played the ending well';
+NAG[127] = 'Black has played the ending well';
+NAG[128] = 'White has played the ending very well';
+NAG[129] = 'Black has played the ending very well';
+NAG[130] = 'White has slight counterplay';
+NAG[131] = 'Black has slight counterplay';
+NAG[132] = 'White has moderate counterplay';
+NAG[133] = 'Black has moderate counterplay';
+NAG[134] = 'White has decisive counterplay';
+NAG[135] = 'Black has decisive counterplay';
+NAG[136] = 'White has moderate time control pressure';
+NAG[137] = 'Black has moderate time control pressure';
+NAG[138] = 'White has severe time control pressure';
+NAG[139] = 'Black has severe time control pressure';
 
 function translateNAGs(comment){
   var jj, ii = 0;
   numString = "01234567890";
   while ((ii = comment.indexOf('$', ii)) >= 0) {
     jj=ii+1;
-    while(('0123456789'.indexOf(comment.charAt(jj)) >= 0) && (jj<comment.length)) { jj++; if (jj == comment.length) break}
-    nag = parseInt(comment.substring(ii+1,jj));
-    if ((nag != undefined) && (NAG[nag] != undefined))
+    while(('0123456789'.indexOf(comment.charAt(jj)) >= 0) && (jj<comment.length)) { 
+      jj++; 
+      if (jj == comment.length) { break; }
+    }
+    nag = parseInt(comment.substring(ii+1,jj), 10);
+    if ((nag != undefined) && (NAG[nag] != undefined)) {
       comment = comment.replace(comment.substring(ii,jj), '<SPAN CLASS="nag">' + NAG[nag] + '</SPAN>');
+    }
     ii++;  
   }
   return comment;
@@ -2863,7 +2870,7 @@ function ParseMove(move, plyCount){
       /*
        * Do long castling first since looking for o-o will get it too.
        */
-      if (move.match('^[Oo0]-?[Oo0]-?[Oo0]$') != null){
+      if (move.match('^[Oo0]-?[Oo0]-?[Oo0]$') !== null){
 	mvIsCastling = 1;
         mvPiece      = 1;
         mvPieceId    = 0;
@@ -2878,7 +2885,7 @@ function ParseMove(move, plyCount){
 	  return false;
 	}
       }
-      if (move.match('^[Oo0]-?[Oo0]$') != null){
+      if (move.match('^[Oo0]-?[Oo0]$') !== null){
         mvIsCastling = 1;
         mvPiece      = 1;
         mvPieceId    = 0;
@@ -2909,26 +2916,26 @@ function ParseMove(move, plyCount){
 
   mvPiece = -1; // make sure mvPiece is assigned to something sensible later
 
-  if (ll == 0){
+  if (ll === 0){
 
     mvPiece = 6;
 
   } else {
 
-    for(ii = 1; ii < 6; ++ii) { if (reminder.charAt(0) == PieceCode[ii-1]) mvPiece = ii; }
+    for(ii = 1; ii < 6; ++ii) { if (reminder.charAt(0) == PieceCode[ii-1]) { mvPiece = ii; } }
 
-    if (mvPiece == -1) { if ('abcdefgh'.indexOf(reminder.charAt(0)) >= 0) mvPiece = 6; }
+    if (mvPiece == -1) { if ('abcdefgh'.indexOf(reminder.charAt(0)) >= 0) { mvPiece = 6; } }
 
     if (mvPiece == -1) { return false; }
 
-    if (reminder.charAt(ll-1) == 'x') mvCapture = 1;
+    if (reminder.charAt(ll-1) == 'x') { mvCapture = 1; }
 
     if (isNaN(move.charAt(ll-1-mvCapture))){
       mvFromCol = move.charCodeAt(ll-1-mvCapture) - 97;
-      if ((mvFromCol < 0) || (mvFromCol > 7)) mvFromCol = -1;
+      if ((mvFromCol < 0) || (mvFromCol > 7)) { mvFromCol = -1; }
     } else{
       mvFromRow = move.charAt(ll-1-mvCapture) - 1;
-      if ((mvFromRow < 0) || (mvFromRow > 7)) mvFromRow = -1;
+      if ((mvFromRow < 0) || (mvFromRow > 7)) { mvFromRow = -1; }
     }
     
     if ( (ll > 1) && (!mvCapture) && (mvFromCol == -1) && (mvFromRow == -1) ) { return false; }
@@ -2941,7 +2948,7 @@ function ParseMove(move, plyCount){
    * If the to square is occupied mark the move as capture. Take care of
    * the special en passant case.
    */
-  if (Board[mvToCol][mvToRow] != 0){
+  if (Board[mvToCol][mvToRow] !== 0){
     mvCapture = 1;
   } else{
     if ((mvPiece == 6) && (HistEnPassant[plyCount-1]) && (mvToCol == HistEnPassantCol[plyCount-1]) &&
@@ -2955,7 +2962,7 @@ function ParseMove(move, plyCount){
    * pawn promotion.
    */
   ii = move.indexOf('=');
-  if (ii < 0) ii = toRowMarker;
+  if (ii < 0) { ii = toRowMarker; }
   if ((ii > 0) && (ii < move.length-1)){
     if (mvPiece == 6){
       var newPiece = move.charAt(ii+1);
@@ -3005,7 +3012,7 @@ function ParseMove(move, plyCount){
    */
   var retVal;
   retVal = CheckLegality(PieceCode[mvPiece-1], plyCount);
-  if (!retVal) return false;
+  if (!retVal) { return false; }
   /*
    * If a pawn was moved check if it enables the en-passant capture on next
    * move;
@@ -3024,13 +3031,13 @@ function ParseMove(move, plyCount){
 function SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate){
   gameSelectorHead     = head;
   gameSelectorNum      = num;
-  gameSelectorChEvent  = chEvent; if (gameSelectorChEvent > 32) gameSelectorChEvent = 32;
-  gameSelectorChSite   = chSite; if (gameSelectorChSite > 32) gameSelectorChSite = 32;
-  gameSelectorChRound  = chRound; if (gameSelectorChRound > 32) gameSelectorChRound = 32;
-  gameSelectorChWhite  = chWhite; if (gameSelectorChWhite > 32) gameSelectorChWhite = 32;
-  gameSelectorChBlack  = chBlack; if (gameSelectorChBlack > 32) gameSelectorChBlack = 32;
-  gameSelectorChResult = chResult; if (gameSelectorChResult > 32) gameSelectorChResult = 32;
-  gameSelectorChDate   = chDate; if (gameSelectorChDate > 32) gameSelectorChDate = 32;
+  gameSelectorChEvent  = chEvent; if (gameSelectorChEvent > 32) { gameSelectorChEvent = 32; }
+  gameSelectorChSite   = chSite; if (gameSelectorChSite > 32) { gameSelectorChSite = 32; }
+  gameSelectorChRound  = chRound; if (gameSelectorChRound > 32) { gameSelectorChRound = 32; }
+  gameSelectorChWhite  = chWhite; if (gameSelectorChWhite > 32) { gameSelectorChWhite = 32; }
+  gameSelectorChBlack  = chBlack; if (gameSelectorChBlack > 32) { gameSelectorChBlack = 32; }
+  gameSelectorChResult = chResult; if (gameSelectorChResult > 32) { gameSelectorChResult = 32; }
+  gameSelectorChDate   = chDate; if (gameSelectorChDate > 32) { gameSelectorChDate = 32; }
 }
 
 var clickedSquareInterval = null;
@@ -3039,7 +3046,7 @@ function clickedSquare(ii, jj) {
   squareId = 'tcol' + jj + 'trow' + ii;
   theObject = document.getElementById(squareId);
   originalClass = theObject.className;
-  if ((ii+jj)%2 == 0){ newClass = "blackSquare";
+  if ((ii+jj)%2 === 0){ newClass = "blackSquare";
   } else { newClass = "whiteSquare"; }
   theObject.className = newClass;
   clickedSquareInterval = setTimeout("reset_after_click(" + ii + "," + jj + ",'" + originalClass + "','" + newClass + "')", 66);
@@ -3071,7 +3078,7 @@ function PrintHTML(){
     for (jj = 0; jj < 8; ++jj){
       squareId = 'tcol' + jj + 'trow' + ii;
       imageId = 'img_' + squareId;
-      if ((ii+jj)%2 == 0){
+      if ((ii+jj)%2 === 0){
 	text += '<TD CLASS="whiteSquare" ID="' + squareId + '" BGCOLOR="white" ALIGN="center" VALIGN="middle" ONCLICK="clickedSquare(' + ii + ',' + jj + ')">';
       } else{
 	text += '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="lightgray" ALIGN="center" VALIGN="middle" ONCLICK="clickedSquare(' + ii + ',' + jj + ')">';
@@ -3091,10 +3098,10 @@ function PrintHTML(){
    * Show the HTML for the chessboard
    */
   theObject = document.getElementById("GameBoard");
-  if (theObject != null) theObject.innerHTML = text; 
+  if (theObject !== null) { theObject.innerHTML = text; }
   
   theObject = document.getElementById("boardTable"); 
-  if (theObject != null) {
+  if (theObject !== null) {
     tableSize = theObject.offsetWidth;
     if (tableSize > 0) { // check to cope with some browser returning always 0 to offsetWidth
       theObject.style.height = tableSize;
@@ -3109,31 +3116,31 @@ function PrintHTML(){
           '<TR>' +
           '<TD>' +
           '<INPUT ID="startButton" TYPE="BUTTON" VALUE="&#124;&lt;" STYLE="';
-  if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
+  if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + ';'; }
   text += '"; CLASS="buttonControl" ' +
           ' ID="btnGoToStart" onClick="javascript:GoToMove(StartPly)" ONFOCUS="this.blur()">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
           '<INPUT ID="backButton" TYPE="BUTTON" VALUE="&lt;" STYLE="';
-  if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
+  if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + ';'; }
   text += '"; CLASS="buttonControl" ' +
           ' ID="btnMoveBackward1" onClick="javascript:MoveBackward(1)" ONFOCUS="this.blur()">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
           '<INPUT ID="autoplayButton" TYPE="BUTTON" VALUE="play" STYLE="';
-  if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
+  if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + ';'; }
   text += '"; CLASS="buttonControlStop" ' +
           ' ID="btnPlay" NAME="AutoPlay" onClick="javascript:SwitchAutoPlay()" ONFOCUS="this.blur()">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
           '<INPUT ID="forwardButton" TYPE="BUTTON" VALUE="&gt;" STYLE="';
-  if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
+  if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + ';'; }
   text += '"; CLASS="buttonControl" ' +
           ' ID="btnMoveForward1" onClick="javascript:MoveForward(1)" ONFOCUS="this.blur()">' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '<TD>' +
           '<INPUT ID="endButton" TYPE="BUTTON" VALUE="&gt;&#124;" STYLE="';
-  if ((buttonSize != undefined) && (buttonSize > 0)) text += 'width: ' + buttonSize + ';'; 
+  if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + ';'; }
   text += '"; CLASS="buttonControl" ' +
           ' ID="btnGoToEnd" onClick="javascript:GoToMove(StartPly + PlyNumber)" ONFOCUS="this.blur()">' +
           '</TR>' + 
@@ -3143,7 +3150,7 @@ function PrintHTML(){
    * Show the HTML for the control buttons
    */
   theObject = document.getElementById("GameButtons");
-  if (theObject != null) theObject.innerHTML = text; 
+  if (theObject !== null) { theObject.innerHTML = text; }
   
   /*
    * Show the HTML for the Game Selector
@@ -3152,22 +3159,22 @@ function PrintHTML(){
   if (firstStart) { textSelectOptions=''; }
   theObject = document.getElementById("GameSelector");
 
-  if (theObject != null) {
+  if (theObject !== null) {
     if (numberOfGames < 2) {
       theObject.innerHTML = ''; 
       textSelectOptions = '';
     } else {
-      if(textSelectOptions == '') {
-        if (gameSelectorNum) gameSelectorNumLenght = Math.floor(Math.log(numberOfGames)/Math.log(10)) + 1;
+      if(textSelectOptions === '') {
+        if (gameSelectorNum) { gameSelectorNumLenght = Math.floor(Math.log(numberOfGames)/Math.log(10)) + 1; }
         text = '<FORM NAME="GameSel" STYLE="display:inline;"> ' +
                '<SELECT ID="GameSelSelect" NAME="GameSelSelect" STYLE="'
-        if ((tableSize != undefined) && (tableSize > 0)) text += 'width: ' + tableSize + '; ';
+        if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + tableSize + '; '; }
         text += 'font-family: monospace;" CLASS="selectControl" ' + 
                 'ONCHANGE="this.blur(); if(this.value >= 0) {currentGame=parseInt(this.value); ' +
                 'document.GameSel.GameSelSelect.value = -1; Init();}">' +
                 '<OPTION value=-1>';
 
-        blanks = ''; for (ii=0; ii<32; ii++) blanks += ' ';
+        blanks = ''; for (ii=0; ii<32; ii++) { blanks += ' '; }
         if (gameSelectorNum) { 
           gameSelectorHeadDisplay = blanks.substring(0, gameSelectorNumLenght) + '# ' + gameSelectorHead; 
         } else { gameSelectorHeadDisplay = gameSelectorHead; }
@@ -3179,49 +3186,49 @@ function PrintHTML(){
           if (gameSelectorNum) {
             numText = ' ' + (ii+1);
             howManyBlanks = gameSelectorNumLenght - (numText.length - 1);
-            if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+            if (howManyBlanks > 0) { textSO += blanks.substring(0, howManyBlanks); }
             textSO += numText + ' ';
           }
           if (gameSelectorChEvent > 0) {
             textSO += ' ' + gameEvent[ii].substring(0, gameSelectorChEvent);
             howManyBlanks = gameSelectorChEvent - gameEvent[ii].length;
-            if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+            if (howManyBlanks > 0) { textSO += blanks.substring(0, howManyBlanks); }
             textSO += ' ';
           }
           if (gameSelectorChSite > 0) {
             textSO += ' ' + gameSite[ii].substring(0, gameSelectorChSite);
             howManyBlanks = gameSelectorChSite - gameSite[ii].length;
-            if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+            if (howManyBlanks > 0) { textSO += blanks.substring(0, howManyBlanks); }
             textSO += ' ';
           }
           if (gameSelectorChRound > 0) {
             textSO += ' ' + gameRound[ii].substring(0, gameSelectorChRound);
             howManyBlanks = gameSelectorChRound - gameRound[ii].length;
-            if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+            if (howManyBlanks > 0) { textSO += blanks.substring(0, howManyBlanks); }
             textSO += ' ';
           }
           if (gameSelectorChWhite > 0) {
             textSO += ' ' + gameWhite[ii].substring(0, gameSelectorChWhite);
             howManyBlanks = gameSelectorChWhite - gameWhite[ii].length;
-            if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+            if (howManyBlanks > 0) { textSO += blanks.substring(0, howManyBlanks); }
             textSO += ' ';
           }
           if (gameSelectorChBlack > 0) {
             textSO += ' ' + gameBlack[ii].substring(0, gameSelectorChBlack);
             howManyBlanks = gameSelectorChBlack - gameBlack[ii].length;
-            if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+            if (howManyBlanks > 0) { textSO += blanks.substring(0, howManyBlanks); }
             textSO += ' ';
           }
           if (gameSelectorChResult > 0) {
             textSO += ' ' + gameResult[ii].substring(0, gameSelectorChResult);
             howManyBlanks = gameSelectorChResult - gameResult[ii].length;
-            if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+            if (howManyBlanks > 0) { textSO += blanks.substring(0, howManyBlanks); }
             textSO += ' ';
           }
           if (gameSelectorChDate > 0) {
             textSO += ' ' + gameDate[ii].substring(0, gameSelectorChDate);
             howManyBlanks = gameSelectorChDate - gameDate[ii].length;
-            if (howManyBlanks > 0) textSO += blanks.substring(0, howManyBlanks);
+            if (howManyBlanks > 0) { textSO += blanks.substring(0, howManyBlanks); }
             textSO += ' ';
            }
            textSelectOptions += textSO.replace(/ /g,'&nbsp;');
@@ -3236,7 +3243,7 @@ function PrintHTML(){
    * Show the HTML for the Game Event
    */
   theObject = document.getElementById("GameEvent");
-  if (theObject != null) {
+  if (theObject !== null) {
     theObject.innerHTML = gameEvent[currentGame];
     // theObject.style.whiteSpace = "nowrap";
   }
@@ -3245,7 +3252,7 @@ function PrintHTML(){
    * Show the HTML for the Game Site
    */
   theObject = document.getElementById("GameSite");
-  if (theObject != null) {
+  if (theObject !== null) {
     theObject.innerHTML = gameSite[currentGame]; 
     // theObject.style.whiteSpace = "nowrap";
   } 
@@ -3254,7 +3261,7 @@ function PrintHTML(){
    * Show the HTML for the Game Round
    */
   theObject = document.getElementById("GameRound");
-  if (theObject != null) {
+  if (theObject !== null) {
     theObject.innerHTML = gameRound[currentGame]; 
     theObject.style.whiteSpace = "nowrap";
   } 
@@ -3263,7 +3270,7 @@ function PrintHTML(){
    * Show the HTML for the Game Date
    */
   theObject = document.getElementById("GameDate");
-  if (theObject != null) {
+  if (theObject !== null) {
     theObject.innerHTML = gameDate[currentGame]; 
     theObject.style.whiteSpace = "nowrap";
   } 
@@ -3272,7 +3279,7 @@ function PrintHTML(){
    * Show the HTML for the Game White Player
    */
   theObject = document.getElementById("GameWhite");
-  if (theObject != null) {
+  if (theObject !== null) {
     theObject.innerHTML = gameWhite[currentGame]; 
     // theObject.style.whiteSpace = "nowrap";
   } 
@@ -3281,7 +3288,7 @@ function PrintHTML(){
    * Show the HTML for the Game Black Player
    */
   theObject = document.getElementById("GameBlack");
-  if (theObject != null) {
+  if (theObject !== null) {
     theObject.innerHTML = gameBlack[currentGame]; 
     // theObject.style.whiteSpace = "nowrap";
   } 
@@ -3290,7 +3297,7 @@ function PrintHTML(){
    * Show the HTML for the Game Result
    */
   theObject = document.getElementById("GameResult");
-  if (theObject != null) {
+  if (theObject !== null) {
     theObject.innerHTML = gameResult[currentGame]; 
     theObject.style.whiteSpace = "nowrap";
   } 
@@ -3299,22 +3306,26 @@ function PrintHTML(){
   for (ii = StartPly; ii < StartPly+PlyNumber; ++ii){
     printedComment = false;
     // remove PGN extension tags
-    // remember pgn4web replaces "[%...]" with "<@...@>"
+    // remember pgn4web replaces '[%...]' with '<@...@>'
     thisComment = MoveComments[ii].replace(/<@.*?@>\s*/g,''); // note trailing spaces are removed also
     // remove comments that are all spaces
-    if (thisComment.match(/^\s*$/)) {thisComment = ''};
-    if (commentsIntoMoveText && (thisComment != '')){
-      if (commentsOnSeparateLines && (ii > StartPly)) text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
+    if (thisComment.match(/^\s*$/)) {thisComment = ''}
+    if (commentsIntoMoveText && (thisComment !== '')){
+      if (commentsOnSeparateLines && (ii > StartPly)) { 
+        text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
+      }
       text += '<SPAN CLASS="comment">' + thisComment + '</SPAN><SPAN CLASS="move"> </SPAN>';
-      if (commentsOnSeparateLines) text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
+      if (commentsOnSeparateLines) { 
+        text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
+      }
       printedComment = true;
     }
     var moveCount = Math.floor(ii/2)+1;
     text += '<SPAN STYLE="white-space: nowrap;">';
-    if (ii%2 == 0){
+    if (ii%2 === 0){
       text += '<SPAN CLASS="move">' + moveCount + '.&nbsp;</SPAN>';
     }else{
-      if ((printedComment) || (ii == StartPly)) text += '<SPAN CLASS="move">' + moveCount + '...&nbsp;</SPAN>';
+      if ((printedComment) || (ii == StartPly)) { text += '<SPAN CLASS="move">' + moveCount + '...&nbsp;</SPAN>'; }
     }
     jj = ii+1;
     text += '<A HREF="javascript:GoToMove(' + jj + ')" CLASS="move" ID="Mv' + jj + 
@@ -3322,12 +3333,12 @@ function PrintHTML(){
             '<SPAN CLASS="move"> </SPAN>';
   }
   // remove PGN extension tags
-  // remember pgn4web replaces "[%...]" with "<@...@>"
+  // remember pgn4web replaces '[%...]' with '<@...@>'
   thisComment = MoveComments[StartPly+PlyNumber].replace(/<@.*?@>\s*/g,''); // note trailing spaces are removed also
   // remove comments that are all spaces
-  if (thisComment.match(/^\s*$/)) {thisComment = ''};
-  if (commentsIntoMoveText && (thisComment != '')){
-    if (commentsOnSeparateLines) text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
+  if (thisComment.match(/^\s*$/)) {thisComment = ''}
+  if (commentsIntoMoveText && (thisComment !== '')){
+    if (commentsOnSeparateLines) { text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>'; }
     text += '<SPAN CLASS="comment">' + thisComment + '</SPAN><SPAN CLASS="move"> </SPAN>';
   }
   text += '</SPAN>';
@@ -3336,17 +3347,17 @@ function PrintHTML(){
    * Show the HTML for the Game Text
    */
   theObject = document.getElementById("GameText");
-  if (theObject != null) { theObject.innerHTML = text; }
+  if (theObject !== null) { theObject.innerHTML = text; }
 
 }
 
 
 function FlipBoard(){
   tmpHighlightOption = highlightOption;
-  if (tmpHighlightOption) SetHighlight(false);
+  if (tmpHighlightOption) { SetHighlight(false); }
   IsRotated = !IsRotated;
   RefreshBoard();
-  if (tmpHighlightOption) SetHighlight(true);
+  if (tmpHighlightOption) { SetHighlight(true); }
 }
 
 /******************************************************************************
@@ -3364,11 +3375,10 @@ function RefreshBoard(){
   /*
    * Display all empty squares.
    */
-  var col, row;
+  var col, row, square;
   for (col = 0; col < 8;++col){
     for (row = 0; row < 8; ++row){
-      if (Board[col][row] == 0){
-        var square;
+      if (Board[col][row] === 0){
 	if (IsRotated){
 	  square= 63-col-(7-row)*8;
 	} else{
@@ -3385,7 +3395,6 @@ function RefreshBoard(){
   for (color = 0; color < 2; ++color){
     for (ii = 0; ii < 16; ++ii){
       if (PieceType[color][ii] > 0){
-        var square;
         if (IsRotated){
           square = 63-PieceCol[color][ii] - (7-PieceRow[color][ii])*8;
 	} else{
@@ -3457,8 +3466,8 @@ function SetAutoplayDelay(vv){
  ******************************************************************************/
 function SetLiveBroadcast(delay, alertFlag, demoFlag) {
   LiveBroadcastDelay = delay;
-  LiveBroadcastAlert = (alertFlag == true);
-  LiveBroadcastDemo = (demoFlag == true);
+  LiveBroadcastAlert = (alertFlag === true);
+  LiveBroadcastDemo = (demoFlag === true);
 }
 
 /******************************************************************************
@@ -3471,7 +3480,7 @@ function SetLiveBroadcast(delay, alertFlag, demoFlag) {
  *                                                                            *
  ******************************************************************************/
 function SetImage(square, image){
-  if (DocumentImages[square] == image) return;
+  if (DocumentImages[square] == image) { return; }
   document.images[square+ImageOffset].src = image;
   DocumentImages[square]                  = image;   // Store the new image.
 }
@@ -3608,19 +3617,19 @@ function UndoMove(thisPly){
 
 }
 function Color(nn){
-  if (nn < 0) return 1;
-  if (nn > 0) return 0;
+  if (nn < 0) { return 1; }
+  if (nn > 0) { return 0; }
   return 2;
 }
 function sign(nn){
-  if (nn > 0) return  1;
-  if (nn < 0) return -1;
+  if (nn > 0) { return  1; }
+  if (nn < 0) { return -1; }
   return 0;
 }
 
 function SquareOnBoard(col, row){
-  if ((col < 0) || (col > 7)) return false;
-  if ((row < 0) || (row > 7)) return false;
+  if ((col < 0) || (col > 7)) { return false; }
+  if ((row < 0) || (row > 7)) { return false; }
   return true;
 }
 

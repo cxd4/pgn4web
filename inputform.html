@@ -104,7 +104,7 @@ Next move: <span style="font-weight: bold" id="GameNextMove"></span>
 function new_start_pgn4web() {
   start_pgn4web();
   theObject = document.getElementById('GameSelSelect');
-  if (theObject != null) theObject.style.width = document.getElementById('pgnForm').offsetWidth - 20 - 230;
+  if (theObject !== null) { theObject.style.width = document.getElementById('pgnForm').offsetWidth - 20 - 230; }
 }
 
 function gup( name ){
@@ -113,13 +113,13 @@ function gup( name ){
   regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   var regex = new RegExp( regexS );
   var results = regex.exec( window.location.href );
-  if( results == null )    return "";
-  else    return results[1];
+  if( results === null ) { return ""; }
+  else { return results[1]; }
 } 
 
 newPgnText = gup("pgnText");
-if (newPgnText == "") { newPgnText = gup("pt"); }
-if (newPgnText != "") {
+if (newPgnText === "") { newPgnText = gup("pt"); }
+if (newPgnText !== "") {
   // remove URL escape chars such as %20 replaced by space
   newPgnText = decodeURIComponent(newPgnText);
 
