@@ -293,6 +293,19 @@ in quotes as supported by the proposed PGN extension) or the sequence "@>"
 Please email me for review any PGN file that pgn4web fails parsing correctly. 
 
 
+JAVASCRIPT CODING
+
+As of pgn4web version 1.72, the pgn4web.js code is checked with the lint
+tool (see online version at http://www.javascriptlint.com/online_lint.php).
+Plase note that warnings "lint warning: increment (++) and decrement (--) 
+operators used as part of greater statement" are ignored.
+Lint validation should allow for easy compression of the javascript code,
+for instance using http://javascriptcompressor.com/ 
+Although a compression beyond 50% can be achieved, only the uncompressed
+version is distributed, but if you want to use a compressed version on your
+site, the pgn4web.js code should support it.
+
+
 CREDITS AND LICENSE
 
 javascript modifications of Paolo Casaschi (pgn4web@casaschi.net) on code 
