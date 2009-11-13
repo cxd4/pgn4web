@@ -2634,11 +2634,13 @@ function ParsePGNGameString(gameString){
         end2 = ss.indexOf('?',start); if ((end2 > 0) && (end2 < end)) { end = end2; }
         if (end < 0) { end = ss.length; }
         move = ss.substring(start,end);
-        Moves[StartPly+PlyNumber] = ClearMove(move);
+        Moves[StartPly+PlyNumber] = ClearMove(move); 
         if (ss.charAt(end) == ' ') { start = end; } 
         else { start = end - 1; }
-        PlyNumber++;
-        MoveComments[StartPly+PlyNumber]='';
+        if (Moves[StartPly+PlyNumber] !== "") { // takes into account odd cased of misformed PGN data
+          PlyNumber++;
+          MoveComments[StartPly+PlyNumber]='';
+        }
         break;
     }
   }
