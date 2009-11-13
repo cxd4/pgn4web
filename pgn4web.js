@@ -782,7 +782,7 @@ DocumentImages = new Array();
 
 var pgnHeaderTagRegExp       = /\[\s*(\w+)\s*\"([^\"]*)\"\s*\]/;
 var pgnHeaderTagRegExpGlobal = /\[\s*(\w+)\s*\"([^\"]*)\"\s*\]/g;
-var dummyPgnHEader = '[x""]';
+var dummyPgnHeader = '[x""]';
 var emptyPgnHeader = '[White ""]\n[Black ""]\n[Result ""]\n[Date ""]\n[Event ""]\n[Site ""]\n[Round ""]\n';
 var templatePgnHeader = '[White "?"]\n[Black "?"]\n[Result "?"]\n[Date "?"]\n[Event "?"]\n[Site "?"]\n[Round "?"]\n';
 
@@ -1392,7 +1392,7 @@ function pgnGameFromPgnText(pgnText){
   for(ii in lines){
 
     // allows for dummy header '[]' at the beginning of a line
-    lines[ii] = lines[ii].replace(/^\s*\[\]/, dummyPgnHEader);
+    lines[ii] = lines[ii].replace(/^\s*\[\]/, dummyPgnHeader);
 
     // according to the PGN standard lines starting with % should be ignored
     if(lines[ii].charAt(0) == '%') { continue; }
