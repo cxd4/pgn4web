@@ -27,7 +27,7 @@
 // SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
 // SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are also accepted
 // SetInitialHalfmove(0,false); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default)
-   SetShortcutKeysEnabled(false);
+   SetShortcutKeysEnabled(true);
 </script>
 
 </head>
@@ -101,10 +101,21 @@ Next move: <span style="font-weight: bold" id="GameNextMove"></span>
   new_start_pgn4web(); 
 ">
 <br>
-<textarea id="pgnForm" rows=11 cols=80></textarea>
+<textarea id="pgnForm" rows=11 cols=80 onFocus="onTextFocus();" onBlur="onTextBlur();"></textarea>
 </form>
 
 <script>
+
+keysWereEnabled = true; 
+function onTextFocus() {
+  if ((keysWereEnabled = shortcutKeysEnabled) === true) {
+    SetShortcutKeysEnabled(false);
+  }
+}
+
+function onTextBlur() {
+  if (keysWereEnabled === true) { SetShortcutKeysEnabled(true); }
+}
 
 function new_start_pgn4web() {
   start_pgn4web();
