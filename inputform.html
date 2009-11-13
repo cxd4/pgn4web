@@ -93,6 +93,11 @@ Next move: <span style="font-weight: bold" id="GameNextMove"></span>
 <input id=pgnButton type=button value="show games from PGN text box" onClick="javascript: 
   firstStart = true;
   document.getElementById('pgnText').innerHTML = document.getElementById('pgnForm').value;
+  document.getElementById('pgnText').innerHTML = document.getElementById('pgnText').innerHTML.replace(/\[/g,'\n\n[');
+  document.getElementById('pgnText').innerHTML = document.getElementById('pgnText').innerHTML.replace(/\]/g,']\n\n');
+  document.getElementById('pgnText').innerHTML = document.getElementById('pgnText').innerHTML.replace(/([012\*])([\s]*)(\[)/g,'$1\n\n$3');
+  document.getElementById('pgnText').innerHTML = document.getElementById('pgnText').innerHTML.replace(/\]([\s]*)\[/g,']\n[');
+  document.getElementById('pgnText').innerHTML = document.getElementById('pgnText').innerHTML.replace(/^([\s]*)\[/g,'[');
   new_start_pgn4web(); 
 ">
 <br>
@@ -132,7 +137,6 @@ if (newPgnText !== "") {
 
   document.getElementById('pgnText').innerHTML = newPgnText;
   document.getElementById('pgnForm').value = newPgnText;
-
   window.onload = new_start_pgn4web;
 }
 document.getElementById('pgnButton').style.width = document.getElementById('pgnForm').offsetWidth;

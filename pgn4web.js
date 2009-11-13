@@ -632,7 +632,6 @@ function displayDebugInfo() {
   alert(debugInfo);
 }
 
-
 var pgnGame = new Array();
 var numberOfGames = -1; 
 var currentGame   = -1;
@@ -781,9 +780,11 @@ ClearImg  = new Image();
 
 DocumentImages = new Array();
 
+var pgnHeaderTagRegExp       = /\[\s*(\w+)\s*\"([^\"]*)\"\s*\]/;
+var pgnHeaderTagRegExpGlobal = /\[\s*(\w+)\s*\"([^\"]*)\"\s*\]/g;
+var dummyPgnHEader = '[x""]';
 var emptyPgnHeader = '[White ""]\n[Black ""]\n[Result ""]\n[Date ""]\n[Event ""]\n[Site ""]\n[Round ""]\n';
 var templatePgnHeader = '[White "?"]\n[Black "?"]\n[Result "?"]\n[Date "?"]\n[Event "?"]\n[Site "?"]\n[Round "?"]\n';
-
 
 var gameSelectorHead      = 'Select a game...';
 var gameSelectorMono      = true;
@@ -1124,13 +1125,12 @@ function SetInitialGame(number){
 }
 
 // the clock value is detected with two options: first the DGT sequence [%clk 01:02] 
-// is checked (remember though that pgn4web has replaced '[%xxx]' with '<@xxx@>'). 
+// is checked. 
 // If this fails, then look for the beginning of the comment for a sequence of numbers 
 // and ':' and '.' characters.
   
 function clockFromComment(comment){
-  // remember pgn4web replaces '[%...]' with '<@...@>'
-  if ((DGTclock = comment.match(/<@clk\s*(.*?)@>/)) !== null) { clock = DGTclock[1]; }
+  if ((DGTclock = comment.match(/\[%clk\s*(.*?)\]/)) !== null) { clock = DGTclock[1]; }
   else { if (!(clock = comment.match(/^\s*[0-9:\.]+/))) {clock = ""; } }
   return clock;
 }
@@ -1165,8 +1165,7 @@ function HighlightLastMove(){
   if (theShowCommentTextObject !== null) {
     if (MoveComments[showThisMove+1] != undefined) {
       // remove PGN extension tags
-      // remember pgn4web replaces '[%...]' with '<@...@>'
-      thisComment = MoveComments[showThisMove+1].replace(/<@.*?@>\s*/g,''); // note trailing spaces are removed also
+      thisComment = MoveComments[showThisMove+1].replace(/\[%.*?\]\s*/g,''); // note trailing spaces are removed also
       // remove comments that are all spaces
       if (thisComment.match(/^\s*$/)) { thisComment = ''; }
     } else {
@@ -1385,11 +1384,6 @@ function highlightSquare(col, row, on) {
  ******************************************************************************/
 function pgnGameFromPgnText(pgnText){
 
-  // in order to cope with DGT clock extensions to PGN like {[%command value]} and considering the pgn4web bug with square brackets in the PGN text, any sequence "[%xxx]" is replaced by '<@xxx@>'.
-  // remember pgn4web replaces '[%...]' with '<@...@>'
-  // note that strictly the '+' is the regular expression should not be there, but this accomodates with erroneus repeat characters like '[[[%%command parameter]]'
-  pgnText = pgnText.replace(/\[+%+(.*?)\]+/g, "<@$1@>");
-
   lines=pgnText.split("\n");
   inGameHeader = false;
   inGameBody = false;
@@ -1397,10 +1391,12 @@ function pgnGameFromPgnText(pgnText){
   pgnGame.length = 0;
   for(ii in lines){
 
+    // allows for dummy header '[]' at the beginning of a line
+    lines[ii] = lines[ii].replace(/^\s*\[\]/, dummyPgnHEader);
+
     // according to the PGN standard lines starting with % should be ignored
     if(lines[ii].charAt(0) == '%') { continue; }
-
-    if(lines[ii].indexOf('[') >= 0){
+    if(lines[ii].match(pgnHeaderTagRegExp) !== null){ 
       if(! inGameHeader){
         gameIndex++;
         pgnGame[gameIndex] = '';
@@ -1685,7 +1681,7 @@ function createBoard(){
   if ( document.getElementById("pgnText") ) {
     tmpText = document.getElementById("pgnText").innerHTML;
     // if no html header is present, add emptyPgnHeader at the top
-    if (tmpText.indexOf(']') < 0) { tmpText = emptyPgnHeader + tmpText; }
+    if (tmpText.match(pgnHeaderTagRegExp) === null) { tmpText = emptyPgnHeader + tmpText; }
     // fixes issue with some browser removing \n from innerHTML
     if (tmpText.indexOf('\n') < 0) { tmpText = tmpText.replace(/((\[[^\[\]]*\]\s*)+)/g, "\n$1\n"); }
     // fixes issue with some browser replacing quotes with &quot;
@@ -2202,7 +2198,7 @@ function checkHeaderDefined(headerValue) {
  ******************************************************************************/
 function LoadGameHeaders(){
   var ii;
-  var tag = /\[(\w+)\s+\"([^\"]+)\"\]/g;
+  var tag = pgnHeaderTagRegExpGlobal;
   /*
    * Initialize the global arrays to the number of games length.
    */
@@ -2482,11 +2478,10 @@ function OpenGame(gameId){
 function ParsePGNGameString(gameString){
 
   var ss      = gameString;
-  var lastKet = ss.lastIndexOf(']');
   /*
    * Get rid of the PGN tags and remove the result at the end. 
    */
-  ss = ss.substring(++lastKet, ss.length);
+  ss = ss.replace(pgnHeaderTagRegExpGlobal, ""); 
 // ss = ss.replace(/\s+/g, ' ');
   ss = ss.replace(/^\s/, '');
 //  ss = ss.replace(/1-0/, '');
@@ -2648,8 +2643,7 @@ function ParsePGNGameString(gameString){
     }
   }
   for (ii=StartPly; ii<=PlyNumber; ii++) {
-    // remember pgn4web replaces '[%...]' with '<@...@>'
-    pgn4webCommentTmp = MoveComments[ii].match(/<@pgn4web\s*(.*?)@>/);
+    pgn4webCommentTmp = MoveComments[ii].match(/\[%pgn4web\s*(.*?)\]/);
     if (pgn4webCommentTmp) { pgn4webMoveComments[ii] = pgn4webCommentTmp[1]; } 
     else { pgn4webMoveComments[ii] = ""; }
     MoveComments[ii] = translateNAGs(MoveComments[ii]);
@@ -3306,8 +3300,7 @@ function PrintHTML(){
   for (ii = StartPly; ii < StartPly+PlyNumber; ++ii){
     printedComment = false;
     // remove PGN extension tags
-    // remember pgn4web replaces '[%...]' with '<@...@>'
-    thisComment = MoveComments[ii].replace(/<@.*?@>\s*/g,''); // note trailing spaces are removed also
+    thisComment = MoveComments[ii].replace(/\[%.*?\]\s*/g,''); // note trailing spaces are removed also
     // remove comments that are all spaces
     if (thisComment.match(/^\s*$/)) { thisComment = ''; }
     if (commentsIntoMoveText && (thisComment !== '')){
@@ -3333,8 +3326,7 @@ function PrintHTML(){
             '<SPAN CLASS="move"> </SPAN>';
   }
   // remove PGN extension tags
-  // remember pgn4web replaces '[%...]' with '<@...@>'
-  thisComment = MoveComments[StartPly+PlyNumber].replace(/<@.*?@>\s*/g,''); // note trailing spaces are removed also
+  thisComment = MoveComments[StartPly+PlyNumber].replace(/\[%.*?\]\s*/g,''); // note trailing spaces are removed also
   // remove comments that are all spaces
   if (thisComment.match(/^\s*$/)) { thisComment = ''; }
   if (commentsIntoMoveText && (thisComment !== '')){
