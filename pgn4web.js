@@ -156,8 +156,12 @@ function handlekey(e) {
 
   if (e.shiftKey) {
     // shift key + escape (27) toogle the usage of shortcut keys 
-    if (keycode == keyToggleKey) { SetShortcutKeysEnabled(!shortcutKeysEnabled); }
-    else { return; }
+    if (keycode == keyToggleKey) { 
+      SetShortcutKeysEnabled(!shortcutKeysEnabled);
+      if (shortcutKeysEnabled) { alert ("pgn4web shortcut key now enabled"); }
+      else { alert("pgn4web shortcut key now disabled"); }
+    }
+    return; 
   }
 
   // escape is always enabled to show help
