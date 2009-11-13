@@ -50,10 +50,11 @@ Limitations:
   more in the same view)
 
 Bugs: 
-- if square brackets are present in the comments (or the game text) then 
-the game parsing is broken. If your PGN file is not displayed properly,
-please check for characters "[" and "]" in the comments and try removing 
-them. Please email me for review at pgn4web@casaschi.net any PGN file that 
+- if square brackets are present in the comments (or the game text) in a
+pattern similar to the PGN header pattern '[tag "value"]' then the game 
+parsing might break. If your PGN file is not displayed properly, please 
+check for characters "[" and "]" in the comments and try removing them. 
+Please email me for review at pgn4web@casaschi.net any PGN file that 
 pgn4web fails parsing correctly.  
 
 Enjoy!
@@ -266,9 +267,10 @@ http://www.tim-mann.org/Standard). Notable exceptions and limitations:
 
 - variations are not parsed as such, but stored as comments; support for 
 browsing variations is planned for a future release
-- if square brackets are present in the comments (or the game text) then 
-the game parsing is broken. If your PGN file is not displayed properly, 
-please check for characters "[" and "]" and try removing them. 
+- if square brackets are present in the comments (or the game text) in a
+pattern similar to the PGN header pattern '[tag "value"]' then the game 
+parsing might break. If your PGN file is not displayed properly, please
+check for characters "[" and "]" in the comments and try removing them.
 - only pieces initials in the English language are supported, the use of
 alternative languages as specified by the PGN standard is not supported
 (pgn4web can however display chess moves text using figurine notation, so
