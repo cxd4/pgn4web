@@ -1682,7 +1682,7 @@ function createBoard(){
     tmpText = document.getElementById("pgnText").innerHTML;
     // fixes issue with some browser removing \n from innerHTML
     if (tmpText.indexOf('\n') < 0) { tmpText = tmpText.replace(/((\[[^\[\]]*\]\s*)+)/g, "\n$1\n"); }
-    // fixes issue with some browser replacing quotes with &quot;
+    // fixes issue with some browser replacing quotes with &quot; such as the blackberry browser
     if (tmpText.indexOf('"') < 0) { tmpText = tmpText.replace(/(&quot;)/g, '"'); }
     // if no html header is present, add emptyPgnHeader at the top
     if (pgnHeaderTagRegExp.test(tmpText) === false) { tmpText = emptyPgnHeader + tmpText; }
