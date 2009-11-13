@@ -1391,8 +1391,8 @@ function pgnGameFromPgnText(pgnText){
   pgnGame.length = 0;
   for(ii in lines){
 
-    // allows for dummy header '[]' at the beginning of a line
-    lines[ii] = lines[ii].replace(/^\s*\[\]/, dummyPgnHeader);
+//    // allows for dummy header '[]' at the beginning of a line
+//    lines[ii] = lines[ii].replace(/^\s*\[\]/, dummyPgnHeader);
 
     // according to the PGN standard lines starting with % should be ignored
     if(lines[ii].charAt(0) == '%') { continue; }
