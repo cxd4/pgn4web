@@ -100,7 +100,7 @@ function displayHelp(section){
   if (shortcutKeysEnabled) { keysParameter = "&keysEnabled=true"; }
   else { keysParameter = "&keysEnabled=false"; }
   helpWin = window.open(detectHelpLocation() + "?" + versionParameter + keysParameter + sectionFlag, "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
-  if (window.focus) { helpWin.focus(); }
+  if ((helpWin !== null) && (window.focus)) { helpWin.window.focus(); }
 }
 
 
@@ -143,24 +143,22 @@ function stopKeyPropagation(e) {
 }
 
 var shortcutKeysEnabled = true;
-var firstStepKeyToggle = false;
 function handlekey(e) { 
   var keycode;
-  var firstStepKeyToggleKey = 16; // shift
-  var secondStepKeyToggleKey = 27; // escape
+  var keyToggleKey = 27; // escape
 
   if (!e) { e = window.event; }
+
   keycode = e.keyCode;
-  
   //myAlert(keycode);
 
-  // shift key (keycode 16) followed by escape (27) toogle the usage of shortcut keys 
-  if ((keycode == secondStepKeyToggleKey) && (firstStepKeyToggle)) {
-    firstStepKeyToggle = false;
-    SetShortcutKeysEnabled(!shortcutKeysEnabled);
+  if (e.altKey || e.ctrlKey) { return; }
+
+  if (e.shiftKey) {
+    // shift key + escape (27) toogle the usage of shortcut keys 
+    if (keycode == keyToggleKey) { SetShortcutKeysEnabled(!shortcutKeysEnabled); }
+    else { return; }
   }
-  if (keycode == firstStepKeyToggleKey) { firstStepKeyToggle = true; }
-  else { firstStepKeyToggle = false; }
 
   // escape is always enabled to show help
   if ((keycode != 27) && (shortcutKeysEnabled === false)) { return; }
