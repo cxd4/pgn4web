@@ -2219,8 +2219,6 @@ function LoadGameHeaders(){
    */
   for (ii = 0; ii < numberOfGames; ++ii){
     var ss      = pgnGame[ii];
-    var lastKet = ss.lastIndexOf(']');
-    var header  = ss.substring(0, ++lastKet);
     var parse;
     gameEvent[ii] = "";
     gameSite[ii] = "";
