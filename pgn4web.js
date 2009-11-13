@@ -780,8 +780,8 @@ ClearImg  = new Image();
 
 DocumentImages = new Array();
 
-var pgnHeaderTagRegExp       = /\[\s*(\w+)\s*\"([^\"]*)\"\s*\]/;
-var pgnHeaderTagRegExpGlobal = /\[\s*(\w+)\s*\"([^\"]*)\"\s*\]/g;
+var pgnHeaderTagRegExp       = /\[\s*(\w+)\s*"([^"]*)"\s*\]/;
+var pgnHeaderTagRegExpGlobal = /\[\s*(\w+)\s*"([^"]*)"\s*\]/g;
 var dummyPgnHeader = '[x""]';
 var emptyPgnHeader = '[White ""]\n[Black ""]\n[Result ""]\n[Date ""]\n[Event ""]\n[Site ""]\n[Round ""]\n';
 var templatePgnHeader = '[White "?"]\n[Black "?"]\n[Result "?"]\n[Date "?"]\n[Event "?"]\n[Site "?"]\n[Round "?"]\n';
@@ -1396,7 +1396,7 @@ function pgnGameFromPgnText(pgnText){
 
     // according to the PGN standard lines starting with % should be ignored
     if(lines[ii].charAt(0) == '%') { continue; }
-    if(lines[ii].match(pgnHeaderTagRegExp) !== null){ 
+    if(pgnHeaderTagRegExp.test(lines[ii]) === true){ 
       if(! inGameHeader){
         gameIndex++;
         pgnGame[gameIndex] = '';
@@ -1680,12 +1680,12 @@ function createBoard(){
   
   if ( document.getElementById("pgnText") ) {
     tmpText = document.getElementById("pgnText").innerHTML;
-    // if no html header is present, add emptyPgnHeader at the top
-    if (tmpText.match(pgnHeaderTagRegExp) === null) { tmpText = emptyPgnHeader + tmpText; }
     // fixes issue with some browser removing \n from innerHTML
     if (tmpText.indexOf('\n') < 0) { tmpText = tmpText.replace(/((\[[^\[\]]*\]\s*)+)/g, "\n$1\n"); }
     // fixes issue with some browser replacing quotes with &quot;
-    if (tmpText.indexOf('"') < 0) { tmpText = tmpText.replace(/(&quot;)/g, "\""); }
+    if (tmpText.indexOf('"') < 0) { tmpText = tmpText.replace(/(&quot;)/g, '"'); }
+    // if no html header is present, add emptyPgnHeader at the top
+    if (pgnHeaderTagRegExp.test(tmpText) === false) { tmpText = emptyPgnHeader + tmpText; }
 
     if ( pgnGameFromPgnText(tmpText) ) {
       Init(); 
@@ -2198,7 +2198,6 @@ function checkHeaderDefined(headerValue) {
  ******************************************************************************/
 function LoadGameHeaders(){
   var ii;
-  var tag = pgnHeaderTagRegExpGlobal;
   /*
    * Initialize the global arrays to the number of games length.
    */
@@ -2229,7 +2228,7 @@ function LoadGameHeaders(){
     gameDate[ii] = "";
     gameInitialWhiteClock[ii] = "";
     gameInitialBlackClock[ii] = "";
-    while ((parse = tag.exec(ss)) !== null){
+    while ((parse = pgnHeaderTagRegExpGlobal.exec(ss)) !== null){
       if (parse[1] == 'Event'){
 	gameEvent[ii]  = parse[2];
       } else if  (parse[1] == 'Site'){
@@ -2479,7 +2478,7 @@ function ParsePGNGameString(gameString){
   /*
    * Get rid of the PGN tags and remove the result at the end. 
    */
-  ss = ss.replace(pgnHeaderTagRegExpGlobal, ""); 
+  ss = ss.replace(pgnHeaderTagRegExpGlobal, ''); 
 // ss = ss.replace(/\s+/g, ' ');
   ss = ss.replace(/^\s/, '');
 //  ss = ss.replace(/1-0/, '');
