@@ -29,7 +29,7 @@
  *        SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
  *        SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are also acceptted
  *        SetInitialHalfmove(0,false); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default)
- *        SetShortcutKeysEnabled(true);
+ *        SetShortcutKeysEnabled(false);
  *
  *        SetLiveBroadcast(0.25, true, true); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false)
  *      </script>
@@ -74,7 +74,7 @@
 // SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
 // SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are also accepted
 // SetInitialHalfmove(0,false); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default).
-// SetShortcutKeysEnabled(true);
+// SetShortcutKeysEnabled(false);
 
 
 /*********************************************************************/
@@ -143,7 +143,7 @@ function stopKeyPropagation(e) {
   return false;
 }
 
-var shortcutKeysEnabled = true;
+var shortcutKeysEnabled = false;
 function handlekey(e) { 
   var keycode;
   var keyToggleKey = 27; // escape
