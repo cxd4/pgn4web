@@ -137,9 +137,10 @@ function myAlert(msg) {
 }
 
 function stopKeyPropagation(e) {
-  	e.cancelBubble = true;
-	if (e.stopPropagation) { e.stopPropagation(); }
-        if (e.preventDefault) { e.preventDefault(); }
+  e.cancelBubble = true;
+  if (e.stopPropagation) { e.stopPropagation(); }
+  if (e.preventDefault) { e.preventDefault(); }
+  return false;
 }
 
 var shortcutKeysEnabled = true;
@@ -152,7 +153,7 @@ function handlekey(e) {
   keycode = e.keyCode;
   //myAlert(keycode);
 
-  if (e.altKey || e.ctrlKey || e.metaKey) { return; }
+  if (e.altKey || e.ctrlKey || e.metaKey) { return true; }
 
   if (e.shiftKey) {
     // shift key + escape (27) toogle the usage of shortcut keys 
@@ -160,12 +161,14 @@ function handlekey(e) {
       SetShortcutKeysEnabled(!shortcutKeysEnabled);
       if (shortcutKeysEnabled) { alert ("pgn4web shortcut keys now enabled"); }
       else { alert("pgn4web shortcut keys now disabled"); }
+      return false; 
+    } else {
+      return true;
     }
-    return; 
   }
 
   // escape is always enabled to show help
-  if ((keycode != 27) && (shortcutKeysEnabled === false)) { return; }
+  if ((keycode != 27) && (shortcutKeysEnabled === false)) { return true; }
 
   switch(keycode)
   {
@@ -184,171 +187,172 @@ function handlekey(e) {
     case 46:  // delete
     case 92:  // super
     case 93:  // menu
+      return true;
       break;
 
     case 90: // z
       window.open(project_url); 
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 37:  // left arrow  
     case 74:  // k
       MoveBackward(1);
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 38:  // up arrow
     case 72:  // h
       GoToMove(StartPly);
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 39:  // right arrow
     case 75:  // k
       MoveForward(1);
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 40:  // down arrow
     case 76:  // l
       GoToMove(StartPly + PlyNumber);
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 85:  // u
       MoveToPrevComment();
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 73:  // i
       MoveToNextComment();
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 65:  // a
       MoveForward(1);
       SetAutoPlay(true);
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 48:  // 0
     case 83:  // s
       SetAutoPlay(false);
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 49:  // 1
       MoveForward(1);
       SetAutoplayDelay( 1*1000);
       SetAutoPlay(true);
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 50:  // 2
       MoveForward(1);
       SetAutoplayDelay( 2*1000);
       SetAutoPlay(true);
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 51:  // 3
       MoveForward(1);
       SetAutoplayDelay( 3*1000);
       SetAutoPlay(true);
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 52:  // 4
       MoveForward(1);
       SetAutoplayDelay( 4*1000);
       SetAutoPlay(true);
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 53:  // 5
       MoveForward(1);
       SetAutoplayDelay( 5*1000);
       SetAutoPlay(true);
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 54:  // 6
       MoveForward(1);
       SetAutoplayDelay( 6*1000);
       SetAutoPlay(true);
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 55:  // 7
       MoveForward(1);
       SetAutoplayDelay( 7*1000);
       SetAutoPlay(true);
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 56:  // 8
       MoveForward(1);
       SetAutoplayDelay( 8*1000);
       SetAutoPlay(true);
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 57:  // 9
       MoveForward(1);
       SetAutoplayDelay( 9*1000);
       SetAutoPlay(true);
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 81:  // q
       MoveForward(1);
       SetAutoplayDelay(10*1000);
       SetAutoPlay(true);
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 87:  // w
       MoveForward(1);
       SetAutoplayDelay(20*1000);
       SetAutoPlay(true);
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 69:  // e
       MoveForward(1);
       SetAutoplayDelay(30*1000);
       SetAutoPlay(true);
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 82:  // r
       pauseLiveBroadcast();
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 84:  // t
       refreshPgnSource();
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 89:  // y
       resumeLiveBroadcast();
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 70:  // f
       FlipBoard();
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 71:  // g
       SetHighlight(!highlightOption);
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 68:  // d
       if (IsRotated) { FlipBoard(); }
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 88: // x
@@ -357,7 +361,7 @@ function handlekey(e) {
         Init();
         GoToMove(StartPly + Math.floor(Math.random()*(StartPly + PlyNumber + 1)));
       }
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 67: // c
@@ -365,7 +369,7 @@ function handlekey(e) {
         currentGame = Math.floor(Math.random()*numberOfGames);
         Init();
       }
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 86:  // v
@@ -373,7 +377,7 @@ function handlekey(e) {
 	currentGame = 0;
         Init();
       }
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 66:  // b
@@ -381,7 +385,7 @@ function handlekey(e) {
         currentGame--;
         Init();
       }
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 78:  // n
@@ -389,7 +393,7 @@ function handlekey(e) {
         currentGame++;
         Init();
       }
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 77:  // m
@@ -397,30 +401,31 @@ function handlekey(e) {
         currentGame = numberOfGames - 1;
         Init();
       }
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 27: // escape
       displayHelp();
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 79:  // o
       SetCommentsOnSeparateLines(!commentsOnSeparateLines);
       Init();
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
     case 80:  // p
       SetCommentsIntoMoveText(!commentsIntoMoveText);
       Init();
-      stopKeyPropagation(e);
+      return stopKeyPropagation(e);
       break;
 
-    default: 
-    break;
+    default:
+      return true;
+      break;
   }
-
+  return true;
 }
 
 boardAlt = new Array(64);
