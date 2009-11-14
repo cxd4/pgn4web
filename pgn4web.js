@@ -152,7 +152,7 @@ function handlekey(e) {
   keycode = e.keyCode;
   //myAlert(keycode);
 
-  if (e.altKey || e.ctrlKey) { return; }
+  if (e.altKey || e.ctrlKey || e.metaKey) { return; }
 
   if (e.shiftKey) {
     // shift key + escape (27) toogle the usage of shortcut keys 
