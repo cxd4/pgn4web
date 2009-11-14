@@ -433,20 +433,20 @@ boardAlt = new Array(64);
 // cells count from the top left (A8 is row0 col0)
 
 // A8
-function boardOnClickCol0Row0() { SetHighlight(!highlightOption); }
-boardAlt[0 + 0 * 8] = "toggle highlight last move";
+function boardOnClickCol0Row0() { window.open(project_url); }
+boardAlt[0 + 0 * 8] = "go to the pgn4web website";
 // B8
-function boardOnClickCol1Row0() { FlipBoard(); }
-boardAlt[1 + 0 * 8] = "flip board";
+function boardOnClickCol1Row0() { }
+boardAlt[1 + 0 * 8] = "";
 // C8
-function boardOnClickCol2Row0() { if (IsRotated) { FlipBoard(); } }
-boardAlt[2 + 0 * 8] = "show white on bottom";
+function boardOnClickCol2Row0() { }
+boardAlt[2 + 0 * 8] = "";
 // D8
 function boardOnClickCol3Row0() { displayPgnData(); }
 boardAlt[3 + 0 * 8] = "show PGN source data";
 // E8
-function boardOnClickCol4Row0() { window.open(project_url); }
-boardAlt[4 + 0 * 8] = "go to pgn4web website";
+function boardOnClickCol4Row0() { displayDebugInfo(); }
+boardAlt[4 + 0 * 8] = "debug info";
 // F8
 function boardOnClickCol5Row0() { displayHelp("keys"); }
 boardAlt[5 + 0 * 8] = "shortcut keys help";
@@ -463,23 +463,23 @@ boardAlt[0 + 1 * 8] = "toggle show comments in game text";
 function boardOnClickCol1Row1() { SetCommentsOnSeparateLines(!commentsOnSeparateLines); thisPly = CurrentPly; Init(); GoToMove(thisPly); }
 boardAlt[1 + 1 * 8] = "toggle show comments on separate lines in game text";
 // C7
-function boardOnClickCol2Row1() { }
-boardAlt[2 + 1 * 8] = "";
+function boardOnClickCol2Row1() { SetHighlight(!highlightOption); }
+boardAlt[2 + 1 * 8] = "toggle highlight last move";
 // D7
-function boardOnClickCol3Row1() { }
-boardAlt[3 + 1 * 8] = "";
+function boardOnClickCol3Row1() { FlipBoard(); }
+boardAlt[3 + 1 * 8] = "flip board";
 // E7
-function boardOnClickCol4Row1() { }
-boardAlt[4 + 1 * 8] = "";
+function boardOnClickCol4Row1() { if (IsRotated) { FlipBoard(); } }
+boardAlt[4 + 1 * 8] = "show white on bottom";
 // F7
 function boardOnClickCol5Row1() { }
 boardAlt[5 + 1 * 8] = "";
 // G7
-function boardOnClickCol6Row1() { SetShortcutKeysEnabled(!shortcutKeysEnabled); }
-boardAlt[6 + 1 * 8] = "toggle enabling shortcut keys";
+function boardOnClickCol6Row1() { }
+boardAlt[6 + 1 * 8] = "";
 // H7
-function boardOnClickCol7Row1() { displayDebugInfo(); }
-boardAlt[7 + 1 * 8] = "debug info";
+function boardOnClickCol7Row1() { SetShortcutKeysEnabled(!shortcutKeysEnabled); }
+boardAlt[7 + 1 * 8] = "toggle enabling shortcut keys";
 // A6
 function boardOnClickCol0Row2() { pauseLiveBroadcast(); }
 boardAlt[0 + 2 * 8] = "pause live broadcast automatic refresh";
