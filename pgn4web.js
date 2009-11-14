@@ -437,8 +437,8 @@ boardAlt[1 + 0 * 8] = "flip board";
 function boardOnClickCol2Row0() { if (IsRotated) { FlipBoard(); } }
 boardAlt[2 + 0 * 8] = "show white on bottom";
 // D8
-function boardOnClickCol3Row0() { SetShortcutKeysEnabled(!shortcutKeysEnabled); }
-boardAlt[3 + 0 * 8] = "toggle enabling shortcut keys";
+function boardOnClickCol3Row0() { displayPgnData(); }
+boardAlt[3 + 0 * 8] = "show PGN source data";
 // E8
 function boardOnClickCol4Row0() { window.open(project_url); }
 boardAlt[4 + 0 * 8] = "go to pgn4web website";
@@ -470,8 +470,8 @@ boardAlt[4 + 1 * 8] = "";
 function boardOnClickCol5Row1() { }
 boardAlt[5 + 1 * 8] = "";
 // G7
-function boardOnClickCol6Row1() { }
-boardAlt[6 + 1 * 8] = "";
+function boardOnClickCol6Row1() { SetShortcutKeysEnabled(!shortcutKeysEnabled); }
+boardAlt[6 + 1 * 8] = "toggle enabling shortcut keys";
 // H7
 function boardOnClickCol7Row1() { displayDebugInfo(); }
 boardAlt[7 + 1 * 8] = "debug info";
@@ -675,6 +675,23 @@ function displayDebugInfo() {
   else { debugInfo += 'live broadcast: off' + '\n\n'; }
   alert(debugInfo);
 }
+
+
+function displayPgnData() {
+
+  pgnWin = window.open("", "pgn_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
+  if (pgnWin !== null) {
+    pgnWin.document.open("text/html", "replace");
+    pgnWin.document.write("<html>");
+    pgnWin.document.write("<head><title>pgn4web PGN source</title></head>");
+    pgnWin.document.write("<body><pre>");
+    for (ii = 0; ii < numberOfGames; ++ii) { pgnWin.document.write(pgnGame[ii]); }
+    pgnWin.document.write("</pre></body></html>");
+    pgnWin.document.close();
+    if (window.focus) { pgnWin.window.focus(); }
+  }
+}
+
 
 var pgnGame = new Array();
 var numberOfGames = -1; 
