@@ -688,10 +688,10 @@ function displayPgnData() {
   if (pgnWin !== null) {
     pgnWin.document.open("text/html", "replace");
     pgnWin.document.write("<html>");
-    pgnWin.document.write("<head><title>pgn4web PGN source</title></head>");
-    pgnWin.document.write("<body><pre>");
+    pgnWin.document.write("<head><title>pgn4web PGN source</title><link rel='shortcut icon' href='pawn.ico'></link></head>");
+    pgnWin.document.write("<body>\n<pre>\n");
     for (ii = 0; ii < numberOfGames; ++ii) { pgnWin.document.write(pgnGame[ii]); }
-    pgnWin.document.write("</pre></body></html>");
+    pgnWin.document.write("\n</pre>\n</body></html>");
     pgnWin.document.close();
     if (window.focus) { pgnWin.window.focus(); }
   }
