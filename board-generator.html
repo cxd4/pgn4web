@@ -291,8 +291,8 @@ function update_suggested_iframe_dimensions() {
   if (document.board.orizontalLayout.value == "t") {
     suggested_frameHeight = "board";
     suggested_frameWidth = "full";
-    document.getElementById('frameHeight_helpText').innerHTML = "a number or <b>board</b>; min <b>" + min_frameHeight + "</b>; if blank, frame height is assigned to <b>" + suggested_frameHeight + "</b>";
-    document.getElementById('frameWidth_helpText').innerHTML = "a number or <b>full</b>; min <b>" + min_frameWidth + "</b>; if blank, frame width is assigned to <b>" + suggested_frameWidth + "</b>; board width is <b>" + boardWidth + "</b>";
+    document.getElementById('frameHeight_helpText').innerHTML = "a number or <b>board</b>; min <b>" + min_frameHeight + "</b>; if blank, assigned to <b>" + suggested_frameHeight + "</b>";
+    document.getElementById('frameWidth_helpText').innerHTML = "a number or <b>full</b>; min <b>" + min_frameWidth + "</b>; if blank, assigned to <b>" + suggested_frameWidth + "</b>; board width is <b>" + boardWidth + "</b>";
   } else {
     suggested_frameWidth = boardWidth;
     suggested_frameHeight = estimated_boardHeight;
@@ -303,8 +303,8 @@ function update_suggested_iframe_dimensions() {
     }
     suggested_frameWidth += 2 * parseInt(document.board.framePadding.value, 10);
     suggested_frameHeight += 2 * parseInt(document.board.framePadding.value, 10);
-    document.getElementById('frameHeight_helpText').innerHTML = "a number; min <b>" + min_frameHeight + "</b>; if blank, frame height is assigned to <b>" + suggested_frameHeight + "</b>";
-    document.getElementById('frameWidth_helpText').innerHTML = "a number or <b>board</b> or <b>full</b>; min <b>" + min_frameWidth + "</b>; if blank, frame width assigned to <b>" + suggested_frameWidth + "</b>; board width is <b>" + boardWidth + "</b>";
+    document.getElementById('frameHeight_helpText').innerHTML = "a number; min <b>" + min_frameHeight + "</b>; if blank, assigned to <b>" + suggested_frameHeight + "</b>";
+    document.getElementById('frameWidth_helpText').innerHTML = "a number or <b>board</b> or <b>full</b>; min <b>" + min_frameWidth + "</b>; if blank, assigned to <b>" + suggested_frameWidth + "</b>; board width is <b>" + boardWidth + "</b>";
   }
 
   theObject = document.getElementById('frameWidth');
@@ -1727,25 +1727,25 @@ chessboard generator</h1>
 
 <p></p>
 
-<input class="input" type="text" id="squareSize" name="input" value="" size="7" onChange="validate_squareSize(); update_suggested_iframe_dimensions()">
+<input class="input" type="text" id="squareSize" name="input" value="" size="9" onChange="validate_squareSize(); update_suggested_iframe_dimensions()">
 &nbsp;&nbsp; square size &nbsp;&nbsp;
 <span class="helptext"">a number; must be larger than the piece size</span>
 <p></p>
 <br>
 
-<input class="color input" type="text" id="lightColorHex" name="input" value="" size="7" onChange="validate_color(this, 'light squares color', lightColorHex_default)">
+<input class="color input" type="text" id="lightColorHex" name="input" value="" size="9" onChange="validate_color(this, 'light squares color', lightColorHex_default)">
 &nbsp;&nbsp; light squares color &nbsp;&nbsp;
 <p></p>
 
-<input class="color input" type="text" id="darkColorHex" name="input" value="" size="7" onChange="validate_color(this, 'dark squares color', darkColorHex_default)">
+<input class="color input" type="text" id="darkColorHex" name="input" value="" size="9" onChange="validate_color(this, 'dark squares color', darkColorHex_default)">
 &nbsp;&nbsp; dark squares color &nbsp;&nbsp;
 <p></p>
 
-<input class="color input" type="text" id="boardBorderColorHex" name="input" value="" size="7" onChange="validate_color(this, 'board border color', boardBorderColorHex_default)">
+<input class="color input" type="text" id="boardBorderColorHex" name="input" value="" size="9" onChange="validate_color(this, 'board border color', boardBorderColorHex_default)">
 &nbsp;&nbsp; board border color &nbsp;&nbsp;
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="highlightColorHex" name="input" value="" size="7" onChange="validate_color_none(this, 'highlight squares color', highlightColorHex_default)">
+<input class="color {adjust:false} input" type="text" id="highlightColorHex" name="input" value="" size="9" onChange="validate_color_none(this, 'highlight squares color', highlightColorHex_default)">
 &nbsp;&nbsp; highlight squares color &nbsp;&nbsp;
 <span class="helptext">set to <b>none</b> in order to disable square highlighting</span>
 
@@ -1757,20 +1757,20 @@ chessboard generator</h1>
 <span class="helptext">control buttons might not be necessary, just try clicking the G8 square</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="controlBackgroundColorHex" name="input" value="" size="7" onChange="validate_color_default(this, 'control buttons background color', 'default'); update_controls()">
+<input class="color {adjust:false} input" type="text" id="controlBackgroundColorHex" name="input" value="" size="9" onChange="validate_color_default(this, 'control buttons background color', 'default'); update_controls()">
 &nbsp;&nbsp; control buttons background color &nbsp;&nbsp;
 <span class="helptext">set to <b>default</b> in order to use standard buttons from the browser</span>
 
 <p></p>
 
-<input class="color input" type="text" id="controlTextColorHex" name="input" value="" size="7" onChange="validate_color(this, 'control buttons text color', controlTextColorHex_default)">
+<input class="color input" type="text" id="controlTextColorHex" name="input" value="" size="9" onChange="validate_color(this, 'control buttons text color', controlTextColorHex_default)">
 &nbsp;&nbsp; control buttons text color &nbsp;&nbsp;
 
 <div style="height: 3em">&nbsp</div>
 <script>print_menu("header_moves_options", 3, "header and moves options");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<input class="input" type="text" id="textMargin" name="input" value="" size="7" onChange="validate_number(this, 'text margin', textMargin_default);">
+<input class="input" type="text" id="textMargin" name="input" value="" size="9" onChange="validate_number(this, 'text margin', textMargin_default);">
 &nbsp;&nbsp; text margin &nbsp;&nbsp;
 <span class="helptext"">a number; header/moves margin, nice to have if text overflows with scrollbars</span>
 
@@ -1781,12 +1781,12 @@ chessboard generator</h1>
 &nbsp;&nbsp; <b>show game header</b> &nbsp;&nbsp;
 <p></p>
 
-<input class="input" type="text" id="fontHeaderSize" name="input" value="" size="7" onChange="validate_number_percentage(this, 'header font size', fontHeaderSize_default);">
+<input class="input" type="text" id="fontHeaderSize" name="input" value="" size="9" onChange="validate_number_percentage(this, 'header font size', fontHeaderSize_default);">
 &nbsp;&nbsp; header font size &nbsp;&nbsp;
 <span class="helptext"">a number or a percentage; make sure left/right columns dont touch in the middle</span>
 <p></p>
 
-<input class="color input" type="text" id="fontHeaderColorHex" name="input" value="" size="7" onChange="validate_color(this, 'header font color', fontHeaderColorHex_default)">
+<input class="color input" type="text" id="fontHeaderColorHex" name="input" value="" size="9" onChange="validate_color(this, 'header font color', fontHeaderColorHex_default)">
 &nbsp;&nbsp; header font color &nbsp;&nbsp;
 <p></p>
 <br>
@@ -1804,27 +1804,27 @@ chessboard generator</h1>
 &nbsp;&nbsp; show comments on separate lines &nbsp;&nbsp;
 <p></p>
 
-<input class="input" type="text" id="fontMovesSize" name="input" value="" size="7" onChange="validate_number_percentage(this, 'moves font size', fontMovesSize_default);">
+<input class="input" type="text" id="fontMovesSize" name="input" value="" size="9" onChange="validate_number_percentage(this, 'moves font size', fontMovesSize_default);">
 &nbsp;&nbsp; moves font size &nbsp;&nbsp;
 <span class="helptext"">a number or a percentage</span>
 <p></p>
 
-<input class="color input" type="text" id="fontMovesColorHex" name="input" value="" size="7" onChange="validate_color(this, 'moves font color', fontMovesColorHex_default)">
+<input class="color input" type="text" id="fontMovesColorHex" name="input" value="" size="9" onChange="validate_color(this, 'moves font color', fontMovesColorHex_default)">
 
 &nbsp;&nbsp; moves font color &nbsp;&nbsp;
 <p></p>
 
-<input class="color input" type="text" id="highlightMoveColorHex" name="input" value="" size="7" onChange="validate_color(this, 'highlight move color', highlightMoveColorHex_default)">
+<input class="color input" type="text" id="highlightMoveColorHex" name="input" value="" size="9" onChange="validate_color(this, 'highlight move color', highlightMoveColorHex_default)">
 &nbsp;&nbsp; highlight move color &nbsp;&nbsp;
 <p></p>
 
-<input class="input" type="text" id="fontCommentsSize" name="input" value="" size="7" onChange="validate_number_percentage(this, 'comments font size', fontCommentsSize_default);">
+<input class="input" type="text" id="fontCommentsSize" name="input" value="" size="9" onChange="validate_number_percentage(this, 'comments font size', fontCommentsSize_default);">
 &nbsp;&nbsp; comments font size &nbsp;&nbsp;
 <span class="helptext"">a number or a percentage</span>
 
 <p></p>
 
-<input class="color input" type="text" id="fontCommentsColorHex" name="input" value="" size="7" onChange="validate_color(this, 'comments font color', fontCommentsColorHex_default)">
+<input class="color input" type="text" id="fontCommentsColorHex" name="input" value="" size="9" onChange="validate_color(this, 'comments font color', fontCommentsColorHex_default)">
 &nbsp;&nbsp; comments font color &nbsp;&nbsp;
 
 <div style="height: 3em">&nbsp</div>
@@ -1839,28 +1839,28 @@ chessboard generator</h1>
 
 <p></p>
 
-<input class="input" type="text" id="frameHeight" name="input" value="" size="7" onChange="validate_frameHeight(); update_suggested_iframe_dimensions();">
+<input class="input" type="text" id="frameHeight" name="input" value="" size="9" onChange="validate_frameHeight(); update_suggested_iframe_dimensions();">
 &nbsp;&nbsp; iFrame height &nbsp;&nbsp;
 <span id="frameHeight_helpText" class="helptext"></span>
 <p></p>
 
-<input class="input" type="text" id="frameWidth" name="input" value="" size="7" onChange="validate_frameWidth(); update_suggested_iframe_dimensions();"> 
+<input class="input" type="text" id="frameWidth" name="input" value="" size="9" onChange="validate_frameWidth(); update_suggested_iframe_dimensions();"> 
 &nbsp;&nbsp; iFrame width &nbsp;&nbsp;
 <span id="frameWidth_helpText" class="helptext"></span>
 <p></p>
 
-<input class="input" type="text" id="framePadding" name="input" value="" size="7" onChange="validate_number(this, 'frame padding', framePadding_default); update_suggested_iframe_dimensions();">
+<input class="input" type="text" id="framePadding" name="input" value="" size="9" onChange="validate_number(this, 'frame padding', framePadding_default); update_suggested_iframe_dimensions();">
 
 &nbsp;&nbsp; iFrame padding &nbsp;&nbsp;
 <span class="helptext">a number; border padding around the iframe, included within the iFrame width value</span>
 <p></p>
 <br>
 
-<input class="color input" type="text" id="backgroundColorHex" name="input" value="" size="7" onChange="validate_color(this, 'background color', backgroundColorHex_default)">
+<input class="color input" type="text" id="backgroundColorHex" name="input" value="" size="9" onChange="validate_color(this, 'background color', backgroundColorHex_default)">
 &nbsp;&nbsp; background color &nbsp;&nbsp;
 <p></p>
 
-<input class="color input" type="text" id="previewBackgroundColorHex" name="input" value="" size="7" onChange="validate_color(this, 'preview background color', previewBackgroundColorHex_default)"> 
+<input class="color input" type="text" id="previewBackgroundColorHex" name="input" value="" size="9" onChange="validate_color(this, 'preview background color', previewBackgroundColorHex_default)"> 
 &nbsp;&nbsp; preview background color &nbsp;&nbsp;
 <span class="helptext"">not actually used in the HTML code, just for the preview</span>
 <p></p>
