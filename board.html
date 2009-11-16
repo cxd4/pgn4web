@@ -157,6 +157,7 @@ function new_start_pgn4web() {
 //  rule.style.fontSize = fontCommentsSize; // the nag is always embedded in the comment
 
   paddingControlHeight = Math.floor(squareSize / 2.5);
+  if ((paddingControlWidth = squareSize - textMargin) < 0) { paddingControlWidth = 0; }
   theObject = document.getElementById("GameButtons");
   if (theObject) { theObject.style.paddingTop = paddingControlHeight; }
   if ((controlBackgroundColor != 'default') && (controlBackgroundColor != '#default')) { 
@@ -184,7 +185,10 @@ function new_start_pgn4web() {
   }
 
   theObject = document.getElementById("headerMovesPadding");
-  if (theObject) { theObject.style.minHeight = paddingControlHeight; }
+  if (theObject) { 
+    if (orizontalLayout === true) { theObject.width = paddingControlWidth + 'px'; }
+    else { theObject.style.minHeight = paddingControlHeight; }
+  }
 
   start_pgn4web();
 
@@ -197,15 +201,28 @@ function new_start_pgn4web() {
   if (showButtons) { boardHeight += document.getElementById("GameButtons").offsetHeight; }
   if (showButtons && (numberOfGames > 1)) { boardHeight += document.getElementById("GameSelector").offsetHeight; }
 
-  theObject = document.getElementById("headerMoves");
-  if (theObject !== null) { 
-    if (frameWidth === "") { document.getElementById("headerMoves").style.width = textWidth; }
-    else { document.getElementById("headerMoves").style.width = frameWidth; }
+  if (orizontalLayout === true) {
+    document.getElementById("extendedBoard").width = boardWidth;
+  }
 
-    if (frameHeight === "") { document.getElementById("headerMoves").style.height = textHeight; }
-    else { 
-      headerMovesPaddingHeight = document.getElementById("headerMovesPadding").offsetHeight;
-      document.getElementById("headerMoves").style.height = frameHeight - boardHeight - 2 * framePadding - headerMovesPaddingHeight; 
+  if (fixFrameWidthToBoard) { frameWidth = boardWidth + 2 * framePadding; }
+  if (fixFrameHeightToBoard) { frameHeight = boardHeight + 2 * framePadding; }
+
+  theObject = document.getElementById("headerMoves");
+  if (theObject !== null) {
+    if (orizontalLayout === true) {
+      if (frameWidth === "") { document.getElementById("headerMoves").style.width = textWidth; }
+      else { document.getElementById("outerFrame").style.width = frameWidth - 2 * framePadding; }
+      if (frameHeight === "") { document.getElementById("headerMoves").style.height = textHeight; }
+      else { document.getElementById("headerMoves").style.height = frameHeight - 2 * framePadding; }
+    } else {
+      if (frameWidth === "") { document.getElementById("headerMoves").style.width = textWidth; }
+      else { document.getElementById("headerMoves").style.width = frameWidth - 2 * framePadding; }
+      if (frameHeight === "") { document.getElementById("headerMoves").style.height = textHeight; }
+      else { 
+        headerMovesPaddingHeight = document.getElementById("headerMovesPadding").offsetHeight;
+	document.getElementById("headerMoves").style.height = frameHeight - boardHeight - 2 * framePadding - headerMovesPaddingHeight; 
+      }
     }
   }
 
@@ -993,15 +1010,53 @@ else { showHeader = false; }
 if (gup("showMoves") == "true") { showMoves = true; }
 else { showMoves = false; }
 
-if ((textHeight = percentFixFromUrl( gup("textHeight") )) === "") { textHeight = "100%"; }
-if ((textWidth = percentFixFromUrl( gup("textWidth") )) === "") { textWidth = "100%"; }
+if ((textHeight = percentFixFromUrl(gup("textHeight"))) === "") { textHeight = "100%"; }
+if ((textWidth = percentFixFromUrl(gup("textWidth"))) === "") { textWidth = "100%"; }
 
 if ((textMargin = gup("textMargin")) === "") { textMargin = 0; }
 else { textMargin = parseInt(textMargin, 10); }
 
+frameHeight = gup("frameHeight");
+// next statement is for compatibility with older version of board/board-generator
+if (frameHeight.match("pct")) { frameHeight = ""; textHeight = "100%"; }
+switch (frameHeight) {
+  case "board":
+    frameHeight = "";
+    fixFrameHeightToBoard = true;
+    break;
+  case "":
+    fixFrameHeightToBoard = false;
+    break
+  default:
+    frameHeight = parseInt(frameHeight, 10);
+    fixFrameHeightToBoard = false;
+    break
+}
 
-frameHeight = percentFixFromUrl( gup("frameHeight") );
-frameWidth = percentFixFromUrl( gup("frameWidth") );
+frameWidth = gup("frameWidth");
+// next statement is for compatibility with older version of board/board-generator
+if (frameWidth.match("pct")) { frameWidth = "full"; }
+switch (frameWidth) {
+  case "board":
+    frameWidth = "";
+    fixFrameWidthToBoard = true;
+    break;
+  case "full":
+    frameWidth = "";
+    textWidth = "100%"; 
+    fixFrameWidthToBoard = false;
+    break;
+  case "":
+    fixFrameWidthToBoard = false;
+    break;
+  default:
+    frameWidth = parseInt(frameWidth, 10);
+    fixFrameWidthToBoard = false;
+    break;
+}
+
+if (gup("orizontalLayout") == "true") { orizontalLayout = true; }
+else { orizontalLayout = false; }	
 
 if (gup("help") !== "") {
   document.write("<PRE>");
@@ -1054,8 +1109,9 @@ if (gup("help") !== "") {
   document.write("\n");
   document.write(" - backgroundColorName = page background color name, like red\n");
   document.write(" - backgroundColorHex = page background color hex code, like FF0000\n");
-  document.write(" - frameHeight = set height of the total page, overriding textHeight (default not set)\n");
-  document.write(" - frameWidth = set width of the total page, overriding textWidth (default not set)\n");
+  document.write(" - orizontalLayout = if set true, shows header/moves text at the right of the board, below otherwise (default false)\n");
+  document.write(" - frameHeight = set height of the total page, as a number or as 'board' overriding textHeight (default not set)\n");
+  document.write(" - frameWidth = set width of the total page, as a number, as 'board' or as 'full', overriding textWidth (default not set)\n");
   document.write(" - framePadding = padding within the frame (default 0)\n");
   document.write("\n");
   document.write(" - showHeightWidth = if set true, calculates optimal iframe dimensions (default false)\n");
@@ -1066,72 +1122,92 @@ if (gup("help") !== "") {
   document.write("</PRE>\n<HR>\n");
 }
 
-document.write("<table cellspacing=0 cellpadding=0 width=100%><tr><td align=center>");
-
-if (showButtons) {
-  document.write("<div id='GameSelector'></div></td></tr><tr><td align=center><div id='GameBoard'></div></td></tr><tr><td align=center><div id='GameButtons'></div>"); 
-} else {
-  document.write("<div id='GameBoard'></div>");
+document.write("<center>");
+document.write("<table id='outerFrame' style='width: 100%;' cellspacing=0 cellpadding=0 border=0>");
+document.write("<tr>");
+document.write("<td id='extendedBoard' align=center valign=top>");
+display_board();
+document.write("</td>");
+if (orizontalLayout === true) { 
+  document.write("<td id='headerMovesPadding' width='0px' >");
+  document.write("<td id='extendedHeaderMoves' align=left valign=top>"); 
+} else { 
+  document.write("</tr><tr><td id='extendedHeaderMoves' align=center valign=top>");
 }
+display_header_moves();
+document.write("</td>");
+document.write("</tr>");
+document.write("</table>");
+document.write("</center>");
 
-if (showHeader) {
-  document.write("<div id='headerMovesPadding' class='header'>&nbsp;</div>");
-} else if (showMoves) {
-  document.write("<div id='headerMovesPadding' class='moves'>&nbsp;</div>");
-}
-
-if ((showHeader) || (showMoves)) {
-	document.write("<div id='headerMoves' style='overflow:auto; height: " + textHeight + "; width: " + textWidth + "; scrollbar-base-color: " + backgroundColor + ";'>");
-} 
-
-if (showHeader) {
-
-  document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
-  document.write("<td align=left>");
-  document.write("<div class='header' style='white-space: nowrap; margin-left: "  + textMargin + 
-                 "; margin-right: 3%;' id=GameWhite></div>");
-  document.write("</td><td align=right>");
-  document.write("<div class='header' style='white-space: nowrap; margin-right: " + textMargin +
-                 "; margin-left: 3%;'  id=GameDate></div>");
+function display_board() {
+  document.write("<table width=100% cellpadding=0 cellspacing=0 border=0>");
+  document.write("<tr><td align=center valign=top>");
+  if (showButtons) { document.write("<div id='GameSelector'></div>"); }
+  document.write("<div id='GameBoard'></div>"); 
+  if (showButtons) { document.write("<div id='GameButtons'></div>"); }
   document.write("</td></tr></table>");
+}
 
-  document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
-  document.write("<td align=left>");
-  document.write("<div class='header' style='white-space: nowrap; margin-left: "  + textMargin + 
-                 "; margin-right: 3%;' id=GameBlack></div>");
-  document.write("</td><td align=right>");
-  document.write("<div class='header' style='white-space: nowrap; margin-right: " + textMargin +
-                 "; margin-left: 3%;'  id=GameSite></div>");
-  document.write("</td></tr></table>");
+function display_header_moves() {
 
-  document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
-  document.write("<td align=left>");
-  document.write("<div class='header' style='white-space: nowrap; margin-left: "  + textMargin + 
-                 "; margin-right: 3%;' id=GameResult></div>");
-  document.write("</td><td align=right>");
-  document.write("<div class='header' style='white-space: nowrap; margin-right: " + textMargin +
-                 "; margin-left: 3%;'  id=GameEvent></div>");
-  document.write("</td></tr></table>");
+  if ((showHeader) && (orizontalLayout === false)) {
+      document.write("<div id='headerMovesPadding' class='header' style='text-align: center;'>&nbsp</div>");
+  }
+
+  if ((showHeader) || (showMoves)) {
+    document.write("<div id='headerMoves' style='overflow:auto; height: " + textHeight + 
+		   "; width: " + textWidth + "; scrollbar-base-color: " + backgroundColor + ";'>");
+  } 
+
+  if (showHeader) {
+
+    document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
+    document.write("<td align=left>");
+    document.write("<div class='header' style='white-space: nowrap; margin-left: "  + textMargin + 
+                   "; margin-right: 3%;' id=GameWhite></div>");
+    document.write("</td><td align=right>");
+    document.write("<div class='header' style='white-space: nowrap; margin-right: " + textMargin +
+                   "; margin-left: 3%;'  id=GameDate></div>");
+    document.write("</td></tr></table>");
+
+    document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
+    document.write("<td align=left>");
+    document.write("<div class='header' style='white-space: nowrap; margin-left: "  + textMargin + 
+                   "; margin-right: 3%;' id=GameBlack></div>");
+    document.write("</td><td align=right>");
+    document.write("<div class='header'header style='white-space: nowrap; margin-right: " + textMargin +
+                   "; margin-left: 3%;'  id=GameSite></div>");
+    document.write("</td></tr></table>");
+
+    document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
+    document.write("<td align=left>");
+    document.write("<div class='header' style='white-space: nowrap; margin-left: "  + textMargin + 
+                   "; margin-right: 3%;' id=GameResult></div>");
+    document.write("</td><td align=right>");
+    document.write("<div class='header' style='white-space: nowrap; margin-right: " + textMargin +
+                   "; margin-left: 3%;'  id=GameEvent></div>");
+    document.write("</td></tr></table>");
+  }
+   
+  if (showMoves) {
+    if (showHeader) {
+      document.write("<div class='header' style='text-align: center;'>&nbsp;</div>");
+    } else {
+      if (orizontalLayout === false) {
+        document.write("<div class='moves' style='text-align: center;'>&nbsp;</div>");
+      }
+    }
+    document.write("<div style='margin-left:" + textMargin + "; margin-right:" + textMargin + 
+                   "; text-align: justify;' id=GameText></div>");
+  }  
+
+  if ((showHeader) || (showMoves)) {
+    document.write("</div>");
+  } 
 
 }
 
-if ((showHeader) && (showMoves)) {
-  document.write("<div class='header'>&nbsp;<br></div>");
-}
-
-if (showMoves) {
-  document.write("<div style='margin-left:" + textMargin + "; margin-right:" + textMargin + 
-                 "; text-align: justify;' id=GameText></div>");
-}
-
-if ((showHeader) || (showMoves)) {
-  document.write("</div>");
-} 
-
-document.write("</div>");
-
-document.write("</td></tr></table>");
-		
 </script>
 
 </body>

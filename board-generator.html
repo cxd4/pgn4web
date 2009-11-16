@@ -80,6 +80,7 @@ controlTextColorHex_default = "000000";
 textMargin_default = 0;
 showHeader_default = "t";
 showMoves_default = "t";
+orizontalLayout_default = "f";
 frameHeight_default = "";
 frameWidth_default = "";
 framePadding_default = 0;
@@ -220,13 +221,17 @@ function set_defaults() {
   document.board.previewBackgroundColorHex.value = previewBackgroundColorHex_value;
   validate_color(document.board.previewBackgroundColorHex, 'preview background color', previewBackgroundColorHex_default);
 
-  if ((frameHeight_value = percentFixFromUrl( gup("frameHeight") )) === "") { frameHeight_value = frameHeight_default; }
-  document.board.frameHeight.value = frameHeight_value;
-  validate_number_blank(document.board.frameHeight, 'iFrame height', '');
+  if ((orizontalLayout_value = gup("orizontalLayout")) === "") { orizontalLayout_value = orizontalLayout_default; }
+  if (orizontalLayout_value == "t") { document.board.orizontalLayout.value = "t"; }
+  else { document.board.orizontalLayout.value = "f"; }
 
-  if ((frameWidth_value = percentFixFromUrl( gup("frameWidth") )) === "") { frameWidth_value = frameWidth_default; }
+  if ((frameHeight_value = gup("frameHeight")) === "") { frameHeight_value = frameHeight_default; }
+  document.board.frameHeight.value = frameHeight_value;
+  validate_frameHeight();
+
+  if ((frameWidth_value = gup("frameWidth")) === "") { frameWidth_value = frameWidth_default; }
   document.board.frameWidth.value = frameWidth_value;
-  validate_number_percentage_blank(document.board.frameWidth, 'iFrame width', '');
+  validate_frameWidth()
 
   if ((framePadding_value = gup("framePadding")) === "") { framePadding_value = framePadding_default; }
   document.board.framePadding.value = framePadding_value;
@@ -267,39 +272,44 @@ function update_disabled_controls() {
 function update_suggested_iframe_dimensions() {
 
   boardWidth = 8 * document.board.squareSize.value + 6; 
-  suggested_frameWidth = boardWidth; 
-  suggested_frameHeight = boardWidth; 
+  estimated_boardHeight = boardWidth; 
   
   if (document.board.showButtons.checked) {
     if (document.board.controlBackgroundColorHex.value != "default") {
       // in this case both control size and control padding grow with squareSize  
-      suggested_frameHeight += (20 + 2 * parseInt(document.board.squareSize.value, 10));
+      estimated_boardHeight += (20 + 2 * parseInt(document.board.squareSize.value, 10));
     } else {
       // in this case control padding grows with squareSize 
       // while the size of the controls cant be predicted, so a safe number is set
-      suggested_frameHeight += 50 + parseInt(document.board.squareSize.value, 10);
+      estimated_boardHeight += 50 + parseInt(document.board.squareSize.value, 10);
     } 
   }
 
-  suggested_frameWidth += 2 * parseInt(document.board.framePadding.value, 10);
-  suggested_frameHeight += 2 * parseInt(document.board.framePadding.value, 10);
+  min_frameWidth = boardWidth + 2 * parseInt(document.board.framePadding.value, 10);
+  min_frameHeight = estimated_boardHeight + 2 * parseInt(document.board.framePadding.value, 10);
 
-  min_frameWidth = suggested_frameWidth;
-  min_frameHeight = suggested_frameHeight;
-
-  if (document.board.showHeader.checked) { suggested_frameHeight += Math.max(100, Math.round(0.2 * boardWidth)); }
-  if (document.board.showMoves.checked) { suggested_frameHeight += Math.max(300, Math.round(0.8 * boardWidth)); }
-
-  if (document.board.showHeader.checked || document.board.showMoves.checked) {
-    suggested_frameWidth = Math.max(400, Math.round(1.5 * boardWidth));
+  if (document.board.orizontalLayout.value == "t") {
+    suggested_frameHeight = "board";
+    suggested_frameWidth = "full";
+    document.getElementById('frameHeight_helpText').innerHTML = "a number or 'board'; min " + min_frameHeight + "; if blank frame height is assigned to " + suggested_frameHeight;
+    document.getElementById('frameWidth_helpText').innerHTML = "a number or 'full'; min " + min_frameWidth + "; if blank frame width assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
+  } else {
+    suggested_frameWidth = boardWidth;
+    suggested_frameHeight = estimated_boardHeight;
+    if (document.board.showHeader.checked) { suggested_frameHeight += Math.max(100, Math.round(0.2 * boardWidth)); }
+    if (document.board.showMoves.checked) { suggested_frameHeight += Math.max(300, Math.round(0.8 * boardWidth)); }
+    if (document.board.showHeader.checked || document.board.showMoves.checked) {
+      suggested_frameWidth = Math.max(400, Math.round(1.5 * boardWidth));
+    }
+    suggested_frameWidth += 2 * parseInt(document.board.framePadding.value, 10);
+    suggested_frameHeight += 2 * parseInt(document.board.framePadding.value, 10);
+    document.getElementById('frameHeight_helpText').innerHTML = "a number; min " + min_frameHeight + "; if blank frame height is assigned to " + suggested_frameHeight;
+    document.getElementById('frameWidth_helpText').innerHTML = "a number or 'board' or 'full'; min " + min_frameWidth + "; if blank frame width assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
   }
 
-  document.getElementById('frameHeight_helpText').innerHTML = "a number; min " + min_frameHeight + "; if blank frame height is assigned to " + suggested_frameHeight;
-  document.getElementById('frameWidth_helpText').innerHTML = "a number or a percentage; min " + min_frameWidth + "; if blank frame width assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
-
   theObject = document.getElementById('frameWidth');
-  if (theObject.value !== "") { 
-    if (!theObject.value.match('/[^0-9]/')) { 
+  if (theObject.value !== ""){ 
+    if (!theObject.value.match('/^[^0-9]$/')) { 
       if (theObject.value < min_frameWidth) { 
         alert('error: iFrame width too small');
         theObject.value = "";
@@ -309,7 +319,7 @@ function update_suggested_iframe_dimensions() {
   
   theObject = document.getElementById('frameHeight');
   if (theObject.value !== "") { 
-    if (!theObject.value.match('/[^0-9]/')) { 
+    if (!theObject.value.match('/^[^0-9]$/')) { 
       if (theObject.value < min_frameHeight) { 
         alert('error: iFrame height too small');
         theObject.value = "";
@@ -400,11 +410,14 @@ function calculate_html_code() {
   framePadding_value = parseInt(document.board.framePadding.value, 10);
   iframeUrl += "&fp=" + framePadding_value;
 
+  orizontalLayout_value = document.board.orizontalLayout.value;
+  iframeUrl += "&ol=" + orizontalLayout_value;
+
   update_suggested_iframe_dimensions();
   if ((frameHeight_value = document.board.frameHeight.value) === "") { frameHeight_value = suggested_frameHeight; }
   if ((frameWidth_value = document.board.frameWidth.value) === "") { frameWidth_value = suggested_frameWidth; }
 
-  iframeUrl += "&fh=" + percentFixForUrl( frameHeight_value ) + "&fw=" + "100pct";
+  iframeUrl += "&fh=" + frameHeight_value + "&fw=" + frameWidth_value
 
   // better to keep this as last item
   pgnText_value = document.getElementById('pgnText').value;
@@ -452,7 +465,28 @@ function generate_html_code() {
 
   calculate_html_code();
 
-  html_code_string = "<iframe \n\theight='" + frameHeight_value + "' width='" + frameWidth_value + "' frameborder='0' scrolling='no' marginheight='0' marginwidth='0'\n\tsrc='" + iframeUrl + "'\n>\n\tyour web browser and/or your host do not support iframes as required to display the chessboard\n</iframe>";
+  switch (frameWidth_value) {
+    case "board":
+      outerFrameWidth = min_frameWidth;
+      break;
+    case "full":
+      outerFrameWidth = "100%";
+      break;
+    default:
+      outerFrameWidth = frameWidth_value;
+      break;
+  }
+
+  switch (frameHeight_value) {
+    case "board":
+      outerFrameHeight = min_frameHeight;
+      break;
+    default:
+      outerFrameHeight = frameHeight_value;
+      break;
+  }
+
+  html_code_string = "<iframe \n\theight='" + outerFrameHeight + "' width='" + outerFrameWidth + "' frameborder='0' scrolling='no' marginheight='0' marginwidth='0'\n\tsrc='" + iframeUrl + "'\n>\n\tyour web browser and/or your host do not support iframes as required to display the chessboard\n</iframe>";
   
   document.getElementById('html_code').value = html_code_string;
 
@@ -500,7 +534,7 @@ function validate_color_none(object, name, def) {
 }
 
 function validate_number(object, name, def) {
-  if (object.value.match(/[^0-9]+(px$|$)/)) {
+  if (!(vv = object.value.match(/^([0-9]+)(px$|$)/))) {
     alert('error: the ' + name + ' must be a non negative number');
     object.value = def;
     return false;    
@@ -509,11 +543,14 @@ function validate_number(object, name, def) {
 
 function validate_number_blank(object, name, def) {
   if (object.value === "") { return true; }
-  if (object.value.match(/[^0-9]+(px$|$)/)) {
+  if (!(vv = object.value.match(/^([0-9]+)(px$|$)/))) {
     alert('error: the ' + name + ' must be blank or a non negative number');
     object.value = def;
     return false;    
-  } else { return true; }
+  } else { 
+    object.value = vv[0];
+    return true; 
+  }
 }
 
 function validate_number_percentage(object, name, def) {
@@ -530,7 +567,47 @@ function validate_number_percentage_blank(object, name, def) {
     alert('error: the ' + name + ' must be blank or a non negative number or percentage');
     object.value = def;
     return false;    
-  } else { return true; }
+  } else { 
+    object.value = vv[0];
+    return true; 
+  }
+}
+
+function validate_frameWidth() {
+  object = document.getElementById('frameWidth');
+  if (object.value === '') { return true; }
+  if ((object.value == 'board') && (document.getElementById('orizontalLayout').value == "f")) { return true; }
+  if (object.value == 'full') { return true; }
+  if (!(vv = object.value.match(/^([0-9]+)(px$|$)/))) {
+    if (document.getElementById('orizontalLayout').value == "t") {
+      alert('error: for the orizontal layout the frameWidth must be a non negative number or \'full\'');
+    } else {
+      alert('error: for the vertical layout the frameWidth must be a non negative number, \'board\' or \'full\'');
+    }
+    object.value = "";
+    return false;    
+  } else { 
+    object.value = vv[0];
+    return true; 
+  }
+}
+
+function validate_frameHeight() {
+  object = document.getElementById('frameHeight');
+  if (object.value === '') { return true; }
+  if ((object.value == 'board') && (document.getElementById('orizontalLayout').value == "t")){ return true; }
+  if (!(vv = object.value.match(/^([0-9]+)(px$|$)/))) {
+    if (document.getElementById('orizontalLayout').value == "t") { 
+      alert('error: for the orizontal layout the frameHeight must be a non negative number or \'board\'');
+    } else {
+      alert('error: for the vertical layout the frameHeight must be a non negative number');
+    }
+    object.value = "";
+    return false;    
+  } else { 
+    object.value = vv[0];
+    return true; 
+  }
 }
 
 function validate_pieceSize() {
@@ -550,7 +627,6 @@ function validate_squareSize() {
     return false;
   } else { return true; }
 }
-
 
 var encodingCharSet = "$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
 var encodingVersion = 1;
@@ -1482,6 +1558,7 @@ window.onload = set_defaults;
 <script>document.write('<a style="color: red;" href=' + project_url + ' target=_blank>pgn4web</a>');</script> 
 chessboard generator</h1>
 </td><td align=right valign=middle>
+
 <script>document.write('<a href=' + project_url + ' target=_blank><img src=pawns.png border=0></a>');</script>
 </td></tr></table>
 
@@ -1492,18 +1569,21 @@ chessboard generator</h1>
 <li><a href=#pgn_form><b>enter your PGN text</b> in the green textbox below</a>
   <ul type="square">
   <li>square brackets chars "[" "]" are not allowed by pgn4web in the PGN text outside the PGN header</li>
+
   <li>within the board generator, the comment tag ";" will flag as a comment the remaining of the PGN data rather than up to the end of line only; please replace the ";" comment tag with the "{" comment tag and close the comment with "}" at the end of the line</li>
   <li>due to a limitation of web browsers and web servers with the URL length, only short PGN texts are allowed and a warning is issued if the max URL length is exceeded; also beware of possible hidden URL redirections extending your URL length further</li>
   </ul>
   </li>
 <li><b><a href=#replay_options>modify any of the configuration options</a></b>, layout, colors and fonts</li>
 <li><b><a href=#generate>generate the HTML code</a></b> and <b><a href=#game_preview>preview your chessboard</a></b></li>
+
 <li><b><a href=#replay_options>fine tune configuration options</a></b> to your liking
   <ul type="square">
   <li><a href=#page_options>check carefully the frame height/width values</a>; different browsers might render some items slightly bigger or smaller, so <a href=#page_options>leave some empty space at the bottom of the frame by increasing the height</a></li>
   </ul>
   </li>
   <li>once happy with <a href=#game_preview>the preview chessboard</a>, just <a href=#generate><b>cut and paste the HTML code</b> from the yellow box</a> into your web page or your blog; when entering the code in your website or blog, please make sure you are using the HTML editing option, otherwise the enhanced editor might alter the code you enter</li>
+
 <li>email to <i>
 <script>document.write('<a href=mailto:' + project_email + '>' + project_email + '</a>');</script>
 </i> the address of your website or your blog</li>
@@ -1514,6 +1594,7 @@ chessboard generator</h1>
 
 <div style="height: 3em">&nbsp</div>
 <script>print_menu("generate HTML code", 2, "generate");</script>
+
 <div style="height: 1em">&nbsp;</div>
 
 <div style="font-style: italic; font-weight: bold; text-align: center; margin-bottom:6;">automatically generated HTML code for your web page or blog</div>
@@ -1543,6 +1624,7 @@ chessboard generator</h1>
 
 <div style="height: 2em">&nbsp</div>
 <script>print_menu("pgn_form", 3, "chess game notation in PGN format");</script>
+
 <div style="height: 1em">&nbsp;</div>
 
 <textarea id=pgnText class="textbox" style="background-color: #DDFFDD; scrollbar-base-color: #DDFFDD;" rows=15 onChange="update_pgnTextLength()"></textarea>
@@ -1552,22 +1634,24 @@ chessboard generator</h1>
 </tr></table>
 <p></p>
 
-<input class="checkbox" type="checkbox" id="encodePgn" name="encodePgn" value="encodePgn" />
+<input class="checkbox" type="checkbox" id="encodePgn" name="checkbox" value="encodePgn" />
 &nbsp;&nbsp; encode PGN text &nbsp;&nbsp;
 <span class="helptext"">encode the PGN text to a URL friendly format (this should be normally enabled)</span>
+
 <p></p>
 
 <div style="height: 3em">&nbsp</div>
 <script>print_menu("replay_options", 3, "game replay options");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<input class="checkbox" type="checkbox" id="auto" name="auto" value="auto" />
+<input class="checkbox" type="checkbox" id="auto" name="checkbox" value="auto" />
 &nbsp;&nbsp; autoplay game on page load &nbsp;&nbsp;
 <p></p>
 
-<select class="dropdown" id="delay" name="delay">
+<select class="dropdown" id="delay" name="dropdown">
 <option value="1000">1</option>
 <option value="2000">2</option>
+
 <option value="3000">3</option>
 <option value="5000">5</option>
 <option value="10000">10</option>
@@ -1576,22 +1660,23 @@ chessboard generator</h1>
 &nbsp;&nbsp; autoplay delay (sec) &nbsp;&nbsp;
 <p></p>
 
-<input class="checkbox" type="checkbox" id="loop" name="loop" value="loop" />
+<input class="checkbox" type="checkbox" id="loop" name="checkbox" value="loop" />
 &nbsp;&nbsp; loop through games at game end &nbsp;&nbsp;
 
 <div style="height: 3em">&nbsp</div>
 <script>print_menu("board_options", 3, "chessboard options");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<select class="dropdown" id="pieceFont" name="pieceFont">
+<select class="dropdown" id="pieceFont" name="dropdown">
 <option value="alpha">alpha</option>
 <option value="merida">merida</option>
 <option value="uscf">uscf</option>
 </select>
 &nbsp;&nbsp; piece font &nbsp;&nbsp;
+
 <p></p>
 
-<select class="dropdown" id="pieceSize" name="pieceSize" onChange="validate_pieceSize();">
+<select class="dropdown" id="pieceSize" name="dropdown" onChange="validate_pieceSize();">
 <option value="20">20</option>
 <option value="21">21</option>
 <option value="22">22</option>
@@ -1599,6 +1684,7 @@ chessboard generator</h1>
 <option value="24">24</option>
 <option value="25">25</option>
 <option value="26">26</option>
+
 <option value="27">27</option>
 <option value="28">28</option>
 <option value="29">29</option>
@@ -1608,6 +1694,7 @@ chessboard generator</h1>
 <option value="33">33</option>
 <option value="34">34</option>
 <option value="35">35</option>
+
 <option value="36">36</option>
 <option value="37">37</option>
 <option value="38">38</option>
@@ -1617,6 +1704,7 @@ chessboard generator</h1>
 <option value="42">42</option>
 <option value="43">43</option>
 <option value="44">44</option>
+
 <option value="45">45</option>
 <option value="46">46</option>
 <option value="47">47</option>
@@ -1626,6 +1714,7 @@ chessboard generator</h1>
 <option value="60">60</option>
 <option value="64">64</option>
 <option value="72">72</option>
+
 <option value="80">80</option>
 <option value="88">88</option>
 <option value="96">96</option>
@@ -1635,129 +1724,145 @@ chessboard generator</h1>
 <option value="300">300</option>
 </select>
 &nbsp;&nbsp; piece size &nbsp;&nbsp;
+
 <p></p>
 
-<input class="input" type="text" id="squareSize" name="squareSize" value="" size="7" onChange="validate_squareSize(); update_suggested_iframe_dimensions()">
+<input class="input" type="text" id="squareSize" name="input" value="" size="7" onChange="validate_squareSize(); update_suggested_iframe_dimensions()">
 &nbsp;&nbsp; square size &nbsp;&nbsp;
 <span class="helptext"">a number; must be larger than the piece size</span>
 <p></p>
 <br>
 
-<input class="color input" type="text" id="lightColorHex" name="lightColorHex" value="" size="7" onChange="validate_color(this, 'light squares color', lightColorHex_default)">
+<input class="color input" type="text" id="lightColorHex" name="input" value="" size="7" onChange="validate_color(this, 'light squares color', lightColorHex_default)">
 &nbsp;&nbsp; light squares color &nbsp;&nbsp;
 <p></p>
 
-<input class="color input" type="text" id="darkColorHex" name="darkColorHex" value="" size="7" onChange="validate_color(this, 'dark squares color', darkColorHex_default)">
+<input class="color input" type="text" id="darkColorHex" name="input" value="" size="7" onChange="validate_color(this, 'dark squares color', darkColorHex_default)">
 &nbsp;&nbsp; dark squares color &nbsp;&nbsp;
 <p></p>
 
-<input class="color input" type="text" id="boardBorderColorHex" name="boardBorderColorHex" value="" size="7" onChange="validate_color(this, 'board border color', boardBorderColorHex_default)">
+<input class="color input" type="text" id="boardBorderColorHex" name="input" value="" size="7" onChange="validate_color(this, 'board border color', boardBorderColorHex_default)">
 &nbsp;&nbsp; board border color &nbsp;&nbsp;
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="highlightColorHex" name="highlightColorHex" value="" size="7" onChange="validate_color_none(this, 'highlight squares color', highlightColorHex_default)">
+<input class="color {adjust:false} input" type="text" id="highlightColorHex" name="input" value="" size="7" onChange="validate_color_none(this, 'highlight squares color', highlightColorHex_default)">
 &nbsp;&nbsp; highlight squares color &nbsp;&nbsp;
 <span class="helptext">set to <i>none</i> in order to disable square highlighting</span>
+
 <p></p>
 <br>
 
-<input class"checkbox" type="checkbox" id="showButtons" name="showButtons" value="showButtons" onChange="update_controls()">
+<input class"checkbox" type="checkbox" id="showButtons" name="checkbox" value="showButtons" onChange="update_controls()">
 &nbsp;&nbsp; show control buttons &nbsp;&nbsp;
 <span class="helptext">control buttons might not be necessary, just try clicking the G8 square</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="controlBackgroundColorHex" name="controlBackgroundColorHex" value="" size="7" onChange="validate_color_default(this, 'control buttons background color', 'default'); update_controls()">
+<input class="color {adjust:false} input" type="text" id="controlBackgroundColorHex" name="input" value="" size="7" onChange="validate_color_default(this, 'control buttons background color', 'default'); update_controls()">
 &nbsp;&nbsp; control buttons background color &nbsp;&nbsp;
 <span class="helptext">set to <i>default</i> in order to use standard buttons from the browser</span>
+
 <p></p>
 
-<input class="color input" type="text" id="controlTextColorHex" name="controlTextColorHex" value="" size="7" onChange="validate_color(this, 'control buttons text color', controlTextColorHex_default)">
+<input class="color input" type="text" id="controlTextColorHex" name="input" value="" size="7" onChange="validate_color(this, 'control buttons text color', controlTextColorHex_default)">
 &nbsp;&nbsp; control buttons text color &nbsp;&nbsp;
 
 <div style="height: 3em">&nbsp</div>
 <script>print_menu("header_moves_options", 3, "header and moves options");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<input class="input" type="text" id="textMargin" name="textMargin" value="" size="7" onChange="validate_number(this, 'text margin', textMargin_default);">
+<input class="input" type="text" id="textMargin" name="input" value="" size="7" onChange="validate_number(this, 'text margin', textMargin_default);">
 &nbsp;&nbsp; text margin &nbsp;&nbsp;
 <span class="helptext"">a number; header/moves margin, nice to have if text overflows with scrollbars</span>
+
 <p></p>
 <br>
 
-<input class="checkbox" type="checkbox" id="showHeader" name="showHeader" value="showHeader" onChange="update_controls()">
+<input class="checkbox" type="checkbox" id="showHeader" name="checkbox" value="showHeader" onChange="update_controls()">
 &nbsp;&nbsp; <b>show game header</b> &nbsp;&nbsp;
 <p></p>
 
-<input class="input" type="text" id="fontHeaderSize" name="fontHeaderSize" value="" size="7" onChange="validate_number_percentage(this, 'header font size', fontHeaderSize_default);">
+<input class="input" type="text" id="fontHeaderSize" name="input" value="" size="7" onChange="validate_number_percentage(this, 'header font size', fontHeaderSize_default);">
 &nbsp;&nbsp; header font size &nbsp;&nbsp;
 <span class="helptext"">a number or a percentage; make sure left/right columns dont touch in the middle</span>
 <p></p>
 
-<input class="color input" type="text" id="fontHeaderColorHex" name="fontHeaderColorHex" value="" size="7" onChange="validate_color(this, 'header font color', fontHeaderColorHex_default)">
+<input class="color input" type="text" id="fontHeaderColorHex" name="input" value="" size="7" onChange="validate_color(this, 'header font color', fontHeaderColorHex_default)">
 &nbsp;&nbsp; header font color &nbsp;&nbsp;
 <p></p>
 <br>
 
-<input class="checkbox" type="checkbox" id="showMoves" name="showMoves" value="showMoves" onChange="update_controls()">
+<input class="checkbox" type="checkbox" id="showMoves" name="checkbox" value="showMoves" onChange="update_controls()">
 &nbsp;&nbsp; <b>show game moves</b> &nbsp;&nbsp;
 <p></p>
 
-<input class="checkbox" type="checkbox" id="showComments" name="showComments" value="showComments">
+<input class="checkbox" type="checkbox" id="showComments" name="checkbox" value="showComments">
 &nbsp;&nbsp; show game comments &nbsp;&nbsp;
+
 <p></p>
 
-<input class="checkbox" type="checkbox" id="showCommentsOnSeparateLines" name="showCommentsOnSeparateLines" value="showCommentsOnSeparateLines">
+<input class="checkbox" type="checkbox" id="showCommentsOnSeparateLines" name="checkbox" value="showCommentsOnSeparateLines">
 &nbsp;&nbsp; show comments on separate lines &nbsp;&nbsp;
 <p></p>
 
-<input class="input" type="text" id="fontMovesSize" name="fontMovesSize" value="" size="7" onChange="validate_number_percentage(this, 'moves font size', fontMovesSize_default);">
+<input class="input" type="text" id="fontMovesSize" name="input" value="" size="7" onChange="validate_number_percentage(this, 'moves font size', fontMovesSize_default);">
 &nbsp;&nbsp; moves font size &nbsp;&nbsp;
 <span class="helptext"">a number or a percentage</span>
 <p></p>
 
-<input class="color input" type="text" id="fontMovesColorHex" name="fontMovesColorHex" value="" size="7" onChange="validate_color(this, 'moves font color', fontMovesColorHex_default)">
+<input class="color input" type="text" id="fontMovesColorHex" name="input" value="" size="7" onChange="validate_color(this, 'moves font color', fontMovesColorHex_default)">
+
 &nbsp;&nbsp; moves font color &nbsp;&nbsp;
 <p></p>
 
-<input class="color input" type="text" id="highlightMoveColorHex" name="highlightMoveColorHex" value="" size="7" onChange="validate_color(this, 'highlight move color', highlightMoveColorHex_default)">
+<input class="color input" type="text" id="highlightMoveColorHex" name="input" value="" size="7" onChange="validate_color(this, 'highlight move color', highlightMoveColorHex_default)">
 &nbsp;&nbsp; highlight move color &nbsp;&nbsp;
 <p></p>
 
-<input class="input" type="text" id="fontCommentsSize" name="fontCommentsSize" value="" size="7" onChange="validate_number_percentage(this, 'comments font size', fontCommentsSize_default);">
+<input class="input" type="text" id="fontCommentsSize" name="input" value="" size="7" onChange="validate_number_percentage(this, 'comments font size', fontCommentsSize_default);">
 &nbsp;&nbsp; comments font size &nbsp;&nbsp;
 <span class="helptext"">a number or a percentage</span>
+
 <p></p>
 
-<input class="color input" type="text" id="fontCommentsColorHex" name="fontCommentsColorHex" value="" size="7" onChange="validate_color(this, 'comments font color', fontCommentsColorHex_default)">
+<input class="color input" type="text" id="fontCommentsColorHex" name="input" value="" size="7" onChange="validate_color(this, 'comments font color', fontCommentsColorHex_default)">
 &nbsp;&nbsp; comments font color &nbsp;&nbsp;
 
 <div style="height: 3em">&nbsp</div>
 <script>print_menu("page_options", 3, "web page options");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<input class="color input" type="text" id="backgroundColorHex" name="backgroundColorHex" value="" size="7" onChange="validate_color(this, 'background color', backgroundColorHex_default)">
-&nbsp;&nbsp; background color &nbsp;&nbsp;
+<select class="dropdown" id="orizontalLayout" name="dropdown" onChange="validate_frameHeight(); validate_frameWidth(); update_suggested_iframe_dimensions();">
+<option value="f">vertical</option>
+<option value="t">orizontal</option>
+</select>
+&nbsp;&nbsp; chessboard and header/moves layout &nbsp;&nbsp;
+
 <p></p>
 
-<input class="color input" type="text" id="previewBackgroundColorHex" name="previewBackgroundColorHex" value="" size="7" onChange="validate_color(this, 'preview background color', previewBackgroundColorHex_default)"> 
-&nbsp;&nbsp; preview background color &nbsp;&nbsp;
-<span class="helptext"">not actually used in the HTML code, just for the preview</span>
-<p></p>
-<br>
-
-<input class="input" type="text" id="frameHeight" name="frameHeight" value="" size="7" onChange="validate_number_blank(this, 'iFrame height', ''); update_suggested_iframe_dimensions();">
+<input class="input" type="text" id="frameHeight" name="input" value="" size="7" onChange="validate_frameHeight(); update_suggested_iframe_dimensions();">
 &nbsp;&nbsp; iFrame height &nbsp;&nbsp;
 <span id="frameHeight_helpText" class="helptext"></span>
 <p></p>
 
-<input class="input" type="text" id="frameWidth" name="frameWidth" value="" size="7" onChange="validate_number_percentage_blank(this, 'iFrame width', ''); update_suggested_iframe_dimensions();"> 
+<input class="input" type="text" id="frameWidth" name="input" value="" size="7" onChange="validate_frameWidth(); update_suggested_iframe_dimensions();"> 
 &nbsp;&nbsp; iFrame width &nbsp;&nbsp;
 <span id="frameWidth_helpText" class="helptext"></span>
 <p></p>
 
-<input class="input" type="text" id="framePadding" name="framePadding" value="" size="7" onChange="validate_number(this, 'frame padding', framePadding_default); update_suggested_iframe_dimensions();">
+<input class="input" type="text" id="framePadding" name="input" value="" size="7" onChange="validate_number(this, 'frame padding', framePadding_default); update_suggested_iframe_dimensions();">
+
 &nbsp;&nbsp; iFrame padding &nbsp;&nbsp;
 <span class="helptext">a number; border padding around the iframe, included within the iFrame width value</span>
+<p></p>
+<br>
+
+<input class="color input" type="text" id="backgroundColorHex" name="input" value="" size="7" onChange="validate_color(this, 'background color', backgroundColorHex_default)">
+&nbsp;&nbsp; background color &nbsp;&nbsp;
+<p></p>
+
+<input class="color input" type="text" id="previewBackgroundColorHex" name="input" value="" size="7" onChange="validate_color(this, 'preview background color', previewBackgroundColorHex_default)"> 
+&nbsp;&nbsp; preview background color &nbsp;&nbsp;
+<span class="helptext"">not actually used in the HTML code, just for the preview</span>
 <p></p>
 <br>
 
@@ -1777,20 +1882,17 @@ base URL: &nbsp;&nbsp;
 <script>
 
 inputWidth = document.getElementById('framePadding').offsetWidth;
-document.getElementById('delay').style.width = inputWidth;
-document.getElementById('pieceFont').style.width = inputWidth;
-document.getElementById('pieceSize').style.width = inputWidth;
+theObject = document.getElementsByName('dropdown');
+for (ii = 0; ii < theObject.length; ii++) {
+  theObject[ii].style.width = inputWidth;
+}
 
 checkboxWidth = document.getElementById('showCommentsOnSeparateLines').offsetWidth;
 // the last number added to marginLeft should be equal to the value of the .checkbox style at the top
-document.getElementById('encodePgn').style.marginLeft += inputWidth - checkboxWidth + 22;
-document.getElementById('auto').style.marginLeft += inputWidth - checkboxWidth + 22;
-document.getElementById('loop').style.marginLeft += inputWidth - checkboxWidth + 22;
-document.getElementById('showButtons').style.marginLeft += inputWidth - checkboxWidth + 22;
-document.getElementById('showHeader').style.marginLeft += inputWidth - checkboxWidth + 22;
-document.getElementById('showMoves').style.marginLeft += inputWidth - checkboxWidth + 22;
-document.getElementById('showComments').style.marginLeft += inputWidth - checkboxWidth + 22;
-document.getElementById('showCommentsOnSeparateLines').style.marginLeft += inputWidth - checkboxWidth + 22;
+theObject = document.getElementsByName('checkbox');
+for (ii = 0; ii < theObject.length; ii++) {
+  theObject[ii].style.marginLeft +=  inputWidth - checkboxWidth + 22;
+}
 
 document.write("<table width=100% cellspacing=0 cellpadding=0><tr><td align=left valign=bottom>");
 document.write("<a " + project_url + " target=_blank><div class='helptext'>pgn4web v" + version + "</div></a>");
