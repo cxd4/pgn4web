@@ -347,7 +347,7 @@ function calculate_html_code() {
   pieceFont_value = document.board.pieceFont.value;
   pieceSize_value = parseInt(document.board.pieceSize.value, 10);
   squareSize_value = parseInt(document.board.squareSize.value, 10);
-  if (pieceSize_value > squareSize_value) { alert("Error: the piece size (" + pieceSize_value + ") can not be bigger than the square size (" + squareSize_value + ")"); }
+  if (pieceSize_value > squareSize_value) { alert("error: the piece size (" + pieceSize_value + ") can not be bigger than the square size (" + squareSize_value + ")"); }
   iframeUrl += "&pf=" + pieceFont_value + "&ps=" + pieceSize_value + "&ss=" + squareSize_value;
 
   lightColorHex_value = document.board.lightColorHex.value; 
@@ -580,9 +580,9 @@ function validate_frameWidth() {
   if (object.value == 'full') { return true; }
   if (!(vv = object.value.match(/^([0-9]+)(px$|$)/))) {
     if (document.getElementById('orizontalLayout').value == "t") {
-      alert('error: for the orizontal layout the frameWidth must be a non negative number or \'full\'');
+      alert('error: in the orizontal layout the iFrame width must be a non negative number or \'full\'');
     } else {
-      alert('error: for the vertical layout the frameWidth must be a non negative number, \'board\' or \'full\'');
+      alert('error: in the vertical layout the iFrame width must be a non negative number, \'board\' or \'full\'');
     }
     object.value = "";
     return false;    
@@ -598,9 +598,9 @@ function validate_frameHeight() {
   if ((object.value == 'board') && (document.getElementById('orizontalLayout').value == "t")){ return true; }
   if (!(vv = object.value.match(/^([0-9]+)(px$|$)/))) {
     if (document.getElementById('orizontalLayout').value == "t") { 
-      alert('error: for the orizontal layout the frameHeight must be a non negative number or \'board\'');
+      alert('error: in the orizontal layout the iFrame height must be a non negative number or \'board\'');
     } else {
-      alert('error: for the vertical layout the frameHeight must be a non negative number');
+      alert('error: in the vertical layout the iFrame height must be a non negative number');
     }
     object.value = "";
     return false;    
