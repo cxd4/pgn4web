@@ -291,8 +291,8 @@ function update_suggested_iframe_dimensions() {
   if (document.board.orizontalLayout.value == "t") {
     suggested_frameHeight = "board";
     suggested_frameWidth = "full";
-    document.getElementById('frameHeight_helpText').innerHTML = "a number or 'board'; min " + min_frameHeight + "; if blank frame height is assigned to " + suggested_frameHeight;
-    document.getElementById('frameWidth_helpText').innerHTML = "a number or 'full'; min " + min_frameWidth + "; if blank frame width assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
+    document.getElementById('frameHeight_helpText').innerHTML = "a number or <b>board</b>; min <b>" + min_frameHeight + "</b>; if blank, frame height is assigned to <b>" + suggested_frameHeight + "</b>";
+    document.getElementById('frameWidth_helpText').innerHTML = "a number or <b>full</b>; min <b>" + min_frameWidth + "</b>; if blank, frame width is assigned to <b>" + suggested_frameWidth + "</b>; board width is <b>" + boardWidth + "</b>";
   } else {
     suggested_frameWidth = boardWidth;
     suggested_frameHeight = estimated_boardHeight;
@@ -303,8 +303,8 @@ function update_suggested_iframe_dimensions() {
     }
     suggested_frameWidth += 2 * parseInt(document.board.framePadding.value, 10);
     suggested_frameHeight += 2 * parseInt(document.board.framePadding.value, 10);
-    document.getElementById('frameHeight_helpText').innerHTML = "a number; min " + min_frameHeight + "; if blank frame height is assigned to " + suggested_frameHeight;
-    document.getElementById('frameWidth_helpText').innerHTML = "a number or 'board' or 'full'; min " + min_frameWidth + "; if blank frame width assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
+    document.getElementById('frameHeight_helpText').innerHTML = "a number; min <b>" + min_frameHeight + "</b>; if blank, frame height is assigned to <b>" + suggested_frameHeight + "</b>";
+    document.getElementById('frameWidth_helpText').innerHTML = "a number or <b>board</b> or <b>full</b>; min <b>" + min_frameWidth + "</b>; if blank, frame width assigned to <b>" + suggested_frameWidth + "</b>; board width is <b>" + boardWidth + "</b>";
   }
 
   theObject = document.getElementById('frameWidth');
@@ -1747,7 +1747,7 @@ chessboard generator</h1>
 
 <input class="color {adjust:false} input" type="text" id="highlightColorHex" name="input" value="" size="7" onChange="validate_color_none(this, 'highlight squares color', highlightColorHex_default)">
 &nbsp;&nbsp; highlight squares color &nbsp;&nbsp;
-<span class="helptext">set to <i>none</i> in order to disable square highlighting</span>
+<span class="helptext">set to <b>none</b> in order to disable square highlighting</span>
 
 <p></p>
 <br>
@@ -1759,7 +1759,7 @@ chessboard generator</h1>
 
 <input class="color {adjust:false} input" type="text" id="controlBackgroundColorHex" name="input" value="" size="7" onChange="validate_color_default(this, 'control buttons background color', 'default'); update_controls()">
 &nbsp;&nbsp; control buttons background color &nbsp;&nbsp;
-<span class="helptext">set to <i>default</i> in order to use standard buttons from the browser</span>
+<span class="helptext">set to <b>default</b> in order to use standard buttons from the browser</span>
 
 <p></p>
 
