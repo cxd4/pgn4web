@@ -1568,10 +1568,9 @@ chessboard generator</h1>
 <ul type="square">
 <li><a href=#pgn_form><b>enter your PGN text</b> in the green textbox below</a>
   <ul type="square">
-  <li>square brackets chars "[" "]" are not allowed by pgn4web in the PGN text outside the PGN header</li>
-
-  <li>within the board generator, the comment tag ";" will flag as a comment the remaining of the PGN data rather than up to the end of line only; please replace the ";" comment tag with the "{" comment tag and close the comment with "}" at the end of the line</li>
-  <li>due to a limitation of web browsers and web servers with the URL length, only short PGN texts are allowed and a warning is issued if the max URL length is exceeded; also beware of possible hidden URL redirections extending your URL length further</li>
+  <li>keep PGN data short: due to a limitation of web browsers and web servers with the URL length, only short PGN texts are allowed and a warning is issued if the max URL length is exceeded; also beware of possible hidden URL redirections extending your URL length further</li>
+  <li>beware of "[" and "]" characters in the game text/comments: if square brackets are present in the comments (or the game text) in a pattern similar to the PGN header pattern <i>[tag "value"]</i> then the game parsing might break. If your PGN file is not displayed properly, please check for characters "[" and "]" in the comments and try removing them.</li>
+  <li>keep "encode PGN text" checkbox checked: within the board generator, if the "encode PGN text" checkbox is unchecked, the comment tag ";" will flag as a comment the remaining of the PGN data rather than up to the end of line only; please either check the "encode PGN text" checkbox or replace the ";" comment tag with the "{" comment tag and close the comment with "}" at the end of the line</li>
   </ul>
   </li>
 <li><b><a href=#replay_options>modify any of the configuration options</a></b>, layout, colors and fonts</li>
@@ -1579,7 +1578,7 @@ chessboard generator</h1>
 
 <li><b><a href=#replay_options>fine tune configuration options</a></b> to your liking
   <ul type="square">
-  <li><a href=#page_options>check carefully the frame height/width values</a>; different browsers might render some items slightly bigger or smaller, so <a href=#page_options>leave some empty space at the bottom of the frame by increasing the height</a></li>
+  <li><a href=#page_options>check carefully the frame height/width values</a>: different browsers might render some items slightly bigger or smaller, so <a href=#page_options>leave some empty space at the bottom of the frame by increasing the height</a></li>
   </ul>
   </li>
   <li>once happy with <a href=#game_preview>the preview chessboard</a>, just <a href=#generate><b>cut and paste the HTML code</b> from the yellow box</a> into your web page or your blog; when entering the code in your website or blog, please make sure you are using the HTML editing option, otherwise the enhanced editor might alter the code you enter</li>
