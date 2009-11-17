@@ -80,7 +80,7 @@ controlTextColorHex_default = "000000";
 textMargin_default = 0;
 showHeader_default = "t";
 showMoves_default = "t";
-orizontalLayout_default = "f";
+horizontalLayout_default = "f";
 frameHeight_default = "";
 frameWidth_default = "";
 framePadding_default = 0;
@@ -221,9 +221,9 @@ function set_defaults() {
   document.board.previewBackgroundColorHex.value = previewBackgroundColorHex_value;
   validate_color(document.board.previewBackgroundColorHex, 'preview background color', previewBackgroundColorHex_default);
 
-  if ((orizontalLayout_value = gup("orizontalLayout")) === "") { orizontalLayout_value = orizontalLayout_default; }
-  if (orizontalLayout_value == "t") { document.board.orizontalLayout.value = "t"; }
-  else { document.board.orizontalLayout.value = "f"; }
+  if ((horizontalLayout_value = gup("horizontalLayout")) === "") { horizontalLayout_value = horizontalLayout_default; }
+  if (horizontalLayout_value == "t") { document.board.horizontalLayout.value = "t"; }
+  else { document.board.horizontalLayout.value = "f"; }
 
   if ((frameHeight_value = gup("frameHeight")) === "") { frameHeight_value = frameHeight_default; }
   document.board.frameHeight.value = frameHeight_value;
@@ -288,7 +288,7 @@ function update_suggested_iframe_dimensions() {
   min_frameWidth = boardWidth + 2 * parseInt(document.board.framePadding.value, 10);
   min_frameHeight = estimated_boardHeight + 2 * parseInt(document.board.framePadding.value, 10);
 
-  if (document.board.orizontalLayout.value == "t") {
+  if (document.board.horizontalLayout.value == "t") {
     suggested_frameHeight = "board";
     suggested_frameWidth = "full";
     document.getElementById('frameHeight_helpText').innerHTML = "a number or <b>board</b>; min <b>" + min_frameHeight + "</b>; if blank, assigned to <b>" + suggested_frameHeight + "</b>";
@@ -410,8 +410,8 @@ function calculate_html_code() {
   framePadding_value = parseInt(document.board.framePadding.value, 10);
   iframeUrl += "&fp=" + framePadding_value;
 
-  orizontalLayout_value = document.board.orizontalLayout.value;
-  iframeUrl += "&ol=" + orizontalLayout_value;
+  horizontalLayout_value = document.board.horizontalLayout.value;
+  iframeUrl += "&hl=" + horizontalLayout_value;
 
   update_suggested_iframe_dimensions();
   if ((frameHeight_value = document.board.frameHeight.value) === "") { frameHeight_value = suggested_frameHeight; }
@@ -580,11 +580,11 @@ function validate_number_percentage_blank(object, name, def) {
 function validate_frameWidth() {
   object = document.getElementById('frameWidth');
   if (object.value === '') { return true; }
-  if ((object.value == 'board') && (document.getElementById('orizontalLayout').value == "f")) { return true; }
+  if ((object.value == 'board') && (document.getElementById('horizontalLayout').value == "f")) { return true; }
   if (object.value == 'full') { return true; }
   if (!(vv = object.value.match(/^([0-9]+)(px$|$)/))) {
-    if (document.getElementById('orizontalLayout').value == "t") {
-      alert('error: in the orizontal layout the iFrame width must be a non negative number or \'full\'');
+    if (document.getElementById('horizontalLayout').value == "t") {
+      alert('error: in the horizontal layout the iFrame width must be a non negative number or \'full\'');
     } else {
       alert('error: in the vertical layout the iFrame width must be a non negative number, \'board\' or \'full\'');
     }
@@ -599,10 +599,10 @@ function validate_frameWidth() {
 function validate_frameHeight() {
   object = document.getElementById('frameHeight');
   if (object.value === '') { return true; }
-  if ((object.value == 'board') && (document.getElementById('orizontalLayout').value == "t")){ return true; }
+  if ((object.value == 'board') && (document.getElementById('horizontalLayout').value == "t")){ return true; }
   if (!(vv = object.value.match(/^([0-9]+)(px$|$)/))) {
-    if (document.getElementById('orizontalLayout').value == "t") { 
-      alert('error: in the orizontal layout the iFrame height must be a non negative number or \'board\'');
+    if (document.getElementById('horizontalLayout').value == "t") { 
+      alert('error: in the horizontal layout the iFrame height must be a non negative number or \'board\'');
     } else {
       alert('error: in the vertical layout the iFrame height must be a non negative number');
     }
@@ -1838,9 +1838,9 @@ chessboard generator</h1>
 <script>print_menu("page_options", 3, "web page options");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<select class="dropdown" id="orizontalLayout" name="dropdown" onChange="validate_frameHeight(); validate_frameWidth(); update_suggested_iframe_dimensions();">
+<select class="dropdown" id="horizontalLayout" name="dropdown" onChange="validate_frameHeight(); validate_frameWidth(); update_suggested_iframe_dimensions();">
 <option value="f">vertical</option>
-<option value="t">orizontal</option>
+<option value="t">horizontal</option>
 </select>
 &nbsp;&nbsp; chessboard and header/moves layout &nbsp;&nbsp;
 

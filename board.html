@@ -186,7 +186,7 @@ function new_start_pgn4web() {
 
   theObject = document.getElementById("headerMovesPadding");
   if (theObject) { 
-    if (orizontalLayout === true) { theObject.width = paddingControlWidth + 'px'; }
+    if (horizontalLayout === true) { theObject.width = paddingControlWidth + 'px'; }
     else { theObject.style.minHeight = paddingControlHeight; }
   }
 
@@ -201,7 +201,7 @@ function new_start_pgn4web() {
   if (showButtons) { boardHeight += document.getElementById("GameButtons").offsetHeight; }
   if (showButtons && (numberOfGames > 1)) { boardHeight += document.getElementById("GameSelector").offsetHeight; }
 
-  if (orizontalLayout === true) {
+  if (horizontalLayout === true) {
     document.getElementById("extendedBoard").width = boardWidth;
   }
 
@@ -210,7 +210,7 @@ function new_start_pgn4web() {
 
   theObject = document.getElementById("headerMoves");
   if (theObject !== null) {
-    if (orizontalLayout === true) {
+    if (horizontalLayout === true) {
       if (frameWidth === "") { document.getElementById("headerMoves").style.width = textWidth; }
       else { document.getElementById("outerFrame").style.width = frameWidth - 2 * framePadding; }
       if (frameHeight === "") { document.getElementById("headerMoves").style.height = textHeight; }
@@ -1055,8 +1055,8 @@ switch (frameWidth) {
     break;
 }
 
-if (gup("orizontalLayout") == "true") { orizontalLayout = true; }
-else { orizontalLayout = false; }	
+if (gup("horizontalLayout") == "true") { horizontalLayout = true; }
+else { horizontalLayout = false; }	
 
 if (gup("help") !== "") {
   document.write("<PRE>");
@@ -1109,7 +1109,7 @@ if (gup("help") !== "") {
   document.write("\n");
   document.write(" - backgroundColorName = page background color name, like red\n");
   document.write(" - backgroundColorHex = page background color hex code, like FF0000\n");
-  document.write(" - orizontalLayout = if set true, shows header/moves text at the right of the board, below otherwise (default false)\n");
+  document.write(" - horizontalLayout = if set true, shows header/moves text at the right of the board, below otherwise (default false)\n");
   document.write(" - frameHeight = set height of the total page, as a number or as 'board' overriding textHeight (default not set)\n");
   document.write(" - frameWidth = set width of the total page, as a number, as 'board' or as 'full', overriding textWidth (default not set)\n");
   document.write(" - framePadding = padding within the frame (default 0)\n");
@@ -1128,7 +1128,7 @@ document.write("<tr>");
 document.write("<td id='extendedBoard' align=center valign=top>");
 display_board();
 document.write("</td>");
-if (orizontalLayout === true) { 
+if (horizontalLayout === true) { 
   document.write("<td id='headerMovesPadding' width='0px' >");
   document.write("<td id='extendedHeaderMoves' align=left valign=top>"); 
 } else { 
@@ -1151,7 +1151,7 @@ function display_board() {
 
 function display_header_moves() {
 
-  if ((showHeader) && (orizontalLayout === false)) {
+  if ((showHeader) && (horizontalLayout === false)) {
       document.write("<div id='headerMovesPadding' class='header' style='text-align: center;'>&nbsp</div>");
   }
 
@@ -1194,7 +1194,7 @@ function display_header_moves() {
     if (showHeader) {
       document.write("<div class='header' style='text-align: center;'>&nbsp;</div>");
     } else {
-      if (orizontalLayout === false) {
+      if (horizontalLayout === false) {
         document.write("<div class='moves' style='text-align: center;'>&nbsp;</div>");
       }
     }
