@@ -128,15 +128,14 @@ function set_defaults() {
   document.board.loop.checked = (loop_value == "t");
 
   if ((pieceFont_value = gup("pieceFont")) === "") { pieceFont_value = pieceFont_default; }
+  if (pieceFont_value == "a") { pieceFont_value = "alpha"; }
+  if (pieceFont_value == "m") { pieceFont_value = "merida"; }
+  if (pieceFont_value == "u") { pieceFont_value = "uscf"; }
   document.board.pieceFont.value = pieceFont_value;
-  if (!((pieceFont_value == "alpha") || (pieceFont_value == "merida") || (pieceFont_value == "uscf") || 
-	(pieceFont_value == "a")     || (pieceFont_value == "m")      || (pieceFont_value == "u")   )) {
+  if (!((pieceFont_value == "alpha") || (pieceFont_value == "merida") || (pieceFont_value == "uscf"))) {
     alert('error: the piece font must me either \'alpha\', \'merida\', \'uscf\' or their initials');
     document.board.pieceFont.value = pieceFont_value = pieceFont_default;
   }
-  if (pieceFont == "a") { pieceFont = "alpha"; }
-  if (pieceFont == "m") { pieceFont = "merida"; }
-  if (pieceFont == "u") { pieceFont = "uscf"; }
 
   if ((squareSize_value = gup("squareSize")) === "") { squareSize_value = squareSize_default; }
   document.getElementById('squareSize').value = squareSize_value;
@@ -230,10 +229,13 @@ function set_defaults() {
   else { document.board.horizontalLayout.value = "f"; }
 
   if ((frameHeight_value = gup("frameHeight")) === "") { frameHeight_value = frameHeight_default; }
+  if (frameHeight_value == "b") { frameHeight_value = "board"; }
   document.board.frameHeight.value = frameHeight_value;
   validate_frameHeight();
 
   if ((frameWidth_value = gup("frameWidth")) === "") { frameWidth_value = frameWidth_default; }
+  if (frameWidth_value == "f") { frameWidth_value = "full"; }
+  if (frameWidth_value == "b") { frameWidth_value = "board"; }
   document.board.frameWidth.value = frameWidth_value;
   validate_frameWidth()
 
