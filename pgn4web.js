@@ -669,7 +669,7 @@ function displayDebugInfo() {
     } else { // backward compatibility with pgn4web older than 1.77 when the <span> technique was used for pgnText
       debugInfo += 'PGN text: ' + document.getElementById("pgnText").innerHTML.length;
     }
-      debugInfo += ' (' + document.getElementById("pgnText").tagName + ')\n\n';
+      debugInfo += ' (' + document.getElementById("pgnText").tagName.toLowerCase() + ')\n\n';
   } else {
     debugInfo += 'PGN text: none' + '\n\n';
   }
