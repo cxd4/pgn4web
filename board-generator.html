@@ -1533,20 +1533,22 @@ function bug_report() {
 
 function print_menu( item, level, title ) {
 
-  menu =  '<table width=100% cellspacing=0 cellpadding=0><tr><td>';
+  menu =  '<table width=100% cellspacing=0 cellpadding=0><tr><td td valign=middle align=left>';
   menu += '<h' + level + '><a name=' + item + '>' + title + '</a></h' + level + '>';
-  menu += '</td><td valign=top>';
-  menu += '<div style="font-size: 66%; text-align: right">';
+  menu += '</td><td valign=top align=right>';
+  menu += '<div style="font-size: 66%;">';
   menu += '<a href=#top>instructions</a>';
+  menu += '<br>';
   menu += '&nbsp; &nbsp;<span style="color:gray">actions:</span>';
   menu += '&nbsp; &nbsp;<a href=#generate>copy iFrame</a>';
   menu += '&nbsp; &nbsp;<a href=#game_preview>preview</a>';
   menu += '&nbsp; &nbsp;<a href="javascript:generate_html_code()">generate</a>';
+  menu += '<br>';
   menu += '&nbsp; &nbsp;<span style="color:gray">config:</span>';
   menu += '&nbsp; &nbsp;<a href=#pgn_form>PGN</a>';
   menu += '&nbsp; &nbsp;<a href=#replay_options>replay</a>';
   menu += '&nbsp; &nbsp;<a href=#board_options>board</a>';
-  menu += '&nbsp; &nbsp;<a href=#header_moves_options>header&moves</a>';
+  menu += '&nbsp; &nbsp;<a href=#header_moves_options>header and moves</a>';
   menu += '&nbsp; &nbsp;<a href=#page_options>page</a>';
   menu += '</div>';
   menu += '</td></tr></table>';
@@ -1598,7 +1600,7 @@ chessboard generator</h1>
 <form id="board" name="board" style="display:inline;" action="javascript:generate_html_code()">
 
 <div style="height: 3em">&nbsp</div>
-<script>print_menu("generate", 2, "generate & copy iFrame");</script>
+<script>print_menu("generate", 2, "generate and copy iFrame");</script>
 
 <div style="height: 1em">&nbsp;</div>
 
@@ -1628,7 +1630,7 @@ chessboard generator</h1>
 <h2>configuration options</h2>
 
 <div style="height: 2em">&nbsp</div>
-<script>print_menu("pgn_form", 3, "chess game PGN notation");</script>
+<script>print_menu("pgn_form", 3, "chess games notation in PGN format");</script>
 
 <div style="height: 1em">&nbsp;</div>
 
