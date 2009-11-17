@@ -882,9 +882,13 @@ SetHighlightOption(true);
 SetShortcutKeysEnabled(true);
 
 if ((pieceFont = gup("pieceFont")) === "") {
-  if ((pieceFont = gup("font")) === "") 
-    { pieceFont = "alpha"; } // left for compatibility with older version
+  if ((pieceFont = gup("font")) === "") // left for compatibility with older version
+    { pieceFont = "alpha"; }
 }
+if (pieceFont == "a") { pieceFont = "alpha"; }
+if (pieceFont == "m") { pieceFont = "merida"; }
+if (pieceFont == "u") { pieceFont = "uscf"; }
+
 if ((pieceSize = gup("pieceSize")) === "") { pieceSize = 24; }
 else { pieceSize = parseInt(pieceSize, 10); }
 
@@ -1020,6 +1024,7 @@ frameHeight = gup("frameHeight");
 // next statement is for compatibility with older version of board/board-generator
 if (frameHeight.match("pct")) { frameHeight = ""; textHeight = "100%"; }
 switch (frameHeight) {
+  case "b":
   case "board":
     frameHeight = "";
     fixFrameHeightToBoard = true;
@@ -1037,10 +1042,12 @@ frameWidth = gup("frameWidth");
 // next statement is for compatibility with older version of board/board-generator
 if (frameWidth.match("pct")) { frameWidth = "full"; }
 switch (frameWidth) {
+  case "b":
   case "board":
     frameWidth = "";
     fixFrameWidthToBoard = true;
     break;
+  case "f":
   case "full":
     frameWidth = "";
     textWidth = "100%"; 

@@ -129,10 +129,14 @@ function set_defaults() {
 
   if ((pieceFont_value = gup("pieceFont")) === "") { pieceFont_value = pieceFont_default; }
   document.board.pieceFont.value = pieceFont_value;
-  if (!((pieceFont_value == "alpha") || (pieceFont_value == "merida") || (pieceFont_value == "uscf"))) {
-    alert('error: the piece font must me either \'alpha\' or \'merida\' or \'uscf\'');
+  if (!((pieceFont_value == "alpha") || (pieceFont_value == "merida") || (pieceFont_value == "uscf") || 
+	(pieceFont_value == "a")     || (pieceFont_value == "m")      || (pieceFont_value == "u")   )) {
+    alert('error: the piece font must me either \'alpha\', \'merida\', \'uscf\' or their initials');
     document.board.pieceFont.value = pieceFont_value = pieceFont_default;
   }
+  if (pieceFont == "a") { pieceFont = "alpha"; }
+  if (pieceFont == "m") { pieceFont = "merida"; }
+  if (pieceFont == "u") { pieceFont = "uscf"; }
 
   if ((squareSize_value = gup("squareSize")) === "") { squareSize_value = squareSize_default; }
   document.getElementById('squareSize').value = squareSize_value;
@@ -348,7 +352,7 @@ function calculate_html_code() {
   pieceSize_value = parseInt(document.board.pieceSize.value, 10);
   squareSize_value = parseInt(document.board.squareSize.value, 10);
   if (pieceSize_value > squareSize_value) { alert("error: the piece size (" + pieceSize_value + ") can not be bigger than the square size (" + squareSize_value + ")"); }
-  iframeUrl += "&pf=" + pieceFont_value + "&ps=" + pieceSize_value + "&ss=" + squareSize_value;
+  iframeUrl += "&pf=" + pieceFont_value.charAt(0) + "&ps=" + pieceSize_value + "&ss=" + squareSize_value;
 
   lightColorHex_value = document.board.lightColorHex.value; 
   darkColorHex_value = document.board.darkColorHex.value; 
@@ -417,7 +421,16 @@ function calculate_html_code() {
   if ((frameHeight_value = document.board.frameHeight.value) === "") { frameHeight_value = suggested_frameHeight; }
   if ((frameWidth_value = document.board.frameWidth.value) === "") { frameWidth_value = suggested_frameWidth; }
 
-  iframeUrl += "&fh=" + frameHeight_value + "&fw=" + frameWidth_value
+  if (frameHeight_value == "board") { 
+    iframeUrl += "&fh=" + frameHeight_value.charAt(0); 
+  } else {
+    iframeUrl += "&fh=" + frameHeight_value;
+  }
+  if ((frameWidth_value == "full") || (frameWidth_value == "board")) { 
+    iframeUrl += "&fw=" + frameWidth_value.charAt(0); 
+  } else {
+    iframeUrl += "&fw=" + frameWidth_value;
+  }
 
   // better to keep this as last item
   pgnText_value = document.getElementById('pgnText').value;
@@ -493,7 +506,7 @@ function generate_html_code() {
   document.getElementById('preview').innerHTML = "<table border='0' bgcolor='#" + previewBackgroundColorHex_value + "' width='100%' cellpadding='25'><tr><td align='center' valign='middle'> " + html_code_string + "</td></tr></table>";
 
   html_code_status_string = "<table width='100%' cellspacing='0' cellpadding='0'><tr><td align='left' valign='top'>";
-  if (iframeUrl.length < iframeUrl_max) {
+  if (iframeUrl.length <= iframeUrl_max) {
     html_code_status_string += "<span class='helptext'>HTML code ready to cut and paste in your web page or blog</span>";
   } else {
     html_code_status_string += "<span style='color: red'>URL (" + iframeUrl.length + " chars) is longer than " + iframeUrl_max + " chars and might be rejected by some web browser/server, try shortening your PGN data</span>";
@@ -507,7 +520,7 @@ function generate_html_code() {
   document.getElementById('html_code_status').innerHTML = html_code_status_string;
 
   if (firstLoad) { firstLoad = false; return; }
-  if (iframeUrl.length < iframeUrl_max) { location.href='#game_preview'; return; }
+  if (iframeUrl.length <= iframeUrl_max) { location.href='#game_preview'; return; }
   location.href='#generate'; return;
 }
 
