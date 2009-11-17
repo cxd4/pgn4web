@@ -666,7 +666,7 @@ function displayDebugInfo() {
   if (document.getElementById("pgnText") !== null) { 
     debugInfo += 'PGN text: ' + document.getElementById("pgnText").innerHTML.length + '\n\n';
   } else {
-    debugInfo += 'PGN text: undefined' + '\n\n';
+    debugInfo += 'PGN text: none' + '\n\n';
   }
   debugInfo += 'games: current=' + currentGame + ' number=' + numberOfGames + '\n\n' +
                'ply: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber;
