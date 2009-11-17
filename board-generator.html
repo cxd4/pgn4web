@@ -234,7 +234,7 @@ function set_defaults() {
   validate_frameHeight();
 
   if ((frameWidth_value = gup("frameWidth")) === "") { frameWidth_value = frameWidth_default; }
-  if (frameWidth_value == "f") { frameWidth_value = "full"; }
+  if (frameWidth_value == "p") { frameWidth_value = "page"; }
   if (frameWidth_value == "b") { frameWidth_value = "board"; }
   document.board.frameWidth.value = frameWidth_value;
   validate_frameWidth()
@@ -296,9 +296,9 @@ function update_suggested_iframe_dimensions() {
 
   if (document.board.horizontalLayout.value == "t") {
     suggested_frameHeight = "board";
-    suggested_frameWidth = "full";
+    suggested_frameWidth = "page";
     document.getElementById('frameHeight_helpText').innerHTML = "a number or <b>board</b>; min <b>" + min_frameHeight + "</b>; if blank, assigned to <b>" + suggested_frameHeight + "</b>";
-    document.getElementById('frameWidth_helpText').innerHTML = "a number or <b>full</b>; min <b>" + min_frameWidth + "</b>; if blank, assigned to <b>" + suggested_frameWidth + "</b>; board width is <b>" + boardWidth + "</b>";
+    document.getElementById('frameWidth_helpText').innerHTML = "a number or <b>page</b>; min <b>" + min_frameWidth + "</b>; if blank, assigned to <b>" + suggested_frameWidth + "</b>; board width is <b>" + boardWidth + "</b>";
   } else {
     suggested_frameWidth = boardWidth;
     suggested_frameHeight = estimated_boardHeight;
@@ -310,7 +310,7 @@ function update_suggested_iframe_dimensions() {
     suggested_frameWidth += 2 * parseInt(document.board.framePadding.value, 10);
     suggested_frameHeight += 2 * parseInt(document.board.framePadding.value, 10);
     document.getElementById('frameHeight_helpText').innerHTML = "a number; min <b>" + min_frameHeight + "</b>; if blank, assigned to <b>" + suggested_frameHeight + "</b>";
-    document.getElementById('frameWidth_helpText').innerHTML = "a number or <b>board</b> or <b>full</b>; min <b>" + min_frameWidth + "</b>; if blank, assigned to <b>" + suggested_frameWidth + "</b>; board width is <b>" + boardWidth + "</b>";
+    document.getElementById('frameWidth_helpText').innerHTML = "a number or <b>board</b> or <b>page</b>; min <b>" + min_frameWidth + "</b>; if blank, assigned to <b>" + suggested_frameWidth + "</b>; board width is <b>" + boardWidth + "</b>";
   }
 
   theObject = document.getElementById('frameWidth');
@@ -428,7 +428,7 @@ function calculate_html_code() {
   } else {
     iframeUrl += "&fh=" + frameHeight_value;
   }
-  if ((frameWidth_value == "full") || (frameWidth_value == "board")) { 
+  if ((frameWidth_value == "page") || (frameWidth_value == "board")) { 
     iframeUrl += "&fw=" + frameWidth_value.charAt(0); 
   } else {
     iframeUrl += "&fw=" + frameWidth_value;
@@ -484,7 +484,7 @@ function generate_html_code() {
     case "board":
       outerFrameWidth = min_frameWidth;
       break;
-    case "full":
+    case "page":
       outerFrameWidth = "100%";
       break;
     default:
@@ -527,29 +527,38 @@ function generate_html_code() {
 }
 
 function validate_color(object, name, def) {
-  if ((object.value.match(/[^0-9A-Fa-f]+/)) || (object.value.length != 6)) {
+  if (object.value.match(/^[0-9A-Fa-f]{6}$/)) {
+    object.value = object.value.toUpperCase();
+    return true;
+  } else { 
     alert('error: the ' + name + ' must be a six digits hexadecimal color code, like FF0000');
     object.value = def;
     return false;    
-  } else { return true; }
+  }
 }
 
 function validate_color_default(object, name, def) {
   if (object.value == 'default') { return true; }
-  else if ((object.value.match(/[^0-9A-Fa-f]+/)) || (object.value.length != 6)) {
+  else if (object.value.match(/^[0-9A-Fa-f]{6}$/)) {
+    object.value = object.value.toUpperCase();
+    return true;
+  } else { 
     alert('error: the ' + name + ' must be \'default\' or a six digits hexadecimal color code, like FF0000');
     object.value = def;
     return false;    
-  } else { return true; }
+  }
 }
 
 function validate_color_none(object, name, def) {
   if (object.value == 'none') { return true; }
-  else if ((object.value.match(/[^0-9A-Fa-f]+/)) || (object.value.length != 6)) {
+  else if (object.value.match(/^[0-9A-Fa-f]{6}$/)) {
+    object.value = object.value.toUpperCase();
+    return true;
+  } else { 
     alert('error: the ' + name + ' must be \'none\' or a six digits hexadecimal color code, like FF0000');
     object.value = def;
     return false;    
-  } else { return true; }
+  }
 }
 
 function validate_number(object, name, def) {
@@ -557,7 +566,10 @@ function validate_number(object, name, def) {
     alert('error: the ' + name + ' must be a non negative number');
     object.value = def;
     return false;    
-  } else { return true; }
+  } else { 
+    object.value = vv[1];
+    return true; 
+  }
 }
 
 function validate_number_blank(object, name, def) {
@@ -567,27 +579,30 @@ function validate_number_blank(object, name, def) {
     object.value = def;
     return false;    
   } else { 
-    object.value = vv[0];
+    object.value = vv[1];
     return true; 
   }
 }
 
 function validate_number_percentage(object, name, def) {
-  if (!object.value.match(/[0-9]+(%$|pct$|px$|$)/)) {
+  if (!(vv = object.value.match(/^([0-9]+)(%$|pct$|px$|$)/))) {
     alert('error: the ' + name + ' must be a non negative number or percentage');
     object.value = def;
     return false;    
-  } else { return true; }
+  } else {
+    if (vv[2] == "px") { object.value = vv[1]; }
+    return true;
+  }
 }
 
 function validate_number_percentage_blank(object, name, def) {
   if (object.value === "") { return true; }
-  if (!object.value.match(/[0-9]+(%$|pct$|px$|$)/)) {
+  if (!(vv = object.value.match(/^([0-9]+)(%$|pct$|px$|$)/))) {
     alert('error: the ' + name + ' must be blank or a non negative number or percentage');
     object.value = def;
     return false;    
   } else { 
-    object.value = vv[0];
+    if (vv[2] == "px") { object.value = vv[1]; }
     return true; 
   }
 }
@@ -596,17 +611,17 @@ function validate_frameWidth() {
   object = document.getElementById('frameWidth');
   if (object.value === '') { return true; }
   if ((object.value == 'board') && (document.getElementById('horizontalLayout').value == "f")) { return true; }
-  if (object.value == 'full') { return true; }
+  if (object.value == 'page') { return true; }
   if (!(vv = object.value.match(/^([0-9]+)(px$|$)/))) {
     if (document.getElementById('horizontalLayout').value == "t") {
-      alert('error: in the horizontal layout the iFrame width must be a non negative number or \'full\'');
+      alert('error: in the horizontal layout the iFrame width must be a non negative number or \'page\'');
     } else {
-      alert('error: in the vertical layout the iFrame width must be a non negative number, \'board\' or \'full\'');
+      alert('error: in the vertical layout the iFrame width must be a non negative number, \'board\' or \'page\'');
     }
     object.value = "";
     return false;    
   } else { 
-    object.value = vv[0];
+    object.value = vv[1];
     return true; 
   }
 }
@@ -624,7 +639,7 @@ function validate_frameHeight() {
     object.value = "";
     return false;    
   } else { 
-    object.value = vv[0];
+    object.value = vv[1];
     return true; 
   }
 }

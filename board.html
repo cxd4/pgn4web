@@ -1040,15 +1040,15 @@ switch (frameHeight) {
 
 frameWidth = gup("frameWidth");
 // next statement is for compatibility with older version of board/board-generator
-if (frameWidth.match("pct")) { frameWidth = "full"; }
+if (frameWidth.match("pct")) { frameWidth = "page"; }
 switch (frameWidth) {
   case "b":
   case "board":
     frameWidth = "";
     fixFrameWidthToBoard = true;
     break;
-  case "f":
-  case "full":
+  case "p":
+  case "page":
     frameWidth = "";
     textWidth = "100%"; 
     fixFrameWidthToBoard = false;
@@ -1117,8 +1117,8 @@ if (gup("help") !== "") {
   document.write(" - backgroundColorName = page background color name, like red\n");
   document.write(" - backgroundColorHex = page background color hex code, like FF0000\n");
   document.write(" - horizontalLayout = if set true, shows header/moves text at the right of the board, below otherwise (default false)\n");
-  document.write(" - frameHeight = set height of the total page, as a number or as 'board' overriding textHeight (default not set)\n");
-  document.write(" - frameWidth = set width of the total page, as a number, as 'board' or as 'full', overriding textWidth (default not set)\n");
+  document.write(" - frameHeight = set height of the overall frame, as a number or as 'board' overriding textHeight (default not set)\n");
+  document.write(" - frameWidth = set width of the overall frame, as a number, as 'board' or as 'page', overriding textWidth (default not set)\n");
   document.write(" - framePadding = padding within the frame (default 0)\n");
   document.write("\n");
   document.write(" - showHeightWidth = if set true, calculates optimal iframe dimensions (default false)\n");
