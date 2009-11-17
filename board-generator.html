@@ -237,7 +237,7 @@ function set_defaults() {
   if (frameWidth_value == "p") { frameWidth_value = "page"; }
   if (frameWidth_value == "b") { frameWidth_value = "board"; }
   document.board.frameWidth.value = frameWidth_value;
-  validate_frameWidth()
+  validate_frameWidth();
 
   if ((framePadding_value = gup("framePadding")) === "") { framePadding_value = framePadding_default; }
   document.board.framePadding.value = framePadding_value;
