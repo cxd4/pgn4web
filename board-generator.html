@@ -320,7 +320,7 @@ function update_suggested_iframe_dimensions() {
         alert('error: iFrame width too small');
         theObject.value = "";
       }
-    }
+    } else { alert('error: invalid iFrame width value'); }
   } 
   
   theObject = document.getElementById('frameHeight');
@@ -330,7 +330,7 @@ function update_suggested_iframe_dimensions() {
         alert('error: iFrame height too small');
         theObject.value = "";
       }
-    }
+    } else { alert('error: invalid iFrame height value'); }
   }
 
 }

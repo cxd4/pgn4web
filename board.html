@@ -928,7 +928,8 @@ if ((backgroundColor = gup("backgroundColorName")) === "") {
  if ((backgroundColor = "#" + gup("backgroundColorHex")) == "#") { backgroundColor = "#FFFFFF"; }
 }
 
-if ((framePadding = percentFixFromUrl( gup("framePadding") )) === "") { framePadding = 0;}
+if ((framePadding = gup("framePadding")) === "") { framePadding = 0;}
+else { framePadding = parseInt(framePadding, 10); }
 
 if ((fontHeaderSize = percentFixFromUrl( gup("fontHeaderSize") )) === "") { fontHeaderSize = "100%"; }
 if ((fontHeaderColor = gup("fontHeaderColorName")) === "") {
