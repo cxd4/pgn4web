@@ -220,7 +220,9 @@ function new_start_pgn4web() {
       else { document.getElementById("headerMoves").style.width = frameWidth - 2 * framePadding; }
       if (frameHeight === "") { document.getElementById("headerMoves").style.height = textHeight; }
       else { 
-        headerMovesPaddingHeight = document.getElementById("headerMovesPadding").offsetHeight;
+	theObject = document.getElementById("headerMovesPadding");
+	if (theObject) { headerMovesPaddingHeight = theObject.offsetHeight; }
+	else { headerMovesPaddingHeight = 0; }
 	document.getElementById("headerMoves").style.height = frameHeight - boardHeight - 2 * framePadding - headerMovesPaddingHeight; 
       }
     }
@@ -1163,8 +1165,9 @@ function display_header_moves() {
   }
 
   if ((showHeader) || (showMoves)) {
-    document.write("<div id='headerMoves' style='overflow:auto; height: " + textHeight + 
-		   "; width: " + textWidth + "; scrollbar-base-color: " + backgroundColor + ";'>");
+  document.write("<div id='headerMoves' style='overflow:auto; overflow-x:hidden;" +
+                 " height: " + textHeight + "; width: " + textWidth + 
+                 "; scrollbar-base-color: " + backgroundColor + ";'>");
   } 
 
   if (showHeader) {
