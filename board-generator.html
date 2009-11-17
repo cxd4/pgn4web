@@ -505,6 +505,10 @@ function generate_html_code() {
 
   html_code_status_string += "</td></tr></table>";
   document.getElementById('html_code_status').innerHTML = html_code_status_string;
+
+  if (firstLoad) { firstLoad = false; return; }
+  if (iframeUrl.length < iframeUrl_max) { location.href='#game_preview'; return; }
+  location.href='#generate'; return;
 }
 
 function validate_color(object, name, def) {
@@ -1533,10 +1537,11 @@ function print_menu( item, level, title ) {
   menu += '<h' + level + '><a name=' + item + '>' + title + '</a></h' + level + '>';
   menu += '</td><td valign=top>';
   menu += '<div style="font-size: 66%; text-align: right">';
-  menu += '<a href=#instructions>instructions</a>';
+  menu += '<a href=#top>instructions</a>';
   menu += '&nbsp; &nbsp;<span style="color:gray">actions:</span>';
-  menu += '&nbsp; &nbsp;<a href=#generate>generate</a>';
+  menu += '&nbsp; &nbsp;<a href=#generate>copy iFrame</a>';
   menu += '&nbsp; &nbsp;<a href=#game_preview>preview</a>';
+  menu += '&nbsp; &nbsp;<a href="javascript:generate_html_code()">generate</a>';
   menu += '&nbsp; &nbsp;<span style="color:gray">config:</span>';
   menu += '&nbsp; &nbsp;<a href=#pgn_form>PGN</a>';
   menu += '&nbsp; &nbsp;<a href=#replay_options>replay</a>';
@@ -1548,6 +1553,7 @@ function print_menu( item, level, title ) {
   document.write(menu); 
 }
 
+firstLoad = true;
 window.onload = set_defaults;
 
 </script>
@@ -1592,7 +1598,7 @@ chessboard generator</h1>
 <form id="board" name="board" style="display:inline;" action="javascript:generate_html_code()">
 
 <div style="height: 3em">&nbsp</div>
-<script>print_menu("generate HTML code", 2, "generate");</script>
+<script>print_menu("generate", 2, "generate & copy iFrame");</script>
 
 <div style="height: 1em">&nbsp;</div>
 
@@ -1622,7 +1628,7 @@ chessboard generator</h1>
 <h2>configuration options</h2>
 
 <div style="height: 2em">&nbsp</div>
-<script>print_menu("pgn_form", 3, "chess game notation in PGN format");</script>
+<script>print_menu("pgn_form", 3, "chess game PGN notation");</script>
 
 <div style="height: 1em">&nbsp;</div>
 
