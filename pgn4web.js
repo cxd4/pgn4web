@@ -664,7 +664,12 @@ function displayDebugInfo() {
   if (pgnUrl !== "") { debugInfo += 'PGN URL: ' + pgnUrl + '\n\n'; }
   else { debugInfo += 'PGN URL: none' + '\n\n'; }
   if (document.getElementById("pgnText") !== null) { 
-    debugInfo += 'PGN text: ' + document.getElementById("pgnText").innerHTML.length + '\n\n';
+    if (document.getElementById("pgnText").tagName.toLowerCase() == "textarea") {
+      debugInfo += 'PGN text: ' + document.getElementById("pgnText").value.length; 
+    } else { // backward compatibility with pgn4web older than 1.77 when the <span> technique was used for pgnText
+      debugInfo += 'PGN text: ' + document.getElementById("pgnText").innerHTML.length;
+    }
+      debugInfo += ' (' + document.getElementById("pgnText").tagName + ')\n\n';
   } else {
     debugInfo += 'PGN text: none' + '\n\n';
   }
@@ -1745,11 +1750,15 @@ function createBoard(){
   } 
   
   if ( document.getElementById("pgnText") ) {
-    tmpText = document.getElementById("pgnText").innerHTML;
-    // fixes issue with some browser removing \n from innerHTML
-    if (tmpText.indexOf('\n') < 0) { tmpText = tmpText.replace(/((\[[^\[\]]*\]\s*)+)/g, "\n$1\n"); }
-    // fixes issue with some browser replacing quotes with &quot; such as the blackberry browser
-    if (tmpText.indexOf('"') < 0) { tmpText = tmpText.replace(/(&quot;)/g, '"'); }
+    if (document.getElementById("pgnText").tagName.toLowerCase() == "textarea") {
+      tmpText = document.getElementById("pgnText").value;
+    } else { // backward compatibility with pgn4web older than 1.77 when the <span> technique was used for pgnText
+      tmpText = document.getElementById("pgnText").innerHTML;
+      // fixes issue with some browser removing \n from innerHTML
+      if (tmpText.indexOf('\n') < 0) { tmpText = tmpText.replace(/((\[[^\[\]]*\]\s*)+)/g, "\n$1\n"); }
+      // fixes issue with some browser replacing quotes with &quot; such as the blackberry browser
+      if (tmpText.indexOf('"') < 0) { tmpText = tmpText.replace(/(&quot;)/g, '"'); }
+    }
     // if no html header is present, add emptyPgnHeader at the top
     if (pgnHeaderTagRegExp.test(tmpText) === false) { tmpText = emptyPgnHeader + tmpText; }
 

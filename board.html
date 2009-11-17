@@ -94,9 +94,9 @@ body {
 <body>
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
-<span style="display:none" id="pgnText">
+<form style="display: none;"><textarea style="display: none;" id="pgnText">
 
-</span>
+</textarea></form>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
 <script>
@@ -970,7 +970,7 @@ if (gup("showCommentsOnSeparateLines") == "true") { SetCommentsOnSeparateLines(t
 if ((fenString = gup("fenString")) !== "") {
   // remove URL escape chars such as %20 replaced by space
   fenString = decodeURIComponent(fenString);
-  document.getElementById('pgnText').innerHTML = '[FEN "' + fenString + '"]';
+  document.getElementById('pgnText').value = '[FEN "' + fenString + '"]';
 }
 
 if ((newPgnText = gup("pgnText")) !== "") {
@@ -985,7 +985,7 @@ if ((newPgnText = gup("pgnText")) !== "") {
   newPgnText = newPgnText.replace(/\]([\s]*)\[/g,"]\n[");
   newPgnText = newPgnText.replace(/^([\s]*)\[/g,"[");
 
-  document.getElementById('pgnText').innerHTML = newPgnText;
+  document.getElementById('pgnText').value = newPgnText;
 } 
 
 if ((newPgnEncoded = gup("pgnEncoded")) !== "") {
@@ -999,7 +999,7 @@ if ((newPgnEncoded = gup("pgnEncoded")) !== "") {
   newPgnDecoded = newPgnDecoded.replace(/\]([\s]*)\[/g,"]\n[");
   newPgnDecoded = newPgnDecoded.replace(/^([\s]*)\[/g,"[");
 
-  document.getElementById('pgnText').innerHTML = newPgnDecoded;
+  document.getElementById('pgnText').value = newPgnDecoded;
 } 
 
 if ((newPgnEncoded !== "") && ((newPgnText !== "") || (fenString !== ""))) {

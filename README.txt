@@ -74,14 +74,14 @@ with at least the call to
 and optionally any of the other calls listed below.  
 
 Or the PGN file can be pasted in the body of the HTML file 
-within a SPAN statement with the ID pgnText:
+within a FORM/TEXTAREA statement with the ID pgnText:
 
   <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
-  <span style="display:none" id="pgnText">
+  <form style="display: none;"><textarea style="display: none;" id="pgnText">
 
   ... your PGN text ...
 
-  </span>
+  </textarea></form>
   <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
 Example:
@@ -287,10 +287,6 @@ specifically:
   [BlackClock "2:00:00"] as the clock times at the beginning of the game
 - defines the [%pgn4web internal comment] tag in the PGN comment section 
 and stores the internal comment value for internal use. 
-
-For pgn4web internal reasons, at the moment, the text between the extension 
-markers "[%" and "]" must not contain anywhere the character "[" (not even 
-in quotes as supported by the proposed PGN extension) or the sequence "@>"
 
 Please email me for review any PGN file that pgn4web fails parsing correctly. 
 

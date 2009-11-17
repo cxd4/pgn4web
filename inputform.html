@@ -37,9 +37,9 @@
 <body>
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
-<span style="display:none" id="pgnText">
+<form style="display: none;"><textarea style="display: none;" id="pgnText">
 
-</span>
+</textarea></form>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
 <table id=chessboardTable cellspacing=0 cellpadding=0 border=0>
@@ -94,12 +94,12 @@ Next move: <span style="font-weight: bold" id="GameNextMove"></span>
 <form style="display:inline;">
 <input id=pgnButton type=button value="show games from PGN text box" onClick="javascript: 
   firstStart = true;
-  document.getElementById('pgnText').innerHTML = document.getElementById('pgnForm').value;
-  document.getElementById('pgnText').innerHTML = document.getElementById('pgnText').innerHTML.replace(/\[/g,'\n\n[');
-  document.getElementById('pgnText').innerHTML = document.getElementById('pgnText').innerHTML.replace(/\]/g,']\n\n');
-  document.getElementById('pgnText').innerHTML = document.getElementById('pgnText').innerHTML.replace(/([012\*])([\s]*)(\[)/g,'$1\n\n$3');
-  document.getElementById('pgnText').innerHTML = document.getElementById('pgnText').innerHTML.replace(/\]([\s]*)\[/g,']\n[');
-  document.getElementById('pgnText').innerHTML = document.getElementById('pgnText').innerHTML.replace(/^([\s]*)\[/g,'[');
+  document.getElementById('pgnText').value = document.getElementById('pgnForm').value;
+  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\[/g,'\n\n[');
+  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\]/g,']\n\n');
+  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/([012\*])([\s]*)(\[)/g,'$1\n\n$3');
+  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\]([\s]*)\[/g,']\n[');
+  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/^([\s]*)\[/g,'[');
   new_start_pgn4web(); 
 ">
 <br>
@@ -148,7 +148,7 @@ if (newPgnText !== "") {
   newPgnText = newPgnText.replace(/\]([\s]*)\[/g,"]\n[");
   newPgnText = newPgnText.replace(/^([\s]*)\[/g,"[");
 
-  document.getElementById('pgnText').innerHTML = newPgnText;
+  document.getElementById('pgnText').value = newPgnText;
   document.getElementById('pgnForm').value = newPgnText;
 
   window.onload = new_start_pgn4web;
