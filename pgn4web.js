@@ -136,6 +136,12 @@ function myAlert(msg) {
   }
 }
 
+function myConfirm(msg) {
+  if ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) {
+    return confirm(msg);
+  } else { return false; }
+}
+
 function stopKeyPropagation(e) {
   e.cancelBubble = true;
   if (e.stopPropagation) { e.stopPropagation(); }
@@ -1538,7 +1544,7 @@ function loadPgnFromPgnUrl(pgnUrl){
     }
     http_request.send(null);
   } catch(e) {
-      var answer = confirm("Error with request for PGN URL:\n" + pgnUrl + "\n\nPress OK for web developer DEBUG information.");
+      var answer = myConfirm("Error with request for PGN URL:\n" + pgnUrl + "\n\nPress OK for web developer DEBUG information.");
       if (answer) { myAlert(XMLrequest_error_debug_message); }
       return false;
 }
