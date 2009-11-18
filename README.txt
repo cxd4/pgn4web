@@ -74,7 +74,7 @@ with at least the call to
 and optionally any of the other calls listed below.  
 
 Or the PGN file can be pasted in the body of the HTML file 
-within a FORM/TEXTAREA statement with the ID pgnText:
+within a hidden FORM/TEXTAREA statement with the ID pgnText:
 
   <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
   <form style="display: none;"><textarea style="display: none;" id="pgnText">
