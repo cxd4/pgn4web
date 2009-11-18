@@ -1593,15 +1593,15 @@ window.onload = set_defaults;
 <table width=100% cellspacing=0 cellpadding=0><tr>
 <td align=left valign=middle>
 <h1 style="color: red;"> 
-<script>document.write('<a style="color: red;" href=' + project_url + ' target=_blank>pgn4web</a>');</script> 
+<script type="text/javascript">document.write('<a style="color: red;" href=' + project_url + ' target=_blank>pgn4web</a>');</script> 
 chessboard generator</h1>
 </td><td align=right valign=middle>
 
-<script>document.write('<a href=' + project_url + ' target=_blank><img src=pawns.png border=0></a>');</script>
+<script type="text/javascript">document.write('<a href=' + project_url + ' target=_blank><img src=pawns.png border=0></a>');</script>
 </td></tr></table>
 
 <div style="height: 1em">&nbsp</div>
-<script>print_menu("instructions", 2, "instructions");</script>
+<script type="text/javascript">print_menu("instructions", 2, "instructions");</script>
 
 <ul type="square">
 <li><a href=#pgn_form><b>enter your PGN text</b> in the green textbox below</a>
@@ -1622,7 +1622,7 @@ chessboard generator</h1>
   <li>once happy with <a href=#game_preview>the preview chessboard</a>, just <a href=#generate><b>cut and paste the HTML code</b> from the yellow box</a> into your web page or your blog; when entering the code in your website or blog, please make sure you are using the HTML editing option, otherwise the enhanced editor might alter the code you enter</li>
 
 <li>email to <i>
-<script>document.write('<a href=mailto:' + project_email + '>' + project_email + '</a>');</script>
+<script type="text/javascript">document.write('<a href=mailto:' + project_email + '>' + project_email + '</a>');</script>
 </i> the address of your website or your blog</li>
 <li>if something goes wrong, you might want to <i><a href="javascript:bug_report()">click here and file a bug report</a></i></li>
 </ul>
@@ -1630,7 +1630,7 @@ chessboard generator</h1>
 <form id="board" name="board" style="display:inline;" action="javascript:generate_html_code()">
 
 <div style="height: 3em">&nbsp</div>
-<script>print_menu("generate", 2, "generate and copy iFrame");</script>
+<script type="text/javascript">print_menu("generate", 2, "generate and copy iFrame");</script>
 
 <div style="height: 1em">&nbsp;</div>
 
@@ -1649,7 +1649,7 @@ chessboard generator</h1>
 </td></tr></table>
 
 <div style="height: 3em">&nbsp</div>
-<script>print_menu("game_preview", 2, "preview");</script>
+<script type="text/javascript">print_menu("game_preview", 2, "preview");</script>
 <div style="height: 1em">&nbsp;</div>
 
 <center>
@@ -1660,7 +1660,7 @@ chessboard generator</h1>
 <h2>configuration options</h2>
 
 <div style="height: 2em">&nbsp</div>
-<script>print_menu("pgn_form", 3, "chess games notation in PGN format");</script>
+<script type="text/javascript">print_menu("pgn_form", 3, "chess games notation in PGN format");</script>
 
 <div style="height: 1em">&nbsp;</div>
 
@@ -1678,7 +1678,7 @@ chessboard generator</h1>
 <p></p>
 
 <div style="height: 3em">&nbsp</div>
-<script>print_menu("replay_options", 3, "game replay options");</script>
+<script type="text/javascript">print_menu("replay_options", 3, "game replay options");</script>
 <div style="height: 1em">&nbsp;</div>
 
 <input class="checkbox" type="checkbox" id="auto" name="checkbox" value="auto" />
@@ -1701,7 +1701,7 @@ chessboard generator</h1>
 &nbsp;&nbsp; loop through games at game end &nbsp;&nbsp;
 
 <div style="height: 3em">&nbsp</div>
-<script>print_menu("board_options", 3, "chessboard options");</script>
+<script type="text/javascript">print_menu("board_options", 3, "chessboard options");</script>
 <div style="height: 1em">&nbsp;</div>
 
 <select class="dropdown" id="pieceFont" name="dropdown">
@@ -1804,7 +1804,7 @@ chessboard generator</h1>
 &nbsp;&nbsp; control buttons text color &nbsp;&nbsp;
 
 <div style="height: 3em">&nbsp</div>
-<script>print_menu("header_moves_options", 3, "header and moves options");</script>
+<script type="text/javascript">print_menu("header_moves_options", 3, "header and moves options");</script>
 <div style="height: 1em">&nbsp;</div>
 
 <input class="input" type="text" id="textMargin" name="input" value="" size="9" onChange="validate_number(this, 'text margin', textMargin_default);">
@@ -1865,7 +1865,7 @@ chessboard generator</h1>
 &nbsp;&nbsp; comments font color &nbsp;&nbsp;
 
 <div style="height: 3em">&nbsp</div>
-<script>print_menu("page_options", 3, "web page options");</script>
+<script type="text/javascript">print_menu("page_options", 3, "web page options");</script>
 <div style="height: 1em">&nbsp;</div>
 
 <select class="dropdown" id="horizontalLayout" name="dropdown" onChange="validate_frameHeight(); validate_frameWidth(); update_suggested_iframe_dimensions();">
@@ -1916,7 +1916,7 @@ base URL: &nbsp;&nbsp;
 
 <input type="hidden" id="baseUrl" name="baseUrl" value="" style="width: 100%" />
 
-<script>
+<script type="text/javascript">
 
 inputWidth = document.getElementById('framePadding').offsetWidth;
 theObject = document.getElementsByName('dropdown');
