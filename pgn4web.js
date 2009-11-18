@@ -681,7 +681,8 @@ function displayDebugInfo() {
                                              ' started=' + LiveBroadcastStarted +
                                              ' ended=' + LiveBroadcastEnded +
                                              ' paused=' + LiveBroadcastPaused +
-                                             ' demo=' + LiveBroadcastDemo + '\n\n'; }
+                                             ' demo=' + LiveBroadcastDemo +
+                                             ' alert=' + LiveBroadcastAlert + '\n\n'; }
   else { debugInfo += 'live broadcast: off' + '\n\n'; }
   alert(debugInfo);
 }
