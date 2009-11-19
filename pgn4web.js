@@ -83,20 +83,20 @@
  * DONT CHANGE AFTER HERE 
  */
 
-var version = '1.77+';
+var pgn4web_version = '1.77+';
 
 var project_url = 'http://pgn4web.casaschi.net';
 var project_email = 'pgn4web@casaschi.net';
 var project_author = 'Paolo Casaschi';
 
-var about = '\tpgn4web v' + version + '\n\t' + project_url + '\n';
+var about = '\tpgn4web v' + pgn4web_version + '\n\t' + project_url + '\n';
 
 function displayHelp(section){
   if ((!section) && (section != "credits") && (section != "squares") && (section != "keys") && (section != "top") ) { 
     section = "top"; 
   }
   sectionFlag = "#" + section;
-  versionParameter = "&version=" + version;
+  versionParameter = "&version=" + pgn4web_version;
   if (shortcutKeysEnabled) { keysParameter = "&keysEnabled=true"; }
   else { keysParameter = "&keysEnabled=false"; }
   helpWin = window.open(detectHelpLocation() + "?" + versionParameter + keysParameter + sectionFlag, "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
@@ -452,7 +452,7 @@ function boardOnClickCol3Row0() { displayPgnData(); }
 boardAlt[3 + 0 * 8] = "show PGN source data";
 // E8
 function boardOnClickCol4Row0() { displayDebugInfo(); }
-boardAlt[4 + 0 * 8] = "debug info";
+boardAlt[4 + 0 * 8] = "debug info v" + pgn4web_version;
 // F8
 function boardOnClickCol5Row0() { displayHelp("keys"); }
 boardAlt[5 + 0 * 8] = "shortcut keys help";
@@ -663,7 +663,7 @@ function detectBaseLocation() {
 
 
 function displayDebugInfo() {
-  debugInfo = 'pgn4web v' + version + '\n\n' +
+  debugInfo = 'pgn4web v' + pgn4web_version + '\n\n' +
               'HTML URL: ' + location.href + '\n\n' +
               'base URL: ' + detectBaseLocation() + '\n\n' +
               'javascript URL: ' + detectJavascriptLocation() + '\n\n';

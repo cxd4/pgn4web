@@ -41,9 +41,34 @@ a.gamelist:link, a.gamelist:visited, a.gamelist:hover, a.gamelist:active
    SetInitialHalfmove(1,true); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default)
    SetShortcutKeysEnabled(false);
 
-// Example below of customization of the shortcut squares,
-// in this case disabling switching games with the usual third row shortcut squares
-// (that would break the game highlighting feature of the page)
+// Example below of customization of the shortcut squares, in this case 
+// disabling switching games with the usual third/fourth/fifth row shortcut
+// squares (that would break the game highlighting feature of the page)
+
+// A6
+function boardOnClickCol0Row2() { }
+boardAlt[0 + 2 * 8] = "";
+// B6
+function boardOnClickCol1Row2() { }
+boardAlt[1 + 2 * 8] = "";
+// C6
+function boardOnClickCol2Row2() { }
+boardAlt[2 + 2 * 8] = "";
+// D6
+function boardOnClickCol3Row2() { }
+boardAlt[3 + 2 * 8] = "";
+// E6
+function boardOnClickCol4Row2() { }
+boardAlt[4 + 2 * 8] = "";
+// F6
+function boardOnClickCol5Row2() { }
+boardAlt[5 + 2 * 8] = "";
+// G6
+function boardOnClickCol6Row2() { }
+boardAlt[6 + 2 * 8] = "";
+// H6
+function boardOnClickCol7Row2() { }
+boardAlt[7 + 2 * 8] = "";
 
 // A4
 function boardOnClickCol0Row4() { }

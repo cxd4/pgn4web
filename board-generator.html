@@ -1540,7 +1540,7 @@ function gup( name ){
 function bug_report() {
   var email = project_email;
   var subject = "pgn4web board generator bug report";
-  var bug_info = "pgn4web board generator bug report\n\n-------- automatically generated debug info: start --------\n\nURL: " + window.location + "\n\nuser agent: " + window.navigator.userAgent+ "\n\npgn4web version: " + version + "\n\niFrame HTML code:\n\n" + html_code_string + "\n\n-------- automatically generated debug info: end   --------\n\nPlease add below a description of the bug and attach a screenshot if possible.\n\n\n\n\n";
+  var bug_info = "pgn4web board generator bug report\n\n-------- automatically generated debug info: start --------\n\nURL: " + window.location + "\n\nuser agent: " + window.navigator.userAgent+ "\n\npgn4web version: " + pgn4web_version + "\n\niFrame HTML code:\n\n" + html_code_string + "\n\n-------- automatically generated debug info: end   --------\n\nPlease add below a description of the bug and attach a screenshot if possible.\n\n\n\n\n";
   mailto_link = 'mailto:' + email + '?subject=' + subject + '&body=' + escape(bug_info);
 
   win = window.open("", "bug_report", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no"); 
@@ -1933,7 +1933,7 @@ for (ii = 0; ii < theObject.length; ii++) {
 }
 
 document.write("<table width=100% cellspacing=0 cellpadding=0><tr><td align=left valign=bottom>");
-document.write("<a " + project_url + " target=_blank><div class='helptext'>pgn4web v" + version + "</div></a>");
+document.write("<a " + project_url + " target=_blank><div class='helptext'>pgn4web v" + pgn4web_version + "</div></a>");
 document.write("</td><td align=right valign=middle>");
 document.write("<a " + project_url + " target=_blank><img src=pawns.png border=0></a>");
 document.write("</td></tr></table>");

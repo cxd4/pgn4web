@@ -91,10 +91,10 @@ function print_help_row (one, two) {
 
 project_url = 'http://pgn4web.casaschi.net';
 
-if ((version = gup("version")) === "") {
+if ((pgn4web_version = gup("version")) === "") {
   displayVersion = '';
 } else {
-  displayVersion = 'v' + version;
+  displayVersion = 'v' + pgn4web_version;
 }
 
 if ((keysEnabled = gup("keysEnabled")) === "") {
