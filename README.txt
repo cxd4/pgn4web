@@ -199,8 +199,8 @@ The status of the live broadcast is displayed in the following section:
 
   <div id="GameLiveStatus"></div>
 
-Clicking on the B6 square will force a games refresh.
-Clicking on the A6/C6 squares will pause/restart the automatic games refresh.
+Clicking on the H6 square will force a games refresh.
+Clicking on the A6/B6 squares will pause/restart the automatic games refresh.
 
 The file live-template.html shows a very basic example.
 
