@@ -89,7 +89,7 @@ Example:
   <script type="text/javascript>
 
     SetPgnUrl("http://yoursite/yourpath/yourfile.pgn"); // if set, this has precedence over the inline PGN in the HTML file
-    SetImagePath (""); // use "" path if images are in the same folder as this javascript file
+    SetImagePath(""); // use "" path if images are in the same folder as this javascript file
     SetImageType("png");
     SetHighlightOption(true); // true or false
     SetGameSelectorOptions("Select a game...", false, 0, 0, 0, 15, 15, 0, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
