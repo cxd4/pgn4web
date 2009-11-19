@@ -490,11 +490,11 @@ boardAlt[7 + 1 * 8] = "toggle enabling shortcut keys";
 function boardOnClickCol0Row2() { pauseLiveBroadcast(); }
 boardAlt[0 + 2 * 8] = "pause live broadcast automatic refresh";
 // B6
-function boardOnClickCol1Row2() { refreshPgnSource(); }
-boardAlt[1 + 2 * 8] = "force games refresh during live broadcast";
+function boardOnClickCol1Row2() { restartLiveBroadcast(); }
+boardAlt[1 + 2 * 8] = "restart live broadcast automatic refresh";
 // C6
-function boardOnClickCol2Row2() { restartLiveBroadcast(); }
-boardAlt[2 + 2 * 8] = "restart live broadcast automatic refresh";
+function boardOnClickCol2Row2() { }
+boardAlt[2 + 2 * 8] = "";
 // D6
 function boardOnClickCol3Row2() { }
 boardAlt[3 + 2 * 8] = "";
@@ -508,8 +508,8 @@ boardAlt[5 + 2 * 8] = "";
 function boardOnClickCol6Row2() { }
 boardAlt[6 + 2 * 8] = "";
 // H6
-function boardOnClickCol7Row2() { }
-boardAlt[7 + 2 * 8] = "";
+function boardOnClickCol7Row2() { refreshPgnSource(); }
+boardAlt[7 + 2 * 8] = "force games refresh during live broadcast";
 // A5
 function boardOnClickCol0Row3() { }
 boardAlt[0 + 3 * 8] = "";
