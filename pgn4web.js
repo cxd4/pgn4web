@@ -83,7 +83,7 @@
  * DONT CHANGE AFTER HERE 
  */
 
-var pgn4web_version = '1.77+';
+var pgn4web_version = '1.78';
 
 var project_url = 'http://pgn4web.casaschi.net';
 var project_email = 'pgn4web@casaschi.net';
