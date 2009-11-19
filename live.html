@@ -21,7 +21,8 @@
   if (gup("demo") == "true") { demoFlag = true; alertFlag = true; }
   else { demoFlag = false; alertFlag = false; }
 
-  if ((pgnFile = gup("pgnFile")) === "") { pgnFile = "live.pgn"; }
+  pgnFile_default = "live/live.pgn";
+  if ((pgnFile = gup("pgnFile")) === "") { pgnFile = pgnFile_default; }
 
   if ((refreshMinutes = gup("refreshMinutes")) === "") { 
     refreshMinutes = 1;
@@ -204,7 +205,7 @@ function gup( name ){
 
 function developer_help() {
   alert("pgn4web live.html parameters" + "\n" + 
-        " - pgnFile = " + pgnFile + "; PGN file to load (default live.pgn)" + "\n" +
+        " - pgnFile = " + pgnFile + "; PGN file to load (default " + pgnFile_default + ")" + "\n" +
         " - initialGame = " + iniGame + "; initial game to load, a number or first, last, random (default 1)" + "\n" +
         " - refreshMinutes = " + refreshMinutes + "; refresh interval in minutes, decimals allowed (default 1)" + "\n" +
         " - demo = " + demoFlag + "; if set true, sets live demo mode (default false)" + "\n" +
