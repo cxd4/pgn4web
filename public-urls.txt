@@ -18,7 +18,7 @@ board widget
 
 board generator site
  http://pgn4web-board-generator.casaschi.net
- (should be a masked forwarding with the parameter ?baseUrl=http://pgn4web-board.casaschi.net)
+ (should be a masked forwarding)
 
 blog
  http://pgn4web-blog.casaschi.net
