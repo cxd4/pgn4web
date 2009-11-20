@@ -6,7 +6,7 @@
 #  for credits, license and more details
 #
 
-project site
+main site
  http://pgn4web.casaschi.net
 
 demo site
