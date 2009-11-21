@@ -107,10 +107,11 @@ function select_frame(new_frame){
 
     if (selected_object !== null) {
       if (new_object == selected_object) { return false; }
-      frames['pgnframe'].location.href = 'javascript: ;';
       selected_object.className='linklist';
     }
     selected_object = new_object;
+    frames['pgnframe'].location.href = selected_object.href;
+
     new_frame_width = '100%';
     new_frame_height = '1000px';
     if (new_frame == 'wch08ak') { 
@@ -141,7 +142,6 @@ function select_frame(new_frame){
     document.getElementById('pgnframe').height = new_frame_height;
   
     selected_object.className = "linkselected"; 
-    frames['pgnframe'].location.href = selected_object.href;
 
   } else { 
     alert('unknown frame: ' + new_frame);
