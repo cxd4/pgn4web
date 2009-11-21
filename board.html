@@ -890,6 +890,14 @@ if ((pieceFont = gup("pieceFont")) === "") {
 if (pieceFont == "a") { pieceFont = "alpha"; }
 if (pieceFont == "m") { pieceFont = "merida"; }
 if (pieceFont == "u") { pieceFont = "uscf"; }
+if ((pieceFont == "random") || (pieceFont == "r")) {
+  randomPiece = Math.floor(Math.random() * 3);
+  switch (randomPiece) {
+    case 1: pieceFont = "merida"; break;
+    case 2: pieceFont = "uscf"; break;
+    default: pieceFont = "alpha"; break;
+  }
+}
 
 if ((pieceSize = gup("pieceSize")) === "") { pieceSize = 24; }
 else { pieceSize = parseInt(pieceSize, 10); }
@@ -1080,7 +1088,7 @@ if (gup("help") !== "") {
   document.write(" - delay = autoplay delay in ms (default 1000)\n");
   document.write(" - loop = if set true, loop indefinitely through games (default false)\n");
   document.write("\n");
-  document.write(" - pieceFont = alpha | merida | uscf (default alpha)\n");
+  document.write(" - pieceFont = alpha | merida | uscf | random (default alpha)\n");
   document.write(" - pieceSize = size of pieces (default 24)\n");
   document.write(" - squareSize = size of square (default 28)\n");
   document.write(" - lightColorName = light square color name, like red\n");

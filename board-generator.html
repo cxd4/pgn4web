@@ -132,9 +132,11 @@ function set_defaults() {
   if (pieceFont_value == "a") { pieceFont_value = "alpha"; }
   if (pieceFont_value == "m") { pieceFont_value = "merida"; }
   if (pieceFont_value == "u") { pieceFont_value = "uscf"; }
+  if (pieceFont_value == "r") { pieceFont_value = "random"; }
   document.board.pieceFont.value = pieceFont_value;
-  if (!((pieceFont_value == "alpha") || (pieceFont_value == "merida") || (pieceFont_value == "uscf"))) {
-    alert('error: the piece font must me either \'alpha\', \'merida\', \'uscf\' or their initials');
+  if (!((pieceFont_value == "alpha") || (pieceFont_value == "merida") || 
+        (pieceFont_value == "uscf")  || (pieceFont_value == "random")) ) {
+    alert('error: the piece font must me either \'alpha\', \'merida\', \'uscf\', \'random\' or their initials');
     document.board.pieceFont.value = pieceFont_value = pieceFont_default;
   }
 
@@ -1712,6 +1714,7 @@ and install the tool on your own servers
 <option value="alpha">alpha</option>
 <option value="merida">merida</option>
 <option value="uscf">uscf</option>
+<option value="random">random</option>
 </select>
 &nbsp;&nbsp; piece font &nbsp;&nbsp;
 
