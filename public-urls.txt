@@ -14,11 +14,10 @@ demo site
 
 board widget
  http://pgn4web-board.casaschi.net
- (should be a plain forwarding)
+ (must be a plain forwarding)
 
 board generator site
  http://pgn4web-board-generator.casaschi.net
- (should be a masked forwarding)
 
 blog
  http://pgn4web-blog.casaschi.net
