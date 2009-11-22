@@ -90,10 +90,15 @@
 var pgn4web_version = '1.79+';
 
 // some website specific vars that might have been redefined in the JS file configure-urls.js
+var pgn4web_project_url;
 if (pgn4web_project_url == undefined) { pgn4web_project_url = 'http://pgn4web.casaschi.net'; }
+var pgn4web_project_email;
 if (pgn4web_project_email == undefined) { pgn4web_project_email = 'pgn4web@casaschi.net'; }
+var pgn4web_project_author;
 if (pgn4web_project_author == undefined) { pgn4web_project_author = 'Paolo Casaschi'; }
+var pgn4web_live_compact_url;
 if (pgn4web_live_compact_url == undefined) { pgn4web_live_compact_url = 'live.html'; }
+var pgn4web_board_url;
 if (pgn4web_board_url == undefined) { pgn4web_board_url = 'board.html'; }
 
 var about = '\tpgn4web v' + pgn4web_version + '\n\t' + pgn4web_project_url + '\n';
