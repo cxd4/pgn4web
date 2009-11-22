@@ -10,9 +10,13 @@
  *
  *   add a SCRIPT instance at the top of your HTML file:
  *
+ *      <script src="configure-urls.js" type="text/javascript">
  *      <script src="pgn4web.js" type="text/javascript"></script>
  *
- *   then add another SCRIPT instance with at least the call to SetPgnUrl("http://yoursite/yourpath/yourfile.pgn")
+ *   The JS file configure-urls.js contains some customization variable
+ *   depending on your web server configuration. Default values should be ok
+ *   for most purposes.
+ *   Then add another SCRIPT instance with at least the call to SetPgnUrl("http://yoursite/yourpath/yourfile.pgn")
  *   and optionally any of the other calls listed below.  
  *   Example:
  *
