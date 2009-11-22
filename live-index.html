@@ -13,9 +13,7 @@
 
 <title>pgn4web chess live boradcast</title> 
 
-<script type="text/javascript">
-  project_url = 'http://pgn4web.casaschi.net';
-</script>
+<script src="configure-urls.js" type="text/javascript"></script>
 
 <style type="text/css"> 
  
@@ -34,13 +32,13 @@ a:link, a:visited, a:hover, a:active
 <td align="left" valign="middle"> 
 <h1 style="color: red;">
 <script type="text/javascript">
-document.write('<a style="color: red;" href=' + project_url + '>pgn4web</a>');
+document.write('<a style="color: red;" href=' + pgn4web_project_url + '>pgn4web</a>');
 </script>
 chess live broadcast</h1> 
 </td>
 <td align="right" valign="middle">
 <script type="text/javascript">
-document.write('<a href=' + project_url + '><img src=pawns.png border=0></a>');
+document.write('<a href=' + pgn4web_project_url + '><img src=pawns.png border=0></a>');
 </script>
 </td>
 </tr></tbody></table>
@@ -49,7 +47,7 @@ document.write('<a href=' + project_url + '><img src=pawns.png border=0></a>');
 
 <center>
 <table bgcolor=#EDE8D5 width=100% cellpadding=60 cellspacing=0><tbody><tr><td align=center valign=middle>
-<iframe src=live.html height="360" width="480" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">your browser does not support the required iframe functionality</iframe>
+<script type="text/javascript">document.write('<iframe src=' + pgn4web_live_compact_url + ' height="360" width="480" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">your browser does not support the required iframe functionality</iframe>');</script>
 </td></tr></tbody></table>
 </center>
 

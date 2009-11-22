@@ -85,11 +85,14 @@
 
 var pgn4web_version = '1.79+';
 
-var project_url = 'http://pgn4web.casaschi.net';
-var project_email = 'pgn4web@casaschi.net';
-var project_author = 'Paolo Casaschi';
+// some website specific vars that might have been redefined in the JS file configure-urls.js
+if (pgn4web_project_url == undefined) { pgn4web_project_url = 'http://pgn4web.casaschi.net'; }
+if (pgn4web_project_email == undefined) { pgn4web_project_email = 'pgn4web@casaschi.net'; }
+if (pgn4web_project_author == undefined) { pgn4web_project_author = 'Paolo Casaschi'; }
+if (pgn4web_live_compact_url == undefined) { pgn4web_live_compact_url = 'live.html'; }
+if (pgn4web_board_url == undefined) { pgn4web_board_url = 'board.html'; }
 
-var about = '\tpgn4web v' + pgn4web_version + '\n\t' + project_url + '\n';
+var about = '\tpgn4web v' + pgn4web_version + '\n\t' + pgn4web_project_url + '\n';
 
 function displayHelp(section){
   if ((!section) && (section != "credits") && (section != "squares") && (section != "keys") && (section != "top") ) { 
@@ -197,7 +200,7 @@ function handlekey(e) {
       break;
 
     case 90: // z
-      window.open(project_url); 
+      window.open(pgn4web_project_url); 
       return stopKeyPropagation(e);
       break;
 
@@ -439,7 +442,7 @@ boardAlt = new Array(64);
 // cells count from the top left (A8 is row0 col0)
 
 // A8
-function boardOnClickCol0Row0() { window.open(project_url); }
+function boardOnClickCol0Row0() { window.open(pgn4web_project_url); }
 boardAlt[0 + 0 * 8] = "go to the pgn4web website";
 // B8
 function boardOnClickCol1Row0() { }

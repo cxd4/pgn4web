@@ -351,7 +351,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 See license-gpl-2.0.txt license file.
 
 You are free to use pgn4web in your website or blog; you are not required to
-acknowledge the pgn4we project, but if you want to do so the following line
+acknowledge the pgn4web project, but if you want to do so the following line
 might be used:
 javascript chess viewer courtesy of <a href=http://pgn4web.casaschi.net>pgn4web</a>
 
