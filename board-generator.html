@@ -1550,7 +1550,7 @@ function bug_report() {
   if (win !== null) {
     win.document.open("text/html", "replace");
     win.document.write("<html>");
-    win.document.write("<head><title>pgn4web bug report</title><link rel='shortcut icon' href='pawn.ico'></link><style type='text/css'> html, body { font-family: sans-serif;  color: black; background: white } a {text-decoration: none; color: black; } </style></head>");
+    win.document.write("<head><title>pgn4web chessboard generator bug report</title><link rel='shortcut icon' href='pawn.ico'></link><style type='text/css'> html, body { font-family: sans-serif;  color: black; background: white } a {text-decoration: none; color: black; } </style></head>");
     win.document.write("<body>");
     win.document.write("<table width=100% cellspacing=0 cellpadding=0><tr><td align=left valign=middle><h1><a " + project_url + " target=_blank>pgn4web</a> bug report</h1></td><td align=right valign=middle><a " + project_url + " target=_blank><img src=pawns.png border=0></a></td></tr></table><p></p>please make sure that:<ul type='square'><li>you are using the same web browser where you noticed the bug in the pgn4web board generator</li><li>you opened this bug report window from the pgn4web board generator page configured with all the parameter that result in the bug condition</li></ul>Then please email ALL the the debug information below and possibly a screenshot to <i><a href=mailto:" + project_email + ">" + project_email + "</a></i><p></p>");
     win.document.write("<hr>");
@@ -1596,11 +1596,11 @@ window.onload = set_defaults;
 <table width=100% cellspacing=0 cellpadding=0><tr>
 <td align=left valign=middle>
 <h1 style="color: red;"> 
-<script type="text/javascript">document.write('<a style="color: red;" href=' + project_url + ' target=_blank>pgn4web</a>');</script> 
+<script type="text/javascript">document.write('<a style="color: red;" href=' + project_url + '>pgn4web</a>');</script> 
 chessboard generator</h1>
 </td><td align=right valign=middle>
 
-<script type="text/javascript">document.write('<a href=' + project_url + ' target=_blank><img src=pawns.png border=0></a>');</script>
+<script type="text/javascript">document.write('<a href=' + project_url + '><img src=pawns.png border=0></a>');</script>
 </td></tr></table>
 
 <div style="height: 1em">&nbsp</div>
@@ -1939,9 +1939,9 @@ for (ii = 0; ii < theObject.length; ii++) {
 }
 
 document.write("<table width=100% cellspacing=0 cellpadding=0><tr><td align=left valign=bottom>");
-document.write("<a " + project_url + " target=_blank><div class='helptext'>pgn4web v" + pgn4web_version + "</div></a>");
+document.write("<a " + project_url + "><div class='helptext'>pgn4web v" + pgn4web_version + "</div></a>");
 document.write("</td><td align=right valign=middle>");
-document.write("<a " + project_url + " target=_blank><img src=pawns.png border=0></a>");
+document.write("<a " + project_url + "><img src=pawns.png border=0></a>");
 document.write("</td></tr></table>");
 
 </script>
