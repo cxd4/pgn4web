@@ -18,7 +18,7 @@ pgn4web_project_email = 'pgn4web@casaschi.net';
 // the URL for the content of the live games broadcast
 // pgn4web_live_compact_url = 'live.html';
 pgn4web_live_compact_url = 'live.html';
-pgn4web_live_compact_url = 'http://pgn4web-live.casaschi.net';
+pgn4web_live_compact_url = 'http://pgn4web-live-compact.casaschi.net';
 
 // the URL for the board widged to be used in the board-generator tool
 // pgn4web_board_url = location.protocol + "//" + location.hostname+location.pathname.substr(0, location.pathname.lastIndexOf("/")) + "/board.html";
