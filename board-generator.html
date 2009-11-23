@@ -958,7 +958,9 @@ function EncodePGN(ov) {
   bits = "";
   bytes = ov.length + "$";
   for (i = 0; i < ov.length; i ++) {
-    bits += LetterCodes[ov.charCodeAt(i)];
+    // converts ASCII chars above 255 to a star (code 42) avoiding decoding failure
+    if (ov.charCodeAt(i) > 255) { bits += LetterCodes[42]; }
+    else { bits += LetterCodes[ov.charCodeAt(i)]; }
     while (bits.length > 5) {
       bytes += BitsToBytes(bits);
       bits = bits.slice(6, bits.length);

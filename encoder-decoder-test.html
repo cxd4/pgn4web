@@ -696,7 +696,9 @@ function EncodePGN(ov) {
   bits = "";
   bytes = ov.length + "$";
   for (i = 0; i < ov.length; i ++) {
-    bits += LetterCodes[ov.charCodeAt(i)];
+    // converts ASCII chars above 255 to a star (code 42) avoiding decoding failure
+    if (ov.charCodeAt(i) > 255) { bits += LetterCodes[42]; } 
+    else { bits += LetterCodes[ov.charCodeAt(i)]; }
     while (bits.length > 5) {
       bytes += BitsToBytes(bits);
       bits = bits.slice(6, bits.length);
@@ -1378,17 +1380,16 @@ function testPGNencode() {
 
   document.getElementById("decoded").value = DecodePGN(test_bytes, test_encodedNodes);
 
-  if (document.getElementById("decoded").value != document.getElementById("original").value) {
-    alertText = "ERROR: decoded different from encoded!\n";
-  } else {
-    alertText = "";
-  }
   compressPerc = Math.floor(100 * (document.getElementById("original").value.length - document.getElementById("encoded").value.length) / document.getElementById("original").value.length);
   
   document.getElementById("status").innerHTML = "encoding/decoding test completed;" +
     " original: " + document.getElementById("original").value.length + ";" +
     " encoded: " + document.getElementById("encoded").value.length + ";" +
     " compression rate: " + compressPerc + "%";
+
+  if (document.getElementById("decoded").value != document.getElementById("original").value) {
+    document.getElementById("status").innerHTML += "<br><span style='font-weight: bold; color: red;'>error: decoded different from original, please check for ASCII chars greater than 255 in the original input</span>";
+  }
 
   document.getElementById("originalLetters").value = letter_frequency(document.getElementById("original").value);
 
