@@ -11,13 +11,6 @@
 //
 
 //
-// the URL for the project, default = 'http://pgn4web.casaschi.net'
-// affects all HTML files through pgn4web.js
-//
-pgn4web_project_url = 'http://pgn4web.casaschi.net';
-//
-
-//
 // the email for the project, default = 'pgn4web@casaschi.net'
 // affects all HTML files through pgn4web.js
 //
@@ -49,7 +42,7 @@ pgn4web_generator_url = 'board-generator.html';
 
 //
 // the URL for the content of the live games broadcast, default = 'live.html'
-// affects live-index.html only
+// affects live.html only
 //
 pgn4web_live_compact_url = 'live-compact.html';
 // pgn4web_live_compact_url = 'http://pgn4web-live-compact.casaschi.net';
