@@ -8,6 +8,7 @@
 //
 // some parameters that might need reconfiguring for implementing pgn4web on your server
 // uncomment the parameter that you need to change from default value
+//
 
 //
 // the URL for the project, default = 'http://pgn4web.casaschi.net'
