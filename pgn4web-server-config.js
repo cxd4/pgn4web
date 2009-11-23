@@ -12,27 +12,31 @@
 
 //
 // the URL for the project, default = 'http://pgn4web.casaschi.net'
+// affects all HTML files through pgn4web.js
 //
 // pgn4web_project_url = 'http://pgn4web.casaschi.net';
 //
 
 //
 // the email for the project, default = 'pgn4web@casaschi.net'
+// affects all HTML files through pgn4web.js
 //
 // pgn4web_project_email = 'pgn4web@casaschi.net';
 //
 
 //
-// the URL for the content of the live games broadcast, default = 'live.html'
-//
-// pgn4web_live_compact_url = 'live.html';
-// pgn4web_live_compact_url = 'http://pgn4web-live-compact.casaschi.net';
-//
-
-//
-// the URL for the board widged to be used in the board-generator tool, default = pgn4web_board_url = location.protocol + "//" + location.hostname+location.pathname.substr(0, location.pathname.lastIndexOf("/")) + "/board.html";
+// the URL for the board widged to be used in the board-generator tool, default = full URL of local board.html file = pgn4web_board_url = location.protocol + "//" + location.hostname+location.pathname.substr(0, location.pathname.lastIndexOf("/")) + "/board.html";
+// affects only board.html
 //
 // pgn4web_board_url = location.protocol + "//" + location.hostname+location.pathname.substr(0, location.pathname.lastIndexOf("/")) + "/board.html";
 // pgn4web_board_url = 'http://pgn4web-board.casaschi.net';
+//
+
+//
+// the URL for the content of the live games broadcast, default = 'live.html'
+// affects only live-index.html
+//
+// pgn4web_live_compact_url = 'live.html';
+// pgn4web_live_compact_url = 'http://pgn4web-live-compact.casaschi.net';
 //
 
