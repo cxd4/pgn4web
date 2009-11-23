@@ -1284,6 +1284,8 @@ function DecodePGN(bytes, encodedNodes) {
 <input type="button" style="width:700px;" onClick="javascript: testPGNencode();" value="pgn4web PGN encoder/decoder test">
 <input type="button" style="width:200px;" onClick="javascript: document.getElementById('textArea').value = '';" value="clear form">
 </form>
+<div style="width: 900px; text-align: left"><b>status: </b><span id="status">enter PGN data and press the test button</span></div>
+<br>
 <table cellspacing=2 cellpadding=0 border=1> 
 <tr style="font-weight: bold; text-align: center;">
 <td>original</td>
@@ -1355,7 +1357,9 @@ function DecodePGN(bytes, encodedNodes) {
 <script type="text/javascript">
 
 function testPGNencode() {
-      
+
+  document.getElementById("status").innerHTML = "encoding data, please wait...";
+
   if (document.getElementById("textArea").value === "") {
     document.getElementById("original").value = document.getElementById("originalInput").innerHTML;
   } else {
@@ -1368,6 +1372,8 @@ function testPGNencode() {
   test_encodedNodes = ret[1];
   test_LetterCodes = ret[2];
 
+  document.getElementById("status").innerHTML = "decoding data, please wait...";
+  
   document.getElementById("encoded").value = bytes;
 
   document.getElementById("decoded").value = DecodePGN(test_bytes, test_encodedNodes);
@@ -1378,10 +1384,11 @@ function testPGNencode() {
     alertText = "";
   }
   compressPerc = Math.floor(100 * (document.getElementById("original").value.length - document.getElementById("encoded").value.length) / document.getElementById("original").value.length);
-  alertText += "original:" + document.getElementById("original").value.length + "\n" +
-               "encoded:" + document.getElementById("encoded").value.length + "\n" +
-	       "compress:" + compressPerc + "%";
-  alert(alertText);
+  
+  document.getElementById("status").innerHTML = "encoding/decoding test completed;" +
+    " original: " + document.getElementById("original").value.length + ";" +
+    " encoded: " + document.getElementById("encoded").value.length + ";" +
+    " compression rate: " + compressPerc + "%";
 
   document.getElementById("originalLetters").value = letter_frequency(document.getElementById("original").value);
 

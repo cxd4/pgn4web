@@ -14,7 +14,7 @@
 // the email for the project, default = 'pgn4web@casaschi.net'
 // affects home.html and board-generator.html (not it's also in pgn4web.js)
 //
-pgn4web_project_email = 'XXXpgn4web@casaschi.net';
+pgn4web_project_email = 'pgn4web@casaschi.net';
 //
 
 //
