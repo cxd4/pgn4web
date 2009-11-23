@@ -10,10 +10,10 @@
  *
  *   add a SCRIPT instance at the top of your HTML file:
  *
- *      <script src="pgn4web-config.js" type="text/javascript">
+ *      <script src="pgn4web-server-config.js" type="text/javascript">
  *      <script src="pgn4web.js" type="text/javascript"></script>
  *
- *   The JS file pgn4web-config.js contains some customization variable
+ *   The JS file pgn4web-server-config.js contains some customization variable
  *   depending on your web server configuration. Default values should be ok
  *   for most purposes.
  *   Then add another SCRIPT instance with at least the call to SetPgnUrl("http://yoursite/yourpath/yourfile.pgn")
@@ -89,7 +89,7 @@
 
 var pgn4web_version = '1.79+';
 
-// some website specific vars that might have been defined in the JS file pgn4web-config.js
+// some website specific vars that might have been defined in the JS file pgn4web-server-config.js
 var pgn4web_project_url;
 if (pgn4web_project_url == undefined) { pgn4web_project_url = 'http://pgn4web.casaschi.net'; }
 var pgn4web_project_email;
