@@ -213,7 +213,7 @@ accurate testing.
 Alternatively, for a more realistic simulation, the bash shell script 
 live-simulation.sh slowly updates the live.pgn file, simulating a real event.
 
-The easiest way to setup a live broadcast is to use the live.html file.
+The easiest way to setup a live broadcast is to use the live-compact.html file.
 The HTML file accepts these parameters:
  - pgnFile = PGN file to load (default live.pgn)
  - initialGame = initial game, a number or first, last, random (default 1)
@@ -221,9 +221,11 @@ The HTML file accepts these parameters:
  - demo = if set true, sets live demo mode (default false)
 For instance, make sure that the file myGames.pgn on your server is periodically
 refreshed with the live games, then add the following iframe to your page:
-<iframe frameborder=0 width=480 height=360 src=live.html?pgnFile=myGames.pgn>
+<iframe frameborder=0 width=480 height=360 
+        src=live-compact.html?pgnFile=myGames.pgn>
 </iframe>
-Of course live.html can be edited to customize colors, layout and every detail.
+Of course live-compact.html can be edited to customize colors, layout and every
+detail.
 
 http://pgn4web-live.casaschi.net will occasionally broadcast live major chess
 events.
