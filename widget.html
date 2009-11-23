@@ -12,6 +12,12 @@
 <title>pgn4web chessboard generator example</title>
 
 <script src="pgn4web-server-config.js" type="text/javascript"></script>
+<script  type="text/javascript">
+// this should have been defined in pgn4web-server-config.js
+// setting default value here just in case
+var pgn4web_generator_url;
+if (pgn4web_generator_url == undefined) { pgn4web_generator_url = "board-generator.html"; }
+</script>
 
 <style type="text/css">
 

@@ -43,15 +43,15 @@ pgn4web_board_url = location.protocol + "//" + location.hostname+location.pathna
 // the URL for the board generator tool, default = 'board-generator.html'
 // affects widget.html only
 //
-pgn4web_live_compact_url = 'board-generator.html';
-// pgn4web_live_compact_url = 'http://pgn4web-board-generator.casaschi.net';
+pgn4web_generator_url = 'board-generator.html';
+// pgn4web_generator_url = 'http://pgn4web-board-generator.casaschi.net';
 //
 
 //
 // the URL for the content of the live games broadcast, default = 'live.html'
 // affects live-index.html only
 //
-pgn4web_live_compact_url = 'live.html';
+pgn4web_live_compact_url = 'live-compact.html';
 // pgn4web_live_compact_url = 'http://pgn4web-live-compact.casaschi.net';
 //
 
