@@ -1945,15 +1945,17 @@ for (ii = 0; ii < theObject.length; ii++) {
   theObject[ii].style.marginLeft +=  inputWidth - checkboxWidth + 22;
 }
 
-document.write("<table width=100% cellspacing=0 cellpadding=0><tr><td align=left valign=bottom>");
-document.write("<a " + pgn4web_project_url + "><div class='helptext'>pgn4web v" + pgn4web_version + "</div></a>");
-document.write("</td><td align=right valign=middle>");
-document.write("<a " + pgn4web_project_url + "><img src=pawns.png border=0></a>");
-document.write("</td></tr></table>");
-
 </script>
 
 </form>
+
+<table width=100% cellspacing=0 cellpadding=0><tr><td align=left valign=bottom>
+<a href="."><div class="helptext">
+<script type="text/javascript">document.write('pgn4web v' + pgn4web_version);</script>
+</div></a>
+</td><td align=right valign=middle>
+<a href="."><img src=pawns.png border=0></a>
+</td></tr></table>
 
 </body>
 
