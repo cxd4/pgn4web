@@ -687,7 +687,7 @@ function displayDebugInfo() {
   }
   debugInfo += 'games: current=' + currentGame + ' number=' + numberOfGames + '\n\n' +
                'ply: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber;
-  if (isAutoPlayOn) { debugInfo += ' autoplay=' + Delay + 'ms' + '\n\n'; }
+  if (isAutoPlayOn) { debugInfo += ' autoplay=' + Delay + 'ms' + ' autoplaynext=' + autoplayNextGame + '\n\n'; }
   else { debugInfo += ' autoplay=off' + '\n\n'; }
   if (LiveBroadcastDelay > 0) { debugInfo += 'live broadcast: delay=' + LiveBroadcastDelay + 'm' + 
                                              ' started=' + LiveBroadcastStarted +
