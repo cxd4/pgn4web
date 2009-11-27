@@ -883,9 +883,15 @@ function gup( name ){
 SetHighlightOption(true);
 SetShortcutKeysEnabled(true);
 
+if ((squareSize = gup("squareSize")) === "") { squareSize = 28; }
+else { squareSize = parseInt(squareSize, 10); }
+
+if ((pieceSize = gup("pieceSize")) === "") { pieceSize = 24; }
+else { pieceSize = parseInt(pieceSize, 10); }
+
 if ((pieceFont = gup("pieceFont")) === "") {
   if ((pieceFont = gup("font")) === "") // left for compatibility with older version
-    { pieceFont = "alpha"; }
+    { pieceFont = "default"; }
 }
 if (pieceFont == "a") { pieceFont = "alpha"; }
 if (pieceFont == "m") { pieceFont = "merida"; }
@@ -898,14 +904,15 @@ if ((pieceFont == "random") || (pieceFont == "r")) {
     default: pieceFont = "alpha"; break;
   }
 }
-
-if ((pieceSize = gup("pieceSize")) === "") { pieceSize = 24; }
-else { pieceSize = parseInt(pieceSize, 10); }
+if ((pieceFont == "default") || (pieceFont == "d")) {
+  if (pieceSize < 30) { pieceFont = "uscf"; }
+  else { 
+    if (pieceSize > 45) { pieceFont = "merida"; }
+    else { pieceFont = "alpha"; }
+  }
+}
 
 SetImagePath(pieceFont + "/" + pieceSize);
-
-if ((squareSize = gup("squareSize")) === "") { squareSize = 28; }
-else { squareSize = parseInt(squareSize, 10); }
 
 if ((lightColor = gup("lightColorName")) === "") { 
   if ((lightColor = "#" + gup("lightColorHex")) == "#") { lightColor = "#EFF4EC"; }
@@ -1088,9 +1095,9 @@ if (gup("help") !== "") {
   document.write(" - delay = autoplay delay in ms (default 1000)\n");
   document.write(" - loop = if set true, loop indefinitely through games (default false)\n");
   document.write("\n");
-  document.write(" - pieceFont = alpha | merida | uscf | random (default alpha)\n");
-  document.write(" - pieceSize = size of pieces (default 24)\n");
   document.write(" - squareSize = size of square (default 28)\n");
+  document.write(" - pieceSize = size of pieces (default 24)\n");
+  document.write(" - pieceFont = alpha | merida | uscf | random | default (default selects fonts based on piece size)\n");
   document.write(" - lightColorName = light square color name, like red\n");
   document.write(" - darkColorName = dark square color name, like red\n");
   document.write(" - highlightColorName = highlight color name, like red, 'none' for no highligh\n");

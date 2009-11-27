@@ -76,7 +76,7 @@ encodePgn_default = "t";
 auto_default = "t";
 delay_default = 1000;
 loop_default = "f";
-pieceFont_default = "alpha";
+pieceFont_default = "default";
 pieceSize_default = 30;
 squareSize_default = 40;
 lightColorHex_default = "EFF4EC";
@@ -141,10 +141,12 @@ function set_defaults() {
   if (pieceFont_value == "m") { pieceFont_value = "merida"; }
   if (pieceFont_value == "u") { pieceFont_value = "uscf"; }
   if (pieceFont_value == "r") { pieceFont_value = "random"; }
+  if (pieceFont_value == "d") { pieceFont_value = "default"; }
   document.board.pieceFont.value = pieceFont_value;
   if (!((pieceFont_value == "alpha") || (pieceFont_value == "merida") || 
-        (pieceFont_value == "uscf")  || (pieceFont_value == "random")) ) {
-    alert('error: the piece font must me either \'alpha\', \'merida\', \'uscf\', \'random\' or their initials');
+        (pieceFont_value == "uscf")  || (pieceFont_value == "random") ||
+	(pieceFont_value == "default")) ) {
+    alert("error: the piece font must me either 'alpha', 'merida', 'uscf', 'random', 'default' or their initials");
     document.board.pieceFont.value = pieceFont_value = pieceFont_default;
   }
 
@@ -361,11 +363,11 @@ function calculate_html_code() {
   if (document.board.loop.checked) { loop_value = "t"; } else { loop_value = "f"; }
   iframeUrl += "&a=" + auto_value + "&d=" + delay_value + "&l=" + loop_value;
 
-  pieceFont_value = document.board.pieceFont.value;
-  pieceSize_value = parseInt(document.board.pieceSize.value, 10);
   squareSize_value = parseInt(document.board.squareSize.value, 10);
+  pieceSize_value = parseInt(document.board.pieceSize.value, 10);
+  pieceFont_value = document.board.pieceFont.value;
   if (pieceSize_value > squareSize_value) { alert("error: the piece size (" + pieceSize_value + ") can not be bigger than the square size (" + squareSize_value + ")"); }
-  iframeUrl += "&pf=" + pieceFont_value.charAt(0) + "&ps=" + pieceSize_value + "&ss=" + squareSize_value;
+  iframeUrl += "&ss=" + squareSize_value + "&ps=" + pieceSize_value + "&pf=" + pieceFont_value.charAt(0);
 
   lightColorHex_value = document.board.lightColorHex.value; 
   darkColorHex_value = document.board.darkColorHex.value; 
@@ -1679,14 +1681,14 @@ and install the tool on your own servers
 
 <textarea id=pgnText class="textbox" style="background-color: #DDFFDD; scrollbar-base-color: #DDFFDD;" rows=15 onChange="update_pgnTextLength()"></textarea>
 <table cellspacing="0" cellpadding="0" width="100%"><tr>
-<td align="left"><div class='helptext'>enter PGN data</div></td>
+<td align="left"><div class="helptext">enter PGN data</div></td>
 <td align="right"><div class="helptext" id="pgnTextLength"></div></td>
 </tr></table>
 <p></p>
 
 <input class="checkbox" type="checkbox" id="encodePgn" name="checkbox" value="encodePgn" />
 &nbsp;&nbsp; encode PGN text &nbsp;&nbsp;
-<span class="helptext"">encode the PGN text to a URL friendly format (this should be normally enabled)</span>
+<span class="helptext">encode the PGN text to a URL friendly format (this should be normally enabled)</span>
 
 <p></p>
 
@@ -1717,13 +1719,21 @@ and install the tool on your own servers
 <script type="text/javascript">print_menu("board_options", 3, "chessboard options");</script>
 <div style="height: 1em">&nbsp;</div>
 
+<input class="input" type="text" id="squareSize" name="input" value="" size="9" onChange="validate_squareSize(); update_suggested_iframe_dimensions()">
+&nbsp;&nbsp; square size &nbsp;&nbsp;
+<span class="helptext">a number; must be larger than the piece size</span>
+
+<p></p>
+
 <select class="dropdown" id="pieceFont" name="dropdown">
+<option value="default">default</option>
 <option value="alpha">alpha</option>
 <option value="merida">merida</option>
 <option value="uscf">uscf</option>
 <option value="random">random</option>
 </select>
 &nbsp;&nbsp; piece font &nbsp;&nbsp;
+<span class="helptext"><b>default</b> selects fonts based on piece size</span>
 
 <p></p>
 
@@ -1735,7 +1745,6 @@ and install the tool on your own servers
 <option value="24">24</option>
 <option value="25">25</option>
 <option value="26">26</option>
-
 <option value="27">27</option>
 <option value="28">28</option>
 <option value="29">29</option>
@@ -1745,7 +1754,6 @@ and install the tool on your own servers
 <option value="33">33</option>
 <option value="34">34</option>
 <option value="35">35</option>
-
 <option value="36">36</option>
 <option value="37">37</option>
 <option value="38">38</option>
@@ -1755,7 +1763,6 @@ and install the tool on your own servers
 <option value="42">42</option>
 <option value="43">43</option>
 <option value="44">44</option>
-
 <option value="45">45</option>
 <option value="46">46</option>
 <option value="47">47</option>
@@ -1765,7 +1772,6 @@ and install the tool on your own servers
 <option value="60">60</option>
 <option value="64">64</option>
 <option value="72">72</option>
-
 <option value="80">80</option>
 <option value="88">88</option>
 <option value="96">96</option>
@@ -1776,11 +1782,6 @@ and install the tool on your own servers
 </select>
 &nbsp;&nbsp; piece size &nbsp;&nbsp;
 
-<p></p>
-
-<input class="input" type="text" id="squareSize" name="input" value="" size="9" onChange="validate_squareSize(); update_suggested_iframe_dimensions()">
-&nbsp;&nbsp; square size &nbsp;&nbsp;
-<span class="helptext"">a number; must be larger than the piece size</span>
 <p></p>
 <br>
 
@@ -1823,7 +1824,7 @@ and install the tool on your own servers
 
 <input class="input" type="text" id="textMargin" name="input" value="" size="9" onChange="validate_number(this, 'text margin', textMargin_default);">
 &nbsp;&nbsp; text margin &nbsp;&nbsp;
-<span class="helptext"">a number; header/moves margin, nice to have if text overflows with scrollbars</span>
+<span class="helptext">a number; header/moves margin, nice to have if text overflows with scrollbars</span>
 
 <p></p>
 <br>
@@ -1834,7 +1835,7 @@ and install the tool on your own servers
 
 <input class="input" type="text" id="fontHeaderSize" name="input" value="" size="9" onChange="validate_number_percentage(this, 'header font size', fontHeaderSize_default);">
 &nbsp;&nbsp; header font size &nbsp;&nbsp;
-<span class="helptext"">a number or a percentage; make sure left/right columns dont touch in the middle</span>
+<span class="helptext">a number or a percentage; make sure left/right columns dont touch in the middle</span>
 <p></p>
 
 <input class="color input" type="text" id="fontHeaderColorHex" name="input" value="" size="9" onChange="validate_color(this, 'header font color', fontHeaderColorHex_default)">
@@ -1857,7 +1858,7 @@ and install the tool on your own servers
 
 <input class="input" type="text" id="fontMovesSize" name="input" value="" size="9" onChange="validate_number_percentage(this, 'moves font size', fontMovesSize_default);">
 &nbsp;&nbsp; moves font size &nbsp;&nbsp;
-<span class="helptext"">a number or a percentage</span>
+<span class="helptext">a number or a percentage</span>
 <p></p>
 
 <input class="color input" type="text" id="fontMovesColorHex" name="input" value="" size="9" onChange="validate_color(this, 'moves font color', fontMovesColorHex_default)">
@@ -1871,7 +1872,7 @@ and install the tool on your own servers
 
 <input class="input" type="text" id="fontCommentsSize" name="input" value="" size="9" onChange="validate_number_percentage(this, 'comments font size', fontCommentsSize_default);">
 &nbsp;&nbsp; comments font size &nbsp;&nbsp;
-<span class="helptext"">a number or a percentage</span>
+<span class="helptext">a number or a percentage</span>
 
 <p></p>
 
@@ -1913,7 +1914,7 @@ and install the tool on your own servers
 
 <input class="color input" type="text" id="previewBackgroundColorHex" name="input" value="" size="9" onChange="validate_color(this, 'preview background color', previewBackgroundColorHex_default)"> 
 &nbsp;&nbsp; preview background color &nbsp;&nbsp;
-<span class="helptext"">not actually used in the HTML code, just for the preview</span>
+<span class="helptext">not actually used in the HTML code, just for the preview</span>
 <p></p>
 <br>
 
