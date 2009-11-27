@@ -93,8 +93,7 @@ horizontalLayout_default = "f";
 frameHeight_default = "";
 frameWidth_default = "";
 framePadding_default = 0;
-showComments_default = "t"; 
-showCommentsOnSeparateLines_default = "f"; 
+commentsMode_default = "inline"; 
 fontHeaderColorHex_default = "000000";
 fontMovesColorHex_default = "000000";
 fontCommentsColorHex_default = "808080";
@@ -195,11 +194,25 @@ function set_defaults() {
   if ((showMoves_value = gup("showMoves")) === "") { showMoves_value = showMoves_default; }
   document.board.showMoves.checked = (showMoves_value == "t");
 
-  if ((showComments_value = gup("showComments")) === "") { showComments_value = showComments_default; }
-  document.board.showComments.checked = (showComments_value == "t");
+  oldCommentsMode_value = "";
+  //kept for backward compatibility
+  if (gup("showCommentsOnSeparateLines") === "t") { oldCommentsMode_value = "newline"; }
+  //kept for backward compatibility
+  if (gup("showComments") === "f") { oldCommentsMode_value = "hidden"; }
 
-  if ((showCommentsOnSeparateLines_value = gup("showCommentsOnSeparateLines")) === "") { showCommentsOnSeparateLines_value = showCommentsOnSeparateLines_default; }
-  document.board.showCommentsOnSeparateLines.checked = (showCommentsOnSeparateLines_value == "t");
+  if ((commentsMode_value = gup("commentsMode")) === "") {
+    if (oldCommentsMode_value === "") { commentsMode_value = commentsMode_default; }
+    else { commentsMode_value = oldCommentsMode_value; }
+  }
+  if (commentsMode_value == "h") { commentsMode_value = "hidden"; }
+  if (commentsMode_value == "i") { commentsMode_value = "inline"; }
+  if (commentsMode_value == "n") { commentsMode_value = "newline"; }
+  document.board.commentsMode.value = commentsMode_value;
+  if (!((commentsMode_value == "hidden") || (commentsMode_value == "inline") ||
+        (commentsMode_value == "newline")) ) {
+    alert("error: the comment mode must me either 'hidden', 'inline', 'newline' or their initials");
+    document.board.commentsMode.value = commentsMode_value = commentsMode_default;
+  }
 
   if ((fontHeaderColorHex_value = gup("fontHeaderColorHex")) === "") { fontHeaderColorHex_value = fontHeaderColorHex_default; }
   document.board.fontHeaderColorHex.value = fontHeaderColorHex_value;
@@ -277,8 +290,7 @@ function update_disabled_controls() {
   document.board.controlBackgroundColorHex.disabled = (!document.board.showButtons.checked);
   document.board.controlTextColorHex.disabled = ((!document.board.showButtons.checked) || (document.board.controlBackgroundColorHex.value == "default"));
   document.board.textMargin.disabled = (!document.board.showMoves.checked && !document.board.showHeader.checked);
-  document.board.showComments.disabled = !document.board.showMoves.checked;
-  document.board.showCommentsOnSeparateLines.disabled = !document.board.showMoves.checked;
+  document.board.commentsMode.disabled = !document.board.showMoves.checked;
   document.board.fontHeaderColorHex.disabled = !document.board.showHeader.checked;
   document.board.fontMovesColorHex.disabled = !document.board.showMoves.checked;
   document.board.fontCommentsColorHex.disabled = !document.board.showMoves.checked;
@@ -413,10 +425,9 @@ function calculate_html_code() {
     fontMovesSize_value = document.board.fontMovesSize.value;
     fontCommentsSize_value = document.board.fontCommentsSize.value;
     iframeUrl += "&fms=" + percentFixForUrl( fontMovesSize_value ) + "&fcs=" + percentFixForUrl( fontCommentsSize_value );
-
-    if (document.board.showComments.checked) { showComments_value = "t"; } else { showComments_value = "f"; } 
-    if (document.board.showCommentsOnSeparateLines.checked) { showCommentsOnSeparateLines_value = "t"; } else { showCommentsOnSeparateLines_value = "f"; }
-    iframeUrl += "&sc=" + showComments_value + "&scosl=" + showCommentsOnSeparateLines_value;
+    
+    commentsMode_value = document.board.commentsMode.value;
+    iframeUrl += "&cm=" + commentsMode_value.charAt(0); 
 
   } 
 
@@ -1733,7 +1744,7 @@ and install the tool on your own servers
 <option value="random">random</option>
 </select>
 &nbsp;&nbsp; piece font &nbsp;&nbsp;
-<span class="helptext"><b>default</b> selects fonts based on piece size</span>
+<span class="helptext"><b>default</b> selects font based on piece size</span>
 
 <p></p>
 
@@ -1847,15 +1858,6 @@ and install the tool on your own servers
 &nbsp;&nbsp; <b>show game moves</b> &nbsp;&nbsp;
 <p></p>
 
-<input class="checkbox" type="checkbox" id="showComments" name="checkbox" value="showComments">
-&nbsp;&nbsp; show game comments &nbsp;&nbsp;
-
-<p></p>
-
-<input class="checkbox" type="checkbox" id="showCommentsOnSeparateLines" name="checkbox" value="showCommentsOnSeparateLines">
-&nbsp;&nbsp; show comments on separate lines &nbsp;&nbsp;
-<p></p>
-
 <input class="input" type="text" id="fontMovesSize" name="input" value="" size="9" onChange="validate_number_percentage(this, 'moves font size', fontMovesSize_default);">
 &nbsp;&nbsp; moves font size &nbsp;&nbsp;
 <span class="helptext">a number or a percentage</span>
@@ -1871,6 +1873,15 @@ and install the tool on your own servers
 <p></p>
 
 <input class="input" type="text" id="fontCommentsSize" name="input" value="" size="9" onChange="validate_number_percentage(this, 'comments font size', fontCommentsSize_default);">
+<select class="dropdown" id="commentsMode" name="dropdown">
+<option value="hidden">hidden</option>
+<option value="inline" selected="selected">inline</option>
+<option value="newline">newline</option>
+</select>
+&nbsp;&nbsp; how to show move comments &nbsp;&nbsp;
+<span class="helptext"><b>inline</b> shows comments on same line as moves, <b>newline</b> shows comments on new lines</span>
+<p></p>
+
 &nbsp;&nbsp; comments font size &nbsp;&nbsp;
 <span class="helptext">a number or a percentage</span>
 
@@ -1939,7 +1950,7 @@ for (ii = 0; ii < theObject.length; ii++) {
   theObject[ii].style.width = inputWidth;
 }
 
-checkboxWidth = document.getElementById('showCommentsOnSeparateLines').offsetWidth;
+checkboxWidth = document.getElementById('encodePgn').offsetWidth;
 // the last number added to marginLeft should be equal to the value of the .checkbox style at the top
 theObject = document.getElementsByName('checkbox');
 for (ii = 0; ii < theObject.length; ii++) {

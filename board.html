@@ -980,8 +980,32 @@ if ((controlTextColor = gup("controlTextColorName")) === "") {
   if ((controlTextColor = "#" + gup("controlTextColorHex")) == "#") { controlTextColor = "black"; } 
 }
 
-if (gup("showComments") == "false") { SetCommentsIntoMoveText(false); }
-if (gup("showCommentsOnSeparateLines") == "true") { SetCommentsOnSeparateLines(true); }
+oldCommentsMode = "";
+if (gup("showCommentsOnSeparateLines") == "true") { oldCommentsMode = "newline"; }
+if (gup("showComments") == "false") { oldCommentsMode = "hidden"; }
+if ((commentsMode = gup("commentsMode")) === "") { 
+  if (oldCommentsMode === "") { commentsMode = "inline"; }
+  else { commentsMode = oldCommentsMode; }
+}
+if (commentsMode == "h") { commentsMode = "hidden"; }
+if (commentsMode == "i") { commentsMode = "inline"; }
+if (commentsMode == "n") { commentsMode = "newline"; }
+
+switch (commentsMode) {
+  case "hidden":
+    SetCommentsIntoMoveText(false);
+    SetCommentsOnSeparateLines(false);
+    break;
+  case "newline":
+    SetCommentsIntoMoveText(true);
+    SetCommentsOnSeparateLines(true);
+    break;
+  case "inline":
+  default:
+    SetCommentsIntoMoveText(true);
+    SetCommentsOnSeparateLines(false);
+    break;
+}
 
 if ((fenString = gup("fenString")) !== "") {
   // remove URL escape chars such as %20 replaced by space
@@ -1097,7 +1121,7 @@ if (gup("help") !== "") {
   document.write("\n");
   document.write(" - squareSize = size of square (default 28)\n");
   document.write(" - pieceSize = size of pieces (default 24)\n");
-  document.write(" - pieceFont = alpha | merida | uscf | random | default (default selects fonts based on piece size)\n");
+  document.write(" - pieceFont = alpha | merida | uscf | random | default (default selects font based on piece size)\n");
   document.write(" - lightColorName = light square color name, like red\n");
   document.write(" - darkColorName = dark square color name, like red\n");
   document.write(" - highlightColorName = highlight color name, like red, 'none' for no highligh\n");
@@ -1118,8 +1142,7 @@ if (gup("help") !== "") {
   document.write(" - textHeight = set height of the textual section, header and/or moves text, might be ingored if frameHeight is set (default 100%)\n");
   document.write(" - textWidth = set width of the textual section, header and/or moves text, might be ignored if frameWidth is set (default 100%)\n");
   document.write(" - textMargin = set left/right margin width of the  textual section, header and/or moves text (default 0)\n");
-  document.write(" - showComments = if set false, removes comments when displaying moves text (default true)\n");
-  document.write(" - showCommentsOnSeparateLines = if set true, add newlines chars when displaying comments (default false)\n"); 
+  document.write(" - commentsMode = hidden | inline (same line as moves) | newline (new lines), (default inline)\n");
   document.write(" - fontHeaderColorName = header color name, like red (default black)\n");
   document.write(" - fontMovesColorName = moves color name, like red (default black)\n");
   document.write(" - fontCommentsColorName = comments color name, like red (default gray)\n");
