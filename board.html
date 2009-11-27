@@ -980,18 +980,18 @@ if ((controlTextColor = gup("controlTextColorName")) === "") {
   if ((controlTextColor = "#" + gup("controlTextColorHex")) == "#") { controlTextColor = "black"; } 
 }
 
-oldCommentsMode = "";
-if (gup("showCommentsOnSeparateLines") == "true") { oldCommentsMode = "newline"; }
-if (gup("showComments") == "false") { oldCommentsMode = "hidden"; }
-if ((commentsMode = gup("commentsMode")) === "") { 
-  if (oldCommentsMode === "") { commentsMode = "inline"; }
-  else { commentsMode = oldCommentsMode; }
+oldCommentsDisplay = "";
+if (gup("showCommentsOnSeparateLines") == "true") { oldCommentsDisplay = "newline"; }
+if (gup("showComments") == "false") { oldCommentsDisplay = "hidden"; }
+if ((commentsDisplay = gup("commentsDisplay")) === "") { 
+  if (oldCommentsDisplay === "") { commentsDisplay = "inline"; }
+  else { commentsDisplay = oldCommentsDisplay; }
 }
-if (commentsMode == "h") { commentsMode = "hidden"; }
-if (commentsMode == "i") { commentsMode = "inline"; }
-if (commentsMode == "n") { commentsMode = "newline"; }
+if (commentsDisplay == "h") { commentsDisplay = "hidden"; }
+if (commentsDisplay == "i") { commentsDisplay = "inline"; }
+if (commentsDisplay == "n") { commentsDisplay = "newline"; }
 
-switch (commentsMode) {
+switch (commentsDisplay) {
   case "hidden":
     SetCommentsIntoMoveText(false);
     SetCommentsOnSeparateLines(false);
@@ -1142,7 +1142,7 @@ if (gup("help") !== "") {
   document.write(" - textHeight = set height of the textual section, header and/or moves text, might be ingored if frameHeight is set (default 100%)\n");
   document.write(" - textWidth = set width of the textual section, header and/or moves text, might be ignored if frameWidth is set (default 100%)\n");
   document.write(" - textMargin = set left/right margin width of the  textual section, header and/or moves text (default 0)\n");
-  document.write(" - commentsMode = hidden | inline (same line as moves) | newline (new lines), (default inline)\n");
+  document.write(" - commentsDisplay = hidden | inline (same line as moves) | newline (new lines), (default inline)\n");
   document.write(" - fontHeaderColorName = header color name, like red (default black)\n");
   document.write(" - fontMovesColorName = moves color name, like red (default black)\n");
   document.write(" - fontCommentsColorName = comments color name, like red (default gray)\n");

@@ -93,7 +93,7 @@ horizontalLayout_default = "f";
 frameHeight_default = "";
 frameWidth_default = "";
 framePadding_default = 0;
-commentsMode_default = "inline"; 
+commentsDisplay_default = "inline"; 
 fontHeaderColorHex_default = "000000";
 fontMovesColorHex_default = "000000";
 fontCommentsColorHex_default = "808080";
@@ -200,18 +200,18 @@ function set_defaults() {
   //kept for backward compatibility
   if (gup("showComments") === "f") { oldCommentsMode_value = "hidden"; }
 
-  if ((commentsMode_value = gup("commentsMode")) === "") {
-    if (oldCommentsMode_value === "") { commentsMode_value = commentsMode_default; }
-    else { commentsMode_value = oldCommentsMode_value; }
+  if ((commentsDisplay_value = gup("commentsDisplay")) === "") {
+    if (oldCommentsMode_value === "") { commentsDisplay_value = commentsDisplay_default; }
+    else { commentsDisplay_value = oldCommentsMode_value; }
   }
-  if (commentsMode_value == "h") { commentsMode_value = "hidden"; }
-  if (commentsMode_value == "i") { commentsMode_value = "inline"; }
-  if (commentsMode_value == "n") { commentsMode_value = "newline"; }
-  document.board.commentsMode.value = commentsMode_value;
-  if (!((commentsMode_value == "hidden") || (commentsMode_value == "inline") ||
-        (commentsMode_value == "newline")) ) {
+  if (commentsDisplay_value == "h") { commentsDisplay_value = "hidden"; }
+  if (commentsDisplay_value == "i") { commentsDisplay_value = "inline"; }
+  if (commentsDisplay_value == "n") { commentsDisplay_value = "newline"; }
+  document.board.commentsDisplay.value = commentsDisplay_value;
+  if (!((commentsDisplay_value == "hidden") || (commentsDisplay_value == "inline") ||
+        (commentsDisplay_value == "newline")) ) {
     alert("error: the comment mode must me either 'hidden', 'inline', 'newline' or their initials");
-    document.board.commentsMode.value = commentsMode_value = commentsMode_default;
+    document.board.commentsDisplay.value = commentsDisplay_value = commentsDisplay_default;
   }
 
   if ((fontHeaderColorHex_value = gup("fontHeaderColorHex")) === "") { fontHeaderColorHex_value = fontHeaderColorHex_default; }
@@ -290,7 +290,7 @@ function update_disabled_controls() {
   document.board.controlBackgroundColorHex.disabled = (!document.board.showButtons.checked);
   document.board.controlTextColorHex.disabled = ((!document.board.showButtons.checked) || (document.board.controlBackgroundColorHex.value == "default"));
   document.board.textMargin.disabled = (!document.board.showMoves.checked && !document.board.showHeader.checked);
-  document.board.commentsMode.disabled = !document.board.showMoves.checked;
+  document.board.commentsDisplay.disabled = !document.board.showMoves.checked;
   document.board.fontHeaderColorHex.disabled = !document.board.showHeader.checked;
   document.board.fontMovesColorHex.disabled = !document.board.showMoves.checked;
   document.board.fontCommentsColorHex.disabled = !document.board.showMoves.checked;
@@ -426,8 +426,8 @@ function calculate_html_code() {
     fontCommentsSize_value = document.board.fontCommentsSize.value;
     iframeUrl += "&fms=" + percentFixForUrl( fontMovesSize_value ) + "&fcs=" + percentFixForUrl( fontCommentsSize_value );
     
-    commentsMode_value = document.board.commentsMode.value;
-    iframeUrl += "&cm=" + commentsMode_value.charAt(0); 
+    commentsDisplay_value = document.board.commentsDisplay.value;
+    iframeUrl += "&cd=" + commentsDisplay_value.charAt(0); 
 
   } 
 
@@ -1872,8 +1872,7 @@ and install the tool on your own servers
 &nbsp;&nbsp; highlight move color &nbsp;&nbsp;
 <p></p>
 
-<input class="input" type="text" id="fontCommentsSize" name="input" value="" size="9" onChange="validate_number_percentage(this, 'comments font size', fontCommentsSize_default);">
-<select class="dropdown" id="commentsMode" name="dropdown">
+<select class="dropdown" id="commentsDisplay" name="dropdown">
 <option value="hidden">hidden</option>
 <option value="inline" selected="selected">inline</option>
 <option value="newline">newline</option>
@@ -1882,6 +1881,7 @@ and install the tool on your own servers
 <span class="helptext"><b>inline</b> shows comments on same line as moves, <b>newline</b> shows comments on new lines</span>
 <p></p>
 
+<input class="input" type="text" id="fontCommentsSize" name="input" value="" size="9" onChange="validate_number_percentage(this, 'comments font size', fontCommentsSize_default);">
 &nbsp;&nbsp; comments font size &nbsp;&nbsp;
 <span class="helptext">a number or a percentage</span>
 
