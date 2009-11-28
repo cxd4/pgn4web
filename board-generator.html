@@ -76,7 +76,7 @@ encodePgn_default = "t";
 autoplayMode_default = "game";
 delay_default = 1000;
 pieceFont_default = "default";
-pieceSize_default = 30;
+pieceSize_default = "default";
 squareSize_default = 40;
 lightColorHex_default = "EFF4EC";
 darkColorHex_default = "C6CEC3";
@@ -386,11 +386,16 @@ function calculate_html_code() {
   delay_value = parseInt(document.board.delay.value, 10);
   iframeUrl += "&am=" + autoplayMode_value.charAt(0) + "&d=" + delay_value;
 
-  squareSize_value = parseInt(document.board.squareSize.value, 10);
-  pieceSize_value = parseInt(document.board.pieceSize.value, 10);
   pieceFont_value = document.board.pieceFont.value;
-  if (pieceSize_value > squareSize_value) { alert("error: the piece size (" + pieceSize_value + ") can not be bigger than the square size (" + squareSize_value + ")"); }
+  squareSize_value = parseInt(document.board.squareSize.value, 10);
+  if (document.board.pieceSize.value == "default") {
+    pieceSize_value = document.board.pieceSize.value;
+    iframeUrl += "&ss=" + squareSize_value + "&ps=" + pieceSize_value.charAt(0) + "&pf=" + pieceFont_value.charAt(0);
+  } else {  
+    pieceSize_value = parseInt(document.board.pieceSize.value, 10);
+    if (pieceSize_value > squareSize_value) { alert("error: the piece size (" + pieceSize_value + ") can not be bigger than the square size (" + squareSize_value + ")"); }
   iframeUrl += "&ss=" + squareSize_value + "&ps=" + pieceSize_value + "&pf=" + pieceFont_value.charAt(0);
+  }
 
   lightColorHex_value = document.board.lightColorHex.value; 
   darkColorHex_value = document.board.darkColorHex.value; 
@@ -680,17 +685,22 @@ function validate_frameHeight() {
 }
 
 function validate_pieceSize() {
+  if (document.getElementById('pieceSize').value == "default") { return true; }
   if (document.getElementById('squareSize').value < document.getElementById('pieceSize').value) {
     alert('error: piece size must be no bigger than the square size');
-    document.getElementById('pieceSize').value = 20;
+    document.getElementById('pieceSize').value = "default";
     return false;
   } else { return true; }
 }
 
 function validate_squareSize() {
+  if (document.getElementById('pieceSize').value == "default") {
+    return validate_number(document.getElementById('squareSize'), 'square size', 20);
+  } 
   if (!validate_number(document.getElementById('squareSize'), 'square size', document.getElementById('pieceSize').value)) {
     return false;
-  } else if (document.getElementById('squareSize').value < document.getElementById('pieceSize').value) {
+  }
+  if (document.getElementById('squareSize').value < document.getElementById('pieceSize').value) {
     alert('error: square size must be at least as big as the piece size');
     document.getElementById('squareSize').value = document.getElementById('pieceSize').value;
     return false;
@@ -1747,18 +1757,8 @@ and install the tool on your own servers
 <span class="helptext">a number; must be larger than the piece size</span>
 <p></p>
 
-<select class="dropdown" id="pieceFont" name="dropdown">
-<option value="default">default</option>
-<option value="alpha">alpha</option>
-<option value="merida">merida</option>
-<option value="uscf">uscf</option>
-<option value="random">random</option>
-</select>
-&nbsp;&nbsp; piece font &nbsp;&nbsp;
-<span class="helptext"><b>default</b> selects font based on piece size</span>
-<p></p>
-
 <select class="dropdown" id="pieceSize" name="dropdown" onChange="validate_pieceSize();">
+<option value="default">default</option>
 <option value="20">20</option>
 <option value="21">21</option>
 <option value="22">22</option>
@@ -1802,6 +1802,18 @@ and install the tool on your own servers
 <option value="300">300</option>
 </select>
 &nbsp;&nbsp; piece size &nbsp;&nbsp;
+<span class="helptext"><b>default</b> selects piece size based on square size</span>
+<p></p>
+
+<select class="dropdown" id="pieceFont" name="dropdown">
+<option value="default">default</option>
+<option value="alpha">alpha</option>
+<option value="merida">merida</option>
+<option value="uscf">uscf</option>
+<option value="random">random</option>
+</select>
+&nbsp;&nbsp; piece font &nbsp;&nbsp;
+<span class="helptext"><b>default</b> selects piece font based on piece size</span>
 <p></p>
 <br>
 
