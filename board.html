@@ -961,11 +961,32 @@ if ((fontCommentsColor = gup("fontCommentsColorName")) === "") {
   if ((fontCommentsColor = "#" + gup("fontCommentsColorHex")) == "#") { fontCommentsColor = "gray"; }
 }
 
-if (gup("auto") == "false") { SetAutostartAutoplay(false); }
-else { SetAutostartAutoplay(true); }
- 
-if (gup("loop") == "true") { SetAutoplayNextGame(true); }
-else { SetAutoplayNextGame(false); }
+oldAutoplayMode = "";
+if (gup("auto") == "false") { oldAutoplayMode = "game"; }
+if (gup("loop") == "true") { oldAutoplayMode = "loop"; }
+if ((autoplayMode = gup("autoplayMode")) === "") {
+  if (oldAutoplayMode === "") { autoplayMode = "game"; }
+  else { autoplayMode = oldAutoplayMode; }
+}
+if (autoplayMode == "g") { autoplayMode = "game"; }
+if (autoplayMode == "l") { autoplayMode = "loop"; }
+if (autoplayMode == "n") { autoplayMode = "none"; }
+
+switch (autoplayMode) {
+  case "loop":
+    SetAutostartAutoplay(true);
+    SetAutoplayNextGame(true);
+    break;
+  case "none":
+    SetAutostartAutoplay(false);
+    SetAutoplayNextGame(false);
+    break;
+  case "game":
+  default:
+    SetAutostartAutoplay(true);
+    SetAutoplayNextGame(false);
+    break;
+}
 
 if (gup("delay") === "") { SetAutoplayDelay(1000); }
 else { SetAutoplayDelay(gup("delay")); }
@@ -1115,9 +1136,8 @@ if (gup("help") !== "") {
   document.write(" - pgnEncoded = encoded PGN games to display (used only by the board generator tool)\n");
   document.write(" - fenString = FEN position to display, superceded by pgnText if set\n");
   document.write("\n");
-  document.write(" - auto = if set true, autoplays game, otherwise if false (default true)\n");
+  document.write(" - autoplayMode = game (autoplay first game once) | loop (loops through games continiously) | none, (default game)\n");
   document.write(" - delay = autoplay delay in ms (default 1000)\n");
-  document.write(" - loop = if set true, loop indefinitely through games (default false)\n");
   document.write("\n");
   document.write(" - squareSize = size of square (default 28)\n");
   document.write(" - pieceSize = size of pieces (default 24)\n");

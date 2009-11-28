@@ -102,10 +102,10 @@ function displayHelp(section){
     section = "top"; 
   }
   sectionFlag = "#" + section;
-  versionParameter = "&version=" + pgn4web_version;
-  if (shortcutKeysEnabled) { keysParameter = "&keysEnabled=true"; }
-  else { keysParameter = "&keysEnabled=false"; }
-  helpWin = window.open(detectHelpLocation() + "?" + versionParameter + keysParameter + sectionFlag, "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
+  versionParameter = "version=" + pgn4web_version;
+  if (shortcutKeysEnabled) { keysParameter = "keysEnabled=true"; }
+  else { keysParameter = "keysEnabled=false"; }
+  helpWin = window.open(detectHelpLocation() + "?" + versionParameter + "&" + keysParameter + sectionFlag, "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if ((helpWin !== null) && (window.focus)) { helpWin.window.focus(); }
 }
 

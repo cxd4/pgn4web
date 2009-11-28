@@ -73,9 +73,8 @@ if (pgn4web_board_url == undefined) { pgn4web_board_url = location.protocol + "/
 
 pgnText_default = templatePgnHeader + '\n';
 encodePgn_default = "t";
-auto_default = "t";
+autoplayMode_default = "game";
 delay_default = 1000;
-loop_default = "f";
 pieceFont_default = "default";
 pieceSize_default = 30;
 squareSize_default = 40;
@@ -126,14 +125,28 @@ function set_defaults() {
   if ((encodePgn_value = gup("encodePgn")) === "") { encodePgn_value = encodePgn_default; }
   document.board.encodePgn.checked = (encodePgn_value == "t");
 
-  if ((auto_value = gup("auto")) === "") { auto_value = auto_default; }
-  document.board.auto.checked = (auto_value == "t");
+  oldAutoplayMode_value = "";
+  //kept for backward compatibility
+  if (gup("loop") === "t") { oldAutoplayMode_value = "loop"; }
+  //kept for backward compatibility
+  if (gup("auto") === "f") { oldAutoplayMode_value = "none"; }
+
+  if ((autoplayMode_value = gup("autoplayMode")) === "") {
+    if (oldAutoplayMode_value === "") { autoplayMode_value = autoplayMode_default; }
+    else { autoplayMode_value = oldAutoplayMode_value; }
+  }
+  if (autoplayMode_value == "g") { autoplayMode_value = "game"; }
+  if (autoplayMode_value == "l") { autoplayMode_value = "loop"; }
+  if (autoplayMode_value == "n") { autoplayMode_value = "none"; }
+    document.board.autoplayMode.value = autoplayMode_value;
+  if (!((autoplayMode_value == "game") || (autoplayMode_value == "loop") ||
+        (autoplayMode_value == "none")) ) {
+    alert("error: autoplay mode must me either 'game', 'loop', 'none' or their initials");
+    document.board.autoplayMode.value = autoplayMode_value = autoplayMode_default;
+  }
 
   if ((delay_value = gup("delay")) === "") { delay_value = delay_default; }
   document.board.delay.value = delay_value;
-
-  if ((loop_value = gup("loop")) === "") { loop_value = loop_default; }
-  document.board.loop.checked = (loop_value == "t");
 
   if ((pieceFont_value = gup("pieceFont")) === "") { pieceFont_value = pieceFont_default; }
   if (pieceFont_value == "a") { pieceFont_value = "alpha"; }
@@ -145,7 +158,7 @@ function set_defaults() {
   if (!((pieceFont_value == "alpha") || (pieceFont_value == "merida") || 
         (pieceFont_value == "uscf")  || (pieceFont_value == "random") ||
 	(pieceFont_value == "default")) ) {
-    alert("error: the piece font must me either 'alpha', 'merida', 'uscf', 'random', 'default' or their initials");
+    alert("error: piece font must me either 'alpha', 'merida', 'uscf', 'random', 'default' or their initials");
     document.board.pieceFont.value = pieceFont_value = pieceFont_default;
   }
 
@@ -194,15 +207,15 @@ function set_defaults() {
   if ((showMoves_value = gup("showMoves")) === "") { showMoves_value = showMoves_default; }
   document.board.showMoves.checked = (showMoves_value == "t");
 
-  oldCommentsMode_value = "";
+  oldCommentsDisplay_value = "";
   //kept for backward compatibility
-  if (gup("showCommentsOnSeparateLines") === "t") { oldCommentsMode_value = "newline"; }
+  if (gup("showCommentsOnSeparateLines") === "t") { oldCommentsDisplay_value = "newline"; }
   //kept for backward compatibility
-  if (gup("showComments") === "f") { oldCommentsMode_value = "hidden"; }
+  if (gup("showComments") === "f") { oldCommentsDisplay_value = "hidden"; }
 
   if ((commentsDisplay_value = gup("commentsDisplay")) === "") {
-    if (oldCommentsMode_value === "") { commentsDisplay_value = commentsDisplay_default; }
-    else { commentsDisplay_value = oldCommentsMode_value; }
+    if (oldCommentsDisplay_value === "") { commentsDisplay_value = commentsDisplay_default; }
+    else { commentsDisplay_value = oldCommentsDisplay_value; }
   }
   if (commentsDisplay_value == "h") { commentsDisplay_value = "hidden"; }
   if (commentsDisplay_value == "i") { commentsDisplay_value = "inline"; }
@@ -210,7 +223,7 @@ function set_defaults() {
   document.board.commentsDisplay.value = commentsDisplay_value;
   if (!((commentsDisplay_value == "hidden") || (commentsDisplay_value == "inline") ||
         (commentsDisplay_value == "newline")) ) {
-    alert("error: the comment mode must me either 'hidden', 'inline', 'newline' or their initials");
+    alert("error: comment display must me either 'hidden', 'inline', 'newline' or their initials");
     document.board.commentsDisplay.value = commentsDisplay_value = commentsDisplay_default;
   }
 
@@ -286,7 +299,6 @@ function update_controls() {
 }
 
 function update_disabled_controls() {
-
   document.board.controlBackgroundColorHex.disabled = (!document.board.showButtons.checked);
   document.board.controlTextColorHex.disabled = ((!document.board.showButtons.checked) || (document.board.controlBackgroundColorHex.value == "default"));
   document.board.textMargin.disabled = (!document.board.showMoves.checked && !document.board.showHeader.checked);
@@ -370,10 +382,9 @@ function calculate_html_code() {
   baseUrl_value = document.board.baseUrl.value;
   iframeUrl = baseUrl_value + "?";
 
-  if (document.board.auto.checked) { auto_value = "t"; } else { auto_value = "f"; }
+  autoplayMode_value = document.board.autoplayMode.value;
   delay_value = parseInt(document.board.delay.value, 10);
-  if (document.board.loop.checked) { loop_value = "t"; } else { loop_value = "f"; }
-  iframeUrl += "&a=" + auto_value + "&d=" + delay_value + "&l=" + loop_value;
+  iframeUrl += "&am=" + autoplayMode_value.charAt(0) + "&d=" + delay_value;
 
   squareSize_value = parseInt(document.board.squareSize.value, 10);
   pieceSize_value = parseInt(document.board.pieceSize.value, 10);
@@ -1700,15 +1711,19 @@ and install the tool on your own servers
 <input class="checkbox" type="checkbox" id="encodePgn" name="checkbox" value="encodePgn" />
 &nbsp;&nbsp; encode PGN text &nbsp;&nbsp;
 <span class="helptext">encode the PGN text to a URL friendly format (this should be normally enabled)</span>
-
 <p></p>
 
 <div style="height: 3em">&nbsp;</div>
 <script type="text/javascript">print_menu("replay_options", 3, "game replay options");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<input class="checkbox" type="checkbox" id="auto" name="checkbox" value="auto" />
+<select class="dropdown" id="autoplayMode" name="dropdown">
+<option value="game">game</option>
+<option value="loop">loop</option>
+<option value="none">none</option>
+</select>
 &nbsp;&nbsp; autoplay game on page load &nbsp;&nbsp;
+<span class="helptext"><b>game</b> autoplays the first game once, <b>loop</b> loops through games continiously</span>
 <p></p>
 
 <select class="dropdown" id="delay" name="dropdown">
@@ -1723,9 +1738,6 @@ and install the tool on your own servers
 &nbsp;&nbsp; autoplay delay (sec) &nbsp;&nbsp;
 <p></p>
 
-<input class="checkbox" type="checkbox" id="loop" name="checkbox" value="loop" />
-&nbsp;&nbsp; loop through games at game end &nbsp;&nbsp;
-
 <div style="height: 3em">&nbsp;</div>
 <script type="text/javascript">print_menu("board_options", 3, "chessboard options");</script>
 <div style="height: 1em">&nbsp;</div>
@@ -1733,7 +1745,6 @@ and install the tool on your own servers
 <input class="input" type="text" id="squareSize" name="input" value="" size="9" onChange="validate_squareSize(); update_suggested_iframe_dimensions()">
 &nbsp;&nbsp; square size &nbsp;&nbsp;
 <span class="helptext">a number; must be larger than the piece size</span>
-
 <p></p>
 
 <select class="dropdown" id="pieceFont" name="dropdown">
@@ -1745,7 +1756,6 @@ and install the tool on your own servers
 </select>
 &nbsp;&nbsp; piece font &nbsp;&nbsp;
 <span class="helptext"><b>default</b> selects font based on piece size</span>
-
 <p></p>
 
 <select class="dropdown" id="pieceSize" name="dropdown" onChange="validate_pieceSize();">
@@ -1792,7 +1802,6 @@ and install the tool on your own servers
 <option value="300">300</option>
 </select>
 &nbsp;&nbsp; piece size &nbsp;&nbsp;
-
 <p></p>
 <br>
 
@@ -1811,7 +1820,6 @@ and install the tool on your own servers
 <input class="color {adjust:false} input" type="text" id="highlightColorHex" name="input" value="" size="9" onChange="validate_color_none(this, 'highlight squares color', highlightColorHex_default)">
 &nbsp;&nbsp; highlight squares color &nbsp;&nbsp;
 <span class="helptext">set to <b>none</b> in order to disable square highlighting</span>
-
 <p></p>
 <br>
 
@@ -1823,7 +1831,6 @@ and install the tool on your own servers
 <input class="color {adjust:false} input" type="text" id="controlBackgroundColorHex" name="input" value="" size="9" onChange="validate_color_default(this, 'control buttons background color', 'default'); update_controls()">
 &nbsp;&nbsp; control buttons background color &nbsp;&nbsp;
 <span class="helptext">set to <b>default</b> in order to use standard buttons from the browser</span>
-
 <p></p>
 
 <input class="color input" type="text" id="controlTextColorHex" name="input" value="" size="9" onChange="validate_color(this, 'control buttons text color', controlTextColorHex_default)">
@@ -1836,7 +1843,6 @@ and install the tool on your own servers
 <input class="input" type="text" id="textMargin" name="input" value="" size="9" onChange="validate_number(this, 'text margin', textMargin_default);">
 &nbsp;&nbsp; text margin &nbsp;&nbsp;
 <span class="helptext">a number; header/moves margin, nice to have if text overflows with scrollbars</span>
-
 <p></p>
 <br>
 
@@ -1884,7 +1890,6 @@ and install the tool on your own servers
 <input class="input" type="text" id="fontCommentsSize" name="input" value="" size="9" onChange="validate_number_percentage(this, 'comments font size', fontCommentsSize_default);">
 &nbsp;&nbsp; comments font size &nbsp;&nbsp;
 <span class="helptext">a number or a percentage</span>
-
 <p></p>
 
 <input class="color input" type="text" id="fontCommentsColorHex" name="input" value="" size="9" onChange="validate_color(this, 'comments font color', fontCommentsColorHex_default)">
@@ -1899,7 +1904,6 @@ and install the tool on your own servers
 <option value="t">horizontal</option>
 </select>
 &nbsp;&nbsp; chessboard and header/moves layout &nbsp;&nbsp;
-
 <p></p>
 
 <input class="input" type="text" id="frameHeight" name="input" value="" size="9" onChange="validate_frameHeight(); update_suggested_iframe_dimensions();">
