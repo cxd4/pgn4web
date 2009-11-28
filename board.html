@@ -896,9 +896,12 @@ if ((squareSize = gup("squareSize")) === "") { squareSize = 28; }
 else { squareSize = parseInt(squareSize, 10); }
 if (squareSize < 20) { squareSize = 20; }
 
+borderSize = 0;
+
 pieceSize = gup("pieceSize");
 if ((pieceSize === "") || (pieceSize == "default") || (pieceSize == "d")) { pieceSize = defaultPieceSize(squareSize); }
 else { pieceSize = parseInt(pieceSize, 10); }
+if (pieceSize > (squareSize - 2 * borderSize)) { pieceSize = squareSize - 2 * borderSize; }
 
 if ((pieceFont = gup("pieceFont")) === "") {
   if ((pieceFont = gup("font")) === "") // left for compatibility with older version
