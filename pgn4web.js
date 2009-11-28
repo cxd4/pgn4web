@@ -484,8 +484,8 @@ boardAlt[3 + 1 * 8] = "flip board";
 function boardOnClickCol4Row1() { if (IsRotated) { FlipBoard(); } }
 boardAlt[4 + 1 * 8] = "show white on bottom";
 // F7
-function boardOnClickCol5Row1() { }
-boardAlt[5 + 1 * 8] = "";
+function boardOnClickCol5Row1() { SetAutoplayNextGame(!autoplayNextGame); }
+boardAlt[5 + 1 * 8] = "toggle autoplay next game";
 // G7
 function boardOnClickCol6Row1() { }
 boardAlt[6 + 1 * 8] = "";
