@@ -190,7 +190,7 @@ function set_defaults() {
   document.board.highlightMode.value = highlightMode_value;
   if (!((highlightMode_value == "border") || (highlightMode_value == "none") ||
         (highlightMode_value == "square")) ) {
-    alert("error: highlight mode must me either 'border', 'none', 'square' or their initials");
+    alert("error: highlight mode must me either 'border', 'square', 'none' or their initials");
     document.board.highlightMode.value = highlightMode_value = highlightMode_default;
   }
 
@@ -1762,7 +1762,6 @@ and install the tool on your own servers
 <select class="dropdown" id="delay" name="dropdown">
 <option value="1000">1</option>
 <option value="2000">2</option>
-
 <option value="3000">3</option>
 <option value="5000">5</option>
 <option value="10000">10</option>
@@ -1853,8 +1852,8 @@ and install the tool on your own servers
 <p></p>
 
 <select class="dropdown" id="highlightMode" name="dropdown" onChange="update_disabled_controls()">
-<option value="square">square</option>
 <option value="border">border</option>
+<option value="square" selected="selected">square</option>
 <option value="none">none</option>
 </select>
 &nbsp;&nbsp; square highlight mode &nbsp;&nbsp;
