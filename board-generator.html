@@ -695,7 +695,14 @@ function validate_pieceSize() {
 
 function validate_squareSize() {
   if (document.getElementById('pieceSize').value == "default") {
-    return validate_number(document.getElementById('squareSize'), 'square size', 20);
+    if (!validate_number(document.getElementById('squareSize'), 'square size', squareSize_default)) {
+      return false;
+    } 
+    if (document.getElementById('squareSize').value < 20) {
+      alert('error: square size must be at least 20');
+      document.getElementById('squareSize').value = squareSize_default;
+      return false;
+    } else { return true; }
   } 
   if (!validate_number(document.getElementById('squareSize'), 'square size', document.getElementById('pieceSize').value)) {
     return false;

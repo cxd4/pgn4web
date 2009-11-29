@@ -884,9 +884,9 @@ var pieceSizeOptions = new Array(20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
 function defaultPieceSize(squareSize) {
   targetPieceSize = Math.floor(0.8 * squareSize);
   for (ii=(pieceSizeOptions.length-1); ii>=0; ii--) {
-	  if (pieceSizeOptions[ii] <= targetPieceSize) { break; }
+	  if (pieceSizeOptions[ii] <= targetPieceSize) { return pieceSizeOptions[ii]; break; }
   }
-  return pieceSizeOptions[ii];
+  return pieceSizeOptions[0];
 }
 
 SetHighlightOption(true);
@@ -901,7 +901,7 @@ borderSize = 0;
 pieceSize = gup("pieceSize");
 if ((pieceSize === "") || (pieceSize == "default") || (pieceSize == "d")) { pieceSize = defaultPieceSize(squareSize); }
 else { pieceSize = parseInt(pieceSize, 10); }
-if (pieceSize > (squareSize - 2 * borderSize)) { pieceSize = squareSize - 2 * borderSize; }
+if (pieceSize > (squareSize - 2 * borderSize)) { pieceSize = defaultPieceSize(squareSize - 2 * borderSize); }
 
 if ((pieceFont = gup("pieceFont")) === "") {
   if ((pieceFont = gup("font")) === "") // left for compatibility with older version
