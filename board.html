@@ -110,25 +110,57 @@ function new_start_pgn4web() {
   rule.style.width = pieceSize;
   rule.style.height = pieceSize;
 
-  rule = getCSSRule('.whiteSquare');
-  rule.style.width = squareSize + 'px';	
-  rule.style.height = squareSize + 'px';
-  rule.style.background = lightColor;
-  rule = getCSSRule('.blackSquare');
-  rule.style.width = squareSize + 'px';	
-  rule.style.height = squareSize + 'px';
-  rule.style.background = darkColor;
-  rule = getCSSRule('.highlightWhiteSquare');
-  rule.style.width = squareSize + 'px';	
-  rule.style.height = squareSize + 'px';
-  rule.style.background = highlightLightColor;
-  rule = getCSSRule('.highlightBlackSquare');
-  rule.style.width = squareSize + 'px';	
-  rule.style.height = squareSize + 'px';
-  rule.style.background = highlightDarkColor;
+  if (highlightMode == 'border') {
+    rule = getCSSRule('.whiteSquare');
+    rule.style.width = (squareSize - 2 * borderSize) + 'px';	
+    rule.style.height = (squareSize - 2 * borderSize) + 'px';
+    rule.style.background = lightColor;
+    rule.style.borderStyle = 'solid';
+    rule.style.borderWidth = borderSize;
+    rule.style.borderColor = lightColor; 
+    rule = getCSSRule('.blackSquare');
+    rule.style.width = (squareSize - 2 * borderSize) + 'px';	
+    rule.style.height = (squareSize - 2 * borderSize) + 'px';
+    rule.style.background = darkColor;
+    rule.style.borderStyle = 'solid';
+    rule.style.borderWidth = borderSize;
+    rule.style.borderColor = darkColor; 
+    rule = getCSSRule('.highlightWhiteSquare');
+    rule.style.width = (squareSize - 2 * borderSize) + 'px';	
+    rule.style.height = (squareSize - 2 * borderSize) + 'px';
+    rule.style.background = lightColor;
+    rule.style.borderStyle = 'solid';
+    rule.style.borderWidth = borderSize;
+    rule.style.borderColor = highlightLightColor;
+    rule = getCSSRule('.highlightBlackSquare');
+    rule.style.width = (squareSize - 2 * borderSize) + 'px';	
+    rule.style.height = (squareSize - 2 * borderSize) + 'px';
+    rule.style.background = darkColor;
+    rule.style.borderStyle = 'solid';
+    rule.style.borderWidth = borderSize;
+    rule.style.borderColor = highlightDarkColor;
+  } else {
+    rule = getCSSRule('.whiteSquare');
+    rule.style.width = squareSize + 'px';	
+    rule.style.height = squareSize + 'px';
+    rule.style.background = lightColor;
+    rule = getCSSRule('.blackSquare');
+    rule.style.width = squareSize + 'px';	
+    rule.style.height = squareSize + 'px';
+    rule.style.background = darkColor;
+    rule = getCSSRule('.highlightWhiteSquare');
+    rule.style.width = squareSize + 'px';	
+    rule.style.height = squareSize + 'px';
+    rule.style.background = highlightLightColor;
+    rule = getCSSRule('.highlightBlackSquare');
+    rule.style.width = squareSize + 'px';	
+    rule.style.height = squareSize + 'px';
+    rule.style.background = highlightDarkColor;
+  }
+
   rule = getCSSRule('.boardTable');
   rule.style.borderColor = boardBorderColor;
-
+  
   rule = getCSSRule('.move');
   rule.style.color = fontMovesColor;
   if (!fontMovesSize.match(/[^0-9]/)) { fontMovesSize += 'px'; }
@@ -896,7 +928,37 @@ if ((squareSize = gup("squareSize")) === "") { squareSize = 28; }
 else { squareSize = parseInt(squareSize, 10); }
 if (squareSize < 20) { squareSize = 20; }
 
-borderSize = 0;
+if ((highlightMode = gup("highlightMode")) === "") { highlightMode = "default"; }
+if (highlightMode == "b") { highlightMode = "border"; }
+if (highlightMode == "d") { highlightMode = "default"; }
+if (highlightMode == "n") { highlightMode = "none"; }
+if (highlightMode == "s") { highlightMode = "square"; }
+if (highlightMode == "default") {
+  if (squareSize < 30) { highlightMode = "square"; }
+  else { highlightMode = "border"; }
+}
+if (highlightMode == "border") {
+  borderSize = Math.floor(0.05 * squareSize);
+} else { borderSize = 0; }
+
+if ((lightColor = gup("lightColorName")) === "") { 
+  if ((lightColor = "#" + gup("lightColorHex")) == "#") { lightColor = "#EFF4EC"; }
+}
+if ((darkColor  = gup("darkColorName"))  === "") {
+  if ((darkColor  = "#" + gup("darkColorHex"))  == "#") { darkColor  = "#C6CEC3"; }
+}
+if ((highlightColor  = gup("highlightColorName")) === "") {
+  if ((highlightColor  = "#" + gup("highlightColorHex"))  == "#") { highlightColor  = "#DAF4D7"; }
+}
+if ((highlightMode == 'none') || (highlightColor == 'none') || (highlightColor == '#none')) {
+  highlightMode = 'none';    
+  borderSize = 0;
+  highlightLightColor = lightColor;
+  highlightDarkColor = darkColor;
+} else { 
+  highlightLightColor = highlightColor;
+  highlightDarkColor = highlightColor;
+}
 
 pieceSize = gup("pieceSize");
 if ((pieceSize === "") || (pieceSize == "default") || (pieceSize == "d")) { pieceSize = defaultPieceSize(squareSize); }
@@ -927,23 +989,6 @@ if ((pieceFont == "default") || (pieceFont == "d")) {
 }
 
 SetImagePath(pieceFont + "/" + pieceSize);
-
-if ((lightColor = gup("lightColorName")) === "") { 
-  if ((lightColor = "#" + gup("lightColorHex")) == "#") { lightColor = "#EFF4EC"; }
-}
-if ((darkColor  = gup("darkColorName"))  === "") {
-  if ((darkColor  = "#" + gup("darkColorHex"))  == "#") { darkColor  = "#C6CEC3"; }
-}
-if ((highlightColor  = gup("highlightColorName")) === "") {
-  if ((highlightColor  = "#" + gup("highlightColorHex"))  == "#") { highlightColor  = "#DAF4D7"; }
-}
-if ((highlightColor == 'none') || (highlightColor == '#none')) {
-  highlightLightColor = lightColor;
-  highlightDarkColor = darkColor;
-} else { 
-  highlightLightColor = highlightColor;
-  highlightDarkColor = highlightColor;
-}
 
 if ((boardBorderColor = gup("boardBorderColorName")) === "") {
   if ((boardBorderColor = "#" + gup("boardBorderColorHex")) == "#") { boardBorderColor = "#000000"; }
@@ -1158,6 +1203,7 @@ if (gup("help") !== "") {
   document.write(" - pieceFont = alpha | merida | uscf | random | default - (default selects piece font based on piece size)\n");
   document.write(" - lightColorName = light square color name, like red\n");
   document.write(" - darkColorName = dark square color name, like red\n");
+  document.write(" - highlightMode = border | square | none | default - (default selects highlight mode based on square size)\n");
   document.write(" - highlightColorName = highlight color name, like red, 'none' for no highligh\n");
   document.write(" - boardBorderColorName = board border color name, like red, 'none' for no highligh\n");
   document.write(" - lightColorHex = light square color hex code, like FF0000 (default EFF4EC)\n");
