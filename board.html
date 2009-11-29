@@ -928,15 +928,10 @@ if ((squareSize = gup("squareSize")) === "") { squareSize = 28; }
 else { squareSize = parseInt(squareSize, 10); }
 if (squareSize < 20) { squareSize = 20; }
 
-if ((highlightMode = gup("highlightMode")) === "") { highlightMode = "default"; }
+if ((highlightMode = gup("highlightMode")) === "") { highlightMode = "square"; }
 if (highlightMode == "b") { highlightMode = "border"; }
-if (highlightMode == "d") { highlightMode = "default"; }
 if (highlightMode == "n") { highlightMode = "none"; }
 if (highlightMode == "s") { highlightMode = "square"; }
-if (highlightMode == "default") {
-  if (squareSize < 30) { highlightMode = "square"; }
-  else { highlightMode = "border"; }
-}
 if (highlightMode == "border") {
   borderSize = Math.floor(0.05 * squareSize);
 } else { borderSize = 0; }
@@ -1201,14 +1196,14 @@ if (gup("help") !== "") {
   document.write(" - squareSize = size of square (default 28)\n");
   document.write(" - pieceSize = size of pieces | default (default selects piece size based on piece size)\n");
   document.write(" - pieceFont = alpha | merida | uscf | random | default - (default selects piece font based on piece size)\n");
-  document.write(" - highlightMode = border | square | none | default - (default selects highlight mode based on square size)\n");
+  document.write(" - highlightMode = border | square | none (default square)\n");
   document.write(" - lightColorName = light square color name, like red\n");
   document.write(" - darkColorName = dark square color name, like red\n");
   document.write(" - highlightColorName = highlight color name, like red\n");
   document.write(" - boardBorderColorName = board border color name, like red\n");
   document.write(" - lightColorHex = light square color hex code, like FF0000 (default EFF4EC)\n");
   document.write(" - darkColorHex = dark square color hex code, like FF0000 (default C6CEC3)\n");
-  document.write(" - highlightColorHex = highlight color hex code, like FF0000 (default B7FFA8)\n");
+  document.write(" - highlightColorHex = highlight color hex code, like FF0000 (default DAF4D7)\n");
   document.write(" - boardBorderColorHex = board border color hex code, like FF0000 (default 000000)\n");
   document.write("\n");
   document.write(" - showButtons = if set true, prints control buttons (default false)\n");

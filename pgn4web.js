@@ -3142,6 +3142,8 @@ function reset_after_click (ii, jj, originalClass, newClass) {
   clickedSquareInterval = null;
 }
 
+var tableSize = null;
+
 /******************************************************************************
  *                                                                            *
  * Function PrintHTML:                                                        *
@@ -3154,7 +3156,9 @@ function PrintHTML(){
   /*
    * Show the board as a 8x8 table.
    */
-  text = '<TABLE CLASS="boardTable" ID="boardTable" CELLSPACING=0 CELLPADDING=0>';
+  text = '<TABLE CLASS="boardTable" ID="boardTable" CELLSPACING=0 CELLPADDING=0';
+  if ((tableSize !== null) && (tableSize !== 0)) { text += ' STYLE="width: ' + tableSize + 'px; height: ' + tableSize + 'px;">'; }
+  else { text += '>'; }
   for (ii = 0; ii < 8; ++ii){
     text += '<TR>';
     for (jj = 0; jj < 8; ++jj){
@@ -3181,7 +3185,7 @@ function PrintHTML(){
    */
   theObject = document.getElementById("GameBoard");
   if (theObject !== null) { theObject.innerHTML = text; }
-  
+
   theObject = document.getElementById("boardTable"); 
   if (theObject !== null) {
     tableSize = theObject.offsetWidth;
