@@ -706,20 +706,22 @@ function validate_frameHeight() {
 }
 
 function validate_ss_ps_hm() {
-  if (document.getElementById('pieceSize').value == "default") {
-    if (document.getElementById('highlightMode').value == "border") {
-      minSquareSize = 22; 
-    } else {
-      minSquareSize = 20;
-    }
-    if (document.getElementById('squareSize').value < minSquareSize) {
-      alert('error: square size must be at least ' + minSquareSize +
-            ' (squareSize=' + document.getElementById('squareSize').value + 
-            ' highlightMode=' + document.getElementById('highlightMode').value + ')');
-      document.getElementById('squareSize').value = minSquareSize;
-      return false;
-    } else { return true; }
+  retval = true;
+  if (document.getElementById('highlightMode').value == 'border') {
+    minSquareSize = 22; 
   } else {
+    minSquareSize = 20;
+  }
+  if (document.getElementById('squareSize').value < minSquareSize) {
+    alert('error: square size must be at least ' + minSquareSize +
+          ', resetting to ' + minSquareSize +
+	  '\n' + '(squareSize=' + document.getElementById('squareSize').value + 
+	  ' pieceSize=' + document.getElementById('pieceSize').value +
+          ' highlightMode=' + document.getElementById('highlightMode').value + ')');
+    document.getElementById('squareSize').value = minSquareSize;
+    retval = false;
+  } 
+  if (document.getElementById('pieceSize').value != "default") {
     if (document.getElementById('highlightMode').value == "border") {
       maxPieceSize = document.getElementById('squareSize').value - 
 	             2 * Math.floor(0.05 * document.getElementById('squareSize').value);
@@ -728,13 +730,17 @@ function validate_ss_ps_hm() {
     }
     if (document.getElementById('pieceSize').value > maxPieceSize) {
       alert('error: piece size must be no bigger than ' + maxPieceSize +
-            ' (squareSize=' + document.getElementById('squareSize').value + 
+	    ', resetting to default' +
+            '\n' + '(squareSize=' + document.getElementById('squareSize').value + 
+            ' pieceSize=' + document.getElementById('pieceSize').value +
             ' highlightMode=' + document.getElementById('highlightMode').value + ')');
       document.getElementById('pieceSize').value = "default";
-      return false;
-    } else { return true; }
+      retval = false;
+    }
   }
+  return retval;
 }
+
 
 var encodingCharSet = "$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
 var encodingVersion = 1;
