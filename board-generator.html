@@ -708,10 +708,17 @@ function validate_frameHeight() {
 function validate_ss_ps_hm() {
   if (document.getElementById('pieceSize').value == "default") {
     if (document.getElementById('highlightMode').value == "border") {
-      maxPieceSize = 22; 
+      minSquareSize = 22; 
     } else {
-      maxPieceSize = 20;
+      minSquareSize = 20;
     }
+    if (document.getElementById('squareSize').value < minSquareSize) {
+      alert('error: square size must be at least ' + minSquareSize +
+            ' (squareSize=' + document.getElementById('squareSize').value + 
+            ' highlightMode=' + document.getElementById('highlightMode').value + ')');
+      document.getElementById('squareSize').value = minSquareSize;
+      return false;
+    } else { return true; }
   } else {
     if (document.getElementById('highlightMode').value == "border") {
       maxPieceSize = document.getElementById('squareSize').value - 
@@ -719,14 +726,14 @@ function validate_ss_ps_hm() {
     } else {
       maxPieceSize = document.getElementById('squareSize').value;
     }
+    if (document.getElementById('pieceSize').value > maxPieceSize) {
+      alert('error: piece size must be no bigger than ' + maxPieceSize +
+            ' (squareSize=' + document.getElementById('squareSize').value + 
+            ' highlightMode=' + document.getElementById('highlightMode').value + ')');
+      document.getElementById('pieceSize').value = "default";
+      return false;
+    } else { return true; }
   }
-  if (document.getElementById('pieceSize').value > maxPieceSize) {
-    alert('error: piece size must be no bigger than ' + maxPieceSize +
-          ' (squareSize=' + document.getElementById('squareSize').value + 
-          ' highlightMode=' + document.getElementById('highlightMode').value + ')');
-    document.getElementById('pieceSize').value = "default";
-    return false;
-  } else { return true; }
 }
 
 var encodingCharSet = "$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
