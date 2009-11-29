@@ -164,12 +164,16 @@ function set_defaults() {
   }
 
   if ((squareSize_value = gup("squareSize")) === "") { squareSize_value = squareSize_default; }
-  document.getElementById('squareSize').value = squareSize_value;
-  validate_squareSize();
+  document.getElementById('squareSize').value = squareSize_value = parseInt(squareSize_value, 10);
+  // value validation done later in validate_ss_ps_hm();
 
   if ((pieceSize_value = gup("pieceSize")) === "") { pieceSize_value = pieceSize_default; }
-  document.getElementById('pieceSize').value = pieceSize_value;
-  validate_pieceSize();
+  if (pieceSize_value == "default") {
+    document.getElementById('pieceSize').value = pieceSize_value;
+  } else {
+    document.getElementById('pieceSize').value = pieceSize_value = parseInt(pieceSize_value, 10);
+  }
+  // value validation done later in validate_ss_ps_hm();
 
   if ((lightColorHex_value = gup("lightColorHex")) === "") { lightColorHex_value = lightColorHex_default; }
   document.board.lightColorHex.value = lightColorHex_value;
@@ -193,6 +197,7 @@ function set_defaults() {
     alert("error: highlight mode must me either 'border', 'square', 'none' or their initials");
     document.board.highlightMode.value = highlightMode_value = highlightMode_default;
   }
+  validate_ss_ps_hm();
 
   if ((highlightColorHex_value = gup("highlightColorHex")) === "") { highlightColorHex_value = highlightColorHex_default; }
   document.board.highlightColorHex.value = highlightColorHex_value;
@@ -700,32 +705,26 @@ function validate_frameHeight() {
   }
 }
 
-function validate_pieceSize() {
-  if (document.getElementById('pieceSize').value == "default") { return true; }
-  if (document.getElementById('squareSize').value < document.getElementById('pieceSize').value) {
-    alert('error: piece size must be no bigger than the square size');
-    document.getElementById('pieceSize').value = "default";
-    return false;
-  } else { return true; }
-}
-
-function validate_squareSize() {
+function validate_ss_ps_hm() {
   if (document.getElementById('pieceSize').value == "default") {
-    if (!validate_number(document.getElementById('squareSize'), 'square size', squareSize_default)) {
-      return false;
-    } 
-    if (document.getElementById('squareSize').value < 20) {
-      alert('error: square size must be at least 20');
-      document.getElementById('squareSize').value = squareSize_default;
-      return false;
-    } else { return true; }
-  } 
-  if (!validate_number(document.getElementById('squareSize'), 'square size', document.getElementById('pieceSize').value)) {
-    return false;
+    if (document.getElementById('highlightMode').value == "border") {
+      maxPieceSize = 22; 
+    } else {
+      maxPieceSize = 20;
+    }
+  } else {
+    if (document.getElementById('highlightMode').value == "border") {
+      maxPieceSize = document.getElementById('squareSize').value - 
+	             2 * Math.floor(0.05 * document.getElementById('squareSize').value);
+    } else {
+      maxPieceSize = document.getElementById('squareSize').value;
+    }
   }
-  if (document.getElementById('squareSize').value < document.getElementById('pieceSize').value) {
-    alert('error: square size must be at least as big as the piece size');
-    document.getElementById('squareSize').value = document.getElementById('pieceSize').value;
+  if (document.getElementById('pieceSize').value > maxPieceSize) {
+    alert('error: piece size must be no bigger than ' + maxPieceSize +
+          ' (squareSize=' + document.getElementById('squareSize').value + 
+          ' highlightMode=' + document.getElementById('highlightMode').value + ')');
+    document.getElementById('pieceSize').value = "default";
     return false;
   } else { return true; }
 }
@@ -1774,12 +1773,12 @@ and install the tool on your own servers
 <script type="text/javascript">print_menu("board_options", 3, "chessboard options");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<input class="input" type="text" id="squareSize" name="input" value="" size="9" onChange="validate_squareSize(); update_suggested_iframe_dimensions()">
+<input class="input" type="text" id="squareSize" name="input" value="" size="9" onChange="validate_ss_ps_hm(); update_suggested_iframe_dimensions();">
 &nbsp;&nbsp; square size &nbsp;&nbsp;
-<span class="helptext">a number; must be larger than the piece size</span>
+<span class="helptext">a number; must be larger than the piece size plus the highlight border if any</span>
 <p></p>
 
-<select class="dropdown" id="pieceSize" name="dropdown" onChange="validate_pieceSize();">
+<select class="dropdown" id="pieceSize" name="dropdown" onChange="validate_ss_ps_hm();">
 <option value="default">default</option>
 <option value="20">20</option>
 <option value="21">21</option>
@@ -1851,12 +1850,13 @@ and install the tool on your own servers
 &nbsp;&nbsp; board border color &nbsp;&nbsp;
 <p></p>
 
-<select class="dropdown" id="highlightMode" name="dropdown" onChange="update_disabled_controls()">
+<select class="dropdown" id="highlightMode" name="dropdown" onChange="validate_ss_ps_hm(); update_disabled_controls();">
 <option value="border">border</option>
 <option value="square" selected="selected">square</option>
 <option value="none">none</option>
 </select>
 &nbsp;&nbsp; square highlight mode &nbsp;&nbsp;
+<span class="helptext">if set  to <b>border</b> a larger square size might be required</span>
 <p></p>
 
 <input class="color {adjust:false} input" type="text" id="highlightColorHex" name="input" value="" size="9" onChange="validate_color_none(this, 'highlight squares color', highlightColorHex_default)">
