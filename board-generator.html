@@ -770,7 +770,17 @@ function template_selected() {
   if (confirm("do you really want to load the selected board generator template?\n\ntemplate: " +
               document.getElementById('templatesList').options[selectedIndex].text +
 	      "\n\nAll your options besides the PGN text will be lost!")) {
-    location.href = pgn4web_generator_url + document.getElementById('templatesList').options[selectedIndex].value;
+    newLocationHref = pgn4web_generator_url + document.getElementById('templatesList').options[selectedIndex].value;
+
+    pgnText_value = document.getElementById('pgnText').value;
+    if ((document.board.encodePgn.checked) && (pgnText_value != previousPgnTextToEncode)) {
+       previousPgnTextToEncode = pgnText_value;
+       pgnTextEncoded = EncodePGN(pgnText_value);
+    }
+    if (document.board.encodePgn.checked) { newLocationHref += "&pe=" + pgnTextEncoded; }
+    else { newLocationHref += "&pt=" + pgnTextFixForUrl(pgnText_value); }
+
+    location.href = newLocationHref;
   }
   document.getElementById('templatesList').value = "heading";
 }
