@@ -66,7 +66,7 @@ a {
 // this should have been defined in pgn4web-server-config.js
 // setting default value here just in case
 var pgn4web_board_url;
-if (pgn4web_board_url == undefined) { pgn4web_board_url = location.protocol + "//" + location.hostname+location.pathname.substr(0, location.pathname.lastIndexOf("/")) + "/board.html"; }
+if (pgn4web_board_url == undefined) { pgn4web_board_url = location.protocol + "//" + location.hostname + location.pathname.substr(0, location.pathname.lastIndexOf("/")) + "/board.html"; }
 </script>
 
 <script type="text/javascript">
@@ -114,6 +114,10 @@ baseUrl_default = pgn4web_board_url;
 iframeUrl_max = 2000;
 
 function set_defaults() {
+
+  load_templates();
+  document.getElementById('templatesList').options[1].value = location.search.replace(/&(pe|pt)=.*(&|$)/,"");
+
   document.getElementById('html_code').innerHTML = '';
   document.getElementById('html_code_status').innerHTML = '&nbsp;';
   
@@ -748,6 +752,27 @@ function validate_ss_ps_hm() {
     }
   }
   return retval;
+}
+
+function load_templates() {
+  theObject = document.getElementById('templatesList');
+
+  newOpt = new Option("PAOLO test template 61", "?ss=61");
+  theObject.add(newOpt, null);
+  newOpt = new Option("PAOLO test template 62", "?ss=62");
+  theObject.add(newOpt, null);
+
+}
+
+function template_selected() {
+  if (document.getElementById('templatesList').value == "heading") { return; }
+  selectedIndex = document.getElementById('templatesList').selectedIndex;
+  if (confirm("do you really want to load the selected board generator template?\n\ntemplate: " +
+              document.getElementById('templatesList').options[selectedIndex].text +
+	      "\n\nAll your options besides the PGN text will be lost!")) {
+    location.href = pgn4web_generator_url + document.getElementById('templatesList').options[selectedIndex].value;
+  }
+  document.getElementById('templatesList').value = "heading";
 }
 
 
@@ -1773,14 +1798,16 @@ and install the tool on your own servers
 <div style="height: 1em">&nbsp;</div>
 
 <a class="configtext" id="thisConfigBookmark" title="pgn4web board generator custom template link">pgn4web board generator custom template link</a>
-&nbsp;&nbsp; add the link into the browser bookmarks, saving current board generator template settings for future use &nbsp;&nbsp;
+&nbsp;&nbsp; 
+<span class="helptext">add the link into the browser bookmarks, saving current board generator template settings for future use</span>
 <p></p>
 
-<select class="largeDropdown" id="templatesList" name="largeDropdown">
+<select class="largeDropdown" id="templatesList" name="largeDropdown" onChange="template_selected();">
 <option value="heading" selected="selected">load a pgn4web board generator template</option>
 <option value="reload">reload last loaded board generator template</option>
 </select>
-&nbsp;&nbsp; choose from a number of preset board generator settings templates &nbsp;&nbsp;
+&nbsp;&nbsp;
+<span class="helptext">choose from a number of preset board generator settings templates</span>
 <p></p>
 
 <div style="height: 3em">&nbsp;</div>
