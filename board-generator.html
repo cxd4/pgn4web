@@ -36,10 +36,14 @@ a {
   border-color: #CCCCCC;
 }
 
-.input, .checkbox, .dropdown {
+.input, .checkbox, .dropdown, .largeDropdown, .configtext {
 /* if the margin-left value below is changed from 22 
    then the corresponding value at the end of the file needs to be changed accordingly */      
   margin-left: 22;
+}
+
+.configtext {
+  font-weight: bold;
 }
 
 .textbox {
@@ -565,6 +569,11 @@ function generate_html_code() {
   html_code_string = "<iframe \n\theight='" + outerFrameHeight + "' width='" + outerFrameWidth + "' frameborder='0' scrolling='no' marginheight='0' marginwidth='0'\n\tsrc='" + iframeUrl + "'\n>\n\tyour web browser and/or your host do not support iframes as required to display the chessboard\n</iframe>";
   
   document.getElementById('html_code').value = html_code_string;
+
+  thisBookmarkUrl = iframeUrl;
+  thisBookmarkUrl = thisBookmarkUrl.replace(pgn4web_board_url,pgn4web_generator_url);
+  thisBookmarkUrl = thisBookmarkUrl.replace(/&(pe|pt)=.*(&|$)/,"");
+  document.getElementById('thisConfigBookmark').href = thisBookmarkUrl;
 
   document.getElementById('preview').innerHTML = "<table border='0' bgcolor='#" + previewBackgroundColorHex_value + "' width='100%' cellpadding='25'><tr><td align='center' valign='middle'> " + html_code_string + "</td></tr></table>";
 
@@ -1658,6 +1667,7 @@ function print_menu( item, level, title ) {
   menu += '<br>';
   menu += '&nbsp; &nbsp;<span style="color:gray">config:</span>';
   menu += '&nbsp; &nbsp;<a href=#pgn_form>PGN</a>';
+  menu += '&nbsp; &nbsp;<a href=#templates>templates</a>';
   menu += '&nbsp; &nbsp;<a href=#replay_options>replay</a>';
   menu += '&nbsp; &nbsp;<a href=#board_options>board</a>';
   menu += '&nbsp; &nbsp;<a href=#header_moves_options>header and moves</a>';
@@ -1756,6 +1766,21 @@ and install the tool on your own servers
 <input class="checkbox" type="checkbox" id="encodePgn" name="checkbox" value="encodePgn" />
 &nbsp;&nbsp; encode PGN text &nbsp;&nbsp;
 <span class="helptext">encode the PGN text to a URL friendly format (this should be normally enabled)</span>
+<p></p>
+
+<div style="height: 3em">&nbsp;</div>
+<script type="text/javascript">print_menu("templates", 3, "templates");</script>
+<div style="height: 1em">&nbsp;</div>
+
+<a class="configtext" id="thisConfigBookmark" title="pgn4web board generator custom template link">pgn4web board generator custom template link</a>
+&nbsp;&nbsp; add the link into the browser bookmarks, saving current board generator template settings for future use &nbsp;&nbsp;
+<p></p>
+
+<select class="largeDropdown" id="templatesList" name="largeDropdown">
+<option value="heading" selected="selected">load a pgn4web board generator template</option>
+<option value="reload">reload last loaded board generator template</option>
+</select>
+&nbsp;&nbsp; choose from a number of preset board generator settings templates &nbsp;&nbsp;
 <p></p>
 
 <div style="height: 3em">&nbsp;</div>
