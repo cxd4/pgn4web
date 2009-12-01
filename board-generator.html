@@ -42,10 +42,6 @@ a {
   margin-left: 22;
 }
 
-.configtext {
-  font-weight: bold;
-}
-
 .textbox {
   width: 100%;
 }
@@ -215,6 +211,7 @@ function set_defaults() {
   document.board.showButtons.checked = (showButtons_value == "t");
 
   if ((controlBackgroundColorHex_value = gup("controlBackgroundColorHex")) === "") { controlBackgroundColorHex_value = controlBackgroundColorHex_default; }
+  if (controlBackgroundColorHex_value == 'd') { controlBackgroundColorHex_value = 'default'; }
   document.board.controlBackgroundColorHex.value = controlBackgroundColorHex_value;
   validate_color_default(document.board.controlBackgroundColorHex, 'control buttons background color', 'default');
 
@@ -578,6 +575,13 @@ function generate_html_code() {
   thisBookmarkUrl = thisBookmarkUrl.replace(pgn4web_board_url,pgn4web_generator_url);
   thisBookmarkUrl = thisBookmarkUrl.replace(/&(pe|pt)=.*(&|$)/,"");
   document.getElementById('thisConfigBookmark').href = thisBookmarkUrl;
+  thisBookmarkChecksum = 0;
+  for (ii=0; ii<thisBookmarkUrl.length; ii++) {
+    thisBookmarkChecksum = (thisBookmarkChecksum + (thisBookmarkUrl.charCodeAt(ii) * (1 + (ii % 6)))) % 900;
+  }
+  thisBookmarkChecksum += 100;
+  document.getElementById('thisConfigBookmark').title = "pgn4web board generator custom template link #" + thisBookmarkChecksum;
+  document.getElementById('bookmarkChecksum').innerHTML = "#" + thisBookmarkChecksum;
 
   document.getElementById('preview').innerHTML = "<table border='0' bgcolor='#" + previewBackgroundColorHex_value + "' width='100%' cellpadding='25'><tr><td align='center' valign='middle'> " + html_code_string + "</td></tr></table>";
 
@@ -762,14 +766,58 @@ function add_option(selectObject, newText, newValue) {
   catch(e) { selectObject.add(newOpt); }  // IE only
 }
 
+// template patterns
+common_template = "?am=l&d=3000&sb=t&sh=t&sm=t&cd=i&fh=&fw=";
+
+// color template array (description, general settings, highlight square color, highlight border color);
+color_template = new Array();
+color_template[0] = new Array("blue ", "&lch=E8E8E8&dch=C2C9D1&bbch=C2C9D1&cbch=D3DAE3&ctch=585B5E&fhch=000000&fmch=000000&fcch=808080&hmch=C7FFFF&bch=E8E8E8", "&hch=D5E5F7", "&hch=7496AD");
+color_template[1] = new Array("brown", "&lch=F2D798&dch=C9AD6F&bbch=54110C&cbch=FFF4E4&ctch=C9AD6F&fhch=54110C&fmch=54110C&fcch=A34D42&hmch=FFFF00&bch=FFFFFF", "&hch=FFFFBB", "&hch=FFFF00");
+color_template[2] = new Array("gray ", "&lch=F4F4F4&dch=D4D4D4&bbch=000000&cbch=d&ctch=000000&fhch=000000&fmch=000000&fcch=808080&hmch=D4D4D4&bch=FFFFFF", "&hch=E4E4E4", "&hch=747474");
+color_template[3] = new Array("green", "&lch=EFF4EC&dch=C6CEC3&bbch=C6CEC3&cbch=E5EBE3&ctch=888888&fhch=444444&fmch=222222&fcch=808080&hmch=DAF4D7&bch=EFF4EC", "&hch=DAF4D7", "&hch=8CBD8C");
+color_template[4] = new Array("pink ", "&lch=EDE8D5&dch=CFCBB3&bbch=CFCBB3&cbch=E6E0CF&ctch=615F54&fhch=615F54&fmch=615F54&fcch=A19D8B&hmch=F8CCA0&bch=EDE8D5", "&hch=F8CCA0", "&hch=F8CCA0");
+
+// size template array
+size_template = new Array();
+size_template[0] = new Array("small ", "&ss=28&ps=d&pf=d&hm=s&tm=14&fhs=80pct&fms=80pct&fcs=80pct&fp=14");
+size_template[1] = new Array("medium", "&ss=40&ps=d&pf=d&hm=b&tm=20&fhs=100pct&fms=100pct&fcs=100pct&fp=20");
+size_template[2] = new Array("large ", "&ss=60&ps=d&pf=d&hm=b&tm=30&fhs=120pct&fms=120pct&fcs=120pct&fp=30");
+
+// layout template array
+layout_template = new Array();
+layout_template[0] = new Array("vertical  ", "&hl=f");
+layout_template[1] = new Array("horizontal", "&hl=t");
+
 function load_templates() {
+      
   theObject = document.getElementById('templatesList');
 
-  add_option(theObject, "PAOLO test template 25", "?ss=25");
+  for(cc=0; cc<color_template.length; cc++) {
+    for(ss=0; ss<size_template.length; ss++) {
+      for(ll=0; ll<layout_template.length; ll++) {
+         template_text = "";
+	 template_text += color_template[cc][0] + " ";
+	 template_text += size_template[ss][0] + " ";
+         template_text += layout_template[ll][0] + " ";
+	 template_text += "template";
+	 // replace spaces with &nbsp; (ascii code 160)
+	 template_text = template_text.replace(/ /g,String.fromCharCode(160));
+	 template_value = common_template;
+	 template_value += layout_template[ll][1];
+	 template_value += size_template[ss][1];
+	 template_value += color_template[cc][1];
+         if (template_value.match("&hm=b")) { template_value += color_template[cc][3]; }
+	 else { template_value += color_template[cc][2]; }
+	 if (color_template[cc][0].match("gray")) { 
+	   template_value = template_value.replace(/hm=(s|b)/,"hm=n");
+	 }
+	 add_option(theObject, template_text, template_value); 
+      }
+    }
+  }
 
-  add_option(theObject, "PAOLO test template 65", "?ss=65");
+  add_option(theObject, "random template", "random");
 
-  add_option(theObject, "random template", "random"); 
 }
 
 function template_selected() {
@@ -777,15 +825,12 @@ function template_selected() {
 
   if (document.getElementById('templatesList').value == "random") {
     selectedIndex = 2 + Math.floor((document.getElementById('templatesList').length - 3) * Math.random());
-    randomFlag = " (random)";
   } else {
     selectedIndex = document.getElementById('templatesList').selectedIndex;
-    randomFlag = "";
   }
 
   if (confirm("do you really want to load the selected board generator template?" + 
-              "\n\ntemplate" + randomFlag + ": " +
-              document.getElementById('templatesList').options[selectedIndex].text +
+              "\n\n" + document.getElementById('templatesList').options[selectedIndex].text +
 	      "\n\nAll your settings besides the PGN text will be lost!")) {
     newLocationHref = pgn4web_generator_url + document.getElementById('templatesList').options[selectedIndex].value;
 
@@ -797,7 +842,7 @@ function template_selected() {
     if (document.board.encodePgn.checked) { newLocationHref += "&pe=" + pgnTextEncoded; }
     else { newLocationHref += "&pt=" + pgnTextFixForUrl(pgnText_value); }
 
-    newLocationHref += "#preview";
+    newLocationHref += "#game_preview";
 
     location.href = newLocationHref;
   }
@@ -1826,19 +1871,19 @@ and install the tool on your own servers
 <script type="text/javascript">print_menu("templates", 3, "templates");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<select class="largeDropdown" id="templatesList" name="largeDropdown" onChange="template_selected();" style="font-family: monospace;">
-<option value="heading" selected="selected">load a built-in template</option>
-<option value="reload">reload last template</option>
+<select class="largeDropdown" id="templatesList" name="largeDropdown" onChange="template_selected();" style="font-family: monospace; white-space: pre;">
+<option value="heading" selected="selected">load a built-in template...</option>
+<option value="reload">refresh last loaded template</option>
 </select>
 &nbsp;&nbsp;
 <span class="helptext">choose a preset board generator settings template</span>
 <p></p>
 
-<a class="configtext" id="thisConfigBookmark" title="pgn4web board generator custom template link PAOLO">custom template link<span style="display: none;">
-PAOLO
-</span></a>
+<div class="configtext">
+<a id="thisConfigBookmark" title=""><b>pgn4web board generator custom template link<span id="bookmarkChecksum" style="display: none;"></span></b></a>
 &nbsp;&nbsp;
-<span class="helptext">add the link into the browser bookmarks, saving current settings for future use</span>
+<span class="helptext">add link into the browser bookmarks, saving current board generator settings for future use</span>
+</div>
 <p></p>
 
 <div style="height: 3em">&nbsp;</div>
@@ -1850,7 +1895,7 @@ PAOLO
 <option value="loop">loop</option>
 <option value="none">none</option>
 </select>
-&nbsp;&nbsp; autoplay game on page load &nbsp;&nbsp;
+&nbsp;&nbsp; autoplay game &nbsp;&nbsp;
 <span class="helptext"><b>game</b> autoplays the first game once, <b>loop</b> loops through games continiously</span>
 <p></p>
 
@@ -2021,7 +2066,7 @@ PAOLO
 <option value="hidden">hidden</option>
 </select>
 &nbsp;&nbsp; how to show move comments &nbsp;&nbsp;
-<span class="helptext"><b>inline</b> shows comments on same line as moves, <b>newline</b> shows comments on new lines</span>
+<span class="helptext"><b>inline</b>: on same line as moves, <b>newline</b>: on separate lines</span>
 <p></p>
 
 <input class="input" type="text" id="fontCommentsSize" name="input" value="" size="9" onChange="validate_number_percentage(this, 'comments font size', fontCommentsSize_default);">
@@ -2085,7 +2130,7 @@ base URL: &nbsp;&nbsp;
 
 <script type="text/javascript">
 
-inputWidth = document.getElementById('framePadding').offsetWidth;
+inputWidth = document.getElementById('squareSize').offsetWidth;
 theObject = document.getElementsByName('dropdown');
 for (ii = 0; ii < theObject.length; ii++) {
   theObject[ii].style.width = inputWidth;

@@ -1051,6 +1051,8 @@ else { showButtons = false; }
 if ((controlBackgroundColor = gup("controlBackgroundColorName")) === "") {
   if ((controlBackgroundColor = "#" + gup("controlBackgroundColorHex")) == "#") { controlBackgroundColor = "default"; }
 }
+if ((controlBackgroundColor == "d") || (controlBackgroundColor == "#d")) { controlBackgroundColor = "default"; }
+
 if ((controlTextColor = gup("controlTextColorName")) === "") {
   if ((controlTextColor = "#" + gup("controlTextColorHex")) == "#") { controlTextColor = "black"; } 
 }
