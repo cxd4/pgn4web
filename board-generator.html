@@ -315,7 +315,7 @@ function set_defaults() {
 }
 
 function reset_form() {
-  if (confirm("do you really want to reset the form to the default values?\nAll your options including the PGN text will be lost!")) { set_defaults(); }
+  if (confirm("do you really want to reset the board generator to the default values?\nAll your settings including the PGN text will be lost!")) { set_defaults(); }
 }
 
 function update_controls() {
@@ -765,18 +765,28 @@ function add_option(selectObject, newText, newValue) {
 function load_templates() {
   theObject = document.getElementById('templatesList');
 
-  add_option(theObject, "PAOLO test template 61", "?ss=61");
+  add_option(theObject, "PAOLO test template 25", "?ss=25");
 
-  add_option(theObject, "PAOLO test template 71", "?ss=71");
+  add_option(theObject, "PAOLO test template 65", "?ss=65");
 
+  add_option(theObject, "random template", "random"); 
 }
 
 function template_selected() {
   if (document.getElementById('templatesList').value == "heading") { return; }
-  selectedIndex = document.getElementById('templatesList').selectedIndex;
-  if (confirm("do you really want to load the selected board generator template?\n\ntemplate: " +
+
+  if (document.getElementById('templatesList').value == "random") {
+    selectedIndex = 2 + Math.floor((document.getElementById('templatesList').length - 3) * Math.random());
+    randomFlag = " (random)";
+  } else {
+    selectedIndex = document.getElementById('templatesList').selectedIndex;
+    randomFlag = "";
+  }
+
+  if (confirm("do you really want to load the selected board generator template?" + 
+              "\n\ntemplate" + randomFlag + ": " +
               document.getElementById('templatesList').options[selectedIndex].text +
-	      "\n\nAll your options besides the PGN text will be lost!")) {
+	      "\n\nAll your settings besides the PGN text will be lost!")) {
     newLocationHref = pgn4web_generator_url + document.getElementById('templatesList').options[selectedIndex].value;
 
     pgnText_value = document.getElementById('pgnText').value;
@@ -786,6 +796,8 @@ function template_selected() {
     }
     if (document.board.encodePgn.checked) { newLocationHref += "&pe=" + pgnTextEncoded; }
     else { newLocationHref += "&pt=" + pgnTextFixForUrl(pgnText_value); }
+
+    newLocationHref += "#preview";
 
     location.href = newLocationHref;
   }
@@ -1815,8 +1827,8 @@ and install the tool on your own servers
 <div style="height: 1em">&nbsp;</div>
 
 <select class="largeDropdown" id="templatesList" name="largeDropdown" onChange="template_selected();" style="font-family: monospace;">
-<option value="heading" selected="selected">load a pgn4web board generator template</option>
-<option value="reload">reload last loaded board generator template</option>
+<option value="heading" selected="selected">load a built-in template</option>
+<option value="reload">reload last template</option>
 </select>
 &nbsp;&nbsp;
 <span class="helptext">choose a preset board generator settings template</span>
