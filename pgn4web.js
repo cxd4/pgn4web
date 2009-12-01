@@ -3247,7 +3247,8 @@ function PrintHTML(){
 
   if (theObject !== null) {
     if (numberOfGames < 2) {
-      theObject.innerHTML = ''; 
+      // theObject.innerHTML = ''; // replaced with code below to cope with IE bug
+      while (theObject.firstChild) { theObject.removeChild(theObject.firstChild); }
       textSelectOptions = '';
     } else {
       if(textSelectOptions === '') {
@@ -3265,7 +3266,8 @@ function PrintHTML(){
           gameSelectorHeadDisplay = blanks.substring(0, gameSelectorNumLenght) + '# ' + gameSelectorHead; 
         } else { gameSelectorHeadDisplay = gameSelectorHead; }
         // replace spaces with &nbsp; (ascii code 160)
-        text += gameSelectorHeadDisplay.replace(/ /g,String.fromCharCode(160)); 
+        // text += gameSelectorHeadDisplay.replace(/ /g,String.fromCharCode(160)); 
+        text += gameSelectorHeadDisplay.replace(/ /g, '&nbsp;'); 
 
         for (ii=0; ii<numberOfGames; ii++){
           textSelectOptions += '<OPTION value=' + ii + '>';
@@ -3319,7 +3321,8 @@ function PrintHTML(){
             textSO += ' ';
           }
           // replace spaces with &nbsp; (ascii code 160)
-          textSelectOptions += textSO.replace(/ /g,String.fromCharCode(160));
+          // textSelectOptions += textSO.replace(/ /g,String.fromCharCode(160));
+          textSelectOptions += textSO.replace(/ /g, '&nbsp;');
         }
       text += textSelectOptions + '</SELECT></FORM>';
       theObject.innerHTML = text; 

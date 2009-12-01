@@ -114,7 +114,7 @@ function set_defaults() {
   load_templates();
   document.getElementById('templatesList').options[1].value = location.search.replace(/&(pe|pt)=.*(&|$)/,"");
 
-  document.getElementById('html_code').innerHTML = '';
+  document.getElementById('html_code').value = '';
   document.getElementById('html_code_status').innerHTML = '&nbsp;';
   
   if ((pgnTextEncoded = gup("pgnEncoded")) !== "") {
