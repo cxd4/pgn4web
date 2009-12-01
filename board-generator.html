@@ -172,6 +172,7 @@ function set_defaults() {
   // value validation done later in validate_ss_ps_hm();
 
   if ((pieceSize_value = gup("pieceSize")) === "") { pieceSize_value = pieceSize_default; }
+  if (pieceSize_value == "d") { pieceSize_value = "default"; }
   if (pieceSize_value == "default") {
     document.getElementById('pieceSize').value = pieceSize_value;
   } else {
