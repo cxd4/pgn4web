@@ -21,7 +21,7 @@ body {
 
 .boardTable {
   border-style: double; 
-  border-color: black;
+  border-color: #C6CEC3;
   border-width: 3px;
 }
 
@@ -34,8 +34,8 @@ body {
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 36;
-  height: 36;
+  width: 40;
+  height: 40;
 }
 
 .whiteSquare,
@@ -57,12 +57,24 @@ body {
 
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
+  padding: 2px;
+  border-style: double; 
+  border-width: 3px;
+  border-color: #C6CEC3;
+  background-color: #EFF4EC;
+  color: gray;
 }
 
 .buttonControlPlay,
 .buttonControlStop,
 .buttonControl {
 /* a "width" attribute here must use the !important flag to override default settings */
+  padding: 2px;
+  border-style: double;
+  border-width: 3px;
+  border-color: #C6CEC3;
+  background-color: #EFF4EC;
+  color: gray;
 }
 
 .buttonControlSpace {
