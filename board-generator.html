@@ -833,7 +833,8 @@ function template_selected() {
   if (confirm("do you really want to load the selected board generator template?" + 
               "\n\n" + document.getElementById('templatesList').options[selectedIndex].text +
 	      "\n\nAll your settings besides the PGN text will be lost!")) {
-    newLocationHref = pgn4web_generator_url + document.getElementById('templatesList').options[selectedIndex].value;
+    newLocationHref = location.pathname;
+    newLocationHref += document.getElementById('templatesList').options[selectedIndex].value;
 
     pgnText_value = document.getElementById('pgnText').value;
     if ((document.board.encodePgn.checked) && (pgnText_value != previousPgnTextToEncode)) {
