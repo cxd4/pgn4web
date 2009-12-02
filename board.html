@@ -916,7 +916,7 @@ var pieceSizeOptions = new Array(20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
 function defaultPieceSize(squareSize) {
   targetPieceSize = Math.floor(0.8 * squareSize);
   for (ii=(pieceSizeOptions.length-1); ii>=0; ii--) {
-	  if (pieceSizeOptions[ii] <= targetPieceSize) { return pieceSizeOptions[ii]; break; }
+	  if (pieceSizeOptions[ii] <= targetPieceSize) { return pieceSizeOptions[ii]; }
   }
   return pieceSizeOptions[0];
 }
