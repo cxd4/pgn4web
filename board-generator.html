@@ -817,7 +817,7 @@ function load_templates() {
     }
   }
 
-  add_option(theObject, "random template", "random");
+  add_option(theObject, "- apply random template", "random");
 
 }
 
@@ -833,20 +833,24 @@ function template_selected() {
   if (confirm("do you really want to load the selected board generator template?" + 
               "\n\n" + document.getElementById('templatesList').options[selectedIndex].text +
 	      "\n\nAll your settings besides the PGN text will be lost!")) {
-    newLocationHref = location.pathname;
-    newLocationHref += document.getElementById('templatesList').options[selectedIndex].value;
+	  
+    newLocationSearch = document.getElementById('templatesList').options[selectedIndex].value;
 
     pgnText_value = document.getElementById('pgnText').value;
     if ((document.board.encodePgn.checked) && (pgnText_value != previousPgnTextToEncode)) {
        previousPgnTextToEncode = pgnText_value;
        pgnTextEncoded = EncodePGN(pgnText_value);
     }
-    if (document.board.encodePgn.checked) { newLocationHref += "&pe=" + pgnTextEncoded; }
-    else { newLocationHref += "&pt=" + pgnTextFixForUrl(pgnText_value); }
+    if (document.board.encodePgn.checked) { newLocationSearch += "&pe=" + pgnTextEncoded; }
+    else { newLocationSearch += "&pt=" + pgnTextFixForUrl(pgnText_value); }
+    newLocationSearch = newLocationSearch.replace(/^&/,"\?");
 
-    newLocationHref += "#game_preview";
-
-    location.href = newLocationHref;
+    if (newLocationSearch != location.search) {
+      location.href = location.pathname + newLocationSearch + "#game_preview";
+    } else {
+      location.reload(true);
+      location.hash = "#game_preview";
+    }
   }
   document.getElementById('templatesList').value = "heading";
 }
@@ -1874,11 +1878,11 @@ and install the tool on your own servers
 <div style="height: 1em">&nbsp;</div>
 
 <select class="largeDropdown" id="templatesList" name="largeDropdown" onChange="template_selected();" style="font-family: monospace; white-space: pre;">
-<option value="heading" selected="selected">load a built-in template...</option>
-<option value="reload">refresh last loaded template</option>
+<option value="heading" selected="selected">apply a built-in template...</option>
+<option value="reapply">- reapply last loaded template</option>
 </select>
 &nbsp;&nbsp;
-<span class="helptext">choose a preset board generator settings template</span>
+<span class="helptext">select from preset board generator settings templates</span>
 <p></p>
 
 <div class="configtext">
