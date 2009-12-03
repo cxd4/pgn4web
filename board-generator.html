@@ -773,16 +773,16 @@ common_template = "?am=l&d=3000&sb=t&sh=t&sm=t&cd=i&fh=&fw=";
 // color template array (description, general settings, highlight square color, highlight border color);
 color_template = new Array();
 color_template[0] = new Array("blue ", "&lch=E8E8E8&dch=C2C9D1&bbch=C2C9D1&cbch=D3DAE3&ctch=585B5E&fhch=000000&fmch=000000&fcch=808080&hmch=C7FFFF&bch=E8E8E8", "&hch=D5E5F7", "&hch=7496AD");
-color_template[1] = new Array("brown", "&lch=F2D798&dch=C9AD6F&bbch=C9AD6F&cbch=FFF4E4&ctch=C9AD6F&fhch=54110C&fmch=54110C&fcch=A34D42&hmch=FFFF00&bch=FFFFFF", "&hch=FFFFBB", "&hch=FFFF00");
+color_template[1] = new Array("brown", "&lch=F2D798&dch=C9AD6F&bbch=C9AD6F&cbch=FFF4E4&ctch=C9AD6F&fhch=54110C&fmch=54110C&fcch=A34D42&hmch=FFFF00&bch=FFFFFF", "&hch=C7BE93", "&hch=FFFF00");
 color_template[2] = new Array("gray ", "&lch=F4F4F4&dch=D4D4D4&bbch=A0A0A0&cbch=d&ctch=000000&fhch=000000&fmch=000000&fcch=808080&hmch=D4D4D4&bch=FFFFFF", "&hch=E4E4E4", "&hch=747474");
 color_template[3] = new Array("green", "&lch=EFF4EC&dch=C6CEC3&bbch=C6CEC3&cbch=E5EBE3&ctch=888888&fhch=444444&fmch=222222&fcch=808080&hmch=DAF4D7&bch=EFF4EC", "&hch=DAF4D7", "&hch=8CBD8C");
-color_template[4] = new Array("pink ", "&lch=EDE8D5&dch=CFCBB3&bbch=CFCBB3&cbch=E6E0CF&ctch=615F54&fhch=615F54&fmch=615F54&fcch=A19D8B&hmch=F8CCA0&bch=EDE8D5", "&hch=F8CCA0", "&hch=F8CCA0");
+color_template[4] = new Array("pink ", "&lch=EDE8D5&dch=CFCBB3&bbch=CFCBB3&cbch=E6E0CF&ctch=615F54&fhch=615F54&fmch=615F54&fcch=A19D8B&hmch=F8CCA0&bch=EDE8D5", "&hch=E6D0BA", "&hch=F8CCA0");
 
 // size template array
 size_template = new Array();
-size_template[0] = new Array("small ", "&ss=28&ps=d&pf=d&hm=s&tm=14&fhs=80pct&fms=80pct&fcs=80pct&fp=14");
-size_template[1] = new Array("medium", "&ss=40&ps=d&pf=d&hm=b&tm=20&fhs=100pct&fms=100pct&fcs=100pct&fp=20");
-size_template[2] = new Array("large ", "&ss=60&ps=d&pf=d&hm=b&tm=30&fhs=120pct&fms=120pct&fcs=120pct&fp=30");
+size_template[0] = new Array("small ", "&ss=26&ps=d&pf=d&hm=s&tm=13&fhs=80pct&fms=80pct&fcs=80pct&fp=13");
+size_template[1] = new Array("medium", "&ss=36&ps=d&pf=d&hm=s&tm=18&fhs=100pct&fms=100pct&fcs=100pct&fp=18");
+size_template[2] = new Array("large ", "&ss=50&ps=d&pf=d&hm=b&tm=25&fhs=120pct&fms=120pct&fcs=120pct&fp=25");
 
 // layout template array
 layout_template = new Array();
@@ -816,16 +816,13 @@ function load_templates() {
       }
     }
   }
-
-  add_option(theObject, "- apply random template", "random");
-
 }
 
 function template_selected() {
   if (document.getElementById('templatesList').value == "heading") { return; }
 
   if (document.getElementById('templatesList').value == "random") {
-    selectedIndex = 2 + Math.floor((document.getElementById('templatesList').length - 3) * Math.random());
+    selectedIndex = 3 + Math.floor((document.getElementById('templatesList').length - 3) * Math.random());
   } else {
     selectedIndex = document.getElementById('templatesList').selectedIndex;
   }
@@ -1880,6 +1877,7 @@ and install the tool on your own servers
 <select class="largeDropdown" id="templatesList" name="largeDropdown" onChange="template_selected();" style="font-family: monospace; white-space: pre;">
 <option value="heading" selected="selected">apply a built-in template...</option>
 <option value="reapply">- reapply last loaded template</option>
+<option value="random">- apply random template</option>
 </select>
 &nbsp;&nbsp;
 <span class="helptext">select from preset board generator settings templates</span>
