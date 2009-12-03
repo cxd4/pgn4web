@@ -864,7 +864,7 @@ ClearImg  = new Image();
 
 DocumentImages = new Array();
 
-var pgnHeaderTagRegExp       = /\[\s*(\w+)\s*"([^"]*)"\s*\]/;
+var pgnHeaderTagRegExp       = /\[\s*(\w+)\s*"([^"]*)"\s*\]/; 
 var pgnHeaderTagRegExpGlobal = /\[\s*(\w+)\s*"([^"]*)"\s*\]/g;
 var dummyPgnHeader = '[x""]';
 var emptyPgnHeader = '[White ""]\n[Black ""]\n[Result ""]\n[Date ""]\n[Event ""]\n[Site ""]\n[Round ""]\n';
@@ -1475,11 +1475,9 @@ function pgnGameFromPgnText(pgnText){
   pgnGame.length = 0;
   for(ii in lines){
 
-//    // allows for dummy header '[]' at the beginning of a line
-//    lines[ii] = lines[ii].replace(/^\s*\[\]/, dummyPgnHeader);
-
     // according to the PGN standard lines starting with % should be ignored
     if(lines[ii].charAt(0) == '%') { continue; }
+
     if(pgnHeaderTagRegExp.test(lines[ii]) === true){ 
       if(! inGameHeader){
         gameIndex++;
@@ -1493,7 +1491,9 @@ function pgnGameFromPgnText(pgnText){
         inGameBody=true;
       }
     }
-    if (gameIndex >= 0) { pgnGame[gameIndex] += lines[ii] + ' \n'; }
+    lines[ii] = lines[ii].replace(/^\s*/,"");
+    lines[ii] = lines[ii].replace(/\s*$/,"");
+    if (gameIndex >= 0) { pgnGame[gameIndex] += lines[ii] + ' \n'; } 
   }
 
   numberOfGames = pgnGame.length;
@@ -1819,10 +1819,9 @@ function Init(){
       default:
         if (isNaN(initialGame)) { currentGame = 0; }
         else {
-          initialGame -= 1;
-          if (initialGame < -1) { currentGame = 0; }
-          else if (initialGame == -1) { currentGame = Math.floor(Math.random()*numberOfGames); }
-          else if (initialGame < numberOfGames) { currentGame = initialGame; } 
+          if (initialGame < 0) { currentGame = 0; }
+          else if (initialGame === 0) { currentGame = Math.floor(Math.random()*numberOfGames); }
+          else if (initialGame <= numberOfGames) { currentGame = (initialGame - 1); } 
           else { currentGame = numberOfGames - 1; }
         }
         break;
@@ -2304,6 +2303,7 @@ function LoadGameHeaders(){
    * Read the headers of all games and store the information in te global
    * arrays.
    */
+  pgnHeaderTagRegExpGlobal.exec(""); // to cope with IE bug when reloading a PGN as in inputform.html
   for (ii = 0; ii < numberOfGames; ++ii){
     var ss      = pgnGame[ii];
     var parse;
