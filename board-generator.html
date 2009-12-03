@@ -313,7 +313,7 @@ function set_defaults() {
 }
 
 function reset_form() {
-  if (confirm("do you really want to reset the board generator to the default values?\nAll your settings including the PGN text will be lost!")) { set_defaults(); }
+  if (confirm("do you really want to reset the board generator to the default values?\nAll your settings including the PGN text might be lost!")) { set_defaults(); }
 }
 
 function update_controls() {
@@ -832,7 +832,7 @@ function template_selected() {
 
   if (confirm("do you really want to load the selected board generator template?" + 
               "\n\n" + document.getElementById('templatesList').options[selectedIndex].text +
-	      "\n\nAll your settings besides the PGN text will be lost!")) {
+	      "\n\nAll your settings besides the PGN text might be lost!")) {
 	  
     newLocationSearch = document.getElementById('templatesList').options[selectedIndex].value;
 
