@@ -1199,13 +1199,13 @@ function SetAutoplayNextGame(onOff){
   autoplayNextGame = onOff;
 }
 
-function SetInitialHalfmove(number, always){
-  initialHalfmove = number;
+function SetInitialHalfmove(number_or_string, always){
+  initialHalfmove = number_or_string;
   if (always === true) { alwaysInitialHalfmove = true; }
 }
 
-function SetInitialGame(number){
-  initialGame = number;
+function SetInitialGame(number_or_string){
+  initialGame = number_or_string;
 }
 
 // the clock value is detected with two options: first the DGT sequence [%clk 01:02] 
@@ -1805,7 +1805,6 @@ function Init(){
   if (firstStart){
 
     LoadGameHeaders();
-
     switch (initialGame) {
       case "first":
         currentGame = 0;
@@ -1817,7 +1816,7 @@ function Init(){
         currentGame = Math.floor(Math.random()*numberOfGames);
         break;
       default:
-        if (isNaN(initialGame)) { currentGame = 0; }
+        if (isNaN(initialGame = parseInt(initialGame,10))) { currentGame = 0; }
         else {
           if (initialGame < 0) { currentGame = 0; }
           else if (initialGame === 0) { currentGame = Math.floor(Math.random()*numberOfGames); }

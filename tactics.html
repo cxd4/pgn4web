@@ -233,7 +233,7 @@ function gup( name ){
   else { return results[1]; }
 }
 
-SetInitialGame(gup('n'));	
+if ((assignedInitialGame = gup('n')) !== '') { SetInitialGame(assignedInitialGame) };	
 
 </script>		  
 
