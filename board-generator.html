@@ -9,7 +9,7 @@
 
 <head>
 
-<title>pgn4web chessboard generator</title>
+<title>pgn4web board generator</title>
 
 <style type="text/css">
 
@@ -1740,9 +1740,9 @@ function bug_report() {
   if (win !== null) {
     win.document.open("text/html", "replace");
     win.document.write("<html>");
-    win.document.write("<head><title>pgn4web chessboard generator bug report</title><link rel='shortcut icon' href='pawn.ico'></link><style type='text/css'> html, body { font-family: sans-serif;  color: black; background: white; padding: 10px; } a {text-decoration: none; color: black; } </style></head>");
+    win.document.write("<head><title>pgn4web board generator bug report</title><link rel='shortcut icon' href='pawn.ico'></link><style type='text/css'> html, body { font-family: sans-serif;  color: black; background: white; padding: 10px; } a {text-decoration: none; color: black; } </style></head>");
     win.document.write("<body>");
-    win.document.write("<table width=100% cellspacing=0 cellpadding=0><tr><td align=left valign=middle><h1>pgn4web chessboard generator bug report</h1></td><td align=right valign=middle><img src=pawns.png border=0></td></tr></table><p></p>please make sure that:<ul type='square'><li>you are using the same web browser where you noticed the bug in the pgn4web board generator</li><li>you opened this bug report window from the pgn4web board generator page configured with all the parameter that result in the bug condition</li></ul>Then please email ALL the the debug information below and possibly a screenshot to <i><a href=mailto:" + pgn4web_project_email + ">" + pgn4web_project_email + "</a></i><p></p>");
+    win.document.write("<table width=100% cellspacing=0 cellpadding=0><tr><td align=left valign=middle><h1>pgn4web board generator bug report</h1></td><td align=right valign=middle><img src=pawns.png border=0></td></tr></table><p></p>please make sure that:<ul type='square'><li>you are using the same web browser where you noticed the bug in the pgn4web board generator</li><li>you opened this bug report window from the pgn4web board generator page configured with all the parameter that result in the bug condition</li></ul>Then please email ALL the the debug information below and possibly a screenshot to <i><a href=mailto:" + pgn4web_project_email + ">" + pgn4web_project_email + "</a></i><p></p>");
     win.document.write("<hr>");
     win.document.write("<pre><code>" + bug_info.replace(/</g,"&lt;").replace(/>/g,"&gt;") + "</code></pre>");
     win.document.write("<hr>");
@@ -1786,7 +1786,7 @@ window.onload = set_defaults;
 
 <table width=100% cellspacing=0 cellpadding=0><tr>
 <td align=left valign=middle>
-<h1 style="color: red;"><a style="color: red;" href=.>pgn4web</a> chessboard generator</h1>
+<h1 style="color: red;"><a style="color: red;" href=.>pgn4web</a> board generator</h1>
 </td><td align=right valign=middle>
 <a href=.><img src=pawns.png border=0></a>
 </td></tr></table>
