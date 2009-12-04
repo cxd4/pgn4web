@@ -104,7 +104,7 @@ function displayHelp(section){
   }
   sectionFlag = "#" + section;
   if (helpWin && !helpWin.closed) { helpWin.close(); };
-  helpWin = window.open(detectHelpLocation() + sectionFlag, "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
+  helpWin = window.open(detectHelpLocation() + "?" + (Math.floor(900 * Math.random()) + 100) + sectionFlag, "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if ((helpWin !== null) && (window.focus)) { helpWin.window.focus(); }
 }
 
@@ -469,7 +469,7 @@ configBoardShrortcut("C8", "", function(){});
 // D8
 configBoardShrortcut("D8", "show PGN source data", function(){ displayPgnData(); });
 // E8
-configBoardShrortcut("E8", "debug info v" + pgn4web_version, function(){ displayDebugInfo(); });
+configBoardShrortcut("E8", "debug info (v" + pgn4web_version + ")", function(){ displayDebugInfo(); });
 // F8
 configBoardShrortcut("F8", "shortcut keys help", function(){ displayHelp("keys"); });
 // G8
