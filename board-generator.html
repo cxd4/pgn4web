@@ -578,9 +578,9 @@ function generate_html_code() {
   document.getElementById('thisConfigBookmark').href = thisBookmarkUrl;
   thisBookmarkChecksum = 0;
   for (ii=0; ii<thisBookmarkUrl.length; ii++) {
-    thisBookmarkChecksum = (thisBookmarkChecksum + (thisBookmarkUrl.charCodeAt(ii) * (1 + (ii % 6)))) % 900;
+    thisBookmarkChecksum = (thisBookmarkChecksum + (thisBookmarkUrl.charCodeAt(ii) * (1 + (ii % 60)))) % 9000;
   }
-  thisBookmarkChecksum += 100;
+  thisBookmarkChecksum += 1000;
   document.getElementById('thisConfigBookmark').title = "pgn4web board generator custom template link #" + thisBookmarkChecksum;
   document.getElementById('bookmarkChecksum').innerHTML = "#" + thisBookmarkChecksum;
 
