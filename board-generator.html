@@ -605,6 +605,17 @@ function generate_html_code() {
   location.href='#generate'; return;
 }
 
+function createShortUrl() {
+  thisShortUrlChecksum = 0;
+  for (ii=0; ii<iframeUrl.length; ii++) {
+    thisShortUrlChecksum = (thisShortUrlChecksum + (iframeUrl.charCodeAt(ii) * (1 + ((1000 * ii) % 6000000)))) % 900000000;
+  }
+  thisShortUrlChecksum += 100000000;
+  document.getElementById('shorturl_url').value = iframeUrl;
+  document.getElementById('shorturl_alias').value = "pgn4web-" + thisShortUrlChecksum;
+  document.forms['shorturl'].submit();
+}
+
 function validate_color(object, name, def) {
   if (object.value.match(/^[0-9A-Fa-f]{6}$/)) {
     object.value = object.value.toUpperCase();
@@ -1810,7 +1821,7 @@ window.onload = set_defaults;
   <li><a href=#page_options>check carefully the frame height/width values</a>: different browsers might render some items slightly bigger or smaller, so <a href=#page_options>leave some empty space at the bottom of the frame by increasing the height</a></li>
   </ul>
   </li>
-<li>once happy with <a href=#game_preview>the preview chessboard</a>, just <a href=#generate><b>cut and paste the HTML code</b> from the yellow box</a> into your web page or your blog; when entering the code in your website or blog, please make sure you are using the HTML editing option, otherwise the enhanced editor might alter the code you enter</li>
+<li>once happy with <a href=#game_preview>the preview chessboard</a>, just <a href=#generate><b>cut and paste the HTML code</b> from the yellow box</a> into your web page or your blog; when entering the code in your website or blog, please make sure you are using the HTML editing option, otherwise the enhanced editor might alter the code you enter; you can also generate a short url for sharing the board via email or instant messaging</li>
 <li>if you plan to reuse similar settings for other chessboards, you can <b><a href=#templates>bookmark a custom template</a></b> into your web browser bookmarks</li>
 <li>email to <i>
 <script type="text/javascript">document.write('<a href=mailto:' + pgn4web_project_email + '>' + pgn4web_project_email + '</a>');</script>
@@ -1820,6 +1831,11 @@ window.onload = set_defaults;
 <script type="text/javascript">document.write('<a href=' + pgn4web_project_url + '>the pgn4web site</a>');</script>
 and install the tool on your own servers
 </ul>
+
+<form id="shorturl" action="http://tinyurl.com/create.php" method="post" target="_blank" style="display:inline;"> 
+<input id="shorturl_url" type="hidden" name="url">
+<input id="shorturl_alias" type="hidden" name="alias"> 
+</form> 
 
 <form id="board" name="board" style="display:inline;" action="javascript:generate_html_code()">
 
@@ -1831,6 +1847,7 @@ and install the tool on your own servers
 <div style="font-style: italic; font-weight: bold; text-align: center; margin-bottom:6;">automatically generated HTML code for your web page or blog</div>
 <textarea readonly id="html_code" name="html_code" rows=15 class="textbox" style="background-color: #FFFFCC; scrollbar-base-color: #FFFFCC;"></textarea>
 <div id="html_code_status">&nbsp;</div>
+<div><a class="helptext" href="javascript:createShortUrl();"><b>click here to create a short url for sharing the chessboard via email or instant messaging</b></a></div>
 <p></p>
 <br>
 
@@ -1841,8 +1858,10 @@ and install the tool on your own servers
 </td><td align=right valign=middle width="25%">
 <input type="button" id="reset_defaults_button" name="reset_defaults_button" value="reset form to default values" onClick="reset_form()" style="width: 100%;"/>
 </td></tr></table>
+<p></p>
+<br>
 
-<div style="height: 3em">&nbsp;</div>
+<div style="height: 1em">&nbsp;</div>
 <script type="text/javascript">print_menu("game_preview", 2, "preview");</script>
 <div style="height: 1em">&nbsp;</div>
 
