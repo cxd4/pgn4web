@@ -36,43 +36,6 @@ a {
 
 <script type="text/javascript">
 
-function gup( name ){
-
-  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-  var regexS = "[\\?&]"+name+"=([^&#]*)";
-  // commented below to match first occurrence (to avoid users overruling setting)
-  // regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
-  var regex = new RegExp( regexS );
-  var results = regex.exec( window.location.href );
-  if( results !== null ) { switch (results[1]) {
-    case "t": case "T": return "true";  break;
-    case "f": case "F": return "false"; break;
-    default: return results[1];
-  } }
-
-  // allows for short version of the URL parameters, for instance sC matches squareColor
-  compact_name = name.charAt(0);
-    for(i=1; i<name.length; i++){
-      if (name.charAt(i).match(/[A-Z]/)) { compact_name = compact_name + name.charAt(i).toLowerCase(); }
-    }
-  name = compact_name;
-
-  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-  regexS = "[\\?&]"+name+"=([^&#]*)";
-  // commented below to match first occurrence (to avoid users overruling setting)
-  // regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
-  regex = new RegExp( regexS );
-
-  results = regex.exec( window.location.href );
-  if( results !== null ) { switch (results[1]) {
-    case "t": case "T": return "true";  break;
-    case "f": case "F": return "false"; break;
-    default: return results[1];
-  } }
-
-  return "";
-}
-
 function print_menu( item, level, title ) {
   menu  = '<table width=100% cellspacing=0 cellpadding=0><tr><td valign=top>';
   menu += '<h' + level + '>' + title + '</a></h' + level + '>';
@@ -90,24 +53,10 @@ function print_help_row (one, two) {
   document.write("<tr><td style='text-align: left; vertical-align: top; padding-left:40'>" + one + "</td><td style='text-align: left; vertical-align: top; padding-left:10'>" + two + "</td></tr>");
 }
 
-if ((pgn4web_version = gup("version")) === "") {
+if (opener && opener.pgn4web_version) {
+  displayVersion = 'v' + opener.pgn4web_version;
+} else {
   displayVersion = '';
-} else {
-  displayVersion = 'v' + pgn4web_version;
-}
-
-if ((keysEnabled = gup("keysEnabled")) === "") {
-  keysString = '';
-} else {
-  if (keysEnabled == "true") {
-    ke_curr = "enabled";
-    ke_next = "disable";
-  } else {
-    ke_curr = "disabled";
-    ke_next = "enable";
-  }
-  keysString = '<p></p><i>Shorcut keys currently ' + ke_curr + ', ' + ke_next + 
-	       ' in the chessboard with shift+escape or clicking square H7.<b>\n';
 }
 
 </script>
@@ -135,59 +84,37 @@ Remaining pgn4web code is copyright (C) 2009 <a href=mailto:pgn4web@casaschi.net
 
 <script type="text/javascript">print_menu("squares", 2, "shortcut&nbsp;squares");</script>
 
-<table style="padding:0;" border=0>
 <script type="text/javascript">
-print_help_row("A1 / H1", "game start / end");
-print_help_row("B1 / G1", "find previous / next comment");
-print_help_row("C1 / F1", "move 6 half-moves back / forward");
-print_help_row("D1 / E1", "move back / forward");
-print_help_row("&nbsp;", "");
-print_help_row("A2 / B2", "stop / toggle autoplay");
-print_help_row("C2 / D2...", "autoplay 1 sec / 2 sec...");
-print_help_row("&nbsp;", "");
-print_help_row("A3 / H3", "load first / last game");
-print_help_row("B3 / G3", "jump 50 games back / forward");
-print_help_row("C3 / F3", "load previous / next game");
-print_help_row("D3 / E3", "load random game / random game at random ply");
-print_help_row("A4 / H4", "jump to previous / next event");
-print_help_row("B4 / G4", "jump to previous / next round of same event");
-print_help_row("C4 / F4", "load previous / next game of same black player");
-print_help_row("D4 / E4", "load previous / next game of same white player");
-print_help_row("&nbsp;", "");
-print_help_row("A6 / B6", "pause / restart live broadcast automatic refresh");
-print_help_row("C6 / F6", "jump to previous / next finished game");
-print_help_row("D6 / E6", "jump to previous / next uninished game");
-print_help_row("H6", "force games refresh during live broadcast");
-print_help_row("&nbsp;", "");
-print_help_row("A7", "toggle comments");
-print_help_row("B7", "toggle comments on separate lines");
-print_help_row("C7", "toggle highlighting last move");
-print_help_row("D7 / E7", "flip board / white on bottom");
-print_help_row("F7", "toggle autoplay next game");
-print_help_row("&nbsp;", "");
-print_help_row("H7", "toggle enabling shortcut keys");
-print_help_row("&nbsp;", "");
-print_help_row("A8", "go to the pgn4web website");
-print_help_row("D8", "show source PGN data");
-print_help_row("E8", "debug info");
-print_help_row("F8 / G8 / H8", "shortcut keys help / shortcut square help / pgn4web help");
+  document.write("<table style='padding:0;' border=0>");	
+  if (opener && opener.boardTitle) {
+  rowNumbers = "12345678";
+  colLetters = "ABCDEFGH";
+  for (r=0; r<8; r++) {
+    rowDisplayed = false;
+    for (c=0; c<8; c++) {
+      if (opener.boardTitle[c][r] !== "") {
+        print_help_row(colLetters.charAt(c) + rowNumbers.charAt(7-r), opener.boardTitle[c][r]);
+        rowDisplayed = true;
+      }
+    }
+    if (rowDisplayed) { print_help_row("&nbsp;", ""); }
+  }
+  document.write("</table>");	
+  document.write("<i>Squares always labeled as if white is at the bottom.</i>");
+} else {
+  print_help_row("could not find shortcut squares info from the parent window", "");
+  print_help_row("help.html should not be opened directly but from a pgn4web chessboard instead", "");
+  document.write("</table>");	
+}
 </script>
-</table>
 
-<p></p>
-
-<i>
-Squares always labeled as if white is at the bottom.
-<br>
-The list above contains default values, those might have been altered by your web page
-</i>
 <p></p>
 <br>
 
 <script type="text/javascript">print_menu("keys", 2, "shortcut&nbsp;keys");</script>
 
-<table style="padding:0;" border=0>
 <script type="text/javascript">
+document.write("<table style='padding:0;' border=0>");	
 print_help_row("h , l", "game start, end (also arrow up, down)");
 print_help_row("u, i", "find previous, next comment");
 print_help_row("j , k", "move backward, forward (also arrow left, right)");
@@ -210,10 +137,21 @@ print_help_row("f, d", "flip board, white on bottom");
 print_help_row("&nbsp;", "");
 print_help_row("z", "go to pgn4web website");
 print_help_row("esc", "pgn4web help");
-</script>
-</table>
+print_help_row("&nbsp;", "");
+document.write("</table>");
 
-<script type="text/javascript">document.write(keysString);</script>
+if (opener && opener.pgn4web_version) {
+  if (opener.shortcutKeysEnabled == "true") {
+    ke_curr = "enabled";
+    ke_next = "disable";
+  } else {
+    ke_curr = "disabled";
+    ke_next = "enable";
+  }
+  document.write('<i>Shorcut keys currently ' + ke_curr + ', ' + ke_next + 
+	         ' in the chessboard with shift+escape or clicking square H7.<b>\n');
+}
+</script>
 
 <p></p>
 <br>

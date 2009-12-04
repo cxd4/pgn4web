@@ -103,11 +103,8 @@ function displayHelp(section){
     section = "top"; 
   }
   sectionFlag = "#" + section;
-  versionParameter = "version=" + pgn4web_version;
-  if (shortcutKeysEnabled) { keysParameter = "keysEnabled=true"; }
-  else { keysParameter = "keysEnabled=false"; }
   if (helpWin && !helpWin.closed) { helpWin.close(); };
-  helpWin = window.open(detectHelpLocation() + "?" + versionParameter + "&" + keysParameter + sectionFlag, "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
+  helpWin = window.open(detectHelpLocation() + sectionFlag, "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if ((helpWin !== null) && (window.focus)) { helpWin.window.focus(); }
 }
 
