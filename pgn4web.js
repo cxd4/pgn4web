@@ -97,6 +97,7 @@ if (pgn4web_project_email == undefined) { pgn4web_project_email = 'pgn4web@casas
 
 var about = '\tpgn4web v' + pgn4web_version + '\n\t' + pgn4web_project_url + '\n';
 
+var helpWin=null;
 function displayHelp(section){
   if ((!section) && (section != "credits") && (section != "squares") && (section != "keys") && (section != "top") ) { 
     section = "top"; 
@@ -105,6 +106,7 @@ function displayHelp(section){
   versionParameter = "version=" + pgn4web_version;
   if (shortcutKeysEnabled) { keysParameter = "keysEnabled=true"; }
   else { keysParameter = "keysEnabled=false"; }
+  if (helpWin && !helpWin.closed) { helpWin.close(); };
   helpWin = window.open(detectHelpLocation() + "?" + versionParameter + "&" + keysParameter + sectionFlag, "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if ((helpWin !== null) && (window.focus)) { helpWin.window.focus(); }
 }
@@ -440,202 +442,155 @@ function handlekey(e) {
   return true;
 }
 
-boardAlt = new Array(64);
+boardOnClick = new Array(8);
+boardTitle = new Array(8);
+for (col=0; col<8; col++) {
+  boardOnClick[col] = new Array(8);
+  boardTitle[col] = new Array(8);
+  for (row=0; row<8; row++) {
+    boardTitle[col][row] = "";
+    boardOnClick[col][row] = function(){};
+  }
+}
 
-// cells count from the top left (A8 is row0 col0)
+function configBoardShrortcut(square, title, functionPointer) {
+  if (square.charCodeAt === null) { myAlert("error: invalid square in configBoardShrortcut()"); return; }
+  var col = square.charCodeAt(0) - 65; // 65 is "A"
+  if ((col < 0) || (col > 7)) { myAlert ("error: invalid column in configBoardShrortcut()"); return; }
+  var row = 56 - square.charCodeAt(1); // 56 is "8"
+  if ((row < 0) || (row > 7)) { myAlert ("error: invalid row in configBoardShrortcut()"); return; }
+  boardTitle[col][row] = title;
+  boardOnClick[col][row] = functionPointer;
+}
 
 // A8
-function boardOnClickCol0Row0() { window.open(pgn4web_project_url); }
-boardAlt[0 + 0 * 8] = "go to the pgn4web website";
+configBoardShrortcut("A8", "go to the pgn4web website", function(){ window.open(pgn4web_project_url); });
 // B8
-function boardOnClickCol1Row0() { }
-boardAlt[1 + 0 * 8] = "";
+configBoardShrortcut("B8", "", function(){});
 // C8
-function boardOnClickCol2Row0() { }
-boardAlt[2 + 0 * 8] = "";
+configBoardShrortcut("C8", "", function(){});
 // D8
-function boardOnClickCol3Row0() { displayPgnData(); }
-boardAlt[3 + 0 * 8] = "show PGN source data";
+configBoardShrortcut("D8", "show PGN source data", function(){ displayPgnData(); });
 // E8
-function boardOnClickCol4Row0() { displayDebugInfo(); }
-boardAlt[4 + 0 * 8] = "debug info v" + pgn4web_version;
+configBoardShrortcut("E8", "debug info v" + pgn4web_version, function(){ displayDebugInfo(); });
 // F8
-function boardOnClickCol5Row0() { displayHelp("keys"); }
-boardAlt[5 + 0 * 8] = "shortcut keys help";
+configBoardShrortcut("F8", "shortcut keys help", function(){ displayHelp("keys"); });
 // G8
-function boardOnClickCol6Row0() { displayHelp("squares"); }
-boardAlt[6 + 0 * 8] = "shortcut squares help";
+configBoardShrortcut("G8", "shortcut squares help", function(){ displayHelp("squares"); });
 // H8
-function boardOnClickCol7Row0() { displayHelp(); }
-boardAlt[7 + 0 * 8] = "pgn4web help";
+configBoardShrortcut("H8", "pgn4web help", function(){ displayHelp(); });
 // A7
-function boardOnClickCol0Row1() { SetCommentsIntoMoveText(!commentsIntoMoveText); thisPly = CurrentPly; Init(); GoToMove(thisPly); }
-boardAlt[0 + 1 * 8] = "toggle show comments in game text";
+configBoardShrortcut("A7", "toggle show comments in game text", function(){ SetCommentsIntoMoveText(!commentsIntoMoveText); thisPly = CurrentPly; Init(); GoToMove(thisPly); });
 // B7
-function boardOnClickCol1Row1() { SetCommentsOnSeparateLines(!commentsOnSeparateLines); thisPly = CurrentPly; Init(); GoToMove(thisPly); }
-boardAlt[1 + 1 * 8] = "toggle show comments on separate lines in game text";
+configBoardShrortcut("B7", "toggle show comments on separate lines in game text", function(){ SetCommentsOnSeparateLines(!commentsOnSeparateLines); thisPly = CurrentPly; Init(); GoToMove(thisPly); });
 // C7
-function boardOnClickCol2Row1() { SetHighlight(!highlightOption); }
-boardAlt[2 + 1 * 8] = "toggle highlight last move";
+configBoardShrortcut("C7", "toggle highlight last move", function(){ SetHighlight(!highlightOption); });
 // D7
-function boardOnClickCol3Row1() { FlipBoard(); }
-boardAlt[3 + 1 * 8] = "flip board";
+configBoardShrortcut("D7", "flip board", function(){ FlipBoard(); });
 // E7
-function boardOnClickCol4Row1() { if (IsRotated) { FlipBoard(); } }
-boardAlt[4 + 1 * 8] = "show white on bottom";
+configBoardShrortcut("E7", "show white on bottom", function(){ if (IsRotated) { FlipBoard(); } });
 // F7
-function boardOnClickCol5Row1() { SetAutoplayNextGame(!autoplayNextGame); }
-boardAlt[5 + 1 * 8] = "toggle autoplay next game";
+configBoardShrortcut("F7", "toggle autoplay next game", function(){ SetAutoplayNextGame(!autoplayNextGame); });
 // G7
-function boardOnClickCol6Row1() { }
-boardAlt[6 + 1 * 8] = "";
+configBoardShrortcut("G7", "", function(){});
 // H7
-function boardOnClickCol7Row1() { SetShortcutKeysEnabled(!shortcutKeysEnabled); }
-boardAlt[7 + 1 * 8] = "toggle enabling shortcut keys";
+configBoardShrortcut("H7", "toggle enabling shortcut keys", function(){ SetShortcutKeysEnabled(!shortcutKeysEnabled); });
 // A6
-function boardOnClickCol0Row2() { pauseLiveBroadcast(); }
-boardAlt[0 + 2 * 8] = "pause live broadcast automatic refresh";
+configBoardShrortcut("A6", "pause live broadcast automatic refresh", function(){ pauseLiveBroadcast(); });
 // B6
-function boardOnClickCol1Row2() { restartLiveBroadcast(); }
-boardAlt[1 + 2 * 8] = "restart live broadcast automatic refresh";
+configBoardShrortcut("B6", "restart live broadcast automatic refresh", function(){ restartLiveBroadcast(); });
 // C6
-function boardOnClickCol2Row2() { for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameResult[ii])) && (gameResult[ii]!="*")) { break; } } if (ii>=0) { currentGame = ii; Init();} }
-boardAlt[2 + 2 * 8] = "load previous finished game";
+configBoardShrortcut("C6", "load previous finished game", function(){ for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameResult[ii])) && (gameResult[ii]!="*")) { break; } } if (ii>=0) { currentGame = ii; Init();} });
 // D6
-function boardOnClickCol3Row2() { for (ii=currentGame-1; ii>=0; ii--) { if ((!checkHeaderDefined(gameResult[ii])) || (gameResult[ii]=="*")) { break; } } if (ii>=0) { currentGame = ii; Init();} }
-boardAlt[3 + 2 * 8] = "load previous unfinished game";
+configBoardShrortcut("D6", "load previous unfinished game", function(){ for (ii=currentGame-1; ii>=0; ii--) { if ((!checkHeaderDefined(gameResult[ii])) || (gameResult[ii]=="*")) { break; } } if (ii>=0) { currentGame = ii; Init();} });
 // E6
-function boardOnClickCol4Row2() { for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((!checkHeaderDefined(gameResult[ii])) || (gameResult[ii]=="*")) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} }
-boardAlt[4 + 2 * 8] = "load next unfinished game";
+configBoardShrortcut("E6", "load next unfinished game", function(){ for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((!checkHeaderDefined(gameResult[ii])) || (gameResult[ii]=="*")) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} });
 // F6
-function boardOnClickCol5Row2() { for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameResult[ii])) && (gameResult[ii]!="*")) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} }
-boardAlt[5 + 2 * 8] = "load next finished game";
+configBoardShrortcut("F6", "load next finished game", function(){ for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameResult[ii])) && (gameResult[ii]!="*")) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} });
 // G6
-function boardOnClickCol6Row2() { }
-boardAlt[6 + 2 * 8] = "";
+configBoardShrortcut("G6", "", function(){});
 // H6
-function boardOnClickCol7Row2() { refreshPgnSource(); }
-boardAlt[7 + 2 * 8] = "force games refresh during live broadcast";
+configBoardShrortcut("H6", "force games refresh during live broadcast", function(){ refreshPgnSource(); });
 // A5
-function boardOnClickCol0Row3() { }
-boardAlt[0 + 3 * 8] = "";
+configBoardShrortcut("A5", "", function(){});
 // B5
-function boardOnClickCol1Row3() { }
-boardAlt[1 + 3 * 8] = "";
+configBoardShrortcut("B5", "", function(){});
 // C5
-function boardOnClickCol2Row3() { }
-boardAlt[2 + 3 * 8] = "";
+configBoardShrortcut("C5", "", function(){});
 // D5
-function boardOnClickCol3Row3() { }
-boardAlt[3 + 3 * 8] = "";
+configBoardShrortcut("D5", "", function(){});
 // E5
-function boardOnClickCol4Row3() { }
-boardAlt[4 + 3 * 8] = "";
+configBoardShrortcut("E5", "", function(){});
 // F5
-function boardOnClickCol5Row3() { }
-boardAlt[5 + 3 * 8] = "";
+configBoardShrortcut("F5", "", function(){});
 // G5
-function boardOnClickCol6Row3() { }
-boardAlt[6 + 3 * 8] = "";
+configBoardShrortcut("G5", "", function(){});
 // H5
-function boardOnClickCol7Row3() { }
-boardAlt[7 + 3 * 8] = "";
+configBoardShrortcut("H5", "", function(){});
 // A4
-function boardOnClickCol0Row4() { if (!checkHeaderDefined(gameEvent[currentGame])) { return; } for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameEvent[ii])) && (gameEvent[ii] != gameEvent[currentGame])) { break; } } if (ii>=0) { currentGame = ii; Init();} }
-boardAlt[0 + 4 * 8] = "jump to previous event";
+configBoardShrortcut("A4", "jump to previous event", function(){ if (!checkHeaderDefined(gameEvent[currentGame])) { return; } for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameEvent[ii])) && (gameEvent[ii] != gameEvent[currentGame])) { break; } } if (ii>=0) { currentGame = ii; Init();} });
 // B4
-function boardOnClickCol1Row4() { if (!checkHeaderDefined(gameRound[currentGame])) { return; } for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameRound[ii])) && (gameEvent[ii] == gameEvent[currentGame]) && (gameRound[ii] != gameRound[currentGame])) { break; } } if (ii>=0) { currentGame = ii; Init();} }
-boardAlt[1 + 4 * 8] = "jump to previous round of same event";
+configBoardShrortcut("B4", "jump to previous round of same event", function(){ if (!checkHeaderDefined(gameRound[currentGame])) { return; } for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameRound[ii])) && (gameEvent[ii] == gameEvent[currentGame]) && (gameRound[ii] != gameRound[currentGame])) { break; } } if (ii>=0) { currentGame = ii; Init();} });
 // C4
-function boardOnClickCol2Row4() { if (!checkHeaderDefined(gameBlack[currentGame])) { return; } for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameBlack[ii])) && (gameBlack[ii] == gameBlack[currentGame])) { break; } } if (ii>=0) { currentGame = ii; Init();} }
-boardAlt[2 + 4 * 8] = "load previous game of same black player";
+configBoardShrortcut("C4", "load previous game of same black player", function(){ if (!checkHeaderDefined(gameBlack[currentGame])) { return; } for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameBlack[ii])) && (gameBlack[ii] == gameBlack[currentGame])) { break; } } if (ii>=0) { currentGame = ii; Init();} });
 // D4
-function boardOnClickCol3Row4() { if (!checkHeaderDefined(gameWhite[currentGame])) { return; } for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameWhite[ii])) && (gameWhite[ii] == gameWhite[currentGame])) { break; } } if (ii>=0) { currentGame = ii; Init();} }
-boardAlt[3 + 4 * 8] = "load previous game of same white player";
+configBoardShrortcut("D4", "load previous game of same white player", function(){ if (!checkHeaderDefined(gameWhite[currentGame])) { return; } for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameWhite[ii])) && (gameWhite[ii] == gameWhite[currentGame])) { break; } } if (ii>=0) { currentGame = ii; Init();} });
 // E4
-function boardOnClickCol4Row4() { if (!checkHeaderDefined(gameWhite[currentGame])) { return; } for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameWhite[ii])) && (gameWhite[ii] == gameWhite[currentGame])) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} }
-boardAlt[4 + 4 * 8] = "load next game of same white player";
+configBoardShrortcut("E4", "load next game of same white player", function(){ if (!checkHeaderDefined(gameWhite[currentGame])) { return; } for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameWhite[ii])) && (gameWhite[ii] == gameWhite[currentGame])) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} });
 // F4
-function boardOnClickCol5Row4() { if (!checkHeaderDefined(gameBlack[currentGame])) { return; } for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameBlack[ii])) && (gameBlack[ii] == gameBlack[currentGame])) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} }
-boardAlt[5 + 4 * 8] = "load next game of same black player";
+configBoardShrortcut("F4", "load next game of same black player", function(){ if (!checkHeaderDefined(gameBlack[currentGame])) { return; } for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameBlack[ii])) && (gameBlack[ii] == gameBlack[currentGame])) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} });
 // G4
-function boardOnClickCol6Row4() { if (!checkHeaderDefined(gameRound[currentGame])) { return; } for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameRound[ii])) && (gameEvent[ii] == gameEvent[currentGame]) && (gameRound[ii] != gameRound[currentGame])) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} }
-boardAlt[6 + 4 * 8] = "jump to next round of same event";
+configBoardShrortcut("G4", "jump to next round of same event", function(){ if (!checkHeaderDefined(gameRound[currentGame])) { return; } for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameRound[ii])) && (gameEvent[ii] == gameEvent[currentGame]) && (gameRound[ii] != gameRound[currentGame])) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} });
 // H4
-function boardOnClickCol7Row4() { if (!checkHeaderDefined(gameEvent[currentGame])) { return; } for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameEvent[ii])) && (gameEvent[ii] != gameEvent[currentGame])) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} }
-boardAlt[7 + 4 * 8] = "jump to next event";
+configBoardShrortcut("H4", "jump to next event", function(){ if (!checkHeaderDefined(gameEvent[currentGame])) { return; } for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameEvent[ii])) && (gameEvent[ii] != gameEvent[currentGame])) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} });
 // A3
-function boardOnClickCol0Row5() { if (numberOfGames > 1) { currentGame = 0; Init(); } }
-boardAlt[0 + 5 * 8] = "load first game";
+configBoardShrortcut("A3", "load first game", function(){ if (numberOfGames > 1) { currentGame = 0; Init(); } });
 // B3
-function boardOnClickCol1Row5() { if (currentGame >= 50){ currentGame -= 50; Init(); }else{ if (numberOfGames > 1) { currentGame = 0; Init(); } } }
-boardAlt[1 + 5 * 8] = "jump 50 games backward";
+configBoardShrortcut("B3", "jump 50 games backward", function(){ if (currentGame >= 50){ currentGame -= 50; Init(); }else{ if (numberOfGames > 1) { currentGame = 0; Init(); } } });
 // C3
-function boardOnClickCol2Row5() { if (currentGame > 0){ currentGame--; Init(); } }
-boardAlt[2 + 5 * 8] = "load previous game";
+configBoardShrortcut("C3", "load previous game", function(){ if (currentGame > 0){ currentGame--; Init(); } });
 // D3
-function boardOnClickCol3Row5() {  if (numberOfGames > 1) { currentGame = Math.floor(Math.random()*numberOfGames); Init(); } }
-boardAlt[3 + 5 * 8] = "load random game";
+configBoardShrortcut("D3", "load random game", function(){ if (numberOfGames > 1) { currentGame = Math.floor(Math.random()*numberOfGames); Init(); } });
 // E3
-function boardOnClickCol4Row5() { if (numberOfGames > 1) { currentGame = Math.floor(Math.random()*numberOfGames); Init(); GoToMove(StartPly + Math.floor(Math.random()*(StartPly + PlyNumber + 1))); } }
-boardAlt[4 + 5 * 8] = "load random game at random position";
+configBoardShrortcut("E3", "load random game at random position", function(){ currentGame = Math.floor(Math.random()*numberOfGames); Init(); GoToMove(StartPly + Math.floor(Math.random()*(StartPly + PlyNumber + 1))); });
 // F3
-function boardOnClickCol5Row5() { if (numberOfGames > currentGame + 1){ currentGame++; Init(); } }
-boardAlt[5 + 5 * 8] = "load next game";
+configBoardShrortcut("F3", "load next game", function(){ if (numberOfGames > currentGame + 1){ currentGame++; Init(); } });
 // G3
-function boardOnClickCol6Row5() { if (numberOfGames > currentGame + 50){ currentGame += 50; Init(); }else{ if (numberOfGames > 1) { currentGame = numberOfGames - 1; Init(); } } }
-boardAlt[6 + 5 * 8] = "jump 50 games forward";
+configBoardShrortcut("G3", "jump 50 games forward", function(){ if (numberOfGames > currentGame + 50){ currentGame += 50; Init(); }else{ if (numberOfGames > 1) { currentGame = numberOfGames - 1; Init(); } } });
 // H3
-function boardOnClickCol7Row5() { if (numberOfGames > 1) { currentGame = numberOfGames - 1; Init(); } }
-boardAlt[7 + 5 * 8] = "load last game";
+configBoardShrortcut("H3", "load last game", function(){ if (numberOfGames > 1) { currentGame = numberOfGames - 1; Init(); } });
 // A2
-function boardOnClickCol0Row6() { SetAutoPlay(false); }
-boardAlt[0 + 6 * 8] = "stop autoplay";
+configBoardShrortcut("A2", "stop autoplay", function(){ SetAutoPlay(false); });
 // B2
-function boardOnClickCol1Row6() { SwitchAutoPlay(); }
-boardAlt[1 + 6 * 8] = "toggle autoplay";
+configBoardShrortcut("B2", "toggle autoplay", function(){ SwitchAutoPlay(); });
 // C2
-function boardOnClickCol2Row6() { MoveForward(1); SetAutoplayDelay( 1*1000); SetAutoPlay(true); }
-boardAlt[2 + 6 * 8] = "autoplay 1 seconds";
+configBoardShrortcut("C2", "autoplay 1 second", function(){ MoveForward(1); SetAutoplayDelay( 1*1000); SetAutoPlay(true); });
 // D2
-function boardOnClickCol3Row6() { MoveForward(1); SetAutoplayDelay( 2*1000); SetAutoPlay(true); }
-boardAlt[3 + 6 * 8] = "autoplay 2 seconds";
+configBoardShrortcut("D2", "autoplay 2 seconds", function(){ MoveForward(1); SetAutoplayDelay( 2*1000); SetAutoPlay(true); });
 // E2
-function boardOnClickCol4Row6() { MoveForward(1); SetAutoplayDelay( 3*1000); SetAutoPlay(true); }
-boardAlt[4 + 6 * 8] = "autoplay 3 seconds";
+configBoardShrortcut("E2", "autoplay 3 seconds", function(){ MoveForward(1); SetAutoplayDelay( 3*1000); SetAutoPlay(true); });
 // F2
-function boardOnClickCol5Row6() { MoveForward(1); SetAutoplayDelay( 5*1000); SetAutoPlay(true); }
-boardAlt[5 + 6 * 8] = "autoplay 5 seconds";
+configBoardShrortcut("F2", "autoplay 5 seconds", function(){ MoveForward(1); SetAutoplayDelay( 5*1000); SetAutoPlay(true); });
 // G2
-function boardOnClickCol6Row6() { MoveForward(1); SetAutoplayDelay(10*1000); SetAutoPlay(true); }
-boardAlt[6 + 6 * 8] = "autoplay 10 seconds";
+configBoardShrortcut("G2", "autoplay 10 seconds", function(){ MoveForward(1); SetAutoplayDelay( 10*1000); SetAutoPlay(true); });
 // H2
-function boardOnClickCol7Row6() { MoveForward(1); SetAutoplayDelay(30*1000); SetAutoPlay(true); }
-boardAlt[7 + 6 * 8] = "autoplay 30 seconds";
+configBoardShrortcut("H2", "autoplay 30 seconds", function(){ MoveForward(1); SetAutoplayDelay( 30*1000); SetAutoPlay(true); });
 // A1
-function boardOnClickCol0Row7() { GoToMove(StartPly); }
-boardAlt[0 + 7 * 8] = "go to game start";
+configBoardShrortcut("A1", "go to game start", function(){ GoToMove(StartPly); });
 // B1
-function boardOnClickCol1Row7() { MoveToPrevComment(); }
-boardAlt[1 + 7 * 8] = "go to previous comment";
+configBoardShrortcut("B1", "go to previous comment", function(){ MoveToPrevComment(); });
 // C1
-function boardOnClickCol2Row7() { MoveBackward(6); }
-boardAlt[2 + 7 * 8] = "move 6 half-moves backward";
+configBoardShrortcut("C1", "move 6 half-moves backward", function(){ MoveBackward(6); });
 // D1
-function boardOnClickCol3Row7() { MoveBackward(1); }
-boardAlt[3 + 7 * 8] = "move backward";
+configBoardShrortcut("D1", "move backward", function(){ MoveBackward(1); });
 // E1
-function boardOnClickCol4Row7() { MoveForward(1); }
-boardAlt[4 + 7 * 8] = "move forward";
+configBoardShrortcut("E1", "move forward", function(){ MoveForward(1); });
 // F1
-function boardOnClickCol5Row7() { MoveForward(6); }
-boardAlt[5 + 7 * 8] = "move 6 half-moves forward";
+configBoardShrortcut("F1", "move 6 half-moves forward", function(){ MoveForward(6); });
 // G1
-function boardOnClickCol6Row7() { MoveToNextComment(); }
-boardAlt[6 + 7 * 8] = "go to next comment";
+configBoardShrortcut("G1", "go to next comment", function(){ MoveToNextComment(); });
 // H1
-function boardOnClickCol7Row7() { GoToMove(StartPly + PlyNumber); }
-boardAlt[7 + 7 * 8] = "go to game end";
+configBoardShrortcut("H1", "go to game end", function(){ GoToMove(StartPly + PlyNumber); });
 
 
 function detectJavascriptLocation() {
@@ -3168,8 +3123,8 @@ function PrintHTML(){
       } else{
 	text += '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="lightgray" ALIGN="center" VALIGN="middle" ONCLICK="clickedSquare(' + ii + ',' + jj + ')">';
       } 
-      text += '<A HREF="javascript:boardOnClickCol' + jj + 'Row' + ii + '()" ' + 
-              'TITLE="' + boardAlt[jj + ii * 8] + '" ' +
+      text += '<A HREF="javascript:boardOnClick[' + jj + '][' + ii + ']()" ' + 
+              'TITLE="' + boardTitle[jj][ii] + '" ' +
               'STYLE="text-decoration: none; outline: none;"' +
               'ONFOCUS="this.blur()">' + 
               '<IMG CLASS="pieceImage" ID="' + imageId + '" ' + 

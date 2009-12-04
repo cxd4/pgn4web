@@ -42,83 +42,17 @@ a.gamelist:link, a.gamelist:visited, a.gamelist:hover, a.gamelist:active
    SetShortcutKeysEnabled(false);
 
 // Example below of customization of the shortcut squares, in this case 
-// disabling switching games with the usual third/fourth/fifth row shortcut
+// disabling switching games with the usual third/fourth/sixth/seventh row shortcut
 // squares (that would break the game highlighting feature of the page)
 
-// A6
-function boardOnClickCol0Row2() { }
-boardAlt[0 + 2 * 8] = "";
-// B6
-function boardOnClickCol1Row2() { }
-boardAlt[1 + 2 * 8] = "";
-// C6
-function boardOnClickCol2Row2() { }
-boardAlt[2 + 2 * 8] = "";
-// D6
-function boardOnClickCol3Row2() { }
-boardAlt[3 + 2 * 8] = "";
-// E6
-function boardOnClickCol4Row2() { }
-boardAlt[4 + 2 * 8] = "";
-// F6
-function boardOnClickCol5Row2() { }
-boardAlt[5 + 2 * 8] = "";
-// G6
-function boardOnClickCol6Row2() { }
-boardAlt[6 + 2 * 8] = "";
-// H6
-function boardOnClickCol7Row2() { }
-boardAlt[7 + 2 * 8] = "";
+cols2clear="ABCDEFGH";
+rows2clear="3467";
 
-// A4
-function boardOnClickCol0Row4() { }
-boardAlt[0 + 4 * 8] = "";
-// B4
-function boardOnClickCol1Row4() { }
-boardAlt[1 + 4 * 8] = "";
-// C4
-function boardOnClickCol2Row4() { }
-boardAlt[2 + 4 * 8] = "";
-// D4
-function boardOnClickCol3Row4() { }
-boardAlt[3 + 4 * 8] = "";
-// E4
-function boardOnClickCol4Row4() { }
-boardAlt[4 + 4 * 8] = "";
-// F4
-function boardOnClickCol5Row4() { }
-boardAlt[5 + 4 * 8] = "";
-// G4
-function boardOnClickCol6Row4() { }
-boardAlt[6 + 4 * 8] = "";
-// H4
-function boardOnClickCol7Row4() { }
-boardAlt[7 + 4 * 8] = "";
-
-// A3
-function boardOnClickCol0Row5() { }
-boardAlt[0 + 5 * 8] = "";
-// B3
-function boardOnClickCol1Row5() { }
-boardAlt[1 + 5 * 8] = "";
-// C3
-function boardOnClickCol2Row5() { }
-boardAlt[2 + 5 * 8] = "";
-// D3
-function boardOnClickCol3Row5() { }
-boardAlt[3 + 5 * 8] = "";
-// E3
-function boardOnClickCol4Row5() { }
-boardAlt[4 + 5 * 8] = "";
-// F3
-function boardOnClickCol5Row5() { }
-boardAlt[5 + 5 * 8] = "";
-// G3
-function boardOnClickCol6Row5() { }
-boardAlt[6 + 5 * 8] = "";
-// H3
-function boardOnClickCol7Row5() { }
-boardAlt[7 + 5 * 8] = "";
+for (c=0; c<cols2clear.length; c++) {
+  for (r=0; r<rows2clear.length; r++) {
+    configBoardShrortcut(cols2clear.charAt(c)+rows2clear.charAt(r), "", function(){});
+  }
+}
 
 </script>
 

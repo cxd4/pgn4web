@@ -1741,27 +1741,29 @@ function gup( name ){
   return "";
 }
 
+var bugWin=null;
 function bug_report() {
   var email = pgn4web_project_email;
   var subject = "pgn4web board generator bug report";
   var bug_info = "pgn4web board generator bug report\n\n-------- automatically generated debug info: start --------\n\nURL: " + window.location + "\n\nuser agent: " + window.navigator.userAgent+ "\n\npgn4web version: " + pgn4web_version + "\n\niFrame HTML code:\n\n" + html_code_string + "\n\n-------- automatically generated debug info: end   --------\n\nPlease add below a description of the bug and attach a screenshot if possible.\n\n\n\n\n";
   mailto_link = 'mailto:' + email + '?subject=' + subject + '&body=' + escape(bug_info);
 
-  win = window.open("", "bug_report", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no"); 
-  if (win !== null) {
-    win.document.open("text/html", "replace");
-    win.document.write("<html>");
-    win.document.write("<head><title>pgn4web board generator bug report</title><link rel='shortcut icon' href='pawn.ico'></link><style type='text/css'> html, body { font-family: sans-serif;  color: black; background: white; padding: 10px; } a {text-decoration: none; color: black; } </style></head>");
-    win.document.write("<body>");
-    win.document.write("<table width=100% cellspacing=0 cellpadding=0><tr><td align=left valign=middle><h1>pgn4web board generator bug report</h1></td><td align=right valign=middle><img src=pawns.png border=0></td></tr></table><p></p>please make sure that:<ul type='square'><li>you are using the same web browser where you noticed the bug in the pgn4web board generator</li><li>you opened this bug report window from the pgn4web board generator page configured with all the parameter that result in the bug condition</li></ul>Then please email ALL the the debug information below and possibly a screenshot to <i><a href=mailto:" + pgn4web_project_email + ">" + pgn4web_project_email + "</a></i><p></p>");
-    win.document.write("<hr>");
-    win.document.write("<pre><code>" + bug_info.replace(/</g,"&lt;").replace(/>/g,"&gt;") + "</code></pre>");
-    win.document.write("<hr>");
-    win.document.write("<p></p>If your email client is properly configured, you can try to <i><a href='" + mailto_link + "'>click here and automatically compose the email in your default client</a></i>; this might not work, in case you have to manually copy the above information into an <i><a href=mailto:" + pgn4web_project_email + ">email to " + pgn4web_project_email + "</a></i>.<p></p>");
-    win.document.write("</body>");
-    win.document.write("<html>");
-    win.document.close();
-    if (window.focus) { win.window.focus(); }
+  if (bugWin && !bugWin.closed) { bugWin.close(); };
+  bugWin = window.open("", "bug_report", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no"); 
+  if (bugWin !== null) {
+    bugWin.document.open("text/html", "replace");
+    bugWin.document.write("<html>");
+    bugWin.document.write("<head><title>pgn4web board generator bug report</title><link rel='shortcut icon' href='pawn.ico'></link><style type='text/css'> html, body { font-family: sans-serif;  color: black; background: white; padding: 10px; } a {text-decoration: none; color: black; } </style></head>");
+    bugWin.document.write("<body>");
+    bugWin.document.write("<table width=100% cellspacing=0 cellpadding=0><tr><td align=left valign=middle><h1>pgn4web board generator bug report</h1></td><td align=right valign=middle><img src=pawns.png border=0></td></tr></table><p></p>please make sure that:<ul type='square'><li>you are using the same web browser where you noticed the bug in the pgn4web board generator</li><li>you opened this bug report window from the pgn4web board generator page configured with all the parameter that result in the bug condition</li></ul>Then please email ALL the the debug information below and possibly a screenshot to <i><a href=mailto:" + pgn4web_project_email + ">" + pgn4web_project_email + "</a></i><p></p>");
+    bugWin.document.write("<hr>");
+    bugWin.document.write("<pre><code>" + bug_info.replace(/</g,"&lt;").replace(/>/g,"&gt;") + "</code></pre>");
+    bugWin.document.write("<hr>");
+    bugWin.document.write("<p></p>If your email client is properly configured, you can try to <i><a href='" + mailto_link + "'>click here and automatically compose the email in your default client</a></i>; this might not work, in case you have to manually copy the above information into an <i><a href=mailto:" + pgn4web_project_email + ">email to " + pgn4web_project_email + "</a></i>.<p></p>");
+    bugWin.document.write("</body>");
+    bugWin.document.write("<html>");
+    bugWin.document.close();
+    if (window.focus) { bugWin.window.focus(); }
   }
 }
 
