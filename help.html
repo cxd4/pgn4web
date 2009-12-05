@@ -89,9 +89,9 @@ Remaining pgn4web code is copyright (C) 2009 <a href=mailto:pgn4web@casaschi.net
   if (opener && opener.boardTitle) {
   rowNumbers = "12345678";
   colLetters = "ABCDEFGH";
-  for (r=0; r<8; r++) {
+  for (r=7; r>=0; r--) {
     rowDisplayed = false;
-    for (c=0; c<8; c++) {
+    for (c=0; c<=7; c++) {
       if (opener.boardTitle[c][r] !== "") {
         print_help_row(colLetters.charAt(c) + rowNumbers.charAt(7-r), opener.boardTitle[c][r]);
         rowDisplayed = true;
