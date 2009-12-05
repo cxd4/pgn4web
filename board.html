@@ -1098,9 +1098,10 @@ if ((newPgnText = gup("pgnText")) !== "") {
   // cleans the PGN text
   newPgnText = newPgnText.replace(/\[/g,"\n\n[");
   newPgnText = newPgnText.replace(/\]/g,"]\n\n");
-  newPgnText = newPgnText.replace(/([012\*])([\s]*)(\[)/g,"$1\n\n$3");
-  newPgnText = newPgnText.replace(/\]([\s]*)\[/g,"]\n[");
-  newPgnText = newPgnText.replace(/^([\s]*)\[/g,"[");
+  newPgnText = newPgnText.replace(/([012\*])(\s*)(\[)/g,"$1\n\n$3");
+  newPgnText = newPgnText.replace(/\]\s*\[/g,"]\n[");
+  newPgnText = newPgnText.replace(/^\s*\[/g,"[");
+  newPgnText = newPgnText.replace(/\n[\s*\n]+/g,'\n\n');
 
   document.getElementById('pgnText').value = newPgnText;
 } 
@@ -1112,9 +1113,10 @@ if ((newPgnEncoded = gup("pgnEncoded")) !== "") {
   // cleans the PGN text
   newPgnDecoded = newPgnDecoded.replace(/\[/g,"\n\n[");
   newPgnDecoded = newPgnDecoded.replace(/\]/g,"]\n\n");
-  newPgnDecoded = newPgnDecoded.replace(/([012\*])([\s]*)(\[)/g,"$1\n\n$3");
-  newPgnDecoded = newPgnDecoded.replace(/\]([\s]*)\[/g,"]\n[");
-  newPgnDecoded = newPgnDecoded.replace(/^([\s]*)\[/g,"[");
+  newPgnDecoded = newPgnDecoded.replace(/([012\*])(\s*)(\[)/g,"$1\n\n$3");
+  newPgnDecoded = newPgnDecoded.replace(/\]\s*\[/g,"]\n[");
+  newPgnDecoded = newPgnDecoded.replace(/^\s*\[/g,"[");
+  newPgnDecoded = newPgnDecoded.replace(/\n[\s*\n]+/g,'\n\n');
 
   document.getElementById('pgnText').value = newPgnDecoded;
 } 

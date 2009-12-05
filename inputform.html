@@ -97,9 +97,10 @@ Next move: <span style="font-weight: bold" id="GameNextMove"></span>
   document.getElementById('pgnText').value = document.getElementById('pgnForm').value;
   document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\[/g,'\n\n[');
   document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\]/g,']\n\n');
-  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/([012\*])([\s]*)(\[)/g,'$1\n\n$3');
-  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\]([\s]*)\[/g,']\n[');
-  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/^([\s]*)\[/g,'[');
+  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/([012\*])(\s*)(\[)/g,'$1\n\n$3');
+  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\]\s*\[/g,']\n[');
+  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/^\s*\[/g,'[');
+  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\n[\s*\n]+/g,'\n\n');
   new_start_pgn4web(); 
 ">
 <br>
@@ -144,9 +145,10 @@ if (newPgnText !== "") {
   // cleans the PGN text
   newPgnText = newPgnText.replace(/\[/g,"\n\n[");
   newPgnText = newPgnText.replace(/\]/g,"]\n\n");
-  newPgnText = newPgnText.replace(/([012\*])([\s]*)(\[)/g,"$1\n\n$3");
-  newPgnText = newPgnText.replace(/\]([\s]*)\[/g,"]\n[");
-  newPgnText = newPgnText.replace(/^([\s]*)\[/g,"[");
+  newPgnText = newPgnText.replace(/([012\*])(\s*)(\[)/g,"$1\n\n$3");
+  newPgnText = newPgnText.replace(/\]\s*\[/g,"]\n[");
+  newPgnText = newPgnText.replace(/^\s*\[/g,"[");
+  newPgnText = newPgnText.replace(/\n[\s*\n]+/g,'\n\n');
 
   document.getElementById('pgnText').value = newPgnText;
   document.getElementById('pgnForm').value = newPgnText;

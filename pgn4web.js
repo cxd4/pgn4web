@@ -2688,7 +2688,7 @@ function ParsePGNGameString(gameString){
     if (pgn4webCommentTmp) { pgn4webMoveComments[ii] = pgn4webCommentTmp[1]; } 
     else { pgn4webMoveComments[ii] = ""; }
     MoveComments[ii] = translateNAGs(MoveComments[ii]);
-    MoveComments[ii] = MoveComments[ii].replace(/[ \b\f\n\r\t]+$/g, '');
+    MoveComments[ii] = MoveComments[ii].replace(/\s+$/g, '');
   }
 }
 
