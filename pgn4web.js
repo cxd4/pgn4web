@@ -652,9 +652,10 @@ function displayDebugInfo() {
   alert(debugInfo);
 }
 
-
+pgnWin = null;
 function displayPgnData() {
 
+  if (pgnWin && !pgnWin.closed) { pgnWin.close(); }
   pgnWin = window.open("", "pgn_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if (pgnWin !== null) {
     pgnWin.document.open("text/html", "replace");
@@ -820,7 +821,7 @@ DocumentImages = new Array();
 var pgnHeaderTagRegExp       = /\[\s*(\w+)\s*"([^"]*)"\s*\]/; 
 var pgnHeaderTagRegExpGlobal = /\[\s*(\w+)\s*"([^"]*)"\s*\]/g;
 var dummyPgnHeader = '[x""]';
-var emptyPgnHeader = '[White ""]\n[Black ""]\n[Result ""]\n[Date ""]\n[Event ""]\n[Site ""]\n[Round ""]\n';
+var emptyPgnHeader = '[White ""]\n[Black ""]\n[Result ""]\n[Date ""]\n[Event ""]\n[Site ""]\n[Round ""]\n\n';
 var templatePgnHeader = '[White "?"]\n[Black "?"]\n[Result "?"]\n[Date "?"]\n[Event "?"]\n[Site "?"]\n[Round "?"]\n';
 
 var gameSelectorHead      = 'Select a game...';
