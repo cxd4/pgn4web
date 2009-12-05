@@ -469,7 +469,7 @@ configBoardShrortcut("C8", "", function(){});
 // D8
 configBoardShrortcut("D8", "show PGN source data", function(){ displayPgnData(); });
 // E8
-configBoardShrortcut("E8", "debug info (v" + pgn4web_version + ")", function(){ displayDebugInfo(); });
+configBoardShrortcut("E8", "debug info v" + pgn4web_version, function(){ displayDebugInfo(); });
 // F8
 configBoardShrortcut("F8", "shortcut keys help", function(){ displayHelp("keys"); });
 // G8
