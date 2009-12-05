@@ -607,7 +607,7 @@ function generate_html_code() {
   thisShortUrlChecksum += 100000000;
   document.getElementById('shorturl_url').value = iframeUrl;
   document.getElementById('shorturl_alias').value = "pgn4web-" + thisShortUrlChecksum;
-  document.getElementById('shorturl_link').title = "pgn4web-" + thisShortUrlChecksum;
+  document.getElementById('shorturl_link').title = "pgn4web board short url #" + thisShortUrlChecksum;
 
   if (firstLoad) { firstLoad = false; return; }
   if (iframeUrl.length <= iframeUrl_max) { location.href='#game_preview'; return; }
