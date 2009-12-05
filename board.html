@@ -1314,7 +1314,7 @@ function display_header_moves() {
                    "; margin-right: 3%;' id=GameResult></div>");
     document.write("</td><td align=right>");
     document.write("<div class='header' style='white-space: nowrap; margin-right: " + textMargin +
-		    "; margin-left: 3%;' id=GameEvent></div>");
+		    "; margin-left: 3%;'><span id=GameEvent></span><span id=roundDetails></span></div>");
     document.write("</td></tr></table>");
   }
    
@@ -1335,6 +1335,20 @@ function display_header_moves() {
   } 
 
 }
+
+function customFunctionOnPgnGameLoad() {
+
+  if ((gameRound[currentGame] !=  undefined) &&
+      (gameRound[currentGame] !== "") &&
+      (gameRound[currentGame] !== "*") &&
+      (gameRound[currentGame] !=  "?")) {
+    document.getElementById("roundDetails").innerHTML = "&nbsp;(" + gameRound[currentGame] + ")";
+  } else {
+    document.getElementById("roundDetails").innerHTML = "";
+  }
+
+}
+
 
 </script>
 

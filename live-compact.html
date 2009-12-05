@@ -120,8 +120,9 @@
 
     if ((gameRound[currentGame] !=  undefined) && 
         (gameRound[currentGame] !== "") && 
+        (gameRound[currentGame] !== "*") && 
 	(gameRound[currentGame] !=  "?")) {
-      document.getElementById("roundDetails").innerHTML = " - round ";
+      document.getElementById("roundDetails").innerHTML = "&nbsp;(" + gameRound[currentGame] + ")";
     } else {
       document.getElementById("roundDetails").innerHTML = "";
       document.getElementById("GameRound").innerHTML = "";
@@ -295,7 +296,7 @@ function user_help() {
 <div id="GameSite" style="width: 94px; height: 1.3em; line-height: 1.3em; overflow: hidden"></div>
 </td>
 <td width=250px style="padding: 3px; text-align: center; vertical-align: middle;">
-<div style="width: 244px; height: 1.3em; line-height: 1.3em; overflow: hidden;"><span id="GameEvent"></span><span id="roundDetails"></span><span id="GameRound"></span></div>
+<div style="width: 244px; height: 1.3em; line-height: 1.3em; overflow: hidden;"><span id="GameEvent"></span><span id="roundDetails"></span></div>
 </td>
 <td width=100px style="padding: 3px; text-align: right; vertical-align: middle;">
 <div id="GameDate" style="width: 94px; height: 1.3em; line-height: 1.3em; overflow: hidden"></div>
