@@ -1119,6 +1119,8 @@ function ClearMove(move){
     }
     ++ii;
   }
+  if (mm.match('^[Oo0]-?[Oo0]-?[Oo0]$')) { return 'O-O-O'; }
+  if (mm.match('^[Oo0]-?[Oo0]$')) { return 'O-O'; }
   return mm;
 }
 
