@@ -321,7 +321,7 @@ function addCSSRule(ruleName) {                           // Create a new css ru
 
 function percentFixFromUrl( text ) {
   text += ''; // makes sure text is a string
-  return text.replace(/pct$/,'%');
+  return text.replace(/pct$/,'%').replace(/p$/,'%'); // 100pct and 100p both mean 100%
 }
 
 
@@ -1143,7 +1143,7 @@ else { textMargin = parseInt(textMargin, 10); }
 
 frameHeight = gup("frameHeight");
 // next statement is for compatibility with older version of board/board-generator
-if (frameHeight.match("pct")) { frameHeight = ""; textHeight = "100%"; }
+if (frameHeight.match("pct") || frameHeight.match("p")) { frameHeight = ""; textHeight = "100%"; }
 switch (frameHeight) {
   case "b":
   case "board":
@@ -1161,7 +1161,7 @@ switch (frameHeight) {
 
 frameWidth = gup("frameWidth");
 // next statement is for compatibility with older version of board/board-generator
-if (frameWidth.match("pct")) { frameWidth = "page"; }
+if (frameWidth.match("pct") || frameWidth.match("p")) { frameWidth = "page"; }
 switch (frameWidth) {
   case "b":
   case "board":
@@ -1230,9 +1230,9 @@ if (gup("help") !== "") {
   document.write(" - fontMovesColorHex = moves color hex code, like FF0000\n");
   document.write(" - fontCommentsColorHex = commentss color hex code, like FF0000\n");
   document.write(" - highlightMoveColorHex = background color hex code to highlight current move, like FF0000, 'none' for no highligh (default DAF4D7)\n");
-  document.write(" - fontHeaderSize = header font size, like 20 or 120% (default 100pct meaning 100%)\n");
-  document.write(" - fontMovesSize = header font size, like 20 or 120% (default 100pct meaning 100%)\n");
-  document.write(" - fontCommentsSize = header font size, like 20 or 120% (default 100pct meaning 100%)\n");
+  document.write(" - fontHeaderSize = header font size, like 20 or 120% (default 100p = 100pct meaning 100%)\n");
+  document.write(" - fontMovesSize = header font size, like 20 or 120% (default 100p = 100pct meaning 100%)\n");
+  document.write(" - fontCommentsSize = header font size, like 20 or 120% (default 100p = 100pct meaning 100%)\n");
   document.write("\n");
   document.write(" - backgroundColorName = page background color name, like red\n");
   document.write(" - backgroundColorHex = page background color hex code, like FF0000\n");
@@ -1338,13 +1338,16 @@ function display_header_moves() {
 
 function customFunctionOnPgnGameLoad() {
 
-  if ((gameRound[currentGame] !=  undefined) &&
-      (gameRound[currentGame] !== "") &&
-      (gameRound[currentGame] !== "*") &&
-      (gameRound[currentGame] !=  "?")) {
-    document.getElementById("roundDetails").innerHTML = "&nbsp;(" + gameRound[currentGame] + ")";
-  } else {
-    document.getElementById("roundDetails").innerHTML = "";
+  theObject = document.getElementById("roundDetails");
+  if (theObject) {
+    if ((gameRound[currentGame] !=  undefined) &&
+        (gameRound[currentGame] !== "") &&
+        (gameRound[currentGame] !== "*") &&
+        (gameRound[currentGame] !=  "?")) {
+      theObject.innerHTML = "&nbsp;(" + gameRound[currentGame] + ")";
+    } else {
+      theObject.innerHTML = "";
+    }
   }
 
 }

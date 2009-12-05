@@ -535,12 +535,12 @@ function pgnTextFixForUrl( text ) {
 
 function percentFixForUrl( text ) {
   text += ''; // makes sure text is a string
-  return text.replace(/%$/,'pct');
+  return text.replace(/%$/,'p');
 }
 
 function percentFixFromUrl( text ) {
   text += ''; // makes sure text is a string
-  return text.replace(/pct$/,'%');
+  return text.replace(/pct$/,'%').replace(/p$/,'%'); // 100pct and 100p both mean 100%
 }
 
 function generate_html_code() {
@@ -674,7 +674,7 @@ function validate_number_blank(object, name, def) {
 }
 
 function validate_number_percentage(object, name, def) {
-  if (!(vv = object.value.match(/^([0-9]+)(%$|pct$|px$|$)/))) {
+  if (!(vv = object.value.match(/^([0-9]+)(%$|p$|pct$|px$|$)/))) {
     alert('error: the ' + name + ' must be a non negative number or percentage');
     object.value = def;
     return false;    
@@ -686,7 +686,7 @@ function validate_number_percentage(object, name, def) {
 
 function validate_number_percentage_blank(object, name, def) {
   if (object.value === "") { return true; }
-  if (!(vv = object.value.match(/^([0-9]+)(%$|pct$|px$|$)/))) {
+  if (!(vv = object.value.match(/^([0-9]+)(%$|p$|pct$|px$|$)/))) {
     alert('error: the ' + name + ' must be blank or a non negative number or percentage');
     object.value = def;
     return false;    
@@ -790,9 +790,9 @@ color_template[4] = new Array("pink ", "&lch=EDE8D5&dch=CFCBB3&bbch=CFCBB3&cbch=
 
 // size template array
 size_template = new Array();
-size_template[0] = new Array("small ", "&ss=26&ps=d&pf=d&hm=s&tm=13&fhs=80pct&fms=80pct&fcs=80pct&fp=13");
-size_template[1] = new Array("medium", "&ss=36&ps=d&pf=d&hm=s&tm=18&fhs=100pct&fms=100pct&fcs=100pct&fp=18");
-size_template[2] = new Array("large ", "&ss=50&ps=d&pf=d&hm=b&tm=25&fhs=120pct&fms=120pct&fcs=120pct&fp=25");
+size_template[0] = new Array("small ", "&ss=26&ps=d&pf=d&hm=s&tm=13&fhs=80p&fms=80p&fcs=80p&fp=13");
+size_template[1] = new Array("medium", "&ss=36&ps=d&pf=d&hm=s&tm=18&fhs=100p&fms=100p&fcs=100p&fp=18");
+size_template[2] = new Array("large ", "&ss=50&ps=d&pf=d&hm=b&tm=25&fhs=120p&fms=120p&fcs=120p&fp=25");
 
 // layout template array
 layout_template = new Array();
