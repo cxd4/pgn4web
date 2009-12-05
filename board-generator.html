@@ -1747,7 +1747,7 @@ function bug_report() {
   var bug_info = "pgn4web board generator bug report\n\n-------- automatically generated debug info: start --------\n\nURL: " + window.location + "\n\nuser agent: " + window.navigator.userAgent+ "\n\npgn4web version: " + pgn4web_version + "\n\niFrame HTML code:\n\n" + html_code_string + "\n\n-------- automatically generated debug info: end   --------\n\nPlease add below a description of the bug and attach a screenshot if possible.\n\n\n\n\n";
   mailto_link = 'mailto:' + email + '?subject=' + subject + '&body=' + escape(bug_info);
 
-  if (bugWin && !bugWin.closed) { bugWin.close(); };
+  if (bugWin && !bugWin.closed) { bugWin.close(); }
   bugWin = window.open("", "bug_report", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no"); 
   if (bugWin !== null) {
     bugWin.document.open("text/html", "replace");

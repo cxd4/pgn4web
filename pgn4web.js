@@ -103,7 +103,7 @@ function displayHelp(section){
     section = "top"; 
   }
   sectionFlag = "#" + section;
-  if (helpWin && !helpWin.closed) { helpWin.close(); };
+  if (helpWin && !helpWin.closed) { helpWin.close(); }
   helpWin = window.open(detectHelpLocation() + "?" + (Math.floor(900 * Math.random()) + 100) + sectionFlag, "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if ((helpWin !== null) && (window.focus)) { helpWin.window.focus(); }
 }
