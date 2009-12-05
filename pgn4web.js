@@ -49,6 +49,7 @@
  *      <div id="GameBoard"></div>
  *      <div id="GameButtons"></div>
  *      <div id="GameEvent"></div>
+ *      <div id="GameRound"></div>
  *      <div id="GameSite"></div>
  *      <div id="GameDate"></div>
  *      <div id="GameWhite"></div>
@@ -3293,21 +3294,21 @@ function PrintHTML(){
   }
 
   /*
-   * Show the HTML for the Game Site
-   */
-  theObject = document.getElementById("GameSite");
-  if (theObject !== null) {
-    theObject.innerHTML = gameSite[currentGame]; 
-    // theObject.style.whiteSpace = "nowrap";
-  } 
-
-  /*
    * Show the HTML for the Game Round
    */
   theObject = document.getElementById("GameRound");
   if (theObject !== null) {
     theObject.innerHTML = gameRound[currentGame]; 
     theObject.style.whiteSpace = "nowrap";
+  } 
+
+  /*
+   * Show the HTML for the Game Site
+   */
+  theObject = document.getElementById("GameSite");
+  if (theObject !== null) {
+    theObject.innerHTML = gameSite[currentGame]; 
+    // theObject.style.whiteSpace = "nowrap";
   } 
 
   /*
