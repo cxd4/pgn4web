@@ -576,7 +576,7 @@ function generate_html_code() {
   thisBookmarkUrl = thisBookmarkUrl.replace(pgn4web_board_url,pgn4web_generator_url);
   thisBookmarkUrl = thisBookmarkUrl.replace(/&(pe|pt)=.*(&|$)/,"");
   document.getElementById('thisConfigBookmark').href = thisBookmarkUrl;
-  thisBookmarkChecksum = 0;
+  thisBookmarkChecksum = 4564;
   for (ii=0; ii<thisBookmarkUrl.length; ii++) {
     thisBookmarkChecksum = (thisBookmarkChecksum + (thisBookmarkUrl.charCodeAt(ii) * (1 + (ii % 60)))) % 9000;
   }
@@ -600,21 +600,20 @@ function generate_html_code() {
   html_code_status_string += "</td></tr></table>";
   document.getElementById('html_code_status').innerHTML = html_code_status_string;
 
-  if (firstLoad) { firstLoad = false; return; }
-  if (iframeUrl.length <= iframeUrl_max) { location.href='#game_preview'; return; }
-  location.href='#generate'; return;
-}
-
-function createShortUrl() {
-  thisShortUrlChecksum = 0;
+  thisShortUrlChecksum = 767353991;
   for (ii=0; ii<iframeUrl.length; ii++) {
     thisShortUrlChecksum = (thisShortUrlChecksum + (iframeUrl.charCodeAt(ii) * (1 + ((1000 * ii) % 6000000)))) % 900000000;
   }
   thisShortUrlChecksum += 100000000;
   document.getElementById('shorturl_url').value = iframeUrl;
   document.getElementById('shorturl_alias').value = "pgn4web-" + thisShortUrlChecksum;
-  document.forms['shorturl'].submit();
+  document.getElementById('shorturl_link').title = "pgn4web-" + thisShortUrlChecksum;
+
+  if (firstLoad) { firstLoad = false; return; }
+  if (iframeUrl.length <= iframeUrl_max) { location.href='#game_preview'; return; }
+  location.href='#generate'; return;
 }
+
 
 function validate_color(object, name, def) {
   if (object.value.match(/^[0-9A-Fa-f]{6}$/)) {
@@ -1849,7 +1848,7 @@ and install the tool on your own servers
 <div style="font-style: italic; font-weight: bold; text-align: center; margin-bottom:6;">automatically generated HTML code for your web page or blog</div>
 <textarea readonly id="html_code" name="html_code" rows=15 class="textbox" style="background-color: #FFFFCC; scrollbar-base-color: #FFFFCC;"></textarea>
 <div id="html_code_status">&nbsp;</div>
-<div><a class="helptext" href="javascript:createShortUrl();">click here to create a short url for sharing the chessboard via email or instant messaging</a></div>
+<div><a id="shorturl_link" class="helptext" href="javascript:document.forms['shorturl'].submit();">click here to create a short url for sharing the chessboard via email or instant messaging</a></div>
 <p></p>
 <br>
 
