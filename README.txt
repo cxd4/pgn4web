@@ -117,8 +117,8 @@ to any <div> or <span> containers with the following IDs:
   <div id="GameBoard"></div>
   <div id="GameButtons"></div>
   <div id="GameEvent"></div>
-  <div id="GameSite"></div>
   <div id="GameRound"></div>
+  <div id="GameSite"></div>
   <div id="GameDate"></div>
   <div id="GameWhite"></div>
   <div id="GameBlack"></div>
