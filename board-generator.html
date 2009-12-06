@@ -100,7 +100,7 @@ fontCommentsColorHex_default = "808080";
 highlightMoveColorHex_default = "DAF4D7";
 fontHeaderSize_default = "100%";
 fontMovesSize_default = "100%";
-fontCommentsSize_default = "100%";
+fontCommentsSize_default = "moves";
 backgroundColorHex_default = "FFFFFF";
 previewBackgroundColorHex_default = "DDDDDD";
 baseUrl_default = pgn4web_board_url;
@@ -370,7 +370,7 @@ function set_defaults() {
 
   if ((fontCommentsSize_value = percentFixFromUrl( gup("fontCommentsSize") )) === "") { fontCommentsSize_value = fontCommentsSize_default; }
   document.board.fontCommentsSize.value = fontCommentsSize_value;
-  validate_number_percentage(document.board.fontCommentsSize, 'comments font size', fontCommentsSize_default);
+  validate_fontCommentsSize();
 
   if ((backgroundColorHex_value = gup("backgroundColorHex")) === "") {
     if ((backgroundColorHex_value = sex2hex(gup("backgroundColorSex"))) === "") { 
@@ -556,12 +556,12 @@ function calculate_html_code() {
   movesDisplay_value = document.board.movesDisplay.value;
   iframeUrl += "&md=" + movesDisplay_value.charAt(0);
 
-  if ((document.board.buttonsDisplay.value != "hidden") || (document.board.movesDisplay.value != "hidden")) {
+  if ((document.board.headerDisplay.value != "hidden") || (document.board.movesDisplay.value != "hidden")) {
     textMargin_value = parseInt(document.board.textMargin.value, 10);
     iframeUrl += "&tm=" + textMargin_value;
   }
 
-  if (document.board.buttonsDisplay.value != "hidden") {
+  if (document.board.headerDisplay.value != "hidden") {
 		  
     fontHeaderColorHex_value =  document.board.fontHeaderColorHex.value;
     iframeUrl += "&fhcs=" + hex2sex(fontHeaderColorHex_value);
@@ -817,6 +817,19 @@ function validate_number_percentage_blank(object, name, def) {
   if (!(vv = object.value.match(/^([0-9]+)(%$|p$|pct$|px$|$)/))) {
     alert('error: the ' + name + ' must be blank or a non negative number or percentage');
     object.value = def;
+    return false;    
+  } else { 
+    if (vv[2] == "px") { object.value = vv[1]; }
+    return true; 
+  }
+}
+
+function validate_fontCommentsSize() {
+  object = document.getElementById('fontCommentsSize');
+  if ((object.value == "moves") || (object.value == "m")) { return true; }
+  if (!(vv = object.value.match(/^([0-9]+)(%$|p$|pct$|px$|$)/))) {
+    alert('error: the comments font size must be \'moves\' or a non negative number or percentage');
+    object.value = fontCommentsSize_default;
     return false;    
   } else { 
     if (vv[2] == "px") { object.value = vv[1]; }
@@ -2262,9 +2275,9 @@ and install the tool on your own servers
 <span class="helptext"><b>inline</b>: on same line as moves, <b>newline</b>: on separate lines</span>
 <p></p>
 
-<input class="input" type="text" id="fontCommentsSize" name="input" value="" size="9" onChange="validate_number_percentage(this, 'comments font size', fontCommentsSize_default);">
+<input class="input" type="text" id="fontCommentsSize" name="input" value="" size="9" onChange="validate_fontCommentsSize();">
 &nbsp;&nbsp; comments font size &nbsp;&nbsp;
-<span class="helptext">a number or a percentage</span>
+<span class="helptext">a number or a percentage; if set to <b>moves</b> the moves font size is copied</span>
 <p></p>
 
 <input class="color input" type="text" id="fontCommentsColorHex" name="input" value="" size="9" onChange="validate_color(this, 'comments font color', fontCommentsColorHex_default)">

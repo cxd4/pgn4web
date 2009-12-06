@@ -180,9 +180,12 @@ function new_start_pgn4web() {
 
   rule = getCSSRule('.comment');
   rule.style.color = fontCommentsColor;
-  rule.style.fontSize = fontCommentsSize;
-  if (!fontCommentsSize.match(/[^0-9]/)) { fontCommentsSize += 'px'; }
-  rule.style.fontSize = fontCommentsSize;
+  if (fontCommentsSize == 'moves') {
+    rule.style.fontSize = fontMovesSize;
+  } else {
+    if (!fontCommentsSize.match(/[^0-9]/)) { fontCommentsSize += 'px'; }
+    rule.style.fontSize = fontCommentsSize;
+  }
 
   rule = getCSSRule('.nag');
   rule.style.color = fontCommentsColor;
@@ -1041,7 +1044,8 @@ if ((fontMovesColor = gup("fontMovesColorName")) === "") {
   }
 }
 
-if ((fontCommentsSize = percentFixFromUrl( gup("fontCommentsSize") )) === "") { fontCommentsSize = "100%"; }
+if ((fontCommentsSize = percentFixFromUrl( gup("fontCommentsSize") )) === "") { fontCommentsSize = "moves"; }
+if (fontCommentsSize == "m") { fontCommentsSize = "moves"; }
 if ((fontCommentsColor = gup("fontCommentsColorName")) === "") {
   if ((fontCommentsColor = "#" + gup("fontCommentsColorHex")) == "#") {
     if ((fontCommentsColor = "#" + sex2hex(gup("fontCommentsColorSex"))) == "#") { fontCommentsColor = "#808080"; }
@@ -1304,7 +1308,7 @@ if (gup("help") !== "") {
   document.write(" - highlightMoveColorHex = background color hex code to highlight current move, like FF0000, 'none' for no highligh (default DAF4D7)\n");
   document.write(" - fontHeaderSize = header font size, like 20 or 120% (default 100p = 100pct meaning 100%)\n");
   document.write(" - fontMovesSize = header font size, like 20 or 120% (default 100p = 100pct meaning 100%)\n");
-  document.write(" - fontCommentsSize = header font size, like 20 or 120% (default 100p = 100pct meaning 100%)\n");
+  document.write(" - fontCommentsSize = header font size, like 20 or 120%; if set as 'moves' fontMovesSize is copied (default moves)\n");
   document.write("\n");
   document.write(" - backgroundColorHex = page background color hex code, like FF0000\n (default FFFFFF)");
   document.write(" - horizontalLayout = if set true, shows header/moves text at the right of the board, below otherwise (default false)\n");
@@ -1315,8 +1319,8 @@ if (gup("help") !== "") {
   document.write(" - showHeightWidth = if set true, calculates optimal iframe dimensions (default false)\n");
   document.write(" - help = if set true, shows help info (default false)\n");
   document.write("\n");
-  document.write("URL parameters can be shortened: for example squareSize => sq, auto => a, highlightMoveColorHex => hmch\n");
-  document.write("Also values true and false can be shortened: true => t, false => f\n");
+  document.write("URL parameters can be shortened: for example squareSize => sq, autoplayMode => am, highlightMoveColorHex => hmch\n");
+  document.write("Also supplied textual values can be shortened: true => t, false => f\n");
   document.write("\n");
   document.write("Every color parameter can by assigned also by name (like 'red') or using a proprietary encoding in base 64.\n");
   document.write("For instance, the light square color, besides using the lightColorHex parameter can be also assigned using the lightColorName or the lightColorSex parameter.\n");
