@@ -877,6 +877,21 @@ function DecodePGN(bytes) {
 }
 
 
+function sex2hex(sex) {
+  if (sex === "") { return ""; }
+  sex += "";
+  var dec = 0;
+  var cnt;
+  for (cnt=0; cnt<sex.length; cnt++) {
+    dec <<= 6;
+    dec += encodingCharSet.indexOf(sex.charAt(cnt));
+  }
+  var hex = dec.toString(16).toUpperCase() + "";
+  while (hex.length < 6) { hex = "0" + hex; }
+  return hex;
+}
+
+
 function gup( name ){
 
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
@@ -937,13 +952,19 @@ if (highlightMode == "border") {
 } else { borderSize = 0; }
 
 if ((lightColor = gup("lightColorName")) === "") { 
-  if ((lightColor = "#" + gup("lightColorHex")) == "#") { lightColor = "#EFF4EC"; }
+  if ((lightColor = "#" + gup("lightColorHex")) == "#") {
+    if ((lightColor = "#" + sex2hex(gup("lightColorSex"))) == "#") { lightColor = "#EFF4EC"; }
+  }
 }
 if ((darkColor  = gup("darkColorName"))  === "") {
-  if ((darkColor  = "#" + gup("darkColorHex"))  == "#") { darkColor  = "#C6CEC3"; }
+  if ((darkColor  = "#" + gup("darkColorHex"))  == "#") {
+    if ((darkColor  = "#" + sex2hex(gup("darkColorSex")))  == "#") { darkColor  = "#C6CEC3"; }
+  }
 }
 if ((highlightColor  = gup("highlightColorName")) === "") {
-  if ((highlightColor  = "#" + gup("highlightColorHex"))  == "#") { highlightColor  = "#C0FFAD"; }
+  if ((highlightColor  = "#" + gup("highlightColorHex"))  == "#") {
+    if ((highlightColor  = "#" + sex2hex(gup("highlightColorSex")))  == "#") { highlightColor  = "#C0FFAD"; }
+  }
 }
 if ((highlightMode == 'none') || (highlightColor == 'none') || (highlightColor == '#none')) {
   highlightMode = 'none';    
@@ -986,15 +1007,21 @@ if ((pieceFont == "default") || (pieceFont == "d")) {
 SetImagePath(pieceFont + "/" + pieceSize);
 
 if ((boardBorderColor = gup("boardBorderColorName")) === "") {
-  if ((boardBorderColor = "#" + gup("boardBorderColorHex")) == "#") { boardBorderColor = "#000000"; }
+  if ((boardBorderColor = "#" + gup("boardBorderColorHex")) == "#") {
+    if ((boardBorderColor = "#" + sex2hex(gup("boardBorderColorSex"))) == "#") { boardBorderColor = "#000000"; }
+  }
 }
 
 if ((highlightMoveColor  = gup("highlightMoveColorName")) === "") {
-  if ((highlightMoveColor  = "#" + gup("highlightMoveColorHex"))  == "#") { highlightMoveColor  = "#DAF4D7"; }
+  if ((highlightMoveColor  = "#" + gup("highlightMoveColorHex"))  == "#") {
+    if ((highlightMoveColor  = "#" + sex2hex(gup("highlightMoveColorSex")))  == "#") { highlightMoveColor  = "#DAF4D7"; }
+  }
 }
 
 if ((backgroundColor = gup("backgroundColorName")) === "") {
- if ((backgroundColor = "#" + gup("backgroundColorHex")) == "#") { backgroundColor = "#FFFFFF"; }
+ if ((backgroundColor = "#" + gup("backgroundColorHex")) == "#") {
+   if ((backgroundColor = "#" + sex2hex(gup("backgroundColorSex"))) == "#") { backgroundColor = "#FFFFFF"; }
+ }
 }
 
 if ((framePadding = gup("framePadding")) === "") { framePadding = 0;}
@@ -1002,17 +1029,23 @@ else { framePadding = parseInt(framePadding, 10); }
 
 if ((fontHeaderSize = percentFixFromUrl( gup("fontHeaderSize") )) === "") { fontHeaderSize = "100%"; }
 if ((fontHeaderColor = gup("fontHeaderColorName")) === "") {
-  if ((fontHeaderColor = "#" + gup("fontHeaderColorHex")) == "#") { fontHeaderColor = "black"; }
+  if ((fontHeaderColor = "#" + gup("fontHeaderColorHex")) == "#") {
+    if ((fontHeaderColor = "#" + sex2hex(gup("fontHeaderColorSex"))) == "#") { fontHeaderColor = "#000000"; }
+  }
 }
 
 if ((fontMovesSize = percentFixFromUrl( gup("fontMovesSize") )) === "") { fontMovesSize = "100%"; }
 if ((fontMovesColor = gup("fontMovesColorName")) === "") {
-  if ((fontMovesColor = "#" + gup("fontMovesColorHex")) == "#") { fontMovesColor = "black";} 
+  if ((fontMovesColor = "#" + gup("fontMovesColorHex")) == "#") { 
+    if ((fontMovesColor = "#" + sex2hex(gup("fontMovesColorSex"))) == "#") { fontMovesColor = "#000000";} 
+  }
 }
 
 if ((fontCommentsSize = percentFixFromUrl( gup("fontCommentsSize") )) === "") { fontCommentsSize = "100%"; }
 if ((fontCommentsColor = gup("fontCommentsColorName")) === "") {
-  if ((fontCommentsColor = "#" + gup("fontCommentsColorHex")) == "#") { fontCommentsColor = "gray"; }
+  if ((fontCommentsColor = "#" + gup("fontCommentsColorHex")) == "#") {
+    if ((fontCommentsColor = "#" + sex2hex(gup("fontCommentsColorSex"))) == "#") { fontCommentsColor = "#808080"; }
+  }
 }
 
 oldAutoplayMode = "";
@@ -1049,12 +1082,24 @@ if (gup("showButtons") == "true") { showButtons = true; }
 else { showButtons = false; }
 
 if ((controlBackgroundColor = gup("controlBackgroundColorName")) === "") {
-  if ((controlBackgroundColor = "#" + gup("controlBackgroundColorHex")) == "#") { controlBackgroundColor = "default"; }
+  if ((controlBackgroundColor = "#" + gup("controlBackgroundColorHex")) == "#") {
+    controlBackgroundColorSex = gup("controlBackgroundColorSex");
+    if (controlBackgroundColorSex == "default") {
+      controlBackgroundColor = "#default";
+    } else if (controlBackgroundColorSex == "d") {
+      controlBackgroundColor = "#d";
+    } else {
+      if ((controlBackgroundColor = "#" + sex2hex(controlBackgroundColorSex)) == "#") { controlBackgroundColor = "#default"; }
+    }
+  }
 }
 if ((controlBackgroundColor == "d") || (controlBackgroundColor == "#d")) { controlBackgroundColor = "default"; }
+if (controlBackgroundColor == "#default") { controlBackgroundColor = "default"; }
 
 if ((controlTextColor = gup("controlTextColorName")) === "") {
-  if ((controlTextColor = "#" + gup("controlTextColorHex")) == "#") { controlTextColor = "black"; } 
+  if ((controlTextColor = "#" + gup("controlTextColorHex")) == "#") { 
+    if ((controlTextColor = "#" + sex2hex(gup("controlTextColorSex"))) == "#") { controlTextColor = "#000000"; } 
+  }
 }
 
 oldCommentsDisplay = "";
@@ -1201,20 +1246,14 @@ if (gup("help") !== "") {
   document.write(" - pieceSize = size of pieces | default (default selects piece size based on piece size)\n");
   document.write(" - pieceFont = alpha | merida | uscf | random | default - (default selects piece font based on piece size)\n");
   document.write(" - highlightMode = border | square | none (default square)\n");
-  document.write(" - lightColorName = light square color name, like red\n");
-  document.write(" - darkColorName = dark square color name, like red\n");
-  document.write(" - highlightColorName = highlight color name, like red\n");
-  document.write(" - boardBorderColorName = board border color name, like red\n");
   document.write(" - lightColorHex = light square color hex code, like FF0000 (default EFF4EC)\n");
   document.write(" - darkColorHex = dark square color hex code, like FF0000 (default C6CEC3)\n");
   document.write(" - highlightColorHex = highlight color hex code, like FF0000 (default DAF4D7)\n");
   document.write(" - boardBorderColorHex = board border color hex code, like FF0000 (default 000000)\n");
   document.write("\n");
   document.write(" - showButtons = if set true, prints control buttons (default false)\n");
-  document.write(" - controlBackgroundColorName = control buttons background color name, like red, or 'default' (default 'default')\n");
-  document.write(" - controlBackgroundColorHex = control buttons background color hex code, like FF0000, or 'default'\n");
-  document.write(" - controlTextColorName = control buttons text color name, like red (default black)\n");
-  document.write(" - controlTextColorHex = control buttons text color hex code, like FF0000\n");
+  document.write(" - controlBackgroundColorHex = control buttons background color hex code, like FF0000, or 'default' (default 'default')\n");
+  document.write(" - controlTextColorHex = control buttons text color hex code, like FF0000 (default 000000)\n");
   document.write("\n");
   document.write(" - showHeader = if set true, displays game header text (default false)\n");
   document.write(" - showMoves = if set true, displays moves text (default false)\n");
@@ -1222,20 +1261,15 @@ if (gup("help") !== "") {
   document.write(" - textWidth = set width of the textual section, header and/or moves text, might be ignored if frameWidth is set (default 100%)\n");
   document.write(" - textMargin = set left/right margin width of the  textual section, header and/or moves text (default 0)\n");
   document.write(" - commentsDisplay = hidden | inline (same line as moves) | newline (new lines) - (default inline)\n");
-  document.write(" - fontHeaderColorName = header color name, like red (default black)\n");
-  document.write(" - fontMovesColorName = moves color name, like red (default black)\n");
-  document.write(" - fontCommentsColorName = comments color name, like red (default gray)\n");
-  document.write(" - highlightMoveColorName = background color name to highlight current move, like red, 'none' for no highligh\n");
-  document.write(" - fontHeaderColorHex = header color hex code, like FF0000\n");
-  document.write(" - fontMovesColorHex = moves color hex code, like FF0000\n");
-  document.write(" - fontCommentsColorHex = commentss color hex code, like FF0000\n");
+  document.write(" - fontHeaderColorHex = header color hex code, like FF0000 (default 000000)\n");
+  document.write(" - fontMovesColorHex = moves color hex code, like FF0000 (default 000000)\n");
+  document.write(" - fontCommentsColorHex = commentss color hex code, like FF0000 (default 808080)\n");
   document.write(" - highlightMoveColorHex = background color hex code to highlight current move, like FF0000, 'none' for no highligh (default DAF4D7)\n");
   document.write(" - fontHeaderSize = header font size, like 20 or 120% (default 100p = 100pct meaning 100%)\n");
   document.write(" - fontMovesSize = header font size, like 20 or 120% (default 100p = 100pct meaning 100%)\n");
   document.write(" - fontCommentsSize = header font size, like 20 or 120% (default 100p = 100pct meaning 100%)\n");
   document.write("\n");
-  document.write(" - backgroundColorName = page background color name, like red\n");
-  document.write(" - backgroundColorHex = page background color hex code, like FF0000\n");
+  document.write(" - backgroundColorHex = page background color hex code, like FF0000\n (default FFFFFF)");
   document.write(" - horizontalLayout = if set true, shows header/moves text at the right of the board, below otherwise (default false)\n");
   document.write(" - frameHeight = set height of the overall frame, as a number or as 'board' overriding textHeight (default not set)\n");
   document.write(" - frameWidth = set width of the overall frame, as a number, as 'board' or as 'page', overriding textWidth (default not set)\n");
@@ -1246,6 +1280,11 @@ if (gup("help") !== "") {
   document.write("\n");
   document.write("URL parameters can be shortened: for example squareSize => sq, auto => a, highlightMoveColorHex => hmch\n");
   document.write("Also values true and false can be shortened: true => t, false => f\n");
+  document.write("\n");
+  document.write("Every color parameter can by assigned also by name (like 'red') or using a proprietary encoding in base 64.\n");
+  document.write("For instance, the light square color, besides using the lightColorHex parameter can be also assigned using the lightColorName or the lightColorSex parameter.\n");
+  document.write("The latter is proprietary and used by the board generator tool. \n");
+  document.write("\n");
   document.write("</PRE>\n<HR>\n");
 }
 

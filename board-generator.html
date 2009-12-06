@@ -180,15 +180,27 @@ function set_defaults() {
   }
   // value validation done later in validate_ss_ps_hm();
 
-  if ((lightColorHex_value = gup("lightColorHex")) === "") { lightColorHex_value = lightColorHex_default; }
+  if ((lightColorHex_value = gup("lightColorHex")) === "") {
+    if ((lightColorHex_value = sex2hex(gup("lightColorSex"))) === "") {
+      lightColorHex_value = lightColorHex_default;
+    }
+  }
   document.board.lightColorHex.value = lightColorHex_value;
   validate_color(document.board.lightColorHex, 'light squares color', lightColorHex_default);
 
-  if ((darkColorHex_value = gup("darkColorHex")) === "") { darkColorHex_value = darkColorHex_default; }
+  if ((darkColorHex_value = gup("darkColorHex")) === "") {
+    if ((darkColorHex_value = sex2hex(gup("darkColorSex"))) === "") {
+      darkColorHex_value = darkColorHex_default;
+    }
+  }
   document.board.darkColorHex.value = darkColorHex_value;
   validate_color(document.board.darkColorHex, 'dark squares color', darkColorHex_default);
 
-  if ((boardBorderColorHex_value = gup("boardBorderColorHex")) === "") { boardBorderColorHex_value = boardBorderColorHex_default; }
+  if ((boardBorderColorHex_value = gup("boardBorderColorHex")) === "") {
+    if ((boardBorderColorHex_value = sex2hex(gup("boardBorderColorSex"))) === "") { 
+      boardBorderColorHex_value = boardBorderColorHex_default;
+    }
+  }
   document.board.boardBorderColorHex.value = boardBorderColorHex_value;
   validate_color(document.board.boardBorderColorHex, 'board border color', boardBorderColorHex_default);
 
@@ -204,19 +216,36 @@ function set_defaults() {
   }
   validate_ss_ps_hm();
 
-  if ((highlightColorHex_value = gup("highlightColorHex")) === "") { highlightColorHex_value = highlightColorHex_default; }
+  if ((highlightColorHex_value = gup("highlightColorHex")) === "") { 
+    if ((highlightColorHex_value = sex2hex(gup("highlightColorSex"))) === "") { 
+      highlightColorHex_value = highlightColorHex_default; 
+    }
+  }
   document.board.highlightColorHex.value = highlightColorHex_value;
   validate_color_none(document.board.highlightColorHex, 'highlight squares color', highlightColorHex_default);
 
   if ((showButtons_value = gup("showButtons")) === "") { showButtons_value = showButtons_default; }
   document.board.showButtons.checked = (showButtons_value == "t");
 
-  if ((controlBackgroundColorHex_value = gup("controlBackgroundColorHex")) === "") { controlBackgroundColorHex_value = controlBackgroundColorHex_default; }
+  if ((controlBackgroundColorHex_value = gup("controlBackgroundColorHex")) === "") {
+    controlBackgroundColorSex = gup("controlBackgroundColorSex");
+    if (controlBackgroundColorSex == 'default') {
+      controlBackgroundColorHex_value = 'default';
+    } else if (controlBackgroundColorSex == 'd') {
+      controlBackgroundColorHex_value = 'd';      
+    } else if ((controlBackgroundColorHex_value = sex2hex(controlBackgroundColorSex)) === "") { 
+      controlBackgroundColorHex_value = controlBackgroundColorHex_default; 
+    }
+  }
   if (controlBackgroundColorHex_value == 'd') { controlBackgroundColorHex_value = 'default'; }
   document.board.controlBackgroundColorHex.value = controlBackgroundColorHex_value;
   validate_color_default(document.board.controlBackgroundColorHex, 'control buttons background color', 'default');
 
-  if ((controlTextColorHex_value = gup("controlTextColorHex")) === "") { controlTextColorHex_value = controlTextColorHex_default; }
+  if ((controlTextColorHex_value = gup("controlTextColorHex")) === "") { 
+    if ((controlTextColorHex_value = sex2hex(gup("controlTextColorSex"))) === "") { 
+      controlTextColorHex_value = controlTextColorHex_default; 
+    }
+  }
   document.board.controlTextColorHex.value = controlTextColorHex_value;
   validate_color(document.board.controlTextColorHex, 'control buttons text color', controlTextColorHex_default);
 
@@ -250,19 +279,35 @@ function set_defaults() {
     document.board.commentsDisplay.value = commentsDisplay_value = commentsDisplay_default;
   }
 
-  if ((fontHeaderColorHex_value = gup("fontHeaderColorHex")) === "") { fontHeaderColorHex_value = fontHeaderColorHex_default; }
+  if ((fontHeaderColorHex_value = gup("fontHeaderColorHex")) === "") { 
+    if ((fontHeaderColorHex_value = sex2hex(gup("fontHeaderColorSex"))) === "") { 
+      fontHeaderColorHex_value = fontHeaderColorHex_default; 
+    }
+  }
   document.board.fontHeaderColorHex.value = fontHeaderColorHex_value;
   validate_color(document.board.fontHeaderColorHex, 'header font color', fontHeaderColorHex_default);
 
-  if ((fontMovesColorHex_value = gup("fontMovesColorHex")) === "") { fontMovesColorHex_value = fontMovesColorHex_default; }
+  if ((fontMovesColorHex_value = gup("fontMovesColorHex")) === "") {
+    if ((fontMovesColorHex_value = sex2hex(gup("fontMovesColorSex"))) === "") { 
+      fontMovesColorHex_value = fontMovesColorHex_default;
+    }
+  }
   document.board.fontMovesColorHex.value = fontMovesColorHex_value;
   validate_color(document.board.fontMovesColorHex, 'moves font color', fontMovesColorHex_default);
 
-  if ((fontCommentsColorHex_value = gup("fontCommentsColorHex")) === "") { fontCommentsColorHex_value = fontCommentsColorHex_default; }
+  if ((fontCommentsColorHex_value = gup("fontCommentsColorHex")) === "") {
+    if ((fontCommentsColorHex_value = sex2hex(gup("fontCommentsColorSex"))) === "") { 
+      fontCommentsColorHex_value = fontCommentsColorHex_default;
+    }
+  }
   document.board.fontCommentsColorHex.value = fontCommentsColorHex_value;
   validate_color(document.board.fontCommentsColorHex, 'comments font color', fontCommentsColorHex_default);
 
-  if ((highlightMoveColorHex_value = gup("highlightMoveColorHex")) === "") { highlightMoveColorHex_value = highlightMoveColorHex_default; }
+  if ((highlightMoveColorHex_value = gup("highlightMoveColorHex")) === "") {
+    if ((highlightMoveColorHex_value = sex2hex(gup("highlightMoveColorSex"))) === "") { 
+      highlightMoveColorHex_value = highlightMoveColorHex_default;
+    }
+  }
   document.board.highlightMoveColorHex.value = highlightMoveColorHex_value;
   validate_color(document.board.highlightMoveColorHex, 'highlight move color', highlightMoveColorHex_default);
 
@@ -278,13 +323,13 @@ function set_defaults() {
   document.board.fontCommentsSize.value = fontCommentsSize_value;
   validate_number_percentage(document.board.fontCommentsSize, 'comments font size', fontCommentsSize_default);
 
-  if ((backgroundColorHex_value = gup("backgroundColorHex")) === "") { backgroundColorHex_value = backgroundColorHex_default; }
+  if ((backgroundColorHex_value = gup("backgroundColorHex")) === "") {
+    if ((backgroundColorHex_value = sex2hex(gup("backgroundColorSex"))) === "") { 
+      backgroundColorHex_value = backgroundColorHex_default; 
+    }
+  }
   document.board.backgroundColorHex.value = backgroundColorHex_value;
   validate_color(document.board.backgroundColorHex, 'background color', backgroundColorHex_default);
-
-  if ((previewBackgroundColorHex_value = gup("previewBackgroundColorHex")) === "") { previewBackgroundColorHex_value = previewBackgroundColorHex_default; }
-  document.board.previewBackgroundColorHex.value = previewBackgroundColorHex_value;
-  validate_color(document.board.previewBackgroundColorHex, 'preview background color', previewBackgroundColorHex_default);
 
   if ((horizontalLayout_value = gup("horizontalLayout")) === "") { horizontalLayout_value = horizontalLayout_default; }
   if (horizontalLayout_value == "t") { document.board.horizontalLayout.value = "t"; }
@@ -304,6 +349,14 @@ function set_defaults() {
   if ((framePadding_value = gup("framePadding")) === "") { framePadding_value = framePadding_default; }
   document.board.framePadding.value = framePadding_value;
   validate_number(document.board.framePadding, 'frame padding', framePadding_default);
+
+  if ((previewBackgroundColorHex_value = gup("previewBackgroundColorHex")) === "") {
+    if ((previewBackgroundColorHex_value = sex2hex(gup("previewBackgroundColorSex"))) === "") { 
+      previewBackgroundColorHex_value = previewBackgroundColorHex_default;
+    }
+  }
+  document.board.previewBackgroundColorHex.value = previewBackgroundColorHex_value;
+  validate_color(document.board.previewBackgroundColorHex, 'preview background color', previewBackgroundColorHex_default);
 
   if ((baseUrl_value = gup("baseUrl")) === "") { baseUrl_value = baseUrl_default; }
   document.board.baseUrl.value = baseUrl_value;
@@ -422,21 +475,25 @@ function calculate_html_code() {
   }
 
   lightColorHex_value = document.board.lightColorHex.value; 
+  iframeUrl += "&lcs=" + hex2sex(lightColorHex_value);
   darkColorHex_value = document.board.darkColorHex.value; 
+  iframeUrl += "&dcs=" + hex2sex(darkColorHex_value);
   boardBorderColorHex_value = document.board.boardBorderColorHex.value; 
-  iframeUrl += "&lch=" + lightColorHex_value + "&dch=" + darkColorHex_value + "&bbch=" + boardBorderColorHex_value;
+  iframeUrl += "&bbcs=" + hex2sex(boardBorderColorHex_value);
 
   highlightMode_value = document.board.highlightMode.value; 
+  iframeUrl += "&hm=" + highlightMode_value.charAt(0); 
   highlightColorHex_value = document.board.highlightColorHex.value; 
-  iframeUrl += "&hm=" + highlightMode_value.charAt(0) + "&hch=" + highlightColorHex_value;
+  iframeUrl += "&hcs=" + hex2sex(highlightColorHex_value);
 
   if (document.board.showButtons.checked) { showButtons_value = "t"; } else { showButtons_value = "f"; }
   iframeUrl += "&sb=" + showButtons_value;
 
   if ((document.board.showButtons.checked) && (document.board.controlBackgroundColorHex.value != "default")) {
     controlBackgroundColorHex_value = document.board.controlBackgroundColorHex.value; 
+    iframeUrl += "&cbcs=" + hex2sex(controlBackgroundColorHex_value);
     controlTextColorHex_value = document.board.controlTextColorHex.value;
-    iframeUrl += "&cbch=" + controlBackgroundColorHex_value + "&ctch=" + controlTextColorHex_value;
+    iframeUrl += "&ctcs=" + hex2sex(controlTextColorHex_value);
   }
 
   if (document.board.showHeader.checked) { showHeader_value = "t"; } else { showHeader_value = "f"; }
@@ -451,7 +508,7 @@ function calculate_html_code() {
   if (document.board.showHeader.checked) {
 		  
     fontHeaderColorHex_value =  document.board.fontHeaderColorHex.value;
-    iframeUrl += "&fhch=" + fontHeaderColorHex_value;
+    iframeUrl += "&fhcs=" + hex2sex(fontHeaderColorHex_value);
 
     fontHeaderSize_value = document.board.fontHeaderSize.value;
     iframeUrl += "&fhs=" + percentFixForUrl( fontHeaderSize_value );
@@ -461,9 +518,11 @@ function calculate_html_code() {
   if (document.board.showMoves.checked) {
 
     fontMovesColorHex_value =  document.board.fontMovesColorHex.value;
+    iframeUrl += "&fmcs=" + hex2sex(fontMovesColorHex_value);
     fontCommentsColorHex_value =  document.board.fontCommentsColorHex.value;
+    iframeUrl += "&fccs=" + hex2sex(fontCommentsColorHex_value);
     highlightMoveColorHex_value =  document.board.highlightMoveColorHex.value;
-    iframeUrl += "&fmch=" + fontMovesColorHex_value + "&fcch=" + fontCommentsColorHex_value + "&hmch=" + highlightMoveColorHex_value;
+    iframeUrl += "&hmcs=" + hex2sex(highlightMoveColorHex_value);
 
     fontMovesSize_value = document.board.fontMovesSize.value;
     fontCommentsSize_value = document.board.fontCommentsSize.value;
@@ -475,7 +534,7 @@ function calculate_html_code() {
   } 
 
   backgroundColorHex_value = document.board.backgroundColorHex.value;
-  iframeUrl += "&bch=" + backgroundColorHex_value;
+  iframeUrl += "&bcs=" + hex2sex(backgroundColorHex_value);
 
   // this does not go in the iframe
   previewBackgroundColorHex_value = document.board.previewBackgroundColorHex.value;
@@ -575,6 +634,19 @@ function generate_html_code() {
   thisBookmarkUrl = iframeUrl;
   thisBookmarkUrl = thisBookmarkUrl.replace(pgn4web_board_url,pgn4web_generator_url);
   thisBookmarkUrl = thisBookmarkUrl.replace(/&(pe|pt)=.*(&|$)/,"");
+
+  if (document.getElementById('encodePgn').checked) { encodePgn_value = "t"; }
+  else { encodePgn_value = "f"; }
+  if (encodePgn_value != encodePgn_default) { thisBookmarkUrl += "&ep=" + encodePgn_value; }
+
+  baseUrl_value = document.board.baseUrl.value;
+  if (baseUrl_value != baseUrl_default) { thisBookmarkUrl += "&bu=" + baseUrl_value; }
+
+  previewBackgroundColorHex_value = document.board.previewBackgroundColorHex.value;
+  if (previewBackgroundColorHex_value != previewBackgroundColorHex_default) { 
+    thisBookmarkUrl += "&pbcs=" + hex2sex(previewBackgroundColorHex_value);
+  }
+
   document.getElementById('thisConfigBookmark').href = thisBookmarkUrl;
   thisBookmarkChecksum = 4564;
   for (ii=0; ii<thisBookmarkUrl.length; ii++) {
@@ -1706,6 +1778,32 @@ function DecodePGN(bytes) {
 }
 
 
+function sex2hex(sex) {
+  if (!sex.match(/^[0-9a-zA-z_\$]{4}$/)) { return ""; }
+  sex += "";
+  var dec = 0;
+  var cnt;
+  for (cnt=0; cnt<sex.length; cnt++) {
+    dec <<= 6;
+    dec += encodingCharSet.indexOf(sex.charAt(cnt));
+  }
+  var hex = dec.toString(16).toUpperCase() + "";
+  while (hex.length < 6) { hex = "0" + hex; }
+  return hex;
+}
+
+function hex2sex(hex) {
+  var sex = "";
+  dec = parseInt(hex,16);
+  while (dec>0) {
+    sex = encodingCharSet.charAt(dec % 64) + sex;
+    dec >>= 6;
+  }
+  while (sex.length < 4) { sex = encodingCharSet.charAt(0) + sex; }
+  return sex;
+}
+
+
 function gup( name ){
 
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
@@ -1885,10 +1983,15 @@ and install the tool on your own servers
 </tr></table>
 <p></p>
 
-<input class="checkbox" type="checkbox" id="encodePgn" name="checkbox" value="encodePgn" />
+<!--
+
+<input class="checkbox" type="checkbox" id="encodePgn" name="checkbox" />
 &nbsp;&nbsp; encode PGN text &nbsp;&nbsp;
 <span class="helptext">encode the PGN text to a URL friendly format (this should be normally enabled)</span>
 <p></p>
+
+-->
+<input type="hidden" id="encodePgn" />
 
 <div style="height: 3em">&nbsp;</div>
 <script type="text/javascript">print_menu("templates", 3, "templates");</script>
@@ -2029,7 +2132,7 @@ and install the tool on your own servers
 <p></p>
 <br>
 
-<input class"checkbox" type="checkbox" id="showButtons" name="checkbox" value="showButtons" onChange="update_controls()">
+<input class"checkbox" type="checkbox" id="showButtons" name="checkbox" onChange="update_controls()">
 &nbsp;&nbsp; show control buttons &nbsp;&nbsp;
 <span class="helptext">control buttons might not be necessary, just try clicking the G8 square</span>
 <p></p>
@@ -2052,7 +2155,7 @@ and install the tool on your own servers
 <p></p>
 <br>
 
-<input class="checkbox" type="checkbox" id="showHeader" name="checkbox" value="showHeader" onChange="update_controls()">
+<input class="checkbox" type="checkbox" id="showHeader" name="checkbox" onChange="update_controls()">
 &nbsp;&nbsp; <b>show game header</b> &nbsp;&nbsp;
 <p></p>
 
@@ -2066,7 +2169,7 @@ and install the tool on your own servers
 <p></p>
 <br>
 
-<input class="checkbox" type="checkbox" id="showMoves" name="checkbox" value="showMoves" onChange="update_controls()">
+<input class="checkbox" type="checkbox" id="showMoves" name="checkbox" onChange="update_controls()">
 &nbsp;&nbsp; <b>show game moves</b> &nbsp;&nbsp;
 <p></p>
 
@@ -2150,7 +2253,7 @@ base URL: &nbsp;&nbsp;
 
 -->
 
-<input type="hidden" id="baseUrl" name="baseUrl" value="" style="width: 100%" />
+<input type="hidden" id="baseUrl" value="" />
 
 <script type="text/javascript">
 
