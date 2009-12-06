@@ -1403,7 +1403,7 @@ function display_header_moves() {
 
     document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
     document.write("<td align=center>");
-    document.write("<div class='header' style='white-space: nowrap; margin-left: "  + textMargin + 
+    document.write("<div id=playersDetails class='header' style='white-space: nowrap; margin-left: "  + textMargin + 
                    "; margin-right: " + textMargin + ";'>");
     document.write("<span id=GameWhite></span><span id=whiteBlackSpacer></span><span id=GameBlack></span><span id=blackResultSpacer></span><span id=GameResult></span>");
     document.write("</div>");
@@ -1489,6 +1489,21 @@ function customFunctionOnPgnGameLoad() {
     }
   }
 
+  theObject = document.getElementById("playersDetails");
+  if (theObject) {
+    if ( ( ((gameWhite[currentGame] != undefined) && (gameWhite[currentGame] != ""))   ||
+           ((gameBlack[currentGame] != undefined) && (gameBlack[currentGame] != ""))   ||
+           ((gameResult[currentGame] != undefined) && (gameResult[currentGame] != "")) )  && 
+         ( ((gameEvent[currentGame] != undefined) && (gameEvent[currentGame] != ""))   ||
+	   ((gameRound[currentGame] != undefined) && (gameRound[currentGame] != "") && 
+	    (gameRound[currentGame] != "?") && (gameRound[currentGame] != "*"))        ||
+	   ((gameSite[currentGame] != undefined) && (gameSite[currentGame] != ""))     ||
+           ((gameDate[currentGame] != undefined) && (gameDate[currentGame] != "")) ) ) {
+      theObject.style.paddingBottom = "0.33em";
+    } else {
+      theObject.style.paddingBottom = "";
+    }
+  }
 }
 
 
