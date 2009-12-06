@@ -83,12 +83,12 @@ darkColorHex_default = "C6CEC3";
 boardBorderColorHex_default = "000000";
 highlightMode_default = "square";
 highlightColorHex_default = "DAF4D7";
-showButtons_default = "f";
-controlBackgroundColorHex_default = "default";
+buttonsDisplay_default = "hidden";
+controlBackgroundColorHex_default = "EFF4EC";
 controlTextColorHex_default = "000000";
 textMargin_default = 0;
-showHeader_default = "t";
-showMoves_default = "t";
+headerDisplay_default = "justified";
+movesDisplay_default = "justified";
 horizontalLayout_default = "f";
 frameHeight_default = "";
 frameWidth_default = "";
@@ -224,8 +224,25 @@ function set_defaults() {
   document.board.highlightColorHex.value = highlightColorHex_value;
   validate_color_none(document.board.highlightColorHex, 'highlight squares color', highlightColorHex_default);
 
-  if ((showButtons_value = gup("showButtons")) === "") { showButtons_value = showButtons_default; }
-  document.board.showButtons.checked = (showButtons_value == "t");
+  oldButtonsDisplay_value = "";
+  //kept for backward compatibility
+  if (gup("showButtons") == "t") { oldButtonsDisplay_value = "custom"; }
+  //kept for backward compatibility
+  if (gup("showButtons") == "f") { oldButtonsDisplay_value = "hidden"; }
+
+  if ((buttonsDisplay_value = gup("buttonsDisplay")) === "") {
+    if (oldButtonsDisplay_value === "") { buttonsDisplay_value = buttonsDisplay_default; }
+    else { buttonsDisplay_value = oldButtonsDisplay_value; }
+  }
+  if (buttonsDisplay_value == "c") { buttonsDisplay_value = "custom"; }
+  if (buttonsDisplay_value == "h") { buttonsDisplay_value = "hidden"; }
+  if (buttonsDisplay_value == "s") { buttonsDisplay_value = "standard"; }
+  document.board.buttonsDisplay.value = buttonsDisplay_value;
+  if (!((buttonsDisplay_value == "custom") || (buttonsDisplay_value == "hidden") ||
+        (buttonsDisplay_value == "standard")) ) {
+    alert("error: buttons display must me either 'custom', 'hidden', 'standard' or their initials");
+    document.board.buttonsDisplay.value = buttonsDisplay_value = buttonsDisplay_default;
+  }
 
   if ((controlBackgroundColorHex_value = gup("controlBackgroundColorHex")) === "") {
     controlBackgroundColorSex = gup("controlBackgroundColorSex");
@@ -253,11 +270,43 @@ function set_defaults() {
   document.getElementById('textMargin').value = textMargin_value;
   validate_number(document.getElementById('textMargin'), 'text margin', textMargin_default);
 
-  if ((showHeader_value = gup("showHeader")) === "") { showHeader_value = showHeader_default; }
-  document.board.showHeader.checked = (showHeader_value == "t");
+  oldHeaderDisplay_value = "";
+  //kept for backward compatibility
+  if (gup("showHeader") == "t") { oldHeaderDisplay_value = "justified"; }
+  //kept for backward compatibility
+  if (gup("showHeader") == "f") { oldHeaderDisplay_value = "hidden"; }
 
-  if ((showMoves_value = gup("showMoves")) === "") { showMoves_value = showMoves_default; }
-  document.board.showMoves.checked = (showMoves_value == "t");
+  if ((headerDisplay_value = gup("headerDisplay")) === "") {
+    if (oldHeaderDisplay_value === "") { headerDisplay_value = headerDisplay_default; }
+    else { headerDisplay_value = oldHeaderDisplay_value; }
+  }
+  if (headerDisplay_value == "c") { headerDisplay_value = "centered"; }
+  if (headerDisplay_value == "h") { headerDisplay_value = "hidden"; }
+  if (headerDisplay_value == "j") { headerDisplay_value = "justified"; }
+  document.board.headerDisplay.value = headerDisplay_value;
+  if (!((headerDisplay_value == "centered") || (headerDisplay_value == "hidden") ||
+        (headerDisplay_value == "justified")) ) {
+    alert("error: header display must me either 'centered', 'hidden', 'justified' or their initials");
+    document.board.headerDisplay.value = headerDisplay_value = headerDisplay_default;
+  }
+
+  oldMovesDisplay_value = "";
+  //kept for backward compatibility
+  if (gup("showMoves") === "t") { oldMovesDisplay_value = "justified"; }
+  //kept for backward compatibility
+  if (gup("showMoves") === "f") { oldMovesDisplay_value = "hidden"; }
+
+  if ((movesDisplay_value = gup("movesDisplay")) === "") {
+    if (oldMovesDisplay_value === "") { movesDisplay_value = movesDisplay_default; }
+    else { movesDisplay_value = oldMovesDisplay_value; }
+  }
+  if (movesDisplay_value == "h") { movesDisplay_value = "hidden"; }
+  if (movesDisplay_value == "j") { movesDisplay_value = "justified"; }
+  document.board.movesDisplay.value = movesDisplay_value;
+  if (!((movesDisplay_value == "hidden") || (movesDisplay_value == "justified")) ) {
+    alert("error: moves display must me either 'hidden', 'justified' or their initials");
+    document.board.movesDisplay.value = movesDisplay_value = movesDisplay_default;
+  }
 
   oldCommentsDisplay_value = "";
   //kept for backward compatibility
@@ -376,17 +425,19 @@ function update_controls() {
 
 function update_disabled_controls() {
   document.board.highlightColorHex.disabled = (document.board.highlightMode.value == 'none');
-  document.board.controlBackgroundColorHex.disabled = (!document.board.showButtons.checked);
-  document.board.controlTextColorHex.disabled = ((!document.board.showButtons.checked) || (document.board.controlBackgroundColorHex.value == 'default'));
-  document.board.textMargin.disabled = (!document.board.showMoves.checked && !document.board.showHeader.checked);
-  document.board.commentsDisplay.disabled = !document.board.showMoves.checked;
-  document.board.fontHeaderColorHex.disabled = !document.board.showHeader.checked;
-  document.board.fontMovesColorHex.disabled = !document.board.showMoves.checked;
-  document.board.fontCommentsColorHex.disabled = !document.board.showMoves.checked;
-  document.board.highlightMoveColorHex.disabled = !document.board.showMoves.checked;
-  document.board.fontHeaderSize.disabled = !document.board.showHeader.checked;
-  document.board.fontMovesSize.disabled = !document.board.showMoves.checked;
-  document.board.fontCommentsSize.disabled = !document.board.showMoves.checked;
+  document.board.controlBackgroundColorHex.disabled = (document.board.buttonsDisplay.value != 'custom');
+  document.board.controlTextColorHex.disabled = ((document.board.buttonsDisplay.value != 'custom') || 
+                                                 (document.board.controlBackgroundColorHex.value == 'default'));
+  document.board.textMargin.disabled = ((document.board.movesDisplay.value == 'hidden') &&
+                                        (document.board.headerDisplay.value == 'hidden'));
+  document.board.commentsDisplay.disabled = (document.board.movesDisplay.value == 'hidden');
+  document.board.fontHeaderColorHex.disabled = (document.board.headerDisplay.value == 'hidden');
+  document.board.fontMovesColorHex.disabled = (document.board.movesDisplay.value == 'hidden');
+  document.board.fontCommentsColorHex.disabled = (document.board.movesDisplay.value == 'hidden');
+  document.board.highlightMoveColorHex.disabled = (document.board.movesDisplay.value == 'hidden');
+  document.board.fontHeaderSize.disabled = (document.board.headerDisplay.value == 'hidden');
+  document.board.fontMovesSize.disabled = (document.board.movesDisplay.value == 'hidden');
+  document.board.fontCommentsSize.disabled = (document.board.movesDisplay.value == 'hidden');
 }
 
 function update_suggested_iframe_dimensions() {
@@ -394,7 +445,7 @@ function update_suggested_iframe_dimensions() {
   boardWidth = 8 * document.board.squareSize.value + 6; 
   estimated_boardHeight = boardWidth; 
   
-  if (document.board.showButtons.checked) {
+  if (document.board.buttonsDisplay.value != 'hidden') {
     if (document.board.controlBackgroundColorHex.value != "default") {
       // in this case both control size and control padding grow with squareSize  
       estimated_boardHeight += (20 + 2 * parseInt(document.board.squareSize.value, 10));
@@ -416,9 +467,13 @@ function update_suggested_iframe_dimensions() {
   } else {
     suggested_frameWidth = boardWidth;
     suggested_frameHeight = estimated_boardHeight;
-    if (document.board.showHeader.checked) { suggested_frameHeight += Math.max(100, Math.round(0.2 * boardWidth)); }
-    if (document.board.showMoves.checked) { suggested_frameHeight += Math.max(300, Math.round(0.8 * boardWidth)); }
-    if (document.board.showHeader.checked || document.board.showMoves.checked) {
+    if (document.board.headerDisplay.value != 'hidden') {
+      suggested_frameHeight += Math.max(100, Math.round(0.2 * boardWidth));
+    }
+    if (document.board.movesDisplay.value != 'hidden') {
+      suggested_frameHeight += Math.max(300, Math.round(0.8 * boardWidth));
+    }
+    if ((document.board.headerDisplay.value != 'hidden') || (document.board.movesDisplay.value != 'hidden')) {
       suggested_frameWidth = Math.max(400, Math.round(1.5 * boardWidth));
     }
     suggested_frameWidth += 2 * parseInt(document.board.framePadding.value, 10);
@@ -486,26 +541,27 @@ function calculate_html_code() {
   highlightColorHex_value = document.board.highlightColorHex.value; 
   iframeUrl += "&hcs=" + hex2sex(highlightColorHex_value);
 
-  if (document.board.showButtons.checked) { showButtons_value = "t"; } else { showButtons_value = "f"; }
-  iframeUrl += "&sb=" + showButtons_value;
+  buttonsDisplay_value = document.board.buttonsDisplay.value;
+  iframeUrl += "&bd=" + buttonsDisplay_value.charAt(0);
 
-  if ((document.board.showButtons.checked) && (document.board.controlBackgroundColorHex.value != "default")) {
+  if ((document.board.buttonsDisplay.value != "hidden") && (document.board.controlBackgroundColorHex.value != "default")) {
     controlBackgroundColorHex_value = document.board.controlBackgroundColorHex.value; 
     iframeUrl += "&cbcs=" + hex2sex(controlBackgroundColorHex_value);
     controlTextColorHex_value = document.board.controlTextColorHex.value;
     iframeUrl += "&ctcs=" + hex2sex(controlTextColorHex_value);
   }
 
-  if (document.board.showHeader.checked) { showHeader_value = "t"; } else { showHeader_value = "f"; }
-  if (document.board.showMoves.checked) { showMoves_value = "t"; } else { showMoves_value = "f"; }
-  iframeUrl += "&sh=" + showHeader_value + "&sm=" + showMoves_value;
+  headerDisplay_value = document.board.headerDisplay.value;
+  iframeUrl += "&hd=" + headerDisplay_value.charAt(0);
+  movesDisplay_value = document.board.movesDisplay.value;
+  iframeUrl += "&md=" + movesDisplay_value.charAt(0);
 
-  if (document.board.showHeader.checked || document.board.showMoves.checked) {
+  if ((document.board.buttonsDisplay.value != "hidden") || (document.board.movesDisplay.value != "hidden")) {
     textMargin_value = parseInt(document.board.textMargin.value, 10);
     iframeUrl += "&tm=" + textMargin_value;
   }
 
-  if (document.board.showHeader.checked) {
+  if (document.board.buttonsDisplay.value != "hidden") {
 		  
     fontHeaderColorHex_value =  document.board.fontHeaderColorHex.value;
     iframeUrl += "&fhcs=" + hex2sex(fontHeaderColorHex_value);
@@ -515,7 +571,7 @@ function calculate_html_code() {
 
   }
 		  
-  if (document.board.showMoves.checked) {
+  if (document.board.movesDisplay.value != "hidden") {
 
     fontMovesColorHex_value =  document.board.fontMovesColorHex.value;
     iframeUrl += "&fmcs=" + hex2sex(fontMovesColorHex_value);
@@ -850,7 +906,7 @@ function add_option(selectObject, newText, newValue) {
 }
 
 // template patterns
-common_template = "?am=l&d=3000&sb=t&sh=t&sm=t&cd=i&fh=&fw=";
+common_template = "?am=l&d=3000&sb=t&fh=&fw=";
 
 // color template array (description, general settings, highlight square color, highlight border color);
 color_template = new Array();
@@ -868,8 +924,8 @@ size_template[2] = new Array("large ", "&ss=50&ps=d&pf=d&hm=b&tm=25&fhs=120p&fms
 
 // layout template array
 layout_template = new Array();
-layout_template[0] = new Array("vertical  ", "&hl=f");
-layout_template[1] = new Array("horizontal", "&hl=t");
+layout_template[0] = new Array("vertical  ", "&hl=f&hd=c&md=j&cd=i");
+layout_template[1] = new Array("horizontal", "&hl=t&hd=j&md=j&cd=i");
 
 function load_templates() {
       
@@ -2132,18 +2188,21 @@ and install the tool on your own servers
 <p></p>
 <br>
 
-<input class"checkbox" type="checkbox" id="showButtons" name="checkbox" onChange="update_controls()">
-&nbsp;&nbsp; show control buttons &nbsp;&nbsp;
-<span class="helptext">control buttons might not be necessary, just try clicking the G8 square</span>
+<select class="dropdown" id="buttonsDisplay" name="dropdown" onChange="update_controls()">
+<option value="hidden" selected="selected">hidden</option>	
+<option value="standard">standard</option>
+<option value="custom">custom</option>
+</select>
+&nbsp;&nbsp; how to show control buttons &nbsp;&nbsp;
+<span class="helptext"><b>standard</b> uses browser's standard buttons, <b>custom</b> uses color's below</span>
 <p></p>
 
 <input class="color {adjust:false} input" type="text" id="controlBackgroundColorHex" name="input" value="" size="9" onChange="validate_color_default(this, 'control buttons background color', 'default'); update_controls()">
-&nbsp;&nbsp; control buttons background color &nbsp;&nbsp;
-<span class="helptext">set to <b>default</b> in order to use standard buttons from the browser</span>
+&nbsp;&nbsp; custom control buttons background color &nbsp;&nbsp;
 <p></p>
 
 <input class="color input" type="text" id="controlTextColorHex" name="input" value="" size="9" onChange="validate_color(this, 'control buttons text color', controlTextColorHex_default)">
-&nbsp;&nbsp; control buttons text color &nbsp;&nbsp;
+&nbsp;&nbsp; custom control buttons text color &nbsp;&nbsp;
 
 <div style="height: 3em">&nbsp;</div>
 <script type="text/javascript">print_menu("header_moves_options", 3, "header and moves options");</script>
@@ -2155,8 +2214,12 @@ and install the tool on your own servers
 <p></p>
 <br>
 
-<input class="checkbox" type="checkbox" id="showHeader" name="checkbox" onChange="update_controls()">
-&nbsp;&nbsp; <b>show game header</b> &nbsp;&nbsp;
+<select class="dropdown" id="headerDisplay" name="dropdown" onChange="update_controls()">
+<option value="centered">centered</option>
+<option value="justified" selected="selected">justified</option>
+<option value="hidden">hidden</option>
+</select>
+&nbsp;&nbsp; <b>how to show game header</b> &nbsp;&nbsp;
 <p></p>
 
 <input class="input" type="text" id="fontHeaderSize" name="input" value="" size="9" onChange="validate_number_percentage(this, 'header font size', fontHeaderSize_default);">
@@ -2169,8 +2232,11 @@ and install the tool on your own servers
 <p></p>
 <br>
 
-<input class="checkbox" type="checkbox" id="showMoves" name="checkbox" onChange="update_controls()">
-&nbsp;&nbsp; <b>show game moves</b> &nbsp;&nbsp;
+<select class="dropdown" id="movesDisplay" name="dropdown" onChange="update_controls()">
+<option value="justified" selected="selected">justified</option>
+<option value="hidden">hidden</option>
+</select>
+&nbsp;&nbsp; <b>how to show game moves</b> &nbsp;&nbsp;
 <p></p>
 
 <input class="input" type="text" id="fontMovesSize" name="input" value="" size="9" onChange="validate_number_percentage(this, 'moves font size', fontMovesSize_default);">
@@ -2236,11 +2302,16 @@ and install the tool on your own servers
 &nbsp;&nbsp; background color &nbsp;&nbsp;
 <p></p>
 
+<!--
+
 <input class="color input" type="text" id="previewBackgroundColorHex" name="input" value="" size="9" onChange="validate_color(this, 'preview background color', previewBackgroundColorHex_default)"> 
 &nbsp;&nbsp; preview background color &nbsp;&nbsp;
 <span class="helptext">not actually used in the HTML code, just for the preview</span>
 <p></p>
 <br>
+
+-->
+<input type="hidden" id="previewBackgroundColorHex" value"DDDDDD">
 
 <!--
 
@@ -2252,7 +2323,6 @@ base URL: &nbsp;&nbsp;
 <br>
 
 -->
-
 <input type="hidden" id="baseUrl" value="" />
 
 <script type="text/javascript">
@@ -2263,12 +2333,16 @@ for (ii = 0; ii < theObject.length; ii++) {
   theObject[ii].style.width = inputWidth;
 }
 
+/* no more checkboxes left 
+
 checkboxWidth = document.getElementById('encodePgn').offsetWidth;
 // the last number added to marginLeft should be equal to the value of the .checkbox style at the top
 theObject = document.getElementsByName('checkbox');
 for (ii = 0; ii < theObject.length; ii++) {
   theObject[ii].style.marginLeft +=  inputWidth - checkboxWidth + 22;
 }
+
+ */
 
 </script>
 
