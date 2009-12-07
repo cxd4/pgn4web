@@ -1202,7 +1202,7 @@ oldHeaderDisplay = "";
 if (gup("showHeader") == "true") { oldHeaderDisplay = "justified"; }
 if (gup("showHeader") == "false") { oldHeaderDisplay = "hidden"; }
 if ((headerDisplay = gup("headerDisplay")) === "") {
-  if (oldHeaderDisplay === "") { headerDisplay = "justified"; }
+  if (oldHeaderDisplay === "") { headerDisplay = "hidden"; }
   else { headerDisplay = oldHeaderDisplay; }
 }
 if (headerDisplay == "c") { headerDisplay = "centered"; }
@@ -1214,7 +1214,7 @@ oldMovesDisplay = "";
 if (gup("showMoves") == "true") { oldMovesDisplay = "justified"; }
 if (gup("showMoves") == "false") { oldMovesDisplay = "hidden"; }
 if ((movesDisplay = gup("movesDisplay")) === "") {
-  if (oldMovesDisplay === "") { movesDisplay = "justified"; }
+  if (oldMovesDisplay === "") { movesDisplay = "hidden"; }
   else { movesDisplay = oldMovesDisplay; }
 }
 if (movesDisplay == "h") { movesDisplay = "hidden"; }
