@@ -584,7 +584,7 @@ function calculate_html_code() {
     iframeUrl += "&fms=" + percentFixForUrl( fontMovesSize_value );
     fontCommentsSize_value = document.board.fontCommentsSize.value;
     if (fontCommentsSize_value == "moves") { iframeUrl += "&fcs=m"; } 
-    else { iframeUrl = "&fcs=" += percentFixForUrl( fontCommentsSize_value ); }
+    else { iframeUrl += "&fcs=" + percentFixForUrl( fontCommentsSize_value ); }
     
     commentsDisplay_value = document.board.commentsDisplay.value;
     iframeUrl += "&cd=" + commentsDisplay_value.charAt(0); 
