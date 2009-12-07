@@ -1456,10 +1456,10 @@ function customFunctionOnPgnGameLoad() {
   theObject = document.getElementById("siteDateSpacer");
   if (theObject) {
     if ((gameSite[currentGame] != undefined) &&
-        (gameSite[currentGame] != "") &&
+        (gameSite[currentGame] !== "") &&
         (gameDate[currentGame] != undefined) &&
-        (gameDate[currentGame] != "")) {
-      theObject.innerHTML = "&nbsp; &nbsp;"
+        (gameDate[currentGame] !== "")) {
+      theObject.innerHTML = "&nbsp; &nbsp;";
     } else {
       theObject.innerHTML = "";
     }
@@ -1468,10 +1468,10 @@ function customFunctionOnPgnGameLoad() {
   theObject = document.getElementById("whiteBlackSpacer");
   if (theObject) {
     if ((gameWhite[currentGame] != undefined) &&
-        (gameWhite[currentGame] != "") &&
+        (gameWhite[currentGame] !== "") &&
         (gameBlack[currentGame] != undefined) &&
-        (gameBlack[currentGame] != "")) {
-      theObject.innerHTML = "&nbsp;-&nbsp;"
+        (gameBlack[currentGame] !== "")) {
+      theObject.innerHTML = "&nbsp;-&nbsp;";
     } else {
       theObject.innerHTML = "";
     }
@@ -1480,10 +1480,10 @@ function customFunctionOnPgnGameLoad() {
   theObject = document.getElementById("blackResultSpacer");
   if (theObject) {
     if ((gameBlack[currentGame] != undefined) &&
-        (gameBlack[currentGame] != "") &&
+        (gameBlack[currentGame] !== "") &&
         (gameResult[currentGame] != undefined) &&
-        (gameResult[currentGame] != "")) {
-      theObject.innerHTML = "&nbsp; &nbsp;"
+        (gameResult[currentGame] !== "")) {
+      theObject.innerHTML = "&nbsp; &nbsp;";
     } else {
       theObject.innerHTML = "";
     }
@@ -1491,14 +1491,14 @@ function customFunctionOnPgnGameLoad() {
 
   theObject = document.getElementById("playersDetails");
   if (theObject) {
-    if ( ( ((gameWhite[currentGame] != undefined) && (gameWhite[currentGame] != ""))   ||
-           ((gameBlack[currentGame] != undefined) && (gameBlack[currentGame] != ""))   ||
-           ((gameResult[currentGame] != undefined) && (gameResult[currentGame] != "")) )  && 
-         ( ((gameEvent[currentGame] != undefined) && (gameEvent[currentGame] != ""))   ||
-	   ((gameRound[currentGame] != undefined) && (gameRound[currentGame] != "") && 
+    if ( ( ((gameWhite[currentGame] != undefined) && (gameWhite[currentGame] !== ""))   ||
+           ((gameBlack[currentGame] != undefined) && (gameBlack[currentGame] !== ""))   ||
+           ((gameResult[currentGame] != undefined) && (gameResult[currentGame] !== "")) )  && 
+         ( ((gameEvent[currentGame] != undefined) && (gameEvent[currentGame] !== ""))   ||
+	   ((gameRound[currentGame] != undefined) && (gameRound[currentGame] !== "") && 
 	    (gameRound[currentGame] != "?") && (gameRound[currentGame] != "*"))        ||
-	   ((gameSite[currentGame] != undefined) && (gameSite[currentGame] != ""))     ||
-           ((gameDate[currentGame] != undefined) && (gameDate[currentGame] != "")) ) ) {
+	   ((gameSite[currentGame] != undefined) && (gameSite[currentGame] !== ""))     ||
+           ((gameDate[currentGame] != undefined) && (gameDate[currentGame] !== "")) ) ) {
       theObject.style.paddingBottom = "0.33em";
     } else {
       theObject.style.paddingBottom = "";
