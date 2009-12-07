@@ -581,8 +581,10 @@ function calculate_html_code() {
     iframeUrl += "&hmcs=" + hex2sex(highlightMoveColorHex_value);
 
     fontMovesSize_value = document.board.fontMovesSize.value;
+    iframeUrl += "&fms=" + percentFixForUrl( fontMovesSize_value );
     fontCommentsSize_value = document.board.fontCommentsSize.value;
-    iframeUrl += "&fms=" + percentFixForUrl( fontMovesSize_value ) + "&fcs=" + percentFixForUrl( fontCommentsSize_value );
+    if (fontCommentsSize_value == "moves") { iframeUrl = "&fcs=m"; } 
+    else { iframeUrl = "&fcs=" + percentFixForUrl( fontCommentsSize_value ); }
     
     commentsDisplay_value = document.board.commentsDisplay.value;
     iframeUrl += "&cd=" + commentsDisplay_value.charAt(0); 
