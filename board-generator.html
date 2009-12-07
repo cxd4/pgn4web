@@ -583,8 +583,8 @@ function calculate_html_code() {
     fontMovesSize_value = document.board.fontMovesSize.value;
     iframeUrl += "&fms=" + percentFixForUrl( fontMovesSize_value );
     fontCommentsSize_value = document.board.fontCommentsSize.value;
-    if (fontCommentsSize_value == "moves") { iframeUrl = "&fcs=m"; } 
-    else { iframeUrl = "&fcs=" + percentFixForUrl( fontCommentsSize_value ); }
+    if (fontCommentsSize_value == "moves") { iframeUrl += "&fcs=m"; } 
+    else { iframeUrl = "&fcs=" += percentFixForUrl( fontCommentsSize_value ); }
     
     commentsDisplay_value = document.board.commentsDisplay.value;
     iframeUrl += "&cd=" + commentsDisplay_value.charAt(0); 
