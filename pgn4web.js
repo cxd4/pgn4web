@@ -1156,12 +1156,21 @@ function SetAutoplayNextGame(onOff){
 }
 
 function SetInitialHalfmove(number_or_string, always){
-  initialHalfmove = number_or_string;
   if (always === true) { alwaysInitialHalfmove = true; }
+  initialHalfmove = number_or_string;
+  if (initialHalfmove == "start") { return; }
+  if (initialHalfmove == "end") { return; }
+  if (initialHalfmove == "random") { return; }
+  if (initialHalfmove == "comment") { return; }
+  if ((initialHalfmove = parseInt(initialHalfmove, 10)) == NaN) { initialHalfmove = 0; }
 }
 
 function SetInitialGame(number_or_string){
   initialGame = number_or_string;
+  if (initialGame == "first") { return; }
+  if (initialGame == "last") { return; }
+  if (initialGame == "random") { return; }
+  if ((initialGame = parseInt(initialGame, 10)) == NaN) { initialGame = 1; } 
 }
 
 // the clock value is detected with two options: first the DGT sequence [%clk 01:02] 

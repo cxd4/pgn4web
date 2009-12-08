@@ -1082,6 +1082,21 @@ switch (autoplayMode) {
 if (gup("delay") === "") { SetAutoplayDelay(1000); }
 else { SetAutoplayDelay(gup("delay")); }
 
+//
+// NOTE: the following initialGame= switch is not added to the board-generator tool 
+//       but reserved for occasional use
+//
+
+// use init_Game to avoid overlap with existing global var initialGame in pgn4web.js
+if ((init_Game = gup("initialGame")) === "") { 
+  init_Game = "first"; 
+} else {
+  if ((init_Game == "f") || (init_Game == "false")) { init_Game = "first"; } // "f" might have been translated to "false"
+  if (init_Game == "l") { init_Game = "last"; }
+  if (init_Game == "r") { init_Game = "random"; }
+}
+SetInitialGame(init_Game);
+
 oldButtonsDisplay = "";
 if (gup("showButtons") == "true") { oldButtonsDisplay = "custom"; }
 if (gup("showButtons") == "false") { oldButtonsDisplay = "hidden"; }
@@ -1282,6 +1297,7 @@ if (gup("help") !== "") {
   document.write("\n");
   document.write(" - autoplayMode = game (autoplay first game once) | loop (loops through games continiously) | none - (default game)\n");
   document.write(" - delay = autoplay delay in ms (default 1000)\n");
+  document.write(" - initialGame = first | last | random | a number (default first)\n");
   document.write("\n");
   document.write(" - squareSize = size of square (default 28)\n");
   document.write(" - pieceSize = size of pieces | default (default selects piece size based on piece size)\n");
