@@ -966,7 +966,7 @@ if ((darkColor  = gup("darkColorName"))  === "") {
 }
 if ((highlightColor  = gup("highlightColorName")) === "") {
   if ((highlightColor  = "#" + gup("highlightColorHex"))  == "#") {
-    if ((highlightColor  = "#" + sex2hex(gup("highlightColorSex")))  == "#") { highlightColor  = "#C0FFAD"; }
+    if ((highlightColor  = "#" + sex2hex(gup("highlightColorSex")))  == "#") { highlightColor  = "#DAF4D7"; }
   }
 }
 if ((highlightMode == 'none') || (highlightColor == 'none') || (highlightColor == '#none')) {
@@ -1098,8 +1098,11 @@ if ((init_Game = gup("initialGame")) === "") {
 SetInitialGame(init_Game);
 
 //
-// NOTE: the following initialHalfmove= switch is not added to the board-generator tool 
-//       but reserved for occasional use
+// NOTE: the following initialHalfmove= switch is not added to the 
+// board-generator tool but reserved for occasional use; if a word (like
+// random) is supplied, the setting is reapeated at each game load, if a
+// number (0 for start, -1 for random or actual halfmove number)is supplied
+// the setting is applied only to the initial game load
 //
 
 // use init_Halfmove to avoid overlap with existing global var initialHalfmove in pgn4web.js
@@ -1109,8 +1112,8 @@ if ((init_Halfmove = gup("initialHalfmove")) === "") {
 } else {
   if (init_Halfmove == "s") { init_Halfmove = "start"; always_Halfmove = true; }
   if (init_Halfmove == "e") { init_Halfmove = "end"; always_Halfmove = true; }
-  if (init_Halfmove == "c") { init_Halfmove = "comment"; always_Halfmove = true; }
   if (init_Halfmove == "r") { init_Halfmove = "random"; always_Halfmove = true; }
+  if (init_Halfmove == "c") { init_Halfmove = "comment"; always_Halfmove = true; }
 }
 SetInitialHalfmove(init_Halfmove,always_Halfmove);
 
@@ -1315,6 +1318,7 @@ if (gup("help") !== "") {
   document.write(" - autoplayMode = game (autoplay first game once) | loop (loops through games continiously) | none - (default game)\n");
   document.write(" - delay = autoplay delay in ms (default 1000)\n");
   document.write(" - initialGame = first | last | random | a number (default first)\n");
+  document.write(" - initialHalfmove = start | end | random | comment | a number (default start)\n");
   document.write("\n");
   document.write(" - squareSize = size of square (default 28)\n");
   document.write(" - pieceSize = size of pieces | default (default selects piece size based on piece size)\n");
@@ -1322,7 +1326,7 @@ if (gup("help") !== "") {
   document.write(" - highlightMode = border | square | none (default square)\n");
   document.write(" - lightColorHex = light square color hex code, like FF0000 (default EFF4EC)\n");
   document.write(" - darkColorHex = dark square color hex code, like FF0000 (default C6CEC3)\n");
-  document.write(" - highlightColorHex = highlight color hex code, like FF0000 (default DAF4D7)\n");
+  document.write(" - highlightColorHex = highlight color hex code, like FF0000 (default DAF4D7\n");
   document.write(" - boardBorderColorHex = board border color hex code, like FF0000 (default 000000)\n");
   document.write("\n");
   document.write(" - buttonsDisplay = hidden | standard (use browser's standard buttons) | custom (use custom color buttons) - (default hidden)\n");
