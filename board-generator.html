@@ -74,7 +74,7 @@ if (pgn4web_board_url == undefined) { pgn4web_board_url = location.protocol + "/
 pgnText_default = templatePgnHeader + '\n';
 encodePgn_default = "t";
 autoplayMode_default = "game";
-delay_default = 1000;
+delay_default = 3000;
 pieceFont_default = "default";
 pieceSize_default = "default";
 squareSize_default = 40;
@@ -2117,7 +2117,7 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 <div style="height: 1em">&nbsp;</div>
 
 <select class="dropdown" id="autoplayMode" name="dropdown">
-<option value="game">game</option>
+<option value="game" selected="selected">game</option>
 <option value="loop">loop</option>
 <option value="none">none</option>
 </select>
@@ -2128,7 +2128,7 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 <select class="dropdown" id="delay" name="dropdown">
 <option value="1000"> 1 second</option>
 <option value="2000"> 2 seconds</option>
-<option value="3000"> 3 seconds</option>
+<option value="3000" selected="selected"> 3 seconds</option>
 <option value="5000"> 5 seconds</option>
 <option value="10000">10 seconds</option>
 <option value="30000">30 seconds</option>
@@ -2146,7 +2146,7 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 <p></p>
 
 <select class="dropdown" id="pieceSize" name="dropdown" onChange="validate_ss_ps_hm();">
-<option value="default">default</option>
+<option value="default" selected="selected">default</option>
 <option value="20">20</option>
 <option value="21">21</option>
 <option value="22">22</option>
@@ -2194,7 +2194,7 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 <p></p>
 
 <select class="dropdown" id="pieceFont" name="dropdown">
-<option value="default">default</option>
+<option value="default" selected="selected">default</option>
 <option value="alpha">alpha</option>
 <option value="merida">merida</option>
 <option value="uscf">uscf</option>
