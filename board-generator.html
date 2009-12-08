@@ -185,7 +185,7 @@ function set_defaults() {
       lightColorHex_value = lightColorHex_default;
     }
   }
-  document.board.lightColorHex.value = lightColorHex_value;
+  document.board.lightColorHex.color.fromString(lightColorHex_value);
   validate_color(document.board.lightColorHex, 'light squares color', lightColorHex_default);
 
   if ((darkColorHex_value = gup("darkColorHex")) === "") {
@@ -193,7 +193,7 @@ function set_defaults() {
       darkColorHex_value = darkColorHex_default;
     }
   }
-  document.board.darkColorHex.value = darkColorHex_value;
+  document.board.darkColorHex.color.fromString(darkColorHex_value);
   validate_color(document.board.darkColorHex, 'dark squares color', darkColorHex_default);
 
   if ((boardBorderColorHex_value = gup("boardBorderColorHex")) === "") {
@@ -201,7 +201,7 @@ function set_defaults() {
       boardBorderColorHex_value = boardBorderColorHex_default;
     }
   }
-  document.board.boardBorderColorHex.value = boardBorderColorHex_value;
+  document.board.boardBorderColorHex.color.fromString(boardBorderColorHex_value);
   validate_color(document.board.boardBorderColorHex, 'board border color', boardBorderColorHex_default);
 
   if ((highlightMode_value = gup("highlightMode")) === "") { highlightMode_value = highlightMode_default; }
@@ -221,7 +221,7 @@ function set_defaults() {
       highlightColorHex_value = highlightColorHex_default; 
     }
   }
-  document.board.highlightColorHex.value = highlightColorHex_value;
+  document.board.highlightColorHex.color.fromString(highlightColorHex_value);
   validate_color_none(document.board.highlightColorHex, 'highlight squares color', highlightColorHex_default);
 
   oldButtonsDisplay_value = "";
@@ -255,7 +255,11 @@ function set_defaults() {
     }
   }
   if (controlBackgroundColorHex_value == 'd') { controlBackgroundColorHex_value = 'default'; }
-  document.board.controlBackgroundColorHex.value = controlBackgroundColorHex_value;
+  if (controlBackgroundColorHex_value == 'default') {
+    document.board.controlBackgroundColorHex.value = controlBackgroundColorHex_value;
+  } else {
+    document.board.controlBackgroundColorHex.color.fromString(controlBackgroundColorHex_value);
+  }
   validate_color_default(document.board.controlBackgroundColorHex, 'control buttons background color', 'default');
 
   if ((controlTextColorHex_value = gup("controlTextColorHex")) === "") { 
@@ -263,7 +267,7 @@ function set_defaults() {
       controlTextColorHex_value = controlTextColorHex_default; 
     }
   }
-  document.board.controlTextColorHex.value = controlTextColorHex_value;
+  document.board.controlTextColorHex.color.fromString(controlTextColorHex_value);
   validate_color(document.board.controlTextColorHex, 'control buttons text color', controlTextColorHex_default);
 
   if ((textMargin_value = gup("textMargin")) === "") { textMargin_value = textMargin_default; }
@@ -333,7 +337,7 @@ function set_defaults() {
       fontHeaderColorHex_value = fontHeaderColorHex_default; 
     }
   }
-  document.board.fontHeaderColorHex.value = fontHeaderColorHex_value;
+  document.board.fontHeaderColorHex.color.fromString(fontHeaderColorHex_value);
   validate_color(document.board.fontHeaderColorHex, 'header font color', fontHeaderColorHex_default);
 
   if ((fontMovesColorHex_value = gup("fontMovesColorHex")) === "") {
@@ -341,7 +345,7 @@ function set_defaults() {
       fontMovesColorHex_value = fontMovesColorHex_default;
     }
   }
-  document.board.fontMovesColorHex.value = fontMovesColorHex_value;
+  document.board.fontMovesColorHex.color.fromString(fontMovesColorHex_value);
   validate_color(document.board.fontMovesColorHex, 'moves font color', fontMovesColorHex_default);
 
   if ((fontCommentsColorHex_value = gup("fontCommentsColorHex")) === "") {
@@ -349,7 +353,7 @@ function set_defaults() {
       fontCommentsColorHex_value = fontCommentsColorHex_default;
     }
   }
-  document.board.fontCommentsColorHex.value = fontCommentsColorHex_value;
+  document.board.fontCommentsColorHex.color.fromString(fontCommentsColorHex_value);
   validate_color(document.board.fontCommentsColorHex, 'comments font color', fontCommentsColorHex_default);
 
   if ((highlightMoveColorHex_value = gup("highlightMoveColorHex")) === "") {
@@ -357,7 +361,7 @@ function set_defaults() {
       highlightMoveColorHex_value = highlightMoveColorHex_default;
     }
   }
-  document.board.highlightMoveColorHex.value = highlightMoveColorHex_value;
+  document.board.highlightMoveColorHex.color.fromString(highlightMoveColorHex_value);
   validate_color(document.board.highlightMoveColorHex, 'highlight move color', highlightMoveColorHex_default);
 
   if ((fontHeaderSize_value = percentFixFromUrl( gup("fontHeaderSize") )) === "") { fontHeaderSize_value = fontHeaderSize_default; }
@@ -377,7 +381,7 @@ function set_defaults() {
       backgroundColorHex_value = backgroundColorHex_default; 
     }
   }
-  document.board.backgroundColorHex.value = backgroundColorHex_value;
+  document.board.backgroundColorHex.color.fromString(backgroundColorHex_value);
   validate_color(document.board.backgroundColorHex, 'background color', backgroundColorHex_default);
 
   if ((horizontalLayout_value = gup("horizontalLayout")) === "") { horizontalLayout_value = horizontalLayout_default; }
@@ -404,7 +408,7 @@ function set_defaults() {
       previewBackgroundColorHex_value = previewBackgroundColorHex_default;
     }
   }
-  document.board.previewBackgroundColorHex.value = previewBackgroundColorHex_value;
+  document.board.previewBackgroundColorHex.color.fromString(previewBackgroundColorHex_value);
   validate_color(document.board.previewBackgroundColorHex, 'preview background color', previewBackgroundColorHex_default);
 
   if ((baseUrl_value = gup("baseUrl")) === "") { baseUrl_value = baseUrl_default; }
@@ -747,11 +751,10 @@ function generate_html_code() {
 
 function validate_color(object, name, def) {
   if (object.value.match(/^[0-9A-Fa-f]{6}$/)) {
-    object.value = object.value.toUpperCase();
     return true;
   } else { 
     alert('error: the ' + name + ' must be a six digits hexadecimal color code, like FF0000');
-    object.value = def;
+    object.color.fromString(def);
     return false;    
   }
 }
@@ -759,11 +762,10 @@ function validate_color(object, name, def) {
 function validate_color_default(object, name, def) {
   if (object.value == 'default') { return true; }
   else if (object.value.match(/^[0-9A-Fa-f]{6}$/)) {
-    object.value = object.value.toUpperCase();
     return true;
   } else { 
     alert('error: the ' + name + ' must be \'default\' or a six digits hexadecimal color code, like FF0000');
-    object.value = def;
+    object.value.color.fromString(def);
     return false;    
   }
 }
@@ -771,11 +773,10 @@ function validate_color_default(object, name, def) {
 function validate_color_none(object, name, def) {
   if (object.value == 'none') { return true; }
   else if (object.value.match(/^[0-9A-Fa-f]{6}$/)) {
-    object.value = object.value.toUpperCase();
     return true;
   } else { 
     alert('error: the ' + name + ' must be \'none\' or a six digits hexadecimal color code, like FF0000');
-    object.value = def;
+    object.color.fromString(def);
     return false;    
   }
 }
@@ -2356,7 +2357,7 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 <br>
 
 -->
-<input type="hidden" id="previewBackgroundColorHex" value"DDDDDD">
+<input class="color input" type="hidden" id="previewBackgroundColorHex" value"DDDDDD">
 
 <!--
 
