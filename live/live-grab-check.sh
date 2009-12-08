@@ -31,7 +31,7 @@ then
 	echo "ERROR: missing awk"
 fi
 
-pgn4web_scan=$(ps -U $USER -w -o pid,command | awk 'BEGIN {c=0} $3=="live-grab.sh" {if ($8=="") {$8="/dev/stdout"}; printf("pgn4web_pid[%d]=\"%s\";pgn4web_log[%d]=\"%s\";",c,$1,c,$8); c++}')
+pgn4web_scan=$(ps -U $USER -w -o pid,command | awk 'BEGIN {c=0} $3=="live-grab.sh" {printf("pgn4web_pid[%d]=\"%s\";pgn4web_log[%d]=\"%s\".log;",c,$1,c,$5); c++}')
 
 eval $pgn4web_scan
 
