@@ -706,7 +706,7 @@ function generate_html_code() {
   }
 
   document.getElementById('thisConfigBookmark').href = thisBookmarkUrl;
-  thisBookmarkChecksum = 3691; // for testing (p4w - home = 1371)
+  thisBookmarkChecksum = 3587; // for testing (p4w - home = 1371)
   for (ii=0; ii<thisBookmarkUrl.length; ii++) {
     thisBookmarkChecksum = (thisBookmarkChecksum + (thisBookmarkUrl.charCodeAt(ii) * (1 + (ii % 60)))) % 9000;
   }
@@ -730,7 +730,7 @@ function generate_html_code() {
   html_code_status_string += "</td></tr></table>";
   document.getElementById('html_code_status').innerHTML = html_code_status_string;
 
-  thisShortUrlChecksum = 477524415;
+  thisShortUrlChecksum = 477442413;
   for (ii=0; ii<iframeUrl.length; ii++) {
     thisShortUrlChecksum = (thisShortUrlChecksum + (iframeUrl.charCodeAt(ii) * (1 + ((1000 * ii) % 6000000)))) % 900000000;
   }
