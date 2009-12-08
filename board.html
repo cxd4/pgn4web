@@ -1097,6 +1097,23 @@ if ((init_Game = gup("initialGame")) === "") {
 }
 SetInitialGame(init_Game);
 
+//
+// NOTE: the following initialHalfmove= switch is not added to the board-generator tool 
+//       but reserved for occasional use
+//
+
+// use init_Halfmove to avoid overlap with existing global var initialHalfmove in pgn4web.js
+always_Halfmove = false;     	
+if ((init_Halfmove = gup("initialHalfmove")) === "") { 
+  init_Halfmove = "start";
+} else {
+  if (init_Halfmove == "s") { init_Halfmove = "start"; always_Halfmove = true; }
+  if (init_Halfmove == "e") { init_Halfmove = "end"; always_Halfmove = true; }
+  if (init_Halfmove == "c") { init_Halfmove = "comment"; always_Halfmove = true; }
+  if (init_Halfmove == "r") { init_Halfmove = "random"; always_Halfmove = true; }
+}
+SetInitialHalfmove(init_Halfmove,always_Halfmove);
+
 oldButtonsDisplay = "";
 if (gup("showButtons") == "true") { oldButtonsDisplay = "custom"; }
 if (gup("showButtons") == "false") { oldButtonsDisplay = "hidden"; }
