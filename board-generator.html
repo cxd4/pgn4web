@@ -181,7 +181,7 @@ function set_defaults() {
   // value validation done later in validate_ss_ps_hm();
 
   if ((lightColorHex_value = gup("lightColorHex")) === "") {
-    if ((lightColorHex_value = sex2hex(gup("lightColorSex"))) === "") {
+    if ((lightColorHex_value = sex2hex(gup("lightColorSex"), 'light squares color')) === "") {
       lightColorHex_value = lightColorHex_default;
     }
   }
@@ -189,7 +189,7 @@ function set_defaults() {
   validate_color(document.board.lightColorHex, 'light squares color', lightColorHex_default);
 
   if ((darkColorHex_value = gup("darkColorHex")) === "") {
-    if ((darkColorHex_value = sex2hex(gup("darkColorSex"))) === "") {
+    if ((darkColorHex_value = sex2hex(gup("darkColorSex"), 'dark squares color')) === "") {
       darkColorHex_value = darkColorHex_default;
     }
   }
@@ -197,7 +197,7 @@ function set_defaults() {
   validate_color(document.board.darkColorHex, 'dark squares color', darkColorHex_default);
 
   if ((boardBorderColorHex_value = gup("boardBorderColorHex")) === "") {
-    if ((boardBorderColorHex_value = sex2hex(gup("boardBorderColorSex"))) === "") { 
+    if ((boardBorderColorHex_value = sex2hex(gup("boardBorderColorSex"), 'board border color')) === "") { 
       boardBorderColorHex_value = boardBorderColorHex_default;
     }
   }
@@ -217,7 +217,7 @@ function set_defaults() {
   validate_ss_ps_hm();
 
   if ((highlightColorHex_value = gup("highlightColorHex")) === "") { 
-    if ((highlightColorHex_value = sex2hex(gup("highlightColorSex"))) === "") { 
+    if ((highlightColorHex_value = sex2hex(gup("highlightColorSex"), 'highlight squares color')) === "") { 
       highlightColorHex_value = highlightColorHex_default; 
     }
   }
@@ -251,7 +251,7 @@ function set_defaults() {
 
   if ((controlBackgroundColorHex_value = gup("controlBackgroundColorHex")) === "") {
     controlBackgroundColorSex = gup("controlBackgroundColorSex");
-    if ((controlBackgroundColorHex_value = sex2hex(controlBackgroundColorSex)) === "") { 
+    if ((controlBackgroundColorHex_value = sex2hex(controlBackgroundColorSex, 'control buttons background color')) === "") { 
       controlBackgroundColorHex_value = controlBackgroundColorHex_default; 
     }
   }
@@ -264,7 +264,7 @@ function set_defaults() {
   validate_color(document.board.controlBackgroundColorHex, 'control buttons background color', 'default');
 
   if ((controlTextColorHex_value = gup("controlTextColorHex")) === "") { 
-    if ((controlTextColorHex_value = sex2hex(gup("controlTextColorSex"))) === "") { 
+    if ((controlTextColorHex_value = sex2hex(gup("controlTextColorSex"), 'control buttons text color')) === "") { 
       controlTextColorHex_value = controlTextColorHex_default; 
     }
   }
@@ -334,7 +334,7 @@ function set_defaults() {
   }
 
   if ((fontHeaderColorHex_value = gup("fontHeaderColorHex")) === "") { 
-    if ((fontHeaderColorHex_value = sex2hex(gup("fontHeaderColorSex"))) === "") { 
+    if ((fontHeaderColorHex_value = sex2hex(gup("fontHeaderColorSex"), 'header font color')) === "") { 
       fontHeaderColorHex_value = fontHeaderColorHex_default; 
     }
   }
@@ -342,7 +342,7 @@ function set_defaults() {
   validate_color(document.board.fontHeaderColorHex, 'header font color', fontHeaderColorHex_default);
 
   if ((fontMovesColorHex_value = gup("fontMovesColorHex")) === "") {
-    if ((fontMovesColorHex_value = sex2hex(gup("fontMovesColorSex"))) === "") { 
+    if ((fontMovesColorHex_value = sex2hex(gup("fontMovesColorSex"), 'moves font color')) === "") { 
       fontMovesColorHex_value = fontMovesColorHex_default;
     }
   }
@@ -350,7 +350,7 @@ function set_defaults() {
   validate_color(document.board.fontMovesColorHex, 'moves font color', fontMovesColorHex_default);
 
   if ((fontCommentsColorHex_value = gup("fontCommentsColorHex")) === "") {
-    if ((fontCommentsColorHex_value = sex2hex(gup("fontCommentsColorSex"))) === "") { 
+    if ((fontCommentsColorHex_value = sex2hex(gup("fontCommentsColorSex"), 'comments font color')) === "") { 
       fontCommentsColorHex_value = fontCommentsColorHex_default;
     }
   }
@@ -358,7 +358,7 @@ function set_defaults() {
   validate_color(document.board.fontCommentsColorHex, 'comments font color', fontCommentsColorHex_default);
 
   if ((highlightMoveColorHex_value = gup("highlightMoveColorHex")) === "") {
-    if ((highlightMoveColorHex_value = sex2hex(gup("highlightMoveColorSex"))) === "") { 
+    if ((highlightMoveColorHex_value = sex2hex(gup("highlightMoveColorSex"), 'move highlight color')) === "") { 
       highlightMoveColorHex_value = highlightMoveColorHex_default;
     }
   }
@@ -379,7 +379,7 @@ function set_defaults() {
   validate_fontCommentsSize();
 
   if ((backgroundColorHex_value = gup("backgroundColorHex")) === "") {
-    if ((backgroundColorHex_value = sex2hex(gup("backgroundColorSex"))) === "") { 
+    if ((backgroundColorHex_value = sex2hex(gup("backgroundColorSex"), 'background color')) === "") { 
       backgroundColorHex_value = backgroundColorHex_default; 
     }
   }
@@ -406,7 +406,7 @@ function set_defaults() {
   validate_number(document.board.framePadding, 'frame padding', framePadding_default);
 
   if ((previewBackgroundColorHex_value = gup("previewBackgroundColorHex")) === "") {
-    if ((previewBackgroundColorHex_value = sex2hex(gup("previewBackgroundColorSex"))) === "") { 
+    if ((previewBackgroundColorHex_value = sex2hex(gup("previewBackgroundColorSex"), 'preview background color')) === "") { 
       previewBackgroundColorHex_value = previewBackgroundColorHex_default;
     }
   }
@@ -1838,8 +1838,12 @@ function DecodePGN(bytes) {
 }
 
 
-function sex2hex(sex) {
-  if (!sex.match(/^[0-9a-zA-z_\$]{4}$/)) { return ""; }
+function sex2hex(sex, name) {
+  if (sex === "") { return ""; }
+  if (!sex.match(/^[0-9a-zA-z_\$]{4}$/)) {
+    alert('error: the ' + name + ' must be a 4 digits color code in the proprietary format, like _L$$');
+    return ""; 
+  }
   sex += "";
   var dec = 0;
   var cnt;
