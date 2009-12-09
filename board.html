@@ -1135,11 +1135,18 @@ if (buttonsDisplay == "custom") {
   if ((controlBackgroundColor = gup("controlBackgroundColorName")) === "") {
     if ((controlBackgroundColor = "#" + gup("controlBackgroundColorHex")) == "#") {
       controlBackgroundColorSex = gup("controlBackgroundColorSex");
-      if ((controlBackgroundColor = "#" + sex2hex(controlBackgroundColorSex)) == "#") { 
-        controlBackgroundColor = "#default"; 
+      if (controlBackgroundColorSex == "default") {
+          controlBackgroundColor = "#default";
+      } else if (controlBackgroundColorSex == "d") {
+            controlBackgroundColor = "#d";
+      } else {
+        if ((controlBackgroundColor = "#" + sex2hex(controlBackgroundColorSex)) == "#") { 
+          controlBackgroundColor = "#default"; 
+        }
       }
     }
   }
+
   if ((controlBackgroundColor == "d") || (controlBackgroundColor == "#d")) { controlBackgroundColor = "default"; }
   if (controlBackgroundColor == "#default") { controlBackgroundColor = "default"; }
 
