@@ -362,8 +362,13 @@ function set_defaults() {
       highlightMoveColorHex_value = highlightMoveColorHex_default;
     }
   }
-  setColorBox(document.board.highlightMoveColorHex, highlightMoveColorHex_value);
-  validate_color(document.board.highlightMoveColorHex, 'move highlight color', highlightMoveColorHex_default);
+  if (highlightMoveColorHex_value == "b") { highlightMoveColorHex_value = "background"; }
+  if (highlightMoveColorHex_value == "background") {
+    document.board.highlightMoveColorHex.value = highlightMoveColorHex_value;
+  } else {
+    setColorBox(document.board.highlightMoveColorHex, highlightMoveColorHex_value);
+    validate_color(document.board.highlightMoveColorHex, 'move highlight color', highlightMoveColorHex_default);
+  }
 
   if ((fontHeaderSize_value = percentFixFromUrl( gup("fontHeaderSize") )) === "") { fontHeaderSize_value = fontHeaderSize_default; }
   document.board.fontHeaderSize.value = fontHeaderSize_value;
@@ -592,7 +597,8 @@ function calculate_html_code() {
     fontCommentsColorHex_value =  document.board.fontCommentsColorHex.value;
     iframeUrl += "&fccs=" + hex2sex(fontCommentsColorHex_value);
     highlightMoveColorHex_value =  document.board.highlightMoveColorHex.value;
-    iframeUrl += "&hmcs=" + hex2sex(highlightMoveColorHex_value);
+    if (highlightMoveColorHex_value == "background" ) { iframeUrl += "&hmcs=b"; }
+    else { iframeUrl += "&hmcs=" + hex2sex(highlightMoveColorHex_value); }
 
     fontMovesSize_value = document.board.fontMovesSize.value;
     iframeUrl += "&fms=" + percentFixForUrl( fontMovesSize_value );
@@ -765,6 +771,18 @@ function validate_color(object, name, def) {
   } else { 
     alert('error: the ' + name + ' must be a six digits hexadecimal color code, like FF0000');
     setColorBox(object, def);
+    return false;    
+  }
+}
+
+function validate_highlightMoveColor() {
+  object = document.getElementById('highlightMoveColorHex');
+  if (object.value == 'background') { return true; }
+  if (object.value.match(/^[0-9A-Fa-f]{6}$/)) {
+    return true;
+  } else { 
+    alert('error: the move highlight color must be \'background\' or a six digits hexadecimal color code, like FF0000');
+    setColorBox(object, highlightMoveColorHex_default);
     return false;    
   }
 }
@@ -2285,8 +2303,9 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 &nbsp;&nbsp; moves font color &nbsp;&nbsp;
 <p></p>
 
-<input class="color input" type="text" id="highlightMoveColorHex" name="input" value="" size="9" onChange="validate_color(this, 'highlight move color', highlightMoveColorHex_default)">
+<input class="color {adjust:false} input" type="text" id="highlightMoveColorHex" name="input" value="" size="9" onChange="validate_highlightMoveColor()">
 &nbsp;&nbsp; highlight move color &nbsp;&nbsp;
+<span class="helptext">if set to <b>background</b> the background color is copied</span>
 <p></p>
 <br>
 
