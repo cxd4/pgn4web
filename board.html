@@ -1015,16 +1015,24 @@ if ((boardBorderColor = gup("boardBorderColorName")) === "") {
   }
 }
 
-if ((highlightMoveColor  = gup("highlightMoveColorName")) === "") {
-  if ((highlightMoveColor  = "#" + gup("highlightMoveColorHex"))  == "#") {
-    if ((highlightMoveColor  = "#" + sex2hex(gup("highlightMoveColorSex")))  == "#") { highlightMoveColor  = "#DAF4D7"; }
-  }
-}
-
 if ((backgroundColor = gup("backgroundColorName")) === "") {
  if ((backgroundColor = "#" + gup("backgroundColorHex")) == "#") {
    if ((backgroundColor = "#" + sex2hex(gup("backgroundColorSex"))) == "#") { backgroundColor = "#FFFFFF"; }
  }
+}
+
+if ((highlightMoveColor  = gup("highlightMoveColorName")) === "") {
+  if ((highlightMoveColor  = "#" + gup("highlightMoveColorHex"))  == "#") {
+    highlightMoveColorSex = gup("highlightMoveColorSex");
+    if ((highlightMoveColorSex == "background") || (highlightMoveColorSex == "b")) {
+      highlightMoveColor = "background";
+    } else {
+      if ((highlightMoveColor  = "#" + sex2hex(highlightMoveColorSex)) == "#") { highlightMoveColor = "#DAF4D7"; }
+    }
+  }
+}
+if ((highlightMoveColor == "background") || (highlightMoveColor == "b")) {
+  highlightMoveColor = backgroundColor;
 }
 
 if ((framePadding = gup("framePadding")) === "") { framePadding = 0;}
@@ -1332,7 +1340,7 @@ if (gup("help") !== "") {
   document.write(" - boardBorderColorHex = board border color hex code, like FF0000 (default 000000)\n");
   document.write("\n");
   document.write(" - buttonsDisplay = hidden | standard (use browser's standard buttons) | custom (use custom color buttons) - (default hidden)\n");
-  document.write(" - controlBackgroundColorHex = control buttons background color hex code, like FF0000, or 'default' (default 'default')\n");
+  document.write(" - controlBackgroundColorHex = control buttons background color hex code, like FF0000 (default reverts to standard buttons)\n");
   document.write(" - controlTextColorHex = control buttons text color hex code, like FF0000 (default 000000)\n");
   document.write("\n");
   document.write(" - headerDisplay = justified | centered | hidden (default hidden)\n");
@@ -1344,7 +1352,7 @@ if (gup("help") !== "") {
   document.write(" - fontHeaderColorHex = header color hex code, like FF0000 (default 000000)\n");
   document.write(" - fontMovesColorHex = moves color hex code, like FF0000 (default 000000)\n");
   document.write(" - fontCommentsColorHex = commentss color hex code, like FF0000 (default 808080)\n");
-  document.write(" - highlightMoveColorHex = background color hex code to highlight current move, like FF0000, 'none' for no highligh (default DAF4D7)\n");
+  document.write(" - highlightMoveColorHex = background color hex code to highlight current move, like FF0000, 'background' for no highligh (default DAF4D7)\n");
   document.write(" - fontHeaderSize = header font size, like 20 or 120% (default 100p = 100pct meaning 100%)\n");
   document.write(" - fontMovesSize = header font size, like 20 or 120% (default 100p = 100pct meaning 100%)\n");
   document.write(" - fontCommentsSize = header font size, like 20 or 120%; if set as 'moves' fontMovesSize is copied (default moves)\n");
