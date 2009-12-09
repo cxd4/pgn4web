@@ -221,8 +221,13 @@ function set_defaults() {
       highlightColorHex_value = highlightColorHex_default; 
     }
   }
+  if (highlightColorHex_value == 'n') { highlightColorHex_value = 'none'; }
+  if (highlightColorHex_value == 'none') {
+    document.board.highlightMode.value = highlightMode_value = "none";
+    highlightColorHex_value = highlightColorHex_default;
+  }
   setColorBox(document.board.highlightColorHex, highlightColorHex_value);
-  validate_color_none(document.board.highlightColorHex, 'highlight squares color', highlightColorHex_default);
+  validate_color(document.board.highlightColorHex, 'highlight squares color', highlightColorHex_default);
 
   oldButtonsDisplay_value = "";
   //kept for backward compatibility
@@ -246,21 +251,17 @@ function set_defaults() {
 
   if ((controlBackgroundColorHex_value = gup("controlBackgroundColorHex")) === "") {
     controlBackgroundColorSex = gup("controlBackgroundColorSex");
-    if (controlBackgroundColorSex == 'default') {
-      controlBackgroundColorHex_value = 'default';
-    } else if (controlBackgroundColorSex == 'd') {
-      controlBackgroundColorHex_value = 'd';      
-    } else if ((controlBackgroundColorHex_value = sex2hex(controlBackgroundColorSex)) === "") { 
+    if ((controlBackgroundColorHex_value = sex2hex(controlBackgroundColorSex)) === "") { 
       controlBackgroundColorHex_value = controlBackgroundColorHex_default; 
     }
   }
   if (controlBackgroundColorHex_value == 'd') { controlBackgroundColorHex_value = 'default'; }
   if (controlBackgroundColorHex_value == 'default') {
-    document.board.controlBackgroundColorHex.value = controlBackgroundColorHex_value;
-  } else {
-    setColorBox(document.board.controlBackgroundColorHex, controlBackgroundColorHex_value);      
+    document.board.buttonsDisplay.value = buttonsDisplay_value = "standard";
+    controlBackgroundColorHex_value = controlBackgroundColorHex_default;
   }
-  validate_color_default(document.board.controlBackgroundColorHex, 'control buttons background color', 'default');
+  setColorBox(document.board.controlBackgroundColorHex, controlBackgroundColorHex_value); 
+  validate_color(document.board.controlBackgroundColorHex, 'control buttons background color', 'default');
 
   if ((controlTextColorHex_value = gup("controlTextColorHex")) === "") { 
     if ((controlTextColorHex_value = sex2hex(gup("controlTextColorSex"))) === "") { 
@@ -373,6 +374,7 @@ function set_defaults() {
   validate_number_percentage(document.board.fontMovesSize, 'moves font size', fontMovesSize_default);
 
   if ((fontCommentsSize_value = percentFixFromUrl( gup("fontCommentsSize") )) === "") { fontCommentsSize_value = fontCommentsSize_default; }
+  if (fontCommentsSize_value == "m") { fontCommentsSize_value = "moves"; }
   document.board.fontCommentsSize.value = fontCommentsSize_value;
   validate_fontCommentsSize();
 
@@ -778,17 +780,6 @@ function validate_color_default(object, name, def) {
   }
 }
 
-function validate_color_none(object, name, def) {
-  if (object.value == 'none') { return true; }
-  else if (object.value.match(/^[0-9A-Fa-f]{6}$/)) {
-    return true;
-  } else { 
-    alert('error: the ' + name + ' must be \'none\' or a six digits hexadecimal color code, like FF0000');
-    setColorBox(object, def);
-    return false;    
-  }
-}
-
 function validate_number(object, name, def) {
   if (!(vv = object.value.match(/^([0-9]+)(px$|$)/))) {
     alert('error: the ' + name + ' must be a non negative number');
@@ -837,7 +828,7 @@ function validate_number_percentage_blank(object, name, def) {
 
 function validate_fontCommentsSize() {
   object = document.getElementById('fontCommentsSize');
-  if ((object.value == "moves") || (object.value == "m")) { return true; }
+  if (object.value == "moves") { return true; }
   if (!(vv = object.value.match(/^([0-9]+)(%$|p$|pct$|px$|$)/))) {
     alert('error: the comments font size must be \'moves\' or a non negative number or percentage');
     object.value = fontCommentsSize_default;
@@ -2235,7 +2226,7 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 <span class="helptext">if set  to <b>border</b> a larger square size might be required</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="highlightColorHex" name="input" value="" size="9" onChange="validate_color_none(this, 'highlight squares color', highlightColorHex_default)">
+<input class="color {adjust:false} input" type="text" id="highlightColorHex" name="input" value="" size="9" onChange="validate_color(this, 'highlight squares color', highlightColorHex_default)">
 &nbsp;&nbsp; highlight squares color &nbsp;&nbsp;
 <p></p>
 <br>
