@@ -980,6 +980,7 @@ function checkInitialHalfmove() {
 	document.board.initialHalfmoveNumber.value = initialHalfmoveNumber_default;
         retVal = false;
       }
+      break;
   }
   document.board.initialHalfmoveNumber.disabled = (document.board.initialHalfmoveSelect.value != "number");
   return retVal;
