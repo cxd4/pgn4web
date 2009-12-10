@@ -968,7 +968,7 @@ function checkInitialHalfmove() {
       retVal = true;
       break;
     default:
-      if (initialHalfmove_value.match(/^[0-9]$/)) {
+      if (initialHalfmove_value.match(/^[0-9]+$/)) {
         document.board.initialHalfmoveSelect.value = "number";
 	document.board.initialHalfmoveNumber.value = initialHalfmove_value;
         retVal = true;
@@ -988,7 +988,7 @@ function setInitialHalfmove() {
   if (document.board.initialHalfmoveSelect.value == "number") {
     document.board.initialHalfmoveNumber.disabled = false;
     if (document.board.initialHalfmoveNumber.value === "") { document.board.initialHalfmoveNumber.value = 0; }
-    if (document.board.initialHalfmoveNumber.value.match(/^[0-9]$/)) {
+    if (document.board.initialHalfmoveNumber.value.match(/^[0-9]+$/)) {
       document.board.initialHalfmove.value = initialHalfmove_value = document.board.initialHalfmoveNumber.value;
     } else {
       alert("error: initial halfmove number must be a non negative integer");
