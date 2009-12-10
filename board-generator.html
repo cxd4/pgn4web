@@ -75,6 +75,8 @@ pgnText_default = templatePgnHeader + '\n';
 encodePgn_default = "t";
 autoplayMode_default = "game";
 delay_default = 3000;
+initialGame_default = "first";
+initialHalfmove_default = initialHalfmoveSelect_default = "start"; initialHalfmoveNumber_default = "0";
 pieceFont_default = "default";
 pieceSize_default = "default";
 squareSize_default = 40;
@@ -146,12 +148,31 @@ function set_defaults() {
     document.board.autoplayMode.value = autoplayMode_value;
   if (!((autoplayMode_value == "game") || (autoplayMode_value == "loop") ||
         (autoplayMode_value == "none")) ) {
-    alert("error: autoplay mode must me either 'game', 'loop', 'none' or their initials");
+    alert("error: autoplay mode must be either 'game', 'loop', 'none' or their initials");
     document.board.autoplayMode.value = autoplayMode_value = autoplayMode_default;
   }
 
   if ((delay_value = gup("delay")) === "") { delay_value = delay_default; }
   document.board.delay.value = delay_value;
+
+  if ((initialGame_value = gup("initialGame")) === "") { initialGame_value = initialGame_default; }
+  if ((initialGame_value == "f") || (initialGame_value == "false")) { initialGame_value = "first"; }
+  if (initialGame_value == "l") { initialGame_value = "last"; }
+  if (initialGame_value == "r") { initialGame_value = "random"; }
+  document.board.initialGame.value = initialGame_value;
+  if (!((initialGame_value == "first") || (initialGame_value == "last") ||
+        (initialGame_value == "random")) ) {
+    alert("error: initial game must be either 'first', 'last', 'random' or their initials");
+    document.board.initialGame.value = initialGame_value = initialGame_default;
+  }
+
+  if ((initialHalfmove_value = gup("initialHalfmove")) === "") { initialHalfmove_value = initialHalfmove_default; }
+  if (initialHalfmove_value == "s") { initialHalfmove_value = "start"; }
+  if (initialHalfmove_value == "e") { initialHalfmove_value = "end"; }
+  if (initialHalfmove_value == "r") { initialHalfmove_value = "random"; }
+  if (initialHalfmove_value == "c") { initialHalfmove_value = "comment"; }
+  document.board.initialHalfmove.value = initialHalfmove_value;
+  checkInitialHalfmove();
 
   if ((pieceFont_value = gup("pieceFont")) === "") { pieceFont_value = pieceFont_default; }
   if (pieceFont_value == "a") { pieceFont_value = "alpha"; }
@@ -163,7 +184,7 @@ function set_defaults() {
   if (!((pieceFont_value == "alpha") || (pieceFont_value == "merida") || 
         (pieceFont_value == "uscf")  || (pieceFont_value == "random") ||
 	(pieceFont_value == "default")) ) {
-    alert("error: piece font must me either 'alpha', 'merida', 'uscf', 'random', 'default' or their initials");
+    alert("error: piece font must be either 'alpha', 'merida', 'uscf', 'random', 'default' or their initials");
     document.board.pieceFont.value = pieceFont_value = pieceFont_default;
   }
 
@@ -211,7 +232,7 @@ function set_defaults() {
   document.board.highlightMode.value = highlightMode_value;
   if (!((highlightMode_value == "border") || (highlightMode_value == "none") ||
         (highlightMode_value == "square")) ) {
-    alert("error: highlight mode must me either 'border', 'square', 'none' or their initials");
+    alert("error: highlight mode must be either 'border', 'square', 'none' or their initials");
     document.board.highlightMode.value = highlightMode_value = highlightMode_default;
   }
   validate_ss_ps_hm();
@@ -245,7 +266,7 @@ function set_defaults() {
   document.board.buttonsDisplay.value = buttonsDisplay_value;
   if (!((buttonsDisplay_value == "custom") || (buttonsDisplay_value == "hidden") ||
         (buttonsDisplay_value == "standard")) ) {
-    alert("error: buttons display must me either 'custom', 'hidden', 'standard' or their initials");
+    alert("error: buttons display must be either 'custom', 'hidden', 'standard' or their initials");
     document.board.buttonsDisplay.value = buttonsDisplay_value = buttonsDisplay_default;
   }
 
@@ -291,7 +312,7 @@ function set_defaults() {
   document.board.headerDisplay.value = headerDisplay_value;
   if (!((headerDisplay_value == "centered") || (headerDisplay_value == "hidden") ||
         (headerDisplay_value == "justified")) ) {
-    alert("error: header display must me either 'centered', 'hidden', 'justified' or their initials");
+    alert("error: header display must be either 'centered', 'hidden', 'justified' or their initials");
     document.board.headerDisplay.value = headerDisplay_value = headerDisplay_default;
   }
 
@@ -309,7 +330,7 @@ function set_defaults() {
   if (movesDisplay_value == "j") { movesDisplay_value = "justified"; }
   document.board.movesDisplay.value = movesDisplay_value;
   if (!((movesDisplay_value == "hidden") || (movesDisplay_value == "justified")) ) {
-    alert("error: moves display must me either 'hidden', 'justified' or their initials");
+    alert("error: moves display must be either 'hidden', 'justified' or their initials");
     document.board.movesDisplay.value = movesDisplay_value = movesDisplay_default;
   }
 
@@ -329,7 +350,7 @@ function set_defaults() {
   document.board.commentsDisplay.value = commentsDisplay_value;
   if (!((commentsDisplay_value == "hidden") || (commentsDisplay_value == "inline") ||
         (commentsDisplay_value == "newline")) ) {
-    alert("error: comment display must me either 'hidden', 'inline', 'newline' or their initials");
+    alert("error: comment display must be either 'hidden', 'inline', 'newline' or their initials");
     document.board.commentsDisplay.value = commentsDisplay_value = commentsDisplay_default;
   }
 
@@ -536,6 +557,18 @@ function calculate_html_code() {
   autoplayMode_value = document.board.autoplayMode.value;
   delay_value = parseInt(document.board.delay.value, 10);
   iframeUrl += "&am=" + autoplayMode_value.charAt(0) + "&d=" + delay_value;
+
+  initialGame_value = document.board.initialGame.value;
+  if (initialGame_value != "first") { iframeUrl += "&ig=" + initialGame_value.charAt(0); }
+
+  initialHalfmove_value = document.board.initialHalfmove.value;
+  if (initialHalfmove_value != "start") { 
+    if (isNaN(parseInt(initialHalfmove_value, 10))) {
+      iframeUrl += "&ih=" + initialHalfmove_value.charAt(0); 
+    } else {
+      iframeUrl += "&ih=" + initialHalfmove_value;
+    }
+  }
 
   pieceFont_value = document.board.pieceFont.value;
   squareSize_value = parseInt(document.board.squareSize.value, 10);
@@ -789,7 +822,7 @@ function validate_highlightMoveColorHex() {
 
 function validate_number(object, name, def) {
   if (!(vv = object.value.match(/^([0-9]+)(px$|$)/))) {
-    alert('error: the ' + name + ' must be a non negative number');
+    alert('error: the ' + name + ' must be a non negative integer');
     object.value = def;
     return false;    
   } else { 
@@ -801,7 +834,7 @@ function validate_number(object, name, def) {
 function validate_number_blank(object, name, def) {
   if (object.value === "") { return true; }
   if (!(vv = object.value.match(/^([0-9]+)(px$|$)/))) {
-    alert('error: the ' + name + ' must be blank or a non negative number');
+    alert('error: the ' + name + ' must be blank or a non negative integer');
     object.value = def;
     return false;    
   } else { 
@@ -812,7 +845,7 @@ function validate_number_blank(object, name, def) {
 
 function validate_number_percentage(object, name, def) {
   if (!(vv = object.value.match(/^([0-9]+)(%$|p$|pct$|px$|$)/))) {
-    alert('error: the ' + name + ' must be a non negative number or percentage');
+    alert('error: the ' + name + ' must be a non negative integer or percentage');
     object.value = def;
     return false;    
   } else {
@@ -824,7 +857,7 @@ function validate_number_percentage(object, name, def) {
 function validate_number_percentage_blank(object, name, def) {
   if (object.value === "") { return true; }
   if (!(vv = object.value.match(/^([0-9]+)(%$|p$|pct$|px$|$)/))) {
-    alert('error: the ' + name + ' must be blank or a non negative number or percentage');
+    alert('error: the ' + name + ' must be blank or a non negative integer or percentage');
     object.value = def;
     return false;    
   } else { 
@@ -837,7 +870,7 @@ function validate_fontCommentsSize() {
   object = document.getElementById('fontCommentsSize');
   if (object.value == "moves") { return true; }
   if (!(vv = object.value.match(/^([0-9]+)(%$|p$|pct$|px$|$)/))) {
-    alert('error: the comments font size must be \'moves\' or a non negative number or percentage');
+    alert('error: the comments font size must be \'moves\' or a non integer number or percentage');
     object.value = fontCommentsSize_default;
     return false;    
   } else { 
@@ -853,9 +886,9 @@ function validate_frameWidth() {
   if (object.value == 'page') { return true; }
   if (!(vv = object.value.match(/^([0-9]+)(px$|$)/))) {
     if (document.getElementById('horizontalLayout').value == "t") {
-      alert('error: in the horizontal layout the iFrame width must be a non negative number or \'page\'');
+      alert('error: in the horizontal layout the iFrame width must be a non negative integer or \'page\'');
     } else {
-      alert('error: in the vertical layout the iFrame width must be a non negative number, \'board\' or \'page\'');
+      alert('error: in the vertical layout the iFrame width must be a non negative integer, \'board\' or \'page\'');
     }
     object.value = "";
     return false;    
@@ -871,9 +904,9 @@ function validate_frameHeight() {
   if ((object.value == 'board') && (document.getElementById('horizontalLayout').value == "t")){ return true; }
   if (!(vv = object.value.match(/^([0-9]+)(px$|$)/))) {
     if (document.getElementById('horizontalLayout').value == "t") { 
-      alert('error: in the horizontal layout the iFrame height must be a non negative number or \'board\'');
+      alert('error: in the horizontal layout the iFrame height must be a non negative integer or \'board\'');
     } else {
-      alert('error: in the vertical layout the iFrame height must be a non negative number');
+      alert('error: in the vertical layout the iFrame height must be a non negative integer');
     }
     object.value = "";
     return false;    
@@ -917,6 +950,53 @@ function validate_ss_ps_hm() {
     }
   }
   return retval;
+}
+
+function checkInitialHalfmove() {
+  initialHalfmove_value = document.board.initialHalfmove.value;
+  switch (initialHalfmove_value) {
+    case "":
+    case "start":
+    case "end":
+    case "random":
+    case "comment":
+    case "-1":
+    case "-2":
+      document.board.initialHalfmoveSelect.value = document.board.initialHalfmove.value;
+      document.board.initialHalfmoveNumber.value = initialHalfmoveNumber_default;
+      retVal = true;
+      break;
+    default:
+      if (initialHalfmove_value.match(/^[0-9]$/)) {
+        document.board.initialHalfmoveSelect.value = "number";
+	document.board.initialHalfmoveNumber.value = initialHalfmove_value;
+        retVal = true;
+      } else {
+        alert("error: initial halfmove (as URL parameter) must be either a number (-2, -1, 0, 1, 2 ...) or 'start', 'end', 'random', 'comment' or their initials");
+        document.board.initialHalfmove.value = initialHalfmove_value = initialHalfmove_default;
+	document.board.initialHalfmoveSelect.value = initialHalfmoveSelect_default;
+	document.board.initialHalfmoveNumber.value = initialHalfmoveNumber_default;
+        retVal = false;
+      }
+  }
+  document.board.initialHalfmoveNumber.disabled = (document.board.initialHalfmoveSelect.value != "number");
+  return retVal;
+}
+
+function setInitialHalfmove() {
+  if (document.board.initialHalfmoveSelect.value == "number") {
+    document.board.initialHalfmoveNumber.disabled = false;
+    if (document.board.initialHalfmoveNumber.value === "") { document.board.initialHalfmoveNumber.value = 0; }
+    if (document.board.initialHalfmoveNumber.value.match(/^[0-9]$/)) {
+      document.board.initialHalfmove.value = initialHalfmove_value = document.board.initialHalfmoveNumber.value;
+    } else {
+      alert("error: initial halfmove number must be a non negative integer");
+      document.board.initialHalfmove.value = initialHalfmove_value = document.board.initialHalfmoveNumber.value = initialHalfmoveNumber_default;
+    }
+  } else {
+    document.board.initialHalfmoveNumber.disabled = true;
+    document.board.initialHalfmove.value = initialHalfmove_value = document.board.initialHalfmoveSelect.value;
+  }
 }
 
 function add_option(selectObject, newText, newValue) {
@@ -2148,6 +2228,33 @@ loops through games continiously</span>
 <option value="30000">30 seconds</option>
 </select>
 &nbsp;&nbsp; autoplay delay &nbsp;&nbsp;
+<p></p>
+
+<select class="dropdown" id="initialGame" name="dropdown">
+<option value="first" selected="selected">first</option>
+<option value="last">last</option>
+<option value="random">random</option>
+</select>
+&nbsp;&nbsp; initial game &nbsp;&nbsp;
+<p></p>
+
+<input type="hidden" id="initialHalfmove" value="">
+
+<select class="dropdown" id="initialHalfmoveSelect" name="dropdown" onChange="javascript:setInitialHalfmove();">
+	<option value="start" selected="selected">start</option>
+	<option value="end">end always</option>
+	<option value=9999>end once</option>
+	<option value="random">random always</option>
+	<option value=-1>random once</option>
+	<option value="comment">comment always</option>
+	<option value=-2>comment once</option>
+	<option value="number">custom number</option>
+</select>
+&nbsp;&nbsp; initial halfmove &nbsp;&nbsp;
+<p></p>
+
+<input  class="input" type="text" id="initialHalfmoveNumber" name="input" value="" size="9" onChange="javascript:setInitialHalfmove();">
+&nbsp;&nbsp; initial halfmove number &nbsp;&nbsp;
 <p></p>
 
 <div style="height: 3em">&nbsp;</div>
