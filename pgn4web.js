@@ -1809,7 +1809,7 @@ function Init(){
 
   RefreshBoard();
   CurrentPly = StartPly;
-  HighlightLastMove();
+  HighlightLastMove(); 
   if (firstStart || alwaysInitialHalfmove) {
     switch (initialHalfmove) {
       case "start":
@@ -1827,8 +1827,9 @@ function Init(){
         break;
       default:
         if (isNaN(initialHalfmove)) { initialHalfmove = 0; }
-        if (initialHalfmove < -2) { initialHalfmove = 0; }
-        if (initialHalfmove == -2) { GoToMove(0); MoveToNextComment(); }
+        if (initialHalfmove < -3) { initialHalfmove = 0; }
+        if (initialHalfmove == -3) { GoToMove(StartPly+PlyNumber); }
+        else if (initialHalfmove == -2) { GoToMove(0); MoveToNextComment(); }
         else if (initialHalfmove == -1) { GoToMove(StartPly + Math.floor(Math.random()*(StartPly+PlyNumber))); }
         else { GoToMove(initialHalfmove); }
         break;

@@ -963,6 +963,7 @@ function checkInitialHalfmove() {
     case "comment":
     case "-1":
     case "-2":
+    case "-3":
       document.board.initialHalfmoveSelect.value = document.board.initialHalfmove.value;
       document.board.initialHalfmoveNumber.value = initialHalfmoveNumber_default;
       retVal = true;
@@ -973,7 +974,7 @@ function checkInitialHalfmove() {
 	document.board.initialHalfmoveNumber.value = initialHalfmove_value;
         retVal = true;
       } else {
-        alert("error: initial halfmove (as URL parameter) must be either a number (-2, -1, 0, 1, 2 ...) or 'start', 'end', 'random', 'comment' or their initials");
+        alert("error: initial halfmove (as URL parameter) must be either a number (-3, -2, -1, 0, 1, 2 ...) or 'start', 'end', 'random', 'comment' or their initials");
         document.board.initialHalfmove.value = initialHalfmove_value = initialHalfmove_default;
 	document.board.initialHalfmoveSelect.value = initialHalfmoveSelect_default;
 	document.board.initialHalfmoveNumber.value = initialHalfmoveNumber_default;
@@ -2244,7 +2245,7 @@ loops through games continiously</span>
 <select class="dropdown" id="initialHalfmoveSelect" name="dropdown" onChange="javascript:setInitialHalfmove();">
 	<option value="start" selected="selected">start</option>
 	<option value="end">end always</option>
-	<option value=999>end once</option>
+	<option value=-3>end once</option>
 	<option value="random">random always</option>
 	<option value=-1>random once</option>
 	<option value="comment">comment always</option>

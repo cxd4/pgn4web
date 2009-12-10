@@ -1090,12 +1090,6 @@ switch (autoplayMode) {
 if (gup("delay") === "") { SetAutoplayDelay(1000); }
 else { SetAutoplayDelay(gup("delay")); }
 
-//
-// NOTE: the following initialGame= switch is not added to the board-generator
-// tool but reserved for occasional use; a word (like random) can be supplied,
-// a number (0 for random or actual game number).
-//
-
 // use init_Game to avoid overlap with existing global var initialGame in pgn4web.js
 if ((init_Game = gup("initialGame")) === "") { 
   init_Game = "first"; 
@@ -1105,14 +1099,6 @@ if ((init_Game = gup("initialGame")) === "") {
   if (init_Game == "r") { init_Game = "random"; }
 }
 SetInitialGame(init_Game);
-
-//
-// NOTE: the following initialHalfmove= switch is not added to the 
-// board-generator tool but reserved for occasional use; if a word (like
-// random) is supplied, the setting is reapeated at each game load, if a
-// number (0 for start, -1 for random, -2 for comment or actual halfmove 
-// number)is supplied the setting is applied only to the initial game load
-//
 
 // use init_Halfmove to avoid overlap with existing global var initialHalfmove in pgn4web.js
 always_Halfmove = false;     	
