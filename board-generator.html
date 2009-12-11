@@ -26,9 +26,12 @@ a {
   color: black;
 }
 
-.helptext {
-  font-size: small;
+.helptext, .helplink {
   color: gray;
+}
+
+.helptext {
+  font-size: 80%;
 }
 
 .input, .textbox {
@@ -503,8 +506,8 @@ function update_suggested_iframe_dimensions() {
   if (document.board.horizontalLayout.value == "t") {
     suggested_frameHeight = "board";
     suggested_frameWidth = "page";
-    document.getElementById('frameHeight_helpText').innerHTML = "a number or <a class='helptext' style='font-weight: bold;' href='' onClick='javascript:document.board.frameHeight.value = \"board\"; return false;'>board</a>; min " + min_frameHeight + "; when <a class='helptext' href='' onClick='javascript:document.board.frameHeight.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameHeight;
-    document.getElementById('frameWidth_helpText').innerHTML = "a number or <a class='helptext' style='font-weight: bold;' href='' onClick='javascript:document.board.frameWidth.value = \"page\"; return false;'>page</a>; min " + min_frameWidth + "; when <a class='helptext' href='' onClick='javascript:document.board.frameWidth.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
+    document.getElementById('frameHeight_helpText').innerHTML = "a number or <a class='helplink' style='font-weight: bold;' href='' onClick='javascript:document.board.frameHeight.value = \"board\"; return false;'>board</a>; min " + min_frameHeight + "; when <a class='helplink' href='' onClick='javascript:document.board.frameHeight.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameHeight;
+    document.getElementById('frameWidth_helpText').innerHTML = "a number or <a class='helplink' style='font-weight: bold;' href='' onClick='javascript:document.board.frameWidth.value = \"page\"; return false;'>page</a>; min " + min_frameWidth + "; when <a class='helplink' href='' onClick='javascript:document.board.frameWidth.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
   } else {
     suggested_frameWidth = boardWidth;
     suggested_frameHeight = estimated_boardHeight;
@@ -519,8 +522,8 @@ function update_suggested_iframe_dimensions() {
     }
     suggested_frameWidth += 2 * parseInt(document.board.framePadding.value, 10);
     suggested_frameHeight += 2 * parseInt(document.board.framePadding.value, 10);
-    document.getElementById('frameHeight_helpText').innerHTML = "a number; min " + min_frameHeight + "; when <a class='helptext' href='' onClick='javascript:document.board.frameHeight.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameHeight;
-    document.getElementById('frameWidth_helpText').innerHTML = "a number or <a class='helptext' style='font-weight: bold;' href='' onClick='javascript:document.board.frameWidth.value = \"board\"; return false;'>board</a> or <a class='helptext' style='font-weight: bold;' href='' onClick='javascript:document.board.frameWidth.value = \"page\"; return false;'>page</a>; min " + min_frameWidth + "; when <a class='helptext' href='' onClick='javascript:document.board.frameWidth.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
+    document.getElementById('frameHeight_helpText').innerHTML = "a number; min " + min_frameHeight + "; when <a class='helplink' href='' onClick='javascript:document.board.frameHeight.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameHeight;
+    document.getElementById('frameWidth_helpText').innerHTML = "a number or <a class='helplink' style='font-weight: bold;' href='' onClick='javascript:document.board.frameWidth.value = \"board\"; return false;'>board</a> or <a class='helplink' style='font-weight: bold;' href='' onClick='javascript:document.board.frameWidth.value = \"page\"; return false;'>page</a>; min " + min_frameWidth + "; when <a class='helplink' href='' onClick='javascript:document.board.frameWidth.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
   }
 
   theObject = document.getElementById('frameWidth');
@@ -2034,7 +2037,7 @@ function print_menu( item, level, title ) {
   menu =  '<table width=100% cellspacing=0 cellpadding=0><tr><td td valign=middle align=left>';
   menu += '<h' + level + '><a name=' + item + '>' + title + '</a></h' + level + '>';
   menu += '</td><td valign=top align=right>';
-  menu += '<div style="font-size: 66%;">';
+  menu += '<div style="font-size: 70%;">';
   menu += '<a href=#top>instructions</a>';
   menu += '<br>';
   menu += '&nbsp; &nbsp;<span style="color:gray">actions:</span>';
@@ -2216,9 +2219,9 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 </select>
 &nbsp;&nbsp; autoplay games &nbsp;&nbsp;
 <span class="helptext">
-<a class="helptext" style="font-weight: bold;" href="" onClick="javascript:document.board.autoplayMode.value = 'game'; return false;">game</a>
+<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.autoplayMode.value = 'game'; return false;">game</a>
 autoplays the first game once,
-<a class="helptext" style="font-weight: bold;" href="" onClick="javascript:document.board.autoplayMode.value = 'loop'; return false;">loop</a>
+<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.autoplayMode.value = 'loop'; return false;">loop</a>
 loops through games continiously</span>
 <p></p>
 
@@ -2260,7 +2263,7 @@ loops through games continiously</span>
 <input  class="input" type="text" id="initialHalfmoveNumber" name="input" value="" size="12" onChange="javascript:setInitialHalfmove();">
 &nbsp;&nbsp; initial halfmove number &nbsp;&nbsp;
 <span class="helptext">actual halfmove number applied when the setting above is
-<a class="helptext" style="font-weight: bold;" href="" onClick="javascript:document.board.initialHalfmoveSelect.value = 'number'; setInitialHalfmove(); return false;">custom number</a>
+<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.initialHalfmoveSelect.value = 'number'; setInitialHalfmove(); return false;">custom number</a>
 </span>
 <p></p>
 
@@ -2319,7 +2322,7 @@ loops through games continiously</span>
 </select>
 &nbsp;&nbsp; piece size &nbsp;&nbsp;
 <span class="helptext">
-<a class="helptext" style="font-weight: bold;" href="" onClick="javascript:document.board.pieceSize.value = 'default'; return false;">default</a>
+<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.pieceSize.value = 'default'; return false;">default</a>
 selects piece size based on square size</span>
 <p></p>
 
@@ -2332,7 +2335,7 @@ selects piece size based on square size</span>
 </select>
 &nbsp;&nbsp; piece font &nbsp;&nbsp;
 <span class="helptext">
-<a class="helptext" style="font-weight: bold;" href="" onClick="javascript:document.board.pieceFont.value = 'default'; return false;">default</a>
+<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.pieceFont.value = 'default'; return false;">default</a>
 selects piece font based on piece size</span>
 <p></p>
 <br>
@@ -2356,7 +2359,7 @@ selects piece font based on piece size</span>
 </select>
 &nbsp;&nbsp; square highlight mode &nbsp;&nbsp;
 <span class="helptext">when set  to
-<a class="helptext" style="font-weight: bold;" href="" onClick="javascript:document.board.highlightMode.value = 'border'; validate_ss_ps_hm(); update_controls(); return false;">border</a>
+<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.highlightMode.value = 'border'; validate_ss_ps_hm(); update_controls(); return false;">border</a>
 a larger square size might be required</span>
 <p></p>
 
@@ -2372,9 +2375,9 @@ a larger square size might be required</span>
 </select>
 &nbsp;&nbsp; how to show control buttons &nbsp;&nbsp;
 <span class="helptext">
-<a class="helptext" style="font-weight: bold;" href="" onClick="javascript:document.board.buttonsDisplay.value = 'standard'; update_controls(); return false;">standard</a>
+<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.buttonsDisplay.value = 'standard'; update_controls(); return false;">standard</a>
 uses browser's buttons,
-<a class="helptext" style="font-weight: bold;" href="" onClick="javascript:document.board.buttonsDisplay.value = 'custom'; update_controls(); return false;">custom</a>
+<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.buttonsDisplay.value = 'custom'; update_controls(); return false;">custom</a>
 uses colors below</span>
 <p></p>
 
@@ -2433,7 +2436,7 @@ uses colors below</span>
 <input class="color {adjust:false} input" type="text" id="highlightMoveColorHex" name="input" value="" size="12" onChange="validate_highlightMoveColorHex()">
 &nbsp;&nbsp; highlight move color &nbsp;&nbsp;
 <span class="helptext">when set to
-<a class="helptext" style="font-weight: bold;" href="" onClick="javascript:document.board.highlightMoveColorHex.color.fromString('FFFFFF'); document.board.highlightMoveColorHex.value = 'background'; return false;">background</a>
+<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.highlightMoveColorHex.color.fromString('FFFFFF'); document.board.highlightMoveColorHex.value = 'background'; return false;">background</a>
 the background color is copied</span>
 <p></p>
 <br>
@@ -2445,16 +2448,16 @@ the background color is copied</span>
 </select>
 &nbsp;&nbsp; how to show move comments &nbsp;&nbsp;
 <span class="helptext">
-<a class="helptext" style="font-weight: bold;" href="" onClick="javascript:document.board.commentsDisplay.value = 'inline'; return false;">inline</a>:
+<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.commentsDisplay.value = 'inline'; return false;">inline</a>:
 on same line as moves,
-<a class="helptext" style="font-weight: bold;" href="" onClick="javascript:document.board.commentsDisplay.value = 'newline'; return false;">newline</a>:
+<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.commentsDisplay.value = 'newline'; return false;">newline</a>:
 on separate lines</span>
 <p></p>
 
 <input class="input" type="text" id="fontCommentsSize" name="input" value="" size="12" onChange="validate_fontCommentsSize();">
 &nbsp;&nbsp; comments font size &nbsp;&nbsp;
 <span class="helptext">a number or a percentage; when set to
-<a class="helptext" style="font-weight: bold;" href="" onClick="javascript:document.board.fontCommentsSize.value = 'moves'; return false;">moves</a>
+<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.fontCommentsSize.value = 'moves'; return false;">moves</a>
 the moves font size is copied</span>
 <p></p>
 
