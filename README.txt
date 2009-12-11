@@ -110,6 +110,7 @@ Then the script will automagically add content into your HTML file
 to any <div> or <span> containers with the following IDs:
 
   <div id="GameSelector"></div>
+  <div id="GameSearch"></div>
   <div id="GameLastMove"></div>
   <div id="GameNextMove"></div>
   <div id="GameSideToMove"></div>

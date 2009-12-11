@@ -42,6 +42,7 @@
  *   to any <div> or <span> containers with the following IDs:
  *
  *      <div id="GameSelector"></div>
+ *      <div id="GameSearch"></div>
  *      <div id="GameLastMove"></div>
  *      <div id="GameNextMove"></div>
  *      <div id="GameSideToMove"></div>
@@ -3121,11 +3122,14 @@ function reset_after_click (ii, jj, originalClass, newClass) {
   clickedSquareInterval = null;
 }
 
-
+var lastSearchPgnExpression = "";
 function searchPgnGame(searchExpression) {
+  lastSearchPgnExpression = searchExpression;
   if (searchExpression === "") { return; }
   if (numberOfGames < 2) { return; }
-  for (checkGame=currentGame+1; checkGame != currentGame; checkGame = (checkGame + 1) % numberOfGames) {
+  for (checkGame=(currentGame+1) % numberOfGames; 
+       checkGame != currentGame; 
+       checkGame = (checkGame + 1) % numberOfGames) { 
     if (pgnGame[checkGame].match(searchExpression)) {
       break;
     }
@@ -3433,6 +3437,29 @@ function PrintHTML(){
   theObject = document.getElementById("GameText");
   if (theObject !== null) { theObject.innerHTML = text; }
 
+  /*
+   * Show the HTML for the Game Search box
+   */
+  theObject = document.getElementById("GameSearch");
+  if ((firstStart) && (theObject !== null)) {
+    if (numberOfGames < 2) {
+      // theObject.innerHTML = ''; // replaced with code below to cope with IE bug
+      while (theObject.firstChild) { theObject.removeChild(theObject.firstChild); }
+    } else {
+      text = '<FORM ID="searchPgnForm" STYLE="display: inline;" ' +
+             'ACTION="javascript:searchPgnGame(document.getElementById(\'searchPgnExpression\').value);">';
+      text += '<INPUT ID="searchPgnButton" CLASS="searchPgnButton" STYLE="display: inline; margin: 0; ';
+      if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + tableSize/4 + '; '; }
+      text += '" TYPE="submit" VALUE="search">';
+      text += '<INPUT ID="searchPgnExpression" CLASS="searchPgnExpression" ' +
+              'TITLE="enter search string or regular expression" TYPE="input" ' +
+              'VALUE="' + lastSearchPgnExpression + '" STYLE="display: inline; margin: 0; ';
+      if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + 3*tableSize/4 + '; '; }
+      text += '" ONFOCUS="disableShortcutKeysAndStoreStatus();" ONBLUR="restoreShortcutKeysStatus();">'; 
+      text += '</FORM>';
+      theObject.innerHTML = text;
+    }
+  }
 }
 
 

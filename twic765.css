@@ -73,6 +73,16 @@ body {
 /* a "width" attribute here must use the !important flag to override default settings */
 }
 
+.searchPgnButton {
+/* a "width" and/or a "margin" attribute here must use the !important flag to override default settings */
+  width: 20% !important;
+}
+
+.searchPgnExpression {
+/* a "width" and/or a "margin" attribute here must use the !important flag to override default settings */
+  width: 80% !important;
+}
+
 .move,
 .moveOn {
   color: black;

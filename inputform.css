@@ -51,31 +51,31 @@ body {
   background: #fdf88d;
 }
 
-.selectControl {
-/* a "width" attribute here must use the !important flag to override default settings */
-  color: gray;
-  background-color: #faf4dc;
-  border-color: #e1dbb5;
-  border-style: solid;
-  border-width: 1px;
-  height: 1.5em;
-}
-
+.selectControl,
 .actionButton,
 .buttonControlPlay,
 .buttonControlStop,
-.buttonControl {
+.buttonControl,
+.searchPgnButton,
+.searchPgnExpression {
 /* a "width" attribute here must use the !important flag to override default settings */
   color: gray;
   background-color: #faf4dc;
   border-color: #e1dbb5;
   border-style: solid;
   border-width: 1px;
-  height: 1.5em;
 }
 
 .buttonControlSpace {
 /* a "width" attribute here must use the !important flag to override default settings */
+}
+
+.searchPgnButton {
+/* a "width" and/or a "margin" attribute here must use the !important flag to override default settings */
+}
+
+.searchPgnExpression {
+/* a "width" and/or a "margin" attribute here must use the !important flag to override default settings */
 }
 
 .move,

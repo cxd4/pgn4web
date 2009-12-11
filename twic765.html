@@ -66,13 +66,7 @@ ply:<span id=currPly>0</span>/<span id=numPly>0</span>
 game:<span id=currGm>0</span>/<span id=numGm>0</span> 
 </div>
 <div align="center" id="GameSelector"></div>
-<form id=searchForm style="display: inline;" action="javascript:searchPgnGame(document.getElementById('searchExpr').value);">
-<table width=100% cellspacing=0 cellpadding=0 border=0><tr><td>
-<input type="submit" style="margin: 0;" value="search games">
-</td><td width=100%>
-<input id=searchExpr title="enter search string or regular expression" type="input" value="" style="width:100%; margin: 0;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();">
-</td></tr></table>
-</form>
+<div id="GameSearch"></div>
 </td>
 
 </tr>
