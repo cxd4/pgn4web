@@ -53,7 +53,10 @@
       iniGame = 1; 
     }
   }
-  
+
+  if (gup("showComments") == "true") { SetCommentsIntoMoveText(true); }
+  else { SetCommentsIntoMoveText(false); }
+
   if (gup("help") == "true") { developer_help(); }
 
   SetPgnUrl(pgnFile); 
@@ -61,8 +64,8 @@
   SetImageType("png");
   SetHighlightOption(true); // true or false
   SetGameSelectorOptions("select a game...", true, 0, 0, 0, 15, 15, 3, 0); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate)
-  SetCommentsIntoMoveText(false);
-  SetCommentsOnSeparateLines(false);
+
+  SetCommentsOnSeparateLines(true);
   SetAutoplayDelay(3000); // milliseconds
   SetAutostartAutoplay(false);
   SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
@@ -208,7 +211,8 @@ function developer_help() {
         " - pgnFile = " + pgnFile + "; PGN file to load (default " + pgnFile_default + ")" + "\n" +
         " - initialGame = " + iniGame + "; initial game to load, a number or first, last, random (default 1)" + "\n" +
         " - refreshMinutes = " + refreshMinutes + "; refresh interval in minutes, decimals allowed (default 1)" + "\n" +
-        " - demo = " + demoFlag + "; if set true, sets live demo mode (default false)" + "\n" +
+        " - showComments = " + commentsIntoMoveText + "; (default false)" + "\n" +
+	" - demo = " + demoFlag + "; if set true, sets live demo mode (default false)" + "\n" +
         " - help = if set true, prints this help (default false)");
 }
 
