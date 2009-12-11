@@ -92,7 +92,7 @@ Next move: <span style="font-weight: bold" id="GameNextMove"></span>
 </table>
 
 <form style="display:inline;">
-<input id=pgnButton type=button value="show games from PGN text box" onClick="javascript: 
+<input id=pgnButton class="actionButton" type=button value="show games from PGN text box" onClick="javascript: 
   firstStart = true;
   document.getElementById('pgnText').value = document.getElementById('pgnForm').value;
   document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\[/g,'\n\n[');

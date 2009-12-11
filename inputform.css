@@ -19,7 +19,7 @@ body {
 
 .boardTable {
   border-style: double; 
-  border-color: black;
+  border-color: #e1dbb5;
   border-width: 3px;
 }
 
@@ -53,12 +53,25 @@ body {
 
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
+  color: gray;
+  background-color: #faf4dc;
+  border-color: #e1dbb5;
+  border-style: solid;
+  border-width: 1px;
+  padding: 2px;
 }
 
+.actionButton,
 .buttonControlPlay,
 .buttonControlStop,
 .buttonControl {
 /* a "width" attribute here must use the !important flag to override default settings */
+  color: gray;
+  background-color: #faf4dc;
+  border-color: #e1dbb5;
+  border-style: solid;
+  border-width: 1px;
+  padding: 2px;
 }
 
 .buttonControlSpace {
