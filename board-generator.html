@@ -215,7 +215,7 @@ function set_defaults() {
       lightColorHex_value = lightColorHex_default;
     }
   }
-  setColorBox(document.board.lightColorHex, lightColorHex_value); 
+  document.board.lightColorHex.color.fromString(lightColorHex_value); 
   validate_color(document.board.lightColorHex, 'light squares color', lightColorHex_default);
 
   if ((darkColorHex_value = gup("darkColorHex")) === "") {
@@ -223,7 +223,7 @@ function set_defaults() {
       darkColorHex_value = darkColorHex_default;
     }
   }
-  setColorBox(document.board.darkColorHex, darkColorHex_value);
+  document.board.darkColorHex.color.fromString(darkColorHex_value);
   validate_color(document.board.darkColorHex, 'dark squares color', darkColorHex_default);
 
   if ((boardBorderColorHex_value = gup("boardBorderColorHex")) === "") {
@@ -231,7 +231,7 @@ function set_defaults() {
       boardBorderColorHex_value = boardBorderColorHex_default;
     }
   }
-  setColorBox(document.board.boardBorderColorHex, boardBorderColorHex_value);
+  document.board.boardBorderColorHex.color.fromString(boardBorderColorHex_value);
   validate_color(document.board.boardBorderColorHex, 'board border color', boardBorderColorHex_default);
 
   if ((highlightMode_value = gup("highlightMode")) === "") { highlightMode_value = highlightMode_default; }
@@ -256,7 +256,7 @@ function set_defaults() {
     document.board.highlightMode.value = highlightMode_value = "none";
     highlightColorHex_value = highlightColorHex_default;
   }
-  setColorBox(document.board.highlightColorHex, highlightColorHex_value);
+  document.board.highlightColorHex.color.fromString(highlightColorHex_value);
   validate_color(document.board.highlightColorHex, 'highlight squares color', highlightColorHex_default);
 
   oldButtonsDisplay_value = "";
@@ -290,7 +290,7 @@ function set_defaults() {
     document.board.buttonsDisplay.value = buttonsDisplay_value = "standard";
     controlBackgroundColorHex_value = controlBackgroundColorHex_default;
   }
-  setColorBox(document.board.controlBackgroundColorHex, controlBackgroundColorHex_value); 
+  document.board.controlBackgroundColorHex.color.fromString(controlBackgroundColorHex_value); 
   validate_color(document.board.controlBackgroundColorHex, 'control buttons background color', 'default');
 
   if ((controlTextColorHex_value = gup("controlTextColorHex")) === "") { 
@@ -298,7 +298,7 @@ function set_defaults() {
       controlTextColorHex_value = controlTextColorHex_default; 
     }
   }
-  setColorBox(document.board.controlTextColorHex, controlTextColorHex_value);
+  document.board.controlTextColorHex.color.fromString(controlTextColorHex_value);
   validate_color(document.board.controlTextColorHex, 'control buttons text color', controlTextColorHex_default);
 
   if ((textMargin_value = gup("textMargin")) === "") { textMargin_value = textMargin_default; }
@@ -368,7 +368,7 @@ function set_defaults() {
       fontHeaderColorHex_value = fontHeaderColorHex_default; 
     }
   }
-  setColorBox(document.board.fontHeaderColorHex, fontHeaderColorHex_value);
+  document.board.fontHeaderColorHex.color.fromString(fontHeaderColorHex_value);
   validate_color(document.board.fontHeaderColorHex, 'header font color', fontHeaderColorHex_default);
 
   if ((fontMovesColorHex_value = gup("fontMovesColorHex")) === "") {
@@ -376,7 +376,7 @@ function set_defaults() {
       fontMovesColorHex_value = fontMovesColorHex_default;
     }
   }
-  setColorBox(document.board.fontMovesColorHex, fontMovesColorHex_value);
+  document.board.fontMovesColorHex.color.fromString(fontMovesColorHex_value);
   validate_color(document.board.fontMovesColorHex, 'moves font color', fontMovesColorHex_default);
 
   if ((fontCommentsColorHex_value = gup("fontCommentsColorHex")) === "") {
@@ -384,7 +384,7 @@ function set_defaults() {
       fontCommentsColorHex_value = fontCommentsColorHex_default;
     }
   }
-  setColorBox(document.board.fontCommentsColorHex, fontCommentsColorHex_value);
+  document.board.fontCommentsColorHex.color.fromString(fontCommentsColorHex_value);
   validate_color(document.board.fontCommentsColorHex, 'comments font color', fontCommentsColorHex_default);
 
   if ((highlightMoveColorHex_value = gup("highlightMoveColorHex")) === "") {
@@ -396,7 +396,7 @@ function set_defaults() {
   if (highlightMoveColorHex_value == "background") {
     document.board.highlightMoveColorHex.value = highlightMoveColorHex_value;
   } else {
-    setColorBox(document.board.highlightMoveColorHex, highlightMoveColorHex_value);
+    document.board.highlightMoveColorHex.color.fromString(highlightMoveColorHex_value);
     validate_color(document.board.highlightMoveColorHex, 'move highlight color', highlightMoveColorHex_default);
   }
 
@@ -418,7 +418,7 @@ function set_defaults() {
       backgroundColorHex_value = backgroundColorHex_default; 
     }
   }
-  setColorBox(document.board.backgroundColorHex, backgroundColorHex_value);
+  document.board.backgroundColorHex.color.fromString(backgroundColorHex_value);
   validate_color(document.board.backgroundColorHex, 'background color', backgroundColorHex_default);
 
   if ((horizontalLayout_value = gup("horizontalLayout")) === "") { horizontalLayout_value = horizontalLayout_default; }
@@ -445,7 +445,7 @@ function set_defaults() {
       previewBackgroundColorHex_value = previewBackgroundColorHex_default;
     }
   }
-  setColorBox(document.board.previewBackgroundColorHex, previewBackgroundColorHex_value);
+  document.board.previewBackgroundColorHex.color.fromString(previewBackgroundColorHex_value);
   validate_color(document.board.previewBackgroundColorHex, 'preview background color', previewBackgroundColorHex_default);
 
   if ((baseUrl_value = gup("baseUrl")) === "") { baseUrl_value = baseUrl_default; }
@@ -453,13 +453,6 @@ function set_defaults() {
 
   generate_html_code();
   update_controls();
-}
-
-
-// this copes with an IE bug with initializing the color boxes
-function setColorBox(theBoxObject, colorHexString) {
-  if (theBoxObject.color) { theBoxObject.color.fromString(colorHexString); } 
-//  else { theBoxObject.value = colorHexString; }
 }
 
 
@@ -812,7 +805,7 @@ function validate_color(object, name, def) {
     return true;
   } else { 
     alert('error: the ' + name + ' must be a six digits hexadecimal color code, like FF0000');
-    setColorBox(object, def);
+    object.color.fromString(def);
     return false;    
   }
 }
@@ -824,7 +817,7 @@ function validate_highlightMoveColorHex() {
     return true;
   } else { 
     alert('error: the move highlight color must be \'background\' or a six digits hexadecimal color code, like FF0000');
-    setColorBox(object, highlightMoveColorHex_default);
+    object.color.fromString(highlightMoveColorHex_default);
     return false;    
   }
 }
