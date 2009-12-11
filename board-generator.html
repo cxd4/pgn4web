@@ -2041,7 +2041,7 @@ function print_menu( item, level, title ) {
   menu += '<a href=#top>instructions</a>';
   menu += '<br>';
   menu += '&nbsp; &nbsp;<span style="color:gray">actions:</span>';
-  menu += '&nbsp; &nbsp;<a href=#generate>copy iFrame</a>';
+  menu += '&nbsp; &nbsp;<a href=#generate>copy output</a>';
   menu += '&nbsp; &nbsp;<a href=#game_preview>preview</a>';
   menu += '&nbsp; &nbsp;<a href="javascript:generate_html_code()">generate</a>';
   menu += '<br>';
@@ -2134,14 +2134,14 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 <form id="board" name="board" style="display:inline;" action="javascript:generate_html_code()">
 
 <div style="height: 3em">&nbsp;</div>
-<script type="text/javascript">print_menu("generate", 2, "generate and copy iFrame");</script>
+<script type="text/javascript">print_menu("generate", 2, "generate and copy iFrame and URL");</script>
 
 <div style="height: 1em">&nbsp;</div>
 
-<div style="font-style: italic; font-weight: bold; text-align: center; margin-bottom:6;">automatically generated HTML code for your web page or blog</div>
+<div style="font-weight: bold; margin-bottom:6;">automatically generated HTML code for your web page or blog</div>
 <textarea readonly id="html_code" name="html_code" rows=15 class="textbox" style="background-color: #FFFFCC; scrollbar-base-color: #FFFFCC;"></textarea>
 <div id="html_code_status">&nbsp;</div>
-<div><a id="shorturl_link" class="helptext" href="javascript:document.forms['shorturl'].submit();">click here to create a short url for sharing the chessboard via email or instant messaging</a></div>
+<div style="margin-top:1em;"><a id="shorturl_link" style="font-weight: bold;" href="javascript:document.forms['shorturl'].submit();">click here to create a short url for sharing the chessboard via email or instant messaging</a></div>
 <p></p>
 <br>
 
