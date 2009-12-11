@@ -115,6 +115,11 @@ baseUrl_default = pgn4web_board_url;
 // max length of the iframeUrl, if this is exceeded a warning is issued 
 iframeUrl_max = 2000;
 
+function new_onLoad() {
+  jscolor.bind(); // needed to cope with IE bug
+  set_defaults();
+}
+
 function set_defaults() {
 
   load_templates();
@@ -454,7 +459,7 @@ function set_defaults() {
 // this copes with an IE bug with initializing the color boxes
 function setColorBox(theBoxObject, colorHexString) {
   if (theBoxObject.color) { theBoxObject.color.fromString(colorHexString); } 
-  else { theBoxObject.value = colorHexString; }
+//  else { theBoxObject.value = colorHexString; }
 }
 
 
@@ -2058,7 +2063,7 @@ function print_menu( item, level, title ) {
 }
 
 firstLoad = true;
-window.onload = set_defaults;
+window.onload = new_onLoad;
 
 </script>
 
