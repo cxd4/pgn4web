@@ -549,7 +549,7 @@ function update_suggested_iframe_dimensions() {
 }
 
 function update_pgnTextLength() {
- document.getElementById('pgnTextLength').innerHTML = "&nbsp;&nbsp;&nbsp;" + document.getElementById('pgnText').value.length + "p";
+ document.getElementById('pgnTextLength').innerHTML = "&nbsp;&nbsp;&nbsp;" + document.getElementById('pgnText').value.replace(/\r\n/g,'\n').length + "p";
 }
 
 function calculate_html_code() {
@@ -679,10 +679,10 @@ function calculate_html_code() {
   pgnText_value = document.getElementById('pgnText').value;
   if ((document.board.encodePgn.checked) && (pgnText_value != previousPgnTextToEncode)) {
     previousPgnTextToEncode = pgnText_value;
-    pgnTextEncoded = EncodePGN(pgnText_value);
+    pgnTextEncoded = EncodePGN(pgnText_value.replace(/\r\n/g,'\n'));
   }
   if (document.board.encodePgn.checked) { iframeUrl += "&pe=" + pgnTextEncoded; }
-  else { iframeUrl += "&pt=" + pgnTextFixForUrl(pgnText_value); }
+  else { iframeUrl += "&pt=" + pgnTextFixForUrl(pgnText_value.replace(/\r\n/g,'\n')); }
 
   // every parameter had an &xxx= format,now we need to remove the first &
   iframeUrl = iframeUrl.replace(/\?&/,"?");
@@ -780,7 +780,7 @@ function generate_html_code() {
     html_code_status_string += "<span class='helptext' style='color: red'>URL (" + iframeUrl.length + " chars) is longer than " + iframeUrl_max + " chars and might be rejected by some web browser/server, try shortening your PGN data</span>";
   }  
   html_code_status_string += "</td><td align=right valign=top>";
-  html_code_status_string += "<span class='helptext'>&nbsp;&nbsp;&nbsp;" + document.getElementById('pgnText').value.length + "p";
+  html_code_status_string += "<span class='helptext'>&nbsp;&nbsp;&nbsp;" + document.getElementById('pgnText').value.replace(/\r\n/g,'\n').length + "p";
   if (document.board.encodePgn.checked) { html_code_status_string += "&nbsp;" + pgnTextEncoded.length + "e"; } 
   html_code_status_string += "&nbsp;" + iframeUrl.length + "u</span>";
 
