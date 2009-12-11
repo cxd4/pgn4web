@@ -155,6 +155,20 @@ function stopKeyPropagation(e) {
   return false;
 }
 
+// to be used as onFocus and onBlur actions on textboxes, in order to allow typing text
+
+var shortcutKeysWereEnabled = false;
+function disableShortcutKeysAndStoreStatus() {
+  if ((shortcutKeysWereEnabled = shortcutKeysEnabled) === true) {
+    SetShortcutKeysEnabled(false);
+  }
+}
+
+function restoreShortcutKeysStatus() {
+  if (shortcutKeysWereEnabled === true) { SetShortcutKeysEnabled(true); }
+  shortcutKeysWereEnabled = false;
+}
+
 var shortcutKeysEnabled = false;
 function handlekey(e) { 
   var keycode;
@@ -3106,6 +3120,22 @@ function reset_after_click (ii, jj, originalClass, newClass) {
   if (theObject.className == newClass) { theObject.className = originalClass; }
   clickedSquareInterval = null;
 }
+
+
+function searchPgnGame(searchExpression) {
+  if (searchExpression === "") { return; }
+  if (numberOfGames < 2) { return; }
+  for (checkGame=currentGame+1; checkGame != currentGame; checkGame = (checkGame + 1) % numberOfGames) {
+    if (pgnGame[checkGame].match(searchExpression)) {
+      break;
+    }
+  }
+  if (checkGame != currentGame) {
+    currentGame = checkGame;
+    Init();
+  }
+}
+
 
 var tableSize = null;
 

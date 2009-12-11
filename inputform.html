@@ -75,7 +75,6 @@ Next move: <span style="font-weight: bold" id="GameNextMove"></span>
 
 <td align=center valign=bottom>
 <div style="height: 1.5em;">&nbsp;</div>
-<div style="height: 3px;">&nbsp;</div>
 <div id="GameButtons"></div>
 </td>
 
@@ -83,14 +82,13 @@ Next move: <span style="font-weight: bold" id="GameNextMove"></span>
 </td>
 
 <td align=center valign=bottom>
-<form id="searchForm" style="display: inline;" action="javascript:searchGame();">
+<form id="searchForm" style="display: inline;" action="javascript:searchPgnGame(document.getElementById('searchExpr').value);">
 <table width=100% cellspacing=0 cellpadding=0 border=0><tr><td>
-<input id="searchButton" class="actionButton" type="submit" value="search games" style="visibility: hidden; height: 1.5em;">
+<input id="searchButton" class="actionButton" type="submit" value="search games" style="visibility: hidden; margin: 0; height: 1.5em;">
 </td><td width=100%>
-<input id=searchExpr class="actionButton" title="enter search string or regular expression" type="input" value="" style="width:100%; height: 1.5em; visibility: hidden;" onFocus="onTextFocus()" onBlur="onTextBlur()">
+<input id=searchExpr class="actionButton" title="enter search string or regular expression" type="input" value="" style="width:100%; height: 1.5em; margin: 0; visibility: hidden;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();">
 </td></tr></table>
 </form>
-<div style="height: 3px;">&nbsp;</div>
 <div id="GameSelector"></div>
 </td>
 
@@ -103,21 +101,10 @@ Next move: <span style="font-weight: bold" id="GameNextMove"></span>
 <form style="display:inline;" action="javascript:loadPgnFromForm()">
 <input id="pgnButton" class="actionButton" type="submit" value="show games from PGN text box"> 
 <br>
-<textarea id="pgnForm" rows=11 cols=80 onFocus="onTextFocus();" onBlur="onTextBlur();"></textarea>
+<textarea id="pgnForm" rows=11 cols=80 onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();"></textarea>
 </form>
 
 <script type="text/javascript">
-
-keysWereEnabled = true; 
-function onTextFocus() {
-  if ((keysWereEnabled = shortcutKeysEnabled) === true) {
-    SetShortcutKeysEnabled(false);
-  }
-}
-
-function onTextBlur() {
-  if (keysWereEnabled === true) { SetShortcutKeysEnabled(true); }
-}
 
 function new_start_pgn4web() {
   start_pgn4web();
@@ -142,20 +129,6 @@ function loadPgnFromForm() {
   document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/^\s*\[/g,'[');
   document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\n[\s*\n]+/g,'\n\n');
   new_start_pgn4web(); 
-}
-
-function searchGame() {
-  if ((searcExpression = document.getElementById('searchExpr').value) === "") { return false; }
-  if (numberOfGames < 2) { return false; }
-  for (checkGame=currentGame+1; checkGame != currentGame; checkGame = (checkGame + 1) % numberOfGames) {
-    if (pgnGame[checkGame].match(searcExpression)) {
-      break;
-    }
-  }
-  if (checkGame != currentGame) {
-    currentGame = checkGame;
-    Init();
-  }
 }
 
 
