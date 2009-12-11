@@ -61,31 +61,26 @@ body {
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 100% !important;
-  height: 2em;
 }
 
 .buttonControlPlay,
 .buttonControlStop,
 .buttonControl {
 /* a "width" attribute here must use the !important flag to override default settings */
-  height: 2em;
 }
 
 .buttonControlSpace {
 /* a "width" attribute here must use the !important flag to override default settings */
-  height: 2em;
 }
 
 .searchPgnButton {
 /* a "width" and/or a "margin" attribute here must use the !important flag to override default settings */
   width: 20% !important;
-  height: 2em;
 }
 
 .searchPgnExpression {
 /* a "width" and/or a "margin" attribute here must use the !important flag to override default settings */
   width: 80% !important;
-  height: 2em;
 }
 
 .move,
