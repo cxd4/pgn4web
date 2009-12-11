@@ -48,7 +48,6 @@
 
 <td width=230 valign=top align=left>
 <div id="GameBoard"></div>
-<br>
 </td>
 
 <td width=20>
@@ -74,43 +73,35 @@ Next move: <span style="font-weight: bold" id="GameNextMove"></span>
 
 <tr>
 
-<td align=center valign=top>
-<span id="GameButtons"></span>
-<br>
+<td align=center valign=bottom>
+<div style="height: 1.5em;">&nbsp;</div>
+<div id="GameButtons"></div>
 </td>
 
 <td width=20>
 </td>
 
-<td align=left valign=top>
+<td align=center valign=bottom>
 <span id="GameSelector"></span>
 <br>
+<form id="searchForm" style="display: inline;" action="javascript:searchGame();">
+<table width=100% cellspacing=0 cellpadding=0 border=0><tr><td>
+<input id="searchButton" class="actionButton" type="submit" value="search games" style="visibility: hidden; height: 1.5em;">
+</td><td width=100%>
+<input id=searchExpr class="actionButton" title="enter search string or regular expression" type="input" value="" style="width:100%; height: 1.5em; visibility: hidden;" onFocus="onTextFocus()" onBlur="onTextBlur()">
+</td></tr></table>
+</form>
+
 </td>
 
 </tr>
 
 </table>
 
-<form id=searchForm style="display: inline;" action="javascript:searchGame();">
-<table width=100% cellspacing=0 cellpadding=0 border=0><tr><td>
-<input type="submit" value="search games">
-</td><td width=100%>
-<input id=searchExpr title="enter search string or regular expression" type="input" value="" style="width:100%;" onFocus="onTextFocus()" onBlur="onTextBlur()">
-</td></tr></table>
-</form>
+<br>
 
-<form style="display:inline;" action="javascript:
-  firstStart = true;
-  document.getElementById('pgnText').value = document.getElementById('pgnForm').value;
-  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\[/g,'\n\n[');
-  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\]/g,']\n\n');
-  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/([012\*])(\s*)(\[)/g,'$1\n\n$3');
-  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\]\s*\[/g,']\n[');
-  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/^\s*\[/g,'[');
-  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\n[\s*\n]+/g,'\n\n');
-  new_start_pgn4web(); 
-">
-<input id=pgnButton class="actionButton" type=button value="show games from PGN text box"> 
+<form style="display:inline;" action="javascript:loadPgnFromForm()">
+<input id="pgnButton" class="actionButton" type="submit" value="show games from PGN text box"> 
 <br>
 <textarea id="pgnForm" rows=11 cols=80 onFocus="onTextFocus();" onBlur="onTextBlur();"></textarea>
 </form>
@@ -132,7 +123,41 @@ function new_start_pgn4web() {
   start_pgn4web();
   theObject = document.getElementById('GameSelSelect');
   if (theObject !== null) { theObject.style.width = document.getElementById('pgnForm').offsetWidth - 20 - 230; }
+  if (numberOfGames > 1) { 
+    document.getElementById('searchExpr').style.visibility = 'visible';
+    document.getElementById('searchButton').style.visibility = 'visible';
+  } else { 
+    document.getElementById('searchExpr').style.visibility = 'hidden'; 
+    document.getElementById('searchButton').style.visibility = 'hidden'; 
+  }
 }
+
+function loadPgnFromForm() {
+  firstStart = true;
+  document.getElementById('pgnText').value = document.getElementById('pgnForm').value;
+  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\[/g,'\n\n[');
+  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\]/g,']\n\n');
+  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/([012\*])(\s*)(\[)/g,'$1\n\n$3');
+  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\]\s*\[/g,']\n[');
+  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/^\s*\[/g,'[');
+  document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\n[\s*\n]+/g,'\n\n');
+  new_start_pgn4web(); 
+}
+
+function searchGame() {
+  if ((searcExpression = document.getElementById('searchExpr').value) === "") { return false; }
+  if (numberOfGames < 2) { return false; }
+  for (checkGame=currentGame+1; checkGame != currentGame; checkGame = (checkGame + 1) % numberOfGames) {
+    if (pgnGame[checkGame].match(searcExpression)) {
+      break;
+    }
+  }
+  if (checkGame != currentGame) {
+    currentGame = checkGame;
+    Init();
+  }
+}
+
 
 function gup( name ){
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
