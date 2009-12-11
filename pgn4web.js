@@ -25,8 +25,8 @@
  *        SetImagePath(""); // use "" path if images are in the same folder as this javascript file
  *        SetImageType("png");
  *        SetHighlightOption(true); // true or false
- *        SetCommentsIntoMoveText(false);
  *        SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate); // default: ("Select a game...", false, 0, 0, 0, 15, 15, 0, 10)
+ *        SetCommentsIntoMoveText(false);
  *        SetCommentsOnSeparateLines(false);
  *        SetAutoplayDelay(1000); // milliseconds
  *        SetAutostartAutoplay(false);
