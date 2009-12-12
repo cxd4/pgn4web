@@ -1203,13 +1203,7 @@ function clockFromComment(comment){
   return clock;
 }
 
-/******************************************************************************
- *                                                                            *
- * Function HighlightLastMove:                                                *
- *                                                                            *
- * Show a text with the last move played and highlight the anchor to it.      *
- *                                                                            *
- ******************************************************************************/
+
 function HighlightLastMove(){
   var anchorName;
 
@@ -1362,15 +1356,7 @@ function SetHighlightOption(on){
   highlightOption = on;
 }
 
-/******************************************************************************
- *                                                                            *
- * Function SetHighlight                                                      *
- *                                                                            *
- * sets the option switch to highlight moves on the chessboard                *
- * and removes highlighting from previously highlighted squares               *
- * if row/col From/To are -1 only removes the previous highlighting           *
- *                                                                            *
- ******************************************************************************/
+
 function SetHighlight(on){
   SetHighlightOption(on);
   if (on) { HighlightLastMove(); }
@@ -1382,15 +1368,6 @@ var lastColFromHighlighted = -1;
 var lastRowFromHighlighted = -1;
 var lastColToHighlighted = -1;
 var lastRowToHighlighted = -1;
-/******************************************************************************
- *                                                                            *
- * Function highlightMove:                                                    *
- *                                                                            *
- * switches on the highlighting for the given move                            *
- * and removes highlighting from previously highlighted squares               *
- * if row/col From/To are -1 only removes the previous highlighting           *
- *                                                                            *
- ******************************************************************************/
 function highlightMove(colFrom, rowFrom, colTo, rowTo){
 
   highlightSquare(lastColFromHighlighted, lastRowFromHighlighted, false);
@@ -1413,15 +1390,7 @@ function highlightMove(colFrom, rowFrom, colTo, rowTo){
   }
 }
 
-/******************************************************************************
- *                                                                            *
- * Function highlightSquare:                                                  *
- *                                                                            *
- * switches on/off the highlighting for the given square                      *
- * and removes highlighting from previously highlighted squares               *
- * if row/col From/To are -1 or undefined returns false                       *
- *                                                                            *
- ******************************************************************************/
+
 function highlightSquare(col, row, on) {
   if ((col == undefined) || (row == undefined)) { return false; }
   if (! SquareOnBoard(col, row)) { return false; }
@@ -1443,13 +1412,7 @@ function highlightSquare(col, row, on) {
   return true;
 }
 
-/******************************************************************************
- *                                                                            *
- * Function pgnGameFromPgnText:                                               *
- *                                                                            *
- * Load the games into the array pgnGame.                                     *
- *                                                                            *
- ******************************************************************************/
+
 function pgnGameFromPgnText(pgnText){
 
   lines=pgnText.split("\n");
@@ -1485,13 +1448,7 @@ function pgnGameFromPgnText(pgnText){
   return (gameIndex >= 0);
 }
 
-/******************************************************************************
- *                                                                            *
- * Function loadPgnFromPgnUrl:                                                *
- *                                                                            *
- * Load the games from the specified URL into the array pgnGame.              *
- *                                                                            *
- ******************************************************************************/
+
 function loadPgnFromPgnUrl(pgnUrl){
   
   var XMLrequest_error_debug_message = 'DEBUG information for web site developers\n\n' + 
@@ -1620,13 +1577,7 @@ function restartLiveBroadcastTimeout() {
 
 }
 
-/******************************************************************************
- *                                                                            *
- * Function refreshPgnSource():                                               *
- *                                                                            *
- * reload the games from the specified URL during live broadcast              *
- *                                                                            *
- ******************************************************************************/
+
 function refreshPgnSource() {
 
   if (LiveBroadcastDelay === 0) { return; }
@@ -1699,13 +1650,7 @@ function refreshPgnSource() {
 
 }
 
-/******************************************************************************
- *                                                                            *
- * Function createBoard:                                                      *
- *                                                                            *
- * Load the games from the specified URL or from the pgnText html object      *
- *                                                                            *
- ******************************************************************************/
+
 function createBoard(){
 
   if ((! pgnUrl) && (! document.getElementById("pgnText"))) {
@@ -1775,13 +1720,7 @@ function createBoard(){
   }
 }
 
-/******************************************************************************
- *                                                                            *
- * Function Init:                                                             *
- *                                                                            *
- * Load the games.                                                            *
- *                                                                            *
- ******************************************************************************/
+
 function Init(){
 
   if (isAutoPlayOn) { SetAutoPlay(false); }
@@ -1863,13 +1802,8 @@ function Init(){
 
   firstStart = false;
 }
-/******************************************************************************
- *                                                                            *
- * Function InitFEN:                                                          *
- *                                                                            *
- * Prepare the starting position from the FEN.                                *
- *                                                                            *
- ******************************************************************************/
+
+
 function InitFEN(startingFEN){
   if (startingFEN != undefined){
     FenString = startingFEN;
@@ -2149,13 +2083,7 @@ function SetImageType(extension){
   imageType = extension;
 }
 
-/******************************************************************************
- *                                                                            *
- * Function InitImages:                                                       *
- *                                                                            *
- * Load all chess men images.                                                 *
- *                                                                            *
- ******************************************************************************/
+
 function InitImages(){
   /* 
    * Reset the array describing what image is in each square.
@@ -2258,15 +2186,7 @@ function checkHeaderDefined(headerValue) {
   return ((headerValue != undefined) && (headerValue !== "") && (headerValue != " ") && (headerValue != "?"));
 }
 
-/******************************************************************************
- *                                                                            *
- * Function LoadGameHeaders:                                                  *
- *                                                                            *
- * Parse the string containing the PGN score of the game and extract the      *
- * event name, the date, the white and black players and the result. Store    *
- * them in global arrays.                                                     *
- *                                                                            *
- ******************************************************************************/
+
 function LoadGameHeaders(){
   var ii;
   /*
@@ -2338,14 +2258,8 @@ function LoadGameHeaders(){
 
   return;
 }
-/******************************************************************************
- *                                                                            *
- * Function MoveBackward:                                                     *
- *                                                                            *
- * Move back in the game by "diff" moves. The old position is reconstructed   *
- * using the various "Hist" arrays.                                           *
- *                                                                            *
- ******************************************************************************/
+
+
 function MoveBackward(diff){
   /*
    * First of all find to which ply we have to go back. Remember that
@@ -2420,14 +2334,8 @@ function MoveBackward(diff){
   } 
   customFunctionOnMove();
 }
-/******************************************************************************
- *                                                                            *
- * Function MoveForward:                                                      *
- *                                                                            *
- * Move forward in the game by "diff" moves. The new position is found        *
- * parsing the array containing the moves and "executing" them.               *
- *                                                                            *
- ******************************************************************************/
+
+
 function MoveForward(diff){
   /*
    * First of all find to which ply we have to go back. Remember that
@@ -2484,13 +2392,7 @@ function AutoplayNextGame(){
   SetAutoPlay(true);
 }
 
-/******************************************************************************
- *                                                                            *
- * Function MoveToNextComment                                                 *
- *                                                                            *
- * moves to the next ply that has a comment. if no comment found, dont move   *
- *                                                                            *
- ******************************************************************************/
+
 function MoveToNextComment()
 {
   for(ii=CurrentPly+1; ii<=StartPly+PlyNumber; ii++){
@@ -2501,13 +2403,7 @@ function MoveToNextComment()
   }
 }
 
-/******************************************************************************
- *                                                                            *
- * Function MoveToPrevComment                                                 *
- *                                                                            *
- * moves to the prev ply that has a comment. if no comment found, dont move   *
- *                                                                            *
- ******************************************************************************/
+
 function MoveToPrevComment()
 {
   for(ii=(CurrentPly-1); ii>=0; ii--){
@@ -2518,13 +2414,7 @@ function MoveToPrevComment()
   }
 }
 
-/******************************************************************************
- *                                                                            *
- * Function OpenGame(gameId)                                                  *
- *                                                                            *
- * opens game with assigned number                                            *
- *                                                                            *
- ******************************************************************************/
+
 function OpenGame(gameId){
   ParsePGNGameString(pgnGame[gameId]);
   currentGame = gameId;
@@ -2536,13 +2426,6 @@ function OpenGame(gameId){
   PrintHTML();
 }
 
-/******************************************************************************
- *                                                                            *
- * Function ParsePGNGameString:                                               *
- *                                                                            *
- * Extract all moves from the PGN string and store them.                      *
- *                                                                            *
- ******************************************************************************/
 
 function ParsePGNGameString(gameString){
 
@@ -2884,16 +2767,6 @@ function translateNAGs(comment){
 }
 
 
-/******************************************************************************
- *                                                                            *
- * Function ParseMove:                                                        *
- *                                                                            *
- * Given a move exctract which piece moves, from which square and to which    *
- * square. Check if the move is legal, but do not check just yet of the       *
- * king is left in check. Take into account castling, promotion and captures  *
- * including the en passant capture.                                          *
- *                                                                            *
- ******************************************************************************/
 function ParseMove(move, plyCount){
   var ii, ll;
   var remainder;
@@ -3146,12 +3019,6 @@ function searchPgnGame(searchExpression) {
 
 
 var tableSize = null;
-
-/******************************************************************************
- *                                                                            *
- * Function PrintHTML:                                                        *
- *                                                                            *
- ******************************************************************************/
 function PrintHTML(){
   var ii, jj;
   var text;
@@ -3475,13 +3342,7 @@ function FlipBoard(){
   if (tmpHighlightOption) { SetHighlight(true); }
 }
 
-/******************************************************************************
- *                                                                            *
- * Function RefreshBoard:                                                     *
- *                                                                            *
- * Update the images of all pieces on the board.                              *
- *                                                                            *
- ******************************************************************************/
+
 function RefreshBoard(){
   /*
    * Check if we need a new set of pieces.
@@ -3520,13 +3381,8 @@ function RefreshBoard(){
     }
   }
 }
-/******************************************************************************
- *                                                                            *
- * Function SetAutoPlay:                                                      *
- *                                                                            *
- * Start the autoplay or stop it depending on the user input.                 *
- *                                                                            *
- ******************************************************************************/
+
+
 function SetAutoPlay(vv){
   isAutoPlayOn = vv;
   /*
@@ -3557,66 +3413,31 @@ function SetAutoPlay(vv){
   }
 }
 
-/******************************************************************************
- *                                                                            *
- * Function SetAutoplayDelay:                                                 *
- *                                                                            *
- * Change the delay of autplay.                                               *
- *                                                                            *
- ******************************************************************************/
+
 function SetAutoplayDelay(vv){
   Delay = vv;
 }
 
-/******************************************************************************
- *                                                                            *
- * Function SetLiveBroadcast(delay, alert, demo)                              *
- *                                                                            *
- * Change the delay (in minutes) of the live broadcast                        *
- * (delay = 0 means no broadcast).                                            *
- * By default suppresses alerts during live broadcasts                        *
- * (alert = true enables alerts during live broadcasts for testing            *
- * Optionally sets demo mode.                                                 *
- *                                                                            *
- ******************************************************************************/
+
 function SetLiveBroadcast(delay, alertFlag, demoFlag) {
-  LiveBroadcastDelay = delay;
-  LiveBroadcastAlert = (alertFlag === true);
+  LiveBroadcastDelay = delay; // delay = 0 means no live broadcast
+  LiveBroadcastAlert = (alertFlag === true); // whether to display myAlerts during live broadcast
   LiveBroadcastDemo = (demoFlag === true);
 }
 
-/******************************************************************************
- *                                                                            *
- * Function SetImage:                                                         *
- *                                                                            *
- * Given a square and an image show it on the board. To make it faster check  *
- * if the image corresponds to the one already there and update it only if    *
- * necessary.                                                                 *
- *                                                                            *
- ******************************************************************************/
+
 function SetImage(square, image){
   if (DocumentImages[square] == image) { return; }
   document.images[square+ImageOffset].src = image;
   DocumentImages[square]                  = image;   // Store the new image.
 }
 
-/******************************************************************************
- *                                                                            *
- * Function SetImagePath:                                                     *
- *                                                                            *
- * Define the path to the directory containing the chess men images.          *
- *                                                                            *
- ******************************************************************************/
+
 function SetImagePath(path){
   ImagePath = path;
 }
-/******************************************************************************
- *                                                                            *
- * Function SwitchAutoPlay:                                                   *
- *                                                                            *
- * Receive user enable/disable autoplay.                                      *
- *                                                                            *
- ******************************************************************************/
+
+
 function SwitchAutoPlay(){
   if (isAutoPlayOn){
     SetAutoPlay(false);
@@ -3625,14 +3446,8 @@ function SwitchAutoPlay(){
     SetAutoPlay(true);
   }
 }
-/******************************************************************************
- *                                                                            *
- * Function StoreMove:                                                        *
- *                                                                            *
- * Update the Board array describing the position of each piece, and the      *
- * "History" arrays describing the movement of the pieces during the game.    *
- *                                                                            *
- ******************************************************************************/
+
+
 function StoreMove(thisPly){
 
   /*
