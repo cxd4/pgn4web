@@ -3323,8 +3323,8 @@ function PrintHTML(){
       if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + tableSize/4 + '; '; }
       text += '" TYPE="submit" VALUE="search">';
       text += '<INPUT ID="searchPgnExpression" CLASS="searchPgnExpression" ' +
-              'TITLE="enter search string or regular expression" TYPE="input" ' +
-              'VALUE="' + lastSearchPgnExpression + '" STYLE="display: inline; margin: 0; ';
+              'TITLE="find games matching the search string (or regular expression) in the PGN data" ' + 
+              'TYPE="input" VALUE="' + lastSearchPgnExpression + '" STYLE="display: inline; margin: 0; ';
       if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + 3*tableSize/4 + '; '; }
       text += '" ONFOCUS="disableShortcutKeysAndStoreStatus();" ONBLUR="restoreShortcutKeysStatus();">'; 
       text += '</FORM>';
