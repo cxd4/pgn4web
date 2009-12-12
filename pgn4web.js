@@ -256,6 +256,11 @@ function handlekey(e) {
       return stopKeyPropagation(e);
       break;
 
+    case 83:  // s
+      searchPgnGame(lastSearchPgnExpression);
+      return stopKeyPropagation(e);
+      break;
+
     case 65:  // a
       MoveForward(1);
       SetAutoPlay(true);
@@ -263,7 +268,6 @@ function handlekey(e) {
       break;
 
     case 48:  // 0
-    case 83:  // s
       SetAutoPlay(false);
       return stopKeyPropagation(e);
       break;
