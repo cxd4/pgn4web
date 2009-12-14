@@ -10,7 +10,7 @@
  *
  *   add a SCRIPT instance at the top of your HTML file:
  *
- *      <script src="pgn4web-server-config.js" type="text/javascript">
+ *      <script src="pgn4web-server-config.js" type="text/javascript"></script>
  *      <script src="pgn4web.js" type="text/javascript"></script>
  *
  *   The JS file pgn4web-server-config.js contains some customization variable
@@ -20,7 +20,7 @@
  *   and optionally any of the other calls listed below.  
  *   Example:
  *
- *      <script yype="text/javascript>
+ *      <script type="text/javascript>
  *        SetPgnUrl("http://yoursite/yourpath/yourfile.pgn");  // if set, this has precedence over the inline PGN in the HTML file
  *        SetImagePath(""); // use "" path if images are in the same folder as this javascript file
  *        SetImageType("png");
