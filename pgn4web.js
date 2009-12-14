@@ -1198,6 +1198,7 @@ function SetInitialGame(number_or_string){
 // and ':' and '.' characters.
   
 function clockFromComment(comment){
+  var clock = "";
   if ((DGTclock = comment.match(/\[%clk\s*(.*?)\]/)) !== null) { clock = DGTclock[1]; }
   else { if (!(clock = comment.match(/^\s*[0-9:\.]+/))) {clock = ""; } }
   return clock;
