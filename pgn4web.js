@@ -2599,6 +2599,7 @@ function ParsePGNGameString(gameString){
     }
   }
   for (ii=StartPly; ii<=PlyNumber; ii++) {
+    MoveComments[ii] = MoveComments[ii].replace(/\s+/g, " ");
     pgn4webCommentTmp = MoveComments[ii].match(/\[%pgn4web\s*(.*?)\]/);
     if (pgn4webCommentTmp) { pgn4webMoveComments[ii] = pgn4webCommentTmp[1]; } 
     else { pgn4webMoveComments[ii] = ""; }
