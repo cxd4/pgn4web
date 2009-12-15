@@ -1655,7 +1655,7 @@ function refreshPgnSource() {
 function createBoard(){
 
   if ((! pgnUrl) && (! document.getElementById("pgnText"))) {
-    myAlert('Error: missing PGN URL location or pgnText.\n\nIn your HTML file, either use in a SCRIPT statement:\n\n  SetPgnUrl("http://yoursite/yourpath/yourfile.pgn")\n\nor embed the PGN text as hidden element, such as a SPAN element with style display:none\n');
+    myAlert('Error: missing PGN URL location or pgnText.\n\nIn your HTML file, either use in a SCRIPT statement:\n\n  SetPgnUrl("http://yoursite/yourpath/yourfile.pgn")\n\nor embed the PGN text as hidden element with id=pgnText, such as a TEXTAREA element with style display:none\n');
     return; 
   }
 
