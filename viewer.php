@@ -8,12 +8,16 @@
  */
 
 $pgnText = $_REQUEST["pgnText"];
-if ($pgnText)
+if ($pgnText) {
   $pgnBoxText = $pgnText;
+}
 
 $pgnUrl = $_REQUEST["pgnUrl"];
-if ($pgnUrl)
+if ($pgnUrl) {
   $pgnUrlText = file_get_contents($pgnUrl);
+//  $pgnZip = zip_open($pgnUrl);
+//  zip_close($pgnZip);
+}
 
 if ($_FILES['pgnFile']['error'] === UPLOAD_ERR_OK) {
   $pgnFileName = $_FILES['pgnFile']['name'];
