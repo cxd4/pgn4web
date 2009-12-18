@@ -1,5 +1,12 @@
 <?php
 
+/*
+ *  pgn4web javascript chessboard
+ *  copyright (C) 2009 Paolo Casaschi
+ *  see README file and http://pgn4web.casaschi.net
+ *  for credits, license and more details
+ */
+
 $pgnText = $_REQUEST["pgnText"];
 if ($pgnText)
   $pgnBoxText = $pgnText;
@@ -8,20 +15,16 @@ $pgnUrl = $_REQUEST["pgnUrl"];
 if ($pgnUrl)
   $pgnUrlText = file_get_contents($pgnUrl);
 
-if ($_FILES['pgnFile']['error'] === UPLOAD_ERR_OK)
+if ($_FILES['pgnFile']['error'] === UPLOAD_ERR_OK) {
+  $pgnFileName = $_FILES['pgnFile']['name'];
+  $pgnFileSize = $_FILES['userfile']['size'];
   if ($_FILES['pgnFile']['tmp_name'])
     $pgnFileText = file_get_contents($_FILES['pgnFile']['tmp_name']);
+}
 
 print <<<END
 
 <html>
-
-<!--
-  pgn4web javascript chessboard
-  copyright (C) 2009 Paolo Casaschi
-  see README file and http://pgn4web.casaschi.net
-  for credits, license and more details
--->
 
 <head>
 
@@ -54,7 +57,7 @@ a:link, a:visited, a:hover, a:active
 </td>
 </tr></tbody></table>
 
-<div style="height: 2em;">&nbsp;</div>
+<div style="height: 1em;">&nbsp;</div>
 
 <form id="textForm" action="$PHP_SELF" method="POST">
 <table width="100%" cellspacing=0 cellpadding=3 border=0><tbody><tr><td>
@@ -78,12 +81,12 @@ a:link, a:visited, a:hover, a:active
 </td></tr/></tbody></table>
 </form>
 
-<form id="uploadForm" action="$PHP_SELF" method="POST">
+<form id="uploadForm" enctype="multipart/form-data" action="$PHP_SELF" method="POST">
 <table width="100%" cellspacing=0 cellpadding=3 border=0><tbody><tr><td>
 <input id="uploadButton" type="submit" value="upload PGN (or zipped PGN) file and show games">
 </td><td width="100%">
 <input type="hidden" name="MAX_FILE_SIZE" value="4194304">
-<input id="pgnFile" name="pgnFile" type="file" value="" style="width:100%">
+<input id="pgnFile" name="pgnFile" type="file" style="width:100%">
 </td></tr/></tbody></table>
 </form>
 
