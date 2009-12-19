@@ -24,17 +24,18 @@ print_footer();
 
 function get_pgn() {
 
-  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus;
   global $fileUploadLimitText, $fileUploadLimitBytes, $tmpDir, $pgnDebugInfo;
 
   $pgnText = $_REQUEST["pgnText"];
+  if (!$pgnText) { $pgnText = $_REQUEST["pgnTextbox"]; }
   if (!$pgnText) { $pgnText = $_REQUEST["pt"]; }
   $pgnUrl = $_REQUEST["pgnUrl"];
   if (!$pgnUrl) { $pgnUrl = $_REQUEST["pu"]; }
 
   if ($pgnText) {
     $pgnStatus = "PGN from direct user input";
-    $pgnBoxText = $pgnText = str_replace("\\\"", "\"", $pgnText);
+    $pgnTextbox = $pgnText = str_replace("\\\"", "\"", $pgnText);
     return TRUE;
   } else if ($pgnUrl) {
     $pgnStatus = "PGN from URL <a href='" . $pgnUrl . "'>" . $pgnUrl . "</a>";
@@ -133,7 +134,7 @@ function get_pgn() {
 
 function check_tmpDir() {
 
-  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus;
   global $fileUploadLimitText, $fileUploadLimitBytes, $tmpDir, $pgnDebugInfo;
 
   $tmpDirHandle = opendir($tmpDir);
@@ -207,11 +208,12 @@ function get_latest_nic_url() {
 
 function print_form() {
 
-  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus;
   global $fileUploadLimitText, $fileUploadLimitBytes, $tmpDir, $pgnDebugInfo;
 
   $latest_twic_url = get_latest_twic_url();
   $latest_nic_url  = get_latest_nic_url();
+  $thisScript = $_SERVER['PHP_SELF'];
 
   print <<<END
 
@@ -228,13 +230,13 @@ function print_form() {
 </script>
 
 <table width="100%" cellspacing=0 cellpadding=3 border=0><tbody>
-<form id="textForm" action="$PHP_SELF#view" method="POST">
+<form id="textForm" action="$thisScript#view" method="POST">
   <tr>
     <td valign="bottom">
       <input id="pgnFormSubmitButton" type="submit" value="show games from PGN text box" style="width:100%;">
     </td>
     <td colspan=3 width="100%">
-      <textarea id="pgnFormText" name="pgnText" rows=3 style="width:100%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();">$pgnBoxText</textarea>
+      <textarea id="pgnFormText" name="pgnTextbox" rows=3 style="width:100%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();">$pgnTextbox</textarea>
     </td>
     <td valign="bottom">
       <input id="pgnFormClearButton" type="button" value="clear" onClick="document.getElementById('pgnFormText').value='';">
@@ -242,7 +244,7 @@ function print_form() {
   </tr>
 </form>
 
-<form id="urlForm" action="$PHP_SELF#view" method="POST">
+<form id="urlForm" action="$thisScript#view" method="POST">
   <tr>
     <td>
       <input id="urlFormSubmitButton" type="submit" value="show games from PGN (or zipped PGN) URL" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
@@ -262,7 +264,7 @@ function print_form() {
   </tr>
 </form>
 
-<form id="uploadForm" enctype="multipart/form-data" action="$PHP_SELF#view" method="POST">
+<form id="uploadForm" enctype="multipart/form-data" action="$thisScript#view" method="POST">
   <tr>
     <td>
       <input id="uploadFormSubmitButton" type="submit" value="show games from PGN (or zipped PGN) file" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
@@ -283,7 +285,7 @@ END;
 
 function print_chessboard() {
 
-  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus;
   global $fileUploadLimitText, $fileUploadLimitBytes, $tmpDir, $pgnDebugInfo;
 
   print <<<END
@@ -473,13 +475,20 @@ END;
 
 function print_footer() {
 
-  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus;
   global $fileUploadLimitText, $fileUploadLimitBytes, $tmpDir, $pgnDebugInfo;
 
   print <<<END
 
-<hr>
+<div>&nbsp;</div>
+<table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
+<td align="left" valign="middle">
 <div style="color: red; font-weight: bold; margin-top: 1em; margin-bottom: 1em;">$pgnDebugInfo</div>
+</td>
+<td align="right" valign="middle">
+<a href=.><img src=pawns.png border=0></a>
+</td>
+</tr></tbody></table>
 
 </body>
 
