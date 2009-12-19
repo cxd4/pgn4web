@@ -7,26 +7,97 @@
  *  for credits, license and more details
  */
 
-$pgnText = $_REQUEST["pgnText"];
-if ($pgnText) {
-  $pgnBoxText = $pgnText;
+error_reporting(E_ERROR | E_PARSE);
+
+get_pgn();
+print_header();
+print_form();
+print_footer();
+
+
+function get_pgn() {
+
+  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $pgnDebugInfo;
+  $fileUploadLimit = "4M";
+
+  $pgnText = $_REQUEST["pgnText"];
+  if ($pgnText) {
+    $pgnStatus = "PGN from direct user input";
+    $pgnBoxText = $pgnText;
+    return TRUE;
+  }
+
+  $pgnUrl = $_REQUEST["pgnUrl"];
+  if ($pgnUrl) {
+    $pgnStatus = "PGN from URL " . $pgnUrl;
+    $isPgn = preg_match("/\.pgn$/i",$pgnUrl);
+    $isZip = preg_match("/\.zip$/i",$pgnUrl);
+    $pgnSource = $pgnUrl;
+  } elseif ($_FILES['pgnFile']['error'] === UPLOAD_ERR_OK) {
+    $pgnFileName = $_FILES['pgnFile']['name'];
+    $pgnStatus = "PGN from user file " . $pgnFileName;
+    $pgnFileSize = $_FILES['userfile']['size'];
+    $isPgn = preg_match("/\.pgn$/i",$pgnFileName);
+    $isZip = preg_match("/\.zip$/i",$pgnFileName);
+    $pgnSource = $_FILES['pgnFile']['tmp_name'];
+  } elseif ($_FILES['pgnFile']['error'] === (UPLOAD_ERR_INI_SIZE | UPLOAD_ERR_FORM_SIZE)) {
+    $pgnStatus = "Uploaded file exceeds " . $fileUploadLimit . " limit";
+  } elseif ($_FILES['pgnFile']['error'] === (UPLOAD_ERR_PARTIAL | UPLOAD_ERR_NO_FILE | UPLOAD_ERR_NO_TMP_DIR | UPLOAD_ERR_CANT_WRITE | UPLOAD_ERR_EXTENSION)) {
+    $pgnStatus = "Error uploading PGN data";
+    return FALSE;
+  } else {
+    $pgnStatus = "Please provide PGN data";
+    return FALSE;
+  }
+
+  if ($isZip) {
+    $pgnDebugInfo = $pgnDebugInfo . " " . $pgnSource;
+    if (($pgnZip = zip_open($pgnSource))) {
+      while ($zipEntry = zip_read($pgnZip)) {
+	if (zip_entry_open($pgnZip, $zipEntry)) {
+          $pgnDebugInfo = $pgnDebugInfo . " " . zip_entry_name($zipEntry);
+	  if (preg_match("/\.pgn$/i",zip_entry_name($zipEntry))) {
+	    $pgnText = $pgnText . zip_entry_read($zipEntry) . "\n\n\n";
+          }
+          zip_entry_close($zipEntry);
+	} else {
+          $pgnStatus = "Failed reading zipfile content";
+          return FALSE;
+        }
+      }
+      zip_close($pgnZip);
+      if (!$pgnText) {
+        $pgnStatus = "No PGN data found in zipfile";
+        return FALSE;
+      } else {
+        return TRUE;
+      }
+    } else {
+      $pgnStatus = "Failed opening zipfile";
+      return FALSE;
+    }
+  }
+
+  if($isPgn) {
+    $pgnText = file_get_contents($pgnSource);
+    if (!$pgnText) {
+      $pgnStatus = "Failed reading PGN data";
+      return FALSE;
+    }
+    return TRUE;
+  } 
+
+  if($pgnSource) {
+    $pgnStatus = "Only PGN and ZIP (zipped pgn) files are supported";
+    return FALSE;
+  }
+
+  return TRUE;
 }
 
-$pgnUrl = $_REQUEST["pgnUrl"];
-if ($pgnUrl) {
-  $pgnUrlText = file_get_contents($pgnUrl);
-//  $pgnZip = zip_open($pgnUrl);
-//  zip_close($pgnZip);
-}
+function print_header() {
 
-if ($_FILES['pgnFile']['error'] === UPLOAD_ERR_OK) {
-  $pgnFileName = $_FILES['pgnFile']['name'];
-  $pgnFileSize = $_FILES['userfile']['size'];
-  if ($_FILES['pgnFile']['tmp_name'])
-    $pgnFileText = file_get_contents($_FILES['pgnFile']['tmp_name']);
-}
-
-print <<<END
+  print <<<END
 
 <html>
 
@@ -35,8 +106,6 @@ print <<<END
 <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"> 
 
 <title>pgn4web PGN viewer</title> 
-
-<script src="pgn4web.js" type="text/javascript"></script>
 
 <style type="text/css">
 
@@ -63,9 +132,18 @@ a:link, a:visited, a:hover, a:active
 
 <div style="height: 1em;">&nbsp;</div>
 
+END;
+}
+
+function print_form() {
+
+  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $pgnDebugInfo;
+
+  print <<<END
+
 <form id="textForm" action="$PHP_SELF" method="POST">
 <table width="100%" cellspacing=0 cellpadding=3 border=0><tbody><tr><td>
-<textarea id="pgnText" name="pgnText" rows=6 style="width:100%;">$pgnText</textarea>
+<textarea id="pgnText" name="pgnText" rows=6 style="width:100%;">$pgnBoxText</textarea>
 </td></tr><tr><td>
 <input id="enterTextButton" type="submit" value="show games from PGN text box" style="width:100%;">
 </td></tr/></tbody></table>
@@ -94,12 +172,23 @@ a:link, a:visited, a:hover, a:active
 </td></tr/></tbody></table>
 </form>
 
+END;
+}
+
+function print_footer() {
+
+  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $pgnDebugInfo;
+
+  print <<<END
+
 <hr>
-$pgnBoxText
+$pgnStatus
 <hr>
-$pgnUrlText
+$pgnDebugInfo
 <hr>
-$pgnFileText
+<pre>
+$pgnText
+</pre>
 <hr>
 
 </body>
@@ -107,4 +196,6 @@ $pgnFileText
 </html>
 
 END;
+}
+
 ?>
