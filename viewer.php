@@ -7,11 +7,14 @@
  *  for credits, license and more details
  */
 
-// error_reporting(E_ERROR | E_PARSE);
+error_reporting(E_ERROR | E_PARSE);
 
 $tmpDir = "viewer";
+$fileUploadLimitText = "4M";
+$fileUploadLimitBytes = 4194304;
 
-get_pgn();
+
+if (!get_pgn()) { $pgnText = NULL; }
 print_header();
 print_form();
 check_tmpDir();
@@ -21,9 +24,8 @@ print_footer();
 
 function get_pgn() {
 
-  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
-
-  $fileUploadLimit = "4M";
+  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $tmpDir, $pgnDebugInfo;
 
   $pgnText = $_REQUEST["pgnText"];
   if (!$pgnText) { $pgnText = $_REQUEST["pt"]; }
@@ -40,12 +42,17 @@ function get_pgn() {
     $isZip = preg_match("/\.zip$/i",$pgnUrl);
     if ($isZip) {
       $tempZipName = tempnam($tmpDir, "pgn4webViewer");
-      if (copy($pgnUrl,$tempZipName)) {
+      $pgnUrlHandle = fopen($pgnUrl, "rb");
+      $tempZipHandle = fopen($tempZipName, "wb");
+      $copiedBytes = stream_copy_to_stream($pgnUrlHandle, $tempZipHandle, $fileUploadLimitBytes + 1, 0);
+      fclose($pgnUrlHandle);
+      fclose($tempZipHandle);
+      if (($copiedBytes > 0) & ($copiedBytes <= $fileUploadLimitBytes)) {
         $pgnSource = $tempZipName;
       } else {
-	$pgnStatus = "Failed to get remote zipfile";
-        if ($tempZipName) { unlink($tempZipName); }
-        return FALSE;   
+	$pgnStatus = "Failed to get remote zipfile (file not found, file exceeds " . $fileUploadLimitText . " limit or server error)";
+        if (($tempZipName) & (file_exists($tempZipName))) { unlink($tempZipName); }
+        return FALSE;
       }
     } else {
       $pgnSource = $pgnUrl;
@@ -54,8 +61,8 @@ function get_pgn() {
     $pgnFileName = $_FILES['pgnFile']['name'];
     $pgnStatus = "PGN from user file " . $pgnFileName;
     $pgnFileSize = $_FILES['userfile']['size'];
-    if ($pgnFileSize > 4194304) {
-      $pgnStatus = "Uploaded file exceeds " . $fileUploadLimit . " limit";
+    if ($pgnFileSize > $fileUploadLimitBytes) {
+      $pgnStatus = "Uploaded file exceeds " . $fileUploadLimitText . " limit";
       return FALSE;
     } else { 
       $isPgn = preg_match("/\.pgn$/i",$pgnFileName);
@@ -63,10 +70,10 @@ function get_pgn() {
       $pgnSource = $_FILES['pgnFile']['tmp_name'];
     }
   } elseif ($_FILES['pgnFile']['error'] === (UPLOAD_ERR_INI_SIZE | UPLOAD_ERR_FORM_SIZE)) {
-    $pgnStatus = "Uploaded file exceeds " . $fileUploadLimit . " limit";
+    $pgnStatus = "Uploaded file exceeds " . $fileUploadLimitText . " limit";
     return FALSE;
   } elseif ($_FILES['pgnFile']['error'] === (UPLOAD_ERR_PARTIAL | UPLOAD_ERR_NO_FILE | UPLOAD_ERR_NO_TMP_DIR | UPLOAD_ERR_CANT_WRITE | UPLOAD_ERR_EXTENSION)) {
-    $pgnStatus = "Error uploading PGN data";
+    $pgnStatus = "Error uploading PGN data (file not found or server error)";
     return FALSE;
   } else {
     $pgnStatus = "Please provide PGN data";
@@ -85,12 +92,12 @@ function get_pgn() {
 	} else {
           $pgnStatus = "Failed reading zipfile content";
           zip_close($pgnZip);
-          if ($tempZipName) { unlink($tempZipName); }
+          if (($tempZipName) & (file_exists($tempZipName))) { unlink($tempZipName); }
           return FALSE;
         }
       }
       zip_close($pgnZip);
-      if ($tempZipName) { unlink($tempZipName); }
+      if (($tempZipName) & (file_exists($tempZipName))) { unlink($tempZipName); }
       if (!$pgnText) {
         $pgnStatus = "No PGN data found in zipfile";
         return FALSE;
@@ -104,9 +111,13 @@ function get_pgn() {
   }
 
   if($isPgn) {
-    $pgnText = file_get_contents($pgnSource);
+    $pgnText = file_get_contents($pgnSource, NULL, NULL, 0, $fileUploadLimitBytes + 1);
     if (!$pgnText) {
-      $pgnStatus = "Failed reading PGN data";
+      $pgnStatus = "Failed reading PGN data (server error)";
+      return FALSE;
+    }
+    if ((strlen($pgnText) == 0) | (strlen($pgnText) > $fileUploadLimitBytes)) {
+      $pgnStatus = "Failed reading PGN data (file exceeds " . $fileUploadLimitText . " limit or server error)";
       return FALSE;
     }
     return TRUE;
@@ -122,7 +133,8 @@ function get_pgn() {
 
 function check_tmpDir() {
 
-  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
+  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $tmpDir, $pgnDebugInfo;
 
   $tmpDirHandle = opendir($tmpDir);
   while($entryName = readdir($tmpDirHandle)) {
@@ -195,7 +207,8 @@ function get_latest_nic_url() {
 
 function print_form() {
 
-  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
+  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $tmpDir, $pgnDebugInfo;
 
   $latest_twic_url = get_latest_twic_url();
   $latest_nic_url  = get_latest_nic_url();
@@ -216,51 +229,49 @@ function print_form() {
 
 <table width="100%" cellspacing=0 cellpadding=3 border=0><tbody>
 <form id="textForm" action="$PHP_SELF#view" method="POST">
-<tr>
-<td colspan=5 width="100%">
-<textarea id="pgnFormText" name="pgnText" rows=6 style="width:100%; font-size: 80%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();">$pgnBoxText</textarea>
-</td>
-</tr>
-<tr>
-<td colspan=4 width="100%">
-<input id="pgnFormSubmitButton" type="submit" value="show games from PGN text box" style="width:100%;">
-</td>
-<td>
-<input id="pgnFormClearButton" type="button" value="clear" onClick="document.getElementById('pgnFormText').value='';">
-</td>
-</tr>
+  <tr>
+    <td valign="bottom">
+      <input id="pgnFormSubmitButton" type="submit" value="show games from PGN text box" style="width:100%;">
+    </td>
+    <td colspan=3 width="100%">
+      <textarea id="pgnFormText" name="pgnText" rows=3 style="width:100%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();">$pgnBoxText</textarea>
+    </td>
+    <td valign="bottom">
+      <input id="pgnFormClearButton" type="button" value="clear" onClick="document.getElementById('pgnFormText').value='';">
+    </td>
+  </tr>
 </form>
 
 <form id="urlForm" action="$PHP_SELF#view" method="POST">
-<tr>
-<td>
-<input id="urlFormSubmitButton" type="submit" value="show games from PGN (or zipped PGN) URL">
-</td>
-<td width="100%">
-<input id="urlFormText" name="pgnUrl" type="text" value="$pgnUrl" style="width:100%" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();">
-</td>
-<td>
-<input id="urlFormTwicButton" type="button" value="latest TWIC" onClick="setPgnUrl('$latest_twic_url');" title="this button saves you the time to download and then upload the latest PGN from The Week In Chess, please show your support for TWIC visiting the TWIC website http://www.chess.co.uk/twic/twic.html">
-</td>
-<td>
-<input id="urlFormNicButton" type="button" value="latest NIC" onClick="setPgnUrl('$latest_nic_url');" title="this button saves you the time to download and then upload the latest PGN from New In Chess, please show your support for NIC visiting the NIC website http://www.newinchess.com">
-</td>
-<td>
-<input id="urlFormClearButton" type="button" value="clear" onClick="setPgnUrl();">
-</td>
-</tr>
+  <tr>
+    <td>
+      <input id="urlFormSubmitButton" type="submit" value="show games from PGN (or zipped PGN) URL" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
+    </td>
+    <td width="100%">
+      <input id="urlFormText" name="pgnUrl" type="text" value="$pgnUrl" style="width:100%" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
+    </td>
+    <td>
+      <input id="urlFormTwicButton" type="button" value="latest TWIC" onClick="setPgnUrl('$latest_twic_url');" title="this button saves you the time to download and then upload the latest PGN from The Week In Chess, please show your support for TWIC visiting the TWIC website http://www.chess.co.uk/twic/twic.html">
+    </td>
+    <td>
+      <input id="urlFormNicButton" type="button" value="latest NIC" onClick="setPgnUrl('$latest_nic_url');" title="this button saves you the time to download and then upload the latest PGN from New In Chess, please show your support for NIC visiting the NIC website http://www.newinchess.com">
+    </td>
+    <td>
+      <input id="urlFormClearButton" type="button" value="clear" onClick="setPgnUrl();">
+    </td>
+  </tr>
 </form>
 
 <form id="uploadForm" enctype="multipart/form-data" action="$PHP_SELF#view" method="POST">
-<tr>
-<td>
-<input id="uploadFormSubmitButton" type="submit" value="show games from PGN (or zipped PGN) file" style="width:100%">
-</td>
-<td colspan=3 width="100%">
-<input type="hidden" name="MAX_FILE_SIZE" value="4194304">
-<input id="uploadFormFile" name="pgnFile" type="file" style="width:100%">
-</td>
-</tr>
+  <tr>
+    <td>
+      <input id="uploadFormSubmitButton" type="submit" value="show games from PGN (or zipped PGN) file" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
+    </td>
+    <td colspan=3 width="100%">
+      <input type="hidden" name="MAX_FILE_SIZE" value="$fileUploadLimitBytes">
+      <input id="uploadFormFile" name="pgnFile" type="file" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
+    </td>
+  </tr>
 </form>
 
 </tbody></table>
@@ -272,7 +283,8 @@ END;
 
 function print_chessboard() {
 
-  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
+  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $tmpDir, $pgnDebugInfo;
 
   print <<<END
 
@@ -461,7 +473,8 @@ END;
 
 function print_footer() {
 
-  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
+  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $tmpDir, $pgnDebugInfo;
 
   print <<<END
 
