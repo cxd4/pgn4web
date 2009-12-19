@@ -7,32 +7,44 @@
  *  for credits, license and more details
  */
 
-error_reporting(E_ERROR | E_PARSE);
+// error_reporting(E_ERROR | E_PARSE);
+
+$tmpDir = "tmp";
 
 get_pgn();
 print_header();
 print_form();
+check_tmpDir();
+print_chessboard();
 print_footer();
 
 
 function get_pgn() {
 
-  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $pgnDebugInfo;
+  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
+
   $fileUploadLimit = "4M";
 
-  $pgnText = $_REQUEST["pgnText"];
-  if ($pgnText) {
+  if ($pgnText = $_REQUEST["pgnText"]) {
     $pgnStatus = "PGN from direct user input";
     $pgnBoxText = $pgnText;
     return TRUE;
-  }
-
-  $pgnUrl = $_REQUEST["pgnUrl"];
-  if ($pgnUrl) {
-    $pgnStatus = "PGN from URL " . $pgnUrl;
+  } else if ($pgnUrl = $_REQUEST["pgnUrl"]) {
+    $pgnStatus = "PGN from URL <a href='" . $pgnUrl . "'>" . $pgnUrl . "</a>";
     $isPgn = preg_match("/\.pgn$/i",$pgnUrl);
     $isZip = preg_match("/\.zip$/i",$pgnUrl);
-    $pgnSource = $pgnUrl;
+    if ($isZip) {
+      $tempZipName = tempnam($tmpDir, "pgn4webViewer");
+      if (copy($pgnUrl,$tempZipName)) {
+        $pgnSource = $tempZipName;
+      } else {
+	$pgnStatus = "Failed to get remote zipfile";
+        if ($tempZipName) { unlink($tempZipName); }
+        return FALSE;   
+      }
+    } else {
+      $pgnSource = $pgnUrl;
+    }
   } elseif ($_FILES['pgnFile']['error'] === UPLOAD_ERR_OK) {
     $pgnFileName = $_FILES['pgnFile']['name'];
     $pgnStatus = "PGN from user file " . $pgnFileName;
@@ -51,21 +63,23 @@ function get_pgn() {
   }
 
   if ($isZip) {
-    $pgnDebugInfo = $pgnDebugInfo . " " . $pgnSource;
-    if (($pgnZip = zip_open($pgnSource))) {
-      while ($zipEntry = zip_read($pgnZip)) {
+    $pgnZip = zip_open($pgnSource);
+    if (is_resource($pgnZip)) {
+      while (is_resource($zipEntry = zip_read($pgnZip))) {
 	if (zip_entry_open($pgnZip, $zipEntry)) {
-          $pgnDebugInfo = $pgnDebugInfo . " " . zip_entry_name($zipEntry);
 	  if (preg_match("/\.pgn$/i",zip_entry_name($zipEntry))) {
-	    $pgnText = $pgnText . zip_entry_read($zipEntry) . "\n\n\n";
+	    $pgnText = $pgnText . zip_entry_read($zipEntry, zip_entry_filesize($zipEntry)) . "\n\n\n";
           }
           zip_entry_close($zipEntry);
 	} else {
           $pgnStatus = "Failed reading zipfile content";
+          zip_close($pgnZip);
+          if ($tempZipName) { unlink($tempZipName); }
           return FALSE;
         }
       }
       zip_close($pgnZip);
+      if ($tempZipName) { unlink($tempZipName); }
       if (!$pgnText) {
         $pgnStatus = "No PGN data found in zipfile";
         return FALSE;
@@ -93,6 +107,23 @@ function get_pgn() {
   }
 
   return TRUE;
+}
+
+function check_tmpDir() {
+
+  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
+
+  $tmpDirHandle = opendir($tmpDir);
+  while($entryName = readdir($tmpDirHandle)) {
+    if (($entryName !== ".") & ($entryName !== "..")) {
+      $unexpectedFiles = $unexpectedFiles . " " . $entryName;
+    }
+  }
+  closedir($tmpDirHandle);
+
+  if ($unexpectedFiles) {
+    $pgnDebugInfo = $pgnDebugInfo . "temporary directory " . $tmpDir . " not empty:" . $unexpectedFiles; 
+  }
 }
 
 function print_header() {
@@ -137,7 +168,7 @@ END;
 
 function print_form() {
 
-  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $pgnDebugInfo;
+  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
 
   print <<<END
 
@@ -175,21 +206,28 @@ function print_form() {
 END;
 }
 
-function print_footer() {
+function print_chessboard() {
 
-  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $pgnDebugInfo;
+  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
 
   print <<<END
 
 <hr>
-$pgnStatus
+<div style="font-weight: bold; margin-top: 1em; margin-bottom: 1em;">$pgnStatus</div>
+
+<pre>$pgnText</pre>
+
+END;
+}
+
+function print_footer() {
+
+  global $pgnText, $pgnBoxText, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
+
+  print <<<END
+
 <hr>
-$pgnDebugInfo
-<hr>
-<pre>
-$pgnText
-</pre>
-<hr>
+<div style="color: red; font-weight: bold; margin-top: 1em; margin-bottom: 1em;">$pgnDebugInfo</div>
 
 </body>
 
