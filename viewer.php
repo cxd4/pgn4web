@@ -9,7 +9,7 @@
 
 // error_reporting(E_ERROR | E_PARSE);
 
-$tmpDir = "tmp";
+$tmpDir = "viewer";
 
 get_pgn();
 print_header();
