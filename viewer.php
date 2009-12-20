@@ -191,7 +191,7 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .formControl {
-  font-size: x-small;
+  font-size: smaller;
 }
 
 </style>
@@ -345,11 +345,11 @@ function print_form() {
       <input id="urlFormText" name="pgnUrl" type="text" class="formControl" value="" style="width:100%" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
     </td>
     <td align="right" valign="top">
-      <select id="urlFormSelect" class="formControl" title="this dropdown menu saves you the time to download locally and then upload the latest PGN from The Week In Chess and New In Chess, please show your support visiting the TWIC website http://www.chess.co.uk/twic/twic.html and the NIC website http://www.newinchess.com; please note the current issue number is estimated and might occasionally need to be manually adjusted" onChange="urlFormSelectChange();">
-      <option value="header">preset URLs</option>
+      <select id="urlFormSelect" class="formControl" title="preset the URL saving the time for downloading locally and then uploading the latest PGN from The Week In Chess or New In Chess; please note the URL of the latest issue of the online chess magazines is estimated and might occasionally need manual adjustment; please show your support to the online chess magazines visiting the TWIC website http://www.chess.co.uk/twic/twic.html and the NIC website http://www.newinchess.com" onChange="urlFormSelectChange();">
+      <option value="header">preset URL</option>
       <option value="twic">latest TWIC</option>
       <option value="nic">latest NIC</option>
-      <option value="clear">clear form</option>
+      <option value="clear">clear URL</option>
       </select>
     </td>
   </tr>
