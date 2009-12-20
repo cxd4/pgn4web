@@ -19,6 +19,9 @@ board widget
 board generator site
  http://pgn4web-board-generator.casaschi.net
 
+PGN viewer
+ http://pgn4web-viewer.casaschi.net
+
 blog
  http://pgn4web-blog.casaschi.net
 

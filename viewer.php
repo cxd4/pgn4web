@@ -313,7 +313,7 @@ END;
 
 .boardTable {
   border-style: double;
-  border-color: black;
+  border-color: #a0a0a0;
   border-width: 3;
 }
 
