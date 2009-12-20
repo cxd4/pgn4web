@@ -218,8 +218,10 @@ function print_form() {
   print <<<END
 
 <script type="text/javascript">
+
   function disableShortcutKeysAndStoreStatus() {}
   function restoreShortcutKeysStatus() {}
+  function start_pgn4web() {}
   
   function setPgnUrl(newPgnUrl) {
     if (!newPgnUrl) { newPgnUrl = ""; }
@@ -250,7 +252,7 @@ function print_form() {
       <input id="urlFormSubmitButton" type="submit" value="show games from PGN (or zipped PGN) URL" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
     </td>
     <td width="100%">
-      <input id="urlFormText" name="pgnUrl" type="text" value="$pgnUrl" style="width:100%" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
+      <input id="urlFormText" name="pgnUrl" type="text" value="" style="width:100%" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
     </td>
     <td>
       <input id="urlFormTwicButton" type="button" value="latest TWIC" onClick="setPgnUrl('$latest_twic_url');" title="this button saves you the time to download and then upload the latest PGN from The Week In Chess, please show your support for TWIC visiting the TWIC website http://www.chess.co.uk/twic/twic.html">
@@ -489,6 +491,17 @@ function print_footer() {
 <a href=.><img src=pawns.png border=0></a>
 </td>
 </tr></tbody></table>
+
+<script>
+
+function new_start_pgn4web() {
+  setPgnUrl("$pgnUrl");
+  start_pgn4web();
+}
+
+window.onload = new_start_pgn4web;
+
+</script>
 
 </body>
 
