@@ -243,11 +243,12 @@ function print_form() {
 
   function checkPgnFormTextSize() {
     leftTextBox = $textBoxLimitBytes - document.getElementById("pgnFormText").value.length;
-    document.getElementById("pgnFormSubmitButton").title = "PGN text box size limit is $textBoxLimitText , current size is " + document.getElementById("pgnFormText").value.length + " chars, " + leftTextBox + " chars left";
     if (leftTextBox < 0) {
-      alert("PGN text box size currently " + document.getElementById("pgnFormText").value.length + " while limit is $textBoxLimitText.\\nPlease remove some text before submitting the PGN data.");
+      document.getElementById("pgnFormSubmitButton").title = "PGN text box max size is $textBoxLimitText, current size is " + document.getElementById("pgnFormText").value.length + " chars, " + (-leftTextBox) + " chars above the limit";
+      alert("PGN text box size currently " + document.getElementById("pgnFormText").value.length + " chars while max size is $textBoxLimitText.\\nPlease remove some text before submitting the PGN data.");
       return false;
     } else {
+      document.getElementById("pgnFormSubmitButton").title = "PGN text box max size is $textBoxLimitText, current size is " + document.getElementById("pgnFormText").value.length + " chars, " + leftTextBox + " chars left";
       return true;
     }
   }
