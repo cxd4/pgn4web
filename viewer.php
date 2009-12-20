@@ -496,7 +496,6 @@ function print_footer() {
   print <<<END
 
 <div>&nbsp;</div>
-<hr>
 <div style="color: red; font-weight: bold; margin-top: 1em; margin-bottom: 1em;">$pgnDebugInfo</div>
 
 <script type="text/javascript">
