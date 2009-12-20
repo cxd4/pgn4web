@@ -10,9 +10,10 @@
 error_reporting(E_ERROR | E_PARSE);
 
 $tmpDir = "viewer";
-$fileUploadLimitText = "4M";
 $fileUploadLimitBytes = 4194304;
-
+$fileUploadLimitText = round(($fileUploadLimitBytes / 1048576), 0) . "MB";
+$textBoxLimitBytes = 16384;
+$textBoxLimitText = round(($textBoxLimitBytes / 1024), 0) . "KB";
 
 if (!get_pgn()) { $pgnText = NULL; }
 print_header();
@@ -24,8 +25,8 @@ print_footer();
 
 function get_pgn() {
 
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $tmpDir, $pgnDebugInfo;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $textBoxLimitText, $textBoxLimitBytes;
 
   $pgnDebugInfo = $_REQUEST["debug"];
 
@@ -79,7 +80,7 @@ function get_pgn() {
     $pgnStatus = "Error uploading PGN data (file not found or server error)";
     return FALSE;
   } else {
-    $pgnStatus = "Please provide PGN data (files must be smaller than " . $fileUploadLimitText . ")";
+    $pgnStatus = "Please provide PGN data (files must be smaller than " . $fileUploadLimitText . ", text box smaller than " . $textBoxLimitText . ")";
     return FALSE;
   }
 
@@ -136,8 +137,8 @@ function get_pgn() {
 
 function check_tmpDir() {
 
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $tmpDir, $pgnDebugInfo;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $textBoxLimitText, $textBoxLimitBytes;
 
   $tmpDirHandle = opendir($tmpDir);
   while($entryName = readdir($tmpDirHandle)) {
@@ -219,8 +220,8 @@ function get_latest_nic_url() {
 
 function print_form() {
 
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $tmpDir, $pgnDebugInfo;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $textBoxLimitText, $textBoxLimitBytes;
 
   $latest_twic_url = get_latest_twic_url();
   $latest_nic_url  = get_latest_nic_url();
@@ -238,6 +239,17 @@ function print_form() {
     if (!newPgnUrl) { newPgnUrl = ""; }
     document.getElementById("urlFormText").value = newPgnUrl;
     return false;
+  }
+
+  function checkPgnFormTextSize() {
+    leftTextBox = $textBoxLimitBytes - document.getElementById("pgnFormText").value.length;
+    document.getElementById("pgnFormSubmitButton").title = "PGN text box size limit is $textBoxLimitText , current size is " + document.getElementById("pgnFormText").value.length + " chars, " + leftTextBox + " chars left";
+    if (leftTextBox < 0) {
+      alert("PGN text box size currently " + document.getElementById("pgnFormText").value.length + " while limit is $textBoxLimitText.\\nPlease remove some text before submitting the PGN data.");
+      return false;
+    } else {
+      return true;
+    }
   }
 
 </script>
@@ -276,10 +288,10 @@ function print_form() {
 <form id="textForm" action="$thisScript#view" method="POST">
   <tr>
     <td valign="top">
-      <input id="pgnFormSubmitButton" type="submit" value="show games from PGN text box" style="width:100%;">
+      <input id="pgnFormSubmitButton" type="submit" value="show games from PGN text box" style="width:100%;" onClick="return checkPgnFormTextSize();">
     </td>
     <td colspan=3 rowspan=2 width="100%">
-      <textarea id="pgnFormText" name="pgnTextbox" rows=3 style="width:100%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();">$pgnTextbox</textarea>
+      <textarea id="pgnFormText" name="pgnTextbox" rows=3 style="width:100%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" onChange="checkPgnFormTextSize();">$pgnTextbox</textarea>
     </td>
   </tr>
 </form>
@@ -299,8 +311,8 @@ END;
 
 function print_chessboard() {
 
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $tmpDir, $pgnDebugInfo;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $textBoxLimitText, $textBoxLimitBytes;
 
   print <<<END
 
@@ -499,8 +511,8 @@ END;
 
 function print_footer() {
 
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $tmpDir, $pgnDebugInfo;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $textBoxLimitText, $textBoxLimitBytes;
 
   print <<<END
 
@@ -511,6 +523,7 @@ function print_footer() {
 
 function new_start_pgn4web() {
   setPgnUrl("$pgnUrl");
+  checkPgnFormTextSize();
   start_pgn4web();
 }
 
