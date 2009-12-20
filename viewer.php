@@ -27,6 +27,8 @@ function get_pgn() {
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus;
   global $fileUploadLimitText, $fileUploadLimitBytes, $tmpDir, $pgnDebugInfo;
 
+  $pgnDebugInfo = $_REQUEST["debug"];
+
   $pgnText = $_REQUEST["pgnText"];
   if (!$pgnText) { $pgnText = $_REQUEST["pgnTextbox"]; }
   if (!$pgnText) { $pgnText = $_REQUEST["pt"]; }
@@ -140,13 +142,15 @@ function check_tmpDir() {
   $tmpDirHandle = opendir($tmpDir);
   while($entryName = readdir($tmpDirHandle)) {
     if (($entryName !== ".") & ($entryName !== "..") & ($entryName !== "index.html")) {
-      $unexpectedFiles = $unexpectedFiles . " " . $entryName;
+      if ((time() - filemtime($tmpDir . "/" . $entryName)) > 3600) { 
+        $unexpectedFiles = $unexpectedFiles . " " . $entryName;
+      }
     }
   }
   closedir($tmpDirHandle);
 
   if ($unexpectedFiles) {
-    $pgnDebugInfo = $pgnDebugInfo . "temporary directory " . $tmpDir . " not empty:" . $unexpectedFiles; 
+    $pgnDebugInfo = $pgnDebugInfo . "message for sysadmin: clean temporary directory " . $tmpDir . ":" . $unexpectedFiles; 
   }
 }
 
@@ -437,12 +441,12 @@ $pgnText
 
       <div id="GameSearch"></div>
 
-      <a href="#view">
-      <div style="text-align: right; color: #aaaaaa; font-size: 66%; margin-bottom: 2em;">
+      <div style="text-align: right; font-size: 66%; margin-bottom: 2em;">
+      <a href="#view" style="color: gray;">
       ply:<span id=currPly>0</span>/<span id=numPly>0</span> 
       game:<span id=currGm>0</span>/<span id=numGm>0</span> 
-      </div>
       </a>
+      </div>
       
     </td>
   </tr>
@@ -498,7 +502,7 @@ function print_footer() {
   print <<<END
 
 <div>&nbsp;</div>
-<div style="color: red; font-weight: bold; margin-top: 1em; margin-bottom: 1em;">$pgnDebugInfo</div>
+<div style="color: gray; margin-top: 1em; margin-bottom: 1em;">$pgnDebugInfo</div>
 
 <script type="text/javascript">
 
