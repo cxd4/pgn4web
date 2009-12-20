@@ -12,8 +12,6 @@ error_reporting(E_ERROR | E_PARSE);
 $tmpDir = "viewer";
 $fileUploadLimitBytes = 4194304;
 $fileUploadLimitText = round(($fileUploadLimitBytes / 1048576), 0) . "MB";
-$textBoxLimitBytes = 16384;
-$textBoxLimitText = round(($textBoxLimitBytes / 1024), 0) . "KB";
 
 if (!get_pgn()) { $pgnText = NULL; }
 print_header();
@@ -26,7 +24,7 @@ print_footer();
 function get_pgn() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $textBoxLimitText, $textBoxLimitBytes;
+  global $fileUploadLimitText, $fileUploadLimitBytes;
 
   $pgnDebugInfo = $_REQUEST["debug"];
 
@@ -80,7 +78,7 @@ function get_pgn() {
     $pgnStatus = "Error uploading PGN data (file not found or server error)";
     return FALSE;
   } else {
-    $pgnStatus = "Please provide PGN data (files must be smaller than " . $fileUploadLimitText . ", text box smaller than " . $textBoxLimitText . ")";
+    $pgnStatus = "Please provide PGN data (files must be smaller than " . $fileUploadLimitText . ")";
     return FALSE;
   }
 
@@ -138,7 +136,7 @@ function get_pgn() {
 function check_tmpDir() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $textBoxLimitText, $textBoxLimitBytes;
+  global $fileUploadLimitText, $fileUploadLimitBytes;
 
   $tmpDirHandle = opendir($tmpDir);
   while($entryName = readdir($tmpDirHandle)) {
@@ -190,7 +188,7 @@ a:link, a:visited, a:hover, a:active {
 
 <table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
 <td align="left" valign="middle"> 
-<h1 style="font-family: sans-serif; color: red;"><a style="color: red;" href=.>pgn4web</a> PGN viewer</h1> 
+<h1 name="top" style="font-family: sans-serif; color: red;"><a style="color: red;" href=.>pgn4web</a> PGN viewer</h1> 
 </td>
 <td align="right" valign="middle">
 <a href=.><img src=pawns.png border=0></a>
@@ -221,7 +219,7 @@ function get_latest_nic_url() {
 function print_form() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $textBoxLimitText, $textBoxLimitBytes;
+  global $fileUploadLimitText, $fileUploadLimitBytes;
 
   $latest_twic_url = get_latest_twic_url();
   $latest_nic_url  = get_latest_nic_url();
@@ -242,22 +240,43 @@ function print_form() {
   }
 
   function checkPgnFormTextSize() {
-    leftTextBox = $textBoxLimitBytes - document.getElementById("pgnFormText").value.length;
-    if (leftTextBox < 0) {
-      document.getElementById("pgnFormSubmitButton").title = "PGN text box max size is $textBoxLimitText, current size is " + document.getElementById("pgnFormText").value.length + " chars, " + (-leftTextBox) + " chars above the limit";
-      alert("PGN text box size currently " + document.getElementById("pgnFormText").value.length + " chars while max size is $textBoxLimitText.\\nPlease remove some text before submitting the PGN data.");
-      return false;
+    document.getElementById("pgnFormButton").title = "PGN text box size is " + document.getElementById("pgnFormText").value.length;
+    if (document.getElementById("pgnFormText").value.length == 1) {
+      document.getElementById("pgnFormButton").title += " char";
     } else {
-      document.getElementById("pgnFormSubmitButton").title = "PGN text box max size is $textBoxLimitText, current size is " + document.getElementById("pgnFormText").value.length + " chars, " + leftTextBox + " chars left";
-      return true;
+      document.getElementById("pgnFormButton").title += " chars";
     }
+  }
+
+  function loadPgnFromForm() {
+    theObjectPgnFormText = document.getElementById('pgnFormText');
+    if (theObjectPgnFormText === null) { return; }
+    if (theObjectPgnFormText.value === "") { return; }
+
+    theObjectPgnText = document.getElementById('pgnText');
+    if (theObjectPgnText === null) { return; }
+
+    theObjectPgnText.value = theObjectPgnFormText.value;
+
+    theObjectPgnText.value = theObjectPgnText.value.replace(/\\[/g,'\\n\\n[');
+    theObjectPgnText.value = theObjectPgnText.value.replace(/\\]/g,']\\n\\n');
+    theObjectPgnText.value = theObjectPgnText.value.replace(/([012\\*])(\\s*)(\\[)/g,'\$1\\n\\n\$3');
+    theObjectPgnText.value = theObjectPgnText.value.replace(/\\]\\s*\\[/g,']\\n[');
+    theObjectPgnText.value = theObjectPgnText.value.replace(/^\\s*\\[/g,'[');
+    theObjectPgnText.value = theObjectPgnText.value.replace(/\\n[\\s*\\n]+/g,'\\n\\n');
+
+    firstStart = true;
+    start_pgn4web();
+    window.location.hash = "view";   
+ 
+    return;
   }
 
 </script>
 
 <table width="100%" cellspacing=0 cellpadding=3 border=0><tbody>
 
-<form id="uploadForm" enctype="multipart/form-data" action="$thisScript#view" method="POST">
+<form id="uploadForm" enctype="multipart/form-data" action="$thisScript" method="POST">
   <tr>
     <td>
       <input id="uploadFormSubmitButton" type="submit" value="show games from PGN (or zipped PGN) file" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
@@ -269,7 +288,7 @@ function print_form() {
   </tr>
 </form>
 
-<form id="urlForm" action="$thisScript#view" method="POST">
+<form id="urlForm" action="$thisScript" method="POST">
   <tr>
     <td>
       <input id="urlFormSubmitButton" type="submit" value="show games from PGN (or zipped PGN) URL" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
@@ -286,10 +305,10 @@ function print_form() {
   </tr>
 </form>
 
-<form id="textForm" action="$thisScript#view" method="POST">
+<form id="textForm">
   <tr>
     <td valign="top">
-      <input id="pgnFormSubmitButton" type="submit" value="show games from PGN text box" style="width:100%;" onClick="return checkPgnFormTextSize();">
+      <input id="pgnFormButton" type="button" value="show games from PGN text box" style="width:100%;" onClick="loadPgnFromForm();">
     </td>
     <td colspan=3 rowspan=2 width="100%">
       <textarea id="pgnFormText" name="pgnTextbox" rows=3 style="width:100%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" onChange="checkPgnFormTextSize();">$pgnTextbox</textarea>
@@ -305,26 +324,28 @@ function print_form() {
 
 </tbody></table>
 
-<div>&nbsp;</div>
-
 END;
 }
 
 function print_chessboard() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $textBoxLimitText, $textBoxLimitBytes;
+  global $fileUploadLimitText, $fileUploadLimitBytes;
 
   print <<<END
 
-<hr>
-<a name="view"><div style="font-weight: bold; padding-top: 2em; padding-bottom: 2em;">$pgnStatus</div></a>
-
-END;
-
-  if (!$pgnText) { return; }
-
-  print <<<END
+<table width=100% cellpadding=0 cellspacing=0 border=0><tr><td valign=top align=left>
+<a name="view"><div style="font-weight: bold; padding-top: 3em; padding-bottom: 3em;">$pgnStatus</div></a>
+</td><td valign=top align=right>
+<div style="padding-top: 1em;">
+&nbsp;
+<a href="#moves" style="color: gray; font-size: 66%;">moves</a>
+&nbsp;
+<a href="#view" style="color: gray; font-size: 66%;">board</a>
+&nbsp;
+<a href="#top" style="color: gray; font-size: 66%;">form</a>
+</div>
+</tr></table>
 
 <link href="$toolRoot/fonts/pgn4web-fonts.css" type="text/css" rel="stylesheet"></link>
 <style type="text/css">
@@ -404,8 +425,7 @@ END;
   background: yellow;
 }
 
-.comment,
-.nag {
+.comment {
   color: gray;
   font-family: 'pgn4web Liberation Sans', sans-serif;
   line-height: 1.3em;
@@ -457,13 +477,8 @@ $pgnText
 
       <div id="GameSearch"></div>
 
-      <div style="text-align: right; font-size: 66%; margin-bottom: 2em;">
-      <a href="#view" style="color: gray;">
-      ply:<span id=currPly>0</span>/<span id=numPly>0</span> 
-      game:<span id=currGm>0</span>/<span id=numGm>0</span> 
-      </a>
-      </div>
-      
+      <div style="padding-top: 1em;">&nbsp;</div>
+
     </td>
   </tr>
   <tr valign=top>
@@ -474,35 +489,52 @@ $pgnText
     </td>
     <td valign=top align=left width=50%>
 
+      <span class="label">Date:</span> <span id="GameDate"></span> 
+      <br>
       <span class="label">Site:</span> <span style="white-space: nowrap;" id="GameSite"></span> 
       <br>
       <span class="label">Event:</span> <span style="white-space: nowrap;" id="GameEvent"></span> 
       <br>
       <span class="label">Round:</span> <span id="GameRound"></span> 
       <p></p>
-      <span class="label">Date:</span> <span id="GameDate"></span> 
-      <p></p>
 
       <span class="label">White:</span> <span style="white-space: nowrap;" id="GameWhite"></span> 
       <br>
       <span class="label">Black:</span> <span style="white-space: nowrap;" id="GameBlack"></span> 
-      <p></p>
+      <br>
       <span class="label">Result:</span> <span id="GameResult"></span> 
       <p></p>
+
+      <span class="label">game:</span> <span id=currGm>0</span> / <span id=numGm>0</span>
+      <br>
+      <span class="label">ply:</span> <span id=currPly>0</span> / <span id=numPly>0</span>
+      <br>
       <span class="label">Side to move:</span> <span id="GameSideToMove"></span> 
       <br>
-
       <span class="label">Last move:</span> <span class="move"><span id="GameLastMove"></span></span> 
       <br>
       <span class="label">Next move:</span> <span class="move"><span id="GameNextMove"></span></span> 
       <p></p>
+
       <span class="label">Move comment:</span><br><span id="GameLastComment"></span> 
 
     </td>
   </tr>
+</table>
+
+<table width=100% cellpadding=0 cellspacing=0 border=0><tr><td valign=bottom align=right>
+&nbsp;
+<a name="moves" href="#moves" style="color: gray; font-size: 66%;">moves</a>
+&nbsp;
+<a href="#view" style="color: gray; font-size: 66%;">board</a>
+&nbsp;
+<a href="#top" style="color: gray; font-size: 66%;">form</a>
+</tr></table>
+
+<table width=100% cellspacing=0 cellpadding=5>
   <tr>
     <td colspan=2>
-      <div style="margin-top: 2em; margin-bottom: 1em; text-align: justify;" id="GameText"></div>
+      <div style="padding-top: 2em; padding-bottom: 1em; text-align: justify;" id="GameText"></div>
     </td>
   </tr>
 </table>
@@ -513,12 +545,25 @@ END;
 function print_footer() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $textBoxLimitText, $textBoxLimitBytes;
+  global $fileUploadLimitText, $fileUploadLimitBytes;
+
+
+  if ($pgnText) { $hashStatement = "window.location.hash = 'view';"; }
+  else { $hashStatement = ""; }
 
   print <<<END
 
 <div>&nbsp;</div>
+<table width=100% cellpadding=0 cellspacing=0 border=0><tr><td valign=bottom align=left>
 <div style="color: gray; margin-top: 1em; margin-bottom: 1em;">$pgnDebugInfo</div>
+</td><td valign=bottom align=right>
+&nbsp;
+<a href="#moves" style="color: gray; font-size: 66%;">moves</a>
+&nbsp;
+<a href="#view" style="color: gray; font-size: 66%;">board</a>
+&nbsp;
+<a href="#top" style="color: gray; font-size: 66%;">form</a>
+</tr></table>
 
 <script type="text/javascript">
 
@@ -526,6 +571,7 @@ function new_start_pgn4web() {
   setPgnUrl("$pgnUrl");
   checkPgnFormTextSize();
   start_pgn4web();
+  $hashStatement
 }
 
 window.onload = new_start_pgn4web;
