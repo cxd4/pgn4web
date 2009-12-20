@@ -437,10 +437,12 @@ $pgnText
 
       <div id="GameSearch"></div>
 
+      <a href="#view">
       <div style="text-align: right; color: #aaaaaa; font-size: 66%; margin-bottom: 2em;">
       ply:<span id=currPly>0</span>/<span id=numPly>0</span> 
       game:<span id=currGm>0</span>/<span id=numGm>0</span> 
       </div>
+      </a>
       
     </td>
   </tr>
