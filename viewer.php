@@ -79,7 +79,7 @@ function get_pgn() {
     $pgnStatus = "Error uploading PGN data (file not found or server error)";
     return FALSE;
   } else {
-    $pgnStatus = "Please provide PGN data";
+    $pgnStatus = "Please provide PGN data (files must be smaller than " . $fileUploadLimitText . ")";
     return FALSE;
   }
 
@@ -265,10 +265,10 @@ function print_form() {
       <input id="urlFormText" name="pgnUrl" type="text" value="" style="width:100%" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
     </td>
     <td>
-      <input id="urlFormTwicButton" type="button" value="latest TWIC" onClick="setPgnUrl('$latest_twic_url');" title="this button saves you the time to download and then upload the latest PGN from The Week In Chess, please show your support for TWIC visiting the TWIC website http://www.chess.co.uk/twic/twic.html">
+      <input id="urlFormTwicButton" type="button" value="latest TWIC" onClick="setPgnUrl('$latest_twic_url');" title="this button saves you the time to download locally and then upload the latest PGN from The Week In Chess, please show your support for TWIC visiting the TWIC website http://www.chess.co.uk/twic/twic.html">
     </td>
     <td>
-      <input id="urlFormNicButton" type="button" value="latest NIC" onClick="setPgnUrl('$latest_nic_url');" title="this button saves you the time to download and then upload the latest PGN from New In Chess, please show your support for NIC visiting the NIC website http://www.newinchess.com">
+      <input id="urlFormNicButton" type="button" value="latest NIC" onClick="setPgnUrl('$latest_nic_url');" title="this button saves you the time to download locally and then upload the latest PGN from New In Chess, please show your support for NIC visiting the NIC website http://www.newinchess.com">
     </td>
   </tr>
 </form>
@@ -286,7 +286,7 @@ function print_form() {
 
   <tr>
   <td align="left" valign="bottom">
-    <input id="clearButton" type="button" value="clear form" onClick="document.getElementById('uploadFormFile').value = document.getElementById('urlFormText').value = document.getElementById('pgnFormText').value = '';">
+    <input id="clearButton" type="button" value="clear form" onClick="document.getElementById('uploadFormFile').value = document.getElementById('urlFormText').value = document.getElementById('pgnFormText').value = '';" title="clear all input boxes, your inputs will be lost">
   </td>
   </tr>
 
@@ -404,6 +404,8 @@ END;
 
 </style>
 
+<link rel="shortcut icon" href="pawn.ico"></link>
+
 <script src="pgn4web.js" type="text/javascript"></script>
 <script type="text/javascript">
   SetImagePath("merida/38"); 
@@ -415,7 +417,7 @@ END;
   SetInitialHalfmove(0);
   SetGameSelectorOptions(" Event         Site          Rd  White            Black            Res  Date", true, 12, 12, 2, 15, 15, 3, 10);
   SetAutostartAutoplay(false);
-  SetAutoplayDelay(1000);
+  SetAutoplayDelay(2000);
   SetShortcutKeysEnabled(true);
 
   function customFunctionOnPgnTextLoad() { document.getElementById('numGm').innerHTML = numberOfGames; }
@@ -515,6 +517,12 @@ function new_start_pgn4web() {
 window.onload = new_start_pgn4web;
 
 </script>
+
+
+<! start of google analytics code -->
+
+<! end of google analytics code -->
+
 
 </body>
 
