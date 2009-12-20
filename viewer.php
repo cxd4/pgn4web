@@ -291,7 +291,8 @@ function print_form() {
 
     firstStart = true;
     start_pgn4web();
-    window.location.hash = "view";   
+    if (window.location.hash == "view") { window.location.reload(); }   
+    else {window.location.hash = "view"; }  
  
     return;
   }
