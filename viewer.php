@@ -164,11 +164,18 @@ function print_header() {
 
 <style type="text/css">
 
-body
-{color: black; background: white; font-family: sans-serif; padding: 20px;}
- 
-a:link, a:visited, a:hover, a:active
-{ color: black; text-decoration: none; }
+body {
+  color: black;
+  background: white; 
+  font-family: 'pgn4web Liberation Sans', sans-serif;
+  line-height: 1.3em;
+  padding: 20px;
+}
+
+a:link, a:visited, a:hover, a:active { 
+  color: black; 
+  text-decoration: none;
+}
 
 </style>
 
@@ -293,7 +300,7 @@ function print_chessboard() {
   print <<<END
 
 <hr>
-<a name="view"><div style="font-weight: bold; margin-top: 2em; margin-bottom: 2em;">$pgnStatus</div></a>
+<a name="view"><div style="font-weight: bold; padding-top: 2em; padding-bottom: 2em;">$pgnStatus</div></a>
 
 END;
 
@@ -301,6 +308,7 @@ END;
 
   print <<<END
 
+<link href="$toolRoot/fonts/pgn4web-fonts.css" type="text/css" rel="stylesheet"></link>
 <style type="text/css">
 
 .boardTable {
@@ -370,6 +378,8 @@ END;
   color: black;
   font-weight: normal;
   text-decoration: none;   
+  font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
+  line-height: 1.3em;
 }
 
 .moveOn {
@@ -379,6 +389,8 @@ END;
 .comment,
 .nag {
   color: gray;
+  font-family: 'pgn4web Liberation Sans', sans-serif;
+  line-height: 1.3em;
 }
 
 .label {
@@ -425,12 +437,13 @@ $pgnText
 
       <div id="GameSearch"></div>
 
-      <div style="text-align: right; color: #aaaaaa; font-size: 66%">
+      <div style="text-align: right; color: #aaaaaa; font-size: 66%; margin-bottom: 2em;">
       ply:<span id=currPly>0</span>/<span id=numPly>0</span> 
       game:<span id=currGm>0</span>/<span id=numGm>0</span> 
       </div>
       
     </td>
+  </tr>
   <tr valign=top>
     <td valign=top align=center width=50%>
       <span id="GameBoard"></span> 
@@ -462,10 +475,10 @@ $pgnText
       <span class="label">Next move:</span> <span class="move"><span id="GameNextMove"></span></span> 
       <p></p>
       <span class="label">Move comment:</span><br><span id="GameLastComment"></span> 
+
     </td>
   </tr>
   <tr>
-
     <td colspan=2>
       <div style="margin-top: 2em; margin-bottom: 1em; text-align: justify;" id="GameText"></div>
     </td>
@@ -492,7 +505,7 @@ function print_footer() {
 </td>
 </tr></tbody></table>
 
-<script>
+<script type="text/javascript">
 
 function new_start_pgn4web() {
   setPgnUrl("$pgnUrl");
