@@ -223,7 +223,7 @@ function print_form() {
 
   $latest_twic_url = get_latest_twic_url();
   $latest_nic_url  = get_latest_nic_url();
-  $thisScript = $_SERVER['PHP_SELF'];
+  $thisScript = $_SERVER['SCRIPT_NAME'];
 
   print <<<END
 
@@ -237,6 +237,18 @@ function print_form() {
     if (!newPgnUrl) { newPgnUrl = ""; }
     document.getElementById("urlFormText").value = newPgnUrl;
     return false;
+  }
+
+  function checkPgnUrl() {
+    theObject = document.getElementById("urlFormText");
+    if (theObject === null) { return false; }
+    return (theObject.value !== "");
+  }
+
+  function checkPgnFile() {
+    theObject = document.getElementById("uploadFormFile");
+    if (theObject === null) { return false; }
+    return (theObject.value !== "");
   }
 
   function checkPgnFormTextSize() {
@@ -265,6 +277,8 @@ function print_form() {
     theObjectPgnText.value = theObjectPgnText.value.replace(/^\\s*\\[/g,'[');
     theObjectPgnText.value = theObjectPgnText.value.replace(/\\n[\\s*\\n]+/g,'\\n\\n');
 
+    document.getElementById('pgnStatus').innerHTML = "PGN from direct user input";
+
     firstStart = true;
     start_pgn4web();
     window.location.hash = "view";   
@@ -276,10 +290,10 @@ function print_form() {
 
 <table width="100%" cellspacing=0 cellpadding=3 border=0><tbody>
 
-<form id="uploadForm" enctype="multipart/form-data" action="$thisScript" method="POST">
+<form id="uploadForm" action="$thisScript" enctype="multipart/form-data" method="POST">
   <tr>
     <td>
-      <input id="uploadFormSubmitButton" type="submit" value="show games from PGN (or zipped PGN) file" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
+      <input id="uploadFormSubmitButton" type="submit" value="show games from PGN (or zipped PGN) file" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText" onClick="return checkPgnFile();">
     </td>
     <td colspan=3 width="100%">
       <input type="hidden" name="MAX_FILE_SIZE" value="$fileUploadLimitBytes">
@@ -291,7 +305,7 @@ function print_form() {
 <form id="urlForm" action="$thisScript" method="POST">
   <tr>
     <td>
-      <input id="urlFormSubmitButton" type="submit" value="show games from PGN (or zipped PGN) URL" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
+      <input id="urlFormSubmitButton" type="submit" value="show games from PGN (or zipped PGN) URL" title="PGN and ZIP files must be smaller than $fileUploadLimitText" onClick="return checkPgnUrl();">
     </td>
     <td width="100%">
       <input id="urlFormText" name="pgnUrl" type="text" value="" style="width:100%" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
@@ -335,7 +349,7 @@ function print_chessboard() {
   print <<<END
 
 <table width=100% cellpadding=0 cellspacing=0 border=0><tr><td valign=top align=left>
-<a name="view"><div style="font-weight: bold; padding-top: 3em; padding-bottom: 3em;">$pgnStatus</div></a>
+<a name="view"><div id="pgnStatus" style="font-weight: bold; padding-top: 3em; padding-bottom: 3em;">$pgnStatus</div></a>
 </td><td valign=top align=right>
 <div style="padding-top: 1em;">
 &nbsp;
