@@ -496,14 +496,8 @@ function print_footer() {
   print <<<END
 
 <div>&nbsp;</div>
-<table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
-<td align="left" valign="middle">
+<hr>
 <div style="color: red; font-weight: bold; margin-top: 1em; margin-bottom: 1em;">$pgnDebugInfo</div>
-</td>
-<td align="right" valign="middle">
-<a href=.><img src=pawns.png border=0></a>
-</td>
-</tr></tbody></table>
 
 <script type="text/javascript">
 
