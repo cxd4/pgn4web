@@ -243,16 +243,15 @@ function print_form() {
 </script>
 
 <table width="100%" cellspacing=0 cellpadding=3 border=0><tbody>
-<form id="textForm" action="$thisScript#view" method="POST">
+
+<form id="uploadForm" enctype="multipart/form-data" action="$thisScript#view" method="POST">
   <tr>
-    <td valign="bottom">
-      <input id="pgnFormSubmitButton" type="submit" value="show games from PGN text box" style="width:100%;">
+    <td>
+      <input id="uploadFormSubmitButton" type="submit" value="show games from PGN (or zipped PGN) file" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
     </td>
     <td colspan=3 width="100%">
-      <textarea id="pgnFormText" name="pgnTextbox" rows=3 style="width:100%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();">$pgnTextbox</textarea>
-    </td>
-    <td valign="bottom">
-      <input id="pgnFormClearButton" type="button" value="clear" onClick="document.getElementById('pgnFormText').value='';">
+      <input type="hidden" name="MAX_FILE_SIZE" value="$fileUploadLimitBytes">
+      <input id="uploadFormFile" name="pgnFile" type="file" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
     </td>
   </tr>
 </form>
@@ -271,23 +270,25 @@ function print_form() {
     <td>
       <input id="urlFormNicButton" type="button" value="latest NIC" onClick="setPgnUrl('$latest_nic_url');" title="this button saves you the time to download and then upload the latest PGN from New In Chess, please show your support for NIC visiting the NIC website http://www.newinchess.com">
     </td>
-    <td>
-      <input id="urlFormClearButton" type="button" value="clear" onClick="setPgnUrl();">
+  </tr>
+</form>
+
+<form id="textForm" action="$thisScript#view" method="POST">
+  <tr>
+    <td valign="top">
+      <input id="pgnFormSubmitButton" type="submit" value="show games from PGN text box" style="width:100%;">
+    </td>
+    <td colspan=3 rowspan=2 width="100%">
+      <textarea id="pgnFormText" name="pgnTextbox" rows=3 style="width:100%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();">$pgnTextbox</textarea>
     </td>
   </tr>
 </form>
 
-<form id="uploadForm" enctype="multipart/form-data" action="$thisScript#view" method="POST">
   <tr>
-    <td>
-      <input id="uploadFormSubmitButton" type="submit" value="show games from PGN (or zipped PGN) file" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
-    </td>
-    <td colspan=3 width="100%">
-      <input type="hidden" name="MAX_FILE_SIZE" value="$fileUploadLimitBytes">
-      <input id="uploadFormFile" name="pgnFile" type="file" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
-    </td>
+  <td align="left" valign="bottom">
+    <input id="clearButton" type="button" value="clear form" onClick="document.getElementById('uploadFormFile').value = document.getElementById('urlFormText').value = document.getElementById('pgnFormText').value = '';">
+  </td>
   </tr>
-</form>
 
 </tbody></table>
 
