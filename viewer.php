@@ -37,6 +37,16 @@ function get_pgn() {
   if ($pgnText) {
     $pgnStatus = "PGN from direct user input";
     $pgnTextbox = $pgnText = str_replace("\\\"", "\"", $pgnText);
+
+    $pgnText = preg_replace("/\[/", "\n\n[", $pgnText);
+    $pgnText = preg_replace("/\]/", "]\n\n", $pgnText);
+    $pgnText = preg_replace("/([012\*])(\s*)(\[)/", "$1\n\n$3", $pgnText);
+    $pgnText = preg_replace("/\]\s*\[/", "]\n[", $pgnText);
+    $pgnText = preg_replace("/^\s*\[/", "[", $pgnText);
+    $pgnText = preg_replace("/\n[\s*\n]+/", "\n\n", $pgnText);
+    
+    $pgnTextbox = $pgnText;
+
     return TRUE;
   } else if ($pgnUrl) {
     $pgnStatus = "PGN from URL <a href='" . $pgnUrl . "'>" . $pgnUrl . "</a>";
@@ -447,6 +457,7 @@ function print_chessboard() {
 
 .label {
   color: gray;
+  line-height: 1.3em;
 }
 
 </style>
