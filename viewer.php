@@ -13,7 +13,7 @@ $tmpDir = "viewer";
 $fileUploadLimitBytes = 4194304;
 $fileUploadLimitText = round(($fileUploadLimitBytes / 1048576), 0) . "MB";
 
-get_pgn();
+if (!($goToView = get_pgn())) { $pgnText = $krabbeStartPosition = get_krabbe_position(); }
 set_mode();
 print_header();
 print_form();
@@ -24,7 +24,7 @@ print_footer();
 function set_mode() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $mode;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
 
   $mode = $_REQUEST["mode"];
 
@@ -38,10 +38,28 @@ function set_mode() {
   }
 }
 
+function get_krabbe_position() {
+
+  $krabbePositions = array(  
+    '[Round "1"][FEN "rnq2rk1/1pn3bp/p2p2p1/2pPp1PP/P1P1Pp2/2N2N2/1P1B1P2/R2QK2R b KQ - 1 16"] 16... Nc6',
+    '[Round "2"][FEN "8/8/4kpp1/3p1b2/p6P/2B5/6P1/6K1 b - - 2 47"] 47... Bh3',
+    '[Round "3"][FEN "5rk1/pp4pp/4p3/2R3Q1/3n4/2q4r/P1P2PPP/5RK1 b - - 1 23"] 23. Qg3',
+    '[Round "4"][FEN "1r6/4k3/r2p2p1/2pR1p1p/2P1pP1P/pPK1P1P1/P7/1B6 b - - 0 48"] 48... Rxb3+',
+    '[Round "5"][FEN "2k2b1r/pb1r1p2/5P2/1qnp4/Npp3Q1/4B1P1/1P3PBP/R4RK1 w - - 4 21"] 21. Qg7',
+    '[Round "6"][FEN "r1bq1rk1/1p3ppp/p1pp2n1/3N3Q/B1PPR2b/8/PP3PPP/R1B3K1 w - - 0 14"] 14. Rxh4',
+    '[Round "7"][FEN "r4k1r/1b2bPR1/p4n2/3p4/4P2P/1q2B2B/PpP5/1K4R1 w - - 0 26"] 26. Bh6',
+    '[Round "8"][FEN "r1b2r1k/4qp1p/p2ppb1Q/4nP2/1p1NP3/2N5/PPP4P/2KR1BR1 w - - 4 18"] 18. Nc6',
+    '[Round "9"][FEN "8/5B2/6Kp/6pP/5b2/p7/1k3P2/8 b - - 3 69"] 69... Be3',
+    '[Round "10"][FEN "4r1k1/q6p/2p4P/2P2QP1/1p6/rb2P3/1B6/1K4RR w - - 1 38"] 38. Qxh7+',
+  );
+
+  return $krabbePositions[rand(0, count($krabbePositions)-1)];
+}
+
 function get_pgn() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $mode;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
 
   $pgnDebugInfo = $_REQUEST["debug"];
 
@@ -168,7 +186,7 @@ function get_pgn() {
 function check_tmpDir() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $mode;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
 
   $tmpDirHandle = opendir($tmpDir);
   while($entryName = readdir($tmpDirHandle)) {
@@ -241,7 +259,7 @@ END;
 function print_form() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $mode;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
 
   $thisScript = $_SERVER['SCRIPT_NAME'];
 
@@ -347,6 +365,18 @@ function print_form() {
     }
   }
 
+function reset_viewer() {
+   document.getElementById("uploadFormFile").value = "";
+   document.getElementById("urlFormText").value = "";
+   document.getElementById("pgnFormText").value = "";
+   document.getElementById("pgnStatus").innerHTML = "Please provide PGN chess games (files must not exceed $fileUploadLimitText)";
+   document.getElementById("pgnText").value = '$krabbeStartPosition';
+   firstStart = true;
+   start_pgn4web();
+   if (window.location.hash == "top") { window.location.reload(); }
+   else {window.location.hash = "top"; }
+}
+
 </script>
 
 <table width="100%" cellspacing=0 cellpadding=3 border=0><tbody>
@@ -398,7 +428,7 @@ function print_form() {
 
   <tr>
   <td align="left" valign="bottom">
-    <input id="clearButton" type="button" class="formControl" value="clear form" onClick="document.getElementById('uploadFormFile').value = document.getElementById('urlFormText').value = document.getElementById('pgnFormText').value = '';" title="clear all input boxes, your inputs will be lost">
+    <input id="clearButton" type="button" class="formControl" value="reset PGN viewer" onClick="if (confirm('reset PGN viewer, current games and inputs will be lost')) { reset_viewer(); }" title="reset PGN viewer, current games and inputs will be lost">
   </td>
   </tr>
 
@@ -410,7 +440,7 @@ END;
 function print_chessboard() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $mode;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
 
   if ($mode == "compact") {
     $squareSize = 30;
@@ -638,10 +668,9 @@ END;
 function print_footer() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $mode;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
 
-
-  if ($pgnText) { $hashStatement = "window.location.hash = 'view';"; }
+  if ($goToView) { $hashStatement = "window.location.hash = 'view';"; }
   else { $hashStatement = ""; }
 
   print <<<END
