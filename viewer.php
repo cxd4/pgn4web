@@ -67,9 +67,10 @@ function get_pgn() {
     return TRUE;
   } else if ($pgnUrl) {
     $pgnStatus = "PGN from URL <a href='" . $pgnUrl . "'>" . $pgnUrl . "</a>";
-    $isPgn = preg_match("/\.pgn$/i",$pgnUrl);
+    $isPgn = preg_match("/\.(pgn|txt)$/i",$pgnUrl);
     $isZip = preg_match("/\.zip$/i",$pgnUrl);
     if ($isZip) {
+      $zipFileString = "<a href='" . $pgnUrl . "'>zipfile</a>";
       $tempZipName = tempnam($tmpDir, "pgn4webViewer");
       $pgnUrlHandle = fopen($pgnUrl, "rb");
       $tempZipHandle = fopen($tempZipName, "wb");
@@ -79,7 +80,7 @@ function get_pgn() {
       if (($copiedBytes > 0) & ($copiedBytes <= $fileUploadLimitBytes)) {
         $pgnSource = $tempZipName;
       } else {
-	$pgnStatus = "Failed to get remote zipfile (file not found, file exceeds " . $fileUploadLimitText . " size limit or server error)";
+	$pgnStatus = "Failed to get " . $zipFileString . " (file not found, file exceeds " . $fileUploadLimitText . " size limit or server error)";
         if (($tempZipName) & (file_exists($tempZipName))) { unlink($tempZipName); }
         return FALSE;
       }
@@ -94,7 +95,7 @@ function get_pgn() {
       $pgnStatus = "Uploaded file exceeds " . $fileUploadLimitText . " size limit";
       return FALSE;
     } else { 
-      $isPgn = preg_match("/\.pgn$/i",$pgnFileName);
+      $isPgn = preg_match("/\.(pgn|txt)$/i",$pgnFileName);
       $isZip = preg_match("/\.zip$/i",$pgnFileName);
       $pgnSource = $_FILES['pgnFile']['tmp_name'];
     }
@@ -110,6 +111,8 @@ function get_pgn() {
   }
 
   if ($isZip) {
+    if ($pgnUrl) { $zipFileString = "<a href='" . $pgnUrl . "'>zipfile</a>"; }
+    else { $zipFileString = "zipfile"; }
     $pgnZip = zip_open($pgnSource);
     if (is_resource($pgnZip)) {
       while (is_resource($zipEntry = zip_read($pgnZip))) {
@@ -119,7 +122,7 @@ function get_pgn() {
           }
           zip_entry_close($zipEntry);
 	} else {
-          $pgnStatus = "Failed reading zipfile content";
+          $pgnStatus = "Failed reading " . $zipFileString . " content";
           zip_close($pgnZip);
           if (($tempZipName) & (file_exists($tempZipName))) { unlink($tempZipName); }
           return FALSE;
@@ -128,25 +131,27 @@ function get_pgn() {
       zip_close($pgnZip);
       if (($tempZipName) & (file_exists($tempZipName))) { unlink($tempZipName); }
       if (!$pgnText) {
-        $pgnStatus = "No PGN data found in zipfile";
+        $pgnStatus = "No PGN data found in " . $zipFileString;
         return FALSE;
       } else {
         return TRUE;
       }
     } else {
-      $pgnStatus = "Failed opening zipfile";
+      $pgnStatus = "Failed opening " . $zipFileString;
       return FALSE;
     }
   }
 
   if($isPgn) {
+    if ($pgnUrl) { $pgnFileString = "<a href='" . $pgnUrl . "'>pgnfile</a>"; }
+    else { $pgnFileString = "pgnfile"; }
     $pgnText = file_get_contents($pgnSource, NULL, NULL, 0, $fileUploadLimitBytes + 1);
     if (!$pgnText) {
-      $pgnStatus = "Failed reading PGN data (server error)";
+      $pgnStatus = "Failed reading " . $pgnFileString . " (file not found or server error)";
       return FALSE;
     }
     if ((strlen($pgnText) == 0) | (strlen($pgnText) > $fileUploadLimitBytes)) {
-      $pgnStatus = "Failed reading PGN data (file exceeds " . $fileUploadLimitText . " size limit or server error)";
+      $pgnStatus = "Failed reading " . $pgnFileString . " (file exceeds " . $fileUploadLimitText . " size limit or server error)";
       return FALSE;
     }
     return TRUE;
@@ -253,12 +258,20 @@ function print_form() {
   function checkPgnUrl() {
     theObject = document.getElementById("urlFormText");
     if (theObject === null) { return false; }
+    if (!theObject.value.match(/\\.(zip|pgn|txt)\$/i)) {
+      alert("Only PGN and ZIP (zipped pgn) files are supported");
+      return false;
+    }
     return (theObject.value !== "");
   }
 
   function checkPgnFile() {
     theObject = document.getElementById("uploadFormFile");
     if (theObject === null) { return false; }
+    if (!theObject.value.match(/\\.(zip|pgn|txt)\$/i)) {
+      alert("Only PGN and ZIP (zipped pgn) files are supported");
+      return false;
+    }
     return (theObject.value !== "");
   }
 
