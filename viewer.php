@@ -388,12 +388,7 @@ function print_chessboard() {
 <a name="view"><div id="pgnStatus" style="font-weight: bold; padding-top: 3em; padding-bottom: 3em;">$pgnStatus</div></a>
 </td><td valign=top align=right>
 <div style="padding-top: 1em;">
-&nbsp;
-<a href="#moves" style="color: gray; font-size: 66%;">moves</a>
-&nbsp;
-<a href="#view" style="color: gray; font-size: 66%;">board</a>
-&nbsp;
-<a href="#top" style="color: gray; font-size: 66%;">form</a>
+&nbsp;&nbsp;&nbsp;<a href="#moves" style="color: gray; font-size: 66%;">moves</a>&nbsp;&nbsp;&nbsp;<a href="#view" style="color: gray; font-size: 66%;">board</a>&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray; font-size: 66%;">form</a>
 </div>
 </tr></table>
 
@@ -574,12 +569,7 @@ $pgnText
 </table>
 
 <table width=100% cellpadding=0 cellspacing=0 border=0><tr><td valign=bottom align=right>
-&nbsp;
-<a name="moves" href="#moves" style="color: gray; font-size: 66%;">moves</a>
-&nbsp;
-<a href="#view" style="color: gray; font-size: 66%;">board</a>
-&nbsp;
-<a href="#top" style="color: gray; font-size: 66%;">form</a>
+&nbsp;&nbsp;&nbsp;<a name="moves" href="#moves" style="color: gray; font-size: 66%;">moves</a>&nbsp;&nbsp;&nbsp;<a href="#view" style="color: gray; font-size: 66%;">board</a>&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray; font-size: 66%;">form</a>
 </tr></table>
 
 <table width=100% cellspacing=0 cellpadding=5>
@@ -608,12 +598,7 @@ function print_footer() {
 <table width=100% cellpadding=0 cellspacing=0 border=0><tr><td valign=bottom align=left>
 <div style="color: gray; margin-top: 1em; margin-bottom: 1em;">$pgnDebugInfo</div>
 </td><td valign=bottom align=right>
-&nbsp;
-<a href="#moves" style="color: gray; font-size: 66%;">moves</a>
-&nbsp;
-<a href="#view" style="color: gray; font-size: 66%;">board</a>
-&nbsp;
-<a href="#top" style="color: gray; font-size: 66%;">form</a>
+&nbsp;&nbsp;&nbsp;<a href="#moves" style="color: gray; font-size: 66%;">moves</a>&nbsp;&nbsp;&nbsp;<a href="#view" style="color: gray; font-size: 66%;">board</a>&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray; font-size: 66%;">form</a>
 </tr></table>
 
 <script type="text/javascript">
