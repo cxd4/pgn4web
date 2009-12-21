@@ -103,10 +103,10 @@ function get_pgn() {
     $pgnStatus = "Uploaded file exceeds " . $fileUploadLimitText . " size limit";
     return FALSE;
   } elseif ($_FILES['pgnFile']['error'] === (UPLOAD_ERR_PARTIAL | UPLOAD_ERR_NO_FILE | UPLOAD_ERR_NO_TMP_DIR | UPLOAD_ERR_CANT_WRITE | UPLOAD_ERR_EXTENSION)) {
-    $pgnStatus = "Error uploading PGN data (file not found or server error)";
+    $pgnStatus = "Error uploading PGN games (file not found or server error)";
     return FALSE;
   } else {
-    $pgnStatus = "Please provide PGN data (files must be smaller than " . $fileUploadLimitText . ")";
+    $pgnStatus = "Please provide PGN chess games (files must not exceed " . $fileUploadLimitText . ")";
     return FALSE;
   }
 
@@ -131,7 +131,7 @@ function get_pgn() {
       zip_close($pgnZip);
       if (($tempZipName) & (file_exists($tempZipName))) { unlink($tempZipName); }
       if (!$pgnText) {
-        $pgnStatus = "No PGN data found in " . $zipFileString;
+        $pgnStatus = "No PGN games found in " . $zipFileString;
         return FALSE;
       } else {
         return TRUE;
