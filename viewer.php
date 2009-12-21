@@ -14,17 +14,34 @@ $fileUploadLimitBytes = 4194304;
 $fileUploadLimitText = round(($fileUploadLimitBytes / 1048576), 0) . "MB";
 
 get_pgn();
+set_mode();
 print_header();
 print_form();
 check_tmpDir();
 print_chessboard();
 print_footer();
 
+function set_mode() {
+
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $mode;
+
+  $mode = $_REQUEST["mode"];
+
+  if (!$mode) {
+    $mode = "normal";
+    $ua = $_SERVER["HTTP_USER_AGENT"];
+    $mobileagents = array ("Android", "Blackberry", "iPhone", "iPod", "Nokia", "Opera Mini", "Palm", "PlayStation Portable", "Pocket", "Smartphone", "Symbian", "WAP", "Windows CE"); 
+    foreach ($mobileagents as $ma) {
+      if(stristr($ua, $ma)) { $mode = "compact"; } 
+    }
+  }
+}
 
 function get_pgn() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $mode;
 
   $pgnDebugInfo = $_REQUEST["debug"];
 
@@ -146,7 +163,7 @@ function get_pgn() {
 function check_tmpDir() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $mode;
 
   $tmpDirHandle = opendir($tmpDir);
   while($entryName = readdir($tmpDirHandle)) {
@@ -183,6 +200,7 @@ body {
   font-family: 'pgn4web Liberation Sans', sans-serif;
   line-height: 1.3em;
   padding: 20px;
+  $bodyFontSize
 }
 
 a:link, a:visited, a:hover, a:active { 
@@ -218,7 +236,7 @@ END;
 function print_form() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $mode;
 
   $thisScript = $_SERVER['SCRIPT_NAME'];
 
@@ -326,6 +344,7 @@ function print_form() {
         <input id="uploadFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) file" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText" onClick="return checkPgnFile();">
     </td>
     <td colspan=2 width="100%" align="left" valign="top">
+        <input type="hidden" name="mode" value="$mode">
         <input type="hidden" name="MAX_FILE_SIZE" value="$fileUploadLimitBytes">
         <input id="uploadFormFile" name="pgnFile" type="file" class="formControl" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
       </form>
@@ -341,6 +360,7 @@ function print_form() {
         <input id="urlFormText" name="pgnUrl" type="text" class="formControl" value="" style="width:100%" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
     </td>
     <td align="right" valign="top">
+        <input type="hidden" name="mode" value="$mode">
         <select id="urlFormSelect" class="formControl" title="preset the URL saving the time for downloading locally and then uploading the latest PGN from The Week In Chess or New In Chess; please note the URL of the latest issue of the online chess magazines is estimated and might occasionally need manual adjustment; please show your support to the online chess magazines visiting the TWIC website http://www.chess.co.uk/twic/twic.html and the NIC website http://www.newinchess.com" onChange="urlFormSelectChange();">
           <option value="header">preset URL</option>
           <option value="twic">latest TWIC</option>
@@ -357,6 +377,7 @@ function print_form() {
         <input id="pgnFormButton" type="button" class="formControl" value="show games from PGN text box" style="width:100%;" onClick="loadPgnFromForm();">
     </td>
     <td colspan=2 rowspan=2 width="100%" align="right" valign="bottom">
+        <input type="hidden" name="mode" value="$mode">
         <textarea id="pgnFormText" class="formControl" name="pgnTextbox" rows=4 style="width:100%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" onChange="checkPgnFormTextSize();">$pgnTextbox</textarea>
       </form>
     </td>
@@ -376,7 +397,15 @@ END;
 function print_chessboard() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $mode;
+
+  if ($mode == "compact") {
+    $squareSize = 30;
+    $pieceSize = 26;
+  } else {
+    $squareSize = 42;
+    $pieceSize = 38;
+  }
 
   print <<<END
 
@@ -398,16 +427,16 @@ function print_chessboard() {
 }
 
 .pieceImage {
-  width: 38;
-  height: 38;
+  width: $pieceSize;
+  height: $pieceSize;
 }
 
 .whiteSquare,
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 42;
-  height: 42;
+  width: $squareSize;
+  height: $squareSize;
   border-style: solid;
   border-width: 2;
 }
@@ -483,7 +512,7 @@ function print_chessboard() {
 
 <script src="pgn4web.js" type="text/javascript"></script>
 <script type="text/javascript">
-  SetImagePath("merida/38"); 
+  SetImagePath("merida/$pieceSize"); 
   SetImageType("png");
   SetHighlightOption(true); 
   SetCommentsIntoMoveText(true);
@@ -512,6 +541,11 @@ $pgnText
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
 <table width=100% cellspacing=0 cellpadding=5>
+
+END;
+
+  if ($mode != "compact") print <<<END
+
   <tr valign=bottom>
     <td align="center" colspan=2>
 
@@ -523,6 +557,11 @@ $pgnText
 
     </td>
   </tr>
+
+END;
+
+  print <<<END
+
   <tr valign=top>
     <td valign=top align=center width=50%>
       <span id="GameBoard"></span> 
@@ -568,6 +607,10 @@ $pgnText
 &nbsp;&nbsp;&nbsp;<a name="moves" href="#moves" style="color: gray; font-size: 66%;">moves</a>&nbsp;&nbsp;&nbsp;<a href="#view" style="color: gray; font-size: 66%;">board</a>&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray; font-size: 66%;">form</a>
 </tr></table>
 
+END;
+ 
+  if ($mode != "compact") print <<<END
+
 <table width=100% cellspacing=0 cellpadding=5>
   <tr>
     <td colspan=2>
@@ -582,7 +625,7 @@ END;
 function print_footer() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $mode;
 
 
   if ($pgnText) { $hashStatement = "window.location.hash = 'view';"; }
