@@ -51,6 +51,16 @@ function get_krabbe_position() {
     '[Round "8"][FEN "r1b2r1k/4qp1p/p2ppb1Q/4nP2/1p1NP3/2N5/PPP4P/2KR1BR1 w - - 4 18"] 18. Nc6',
     '[Round "9"][FEN "8/5B2/6Kp/6pP/5b2/p7/1k3P2/8 b - - 3 69"] 69... Be3',
     '[Round "10"][FEN "4r1k1/q6p/2p4P/2P2QP1/1p6/rb2P3/1B6/1K4RR w - - 1 38"] 38. Qxh7+',
+    '[Round "11"][FEN "6k1/3Q4/5p2/5P2/8/1KP5/PP4qp/2B5 w - - 0 99"] 99. Bg5',
+    '[Round "12"][FEN "k4b1r/p3pppp/B1p2n2/3rB1N1/7q/8/PPP2P2/R2Q1RK1 w - - 1 18"] 18. c4',
+    '[Round "13"][FEN "1nbk1b1r/r3pQpp/pq2P3/1p1P2B1/2p5/2P5/5PPP/R3KB1R b KQ - 0 15"] 15... Rd7',
+    '[Round "14"][FEN "5r2/7k/1pPP3P/8/4p3/3p4/P4R1P/7K b - - 0 48"] 48... e3',
+    '[Round "15"][FEN "rnb1kr2/pp1p1pQp/6q1/4PpB1/1P6/8/1PP2PPP/2KR3R w q - 2 15"] 15. e6',
+    '[Round "16"][FEN "7k/1p1P2pp/p7/3P4/1Q5P/5pPK/PP3r2/1q5B b - - 1 37"] 37... h5',
+    '[Round "17"][FEN "r2q1rk1/pp2bpp1/4p2p/2pPB2P/2P3n1/3Q2N1/PP3PP1/2KR3R w - - 1 17"] 17. Bxg7',
+    '[Round "18"][FEN "r2qk2r/1b3ppp/p2p1b2/2nNp3/1R2P3/2P5/1PN2PPP/3QKB1R w Kkq - 3 17"] 17. Rxb7',
+    '[Round "19"][FEN "r3kbnr/p1pp1qpp/b1n1P3/6N1/1p6/8/Pp3PPP/RNBQR1K1 b kq - 0 12"] 12... O-O-O',
+    '[Round "20"][FEN "r2qkb1r/pb1p1p1p/1pn2np1/2p1p3/2P1P3/2NP1NP1/PP3PBP/R1BQ1RK1 w kq - 0 9"] 9. Nxe5',
   );
 
   return $krabbePositions[rand(0, count($krabbePositions)-1)];
@@ -629,9 +639,9 @@ END;
       <span class="label">Result:</span> <span id="GameResult"></span> 
       <p></p>
 
-      <span class="label">game:</span> <span id=currGm>0</span> / <span id=numGm>0</span>
+      <span class="label">game:</span> <span id=currGm>0</span> (<span id=numGm>0</span>)
       <br>
-      <span class="label">ply:</span> <span id=currPly>0</span> / <span id=numPly>0</span>
+      <span class="label">ply:</span> <span id=currPly>0</span> (<span id=numPly>0</span>)
       <br>
       <span class="label">Side to move:</span> <span id="GameSideToMove"></span> 
       <br>
