@@ -80,7 +80,7 @@ function get_pgn() {
   if (!$pgnUrl) { $pgnUrl = $_REQUEST["pu"]; }
 
   if ($pgnText) {
-    $pgnStatus = "PGN from direct user input";
+    $pgnStatus = "PGN games from text box input";
     $pgnTextbox = $pgnText = str_replace("\\\"", "\"", $pgnText);
 
     $pgnText = preg_replace("/\[/", "\n\n[", $pgnText);
@@ -94,7 +94,7 @@ function get_pgn() {
 
     return TRUE;
   } else if ($pgnUrl) {
-    $pgnStatus = "PGN from URL <a href='" . $pgnUrl . "'>" . $pgnUrl . "</a>";
+    $pgnStatus = "PGN games from URL <a href='" . $pgnUrl . "'>" . $pgnUrl . "</a>";
     $isPgn = preg_match("/\.(pgn|txt)$/i",$pgnUrl);
     $isZip = preg_match("/\.zip$/i",$pgnUrl);
     if ($isZip) {
@@ -108,7 +108,7 @@ function get_pgn() {
       if (($copiedBytes > 0) & ($copiedBytes <= $fileUploadLimitBytes)) {
         $pgnSource = $tempZipName;
       } else {
-	$pgnStatus = "Failed to get " . $zipFileString . " (file not found, file exceeds " . $fileUploadLimitText . " size limit or server error)";
+	$pgnStatus = "failed to get " . $zipFileString . " (file not found, file exceeds " . $fileUploadLimitText . " size limit or server error)";
         if (($tempZipName) & (file_exists($tempZipName))) { unlink($tempZipName); }
         return FALSE;
       }
@@ -117,10 +117,10 @@ function get_pgn() {
     }
   } elseif ($_FILES['pgnFile']['error'] === UPLOAD_ERR_OK) {
     $pgnFileName = $_FILES['pgnFile']['name'];
-    $pgnStatus = "PGN from user file " . $pgnFileName;
+    $pgnStatus = "PGN games from file " . $pgnFileName;
     $pgnFileSize = $_FILES['userfile']['size'];
     if ($pgnFileSize > $fileUploadLimitBytes) {
-      $pgnStatus = "Uploaded file exceeds " . $fileUploadLimitText . " size limit";
+      $pgnStatus = "uploaded file exceeds " . $fileUploadLimitText . " size limit";
       return FALSE;
     } else { 
       $isPgn = preg_match("/\.(pgn|txt)$/i",$pgnFileName);
@@ -128,13 +128,13 @@ function get_pgn() {
       $pgnSource = $_FILES['pgnFile']['tmp_name'];
     }
   } elseif ($_FILES['pgnFile']['error'] === (UPLOAD_ERR_INI_SIZE | UPLOAD_ERR_FORM_SIZE)) {
-    $pgnStatus = "Uploaded file exceeds " . $fileUploadLimitText . " size limit";
+    $pgnStatus = "uploaded file exceeds " . $fileUploadLimitText . " size limit";
     return FALSE;
   } elseif ($_FILES['pgnFile']['error'] === (UPLOAD_ERR_PARTIAL | UPLOAD_ERR_NO_FILE | UPLOAD_ERR_NO_TMP_DIR | UPLOAD_ERR_CANT_WRITE | UPLOAD_ERR_EXTENSION)) {
-    $pgnStatus = "Error uploading PGN games (file not found or server error)";
+    $pgnStatus = "error uploading PGN games (file not found or server error)";
     return FALSE;
   } else {
-    $pgnStatus = "Please provide PGN chess games (files must not exceed " . $fileUploadLimitText . ")";
+    $pgnStatus = "please enter chess games in PGN format (files must not exceed " . $fileUploadLimitText . ")";
     return FALSE;
   }
 
@@ -150,7 +150,7 @@ function get_pgn() {
           }
           zip_entry_close($zipEntry);
 	} else {
-          $pgnStatus = "Failed reading " . $zipFileString . " content";
+          $pgnStatus = "failed reading " . $zipFileString . " content";
           zip_close($pgnZip);
           if (($tempZipName) & (file_exists($tempZipName))) { unlink($tempZipName); }
           return FALSE;
@@ -159,13 +159,13 @@ function get_pgn() {
       zip_close($pgnZip);
       if (($tempZipName) & (file_exists($tempZipName))) { unlink($tempZipName); }
       if (!$pgnText) {
-        $pgnStatus = "No PGN games found in " . $zipFileString;
+        $pgnStatus = "PGN games not found in " . $zipFileString;
         return FALSE;
       } else {
         return TRUE;
       }
     } else {
-      $pgnStatus = "Failed opening " . $zipFileString;
+      $pgnStatus = "failed opening " . $zipFileString;
       return FALSE;
     }
   }
@@ -175,18 +175,18 @@ function get_pgn() {
     else { $pgnFileString = "pgnfile"; }
     $pgnText = file_get_contents($pgnSource, NULL, NULL, 0, $fileUploadLimitBytes + 1);
     if (!$pgnText) {
-      $pgnStatus = "Failed reading " . $pgnFileString . " (file not found or server error)";
+      $pgnStatus = "failed reading " . $pgnFileString . " (file not found or server error)";
       return FALSE;
     }
     if ((strlen($pgnText) == 0) | (strlen($pgnText) > $fileUploadLimitBytes)) {
-      $pgnStatus = "Failed reading " . $pgnFileString . " (file exceeds " . $fileUploadLimitText . " size limit or server error)";
+      $pgnStatus = "failed reading " . $pgnFileString . " (file exceeds " . $fileUploadLimitText . " size limit or server error)";
       return FALSE;
     }
     return TRUE;
   } 
 
   if($pgnSource) {
-    $pgnStatus = "Only PGN and ZIP (zipped pgn) files are supported";
+    $pgnStatus = "only PGN and ZIP (zipped pgn) files are supported";
     return FALSE;
   }
 
@@ -287,7 +287,7 @@ function print_form() {
     theObject = document.getElementById("urlFormText");
     if (theObject === null) { return false; }
     if (!theObject.value.match(/\\.(zip|pgn|txt)\$/i)) {
-      alert("Only PGN and ZIP (zipped pgn) files are supported");
+      alert("only PGN and ZIP (zipped pgn) files are supported");
       return false;
     }
     return (theObject.value !== "");
@@ -297,7 +297,7 @@ function print_form() {
     theObject = document.getElementById("uploadFormFile");
     if (theObject === null) { return false; }
     if (!theObject.value.match(/\\.(zip|pgn|txt)\$/i)) {
-      alert("Only PGN and ZIP (zipped pgn) files are supported");
+      alert("only PGN and ZIP (zipped pgn) files are supported");
       return false;
     }
     return (theObject.value !== "");
@@ -329,7 +329,7 @@ function print_form() {
     theObjectPgnText.value = theObjectPgnText.value.replace(/^\\s*\\[/g,'[');
     theObjectPgnText.value = theObjectPgnText.value.replace(/\\n[\\s*\\n]+/g,'\\n\\n');
 
-    document.getElementById('pgnStatus').innerHTML = "PGN from direct user input";
+    document.getElementById('pgnStatus').innerHTML = "PGN games from text box input";
     document.getElementById('uploadFormFile').value = "";
     document.getElementById('urlFormText').value = "";
 
@@ -379,7 +379,8 @@ function reset_viewer() {
    document.getElementById("uploadFormFile").value = "";
    document.getElementById("urlFormText").value = "";
    document.getElementById("pgnFormText").value = "";
-   document.getElementById("pgnStatus").innerHTML = "Please provide PGN chess games (files must not exceed $fileUploadLimitText)";
+   checkPgnFormTextSize();
+   document.getElementById("pgnStatus").innerHTML = "please enter chess games in PGN format (files must not exceed $fileUploadLimitText)";
    document.getElementById("pgnText").value = '$krabbeStartPosition';
    firstStart = true;
    start_pgn4web();
