@@ -62,7 +62,7 @@ function get_pgn() {
       if (($copiedBytes > 0) & ($copiedBytes <= $fileUploadLimitBytes)) {
         $pgnSource = $tempZipName;
       } else {
-	$pgnStatus = "Failed to get remote zipfile (file not found, file exceeds " . $fileUploadLimitText . " limit or server error)";
+	$pgnStatus = "Failed to get remote zipfile (file not found, file exceeds " . $fileUploadLimitText . " size limit or server error)";
         if (($tempZipName) & (file_exists($tempZipName))) { unlink($tempZipName); }
         return FALSE;
       }
@@ -74,7 +74,7 @@ function get_pgn() {
     $pgnStatus = "PGN from user file " . $pgnFileName;
     $pgnFileSize = $_FILES['userfile']['size'];
     if ($pgnFileSize > $fileUploadLimitBytes) {
-      $pgnStatus = "Uploaded file exceeds " . $fileUploadLimitText . " limit";
+      $pgnStatus = "Uploaded file exceeds " . $fileUploadLimitText . " size limit";
       return FALSE;
     } else { 
       $isPgn = preg_match("/\.pgn$/i",$pgnFileName);
@@ -82,7 +82,7 @@ function get_pgn() {
       $pgnSource = $_FILES['pgnFile']['tmp_name'];
     }
   } elseif ($_FILES['pgnFile']['error'] === (UPLOAD_ERR_INI_SIZE | UPLOAD_ERR_FORM_SIZE)) {
-    $pgnStatus = "Uploaded file exceeds " . $fileUploadLimitText . " limit";
+    $pgnStatus = "Uploaded file exceeds " . $fileUploadLimitText . " size limit";
     return FALSE;
   } elseif ($_FILES['pgnFile']['error'] === (UPLOAD_ERR_PARTIAL | UPLOAD_ERR_NO_FILE | UPLOAD_ERR_NO_TMP_DIR | UPLOAD_ERR_CANT_WRITE | UPLOAD_ERR_EXTENSION)) {
     $pgnStatus = "Error uploading PGN data (file not found or server error)";
@@ -129,7 +129,7 @@ function get_pgn() {
       return FALSE;
     }
     if ((strlen($pgnText) == 0) | (strlen($pgnText) > $fileUploadLimitBytes)) {
-      $pgnStatus = "Failed reading PGN data (file exceeds " . $fileUploadLimitText . " limit or server error)";
+      $pgnStatus = "Failed reading PGN data (file exceeds " . $fileUploadLimitText . " size limit or server error)";
       return FALSE;
     }
     return TRUE;
