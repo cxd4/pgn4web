@@ -13,7 +13,7 @@ $tmpDir = "viewer";
 $fileUploadLimitBytes = 4194304;
 $fileUploadLimitText = round(($fileUploadLimitBytes / 1048576), 0) . "MB";
 
-if (!get_pgn()) { $pgnText = NULL; }
+get_pgn();
 print_header();
 print_form();
 check_tmpDir();
@@ -226,10 +226,6 @@ function print_form() {
 
 <script type="text/javascript">
 
-  function disableShortcutKeysAndStoreStatus() {}
-  function restoreShortcutKeysStatus() {}
-  function start_pgn4web() {}
-  
   function setPgnUrl(newPgnUrl) {
     if (!newPgnUrl) { newPgnUrl = ""; }
     document.getElementById("urlFormText").value = newPgnUrl;
@@ -297,7 +293,7 @@ function print_form() {
         nowDate = new Date();
         epochTimeNow = nowDate.getTime() / 1000;
         twicNum = givenTwicNumber + Math.floor((epochTimeNow - epochTimeOfGivenTwic) / (60 * 60 * 24 * 7))
-	document.getElementById("urlFormText").value = "http://www.chesscenter.com/twic/zips/twic" + twicNum + "g.zip";;
+	setPgnUrl("http://www.chesscenter.com/twic/zips/twic" + twicNum + "g.zip");
         theObject.value = "header";
       break;
 
@@ -309,12 +305,12 @@ function print_form() {
 	epochTimeNow = nowDate.getTime() / 1000;
         nicYear = givenNicYear + Math.floor((epochTimeNow - epochTimeOfGivenNic) / (60 * 60 * 24 * 365.25));
         nicIssue = 1 + Math.floor((epochTimeNow - (epochTimeOfGivenNic + (nicYear - givenNicYear) * (60 * 60 * 24 * 365.25))) / (60 * 60 * 24 * 365.25 / 8));
-        document.getElementById("urlFormText").value = "http://www.newinchess.com/Magazine/GameFiles/mag_" + nicYear + "_" + nicIssue + "_pgn.zip";
+        setPgnUrl("http://www.newinchess.com/Magazine/GameFiles/mag_" + nicYear + "_" + nicIssue + "_pgn.zip");
         theObject.value = "header";
       break;
 
       default:
-        document.getElementById("urlFormText").value = "";
+        setPgnUrl("");
         theObject.value = "header";
       break;
     }
@@ -324,47 +320,47 @@ function print_form() {
 
 <table width="100%" cellspacing=0 cellpadding=3 border=0><tbody>
 
-<form id="uploadForm" action="$thisScript" enctype="multipart/form-data" method="POST">
   <tr>
     <td align="left" valign="top">
-      <input id="uploadFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) file" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText" onClick="return checkPgnFile();">
+      <form id="uploadForm" action="$thisScript" enctype="multipart/form-data" method="POST" style="display: inline;">
+        <input id="uploadFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) file" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText" onClick="return checkPgnFile();">
     </td>
     <td colspan=2 width="100%" align="left" valign="top">
-      <input type="hidden" name="MAX_FILE_SIZE" value="$fileUploadLimitBytes">
-      <input id="uploadFormFile" name="pgnFile" type="file" class="formControl" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
+        <input type="hidden" name="MAX_FILE_SIZE" value="$fileUploadLimitBytes">
+        <input id="uploadFormFile" name="pgnFile" type="file" class="formControl" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
+      </form>
     </td>
   </tr>
-</form>
 
-<form id="urlForm" action="$thisScript" method="POST">
   <tr>
     <td align="left" valign="top">
-      <input id="urlFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) URL" title="PGN and ZIP files must be smaller than $fileUploadLimitText" onClick="return checkPgnUrl();">
+      <form id="urlForm" action="$thisScript" method="POST" style="display: inline;">
+        <input id="urlFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) URL" title="PGN and ZIP files must be smaller than $fileUploadLimitText" onClick="return checkPgnUrl();">
     </td>
     <td width="100%" align="left" valign="top">
-      <input id="urlFormText" name="pgnUrl" type="text" class="formControl" value="" style="width:100%" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
+        <input id="urlFormText" name="pgnUrl" type="text" class="formControl" value="" style="width:100%" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
     </td>
     <td align="right" valign="top">
-      <select id="urlFormSelect" class="formControl" title="preset the URL saving the time for downloading locally and then uploading the latest PGN from The Week In Chess or New In Chess; please note the URL of the latest issue of the online chess magazines is estimated and might occasionally need manual adjustment; please show your support to the online chess magazines visiting the TWIC website http://www.chess.co.uk/twic/twic.html and the NIC website http://www.newinchess.com" onChange="urlFormSelectChange();">
-      <option value="header">preset URL</option>
-      <option value="twic">latest TWIC</option>
-      <option value="nic">latest NIC</option>
-      <option value="clear">clear URL</option>
-      </select>
+        <select id="urlFormSelect" class="formControl" title="preset the URL saving the time for downloading locally and then uploading the latest PGN from The Week In Chess or New In Chess; please note the URL of the latest issue of the online chess magazines is estimated and might occasionally need manual adjustment; please show your support to the online chess magazines visiting the TWIC website http://www.chess.co.uk/twic/twic.html and the NIC website http://www.newinchess.com" onChange="urlFormSelectChange();">
+          <option value="header">preset URL</option>
+          <option value="twic">latest TWIC</option>
+          <option value="nic">latest NIC</option>
+          <option value="clear">clear URL</option>
+        </select>
+      </form>
     </td>
   </tr>
-</form>
 
-<form id="textForm">
   <tr>
     <td align="left" valign="top">
-      <input id="pgnFormButton" type="button" class="formControl" value="show games from PGN text box" style="width:100%;" onClick="loadPgnFromForm();">
+      <form id="textForm" style="display: inline;">
+        <input id="pgnFormButton" type="button" class="formControl" value="show games from PGN text box" style="width:100%;" onClick="loadPgnFromForm();">
     </td>
     <td colspan=2 rowspan=2 width="100%" align="right" valign="bottom">
-      <textarea id="pgnFormText" class="formControl" name="pgnTextbox" rows=4 style="width:100%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" onChange="checkPgnFormTextSize();">$pgnTextbox</textarea>
+        <textarea id="pgnFormText" class="formControl" name="pgnTextbox" rows=4 style="width:100%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" onChange="checkPgnFormTextSize();">$pgnTextbox</textarea>
+      </form>
     </td>
   </tr>
-</form>
 
   <tr>
   <td align="left" valign="bottom">
