@@ -108,7 +108,7 @@ function get_pgn() {
       if (($copiedBytes > 0) & ($copiedBytes <= $fileUploadLimitBytes)) {
         $pgnSource = $tempZipName;
       } else {
-	$pgnStatus = "failed to get " . $zipFileString . " (file not found, file exceeds " . $fileUploadLimitText . " size limit or server error)";
+	$pgnStatus = "failed to get " . $zipFileString . ": file not found, file exceeds " . $fileUploadLimitText . " size limit or server error";
         if (($tempZipName) & (file_exists($tempZipName))) { unlink($tempZipName); }
         return FALSE;
       }
@@ -131,10 +131,10 @@ function get_pgn() {
     $pgnStatus = "uploaded file exceeds " . $fileUploadLimitText . " size limit";
     return FALSE;
   } elseif ($_FILES['pgnFile']['error'] === (UPLOAD_ERR_PARTIAL | UPLOAD_ERR_NO_FILE | UPLOAD_ERR_NO_TMP_DIR | UPLOAD_ERR_CANT_WRITE | UPLOAD_ERR_EXTENSION)) {
-    $pgnStatus = "error uploading PGN games (file not found or server error)";
+    $pgnStatus = "error uploading PGN games: file not found or server error";
     return FALSE;
   } else {
-    $pgnStatus = "please enter chess games in <a href=http://www.tim-mann.org/Standard target=_blank>PGN format</a> (files must not exceed " . $fileUploadLimitText . ")";
+    $pgnStatus = "please enter chess games in <a href=http://www.tim-mann.org/Standard target=_blank>PGN format</a>: files must not exceed " . $fileUploadLimitText;
     return FALSE;
   }
 
@@ -175,11 +175,11 @@ function get_pgn() {
     else { $pgnFileString = "pgnfile"; }
     $pgnText = file_get_contents($pgnSource, NULL, NULL, 0, $fileUploadLimitBytes + 1);
     if (!$pgnText) {
-      $pgnStatus = "failed reading " . $pgnFileString . " (file not found or server error)";
+      $pgnStatus = "failed reading " . $pgnFileString . ": file not found or server error";
       return FALSE;
     }
     if ((strlen($pgnText) == 0) | (strlen($pgnText) > $fileUploadLimitBytes)) {
-      $pgnStatus = "failed reading " . $pgnFileString . " (file exceeds " . $fileUploadLimitText . " size limit or server error)";
+      $pgnStatus = "failed reading " . $pgnFileString . ": file exceeds " . $fileUploadLimitText . " size limit or server error";
       return FALSE;
     }
     return TRUE;
@@ -380,7 +380,7 @@ function reset_viewer() {
    document.getElementById("urlFormText").value = "";
    document.getElementById("pgnFormText").value = "";
    checkPgnFormTextSize();
-   document.getElementById("pgnStatus").innerHTML = "please enter chess games in <a href=http://www.tim-mann.org/Standard target=_blank>PGN format</a> (files must not exceed $fileUploadLimitText)";
+   document.getElementById("pgnStatus").innerHTML = "please enter chess games in <a href=http://www.tim-mann.org/Standard target=_blank>PGN format</a>: files must not exceed $fileUploadLimitText";
    document.getElementById("pgnText").value = '$krabbeStartPosition';
    firstStart = true;
    start_pgn4web();
