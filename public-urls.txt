@@ -19,7 +19,7 @@ board widget
 board generator site
  http://pgn4web-board-generator.casaschi.net
 
-PGN viewer
+games viewer
  http://pgn4web-viewer.casaschi.net
 
 blog
