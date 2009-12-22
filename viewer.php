@@ -116,6 +116,9 @@ function get_pgn() {
     } else {
       $pgnSource = $pgnUrl;
     }
+  } elseif (count($_FILES) == 0) {
+    $pgnStatus = "please enter chess games in <a href=http://www.tim-mann.org/Standard target=_blank>PGN format</a>&nbsp; &nbsp;<span style='color: gray;'>file and URL inputs must not exceed " . $fileUploadLimitText . "</span>";
+    return FALSE;
   } elseif ($_FILES['pgnFile']['error'] == UPLOAD_ERR_OK) {
     $pgnFileName = $_FILES['pgnFile']['name'];
     $pgnStatus = "PGN games from file " . $pgnFileName;
@@ -138,7 +141,7 @@ function get_pgn() {
     $pgnStatus = "failed uploading PGN games: server error";
     return FALSE;
   } else {
-    $pgnStatus = "please enter chess games in <a href=http://www.tim-mann.org/Standard target=_blank>PGN format</a>&nbsp; &nbsp;<span style='color: gray;'>file and URL inputs must not exceed " . $fileUploadLimitText . "</span>";
+    $pgnStatus = "failed uploading PGN games";
     return FALSE;
   }
 
@@ -687,7 +690,6 @@ function print_footer() {
 
   if ($goToView) { $hashStatement = "window.location.hash = 'view';"; }
   else { $hashStatement = ""; }
-
   print <<<END
 
 <div>&nbsp;</div>
