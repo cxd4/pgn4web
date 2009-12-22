@@ -253,7 +253,7 @@ a:link, a:visited, a:hover, a:active {
 
 <table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
 <td align="left" valign="middle"> 
-<h1 name="top" style="font-family: sans-serif; color: red;"><a style="color: red;" href=.>pgn4web</a> PGN viewer</h1> 
+<h1 name="top" style="font-family: sans-serif; color: red;"><a style="color: red;" href=.>pgn4web</a> games viewer</h1> 
 </td>
 <td align="right" valign="middle">
 <a href=.><img src=pawns.png border=0></a>
@@ -408,20 +408,20 @@ function reset_viewer() {
   <tr>
     <td align="left" valign="top">
       <form id="urlForm" action="$thisScript" method="POST" style="display: inline;">
-        <input id="urlFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) URL" title="PGN and ZIP files must be smaller than $fileUploadLimitText" onClick="return checkPgnUrl();">
+	<input id="urlFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) URL" title="PGN and ZIP files must be smaller than $fileUploadLimitText" onClick="return checkPgnUrl();">
     </td>
     <td width="100%" align="left" valign="top">
         <input id="urlFormText" name="pgnUrl" type="text" class="formControl" value="" style="width:100%" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
+        <input type="hidden" name="mode" value="$mode">
+      </form>
     </td>
     <td align="right" valign="top">
-        <input type="hidden" name="mode" value="$mode">
         <select id="urlFormSelect" class="formControl" title="preset the URL saving the time for downloading locally and then uploading the latest PGN from The Week In Chess or New In Chess; please note the URL of the latest issue of the online chess magazines is estimated and might occasionally need manual adjustment; please show your support to the online chess magazines visiting the TWIC website http://www.chess.co.uk/twic/twic.html and the NIC website http://www.newinchess.com" onChange="urlFormSelectChange();">
           <option value="header">preset URL</option>
           <option value="twic">latest TWIC</option>
           <option value="nic">latest NIC</option>
           <option value="clear">clear URL</option>
         </select>
-      </form>
     </td>
   </tr>
 
@@ -464,7 +464,7 @@ function print_chessboard() {
   print <<<END
 
 <table width=100% cellpadding=0 cellspacing=0 border=0><tr><td valign=top align=left>
-<a name="view"><div id="pgnStatus" style="font-weight: bold; padding-top: 3em; padding-bottom: 3em;">$pgnStatus</div></a>
+<a name="view"><div id="pgnStatus" style="font-weight: bold; margin-top: 3em; margin-bottom: 3em;">$pgnStatus</div></a>
 </td><td valign=top align=right>
 <div style="padding-top: 1em;">
 &nbsp;&nbsp;&nbsp;<a href="#moves" style="color: gray; font-size: 66%;">moves</a>&nbsp;&nbsp;&nbsp;<a href="#view" style="color: gray; font-size: 66%;">board</a>&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray; font-size: 66%;">form</a>
