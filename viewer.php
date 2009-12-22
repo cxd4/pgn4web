@@ -80,7 +80,7 @@ function get_pgn() {
   if (!$pgnUrl) { $pgnUrl = $_REQUEST["pu"]; }
 
   if ($pgnText) {
-    $pgnStatus = "PGN games from text box input";
+    $pgnStatus = "PGN games from textbox input";
     $pgnTextbox = $pgnText = str_replace("\\\"", "\"", $pgnText);
 
     $pgnText = preg_replace("/\[/", "\n\n[", $pgnText);
@@ -98,7 +98,7 @@ function get_pgn() {
     $isPgn = preg_match("/\.(pgn|txt)$/i",$pgnUrl);
     $isZip = preg_match("/\.zip$/i",$pgnUrl);
     if ($isZip) {
-      $zipFileString = "<a href='" . $pgnUrl . "'>zipfile</a>";
+      $zipFileString = "<a href='" . $pgnUrl . "'>zip URL</a>";
       $tempZipName = tempnam($tmpDir, "pgn4webViewer");
       $pgnUrlHandle = fopen($pgnUrl, "rb");
       $tempZipHandle = fopen($tempZipName, "wb");
@@ -134,13 +134,13 @@ function get_pgn() {
     $pgnStatus = "error uploading PGN games: file not found or server error";
     return FALSE;
   } else {
-    $pgnStatus = "please enter chess games in <a href=http://www.tim-mann.org/Standard target=_blank>PGN format</a>: files must not exceed " . $fileUploadLimitText;
+    $pgnStatus = "please enter chess games in <a href=http://www.tim-mann.org/Standard target=_blank>PGN format</a>&nbsp; &nbsp;<span style='color: gray;'>file and URL inputs must not exceed " . $fileUploadLimitText . "</span>";
     return FALSE;
   }
 
   if ($isZip) {
-    if ($pgnUrl) { $zipFileString = "<a href='" . $pgnUrl . "'>zipfile</a>"; }
-    else { $zipFileString = "zipfile"; }
+    if ($pgnUrl) { $zipFileString = "<a href='" . $pgnUrl . "'>zip URL</a>"; }
+    else { $zipFileString = "zip file"; }
     $pgnZip = zip_open($pgnSource);
     if (is_resource($pgnZip)) {
       while (is_resource($zipEntry = zip_read($pgnZip))) {
@@ -171,8 +171,8 @@ function get_pgn() {
   }
 
   if($isPgn) {
-    if ($pgnUrl) { $pgnFileString = "<a href='" . $pgnUrl . "'>pgnfile</a>"; }
-    else { $pgnFileString = "pgnfile"; }
+    if ($pgnUrl) { $pgnFileString = "<a href='" . $pgnUrl . "'>pgn URL</a>"; }
+    else { $pgnFileString = "pgn file"; }
     $pgnText = file_get_contents($pgnSource, NULL, NULL, 0, $fileUploadLimitBytes + 1);
     if (!$pgnText) {
       $pgnStatus = "failed reading " . $pgnFileString . ": file not found or server error";
@@ -304,7 +304,7 @@ function print_form() {
   }
 
   function checkPgnFormTextSize() {
-    document.getElementById("pgnFormButton").title = "PGN text box size is " + document.getElementById("pgnFormText").value.length;
+    document.getElementById("pgnFormButton").title = "PGN textbox size is " + document.getElementById("pgnFormText").value.length;
     if (document.getElementById("pgnFormText").value.length == 1) {
       document.getElementById("pgnFormButton").title += " char";
     } else {
@@ -329,7 +329,7 @@ function print_form() {
     theObjectPgnText.value = theObjectPgnText.value.replace(/^\\s*\\[/g,'[');
     theObjectPgnText.value = theObjectPgnText.value.replace(/\\n[\\s*\\n]+/g,'\\n\\n');
 
-    document.getElementById('pgnStatus').innerHTML = "PGN games from text box input";
+    document.getElementById('pgnStatus').innerHTML = "PGN games from textbox input";
     document.getElementById('uploadFormFile').value = "";
     document.getElementById('urlFormText').value = "";
 
@@ -380,7 +380,7 @@ function reset_viewer() {
    document.getElementById("urlFormText").value = "";
    document.getElementById("pgnFormText").value = "";
    checkPgnFormTextSize();
-   document.getElementById("pgnStatus").innerHTML = "please enter chess games in <a href=http://www.tim-mann.org/Standard target=_blank>PGN format</a>: files must not exceed $fileUploadLimitText";
+   document.getElementById("pgnStatus").innerHTML = "please enter chess games in <a href=http://www.tim-mann.org/Standard target=_blank>PGN format</a>&nbsp; &nbsp;<span style='color: gray;'>file and URL inputs must not exceed $fileUploadLimitText</span>";
    document.getElementById("pgnText").value = '$krabbeStartPosition';
    firstStart = true;
    start_pgn4web();
@@ -428,7 +428,7 @@ function reset_viewer() {
   <tr>
     <td align="left" valign="top">
       <form id="textForm" style="display: inline;">
-        <input id="pgnFormButton" type="button" class="formControl" value="show games from PGN text box" style="width:100%;" onClick="loadPgnFromForm();">
+        <input id="pgnFormButton" type="button" class="formControl" value="show games from PGN textbox" style="width:100%;" onClick="loadPgnFromForm();">
     </td>
     <td colspan=2 rowspan=2 width="100%" align="right" valign="bottom">
         <input type="hidden" name="mode" value="$mode">
