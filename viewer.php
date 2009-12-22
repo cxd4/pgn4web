@@ -76,6 +76,7 @@ function get_pgn() {
   $pgnText = $_REQUEST["pgnText"];
   if (!$pgnText) { $pgnText = $_REQUEST["pgnTextbox"]; }
   if (!$pgnText) { $pgnText = $_REQUEST["pt"]; }
+
   $pgnUrl = $_REQUEST["pgnUrl"];
   if (!$pgnUrl) { $pgnUrl = $_REQUEST["pu"]; }
 
@@ -119,8 +120,11 @@ function get_pgn() {
     $pgnFileName = $_FILES['pgnFile']['name'];
     $pgnStatus = "PGN games from file " . $pgnFileName;
     $pgnFileSize = $_FILES['userfile']['size'];
-    if ($pgnFileSize > $fileUploadLimitBytes) {
-      $pgnStatus = "uploaded file exceeds " . $fileUploadLimitText . " size limit";
+    if ($pgnFileSize === 0) {
+      $pgnStatus = "failed uploading PGN games: file not found, upload error or file empty";
+      return FALSE;
+    } elseif ($pgnFileSize > $fileUploadLimitBytes) {
+      $pgnStatus = "failed uploading PGN games: file exceeds " . $fileUploadLimitText . " size limit";
       return FALSE;
     } else { 
       $isPgn = preg_match("/\.(pgn|txt)$/i",$pgnFileName);
@@ -128,7 +132,7 @@ function get_pgn() {
       $pgnSource = $_FILES['pgnFile']['tmp_name'];
     }
   } elseif ($_FILES['pgnFile']['error'] === (UPLOAD_ERR_INI_SIZE | UPLOAD_ERR_FORM_SIZE)) {
-    $pgnStatus = "uploaded file exceeds " . $fileUploadLimitText . " size limit";
+    $pgnStatus = "failed uploading PGN games: file exceeds " . $fileUploadLimitText . " size limit";
     return FALSE;
   } elseif ($_FILES['pgnFile']['error'] === (UPLOAD_ERR_PARTIAL | UPLOAD_ERR_NO_FILE | UPLOAD_ERR_NO_TMP_DIR | UPLOAD_ERR_CANT_WRITE | UPLOAD_ERR_EXTENSION)) {
     $pgnStatus = "error uploading PGN games: file not found or server error";
