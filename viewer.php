@@ -134,7 +134,7 @@ function get_pgn() {
     $pgnStatus = "error uploading PGN games (file not found or server error)";
     return FALSE;
   } else {
-    $pgnStatus = "please enter chess games in PGN format (files must not exceed " . $fileUploadLimitText . ")";
+    $pgnStatus = "please enter chess games in <a href=http://www.tim-mann.org/Standard target=_blank>PGN format</a> (files must not exceed " . $fileUploadLimitText . ")";
     return FALSE;
   }
 
@@ -380,7 +380,7 @@ function reset_viewer() {
    document.getElementById("urlFormText").value = "";
    document.getElementById("pgnFormText").value = "";
    checkPgnFormTextSize();
-   document.getElementById("pgnStatus").innerHTML = "please enter chess games in PGN format (files must not exceed $fileUploadLimitText)";
+   document.getElementById("pgnStatus").innerHTML = "please enter chess games in <a href=http://www.tim-mann.org/Standard target=_blank>PGN format</a> (files must not exceed $fileUploadLimitText)";
    document.getElementById("pgnText").value = '$krabbeStartPosition';
    firstStart = true;
    start_pgn4web();
