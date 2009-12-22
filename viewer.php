@@ -116,12 +116,12 @@ function get_pgn() {
     } else {
       $pgnSource = $pgnUrl;
     }
-  } elseif ($_FILES['pgnFile']['error'] === UPLOAD_ERR_OK) {
+  } elseif ($_FILES['pgnFile']['error'] == UPLOAD_ERR_OK) {
     $pgnFileName = $_FILES['pgnFile']['name'];
     $pgnStatus = "PGN games from file " . $pgnFileName;
     $pgnFileSize = $_FILES['userfile']['size'];
-    if ($pgnFileSize === 0) {
-      $pgnStatus = "failed uploading PGN games: file not found, upload error or file empty";
+    if ($pgnFileSize == 0) {
+      $pgnStatus = "failed uploading PGN games: file not found, file empty or upload error";
       return FALSE;
     } elseif ($pgnFileSize > $fileUploadLimitBytes) {
       $pgnStatus = "failed uploading PGN games: file exceeds " . $fileUploadLimitText . " size limit";
@@ -131,11 +131,11 @@ function get_pgn() {
       $isZip = preg_match("/\.zip$/i",$pgnFileName);
       $pgnSource = $_FILES['pgnFile']['tmp_name'];
     }
-  } elseif ($_FILES['pgnFile']['error'] === (UPLOAD_ERR_INI_SIZE | UPLOAD_ERR_FORM_SIZE)) {
+  } elseif ($_FILES['pgnFile']['error'] == (UPLOAD_ERR_INI_SIZE | UPLOAD_ERR_FORM_SIZE)) {
     $pgnStatus = "failed uploading PGN games: file exceeds " . $fileUploadLimitText . " size limit";
     return FALSE;
-  } elseif ($_FILES['pgnFile']['error'] === (UPLOAD_ERR_PARTIAL | UPLOAD_ERR_NO_FILE | UPLOAD_ERR_NO_TMP_DIR | UPLOAD_ERR_CANT_WRITE | UPLOAD_ERR_EXTENSION)) {
-    $pgnStatus = "error uploading PGN games: file not found or server error";
+  } elseif ($_FILES['pgnFile']['error'] == (UPLOAD_ERR_PARTIAL | UPLOAD_ERR_NO_FILE | UPLOAD_ERR_NO_TMP_DIR | UPLOAD_ERR_CANT_WRITE | UPLOAD_ERR_EXTENSION)) {
+    $pgnStatus = "failed uploading PGN games: server error";
     return FALSE;
   } else {
     $pgnStatus = "please enter chess games in <a href=http://www.tim-mann.org/Standard target=_blank>PGN format</a>&nbsp; &nbsp;<span style='color: gray;'>file and URL inputs must not exceed " . $fileUploadLimitText . "</span>";
