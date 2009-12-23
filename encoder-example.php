@@ -22,10 +22,23 @@ if ($pgnText) {
   $pgnText = preg_replace("/\]\s*\[/", "]\n[", $pgnText);
   $pgnText = preg_replace("/^\s*\[/", "[", $pgnText);
   $pgnText = preg_replace("/\n[\s*\n]+/", "\n\n", $pgnText);
-  $pgnEncoded = EncodePGN($pgnText);
 } else { 
-  $pgnEncoded = ""; 
+  $pgnText = <<<END
+
+[White "?"]
+[Black "?"]
+[Result "?"]
+[Date "?"]
+[Event "?"]
+[Site "?"]
+[Round "?"]
+
+{please enter your PGN games in the textbox and then click the button}
+
+END;
+
 }
+$pgnEncoded = EncodePGN($pgnText);
 
 $thisScript = $_SERVER['SCRIPT_NAME'];
 
@@ -40,6 +53,10 @@ print <<<END
 <title>pgn4web PGN encoder/decoder php example</title> 
 
 <link rel="shortcut icon" href="pawn.ico"></link>
+
+</head>
+
+<body style="font-family: sans-serif;">
 
 <h1>pgn4web PGN encoder/decoder php example</h1>
 
@@ -56,6 +73,10 @@ your web browser and/or your host do not support iframes as required to display 
 </form>
 
 </center>
+
+</body>
+
+</html>
 
 END;
 
