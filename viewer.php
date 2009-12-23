@@ -95,7 +95,7 @@ function get_pgn() {
 
     return TRUE;
   } else if ($pgnUrl) {
-    $pgnStatus = "PGN games from URL <a href='" . $pgnUrl . "'>" . $pgnUrl . "</a>";
+    $pgnStatus = "PGN games from URL: <a href='" . $pgnUrl . "'>" . $pgnUrl . "</a>";
     $isPgn = preg_match("/\.(pgn|txt)$/i",$pgnUrl);
     $isZip = preg_match("/\.zip$/i",$pgnUrl);
     if ($isZip) {
@@ -121,7 +121,7 @@ function get_pgn() {
     return FALSE;
   } elseif ($_FILES['pgnFile']['error'] == UPLOAD_ERR_OK) {
     $pgnFileName = $_FILES['pgnFile']['name'];
-    $pgnStatus = "PGN games from file " . $pgnFileName;
+    $pgnStatus = "PGN games from file: " . $pgnFileName;
     $pgnFileSize = $_FILES['userfile']['size'];
     if ($pgnFileSize == 0) {
       $pgnStatus = "failed uploading PGN games: file not found, file empty or upload error";
