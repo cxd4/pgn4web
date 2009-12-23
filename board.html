@@ -330,6 +330,8 @@ function percentFixFromUrl( text ) {
 }
 
 
+var  sexEncodingCharSet = "$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
+
 function sex2hex(sex) {
   if (sex === "") { return ""; }
   sex += "";
@@ -337,7 +339,7 @@ function sex2hex(sex) {
   var cnt;
   for (cnt=0; cnt<sex.length; cnt++) {
     dec <<= 6;
-    dec += encodingCharSet.indexOf(sex.charAt(cnt));
+    dec += sexEncodingCharSet.indexOf(sex.charAt(cnt));
   }
   var hex = dec.toString(16).toUpperCase() + "";
   while (hex.length < 6) { hex = "0" + hex; }

@@ -7,8 +7,6 @@
  *  Huffman encoding/decoding derived from code at http://rumkin.com/tools/compression/compress_huff.php
  */
 
-var encodingCharSet = "$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
-var encodingVersion = 1;
 // version 1 of PGN encoding:
 //   encodedPGN = nnn$xxx0
 //   nnn = number representing bytes length of the decoded message
@@ -16,6 +14,17 @@ var encodingVersion = 1;
 //   xxx = encoded text (using LetterCodes below)
 //   0 = zero char (version marker)
 
+var encodingCharSet_dec;
+var encodingCharSet_enc;
+var encodingCharSet = encodingCharSet_dec = "$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
+var encodingVersion_dec;
+var encodingVersion_enc;
+var encodingVersion = encodingVersion_dec = 1;
+
+if (((encodingCharSet_enc != undefined) && (encodingCharSet_enc != encodingCharSet_dec)) || 
+    ((encodingVersion_enc != undefined) && (encodingVersion_enc != encodingVersion_dec))) {
+  alert("ERROR: PGN encoding/decoding mismatch");
+}
 
 function DecodePGN(bytes) {
 

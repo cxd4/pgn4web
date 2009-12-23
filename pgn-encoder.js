@@ -7,8 +7,6 @@
  *  Huffman encoding/decoding derived from code at http://rumkin.com/tools/compression/compress_huff.php
  */
 
-var encodingCharSet = "$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
-var encodingVersion = 1;
 // version 1 of PGN encoding:
 //   encodedPGN = nnn$xxx0
 //   nnn = number representing bytes length of the decoded message
@@ -16,18 +14,30 @@ var encodingVersion = 1;
 //   xxx = encoded text (using LetterCodes below)
 //   0 = zero char (version marker)
 
-function BitsToBytes(i) {
-  o = 0;
-  if (i.charAt(0) == '1') { o += 32; }
-  if (i.charAt(1) == '1') { o += 16; }
-  if (i.charAt(2) == '1') { o +=  8; }
-  if (i.charAt(3) == '1') { o +=  4; }
-  if (i.charAt(4) == '1') { o +=  2; }
-  if (i.charAt(5) == '1') { o +=  1; }
-  return encodingCharSet.charAt(o);
+var encodingCharSet_dec;
+var encodingCharSet_enc;
+var encodingCharSet = encodingCharSet_enc = "$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
+var encodingVersion_dec;
+var encodingVersion_enc;
+var encodingVersion = encodingVersion_enc = 1;
+
+if (((encodingCharSet_dec != undefined) && (encodingCharSet_enc != encodingCharSet_dec)) ||
+    ((encodingVersion_dec != undefined) && (encodingVersion_enc != encodingVersion_dec))) {
+  alert("ERROR: PGN encoding/decoding version/charset mismatch");
 }
 
 function EncodePGN(ov) {
+
+  function BitsToBytes(i) {
+    o = 0;
+    if (i.charAt(0) == '1') { o += 32; }
+    if (i.charAt(1) == '1') { o += 16; }
+    if (i.charAt(2) == '1') { o +=  8; }
+    if (i.charAt(3) == '1') { o +=  4; }
+    if (i.charAt(4) == '1') { o +=  2; }
+    if (i.charAt(5) == '1') { o +=  1; }
+    return encodingCharSet.charAt(o);
+  }  
 
   var LetterCodes = new Array(256);
   LetterCodes[0]   = '00111111111111110';
