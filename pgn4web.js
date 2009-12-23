@@ -614,7 +614,7 @@ function detectJavascriptLocation() {
   jspath = "";
   var e = document.getElementsByTagName('script');
   for(var i=0; i<e.length; i++) {
-    if ((e[i].src) && (e[i].src.match(/pgn4web\.js/))) {
+    if ((e[i].src) && (e[i].src.match(/(pgn4web|pgn4web-compacted)\.js/))) {
       jspath = e[i].src; 
     }
   }
@@ -624,7 +624,7 @@ function detectJavascriptLocation() {
 
 function detectHelpLocation() {
   helpfile = "help.html";
-  return detectJavascriptLocation().replace(/pgn4web\.js/, helpfile); 
+  return detectJavascriptLocation().replace(/(pgn4web|pgn4web-compacted)\.js/, helpfile); 
 }
 
 
