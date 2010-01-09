@@ -201,7 +201,6 @@ function handlekey(e) {
   {
     case  8:  // backspace
     case  9:  // tab
-    case 13:  // enter
     case 16:  // shift
     case 17:  // ctrl
     case 18:  // alt
@@ -257,6 +256,7 @@ function handlekey(e) {
       break;
 
     case 83:  // s
+    case 13:  // enter
       searchPgnGame(lastSearchPgnExpression);
       return stopKeyPropagation(e);
       break;
