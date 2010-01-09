@@ -41,6 +41,9 @@ Features:
 - provides a very simple board generator web tool helping you adding chess 
   games to your website or blog without any html/javascript coding (see 
   http://pgn4web-board-generator.casaschi.net
+- integrated with popular blog platforms (such as blogger and wordpress), 
+  forum platforms (such as simplemachines and phpBB) and portal platforms 
+  (such as joomla! and drupal)
 - allows for live broadcast of games
 
 Limitations:
