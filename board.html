@@ -354,11 +354,7 @@ function gup( name ){
   regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   var regex = new RegExp( regexS );
   var results = regex.exec( window.location.href );
-  if( results !== null ) { switch (results[1]) {
-    case "t": case "T": return "true";  break;
-    case "f": case "F": return "false"; break;
-    default: return results[1]; 
-  } }
+  if( results !== null ) { return results[1]; } 
 
   // allows for short version of the URL parameters, for instance sC matches squareColor
   compact_name = name.charAt(0);
@@ -373,11 +369,7 @@ function gup( name ){
   regex = new RegExp( regexS );
 
   results = regex.exec( window.location.href );
-  if( results !== null ) { switch (results[1]) {
-    case "t": case "T": return "true";  break;
-    case "f": case "F": return "false"; break;
-    default: return results[1]; 
-  } }
+  if( results !== null ) { return results[1]; }
   
   return "";
 }
@@ -470,15 +462,15 @@ if ((boardBorderColor = gup("boardBorderColorName")) === "") {
 if ((backgroundColor = gup("backgroundColorName")) === "") {
   if ((backgroundColor = "#" + gup("backgroundColorHex")) == "#") {
     backgroundColorSex = gup("backgroundColorSex");
-    if ((backgroundColorSex == "transparent") || (backgroundColorSex == "true") || (backgroundColorSex == "t")) {
+    if ((backgroundColorSex == "transparent") || (backgroundColorSex == "t")) {
       backgroundColor = "transparent";
     } else {
       if ((backgroundColor = "#" + sex2hex(gup("backgroundColorSex"))) == "#") { backgroundColor = "#FFFFFF"; }
     }
   }
 }
-if ((backgroundColor ==  "transparent") || (backgroundColor ==  "true") || (backgroundColor ==  "t") ||
-    (backgroundColor == "#transparent") || (backgroundColor == "#true") || (backgroundColor == "#t")) {
+if ((backgroundColor ==  "transparent") || (backgroundColor ==  "t") ||
+    (backgroundColor == "#transparent") || (backgroundColor == "#t")) {
   backgroundColor = "transparent";
 }
 
@@ -523,8 +515,10 @@ if ((fontCommentsColor = gup("fontCommentsColorName")) === "") {
 }
 
 oldAutoplayMode = "";
-if (gup("auto") == "false") { oldAutoplayMode = "game"; }
-if (gup("loop") == "true") { oldAutoplayMode = "loop"; }
+auto = gup("auto");
+if ((auto == "false") || (auto == "f")) { oldAutoplayMode = "game"; }
+loop = gup("loop");
+if ((loop == "true") || (loop == "t")) { oldAutoplayMode = "loop"; }
 if ((autoplayMode = gup("autoplayMode")) === "") {
   if (oldAutoplayMode === "") { autoplayMode = "game"; }
   else { autoplayMode = oldAutoplayMode; }
@@ -575,8 +569,9 @@ if ((init_Halfmove = gup("initialHalfmove")) === "") {
 SetInitialHalfmove(init_Halfmove,always_Halfmove);
 
 oldButtonsDisplay = "";
-if (gup("showButtons") == "true") { oldButtonsDisplay = "custom"; }
-if (gup("showButtons") == "false") { oldButtonsDisplay = "hidden"; }
+showButtons = gup("showButtons");
+if ((showButtons == "true")  || (showButtons == "t")) { oldButtonsDisplay = "custom"; }
+if ((showButtons == "false") || (showButtons == "f")) { oldButtonsDisplay = "hidden"; }
 if ((buttonsDisplay = gup("buttonsDisplay")) === "") {
   if (oldButtonsDisplay === "") { buttonsDisplay = "hidden"; }
   else { buttonsDisplay = oldButtonsDisplay; }
@@ -620,8 +615,10 @@ if (buttonsDisplay == "custom") {
 }
 
 oldCommentsDisplay = "";
-if (gup("showCommentsOnSeparateLines") == "true") { oldCommentsDisplay = "newline"; }
-if (gup("showComments") == "false") { oldCommentsDisplay = "hidden"; }
+showCommentsOnSeparateLines = gup("showCommentsOnSeparateLines");
+if ((showCommentsOnSeparateLines == "true") || (showCommentsOnSeparateLines == "t")) { oldCommentsDisplay = "newline"; }
+showComments = gup("showComments");
+if ((showComments == "false") || (showComments == "f")) { oldCommentsDisplay = "hidden"; }
 if ((commentsDisplay = gup("commentsDisplay")) === "") { 
   if (oldCommentsDisplay === "") { commentsDisplay = "inline"; }
   else { commentsDisplay = oldCommentsDisplay; }
@@ -692,8 +689,9 @@ if ((fenString !== "") && (newPgnText !== "")) {
 }
 
 oldHeaderDisplay = "";
-if (gup("showHeader") == "true") { oldHeaderDisplay = "justified"; }
-if (gup("showHeader") == "false") { oldHeaderDisplay = "hidden"; }
+showHeader = gup("showHeader");
+if ((showHeader == "true")  || (showHeader == "t")) { oldHeaderDisplay = "justified"; }
+if ((showHeader == "false") || (showHeader == "f")) { oldHeaderDisplay = "hidden"; }
 if ((headerDisplay = gup("headerDisplay")) === "") {
   if (oldHeaderDisplay === "") { headerDisplay = "hidden"; }
   else { headerDisplay = oldHeaderDisplay; }
@@ -704,8 +702,9 @@ if (headerDisplay == "j") { headerDisplay = "justified"; }
 if ((headerDisplay != "centered") && (headerDisplay != "hidden")) { headerDisplay = "justified"; }
 
 oldMovesDisplay = "";
-if (gup("showMoves") == "true") { oldMovesDisplay = "justified"; }
-if (gup("showMoves") == "false") { oldMovesDisplay = "hidden"; }
+showMoves = gup("showMoves");
+if ((showMoves == "true")  || (showMoves == "t")) { oldMovesDisplay = "justified"; }
+if ((showMoves == "false") || (showMoves == "f")) { oldMovesDisplay = "hidden"; }
 if ((movesDisplay = gup("movesDisplay")) === "") {
   if (oldMovesDisplay === "") { movesDisplay = "hidden"; }
   else { movesDisplay = oldMovesDisplay; }
@@ -762,7 +761,7 @@ switch (frameWidth) {
     break;
 }
 
-if (gup("horizontalLayout") == "true") { horizontalLayout = true; }
+if ((gup("horizontalLayout") == "true") || (gup("horizontalLayout") == "t")) { horizontalLayout = true; }
 else { horizontalLayout = false; }	
 
 if (gup("help") !== "") {

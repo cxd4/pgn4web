@@ -18,7 +18,7 @@
 <script src="pgn4web.js" type="text/javascript"></script>
 <script type="text/javascript">
 
-  if (gup("demo") == "true") { demoFlag = true; alertFlag = true; }
+  if ((gup("demo") == "true") || (gup("demo") == "t")) { demoFlag = true; alertFlag = true; }
   else { demoFlag = false; alertFlag = false; }
 
   pgnFile_default = "live/live.pgn";
@@ -54,10 +54,10 @@
     }
   }
 
-  if (gup("showComments") == "true") { SetCommentsIntoMoveText(true); }
+  if ((gup("showComments") == "true") || (gup("showComments") == "t")) { SetCommentsIntoMoveText(true); }
   else { SetCommentsIntoMoveText(false); }
 
-  if (gup("help") == "true") { developer_help(); }
+  if ((gup("help") == "true") || (gup("help") == "t")) { developer_help(); }
 
   SetPgnUrl(pgnFile); 
   SetImagePath("uscf/24"); 
@@ -177,11 +177,7 @@ function gup( name ){
   // regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   var regex = new RegExp( regexS );
   var results = regex.exec( window.location.href );
-  if( results !== null ) { switch (results[1]) {
-    case "t": case "T": return "true";  break;
-    case "f": case "F": return "false"; break;
-    default: return results[1];
-  } }
+  if( results !== null ) { return results[1]; }
 
   // allows for short version of the URL parameters, for instance sC matches squareColor
   compact_name = name.charAt(0);
@@ -197,11 +193,7 @@ function gup( name ){
   regex = new RegExp( regexS );
 
   results = regex.exec( window.location.href );
-  if( results !== null ) { switch (results[1]) {
-    case "t": case "T": return "true";  break;
-    case "f": case "F": return "false"; break;
-    default: return results[1];
-  } }
+  if( results !== null ) { return results[1]; }
 
   return "";
 }

@@ -424,7 +424,7 @@ function set_defaults() {
 
   if ((backgroundColorHex_value = gup("backgroundColorHex")) === "") {
     backgroundColorSex = gup("backgroundColorSex");
-    if ((backgroundColorSex == "transparent") || (backgroundColorSex == "true") || (backgroundColorSex == "t")) {
+    if ((backgroundColorSex == "transparent") || (backgroundColorSex == "t")) {
       backgroundColorHex_value = "transparent";
     } else {    
       if ((backgroundColorHex_value = sex2hex(backgroundColorSex, 'background color')) === "") { 
@@ -432,7 +432,7 @@ function set_defaults() {
       }
     }
   }
-  if ((backgroundColorHex_value == "t") || (backgroundColorHex_value == "true")) {
+  if (backgroundColorHex_value == "t") {
     backgroundColorHex_value = "transparent";
   }
   if (backgroundColorHex_value == "transparent") {
@@ -1199,11 +1199,7 @@ function gup( name ){
   regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   var regex = new RegExp( regexS );
   var results = regex.exec( window.location.href );
-  if( results !== null ) { switch (results[1]) {
-    case "true": case "T": return "t";  break;
-    case "false": case "F": return "f"; break;
-    default: return results[1];
-  } }
+  if( results !== null ) { return results[1]; }
 
   // allows for short version of the URL parameters, for instance sC matches squareColor
   compact_name = name.charAt(0);
@@ -1217,11 +1213,7 @@ function gup( name ){
   regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   regex = new RegExp( regexS );
   results = regex.exec( window.location.href );
-  if( results !== null ) { switch (results[1]) {
-    case "true": case "T": return "t";  break;
-    case "false": case "F": return "f"; break;
-    default: return results[1];
-  } }
+  if( results !== null ) { return results[1]; }
 
   return "";
 }
