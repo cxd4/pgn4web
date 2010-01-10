@@ -115,9 +115,9 @@ Remaining pgn4web code is copyright (C) 2009 <a href=mailto:pgn4web@casaschi.net
 
 <script type="text/javascript">
 document.write("<table style='padding:0;' border=0>");	
-print_help_row("h , l", "game start, end (also arrow up, down)");
+print_help_row("h , l", "game start, end (also arrow up, down keys)");
 print_help_row("u, i", "find previous, next comment");
-print_help_row("j , k", "move backward, forward (also arrow left, right)");
+print_help_row("j , k", "move backward, forward (also arrow left, right keys)");
 print_help_row("&nbsp;", "");
 print_help_row("a", "start autoplay");
 print_help_row("0", "stop autoplay");
@@ -127,7 +127,7 @@ print_help_row("v, m", "load first, last game");
 print_help_row("b, n", "load previous, next game");
 print_help_row("c, x", "load random game, random game at random ply");
 print_help_row("&nbsp;", "");
-print_help_row("s", "repeat last search (if any)");
+print_help_row("s", "repeat last search (also enter key)");
 print_help_row("&nbsp;", "");
 print_help_row("r, y", "pause, restart live broadcast automatic refresh");
 print_help_row("t", "force games refresh during live broadcast");
@@ -144,7 +144,7 @@ print_help_row("&nbsp;", "");
 document.write("</table>");
 
 if (opener && opener.pgn4web_version) {
-  if (opener.shortcutKeysEnabled == "true") {
+  if (opener.shortcutKeysEnabled) {
     ke_curr = "enabled";
     ke_next = "disable";
   } else {
@@ -152,12 +152,11 @@ if (opener && opener.pgn4web_version) {
     ke_next = "enable";
   }
   document.write('<i>Shorcut keys currently ' + ke_curr + ', ' + ke_next + 
-	         ' in the chessboard with shift+escape or clicking square H7.<b>\n');
+                 ' in the chessboard with shift+escape or clicking square H7.\n');
 }
 </script>
 
 <p></p>
-<br>
 
 <table width=100% cellspacing=0 cellpadding=0><tr>
 <td align=left valign=bottom>
