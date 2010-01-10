@@ -468,9 +468,18 @@ if ((boardBorderColor = gup("boardBorderColorName")) === "") {
 }
 
 if ((backgroundColor = gup("backgroundColorName")) === "") {
- if ((backgroundColor = "#" + gup("backgroundColorHex")) == "#") {
-   if ((backgroundColor = "#" + sex2hex(gup("backgroundColorSex"))) == "#") { backgroundColor = "#FFFFFF"; }
- }
+  if ((backgroundColor = "#" + gup("backgroundColorHex")) == "#") {
+    backgroundColorSex = gup("backgroundColorSex");
+    if ((backgroundColorSex == "transparent") || (backgroundColorSex == "true") || (backgroundColorSex == "t")) {
+      backgroundColor = "transparent";
+    } else {
+      if ((backgroundColor = "#" + sex2hex(gup("backgroundColorSex"))) == "#") { backgroundColor = "#FFFFFF"; }
+    }
+  }
+}
+if ((backgroundColor ==  "transparent") || (backgroundColor ==  "true") || (backgroundColor ==  "t") ||
+    (backgroundColor == "#transparent") || (backgroundColor == "#true") || (backgroundColor == "#t")) {
+  backgroundColor = "transparent";
 }
 
 if ((highlightMoveColor  = gup("highlightMoveColorName")) === "") {
@@ -483,7 +492,8 @@ if ((highlightMoveColor  = gup("highlightMoveColorName")) === "") {
     }
   }
 }
-if ((highlightMoveColor == "background") || (highlightMoveColor == "b")) {
+if ((highlightMoveColor ==  "background") || (highlightMoveColor ==  "b") ||
+    (highlightMoveColor == "#background") || (highlightMoveColor == "#b")) {
   highlightMoveColor = backgroundColor;
 }
 
@@ -795,7 +805,7 @@ if (gup("help") !== "") {
   document.write(" - fontMovesSize = header font size, like 20 or 120% (default 100p = 100pct meaning 100%)\n");
   document.write(" - fontCommentsSize = header font size, like 20 or 120%; if set as 'moves' fontMovesSize is copied (default moves)\n");
   document.write("\n");
-  document.write(" - backgroundColorHex = page background color hex code, like FF0000 (default FFFFFF)\n");
+  document.write(" - backgroundColorHex = page background color hex code, like FF0000, 'transparent' to use the parent's background color (default FFFFFF)\n");
   document.write(" - horizontalLayout = if set true, shows header/moves text at the right of the board, below otherwise (default false)\n");
   document.write(" - frameHeight = set height of the overall frame, as a number or as 'board' overriding textHeight (default not set)\n");
   document.write(" - frameWidth = set width of the overall frame, as a number, as 'board' or as 'page', overriding textWidth (default not set)\n");

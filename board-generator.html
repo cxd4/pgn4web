@@ -392,8 +392,13 @@ function set_defaults() {
   validate_color(document.board.fontCommentsColorHex, 'comments font color', fontCommentsColorHex_default);
 
   if ((highlightMoveColorHex_value = gup("highlightMoveColorHex")) === "") {
-    if ((highlightMoveColorHex_value = sex2hex(gup("highlightMoveColorSex"), 'move highlight color')) === "") { 
-      highlightMoveColorHex_value = highlightMoveColorHex_default;
+    highlightMoveColorSex = gup("highlightMoveColorSex");
+    if ((highlightMoveColorSex == "background") || (highlightMoveColorSex == "b")) {
+      highlightMoveColorHex_value = "background";
+    } else {
+      if ((highlightMoveColorHex_value = sex2hex(highlightMoveColorSex, 'move highlight color')) === "") {
+        highlightMoveColorHex_value = highlightMoveColorHex_default;
+      }
     }
   }
   if (highlightMoveColorHex_value == "b") { highlightMoveColorHex_value = "background"; }
@@ -418,12 +423,24 @@ function set_defaults() {
   validate_fontCommentsSize();
 
   if ((backgroundColorHex_value = gup("backgroundColorHex")) === "") {
-    if ((backgroundColorHex_value = sex2hex(gup("backgroundColorSex"), 'background color')) === "") { 
-      backgroundColorHex_value = backgroundColorHex_default; 
+    backgroundColorSex = gup("backgroundColorSex");
+    if ((backgroundColorSex == "transparent") || (backgroundColorSex == "true") || (backgroundColorSex == "t")) {
+      backgroundColorHex_value = "transparent";
+    } else {    
+      if ((backgroundColorHex_value = sex2hex(backgroundColorSex, 'background color')) === "") { 
+        backgroundColorHex_value = backgroundColorHex_default; 
+      }
     }
   }
-  document.board.backgroundColorHex.color.fromString(backgroundColorHex_value);
-  validate_color(document.board.backgroundColorHex, 'background color', backgroundColorHex_default);
+  if ((backgroundColorHex_value == "t") || (backgroundColorHex_value == "true")) {
+    backgroundColorHex_value = "transparent";
+  }
+  if (backgroundColorHex_value == "transparent") {
+    document.board.backgroundColorHex.value = backgroundColorHex_value;
+  } else {
+    document.board.backgroundColorHex.color.fromString(backgroundColorHex_value);
+    validate_color(document.board.backgroundColorHex, 'background color', backgroundColorHex_default);
+  }
 
   if ((horizontalLayout_value = gup("horizontalLayout")) === "") { horizontalLayout_value = horizontalLayout_default; }
   if (horizontalLayout_value == "t") { document.board.horizontalLayout.value = "t"; }
@@ -651,7 +668,11 @@ function calculate_html_code() {
   } 
 
   backgroundColorHex_value = document.board.backgroundColorHex.value;
-  iframeUrl += "&bcs=" + hex2sex(backgroundColorHex_value);
+  if (backgroundColorHex_value == "transparent") {
+     iframeUrl += "&bcs=" + backgroundColorHex_value.charAt(0);
+  } else {
+     iframeUrl += "&bcs=" + hex2sex(backgroundColorHex_value);
+  }
 
   // this does not go in the iframe
   previewBackgroundColorHex_value = document.board.previewBackgroundColorHex.value;
@@ -744,7 +765,11 @@ function generate_html_code() {
       break;
   }
 
-  html_code_string = "<iframe \n\theight='" + outerFrameHeight + "' width='" + outerFrameWidth + "' frameborder='0' scrolling='no' marginheight='0' marginwidth='0'\n\tsrc='" + iframeUrl + "'\n>\n\tyour web browser and/or your host do not support iframes as required to display the chessboard\n</iframe>";
+  html_code_string = "<iframe \n\theight='" + outerFrameHeight + "' width='" + outerFrameWidth + "' frameborder='0' scrolling='no' marginheight='0' marginwidth='0'";
+  if (document.getElementById('backgroundColorHex').value == 'transparent') {
+    html_code_string += " allowtransparency='true'";
+  }
+  html_code_string += "\n\tsrc='" + iframeUrl + "'\n>\n\tyour web browser and/or your host do not support iframes as required to display the chessboard\n</iframe>";
   
   document.getElementById('html_code').value = html_code_string;
 
@@ -815,6 +840,18 @@ function validate_highlightMoveColorHex() {
     alert('error: the move highlight color must be \'background\' or a six digits hexadecimal color code, like FF0000');
     object.color.fromString(highlightMoveColorHex_default);
     return false;    
+  }
+}
+
+function validate_backgroundColorHex() {
+  object = document.getElementById('backgroundColorHex');
+  if (object.value == 'transparent') { return true; }
+  if (object.value.match(/^[0-9A-Fa-f]{6}$/)) {
+    return true;
+  } else { 
+    alert('error: the move highlight color must be \'transparent\' or a six digits hexadecimal color code, like FF0000');
+    object.color.fromString(backgroundColorHex_default);
+    return false;
   }
 }
 
@@ -1676,8 +1713,11 @@ the moves font size is copied</span>
 <p></p>
 <br>
 
-<input class="color input" type="text" id="backgroundColorHex" name="input" value="" size="12" onChange="validate_color(this, 'background color', backgroundColorHex_default)">
+<input class="color input" type="text" id="backgroundColorHex" name="input" value="" size="12" onChange="validate_backgroundColorHex()">
 &nbsp;&nbsp; background color &nbsp;&nbsp;
+<span class="helptext">if set to
+<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.backgroundColorHex.color.fromString('FFFFFF'); document.board.backgroundColorHex.value = 'transparent'; return false;">transparent</a>
+the parent's background color will be used</span>
 <p></p>
 
 <!--
