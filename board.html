@@ -786,7 +786,8 @@ if (gup("help") !== "") {
   document.write("\n");
   document.write(" - pgnText = PGN games to display\n");
   document.write(" - pgnEncoded = encoded PGN games to display (used only by the board generator tool)\n");
-  document.write(" - fenString = FEN position to display, superceded by pgnText if set\n");
+  document.write(" - fenString = FEN position to display\n");
+  document.write(" - pgnId = id of the parent's textarea containing the PGN games (works only if parent is in the same domain)\n");
   document.write("\n");
   document.write(" - autoplayMode = game (autoplay first game once) | loop (loops through games continiously) | none - (default game)\n");
   document.write(" - delay = autoplay delay in ms (default 1000)\n");
