@@ -550,7 +550,7 @@ else { SetAutoplayDelay(gup("delay")); }
 if ((init_Game = gup("initialGame")) === "") { 
   init_Game = "first"; 
 } else {
-  if ((init_Game == "f") || (init_Game == "false")) { init_Game = "first"; } // "f" might have been translated to "false"
+  if (init_Game == "f") { init_Game = "first"; } 
   if (init_Game == "l") { init_Game = "last"; }
   if (init_Game == "r") { init_Game = "random"; }
 }
