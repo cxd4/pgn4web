@@ -671,7 +671,7 @@ if ((newPgnId = gup("pgnId")) !== "") {
     document.getElementById('pgnText').value = newPgnIdData = cleanPgnInput(newPgnIdData);
   }
   if ( !parent || !parent.document.getElementById(newPgnId) || !newPgnIdData ) {
-    alert("WARNING: failed to get data from supplied pgnId (check parent is in the same domain).")
+    alert("WARNING: failed to get data from supplied pgnId (check parent is in the same domain).");
   }
 }
 
