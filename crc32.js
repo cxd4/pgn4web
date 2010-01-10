@@ -21,3 +21,16 @@ function crc32(str) {
   return crc ^ (-1);
 }
 
+function printHex(n) {
+  hex = "0123456789ABCDEF";
+  var s = "";
+  var r = 0;
+  for (ii = 0; ii < 8; ii++) {
+    r = n % 16;
+    if (r < 0) { r += 16; }
+    s = hex.charAt(r) + s;
+    n >>= 4;
+  }
+  return s;
+}
+
