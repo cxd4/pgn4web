@@ -43,7 +43,7 @@ Features:
   http://pgn4web-board-generator.casaschi.net
 - integrated with popular blog platforms (such as blogger and wordpress), 
   forum platforms (such as simplemachines and phpBB) and portal platforms 
-  (such as joomla! and drupal)
+  (such as joomla, drupal and wikimedia)
 - allows for live broadcast of games
 
 Limitations:
