@@ -11,6 +11,12 @@
 
 <title>pgn4web live broadcast</title>
 
+<!-- use the base tag to host live-compact.html on a different server than pgn4web.js
+
+<base href="http://pgn4web.casaschi.net">
+
+-->
+
 <link href="live.css" type="text/css" rel="stylesheet"></link>
 
 <link rel="shortcut icon" href="pawn.ico"></link>
@@ -21,7 +27,11 @@
   if ((gup("demo") == "true") || (gup("demo") == "t")) { demoFlag = true; alertFlag = true; }
   else { demoFlag = false; alertFlag = false; }
 
-  pgnFile_default = "live/live.pgn";
+  if (detectBaseLocation()) {
+    pgnFile_default = location.protocol + "//" + location.hostname + location.pathname.replace(/\/[^\/]*$/, "/live/live.pgn");
+  } else {
+    pgnFile_default = "live/live.pgn";
+  }
   if ((pgnFile = gup("pgnFile")) === "") { pgnFile = pgnFile_default; }
 
   if ((refreshMinutes = gup("refreshMinutes")) === "") { 
