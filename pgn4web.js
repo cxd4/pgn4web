@@ -3139,7 +3139,9 @@ function PrintHTML(){
         if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + tableSize + '; '; }
         text += 'font-family: monospace;" CLASS="selectControl" ' + 
                 'ONCHANGE="this.blur(); if(this.value >= 0) {currentGame=parseInt(this.value); ' +
-                'document.GameSel.GameSelSelect.value = -1; Init();}">' +
+                'document.GameSel.GameSelSelect.value = -1; Init();}" ' +
+                'ONFOCUS="disableShortcutKeysAndStoreStatus();" ONBLUR="restoreShortcutKeysStatus();" ' +
+                '> ' +
                 '<OPTION value=-1>';
 
         blanks = ''; for (ii=0; ii<32; ii++) { blanks += ' '; }
