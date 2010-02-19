@@ -122,7 +122,7 @@ function get_pgn() {
   } elseif ($_FILES['pgnFile']['error'] == UPLOAD_ERR_OK) {
     $pgnFileName = $_FILES['pgnFile']['name'];
     $pgnStatus = "PGN games from file: " . $pgnFileName;
-    $pgnFileSize = $_FILES['userfile']['size'];
+    $pgnFileSize = $_FILES['pgnFile']['size'];
     if ($pgnFileSize == 0) {
       $pgnStatus = "failed uploading PGN games: file not found, file empty or upload error";
       return FALSE;
