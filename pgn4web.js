@@ -89,7 +89,7 @@
  * DONT CHANGE AFTER HERE 
  */
 
-var pgn4web_version = '1.88+';
+var pgn4web_version = '1.89';
 
 var pgn4web_project_url = 'http://pgn4web.casaschi.net';
 var pgn4web_project_author = 'Paolo Casaschi';
