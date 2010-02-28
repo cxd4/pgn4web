@@ -561,10 +561,14 @@ always_Halfmove = false;
 if ((init_Halfmove = gup("initialHalfmove")) === "") { 
   init_Halfmove = "start";
 } else {
-  if (init_Halfmove == "s") { init_Halfmove = "start"; always_Halfmove = true; }
-  if (init_Halfmove == "e") { init_Halfmove = "end"; always_Halfmove = true; }
-  if (init_Halfmove == "r") { init_Halfmove = "random"; always_Halfmove = true; }
-  if (init_Halfmove == "c") { init_Halfmove = "comment"; always_Halfmove = true; }
+  if (init_Halfmove == "s") { init_Halfmove = "start"; }
+  if (init_Halfmove == "e") { init_Halfmove = "end"; }
+  if (init_Halfmove == "r") { init_Halfmove = "random"; }
+  if (init_Halfmove == "c") { init_Halfmove = "comment"; }
+  if ((init_Halfmove == "start")  || (init_Halfmove == "end") ||
+      (init_Halfmove == "random") || (init_Halfmove == "comment")) {
+     always_Halfmove = true;
+  }
 }
 SetInitialHalfmove(init_Halfmove,always_Halfmove);
 
