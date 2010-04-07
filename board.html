@@ -938,10 +938,10 @@ function display_header_moves() {
 
   if (movesDisplay != "hidden") {
     if (headerDisplay != "hidden") {
-      document.write("<div id='headerMovesSeparator' class='header' style='text-align: center;'>&nbsp;</div>");
+      document.write("<div id='headerMovesSpacer' class='header' style='text-align: center;'>&nbsp;</div>");
     } else {
       if (horizontalLayout === false) {
-        document.write("<div id='boardMovesSeparator' class='moves' style='text-align: center;'>&nbsp;</div>");
+        document.write("<div id='boardMovesSpacer' class='moves' style='text-align: center;'>&nbsp;</div>");
       }
     }
     document.write("<div style='margin-left:" + textMargin + "; margin-right:" + textMargin + 
@@ -1019,6 +1019,24 @@ function customFunctionOnPgnGameLoad() {
       theObject.style.paddingBottom = "";
     }
   }
+
+  theObject = document.getElementById("headerMovesSpacer");
+  if (theObject) {
+//  if ((theObject) && (horizontalLayout === true)) {
+    if ( ((gameWhite[currentGame] != undefined) && (gameWhite[currentGame] !== ""))   ||
+         ((gameBlack[currentGame] != undefined) && (gameBlack[currentGame] !== ""))   ||
+         ((gameResult[currentGame] != undefined) && (gameResult[currentGame] !== "")) || 
+         ((gameEvent[currentGame] != undefined) && (gameEvent[currentGame] !== ""))   ||
+	 ((gameRound[currentGame] != undefined) && (gameRound[currentGame] !== "") && 
+	  (gameRound[currentGame] != "?") && (gameRound[currentGame] != "*"))         ||
+	 ((gameSite[currentGame] != undefined) && (gameSite[currentGame] !== ""))     ||
+         ((gameDate[currentGame] != undefined) && (gameDate[currentGame] !== "")) ) {
+      theObject.style.display = "inline";
+    } else {
+      theObject.style.display = "none";
+    }
+  }
+
 }
 
 
