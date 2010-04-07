@@ -900,7 +900,7 @@ function display_header_moves() {
                    "; margin-right: 3%;' id=GameBlack></div>");
     document.write("</td><td align=right>");
     
-    document.write("<div class='header'header style='white-space: nowrap; margin-right: " + textMargin +
+    document.write("<div class='header' style='white-space: nowrap; margin-right: " + textMargin +
                    "; margin-left: 3%;'  id=GameSite></div>");
     document.write("</td></tr></table>");
 
@@ -938,10 +938,10 @@ function display_header_moves() {
 
   if (movesDisplay != "hidden") {
     if (headerDisplay != "hidden") {
-      document.write("<div class='header' style='text-align: center;'>&nbsp;</div>");
+      document.write("<div id='headerMovesSeparator' class='header' style='text-align: center;'>&nbsp;</div>");
     } else {
       if (horizontalLayout === false) {
-        document.write("<div class='moves' style='text-align: center;'>&nbsp;</div>");
+        document.write("<div id='boardMovesSeparator' class='moves' style='text-align: center;'>&nbsp;</div>");
       }
     }
     document.write("<div style='margin-left:" + textMargin + "; margin-right:" + textMargin + 
