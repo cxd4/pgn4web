@@ -1021,7 +1021,7 @@ function customFunctionOnPgnGameLoad() {
   }
 
   theObject = document.getElementById("headerMovesSpacer");
-  if (theObject) {
+  if ((theObject) && (horizontalLayout === true)) {
     if ( ((gameWhite[currentGame] != undefined) && (gameWhite[currentGame] !== ""))   ||
          ((gameBlack[currentGame] != undefined) && (gameBlack[currentGame] !== ""))   ||
          ((gameResult[currentGame] != undefined) && (gameResult[currentGame] !== "")) || 
