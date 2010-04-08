@@ -257,10 +257,10 @@ function new_start_pgn4web() {
       else { document.getElementById("headerMoves").style.width = frameWidth - 2 * framePadding; }
       if (frameHeight === "") { document.getElementById("headerMoves").style.height = textHeight; }
       else { 
-	theObject = document.getElementById("headerMovesPadding");
-	if (theObject) { headerMovesPaddingHeight = theObject.offsetHeight; }
-	else { headerMovesPaddingHeight = 0; }
-	document.getElementById("headerMoves").style.height = frameHeight - boardHeight - 2 * framePadding - headerMovesPaddingHeight; 
+	theObject = document.getElementById("boardHeadermovesPadding");
+	if (theObject) { boardHeadermovesPaddingHeight = theObject.offsetHeight; }
+	else { boardHeadermovesPaddingHeight = 0; }
+	document.getElementById("headerMoves").style.height = frameHeight - boardHeight - 2 * framePadding - boardHeadermovesPaddingHeight; 
       }
     }
   }
@@ -873,10 +873,13 @@ function display_board() {
 
 function display_header_moves() {
 
-  if ((headerDisplay != "hidden") && (horizontalLayout === false)) {
-      document.write("<div id='headerMovesPadding' class='header' style='text-align: center;'>&nbsp;</div>");
-  }
-
+  if (((headerDisplay != "hidden") || (movesDisplay != "hidden")) && (horizontalLayout === false)) {
+    if (headerDisplay != "hidden") {
+      document.write("<div id='boardHeadermovesPadding' class='header' style='text-align: center;'>&nbsp;</div>");
+    } else {
+      document.write("<div id='boardHeadermovesPadding' class='moves' style='text-align: center;'>&nbsp;</div>");
+    }
+  }  
   if ((headerDisplay != "hidden") || (movesDisplay != "hidden")) {
   document.write("<div id='headerMoves' style='overflow:auto; overflow-x:hidden;" +
                  " height: " + textHeight + "; width: " + textWidth + 
@@ -939,10 +942,6 @@ function display_header_moves() {
   if (movesDisplay != "hidden") {
     if (headerDisplay != "hidden") {
       document.write("<div id='headerMovesSpacer' class='header' style='text-align: center;'>&nbsp;</div>");
-    } else {
-      if (horizontalLayout === false) {
-        document.write("<div id='boardMovesSpacer' class='moves' style='text-align: center;'>&nbsp;</div>");
-      }
     }
     document.write("<div style='margin-left:" + textMargin + "; margin-right:" + textMargin + 
                    "; text-align: justify;' id=GameText></div>");
@@ -1021,7 +1020,7 @@ function customFunctionOnPgnGameLoad() {
   }
 
   theObject = document.getElementById("headerMovesSpacer");
-  if ((theObject) && (horizontalLayout === true)) {
+  if (theObject) {
     if ( ((gameWhite[currentGame] != undefined) && (gameWhite[currentGame] !== ""))   ||
          ((gameBlack[currentGame] != undefined) && (gameBlack[currentGame] !== ""))   ||
          ((gameResult[currentGame] != undefined) && (gameResult[currentGame] !== "")) || 
