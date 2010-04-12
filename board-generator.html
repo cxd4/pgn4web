@@ -700,7 +700,7 @@ function calculate_html_code() {
   }
 
   // better to keep this as last item
-  pgnText_value = document.getElementById('pgnText').value;
+  pgnText_value = pgnTextFixFromInput(document.getElementById('pgnText').value);
   if ((document.board.encodePgn.checked) && (pgnText_value != previousPgnTextToEncode)) {
     previousPgnTextToEncode = pgnText_value;
     pgnTextEncoded = EncodePGN(pgnText_value.replace(/\r\n/g,'\n'));
@@ -710,6 +710,15 @@ function calculate_html_code() {
 
   // every parameter had an &xxx= format,now we need to remove the first &
   iframeUrl = iframeUrl.replace(/\?&/,"?");
+}
+
+function pgnTextFixFromInput( text ) {
+    
+  text = text.replace(/\u2026/g,'...'); // replace ellipsis char with ...
+  text = text.replace(/\u2011/g,'-'); // replace non breaking hyphen with -
+  text = text.replace(/[\u0100-\uFFFF]+/g, "*"); // replace all chars with code greather than 255 with *
+
+  return text;
 }
 
 function pgnTextFixForUrl( text ) {
