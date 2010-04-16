@@ -512,24 +512,25 @@ function update_suggested_iframe_dimensions() {
   multiGamesRegexp = /\s*\[\s*\w+\s*"[^"]*"\s*\]\s*[^\s\[\]]+[\s\S]*\[\s*\w+\s*"[^"]*"\s*\]\s*/m;
   selectDropdownShown = multiGamesRegexp.test(pgnTextFixFromInput(document.getElementById('pgnText').value));
 
-  if (document.board.buttonsDisplay.value != 'hidden') {
-    if (document.board.controlBackgroundColorHex.value == "default") {
+  if (document.board.buttonsDisplay.value != 'hidden') {  
+    if (document.board.buttonsDisplay.value == "standard") { 
       // in this case control padding grows with squareSize 
       // while the size of the controls cant be predicted, so a safe number is set
       if (selectDropdownShown) {
-        estimated_boardHeight += 50 + parseInt(document.board.squareSize.value, 10);
+        estimated_boardHeight += 2 * (25 + parseInt(document.board.squareSize.value, 10) / 2);
       } else {
-        estimated_boardHeight += 25 + parseInt(document.board.squareSize.value, 10);
+        estimated_boardHeight += 25 + parseInt(document.board.squareSize.value, 10) / 2;
       } 
     } else {
       // in this case both control size and control padding grow with squareSize
       if (selectDropdownShown) {
-        estimated_boardHeight += (20 + 2 * parseInt(document.board.squareSize.value, 10));
+        estimated_boardHeight += 2 * (5 + 1.1 * parseInt(document.board.squareSize.value, 10));
       } else {
-        estimated_boardHeight += (10 + parseInt(document.board.squareSize.value, 10));
+        estimated_boardHeight += 5 + 1.1 * parseInt(document.board.squareSize.value, 10);
       }
     } 
   }
+  estimated_boardHeight = Math.floor(estimated_boardHeight);
 
   min_frameWidth = boardWidth + 2 * parseInt(document.board.framePadding.value, 10);
   min_frameHeight = estimated_boardHeight + 2 * parseInt(document.board.framePadding.value, 10);
