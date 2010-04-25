@@ -659,7 +659,6 @@ function cleanPgnInput(pgnInput) {
 
   pgnInput = pgnInput.replace(/\u2026/g,'...'); // replace ellipsis char with ...
   pgnInput = pgnInput.replace(/\u2011/g,'-'); // replace non breaking hyphen with -
-  pgnInput = pgnInput.replace(/[\u0100-\uFFFF]+/g, "*"); // replace all chars with code greather than 255 with *
 
   return pgnInput;
 }
