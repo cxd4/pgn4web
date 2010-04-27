@@ -3014,10 +3014,11 @@ function searchPgnGame(searchExpression) {
   lastSearchPgnExpression = searchExpression;
   if (searchExpression === "") { return; }
   if (numberOfGames < 2) { return; }
+  var searchExpressionRegExp = new RegExp(searchExpression, "im");
   for (checkGame=(currentGame+1) % numberOfGames; 
        checkGame != currentGame; 
        checkGame = (checkGame + 1) % numberOfGames) { 
-    if (pgnGame[checkGame].match(searchExpression)) {
+    if (pgnGame[checkGame].match(searchExpressionRegExp)) {
       break;
     }
   }
