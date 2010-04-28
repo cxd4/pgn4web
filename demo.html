@@ -62,6 +62,8 @@ function gup( name ){
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <a class="linklist" id="live" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="live-compact.html?pgnFile=tilb98r2.pgn&initialGame=2&refreshMinutes=0.25&demo=true">broadcast&nbsp;demo</a>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<a class="linklist" id="collection" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="collection-example.html">collection</a> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <a class="linklist" id="mini" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="mini.html">KK</a> 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <a class="linklist" id="inputform" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="inputform.html">form</a> 
@@ -127,7 +129,9 @@ function select_frame(new_frame){
     } 
     if (new_frame == 'twic765') {
     } 
-    
+    if (new_frame == 'collection') {
+      new_frame_height = '2000px';
+    }    
     document.getElementById('pgnframe').width = new_frame_width; 
     document.getElementById('pgnframe').height = new_frame_height;
   
