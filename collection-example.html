@@ -52,8 +52,8 @@ A link can be listed for online viewing each PGN file in a new browser window:
 <table cellpadding=20 cellspacing=0 border=1>
 
 <tr>
-<td>Anand Kramnik 2008 World Championship</td>
-<td><a href="collection.html?pgnFile=wch08ak.pgn&title=Anand Kramnik 2008 World Championship" target="viewer">view</a></td>
+<td>2008 World Chess Championship Anand - Kramnik</td>
+<td><a href="collection.html?pgnFile=wch08ak.pgn&title=2008 World Chess Championship Anand - Kramnik" target="viewer">view</a></td>
 <td><a href="wch08ak.pgn">download</a></td>
 </tr>
 
@@ -64,14 +64,14 @@ A link can be listed for online viewing each PGN file in a new browser window:
 </tr>
 
 <tr>
-<td>The week in chess 765</td>
-<td><a href="collection.html?pgnFile=twic765.pgn&title=The week in chess 765" target="viewer">view</a></td>
+<td>The Week In Chess #765</td>
+<td><a href="collection.html?pgnFile=twic765.pgn&title=The Week In Chess %23765" target="viewer">view</a></td>
 <td><a href="twic765.pgn">download</a></td>
 </tr>
 
 <tr>
-<td>Tilburg tournament 1998 round 2</td>
-<td><a href="collection.html?pgnFile=tilb98r2.pgn&title=Tilburg tournament 1998 round 2" target="viewer">view</a></td>
+<td>Tilburg Fontys 1998 round 2</td>
+<td><a href="collection.html?pgnFile=tilb98r2.pgn&title=Tilburg Fontys 1998 round 2" target="viewer">view</a></td>
 <td><a href="tilb98r2.pgn">download</a></td>
 </tr>
 
@@ -86,10 +86,10 @@ The selecetd PGN file from a dropdown menu is shown in the inline frame undernea
 <br>
 <select id="selectmenu" style="width:100%">
 <option value="">Select a PGN archive from the collection</option>
-<option value="wch08ak.pgn">Anand Kramnik 2008 World Championship</option>
+<option value="wch08ak.pgn">2008 World Chess Championship Anand - Kramnik</option>
 <option value="paolo-chess-games.pgn">Paolo's chess games</option>
-<option value="twic765.pgn">The week in chess 765</option>
-<option value="tilb98r2.pgn">Tilburg tournament 1998 round 2</option>
+<option value="twic765.pgn">The Week In Chess #765</option>
+<option value="tilb98r2.pgn">Tilburg Fontys 1998 round 2</option>
 </select>
 
 <br>
@@ -104,7 +104,7 @@ var selectmenu=document.getElementById("selectmenu");
 selectmenu.onchange=function(){ 
     var chosenoption=this.options[this.selectedIndex]
     if (chosenoption.value!="nothing"){
-	frames['inlineframe'].location.href = "collection.html?pgnFile=" + chosenoption.value + "&title=" + chosenoption.innerHTML;
+	frames['inlineframe'].location.href = "collection.html?pgnFile=" + chosenoption.value + "&title=" + escape(chosenoption.innerHTML);
         this.selectedIndex = 0;
     }
 }
