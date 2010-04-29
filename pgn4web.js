@@ -222,7 +222,7 @@ function handlekey(e) {
       break;
 
     case 37:  // left arrow  
-    case 74:  // k
+    case 74:  // j
       MoveBackward(1);
       return stopKeyPropagation(e);
       break;
@@ -256,6 +256,10 @@ function handlekey(e) {
       break;
 
     case 83:  // s
+      searchPgnGamePrompt();
+      return stopKeyPropagation(e);
+      break;
+
     case 13:  // enter
       searchPgnGame(lastSearchPgnExpression);
       return stopKeyPropagation(e);
@@ -529,9 +533,9 @@ configBoardShrortcut("G6", "", function(){});
 // H6
 configBoardShrortcut("H6", "force games refresh during live broadcast", function(){ refreshPgnSource(); });
 // A5
-configBoardShrortcut("A5", "", function(){});
+configBoardShrortcut("A5", "repeat last search", function(){ searchPgnGame(lastSearchPgnExpression); });
 // B5
-configBoardShrortcut("B5", "", function(){});
+configBoardShrortcut("B5", "search prompt", function(){ searchPgnGamePrompt(); });
 // C5
 configBoardShrortcut("C5", "", function(){});
 // D5
@@ -3009,10 +3013,11 @@ function reset_after_click (ii, jj, originalClass, newClass) {
   clickedSquareInterval = null;
 }
 
+
 var lastSearchPgnExpression = "";
 function searchPgnGame(searchExpression) {
   lastSearchPgnExpression = searchExpression;
-  if (searchExpression === "") { return; }
+  if ((searchExpression === "") || (! searchExpression)) { return; }
   if (numberOfGames < 2) { return; }
   var searchExpressionRegExp = new RegExp(searchExpression, "im");
   for (checkGame=(currentGame+1) % numberOfGames; 
@@ -3026,6 +3031,19 @@ function searchPgnGame(searchExpression) {
     currentGame = checkGame;
     Init();
   }
+}
+
+function searchPgnGamePrompt() {
+  if (numberOfGames < 2) { 
+    alert("Search disabled: PGN data with less than 2 games."); 
+    return;
+  }
+  searchExpression = prompt("Enter string to search PGN data:", lastSearchPgnExpression);
+  if (! searchExpression) { return; }
+  if (thisObject = document.getElementById('searchPgnExpression')) {
+    thisObject.value = searchExpression;
+  }
+  searchPgnGame(searchExpression);
 }
 
 
