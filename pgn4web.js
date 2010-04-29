@@ -3040,9 +3040,9 @@ function searchPgnGamePrompt() {
   }
   searchExpression = prompt("Enter string to search PGN data:", lastSearchPgnExpression);
   if (! searchExpression) { return; }
-  thisObject = document.getElementById('searchPgnExpression');
-  if (thisObject) {
-    thisObject.value = searchExpression;
+  theObject = document.getElementById('searchPgnExpression');
+  if (theObject) {
+    theObject.value = searchExpression;
   }
   searchPgnGame(searchExpression);
 }
