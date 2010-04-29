@@ -69,7 +69,8 @@
 
    function customFunctionOnPgnTextLoad() {
      document.getElementById('numGm').innerHTML = numberOfGames;
-     if (thisObject = document.getElementById('searchPgnExpression')) {
+     thisObject = document.getElementById('searchPgnExpression');
+     if (thisObject) {
        thisObject.value = pgnSearchTarget;
      }
      searchPgnGame(pgnSearchTarget);
