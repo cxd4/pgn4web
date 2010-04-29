@@ -97,9 +97,9 @@ your web browser and/or your host do not support iframes as required to display 
 
 var oldChosenoptionValue = "";
 var selectmenu=document.getElementById("selectmenu");
-selectmenu.onchange=function(){ 
-    var chosenoption=this.options[this.selectedIndex]
-    if ((chosenoption.value!=="") && (chosenoption.value!=oldChosenoptionValue)){
+selectmenu.onchange = function() { 
+    var chosenoption = this.options[this.selectedIndex];
+    if ((chosenoption.value !== "") && (chosenoption.value != oldChosenoptionValue)){
         oldChosenoptionValue = chosenoption.value;
         thisObject = frames['inlineframe'].document.getElementById('searchPgnExpression');
         if (thisObject) {
@@ -110,7 +110,7 @@ selectmenu.onchange=function(){
 	frames['inlineframe'].location.href = "collection.html?pgnFile=" + chosenoption.value + "&title=" + escape(chosenoption.innerHTML) + searchPgnString;
     }
     this.selectedIndex = 0;
-}
+};
 
 </script>
 
