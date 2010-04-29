@@ -3019,11 +3019,14 @@ function searchPgnGame(searchExpression) {
   lastSearchPgnExpression = searchExpression;
   if ((searchExpression === "") || (! searchExpression)) { return; }
   if (numberOfGames < 2) { return; }
-  var searchExpressionRegExp = new RegExp(searchExpression, "im");
+  // when searching we replace newline characters with spaces, 
+  // so that we can use the "." special regexp characters on the whole game as a single line
+  newlinesRegExp = new RegExp("[\n\r]", "gm");
+  searchExpressionRegExp = new RegExp(searchExpression, "im");
   for (checkGame=(currentGame+1) % numberOfGames; 
        checkGame != currentGame; 
        checkGame = (checkGame + 1) % numberOfGames) { 
-    if (pgnGame[checkGame].match(searchExpressionRegExp)) {
+    if (pgnGame[checkGame].replace(newlinesRegExp, " ").match(searchExpressionRegExp)) {
       break;
     }
   }
