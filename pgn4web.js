@@ -3041,7 +3041,7 @@ function searchPgnGamePrompt() {
     alert("Search disabled: PGN data with less than 2 games."); 
     return;
   }
-  searchExpression = prompt("Enter string to search PGN data:", lastSearchPgnExpression);
+  searchExpression = prompt("Please enter search pattern for the PGN games:", lastSearchPgnExpression);
   if (! searchExpression) { return; }
   theObject = document.getElementById('searchPgnExpression');
   if (theObject) {
