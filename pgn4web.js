@@ -487,13 +487,13 @@ function configBoardShrortcut(square, title, functionPointer) {
 // A8
 configBoardShrortcut("A8", "go to the pgn4web website", function(){ window.open(pgn4web_project_url); });
 // B8
-configBoardShrortcut("B8", "", function(){});
+configBoardShrortcut("B8", "debug info v" + pgn4web_version, function(){ displayDebugInfo(); });
 // C8
 configBoardShrortcut("C8", "show this game PGN source data", function(){ displayPgnData(false); });
 // D8
 configBoardShrortcut("D8", "show full PGN source data", function(){ displayPgnData(true); });
 // E8
-configBoardShrortcut("E8", "debug info v" + pgn4web_version, function(){ displayDebugInfo(); });
+configBoardShrortcut("E8", "search help", function(){ displayHelp("search"); });
 // F8
 configBoardShrortcut("F8", "shortcut keys help", function(){ displayHelp("keys"); });
 // G8
@@ -537,7 +537,7 @@ configBoardShrortcut("A5", "repeat last search", function(){ searchPgnGame(lastS
 // B5
 configBoardShrortcut("B5", "search prompt", function(){ searchPgnGamePrompt(); });
 // C5
-configBoardShrortcut("C5", "search help", function(){ displayHelp("search"); });
+configBoardShrortcut("C5", "", function(){});
 // D5
 configBoardShrortcut("D5", "", function(){});
 // E5
@@ -3366,10 +3366,10 @@ function PrintHTML(){
              'ACTION="javascript:searchPgnGame(document.getElementById(\'searchPgnExpression\').value);">';
       text += '<INPUT ID="searchPgnButton" CLASS="searchPgnButton" STYLE="display: inline; ';
       if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + tableSize/4 + '; '; }
-      text += '" TITLE="find games matching the search string (or regular expression), click square C5 for more help" ';
+      text += '" TITLE="find games matching the search string (or regular expression), click square E8 for more help" ';
       text += 'TYPE="submit" VALUE="search">';
       text += '<INPUT ID="searchPgnExpression" CLASS="searchPgnExpression" ' +
-              'TITLE="find games matching the search string (or regular expression), click square C5 for more help" ' + 
+              'TITLE="find games matching the search string (or regular expression), click square E8 for more help" ' + 
               'TYPE="input" VALUE="' + lastSearchPgnExpression + '" STYLE="display: inline; ';
       if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + 3*tableSize/4 + '; '; }
       text += '" ONFOCUS="disableShortcutKeysAndStoreStatus();" ONBLUR="restoreShortcutKeysStatus();">'; 
