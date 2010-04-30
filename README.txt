@@ -23,8 +23,14 @@ pages and blogs, without the need of much knowledge of HTML or any
 other technicality. It also allows for frequent updates of the PGN file 
 without the need of manually generating new web pages at every update.
 
-Project homepage: http://pgn4web.casaschi.net (including downloads and
-support wiki)
+***
+*** THIS README FILE IS A SUMMARY OF THE PGN4WEB DOCUMENTATION
+*** MORE EXTENSIVE AND UPDATED DOCUMENTATION IS AVAILABLE
+*** FROM THE PGN4WEB SUPPORT WIKI REACHABLE FROM http://pgn4web.casaschi.net
+*** PLEASE RELY ON THE SUPPORT WIKI RATHER THAN THIS README ONLY
+***
+
+Project homepage: http://pgn4web.casaschi.net (including downloads and wiki)
 Contact email: pgn4web@casaschi.net
 
 Features:
@@ -42,8 +48,8 @@ Features:
   games to your website or blog without any html/javascript coding (see 
   http://pgn4web-board-generator.casaschi.net
 - integrated with popular blog platforms (such as blogger and wordpress), 
-  forum platforms (such as simplemachines and phpBB) and portal platforms 
-  (such as joomla, drupal and wikimedia)
+  portal platforms (such as joomla, drupal and wikimedia) and forum platforms
+  (such as phpBB, simplemachines and vbulletin)
 - allows for live broadcast of games
 
 Limitations:
