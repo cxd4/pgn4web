@@ -44,13 +44,14 @@ function print_menu( item, level, title ) {
   menu += '<a name="' + item + '" href=#credits>credits&nbsp;&amp;&nbsp;license</a>';
   menu += '&nbsp; &nbsp;<a href=#squares>shortcut&nbsp;squares</a>';
   menu += '&nbsp; &nbsp;<a href=#keys>shortcut&nbsp;keys</a>';
+  menu += '&nbsp; &nbsp;<a href=#search>search&nbsp;facility</a>';
   menu += '</div>';
   menu += '</td></tr></table>';
   document.write(menu); 
 }
 
 function print_help_row (one, two) {
-  document.write("<tr><td style='text-align: left; vertical-align: top; padding-left:40'>" + one + "</td><td style='text-align: left; vertical-align: top; padding-left:10'>" + two + "</td></tr>");
+  document.write("<tr><td style='text-align: left; vertical-align: top; padding-left:40; white-space:nowrap;'>" + one + "</td><td style='text-align: left; vertical-align: top; padding-left:20'>" + two + "</td></tr>");
 }
 
 try {
@@ -154,6 +155,27 @@ try {
   document.write('<i>Shorcut keys currently ' + ke_curr + ', ' + ke_next + 
                  ' in the chessboard with shift+escape or clicking square H7.\n');
 } catch (e) {}
+</script>
+
+<p></p>
+<br>
+
+<script type="text/javascript">print_menu("search", 2, "search&nbsp;facility");</script>
+
+Access the pgn4web search facility using either the search form if available on your page or the popup search box invoked with the B5 shortcut square and/or the 's' shortcut key. The A5 shortcut square and/or the 'enter' shortcut key repeats the last search. 
+<p></p>
+For full details about the search facility (implemented as regular expressions match the text of the PGN game), please refer to <a href="http://code.google.com/p/pgn4web/wiki/SearchBox" target="_blank">the pgn4web searchbox wiki page</a>; please find below a list of useful search patterns and samples:
+<p></p>
+<script type="text/javascript">
+document.write("<table style='padding:0;' border=0>");	
+print_help_row("something", "search for text <i>something</i> anywhere in the PGN game");
+print_help_row("White\\s*\"Somebody", "search for player <i>Somebody</i> as White");
+print_help_row("\(White|Black\)\\s*\"Somebody", "search for player <i>Somebody</i> as either White or Black");
+print_help_row("White\\s*\"Somebody.*Black\\s*\"Other", "search for games between <i>Somebody</i> and <i>Other</i>");
+print_help_row("Site\\s*\"Somewhere.*Result\\s\"\(1-0|0-1\)", "search for games at the <i>Somewhere</i> site ending with a win");
+print_help_row("1.\\s*e4\\s*e6", "search for games with moves <i>1. e4 e6</i>");
+document.write("</table>");
+
 </script>
 
 <p></p>
