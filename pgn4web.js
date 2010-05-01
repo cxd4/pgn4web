@@ -3168,8 +3168,7 @@ function PrintHTML(){
         text = '<FORM NAME="GameSel" STYLE="display:inline;"> ' +
                '<SELECT ID="GameSelSelect" NAME="GameSelSelect" STYLE="';
         if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + tableSize + '; '; }
-        text += 'font-family: monospace;" CLASS="selectControl" ' + 
-                'TITLE="Select a game" ' +
+        text += 'font-family: monospace;" CLASS="selectControl" TITLE="Select a game" ' +
                 'ONCHANGE="this.blur(); if(this.value >= 0) {currentGame=parseInt(this.value); ' +
                 'document.GameSel.GameSelSelect.value = -1; Init();}" ' +
                 'ONFOCUS="disableShortcutKeysAndStoreStatus();" ONBLUR="restoreShortcutKeysStatus();" ' +
