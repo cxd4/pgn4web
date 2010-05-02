@@ -26,21 +26,21 @@
 	     " - search=search expression" + "\n" +
              " - help");
    }
+   pgnFilename = "";
    thisRegExp = /(&|\?)(pgnFile|pf)=([^&$]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
        pgnFilename = unescape(window.location.search.match(thisRegExp)[3]);
-       if (pgnFilename === null) {
-           pgnFilename = "";
-       } else if (pgnFilename !== "") {
-           SetPgnUrl(pgnFilename); // if set, this has precedence over the inline PGN in the HTML file
-       } else {
-           pgnFilename = "";
-           pgnTitle = "no PGN file loaded";
-       }
-       pgnTitle = pgnFilename;
    } else {
-       pgnFilename = "";
+       thisRegExp = /(&|\?)(pgnData|pd)=([^&$]*)(&|$)/i;
+       if (window.location.search.match(thisRegExp) !== null) {
+           pgnFilename = unescape(window.location.search.match(thisRegExp)[3]);
+       }
+   } 
+   if (pgnFilename === "") {
        pgnTitle = "no PGN file loaded";
+   } else {
+       SetPgnUrl(pgnFilename); // if set, this has precedence over the inline PGN in the HTML file
+       pgnTitle = pgnFilename;
    }
    thisRegExp = /(&|\?)(title|t)=([^&$]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
