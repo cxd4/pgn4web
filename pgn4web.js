@@ -581,7 +581,7 @@ configBoardShrortcut("G3", "jump 50 games forward", function(){ if (numberOfGame
 // H3
 configBoardShrortcut("H3", "load last game", function(){ if (numberOfGames > 1) { currentGame = numberOfGames - 1; Init(); } });
 // A2
-configBoardShrortcut("A2", "pause autoplay", function(){ SetAutoPlay(false); });
+configBoardShrortcut("A2", "stop autoplay", function(){ SetAutoPlay(false); });
 // B2
 configBoardShrortcut("B2", "toggle autoplay", function(){ SwitchAutoPlay(); });
 // C2
