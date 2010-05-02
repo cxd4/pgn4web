@@ -699,6 +699,16 @@ if ((newPgnEncoded = gup("pgnEncoded")) !== "") {
   document.getElementById('pgnText').value = newPgnDecoded = cleanPgnInput(newPgnDecoded);
 } 
 
+if ((pgnData = gup("pgnData")) !== "") {
+  SetPgnUrl(pgnData);
+  document.getElementById('pgnText').value = "";
+}
+
+if ((pgnData !== "") && ((newPgnEncoded !== "") || (newPgnText !== "") || 
+			 (fenString !== "") || (newPgnId !==""))) {
+  alert("WARNING: pgnData value superseeds pgnEncoded, pgnText, pgnId and/or fenString values.");
+}
+
 if ((newPgnEncoded !== "") && ((newPgnText !== "") || (fenString !== "") || (newPgnId !==""))) {
   alert("WARNING: pgnEncoded value superseeds pgnText, pgnId and/or fenString values.");
 }
@@ -794,7 +804,8 @@ if (gup("help") !== "") {
   document.write(" - pgnText = PGN games to display\n");
   document.write(" - pgnEncoded = encoded PGN games to display (used only by the board generator tool)\n");
   document.write(" - fenString = FEN position to display\n");
-  document.write(" - pgnId = id of the parent's textarea containing the PGN games (works only if parent is in the same domain)\n");
+  document.write(" - pgnId = id of the parent's textarea containing the PGN games (parent page/frame MUST be in the same domain)\n");
+  document.write(" - pgnData = URL of the file containing the PGN games (file MUST be in the same domain)\n");
   document.write("\n");
   document.write(" - autoplayMode = game (autoplay first game once) | loop (loops through games continiously) | none - (default game)\n");
   document.write(" - delay = autoplay delay in ms (default 1000)\n");

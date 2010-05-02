@@ -32,7 +32,11 @@
   } else {
     pgnFile_default = "live/live.pgn";
   }
-  if ((pgnFile = gup("pgnFile")) === "") { pgnFile = pgnFile_default; }
+  // accepts pgnData as alias for pgnFile for consistency with board.html
+  if ((pgnFile = gup("pgnFile")) === "") { 
+    if ((pgnFile = gup("pgnData")) === "") {
+      pgnFile = pgnFile_default; }
+  }
 
   if ((refreshMinutes = gup("refreshMinutes")) === "") { 
     refreshMinutes = 1;
