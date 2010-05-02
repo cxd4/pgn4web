@@ -31,6 +31,7 @@
    if (window.location.search.match(thisRegExp) !== null) {
        pgnFilename = unescape(window.location.search.match(thisRegExp)[3]);
    } else {
+       // accepts pgnData as alias for pgnFile for consistency with board.html
        thisRegExp = /(&|\?)(pgnData|pd)=([^&$]*)(&|$)/i;
        if (window.location.search.match(thisRegExp) !== null) {
            pgnFilename = unescape(window.location.search.match(thisRegExp)[3]);
