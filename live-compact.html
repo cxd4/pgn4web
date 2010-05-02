@@ -35,7 +35,8 @@
   // accepts pgnData as alias for pgnFile for consistency with board.html
   if ((pgnFile = gup("pgnFile")) === "") { 
     if ((pgnFile = gup("pgnData")) === "") {
-      pgnFile = pgnFile_default; }
+      pgnFile = pgnFile_default; 
+    }
   }
 
   if ((refreshMinutes = gup("refreshMinutes")) === "") { 
