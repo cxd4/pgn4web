@@ -20,8 +20,8 @@ side.
  
 It has been designed to make it easier adding chess games to your web 
 pages and blogs, without the need of much knowledge of HTML or any 
-other technicality. It also allows for frequent updates of the PGN file 
-without the need of manually generating new web pages at every update.
+other technicality. It also has been integrated with many popular web
+software platforms and services.
 
 ***
 *** THIS README FILE IS A SUMMARY OF THE PGN4WEB DOCUMENTATION
@@ -48,8 +48,9 @@ Features:
   games to your website or blog without any html/javascript coding (see 
   http://pgn4web-board-generator.casaschi.net
 - integrated with popular blog platforms (such as blogger and wordpress), 
-  portal platforms (such as joomla, drupal and wikimedia) and forum platforms
-  (such as phpBB, simplemachines and vbulletin)
+  portal platforms (such as joomla, drupal and wikimedia), forum platforms
+  (such as phpBB, simplemachines and vbulletin) and hosting services (such 
+  as google sites)
 - allows for live broadcast of games
 
 Limitations:
