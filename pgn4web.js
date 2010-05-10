@@ -86,7 +86,7 @@
 /*********************************************************************/
 
 /* 
- * DONT CHANGE AFTER HERE 
+ * DONT CHANGE AFTER HERE
  */
 
 var pgn4web_version = '1.94+';
