@@ -1051,6 +1051,14 @@ function customFunctionOnPgnGameLoad() {
 
 }
 
+var boardGeneratorWin=null;
+function customShortcutKey_Shift_1() {
+  if ((newPgnEncoded === "") && (newPgnText === "")) { return; }
+  if (! window.location.href.match(/board\.html/)) { return; }
+  if (boardGeneratorWin && !boardGeneratorWin.closed) { boardGeneratorWin.close(); }
+  boardGeneratorWin = window.open(window.location.href.replace(/board\.html/g, "board-generator.html").replace(window.location.hash, "") + "#preview");
+  if ((boardGeneratorWin !== null) && (window.focus)) { boardGeneratorWin.window.focus(); }
+}
 
 </script>
 

@@ -170,10 +170,20 @@ function restoreShortcutKeysStatus() {
   shortcutKeysWereEnabled = false;
 }
 
+function customShortcutKey_Shift_0() {}
+function customShortcutKey_Shift_1() {}
+function customShortcutKey_Shift_2() {}
+function customShortcutKey_Shift_3() {}
+function customShortcutKey_Shift_4() {}
+function customShortcutKey_Shift_5() {}
+function customShortcutKey_Shift_6() {}
+function customShortcutKey_Shift_7() {}
+function customShortcutKey_Shift_8() {}
+function customShortcutKey_Shift_9() {}
+
 var shortcutKeysEnabled = false;
 function handlekey(e) { 
   var keycode;
-  var keyToggleKey = 27; // escape
 
   if (!e) { e = window.event; }
 
@@ -182,19 +192,7 @@ function handlekey(e) {
 
   if (e.altKey || e.ctrlKey || e.metaKey) { return true; }
 
-  if (e.shiftKey) {
-    // shift key + escape (27) toogle the usage of shortcut keys 
-    if (keycode == keyToggleKey) { 
-      SetShortcutKeysEnabled(!shortcutKeysEnabled);
-      if (shortcutKeysEnabled) { alert ("pgn4web shortcut keys now enabled"); }
-      else { alert("pgn4web shortcut keys now disabled"); }
-      return false; 
-    } else {
-      return true;
-    }
-  }
-
-  // escape is always enabled to show help
+  // escape is always enabled to show help and to toggle enabling shortcut keys
   if ((keycode != 27) && (shortcutKeysEnabled === false)) { return true; }
 
   switch(keycode)
@@ -214,6 +212,18 @@ function handlekey(e) {
     case 92:  // super
     case 93:  // menu
       return true;
+      break;
+
+    case 27: // escape
+      if (e.shiftKey) {
+        // shift key + escape (27) toogle the usage of shortcut keys 
+        SetShortcutKeysEnabled(!shortcutKeysEnabled);
+        if (shortcutKeysEnabled) { alert ("pgn4web shortcut keys now enabled"); }
+        else { alert("pgn4web shortcut keys now disabled"); }
+      } else {
+        displayHelp();
+      }
+      return stopKeyPropagation(e);
       break;
 
     case 90: // z
@@ -272,70 +282,100 @@ function handlekey(e) {
       break;
 
     case 48:  // 0
-      SetAutoPlay(false);
+      if (e.shiftKey) { customShortcutKey_Shift_0(); }
+      else {
+        SetAutoPlay(false); 
+      }
       return stopKeyPropagation(e);
       break;
 
     case 49:  // 1
-      MoveForward(1);
-      SetAutoplayDelay( 1*1000);
-      SetAutoPlay(true);
+      if (e.shiftKey) { customShortcutKey_Shift_1(); }
+      else {
+        MoveForward(1);
+        SetAutoplayDelay( 1*1000);
+        SetAutoPlay(true);
+      }
       return stopKeyPropagation(e);
       break;
 
     case 50:  // 2
-      MoveForward(1);
-      SetAutoplayDelay( 2*1000);
-      SetAutoPlay(true);
+      if (e.shiftKey) { customShortcutKey_Shift_2(); }
+      else {
+        MoveForward(1);
+        SetAutoplayDelay( 2*1000);
+        SetAutoPlay(true);
+      }
       return stopKeyPropagation(e);
       break;
 
     case 51:  // 3
-      MoveForward(1);
-      SetAutoplayDelay( 3*1000);
-      SetAutoPlay(true);
+      if (e.shiftKey) { customShortcutKey_Shift_3(); }
+      else {
+        MoveForward(1);
+        SetAutoplayDelay( 3*1000);
+        SetAutoPlay(true);
+      }
       return stopKeyPropagation(e);
       break;
 
     case 52:  // 4
-      MoveForward(1);
-      SetAutoplayDelay( 4*1000);
-      SetAutoPlay(true);
+      if (e.shiftKey) { customShortcutKey_Shift_4(); }
+      else {
+        MoveForward(1);
+        SetAutoplayDelay( 4*1000);
+        SetAutoPlay(true);
+      }
       return stopKeyPropagation(e);
       break;
 
     case 53:  // 5
-      MoveForward(1);
-      SetAutoplayDelay( 5*1000);
-      SetAutoPlay(true);
+      if (e.shiftKey) { customShortcutKey_Shift_5(); }
+      else {
+        MoveForward(1);
+        SetAutoplayDelay( 5*1000);
+        SetAutoPlay(true);
+      }
       return stopKeyPropagation(e);
       break;
 
     case 54:  // 6
-      MoveForward(1);
-      SetAutoplayDelay( 6*1000);
-      SetAutoPlay(true);
+      if (e.shiftKey) { customShortcutKey_Shift_6(); }
+      else {
+        MoveForward(1);
+        SetAutoplayDelay( 6*1000);
+        SetAutoPlay(true);
+      }
       return stopKeyPropagation(e);
       break;
 
     case 55:  // 7
-      MoveForward(1);
-      SetAutoplayDelay( 7*1000);
-      SetAutoPlay(true);
+      if (e.shiftKey) { customShortcutKey_Shift_7(); }
+      else {
+        MoveForward(1);
+        SetAutoplayDelay( 7*1000);
+        SetAutoPlay(true);
+      }
       return stopKeyPropagation(e);
       break;
 
     case 56:  // 8
-      MoveForward(1);
-      SetAutoplayDelay( 8*1000);
-      SetAutoPlay(true);
+      if (e.shiftKey) { customShortcutKey_Shift_8(); }
+      else {
+        MoveForward(1);
+        SetAutoplayDelay( 8*1000);
+        SetAutoPlay(true);
+      }
       return stopKeyPropagation(e);
       break;
 
     case 57:  // 9
-      MoveForward(1);
-      SetAutoplayDelay( 9*1000);
-      SetAutoPlay(true);
+      if (e.shiftKey) { customShortcutKey_Shift_9(); }
+      else {
+        MoveForward(1);
+        SetAutoplayDelay( 9*1000);
+        SetAutoPlay(true);
+      }
       return stopKeyPropagation(e);
       break;
 
@@ -436,11 +476,6 @@ function handlekey(e) {
         currentGame = numberOfGames - 1;
         Init();
       }
-      return stopKeyPropagation(e);
-      break;
-
-    case 27: // escape
-      displayHelp();
       return stopKeyPropagation(e);
       break;
 
