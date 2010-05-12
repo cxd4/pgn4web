@@ -257,6 +257,13 @@ selected game is fully loaded) customFunctionOnPgnTextLoad() is executed.
 
 See twic765.html or live.html for examples.
 
+The following functions, if defined in the HTML file after loading pgn4web.js,
+allow for execution of custom commands when shift + a number key is pressed:
+- customShortcutKey_Shift_0()
+- customShortcutKey_Shift_1()
+...
+- customShortcutKey_Shift_9()
+
 
 TECHNICAL NOTES ABOUT WEB BROWSERS
 
