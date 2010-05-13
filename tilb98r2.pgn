@@ -5,6 +5,9 @@
 [White "Kortschnoj, Viktor"]
 [Black "Adams, Michael"]
 [Result "0-1"]
+[ECO "A14"]
+[Opening "English"]
+[Variation "Neo-Catalan declined"]
 [WhiteClock "2:00:00"]
 [BlackClock "2:00:00"]
 
@@ -82,6 +85,9 @@ Kc2 { [%clk 00:14] } 84. Qc5+ { [%clk 00:13] } 84... Kd1 { [%clk 00:12] }
 [White "Anand, Viswanathan"]
 [Black "Kramnik, Vladimir"]
 [Result "1-0"]
+[ECO "C42"]
+[Opening "Petrov"]
+[Variation "classical attack, Chigorin variation"]
 [WhiteClock "2:00:00"]
 [BlackClock "2:00:00"]
 
@@ -118,6 +124,8 @@ Rxe4 { 58:58 } 32. Nxe4 { 57:57 } 32... h4 { 56:56 } 33. Ng5 { 55:55 }
 [White "Lautier, Joel"]
 [Black "Van Wely, Loek"]
 [Result "1/2-1/2"]
+[ECO "A57"]
+[Opening "Benko gambit"]
 [WhiteClock "2:00:00"]
 [BlackClock "2:00:00"]
 
@@ -144,6 +152,9 @@ Bg7 { [%clk 1:50:40] } 11. Bd3 { [%clk 1:49:39] } 11... O-O { [%clk
 [White "Sadler, Matthew"]
 [Black "Topalov, Veselin"]
 [Result "1/2-1/2"]
+[ECO "E42"]
+[Opening "Nimzo-Indian"]
+[Variation "4.e3 c5, 5.Ne2 (Rubinstein)"]
 [WhiteClock "2:00:00"]
 [BlackClock "2:00:00"]
 
@@ -175,6 +186,9 @@ Nfd7 { 1:50:30 } 16. f4 { 1:49:29 } 16... Bf6 { 1:49:28 } 17. Ra2 { 1:49:27
 [White "Zvjaginsev, Vadim"]
 [Black "Leko, Peter"]
 [Result "1/2-1/2"]
+[ECO "D91"]
+[Opening "Gruenfeld"]
+[Variation "5.Bg5"]
 [WhiteClock "2:00:00"]
 [BlackClock "2:00:00"]
 
@@ -213,6 +227,9 @@ Rfc8 { [%clk 1:50:22] } 20. h3 { [%clk 1:50:21] } 20... Qf5 { [%clk
 [White "Svidler, Peter"]
 [Black "Piket, Jeroen"]
 [Result "1-0"]
+[ECO "C98"]
+[Opening "Ruy Lopez"]
+[Variation "closed, Chigorin, 12...Nc6"]
 [WhiteClock "2:00:00"]
 [BlackClock "2:00:00"]
 
