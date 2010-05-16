@@ -822,10 +822,15 @@ else {
 
 if (refreshMinutes > 0) {
   if (pgnData !== "") { SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag); }
-  else { alert("ERROR: live broadcast requires using pgnData parameter as PGN source."); }
-  
+  else { 
+    if (alertFlag) {
+      alert("ERROR: live broadcast requires using pgnData parameter as PGN source."); 
+    }
+  }
   if (init_Halfmove != "end") { 
-    alert("ERROR: live broadcast requires initialHalfmove=end"); 
+    if (alertFlag) {
+      alert("ERROR: live broadcast requires initialHalfmove=end"); 
+    }
     SetInitialHalfmove(init_Halfmove = "end", always_Halfmove = true);
   }
 }
