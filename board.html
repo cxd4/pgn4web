@@ -797,6 +797,34 @@ switch (frameWidth) {
 if ((gup("horizontalLayout") == "true") || (gup("horizontalLayout") == "t")) { horizontalLayout = true; }
 else { horizontalLayout = false; }	
 
+if ((gup("refreshDemo") == "true") || (gup("refreshDemo") == "t")) { demoFlag = true; alertFlag = true; }
+else { demoFlag = false; alertFlag = false; }
+
+if ((refreshMinutes = gup("refreshMinutes")) === "") { 
+  refreshMinutes = 0;
+}
+else {
+  testMinutes = refreshMinutes + "";
+  if ((testMinutes.match(/[^0-9\.]/)) || (refreshMinutes === 0)) {
+    if (alertFlag) { 
+      alert("ERROR: refreshMinutes parameter must be a positive number.\n" +
+	    "Supplied " + testMinutes + "; live refresh disabled."); 
+    }
+    refreshMinutes = 0;
+  }
+}
+
+if (refreshMinutes > 0) {
+  if (pgnData !== "") { SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag); }
+  else { alert("ERROR: live broadcast requires using pgnData parameter as PGN source."); }
+  
+  if (init_Halfmove != "end") { 
+    alert("ERROR: live broadcast requires initialHalfmove=end"); 
+    init_Halfmove = "end";
+    always_Halfmove = true;
+  }
+}
+
 if (gup("help") !== "") {
   document.write("<PRE>");
   document.write("URL parameters\n");
@@ -806,6 +834,9 @@ if (gup("help") !== "") {
   document.write(" - fenString = FEN position to display\n");
   document.write(" - pgnId = id of the parent's textarea containing the PGN games (parent page/frame MUST be in the same domain)\n");
   document.write(" - pgnData = URL of the file containing the PGN games (file MUST be in the same domain)\n");
+  document.write("\n");
+  document.write(" - refreshMinutes = live broadcast delay, requires pgnData as PGN source and initialHalfmove=end (default 0 = live broadcast disabled)\n");
+  document.write(" - refreshDemo = if set true sets live demo mode (default false)\n");
   document.write("\n");
   document.write(" - autoplayMode = game (autoplay first game once) | loop (loops through games continiously) | none - (default game)\n");
   document.write(" - delay = autoplay delay in ms (default 1000)\n");
