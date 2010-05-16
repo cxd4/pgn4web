@@ -11,6 +11,12 @@
 
 <title>pgn4web chessboard</title>
 
+<!-- use the base tag to host board.html in live mode on a different server than pgn4web.js
+
+<base href="http://pgn4web.casaschi.net">
+
+-->
+
 <style type="text/css"> 
 
 @import url("fonts/pgn4web-fonts.css");
@@ -820,8 +826,7 @@ if (refreshMinutes > 0) {
   
   if (init_Halfmove != "end") { 
     alert("ERROR: live broadcast requires initialHalfmove=end"); 
-    init_Halfmove = "end";
-    always_Halfmove = true;
+    SetInitialHalfmove(init_Halfmove = "end", always_Halfmove = true);
   }
 }
 
