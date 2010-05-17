@@ -3225,11 +3225,11 @@ function PrintHTML(){
                 '<OPTION value=-1>';
 
         blanks = ''; for (ii=0; ii<32; ii++) { blanks += ' '; }
-        // if (gameSelectorNum) { 
-        //  gameSelectorHeadDisplay = blanks.substring(0, gameSelectorNumLenght) + '# ' + gameSelectorHead; 
-        //} else { 
+        if (gameSelectorNum) { 
+          gameSelectorHeadDisplay = blanks.substring(0, gameSelectorNumLenght) + '# ' + gameSelectorHead; 
+        } else { 
           gameSelectorHeadDisplay = gameSelectorHead; 
-        //}
+        }
         // replace spaces with &nbsp; (ascii code 160)
         // text += gameSelectorHeadDisplay.replace(/ /g,String.fromCharCode(160)); 
         text += gameSelectorHeadDisplay.replace(/ /g, '&nbsp;'); 
