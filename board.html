@@ -831,16 +831,10 @@ if (refreshMinutes > 0) {
       alert("ERROR: live broadcast requires using pgnData parameter as PGN source."); 
     }
   }
-  if (init_Halfmove != "end") { 
-    if (alertFlag) {
-      alert("ERROR: live broadcast requires initialHalfmove=end"); 
-    }
+  if (gup("initialHalfmove") === "") { 
     SetInitialHalfmove(init_Halfmove = "end", always_Halfmove = true);
   }
-  if (autoplayMode != "none") {
-    if (alertFlag) {
-      alert("ERROR: live broadcast requires autoplayMode=none");
-    }
+  if (gup("autoplayMode") === "") {
     autoplayMode = "none";
     SetAutostartAutoplay(false);
     SetAutoplayNextGame(false);
