@@ -3017,15 +3017,29 @@ function ParseMove(move, plyCount){
 }
 
 function SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate){
-  gameSelectorHead     = head;
-  gameSelectorNum      = num;
-  gameSelectorChEvent  = chEvent; if (gameSelectorChEvent > 32) { gameSelectorChEvent = 32; }
-  gameSelectorChSite   = chSite; if (gameSelectorChSite > 32) { gameSelectorChSite = 32; }
-  gameSelectorChRound  = chRound; if (gameSelectorChRound > 32) { gameSelectorChRound = 32; }
-  gameSelectorChWhite  = chWhite; if (gameSelectorChWhite > 32) { gameSelectorChWhite = 32; }
-  gameSelectorChBlack  = chBlack; if (gameSelectorChBlack > 32) { gameSelectorChBlack = 32; }
-  gameSelectorChResult = chResult; if (gameSelectorChResult > 32) { gameSelectorChResult = 32; }
-  gameSelectorChDate   = chDate; if (gameSelectorChDate > 32) { gameSelectorChDate = 32; }
+  if (head !== null) { gameSelectorHead = head; }
+  if (num !== null) { gameSelectorNum = num; }
+  if (chEvent !== null) { 
+    gameSelectorChEvent = chEvent; if (gameSelectorChEvent > 32) { gameSelectorChEvent = 32; } 
+  }
+  if (chSite !== null) { 
+    gameSelectorChSite = chSite; if (gameSelectorChSite > 32) { gameSelectorChSite = 32; } 
+  }
+  if (chRound !== null) { 
+    gameSelectorChRound = chRound; if (gameSelectorChRound > 32) { gameSelectorChRound = 32; } 
+  }
+  if (chWhite !== null) { 
+    gameSelectorChWhite = chWhite; if (gameSelectorChWhite > 32) { gameSelectorChWhite = 32; } 
+  }
+  if (chBlack !== null) { 
+    gameSelectorChBlack = chBlack; if (gameSelectorChBlack > 32) { gameSelectorChBlack = 32; } 
+  }
+  if (chResult !== null) { 
+    gameSelectorChResult = chResult; if (gameSelectorChResult > 32) { gameSelectorChResult = 32; } 
+  }
+  if (chDate !== null) { 
+    gameSelectorChDate = chDate; if (gameSelectorChDate > 32) { gameSelectorChDate = 32; } 
+  }
 }
 
 var clickedSquareInterval = null;
@@ -3211,9 +3225,11 @@ function PrintHTML(){
                 '<OPTION value=-1>';
 
         blanks = ''; for (ii=0; ii<32; ii++) { blanks += ' '; }
-        if (gameSelectorNum) { 
-          gameSelectorHeadDisplay = blanks.substring(0, gameSelectorNumLenght) + '# ' + gameSelectorHead; 
-        } else { gameSelectorHeadDisplay = gameSelectorHead; }
+        // if (gameSelectorNum) { 
+        //  gameSelectorHeadDisplay = blanks.substring(0, gameSelectorNumLenght) + '# ' + gameSelectorHead; 
+        //} else { 
+          gameSelectorHeadDisplay = gameSelectorHead; 
+        //}
         // replace spaces with &nbsp; (ascii code 160)
         // text += gameSelectorHeadDisplay.replace(/ /g,String.fromCharCode(160)); 
         text += gameSelectorHeadDisplay.replace(/ /g, '&nbsp;'); 
