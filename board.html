@@ -591,6 +591,10 @@ if (buttonsDisplay == "h") { buttonsDisplay = "hidden"; }
 if (buttonsDisplay == "s") { buttonsDisplay = "standard"; }
 if ((buttonsDisplay != "custom") && (buttonsDisplay != "standard")) { buttonsDisplay = "hidden"; }
 
+// SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
+// default:           ("Select a game...", false, 0, 0, 0, 15, 15, 0, 10)
+SetGameSelectorOptions("select a game...", true,  0, 0, 0, 15, 15, 3, 10); 
+
 if (buttonsDisplay == "custom") {
       
   if ((controlBackgroundColor = gup("controlBackgroundColorName")) === "") {
@@ -833,6 +837,14 @@ if (refreshMinutes > 0) {
     }
     SetInitialHalfmove(init_Halfmove = "end", always_Halfmove = true);
   }
+  if (autoplayMode != "none") {
+    if (alertFlag) {
+      alert("ERROR: live broadcast requires autoplayMode=none");
+    }
+    autoplayMode = "none";
+    SetAutostartAutoplay(false);
+    SetAutoplayNextGame(false);
+  }
 }
 
 if (gup("help") !== "") {
@@ -845,24 +857,24 @@ if (gup("help") !== "") {
   document.write(" - pgnId = id of the parent's textarea containing the PGN games (parent page/frame MUST be in the same domain)\n");
   document.write(" - pgnData = URL of the file containing the PGN games (file MUST be in the same domain)\n");
   document.write("\n");
-  document.write(" - refreshMinutes = live broadcast delay, requires pgnData as PGN source and initialHalfmove=end (default 0 = live broadcast disabled)\n");
+  document.write(" - refreshMinutes = live broadcast delay (default 0 = live broadcast disabled)\n");
   document.write(" - refreshDemo = if set true sets live demo mode (default false)\n");
   document.write("\n");
-  document.write(" - autoplayMode = game (autoplay first game once) | loop (loops through games continiously) | none - (default game)\n");
+  document.write(" - autoplayMode = game (autoplay first game once) | loop (loops through games continiously) | none (default game)\n");
   document.write(" - delay = autoplay delay in ms (default 1000)\n");
   document.write(" - initialGame = first | last | random | a number (default first)\n");
   document.write(" - initialHalfmove = start | end | random | comment | a number (default start)\n");
   document.write("\n");
   document.write(" - squareSize = size of square (default 28)\n");
   document.write(" - pieceSize = size of pieces | default (default selects piece size based on piece size)\n");
-  document.write(" - pieceFont = alpha | merida | uscf | random | default - (default selects piece font based on piece size)\n");
+  document.write(" - pieceFont = alpha | merida | uscf | random | default (default selects piece font based on piece size)\n");
   document.write(" - highlightMode = border | square | none (default square)\n");
   document.write(" - lightColorHex = light square color hex code, like FF0000 (default EFF4EC)\n");
   document.write(" - darkColorHex = dark square color hex code, like FF0000 (default C6CEC3)\n");
   document.write(" - highlightColorHex = highlight color hex code, like FF0000 (default DAF4D7)\n");
   document.write(" - boardBorderColorHex = board border color hex code, like FF0000 (default 000000)\n");
   document.write("\n");
-  document.write(" - buttonsDisplay = hidden | standard (use browser's standard buttons) | custom (use custom color buttons) - (default hidden)\n");
+  document.write(" - buttonsDisplay = hidden | standard (use browser's standard buttons) | custom (use custom color buttons) (default hidden)\n");
   document.write(" - controlBackgroundColorHex = control buttons background color hex code, like FF0000 (default reverts to standard buttons)\n");
   document.write(" - controlTextColorHex = control buttons text color hex code, like FF0000 (default 000000)\n");
   document.write("\n");
@@ -871,7 +883,7 @@ if (gup("help") !== "") {
   document.write(" - textHeight = set height of the textual section, header and/or moves text, might be ingored if frameHeight is set (default 100%)\n");
   document.write(" - textWidth = set width of the textual section, header and/or moves text, might be ignored if frameWidth is set (default 100%)\n");
   document.write(" - textMargin = set left/right margin width of the  textual section, header and/or moves text (default 0)\n");
-  document.write(" - commentsDisplay = hidden | inline (same line as moves) | newline (new lines) - (default inline)\n");
+  document.write(" - commentsDisplay = hidden | inline (same line as moves) | newline (new lines) (default inline)\n");
   document.write(" - fontHeaderColorHex = header color hex code, like FF0000 (default 000000)\n");
   document.write(" - fontMovesColorHex = moves color hex code, like FF0000 (default 000000)\n");
   document.write(" - fontCommentsColorHex = commentss color hex code, like FF0000 (default 808080)\n");
