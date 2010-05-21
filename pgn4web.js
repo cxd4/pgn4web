@@ -25,7 +25,7 @@
  *        SetImagePath(""); // use "" path if images are in the same folder as this javascript file
  *        SetImageType("png");
  *        SetHighlightOption(true); // true or false
- *        SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate); // default: ("Select a game...", false, 0, 0, 0, 15, 15, 0, 10)
+ *        SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate); // default: (" ...", false, 0, 0, 0, 15, 15, 0, 10)
  *        SetCommentsIntoMoveText(false);
  *        SetCommentsOnSeparateLines(false);
  *        SetAutoplayDelay(1000); // milliseconds
@@ -72,7 +72,7 @@
 // SetImagePath(""); // use "" path if images are in the same folder as this javascript file
 // SetImageType("png");
 // SetHighlightOption(true); // true or false
-// SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate); // default: ("Select a game...", false, 0, 0, 0, 15, 15, 0, 10)
+// SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate); // default: (" ...", false, 0, 0, 0, 15, 15, 0, 10)
 // SetCommentsIntoMoveText(true);
 // SetCommentsOnSeparateLines(true);
 // SetAutoplayDelay(1000); // milliseconds
@@ -884,7 +884,7 @@ var dummyPgnHeader = '[x""]';
 var emptyPgnHeader = '[White ""]\n[Black ""]\n[Result ""]\n[Date ""]\n[Event ""]\n[Site ""]\n[Round ""]\n\n';
 var templatePgnHeader = '[White "?"]\n[Black "?"]\n[Result "?"]\n[Date "?"]\n[Event "?"]\n[Site "?"]\n[Round "?"]\n';
 
-var gameSelectorHead      = 'Select a game...';
+var gameSelectorHead      = ' ...';
 var gameSelectorMono      = true;
 var gameSelectorNum       = false;
 var gameSelectorNumLenght = 0;
@@ -3153,7 +3153,7 @@ function PrintHTML(){
           '<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>' + 
           '<TR>' +
           '<TD>' +
-          '<INPUT ID="startButton" TYPE="BUTTON" VALUE="&#124;&lt;" STYLE="';
+          '<INPUT ID="startButton" TYPE="BUTTON" VALUE="&lt;&lt;" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + ';'; }
   text += '"; CLASS="buttonControl" TITLE="go to game start" ' +
           ' ID="btnGoToStart" onClick="javascript:GoToMove(StartPly)" ONFOCUS="this.blur()">' +
@@ -3169,9 +3169,9 @@ function PrintHTML(){
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '</TD>' +
           '<TD>' +
-          '<INPUT ID="autoplayButton" TYPE="BUTTON" VALUE="play" STYLE="';
+          '<INPUT ID="autoplayButton" TYPE="BUTTON" VALUE="+" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + ';'; }
-  text += '"; CLASS="buttonControlStop" TITLE="toggle autoplay" ' +
+  text += '"; CLASS="buttonControlStop" TITLE="toggle autoplay (start)" ' +
           ' ID="btnPlay" NAME="AutoPlay" onClick="javascript:SwitchAutoPlay()" ONFOCUS="this.blur()">' +
           '</TD>' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
@@ -3185,7 +3185,7 @@ function PrintHTML(){
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '</TD>' +
           '<TD>' +
-          '<INPUT ID="endButton" TYPE="BUTTON" VALUE="&gt;&#124;" STYLE="';
+          '<INPUT ID="endButton" TYPE="BUTTON" VALUE="&gt;&gt;" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + ';'; }
   text += '"; CLASS="buttonControl" TITLE="go to game end" ' +
           ' ID="btnGoToEnd" onClick="javascript:GoToMove(StartPly + PlyNumber)" ONFOCUS="this.blur()">' +
@@ -3226,7 +3226,7 @@ function PrintHTML(){
 
         blanks = ''; for (ii=0; ii<32; ii++) { blanks += ' '; }
         if (gameSelectorNum) { 
-          gameSelectorHeadDisplay = blanks.substring(0, gameSelectorNumLenght) + '# ' + gameSelectorHead; 
+          gameSelectorHeadDisplay = blanks.substring(0, gameSelectorNumLenght) + '  ' + gameSelectorHead; 
         } else { 
           gameSelectorHeadDisplay = gameSelectorHead; 
         }
@@ -3417,7 +3417,7 @@ function PrintHTML(){
       text += '<INPUT ID="searchPgnButton" CLASS="searchPgnButton" STYLE="display: inline; ';
       if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + tableSize/4 + '; '; }
       text += '" TITLE="find games matching the search string (or regular expression), click square E8 for more help" ';
-      text += 'TYPE="submit" VALUE="search">';
+      text += 'TYPE="submit" VALUE="?">';
       text += '<INPUT ID="searchPgnExpression" CLASS="searchPgnExpression" ' +
               'TITLE="find games matching the search string (or regular expression), click square E8 for more help" ' + 
               'TYPE="input" VALUE="' + lastSearchPgnExpression + '" STYLE="display: inline; ';
@@ -3491,7 +3491,8 @@ function SetAutoPlay(vv){
   if (isAutoPlayOn){
     if (document.GameButtonsForm) {
       if (document.GameButtonsForm.AutoPlay){
-        document.GameButtonsForm.AutoPlay.value="stop";
+        document.GameButtonsForm.AutoPlay.value="=";
+        document.GameButtonsForm.AutoPlay.title="toggle autoplay (stop)";
         document.GameButtonsForm.AutoPlay.className="buttonControlStop";
       }
     }
@@ -3502,7 +3503,8 @@ function SetAutoPlay(vv){
   } else { 
     if (document.GameButtonsForm) {
       if (document.GameButtonsForm.AutoPlay) {
-        document.GameButtonsForm.AutoPlay.value="play";
+        document.GameButtonsForm.AutoPlay.value="+";
+        document.GameButtonsForm.AutoPlay.title="toggle autoplay (start)";
         document.GameButtonsForm.AutoPlay.className="buttonControlPlay";
       }
     }

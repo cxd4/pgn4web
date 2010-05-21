@@ -102,7 +102,7 @@ Example:
     SetImagePath(""); // use "" path if images are in the same folder as this javascript file
     SetImageType("png");
     SetHighlightOption(true); // true or false
-    SetGameSelectorOptions("Select a game...", false, 0, 0, 0, 15, 15, 0, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
+    SetGameSelectorOptions(" ...", false, 0, 0, 0, 15, 15, 0, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
     SetCommentsIntoMoveText(false);
     SetCommentsOnSeparateLines(false);
     SetAutoplayDelay(1000); // milliseconds
