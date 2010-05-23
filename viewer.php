@@ -535,12 +535,12 @@ function print_chessboard() {
 
 .searchPgnButton {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 20% !important;
+  width: 10% !important;
 }
 
 .searchPgnExpression {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 80% !important;
+  width: 90% !important;
 }
 
 .move,
