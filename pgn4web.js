@@ -1943,6 +1943,7 @@ function InitFEN(startingFEN){
         { ii+=parseInt(cc, 10);
           if ((ii<0)||(ii>8))
           { myAlert("Invalid FEN [3]: char "+ll+" in "+FenString);
+            InitFEN();
             return;
           }
         }
@@ -1950,6 +1951,7 @@ function InitFEN(startingFEN){
         if (cc.charCodeAt(0)==PieceName.toUpperCase().charCodeAt(0))
         { if (PieceType[0][0]!=-1)
           { myAlert("Invalid FEN [4]: char "+ll+" in "+FenString);
+            InitFEN();
             return;
           }     
           PieceType[0][0]=1;
@@ -1960,6 +1962,7 @@ function InitFEN(startingFEN){
         if (cc.charCodeAt(0)==PieceName.toLowerCase().charCodeAt(0))
         { if (PieceType[1][0]!=-1)
           { myAlert("Invalid FEN [5]: char "+ll+" in "+FenString);
+            InitFEN();
             return;
           }  
           PieceType[1][0]=1;
@@ -1971,6 +1974,7 @@ function InitFEN(startingFEN){
         { if (cc.charCodeAt(0)==PieceName.toUpperCase().charCodeAt(kk))
           { if (nn==16)
             { myAlert("Invalid FEN [6]: char "+ll+" in "+FenString);
+              InitFEN();
               return;
             }          
             PieceType[0][nn]=kk+1;
@@ -1982,6 +1986,7 @@ function InitFEN(startingFEN){
           if (cc.charCodeAt(0)==PieceName.toLowerCase().charCodeAt(kk))
           { if (mm==16)
             { myAlert("Invalid FEN [7]: char "+ll+" in "+FenString);
+              InitFEN();
               return;
             }  
             PieceType[1][mm]=kk+1;
@@ -1996,10 +2001,12 @@ function InitFEN(startingFEN){
       }
       if ((ii!=8)||(jj!==0))
       { myAlert("Invalid FEN [8]: char "+ll+" in "+FenString);
+        InitFEN();
         return;
       }
       if ((PieceType[0][0]==-1)||(PieceType[1][0]==-1))
       { myAlert("Invalid FEN [9]: char "+ll+" missing king");
+        InitFEN();
         return;
       }
       if (ll==FenString.length)
