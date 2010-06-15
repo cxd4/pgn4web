@@ -1868,6 +1868,7 @@ function InitFEN(startingFEN){
   StartPly  = 0;
   MoveCount = StartPly;
   MoveColor = StartPly % 2;
+  StartMove = 0;
 
   var newEnPassant = false;
   var newEnPassantCol;
@@ -1927,7 +1928,7 @@ function InitFEN(startingFEN){
       { if (cc=="/")
         { if (ii!=8)
           { myAlert("Invalid FEN [1]: char "+ll+" in "+FenString);
-            Init('standard');
+            InitFEN();
             return;
           }
           ii=0;
@@ -1935,7 +1936,7 @@ function InitFEN(startingFEN){
         }
         if (ii==8) 
         { myAlert("Invalid FEN [2]: char "+ll+" in "+FenString);
-          Init('standard');
+          InitFEN();
           return;
         }
         if (! isNaN(cc))
@@ -2012,9 +2013,7 @@ function InitFEN(startingFEN){
       }
       cc=FenString.charAt(ll++);
       if ((cc=="w")||(cc=="b"))
-      { if (cc=="w") { 
-          StartMove=0;
-        }else{ 
+      { if (cc=="b") { 
           StartMove=1;
           StartPly += 1;
           MoveColor = 1;
@@ -2022,14 +2021,12 @@ function InitFEN(startingFEN){
       }
       else
       { myAlert("Invalid FEN [11]: char "+ll+" invalid active color");
-        Init('standard');
         return;
       }
 
       ll++;
       if (ll>=FenString.length)
       { myAlert("Invalid FEN [12]: char "+ll+" missing castling availability");
-        Init('standard');
         return;
       }
       CastlingShort[0]=0; CastlingLong[0]=0; CastlingShort[1]=0; CastlingLong[1]=0;
@@ -2074,7 +2071,6 @@ function InitFEN(startingFEN){
           
       if (ll==FenString.length)
       { myAlert("Invalid FEN [13]: char "+ll+" missing en passant target square");
-        Init('standard');
         return;
       }
       cc=FenString.charAt(ll++);
