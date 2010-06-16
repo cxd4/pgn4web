@@ -755,7 +755,7 @@ function displayFenData() {
     fenWin.document.write("<html>");
     fenWin.document.write("<head><title>pgn4web FEN string</title><link rel='shortcut icon' href='pawn.ico'></link></head>");
     fenWin.document.write("<body>\n");
-    fenWin.document.write("<b><pre>\n" + currentFEN + "\n\n</pre></b>\n<hr>\n");
+    fenWin.document.write("<b><pre>\n\n" + currentFEN + "\n\n</pre></b>\n<hr>\n");
     fenWin.document.write("<pre>\n\n");
     if (gameEvent[currentGame]) { fenWin.document.write("[Event \"" + gameEvent[currentGame] + "\"]\n"); }
     else { fenWin.document.write("[Event \"?\"]\n"); }
