@@ -3182,7 +3182,7 @@ function PrintHTML(){
       } else {
         squareCoord = String.fromCharCode(jj+65,56-ii);
       }
-      if (boardTitle[jj][ii] !== '') { titleSeparator = '  '; }
+      if (boardTitle[jj][ii] !== '') { titleSeparator = '   '; }
       else { titleSeparator = ''; }
       text += '<A HREF="javascript:boardOnClick[' + jj + '][' + ii + ']()" ' + 
               'TITLE="' + squareCoord + titleSeparator + boardTitle[jj][ii] + '"' +
