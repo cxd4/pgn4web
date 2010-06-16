@@ -522,7 +522,7 @@ function configBoardShrortcut(square, title, functionPointer) {
 // A8
 configBoardShrortcut("A8", "go to the pgn4web website", function(){ window.open(pgn4web_project_url); });
 // B8
-configBoardShrortcut("B8", "debug info v" + pgn4web_version, function(){ displayDebugInfo(); });
+configBoardShrortcut("B8", "show this position FEN string", function(){ displayFenData(); });
 // C8
 configBoardShrortcut("C8", "show this game PGN source data", function(){ displayPgnData(false); });
 // D8
@@ -536,19 +536,19 @@ configBoardShrortcut("G8", "shortcut squares help", function(){ displayHelp("squ
 // H8
 configBoardShrortcut("H8", "pgn4web help", function(){ displayHelp(); });
 // A7
-configBoardShrortcut("A7", "toggle show comments in game text", function(){ SetCommentsIntoMoveText(!commentsIntoMoveText); thisPly = CurrentPly; Init(); GoToMove(thisPly); });
+configBoardShrortcut("A7", "debug info v" + pgn4web_version, function(){ displayDebugInfo(); });
 // B7
-configBoardShrortcut("B7", "toggle show comments on separate lines in game text", function(){ SetCommentsOnSeparateLines(!commentsOnSeparateLines); thisPly = CurrentPly; Init(); GoToMove(thisPly); });
+configBoardShrortcut("B7", "toggle show comments in game text", function(){ SetCommentsIntoMoveText(!commentsIntoMoveText); thisPly = CurrentPly; Init(); GoToMove(thisPly); });
 // C7
-configBoardShrortcut("C7", "toggle highlight last move", function(){ SetHighlight(!highlightOption); });
+configBoardShrortcut("C7", "toggle show comments on separate lines in game text", function(){ SetCommentsOnSeparateLines(!commentsOnSeparateLines); thisPly = CurrentPly; Init(); GoToMove(thisPly); });
 // D7
-configBoardShrortcut("D7", "flip board", function(){ FlipBoard(); });
+configBoardShrortcut("D7", "toggle highlight last move", function(){ SetHighlight(!highlightOption); });
 // E7
-configBoardShrortcut("E7", "show white on bottom", function(){ if (IsRotated) { FlipBoard(); } });
+configBoardShrortcut("E7", "flip board", function(){ FlipBoard(); });
 // F7
-configBoardShrortcut("F7", "toggle autoplay next game", function(){ SetAutoplayNextGame(!autoplayNextGame); });
+configBoardShrortcut("F7", "show white on bottom", function(){ if (IsRotated) { FlipBoard(); } });
 // G7
-configBoardShrortcut("G7", "", function(){});
+configBoardShrortcut("G7", "toggle autoplay next game", function(){ SetAutoplayNextGame(!autoplayNextGame); });
 // H7
 configBoardShrortcut("H7", "toggle enabling shortcut keys", function(){ SetShortcutKeysEnabled(!shortcutKeysEnabled); });
 // A6
@@ -729,6 +729,142 @@ function displayPgnData(allGames) {
   }
 }
 
+function CurrentFEN() {
+
+  currentFEN = "";
+
+  emptyCounterFen = 0;
+  for (row=7; row>=0; row--) {
+    for (col=0; col<=7; col++) {
+      if (Board[col][row] === 0) {
+        emptyCounterFen++;
+      } else {
+        if (emptyCounterFen > 0) {
+          currentFEN += "" + emptyCounterFen;
+          emptyCounterFen = 0;
+        }
+        if (Board[col][row] > 0) { currentFEN += FenPieceName.toUpperCase().charAt(Board[col][row]-1); }
+        else if (Board[col][row] < 0) { currentFEN += FenPieceName.toLowerCase().charAt(-Board[col][row]-1); }
+      }
+    }
+    if (emptyCounterFen > 0) {
+      currentFEN += "" + emptyCounterFen;
+      emptyCounterFen = 0;
+    }
+    if (row>0) { currentFEN += "/"; }
+  }
+ 
+  // Active color
+  if (CurrentPly%2 === 0) { currentFEN += " w"; }
+  else { currentFEN += " b"; }
+
+  // Castling availability (only standard chess supported, not any FischerRandom extensions
+  CastlingShortFEN = new Array(2);
+  CastlingShortFEN[0] = CastlingShort[0];
+  CastlingShortFEN[1] = CastlingShort[1];
+  CastlingLongFEN = new Array(2);
+  CastlingLongFEN[0] = CastlingLong[0];
+  CastlingLongFEN[1] = CastlingLong[1];
+  for (thisPly = StartPly; thisPly < CurrentPly; thisPly++) {
+    SideToMoveFEN = thisPly%2;
+    BackrowSideToMoveFEN = SideToMoveFEN * 7;
+    if (HistType[0][thisPly] == 1) { CastlingShortFEN[SideToMoveFEN] = CastlingLongFEN[SideToMoveFEN] = 0; }
+    if ((HistCol[0][thisPly] === 7) && (HistRow[0][thisPly] == BackrowSideToMoveFEN)) { CastlingShortFEN[SideToMoveFEN] = 0; }
+    if ((HistCol[0][thisPly] === 0) && (HistRow[0][thisPly] == BackrowSideToMoveFEN)) { CastlingLongFEN[SideToMoveFEN] = 0; }
+  }
+
+  CastlingFEN = "";
+  if (CastlingShortFEN[0] !== 0) { CastlingFEN += FenPieceName.toUpperCase().charAt(0); }
+  if (CastlingLongFEN[0] !== 0) { CastlingFEN += FenPieceName.toUpperCase().charAt(1); }
+  if (CastlingShortFEN[1] !== 0) { CastlingFEN += FenPieceName.toLowerCase().charAt(0); }
+  if (CastlingLongFEN[1] !== 0) { CastlingFEN += FenPieceName.toLowerCase().charAt(1); }
+  if (CastlingFEN === "") { CastlingFEN = "-"; }
+  currentFEN += " " + CastlingFEN;
+ 
+  // En passant target square
+  if (HistEnPassant[CurrentPly-1]) {
+    currentFEN += " " + String.fromCharCode(HistEnPassantCol[CurrentPly-1] + 97);
+    if (CurrentPly%2 === 0) { currentFEN += "6"; }
+    else { currentFEN += "3"; }
+  } else {
+    currentFEN += " -";
+  }
+
+  // Halfmove clock
+  HalfMoveClock = InitialHalfMoveClock;  
+  for (thisPly = StartPly; thisPly < CurrentPly; thisPly++) {
+    if ((HistType[0][thisPly] == 6) || (HistPieceId[1][thisPly] >= 16)) { HalfMoveClock = 0; }
+    else { HalfMoveClock++; } 
+  }
+  currentFEN += " " + HalfMoveClock;
+
+  // Fullmove number
+  currentFEN += " " + (Math.floor(CurrentPly/2)+1);
+
+  return currentFEN;
+}
+
+fenWin = null;
+function displayFenData() {
+  if (fenWin && !fenWin.closed) { fenWin.close(); }
+
+  currentFEN = CurrentFEN();
+
+  currentMovesString = "";
+  lastLineStart = 0;
+  for(thisPly = CurrentPly; thisPly <= PlyNumber; thisPly++) {
+    addToMovesString = "";
+    if (thisPly == PlyNumber) {
+      if ((gameResult[currentGame]) && (gameResult[currentGame] != "*")) {
+        addToMovesString = gameResult[currentGame];
+      }
+    } else {
+      if ((thisPly%2) === 0) { addToMovesString = (Math.floor(thisPly/2)+1) + ". "; }
+      else if (thisPly == CurrentPly) {
+        addToMovesString = (Math.floor(thisPly/2)+1) + "... ";
+      }
+      addToMovesString += Moves[thisPly];
+    }
+    if (currentMovesString.length + addToMovesString.length + 1 > lastLineStart + 80) {
+      lastLineStart = currentMovesString.length;
+      currentMovesString += "\n" + addToMovesString;
+    } else {
+      if (currentMovesString.length > 0) { currentMovesString += " "; }
+      currentMovesString += addToMovesString;
+    }
+  }
+
+  fenWin = window.open("", "fen_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
+  if (fenWin !== null) {
+    fenWin.document.open("text/html", "replace");
+    fenWin.document.write("<html>");
+    fenWin.document.write("<head><title>pgn4web FEN string</title><link rel='shortcut icon' href='pawn.ico'></link></head>");
+    fenWin.document.write("<body>\n");
+    fenWin.document.write("<b><pre>\n" + currentFEN + "\n\n</pre></b>\n<hr>\n");
+    fenWin.document.write("<pre>\n\n");
+    if (gameEvent[currentGame]) { fenWin.document.write("[Event \"" + gameEvent[currentGame] + "\"]\n"); }
+    else { fenWin.document.write("[Event \"?\"]\n"); }
+    if (gameSite[currentGame]) { fenWin.document.write("[Site \"" + gameSite[currentGame] + "\"]\n"); }
+    else { fenWin.document.write("[Site \"?\"]\n"); }
+    if (gameDate[currentGame]) { fenWin.document.write("[Date \"" + gameDate[currentGame] + "\"]\n"); }
+    else { fenWin.document.write("[Date \"????.??.??\"]\n"); }
+    if (gameRound[currentGame]) { fenWin.document.write("[Round \"" + gameRound[currentGame] + "\"]\n"); }
+    else { fenWin.document.write("[Round \"?\"]\n"); }
+    if (gameWhite[currentGame]) { fenWin.document.write("[White \"" + gameWhite[currentGame] + "\"]\n"); }
+    else { fenWin.document.write("[White \"?\"]\n"); }
+    if (gameBlack[currentGame]) { fenWin.document.write("[Black \"" + gameBlack[currentGame] + "\"]\n"); }
+    else { fenWin.document.write("[Black \"?\"]\n"); }
+    if (gameResult[currentGame]) { fenWin.document.write("[Result \"" + gameResult[currentGame] + "\"]\n"); }
+    else { fenWin.document.write("[Result \"*\"]\n"); }
+    fenWin.document.write("[SetUp \"1\"]\n");
+    fenWin.document.write("[FEN \"" + CurrentFEN() + "\"]\n\n");
+    fenWin.document.write(currentMovesString);
+    fenWin.document.write("\n</pre>\n</body></html>");
+    fenWin.document.close();
+    if (window.focus) { fenWin.window.focus(); }
+  }
+}
+
 
 var pgnGame = new Array();
 var numberOfGames = -1; 
@@ -845,8 +981,9 @@ PieceCode[3] = "B";
 PieceCode[4] = "N";
 PieceCode[5] = "P";
 
-var FenString   = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-var ImageOffset = -1; 
+var FenPieceName = "KQRBNP";
+var FenString    = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+var ImageOffset  = -1; 
                                                 
 var ImagePath = '';                                                 
 var ImagePathOld;
@@ -1880,7 +2017,8 @@ function InitFEN(startingFEN){
     CastlingLong[ii]  = 1;
     CastlingShort[ii] = 1;
   }
-  HalfMove=0;
+  
+  InitialHalfMoveClock=0;
 
   if (FenString == "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"){
     for (color = 0; color < 2; ++color){
@@ -1950,8 +2088,7 @@ function InitFEN(startingFEN){
             return;
           }
         }
-        var PieceName = "KQRBNP";
-        if (cc.charCodeAt(0)==PieceName.toUpperCase().charCodeAt(0))
+        if (cc.charCodeAt(0)==FenPieceName.toUpperCase().charCodeAt(0))
         { if (PieceType[0][0]!=-1)
           { myAlert("Invalid FEN [4]: char "+ll+" in "+FenString);
             InitFEN();
@@ -1962,7 +2099,7 @@ function InitFEN(startingFEN){
           PieceRow[0][0]=jj;
           ii++;
         }
-        if (cc.charCodeAt(0)==PieceName.toLowerCase().charCodeAt(0))
+        if (cc.charCodeAt(0)==FenPieceName.toLowerCase().charCodeAt(0))
         { if (PieceType[1][0]!=-1)
           { myAlert("Invalid FEN [5]: char "+ll+" in "+FenString);
             InitFEN();
@@ -1974,7 +2111,7 @@ function InitFEN(startingFEN){
           ii++;
         }
         for (kk=1; kk<6; kk++)
-        { if (cc.charCodeAt(0)==PieceName.toUpperCase().charCodeAt(kk))
+        { if (cc.charCodeAt(0)==FenPieceName.toUpperCase().charCodeAt(kk))
           { if (nn==16)
             { myAlert("Invalid FEN [6]: char "+ll+" in "+FenString);
               InitFEN();
@@ -1986,7 +2123,7 @@ function InitFEN(startingFEN){
             nn++;
             ii++;
           }
-          if (cc.charCodeAt(0)==PieceName.toLowerCase().charCodeAt(kk))
+          if (cc.charCodeAt(0)==FenPieceName.toLowerCase().charCodeAt(kk))
           { if (mm==16)
             { myAlert("Invalid FEN [7]: char "+ll+" in "+FenString);
               InitFEN();
@@ -2014,10 +2151,10 @@ function InitFEN(startingFEN){
       }
       if (ll==FenString.length)
       { FenString+=" w ";
-        FenString+=PieceName.toUpperCase().charAt(0);
-        FenString+=PieceName.toUpperCase().charAt(1);
-        FenString+=PieceName.toLowerCase().charAt(0);
-        FenString+=PieceName.toLowerCase().charAt(1);      
+        FenString+=FenPieceName.toUpperCase().charAt(0);
+        FenString+=FenPieceName.toUpperCase().charAt(1);
+        FenString+=FenPieceName.toLowerCase().charAt(0);
+        FenString+=FenPieceName.toLowerCase().charAt(1);      
         FenString+=" - 0 1";
         ll++;
       }
@@ -2042,13 +2179,13 @@ function InitFEN(startingFEN){
       CastlingShort[0]=0; CastlingLong[0]=0; CastlingShort[1]=0; CastlingLong[1]=0;
       cc=FenString.charAt(ll++);
       while (cc!=" ")
-      { if (cc.charCodeAt(0)==PieceName.toUpperCase().charCodeAt(0))
+      { if (cc.charCodeAt(0)==FenPieceName.toUpperCase().charCodeAt(0))
         { CastlingShort[0]=1; }
-        if (cc.charCodeAt(0)==PieceName.toUpperCase().charCodeAt(1))
+        if (cc.charCodeAt(0)==FenPieceName.toUpperCase().charCodeAt(1))
         { CastlingLong[0]=1; }
-        if (cc.charCodeAt(0)==PieceName.toLowerCase().charCodeAt(0))
+        if (cc.charCodeAt(0)==FenPieceName.toLowerCase().charCodeAt(0))
         { CastlingShort[1]=1; }
-        if (cc.charCodeAt(0)==PieceName.toLowerCase().charCodeAt(1))
+        if (cc.charCodeAt(0)==FenPieceName.toLowerCase().charCodeAt(1))
         { CastlingLong[1]=1; }
         if ((cc=="E")||(cc=="F")||(cc=="G")||(cc=="H")) //for Chess960
         { CastlingShort[0]=1; }
@@ -2096,14 +2233,14 @@ function InitFEN(startingFEN){
       { myAlert("Invalid FEN [14]: char "+ll+" missing halfmove clock");
         return;
       }
-      HalfMove=0;
+      InitialHalfMoveClock=0;
       cc=FenString.charAt(ll++);
       while (cc!=" ")
       { if (isNaN(cc))
         { myAlert("Invalid FEN [15]: char "+ll+" invalid halfmove clock");
           return;
         }
-        HalfMove=HalfMove*10+parseInt(cc, 10);
+        InitialHalfMoveClock=InitialHalfMoveClock*10+parseInt(cc, 10);
         if (ll<FenString.length) { cc=FenString.charAt(ll++); }
         else { cc=" "; }
       }
