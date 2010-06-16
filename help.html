@@ -60,24 +60,6 @@ try {
   displayVersion = '';
 }
 
-try {
-  isRotated = opener.IsRotated;
-} catch(e) {
-  isRotated = false;
-}
-
-if (isRotated) {
-  colorAtTheBottom = "black";
-  shortcutSquareKeyEnable = "A2";
-  shortcutSquareSearchPopup = "H4";
-  shortcutSquareSearchRepeat = "G4";
-} else {
-  colorAtTheBottom = "white";
-  shortcutSquareKeyEnable = "H7";
-  shortcutSquareSearchPopup = "A5";
-  shortcutSquareSearchRepeat = "B5";
-}
-
 </script>
 
 <table name="top" width=100% cellspacing=0 cellpadding=0><tr>
@@ -119,7 +101,7 @@ Remaining pgn4web code is copyright (C) 2009, 2010 <a href=mailto:pgn4web@casasc
       if (rowDisplayed) { print_help_row("&nbsp;", ""); }
     }
     document.write("</table>");	
-    document.write("<i>Squares labeled assuming " + colorAtTheBottom + " is at the bottom.</i>");
+    document.write("<i>Squares always labeled assuming White on bottom.</i>");
   } catch (e) {
     print_help_row("could not find shortcut squares info from the opener window", "");
     print_help_row("please hover the mouse pointer on each square of the chessboard to check for their shortcut action", "");
@@ -156,7 +138,7 @@ print_help_row("p", "toggle comments");
 print_help_row("o", "toggle comments on separate lines");
 print_help_row("&nbsp;", "");
 print_help_row("g", "toggle highlighting");
-print_help_row("f, d", "flip board, white on bottom");
+print_help_row("f, d", "flip board, White on bottom");
 print_help_row("&nbsp;", "");
 print_help_row("z", "go to pgn4web website");
 print_help_row("esc", "pgn4web help");
@@ -172,9 +154,8 @@ try {
     ke_next = "enable";
   }
   document.write('<i>Shorcut keys currently ' + ke_curr + ', ' + ke_next + 
-                 ' in the chessboard with shift+escape or clicking square ' +
-                 shortcutSquareKeyEnable + ' (assuming ' + 
-                 colorAtTheBottom + ' on bottom).\n');
+                 ' in the chessboard with shift+escape or clicking square H7' +
+                 ' (assuming White on bottom).\n');
 } catch (e) {}
 </script>
 
@@ -183,9 +164,7 @@ try {
 
 <script type="text/javascript">print_menu("search", 2, "search&nbsp;tool");</script>
 
-<script type="text/javascript">
-document.write('Access the search tool either direclty with the search form (if available on the web page) or via the popup search box invoked with the ' + shortcutSquareSearchRepeat + ' (assuming ' + colorAtTheBottom + ' on bottom) shortcut square and/or the \'s\' shortcut key. The ' + shortcutSquareSearchPopup + ' (assuming ' + colorAtTheBottom + ' on bottom) shortcut square and/or the \'enter\' shortcut key repeat the last search.'); 
-</script>
+Access the search tool either direclty with the search form (if available on the web page) or via the popup search box invoked with the B5 shortcut square (assuming White on bottom) and/or the 's' shortcut key. The A5 shortcut square (assuming White on bottom) and/or the 'enter' shortcut key repeat the last search. 
 
 <p></p>
 For full details about the search tool (implemented as regular expression match of the text of the PGN game), please refer to <a href="http://code.google.com/p/pgn4web/wiki/SearchTool" target="_blank">the pgn4web search tool wiki page</a>; please find below a sample list of useful search patterns:
