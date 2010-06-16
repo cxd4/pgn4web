@@ -435,7 +435,7 @@ function configBoardShrortcut(square, title, functionPointer) {
 }
 
 // A8
-configBoardShrortcut("A8", "go to the pgn4web website", function(){ window.open(pgn4web_project_url); });
+configBoardShrortcut("A8", "debug info v" + pgn4web_version, function(){ displayDebugInfo(); });
 // B8
 configBoardShrortcut("B8", "show this position FEN string", function(){ displayFenData(); });
 // C8
@@ -451,7 +451,7 @@ configBoardShrortcut("G8", "shortcut squares help", function(){ displayHelp("squ
 // H8
 configBoardShrortcut("H8", "pgn4web help", function(){ displayHelp(); });
 // A7
-configBoardShrortcut("A7", "debug info v" + pgn4web_version, function(){ displayDebugInfo(); });
+configBoardShrortcut("A7", "go to the pgn4web website", function(){ window.open(pgn4web_project_url); });
 // B7
 configBoardShrortcut("B7", "toggle show comments in game text", function(){ SetCommentsIntoMoveText(!commentsIntoMoveText); thisPly = CurrentPly; Init(); GoToMove(thisPly); });
 // C7
@@ -3177,8 +3177,15 @@ function PrintHTML(){
       } else{
 	text += '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="lightgray" ALIGN="center" VALIGN="middle" ONCLICK="clickedSquare(' + ii + ',' + jj + ')">';
       } 
+      if (IsRotated) {
+        squareCoord = String.fromCharCode(72-jj,49+ii);
+      } else {
+        squareCoord = String.fromCharCode(jj+65,56-ii);
+      }
+      if (boardTitle[jj][ii] !== '') { titleSeparator = '  '; }
+      else { titleSeparator = ''; }
       text += '<A HREF="javascript:boardOnClick[' + jj + '][' + ii + ']()" ' + 
-              'TITLE="' + boardTitle[jj][ii] + '" ' +
+              'TITLE="' + squareCoord + titleSeparator + boardTitle[jj][ii] + '"' +
               'STYLE="text-decoration: none; outline: none;"' +
               'ONFOCUS="this.blur()">' + 
               '<IMG CLASS="pieceImage" ID="' + imageId + '" ' + 
@@ -3224,11 +3231,19 @@ function PrintHTML(){
           '</TD>' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '</TD>' +
-          '<TD>' +
-          '<INPUT ID="autoplayButton" TYPE="BUTTON" VALUE="+" STYLE="';
+          '<TD>';
+  if (isAutoPlayOn) {
+    text += '<INPUT ID="autoplayButton" TYPE="BUTTON" VALUE="=" STYLE="';
+  } else {
+    text += '<INPUT ID="autoplayButton" TYPE="BUTTON" VALUE="+" STYLE="';
+  }
   if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + ';'; }
-  text += '"; CLASS="buttonControlStop" TITLE="toggle autoplay (start)" ' +
-          ' ID="btnPlay" NAME="AutoPlay" onClick="javascript:SwitchAutoPlay()" ONFOCUS="this.blur()">' +
+  if (isAutoPlayOn) { 
+    text += '"; CLASS="buttonControlStop" TITLE="toggle autoplay (stop)" ';
+  } else {
+    text += '"; CLASS="buttonControlPlay" TITLE="toggle autoplay (start)" ';
+  }  
+  text += ' ID="btnPlay" NAME="AutoPlay" onClick="javascript:SwitchAutoPlay()" ONFOCUS="this.blur()">' +
           '</TD>' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '</TD>' +
@@ -3490,6 +3505,7 @@ function FlipBoard(){
   tmpHighlightOption = highlightOption;
   if (tmpHighlightOption) { SetHighlight(false); }
   IsRotated = !IsRotated;
+  PrintHTML();
   RefreshBoard();
   if (tmpHighlightOption) { SetHighlight(true); }
 }

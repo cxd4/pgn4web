@@ -60,6 +60,28 @@ try {
   displayVersion = '';
 }
 
+try {
+  isRotated = opener.IsRotated;
+} catch(e) {
+  isRotated = false;
+}
+
+if (isRotated) {
+  colorAtTheBottom = "Black";
+  shortcutSquareKeyEnable = "A2";
+  shortcutSquareSearchPopup = "H4";
+  shortcutSquareSearchRepeat = "G4";
+  rowNumbers = "87654321";
+  colLetters = "HGFEDCBA";
+} else {
+  colorAtTheBottom = "White";
+  shortcutSquareKeyEnable = "H7";
+  shortcutSquareSearchPopup = "A5";
+  shortcutSquareSearchRepeat = "B5";
+  rowNumbers = "12345678";
+  colLetters = "ABCDEFGH";
+}
+
 </script>
 
 <table name="top" width=100% cellspacing=0 cellpadding=0><tr>
@@ -80,6 +102,7 @@ PNG images from http://ixian.com/chess/jin-piece-sets (<a href=http://creativeco
 The figurine fonts are derived from the Liberation Sans font (released under GNU General Public License, see https://fedorahosted.org/liberation-fonts/) with the addition of chess pieces from freeware fonts: the alpha2 font (Peter Strickland), the good companion font (David L. Brown), the merida font (Armando H. Marroquin), the pirate font (Klaus Wolf) and the chess usual font (Armando H. Marroquin). The original chess fonts and more details are available at http://www.enpassant.dk/chess/fonteng.htm
 <p></p>
 Remaining pgn4web code is copyright (C) 2009, 2010 <a href=mailto:pgn4web@casaschi.net target=_blank>Paolo Casaschi (pgn4web@casaschi.net)</a> and licensed under the terms of the <a href=license-gpl-2.0.txt>GNU General Public License version 2</a> as published by the <a href=http://www.fsf.org target=_blank>Free Software Foundation</a>; either <a href=license-gpl-2.0.txt>version 2 of the License</a>, or (at your option) any later version.
+
 <p></p>
 <br>
 
@@ -88,8 +111,6 @@ Remaining pgn4web code is copyright (C) 2009, 2010 <a href=mailto:pgn4web@casasc
 <script type="text/javascript">
   document.write("<table style='padding:0;' border=0>");	
   try {
-    rowNumbers = "12345678";
-    colLetters = "ABCDEFGH";
     for (r=7; r>=0; r--) {
       rowDisplayed = false;
       for (c=0; c<=7; c++) {
@@ -101,7 +122,7 @@ Remaining pgn4web code is copyright (C) 2009, 2010 <a href=mailto:pgn4web@casasc
       if (rowDisplayed) { print_help_row("&nbsp;", ""); }
     }
     document.write("</table>");	
-    document.write("<i>Squares always labeled assuming White on bottom.</i>");
+    document.write("<i>Squares labeled assuming " + colorAtTheBottom + " on bottom.</i>");
   } catch (e) {
     print_help_row("could not find shortcut squares info from the opener window", "");
     print_help_row("please hover the mouse pointer on each square of the chessboard to check for their shortcut action", "");
@@ -154,8 +175,9 @@ try {
     ke_next = "enable";
   }
   document.write('<i>Shorcut keys currently ' + ke_curr + ', ' + ke_next + 
-                 ' in the chessboard with shift+escape or clicking square H7' +
-                 ' (assuming White on bottom).\n');
+                 ' in the chessboard with shift+escape or clicking square ' +
+                 shortcutSquareKeyEnable + ' (assuming ' + 
+                 colorAtTheBottom + ' on bottom).\n');
 } catch (e) {}
 </script>
 
@@ -164,7 +186,9 @@ try {
 
 <script type="text/javascript">print_menu("search", 2, "search&nbsp;tool");</script>
 
-Access the search tool either direclty with the search form (if available on the web page) or via the popup search box invoked with the B5 shortcut square (assuming White on bottom) and/or the 's' shortcut key. The A5 shortcut square (assuming White on bottom) and/or the 'enter' shortcut key repeat the last search. 
+<script type="text/javascript">
+document.write('Access the search tool either direclty with the search form (if available on the web page) or via the popup search box invoked with the ' + shortcutSquareSearchRepeat + ' shortcut square (assuming ' + colorAtTheBottom + ' on bottom) and/or the \'s\' shortcut key. The ' + shortcutSquareSearchPopup + ' shortcut square (assuming ' + colorAtTheBottom + ' on bottom) and/or the \'enter\' shortcut key repeat the last search.'); 
+</script>
 
 <p></p>
 For full details about the search tool (implemented as regular expression match of the text of the PGN game), please refer to <a href="http://code.google.com/p/pgn4web/wiki/SearchTool" target="_blank">the pgn4web search tool wiki page</a>; please find below a sample list of useful search patterns:
@@ -193,4 +217,3 @@ document.write("</table>");
 </body>
 
 </html>
-
