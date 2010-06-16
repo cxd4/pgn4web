@@ -6,87 +6,8 @@
  */
 
 /*
- *   HOW TO USE pgn4web.js
- *
- *   add a SCRIPT instance at the top of your HTML file:
- *
- *      <script src="pgn4web-server-config.js" type="text/javascript"></script>
- *      <script src="pgn4web.js" type="text/javascript"></script>
- *
- *   The JS file pgn4web-server-config.js contains some customization variable
- *   depending on your web server configuration. Default values should be ok
- *   for most purposes.
- *   Then add another SCRIPT instance with at least the call to SetPgnUrl("http://yoursite/yourpath/yourfile.pgn")
- *   and optionally any of the other calls listed below.  
- *   Example:
- *
- *      <script type="text/javascript>
- *        SetPgnUrl("http://yoursite/yourpath/yourfile.pgn");  // if set, this has precedence over the inline PGN in the HTML file
- *        SetImagePath(""); // use "" path if images are in the same folder as this javascript file
- *        SetImageType("png");
- *        SetHighlightOption(true); // true or false
- *        SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate); // default: (" ...", false, 0, 0, 0, 15, 15, 0, 10)
- *        SetCommentsIntoMoveText(false);
- *        SetCommentsOnSeparateLines(false);
- *        SetAutoplayDelay(1000); // milliseconds
- *        SetAutostartAutoplay(false);
- *        SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
- *        SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are also acceptted
- *        SetInitialHalfmove(0,false); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default)
- *        SetShortcutKeysEnabled(false);
- *
- *        SetLiveBroadcast(0.25, true, true); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false)
- *      </script>
- * 
- *   Then the script will automagically add content into your HTML file 
- *   to any <div> or <span> containers with the following IDs:
- *
- *      <div id="GameSelector"></div>
- *      <div id="GameSearch"></div>
- *      <div id="GameLastMove"></div>
- *      <div id="GameNextMove"></div>
- *      <div id="GameSideToMove"></div>
- *      <div id="GameLastComment"></div>
- *      <div id="GameBoard"></div>
- *      <div id="GameButtons"></div>
- *      <div id="GameEvent"></div>
- *      <div id="GameRound"></div>
- *      <div id="GameSite"></div>
- *      <div id="GameDate"></div>
- *      <div id="GameWhite"></div>
- *      <div id="GameBlack"></div>
- *      <div id="GameResult"></div>
- *      <div id="GameText"></div>
- *
- *      <div id="GameWhiteClock"></div>
- *      <div id="GameBlackClock"></div>
- *      <div id="GameLiveStatus"></div>
- *
- *   The file template.css shows a list of customization style options.
- *
- *   See template.html file for an example.
- *   See mini.html for an example of embedding the PGN within the HTML file.
- */
-
-// SetPgnUrl("");  // if set, this has precedence over the inline PGN in the HTML file
-// SetImagePath(""); // use "" path if images are in the same folder as this javascript file
-// SetImageType("png");
-// SetHighlightOption(true); // true or false
-// SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate); // default: (" ...", false, 0, 0, 0, 15, 15, 0, 10)
-// SetCommentsIntoMoveText(true);
-// SetCommentsOnSeparateLines(true);
-// SetAutoplayDelay(1000); // milliseconds
-// SetAutostartAutoplay(false);
-// SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
-// SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are also accepted
-// SetInitialHalfmove(0,false); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default).
-// SetShortcutKeysEnabled(false);
-
-
-/*********************************************************************/
-
-/* 
- * DONT CHANGE AFTER HERE
+ *   See README.txt file for instructions HOW TO USE pgn4web.js
+ *   Alternatively, check the project wiki at http://pgn4web.casaschi.net
  */
 
 var pgn4web_version = '1.97+';
@@ -111,17 +32,11 @@ function displayHelp(section){
 }
 
 
-/******************************************************************************
- *                                                                            *
- * function customFunctionOnPgnTextLoad() {}                                  *
- * function customFunctionOnPgnGameLoad() {}                                  *
- * function customFunctionOnMove()        {}                                  *
- *                                                                            *
- * Custom functions executed each time a PGN text is loaded and each time a   *
- * PGN game is loaded. They are intentionally empty here so that can be       *
- * customized in the HTML file by redefining them AFTER loading pgn4web.js    *
- *                                                                            *
- ******************************************************************************/
+/*
+ * Custom functions executed each time a PGN text is loaded and each time a 
+ * PGN game is loaded. They are intentionally empty here so that can be 
+ * customized in the HTML file by redefining them AFTER loading pgn4web.js
+ */
 
 function customFunctionOnPgnTextLoad() {}
 function customFunctionOnPgnGameLoad() {}
@@ -812,9 +727,9 @@ function displayFenData() {
 
   currentMovesString = "";
   lastLineStart = 0;
-  for(thisPly = CurrentPly; thisPly <= PlyNumber; thisPly++) {
+  for(thisPly = CurrentPly; thisPly <= StartPly + PlyNumber; thisPly++) {
     addToMovesString = "";
-    if (thisPly == PlyNumber) {
+    if (thisPly == StartPly + PlyNumber) {
       if ((gameResult[currentGame]) && (gameResult[currentGame] != "*")) {
         addToMovesString = gameResult[currentGame];
       }
@@ -2622,12 +2537,7 @@ function ParsePGNGameString(gameString){
    * Get rid of the PGN tags and remove the result at the end. 
    */
   ss = ss.replace(pgnHeaderTagRegExpGlobal, ''); 
-// ss = ss.replace(/\s+/g, ' ');
   ss = ss.replace(/^\s/, '');
-//  ss = ss.replace(/1-0/, '');
-//  ss = ss.replace(/0-1/, '');
-//  ss = ss.replace(/1\/2-1\/2/, '');
-//  ss = ss.replace(/\*/, '');
   ss = ss.replace(/\s$/, '');
   
   PlyNumber = 0;
