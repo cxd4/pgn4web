@@ -3187,7 +3187,7 @@ function PrintHTML(){
       if (boardTitle[jj][ii] !== '') { titleSeparator = '   '; }
       else { titleSeparator = ''; }
       text += '<A HREF="javascript:boardOnClick[' + jj + '][' + ii + ']()" ' + 
-              'TITLE="' + squareCoord + titleSeparator + boardTitle[jj][ii] + '"' +
+              'TITLE="' + boardTitle[jj][ii] + titleSeparator + squareCoord + '"' +
               'STYLE="text-decoration: none; outline: none;"' +
               'ONFOCUS="this.blur()">' + 
               '<IMG CLASS="pieceImage" ID="' + imageId + '" ' + 
