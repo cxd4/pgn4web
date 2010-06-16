@@ -746,6 +746,7 @@ var gameEvent = new Array();
 var gameSite = new Array();
 var gameRound = new Array();
 var gameResult = new Array();
+var gameSetUp = new Array();
 var gameFEN = new Array();
 var gameInitialWhiteClock = new Array();
 var gameInitialBlackClock = new Array();
@@ -1792,7 +1793,9 @@ function Init(){
     }
   }
 
-  InitFEN(gameFEN[currentGame]);
+  if ((gameSetUp[currentGame] != undefined) && (gameSetUp[currentGame] != "1")) { InitFEN(); }
+  else { InitFEN(gameFEN[currentGame]); }
+  
   OpenGame(currentGame);
   
   /*
@@ -2240,6 +2243,7 @@ function LoadGameHeaders(){
   gameDate.length = 0; 
   gameWhite.length = 0;
   gameBlack.length = 0;
+  gameSetUp.length = 0;
   gameFEN.length = 0;
   gameEvent.length = 0;
   gameSite.length = 0;
@@ -2278,6 +2282,8 @@ function LoadGameHeaders(){
 	gameWhite[ii]  = parse[2];
       } else if  (parse[1] == 'Black'){
 	gameBlack[ii]  = parse[2];
+      } else if  (parse[1] == 'SetUp'){
+	gameSetUp[ii]  = parse[2];
       } else if  (parse[1] == 'FEN'){
 	gameFEN[ii]  = parse[2];
       } else if  (parse[1] == 'Result'){
