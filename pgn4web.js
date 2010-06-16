@@ -434,6 +434,8 @@ function configBoardShrortcut(square, title, functionPointer) {
   boardOnClick[col][row] = functionPointer;
 }
 
+// PLEASE NOTE: the 'square' parameter of 'configBoardShrortcut' is ALWAYS ASSUMING WHITE ON BOTTOM
+
 // A8
 configBoardShrortcut("A8", "debug info v" + pgn4web_version, function(){ displayDebugInfo(); });
 // B8
