@@ -3179,15 +3179,12 @@ function PrintHTML(){
       } else{
 	text += '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="lightgray" ALIGN="center" VALIGN="middle" ONCLICK="clickedSquare(' + ii + ',' + jj + ')">';
       } 
-      if (IsRotated) {
-        squareCoord = String.fromCharCode(72-jj,49+ii);
-      } else {
-        squareCoord = String.fromCharCode(jj+65,56-ii);
-      }
-      if (boardTitle[jj][ii] !== '') { titleSeparator = '   '; }
-      else { titleSeparator = ''; }
+      if (IsRotated) { squareCoord = String.fromCharCode(72-jj,49+ii); }
+      else { squareCoord = String.fromCharCode(jj+65,56-ii); }
+      if (boardTitle[jj][ii] !== '') { squareTitle = squareCoord + ': ' + boardTitle[jj][ii]; }
+      else { squareTitle = squareCoord; }
       text += '<A HREF="javascript:boardOnClick[' + jj + '][' + ii + ']()" ' + 
-              'TITLE="' + boardTitle[jj][ii] + titleSeparator + squareCoord + '"' +
+              'TITLE="' + squareTitle + '"' +
               'STYLE="text-decoration: none; outline: none;"' +
               'ONFOCUS="this.blur()">' + 
               '<IMG CLASS="pieceImage" ID="' + imageId + '" ' + 
