@@ -3486,10 +3486,10 @@ function PrintHTML(){
              'ACTION="javascript:searchPgnGame(document.getElementById(\'searchPgnExpression\').value);">';
       text += '<INPUT ID="searchPgnButton" CLASS="searchPgnButton" STYLE="display: inline; ';
       if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + tableSize/4 + '; '; }
-      text += '" TITLE="find games matching the search string (or regular expression), click square E8 for more help" ';
+      text += '" TITLE="find games matching the search string (or regular expression)" ';
       text += 'TYPE="submit" VALUE="?">';
       text += '<INPUT ID="searchPgnExpression" CLASS="searchPgnExpression" ' +
-              'TITLE="find games matching the search string (or regular expression), click square E8 for more help" ' + 
+              'TITLE="find games matching the search string (or regular expression)" ' + 
               'TYPE="input" VALUE="' + lastSearchPgnExpression + '" STYLE="display: inline; ';
       if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + 3*tableSize/4 + '; '; }
       text += '" ONFOCUS="disableShortcutKeysAndStoreStatus();" ONBLUR="restoreShortcutKeysStatus();">'; 
