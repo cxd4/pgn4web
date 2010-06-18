@@ -10,7 +10,7 @@
  *   Alternatively, check the project wiki at http://pgn4web.casaschi.net
  */
 
-var pgn4web_version = '1.98';
+var pgn4web_version = '1.98+';
 
 var pgn4web_project_url = 'http://pgn4web.casaschi.net';
 var pgn4web_project_author = 'Paolo Casaschi';
