@@ -72,7 +72,6 @@ function stopKeyPropagation(e) {
 }
 
 // to be used as onFocus and onBlur actions on textboxes, in order to allow typing text
-
 var shortcutKeysWereEnabled = false;
 function disableShortcutKeysAndStoreStatus() {
   if ((shortcutKeysWereEnabled = shortcutKeysEnabled) === true) {
@@ -425,11 +424,11 @@ for (col=0; col<8; col++) {
 }
 
 function configBoardShrortcut(square, title, functionPointer) {
-  if (square.charCodeAt === null) { myAlert("error: invalid square in configBoardShrortcut()"); return; }
+  if (square.charCodeAt === null) { return; }
   var col = square.charCodeAt(0) - 65; // 65 is "A"
-  if ((col < 0) || (col > 7)) { myAlert ("error: invalid column in configBoardShrortcut()"); return; }
+  if ((col < 0) || (col > 7)) { return; }
   var row = 56 - square.charCodeAt(1); // 56 is "8"
-  if ((row < 0) || (row > 7)) { myAlert ("error: invalid row in configBoardShrortcut()"); return; }
+  if ((row < 0) || (row > 7)) { return; }
   boardTitle[col][row] = title;
   boardOnClick[col][row] = functionPointer;
 }
@@ -577,12 +576,10 @@ function detectJavascriptLocation() {
   return jspath;
 }
 
-
 function detectHelpLocation() {
   helpfile = "help.html";
   return detectJavascriptLocation().replace(/(pgn4web|pgn4web-compacted)\.js/, helpfile); 
 }
-
 
 function detectBaseLocation() {
   base = "";
@@ -594,7 +591,6 @@ function detectBaseLocation() {
   }
   return base;
 }
-
 
 function displayDebugInfo() {
   debugInfo = 'pgn4web v' + pgn4web_version + '\n\n' +
@@ -629,7 +625,6 @@ function displayDebugInfo() {
 
 pgnWin = null;
 function displayPgnData(allGames) {
-
   if (allGames === null) { allGames = true; }
   if (pgnWin && !pgnWin.closed) { pgnWin.close(); }
   pgnWin = window.open("", "pgn_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
@@ -647,7 +642,6 @@ function displayPgnData(allGames) {
 }
 
 function CurrentFEN() {
-
   currentFEN = "";
 
   emptyCounterFen = 0;
@@ -899,7 +893,7 @@ PieceCode[4] = "N";
 PieceCode[5] = "P";
 
 var FenPieceName = "KQRBNP";
-var FenString    = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+var FenStringStart = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 var ImageOffset  = -1; 
                                                 
 var ImagePath = '';                                                 
@@ -1907,7 +1901,7 @@ function InitFEN(startingFEN){
   if (startingFEN != undefined){
     FenString = startingFEN;
   }else{
-    FenString = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    FenString = FenStringStart;
   }
   /*
    * Reset the board;
