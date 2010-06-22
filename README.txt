@@ -158,7 +158,7 @@ pgn4web allows displaying chess moves text using the supplied figurine fonts:
 the Liberation Sans font, see credits section for more details.
 To enable figurine display of chess moves text, make sure you include the
 fonts/pgn4web-fonts.css file into your HTML file:
-  <link href="fonts/pgn4web-fonts.css" type="text/css" rel="stylesheet"></link> 
+  <link href="fonts/pgn4web-fonts.css" type="text/css" rel="stylesheet" /> 
 or into your CSS file:
   @import url("fonts/pgn4web-fonts.css");
 Then set the font-family for the .move class to the chess font of your choice.

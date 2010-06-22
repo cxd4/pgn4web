@@ -478,7 +478,7 @@ function print_chessboard() {
 </div>
 </tr></table>
 
-<link href="$toolRoot/fonts/pgn4web-fonts.css" type="text/css" rel="stylesheet"></link>
+<link href="$toolRoot/fonts/pgn4web-fonts.css" type="text/css" rel="stylesheet" />
 <style type="text/css">
 
 .boardTable {
@@ -569,7 +569,7 @@ function print_chessboard() {
 
 </style>
 
-<link rel="shortcut icon" href="pawn.ico"></link>
+<link rel="shortcut icon" href="pawn.ico" />
 
 <script src="pgn4web.js" type="text/javascript"></script>
 <script type="text/javascript">

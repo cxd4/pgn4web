@@ -636,7 +636,7 @@ function displayPgnData(allGames) {
   if (pgnWin !== null) {
     pgnWin.document.open("text/html", "replace");
     pgnWin.document.write("<html>");
-    pgnWin.document.write("<head><title>pgn4web PGN source</title><link rel='shortcut icon' href='pawn.ico'></link></head>");
+    pgnWin.document.write("<head><title>pgn4web PGN source</title><link rel='shortcut icon' href='pawn.ico' /></head>");
     pgnWin.document.write("<body>\n<pre>\n");
     if (allGames) { for (ii = 0; ii < numberOfGames; ++ii) { pgnWin.document.write(pgnGame[ii]); } }
     else { pgnWin.document.write(pgnGame[currentGame]); }
@@ -755,7 +755,7 @@ function displayFenData() {
   if (fenWin !== null) {
     fenWin.document.open("text/html", "replace");
     fenWin.document.write("<html>");
-    fenWin.document.write("<head><title>pgn4web FEN string</title><link rel='shortcut icon' href='pawn.ico'></link></head>");
+    fenWin.document.write("<head><title>pgn4web FEN string</title><link rel='shortcut icon' href='pawn.ico' /></head>");
     fenWin.document.write("<body>\n");
     fenWin.document.write("<b><pre>\n\n" + currentFEN + "\n\n</pre></b>\n<hr>\n");
     fenWin.document.write("<pre>\n\n");

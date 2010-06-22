@@ -51,7 +51,7 @@ print <<<END
 
 <title>pgn4web PGN encoder/decoder php example</title> 
 
-<link rel="shortcut icon" href="pawn.ico"></link>
+<link rel="shortcut icon" href="pawn.ico" />
 
 </head>
 
