@@ -52,16 +52,20 @@ function start_pgn4web() {
   if (LiveBroadcastDelay > 0) { restartLiveBroadcastTimeout(); }
 }
 
+alertLog = new Array(5);
+alertLast = alertLog.length - 1;
+alertNum = 0;
 function myAlert(msg) {
-  if ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) {
-    alert(msg);
-  }
-}
+  alertNum++;
+  alertLast = (alertLast + 1) % alertLog.length;
+  alertLog[alertLast] = msg;
+  if (alertNum > 1) { alertPlural = "s"; }
+  else { alertPlural = ""; }
+  configBoardShrortcut(debugShortcutSquare, "debug info v" + pgn4web_version + " (" + alertNum + " alert" + alertPlural + ")", "keep"); 
 
-function myConfirm(msg) {
   if ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) {
-    return confirm(msg);
-  } else { return false; }
+    // PAOLO do something like flashing the board
+  }
 }
 
 function stopKeyPropagation(e) {
@@ -430,11 +434,18 @@ function configBoardShrortcut(square, title, functionPointer) {
   var row = 56 - square.charCodeAt(1); // 56 is "8"
   if ((row < 0) || (row > 7)) { return; }
   boardTitle[col][row] = title;
-  boardOnClick[col][row] = functionPointer;
+  if (functionPointer != "keep") { boardOnClick[col][row] = functionPointer; }
+  if (theObject = document.getElementById('link_tcol' + col + 'trow' + row)) {
+   if (IsRotated) { square = String.fromCharCode(72-col,49+row); }
+   if (boardTitle[col][row] !== '') { squareTitle = square + ': ' + boardTitle[col][row]; }
+   else { squareTitle = square; } 
+   theObject.title = squareTitle;
+  }
 }
 
 // PLEASE NOTE: the 'square' parameter of 'configBoardShrortcut' is ALWAYS ASSUMING WHITE ON BOTTOM
 
+debugShortcutSquare = "A8";
 // A8
 configBoardShrortcut("A8", "debug info v" + pgn4web_version, function(){ displayDebugInfo(); });
 // B8
@@ -593,33 +604,47 @@ function detectBaseLocation() {
 }
 
 function displayDebugInfo() {
-  debugInfo = 'pgn4web v' + pgn4web_version + '\n\n' +
-              'HTML URL: ' + location.href + '\n\n' +
-              'base URL: ' + detectBaseLocation() + '\n\n' +
-              'javascript URL: ' + detectJavascriptLocation() + '\n\n';
-  if (pgnUrl !== "") { debugInfo += 'PGN URL: ' + pgnUrl + '\n\n'; }
-  else { debugInfo += 'PGN URL: none' + '\n\n'; }
+  debugInfo = 'pgn4web v' + pgn4web_version + '\n\n';
+  debugInfo += 'HTML URL (' + location.href.length + '): ';
+  if (location.href.length < 100) { debugInfo += location.href + '\n'; }
+  else { debugInfo += location.href.substring(0,99) + ' ...\n'; }
+  debugInfo += 'BASE URL: ' + detectBaseLocation() + '\n' +
+               'JS URL: ' + detectJavascriptLocation() + '\n\n';
+  debugInfo += 'PGN URL: ';
+  if (pgnUrl !== "") { debugInfo += pgnUrl; }
+  debugInfo += '\n';
+  debugInfo += 'PGN TEXT: ';
   if (document.getElementById("pgnText") !== null) { 
     if (document.getElementById("pgnText").tagName.toLowerCase() == "textarea") {
-      debugInfo += 'PGN text: ' + document.getElementById("pgnText").value.length; 
+      debugInfo += document.getElementById("pgnText").value.length; 
     } else { // backward compatibility with pgn4web older than 1.77 when the <span> technique was used for pgnText
-      debugInfo += 'PGN text: ' + document.getElementById("pgnText").innerHTML.length;
+      debugInfo += document.getElementById("pgnText").innerHTML.length;
     }
-      debugInfo += ' (' + document.getElementById("pgnText").tagName.toLowerCase() + ')\n\n';
-  } else {
-    debugInfo += 'PGN text: none' + '\n\n';
+      debugInfo += ' (' + document.getElementById("pgnText").tagName.toLowerCase() + ')';
   }
-  debugInfo += 'games: current=' + currentGame + ' number=' + numberOfGames + '\n\n' +
-               'ply: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber;
-  if (isAutoPlayOn) { debugInfo += ' autoplay=' + Delay + 'ms' + ' autoplaynext=' + autoplayNextGame + '\n\n'; }
-  else { debugInfo += ' autoplay=off' + '\n\n'; }
-  if (LiveBroadcastDelay > 0) { debugInfo += 'live broadcast: delay=' + LiveBroadcastDelay + 'm' + 
+  debugInfo += '\n\n';
+  debugInfo += 'GAMES: current=' + currentGame + ' number=' + numberOfGames + '\n' +
+               'PLY: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber + '\n';
+  debugInfo += 'AUTOPLAY: ';
+  if (isAutoPlayOn) { debugInfo += 'delay=' + Delay + 'ms' + ' autoplaynext=' + autoplayNextGame; }
+  else { debugInfo += 'off'; }
+  debugInfo += '\n\n';
+  debugInfo += 'LIVE BROADCAST: '; 
+  if (LiveBroadcastDelay > 0) { debugInfo += ' delay=' + LiveBroadcastDelay + 'm' + 
                                              ' started=' + LiveBroadcastStarted +
                                              ' ended=' + LiveBroadcastEnded +
                                              ' paused=' + LiveBroadcastPaused +
                                              ' demo=' + LiveBroadcastDemo +
                                              ' alert=' + LiveBroadcastAlert + '\n\n'; }
-  else { debugInfo += 'live broadcast: off' + '\n\n'; }
+  else { debugInfo += 'off'; }
+  debugInfo += '\n\n';
+  debugInfo += 'ALERT LOG (' + alertNum + '):\n--\n';
+  if (alertNum > 0) {
+    for (ii = 0; ii<alertLog.length; ii++) {
+      if (alertLog[(alertNum - 1 - ii) % alertLog.length] === undefined) { break; }
+      else { debugInfo += alertLog[(alertNum - 1 - ii) % alertLog.length] + "\n--\n"; }
+    }
+  }
   alert(debugInfo);
 }
 
@@ -1542,12 +1567,6 @@ function pgnGameFromPgnText(pgnText){
 
 function loadPgnFromPgnUrl(pgnUrl){
   
-  var XMLrequest_error_debug_message = 'DEBUG information for web site developers\n\n' + 
-    'Failed retrieving the PGN file at the URL:\n' + pgnUrl + '\n\n' + 
-    '1) Make sure that the PGN URL is correct, that the PGN file is available and supported by the web host. Some web hosts do not allow files with arbitary extensions; in that case try renaming your .pgn file as .txt or another extension supported by your web host. You can check for all the above by typing the PGN URL in your web browser, if the browser does not download the file, some of the above issues are likely to apply.\n\n' +
-    '2) Make sure that your PGN file is on the same server/domain as your HTML file since javascript cannot load files from a different server/domain.\n\n' +
-    '3) If you are testing your HTML pages from your local computer and you are using Internet Explorer 7 (or above) please make sure the "Enable native XMLHTTP support" option is NOT enabled (see Control Panel, Internet Options, Advanced). A "feature" of IE7, when this option is enabled, stops javascript from loading local files.';
-
   var http_request = false;
     if (window.XMLHttpRequest) { // Mozilla, Safari, ...
       http_request = new XMLHttpRequest();
@@ -1564,7 +1583,7 @@ function loadPgnFromPgnUrl(pgnUrl){
       }
     }
   if (!http_request){
-    myAlert('Error with XMLHttpRequest for reading PGN file from URL');
+    myAlert('error: XMLHttpRequest failed for PGN URL\n' + pgnUrl);
     return false; 
   }
 
@@ -1582,18 +1601,17 @@ function loadPgnFromPgnUrl(pgnUrl){
     }
     http_request.send(null);
   } catch(e) {
-      var answer = myConfirm("Error with request for PGN URL:\n" + pgnUrl + "\n\nPress OK for web developer DEBUG information.");
-      if (answer) { myAlert(XMLrequest_error_debug_message); }
+      myAlert('error: request failed for PGN URL\n' + pgnUrl);
       return false;
 }
 
   if((http_request.readyState == 4) && ((http_request.status == 200) || (http_request.status === 0))){
     if (! pgnGameFromPgnText(http_request.responseText)) {
-      myAlert('Error: no games found in PGN file');
+      myAlert('error: no games found in PGN file');
       return false;
     }
   }else{ 
-    myAlert('Error reading PGN file from URL:\n' + pgnUrl);
+    myAlert('error: failed reading PGN from URL\n' + pgnUrl);
     return false;
   }
 
@@ -1745,7 +1763,7 @@ function refreshPgnSource() {
 function createBoard(){
 
   if ((! pgnUrl) && (! document.getElementById("pgnText"))) {
-    myAlert('Error: missing PGN URL location or pgnText.\n\nIn your HTML file, either use in a SCRIPT statement:\n\n  SetPgnUrl("http://yoursite/yourpath/yourfile.pgn")\n\nor embed the PGN text as hidden element with id=pgnText, such as a TEXTAREA element with style display:none\n');
+    myAlert('error: missing PGN URL location or pgnText in the HTML file');
     return; 
   }
 
@@ -1799,7 +1817,7 @@ function createBoard(){
       Init(); 
       customFunctionOnPgnTextLoad();
     } else {
-      myAlert('Error: no games found in PGN text');
+      myAlert('error: no games found in PGN text');
       return;
     }   
     return;
@@ -1962,7 +1980,6 @@ function InitFEN(startingFEN){
         var col = PieceCol[color][ii];
         var row = PieceRow[color][ii];
         Board[col][row] = (1-2*color)*PieceType[color][ii];
-        // myAlert("Standard FEN: Setting "+(1-2*color)*PieceType[color][ii]+ " at "+col+" / "+row);
       }
     }
   } else{
@@ -1979,7 +1996,7 @@ function InitFEN(startingFEN){
       while (cc!=" ")
       { if (cc=="/")
         { if (ii!=8)
-          { myAlert("Invalid FEN [1]: char "+ll+" in "+FenString);
+          { myAlert("error: Invalid FEN [1] char "+ll+" in game "+currentGame+"\n"+FenString);
             InitFEN();
             return;
           }
@@ -1987,21 +2004,21 @@ function InitFEN(startingFEN){
           jj--;
         }
         if (ii==8) 
-        { myAlert("Invalid FEN [2]: char "+ll+" in "+FenString);
+        { myAlert("error: Invalid FEN [2] char "+ll+" in game "+currentGame+"\n"+FenString);
           InitFEN();
           return;
         }
         if (! isNaN(cc))
         { ii+=parseInt(cc, 10);
           if ((ii<0)||(ii>8))
-          { myAlert("Invalid FEN [3]: char "+ll+" in "+FenString);
+          { myAlert("error: Invalid FEN [3] char "+ll+" in game "+currentGame+"\n"+FenString);
             InitFEN();
             return;
           }
         }
         if (cc.charCodeAt(0)==FenPieceName.toUpperCase().charCodeAt(0))
         { if (PieceType[0][0]!=-1)
-          { myAlert("Invalid FEN [4]: char "+ll+" in "+FenString);
+          { myAlert("error: Invalid FEN [4] char "+ll+" in game "+currentGame+"\n"+FenString);
             InitFEN();
             return;
           }     
@@ -2012,7 +2029,7 @@ function InitFEN(startingFEN){
         }
         if (cc.charCodeAt(0)==FenPieceName.toLowerCase().charCodeAt(0))
         { if (PieceType[1][0]!=-1)
-          { myAlert("Invalid FEN [5]: char "+ll+" in "+FenString);
+          { myAlert("error: Invalid FEN [5] char "+ll+" in game "+currentGame+"\n"+FenString);
             InitFEN();
             return;
           }  
@@ -2024,7 +2041,7 @@ function InitFEN(startingFEN){
         for (kk=1; kk<6; kk++)
         { if (cc.charCodeAt(0)==FenPieceName.toUpperCase().charCodeAt(kk))
           { if (nn==16)
-            { myAlert("Invalid FEN [6]: char "+ll+" in "+FenString);
+            { myAlert("error: Invalid FEN [6] char "+ll+" in game "+currentGame+"\n"+FenString);
               InitFEN();
               return;
             }          
@@ -2036,7 +2053,7 @@ function InitFEN(startingFEN){
           }
           if (cc.charCodeAt(0)==FenPieceName.toLowerCase().charCodeAt(kk))
           { if (mm==16)
-            { myAlert("Invalid FEN [7]: char "+ll+" in "+FenString);
+            { myAlert("error: Invalid FEN [7] char "+ll+" in game "+currentGame+"\n"+FenString);
               InitFEN();
               return;
             }  
@@ -2051,12 +2068,12 @@ function InitFEN(startingFEN){
         else { cc=" "; }
       }
       if ((ii!=8)||(jj!==0))
-      { myAlert("Invalid FEN [8]: char "+ll+" in "+FenString);
+      { myAlert("error: Invalid FEN [8] char "+ll+" in game "+currentGame+"\n"+FenString);
         InitFEN();
         return;
       }
       if ((PieceType[0][0]==-1)||(PieceType[1][0]==-1))
-      { myAlert("Invalid FEN [9]: char "+ll+" missing king");
+      { myAlert("error: invalid FEN [9]: char "+ll+" missing king in game "+currentGame+"\n"+FenString);
         InitFEN();
         return;
       }
@@ -2078,13 +2095,13 @@ function InitFEN(startingFEN){
         }
       }
       else
-      { myAlert("Invalid FEN [11]: char "+ll+" invalid active color");
+      { myAlert("error: invalid FEN [11]: char "+ll+" invalid active color in game "+currentGame+"\n"+FenString);
         return;
       }
 
       ll++;
       if (ll>=FenString.length)
-      { myAlert("Invalid FEN [12]: char "+ll+" missing castling availability");
+      { myAlert("error: invalid FEN [12]: char "+ll+" missing castling availability in game "+currentGame+"\n"+FenString);
         return;
       }
       CastlingShort[0]=0; CastlingLong[0]=0; CastlingShort[1]=0; CastlingLong[1]=0;
@@ -2121,14 +2138,13 @@ function InitFEN(startingFEN){
           if (PieceType[color][ii]!=-1){
    	     col = PieceCol[color][ii];
 	     row = PieceRow[color][ii];
-	     // myAlert("given FEN: Setting "+(1-2*color)*(PieceType[color][ii])+ " at "+col+" / "+row);
 	     Board[col][row] = (1-2*color)*(PieceType[color][ii]);
 	  }
        }
       }
           
       if (ll==FenString.length)
-      { myAlert("Invalid FEN [13]: char "+ll+" missing en passant target square");
+      { myAlert("error: invalid FEN [13]: char "+ll+" missing en passant target square in game "+currentGame+"\n"+FenString);
         return;
       }
       cc=FenString.charAt(ll++);
@@ -2141,14 +2157,14 @@ function InitFEN(startingFEN){
         else { cc=" "; }
       }
       if (ll==FenString.length)
-      { myAlert("Invalid FEN [14]: char "+ll+" missing halfmove clock");
+      { myAlert("error: invalid FEN [14]: char "+ll+" missing halfmove clock in game "+currentGame+"\n"+FenString);
         return;
       }
       InitialHalfMoveClock=0;
       cc=FenString.charAt(ll++);
       while (cc!=" ")
       { if (isNaN(cc))
-        { myAlert("Invalid FEN [15]: char "+ll+" invalid halfmove clock");
+        { myAlert("error: invalid FEN [15]: char "+ll+" invalid halfmove clock in game "+currentGame+"\n"+FenString);
           return;
         }
         InitialHalfMoveClock=InitialHalfMoveClock*10+parseInt(cc, 10);
@@ -2156,16 +2172,16 @@ function InitFEN(startingFEN){
         else { cc=" "; }
       }
       if (ll==FenString.length)
-      { myAlert("Invalid FEN [16]: char "+ll+" missing fullmove number");
+      { myAlert("error: invalid FEN [16]: char "+ll+" missing fullmove number in game "+currentGame+"\n"+FenString);
         return;
       }
       cc=FenString.substring(ll++);
       if (isNaN(cc))
-      { myAlert("Invalid FEN [17]: char "+ll+" invalid fullmove number");
+      { myAlert("error: invalid FEN [17]: char "+ll+" invalid fullmove number in game "+currentGame+"\n"+FenString);
         return;
       }
       if (cc<=0)
-      { myAlert("Invalid FEN [18]: char "+ll+" invalid fullmove number");
+      { myAlert("error: invalid FEN [18]: char "+ll+" invalid fullmove number in game "+currentGame+"\n"+FenString);
         return;
       }
       StartPly+=2*(parseInt(cc, 10)-1);
@@ -2454,7 +2470,7 @@ function MoveForward(diff){
     if (!parse) {
       if ((thisPly % 2) === 0) { text = (Math.floor(thisPly / 2) + 1) + '. '; }
       else { text = (Math.floor(thisPly / 2) + 1) + '... '; }
-      myAlert('Error on ply ' + text + move);
+      myAlert('error: invalid ply ' + text + move + ' in game ' + currentGame);
       break;
     }
     MoveColor = 1-MoveColor; 
@@ -2582,7 +2598,7 @@ function ParsePGNGameString(gameString){
           MoveComments[StartPly+PlyNumber] += ss.substring(commentStart, commentEnd); 
           start = commentEnd;
         }else{
-          myAlert('Error parsing PGN: missing end comment char }');
+          myAlert('error: missing end comment char } while parsing game ' + currentGame);
           return;
         }
         break;
@@ -2616,7 +2632,7 @@ function ParsePGNGameString(gameString){
           nextOpen = ss.indexOf('(', variationEnd);
           nextClosed = ss.indexOf(')', variationEnd);
           if (nextClosed < 0) {
-            myAlert('Error parsing PGN: missing end variation char )');
+            myAlert('error: missing end variation char ) while parsing game ' + currentGame);
             return;
           }
           if ((nextOpen >= 0) && (nextOpen < nextClosed)) {
@@ -3100,8 +3116,8 @@ function clickedSquare(ii, jj) {
   squareId = 'tcol' + jj + 'trow' + ii;
   theObject = document.getElementById(squareId);
   originalClass = theObject.className;
-  if ((ii+jj)%2 === 0){ newClass = "blackSquare";
-  } else { newClass = "whiteSquare"; }
+  if ((ii+jj)%2 === 0){ newClass = "blackSquare"; }
+  else { newClass = "whiteSquare"; }
   theObject.className = newClass;
   clickedSquareInterval = setTimeout("reset_after_click(" + ii + "," + jj + ",'" + originalClass + "','" + newClass + "')", 66);
 }
@@ -3139,7 +3155,7 @@ function searchPgnGame(searchExpression) {
 
 function searchPgnGamePrompt() {
   if (numberOfGames < 2) { 
-    alert("Search disabled: PGN data with less than 2 games."); 
+    alert("search disabled: PGN data with less than 2 games"); 
     return;
   }
   searchExpression = prompt("Please enter search pattern for PGN games:", lastSearchPgnExpression);
@@ -3168,6 +3184,7 @@ function PrintHTML(){
     for (jj = 0; jj < 8; ++jj){
       squareId = 'tcol' + jj + 'trow' + ii;
       imageId = 'img_' + squareId;
+      linkId = 'link_' + squareId;
       if ((ii+jj)%2 === 0){
 	text += '<TD CLASS="whiteSquare" ID="' + squareId + '" BGCOLOR="white" ALIGN="center" VALIGN="middle" ONCLICK="clickedSquare(' + ii + ',' + jj + ')">';
       } else{
@@ -3177,9 +3194,10 @@ function PrintHTML(){
       else { squareCoord = String.fromCharCode(jj+65,56-ii); }
       if (boardTitle[jj][ii] !== '') { squareTitle = squareCoord + ': ' + boardTitle[jj][ii]; }
       else { squareTitle = squareCoord; }
-      text += '<A HREF="javascript:boardOnClick[' + jj + '][' + ii + ']()" ' + 
-              'TITLE="' + squareTitle + '"' +
-              'STYLE="text-decoration: none; outline: none;"' +
+      text += '<A HREF="javascript:boardOnClick[' + jj + '][' + ii + ']()" ' +
+              'ID="' + linkId + '" ' + 
+              'TITLE="' + squareTitle + '" ' +
+              'STYLE="text-decoration: none; outline: none;" ' +
               'ONFOCUS="this.blur()">' + 
               '<IMG CLASS="pieceImage" ID="' + imageId + '" ' + 
               ' SRC="'+ImagePath+'clear.'+imageType+'" BORDER=0></A></TD>';

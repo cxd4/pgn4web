@@ -266,7 +266,7 @@ function new_start_pgn4web() {
   }
 
   if (gup("showHeightWidth") !== "") { 
-    alert("board dimensions\n\nwidth: " + boardWidth + "\nheight: " + boardHeight);
+    myAlert("info: board dimensions\n\nwidth: " + boardWidth + "\nheight: " + boardHeight);
   }
 }
 
@@ -682,7 +682,7 @@ if ((newPgnId = gup("pgnId")) !== "") {
     document.getElementById('pgnText').value = newPgnIdData = cleanPgnInput(newPgnIdData);
   }
   if ( !parent || !parent.document.getElementById(newPgnId) || !newPgnIdData ) {
-    alert("WARNING: failed to get data from supplied pgnId (check parent is in the same domain).");
+    myAlert("error: failed to get data from supplied pgnId (check parent is in the same domain).");
   }
 }
 
@@ -710,19 +710,19 @@ if ((pgnData = gup("pgnData")) !== "") {
 
 if ((pgnData !== "") && ((newPgnEncoded !== "") || (newPgnText !== "") || 
 			 (fenString !== "") || (newPgnId !==""))) {
-  alert("WARNING: pgnData value superseeds pgnEncoded, pgnText, pgnId and/or fenString values.");
+  myAlert("warning: pgnData value superseeds pgnEncoded, pgnText, pgnId and/or fenString values.");
 }
 
 if ((newPgnEncoded !== "") && ((newPgnText !== "") || (fenString !== "") || (newPgnId !==""))) {
-  alert("WARNING: pgnEncoded value superseeds pgnText, pgnId and/or fenString values.");
+  myAlert("error: pgnEncoded value superseeds pgnText, pgnId and/or fenString values.");
 }
 
 if ((newPgnText !== "") && ((fenString !== "") || (newPgnId !==""))) {
-  alert("WARNING: pgnText value superseeds pgnId and/or fenString value.");
+  myAlert("warning: pgnText value superseeds pgnId and/or fenString value.");
 }
 
 if ((fenString !== "") && (newPgnId !=="")) {
-  alert("WARNING: fenString value superseeds pgnId value.");
+  myAlert("warning: fenString value superseeds pgnId value.");
 }
 
 oldHeaderDisplay = "";
@@ -810,10 +810,8 @@ if ((refreshMinutes = gup("refreshMinutes")) === "") {
 else {
   testMinutes = refreshMinutes + "";
   if ((testMinutes.match(/[^0-9\.]/)) || (refreshMinutes === 0)) {
-    if (alertFlag) { 
-      alert("ERROR: refreshMinutes parameter must be a positive number.\n" +
+    myAlert("ERROR: refreshMinutes parameter must be a positive number.\n" +
 	    "Supplied " + testMinutes + "; live refresh disabled."); 
-    }
     refreshMinutes = 0;
   }
 }
@@ -821,9 +819,7 @@ else {
 if (refreshMinutes > 0) {
   if (pgnData !== "") { SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag); }
   else { 
-    if (alertFlag) {
-      alert("ERROR: live broadcast requires using pgnData parameter as PGN source."); 
-    }
+    myAlert("ERROR: live broadcast requires using pgnData parameter as PGN source."); 
   }
   if (gup("initialHalfmove") === "") { 
     SetInitialHalfmove(init_Halfmove = "end", always_Halfmove = true);
