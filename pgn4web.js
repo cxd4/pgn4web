@@ -89,6 +89,7 @@ function setAlertPrompt() {
   } else {
     alertPromptDelay = 10000;
   }
+  clearTimeout(alertPromptInterval);
   alertPromptInterval = setTimeout("setAlertPrompt();", alertPromptDelay);
 }
 
@@ -160,8 +161,8 @@ function handlekey(e) {
       if (e.shiftKey) {
         // shift key + escape (27) toogle the usage of shortcut keys 
         SetShortcutKeysEnabled(!shortcutKeysEnabled);
-        if (shortcutKeysEnabled) { alert ("pgn4web shortcut keys now enabled"); }
-        else { alert("pgn4web shortcut keys now disabled"); }
+        if (shortcutKeysEnabled) { alert("info: pgn4web shortcut keys now enabled"); }
+        else { alert("info: pgn4web shortcut keys now disabled"); }
       } else {
         displayHelp();
       }
@@ -1028,11 +1029,11 @@ function CheckLegality(what, plyCount){
   /*
    * Some checks common to all pieces:
    *
-   * o If it is not a capture the square has to be empty.
-   * o If it is a capture the TO square has to be occupied by a piece of the
-   *   opposite color, with the exception of the en-passant capture.
-   * o If the moved piece and the piece in the TO square are different then 
-   *   the moved piece has to be a pawn promoting.
+   * If it is not a capture the square has to be empty.
+   * If it is a capture the TO square has to be occupied by a piece of the
+   * opposite color, with the exception of the en-passant capture.
+   * If the moved piece and the piece in the TO square are different then 
+   * the moved piece has to be a pawn promoting.
    *
    */
   if (!mvCapture){
@@ -3173,7 +3174,7 @@ function searchPgnGame(searchExpression) {
 
 function searchPgnGamePrompt() {
   if (numberOfGames < 2) { 
-    alert("search disabled: PGN data with less than 2 games"); 
+    alert("info: search prompt disabled with less than 2 games"); 
     return;
   }
   searchExpression = prompt("Please enter search pattern for PGN games:", lastSearchPgnExpression);
