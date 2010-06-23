@@ -75,19 +75,20 @@ function startAlertPrompt() {
   setAlertPrompt();
 }
 function setAlertPrompt() {
-  for (ii=0; ii<8; ii++) {
-    for (jj=0; jj<8; jj++) {
-      squareId = 'tcol' + jj + 'trow' + ii;
-      theObject = document.getElementById(squareId);
-      if (theObject.className == "blackSquare") { theObject.className = "whiteSquare"; }
-      else { theObject.className = "blackSquare" }
+  if(document.getElementById('tcol0trow0')) {
+    for (ii=0; ii<8; ii++) {
+      for (jj=0; jj<8; jj++) {
+        squareId = 'tcol' + jj + 'trow' + ii;
+        theObject = document.getElementById(squareId);
+        if (theObject.className == "blackSquare") { theObject.className = "whiteSquare"; }
+        else { theObject.className = "blackSquare" }
+      }
     }
-  }
-  alertPromptOn = !alertPromptOn;
-  if (alertPromptOn) {
-    alertPromptDelay = 500;
+    alertPromptOn = !alertPromptOn;
+    if (alertPromptOn) { alertPromptDelay = 500; }
+    else { alertPromptDelay = 10000; }
   } else {
-    alertPromptDelay = 10000;
+    alertPromptDelay = 1500;
   }
   clearTimeout(alertPromptInterval);
   alertPromptInterval = setTimeout("setAlertPrompt();", alertPromptDelay);
