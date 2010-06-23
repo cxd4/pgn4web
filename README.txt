@@ -274,6 +274,12 @@ browser version and every combination of browser/platform has been tested.
 If you have any issue with using pgn4web on your platform, please email 
 pgn4web@casaschi.net
 
+Note about Google Chrome: you might experience problems when testing HTML
+pages from your local computer while developing your site. This is a
+limitation of the browser with respect to loading local files. There is no
+workaround other than testing with a different browser. Browsing pgn4web
+websites with Google Chrome should work properly.
+
 Note about Internet Explorer v7 and above: under some circumstances you might
 experience problems when testing HTML pages from your local computer while 
 developing your site. If this happens to you, read notes at 
