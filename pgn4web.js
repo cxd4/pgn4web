@@ -33,9 +33,9 @@ function displayHelp(section){
 
 
 /*
- * Custom functions executed each time a PGN text is loaded and each time a 
- * PGN game is loaded. They are intentionally empty here so that can be 
- * customized in the HTML file by redefining them AFTER loading pgn4web.js
+ * Custom functions executed at the given moments.
+ * Here intentionally empty, to be redefined in 
+ * the HTML file AFTER loading pgn4web.js
  */
 
 function customFunctionOnPgnTextLoad() {}
