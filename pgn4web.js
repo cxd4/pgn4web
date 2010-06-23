@@ -87,7 +87,7 @@ function setAlertPrompt() {
   if (alertPromptOn) {
     alertPromptDelay = 500;
   } else {
-    alertPromptDelay = 5000;
+    alertPromptDelay = 10000;
   }
   alertPromptInterval = setTimeout("setAlertPrompt();", alertPromptDelay);
 }
