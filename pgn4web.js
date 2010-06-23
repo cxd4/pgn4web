@@ -81,7 +81,7 @@ function setAlertPrompt() {
         squareId = 'tcol' + jj + 'trow' + ii;
         theObject = document.getElementById(squareId);
         if (theObject.className == "blackSquare") { theObject.className = "whiteSquare"; }
-        else { theObject.className = "blackSquare" }
+        else if (theObject.className == "whiteSquare") { theObject.className = "blackSquare"; }
       }
     }
     alertPromptOn = !alertPromptOn;
