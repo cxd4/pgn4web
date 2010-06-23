@@ -82,8 +82,6 @@ function setAlertPrompt() {
         theObject = document.getElementById(squareId);
         if (theObject.className == "blackSquare") { theObject.className = "whiteSquare"; }
         else if (theObject.className == "whiteSquare") { theObject.className = "blackSquare"; }
-        else if (theObject.className == "highlightBlackSquare") { theObject.className = "highlightWhiteSquare"; }
-        else if (theObject.className == "highlightWhiteSquare") { theObject.className = "highlightBlackSquare"; }
       }
     }
     alertPromptOn = !alertPromptOn;
