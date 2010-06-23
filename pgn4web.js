@@ -674,7 +674,7 @@ function displayDebugInfo() {
   if (alertNum > 0) {
     for (ii = 0; ii<alertLog.length; ii++) {
       if (alertLog[(alertNum - 1 - ii) % alertLog.length] === undefined) { break; }
-      else { debugInfo += alertLog[(alertNum - 1 - ii) % alertLog.length] + "\n\n--"; }
+      else { debugInfo += "\n" + alertLog[(alertNum - 1 - ii) % alertLog.length] + "\n--"; }
     }
   }
   alert(debugInfo);
