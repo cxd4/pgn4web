@@ -71,26 +71,33 @@ function myAlert(msg) {
 var alertPromptInterval = null;
 var alertPromptOn = false;
 function startAlertPrompt() {
-  if (alertPromptInterval) { return; } // make sure you dont trigger the effect twice by mistake
-  setAlertPrompt();
+  if (alertPromptOn) { return; } // if flashing already dont start a new flashing
+  if (alertPromptInterval) { clearTimeout(alertPromptInterval); }
+  alertPromptInterval = setTimeout("setAlertPrompt();", 500);
 }
 function setAlertPrompt() {
+  if (alertPromptInterval) { clearTimeout(alertPromptInterval); }
   if(document.getElementById('tcol0trow0')) {
     for (ii=0; ii<8; ii++) {
       for (jj=0; jj<8; jj++) {
         squareId = 'tcol' + jj + 'trow' + ii;
         theObject = document.getElementById(squareId);
-        if (theObject.className == "blackSquare") { theObject.className = "whiteSquare"; }
-        else if (theObject.className == "whiteSquare") { theObject.className = "blackSquare"; }
+        if (alertPromptOn) {
+          if ((ii+jj)%2 == 0) { theObject.className = "whiteSquare"; }
+          else { theObject.className = "blackSquare"; }
+        } else {
+          if ((ii+jj)%2 === 1) { theObject.className = "whiteSquare"; }
+          else { theObject.className = "blackSquare"; }
+        }
       }
     }
+    HighlightLastMove();
     alertPromptOn = !alertPromptOn;
     if (alertPromptOn) { alertPromptDelay = 500; }
     else { alertPromptDelay = 10000; }
   } else {
     alertPromptDelay = 1500;
   }
-  clearTimeout(alertPromptInterval);
   alertPromptInterval = setTimeout("setAlertPrompt();", alertPromptDelay);
 }
 
@@ -461,11 +468,12 @@ function configBoardShrortcut(square, title, functionPointer) {
   if ((row < 0) || (row > 7)) { return; }
   boardTitle[col][row] = title;
   if (functionPointer != "keep") { boardOnClick[col][row] = functionPointer; }
-  if (theObject = document.getElementById('link_tcol' + col + 'trow' + row)) {
-   if (IsRotated) { square = String.fromCharCode(72-col,49+row); }
-   if (boardTitle[col][row] !== '') { squareTitle = square + ': ' + boardTitle[col][row]; }
-   else { squareTitle = square; } 
-   theObject.title = squareTitle;
+  theObject = document.getElementById('link_tcol' + col + 'trow' + row);
+  if (theObject) {
+    if (IsRotated) { square = String.fromCharCode(72-col,49+row); }
+    if (boardTitle[col][row] !== '') { squareTitle = square + ': ' + boardTitle[col][row]; }
+    else { squareTitle = square; } 
+    theObject.title = squareTitle;
   }
 }
 
