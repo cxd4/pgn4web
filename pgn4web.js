@@ -670,7 +670,7 @@ function displayDebugInfo() {
                                              ' alert=' + LiveBroadcastAlert + '\n\n'; }
   else { debugInfo += 'off'; }
   debugInfo += '\n\n';
-  debugInfo += 'ALERT LOG (' + alertNum + '):\n--';
+  debugInfo += 'ALERT LOG (' + Math.min(alertNum, alertLog.length) + '/' + alertNum + '):\n--';
   if (alertNum > 0) {
     for (ii = 0; ii<alertLog.length; ii++) {
       if (alertLog[(alertNum - 1 - ii) % alertLog.length] === undefined) { break; }
