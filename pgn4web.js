@@ -82,12 +82,10 @@ function setAlertPrompt() {
       for (jj=0; jj<8; jj++) {
         squareId = 'tcol' + jj + 'trow' + ii;
         theObject = document.getElementById(squareId);
-        if (alertPromptOn) {
-          if ((ii+jj)%2 == 0) { theObject.className = "whiteSquare"; }
-          else { theObject.className = "blackSquare"; }
+        if (((alertPromptOn) && ((ii+jj)%2 === 0)) || (!(alertPromptOn) && !((ii+jj)%2 === 0))) {
+          theObject.className = "whiteSquare";
         } else {
-          if ((ii+jj)%2 === 1) { theObject.className = "whiteSquare"; }
-          else { theObject.className = "blackSquare"; }
+          theObject.className = "blackSquare";
         }
       }
     }
