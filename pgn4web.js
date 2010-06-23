@@ -64,8 +64,32 @@ function myAlert(msg) {
   configBoardShrortcut(debugShortcutSquare, "debug info v" + pgn4web_version + " (" + alertNum + " alert" + alertPlural + ")", "keep"); 
 
   if ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) {
-    // PAOLO do something like flashing the board
+    startAlertPrompt();
   }
+}
+
+var alertPromptInterval = null;
+var alertPromptOn = false;
+function startAlertPrompt() {
+  if (alertPromptInterval) { return; } // make sure you dont trigger the effect twice by mistake
+  setAlertPrompt();
+}
+function setAlertPrompt() {
+  for (ii=0; ii<8; ii++) {
+    for (jj=0; jj<8; jj++) {
+      squareId = 'tcol' + jj + 'trow' + ii;
+      theObject = document.getElementById(squareId);
+      if (theObject.className == "blackSquare") { theObject.className = "whiteSquare"; }
+      else { theObject.className = "blackSquare" }
+    }
+  }
+  alertPromptOn = !alertPromptOn;
+  if (alertPromptOn) {
+    alertPromptDelay = 500;
+  } else {
+    alertPromptDelay = 5000;
+  }
+  alertPromptInterval = setTimeout("setAlertPrompt();", alertPromptDelay);
 }
 
 function stopKeyPropagation(e) {
@@ -1759,13 +1783,7 @@ function refreshPgnSource() {
 
 }
 
-
 function createBoard(){
-
-  if ((! pgnUrl) && (! document.getElementById("pgnText"))) {
-    myAlert('error: missing PGN URL location or pgnText in the HTML file');
-    return; 
-  }
 
   theObject = document.getElementById("GameBoard");
   if (theObject !== null) {
@@ -1782,12 +1800,10 @@ function createBoard(){
       return;
     } else {
       if (LiveBroadcastDelay === 0) {
-        theObject = document.getElementById("GameBoard");
-        if (theObject !== null) {
-          theObject.innerHTML = '<SPAN STYLE="font-style: italic;">' + 
-                                'Failed loading games from PGN file<br>' + 
-                                pgnUrl + '</SPAN>';
-        }
+        pgnGameFromPgnText(emptyPgnHeader);
+        Init();
+        customFunctionOnPgnTextLoad();
+        myAlert('error: failed loading games from PGN URL\n' + pgnUrl);
         return;
       } else { // live broadcast case, wait for live show to start
         LiveBroadcastStarted = false;
@@ -1798,9 +1814,7 @@ function createBoard(){
         return;
       }
     }
-  } 
-  
-  if ( document.getElementById("pgnText") ) {
+  } else if ( document.getElementById("pgnText") ) {
     if (document.getElementById("pgnText").tagName.toLowerCase() == "textarea") {
       tmpText = document.getElementById("pgnText").value;
     } else { // backward compatibility with pgn4web older than 1.77 when the <span> technique was used for pgnText
@@ -1810,6 +1824,7 @@ function createBoard(){
       // fixes issue with some browser replacing quotes with &quot; such as the blackberry browser
       if (tmpText.indexOf('"') < 0) { tmpText = tmpText.replace(/(&quot;)/g, '"'); }
     }
+
     // if no html header is present, add emptyPgnHeader at the top
     if (pgnHeaderTagRegExp.test(tmpText) === false) { tmpText = emptyPgnHeader + tmpText; }
 
@@ -1817,15 +1832,18 @@ function createBoard(){
       Init(); 
       customFunctionOnPgnTextLoad();
     } else {
+      pgnGameFromPgnText(emptyPgnHeader);
+      Init();
+      customFunctionOnPgnTextLoad();
       myAlert('error: no games found in PGN text');
-      return;
     }   
     return;
-  } 
-
-  if (theObject !== null) {
-    theObject.innerHTML = '<SPAN STYLE="font-style: italic;">' + 
-                          'Missing PGN data</SPAN>';
+  } else {
+    pgnGameFromPgnText(emptyPgnHeader);
+    Init();
+    customFunctionOnPgnTextLoad();
+    myAlert('error: missing PGN URL location or pgnText in the HTML file');
+    return;
   }
 }
 
