@@ -682,7 +682,7 @@ if ((newPgnId = gup("pgnId")) !== "") {
     document.getElementById('pgnText').value = newPgnIdData = cleanPgnInput(newPgnIdData);
   }
   if ( !parent || !parent.document.getElementById(newPgnId) || !newPgnIdData ) {
-    myAlert("error: failed to get data from supplied pgnId (check parent is in the same domain).");
+    myAlert("error: failed to get data from supplied pgnId=" + newPgnId + " (check parent is in the same domain).");
   }
 }
 
@@ -714,7 +714,7 @@ if ((pgnData !== "") && ((newPgnEncoded !== "") || (newPgnText !== "") ||
 }
 
 if ((newPgnEncoded !== "") && ((newPgnText !== "") || (fenString !== "") || (newPgnId !==""))) {
-  myAlert("error: pgnEncoded value superseeds pgnText, pgnId and/or fenString values.");
+  myAlert("warning: pgnEncoded value superseeds pgnText, pgnId and/or fenString values.");
 }
 
 if ((newPgnText !== "") && ((fenString !== "") || (newPgnId !==""))) {
@@ -810,7 +810,7 @@ if ((refreshMinutes = gup("refreshMinutes")) === "") {
 else {
   testMinutes = refreshMinutes + "";
   if ((testMinutes.match(/[^0-9\.]/)) || (refreshMinutes === 0)) {
-    myAlert("ERROR: refreshMinutes parameter must be a positive number.\n" +
+    myAlert("error: refreshMinutes parameter must be a positive number.\n" +
 	    "Supplied " + testMinutes + "; live refresh disabled."); 
     refreshMinutes = 0;
   }
@@ -819,7 +819,7 @@ else {
 if (refreshMinutes > 0) {
   if (pgnData !== "") { SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag); }
   else { 
-    myAlert("ERROR: live broadcast requires using pgnData parameter as PGN source."); 
+    myAlert("error: live broadcast requires using pgnData parameter as PGN source."); 
   }
   if (gup("initialHalfmove") === "") { 
     SetInitialHalfmove(init_Halfmove = "end", always_Halfmove = true);

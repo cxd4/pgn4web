@@ -137,7 +137,6 @@ function handlekey(e) {
   if (!e) { e = window.event; }
 
   keycode = e.keyCode;
-  //myAlert(keycode);
 
   if (e.altKey || e.ctrlKey || e.metaKey) { return true; }
 
@@ -1640,7 +1639,7 @@ function loadPgnFromPgnUrl(pgnUrl){
 
   if((http_request.readyState == 4) && ((http_request.status == 200) || (http_request.status === 0))){
     if (! pgnGameFromPgnText(http_request.responseText)) {
-      myAlert('error: no games found in PGN file');
+      myAlert('error: no games found in PGN file\n' + pgnUrl);
       return false;
     }
   }else{ 
