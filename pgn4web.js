@@ -983,6 +983,7 @@ var pgnHeaderTagRegExpGlobal = /\[\s*(\w+)\s*"([^"]*)"\s*\]/g;
 var dummyPgnHeader = '[x""]';
 var emptyPgnHeader = '[White ""]\n[Black ""]\n[Result ""]\n[Date ""]\n[Event ""]\n[Site ""]\n[Round ""]\n\n';
 var templatePgnHeader = '[White "?"]\n[Black "?"]\n[Result "?"]\n[Date "?"]\n[Event "?"]\n[Site "?"]\n[Round "?"]\n';
+var alertPgnHeader = '[White ""]\n[Black ""]\n[Result ""]\n[Date ""]\n[Event ""]\n[Site ""]\n[Round ""]\n\n{error: click on the top left chessboard square for debug info}';
 
 var gameSelectorHead      = ' ...';
 var gameSelectorMono      = true;
@@ -1802,7 +1803,7 @@ function createBoard(){
       return;
     } else {
       if (LiveBroadcastDelay === 0) {
-        pgnGameFromPgnText(emptyPgnHeader);
+        pgnGameFromPgnText(alertPgnHeader);
         Init();
         customFunctionOnPgnTextLoad();
         myAlert('error: failed loading games from PGN URL\n' + pgnUrl);
@@ -1834,14 +1835,14 @@ function createBoard(){
       Init(); 
       customFunctionOnPgnTextLoad();
     } else {
-      pgnGameFromPgnText(emptyPgnHeader);
+      pgnGameFromPgnText(alertPgnHeader);
       Init();
       customFunctionOnPgnTextLoad();
       myAlert('error: no games found in PGN text');
     }   
     return;
   } else {
-    pgnGameFromPgnText(emptyPgnHeader);
+    pgnGameFromPgnText(alertPgnHeader);
     Init();
     customFunctionOnPgnTextLoad();
     myAlert('error: missing PGN URL location or pgnText in the HTML file');
