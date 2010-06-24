@@ -1571,7 +1571,11 @@ function highlightSquare(col, row, on) {
 
 function pgnGameFromPgnText(pgnText){
 
-  lines=pgnText.split("\n");
+  // replace < and > with html entities to avoid html injection form the PGN data
+  pgnText = pgnText.replace(/</g, "&lt;");
+  pgnText = pgnText.replace(/>/g, "&gt;");
+
+  lines = pgnText.split("\n");
   inGameHeader = false;
   inGameBody = false;
   gameIndex = -1;
