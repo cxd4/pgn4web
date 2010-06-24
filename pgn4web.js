@@ -3351,8 +3351,7 @@ function PrintHTML(){
         } else { 
           gameSelectorHeadDisplay = gameSelectorHead; 
         }
-        // replace spaces with &nbsp; (ascii code 160)
-        // text += gameSelectorHeadDisplay.replace(/ /g,String.fromCharCode(160)); 
+        // replace spaces with &nbsp; 
         text += gameSelectorHeadDisplay.replace(/ /g, '&nbsp;'); 
 
         for (ii=0; ii<numberOfGames; ii++){
@@ -3406,8 +3405,7 @@ function PrintHTML(){
             if (howManyBlanks > 0) { textSO += blanks.substring(0, howManyBlanks); }
             textSO += ' ';
           }
-          // replace spaces with &nbsp; (ascii code 160)
-          // textSelectOptions += textSO.replace(/ /g,String.fromCharCode(160));
+          // replace spaces with &nbsp; 
           textSelectOptions += textSO.replace(/ /g, '&nbsp;');
         }
       text += textSelectOptions + '</SELECT></FORM>';
