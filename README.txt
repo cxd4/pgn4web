@@ -72,8 +72,8 @@ Enjoy!
 
 DEBUGGING
 
-Errors alert messages are logged by pgn4web, such as failures to load PGN
-games, incorrect PGN games or incorrect FEN strings. 
+Errors alert messages are logged by pgn4web, such as failure to load PGN
+data, incorrect PGN games or incorrect FEN strings. 
 When an error is encountered, the chessboard will flash at regular
 intervals to signal the exception. 
 The error alert log can be reviewed clicking on square A8 (assuming White
