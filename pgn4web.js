@@ -175,7 +175,8 @@ function handlekey(e) {
       break;
 
     case 90: // z
-      window.open(pgn4web_project_url); 
+      if (e.shiftKey) { window.open(pgn4web_project_url); }
+      else { displayDebugInfo(); }
       return stopKeyPropagation(e);
       break;
 
