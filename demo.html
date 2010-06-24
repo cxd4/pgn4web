@@ -147,15 +147,16 @@ function select_frame(new_frame){
     if (new_frame == 'wch08ak') { 
       new_frame_height = '2500px';
     } 
-    if (new_frame == 'widget') { 
-    } 
-    if (new_frame == 'live') {
-      new_frame_width = '480px';
-      new_frame_height = '360px';
+    if (new_frame == 'debug') {
     } 
     if (new_frame == 'mini') {
       new_frame_height = '450px';
     } 
+    if (new_frame == 'widget') { 
+    } 
+    if (new_frame == 'collection') {
+      new_frame_height = '2000px';
+    }    
     if (new_frame == 'inputform') {
       new_frame_width = '753px';
     } 
@@ -163,13 +164,14 @@ function select_frame(new_frame){
     } 
     if (new_frame == 'board') {
     } 
+    if (new_frame == 'live') {
+      new_frame_width = '480px';
+      new_frame_height = '360px';
+    } 
     if (new_frame == 'tilb98r2') {
     } 
     if (new_frame == 'twic765') {
     } 
-    if (new_frame == 'collection') {
-      new_frame_height = '2000px';
-    }    
     document.getElementById('pgnframe').width = new_frame_width; 
     document.getElementById('pgnframe').height = new_frame_height;
   
