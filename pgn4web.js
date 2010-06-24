@@ -83,13 +83,20 @@ function setAlertPrompt() {
         squareId = 'tcol' + jj + 'trow' + ii;
         theObject = document.getElementById(squareId);
         if (((alertPromptOn) && ((ii+jj)%2 === 0)) || (!(alertPromptOn) && !((ii+jj)%2 === 0))) {
-          theObject.className = "whiteSquare";
+          if (theObject.className.match('highlight')) {
+            theObject.className = 'highlightWhiteSquare';
+          } else {
+            theObject.className = 'whiteSquare';
+          }
         } else {
-          theObject.className = "blackSquare";
+          if (theObject.className.match('highlight')) {
+            theObject.className = 'highlightBlackSquare';
+          } else {
+            theObject.className = 'blackSquare';
+          }
         }
       }
     }
-    HighlightLastMove();
     alertPromptOn = !alertPromptOn;
     if (alertPromptOn) { alertPromptDelay = 500; }
     else { alertPromptDelay = 10000; }
