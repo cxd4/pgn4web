@@ -86,12 +86,19 @@ function startAlertPrompt() {
 }
 
 function stopAlertPrompt() {
-  if (alertPromptInterval) { clearTimeout(alertPromptInterval); }
+  if (alertPromptInterval) { 
+    clearTimeout(alertPromptInterval); 
+    alertPromptInterval = null;
+  }
+  // need to restore the chessboard to the correct colors
   if (alertPromptOn) { alertPromptTick(false); }
 }
 
 function alertPromptTick(restart) {
-  if (alertPromptInterval) { clearTimeout(alertPromptInterval); }
+  if (alertPromptInterval) { 
+    clearTimeout(alertPromptInterval); 
+    alertPromptInterval = null;
+  }
   if(document.getElementById('tcol0trow0')) {
     for (ii=0; ii<8; ii++) {
       for (jj=0; jj<8; jj++) {
@@ -120,6 +127,7 @@ function alertPromptTick(restart) {
   }
   if (restart) { alertPromptInterval = setTimeout("alertPromptTick(true);", alertPromptDelay); }
 }
+
 
 function stopKeyPropagation(e) {
   e.cancelBubble = true;
