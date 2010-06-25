@@ -340,6 +340,8 @@ function print_form() {
     document.getElementById('uploadFormFile').value = "";
     document.getElementById('urlFormText').value = "";
 
+    document.getElementById('lastAlert').innerHTML = "";
+
     firstStart = true;
     start_pgn4web();
     if (window.location.hash == "view") { window.location.reload(); }   
@@ -389,6 +391,8 @@ function reset_viewer() {
    checkPgnFormTextSize();
    document.getElementById("pgnStatus").innerHTML = "please enter chess games in <a href=http://www.tim-mann.org/Standard target=_blank>PGN format</a>&nbsp; &nbsp;<span style='color: gray;'>file and URL inputs must not exceed $fileUploadLimitText</span>";
    document.getElementById("pgnText").value = '$krabbeStartPosition';
+   document.getElementById('lastAlert').innerHTML = "";
+
    firstStart = true;
    start_pgn4web();
    if (window.location.hash == "top") { window.location.reload(); }
@@ -585,12 +589,21 @@ function print_chessboard() {
   SetAutoplayDelay(2000);
   SetShortcutKeysEnabled(true);
 
-  function customFunctionOnPgnTextLoad() { document.getElementById('numGm').innerHTML = numberOfGames; }
+  function customFunctionOnPgnTextLoad() { 
+    document.getElementById('numGm').innerHTML = numberOfGames; 
+  }
   function customFunctionOnPgnGameLoad() {
     document.getElementById('currGm').innerHTML = currentGame+1;
     document.getElementById('numPly').innerHTML = PlyNumber;
   }
-  function customFunctionOnMove() { document.getElementById('currPly').innerHTML = CurrentPly; }
+  function customFunctionOnMove() { 
+    document.getElementById('currPly').innerHTML = CurrentPly; 
+    if (alertLog[alertLast]) { 
+      document.getElementById('lastAlert').innerHTML = alertLog[alertLast].replace("\\n", "<br>");
+    } else {
+      document.getElementById('lastAlert').innerHTML = ""; 
+    }
+  }
 </script>
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
@@ -659,6 +672,9 @@ END;
       <p></p>
 
       <span class="label">Move comment:</span><br><span id="GameLastComment"></span> 
+      <p></p>
+
+      <span id="lastAlert" style="color: red;"></span> 
 
     </td>
   </tr>
