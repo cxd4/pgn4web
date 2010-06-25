@@ -118,6 +118,11 @@ function customFunctionOnPgnGameLoad() {
   }
 }
 
+function customFunctionOnAlert(message_string) {
+  stopAlertPrompt(); 
+  alert(message_string);
+}
+
 function loadPgnFromForm() {
   firstStart = true;
   document.getElementById('pgnText').value = document.getElementById('pgnForm').value;

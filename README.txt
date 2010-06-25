@@ -256,9 +256,10 @@ CUSTOMIZATION FUNCTIONS
 
 The following functions, if defined in the HTML file after loading pgn4web.js,
 allow for execution of custom commands at given points:
-- customFunctionOnPgnTextLoad(): executed when loading a new PGN file
-- customFunctionOnPgnGameLoad(): executed when loading a new game
-- customFunctionOnMove(): executed when a  move is made
+- customFunctionOnPgnTextLoad(): when loading a new PGN file
+- customFunctionOnPgnGameLoad(): when loading a new game
+- customFunctionOnMove(): when a  move is made
+- customFunctionOnAlert(message_string): when an error alert is raised
 Please note the order these functions are executed; for example, when loading 
 a new PGN file at the end of the first game, first customFunctionOnMove() is 
 executed, then (when the game has been loaded and the move positioning 

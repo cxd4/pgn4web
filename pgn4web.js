@@ -41,6 +41,7 @@ function displayHelp(section){
 function customFunctionOnPgnTextLoad() {}
 function customFunctionOnPgnGameLoad() {}
 function customFunctionOnMove()        {}
+function customFunctionOnAlert(msg)    {}
 
 
 window.onload = start_pgn4web;
@@ -77,6 +78,7 @@ function myAlert(msg) {
   if ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) {
     startAlertPrompt();
   }
+  customFunctionOnAlert(msg);
 }
 
 function startAlertPrompt() {
