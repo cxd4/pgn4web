@@ -66,8 +66,6 @@ Result: <span style="font-weight: bold;" id="GameResult"></span><br>
 <br>
 Last move: <span style="font-weight: bold" id="GameLastMove"></span><br>
 Next move: <span style="font-weight: bold" id="GameNextMove"></span><br>
-<br>
-<span style="color: red; font-size: 75%;" id="lastAlert"></span><br>
 </span>
 </td>
 
@@ -102,14 +100,14 @@ Next move: <span style="font-weight: bold" id="GameNextMove"></span><br>
 
 <script type="text/javascript">
 
-function customFunctionOnPgnTextLoad() {
+function customFunctionOnPgnTextLoad() { 
   theObject = document.getElementById('GameSelSelect');
   if (theObject !== null) {
     theObject.style.width = document.getElementById('pgnForm').offsetWidth - 20 - 230;
   }
 }
 
-function customFunctionOnPgnGameLoad() {
+function customFunctionOnPgnGameLoad() { 
   theObject = document.getElementById('searchPgnButton');
   if (theObject !== null) { 
      theObject.style.width = (document.getElementById('pgnForm').offsetWidth - 20 - 230) / 4; 
@@ -120,11 +118,11 @@ function customFunctionOnPgnGameLoad() {
   }
 }
 
-function customFunctionOnMove() { 
-  if (alertLog[alertLast]) {
-    document.getElementById('lastAlert').innerHTML = alertLog[alertLast].replace("\n", "<br>");
-  } else {
-    document.getElementById('lastAlert').innerHTML = "";
+var previousAlertNum = 0;
+function customFunctionOnMove() {
+  if (alertNum != previousAlertNum) { 
+    alert(alertLog[alertLast]);
+    previousAlertNum = alertNum;
   }
 }
 
@@ -138,8 +136,7 @@ function loadPgnFromForm() {
   document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/^\s*\[/g,'[');
   document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\n[\s*\n]+/g,'\n\n');
 
-  document.getElementById('lastAlert').innerHTML = "";
-
+  previousAlertNum = 0;
   start_pgn4web(); 
 }
 
