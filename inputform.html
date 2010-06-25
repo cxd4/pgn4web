@@ -118,14 +118,6 @@ function customFunctionOnPgnGameLoad() {
   }
 }
 
-var previousAlertNum = 0;
-function customFunctionOnMove() {
-  if (alertNum != previousAlertNum) { 
-    alert(alertLog[alertLast]);
-    previousAlertNum = alertNum;
-  }
-}
-
 function loadPgnFromForm() {
   firstStart = true;
   document.getElementById('pgnText').value = document.getElementById('pgnForm').value;
@@ -136,7 +128,6 @@ function loadPgnFromForm() {
   document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/^\s*\[/g,'[');
   document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\n[\s*\n]+/g,'\n\n');
 
-  previousAlertNum = 0;
   start_pgn4web(); 
 }
 

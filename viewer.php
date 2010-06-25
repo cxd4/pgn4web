@@ -340,7 +340,6 @@ function print_form() {
     document.getElementById('uploadFormFile').value = "";
     document.getElementById('urlFormText').value = "";
 
-    previousAlertNum = 0;
     firstStart = true;
     start_pgn4web();
     if (window.location.hash == "view") { window.location.reload(); }   
@@ -391,7 +390,6 @@ function reset_viewer() {
    document.getElementById("pgnStatus").innerHTML = "please enter chess games in PGN format&nbsp; &nbsp;<span style='color: gray;'>file and URL inputs must not exceed $fileUploadLimitText</span>";
    document.getElementById("pgnText").value = '$krabbeStartPosition';
 
-   previousAlertNum = 0;
    firstStart = true;
    start_pgn4web();
    if (window.location.hash == "top") { window.location.reload(); }
@@ -595,13 +593,8 @@ function print_chessboard() {
     document.getElementById('currGm').innerHTML = currentGame+1;
     document.getElementById('numPly').innerHTML = PlyNumber;
   }
-  var previousAlertNum = 0;
   function customFunctionOnMove() { 
     document.getElementById('currPly').innerHTML = CurrentPly; 
-    if (alertNum != previousAlertNum) {
-      alert(alertLog[alertLast]);
-      previousAlertNum = alertNum;
-    }
   }
 </script>
 
@@ -715,7 +708,6 @@ function print_footer() {
 <script type="text/javascript">
 
 function new_start_pgn4web() {
-  previousAlertNum = 0;
   setPgnUrl("$pgnUrl");
   checkPgnFormTextSize();
   start_pgn4web();
