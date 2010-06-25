@@ -87,7 +87,7 @@ function startAlertPrompt() {
 
 function stopAlertPrompt() {
   if (alertPromptInterval) { clearTimeout(alertPromptInterval); }
-  if (alertPromptOn) { alertPromptTick(false) };
+  if (alertPromptOn) { alertPromptTick(false); }
 }
 
 function alertPromptTick(restart) {
