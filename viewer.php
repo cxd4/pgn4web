@@ -474,7 +474,7 @@ function print_chessboard() {
   print <<<END
 
 <table width=100% cellpadding=0 cellspacing=0 border=0><tr><td valign=top align=left>
-<a name="view"><div id="pgnStatus" style="font-weight: bold; margin-top: 3em; margin-bottom: 3em;">$pgnStatus</div></a>
+<a name="view"></a><div id="pgnStatus" style="font-weight: bold; margin-top: 3em; margin-bottom: 3em;">$pgnStatus</div>
 </td><td valign=top align=right>
 <div style="padding-top: 1em;">
 &nbsp;&nbsp;&nbsp;<a href="#moves" style="color: gray; font-size: 66%;">moves</a>&nbsp;&nbsp;&nbsp;<a href="#view" style="color: gray; font-size: 66%;">board</a>&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray; font-size: 66%;">form</a>
