@@ -13,6 +13,8 @@ $tmpDir = "viewer";
 $fileUploadLimitBytes = 4194304;
 $fileUploadLimitText = round(($fileUploadLimitBytes / 1048576), 0) . "MB";
 
+$debugHelpText = "a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages";
+
 if (!($goToView = get_pgn())) { $pgnText = $krabbeStartPosition = get_krabbe_position(); }
 set_mode();
 print_header();
@@ -23,7 +25,7 @@ print_footer();
 
 function set_mode() {
 
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
 
   $mode = $_REQUEST["mode"];
@@ -68,7 +70,7 @@ function get_krabbe_position() {
 
 function get_pgn() {
 
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
 
   $pgnDebugInfo = $_REQUEST["debug"];
@@ -202,7 +204,7 @@ function get_pgn() {
 
 function check_tmpDir() {
 
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
 
   $tmpDirHandle = opendir($tmpDir);
@@ -275,7 +277,7 @@ END;
 
 function print_form() {
 
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
 
   $thisScript = $_SERVER['SCRIPT_NAME'];
@@ -313,10 +315,12 @@ function print_form() {
   function checkPgnFormTextSize() {
     document.getElementById("pgnFormButton").title = "PGN textbox size is " + document.getElementById("pgnFormText").value.length;
     if (document.getElementById("pgnFormText").value.length == 1) {
-      document.getElementById("pgnFormButton").title += " char";
+      document.getElementById("pgnFormButton").title += " char;";
     } else {
-      document.getElementById("pgnFormButton").title += " chars";
+      document.getElementById("pgnFormButton").title += " chars;";
     }
+    document.getElementById("pgnFormButton").title += " $debugHelpText";
+    document.getElementById("pgnFormText").title = document.getElementById("pgnFormButton").title;
   }
 
   function loadPgnFromForm() {
@@ -403,12 +407,12 @@ function reset_viewer() {
   <tr>
     <td align="left" valign="top">
       <form id="uploadForm" action="$thisScript" enctype="multipart/form-data" method="POST" style="display: inline;">
-        <input id="uploadFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) file" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText" onClick="return checkPgnFile();">
+        <input id="uploadFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) file" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText; $debugHelpText" onClick="return checkPgnFile();">
     </td>
     <td colspan=2 width="100%" align="left" valign="top">
         <input type="hidden" name="mode" value="$mode">
         <input type="hidden" name="MAX_FILE_SIZE" value="$fileUploadLimitBytes">
-        <input id="uploadFormFile" name="pgnFile" type="file" class="formControl" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
+        <input id="uploadFormFile" name="pgnFile" type="file" class="formControl" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText; $debugHelpText">
       </form>
     </td>
   </tr>
@@ -416,10 +420,10 @@ function reset_viewer() {
   <tr>
     <td align="left" valign="top">
       <form id="urlForm" action="$thisScript" method="POST" style="display: inline;">
-	<input id="urlFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) URL" title="PGN and ZIP files must be smaller than $fileUploadLimitText" onClick="return checkPgnUrl();">
+	<input id="urlFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) URL" title="PGN and ZIP files must be smaller than $fileUploadLimitText; $debugHelpText" onClick="return checkPgnUrl();">
     </td>
     <td width="100%" align="left" valign="top">
-        <input id="urlFormText" name="pgnUrl" type="text" class="formControl" value="" style="width:100%" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
+        <input id="urlFormText" name="pgnUrl" type="text" class="formControl" value="" style="width:100%" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText; $debugHelpText">
         <input type="hidden" name="mode" value="$mode">
       </form>
     </td>
@@ -458,7 +462,7 @@ END;
 
 function print_chessboard() {
 
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
 
   if ($mode == "compact") {
@@ -691,7 +695,7 @@ END;
 
 function print_footer() {
 
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
 
   if ($goToView) { $hashStatement = "window.location.hash = 'view';"; }
