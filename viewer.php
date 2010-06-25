@@ -117,7 +117,7 @@ function get_pgn() {
       $pgnSource = $pgnUrl;
     }
   } elseif (count($_FILES) == 0) {
-    $pgnStatus = "please enter chess games in <a href=http://www.tim-mann.org/Standard target=_blank>PGN format</a>&nbsp; &nbsp;<span style='color: gray;'>file and URL inputs must not exceed " . $fileUploadLimitText . "</span>";
+    $pgnStatus = "please enter chess games in PGN format&nbsp; &nbsp;<span style='color: gray;'>file and URL inputs must not exceed " . $fileUploadLimitText . "</span>";
     return FALSE;
   } elseif ($_FILES['pgnFile']['error'] == UPLOAD_ERR_OK) {
     $pgnFileName = $_FILES['pgnFile']['name'];
@@ -389,7 +389,7 @@ function reset_viewer() {
    document.getElementById("urlFormText").value = "";
    document.getElementById("pgnFormText").value = "";
    checkPgnFormTextSize();
-   document.getElementById("pgnStatus").innerHTML = "please enter chess games in <a href=http://www.tim-mann.org/Standard target=_blank>PGN format</a>&nbsp; &nbsp;<span style='color: gray;'>file and URL inputs must not exceed $fileUploadLimitText</span>";
+   document.getElementById("pgnStatus").innerHTML = "please enter chess games in PGN format&nbsp; &nbsp;<span style='color: gray;'>file and URL inputs must not exceed $fileUploadLimitText</span>";
    document.getElementById("pgnText").value = '$krabbeStartPosition';
    document.getElementById('lastAlert').innerHTML = "";
 
