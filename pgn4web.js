@@ -74,7 +74,7 @@ function myAlert(msg) {
   alertLog[alertLast] = msg;
   if (alertNum > 1) { alertPlural = "s"; }
   else { alertPlural = ""; }
-  configBoardShrortcut(debugShortcutSquare, "pgn4web v" + pgn4web_version + " debug info (" + alertNum + " alert" + alertPlural + ")", "keep"); 
+  configBoardShrortcut(debugShortcutSquare, "pgn4web v" + pgn4web_version + " debug info, " + alertNum + " alert" + alertPlural, "keep"); 
 
   if ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) {
     startAlertPrompt();
