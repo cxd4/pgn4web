@@ -65,6 +65,7 @@ function resetAlert() {
   alertLast = alertLog.length - 1;
   alertNum = 0;
   stopAlertPrompt();
+  configBoardShrortcut(debugShortcutSquare, "pgn4web v" + pgn4web_version + " debug info", "keep");
 }
 
 function myAlert(msg) {
@@ -73,7 +74,7 @@ function myAlert(msg) {
   alertLog[alertLast] = msg;
   if (alertNum > 1) { alertPlural = "s"; }
   else { alertPlural = ""; }
-  configBoardShrortcut(debugShortcutSquare, "debug info v" + pgn4web_version + " (" + alertNum + " alert" + alertPlural + ")", "keep"); 
+  configBoardShrortcut(debugShortcutSquare, "pgn4web v" + pgn4web_version + " debug info (" + alertNum + " alert" + alertPlural + ")", "keep"); 
 
   if ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) {
     startAlertPrompt();
@@ -511,7 +512,7 @@ function configBoardShrortcut(square, title, functionPointer) {
 
 debugShortcutSquare = "A8";
 // A8
-configBoardShrortcut("A8", "debug info v" + pgn4web_version, function(){ displayDebugInfo(); });
+configBoardShrortcut("A8", "pgn4web v" + pgn4web_version + " debug info", function(){ displayDebugInfo(); });
 // B8
 configBoardShrortcut("B8", "show this position FEN string", function(){ displayFenData(); });
 // C8
@@ -527,7 +528,7 @@ configBoardShrortcut("G8", "shortcut squares help", function(){ displayHelp("squ
 // H8
 configBoardShrortcut("H8", "pgn4web help", function(){ displayHelp(); });
 // A7
-configBoardShrortcut("A7", "go to the pgn4web website", function(){ window.open(pgn4web_project_url); });
+configBoardShrortcut("A7", "pgn4web website", function(){ window.open(pgn4web_project_url); });
 // B7
 configBoardShrortcut("B7", "toggle show comments in game text", function(){ SetCommentsIntoMoveText(!commentsIntoMoveText); thisPly = CurrentPly; Init(); GoToMove(thisPly); });
 // C7
