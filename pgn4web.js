@@ -1316,6 +1316,7 @@ function ClearMove(move){
   while(ii < ss){
     cc = move.charCodeAt(ii);
     if ((cc == 45) || ((cc >= 48) && (cc <= 57)) || (cc == 61) ||
+//        (cc == 35) || (cc == 43) || // patch this to pass through '+' and '#' signs
 	((cc >= 65) && (cc <= 90)) || ((cc >=97) && (cc <= 122))){
 	  mm += move.charAt(ii);
     }
@@ -2950,6 +2951,7 @@ function translateNAGs(comment){
 
 
 function ParseMove(move, plyCount){
+//  move = move.replace(/[\+#]/g, ""); // patch this to pass through '+' and '#' signs
   var ii, ll;
   var remainder;
   var toRowMarker = -1;
