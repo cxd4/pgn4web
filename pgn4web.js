@@ -49,7 +49,10 @@ window.onload = start_pgn4web;
 document.onkeydown = handlekey;
 
 function start_pgn4web() {
-  resetAlert();
+  // first time pgn4web is started allow for alert log messages preceding start_pgn4web
+  // if start_pgn4web is later reloaded then reset alert log
+  if (alertFirstResetLoadingPgn) { alertFirstResetLoadingPgn = false; }
+  else { resetAlert(); } 
   createBoard();
   if (LiveBroadcastDelay > 0) { restartLiveBroadcastTimeout(); }
 }
@@ -59,13 +62,18 @@ var alertLast;
 var alertNum;
 var alertPromptInterval = null;
 var alertPromptOn = false;
+var alertFirstResetLoadingPgn = true;
+
+resetAlert();
 
 function resetAlert() {
   alertLog = new Array(5);
   alertLast = alertLog.length - 1;
   alertNum = 0;
   stopAlertPrompt();
-  configBoardShrortcut(debugShortcutSquare, "pgn4web v" + pgn4web_version + " debug info", "keep");
+  if (!alertFirstResetLoadingPgn) {
+    configBoardShrortcut(debugShortcutSquare, "pgn4web v" + pgn4web_version + " debug info", "keep");
+  }
 }
 
 function myAlert(msg) {
