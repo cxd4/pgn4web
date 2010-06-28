@@ -49,8 +49,86 @@ window.onload = start_pgn4web;
 document.onkeydown = handlekey;
 
 function start_pgn4web() {
+  resetAlert();
   createBoard();
   if (LiveBroadcastDelay > 0) { restartLiveBroadcastTimeout(); }
+}
+
+var alertLog;
+var alertLast;
+var alertNum;
+var alertPromptInterval = null;
+var alertPromptOn = false;
+
+function resetAlert() {
+  alertLog = new Array(5);
+  alertLast = alertLog.length - 1;
+  alertNum = 0;
+  stopAlertPrompt();
+  configBoardShrortcut(debugShortcutSquare, "pgn4web v" + pgn4web_version + " debug info", "keep");
+}
+
+function myAlert(msg) {
+  alertNum++;
+  alertLast = (alertLast + 1) % alertLog.length;
+  alertLog[alertLast] = msg;
+  if (alertNum > 1) { alertPlural = "s"; }
+  else { alertPlural = ""; }
+  configBoardShrortcut(debugShortcutSquare, "pgn4web v" + pgn4web_version + " debug info, " + alertNum + " alert" + alertPlural, "keep"); 
+
+  if ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) {
+    startAlertPrompt();
+  }
+  customFunctionOnAlert(msg);
+}
+
+function startAlertPrompt() {
+  if (alertPromptOn) { return; } // if flashing already dont start a new flashing
+  if (alertPromptInterval) { clearTimeout(alertPromptInterval); }
+  alertPromptInterval = setTimeout("alertPromptTick(true);", 500);
+}
+
+function stopAlertPrompt() {
+  if (alertPromptInterval) { 
+    clearTimeout(alertPromptInterval); 
+    alertPromptInterval = null;
+  }
+  // need to restore the chessboard to the correct colors
+  if (alertPromptOn) { alertPromptTick(false); }
+}
+
+function alertPromptTick(restart) {
+  if (alertPromptInterval) { 
+    clearTimeout(alertPromptInterval); 
+    alertPromptInterval = null;
+  }
+  if(document.getElementById('tcol0trow0')) {
+    for (ii=0; ii<8; ii++) {
+      for (jj=0; jj<8; jj++) {
+        squareId = 'tcol' + jj + 'trow' + ii;
+        theObject = document.getElementById(squareId);
+        if (((alertPromptOn) && ((ii+jj)%2 === 0)) || (!(alertPromptOn) && !((ii+jj)%2 === 0))) {
+          if (theObject.className.match('highlight')) {
+            theObject.className = 'highlightWhiteSquare';
+          } else {
+            theObject.className = 'whiteSquare';
+          }
+        } else {
+          if (theObject.className.match('highlight')) {
+            theObject.className = 'highlightBlackSquare';
+          } else {
+            theObject.className = 'blackSquare';
+          }
+        }
+      }
+    }
+    alertPromptOn = !alertPromptOn;
+    if (alertPromptOn) { alertPromptDelay = 500; }
+    else { alertPromptDelay = 10000; }
+  } else {
+    alertPromptDelay = 1500;
+  }
+  if (restart) { alertPromptInterval = setTimeout("alertPromptTick(true);", alertPromptDelay); }
 }
 
 
@@ -789,86 +867,6 @@ function displayFenData() {
 }
 
 
-var alertLog;
-var alertLast;
-var alertNum;
-var alertPromptInterval = null;
-var alertPromptOn = false;
-
-resetAlert();
-
-function resetAlert() {
-  alertLog = new Array(5);
-  alertLast = alertLog.length - 1;
-  alertNum = 0;
-  stopAlertPrompt();
-  configBoardShrortcut(debugShortcutSquare, "pgn4web v" + pgn4web_version + " debug info", "keep");
-}
-
-function myAlert(msg) {
-  alertNum++;
-  alertLast = (alertLast + 1) % alertLog.length;
-  alertLog[alertLast] = msg;
-  if (alertNum > 1) { alertPlural = "s"; }
-  else { alertPlural = ""; }
-  configBoardShrortcut(debugShortcutSquare, "pgn4web v" + pgn4web_version + " debug info, " + alertNum + " alert" + alertPlural, "keep"); 
-
-  if ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) {
-    startAlertPrompt();
-  }
-  customFunctionOnAlert(msg);
-}
-
-function startAlertPrompt() {
-  if (alertPromptOn) { return; } // if flashing already dont start a new flashing
-  if (alertPromptInterval) { clearTimeout(alertPromptInterval); }
-  alertPromptInterval = setTimeout("alertPromptTick(true);", 500);
-}
-
-function stopAlertPrompt() {
-  if (alertPromptInterval) { 
-    clearTimeout(alertPromptInterval); 
-    alertPromptInterval = null;
-  }
-  // need to restore the chessboard to the correct colors
-  if (alertPromptOn) { alertPromptTick(false); }
-}
-
-function alertPromptTick(restart) {
-  if (alertPromptInterval) { 
-    clearTimeout(alertPromptInterval); 
-    alertPromptInterval = null;
-  }
-  if(document.getElementById('tcol0trow0')) {
-    for (ii=0; ii<8; ii++) {
-      for (jj=0; jj<8; jj++) {
-        squareId = 'tcol' + jj + 'trow' + ii;
-        theObject = document.getElementById(squareId);
-        if (((alertPromptOn) && ((ii+jj)%2 === 0)) || (!(alertPromptOn) && !((ii+jj)%2 === 0))) {
-          if (theObject.className.match('highlight')) {
-            theObject.className = 'highlightWhiteSquare';
-          } else {
-            theObject.className = 'whiteSquare';
-          }
-        } else {
-          if (theObject.className.match('highlight')) {
-            theObject.className = 'highlightBlackSquare';
-          } else {
-            theObject.className = 'blackSquare';
-          }
-        }
-      }
-    }
-    alertPromptOn = !alertPromptOn;
-    if (alertPromptOn) { alertPromptDelay = 500; }
-    else { alertPromptDelay = 10000; }
-  } else {
-    alertPromptDelay = 1500;
-  }
-  if (restart) { alertPromptInterval = setTimeout("alertPromptTick(true);", alertPromptDelay); }
-}
-
-
 var pgnGame = new Array();
 var numberOfGames = -1; 
 var currentGame   = -1;
@@ -1318,7 +1316,6 @@ function ClearMove(move){
   while(ii < ss){
     cc = move.charCodeAt(ii);
     if ((cc == 45) || ((cc >= 48) && (cc <= 57)) || (cc == 61) ||
-//        (cc == 35) || (cc == 43) || // patch this to pass through '+' and '#' signs
 	((cc >= 65) && (cc <= 90)) || ((cc >=97) && (cc <= 122))){
 	  mm += move.charAt(ii);
     }
@@ -2953,7 +2950,6 @@ function translateNAGs(comment){
 
 
 function ParseMove(move, plyCount){
-//  move = move.replace(/[\+#]/g, ""); // patch this to pass through '+' and '#' signs
   var ii, ll;
   var remainder;
   var toRowMarker = -1;

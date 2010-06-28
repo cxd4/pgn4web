@@ -132,8 +132,7 @@ function loadPgnFromForm() {
   document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\]\s*\[/g,']\n[');
   document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/^\s*\[/g,'[');
   document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\n[\s*\n]+/g,'\n\n');
-  
-  resetAlert();
+
   start_pgn4web(); 
 }
 
