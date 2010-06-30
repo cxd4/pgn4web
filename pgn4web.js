@@ -2988,7 +2988,7 @@ function ParseMove(move, plyCount){
     if (!isNaN(move.charAt(ii))){
       mvToCol     = move.charCodeAt(ii-1) - 97;
       mvToRow     = move.charAt(ii)       -  1;
-      reminder    = move.substring(0, ii-1);
+      remainder   = move.substring(0, ii-1);
       toRowMarker = ii;
     }
     ++ii;
@@ -3041,7 +3041,7 @@ function ParseMove(move, plyCount){
    * is present) mark the as such.
    */
   
-  ll = reminder.length;
+  ll = remainder.length;
 
   if (ll > 3) { return false; }
 
@@ -3053,13 +3053,13 @@ function ParseMove(move, plyCount){
 
   } else {
 
-    for(ii = 1; ii < 6; ++ii) { if (reminder.charAt(0) == PieceCode[ii-1]) { mvPiece = ii; } }
+    for(ii = 1; ii < 6; ++ii) { if (remainder.charAt(0) == PieceCode[ii-1]) { mvPiece = ii; } }
 
-    if (mvPiece == -1) { if ('abcdefgh'.indexOf(reminder.charAt(0)) >= 0) { mvPiece = 6; } }
+    if (mvPiece == -1) { if ('abcdefgh'.indexOf(remainder.charAt(0)) >= 0) { mvPiece = 6; } }
 
     if (mvPiece == -1) { return false; }
 
-    if (reminder.charAt(ll-1) == 'x') { mvCapture = 1; }
+    if (remainder.charAt(ll-1) == 'x') { mvCapture = 1; }
 
     if (isNaN(move.charAt(ll-1-mvCapture))){
       mvFromCol = move.charCodeAt(ll-1-mvCapture) - 97;
