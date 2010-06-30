@@ -696,7 +696,7 @@ function displayDebugInfo() {
       debugInfo += ' (' + document.getElementById("pgnText").tagName.toLowerCase() + ')';
   }
   debugInfo += '\n\n';
-  debugInfo += 'GAMES: current=' + currentGame + ' number=' + numberOfGames + '\n' +
+  debugInfo += 'GAMES: current=' + (currentGame+1) + ' number=' + numberOfGames + '\n' +
                'PLY: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber + '\n';
   debugInfo += 'AUTOPLAY: ';
   if (isAutoPlayOn) { debugInfo += 'delay=' + Delay + 'ms' + ' autoplaynext=' + autoplayNextGame; }
