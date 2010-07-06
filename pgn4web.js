@@ -677,6 +677,7 @@ function detectBaseLocation() {
 }
 
 function displayDebugInfo() {
+  stopAlertPrompt();
   debugInfo = 'pgn4web v' + pgn4web_version + '\n\n';
   debugInfo += 'HTML URL (' + location.href.length + '): ';
   if (location.href.length < 100) { debugInfo += location.href + '\n'; }
