@@ -60,6 +60,7 @@ function start_pgn4web() {
 var alertLog;
 var alertLast;
 var alertNum;
+var alertNumSinceReset;
 var alertPromptInterval = null;
 var alertPromptOn = false;
 var alertFirstResetLoadingPgn = true;
@@ -69,7 +70,7 @@ resetAlert();
 function resetAlert() {
   alertLog = new Array(5);
   alertLast = alertLog.length - 1;
-  alertNum = 0;
+  alertNum = alertNumSinceReset = 0;
   stopAlertPrompt();
   if (!alertFirstResetLoadingPgn) {
     configBoardShrortcut(debugShortcutSquare, "pgn4web v" + pgn4web_version + " debug info", "keep");
@@ -78,6 +79,7 @@ function resetAlert() {
 
 function myAlert(msg) {
   alertNum++;
+  alertNumSinceReset++;
   alertLast = (alertLast + 1) % alertLog.length;
   alertLog[alertLast] = msg;
   if (alertNum > 1) { alertPlural = "s"; }
@@ -712,7 +714,8 @@ function displayDebugInfo() {
                                              ' alert=' + LiveBroadcastAlert; }
   else { debugInfo += 'off'; }
   debugInfo += '\n\n';
-  debugInfo += 'ALERT LOG (' + Math.min(alertNum, alertLog.length) + '/' + alertNum + '):\n--';
+  debugInfo += 'ALERT LOG: new=' + alertNumSinceReset + ' shown=' + 
+               Math.min(alertNum, alertLog.length) + ' total=' + alertNum + '\n--';
   if (alertNum > 0) {
     for (ii = 0; ii<alertLog.length; ii++) {
       if (alertLog[(alertNum - 1 - ii) % alertLog.length] === undefined) { break; }
@@ -720,6 +723,7 @@ function displayDebugInfo() {
     }
   }
   alert(debugInfo);
+  alertNumSinceReset = 0;
 }
 
 pgnWin = null;
