@@ -88,6 +88,7 @@ function myAlert(msg) {
   if ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) {
     startAlertPrompt();
   }
+  SetAutostartAutoplay(false); // need to avoid endless error alert repetition
   customFunctionOnAlert(msg);
 }
 
@@ -112,20 +113,23 @@ function alertPromptTick(restart) {
     alertPromptInterval = null;
   }
   if(document.getElementById('tcol0trow0')) {
-    for (ii=0; ii<8; ii++) {
-      for (jj=0; jj<8; jj++) {
-        squareId = 'tcol' + jj + 'trow' + ii;
-        theObject = document.getElementById(squareId);
-        if (((alertPromptOn) && ((ii+jj)%2 === 0)) || (!(alertPromptOn) && !((ii+jj)%2 === 0))) {
-          theObject.className = (theObject.className.match('highlight') ? 'highlightWhiteSquare' : 'whiteSquare');
+
+    theObject = document.getElementById('tcol0trow0');
+    if (alertPromptOn) {
+      if ((highlightOption) && 
+          ((lastColFromHighlighted === 0 && lastRowFromHighlighted === 7) || 
+           (lastColToHighlighted === 0 && lastRowToHighlighted === 7))) {
+          theObject.className = 'highlightWhiteSquare';
         } else {
-          theObject.className = (theObject.className.match('highlight') ? 'highlightBlackSquare' : 'blackSquare');
+          theObject.className = 'whiteSquare';
         }
-      }
+    } else {
+      theObject.className = 'blackSquare';
     }
+
     alertPromptOn = !alertPromptOn;
     if (alertPromptOn) { alertPromptDelay = 500; }
-    else { alertPromptDelay = 10000; }
+    else { alertPromptDelay = 3000; }
   } else {
     alertPromptDelay = 1500;
   }
