@@ -82,8 +82,7 @@ function myAlert(msg) {
   alertNumSinceReset++;
   alertLast = (alertLast + 1) % alertLog.length;
   alertLog[alertLast] = msg;
-  if (alertNum > 1) { alertPlural = "s"; }
-  else { alertPlural = ""; }
+  alertPlural = alertNum > 1 ? "s" : "";
   configBoardShrortcut(debugShortcutSquare, "pgn4web v" + pgn4web_version + " debug info, " + alertNum + " alert" + alertPlural, "keep"); 
 
   if ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) {
@@ -1411,19 +1410,14 @@ function HighlightLastMove(){
     } else {
       thisComment = '';
     }
-    if (thisComment !== '') {
-      theShowCommentTextObject.innerHTML = MoveComments[showThisMove+1]; 
-    } else {
-      theShowCommentTextObject.innerHTML = '-';
-    }
+    theShowCommentTextObject.innerHTML = thisComment !== '' ? MoveComments[showThisMove+1] : '-';
     theShowCommentTextObject.className = 'GameLastComment';
   }
   
   /*
    * Show the side to move
-   */ 
-  if ((showThisMove+1)%2 === 0) { text='white'; } // black has just moved
-  else { text='black'; }
+   */
+  text = (showThisMove+1)%2 === 0 ? 'white' : 'black';
  
   theObject = document.getElementById("GameSideToMove");
   if (theObject !== null) { theObject.innerHTML = text; }
@@ -1445,18 +1439,14 @@ function HighlightLastMove(){
   }
 
   if (lastMoverClockObject !== null) {
-    if (showThisMove+1 > StartPly) { 
-      lastMoverClockObject.innerHTML = clockFromComment(MoveComments[showThisMove+1]); 
-    } else {
-      lastMoverClockObject.innerHTML = initialLastMoverClock;
-    }
+    lastMoverClockObject.innerHTML = showThisMove+1 > StartPly ?
+                                     clockFromComment(MoveComments[showThisMove+1]) :
+                                     initialLastMoverClock;
   }
   if (beforeLastMoverClockObject !== null) {
-    if (showThisMove+1 > StartPly+1) { 
-      beforeLastMoverClockObject.innerHTML = clockFromComment(MoveComments[showThisMove]); 
-    } else {
-      beforeLastMoverClockObject.innerHTML = initialBeforeLastMoverClock;
-    }
+    beforeLastMoverClockObject.innerHTML = showThisMove+1 > StartPly+1 ?
+                                           clockFromComment(MoveComments[showThisMove]) :
+                                           initialBeforeLastMoverClock;
   }
 
   /*
@@ -1468,15 +1458,9 @@ function HighlightLastMove(){
     if (showThisMove+1 >= (StartPly+PlyNumber)){
       text = gameResult[currentGame];
     }else{
-      move = Moves[showThisMove+1];
-      text = '';
-      mvNum = Math.floor((showThisMove+1)/2) + 1;
-      if ((showThisMove+1) % 2 === 0){
-        text += mvNum + '. ';
-      } else{
-        text += mvNum + '... ';
-      }
-      text += move;
+      text = (Math.floor((showThisMove+1)/2) + 1) + 
+             ((showThisMove+1) % 2 === 0 ? '. ' : '... ') +
+             Moves[showThisMove+1];
     }
     theShowMoveTextObject.innerHTML = text; 
     theShowMoveTextObject.className = 'GameNextMove';
@@ -1488,15 +1472,9 @@ function HighlightLastMove(){
     if (showThisMove < StartPly){
       text = '-';
     }else{
-      move = Moves[showThisMove];
-      var text = '';
-      var mvNum = Math.floor(showThisMove/2) + 1;
-      if (showThisMove % 2 === 0){
-        text += mvNum + '. ';
-      } else{
-        text += mvNum + '... ';
-      }
-      text += move;
+      text = (Math.floor(showThisMove/2) + 1) + 
+             (showThisMove % 2 === 0 ? '. ' : '... ') +
+             Moves[showThisMove];
     }
     theShowMoveTextObject.innerHTML = text; 
     theShowMoveTextObject.className = 'GameLastMove';
@@ -1581,11 +1559,9 @@ function highlightSquare(col, row, on) {
   if (theObject === null) { return false; }
 
   if (on) {
-    if ((trow+tcol)%2 === 0) { theObject.className = "highlightWhiteSquare"; }
-    else { theObject.className = "highlightBlackSquare"; }
+    theObject.className = (trow+tcol)%2 === 0 ? "highlightWhiteSquare" : "highlightBlackSquare";
   } else {
-    if ((trow+tcol)%2 === 0) { theObject.className = "whiteSquare"; }
-    else { theObject.className = "blackSquare"; }
+    theObject.className = (trow+tcol)%2 === 0 ? "whiteSquare" : "blackSquare";
   }
   return true;
 }
@@ -1724,12 +1700,10 @@ function checkLiveBroadcastStatus() {
     }
     LiveBroadcastEnded = (liveGamesRunning === 0);
 
-    if (LiveBroadcastEnded) {
-      LiveBroadcastStatusString = "live broadcast ended";
-    } else {
-      LiveBroadcastStatusString = "live games: " + liveGamesRunning + 
-                                  " &nbsp; finished: " + (numberOfGames - liveGamesRunning);
-    }
+    LiveBroadcastStatusString = LiveBroadcastEnded ?
+                                "live broadcast ended" :
+                                "live games: " + liveGamesRunning +
+                                " &nbsp; finished: " + (numberOfGames - liveGamesRunning);
   }
 
   theObject = document.getElementById("GameLiveStatus");
@@ -1779,8 +1753,7 @@ function refreshPgnSource() {
   firstStart = true;
   textSelectOptions = '';
 
-  if (CurrentPly != StartPly + PlyNumber) { oldCurrentPly = CurrentPly; }
-  else {oldCurrentPly = -1;}
+  oldCurrentPly = CurrentPly != StartPly + PlyNumber ? CurrentPly : -1;
 
   if (isAutoPlayOn) {
     SetAutoPlay(false);
@@ -1977,11 +1950,7 @@ function Init(){
 
 
 function InitFEN(startingFEN){
-  if (startingFEN != undefined){
-    FenString = startingFEN;
-  }else{
-    FenString = FenStringStart;
-  }
+  FenString = startingFEN != undefined ? startingFEN : FenStringStart;
   /*
    * Reset the board;
    */
@@ -2125,8 +2094,7 @@ function InitFEN(startingFEN){
             ii++;
           }
         }
-        if (ll<FenString.length) { cc=FenString.charAt(ll++); }
-        else { cc=" "; }
+        cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
       }
       if ((ii!=8)||(jj!==0))
       { myAlert("error: invalid FEN [8] char "+ll+" in game "+(currentGame+1)+"\n"+FenString);
@@ -2183,11 +2151,8 @@ function InitFEN(startingFEN){
         if ((cc=="e")||(cc=="f")||(cc=="g")||(cc=="h"))
         { CastlingShort[1]=1; }
         if ((cc=="a")||(cc=="b")||(cc=="c")||(cc=="d"))
-        { CastlingLong[1]=1; }   
-        if (ll<FenString.length)
-        { cc=FenString.charAt(ll++); }
-        else 
-        { cc=" "; }
+        { CastlingLong[1]=1; }
+        cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
       }
 
       /*
@@ -2214,8 +2179,7 @@ function InitFEN(startingFEN){
           newEnPassant = true;
           newEnPassantCol=cc.charCodeAt(0)-97; 
         }
-        if (ll<FenString.length) { cc=FenString.charAt(ll++); }
-        else { cc=" "; }
+        cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
       }
       if (ll>=FenString.length)
       { myAlert("error: invalid FEN [14]: char "+ll+" missing halfmove clock in game "+(currentGame+1)+"\n"+FenString);
@@ -2229,8 +2193,7 @@ function InitFEN(startingFEN){
           return;
         }
         InitialHalfMoveClock=InitialHalfMoveClock*10+parseInt(cc, 10);
-        if (ll<FenString.length) { cc=FenString.charAt(ll++); }
-        else { cc=" "; }
+        cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
       }
       if (ll>=FenString.length)
       { myAlert("error: invalid FEN [16]: char "+ll+" missing fullmove number in game "+(currentGame+1)+"\n"+FenString);
@@ -2529,8 +2492,7 @@ function MoveForward(diff){
     var move  = Moves[thisPly];
     var parse = ParseMove(move, thisPly);
     if (!parse) {
-      if ((thisPly % 2) === 0) { text = (Math.floor(thisPly / 2) + 1) + '. '; }
-      else { text = (Math.floor(thisPly / 2) + 1) + '... '; }
+      text = (Math.floor(thisPly / 2) + 1) + ((thisPly % 2) === 0 ? '. ' : '... ');
       myAlert('error: invalid ply ' + text + move + ' in game ' + (currentGame+1));
       break;
     }
@@ -2644,8 +2606,7 @@ function ParsePGNGameString(gameString){
       case '!':
       case '?':
         commentStart = start;
-        if ((ss.charAt(start+1) == '?') || (ss.charAt(start+1) == '!')) { commentEnd = commentStart + 2; }
-        else { commentEnd = commentStart + 1; }
+        commentEnd = commentStart + (((ss.charAt(start+1) == '?') || (ss.charAt(start+1) == '!')) ? 2 : 1);
         if (MoveComments[StartPly+PlyNumber].length>0) { MoveComments[StartPly+PlyNumber] += ' '; }
         MoveComments[StartPly+PlyNumber] += ss.substring(commentStart, commentEnd);
         start = commentEnd;
@@ -2764,7 +2725,7 @@ function ParsePGNGameString(gameString){
         end2 = ss.indexOf('?',start); if ((end2 > 0) && (end2 < end)) { end = end2; }
         if (end < 0) { end = ss.length; }
         move = ss.substring(start,end);
-        Moves[StartPly+PlyNumber] = ClearMove(move); 
+        Moves[StartPly+PlyNumber] = ClearMove(move);
         if (ss.charAt(end) == ' ') { start = end; } 
         else { start = end - 1; }
         if (Moves[StartPly+PlyNumber] !== "") { // takes into account odd cased of misformed PGN data
@@ -2777,8 +2738,7 @@ function ParsePGNGameString(gameString){
   for (ii=StartPly; ii<=PlyNumber; ii++) {
     MoveComments[ii] = MoveComments[ii].replace(/\s+/g, " ");
     pgn4webCommentTmp = MoveComments[ii].match(/\[%pgn4web\s*(.*?)\]/);
-    if (pgn4webCommentTmp) { pgn4webMoveComments[ii] = pgn4webCommentTmp[1]; } 
-    else { pgn4webMoveComments[ii] = ""; }
+    pgn4webMoveComments[ii] = pgn4webCommentTmp ? pgn4webCommentTmp[1] : "";
     MoveComments[ii] = translateNAGs(MoveComments[ii]);
     MoveComments[ii] = MoveComments[ii].replace(/\s+$/g, '');
   }
@@ -2997,11 +2957,7 @@ function ParseMove(move, plyCount){
         mvToCol      = 2;
         mvFromRow    = 7*MoveColor;
         mvToRow      = 7*MoveColor;
-	if (CheckLegality('O-O-O', plyCount)){
-	  return true;
-	} else{
-	  return false;
-	}
+        return CheckLegality('O-O-O', plyCount);
       }
       if (move.match('^[Oo0]-?[Oo0]$') !== null){
         mvIsCastling = 1;
@@ -3012,11 +2968,7 @@ function ParseMove(move, plyCount){
 	mvToCol      = 6;
         mvFromRow    = 7*MoveColor;
         mvToRow      = 7*MoveColor;
-	if (CheckLegality('O-O', plyCount)){
-	  return true;
-	} else{
-	  return false;
-	}
+	return CheckLegality('O-O', plyCount);
       }
       return false;
     } else{
@@ -3178,8 +3130,7 @@ function clickedSquare(ii, jj) {
   squareId = 'tcol' + jj + 'trow' + ii;
   theObject = document.getElementById(squareId);
   originalClass = theObject.className;
-  if ((ii+jj)%2 === 0){ newClass = "blackSquare"; }
-  else { newClass = "whiteSquare"; }
+  newClass = (ii+jj)%2 === 0 ? "blackSquare" : "whiteSquare";
   theObject.className = newClass;
   clickedSquareInterval = setTimeout("reset_after_click(" + ii + "," + jj + ",'" + originalClass + "','" + newClass + "')", 66);
 }
@@ -3239,23 +3190,22 @@ function PrintHTML(){
    * Show the board as a 8x8 table.
    */
   text = '<TABLE CLASS="boardTable" ID="boardTable" CELLSPACING=0 CELLPADDING=0';
-  if ((tableSize !== null) && (tableSize !== 0)) { text += ' STYLE="width: ' + tableSize + 'px; height: ' + tableSize + 'px;">'; }
-  else { text += '>'; }
+  text += ((tableSize !== null) && (tableSize !== 0)) ?
+          ' STYLE="width: ' + tableSize + 'px; height: ' + tableSize + 'px;">' :
+          '>';
   for (ii = 0; ii < 8; ++ii){
     text += '<TR>';
     for (jj = 0; jj < 8; ++jj){
       squareId = 'tcol' + jj + 'trow' + ii;
       imageId = 'img_' + squareId;
       linkId = 'link_' + squareId;
-      if ((ii+jj)%2 === 0){
-	text += '<TD CLASS="whiteSquare" ID="' + squareId + '" BGCOLOR="white" ALIGN="center" VALIGN="middle" ONCLICK="clickedSquare(' + ii + ',' + jj + ')">';
-      } else{
-	text += '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="lightgray" ALIGN="center" VALIGN="middle" ONCLICK="clickedSquare(' + ii + ',' + jj + ')">';
-      } 
-      if (IsRotated) { squareCoord = String.fromCharCode(72-jj,49+ii); }
-      else { squareCoord = String.fromCharCode(jj+65,56-ii); }
-      if (boardTitle[jj][ii] !== '') { squareTitle = squareCoord + ': ' + boardTitle[jj][ii]; }
-      else { squareTitle = squareCoord; }
+      text += (ii+jj)%2 === 0 ? 
+              '<TD CLASS="whiteSquare" ID="' + squareId + '" BGCOLOR="white"' :
+              '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="lightgray"';
+      text += ' ALIGN="center" VALIGN="middle" ONCLICK="clickedSquare(' + ii + ',' + jj + ')">';
+      squareCoord = IsRotated ? String.fromCharCode(72-jj,49+ii) : String.fromCharCode(jj+65,56-ii);
+      squareTitle = squareCoord;
+      if (boardTitle[jj][ii] !== '') { squareTitle += ': ' + boardTitle[jj][ii]; }
       text += '<A HREF="javascript:boardOnClick[' + jj + '][' + ii + ']()" ' +
               'ID="' + linkId + '" ' + 
               'TITLE="' + squareTitle + '" ' +
@@ -3305,17 +3255,13 @@ function PrintHTML(){
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '</TD>' +
           '<TD>';
-  if (isAutoPlayOn) {
-    text += '<INPUT ID="autoplayButton" TYPE="BUTTON" VALUE="=" STYLE="';
-  } else {
-    text += '<INPUT ID="autoplayButton" TYPE="BUTTON" VALUE="+" STYLE="';
-  }
+  text += '<INPUT ID="autoplayButton" TYPE="BUTTON" VALUE=';
+  text += isAutoPlayOn ? "=" : "+";
+  text += ' STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + ';'; }
-  if (isAutoPlayOn) { 
-    text += '"; CLASS="buttonControlStop" TITLE="toggle autoplay (stop)" ';
-  } else {
-    text += '"; CLASS="buttonControlPlay" TITLE="toggle autoplay (start)" ';
-  }  
+  text += isAutoPlayOn ?
+          '"; CLASS="buttonControlStop" TITLE="toggle autoplay (stop)" ' :
+          '"; CLASS="buttonControlPlay" TITLE="toggle autoplay (start)" ';
   text += ' ID="btnPlay" NAME="AutoPlay" onClick="javascript:SwitchAutoPlay()" ONFOCUS="this.blur()">' +
           '</TD>' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
@@ -3594,11 +3540,7 @@ function RefreshBoard(){
   for (col = 0; col < 8;++col){
     for (row = 0; row < 8; ++row){
       if (Board[col][row] === 0){
-	if (IsRotated){
-	  square= 63-col-(7-row)*8;
-	} else{
-        square = col+(7-row)*8;
-	}
+        square = IsRotated ? 63-col-(7-row)*8 : col+(7-row)*8;
 	SetImage(square, ClearImg.src);
       }
     }
@@ -3610,11 +3552,9 @@ function RefreshBoard(){
   for (color = 0; color < 2; ++color){
     for (ii = 0; ii < 16; ++ii){
       if (PieceType[color][ii] > 0){
-        if (IsRotated){
-          square = 63-PieceCol[color][ii] - (7-PieceRow[color][ii])*8;
-	} else{
-	  square = PieceCol[color][ii] + (7-PieceRow[color][ii])*8;
-	}
+        square = IsRotated ? 
+                 63-PieceCol[color][ii] - (7-PieceRow[color][ii])*8 :
+                 PieceCol[color][ii] + (7-PieceRow[color][ii])*8;
         SetImage(square, PiecePicture[color][PieceType[color][ii]].src);
       }
     }
@@ -3743,11 +3683,7 @@ function StoreMove(thisPly){
   PieceRow[MoveColor][mvPieceId]  = mvToRow;
   if (mvIsCastling){
     PieceMoveCounter[MoveColor][castleRook]++;
-    if (mvToCol == 2){
-      PieceCol[MoveColor][castleRook] = 3;
-    } else{
-      PieceCol[MoveColor][castleRook] = 5;
-    }
+    PieceCol[MoveColor][castleRook] = mvToCol == 2 ? 3 : 5;
     PieceRow[MoveColor][castleRook] = mvToRow;
   }
   /*

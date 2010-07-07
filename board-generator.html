@@ -153,8 +153,7 @@ function set_defaults() {
   if (gup("auto") === "f") { oldAutoplayMode_value = "none"; }
 
   if ((autoplayMode_value = gup("autoplayMode")) === "") {
-    if (oldAutoplayMode_value === "") { autoplayMode_value = autoplayMode_default; }
-    else { autoplayMode_value = oldAutoplayMode_value; }
+    autoplayMode_value = oldAutoplayMode_value === "" ? autoplayMode_default : oldAutoplayMode_value;
   }
   if (autoplayMode_value == "g") { autoplayMode_value = "game"; }
   if (autoplayMode_value == "l") { autoplayMode_value = "loop"; }
@@ -271,8 +270,7 @@ function set_defaults() {
   if (gup("showButtons") == "f") { oldButtonsDisplay_value = "hidden"; }
 
   if ((buttonsDisplay_value = gup("buttonsDisplay")) === "") {
-    if (oldButtonsDisplay_value === "") { buttonsDisplay_value = buttonsDisplay_default; }
-    else { buttonsDisplay_value = oldButtonsDisplay_value; }
+    buttonsDisplay_value = oldButtonsDisplay_value === "" ? buttonsDisplay_default : oldButtonsDisplay_value;
   }
   if (buttonsDisplay_value == "c") { buttonsDisplay_value = "custom"; }
   if (buttonsDisplay_value == "h") { buttonsDisplay_value = "hidden"; }
@@ -317,8 +315,7 @@ function set_defaults() {
   if (gup("showHeader") == "f") { oldHeaderDisplay_value = "hidden"; }
 
   if ((headerDisplay_value = gup("headerDisplay")) === "") {
-    if (oldHeaderDisplay_value === "") { headerDisplay_value = headerDisplay_default; }
-    else { headerDisplay_value = oldHeaderDisplay_value; }
+    headerDisplay_value = oldHeaderDisplay_value === "" ? headerDisplay_default : oldHeaderDisplay_value;
   }
   if (headerDisplay_value == "c") { headerDisplay_value = "centered"; }
   if (headerDisplay_value == "h") { headerDisplay_value = "hidden"; }
@@ -337,8 +334,7 @@ function set_defaults() {
   if (gup("showMoves") === "f") { oldMovesDisplay_value = "hidden"; }
 
   if ((movesDisplay_value = gup("movesDisplay")) === "") {
-    if (oldMovesDisplay_value === "") { movesDisplay_value = movesDisplay_default; }
-    else { movesDisplay_value = oldMovesDisplay_value; }
+    movesDisplay_value = oldMovesDisplay_value === "" ? movesDisplay_default : oldMovesDisplay_value;
   }
   if (movesDisplay_value == "h") { movesDisplay_value = "hidden"; }
   if (movesDisplay_value == "j") { movesDisplay_value = "justified"; }
@@ -355,8 +351,7 @@ function set_defaults() {
   if (gup("showComments") === "f") { oldCommentsDisplay_value = "hidden"; }
 
   if ((commentsDisplay_value = gup("commentsDisplay")) === "") {
-    if (oldCommentsDisplay_value === "") { commentsDisplay_value = commentsDisplay_default; }
-    else { commentsDisplay_value = oldCommentsDisplay_value; }
+    commentsDisplay_value = oldCommentsDisplay_value === "" ? commentsDisplay_default : oldCommentsDisplay_value;
   }
   if (commentsDisplay_value == "h") { commentsDisplay_value = "hidden"; }
   if (commentsDisplay_value == "i") { commentsDisplay_value = "inline"; }
@@ -444,8 +439,7 @@ function set_defaults() {
   }
 
   if ((horizontalLayout_value = gup("horizontalLayout")) === "") { horizontalLayout_value = horizontalLayout_default; }
-  if (horizontalLayout_value == "t") { document.board.horizontalLayout.value = "t"; }
-  else { document.board.horizontalLayout.value = "f"; }
+  document.board.horizontalLayout.value = horizontalLayout_value == "t" ? "t" : "f";
 
   if ((frameHeight_value = gup("frameHeight")) === "") { frameHeight_value = frameHeight_default; }
   if (frameHeight_value == "b") { frameHeight_value = "board"; }
@@ -516,18 +510,14 @@ function update_suggested_iframe_dimensions() {
     if (document.board.buttonsDisplay.value == "standard") { 
       // in this case control padding grows with squareSize 
       // while the size of the controls cant be predicted, so a safe number is set
-      if (selectDropdownShown) {
-        estimated_boardHeight += 2 * (25 + parseInt(document.board.squareSize.value, 10) / 2);
-      } else {
-        estimated_boardHeight += 25 + parseInt(document.board.squareSize.value, 10) / 2;
-      } 
+      estimated_boardHeight += selectDropdownShown ?
+                               2 * (25 + parseInt(document.board.squareSize.value, 10) / 2) :
+                               25 + parseInt(document.board.squareSize.value, 10) / 2;
     } else {
       // in this case both control size and control padding grow with squareSize
-      if (selectDropdownShown) {
-        estimated_boardHeight += 2 * (5 + 1.1 * parseInt(document.board.squareSize.value, 10));
-      } else {
-        estimated_boardHeight += 5 + 1.1 * parseInt(document.board.squareSize.value, 10);
-      }
+      estimated_boardHeight += selectDropdownShown ?
+                               2 * (5 + 1.1 * parseInt(document.board.squareSize.value, 10)) :
+                               5 + 1.1 * parseInt(document.board.squareSize.value, 10);
     } 
   }
   estimated_boardHeight = Math.floor(estimated_boardHeight);
@@ -598,12 +588,10 @@ function calculate_html_code() {
   if (initialGame_value != "first") { iframeUrl += "&ig=" + initialGame_value.charAt(0); }
 
   initialHalfmove_value = document.board.initialHalfmove.value;
-  if (initialHalfmove_value != "start") { 
-    if (isNaN(parseInt(initialHalfmove_value, 10))) {
-      iframeUrl += "&ih=" + initialHalfmove_value.charAt(0); 
-    } else {
-      iframeUrl += "&ih=" + initialHalfmove_value;
-    }
+  if (initialHalfmove_value != "start") {
+    iframeUrl += "&ih=" + (isNaN(parseInt(initialHalfmove_value, 10)) ? 
+                          initialHalfmove_value.charAt(0) : 
+                          initialHalfmove_value);
   }
 
   pieceFont_value = document.board.pieceFont.value;
@@ -614,7 +602,7 @@ function calculate_html_code() {
   } else {  
     pieceSize_value = parseInt(document.board.pieceSize.value, 10);
     if (pieceSize_value > squareSize_value) { alert("error: the piece size (" + pieceSize_value + ") can not be bigger than the square size (" + squareSize_value + ")"); }
-  iframeUrl += "&ss=" + squareSize_value + "&ps=" + pieceSize_value + "&pf=" + pieceFont_value.charAt(0);
+    iframeUrl += "&ss=" + squareSize_value + "&ps=" + pieceSize_value + "&pf=" + pieceFont_value.charAt(0);
   }
 
   lightColorHex_value = document.board.lightColorHex.value; 
@@ -1106,8 +1094,7 @@ function load_templates() {
 	 template_value += layout_template[ll][1];
 	 template_value += size_template[ss][1];
 	 template_value += color_template[cc][1];
-         if (template_value.match("&hm=b")) { template_value += color_template[cc][3]; }
-	 else { template_value += color_template[cc][2]; }
+         template_value += template_value.match("&hm=b") ? color_template[cc][3] : color_template[cc][2];
 	 if (color_template[cc][0].match("gray")) { 
 	   template_value = template_value.replace(/hm=(s|b)/,"hm=n");
 	 }
@@ -1120,11 +1107,9 @@ function load_templates() {
 function template_selected() {
   if (document.getElementById('templatesList').value == "heading") { return; }
 
-  if (document.getElementById('templatesList').value == "random") {
-    selectedIndex = 3 + Math.floor((document.getElementById('templatesList').length - 3) * Math.random());
-  } else {
-    selectedIndex = document.getElementById('templatesList').selectedIndex;
-  }
+  selectedIndex = document.getElementById('templatesList').value == "random" ?
+                  3 + Math.floor((document.getElementById('templatesList').length - 3) * Math.random()) :
+                  document.getElementById('templatesList').selectedIndex;
 
   if (confirm("do you really want to load the selected board generator template?" + 
               "\n\n" + document.getElementById('templatesList').options[selectedIndex].text +
@@ -1137,8 +1122,9 @@ function template_selected() {
        previousPgnTextToEncode = pgnText_value;
        pgnTextEncoded = EncodePGN(pgnText_value);
     }
-    if (document.board.encodePgn.checked) { newLocationSearch += "&pe=" + pgnTextEncoded; }
-    else { newLocationSearch += "&pt=" + pgnTextFixForUrl(pgnText_value); }
+    newLocationSearch += document.board.encodePgn.checked ? 
+                         "&pe=" + pgnTextEncoded :
+                         "&pt=" + pgnTextFixForUrl(pgnText_value);
     newLocationSearch = newLocationSearch.replace(/^&/,"\?");
 
     if (newLocationSearch != location.search) {

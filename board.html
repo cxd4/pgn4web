@@ -169,8 +169,7 @@ function new_start_pgn4web() {
   rule.style.fontSize = fontMovesSize;
 
   rule = getCSSRule('.moveOn');
-  if (highlightMoveColor == 'none') { rule.style.background = backgroundColor; }
-  else { rule.style.background = highlightMoveColor; }
+  rule.style.background = highlightMoveColor == 'none' ? backgroundColor : highlightMoveColor;
   rule.style.color = fontMovesColor;
   if (!fontMovesSize.match(/[^0-9]/)) { fontMovesSize += 'px'; }
   rule.style.fontSize = fontMovesSize;
@@ -182,12 +181,8 @@ function new_start_pgn4web() {
 
   rule = getCSSRule('.comment');
   rule.style.color = fontCommentsColor;
-  if (fontCommentsSize == 'moves') {
-    rule.style.fontSize = fontMovesSize;
-  } else {
-    if (!fontCommentsSize.match(/[^0-9]/)) { fontCommentsSize += 'px'; }
-    rule.style.fontSize = fontCommentsSize;
-  }
+  if (!fontCommentsSize.match(/[^0-9]/)) { fontCommentsSize += 'px'; }
+  rule.style.fontSize = fontCommentsSize == 'moves' ? fontMovesSize : fontCommentsSize;
 
   rule = getCSSRule('.nag');
   rule.style.color = fontCommentsColor;
@@ -250,16 +245,13 @@ function new_start_pgn4web() {
     if (horizontalLayout === true) {
       if (frameWidth === "") { document.getElementById("headerMoves").style.width = textWidth; }
       else { document.getElementById("outerFrame").style.width = frameWidth - 2 * framePadding; }
-      if (frameHeight === "") { document.getElementById("headerMoves").style.height = textHeight; }
-      else { document.getElementById("headerMoves").style.height = frameHeight - 2 * framePadding; }
+      document.getElementById("headerMoves").style.height = frameHeight === "" ? textHeight : frameHeight - 2 * framePadding;
     } else {
-      if (frameWidth === "") { document.getElementById("headerMoves").style.width = textWidth; }
-      else { document.getElementById("headerMoves").style.width = frameWidth - 2 * framePadding; }
+      document.getElementById("headerMoves").style.width = frameWidth === "" ? textWidth : frameWidth - 2 * framePadding;
       if (frameHeight === "") { document.getElementById("headerMoves").style.height = textHeight; }
       else { 
 	theObject = document.getElementById("boardHeadermovesPadding");
-	if (theObject) { boardHeadermovesPaddingHeight = theObject.offsetHeight; }
-	else { boardHeadermovesPaddingHeight = 0; }
+        boardHeadermovesPaddingHeight = theObject ? theObject.offsetHeight : 0;
 	document.getElementById("headerMoves").style.height = frameHeight - boardHeight - 2 * framePadding - boardHeadermovesPaddingHeight; 
       }
     }
@@ -394,9 +386,7 @@ if ((highlightMode = gup("highlightMode")) === "") { highlightMode = "square"; }
 if (highlightMode == "b") { highlightMode = "border"; }
 if (highlightMode == "n") { highlightMode = "none"; }
 if (highlightMode == "s") { highlightMode = "square"; }
-if (highlightMode == "border") {
-  borderSize = Math.floor(0.05 * squareSize);
-} else { borderSize = 0; }
+borderSize = highlightMode == "border" ? Math.floor(0.05 * squareSize) : 0;
 
 if ((lightColor = gup("lightColorName")) === "") { 
   if ((lightColor = "#" + gup("lightColorHex")) == "#") {
@@ -520,8 +510,7 @@ if ((auto == "false") || (auto == "f")) { oldAutoplayMode = "none"; }
 loop = gup("loop");
 if ((loop == "true") || (loop == "t")) { oldAutoplayMode = "loop"; }
 if ((autoplayMode = gup("autoplayMode")) === "") {
-  if (oldAutoplayMode === "") { autoplayMode = "game"; }
-  else { autoplayMode = oldAutoplayMode; }
+  autoplayMode = oldAutoplayMode === "" ? "game" : oldAutoplayMode;
 }
 if (autoplayMode == "g") { autoplayMode = "game"; }
 if (autoplayMode == "l") { autoplayMode = "loop"; }
@@ -577,8 +566,7 @@ showButtons = gup("showButtons");
 if ((showButtons == "true")  || (showButtons == "t")) { oldButtonsDisplay = "custom"; }
 if ((showButtons == "false") || (showButtons == "f")) { oldButtonsDisplay = "hidden"; }
 if ((buttonsDisplay = gup("buttonsDisplay")) === "") {
-  if (oldButtonsDisplay === "") { buttonsDisplay = "hidden"; }
-  else { buttonsDisplay = oldButtonsDisplay; }
+  buttonsDisplay = oldButtonsDisplay === "" ? "hidden" : oldButtonsDisplay;
 }
 if (buttonsDisplay == "c") { buttonsDisplay = "custom"; }
 if (buttonsDisplay == "h") { buttonsDisplay = "hidden"; }
@@ -627,9 +615,8 @@ showCommentsOnSeparateLines = gup("showCommentsOnSeparateLines");
 if ((showCommentsOnSeparateLines == "true") || (showCommentsOnSeparateLines == "t")) { oldCommentsDisplay = "newline"; }
 showComments = gup("showComments");
 if ((showComments == "false") || (showComments == "f")) { oldCommentsDisplay = "hidden"; }
-if ((commentsDisplay = gup("commentsDisplay")) === "") { 
-  if (oldCommentsDisplay === "") { commentsDisplay = "inline"; }
-  else { commentsDisplay = oldCommentsDisplay; }
+if ((commentsDisplay = gup("commentsDisplay")) === "") {
+  commentsDisplay = oldCommentsDisplay === "" ? "inline" : oldCommentsDisplay;
 }
 if (commentsDisplay == "h") { commentsDisplay = "hidden"; }
 if (commentsDisplay == "i") { commentsDisplay = "inline"; }
@@ -730,8 +717,7 @@ showHeader = gup("showHeader");
 if ((showHeader == "true")  || (showHeader == "t")) { oldHeaderDisplay = "justified"; }
 if ((showHeader == "false") || (showHeader == "f")) { oldHeaderDisplay = "hidden"; }
 if ((headerDisplay = gup("headerDisplay")) === "") {
-  if (oldHeaderDisplay === "") { headerDisplay = "hidden"; }
-  else { headerDisplay = oldHeaderDisplay; }
+  headerDisplay = oldHeaderDisplay === "" ? "hidden" : oldHeaderDisplay;
 }
 if (headerDisplay == "c") { headerDisplay = "centered"; }
 if (headerDisplay == "h") { headerDisplay = "hidden"; }
@@ -743,8 +729,7 @@ showMoves = gup("showMoves");
 if ((showMoves == "true")  || (showMoves == "t")) { oldMovesDisplay = "justified"; }
 if ((showMoves == "false") || (showMoves == "f")) { oldMovesDisplay = "hidden"; }
 if ((movesDisplay = gup("movesDisplay")) === "") {
-  if (oldMovesDisplay === "") { movesDisplay = "hidden"; }
-  else { movesDisplay = oldMovesDisplay; }
+  movesDisplay = oldMovesDisplay === "" ? "hidden" : oldMovesDisplay;
 }
 if (movesDisplay == "h") { movesDisplay = "hidden"; }
 if (movesDisplay == "j") { movesDisplay = "justified"; }

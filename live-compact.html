@@ -33,11 +33,9 @@
     demoFlag = false; alertFlag = false; 
   }
 
-  if (detectBaseLocation()) {
-    pgnFile_default = location.protocol + "//" + location.hostname + location.pathname.replace(/\/[^\/]*$/, "/live/live.pgn");
-  } else {
-    pgnFile_default = "live/live.pgn";
-  }
+  pgnFile_default = detectBaseLocation() ?
+                    location.protocol + "//" + location.hostname + location.pathname.replace(/\/[^\/]*$/, "/live/live.pgn") :
+                    "live/live.pgn";
   // accepts pgnData as alias for pgnFile for consistency with board.html
   if ((pgnFile = gup("pgnData")) === "") { 
     if ((pgnFile = gup("pgnFile")) === "") {
@@ -98,8 +96,7 @@
 
   originalTitle = document.title;
 
-  if (demoFlag === true) { ticker_string = " demo"; }
-  else { ticker_string = " help"; }
+  ticker_string = demoFlag ? " demo" : " help";
   
   ticker_counter = 0;
   function update_ticker() {
@@ -116,23 +113,11 @@
         (gameEvent[0] != undefined) && (gameEvent[0] !== "")) {
       document.title = originalTitle + ": " + gameEvent[0];
     }
-    if (LiveBroadcastStarted) { 
-      document.getElementById("playersDetails").className = "headerHighlighted";
-    } else {
-      document.getElementById("playersDetails").className = "header";
-    }
-
-    if ((!LiveBroadcastStarted) || (LiveBroadcastEnded)) {
-      document.getElementById("statusDetails").className = "headerHighlighted";
-    } else {
-      document.getElementById("statusDetails").className = "header";
-    }
-
-    if (LiveBroadcastEnded) {
-      document.getElementById("additionalMessage").innerHTML = ", <a href='javascript: checkForNewLiveEvent();' onFocus='this.blur();' title='click here to check for the start of a new live broadcast event' style='color: inherit;'>check here for a new event</a>";
-    } else {
-      document.getElementById("additionalMessage").innerHTML = "";
-    }
+    document.getElementById("playersDetails").className = LiveBroadcastStarted ? 
+                                                          "headerHighlighted" : "header";
+    document.getElementById("statusDetails").className = ((!LiveBroadcastStarted) || (LiveBroadcastEnded)) ? 
+                                                         "headerHighlighted" : "header";
+    document.getElementById("additionalMessage").innerHTML = LiveBroadcastEnded ? ", <a href='javascript: checkForNewLiveEvent();' onFocus='this.blur();' title='click here to check for the start of a new live broadcast event' style='color: inherit;'>check here for a new event</a>" : "";
 
     update_ticker();
 
@@ -173,11 +158,8 @@
   }
 
   function customFunctionOnMove() {
-    if (pgn4webMoveComments[CurrentPly] !== "") {
-      document.getElementById("systemMessage").style.display = "none";
-    } else {
-      document.getElementById("systemMessage").style.display = "inline";
-    }
+    document.getElementById("systemMessage").style.display = pgn4webMoveComments[CurrentPly] !== "" ?
+                                                             "none" : "inline";
     document.getElementById("pgn4webMessage").innerHTML = pgn4webMoveComments[CurrentPly];
   }
 
@@ -231,11 +213,8 @@ function developer_help() {
 
 function user_help() {
 
-  if (refreshMinutes != 1) { plural = "s"; }
-  else { plural = ""; }
-
-  if (demoFlag) { demoString = "demo mode enabled" + "\n"; }
-  else { demoString = ""; }
+  plural = refreshMinutes != 1 ? "s" : "";
+  demoString = demoFlag ? "demo mode enabled" + "\n" : "";
 
   helpText = "Chess games live broadcast using pgn4web v" + pgn4web_version + "\n" +
 	     "\n" +
