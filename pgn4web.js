@@ -680,23 +680,26 @@ function detectBaseLocation() {
 
 function displayDebugInfo() {
   stopAlertPrompt();
-  debugInfo = 'pgn4web v' + pgn4web_version + '\n\n';
-  debugInfo += 'HTML URL (' + location.href.length + '): ';
+  debugInfo = 'pgn4web: version=' + pgn4web_version + ' homepage=' + pgn4web_project_url + '\n\n';
+  debugInfo += 'HTML URL: length=' + location.href.length + ' url=';
   if (location.href.length < 100) { debugInfo += location.href + '\n'; }
   else { debugInfo += location.href.substring(0,99) + ' ...\n'; }
-  debugInfo += 'BASE URL: ' + detectBaseLocation() + '\n' +
-               'JS URL: ' + detectJavascriptLocation() + '\n\n';
-  debugInfo += 'PGN URL: ';
+  baseLocation = detectBaseLocation();
+  if (baseLocation === '') { baseLocation = 'none'; }
+  debugInfo += 'BASE URL: url=' + baseLocation + '\n';
+  debugInfo += 'JS URL: url=' + detectJavascriptLocation() + '\n\n';
+  debugInfo += 'PGN URL: url=';
   if (pgnUrl !== "") { debugInfo += pgnUrl; }
+  else { debugInfo += 'none'; }
   debugInfo += '\n';
-  debugInfo += 'PGN TEXT: ';
+  debugInfo += 'PGN TEXT: length=';
   if (document.getElementById("pgnText") !== null) { 
     if (document.getElementById("pgnText").tagName.toLowerCase() == "textarea") {
       debugInfo += document.getElementById("pgnText").value.length; 
     } else { // backward compatibility with pgn4web older than 1.77 when the <span> technique was used for pgnText
       debugInfo += document.getElementById("pgnText").innerHTML.length;
+      debugInfo += ' container=' + document.getElementById("pgnText").tagName.toLowerCase();
     }
-      debugInfo += ' (' + document.getElementById("pgnText").tagName.toLowerCase() + ')';
   }
   debugInfo += '\n\n';
   debugInfo += 'GAMES: current=' + (currentGame+1) + ' number=' + numberOfGames + '\n' +
