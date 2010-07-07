@@ -683,7 +683,7 @@ function displayDebugInfo() {
   debugInfo = 'pgn4web: version=' + pgn4web_version + ' homepage=' + pgn4web_project_url + '\n\n';
   debugInfo += 'HTML URL: length=' + location.href.length + ' url=';
   if (location.href.length < 100) { debugInfo += location.href + '\n'; }
-  else { debugInfo += location.href.substring(0,99) + ' ...\n'; }
+  else { debugInfo += location.href.substring(0,99) + '...\n'; }
   baseLocation = detectBaseLocation();
   if (baseLocation === '') { baseLocation = 'none'; }
   debugInfo += 'BASE URL: url=' + baseLocation + '\n';
