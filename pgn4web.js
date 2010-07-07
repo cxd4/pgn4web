@@ -118,17 +118,9 @@ function alertPromptTick(restart) {
         squareId = 'tcol' + jj + 'trow' + ii;
         theObject = document.getElementById(squareId);
         if (((alertPromptOn) && ((ii+jj)%2 === 0)) || (!(alertPromptOn) && !((ii+jj)%2 === 0))) {
-          if (theObject.className.match('highlight')) {
-            theObject.className = 'highlightWhiteSquare';
-          } else {
-            theObject.className = 'whiteSquare';
-          }
+          theObject.className = (theObject.className.match('highlight') ? 'highlightWhiteSquare' : 'whiteSquare');
         } else {
-          if (theObject.className.match('highlight')) {
-            theObject.className = 'highlightBlackSquare';
-          } else {
-            theObject.className = 'blackSquare';
-          }
+          theObject.className = (theObject.className.match('highlight') ? 'highlightBlackSquare' : 'blackSquare');
         }
       }
     }
@@ -208,9 +200,7 @@ function handlekey(e) {
     case 27: // escape
       if (e.shiftKey) {
         // shift key + escape (27) toogle the usage of shortcut keys 
-        SetShortcutKeysEnabled(!shortcutKeysEnabled);
-        if (shortcutKeysEnabled) { alert("info: pgn4web shortcut keys now enabled"); }
-        else { alert("info: pgn4web shortcut keys now disabled"); }
+        interactivelyToggleShortcutKeys(); 
       } else {
         displayHelp();
       }
@@ -552,7 +542,7 @@ configBoardShrortcut("F7", "show white on bottom", function(){ if (IsRotated) { 
 // G7
 configBoardShrortcut("G7", "toggle autoplay next game", function(){ SetAutoplayNextGame(!autoplayNextGame); });
 // H7
-configBoardShrortcut("H7", "toggle enabling shortcut keys", function(){ SetShortcutKeysEnabled(!shortcutKeysEnabled); });
+configBoardShrortcut("H7", "toggle enabling shortcut keys", function(){ interactivelyToggleShortcutKeys(); });
 // A6
 configBoardShrortcut("A6", "pause live broadcast automatic refresh", function(){ pauseLiveBroadcast(); });
 // B6
@@ -682,40 +672,25 @@ function displayDebugInfo() {
   stopAlertPrompt();
   debugInfo = 'pgn4web: version=' + pgn4web_version + ' homepage=' + pgn4web_project_url + '\n\n';
   debugInfo += 'HTML URL: length=' + location.href.length + ' url=';
-  if (location.href.length < 100) { debugInfo += location.href + '\n'; }
-  else { debugInfo += location.href.substring(0,99) + '...\n'; }
+  debugInfo += (location.href.length < 100 ? location.href : (location.href.substring(0,99) + '...')) + '\n';
   baseLocation = detectBaseLocation();
-  if (baseLocation === '') { baseLocation = 'none'; }
-  debugInfo += 'BASE URL: url=' + baseLocation + '\n';
+  debugInfo += 'BASE URL: url=' + (baseLocation !== '' ? baseLocation : 'none') + '\n';
   debugInfo += 'JS URL: url=' + detectJavascriptLocation() + '\n\n';
-  debugInfo += 'PGN URL: url=';
-  if (pgnUrl !== "") { debugInfo += pgnUrl; }
-  else { debugInfo += 'none'; }
-  debugInfo += '\n';
+  debugInfo += 'PGN URL: url=' + (pgnUrl !== '' ? pgnUrl : 'none') + '\n';
   debugInfo += 'PGN TEXT: length=';
   if (document.getElementById("pgnText") !== null) { 
-    if (document.getElementById("pgnText").tagName.toLowerCase() == "textarea") {
-      debugInfo += document.getElementById("pgnText").value.length; 
-    } else { // backward compatibility with pgn4web older than 1.77 when the <span> technique was used for pgnText
-      debugInfo += document.getElementById("pgnText").innerHTML.length;
-      debugInfo += ' container=' + document.getElementById("pgnText").tagName.toLowerCase();
-    }
+    debugInfo += document.getElementById("pgnText").tagName.toLowerCase() == "textarea" ?
+                 document.getElementById("pgnText").value.length :
+                 document.getElementById("pgnText").innerHTML.length +
+                 ' container=' + document.getElementById("pgnText").tagName.toLowerCase();
+    // backward compatibility with pgn4web older than 1.77 when the <span> technique was used for pgnText
   }
   debugInfo += '\n\n';
   debugInfo += 'GAMES: current=' + (currentGame+1) + ' number=' + numberOfGames + '\n' +
                'PLY: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber + '\n';
-  debugInfo += 'AUTOPLAY: ';
-  if (isAutoPlayOn) { debugInfo += 'delay=' + Delay + 'ms' + ' autoplaynext=' + autoplayNextGame; }
-  else { debugInfo += 'off'; }
+  debugInfo += 'AUTOPLAY: ' + (isAutoPlayOn ? 'delay=' + Delay + 'ms' + ' autoplaynext=' + autoplayNextGame : 'off');
   debugInfo += '\n\n';
-  debugInfo += 'LIVE BROADCAST: '; 
-  if (LiveBroadcastDelay > 0) { debugInfo += ' delay=' + LiveBroadcastDelay + 'm' + 
-                                             ' started=' + LiveBroadcastStarted +
-                                             ' ended=' + LiveBroadcastEnded +
-                                             ' paused=' + LiveBroadcastPaused +
-                                             ' demo=' + LiveBroadcastDemo +
-                                             ' alert=' + LiveBroadcastAlert; }
-  else { debugInfo += 'off'; }
+  debugInfo += 'LIVE BROADCAST: ' + (LiveBroadcastDelay > 0 ? 'delay=' + LiveBroadcastDelay + 'm' + ' started=' + LiveBroadcastStarted + ' ended=' + LiveBroadcastEnded + ' paused=' + LiveBroadcastPaused + ' demo=' + LiveBroadcastDemo + ' alert=' + LiveBroadcastAlert : 'off'); 
   debugInfo += '\n\n';
   debugInfo += 'ALERT LOG: new=' + alertNumSinceReset + ' shown=' + 
                Math.min(alertNum, alertLog.length) + ' total=' + alertNum + '\n--';
@@ -772,8 +747,7 @@ function CurrentFEN() {
   }
  
   // Active color
-  if (CurrentPly%2 === 0) { currentFEN += " w"; }
-  else { currentFEN += " b"; }
+  currentFEN += CurrentPly%2 === 0 ? " w" : " b";
 
   // Castling availability (only standard chess supported, not any FischerRandom extensions
   CastlingShortFEN = new Array(2);
@@ -801,8 +775,7 @@ function CurrentFEN() {
   // En passant target square
   if (HistEnPassant[CurrentPly-1]) {
     currentFEN += " " + String.fromCharCode(HistEnPassantCol[CurrentPly-1] + 97);
-    if (CurrentPly%2 === 0) { currentFEN += "6"; }
-    else { currentFEN += "3"; }
+    currentFEN += CurrentPly%2 === 0 ? "6" : "3";
   } else {
     currentFEN += " -";
   }
@@ -859,20 +832,20 @@ function displayFenData() {
     fenWin.document.write("<body>\n");
     fenWin.document.write("<b><pre>\n\n" + currentFEN + "\n\n</pre></b>\n<hr>\n");
     fenWin.document.write("<pre>\n\n");
-    if (gameEvent[currentGame]) { fenWin.document.write("[Event \"" + gameEvent[currentGame] + "\"]\n"); }
-    else { fenWin.document.write("[Event \"?\"]\n"); }
-    if (gameSite[currentGame]) { fenWin.document.write("[Site \"" + gameSite[currentGame] + "\"]\n"); }
-    else { fenWin.document.write("[Site \"?\"]\n"); }
-    if (gameDate[currentGame]) { fenWin.document.write("[Date \"" + gameDate[currentGame] + "\"]\n"); }
-    else { fenWin.document.write("[Date \"????.??.??\"]\n"); }
-    if (gameRound[currentGame]) { fenWin.document.write("[Round \"" + gameRound[currentGame] + "\"]\n"); }
-    else { fenWin.document.write("[Round \"?\"]\n"); }
-    if (gameWhite[currentGame]) { fenWin.document.write("[White \"" + gameWhite[currentGame] + "\"]\n"); }
-    else { fenWin.document.write("[White \"?\"]\n"); }
-    if (gameBlack[currentGame]) { fenWin.document.write("[Black \"" + gameBlack[currentGame] + "\"]\n"); }
-    else { fenWin.document.write("[Black \"?\"]\n"); }
-    if (gameResult[currentGame]) { fenWin.document.write("[Result \"" + gameResult[currentGame] + "\"]\n"); }
-    else { fenWin.document.write("[Result \"*\"]\n"); }
+    tmpString = gameEvent[currentGame] ? gameEvent[currentGame] : "?";
+    fenWin.document.write("[Event \"" + tmpString + "\"]\n");
+    tmpString = gameSite[currentGame] ? gameSite[currentGame] : "?";
+    fenWin.document.write("[Site \"" + tmpString + "\"]\n");
+    tmpString = gameDate[currentGame] ? gameDate[currentGame] : "????.??.??";
+    fenWin.document.write("[Date \"" + tmpString + "\"]\n");
+    tmpString = gameRound[currentGame] ? gameRound[currentGame] : "?";
+    fenWin.document.write("[Round \"" + tmpString + "\"]\n");
+    tmpString = gameWhite[currentGame] ? gameWhite[currentGame] : "?";
+    fenWin.document.write("[White \"" + tmpString + "\"]\n");
+    tmpString = gameBlack[currentGame] ? gameBlack[currentGame] : "?";
+    fenWin.document.write("[Black \"" + tmpString + "\"]\n");
+    tmpString = gameResult[currentGame] ? gameResult[currentGame] : "*";
+    fenWin.document.write("[Result \"" + tmpString + "\"]\n");
     fenWin.document.write("[SetUp \"1\"]\n");
     fenWin.document.write("[FEN \"" + CurrentFEN() + "\"]\n\n");
     fenWin.document.write(currentMovesString);
@@ -1354,6 +1327,12 @@ function GoToMove(thisMove){
 
 function SetShortcutKeysEnabled(onOff){
   shortcutKeysEnabled = onOff;
+}
+
+function interactivelyToggleShortcutKeys(){
+  if (confirm("Shortcut keys currently " + (shortcutKeysEnabled ? "enabled" : "disabled") + ".\nToggle shortcut keys to " + (shortcutKeysEnabled ? "DISABLED" : "ENABLED") + "?")) {
+    SetShortcutKeysEnabled(!shortcutKeysEnabled);
+  }
 }
 
 function SetCommentsIntoMoveText(onOff){
