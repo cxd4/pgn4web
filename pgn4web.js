@@ -22,12 +22,12 @@ var about = '\tpgn4web v' + pgn4web_version + '\n\t' + pgn4web_project_url + '\n
 
 var helpWin=null;
 function displayHelp(section){
-  if ((!section) && (section != "credits") && (section != "squares") && (section != "keys") && (section != "top") ) { 
-    section = "top"; 
-  }
-  sectionFlag = "#" + section;
+  if (!section) { section = "top"; }
   if (helpWin && !helpWin.closed) { helpWin.close(); }
-  helpWin = window.open(detectHelpLocation() + "?" + (Math.floor(900 * Math.random()) + 100) + sectionFlag, "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
+  helpWin = window.open(detectHelpLocation() + "?" + 
+            (Math.floor(900 * Math.random()) + 100) + "#" + section, 
+            "pgn4web_help", 
+            "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if ((helpWin !== null) && (window.focus)) { helpWin.window.focus(); }
 }
 
@@ -74,7 +74,9 @@ function resetAlert() {
   alertNum = alertNumSinceReset = fatalErrorNumSinceReset = 0;
   stopAlertPrompt();
   if (!alertFirstResetLoadingPgn) {
-    configBoardShrortcut(debugShortcutSquare, "pgn4web v" + pgn4web_version + " debug info", "keep");
+    configBoardShrortcut(debugShortcutSquare, 
+                         "pgn4web v" + pgn4web_version + " debug info", 
+                         "keep");
   }
 }
 
@@ -85,7 +87,9 @@ function myAlert(msg, fatalError) {
   alertLast = (alertLast + 1) % alertLog.length;
   alertLog[alertLast] = msg;
   alertPlural = alertNum > 1 ? "s" : "";
-  configBoardShrortcut(debugShortcutSquare, "pgn4web v" + pgn4web_version + " debug info, " + alertNum + " alert" + alertPlural, "keep"); 
+  configBoardShrortcut(debugShortcutSquare, 
+                       "pgn4web v" + pgn4web_version + " debug info, " + alertNum + " alert" + alertPlural, 
+                       "keep"); 
 
   if ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) {
     startAlertPrompt();
@@ -114,26 +118,19 @@ function alertPromptTick(restart) {
     alertPromptInterval = null;
   }
   if(document.getElementById('tcol0trow0')) {
-
     theObject = document.getElementById('tcol0trow0');
     if (alertPromptOn) {
       if ((highlightOption) && 
           ((lastColFromHighlighted === 0 && lastRowFromHighlighted === 7) || 
            (lastColToHighlighted === 0 && lastRowToHighlighted === 7))) {
           theObject.className = 'highlightWhiteSquare';
-        } else {
-          theObject.className = 'whiteSquare';
-        }
-    } else {
-      theObject.className = 'blackSquare';
-    }
+        } else { theObject.className = 'whiteSquare'; }
+    } else { theObject.className = 'blackSquare'; }
 
     alertPromptOn = !alertPromptOn;
     if (alertPromptOn) { alertPromptDelay = 500; }
     else { alertPromptDelay = 3000; }
-  } else {
-    alertPromptDelay = 1500;
-  }
+  } else { alertPromptDelay = 1500; }
   if (restart) { alertPromptInterval = setTimeout("alertPromptTick(true);", alertPromptDelay); }
 }
 
@@ -417,7 +414,7 @@ function handlekey(e) {
       break;
 
     case 88: // x
-      if (numberOfGames > 1){
+      if (numberOfGames > 1) {
         currentGame = Math.floor(Math.random()*numberOfGames);
         Init();
         GoToMove(StartPly + Math.floor(Math.random()*(StartPly + PlyNumber + 1)));
@@ -426,7 +423,7 @@ function handlekey(e) {
       break;
 
     case 67: // c
-      if (numberOfGames > 1){
+      if (numberOfGames > 1) {
         currentGame = Math.floor(Math.random()*numberOfGames);
         Init();
       }
@@ -434,7 +431,7 @@ function handlekey(e) {
       break;
 
     case 86:  // v
-      if (numberOfGames > 1){
+      if (numberOfGames > 1) {
 	currentGame = 0;
         Init();
       }
@@ -442,7 +439,7 @@ function handlekey(e) {
       break;
 
     case 66:  // b
-      if (currentGame > 0){
+      if (currentGame > 0) {
         currentGame--;
         Init();
       }
@@ -450,7 +447,7 @@ function handlekey(e) {
       break;
 
     case 78:  // n
-      if (numberOfGames > currentGame + 1){
+      if (numberOfGames > currentGame + 1) {
         currentGame++;
         Init();
       }
@@ -458,7 +455,7 @@ function handlekey(e) {
       break;
 
     case 77:  // m
-      if (numberOfGames > 1){
+      if (numberOfGames > 1) {
         currentGame = numberOfGames - 1;
         Init();
       }
@@ -665,9 +662,7 @@ function detectBaseLocation() {
   base = "";
   var e = document.getElementsByTagName('base');
   for(var i=0; i<e.length; i++) {
-    if (e[i].href) {
-      base = e[i].href; 
-    }
+    if (e[i].href) { base = e[i].href; }
   }
   return base;
 }
@@ -746,9 +741,8 @@ function CurrentFEN() {
   emptyCounterFen = 0;
   for (row=7; row>=0; row--) {
     for (col=0; col<=7; col++) {
-      if (Board[col][row] === 0) {
-        emptyCounterFen++;
-      } else {
+      if (Board[col][row] === 0) { emptyCounterFen++; }
+      else {
         if (emptyCounterFen > 0) {
           currentFEN += "" + emptyCounterFen;
           emptyCounterFen = 0;
@@ -794,9 +788,7 @@ function CurrentFEN() {
   if (HistEnPassant[CurrentPly-1]) {
     currentFEN += " " + String.fromCharCode(HistEnPassantCol[CurrentPly-1] + 97);
     currentFEN += CurrentPly%2 === 0 ? "6" : "3";
-  } else {
-    currentFEN += " -";
-  }
+  } else { currentFEN += " -"; }
 
   // Halfmove clock
   HalfMoveClock = InitialHalfMoveClock;  
@@ -937,9 +929,7 @@ var mvCaptured    = -1;
 var mvCapturedId  = -1;
 
 Board = new Array(8);
-for(i=0; i<8; ++i){
- Board[i] = new Array(8);
-}
+for(i=0; i<8; ++i) { Board[i] = new Array(8); }
 
 // HistCol and HistRow contain move history up to the last replayed ply
 // HistCol[0] and HistRow[0] contain the from square (0..7, 0..7 from square a1)
@@ -1043,14 +1033,13 @@ var gameSelectorChBlack   = 15;
 var gameSelectorChResult  = 0;
 var gameSelectorChDate    = 10;
 
-function CheckLegality(what, plyCount){
+function CheckLegality(what, plyCount) {
   var retVal;
   var start;
   var end;
   var isCheck;
-  /*
-   * Is it a castling move/
-   */
+
+  // Is it a castling move?
   if (what == 'O-O'){
     if (!CheckLegalityOO()) { return false; }
     start = PieceCol[MoveColor][0];
@@ -1074,16 +1063,13 @@ function CheckLegality(what, plyCount){
     StoreMove(plyCount);
     return true;
   } 
-  /*
-   * Some checks common to all pieces:
-   *
-   * If it is not a capture the square has to be empty.
-   * If it is a capture the TO square has to be occupied by a piece of the
-   * opposite color, with the exception of the en-passant capture.
-   * If the moved piece and the piece in the TO square are different then 
-   * the moved piece has to be a pawn promoting.
-   *
-   */
+  
+  // Some checks common to all pieces:
+  // If it is not a capture the square has to be empty.
+  // If it is a capture the TO square has to be occupied by a piece of the
+  // opposite color, with the exception of the en-passant capture.
+  // If the moved piece and the piece in the TO square are different then 
+  // the moved piece has to be a pawn promoting.
   if (!mvCapture){
     if (Board[mvToCol][mvToRow] !== 0) { return false; }
   }
@@ -1096,46 +1082,33 @@ function CheckLegality(what, plyCount){
     if (mvPieceOnTo >= 6)               { return false; }
     if (mvToRow     != 7*(1-MoveColor)) { return false; }
   }
-  /*
-   * It is a piece move. Loop over all pieces and find the ones of the same
-   * type as the one in the move. For each one of these check if they could 
-   * have made the move.
-   */
+  
+  // It is a piece move. Loop over all pieces and find the ones of the same
+  // type as the one in the move. For each one of these check if they could 
+  // have made the move.
   var pieceId;
   for (pieceId = 0; pieceId < 16; ++pieceId){
      if (PieceType[MoveColor][pieceId] == mvPiece){
-      if (mvPiece == 1){
-	retVal = CheckLegalityKing(pieceId);
-      } else if (mvPiece == 2){
-        retVal = CheckLegalityQueen(pieceId);
-      } else if (mvPiece == 3){
-	retVal = CheckLegalityRook(pieceId);
-      } else if (mvPiece == 4){
-	retVal = CheckLegalityBishop(pieceId);
-      } else if (mvPiece == 5){
-	retVal = CheckLegalityKnight(pieceId);
-      } else if (mvPiece == 6){
-	retVal = CheckLegalityPawn(pieceId);
-      }
-      if (retVal){
+      if (mvPiece == 1) { retVal = CheckLegalityKing(pieceId); }
+      else if (mvPiece == 2) { retVal = CheckLegalityQueen(pieceId); }
+      else if (mvPiece == 3) { retVal = CheckLegalityRook(pieceId); }
+      else if (mvPiece == 4) { retVal = CheckLegalityBishop(pieceId); }
+      else if (mvPiece == 5) { retVal = CheckLegalityKnight(pieceId); }
+      else if (mvPiece == 6) { retVal = CheckLegalityPawn(pieceId); }
+      if (retVal) {
 	mvPieceId = pieceId;
-       /*
-        * Now that the board is updated check if the king is in check.
-        */
+        // Now that the board is updated check if the king is in check.
         StoreMove(plyCount);
         isCheck = IsCheck(PieceCol[MoveColor][0], PieceRow[MoveColor][0], MoveColor);
-	if (!isCheck){
-	  return true;
-	} else{
-	  UndoMove(plyCount);
-	}
+	if (!isCheck) { return true; }
+	else { UndoMove(plyCount); }
       }
     }
   }
   return false;
 }
 
-function CheckLegalityKing(thisKing){
+function CheckLegalityKing(thisKing) {
   if ((mvFromCol >= 0) &&
       (mvFromCol != PieceCol[MoveColor][thisKing])) { return false; }
   if ((mvFromRow > 0) &&
@@ -1147,7 +1120,7 @@ function CheckLegalityKing(thisKing){
   return true;
 }
 
-function CheckLegalityQueen(thisQueen){
+function CheckLegalityQueen(thisQueen) {
   if ((mvFromCol >= 0) &&
       (mvFromCol != PieceCol[MoveColor][thisQueen])) { return false; }
   if ((mvFromRow >= 0) &&
@@ -1164,7 +1137,7 @@ function CheckLegalityQueen(thisQueen){
   return true;
 }
 
-function CheckLegalityRook(thisRook){
+function CheckLegalityRook(thisRook) {
   if ((mvFromCol >= 0) &&
       (mvFromCol != PieceCol[MoveColor][thisRook])) { return false; }
   if ((mvFromRow >= 0) &&
@@ -1179,7 +1152,7 @@ function CheckLegalityRook(thisRook){
   return true;
 }
 
-function CheckLegalityBishop(thisBishop){
+function CheckLegalityBishop(thisBishop) {
   if ((mvFromCol >= 0) &&
       (mvFromCol != PieceCol[MoveColor][thisBishop])) { return false; }
   if ((mvFromRow >= 0) &&
@@ -1194,7 +1167,7 @@ function CheckLegalityBishop(thisBishop){
   return true;
 }
 
-function CheckLegalityKnight(thisKnight){
+function CheckLegalityKnight(thisKnight) {
   if ((mvFromCol >= 0) &&
       (mvFromCol != PieceCol[MoveColor][thisKnight])) { return false; }
   if ((mvFromRow >= 0) &&
@@ -1202,9 +1175,11 @@ function CheckLegalityKnight(thisKnight){
 
   if (Math.abs(PieceCol[MoveColor][thisKnight]-mvToCol)*
       Math.abs(PieceRow[MoveColor][thisKnight]-mvToRow) != 2) { return false; }
+
   return true;
 }
-function CheckLegalityPawn(thisPawn){
+
+function CheckLegalityPawn(thisPawn) {
   if ((mvFromCol >= 0) &&
       (mvFromCol != PieceCol[MoveColor][thisPawn])) { return false; }
   if ((mvFromRow >= 0) &&
@@ -1213,31 +1188,30 @@ function CheckLegalityPawn(thisPawn){
   if (Math.abs(PieceCol[MoveColor][thisPawn]-mvToCol) != mvCapture)
   { return false; }
 
-  if (mvCapture){
+  if (mvCapture) {
     if (PieceRow[MoveColor][thisPawn]-mvToRow != 2*MoveColor-1) { return false; }
-  } else{
+  } else {
     if (PieceRow[MoveColor][thisPawn]-mvToRow == 4*MoveColor-2){
       if (PieceRow[MoveColor][thisPawn] != 1+5*MoveColor) { return false; }
       if (Board[mvToCol][mvToRow+2*MoveColor-1] !== 0)    { return false; }
-    } else{
+    } else {
       if (PieceRow[MoveColor][thisPawn]-mvToRow != 2*MoveColor-1) { return false; }
     }
   }
   return true;
 }
 
-function CheckLegalityOO(){
+function CheckLegalityOO() {
   if (CastlingShort[MoveColor] === 0) { return false; }
   if (PieceMoveCounter[MoveColor][0] > 0) { return false; }
-  /*
-   * Find which rook was involved in the castling.
-   */
+  
+  // Find which rook was involved in the castling.
   var legal    = false;
   var thisRook = 0;
-  while (thisRook < 16){
+  while (thisRook < 16) {
     if ((PieceCol[MoveColor][thisRook]  >  PieceCol[MoveColor][0]) &&
 	(PieceRow[MoveColor][thisRook]  == MoveColor*7)            &&
-        (PieceType[MoveColor][thisRook] == 3)){
+        (PieceType[MoveColor][thisRook] == 3)) {
       legal = true;
       break;
     }
@@ -1245,36 +1219,32 @@ function CheckLegalityOO(){
   }
   if (!legal) { return false; }
   if (PieceMoveCounter[MoveColor][thisRook] > 0) { return false; }
-  /*
-   * Check no piece is between the king and the rook. To make it compatible
-   * with fisher-random rules clear the king and rook squares now.
-   */
+  
+  // Check no piece is between the king and the rook. To make it compatible
+  // with fisher-random rules clear the king and rook squares now.
   Board[PieceCol[MoveColor][0]][MoveColor*7]        = 0;
   Board[PieceCol[MoveColor][thisRook]][MoveColor*7] = 0;
   var col = PieceRow[MoveColor][thisRook];
   if (col < 6) { col = 6; }
-  while ((col > PieceCol[MoveColor][0]) || (col >= 5)){
-    if (Board[col][MoveColor*7] !== 0){
-      return false;
-    }
+  while ((col > PieceCol[MoveColor][0]) || (col >= 5)) {
+    if (Board[col][MoveColor*7] !== 0) { return false; }
     --col;
   }
   castleRook = thisRook;
   return true;
 }
 
-function CheckLegalityOOO(){
+function CheckLegalityOOO() {
   if (CastlingLong[MoveColor] === 0) { return false; }
   if (PieceMoveCounter[MoveColor][0] > 0) { return false; }
-  /*
-   * Find which rook was involved in the castling.
-   */
+
+  // Find which rook was involved in the castling.
   var legal    = false;
   var thisRook = 0;
   while (thisRook < 16){
     if ((PieceCol[MoveColor][thisRook]  <  PieceCol[MoveColor][0]) &&
 	(PieceRow[MoveColor][thisRook]  == MoveColor*7)            &&
-        (PieceType[MoveColor][thisRook] == 3)){
+        (PieceType[MoveColor][thisRook] == 3)) {
       legal = true;
       break;
     }
@@ -1282,25 +1252,22 @@ function CheckLegalityOOO(){
   }
   if (!legal) { return false; }
   if (PieceMoveCounter[MoveColor][thisRook] > 0) { return false; }
-  /*
-   * Check no piece is between the king and the rook. To make it compatible
-   * with fisher-random rules clear the king and rook squares now.
-   */
+
+  // Check no piece is between the king and the rook. To make it compatible
+  // with fisher-random rules clear the king and rook squares now.
   Board[PieceCol[MoveColor][0]][MoveColor*7]        = 0;
   Board[PieceCol[MoveColor][thisRook]][MoveColor*7] = 0;
   var col = PieceRow[MoveColor][thisRook];
   if (col > 2) { col = 2; }
-  while ((col > PieceCol[MoveColor][0]) || (col <= 3)){
-    if (Board[col][MoveColor*7] !== 0){
-      return false;
-    }
+  while ((col > PieceCol[MoveColor][0]) || (col <= 3)) {
+    if (Board[col][MoveColor*7] !== 0) { return false; }
     ++col;
   }
   castleRook = thisRook;
   return true;
 }
 
-function CheckClearWay(thisPiece){
+function CheckClearWay(thisPiece) {
   var stepCol = sign(mvToCol-PieceCol[MoveColor][thisPiece]);
   var stepRow = sign(mvToRow-PieceRow[MoveColor][thisPiece]);
 
@@ -1315,7 +1282,7 @@ function CheckClearWay(thisPiece){
   return true;
 }
 
-function ClearMove(move){
+function ClearMove(move) {
   var ss = move.length;
   var cc = -1;
   var ii = 0;
@@ -1334,42 +1301,39 @@ function ClearMove(move){
   return mm;
 }
 
-function GoToMove(thisMove){
-  var diff       = thisMove - CurrentPly;
-  if (diff > 0){
-    MoveForward(diff);
-  } else{
-    MoveBackward(-diff);
-  }
+function GoToMove(thisMove) {
+  var diff = thisMove - CurrentPly;
+  if (diff > 0) { MoveForward(diff); }
+  else { MoveBackward(-diff); }
 }
 
-function SetShortcutKeysEnabled(onOff){
+function SetShortcutKeysEnabled(onOff) {
   shortcutKeysEnabled = onOff;
 }
 
-function interactivelyToggleShortcutKeys(){
+function interactivelyToggleShortcutKeys() {
   if (confirm("Shortcut keys currently " + (shortcutKeysEnabled ? "enabled" : "disabled") + ".\nToggle shortcut keys to " + (shortcutKeysEnabled ? "DISABLED" : "ENABLED") + "?")) {
     SetShortcutKeysEnabled(!shortcutKeysEnabled);
   }
 }
 
-function SetCommentsIntoMoveText(onOff){
+function SetCommentsIntoMoveText(onOff) {
   commentsIntoMoveText = onOff;
 }
 
-function SetCommentsOnSeparateLines(onOff){ 
+function SetCommentsOnSeparateLines(onOff) { 
   commentsOnSeparateLines = onOff;
 }
 
-function SetAutostartAutoplay(onOff){
+function SetAutostartAutoplay(onOff) {
   autostartAutoplay = onOff;
 }
 
-function SetAutoplayNextGame(onOff){
+function SetAutoplayNextGame(onOff) {
   autoplayNextGame = onOff;
 }
 
-function SetInitialHalfmove(number_or_string, always){
+function SetInitialHalfmove(number_or_string, always) {
   if (always === true) { alwaysInitialHalfmove = true; }
   initialHalfmove = number_or_string;
   if (initialHalfmove == "start") { return; }
@@ -1379,7 +1343,7 @@ function SetInitialHalfmove(number_or_string, always){
   if ((initialHalfmove = parseInt(initialHalfmove, 10)) == NaN) { initialHalfmove = 0; }
 }
 
-function SetInitialGame(number_or_string){
+function SetInitialGame(number_or_string) {
   initialGame = number_or_string;
   if (initialGame == "first") { return; }
   if (initialGame == "last") { return; }
@@ -1392,7 +1356,7 @@ function SetInitialGame(number_or_string){
 // If this fails, then look for the beginning of the comment for a sequence of numbers 
 // and ':' and '.' characters.
   
-function clockFromComment(comment){
+function clockFromComment(comment) {
   var clock = "";
   if ((DGTclock = comment.match(/\[%clk\s*(.*?)\]/)) !== null) { clock = DGTclock[1]; }
   else { if (!(clock = comment.match(/^\s*[0-9:\.]+/))) {clock = ""; } }
@@ -1400,22 +1364,19 @@ function clockFromComment(comment){
 }
 
 
-function HighlightLastMove(){
+function HighlightLastMove() {
   var anchorName;
 
-  /*
-   * Remove the highlighting from the old anchor if any.
-   */
+  // Remove the highlighting from the old anchor if any.
   if (oldAnchor >= 0){
     anchorName = 'Mv'+oldAnchor;
     theAnchor = document.getElementById(anchorName);
     if (theAnchor !== null) { theAnchor.className = 'move'; }
   }
-  /*
-   * Find which move has to be highlighted. If the move number is negative
-   * we are at the starting position and nothing is to be highlighted and
-   * the header on top of the board is removed.
-   */
+
+  // Find which move has to be highlighted. If the move number is negative
+  // we are at the starting position and nothing is to be highlighted and
+  // the header on top of the board is removed.
   var showThisMove = CurrentPly - 1;
   if (showThisMove > StartPly + PlyNumber) { showThisMove = StartPly + PlyNumber; }
 
@@ -1426,25 +1387,18 @@ function HighlightLastMove(){
       thisComment = MoveComments[showThisMove+1].replace(/\[%.*?\]\s*/g,''); // note trailing spaces are removed also
       // remove comments that are all spaces
       if (thisComment.match(/^\s*$/)) { thisComment = ''; }
-    } else {
-      thisComment = '';
-    }
+    } else { thisComment = ''; }
     theShowCommentTextObject.innerHTML = thisComment !== '' ? MoveComments[showThisMove+1] : '-';
     theShowCommentTextObject.className = 'GameLastComment';
   }
   
-  /*
-   * Show the side to move
-   */
+  // Show the side to move
   text = (showThisMove+1)%2 === 0 ? 'white' : 'black';
  
   theObject = document.getElementById("GameSideToMove");
   if (theObject !== null) { theObject.innerHTML = text; }
 
-  /*
-   * Show the clock (if suitable info is found in the game comment)
-   */
-  
+  // Show the clock (if suitable info is found in the game comment)
   if ((showThisMove+1)%2 == 1) { // white has just moved
     lastMoverClockObject = document.getElementById("GameWhiteClock");
     initialLastMoverClock = gameInitialWhiteClock[currentGame];
@@ -1468,15 +1422,12 @@ function HighlightLastMove(){
                                            initialBeforeLastMoverClock;
   }
 
-  /*
-   * Show the next move
-   */
-
+  // Show the next move
   var theShowMoveTextObject = document.getElementById("GameNextMove");
-  if (theShowMoveTextObject !== null){
-    if (showThisMove+1 >= (StartPly+PlyNumber)){
+  if (theShowMoveTextObject !== null) {
+    if (showThisMove+1 >= (StartPly+PlyNumber)) {
       text = gameResult[currentGame];
-    }else{
+    } else {
       text = (Math.floor((showThisMove+1)/2) + 1) + 
              ((showThisMove+1) % 2 === 0 ? '. ' : '... ') +
              Moves[showThisMove+1];
@@ -1487,10 +1438,10 @@ function HighlightLastMove(){
   }
 
   theShowMoveTextObject = document.getElementById("GameLastMove");
-  if (theShowMoveTextObject !== null){
-    if (showThisMove < StartPly){
+  if (theShowMoveTextObject !== null) {
+    if (showThisMove < StartPly) {
       text = '-';
-    }else{
+    } else {
       text = (Math.floor(showThisMove/2) + 1) + 
              (showThisMove % 2 === 0 ? '. ' : '... ') +
              Moves[showThisMove];
@@ -1500,18 +1451,16 @@ function HighlightLastMove(){
     theShowMoveTextObject.style.whiteSpace = 'nowrap';
   }
 
-  if (showThisMove >= (StartPly-1)){
+  if (showThisMove >= (StartPly-1)) {
     anchorName = 'Mv' + (showThisMove + 1);
     theAnchor = document.getElementById(anchorName);
     if (theAnchor !== null) { theAnchor.className = 'move moveOn'; }
     oldAnchor = showThisMove + 1;
 
-    if (highlightOption){
+    if (highlightOption) {
       if (showThisMove < StartPly) {
-        highlightColFrom = -1;
-        highlightRowFrom = -1;
-        highlightColTo = -1;
-        highlightRowTo = -1;
+        highlightColFrom = highlightRowFrom = -1;
+        highlightColTo   = highlightRowTo   = -1;
       } else {
         highlightColFrom = HistCol[0][showThisMove];
         if (highlightColFrom == undefined) { highlightColFrom = -1; }
@@ -1527,12 +1476,12 @@ function HighlightLastMove(){
   }
 }
 
-function SetHighlightOption(on){
+function SetHighlightOption(on) {
   highlightOption = on;
 }
 
 
-function SetHighlight(on){
+function SetHighlight(on) {
   SetHighlightOption(on);
   if (on) { HighlightLastMove(); }
   else { highlightMove(-1, -1, -1, -1); }
@@ -1543,12 +1492,12 @@ var lastColFromHighlighted = -1;
 var lastRowFromHighlighted = -1;
 var lastColToHighlighted = -1;
 var lastRowToHighlighted = -1;
-function highlightMove(colFrom, rowFrom, colTo, rowTo){
+function highlightMove(colFrom, rowFrom, colTo, rowTo) {
 
   highlightSquare(lastColFromHighlighted, lastRowFromHighlighted, false);
   highlightSquare(lastColToHighlighted, lastRowToHighlighted, false);
 
-  if ( highlightSquare(colFrom, rowFrom, true) ){
+  if ( highlightSquare(colFrom, rowFrom, true) ) {
     lastColFromHighlighted = colFrom;
     lastRowFromHighlighted = rowFrom;
   } else {
@@ -1556,7 +1505,7 @@ function highlightMove(colFrom, rowFrom, colTo, rowTo){
     lastRowFromHighlighted = -1;
   }
 
-  if ( highlightSquare(colTo, rowTo, true) ){
+  if ( highlightSquare(colTo, rowTo, true) ) {
     lastColToHighlighted = colTo;
     lastRowToHighlighted = rowTo;
   } else {
@@ -1586,7 +1535,7 @@ function highlightSquare(col, row, on) {
 }
 
 
-function pgnGameFromPgnText(pgnText){
+function pgnGameFromPgnText(pgnText) {
 
   // replace < and > with html entities to avoid html injection form the PGN data
   pgnText = pgnText.replace(/</g, "&lt;");
@@ -1602,15 +1551,15 @@ function pgnGameFromPgnText(pgnText){
     // according to the PGN standard lines starting with % should be ignored
     if(lines[ii].charAt(0) == '%') { continue; }
 
-    if(pgnHeaderTagRegExp.test(lines[ii]) === true){ 
-      if(! inGameHeader){
+    if(pgnHeaderTagRegExp.test(lines[ii]) === true) {
+      if(!inGameHeader) {
         gameIndex++;
         pgnGame[gameIndex] = '';
       }
       inGameHeader=true;
       inGameBody=false;
-    }else{
-      if(inGameHeader){
+    } else {
+      if(inGameHeader) {
         inGameHeader=false;
         inGameBody=true;
       }
@@ -1635,12 +1584,10 @@ function loadPgnFromPgnUrl(pgnUrl){
         http_request.overrideMimeType('text/xml');
       }
     } else if (window.ActiveXObject) { // IE
-      try {
-        http_request = new ActiveXObject("Msxml2.XMLHTTP");
-      } catch (e) {
-        try {
-          http_request = new ActiveXObject("Microsoft.XMLHTTP");
-        } catch (e) { }
+      try { http_request = new ActiveXObject("Msxml2.XMLHTTP"); }
+      catch (e) {
+        try { http_request = new ActiveXObject("Microsoft.XMLHTTP"); }
+        catch (e) { }
       }
     }
   if (!http_request){
@@ -1653,9 +1600,7 @@ function loadPgnFromPgnUrl(pgnUrl){
     if (LiveBroadcastDelay > 0) {
       dd = new Date();
       http_request.open("GET", pgnUrl + "?nocahce=" + Math.random(), false); 
-    } else {
-      http_request.open("GET", pgnUrl, false); 
-    }
+    } else { http_request.open("GET", pgnUrl, false); }
     // anti-caching tecnique number 2: add header option
     if (LiveBroadcastDelay > 0) { 
       http_request.setRequestHeader( "If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT" ); 
@@ -1679,7 +1624,7 @@ function loadPgnFromPgnUrl(pgnUrl){
   return true;
 }
 
-function SetPgnUrl(url){
+function SetPgnUrl(url) {
   pgnUrl = url;
 }
 
@@ -1730,28 +1675,19 @@ function checkLiveBroadcastStatus() {
 }
 
 function restartLiveBroadcastTimeout() {
-
   if (LiveBroadcastDelay === 0) { return; }
-
   if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); LiveBroadcastInterval = null; }
- 
   checkLiveBroadcastStatus();
-
   needRestart = (!LiveBroadcastEnded);
-  
   if ((needRestart === true) && (!LiveBroadcastPaused)){
     LiveBroadcastInterval = setTimeout("refreshPgnSource()", LiveBroadcastDelay * 60000);
   }
-
 }
 
 
 function refreshPgnSource() {
-
   if (LiveBroadcastDelay === 0) { return; }
-
   if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); LiveBroadcastInterval = null; }
-
   if (LiveBroadcastDemo) {
     for(ii=0;ii<numberOfGames;ii++) {
       rnd = Math.random();
@@ -1774,19 +1710,11 @@ function refreshPgnSource() {
 
   oldCurrentPly = CurrentPly != StartPly + PlyNumber ? CurrentPly : -1;
 
-  if (isAutoPlayOn) {
-    SetAutoPlay(false);
-    oldAutoplay = true;
-  } else {
-    oldAutoplay = false; 
-  }
+  oldAutoplay = isAutoPlayOn;
+  if (isAutoPlayOn) { SetAutoPlay(false); }
 
-  if ( loadPgnFromPgnUrl(pgnUrl) ) {
-    LiveBroadcastStarted = true; 
-  } else {
-    LiveBroadcastStarted = false;
-    pgnGameFromPgnText(LiveBroadcastPlaceholderPgn); 
-  } 
+  LiveBroadcastStarted = loadPgnFromPgnUrl(pgnUrl);
+  if (!LiveBroadcastStarted) { pgnGameFromPgnText(LiveBroadcastPlaceholderPgn); }
 
   LoadGameHeaders();
   foundOldGame = false;
@@ -1800,7 +1728,8 @@ function refreshPgnSource() {
 
   if ((foundOldGame === true) && (oldCurrentPly >= 0)) { 
     oldInitialHalfmove = initialHalfmove; 
-    initialHalfmove = oldCurrentPly; }
+    initialHalfmove = oldCurrentPly;
+  }
   
   Init();
 
@@ -1888,7 +1817,6 @@ function Init(){
   if (isAutoPlayOn) { SetAutoPlay(false); }
   InitImages();
   if (firstStart){
-
     LoadGameHeaders();
     switch (initialGame) {
       case "first":
@@ -1917,12 +1845,10 @@ function Init(){
   
   OpenGame(currentGame);
   
-  /*
-   * Find the index of the first square image if needed.
-   */
-  if (ImageOffset < 0){
-    for (ii = 0; ii < document.images.length; ++ii){
-      if (document.images[ii].src == ClearImg.src){
+  // Find the index of the first square image if needed.
+  if (ImageOffset < 0) {
+    for (ii = 0; ii < document.images.length; ++ii) {
+      if (document.images[ii].src == ClearImg.src) {
         ImageOffset = ii;
         break;
       }
@@ -1968,20 +1894,18 @@ function Init(){
 }
 
 
-function InitFEN(startingFEN){
+function InitFEN(startingFEN) {
   FenString = startingFEN != undefined ? startingFEN : FenStringStart;
-  /*
-   * Reset the board;
-   */
+  
+  // Reset the board
   var ii, jj;
-  for (ii = 0; ii < 8; ++ii){
-    for (jj = 0; jj < 8; ++jj){
+  for (ii = 0; ii < 8; ++ii) {
+    for (jj = 0; jj < 8; ++jj) {
       Board[ii][jj] = 0;
     }
   }
-  /*
-   * Set the initial position. As of now only the normal starting position.
-   */
+
+  // Set the initial position. As of now only the normal starting position.
   var color, pawn;
   StartPly  = 0;
   MoveCount = StartPly;
@@ -1990,16 +1914,11 @@ function InitFEN(startingFEN){
 
   var newEnPassant = false;
   var newEnPassantCol;
+  for (ii = 0; ii < 2; ii++) { CastlingLong[ii] = CastlingShort[ii] = 1; }
+  InitialHalfMoveClock = 0;
 
-  for (ii = 0; ii < 2; ii++){
-    CastlingLong[ii]  = 1;
-    CastlingShort[ii] = 1;
-  }
-  
-  InitialHalfMoveClock=0;
-
-  if (FenString == "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"){
-    for (color = 0; color < 2; ++color){
+  if (FenString == "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1") {
+    for (color = 0; color < 2; ++color) {
       PieceType[color][0] = 1;  // King
       PieceCol[color][0]  = 4;
       PieceType[color][1] = 2;  // Queen
@@ -2031,222 +1950,216 @@ function InitFEN(startingFEN){
         Board[col][row] = (1-2*color)*PieceType[color][ii];
       }
     }
-  } else{
+  } else {
     var cc, kk, ll, nn, mm;
-    for (ii=0; ii<2; ii++)
-      { for (jj=0; jj<16; jj++)
-        { PieceType[ii][jj]=-1;
-          PieceCol[ii][jj]=0;
-          PieceRow[ii][jj]=0;
-          PieceMoveCounter[ii][jj]=0;
-        }
+    for (ii = 0; ii < 2; ii++) {
+      for (jj = 0; jj < 16; jj++) {
+        PieceType[ii][jj] = -1;
+        PieceCol[ii][jj] = 0;
+        PieceRow[ii][jj] = 0;
+        PieceMoveCounter[ii][jj] = 0;
       }
-      ii=0; jj=7; ll=0; nn=1; mm=1; cc=FenString.charAt(ll++);
-      while (cc!=" ")
-      { if (cc=="/")
-        { if (ii!=8)
-          { myAlert("error: invalid FEN [1] char "+ll+" '" + cc + "' in game "+(currentGame+1)+"\n"+FenString, true);
-            InitFEN();
-            return;
-          }
-          ii=0;
-          jj--;
-        }
-        if (ii==8) 
-        { myAlert("error: invalid FEN [2] char "+ll+" '" + cc + "' in game "+(currentGame+1)+"\n"+FenString, true);
+    }
+
+    ii = 0; jj = 7; ll = 0; nn = 1; mm = 1; cc = FenString.charAt(ll++);
+    while (cc != " ") {
+      if (cc == "/") {
+        if (ii != 8) {
+          myAlert("error: invalid FEN [1] char "+ll+" '" + cc + "' in game "+(currentGame+1)+"\n"+FenString, true);
           InitFEN();
           return;
         }
-        if (! isNaN(cc))
-        { ii+=parseInt(cc, 10);
-          if ((ii<0)||(ii>8))
-          { myAlert("error: invalid FEN [3] char "+ll+" '" + cc + "' in game "+(currentGame+1)+"\n"+FenString, true);
-            InitFEN();
-            return;
-          }
+        ii = 0;
+        jj--;
+      }
+      if (ii == 8) {
+        myAlert("error: invalid FEN [2] char "+ll+" '" + cc + "' in game "+(currentGame+1)+"\n"+FenString, true);
+        InitFEN();
+        return;
+      }
+      if (!isNaN(cc)) {
+        ii += parseInt(cc, 10);
+        if ((ii < 0) || (ii > 8)) {
+          myAlert("error: invalid FEN [3] char "+ll+" '" + cc + "' in game "+(currentGame+1)+"\n"+FenString, true);
+          InitFEN();
+          return;
         }
-        if (cc.charCodeAt(0)==FenPieceName.toUpperCase().charCodeAt(0))
-        { if (PieceType[0][0]!=-1)
-          { myAlert("error: invalid FEN [4] char "+ll+" '" + cc + "' in game "+(currentGame+1)+"\n"+FenString, true);
+      }
+      if (cc.charCodeAt(0) == FenPieceName.toUpperCase().charCodeAt(0)) {
+        if (PieceType[0][0] != -1) {
+          myAlert("error: invalid FEN [4] char "+ll+" '" + cc + "' in game "+(currentGame+1)+"\n"+FenString, true);
+          InitFEN();
+          return;
+        }     
+        PieceType[0][0] = 1;
+        PieceCol[0][0] = ii;
+        PieceRow[0][0] = jj;
+        ii++;
+      }
+      if (cc.charCodeAt(0) == FenPieceName.toLowerCase().charCodeAt(0)) {
+        if (PieceType[1][0] != -1) {
+          myAlert("error: invalid FEN [5] char "+ll+" '" + cc + "' in game "+(currentGame+1)+"\n"+FenString, true);
+          InitFEN();
+          return;
+        }  
+        PieceType[1][0] = 1;
+        PieceCol[1][0] = ii;
+        PieceRow[1][0] = jj;
+        ii++;
+      }
+      for (kk = 1; kk < 6; kk++) {
+        if (cc.charCodeAt(0) == FenPieceName.toUpperCase().charCodeAt(kk)) {
+          if (nn == 16) {
+            myAlert("error: invalid FEN [6] char "+ll+" '" + cc + "' in game "+(currentGame+1)+"\n"+FenString, true);
             InitFEN();
             return;
-          }     
-          PieceType[0][0]=1;
-          PieceCol[0][0]=ii;
-          PieceRow[0][0]=jj;
+          }          
+          PieceType[0][nn] = kk+1;
+          PieceCol[0][nn] = ii;
+          PieceRow[0][nn] = jj;
+          nn++;
           ii++;
         }
-        if (cc.charCodeAt(0)==FenPieceName.toLowerCase().charCodeAt(0))
-        { if (PieceType[1][0]!=-1)
-          { myAlert("error: invalid FEN [5] char "+ll+" '" + cc + "' in game "+(currentGame+1)+"\n"+FenString, true);
+        if (cc.charCodeAt(0) == FenPieceName.toLowerCase().charCodeAt(kk)) {
+          if (mm==16) {
+            myAlert("error: invalid FEN [7] char "+ll+" '" + cc + "' in game "+(currentGame+1)+"\n"+FenString, true);
             InitFEN();
             return;
           }  
-          PieceType[1][0]=1;
-          PieceCol[1][0]=ii;
-          PieceRow[1][0]=jj;
+          PieceType[1][mm] = kk+1;
+          PieceCol[1][mm] = ii;
+          PieceRow[1][mm] = jj;
+          mm++;
           ii++;
         }
-        for (kk=1; kk<6; kk++)
-        { if (cc.charCodeAt(0)==FenPieceName.toUpperCase().charCodeAt(kk))
-          { if (nn==16)
-            { myAlert("error: invalid FEN [6] char "+ll+" '" + cc + "' in game "+(currentGame+1)+"\n"+FenString, true);
-              InitFEN();
-              return;
-            }          
-            PieceType[0][nn]=kk+1;
-            PieceCol[0][nn]=ii;
-            PieceRow[0][nn]=jj;
-            nn++;
-            ii++;
-          }
-          if (cc.charCodeAt(0)==FenPieceName.toLowerCase().charCodeAt(kk))
-          { if (mm==16)
-            { myAlert("error: invalid FEN [7] char "+ll+" '" + cc + "' in game "+(currentGame+1)+"\n"+FenString, true);
-              InitFEN();
-              return;
-            }  
-            PieceType[1][mm]=kk+1;
-            PieceCol[1][mm]=ii;
-            PieceRow[1][mm]=jj;
-            mm++;
-            ii++;
-          }
-        }
-        cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
       }
-      if ((ii!=8)||(jj!==0))
-      { myAlert("error: invalid FEN [8] char "+ll+" in game "+(currentGame+1)+"\n"+FenString, true);
-        InitFEN();
-        return;
-      }
-      if ((PieceType[0][0]==-1)||(PieceType[1][0]==-1))
-      { myAlert("error: invalid FEN [9]: missing king in game "+(currentGame+1)+"\n"+FenString, true);
-        InitFEN();
-        return;
-      }
-      if (ll==FenString.length)
-      { FenString+=" w ";
-        FenString+=FenPieceName.toUpperCase().charAt(0);
-        FenString+=FenPieceName.toUpperCase().charAt(1);
-        FenString+=FenPieceName.toLowerCase().charAt(0);
-        FenString+=FenPieceName.toLowerCase().charAt(1);      
-        FenString+=" - 0 1";
-        ll++;
-      }
-      cc=FenString.charAt(ll++);
-      if ((cc=="w")||(cc=="b"))
-      { if (cc=="b") { 
-          StartMove=1;
-          StartPly += 1;
-          MoveColor = 1;
-        }
-      }
-      else
-      { myAlert("error: invalid FEN [11]: char "+ll+" '" + cc + "' invalid active color in game "+(currentGame+1)+"\n"+FenString, true);
-        return;
-      }
-
+      cc = ll < FenString.length ? FenString.charAt(ll++) : " ";
+    }
+    if ((ii != 8) || (jj !== 0)) {
+      myAlert("error: invalid FEN [8] char "+ll+" in game "+(currentGame+1)+"\n"+FenString, true);
+      InitFEN();
+      return;
+    }
+    if ((PieceType[0][0] == -1) || (PieceType[1][0] == -1)) {
+      myAlert("error: invalid FEN [9]: missing king in game "+(currentGame+1)+"\n"+FenString, true);
+      InitFEN();
+      return;
+    }
+    if (ll == FenString.length) {
+      FenString += " w ";
+      FenString += FenPieceName.toUpperCase().charAt(0);
+      FenString += FenPieceName.toUpperCase().charAt(1);
+      FenString += FenPieceName.toLowerCase().charAt(0);
+      FenString += FenPieceName.toLowerCase().charAt(1);      
+      FenString += " - 0 1";
       ll++;
-      if (ll>=FenString.length)
-      { myAlert("error: invalid FEN [12]: char "+ll+" missing castling availability in game "+(currentGame+1)+"\n"+FenString, true);
-        return;
+    }
+    cc = FenString.charAt(ll++);
+    if ((cc == "w") || (cc == "b")) {
+      if (cc == "b") { 
+        StartMove=1;
+        StartPly += 1;
+        MoveColor = 1;
       }
-      CastlingShort[0]=0; CastlingLong[0]=0; CastlingShort[1]=0; CastlingLong[1]=0;
-      cc=FenString.charAt(ll++);
-      while (cc!=" ")
-      { if (cc.charCodeAt(0)==FenPieceName.toUpperCase().charCodeAt(0))
-        { CastlingShort[0]=1; }
-        if (cc.charCodeAt(0)==FenPieceName.toUpperCase().charCodeAt(1))
-        { CastlingLong[0]=1; }
-        if (cc.charCodeAt(0)==FenPieceName.toLowerCase().charCodeAt(0))
-        { CastlingShort[1]=1; }
-        if (cc.charCodeAt(0)==FenPieceName.toLowerCase().charCodeAt(1))
-        { CastlingLong[1]=1; }
-        if ((cc=="E")||(cc=="F")||(cc=="G")||(cc=="H")) //for Chess960
-        { CastlingShort[0]=1; }
-        if ((cc=="A")||(cc=="B")||(cc=="C")||(cc=="D"))
-        { CastlingLong[0]=1; }
-        if ((cc=="e")||(cc=="f")||(cc=="g")||(cc=="h"))
-        { CastlingShort[1]=1; }
-        if ((cc=="a")||(cc=="b")||(cc=="c")||(cc=="d"))
-        { CastlingLong[1]=1; }
-        cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
-      }
+    } else {
+      myAlert("error: invalid FEN [11]: char "+ll+" '" + cc + "' invalid active color in game "+(currentGame+1)+"\n"+FenString, true);
+      return;
+    }
 
-      /*
-       * Set Board
-       * 
-      */
-      for (color = 0; color < 2; ++color){
-       for (ii = 0; ii < 16; ii++){
-          if (PieceType[color][ii]!=-1){
-   	     col = PieceCol[color][ii];
-	     row = PieceRow[color][ii];
-	     Board[col][row] = (1-2*color)*(PieceType[color][ii]);
-	  }
-       }
+    ll++;
+    if (ll >= FenString.length) {
+      myAlert("error: invalid FEN [12]: char "+ll+" missing castling availability in game "+(currentGame+1)+"\n"+FenString, true);
+      return;
+    }
+    CastlingShort[0] = CastlingLong[0] = CastlingShort[1] = CastlingLong[1] = 0;
+    cc = FenString.charAt(ll++);
+    while (cc!=" ") {
+      if (cc.charCodeAt(0) == FenPieceName.toUpperCase().charCodeAt(0))
+      { CastlingShort[0] = 1; }
+      if (cc.charCodeAt(0) == FenPieceName.toUpperCase().charCodeAt(1))
+      { CastlingLong[0] = 1; }
+      if (cc.charCodeAt(0) == FenPieceName.toLowerCase().charCodeAt(0))
+      { CastlingShort[1]=1; }
+      if (cc.charCodeAt(0) == FenPieceName.toLowerCase().charCodeAt(1))
+      { CastlingLong[1] = 1; }
+      if ((cc == "E") || (cc == "F") || (cc == "G") || (cc == "H")) //for Chess960
+      { CastlingShort[0] = 1; }
+      if ((cc == "A") || (cc == "B") || (cc == "C") || (cc == "D"))
+      { CastlingLong[0] = 1; }
+      if ((cc == "e") || (cc == "f") || (cc == "g") || (cc=="h"))
+      { CastlingShort[1] = 1; }
+      if ((cc == "a") || (cc == "b") || (cc == "c") || (cc == "d"))
+      { CastlingLong[1] = 1; }
+      cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
+    }
+
+    // Set board
+    for (color = 0; color < 2; ++color) {
+      for (ii = 0; ii < 16; ii++) {
+        if (PieceType[color][ii] != -1) {
+   	  col = PieceCol[color][ii];
+	  row = PieceRow[color][ii];
+	  Board[col][row] = (1-2*color)*(PieceType[color][ii]);
+	}
       }
+    }
           
-      if (ll>=FenString.length)
-      { myAlert("error: invalid FEN [13]: char "+ll+" missing en passant target square in game "+(currentGame+1)+"\n"+FenString, true);
+    if (ll >= FenString.length) {
+      myAlert("error: invalid FEN [13]: char "+ll+" missing en passant target square in game "+(currentGame+1)+"\n"+FenString, true);
+      return;
+    }
+    cc = FenString.charAt(ll++);
+    while (cc != " ") {
+      if ((cc.charCodeAt(0)-97 >= 0) && (cc.charCodeAt(0)-97 <= 7)) {
+        newEnPassant = true;
+        newEnPassantCol = cc.charCodeAt(0)-97; 
+      }
+      cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
+    }
+    if (ll >= FenString.length) {
+      myAlert("error: invalid FEN [14]: char "+ll+" missing halfmove clock in game "+(currentGame+1)+"\n"+FenString, true);
+      return;
+    }
+    InitialHalfMoveClock = 0;
+    cc = FenString.charAt(ll++);
+    while (cc != " ") {
+      if (isNaN(cc)) {
+        myAlert("error: invalid FEN [15]: char "+ll+" '" + cc + "' invalid halfmove clock in game "+(currentGame+1)+"\n"+FenString, true);
         return;
       }
-      cc=FenString.charAt(ll++);
-      while (cc!=" ")
-      { if ((cc.charCodeAt(0)-97>=0)&&(cc.charCodeAt(0)-97<=7)) {
-          newEnPassant = true;
-          newEnPassantCol=cc.charCodeAt(0)-97; 
-        }
-        cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
-      }
-      if (ll>=FenString.length)
-      { myAlert("error: invalid FEN [14]: char "+ll+" missing halfmove clock in game "+(currentGame+1)+"\n"+FenString, true);
-        return;
-      }
-      InitialHalfMoveClock=0;
-      cc=FenString.charAt(ll++);
-      while (cc!=" ")
-      { if (isNaN(cc))
-        { myAlert("error: invalid FEN [15]: char "+ll+" '" + cc + "' invalid halfmove clock in game "+(currentGame+1)+"\n"+FenString, true);
-          return;
-        }
-        InitialHalfMoveClock=InitialHalfMoveClock*10+parseInt(cc, 10);
-        cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
-      }
-      if (ll>=FenString.length)
-      { myAlert("error: invalid FEN [16]: char "+ll+" missing fullmove number in game "+(currentGame+1)+"\n"+FenString, true);
-        return;
-      }
-      cc=FenString.substring(ll++);
-      if (isNaN(cc))
-      { myAlert("error: invalid FEN [17]: char "+ll+" '" + cc + "' invalid fullmove number in game "+(currentGame+1)+"\n"+FenString, true);
-        return;
-      }
-      if (cc<=0)
-      { myAlert("error: invalid FEN [18]: char "+ll+" '" + cc + "' invalid fullmove number in game "+(currentGame+1)+"\n"+FenString, true);
-        return;
-      }
-      StartPly+=2*(parseInt(cc, 10)-1);
+      InitialHalfMoveClock=InitialHalfMoveClock*10+parseInt(cc, 10);
+      cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
+    }
+    if (ll >= FenString.length) {
+      myAlert("error: invalid FEN [16]: char "+ll+" missing fullmove number in game "+(currentGame+1)+"\n"+FenString, true);
+      return;
+    }
+    cc = FenString.substring(ll++);
+    if (isNaN(cc)) {
+      myAlert("error: invalid FEN [17]: char "+ll+" '" + cc + "' invalid fullmove number in game "+(currentGame+1)+"\n"+FenString, true);
+      return;
+    }
+    if (cc <= 0) {
+      myAlert("error: invalid FEN [18]: char "+ll+" '" + cc + "' invalid fullmove number in game "+(currentGame+1)+"\n"+FenString, true);
+      return;
+    }
+    StartPly += 2*(parseInt(cc, 10)-1);
 
-      HistEnPassant[StartPly-1] = newEnPassant;
-      HistEnPassantCol[StartPly-1] = newEnPassantCol;
+    HistEnPassant[StartPly-1] = newEnPassant;
+    HistEnPassantCol[StartPly-1] = newEnPassantCol;
   }
 }
 
-function SetImageType(extension){
+function SetImageType(extension) {
   imageType = extension;
 }
 
 
-function InitImages(){
-  /* 
-   * Reset the array describing what image is in each square.
-   */
+function InitImages() {
+  // Reset the array describing what image is in each square.
   DocumentImages.length = 0;
-  /*
-   * No need if the directory where we pick images is not changed.
-   */
+  
+  // No need if the directory where we pick images is not changed.
   if (ImagePathOld == ImagePath) { return; }
 
   /* adds a trailing / to ImagePath if missing and if path not blank */
@@ -2254,17 +2167,13 @@ function InitImages(){
     ImagePath += '/';
   }
 
-  /*
-   * No image.
-   */
+  // No image.
   ClearImg.src = ImagePath+'clear.'+imageType;
 
-  /*
-   * Load the images.
-   */
+  // Load the images.
   var color;
   ColorName = new Array ("w", "b");
-  for (color = 0; color < 2; ++color){
+  for (color = 0; color < 2; ++color) {
     PiecePicture[color][1]     = new Image();
     PiecePicture[color][1].src = ImagePath + ColorName[color] + 'k.'+imageType;
     PiecePicture[color][2]     = new Image();
@@ -2278,44 +2187,40 @@ function InitImages(){
     PiecePicture[color][6]     = new Image();
     PiecePicture[color][6].src = ImagePath + ColorName[color] + 'p.'+imageType;
   }
-  ImagePathOld          = ImagePath;
+  ImagePathOld = ImagePath;
 }
 
-function IsCheck(col, row, color){
+function IsCheck(col, row, color) {
   var ii, jj;
   var sign = 2*color-1; // white or black
-  /*
-   * Is the other king giving check?
-   */
-  if ((Math.abs(PieceCol[1-color][0]-col)<=1) &&
-      (Math.abs(PieceRow[1-color][0]-row)<=1)) { return true; }
-  /*
-   * Any knight giving check?
-   */
-  for (ii = -2; ii <= 2; ii += 4){
-    for(jj = -1; jj <= 1; jj += 2){
-      if (SquareOnBoard(col+ii, row+jj)){
+
+  // Is the other king giving check?
+  if ((Math.abs(PieceCol[1-color][0]-col) <= 1) &&
+      (Math.abs(PieceRow[1-color][0]-row) <= 1)) { return true; }
+
+  // Any knight giving check?
+  for (ii = -2; ii <= 2; ii += 4) {
+    for(jj = -1; jj <= 1; jj += 2) {
+      if (SquareOnBoard(col+ii, row+jj)) {
 	if (Board[col+ii][row+jj] == sign*5) { return true; }
       }
-      if (SquareOnBoard(col+jj, row+ii)){
+      if (SquareOnBoard(col+jj, row+ii)) {
 	if (Board[col+jj][row+ii] == sign*5) { return true; }
       }
     }
   }
-  /*
-   * Any pawn giving check?
-   */
+
+  // Any pawn giving check?
   for (ii = -1; ii <= 1; ii += 2){
     if (SquareOnBoard(col+ii, row-sign)){
       if (Board[col+ii][row-sign] == sign*6) { return true; }
     }
   }
-  /*
-   * Now queens, rooks and bishops.
-   */
-  for (ii = -1; ii <= 1; ++ii){
-    for (jj = -1; jj <= 1; ++jj){
-      if ((ii !== 0) || (jj !== 0)){
+
+  // Now queens, rooks and bishops.
+  for (ii = -1; ii <= 1; ++ii) {
+    for (jj = -1; jj <= 1; ++jj) {
+      if ((ii !== 0) || (jj !== 0)) {
 	var checkCol  = col+ii;
 	var checkRow  = row+jj;
 	var thisPiece = 0;
@@ -2325,7 +2230,7 @@ function IsCheck(col, row, color){
 	  if (thisPiece === 0){
 	    checkCol += ii;
 	    checkRow += jj;
-	  } else{
+	  } else {
 	    if (thisPiece  == sign*2)                                { return true; }
 	    if ((thisPiece == sign*3) && ((ii === 0) || (jj === 0))) { return true; }
 	    if ((thisPiece == sign*4) && ((ii !== 0) && (jj !== 0))) { return true; }
@@ -2344,62 +2249,33 @@ function checkHeaderDefined(headerValue) {
 
 function LoadGameHeaders(){
   var ii;
-  /*
-   * Initialize the global arrays to the number of games length.
-   */
-  gameDate.length = 0; 
-  gameWhite.length = 0;
-  gameBlack.length = 0;
-  gameSetUp.length = 0;
-  gameFEN.length = 0;
-  gameEvent.length = 0;
-  gameSite.length = 0;
-  gameRound.length = 0;
-  gameResult.length = 0;
-  gameInitialWhiteClock.length = 0;
-  gameInitialBlackClock.length = 0;
 
-  /*
-   * Read the headers of all games and store the information in te global
-   * arrays.
-   */
+  // Initialize the global arrays to the number of games length.
+  gameEvent.length = gameSite.length = gameRound.length = gameDate.length = 0;
+  gameWhite.length = gameBlack.length = gameResult.length = 0;
+  gameSetUp.length = gameFEN.length = 0;
+  gameInitialWhiteClock.length = gameInitialBlackClock.length = 0;
+
+  // Read the headers of all games and store them in the global arrays
   pgnHeaderTagRegExpGlobal.exec(""); // to cope with IE bug when reloading a PGN as in inputform.html
-  for (ii = 0; ii < numberOfGames; ++ii){
-    var ss      = pgnGame[ii];
+  for (ii = 0; ii < numberOfGames; ++ii) {
+    var ss = pgnGame[ii];
     var parse;
-    gameEvent[ii] = "";
-    gameSite[ii] = "";
-    gameRound[ii] = "";
-    gameWhite[ii] = "";
-    gameBlack[ii] = "";
-    gameResult[ii] = "";
-    gameDate[ii] = "";
-    gameInitialWhiteClock[ii] = "";
-    gameInitialBlackClock[ii] = "";
+    gameEvent[ii] = gameSite[ii] = gameRound[ii] = gameDate[ii] = "";
+    gameWhite[ii] = gameBlack[ii] = gameResult[ii] = "";
+    gameInitialWhiteClock[ii] = gameInitialBlackClock[ii] = "";
     while ((parse = pgnHeaderTagRegExpGlobal.exec(ss)) !== null){
-      if (parse[1] == 'Event'){
-	gameEvent[ii]  = parse[2];
-      } else if  (parse[1] == 'Site'){
-	gameSite[ii]   = parse[2];
-      } else if  (parse[1] == 'Round'){
-	gameRound[ii]   = parse[2];
-      } else if  (parse[1] == 'Date'){
-	gameDate[ii]   = parse[2];
-      } else if  (parse[1] == 'White'){
-	gameWhite[ii]  = parse[2];
-      } else if  (parse[1] == 'Black'){
-	gameBlack[ii]  = parse[2];
-      } else if  (parse[1] == 'SetUp'){
-	gameSetUp[ii]  = parse[2];
-      } else if  (parse[1] == 'FEN'){
-	gameFEN[ii]  = parse[2];
-      } else if  (parse[1] == 'Result'){
-	gameResult[ii] = parse[2];
-      } else if  (parse[1] == 'WhiteClock'){
-	gameInitialWhiteClock[ii] = parse[2];
-      } else if  (parse[1] == 'BlackClock'){
-	gameInitialBlackClock[ii] = parse[2];
-      }
+      if       (parse[1] == 'Event')      { gameEvent[ii]  = parse[2]; }
+      else if  (parse[1] == 'Site')       { gameSite[ii]   = parse[2]; }
+      else if  (parse[1] == 'Round')      { gameRound[ii]  = parse[2]; }
+      else if  (parse[1] == 'Date')       { gameDate[ii]   = parse[2]; }
+      else if  (parse[1] == 'White')      { gameWhite[ii]  = parse[2]; }
+      else if  (parse[1] == 'Black')      { gameBlack[ii]  = parse[2]; }
+      else if  (parse[1] == 'Result')     { gameResult[ii] = parse[2]; }
+      else if  (parse[1] == 'SetUp')      { gameSetUp[ii]  = parse[2]; }
+      else if  (parse[1] == 'FEN')        { gameFEN[ii]    = parse[2]; }
+      else if  (parse[1] == 'WhiteClock') { gameInitialWhiteClock[ii] = parse[2]; }
+      else if  (parse[1] == 'BlackClock') { gameInitialBlackClock[ii] = parse[2]; }
     }
   }
   if ((LiveBroadcastDemo) && (numberOfGames > 0)) {
@@ -2409,7 +2285,6 @@ function LoadGameHeaders(){
          gameDemoLength[ii] = PlyNumber; 
        }
        if (gameDemoMaxPly[ii] == undefined) { gameDemoMaxPly[ii] = 0; }
-
        if (gameDemoMaxPly[ii] <= gameDemoLength[ii]) { gameResult[ii] = '*'; }
     }
   }
@@ -2418,97 +2293,81 @@ function LoadGameHeaders(){
 }
 
 
-function MoveBackward(diff){
-  /*
-   * First of all find to which ply we have to go back. Remember that
-   * CurrentPly contains the ply number counting from 1.
-   */
+function MoveBackward(diff) {
+
+  // First of all find to which ply we have to go back. Remember that
+  // CurrentPly contains the ply number counting from 1.
   var goFromPly  = CurrentPly - 1;
   var goToPly    = goFromPly  - diff;
   if (goToPly < StartPly) { goToPly = StartPly-1; }
-  /*
-   * Loop back to reconstruct the old position one ply at the time.
-   */
+
+  // Loop back to reconstruct the old position one ply at the time.
   var thisPly;
-  for(thisPly = goFromPly; thisPly > goToPly; --thisPly){
+  for(thisPly = goFromPly; thisPly > goToPly; --thisPly) {
     CurrentPly--;
     MoveColor = 1-MoveColor;
-    /*
-     * Reposition the moved piece on the original square.
-     */
+
+    // Reposition the moved piece on the original square.
     var chgPiece = HistPieceId[0][thisPly];
     Board[PieceCol[MoveColor][chgPiece]][PieceRow[MoveColor][chgPiece]] = 0;
 
-    Board[HistCol[0][thisPly]][HistRow[0][thisPly]] = HistType[0][thisPly]*
-	(1-2*MoveColor);
+    Board[HistCol[0][thisPly]][HistRow[0][thisPly]] = HistType[0][thisPly] * (1-2*MoveColor);
     PieceType[MoveColor][chgPiece] = HistType[0][thisPly];
-    PieceCol[MoveColor][chgPiece]  = HistCol[0][thisPly];
-    PieceRow[MoveColor][chgPiece]  = HistRow[0][thisPly];
+    PieceCol[MoveColor][chgPiece] = HistCol[0][thisPly];
+    PieceRow[MoveColor][chgPiece] = HistRow[0][thisPly];
     PieceMoveCounter[MoveColor][chgPiece]--;
-    /*
-     * If the move was a castling reposition the rook on its original square.
-     */
+
+    // If the move was a castling reposition the rook on its original square.
     chgPiece = HistPieceId[1][thisPly];
-    if ((chgPiece >= 0) && (chgPiece < 16)){
+    if ((chgPiece >= 0) && (chgPiece < 16)) {
        Board[PieceCol[MoveColor][chgPiece]][PieceRow[MoveColor][chgPiece]] = 0;
-       Board[HistCol[1][thisPly]][HistRow[1][thisPly]] = HistType[1][thisPly]*
-	(1-2*MoveColor);
+       Board[HistCol[1][thisPly]][HistRow[1][thisPly]] = HistType[1][thisPly] * (1-2*MoveColor);
        PieceType[MoveColor][chgPiece] = HistType[1][thisPly];
-       PieceCol[MoveColor][chgPiece]  = HistCol[1][thisPly];
-       PieceRow[MoveColor][chgPiece]  = HistRow[1][thisPly];
+       PieceCol[MoveColor][chgPiece] = HistCol[1][thisPly];
+       PieceRow[MoveColor][chgPiece] = HistRow[1][thisPly];
        PieceMoveCounter[MoveColor][chgPiece]--;
     } 
-    /*
-     * If the move was a capture reposition the captured piece on its
-     * original square.
-     */
+
+    // For captures, reposition the captured piece on its original square.
     chgPiece -= 16;
-    if ((chgPiece >= 0) && (chgPiece < 16)){
+    if ((chgPiece >= 0) && (chgPiece < 16)) {
        Board[PieceCol[1-MoveColor][chgPiece]][PieceRow[1-MoveColor][chgPiece]] = 0;
        Board[HistCol[1][thisPly]][HistRow[1][thisPly]] = HistType[1][thisPly]*
 	(2*MoveColor-1);
        PieceType[1-MoveColor][chgPiece] = HistType[1][thisPly];
-       PieceCol[1-MoveColor][chgPiece]  = HistCol[1][thisPly];
-       PieceRow[1-MoveColor][chgPiece]  = HistRow[1][thisPly];
+       PieceCol[1-MoveColor][chgPiece] = HistCol[1][thisPly];
+       PieceRow[1-MoveColor][chgPiece] = HistRow[1][thisPly];
        PieceMoveCounter[1-MoveColor][chgPiece]--;
     } 
   }
-  /*
-   * Now that we have the old position refresh the board and update the 
-   * ply count on the HTML.
-   */
+
+  // With the old position refresh the board and update the ply count on the HTML.
   RefreshBoard();
   HighlightLastMove(); 
-  /*
-   * Set a new timeout if in autoplay mode.
-   */
+
+  // Set a new timeout if in autoplay mode.
   if (AutoPlayInterval) { clearTimeout(AutoPlayInterval); AutoPlayInterval = null; }
   if (isAutoPlayOn) {
-    if(goToPly >= StartPly) {
-      AutoPlayInterval=setTimeout("MoveBackward(1)", Delay);
-    } else {
-      SetAutoPlay(false);
-    }
+    if(goToPly >= StartPly) { AutoPlayInterval=setTimeout("MoveBackward(1)", Delay); }
+    else { SetAutoPlay(false); }
   } 
   customFunctionOnMove();
 }
 
 
-function MoveForward(diff){
-  /*
-   * First of all find to which ply we have to go back. Remember that
-   * CurrentPly contains the ply number counting from 1.
-   */
-  goToPly        = CurrentPly + parseInt(diff, 10);
+function MoveForward(diff) {
+
+  // First of all find to which ply we have to go back. Remember that
+  // CurrentPly contains the ply number counting from 1.
+  goToPly = CurrentPly + parseInt(diff, 10);
 
   if (goToPly > (StartPly+PlyNumber)) { goToPly = StartPly+PlyNumber; }
   var thisPly;
-  /*
-   * Loop over all moves till the selected one is reached. Check that
-   * every move is legal and if yes update the board.
-   */
-  for(thisPly = CurrentPly; thisPly < goToPly; ++thisPly){
-    var move  = Moves[thisPly];
+
+  // Loop over all moves till the selected one is reached. Check that
+  // every move is legal and if yes update the board.
+  for(thisPly = CurrentPly; thisPly < goToPly; ++thisPly) {
+    var move = Moves[thisPly];
     var parse = ParseMove(move, thisPly);
     if (!parse) {
       text = (Math.floor(thisPly / 2) + 1) + ((thisPly % 2) === 0 ? '. ' : '... ');
@@ -2517,17 +2376,14 @@ function MoveForward(diff){
     }
     MoveColor = 1-MoveColor; 
   }
-  /*
-   * Once the desired position is reached refresh the board and update the 
-   * ply count on the HTML.
-   */
+
+  // Once the desired position is reached refresh the board and update the 
+  // ply count on the HTML.
   CurrentPly = thisPly;
   RefreshBoard();
   HighlightLastMove(); 
 
-  /*
-   * Set a new timeout if in autoplay mode and if all parsing was successful
-   */
+  // Set a new timeout if in autoplay mode and if all parsing was successful
   if (AutoPlayInterval) { clearTimeout(AutoPlayInterval); AutoPlayInterval = null; }
   if (!parse) { SetAutoPlay(false); } 
   else if (thisPly == goToPly) {
@@ -2543,7 +2399,7 @@ function MoveForward(diff){
   customFunctionOnMove();
 }
 
-function AutoplayNextGame(){
+function AutoplayNextGame() {
   if (fatalErrorNumSinceReset === 0) {
     if (++currentGame >= numberOfGames) { currentGame = 0; }
     Init();
@@ -2556,29 +2412,21 @@ function AutoplayNextGame(){
 }
 
 
-function MoveToNextComment()
-{
-  for(ii=CurrentPly+1; ii<=StartPly+PlyNumber; ii++){
-    if (MoveComments[ii] !== '') {
-      GoToMove(ii);
-      break;
-    }
+function MoveToNextComment() {
+  for(ii=CurrentPly+1; ii<=StartPly+PlyNumber; ii++) {
+    if (MoveComments[ii] !== '') { GoToMove(ii); break; }
   }
 }
 
 
-function MoveToPrevComment()
-{
-  for(ii=(CurrentPly-1); ii>=0; ii--){
-    if (MoveComments[ii] !== '') {
-      GoToMove(ii);
-      break;
-    }
+function MoveToPrevComment() {
+  for(ii=(CurrentPly-1); ii>=0; ii--) {
+    if (MoveComments[ii] !== '') { GoToMove(ii); break; }
   }
 }
 
 
-function OpenGame(gameId){
+function OpenGame(gameId) {
   ParsePGNGameString(pgnGame[gameId]);
   currentGame = gameId;
  
@@ -2590,12 +2438,10 @@ function OpenGame(gameId){
 }
 
 
-function ParsePGNGameString(gameString){
+function ParsePGNGameString(gameString) {
 
-  var ss      = gameString;
-  /*
-   * Get rid of the PGN tags and remove the result at the end. 
-   */
+  var ss = gameString;
+  // Get rid of the PGN tags and remove the result at the end. 
   ss = ss.replace(pgnHeaderTagRegExpGlobal, ''); 
   ss = ss.replace(/^\s/, '');
   ss = ss.replace(/\s$/, '');
@@ -2604,9 +2450,9 @@ function ParsePGNGameString(gameString){
   for (ii=0; ii<StartPly; ii++) { Moves[ii]=''; }
   MoveComments[StartPly+PlyNumber]='';
 
-  for (start=0; start<ss.length; start++){
+  for (start=0; start<ss.length; start++) {
   
-    switch (ss.charAt(start)){
+    switch (ss.charAt(start)) {
 
       case ' ':
       case '\b':
@@ -2911,7 +2757,7 @@ NAG[137] = 'Black has moderate time control pressure';
 NAG[138] = 'White has severe time control pressure';
 NAG[139] = 'Black has severe time control pressure';
 
-function translateNAGs(comment){
+function translateNAGs(comment) {
   var jj, ii = 0;
   numString = "01234567890";
   while ((ii = comment.indexOf('$', ii)) >= 0) {
@@ -2930,14 +2776,12 @@ function translateNAGs(comment){
 }
 
 
-function ParseMove(move, plyCount){
+function ParseMove(move, plyCount) {
 //  move = move.replace(/[\+#]/g, ""); // patch this to pass through '+' and '#' signs
   var ii, ll;
   var remainder;
   var toRowMarker = -1;
-  /*
-   * Reset the global move variables.
-   */
+  // Reset the global move variables.
   castleRook    = -1;
   mvIsCastling  =  0;
   mvIsPromotion =  0;
@@ -2951,13 +2795,12 @@ function ParseMove(move, plyCount){
   mvPieceOnTo   = -1;
   mvCaptured    = -1;
   mvCapturedId  = -1;
-  /*
-   * Given the move as something like Rdxc3 or exf8=Q+ extract the destination
-   * column and row and remember whatever is left of the string.
-   */
+
+  // Given the move as something like Rdxc3 or exf8=Q+ extract the destination
+  // column and row and remember whatever is left of the string.
   ii = 1;
-  while(ii < move.length){
-    if (!isNaN(move.charAt(ii))){
+  while(ii < move.length) {
+    if (!isNaN(move.charAt(ii))) {
       mvToCol     = move.charCodeAt(ii-1) - 97;
       mvToRow     = move.charAt(ii)       -  1;
       remainder   = move.substring(0, ii-1);
@@ -2965,15 +2808,12 @@ function ParseMove(move, plyCount){
     }
     ++ii;
   }
-  /*
-   * The final square did not make sense, maybe it is a castle.
-   */
-  if ((mvToCol < 0) || (mvToCol > 7) || (mvToRow < 0) || (mvToRow > 7)){
-    if ((move.indexOf('O') >= 0) || (move.indexOf('o') >= 0) || (move.indexOf('0') >= 0)){
-      /*
-       * Do long castling first since looking for o-o will get it too.
-       */
-      if (move.match('^[Oo0]-?[Oo0]-?[Oo0]$') !== null){
+
+  // The final square did not make sense, maybe it is a castle.
+  if ((mvToCol < 0) || (mvToCol > 7) || (mvToRow < 0) || (mvToRow > 7)) {
+    if ((move.indexOf('O') >= 0) || (move.indexOf('o') >= 0) || (move.indexOf('0') >= 0)) {
+      // Do long castling first since looking for o-o will get it too.
+      if (move.match('^[Oo0]-?[Oo0]-?[Oo0]$') !== null) {
 	mvIsCastling = 1;
         mvPiece      = 1;
         mvPieceId    = 0;
@@ -2984,7 +2824,7 @@ function ParseMove(move, plyCount){
         mvToRow      = 7*MoveColor;
         return CheckLegality('O-O-O', plyCount);
       }
-      if (move.match('^[Oo0]-?[Oo0]$') !== null){
+      if (move.match('^[Oo0]-?[Oo0]$') !== null) {
         mvIsCastling = 1;
         mvPiece      = 1;
         mvPieceId    = 0;
@@ -2996,39 +2836,24 @@ function ParseMove(move, plyCount){
 	return CheckLegality('O-O', plyCount);
       }
       return false;
-    } else{
-      return false;
-    }
+    } else { return false; }
   }
-  /*
-   * Now extract the piece and the origin square. If it is a capture (the 'x'
-   * is present) mark the as such.
-   */
-  
+
+  // Now extract the piece and the origin square. If it is a capture (the 'x'
+  // is present) mark the as such.
   ll = remainder.length;
-
   if (ll > 3) { return false; }
-
   mvPiece = -1; // make sure mvPiece is assigned to something sensible later
-
-  if (ll === 0){
-
-    mvPiece = 6;
-
-  } else {
-
+  if (ll === 0) { mvPiece = 6; }
+  else {
     for(ii = 1; ii < 6; ++ii) { if (remainder.charAt(0) == PieceCode[ii-1]) { mvPiece = ii; } }
-
     if (mvPiece == -1) { if ('abcdefgh'.indexOf(remainder.charAt(0)) >= 0) { mvPiece = 6; } }
-
     if (mvPiece == -1) { return false; }
-
     if (remainder.charAt(ll-1) == 'x') { mvCapture = 1; }
-
     if (isNaN(move.charAt(ll-1-mvCapture))){
       mvFromCol = move.charCodeAt(ll-1-mvCapture) - 97;
       if ((mvFromCol < 0) || (mvFromCol > 7)) { mvFromCol = -1; }
-    } else{
+    } else {
       mvFromRow = move.charAt(ll-1-mvCapture) - 1;
       if ((mvFromRow < 0) || (mvFromRow > 7)) { mvFromRow = -1; }
     }
@@ -3039,83 +2864,67 @@ function ParseMove(move, plyCount){
   }
 
   mvPieceOnTo = mvPiece;
-  /*
-   * If the to square is occupied mark the move as capture. Take care of
-   * the special en passant case.
-   */
-  if (Board[mvToCol][mvToRow] !== 0){
-    mvCapture = 1;
-  } else{
-    if ((mvPiece == 6) && (HistEnPassant[plyCount-1]) && (mvToCol == HistEnPassantCol[plyCount-1]) &&
-	(mvToRow == 5-3*MoveColor)){
+  // If the to square is occupied mark the move as capture. Take care of
+  // the special en passant case.
+  if (Board[mvToCol][mvToRow] !== 0) { mvCapture = 1; }
+  else {
+    if ((mvPiece == 6) && (HistEnPassant[plyCount-1]) && 
+        (mvToCol == HistEnPassantCol[plyCount-1]) &&
+	(mvToRow == 5-3*MoveColor)) {
       mvCapture = 1;
     }
   }
-  /*
-   * Take care of promotions. If there is a '=' in the move or if the
-   * destination row is not the last character in the move, then it may be a
-   * pawn promotion.
-   */
+
+  // Take care of promotions. If there is a '=' in the move or if the
+  // destination row is not the last character in the move, then it may be a
+  // pawn promotion.
   ii = move.indexOf('=');
   if (ii < 0) { ii = toRowMarker; }
-  if ((ii > 0) && (ii < move.length-1)){
-    if (mvPiece == 6){
+  if ((ii > 0) && (ii < move.length-1)) {
+    if (mvPiece == 6) {
       var newPiece = move.charAt(ii+1);
-      if (newPiece == PieceCode[1]){
-	  mvPieceOnTo = 2;
-      } else if (newPiece == PieceCode[2]){
-	  mvPieceOnTo = 3;
-      } else if (newPiece == PieceCode[3]){
-	  mvPieceOnTo = 4;
-      } else if (newPiece == PieceCode[4]){
-	  mvPieceOnTo = 5;
-      }
+      if (newPiece == PieceCode[1]) { mvPieceOnTo = 2; }
+      else if (newPiece == PieceCode[2]) { mvPieceOnTo = 3; }
+      else if (newPiece == PieceCode[3]) { mvPieceOnTo = 4; }
+      else if (newPiece == PieceCode[4]) { mvPieceOnTo = 5; }
       mvIsPromotion = 1;
     }
   }
-  /*
-   * Find which piece was captured. The first part checks normal captures.
-   * If nothing is found then it has to be a pawn making an en-passant
-   * capture.
-   */
-  if (mvCapture){
+
+  // Find which piece was captured. The first part checks normal captures.
+  // If nothing is found then it has to be a pawn making an en-passant
+  // capture.
+  if (mvCapture) {
     mvCapturedId = 15;
-    while((mvCapturedId >= 0) && (mvCaptured < 0)){
+    while((mvCapturedId >= 0) && (mvCaptured < 0)) {
       if ((PieceType[1-MoveColor][mvCapturedId] >  0)       &&
 	  (PieceCol[1-MoveColor][mvCapturedId]  == mvToCol) &&
 	  (PieceRow[1-MoveColor][mvCapturedId]  == mvToRow)){
 	mvCaptured = PieceType[1-MoveColor][mvCapturedId];
-      } else{
-	--mvCapturedId;
-      }
+      } else { --mvCapturedId; }
     }
-    if ((mvPiece == 6) && (mvCapturedId < 1) && (HistEnPassant[plyCount-1])){
+    if ((mvPiece == 6) && (mvCapturedId < 1) && (HistEnPassant[plyCount-1])) {
       mvCapturedId = 15;
       while((mvCapturedId >= 0) && (mvCaptured < 0)){
         if ((PieceType[1-MoveColor][mvCapturedId] == 6)       &&
 	    (PieceCol[1-MoveColor][mvCapturedId]  == mvToCol) &&
-	    (PieceRow[1-MoveColor][mvCapturedId]  == 4-MoveColor)){
+	    (PieceRow[1-MoveColor][mvCapturedId]  == 4-MoveColor)) {
 	  mvCaptured = PieceType[1-MoveColor][mvCapturedId];
-	} else{
-	  --mvCapturedId;
-	}
+	} else { --mvCapturedId; }
       }
     }
   }
-  /*
-   * Check the move legality.
-   */
+
+  // Check the move legality.
   var retVal;
   retVal = CheckLegality(PieceCode[mvPiece-1], plyCount);
   if (!retVal) { return false; }
-  /*
-   * If a pawn was moved check if it enables the en-passant capture on next
-   * move;
-   */
+
+  // If a pawn was moved check for en-passant capture on next move
   HistEnPassant[plyCount]    = false;
   HistEnPassantCol[plyCount] = -1;
-  if (mvPiece == 6){
-     if (Math.abs(HistRow[0][plyCount]-mvToRow) == 2){
+  if (mvPiece == 6) {
+     if (Math.abs(HistRow[0][plyCount]-mvToRow) == 2) {
        HistEnPassant[plyCount]    = true;
        HistEnPassantCol[plyCount] = mvToCol;
      }
@@ -3123,30 +2932,16 @@ function ParseMove(move, plyCount){
   return true;
 }
 
-function SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate){
+function SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate) {
   if (head !== null) { gameSelectorHead = head; }
   if (num !== null) { gameSelectorNum = num; }
-  if (chEvent !== null) { 
-    gameSelectorChEvent = chEvent; if (gameSelectorChEvent > 32) { gameSelectorChEvent = 32; } 
-  }
-  if (chSite !== null) { 
-    gameSelectorChSite = chSite; if (gameSelectorChSite > 32) { gameSelectorChSite = 32; } 
-  }
-  if (chRound !== null) { 
-    gameSelectorChRound = chRound; if (gameSelectorChRound > 32) { gameSelectorChRound = 32; } 
-  }
-  if (chWhite !== null) { 
-    gameSelectorChWhite = chWhite; if (gameSelectorChWhite > 32) { gameSelectorChWhite = 32; } 
-  }
-  if (chBlack !== null) { 
-    gameSelectorChBlack = chBlack; if (gameSelectorChBlack > 32) { gameSelectorChBlack = 32; } 
-  }
-  if (chResult !== null) { 
-    gameSelectorChResult = chResult; if (gameSelectorChResult > 32) { gameSelectorChResult = 32; } 
-  }
-  if (chDate !== null) { 
-    gameSelectorChDate = chDate; if (gameSelectorChDate > 32) { gameSelectorChDate = 32; } 
-  }
+  if (chEvent !== null)  { gameSelectorChEvent  = chEvent  > 32 ? 32 : chEvent;  }
+  if (chSite !== null)   { gameSelectorChSite   = chSite   > 32 ? 32 : chSite;   }
+  if (chRound !== null)  { gameSelectorChRound  = chRound  > 32 ? 32 : chRound;  }
+  if (chWhite !== null)  { gameSelectorChWhite  = chWhite  > 32 ? 32 : chWhite;  } 
+  if (chBlack !== null)  { gameSelectorChBlack  = chBlack  > 32 ? 32 : chBlack;  }
+  if (chResult !== null) { gameSelectorChResult = chResult > 32 ? 32 : chResult; }
+  if (chDate !== null)   { gameSelectorChDate   = chDate   > 32 ? 32 : chDate;   } 
 }
 
 var clickedSquareInterval = null;
@@ -3207,20 +3002,19 @@ function searchPgnGamePrompt() {
 
 
 var tableSize = null;
-function PrintHTML(){
+function PrintHTML() {
   var ii, jj;
   var text;
 
-  /*
-   * Show the board as a 8x8 table.
-   */
+  // Show the board as a 8x8 table.
+
   text = '<TABLE CLASS="boardTable" ID="boardTable" CELLSPACING=0 CELLPADDING=0';
   text += ((tableSize !== null) && (tableSize !== 0)) ?
           ' STYLE="width: ' + tableSize + 'px; height: ' + tableSize + 'px;">' :
           '>';
-  for (ii = 0; ii < 8; ++ii){
+  for (ii = 0; ii < 8; ++ii) {
     text += '<TR>';
-    for (jj = 0; jj < 8; ++jj){
+    for (jj = 0; jj < 8; ++jj) {
       squareId = 'tcol' + jj + 'trow' + ii;
       imageId = 'img_' + squareId;
       linkId = 'link_' + squareId;
@@ -3243,9 +3037,8 @@ function PrintHTML(){
   }
   text += '</TABLE>';
 
-  /*
-   * Show the HTML for the chessboard
-   */
+  // Show the HTML for the chessboard
+
   theObject = document.getElementById("GameBoard");
   if (theObject !== null) { theObject.innerHTML = text; }
 
@@ -3257,9 +3050,9 @@ function PrintHTML(){
     }
   }
 
-  numberOfButtons=5;
-  spaceSize=3;
-  buttonSize=(tableSize - spaceSize*(numberOfButtons - 1))/numberOfButtons;
+  numberOfButtons = 5;
+  spaceSize = 3;
+  buttonSize = (tableSize - spaceSize*(numberOfButtons - 1)) / numberOfButtons;
   text =  '<FORM NAME="GameButtonsForm" STYLE="display:inline;">' +
           '<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>' + 
           '<TR>' +
@@ -3308,15 +3101,13 @@ function PrintHTML(){
           '</TR>' + 
           '</TABLE>' +
           '</FORM>';
-  /*
-   * Show the HTML for the control buttons
-   */
+
+  // Show the HTML for the control buttons
+
   theObject = document.getElementById("GameButtons");
   if (theObject !== null) { theObject.innerHTML = text; }
   
-  /*
-   * Show the HTML for the Game Selector
-   */
+  // Show the HTML for the Game Selector
 
   if (firstStart) { textSelectOptions=''; }
   theObject = document.getElementById("GameSelector");
@@ -3408,63 +3199,56 @@ function PrintHTML(){
     }
   }
 
-  /*
-   * Show the HTML for the Game Event
-   */
+  // Show the HTML for the Game Event
+
   theObject = document.getElementById("GameEvent");
   if (theObject !== null) {
     theObject.innerHTML = gameEvent[currentGame];
     // theObject.style.whiteSpace = "nowrap";
   }
 
-  /*
-   * Show the HTML for the Game Round
-   */
+  // Show the HTML for the Game Round
+
   theObject = document.getElementById("GameRound");
   if (theObject !== null) {
     theObject.innerHTML = gameRound[currentGame]; 
     theObject.style.whiteSpace = "nowrap";
   } 
 
-  /*
-   * Show the HTML for the Game Site
-   */
+  // Show the HTML for the Game Site
+
   theObject = document.getElementById("GameSite");
   if (theObject !== null) {
     theObject.innerHTML = gameSite[currentGame]; 
     // theObject.style.whiteSpace = "nowrap";
   } 
 
-  /*
-   * Show the HTML for the Game Date
-   */
+  // Show the HTML for the Game Date
+
   theObject = document.getElementById("GameDate");
   if (theObject !== null) {
     theObject.innerHTML = gameDate[currentGame]; 
     theObject.style.whiteSpace = "nowrap";
   } 
 
-  /*
-   * Show the HTML for the Game White Player
-   */
+  // Show the HTML for the Game White Player
+
   theObject = document.getElementById("GameWhite");
   if (theObject !== null) {
     theObject.innerHTML = gameWhite[currentGame]; 
     // theObject.style.whiteSpace = "nowrap";
   } 
 
-  /*
-   * Show the HTML for the Game Black Player
-   */
+  // Show the HTML for the Game Black Player
+
   theObject = document.getElementById("GameBlack");
   if (theObject !== null) {
     theObject.innerHTML = gameBlack[currentGame]; 
     // theObject.style.whiteSpace = "nowrap";
   } 
 
-  /*
-   * Show the HTML for the Game Result
-   */
+  // Show the HTML for the Game Result
+
   theObject = document.getElementById("GameResult");
   if (theObject !== null) {
     theObject.innerHTML = gameResult[currentGame]; 
@@ -3510,15 +3294,13 @@ function PrintHTML(){
   }
   text += '</SPAN>';
 
-  /*
-   * Show the HTML for the Game Text
-   */
+  // Show the HTML for the Game Text
+
   theObject = document.getElementById("GameText");
   if (theObject !== null) { theObject.innerHTML = text; }
 
-  /*
-   * Show the HTML for the Game Search box
-   */
+  // Show the HTML for the Game Search box
+
   theObject = document.getElementById("GameSearch");
   if ((firstStart) && (theObject !== null)) {
     if (numberOfGames < 2) {
@@ -3543,7 +3325,7 @@ function PrintHTML(){
 }
 
 
-function FlipBoard(){
+function FlipBoard() {
   tmpHighlightOption = highlightOption;
   if (tmpHighlightOption) { SetHighlight(false); }
   IsRotated = !IsRotated;
@@ -3553,26 +3335,22 @@ function FlipBoard(){
 }
 
 
-function RefreshBoard(){
-  /*
-   * Check if we need a new set of pieces.
-   */
+function RefreshBoard() {
+  // Check if we need a new set of pieces.
   InitImages();
-  /*
-   * Display all empty squares.
-   */
+
+  // Display all empty squares.
   var col, row, square;
-  for (col = 0; col < 8;++col){
-    for (row = 0; row < 8; ++row){
-      if (Board[col][row] === 0){
+  for (col = 0; col < 8;++col) {
+    for (row = 0; row < 8; ++row) {
+      if (Board[col][row] === 0) {
         square = IsRotated ? 63-col-(7-row)*8 : col+(7-row)*8;
 	SetImage(square, ClearImg.src);
       }
     }
   }
-  /*
-   * Display all pieces.
-   */
+
+  // Display all pieces.
   var color, ii;
   for (color = 0; color < 2; ++color){
     for (ii = 0; ii < 16; ++ii){
@@ -3587,15 +3365,11 @@ function RefreshBoard(){
 }
 
 
-function SetAutoPlay(vv){
+function SetAutoPlay(vv) {
   isAutoPlayOn = vv;
-  /*
-   * No matter what clear the timeout.
-   */
+  // No matter what clear the timeout.
   if (AutoPlayInterval) { clearTimeout(AutoPlayInterval); AutoPlayInterval = null; }
-  /*
-   * If switched on start  moving forward. Also change the button value.
-   */
+  // If switched on start  moving forward. Also change the button value.
   if (isAutoPlayOn){
     if (document.GameButtonsForm) {
       if (document.GameButtonsForm.AutoPlay){
@@ -3620,7 +3394,7 @@ function SetAutoPlay(vv){
 }
 
 
-function SetAutoplayDelay(vv){
+function SetAutoplayDelay(vv) {
   Delay = vv;
 }
 
@@ -3632,88 +3406,77 @@ function SetLiveBroadcast(delay, alertFlag, demoFlag) {
 }
 
 
-function SetImage(square, image){
+function SetImage(square, image) {
   if (DocumentImages[square] == image) { return; }
   document.images[square+ImageOffset].src = image;
   DocumentImages[square]                  = image;   // Store the new image.
 }
 
 
-function SetImagePath(path){
+function SetImagePath(path) {
   ImagePath = path;
 }
 
 
-function SwitchAutoPlay(){
-  if (isAutoPlayOn){
-    SetAutoPlay(false);
-  } else{
+function SwitchAutoPlay() {
+  if (isAutoPlayOn) { SetAutoPlay(false); }
+  else {
     MoveForward(1);
     SetAutoPlay(true);
   }
 }
 
 
-function StoreMove(thisPly){
+function StoreMove(thisPly) {
 
-  /*
-   * Store the moved piece int he history arrays.
-   */
-
-// Stores "square from" history information
+  // Stores "square from" history information
   HistPieceId[0][thisPly] = mvPieceId;
   HistCol[0][thisPly]     = PieceCol[MoveColor][mvPieceId];
   HistRow[0][thisPly]     = PieceRow[MoveColor][mvPieceId];
   HistType[0][thisPly]    = PieceType[MoveColor][mvPieceId];
 
-// Stores "square to" history information
+  // Stores "square to" history information
   HistCol[2][thisPly] = mvToCol;
   HistRow[2][thisPly] = mvToRow;
 
-  if (mvIsCastling){
+  if (mvIsCastling) {
      HistPieceId[1][thisPly] = castleRook;
      HistCol[1][thisPly]     = PieceCol[MoveColor][castleRook];
      HistRow[1][thisPly]     = PieceRow[MoveColor][castleRook];
      HistType[1][thisPly]    = PieceType[MoveColor][castleRook];
-  } else if (mvCapturedId >= 0){
+  } else if (mvCapturedId >= 0) {
      HistPieceId[1][thisPly] = mvCapturedId+16;
      HistCol[1][thisPly]     = PieceCol[1-MoveColor][mvCapturedId];
      HistRow[1][thisPly]     = PieceRow[1-MoveColor][mvCapturedId];
      HistType[1][thisPly]    = PieceType[1-MoveColor][mvCapturedId];
-  } else{
+  } else {
     HistPieceId[1][thisPly] = -1;
   }
 
-  /*
-   * Update the from square and the captured square. Remember that the
-   * captured square is not necessarely the to square because of the en-passant.
-   */
+  // Update the from square and the captured square. Remember that the
+  // captured square is not necessarely the to square because of the en-passant.
   Board[PieceCol[MoveColor][mvPieceId]][PieceRow[MoveColor][mvPieceId]] = 0;
-  /*
-   * Mark the captured piece as such.
-   */  
-  if (mvCapturedId >=0){
+
+  // Mark the captured piece as such.
+  if (mvCapturedId >=0) {
      PieceType[1-MoveColor][mvCapturedId] = -1;
      PieceMoveCounter[1-MoveColor][mvCapturedId]++;
      Board[PieceCol[1-MoveColor][mvCapturedId]][PieceRow[1-MoveColor][mvCapturedId]] = 0;
   }
-  /*
-   * Update the piece arrays. Don't forget to update the type array, since a
-   * pawn might have been replaced by a piece in a promotion.
-   *
-   */
+
+  // Update the piece arrays. Don't forget to update the type array, since a
+  // pawn might have been replaced by a piece in a promotion.
   PieceType[MoveColor][mvPieceId] = mvPieceOnTo;
   PieceMoveCounter[MoveColor][mvPieceId]++;
   PieceCol[MoveColor][mvPieceId]  = mvToCol;
   PieceRow[MoveColor][mvPieceId]  = mvToRow;
-  if (mvIsCastling){
+  if (mvIsCastling) {
     PieceMoveCounter[MoveColor][castleRook]++;
     PieceCol[MoveColor][castleRook] = mvToCol == 2 ? 3 : 5;
     PieceRow[MoveColor][castleRook] = mvToRow;
   }
-  /*
-   * Update the board.
-   */
+
+  // Update the board.
   Board[mvToCol][mvToRow] = PieceType[MoveColor][mvPieceId]*(1-2*MoveColor);
   if (mvIsCastling){
     Board[PieceCol[MoveColor][castleRook]][PieceRow[MoveColor][castleRook]] =
@@ -3721,10 +3484,10 @@ function StoreMove(thisPly){
   }
   return;
 }
-function UndoMove(thisPly){
-  /*
-   * Bring the moved piece back.
-   */
+
+function UndoMove(thisPly) {
+
+  // Bring the moved piece back.
   Board[mvToCol][mvToRow] = 0;
   Board[HistCol[0][thisPly]][HistRow[0][thisPly]] =
     HistType[0][thisPly]*(1-2*MoveColor);
@@ -3733,33 +3496,33 @@ function UndoMove(thisPly){
   PieceRow[MoveColor][mvPieceId]  = HistRow[0][thisPly];
   PieceType[MoveColor][mvPieceId] = HistType[0][thisPly];
   PieceMoveCounter[MoveColor][mvPieceId]--;
-  /*
-   * If capture or castle bring the captured piece or the rook back.
-   */
-  if (mvCapturedId >=0){
+
+  // If capture or castle bring the captured piece or the rook back.
+  if (mvCapturedId >=0) {
      PieceType[1-MoveColor][mvCapturedId] = mvCapturedId;
      PieceCol[1-MoveColor][mvCapturedId]  = HistCol[1][thisPly];
      PieceRow[1-MoveColor][mvCapturedId]  = HistRow[1][thisPly];
      PieceCol[1-MoveColor][mvCapturedId]  = HistCol[1][thisPly];
-  } else if (mvIsCastling){
+  } else if (mvIsCastling) {
      PieceCol[MoveColor][castleRook] = HistCol[1][thisPly];
      PieceRow[MoveColor][castleRook] = HistRow[1][thisPly];
      PieceMoveCounter[MoveColor][castleRook]--;
   }
-
 }
-function Color(nn){
+
+function Color(nn) {
   if (nn < 0) { return 1; }
   if (nn > 0) { return 0; }
   return 2;
 }
-function sign(nn){
+
+function sign(nn) {
   if (nn > 0) { return  1; }
   if (nn < 0) { return -1; }
   return 0;
 }
 
-function SquareOnBoard(col, row){
+function SquareOnBoard(col, row) {
   if ((col < 0) || (col > 7)) { return false; }
   if ((row < 0) || (row > 7)) { return false; }
   return true;
