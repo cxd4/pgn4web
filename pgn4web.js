@@ -88,7 +88,6 @@ function myAlert(msg) {
   if ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) {
     startAlertPrompt();
   }
-  SetAutostartAutoplay(false); // need to avoid endless error alert repetition
   customFunctionOnAlert(msg);
 }
 
