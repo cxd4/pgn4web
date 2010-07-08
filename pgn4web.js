@@ -700,7 +700,7 @@ function displayDebugInfo() {
       else { debugInfo += "\n" + alertLog[(alertNum - 1 - ii) % alertLog.length] + "\n--"; }
     }
   }
-  if (confirm(debugInfo + '\n\nclick OK to view debug info in a browser window for cut & paste')) {
+  if (confirm(debugInfo + '\n\nclick OK to show this debug info in a browser window for cut and paste')) {
     if (debugWin && !debugWin.closed) { debugWin.close(); }
     debugWin = window.open("", "debug_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
     if (debugWin !== null) {
