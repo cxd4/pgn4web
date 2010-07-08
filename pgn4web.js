@@ -672,6 +672,7 @@ function detectBaseLocation() {
   return base;
 }
 
+debugWin = null;
 function displayDebugInfo() {
   stopAlertPrompt();
   debugInfo = 'pgn4web: version=' + pgn4web_version + ' homepage=' + pgn4web_project_url + '\n\n';
@@ -704,7 +705,20 @@ function displayDebugInfo() {
       else { debugInfo += "\n" + alertLog[(alertNum - 1 - ii) % alertLog.length] + "\n--"; }
     }
   }
-  alert(debugInfo);
+  if (confirm(debugInfo + '\n\nclick OK to view debug info in a browser window for cut & paste')) {
+    if (debugWin && !debugWin.closed) { debugWin.close(); }
+    debugWin = window.open("", "debug_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
+    if (debugWin !== null) {
+       debugWin.document.open("text/html", "replace");
+       debugWin.document.write("<html>");
+       debugWin.document.write("<head><title>pgn4web debug info</title><link rel='shortcut icon' href='pawn.ico' /></head>");
+       debugWin.document.write("<body>\n<pre>\n");
+       debugWin.document.write(debugInfo);
+       debugWin.document.write("\n</pre>\n</body></html>");
+       debugWin.document.close();
+       if (window.focus) { debugWin.window.focus(); }
+    }
+  }
   alertNumSinceReset = fatalErrorNumSinceReset = 0;
 }
 
