@@ -696,7 +696,7 @@ function displayDebugInfo() {
   debugInfo += '\n\n';
   debugInfo += 'LIVE BROADCAST: ' + (LiveBroadcastDelay > 0 ? 'delay=' + LiveBroadcastDelay + 'm' + ' started=' + LiveBroadcastStarted + ' ended=' + LiveBroadcastEnded + ' paused=' + LiveBroadcastPaused + ' demo=' + LiveBroadcastDemo + ' alert=' + LiveBroadcastAlert : 'off'); 
   debugInfo += '\n\n';
-  debugInfo += 'ALERT LOG: new=' + alertNumSinceReset + ' shown=' + 
+  debugInfo += 'ALERT LOG: fatalnew=' + fatalErrorNumSinceReset + ' new=' + alertNumSinceReset + ' shown=' + 
                Math.min(alertNum, alertLog.length) + ' total=' + alertNum + '\n--';
   if (alertNum > 0) {
     for (ii = 0; ii<alertLog.length; ii++) {
@@ -705,7 +705,7 @@ function displayDebugInfo() {
     }
   }
   alert(debugInfo);
-  alertNumSinceReset = 0;
+  alertNumSinceReset = fatalErrorNumSinceReset = 0;
 }
 
 pgnWin = null;
@@ -1658,7 +1658,7 @@ function loadPgnFromPgnUrl(pgnUrl){
       return false;
     }
   }else{ 
-    myAlert('error: failed reading PGN from URL\n' + pgnUrl);
+    myAlert('error: failed reading PGN from URL\n' + pgnUrl, true);
     return false;
   }
 
