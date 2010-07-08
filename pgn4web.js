@@ -88,6 +88,7 @@ function myAlert(msg) {
   if ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) {
     startAlertPrompt();
   }
+  SetAutoPlay(false);
   customFunctionOnAlert(msg);
 }
 
@@ -2528,9 +2529,15 @@ function MoveForward(diff){
 }
 
 function AutoplayNextGame(){
-  if (++currentGame >= numberOfGames) { currentGame = 0; }
-  Init();
-  SetAutoPlay(true);
+  if (alertNumSinceReset === 0) {
+    if (++currentGame >= numberOfGames) { currentGame = 0; }
+    Init();
+    if ((numberOfGames > 0) && (PlyNumber > 0)) {
+      SetAutoPlay(true);
+      return;
+    }
+  }
+  SetAutoPlay(false);
 }
 
 
