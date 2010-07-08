@@ -61,6 +61,7 @@ var alertLog;
 var alertLast;
 var alertNum;
 var alertNumSinceReset;
+var fatalErrorNumSinceReset;
 var alertPromptInterval = null;
 var alertPromptOn = false;
 var alertFirstResetLoadingPgn = true;
@@ -70,16 +71,17 @@ resetAlert();
 function resetAlert() {
   alertLog = new Array(5);
   alertLast = alertLog.length - 1;
-  alertNum = alertNumSinceReset = 0;
+  alertNum = alertNumSinceReset = fatalErrorNumSinceReset = 0;
   stopAlertPrompt();
   if (!alertFirstResetLoadingPgn) {
     configBoardShrortcut(debugShortcutSquare, "pgn4web v" + pgn4web_version + " debug info", "keep");
   }
 }
 
-function myAlert(msg) {
+function myAlert(msg, fatalError) {
   alertNum++;
   alertNumSinceReset++;
+  if (fatalError) { fatalErrorNumSinceReset++; }
   alertLast = (alertLast + 1) % alertLog.length;
   alertLog[alertLast] = msg;
   alertPlural = alertNum > 1 ? "s" : "";
@@ -88,7 +90,6 @@ function myAlert(msg) {
   if ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) {
     startAlertPrompt();
   }
-  SetAutoPlay(false);
   customFunctionOnAlert(msg);
 }
 
@@ -2529,7 +2530,7 @@ function MoveForward(diff){
 }
 
 function AutoplayNextGame(){
-  if (alertNumSinceReset === 0) {
+  if (fatalErrorNumSinceReset === 0) {
     if (++currentGame >= numberOfGames) { currentGame = 0; }
     Init();
     if ((numberOfGames > 0) && (PlyNumber > 0)) {
