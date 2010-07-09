@@ -6,8 +6,8 @@
  */
 
 /*
- *   See README.txt file for instructions HOW TO USE pgn4web.js
- *   Alternatively, check the project wiki at http://pgn4web.casaschi.net
+ *  See README.txt file for instructions HOW TO USE pgn4web.js
+ *  Alternatively, check the project wiki at http://pgn4web.casaschi.net
  */
 
 var pgn4web_version = '2.03+';
