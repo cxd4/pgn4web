@@ -690,7 +690,7 @@ function displayDebugInfo() {
                'PLY: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber + '\n';
   debugInfo += 'AUTOPLAY: ' + (isAutoPlayOn ? 'delay=' + Delay + 'ms' + ' autoplaynext=' + autoplayNextGame : 'off');
   debugInfo += '\n\n';
-  debugInfo += 'LIVE BROADCAST: ' + (LiveBroadcastDelay > 0 ? 'delay=' + LiveBroadcastDelay + 'm' + ' started=' + LiveBroadcastStarted + ' ended=' + LiveBroadcastEnded + ' paused=' + LiveBroadcastPaused + ' demo=' + LiveBroadcastDemo + ' alert=' + LiveBroadcastAlert : 'off'); 
+  debugInfo += 'LIVE BROADCAST: ' + (LiveBroadcastDelay > 0 ? 'ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + ' started=' + LiveBroadcastStarted + ' ended=' + LiveBroadcastEnded + ' paused=' + LiveBroadcastPaused + ' demo=' + LiveBroadcastDemo + ' alert=' + LiveBroadcastAlert : 'off'); 
   debugInfo += '\n\n';
   debugInfo += 'ALERT LOG: fatalnew=' + fatalErrorNumSinceReset + ' new=' + alertNumSinceReset + ' shown=' + 
                Math.min(alertNum, alertLog.length) + ' total=' + alertNum + '\n--';
@@ -906,6 +906,7 @@ var LiveBroadcastDemo = false;
 var LiveBroadcastStarted = false;
 var LiveBroadcastEnded = false;
 var LiveBroadcastPaused = false;
+var LiveBroadcastTicker = 0;
 var LiveBroadcastStatusString = "";
 var LiveBroadcastPlaceholderEvent = 'pgn4web live broadcast';
 var LiveBroadcastPlaceholderPgn = '[Event "' + LiveBroadcastPlaceholderEvent + '"]';
@@ -1682,6 +1683,7 @@ function restartLiveBroadcastTimeout() {
   if ((needRestart === true) && (!LiveBroadcastPaused)){
     LiveBroadcastInterval = setTimeout("refreshPgnSource()", LiveBroadcastDelay * 60000);
   }
+  LiveBroadcastTicker++;
 }
 
 
@@ -2281,10 +2283,9 @@ function LoadGameHeaders(){
   if ((LiveBroadcastDemo) && (numberOfGames > 0)) {
     for (ii = 0; ii < numberOfGames; ++ii) {
        if (gameDemoLength[ii] == undefined) {
-         if (gameFEN[ii]) { InitFEN(gameFEN[ii]); }
-         else { InitFEN(); }
+         InitFEN(gameFEN[ii]);
          ParsePGNGameString(pgnGame[ii]);
-         gameDemoLength[ii] = StartPly + PlyNumber; 
+         gameDemoLength[ii] = PlyNumber; 
        }
        if (gameDemoMaxPly[ii] == undefined) { gameDemoMaxPly[ii] = 0; }
        if (gameDemoMaxPly[ii] <= gameDemoLength[ii]) { gameResult[ii] = '*'; }
