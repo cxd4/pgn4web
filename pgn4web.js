@@ -2280,9 +2280,11 @@ function LoadGameHeaders(){
   }
   if ((LiveBroadcastDemo) && (numberOfGames > 0)) {
     for (ii = 0; ii < numberOfGames; ++ii) {
-       if (gameDemoLength[ii] == undefined) { 
-         ParsePGNGameString(pgnGame[ii]); 
-         gameDemoLength[ii] = PlyNumber; 
+       if (gameDemoLength[ii] == undefined) {
+         if (gameFEN[ii]) { InitFEN(gameFEN[ii]); }
+         else { InitFEN(); }
+         ParsePGNGameString(pgnGame[ii]);
+         gameDemoLength[ii] = StartPly + PlyNumber; 
        }
        if (gameDemoMaxPly[ii] == undefined) { gameDemoMaxPly[ii] = 0; }
        if (gameDemoMaxPly[ii] <= gameDemoLength[ii]) { gameResult[ii] = '*'; }
