@@ -9,15 +9,15 @@
 
 <Module>
 <ModulePrefs
-   title="Paolo's chess games"
-   description="Paolo's chess games"
+   title="pgn4web example"
+   description="pgn4web example"
    thumbnail="pawns.png"
    author="pgn4web"
    author_email="pgn4web@casaschi.net"
    author_link="http://pgn4web.casaschi.net"
-   width="800"
-   height="575"
+   width="100%"
+   height="600"
    scrolling="auto"
    category="funandgames"/>
-<Content type="url" href="paolo-chess-games.html"/>
+<Content type="url" href="inputform.html"/>
 </Module>

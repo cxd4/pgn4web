@@ -2,14 +2,14 @@
 
 <!--
   pgn4web javascript chessboard
-  copyright (C) 2009, 2010 Paolo Casaschi
+  copyright (C) 2009 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 -->
 
 <head>
 
-<title>pgn4web chessboard</title>
+<title>chess</title>
 
 <style type="text/css"> 
 
@@ -85,11 +85,9 @@ font-weight: bold;
 
 </style>
 
-<link rel="shortcut icon" href="pawn.ico" />
+<link rel="shortcut icon" href="pawn.ico"></link>
 
 <script src="pgn4web.js" type="text/javascript"></script>
-
-<script src="pgn-decoder.js" type="text/javascript"></script>
 
 </head>
 
@@ -169,7 +167,8 @@ function new_start_pgn4web() {
   rule.style.fontSize = fontMovesSize;
 
   rule = getCSSRule('.moveOn');
-  rule.style.background = highlightMoveColor == 'none' ? backgroundColor : highlightMoveColor;
+  if (highlightMoveColor == 'none') { rule.style.background = backgroundColor; }
+  else { rule.style.background = highlightMoveColor; }
   rule.style.color = fontMovesColor;
   if (!fontMovesSize.match(/[^0-9]/)) { fontMovesSize += 'px'; }
   rule.style.fontSize = fontMovesSize;
@@ -181,8 +180,12 @@ function new_start_pgn4web() {
 
   rule = getCSSRule('.comment');
   rule.style.color = fontCommentsColor;
-  if (!fontCommentsSize.match(/[^0-9]/)) { fontCommentsSize += 'px'; }
-  rule.style.fontSize = fontCommentsSize == 'moves' ? fontMovesSize : fontCommentsSize;
+  if (fontCommentsSize == 'moves') {
+    rule.style.fontSize = fontMovesSize;
+  } else {
+    if (!fontCommentsSize.match(/[^0-9]/)) { fontCommentsSize += 'px'; }
+    rule.style.fontSize = fontCommentsSize;
+  }
 
   rule = getCSSRule('.nag');
   rule.style.color = fontCommentsColor;
@@ -245,20 +248,23 @@ function new_start_pgn4web() {
     if (horizontalLayout === true) {
       if (frameWidth === "") { document.getElementById("headerMoves").style.width = textWidth; }
       else { document.getElementById("outerFrame").style.width = frameWidth - 2 * framePadding; }
-      document.getElementById("headerMoves").style.height = frameHeight === "" ? textHeight : frameHeight - 2 * framePadding;
+      if (frameHeight === "") { document.getElementById("headerMoves").style.height = textHeight; }
+      else { document.getElementById("headerMoves").style.height = frameHeight - 2 * framePadding; }
     } else {
-      document.getElementById("headerMoves").style.width = frameWidth === "" ? textWidth : frameWidth - 2 * framePadding;
+      if (frameWidth === "") { document.getElementById("headerMoves").style.width = textWidth; }
+      else { document.getElementById("headerMoves").style.width = frameWidth - 2 * framePadding; }
       if (frameHeight === "") { document.getElementById("headerMoves").style.height = textHeight; }
       else { 
-	theObject = document.getElementById("boardHeadermovesPadding");
-        boardHeadermovesPaddingHeight = theObject ? theObject.offsetHeight : 0;
-	document.getElementById("headerMoves").style.height = frameHeight - boardHeight - 2 * framePadding - boardHeadermovesPaddingHeight; 
+	theObject = document.getElementById("headerMovesPadding");
+	if (theObject) { headerMovesPaddingHeight = theObject.offsetHeight; }
+	else { headerMovesPaddingHeight = 0; }
+	document.getElementById("headerMoves").style.height = frameHeight - boardHeight - 2 * framePadding - headerMovesPaddingHeight; 
       }
     }
   }
 
   if (gup("showHeightWidth") !== "") { 
-    myAlert("info: board width=" + boardWidth + " height=" + boardHeight, false);
+    alert("board dimensions\n\nwidth: " + boardWidth + "\nheight: " + boardHeight);
   }
 }
 
@@ -322,7 +328,557 @@ function percentFixFromUrl( text ) {
 }
 
 
-var  sexEncodingCharSet = "$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
+var encodingCharSet = "$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
+var encodingVersion = 1;
+// version 1 of PGN encoding:
+//   encodedPGN = nnn$xxx0
+//   nnn = number representing bytes length of the decoded message
+//   $ = dollar char (delimiter for length info)
+//   xxx = encoded text (using LetterCodes below)
+//   0 = zero char (version marker)
+
+function DecodePGN(bytes) {
+
+  if (bytes.charAt(bytes.length - 1) != encodingCharSet.charAt(encodingVersion)) {
+    alert("ERROR: PGN encoding version mismatch (e:" + 
+           bytes.charAt(bytes.length - 1) + " d:" + encodingCharSet.charAt(encodingVersion) + ")");
+  } else {
+    bytes.length--;
+  }
+
+  originalLength = parseInt(bytes.match(/^[0-9]*/), 10);
+  bytes = bytes.replace(/^[0-9]*\$/,"");
+
+  l = new Array();
+  l[0] = -146;
+  l[1] = -111;
+  l[2] = -66;
+  l[3] = -55;
+  l[4] = -6;
+  l[5] = 46;
+  l[6] = -8;
+  l[7] = 66;
+  l[8] = -10;
+  l[9] = 105;
+  l[10] = -12;
+  l[11] = 107;
+  l[12] = -14;
+  l[13] = 44;
+  l[14] = -16;
+  l[15] = 85;
+  l[16] = -18;
+  l[17] = 106;
+  l[18] = -20;
+  l[19] = 62;
+  l[20] = -22;
+  l[21] = 89;
+  l[22] = -24;
+  l[23] = 38;
+  l[24] = -40;
+  l[25] = -33;
+  l[26] = -30;
+  l[27] = -29;
+  l[28] = 17;
+  l[29] = 18;
+  l[30] = -32;
+  l[31] = 15;
+  l[32] = 16;
+  l[33] = -37;
+  l[34] = -36;
+  l[35] = 21;
+  l[36] = 22;
+  l[37] = -39;
+  l[38] = 19;
+  l[39] = 20;
+  l[40] = -48;
+  l[41] = -45;
+  l[42] = -44;
+  l[43] = 7;
+  l[44] = 8;
+  l[45] = -47;
+  l[46] = 5;
+  l[47] = 6;
+  l[48] = -52;
+  l[49] = -51;
+  l[50] = 12;
+  l[51] = 14;
+  l[52] = -54;
+  l[53] = 9;
+  l[54] = 11;
+  l[55] = -57;
+  l[56] = 34;
+  l[57] = -59;
+  l[58] = 78;
+  l[59] = -61;
+  l[60] = 57;
+  l[61] = -63;
+  l[62] = 63;
+  l[63] = -65;
+  l[64] = 109;
+  l[65] = 119;
+  l[66] = -80;
+  l[67] = -69;
+  l[68] = 101;
+  l[69] = -71;
+  l[70] = 55;
+  l[71] = -73;
+  l[72] = 69;
+  l[73] = -75;
+  l[74] = 118;
+  l[75] = -77;
+  l[76] = 121;
+  l[77] = -79;
+  l[78] = 73;
+  l[79] = 123;
+  l[80] = -82;
+  l[81] = 49;
+  l[82] = -86;
+  l[83] = -85;
+  l[84] = 13;
+  l[85] = 40;
+  l[86] = -88;
+  l[87] = 45;
+  l[88] = -90;
+  l[89] = 68;
+  l[90] = -92;
+  l[91] = 84;
+  l[92] = -94;
+  l[93] = 125;
+  l[94] = -96;
+  l[95] = 39;
+  l[96] = -98;
+  l[97] = 58;
+  l[98] = -100;
+  l[99] = 36;
+  l[100] = -102;
+  l[101] = 92;
+  l[102] = -104;
+  l[103] = 124;
+  l[104] = -108;
+  l[105] = -107;
+  l[106] = 3;
+  l[107] = 4;
+  l[108] = -110;
+  l[109] = 0;
+  l[110] = 2;
+  l[111] = -129;
+  l[112] = -118;
+  l[113] = -115;
+  l[114] = 50;
+  l[115] = -117;
+  l[116] = 102;
+  l[117] = 103;
+  l[118] = -122;
+  l[119] = -121;
+  l[120] = 48;
+  l[121] = 110;
+  l[122] = -126;
+  l[123] = -125;
+  l[124] = 10;
+  l[125] = 1;
+  l[126] = -128;
+  l[127] = 79;
+  l[128] = 117;
+  l[129] = -137;
+  l[130] = -132;
+  l[131] = 51;
+  l[132] = -134;
+  l[133] = 98;
+  l[134] = -136;
+  l[135] = 47;
+  l[136] = 112;
+  l[137] = -141;
+  l[138] = -140;
+  l[139] = 56;
+  l[140] = 81;
+  l[141] = -143;
+  l[142] = 104;
+  l[143] = -145;
+  l[144] = 114;
+  l[145] = 115;
+  l[146] = -192;
+  l[147] = -153;
+  l[148] = -150;
+  l[149] = 32;
+  l[150] = -152;
+  l[151] = 91;
+  l[152] = 93;
+  l[153] = -157;
+  l[154] = -156;
+  l[155] = 99;
+  l[156] = 120;
+  l[157] = -159;
+  l[158] = 116;
+  l[159] = -161;
+  l[160] = 75;
+  l[161] = -163;
+  l[162] = 80;
+  l[163] = -165;
+  l[164] = 67;
+  l[165] = -167;
+  l[166] = 77;
+  l[167] = -169;
+  l[168] = 90;
+  l[169] = -171;
+  l[170] = 60;
+  l[171] = -173;
+  l[172] = 33;
+  l[173] = -175;
+  l[174] = 37;
+  l[175] = -177;
+  l[176] = 96;
+  l[177] = -185;
+  l[178] = -182;
+  l[179] = -181;
+  l[180] = 248;
+  l[181] = 249;
+  l[182] = -184;
+  l[183] = 246;
+  l[184] = 247;
+  l[185] = -189;
+  l[186] = -188;
+  l[187] = 252;
+  l[188] = 253;
+  l[189] = -191;
+  l[190] = 250;
+  l[191] = 251;
+  l[192] = -228;
+  l[193] = -225;
+  l[194] = -196;
+  l[195] = 52;
+  l[196] = -198;
+  l[197] = 108;
+  l[198] = -208;
+  l[199] = -201;
+  l[200] = 83;
+  l[201] = -205;
+  l[202] = -204;
+  l[203] = 61;
+  l[204] = 72;
+  l[205] = -207;
+  l[206] = 113;
+  l[207] = 122;
+  l[208] = -212;
+  l[209] = -211;
+  l[210] = 65;
+  l[211] = 70;
+  l[212] = -214;
+  l[213] = 71;
+  l[214] = -216;
+  l[215] = 76;
+  l[216] = -218;
+  l[217] = 74;
+  l[218] = -220;
+  l[219] = 88;
+  l[220] = -222;
+  l[221] = 64;
+  l[222] = -224;
+  l[223] = 42;
+  l[224] = 94;
+  l[225] = -227;
+  l[226] = 53;
+  l[227] = 100;
+  l[228] = -232;
+  l[229] = -231;
+  l[230] = 54;
+  l[231] = 82;
+  l[232] = -234;
+  l[233] = 97;
+  l[234] = -236;
+  l[235] = 111;
+  l[236] = -238;
+  l[237] = 43;
+  l[238] = -240;
+  l[239] = 87;
+  l[240] = -242;
+  l[241] = 41;
+  l[242] = -244;
+  l[243] = 86;
+  l[244] = -246;
+  l[245] = 35;
+  l[246] = -256;
+  l[247] = -249;
+  l[248] = 59;
+  l[249] = -251;
+  l[250] = 95;
+  l[251] = -253;
+  l[252] = 126;
+  l[253] = -255;
+  l[254] = 254;
+  l[255] = 255;
+  l[256] = -384;
+  l[257] = -321;
+  l[258] = -290;
+  l[259] = -275;
+  l[260] = -268;
+  l[261] = -265;
+  l[262] = -264;
+  l[263] = 160;
+  l[264] = 161;
+  l[265] = -267;
+  l[266] = 158;
+  l[267] = 159;
+  l[268] = -272;
+  l[269] = -271;
+  l[270] = 164;
+  l[271] = 165;
+  l[272] = -274;
+  l[273] = 162;
+  l[274] = 163;
+  l[275] = -283;
+  l[276] = -280;
+  l[277] = -279;
+  l[278] = 152;
+  l[279] = 153;
+  l[280] = -282;
+  l[281] = 150;
+  l[282] = 151;
+  l[283] = -287;
+  l[284] = -286;
+  l[285] = 156;
+  l[286] = 157;
+  l[287] = -289;
+  l[288] = 154;
+  l[289] = 155;
+  l[290] = -306;
+  l[291] = -299;
+  l[292] = -296;
+  l[293] = -295;
+  l[294] = 176;
+  l[295] = 177;
+  l[296] = -298;
+  l[297] = 174;
+  l[298] = 175;
+  l[299] = -303;
+  l[300] = -302;
+  l[301] = 180;
+  l[302] = 181;
+  l[303] = -305;
+  l[304] = 178;
+  l[305] = 179;
+  l[306] = -314;
+  l[307] = -311;
+  l[308] = -310;
+  l[309] = 168;
+  l[310] = 169;
+  l[311] = -313;
+  l[312] = 166;
+  l[313] = 167;
+  l[314] = -318;
+  l[315] = -317;
+  l[316] = 172;
+  l[317] = 173;
+  l[318] = -320;
+  l[319] = 170;
+  l[320] = 171;
+  l[321] = -353;
+  l[322] = -338;
+  l[323] = -331;
+  l[324] = -328;
+  l[325] = -327;
+  l[326] = 128;
+  l[327] = 129;
+  l[328] = -330;
+  l[329] = 31;
+  l[330] = 127;
+  l[331] = -335;
+  l[332] = -334;
+  l[333] = 132;
+  l[334] = 133;
+  l[335] = -337;
+  l[336] = 130;
+  l[337] = 131;
+  l[338] = -346;
+  l[339] = -343;
+  l[340] = -342;
+  l[341] = 25;
+  l[342] = 26;
+  l[343] = -345;
+  l[344] = 23;
+  l[345] = 24;
+  l[346] = -350;
+  l[347] = -349;
+  l[348] = 29;
+  l[349] = 30;
+  l[350] = -352;
+  l[351] = 27;
+  l[352] = 28;
+  l[353] = -369;
+  l[354] = -362;
+  l[355] = -359;
+  l[356] = -358;
+  l[357] = 144;
+  l[358] = 145;
+  l[359] = -361;
+  l[360] = 142;
+  l[361] = 143;
+  l[362] = -366;
+  l[363] = -365;
+  l[364] = 148;
+  l[365] = 149;
+  l[366] = -368;
+  l[367] = 146;
+  l[368] = 147;
+  l[369] = -377;
+  l[370] = -374;
+  l[371] = -373;
+  l[372] = 136;
+  l[373] = 137;
+  l[374] = -376;
+  l[375] = 134;
+  l[376] = 135;
+  l[377] = -381;
+  l[378] = -380;
+  l[379] = 140;
+  l[380] = 141;
+  l[381] = -383;
+  l[382] = 138;
+  l[383] = 139;
+  l[384] = -448;
+  l[385] = -417;
+  l[386] = -402;
+  l[387] = -395;
+  l[388] = -392;
+  l[389] = -391;
+  l[390] = 224;
+  l[391] = 225;
+  l[392] = -394;
+  l[393] = 222;
+  l[394] = 223;
+  l[395] = -399;
+  l[396] = -398;
+  l[397] = 228;
+  l[398] = 229;
+  l[399] = -401;
+  l[400] = 226;
+  l[401] = 227;
+  l[402] = -410;
+  l[403] = -407;
+  l[404] = -406;
+  l[405] = 216;
+  l[406] = 217;
+  l[407] = -409;
+  l[408] = 214;
+  l[409] = 215;
+  l[410] = -414;
+  l[411] = -413;
+  l[412] = 220;
+  l[413] = 221;
+  l[414] = -416;
+  l[415] = 218;
+  l[416] = 219;
+  l[417] = -433;
+  l[418] = -426;
+  l[419] = -423;
+  l[420] = -422;
+  l[421] = 240;
+  l[422] = 241;
+  l[423] = -425;
+  l[424] = 238;
+  l[425] = 239;
+  l[426] = -430;
+  l[427] = -429;
+  l[428] = 244;
+  l[429] = 245;
+  l[430] = -432;
+  l[431] = 242;
+  l[432] = 243;
+  l[433] = -441;
+  l[434] = -438;
+  l[435] = -437;
+  l[436] = 232;
+  l[437] = 233;
+  l[438] = -440;
+  l[439] = 230;
+  l[440] = 231;
+  l[441] = -445;
+  l[442] = -444;
+  l[443] = 236;
+  l[444] = 237;
+  l[445] = -447;
+  l[446] = 234;
+  l[447] = 235;
+  l[448] = -480;
+  l[449] = -465;
+  l[450] = -458;
+  l[451] = -455;
+  l[452] = -454;
+  l[453] = 192;
+  l[454] = 193;
+  l[455] = -457;
+  l[456] = 190;
+  l[457] = 191;
+  l[458] = -462;
+  l[459] = -461;
+  l[460] = 196;
+  l[461] = 197;
+  l[462] = -464;
+  l[463] = 194;
+  l[464] = 195;
+  l[465] = -473;
+  l[466] = -470;
+  l[467] = -469;
+  l[468] = 184;
+  l[469] = 185;
+  l[470] = -472;
+  l[471] = 182;
+  l[472] = 183;
+  l[473] = -477;
+  l[474] = -476;
+  l[475] = 188;
+  l[476] = 189;
+  l[477] = -479;
+  l[478] = 186;
+  l[479] = 187;
+  l[480] = -496;
+  l[481] = -489;
+  l[482] = -486;
+  l[483] = -485;
+  l[484] = 208;
+  l[485] = 209;
+  l[486] = -488;
+  l[487] = 206;
+  l[488] = 207;
+  l[489] = -493;
+  l[490] = -492;
+  l[491] = 212;
+  l[492] = 213;
+  l[493] = -495;
+  l[494] = 210;
+  l[495] = 211;
+  l[496] = -504;
+  l[497] = -501;
+  l[498] = -500;
+  l[499] = 200;
+  l[500] = 201;
+  l[501] = -503;
+  l[502] = 198;
+  l[503] = 199;
+  l[504] = -508;
+  l[505] = -507;
+  l[506] = 204;
+  l[507] = 205;
+  l[508] = -510;
+  l[509] = 202;
+  l[510] = 203;
+
+  e=b=a=0;
+  o="";
+
+  function B() { if(a===0) { b=encodingCharSet.indexOf(bytes.charAt(e++)); a=6; } return ((b>>--a)&0x01); }
+  
+  while(originalLength>0) { i=0; 
+    while(l[i]<0) { 
+      if(B()) { i=-l[i]; }
+      else { i++; }
+    }
+    o+=String.fromCharCode(l[i]);
+    originalLength--;
+  }
+
+  return o;
+}
+
 
 function sex2hex(sex) {
   if (sex === "") { return ""; }
@@ -331,7 +887,7 @@ function sex2hex(sex) {
   var cnt;
   for (cnt=0; cnt<sex.length; cnt++) {
     dec <<= 6;
-    dec += sexEncodingCharSet.indexOf(sex.charAt(cnt));
+    dec += encodingCharSet.indexOf(sex.charAt(cnt));
   }
   var hex = dec.toString(16).toUpperCase() + "";
   while (hex.length < 6) { hex = "0" + hex; }
@@ -346,7 +902,11 @@ function gup( name ){
   regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   var regex = new RegExp( regexS );
   var results = regex.exec( window.location.href );
-  if( results !== null ) { return results[1]; } 
+  if( results !== null ) { switch (results[1]) {
+    case "t": case "T": return "true";  break;
+    case "f": case "F": return "false"; break;
+    default: return results[1]; 
+  } }
 
   // allows for short version of the URL parameters, for instance sC matches squareColor
   compact_name = name.charAt(0);
@@ -361,7 +921,11 @@ function gup( name ){
   regex = new RegExp( regexS );
 
   results = regex.exec( window.location.href );
-  if( results !== null ) { return results[1]; }
+  if( results !== null ) { switch (results[1]) {
+    case "t": case "T": return "true";  break;
+    case "f": case "F": return "false"; break;
+    default: return results[1]; 
+  } }
   
   return "";
 }
@@ -386,7 +950,9 @@ if ((highlightMode = gup("highlightMode")) === "") { highlightMode = "square"; }
 if (highlightMode == "b") { highlightMode = "border"; }
 if (highlightMode == "n") { highlightMode = "none"; }
 if (highlightMode == "s") { highlightMode = "square"; }
-borderSize = highlightMode == "border" ? Math.floor(0.05 * squareSize) : 0;
+if (highlightMode == "border") {
+  borderSize = Math.floor(0.05 * squareSize);
+} else { borderSize = 0; }
 
 if ((lightColor = gup("lightColorName")) === "") { 
   if ((lightColor = "#" + gup("lightColorHex")) == "#") {
@@ -450,18 +1016,9 @@ if ((boardBorderColor = gup("boardBorderColorName")) === "") {
 }
 
 if ((backgroundColor = gup("backgroundColorName")) === "") {
-  if ((backgroundColor = "#" + gup("backgroundColorHex")) == "#") {
-    backgroundColorSex = gup("backgroundColorSex");
-    if ((backgroundColorSex == "transparent") || (backgroundColorSex == "t")) {
-      backgroundColor = "transparent";
-    } else {
-      if ((backgroundColor = "#" + sex2hex(gup("backgroundColorSex"))) == "#") { backgroundColor = "#FFFFFF"; }
-    }
-  }
-}
-if ((backgroundColor ==  "transparent") || (backgroundColor ==  "t") ||
-    (backgroundColor == "#transparent") || (backgroundColor == "#t")) {
-  backgroundColor = "transparent";
+ if ((backgroundColor = "#" + gup("backgroundColorHex")) == "#") {
+   if ((backgroundColor = "#" + sex2hex(gup("backgroundColorSex"))) == "#") { backgroundColor = "#FFFFFF"; }
+ }
 }
 
 if ((highlightMoveColor  = gup("highlightMoveColorName")) === "") {
@@ -474,8 +1031,7 @@ if ((highlightMoveColor  = gup("highlightMoveColorName")) === "") {
     }
   }
 }
-if ((highlightMoveColor ==  "background") || (highlightMoveColor ==  "b") ||
-    (highlightMoveColor == "#background") || (highlightMoveColor == "#b")) {
+if ((highlightMoveColor == "background") || (highlightMoveColor == "b")) {
   highlightMoveColor = backgroundColor;
 }
 
@@ -505,12 +1061,11 @@ if ((fontCommentsColor = gup("fontCommentsColorName")) === "") {
 }
 
 oldAutoplayMode = "";
-auto = gup("auto");
-if ((auto == "false") || (auto == "f")) { oldAutoplayMode = "none"; }
-loop = gup("loop");
-if ((loop == "true") || (loop == "t")) { oldAutoplayMode = "loop"; }
+if (gup("auto") == "false") { oldAutoplayMode = "game"; }
+if (gup("loop") == "true") { oldAutoplayMode = "loop"; }
 if ((autoplayMode = gup("autoplayMode")) === "") {
-  autoplayMode = oldAutoplayMode === "" ? "game" : oldAutoplayMode;
+  if (oldAutoplayMode === "") { autoplayMode = "game"; }
+  else { autoplayMode = oldAutoplayMode; }
 }
 if (autoplayMode == "g") { autoplayMode = "game"; }
 if (autoplayMode == "l") { autoplayMode = "loop"; }
@@ -539,7 +1094,7 @@ else { SetAutoplayDelay(gup("delay")); }
 if ((init_Game = gup("initialGame")) === "") { 
   init_Game = "first"; 
 } else {
-  if (init_Game == "f") { init_Game = "first"; } 
+  if ((init_Game == "f") || (init_Game == "false")) { init_Game = "first"; } // "f" might have been translated to "false"
   if (init_Game == "l") { init_Game = "last"; }
   if (init_Game == "r") { init_Game = "random"; }
 }
@@ -550,32 +1105,24 @@ always_Halfmove = false;
 if ((init_Halfmove = gup("initialHalfmove")) === "") { 
   init_Halfmove = "start";
 } else {
-  if (init_Halfmove == "s") { init_Halfmove = "start"; }
-  if (init_Halfmove == "e") { init_Halfmove = "end"; }
-  if (init_Halfmove == "r") { init_Halfmove = "random"; }
-  if (init_Halfmove == "c") { init_Halfmove = "comment"; }
-  if ((init_Halfmove == "start")  || (init_Halfmove == "end") ||
-      (init_Halfmove == "random") || (init_Halfmove == "comment")) {
-     always_Halfmove = true;
-  }
+  if (init_Halfmove == "s") { init_Halfmove = "start"; always_Halfmove = true; }
+  if (init_Halfmove == "e") { init_Halfmove = "end"; always_Halfmove = true; }
+  if (init_Halfmove == "r") { init_Halfmove = "random"; always_Halfmove = true; }
+  if (init_Halfmove == "c") { init_Halfmove = "comment"; always_Halfmove = true; }
 }
 SetInitialHalfmove(init_Halfmove,always_Halfmove);
 
 oldButtonsDisplay = "";
-showButtons = gup("showButtons");
-if ((showButtons == "true")  || (showButtons == "t")) { oldButtonsDisplay = "custom"; }
-if ((showButtons == "false") || (showButtons == "f")) { oldButtonsDisplay = "hidden"; }
+if (gup("showButtons") == "true") { oldButtonsDisplay = "custom"; }
+if (gup("showButtons") == "false") { oldButtonsDisplay = "hidden"; }
 if ((buttonsDisplay = gup("buttonsDisplay")) === "") {
-  buttonsDisplay = oldButtonsDisplay === "" ? "hidden" : oldButtonsDisplay;
+  if (oldButtonsDisplay === "") { buttonsDisplay = "hidden"; }
+  else { buttonsDisplay = oldButtonsDisplay; }
 }
 if (buttonsDisplay == "c") { buttonsDisplay = "custom"; }
 if (buttonsDisplay == "h") { buttonsDisplay = "hidden"; }
 if (buttonsDisplay == "s") { buttonsDisplay = "standard"; }
 if ((buttonsDisplay != "custom") && (buttonsDisplay != "standard")) { buttonsDisplay = "hidden"; }
-
-// SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
-// default:           (" ...", false, 0, 0, 0, 15, 15, 0, 10)
-SetGameSelectorOptions(null, false,  0, 0, 0, 15, 15, 3, 10); 
 
 if (buttonsDisplay == "custom") {
       
@@ -611,12 +1158,11 @@ if (buttonsDisplay == "custom") {
 }
 
 oldCommentsDisplay = "";
-showCommentsOnSeparateLines = gup("showCommentsOnSeparateLines");
-if ((showCommentsOnSeparateLines == "true") || (showCommentsOnSeparateLines == "t")) { oldCommentsDisplay = "newline"; }
-showComments = gup("showComments");
-if ((showComments == "false") || (showComments == "f")) { oldCommentsDisplay = "hidden"; }
-if ((commentsDisplay = gup("commentsDisplay")) === "") {
-  commentsDisplay = oldCommentsDisplay === "" ? "inline" : oldCommentsDisplay;
+if (gup("showCommentsOnSeparateLines") == "true") { oldCommentsDisplay = "newline"; }
+if (gup("showComments") == "false") { oldCommentsDisplay = "hidden"; }
+if ((commentsDisplay = gup("commentsDisplay")) === "") { 
+  if (oldCommentsDisplay === "") { commentsDisplay = "inline"; }
+  else { commentsDisplay = oldCommentsDisplay; }
 }
 if (commentsDisplay == "h") { commentsDisplay = "hidden"; }
 if (commentsDisplay == "i") { commentsDisplay = "inline"; }
@@ -638,41 +1184,6 @@ switch (commentsDisplay) {
     break;
 }
 
-function cleanPgnInput(pgnInput) {
-  pgnInput += "";
-
-  pgnInput = pgnInput.replace(/\[/g,"\n\n[");
-  pgnInput = pgnInput.replace(/\]/g,"]\n\n");
-  pgnInput = pgnInput.replace(/([012\*])(\s*)(\[)/g,"$1\n\n$3");
-  pgnInput = pgnInput.replace(/\]\s*\[/g,"]\n[");
-  pgnInput = pgnInput.replace(/^\s*\[/g,"[");
-  pgnInput = pgnInput.replace(/\n[\s*\n]+/g,'\n\n');
-
-  pgnInput = pgnInput.replace(/\u2026/g,'...'); // replace ellipsis char with ...
-  pgnInput = pgnInput.replace(/\u2011/g,'-'); // replace non breaking hyphen with -
-
-  return pgnInput;
-}
-
-if ((newPgnId = gup("pgnId")) !== "") {
-  if (parent && parent.document.getElementById(newPgnId)) {
-    theParentObject = parent.document.getElementById(newPgnId);
-    if (theParentObject.tagName.toLowerCase() == "textarea") {
-      newPgnIdData = theParentObject.value;
-    } else { // backward compatibility with pgn4web older than 1.77 when the <span> technique was used for pgnText
-      newPgnIdData = theParentObject.innerHTML;
-      // fixes issue with some browser removing \n from innerHTML
-      if (newPgnIdData.indexOf('\n') < 0) { newPgnIdData = newPgnIdData.replace(/((\[[^\[\]]*\]\s*)+)/g, "\n$1\n"); }
-      // fixes issue with some browser replacing quotes with &quot; such as the blackberry browser
-      if (newPgnIdData.indexOf('"') < 0) { newPgnIdData = newPgnIdData.replace(/(&quot;)/g, '"'); }
-    }
-    document.getElementById('pgnText').value = newPgnIdData = cleanPgnInput(newPgnIdData);
-  }
-  if ( !parent || !parent.document.getElementById(newPgnId) || !newPgnIdData ) {
-    myAlert("error: failed to get data from supplied pgnId=" + newPgnId + " (check parent is in the same domain).", true);
-  }
-}
-
 if ((fenString = gup("fenString")) !== "") {
   // remove URL escape chars such as %20 replaced by space
   fenString = decodeURIComponent(fenString);
@@ -680,44 +1191,50 @@ if ((fenString = gup("fenString")) !== "") {
 }
 
 if ((newPgnText = gup("pgnText")) !== "") {
+
   // remove URL escape chars such as %20 replaced by space
   newPgnText = decodeURIComponent(newPgnText);
-  document.getElementById('pgnText').value = newPgnText = cleanPgnInput(newPgnText);
+
+  // cleans the PGN text
+  newPgnText = newPgnText.replace(/\[/g,"\n\n[");
+  newPgnText = newPgnText.replace(/\]/g,"]\n\n");
+  newPgnText = newPgnText.replace(/([012\*])(\s*)(\[)/g,"$1\n\n$3");
+  newPgnText = newPgnText.replace(/\]\s*\[/g,"]\n[");
+  newPgnText = newPgnText.replace(/^\s*\[/g,"[");
+  newPgnText = newPgnText.replace(/\n[\s*\n]+/g,'\n\n');
+
+  document.getElementById('pgnText').value = newPgnText;
 } 
 
 if ((newPgnEncoded = gup("pgnEncoded")) !== "") {
+
   newPgnDecoded = DecodePGN(newPgnEncoded);
-  document.getElementById('pgnText').value = newPgnDecoded = cleanPgnInput(newPgnDecoded);
+
+  // cleans the PGN text
+  newPgnDecoded = newPgnDecoded.replace(/\[/g,"\n\n[");
+  newPgnDecoded = newPgnDecoded.replace(/\]/g,"]\n\n");
+  newPgnDecoded = newPgnDecoded.replace(/([012\*])(\s*)(\[)/g,"$1\n\n$3");
+  newPgnDecoded = newPgnDecoded.replace(/\]\s*\[/g,"]\n[");
+  newPgnDecoded = newPgnDecoded.replace(/^\s*\[/g,"[");
+  newPgnDecoded = newPgnDecoded.replace(/\n[\s*\n]+/g,'\n\n');
+
+  document.getElementById('pgnText').value = newPgnDecoded;
 } 
 
-if ((pgnData = gup("pgnData")) !== "") {
-  SetPgnUrl(pgnData);
-  document.getElementById('pgnText').value = "";
+if ((newPgnEncoded !== "") && ((newPgnText !== "") || (fenString !== ""))) {
+  alert("WARNING: pgnEncoded value superseeds pgnText and/or fenString values.");
 }
 
-if ((pgnData !== "") && ((newPgnEncoded !== "") || (newPgnText !== "") || 
-			 (fenString !== "") || (newPgnId !==""))) {
-  myAlert("warning: pgnData value superseeds pgnEncoded, pgnText, pgnId and/or fenString values.", false);
-}
-
-if ((newPgnEncoded !== "") && ((newPgnText !== "") || (fenString !== "") || (newPgnId !==""))) {
-  myAlert("warning: pgnEncoded value superseeds pgnText, pgnId and/or fenString values.", false);
-}
-
-if ((newPgnText !== "") && ((fenString !== "") || (newPgnId !==""))) {
-  myAlert("warning: pgnText value superseeds pgnId and/or fenString value.", false);
-}
-
-if ((fenString !== "") && (newPgnId !=="")) {
-  myAlert("warning: fenString value superseeds pgnId value.", false);
+if ((fenString !== "") && (newPgnText !== "")) {
+  alert("WARNING: pgnText value superseeds fenString value.");
 }
 
 oldHeaderDisplay = "";
-showHeader = gup("showHeader");
-if ((showHeader == "true")  || (showHeader == "t")) { oldHeaderDisplay = "justified"; }
-if ((showHeader == "false") || (showHeader == "f")) { oldHeaderDisplay = "hidden"; }
+if (gup("showHeader") == "true") { oldHeaderDisplay = "justified"; }
+if (gup("showHeader") == "false") { oldHeaderDisplay = "hidden"; }
 if ((headerDisplay = gup("headerDisplay")) === "") {
-  headerDisplay = oldHeaderDisplay === "" ? "hidden" : oldHeaderDisplay;
+  if (oldHeaderDisplay === "") { headerDisplay = "hidden"; }
+  else { headerDisplay = oldHeaderDisplay; }
 }
 if (headerDisplay == "c") { headerDisplay = "centered"; }
 if (headerDisplay == "h") { headerDisplay = "hidden"; }
@@ -725,11 +1242,11 @@ if (headerDisplay == "j") { headerDisplay = "justified"; }
 if ((headerDisplay != "centered") && (headerDisplay != "hidden")) { headerDisplay = "justified"; }
 
 oldMovesDisplay = "";
-showMoves = gup("showMoves");
-if ((showMoves == "true")  || (showMoves == "t")) { oldMovesDisplay = "justified"; }
-if ((showMoves == "false") || (showMoves == "f")) { oldMovesDisplay = "hidden"; }
+if (gup("showMoves") == "true") { oldMovesDisplay = "justified"; }
+if (gup("showMoves") == "false") { oldMovesDisplay = "hidden"; }
 if ((movesDisplay = gup("movesDisplay")) === "") {
-  movesDisplay = oldMovesDisplay === "" ? "hidden" : oldMovesDisplay;
+  if (oldMovesDisplay === "") { movesDisplay = "hidden"; }
+  else { movesDisplay = oldMovesDisplay; }
 }
 if (movesDisplay == "h") { movesDisplay = "hidden"; }
 if (movesDisplay == "j") { movesDisplay = "justified"; }
@@ -783,38 +1300,8 @@ switch (frameWidth) {
     break;
 }
 
-if ((gup("horizontalLayout") == "true") || (gup("horizontalLayout") == "t")) { horizontalLayout = true; }
+if (gup("horizontalLayout") == "true") { horizontalLayout = true; }
 else { horizontalLayout = false; }	
-
-if ((gup("refreshDemo") == "true") || (gup("refreshDemo") == "t")) { demoFlag = true; alertFlag = true; }
-else { demoFlag = false; alertFlag = false; }
-
-if ((refreshMinutes = gup("refreshMinutes")) === "") { 
-  refreshMinutes = 0;
-}
-else {
-  testMinutes = refreshMinutes + "";
-  if ((testMinutes.match(/[^0-9\.]/)) || (refreshMinutes === 0)) {
-    myAlert("error: refreshMinutes parameter must be a positive number.\n" +
-	    "Supplied " + testMinutes + "; live refresh disabled.", true); 
-    refreshMinutes = 0;
-  }
-}
-
-if (refreshMinutes > 0) {
-  if (pgnData !== "") { SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag); }
-  else { 
-    myAlert("error: live broadcast requires using pgnData parameter as PGN source.", true); 
-  }
-  if (gup("initialHalfmove") === "") { 
-    SetInitialHalfmove(init_Halfmove = "end", always_Halfmove = true);
-  }
-  if (gup("autoplayMode") === "") {
-    autoplayMode = "none";
-    SetAutostartAutoplay(false);
-    SetAutoplayNextGame(false);
-  }
-}
 
 if (gup("help") !== "") {
   document.write("<PRE>");
@@ -822,28 +1309,23 @@ if (gup("help") !== "") {
   document.write("\n");
   document.write(" - pgnText = PGN games to display\n");
   document.write(" - pgnEncoded = encoded PGN games to display (used only by the board generator tool)\n");
-  document.write(" - fenString = FEN position to display\n");
-  document.write(" - pgnId = id of the parent's textarea containing the PGN games (parent page/frame MUST be in the same domain)\n");
-  document.write(" - pgnData = URL of the file containing the PGN games (file MUST be in the same domain)\n");
+  document.write(" - fenString = FEN position to display, superceded by pgnText if set\n");
   document.write("\n");
-  document.write(" - refreshMinutes = live broadcast delay (default 0 = live broadcast disabled)\n");
-  document.write(" - refreshDemo = if set true sets live demo mode (default false)\n");
-  document.write("\n");
-  document.write(" - autoplayMode = game (autoplay first game once) | loop (loops through games continiously) | none (default game)\n");
+  document.write(" - autoplayMode = game (autoplay first game once) | loop (loops through games continiously) | none - (default game)\n");
   document.write(" - delay = autoplay delay in ms (default 1000)\n");
   document.write(" - initialGame = first | last | random | a number (default first)\n");
   document.write(" - initialHalfmove = start | end | random | comment | a number (default start)\n");
   document.write("\n");
   document.write(" - squareSize = size of square (default 28)\n");
   document.write(" - pieceSize = size of pieces | default (default selects piece size based on piece size)\n");
-  document.write(" - pieceFont = alpha | merida | uscf | random | default (default selects piece font based on piece size)\n");
+  document.write(" - pieceFont = alpha | merida | uscf | random | default - (default selects piece font based on piece size)\n");
   document.write(" - highlightMode = border | square | none (default square)\n");
   document.write(" - lightColorHex = light square color hex code, like FF0000 (default EFF4EC)\n");
   document.write(" - darkColorHex = dark square color hex code, like FF0000 (default C6CEC3)\n");
   document.write(" - highlightColorHex = highlight color hex code, like FF0000 (default DAF4D7)\n");
   document.write(" - boardBorderColorHex = board border color hex code, like FF0000 (default 000000)\n");
   document.write("\n");
-  document.write(" - buttonsDisplay = hidden | standard (use browser's standard buttons) | custom (use custom color buttons) (default hidden)\n");
+  document.write(" - buttonsDisplay = hidden | standard (use browser's standard buttons) | custom (use custom color buttons) - (default hidden)\n");
   document.write(" - controlBackgroundColorHex = control buttons background color hex code, like FF0000 (default reverts to standard buttons)\n");
   document.write(" - controlTextColorHex = control buttons text color hex code, like FF0000 (default 000000)\n");
   document.write("\n");
@@ -852,7 +1334,7 @@ if (gup("help") !== "") {
   document.write(" - textHeight = set height of the textual section, header and/or moves text, might be ingored if frameHeight is set (default 100%)\n");
   document.write(" - textWidth = set width of the textual section, header and/or moves text, might be ignored if frameWidth is set (default 100%)\n");
   document.write(" - textMargin = set left/right margin width of the  textual section, header and/or moves text (default 0)\n");
-  document.write(" - commentsDisplay = hidden | inline (same line as moves) | newline (new lines) (default inline)\n");
+  document.write(" - commentsDisplay = hidden | inline (same line as moves) | newline (new lines) - (default inline)\n");
   document.write(" - fontHeaderColorHex = header color hex code, like FF0000 (default 000000)\n");
   document.write(" - fontMovesColorHex = moves color hex code, like FF0000 (default 000000)\n");
   document.write(" - fontCommentsColorHex = commentss color hex code, like FF0000 (default 808080)\n");
@@ -861,7 +1343,7 @@ if (gup("help") !== "") {
   document.write(" - fontMovesSize = header font size, like 20 or 120% (default 100p = 100pct meaning 100%)\n");
   document.write(" - fontCommentsSize = header font size, like 20 or 120%; if set as 'moves' fontMovesSize is copied (default moves)\n");
   document.write("\n");
-  document.write(" - backgroundColorHex = page background color hex code, like FF0000, 'transparent' to use the parent's background color (default FFFFFF)\n");
+  document.write(" - backgroundColorHex = page background color hex code, like FF0000 (default FFFFFF)\n");
   document.write(" - horizontalLayout = if set true, shows header/moves text at the right of the board, below otherwise (default false)\n");
   document.write(" - frameHeight = set height of the overall frame, as a number or as 'board' overriding textHeight (default not set)\n");
   document.write(" - frameWidth = set width of the overall frame, as a number, as 'board' or as 'page', overriding textWidth (default not set)\n");
@@ -909,13 +1391,10 @@ function display_board() {
 
 function display_header_moves() {
 
-  if (((headerDisplay != "hidden") || (movesDisplay != "hidden")) && (horizontalLayout === false)) {
-    if (headerDisplay != "hidden") {
-      document.write("<div id='boardHeadermovesPadding' class='header' style='text-align: center;'>&nbsp;</div>");
-    } else {
-      document.write("<div id='boardHeadermovesPadding' class='moves' style='text-align: center;'>&nbsp;</div>");
-    }
-  }  
+  if ((headerDisplay != "hidden") && (horizontalLayout === false)) {
+      document.write("<div id='headerMovesPadding' class='header' style='text-align: center;'>&nbsp;</div>");
+  }
+
   if ((headerDisplay != "hidden") || (movesDisplay != "hidden")) {
   document.write("<div id='headerMoves' style='overflow:auto; overflow-x:hidden;" +
                  " height: " + textHeight + "; width: " + textWidth + 
@@ -939,7 +1418,7 @@ function display_header_moves() {
                    "; margin-right: 3%;' id=GameBlack></div>");
     document.write("</td><td align=right>");
     
-    document.write("<div class='header' style='white-space: nowrap; margin-right: " + textMargin +
+    document.write("<div class='header'header style='white-space: nowrap; margin-right: " + textMargin +
                    "; margin-left: 3%;'  id=GameSite></div>");
     document.write("</td></tr></table>");
 
@@ -977,7 +1456,11 @@ function display_header_moves() {
 
   if (movesDisplay != "hidden") {
     if (headerDisplay != "hidden") {
-      document.write("<div id='headerMovesSpacer' class='header' style='text-align: center;'>&nbsp;</div>");
+      document.write("<div class='header' style='text-align: center;'>&nbsp;</div>");
+    } else {
+      if (horizontalLayout === false) {
+        document.write("<div class='moves' style='text-align: center;'>&nbsp;</div>");
+      }
     }
     document.write("<div style='margin-left:" + textMargin + "; margin-right:" + textMargin + 
                    "; text-align: justify;' id=GameText></div>");
@@ -1054,40 +1537,15 @@ function customFunctionOnPgnGameLoad() {
       theObject.style.paddingBottom = "";
     }
   }
-
-  theObject = document.getElementById("headerMovesSpacer");
-  if (theObject) {
-    if ( ((gameWhite[currentGame] != undefined) && (gameWhite[currentGame] !== ""))   ||
-         ((gameBlack[currentGame] != undefined) && (gameBlack[currentGame] !== ""))   ||
-         ((gameResult[currentGame] != undefined) && (gameResult[currentGame] !== "")) || 
-         ((gameEvent[currentGame] != undefined) && (gameEvent[currentGame] !== ""))   ||
-	 ((gameRound[currentGame] != undefined) && (gameRound[currentGame] !== "") && 
-	  (gameRound[currentGame] != "?") && (gameRound[currentGame] != "*"))         ||
-	 ((gameSite[currentGame] != undefined) && (gameSite[currentGame] !== ""))     ||
-         ((gameDate[currentGame] != undefined) && (gameDate[currentGame] !== "")) ) {
-      theObject.style.display = "inline";
-    } else {
-      theObject.style.display = "none";
-    }
-  }
-
 }
 
-var boardGeneratorWin=null;
-function customShortcutKey_Shift_1() {
-  if ((newPgnEncoded === "") && (newPgnText === "")) { return; }
-  if (! window.location.href.match(/board\.html/)) { return; }
-  if (boardGeneratorWin && !boardGeneratorWin.closed) { boardGeneratorWin.close(); }
-  boardGeneratorWin = window.open(window.location.href.replace(/board\.html/g, "board-generator.html").replace(window.location.hash, "") + "#preview");
-  if ((boardGeneratorWin !== null) && (window.focus)) { boardGeneratorWin.window.focus(); }
-}
 
 </script>
 
 
-<!-- start of google analytics code -->
+<! start of google analytics code -->
 
-<!-- end of google analytics code -->
+<! end of google analytics code -->
 
 
 </body>
