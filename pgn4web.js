@@ -6,11 +6,90 @@
  */
 
 /*
- *  See README.txt file for instructions HOW TO USE pgn4web.js
- *  Alternatively, check the project wiki at http://pgn4web.casaschi.net
+ *   HOW TO USE pgn4web.js
+ *
+ *   add a SCRIPT instance at the top of your HTML file:
+ *
+ *      <script src="pgn4web-server-config.js" type="text/javascript"></script>
+ *      <script src="pgn4web.js" type="text/javascript"></script>
+ *
+ *   The JS file pgn4web-server-config.js contains some customization variable
+ *   depending on your web server configuration. Default values should be ok
+ *   for most purposes.
+ *   Then add another SCRIPT instance with at least the call to SetPgnUrl("http://yoursite/yourpath/yourfile.pgn")
+ *   and optionally any of the other calls listed below.  
+ *   Example:
+ *
+ *      <script type="text/javascript>
+ *        SetPgnUrl("http://yoursite/yourpath/yourfile.pgn");  // if set, this has precedence over the inline PGN in the HTML file
+ *        SetImagePath(""); // use "" path if images are in the same folder as this javascript file
+ *        SetImageType("png");
+ *        SetHighlightOption(true); // true or false
+ *        SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate); // default: (" ...", false, 0, 0, 0, 15, 15, 0, 10)
+ *        SetCommentsIntoMoveText(false);
+ *        SetCommentsOnSeparateLines(false);
+ *        SetAutoplayDelay(1000); // milliseconds
+ *        SetAutostartAutoplay(false);
+ *        SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
+ *        SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are also acceptted
+ *        SetInitialHalfmove(0,false); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default)
+ *        SetShortcutKeysEnabled(false);
+ *
+ *        SetLiveBroadcast(0.25, true, true); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false)
+ *      </script>
+ * 
+ *   Then the script will automagically add content into your HTML file 
+ *   to any <div> or <span> containers with the following IDs:
+ *
+ *      <div id="GameSelector"></div>
+ *      <div id="GameSearch"></div>
+ *      <div id="GameLastMove"></div>
+ *      <div id="GameNextMove"></div>
+ *      <div id="GameSideToMove"></div>
+ *      <div id="GameLastComment"></div>
+ *      <div id="GameBoard"></div>
+ *      <div id="GameButtons"></div>
+ *      <div id="GameEvent"></div>
+ *      <div id="GameRound"></div>
+ *      <div id="GameSite"></div>
+ *      <div id="GameDate"></div>
+ *      <div id="GameWhite"></div>
+ *      <div id="GameBlack"></div>
+ *      <div id="GameResult"></div>
+ *      <div id="GameText"></div>
+ *
+ *      <div id="GameWhiteClock"></div>
+ *      <div id="GameBlackClock"></div>
+ *      <div id="GameLiveStatus"></div>
+ *
+ *   The file template.css shows a list of customization style options.
+ *
+ *   See template.html file for an example.
+ *   See mini.html for an example of embedding the PGN within the HTML file.
  */
 
-var pgn4web_version = '2.04+';
+// SetPgnUrl("");  // if set, this has precedence over the inline PGN in the HTML file
+// SetImagePath(""); // use "" path if images are in the same folder as this javascript file
+// SetImageType("png");
+// SetHighlightOption(true); // true or false
+// SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate); // default: (" ...", false, 0, 0, 0, 15, 15, 0, 10)
+// SetCommentsIntoMoveText(true);
+// SetCommentsOnSeparateLines(true);
+// SetAutoplayDelay(1000); // milliseconds
+// SetAutostartAutoplay(false);
+// SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
+// SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are also accepted
+// SetInitialHalfmove(0,false); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default).
+// SetShortcutKeysEnabled(false);
+
+
+/*********************************************************************/
+
+/* 
+ * DONT CHANGE AFTER HERE
+ */
+
+var pgn4web_version = '1.97';
 
 var pgn4web_project_url = 'http://pgn4web.casaschi.net';
 var pgn4web_project_author = 'Paolo Casaschi';
@@ -22,26 +101,31 @@ var about = '\tpgn4web v' + pgn4web_version + '\n\t' + pgn4web_project_url + '\n
 
 var helpWin=null;
 function displayHelp(section){
-  if (!section) { section = "top"; }
+  if ((!section) && (section != "credits") && (section != "squares") && (section != "keys") && (section != "top") ) { 
+    section = "top"; 
+  }
+  sectionFlag = "#" + section;
   if (helpWin && !helpWin.closed) { helpWin.close(); }
-  helpWin = window.open(detectHelpLocation() + "?" + 
-            (Math.floor(900 * Math.random()) + 100) + "#" + section, 
-            "pgn4web_help", 
-            "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
+  helpWin = window.open(detectHelpLocation() + "?" + (Math.floor(900 * Math.random()) + 100) + sectionFlag, "pgn4web_help", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if ((helpWin !== null) && (window.focus)) { helpWin.window.focus(); }
 }
 
 
-/*
- * Custom functions executed at the given moments.
- * Here intentionally empty, to be redefined in 
- * the HTML file AFTER loading pgn4web.js
- */
+/******************************************************************************
+ *                                                                            *
+ * function customFunctionOnPgnTextLoad() {}                                  *
+ * function customFunctionOnPgnGameLoad() {}                                  *
+ * function customFunctionOnMove()        {}                                  *
+ *                                                                            *
+ * Custom functions executed each time a PGN text is loaded and each time a   *
+ * PGN game is loaded. They are intentionally empty here so that can be       *
+ * customized in the HTML file by redefining them AFTER loading pgn4web.js    *
+ *                                                                            *
+ ******************************************************************************/
 
 function customFunctionOnPgnTextLoad() {}
 function customFunctionOnPgnGameLoad() {}
 function customFunctionOnMove()        {}
-function customFunctionOnAlert(msg)    {}
 
 
 window.onload = start_pgn4web;
@@ -49,91 +133,21 @@ window.onload = start_pgn4web;
 document.onkeydown = handlekey;
 
 function start_pgn4web() {
-  // first time pgn4web is started allow for alert log messages preceding start_pgn4web
-  // if start_pgn4web is later reloaded then reset alert log
-  if (alertFirstResetLoadingPgn) { alertFirstResetLoadingPgn = false; }
-  else { resetAlert(); } 
   createBoard();
   if (LiveBroadcastDelay > 0) { restartLiveBroadcastTimeout(); }
 }
 
-var alertLog;
-var alertLast;
-var alertNum;
-var alertNumSinceReset;
-var fatalErrorNumSinceReset;
-var alertPromptInterval = null;
-var alertPromptOn = false;
-var alertFirstResetLoadingPgn = true;
-
-resetAlert();
-
-function resetAlert() {
-  alertLog = new Array(5);
-  alertLast = alertLog.length - 1;
-  alertNum = alertNumSinceReset = fatalErrorNumSinceReset = 0;
-  stopAlertPrompt();
-  if (!alertFirstResetLoadingPgn) {
-    configBoardShrortcut(debugShortcutSquare, 
-                         "pgn4web v" + pgn4web_version + " debug info", 
-                         "keep");
-  }
-}
-
-function myAlert(msg, fatalError) {
-  alertNum++;
-  alertNumSinceReset++;
-  if (fatalError) { fatalErrorNumSinceReset++; }
-  alertLast = (alertLast + 1) % alertLog.length;
-  alertLog[alertLast] = msg;
-  alertPlural = alertNum > 1 ? "s" : "";
-  configBoardShrortcut(debugShortcutSquare, 
-                       "pgn4web v" + pgn4web_version + " debug info, " + alertNum + " alert" + alertPlural, 
-                       "keep"); 
-
+function myAlert(msg) {
   if ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) {
-    startAlertPrompt();
+    alert(msg);
   }
-  customFunctionOnAlert(msg);
 }
 
-function startAlertPrompt() {
-  if (alertPromptOn) { return; } // if flashing already dont start a new flashing
-  if (alertPromptInterval) { clearTimeout(alertPromptInterval); }
-  alertPromptInterval = setTimeout("alertPromptTick(true);", 500);
+function myConfirm(msg) {
+  if ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) {
+    return confirm(msg);
+  } else { return false; }
 }
-
-function stopAlertPrompt() {
-  if (alertPromptInterval) { 
-    clearTimeout(alertPromptInterval); 
-    alertPromptInterval = null;
-  }
-  // need to restore the chessboard to the correct colors
-  if (alertPromptOn) { alertPromptTick(false); }
-}
-
-function alertPromptTick(restart) {
-  if (alertPromptInterval) { 
-    clearTimeout(alertPromptInterval); 
-    alertPromptInterval = null;
-  }
-  if(document.getElementById('tcol0trow0')) {
-    theObject = document.getElementById('tcol0trow0');
-    if (alertPromptOn) {
-      if ((highlightOption) && 
-          ((lastColFromHighlighted === 0 && lastRowFromHighlighted === 7) || 
-           (lastColToHighlighted === 0 && lastRowToHighlighted === 7))) {
-          theObject.className = 'highlightWhiteSquare';
-        } else { theObject.className = 'whiteSquare'; }
-    } else { theObject.className = 'blackSquare'; }
-
-    alertPromptOn = !alertPromptOn;
-    if (alertPromptOn) { alertPromptDelay = 500; }
-    else { alertPromptDelay = 3000; }
-  } else { alertPromptDelay = 1500; }
-  if (restart) { alertPromptInterval = setTimeout("alertPromptTick(true);", alertPromptDelay); }
-}
-
 
 function stopKeyPropagation(e) {
   e.cancelBubble = true;
@@ -143,6 +157,7 @@ function stopKeyPropagation(e) {
 }
 
 // to be used as onFocus and onBlur actions on textboxes, in order to allow typing text
+
 var shortcutKeysWereEnabled = false;
 function disableShortcutKeysAndStoreStatus() {
   if ((shortcutKeysWereEnabled = shortcutKeysEnabled) === true) {
@@ -173,6 +188,7 @@ function handlekey(e) {
   if (!e) { e = window.event; }
 
   keycode = e.keyCode;
+  //myAlert(keycode);
 
   if (e.altKey || e.ctrlKey || e.metaKey) { return true; }
 
@@ -201,7 +217,9 @@ function handlekey(e) {
     case 27: // escape
       if (e.shiftKey) {
         // shift key + escape (27) toogle the usage of shortcut keys 
-        interactivelyToggleShortcutKeys(); 
+        SetShortcutKeysEnabled(!shortcutKeysEnabled);
+        if (shortcutKeysEnabled) { alert ("pgn4web shortcut keys now enabled"); }
+        else { alert("pgn4web shortcut keys now disabled"); }
       } else {
         displayHelp();
       }
@@ -209,8 +227,7 @@ function handlekey(e) {
       break;
 
     case 90: // z
-      if (e.shiftKey) { window.open(pgn4web_project_url); }
-      else { displayDebugInfo(); }
+      window.open(pgn4web_project_url); 
       return stopKeyPropagation(e);
       break;
 
@@ -414,7 +431,7 @@ function handlekey(e) {
       break;
 
     case 88: // x
-      if (numberOfGames > 1) {
+      if (numberOfGames > 1){
         currentGame = Math.floor(Math.random()*numberOfGames);
         Init();
         GoToMove(StartPly + Math.floor(Math.random()*(StartPly + PlyNumber + 1)));
@@ -423,7 +440,7 @@ function handlekey(e) {
       break;
 
     case 67: // c
-      if (numberOfGames > 1) {
+      if (numberOfGames > 1){
         currentGame = Math.floor(Math.random()*numberOfGames);
         Init();
       }
@@ -431,7 +448,7 @@ function handlekey(e) {
       break;
 
     case 86:  // v
-      if (numberOfGames > 1) {
+      if (numberOfGames > 1){
 	currentGame = 0;
         Init();
       }
@@ -439,7 +456,7 @@ function handlekey(e) {
       break;
 
     case 66:  // b
-      if (currentGame > 0) {
+      if (currentGame > 0){
         currentGame--;
         Init();
       }
@@ -447,7 +464,7 @@ function handlekey(e) {
       break;
 
     case 78:  // n
-      if (numberOfGames > currentGame + 1) {
+      if (numberOfGames > currentGame + 1){
         currentGame++;
         Init();
       }
@@ -455,7 +472,7 @@ function handlekey(e) {
       break;
 
     case 77:  // m
-      if (numberOfGames > 1) {
+      if (numberOfGames > 1){
         currentGame = numberOfGames - 1;
         Init();
       }
@@ -493,29 +510,19 @@ for (col=0; col<8; col++) {
 }
 
 function configBoardShrortcut(square, title, functionPointer) {
-  if (square.charCodeAt === null) { return; }
+  if (square.charCodeAt === null) { myAlert("error: invalid square in configBoardShrortcut()"); return; }
   var col = square.charCodeAt(0) - 65; // 65 is "A"
-  if ((col < 0) || (col > 7)) { return; }
+  if ((col < 0) || (col > 7)) { myAlert ("error: invalid column in configBoardShrortcut()"); return; }
   var row = 56 - square.charCodeAt(1); // 56 is "8"
-  if ((row < 0) || (row > 7)) { return; }
+  if ((row < 0) || (row > 7)) { myAlert ("error: invalid row in configBoardShrortcut()"); return; }
   boardTitle[col][row] = title;
-  if (functionPointer != "keep") { boardOnClick[col][row] = functionPointer; }
-  theObject = document.getElementById('link_tcol' + col + 'trow' + row);
-  if (theObject) {
-    if (IsRotated) { square = String.fromCharCode(72-col,49+row); }
-    if (boardTitle[col][row] !== '') { squareTitle = square + ': ' + boardTitle[col][row]; }
-    else { squareTitle = square; } 
-    theObject.title = squareTitle;
-  }
+  boardOnClick[col][row] = functionPointer;
 }
 
-// PLEASE NOTE: the 'square' parameter of 'configBoardShrortcut' is ALWAYS ASSUMING WHITE ON BOTTOM
-
-debugShortcutSquare = "A8";
 // A8
-configBoardShrortcut("A8", "pgn4web v" + pgn4web_version + " debug info", function(){ displayDebugInfo(); });
+configBoardShrortcut("A8", "go to the pgn4web website", function(){ window.open(pgn4web_project_url); });
 // B8
-configBoardShrortcut("B8", "show this position FEN string", function(){ displayFenData(); });
+configBoardShrortcut("B8", "debug info v" + pgn4web_version, function(){ displayDebugInfo(); });
 // C8
 configBoardShrortcut("C8", "show this game PGN source data", function(){ displayPgnData(false); });
 // D8
@@ -529,21 +536,21 @@ configBoardShrortcut("G8", "shortcut squares help", function(){ displayHelp("squ
 // H8
 configBoardShrortcut("H8", "pgn4web help", function(){ displayHelp(); });
 // A7
-configBoardShrortcut("A7", "pgn4web website", function(){ window.open(pgn4web_project_url); });
+configBoardShrortcut("A7", "toggle show comments in game text", function(){ SetCommentsIntoMoveText(!commentsIntoMoveText); thisPly = CurrentPly; Init(); GoToMove(thisPly); });
 // B7
-configBoardShrortcut("B7", "toggle show comments in game text", function(){ SetCommentsIntoMoveText(!commentsIntoMoveText); thisPly = CurrentPly; Init(); GoToMove(thisPly); });
+configBoardShrortcut("B7", "toggle show comments on separate lines in game text", function(){ SetCommentsOnSeparateLines(!commentsOnSeparateLines); thisPly = CurrentPly; Init(); GoToMove(thisPly); });
 // C7
-configBoardShrortcut("C7", "toggle show comments on separate lines in game text", function(){ SetCommentsOnSeparateLines(!commentsOnSeparateLines); thisPly = CurrentPly; Init(); GoToMove(thisPly); });
+configBoardShrortcut("C7", "toggle highlight last move", function(){ SetHighlight(!highlightOption); });
 // D7
-configBoardShrortcut("D7", "toggle highlight last move", function(){ SetHighlight(!highlightOption); });
+configBoardShrortcut("D7", "flip board", function(){ FlipBoard(); });
 // E7
-configBoardShrortcut("E7", "flip board", function(){ FlipBoard(); });
+configBoardShrortcut("E7", "show white on bottom", function(){ if (IsRotated) { FlipBoard(); } });
 // F7
-configBoardShrortcut("F7", "show white on bottom", function(){ if (IsRotated) { FlipBoard(); } });
+configBoardShrortcut("F7", "toggle autoplay next game", function(){ SetAutoplayNextGame(!autoplayNextGame); });
 // G7
-configBoardShrortcut("G7", "toggle autoplay next game", function(){ SetAutoplayNextGame(!autoplayNextGame); });
+configBoardShrortcut("G7", "", function(){});
 // H7
-configBoardShrortcut("H7", "toggle enabling shortcut keys", function(){ interactivelyToggleShortcutKeys(); });
+configBoardShrortcut("H7", "toggle enabling shortcut keys", function(){ SetShortcutKeysEnabled(!shortcutKeysEnabled); });
 // A6
 configBoardShrortcut("A6", "pause live broadcast automatic refresh", function(){ pauseLiveBroadcast(); });
 // B6
@@ -653,215 +660,72 @@ function detectJavascriptLocation() {
   return jspath;
 }
 
+
 function detectHelpLocation() {
   helpfile = "help.html";
   return detectJavascriptLocation().replace(/(pgn4web|pgn4web-compacted)\.js/, helpfile); 
 }
 
+
 function detectBaseLocation() {
   base = "";
   var e = document.getElementsByTagName('base');
   for(var i=0; i<e.length; i++) {
-    if (e[i].href) { base = e[i].href; }
+    if (e[i].href) {
+      base = e[i].href; 
+    }
   }
   return base;
 }
 
-debugWin = null;
+
 function displayDebugInfo() {
-  stopAlertPrompt();
-  debugInfo = 'pgn4web: version=' + pgn4web_version + ' homepage=' + pgn4web_project_url + '\n\n';
-  debugInfo += 'HTML URL: length=' + location.href.length + ' url=';
-  debugInfo += (location.href.length < 100 ? location.href : (location.href.substring(0,99) + '...')) + '\n';
-  baseLocation = detectBaseLocation();
-  debugInfo += 'BASE URL: url=' + (baseLocation !== '' ? baseLocation : 'none') + '\n';
-  debugInfo += 'JS URL: url=' + detectJavascriptLocation() + '\n\n';
-  debugInfo += 'PGN URL: url=' + (pgnUrl !== '' ? pgnUrl : 'none') + '\n';
-  debugInfo += 'PGN TEXT: length=';
+  debugInfo = 'pgn4web v' + pgn4web_version + '\n\n' +
+              'HTML URL: ' + location.href + '\n\n' +
+              'base URL: ' + detectBaseLocation() + '\n\n' +
+              'javascript URL: ' + detectJavascriptLocation() + '\n\n';
+  if (pgnUrl !== "") { debugInfo += 'PGN URL: ' + pgnUrl + '\n\n'; }
+  else { debugInfo += 'PGN URL: none' + '\n\n'; }
   if (document.getElementById("pgnText") !== null) { 
-    debugInfo += document.getElementById("pgnText").tagName.toLowerCase() == "textarea" ?
-                 document.getElementById("pgnText").value.length :
-                 document.getElementById("pgnText").innerHTML.length +
-                 ' container=' + document.getElementById("pgnText").tagName.toLowerCase();
-    // backward compatibility with pgn4web older than 1.77 when the <span> technique was used for pgnText
-  }
-  debugInfo += '\n\n';
-  debugInfo += 'GAMES: current=' + (currentGame+1) + ' number=' + numberOfGames + '\n' +
-               'PLY: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber + '\n';
-  debugInfo += 'AUTOPLAY: ' + (isAutoPlayOn ? 'delay=' + Delay + 'ms' + ' autoplaynext=' + autoplayNextGame : 'off');
-  debugInfo += '\n\n';
-  debugInfo += 'LIVE BROADCAST: ' + (LiveBroadcastDelay > 0 ? 'ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + ' started=' + LiveBroadcastStarted + ' ended=' + LiveBroadcastEnded + ' paused=' + LiveBroadcastPaused + ' demo=' + LiveBroadcastDemo + ' alert=' + LiveBroadcastAlert : 'off'); 
-  debugInfo += '\n\n';
-  debugInfo += 'ALERT LOG: fatalnew=' + fatalErrorNumSinceReset + ' new=' + alertNumSinceReset + ' shown=' + 
-               Math.min(alertNum, alertLog.length) + ' total=' + alertNum + '\n--';
-  if (alertNum > 0) {
-    for (ii = 0; ii<alertLog.length; ii++) {
-      if (alertLog[(alertNum - 1 - ii) % alertLog.length] === undefined) { break; }
-      else { debugInfo += "\n" + alertLog[(alertNum - 1 - ii) % alertLog.length] + "\n--"; }
+    if (document.getElementById("pgnText").tagName.toLowerCase() == "textarea") {
+      debugInfo += 'PGN text: ' + document.getElementById("pgnText").value.length; 
+    } else { // backward compatibility with pgn4web older than 1.77 when the <span> technique was used for pgnText
+      debugInfo += 'PGN text: ' + document.getElementById("pgnText").innerHTML.length;
     }
+      debugInfo += ' (' + document.getElementById("pgnText").tagName.toLowerCase() + ')\n\n';
+  } else {
+    debugInfo += 'PGN text: none' + '\n\n';
   }
-  if (confirm(debugInfo + '\n\nclick OK to show this debug info in a browser window for cut and paste')) {
-    if (debugWin && !debugWin.closed) { debugWin.close(); }
-    debugWin = window.open("", "debug_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
-    if (debugWin !== null) {
-       debugWin.document.open("text/html", "replace");
-       debugWin.document.write("<html>");
-       debugWin.document.write("<head><title>pgn4web debug info</title><link rel='shortcut icon' href='pawn.ico' /></head>");
-       debugWin.document.write("<body>\n<pre>\n");
-       debugWin.document.write(debugInfo);
-       debugWin.document.write("\n</pre>\n</body></html>");
-       debugWin.document.close();
-       if (window.focus) { debugWin.window.focus(); }
-    }
-  }
-  alertNumSinceReset = fatalErrorNumSinceReset = 0;
+  debugInfo += 'games: current=' + currentGame + ' number=' + numberOfGames + '\n\n' +
+               'ply: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber;
+  if (isAutoPlayOn) { debugInfo += ' autoplay=' + Delay + 'ms' + ' autoplaynext=' + autoplayNextGame + '\n\n'; }
+  else { debugInfo += ' autoplay=off' + '\n\n'; }
+  if (LiveBroadcastDelay > 0) { debugInfo += 'live broadcast: delay=' + LiveBroadcastDelay + 'm' + 
+                                             ' started=' + LiveBroadcastStarted +
+                                             ' ended=' + LiveBroadcastEnded +
+                                             ' paused=' + LiveBroadcastPaused +
+                                             ' demo=' + LiveBroadcastDemo +
+                                             ' alert=' + LiveBroadcastAlert + '\n\n'; }
+  else { debugInfo += 'live broadcast: off' + '\n\n'; }
+  alert(debugInfo);
 }
 
 pgnWin = null;
 function displayPgnData(allGames) {
+
   if (allGames === null) { allGames = true; }
   if (pgnWin && !pgnWin.closed) { pgnWin.close(); }
   pgnWin = window.open("", "pgn_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if (pgnWin !== null) {
     pgnWin.document.open("text/html", "replace");
     pgnWin.document.write("<html>");
-    pgnWin.document.write("<head><title>pgn4web PGN source</title><link rel='shortcut icon' href='pawn.ico' /></head>");
+    pgnWin.document.write("<head><title>pgn4web PGN source</title><link rel='shortcut icon' href='pawn.ico'></link></head>");
     pgnWin.document.write("<body>\n<pre>\n");
     if (allGames) { for (ii = 0; ii < numberOfGames; ++ii) { pgnWin.document.write(pgnGame[ii]); } }
     else { pgnWin.document.write(pgnGame[currentGame]); }
     pgnWin.document.write("\n</pre>\n</body></html>");
     pgnWin.document.close();
     if (window.focus) { pgnWin.window.focus(); }
-  }
-}
-
-function CurrentFEN() {
-  currentFEN = "";
-
-  emptyCounterFen = 0;
-  for (row=7; row>=0; row--) {
-    for (col=0; col<=7; col++) {
-      if (Board[col][row] === 0) { emptyCounterFen++; }
-      else {
-        if (emptyCounterFen > 0) {
-          currentFEN += "" + emptyCounterFen;
-          emptyCounterFen = 0;
-        }
-        if (Board[col][row] > 0) { currentFEN += FenPieceName.toUpperCase().charAt(Board[col][row]-1); }
-        else if (Board[col][row] < 0) { currentFEN += FenPieceName.toLowerCase().charAt(-Board[col][row]-1); }
-      }
-    }
-    if (emptyCounterFen > 0) {
-      currentFEN += "" + emptyCounterFen;
-      emptyCounterFen = 0;
-    }
-    if (row>0) { currentFEN += "/"; }
-  }
- 
-  // Active color
-  currentFEN += CurrentPly%2 === 0 ? " w" : " b";
-
-  // Castling availability (only standard chess supported, not any FischerRandom extensions
-  CastlingShortFEN = new Array(2);
-  CastlingShortFEN[0] = CastlingShort[0];
-  CastlingShortFEN[1] = CastlingShort[1];
-  CastlingLongFEN = new Array(2);
-  CastlingLongFEN[0] = CastlingLong[0];
-  CastlingLongFEN[1] = CastlingLong[1];
-  for (thisPly = StartPly; thisPly < CurrentPly; thisPly++) {
-    SideToMoveFEN = thisPly%2;
-    BackrowSideToMoveFEN = SideToMoveFEN * 7;
-    if (HistType[0][thisPly] == 1) { CastlingShortFEN[SideToMoveFEN] = CastlingLongFEN[SideToMoveFEN] = 0; }
-    if ((HistCol[0][thisPly] === 7) && (HistRow[0][thisPly] == BackrowSideToMoveFEN)) { CastlingShortFEN[SideToMoveFEN] = 0; }
-    if ((HistCol[0][thisPly] === 0) && (HistRow[0][thisPly] == BackrowSideToMoveFEN)) { CastlingLongFEN[SideToMoveFEN] = 0; }
-  }
-
-  CastlingFEN = "";
-  if (CastlingShortFEN[0] !== 0) { CastlingFEN += FenPieceName.toUpperCase().charAt(0); }
-  if (CastlingLongFEN[0] !== 0) { CastlingFEN += FenPieceName.toUpperCase().charAt(1); }
-  if (CastlingShortFEN[1] !== 0) { CastlingFEN += FenPieceName.toLowerCase().charAt(0); }
-  if (CastlingLongFEN[1] !== 0) { CastlingFEN += FenPieceName.toLowerCase().charAt(1); }
-  if (CastlingFEN === "") { CastlingFEN = "-"; }
-  currentFEN += " " + CastlingFEN;
- 
-  // En passant target square
-  if (HistEnPassant[CurrentPly-1]) {
-    currentFEN += " " + String.fromCharCode(HistEnPassantCol[CurrentPly-1] + 97);
-    currentFEN += CurrentPly%2 === 0 ? "6" : "3";
-  } else { currentFEN += " -"; }
-
-  // Halfmove clock
-  HalfMoveClock = InitialHalfMoveClock;  
-  for (thisPly = StartPly; thisPly < CurrentPly; thisPly++) {
-    if ((HistType[0][thisPly] == 6) || (HistPieceId[1][thisPly] >= 16)) { HalfMoveClock = 0; }
-    else { HalfMoveClock++; } 
-  }
-  currentFEN += " " + HalfMoveClock;
-
-  // Fullmove number
-  currentFEN += " " + (Math.floor(CurrentPly/2)+1);
-
-  return currentFEN;
-}
-
-fenWin = null;
-function displayFenData() {
-  if (fenWin && !fenWin.closed) { fenWin.close(); }
-
-  currentFEN = CurrentFEN();
-
-  currentMovesString = "";
-  lastLineStart = 0;
-  for(thisPly = CurrentPly; thisPly <= StartPly + PlyNumber; thisPly++) {
-    addToMovesString = "";
-    if (thisPly == StartPly + PlyNumber) {
-      if ((gameResult[currentGame]) && (gameResult[currentGame] != "*")) {
-        addToMovesString = gameResult[currentGame];
-      }
-    } else {
-      if ((thisPly%2) === 0) { addToMovesString = (Math.floor(thisPly/2)+1) + ". "; }
-      else if (thisPly == CurrentPly) {
-        addToMovesString = (Math.floor(thisPly/2)+1) + "... ";
-      }
-      addToMovesString += Moves[thisPly];
-    }
-    if (currentMovesString.length + addToMovesString.length + 1 > lastLineStart + 80) {
-      lastLineStart = currentMovesString.length;
-      currentMovesString += "\n" + addToMovesString;
-    } else {
-      if (currentMovesString.length > 0) { currentMovesString += " "; }
-      currentMovesString += addToMovesString;
-    }
-  }
-
-  fenWin = window.open("", "fen_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
-  if (fenWin !== null) {
-    fenWin.document.open("text/html", "replace");
-    fenWin.document.write("<html>");
-    fenWin.document.write("<head><title>pgn4web FEN string</title><link rel='shortcut icon' href='pawn.ico' /></head>");
-    fenWin.document.write("<body>\n");
-    fenWin.document.write("<b><pre>\n\n" + currentFEN + "\n\n</pre></b>\n<hr>\n");
-    fenWin.document.write("<pre>\n\n");
-    tmpString = gameEvent[currentGame] ? gameEvent[currentGame] : "?";
-    fenWin.document.write("[Event \"" + tmpString + "\"]\n");
-    tmpString = gameSite[currentGame] ? gameSite[currentGame] : "?";
-    fenWin.document.write("[Site \"" + tmpString + "\"]\n");
-    tmpString = gameDate[currentGame] ? gameDate[currentGame] : "????.??.??";
-    fenWin.document.write("[Date \"" + tmpString + "\"]\n");
-    tmpString = gameRound[currentGame] ? gameRound[currentGame] : "?";
-    fenWin.document.write("[Round \"" + tmpString + "\"]\n");
-    tmpString = gameWhite[currentGame] ? gameWhite[currentGame] : "?";
-    fenWin.document.write("[White \"" + tmpString + "\"]\n");
-    tmpString = gameBlack[currentGame] ? gameBlack[currentGame] : "?";
-    fenWin.document.write("[Black \"" + tmpString + "\"]\n");
-    tmpString = gameResult[currentGame] ? gameResult[currentGame] : "*";
-    fenWin.document.write("[Result \"" + tmpString + "\"]\n");
-    fenWin.document.write("[SetUp \"1\"]\n");
-    fenWin.document.write("[FEN \"" + CurrentFEN() + "\"]\n\n");
-    fenWin.document.write(currentMovesString);
-    fenWin.document.write("\n</pre>\n</body></html>");
-    fenWin.document.close();
-    if (window.focus) { fenWin.window.focus(); }
   }
 }
 
@@ -882,7 +746,6 @@ var gameEvent = new Array();
 var gameSite = new Array();
 var gameRound = new Array();
 var gameResult = new Array();
-var gameSetUp = new Array();
 var gameFEN = new Array();
 var gameInitialWhiteClock = new Array();
 var gameInitialBlackClock = new Array();
@@ -906,7 +769,6 @@ var LiveBroadcastDemo = false;
 var LiveBroadcastStarted = false;
 var LiveBroadcastEnded = false;
 var LiveBroadcastPaused = false;
-var LiveBroadcastTicker = 0;
 var LiveBroadcastStatusString = "";
 var LiveBroadcastPlaceholderEvent = 'pgn4web live broadcast';
 var LiveBroadcastPlaceholderPgn = '[Event "' + LiveBroadcastPlaceholderEvent + '"]';
@@ -930,7 +792,9 @@ var mvCaptured    = -1;
 var mvCapturedId  = -1;
 
 Board = new Array(8);
-for(i=0; i<8; ++i) { Board[i] = new Array(8); }
+for(i=0; i<8; ++i){
+ Board[i] = new Array(8);
+}
 
 // HistCol and HistRow contain move history up to the last replayed ply
 // HistCol[0] and HistRow[0] contain the from square (0..7, 0..7 from square a1)
@@ -980,9 +844,8 @@ PieceCode[3] = "B";
 PieceCode[4] = "N";
 PieceCode[5] = "P";
 
-var FenPieceName = "KQRBNP";
-var FenStringStart = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-var ImageOffset  = -1; 
+var FenString   = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+var ImageOffset = -1; 
                                                 
 var ImagePath = '';                                                 
 var ImagePathOld;
@@ -1020,7 +883,6 @@ var pgnHeaderTagRegExpGlobal = /\[\s*(\w+)\s*"([^"]*)"\s*\]/g;
 var dummyPgnHeader = '[x""]';
 var emptyPgnHeader = '[White ""]\n[Black ""]\n[Result ""]\n[Date ""]\n[Event ""]\n[Site ""]\n[Round ""]\n\n';
 var templatePgnHeader = '[White "?"]\n[Black "?"]\n[Result "?"]\n[Date "?"]\n[Event "?"]\n[Site "?"]\n[Round "?"]\n';
-var alertPgnHeader = '[White ""]\n[Black ""]\n[Result ""]\n[Date ""]\n[Event ""]\n[Site ""]\n[Round ""]\n\n{error: click on the top left chessboard square for debug info}';
 
 var gameSelectorHead      = ' ...';
 var gameSelectorMono      = true;
@@ -1034,13 +896,14 @@ var gameSelectorChBlack   = 15;
 var gameSelectorChResult  = 0;
 var gameSelectorChDate    = 10;
 
-function CheckLegality(what, plyCount) {
+function CheckLegality(what, plyCount){
   var retVal;
   var start;
   var end;
   var isCheck;
-
-  // Is it a castling move?
+  /*
+   * Is it a castling move/
+   */
   if (what == 'O-O'){
     if (!CheckLegalityOO()) { return false; }
     start = PieceCol[MoveColor][0];
@@ -1064,13 +927,16 @@ function CheckLegality(what, plyCount) {
     StoreMove(plyCount);
     return true;
   } 
-  
-  // Some checks common to all pieces:
-  // If it is not a capture the square has to be empty.
-  // If it is a capture the TO square has to be occupied by a piece of the
-  // opposite color, with the exception of the en-passant capture.
-  // If the moved piece and the piece in the TO square are different then 
-  // the moved piece has to be a pawn promoting.
+  /*
+   * Some checks common to all pieces:
+   *
+   * o If it is not a capture the square has to be empty.
+   * o If it is a capture the TO square has to be occupied by a piece of the
+   *   opposite color, with the exception of the en-passant capture.
+   * o If the moved piece and the piece in the TO square are different then 
+   *   the moved piece has to be a pawn promoting.
+   *
+   */
   if (!mvCapture){
     if (Board[mvToCol][mvToRow] !== 0) { return false; }
   }
@@ -1083,33 +949,46 @@ function CheckLegality(what, plyCount) {
     if (mvPieceOnTo >= 6)               { return false; }
     if (mvToRow     != 7*(1-MoveColor)) { return false; }
   }
-  
-  // It is a piece move. Loop over all pieces and find the ones of the same
-  // type as the one in the move. For each one of these check if they could 
-  // have made the move.
+  /*
+   * It is a piece move. Loop over all pieces and find the ones of the same
+   * type as the one in the move. For each one of these check if they could 
+   * have made the move.
+   */
   var pieceId;
   for (pieceId = 0; pieceId < 16; ++pieceId){
      if (PieceType[MoveColor][pieceId] == mvPiece){
-      if (mvPiece == 1) { retVal = CheckLegalityKing(pieceId); }
-      else if (mvPiece == 2) { retVal = CheckLegalityQueen(pieceId); }
-      else if (mvPiece == 3) { retVal = CheckLegalityRook(pieceId); }
-      else if (mvPiece == 4) { retVal = CheckLegalityBishop(pieceId); }
-      else if (mvPiece == 5) { retVal = CheckLegalityKnight(pieceId); }
-      else if (mvPiece == 6) { retVal = CheckLegalityPawn(pieceId); }
-      if (retVal) {
+      if (mvPiece == 1){
+	retVal = CheckLegalityKing(pieceId);
+      } else if (mvPiece == 2){
+        retVal = CheckLegalityQueen(pieceId);
+      } else if (mvPiece == 3){
+	retVal = CheckLegalityRook(pieceId);
+      } else if (mvPiece == 4){
+	retVal = CheckLegalityBishop(pieceId);
+      } else if (mvPiece == 5){
+	retVal = CheckLegalityKnight(pieceId);
+      } else if (mvPiece == 6){
+	retVal = CheckLegalityPawn(pieceId);
+      }
+      if (retVal){
 	mvPieceId = pieceId;
-        // Now that the board is updated check if the king is in check.
+       /*
+        * Now that the board is updated check if the king is in check.
+        */
         StoreMove(plyCount);
         isCheck = IsCheck(PieceCol[MoveColor][0], PieceRow[MoveColor][0], MoveColor);
-	if (!isCheck) { return true; }
-	else { UndoMove(plyCount); }
+	if (!isCheck){
+	  return true;
+	} else{
+	  UndoMove(plyCount);
+	}
       }
     }
   }
   return false;
 }
 
-function CheckLegalityKing(thisKing) {
+function CheckLegalityKing(thisKing){
   if ((mvFromCol >= 0) &&
       (mvFromCol != PieceCol[MoveColor][thisKing])) { return false; }
   if ((mvFromRow > 0) &&
@@ -1121,7 +1000,7 @@ function CheckLegalityKing(thisKing) {
   return true;
 }
 
-function CheckLegalityQueen(thisQueen) {
+function CheckLegalityQueen(thisQueen){
   if ((mvFromCol >= 0) &&
       (mvFromCol != PieceCol[MoveColor][thisQueen])) { return false; }
   if ((mvFromRow >= 0) &&
@@ -1138,7 +1017,7 @@ function CheckLegalityQueen(thisQueen) {
   return true;
 }
 
-function CheckLegalityRook(thisRook) {
+function CheckLegalityRook(thisRook){
   if ((mvFromCol >= 0) &&
       (mvFromCol != PieceCol[MoveColor][thisRook])) { return false; }
   if ((mvFromRow >= 0) &&
@@ -1153,7 +1032,7 @@ function CheckLegalityRook(thisRook) {
   return true;
 }
 
-function CheckLegalityBishop(thisBishop) {
+function CheckLegalityBishop(thisBishop){
   if ((mvFromCol >= 0) &&
       (mvFromCol != PieceCol[MoveColor][thisBishop])) { return false; }
   if ((mvFromRow >= 0) &&
@@ -1168,7 +1047,7 @@ function CheckLegalityBishop(thisBishop) {
   return true;
 }
 
-function CheckLegalityKnight(thisKnight) {
+function CheckLegalityKnight(thisKnight){
   if ((mvFromCol >= 0) &&
       (mvFromCol != PieceCol[MoveColor][thisKnight])) { return false; }
   if ((mvFromRow >= 0) &&
@@ -1176,11 +1055,9 @@ function CheckLegalityKnight(thisKnight) {
 
   if (Math.abs(PieceCol[MoveColor][thisKnight]-mvToCol)*
       Math.abs(PieceRow[MoveColor][thisKnight]-mvToRow) != 2) { return false; }
-
   return true;
 }
-
-function CheckLegalityPawn(thisPawn) {
+function CheckLegalityPawn(thisPawn){
   if ((mvFromCol >= 0) &&
       (mvFromCol != PieceCol[MoveColor][thisPawn])) { return false; }
   if ((mvFromRow >= 0) &&
@@ -1189,30 +1066,31 @@ function CheckLegalityPawn(thisPawn) {
   if (Math.abs(PieceCol[MoveColor][thisPawn]-mvToCol) != mvCapture)
   { return false; }
 
-  if (mvCapture) {
+  if (mvCapture){
     if (PieceRow[MoveColor][thisPawn]-mvToRow != 2*MoveColor-1) { return false; }
-  } else {
+  } else{
     if (PieceRow[MoveColor][thisPawn]-mvToRow == 4*MoveColor-2){
       if (PieceRow[MoveColor][thisPawn] != 1+5*MoveColor) { return false; }
       if (Board[mvToCol][mvToRow+2*MoveColor-1] !== 0)    { return false; }
-    } else {
+    } else{
       if (PieceRow[MoveColor][thisPawn]-mvToRow != 2*MoveColor-1) { return false; }
     }
   }
   return true;
 }
 
-function CheckLegalityOO() {
+function CheckLegalityOO(){
   if (CastlingShort[MoveColor] === 0) { return false; }
   if (PieceMoveCounter[MoveColor][0] > 0) { return false; }
-  
-  // Find which rook was involved in the castling.
+  /*
+   * Find which rook was involved in the castling.
+   */
   var legal    = false;
   var thisRook = 0;
-  while (thisRook < 16) {
+  while (thisRook < 16){
     if ((PieceCol[MoveColor][thisRook]  >  PieceCol[MoveColor][0]) &&
 	(PieceRow[MoveColor][thisRook]  == MoveColor*7)            &&
-        (PieceType[MoveColor][thisRook] == 3)) {
+        (PieceType[MoveColor][thisRook] == 3)){
       legal = true;
       break;
     }
@@ -1220,32 +1098,36 @@ function CheckLegalityOO() {
   }
   if (!legal) { return false; }
   if (PieceMoveCounter[MoveColor][thisRook] > 0) { return false; }
-  
-  // Check no piece is between the king and the rook. To make it compatible
-  // with fisher-random rules clear the king and rook squares now.
+  /*
+   * Check no piece is between the king and the rook. To make it compatible
+   * with fisher-random rules clear the king and rook squares now.
+   */
   Board[PieceCol[MoveColor][0]][MoveColor*7]        = 0;
   Board[PieceCol[MoveColor][thisRook]][MoveColor*7] = 0;
   var col = PieceRow[MoveColor][thisRook];
   if (col < 6) { col = 6; }
-  while ((col > PieceCol[MoveColor][0]) || (col >= 5)) {
-    if (Board[col][MoveColor*7] !== 0) { return false; }
+  while ((col > PieceCol[MoveColor][0]) || (col >= 5)){
+    if (Board[col][MoveColor*7] !== 0){
+      return false;
+    }
     --col;
   }
   castleRook = thisRook;
   return true;
 }
 
-function CheckLegalityOOO() {
+function CheckLegalityOOO(){
   if (CastlingLong[MoveColor] === 0) { return false; }
   if (PieceMoveCounter[MoveColor][0] > 0) { return false; }
-
-  // Find which rook was involved in the castling.
+  /*
+   * Find which rook was involved in the castling.
+   */
   var legal    = false;
   var thisRook = 0;
   while (thisRook < 16){
     if ((PieceCol[MoveColor][thisRook]  <  PieceCol[MoveColor][0]) &&
 	(PieceRow[MoveColor][thisRook]  == MoveColor*7)            &&
-        (PieceType[MoveColor][thisRook] == 3)) {
+        (PieceType[MoveColor][thisRook] == 3)){
       legal = true;
       break;
     }
@@ -1253,22 +1135,25 @@ function CheckLegalityOOO() {
   }
   if (!legal) { return false; }
   if (PieceMoveCounter[MoveColor][thisRook] > 0) { return false; }
-
-  // Check no piece is between the king and the rook. To make it compatible
-  // with fisher-random rules clear the king and rook squares now.
+  /*
+   * Check no piece is between the king and the rook. To make it compatible
+   * with fisher-random rules clear the king and rook squares now.
+   */
   Board[PieceCol[MoveColor][0]][MoveColor*7]        = 0;
   Board[PieceCol[MoveColor][thisRook]][MoveColor*7] = 0;
   var col = PieceRow[MoveColor][thisRook];
   if (col > 2) { col = 2; }
-  while ((col > PieceCol[MoveColor][0]) || (col <= 3)) {
-    if (Board[col][MoveColor*7] !== 0) { return false; }
+  while ((col > PieceCol[MoveColor][0]) || (col <= 3)){
+    if (Board[col][MoveColor*7] !== 0){
+      return false;
+    }
     ++col;
   }
   castleRook = thisRook;
   return true;
 }
 
-function CheckClearWay(thisPiece) {
+function CheckClearWay(thisPiece){
   var stepCol = sign(mvToCol-PieceCol[MoveColor][thisPiece]);
   var stepRow = sign(mvToRow-PieceRow[MoveColor][thisPiece]);
 
@@ -1283,7 +1168,7 @@ function CheckClearWay(thisPiece) {
   return true;
 }
 
-function ClearMove(move) {
+function ClearMove(move){
   var ss = move.length;
   var cc = -1;
   var ii = 0;
@@ -1291,7 +1176,6 @@ function ClearMove(move) {
   while(ii < ss){
     cc = move.charCodeAt(ii);
     if ((cc == 45) || ((cc >= 48) && (cc <= 57)) || (cc == 61) ||
-//        (cc == 35) || (cc == 43) || // patch this to pass through '+' and '#' signs
 	((cc >= 65) && (cc <= 90)) || ((cc >=97) && (cc <= 122))){
 	  mm += move.charAt(ii);
     }
@@ -1302,39 +1186,36 @@ function ClearMove(move) {
   return mm;
 }
 
-function GoToMove(thisMove) {
-  var diff = thisMove - CurrentPly;
-  if (diff > 0) { MoveForward(diff); }
-  else { MoveBackward(-diff); }
-}
-
-function SetShortcutKeysEnabled(onOff) {
-  shortcutKeysEnabled = onOff;
-}
-
-function interactivelyToggleShortcutKeys() {
-  if (confirm("Shortcut keys currently " + (shortcutKeysEnabled ? "enabled" : "disabled") + ".\nToggle shortcut keys to " + (shortcutKeysEnabled ? "DISABLED" : "ENABLED") + "?")) {
-    SetShortcutKeysEnabled(!shortcutKeysEnabled);
+function GoToMove(thisMove){
+  var diff       = thisMove - CurrentPly;
+  if (diff > 0){
+    MoveForward(diff);
+  } else{
+    MoveBackward(-diff);
   }
 }
 
-function SetCommentsIntoMoveText(onOff) {
+function SetShortcutKeysEnabled(onOff){
+  shortcutKeysEnabled = onOff;
+}
+
+function SetCommentsIntoMoveText(onOff){
   commentsIntoMoveText = onOff;
 }
 
-function SetCommentsOnSeparateLines(onOff) { 
+function SetCommentsOnSeparateLines(onOff){ 
   commentsOnSeparateLines = onOff;
 }
 
-function SetAutostartAutoplay(onOff) {
+function SetAutostartAutoplay(onOff){
   autostartAutoplay = onOff;
 }
 
-function SetAutoplayNextGame(onOff) {
+function SetAutoplayNextGame(onOff){
   autoplayNextGame = onOff;
 }
 
-function SetInitialHalfmove(number_or_string, always) {
+function SetInitialHalfmove(number_or_string, always){
   if (always === true) { alwaysInitialHalfmove = true; }
   initialHalfmove = number_or_string;
   if (initialHalfmove == "start") { return; }
@@ -1344,7 +1225,7 @@ function SetInitialHalfmove(number_or_string, always) {
   if ((initialHalfmove = parseInt(initialHalfmove, 10)) == NaN) { initialHalfmove = 0; }
 }
 
-function SetInitialGame(number_or_string) {
+function SetInitialGame(number_or_string){
   initialGame = number_or_string;
   if (initialGame == "first") { return; }
   if (initialGame == "last") { return; }
@@ -1357,7 +1238,7 @@ function SetInitialGame(number_or_string) {
 // If this fails, then look for the beginning of the comment for a sequence of numbers 
 // and ':' and '.' characters.
   
-function clockFromComment(comment) {
+function clockFromComment(comment){
   var clock = "";
   if ((DGTclock = comment.match(/\[%clk\s*(.*?)\]/)) !== null) { clock = DGTclock[1]; }
   else { if (!(clock = comment.match(/^\s*[0-9:\.]+/))) {clock = ""; } }
@@ -1365,19 +1246,22 @@ function clockFromComment(comment) {
 }
 
 
-function HighlightLastMove() {
+function HighlightLastMove(){
   var anchorName;
 
-  // Remove the highlighting from the old anchor if any.
+  /*
+   * Remove the highlighting from the old anchor if any.
+   */
   if (oldAnchor >= 0){
     anchorName = 'Mv'+oldAnchor;
     theAnchor = document.getElementById(anchorName);
     if (theAnchor !== null) { theAnchor.className = 'move'; }
   }
-
-  // Find which move has to be highlighted. If the move number is negative
-  // we are at the starting position and nothing is to be highlighted and
-  // the header on top of the board is removed.
+  /*
+   * Find which move has to be highlighted. If the move number is negative
+   * we are at the starting position and nothing is to be highlighted and
+   * the header on top of the board is removed.
+   */
   var showThisMove = CurrentPly - 1;
   if (showThisMove > StartPly + PlyNumber) { showThisMove = StartPly + PlyNumber; }
 
@@ -1388,18 +1272,30 @@ function HighlightLastMove() {
       thisComment = MoveComments[showThisMove+1].replace(/\[%.*?\]\s*/g,''); // note trailing spaces are removed also
       // remove comments that are all spaces
       if (thisComment.match(/^\s*$/)) { thisComment = ''; }
-    } else { thisComment = ''; }
-    theShowCommentTextObject.innerHTML = thisComment !== '' ? MoveComments[showThisMove+1] : '-';
+    } else {
+      thisComment = '';
+    }
+    if (thisComment !== '') {
+      theShowCommentTextObject.innerHTML = MoveComments[showThisMove+1]; 
+    } else {
+      theShowCommentTextObject.innerHTML = '-';
+    }
     theShowCommentTextObject.className = 'GameLastComment';
   }
   
-  // Show the side to move
-  text = (showThisMove+1)%2 === 0 ? 'white' : 'black';
+  /*
+   * Show the side to move
+   */ 
+  if ((showThisMove+1)%2 === 0) { text='white'; } // black has just moved
+  else { text='black'; }
  
   theObject = document.getElementById("GameSideToMove");
   if (theObject !== null) { theObject.innerHTML = text; }
 
-  // Show the clock (if suitable info is found in the game comment)
+  /*
+   * Show the clock (if suitable info is found in the game comment)
+   */
+  
   if ((showThisMove+1)%2 == 1) { // white has just moved
     lastMoverClockObject = document.getElementById("GameWhiteClock");
     initialLastMoverClock = gameInitialWhiteClock[currentGame];
@@ -1413,25 +1309,38 @@ function HighlightLastMove() {
   }
 
   if (lastMoverClockObject !== null) {
-    lastMoverClockObject.innerHTML = showThisMove+1 > StartPly ?
-                                     clockFromComment(MoveComments[showThisMove+1]) :
-                                     initialLastMoverClock;
+    if (showThisMove+1 > StartPly) { 
+      lastMoverClockObject.innerHTML = clockFromComment(MoveComments[showThisMove+1]); 
+    } else {
+      lastMoverClockObject.innerHTML = initialLastMoverClock;
+    }
   }
   if (beforeLastMoverClockObject !== null) {
-    beforeLastMoverClockObject.innerHTML = showThisMove+1 > StartPly+1 ?
-                                           clockFromComment(MoveComments[showThisMove]) :
-                                           initialBeforeLastMoverClock;
+    if (showThisMove+1 > StartPly+1) { 
+      beforeLastMoverClockObject.innerHTML = clockFromComment(MoveComments[showThisMove]); 
+    } else {
+      beforeLastMoverClockObject.innerHTML = initialBeforeLastMoverClock;
+    }
   }
 
-  // Show the next move
+  /*
+   * Show the next move
+   */
+
   var theShowMoveTextObject = document.getElementById("GameNextMove");
-  if (theShowMoveTextObject !== null) {
-    if (showThisMove+1 >= (StartPly+PlyNumber)) {
+  if (theShowMoveTextObject !== null){
+    if (showThisMove+1 >= (StartPly+PlyNumber)){
       text = gameResult[currentGame];
-    } else {
-      text = (Math.floor((showThisMove+1)/2) + 1) + 
-             ((showThisMove+1) % 2 === 0 ? '. ' : '... ') +
-             Moves[showThisMove+1];
+    }else{
+      move = Moves[showThisMove+1];
+      text = '';
+      mvNum = Math.floor((showThisMove+1)/2) + 1;
+      if ((showThisMove+1) % 2 === 0){
+        text += mvNum + '. ';
+      } else{
+        text += mvNum + '... ';
+      }
+      text += move;
     }
     theShowMoveTextObject.innerHTML = text; 
     theShowMoveTextObject.className = 'GameNextMove';
@@ -1439,29 +1348,37 @@ function HighlightLastMove() {
   }
 
   theShowMoveTextObject = document.getElementById("GameLastMove");
-  if (theShowMoveTextObject !== null) {
-    if (showThisMove < StartPly) {
+  if (theShowMoveTextObject !== null){
+    if (showThisMove < StartPly){
       text = '-';
-    } else {
-      text = (Math.floor(showThisMove/2) + 1) + 
-             (showThisMove % 2 === 0 ? '. ' : '... ') +
-             Moves[showThisMove];
+    }else{
+      move = Moves[showThisMove];
+      var text = '';
+      var mvNum = Math.floor(showThisMove/2) + 1;
+      if (showThisMove % 2 === 0){
+        text += mvNum + '. ';
+      } else{
+        text += mvNum + '... ';
+      }
+      text += move;
     }
     theShowMoveTextObject.innerHTML = text; 
     theShowMoveTextObject.className = 'GameLastMove';
     theShowMoveTextObject.style.whiteSpace = 'nowrap';
   }
 
-  if (showThisMove >= (StartPly-1)) {
+  if (showThisMove >= (StartPly-1)){
     anchorName = 'Mv' + (showThisMove + 1);
     theAnchor = document.getElementById(anchorName);
     if (theAnchor !== null) { theAnchor.className = 'move moveOn'; }
     oldAnchor = showThisMove + 1;
 
-    if (highlightOption) {
+    if (highlightOption){
       if (showThisMove < StartPly) {
-        highlightColFrom = highlightRowFrom = -1;
-        highlightColTo   = highlightRowTo   = -1;
+        highlightColFrom = -1;
+        highlightRowFrom = -1;
+        highlightColTo = -1;
+        highlightRowTo = -1;
       } else {
         highlightColFrom = HistCol[0][showThisMove];
         if (highlightColFrom == undefined) { highlightColFrom = -1; }
@@ -1477,12 +1394,12 @@ function HighlightLastMove() {
   }
 }
 
-function SetHighlightOption(on) {
+function SetHighlightOption(on){
   highlightOption = on;
 }
 
 
-function SetHighlight(on) {
+function SetHighlight(on){
   SetHighlightOption(on);
   if (on) { HighlightLastMove(); }
   else { highlightMove(-1, -1, -1, -1); }
@@ -1493,12 +1410,12 @@ var lastColFromHighlighted = -1;
 var lastRowFromHighlighted = -1;
 var lastColToHighlighted = -1;
 var lastRowToHighlighted = -1;
-function highlightMove(colFrom, rowFrom, colTo, rowTo) {
+function highlightMove(colFrom, rowFrom, colTo, rowTo){
 
   highlightSquare(lastColFromHighlighted, lastRowFromHighlighted, false);
   highlightSquare(lastColToHighlighted, lastRowToHighlighted, false);
 
-  if ( highlightSquare(colFrom, rowFrom, true) ) {
+  if ( highlightSquare(colFrom, rowFrom, true) ){
     lastColFromHighlighted = colFrom;
     lastRowFromHighlighted = rowFrom;
   } else {
@@ -1506,7 +1423,7 @@ function highlightMove(colFrom, rowFrom, colTo, rowTo) {
     lastRowFromHighlighted = -1;
   }
 
-  if ( highlightSquare(colTo, rowTo, true) ) {
+  if ( highlightSquare(colTo, rowTo, true) ){
     lastColToHighlighted = colTo;
     lastRowToHighlighted = rowTo;
   } else {
@@ -1528,21 +1445,19 @@ function highlightSquare(col, row, on) {
   if (theObject === null) { return false; }
 
   if (on) {
-    theObject.className = (trow+tcol)%2 === 0 ? "highlightWhiteSquare" : "highlightBlackSquare";
+    if ((trow+tcol)%2 === 0) { theObject.className = "highlightWhiteSquare"; }
+    else { theObject.className = "highlightBlackSquare"; }
   } else {
-    theObject.className = (trow+tcol)%2 === 0 ? "whiteSquare" : "blackSquare";
+    if ((trow+tcol)%2 === 0) { theObject.className = "whiteSquare"; }
+    else { theObject.className = "blackSquare"; }
   }
   return true;
 }
 
 
-function pgnGameFromPgnText(pgnText) {
+function pgnGameFromPgnText(pgnText){
 
-  // replace < and > with html entities to avoid html injection form the PGN data
-  pgnText = pgnText.replace(/</g, "&lt;");
-  pgnText = pgnText.replace(/>/g, "&gt;");
-
-  lines = pgnText.split("\n");
+  lines=pgnText.split("\n");
   inGameHeader = false;
   inGameBody = false;
   gameIndex = -1;
@@ -1552,15 +1467,15 @@ function pgnGameFromPgnText(pgnText) {
     // according to the PGN standard lines starting with % should be ignored
     if(lines[ii].charAt(0) == '%') { continue; }
 
-    if(pgnHeaderTagRegExp.test(lines[ii]) === true) {
-      if(!inGameHeader) {
+    if(pgnHeaderTagRegExp.test(lines[ii]) === true){ 
+      if(! inGameHeader){
         gameIndex++;
         pgnGame[gameIndex] = '';
       }
       inGameHeader=true;
       inGameBody=false;
-    } else {
-      if(inGameHeader) {
+    }else{
+      if(inGameHeader){
         inGameHeader=false;
         inGameBody=true;
       }
@@ -1578,6 +1493,12 @@ function pgnGameFromPgnText(pgnText) {
 
 function loadPgnFromPgnUrl(pgnUrl){
   
+  var XMLrequest_error_debug_message = 'DEBUG information for web site developers\n\n' + 
+    'Failed retrieving the PGN file at the URL:\n' + pgnUrl + '\n\n' + 
+    '1) Make sure that the PGN URL is correct, that the PGN file is available and supported by the web host. Some web hosts do not allow files with arbitary extensions; in that case try renaming your .pgn file as .txt or another extension supported by your web host. You can check for all the above by typing the PGN URL in your web browser, if the browser does not download the file, some of the above issues are likely to apply.\n\n' +
+    '2) Make sure that your PGN file is on the same server/domain as your HTML file since javascript cannot load files from a different server/domain.\n\n' +
+    '3) If you are testing your HTML pages from your local computer and you are using Internet Explorer 7 (or above) please make sure the "Enable native XMLHTTP support" option is NOT enabled (see Control Panel, Internet Options, Advanced). A "feature" of IE7, when this option is enabled, stops javascript from loading local files.';
+
   var http_request = false;
     if (window.XMLHttpRequest) { // Mozilla, Safari, ...
       http_request = new XMLHttpRequest();
@@ -1585,14 +1506,16 @@ function loadPgnFromPgnUrl(pgnUrl){
         http_request.overrideMimeType('text/xml');
       }
     } else if (window.ActiveXObject) { // IE
-      try { http_request = new ActiveXObject("Msxml2.XMLHTTP"); }
-      catch (e) {
-        try { http_request = new ActiveXObject("Microsoft.XMLHTTP"); }
-        catch (e) { }
+      try {
+        http_request = new ActiveXObject("Msxml2.XMLHTTP");
+      } catch (e) {
+        try {
+          http_request = new ActiveXObject("Microsoft.XMLHTTP");
+        } catch (e) { }
       }
     }
   if (!http_request){
-    myAlert('error: XMLHttpRequest failed for PGN URL\n' + pgnUrl, true);
+    myAlert('Error with XMLHttpRequest for reading PGN file from URL');
     return false; 
   }
 
@@ -1601,31 +1524,34 @@ function loadPgnFromPgnUrl(pgnUrl){
     if (LiveBroadcastDelay > 0) {
       dd = new Date();
       http_request.open("GET", pgnUrl + "?nocahce=" + Math.random(), false); 
-    } else { http_request.open("GET", pgnUrl, false); }
+    } else {
+      http_request.open("GET", pgnUrl, false); 
+    }
     // anti-caching tecnique number 2: add header option
     if (LiveBroadcastDelay > 0) { 
       http_request.setRequestHeader( "If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT" ); 
     }
     http_request.send(null);
   } catch(e) {
-      myAlert('error: request failed for PGN URL\n' + pgnUrl, true);
+      var answer = myConfirm("Error with request for PGN URL:\n" + pgnUrl + "\n\nPress OK for web developer DEBUG information.");
+      if (answer) { myAlert(XMLrequest_error_debug_message); }
       return false;
 }
 
   if((http_request.readyState == 4) && ((http_request.status == 200) || (http_request.status === 0))){
     if (! pgnGameFromPgnText(http_request.responseText)) {
-      myAlert('error: no games found in PGN file\n' + pgnUrl, true);
+      myAlert('Error: no games found in PGN file');
       return false;
     }
   }else{ 
-    myAlert('error: failed reading PGN from URL\n' + pgnUrl, true);
+    myAlert('Error reading PGN file from URL:\n' + pgnUrl);
     return false;
   }
 
   return true;
 }
 
-function SetPgnUrl(url) {
+function SetPgnUrl(url){
   pgnUrl = url;
 }
 
@@ -1665,10 +1591,12 @@ function checkLiveBroadcastStatus() {
     }
     LiveBroadcastEnded = (liveGamesRunning === 0);
 
-    LiveBroadcastStatusString = LiveBroadcastEnded ?
-                                "live broadcast ended" :
-                                "live games: " + liveGamesRunning +
-                                " &nbsp; finished: " + (numberOfGames - liveGamesRunning);
+    if (LiveBroadcastEnded) {
+      LiveBroadcastStatusString = "live broadcast ended";
+    } else {
+      LiveBroadcastStatusString = "live games: " + liveGamesRunning + 
+                                  " &nbsp; finished: " + (numberOfGames - liveGamesRunning);
+    }
   }
 
   theObject = document.getElementById("GameLiveStatus");
@@ -1676,20 +1604,28 @@ function checkLiveBroadcastStatus() {
 }
 
 function restartLiveBroadcastTimeout() {
+
   if (LiveBroadcastDelay === 0) { return; }
+
   if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); LiveBroadcastInterval = null; }
+ 
   checkLiveBroadcastStatus();
+
   needRestart = (!LiveBroadcastEnded);
+  
   if ((needRestart === true) && (!LiveBroadcastPaused)){
     LiveBroadcastInterval = setTimeout("refreshPgnSource()", LiveBroadcastDelay * 60000);
   }
-  LiveBroadcastTicker++;
+
 }
 
 
 function refreshPgnSource() {
+
   if (LiveBroadcastDelay === 0) { return; }
+
   if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); LiveBroadcastInterval = null; }
+
   if (LiveBroadcastDemo) {
     for(ii=0;ii<numberOfGames;ii++) {
       rnd = Math.random();
@@ -1710,13 +1646,22 @@ function refreshPgnSource() {
   firstStart = true;
   textSelectOptions = '';
 
-  oldCurrentPly = CurrentPly != StartPly + PlyNumber ? CurrentPly : -1;
+  if (CurrentPly != StartPly + PlyNumber) { oldCurrentPly = CurrentPly; }
+  else {oldCurrentPly = -1;}
 
-  oldAutoplay = isAutoPlayOn;
-  if (isAutoPlayOn) { SetAutoPlay(false); }
+  if (isAutoPlayOn) {
+    SetAutoPlay(false);
+    oldAutoplay = true;
+  } else {
+    oldAutoplay = false; 
+  }
 
-  LiveBroadcastStarted = loadPgnFromPgnUrl(pgnUrl);
-  if (!LiveBroadcastStarted) { pgnGameFromPgnText(LiveBroadcastPlaceholderPgn); }
+  if ( loadPgnFromPgnUrl(pgnUrl) ) {
+    LiveBroadcastStarted = true; 
+  } else {
+    LiveBroadcastStarted = false;
+    pgnGameFromPgnText(LiveBroadcastPlaceholderPgn); 
+  } 
 
   LoadGameHeaders();
   foundOldGame = false;
@@ -1730,8 +1675,7 @@ function refreshPgnSource() {
 
   if ((foundOldGame === true) && (oldCurrentPly >= 0)) { 
     oldInitialHalfmove = initialHalfmove; 
-    initialHalfmove = oldCurrentPly;
-  }
+    initialHalfmove = oldCurrentPly; }
   
   Init();
 
@@ -1748,13 +1692,18 @@ function refreshPgnSource() {
 
 }
 
+
 function createBoard(){
+
+  if ((! pgnUrl) && (! document.getElementById("pgnText"))) {
+    myAlert('Error: missing PGN URL location or pgnText.\n\nIn your HTML file, either use in a SCRIPT statement:\n\n  SetPgnUrl("http://yoursite/yourpath/yourfile.pgn")\n\nor embed the PGN text as hidden element with id=pgnText, such as a TEXTAREA element with style display:none\n');
+    return; 
+  }
 
   theObject = document.getElementById("GameBoard");
   if (theObject !== null) {
-    theObject.innerHTML = '<DIV STYLE="font-size: small; font-family: sans-serif; ' +
-                          'padding: 10px; text-align: center;">' + 
-                          '...loading PGN data<br />please wait...</DIV>';
+    theObject.innerHTML = '<SPAN STYLE="font-style: italic;">' +
+                          'Please wait while loading PGN data...</SPAN>'; 
   }
 
   if (pgnUrl) {
@@ -1766,10 +1715,12 @@ function createBoard(){
       return;
     } else {
       if (LiveBroadcastDelay === 0) {
-        pgnGameFromPgnText(alertPgnHeader);
-        Init();
-        customFunctionOnPgnTextLoad();
-        myAlert('error: failed loading games from PGN URL\n' + pgnUrl, true);
+        theObject = document.getElementById("GameBoard");
+        if (theObject !== null) {
+          theObject.innerHTML = '<SPAN STYLE="font-style: italic;">' + 
+                                'Failed loading games from PGN file<br>' + 
+                                pgnUrl + '</SPAN>';
+        }
         return;
       } else { // live broadcast case, wait for live show to start
         LiveBroadcastStarted = false;
@@ -1780,7 +1731,9 @@ function createBoard(){
         return;
       }
     }
-  } else if ( document.getElementById("pgnText") ) {
+  } 
+  
+  if ( document.getElementById("pgnText") ) {
     if (document.getElementById("pgnText").tagName.toLowerCase() == "textarea") {
       tmpText = document.getElementById("pgnText").value;
     } else { // backward compatibility with pgn4web older than 1.77 when the <span> technique was used for pgnText
@@ -1790,7 +1743,6 @@ function createBoard(){
       // fixes issue with some browser replacing quotes with &quot; such as the blackberry browser
       if (tmpText.indexOf('"') < 0) { tmpText = tmpText.replace(/(&quot;)/g, '"'); }
     }
-
     // if no html header is present, add emptyPgnHeader at the top
     if (pgnHeaderTagRegExp.test(tmpText) === false) { tmpText = emptyPgnHeader + tmpText; }
 
@@ -1798,18 +1750,15 @@ function createBoard(){
       Init(); 
       customFunctionOnPgnTextLoad();
     } else {
-      pgnGameFromPgnText(alertPgnHeader);
-      Init();
-      customFunctionOnPgnTextLoad();
-      myAlert('error: no games found in PGN text', true);
+      myAlert('Error: no games found in PGN text');
+      return;
     }   
     return;
-  } else {
-    pgnGameFromPgnText(alertPgnHeader);
-    Init();
-    customFunctionOnPgnTextLoad();
-    myAlert('error: missing PGN URL location or pgnText in the HTML file', true);
-    return;
+  } 
+
+  if (theObject !== null) {
+    theObject.innerHTML = '<SPAN STYLE="font-style: italic;">' + 
+                          'Missing PGN data</SPAN>';
   }
 }
 
@@ -1819,6 +1768,7 @@ function Init(){
   if (isAutoPlayOn) { SetAutoPlay(false); }
   InitImages();
   if (firstStart){
+
     LoadGameHeaders();
     switch (initialGame) {
       case "first":
@@ -1842,15 +1792,15 @@ function Init(){
     }
   }
 
-  if ((gameSetUp[currentGame] != undefined) && (gameSetUp[currentGame] != "1")) { InitFEN(); }
-  else { InitFEN(gameFEN[currentGame]); }
-  
+  InitFEN(gameFEN[currentGame]);
   OpenGame(currentGame);
   
-  // Find the index of the first square image if needed.
-  if (ImageOffset < 0) {
-    for (ii = 0; ii < document.images.length; ++ii) {
-      if (document.images[ii].src == ClearImg.src) {
+  /*
+   * Find the index of the first square image if needed.
+   */
+  if (ImageOffset < 0){
+    for (ii = 0; ii < document.images.length; ++ii){
+      if (document.images[ii].src == ClearImg.src){
         ImageOffset = ii;
         break;
       }
@@ -1896,18 +1846,24 @@ function Init(){
 }
 
 
-function InitFEN(startingFEN) {
-  FenString = startingFEN != undefined ? startingFEN : FenStringStart;
-  
-  // Reset the board
+function InitFEN(startingFEN){
+  if (startingFEN != undefined){
+    FenString = startingFEN;
+  }else{
+    FenString = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+  }
+  /*
+   * Reset the board;
+   */
   var ii, jj;
-  for (ii = 0; ii < 8; ++ii) {
-    for (jj = 0; jj < 8; ++jj) {
+  for (ii = 0; ii < 8; ++ii){
+    for (jj = 0; jj < 8; ++jj){
       Board[ii][jj] = 0;
     }
   }
-
-  // Set the initial position. As of now only the normal starting position.
+  /*
+   * Set the initial position. As of now only the normal starting position.
+   */
   var color, pawn;
   StartPly  = 0;
   MoveCount = StartPly;
@@ -1916,11 +1872,15 @@ function InitFEN(startingFEN) {
 
   var newEnPassant = false;
   var newEnPassantCol;
-  for (ii = 0; ii < 2; ii++) { CastlingLong[ii] = CastlingShort[ii] = 1; }
-  InitialHalfMoveClock = 0;
 
-  if (FenString == "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1") {
-    for (color = 0; color < 2; ++color) {
+  for (ii = 0; ii < 2; ii++){
+    CastlingLong[ii]  = 1;
+    CastlingShort[ii] = 1;
+  }
+  HalfMove=0;
+
+  if (FenString == "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"){
+    for (color = 0; color < 2; ++color){
       PieceType[color][0] = 1;  // King
       PieceCol[color][0]  = 4;
       PieceType[color][1] = 2;  // Queen
@@ -1950,218 +1910,233 @@ function InitFEN(startingFEN) {
         var col = PieceCol[color][ii];
         var row = PieceRow[color][ii];
         Board[col][row] = (1-2*color)*PieceType[color][ii];
+        // myAlert("Standard FEN: Setting "+(1-2*color)*PieceType[color][ii]+ " at "+col+" / "+row);
       }
     }
-  } else {
+  } else{
     var cc, kk, ll, nn, mm;
-    for (ii = 0; ii < 2; ii++) {
-      for (jj = 0; jj < 16; jj++) {
-        PieceType[ii][jj] = -1;
-        PieceCol[ii][jj] = 0;
-        PieceRow[ii][jj] = 0;
-        PieceMoveCounter[ii][jj] = 0;
-      }
-    }
-
-    ii = 0; jj = 7; ll = 0; nn = 1; mm = 1; cc = FenString.charAt(ll++);
-    while (cc != " ") {
-      if (cc == "/") {
-        if (ii != 8) {
-          myAlert("error: invalid FEN [1] char "+ll+" '" + cc + "' in game "+(currentGame+1)+"\n"+FenString, true);
-          InitFEN();
-          return;
-        }
-        ii = 0;
-        jj--;
-      }
-      if (ii == 8) {
-        myAlert("error: invalid FEN [2] char "+ll+" '" + cc + "' in game "+(currentGame+1)+"\n"+FenString, true);
-        InitFEN();
-        return;
-      }
-      if (!isNaN(cc)) {
-        ii += parseInt(cc, 10);
-        if ((ii < 0) || (ii > 8)) {
-          myAlert("error: invalid FEN [3] char "+ll+" '" + cc + "' in game "+(currentGame+1)+"\n"+FenString, true);
-          InitFEN();
-          return;
+    for (ii=0; ii<2; ii++)
+      { for (jj=0; jj<16; jj++)
+        { PieceType[ii][jj]=-1;
+          PieceCol[ii][jj]=0;
+          PieceRow[ii][jj]=0;
+          PieceMoveCounter[ii][jj]=0;
         }
       }
-      if (cc.charCodeAt(0) == FenPieceName.toUpperCase().charCodeAt(0)) {
-        if (PieceType[0][0] != -1) {
-          myAlert("error: invalid FEN [4] char "+ll+" '" + cc + "' in game "+(currentGame+1)+"\n"+FenString, true);
-          InitFEN();
-          return;
-        }     
-        PieceType[0][0] = 1;
-        PieceCol[0][0] = ii;
-        PieceRow[0][0] = jj;
-        ii++;
-      }
-      if (cc.charCodeAt(0) == FenPieceName.toLowerCase().charCodeAt(0)) {
-        if (PieceType[1][0] != -1) {
-          myAlert("error: invalid FEN [5] char "+ll+" '" + cc + "' in game "+(currentGame+1)+"\n"+FenString, true);
-          InitFEN();
-          return;
-        }  
-        PieceType[1][0] = 1;
-        PieceCol[1][0] = ii;
-        PieceRow[1][0] = jj;
-        ii++;
-      }
-      for (kk = 1; kk < 6; kk++) {
-        if (cc.charCodeAt(0) == FenPieceName.toUpperCase().charCodeAt(kk)) {
-          if (nn == 16) {
-            myAlert("error: invalid FEN [6] char "+ll+" '" + cc + "' in game "+(currentGame+1)+"\n"+FenString, true);
+      ii=0; jj=7; ll=0; nn=1; mm=1; cc=FenString.charAt(ll++);
+      while (cc!=" ")
+      { if (cc=="/")
+        { if (ii!=8)
+          { myAlert("Invalid FEN [1]: char "+ll+" in "+FenString);
             InitFEN();
             return;
-          }          
-          PieceType[0][nn] = kk+1;
-          PieceCol[0][nn] = ii;
-          PieceRow[0][nn] = jj;
-          nn++;
+          }
+          ii=0;
+          jj--;
+        }
+        if (ii==8) 
+        { myAlert("Invalid FEN [2]: char "+ll+" in "+FenString);
+          InitFEN();
+          return;
+        }
+        if (! isNaN(cc))
+        { ii+=parseInt(cc, 10);
+          if ((ii<0)||(ii>8))
+          { myAlert("Invalid FEN [3]: char "+ll+" in "+FenString);
+            InitFEN();
+            return;
+          }
+        }
+        var PieceName = "KQRBNP";
+        if (cc.charCodeAt(0)==PieceName.toUpperCase().charCodeAt(0))
+        { if (PieceType[0][0]!=-1)
+          { myAlert("Invalid FEN [4]: char "+ll+" in "+FenString);
+            InitFEN();
+            return;
+          }     
+          PieceType[0][0]=1;
+          PieceCol[0][0]=ii;
+          PieceRow[0][0]=jj;
           ii++;
         }
-        if (cc.charCodeAt(0) == FenPieceName.toLowerCase().charCodeAt(kk)) {
-          if (mm==16) {
-            myAlert("error: invalid FEN [7] char "+ll+" '" + cc + "' in game "+(currentGame+1)+"\n"+FenString, true);
+        if (cc.charCodeAt(0)==PieceName.toLowerCase().charCodeAt(0))
+        { if (PieceType[1][0]!=-1)
+          { myAlert("Invalid FEN [5]: char "+ll+" in "+FenString);
             InitFEN();
             return;
           }  
-          PieceType[1][mm] = kk+1;
-          PieceCol[1][mm] = ii;
-          PieceRow[1][mm] = jj;
-          mm++;
+          PieceType[1][0]=1;
+          PieceCol[1][0]=ii;
+          PieceRow[1][0]=jj;
           ii++;
         }
+        for (kk=1; kk<6; kk++)
+        { if (cc.charCodeAt(0)==PieceName.toUpperCase().charCodeAt(kk))
+          { if (nn==16)
+            { myAlert("Invalid FEN [6]: char "+ll+" in "+FenString);
+              InitFEN();
+              return;
+            }          
+            PieceType[0][nn]=kk+1;
+            PieceCol[0][nn]=ii;
+            PieceRow[0][nn]=jj;
+            nn++;
+            ii++;
+          }
+          if (cc.charCodeAt(0)==PieceName.toLowerCase().charCodeAt(kk))
+          { if (mm==16)
+            { myAlert("Invalid FEN [7]: char "+ll+" in "+FenString);
+              InitFEN();
+              return;
+            }  
+            PieceType[1][mm]=kk+1;
+            PieceCol[1][mm]=ii;
+            PieceRow[1][mm]=jj;
+            mm++;
+            ii++;
+          }
+        }
+        if (ll<FenString.length) { cc=FenString.charAt(ll++); }
+        else { cc=" "; }
       }
-      cc = ll < FenString.length ? FenString.charAt(ll++) : " ";
-    }
-    if ((ii != 8) || (jj !== 0)) {
-      myAlert("error: invalid FEN [8] char "+ll+" in game "+(currentGame+1)+"\n"+FenString, true);
-      InitFEN();
-      return;
-    }
-    if ((PieceType[0][0] == -1) || (PieceType[1][0] == -1)) {
-      myAlert("error: invalid FEN [9]: missing king in game "+(currentGame+1)+"\n"+FenString, true);
-      InitFEN();
-      return;
-    }
-    if (ll == FenString.length) {
-      FenString += " w ";
-      FenString += FenPieceName.toUpperCase().charAt(0);
-      FenString += FenPieceName.toUpperCase().charAt(1);
-      FenString += FenPieceName.toLowerCase().charAt(0);
-      FenString += FenPieceName.toLowerCase().charAt(1);      
-      FenString += " - 0 1";
-      ll++;
-    }
-    cc = FenString.charAt(ll++);
-    if ((cc == "w") || (cc == "b")) {
-      if (cc == "b") { 
-        StartMove=1;
-        StartPly += 1;
-        MoveColor = 1;
-      }
-    } else {
-      myAlert("error: invalid FEN [11]: char "+ll+" '" + cc + "' invalid active color in game "+(currentGame+1)+"\n"+FenString, true);
-      return;
-    }
-
-    ll++;
-    if (ll >= FenString.length) {
-      myAlert("error: invalid FEN [12]: char "+ll+" missing castling availability in game "+(currentGame+1)+"\n"+FenString, true);
-      return;
-    }
-    CastlingShort[0] = CastlingLong[0] = CastlingShort[1] = CastlingLong[1] = 0;
-    cc = FenString.charAt(ll++);
-    while (cc!=" ") {
-      if (cc.charCodeAt(0) == FenPieceName.toUpperCase().charCodeAt(0))
-      { CastlingShort[0] = 1; }
-      if (cc.charCodeAt(0) == FenPieceName.toUpperCase().charCodeAt(1))
-      { CastlingLong[0] = 1; }
-      if (cc.charCodeAt(0) == FenPieceName.toLowerCase().charCodeAt(0))
-      { CastlingShort[1]=1; }
-      if (cc.charCodeAt(0) == FenPieceName.toLowerCase().charCodeAt(1))
-      { CastlingLong[1] = 1; }
-      if ((cc == "E") || (cc == "F") || (cc == "G") || (cc == "H")) //for Chess960
-      { CastlingShort[0] = 1; }
-      if ((cc == "A") || (cc == "B") || (cc == "C") || (cc == "D"))
-      { CastlingLong[0] = 1; }
-      if ((cc == "e") || (cc == "f") || (cc == "g") || (cc=="h"))
-      { CastlingShort[1] = 1; }
-      if ((cc == "a") || (cc == "b") || (cc == "c") || (cc == "d"))
-      { CastlingLong[1] = 1; }
-      cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
-    }
-
-    // Set board
-    for (color = 0; color < 2; ++color) {
-      for (ii = 0; ii < 16; ii++) {
-        if (PieceType[color][ii] != -1) {
-   	  col = PieceCol[color][ii];
-	  row = PieceRow[color][ii];
-	  Board[col][row] = (1-2*color)*(PieceType[color][ii]);
-	}
-      }
-    }
-          
-    if (ll >= FenString.length) {
-      myAlert("error: invalid FEN [13]: char "+ll+" missing en passant target square in game "+(currentGame+1)+"\n"+FenString, true);
-      return;
-    }
-    cc = FenString.charAt(ll++);
-    while (cc != " ") {
-      if ((cc.charCodeAt(0)-97 >= 0) && (cc.charCodeAt(0)-97 <= 7)) {
-        newEnPassant = true;
-        newEnPassantCol = cc.charCodeAt(0)-97; 
-      }
-      cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
-    }
-    if (ll >= FenString.length) {
-      myAlert("error: invalid FEN [14]: char "+ll+" missing halfmove clock in game "+(currentGame+1)+"\n"+FenString, true);
-      return;
-    }
-    InitialHalfMoveClock = 0;
-    cc = FenString.charAt(ll++);
-    while (cc != " ") {
-      if (isNaN(cc)) {
-        myAlert("error: invalid FEN [15]: char "+ll+" '" + cc + "' invalid halfmove clock in game "+(currentGame+1)+"\n"+FenString, true);
+      if ((ii!=8)||(jj!==0))
+      { myAlert("Invalid FEN [8]: char "+ll+" in "+FenString);
+        InitFEN();
         return;
       }
-      InitialHalfMoveClock=InitialHalfMoveClock*10+parseInt(cc, 10);
-      cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
-    }
-    if (ll >= FenString.length) {
-      myAlert("error: invalid FEN [16]: char "+ll+" missing fullmove number in game "+(currentGame+1)+"\n"+FenString, true);
-      return;
-    }
-    cc = FenString.substring(ll++);
-    if (isNaN(cc)) {
-      myAlert("error: invalid FEN [17]: char "+ll+" '" + cc + "' invalid fullmove number in game "+(currentGame+1)+"\n"+FenString, true);
-      return;
-    }
-    if (cc <= 0) {
-      myAlert("error: invalid FEN [18]: char "+ll+" '" + cc + "' invalid fullmove number in game "+(currentGame+1)+"\n"+FenString, true);
-      return;
-    }
-    StartPly += 2*(parseInt(cc, 10)-1);
+      if ((PieceType[0][0]==-1)||(PieceType[1][0]==-1))
+      { myAlert("Invalid FEN [9]: char "+ll+" missing king");
+        InitFEN();
+        return;
+      }
+      if (ll==FenString.length)
+      { FenString+=" w ";
+        FenString+=PieceName.toUpperCase().charAt(0);
+        FenString+=PieceName.toUpperCase().charAt(1);
+        FenString+=PieceName.toLowerCase().charAt(0);
+        FenString+=PieceName.toLowerCase().charAt(1);      
+        FenString+=" - 0 1";
+        ll++;
+      }
+      cc=FenString.charAt(ll++);
+      if ((cc=="w")||(cc=="b"))
+      { if (cc=="b") { 
+          StartMove=1;
+          StartPly += 1;
+          MoveColor = 1;
+        }
+      }
+      else
+      { myAlert("Invalid FEN [11]: char "+ll+" invalid active color");
+        return;
+      }
 
-    HistEnPassant[StartPly-1] = newEnPassant;
-    HistEnPassantCol[StartPly-1] = newEnPassantCol;
+      ll++;
+      if (ll>=FenString.length)
+      { myAlert("Invalid FEN [12]: char "+ll+" missing castling availability");
+        return;
+      }
+      CastlingShort[0]=0; CastlingLong[0]=0; CastlingShort[1]=0; CastlingLong[1]=0;
+      cc=FenString.charAt(ll++);
+      while (cc!=" ")
+      { if (cc.charCodeAt(0)==PieceName.toUpperCase().charCodeAt(0))
+        { CastlingShort[0]=1; }
+        if (cc.charCodeAt(0)==PieceName.toUpperCase().charCodeAt(1))
+        { CastlingLong[0]=1; }
+        if (cc.charCodeAt(0)==PieceName.toLowerCase().charCodeAt(0))
+        { CastlingShort[1]=1; }
+        if (cc.charCodeAt(0)==PieceName.toLowerCase().charCodeAt(1))
+        { CastlingLong[1]=1; }
+        if ((cc=="E")||(cc=="F")||(cc=="G")||(cc=="H")) //for Chess960
+        { CastlingShort[0]=1; }
+        if ((cc=="A")||(cc=="B")||(cc=="C")||(cc=="D"))
+        { CastlingLong[0]=1; }
+        if ((cc=="e")||(cc=="f")||(cc=="g")||(cc=="h"))
+        { CastlingShort[1]=1; }
+        if ((cc=="a")||(cc=="b")||(cc=="c")||(cc=="d"))
+        { CastlingLong[1]=1; }   
+        if (ll<FenString.length)
+        { cc=FenString.charAt(ll++); }
+        else 
+        { cc=" "; }
+      }
+
+      /*
+       * Set Board
+       * 
+      */
+      for (color = 0; color < 2; ++color){
+       for (ii = 0; ii < 16; ii++){
+          if (PieceType[color][ii]!=-1){
+   	     col = PieceCol[color][ii];
+	     row = PieceRow[color][ii];
+	     // myAlert("given FEN: Setting "+(1-2*color)*(PieceType[color][ii])+ " at "+col+" / "+row);
+	     Board[col][row] = (1-2*color)*(PieceType[color][ii]);
+	  }
+       }
+      }
+          
+      if (ll==FenString.length)
+      { myAlert("Invalid FEN [13]: char "+ll+" missing en passant target square");
+        return;
+      }
+      cc=FenString.charAt(ll++);
+      while (cc!=" ")
+      { if ((cc.charCodeAt(0)-97>=0)&&(cc.charCodeAt(0)-97<=7)) {
+          newEnPassant = true;
+          newEnPassantCol=cc.charCodeAt(0)-97; 
+        }
+        if (ll<FenString.length) { cc=FenString.charAt(ll++); }
+        else { cc=" "; }
+      }
+      if (ll==FenString.length)
+      { myAlert("Invalid FEN [14]: char "+ll+" missing halfmove clock");
+        return;
+      }
+      HalfMove=0;
+      cc=FenString.charAt(ll++);
+      while (cc!=" ")
+      { if (isNaN(cc))
+        { myAlert("Invalid FEN [15]: char "+ll+" invalid halfmove clock");
+          return;
+        }
+        HalfMove=HalfMove*10+parseInt(cc, 10);
+        if (ll<FenString.length) { cc=FenString.charAt(ll++); }
+        else { cc=" "; }
+      }
+      if (ll==FenString.length)
+      { myAlert("Invalid FEN [16]: char "+ll+" missing fullmove number");
+        return;
+      }
+      cc=FenString.substring(ll++);
+      if (isNaN(cc))
+      { myAlert("Invalid FEN [17]: char "+ll+" invalid fullmove number");
+        return;
+      }
+      if (cc<=0)
+      { myAlert("Invalid FEN [18]: char "+ll+" invalid fullmove number");
+        return;
+      }
+      StartPly+=2*(parseInt(cc, 10)-1);
+
+      HistEnPassant[StartPly-1] = newEnPassant;
+      HistEnPassantCol[StartPly-1] = newEnPassantCol;
   }
 }
 
-function SetImageType(extension) {
+function SetImageType(extension){
   imageType = extension;
 }
 
 
-function InitImages() {
-  // Reset the array describing what image is in each square.
+function InitImages(){
+  /* 
+   * Reset the array describing what image is in each square.
+   */
   DocumentImages.length = 0;
-  
-  // No need if the directory where we pick images is not changed.
+  /*
+   * No need if the directory where we pick images is not changed.
+   */
   if (ImagePathOld == ImagePath) { return; }
 
   /* adds a trailing / to ImagePath if missing and if path not blank */
@@ -2169,13 +2144,17 @@ function InitImages() {
     ImagePath += '/';
   }
 
-  // No image.
+  /*
+   * No image.
+   */
   ClearImg.src = ImagePath+'clear.'+imageType;
 
-  // Load the images.
+  /*
+   * Load the images.
+   */
   var color;
   ColorName = new Array ("w", "b");
-  for (color = 0; color < 2; ++color) {
+  for (color = 0; color < 2; ++color){
     PiecePicture[color][1]     = new Image();
     PiecePicture[color][1].src = ImagePath + ColorName[color] + 'k.'+imageType;
     PiecePicture[color][2]     = new Image();
@@ -2189,40 +2168,44 @@ function InitImages() {
     PiecePicture[color][6]     = new Image();
     PiecePicture[color][6].src = ImagePath + ColorName[color] + 'p.'+imageType;
   }
-  ImagePathOld = ImagePath;
+  ImagePathOld          = ImagePath;
 }
 
-function IsCheck(col, row, color) {
+function IsCheck(col, row, color){
   var ii, jj;
   var sign = 2*color-1; // white or black
-
-  // Is the other king giving check?
-  if ((Math.abs(PieceCol[1-color][0]-col) <= 1) &&
-      (Math.abs(PieceRow[1-color][0]-row) <= 1)) { return true; }
-
-  // Any knight giving check?
-  for (ii = -2; ii <= 2; ii += 4) {
-    for(jj = -1; jj <= 1; jj += 2) {
-      if (SquareOnBoard(col+ii, row+jj)) {
+  /*
+   * Is the other king giving check?
+   */
+  if ((Math.abs(PieceCol[1-color][0]-col)<=1) &&
+      (Math.abs(PieceRow[1-color][0]-row)<=1)) { return true; }
+  /*
+   * Any knight giving check?
+   */
+  for (ii = -2; ii <= 2; ii += 4){
+    for(jj = -1; jj <= 1; jj += 2){
+      if (SquareOnBoard(col+ii, row+jj)){
 	if (Board[col+ii][row+jj] == sign*5) { return true; }
       }
-      if (SquareOnBoard(col+jj, row+ii)) {
+      if (SquareOnBoard(col+jj, row+ii)){
 	if (Board[col+jj][row+ii] == sign*5) { return true; }
       }
     }
   }
-
-  // Any pawn giving check?
+  /*
+   * Any pawn giving check?
+   */
   for (ii = -1; ii <= 1; ii += 2){
     if (SquareOnBoard(col+ii, row-sign)){
       if (Board[col+ii][row-sign] == sign*6) { return true; }
     }
   }
-
-  // Now queens, rooks and bishops.
-  for (ii = -1; ii <= 1; ++ii) {
-    for (jj = -1; jj <= 1; ++jj) {
-      if ((ii !== 0) || (jj !== 0)) {
+  /*
+   * Now queens, rooks and bishops.
+   */
+  for (ii = -1; ii <= 1; ++ii){
+    for (jj = -1; jj <= 1; ++jj){
+      if ((ii !== 0) || (jj !== 0)){
 	var checkCol  = col+ii;
 	var checkRow  = row+jj;
 	var thisPiece = 0;
@@ -2232,7 +2215,7 @@ function IsCheck(col, row, color) {
 	  if (thisPiece === 0){
 	    checkCol += ii;
 	    checkRow += jj;
-	  } else {
+	  } else{
 	    if (thisPiece  == sign*2)                                { return true; }
 	    if ((thisPiece == sign*3) && ((ii === 0) || (jj === 0))) { return true; }
 	    if ((thisPiece == sign*4) && ((ii !== 0) && (jj !== 0))) { return true; }
@@ -2251,43 +2234,69 @@ function checkHeaderDefined(headerValue) {
 
 function LoadGameHeaders(){
   var ii;
+  /*
+   * Initialize the global arrays to the number of games length.
+   */
+  gameDate.length = 0; 
+  gameWhite.length = 0;
+  gameBlack.length = 0;
+  gameFEN.length = 0;
+  gameEvent.length = 0;
+  gameSite.length = 0;
+  gameRound.length = 0;
+  gameResult.length = 0;
+  gameInitialWhiteClock.length = 0;
+  gameInitialBlackClock.length = 0;
 
-  // Initialize the global arrays to the number of games length.
-  gameEvent.length = gameSite.length = gameRound.length = gameDate.length = 0;
-  gameWhite.length = gameBlack.length = gameResult.length = 0;
-  gameSetUp.length = gameFEN.length = 0;
-  gameInitialWhiteClock.length = gameInitialBlackClock.length = 0;
-
-  // Read the headers of all games and store them in the global arrays
+  /*
+   * Read the headers of all games and store the information in te global
+   * arrays.
+   */
   pgnHeaderTagRegExpGlobal.exec(""); // to cope with IE bug when reloading a PGN as in inputform.html
-  for (ii = 0; ii < numberOfGames; ++ii) {
-    var ss = pgnGame[ii];
+  for (ii = 0; ii < numberOfGames; ++ii){
+    var ss      = pgnGame[ii];
     var parse;
-    gameEvent[ii] = gameSite[ii] = gameRound[ii] = gameDate[ii] = "";
-    gameWhite[ii] = gameBlack[ii] = gameResult[ii] = "";
-    gameInitialWhiteClock[ii] = gameInitialBlackClock[ii] = "";
+    gameEvent[ii] = "";
+    gameSite[ii] = "";
+    gameRound[ii] = "";
+    gameWhite[ii] = "";
+    gameBlack[ii] = "";
+    gameResult[ii] = "";
+    gameDate[ii] = "";
+    gameInitialWhiteClock[ii] = "";
+    gameInitialBlackClock[ii] = "";
     while ((parse = pgnHeaderTagRegExpGlobal.exec(ss)) !== null){
-      if       (parse[1] == 'Event')      { gameEvent[ii]  = parse[2]; }
-      else if  (parse[1] == 'Site')       { gameSite[ii]   = parse[2]; }
-      else if  (parse[1] == 'Round')      { gameRound[ii]  = parse[2]; }
-      else if  (parse[1] == 'Date')       { gameDate[ii]   = parse[2]; }
-      else if  (parse[1] == 'White')      { gameWhite[ii]  = parse[2]; }
-      else if  (parse[1] == 'Black')      { gameBlack[ii]  = parse[2]; }
-      else if  (parse[1] == 'Result')     { gameResult[ii] = parse[2]; }
-      else if  (parse[1] == 'SetUp')      { gameSetUp[ii]  = parse[2]; }
-      else if  (parse[1] == 'FEN')        { gameFEN[ii]    = parse[2]; }
-      else if  (parse[1] == 'WhiteClock') { gameInitialWhiteClock[ii] = parse[2]; }
-      else if  (parse[1] == 'BlackClock') { gameInitialBlackClock[ii] = parse[2]; }
+      if (parse[1] == 'Event'){
+	gameEvent[ii]  = parse[2];
+      } else if  (parse[1] == 'Site'){
+	gameSite[ii]   = parse[2];
+      } else if  (parse[1] == 'Round'){
+	gameRound[ii]   = parse[2];
+      } else if  (parse[1] == 'Date'){
+	gameDate[ii]   = parse[2];
+      } else if  (parse[1] == 'White'){
+	gameWhite[ii]  = parse[2];
+      } else if  (parse[1] == 'Black'){
+	gameBlack[ii]  = parse[2];
+      } else if  (parse[1] == 'FEN'){
+	gameFEN[ii]  = parse[2];
+      } else if  (parse[1] == 'Result'){
+	gameResult[ii] = parse[2];
+      } else if  (parse[1] == 'WhiteClock'){
+	gameInitialWhiteClock[ii] = parse[2];
+      } else if  (parse[1] == 'BlackClock'){
+	gameInitialBlackClock[ii] = parse[2];
+      }
     }
   }
   if ((LiveBroadcastDemo) && (numberOfGames > 0)) {
     for (ii = 0; ii < numberOfGames; ++ii) {
-       if (gameDemoLength[ii] == undefined) {
-         InitFEN(gameFEN[ii]);
-         ParsePGNGameString(pgnGame[ii]);
+       if (gameDemoLength[ii] == undefined) { 
+         ParsePGNGameString(pgnGame[ii]); 
          gameDemoLength[ii] = PlyNumber; 
        }
        if (gameDemoMaxPly[ii] == undefined) { gameDemoMaxPly[ii] = 0; }
+
        if (gameDemoMaxPly[ii] <= gameDemoLength[ii]) { gameResult[ii] = '*'; }
     }
   }
@@ -2296,97 +2305,117 @@ function LoadGameHeaders(){
 }
 
 
-function MoveBackward(diff) {
-
-  // First of all find to which ply we have to go back. Remember that
-  // CurrentPly contains the ply number counting from 1.
+function MoveBackward(diff){
+  /*
+   * First of all find to which ply we have to go back. Remember that
+   * CurrentPly contains the ply number counting from 1.
+   */
   var goFromPly  = CurrentPly - 1;
   var goToPly    = goFromPly  - diff;
   if (goToPly < StartPly) { goToPly = StartPly-1; }
-
-  // Loop back to reconstruct the old position one ply at the time.
+  /*
+   * Loop back to reconstruct the old position one ply at the time.
+   */
   var thisPly;
-  for(thisPly = goFromPly; thisPly > goToPly; --thisPly) {
+  for(thisPly = goFromPly; thisPly > goToPly; --thisPly){
     CurrentPly--;
     MoveColor = 1-MoveColor;
-
-    // Reposition the moved piece on the original square.
+    /*
+     * Reposition the moved piece on the original square.
+     */
     var chgPiece = HistPieceId[0][thisPly];
     Board[PieceCol[MoveColor][chgPiece]][PieceRow[MoveColor][chgPiece]] = 0;
 
-    Board[HistCol[0][thisPly]][HistRow[0][thisPly]] = HistType[0][thisPly] * (1-2*MoveColor);
+    Board[HistCol[0][thisPly]][HistRow[0][thisPly]] = HistType[0][thisPly]*
+	(1-2*MoveColor);
     PieceType[MoveColor][chgPiece] = HistType[0][thisPly];
-    PieceCol[MoveColor][chgPiece] = HistCol[0][thisPly];
-    PieceRow[MoveColor][chgPiece] = HistRow[0][thisPly];
+    PieceCol[MoveColor][chgPiece]  = HistCol[0][thisPly];
+    PieceRow[MoveColor][chgPiece]  = HistRow[0][thisPly];
     PieceMoveCounter[MoveColor][chgPiece]--;
-
-    // If the move was a castling reposition the rook on its original square.
+    /*
+     * If the move was a castling reposition the rook on its original square.
+     */
     chgPiece = HistPieceId[1][thisPly];
-    if ((chgPiece >= 0) && (chgPiece < 16)) {
+    if ((chgPiece >= 0) && (chgPiece < 16)){
        Board[PieceCol[MoveColor][chgPiece]][PieceRow[MoveColor][chgPiece]] = 0;
-       Board[HistCol[1][thisPly]][HistRow[1][thisPly]] = HistType[1][thisPly] * (1-2*MoveColor);
+       Board[HistCol[1][thisPly]][HistRow[1][thisPly]] = HistType[1][thisPly]*
+	(1-2*MoveColor);
        PieceType[MoveColor][chgPiece] = HistType[1][thisPly];
-       PieceCol[MoveColor][chgPiece] = HistCol[1][thisPly];
-       PieceRow[MoveColor][chgPiece] = HistRow[1][thisPly];
+       PieceCol[MoveColor][chgPiece]  = HistCol[1][thisPly];
+       PieceRow[MoveColor][chgPiece]  = HistRow[1][thisPly];
        PieceMoveCounter[MoveColor][chgPiece]--;
     } 
-
-    // For captures, reposition the captured piece on its original square.
+    /*
+     * If the move was a capture reposition the captured piece on its
+     * original square.
+     */
     chgPiece -= 16;
-    if ((chgPiece >= 0) && (chgPiece < 16)) {
+    if ((chgPiece >= 0) && (chgPiece < 16)){
        Board[PieceCol[1-MoveColor][chgPiece]][PieceRow[1-MoveColor][chgPiece]] = 0;
        Board[HistCol[1][thisPly]][HistRow[1][thisPly]] = HistType[1][thisPly]*
 	(2*MoveColor-1);
        PieceType[1-MoveColor][chgPiece] = HistType[1][thisPly];
-       PieceCol[1-MoveColor][chgPiece] = HistCol[1][thisPly];
-       PieceRow[1-MoveColor][chgPiece] = HistRow[1][thisPly];
+       PieceCol[1-MoveColor][chgPiece]  = HistCol[1][thisPly];
+       PieceRow[1-MoveColor][chgPiece]  = HistRow[1][thisPly];
        PieceMoveCounter[1-MoveColor][chgPiece]--;
     } 
   }
-
-  // With the old position refresh the board and update the ply count on the HTML.
+  /*
+   * Now that we have the old position refresh the board and update the 
+   * ply count on the HTML.
+   */
   RefreshBoard();
   HighlightLastMove(); 
-
-  // Set a new timeout if in autoplay mode.
+  /*
+   * Set a new timeout if in autoplay mode.
+   */
   if (AutoPlayInterval) { clearTimeout(AutoPlayInterval); AutoPlayInterval = null; }
   if (isAutoPlayOn) {
-    if(goToPly >= StartPly) { AutoPlayInterval=setTimeout("MoveBackward(1)", Delay); }
-    else { SetAutoPlay(false); }
+    if(goToPly >= StartPly) {
+      AutoPlayInterval=setTimeout("MoveBackward(1)", Delay);
+    } else {
+      SetAutoPlay(false);
+    }
   } 
   customFunctionOnMove();
 }
 
 
-function MoveForward(diff) {
-
-  // First of all find to which ply we have to go back. Remember that
-  // CurrentPly contains the ply number counting from 1.
-  goToPly = CurrentPly + parseInt(diff, 10);
+function MoveForward(diff){
+  /*
+   * First of all find to which ply we have to go back. Remember that
+   * CurrentPly contains the ply number counting from 1.
+   */
+  goToPly        = CurrentPly + parseInt(diff, 10);
 
   if (goToPly > (StartPly+PlyNumber)) { goToPly = StartPly+PlyNumber; }
   var thisPly;
-
-  // Loop over all moves till the selected one is reached. Check that
-  // every move is legal and if yes update the board.
-  for(thisPly = CurrentPly; thisPly < goToPly; ++thisPly) {
-    var move = Moves[thisPly];
+  /*
+   * Loop over all moves till the selected one is reached. Check that
+   * every move is legal and if yes update the board.
+   */
+  for(thisPly = CurrentPly; thisPly < goToPly; ++thisPly){
+    var move  = Moves[thisPly];
     var parse = ParseMove(move, thisPly);
     if (!parse) {
-      text = (Math.floor(thisPly / 2) + 1) + ((thisPly % 2) === 0 ? '. ' : '... ');
-      myAlert('error: invalid ply ' + text + move + ' in game ' + (currentGame+1), true);
+      if ((thisPly % 2) === 0) { text = (Math.floor(thisPly / 2) + 1) + '. '; }
+      else { text = (Math.floor(thisPly / 2) + 1) + '... '; }
+      myAlert('Error on ply ' + text + move);
       break;
     }
     MoveColor = 1-MoveColor; 
   }
-
-  // Once the desired position is reached refresh the board and update the 
-  // ply count on the HTML.
+  /*
+   * Once the desired position is reached refresh the board and update the 
+   * ply count on the HTML.
+   */
   CurrentPly = thisPly;
   RefreshBoard();
   HighlightLastMove(); 
 
-  // Set a new timeout if in autoplay mode and if all parsing was successful
+  /*
+   * Set a new timeout if in autoplay mode and if all parsing was successful
+   */
   if (AutoPlayInterval) { clearTimeout(AutoPlayInterval); AutoPlayInterval = null; }
   if (!parse) { SetAutoPlay(false); } 
   else if (thisPly == goToPly) {
@@ -2402,34 +2431,36 @@ function MoveForward(diff) {
   customFunctionOnMove();
 }
 
-function AutoplayNextGame() {
-  if (fatalErrorNumSinceReset === 0) {
-    if (++currentGame >= numberOfGames) { currentGame = 0; }
-    Init();
-    if ((numberOfGames > 0) || (PlyNumber > 0)) {
-      SetAutoPlay(true);
-      return;
+function AutoplayNextGame(){
+  if (++currentGame >= numberOfGames) { currentGame = 0; }
+  Init();
+  SetAutoPlay(true);
+}
+
+
+function MoveToNextComment()
+{
+  for(ii=CurrentPly+1; ii<=StartPly+PlyNumber; ii++){
+    if (MoveComments[ii] !== '') {
+      GoToMove(ii);
+      break;
     }
   }
-  SetAutoPlay(false);
 }
 
 
-function MoveToNextComment() {
-  for(ii=CurrentPly+1; ii<=StartPly+PlyNumber; ii++) {
-    if (MoveComments[ii] !== '') { GoToMove(ii); break; }
+function MoveToPrevComment()
+{
+  for(ii=(CurrentPly-1); ii>=0; ii--){
+    if (MoveComments[ii] !== '') {
+      GoToMove(ii);
+      break;
+    }
   }
 }
 
 
-function MoveToPrevComment() {
-  for(ii=(CurrentPly-1); ii>=0; ii--) {
-    if (MoveComments[ii] !== '') { GoToMove(ii); break; }
-  }
-}
-
-
-function OpenGame(gameId) {
+function OpenGame(gameId){
   ParsePGNGameString(pgnGame[gameId]);
   currentGame = gameId;
  
@@ -2441,21 +2472,28 @@ function OpenGame(gameId) {
 }
 
 
-function ParsePGNGameString(gameString) {
+function ParsePGNGameString(gameString){
 
-  var ss = gameString;
-  // Get rid of the PGN tags and remove the result at the end. 
+  var ss      = gameString;
+  /*
+   * Get rid of the PGN tags and remove the result at the end. 
+   */
   ss = ss.replace(pgnHeaderTagRegExpGlobal, ''); 
+// ss = ss.replace(/\s+/g, ' ');
   ss = ss.replace(/^\s/, '');
+//  ss = ss.replace(/1-0/, '');
+//  ss = ss.replace(/0-1/, '');
+//  ss = ss.replace(/1\/2-1\/2/, '');
+//  ss = ss.replace(/\*/, '');
   ss = ss.replace(/\s$/, '');
   
   PlyNumber = 0;
   for (ii=0; ii<StartPly; ii++) { Moves[ii]=''; }
   MoveComments[StartPly+PlyNumber]='';
 
-  for (start=0; start<ss.length; start++) {
+  for (start=0; start<ss.length; start++){
   
-    switch (ss.charAt(start)) {
+    switch (ss.charAt(start)){
 
       case ' ':
       case '\b':
@@ -2480,7 +2518,8 @@ function ParsePGNGameString(gameString) {
       case '!':
       case '?':
         commentStart = start;
-        commentEnd = commentStart + (((ss.charAt(start+1) == '?') || (ss.charAt(start+1) == '!')) ? 2 : 1);
+        if ((ss.charAt(start+1) == '?') || (ss.charAt(start+1) == '!')) { commentEnd = commentStart + 2; }
+        else { commentEnd = commentStart + 1; }
         if (MoveComments[StartPly+PlyNumber].length>0) { MoveComments[StartPly+PlyNumber] += ' '; }
         MoveComments[StartPly+PlyNumber] += ss.substring(commentStart, commentEnd);
         start = commentEnd;
@@ -2494,7 +2533,7 @@ function ParsePGNGameString(gameString) {
           MoveComments[StartPly+PlyNumber] += ss.substring(commentStart, commentEnd); 
           start = commentEnd;
         }else{
-          myAlert('error: missing end comment char } while parsing game ' + (currentGame+1), true);
+          myAlert('Error parsing PGN: missing end comment char }');
           return;
         }
         break;
@@ -2528,7 +2567,7 @@ function ParsePGNGameString(gameString) {
           nextOpen = ss.indexOf('(', variationEnd);
           nextClosed = ss.indexOf(')', variationEnd);
           if (nextClosed < 0) {
-            myAlert('error: missing end variation char ) while parsing game ' + (currentGame+1), true);
+            myAlert('Error parsing PGN: missing end variation char )');
             return;
           }
           if ((nextOpen >= 0) && (nextOpen < nextClosed)) {
@@ -2599,7 +2638,7 @@ function ParsePGNGameString(gameString) {
         end2 = ss.indexOf('?',start); if ((end2 > 0) && (end2 < end)) { end = end2; }
         if (end < 0) { end = ss.length; }
         move = ss.substring(start,end);
-        Moves[StartPly+PlyNumber] = ClearMove(move);
+        Moves[StartPly+PlyNumber] = ClearMove(move); 
         if (ss.charAt(end) == ' ') { start = end; } 
         else { start = end - 1; }
         if (Moves[StartPly+PlyNumber] !== "") { // takes into account odd cased of misformed PGN data
@@ -2612,7 +2651,8 @@ function ParsePGNGameString(gameString) {
   for (ii=StartPly; ii<=PlyNumber; ii++) {
     MoveComments[ii] = MoveComments[ii].replace(/\s+/g, " ");
     pgn4webCommentTmp = MoveComments[ii].match(/\[%pgn4web\s*(.*?)\]/);
-    pgn4webMoveComments[ii] = pgn4webCommentTmp ? pgn4webCommentTmp[1] : "";
+    if (pgn4webCommentTmp) { pgn4webMoveComments[ii] = pgn4webCommentTmp[1]; } 
+    else { pgn4webMoveComments[ii] = ""; }
     MoveComments[ii] = translateNAGs(MoveComments[ii]);
     MoveComments[ii] = MoveComments[ii].replace(/\s+$/g, '');
   }
@@ -2760,7 +2800,7 @@ NAG[137] = 'Black has moderate time control pressure';
 NAG[138] = 'White has severe time control pressure';
 NAG[139] = 'Black has severe time control pressure';
 
-function translateNAGs(comment) {
+function translateNAGs(comment){
   var jj, ii = 0;
   numString = "01234567890";
   while ((ii = comment.indexOf('$', ii)) >= 0) {
@@ -2779,12 +2819,13 @@ function translateNAGs(comment) {
 }
 
 
-function ParseMove(move, plyCount) {
-//  move = move.replace(/[\+#]/g, ""); // patch this to pass through '+' and '#' signs
+function ParseMove(move, plyCount){
   var ii, ll;
   var remainder;
   var toRowMarker = -1;
-  // Reset the global move variables.
+  /*
+   * Reset the global move variables.
+   */
   castleRook    = -1;
   mvIsCastling  =  0;
   mvIsPromotion =  0;
@@ -2798,25 +2839,29 @@ function ParseMove(move, plyCount) {
   mvPieceOnTo   = -1;
   mvCaptured    = -1;
   mvCapturedId  = -1;
-
-  // Given the move as something like Rdxc3 or exf8=Q+ extract the destination
-  // column and row and remember whatever is left of the string.
+  /*
+   * Given the move as something like Rdxc3 or exf8=Q+ extract the destination
+   * column and row and remember whatever is left of the string.
+   */
   ii = 1;
-  while(ii < move.length) {
-    if (!isNaN(move.charAt(ii))) {
+  while(ii < move.length){
+    if (!isNaN(move.charAt(ii))){
       mvToCol     = move.charCodeAt(ii-1) - 97;
       mvToRow     = move.charAt(ii)       -  1;
-      remainder   = move.substring(0, ii-1);
+      reminder    = move.substring(0, ii-1);
       toRowMarker = ii;
     }
     ++ii;
   }
-
-  // The final square did not make sense, maybe it is a castle.
-  if ((mvToCol < 0) || (mvToCol > 7) || (mvToRow < 0) || (mvToRow > 7)) {
-    if ((move.indexOf('O') >= 0) || (move.indexOf('o') >= 0) || (move.indexOf('0') >= 0)) {
-      // Do long castling first since looking for o-o will get it too.
-      if (move.match('^[Oo0]-?[Oo0]-?[Oo0]$') !== null) {
+  /*
+   * The final square did not make sense, maybe it is a castle.
+   */
+  if ((mvToCol < 0) || (mvToCol > 7) || (mvToRow < 0) || (mvToRow > 7)){
+    if ((move.indexOf('O') >= 0) || (move.indexOf('o') >= 0) || (move.indexOf('0') >= 0)){
+      /*
+       * Do long castling first since looking for o-o will get it too.
+       */
+      if (move.match('^[Oo0]-?[Oo0]-?[Oo0]$') !== null){
 	mvIsCastling = 1;
         mvPiece      = 1;
         mvPieceId    = 0;
@@ -2825,9 +2870,13 @@ function ParseMove(move, plyCount) {
         mvToCol      = 2;
         mvFromRow    = 7*MoveColor;
         mvToRow      = 7*MoveColor;
-        return CheckLegality('O-O-O', plyCount);
+	if (CheckLegality('O-O-O', plyCount)){
+	  return true;
+	} else{
+	  return false;
+	}
       }
-      if (move.match('^[Oo0]-?[Oo0]$') !== null) {
+      if (move.match('^[Oo0]-?[Oo0]$') !== null){
         mvIsCastling = 1;
         mvPiece      = 1;
         mvPieceId    = 0;
@@ -2836,27 +2885,46 @@ function ParseMove(move, plyCount) {
 	mvToCol      = 6;
         mvFromRow    = 7*MoveColor;
         mvToRow      = 7*MoveColor;
-	return CheckLegality('O-O', plyCount);
+	if (CheckLegality('O-O', plyCount)){
+	  return true;
+	} else{
+	  return false;
+	}
       }
       return false;
-    } else { return false; }
+    } else{
+      return false;
+    }
   }
+  /*
+   * Now extract the piece and the origin square. If it is a capture (the 'x'
+   * is present) mark the as such.
+   */
+  
+  ll = reminder.length;
 
-  // Now extract the piece and the origin square. If it is a capture (the 'x'
-  // is present) mark the as such.
-  ll = remainder.length;
   if (ll > 3) { return false; }
+
   mvPiece = -1; // make sure mvPiece is assigned to something sensible later
-  if (ll === 0) { mvPiece = 6; }
-  else {
-    for(ii = 1; ii < 6; ++ii) { if (remainder.charAt(0) == PieceCode[ii-1]) { mvPiece = ii; } }
-    if (mvPiece == -1) { if ('abcdefgh'.indexOf(remainder.charAt(0)) >= 0) { mvPiece = 6; } }
+
+  if (ll === 0){
+
+    mvPiece = 6;
+
+  } else {
+
+    for(ii = 1; ii < 6; ++ii) { if (reminder.charAt(0) == PieceCode[ii-1]) { mvPiece = ii; } }
+
+    if (mvPiece == -1) { if ('abcdefgh'.indexOf(reminder.charAt(0)) >= 0) { mvPiece = 6; } }
+
     if (mvPiece == -1) { return false; }
-    if (remainder.charAt(ll-1) == 'x') { mvCapture = 1; }
+
+    if (reminder.charAt(ll-1) == 'x') { mvCapture = 1; }
+
     if (isNaN(move.charAt(ll-1-mvCapture))){
       mvFromCol = move.charCodeAt(ll-1-mvCapture) - 97;
       if ((mvFromCol < 0) || (mvFromCol > 7)) { mvFromCol = -1; }
-    } else {
+    } else{
       mvFromRow = move.charAt(ll-1-mvCapture) - 1;
       if ((mvFromRow < 0) || (mvFromRow > 7)) { mvFromRow = -1; }
     }
@@ -2867,67 +2935,83 @@ function ParseMove(move, plyCount) {
   }
 
   mvPieceOnTo = mvPiece;
-  // If the to square is occupied mark the move as capture. Take care of
-  // the special en passant case.
-  if (Board[mvToCol][mvToRow] !== 0) { mvCapture = 1; }
-  else {
-    if ((mvPiece == 6) && (HistEnPassant[plyCount-1]) && 
-        (mvToCol == HistEnPassantCol[plyCount-1]) &&
-	(mvToRow == 5-3*MoveColor)) {
+  /*
+   * If the to square is occupied mark the move as capture. Take care of
+   * the special en passant case.
+   */
+  if (Board[mvToCol][mvToRow] !== 0){
+    mvCapture = 1;
+  } else{
+    if ((mvPiece == 6) && (HistEnPassant[plyCount-1]) && (mvToCol == HistEnPassantCol[plyCount-1]) &&
+	(mvToRow == 5-3*MoveColor)){
       mvCapture = 1;
     }
   }
-
-  // Take care of promotions. If there is a '=' in the move or if the
-  // destination row is not the last character in the move, then it may be a
-  // pawn promotion.
+  /*
+   * Take care of promotions. If there is a '=' in the move or if the
+   * destination row is not the last character in the move, then it may be a
+   * pawn promotion.
+   */
   ii = move.indexOf('=');
   if (ii < 0) { ii = toRowMarker; }
-  if ((ii > 0) && (ii < move.length-1)) {
-    if (mvPiece == 6) {
+  if ((ii > 0) && (ii < move.length-1)){
+    if (mvPiece == 6){
       var newPiece = move.charAt(ii+1);
-      if (newPiece == PieceCode[1]) { mvPieceOnTo = 2; }
-      else if (newPiece == PieceCode[2]) { mvPieceOnTo = 3; }
-      else if (newPiece == PieceCode[3]) { mvPieceOnTo = 4; }
-      else if (newPiece == PieceCode[4]) { mvPieceOnTo = 5; }
+      if (newPiece == PieceCode[1]){
+	  mvPieceOnTo = 2;
+      } else if (newPiece == PieceCode[2]){
+	  mvPieceOnTo = 3;
+      } else if (newPiece == PieceCode[3]){
+	  mvPieceOnTo = 4;
+      } else if (newPiece == PieceCode[4]){
+	  mvPieceOnTo = 5;
+      }
       mvIsPromotion = 1;
     }
   }
-
-  // Find which piece was captured. The first part checks normal captures.
-  // If nothing is found then it has to be a pawn making an en-passant
-  // capture.
-  if (mvCapture) {
+  /*
+   * Find which piece was captured. The first part checks normal captures.
+   * If nothing is found then it has to be a pawn making an en-passant
+   * capture.
+   */
+  if (mvCapture){
     mvCapturedId = 15;
-    while((mvCapturedId >= 0) && (mvCaptured < 0)) {
+    while((mvCapturedId >= 0) && (mvCaptured < 0)){
       if ((PieceType[1-MoveColor][mvCapturedId] >  0)       &&
 	  (PieceCol[1-MoveColor][mvCapturedId]  == mvToCol) &&
 	  (PieceRow[1-MoveColor][mvCapturedId]  == mvToRow)){
 	mvCaptured = PieceType[1-MoveColor][mvCapturedId];
-      } else { --mvCapturedId; }
+      } else{
+	--mvCapturedId;
+      }
     }
-    if ((mvPiece == 6) && (mvCapturedId < 1) && (HistEnPassant[plyCount-1])) {
+    if ((mvPiece == 6) && (mvCapturedId < 1) && (HistEnPassant[plyCount-1])){
       mvCapturedId = 15;
       while((mvCapturedId >= 0) && (mvCaptured < 0)){
         if ((PieceType[1-MoveColor][mvCapturedId] == 6)       &&
 	    (PieceCol[1-MoveColor][mvCapturedId]  == mvToCol) &&
-	    (PieceRow[1-MoveColor][mvCapturedId]  == 4-MoveColor)) {
+	    (PieceRow[1-MoveColor][mvCapturedId]  == 4-MoveColor)){
 	  mvCaptured = PieceType[1-MoveColor][mvCapturedId];
-	} else { --mvCapturedId; }
+	} else{
+	  --mvCapturedId;
+	}
       }
     }
   }
-
-  // Check the move legality.
+  /*
+   * Check the move legality.
+   */
   var retVal;
   retVal = CheckLegality(PieceCode[mvPiece-1], plyCount);
   if (!retVal) { return false; }
-
-  // If a pawn was moved check for en-passant capture on next move
+  /*
+   * If a pawn was moved check if it enables the en-passant capture on next
+   * move;
+   */
   HistEnPassant[plyCount]    = false;
   HistEnPassantCol[plyCount] = -1;
-  if (mvPiece == 6) {
-     if (Math.abs(HistRow[0][plyCount]-mvToRow) == 2) {
+  if (mvPiece == 6){
+     if (Math.abs(HistRow[0][plyCount]-mvToRow) == 2){
        HistEnPassant[plyCount]    = true;
        HistEnPassantCol[plyCount] = mvToCol;
      }
@@ -2935,16 +3019,30 @@ function ParseMove(move, plyCount) {
   return true;
 }
 
-function SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate) {
+function SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate){
   if (head !== null) { gameSelectorHead = head; }
   if (num !== null) { gameSelectorNum = num; }
-  if (chEvent !== null)  { gameSelectorChEvent  = chEvent  > 32 ? 32 : chEvent;  }
-  if (chSite !== null)   { gameSelectorChSite   = chSite   > 32 ? 32 : chSite;   }
-  if (chRound !== null)  { gameSelectorChRound  = chRound  > 32 ? 32 : chRound;  }
-  if (chWhite !== null)  { gameSelectorChWhite  = chWhite  > 32 ? 32 : chWhite;  } 
-  if (chBlack !== null)  { gameSelectorChBlack  = chBlack  > 32 ? 32 : chBlack;  }
-  if (chResult !== null) { gameSelectorChResult = chResult > 32 ? 32 : chResult; }
-  if (chDate !== null)   { gameSelectorChDate   = chDate   > 32 ? 32 : chDate;   } 
+  if (chEvent !== null) { 
+    gameSelectorChEvent = chEvent; if (gameSelectorChEvent > 32) { gameSelectorChEvent = 32; } 
+  }
+  if (chSite !== null) { 
+    gameSelectorChSite = chSite; if (gameSelectorChSite > 32) { gameSelectorChSite = 32; } 
+  }
+  if (chRound !== null) { 
+    gameSelectorChRound = chRound; if (gameSelectorChRound > 32) { gameSelectorChRound = 32; } 
+  }
+  if (chWhite !== null) { 
+    gameSelectorChWhite = chWhite; if (gameSelectorChWhite > 32) { gameSelectorChWhite = 32; } 
+  }
+  if (chBlack !== null) { 
+    gameSelectorChBlack = chBlack; if (gameSelectorChBlack > 32) { gameSelectorChBlack = 32; } 
+  }
+  if (chResult !== null) { 
+    gameSelectorChResult = chResult; if (gameSelectorChResult > 32) { gameSelectorChResult = 32; } 
+  }
+  if (chDate !== null) { 
+    gameSelectorChDate = chDate; if (gameSelectorChDate > 32) { gameSelectorChDate = 32; } 
+  }
 }
 
 var clickedSquareInterval = null;
@@ -2953,7 +3051,8 @@ function clickedSquare(ii, jj) {
   squareId = 'tcol' + jj + 'trow' + ii;
   theObject = document.getElementById(squareId);
   originalClass = theObject.className;
-  newClass = (ii+jj)%2 === 0 ? "blackSquare" : "whiteSquare";
+  if ((ii+jj)%2 === 0){ newClass = "blackSquare";
+  } else { newClass = "whiteSquare"; }
   theObject.className = newClass;
   clickedSquareInterval = setTimeout("reset_after_click(" + ii + "," + jj + ",'" + originalClass + "','" + newClass + "')", 66);
 }
@@ -2991,7 +3090,7 @@ function searchPgnGame(searchExpression) {
 
 function searchPgnGamePrompt() {
   if (numberOfGames < 2) { 
-    alert("info: search prompt disabled with less than 2 games"); 
+    alert("Search disabled: PGN data with less than 2 games."); 
     return;
   }
   searchExpression = prompt("Please enter search pattern for PGN games:", lastSearchPgnExpression);
@@ -3005,33 +3104,29 @@ function searchPgnGamePrompt() {
 
 
 var tableSize = null;
-function PrintHTML() {
+function PrintHTML(){
   var ii, jj;
   var text;
 
-  // Show the board as a 8x8 table.
-
+  /*
+   * Show the board as a 8x8 table.
+   */
   text = '<TABLE CLASS="boardTable" ID="boardTable" CELLSPACING=0 CELLPADDING=0';
-  text += ((tableSize !== null) && (tableSize !== 0)) ?
-          ' STYLE="width: ' + tableSize + 'px; height: ' + tableSize + 'px;">' :
-          '>';
-  for (ii = 0; ii < 8; ++ii) {
+  if ((tableSize !== null) && (tableSize !== 0)) { text += ' STYLE="width: ' + tableSize + 'px; height: ' + tableSize + 'px;">'; }
+  else { text += '>'; }
+  for (ii = 0; ii < 8; ++ii){
     text += '<TR>';
-    for (jj = 0; jj < 8; ++jj) {
+    for (jj = 0; jj < 8; ++jj){
       squareId = 'tcol' + jj + 'trow' + ii;
       imageId = 'img_' + squareId;
-      linkId = 'link_' + squareId;
-      text += (ii+jj)%2 === 0 ? 
-              '<TD CLASS="whiteSquare" ID="' + squareId + '" BGCOLOR="white"' :
-              '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="lightgray"';
-      text += ' ALIGN="center" VALIGN="middle" ONCLICK="clickedSquare(' + ii + ',' + jj + ')">';
-      squareCoord = IsRotated ? String.fromCharCode(72-jj,49+ii) : String.fromCharCode(jj+65,56-ii);
-      squareTitle = squareCoord;
-      if (boardTitle[jj][ii] !== '') { squareTitle += ': ' + boardTitle[jj][ii]; }
-      text += '<A HREF="javascript:boardOnClick[' + jj + '][' + ii + ']()" ' +
-              'ID="' + linkId + '" ' + 
-              'TITLE="' + squareTitle + '" ' +
-              'STYLE="text-decoration: none; outline: none;" ' +
+      if ((ii+jj)%2 === 0){
+	text += '<TD CLASS="whiteSquare" ID="' + squareId + '" BGCOLOR="white" ALIGN="center" VALIGN="middle" ONCLICK="clickedSquare(' + ii + ',' + jj + ')">';
+      } else{
+	text += '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="lightgray" ALIGN="center" VALIGN="middle" ONCLICK="clickedSquare(' + ii + ',' + jj + ')">';
+      } 
+      text += '<A HREF="javascript:boardOnClick[' + jj + '][' + ii + ']()" ' + 
+              'TITLE="' + boardTitle[jj][ii] + '" ' +
+              'STYLE="text-decoration: none; outline: none;"' +
               'ONFOCUS="this.blur()">' + 
               '<IMG CLASS="pieceImage" ID="' + imageId + '" ' + 
               ' SRC="'+ImagePath+'clear.'+imageType+'" BORDER=0></A></TD>';
@@ -3040,8 +3135,9 @@ function PrintHTML() {
   }
   text += '</TABLE>';
 
-  // Show the HTML for the chessboard
-
+  /*
+   * Show the HTML for the chessboard
+   */
   theObject = document.getElementById("GameBoard");
   if (theObject !== null) { theObject.innerHTML = text; }
 
@@ -3053,9 +3149,9 @@ function PrintHTML() {
     }
   }
 
-  numberOfButtons = 5;
-  spaceSize = 3;
-  buttonSize = (tableSize - spaceSize*(numberOfButtons - 1)) / numberOfButtons;
+  numberOfButtons=5;
+  spaceSize=3;
+  buttonSize=(tableSize - spaceSize*(numberOfButtons - 1))/numberOfButtons;
   text =  '<FORM NAME="GameButtonsForm" STYLE="display:inline;">' +
           '<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>' + 
           '<TR>' +
@@ -3075,15 +3171,11 @@ function PrintHTML() {
           '</TD>' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '</TD>' +
-          '<TD>';
-  text += '<INPUT ID="autoplayButton" TYPE="BUTTON" VALUE=';
-  text += isAutoPlayOn ? "=" : "+";
-  text += ' STYLE="';
+          '<TD>' +
+          '<INPUT ID="autoplayButton" TYPE="BUTTON" VALUE="+" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + ';'; }
-  text += isAutoPlayOn ?
-          '"; CLASS="buttonControlStop" TITLE="toggle autoplay (stop)" ' :
-          '"; CLASS="buttonControlPlay" TITLE="toggle autoplay (start)" ';
-  text += ' ID="btnPlay" NAME="AutoPlay" onClick="javascript:SwitchAutoPlay()" ONFOCUS="this.blur()">' +
+  text += '"; CLASS="buttonControlStop" TITLE="toggle autoplay (start)" ' +
+          ' ID="btnPlay" NAME="AutoPlay" onClick="javascript:SwitchAutoPlay()" ONFOCUS="this.blur()">' +
           '</TD>' +
           '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
           '</TD>' +
@@ -3104,13 +3196,15 @@ function PrintHTML() {
           '</TR>' + 
           '</TABLE>' +
           '</FORM>';
-
-  // Show the HTML for the control buttons
-
+  /*
+   * Show the HTML for the control buttons
+   */
   theObject = document.getElementById("GameButtons");
   if (theObject !== null) { theObject.innerHTML = text; }
   
-  // Show the HTML for the Game Selector
+  /*
+   * Show the HTML for the Game Selector
+   */
 
   if (firstStart) { textSelectOptions=''; }
   theObject = document.getElementById("GameSelector");
@@ -3139,7 +3233,8 @@ function PrintHTML() {
         } else { 
           gameSelectorHeadDisplay = gameSelectorHead; 
         }
-        // replace spaces with &nbsp; 
+        // replace spaces with &nbsp; (ascii code 160)
+        // text += gameSelectorHeadDisplay.replace(/ /g,String.fromCharCode(160)); 
         text += gameSelectorHeadDisplay.replace(/ /g, '&nbsp;'); 
 
         for (ii=0; ii<numberOfGames; ii++){
@@ -3193,7 +3288,8 @@ function PrintHTML() {
             if (howManyBlanks > 0) { textSO += blanks.substring(0, howManyBlanks); }
             textSO += ' ';
           }
-          // replace spaces with &nbsp; 
+          // replace spaces with &nbsp; (ascii code 160)
+          // textSelectOptions += textSO.replace(/ /g,String.fromCharCode(160));
           textSelectOptions += textSO.replace(/ /g, '&nbsp;');
         }
       text += textSelectOptions + '</SELECT></FORM>';
@@ -3202,56 +3298,63 @@ function PrintHTML() {
     }
   }
 
-  // Show the HTML for the Game Event
-
+  /*
+   * Show the HTML for the Game Event
+   */
   theObject = document.getElementById("GameEvent");
   if (theObject !== null) {
     theObject.innerHTML = gameEvent[currentGame];
     // theObject.style.whiteSpace = "nowrap";
   }
 
-  // Show the HTML for the Game Round
-
+  /*
+   * Show the HTML for the Game Round
+   */
   theObject = document.getElementById("GameRound");
   if (theObject !== null) {
     theObject.innerHTML = gameRound[currentGame]; 
     theObject.style.whiteSpace = "nowrap";
   } 
 
-  // Show the HTML for the Game Site
-
+  /*
+   * Show the HTML for the Game Site
+   */
   theObject = document.getElementById("GameSite");
   if (theObject !== null) {
     theObject.innerHTML = gameSite[currentGame]; 
     // theObject.style.whiteSpace = "nowrap";
   } 
 
-  // Show the HTML for the Game Date
-
+  /*
+   * Show the HTML for the Game Date
+   */
   theObject = document.getElementById("GameDate");
   if (theObject !== null) {
     theObject.innerHTML = gameDate[currentGame]; 
     theObject.style.whiteSpace = "nowrap";
   } 
 
-  // Show the HTML for the Game White Player
-
+  /*
+   * Show the HTML for the Game White Player
+   */
   theObject = document.getElementById("GameWhite");
   if (theObject !== null) {
     theObject.innerHTML = gameWhite[currentGame]; 
     // theObject.style.whiteSpace = "nowrap";
   } 
 
-  // Show the HTML for the Game Black Player
-
+  /*
+   * Show the HTML for the Game Black Player
+   */
   theObject = document.getElementById("GameBlack");
   if (theObject !== null) {
     theObject.innerHTML = gameBlack[currentGame]; 
     // theObject.style.whiteSpace = "nowrap";
   } 
 
-  // Show the HTML for the Game Result
-
+  /*
+   * Show the HTML for the Game Result
+   */
   theObject = document.getElementById("GameResult");
   if (theObject !== null) {
     theObject.innerHTML = gameResult[currentGame]; 
@@ -3297,13 +3400,15 @@ function PrintHTML() {
   }
   text += '</SPAN>';
 
-  // Show the HTML for the Game Text
-
+  /*
+   * Show the HTML for the Game Text
+   */
   theObject = document.getElementById("GameText");
   if (theObject !== null) { theObject.innerHTML = text; }
 
-  // Show the HTML for the Game Search box
-
+  /*
+   * Show the HTML for the Game Search box
+   */
   theObject = document.getElementById("GameSearch");
   if ((firstStart) && (theObject !== null)) {
     if (numberOfGames < 2) {
@@ -3314,10 +3419,10 @@ function PrintHTML() {
              'ACTION="javascript:searchPgnGame(document.getElementById(\'searchPgnExpression\').value);">';
       text += '<INPUT ID="searchPgnButton" CLASS="searchPgnButton" STYLE="display: inline; ';
       if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + tableSize/4 + '; '; }
-      text += '" TITLE="find games matching the search string (or regular expression)" ';
+      text += '" TITLE="find games matching the search string (or regular expression), click square E8 for more help" ';
       text += 'TYPE="submit" VALUE="?">';
       text += '<INPUT ID="searchPgnExpression" CLASS="searchPgnExpression" ' +
-              'TITLE="find games matching the search string (or regular expression)" ' + 
+              'TITLE="find games matching the search string (or regular expression), click square E8 for more help" ' + 
               'TYPE="input" VALUE="' + lastSearchPgnExpression + '" STYLE="display: inline; ';
       if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + 3*tableSize/4 + '; '; }
       text += '" ONFOCUS="disableShortcutKeysAndStoreStatus();" ONBLUR="restoreShortcutKeysStatus();">'; 
@@ -3328,39 +3433,48 @@ function PrintHTML() {
 }
 
 
-function FlipBoard() {
+function FlipBoard(){
   tmpHighlightOption = highlightOption;
   if (tmpHighlightOption) { SetHighlight(false); }
   IsRotated = !IsRotated;
-  PrintHTML();
   RefreshBoard();
   if (tmpHighlightOption) { SetHighlight(true); }
 }
 
 
-function RefreshBoard() {
-  // Check if we need a new set of pieces.
+function RefreshBoard(){
+  /*
+   * Check if we need a new set of pieces.
+   */
   InitImages();
-
-  // Display all empty squares.
+  /*
+   * Display all empty squares.
+   */
   var col, row, square;
-  for (col = 0; col < 8;++col) {
-    for (row = 0; row < 8; ++row) {
-      if (Board[col][row] === 0) {
-        square = IsRotated ? 63-col-(7-row)*8 : col+(7-row)*8;
+  for (col = 0; col < 8;++col){
+    for (row = 0; row < 8; ++row){
+      if (Board[col][row] === 0){
+	if (IsRotated){
+	  square= 63-col-(7-row)*8;
+	} else{
+        square = col+(7-row)*8;
+	}
 	SetImage(square, ClearImg.src);
       }
     }
   }
-
-  // Display all pieces.
+  /*
+   * Display all pieces.
+   */
   var color, ii;
   for (color = 0; color < 2; ++color){
     for (ii = 0; ii < 16; ++ii){
       if (PieceType[color][ii] > 0){
-        square = IsRotated ? 
-                 63-PieceCol[color][ii] - (7-PieceRow[color][ii])*8 :
-                 PieceCol[color][ii] + (7-PieceRow[color][ii])*8;
+        if (IsRotated){
+          square = 63-PieceCol[color][ii] - (7-PieceRow[color][ii])*8;
+	} else{
+	  square = PieceCol[color][ii] + (7-PieceRow[color][ii])*8;
+	}
         SetImage(square, PiecePicture[color][PieceType[color][ii]].src);
       }
     }
@@ -3368,11 +3482,15 @@ function RefreshBoard() {
 }
 
 
-function SetAutoPlay(vv) {
+function SetAutoPlay(vv){
   isAutoPlayOn = vv;
-  // No matter what clear the timeout.
+  /*
+   * No matter what clear the timeout.
+   */
   if (AutoPlayInterval) { clearTimeout(AutoPlayInterval); AutoPlayInterval = null; }
-  // If switched on start  moving forward. Also change the button value.
+  /*
+   * If switched on start  moving forward. Also change the button value.
+   */
   if (isAutoPlayOn){
     if (document.GameButtonsForm) {
       if (document.GameButtonsForm.AutoPlay){
@@ -3397,7 +3515,7 @@ function SetAutoPlay(vv) {
 }
 
 
-function SetAutoplayDelay(vv) {
+function SetAutoplayDelay(vv){
   Delay = vv;
 }
 
@@ -3409,77 +3527,92 @@ function SetLiveBroadcast(delay, alertFlag, demoFlag) {
 }
 
 
-function SetImage(square, image) {
+function SetImage(square, image){
   if (DocumentImages[square] == image) { return; }
   document.images[square+ImageOffset].src = image;
   DocumentImages[square]                  = image;   // Store the new image.
 }
 
 
-function SetImagePath(path) {
+function SetImagePath(path){
   ImagePath = path;
 }
 
 
-function SwitchAutoPlay() {
-  if (isAutoPlayOn) { SetAutoPlay(false); }
-  else {
+function SwitchAutoPlay(){
+  if (isAutoPlayOn){
+    SetAutoPlay(false);
+  } else{
     MoveForward(1);
     SetAutoPlay(true);
   }
 }
 
 
-function StoreMove(thisPly) {
+function StoreMove(thisPly){
 
-  // Stores "square from" history information
+  /*
+   * Store the moved piece int he history arrays.
+   */
+
+// Stores "square from" history information
   HistPieceId[0][thisPly] = mvPieceId;
   HistCol[0][thisPly]     = PieceCol[MoveColor][mvPieceId];
   HistRow[0][thisPly]     = PieceRow[MoveColor][mvPieceId];
   HistType[0][thisPly]    = PieceType[MoveColor][mvPieceId];
 
-  // Stores "square to" history information
+// Stores "square to" history information
   HistCol[2][thisPly] = mvToCol;
   HistRow[2][thisPly] = mvToRow;
 
-  if (mvIsCastling) {
+  if (mvIsCastling){
      HistPieceId[1][thisPly] = castleRook;
      HistCol[1][thisPly]     = PieceCol[MoveColor][castleRook];
      HistRow[1][thisPly]     = PieceRow[MoveColor][castleRook];
      HistType[1][thisPly]    = PieceType[MoveColor][castleRook];
-  } else if (mvCapturedId >= 0) {
+  } else if (mvCapturedId >= 0){
      HistPieceId[1][thisPly] = mvCapturedId+16;
      HistCol[1][thisPly]     = PieceCol[1-MoveColor][mvCapturedId];
      HistRow[1][thisPly]     = PieceRow[1-MoveColor][mvCapturedId];
      HistType[1][thisPly]    = PieceType[1-MoveColor][mvCapturedId];
-  } else {
+  } else{
     HistPieceId[1][thisPly] = -1;
   }
 
-  // Update the from square and the captured square. Remember that the
-  // captured square is not necessarely the to square because of the en-passant.
+  /*
+   * Update the from square and the captured square. Remember that the
+   * captured square is not necessarely the to square because of the en-passant.
+   */
   Board[PieceCol[MoveColor][mvPieceId]][PieceRow[MoveColor][mvPieceId]] = 0;
-
-  // Mark the captured piece as such.
-  if (mvCapturedId >=0) {
+  /*
+   * Mark the captured piece as such.
+   */  
+  if (mvCapturedId >=0){
      PieceType[1-MoveColor][mvCapturedId] = -1;
      PieceMoveCounter[1-MoveColor][mvCapturedId]++;
      Board[PieceCol[1-MoveColor][mvCapturedId]][PieceRow[1-MoveColor][mvCapturedId]] = 0;
   }
-
-  // Update the piece arrays. Don't forget to update the type array, since a
-  // pawn might have been replaced by a piece in a promotion.
+  /*
+   * Update the piece arrays. Don't forget to update the type array, since a
+   * pawn might have been replaced by a piece in a promotion.
+   *
+   */
   PieceType[MoveColor][mvPieceId] = mvPieceOnTo;
   PieceMoveCounter[MoveColor][mvPieceId]++;
   PieceCol[MoveColor][mvPieceId]  = mvToCol;
   PieceRow[MoveColor][mvPieceId]  = mvToRow;
-  if (mvIsCastling) {
+  if (mvIsCastling){
     PieceMoveCounter[MoveColor][castleRook]++;
-    PieceCol[MoveColor][castleRook] = mvToCol == 2 ? 3 : 5;
+    if (mvToCol == 2){
+      PieceCol[MoveColor][castleRook] = 3;
+    } else{
+      PieceCol[MoveColor][castleRook] = 5;
+    }
     PieceRow[MoveColor][castleRook] = mvToRow;
   }
-
-  // Update the board.
+  /*
+   * Update the board.
+   */
   Board[mvToCol][mvToRow] = PieceType[MoveColor][mvPieceId]*(1-2*MoveColor);
   if (mvIsCastling){
     Board[PieceCol[MoveColor][castleRook]][PieceRow[MoveColor][castleRook]] =
@@ -3487,10 +3620,10 @@ function StoreMove(thisPly) {
   }
   return;
 }
-
-function UndoMove(thisPly) {
-
-  // Bring the moved piece back.
+function UndoMove(thisPly){
+  /*
+   * Bring the moved piece back.
+   */
   Board[mvToCol][mvToRow] = 0;
   Board[HistCol[0][thisPly]][HistRow[0][thisPly]] =
     HistType[0][thisPly]*(1-2*MoveColor);
@@ -3499,33 +3632,33 @@ function UndoMove(thisPly) {
   PieceRow[MoveColor][mvPieceId]  = HistRow[0][thisPly];
   PieceType[MoveColor][mvPieceId] = HistType[0][thisPly];
   PieceMoveCounter[MoveColor][mvPieceId]--;
-
-  // If capture or castle bring the captured piece or the rook back.
-  if (mvCapturedId >=0) {
+  /*
+   * If capture or castle bring the captured piece or the rook back.
+   */
+  if (mvCapturedId >=0){
      PieceType[1-MoveColor][mvCapturedId] = mvCapturedId;
      PieceCol[1-MoveColor][mvCapturedId]  = HistCol[1][thisPly];
      PieceRow[1-MoveColor][mvCapturedId]  = HistRow[1][thisPly];
      PieceCol[1-MoveColor][mvCapturedId]  = HistCol[1][thisPly];
-  } else if (mvIsCastling) {
+  } else if (mvIsCastling){
      PieceCol[MoveColor][castleRook] = HistCol[1][thisPly];
      PieceRow[MoveColor][castleRook] = HistRow[1][thisPly];
      PieceMoveCounter[MoveColor][castleRook]--;
   }
-}
 
-function Color(nn) {
+}
+function Color(nn){
   if (nn < 0) { return 1; }
   if (nn > 0) { return 0; }
   return 2;
 }
-
-function sign(nn) {
+function sign(nn){
   if (nn > 0) { return  1; }
   if (nn < 0) { return -1; }
   return 0;
 }
 
-function SquareOnBoard(col, row) {
+function SquareOnBoard(col, row){
   if ((col < 0) || (col > 7)) { return false; }
   if ((row < 0) || (row > 7)) { return false; }
   return true;
