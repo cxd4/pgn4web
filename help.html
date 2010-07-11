@@ -28,7 +28,7 @@ a {
 
 </style>
 
-<link rel="shortcut icon" href="pawn.ico" />
+<link rel="shortcut icon" href="pawn.ico"></link>
 
 </head>
 
@@ -38,14 +38,13 @@ a {
 
 function print_menu( item, level, title ) {
   menu  = '<table width=100% cellspacing=0 cellpadding=0><tr><td valign=top>';
-  menu += '<h' + level + '>' + title + '</h' + level + '>';
+  menu += '<h' + level + '>' + title + '</a></h' + level + '>';
   menu += '</td><td valign=top>';
   menu += '<div style="font-size: 66%; text-align: right">';
-  menu += '<a name="' + item + '" href=#ui>user&nbsp;interface</a>';
+  menu += '<a name="' + item + '" href=#credits>credits&nbsp;&amp;&nbsp;license</a>';
   menu += '&nbsp; &nbsp;<a href=#squares>shortcut&nbsp;squares</a>';
   menu += '&nbsp; &nbsp;<a href=#keys>shortcut&nbsp;keys</a>';
   menu += '&nbsp; &nbsp;<a href=#search>search&nbsp;tool</a>';
-  menu += '&nbsp; &nbsp;<a href=#credits>credits&nbsp;&amp;&nbsp;license</a>';
   menu += '</div>';
   menu += '</td></tr></table>';
   document.write(menu); 
@@ -94,13 +93,16 @@ if (isRotated) {
 
 <div style="height: 1em">&nbsp;</div>
 
-<script type="text/javascript">print_menu("ui", 2, "user&nbsp;interface");</script>
+<script type="text/javascript">print_menu("credits", 2, "credits&nbsp;&amp;&nbsp;license");</script>
 
-The user can interact with the pgn4web chessboard <a href="#keys">using the keyboard</a> or <a href="#squares">clicking chessboard squares</a>; hovering the mouse on each square displays an help summary.
+Javascript modifications of <a href=mailto:pgn4web@casaschi.net target=_blank>Paolo Casaschi (pgn4web@casaschi.net)</a> on code from the http://ficsgames.com database, in turn likely based on code from the LT PGN viewer at http://www.lutanho.net/pgn/pgnviewer.html
 <p></p>
-A <a href="#search">search tool</a> allows seraching within the PGN games.
+PNG images from http://ixian.com/chess/jin-piece-sets (<a href=http://creativecommons.org/licenses/by-sa/3.0/>creative commons attribution-share alike 3.0 unported license</a>).
 <p></p>
-Errors alert messages are logged, such as failures to load PGN games, incorrect PGN games or incorrect FEN strings. When an error is encountered, the top left chessboard square will flash to signal the exception. The error alert log can be reviewed clicking on the same top left chessboard square. 
+The figurine fonts are derived from the Liberation Sans font (released under GNU General Public License, see https://fedorahosted.org/liberation-fonts/) with the addition of chess pieces from freeware fonts: the alpha2 font (Peter Strickland), the good companion font (David L. Brown), the merida font (Armando H. Marroquin), the pirate font (Klaus Wolf) and the chess usual font (Armando H. Marroquin). The original chess fonts and more details are available at http://www.enpassant.dk/chess/fonteng.htm
+<p></p>
+Remaining pgn4web code is copyright (C) 2009, 2010 <a href=mailto:pgn4web@casaschi.net target=_blank>Paolo Casaschi (pgn4web@casaschi.net)</a> and licensed under the terms of the <a href=license-gpl-2.0.txt>GNU General Public License version 2</a> as published by the <a href=http://www.fsf.org target=_blank>Free Software Foundation</a>; either <a href=license-gpl-2.0.txt>version 2 of the License</a>, or (at your option) any later version.
+
 <p></p>
 <br>
 
@@ -159,10 +161,8 @@ print_help_row("&nbsp;", "");
 print_help_row("g", "toggle highlighting");
 print_help_row("f, d", "flip board, White on bottom");
 print_help_row("&nbsp;", "");
-print_help_row("z", "pgn4web debug info");
-print_help_row("shift-z", "pgn4web website");
+print_help_row("z", "go to pgn4web website");
 print_help_row("esc", "pgn4web help");
-print_help_row("shift-esc", "toggle enabling shortcut keys");
 print_help_row("&nbsp;", "");
 document.write("</table>");
 
@@ -177,7 +177,7 @@ try {
   document.write('<i>Shorcut keys currently ' + ke_curr + ', ' + ke_next + 
                  ' in the chessboard with shift+escape or clicking square ' +
                  shortcutSquareKeyEnable + ' (assuming ' + 
-                 colorAtTheBottom + ' on bottom).</i>\n');
+                 colorAtTheBottom + ' on bottom).\n');
 } catch (e) {}
 </script>
 
@@ -204,19 +204,6 @@ print_help_row("1.\\s*e4\\s*e6", "search for games with moves <i>1. e4 e6</i>");
 document.write("</table>");
 
 </script>
-
-<p></p>
-<br>
-
-<script type="text/javascript">print_menu("credits", 2, "credits&nbsp;&amp;&nbsp;license");</script>
-
-Javascript modifications of <a href=mailto:pgn4web@casaschi.net target=_blank>Paolo Casaschi (pgn4web@casaschi.net)</a> on code from the http://ficsgames.com database, in turn likely based on code from the LT PGN viewer at http://www.lutanho.net/pgn/pgnviewer.html
-<p></p>
-PNG images from http://ixian.com/chess/jin-piece-sets (<a href=http://creativecommons.org/licenses/by-sa/3.0/>creative commons attribution-share alike 3.0 unported license</a>).
-<p></p>
-The figurine fonts are derived from the Liberation Sans font (released under GNU General Public License, see https://fedorahosted.org/liberation-fonts/) with the addition of chess pieces from freeware fonts: the alpha2 font (Peter Strickland), the good companion font (David L. Brown), the merida font (Armando H. Marroquin), the pirate font (Klaus Wolf) and the chess usual font (Armando H. Marroquin). The original chess fonts and more details are available at http://www.enpassant.dk/chess/fonteng.htm
-<p></p>
-Remaining pgn4web code is copyright (C) 2009, 2010 <a href=mailto:pgn4web@casaschi.net target=_blank>Paolo Casaschi (pgn4web@casaschi.net)</a> and licensed under the terms of the <a href=license-gpl-2.0.txt>GNU General Public License version 2</a> as published by the <a href=http://www.fsf.org target=_blank>Free Software Foundation</a>; either <a href=license-gpl-2.0.txt>version 2 of the License</a>, or (at your option) any later version.
 
 <p></p>
 
