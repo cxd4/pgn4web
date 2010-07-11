@@ -74,10 +74,10 @@ DEBUGGING
 
 Errors alert messages are logged by pgn4web, such as failure to load PGN
 data, incorrect PGN games or incorrect FEN strings. 
-When an error is encountered, the top left chessboard square will flash
-to signal the exception. 
-The error alert log can be reviewed clicking on the same top left 
-chessboard square.
+When an error is encountered, the chessboard will flash at regular
+intervals to signal the exception. 
+The error alert log can be reviewed clicking on square A8 (assuming White
+on bottom, H1 otherwise).
 
 
 HOW TO USE pgn4we.js
