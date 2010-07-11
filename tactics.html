@@ -2,7 +2,7 @@
 
 <!--
   pgn4web javascript chessboard
-  copyright (C) 2009, 2010 Paolo Casaschi
+  copyright (C) 2009 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 -->
@@ -11,7 +11,7 @@
 
 <title>Solve chess tactics!</title>
 
-<link href="tactics.css" type="text/css" rel="stylesheet" />
+<link href="tactics.css" type="text/css" rel="stylesheet"></link>
 
 <style type="text/css">
 
@@ -28,7 +28,7 @@
 
 </style>
 
-<link rel="shortcut icon" href="pawn.ico" />
+<link rel="shortcut icon" href="pawn.ico"></link>
 
 <script src="pgn4web.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -36,7 +36,7 @@
    SetImagePath("uscf/24"); // use "" path if images are in the same folder as this javascript file
 // SetImageType("png");
 // SetHighlightOption(true); // true or false
-// SetGameSelectorOptions(" ...", false, 0, 0, 0, 15, 15, 0, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
+// SetGameSelectorOptions("Select a game...", false, 0, 0, 0, 15, 15, 0, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
 // SetCommentsIntoMoveText(true);
 // SetCommentsOnSeparateLines(false);
 // SetAutoplayDelay(1000); // milliseconds
@@ -46,13 +46,181 @@
 // SetInitialHalfmove(0,false); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default)
    SetShortcutKeysEnabled(false);
 
-cols2clear="ABCDEFGH";
-rows2clear="1234567";
-for (c=0; c<cols2clear.length; c++) {
-  for (r=0; r<rows2clear.length; r++) {
-    configBoardShrortcut(cols2clear.charAt(c)+rows2clear.charAt(r), "", function(){});
-  }
-}
+
+// A7
+function boardOnClickCol0Row1() { }
+boardAlt[0 + 1 * 8] = "";
+// B7
+function boardOnClickCol1Row1() { }
+boardAlt[1 + 1 * 8] = "";
+// C7
+function boardOnClickCol2Row1() { }
+boardAlt[2 + 1 * 8] = "";
+// D7
+function boardOnClickCol3Row1() { }
+boardAlt[3 + 1 * 8] = "";
+// E7
+function boardOnClickCol4Row1() { }
+boardAlt[4 + 1 * 8] = "";
+// F7
+function boardOnClickCol5Row1() { }
+boardAlt[5 + 1 * 8] = "";
+// G7
+function boardOnClickCol6Row1() { }
+boardAlt[6 + 1 * 8] = "";
+// H7
+function boardOnClickCol6Row1() { }
+boardAlt[7 + 1 * 8] = "";
+
+// A6
+function boardOnClickCol0Row2() { }
+boardAlt[0 + 2 * 8] = "";
+// B6
+function boardOnClickCol1Row2() { }
+boardAlt[1 + 2 * 8] = "";
+// C6
+function boardOnClickCol2Row2() { }
+boardAlt[2 + 2 * 8] = "";
+// D6
+function boardOnClickCol3Row2() { }
+boardAlt[3 + 2 * 8] = "";
+// E6
+function boardOnClickCol4Row2() { }
+boardAlt[4 + 2 * 8] = "";
+// F6
+function boardOnClickCol5Row2() { }
+boardAlt[5 + 2 * 8] = "";
+// G6
+function boardOnClickCol6Row2() { }
+boardAlt[6 + 2 * 8] = "";
+// H6
+function boardOnClickCol7Row2() { }
+boardAlt[7 + 2 * 8] = "";
+
+// A5
+function boardOnClickCol0Row3() { }
+boardAlt[0 + 3 * 8] = "";
+// B5
+function boardOnClickCol1Row3() { }
+boardAlt[1 + 3 * 8] = "";
+// C5
+function boardOnClickCol2Row3() { }
+boardAlt[2 + 3 * 8] = "";
+// D5
+function boardOnClickCol3Row3() { }
+boardAlt[3 + 3 * 8] = "";
+// E5
+function boardOnClickCol4Row3() { }
+boardAlt[4 + 3 * 8] = "";
+// F5
+function boardOnClickCol5Row3() { }
+boardAlt[5 + 3 * 8] = "";
+// G5
+function boardOnClickCol6Row3() { }
+boardAlt[6 + 3 * 8] = "";
+// H5
+function boardOnClickCol7Row3() { }
+boardAlt[7 + 3 * 8] = "";
+
+// A4
+function boardOnClickCol0Row4() { }
+boardAlt[0 + 4 * 8] = "";
+// B4
+function boardOnClickCol1Row4() { }
+boardAlt[1 + 4 * 8] = "";
+// C4
+function boardOnClickCol2Row4() { }
+boardAlt[2 + 4 * 8] = "";
+// D4
+function boardOnClickCol3Row4() { }
+boardAlt[3 + 4 * 8] = "";
+// E4
+function boardOnClickCol4Row4() { }
+boardAlt[4 + 4 * 8] = "";
+// F4
+function boardOnClickCol5Row4() { }
+boardAlt[5 + 4 * 8] = "";
+// G4
+function boardOnClickCol6Row4() { }
+boardAlt[6 + 4 * 8] = "";
+// H4
+function boardOnClickCol7Row4() { }
+boardAlt[7 + 4 * 8] = "";
+
+// A3
+function boardOnClickCol0Row5() { }
+boardAlt[0 + 5 * 8] = "";
+// B3
+function boardOnClickCol1Row5() { }
+boardAlt[1 + 5 * 8] = "";
+// C3
+function boardOnClickCol2Row5() { }
+boardAlt[2 + 5 * 8] = "";
+// D3
+function boardOnClickCol3Row5() { }
+boardAlt[3 + 5 * 8] = "";
+// E3
+function boardOnClickCol4Row5() { }
+boardAlt[4 + 5 * 8] = "";
+// F3
+function boardOnClickCol5Row5() { }
+boardAlt[5 + 5 * 8] = "";
+// G3
+function boardOnClickCol6Row5() { }
+boardAlt[6 + 5 * 8] = "";
+// H3
+function boardOnClickCol7Row5() { }
+boardAlt[7 + 5 * 8] = "";
+
+// A2
+function boardOnClickCol0Row6() { }
+boardAlt[0 + 6 * 8] = "";
+// B2
+function boardOnClickCol1Row6() { }
+boardAlt[1 + 6 * 8] = "";
+// C2
+function boardOnClickCol2Row6() { }
+boardAlt[2 + 6 * 8] = "";
+// D2
+function boardOnClickCol3Row6() { }
+boardAlt[3 + 6 * 8] = "";
+// E2
+function boardOnClickCol4Row6() { }
+boardAlt[4 + 6 * 8] = "";
+// F2
+function boardOnClickCol5Row6() { }
+boardAlt[5 + 6 * 8] = "";
+// G2
+function boardOnClickCol6Row6() { }
+boardAlt[6 + 6 * 8] = "";
+// H2
+function boardOnClickCol7Row6() { }
+boardAlt[7 + 6 * 8] = "";
+
+// A1
+function boardOnClickCol0Row7() { }
+boardAlt[0 + 7 * 8] = "";
+// B1
+function boardOnClickCol1Row7() { }
+boardAlt[1 + 7 * 8] = "";
+// C1
+function boardOnClickCol2Row7() { }
+boardAlt[2 + 7 * 8] = "";
+// D1
+function boardOnClickCol3Row7() { }
+boardAlt[3 + 7 * 8] = "";
+// E1
+function boardOnClickCol4Row7() { }
+boardAlt[4 + 7 * 8] = "";
+// F1
+function boardOnClickCol5Row7() { }
+boardAlt[5 + 7 * 8] = "";
+// G1
+function boardOnClickCol6Row7() { }
+boardAlt[6 + 7 * 8] = "";
+// H1
+function boardOnClickCol7Row7() { }
+boardAlt[7 + 7 * 8] = "";
 
 
 function gup( name ){
@@ -65,7 +233,7 @@ function gup( name ){
   else { return results[1]; }
 }
 
-if ((assignedInitialGame = gup('n')) !== '') { SetInitialGame(assignedInitialGame); }
+SetInitialGame(gup('n'));	
 
 </script>		  
 
@@ -110,6 +278,7 @@ if ((assignedInitialGame = gup('n')) !== '') { SetInitialGame(assignedInitialGam
 <span id="solution" style="font-size: 14; text-align: left; visibility: hidden">
 <span id="GameText"></span> <span id="GameResult"></span>
 </span>
+</div>
 
 </td>
 </tr>
@@ -117,8 +286,8 @@ if ((assignedInitialGame = gup('n')) !== '') { SetInitialGame(assignedInitialGam
 <tr>
 <td width=246 height=40 valign=bottom>
 
-<form style="display: inline">
 <table cellspacing=0 cellpadding=0 border=0>
+<form>
 <tr>
 <td width=80px valign=top>
 <input type=button value="move back" title="click here to move back one ply when looking at the solution" class="newButton" onClick="javascript: MoveBackward(1); if (StartPly == CurrentPly) {document.getElementById('task').style.visibility = 'visible';}" onFocus="this.blur()">
@@ -134,8 +303,8 @@ if ((assignedInitialGame = gup('n')) !== '') { SetInitialGame(assignedInitialGam
 <input type=button value="next puzzle" title="click here to load the next puzzle" class="newButton" onClick="javascript: document.getElementById('solution').style.visibility = 'hidden'; document.getElementById('task').style.visibility = 'visible'; currentGame = Math.floor(Math.random()*numberOfGames);Init();" onFocus="this.blur()">
 </td>
 </tr>
-</table>
 </form>
+</table>
 
 </td>
 </tr>

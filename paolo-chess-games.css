@@ -1,6 +1,6 @@
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009, 2010 Paolo Casaschi
+ *  copyright (C) 2009 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
@@ -21,31 +21,33 @@ body {
 
 .boardTable {
   border-style: double; 
-  border-color: gray; /* #C6CEC3; */
+  border-color: black;
   border-width: 3px;
 }
 
 .pieceImage {
-  width: 32px;
-  height: 32px;
+  width: 32;
+  height: 32;
 }
 
 .whiteSquare,
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 40px;
-  height: 40px;
+  width: 36;
+  height: 36;
 }
 
 .whiteSquare,
 .highlightWhiteSquare {
   background: #EFF4EC;
+  border-color: #EFF4EC;
 }
 
 .blackSquare,
 .highlightBlackSquare {
   background: #C6CEC3;
+  border-color: #C6CEC3;
 }
 
 .highlightWhiteSquare,
@@ -55,7 +57,6 @@ body {
 
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
-  padding: 2px;
 }
 
 .buttonControlPlay,
@@ -65,14 +66,6 @@ body {
 }
 
 .buttonControlSpace {
-/* a "width" attribute here must use the !important flag to override default settings */
-}
-
-.searchPgnButton {
-/* a "width" attribute here must use the !important flag to override default settings */
-}
-
-.searchPgnExpression {
 /* a "width" attribute here must use the !important flag to override default settings */
 }
 

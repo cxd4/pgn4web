@@ -1,6 +1,6 @@
 #
 #  pgn4web javascript chessboard
-#  copyright (C) 2009, 2010 Paolo Casaschi
+#  copyright (C) 2009 Paolo Casaschi
 #  see README file and http://pgn4web.casaschi.net
 #  for credits, license and more details
 #
@@ -20,17 +20,11 @@ side.
  
 It has been designed to make it easier adding chess games to your web 
 pages and blogs, without the need of much knowledge of HTML or any 
-other technicality. It also has been integrated with many popular web
-software platforms and services.
+other technicality. It also allows for frequent updates of the PGN file 
+without the need of manually generating new web pages at every update.
 
-***
-*** THIS README FILE IS A SUMMARY OF THE PGN4WEB DOCUMENTATION
-*** MORE EXTENSIVE AND UPDATED DOCUMENTATION IS AVAILABLE
-*** FROM THE PGN4WEB SUPPORT WIKI REACHABLE FROM http://pgn4web.casaschi.net
-*** PLEASE RELY ON THE SUPPORT WIKI RATHER THAN THIS README ONLY
-***
-
-Project homepage: http://pgn4web.casaschi.net (including downloads and wiki)
+Project homepage: http://pgn4web.casaschi.net (including downloads and
+support wiki)
 Contact email: pgn4web@casaschi.net
 
 Features:
@@ -47,10 +41,6 @@ Features:
 - provides a very simple board generator web tool helping you adding chess 
   games to your website or blog without any html/javascript coding (see 
   http://pgn4web-board-generator.casaschi.net
-- integrated with popular blog platforms (such as blogger and wordpress), 
-  portal platforms (such as joomla, drupal and wikimedia), forum platforms
-  (such as phpBB, simplemachines and vbulletin) and hosting services (such 
-  as google sites)
 - allows for live broadcast of games
 
 Limitations:
@@ -68,16 +58,6 @@ Please email me for review at pgn4web@casaschi.net any PGN file that
 pgn4web fails parsing correctly.  
 
 Enjoy!
-
-
-DEBUGGING
-
-Errors alert messages are logged by pgn4web, such as failure to load PGN
-data, incorrect PGN games or incorrect FEN strings. 
-When an error is encountered, the top left chessboard square will flash
-to signal the exception. 
-The error alert log can be reviewed clicking on the same top left 
-chessboard square.
 
 
 HOW TO USE pgn4we.js
@@ -112,7 +92,7 @@ Example:
     SetImagePath(""); // use "" path if images are in the same folder as this javascript file
     SetImageType("png");
     SetHighlightOption(true); // true or false
-    SetGameSelectorOptions(" ...", false, 0, 0, 0, 15, 15, 0, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
+    SetGameSelectorOptions("Select a game...", false, 0, 0, 0, 15, 15, 0, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
     SetCommentsIntoMoveText(false);
     SetCommentsOnSeparateLines(false);
     SetAutoplayDelay(1000); // milliseconds
@@ -130,7 +110,6 @@ Then the script will automagically add content into your HTML file
 to any <div> or <span> containers with the following IDs:
 
   <div id="GameSelector"></div>
-  <div id="GameSearch"></div>
   <div id="GameLastMove"></div>
   <div id="GameNextMove"></div>
   <div id="GameSideToMove"></div>
@@ -138,8 +117,8 @@ to any <div> or <span> containers with the following IDs:
   <div id="GameBoard"></div>
   <div id="GameButtons"></div>
   <div id="GameEvent"></div>
-  <div id="GameRound"></div>
   <div id="GameSite"></div>
+  <div id="GameRound"></div>
   <div id="GameDate"></div>
   <div id="GameWhite"></div>
   <div id="GameBlack"></div>
@@ -168,7 +147,7 @@ pgn4web allows displaying chess moves text using the supplied figurine fonts:
 the Liberation Sans font, see credits section for more details.
 To enable figurine display of chess moves text, make sure you include the
 fonts/pgn4web-fonts.css file into your HTML file:
-  <link href="fonts/pgn4web-fonts.css" type="text/css" rel="stylesheet" /> 
+  <link href="fonts/pgn4web-fonts.css" type="text/css" rel="stylesheet"></link> 
 or into your CSS file:
   @import url("fonts/pgn4web-fonts.css");
 Then set the font-family for the .move class to the chess font of your choice.
@@ -234,7 +213,7 @@ accurate testing.
 Alternatively, for a more realistic simulation, the bash shell script 
 live-simulation.sh slowly updates the live.pgn file, simulating a real event.
 
-The easiest way to setup a live broadcast is to use the live-compact.html file.
+The easiest way to setup a live broadcast is to use the live.html file.
 The HTML file accepts these parameters:
  - pgnFile = PGN file to load (default live.pgn)
  - initialGame = initial game, a number or first, last, random (default 1)
@@ -242,11 +221,9 @@ The HTML file accepts these parameters:
  - demo = if set true, sets live demo mode (default false)
 For instance, make sure that the file myGames.pgn on your server is periodically
 refreshed with the live games, then add the following iframe to your page:
-<iframe frameborder=0 width=480 height=360 
-        src=live-compact.html?pgnFile=myGames.pgn>
+<iframe frameborder=0 width=480 height=360 src=live.html?pgnFile=myGames.pgn>
 </iframe>
-Of course live-compact.html can be edited to customize colors, layout and every
-detail.
+Of course live.html can be edited to customize colors, layout and every detail.
 
 http://pgn4web-live.casaschi.net will occasionally broadcast live major chess
 events.
@@ -256,10 +233,9 @@ CUSTOMIZATION FUNCTIONS
 
 The following functions, if defined in the HTML file after loading pgn4web.js,
 allow for execution of custom commands at given points:
-- customFunctionOnPgnTextLoad(): when loading a new PGN file
-- customFunctionOnPgnGameLoad(): when loading a new game
-- customFunctionOnMove(): when a  move is made
-- customFunctionOnAlert(message_string): when an error alert is raised
+- customFunctionOnPgnTextLoad(): executed when loading a new PGN file
+- customFunctionOnPgnGameLoad(): executed when loading a new game
+- customFunctionOnMove(): executed when a  move is made
 Please note the order these functions are executed; for example, when loading 
 a new PGN file at the end of the first game, first customFunctionOnMove() is 
 executed, then (when the game has been loaded and the move positioning 
@@ -267,13 +243,6 @@ completed) customFunctionOnPgnGameLoad() is executed and finally (when the
 selected game is fully loaded) customFunctionOnPgnTextLoad() is executed.
 
 See twic765.html or live.html for examples.
-
-The following functions, if defined in the HTML file after loading pgn4web.js,
-allow for execution of custom commands when shift + a number key is pressed:
-- customShortcutKey_Shift_0()
-- customShortcutKey_Shift_1()
-...
-- customShortcutKey_Shift_9()
 
 
 TECHNICAL NOTES ABOUT WEB BROWSERS
@@ -284,12 +253,6 @@ Safari) on a variety of platforms (Linux/Debian, MacOS, Windows). Not every
 browser version and every combination of browser/platform has been tested. 
 If you have any issue with using pgn4web on your platform, please email 
 pgn4web@casaschi.net
-
-Note about Google Chrome: you might experience problems when testing HTML
-pages from your local computer while developing your site. This is a
-limitation of the browser with respect to loading local files. There is no
-workaround other than testing with a different browser. Browsing pgn4web
-websites with Google Chrome should work properly.
 
 Note about Internet Explorer v7 and above: under some circumstances you might
 experience problems when testing HTML pages from your local computer while 
@@ -369,7 +332,7 @@ See http://jscolor.com/
 
 The above items remains subject to their original licenses (if any).
 
-Remaining pgn4web code is copyright (C) 2010 Paolo Casaschi
+Remaining pgn4web code is copyright (C) 2009 Paolo Casaschi
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -388,7 +351,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 See license-gpl-2.0.txt license file.
 
 You are free to use pgn4web in your website or blog; you are not required to
-acknowledge the pgn4web project, but if you want to do so the following line
+acknowledge the pgn4we project, but if you want to do so the following line
 might be used:
 javascript chess viewer courtesy of <a href=http://pgn4web.casaschi.net>pgn4web</a>
 

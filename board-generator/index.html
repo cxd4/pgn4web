@@ -1,15 +1,22 @@
-<html> 
+<html>
 
 <!--
   pgn4web javascript chessboard
-  copyright (C) 2009, 2010 Paolo Casaschi
+  copyright (C) 2009 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 -->
-
+	
 <head>
 <script>
-window.location.href = "../board-generator.html" + window.location.search + window.location.hash;
+
+// if you install this on your site, 
+// you must change http://pgn4web-board.casaschi.net
+// to the location of the board widget on your site
+
+window.location = "../board-generator.html?bu=http://pgn4web-board.casaschi.net/" + 
+                  window.location.search.replace(/^\?/,"&");
+
 </script>
 </head>
 </html>

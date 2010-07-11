@@ -2,7 +2,7 @@
 
 <!--
   pgn4web javascript chessboard
-  copyright (C) 2009, 2010 Paolo Casaschi
+  copyright (C) 2009 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 -->
@@ -11,11 +11,10 @@
 
 <title>pgn4web live broadcast template</title>
 
-<link href="live-template.css" type="text/css" rel="stylesheet" />
+<link href="live-template.css" type="text/css" rel="stylesheet"></link>
 
-<link rel="shortcut icon" href="pawn.ico" />
+<link rel="shortcut icon" href="pawn.ico"></link>
 
-<script src="pgn4web-server-config.js" type="text/javascript"></script>
 <script src="pgn4web.js" type="text/javascript"></script>
 <script type="text/javascript">
 
@@ -26,7 +25,7 @@
 // SetImageType("png");
 // SetHighlightOption(true); // true or false
 
-   SetGameSelectorOptions(null, true, 0, 0, 0, 15, 15, 3, 0); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
+   SetGameSelectorOptions("Select a game...", true, 0, 0, 0, 15, 15, 3, 0); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
 
    SetCommentsIntoMoveText(false);
    SetCommentsOnSeparateLines(false);
@@ -67,6 +66,8 @@
 <div id="GameBoard"></div>
 <p></p>
 <div id="GameButtons"></div>
+<p></p>
+<small><i><a href="javascript:displayHelp()">hit escape for help</a></i></small>
 </td>
 
 <td>
@@ -92,7 +93,7 @@
 <p></p>
 <span class="label">Side to move:</span> <span id="GameSideToMove"></span> 
 <br>
-<span class="label">Last move:</span> <span class="move"><span id="GameLastMove"></span></span> 
+<span class="label">Last move:</span> <span class="move"><span id="GameLastMove"></span></span></span> 
 <br>
 <span class="label">Next move:</span> <span class="move"><span id="GameNextMove"></span></span> 
 <p></p>
@@ -102,7 +103,6 @@
 </tr>
 </table>
 
-<p></p>
 <hr>
 
 <div style="font-size: 85%; text-align: justify;" id="GameText"></div>
