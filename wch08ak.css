@@ -1,9 +1,9 @@
-/*
- *  pgn4web javascript chessboard
- *  copyright (C) 2009, 2010 Casaschi
- *  see README file and http://pgn4web.casaschi.net
- *  for credits, license and more details
- */
+<!--
+  pgn4web javascript chessboard
+  copyright (C) 2009 Paolo Casaschi
+  see README file and http://pgn4web.casaschi.net
+  for credits, license and more details
+-->
 
 html, 
 body { 
@@ -77,14 +77,6 @@ body {
   width: 0px !important;
 }
 
-.searchPgnButton {
-/* a "width" attribute here must use the !important flag to override default settings */
-}
-
-.searchPgnExpression {
-/* a "width" attribute here must use the !important flag to override default settings */
-}
-
 .move,
 .moveOn {
   color: black;
@@ -97,7 +89,12 @@ body {
 }
 
 .comment,
-.nag {
+.nag
+{
   color: gray;
+}
+
+.nag {
+  font-style: italic;
 }
 

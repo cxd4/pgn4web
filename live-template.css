@@ -1,20 +1,18 @@
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009, 2010 Paolo Casaschi
+ *  copyright (C) 2009 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
 
-@import url("fonts/pgn4web-fonts.css");
-
 html, 
 body { 
   margin: 0; 
-  padding: 10; 
+  padding: 0; 
 }
 
 body {
-  font-family: 'pgn4web Liberation Sans', sans-serif;
+  font-family: sans-serif;
   color: black;
   background: white;
 }
@@ -72,19 +70,9 @@ body {
 /* a "width" attribute here must use the !important flag to override default settings */
 }
 
-.searchPgnButton {
-/* a "width" attribute here must use the !important flag to override default settings */
-}
-
-.searchPgnExpression {
-/* a "width" attribute here must use the !important flag to override default settings */
-}
-
 .move,
 .moveOn {
   color: black;
-  font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
-  line-height: 1.3em;
   font-weight: normal;
   text-decoration: none;   
 }
@@ -93,9 +81,13 @@ body {
   background: #DAF4D7;
 }
 
-.label,
 .comment,
-.nag {
+.nag
+{
   color: gray;
+}
+
+.nag {
+  font-style: italic;
 }
 

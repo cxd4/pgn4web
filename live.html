@@ -2,63 +2,326 @@
 
 <!--
   pgn4web javascript chessboard
-  copyright (C) 2009, 2010 Paolo Casaschi
+  copyright (C) 2009 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 -->
 
 <head>
 
-<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"> 
+<title>pgn4web live broadcast</title>
 
-<title>pgn4web chess live broadcast</title> 
+<link href="live.css" type="text/css" rel="stylesheet"></link>
 
-<script src="pgn4web-server-config.js" type="text/javascript"></script>
-<script  type="text/javascript">
-// this should have been defined in pgn4web-server-config.js
-// setting default value here just in case
-var pgn4web_live_compact_url;
-if (pgn4web_live_compact_url == undefined) { pgn4web_live_compact_url = "live-compact.html"; }
+<script src="pgn4web.js" type="text/javascript"></script>
+<script>
+
+  if (gup("demo") == "true") { demoFlag = true; alertFlag = true; }
+  else { demoFlag = false; alertFlag = false; }
+
+  if ((pgnFile = gup("pgnFile")) == "") { pgnFile = "live.pgn"; }
+
+  if ((refreshMinutes = gup("refreshMinutes")) == "") { 
+    refreshMinutes = 1;
+  }
+  else {
+    testMinutes = refreshMinutes + "";
+    if ((testMinutes.match(/[^0-9\.]/)) || (refreshMinutes == 0)) {
+      if (alertFlag) { 
+	      alert("ERROR: refreshMinutes parameter must be a positive number.\n" +
+		    "Supplied " + testMinutes + "; defaulting to 1."); 
+      }
+      refreshMinutes = 1;
+    }
+  }
+
+  if ((iniGame = gup("initialGame")) == "") {iniGame = 1; }
+  iniGameError = "ERROR: initialGame parameter must be a positive number or " +
+                 "'first', 'last' or 'random'.\n" +
+                 "Supplied " + iniGame + "; defaulting to 1.";
+  if (parseInt(iniGame)) {
+    if (parseInt(iniGame) < 1) { 
+      if (alertFlag) { alert(iniGameError); }
+      iniGame = 1; 
+    }
+  } else {
+    if ((iniGame != "first") && (iniGame != "last") && (iniGame != "random")) { 
+      if (alertFlag) { alert(iniGameError); }
+      iniGame = 1; 
+    }
+  }
+  
+  if (gup("help") == "true") { developer_help(); }
+
+  SetPgnUrl(pgnFile); 
+  SetImagePath ("uscf/24"); 
+  SetImageType("png");
+  SetHighlightOption(true); // true or false
+  SetGameSelectorOptions("select a game...", true, 0, 0, 0, 15, 15, 3, 0); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate)
+  SetCommentsIntoMoveText(false);
+  SetCommentsOnSeparateLines(false);
+  SetAutoplayDelay(3000); // milliseconds
+  SetAutostartAutoplay(false);
+  SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
+  SetInitialGame(iniGame); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are also accepted
+  SetInitialHalfmove("end",true); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default)
+  SetShortcutKeysEnabled(false);
+
+  SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false)
+
+  originalTitle = document.title;
+
+  ticker_string = " help";
+  ticker_counter = 0;
+  function update_ticker() {
+    document.getElementById("ticker").innerHTML = ticker_string.substring(0, ticker_counter) +
+      ticker_string.substring(ticker_counter, ticker_counter + 1).toUpperCase() +
+      ticker_string.substring(ticker_counter + 1);
+    ticker_counter = (ticker_counter + 1) % ticker_string.length;
+  }
+
+  lastRefreshTime = "";
+  function customFunctionOnPgnTextLoad() {
+    if ((gameEvent[0] != undefined) && (gameEvent[0] != "")) {
+      document.title = originalTitle + ": " + gameEvent[0];
+    }
+    if ((!LiveBroadcastStarted) || (LiveBroadcastEnded)) {
+      document.getElementById("liveStatusDetails").className = "headerHighlighted";
+    } else {
+      document.getElementById("liveStatusDetails").className = "header";
+    }
+
+    update_ticker();
+
+    lastRefreshTime = Date();
+
+  }
+
+  function customFunctionOnPgnGameLoad() {
+    if ((gameRound[currentGame] != undefined) && (gameRound[currentGame] != "") && (gameRound[currentGame] != "?")) {
+      document.getElementById("roundDetails").innerHTML = "round ";
+    } else {
+      document.getElementById("roundDetails").innerHTML = "";
+      document.getElementById("GameRound").innerHTML = "";
+    }
+    if ((gameWhite[currentGame] != undefined) && (gameWhite[currentGame] != "") && (gameWhite[currentGame] != "?")) {
+      document.getElementById("whiteDetails").className = "headerHighlighted";
+    } else {
+      document.getElementById("whiteDetails").className = "header";
+    }
+    if ((gameBlack[currentGame] != undefined) && (gameBlack[currentGame] != "") && (gameBlack[currentGame] != "?")) {
+      document.getElementById("blackDetails").className = "headerHighlighted";
+    } else {
+      document.getElementById("blackDetails").className = "header";
+    }
+    // if ((gameResult[currentGame] != undefined) && ((gameResult[currentGame] == "*") || (gameResult[currentGame] == "?"))) {
+    //  document.getElementById("resultDetails").className = "header";
+    // } else {
+    //  document.getElementById("resultDetails").className = "headerHighlighted";
+    // }
+  }
+
+// redefine B3 and G3 to load the next/previous live game
+// B3
+function boardOnClickCol1Row5() { for (ii=currentGame-1; ii>=0; ii--) { if ((gameResult[ii] != undefined) && ((gameResult[ii]=="*") || (gameResult[ii]=="?"))) { break; }} if (ii>=0) { currentGame = ii; Init();} };
+boardAlt[1 + 5 * 8] = "load previous live game";
+// G3
+function boardOnClickCol6Row5() { for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((gameResult[ii] != undefined) && ((gameResult[ii]=="*") || (gameResult[ii]=="?"))) { break; }} if (ii<numberOfGames) { currentGame = ii; Init();} };
+boardAlt[6 + 5 * 8] = "load next live game";
+
+// disable A7 and B7 shortcut squares usually allowing showing move comments
+// A7
+function boardOnClickCol0Row1() { };
+boardAlt[0 + 1 * 8] = "";
+// B7
+function boardOnClickCol1Row1() { };
+boardAlt[1 + 1 * 8] = "";
+
+function gup( name ){
+
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regexS = "[\\?&]"+name+"=([^&#]*)";
+  // commented below to match first occurrence (to avoid users overruling setting)
+  // regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
+  var regex = new RegExp( regexS );
+  var results = regex.exec( window.location.href );
+  if( results != null ) { switch (results[1]) {
+    case "t": case "T": return "true";  break;
+    case "f": case "F": return "false"; break;
+    default: return results[1];
+  } }
+
+  // allows for short version of the URL parameters, for instance sC matches squareColor
+  compact_name = name.charAt(0);
+    for(i=1; i<name.length; i++){
+      if (name.charAt(i).match(/[A-Z]/)) { compact_name = compact_name + name.charAt(i).toLowerCase(); }
+    }
+  name = compact_name;
+
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regexS = "[\\?&]"+name+"=([^&#]*)";
+  // commented below to match first occurrence (to avoid users overruling setting)
+  // regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
+  var regex = new RegExp( regexS );
+
+  var results = regex.exec( window.location.href );
+  if( results != null ) { switch (results[1]) {
+    case "t": case "T": return "true";  break;
+    case "f": case "F": return "false"; break;
+    default: return results[1];
+  } }
+
+  return "";
+}
+
+function developer_help() {
+  alert("pgn4web live.html parameters" + "\n" + 
+        " - pgnFile = " + pgnFile + "; PGN file to load (default live.pgn)" + "\n" +
+        " - initialGame = " + iniGame + "; initial game to load, a number or first, last, random (default 1)" + "\n" +
+        " - refreshMinutes = " + refreshMinutes + "; refresh interval in minutes, decimals allowed (default 1)" + "\n" +
+        " - demo = " + demoFlag + "; if set true, sets live demo mode (default false)" + "\n" +
+        " - help = if set true, prints this help (default false)");
+}
+
+function user_help() {
+
+  if (refreshMinutes != 1) { plural = "s"; }
+  else { plural = ""; }
+
+  if (demoFlag) { demoString = "- demo mode enabled" + "\n"; }
+  else { demoString = ""; }
+
+  helpText = "Chess games live broadcast using pgn4web v" + version + "\n" +
+	     "\n" +
+	     "Games are automatically updated every " + 
+	     refreshMinutes + " minute" + plural  + " from the remote file " +
+	     "(" + pgnFile + "). " +
+	     "If the shown game is kept at the last available move, " +
+	     "upon refresh the chessboard steps forward automatically " +
+	     "to the game's latest position. " + 
+	     "The refresh stops once all games are ended. " + 
+	     "If no games are shown, just wait for the live broadcast to start. " +
+	     "There is no need to reload the webpage to refresh games, " +
+	     "but it's possible to manually force a refresh by clicking on square A6." + "\n" + 
+	     "\n" +
+	     "Chessboard squares are input buttons to control the games display:" + "\n" +
+	     "\n" +
+	     "\tD1 / E1\tmove back / forwards" + "\n" +
+	     "\tA1 / H1\tgame start / end" + "\n" + 
+	     "\tC3 / F3\tprevious / next game" + "\n" +
+	     "\tB3 / G3\tprevious / next live game (redefined shortcuts)" + "\n" +
+	     "\tA3 / H3\tfirst / last game" + "\n" +
+	     "\tB6     \tforce games refresh during live broadcast" + "\n" +
+	     "\tA6 / C6\tpause / restart live broadcast automatic refresh" + "\n" +
+	     "\tG8 / H8\tshortcuts help / pgn4web help" + "\n" +
+	     "\n" +
+	     "Status:" + "\n" + 
+	     demoString +
+	     "- last refresh: " + lastRefreshTime + "\n" +
+	     "- live broadcast started:" + LiveBroadcastStarted + 
+	     " ended:" + LiveBroadcastEnded + 
+	     " paused:" + LiveBroadcastPaused + "\n" +
+	     "\n" + 
+	     "Press OK to visit the pgn4web project website " + project_url +
+	     "\n\t";
+
+  if (confirm(helpText)) { window.open(project_url); }
+}
+
 </script>
 
-<style type="text/css"> 
- 
-body 
-{ color: black; background: white; font-family: sans-serif; padding: 20px; }
- 
-a:link, a:visited, a:hover, a:active
-{ color: black; text-decoration: none; }
+</head>
 
-</style> 
+<body>
 
-<link rel="shortcut icon" href="pawn.ico" />
+<!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
+<span style="display:none" id="pgnText">
 
-</head><body>
-<table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
-<td align="left" valign="middle"> 
-<h1 style="color: red;"><a style="color: red;" href=.>pgn4web</a> chess live broadcast</h1> 
-</td>
-<td align="right" valign="middle">
-<a href=.><img src=pawns.png border=0></a>
-</td>
-</tr></tbody></table>
- 
-<div>&nbsp;</div>
+</span>
+<!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
 <center>
-<table bgcolor=#EDE8D5 width=100% cellpadding=60 cellspacing=0><tbody><tr><td align=center valign=middle>
-<script type="text/javascript">document.write('<iframe src=' + pgn4web_live_compact_url + ' height="360" width="480" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">your browser does not support the required iframe functionality</iframe>');</script>
-</td></tr></tbody></table>
+<table width=460px height=360px cellpadding=0 cellspacing=0 border=0>
+<tr><td align=center valign=top>
+
+<table id="liveTable" width=460px cellpadding=0 cellspacing=5 border=0>
+
+<tr>
+
+<td align=left colspan=2 width=450px style="padding-top: 4px;">
+<div id="GameSelector"></div>
+</td>
+
+</tr>
+
+<tr>
+
+<td width=246px align=left>
+
+<table class="header" id="whiteDetails" cellpadding=3 cellspacing=0 width=246px><tr><td align=left>
+<span id="GameWhite"></span>
+</td><td align=right>
+<span id="GameWhiteClock"></span>
+</td></tr></table>
+
+<table class="header" id="blackDetails" cellpadding=3 cellspacing=0 width=246px><tr><td align=left>
+<span id="GameBlack"></span>
+</td><td align=right>
+<span id="GameBlackClock"></span>
+</td></tr></table>
+
+</td>
+
+<td width=199px align=left>
+
+<table class="header" cellpadding=3 cellspacing=0 width=199px><tr><td align=left>
+<span id="GameEvent"></span>
+</td><td align=right>
+<span id="roundDetails"></span><span id="GameRound"></span>
+</td></tr></table>
+
+<table class="header" cellpadding=3 cellspacing=0 width=199px><tr><td align=left>
+<span id="GameSite"></span>
+</td><td align=right>
+<span id="GameDate"></span>
+</td></tr></table>
+
+</td>
+
+</tr>
+
+<tr valign=top>
+
+<td width=246px align=left>
+<span id="GameBoard"></span>
+</td>
+
+<td width=199px align=left valign=top>	
+<div class="movebox" id="GameText" style="height: 243px; padding-left: 3px; padding-right: 3px; overflow: auto;">
+</div>
+</td>
+
+<tr>
+
+<td width=246px align=left valign=middle>
+<table width=246px cellpadding=0 cellspacing=0><tr><td id="resultDetails" class="header" width="50%" align=left valign=middle>
+<span style="padding-left: 3px;" id="GameResult"></span>
+</td><td width="50%" align=right valign=middle>
+<a class="helplink" id="ticker" style="padding-right: 3px;" href="javascript: user_help();" onFocus="this.blur()" title="pgn4web live broadcast help">HELP</a>
+</td></tr></table>
+</td>
+
+<td class="header" id="liveStatusDetails" width=199px align=center valign=middle">
+<span id="GameLiveStatus"></span>
+</td>
+
+</tr>
+
+</table>
+
+</td></tr>
+</table>
 </center>
-
-<div>&nbsp;</div>
-<div style="text-align: right; font-size: 66%">click on square H8 for help</div> 
-
-
-<!-- start of google analytics code -->
-
-<!-- end of google analytics code -->
-
 
 </body>
 

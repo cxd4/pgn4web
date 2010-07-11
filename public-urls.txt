@@ -1,12 +1,12 @@
 
 #
 #  pgn4web javascript chessboard
-#  copyright (C) 2009, 2010 Paolo Casaschi
+#  copyright (C) 2009 Paolo Casaschi
 #  see README file and http://pgn4web.casaschi.net
 #  for credits, license and more details
 #
 
-main site
+project site
  http://pgn4web.casaschi.net
 
 demo site
@@ -14,13 +14,11 @@ demo site
 
 board widget
  http://pgn4web-board.casaschi.net
- (must be a plain forwarding)
+ (should be a plain forwarding)
 
 board generator site
  http://pgn4web-board-generator.casaschi.net
-
-games viewer
- http://pgn4web-viewer.casaschi.net
+ (should be a masked forwarding with the parameter ?baseUrl=http://pgn4web-board.casaschi.net)
 
 blog
  http://pgn4web-blog.casaschi.net

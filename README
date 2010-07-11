@@ -1,0 +1,283 @@
+#
+#  pgn4web javascript chessboard
+#  copyright (C) 2009 Paolo Casaschi
+#  see README file and http://pgn4web.casaschi.net
+#  for credits, license and more details
+#
+
+PGN4WEB
+display chess games on web pages using javascript
+
+ABOUT
+
+PGN4WEB is a javascript tool showing chess PGN games as a graphical
+chessboard in websites and blogs. 
+
+It comes as software package you can to your website or blogsite, but also
+provides a very simple board generator web tool helping you adding chess 
+games to your website or blog without any html/javascript coding from your 
+side.
+ 
+It has been designed to make it easier adding chess games to your web 
+pages and blogs, without the need of much knowledge of HTML or any 
+other technicality. It also allows for frequent updates of the PGN file 
+without the need of manually generating new web pages at every update.
+
+Project homepage: http://pgn4web.casaschi.net
+Contact: pgn4web@casaschi.net
+
+Features:
+- display chess games form a PGN file on a dynamic chessboard on your
+  webpage or blog
+- shortcut keys for navigating through the game, for selecting the
+  game from the file and much more; also uses chessboard squares as 
+  input buttons (hit escape for help)
+- fully customizable display. Each item (board, button bar, game
+  selection menu, PGN header info, game text, game comment and more)
+  can be displayed (or hidden) at pleasure in your html file
+- support different chess bitmaps (even custom bitmaps) and different
+  chessboard sizes
+- provides a very simple board generator web tool helping you adding chess 
+  games to your website or blog without any html/javascript coding (see 
+  http://pgn4web-board-generator.casaschi.net
+- allows for live broadcast of games
+
+Limitations:
+- variations are displayed as comment, it's not possible to display
+  in the chessboard positions from variations
+- only one chessboard for html file (use frames if you need to display
+  more in the same view)
+
+Bugs: 
+- if square brackets are present in the comments (or the game text) then 
+the game parsing is badly broken. If your PGN file is not displayed properly,
+please check for characters "[" and "]" in the comments and try removing 
+them. Otherwise send me the PGN file for review. 
+
+Enjoy!
+
+
+HOW TO USE pgn4we.js
+
+add a SCRIPT instance at the top of your HTML file:
+
+  <script src="pgn4web.js" type="text/javascript"></script>
+
+The PGN input can be specified either as URL within another SCRIPT instance 
+with at least the call to 
+
+  SetPgnUrl("http://yoursite/yourpath/yourfile.pgn")
+
+and optionally any of the other calls listed below.  
+
+Or the PGN file can be pasted in the body of the HTML file 
+within a SPAN statement with the ID pgnText:
+
+  <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
+  <span style="display:none" id="pgnText">
+
+  ... your PGN text ...
+
+  </span>
+  <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
+
+Example:
+
+  <script yype="text/javascript>
+
+    SetPgnUrl("http://yoursite/yourpath/yourfile.pgn"); // if set, this has precedence over the inline PGN in the HTML file
+    SetImagePath (""); // use "" path if images are in the same folder as this javascript file
+    SetImageType("png");
+    SetHighlightOption(true); // true or false
+    SetGameSelectorOptions("Select a game...", false, 0, 0, 0, 15, 15, 0, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
+    SetCommentsIntoMoveText(false);
+    SetCommentsOnSeparateLines(false);
+    SetAutoplayDelay(1000); // milliseconds
+    SetAutostartAutoplay(false);
+    SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
+    SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are also accepted
+    SetInitialHalfmove(0,false); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only
+    SetShortcutKeysEnabled(true);
+
+    SetLiveBroadcast(0.25, true, true); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false)
+
+  </script>
+ 
+Then the script will automagically add content into your HTML file 
+to any <div> or <span> containers with the following IDs:
+
+  <div id="GameSelector"></div>
+  <div id="GameLastMove"></div>
+  <div id="GameNextMove"></div>
+  <div id="GameSideToMove"></div>
+  <div id="GameLastComment"></div>
+  <div id="GameBoard"></div>
+  <div id="GameButtons"></div>
+  <div id="GameEvent"></div>
+  <div id="GameSite"></div>
+  <div id="GameRound"></div>
+  <div id="GameDate"></div>
+  <div id="GameWhite"></div>
+  <div id="GameBlack"></div>
+  <div id="GameResult"></div>
+  <div id="GameText"></div>
+
+  <div id="GameWhiteClock"></div>
+  <div id="GameBlackClock"></div>
+  <div id="GameLiveStatus"></div>
+
+The file template.css shows a list of customization style options.
+
+See template.html file for an example.
+See *mini.html* for an example of embedding the PGN content into the HTML file.
+See http://pgn4web-demo.casaschi.net usage example, including a live broadcast
+demo.
+See http://pgn4web-blog.casaschi for a usage example within a blog using the
+iframe html tag. 
+
+
+THE BOARD GENERATOR WEB TOOL
+
+The board widget allows showing games and positions in web pages and blogs, 
+Pwithout any html coding for each game, where the chessboard widget is created 
+using a given HTML code within the web page or blog. 
+
+Just go to the board widget generator site on 
+  http://pgn4web-board-generator.casaschi.net
+the enter your PGN games and configure the options. The tool will 
+automatically generate some HTML code that you can cut and paste in your web 
+page or your blog.
+
+
+THE LIVE BROADCAST OF GAMES
+
+By setting the SetLiveBroadcast(delay, alertFlag, demoFlag) option in the 
+HTML file, pgn4web will periodically refresh the PGN file, showing the live 
+progress of the games. PGN files produced by the DGT chessboards are supported.
+
+SetLiveBroadcast(delay, alertFlag, demoFlag) parameters:
+ - delay = refresh interval in minutes, decimals allowed (default 1)
+ - alertFlag = if set true, shows alert debug messages (default false)
+ - demoFlag = if set true, sets live demo mode (default false)
+
+The bash shell script live-grab.sh, executed on your server allows for grabbing
+the updated game source from anywhere on the Internet to your server.
+The live broadcast stops refreshing once all games are ended.
+
+If your live PGN contains clock info as comments after each game such as
+{1:59:59}, the clock information is displayed in the following sections:
+
+  <div id="GameWhiteClock"></div>
+  <div id="GameBlackClock"></div>
+
+Clock information provided by the DGT chessboards (like {[%clk 1:59:59]}) is
+also supported.
+
+The status of the live broadcast is displayed in the following section: 
+
+  <div id="GameLiveStatus"></div>
+
+Clicking on the B6 square will force a games refresh.
+Clicking on the A6/C6 squares will pause/restart the automatic games refresh.
+
+The file live-template.html shows a very basic example.
+
+A demo facility is available to test the live broadcast functionality.
+If the demo flag is set in SetLiveBroadcast() and a set of full games is 
+provided, the tool will simulate a slow progress of the game. Set the
+proper flag in live-template.html for an example. Please note, even during
+a demo, the PGN file is actually refreshed from the server for a more
+accurate testing.
+Alternatively, for a more realistic simulation, the bash shell script 
+live-simulation.sh slowly updates the live.pgn file, simulating a real event.
+
+The easiest way to setup a live broadcast is to use the live.html file.
+The HTML file accepts these parameters:
+ - pgnFile = PGN file to load (default live.pgn)
+ - initialGame = initial game, a number or first, last, random (default 1)
+ - refreshMinutes = refresh interval in minutes, decimals allowed (default 1)
+ - demo = if set true, sets live demo mode (default false)
+For instance, make sure that the file myGames.pgn on your server is periodically
+refreshed with the live games, then add the following iframe to your page:
+<iframe frameborder=0 width=480 height=360 src=live.html?pgnFile=myGames.pgn>
+</iframe>
+Of course live.html can be edited to customize colors, layout and every detail.
+
+http://pgn4web-live.casaschi.net will occasionally broadcast live major chess
+events.
+
+
+CUSTOMIZATION FUNCTIONS
+
+The following functions, if defined in the HTML file after loading pgn4web.js,
+allow for execution of custom commands at given points:
+- customFunctionOnPgnTextLoad(): executed when loading a new PGN file
+- customFunctionOnPgnGameLoad(): executed when loading a new game
+- customFunctionOnMove(): executed when a  move is made
+
+See twic765.html or live.html for examples.
+
+
+TECHNICAL NOTES ABOUT WEB BROWSERS
+
+pgn4web.js is developed and tested with a variety of browsers (Arora, 
+Blackberry browser, Chrome, Epiphany, Firefox, Internet Explorer, Opera, 
+Safari) on a variety of platforms (Linux/Debian, MacOS, Windows). Not every 
+browser version and every combination of browser/platform has been tested. 
+If you have any issue with using pgn4web on your platform, please email 
+pgn4web@casaschi.net
+
+Note about Internet Explorer v7 and above: under some circumstances you might
+experience problems when testing HTML pages from your local computer while 
+developing your site. If this happens to you, read notes at 
+http://code.google.com/p/pgn4web/issues/detail?id=23 
+
+
+CREDITS AND LICENSE
+
+javascript modifications of Paolo Casaschi (pgn4web@casaschi.net) on code 
+from the http://ficsgames.com database, in turn likely based on code from the 
+LT PGN viewer at http://www.lutanho.net/pgn/pgnviewer.html
+
+PNG images from http://ixian.com/chess/jin-piece-sets (creative commons 
+attribution-share alike 3.0 unported license)
+
+Some of the PGN files for the examples are coming from "The Week in Chess" at 
+http://www.chesscenter.com/twic/twic.html (files wch08ak.pgn and twic765.pgn) 
+and from the scid project at http://scid.sourceforge.net (file tactics.pgn).
+
+The jscolor javascript code is  maintained by Honza Odvarko 
+(http://odvarko.cz/) and released under the GNU Lesser General Public License 
+(http://www.gnu.org/copyleft/lesser.html)
+See http://jscolor.com/
+
+The above items remains subject to their original licenses (if any).
+
+Remaining pgn4web code is Copyright (C) 2009 Paolo Casaschi
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+See license-gpl-2.0.txt license file.
+
+You are free to use pgn4web in your website or blog; you are not required to
+acknowledge the pgn4we project, but if you want to do so the following line
+might be used:
+javascript chess viewer courtesy of <a href=http://pgn4web.casaschi.net>pgn4web</a>
+
+You are also encouraged to notify pgn4web@casaschi.net that you are using 
+pgn4web.
+
+END
+

@@ -1,11 +1,9 @@
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009, 2010 Paolo Casaschi
+ *  copyright (C) 2009 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
-
-@import url("fonts/pgn4web-fonts.css");
 
 html, 
 body { 
@@ -14,14 +12,9 @@ body {
 }
 
 body {
-  font-family: 'pgn4web Liberation Sans', sans-serif;
-  color: #615F54;
+  font-family: sans-serif;
+  color: #7D7A6C;
   background: #EDE8D5;
-}
-
-a {
-  text-decoration: none;
-  color: black;
 }
 
 .boardTable {
@@ -48,7 +41,7 @@ a {
 .whiteSquare,
 .highlightWhiteSquare {
   border-color: #EDE8D5;
-  background: #EDE8D5; 
+  background: #EDE8D5;
 }
 
 .blackSquare,
@@ -60,18 +53,18 @@ a {
 .highlightWhiteSquare,
 .highlightBlackSquare {
   border-style: solid;
-  border-color: #F8CCA0; /* #E6CCB3; */ /* #F5B371; */
+  border-color: #F5B371;
 }
 
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 450px !important;
-  color: #615F54;
+  color: #7D7A6C;
   font-size: 90%;
-  padding: 2px;
-  border-width: 1px;
-  border-color: #CFCBB3;
-  background-color: #EDE8D5;
+  background-color: #E8E3D0;
+  border-width: 0px;
+  border-color: #E8E3D0;
+  border-style: solid;
 }
 
 .buttonControlPlay,
@@ -87,20 +80,9 @@ a {
 /* a "width" attribute here must use the !important flag to override default settings */
 }
 
-.searchPgnButton {
-/* a "width" attribute here must use the !important flag to override default settings */
-}
-
-.searchPgnExpression {
-/* a "width" attribute here must use the !important flag to override default settings */
-}
-
+.helplink,
 .header,
-.headerNosize,
 .headerHighlighted,
-.headerHighlightedNosize,
-.helplinkNosize,
-.helplinkNosizeHighlighted,
 .move,
 .moveOn,
 .comment,
@@ -108,6 +90,7 @@ a {
   text-decoration: none;   
 }
 
+.helplink,
 .header,
 .headerHighlighted {
   font-size: 75%;
@@ -115,37 +98,34 @@ a {
 
 .move,
 .moveOn,
-.comment {
-  font-size: 70%; 
+.comment,
+.nag {
+  font-size: 66%;
 }
 
-.move,
-.moveOn {
-  font-family: 'pgn4web ChessSansUscf', 'pgn4web Liberation Sans', sans-serif;
-  line-height: 1.4em;
-}
-
-.helplinkNosize {
+.helplink {
   color: #BFBAA5;
 }
 
 .header,
-.headerNosize,
 .move {
-  color: #615F54;
+  color: #7D7A6C;
 }
 
 .headerHighlighted,
-.headerHighlightedNosize,
 .moveOn {
   color: black;
-  background: #F8CCA0; /* #E6CCB3; */ /* #F5B371; */
+  background: #F5B371;
 }
 
 .comment,
-.nag {
+.nag
+{
   color: #A19D8B;
-  line-height: 1.4em;
+}
+
+.nag {
+  font-style: italic;
 }
 
 .movebox {
