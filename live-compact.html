@@ -17,9 +17,9 @@
 
 -->
 
-<link href="live.css" type="text/css" rel="stylesheet" />
+<link href="live.css" type="text/css" rel="stylesheet"></link>
 
-<link rel="shortcut icon" href="pawn.ico" />
+<link rel="shortcut icon" href="pawn.ico"></link>
 
 <script src="pgn4web.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -33,9 +33,11 @@
     demoFlag = false; alertFlag = false; 
   }
 
-  pgnFile_default = detectBaseLocation() ?
-                    location.protocol + "//" + location.hostname + location.pathname.replace(/\/[^\/]*$/, "/live/live.pgn") :
-                    "live/live.pgn";
+  if (detectBaseLocation()) {
+    pgnFile_default = location.protocol + "//" + location.hostname + location.pathname.replace(/\/[^\/]*$/, "/live/live.pgn");
+  } else {
+    pgnFile_default = "live/live.pgn";
+  }
   // accepts pgnData as alias for pgnFile for consistency with board.html
   if ((pgnFile = gup("pgnData")) === "") { 
     if ((pgnFile = gup("pgnFile")) === "") {
@@ -96,7 +98,8 @@
 
   originalTitle = document.title;
 
-  ticker_string = demoFlag ? " demo" : " help";
+  if (demoFlag === true) { ticker_string = " demo"; }
+  else { ticker_string = " help"; }
   
   ticker_counter = 0;
   function update_ticker() {
@@ -113,11 +116,23 @@
         (gameEvent[0] != undefined) && (gameEvent[0] !== "")) {
       document.title = originalTitle + ": " + gameEvent[0];
     }
-    document.getElementById("playersDetails").className = LiveBroadcastStarted ? 
-                                                          "headerHighlighted" : "header";
-    document.getElementById("statusDetails").className = ((!LiveBroadcastStarted) || (LiveBroadcastEnded)) ? 
-                                                         "headerHighlighted" : "header";
-    document.getElementById("additionalMessage").innerHTML = LiveBroadcastEnded ? ", <a href='javascript: checkForNewLiveEvent();' onFocus='this.blur();' title='click here to check for the start of a new live broadcast event' style='color: inherit;'>check here for a new event</a>" : "";
+    if (LiveBroadcastStarted) { 
+      document.getElementById("playersDetails").className = "headerHighlighted";
+    } else {
+      document.getElementById("playersDetails").className = "header";
+    }
+
+    if ((!LiveBroadcastStarted) || (LiveBroadcastEnded)) {
+      document.getElementById("statusDetails").className = "headerHighlighted";
+    } else {
+      document.getElementById("statusDetails").className = "header";
+    }
+
+    if (LiveBroadcastEnded) {
+      document.getElementById("additionalMessage").innerHTML = ", <a href='javascript: checkForNewLiveEvent();' onFocus='this.blur();' title='click here to check for the start of a new live broadcast event' style='color: inherit;'>click here to check for a new event</a>";
+    } else {
+      document.getElementById("additionalMessage").innerHTML = "";
+    }
 
     update_ticker();
 
@@ -158,8 +173,11 @@
   }
 
   function customFunctionOnMove() {
-    document.getElementById("systemMessage").style.display = pgn4webMoveComments[CurrentPly] !== "" ?
-                                                             "none" : "inline";
+    if (pgn4webMoveComments[CurrentPly] !== "") {
+      document.getElementById("systemMessage").style.display = "none";
+    } else {
+      document.getElementById("systemMessage").style.display = "inline";
+    }
     document.getElementById("pgn4webMessage").innerHTML = pgn4webMoveComments[CurrentPly];
   }
 
@@ -213,8 +231,11 @@ function developer_help() {
 
 function user_help() {
 
-  plural = refreshMinutes != 1 ? "s" : "";
-  demoString = demoFlag ? "demo mode enabled" + "\n" : "";
+  if (refreshMinutes != 1) { plural = "s"; }
+  else { plural = ""; }
+
+  if (demoFlag) { demoString = "demo mode enabled" + "\n"; }
+  else { demoString = ""; }
 
   helpText = "Chess games live broadcast using pgn4web v" + pgn4web_version + "\n" +
 	     "\n" +
@@ -240,8 +261,6 @@ function user_help() {
 	     "D6 / E6: jump to previous / next unfinished game" + "\n" +
 	     "H6: force games refresh during live broadcast" + "\n" +
 	     "G8 / H8: shortcut squares help / pgn4web help" + "\n" +
-	     "\n" +
-	     "Please note all squares are listed assuming White on bottom, plese adjust square labels if the chessboard is flipped." + "\n" +
 	     "\n" +
 	     "Status:" + "\n" + 
 	     "\n" +
@@ -290,7 +309,7 @@ function user_help() {
 <table id="eventDetails" class="header" width=450px cellpadding=0 cellspacing=0 border=0>
 <tr>
 <td width=100px style="padding: 3px; text-align: left; vertical-align: middle;">
-<div id="GameSite" style="width: 94px; height: 1.3em; line-height: 1.3em; overflow: hidden; white-space: nowrap;"></div>
+<div id="GameSite" style="width: 94px; height: 1.3em; line-height: 1.3em; overflow: hidden"></div>
 </td>
 <td width=250px style="padding: 3px; text-align: center; vertical-align: middle;">
 <div style="width: 244px; height: 1.3em; line-height: 1.3em; overflow: hidden;"><span id="GameEvent"></span><span id="roundDetails"></span></div>
@@ -305,17 +324,17 @@ function user_help() {
 <table id="playersDetails" class="header" width=450px cellpadding=0 cellspacing=0 border=0>
 <tr>
 <td width=65px style="padding: 3px; text-align: left; vertical-align: middle;">
-<div id="GameWhiteClock" style="width: 59px; height: 1.3em; line-height: 1.3em; overflow: hidden; white-space: nowrap;"></div>
+<div id="GameWhiteClock" style="width: 59px; height: 1.3em; line-height: 1.3em; overflow: hidden;"></div>
 </td>
 <td width=320px style="padding: 3px; text-align: center; vertical-align: middle;">
-<div style="width: 314px; height: 1.3em; line-height: 1.3em; overflow: hidden; white-space: nowrap;">
+<div style="width: 314px; height: 1.3em; line-height: 1.3em; overflow: hidden;">
 <span id="GameWhite"></span> 
 &nbsp;&nbsp;&nbsp; 
 <span id="GameBlack"></span> 
 </div>
 </td>
 <td width=65px style="padding: 3px; text-align: right; vertical-align: middle;">
-<div id="GameBlackClock" style="width: 59px; height: 1.3em; line-height: 1.3em; overflow: hidden; white-space: nowrap;"></div>
+<div id="GameBlackClock" style="width: 59px; height: 1.3em; line-height: 1.3em; overflow: hidden;"></div>
 </td>
 </tr>
 </table>
@@ -339,20 +358,20 @@ function user_help() {
 
 <!-- same 450 width as above -->
 <table id="statusDetails" class="header" width=450px cellpadding=0 cellspacing=0 border=0>
-<tr>
+<tr">
 <td width=55px style="padding: 3px; text-align: left; vertical-align: middle;">
-<div style="width: 49px; height: 1.3em; line-height: 1.3em; overflow: hidden; white-space: nowrap;">
+<div style="width: 49px; height: 1.3em; line-height: 1.3em; overflow: hidden;">
 <span id="GameResult" class="headerNosize"></span>
 </div>
 </td>
 <td width=340px style="padding: 3px;" align=center valign=middle>
-<div id="messageLine" style="width: 334px; height: 1.3em; line-height: 1.3em; overflow: hidden; white-space: nowrap;">
+<div id="messageLine" style="width: 334px; height: 1.3em; line-height: 1.3em; overflow: hidden;">
 <span id="pgn4webMessage"></span>
 <span id="systemMessage"><span id="GameLiveStatus"></span><span id="additionalMessage"></span></span>
 </div>
 </td>
 <td width=55px style="padding: 3px; text-align: right; vertical-align: middle;">
-<div style="width: 49px; height: 1.3em; line-height: 1.3em; overflow: hidden; white-space: nowrap;">
+<div style="width: 49px; height: 1.3em; line-height: 1.3em; overflow: hidden;">
 <a id="ticker" class="helplinkNosize" href="javascript: user_help();" onFocus="this.blur()" title="pgn4web live broadcast help">HELP</a>
 </div>
 </td>

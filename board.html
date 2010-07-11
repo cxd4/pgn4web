@@ -85,7 +85,7 @@ font-weight: bold;
 
 </style>
 
-<link rel="shortcut icon" href="pawn.ico" />
+<link rel="shortcut icon" href="pawn.ico"></link>
 
 <script src="pgn4web.js" type="text/javascript"></script>
 
@@ -169,7 +169,8 @@ function new_start_pgn4web() {
   rule.style.fontSize = fontMovesSize;
 
   rule = getCSSRule('.moveOn');
-  rule.style.background = highlightMoveColor == 'none' ? backgroundColor : highlightMoveColor;
+  if (highlightMoveColor == 'none') { rule.style.background = backgroundColor; }
+  else { rule.style.background = highlightMoveColor; }
   rule.style.color = fontMovesColor;
   if (!fontMovesSize.match(/[^0-9]/)) { fontMovesSize += 'px'; }
   rule.style.fontSize = fontMovesSize;
@@ -181,8 +182,12 @@ function new_start_pgn4web() {
 
   rule = getCSSRule('.comment');
   rule.style.color = fontCommentsColor;
-  if (!fontCommentsSize.match(/[^0-9]/)) { fontCommentsSize += 'px'; }
-  rule.style.fontSize = fontCommentsSize == 'moves' ? fontMovesSize : fontCommentsSize;
+  if (fontCommentsSize == 'moves') {
+    rule.style.fontSize = fontMovesSize;
+  } else {
+    if (!fontCommentsSize.match(/[^0-9]/)) { fontCommentsSize += 'px'; }
+    rule.style.fontSize = fontCommentsSize;
+  }
 
   rule = getCSSRule('.nag');
   rule.style.color = fontCommentsColor;
@@ -245,20 +250,23 @@ function new_start_pgn4web() {
     if (horizontalLayout === true) {
       if (frameWidth === "") { document.getElementById("headerMoves").style.width = textWidth; }
       else { document.getElementById("outerFrame").style.width = frameWidth - 2 * framePadding; }
-      document.getElementById("headerMoves").style.height = frameHeight === "" ? textHeight : frameHeight - 2 * framePadding;
+      if (frameHeight === "") { document.getElementById("headerMoves").style.height = textHeight; }
+      else { document.getElementById("headerMoves").style.height = frameHeight - 2 * framePadding; }
     } else {
-      document.getElementById("headerMoves").style.width = frameWidth === "" ? textWidth : frameWidth - 2 * framePadding;
+      if (frameWidth === "") { document.getElementById("headerMoves").style.width = textWidth; }
+      else { document.getElementById("headerMoves").style.width = frameWidth - 2 * framePadding; }
       if (frameHeight === "") { document.getElementById("headerMoves").style.height = textHeight; }
       else { 
 	theObject = document.getElementById("boardHeadermovesPadding");
-        boardHeadermovesPaddingHeight = theObject ? theObject.offsetHeight : 0;
+	if (theObject) { boardHeadermovesPaddingHeight = theObject.offsetHeight; }
+	else { boardHeadermovesPaddingHeight = 0; }
 	document.getElementById("headerMoves").style.height = frameHeight - boardHeight - 2 * framePadding - boardHeadermovesPaddingHeight; 
       }
     }
   }
 
   if (gup("showHeightWidth") !== "") { 
-    myAlert("info: board width=" + boardWidth + " height=" + boardHeight, false);
+    alert("board dimensions\n\nwidth: " + boardWidth + "\nheight: " + boardHeight);
   }
 }
 
@@ -386,7 +394,9 @@ if ((highlightMode = gup("highlightMode")) === "") { highlightMode = "square"; }
 if (highlightMode == "b") { highlightMode = "border"; }
 if (highlightMode == "n") { highlightMode = "none"; }
 if (highlightMode == "s") { highlightMode = "square"; }
-borderSize = highlightMode == "border" ? Math.floor(0.05 * squareSize) : 0;
+if (highlightMode == "border") {
+  borderSize = Math.floor(0.05 * squareSize);
+} else { borderSize = 0; }
 
 if ((lightColor = gup("lightColorName")) === "") { 
   if ((lightColor = "#" + gup("lightColorHex")) == "#") {
@@ -510,7 +520,8 @@ if ((auto == "false") || (auto == "f")) { oldAutoplayMode = "none"; }
 loop = gup("loop");
 if ((loop == "true") || (loop == "t")) { oldAutoplayMode = "loop"; }
 if ((autoplayMode = gup("autoplayMode")) === "") {
-  autoplayMode = oldAutoplayMode === "" ? "game" : oldAutoplayMode;
+  if (oldAutoplayMode === "") { autoplayMode = "game"; }
+  else { autoplayMode = oldAutoplayMode; }
 }
 if (autoplayMode == "g") { autoplayMode = "game"; }
 if (autoplayMode == "l") { autoplayMode = "loop"; }
@@ -566,7 +577,8 @@ showButtons = gup("showButtons");
 if ((showButtons == "true")  || (showButtons == "t")) { oldButtonsDisplay = "custom"; }
 if ((showButtons == "false") || (showButtons == "f")) { oldButtonsDisplay = "hidden"; }
 if ((buttonsDisplay = gup("buttonsDisplay")) === "") {
-  buttonsDisplay = oldButtonsDisplay === "" ? "hidden" : oldButtonsDisplay;
+  if (oldButtonsDisplay === "") { buttonsDisplay = "hidden"; }
+  else { buttonsDisplay = oldButtonsDisplay; }
 }
 if (buttonsDisplay == "c") { buttonsDisplay = "custom"; }
 if (buttonsDisplay == "h") { buttonsDisplay = "hidden"; }
@@ -615,8 +627,9 @@ showCommentsOnSeparateLines = gup("showCommentsOnSeparateLines");
 if ((showCommentsOnSeparateLines == "true") || (showCommentsOnSeparateLines == "t")) { oldCommentsDisplay = "newline"; }
 showComments = gup("showComments");
 if ((showComments == "false") || (showComments == "f")) { oldCommentsDisplay = "hidden"; }
-if ((commentsDisplay = gup("commentsDisplay")) === "") {
-  commentsDisplay = oldCommentsDisplay === "" ? "inline" : oldCommentsDisplay;
+if ((commentsDisplay = gup("commentsDisplay")) === "") { 
+  if (oldCommentsDisplay === "") { commentsDisplay = "inline"; }
+  else { commentsDisplay = oldCommentsDisplay; }
 }
 if (commentsDisplay == "h") { commentsDisplay = "hidden"; }
 if (commentsDisplay == "i") { commentsDisplay = "inline"; }
@@ -669,7 +682,7 @@ if ((newPgnId = gup("pgnId")) !== "") {
     document.getElementById('pgnText').value = newPgnIdData = cleanPgnInput(newPgnIdData);
   }
   if ( !parent || !parent.document.getElementById(newPgnId) || !newPgnIdData ) {
-    myAlert("error: failed to get data from supplied pgnId=" + newPgnId + " (check parent is in the same domain).", true);
+    alert("WARNING: failed to get data from supplied pgnId (check parent is in the same domain).");
   }
 }
 
@@ -697,19 +710,19 @@ if ((pgnData = gup("pgnData")) !== "") {
 
 if ((pgnData !== "") && ((newPgnEncoded !== "") || (newPgnText !== "") || 
 			 (fenString !== "") || (newPgnId !==""))) {
-  myAlert("warning: pgnData value superseeds pgnEncoded, pgnText, pgnId and/or fenString values.", false);
+  alert("WARNING: pgnData value superseeds pgnEncoded, pgnText, pgnId and/or fenString values.");
 }
 
 if ((newPgnEncoded !== "") && ((newPgnText !== "") || (fenString !== "") || (newPgnId !==""))) {
-  myAlert("warning: pgnEncoded value superseeds pgnText, pgnId and/or fenString values.", false);
+  alert("WARNING: pgnEncoded value superseeds pgnText, pgnId and/or fenString values.");
 }
 
 if ((newPgnText !== "") && ((fenString !== "") || (newPgnId !==""))) {
-  myAlert("warning: pgnText value superseeds pgnId and/or fenString value.", false);
+  alert("WARNING: pgnText value superseeds pgnId and/or fenString value.");
 }
 
 if ((fenString !== "") && (newPgnId !=="")) {
-  myAlert("warning: fenString value superseeds pgnId value.", false);
+  alert("WARNING: fenString value superseeds pgnId value.");
 }
 
 oldHeaderDisplay = "";
@@ -717,7 +730,8 @@ showHeader = gup("showHeader");
 if ((showHeader == "true")  || (showHeader == "t")) { oldHeaderDisplay = "justified"; }
 if ((showHeader == "false") || (showHeader == "f")) { oldHeaderDisplay = "hidden"; }
 if ((headerDisplay = gup("headerDisplay")) === "") {
-  headerDisplay = oldHeaderDisplay === "" ? "hidden" : oldHeaderDisplay;
+  if (oldHeaderDisplay === "") { headerDisplay = "hidden"; }
+  else { headerDisplay = oldHeaderDisplay; }
 }
 if (headerDisplay == "c") { headerDisplay = "centered"; }
 if (headerDisplay == "h") { headerDisplay = "hidden"; }
@@ -729,7 +743,8 @@ showMoves = gup("showMoves");
 if ((showMoves == "true")  || (showMoves == "t")) { oldMovesDisplay = "justified"; }
 if ((showMoves == "false") || (showMoves == "f")) { oldMovesDisplay = "hidden"; }
 if ((movesDisplay = gup("movesDisplay")) === "") {
-  movesDisplay = oldMovesDisplay === "" ? "hidden" : oldMovesDisplay;
+  if (oldMovesDisplay === "") { movesDisplay = "hidden"; }
+  else { movesDisplay = oldMovesDisplay; }
 }
 if (movesDisplay == "h") { movesDisplay = "hidden"; }
 if (movesDisplay == "j") { movesDisplay = "justified"; }
@@ -795,8 +810,10 @@ if ((refreshMinutes = gup("refreshMinutes")) === "") {
 else {
   testMinutes = refreshMinutes + "";
   if ((testMinutes.match(/[^0-9\.]/)) || (refreshMinutes === 0)) {
-    myAlert("error: refreshMinutes parameter must be a positive number.\n" +
-	    "Supplied " + testMinutes + "; live refresh disabled.", true); 
+    if (alertFlag) { 
+      alert("ERROR: refreshMinutes parameter must be a positive number.\n" +
+	    "Supplied " + testMinutes + "; live refresh disabled."); 
+    }
     refreshMinutes = 0;
   }
 }
@@ -804,7 +821,9 @@ else {
 if (refreshMinutes > 0) {
   if (pgnData !== "") { SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag); }
   else { 
-    myAlert("error: live broadcast requires using pgnData parameter as PGN source.", true); 
+    if (alertFlag) {
+      alert("ERROR: live broadcast requires using pgnData parameter as PGN source."); 
+    }
   }
   if (gup("initialHalfmove") === "") { 
     SetInitialHalfmove(init_Halfmove = "end", always_Halfmove = true);
