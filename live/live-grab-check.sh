@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #  pgn4web javascript chessboard
-#  copyright (C) 2009, 2010 Paolo Casaschi
+#  copyright (C) 2009 Paolo Casaschi
 #  see README file and http://pgn4web.casaschi.net
 #  for credits, license and more details
 
@@ -31,7 +31,7 @@ then
 	echo "ERROR: missing awk"
 fi
 
-pgn4web_scan=$(ps -U $USER -w -o pid,command | awk 'BEGIN {c=0} $3=="live-grab.sh" {printf("pgn4web_pid[%d]=\"%s\";pgn4web_log[%d]=\"%s\".log;",c,$1,c,$5); c++}')
+pgn4web_scan=$(ps -U $USER -w -o pid,command | awk 'BEGIN {c=0} $3=="live-grab.sh" {if ($8=="") {$8="/dev/stdout"}; printf("pgn4web_pid[%d]=\"%s\";pgn4web_log[%d]=\"%s\";",c,$1,c,$8); c++}')
 
 eval $pgn4web_scan
 

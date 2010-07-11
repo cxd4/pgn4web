@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #  pgn4web javascript chessboard
-#  copyright (C) 2009, 2010 Paolo Casaschi
+#  copyright (C) 2009 Paolo Casaschi
 #  see README file and http://pgn4web.casaschi.net
 #  for credits, license and more details
 
@@ -12,7 +12,7 @@ timeoutHours_default=12
 if [ -z "$1" ] || [ "$1" == "--help" ]
 then
   echo
-  echo "$(basename $0) remotePgnUrl localPgnFile refreshSeconds timeoutHours"
+  echo "$(basename $0) remotePgnUrl localPgnFile refreshSeconds timeoutHours logFile"
   echo 
   echo "Shell script periodically fetching a PGN file for a pgn4web live broadcast."
   echo
@@ -21,9 +21,9 @@ then
   echo "  localPgnFile: local PGN filename (default: $localPgnFile_default)"
   echo "  refreshSeconds: refresh rate in seconds (default: $refreshSeconds_default)"
   echo "  timeoutHours: timeout in hours for stopping the process (default: $timeoutHours_default)"
+  echo "  logFile: log file name (default: standard output)"
   echo
   echo "Needs to be run using bash and requires either curl or wget"
-  echo "Logs to 'localPgnFile'.log"
   echo
   exit
 fi
@@ -49,16 +49,10 @@ print_log() {
 	fi
 }
 
-first_print_error="notYet";
 print_error() {
         if [ -n "$logFile" ]
         then
 		echo $(date) $(basename $0) ERROR: $1 >> $logFile
-	fi
-        if [ -n "$first_print_error" ]
-	then
-		first_print_error=
-	        echo > /dev/stderr
 	fi
 	echo $(basename $0) ERROR: $1 > /dev/stderr
 }
@@ -70,13 +64,27 @@ else
 	remotePgnUrl=$1
 fi
 
+if [ -n "$5" ]
+then
+	if [ -e "$5" ]
+	then
+		echo "$(date) $(basename $0) ERROR: logFile exists" > /dev/stderr
+		echo "$(date) $(basename $0) ERROR: delete the file or choose another filename and restart" > /dev/stderr
+		exit
+	fi
+	logFile=$5
+fi
+print_log
+print_log "pgn4web $(basename $0) logfile"
+print_log
+
 if [ -z "$2" ]
 then
 	localPgnFile=$localPgnFile_default
 else
 	localPgnFile=$2
 fi
-if [ -e "$localPgnFile" ] || [ -h "$localPgnFile" ]
+if [ -e "$localPgnFile" ]
 then
 	print_error "localPgnFile $localPgnFile exists"
 	print_error "delete the file or choose another filename and restart"
@@ -103,17 +111,6 @@ then
 	exit
 fi
 tmpLocalPgnFile=$localPgnFile.$RANDOM.pgn
-
-logFile=$localPgnFile.log
-if [ -e "$logFile" ] || [ -h "$logFile" ]
-then
-	print_error  "logFile $logFile exists"
-	print_error "delete the file or choose another localPgnFile name and restart"
-	exit
-fi
-print_log
-print_log "pgn4web $(basename $0) logfile"
-print_log
 
 if [ -z "$3" ]
 then

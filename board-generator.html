@@ -2,7 +2,7 @@
 
 <!--
   pgn4web javascript chessboard
-  copyright (C) 2009, 2010 Paolo Casaschi
+  copyright (C) 2009 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 -->
@@ -26,12 +26,8 @@ a {
   color: black;
 }
 
-.helptext, .helplink {
-  color: gray;
-}
-
 .helptext {
-  font-size: 80%;
+  color: gray;
 }
 
 .input, .textbox {
@@ -52,7 +48,7 @@ a {
 
 </style>
 
-<link rel="shortcut icon" href="pawn.ico" />
+<link rel="shortcut icon" href="pawn.ico"></link>
 
 </head>
 
@@ -62,11 +58,6 @@ a {
 
 <script src="pgn4web-server-config.js" type="text/javascript"></script>
 <script src="pgn4web.js" type="text/javascript"></script>
-
-<script src="pgn-decoder.js" type="text/javascript"></script>
-<script src="pgn-encoder.js" type="text/javascript"></script>
-<script src="crc32.js" type="text/javascript"></script>
-
 <script  type="text/javascript">
 // this should have been defined in pgn4web-server-config.js
 // setting default value here just in case
@@ -83,9 +74,7 @@ if (pgn4web_board_url == undefined) { pgn4web_board_url = location.protocol + "/
 pgnText_default = templatePgnHeader + '\n';
 encodePgn_default = "t";
 autoplayMode_default = "game";
-delay_default = 3000;
-initialGame_default = "first";
-initialHalfmove_default = initialHalfmoveSelect_default = "start"; initialHalfmoveNumber_default = "0";
+delay_default = 1000;
 pieceFont_default = "default";
 pieceSize_default = "default";
 squareSize_default = 40;
@@ -94,12 +83,12 @@ darkColorHex_default = "C6CEC3";
 boardBorderColorHex_default = "000000";
 highlightMode_default = "square";
 highlightColorHex_default = "DAF4D7";
-buttonsDisplay_default = "hidden";
-controlBackgroundColorHex_default = "EFF4EC";
+showButtons_default = "f";
+controlBackgroundColorHex_default = "default";
 controlTextColorHex_default = "000000";
 textMargin_default = 0;
-headerDisplay_default = "justified";
-movesDisplay_default = "justified";
+showHeader_default = "t";
+showMoves_default = "t";
 horizontalLayout_default = "f";
 frameHeight_default = "";
 frameWidth_default = "";
@@ -111,7 +100,7 @@ fontCommentsColorHex_default = "808080";
 highlightMoveColorHex_default = "DAF4D7";
 fontHeaderSize_default = "100%";
 fontMovesSize_default = "100%";
-fontCommentsSize_default = "moves";
+fontCommentsSize_default = "100%";
 backgroundColorHex_default = "FFFFFF";
 previewBackgroundColorHex_default = "DDDDDD";
 baseUrl_default = pgn4web_board_url;
@@ -119,11 +108,6 @@ baseUrl_default = pgn4web_board_url;
 
 // max length of the iframeUrl, if this is exceeded a warning is issued 
 iframeUrl_max = 2000;
-
-function new_onLoad() {
-  jscolor.bind(); // needed to cope with IE bug
-  set_defaults();
-}
 
 function set_defaults() {
 
@@ -153,7 +137,8 @@ function set_defaults() {
   if (gup("auto") === "f") { oldAutoplayMode_value = "none"; }
 
   if ((autoplayMode_value = gup("autoplayMode")) === "") {
-    autoplayMode_value = oldAutoplayMode_value === "" ? autoplayMode_default : oldAutoplayMode_value;
+    if (oldAutoplayMode_value === "") { autoplayMode_value = autoplayMode_default; }
+    else { autoplayMode_value = oldAutoplayMode_value; }
   }
   if (autoplayMode_value == "g") { autoplayMode_value = "game"; }
   if (autoplayMode_value == "l") { autoplayMode_value = "loop"; }
@@ -161,31 +146,12 @@ function set_defaults() {
     document.board.autoplayMode.value = autoplayMode_value;
   if (!((autoplayMode_value == "game") || (autoplayMode_value == "loop") ||
         (autoplayMode_value == "none")) ) {
-    alert("error: autoplay mode must be either 'game', 'loop', 'none' or their initials");
+    alert("error: autoplay mode must me either 'game', 'loop', 'none' or their initials");
     document.board.autoplayMode.value = autoplayMode_value = autoplayMode_default;
   }
 
   if ((delay_value = gup("delay")) === "") { delay_value = delay_default; }
   document.board.delay.value = delay_value;
-
-  if ((initialGame_value = gup("initialGame")) === "") { initialGame_value = initialGame_default; }
-  if ((initialGame_value == "f") || (initialGame_value == "false")) { initialGame_value = "first"; }
-  if (initialGame_value == "l") { initialGame_value = "last"; }
-  if (initialGame_value == "r") { initialGame_value = "random"; }
-  document.board.initialGame.value = initialGame_value;
-  if (!((initialGame_value == "first") || (initialGame_value == "last") ||
-        (initialGame_value == "random")) ) {
-    alert("error: initial game must be either 'first', 'last', 'random' or their initials");
-    document.board.initialGame.value = initialGame_value = initialGame_default;
-  }
-
-  if ((initialHalfmove_value = gup("initialHalfmove")) === "") { initialHalfmove_value = initialHalfmove_default; }
-  if (initialHalfmove_value == "s") { initialHalfmove_value = "start"; }
-  if (initialHalfmove_value == "e") { initialHalfmove_value = "end"; }
-  if (initialHalfmove_value == "r") { initialHalfmove_value = "random"; }
-  if (initialHalfmove_value == "c") { initialHalfmove_value = "comment"; }
-  document.board.initialHalfmove.value = initialHalfmove_value;
-  checkInitialHalfmove();
 
   if ((pieceFont_value = gup("pieceFont")) === "") { pieceFont_value = pieceFont_default; }
   if (pieceFont_value == "a") { pieceFont_value = "alpha"; }
@@ -197,7 +163,7 @@ function set_defaults() {
   if (!((pieceFont_value == "alpha") || (pieceFont_value == "merida") || 
         (pieceFont_value == "uscf")  || (pieceFont_value == "random") ||
 	(pieceFont_value == "default")) ) {
-    alert("error: piece font must be either 'alpha', 'merida', 'uscf', 'random', 'default' or their initials");
+    alert("error: piece font must me either 'alpha', 'merida', 'uscf', 'random', 'default' or their initials");
     document.board.pieceFont.value = pieceFont_value = pieceFont_default;
   }
 
@@ -214,28 +180,16 @@ function set_defaults() {
   }
   // value validation done later in validate_ss_ps_hm();
 
-  if ((lightColorHex_value = gup("lightColorHex")) === "") {
-    if ((lightColorHex_value = sex2hex(gup("lightColorSex"), 'light squares color')) === "") {
-      lightColorHex_value = lightColorHex_default;
-    }
-  }
-  document.board.lightColorHex.color.fromString(lightColorHex_value); 
+  if ((lightColorHex_value = gup("lightColorHex")) === "") { lightColorHex_value = lightColorHex_default; }
+  document.board.lightColorHex.value = lightColorHex_value;
   validate_color(document.board.lightColorHex, 'light squares color', lightColorHex_default);
 
-  if ((darkColorHex_value = gup("darkColorHex")) === "") {
-    if ((darkColorHex_value = sex2hex(gup("darkColorSex"), 'dark squares color')) === "") {
-      darkColorHex_value = darkColorHex_default;
-    }
-  }
-  document.board.darkColorHex.color.fromString(darkColorHex_value);
+  if ((darkColorHex_value = gup("darkColorHex")) === "") { darkColorHex_value = darkColorHex_default; }
+  document.board.darkColorHex.value = darkColorHex_value;
   validate_color(document.board.darkColorHex, 'dark squares color', darkColorHex_default);
 
-  if ((boardBorderColorHex_value = gup("boardBorderColorHex")) === "") {
-    if ((boardBorderColorHex_value = sex2hex(gup("boardBorderColorSex"), 'board border color')) === "") { 
-      boardBorderColorHex_value = boardBorderColorHex_default;
-    }
-  }
-  document.board.boardBorderColorHex.color.fromString(boardBorderColorHex_value);
+  if ((boardBorderColorHex_value = gup("boardBorderColorHex")) === "") { boardBorderColorHex_value = boardBorderColorHex_default; }
+  document.board.boardBorderColorHex.value = boardBorderColorHex_value;
   validate_color(document.board.boardBorderColorHex, 'board border color', boardBorderColorHex_default);
 
   if ((highlightMode_value = gup("highlightMode")) === "") { highlightMode_value = highlightMode_default; }
@@ -245,104 +199,36 @@ function set_defaults() {
   document.board.highlightMode.value = highlightMode_value;
   if (!((highlightMode_value == "border") || (highlightMode_value == "none") ||
         (highlightMode_value == "square")) ) {
-    alert("error: highlight mode must be either 'border', 'square', 'none' or their initials");
+    alert("error: highlight mode must me either 'border', 'square', 'none' or their initials");
     document.board.highlightMode.value = highlightMode_value = highlightMode_default;
   }
   validate_ss_ps_hm();
 
-  if ((highlightColorHex_value = gup("highlightColorHex")) === "") { 
-    if ((highlightColorHex_value = sex2hex(gup("highlightColorSex"), 'highlight squares color')) === "") { 
-      highlightColorHex_value = highlightColorHex_default; 
-    }
-  }
-  if (highlightColorHex_value == 'n') { highlightColorHex_value = 'none'; }
-  if (highlightColorHex_value == 'none') {
-    document.board.highlightMode.value = highlightMode_value = "none";
-    highlightColorHex_value = highlightColorHex_default;
-  }
-  document.board.highlightColorHex.color.fromString(highlightColorHex_value);
-  validate_color(document.board.highlightColorHex, 'highlight squares color', highlightColorHex_default);
+  if ((highlightColorHex_value = gup("highlightColorHex")) === "") { highlightColorHex_value = highlightColorHex_default; }
+  document.board.highlightColorHex.value = highlightColorHex_value;
+  validate_color_none(document.board.highlightColorHex, 'highlight squares color', highlightColorHex_default);
 
-  oldButtonsDisplay_value = "";
-  //kept for backward compatibility
-  if (gup("showButtons") == "t") { oldButtonsDisplay_value = "custom"; }
-  //kept for backward compatibility
-  if (gup("showButtons") == "f") { oldButtonsDisplay_value = "hidden"; }
+  if ((showButtons_value = gup("showButtons")) === "") { showButtons_value = showButtons_default; }
+  document.board.showButtons.checked = (showButtons_value == "t");
 
-  if ((buttonsDisplay_value = gup("buttonsDisplay")) === "") {
-    buttonsDisplay_value = oldButtonsDisplay_value === "" ? buttonsDisplay_default : oldButtonsDisplay_value;
-  }
-  if (buttonsDisplay_value == "c") { buttonsDisplay_value = "custom"; }
-  if (buttonsDisplay_value == "h") { buttonsDisplay_value = "hidden"; }
-  if (buttonsDisplay_value == "s") { buttonsDisplay_value = "standard"; }
-  document.board.buttonsDisplay.value = buttonsDisplay_value;
-  if (!((buttonsDisplay_value == "custom") || (buttonsDisplay_value == "hidden") ||
-        (buttonsDisplay_value == "standard")) ) {
-    alert("error: buttons display must be either 'custom', 'hidden', 'standard' or their initials");
-    document.board.buttonsDisplay.value = buttonsDisplay_value = buttonsDisplay_default;
-  }
-
-  if ((controlBackgroundColorHex_value = gup("controlBackgroundColorHex")) === "") {
-    controlBackgroundColorSex = gup("controlBackgroundColorSex");
-    if ((controlBackgroundColorHex_value = sex2hex(controlBackgroundColorSex, 'control buttons background color')) === "") { 
-      controlBackgroundColorHex_value = controlBackgroundColorHex_default; 
-    }
-  }
+  if ((controlBackgroundColorHex_value = gup("controlBackgroundColorHex")) === "") { controlBackgroundColorHex_value = controlBackgroundColorHex_default; }
   if (controlBackgroundColorHex_value == 'd') { controlBackgroundColorHex_value = 'default'; }
-  if (controlBackgroundColorHex_value == 'default') {
-    document.board.buttonsDisplay.value = buttonsDisplay_value = "standard";
-    controlBackgroundColorHex_value = controlBackgroundColorHex_default;
-  }
-  document.board.controlBackgroundColorHex.color.fromString(controlBackgroundColorHex_value); 
-  validate_color(document.board.controlBackgroundColorHex, 'control buttons background color', 'default');
+  document.board.controlBackgroundColorHex.value = controlBackgroundColorHex_value;
+  validate_color_default(document.board.controlBackgroundColorHex, 'control buttons background color', 'default');
 
-  if ((controlTextColorHex_value = gup("controlTextColorHex")) === "") { 
-    if ((controlTextColorHex_value = sex2hex(gup("controlTextColorSex"), 'control buttons text color')) === "") { 
-      controlTextColorHex_value = controlTextColorHex_default; 
-    }
-  }
-  document.board.controlTextColorHex.color.fromString(controlTextColorHex_value);
+  if ((controlTextColorHex_value = gup("controlTextColorHex")) === "") { controlTextColorHex_value = controlTextColorHex_default; }
+  document.board.controlTextColorHex.value = controlTextColorHex_value;
   validate_color(document.board.controlTextColorHex, 'control buttons text color', controlTextColorHex_default);
 
   if ((textMargin_value = gup("textMargin")) === "") { textMargin_value = textMargin_default; }
   document.getElementById('textMargin').value = textMargin_value;
   validate_number(document.getElementById('textMargin'), 'text margin', textMargin_default);
 
-  oldHeaderDisplay_value = "";
-  //kept for backward compatibility
-  if (gup("showHeader") == "t") { oldHeaderDisplay_value = "justified"; }
-  //kept for backward compatibility
-  if (gup("showHeader") == "f") { oldHeaderDisplay_value = "hidden"; }
+  if ((showHeader_value = gup("showHeader")) === "") { showHeader_value = showHeader_default; }
+  document.board.showHeader.checked = (showHeader_value == "t");
 
-  if ((headerDisplay_value = gup("headerDisplay")) === "") {
-    headerDisplay_value = oldHeaderDisplay_value === "" ? headerDisplay_default : oldHeaderDisplay_value;
-  }
-  if (headerDisplay_value == "c") { headerDisplay_value = "centered"; }
-  if (headerDisplay_value == "h") { headerDisplay_value = "hidden"; }
-  if (headerDisplay_value == "j") { headerDisplay_value = "justified"; }
-  document.board.headerDisplay.value = headerDisplay_value;
-  if (!((headerDisplay_value == "centered") || (headerDisplay_value == "hidden") ||
-        (headerDisplay_value == "justified")) ) {
-    alert("error: header display must be either 'centered', 'hidden', 'justified' or their initials");
-    document.board.headerDisplay.value = headerDisplay_value = headerDisplay_default;
-  }
-
-  oldMovesDisplay_value = "";
-  //kept for backward compatibility
-  if (gup("showMoves") === "t") { oldMovesDisplay_value = "justified"; }
-  //kept for backward compatibility
-  if (gup("showMoves") === "f") { oldMovesDisplay_value = "hidden"; }
-
-  if ((movesDisplay_value = gup("movesDisplay")) === "") {
-    movesDisplay_value = oldMovesDisplay_value === "" ? movesDisplay_default : oldMovesDisplay_value;
-  }
-  if (movesDisplay_value == "h") { movesDisplay_value = "hidden"; }
-  if (movesDisplay_value == "j") { movesDisplay_value = "justified"; }
-  document.board.movesDisplay.value = movesDisplay_value;
-  if (!((movesDisplay_value == "hidden") || (movesDisplay_value == "justified")) ) {
-    alert("error: moves display must be either 'hidden', 'justified' or their initials");
-    document.board.movesDisplay.value = movesDisplay_value = movesDisplay_default;
-  }
+  if ((showMoves_value = gup("showMoves")) === "") { showMoves_value = showMoves_default; }
+  document.board.showMoves.checked = (showMoves_value == "t");
 
   oldCommentsDisplay_value = "";
   //kept for backward compatibility
@@ -351,7 +237,8 @@ function set_defaults() {
   if (gup("showComments") === "f") { oldCommentsDisplay_value = "hidden"; }
 
   if ((commentsDisplay_value = gup("commentsDisplay")) === "") {
-    commentsDisplay_value = oldCommentsDisplay_value === "" ? commentsDisplay_default : oldCommentsDisplay_value;
+    if (oldCommentsDisplay_value === "") { commentsDisplay_value = commentsDisplay_default; }
+    else { commentsDisplay_value = oldCommentsDisplay_value; }
   }
   if (commentsDisplay_value == "h") { commentsDisplay_value = "hidden"; }
   if (commentsDisplay_value == "i") { commentsDisplay_value = "inline"; }
@@ -359,51 +246,25 @@ function set_defaults() {
   document.board.commentsDisplay.value = commentsDisplay_value;
   if (!((commentsDisplay_value == "hidden") || (commentsDisplay_value == "inline") ||
         (commentsDisplay_value == "newline")) ) {
-    alert("error: comment display must be either 'hidden', 'inline', 'newline' or their initials");
+    alert("error: comment display must me either 'hidden', 'inline', 'newline' or their initials");
     document.board.commentsDisplay.value = commentsDisplay_value = commentsDisplay_default;
   }
 
-  if ((fontHeaderColorHex_value = gup("fontHeaderColorHex")) === "") { 
-    if ((fontHeaderColorHex_value = sex2hex(gup("fontHeaderColorSex"), 'header font color')) === "") { 
-      fontHeaderColorHex_value = fontHeaderColorHex_default; 
-    }
-  }
-  document.board.fontHeaderColorHex.color.fromString(fontHeaderColorHex_value);
+  if ((fontHeaderColorHex_value = gup("fontHeaderColorHex")) === "") { fontHeaderColorHex_value = fontHeaderColorHex_default; }
+  document.board.fontHeaderColorHex.value = fontHeaderColorHex_value;
   validate_color(document.board.fontHeaderColorHex, 'header font color', fontHeaderColorHex_default);
 
-  if ((fontMovesColorHex_value = gup("fontMovesColorHex")) === "") {
-    if ((fontMovesColorHex_value = sex2hex(gup("fontMovesColorSex"), 'moves font color')) === "") { 
-      fontMovesColorHex_value = fontMovesColorHex_default;
-    }
-  }
-  document.board.fontMovesColorHex.color.fromString(fontMovesColorHex_value);
+  if ((fontMovesColorHex_value = gup("fontMovesColorHex")) === "") { fontMovesColorHex_value = fontMovesColorHex_default; }
+  document.board.fontMovesColorHex.value = fontMovesColorHex_value;
   validate_color(document.board.fontMovesColorHex, 'moves font color', fontMovesColorHex_default);
 
-  if ((fontCommentsColorHex_value = gup("fontCommentsColorHex")) === "") {
-    if ((fontCommentsColorHex_value = sex2hex(gup("fontCommentsColorSex"), 'comments font color')) === "") { 
-      fontCommentsColorHex_value = fontCommentsColorHex_default;
-    }
-  }
-  document.board.fontCommentsColorHex.color.fromString(fontCommentsColorHex_value);
+  if ((fontCommentsColorHex_value = gup("fontCommentsColorHex")) === "") { fontCommentsColorHex_value = fontCommentsColorHex_default; }
+  document.board.fontCommentsColorHex.value = fontCommentsColorHex_value;
   validate_color(document.board.fontCommentsColorHex, 'comments font color', fontCommentsColorHex_default);
 
-  if ((highlightMoveColorHex_value = gup("highlightMoveColorHex")) === "") {
-    highlightMoveColorSex = gup("highlightMoveColorSex");
-    if ((highlightMoveColorSex == "background") || (highlightMoveColorSex == "b")) {
-      highlightMoveColorHex_value = "background";
-    } else {
-      if ((highlightMoveColorHex_value = sex2hex(highlightMoveColorSex, 'move highlight color')) === "") {
-        highlightMoveColorHex_value = highlightMoveColorHex_default;
-      }
-    }
-  }
-  if (highlightMoveColorHex_value == "b") { highlightMoveColorHex_value = "background"; }
-  if (highlightMoveColorHex_value == "background") {
-    document.board.highlightMoveColorHex.value = highlightMoveColorHex_value;
-  } else {
-    document.board.highlightMoveColorHex.color.fromString(highlightMoveColorHex_value);
-    validate_color(document.board.highlightMoveColorHex, 'move highlight color', highlightMoveColorHex_default);
-  }
+  if ((highlightMoveColorHex_value = gup("highlightMoveColorHex")) === "") { highlightMoveColorHex_value = highlightMoveColorHex_default; }
+  document.board.highlightMoveColorHex.value = highlightMoveColorHex_value;
+  validate_color(document.board.highlightMoveColorHex, 'highlight move color', highlightMoveColorHex_default);
 
   if ((fontHeaderSize_value = percentFixFromUrl( gup("fontHeaderSize") )) === "") { fontHeaderSize_value = fontHeaderSize_default; }
   document.board.fontHeaderSize.value = fontHeaderSize_value;
@@ -414,32 +275,20 @@ function set_defaults() {
   validate_number_percentage(document.board.fontMovesSize, 'moves font size', fontMovesSize_default);
 
   if ((fontCommentsSize_value = percentFixFromUrl( gup("fontCommentsSize") )) === "") { fontCommentsSize_value = fontCommentsSize_default; }
-  if (fontCommentsSize_value == "m") { fontCommentsSize_value = "moves"; }
   document.board.fontCommentsSize.value = fontCommentsSize_value;
-  validate_fontCommentsSize();
+  validate_number_percentage(document.board.fontCommentsSize, 'comments font size', fontCommentsSize_default);
 
-  if ((backgroundColorHex_value = gup("backgroundColorHex")) === "") {
-    backgroundColorSex = gup("backgroundColorSex");
-    if ((backgroundColorSex == "transparent") || (backgroundColorSex == "t")) {
-      backgroundColorHex_value = "transparent";
-    } else {    
-      if ((backgroundColorHex_value = sex2hex(backgroundColorSex, 'background color')) === "") { 
-        backgroundColorHex_value = backgroundColorHex_default; 
-      }
-    }
-  }
-  if (backgroundColorHex_value == "t") {
-    backgroundColorHex_value = "transparent";
-  }
-  if (backgroundColorHex_value == "transparent") {
-    document.board.backgroundColorHex.value = backgroundColorHex_value;
-  } else {
-    document.board.backgroundColorHex.color.fromString(backgroundColorHex_value);
-    validate_color(document.board.backgroundColorHex, 'background color', backgroundColorHex_default);
-  }
+  if ((backgroundColorHex_value = gup("backgroundColorHex")) === "") { backgroundColorHex_value = backgroundColorHex_default; }
+  document.board.backgroundColorHex.value = backgroundColorHex_value;
+  validate_color(document.board.backgroundColorHex, 'background color', backgroundColorHex_default);
+
+  if ((previewBackgroundColorHex_value = gup("previewBackgroundColorHex")) === "") { previewBackgroundColorHex_value = previewBackgroundColorHex_default; }
+  document.board.previewBackgroundColorHex.value = previewBackgroundColorHex_value;
+  validate_color(document.board.previewBackgroundColorHex, 'preview background color', previewBackgroundColorHex_default);
 
   if ((horizontalLayout_value = gup("horizontalLayout")) === "") { horizontalLayout_value = horizontalLayout_default; }
-  document.board.horizontalLayout.value = horizontalLayout_value == "t" ? "t" : "f";
+  if (horizontalLayout_value == "t") { document.board.horizontalLayout.value = "t"; }
+  else { document.board.horizontalLayout.value = "f"; }
 
   if ((frameHeight_value = gup("frameHeight")) === "") { frameHeight_value = frameHeight_default; }
   if (frameHeight_value == "b") { frameHeight_value = "board"; }
@@ -456,21 +305,12 @@ function set_defaults() {
   document.board.framePadding.value = framePadding_value;
   validate_number(document.board.framePadding, 'frame padding', framePadding_default);
 
-  if ((previewBackgroundColorHex_value = gup("previewBackgroundColorHex")) === "") {
-    if ((previewBackgroundColorHex_value = sex2hex(gup("previewBackgroundColorSex"), 'preview background color')) === "") { 
-      previewBackgroundColorHex_value = previewBackgroundColorHex_default;
-    }
-  }
-  document.board.previewBackgroundColorHex.color.fromString(previewBackgroundColorHex_value);
-  validate_color(document.board.previewBackgroundColorHex, 'preview background color', previewBackgroundColorHex_default);
-
   if ((baseUrl_value = gup("baseUrl")) === "") { baseUrl_value = baseUrl_default; }
   document.board.baseUrl.value = baseUrl_value;
 
   generate_html_code();
   update_controls();
 }
-
 
 function reset_form() {
   if (confirm("do you really want to reset the board generator to the default values?\nAll your settings including the PGN text might be lost!")) { set_defaults(); }
@@ -483,44 +323,34 @@ function update_controls() {
 
 function update_disabled_controls() {
   document.board.highlightColorHex.disabled = (document.board.highlightMode.value == 'none');
-  document.board.controlBackgroundColorHex.disabled = (document.board.buttonsDisplay.value != 'custom');
-  document.board.controlTextColorHex.disabled = ((document.board.buttonsDisplay.value != 'custom') || 
-                                                 (document.board.controlBackgroundColorHex.value == 'default'));
-  document.board.textMargin.disabled = ((document.board.movesDisplay.value == 'hidden') &&
-                                        (document.board.headerDisplay.value == 'hidden'));
-  document.board.commentsDisplay.disabled = (document.board.movesDisplay.value == 'hidden');
-  document.board.fontHeaderColorHex.disabled = (document.board.headerDisplay.value == 'hidden');
-  document.board.fontMovesColorHex.disabled = (document.board.movesDisplay.value == 'hidden');
-  document.board.fontCommentsColorHex.disabled = (document.board.movesDisplay.value == 'hidden');
-  document.board.highlightMoveColorHex.disabled = (document.board.movesDisplay.value == 'hidden');
-  document.board.fontHeaderSize.disabled = (document.board.headerDisplay.value == 'hidden');
-  document.board.fontMovesSize.disabled = (document.board.movesDisplay.value == 'hidden');
-  document.board.fontCommentsSize.disabled = (document.board.movesDisplay.value == 'hidden');
+  document.board.controlBackgroundColorHex.disabled = (!document.board.showButtons.checked);
+  document.board.controlTextColorHex.disabled = ((!document.board.showButtons.checked) || (document.board.controlBackgroundColorHex.value == 'default'));
+  document.board.textMargin.disabled = (!document.board.showMoves.checked && !document.board.showHeader.checked);
+  document.board.commentsDisplay.disabled = !document.board.showMoves.checked;
+  document.board.fontHeaderColorHex.disabled = !document.board.showHeader.checked;
+  document.board.fontMovesColorHex.disabled = !document.board.showMoves.checked;
+  document.board.fontCommentsColorHex.disabled = !document.board.showMoves.checked;
+  document.board.highlightMoveColorHex.disabled = !document.board.showMoves.checked;
+  document.board.fontHeaderSize.disabled = !document.board.showHeader.checked;
+  document.board.fontMovesSize.disabled = !document.board.showMoves.checked;
+  document.board.fontCommentsSize.disabled = !document.board.showMoves.checked;
 }
 
 function update_suggested_iframe_dimensions() {
 
   boardWidth = 8 * document.board.squareSize.value + 6; 
   estimated_boardHeight = boardWidth; 
-
-  multiGamesRegexp = /\s*\[\s*\w+\s*"[^"]*"\s*\]\s*[^\s\[\]]+[\s\S]*\[\s*\w+\s*"[^"]*"\s*\]\s*/m;
-  selectDropdownShown = multiGamesRegexp.test(pgnTextFixFromInput(document.getElementById('pgnText').value));
-
-  if (document.board.buttonsDisplay.value != 'hidden') {  
-    if (document.board.buttonsDisplay.value == "standard") { 
+  
+  if (document.board.showButtons.checked) {
+    if (document.board.controlBackgroundColorHex.value != "default") {
+      // in this case both control size and control padding grow with squareSize  
+      estimated_boardHeight += (20 + 2 * parseInt(document.board.squareSize.value, 10));
+    } else {
       // in this case control padding grows with squareSize 
       // while the size of the controls cant be predicted, so a safe number is set
-      estimated_boardHeight += selectDropdownShown ?
-                               2 * (25 + parseInt(document.board.squareSize.value, 10) / 2) :
-                               25 + parseInt(document.board.squareSize.value, 10) / 2;
-    } else {
-      // in this case both control size and control padding grow with squareSize
-      estimated_boardHeight += selectDropdownShown ?
-                               2 * (5 + 1.1 * parseInt(document.board.squareSize.value, 10)) :
-                               5 + 1.1 * parseInt(document.board.squareSize.value, 10);
+      estimated_boardHeight += 50 + parseInt(document.board.squareSize.value, 10);
     } 
   }
-  estimated_boardHeight = Math.floor(estimated_boardHeight);
 
   min_frameWidth = boardWidth + 2 * parseInt(document.board.framePadding.value, 10);
   min_frameHeight = estimated_boardHeight + 2 * parseInt(document.board.framePadding.value, 10);
@@ -528,24 +358,20 @@ function update_suggested_iframe_dimensions() {
   if (document.board.horizontalLayout.value == "t") {
     suggested_frameHeight = "board";
     suggested_frameWidth = "page";
-    document.getElementById('frameHeight_helpText').innerHTML = "a number or <a class='helplink' style='font-weight: bold;' href='' onClick='javascript:document.board.frameHeight.value = \"board\"; return false;'>board</a>; min " + min_frameHeight + "; when <a class='helplink' href='' onClick='javascript:document.board.frameHeight.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameHeight;
-    document.getElementById('frameWidth_helpText').innerHTML = "a number or <a class='helplink' style='font-weight: bold;' href='' onClick='javascript:document.board.frameWidth.value = \"page\"; return false;'>page</a>; min " + min_frameWidth + "; when <a class='helplink' href='' onClick='javascript:document.board.frameWidth.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
+    document.getElementById('frameHeight_helpText').innerHTML = "a number or <b>board</b>; min <b>" + min_frameHeight + "</b>; if blank, assigned to <b>" + suggested_frameHeight + "</b>";
+    document.getElementById('frameWidth_helpText').innerHTML = "a number or <b>page</b>; min <b>" + min_frameWidth + "</b>; if blank, assigned to <b>" + suggested_frameWidth + "</b>; board width is <b>" + boardWidth + "</b>";
   } else {
     suggested_frameWidth = boardWidth;
     suggested_frameHeight = estimated_boardHeight;
-    if (document.board.headerDisplay.value != 'hidden') {
-      suggested_frameHeight += Math.max(100, Math.round(0.2 * boardWidth));
-    }
-    if (document.board.movesDisplay.value != 'hidden') {
-      suggested_frameHeight += Math.max(300, Math.round(0.8 * boardWidth));
-    }
-    if ((document.board.headerDisplay.value != 'hidden') || (document.board.movesDisplay.value != 'hidden')) {
+    if (document.board.showHeader.checked) { suggested_frameHeight += Math.max(100, Math.round(0.2 * boardWidth)); }
+    if (document.board.showMoves.checked) { suggested_frameHeight += Math.max(300, Math.round(0.8 * boardWidth)); }
+    if (document.board.showHeader.checked || document.board.showMoves.checked) {
       suggested_frameWidth = Math.max(400, Math.round(1.5 * boardWidth));
     }
     suggested_frameWidth += 2 * parseInt(document.board.framePadding.value, 10);
     suggested_frameHeight += 2 * parseInt(document.board.framePadding.value, 10);
-    document.getElementById('frameHeight_helpText').innerHTML = "a number; min " + min_frameHeight + "; when <a class='helplink' href='' onClick='javascript:document.board.frameHeight.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameHeight;
-    document.getElementById('frameWidth_helpText').innerHTML = "a number or <a class='helplink' style='font-weight: bold;' href='' onClick='javascript:document.board.frameWidth.value = \"board\"; return false;'>board</a> or <a class='helplink' style='font-weight: bold;' href='' onClick='javascript:document.board.frameWidth.value = \"page\"; return false;'>page</a>; min " + min_frameWidth + "; when <a class='helplink' href='' onClick='javascript:document.board.frameWidth.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
+    document.getElementById('frameHeight_helpText').innerHTML = "a number; min <b>" + min_frameHeight + "</b>; if blank, assigned to <b>" + suggested_frameHeight + "</b>";
+    document.getElementById('frameWidth_helpText').innerHTML = "a number or <b>board</b> or <b>page</b>; min <b>" + min_frameWidth + "</b>; if blank, assigned to <b>" + suggested_frameWidth + "</b>; board width is <b>" + boardWidth + "</b>";
   }
 
   theObject = document.getElementById('frameWidth');
@@ -571,7 +397,7 @@ function update_suggested_iframe_dimensions() {
 }
 
 function update_pgnTextLength() {
- document.getElementById('pgnTextLength').innerHTML = "&nbsp;&nbsp;&nbsp;" + document.getElementById('pgnText').value.replace(/\r\n/g,'\n').length + "p";
+ document.getElementById('pgnTextLength').innerHTML = "&nbsp;&nbsp;&nbsp;" + document.getElementById('pgnText').value.length + "p";
 }
 
 function calculate_html_code() {
@@ -584,16 +410,6 @@ function calculate_html_code() {
   delay_value = parseInt(document.board.delay.value, 10);
   iframeUrl += "&am=" + autoplayMode_value.charAt(0) + "&d=" + delay_value;
 
-  initialGame_value = document.board.initialGame.value;
-  if (initialGame_value != "first") { iframeUrl += "&ig=" + initialGame_value.charAt(0); }
-
-  initialHalfmove_value = document.board.initialHalfmove.value;
-  if (initialHalfmove_value != "start") {
-    iframeUrl += "&ih=" + (isNaN(parseInt(initialHalfmove_value, 10)) ? 
-                          initialHalfmove_value.charAt(0) : 
-                          initialHalfmove_value);
-  }
-
   pieceFont_value = document.board.pieceFont.value;
   squareSize_value = parseInt(document.board.squareSize.value, 10);
   if (document.board.pieceSize.value == "default") {
@@ -602,66 +418,56 @@ function calculate_html_code() {
   } else {  
     pieceSize_value = parseInt(document.board.pieceSize.value, 10);
     if (pieceSize_value > squareSize_value) { alert("error: the piece size (" + pieceSize_value + ") can not be bigger than the square size (" + squareSize_value + ")"); }
-    iframeUrl += "&ss=" + squareSize_value + "&ps=" + pieceSize_value + "&pf=" + pieceFont_value.charAt(0);
+  iframeUrl += "&ss=" + squareSize_value + "&ps=" + pieceSize_value + "&pf=" + pieceFont_value.charAt(0);
   }
 
   lightColorHex_value = document.board.lightColorHex.value; 
-  iframeUrl += "&lcs=" + hex2sex(lightColorHex_value);
   darkColorHex_value = document.board.darkColorHex.value; 
-  iframeUrl += "&dcs=" + hex2sex(darkColorHex_value);
   boardBorderColorHex_value = document.board.boardBorderColorHex.value; 
-  iframeUrl += "&bbcs=" + hex2sex(boardBorderColorHex_value);
+  iframeUrl += "&lch=" + lightColorHex_value + "&dch=" + darkColorHex_value + "&bbch=" + boardBorderColorHex_value;
 
   highlightMode_value = document.board.highlightMode.value; 
-  iframeUrl += "&hm=" + highlightMode_value.charAt(0); 
   highlightColorHex_value = document.board.highlightColorHex.value; 
-  iframeUrl += "&hcs=" + hex2sex(highlightColorHex_value);
+  iframeUrl += "&hm=" + highlightMode_value.charAt(0) + "&hch=" + highlightColorHex_value;
 
-  buttonsDisplay_value = document.board.buttonsDisplay.value;
-  iframeUrl += "&bd=" + buttonsDisplay_value.charAt(0);
+  if (document.board.showButtons.checked) { showButtons_value = "t"; } else { showButtons_value = "f"; }
+  iframeUrl += "&sb=" + showButtons_value;
 
-  if ((document.board.buttonsDisplay.value != "hidden") && (document.board.controlBackgroundColorHex.value != "default")) {
+  if ((document.board.showButtons.checked) && (document.board.controlBackgroundColorHex.value != "default")) {
     controlBackgroundColorHex_value = document.board.controlBackgroundColorHex.value; 
-    iframeUrl += "&cbcs=" + hex2sex(controlBackgroundColorHex_value);
     controlTextColorHex_value = document.board.controlTextColorHex.value;
-    iframeUrl += "&ctcs=" + hex2sex(controlTextColorHex_value);
+    iframeUrl += "&cbch=" + controlBackgroundColorHex_value + "&ctch=" + controlTextColorHex_value;
   }
 
-  headerDisplay_value = document.board.headerDisplay.value;
-  iframeUrl += "&hd=" + headerDisplay_value.charAt(0);
-  movesDisplay_value = document.board.movesDisplay.value;
-  iframeUrl += "&md=" + movesDisplay_value.charAt(0);
+  if (document.board.showHeader.checked) { showHeader_value = "t"; } else { showHeader_value = "f"; }
+  if (document.board.showMoves.checked) { showMoves_value = "t"; } else { showMoves_value = "f"; }
+  iframeUrl += "&sh=" + showHeader_value + "&sm=" + showMoves_value;
 
-  if ((document.board.headerDisplay.value != "hidden") || (document.board.movesDisplay.value != "hidden")) {
+  if (document.board.showHeader.checked || document.board.showMoves.checked) {
     textMargin_value = parseInt(document.board.textMargin.value, 10);
     iframeUrl += "&tm=" + textMargin_value;
   }
 
-  if (document.board.headerDisplay.value != "hidden") {
+  if (document.board.showHeader.checked) {
 		  
     fontHeaderColorHex_value =  document.board.fontHeaderColorHex.value;
-    iframeUrl += "&fhcs=" + hex2sex(fontHeaderColorHex_value);
+    iframeUrl += "&fhch=" + fontHeaderColorHex_value;
 
     fontHeaderSize_value = document.board.fontHeaderSize.value;
     iframeUrl += "&fhs=" + percentFixForUrl( fontHeaderSize_value );
 
   }
 		  
-  if (document.board.movesDisplay.value != "hidden") {
+  if (document.board.showMoves.checked) {
 
     fontMovesColorHex_value =  document.board.fontMovesColorHex.value;
-    iframeUrl += "&fmcs=" + hex2sex(fontMovesColorHex_value);
     fontCommentsColorHex_value =  document.board.fontCommentsColorHex.value;
-    iframeUrl += "&fccs=" + hex2sex(fontCommentsColorHex_value);
     highlightMoveColorHex_value =  document.board.highlightMoveColorHex.value;
-    if (highlightMoveColorHex_value == "background" ) { iframeUrl += "&hmcs=b"; }
-    else { iframeUrl += "&hmcs=" + hex2sex(highlightMoveColorHex_value); }
+    iframeUrl += "&fmch=" + fontMovesColorHex_value + "&fcch=" + fontCommentsColorHex_value + "&hmch=" + highlightMoveColorHex_value;
 
     fontMovesSize_value = document.board.fontMovesSize.value;
-    iframeUrl += "&fms=" + percentFixForUrl( fontMovesSize_value );
     fontCommentsSize_value = document.board.fontCommentsSize.value;
-    if (fontCommentsSize_value == "moves") { iframeUrl += "&fcs=m"; } 
-    else { iframeUrl += "&fcs=" + percentFixForUrl( fontCommentsSize_value ); }
+    iframeUrl += "&fms=" + percentFixForUrl( fontMovesSize_value ) + "&fcs=" + percentFixForUrl( fontCommentsSize_value );
     
     commentsDisplay_value = document.board.commentsDisplay.value;
     iframeUrl += "&cd=" + commentsDisplay_value.charAt(0); 
@@ -669,11 +475,7 @@ function calculate_html_code() {
   } 
 
   backgroundColorHex_value = document.board.backgroundColorHex.value;
-  if (backgroundColorHex_value == "transparent") {
-     iframeUrl += "&bcs=" + backgroundColorHex_value.charAt(0);
-  } else {
-     iframeUrl += "&bcs=" + hex2sex(backgroundColorHex_value);
-  }
+  iframeUrl += "&bch=" + backgroundColorHex_value;
 
   // this does not go in the iframe
   previewBackgroundColorHex_value = document.board.previewBackgroundColorHex.value;
@@ -685,7 +487,6 @@ function calculate_html_code() {
   iframeUrl += "&hl=" + horizontalLayout_value;
 
   update_suggested_iframe_dimensions();
-
   if ((frameHeight_value = document.board.frameHeight.value) === "") { frameHeight_value = suggested_frameHeight; }
   if ((frameWidth_value = document.board.frameWidth.value) === "") { frameWidth_value = suggested_frameWidth; }
 
@@ -699,26 +500,18 @@ function calculate_html_code() {
   } else {
     iframeUrl += "&fw=" + frameWidth_value;
   }
-  
-  pgnText_value = pgnTextFixFromInput(document.getElementById('pgnText').value);
+
+  // better to keep this as last item
+  pgnText_value = document.getElementById('pgnText').value;
   if ((document.board.encodePgn.checked) && (pgnText_value != previousPgnTextToEncode)) {
     previousPgnTextToEncode = pgnText_value;
-    pgnTextEncoded = EncodePGN(pgnText_value.replace(/\r\n/g,'\n'));
+    pgnTextEncoded = EncodePGN(pgnText_value);
   }
   if (document.board.encodePgn.checked) { iframeUrl += "&pe=" + pgnTextEncoded; }
-  else { iframeUrl += "&pt=" + pgnTextFixForUrl(pgnText_value.replace(/\r\n/g,'\n')); }
+  else { iframeUrl += "&pt=" + pgnTextFixForUrl(pgnText_value); }
 
   // every parameter had an &xxx= format,now we need to remove the first &
   iframeUrl = iframeUrl.replace(/\?&/,"?");
-}
-
-function pgnTextFixFromInput( text ) {
-    
-  text = text.replace(/\u2026/g,'...'); // replace ellipsis char with ...
-  text = text.replace(/\u2011/g,'-'); // replace non breaking hyphen with -
-  text = text.replace(/[\u0100-\uFFFF]+/g, "*"); // replace all chars with code greather than 255 with *
-
-  return text;
 }
 
 function pgnTextFixForUrl( text ) {
@@ -742,12 +535,12 @@ function pgnTextFixForUrl( text ) {
 
 function percentFixForUrl( text ) {
   text += ''; // makes sure text is a string
-  return text.replace(/%$/,'p');
+  return text.replace(/%$/,'pct');
 }
 
 function percentFixFromUrl( text ) {
   text += ''; // makes sure text is a string
-  return text.replace(/pct$/,'%').replace(/p$/,'%'); // 100pct and 100p both mean 100%
+  return text.replace(/pct$/,'%');
 }
 
 function generate_html_code() {
@@ -775,34 +568,21 @@ function generate_html_code() {
       break;
   }
 
-  html_code_string = "<iframe height='" + outerFrameHeight + "' width='" + outerFrameWidth + "' frameborder='0' scrolling='no' marginheight='0' marginwidth='0'";
-  if (document.getElementById('backgroundColorHex').value == 'transparent') {
-    html_code_string += " allowtransparency='true'";
-  }
-  html_code_string += " src='" + iframeUrl + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>";
+  html_code_string = "<iframe \n\theight='" + outerFrameHeight + "' width='" + outerFrameWidth + "' frameborder='0' scrolling='no' marginheight='0' marginwidth='0'\n\tsrc='" + iframeUrl + "'\n>\n\tyour web browser and/or your host do not support iframes as required to display the chessboard\n</iframe>";
   
   document.getElementById('html_code').value = html_code_string;
 
   thisBookmarkUrl = iframeUrl;
   thisBookmarkUrl = thisBookmarkUrl.replace(pgn4web_board_url,pgn4web_generator_url);
   thisBookmarkUrl = thisBookmarkUrl.replace(/&(pe|pt)=.*(&|$)/,"");
-
-  if (document.getElementById('encodePgn').checked) { encodePgn_value = "t"; }
-  else { encodePgn_value = "f"; }
-  if (encodePgn_value != encodePgn_default) { thisBookmarkUrl += "&ep=" + encodePgn_value; }
-
-  baseUrl_value = document.board.baseUrl.value;
-  if (baseUrl_value != baseUrl_default) { thisBookmarkUrl += "&bu=" + baseUrl_value; }
-
-  previewBackgroundColorHex_value = document.board.previewBackgroundColorHex.value;
-  if (previewBackgroundColorHex_value != previewBackgroundColorHex_default) { 
-    thisBookmarkUrl += "&pbcs=" + hex2sex(previewBackgroundColorHex_value);
-  }
-
   document.getElementById('thisConfigBookmark').href = thisBookmarkUrl;
-  thisBookmarkCrc32 = printHex(crc32(thisBookmarkUrl));
-  document.getElementById('thisConfigBookmark').title = "pgn4web board generator custom template link #" + thisBookmarkCrc32;
-  document.getElementById('bookmarkCrc32').innerHTML = "#" + thisBookmarkCrc32;
+  thisBookmarkChecksum = 0;
+  for (ii=0; ii<thisBookmarkUrl.length; ii++) {
+    thisBookmarkChecksum = (thisBookmarkChecksum + (thisBookmarkUrl.charCodeAt(ii) * (1 + (ii % 6)))) % 900;
+  }
+  thisBookmarkChecksum += 100;
+  document.getElementById('thisConfigBookmark').title = "pgn4web board generator custom template link #" + thisBookmarkChecksum;
+  document.getElementById('bookmarkChecksum').innerHTML = "#" + thisBookmarkChecksum;
 
   document.getElementById('preview').innerHTML = "<table border='0' bgcolor='#" + previewBackgroundColorHex_value + "' width='100%' cellpadding='25'><tr><td align='center' valign='middle'> " + html_code_string + "</td></tr></table>";
 
@@ -810,64 +590,59 @@ function generate_html_code() {
   if (iframeUrl.length <= iframeUrl_max) {
     html_code_status_string += "<span class='helptext'>HTML code ready to cut and paste in your web page or blog</span>";
   } else {
-    html_code_status_string += "<span class='helptext' style='color: red'>URL (" + iframeUrl.length + " chars) is longer than " + iframeUrl_max + " chars and might be rejected by some web browser/server, try shortening your PGN data</span>";
+    html_code_status_string += "<span style='color: red'>URL (" + iframeUrl.length + " chars) is longer than " + iframeUrl_max + " chars and might be rejected by some web browser/server, try shortening your PGN data</span>";
   }  
   html_code_status_string += "</td><td align=right valign=top>";
-  html_code_status_string += "<span class='helptext'>&nbsp;&nbsp;&nbsp;" + document.getElementById('pgnText').value.replace(/\r\n/g,'\n').length + "p";
+  html_code_status_string += "<span class='helptext'>&nbsp;&nbsp;&nbsp;" + document.getElementById('pgnText').value.length + "p";
   if (document.board.encodePgn.checked) { html_code_status_string += "&nbsp;" + pgnTextEncoded.length + "e"; } 
   html_code_status_string += "&nbsp;" + iframeUrl.length + "u</span>";
 
   html_code_status_string += "</td></tr></table>";
   document.getElementById('html_code_status').innerHTML = html_code_status_string;
 
-  thisShortUrlCrc32 = printHex(crc32(iframeUrl));
-  document.getElementById('shorturl_url').value = iframeUrl;
-  document.getElementById('shorturl_alias').value = "pgn4web-" + thisShortUrlCrc32;
-  document.getElementById('shorturl_link').title = "pgn4web board short url #" + thisShortUrlCrc32;
-
   if (firstLoad) { firstLoad = false; return; }
   if (iframeUrl.length <= iframeUrl_max) { location.href='#game_preview'; return; }
   location.href='#generate'; return;
 }
 
-
 function validate_color(object, name, def) {
   if (object.value.match(/^[0-9A-Fa-f]{6}$/)) {
+    object.value = object.value.toUpperCase();
     return true;
   } else { 
     alert('error: the ' + name + ' must be a six digits hexadecimal color code, like FF0000');
-    object.color.fromString(def);
+    object.value = def;
     return false;    
   }
 }
 
-function validate_highlightMoveColorHex() {
-  object = document.getElementById('highlightMoveColorHex');
-  if (object.value == 'background') { return true; }
-  if (object.value.match(/^[0-9A-Fa-f]{6}$/)) {
+function validate_color_default(object, name, def) {
+  if (object.value == 'default') { return true; }
+  else if (object.value.match(/^[0-9A-Fa-f]{6}$/)) {
+    object.value = object.value.toUpperCase();
     return true;
   } else { 
-    alert('error: the move highlight color must be \'background\' or a six digits hexadecimal color code, like FF0000');
-    object.color.fromString(highlightMoveColorHex_default);
+    alert('error: the ' + name + ' must be \'default\' or a six digits hexadecimal color code, like FF0000');
+    object.value = def;
     return false;    
   }
 }
 
-function validate_backgroundColorHex() {
-  object = document.getElementById('backgroundColorHex');
-  if (object.value == 'transparent') { return true; }
-  if (object.value.match(/^[0-9A-Fa-f]{6}$/)) {
+function validate_color_none(object, name, def) {
+  if (object.value == 'none') { return true; }
+  else if (object.value.match(/^[0-9A-Fa-f]{6}$/)) {
+    object.value = object.value.toUpperCase();
     return true;
   } else { 
-    alert('error: the move highlight color must be \'transparent\' or a six digits hexadecimal color code, like FF0000');
-    object.color.fromString(backgroundColorHex_default);
-    return false;
+    alert('error: the ' + name + ' must be \'none\' or a six digits hexadecimal color code, like FF0000');
+    object.value = def;
+    return false;    
   }
 }
 
 function validate_number(object, name, def) {
   if (!(vv = object.value.match(/^([0-9]+)(px$|$)/))) {
-    alert('error: the ' + name + ' must be a non negative integer');
+    alert('error: the ' + name + ' must be a non negative number');
     object.value = def;
     return false;    
   } else { 
@@ -879,7 +654,7 @@ function validate_number(object, name, def) {
 function validate_number_blank(object, name, def) {
   if (object.value === "") { return true; }
   if (!(vv = object.value.match(/^([0-9]+)(px$|$)/))) {
-    alert('error: the ' + name + ' must be blank or a non negative integer');
+    alert('error: the ' + name + ' must be blank or a non negative number');
     object.value = def;
     return false;    
   } else { 
@@ -889,8 +664,8 @@ function validate_number_blank(object, name, def) {
 }
 
 function validate_number_percentage(object, name, def) {
-  if (!(vv = object.value.match(/^([0-9]+)(%$|p$|pct$|px$|$)/))) {
-    alert('error: the ' + name + ' must be a non negative integer or percentage');
+  if (!(vv = object.value.match(/^([0-9]+)(%$|pct$|px$|$)/))) {
+    alert('error: the ' + name + ' must be a non negative number or percentage');
     object.value = def;
     return false;    
   } else {
@@ -901,22 +676,9 @@ function validate_number_percentage(object, name, def) {
 
 function validate_number_percentage_blank(object, name, def) {
   if (object.value === "") { return true; }
-  if (!(vv = object.value.match(/^([0-9]+)(%$|p$|pct$|px$|$)/))) {
-    alert('error: the ' + name + ' must be blank or a non negative integer or percentage');
+  if (!(vv = object.value.match(/^([0-9]+)(%$|pct$|px$|$)/))) {
+    alert('error: the ' + name + ' must be blank or a non negative number or percentage');
     object.value = def;
-    return false;    
-  } else { 
-    if (vv[2] == "px") { object.value = vv[1]; }
-    return true; 
-  }
-}
-
-function validate_fontCommentsSize() {
-  object = document.getElementById('fontCommentsSize');
-  if (object.value == "moves") { return true; }
-  if (!(vv = object.value.match(/^([0-9]+)(%$|p$|pct$|px$|$)/))) {
-    alert('error: the comments font size must be \'moves\' or a non integer number or percentage');
-    object.value = fontCommentsSize_default;
     return false;    
   } else { 
     if (vv[2] == "px") { object.value = vv[1]; }
@@ -931,9 +693,9 @@ function validate_frameWidth() {
   if (object.value == 'page') { return true; }
   if (!(vv = object.value.match(/^([0-9]+)(px$|$)/))) {
     if (document.getElementById('horizontalLayout').value == "t") {
-      alert('error: in the horizontal layout the iFrame width must be a non negative integer or \'page\'');
+      alert('error: in the horizontal layout the iFrame width must be a non negative number or \'page\'');
     } else {
-      alert('error: in the vertical layout the iFrame width must be a non negative integer, \'board\' or \'page\'');
+      alert('error: in the vertical layout the iFrame width must be a non negative number, \'board\' or \'page\'');
     }
     object.value = "";
     return false;    
@@ -949,9 +711,9 @@ function validate_frameHeight() {
   if ((object.value == 'board') && (document.getElementById('horizontalLayout').value == "t")){ return true; }
   if (!(vv = object.value.match(/^([0-9]+)(px$|$)/))) {
     if (document.getElementById('horizontalLayout').value == "t") { 
-      alert('error: in the horizontal layout the iFrame height must be a non negative integer or \'board\'');
+      alert('error: in the horizontal layout the iFrame height must be a non negative number or \'board\'');
     } else {
-      alert('error: in the vertical layout the iFrame height must be a non negative integer');
+      alert('error: in the vertical layout the iFrame height must be a non negative number');
     }
     object.value = "";
     return false;    
@@ -997,55 +759,6 @@ function validate_ss_ps_hm() {
   return retval;
 }
 
-function checkInitialHalfmove() {
-  initialHalfmove_value = document.board.initialHalfmove.value;
-  switch (initialHalfmove_value) {
-    case "":
-    case "start":
-    case "end":
-    case "random":
-    case "comment":
-    case "-1":
-    case "-2":
-    case "-3":
-      document.board.initialHalfmoveSelect.value = document.board.initialHalfmove.value;
-      document.board.initialHalfmoveNumber.value = initialHalfmoveNumber_default;
-      retVal = true;
-      break;
-    default:
-      if (initialHalfmove_value.match(/^[0-9]+$/)) {
-        document.board.initialHalfmoveSelect.value = "number";
-	document.board.initialHalfmoveNumber.value = initialHalfmove_value;
-        retVal = true;
-      } else {
-        alert("error: initial halfmove (as URL parameter) must be either a number (-3, -2, -1, 0, 1, 2 ...) or 'start', 'end', 'random', 'comment' or their initials");
-        document.board.initialHalfmove.value = initialHalfmove_value = initialHalfmove_default;
-	document.board.initialHalfmoveSelect.value = initialHalfmoveSelect_default;
-	document.board.initialHalfmoveNumber.value = initialHalfmoveNumber_default;
-        retVal = false;
-      }
-      break;
-  }
-  document.board.initialHalfmoveNumber.disabled = (document.board.initialHalfmoveSelect.value != "number");
-  return retVal;
-}
-
-function setInitialHalfmove() {
-  if (document.board.initialHalfmoveSelect.value == "number") {
-    document.board.initialHalfmoveNumber.disabled = false;
-    if (document.board.initialHalfmoveNumber.value === "") { document.board.initialHalfmoveNumber.value = 0; }
-    if (document.board.initialHalfmoveNumber.value.match(/^[0-9]+$/)) {
-      document.board.initialHalfmove.value = initialHalfmove_value = document.board.initialHalfmoveNumber.value;
-    } else {
-      alert("error: initial halfmove number must be a non negative integer");
-      document.board.initialHalfmove.value = initialHalfmove_value = document.board.initialHalfmoveNumber.value = initialHalfmoveNumber_default;
-    }
-  } else {
-    document.board.initialHalfmoveNumber.disabled = true;
-    document.board.initialHalfmove.value = initialHalfmove_value = document.board.initialHalfmoveSelect.value;
-  }
-}
-
 function add_option(selectObject, newText, newValue) {
   var newOpt = document.createElement('option');
   newOpt.text = newText;
@@ -1055,26 +768,26 @@ function add_option(selectObject, newText, newValue) {
 }
 
 // template patterns
-common_template = "?am=l&d=3000&fh=&fw=";
+common_template = "?am=l&d=3000&sb=t&sh=t&sm=t&cd=i&fh=&fw=";
 
 // color template array (description, general settings, highlight square color, highlight border color);
 color_template = new Array();
-color_template[0] = new Array("blue ", "&lcs=VdyD&dcs=LHCg&bbcs=LHCg&bd=c&cbcs=PYGy&ctcs=l4It&fhcs=$$$$&fmcs=$$$$&fccs=v71$&hmcs=M___&bcs=VdyD", "&hcs=QtmS", "&hcs=s8pI");
-color_template[1] = new Array("brown", "&lcs=XItn&dcs=NpQK&bbcs=NpQK&bd=c&cbcs=__iz&ctcs=NpQK&fhcs=k03b&fmcs=k03b&fccs=DRYC&hmcs=__X$&bcs=____", "&hcs=MWVi", "&hcs=__X$");
-color_template[2] = new Array("gray ", "&lcs=YeiP&dcs=Qcij&bbcs=D91v&bd=s&cbcs=YeiP&ctcs=$$$$&fhcs=$$$$&fmcs=$$$$&fccs=v71$&hmcs=Qcij&bcs=____", "&hcs=Udiz", "&hcs=s6gP");
-color_template[3] = new Array("green", "&lcs=W_iH&dcs=MHW2&bbcs=MHW2&bd=c&cbcs=UtKy&ctcs=x7x7&fhcs=g3g3&fmcs=7x7x&fccs=v71$&hmcs=RKim&bcs=W_iH", "&hcs=RKim", "&hcs=waRy");
-color_template[4] = new Array("pink ", "&lcs=Wtyk&dcs=OXJO&bbcs=OXJO&bd=c&cbcs=UJ2e&ctcs=nkYj&fhcs=nkYi&fmcs=nkYi&fccs=DoRa&hmcs=ZbNv&bcs=Wtyk", "&hcs=UIFV", "&hcs=ZbNv");
+color_template[0] = new Array("blue ", "&lch=E8E8E8&dch=C2C9D1&bbch=C2C9D1&cbch=D3DAE3&ctch=585B5E&fhch=000000&fmch=000000&fcch=808080&hmch=C7FFFF&bch=E8E8E8", "&hch=D5E5F7", "&hch=7496AD");
+color_template[1] = new Array("brown", "&lch=F2D798&dch=C9AD6F&bbch=C9AD6F&cbch=FFF4E4&ctch=C9AD6F&fhch=54110C&fmch=54110C&fcch=A34D42&hmch=FFFF00&bch=FFFFFF", "&hch=C7BE93", "&hch=FFFF00");
+color_template[2] = new Array("gray ", "&lch=F4F4F4&dch=D4D4D4&bbch=A0A0A0&cbch=d&ctch=000000&fhch=000000&fmch=000000&fcch=808080&hmch=D4D4D4&bch=FFFFFF", "&hch=E4E4E4", "&hch=747474");
+color_template[3] = new Array("green", "&lch=EFF4EC&dch=C6CEC3&bbch=C6CEC3&cbch=E5EBE3&ctch=888888&fhch=444444&fmch=222222&fcch=808080&hmch=DAF4D7&bch=EFF4EC", "&hch=DAF4D7", "&hch=8CBD8C");
+color_template[4] = new Array("pink ", "&lch=EDE8D5&dch=CFCBB3&bbch=CFCBB3&cbch=E6E0CF&ctch=615F54&fhch=615F54&fmch=615F54&fcch=A19D8B&hmch=F8CCA0&bch=EDE8D5", "&hch=E6DABA", "&hch=F8CCA0");
 
 // size template array
 size_template = new Array();
-size_template[0] = new Array("small ", "&ss=26&ps=d&pf=d&hm=s&tm=13&fhs=80p&fms=80p&fcs=m&fp=13");
-size_template[1] = new Array("medium", "&ss=36&ps=d&pf=d&hm=s&tm=18&fhs=100p&fms=100p&fcs=m&fp=18");
-size_template[2] = new Array("large ", "&ss=50&ps=d&pf=d&hm=b&tm=25&fhs=120p&fms=120p&fcs=m&fp=25");
+size_template[0] = new Array("small ", "&ss=26&ps=d&pf=d&hm=s&tm=13&fhs=80pct&fms=80pct&fcs=80pct&fp=13");
+size_template[1] = new Array("medium", "&ss=36&ps=d&pf=d&hm=s&tm=18&fhs=100pct&fms=100pct&fcs=100pct&fp=18");
+size_template[2] = new Array("large ", "&ss=50&ps=d&pf=d&hm=b&tm=25&fhs=120pct&fms=120pct&fcs=120pct&fp=25");
 
 // layout template array
 layout_template = new Array();
-layout_template[0] = new Array("vertical  ", "&hl=f&hd=c&md=j&cd=i");
-layout_template[1] = new Array("horizontal", "&hl=t&hd=j&md=j&cd=i");
+layout_template[0] = new Array("vertical  ", "&hl=f");
+layout_template[1] = new Array("horizontal", "&hl=t");
 
 function load_templates() {
       
@@ -1094,7 +807,8 @@ function load_templates() {
 	 template_value += layout_template[ll][1];
 	 template_value += size_template[ss][1];
 	 template_value += color_template[cc][1];
-         template_value += template_value.match("&hm=b") ? color_template[cc][3] : color_template[cc][2];
+         if (template_value.match("&hm=b")) { template_value += color_template[cc][3]; }
+	 else { template_value += color_template[cc][2]; }
 	 if (color_template[cc][0].match("gray")) { 
 	   template_value = template_value.replace(/hm=(s|b)/,"hm=n");
 	 }
@@ -1107,9 +821,11 @@ function load_templates() {
 function template_selected() {
   if (document.getElementById('templatesList').value == "heading") { return; }
 
-  selectedIndex = document.getElementById('templatesList').value == "random" ?
-                  3 + Math.floor((document.getElementById('templatesList').length - 3) * Math.random()) :
-                  document.getElementById('templatesList').selectedIndex;
+  if (document.getElementById('templatesList').value == "random") {
+    selectedIndex = 3 + Math.floor((document.getElementById('templatesList').length - 3) * Math.random());
+  } else {
+    selectedIndex = document.getElementById('templatesList').selectedIndex;
+  }
 
   if (confirm("do you really want to load the selected board generator template?" + 
               "\n\n" + document.getElementById('templatesList').options[selectedIndex].text +
@@ -1122,9 +838,8 @@ function template_selected() {
        previousPgnTextToEncode = pgnText_value;
        pgnTextEncoded = EncodePGN(pgnText_value);
     }
-    newLocationSearch += document.board.encodePgn.checked ? 
-                         "&pe=" + pgnTextEncoded :
-                         "&pt=" + pgnTextFixForUrl(pgnText_value);
+    if (document.board.encodePgn.checked) { newLocationSearch += "&pe=" + pgnTextEncoded; }
+    else { newLocationSearch += "&pt=" + pgnTextFixForUrl(pgnText_value); }
     newLocationSearch = newLocationSearch.replace(/^&/,"\?");
 
     if (newLocationSearch != location.search) {
@@ -1138,35 +853,846 @@ function template_selected() {
 }
 
 
-var  sexEncodingCharSet = "$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
+var encodingCharSet = "$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
+var encodingVersion = 1;
+// version 1 of PGN encoding:
+//   encodedPGN = nnn$xxx0
+//   nnn = number representing bytes length of the decoded message
+//   $ = dollar char (delimiter for length info)
+//   xxx = encoded text (using LetterCodes below)
+//   0 = zero char (version marker)
 
-function sex2hex(sex, name) {
-  if (sex === "") { return ""; }
-  if (!sex.match(/^[0-9a-zA-z_\$]{4}$/)) {
-    alert('error: the ' + name + ' must be a 4 digits color code in the proprietary format, like _L$$');
-    return ""; 
-  }
-  sex += "";
-  var dec = 0;
-  var cnt;
-  for (cnt=0; cnt<sex.length; cnt++) {
-    dec <<= 6;
-    dec += sexEncodingCharSet.indexOf(sex.charAt(cnt));
-  }
-  var hex = dec.toString(16).toUpperCase() + "";
-  while (hex.length < 6) { hex = "0" + hex; }
-  return hex;
+function BitsToBytes(i) {
+  o = 0;
+  if (i.charAt(0) == '1') { o += 32; }
+  if (i.charAt(1) == '1') { o += 16; }
+  if (i.charAt(2) == '1') { o +=  8; }
+  if (i.charAt(3) == '1') { o +=  4; }
+  if (i.charAt(4) == '1') { o +=  2; }
+  if (i.charAt(5) == '1') { o +=  1; }
+  return encodingCharSet.charAt(o);
 }
 
-function hex2sex(hex) {
-  var sex = "";
-  dec = parseInt(hex,16);
-  while (dec>0) {
-    sex = sexEncodingCharSet.charAt(dec % 64) + sex;
-    dec >>= 6;
+function EncodePGN(ov) {
+
+  var LetterCodes = new Array(256);
+  LetterCodes[0]   = '00111111111111110';
+  LetterCodes[1]   = '0101101';
+  LetterCodes[2]   = '00111111111111111';
+  LetterCodes[3]   = '00111111111111100';
+  LetterCodes[4]   = '00111111111111101';
+  LetterCodes[5]   = '000011111111111010';
+  LetterCodes[6]   = '000011111111111011';
+  LetterCodes[7]   = '000011111111111000';
+  LetterCodes[8]   = '000011111111111001';
+  LetterCodes[9]   = '000011111111111110';
+  LetterCodes[10]  = '0101100';
+  LetterCodes[11]  = '000011111111111111';
+  LetterCodes[12]  = '000011111111111100';
+  LetterCodes[13]  = '0011100';
+  LetterCodes[14]  = '000011111111111101';
+  LetterCodes[15]  = '000011111111110010';
+  LetterCodes[16]  = '000011111111110011';
+  LetterCodes[17]  = '000011111111110000';
+  LetterCodes[18]  = '000011111111110001';
+  LetterCodes[19]  = '000011111111110110';
+  LetterCodes[20]  = '000011111111110111';
+  LetterCodes[21]  = '000011111111110100';
+  LetterCodes[22]  = '000011111111110101';
+  LetterCodes[23]  = '1111111111110101010';
+  LetterCodes[24]  = '1111111111110101011';
+  LetterCodes[25]  = '1111111111110101000';
+  LetterCodes[26]  = '1111111111110101001';
+  LetterCodes[27]  = '1111111111110101110';
+  LetterCodes[28]  = '1111111111110101111';
+  LetterCodes[29]  = '1111111111110101100';
+  LetterCodes[30]  = '1111111111110101101';
+  LetterCodes[31]  = '1111111111110100010';
+  LetterCodes[32]  = '1000';
+  LetterCodes[33]  = '101111111110';
+  LetterCodes[34]  = '00010';
+  LetterCodes[35]  = '11111111110';
+  LetterCodes[36]  = '0011111111110';
+  LetterCodes[37]  = '1011111111110';
+  LetterCodes[38]  = '00001111111110';
+  LetterCodes[39]  = '00111111110';
+  LetterCodes[40]  = '0011101';
+  LetterCodes[41]  = '111111110';
+  LetterCodes[42]  = '11001111111110';
+  LetterCodes[43]  = '1111110';
+  LetterCodes[44]  = '000011110';
+  LetterCodes[45]  = '0011110';
+  LetterCodes[46]  = '00000';
+  LetterCodes[47]  = '0110110';
+  LetterCodes[48]  = '010100';
+  LetterCodes[49]  = '00110';
+  LetterCodes[50]  = '01000';
+  LetterCodes[51]  = '01100';
+  LetterCodes[52]  = '11000';
+  LetterCodes[53]  = '11010';
+  LetterCodes[54]  = '11100';
+  LetterCodes[55]  = '001010';
+  LetterCodes[56]  = '011100';
+  LetterCodes[57]  = '0001110';
+  LetterCodes[58]  = '001111111110';
+  LetterCodes[59]  = '1111111111100';
+  LetterCodes[60]  = '10111111110';
+  LetterCodes[61]  = '1100110100';
+  LetterCodes[62]  = '000011111110';
+  LetterCodes[63]  = '00011110';
+  LetterCodes[64]  = '1100111111110';
+  LetterCodes[65]  = '110011100';
+  LetterCodes[66]  = '000010';
+  LetterCodes[67]  = '10111110';
+  LetterCodes[68]  = '00111110';
+  LetterCodes[69]  = '0010110';
+  LetterCodes[70]  = '110011101';
+  LetterCodes[71]  = '110011110';
+  LetterCodes[72]  = '1100110101';
+  LetterCodes[73]  = '0010111110';
+  LetterCodes[74]  = '11001111110';
+  LetterCodes[75]  = '101110';
+  LetterCodes[76]  = '1100111110';
+  LetterCodes[77]  = '101111110';
+  LetterCodes[78]  = '000110';
+  LetterCodes[79]  = '0101110';
+  LetterCodes[80]  = '1011110';
+  LetterCodes[81]  = '011101';
+  LetterCodes[82]  = '11101';
+  LetterCodes[83]  = '11001100';
+  LetterCodes[84]  = '001111110';
+  LetterCodes[85]  = '0000111110';
+  LetterCodes[86]  = '1111111110';
+  LetterCodes[87]  = '11111110';
+  LetterCodes[88]  = '110011111110';
+  LetterCodes[89]  = '0000111111110';
+  LetterCodes[90]  = '1011111110';
+  LetterCodes[91]  = '10010';
+  LetterCodes[92]  = '00111111111110';
+  LetterCodes[93]  = '10011';
+  LetterCodes[94]  = '11001111111111';
+  LetterCodes[95]  = '11111111111010';
+  LetterCodes[96]  = '10111111111110';
+  LetterCodes[97]  = '11110';
+  LetterCodes[98]  = '011010';
+  LetterCodes[99]  = '10100';
+  LetterCodes[100] = '11011';
+  LetterCodes[101] = '00100';
+  LetterCodes[102] = '010010';
+  LetterCodes[103] = '010011';
+  LetterCodes[104] = '011110';
+  LetterCodes[105] = '0000110';
+  LetterCodes[106] = '00001111110';
+  LetterCodes[107] = '00001110';
+  LetterCodes[108] = '110010';
+  LetterCodes[109] = '000111110';
+  LetterCodes[110] = '010101';
+  LetterCodes[111] = '111110';
+  LetterCodes[112] = '0110111';
+  LetterCodes[113] = '1100110110';
+  LetterCodes[114] = '0111110';
+  LetterCodes[115] = '0111111';
+  LetterCodes[116] = '10110';
+  LetterCodes[117] = '0101111';
+  LetterCodes[118] = '00101110';
+  LetterCodes[119] = '000111111';
+  LetterCodes[120] = '10101';
+  LetterCodes[121] = '001011110';
+  LetterCodes[122] = '1100110111';
+  LetterCodes[123] = '0010111111';
+  LetterCodes[124] = '001111111111110';
+  LetterCodes[125] = '0011111110';
+  LetterCodes[126] = '111111111110110';
+  LetterCodes[127] = '1111111111110100011';
+  LetterCodes[128] = '1111111111110100000';
+  LetterCodes[129] = '1111111111110100001';
+  LetterCodes[130] = '1111111111110100110';
+  LetterCodes[131] = '1111111111110100111';
+  LetterCodes[132] = '1111111111110100100';
+  LetterCodes[133] = '1111111111110100101';
+  LetterCodes[134] = '1111111111110111010';
+  LetterCodes[135] = '1111111111110111011';
+  LetterCodes[136] = '1111111111110111000';
+  LetterCodes[137] = '1111111111110111001';
+  LetterCodes[138] = '1111111111110111110';
+  LetterCodes[139] = '1111111111110111111';
+  LetterCodes[140] = '1111111111110111100';
+  LetterCodes[141] = '1111111111110111101';
+  LetterCodes[142] = '1111111111110110010';
+  LetterCodes[143] = '1111111111110110011';
+  LetterCodes[144] = '1111111111110110000';
+  LetterCodes[145] = '1111111111110110001';
+  LetterCodes[146] = '1111111111110110110';
+  LetterCodes[147] = '1111111111110110111';
+  LetterCodes[148] = '1111111111110110100';
+  LetterCodes[149] = '1111111111110110101';
+  LetterCodes[150] = '1111111111110001010';
+  LetterCodes[151] = '1111111111110001011';
+  LetterCodes[152] = '1111111111110001000';
+  LetterCodes[153] = '1111111111110001001';
+  LetterCodes[154] = '1111111111110001110';
+  LetterCodes[155] = '1111111111110001111';
+  LetterCodes[156] = '1111111111110001100';
+  LetterCodes[157] = '1111111111110001101';
+  LetterCodes[158] = '1111111111110000010';
+  LetterCodes[159] = '1111111111110000011';
+  LetterCodes[160] = '1111111111110000000';
+  LetterCodes[161] = '1111111111110000001';
+  LetterCodes[162] = '1111111111110000110';
+  LetterCodes[163] = '1111111111110000111';
+  LetterCodes[164] = '1111111111110000100';
+  LetterCodes[165] = '1111111111110000101';
+  LetterCodes[166] = '1111111111110011010';
+  LetterCodes[167] = '1111111111110011011';
+  LetterCodes[168] = '1111111111110011000';
+  LetterCodes[169] = '1111111111110011001';
+  LetterCodes[170] = '1111111111110011110';
+  LetterCodes[171] = '1111111111110011111';
+  LetterCodes[172] = '1111111111110011100';
+  LetterCodes[173] = '1111111111110011101';
+  LetterCodes[174] = '1111111111110010010';
+  LetterCodes[175] = '1111111111110010011';
+  LetterCodes[176] = '1111111111110010000';
+  LetterCodes[177] = '1111111111110010001';
+  LetterCodes[178] = '1111111111110010110';
+  LetterCodes[179] = '1111111111110010111';
+  LetterCodes[180] = '1111111111110010100';
+  LetterCodes[181] = '1111111111110010101';
+  LetterCodes[182] = '1111111111111101010';
+  LetterCodes[183] = '1111111111111101011';
+  LetterCodes[184] = '1111111111111101000';
+  LetterCodes[185] = '1111111111111101001';
+  LetterCodes[186] = '1111111111111101110';
+  LetterCodes[187] = '1111111111111101111';
+  LetterCodes[188] = '1111111111111101100';
+  LetterCodes[189] = '1111111111111101101';
+  LetterCodes[190] = '1111111111111100010';
+  LetterCodes[191] = '1111111111111100011';
+  LetterCodes[192] = '1111111111111100000';
+  LetterCodes[193] = '1111111111111100001';
+  LetterCodes[194] = '1111111111111100110';
+  LetterCodes[195] = '1111111111111100111';
+  LetterCodes[196] = '1111111111111100100';
+  LetterCodes[197] = '1111111111111100101';
+  LetterCodes[198] = '1111111111111111010';
+  LetterCodes[199] = '1111111111111111011';
+  LetterCodes[200] = '1111111111111111000';
+  LetterCodes[201] = '1111111111111111001';
+  LetterCodes[202] = '1111111111111111110';
+  LetterCodes[203] = '1111111111111111111';
+  LetterCodes[204] = '1111111111111111100';
+  LetterCodes[205] = '1111111111111111101';
+  LetterCodes[206] = '1111111111111110010';
+  LetterCodes[207] = '1111111111111110011';
+  LetterCodes[208] = '1111111111111110000';
+  LetterCodes[209] = '1111111111111110001';
+  LetterCodes[210] = '1111111111111110110';
+  LetterCodes[211] = '1111111111111110111';
+  LetterCodes[212] = '1111111111111110100';
+  LetterCodes[213] = '1111111111111110101';
+  LetterCodes[214] = '1111111111111001010';
+  LetterCodes[215] = '1111111111111001011';
+  LetterCodes[216] = '1111111111111001000';
+  LetterCodes[217] = '1111111111111001001';
+  LetterCodes[218] = '1111111111111001110';
+  LetterCodes[219] = '1111111111111001111';
+  LetterCodes[220] = '1111111111111001100';
+  LetterCodes[221] = '1111111111111001101';
+  LetterCodes[222] = '1111111111111000010';
+  LetterCodes[223] = '1111111111111000011';
+  LetterCodes[224] = '1111111111111000000';
+  LetterCodes[225] = '1111111111111000001';
+  LetterCodes[226] = '1111111111111000110';
+  LetterCodes[227] = '1111111111111000111';
+  LetterCodes[228] = '1111111111111000100';
+  LetterCodes[229] = '1111111111111000101';
+  LetterCodes[230] = '1111111111111011010';
+  LetterCodes[231] = '1111111111111011011';
+  LetterCodes[232] = '1111111111111011000';
+  LetterCodes[233] = '1111111111111011001';
+  LetterCodes[234] = '1111111111111011110';
+  LetterCodes[235] = '1111111111111011111';
+  LetterCodes[236] = '1111111111111011100';
+  LetterCodes[237] = '1111111111111011101';
+  LetterCodes[238] = '1111111111111010010';
+  LetterCodes[239] = '1111111111111010011';
+  LetterCodes[240] = '1111111111111010000';
+  LetterCodes[241] = '1111111111111010001';
+  LetterCodes[242] = '1111111111111010110';
+  LetterCodes[243] = '1111111111111010111';
+  LetterCodes[244] = '1111111111111010100';
+  LetterCodes[245] = '1111111111111010101';
+  LetterCodes[246] = '10111111111111010';
+  LetterCodes[247] = '10111111111111011';
+  LetterCodes[248] = '10111111111111000';
+  LetterCodes[249] = '10111111111111001';
+  LetterCodes[250] = '10111111111111110';
+  LetterCodes[251] = '10111111111111111';
+  LetterCodes[252] = '10111111111111100';
+  LetterCodes[253] = '10111111111111101';
+  LetterCodes[254] = '1111111111101110';
+  LetterCodes[255] = '1111111111101111'; 
+
+  // Build resulting data stream
+  // The bits string could get very large
+  bits = "";
+  bytes = ov.length + "$";
+  for (i = 0; i < ov.length; i ++) {
+    // converts ASCII chars above 255 to a star (code 42) avoiding decoding failure
+    if (ov.charCodeAt(i) > 255) { bits += LetterCodes[42]; }
+    else { bits += LetterCodes[ov.charCodeAt(i)]; }
+    while (bits.length > 5) {
+      bytes += BitsToBytes(bits);
+      bits = bits.slice(6, bits.length);
+    }
   }
-  while (sex.length < 4) { sex = sexEncodingCharSet.charAt(0) + sex; }
-  return sex;
+  bytes += BitsToBytes(bits);
+
+  bytes += encodingCharSet.charAt(encodingVersion);
+
+  return bytes;
+}
+
+function DecodePGN(bytes) {
+
+  if (bytes.charAt(bytes.length - 1) != encodingCharSet.charAt(encodingVersion)) {
+    alert("ERROR: PGN encoding version mismatch (e:" + 
+           bytes.charAt(bytes.length - 1) + " d:" + encodingCharSet.charAt(encodingVersion) + ")");
+  } else {
+    bytes.length--;
+  }
+
+  originalLength = parseInt(bytes.match(/^[0-9]*/), 10);
+  bytes = bytes.replace(/^[0-9]*\$/,"");
+
+  l = new Array();
+  l[0] = -146;
+  l[1] = -111;
+  l[2] = -66;
+  l[3] = -55;
+  l[4] = -6;
+  l[5] = 46;
+  l[6] = -8;
+  l[7] = 66;
+  l[8] = -10;
+  l[9] = 105;
+  l[10] = -12;
+  l[11] = 107;
+  l[12] = -14;
+  l[13] = 44;
+  l[14] = -16;
+  l[15] = 85;
+  l[16] = -18;
+  l[17] = 106;
+  l[18] = -20;
+  l[19] = 62;
+  l[20] = -22;
+  l[21] = 89;
+  l[22] = -24;
+  l[23] = 38;
+  l[24] = -40;
+  l[25] = -33;
+  l[26] = -30;
+  l[27] = -29;
+  l[28] = 17;
+  l[29] = 18;
+  l[30] = -32;
+  l[31] = 15;
+  l[32] = 16;
+  l[33] = -37;
+  l[34] = -36;
+  l[35] = 21;
+  l[36] = 22;
+  l[37] = -39;
+  l[38] = 19;
+  l[39] = 20;
+  l[40] = -48;
+  l[41] = -45;
+  l[42] = -44;
+  l[43] = 7;
+  l[44] = 8;
+  l[45] = -47;
+  l[46] = 5;
+  l[47] = 6;
+  l[48] = -52;
+  l[49] = -51;
+  l[50] = 12;
+  l[51] = 14;
+  l[52] = -54;
+  l[53] = 9;
+  l[54] = 11;
+  l[55] = -57;
+  l[56] = 34;
+  l[57] = -59;
+  l[58] = 78;
+  l[59] = -61;
+  l[60] = 57;
+  l[61] = -63;
+  l[62] = 63;
+  l[63] = -65;
+  l[64] = 109;
+  l[65] = 119;
+  l[66] = -80;
+  l[67] = -69;
+  l[68] = 101;
+  l[69] = -71;
+  l[70] = 55;
+  l[71] = -73;
+  l[72] = 69;
+  l[73] = -75;
+  l[74] = 118;
+  l[75] = -77;
+  l[76] = 121;
+  l[77] = -79;
+  l[78] = 73;
+  l[79] = 123;
+  l[80] = -82;
+  l[81] = 49;
+  l[82] = -86;
+  l[83] = -85;
+  l[84] = 13;
+  l[85] = 40;
+  l[86] = -88;
+  l[87] = 45;
+  l[88] = -90;
+  l[89] = 68;
+  l[90] = -92;
+  l[91] = 84;
+  l[92] = -94;
+  l[93] = 125;
+  l[94] = -96;
+  l[95] = 39;
+  l[96] = -98;
+  l[97] = 58;
+  l[98] = -100;
+  l[99] = 36;
+  l[100] = -102;
+  l[101] = 92;
+  l[102] = -104;
+  l[103] = 124;
+  l[104] = -108;
+  l[105] = -107;
+  l[106] = 3;
+  l[107] = 4;
+  l[108] = -110;
+  l[109] = 0;
+  l[110] = 2;
+  l[111] = -129;
+  l[112] = -118;
+  l[113] = -115;
+  l[114] = 50;
+  l[115] = -117;
+  l[116] = 102;
+  l[117] = 103;
+  l[118] = -122;
+  l[119] = -121;
+  l[120] = 48;
+  l[121] = 110;
+  l[122] = -126;
+  l[123] = -125;
+  l[124] = 10;
+  l[125] = 1;
+  l[126] = -128;
+  l[127] = 79;
+  l[128] = 117;
+  l[129] = -137;
+  l[130] = -132;
+  l[131] = 51;
+  l[132] = -134;
+  l[133] = 98;
+  l[134] = -136;
+  l[135] = 47;
+  l[136] = 112;
+  l[137] = -141;
+  l[138] = -140;
+  l[139] = 56;
+  l[140] = 81;
+  l[141] = -143;
+  l[142] = 104;
+  l[143] = -145;
+  l[144] = 114;
+  l[145] = 115;
+  l[146] = -192;
+  l[147] = -153;
+  l[148] = -150;
+  l[149] = 32;
+  l[150] = -152;
+  l[151] = 91;
+  l[152] = 93;
+  l[153] = -157;
+  l[154] = -156;
+  l[155] = 99;
+  l[156] = 120;
+  l[157] = -159;
+  l[158] = 116;
+  l[159] = -161;
+  l[160] = 75;
+  l[161] = -163;
+  l[162] = 80;
+  l[163] = -165;
+  l[164] = 67;
+  l[165] = -167;
+  l[166] = 77;
+  l[167] = -169;
+  l[168] = 90;
+  l[169] = -171;
+  l[170] = 60;
+  l[171] = -173;
+  l[172] = 33;
+  l[173] = -175;
+  l[174] = 37;
+  l[175] = -177;
+  l[176] = 96;
+  l[177] = -185;
+  l[178] = -182;
+  l[179] = -181;
+  l[180] = 248;
+  l[181] = 249;
+  l[182] = -184;
+  l[183] = 246;
+  l[184] = 247;
+  l[185] = -189;
+  l[186] = -188;
+  l[187] = 252;
+  l[188] = 253;
+  l[189] = -191;
+  l[190] = 250;
+  l[191] = 251;
+  l[192] = -228;
+  l[193] = -225;
+  l[194] = -196;
+  l[195] = 52;
+  l[196] = -198;
+  l[197] = 108;
+  l[198] = -208;
+  l[199] = -201;
+  l[200] = 83;
+  l[201] = -205;
+  l[202] = -204;
+  l[203] = 61;
+  l[204] = 72;
+  l[205] = -207;
+  l[206] = 113;
+  l[207] = 122;
+  l[208] = -212;
+  l[209] = -211;
+  l[210] = 65;
+  l[211] = 70;
+  l[212] = -214;
+  l[213] = 71;
+  l[214] = -216;
+  l[215] = 76;
+  l[216] = -218;
+  l[217] = 74;
+  l[218] = -220;
+  l[219] = 88;
+  l[220] = -222;
+  l[221] = 64;
+  l[222] = -224;
+  l[223] = 42;
+  l[224] = 94;
+  l[225] = -227;
+  l[226] = 53;
+  l[227] = 100;
+  l[228] = -232;
+  l[229] = -231;
+  l[230] = 54;
+  l[231] = 82;
+  l[232] = -234;
+  l[233] = 97;
+  l[234] = -236;
+  l[235] = 111;
+  l[236] = -238;
+  l[237] = 43;
+  l[238] = -240;
+  l[239] = 87;
+  l[240] = -242;
+  l[241] = 41;
+  l[242] = -244;
+  l[243] = 86;
+  l[244] = -246;
+  l[245] = 35;
+  l[246] = -256;
+  l[247] = -249;
+  l[248] = 59;
+  l[249] = -251;
+  l[250] = 95;
+  l[251] = -253;
+  l[252] = 126;
+  l[253] = -255;
+  l[254] = 254;
+  l[255] = 255;
+  l[256] = -384;
+  l[257] = -321;
+  l[258] = -290;
+  l[259] = -275;
+  l[260] = -268;
+  l[261] = -265;
+  l[262] = -264;
+  l[263] = 160;
+  l[264] = 161;
+  l[265] = -267;
+  l[266] = 158;
+  l[267] = 159;
+  l[268] = -272;
+  l[269] = -271;
+  l[270] = 164;
+  l[271] = 165;
+  l[272] = -274;
+  l[273] = 162;
+  l[274] = 163;
+  l[275] = -283;
+  l[276] = -280;
+  l[277] = -279;
+  l[278] = 152;
+  l[279] = 153;
+  l[280] = -282;
+  l[281] = 150;
+  l[282] = 151;
+  l[283] = -287;
+  l[284] = -286;
+  l[285] = 156;
+  l[286] = 157;
+  l[287] = -289;
+  l[288] = 154;
+  l[289] = 155;
+  l[290] = -306;
+  l[291] = -299;
+  l[292] = -296;
+  l[293] = -295;
+  l[294] = 176;
+  l[295] = 177;
+  l[296] = -298;
+  l[297] = 174;
+  l[298] = 175;
+  l[299] = -303;
+  l[300] = -302;
+  l[301] = 180;
+  l[302] = 181;
+  l[303] = -305;
+  l[304] = 178;
+  l[305] = 179;
+  l[306] = -314;
+  l[307] = -311;
+  l[308] = -310;
+  l[309] = 168;
+  l[310] = 169;
+  l[311] = -313;
+  l[312] = 166;
+  l[313] = 167;
+  l[314] = -318;
+  l[315] = -317;
+  l[316] = 172;
+  l[317] = 173;
+  l[318] = -320;
+  l[319] = 170;
+  l[320] = 171;
+  l[321] = -353;
+  l[322] = -338;
+  l[323] = -331;
+  l[324] = -328;
+  l[325] = -327;
+  l[326] = 128;
+  l[327] = 129;
+  l[328] = -330;
+  l[329] = 31;
+  l[330] = 127;
+  l[331] = -335;
+  l[332] = -334;
+  l[333] = 132;
+  l[334] = 133;
+  l[335] = -337;
+  l[336] = 130;
+  l[337] = 131;
+  l[338] = -346;
+  l[339] = -343;
+  l[340] = -342;
+  l[341] = 25;
+  l[342] = 26;
+  l[343] = -345;
+  l[344] = 23;
+  l[345] = 24;
+  l[346] = -350;
+  l[347] = -349;
+  l[348] = 29;
+  l[349] = 30;
+  l[350] = -352;
+  l[351] = 27;
+  l[352] = 28;
+  l[353] = -369;
+  l[354] = -362;
+  l[355] = -359;
+  l[356] = -358;
+  l[357] = 144;
+  l[358] = 145;
+  l[359] = -361;
+  l[360] = 142;
+  l[361] = 143;
+  l[362] = -366;
+  l[363] = -365;
+  l[364] = 148;
+  l[365] = 149;
+  l[366] = -368;
+  l[367] = 146;
+  l[368] = 147;
+  l[369] = -377;
+  l[370] = -374;
+  l[371] = -373;
+  l[372] = 136;
+  l[373] = 137;
+  l[374] = -376;
+  l[375] = 134;
+  l[376] = 135;
+  l[377] = -381;
+  l[378] = -380;
+  l[379] = 140;
+  l[380] = 141;
+  l[381] = -383;
+  l[382] = 138;
+  l[383] = 139;
+  l[384] = -448;
+  l[385] = -417;
+  l[386] = -402;
+  l[387] = -395;
+  l[388] = -392;
+  l[389] = -391;
+  l[390] = 224;
+  l[391] = 225;
+  l[392] = -394;
+  l[393] = 222;
+  l[394] = 223;
+  l[395] = -399;
+  l[396] = -398;
+  l[397] = 228;
+  l[398] = 229;
+  l[399] = -401;
+  l[400] = 226;
+  l[401] = 227;
+  l[402] = -410;
+  l[403] = -407;
+  l[404] = -406;
+  l[405] = 216;
+  l[406] = 217;
+  l[407] = -409;
+  l[408] = 214;
+  l[409] = 215;
+  l[410] = -414;
+  l[411] = -413;
+  l[412] = 220;
+  l[413] = 221;
+  l[414] = -416;
+  l[415] = 218;
+  l[416] = 219;
+  l[417] = -433;
+  l[418] = -426;
+  l[419] = -423;
+  l[420] = -422;
+  l[421] = 240;
+  l[422] = 241;
+  l[423] = -425;
+  l[424] = 238;
+  l[425] = 239;
+  l[426] = -430;
+  l[427] = -429;
+  l[428] = 244;
+  l[429] = 245;
+  l[430] = -432;
+  l[431] = 242;
+  l[432] = 243;
+  l[433] = -441;
+  l[434] = -438;
+  l[435] = -437;
+  l[436] = 232;
+  l[437] = 233;
+  l[438] = -440;
+  l[439] = 230;
+  l[440] = 231;
+  l[441] = -445;
+  l[442] = -444;
+  l[443] = 236;
+  l[444] = 237;
+  l[445] = -447;
+  l[446] = 234;
+  l[447] = 235;
+  l[448] = -480;
+  l[449] = -465;
+  l[450] = -458;
+  l[451] = -455;
+  l[452] = -454;
+  l[453] = 192;
+  l[454] = 193;
+  l[455] = -457;
+  l[456] = 190;
+  l[457] = 191;
+  l[458] = -462;
+  l[459] = -461;
+  l[460] = 196;
+  l[461] = 197;
+  l[462] = -464;
+  l[463] = 194;
+  l[464] = 195;
+  l[465] = -473;
+  l[466] = -470;
+  l[467] = -469;
+  l[468] = 184;
+  l[469] = 185;
+  l[470] = -472;
+  l[471] = 182;
+  l[472] = 183;
+  l[473] = -477;
+  l[474] = -476;
+  l[475] = 188;
+  l[476] = 189;
+  l[477] = -479;
+  l[478] = 186;
+  l[479] = 187;
+  l[480] = -496;
+  l[481] = -489;
+  l[482] = -486;
+  l[483] = -485;
+  l[484] = 208;
+  l[485] = 209;
+  l[486] = -488;
+  l[487] = 206;
+  l[488] = 207;
+  l[489] = -493;
+  l[490] = -492;
+  l[491] = 212;
+  l[492] = 213;
+  l[493] = -495;
+  l[494] = 210;
+  l[495] = 211;
+  l[496] = -504;
+  l[497] = -501;
+  l[498] = -500;
+  l[499] = 200;
+  l[500] = 201;
+  l[501] = -503;
+  l[502] = 198;
+  l[503] = 199;
+  l[504] = -508;
+  l[505] = -507;
+  l[506] = 204;
+  l[507] = 205;
+  l[508] = -510;
+  l[509] = 202;
+  l[510] = 203;
+
+  e=b=a=0;
+  o="";
+
+  function B() { if(a===0) { b=encodingCharSet.indexOf(bytes.charAt(e++)); a=6; } return ((b>>--a)&0x01); }
+  
+  while(originalLength>0) { i=0; 
+    while(l[i]<0) { 
+      if(B()) { i=-l[i]; }
+      else { i++; }
+    }
+    o+=String.fromCharCode(l[i]);
+    originalLength--;
+  }
+
+  return o;
 }
 
 
@@ -1177,7 +1703,11 @@ function gup( name ){
   regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   var regex = new RegExp( regexS );
   var results = regex.exec( window.location.href );
-  if( results !== null ) { return results[1]; }
+  if( results !== null ) { switch (results[1]) {
+    case "true": case "T": return "t";  break;
+    case "false": case "F": return "f"; break;
+    default: return results[1];
+  } }
 
   // allows for short version of the URL parameters, for instance sC matches squareColor
   compact_name = name.charAt(0);
@@ -1191,34 +1721,36 @@ function gup( name ){
   regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   regex = new RegExp( regexS );
   results = regex.exec( window.location.href );
-  if( results !== null ) { return results[1]; }
+  if( results !== null ) { switch (results[1]) {
+    case "true": case "T": return "t";  break;
+    case "false": case "F": return "f"; break;
+    default: return results[1];
+  } }
 
   return "";
 }
 
-var bugWin=null;
 function bug_report() {
   var email = pgn4web_project_email;
   var subject = "pgn4web board generator bug report";
   var bug_info = "pgn4web board generator bug report\n\n-------- automatically generated debug info: start --------\n\nURL: " + window.location + "\n\nuser agent: " + window.navigator.userAgent+ "\n\npgn4web version: " + pgn4web_version + "\n\niFrame HTML code:\n\n" + html_code_string + "\n\n-------- automatically generated debug info: end   --------\n\nPlease add below a description of the bug and attach a screenshot if possible.\n\n\n\n\n";
   mailto_link = 'mailto:' + email + '?subject=' + subject + '&body=' + escape(bug_info);
 
-  if (bugWin && !bugWin.closed) { bugWin.close(); }
-  bugWin = window.open("", "bug_report", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no"); 
-  if (bugWin !== null) {
-    bugWin.document.open("text/html", "replace");
-    bugWin.document.write("<html>");
-    bugWin.document.write("<head><title>pgn4web board generator bug report</title><link rel='shortcut icon' href='pawn.ico' /><style type='text/css'> html, body { font-family: sans-serif;  color: black; background: white; padding: 10px; } a {text-decoration: none; color: black; } </style></head>");
-    bugWin.document.write("<body style='text-align: justify;'>");
-    bugWin.document.write("<table width=100% cellspacing=0 cellpadding=0><tr><td align=left valign=middle><h1>pgn4web board generator bug report</h1></td><td align=right valign=middle><img src=pawns.png border=0></td></tr></table><p></p>please make sure that:<ul type='square'><li>you are using the same web browser where you noticed the bug in the pgn4web board generator</li><li>you opened this bug report window from the pgn4web board generator page configured with all the parameter that result in the bug condition</li></ul>Then please email ALL the the debug information below and possibly a screenshot to <i><a href=mailto:" + pgn4web_project_email + ">" + pgn4web_project_email + "</a></i><p></p>");
-    bugWin.document.write("<hr>");
-    bugWin.document.write("<pre><code>" + bug_info.replace(/</g,"&lt;").replace(/>/g,"&gt;") + "</code></pre>");
-    bugWin.document.write("<hr>");
-    bugWin.document.write("<p></p>If your email client is properly configured, you can try to <i><a href='" + mailto_link + "'>click here and automatically compose the email in your default client</a></i>; this might not work, in case you have to manually copy the above information into an <i><a href=mailto:" + pgn4web_project_email + ">email to " + pgn4web_project_email + "</a></i>.<p></p>");
-    bugWin.document.write("</body>");
-    bugWin.document.write("<html>");
-    bugWin.document.close();
-    if (window.focus) { bugWin.window.focus(); }
+  win = window.open("", "bug_report", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no"); 
+  if (win !== null) {
+    win.document.open("text/html", "replace");
+    win.document.write("<html>");
+    win.document.write("<head><title>pgn4web board generator bug report</title><link rel='shortcut icon' href='pawn.ico'></link><style type='text/css'> html, body { font-family: sans-serif;  color: black; background: white; padding: 10px; } a {text-decoration: none; color: black; } </style></head>");
+    win.document.write("<body>");
+    win.document.write("<table width=100% cellspacing=0 cellpadding=0><tr><td align=left valign=middle><h1>pgn4web board generator bug report</h1></td><td align=right valign=middle><img src=pawns.png border=0></td></tr></table><p></p>please make sure that:<ul type='square'><li>you are using the same web browser where you noticed the bug in the pgn4web board generator</li><li>you opened this bug report window from the pgn4web board generator page configured with all the parameter that result in the bug condition</li></ul>Then please email ALL the the debug information below and possibly a screenshot to <i><a href=mailto:" + pgn4web_project_email + ">" + pgn4web_project_email + "</a></i><p></p>");
+    win.document.write("<hr>");
+    win.document.write("<pre><code>" + bug_info.replace(/</g,"&lt;").replace(/>/g,"&gt;") + "</code></pre>");
+    win.document.write("<hr>");
+    win.document.write("<p></p>If your email client is properly configured, you can try to <i><a href='" + mailto_link + "'>click here and automatically compose the email in your default client</a></i>; this might not work, in case you have to manually copy the above information into an <i><a href=mailto:" + pgn4web_project_email + ">email to " + pgn4web_project_email + "</a></i>.<p></p>");
+    win.document.write("</body>");
+    win.document.write("<html>");
+    win.document.close();
+    if (window.focus) { win.window.focus(); }
   }
 }
 
@@ -1227,11 +1759,11 @@ function print_menu( item, level, title ) {
   menu =  '<table width=100% cellspacing=0 cellpadding=0><tr><td td valign=middle align=left>';
   menu += '<h' + level + '><a name=' + item + '>' + title + '</a></h' + level + '>';
   menu += '</td><td valign=top align=right>';
-  menu += '<div style="font-size: 70%;">';
+  menu += '<div style="font-size: 66%;">';
   menu += '<a href=#top>instructions</a>';
   menu += '<br>';
   menu += '&nbsp; &nbsp;<span style="color:gray">actions:</span>';
-  menu += '&nbsp; &nbsp;<a href=#generate>copy output</a>';
+  menu += '&nbsp; &nbsp;<a href=#generate>copy iFrame</a>';
   menu += '&nbsp; &nbsp;<a href=#game_preview>preview</a>';
   menu += '&nbsp; &nbsp;<a href="javascript:generate_html_code()">generate</a>';
   menu += '<br>';
@@ -1248,7 +1780,7 @@ function print_menu( item, level, title ) {
 }
 
 firstLoad = true;
-window.onload = new_onLoad;
+window.onload = set_defaults;
 
 </script>
 
@@ -1262,77 +1794,43 @@ window.onload = new_onLoad;
 <div style="height: 1em">&nbsp;</div>
 <script type="text/javascript">print_menu("instructions", 2, "instructions");</script>
 
-<ul type="square" style="text-align: justify;">
-	
-<li>
-<a href=#pgn_form><b>enter your PGN text</b> in the green textbox below</a>
+<ul type="square">
+<li><a href=#pgn_form><b>enter your PGN text</b> in the green textbox below</a>
   <ul type="square">
-  <li>keep PGN data short: due to a limitation of web browsers and web servers with the URL length, only short PGN texts are allowed, usually up to four games without comments; a warning is issued if the max URL length is exceeded, in case try removing unnecessary header tags and comments/variations or try reducing the number of games per chessboard</li>
-  <li>beware of "[" and "]" characters in the game text/comments: if square brackets are present in the comments (or the game text) in a pattern similar to the PGN header pattern <code>[tag "value"]</code> then the game parsing might break; if your PGN file is not displayed properly, please check for characters "[" and "]" in the comments and try removing them</li>
-  <li>in case of errors in the supplied PGN data, the chessboard squares starts flashing at regular intervals to signal the exception; detailed debug information is available clicking the top left chessboard square (A8 assuming White on bottom, H1 otherwise)</li>
+  <li>keep PGN data short: due to a limitation of web browsers and web servers with the URL length, only short PGN texts are allowed and a warning is issued if the max URL length is exceeded; also beware of possible hidden URL redirections extending your URL length further</li>
+  <li>beware of "[" and "]" characters in the game text/comments: if square brackets are present in the comments (or the game text) in a pattern similar to the PGN header pattern <i>[tag "value"]</i> then the game parsing might break. If your PGN file is not displayed properly, please check for characters "[" and "]" in the comments and try removing them.</li>
+  <li>keep "encode PGN text" checkbox checked: within the board generator, if the "encode PGN text" checkbox is unchecked, the comment tag ";" will flag as a comment the remaining of the PGN data rather than up to the end of line only; please either check the "encode PGN text" checkbox or replace the ";" comment tag with the "{" comment tag and close the comment with "}" at the end of the line</li>
   </ul>
-</li>
-<div style="line-height: 0.5em;">&nbsp;</div>
+  </li>
+<li><b><a href=#templates>select a predefined settings template</a></b> and/or <b><a href=#replay_options>modify any of the configuration options</a></b>, layout, colors and fonts</li>
+<li><b><a href=#generate>generate the HTML code</a></b> and <b><a href=#game_preview>preview your chessboard</a></b></li>
 
-<li>
-<b><a href=#templates>select a predefined settings template</a></b> and/or <b><a href=#replay_options>modify any of the configuration options</a></b>, layout, colors and fonts
-</li>
-<div style="line-height: 0.5em;">&nbsp;</div>
-
-<li>
-<b><a href=#generate>generate the HTML code</a></b> and <b><a href=#game_preview>preview your chessboard</a></b>
-</li>
-<div style="line-height: 0.5em;">&nbsp;</div>
-
-<li>
-<b><a href=#replay_options>fine tune configuration options</a></b> to your liking
+<li><b><a href=#replay_options>fine tune configuration options</a></b> to your liking
   <ul type="square">
   <li><a href=#page_options>check carefully the frame height/width values</a>: different browsers might render some items slightly bigger or smaller, so <a href=#page_options>leave some empty space at the bottom of the frame by increasing the height</a></li>
   </ul>
-</li>
-<div style="line-height: 0.5em;">&nbsp;</div>
-  
-<li>
-once happy with <a href=#game_preview>the preview chessboard</a>, just <a href=#generate><b>cut and paste the HTML code</b> from the yellow box</a> into your web page or your blog; when entering the code in your website or blog, please make sure you are using the HTML editing option, otherwise an enhanced editor might alter the code you enter; you can also <a href=#generate>generate a short url</a> for sharing the board via email or instant messaging
-</li>
-<div style="line-height: 0.5em;">&nbsp;</div>
-
-<li>
-if you plan to reuse similar settings for other chessboards, you can <b><a href=#templates>bookmark a custom template</a></b> into your web browser bookmarks
-</li>
-<div style="line-height: 0.5em;">&nbsp;</div>
-
-<li>
-email to <i><script type="text/javascript">document.write('<a href=mailto:' + pgn4web_project_email + '>' + pgn4web_project_email + '</a>');</script></i> the address of your website or your blog
-</li>
-<div style="line-height: 0.5em;">&nbsp;</div>
-
-<li>
-if something goes wrong, you might want to <i><a href="javascript:bug_report()">click here and file a bug report</a></i>
-</li>
-<div style="line-height: 0.5em;">&nbsp;</div>
-
-<li>
-<b>service note</b>: the pgn4web board generator on this site is intended for chess enthusiasts to easily add chess games with a dynamic chessboard to their personal blogs and websites; if you publish chess games as part of a professional site and need full server availability and high network performance, you are strongly recommended to evaluate the code from <script type="text/javascript">document.write('<a href=' + pgn4web_project_url + '>the pgn4web site</a>');</script> and install the tool on your own servers
-</li>
+  </li>
+<li>once happy with <a href=#game_preview>the preview chessboard</a>, just <a href=#generate><b>cut and paste the HTML code</b> from the yellow box</a> into your web page or your blog; when entering the code in your website or blog, please make sure you are using the HTML editing option, otherwise the enhanced editor might alter the code you enter</li>
+<li>if you plan to reuse similar settings for other chessboards, you can <b><a href=#templates>bookmark a custom template</a></b> into your web browser bookmarks</li>
+<li>email to <i>
+<script type="text/javascript">document.write('<a href=mailto:' + pgn4web_project_email + '>' + pgn4web_project_email + '</a>');</script>
+</i> the address of your website or your blog</li>
+<li>if something goes wrong, you might want to <i><a href="javascript:bug_report()">click here and file a bug report</a></i></li>
+<li><b>service note</b>: the pgn4web board generator on this site is intended for chess enthusiasts to easily add chess games with a dynamic chessboard to their personal blogs and websites. If you publish chess games as part of a professional site and need full server availability and high network performance, you are strongly recommended to evaluate the code from 
+<script type="text/javascript">document.write('<a href=' + pgn4web_project_url + '>the pgn4web site</a>');</script>
+and install the tool on your own servers
 </ul>
-
-<form id="shorturl" action="http://tinyurl.com/create.php" method="post" target="_blank" style="display:inline;"> 
-<input id="shorturl_url" type="hidden" name="url">
-<input id="shorturl_alias" type="hidden" name="alias"> 
-</form> 
 
 <form id="board" name="board" style="display:inline;" action="javascript:generate_html_code()">
 
 <div style="height: 3em">&nbsp;</div>
-<script type="text/javascript">print_menu("generate", 2, "generate and copy iFrame and URL");</script>
+<script type="text/javascript">print_menu("generate", 2, "generate and copy iFrame");</script>
 
 <div style="height: 1em">&nbsp;</div>
 
-<div style="font-weight: bold; margin-bottom:6;">automatically generated HTML code for your web page or blog</div>
+<div style="font-style: italic; font-weight: bold; text-align: center; margin-bottom:6;">automatically generated HTML code for your web page or blog</div>
 <textarea readonly id="html_code" name="html_code" rows=15 class="textbox" style="background-color: #FFFFCC; scrollbar-base-color: #FFFFCC;"></textarea>
 <div id="html_code_status">&nbsp;</div>
-<div style="margin-top:1em;"><a id="shorturl_link" style="font-weight: bold;" href="javascript:document.forms['shorturl'].submit();">click here to create a short url for sharing the chessboard via email or instant messaging</a></div>
 <p></p>
 <br>
 
@@ -1343,10 +1841,8 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 </td><td align=right valign=middle width="25%">
 <input type="button" id="reset_defaults_button" name="reset_defaults_button" value="reset form to default values" onClick="reset_form()" style="width: 100%;"/>
 </td></tr></table>
-<p></p>
-<br>
 
-<div style="height: 1em">&nbsp;</div>
+<div style="height: 3em">&nbsp;</div>
 <script type="text/javascript">print_menu("game_preview", 2, "preview");</script>
 <div style="height: 1em">&nbsp;</div>
 
@@ -1362,28 +1858,23 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 
 <div style="height: 1em">&nbsp;</div>
 
-<textarea id=pgnText class="textbox" style="background-color: #DDFFDD; scrollbar-base-color: #DDFFDD;" rows=15 onChange="update_pgnTextLength(); update_suggested_iframe_dimensions();"></textarea>
+<textarea id=pgnText class="textbox" style="background-color: #DDFFDD; scrollbar-base-color: #DDFFDD;" rows=15 onChange="update_pgnTextLength()"></textarea>
 <table cellspacing="0" cellpadding="0" width="100%"><tr>
 <td align="left"><div class="helptext">enter PGN data</div></td>
 <td align="right"><div class="helptext" id="pgnTextLength"></div></td>
 </tr></table>
 <p></p>
 
-<!--
-
-<input class="checkbox" type="checkbox" id="encodePgn" name="checkbox" />
+<input class="checkbox" type="checkbox" id="encodePgn" name="checkbox" value="encodePgn" />
 &nbsp;&nbsp; encode PGN text &nbsp;&nbsp;
 <span class="helptext">encode the PGN text to a URL friendly format (this should be normally enabled)</span>
 <p></p>
-
--->
-<input type="hidden" id="encodePgn" />
 
 <div style="height: 3em">&nbsp;</div>
 <script type="text/javascript">print_menu("templates", 3, "templates");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<select class="largeDropdown" id="templatesList" name="largeDropdown" onChange="template_selected();" style="font-family: monospace; font-weight: bold; white-space: pre;">
+<select class="largeDropdown" id="templatesList" name="largeDropdown" onChange="template_selected();" style="font-family: monospace; white-space: pre;">
 <option value="heading" selected="selected">apply a built-in template...</option>
 <option value="reapply">- reapply last loaded template</option>
 <option value="random">- apply random template</option>
@@ -1393,9 +1884,9 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 <p></p>
 
 <div class="configtext">
-<a id="thisConfigBookmark" title=""><b>pgn4web board generator custom template link<span id="bookmarkCrc32" style="display: none;"></span></b></a>
+<a id="thisConfigBookmark" title=""><b>pgn4web board generator custom template link<span id="bookmarkChecksum" style="display: none;"></span></b></a>
 &nbsp;&nbsp;
-<span class="helptext">add link into the browser bookmarks, saving current board settings</span>
+<span class="helptext">add link into the browser bookmarks, saving current board generator settings</span>
 </div>
 <p></p>
 
@@ -1404,71 +1895,36 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 <div style="height: 1em">&nbsp;</div>
 
 <select class="dropdown" id="autoplayMode" name="dropdown">
-<option value="game" selected="selected">game</option>
+<option value="game">game</option>
 <option value="loop">loop</option>
 <option value="none">none</option>
 </select>
-&nbsp;&nbsp; autoplay games &nbsp;&nbsp;
-<span class="helptext">
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.autoplayMode.value = 'game'; return false;">game</a>
-autoplays the first game once,
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.autoplayMode.value = 'loop'; return false;">loop</a>
-loops through games continiously</span>
+&nbsp;&nbsp; autoplay game &nbsp;&nbsp;
+<span class="helptext"><b>game</b> autoplays the first game once, <b>loop</b> loops through games continiously</span>
 <p></p>
 
 <select class="dropdown" id="delay" name="dropdown">
-<option value="1000"> 1 second</option>
-<option value="2000"> 2 seconds</option>
-<option value="3000" selected="selected"> 3 seconds</option>
-<option value="5000"> 5 seconds</option>
-<option value="10000">10 seconds</option>
-<option value="30000">30 seconds</option>
+<option value="1000">1</option>
+<option value="2000">2</option>
+<option value="3000">3</option>
+<option value="5000">5</option>
+<option value="10000">10</option>
+<option value="300000">30</option>
 </select>
-&nbsp;&nbsp; autoplay delay &nbsp;&nbsp;
-<p></p>
-
-<select class="dropdown" id="initialGame" name="dropdown">
-<option value="first" selected="selected">first</option>
-<option value="last">last</option>
-<option value="random">random</option>
-</select>
-&nbsp;&nbsp; initial game &nbsp;&nbsp;
-<p></p>
-
-<input type="hidden" id="initialHalfmove" value="">
-
-<select class="dropdown" id="initialHalfmoveSelect" name="dropdown" onChange="javascript:setInitialHalfmove();">
-	<option value="start" selected="selected">start</option>
-	<option value="end">end always</option>
-	<option value=-3>end once</option>
-	<option value="random">random always</option>
-	<option value=-1>random once</option>
-	<option value="comment">comment always</option>
-	<option value=-2>comment once</option>
-	<option value="number">custom number</option>
-</select>
-&nbsp;&nbsp; initial halfmove &nbsp;&nbsp;
-<span class="helptext"><b>always</b> settings apply at every game load, <b>once</b> settings only at the first load</span>
-<p></p>
-
-<input  class="input" type="text" id="initialHalfmoveNumber" name="input" value="" size="12" onChange="javascript:setInitialHalfmove();">
-&nbsp;&nbsp; initial halfmove number &nbsp;&nbsp;
-<span class="helptext">actual halfmove number applied when the setting above is
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.initialHalfmoveSelect.value = 'number'; setInitialHalfmove(); return false;">custom number</a>
-</span>
+&nbsp;&nbsp; autoplay delay (sec) &nbsp;&nbsp;
 <p></p>
 
 <div style="height: 3em">&nbsp;</div>
 <script type="text/javascript">print_menu("board_options", 3, "chessboard options");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<input class="input" type="text" id="squareSize" name="input" value="" size="12" onChange="validate_ss_ps_hm(); update_suggested_iframe_dimensions();">
+<input class="input" type="text" id="squareSize" name="input" value="" size="9" onChange="validate_ss_ps_hm(); update_suggested_iframe_dimensions();">
 &nbsp;&nbsp; square size &nbsp;&nbsp;
 <span class="helptext">a number; must be larger than the piece size plus the highlight border if any</span>
 <p></p>
 
 <select class="dropdown" id="pieceSize" name="dropdown" onChange="validate_ss_ps_hm();">
-<option value="default" selected="selected">default</option>
+<option value="default">default</option>
 <option value="20">20</option>
 <option value="21">21</option>
 <option value="22">22</option>
@@ -1512,125 +1968,101 @@ loops through games continiously</span>
 <option value="300">300</option>
 </select>
 &nbsp;&nbsp; piece size &nbsp;&nbsp;
-<span class="helptext">
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.pieceSize.value = 'default'; return false;">default</a>
-selects piece size based on square size</span>
+<span class="helptext"><b>default</b> selects piece size based on square size</span>
 <p></p>
 
 <select class="dropdown" id="pieceFont" name="dropdown">
-<option value="default" selected="selected">default</option>
+<option value="default">default</option>
 <option value="alpha">alpha</option>
 <option value="merida">merida</option>
 <option value="uscf">uscf</option>
 <option value="random">random</option>
 </select>
 &nbsp;&nbsp; piece font &nbsp;&nbsp;
-<span class="helptext">
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.pieceFont.value = 'default'; return false;">default</a>
-selects piece font based on piece size</span>
+<span class="helptext"><b>default</b> selects piece font based on piece size</span>
 <p></p>
 <br>
 
-<input class="color input" type="text" id="lightColorHex" name="input" value="" size="12" onChange="validate_color(this, 'light squares color', lightColorHex_default)">
+<input class="color input" type="text" id="lightColorHex" name="input" value="" size="9" onChange="validate_color(this, 'light squares color', lightColorHex_default)">
 &nbsp;&nbsp; light squares color &nbsp;&nbsp;
 <p></p>
 
-<input class="color input" type="text" id="darkColorHex" name="input" value="" size="12" onChange="validate_color(this, 'dark squares color', darkColorHex_default)">
+<input class="color input" type="text" id="darkColorHex" name="input" value="" size="9" onChange="validate_color(this, 'dark squares color', darkColorHex_default)">
 &nbsp;&nbsp; dark squares color &nbsp;&nbsp;
 <p></p>
 
-<input class="color input" type="text" id="boardBorderColorHex" name="input" value="" size="12" onChange="validate_color(this, 'board border color', boardBorderColorHex_default)">
+<input class="color input" type="text" id="boardBorderColorHex" name="input" value="" size="9" onChange="validate_color(this, 'board border color', boardBorderColorHex_default)">
 &nbsp;&nbsp; board border color &nbsp;&nbsp;
 <p></p>
 
-<select class="dropdown" id="highlightMode" name="dropdown" onChange="validate_ss_ps_hm(); update_controls();">
+<select class="dropdown" id="highlightMode" name="dropdown" onChange="validate_ss_ps_hm(); update_disabled_controls();">
 <option value="border">border</option>
 <option value="square" selected="selected">square</option>
 <option value="none">none</option>
 </select>
 &nbsp;&nbsp; square highlight mode &nbsp;&nbsp;
-<span class="helptext">when set  to
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.highlightMode.value = 'border'; validate_ss_ps_hm(); update_controls(); return false;">border</a>
-a larger square size might be required</span>
+<span class="helptext">if set  to <b>border</b> a larger square size might be required</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="highlightColorHex" name="input" value="" size="12" onChange="validate_color(this, 'highlight squares color', highlightColorHex_default)">
+<input class="color {adjust:false} input" type="text" id="highlightColorHex" name="input" value="" size="9" onChange="validate_color_none(this, 'highlight squares color', highlightColorHex_default)">
 &nbsp;&nbsp; highlight squares color &nbsp;&nbsp;
 <p></p>
 <br>
 
-<select class="dropdown" id="buttonsDisplay" name="dropdown" onChange="update_controls()">
-<option value="hidden" selected="selected">hidden</option>	
-<option value="standard">standard</option>
-<option value="custom">custom</option>
-</select>
-&nbsp;&nbsp; how to show control buttons &nbsp;&nbsp;
-<span class="helptext">
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.buttonsDisplay.value = 'standard'; update_controls(); return false;">standard</a>
-uses browser's buttons,
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.buttonsDisplay.value = 'custom'; update_controls(); return false;">custom</a>
-uses colors below</span>
+<input class"checkbox" type="checkbox" id="showButtons" name="checkbox" value="showButtons" onChange="update_controls()">
+&nbsp;&nbsp; show control buttons &nbsp;&nbsp;
+<span class="helptext">control buttons might not be necessary, just try clicking the G8 square</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="controlBackgroundColorHex" name="input" value="" size="12" onChange="validate_color(this, 'control buttons background color', controlBackgroundColorHex_default); update_controls()">
-&nbsp;&nbsp; custom control buttons background color &nbsp;&nbsp;
+<input class="color {adjust:false} input" type="text" id="controlBackgroundColorHex" name="input" value="" size="9" onChange="validate_color_default(this, 'control buttons background color', 'default'); update_controls()">
+&nbsp;&nbsp; control buttons background color &nbsp;&nbsp;
+<span class="helptext">set to <b>default</b> in order to use standard buttons from the browser</span>
 <p></p>
 
-<input class="color input" type="text" id="controlTextColorHex" name="input" value="" size="12" onChange="validate_color(this, 'control buttons text color', controlTextColorHex_default)">
-&nbsp;&nbsp; custom control buttons text color &nbsp;&nbsp;
+<input class="color input" type="text" id="controlTextColorHex" name="input" value="" size="9" onChange="validate_color(this, 'control buttons text color', controlTextColorHex_default)">
+&nbsp;&nbsp; control buttons text color &nbsp;&nbsp;
 
 <div style="height: 3em">&nbsp;</div>
 <script type="text/javascript">print_menu("header_moves_options", 3, "header and moves options");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<input class="input" type="text" id="textMargin" name="input" value="" size="12" onChange="validate_number(this, 'text margin', textMargin_default);">
+<input class="input" type="text" id="textMargin" name="input" value="" size="9" onChange="validate_number(this, 'text margin', textMargin_default);">
 &nbsp;&nbsp; text margin &nbsp;&nbsp;
-<span class="helptext">a number; header/moves margin, nice to have when text overflows with scrollbars</span>
+<span class="helptext">a number; header/moves margin, nice to have if text overflows with scrollbars</span>
 <p></p>
 <br>
 
-<select class="dropdown" id="headerDisplay" name="dropdown" onChange="update_controls()">
-<option value="centered">centered</option>
-<option value="justified" selected="selected">justified</option>
-<option value="hidden">hidden</option>
-</select>
-&nbsp;&nbsp; <b>how to show game header</b> &nbsp;&nbsp;
+<input class="checkbox" type="checkbox" id="showHeader" name="checkbox" value="showHeader" onChange="update_controls()">
+&nbsp;&nbsp; <b>show game header</b> &nbsp;&nbsp;
 <p></p>
 
-<input class="input" type="text" id="fontHeaderSize" name="input" value="" size="12" onChange="validate_number_percentage(this, 'header font size', fontHeaderSize_default);">
+<input class="input" type="text" id="fontHeaderSize" name="input" value="" size="9" onChange="validate_number_percentage(this, 'header font size', fontHeaderSize_default);">
 &nbsp;&nbsp; header font size &nbsp;&nbsp;
-<span class="helptext">a number or a percentage</span>
+<span class="helptext">a number or a percentage; make sure left/right columns dont touch in the middle</span>
 <p></p>
 
-<input class="color input" type="text" id="fontHeaderColorHex" name="input" value="" size="12" onChange="validate_color(this, 'header font color', fontHeaderColorHex_default)">
+<input class="color input" type="text" id="fontHeaderColorHex" name="input" value="" size="9" onChange="validate_color(this, 'header font color', fontHeaderColorHex_default)">
 &nbsp;&nbsp; header font color &nbsp;&nbsp;
 <p></p>
 <br>
 
-<select class="dropdown" id="movesDisplay" name="dropdown" onChange="update_controls()">
-<option value="justified" selected="selected">justified</option>
-<option value="hidden">hidden</option>
-</select>
-&nbsp;&nbsp; <b>how to show game moves</b> &nbsp;&nbsp;
+<input class="checkbox" type="checkbox" id="showMoves" name="checkbox" value="showMoves" onChange="update_controls()">
+&nbsp;&nbsp; <b>show game moves</b> &nbsp;&nbsp;
 <p></p>
 
-<input class="input" type="text" id="fontMovesSize" name="input" value="" size="12" onChange="validate_number_percentage(this, 'moves font size', fontMovesSize_default);">
+<input class="input" type="text" id="fontMovesSize" name="input" value="" size="9" onChange="validate_number_percentage(this, 'moves font size', fontMovesSize_default);">
 &nbsp;&nbsp; moves font size &nbsp;&nbsp;
 <span class="helptext">a number or a percentage</span>
 <p></p>
 
-<input class="color input" type="text" id="fontMovesColorHex" name="input" value="" size="12" onChange="validate_color(this, 'moves font color', fontMovesColorHex_default)">
+<input class="color input" type="text" id="fontMovesColorHex" name="input" value="" size="9" onChange="validate_color(this, 'moves font color', fontMovesColorHex_default)">
 
 &nbsp;&nbsp; moves font color &nbsp;&nbsp;
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="highlightMoveColorHex" name="input" value="" size="12" onChange="validate_highlightMoveColorHex()">
+<input class="color input" type="text" id="highlightMoveColorHex" name="input" value="" size="9" onChange="validate_color(this, 'highlight move color', highlightMoveColorHex_default)">
 &nbsp;&nbsp; highlight move color &nbsp;&nbsp;
-<span class="helptext">when set to
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.highlightMoveColorHex.color.fromString('FFFFFF'); document.board.highlightMoveColorHex.value = 'background'; return false;">background</a>
-the background color is copied</span>
 <p></p>
-<br>
 
 <select class="dropdown" id="commentsDisplay" name="dropdown">
 <option value="inline" selected="selected">inline</option>
@@ -1638,21 +2070,15 @@ the background color is copied</span>
 <option value="hidden">hidden</option>
 </select>
 &nbsp;&nbsp; how to show move comments &nbsp;&nbsp;
-<span class="helptext">
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.commentsDisplay.value = 'inline'; return false;">inline</a>:
-on same line as moves,
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.commentsDisplay.value = 'newline'; return false;">newline</a>:
-on separate lines</span>
+<span class="helptext"><b>inline</b>: on same line as moves, <b>newline</b>: on separate lines</span>
 <p></p>
 
-<input class="input" type="text" id="fontCommentsSize" name="input" value="" size="12" onChange="validate_fontCommentsSize();">
+<input class="input" type="text" id="fontCommentsSize" name="input" value="" size="9" onChange="validate_number_percentage(this, 'comments font size', fontCommentsSize_default);">
 &nbsp;&nbsp; comments font size &nbsp;&nbsp;
-<span class="helptext">a number or a percentage; when set to
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.fontCommentsSize.value = 'moves'; return false;">moves</a>
-the moves font size is copied</span>
+<span class="helptext">a number or a percentage</span>
 <p></p>
 
-<input class="color input" type="text" id="fontCommentsColorHex" name="input" value="" size="12" onChange="validate_color(this, 'comments font color', fontCommentsColorHex_default)">
+<input class="color input" type="text" id="fontCommentsColorHex" name="input" value="" size="9" onChange="validate_color(this, 'comments font color', fontCommentsColorHex_default)">
 &nbsp;&nbsp; comments font color &nbsp;&nbsp;
 
 <div style="height: 3em">&nbsp;</div>
@@ -1665,42 +2091,33 @@ the moves font size is copied</span>
 </select>
 &nbsp;&nbsp; chessboard and header/moves layout &nbsp;&nbsp;
 <p></p>
-<br>
 
-<input class="input" type="text" id="frameHeight" name="input" value="" size="12" onChange="validate_frameHeight(); update_suggested_iframe_dimensions();">
+<input class="input" type="text" id="frameHeight" name="input" value="" size="9" onChange="validate_frameHeight(); update_suggested_iframe_dimensions();">
 &nbsp;&nbsp; iFrame height &nbsp;&nbsp;
 <span id="frameHeight_helpText" class="helptext"></span>
 <p></p>
 
-<input class="input" type="text" id="frameWidth" name="input" value="" size="12" onChange="validate_frameWidth(); update_suggested_iframe_dimensions();"> 
+<input class="input" type="text" id="frameWidth" name="input" value="" size="9" onChange="validate_frameWidth(); update_suggested_iframe_dimensions();"> 
 &nbsp;&nbsp; iFrame width &nbsp;&nbsp;
 <span id="frameWidth_helpText" class="helptext"></span>
 <p></p>
 
-<input class="input" type="text" id="framePadding" name="input" value="" size="12" onChange="validate_number(this, 'frame padding', framePadding_default); update_suggested_iframe_dimensions();">
+<input class="input" type="text" id="framePadding" name="input" value="" size="9" onChange="validate_number(this, 'frame padding', framePadding_default); update_suggested_iframe_dimensions();">
 
 &nbsp;&nbsp; iFrame padding &nbsp;&nbsp;
 <span class="helptext">a number; border padding around the iframe, included within the iFrame width value</span>
 <p></p>
 <br>
 
-<input class="color input" type="text" id="backgroundColorHex" name="input" value="" size="12" onChange="validate_backgroundColorHex()">
+<input class="color input" type="text" id="backgroundColorHex" name="input" value="" size="9" onChange="validate_color(this, 'background color', backgroundColorHex_default)">
 &nbsp;&nbsp; background color &nbsp;&nbsp;
-<span class="helptext">when set to
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.backgroundColorHex.color.fromString('FFFFFF'); document.board.backgroundColorHex.value = 'transparent'; return false;">transparent</a>
-the parent's background color is used</span>
 <p></p>
 
-<!--
-
-<input class="color input" type="text" id="previewBackgroundColorHex" name="input" value="" size="12" onChange="validate_color(this, 'preview background color', previewBackgroundColorHex_default)"> 
+<input class="color input" type="text" id="previewBackgroundColorHex" name="input" value="" size="9" onChange="validate_color(this, 'preview background color', previewBackgroundColorHex_default)"> 
 &nbsp;&nbsp; preview background color &nbsp;&nbsp;
 <span class="helptext">not actually used in the HTML code, just for the preview</span>
 <p></p>
 <br>
-
--->
-<input class="color input" type="hidden" id="previewBackgroundColorHex" value"DDDDDD">
 
 <!--
 
@@ -1712,7 +2129,8 @@ base URL: &nbsp;&nbsp;
 <br>
 
 -->
-<input type="hidden" id="baseUrl" value="" />
+
+<input type="hidden" id="baseUrl" name="baseUrl" value="" style="width: 100%" />
 
 <script type="text/javascript">
 
@@ -1722,16 +2140,12 @@ for (ii = 0; ii < theObject.length; ii++) {
   theObject[ii].style.width = inputWidth;
 }
 
-/* no more checkboxes left 
-
 checkboxWidth = document.getElementById('encodePgn').offsetWidth;
 // the last number added to marginLeft should be equal to the value of the .checkbox style at the top
 theObject = document.getElementsByName('checkbox');
 for (ii = 0; ii < theObject.length; ii++) {
   theObject[ii].style.marginLeft +=  inputWidth - checkboxWidth + 22;
 }
-
- */
 
 </script>
 

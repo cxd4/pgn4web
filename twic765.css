@@ -1,6 +1,6 @@
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009, 2010 Paolo Casaschi
+ *  copyright (C) 2009 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
@@ -59,8 +59,8 @@ body {
 }
 
 .selectControl {
-/* a "width" attribute here must use the !important flag to override default settings */
   width: 100% !important;
+/* a "width" attribute here must use the !important flag to override default settings */
 }
 
 .buttonControlPlay,
@@ -71,16 +71,6 @@ body {
 
 .buttonControlSpace {
 /* a "width" attribute here must use the !important flag to override default settings */
-}
-
-.searchPgnButton {
-/* a "width" attribute here must use the !important flag to override default settings */
-  width: 10% !important;
-}
-
-.searchPgnExpression {
-/* a "width" attribute here must use the !important flag to override default settings */
-  width: 90% !important;
 }
 
 .move,
