@@ -13,8 +13,6 @@ $tmpDir = "viewer";
 $fileUploadLimitBytes = 4194304;
 $fileUploadLimitText = round(($fileUploadLimitBytes / 1048576), 0) . "MB";
 
-$debugHelpText = "a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages";
-
 if (!($goToView = get_pgn())) { $pgnText = $krabbeStartPosition = get_krabbe_position(); }
 set_mode();
 print_header();
@@ -25,7 +23,7 @@ print_footer();
 
 function set_mode() {
 
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
   global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
 
   $mode = $_REQUEST["mode"];
@@ -70,7 +68,7 @@ function get_krabbe_position() {
 
 function get_pgn() {
 
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
   global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
 
   $pgnDebugInfo = $_REQUEST["debug"];
@@ -119,7 +117,7 @@ function get_pgn() {
       $pgnSource = $pgnUrl;
     }
   } elseif (count($_FILES) == 0) {
-    $pgnStatus = "please enter chess games in PGN format&nbsp; &nbsp;<span style='color: gray;'>file and URL inputs must not exceed " . $fileUploadLimitText . "</span>";
+    $pgnStatus = "please enter chess games in <a href=http://www.tim-mann.org/Standard target=_blank>PGN format</a>&nbsp; &nbsp;<span style='color: gray;'>file and URL inputs must not exceed " . $fileUploadLimitText . "</span>";
     return FALSE;
   } elseif ($_FILES['pgnFile']['error'] == UPLOAD_ERR_OK) {
     $pgnFileName = $_FILES['pgnFile']['name'];
@@ -204,7 +202,7 @@ function get_pgn() {
 
 function check_tmpDir() {
 
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
   global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
 
   $tmpDirHandle = opendir($tmpDir);
@@ -277,7 +275,7 @@ END;
 
 function print_form() {
 
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
   global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
 
   $thisScript = $_SERVER['SCRIPT_NAME'];
@@ -315,12 +313,10 @@ function print_form() {
   function checkPgnFormTextSize() {
     document.getElementById("pgnFormButton").title = "PGN textbox size is " + document.getElementById("pgnFormText").value.length;
     if (document.getElementById("pgnFormText").value.length == 1) {
-      document.getElementById("pgnFormButton").title += " char;";
+      document.getElementById("pgnFormButton").title += " char";
     } else {
-      document.getElementById("pgnFormButton").title += " chars;";
+      document.getElementById("pgnFormButton").title += " chars";
     }
-    document.getElementById("pgnFormButton").title += " $debugHelpText";
-    document.getElementById("pgnFormText").title = document.getElementById("pgnFormButton").title;
   }
 
   function loadPgnFromForm() {
@@ -391,9 +387,8 @@ function reset_viewer() {
    document.getElementById("urlFormText").value = "";
    document.getElementById("pgnFormText").value = "";
    checkPgnFormTextSize();
-   document.getElementById("pgnStatus").innerHTML = "please enter chess games in PGN format&nbsp; &nbsp;<span style='color: gray;'>file and URL inputs must not exceed $fileUploadLimitText</span>";
+   document.getElementById("pgnStatus").innerHTML = "please enter chess games in <a href=http://www.tim-mann.org/Standard target=_blank>PGN format</a>&nbsp; &nbsp;<span style='color: gray;'>file and URL inputs must not exceed $fileUploadLimitText</span>";
    document.getElementById("pgnText").value = '$krabbeStartPosition';
-
    firstStart = true;
    start_pgn4web();
    if (window.location.hash == "top") { window.location.reload(); }
@@ -407,12 +402,12 @@ function reset_viewer() {
   <tr>
     <td align="left" valign="top">
       <form id="uploadForm" action="$thisScript" enctype="multipart/form-data" method="POST" style="display: inline;">
-        <input id="uploadFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) file" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText; $debugHelpText" onClick="return checkPgnFile();">
+        <input id="uploadFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) file" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText" onClick="return checkPgnFile();">
     </td>
     <td colspan=2 width="100%" align="left" valign="top">
         <input type="hidden" name="mode" value="$mode">
         <input type="hidden" name="MAX_FILE_SIZE" value="$fileUploadLimitBytes">
-        <input id="uploadFormFile" name="pgnFile" type="file" class="formControl" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText; $debugHelpText">
+        <input id="uploadFormFile" name="pgnFile" type="file" class="formControl" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
       </form>
     </td>
   </tr>
@@ -420,10 +415,10 @@ function reset_viewer() {
   <tr>
     <td align="left" valign="top">
       <form id="urlForm" action="$thisScript" method="POST" style="display: inline;">
-	<input id="urlFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) URL" title="PGN and ZIP files must be smaller than $fileUploadLimitText; $debugHelpText" onClick="return checkPgnUrl();">
+	<input id="urlFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) URL" title="PGN and ZIP files must be smaller than $fileUploadLimitText" onClick="return checkPgnUrl();">
     </td>
     <td width="100%" align="left" valign="top">
-        <input id="urlFormText" name="pgnUrl" type="text" class="formControl" value="" style="width:100%" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText; $debugHelpText">
+        <input id="urlFormText" name="pgnUrl" type="text" class="formControl" value="" style="width:100%" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText">
         <input type="hidden" name="mode" value="$mode">
       </form>
     </td>
@@ -462,7 +457,7 @@ END;
 
 function print_chessboard() {
 
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
   global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
 
   if ($mode == "compact") {
@@ -476,14 +471,14 @@ function print_chessboard() {
   print <<<END
 
 <table width=100% cellpadding=0 cellspacing=0 border=0><tr><td valign=top align=left>
-<a name="view"></a><div id="pgnStatus" style="font-weight: bold; margin-top: 3em; margin-bottom: 3em;">$pgnStatus</div>
+<a name="view"><div id="pgnStatus" style="font-weight: bold; margin-top: 3em; margin-bottom: 3em;">$pgnStatus</div></a>
 </td><td valign=top align=right>
 <div style="padding-top: 1em;">
 &nbsp;&nbsp;&nbsp;<a href="#moves" style="color: gray; font-size: 66%;">moves</a>&nbsp;&nbsp;&nbsp;<a href="#view" style="color: gray; font-size: 66%;">board</a>&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray; font-size: 66%;">form</a>
 </div>
 </tr></table>
 
-<link href="$toolRoot/fonts/pgn4web-fonts.css" type="text/css" rel="stylesheet" />
+<link href="$toolRoot/fonts/pgn4web-fonts.css" type="text/css" rel="stylesheet"></link>
 <style type="text/css">
 
 .boardTable {
@@ -540,12 +535,12 @@ function print_chessboard() {
 
 .searchPgnButton {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 10% !important;
+  width: 20% !important;
 }
 
 .searchPgnExpression {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 90% !important;
+  width: 80% !important;
 }
 
 .move,
@@ -574,7 +569,7 @@ function print_chessboard() {
 
 </style>
 
-<link rel="shortcut icon" href="pawn.ico" />
+<link rel="shortcut icon" href="pawn.ico"></link>
 
 <script src="pgn4web.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -590,16 +585,12 @@ function print_chessboard() {
   SetAutoplayDelay(2000);
   SetShortcutKeysEnabled(true);
 
-  function customFunctionOnPgnTextLoad() { 
-    document.getElementById('numGm').innerHTML = numberOfGames; 
-  }
+  function customFunctionOnPgnTextLoad() { document.getElementById('numGm').innerHTML = numberOfGames; }
   function customFunctionOnPgnGameLoad() {
     document.getElementById('currGm').innerHTML = currentGame+1;
     document.getElementById('numPly').innerHTML = PlyNumber;
   }
-  function customFunctionOnMove() { 
-    document.getElementById('currPly').innerHTML = CurrentPly; 
-  }
+  function customFunctionOnMove() { document.getElementById('currPly').innerHTML = CurrentPly; }
 </script>
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
@@ -668,7 +659,6 @@ END;
       <p></p>
 
       <span class="label">Move comment:</span><br><span id="GameLastComment"></span> 
-      <p></p>
 
     </td>
   </tr>
@@ -695,7 +685,7 @@ END;
 
 function print_footer() {
 
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $pgnDebugInfo;
   global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
 
   if ($goToView) { $hashStatement = "window.location.hash = 'view';"; }
@@ -723,9 +713,9 @@ window.onload = new_start_pgn4web;
 </script>
 
 
-<!-- start of google analytics code -->
+<! start of google analytics code -->
 
-<!-- end of google analytics code -->
+<! end of google analytics code -->
 
 
 </body>
