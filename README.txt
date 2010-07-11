@@ -20,8 +20,8 @@ side.
  
 It has been designed to make it easier adding chess games to your web 
 pages and blogs, without the need of much knowledge of HTML or any 
-other technicality. It also has been integrated with many popular web
-software platforms and services.
+other technicality. It also allows for frequent updates of the PGN file 
+without the need of manually generating new web pages at every update.
 
 ***
 *** THIS README FILE IS A SUMMARY OF THE PGN4WEB DOCUMENTATION
@@ -48,9 +48,8 @@ Features:
   games to your website or blog without any html/javascript coding (see 
   http://pgn4web-board-generator.casaschi.net
 - integrated with popular blog platforms (such as blogger and wordpress), 
-  portal platforms (such as joomla, drupal and wikimedia), forum platforms
-  (such as phpBB, simplemachines and vbulletin) and hosting services (such 
-  as google sites)
+  portal platforms (such as joomla, drupal and wikimedia) and forum platforms
+  (such as phpBB, simplemachines and vbulletin)
 - allows for live broadcast of games
 
 Limitations:
@@ -68,16 +67,6 @@ Please email me for review at pgn4web@casaschi.net any PGN file that
 pgn4web fails parsing correctly.  
 
 Enjoy!
-
-
-DEBUGGING
-
-Errors alert messages are logged by pgn4web, such as failure to load PGN
-data, incorrect PGN games or incorrect FEN strings. 
-When an error is encountered, the top left chessboard square will flash
-to signal the exception. 
-The error alert log can be reviewed clicking on the same top left 
-chessboard square.
 
 
 HOW TO USE pgn4we.js
@@ -112,7 +101,7 @@ Example:
     SetImagePath(""); // use "" path if images are in the same folder as this javascript file
     SetImageType("png");
     SetHighlightOption(true); // true or false
-    SetGameSelectorOptions(" ...", false, 0, 0, 0, 15, 15, 0, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
+    SetGameSelectorOptions("Select a game...", false, 0, 0, 0, 15, 15, 0, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
     SetCommentsIntoMoveText(false);
     SetCommentsOnSeparateLines(false);
     SetAutoplayDelay(1000); // milliseconds
@@ -168,7 +157,7 @@ pgn4web allows displaying chess moves text using the supplied figurine fonts:
 the Liberation Sans font, see credits section for more details.
 To enable figurine display of chess moves text, make sure you include the
 fonts/pgn4web-fonts.css file into your HTML file:
-  <link href="fonts/pgn4web-fonts.css" type="text/css" rel="stylesheet" /> 
+  <link href="fonts/pgn4web-fonts.css" type="text/css" rel="stylesheet"></link> 
 or into your CSS file:
   @import url("fonts/pgn4web-fonts.css");
 Then set the font-family for the .move class to the chess font of your choice.
@@ -256,10 +245,9 @@ CUSTOMIZATION FUNCTIONS
 
 The following functions, if defined in the HTML file after loading pgn4web.js,
 allow for execution of custom commands at given points:
-- customFunctionOnPgnTextLoad(): when loading a new PGN file
-- customFunctionOnPgnGameLoad(): when loading a new game
-- customFunctionOnMove(): when a  move is made
-- customFunctionOnAlert(message_string): when an error alert is raised
+- customFunctionOnPgnTextLoad(): executed when loading a new PGN file
+- customFunctionOnPgnGameLoad(): executed when loading a new game
+- customFunctionOnMove(): executed when a  move is made
 Please note the order these functions are executed; for example, when loading 
 a new PGN file at the end of the first game, first customFunctionOnMove() is 
 executed, then (when the game has been loaded and the move positioning 
@@ -267,13 +255,6 @@ completed) customFunctionOnPgnGameLoad() is executed and finally (when the
 selected game is fully loaded) customFunctionOnPgnTextLoad() is executed.
 
 See twic765.html or live.html for examples.
-
-The following functions, if defined in the HTML file after loading pgn4web.js,
-allow for execution of custom commands when shift + a number key is pressed:
-- customShortcutKey_Shift_0()
-- customShortcutKey_Shift_1()
-...
-- customShortcutKey_Shift_9()
 
 
 TECHNICAL NOTES ABOUT WEB BROWSERS
@@ -284,12 +265,6 @@ Safari) on a variety of platforms (Linux/Debian, MacOS, Windows). Not every
 browser version and every combination of browser/platform has been tested. 
 If you have any issue with using pgn4web on your platform, please email 
 pgn4web@casaschi.net
-
-Note about Google Chrome: you might experience problems when testing HTML
-pages from your local computer while developing your site. This is a
-limitation of the browser with respect to loading local files. There is no
-workaround other than testing with a different browser. Browsing pgn4web
-websites with Google Chrome should work properly.
 
 Note about Internet Explorer v7 and above: under some circumstances you might
 experience problems when testing HTML pages from your local computer while 

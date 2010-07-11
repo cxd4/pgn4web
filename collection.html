@@ -11,9 +11,9 @@
 
 <title>chess games</title>
 
-<link href="collection.css" type="text/css" rel="stylesheet" />
+<link href="collection.css" type="text/css" rel="stylesheet"></link>
 
-<link rel="shortcut icon" href="pawn.ico" />
+<link rel="shortcut icon" href="pawn.ico"></link>
 
 <script src="pgn4web.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -26,22 +26,21 @@
 	     " - search=search expression" + "\n" +
              " - help");
    }
-   pgnFilename = "";
    thisRegExp = /(&|\?)(pgnFile|pf)=([^&$]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
        pgnFilename = unescape(window.location.search.match(thisRegExp)[3]);
-   } else {
-       // accepts pgnData as alias for pgnFile for consistency with board.html
-       thisRegExp = /(&|\?)(pgnData|pd)=([^&$]*)(&|$)/i;
-       if (window.location.search.match(thisRegExp) !== null) {
-           pgnFilename = unescape(window.location.search.match(thisRegExp)[3]);
+       if (pgnFilename === null) {
+           pgnFilename = "";
+       } else if (pgnFilename !== "") {
+           SetPgnUrl(pgnFilename); // if set, this has precedence over the inline PGN in the HTML file
+       } else {
+           pgnFilename = "";
+           pgnTitle = "no PGN file loaded";
        }
-   } 
-   if (pgnFilename === "") {
-       pgnTitle = "no PGN file loaded";
-   } else {
-       SetPgnUrl(pgnFilename); // if set, this has precedence over the inline PGN in the HTML file
        pgnTitle = pgnFilename;
+   } else {
+       pgnFilename = "";
+       pgnTitle = "no PGN file loaded";
    }
    thisRegExp = /(&|\?)(title|t)=([^&$]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
@@ -155,7 +154,7 @@ document.write(pgnTitle);
 
 <tr valign=top>
 <td class="containerCell" style="text-align: justify;" colspan=2>
-<span id="GameText"></span>
+<span id="GameText"></span></span>
 </td>
 </tr>
 
