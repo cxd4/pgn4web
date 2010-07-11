@@ -2,7 +2,7 @@
 
 <!--
   pgn4web javascript chessboard
-  copyright (C) 2009, 2010 Paolo Casaschi
+  copyright (C) 2009 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 -->
@@ -52,7 +52,7 @@ a {
 
 </style>
 
-<link rel="shortcut icon" href="pawn.ico" />
+<link rel="shortcut icon" href="pawn.ico"></link>
 
 </head>
 
@@ -153,7 +153,8 @@ function set_defaults() {
   if (gup("auto") === "f") { oldAutoplayMode_value = "none"; }
 
   if ((autoplayMode_value = gup("autoplayMode")) === "") {
-    autoplayMode_value = oldAutoplayMode_value === "" ? autoplayMode_default : oldAutoplayMode_value;
+    if (oldAutoplayMode_value === "") { autoplayMode_value = autoplayMode_default; }
+    else { autoplayMode_value = oldAutoplayMode_value; }
   }
   if (autoplayMode_value == "g") { autoplayMode_value = "game"; }
   if (autoplayMode_value == "l") { autoplayMode_value = "loop"; }
@@ -270,7 +271,8 @@ function set_defaults() {
   if (gup("showButtons") == "f") { oldButtonsDisplay_value = "hidden"; }
 
   if ((buttonsDisplay_value = gup("buttonsDisplay")) === "") {
-    buttonsDisplay_value = oldButtonsDisplay_value === "" ? buttonsDisplay_default : oldButtonsDisplay_value;
+    if (oldButtonsDisplay_value === "") { buttonsDisplay_value = buttonsDisplay_default; }
+    else { buttonsDisplay_value = oldButtonsDisplay_value; }
   }
   if (buttonsDisplay_value == "c") { buttonsDisplay_value = "custom"; }
   if (buttonsDisplay_value == "h") { buttonsDisplay_value = "hidden"; }
@@ -315,7 +317,8 @@ function set_defaults() {
   if (gup("showHeader") == "f") { oldHeaderDisplay_value = "hidden"; }
 
   if ((headerDisplay_value = gup("headerDisplay")) === "") {
-    headerDisplay_value = oldHeaderDisplay_value === "" ? headerDisplay_default : oldHeaderDisplay_value;
+    if (oldHeaderDisplay_value === "") { headerDisplay_value = headerDisplay_default; }
+    else { headerDisplay_value = oldHeaderDisplay_value; }
   }
   if (headerDisplay_value == "c") { headerDisplay_value = "centered"; }
   if (headerDisplay_value == "h") { headerDisplay_value = "hidden"; }
@@ -334,7 +337,8 @@ function set_defaults() {
   if (gup("showMoves") === "f") { oldMovesDisplay_value = "hidden"; }
 
   if ((movesDisplay_value = gup("movesDisplay")) === "") {
-    movesDisplay_value = oldMovesDisplay_value === "" ? movesDisplay_default : oldMovesDisplay_value;
+    if (oldMovesDisplay_value === "") { movesDisplay_value = movesDisplay_default; }
+    else { movesDisplay_value = oldMovesDisplay_value; }
   }
   if (movesDisplay_value == "h") { movesDisplay_value = "hidden"; }
   if (movesDisplay_value == "j") { movesDisplay_value = "justified"; }
@@ -351,7 +355,8 @@ function set_defaults() {
   if (gup("showComments") === "f") { oldCommentsDisplay_value = "hidden"; }
 
   if ((commentsDisplay_value = gup("commentsDisplay")) === "") {
-    commentsDisplay_value = oldCommentsDisplay_value === "" ? commentsDisplay_default : oldCommentsDisplay_value;
+    if (oldCommentsDisplay_value === "") { commentsDisplay_value = commentsDisplay_default; }
+    else { commentsDisplay_value = oldCommentsDisplay_value; }
   }
   if (commentsDisplay_value == "h") { commentsDisplay_value = "hidden"; }
   if (commentsDisplay_value == "i") { commentsDisplay_value = "inline"; }
@@ -439,7 +444,8 @@ function set_defaults() {
   }
 
   if ((horizontalLayout_value = gup("horizontalLayout")) === "") { horizontalLayout_value = horizontalLayout_default; }
-  document.board.horizontalLayout.value = horizontalLayout_value == "t" ? "t" : "f";
+  if (horizontalLayout_value == "t") { document.board.horizontalLayout.value = "t"; }
+  else { document.board.horizontalLayout.value = "f"; }
 
   if ((frameHeight_value = gup("frameHeight")) === "") { frameHeight_value = frameHeight_default; }
   if (frameHeight_value == "b") { frameHeight_value = "board"; }
@@ -502,25 +508,17 @@ function update_suggested_iframe_dimensions() {
 
   boardWidth = 8 * document.board.squareSize.value + 6; 
   estimated_boardHeight = boardWidth; 
-
-  multiGamesRegexp = /\s*\[\s*\w+\s*"[^"]*"\s*\]\s*[^\s\[\]]+[\s\S]*\[\s*\w+\s*"[^"]*"\s*\]\s*/m;
-  selectDropdownShown = multiGamesRegexp.test(pgnTextFixFromInput(document.getElementById('pgnText').value));
-
-  if (document.board.buttonsDisplay.value != 'hidden') {  
-    if (document.board.buttonsDisplay.value == "standard") { 
+  
+  if (document.board.buttonsDisplay.value != 'hidden') {
+    if (document.board.controlBackgroundColorHex.value != "default") {
+      // in this case both control size and control padding grow with squareSize  
+      estimated_boardHeight += (20 + 2 * parseInt(document.board.squareSize.value, 10));
+    } else {
       // in this case control padding grows with squareSize 
       // while the size of the controls cant be predicted, so a safe number is set
-      estimated_boardHeight += selectDropdownShown ?
-                               2 * (25 + parseInt(document.board.squareSize.value, 10) / 2) :
-                               25 + parseInt(document.board.squareSize.value, 10) / 2;
-    } else {
-      // in this case both control size and control padding grow with squareSize
-      estimated_boardHeight += selectDropdownShown ?
-                               2 * (5 + 1.1 * parseInt(document.board.squareSize.value, 10)) :
-                               5 + 1.1 * parseInt(document.board.squareSize.value, 10);
+      estimated_boardHeight += 50 + parseInt(document.board.squareSize.value, 10);
     } 
   }
-  estimated_boardHeight = Math.floor(estimated_boardHeight);
 
   min_frameWidth = boardWidth + 2 * parseInt(document.board.framePadding.value, 10);
   min_frameHeight = estimated_boardHeight + 2 * parseInt(document.board.framePadding.value, 10);
@@ -588,10 +586,12 @@ function calculate_html_code() {
   if (initialGame_value != "first") { iframeUrl += "&ig=" + initialGame_value.charAt(0); }
 
   initialHalfmove_value = document.board.initialHalfmove.value;
-  if (initialHalfmove_value != "start") {
-    iframeUrl += "&ih=" + (isNaN(parseInt(initialHalfmove_value, 10)) ? 
-                          initialHalfmove_value.charAt(0) : 
-                          initialHalfmove_value);
+  if (initialHalfmove_value != "start") { 
+    if (isNaN(parseInt(initialHalfmove_value, 10))) {
+      iframeUrl += "&ih=" + initialHalfmove_value.charAt(0); 
+    } else {
+      iframeUrl += "&ih=" + initialHalfmove_value;
+    }
   }
 
   pieceFont_value = document.board.pieceFont.value;
@@ -602,7 +602,7 @@ function calculate_html_code() {
   } else {  
     pieceSize_value = parseInt(document.board.pieceSize.value, 10);
     if (pieceSize_value > squareSize_value) { alert("error: the piece size (" + pieceSize_value + ") can not be bigger than the square size (" + squareSize_value + ")"); }
-    iframeUrl += "&ss=" + squareSize_value + "&ps=" + pieceSize_value + "&pf=" + pieceFont_value.charAt(0);
+  iframeUrl += "&ss=" + squareSize_value + "&ps=" + pieceSize_value + "&pf=" + pieceFont_value.charAt(0);
   }
 
   lightColorHex_value = document.board.lightColorHex.value; 
@@ -685,7 +685,6 @@ function calculate_html_code() {
   iframeUrl += "&hl=" + horizontalLayout_value;
 
   update_suggested_iframe_dimensions();
-
   if ((frameHeight_value = document.board.frameHeight.value) === "") { frameHeight_value = suggested_frameHeight; }
   if ((frameWidth_value = document.board.frameWidth.value) === "") { frameWidth_value = suggested_frameWidth; }
 
@@ -699,8 +698,9 @@ function calculate_html_code() {
   } else {
     iframeUrl += "&fw=" + frameWidth_value;
   }
-  
-  pgnText_value = pgnTextFixFromInput(document.getElementById('pgnText').value);
+
+  // better to keep this as last item
+  pgnText_value = document.getElementById('pgnText').value;
   if ((document.board.encodePgn.checked) && (pgnText_value != previousPgnTextToEncode)) {
     previousPgnTextToEncode = pgnText_value;
     pgnTextEncoded = EncodePGN(pgnText_value.replace(/\r\n/g,'\n'));
@@ -710,15 +710,6 @@ function calculate_html_code() {
 
   // every parameter had an &xxx= format,now we need to remove the first &
   iframeUrl = iframeUrl.replace(/\?&/,"?");
-}
-
-function pgnTextFixFromInput( text ) {
-    
-  text = text.replace(/\u2026/g,'...'); // replace ellipsis char with ...
-  text = text.replace(/\u2011/g,'-'); // replace non breaking hyphen with -
-  text = text.replace(/[\u0100-\uFFFF]+/g, "*"); // replace all chars with code greather than 255 with *
-
-  return text;
 }
 
 function pgnTextFixForUrl( text ) {
@@ -775,11 +766,11 @@ function generate_html_code() {
       break;
   }
 
-  html_code_string = "<iframe height='" + outerFrameHeight + "' width='" + outerFrameWidth + "' frameborder='0' scrolling='no' marginheight='0' marginwidth='0'";
+  html_code_string = "<iframe \n\theight='" + outerFrameHeight + "' width='" + outerFrameWidth + "' frameborder='0' scrolling='no' marginheight='0' marginwidth='0'";
   if (document.getElementById('backgroundColorHex').value == 'transparent') {
     html_code_string += " allowtransparency='true'";
   }
-  html_code_string += " src='" + iframeUrl + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>";
+  html_code_string += "\n\tsrc='" + iframeUrl + "'\n>\n\tyour web browser and/or your host do not support iframes as required to display the chessboard\n</iframe>";
   
   document.getElementById('html_code').value = html_code_string;
 
@@ -1094,7 +1085,8 @@ function load_templates() {
 	 template_value += layout_template[ll][1];
 	 template_value += size_template[ss][1];
 	 template_value += color_template[cc][1];
-         template_value += template_value.match("&hm=b") ? color_template[cc][3] : color_template[cc][2];
+         if (template_value.match("&hm=b")) { template_value += color_template[cc][3]; }
+	 else { template_value += color_template[cc][2]; }
 	 if (color_template[cc][0].match("gray")) { 
 	   template_value = template_value.replace(/hm=(s|b)/,"hm=n");
 	 }
@@ -1107,9 +1099,11 @@ function load_templates() {
 function template_selected() {
   if (document.getElementById('templatesList').value == "heading") { return; }
 
-  selectedIndex = document.getElementById('templatesList').value == "random" ?
-                  3 + Math.floor((document.getElementById('templatesList').length - 3) * Math.random()) :
-                  document.getElementById('templatesList').selectedIndex;
+  if (document.getElementById('templatesList').value == "random") {
+    selectedIndex = 3 + Math.floor((document.getElementById('templatesList').length - 3) * Math.random());
+  } else {
+    selectedIndex = document.getElementById('templatesList').selectedIndex;
+  }
 
   if (confirm("do you really want to load the selected board generator template?" + 
               "\n\n" + document.getElementById('templatesList').options[selectedIndex].text +
@@ -1122,9 +1116,8 @@ function template_selected() {
        previousPgnTextToEncode = pgnText_value;
        pgnTextEncoded = EncodePGN(pgnText_value);
     }
-    newLocationSearch += document.board.encodePgn.checked ? 
-                         "&pe=" + pgnTextEncoded :
-                         "&pt=" + pgnTextFixForUrl(pgnText_value);
+    if (document.board.encodePgn.checked) { newLocationSearch += "&pe=" + pgnTextEncoded; }
+    else { newLocationSearch += "&pt=" + pgnTextFixForUrl(pgnText_value); }
     newLocationSearch = newLocationSearch.replace(/^&/,"\?");
 
     if (newLocationSearch != location.search) {
@@ -1208,7 +1201,7 @@ function bug_report() {
   if (bugWin !== null) {
     bugWin.document.open("text/html", "replace");
     bugWin.document.write("<html>");
-    bugWin.document.write("<head><title>pgn4web board generator bug report</title><link rel='shortcut icon' href='pawn.ico' /><style type='text/css'> html, body { font-family: sans-serif;  color: black; background: white; padding: 10px; } a {text-decoration: none; color: black; } </style></head>");
+    bugWin.document.write("<head><title>pgn4web board generator bug report</title><link rel='shortcut icon' href='pawn.ico'></link><style type='text/css'> html, body { font-family: sans-serif;  color: black; background: white; padding: 10px; } a {text-decoration: none; color: black; } </style></head>");
     bugWin.document.write("<body style='text-align: justify;'>");
     bugWin.document.write("<table width=100% cellspacing=0 cellpadding=0><tr><td align=left valign=middle><h1>pgn4web board generator bug report</h1></td><td align=right valign=middle><img src=pawns.png border=0></td></tr></table><p></p>please make sure that:<ul type='square'><li>you are using the same web browser where you noticed the bug in the pgn4web board generator</li><li>you opened this bug report window from the pgn4web board generator page configured with all the parameter that result in the bug condition</li></ul>Then please email ALL the the debug information below and possibly a screenshot to <i><a href=mailto:" + pgn4web_project_email + ">" + pgn4web_project_email + "</a></i><p></p>");
     bugWin.document.write("<hr>");
@@ -1269,7 +1262,6 @@ window.onload = new_onLoad;
   <ul type="square">
   <li>keep PGN data short: due to a limitation of web browsers and web servers with the URL length, only short PGN texts are allowed, usually up to four games without comments; a warning is issued if the max URL length is exceeded, in case try removing unnecessary header tags and comments/variations or try reducing the number of games per chessboard</li>
   <li>beware of "[" and "]" characters in the game text/comments: if square brackets are present in the comments (or the game text) in a pattern similar to the PGN header pattern <code>[tag "value"]</code> then the game parsing might break; if your PGN file is not displayed properly, please check for characters "[" and "]" in the comments and try removing them</li>
-  <li>in case of errors in the supplied PGN data, the chessboard squares starts flashing at regular intervals to signal the exception; detailed debug information is available clicking the top left chessboard square (A8 assuming White on bottom, H1 otherwise)</li>
   </ul>
 </li>
 <div style="line-height: 0.5em;">&nbsp;</div>
@@ -1362,7 +1354,7 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 
 <div style="height: 1em">&nbsp;</div>
 
-<textarea id=pgnText class="textbox" style="background-color: #DDFFDD; scrollbar-base-color: #DDFFDD;" rows=15 onChange="update_pgnTextLength(); update_suggested_iframe_dimensions();"></textarea>
+<textarea id=pgnText class="textbox" style="background-color: #DDFFDD; scrollbar-base-color: #DDFFDD;" rows=15 onChange="update_pgnTextLength()"></textarea>
 <table cellspacing="0" cellpadding="0" width="100%"><tr>
 <td align="left"><div class="helptext">enter PGN data</div></td>
 <td align="right"><div class="helptext" id="pgnTextLength"></div></td>

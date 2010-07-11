@@ -2,14 +2,14 @@
 
 <!--
   pgn4web javascript chessboard
-  copyright (C) 2009, 2010 Paolo Casaschi
+  copyright (C) 2009 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 -->
 
 <head>
 
-<title>pgn4web chessboard</title>
+<title>chess</title>
 
 <style type="text/css"> 
 
@@ -85,7 +85,7 @@ font-weight: bold;
 
 </style>
 
-<link rel="shortcut icon" href="pawn.ico" />
+<link rel="shortcut icon" href="pawn.ico"></link>
 
 <script src="pgn4web.js" type="text/javascript"></script>
 
@@ -169,7 +169,8 @@ function new_start_pgn4web() {
   rule.style.fontSize = fontMovesSize;
 
   rule = getCSSRule('.moveOn');
-  rule.style.background = highlightMoveColor == 'none' ? backgroundColor : highlightMoveColor;
+  if (highlightMoveColor == 'none') { rule.style.background = backgroundColor; }
+  else { rule.style.background = highlightMoveColor; }
   rule.style.color = fontMovesColor;
   if (!fontMovesSize.match(/[^0-9]/)) { fontMovesSize += 'px'; }
   rule.style.fontSize = fontMovesSize;
@@ -181,8 +182,12 @@ function new_start_pgn4web() {
 
   rule = getCSSRule('.comment');
   rule.style.color = fontCommentsColor;
-  if (!fontCommentsSize.match(/[^0-9]/)) { fontCommentsSize += 'px'; }
-  rule.style.fontSize = fontCommentsSize == 'moves' ? fontMovesSize : fontCommentsSize;
+  if (fontCommentsSize == 'moves') {
+    rule.style.fontSize = fontMovesSize;
+  } else {
+    if (!fontCommentsSize.match(/[^0-9]/)) { fontCommentsSize += 'px'; }
+    rule.style.fontSize = fontCommentsSize;
+  }
 
   rule = getCSSRule('.nag');
   rule.style.color = fontCommentsColor;
@@ -245,20 +250,23 @@ function new_start_pgn4web() {
     if (horizontalLayout === true) {
       if (frameWidth === "") { document.getElementById("headerMoves").style.width = textWidth; }
       else { document.getElementById("outerFrame").style.width = frameWidth - 2 * framePadding; }
-      document.getElementById("headerMoves").style.height = frameHeight === "" ? textHeight : frameHeight - 2 * framePadding;
+      if (frameHeight === "") { document.getElementById("headerMoves").style.height = textHeight; }
+      else { document.getElementById("headerMoves").style.height = frameHeight - 2 * framePadding; }
     } else {
-      document.getElementById("headerMoves").style.width = frameWidth === "" ? textWidth : frameWidth - 2 * framePadding;
+      if (frameWidth === "") { document.getElementById("headerMoves").style.width = textWidth; }
+      else { document.getElementById("headerMoves").style.width = frameWidth - 2 * framePadding; }
       if (frameHeight === "") { document.getElementById("headerMoves").style.height = textHeight; }
       else { 
-	theObject = document.getElementById("boardHeadermovesPadding");
-        boardHeadermovesPaddingHeight = theObject ? theObject.offsetHeight : 0;
-	document.getElementById("headerMoves").style.height = frameHeight - boardHeight - 2 * framePadding - boardHeadermovesPaddingHeight; 
+	theObject = document.getElementById("headerMovesPadding");
+	if (theObject) { headerMovesPaddingHeight = theObject.offsetHeight; }
+	else { headerMovesPaddingHeight = 0; }
+	document.getElementById("headerMoves").style.height = frameHeight - boardHeight - 2 * framePadding - headerMovesPaddingHeight; 
       }
     }
   }
 
   if (gup("showHeightWidth") !== "") { 
-    myAlert("info: board width=" + boardWidth + " height=" + boardHeight, false);
+    alert("board dimensions\n\nwidth: " + boardWidth + "\nheight: " + boardHeight);
   }
 }
 
@@ -386,7 +394,9 @@ if ((highlightMode = gup("highlightMode")) === "") { highlightMode = "square"; }
 if (highlightMode == "b") { highlightMode = "border"; }
 if (highlightMode == "n") { highlightMode = "none"; }
 if (highlightMode == "s") { highlightMode = "square"; }
-borderSize = highlightMode == "border" ? Math.floor(0.05 * squareSize) : 0;
+if (highlightMode == "border") {
+  borderSize = Math.floor(0.05 * squareSize);
+} else { borderSize = 0; }
 
 if ((lightColor = gup("lightColorName")) === "") { 
   if ((lightColor = "#" + gup("lightColorHex")) == "#") {
@@ -510,7 +520,8 @@ if ((auto == "false") || (auto == "f")) { oldAutoplayMode = "none"; }
 loop = gup("loop");
 if ((loop == "true") || (loop == "t")) { oldAutoplayMode = "loop"; }
 if ((autoplayMode = gup("autoplayMode")) === "") {
-  autoplayMode = oldAutoplayMode === "" ? "game" : oldAutoplayMode;
+  if (oldAutoplayMode === "") { autoplayMode = "game"; }
+  else { autoplayMode = oldAutoplayMode; }
 }
 if (autoplayMode == "g") { autoplayMode = "game"; }
 if (autoplayMode == "l") { autoplayMode = "loop"; }
@@ -550,14 +561,10 @@ always_Halfmove = false;
 if ((init_Halfmove = gup("initialHalfmove")) === "") { 
   init_Halfmove = "start";
 } else {
-  if (init_Halfmove == "s") { init_Halfmove = "start"; }
-  if (init_Halfmove == "e") { init_Halfmove = "end"; }
-  if (init_Halfmove == "r") { init_Halfmove = "random"; }
-  if (init_Halfmove == "c") { init_Halfmove = "comment"; }
-  if ((init_Halfmove == "start")  || (init_Halfmove == "end") ||
-      (init_Halfmove == "random") || (init_Halfmove == "comment")) {
-     always_Halfmove = true;
-  }
+  if (init_Halfmove == "s") { init_Halfmove = "start"; always_Halfmove = true; }
+  if (init_Halfmove == "e") { init_Halfmove = "end"; always_Halfmove = true; }
+  if (init_Halfmove == "r") { init_Halfmove = "random"; always_Halfmove = true; }
+  if (init_Halfmove == "c") { init_Halfmove = "comment"; always_Halfmove = true; }
 }
 SetInitialHalfmove(init_Halfmove,always_Halfmove);
 
@@ -566,16 +573,13 @@ showButtons = gup("showButtons");
 if ((showButtons == "true")  || (showButtons == "t")) { oldButtonsDisplay = "custom"; }
 if ((showButtons == "false") || (showButtons == "f")) { oldButtonsDisplay = "hidden"; }
 if ((buttonsDisplay = gup("buttonsDisplay")) === "") {
-  buttonsDisplay = oldButtonsDisplay === "" ? "hidden" : oldButtonsDisplay;
+  if (oldButtonsDisplay === "") { buttonsDisplay = "hidden"; }
+  else { buttonsDisplay = oldButtonsDisplay; }
 }
 if (buttonsDisplay == "c") { buttonsDisplay = "custom"; }
 if (buttonsDisplay == "h") { buttonsDisplay = "hidden"; }
 if (buttonsDisplay == "s") { buttonsDisplay = "standard"; }
 if ((buttonsDisplay != "custom") && (buttonsDisplay != "standard")) { buttonsDisplay = "hidden"; }
-
-// SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
-// default:           (" ...", false, 0, 0, 0, 15, 15, 0, 10)
-SetGameSelectorOptions(null, false,  0, 0, 0, 15, 15, 3, 10); 
 
 if (buttonsDisplay == "custom") {
       
@@ -615,8 +619,9 @@ showCommentsOnSeparateLines = gup("showCommentsOnSeparateLines");
 if ((showCommentsOnSeparateLines == "true") || (showCommentsOnSeparateLines == "t")) { oldCommentsDisplay = "newline"; }
 showComments = gup("showComments");
 if ((showComments == "false") || (showComments == "f")) { oldCommentsDisplay = "hidden"; }
-if ((commentsDisplay = gup("commentsDisplay")) === "") {
-  commentsDisplay = oldCommentsDisplay === "" ? "inline" : oldCommentsDisplay;
+if ((commentsDisplay = gup("commentsDisplay")) === "") { 
+  if (oldCommentsDisplay === "") { commentsDisplay = "inline"; }
+  else { commentsDisplay = oldCommentsDisplay; }
 }
 if (commentsDisplay == "h") { commentsDisplay = "hidden"; }
 if (commentsDisplay == "i") { commentsDisplay = "inline"; }
@@ -648,9 +653,6 @@ function cleanPgnInput(pgnInput) {
   pgnInput = pgnInput.replace(/^\s*\[/g,"[");
   pgnInput = pgnInput.replace(/\n[\s*\n]+/g,'\n\n');
 
-  pgnInput = pgnInput.replace(/\u2026/g,'...'); // replace ellipsis char with ...
-  pgnInput = pgnInput.replace(/\u2011/g,'-'); // replace non breaking hyphen with -
-
   return pgnInput;
 }
 
@@ -669,7 +671,7 @@ if ((newPgnId = gup("pgnId")) !== "") {
     document.getElementById('pgnText').value = newPgnIdData = cleanPgnInput(newPgnIdData);
   }
   if ( !parent || !parent.document.getElementById(newPgnId) || !newPgnIdData ) {
-    myAlert("error: failed to get data from supplied pgnId=" + newPgnId + " (check parent is in the same domain).", true);
+    alert("WARNING: failed to get data from supplied pgnId (check parent is in the same domain).");
   }
 }
 
@@ -690,26 +692,16 @@ if ((newPgnEncoded = gup("pgnEncoded")) !== "") {
   document.getElementById('pgnText').value = newPgnDecoded = cleanPgnInput(newPgnDecoded);
 } 
 
-if ((pgnData = gup("pgnData")) !== "") {
-  SetPgnUrl(pgnData);
-  document.getElementById('pgnText').value = "";
-}
-
-if ((pgnData !== "") && ((newPgnEncoded !== "") || (newPgnText !== "") || 
-			 (fenString !== "") || (newPgnId !==""))) {
-  myAlert("warning: pgnData value superseeds pgnEncoded, pgnText, pgnId and/or fenString values.", false);
-}
-
 if ((newPgnEncoded !== "") && ((newPgnText !== "") || (fenString !== "") || (newPgnId !==""))) {
-  myAlert("warning: pgnEncoded value superseeds pgnText, pgnId and/or fenString values.", false);
+  alert("WARNING: pgnEncoded value superseeds pgnText, pgnId and/or fenString values.");
 }
 
 if ((newPgnText !== "") && ((fenString !== "") || (newPgnId !==""))) {
-  myAlert("warning: pgnText value superseeds pgnId and/or fenString value.", false);
+  alert("WARNING: pgnText value superseeds pgnId and/or fenString value.");
 }
 
 if ((fenString !== "") && (newPgnId !=="")) {
-  myAlert("warning: fenString value superseeds pgnId value.", false);
+  alert("WARNING: fenString value superseeds pgnId value.");
 }
 
 oldHeaderDisplay = "";
@@ -717,7 +709,8 @@ showHeader = gup("showHeader");
 if ((showHeader == "true")  || (showHeader == "t")) { oldHeaderDisplay = "justified"; }
 if ((showHeader == "false") || (showHeader == "f")) { oldHeaderDisplay = "hidden"; }
 if ((headerDisplay = gup("headerDisplay")) === "") {
-  headerDisplay = oldHeaderDisplay === "" ? "hidden" : oldHeaderDisplay;
+  if (oldHeaderDisplay === "") { headerDisplay = "hidden"; }
+  else { headerDisplay = oldHeaderDisplay; }
 }
 if (headerDisplay == "c") { headerDisplay = "centered"; }
 if (headerDisplay == "h") { headerDisplay = "hidden"; }
@@ -729,7 +722,8 @@ showMoves = gup("showMoves");
 if ((showMoves == "true")  || (showMoves == "t")) { oldMovesDisplay = "justified"; }
 if ((showMoves == "false") || (showMoves == "f")) { oldMovesDisplay = "hidden"; }
 if ((movesDisplay = gup("movesDisplay")) === "") {
-  movesDisplay = oldMovesDisplay === "" ? "hidden" : oldMovesDisplay;
+  if (oldMovesDisplay === "") { movesDisplay = "hidden"; }
+  else { movesDisplay = oldMovesDisplay; }
 }
 if (movesDisplay == "h") { movesDisplay = "hidden"; }
 if (movesDisplay == "j") { movesDisplay = "justified"; }
@@ -786,36 +780,6 @@ switch (frameWidth) {
 if ((gup("horizontalLayout") == "true") || (gup("horizontalLayout") == "t")) { horizontalLayout = true; }
 else { horizontalLayout = false; }	
 
-if ((gup("refreshDemo") == "true") || (gup("refreshDemo") == "t")) { demoFlag = true; alertFlag = true; }
-else { demoFlag = false; alertFlag = false; }
-
-if ((refreshMinutes = gup("refreshMinutes")) === "") { 
-  refreshMinutes = 0;
-}
-else {
-  testMinutes = refreshMinutes + "";
-  if ((testMinutes.match(/[^0-9\.]/)) || (refreshMinutes === 0)) {
-    myAlert("error: refreshMinutes parameter must be a positive number.\n" +
-	    "Supplied " + testMinutes + "; live refresh disabled.", true); 
-    refreshMinutes = 0;
-  }
-}
-
-if (refreshMinutes > 0) {
-  if (pgnData !== "") { SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag); }
-  else { 
-    myAlert("error: live broadcast requires using pgnData parameter as PGN source.", true); 
-  }
-  if (gup("initialHalfmove") === "") { 
-    SetInitialHalfmove(init_Halfmove = "end", always_Halfmove = true);
-  }
-  if (gup("autoplayMode") === "") {
-    autoplayMode = "none";
-    SetAutostartAutoplay(false);
-    SetAutoplayNextGame(false);
-  }
-}
-
 if (gup("help") !== "") {
   document.write("<PRE>");
   document.write("URL parameters\n");
@@ -823,27 +787,23 @@ if (gup("help") !== "") {
   document.write(" - pgnText = PGN games to display\n");
   document.write(" - pgnEncoded = encoded PGN games to display (used only by the board generator tool)\n");
   document.write(" - fenString = FEN position to display\n");
-  document.write(" - pgnId = id of the parent's textarea containing the PGN games (parent page/frame MUST be in the same domain)\n");
-  document.write(" - pgnData = URL of the file containing the PGN games (file MUST be in the same domain)\n");
+  document.write(" - pgnId = id of the parent's textarea containing the PGN games (works only if parent is in the same domain)\n");
   document.write("\n");
-  document.write(" - refreshMinutes = live broadcast delay (default 0 = live broadcast disabled)\n");
-  document.write(" - refreshDemo = if set true sets live demo mode (default false)\n");
-  document.write("\n");
-  document.write(" - autoplayMode = game (autoplay first game once) | loop (loops through games continiously) | none (default game)\n");
+  document.write(" - autoplayMode = game (autoplay first game once) | loop (loops through games continiously) | none - (default game)\n");
   document.write(" - delay = autoplay delay in ms (default 1000)\n");
   document.write(" - initialGame = first | last | random | a number (default first)\n");
   document.write(" - initialHalfmove = start | end | random | comment | a number (default start)\n");
   document.write("\n");
   document.write(" - squareSize = size of square (default 28)\n");
   document.write(" - pieceSize = size of pieces | default (default selects piece size based on piece size)\n");
-  document.write(" - pieceFont = alpha | merida | uscf | random | default (default selects piece font based on piece size)\n");
+  document.write(" - pieceFont = alpha | merida | uscf | random | default - (default selects piece font based on piece size)\n");
   document.write(" - highlightMode = border | square | none (default square)\n");
   document.write(" - lightColorHex = light square color hex code, like FF0000 (default EFF4EC)\n");
   document.write(" - darkColorHex = dark square color hex code, like FF0000 (default C6CEC3)\n");
   document.write(" - highlightColorHex = highlight color hex code, like FF0000 (default DAF4D7)\n");
   document.write(" - boardBorderColorHex = board border color hex code, like FF0000 (default 000000)\n");
   document.write("\n");
-  document.write(" - buttonsDisplay = hidden | standard (use browser's standard buttons) | custom (use custom color buttons) (default hidden)\n");
+  document.write(" - buttonsDisplay = hidden | standard (use browser's standard buttons) | custom (use custom color buttons) - (default hidden)\n");
   document.write(" - controlBackgroundColorHex = control buttons background color hex code, like FF0000 (default reverts to standard buttons)\n");
   document.write(" - controlTextColorHex = control buttons text color hex code, like FF0000 (default 000000)\n");
   document.write("\n");
@@ -852,7 +812,7 @@ if (gup("help") !== "") {
   document.write(" - textHeight = set height of the textual section, header and/or moves text, might be ingored if frameHeight is set (default 100%)\n");
   document.write(" - textWidth = set width of the textual section, header and/or moves text, might be ignored if frameWidth is set (default 100%)\n");
   document.write(" - textMargin = set left/right margin width of the  textual section, header and/or moves text (default 0)\n");
-  document.write(" - commentsDisplay = hidden | inline (same line as moves) | newline (new lines) (default inline)\n");
+  document.write(" - commentsDisplay = hidden | inline (same line as moves) | newline (new lines) - (default inline)\n");
   document.write(" - fontHeaderColorHex = header color hex code, like FF0000 (default 000000)\n");
   document.write(" - fontMovesColorHex = moves color hex code, like FF0000 (default 000000)\n");
   document.write(" - fontCommentsColorHex = commentss color hex code, like FF0000 (default 808080)\n");
@@ -909,13 +869,10 @@ function display_board() {
 
 function display_header_moves() {
 
-  if (((headerDisplay != "hidden") || (movesDisplay != "hidden")) && (horizontalLayout === false)) {
-    if (headerDisplay != "hidden") {
-      document.write("<div id='boardHeadermovesPadding' class='header' style='text-align: center;'>&nbsp;</div>");
-    } else {
-      document.write("<div id='boardHeadermovesPadding' class='moves' style='text-align: center;'>&nbsp;</div>");
-    }
-  }  
+  if ((headerDisplay != "hidden") && (horizontalLayout === false)) {
+      document.write("<div id='headerMovesPadding' class='header' style='text-align: center;'>&nbsp;</div>");
+  }
+
   if ((headerDisplay != "hidden") || (movesDisplay != "hidden")) {
   document.write("<div id='headerMoves' style='overflow:auto; overflow-x:hidden;" +
                  " height: " + textHeight + "; width: " + textWidth + 
@@ -939,7 +896,7 @@ function display_header_moves() {
                    "; margin-right: 3%;' id=GameBlack></div>");
     document.write("</td><td align=right>");
     
-    document.write("<div class='header' style='white-space: nowrap; margin-right: " + textMargin +
+    document.write("<div class='header'header style='white-space: nowrap; margin-right: " + textMargin +
                    "; margin-left: 3%;'  id=GameSite></div>");
     document.write("</td></tr></table>");
 
@@ -977,7 +934,11 @@ function display_header_moves() {
 
   if (movesDisplay != "hidden") {
     if (headerDisplay != "hidden") {
-      document.write("<div id='headerMovesSpacer' class='header' style='text-align: center;'>&nbsp;</div>");
+      document.write("<div class='header' style='text-align: center;'>&nbsp;</div>");
+    } else {
+      if (horizontalLayout === false) {
+        document.write("<div class='moves' style='text-align: center;'>&nbsp;</div>");
+      }
     }
     document.write("<div style='margin-left:" + textMargin + "; margin-right:" + textMargin + 
                    "; text-align: justify;' id=GameText></div>");
@@ -1054,40 +1015,15 @@ function customFunctionOnPgnGameLoad() {
       theObject.style.paddingBottom = "";
     }
   }
-
-  theObject = document.getElementById("headerMovesSpacer");
-  if (theObject) {
-    if ( ((gameWhite[currentGame] != undefined) && (gameWhite[currentGame] !== ""))   ||
-         ((gameBlack[currentGame] != undefined) && (gameBlack[currentGame] !== ""))   ||
-         ((gameResult[currentGame] != undefined) && (gameResult[currentGame] !== "")) || 
-         ((gameEvent[currentGame] != undefined) && (gameEvent[currentGame] !== ""))   ||
-	 ((gameRound[currentGame] != undefined) && (gameRound[currentGame] !== "") && 
-	  (gameRound[currentGame] != "?") && (gameRound[currentGame] != "*"))         ||
-	 ((gameSite[currentGame] != undefined) && (gameSite[currentGame] !== ""))     ||
-         ((gameDate[currentGame] != undefined) && (gameDate[currentGame] !== "")) ) {
-      theObject.style.display = "inline";
-    } else {
-      theObject.style.display = "none";
-    }
-  }
-
 }
 
-var boardGeneratorWin=null;
-function customShortcutKey_Shift_1() {
-  if ((newPgnEncoded === "") && (newPgnText === "")) { return; }
-  if (! window.location.href.match(/board\.html/)) { return; }
-  if (boardGeneratorWin && !boardGeneratorWin.closed) { boardGeneratorWin.close(); }
-  boardGeneratorWin = window.open(window.location.href.replace(/board\.html/g, "board-generator.html").replace(window.location.hash, "") + "#preview");
-  if ((boardGeneratorWin !== null) && (window.focus)) { boardGeneratorWin.window.focus(); }
-}
 
 </script>
 
 
-<!-- start of google analytics code -->
+<! start of google analytics code -->
 
-<!-- end of google analytics code -->
+<! end of google analytics code -->
 
 
 </body>
