@@ -1,34 +1,25 @@
 <html>
 
-<!--
-  pgn4web javascript chessboard
-  copyright (C) 2009, 2010 Paolo Casaschi
-  see README file and http://pgn4web.casaschi.net
-  for credits, license and more details
--->
-
 <head>
 
 <title>2008 World Chess Championship: Anand - Kramnik</title>
 
-<link href="wch08ak.css" type="text/css" rel="stylesheet" />
-
-<link rel="shortcut icon" href="pawn.ico" />
+<link href="wch08ak.css" type="text/css" rel="stylesheet"></link>
 
 <script src="pgn4web.js" type="text/javascript"></script>
-<script type="text/javascript">
+<script>
    SetPgnUrl("wch08ak.pgn"); // if set, this has precedence over the inline PGN in the HTML file
-   SetImagePath("uscf/40"); // use "" path if images are in the same folder as this javascript file
+   SetImagePath ("uscf/40"); // use "" path if images are in the same folder as this javascript file
    SetImageType("png");
-   SetHighlightOption(true); // true or false
-   SetGameSelectorOptions(" select a game from the 2008 wch...", true, 0, 0, 0, 10, 10, 3, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);   
+   SetHighlightOption(true) // true or false
+   SetGameSelectorOptions("Select a game...", false, 0, 0, 2, 10, 10, 0, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);   
    SetCommentsIntoMoveText(true);
    SetCommentsOnSeparateLines(true);
    SetAutoplayDelay(5000); // milliseconds
    SetAutostartAutoplay(false);
    SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
-   SetInitialGame(3); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are also accepted
-   SetInitialHalfmove(28,false); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default)
+   SetInitialGame(3); // number of game to be shown at load, from 1 (default); if 0 a random game is loaded
+   SetInitialHalfmove(28); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
    SetShortcutKeysEnabled(true);
 </script>
 
@@ -37,16 +28,16 @@
 <body>
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
-<form style="display: none;"><textarea style="display: none;" id="pgnText">
+<span style="display:none" id="pgnText">
 
-</textarea></form>
+</span>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
 <div style="font-weight: bold; font-size: 200%; text-align: left;"> 
 2008 World Chess Championship<br> 
 Anand - Kramnik
 </div>
-<p></p>
+<p>
 
 <table width=100% cellspacing=10>
 <tr valign=top>
@@ -59,25 +50,28 @@ Anand - Kramnik
 <div id="GameButtons"></div>
 </td></tr></table>
 
+<p>
+
+<small><i><a href="javascript:displayHelp()" style="color: black; text-decoration: none;">hit escape for help</a></i></small>
 </td>
 
 <td>
-Event: <b><span style="white-space: nowrap;" id="GameEvent"></span></b>
+Event: <b><span id="GameEvent"></span></b>
 <br>
-Site: <b><span style="white-space: nowrap;" id="GameSite"></span></b>
+Site: <b><span id="GameSite"></span></b>
 <br>
 Round: <b><span id="GameRound"></span></b>
 <br>
 Date: <b><span id="GameDate"></span></b>
 
-<p></p>
+<p>
 
-White: <b><span style="white-space: nowrap;" id="GameWhite"></span></b>
+White: <b><span id="GameWhite"></span></b>
 <br>
-Black: <b><span style="white-space: nowrap;" id="GameBlack"></span></b>
+Black: <b><span id="GameBlack"></span></b>
 <br>
 Result: <b><span id="GameResult"></span></b>
-<p></p>
+<p>
 Side to move: <b><span id="GameSideToMove"></span></b>
 <br>
 Last move: <b><span id="GameLastMove"></span></b>
@@ -85,15 +79,15 @@ Last move: <b><span id="GameLastMove"></span></b>
 
 Next move: <b><span id="GameNextMove"></span></b>
 
-<p></p>
-Move comment:<br><b><span id="GameLastComment"></span></b>
+<p>
+Move comment:<br><b><span id="GameLastComment"><b></span>
 </td>
 
 </tr>
 </table>
 
-<br>
-<div style="font-size: 80%; line-height: 1.3em;" id="GameText"></div>
+<hr>
+<div style="font-size: 66%" id="GameText"></div>
 
 </body>
 

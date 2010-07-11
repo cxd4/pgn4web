@@ -1,14 +1,8 @@
-/* 
- * pgn4web javascript chessboard
- * copyright (C) 2009, 2010 Paolo Casaschi
- * see README file and http://pgn4web.casaschi.net
- * for credits, license and more details
- */
 
 html, 
 body { 
   margin: 0; 
-  padding: 0;
+  padding: 0; 
 }
 
 body {
@@ -59,8 +53,6 @@ body {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 456px !important;
   font-size: x-small;
-  border-width: 0px;
-  padding: 2px;
 }
 
 .buttonControlPlay,
@@ -70,14 +62,6 @@ body {
 }
 
 .buttonControlSpace {
-/* a "width" attribute here must use the !important flag to override default settings */
-}
-
-.searchPgnButton {
-/* a "width" attribute here must use the !important flag to override default settings */
-}
-
-.searchPgnExpression {
 /* a "width" attribute here must use the !important flag to override default settings */
 }
 
@@ -93,7 +77,12 @@ body {
 }
 
 .comment,
-.nag {
+.nag
+{
   color: gray;
+}
+
+.nag {
+  font-style: italic;
 }
 

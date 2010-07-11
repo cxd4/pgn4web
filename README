@@ -1,0 +1,167 @@
+PGN4WEB
+
+
+ABOUT
+
+PGN4WEB is a javascript tool to display chess games from a PGN file.
+It has been designed to make it easier adding chess games to your web 
+pages and blogs, without the need of much knowledge of HTML or any 
+other technicality. It also allows for frequent updates of the PGN file 
+without the need of manually generating new web pages at every update.
+
+Project homepage: http://code.google.com/p/pgn4web
+Contact: pgn4web@casaschi.net
+
+Features:
+- display chess games form a PGN file on a dynamic chessboard on your
+  webpage or blog
+- shortcut keys for navigating through the game, for selecting the
+  game from the file and much more; also uses chessboard squares as 
+  input buttons (hit escape for help)
+- fully customizable display. Each item (board, button bar, game
+  selection menu, PGN header info, game text, game comment and more)
+  can be displayed (or hidden) at pleasure in your html file
+- support different chess bitmaps (even custom bitmaps) and different
+  chessboard sizes
+
+Limitations:
+- variations are displayed as comment, it's not possible to display
+  in the chessboard positions from variations
+- only one chessboard for html file (use frames if you need to display
+  more in the same view)
+
+Bugs: 
+- if square brackets are present in the comments (or the game text) then 
+the game parsing is badly broken. If your PGN file is not displayed properly,
+please check for characters "[" and "]" in the comments and try removing 
+them. Otherwise send me the PGN file for review. 
+
+Enjoy!
+
+
+HOW TO USE pgn4we.js
+
+add a SCRIPT instance at the top of your HTML file:
+
+  <script src="pgn4web.js" type="text/javascript"></script>
+
+The PGN input can be specified either as URL within another SCRIPT instance 
+with at least the call to 
+
+  SetPgnUrl("http://yoursite/yourpath/yourfile.pgn")
+
+and optionally any of the other calls listed below.  
+
+Or the PGN file can be pasted in the body of the HTML file 
+within a SPAN statement with the ID pgnText:
+
+  <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
+  <span style="display:none" id="pgnText">
+
+  ... your PGN text ...
+
+  </span>
+  <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
+
+Example:
+
+  <script yype="text/javascript>
+    SetPgnUrl("http://yoursite/yourpath/yourfile.pgn"); // if set, this has precedence over the inline PGN in the HTML file
+    SetImagePath (""); // use "" path if images are in the same folder as this javascript file
+    SetImageType("png");
+    SetHighlightOption(true) // true or false
+    SetGameSelectorOptions("Select a game...", false, 0, 0, 0, 15, 15, 0, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
+    SetCommentsIntoMoveText(false)
+    SetCommentsOnSeparateLines(false)
+    SetAutoplayDelay(1000); // milliseconds
+    SetAutostartAutoplay(false);
+    SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
+    SetInitialGame(1); // number of game to be shown at load, from 1 (default); if 0 a random game is loaded
+    SetInitialHalfmove(0); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
+    SetShortcutKeysEnabled(true);
+  </script>
+ 
+Then the script will automagically add content into your HTML file 
+to any <div> or <span> containers with the following IDs:
+
+  <div id="GameSelector"></div>
+  <div id="GameLastMove"></div>
+  <div id="GameNextMove"></div>
+  <div id="GameSideToMove"></div>
+  <div id="GameLastComment"></div>
+  <div id="GameBoard"></div>
+  <div id="GameButtons"></div>
+  <div id="GameEvent"></div>
+  <div id="GameSite"></div>
+  <div id="GameRound"></div>
+  <div id="GameDate"></div>
+  <div id="GameWhite"></div>
+  <div id="GameBlack"></div>
+  <div id="GameResult"></div>
+  <div id="GameText"></div>
+
+The file template.css shows a list of customization style options.
+
+See template.html file for an example.
+See *mini.html* for an example of embedding the PGN content into the HTML file.
+See http://www.casaschi.net/chess for an implementation. 
+See http://blog.casaschi.net/search?label=pgn4web for an example of usage
+within a blog using the iframe html tag. 
+
+TECHNICAL NOTES ABOUT WEB BROWSERS
+
+pgn4web.js is developed and tested with a variety of browsers (Arora, 
+Blackberry browser, Chrome, Epiphany, Firefox, Internet Explorer, Opera, 
+Safari) on a variety of platforms (Linux/Debian, MacOS, Windows). Not every 
+browser version and every combination of browser/platform has been tested. 
+If you have any issue with using pgn4web on your platform, please email 
+pgn4web@casaschi.net
+
+Note about Internet Explorer v7 and above: under some circumstances you might
+experience problems when testing HTML pages from your local computer while 
+developing your site. If this happens to you, read notes at 
+http://code.google.com/p/pgn4web/issues/detail?id=23 
+
+CREDITS AND LICENSE
+
+javascript modifications of Paolo Casaschi (pgn4web@casaschi.net) on code 
+from the http://ficsgames.com database, in turn likely based on code from the 
+LT PGN viewer at http://www.lutanho.net/pgn/pgnviewer.html
+
+PNG images from http://ixian.com/chess/jin-piece-sets (creative commons 
+attribution-share alike 3.0 unported license)
+
+Some of the PGN files for the examples are coming from "The Week in Chess" at 
+http://www.chesscenter.com/twic/twic.html (files wch08ak.pgn and twic765.pgn) 
+and from the scid project at http://scid.sourceforge.net (file tactics.pgn).
+
+The above remains subject to their original licenses (if any).
+
+Remaining pgn4web code is Copyright (C) 2009 Paolo Casaschi
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+See license-gpl-2.0.txt license file.
+
+You are free to use pgn4web in your website or blog; you are not required to
+acknowledge the pgn4we project, but if you want to do so the following line
+might be used:
+javascript chess viewer courtesy of <a href=http://pgn4web.casaschi.net>pgn4web</a>
+
+You are also encouraged to notify pgn4web@casaschi.net that you are using 
+pgn4web.
+
+END
+
