@@ -11,7 +11,7 @@
 
 <title>pgn4web chessboard</title>
 
-<style type="text/css"> 
+<style id="boardCss" type="text/css"> 
 
 @import url("fonts/pgn4web-fonts.css");
 
@@ -108,33 +108,33 @@ function new_start_pgn4web() {
   document.body.style.background = backgroundColor;
   document.body.style.padding = framePadding;
   
-  rule = getCSSRule('.pieceImage');
+  rule = getCSSRuleFromObject('.pieceImage', 'boardCss');
   rule.style.width = pieceSize;
   rule.style.height = pieceSize;
 
   if (highlightMode == 'border') {
-    rule = getCSSRule('.whiteSquare');
+    rule = getCSSRuleFromObject('.whiteSquare', 'boardCss');
     rule.style.width = (squareSize - 2 * borderSize) + 'px';	
     rule.style.height = (squareSize - 2 * borderSize) + 'px';
     rule.style.background = lightColor;
     rule.style.borderStyle = 'solid';
     rule.style.borderWidth = borderSize + 'px';
     rule.style.borderColor = lightColor; 
-    rule = getCSSRule('.blackSquare');
+    rule = getCSSRuleFromObject('.blackSquare', 'boardCss');
     rule.style.width = (squareSize - 2 * borderSize) + 'px';	
     rule.style.height = (squareSize - 2 * borderSize) + 'px';
     rule.style.background = darkColor;
     rule.style.borderStyle = 'solid';
     rule.style.borderWidth = borderSize + 'px';
     rule.style.borderColor = darkColor; 
-    rule = getCSSRule('.highlightWhiteSquare');
+    rule = getCSSRuleFromObject('.highlightWhiteSquare', 'boardCss');
     rule.style.width = (squareSize - 2 * borderSize) + 'px';	
     rule.style.height = (squareSize - 2 * borderSize) + 'px';
     rule.style.background = lightColor;
     rule.style.borderStyle = 'solid';
     rule.style.borderWidth = borderSize + 'px';
     rule.style.borderColor = highlightLightColor;
-    rule = getCSSRule('.highlightBlackSquare');
+    rule = getCSSRuleFromObject('.highlightBlackSquare', 'boardCss');
     rule.style.width = (squareSize - 2 * borderSize) + 'px';	
     rule.style.height = (squareSize - 2 * borderSize) + 'px';
     rule.style.background = darkColor;
@@ -142,49 +142,49 @@ function new_start_pgn4web() {
     rule.style.borderWidth = borderSize + 'px';
     rule.style.borderColor = highlightDarkColor;
   } else {
-    rule = getCSSRule('.whiteSquare');
+    rule = getCSSRuleFromObject('.whiteSquare', 'boardCss');
     rule.style.width = squareSize + 'px';	
     rule.style.height = squareSize + 'px';
     rule.style.background = lightColor;
-    rule = getCSSRule('.blackSquare');
+    rule = getCSSRuleFromObject('.blackSquare', 'boardCss');
     rule.style.width = squareSize + 'px';	
     rule.style.height = squareSize + 'px';
     rule.style.background = darkColor;
-    rule = getCSSRule('.highlightWhiteSquare');
+    rule = getCSSRuleFromObject('.highlightWhiteSquare', 'boardCss');
     rule.style.width = squareSize + 'px';	
     rule.style.height = squareSize + 'px';
     rule.style.background = highlightLightColor;
-    rule = getCSSRule('.highlightBlackSquare');
+    rule = getCSSRuleFromObject('.highlightBlackSquare', 'boardCss');
     rule.style.width = squareSize + 'px';	
     rule.style.height = squareSize + 'px';
     rule.style.background = highlightDarkColor;
   }
 
-  rule = getCSSRule('.boardTable');
+  rule = getCSSRuleFromObject('.boardTable', 'boardCss');
   rule.style.borderColor = boardBorderColor;
   
-  rule = getCSSRule('.move');
+  rule = getCSSRuleFromObject('.move', 'boardCss');
   rule.style.color = fontMovesColor;
   if (!fontMovesSize.match(/[^0-9]/)) { fontMovesSize += 'px'; }
   rule.style.fontSize = fontMovesSize;
 
-  rule = getCSSRule('.moveOn');
+  rule = getCSSRuleFromObject('.moveOn', 'boardCss');
   rule.style.background = highlightMoveColor == 'none' ? backgroundColor : highlightMoveColor;
   rule.style.color = fontMovesColor;
   if (!fontMovesSize.match(/[^0-9]/)) { fontMovesSize += 'px'; }
   rule.style.fontSize = fontMovesSize;
 
-  rule = getCSSRule('.header');
+  rule = getCSSRuleFromObject('.header', 'boardCss');
   rule.style.color = fontHeaderColor;
   if (!fontHeaderSize.match(/[^0-9]/)) { fontHeaderSize += 'px'; }
   rule.style.fontSize = fontHeaderSize;
 
-  rule = getCSSRule('.comment');
+  rule = getCSSRuleFromObject('.comment', 'boardCss');
   rule.style.color = fontCommentsColor;
   if (!fontCommentsSize.match(/[^0-9]/)) { fontCommentsSize += 'px'; }
   rule.style.fontSize = fontCommentsSize == 'moves' ? fontMovesSize : fontCommentsSize;
 
-  rule = getCSSRule('.nag');
+  rule = getCSSRuleFromObject('.nag', 'boardCss');
   rule.style.color = fontCommentsColor;
 //  rule.style.fontSize = fontCommentsSize; // the nag is always embedded in the comment
 
@@ -193,9 +193,9 @@ function new_start_pgn4web() {
   theObject = document.getElementById("GameButtons");
   if (theObject) { theObject.style.paddingTop = paddingControlHeight; }
   if ((controlBackgroundColor != 'default') && (controlBackgroundColor != '#default')) { 
-    rule1 = getCSSRule('.buttonControl');
-    rule2 = getCSSRule('.buttonControlPlay');
-    rule3 = getCSSRule('.buttonControlStop');
+    rule1 = getCSSRuleFromObject('.buttonControl', 'boardCss');
+    rule2 = getCSSRuleFromObject('.buttonControlPlay', 'boardCss');
+    rule3 = getCSSRuleFromObject('.buttonControlStop', 'boardCss');
     rule1.style.borderStyle = rule2.style.borderStyle = rule3.style.borderStyle = 'solid';
     rule1.style.borderWidth = rule2.style.borderWidth = rule3.style.borderWidth = '0px';
     rule1.style.borderColor = rule2.style.borderColor = rule3.style.borderColor = backgroundColor;
@@ -206,7 +206,7 @@ function new_start_pgn4web() {
   }
 
   if ((controlBackgroundColor != 'default') && (controlBackgroundColor != '#default')) {
-    rule = getCSSRule('.selectControl');
+    rule = getCSSRuleFromObject('.selectControl', 'boardCss');
     rule.style.borderStyle = 'solid';
     rule.style.padding = '3px';
     rule.style.borderWidth = '1px';
@@ -265,51 +265,30 @@ function new_start_pgn4web() {
 window.onload = new_start_pgn4web;
 
 
-// getCSSRule, killCSSRule and addCSSRule derived from origninal scripts
+// getCSSRuleFromObject derived from origninal scripts
 // from Patrick Hunlock (http://www.hunlock.com) at http://javascript.internet.com
 
-function getCSSRule(ruleName, deleteFlag) { 
+function getCSSRuleFromObject(ruleName, objectId) { 
   ruleName = ruleName.toLowerCase();
-  if (document.styleSheets) {
-    for (var i = 0; i < document.styleSheets.length; i++) {
-      var styleSheet = document.styleSheets[i];
-      var ii = 0;
-      do {
-        var cssRule = false; 
-        if (styleSheet.cssRules) { cssRule = styleSheet.cssRules[ii]; } // Mozilla style
-        else if (styleSheet.rules) { cssRule = styleSheet.rules[ii]; } // IE style
-	if (cssRule && (cssRule.selectorText != undefined)) {
-     	  if (cssRule.selectorText.toLowerCase() == ruleName) {
-            if (deleteFlag == 'delete') {
-              if (styleSheet.cssRules) { styleSheet.deleteRule(ii); return true; } // Mozilla style
-              else if (styleSheet.rules) { styleSheet.removeRule(ii); return true; } // IE style
-              return false;
-            } else { return cssRule; }
-          }
-        }
-        ii++;
-      } while (cssRule);
-    }
+  cssObj = document.getElementById(objectId);
+  if (cssObj) { 
+    if (cssObj.sheet) { styleSheet = cssObj.sheet; } // Mozilla style
+    else if (cssObj.styleSheet) { styleSheet = cssObj.styleSheet; } // IE style
+    else { styleSheet = null; } 
+  }
+  if (styleSheet) {
+    var ii = 0;
+    do {
+      var cssRule = null; 
+      if (styleSheet.cssRules) { cssRule = styleSheet.cssRules[ii++]; } // Mozilla style
+      else if (styleSheet.rules) { cssRule = styleSheet.rules[ii++]; } // IE style
+      if (cssRule && cssRule.selectorText && (cssRule.selectorText.toLowerCase() == ruleName)) {
+        return cssRule;
+      }
+    } while (cssRule);
   }
   return false;
 }
-
-function killCSSRule(ruleName) {   
-  return getCSSRule(ruleName, 'delete');
-}
-
-function addCSSRule(ruleName) {
-  if (document.styleSheets) {
-    if (!getCSSRule(ruleName)) {
-      if (document.styleSheets[0].addRule) { 
-        document.styleSheets[0].addRule(ruleName, null,0); // IE style
-      } else if (document.styleSheets[0].insertRule) {
-        document.styleSheets[0].insertRule(ruleName+' { }', 0); // Mozilla syle
-      } else { return false; }
-    }
-  }
-  return getCSSRule(ruleName);
-} 
 
 
 function percentFixFromUrl( text ) {
