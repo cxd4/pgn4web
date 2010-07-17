@@ -11,6 +11,12 @@
 
 <title>pgn4web chessboard</title>
 
+<!--  use the base tag to host board.html on a different server than pgn4web.js
+
+<base id="boardBase" href="http://pgn4web.casaschi.net">
+
+-->
+
 <style id="boardCss" type="text/css"> 
 
 @import url("fonts/pgn4web-fonts.css");
@@ -104,6 +110,18 @@ font-weight: bold;
 <script type="text/javascript">
 
 function new_start_pgn4web() {
+
+  // workaround to cope with css/base issue with some browser
+  // if set, reset base.href temporarily to modify css stylesheet
+  var oldBaseHref = null;
+  if (baseObj = document.getElementById('boardBase')) {
+    var cssObj = document.getElementById('boardCss');
+    if ((cssObj.sheet      && !cssObj.sheet.cssRules) ||    // Mozilla style
+        (cssObj.styleSheet && !cssObj.styleSheet.rules)) {  // IE style
+      oldBaseHref = baseObj.href;
+      baseObj.href = "#";
+    }
+  }
 
   document.body.style.background = backgroundColor;
   document.body.style.padding = framePadding;
@@ -222,6 +240,9 @@ function new_start_pgn4web() {
     else { theObject.style.minHeight = paddingControlHeight; }
   }
 
+  // restore base.href if reset to modify css styleshhet
+  if (baseObj && oldBaseHref) { baseObj.href = oldBaseHref; }
+
   start_pgn4web();
 
   theObject = document.getElementById("GameSelector");
@@ -270,7 +291,7 @@ window.onload = new_start_pgn4web;
 
 function getCSSRuleFromObject(ruleName, objectId) { 
   ruleName = ruleName.toLowerCase();
-  cssObj = document.getElementById(objectId);
+  var cssObj = document.getElementById(objectId);
   if (cssObj) { 
     if (cssObj.sheet) { styleSheet = cssObj.sheet; } // Mozilla style
     else if (cssObj.styleSheet) { styleSheet = cssObj.styleSheet; } // IE style
