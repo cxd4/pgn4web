@@ -228,39 +228,6 @@ function new_start_pgn4web() {
 
   start_pgn4web();
 
-  theObject = document.getElementById("GameSelector");
-  if (theObject) { if (theObject.innerHTML !== "") { theObject.style.paddingBottom = paddingControlHeight; } }
-
-  boardHeight = document.getElementById("boardTable").offsetHeight;
-  document.getElementById("boardTable").style.width = boardHeight;
-  boardWidth = document.getElementById("boardTable").offsetWidth;
-  if (buttonsDisplay != "hidden") { boardHeight += document.getElementById("GameButtons").offsetHeight; }
-  if ((buttonsDisplay != "hidden") && (numberOfGames > 1)) { boardHeight += document.getElementById("GameSelector").offsetHeight; }
-
-  if (horizontalLayout === true) {
-    document.getElementById("extendedBoard").width = boardWidth;
-  }
-
-  if (fixFrameWidthToBoard) { frameWidth = boardWidth + 2 * framePadding; }
-  if (fixFrameHeightToBoard) { frameHeight = boardHeight + 2 * framePadding; }
-
-  theObject = document.getElementById("headerMoves");
-  if (theObject !== null) {
-    if (horizontalLayout === true) {
-      if (frameWidth === "") { document.getElementById("headerMoves").style.width = textWidth; }
-      else { document.getElementById("outerFrame").style.width = frameWidth - 2 * framePadding; }
-      document.getElementById("headerMoves").style.height = frameHeight === "" ? textHeight : frameHeight - 2 * framePadding;
-    } else {
-      document.getElementById("headerMoves").style.width = frameWidth === "" ? textWidth : frameWidth - 2 * framePadding;
-      if (frameHeight === "") { document.getElementById("headerMoves").style.height = textHeight; }
-      else { 
-	theObject = document.getElementById("boardHeadermovesPadding");
-        boardHeadermovesPaddingHeight = theObject ? theObject.offsetHeight : 0;
-	document.getElementById("headerMoves").style.height = frameHeight - boardHeight - 2 * framePadding - boardHeadermovesPaddingHeight; 
-      }
-    }
-  }
-
   if (gup("showHeightWidth") !== "") { 
     myAlert("info: board width=" + boardWidth + " height=" + boardHeight, false);
   }
@@ -970,11 +937,43 @@ function display_header_moves() {
 }
 
 function customFunctionOnPgnTextLoad() {
+
   theObject = document.getElementById("GameSelector");
   if (theObject) { 
     if (theObject.innerHTML !== "") { theObject.style.paddingBottom = paddingControlHeight; }
     else { theObject.style.paddingBottom = 0; }
   }
+
+  boardHeight = document.getElementById("boardTable").offsetHeight;
+  document.getElementById("boardTable").style.width = boardHeight;
+  boardWidth = document.getElementById("boardTable").offsetWidth;
+  if (buttonsDisplay != "hidden") { boardHeight += document.getElementById("GameButtons").offsetHeight; }
+  if ((buttonsDisplay != "hidden") && (numberOfGames > 1)) { boardHeight += document.getElementById("GameSelector").offsetHeight; }
+
+  if (horizontalLayout === true) {
+    document.getElementById("extendedBoard").width = boardWidth;
+  }
+
+  if (fixFrameWidthToBoard) { frameWidth = boardWidth + 2 * framePadding; }
+  if (fixFrameHeightToBoard) { frameHeight = boardHeight + 2 * framePadding; }
+
+  theObject = document.getElementById("headerMoves");
+  if (theObject !== null) {
+    if (horizontalLayout === true) {
+      if (frameWidth === "") { document.getElementById("headerMoves").style.width = textWidth; }
+      else { document.getElementById("outerFrame").style.width = frameWidth - 2 * framePadding; }
+      document.getElementById("headerMoves").style.height = frameHeight === "" ? textHeight : frameHeight - 2 * framePadding;
+    } else {
+      document.getElementById("headerMoves").style.width = frameWidth === "" ? textWidth : frameWidth - 2 * framePadding;
+      if (frameHeight === "") { document.getElementById("headerMoves").style.height = textHeight; }
+      else { 
+	theObject = document.getElementById("boardHeadermovesPadding");
+        boardHeadermovesPaddingHeight = theObject ? theObject.offsetHeight : 0;
+	document.getElementById("headerMoves").style.height = frameHeight - boardHeight - 2 * framePadding - boardHeadermovesPaddingHeight; 
+      }
+    }
+  }
+
 }
 
 function customFunctionOnPgnGameLoad() {
