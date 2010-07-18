@@ -969,6 +969,14 @@ function display_header_moves() {
 
 }
 
+function customFunctionOnPgnTextLoad() {
+  theObject = document.getElementById("GameSelector");
+  if (theObject) { 
+    if (theObject.innerHTML !== "") { theObject.style.paddingBottom = paddingControlHeight; }
+    else { theObject.style.paddingBottom = 0; }
+  }
+}
+
 function customFunctionOnPgnGameLoad() {
 
   theObject = document.getElementById("roundDetails");
