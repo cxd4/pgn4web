@@ -11,7 +11,7 @@
 
 <title>pgn4web chessboard</title>
 
-<!-- use the base tag to host board.html on a different server than pgn4web.js
+<!-- use the base tag to host live-compact.html on a different server than pgn4web.js
 
 <base href="http://pgn4web.casaschi.net">
 
@@ -91,13 +91,10 @@ font-weight: bold;
 
 </style>
 
-<!-- baseHref -->
 <link rel="shortcut icon" href="pawn.ico" />
 
-<!-- baseHref -->
 <script src="pgn4web.js" type="text/javascript"></script>
 
-<!-- baseHref -->
 <script src="pgn-decoder.js" type="text/javascript"></script>
 
 </head>
@@ -922,8 +919,13 @@ function customFunctionOnPgnTextLoad() {
 
   theObject = document.getElementById("GameSelector");
   if (theObject) { 
-    if ((buttonsDisplay != "hidden") && (numberOfGames > 1)) { theObject.style.paddingBottom = paddingControlHeight; }
-    else { theObject.style.paddingBottom = "0px"; }
+    if ((buttonsDisplay != "hidden") && (numberOfGames > 1)) { 
+      theObject.style.paddingBottom = paddingControlHeight; 
+      theObject.style.display = "block";
+    } else { 
+      theObject.style.paddingBottom = "0px"; 
+      theObject.style.display = "inline";
+    }
   }
 
   theObject = document.getElementById("headerMovesPadding");
