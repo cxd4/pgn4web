@@ -23,14 +23,18 @@ var encodingVersion = encodingVersion_dec = 1;
 
 if (((encodingCharSet_enc != undefined) && (encodingCharSet_enc != encodingCharSet_dec)) || 
     ((encodingVersion_enc != undefined) && (encodingVersion_enc != encodingVersion_dec))) {
-  alert("ERROR: PGN encoding/decoding mismatch");
+  errorString = "error: PGN encoding/decoding mismatch";
+  if (typeof myAlert == "function") { myAlert(errorString); } 
+  else { alert(errorString); }
 }
 
 function DecodePGN(bytes) {
 
   if (bytes.charAt(bytes.length - 1) != encodingCharSet.charAt(encodingVersion)) {
-    alert("ERROR: PGN encoding version mismatch (e:" + 
-           bytes.charAt(bytes.length - 1) + " d:" + encodingCharSet.charAt(encodingVersion) + ")");
+    errorString = "error: PGN encoding version mismatch (e:" + 
+                  bytes.charAt(bytes.length - 1) + " d:" + encodingCharSet.charAt(encodingVersion) + ")";
+    if (typeof myAlert == "function") { myAlert(errorString); }
+    else { alert(errorString); }
   } else {
     bytes.length--;
   }

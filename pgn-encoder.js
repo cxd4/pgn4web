@@ -23,7 +23,9 @@ var encodingVersion = encodingVersion_enc = 1;
 
 if (((encodingCharSet_dec != undefined) && (encodingCharSet_enc != encodingCharSet_dec)) ||
     ((encodingVersion_dec != undefined) && (encodingVersion_enc != encodingVersion_dec))) {
-  alert("ERROR: PGN encoding/decoding version/charset mismatch");
+  errorString = "error: PGN encoding/decoding version/charset mismatch";
+  if (typeof myAlert == "function") { myAlert(errorString); }
+  else { alert(errorString); }
 }
 
 function EncodePGN(ov) {
