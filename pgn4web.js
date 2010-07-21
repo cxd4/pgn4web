@@ -1018,9 +1018,9 @@ DocumentImages = new Array();
 var pgnHeaderTagRegExp       = /\[\s*(\w+)\s*"([^"]*)"\s*\]/; 
 var pgnHeaderTagRegExpGlobal = /\[\s*(\w+)\s*"([^"]*)"\s*\]/g;
 var dummyPgnHeader = '[x""]';
-var emptyPgnHeader = '[White ""]\n[Black ""]\n[Result ""]\n[Date ""]\n[Event ""]\n[Site ""]\n[Round ""]\n\n';
-var templatePgnHeader = '[White "?"]\n[Black "?"]\n[Result "?"]\n[Date "?"]\n[Event "?"]\n[Site "?"]\n[Round "?"]\n';
-var alertPgnHeader = '[White ""]\n[Black ""]\n[Result ""]\n[Date ""]\n[Event ""]\n[Site ""]\n[Round ""]\n\n{error: click on the top left chessboard square for debug info}';
+var emptyPgnHeader = '[Event ""]\n[Site ""]\n[Date ""]\n[Round ""]\n[White ""]\n[Black ""]\n[Result ""]\n\n';
+var templatePgnHeader = '[Event "?"]\n[Site "?"]\n[Date "?"]\n[Round "?"]\n[White "?"]\n[Black "?"]\n[Result "?"]\n';
+var alertPgnHeader = '[Event ""]\n[Site ""]\n[Date ""]\n[Round ""]\n[White ""]\n[Black ""]\n[Result ""]\n\n{error: click on the top left chessboard square for debug info}';
 
 var gameSelectorHead      = ' ...';
 var gameSelectorMono      = true;
