@@ -118,7 +118,7 @@ Example:
     SetAutoplayDelay(1000); // milliseconds
     SetAutostartAutoplay(false);
     SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
-    SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are also accepted
+    SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are accepted; other strings values assumed as PGN search string
     SetInitialHalfmove(0,false); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only
     SetShortcutKeysEnabled(false);
 

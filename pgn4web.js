@@ -1346,10 +1346,6 @@ function SetInitialHalfmove(number_or_string, always) {
 
 function SetInitialGame(number_or_string) {
   initialGame = number_or_string;
-  if (initialGame == "first") { return; }
-  if (initialGame == "last") { return; }
-  if (initialGame == "random") { return; }
-  if ((initialGame = parseInt(initialGame, 10)) == NaN) { initialGame = 1; } 
 }
 
 // the clock value is detected with two options: first the DGT sequence [%clk 01:02] 
@@ -1834,8 +1830,11 @@ function Init(){
         currentGame = Math.floor(Math.random()*numberOfGames);
         break;
       default:
-        if (isNaN(initialGame = parseInt(initialGame,10))) { currentGame = 0; }
-        else {
+        if (isNaN(parseInt(initialGame,10))) { 
+          currentGame = gameNumberSearchPgn(initialGame);
+          if (!currentGame) { currentGame = 0; }
+        } else {
+          initialGame = parseInt(initialGame,10);
           if (initialGame < 0) { currentGame = 0; }
           else if (initialGame === 0) { currentGame = Math.floor(Math.random()*numberOfGames); }
           else if (initialGame <= numberOfGames) { currentGame = (initialGame - 1); } 
@@ -2971,21 +2970,28 @@ function reset_after_click (ii, jj, originalClass, newClass) {
 
 
 var lastSearchPgnExpression = "";
-function searchPgnGame(searchExpression) {
+function gameNumberSearchPgn(searchExpression) {
   lastSearchPgnExpression = searchExpression;
-  if ((searchExpression === "") || (! searchExpression)) { return; }
-  if (numberOfGames < 2) { return; }
   // when searching we replace newline characters with spaces, 
   // so that we can use the "." special regexp characters on the whole game as a single line
   newlinesRegExp = new RegExp("[\n\r]", "gm");
   searchExpressionRegExp = new RegExp(searchExpression, "im");
-  for (checkGame = ((currentGame + 1) % numberOfGames); 
-       checkGame != currentGame; 
+  currentGameSearch = (currentGame + 1) % numberOfGames;
+  for (checkGame = (currentGameSearch + 1) % numberOfGames; 
+       checkGame != currentGameSearch; 
        checkGame = (checkGame + 1) % numberOfGames) { 
     if (pgnGame[checkGame].replace(newlinesRegExp, " ").match(searchExpressionRegExp)) {
-      break;
+      return checkGame;
     }
   }
+  return false;
+}
+
+function searchPgnGame(searchExpression) {
+  lastSearchPgnExpression = searchExpression;
+  if ((searchExpression === "") || (! searchExpression)) { return; }
+  if (numberOfGames < 2) { return; }
+  checkGame = gameNumberSearchPgn(searchExpression);
   if (checkGame != currentGame) {
     currentGame = checkGame;
     Init();
