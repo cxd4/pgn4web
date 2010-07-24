@@ -594,6 +594,8 @@ if (refreshMinutes > 0) {
   }
 }
 
+boardSearchString = gup("search");
+
 if (gup("help") !== "") {
   document.write("<PRE>");
   document.write("URL parameters\n");
@@ -607,10 +609,12 @@ if (gup("help") !== "") {
   document.write(" - refreshMinutes = live broadcast delay (default 0 = live broadcast disabled)\n");
   document.write(" - refreshDemo = if set true sets live demo mode (default false)\n");
   document.write("\n");
+  document.write(" - initialHalfmove = start | end | random | comment | a number (default start)\n");
+  document.write(" - initialGame = first | last | random | a number (default first)\n");
+  document.write(" - search = search expression (overrides initialHalfmove and initialGame)\n");
+  document.write("\n");
   document.write(" - autoplayMode = game (autoplay first game once) | loop (loops through games continiously) | none (default game)\n");
   document.write(" - delay = autoplay delay in ms (default 1000)\n");
-  document.write(" - initialGame = first | last | random | a number (default first)\n");
-  document.write(" - initialHalfmove = start | end | random | comment | a number (default start)\n");
   document.write("\n");
   document.write(" - squareSize = size of square (default 28)\n");
   document.write(" - pieceSize = size of pieces | default (default selects piece size based on piece size)\n");
@@ -959,6 +963,10 @@ function customFunctionOnPgnTextLoad() {
   if (gup("showHeightWidth") !== "") { 
     myAlert("info: board width=" + boardWidth + " height=" + boardHeight, false);
   }
+
+  if (!LiveBroadcastFoundOldGame && boardSearchString) {
+    searchPgnGame(boardSearchString); 
+  }
 }
 
 function customFunctionOnPgnGameLoad() {
@@ -1054,6 +1062,7 @@ function customFunctionOnPgnGameLoad() {
 //       theObject.innerHTML += '<span class="move"> ' + gameResult[currentGame] + '</span>'; 
 //     }
 //   }
+
 }
 
 var boardGeneratorWin=null;

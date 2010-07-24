@@ -1686,7 +1686,7 @@ function restartLiveBroadcastTimeout() {
   LiveBroadcastTicker++;
 }
 
-
+var LiveBroadcastFoundOldGame = false;
 function refreshPgnSource() {
   if (LiveBroadcastDelay === 0) { return; }
   if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); LiveBroadcastInterval = null; }
@@ -1719,23 +1719,26 @@ function refreshPgnSource() {
   if (!LiveBroadcastStarted) { pgnGameFromPgnText(LiveBroadcastPlaceholderPgn); }
 
   LoadGameHeaders();
-  foundOldGame = false;
+  LiveBroadcastFoundOldGame = false;
   for (ii=0; ii<numberOfGames; ii++) {
-    foundOldGame = ( (gameWhite[ii]==oldGameWhite) && (gameBlack[ii]==oldGameBlack) &&
-                     (gameEvent[ii]==oldGameEvent) && (gameRound[ii]==oldGameRound) &&
-                     (gameSite[ii] ==oldGameSite ) && (gameDate[ii] ==oldGameDate ) );
-    if (foundOldGame === true) { break; }
+    LiveBroadcastFoundOldGame = ( (gameWhite[ii]==oldGameWhite) && 
+                                  (gameBlack[ii]==oldGameBlack) &&
+                                  (gameEvent[ii]==oldGameEvent) && 
+                                  (gameRound[ii]==oldGameRound) &&
+                                  (gameSite[ii] ==oldGameSite ) && 
+                                  (gameDate[ii] ==oldGameDate ) );
+    if (LiveBroadcastFoundOldGame) { break; }
   }
-  if (foundOldGame === true) { initialGame = ii + 1; }
+  if (LiveBroadcastFoundOldGame) { initialGame = ii + 1; }
 
-  if ((foundOldGame === true) && (oldCurrentPly >= 0)) { 
+  if (LiveBroadcastFoundOldGame && (oldCurrentPly >= 0)) { 
     oldInitialHalfmove = initialHalfmove; 
     initialHalfmove = oldCurrentPly;
   }
   
   Init();
 
-  if ((foundOldGame === true) && (oldCurrentPly >= 0)) { 
+  if (LiveBroadcastFoundOldGame && (oldCurrentPly >= 0)) { 
     initialHalfmove = oldInitialHalfmove; 
   }
   
@@ -1744,7 +1747,7 @@ function refreshPgnSource() {
 
   restartLiveBroadcastTimeout();
 
-  if ((foundOldGame === true) && (oldAutoplay)) { SetAutoPlay(true); }
+  if (LiveBroadcastFoundOldGame && oldAutoplay) { SetAutoPlay(true); }
 
 }
 
@@ -2976,7 +2979,7 @@ function searchPgnGame(searchExpression) {
   // so that we can use the "." special regexp characters on the whole game as a single line
   newlinesRegExp = new RegExp("[\n\r]", "gm");
   searchExpressionRegExp = new RegExp(searchExpression, "im");
-  for (checkGame=(currentGame+1) % numberOfGames; 
+  for (checkGame = ((currentGame + 1) % numberOfGames); 
        checkGame != currentGame; 
        checkGame = (checkGame + 1) % numberOfGames) { 
     if (pgnGame[checkGame].replace(newlinesRegExp, " ").match(searchExpressionRegExp)) {
