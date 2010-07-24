@@ -1345,7 +1345,7 @@ function SetInitialHalfmove(number_or_string, always) {
 }
 
 function SetInitialGame(number_or_string) {
-  initialGame = number_or_string;
+  if (number_or_string) { initialGame = number_or_string; }
 }
 
 // the clock value is detected with two options: first the DGT sequence [%clk 01:02] 
@@ -2972,6 +2972,7 @@ function reset_after_click (ii, jj, originalClass, newClass) {
 var lastSearchPgnExpression = "";
 function gameNumberSearchPgn(searchExpression) {
   lastSearchPgnExpression = searchExpression;
+  if (searchExpression === "") { return false; }
   // when searching we replace newline characters with spaces, 
   // so that we can use the "." special regexp characters on the whole game as a single line
   newlinesRegExp = new RegExp("[\n\r]", "gm");
