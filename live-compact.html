@@ -180,7 +180,7 @@ function gup( name ){
   // regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   var regex = new RegExp( regexS );
   var results = regex.exec( window.location.href );
-  if( results !== null ) { return results[1]; }
+  if( results !== null ) { return decodeURIComponent(results[1]); }
 
   // allows for short version of the URL parameters, for instance sC matches squareColor
   compact_name = name.charAt(0);
@@ -196,7 +196,7 @@ function gup( name ){
   regex = new RegExp( regexS );
 
   results = regex.exec( window.location.href );
-  if( results !== null ) { return results[1]; }
+  if( results !== null ) { return decodeURIComponent(results[1]); }
 
   return "";
 }

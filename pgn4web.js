@@ -3328,11 +3328,13 @@ function PrintHTML() {
       text += 'TYPE="submit" VALUE="?">';
       text += '<INPUT ID="searchPgnExpression" CLASS="searchPgnExpression" ' +
               'TITLE="find games matching the search string (or regular expression)" ' + 
-              'TYPE="input" VALUE="' + lastSearchPgnExpression + '" STYLE="display: inline; ';
+              'TYPE="input" VALUE="" STYLE="display: inline; ';
       if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + 3*tableSize/4 + '; '; }
       text += '" ONFOCUS="disableShortcutKeysAndStoreStatus();" ONBLUR="restoreShortcutKeysStatus();">'; 
       text += '</FORM>';
       theObject.innerHTML = text;
+      theObject = document.getElementById('searchPgnExpression');
+      if (theObject) { theObject.value = lastSearchPgnExpression; }
     }
   }
 }
