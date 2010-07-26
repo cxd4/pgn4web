@@ -1892,12 +1892,10 @@ function Init(){
   RefreshBoard();
   CurrentPly = StartPly;
   HighlightLastMove(); 
-  if (firstStart || alwaysInitialHalfmove) {
-    GoToInitialHalfmove();
-  } else {
-    // added here customFunctionOnMove for consistency, as a null move starting a new game
-    customFunctionOnMove();
-  }
+  if (firstStart || alwaysInitialHalfmove) { GoToInitialHalfmove(); }
+  else { customFunctionOnMove(); }
+  // added here customFunctionOnMove for consistency, as a null move starting a new game
+
   if ((firstStart) && (autostartAutoplay)) { SetAutoPlay(true); }
 
   customFunctionOnPgnGameLoad();
