@@ -954,6 +954,7 @@ function customFunctionOnPgnTextLoad() {
     }
   }
 
+  // cope with occasional failures to load the live PGN data
   if ((LiveBroadcastDelay !== 0) && (LiveBroadcastTicker > 0) && (!LiveBroadcastFoundOldGame)) {
     SetInitialGame(init_Game);
     SetInitialHalfmove(init_Halfmove,always_Halfmove);

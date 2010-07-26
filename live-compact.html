@@ -123,6 +123,15 @@
 
     lastRefreshTime = Date();
 
+    // cope with occasional failures to load the live PGN data
+    if ((LiveBroadcastDelay !== 0) && (LiveBroadcastTicker > 0) && (!LiveBroadcastFoundOldGame)) {
+      SetInitialGame(iniGame);
+      SetInitialHalfmove("end",true);
+      setCurrentGameFromInitialGame();
+      Init();
+      GoToInitialHalfmove();
+    }
+
   }
 
   function customFunctionOnPgnGameLoad() {
