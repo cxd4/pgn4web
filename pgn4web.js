@@ -579,7 +579,7 @@ configBoardShrortcut("H5", "", function(){});
 // A4
 configBoardShrortcut("A4", "jump to previous event", function(){ if (!checkHeaderDefined(gameEvent[currentGame])) { return; } for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameEvent[ii])) && (gameEvent[ii] != gameEvent[currentGame])) { break; } } if (ii>=0) { currentGame = ii; Init();} });
 // B4
-configBoardShrortcut("B4", "jump to previous round of same event", function(){ if (!checkHeaderDefined(gameRound[currentGame])) { return; } for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameRound[ii])) && (gameEvent[ii] == gameEvent[currentGame]) && (gameRound[ii] != gameRound[currentGame])) { break; } } if (ii>=0) { currentGame = ii; Init();} });
+configBoardShrortcut("B4", "jump to previous round of same event", function(){ if ((!checkHeaderDefined(gameEvent[currentGame])) || (!checkHeaderDefined(gameRound[currentGame]))) { return; } for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameRound[ii])) && (gameEvent[ii] == gameEvent[currentGame]) && (gameRound[ii] != gameRound[currentGame])) { break; } } if (ii>=0) { currentGame = ii; Init();} });
 // C4
 configBoardShrortcut("C4", "load previous game of same black player", function(){ if (!checkHeaderDefined(gameBlack[currentGame])) { return; } for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameBlack[ii])) && (gameBlack[ii] == gameBlack[currentGame])) { break; } } if (ii>=0) { currentGame = ii; Init();} });
 // D4
@@ -589,7 +589,7 @@ configBoardShrortcut("E4", "load next game of same white player", function(){ if
 // F4
 configBoardShrortcut("F4", "load next game of same black player", function(){ if (!checkHeaderDefined(gameBlack[currentGame])) { return; } for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameBlack[ii])) && (gameBlack[ii] == gameBlack[currentGame])) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} });
 // G4
-configBoardShrortcut("G4", "jump to next round of same event", function(){ if (!checkHeaderDefined(gameRound[currentGame])) { return; } for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameRound[ii])) && (gameEvent[ii] == gameEvent[currentGame]) && (gameRound[ii] != gameRound[currentGame])) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} });
+configBoardShrortcut("G4", "jump to next round of same event", function(){ if ((!checkHeaderDefined(gameEvent[currentGame])) || (!checkHeaderDefined(gameRound[currentGame]))) { return; } for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameRound[ii])) && (gameEvent[ii] == gameEvent[currentGame]) && (gameRound[ii] != gameRound[currentGame])) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} });
 // H4
 configBoardShrortcut("H4", "jump to next event", function(){ if (!checkHeaderDefined(gameEvent[currentGame])) { return; } for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameEvent[ii])) && (gameEvent[ii] != gameEvent[currentGame])) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} });
 // A3
@@ -2977,7 +2977,8 @@ function gameNumberSearchPgn(searchExpression) {
   // so that we can use the "." special regexp characters on the whole game as a single line
   newlinesRegExp = new RegExp("[\n\r]", "gm");
   searchExpressionRegExp = new RegExp(searchExpression, "im");
-  currentGameSearch = (currentGame + 1) % numberOfGames;
+  // at start currentGame might still be -1
+  currentGameSearch = (currentGame < 0) || (currentGame >= numberOfGames) ? 0 : currentGame;
   for (checkGame = (currentGameSearch + 1) % numberOfGames; 
        checkGame != currentGameSearch; 
        checkGame = (checkGame + 1) % numberOfGames) { 
@@ -2993,7 +2994,7 @@ function searchPgnGame(searchExpression) {
   if ((searchExpression === "") || (! searchExpression)) { return; }
   if (numberOfGames < 2) { return; }
   checkGame = gameNumberSearchPgn(searchExpression);
-  if (checkGame != currentGame) {
+  if ((checkGame !== false) && (checkGame != currentGame)) {
     currentGame = checkGame;
     Init();
   }
@@ -3011,6 +3012,11 @@ function searchPgnGamePrompt() {
     theObject.value = searchExpression;
   }
   searchPgnGame(searchExpression);
+}
+
+function searchPgnGameForm() {
+  theObject = document.getElementById('searchPgnExpression');
+  if (theObject) { searchPgnGame(document.getElementById('searchPgnExpression').value); }
 }
 
 
@@ -3321,7 +3327,7 @@ function PrintHTML() {
       while (theObject.firstChild) { theObject.removeChild(theObject.firstChild); }
     } else {
       text = '<FORM ID="searchPgnForm" STYLE="display: inline;" ' +
-             'ACTION="javascript:searchPgnGame(document.getElementById(\'searchPgnExpression\').value);">';
+             'ACTION="javascript:searchPgnGameForm();">';
       text += '<INPUT ID="searchPgnButton" CLASS="searchPgnButton" STYLE="display: inline; ';
       if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + tableSize/4 + '; '; }
       text += '" TITLE="find games matching the search string (or regular expression)" ';
