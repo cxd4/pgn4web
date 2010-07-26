@@ -1813,35 +1813,65 @@ function createBoard(){
 }
 
 
+function setCurrentGameFromInitialGame() {
+  switch (initialGame) {
+    case "first":
+      currentGame = 0;
+      break;
+    case "last":
+      currentGame = numberOfGames - 1;
+      break;
+    case "random":
+      currentGame = Math.floor(Math.random()*numberOfGames);
+      break;
+    default:
+      if (isNaN(parseInt(initialGame,10))) { 
+        currentGame = gameNumberSearchPgn(initialGame);
+        if (!currentGame) { currentGame = 0; }
+      } else {
+        initialGame = parseInt(initialGame,10);
+        if (initialGame < 0) { currentGame = 0; }
+        else if (initialGame === 0) { currentGame = Math.floor(Math.random()*numberOfGames); }
+        else if (initialGame <= numberOfGames) { currentGame = (initialGame - 1); } 
+        else { currentGame = numberOfGames - 1; }
+      }
+      break;
+  }
+}
+
+function GoToInitialHalfmove(){
+  switch (initialHalfmove) {
+    case "start":
+      GoToMove(0);
+      break;
+    case "end":
+      GoToMove(StartPly+PlyNumber);
+      break;
+    case "random":
+      GoToMove(StartPly + Math.floor(Math.random()*(StartPly+PlyNumber)));
+      break;
+    case "comment":
+      GoToMove(0);
+      MoveToNextComment();
+      break;
+    default:
+      if (isNaN(initialHalfmove)) { initialHalfmove = 0; }
+      if (initialHalfmove < -3) { initialHalfmove = 0; }
+      if (initialHalfmove == -3) { GoToMove(StartPly+PlyNumber); }
+      else if (initialHalfmove == -2) { GoToMove(0); MoveToNextComment(); }
+      else if (initialHalfmove == -1) { GoToMove(StartPly + Math.floor(Math.random()*(StartPly+PlyNumber))); }
+      else { GoToMove(initialHalfmove); }
+      break;
+  }
+}
+
 function Init(){
 
   if (isAutoPlayOn) { SetAutoPlay(false); }
   InitImages();
   if (firstStart){
     LoadGameHeaders();
-    switch (initialGame) {
-      case "first":
-        currentGame = 0;
-        break;
-      case "last":
-        currentGame = numberOfGames - 1;
-        break;
-      case "random":
-        currentGame = Math.floor(Math.random()*numberOfGames);
-        break;
-      default:
-        if (isNaN(parseInt(initialGame,10))) { 
-          currentGame = gameNumberSearchPgn(initialGame);
-          if (!currentGame) { currentGame = 0; }
-        } else {
-          initialGame = parseInt(initialGame,10);
-          if (initialGame < 0) { currentGame = 0; }
-          else if (initialGame === 0) { currentGame = Math.floor(Math.random()*numberOfGames); }
-          else if (initialGame <= numberOfGames) { currentGame = (initialGame - 1); } 
-          else { currentGame = numberOfGames - 1; }
-        }
-        break;
-    }
+    setCurrentGameFromInitialGame();
   }
 
   if ((gameSetUp[currentGame] != undefined) && (gameSetUp[currentGame] != "1")) { InitFEN(); }
@@ -1863,29 +1893,7 @@ function Init(){
   CurrentPly = StartPly;
   HighlightLastMove(); 
   if (firstStart || alwaysInitialHalfmove) {
-    switch (initialHalfmove) {
-      case "start":
-        GoToMove(0);
-        break;
-      case "end":
-        GoToMove(StartPly+PlyNumber);
-        break;
-      case "random":
-        GoToMove(StartPly + Math.floor(Math.random()*(StartPly+PlyNumber)));
-        break;
-      case "comment":
-        GoToMove(0);
-        MoveToNextComment();
-        break;
-      default:
-        if (isNaN(initialHalfmove)) { initialHalfmove = 0; }
-        if (initialHalfmove < -3) { initialHalfmove = 0; }
-        if (initialHalfmove == -3) { GoToMove(StartPly+PlyNumber); }
-        else if (initialHalfmove == -2) { GoToMove(0); MoveToNextComment(); }
-        else if (initialHalfmove == -1) { GoToMove(StartPly + Math.floor(Math.random()*(StartPly+PlyNumber))); }
-        else { GoToMove(initialHalfmove); }
-        break;
-    }
+    GoToInitialHalfmove();
   } else {
     // added here customFunctionOnMove for consistency, as a null move starting a new game
     customFunctionOnMove();

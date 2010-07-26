@@ -954,6 +954,14 @@ function customFunctionOnPgnTextLoad() {
     }
   }
 
+  if ((LiveBroadcastDelay !== 0) && (LiveBroadcastTicker > 0) && (!LiveBroadcastFoundOldGame)) {
+    SetInitialGame(init_Game);
+    SetInitialHalfmove(init_Halfmove,always_Halfmove);
+    setCurrentGameFromInitialGame();
+    Init();
+    GoToInitialHalfmove();
+  }
+
   if (gup("showHeightWidth") !== "") { 
     myAlert("info: board width=" + boardWidth + " height=" + boardHeight, false);
   }
