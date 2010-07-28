@@ -202,7 +202,7 @@ print_help_row("White\\s*\"Somebody.*Black\\s*\"Other", "search for <i>Somebody<
 print_help_row("Site\\s*\"Somewhere.*Result\\s*\"\(1-0|0-1\)", "search for games at the <i>Somewhere</i> site ending with a win");
 print_help_row("Result\\s*\"\(?!1-0\)", "search for games not ending with a White win");
 print_help_row("1.\\s*e4\\s*e6", "search for games with moves <i>1. e4 e6</i>");
-print_help_row("1.\\s*e4\\s*e5\(?!\\s*2.\\s*Nf3\)", "search for games with moves <i>1. e4 e5</i> without <i>2. Nf3</i>");
+print_help_row("[^0-9]1.\\s*e4\\s*e5\(?!\\s*2.\\s*Nf3\)", "search for games with moves <i>1. e4 e5</i> without <i>2. Nf3</i>");
 document.write("</table>");
 
 </script>
