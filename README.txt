@@ -278,12 +278,15 @@ allow for execution of custom commands when shift + a number key is pressed:
 
 TECHNICAL NOTES ABOUT WEB BROWSERS
 
-pgn4web.js is developed and tested with a variety of browsers (Arora, 
-Blackberry browser, Chrome, Epiphany, Firefox, Internet Explorer, Opera, 
-Safari) on a variety of platforms (Linux/Debian, MacOS, Windows). Not every 
-browser version and every combination of browser/platform has been tested. 
+pgn4web is developed and tested with recent versions of a variety of 
+browsers (Arora, Blackberry browser, Chrome, Epiphany, Firefox, Internet 
+Explorer, Opera, Safari) on a variety of personal computer platforms 
+(Linux/Debian, MacOS, Windows) and some smartphone/pda platforms (Blackberry, 
+iPhone, iPad, iPod). 
+Not every browser version (please upgrade to a recent release) has been 
+tested and not every combination of browser/platform has been validated. 
 If you have any issue with using pgn4web on your platform, please email 
-pgn4web@casaschi.net
+pgn4web@casaschi.net 
 
 Note about Google Chrome: you might experience problems when testing HTML
 pages from your local computer while developing your site. This is a
