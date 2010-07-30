@@ -281,8 +281,8 @@ TECHNICAL NOTES ABOUT WEB BROWSERS
 pgn4web is developed and tested with recent versions of a variety of 
 browsers (Arora, Blackberry browser, Chrome, Epiphany, Firefox, Internet 
 Explorer, Opera, Safari) on a variety of personal computer platforms 
-(Linux/Debian, MacOS, Windows) and some smartphone/pda platforms (Blackberry, 
-iPhone, iPad, iPod). 
+(Linux/Debian, MacOS, Windows) and some smartphone/pda platform (Android, 
+Blackberry, Apple iOS for iPhone/iPad/iPod).
 Not every browser version (please upgrade to a recent release) has been 
 tested and not every combination of browser/platform has been validated. 
 If you have any issue with using pgn4web on your platform, please email 
