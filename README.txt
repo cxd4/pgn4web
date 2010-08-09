@@ -290,9 +290,10 @@ pgn4web@casaschi.net
 
 Note about Google Chrome: you might experience problems when testing HTML
 pages from your local computer while developing your site. This is a
-limitation of the browser with respect to loading local files. There is no
-workaround other than testing with a different browser. Browsing pgn4web
-websites with Google Chrome should work properly.
+security limitation of the browser with respect to loading local files. 
+The limitation can be bypassed by starting Google Chrome with the command 
+line switch '--allow-file-access-from-files'. Browsing pgn4web websites
+with Google Chrome should work properly.
 
 Note about Internet Explorer v7 and above: under some circumstances you might
 experience problems when testing HTML pages from your local computer while 
