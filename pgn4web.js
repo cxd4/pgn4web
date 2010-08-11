@@ -910,6 +910,7 @@ var LiveBroadcastTicker = 0;
 var LiveBroadcastStatusString = "";
 var LiveBroadcastLastModified = new Date(0); // default to epoch start
 var LiveBroadcastLastModifiedHeader = LiveBroadcastLastModified.toUTCString();
+var LiveBroadcastLastModifiedLocal = 'unavailable';
 var LiveBroadcastPlaceholderEvent = 'pgn4web live broadcast';
 var LiveBroadcastPlaceholderPgn = '[Event "' + LiveBroadcastPlaceholderEvent + '"]';
 var gameDemoMaxPly = new Array();
@@ -1624,7 +1625,10 @@ function loadPgnFromPgnUrl(pgnUrl){
       return LOAD_PGN_FROM_PGN_URL_FAIL;
     } else {
       LiveBroadcastLastModifiedHeader = http_request.getResponseHeader("Last-Modified");
-      if (LiveBroadcastLastModifiedHeader) { LiveBroadcastLastModified = new Date(LiveBroadcastLastModifiedHeader); }
+      if (LiveBroadcastLastModifiedHeader) { 
+        LiveBroadcastLastModified = new Date(LiveBroadcastLastModifiedHeader); 
+        LiveBroadcastLastModifiedLocal = new Date().toLocaleString();
+      }
       else { LiveBroadcastLastModified_Reset(); }
     }
   } else { 
@@ -1644,6 +1648,7 @@ function SetPgnUrl(url) {
 function LiveBroadcastLastModified_Reset() {
   LiveBroadcastLastModified = new Date(0);
   LiveBroadcastLastModifiedHeader = LiveBroadcastLastModified.toUTCString();
+  LiveBroadcastLastModifiedLocal = 'unavailable';
 }
 
 function pauseLiveBroadcast() {
@@ -1693,7 +1698,7 @@ function checkLiveBroadcastStatus() {
 
   theObject = document.getElementById("GameLiveLastModified");
   if (theObject !== null) { 
-    theObject.innerHTML = (LiveBroadcastLastModified.getTime() === 0) ? "unavailable" : LiveBroadcastLastModified.toLocaleString(); 
+    theObject.innerHTML = LiveBroadcastLastModifiedLocal; 
   }
 }
 
@@ -1724,7 +1729,7 @@ function refreshPgnSource() {
       addedPly += newPly;
     }    
   }
-  if (addedPly > 0) { LiveBroadcastLastModified = new Date(); }
+  if (addedPly > 0) { LiveBroadcastLastModifiedLocal = new Date().toLocaleString(); }
 
   oldGameWhite = gameWhite[currentGame];
   oldGameBlack = gameBlack[currentGame];
