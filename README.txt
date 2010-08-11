@@ -149,6 +149,7 @@ to any <div> or <span> containers with the following IDs:
   <div id="GameWhiteClock"></div>
   <div id="GameBlackClock"></div>
   <div id="GameLiveStatus"></div>
+  <div id="GameLiveLastModified"></div>
 
 The file template.css shows a list of customization style options.
 
@@ -216,9 +217,10 @@ If your live PGN contains clock info as comments after each game such as
 Clock information provided by the DGT chessboards (like {[%clk 1:59:59]}) is
 also supported.
 
-The status of the live broadcast is displayed in the following section: 
+The status of the live broadcast is displayed in the following sections: 
 
   <div id="GameLiveStatus"></div>
+  <div id="GameLiveLastModified"></div>
 
 Clicking on the H6 square will force a games refresh.
 Clicking on the A6/B6 squares will pause/restart the automatic games refresh.

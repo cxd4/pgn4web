@@ -106,7 +106,7 @@
     ticker_counter = (ticker_counter + 1) % ticker_string.length;
   }
 
-  lastRefreshTime = "";
+  lastRefreshTime = new Date(0);
   function customFunctionOnPgnTextLoad() {
       
     if ((LiveBroadcastStarted) && 
@@ -121,7 +121,7 @@
 
     update_ticker();
 
-    lastRefreshTime = Date();
+    lastRefreshTime = new Date();
 
     // cope with occasional failures to load the live PGN data
     if ((LiveBroadcastDelay !== 0) && (LiveBroadcastTicker > 0) && (!LiveBroadcastFoundOldGame)) {
@@ -255,7 +255,8 @@ function user_help() {
 	     "Status:" + "\n" + 
 	     "\n" +
 	     demoString +
-	     "last refresh: " + lastRefreshTime + "\n" +
+	     "last refresh: " + ((lastRefreshTime.getTime() === 0) ? "unavailable" : lastRefreshTime.toLocaleString()) + "\n" +
+             "last modified: " + ((LiveBroadcastLastModified.getTime() === 0) ? "unavailable" : LiveBroadcastLastModified.toLocaleString()) + "\n" +
 	     "live broadcast started:" + LiveBroadcastStarted + 
 	     " ended:" + LiveBroadcastEnded + 
 	     " paused:" + LiveBroadcastPaused + "\n" +
