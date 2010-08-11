@@ -1592,22 +1592,23 @@ function loadPgnFromPgnUrl(pgnUrl){
         catch (e) { }
       }
     }
-  if (!http_request){
+  if (!http_request) {
+    LiveBroadcastLastModified = new Date(0);
     myAlert('error: XMLHttpRequest failed for PGN URL\n' + pgnUrl, true);
     return LOAD_PGN_FROM_PGN_URL_FAIL; 
   }
 
   try {
     // anti-caching tecnique number 1: add a random parameter to the URL
-    if (LiveBroadcastDelay > 0) {
-      http_request.open("GET", pgnUrl + "?nocahce=" + Math.random(), false); 
-    } else { http_request.open("GET", pgnUrl, false); }
+    urlRandomizer = (LiveBroadcastDelay > 0) ? "?nocahce=" + Math.random() : "";
+    http_request.open("GET", pgnUrl + urlRandomizer, false);
     // anti-caching tecnique number 2: add header option
     if (LiveBroadcastDelay > 0) {
       http_request.setRequestHeader( "If-Modified-Since", LiveBroadcastLastModified.toUTCString() ); 
     }
     http_request.send(null);
   } catch(e) {
+      LiveBroadcastLastModified = new Date(0);
       myAlert('error: request failed for PGN URL\n' + pgnUrl, true);
       return LOAD_PGN_FROM_PGN_URL_FAIL;
   }
@@ -1617,6 +1618,7 @@ function loadPgnFromPgnUrl(pgnUrl){
     if (http_request.status == 304) {
       return LOAD_PGN_FROM_PGN_URL_UNMODIFIED;
     } else if (! pgnGameFromPgnText(http_request.responseText)) {
+      LiveBroadcastLastModified = new Date(0);
       myAlert('error: no games found in PGN file\n' + pgnUrl, true);
       return LOAD_PGN_FROM_PGN_URL_FAIL;
     } else {
@@ -1624,6 +1626,7 @@ function loadPgnFromPgnUrl(pgnUrl){
       LiveBroadcastLastModified = lastModifiedHeader ? new Date(lastModifiedHeader) : new Date(0); // default to epoch start
     }
   } else { 
+    LiveBroadcastLastModified = new Date(0);
     myAlert('error: failed reading PGN from URL\n' + pgnUrl, true);
     return LOAD_PGN_FROM_PGN_URL_FAIL;
   }
@@ -1713,10 +1716,7 @@ function refreshPgnSource() {
       addedPly += newPly;
     }    
   }
-  if (addedPly > 0) { 
-    LiveBroadcastLastModified = new Date(); 
-    checkLiveBroadcastStatus();  
-  }
+  if (addedPly > 0) { LiveBroadcastLastModified = new Date(); }
 
   oldGameWhite = gameWhite[currentGame];
   oldGameBlack = gameBlack[currentGame];
