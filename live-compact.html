@@ -255,8 +255,8 @@ function user_help() {
 	     "Status:" + "\n" + 
 	     "\n" +
 	     demoString +
-	     "last refresh: " + ((lastRefreshTime.getTime() === 0) ? "unavailable" : lastRefreshTime.toLocaleString()) + "\n" +
-             "last modified: " + ((LiveBroadcastLastModified.getTime() === 0) ? "unavailable" : LiveBroadcastLastModified.toLocaleString()) + "\n" +
+	     "last refresh (client time): " + ((lastRefreshTime.getTime() === 0) ? "unavailable" : lastRefreshTime.toLocaleString()) + "\n" +
+             "last modified (server time): " + ((LiveBroadcastLastModified.getTime() === 0) ? "unavailable" : LiveBroadcastLastModified.toLocaleString()) + "\n" +
 	     "live broadcast started:" + LiveBroadcastStarted + 
 	     " ended:" + LiveBroadcastEnded + 
 	     " paused:" + LiveBroadcastPaused + "\n" +
