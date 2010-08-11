@@ -1685,7 +1685,7 @@ function checkLiveBroadcastStatus() {
 
   theObject = document.getElementById("GameLiveLastModified");
   if (theObject !== null) { 
-    theObject.innerHTML = (LiveBroadcastLastModified.getTine === 0) ? "unavailable" : LiveBroadcastLastModified.toLocaleString(); 
+    theObject.innerHTML = (LiveBroadcastLastModified.getTime() === 0) ? "unavailable" : LiveBroadcastLastModified.toLocaleString(); 
   }
 }
 
