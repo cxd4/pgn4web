@@ -909,6 +909,7 @@ var LiveBroadcastPaused = false;
 var LiveBroadcastTicker = 0;
 var LiveBroadcastStatusString = "";
 var LiveBroadcastLastModified = new Date(0); // default to epoch start
+var LiveBroadcastLastModifiedHeader = LiveBroadcastLastModified.toUTCString();
 var LiveBroadcastPlaceholderEvent = 'pgn4web live broadcast';
 var LiveBroadcastPlaceholderPgn = '[Event "' + LiveBroadcastPlaceholderEvent + '"]';
 var gameDemoMaxPly = new Array();
@@ -1593,7 +1594,7 @@ function loadPgnFromPgnUrl(pgnUrl){
       }
     }
   if (!http_request) {
-    LiveBroadcastLastModified = new Date(0);
+    LiveBroadcastLastModified_Reset();
     myAlert('error: XMLHttpRequest failed for PGN URL\n' + pgnUrl, true);
     return LOAD_PGN_FROM_PGN_URL_FAIL; 
   }
@@ -1604,11 +1605,11 @@ function loadPgnFromPgnUrl(pgnUrl){
     http_request.open("GET", pgnUrl + urlRandomizer, false);
     // anti-caching tecnique number 2: add header option
     if (LiveBroadcastDelay > 0) {
-      http_request.setRequestHeader( "If-Modified-Since", LiveBroadcastLastModified.toUTCString() ); 
+      http_request.setRequestHeader( "If-Modified-Since", LiveBroadcastLastModifiedHeader ); 
     }
     http_request.send(null);
   } catch(e) {
-      LiveBroadcastLastModified = new Date(0);
+      LiveBroadcastLastModified_Reset();
       myAlert('error: request failed for PGN URL\n' + pgnUrl, true);
       return LOAD_PGN_FROM_PGN_URL_FAIL;
   }
@@ -1618,15 +1619,16 @@ function loadPgnFromPgnUrl(pgnUrl){
     if (http_request.status == 304) {
       return LOAD_PGN_FROM_PGN_URL_UNMODIFIED;
     } else if (! pgnGameFromPgnText(http_request.responseText)) {
-      LiveBroadcastLastModified = new Date(0);
+      LiveBroadcastLastModified_Reset();
       myAlert('error: no games found in PGN file\n' + pgnUrl, true);
       return LOAD_PGN_FROM_PGN_URL_FAIL;
     } else {
-      lastModifiedHeader = http_request.getResponseHeader("Last-Modified");
-      LiveBroadcastLastModified = lastModifiedHeader ? new Date(lastModifiedHeader) : new Date(0); // default to epoch start
+      LiveBroadcastLastModifiedHeader = http_request.getResponseHeader("Last-Modified");
+      if (LiveBroadcastLastModifiedHeader) { LiveBroadcastLastModified = new Date(LiveBroadcastLastModifiedHeader); }
+      else { LiveBroadcastLastModified_Reset(); }
     }
   } else { 
-    LiveBroadcastLastModified = new Date(0);
+    LiveBroadcastLastModified_Reset();
     myAlert('error: failed reading PGN from URL\n' + pgnUrl, true);
     return LOAD_PGN_FROM_PGN_URL_FAIL;
   }
@@ -1636,6 +1638,12 @@ function loadPgnFromPgnUrl(pgnUrl){
 
 function SetPgnUrl(url) {
   pgnUrl = url;
+}
+
+
+function LiveBroadcastLastModified_Reset() {
+  LiveBroadcastLastModified = new Date(0);
+  LiveBroadcastLastModifiedHeader = LiveBroadcastLastModified.toUTCString();
 }
 
 function pauseLiveBroadcast() {
@@ -1737,7 +1745,7 @@ function refreshPgnSource() {
   LiveBroadcastStarted = (loadPgnFromPgnUrl(pgnUrl) != LOAD_PGN_FROM_PGN_URL_FAIL);
   if (!LiveBroadcastStarted) { 
     pgnGameFromPgnText(LiveBroadcastPlaceholderPgn); 
-    LiveBroadcastLastModified = new Date(0); // default to epoch start
+    LiveBroadcastLastModified_Reset();
   }
 
   LoadGameHeaders();
