@@ -22,7 +22,7 @@ then
   echo "  refreshSeconds: refresh rate in seconds (default: $refreshSeconds_default)"
   echo "  timeoutHours: timeout in hours for stopping the process (default: $timeoutHours_default)"
   echo
-  echo "Needs to be run using bash and requires either curl or wget"
+  echo "Needs to be run using bash and requires curl"
   echo "Logs to 'localPgnFile'.log"
   echo
   exit
@@ -133,17 +133,13 @@ timeoutSteps=$((3600*$timeoutHours/$refreshSeconds))
 
 if [ -z "$(which curl)" ]
 then
-	if [ -z "$(which wget)" ]
-	then
-		print_error "missing both curl and wget"
-		exit
-	else
-		# TODO: add timestamping option --timestamp (but cant have --output-document)
-		grabCmdLine="wget --quiet --output-document=$tmpLocalPgnFile $remotePgnUrl"
-	fi
+	print_error "missing curl"
+	exit
 else 
 	grabCmdLine="curl --silent --remote-time --time-cond $localPgnFile --output $tmpLocalPgnFile --url $remotePgnUrl"
 fi
+	# wget alternative to curl, but --timestamp option is not compatible with --output-document
+	# grabCmdLine="wget --quiet --output-document=$tmpLocalPgnFile $remotePgnUrl"
 
 print_log "remoteUrl: $remotePgnUrl"
 print_log "localPgnFile: $localPgnFile"
