@@ -28,6 +28,7 @@ then
   exit
 fi
 
+# TODO: better bash shell detection
 if [ "$(basename $SHELL)" != "bash" ]
 then
 	echo "ERROR: $(basename $0) should be run with bash"
@@ -137,10 +138,11 @@ then
 		print_error "missing both curl and wget"
 		exit
 	else
-		grabCmdLine="wget -qrO $tmpLocalPgnFile $remotePgnUrl"
+		# TODO: add timestamping option --timestamp (but cant have --output-document)
+		grabCmdLine="wget --quiet --output-document=$tmpLocalPgnFile $remotePgnUrl"
 	fi
 else 
-	grabCmdLine="curl -so $tmpLocalPgnFile --url $remotePgnUrl"
+	grabCmdLine="curl --silent --remote-time --time-cond $localPgnFile --output $tmpLocalPgnFile --url $remotePgnUrl"
 fi
 
 print_log "remoteUrl: $remotePgnUrl"
