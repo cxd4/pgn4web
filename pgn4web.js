@@ -1606,7 +1606,7 @@ function loadPgnFromPgnUrl(pgnUrl){
     http_request.open("GET", pgnUrl + urlRandomizer, false);
     // anti-caching tecnique number 2: add header option
     if (LiveBroadcastDelay > 0) {
-      http_request.setRequestHeader( "If-Modified-Since", LiveBroadcastLastModifiedHeader ); 
+      http_request.setRequestHeader( "If-Modified-Since", LiveBroadcastLastModifiedHeader );
     }
     http_request.send(null);
   } catch(e) {
