@@ -159,7 +159,7 @@ do
 	cmp "$tmpLocalPgnFile" "$localPgnFile"
 	if [ $? -ne 0 ]
 	then
-		cp "$tmpLocalPgnFile" "$localPgnFile"
+		cp -s "$tmpLocalPgnFile" "$localPgnFile"
 	fi
 	step=$(($step +1))
 	sleep $refreshSeconds
