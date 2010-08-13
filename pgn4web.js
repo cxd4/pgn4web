@@ -1595,7 +1595,7 @@ function loadPgnFromPgnUrl(pgnUrl){
       }
     }
   if (!http_request) {
-    LiveBroadcastLastModified_Reset();
+    if (LiveBroadcastDelay > 0) { LiveBroadcastLastModified_Reset(); }
     myAlert('error: XMLHttpRequest failed for PGN URL\n' + pgnUrl, true);
     return LOAD_PGN_FROM_PGN_URL_FAIL; 
   }
@@ -1610,7 +1610,7 @@ function loadPgnFromPgnUrl(pgnUrl){
     }
     http_request.send(null);
   } catch(e) {
-      LiveBroadcastLastModified_Reset();
+      if (LiveBroadcastDelay > 0) { LiveBroadcastLastModified_Reset(); }
       myAlert('error: request failed for PGN URL\n' + pgnUrl, true);
       return LOAD_PGN_FROM_PGN_URL_FAIL;
   }
@@ -1618,7 +1618,11 @@ function loadPgnFromPgnUrl(pgnUrl){
   if ( (http_request.readyState == 4) && 
        ((http_request.status == 200) || (http_request.status === 0) || (http_request.status == 304)) ) {
     if (http_request.status == 304) {
-      return LOAD_PGN_FROM_PGN_URL_UNMODIFIED;
+      if (LiveBroadcastDelay > 0) { return LOAD_PGN_FROM_PGN_URL_UNMODIFIED; }
+      else { 
+        myAlert('error: unexpected unmodified PGN URL when not in live mode');
+        return LOAD_PGN_FROM_PGN_URL_FAIL;
+      }
 
 // dirty hack to cope with Opera's failure to report correctly a 304 status; should really be fixed properly instead
     } else if (window.opera && (! http_request.responseText) && (http_request.status === 0)) {
@@ -1627,19 +1631,21 @@ function loadPgnFromPgnUrl(pgnUrl){
 // end of dirty hack
 
     } else if (! pgnGameFromPgnText(http_request.responseText)) {
-      LiveBroadcastLastModified_Reset();
+      if (LiveBroadcastDelay > 0) { LiveBroadcastLastModified_Reset(); }
       myAlert('error: no games found in PGN file\n' + pgnUrl, true);
       return LOAD_PGN_FROM_PGN_URL_FAIL;
     } else {
-      LiveBroadcastLastModifiedHeader = http_request.getResponseHeader("Last-Modified");
-      if (LiveBroadcastLastModifiedHeader) { 
-        LiveBroadcastLastModified = new Date(LiveBroadcastLastModifiedHeader); 
-        LiveBroadcastLastModifiedLocal = new Date().toLocaleString();
+      if (LiveBroadcastDelay > 0) {
+        LiveBroadcastLastModifiedHeader = http_request.getResponseHeader("Last-Modified");
+        if (LiveBroadcastLastModifiedHeader) { 
+          LiveBroadcastLastModified = new Date(LiveBroadcastLastModifiedHeader); 
+          LiveBroadcastLastModifiedLocal = new Date().toLocaleString();
+        }
+        else { LiveBroadcastLastModified_Reset(); }
       }
-      else { LiveBroadcastLastModified_Reset(); }
     }
   } else { 
-    LiveBroadcastLastModified_Reset();
+    if (LiveBroadcastDelay > 0) { LiveBroadcastLastModified_Reset(); }
     myAlert('error: failed reading PGN from URL\n' + pgnUrl, true);
     return LOAD_PGN_FROM_PGN_URL_FAIL;
   }
@@ -1704,9 +1710,7 @@ function checkLiveBroadcastStatus() {
   if (theObject !== null) { theObject.innerHTML = LiveBroadcastStatusString; }
 
   theObject = document.getElementById("GameLiveLastModified");
-  if (theObject !== null) { 
-    theObject.innerHTML = LiveBroadcastLastModifiedLocal; 
-  }
+  if (theObject !== null) { theObject.innerHTML = LiveBroadcastLastModifiedLocal; }
 }
 
 function restartLiveBroadcastTimeout() {
@@ -1740,7 +1744,12 @@ function refreshPgnSource() {
     if (addedPly > 0) { LiveBroadcastLastModifiedLocal = new Date().toLocaleString(); }
   }
 
-  switch ( loadPgnFromPgnUrl(pgnUrl) ) {
+  loadPgnFromPgnUrlResult = loadPgnFromPgnUrl(pgnUrl);
+  if (LiveBroadcastDemo && (loadPgnFromPgnUrlResult == LOAD_PGN_FROM_PGN_URL_UNMODIFIED)) {
+    loadPgnFromPgnUrlResult = LOAD_PGN_FROM_PGN_URL_OK;
+  }
+
+  switch ( loadPgnFromPgnUrlResult ) {
   
     case LOAD_PGN_FROM_PGN_URL_FAIL:
       LiveBroadcastGameLoadFailures++;
