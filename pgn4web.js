@@ -88,8 +88,8 @@ function myAlert(msg, fatalError) {
   alertLog[alertLast] = msg;
   alertPlural = alertNum > 1 ? "s" : "";
   configBoardShrortcut(debugShortcutSquare, 
-                       "pgn4web v" + pgn4web_version + " debug info, " + alertNum + " alert" + alertPlural, 
-                       "keep"); 
+    "pgn4web v" + pgn4web_version + " debug info, " + alertNum + " alert" + alertPlural, 
+    "keep"); 
 
   if ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) {
     startAlertPrompt();
@@ -667,6 +667,7 @@ function detectBaseLocation() {
   return base;
 }
 
+
 debugWin = null;
 function displayDebugInfo() {
   stopAlertPrompt();
@@ -966,7 +967,7 @@ for(i=0; i<3; ++i){
 }
 
 HistEnPassant =  new Array(MaxMove);
-HistEnPassant[0] =  false;
+HistEnPassant[0] = false;
 HistEnPassantCol = new Array(MaxMove);
 HistEnPassantCol[0] = -1;
 
@@ -991,7 +992,6 @@ var ImageOffset  = -1;
 var ImagePath = '';                                                 
 var ImagePathOld;
 var imageType = 'png';
-
 var defaultImagesSize = 40;
 
 var highlightOption = true;
@@ -1016,7 +1016,6 @@ var CurrentPly;
 var IsRotated = false;
 
 ClearImg  = new Image();
-
 DocumentImages = new Array();
 
 var pgnHeaderTagRegExp       = /\[\s*(\w+)\s*"([^"]*)"\s*\]/; 
@@ -1045,22 +1044,22 @@ function CheckLegality(what, plyCount) {
   var isCheck;
 
   // Is it a castling move?
-  if (what == 'O-O'){
+  if (what == 'O-O') {
     if (!CheckLegalityOO()) { return false; }
     start = PieceCol[MoveColor][0];
     end   = 6;
-    while(start < end){
+    while(start < end) {
       isCheck = IsCheck(start, MoveColor*7, MoveColor);
       if (isCheck) { return false; }
       ++start;
     }
     StoreMove(plyCount);
     return true;
-  } else if (what == 'O-O-O'){
+  } else if (what == 'O-O-O') {
     if (!CheckLegalityOOO()) { return false; }
     start = PieceCol[MoveColor][0];
     end   = 2;
-    while(start > end){
+    while(start > end) {
       isCheck = IsCheck(start, MoveColor*7, MoveColor);
       if (isCheck) { return false; }
       --start;
@@ -1075,14 +1074,14 @@ function CheckLegality(what, plyCount) {
   // opposite color, with the exception of the en-passant capture.
   // If the moved piece and the piece in the TO square are different then 
   // the moved piece has to be a pawn promoting.
-  if (!mvCapture){
+  if (!mvCapture) {
     if (Board[mvToCol][mvToRow] !== 0) { return false; }
   }
-  if ((mvCapture) && (Color(Board[mvToCol][mvToRow]) != 1-MoveColor)){
+  if ((mvCapture) && (Color(Board[mvToCol][mvToRow]) != 1-MoveColor)) {
     if ((mvPiece != 6) || (!HistEnPassant[plyCount-1]) || (HistEnPassantCol[plyCount-1] != mvToCol) ||
 	(mvToRow != 5-3*MoveColor)) { return false; }
   }
-  if (mvIsPromotion){
+  if (mvIsPromotion) {
     if (mvPiece     != 6)               { return false; }
     if (mvPieceOnTo >= 6)               { return false; }
     if (mvToRow     != 7*(1-MoveColor)) { return false; }
@@ -1092,8 +1091,8 @@ function CheckLegality(what, plyCount) {
   // type as the one in the move. For each one of these check if they could 
   // have made the move.
   var pieceId;
-  for (pieceId = 0; pieceId < 16; ++pieceId){
-     if (PieceType[MoveColor][pieceId] == mvPiece){
+  for (pieceId = 0; pieceId < 16; ++pieceId) {
+     if (PieceType[MoveColor][pieceId] == mvPiece) {
       if (mvPiece == 1) { retVal = CheckLegalityKing(pieceId); }
       else if (mvPiece == 2) { retVal = CheckLegalityQueen(pieceId); }
       else if (mvPiece == 3) { retVal = CheckLegalityRook(pieceId); }
@@ -1114,10 +1113,8 @@ function CheckLegality(what, plyCount) {
 }
 
 function CheckLegalityKing(thisKing) {
-  if ((mvFromCol >= 0) &&
-      (mvFromCol != PieceCol[MoveColor][thisKing])) { return false; }
-  if ((mvFromRow > 0) &&
-      (mvFromRow != PieceRow[MoveColor][thisKing])) { return false; }
+  if ((mvFromCol >= 0) && (mvFromCol != PieceCol[MoveColor][thisKing])) { return false; }
+  if ((mvFromRow >= 0) && (mvFromRow != PieceRow[MoveColor][thisKing])) { return false; }
 
   if (Math.abs(PieceCol[MoveColor][thisKing]-mvToCol) > 1) { return false; }
   if (Math.abs(PieceRow[MoveColor][thisKing]-mvToRow) > 1) { return false; }
@@ -1126,10 +1123,8 @@ function CheckLegalityKing(thisKing) {
 }
 
 function CheckLegalityQueen(thisQueen) {
-  if ((mvFromCol >= 0) &&
-      (mvFromCol != PieceCol[MoveColor][thisQueen])) { return false; }
-  if ((mvFromRow >= 0) &&
-      (mvFromRow != PieceRow[MoveColor][thisQueen])) { return false; }
+  if ((mvFromCol >= 0) && (mvFromCol != PieceCol[MoveColor][thisQueen])) { return false; }
+  if ((mvFromRow >= 0) && (mvFromRow != PieceRow[MoveColor][thisQueen])) { return false; }
 
   if (((PieceCol[MoveColor][thisQueen]-mvToCol)*
        (PieceRow[MoveColor][thisQueen]-mvToRow) !== 0) &&
@@ -1143,10 +1138,8 @@ function CheckLegalityQueen(thisQueen) {
 }
 
 function CheckLegalityRook(thisRook) {
-  if ((mvFromCol >= 0) &&
-      (mvFromCol != PieceCol[MoveColor][thisRook])) { return false; }
-  if ((mvFromRow >= 0) &&
-      (mvFromRow != PieceRow[MoveColor][thisRook])) { return false; }
+  if ((mvFromCol >= 0) && (mvFromCol != PieceCol[MoveColor][thisRook])) { return false; }
+  if ((mvFromRow >= 0) && (mvFromRow != PieceRow[MoveColor][thisRook])) { return false; }
 
   if ((PieceCol[MoveColor][thisRook]-mvToCol)*
       (PieceRow[MoveColor][thisRook]-mvToRow) !== 0) { return false; }
@@ -1158,10 +1151,8 @@ function CheckLegalityRook(thisRook) {
 }
 
 function CheckLegalityBishop(thisBishop) {
-  if ((mvFromCol >= 0) &&
-      (mvFromCol != PieceCol[MoveColor][thisBishop])) { return false; }
-  if ((mvFromRow >= 0) &&
-      (mvFromRow != PieceRow[MoveColor][thisBishop])) { return false; }
+  if ((mvFromCol >= 0) && (mvFromCol != PieceCol[MoveColor][thisBishop])) { return false; }
+  if ((mvFromRow >= 0) && (mvFromRow != PieceRow[MoveColor][thisBishop])) { return false; }
 
   if (Math.abs(PieceCol[MoveColor][thisBishop]-mvToCol) !=
       Math.abs(PieceRow[MoveColor][thisBishop]-mvToRow)) { return false; }
@@ -1173,10 +1164,8 @@ function CheckLegalityBishop(thisBishop) {
 }
 
 function CheckLegalityKnight(thisKnight) {
-  if ((mvFromCol >= 0) &&
-      (mvFromCol != PieceCol[MoveColor][thisKnight])) { return false; }
-  if ((mvFromRow >= 0) &&
-      (mvFromRow != PieceRow[MoveColor][thisKnight])) { return false; }
+  if ((mvFromCol >= 0) && (mvFromCol != PieceCol[MoveColor][thisKnight])) { return false; }
+  if ((mvFromRow >= 0) && (mvFromRow != PieceRow[MoveColor][thisKnight])) { return false; }
 
   if (Math.abs(PieceCol[MoveColor][thisKnight]-mvToCol)*
       Math.abs(PieceRow[MoveColor][thisKnight]-mvToRow) != 2) { return false; }
@@ -1185,13 +1174,10 @@ function CheckLegalityKnight(thisKnight) {
 }
 
 function CheckLegalityPawn(thisPawn) {
-  if ((mvFromCol >= 0) &&
-      (mvFromCol != PieceCol[MoveColor][thisPawn])) { return false; }
-  if ((mvFromRow >= 0) &&
-      (mvFromRow != PieceRow[MoveColor][thisPawn])) { return false; }
+  if ((mvFromCol >= 0) && (mvFromCol != PieceCol[MoveColor][thisPawn])) { return false; }
+  if ((mvFromRow >= 0) && (mvFromRow != PieceRow[MoveColor][thisPawn])) { return false; }
 
-  if (Math.abs(PieceCol[MoveColor][thisPawn]-mvToCol) != mvCapture)
-  { return false; }
+  if (Math.abs(PieceCol[MoveColor][thisPawn]-mvToCol) != mvCapture) { return false; }
 
   if (mvCapture) {
     if (PieceRow[MoveColor][thisPawn]-mvToRow != 2*MoveColor-1) { return false; }
@@ -1296,7 +1282,7 @@ function ClearMove(move) {
     cc = move.charCodeAt(ii);
     if ((cc == 45) || ((cc >= 48) && (cc <= 57)) || (cc == 61) ||
 //        (cc == 35) || (cc == 43) || // patch this to pass through '+' and '#' signs
-	((cc >= 65) && (cc <= 90)) || ((cc >=97) && (cc <= 122))){
+	((cc >= 65) && (cc <= 90)) || ((cc >=97) && (cc <= 122))) {
 	  mm += move.charAt(ii);
     }
     ++ii;
@@ -1481,7 +1467,6 @@ function SetHighlightOption(on) {
   highlightOption = on;
 }
 
-
 function SetHighlight(on) {
   SetHighlightOption(on);
   if (on) { HighlightLastMove(); }
@@ -1501,20 +1486,13 @@ function highlightMove(colFrom, rowFrom, colTo, rowTo) {
   if ( highlightSquare(colFrom, rowFrom, true) ) {
     lastColFromHighlighted = colFrom;
     lastRowFromHighlighted = rowFrom;
-  } else {
-    lastColFromHighlighted = -1;
-    lastRowFromHighlighted = -1;
-  }
+  } else { lastColFromHighlighted = lastRowFromHighlighted = -1; }
 
   if ( highlightSquare(colTo, rowTo, true) ) {
     lastColToHighlighted = colTo;
     lastRowToHighlighted = rowTo;
-  } else {
-    lastColToHighlighted = -1;
-    lastRowToHighlighted = -1;
-  }
+  } else { lastColToHighlighted = lastRowToHighlighted = -1; }
 }
-
 
 function highlightSquare(col, row, on) {
   if ((col == undefined) || (row == undefined)) { return false; }
@@ -1527,11 +1505,9 @@ function highlightSquare(col, row, on) {
   theObject = document.getElementById('tcol' + tcol + 'trow' + trow);
   if (theObject === null) { return false; }
 
-  if (on) {
-    theObject.className = (trow+tcol)%2 === 0 ? "highlightWhiteSquare" : "highlightBlackSquare";
-  } else {
-    theObject.className = (trow+tcol)%2 === 0 ? "whiteSquare" : "blackSquare";
-  }
+  if (on) { theObject.className = (trow+tcol)%2 === 0 ? "highlightWhiteSquare" : "highlightBlackSquare"; }
+  else { theObject.className = (trow+tcol)%2 === 0 ? "whiteSquare" : "blackSquare"; }
+  
   return true;
 }
 
@@ -1575,11 +1551,9 @@ function pgnGameFromPgnText(pgnText) {
   return (gameIndex >= 0);
 }
 
-
 var LOAD_PGN_FROM_PGN_URL_FAIL = 0;
 var LOAD_PGN_FROM_PGN_URL_OK = 1;
 var LOAD_PGN_FROM_PGN_URL_UNMODIFIED = 2;
-
 function loadPgnFromPgnUrl(pgnUrl){
   
   LiveBroadcastLastRefreshedLocal = (new Date()).toLocaleString();
@@ -1704,10 +1678,8 @@ function checkLiveBroadcastStatus() {
     }
     LiveBroadcastEnded = (liveGamesRunning === 0);
 
-    LiveBroadcastStatusString = LiveBroadcastEnded ?
-                                "live broadcast ended" :
-                                "live games: " + liveGamesRunning +
-                                " &nbsp; finished: " + (numberOfGames - liveGamesRunning);
+    LiveBroadcastStatusString = LiveBroadcastEnded ? "live broadcast ended" :
+      "live games: " + liveGamesRunning + " &nbsp; finished: " + (numberOfGames - liveGamesRunning);
   }
 
   theObject = document.getElementById("GameLiveStatus");
@@ -1726,7 +1698,7 @@ function restartLiveBroadcastTimeout() {
   if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); LiveBroadcastInterval = null; }
   checkLiveBroadcastStatus();
   needRestart = (!LiveBroadcastEnded);
-  if ((needRestart === true) && (!LiveBroadcastPaused)){
+  if ((needRestart === true) && (!LiveBroadcastPaused)) {
     LiveBroadcastInterval = setTimeout("refreshPgnSource()", LiveBroadcastDelay * 60000);
   }
   LiveBroadcastTicker++;
@@ -1800,12 +1772,10 @@ function refreshPgnSource() {
       LoadGameHeaders();
       LiveBroadcastFoundOldGame = false;
       for (ii=0; ii<numberOfGames; ii++) {
-      LiveBroadcastFoundOldGame = ( (gameWhite[ii]==oldGameWhite) && 
-                                    (gameBlack[ii]==oldGameBlack) &&
-                                    (gameEvent[ii]==oldGameEvent) && 
-                                    (gameRound[ii]==oldGameRound) &&
-                                    (gameSite[ii] ==oldGameSite ) && 
-                                    (gameDate[ii] ==oldGameDate ) );
+        LiveBroadcastFoundOldGame = 
+          (gameWhite[ii]==oldGameWhite) && (gameBlack[ii]==oldGameBlack) && 
+          (gameEvent[ii]==oldGameEvent) && (gameRound[ii]==oldGameRound) &&
+          (gameSite[ii] ==oldGameSite ) && (gameDate[ii] ==oldGameDate );
         if (LiveBroadcastFoundOldGame) { break; }
       }
       if (LiveBroadcastFoundOldGame) { initialGame = ii + 1; }
@@ -1841,6 +1811,7 @@ function refreshPgnSource() {
   restartLiveBroadcastTimeout();
 
 }
+
 
 function createBoard(){
 
@@ -1917,7 +1888,6 @@ function createBoard(){
     return;
   }
 }
-
 
 function setCurrentGameFromInitialGame() {
   switch (initialGame) {
@@ -2051,16 +2021,16 @@ function InitFEN(startingFEN) {
       PieceType[color][3] = 5;
       PieceCol[color][2]  = 1;
       PieceCol[color][3]  = 6;
-      for (pawn = 0; pawn < 8; ++pawn){
+      for (pawn = 0; pawn < 8; ++pawn) {
 	PieceType[color][pawn+8] = 6;
 	PieceCol[color][pawn+8]  = pawn;
       }
-      for (ii = 0; ii < 16; ++ii){
+      for (ii = 0; ii < 16; ++ii) {
 	PieceMoveCounter[color][ii] = 0;
 	PieceRow[color][ii]         = (1-color) * Math.floor(ii/8) +
  	                                 color  * (7-Math.floor(ii/8));
       }
-      for (ii = 0; ii < 16; ii++){
+      for (ii = 0; ii < 16; ii++) {
         var col = PieceCol[color][ii];
         var row = PieceRow[color][ii];
         Board[col][row] = (1-2*color)*PieceType[color][ii];
@@ -2270,7 +2240,6 @@ function SetImageType(extension) {
   imageType = extension;
 }
 
-
 function InitImages() {
   // Reset the array describing what image is in each square.
   DocumentImages.length = 0;
@@ -2305,6 +2274,7 @@ function InitImages() {
   }
   ImagePathOld = ImagePath;
 }
+
 
 function IsCheck(col, row, color) {
   var ii, jj;
@@ -2358,10 +2328,10 @@ function IsCheck(col, row, color) {
   return false;
 }
 
+
 function checkHeaderDefined(headerValue) {
   return ((headerValue != undefined) && (headerValue !== "") && (headerValue != " ") && (headerValue != "?"));
 }
-
 
 function LoadGameHeaders(){
   var ii;
@@ -2471,7 +2441,6 @@ function MoveBackward(diff) {
   customFunctionOnMove();
 }
 
-
 function MoveForward(diff) {
 
   // First of all find to which ply we have to go back. Remember that
@@ -2528,13 +2497,11 @@ function AutoplayNextGame() {
   SetAutoPlay(false);
 }
 
-
 function MoveToNextComment() {
   for(ii=CurrentPly+1; ii<=StartPly+PlyNumber; ii++) {
     if (MoveComments[ii] !== '') { GoToMove(ii); break; }
   }
 }
-
 
 function MoveToPrevComment() {
   for(ii=(CurrentPly-1); ii>=0; ii--) {
@@ -2553,7 +2520,6 @@ function OpenGame(gameId) {
  
   PrintHTML();
 }
-
 
 function ParsePGNGameString(gameString) {
 
@@ -2891,7 +2857,6 @@ function translateNAGs(comment) {
   }
   return comment;
 }
-
 
 function ParseMove(move, plyCount) {
 //  move = move.replace(/[\+#]/g, ""); // patch this to pass through '+' and '#' signs
@@ -3333,50 +3298,35 @@ function PrintHTML() {
   // Show the HTML for the Game Event
 
   theObject = document.getElementById("GameEvent");
-  if (theObject !== null) {
-    theObject.innerHTML = gameEvent[currentGame];
-    // theObject.style.whiteSpace = "nowrap";
-  }
+  if (theObject !== null) { theObject.innerHTML = gameEvent[currentGame]; }
 
   // Show the HTML for the Game Round
 
   theObject = document.getElementById("GameRound");
-  if (theObject !== null) {
-    theObject.innerHTML = gameRound[currentGame]; 
-    theObject.style.whiteSpace = "nowrap";
-  } 
+  if (theObject !== null) { theObject.innerHTML = gameRound[currentGame]; }
 
   // Show the HTML for the Game Site
 
   theObject = document.getElementById("GameSite");
-  if (theObject !== null) {
-    theObject.innerHTML = gameSite[currentGame]; 
-    // theObject.style.whiteSpace = "nowrap";
-  } 
+  if (theObject !== null) { theObject.innerHTML = gameSite[currentGame]; }
 
   // Show the HTML for the Game Date
 
   theObject = document.getElementById("GameDate");
-  if (theObject !== null) {
+  if (theObject !== null) { 
     theObject.innerHTML = gameDate[currentGame]; 
     theObject.style.whiteSpace = "nowrap";
-  } 
+  }
 
   // Show the HTML for the Game White Player
 
   theObject = document.getElementById("GameWhite");
-  if (theObject !== null) {
-    theObject.innerHTML = gameWhite[currentGame]; 
-    // theObject.style.whiteSpace = "nowrap";
-  } 
+  if (theObject !== null) { theObject.innerHTML = gameWhite[currentGame]; }
 
   // Show the HTML for the Game Black Player
 
   theObject = document.getElementById("GameBlack");
-  if (theObject !== null) {
-    theObject.innerHTML = gameBlack[currentGame]; 
-    // theObject.style.whiteSpace = "nowrap";
-  } 
+  if (theObject !== null) { theObject.innerHTML = gameBlack[currentGame]; }
 
   // Show the HTML for the Game Result
 
@@ -3387,13 +3337,13 @@ function PrintHTML() {
   } 
   
   text = '<SPAN ID="ShowPgnText">';
-  for (ii = StartPly; ii < StartPly+PlyNumber; ++ii){
+  for (ii = StartPly; ii < StartPly+PlyNumber; ++ii) {
     printedComment = false;
     // remove PGN extension tags
     thisComment = MoveComments[ii].replace(/\[%.*?\]\s*/g,''); // note trailing spaces are removed also
     // remove comments that are all spaces
     if (thisComment.match(/^\s*$/)) { thisComment = ''; }
-    if (commentsIntoMoveText && (thisComment !== '')){
+    if (commentsIntoMoveText && (thisComment !== '')) {
       if (commentsOnSeparateLines && (ii > StartPly)) { 
         text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
       }
@@ -3407,7 +3357,7 @@ function PrintHTML() {
     text += '<SPAN STYLE="white-space: nowrap;">';
     if (ii%2 === 0){
       text += '<SPAN CLASS="move">' + moveCount + '.&nbsp;</SPAN>';
-    }else{
+    } else {
       if ((printedComment) || (ii == StartPly)) { text += '<SPAN CLASS="move">' + moveCount + '...&nbsp;</SPAN>'; }
     }
     jj = ii+1;
@@ -3419,7 +3369,7 @@ function PrintHTML() {
   thisComment = MoveComments[StartPly+PlyNumber].replace(/\[%.*?\]\s*/g,''); // note trailing spaces are removed also
   // remove comments that are all spaces
   if (thisComment.match(/^\s*$/)) { thisComment = ''; }
-  if (commentsIntoMoveText && (thisComment !== '')){
+  if (commentsIntoMoveText && (thisComment !== '')) {
     if (commentsOnSeparateLines) { text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>'; }
     text += '<SPAN CLASS="comment">' + thisComment + '</SPAN><SPAN CLASS="move"> </SPAN>';
   }
@@ -3467,7 +3417,6 @@ function FlipBoard() {
   if (tmpHighlightOption) { SetHighlight(true); }
 }
 
-
 function RefreshBoard() {
   // Check if we need a new set of pieces.
   InitImages();
@@ -3497,7 +3446,6 @@ function RefreshBoard() {
   }
 }
 
-
 function SetAutoPlay(vv) {
   isAutoPlayOn = vv;
   // No matter what clear the timeout.
@@ -3526,11 +3474,9 @@ function SetAutoPlay(vv) {
   }
 }
 
-
 function SetAutoplayDelay(vv) {
   Delay = vv;
 }
-
 
 function SetLiveBroadcast(delay, alertFlag, demoFlag) {
   LiveBroadcastDelay = delay; // delay = 0 means no live broadcast
@@ -3538,18 +3484,15 @@ function SetLiveBroadcast(delay, alertFlag, demoFlag) {
   LiveBroadcastDemo = (demoFlag === true);
 }
 
-
 function SetImage(square, image) {
   if (DocumentImages[square] == image) { return; }
   document.images[square+ImageOffset].src = image;
   DocumentImages[square]                  = image;   // Store the new image.
 }
 
-
 function SetImagePath(path) {
   ImagePath = path;
 }
-
 
 function SwitchAutoPlay() {
   if (isAutoPlayOn) { SetAutoPlay(false); }
@@ -3558,7 +3501,6 @@ function SwitchAutoPlay() {
     SetAutoPlay(true);
   }
 }
-
 
 function StoreMove(thisPly) {
 
