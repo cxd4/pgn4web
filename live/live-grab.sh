@@ -156,10 +156,10 @@ while [ $step -le $timeoutSteps ]
 do
 	print_log "step $step of $timeoutSteps"
 	$grabCmdLine 
-	cmp "$tmpLocalPgnFile" "$localPgnFile"
+	cmp -s "$tmpLocalPgnFile" "$localPgnFile"
 	if [ $? -ne 0 ]
 	then
-		cp -s "$tmpLocalPgnFile" "$localPgnFile"
+		cp "$tmpLocalPgnFile" "$localPgnFile"
 	fi
 	step=$(($step +1))
 	sleep $refreshSeconds
