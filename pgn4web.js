@@ -1711,15 +1711,17 @@ function refreshPgnSource() {
   if (LiveBroadcastDelay === 0) { return; }
   if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); LiveBroadcastInterval = null; }
   if (LiveBroadcastDemo) {
-    var addedPly = 0;
+    addedPly = 0;
     for(ii=0;ii<numberOfGames;ii++) {
       rnd = Math.random();
       if (rnd <= 0.05)      { newPly = 3; } //  5% of times add 3 ply
       else if (rnd <= 0.20) { newPly = 2; } // 15% of times add 2 ply
       else if (rnd <= 0.60) { newPly = 1; } // 40% of times add 1 ply
       else                  { newPly = 0; } // 40% of times add 0 ply
-      gameDemoMaxPly[ii] += newPly;
-      addedPly += newPly;
+      if (gameDemoMaxPly[ii] <= gameDemoLength[ii]) { 
+        gameDemoMaxPly[ii] += newPly;
+        addedPly += newPly;
+      }
     }    
     if (addedPly > 0) { LiveBroadcastLastReceivedLocal = (new Date()).toLocaleString(); }
   }
