@@ -690,7 +690,7 @@ function displayDebugInfo() {
                'PLY: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber + '\n';
   debugInfo += 'AUTOPLAY: ' + (isAutoPlayOn ? 'delay=' + Delay + 'ms' + ' autoplaynext=' + autoplayNextGame : 'off');
   debugInfo += '\n\n';
-  debugInfo += 'LIVE BROADCAST: ' + (LiveBroadcastDelay > 0 ? 'ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + ' started=' + LiveBroadcastStarted + ' ended=' + LiveBroadcastEnded + ' paused=' + LiveBroadcastPaused + ' demo=' + LiveBroadcastDemo + ' alert=' + LiveBroadcastAlert : 'off'); 
+  debugInfo += 'LIVE BROADCAST: ' + (LiveBroadcastDelay > 0 ? 'ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + ' started=' + LiveBroadcastStarted + ' ended=' + LiveBroadcastEnded + ' paused=' + LiveBroadcastPaused + ' demo=' + LiveBroadcastDemo + ' alert=' + LiveBroadcastAlert + '\n' + 'last refresh: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'last received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'last modified (server time): ' + LiveBroadcastLastModified_ServerTime() : 'off'); 
   debugInfo += '\n\n';
   debugInfo += 'ALERT LOG: fatalnew=' + fatalErrorNumSinceReset + ' new=' + alertNumSinceReset + ' shown=' + 
                Math.min(alertNum, alertLog.length) + ' total=' + alertNum + '\n--';
@@ -910,7 +910,8 @@ var LiveBroadcastTicker = 0;
 var LiveBroadcastStatusString = "";
 var LiveBroadcastLastModified = new Date(0); // default to epoch start
 var LiveBroadcastLastModifiedHeader = LiveBroadcastLastModified.toUTCString();
-var LiveBroadcastLastModifiedLocal = 'unavailable';
+var LiveBroadcastLastReceivedLocal = 'unavailable';
+var LiveBroadcastLastRefreshedLocal = 'unavailable';
 var LiveBroadcastPlaceholderEvent = 'pgn4web live broadcast';
 var LiveBroadcastPlaceholderPgn = '[Event "' + LiveBroadcastPlaceholderEvent + '"]';
 var gameDemoMaxPly = new Array();
@@ -1617,6 +1618,9 @@ function loadPgnFromPgnUrl(pgnUrl){
 
   if ( (http_request.readyState == 4) && 
        ((http_request.status == 200) || (http_request.status === 0) || (http_request.status == 304)) ) {
+
+    LiveBroadcastLastRefreshedLocal = new Date().toLocaleString();
+
     if (http_request.status == 304) {
       if (LiveBroadcastDelay > 0) { return LOAD_PGN_FROM_PGN_URL_UNMODIFIED; }
       else { 
@@ -1639,7 +1643,7 @@ function loadPgnFromPgnUrl(pgnUrl){
         LiveBroadcastLastModifiedHeader = http_request.getResponseHeader("Last-Modified");
         if (LiveBroadcastLastModifiedHeader) { 
           LiveBroadcastLastModified = new Date(LiveBroadcastLastModifiedHeader); 
-          LiveBroadcastLastModifiedLocal = new Date().toLocaleString();
+          LiveBroadcastLastReceivedLocal = new Date().toLocaleString();
         }
         else { LiveBroadcastLastModified_Reset(); }
       }
@@ -1661,7 +1665,11 @@ function SetPgnUrl(url) {
 function LiveBroadcastLastModified_Reset() {
   LiveBroadcastLastModified = new Date(0);
   LiveBroadcastLastModifiedHeader = LiveBroadcastLastModified.toUTCString();
-  LiveBroadcastLastModifiedLocal = 'unavailable';
+  LiveBroadcastLastReceivedLocal = 'unavailable';
+}
+
+function LiveBroadcastLastModified_ServerTime() {
+  return LiveBroadcastLastModified.getTime() === 0 ? 'unavailable' : LiveBroadcastLastModifiedHeader; 
 }
 
 function pauseLiveBroadcast() {
@@ -1709,8 +1717,12 @@ function checkLiveBroadcastStatus() {
   theObject = document.getElementById("GameLiveStatus");
   if (theObject !== null) { theObject.innerHTML = LiveBroadcastStatusString; }
 
-  theObject = document.getElementById("GameLiveLastModified");
-  if (theObject !== null) { theObject.innerHTML = LiveBroadcastLastModifiedLocal; }
+  theObject = document.getElementById("GameLiveLastRefreshed");
+  if (theObject !== null) { theObject.innerHTML = LiveBroadcastLastRefreshedLocal; }
+  theObject = document.getElementById("GameLiveLastReceived");
+  if (theObject !== null) { theObject.innerHTML = LiveBroadcastLastReceivedLocal; }
+  theObject = document.getElementById("GameLiveLastModifiedServer");
+  if (theObject !== null) { theObject.innerHTML = LiveBroadcastLastModified_ServerTime(); }
 }
 
 function restartLiveBroadcastTimeout() {
@@ -1741,7 +1753,7 @@ function refreshPgnSource() {
       gameDemoMaxPly[ii] += newPly;
       addedPly += newPly;
     }    
-    if (addedPly > 0) { LiveBroadcastLastModifiedLocal = new Date().toLocaleString(); }
+    if (addedPly > 0) { LiveBroadcastLastReceivedLocal = new Date().toLocaleString(); }
   }
 
   loadPgnFromPgnUrlResult = loadPgnFromPgnUrl(pgnUrl);

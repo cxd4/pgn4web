@@ -106,7 +106,6 @@
     ticker_counter = (ticker_counter + 1) % ticker_string.length;
   }
 
-  lastRefreshTime = new Date(0);
   function customFunctionOnPgnTextLoad() {
       
     if ((LiveBroadcastStarted) && 
@@ -120,8 +119,6 @@
     document.getElementById("additionalMessage").innerHTML = LiveBroadcastEnded ? ", <a href='javascript: checkForNewLiveEvent();' onFocus='this.blur();' title='click here to check for the start of a new live broadcast event' style='color: inherit;'>check here for a new event</a>" : "";
 
     update_ticker();
-
-    lastRefreshTime = new Date();
 
     // cope with occasional failures to load the live PGN data
     if ((LiveBroadcastDelay !== 0) && (LiveBroadcastTicker > 0) && (!LiveBroadcastFoundOldGame)) {
@@ -248,19 +245,11 @@ function user_help() {
 	     "C6 / F6: jump to previous / next finished game" + "\n" +
 	     "D6 / E6: jump to previous / next unfinished game" + "\n" +
 	     "H6: force games refresh during live broadcast" + "\n" +
+             "A8: debug info" + "\n" +
 	     "G8 / H8: shortcut squares help / pgn4web help" + "\n" +
 	     "\n" +
 	     "Please note all squares are listed assuming White on bottom, plese adjust square labels if the chessboard is flipped." + "\n" +
 	     "\n" +
-	     "Status:" + "\n" + 
-	     "\n" +
-	     demoString +
-	     "last refresh: " + ((lastRefreshTime.getTime() === 0) ? "unavailable" : lastRefreshTime.toLocaleString()) + "\n" +
-             "last received: " + LiveBroadcastLastModifiedLocal + "\n" +
-	     "live broadcast started:" + LiveBroadcastStarted + 
-	     " ended:" + LiveBroadcastEnded + 
-	     " paused:" + LiveBroadcastPaused + "\n" +
-	     "\n" + 
 	     "Press OK for more pgn4web help information" +
 	     "\n ";
 

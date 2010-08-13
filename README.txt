@@ -220,7 +220,9 @@ also supported.
 The status of the live broadcast is displayed in the following sections: 
 
   <div id="GameLiveStatus"></div>
-  <div id="GameLiveLastModified"></div>
+  <div id="GameLiveLastRefreshed"></div>
+  <div id="GameLiveLastReceived"></div>
+  <div id="GameLiveLastModifiedServer"></div>
 
 Clicking on the H6 square will force a games refresh.
 Clicking on the A6/B6 squares will pause/restart the automatic games refresh.
