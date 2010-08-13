@@ -1562,7 +1562,7 @@ function loadPgnFromPgnUrl(pgnUrl){
     if (window.XMLHttpRequest) { // Mozilla, Safari, ...
       http_request = new XMLHttpRequest();
       if (http_request.overrideMimeType) {
-        http_request.overrideMimeType('text/xml');
+        http_request.overrideMimeType('text/plain');
       }
     } else if (window.ActiveXObject) { // IE
       try { http_request = new ActiveXObject("Msxml2.XMLHTTP"); }
