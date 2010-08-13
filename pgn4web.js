@@ -1619,6 +1619,13 @@ function loadPgnFromPgnUrl(pgnUrl){
        ((http_request.status == 200) || (http_request.status === 0) || (http_request.status == 304)) ) {
     if (http_request.status == 304) {
       return LOAD_PGN_FROM_PGN_URL_UNMODIFIED;
+
+// dirty hack to cope with Opera's failure to report correctly a 304 status; should really be fixed properly instead
+    } else if (window.opera && (! http_request.responseText) && (http_request.status === 0)) {
+      http_request.abort(); 
+      return LOAD_PGN_FROM_PGN_URL_UNMODIFIED;
+// end of dirty hack
+
     } else if (! pgnGameFromPgnText(http_request.responseText)) {
       LiveBroadcastLastModified_Reset();
       myAlert('error: no games found in PGN file\n' + pgnUrl, true);
@@ -1714,6 +1721,8 @@ function restartLiveBroadcastTimeout() {
 }
 
 var LiveBroadcastFoundOldGame = false;
+var LiveBroadcastGameLoadFailures = 0;
+var LiveBroadcastGameLoadFailuresThreshold = 3;
 function refreshPgnSource() {
   if (LiveBroadcastDelay === 0) { return; }
   if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); LiveBroadcastInterval = null; }
@@ -1728,61 +1737,88 @@ function refreshPgnSource() {
       gameDemoMaxPly[ii] += newPly;
       addedPly += newPly;
     }    
-  }
-  if (addedPly > 0) { LiveBroadcastLastModifiedLocal = new Date().toLocaleString(); }
-
-  oldGameWhite = gameWhite[currentGame];
-  oldGameBlack = gameBlack[currentGame];
-  oldGameEvent = gameEvent[currentGame];
-  oldGameRound = gameRound[currentGame];
-  oldGameSite  = gameSite[currentGame];
-  oldGameDate  = gameDate[currentGame];
-
-  initialGame = currentGame + 1;
-  firstStart = true;
-  textSelectOptions = '';
-
-  oldCurrentPly = CurrentPly != StartPly + PlyNumber ? CurrentPly : -1;
-
-  oldAutoplay = isAutoPlayOn;
-  if (isAutoPlayOn) { SetAutoPlay(false); }
-
-  LiveBroadcastStarted = (loadPgnFromPgnUrl(pgnUrl) != LOAD_PGN_FROM_PGN_URL_FAIL);
-  if (!LiveBroadcastStarted) { 
-    pgnGameFromPgnText(LiveBroadcastPlaceholderPgn); 
-    LiveBroadcastLastModified_Reset();
+    if (addedPly > 0) { LiveBroadcastLastModifiedLocal = new Date().toLocaleString(); }
   }
 
-  LoadGameHeaders();
-  LiveBroadcastFoundOldGame = false;
-  for (ii=0; ii<numberOfGames; ii++) {
-    LiveBroadcastFoundOldGame = ( (gameWhite[ii]==oldGameWhite) && 
-                                  (gameBlack[ii]==oldGameBlack) &&
-                                  (gameEvent[ii]==oldGameEvent) && 
-                                  (gameRound[ii]==oldGameRound) &&
-                                  (gameSite[ii] ==oldGameSite ) && 
-                                  (gameDate[ii] ==oldGameDate ) );
-    if (LiveBroadcastFoundOldGame) { break; }
-  }
-  if (LiveBroadcastFoundOldGame) { initialGame = ii + 1; }
-
-  if (LiveBroadcastFoundOldGame && (oldCurrentPly >= 0)) { 
-    oldInitialHalfmove = initialHalfmove; 
-    initialHalfmove = oldCurrentPly;
-  }
+  switch ( loadPgnFromPgnUrl(pgnUrl) ) {
   
-  Init();
+    case LOAD_PGN_FROM_PGN_URL_FAIL:
+      LiveBroadcastGameLoadFailures++;
+      if (LiveBroadcastGameLoadFailures >= LiveBroadcastGameLoadFailuresThreshold) {
+        LiveBroadcastStarted = false;
+        pgnGameFromPgnText(LiveBroadcastPlaceholderPgn);
+        LiveBroadcastLastModified_Reset();
+        initialGame = 1;
+        firstStart = true;
+        textSelectOptions = '';
+        LoadGameHeaders();
+        Init();
+        checkLiveBroadcastStatus();
+        customFunctionOnPgnTextLoad();
+      }
+      break;
 
-  if (LiveBroadcastFoundOldGame && (oldCurrentPly >= 0)) { 
-    initialHalfmove = oldInitialHalfmove; 
-  }
+    case LOAD_PGN_FROM_PGN_URL_OK:
+      LiveBroadcastGameLoadFailures = 0;
+      LiveBroadcastStarted = true;
+
+      oldGameWhite = gameWhite[currentGame];
+      oldGameBlack = gameBlack[currentGame];
+      oldGameEvent = gameEvent[currentGame];
+      oldGameRound = gameRound[currentGame];
+      oldGameSite  = gameSite[currentGame];
+      oldGameDate  = gameDate[currentGame];
+
+      initialGame = currentGame + 1;
+      firstStart = true;
+      textSelectOptions = '';
+
+      oldCurrentPly = CurrentPly != StartPly + PlyNumber ? CurrentPly : -1;
+
+      oldAutoplay = isAutoPlayOn;
+      if (isAutoPlayOn) { SetAutoPlay(false); }
+
+      LoadGameHeaders();
+      LiveBroadcastFoundOldGame = false;
+      for (ii=0; ii<numberOfGames; ii++) {
+      LiveBroadcastFoundOldGame = ( (gameWhite[ii]==oldGameWhite) && 
+                                    (gameBlack[ii]==oldGameBlack) &&
+                                    (gameEvent[ii]==oldGameEvent) && 
+                                    (gameRound[ii]==oldGameRound) &&
+                                    (gameSite[ii] ==oldGameSite ) && 
+                                    (gameDate[ii] ==oldGameDate ) );
+        if (LiveBroadcastFoundOldGame) { break; }
+      }
+      if (LiveBroadcastFoundOldGame) { initialGame = ii + 1; }
+
+      if (LiveBroadcastFoundOldGame && (oldCurrentPly >= 0)) { 
+        oldInitialHalfmove = initialHalfmove; 
+        initialHalfmove = oldCurrentPly;
+      }
   
-  checkLiveBroadcastStatus();
-  customFunctionOnPgnTextLoad();
+      Init();
+
+      if (LiveBroadcastFoundOldGame && (oldCurrentPly >= 0)) { 
+        initialHalfmove = oldInitialHalfmove; 
+      } 
+  
+      checkLiveBroadcastStatus();
+      customFunctionOnPgnTextLoad();
+
+      if (LiveBroadcastFoundOldGame && oldAutoplay) { SetAutoPlay(true); }
+
+      break;
+
+    case LOAD_PGN_FROM_PGN_URL_UNMODIFIED: 
+      LiveBroadcastGameLoadFailures = 0;
+      break;
+
+    default:
+      break;
+
+  }
 
   restartLiveBroadcastTimeout();
-
-  if (LiveBroadcastFoundOldGame && oldAutoplay) { SetAutoPlay(true); }
 
 }
 
