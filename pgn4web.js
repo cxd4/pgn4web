@@ -1738,7 +1738,7 @@ function restartLiveBroadcastTimeout() {
 
 var LiveBroadcastFoundOldGame = false;
 var LiveBroadcastGameLoadFailures = 0;
-var LiveBroadcastGameLoadFailuresThreshold = 3;
+var LiveBroadcastGameLoadFailuresThreshold = 5;
 function refreshPgnSource() {
   if (LiveBroadcastDelay === 0) { return; }
   if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); LiveBroadcastInterval = null; }

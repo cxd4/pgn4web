@@ -21,10 +21,15 @@ then
 	exit
 fi
 
-if [ "$(basename $SHELL)" != "bash" ]
+if [ "$1" == "--no-shell-check" ]
 then
-	echo "ERROR: $(basename $0) should be run with bash"
-	exit
+        shift 1
+else
+        if [ "$(basename $SHELL)" != "bash" ]
+        then
+                echo "ERROR: $(basename $0) should be run with bash. Prepend --no-shell-check as first parameters to skip checking the shell type."
+                exit
+        fi
 fi
 
 pgn_file=live.pgn
