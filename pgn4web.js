@@ -1582,6 +1582,8 @@ var LOAD_PGN_FROM_PGN_URL_UNMODIFIED = 2;
 
 function loadPgnFromPgnUrl(pgnUrl){
   
+  LiveBroadcastLastRefreshedLocal = (new Date()).toLocaleString();
+
   var http_request = false;
     if (window.XMLHttpRequest) { // Mozilla, Safari, ...
       http_request = new XMLHttpRequest();
@@ -1596,7 +1598,6 @@ function loadPgnFromPgnUrl(pgnUrl){
       }
     }
   if (!http_request) {
-    if (LiveBroadcastDelay > 0) { LiveBroadcastLastModified_Reset(); }
     myAlert('error: XMLHttpRequest failed for PGN URL\n' + pgnUrl, true);
     return LOAD_PGN_FROM_PGN_URL_FAIL; 
   }
@@ -1611,15 +1612,12 @@ function loadPgnFromPgnUrl(pgnUrl){
     }
     http_request.send(null);
   } catch(e) {
-      if (LiveBroadcastDelay > 0) { LiveBroadcastLastModified_Reset(); }
       myAlert('error: request failed for PGN URL\n' + pgnUrl, true);
       return LOAD_PGN_FROM_PGN_URL_FAIL;
   }
 
   if ( (http_request.readyState == 4) && 
        ((http_request.status == 200) || (http_request.status === 0) || (http_request.status == 304)) ) {
-
-    LiveBroadcastLastRefreshedLocal = (new Date()).toLocaleString();
 
     if (http_request.status == 304) {
       if (LiveBroadcastDelay > 0) { return LOAD_PGN_FROM_PGN_URL_UNMODIFIED; }
@@ -1635,7 +1633,6 @@ function loadPgnFromPgnUrl(pgnUrl){
 // end of dirty hack
 
     } else if (! pgnGameFromPgnText(http_request.responseText)) {
-      if (LiveBroadcastDelay > 0) { LiveBroadcastLastModified_Reset(); }
       myAlert('error: no games found in PGN file\n' + pgnUrl, true);
       return LOAD_PGN_FROM_PGN_URL_FAIL;
     } else {
@@ -1649,7 +1646,6 @@ function loadPgnFromPgnUrl(pgnUrl){
       }
     }
   } else { 
-    if (LiveBroadcastDelay > 0) { LiveBroadcastLastModified_Reset(); }
     myAlert('error: failed reading PGN from URL\n' + pgnUrl, true);
     return LOAD_PGN_FROM_PGN_URL_FAIL;
   }
@@ -1776,6 +1772,8 @@ function refreshPgnSource() {
         Init();
         checkLiveBroadcastStatus();
         customFunctionOnPgnTextLoad();
+      } else {
+        checkLiveBroadcastStatus();
       }
       break;
 
@@ -1832,6 +1830,7 @@ function refreshPgnSource() {
 
     case LOAD_PGN_FROM_PGN_URL_UNMODIFIED: 
       LiveBroadcastGameLoadFailures = 0;
+      customFunctionOnPgnTextLoad();
       break;
 
     default:
@@ -1870,6 +1869,7 @@ function createBoard(){
           return;
         } else { // live broadcast case, wait for live show to start
           LiveBroadcastStarted = false;
+          LiveBroadcastLastModified_Reset(); 
           pgnGameFromPgnText(LiveBroadcastPlaceholderPgn); 
           Init();
 	  checkLiveBroadcastStatus();
@@ -1878,6 +1878,9 @@ function createBoard(){
         }
         break;
       case LOAD_PGN_FROM_PGN_URL_UNMODIFIED:
+        if (LiveBroadcastDelay > 0) { checkLiveBroadcastStatus(); }
+        return;
+        break;
       default:
         return;
         break;
