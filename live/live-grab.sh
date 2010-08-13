@@ -107,7 +107,7 @@ then
 	print_error "localPgnFile should not contain \"]\""
 	exit
 fi
-tmpLocalPgnFile=$localPgnFile.$RANDOM.pgn
+tmpLocalPgnFile=$localPgnFile.tmp
 
 logFile=$localPgnFile.log
 if [ -e "$logFile" ] || [ -h "$logFile" ]
@@ -140,7 +140,7 @@ then
 	print_error "missing curl"
 	exit
 else 
-	grabCmdLine="curl --silent --remote-time --time-cond $localPgnFile --output $tmpLocalPgnFile --url $remotePgnUrl"
+	grabCmdLine="curl --silent --remote-time --time-cond $tmpLocalPgnFile --output $tmpLocalPgnFile --url $remotePgnUrl"
 fi
 	# wget alternative to curl, but --timestamp option is not compatible with --output-document
 	# grabCmdLine="wget --quiet --output-document=$tmpLocalPgnFile $remotePgnUrl"
@@ -156,9 +156,10 @@ while [ $step -le $timeoutSteps ]
 do
 	print_log "step $step of $timeoutSteps"
 	$grabCmdLine 
-	if [ -e "$tmpLocalPgnFile" ]
+	cmp "$tmpLocalPgnFile" "$localPgnFile"
+	if [ $? -ne 0 ]
 	then
-		mv "$tmpLocalPgnFile" "$localPgnFile"
+		cp "$tmpLocalPgnFile" "$localPgnFile"
 	fi
 	step=$(($step +1))
 	sleep $refreshSeconds
