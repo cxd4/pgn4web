@@ -1619,7 +1619,7 @@ function loadPgnFromPgnUrl(pgnUrl){
   if ( (http_request.readyState == 4) && 
        ((http_request.status == 200) || (http_request.status === 0) || (http_request.status == 304)) ) {
 
-    LiveBroadcastLastRefreshedLocal = new Date().toLocaleString();
+    LiveBroadcastLastRefreshedLocal = (new Date()).toLocaleString();
 
     if (http_request.status == 304) {
       if (LiveBroadcastDelay > 0) { return LOAD_PGN_FROM_PGN_URL_UNMODIFIED; }
@@ -1643,7 +1643,7 @@ function loadPgnFromPgnUrl(pgnUrl){
         LiveBroadcastLastModifiedHeader = http_request.getResponseHeader("Last-Modified");
         if (LiveBroadcastLastModifiedHeader) { 
           LiveBroadcastLastModified = new Date(LiveBroadcastLastModifiedHeader); 
-          LiveBroadcastLastReceivedLocal = new Date().toLocaleString();
+          LiveBroadcastLastReceivedLocal = (new Date()).toLocaleString();
         }
         else { LiveBroadcastLastModified_Reset(); }
       }
@@ -1753,7 +1753,7 @@ function refreshPgnSource() {
       gameDemoMaxPly[ii] += newPly;
       addedPly += newPly;
     }    
-    if (addedPly > 0) { LiveBroadcastLastReceivedLocal = new Date().toLocaleString(); }
+    if (addedPly > 0) { LiveBroadcastLastReceivedLocal = (new Date()).toLocaleString(); }
   }
 
   loadPgnFromPgnUrlResult = loadPgnFromPgnUrl(pgnUrl);
