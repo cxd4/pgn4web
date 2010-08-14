@@ -1553,7 +1553,6 @@ function pgnGameFromPgnText(pgnText) {
 
 var LOAD_PGN_FROM_PGN_URL_FAIL = 0;
 var LOAD_PGN_FROM_PGN_URL_OK = 1;
-var LOAD_PGN_FROM_PGN_URL_UNMODIFIED = 2;
 function loadPgnFromPgnUrl(pgnUrl){
   
   LiveBroadcastLastRefreshedLocal = (new Date()).toLocaleString();
@@ -1577,12 +1576,10 @@ function loadPgnFromPgnUrl(pgnUrl){
   }
 
   try {
-    // anti-caching tecnique number 1: add a random parameter to the URL
-    urlRandomizer = (LiveBroadcastDelay > 0) ? "?nocahce=" + Math.random() : "";
-    http_request.open("GET", pgnUrl + urlRandomizer, false);
-    // anti-caching tecnique number 2: add header option
+    http_request.open("GET", pgnUrl, false);
     if (LiveBroadcastDelay > 0) {
-      http_request.setRequestHeader( "If-Modified-Since", LiveBroadcastLastModifiedHeader );
+      // let the browser manage chaching, but force revalidation of cached PGN data
+      http_request.setRequestHeader( "Cache-Control", "must-revalidate" ); 
     }
     http_request.send(null);
   } catch(e) {
@@ -1591,22 +1588,8 @@ function loadPgnFromPgnUrl(pgnUrl){
   }
 
   if ( (http_request.readyState == 4) && 
-       ((http_request.status == 200) || (http_request.status === 0) || (http_request.status == 304)) ) {
-
-    if (http_request.status == 304) {
-      if (LiveBroadcastDelay > 0) { return LOAD_PGN_FROM_PGN_URL_UNMODIFIED; }
-      else { 
-        myAlert('error: unexpected unmodified PGN URL when not in live mode');
-        return LOAD_PGN_FROM_PGN_URL_FAIL;
-      }
-
-// dirty hack to cope with Opera's failure to report correctly a 304 status; should really be fixed properly instead
-    } else if (window.opera && (! http_request.responseText) && (http_request.status === 0)) {
-      http_request.abort(); 
-      return LOAD_PGN_FROM_PGN_URL_UNMODIFIED;
-// end of dirty hack
-
-    } else if (! pgnGameFromPgnText(http_request.responseText)) {
+       ((http_request.status == 200) || (http_request.status === 0) ) {
+    if (! pgnGameFromPgnText(http_request.responseText)) {
       myAlert('error: no games found in PGN file\n' + pgnUrl, true);
       return LOAD_PGN_FROM_PGN_URL_FAIL;
     } else {
@@ -1624,6 +1607,7 @@ function loadPgnFromPgnUrl(pgnUrl){
     return LOAD_PGN_FROM_PGN_URL_FAIL;
   }
 
+alert("PAOLO" + http_request.status);
   return LOAD_PGN_FROM_PGN_URL_OK;
 }
 
@@ -1727,9 +1711,6 @@ function refreshPgnSource() {
   }
 
   loadPgnFromPgnUrlResult = loadPgnFromPgnUrl(pgnUrl);
-  if (LiveBroadcastDemo && (loadPgnFromPgnUrlResult == LOAD_PGN_FROM_PGN_URL_UNMODIFIED)) {
-    loadPgnFromPgnUrlResult = LOAD_PGN_FROM_PGN_URL_OK;
-  }
 
   switch ( loadPgnFromPgnUrlResult ) {
   
@@ -1800,11 +1781,6 @@ function refreshPgnSource() {
 
       break;
 
-    case LOAD_PGN_FROM_PGN_URL_UNMODIFIED: 
-      LiveBroadcastGameLoadFailures = 0;
-      checkLiveBroadcastStatus();
-      break;
-
     default:
       break;
 
@@ -1849,10 +1825,6 @@ function createBoard(){
           customFunctionOnPgnTextLoad();
           return;
         }
-        break;
-      case LOAD_PGN_FROM_PGN_URL_UNMODIFIED:
-        if (LiveBroadcastDelay > 0) { checkLiveBroadcastStatus(); }
-        return;
         break;
       default:
         return;

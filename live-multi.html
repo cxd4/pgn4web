@@ -1,0 +1,113 @@
+<html>
+
+<!--
+  pgn4web javascript chessboard
+  copyright (C) 2009, 2010 Paolo Casaschi
+  see README file and http://pgn4web.casaschi.net
+  for credits, license and more details
+-->
+
+<head>
+
+<title>pgn4web live broadcast with multiple boards</title>
+
+<script type="text/javascript">
+
+  pgnFile_default = "live/live.pgn";
+  // accepts pgnData as alias for pgnFile for consistency with board.html
+  if ((pgnFile = gup("pgnData")) === "") { 
+    if ((pgnFile = gup("pgnFile")) === "") {
+      pgnFile = pgnFile_default; 
+    }
+  }
+
+  if ((refreshMinutes = gup("refreshMinutes")) === "") { 
+    refreshMinutes = 1;
+  }
+  else {
+    testMinutes = refreshMinutes + "";
+    if ((testMinutes.match(/[^0-9\.]/)) || (refreshMinutes === 0)) {
+      if (alertFlag) { 
+	      alert("ERROR: refreshMinutes parameter must be a positive number.\n" +
+		    "Supplied " + testMinutes + "; defaulting to 1."); 
+      }
+      refreshMinutes = 1;
+    }
+  }
+  refreshMinutes_1 = refreshMinutes;
+  refreshMinutes_2 = refreshMinutes * 1.1;
+
+  if ((gup("help") == "true") || (gup("help") == "t")) { developer_help(); }
+
+function gup( name ){
+
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regexS = "[\\?&]"+name+"=([^&#]*)";
+  // commented below to match first occurrence (to avoid users overruling setting)
+  // regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
+  var regex = new RegExp( regexS, "i" );
+  var results = regex.exec( window.location.href );
+  if( results !== null ) { return decodeURIComponent(results[1]); }
+
+  // allows for short version of the URL parameters, for instance sC matches squareColor
+  compact_name = name.charAt(0);
+    for(i=1; i<name.length; i++){
+      if (name.charAt(i).match(/[A-Z]/)) { compact_name = compact_name + name.charAt(i).toLowerCase(); }
+    }
+  name = compact_name;
+
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  regexS = "[\\?&]"+name+"=([^&#]*)";
+  // commented below to match first occurrence (to avoid users overruling setting)
+  // regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
+  regex = new RegExp( regexS, "i" );
+
+  results = regex.exec( window.location.href );
+  if( results !== null ) { return decodeURIComponent(results[1]); }
+
+  return "";
+}
+
+function developer_help() {
+  alert("pgn4web live.html parameters" + "\n" + 
+        " - pgnData = " + pgnFile + "; PGN file to load (default " + pgnFile_default + ")" + "\n" +
+        " - refreshMinutes = " + refreshMinutes + "; refresh interval in minutes, decimals allowed (default 1)" + "\n" +
+        " - help = true; prints this help (default false)");
+}
+
+</script>
+
+</head>
+
+<body style='padding: 10px; font-family: sans-serif;'>
+
+<h1>pgn4web live broadcast with multiple boards</h1>
+
+This page shows how to present more than one live chessboard at the same time.
+<br>
+Use for example in conjunction with live-simulation.sh to test the live effect (and to validate the effects of browser caching).
+<br>
+
+<table width='100%' cellspacing='0' cellpadding='10'><tr><td></td>
+<td width='260'>
+<iframe id='frame_1' width='240' height='375' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src=''>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>
+</td><td width='260'>
+<iframe id='frame_2' width='240' height='375' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src=''>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>
+</td><td></td></tr></table>
+
+<script type="text/javascript">
+
+baseSrc = 'board.html?am=n&d=5000&ih=e&ss=26&ps=d&pf=d&lcs=VdyD&dcs=LHCg&bbcs=LHCg&hm=b&hcs=x7y_&bd=c&cbcs=VdyD&ctcs=yU1n&hd=j&md=h&tm=0&fhcs=7jdn&fhs=67p&bcs=____&fp=13&hl=f&fh=375&fw=b&pd=&rm=0.11&ig=1&pd=' + pgnFile;
+
+src_1 = baseSrc + '&ig=1&rm=' + refreshMinutes_1;
+src_2 = baseSrc + '&ig=2&rm=' + refreshMinutes_2;
+
+document.getElementById('frame_1').src = src_1;
+document.getElementById('frame_2').src = src_2;
+
+</script>
+
+</body>
+
+</html>
+
