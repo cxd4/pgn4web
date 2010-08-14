@@ -1579,7 +1579,7 @@ function loadPgnFromPgnUrl(pgnUrl){
     http_request.open("GET", pgnUrl, false);
     if (LiveBroadcastDelay > 0) {
       // let the browser manage chaching, but force revalidation of cached PGN data
-      http_request.setRequestHeader( "Cache-Control", "must-revalidate" ); 
+      http_request.setRequestHeader( "Cache-Control", "max-age=0" ); 
     }
     http_request.send(null);
   } catch(e) {
@@ -1588,7 +1588,7 @@ function loadPgnFromPgnUrl(pgnUrl){
   }
 
   if ( (http_request.readyState == 4) && 
-       ((http_request.status == 200) || (http_request.status === 0) ) {
+       ((http_request.status == 200) || (http_request.status === 0)) ) {
     if (! pgnGameFromPgnText(http_request.responseText)) {
       myAlert('error: no games found in PGN file\n' + pgnUrl, true);
       return LOAD_PGN_FROM_PGN_URL_FAIL;
@@ -1607,7 +1607,6 @@ function loadPgnFromPgnUrl(pgnUrl){
     return LOAD_PGN_FROM_PGN_URL_FAIL;
   }
 
-alert("PAOLO" + http_request.status);
   return LOAD_PGN_FROM_PGN_URL_OK;
 }
 
