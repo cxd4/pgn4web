@@ -1802,7 +1802,7 @@ function refreshPgnSource() {
 
     case LOAD_PGN_FROM_PGN_URL_UNMODIFIED: 
       LiveBroadcastGameLoadFailures = 0;
-      customFunctionOnPgnTextLoad();
+      checkLiveBroadcastStatus();
       break;
 
     default:
