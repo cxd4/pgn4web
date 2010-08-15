@@ -24,8 +24,7 @@
 
   if ((refreshMinutes = gup("refreshMinutes")) === "") { 
     refreshMinutes = 1;
-  }
-  else {
+  } else {
     testMinutes = refreshMinutes + "";
     if (testMinutes.match(/[^0-9\.]/)) {
       alert("ERROR: refreshMinutes parameter must be a positive number.\n" +
@@ -36,8 +35,7 @@
 
   if ((boards = gup("boards")) === "") {
     boards = 2;
-  }
-  else {
+  } else {
     testBoards = boards + "";
     if ((testBoards.match(/[^0-9]/)) || (boards == 0) || (boards > 32)) {
       alert("ERROR: boards parameter must be a positive integer, max 32.\n" +
@@ -48,8 +46,7 @@
 
   if ((columns = gup("columns")) === "") {
     columns = 2;
-  }
-  else {
+  } else {
     testColumns = columns + "";
     if ((testColumns.match(/[^0-9]/)) || (columns == 0) || (columns > 8)) {
       alert("ERROR: columns parameter must be a positive integer, max 8.\n" +
