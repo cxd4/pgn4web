@@ -9,11 +9,14 @@
 
 <head>
 
-<title>pgn4web live broadcast with multiple boards</title>
+<title>pgn4web live broadcast multiple boards</title>
 
 <script type="text/javascript">
 
-  pgnFile_default = "live/live.pgn";
+  pgnFile_default = window.location.protocol + "//" + window.location.host +
+    window.location.pathname.substring(0, window.location.pathname.lastIndexOf("/")) + 
+    "/live/live.pgn";
+  
   // accepts pgnData as alias for pgnFile for consistency with board.html
   if ((pgnFile = gup("pgnData")) === "") { 
     if ((pgnFile = gup("pgnFile")) === "") {
@@ -34,8 +37,34 @@
       refreshMinutes = 1;
     }
   }
-  refreshMinutes_1 = refreshMinutes;
-  refreshMinutes_2 = refreshMinutes * 1.1;
+
+  if ((boards = gup("boards")) === "") {
+    boards = 2;
+  }
+  else {
+    testBoards = boards + "";
+    if ((testBoards.match(/[^0-9]/)) || (boards === 0)) {
+      if (alertFlag) { 
+	      alert("ERROR: boards parameter must be a positive integer.\n" +
+		    "Supplied " + testBoards + "; defaulting to 2."); 
+      }
+      boards = 2;
+    }
+  }
+
+  if ((columns = gup("columns")) === "") {
+    columns = 2;
+  }
+  else {
+    testColumns = columns + "";
+    if ((testColumns.match(/[^0-9]/)) || (columns === 0)) {
+      if (alertFlag) { 
+	      alert("ERROR: columns parameter must be a positive integer.\n" +
+		    "Supplied " + testColumns + "; defaulting to 2."); 
+      }
+      columns = 2;
+    }
+  }
 
   if ((gup("help") == "true") || (gup("help") == "t")) { developer_help(); }
 
@@ -72,6 +101,8 @@ function developer_help() {
   alert("pgn4web live.html parameters" + "\n" + 
         " - pgnData = " + pgnFile + "; PGN file to load (default " + pgnFile_default + ")" + "\n" +
         " - refreshMinutes = " + refreshMinutes + "; refresh interval in minutes, decimals allowed (default 1)" + "\n" +
+        " - boards = " + boards + "; number of boards to display (default 2)" + "\n" +
+        " - columns = " + columns + "; number of columns to arrange the display (default 2)" + "\n" +
         " - help = true; prints this help (default false)");
 }
 
@@ -81,29 +112,25 @@ function developer_help() {
 
 <body style='padding: 10px; font-family: sans-serif;'>
 
-<h1>pgn4web live broadcast with multiple boards</h1>
-
-This page shows how to present more than one live chessboard at the same time.
-<br>
-Use for example in conjunction with live-simulation.sh to test the live effect (and to validate the effects of browser caching).
-<br>
-
-<table width='100%' cellspacing='0' cellpadding='10'><tr><td></td>
-<td width='260'>
-<iframe id='frame_1' width='240' height='375' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src=''>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>
-</td><td width='260'>
-<iframe id='frame_2' width='240' height='375' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src=''>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>
-</td><td></td></tr></table>
+<h1>pgn4web live broadcast multiple boards</h1>
 
 <script type="text/javascript">
 
-baseSrc = 'board.html?am=n&d=5000&ih=e&ss=26&ps=d&pf=d&lcs=VdyD&dcs=LHCg&bbcs=LHCg&hm=b&hcs=x7y_&bd=c&cbcs=VdyD&ctcs=yU1n&hd=j&md=h&tm=0&fhcs=7jdn&fhs=67p&bcs=____&fp=13&hl=f&fh=375&fw=b&pd=&rm=0.11&ig=1&pd=' + pgnFile;
+rows = Math.ceil(boards / columns);
 
-src_1 = baseSrc + '&ig=1&rm=' + refreshMinutes_1;
-src_2 = baseSrc + '&ig=2&rm=' + refreshMinutes_2;
-
-document.getElementById('frame_1').src = src_1;
-document.getElementById('frame_2').src = src_2;
+document.write("<center><table cellspacing='0' cellpadding='10'>");
+for (r = 0; r < rows; r++) {
+  document.write("<tr>");
+  for (c = 0; c < columns; c++) {
+    document.write("<td width='260'>");
+      if ((r * columns + c) < boards) {
+        document.write("<iframe width='240' height='375' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='board.html?am=n&d=5000&ih=e&ss=26&ps=d&pf=d&lcs=VdyD&dcs=LHCg&bbcs=LHCg&hm=b&hcs=x7y_&bd=c&cbcs=VdyD&ctcs=yU1n&hd=j&md=h&tm=0&fhcs=7jdn&fhs=67p&bcs=____&fp=13&hl=f&fh=375&fw=b&pd=" + pgnFile + "&ig=" + (r * columns + c + 1) + "&rm=" + (refreshMinutes * (1 + Math.floor(Math.random() * 100) / 1000)) + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
+      }
+    document.write("</td>");
+  }
+  document.write("</tr>");
+}
+document.write("</table></center>");
 
 </script>
 
