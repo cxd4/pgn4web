@@ -13,9 +13,7 @@
 
 <script type="text/javascript">
 
-  pgnFile_default = window.location.protocol + "//" + window.location.host +
-    window.location.pathname.substring(0, window.location.pathname.lastIndexOf("/")) + 
-    "/live/live.pgn";
+  pgnFile_default = location.protocol + "//" + location.hostname + location.pathname.replace(/\/[^\/]*$/, "/live/live.pgn");
   
   // accepts pgnData as alias for pgnFile for consistency with board.html
   if ((pgnFile = gup("pgnData")) === "") { 
