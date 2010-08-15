@@ -9,7 +9,7 @@
 
 <head>
 
-<title>pgn4web live broadcast multiple boards</title>
+<title>pgn4web multiple live boards</title>
 
 <script type="text/javascript">
 
@@ -102,9 +102,9 @@ function developer_help() {
 
 </head>
 
-<body style='padding: 10px; font-family: sans-serif;'>
+<body style='color: black; background: white; padding: 10px; font-family: sans-serif;'>
 
-<h1>pgn4web live broadcast multiple boards</h1>
+<h1>pgn4web multiple live boards</h1>
 
 <script type="text/javascript">
 
@@ -123,6 +123,8 @@ for (r = 0; r < rows; r++) {
   document.write("</tr>");
 }
 document.write("</table></center>");
+
+document.write("<p/><p style='font-size:small; color:#DDDDDD;'>refreshMinutes = " + refreshMinutes + "<br>pgnData = <a style='color:#DDDDDD' href='" + pgnFile + "'>" + pgnFile + "</a></p>");
 
 </script>
 
