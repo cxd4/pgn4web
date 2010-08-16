@@ -154,12 +154,14 @@ print_log
 step=0
 while [ $step -le $timeoutSteps ] 
 do
-	print_log "step $step of $timeoutSteps"
-	$grabCmdLine 
+	$grabCmdLine
 	cmp -s "$tmpLocalPgnFile" "$localPgnFile"
 	if [ $? -ne 0 ]
 	then
 		cp "$tmpLocalPgnFile" "$localPgnFile"
+		print_log "step $step of $timeoutSteps - new PGN data found"
+	else
+		print_log "step $step of $timeoutSteps - no new data"
 	fi
 	step=$(($step +1))
 	sleep $refreshSeconds
