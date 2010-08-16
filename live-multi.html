@@ -97,11 +97,22 @@ function developer_help() {
 
 </script>
 
+<style type="text/css">
+
+body
+{ color: #DDDDDD; background: white; font-family: sans-serif; padding: 20px; }
+
+a:link, a:visited, a:hover, a:active
+{ color: #DDDDDD; text-decoration: none; }
+
+</style>
+
 </head>
 
-<body style='color: black; background: white; padding: 10px; font-family: sans-serif;'>
+<body>
 
-<h1><a style='color: black;' target='_blank' href='http://pgn4web.casaschi.net'>pgn4web</a> multiple live chessboards</h1>
+<h1><a target='_blank' href='http://pgn4web.casaschi.net'>pgn4web</a> multiple live chessboards</h1>
+<a name='boards' style='line-height:10px;'>&nbsp;</a>
 
 <script type="text/javascript">
 
@@ -121,7 +132,7 @@ for (r = 0; r < rows; r++) {
 }
 document.write("</table></center>");
 
-document.write("<p style='text-align: right; font-size:small; color:#DDDDDD;'>refreshMinutes = " + refreshMinutes + "<br>pgnData = <a style='color:#DDDDDD' href='" + pgnFile + "'>" + pgnFile + "</a></p>");
+document.write("<p style='line-height:10px;'>&nbsp;</p><table width='100%' cellspacing='0' cellpadding='10'><tr><td align='left'><p style='font-size:small; color:white;'>refreshMinutes = " + refreshMinutes + "<br>pgnData = <a style='color:white;' href='" + pgnFile + "'>" + pgnFile + "</a></p></td><td align='right'><p style='font-size:small;'>interact with the pgn4web chessboards clicking chessboard squares<br>hover the mouse on each square to displays an help summary</p></td></tr></table>");
 
 </script>
 
