@@ -3117,8 +3117,8 @@ function PrintHTML() {
       imageId = 'img_' + squareId;
       linkId = 'link_' + squareId;
       text += (ii+jj)%2 === 0 ? 
-              '<TD CLASS="whiteSquare" ID="' + squareId + '" BGCOLOR="white"' :
-              '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="lightgray"';
+              '<TD CLASS="whiteSquare" ID="' + squareId + '" BGCOLOR="#FFFFFF"' :
+              '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="#D3D3D3"';
       text += ' ALIGN="center" VALIGN="middle" ONCLICK="clickedSquare(' + ii + ',' + jj + ')">';
       squareCoord = IsRotated ? String.fromCharCode(72-jj,49+ii) : String.fromCharCode(jj+65,56-ii);
       squareTitle = squareCoord;
