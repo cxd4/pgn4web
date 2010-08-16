@@ -3144,7 +3144,7 @@ function PrintHTML() {
   if (theObject !== null) {
     tableSize = theObject.offsetWidth;
     if (tableSize > 0) { // check to cope with some browser returning always 0 to offsetWidth
-      theObject.style.height = tableSize;
+      theObject.style.height = tableSize + "px";
     }
   }
 
@@ -3156,7 +3156,7 @@ function PrintHTML() {
           '<TR>' +
           '<TD>' +
           '<INPUT ID="startButton" TYPE="BUTTON" VALUE="&lt;&lt;" STYLE="';
-  if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + ';'; }
+  if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
   text += '"; CLASS="buttonControl" TITLE="go to game start" ' +
           ' ID="btnGoToStart" onClick="javascript:GoToMove(StartPly)" ONFOCUS="this.blur()">' +
           '</TD>' +
@@ -3164,7 +3164,7 @@ function PrintHTML() {
           '</TD>' +
           '<TD>' +
           '<INPUT ID="backButton" TYPE="BUTTON" VALUE="&lt;" STYLE="';
-  if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + ';'; }
+  if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
   text += '"; CLASS="buttonControl" TITLE="move backward" ' +
           ' ID="btnMoveBackward1" onClick="javascript:MoveBackward(1)" ONFOCUS="this.blur()">' +
           '</TD>' +
@@ -3174,7 +3174,7 @@ function PrintHTML() {
   text += '<INPUT ID="autoplayButton" TYPE="BUTTON" VALUE=';
   text += isAutoPlayOn ? "=" : "+";
   text += ' STYLE="';
-  if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + ';'; }
+  if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
   text += isAutoPlayOn ?
           '"; CLASS="buttonControlStop" TITLE="toggle autoplay (stop)" ' :
           '"; CLASS="buttonControlPlay" TITLE="toggle autoplay (start)" ';
@@ -3184,7 +3184,7 @@ function PrintHTML() {
           '</TD>' +
           '<TD>' +
           '<INPUT ID="forwardButton" TYPE="BUTTON" VALUE="&gt;" STYLE="';
-  if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + ';'; }
+  if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
   text += '"; CLASS="buttonControl" TITLE="move forward" ' +
           ' ID="btnMoveForward1" onClick="javascript:MoveForward(1)" ONFOCUS="this.blur()">' +
           '</TD>' +
@@ -3192,7 +3192,7 @@ function PrintHTML() {
           '</TD>' +
           '<TD>' +
           '<INPUT ID="endButton" TYPE="BUTTON" VALUE="&gt;&gt;" STYLE="';
-  if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + ';'; }
+  if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
   text += '"; CLASS="buttonControl" TITLE="go to game end" ' +
           ' ID="btnGoToEnd" onClick="javascript:GoToMove(StartPly + PlyNumber)" ONFOCUS="this.blur()">' +
           '</TD>' +
@@ -3220,7 +3220,7 @@ function PrintHTML() {
         if (gameSelectorNum) { gameSelectorNumLenght = Math.floor(Math.log(numberOfGames)/Math.log(10)) + 1; }
         text = '<FORM NAME="GameSel" STYLE="display:inline;"> ' +
                '<SELECT ID="GameSelSelect" NAME="GameSelSelect" STYLE="';
-        if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + tableSize + '; '; }
+        if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + tableSize + 'px; '; }
         text += 'font-family: monospace;" CLASS="selectControl" TITLE="Select a game" ' +
                 'ONCHANGE="this.blur(); if(this.value >= 0) {currentGame=parseInt(this.value); ' +
                 'document.GameSel.GameSelSelect.value = -1; Init();}" ' +
@@ -3393,13 +3393,13 @@ function PrintHTML() {
       text = '<FORM ID="searchPgnForm" STYLE="display: inline;" ' +
              'ACTION="javascript:searchPgnGameForm();">';
       text += '<INPUT ID="searchPgnButton" CLASS="searchPgnButton" STYLE="display: inline; ';
-      if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + tableSize/4 + '; '; }
+      if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + (tableSize/4) + 'px; '; }
       text += '" TITLE="find games matching the search string (or regular expression)" ';
       text += 'TYPE="submit" VALUE="?">';
       text += '<INPUT ID="searchPgnExpression" CLASS="searchPgnExpression" ' +
               'TITLE="find games matching the search string (or regular expression)" ' + 
               'TYPE="input" VALUE="" STYLE="display: inline; ';
-      if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + 3*tableSize/4 + '; '; }
+      if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + (3*tableSize/4) + 'px; '; }
       text += '" ONFOCUS="disableShortcutKeysAndStoreStatus();" ONBLUR="restoreShortcutKeysStatus();">'; 
       text += '</FORM>';
       theObject.innerHTML = text;
