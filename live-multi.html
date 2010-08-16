@@ -100,7 +100,7 @@ function developer_help() {
 <style type="text/css">
 
 body
-{ color: #DDDDDD; background: white; font-family: sans-serif; padding: 20px; }
+{ color: #DDDDDD; background: white; font-family: sans-serif; padding: 20px 20px 0px 20px; }
 
 a:link, a:visited, a:hover, a:active
 { color: #DDDDDD; text-decoration: none; }
@@ -132,7 +132,7 @@ for (r = 0; r < rows; r++) {
 }
 document.write("</table></center>");
 
-document.write("<p style='line-height:10px;'>&nbsp;</p><table width='100%' cellspacing='0' cellpadding='10'><tr><td align='left'><p style='font-size:small; color:white;'>refreshMinutes = " + refreshMinutes + "<br>pgnData = <a style='color:white;' href='" + pgnFile + "'>" + pgnFile + "</a></p></td><td align='right'><p style='font-size:small;'>interact with the pgn4web chessboards clicking chessboard squares<br>hover the mouse on each square to displays an help summary</p></td></tr></table>");
+document.write("<p style='line-height:10px;'>&nbsp;</p><p style='text-align: right; font-size:small; font-weight:bold;'>interact with the pgn4web chessboards by clicking chessboard squares<br>hover the mouse on each square to displays an help summary</p><p style='text-align: left; font-size:small; color:white;'>refreshMinutes = " + refreshMinutes + " &nbsp; pgnData = <a style='color:white;' href='" + pgnFile + "'>" + pgnFile + "</a></p>");
 
 </script>
 
