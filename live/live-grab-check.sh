@@ -60,7 +60,7 @@ do
 
 	if [ -f "${pgn4web_log[$i]}" ]
 	then
-		pgn4web_steps[i]=$(cat ${pgn4web_log[$i]} | awk 'END { printf("%4d of %4d", $11, $13) }')
+		pgn4web_steps[i]=$(cat ${pgn4web_log[$i]} | awk 'END { printf("%4d of %4d", $8, $10) }')
 	else
 		pgn4web_steps[i]="unavaiable  "
 	fi

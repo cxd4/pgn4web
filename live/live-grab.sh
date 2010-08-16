@@ -42,7 +42,7 @@ fi
 print_log() {
 	if [ -n "$1" ]
 	then
-		log="$(date) $(basename $0) ($$) LOG: $1"
+		log="$(date '+%b %d %T') $(hostname) $(basename $0) [$$]: $1"
 	else
 		log=""
 	fi
@@ -116,9 +116,7 @@ then
 	print_error "delete the file or choose another localPgnFile name and restart"
 	exit
 fi
-print_log
-print_log "pgn4web $(basename $0) logfile"
-print_log
+print_log "start"
 
 if [ -z "$3" ]
 then
@@ -149,7 +147,6 @@ print_log "remoteUrl: $remotePgnUrl"
 print_log "localPgnFile: $localPgnFile"
 print_log "refreshSeconds: $refreshSeconds"
 print_log "timeoutHours: $timeoutHours"
-print_log 
 
 step=0
 while [ $step -le $timeoutSteps ] 
@@ -159,13 +156,11 @@ do
 	if [ $? -ne 0 ]
 	then
 		cp "$tmpLocalPgnFile" "$localPgnFile"
-		print_log "step $step of $timeoutSteps - new PGN data found"
+		print_log "step $step of $timeoutSteps, new PGN data found"
 	else
-		print_log "step $step of $timeoutSteps - no new data"
+		print_log "step $step of $timeoutSteps, no new data"
 	fi
 	step=$(($step +1))
 	sleep $refreshSeconds
 done
-
-print_log "done"
 
