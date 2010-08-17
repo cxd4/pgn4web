@@ -1908,7 +1908,9 @@ function setCurrentGameFromInitialGame() {
         if (!currentGame) { currentGame = 0; }
       } else {
         initialGame = parseInt(initialGame,10);
-        if (initialGame < 0) { currentGame = 0; }
+        initialGame = initialGame < 0 ? -Math.floor(-initialGame) : Math.floor(initialGame);
+        if (initialGame < -numberOfGames) { currentGame = 0; }
+        else if (initialGame < 0) { currentGame = numberOfGames + initialGame; }
         else if (initialGame === 0) { currentGame = Math.floor(Math.random()*numberOfGames); }
         else if (initialGame <= numberOfGames) { currentGame = (initialGame - 1); } 
         else { currentGame = numberOfGames - 1; }
@@ -1934,11 +1936,13 @@ function GoToInitialHalfmove(){
       break;
     default:
       if (isNaN(initialHalfmove)) { initialHalfmove = 0; }
+      initialHalfmove = parseInt(initialHalfmove,10);
+      initialHalfmove = initialHalfmove < 0 ? -Math.floor(-initialHalfmove) : Math.floor(initialHalfmove);
       if (initialHalfmove < -3) { initialHalfmove = 0; }
       if (initialHalfmove == -3) { GoToMove(StartPly+PlyNumber); }
       else if (initialHalfmove == -2) { GoToMove(0); MoveToNextComment(); }
       else if (initialHalfmove == -1) { GoToMove(StartPly + Math.floor(Math.random()*(StartPly+PlyNumber))); }
-      else { GoToMove(initialHalfmove); }
+      else { GoToMove(Math.floor(initialHalfmove)); }
       break;
   }
 }
