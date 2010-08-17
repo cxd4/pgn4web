@@ -111,19 +111,19 @@ a:link, a:visited, a:hover, a:active
 
 <body>
 
-<h1><a target='_blank' href='http://pgn4web.casaschi.net'>pgn4web</a> multiple live <a href='#boards'>chessboards</a></h1>
-<a name='boards' style='line-height:10px;'>&nbsp;</a>
+<h1><a target='_blank' href='http://pgn4web.casaschi.net'>pgn4web</a> multiple live <a href='#row1'>che</a><a href='#row2'>ss</a><a href='#row3'>bo</a><a href='#row4'>ar</a><a href='#row5'>ds</a></h1>
 
 <script type="text/javascript">
 
 rows = Math.ceil(boards / columns);
 
-document.write("<center><table cellspacing='0' cellpadding='10'>");
+document.write("<center><table cellspacing='5' cellpadding='0'>");
 for (r = 0; r < rows; r++) {
   document.write("<tr>");
   for (c = 0; c < columns; c++) {
-    document.write("<td width='260'>");
+    document.write("<td align='center' width='260'>");
       if ((r * columns + c) < boards) {
+        document.write("<a style='color:white; font-size:x-small;' name='row" + (r+1) + "' href='#row" + (r+1) + "'>chessboard row:" + (r+1) + " col:" + (c+1) + "</a><br>");
         document.write("<iframe width='240' height='300' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='board.html?am=n&d=5000&ih=e&ss=26&ps=d&pf=d&lcs=VdyD&dcs=LHCg&bbcs=LHCg&hm=b&hcs=x7y_&bd=h&cbcs=VdyD&ctcs=yU1n&hd=j&md=h&tm=0&fhcs=7jdn&fhs=67p&bcs=____&fp=13&hl=f&fh=300&fw=b&pd=" + pgnFile + "&ig=" + (r * columns + c + 1) + "&rm=" + (refreshMinutes * (1 + Math.floor(Math.random() * 100) / 1000)) + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
       }
     document.write("</td>");
@@ -132,7 +132,7 @@ for (r = 0; r < rows; r++) {
 }
 document.write("</table></center>");
 
-document.write("<p style='text-align: right; font-size:small; color:white;'>refreshMinutes: " + refreshMinutes + " &nbsp; pgnData: <a style='color:white;' href='" + pgnFile + "'>" + pgnFile + "</a></p><p style='text-align: right; font-size:small; font-weight:bold;'>control the <a href='#boards'>chessboards</a> by clicking their squares<br>hover the mouse on each square for help</p>");
+document.write("<p style='text-align: right; font-size:small; color:white;'>refreshMinutes: " + refreshMinutes + " &nbsp; pgnData: <a style='color:white;' href='" + pgnFile + "'>" + pgnFile + "</a></p><p style='text-align: right; font-size:small; font-weight:bold;'>control the <a href='#row1'>che</a><a href='#row2'>ss</a><a href='#row3'>bo</a><a href='#row4'>ar</a><a href='#row5'>ds</a> by clicking their squares<br>hover the mouse on each square for help</p>");
 
 </script>
 
