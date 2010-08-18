@@ -76,6 +76,42 @@ $pgnText = validate_pgnText($_REQUEST["pgnText"]);
 
 <script type='text/javascript'>grabTimeout = null;</script>
 
+<form name='mainForm' method='post' action='<?echo basename(__FILE__)?>'>
+<hr>
+Password
+<input name='secret' type='password' id='secret' value='<?echo $secret?>'
+onchange='validate_and_set_secret(this.value);'>
+<input type='submit' name='action' value='clear password'
+onclick='document.getElementById("secret").value=""; return false;'>
+<hr>
+local PGN file 
+<input type='text' id='localPgnFile' name='localPgnFile' value='<?print($localPgnFile)?>' 
+onchange='validate_and_set_localPgnFile(this.value);'>
+<hr>
+<input type='submit' id='submitPgnUrl' name='action' value='grab PGN URL'
+onclick='return askUserToGrabPgnUrl ? confirm("grab PGN URL as local file") : true;'>
+<input type='submit' id='stopGrabbingPgnUrl' name='action' value='stop grabbing PGN URL'
+onclick='return disableStopGrabButton();' disabled='true'>
+<br/>PGN URL
+<input type='text' name='pgnUrl' value='<?echo $pgnUrl?>'>
+<input type='hidden' name='lastPgnUrlModification' value='<?echo $lastPgnUrlModification?>'>
+<br/>refresh seconds
+<input type='text' id='refreshSeconds' name='refreshSeconds' value='<?echo $refreshSeconds?>'
+onchange='validate_and_set_refreshSeconds(this.value)'>
+<br/>refresh steps
+<input type='text' id='refreshSteps' name='refreshSteps' value='<?echo $refreshSteps?>'
+onchange='validate_and_set_refreshSteps(this.value)'>
+<hr>
+<input type='submit' name='action' value='save PGN text'
+onclick='return confirm("save PGN text as local file?");'>
+<br/>PGN text
+<textarea name='pgnText' rows='4'><?echo $pgnText?></textarea>
+<hr>
+<input type='submit' name='action' value='delete local PGN file' 
+onclick='return confirm("deleting local PGN file?");'>
+<hr>
+</form>
+
 <?
 
 function deleteFile($myFile) {
@@ -96,6 +132,7 @@ if ($secretHash == $storedSecretHash) {
         print("<script type='text/javascript'>" . 
               "if (grabTimeout) { clearTimeout(grabTimeout); } " .
               "grabTimeout = setTimeout('grabPgnUrl()'," . (1000 * $refreshSeconds) . "); " .
+              "if (grabTimeout) { document.getElementById('stopGrabbingPgnUrl').disabled = false; } " .
               "</script>");
         $newLastPgnUrlModification = "";
         $pgnHeaders = get_headers($pgnUrl, 1); 
@@ -212,45 +249,6 @@ function disableStopGrabButton() {
 
 </script>
 
-<form name='mainForm' method='post' action='<?echo basename(__FILE__)?>'>
-<hr>
-Password
-<input name='secret' type='password' id='secret' value='<?echo $secret?>'
-onchange='validate_and_set_secret(this.value);'>
-<input type='submit' name='action' value='clear password'
-onclick='document.getElementById("secret").value=""; return false;'>
-<hr>
-local PGN file 
-<input type='text' id='localPgnFile' name='localPgnFile' value='<?print($localPgnFile)?>' 
-onchange='validate_and_set_localPgnFile(this.value);'>
-<hr>
-<input type='submit' id='submitPgnUrl' name='action' value='grab PGN URL'
-onclick='return askUserToGrabPgnUrl ? confirm("grab PGN URL as local file") : true;'>
-<input type='submit' id='stopGrabbingPgnUrl' name='action' value='stop grabbing PGN URL'
-onclick='return disableStopGrabButton();'>
-<br/>PGN URL
-<input type='text' name='pgnUrl' value='<?echo $pgnUrl?>'>
-<input type='hidden' name='lastPgnUrlModification' value='<?echo $lastPgnUrlModification?>'>
-<br/>refresh seconds
-<input type='text' id='refreshSeconds' name='refreshSeconds' value='<?echo $refreshSeconds?>'
-onchange='validate_and_set_refreshSeconds(this.value)'>
-<br/>refresh steps
-<input type='text' id='refreshSteps' name='refreshSteps' value='<?echo $refreshSteps?>'
-onchange='validate_and_set_refreshSteps(this.value)'>
-<hr>
-<input type='submit' name='action' value='save PGN text'
-onclick='return confirm("save PGN text as local file?");'>
-<br/>PGN text
-<textarea name='pgnText' rows='4'><?echo $pgnText?></textarea>
-<hr>
-<input type='submit' name='action' value='delete local PGN file' 
-onclick='return confirm("deleting local PGN file?");'>
-<hr>
-</form>
-
-<script type='text/javascript'>
-  if (grabTimeout) { document.getElementById('stopGrabbingPgnUrl').disabled = false; }
-</script>
 <?echo $message?>
 
 <?php
