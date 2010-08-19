@@ -11,19 +11,19 @@ error_reporting(E_ERROR | E_PARSE);
 
 
 
-/* configuration section */
+// configuration section 
 
-/* set this to true to enable the script, set to false by default */
+// set this to true to enable the script, set to false by default
 $enableScript = true; 
-$enableScript = false; 
+$enableScript = false;
 
-/* set this to the sha256 hash of your password of choice
-   you can calculate the sha256 of your password of choice by
-   entering that passowrd in the form, submitting it and then
-   looking at the invalid password error message */
+// set this to the sha256 hash of your password of choice;
+// you can calculate the sha256 of your password of choice by
+// entering that passowrd in the form, submitting it and then
+// looking at the invalid password error message; 
 $storedSecretHash = "346e85156ba458d324507f0d4cfa40286d4c052d2640cf6dd2321aa6cfcdcb07";
 
-/* end of configuration section, dont modify below this line */
+// end of configuration section, dont modify below this line
 
 
 
@@ -277,7 +277,7 @@ if ($secretHash == $storedSecretHash) {
               $message = $message . "<br/>no new PGN content read from URL" .
                          "<br/>timestamp=" . $newLastPgnUrlModification;
             } else {
-              $pgnData = file_get_contents($pgnUrl, false);
+              $pgnData = file_get_contents($pgnUrl, NULL, NULL, 0, 1048576);
               if (! $pgnData) { 
                 $message = $message . "<br/>failed reading PGN URL";
               } else {
@@ -593,10 +593,10 @@ class='inputbutton' onclick='return confirm("deleting local PGN file?");'>
 <td>
 <div class='logcontainer'>
 <a href='../live-compact.html?pd=<?print(str_replace(basename(__FILE__), $localPgnFile, curPageURL()))?>' 
-target='_blank'>live compact</a>
+target='_blank'>chess live broadcaset with single compact chessboard</a>
 <br/><br/>
-<a href='../live-multi.html?pd=<?print(str_replace(basename(__FILE__), $localPgnFile, curPageURL()))?>' 
-target='_blank'>live multi</a>
+<a href='../live-multi.html?b=2&c=2&pd=<?print(str_replace(basename(__FILE__), $localPgnFile, curPageURL()))?>' 
+target='_blank'>chess live broadcast with multiple chessboards</a>
 </div>
 </td>
 </tr>
