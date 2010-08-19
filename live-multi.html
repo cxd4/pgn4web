@@ -138,7 +138,7 @@ for (r = 0; r < rows; r++) {
         initialGame = (r * columns + c + 1);
         if (displayOrder.charAt(0) == "r") { initialGame = -initialGame; }
         document.write("<a style='color:white; font-size:x-small;' name='row" + (r+1) + "' href='#row" + (r+1) + "'>chessboard row:" + (r+1) + " col:" + (c+1) + "</a><br>");
-        document.write("<iframe width='240' height='300' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='board.html?am=n&d=5000&ih=e&ss=26&ps=d&pf=d&lcs=VdyD&dcs=LHCg&bbcs=LHCg&hm=b&hcs=x7y_&bd=h&cbcs=VdyD&ctcs=yU1n&hd=j&md=h&tm=0&fhcs=7jdn&fhs=67p&bcs=____&fp=13&hl=f&fh=300&fw=b&pd=" + pgnFile + "&ig=" + initialGame + "&rm=" + (refreshMinutes * (1 + Math.floor(Math.random() * 100) / 1000)) + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
+        document.write("<iframe width='240' height='313' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='board.html?am=n&d=5000&ih=e&ss=26&ps=d&pf=d&lcs=VdyD&dcs=LHCg&bbcs=LHCg&hm=b&hcs=x7y_&bd=h&cbcs=VdyD&ctcs=yU1n&hd=j&md=h&tm=0&fhcs=7jdn&fhs=67p&bcs=____&fp=13&hl=f&fh=313&fw=b&pd=" + pgnFile + "&ig=" + initialGame + "&rm=" + (refreshMinutes * (1 + Math.floor(Math.random() * 100) / 1000)) + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
       }
     document.write("</td>");
   }
