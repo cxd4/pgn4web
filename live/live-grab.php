@@ -140,7 +140,6 @@ body {
   color: black;
   background: white; 
   font-family: sans-serif;
-  line-height: 1.3em;
   padding: 20px;
 }
 
@@ -149,30 +148,33 @@ a:link, a:visited, a:hover, a:active {
   text-decoration: none;
 }
 
+.inputbutton {
+  width: 100%;
+}
+
+.inputline,
 .inputarea {
-  font-size: 80%;
   width: 97.5%;
 }
 
+.logcontainer,
+.linkcontainer {
+  padding-left: 2.5%;
+}
+
+.inputarea {
+  font-size: 80%;
+}
+
+.inputlinecontainer,
 .inputareacontainer {
   text-align: right;
   padding-bottom: 5px;
 }
 
-.inputbutton {
-  width: 100%;
-}
-
-.inputline {
-  width: 97.5%;
-}
-
+.label,
+.inputlinecontainer,
 .inputbuttoncontainer {
-  height: 2em;
-}
-
-.inputlinecontainer {
-  text-align: right;
   height: 2em;
 }
 
@@ -180,25 +182,24 @@ a:link, a:visited, a:hover, a:active {
   font-size: 150%;
   font-weight: bold;
   text-align: left;
-  padding-top: 10px;
-  padding-bottom: 5px;
+  padding-top: 15px;
+  padding-bottom: 10px;
 }
 
 .label {
   font-weight: bold;
   text-align: right;
-  height: 2em;
-}
-
-.logcontainer {
-  padding-left: 2.5%;
 }
 
 .log {
-  height: 18em;
+  font-size: 90%;
+  height: 17em;
   overflow: auto;
-  color: black;
-  font-size: 75%
+}
+
+.link {
+  font-style: italic;
+  margin-bottom: 0.5em;
 }
 
 </style>
@@ -207,7 +208,7 @@ a:link, a:visited, a:hover, a:active {
 
 <body>
 
-<h1 name="top" style="font-family: sans-serif; color: black;">pgn4web live games grab</h1> 
+<h1 name="top">pgn4web live games grab</h1> 
 
 <script type='text/javascript'>grabTimeout = null;</script>
 
@@ -233,8 +234,8 @@ function checkFileExisting($localPgnFile, $localPgnTmpFile, $localPgnLogFile) {
 
 function fileInformation($myFile) {
   $ft = filetype($myFile);
-  if (!$ft) { return $myFile . " not found or file error"; }
-  else return $myFile . " type=" . $ft .
+  if (!$ft) { return "name=" . $myFile . " error=not found or file error"; }
+  else return "name=" . $myFile . " type=" . $ft .
               " size=" . filesize($myFile) .
               " permissions=" . substr(sprintf('%o', fileperms($myFile)), -4) .
               " time=" . date("M d H:i:s e", filemtime($myFile)); 
@@ -243,54 +244,54 @@ function fileInformation($myFile) {
 if ($secretHash == $storedSecretHash) { 
 
   $overwrite = false;
-  $message = logMsg("<br/>" . fileInformation(".") .
-                    "<br/>" . fileInformation($localPgnFile) . 
-                    "<br/>" . fileInformation($localPgnTmpFile) .
-                    "<br/>" . fileInformation($localPgnLogFile));
+  $message = logMsg("\n" . fileInformation($localPgnFile) .
+                    "\n" . fileInformation($localPgnTmpFile) .
+                    "\n" . fileInformation($localPgnLogFile) .
+                    "\n" . fileInformation("."));
   switch ($action) {
 
     case "grab PGN URL overwrite":
       $overwrite = true;
     case "grab PGN URL":
-      $message = $message . "<br/>action=" . $action . "<br/>localPgnFile=" . $localPgnFile . 
-                 "<br/>pgnUrl=" . $pgnUrl . "<br/>refreshSeconds=" . $refreshSeconds . 
-                 "<br/>refreshSteps=" . $refreshSteps;
+      $message = $message . "\n" . "action=" . $action . "\n" . "localPgnFile=" . $localPgnFile . 
+                 "\n" . "pgnUrl=" . $pgnUrl . "\n" . "refreshSeconds=" . $refreshSeconds . 
+                 "\n" . "refreshSteps=" . $refreshSteps;
       $errorMessage = checkFileExisting($localPgnFile, $localPgnTmpFile, $localPgnLogFile);
       if (!$overwrite && $errorMessage) {
         $message = $message . $errorMessage;
       } else {
         if (--$refreshSteps < 0) {
-          $message = $message . "<br/>error: invalid refresh steps";
+          $message = $message . "\n" . "error: invalid refresh steps";
         } else {
           $logOk = false;
           $newLastPgnUrlModification = "";
           $pgnHeaders = get_headers($pgnUrl, 1); 
           if (! $pgnHeaders) { 
-            $message = $message . "<br/>" . "failed getting PGN URL headers";
+            $message = $message . "\n" . "failed getting PGN URL headers";
           } else {
             if (! $pgnHeaders['Last-Modified']) { 
-              $message = $message . "<br/>" . "failed getting PGN URL last modified header"; 
+              $message = $message . "\n" . "failed getting PGN URL last modified header"; 
             } else {
               $newLastPgnUrlModification = $pgnHeaders['Last-Modified'];
             }
             if ($newLastPgnUrlModification == $lastPgnUrlModification) {
-              $message = $message . "<br/>no new PGN content read from URL" .
-                         "<br/>timestamp=" . $newLastPgnUrlModification;
+              $message = $message . "\n" . "no new PGN content read from URL" .
+                         "\n" . "timestamp=" . $newLastPgnUrlModification;
             } else {
               $pgnData = file_get_contents($pgnUrl, NULL, NULL, 0, 1048576);
               if (! $pgnData) { 
-                $message = $message . "<br/>failed reading PGN URL";
+                $message = $message . "\n" . "failed reading PGN URL (file not found or file too large)";
               } else {
                 if (! file_put_contents($localPgnTmpFile, $pgnData)) {
-                  $message = $message . "<br/>" . "failed saving updated " . $localPgnTmpFile;
+                  $message = $message . "\n" . "failed saving updated " . $localPgnTmpFile;
                 } else {
                   if (! copy($localPgnTmpFile, $localPgnFile)) {
-                    $message = $message . "<br/>" . "failed copying new data to " . $localPgnFile;
+                    $message = $message . "\n" . "failed copying new data to " . $localPgnFile;
                   } else {
-                    $message = $message . "<br/>" . "updated " . $localPgnFile;
+                    $message = $message . "\n" . "updated " . $localPgnFile;
                     if ($newLastPgnUrlModification != "") { 
-                      $message = $message . "<br/>old timestamp=" . $lastPgnUrlModification;
-                      $message = $message . "<br/>new timestamp=" . $newLastPgnUrlModification;
+                      $message = $message . "\n" . "old timestamp=" . $lastPgnUrlModification;
+                      $message = $message . "\n" . "new timestamp=" . $newLastPgnUrlModification;
                       $lastPgnUrlModification = $newLastPgnUrlModification; 
                     }
                     $logOk = true;
@@ -302,9 +303,9 @@ if ($secretHash == $storedSecretHash) {
           if ($logOk) { logToFile("step 1 of " . $refreshSteps . ", new PGN data found", $overwrite); }
           else { logToFile("step 1 of " . $refreshSteps . ", no new data", $overwrite); }
           if ($refreshSteps == 0) {
-            $message = $message . "<br/>timer not restarted";
+            $message = $message . "\n" . "timer not restarted";
           } else {
-            $message = $message . "<br/>timer restarted";
+            $message = $message . "\n" . "timer restarted";
             print("<script type='text/javascript'>" . 
                   "if (grabTimeout) { clearTimeout(grabTimeout); } " .
                   "grabTimeout = setTimeout('grabPgnUrl()'," . (1000 * $refreshSeconds) . "); " .
@@ -315,8 +316,7 @@ if ($secretHash == $storedSecretHash) {
       break;
 
     case "save PGN text":
-      $message = $message . "<br/>action=" . $action . "<br/>localPgnFile=" . $localPgnFile .
-                 "<br/>pgnText=<pre>" . $pgnText . "</pre>";
+      $message = $message . "\n" . "action=" . $action . "\n" . "localPgnFile=" . $localPgnFile;
       $errorMessage = checkFileExisting($localPgnFile, $localPgnTmpFile, $localPgnLogFile);
       if (!$overwrite && $errorMessage) {
         $message = $message . $errorMessage;
@@ -329,35 +329,38 @@ if ($secretHash == $storedSecretHash) {
           $pgnTextToSave = $pgnText . "\n";
         }
         if (file_put_contents($localPgnFile, $pgnTextToSave)) { 
-          $message = $message . "<br/>file " . $localPgnFile . " updated";
+          $message = $message . "\n" . "file " . $localPgnFile . " updated";
         } else {
-          $message = $message . "<br/>failed updating file " . $localPgnFile;
+          $message = $message . "\n" . "failed updating file " . $localPgnFile;
         }
       }
+      $message = $message . "\n" . "pgnText=\n" . $pgnText . "\n";
       $lastPgnUrlModification = validate_lastPgnUrlModification();
       break;
 
     case "delete local PGN file":
-      $message = $message . "<br/>action=" . $action . "<br/>localPgnFile=" . $localPgnFile;
-      $message = $message . "<br/>" . deleteFile($localPgnFile);
-      $message = $message . "<br/>" . deleteFile($localPgnTmpFile);
-      $message = $message . "<br/>" . deleteFile($localPgnLogFile);
+      $message = $message . "\n" . "action=" . $action . "\n" . "localPgnFile=" . $localPgnFile;
+      $message = $message . "\n" . deleteFile($localPgnFile);
+      $message = $message . "\n" . deleteFile($localPgnTmpFile);
+      $message = $message . "\n" . deleteFile($localPgnLogFile);
       $lastPgnUrlModification = validate_lastPgnUrlModification();
       break;
 
     case "submit password":
-      $message = $message . "<br/>password accepted";
+      $message = $message . "\n" . "password accepted";
       break;
 
     default:
-      $message = $message . "<br/>invalid action=" . $action;
+      $message = $message . "\n" . "invalid action=" . $action;
       break;
 
   }
 
 } else {
 
-  $message = logMsg("<br/>invalid password<br/>the sha256 hash of the password you entered is:<br/>" . $secretHash);
+  $message = logMsg("invalid password" . "\n" . 
+                    "the sha256 hash of the password you entered is:" . "\n" . 
+                    $secretHash);
 
 }
 
@@ -407,26 +410,22 @@ function disableStopGrabButton() {
 
 </script>
 
-<table cellspacing='3' cellpadding='0' width='100%'>
-<tr valign='top'>
-<td colspan='2'>
-<div class='header'>log</div>
-</td>
-</tr>
+<table border='0' cellspacing='3' cellpadding='0' width='100%'>
 <tr valign='top'>
 <td width='25%'>
+<div class='header'>log</div>
 </td>
 <td>
 <div class='logcontainer'>
-<div class='log'><?echo $message?></div>
+<div class='log'><pre><?print($message)?></pre></div>
 </div>
 </td>
 </tr>
 </table>
 
-<form name='mainForm' method='post' action='<?echo basename(__FILE__)?>'>
+<form name='mainForm' method='post' action='<?print(basename(__FILE__));?>'>
 
-<table cellspacing='3' cellpadding='0' width='100%'>
+<table border='0' cellspacing='3' cellpadding='0' width='100%'>
 <tr valign='top'>
 <td colspan='2'>
 <div class='header'>authentication</div>
@@ -461,14 +460,14 @@ onclick='document.getElementById("secret").value=""; return false;'>
 </td>
 <td>
 <div class='inputlinecontainer'>
-<input name='secret' type='password' id='secret' value='<?echo $secret?>'
+<input name='secret' type='password' id='secret' value='<?print($secret);?>'
 class='inputline' onchange='validate_and_set_secret(this.value);'>
 </div>
 </td>
 </tr>
 </table>
 
-<table cellspacing='3' cellpadding='0' width='100%'
+<table border='0' cellspacing='3' cellpadding='0' width='100%'
 <?
 if ($secretHash == $storedSecretHash) { print(">"); }
 else { print("style='visibility: hidden;'>"); }
@@ -523,9 +522,9 @@ class='inputbutton' onclick='return disableStopGrabButton();' disabled='true'>
 </td>
 <td>
 <div class='inputlinecontainer'>
-<input type='text' name='pgnUrl' value='<?echo $pgnUrl?>'
+<input type='text' name='pgnUrl' value='<?print($pgnUrl);?>'
 class='inputline'>
-<input type='hidden' name='lastPgnUrlModification' value='<?echo $lastPgnUrlModification?>'>
+<input type='hidden' name='lastPgnUrlModification' value='<?print($lastPgnUrlModification);?>'>
 </div>
 </td>
 </tr>
@@ -535,7 +534,7 @@ class='inputline'>
 </td>
 <td>
 <div class='inputlinecontainer'>
-<input type='text' id='refreshSeconds' name='refreshSeconds' value='<?echo $refreshSeconds?>'
+<input type='text' id='refreshSeconds' name='refreshSeconds' value='<?print($refreshSeconds);?>'
 class='inputline' onchange='validate_and_set_refreshSeconds(this.value)'>
 </div>
 </td>
@@ -546,7 +545,7 @@ class='inputline' onchange='validate_and_set_refreshSeconds(this.value)'>
 </td>
 <td>
 <div class='inputlinecontainer'>
-<input type='text' id='refreshSteps' name='refreshSteps' value='<?echo $refreshSteps?>'
+<input type='text' id='refreshSteps' name='refreshSteps' value='<?print($refreshSteps);?>'
 class='inputline' onchange='validate_and_set_refreshSteps(this.value)'>
 </div>
 </td>
@@ -567,7 +566,7 @@ class='inputbutton' onclick='return confirm("save PGN text as local file?");'>
 </td>
 <td>
 <div class='inputareacontainer'>
-<textarea name='pgnText' rows='4' class='inputarea'><?echo $pgnText?></textarea>
+<textarea name='pgnText' rows='4' class='inputarea'><?print($pgnText);?></textarea>
 </div>
 </td>
 </tr>
@@ -591,12 +590,18 @@ class='inputbutton' onclick='return confirm("deleting local PGN file?");'>
 <td>
 </td>
 <td>
-<div class='logcontainer'>
-<a href='../live-compact.html?pd=<?print(str_replace(basename(__FILE__), $localPgnFile, curPageURL()))?>' 
-target='_blank'>chess live broadcaset with single compact chessboard</a>
-<br/><br/>
-<a href='../live-multi.html?b=2&c=2&pd=<?print(str_replace(basename(__FILE__), $localPgnFile, curPageURL()))?>' 
-target='_blank'>chess live broadcast with multiple chessboards</a>
+<div class='linkcontainer'>
+<div class='link'>
+<a href='../live-compact.html?pd=<?print(str_replace(basename(__FILE__),$localPgnFile,curPageURL()))?>' 
+target='compact' class='link'>chess live broadcast with single compact chessboard</a>
+</div>
+<div class='link'>
+<a href='../live-multi.html?b=2&c=2&pd=<?print(str_replace(basename(__FILE__),$localPgnFile,curPageURL()))?>' 
+target='multi'>chess live broadcast with multiple chessboards</a>
+</div>
+<div class='link'>
+<a href='<?print($localPgnLogFile)?>' target='log' class='link'>live grab logfile</a>
+</div>
 </div>
 </td>
 </tr>
