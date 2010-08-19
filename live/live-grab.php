@@ -90,13 +90,16 @@ function validate_pgnUrl($pgnUrl) {
 }
 
 function validate_refreshSeconds($refreshSeconds) {
-  if (preg_match("/^[0-9]+$/", $refreshSeconds) && ($refreshSeconds > 9) && ($refreshSeconds < 3601)) { return $refreshSeconds; }
+  if (preg_match("/^[0-9]+$/", $refreshSeconds) && 
+      ($refreshSeconds > 9) && ($refreshSeconds < 3601)) 
+  { return $refreshSeconds; }
   else { return 49; }
 }
 
 function validate_refreshSteps($refreshSteps) {
+  global $refreshSeconds;
   if (preg_match("/^[0-9]+$/", $refreshSteps)) { return $refreshSteps; }
-  else { return 1000; }
+  else { return ceil(8 * 60 * 60 / $refreshSeconds); }
 }
 
 function validate_lastPgnUrlModification($lastPgnUrlModification) {
@@ -157,6 +160,7 @@ a:link, a:visited, a:hover, a:active {
   width: 97.5%;
 }
 
+.textinfocontainer,
 .logcontainer,
 .linkcontainer {
   padding-left: 2.5%;
@@ -386,13 +390,26 @@ function validate_and_set_refreshSeconds(refreshSeconds) {
     alert("ERROR: invalid refresh seconds: " + refreshSeconds + "\ndefaulting to: 49");
     document.getElementById("refreshSeconds").value = 49;
   }
+  set_remainingTime();
 }
 
 function validate_and_set_refreshSteps(refreshSteps) {
-  if (!refreshSteps.match("^[0-9]+$")) { 
-    alert("ERROR: invalid refresh steps: " + refreshSteps + "\ndefaulting to: 1000");
-    document.getElementById("refreshSteps").value = 1000;
+  if (!refreshSteps.match("^[0-9]+$")) {
+    defaultRefreshSteps = Math.ceil(8 * 60 * 60 / document.getElementById("refreshSeconds").value); 
+    alert("ERROR: invalid refresh steps: " + refreshSteps + "\ndefaulting to: " + defaultRefreshSteps);
+    document.getElementById("refreshSteps").value = defaultRefreshSteps;
   }
+  set_remainingTime();
+}
+
+function set_remainingTime() {
+  remainingTotalSeconds = document.getElementById("refreshSeconds").value *
+                          document.getElementById("refreshSteps").value;
+  remainingHours = Math.floor(remainingTotalSeconds / 3600);
+  remainingMinutes = Math.floor((remainingTotalSeconds - 3600 * remainingHours) / 60);
+  remainingSeconds = remainingTotalSeconds - 3600 * remainingHours - 60 * remainingMinutes;
+  document.getElementById("remainingTime").innerHTML = remainingHours + "h " +
+      remainingMinutes + "m " + remainingSeconds + "s";
 }
 
 function grabPgnUrl() {
@@ -552,6 +569,14 @@ class='inputline' onchange='validate_and_set_refreshSteps(this.value)'>
 </tr>
 <tr valign='top'>
 <td>
+<div class='label'>time for these steps</div>
+</td>
+<td>
+<div class='textinfocontainer' id='remainingTime'></div>
+</td>
+</tr>
+<tr valign='top'>
+<td>
 <div class='inputbuttoncontainer'>
 <input type='submit' name='action' value='save PGN text'
 class='inputbutton' onclick='return confirm("save PGN text as local file?");'>
@@ -612,6 +637,7 @@ target='multi'>chess live broadcast with multiple chessboards</a>
 
 <script type="text/javascript">
 if (grabTimeout) { document.getElementById('stopGrabbingPgnUrl').disabled = false; }
+set_remainingTime();
 </script>
 
 </body>
