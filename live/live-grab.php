@@ -15,7 +15,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 // set this to true to enable the script, set to false by default
 $enableScript = true; 
-// $enableScript = false;
+$enableScript = false;
 
 // set this to the sha256 hash of your password of choice;
 // you can calculate the sha256 of your password of choice by
