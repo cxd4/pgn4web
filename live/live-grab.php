@@ -137,6 +137,8 @@ $pgnText = validate_pgnText(stripslashes($_POST["pgnText"]));
 
 <title>pgn4web live games grab</title> 
 
+<link rel="shortcut icon" href="../pawn.ico" />
+
 <style type="text/css">
 
 body {
