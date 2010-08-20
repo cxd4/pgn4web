@@ -664,9 +664,19 @@ class='inputbutton' onclick='return confirm("deleting local PGN file?");'>
 <a href='../live-compact.html?pd=<?print(str_replace(basename(__FILE__),$localPgnFile,curPageURL()))?>' 
 target='compact' class='link'>chess live broadcast with single compact chessboard</a>
 </div>
-<div class='link'>
+<div class='link'>chess live broadcast with multiple chessboards:
+<a href='../live-multi.html?b=1&c=1&pd=<?print(str_replace(basename(__FILE__),$localPgnFile,curPageURL()))?>' 
+target='multi'>one</a>
 <a href='../live-multi.html?b=2&c=2&pd=<?print(str_replace(basename(__FILE__),$localPgnFile,curPageURL()))?>' 
-target='multi'>chess live broadcast with multiple chessboards</a>
+target='multi'>two</a>
+<a href='../live-multi.html?b=3&c=3&pd=<?print(str_replace(basename(__FILE__),$localPgnFile,curPageURL()))?>' 
+target='multi'>three</a>
+<a href='../live-multi.html?b=4&c=3&pd=<?print(str_replace(basename(__FILE__),$localPgnFile,curPageURL()))?>' 
+target='multi'>four</a>
+<a href='../live-multi.html?b=5&c=3&pd=<?print(str_replace(basename(__FILE__),$localPgnFile,curPageURL()))?>' 
+target='multi'>five</a>
+<a href='../live-multi.html?b=6&c=3&pd=<?print(str_replace(basename(__FILE__),$localPgnFile,curPageURL()))?>' 
+target='multi'>six</a>
 </div>
 </div>
 </td>
