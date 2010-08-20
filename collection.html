@@ -69,18 +69,24 @@
    SetShortcutKeysEnabled(true);
 
    function customFunctionOnPgnTextLoad() {
-     document.getElementById('numGm').innerHTML = numberOfGames;
+     theObject = document.getElementById('numGm');
+     if (theObject) { theObject.innerHTML = numberOfGames; }
      theObject = document.getElementById('searchPgnExpression');
-     if (theObject) {
-       theObject.value = pgnSearchTarget;
-     }
+     if (theObject) { theObject.value = pgnSearchTarget; }
      searchPgnGame(pgnSearchTarget);
    }
-   function customFunctionOnPgnGameLoad() { 
-     document.getElementById('currGm').innerHTML = currentGame+1;
-     document.getElementById('numPly').innerHTML = PlyNumber; 
+
+   function customFunctionOnPgnGameLoad() {
+     theObject = document.getElementById('currGm');
+     if (theObject) { theObject.innerHTML = currentGame+1; }
+     theObject = document.getElementById('numPly');
+     if (theObject) { theObject.innerHTML = PlyNumber; }
    }
-   function customFunctionOnMove() { document.getElementById('currPly').innerHTML = CurrentPly; }
+
+   function customFunctionOnMove() {
+     theObject = document.getElementById('currPly');
+     if (theObject) { theObject.innerHTML = CurrentPly; }
+   }
 
 </script>
 
