@@ -434,7 +434,7 @@ function disableStopGrabButton() {
 </td>
 <td>
 <div class='logcontainer'>
-<div class='log'><pre><?print($message)?></pre></div>
+<div class='log' title='summary result from last action'><pre><?print($message)?></pre></div>
 </div>
 </td>
 </tr>
@@ -452,6 +452,7 @@ function disableStopGrabButton() {
 <td width='25%'>
 <div class='inputbuttoncontainer'>
 <input type='submit' name='action' value='submit password' class='inputbutton' 
+title='submit password to access private sections of the live games grab page'
 <?
 if ($secretHash == $storedSecretHash) { print("disabled='true'>"); }
 else { print(">"); }
@@ -464,7 +465,8 @@ else { print(">"); }
 <tr valign='top'>
 <td>
 <div class='inputbuttoncontainer'>
-<input type='submit' name='action' value='clear password' class='inputbutton' 
+<input type='submit' name='action' value='clear password' class='inputbutton'
+title='clear password to secure page from unauthorized use' 
 onclick='document.getElementById("secret").value=""; return false;'>
 </div>
 </td>
@@ -478,6 +480,7 @@ onclick='document.getElementById("secret").value=""; return false;'>
 <td>
 <div class='inputlinecontainer'>
 <input name='secret' type='password' id='secret' value='<?print($secret);?>'
+title='password to access private sections of the live games grab page'
 class='inputline' onchange='validate_and_set_secret(this.value);'>
 </div>
 </td>
@@ -501,6 +504,7 @@ else { print("style='visibility: hidden;'>"); }
 <td>
 <div class='inputlinecontainer'>
 <input type='text' id='localPgnFile' name='localPgnFile' value='<?print($localPgnFile)?>' 
+title='name for the local PGN file: must be plain alphanumeric name with .pgn or .txt extension'
 class='inputline' onchange='validate_and_set_localPgnFile(this.value);'>
 </div>
 </td>
@@ -515,6 +519,7 @@ class='inputline' onchange='validate_and_set_localPgnFile(this.value);'>
 <td>
 <div class='inputbuttoncontainer'>
 <input type='submit' id='submitPgnUrl' name='action' value='grab PGN URL'
+title='start the polling cycle to periodically fetch the PGN data at the remote URL'
 class='inputbutton' onclick='return confirm("grab PGN URL as local file");'>
 <input type='submit' id='submitPgnUrlOverwrite' name='action' value='grab PGN URL overwrite'
 style='display: none;'>
@@ -527,6 +532,7 @@ style='display: none;'>
 <td>
 <div class='inputbuttoncontainer'>
 <input type='submit' id='stopGrabbingPgnUrl' name='action' value='stop grabbing PGN URL'
+title='stop the pollyng cycle fetching the PGN data at the remote URL'
 class='inputbutton' onclick='return disableStopGrabButton();' disabled='true'>
 </div>
 </td>
@@ -540,6 +546,7 @@ class='inputbutton' onclick='return disableStopGrabButton();' disabled='true'>
 <td>
 <div class='inputlinecontainer'>
 <input type='text' name='pgnUrl' value='<?print($pgnUrl);?>'
+title='remote URL of the PGN data to be checked and fetched if newer: remote PGN data must not exceed 1MB'
 class='inputline'>
 <input type='hidden' name='lastPgnUrlModification' value='<?print($lastPgnUrlModification);?>'>
 </div>
@@ -552,6 +559,7 @@ class='inputline'>
 <td>
 <div class='inputlinecontainer'>
 <input type='text' id='refreshSeconds' name='refreshSeconds' value='<?print($refreshSeconds);?>'
+title='polling interval in seconds between checks of the remote URL: must be a number between 10 and 3600'
 class='inputline' onchange='validate_and_set_refreshSeconds(this.value)'>
 </div>
 </td>
@@ -563,6 +571,7 @@ class='inputline' onchange='validate_and_set_refreshSeconds(this.value)'>
 <td>
 <div class='inputlinecontainer'>
 <input type='text' id='refreshSteps' name='refreshSteps' value='<?print($refreshSteps);?>'
+title='numer of iterations left for the polling cycle checking the remote URL: must be a number, if blank defaulting to the number of steps for a time duration of approximately 8 hours'
 class='inputline' onchange='validate_and_set_refreshSteps(this.value)'>
 </div>
 </td>
@@ -572,13 +581,26 @@ class='inputline' onchange='validate_and_set_refreshSteps(this.value)'>
 <div class='label'>time for these steps</div>
 </td>
 <td>
-<div class='textinfocontainer' id='remainingTime'></div>
+<div class='textinfocontainer' id='remainingTime' title='time required for the given number of steps at the given polling interval'></div>
+</td>
+</tr>
+<tr valign='top'>
+<td>
+<div class='label'>history</div>
+</td>
+<td>
+<div class='linkcontainer'>
+<div class='link' title='open new browser window showing the logfile of the current games grab action'>
+<a href='<?print($localPgnLogFile)?>' target='log' class='link'>live grab history log</a>
+</div>
+</div>
 </td>
 </tr>
 <tr valign='top'>
 <td>
 <div class='inputbuttoncontainer'>
 <input type='submit' name='action' value='save PGN text'
+title='save the given PGN text as local PGN file'
 class='inputbutton' onclick='return confirm("save PGN text as local file?");'>
 </div>
 </td>
@@ -591,7 +613,9 @@ class='inputbutton' onclick='return confirm("save PGN text as local file?");'>
 </td>
 <td>
 <div class='inputareacontainer'>
-<textarea name='pgnText' rows='4' class='inputarea'><?print($pgnText);?></textarea>
+<textarea name='pgnText' rows='4' class='inputarea'
+title='PGN text for saving as local PGN file'
+><?print($pgnText);?></textarea>
 </div>
 </td>
 </tr>
@@ -599,6 +623,7 @@ class='inputbutton' onclick='return confirm("save PGN text as local file?");'>
 <td>
 <div class='inputbuttoncontainer'>
 <input type='submit' name='action' value='delete local PGN file'
+title='delete local PGN file and associated temporary file and log file'
 class='inputbutton' onclick='return confirm("deleting local PGN file?");'>
 </div>
 </td>
@@ -608,7 +633,7 @@ class='inputbutton' onclick='return confirm("deleting local PGN file?");'>
 
 <tr valign='top'>
 <td colspan='2'>
-<div class='header'>links</div>
+<div class='header'>chessboard viewers</div>
 </td>
 </tr>
 <tr valign='top'>
@@ -623,9 +648,6 @@ target='compact' class='link'>chess live broadcast with single compact chessboar
 <div class='link'>
 <a href='../live-multi.html?b=2&c=2&pd=<?print(str_replace(basename(__FILE__),$localPgnFile,curPageURL()))?>' 
 target='multi'>chess live broadcast with multiple chessboards</a>
-</div>
-<div class='link'>
-<a href='<?print($localPgnLogFile)?>' target='log' class='link'>live grab logfile</a>
 </div>
 </div>
 </td>
