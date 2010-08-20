@@ -659,23 +659,27 @@ class='inputbutton' onclick='return confirm("deleting local PGN file?");'>
 <td>
 </td>
 <td>
+<?
+$refreshMinutes = max(1, floor(($refreshSeconds * 1.25) / 60 * 100) / 100);
+$pdString = str_replace(basename(__FILE__), $localPgnFile, curPageURL());
+?>
 <div class='linkcontainer'>
 <div class='link'>
-<a href='../live-compact.html?pd=<?print(str_replace(basename(__FILE__),$localPgnFile,curPageURL()))?>' 
+<a href='../live-compact.html?rm=<?print($refreshMinutes);?>&pd=<?print($pdString);?>' 
 target='compact' class='link'>chess live broadcast with single compact chessboard</a>
 </div>
 <div class='link'>chess live broadcast with multiple chessboards:
-<a href='../live-multi.html?b=1&c=1&pd=<?print(str_replace(basename(__FILE__),$localPgnFile,curPageURL()))?>' 
+<a href='../live-multi.html?b=1&c=1&do=s&rm=<?print($refreshMinutes);?>&pd=<?print($pdString)?>' 
 target='multi'>one</a>
-<a href='../live-multi.html?b=2&c=2&pd=<?print(str_replace(basename(__FILE__),$localPgnFile,curPageURL()))?>' 
+<a href='../live-multi.html?b=2&c=2&do=s&rm=<?print($refreshMinutes);?>&pd=<?print($pdString)?>' 
 target='multi'>two</a>
-<a href='../live-multi.html?b=3&c=3&pd=<?print(str_replace(basename(__FILE__),$localPgnFile,curPageURL()))?>' 
+<a href='../live-multi.html?b=3&c=3&do=s&rm=<?print($refreshMinutes);?>&pd=<?print($pdString)?>' 
 target='multi'>three</a>
-<a href='../live-multi.html?b=4&c=3&pd=<?print(str_replace(basename(__FILE__),$localPgnFile,curPageURL()))?>' 
+<a href='../live-multi.html?b=4&c=2&do=s&rm=<?print($refreshMinutes);?>&pd=<?print($pdString)?>' 
 target='multi'>four</a>
-<a href='../live-multi.html?b=5&c=3&pd=<?print(str_replace(basename(__FILE__),$localPgnFile,curPageURL()))?>' 
+<a href='../live-multi.html?b=5&c=3&do=s&rm=<?print($refreshMinutes);?>&pd=<?print($pdString)?>' 
 target='multi'>five</a>
-<a href='../live-multi.html?b=6&c=3&pd=<?print(str_replace(basename(__FILE__),$localPgnFile,curPageURL()))?>' 
+<a href='../live-multi.html?b=6&c=3&do=s&rm=<?print($refreshMinutes);?>&pd=<?print($pdString)?>' 
 target='multi'>six</a>
 </div>
 </div>
