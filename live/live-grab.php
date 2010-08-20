@@ -81,7 +81,7 @@ function validate_action($action) {
 }
 
 function validate_localPgnFile($localPgnFile) {
-  if (preg_match("/^[A-Za-z0-9_\-]+\.pgn$/", $localPgnFile)) { return $localPgnFile; }
+  if (preg_match("/^[A-Za-z0-9_\-]+\.(pgn|txt)$/", $localPgnFile)) { return $localPgnFile; }
   else { return "live.pgn"; }
 }
 
@@ -114,15 +114,15 @@ function validate_pgnText($pgnText) {
 $secret = stripslashes($_POST["secret"]);
 $secretHash = hash("sha256", str_rot13($secret));
 
-$localPgnFile = validate_localPgnFile($localPgnFile);
+$localPgnFile = validate_localPgnFile($_REQUEST["localPgnFile"]);
 $localPgnTmpFile = $localPgnFile . ".tmp";
 $localPgnLogFile = $localPgnFile . ".log";
 
 $action = validate_action($_POST["action"]);
 
-$pgnUrl = validate_pgnUrl($_POST["pgnUrl"]);
-$refreshSeconds = validate_refreshSeconds($_POST["refreshSeconds"]);
-$refreshSteps = validate_refreshSteps($_POST["refreshSteps"]);
+$pgnUrl = validate_pgnUrl($_REQUEST["pgnUrl"]);
+$refreshSeconds = validate_refreshSeconds($_REQUEST["refreshSeconds"]);
+$refreshSteps = validate_refreshSteps($_REQUEST["refreshSteps"]);
 $lastPgnUrlModification = validate_lastPgnUrlModification($_POST["lastPgnUrlModification"]);
 
 $pgnText = validate_pgnText(stripslashes($_POST["pgnText"]));
@@ -379,7 +379,7 @@ function validate_and_set_secret(secret) {
 };
 
 function validate_and_set_localPgnFile(localPgnFile) {
-  if (!localPgnFile.match("^[A-Za-z0-9_\-]+\.pgn$")) { 
+  if (!localPgnFile.match("^[A-Za-z0-9_\-]+\.(pgn|txt)$")) { 
     alert("ERROR: invalid local PGN file: " + localPgnFile + "\ndefaulting to: live.pgn");
     document.getElementById("localPgnFile").value = "live.pgn";
   }
