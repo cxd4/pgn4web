@@ -15,7 +15,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 // set this to true to enable the script, set to false by default
 $enableScript = true; 
-$enableScript = false;
+// $enableScript = false;
 
 // set this to the sha256 hash of your password of choice;
 // you can calculate the sha256 of your password of choice by
@@ -427,6 +427,12 @@ function disableStopGrabButton() {
   return false;
 }
 
+function setLocalPgnFileToDefault() {
+  document.getElementById('pgnText').value = '[Event "Wch"] \n[Site "Moscow"] \n[Date "1985.01.17"] \n[Round "16"] \n[White "Karpov"] \n[Black "Kasparov"] \n[Result "0-1"] \n\n1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nc6 5. Nb5 d6 6. c4 Nf6 7. N1c3 a6 8. \nNa3 d5 9. cxd5 exd5 10. exd5 Nb4 11. Be2 Bc5 12. O-O O-O 13. Bf3 Bf5 14. \nBg5 Re8 15. Qd2 b5 16. Rad1 Nd3 17. Nab1 h6 18. Bh4 b4 19. Na4 Bd6 20. Bg3 \nRc8 21. b3 g5 22. Bxd6 Qxd6 23. g3 Nd7 24. Bg2 Qf6 25. a3 a5 26. axb4 axb4 \n27. Qa2 Bg6 28. d6 g4 29. Qd2 Kg7 30. f3 Qxd6 31. fxg4 Qd4+ 32. Kh1 Nf6 33. \nRf4 Ne4 34. Qxd3 Nf2+ 35. Rxf2 Bxd3 36. Rfd2 Qe3 37. Rxd3 Rc1 38. Nb2 Qf2 \n39. Nd2 Rxd1+ 40. Nxd1 Re1+ 0-1 \n';
+  document.getElementById('savePgnText').click();
+  return false;
+}
+
 </script>
 
 <table border='0' cellspacing='3' cellpadding='0' width='100%'>
@@ -601,7 +607,7 @@ class='inputline' onchange='validate_and_set_refreshSteps(this.value)'>
 <tr valign='top'>
 <td>
 <div class='inputbuttoncontainer'>
-<input type='submit' name='action' value='save PGN text'
+<input type='submit' id='savePgnText' name='action' value='save PGN text'
 title='save the given PGN text as local PGN file'
 class='inputbutton' onclick='return confirm("save PGN text as local file?");'>
 </div>
@@ -615,10 +621,21 @@ class='inputbutton' onclick='return confirm("save PGN text as local file?");'>
 </td>
 <td>
 <div class='inputareacontainer'>
-<textarea name='pgnText' rows='4' class='inputarea'
+<textarea id='pgnText' name='pgnText' rows='4' class='inputarea'
 title='PGN text for saving as local PGN file'
 ><?print($pgnText);?></textarea>
 </div>
+</td>
+</tr>
+<tr valign='top'>
+<td>
+<div class='inputbuttoncontainer'>
+<input type='submit' name='action' value='set local PGN file to default'
+title='set local PGN file to a default game: a classic games from the 1985 world championship'
+class='inputbutton' onclick='return setLocalPgnFileToDefault();'>
+</div>
+</td>
+<td>
 </td>
 </tr>
 <tr valign='top'>
