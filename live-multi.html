@@ -45,6 +45,7 @@
       boards = 2;
     }
   }
+  boards = parseInt(boards, 10);
 
   if ((columns = gup("columns")) === "") {
     columns = 2;
@@ -56,6 +57,7 @@
       columns = 2;
     }
   }
+  columns = parseInt(columns, 10);
 
   if ((displayOrder = gup("displayOrder")) === "") {
     displayOrder = "sequential";
@@ -109,6 +111,13 @@ function developer_help() {
         " - help = true; prints this help (default false)");
 }
 
+buildUrl_one = location.protocol + "//" + location.host + location.pathname + "?";
+buildUrl_two = "&do=" + displayOrder.charAt(0) + "&rm=" + refreshMinutes + "&pd=" + pgnFile;
+oneMoreBoardUrl = buildUrl_one + "&b=" + (boards < 32 ? (boards + 1) : 32) + "&c=" + columns + buildUrl_two;
+oneLessBoardUrl = buildUrl_one + "&b=" + (boards >  1 ? (boards - 1) :  1) + "&c=" + columns + buildUrl_two;
+oneMoreColumnUrl = buildUrl_one + "&b=" + boards + "&c=" + (columns < 8 ? (columns + 1) : 8) + buildUrl_two;
+oneLessColumnUrl = buildUrl_one + "&b=" + boards + "&c=" + (columns > 1 ? (columns - 1) : 1) + buildUrl_two;
+
 </script>
 
 <style type="text/css">
@@ -149,7 +158,15 @@ for (r = 0; r < rows; r++) {
 }
 document.write("</table></center>");
 
-document.write("<p style='text-align: right; font-size:small; color:white;'>refreshMinutes: " + refreshMinutes + " &nbsp; pgnData: <a style='color:white;' href='" + pgnFile + "'>" + pgnFile + "</a></p><p style='text-align: right; font-size:small; font-weight:bold;'>control the <a href='#row1'>che</a><a href='#row2'>ss</a><a href='#row3'>bo</a><a href='#row4'>ar</a><a href='#row5'>ds</a> by clicking their squares<br>hover the mouse on each square for help</p>");
+document.write("<table width='100%' cellspacing='5' cellpadding='0'><tr><td>");
+document.write("<p style='text-align: left; font-size:small; color:white;'>refreshMinutes: " + refreshMinutes + "</p>");
+document.write("</td><td>");
+document.write("<p style='text-align: right; font-size:small; color:white;'><a style='color:white;' href='" + pgnFile + "'>" + pgnFile + "</a></p>");
+document.write("</td></tr><tr><td>");
+document.write("<p style='text-align: left; font-size:small; font-weight:bold;'><a href='" + oneLessColumnUrl + "'>less</a> / <a href='" + oneMoreColumnUrl + "'>more</a> columns<br/><a href='" + oneLessBoardUrl + "'>less</a> / <a href='" + oneMoreBoardUrl + "'>more</a> boards</p>");
+document.write("</td><td>");
+document.write("<p style='text-align: right; font-size:small; font-weight:bold;'>control the <a href='#row1'>che</a><a href='#row2'>ss</a><a href='#row3'>bo</a><a href='#row4'>ar</a><a href='#row5'>ds</a> by clicking their squares<br>hover the mouse on each square for help</p>");
+document.write("</td></tr></table>");
 
 </script>
 
