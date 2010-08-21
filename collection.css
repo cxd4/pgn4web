@@ -35,16 +35,16 @@ body {
 }
 
 .pieceImage {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
 }
 
 .whiteSquare,
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 50px;
-  height: 50px;
+  width: 43px;
+  height: 43px;
   border-style: solid;
   border-width: 2px;
 }
