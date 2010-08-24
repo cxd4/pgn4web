@@ -45,7 +45,7 @@ function curPageURL() {
 }
 
 function logMsg($msg) {
-  return date("M d H:i:s e") . " " . $msg;
+  return "time=" . date("M d H:i:s e") . " " . $msg;
 }
 
 function logToFile($msg, $append) {
@@ -221,18 +221,18 @@ a:link, a:visited, a:hover, a:active {
 <?
 
 function deleteFile($myFile) {
-  if (!is_file($myFile)) { return "file " . $myFile . " not found or not a regular file"; }
-  if (unlink($myFile)) { return "file " . $myFile . " deleted"; }
-  else { return "error deleting file " . $myFile; };
+  if (!is_file($myFile)) { return "warning=file " . $myFile . " not found or not a regular file"; }
+  if (unlink($myFile)) { return "info=file " . $myFile . " deleted"; }
+  else { return "error=failed deleting file " . $myFile; };
 }
 
 function checkFileExisting($localPgnFile, $localPgnTmpFile, $localPgnLogFile) {
   if (file_exists($localPgnFile)) {
-    return "<br/>" . $localPgnFile . " exists: aborting action";
+    return "error=" . $localPgnFile . " exists, aborting action";
   } elseif (file_exists($localPgnTmpFile)) {
-    return "<br/>" . $localPgnTmpFile . " exists: aborting action";
+    return "error=" . $localPgnTmpFile . " exists, aborting action";
   } elseif (file_exists($localPgnLogFile)) {
-    return "<br/>" . $localPgnLogFile . " exists: aborting action";
+    return "error=" . $localPgnLogFile . " exists, aborting action";
   } else {
     return "";
   }
@@ -264,44 +264,49 @@ if ($secretHash == $storedSecretHash) {
                  "\n" . "refreshSteps=" . $refreshSteps;
       $errorMessage = checkFileExisting($localPgnFile, $localPgnTmpFile, $localPgnLogFile);
       if (!$overwrite && $errorMessage) {
-        $message = $message . $errorMessage;
+        $message = $message . "\n" . $errorMessage;
       } else {
         if (--$refreshSteps < 0) {
-          $message = $message . "\n" . "error: invalid refresh steps";
+          $message = $message . "\n" . "error=invalid refresh steps";
         } else {
           $logOk = false;
           $newLastPgnUrlModification = "";
           $pgnHeaders = get_headers($pgnUrl, 1); 
           if (! $pgnHeaders) { 
-            $message = $message . "\n" . "failed getting PGN URL headers";
+            $message = $message . "\n" . "error=failed getting PGN URL headers";
           } else {
             if (! $pgnHeaders['Last-Modified']) { 
-              $message = $message . "\n" . "failed getting PGN URL last modified header"; 
+              $message = $message . "\n" . "warning=failed getting PGN URL last modified header"; 
             } else {
               $newLastPgnUrlModification = $pgnHeaders['Last-Modified'];
             }
             if ($newLastPgnUrlModification == $lastPgnUrlModification) {
-              $message = $message . "\n" . "no new PGN content read from URL" .
+              $message = $message . "\n" . "info=no new PGN content read from URL" .
                          "\n" . "timestamp=" . $newLastPgnUrlModification;
             } else {
-              $pgnData = file_get_contents($pgnUrl, NULL, NULL, 0, 1048576);
-              if (! $pgnData) { 
-                $message = $message . "\n" . "failed reading PGN URL (file not found or file too large)";
+              if (! copy($pgnUrl, $localPgnTmpFile)) {
+                $message = $message . "\n" . "error=failed copying updated " . $pgnUrl . " to " . $localPgnTmpFile;
               } else {
-                if (! file_put_contents($localPgnTmpFile, $pgnData)) {
-                  $message = $message . "\n" . "failed saving updated " . $localPgnTmpFile;
-                } else {
-                  if (! copy($localPgnTmpFile, $localPgnFile)) {
-                    $message = $message . "\n" . "failed copying new data to " . $localPgnFile;
+                if ($newLastPgnUrlModification != "") {
+                  $timeNewLastPgnUrlModification = strtotime($newLastPgnUrlModification);
+                  if (! $timeNewLastPgnUrlModification) { 
+                    $message = $message . "\n" . "warning=failed parsing time of last modification from server";
                   } else {
-                    $message = $message . "\n" . "updated " . $localPgnFile;
-                    if ($newLastPgnUrlModification != "") { 
-                      $message = $message . "\n" . "old timestamp=" . $lastPgnUrlModification;
-                      $message = $message . "\n" . "new timestamp=" . $newLastPgnUrlModification;
-                      $lastPgnUrlModification = $newLastPgnUrlModification; 
+                    if (! touch($localPgnTmpFile, $timeNewLastPgnUrlModification)) {
+                      $message = $message . "\n" . "warning=failed setting modification date on " . $localPgnTmpFile;
                     }
-                    $logOk = true;
                   }
+                }
+                if (! rename($localPgnTmpFile, $localPgnFile)) {
+                  $message = $message . "\n" . "error=failed renaming " . $localPgnTmpFile . " as " . $localPgnFile;
+                } else {
+                  $message = $message . "\n" . "info=updated " . $localPgnFile;
+                  if ($newLastPgnUrlModification != "") { 
+                    $message = $message . "\n" . "oldTimestamp=" . $lastPgnUrlModification;
+                    $message = $message . "\n" . "newTimestamp=" . $newLastPgnUrlModification;
+                    $lastPgnUrlModification = $newLastPgnUrlModification; 
+                  }
+                  $logOk = true;
                 }
               }
             }
@@ -309,9 +314,9 @@ if ($secretHash == $storedSecretHash) {
           if ($logOk) { logToFile("step 1 of " . $refreshSteps . ", new PGN data found", $overwrite); }
           else { logToFile("step 1 of " . $refreshSteps . ", no new data", $overwrite); }
           if ($refreshSteps == 0) {
-            $message = $message . "\n" . "timer not restarted";
+            $message = $message . "\n" . "info=timer not restarted";
           } else {
-            $message = $message . "\n" . "timer restarted";
+            $message = $message . "\n" . "info=timer restarted";
             print("<script type='text/javascript'>" . 
                   "if (grabTimeout) { clearTimeout(grabTimeout); } " .
                   "grabTimeout = setTimeout('grabPgnUrl()'," . (1000 * $refreshSeconds) . "); " .
@@ -325,7 +330,7 @@ if ($secretHash == $storedSecretHash) {
       $message = $message . "\n" . "action=" . $action . "\n" . "localPgnFile=" . $localPgnFile;
       $errorMessage = checkFileExisting($localPgnFile, $localPgnTmpFile, $localPgnLogFile);
       if (!$overwrite && $errorMessage) {
-        $message = $message . $errorMessage;
+        $message = $message . "\n" . $errorMessage;
       } else {
         if ($pgnText == "") {
           $pgnTextToSave = $pgnText . "\n";
@@ -335,9 +340,9 @@ if ($secretHash == $storedSecretHash) {
           $pgnTextToSave = $pgnText . "\n";
         }
         if (file_put_contents($localPgnFile, $pgnTextToSave)) { 
-          $message = $message . "\n" . "file " . $localPgnFile . " updated";
+          $message = $message . "\n" . "info=file " . $localPgnFile . " updated";
         } else {
-          $message = $message . "\n" . "failed updating file " . $localPgnFile;
+          $message = $message . "\n" . "error=failed updating file " . $localPgnFile;
         }
       }
       $message = $message . "\n" . "pgnText=\n" . $pgnText . "\n";
@@ -353,18 +358,18 @@ if ($secretHash == $storedSecretHash) {
       break;
 
     case "submit password":
-      $message = $message . "\n" . "password accepted";
+      $message = $message . "\n" . "info=password accepted";
       break;
 
     default:
-      $message = $message . "\n" . "invalid action=" . $action;
+      $message = $message . "\n" . "error=invalid action " . $action;
       break;
 
   }
 
 } else {
 
-  $message = logMsg("invalid password" . "\n" . 
+  $message = logMsg("error=invalid password" . "\n" . 
                     "the sha256 hash of the password you entered is:" . "\n" . 
                     $secretHash);
 
