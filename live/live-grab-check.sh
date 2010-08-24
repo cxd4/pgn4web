@@ -50,6 +50,11 @@ pgn4web_dir=$(dirname $0)
 
 for ((i=0; i<length; i++))
 do
+	if [ "${pgn4web_log[i]}" == ".log" ]
+	then
+		pgn4web_log[i]="live.pgn.log"
+	fi
+
 	if [ -n "$pgn4web_dir" ]
 	then
 		if [[ ${pgn4web_log[i]} != /* ]]
