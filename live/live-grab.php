@@ -284,6 +284,7 @@ if ($secretHash == $storedSecretHash) {
               $message = $message . "\n" . "info=no new PGN content read from URL" .
                          "\n" . "timestamp=" . $newLastPgnUrlModification;
             } else {
+              umask(0000);
               if (! copy($pgnUrl, $localPgnTmpFile)) {
                 $message = $message . "\n" . "error=failed copying updated " . $pgnUrl . " to " . $localPgnTmpFile;
               } else {
@@ -339,10 +340,11 @@ if ($secretHash == $storedSecretHash) {
         } else {
           $pgnTextToSave = $pgnText . "\n";
         }
-        if (file_put_contents($localPgnFile, $pgnTextToSave)) { 
-          $message = $message . "\n" . "info=file " . $localPgnFile . " updated";
-        } else {
+        umask(0000);
+        if (! file_put_contents($localPgnFile, $pgnTextToSave)) { 
           $message = $message . "\n" . "error=failed updating file " . $localPgnFile;
+        } else {
+          $message = $message . "\n" . "info=file " . $localPgnFile . " updated";
         }
       }
       $message = $message . "\n" . "pgnText=\n" . $pgnText . "\n";

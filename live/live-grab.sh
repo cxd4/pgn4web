@@ -68,6 +68,13 @@ print_error() {
 	echo $(basename $0) ERROR: $1 > /dev/stderr
 }
 
+umask 0000
+if [ $? -ne 0]
+then
+	print_error "failed setting umask 0000"
+        exit
+fi 
+
 if [ -z "$1" ]
 then 
 	exit
