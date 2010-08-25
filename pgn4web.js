@@ -596,7 +596,7 @@ configBoardShrortcut("H4", "search next event", function(){ searchPgnGame('\\[\\
 // A3
 configBoardShrortcut("A3", "load first game", function(){ if (numberOfGames > 1) { currentGame = 0; Init(); } });
 // B3
-configBoardShrortcut("B3", "junp 1/10th of games backward", function(){ decile = Math.round(numberOfGames / 10); if (currentGame >= decile) { currentGame -= decile; Init(); } });
+configBoardShrortcut("B3", "junp to previous games decile", function(){ if (currentGame > 0) { calculateDeciles(); for(ii=10; ii>=0; ii--) { if (currentGame > deciles[ii]) { currentGame = deciles[ii]; break; } } Init(); } });
 // C3
 configBoardShrortcut("C3", "load previous game", function(){ if (currentGame > 0){ currentGame--; Init(); } });
 // D3
@@ -606,7 +606,7 @@ configBoardShrortcut("E3", "load random game at random position", function(){ cu
 // F3
 configBoardShrortcut("F3", "load next game", function(){ if (numberOfGames > currentGame + 1){ currentGame++; Init(); } });
 // G3
-configBoardShrortcut("G3", "jump 1/10th of games forward", function(){ decile = Math.round(numberOfGames / 10); if (currentGame + decile < numberOfGames) { currentGame += decile; Init(); } });
+configBoardShrortcut("G3", "jump to next games decile", function(){ if (currentGame < numberOfGames - 1) { calculateDeciles(); for(ii=1; ii<=10; ii++) { if (currentGame < deciles[ii]) { currentGame = deciles[ii]; break; } } Init(); } });
 // H3
 configBoardShrortcut("H3", "load last game", function(){ if (numberOfGames > 1) { currentGame = numberOfGames - 1; Init(); } });
 // A2
@@ -642,6 +642,11 @@ configBoardShrortcut("G1", "go to next comment", function(){ MoveToNextComment()
 // H1
 configBoardShrortcut("H1", "go to game end", function(){ GoToMove(StartPly + PlyNumber); });
 
+
+var deciles = new Array(11);
+function calculateDeciles() {
+  for (ii=0; ii<11; ii++) { deciles[ii] = Math.round((numberOfGames - 1) * ii / 10); }
+}
 
 function detectJavascriptLocation() {
   jspath = "";
