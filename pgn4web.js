@@ -550,13 +550,13 @@ configBoardShrortcut("A6", "pause live broadcast automatic refresh", function(){
 // B6
 configBoardShrortcut("B6", "restart live broadcast automatic refresh", function(){ restartLiveBroadcast(); });
 // C6
-configBoardShrortcut("C6", "load previous finished game", function(){ for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameResult[ii])) && (gameResult[ii]!="*")) { break; } } if (ii>=0) { currentGame = ii; Init();} });
+configBoardShrortcut("C6", "search previous finished game", function(){ searchPgnGame('\\[\\s*Result\\s*"(?!\\*"\\s*\\])', true); });
 // D6
-configBoardShrortcut("D6", "load previous unfinished game", function(){ for (ii=currentGame-1; ii>=0; ii--) { if ((!checkHeaderDefined(gameResult[ii])) || (gameResult[ii]=="*")) { break; } } if (ii>=0) { currentGame = ii; Init();} });
+configBoardShrortcut("D6", "search previous unfinished game", function(){ searchPgnGame('\\[\\s*Result\\s*"\\*"\\s*\\]', true); });
 // E6
-configBoardShrortcut("E6", "load next unfinished game", function(){ for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((!checkHeaderDefined(gameResult[ii])) || (gameResult[ii]=="*")) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} });
+configBoardShrortcut("E6", "search next unfinished game", function(){  searchPgnGame('\\[\\s*Result\\s*"\\*"\\s*\\]', false); });
 // F6
-configBoardShrortcut("F6", "load next finished game", function(){ for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameResult[ii])) && (gameResult[ii]!="*")) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} });
+configBoardShrortcut("F6", "search next finished game", function(){ searchPgnGame('\\[\\s*Result\\s*"(?!\\*"\\s*\\])', false); });
 // G6
 configBoardShrortcut("G6", "", function(){});
 // H6
@@ -578,25 +578,25 @@ configBoardShrortcut("G5", "", function(){});
 // H5
 configBoardShrortcut("H5", "", function(){});
 // A4
-configBoardShrortcut("A4", "jump to previous event", function(){ if (!checkHeaderDefined(gameEvent[currentGame])) { return; } for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameEvent[ii])) && (gameEvent[ii] != gameEvent[currentGame])) { break; } } if (ii>=0) { currentGame = ii; Init();} });
+configBoardShrortcut("A4", "search previous event", function(){ searchPgnGame('\\[\\s*Event\\s*"(?!' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])', true); });
 // B4
-configBoardShrortcut("B4", "jump to previous round of same event", function(){ if ((!checkHeaderDefined(gameEvent[currentGame])) || (!checkHeaderDefined(gameRound[currentGame]))) { return; } for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameRound[ii])) && (gameEvent[ii] == gameEvent[currentGame]) && (gameRound[ii] != gameRound[currentGame])) { break; } } if (ii>=0) { currentGame = ii; Init();} });
+configBoardShrortcut("B4", "search previous round of same event", function(){ searchPgnGame('\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])|\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])', true); });
 // C4
-configBoardShrortcut("C4", "load previous game of same black player", function(){ if (!checkHeaderDefined(gameBlack[currentGame])) { return; } for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameBlack[ii])) && (gameBlack[ii] == gameBlack[currentGame])) { break; } } if (ii>=0) { currentGame = ii; Init();} });
+configBoardShrortcut("C4", "search previous game of same black player", function(){ searchPgnGame('\\[\\s*Black\\s*"' + fixRegExp(gameBlack[currentGame]) + '"\\s*\\]', true); });
 // D4
-configBoardShrortcut("D4", "load previous game of same white player", function(){ if (!checkHeaderDefined(gameWhite[currentGame])) { return; } for (ii=currentGame-1; ii>=0; ii--) { if ((checkHeaderDefined(gameWhite[ii])) && (gameWhite[ii] == gameWhite[currentGame])) { break; } } if (ii>=0) { currentGame = ii; Init();} });
+configBoardShrortcut("D4", "search previous game of same white player", function(){ searchPgnGame('\\[\\s*White\\s*"' + fixRegExp(gameWhite[currentGame]) + '"\\s*\\]', true); });
 // E4
-configBoardShrortcut("E4", "load next game of same white player", function(){ if (!checkHeaderDefined(gameWhite[currentGame])) { return; } for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameWhite[ii])) && (gameWhite[ii] == gameWhite[currentGame])) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} });
+configBoardShrortcut("E4", "search next game of same white player", function(){ searchPgnGame('\\[\\s*White\\s*"' + fixRegExp(gameWhite[currentGame]) + '"\\s*\\]', false); });
 // F4
-configBoardShrortcut("F4", "load next game of same black player", function(){ if (!checkHeaderDefined(gameBlack[currentGame])) { return; } for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameBlack[ii])) && (gameBlack[ii] == gameBlack[currentGame])) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} });
+configBoardShrortcut("F4", "search next game of same black player", function(){  searchPgnGame('\\[\\s*Black\\s*"' + fixRegExp(gameBlack[currentGame]) + '"\\s*\\]', false); });
 // G4
-configBoardShrortcut("G4", "jump to next round of same event", function(){ if ((!checkHeaderDefined(gameEvent[currentGame])) || (!checkHeaderDefined(gameRound[currentGame]))) { return; } for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameRound[ii])) && (gameEvent[ii] == gameEvent[currentGame]) && (gameRound[ii] != gameRound[currentGame])) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} });
+configBoardShrortcut("G4", "search next round of same event", function(){ searchPgnGame('\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])|\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])', false); });
 // H4
-configBoardShrortcut("H4", "jump to next event", function(){ if (!checkHeaderDefined(gameEvent[currentGame])) { return; } for (ii=currentGame+1; ii<numberOfGames; ii++) { if ((checkHeaderDefined(gameEvent[ii])) && (gameEvent[ii] != gameEvent[currentGame])) { break; } } if (ii<numberOfGames) { currentGame = ii; Init();} });
+configBoardShrortcut("H4", "search next event", function(){ searchPgnGame('\\[\\s*Event\\s*"(?!' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])', false); });
 // A3
 configBoardShrortcut("A3", "load first game", function(){ if (numberOfGames > 1) { currentGame = 0; Init(); } });
 // B3
-configBoardShrortcut("B3", "jump 50 games backward", function(){ if (currentGame >= 50){ currentGame -= 50; Init(); }else{ if (numberOfGames > 1) { currentGame = 0; Init(); } } });
+configBoardShrortcut("B3", "junp to previous game decile", function(){ decile = Math.ceil(numberOfGames / 10); if (currentGame >= decile) { currentGame -= decile; Init(); } });
 // C3
 configBoardShrortcut("C3", "load previous game", function(){ if (currentGame > 0){ currentGame--; Init(); } });
 // D3
@@ -606,7 +606,7 @@ configBoardShrortcut("E3", "load random game at random position", function(){ cu
 // F3
 configBoardShrortcut("F3", "load next game", function(){ if (numberOfGames > currentGame + 1){ currentGame++; Init(); } });
 // G3
-configBoardShrortcut("G3", "jump 50 games forward", function(){ if (numberOfGames > currentGame + 50){ currentGame += 50; Init(); }else{ if (numberOfGames > 1) { currentGame = numberOfGames - 1; Init(); } } });
+configBoardShrortcut("G3", "jump to next game decile", function(){ decile = Math.ceil(numberOfGames / 10); if (numberOfGames > currentGame + decile) { currentGame += decile; Init(); } });
 // H3
 configBoardShrortcut("H3", "load last game", function(){ if (numberOfGames > 1) { currentGame = numberOfGames - 1; Init(); } });
 // A2
@@ -2336,8 +2336,12 @@ function IsCheck(col, row, color) {
 }
 
 
-function checkHeaderDefined(headerValue) {
-  return ((headerValue != undefined) && (headerValue !== "") && (headerValue != " ") && (headerValue != "?"));
+function fixRegExp(exp) {
+  rexExpSpecialChars = "[\^$.|?*+()";
+  for (ii=0; ii<rexExpSpecialChars.length; ii++) {
+    exp = exp.replace(rexExpSpecialChars.charAt(ii), "\\" + rexExpSpecialChars.charAt(ii));
+  }
+  return exp;
 }
 
 function LoadGameHeaders(){
@@ -3076,6 +3080,8 @@ function gameNumberSearchPgn(searchExpression, backward) {
 
 function searchPgnGame(searchExpression, backward) {
   lastSearchPgnExpression = searchExpression;
+  theObject = document.getElementById('searchPgnExpression');
+  if (theObject) { theObject.value = searchExpression; }
   if ((searchExpression === "") || (! searchExpression)) { return; }
   if (numberOfGames < 2) { return; }
   checkGame = gameNumberSearchPgn(searchExpression, backward);
@@ -3092,10 +3098,6 @@ function searchPgnGamePrompt() {
   }
   searchExpression = prompt("Please enter search pattern for PGN games:", lastSearchPgnExpression);
   if (! searchExpression) { return; }
-  theObject = document.getElementById('searchPgnExpression');
-  if (theObject) {
-    theObject.value = searchExpression;
-  }
   searchPgnGame(searchExpression);
 }
 
