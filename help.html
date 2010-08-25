@@ -70,15 +70,17 @@ try {
 if (isRotated) {
   colorAtTheBottom = "Black";
   shortcutSquareKeyEnable = "A2";
-  shortcutSquareSearchPopup = "H4";
-  shortcutSquareSearchRepeat = "G4";
+  shortcutSquareSearchPopup = "G4";
+  shortcutSquareSearchRepeat = "F4";
+  shortcutSquareSearchRepeatBackward = "H4";
   rowNumbers = "87654321";
   colLetters = "HGFEDCBA";
 } else {
   colorAtTheBottom = "White";
   shortcutSquareKeyEnable = "H7";
-  shortcutSquareSearchPopup = "A5";
-  shortcutSquareSearchRepeat = "B5";
+  shortcutSquareSearchPopup = "B5";
+  shortcutSquareSearchRepeat = "C5";
+  shortcutSquareSearchRepeatBackward = "A5";
   rowNumbers = "12345678";
   colLetters = "ABCDEFGH";
 }
@@ -188,7 +190,7 @@ try {
 <script type="text/javascript">print_menu("search", 2, "search&nbsp;tool");</script>
 
 <script type="text/javascript">
-document.write('Access the search tool either direclty with the search form (if available on the web page) or via the popup search box invoked with the ' + shortcutSquareSearchRepeat + ' shortcut square (assuming ' + colorAtTheBottom + ' on bottom) and/or the \'s\' shortcut key. The ' + shortcutSquareSearchPopup + ' shortcut square (assuming ' + colorAtTheBottom + ' on bottom) and/or the \'enter\' shortcut key repeat the last search.'); 
+document.write('Access the search tool either direclty with the search form (if available on the web page) or via the popup search box invoked with the ' + shortcutSquareSearchPopup + ' shortcut square (assuming ' + colorAtTheBottom + ' on bottom) and/or the \'s\' shortcut key. The ' + shortcutSquareSearchRepeat + ' shortcut square (assuming ' + colorAtTheBottom + ' on bottom) and/or the \'enter\' shortcut key repeat the last search. The ' + shortcutSquareSearchRepeatBackward + ' shortcut square (assuming ' + colorAtTheBottom + ' on bottom) and/or the \'shift-enter\' shortcut key repeat the last search backward.'); 
 </script>
 
 <p></p>
