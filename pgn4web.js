@@ -254,7 +254,8 @@ function handlekey(e) {
       break;
 
     case 13:  // enter
-      searchPgnGame(lastSearchPgnExpression);
+      if (e.shiftKey) { searchPgnGame(lastSearchPgnExpression, true); }
+      else { searchPgnGame(lastSearchPgnExpression); }
       return stopKeyPropagation(e);
       break;
 
@@ -561,11 +562,11 @@ configBoardShrortcut("G6", "", function(){});
 // H6
 configBoardShrortcut("H6", "force games refresh during live broadcast", function(){ refreshPgnSource(); });
 // A5
-configBoardShrortcut("A5", "repeat last search", function(){ searchPgnGame(lastSearchPgnExpression); });
+configBoardShrortcut("A5", "repeat last search backward", function(){ searchPgnGame(lastSearchPgnExpression, true); });
 // B5
 configBoardShrortcut("B5", "search prompt", function(){ searchPgnGamePrompt(); });
 // C5
-configBoardShrortcut("C5", "", function(){});
+configBoardShrortcut("C5", "repeat last search", function(){ searchPgnGame(lastSearchPgnExpression); });
 // D5
 configBoardShrortcut("D5", "", function(){});
 // E5
@@ -3053,7 +3054,7 @@ function reset_after_click (ii, jj, originalClass, newClass) {
 
 
 var lastSearchPgnExpression = "";
-function gameNumberSearchPgn(searchExpression) {
+function gameNumberSearchPgn(searchExpression, backward) {
   lastSearchPgnExpression = searchExpression;
   if (searchExpression === "") { return false; }
   // when searching we replace newline characters with spaces, 
@@ -3062,9 +3063,10 @@ function gameNumberSearchPgn(searchExpression) {
   searchExpressionRegExp = new RegExp(searchExpression, "im");
   // at start currentGame might still be -1
   currentGameSearch = (currentGame < 0) || (currentGame >= numberOfGames) ? 0 : currentGame;
-  for (checkGame = (currentGameSearch + 1) % numberOfGames; 
+  delta = backward ? -1 : +1;
+  for (checkGame = (currentGameSearch + delta + numberOfGames) % numberOfGames; 
        checkGame != currentGameSearch; 
-       checkGame = (checkGame + 1) % numberOfGames) { 
+       checkGame = (checkGame + delta + numberOfGames) % numberOfGames) { 
     if (pgnGame[checkGame].replace(newlinesRegExp, " ").match(searchExpressionRegExp)) {
       return checkGame;
     }
@@ -3072,11 +3074,11 @@ function gameNumberSearchPgn(searchExpression) {
   return false;
 }
 
-function searchPgnGame(searchExpression) {
+function searchPgnGame(searchExpression, backward) {
   lastSearchPgnExpression = searchExpression;
   if ((searchExpression === "") || (! searchExpression)) { return; }
   if (numberOfGames < 2) { return; }
-  checkGame = gameNumberSearchPgn(searchExpression);
+  checkGame = gameNumberSearchPgn(searchExpression, backward);
   if ((checkGame !== false) && (checkGame != currentGame)) {
     currentGame = checkGame;
     Init();
