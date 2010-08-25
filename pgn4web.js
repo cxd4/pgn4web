@@ -596,7 +596,7 @@ configBoardShrortcut("H4", "search next event", function(){ searchPgnGame('\\[\\
 // A3
 configBoardShrortcut("A3", "load first game", function(){ if (numberOfGames > 1) { currentGame = 0; Init(); } });
 // B3
-configBoardShrortcut("B3", "junp to previous game decile", function(){ decile = Math.ceil(numberOfGames / 10); if (currentGame >= decile) { currentGame -= decile; Init(); } });
+configBoardShrortcut("B3", "junp 1/10th of games backward", function(){ decile = Math.round(numberOfGames / 10); if (currentGame >= decile) { currentGame -= decile; Init(); } });
 // C3
 configBoardShrortcut("C3", "load previous game", function(){ if (currentGame > 0){ currentGame--; Init(); } });
 // D3
@@ -606,7 +606,7 @@ configBoardShrortcut("E3", "load random game at random position", function(){ cu
 // F3
 configBoardShrortcut("F3", "load next game", function(){ if (numberOfGames > currentGame + 1){ currentGame++; Init(); } });
 // G3
-configBoardShrortcut("G3", "jump to next game decile", function(){ decile = Math.ceil(numberOfGames / 10); if (numberOfGames > currentGame + decile) { currentGame += decile; Init(); } });
+configBoardShrortcut("G3", "jump 1/10th of games forward", function(){ decile = Math.round(numberOfGames / 10); if (currentGame + decile < numberOfGames) { currentGame += decile; Init(); } });
 // H3
 configBoardShrortcut("H3", "load last game", function(){ if (numberOfGames > 1) { currentGame = numberOfGames - 1; Init(); } });
 // A2
