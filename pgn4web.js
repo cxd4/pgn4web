@@ -1406,13 +1406,14 @@ function HighlightLastMove() {
     theShowMoveTextObject.style.whiteSpace = 'nowrap';
   }
 
+  // show last move
   theShowMoveTextObject = document.getElementById("GameLastMove");
   if (theShowMoveTextObject !== null) {
     if (showThisMove < StartPly) {
       text = '-';
     } else {
       text = (Math.floor(showThisMove/2) + 1) + 
-       (showThisMove % 2 === 0 ? '. ' : '... ') + Moves[showThisMove+1];
+       (showThisMove % 2 === 0 ? '. ' : '... ') + Moves[showThisMove];
     }
     theShowMoveTextObject.innerHTML = text; 
     theShowMoveTextObject.className = 'GameLastMove';
