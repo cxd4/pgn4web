@@ -6,8 +6,8 @@
  */
 
 /*
- *  See README.txt file for instructions HOW TO USE pgn4web.js
- *  Alternatively, check the project wiki at http://pgn4web.casaschi.net
+ *  Implementation notes in the README.txt file and
+ *  at the project wiki http://pgn4web.casaschi.net
  */
 
 var pgn4web_version = '2.06+';
@@ -74,9 +74,7 @@ function resetAlert() {
   alertNum = alertNumSinceReset = fatalErrorNumSinceReset = 0;
   stopAlertPrompt();
   if (!alertFirstResetLoadingPgn) {
-    configBoardShrortcut(debugShortcutSquare, 
-                         "pgn4web v" + pgn4web_version + " debug info", 
-                         "keep");
+    configBoardShrortcut(debugShortcutSquare, "pgn4web v" + pgn4web_version + " debug info");
   }
 }
 
@@ -88,8 +86,7 @@ function myAlert(msg, fatalError) {
   alertLog[alertLast] = msg;
   alertPlural = alertNum > 1 ? "s" : "";
   configBoardShrortcut(debugShortcutSquare, 
-    "pgn4web v" + pgn4web_version + " debug info, " + alertNum + " alert" + alertPlural, 
-    "keep"); 
+    "pgn4web v" + pgn4web_version + " debug info, " + alertNum + " alert" + alertPlural); 
 
   if ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) {
     startAlertPrompt();
@@ -500,7 +497,7 @@ function configBoardShrortcut(square, title, functionPointer) {
   var row = 56 - square.charCodeAt(1); // 56 is "8"
   if ((row < 0) || (row > 7)) { return; }
   boardTitle[col][row] = title;
-  if (functionPointer != "keep") { boardOnClick[col][row] = functionPointer; }
+  if (functionPointer) { boardOnClick[col][row] = functionPointer; }
   theObject = document.getElementById('link_tcol' + col + 'trow' + row);
   if (theObject) {
     if (IsRotated) { square = String.fromCharCode(72-col,49+row); }
@@ -853,20 +850,13 @@ function displayFenData() {
     fenWin.document.write("<body>\n");
     fenWin.document.write("<b><pre>\n\n" + currentFEN + "\n\n</pre></b>\n<hr>\n");
     fenWin.document.write("<pre>\n\n");
-    tmpString = gameEvent[currentGame] ? gameEvent[currentGame] : "?";
-    fenWin.document.write("[Event \"" + tmpString + "\"]\n");
-    tmpString = gameSite[currentGame] ? gameSite[currentGame] : "?";
-    fenWin.document.write("[Site \"" + tmpString + "\"]\n");
-    tmpString = gameDate[currentGame] ? gameDate[currentGame] : "????.??.??";
-    fenWin.document.write("[Date \"" + tmpString + "\"]\n");
-    tmpString = gameRound[currentGame] ? gameRound[currentGame] : "?";
-    fenWin.document.write("[Round \"" + tmpString + "\"]\n");
-    tmpString = gameWhite[currentGame] ? gameWhite[currentGame] : "?";
-    fenWin.document.write("[White \"" + tmpString + "\"]\n");
-    tmpString = gameBlack[currentGame] ? gameBlack[currentGame] : "?";
-    fenWin.document.write("[Black \"" + tmpString + "\"]\n");
-    tmpString = gameResult[currentGame] ? gameResult[currentGame] : "*";
-    fenWin.document.write("[Result \"" + tmpString + "\"]\n");
+    fenWin.document.write("[Event \"" + (gameEvent[currentGame] ? gameEvent[currentGame] : "?") + "\"]\n");
+    fenWin.document.write("[Site \"" + (gameSite[currentGame] ? gameSite[currentGame] : "?") + "\"]\n");
+    fenWin.document.write("[Date \"" + (gameDate[currentGame] ? gameDate[currentGame] : "????.??.??") + "\"]\n");
+    fenWin.document.write("[Round \"" + (gameRound[currentGame] ? gameRound[currentGame] : "?") + "\"]\n");
+    fenWin.document.write("[White \"" + (gameWhite[currentGame] ? gameWhite[currentGame] : "?") + "\"]\n");
+    fenWin.document.write("[Black \"" + (gameBlack[currentGame] ? gameBlack[currentGame] : "?") + "\"]\n");
+    fenWin.document.write("[Result \"" + (gameResult[currentGame] ? gameResult[currentGame] : "*") + "\"]\n");
     fenWin.document.write("[SetUp \"1\"]\n");
     fenWin.document.write("[FEN \"" + CurrentFEN() + "\"]\n\n");
     fenWin.document.write(currentMovesString);
@@ -883,9 +873,6 @@ var currentGame   = -1;
 
 var firstStart = true;
 
-/*
- * Global variables holding game tags.
- */
 var gameDate = new Array();
 var gameWhite = new Array();
 var gameBlack = new Array();
@@ -1078,12 +1065,9 @@ function CheckLegality(what, plyCount) {
     return true;
   } 
   
-  // Some checks common to all pieces:
-  // If it is not a capture the square has to be empty.
-  // If it is a capture the TO square has to be occupied by a piece of the
-  // opposite color, with the exception of the en-passant capture.
-  // If the moved piece and the piece in the TO square are different then 
-  // the moved piece has to be a pawn promoting.
+  // not a capture => the square has to be empty
+  // capture => TO square occupied by a opposite color piece (except en-passant)
+  // moved piece different from piece in TO square => pawn promotion 
   if (!mvCapture) {
     if (Board[mvToCol][mvToRow] !== 0) { return false; }
   }
@@ -1097,9 +1081,7 @@ function CheckLegality(what, plyCount) {
     if (mvToRow     != 7*(1-MoveColor)) { return false; }
   }
   
-  // It is a piece move. Loop over all pieces and find the ones of the same
-  // type as the one in the move. For each one of these check if they could 
-  // have made the move.
+  // this is a piece move => loop over all same tipe pieces and find which could move there
   var pieceId;
   for (pieceId = 0; pieceId < 16; ++pieceId) {
      if (PieceType[MoveColor][pieceId] == mvPiece) {
@@ -1206,7 +1188,7 @@ function CheckLegalityOO() {
   if (CastlingShort[MoveColor] === 0) { return false; }
   if (PieceMoveCounter[MoveColor][0] > 0) { return false; }
   
-  // Find which rook was involved in the castling.
+  // which rook was castling
   var legal    = false;
   var thisRook = 0;
   while (thisRook < 16) {
@@ -1221,8 +1203,8 @@ function CheckLegalityOO() {
   if (!legal) { return false; }
   if (PieceMoveCounter[MoveColor][thisRook] > 0) { return false; }
   
-  // Check no piece is between the king and the rook. To make it compatible
-  // with fisher-random rules clear the king and rook squares now.
+  // check no piece between king and rook
+  // clear king/rook squares for fisher-random compatibility
   Board[PieceCol[MoveColor][0]][MoveColor*7]        = 0;
   Board[PieceCol[MoveColor][thisRook]][MoveColor*7] = 0;
   var col = PieceRow[MoveColor][thisRook];
@@ -1239,7 +1221,7 @@ function CheckLegalityOOO() {
   if (CastlingLong[MoveColor] === 0) { return false; }
   if (PieceMoveCounter[MoveColor][0] > 0) { return false; }
 
-  // Find which rook was involved in the castling.
+  // which rook was castling
   var legal    = false;
   var thisRook = 0;
   while (thisRook < 16){
@@ -1254,8 +1236,8 @@ function CheckLegalityOOO() {
   if (!legal) { return false; }
   if (PieceMoveCounter[MoveColor][thisRook] > 0) { return false; }
 
-  // Check no piece is between the king and the rook. To make it compatible
-  // with fisher-random rules clear the king and rook squares now.
+  // check no piece between king and rook
+  // clear king/rook squares for fisher-random compatibility
   Board[PieceCol[MoveColor][0]][MoveColor*7]        = 0;
   Board[PieceCol[MoveColor][thisRook]][MoveColor*7] = 0;
   var col = PieceRow[MoveColor][thisRook];
@@ -1348,10 +1330,9 @@ function SetInitialGame(number_or_string) {
   if (number_or_string) { initialGame = number_or_string; }
 }
 
-// the clock value is detected with two options: first the DGT sequence [%clk 01:02] 
-// is checked. 
-// If this fails, then look for the beginning of the comment for a sequence of numbers 
-// and ':' and '.' characters.
+// clock value detection:
+// a) check DGT sequence [%clk 01:02] 
+// b) check for nn:nn:nn and nn.nn.nn at the comment start 
   
 function clockFromComment(comment) {
   var clock = "";
@@ -1364,16 +1345,14 @@ function clockFromComment(comment) {
 function HighlightLastMove() {
   var anchorName;
 
-  // Remove the highlighting from the old anchor if any.
+  // remove highlighting from old anchor if any
   if (oldAnchor >= 0){
     anchorName = 'Mv'+oldAnchor;
     theAnchor = document.getElementById(anchorName);
     if (theAnchor !== null) { theAnchor.className = 'move'; }
   }
 
-  // Find which move has to be highlighted. If the move number is negative
-  // we are at the starting position and nothing is to be highlighted and
-  // the header on top of the board is removed.
+  // find halfmove to be highlighted, negative for starting position (nothing to highlight)
   var showThisMove = CurrentPly - 1;
   if (showThisMove > StartPly + PlyNumber) { showThisMove = StartPly + PlyNumber; }
 
@@ -1382,20 +1361,20 @@ function HighlightLastMove() {
     if (MoveComments[showThisMove+1] != undefined) {
       // remove PGN extension tags
       thisComment = MoveComments[showThisMove+1].replace(/\[%.*?\]\s*/g,''); // note trailing spaces are removed also
-      // remove comments that are all spaces
-      if (thisComment.match(/^\s*$/)) { thisComment = ''; }
+      // remove spaces only comments
+      thisComment = thisComment.replace(/^\s+$/,'');
     } else { thisComment = ''; }
     theShowCommentTextObject.innerHTML = thisComment !== '' ? MoveComments[showThisMove+1] : '-';
     theShowCommentTextObject.className = 'GameLastComment';
   }
   
-  // Show the side to move
+  // show side to move
   text = (showThisMove+1)%2 === 0 ? 'white' : 'black';
  
   theObject = document.getElementById("GameSideToMove");
   if (theObject !== null) { theObject.innerHTML = text; }
 
-  // Show the clock (if suitable info is found in the game comment)
+  // show clock if any
   if ((showThisMove+1)%2 == 1) { // white has just moved
     lastMoverClockObject = document.getElementById("GameWhiteClock");
     initialLastMoverClock = gameInitialWhiteClock[currentGame];
@@ -1419,7 +1398,7 @@ function HighlightLastMove() {
                                            initialBeforeLastMoverClock;
   }
 
-  // Show the next move
+  // show next move
   var theShowMoveTextObject = document.getElementById("GameNextMove");
   if (theShowMoveTextObject !== null) {
     if (showThisMove+1 >= (StartPly+PlyNumber)) {
@@ -1459,14 +1438,10 @@ function HighlightLastMove() {
         highlightColFrom = highlightRowFrom = -1;
         highlightColTo   = highlightRowTo   = -1;
       } else {
-        highlightColFrom = HistCol[0][showThisMove];
-        if (highlightColFrom == undefined) { highlightColFrom = -1; }
-        highlightRowFrom = HistRow[0][showThisMove];
-        if (highlightRowFrom == undefined) { highlightRowFrom = -1; }
-        highlightColTo = HistCol[2][showThisMove];
-        if (highlightColTo == undefined) { highlightColTo = -1; }
-        highlightRowTo = HistRow[2][showThisMove];
-        if (highlightRowTo == undefined) { highlightRowTo = -1; }
+        highlightColFrom = HistCol[0][showThisMove] == undefined ? -1 : HistCol[0][showThisMove];
+        highlightRowFrom = HistRow[0][showThisMove] == undefined ? -1 : HistRow[0][showThisMove];
+        highlightColTo   = HistCol[2][showThisMove] == undefined ? -1 : HistCol[2][showThisMove];
+        highlightRowTo   = HistRow[2][showThisMove] == undefined ? -1 : HistRow[2][showThisMove];
       }
       highlightMove(highlightColFrom, highlightRowFrom, highlightColTo, highlightRowTo);
     }
@@ -1483,7 +1458,6 @@ function SetHighlight(on) {
   else { highlightMove(-1, -1, -1, -1); }
 }
 
-// global vars to remember last highlighted square
 var lastColFromHighlighted = -1;
 var lastRowFromHighlighted = -1;
 var lastColToHighlighted = -1;
@@ -1524,7 +1498,7 @@ function highlightSquare(col, row, on) {
 
 function pgnGameFromPgnText(pgnText) {
 
-  // replace < and > with html entities to avoid html injection form the PGN data
+  // replace < and > with html entities: avoid html injection from PGN data
   pgnText = pgnText.replace(/</g, "&lt;");
   pgnText = pgnText.replace(/>/g, "&gt;");
 
@@ -1533,7 +1507,7 @@ function pgnGameFromPgnText(pgnText) {
   inGameBody = false;
   gameIndex = -1;
   pgnGame.length = 0;
-  for(ii in lines){
+  for(ii in lines) {
 
     // according to the PGN standard lines starting with % should be ignored
     if(lines[ii].charAt(0) == '%') { continue; }
@@ -1543,12 +1517,12 @@ function pgnGameFromPgnText(pgnText) {
         gameIndex++;
         pgnGame[gameIndex] = '';
       }
-      inGameHeader=true;
-      inGameBody=false;
+      inGameHeader = true;
+      inGameBody = false;
     } else {
       if(inGameHeader) {
-        inGameHeader=false;
-        inGameBody=true;
+        inGameHeader = false;
+        inGameBody = true;
       }
     }
     lines[ii] = lines[ii].replace(/^\s*/,"");
@@ -1569,7 +1543,7 @@ function loadPgnFromPgnUrl(pgnUrl){
   LiveBroadcastLastRefreshedLocal = (new Date()).toLocaleString();
 
   var http_request = false;
-    if (window.XMLHttpRequest) { // Mozilla, Safari, ...
+    if (window.XMLHttpRequest) { // not IE
       http_request = new XMLHttpRequest();
       if (http_request.overrideMimeType) {
         http_request.overrideMimeType('text/plain');
@@ -1587,10 +1561,10 @@ function loadPgnFromPgnUrl(pgnUrl){
   }
 
   try {
-    // anti-caching tecnique number 1: add a random parameter to the URL
+    // anti-caching #1: add random parameter
     urlRandomizer = (LiveBroadcastDelay > 0) ? "?nocahce=" + Math.random() : "";
     http_request.open("GET", pgnUrl + urlRandomizer, false);
-    // anti-caching tecnique number 2: add header option
+    // anti-caching #2: add header option
     if (LiveBroadcastDelay > 0) {
       http_request.setRequestHeader( "If-Modified-Since", LiveBroadcastLastModifiedHeader );
     }
@@ -1610,7 +1584,7 @@ function loadPgnFromPgnUrl(pgnUrl){
         return LOAD_PGN_FROM_PGN_URL_FAIL;
       }
 
-// dirty hack to cope with Opera's failure to report correctly a 304 status; should really be fixed properly instead
+// dirty hack for Opera's failure reporting 304 status
     } else if (window.opera && (! http_request.responseText) && (http_request.status === 0)) {
       http_request.abort(); 
       return LOAD_PGN_FROM_PGN_URL_UNMODIFIED;
@@ -1673,15 +1647,15 @@ function checkLiveBroadcastStatus() {
     return; 
   }
 
-  // check if broadcast did not start yet
-  // check for odd situations where no PGN file is found and fake LiveBroadcastPlaceholderPgn game is injected
+  // broadcast started yet?
+  // check for fake LiveBroadcastPlaceholderPgn game when no PGN file is found
   if ((LiveBroadcastStarted === false) || 
       ((pgnGame == undefined) || 
       ((numberOfGames == 1) && (gameEvent[0] == LiveBroadcastPlaceholderEvent)))) {
     LiveBroadcastEnded = false;
     LiveBroadcastStatusString = "live broadcast yet to start";
   } else {
-    // broadcast started with a good PGN
+    // broadcast started with good PGN
     liveGamesRunning = 0;
     for (ii=0; ii<numberOfGames; ii++) {
       if (gameResult[ii].indexOf('*') >= 0) { liveGamesRunning++; }
@@ -1871,15 +1845,15 @@ function createBoard(){
   } else if ( document.getElementById("pgnText") ) {
     if (document.getElementById("pgnText").tagName.toLowerCase() == "textarea") {
       tmpText = document.getElementById("pgnText").value;
-    } else { // backward compatibility with pgn4web older than 1.77 when the <span> technique was used for pgnText
+    } else { // backward compatibility with pgn4web <1.77 when <span> was used for pgnText
       tmpText = document.getElementById("pgnText").innerHTML;
-      // fixes issue with some browser removing \n from innerHTML
+      // fixes browser issue removing \n from innerHTML
       if (tmpText.indexOf('\n') < 0) { tmpText = tmpText.replace(/((\[[^\[\]]*\]\s*)+)/g, "\n$1\n"); }
-      // fixes issue with some browser replacing quotes with &quot; such as the blackberry browser
+      // fixes browser issue replacing quotes with &quot; e.g. blackberry
       if (tmpText.indexOf('"') < 0) { tmpText = tmpText.replace(/(&quot;)/g, '"'); }
     }
 
-    // if no html header is present, add emptyPgnHeader at the top
+    // no html header => add emptyPgnHeader
     if (pgnHeaderTagRegExp.test(tmpText) === false) { tmpText = emptyPgnHeader + tmpText; }
 
     if ( pgnGameFromPgnText(tmpText) ) {
@@ -1971,7 +1945,7 @@ function Init(){
   
   OpenGame(currentGame);
   
-  // Find the index of the first square image if needed.
+  // find index of first square image
   if (ImageOffset < 0) {
     for (ii = 0; ii < document.images.length; ++ii) {
       if (document.images[ii].src == ClearImg.src) {
@@ -1986,7 +1960,7 @@ function Init(){
   HighlightLastMove(); 
   if (firstStart || alwaysInitialHalfmove) { GoToInitialHalfmove(); }
   else { customFunctionOnMove(); }
-  // added here customFunctionOnMove for consistency, as a null move starting a new game
+  // customFunctionOnMove here for consistency, as a null move starting a new game
 
   if ((firstStart) && (autostartAutoplay)) { SetAutoPlay(true); }
 
@@ -1999,7 +1973,7 @@ function Init(){
 function InitFEN(startingFEN) {
   FenString = startingFEN != undefined ? startingFEN : FenStringStart;
   
-  // Reset the board
+  // board reset
   var ii, jj;
   for (ii = 0; ii < 8; ++ii) {
     for (jj = 0; jj < 8; ++jj) {
@@ -2007,7 +1981,7 @@ function InitFEN(startingFEN) {
     }
   }
 
-  // Set the initial position. As of now only the normal starting position.
+  // initial position
   var color, pawn;
   StartPly  = 0;
   MoveCount = StartPly;
@@ -2043,8 +2017,7 @@ function InitFEN(startingFEN) {
       }
       for (ii = 0; ii < 16; ++ii) {
 	PieceMoveCounter[color][ii] = 0;
-	PieceRow[color][ii]         = (1-color) * Math.floor(ii/8) +
- 	                                 color  * (7-Math.floor(ii/8));
+	PieceRow[color][ii] = (1-color) * Math.floor(ii/8) + color * (7-Math.floor(ii/8));
       }
       for (ii = 0; ii < 16; ii++) {
         var col = PieceCol[color][ii];
@@ -2195,7 +2168,7 @@ function InitFEN(startingFEN) {
       cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
     }
 
-    // Set board
+    // set board
     for (color = 0; color < 2; ++color) {
       for (ii = 0; ii < 16; ii++) {
         if (PieceType[color][ii] != -1) {
@@ -2257,21 +2230,19 @@ function SetImageType(extension) {
 }
 
 function InitImages() {
-  // Reset the array describing what image is in each square.
+  // reset square images array
   DocumentImages.length = 0;
   
-  // No need if the directory where we pick images is not changed.
+  // proceed only if new image path
   if (ImagePathOld == ImagePath) { return; }
 
-  /* adds a trailing / to ImagePath if missing and if path not blank */
+  // add trailing / if missing
   if ((ImagePath.length > 0) && (ImagePath[ImagePath.length-1] != '/')) {
     ImagePath += '/';
   }
 
-  // No image.
   ClearImg.src = ImagePath+'clear.'+imageType;
 
-  // Load the images.
   var color;
   ColorName = new Array ("w", "b");
   for (color = 0; color < 2; ++color) {
@@ -2296,11 +2267,11 @@ function IsCheck(col, row, color) {
   var ii, jj;
   var sign = 2*color-1; // white or black
 
-  // Is the other king giving check?
+  // other king giving check?
   if ((Math.abs(PieceCol[1-color][0]-col) <= 1) &&
       (Math.abs(PieceRow[1-color][0]-row) <= 1)) { return true; }
 
-  // Any knight giving check?
+  // knight giving check?
   for (ii = -2; ii <= 2; ii += 4) {
     for(jj = -1; jj <= 1; jj += 2) {
       if (SquareOnBoard(col+ii, row+jj)) {
@@ -2312,14 +2283,14 @@ function IsCheck(col, row, color) {
     }
   }
 
-  // Any pawn giving check?
-  for (ii = -1; ii <= 1; ii += 2){
-    if (SquareOnBoard(col+ii, row-sign)){
+  // pawn giving check?
+  for (ii = -1; ii <= 1; ii += 2) {
+    if (SquareOnBoard(col+ii, row-sign)) {
       if (Board[col+ii][row-sign] == sign*6) { return true; }
     }
   }
 
-  // Now queens, rooks and bishops.
+  // queens, rooks and bishops?
   for (ii = -1; ii <= 1; ++ii) {
     for (jj = -1; jj <= 1; ++jj) {
       if ((ii !== 0) || (jj !== 0)) {
@@ -2352,14 +2323,12 @@ function fixRegExp(exp) {
 function LoadGameHeaders(){
   var ii;
 
-  // Initialize the global arrays to the number of games length.
   gameEvent.length = gameSite.length = gameRound.length = gameDate.length = 0;
   gameWhite.length = gameBlack.length = gameResult.length = 0;
   gameSetUp.length = gameFEN.length = 0;
   gameInitialWhiteClock.length = gameInitialBlackClock.length = 0;
 
-  // Read the headers of all games and store them in the global arrays
-  pgnHeaderTagRegExpGlobal.exec(""); // to cope with IE bug when reloading a PGN as in inputform.html
+  pgnHeaderTagRegExpGlobal.exec(""); // coping with IE bug when reloading PGN e.g. inputform.html
   for (ii = 0; ii < numberOfGames; ++ii) {
     var ss = pgnGame[ii];
     var parse;
@@ -2398,19 +2367,18 @@ function LoadGameHeaders(){
 
 function MoveBackward(diff) {
 
-  // First of all find to which ply we have to go back. Remember that
-  // CurrentPly contains the ply number counting from 1.
+  // CurrentPly counts from 1, starting position 0
   var goFromPly  = CurrentPly - 1;
   var goToPly    = goFromPly  - diff;
   if (goToPly < StartPly) { goToPly = StartPly-1; }
 
-  // Loop back to reconstruct the old position one ply at the time.
+  // reconstruct old position one ply at the time
   var thisPly;
   for(thisPly = goFromPly; thisPly > goToPly; --thisPly) {
     CurrentPly--;
     MoveColor = 1-MoveColor;
 
-    // Reposition the moved piece on the original square.
+    // moved piece back to original square.
     var chgPiece = HistPieceId[0][thisPly];
     Board[PieceCol[MoveColor][chgPiece]][PieceRow[MoveColor][chgPiece]] = 0;
 
@@ -2420,7 +2388,7 @@ function MoveBackward(diff) {
     PieceRow[MoveColor][chgPiece] = HistRow[0][thisPly];
     PieceMoveCounter[MoveColor][chgPiece]--;
 
-    // If the move was a castling reposition the rook on its original square.
+    // castling: rook back to original square
     chgPiece = HistPieceId[1][thisPly];
     if ((chgPiece >= 0) && (chgPiece < 16)) {
        Board[PieceCol[MoveColor][chgPiece]][PieceRow[MoveColor][chgPiece]] = 0;
@@ -2431,7 +2399,7 @@ function MoveBackward(diff) {
        PieceMoveCounter[MoveColor][chgPiece]--;
     } 
 
-    // For captures, reposition the captured piece on its original square.
+    // capture: captured piece back to original square
     chgPiece -= 16;
     if ((chgPiece >= 0) && (chgPiece < 16)) {
        Board[PieceCol[1-MoveColor][chgPiece]][PieceRow[1-MoveColor][chgPiece]] = 0;
@@ -2444,11 +2412,11 @@ function MoveBackward(diff) {
     } 
   }
 
-  // With the old position refresh the board and update the ply count on the HTML.
+  // old position reconstructed: refresh board
   RefreshBoard();
   HighlightLastMove(); 
 
-  // Set a new timeout if in autoplay mode.
+  // autoplay: restart timeout
   if (AutoPlayInterval) { clearTimeout(AutoPlayInterval); AutoPlayInterval = null; }
   if (isAutoPlayOn) {
     if(goToPly >= StartPly) { AutoPlayInterval=setTimeout("MoveBackward(1)", Delay); }
@@ -2459,15 +2427,13 @@ function MoveBackward(diff) {
 
 function MoveForward(diff) {
 
-  // First of all find to which ply we have to go back. Remember that
-  // CurrentPly contains the ply number counting from 1.
+  // CurrentPly counts from 1, starting position 0
   goToPly = CurrentPly + parseInt(diff, 10);
 
   if (goToPly > (StartPly+PlyNumber)) { goToPly = StartPly+PlyNumber; }
   var thisPly;
 
-  // Loop over all moves till the selected one is reached. Check that
-  // every move is legal and if yes update the board.
+  // reach to the selected move checking legality
   for(thisPly = CurrentPly; thisPly < goToPly; ++thisPly) {
     var move = Moves[thisPly];
     var parse = ParseMove(move, thisPly);
@@ -2479,13 +2445,12 @@ function MoveForward(diff) {
     MoveColor = 1-MoveColor; 
   }
 
-  // Once the desired position is reached refresh the board and update the 
-  // ply count on the HTML.
+  // new position: refresh board and update ply count
   CurrentPly = thisPly;
   RefreshBoard();
   HighlightLastMove(); 
 
-  // Set a new timeout if in autoplay mode and if all parsing was successful
+  // autoplay: restart timeout
   if (AutoPlayInterval) { clearTimeout(AutoPlayInterval); AutoPlayInterval = null; }
   if (!parse) { SetAutoPlay(false); } 
   else if (thisPly == goToPly) {
@@ -2540,7 +2505,7 @@ function OpenGame(gameId) {
 function ParsePGNGameString(gameString) {
 
   var ss = gameString;
-  // Get rid of the PGN tags and remove the result at the end. 
+  // remove PGN tags and result at the end 
   ss = ss.replace(pgnHeaderTagRegExpGlobal, ''); 
   ss = ss.replace(/^\s/, '');
   ss = ss.replace(/\s$/, '');
@@ -2630,7 +2595,7 @@ function ParsePGNGameString(gameString) {
           if ((nextOpen >= 0) && (nextOpen < nextClosed)) {
             openVariation++;
             variationEnd = nextOpen+1;
-          }else{
+          } else {
             openVariation--;
             variationEnd = nextClosed+1;
           }
@@ -2879,7 +2844,7 @@ function ParseMove(move, plyCount) {
   var ii, ll;
   var remainder;
   var toRowMarker = -1;
-  // Reset the global move variables.
+
   castleRook    = -1;
   mvIsCastling  =  0;
   mvIsPromotion =  0;
@@ -2894,8 +2859,7 @@ function ParseMove(move, plyCount) {
   mvCaptured    = -1;
   mvCapturedId  = -1;
 
-  // Given the move as something like Rdxc3 or exf8=Q+ extract the destination
-  // column and row and remember whatever is left of the string.
+  // get destination column/row remembering what's left e.g. Rdxc3 exf8=Q+
   ii = 1;
   while(ii < move.length) {
     if (!isNaN(move.charAt(ii))) {
@@ -2907,10 +2871,10 @@ function ParseMove(move, plyCount) {
     ++ii;
   }
 
-  // The final square did not make sense, maybe it is a castle.
+  // final square did not make sense: maybe a castle?
   if ((mvToCol < 0) || (mvToCol > 7) || (mvToRow < 0) || (mvToRow > 7)) {
     if ((move.indexOf('O') >= 0) || (move.indexOf('o') >= 0) || (move.indexOf('0') >= 0)) {
-      // Do long castling first since looking for o-o will get it too.
+      // long castling first: looking for o-o will get o-o-o too
       if (move.match('^[Oo0]-?[Oo0]-?[Oo0]$') !== null) {
 	mvIsCastling = 1;
         mvPiece      = 1;
@@ -2937,8 +2901,7 @@ function ParseMove(move, plyCount) {
     } else { return false; }
   }
 
-  // Now extract the piece and the origin square. If it is a capture (the 'x'
-  // is present) mark the as such.
+  // get piece and origin square: mark captures ('x' is there)
   ll = remainder.length;
   if (ll > 3) { return false; }
   mvPiece = -1; // make sure mvPiece is assigned to something sensible later
@@ -2962,8 +2925,7 @@ function ParseMove(move, plyCount) {
   }
 
   mvPieceOnTo = mvPiece;
-  // If the to square is occupied mark the move as capture. Take care of
-  // the special en passant case.
+  // to square occupied: capture (note en-passant case)
   if (Board[mvToCol][mvToRow] !== 0) { mvCapture = 1; }
   else {
     if ((mvPiece == 6) && (HistEnPassant[plyCount-1]) && 
@@ -2973,9 +2935,7 @@ function ParseMove(move, plyCount) {
     }
   }
 
-  // Take care of promotions. If there is a '=' in the move or if the
-  // destination row is not the last character in the move, then it may be a
-  // pawn promotion.
+  // move contains '=' or char after destination row: might be a promotion
   ii = move.indexOf('=');
   if (ii < 0) { ii = toRowMarker; }
   if ((ii > 0) && (ii < move.length-1)) {
@@ -2989,9 +2949,7 @@ function ParseMove(move, plyCount) {
     }
   }
 
-  // Find which piece was captured. The first part checks normal captures.
-  // If nothing is found then it has to be a pawn making an en-passant
-  // capture.
+  // which piece was captured: if nothing found must be en-passant
   if (mvCapture) {
     mvCapturedId = 15;
     while((mvCapturedId >= 0) && (mvCaptured < 0)) {
@@ -3013,12 +2971,12 @@ function ParseMove(move, plyCount) {
     }
   }
 
-  // Check the move legality.
+  // check move legality
   var retVal;
   retVal = CheckLegality(PieceCode[mvPiece-1], plyCount);
   if (!retVal) { return false; }
 
-  // If a pawn was moved check for en-passant capture on next move
+  // pawn moved => check if en-passant possible
   HistEnPassant[plyCount]    = false;
   HistEnPassantCol[plyCount] = -1;
   if (mvPiece == 6) {
@@ -3044,7 +3002,7 @@ function SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, ch
 
 var clickedSquareInterval = null;
 function clickedSquare(ii, jj) {
-  if (clickedSquareInterval) { return; } // make sure you dont trigger the effect twice by mistake
+  if (clickedSquareInterval) { return; } // dont trigger effect twice
   squareId = 'tcol' + jj + 'trow' + ii;
   theObject = document.getElementById(squareId);
   originalClass = theObject.className;
@@ -3056,7 +3014,7 @@ function clickedSquare(ii, jj) {
 function reset_after_click (ii, jj, originalClass, newClass) {
   squareId = 'tcol' + jj + 'trow' + ii;
   theObject = document.getElementById(squareId);
-  // if the square class has been changed by pgn4web already (due to autoplay for instance) dont touch it anymore
+  // square class changed again by pgn4web already: dont touch it anymore e.g. autoplay
   if (theObject.className == newClass) { theObject.className = originalClass; }
   clickedSquareInterval = null;
 }
@@ -3066,8 +3024,7 @@ var lastSearchPgnExpression = "";
 function gameNumberSearchPgn(searchExpression, backward) {
   lastSearchPgnExpression = searchExpression;
   if (searchExpression === "") { return false; }
-  // when searching we replace newline characters with spaces, 
-  // so that we can use the "." special regexp characters on the whole game as a single line
+  // replace newline with spaces so that we can use regexp "." on whole game
   newlinesRegExp = new RegExp("[\n\r]", "gm");
   searchExpressionRegExp = new RegExp(searchExpression, "im");
   // at start currentGame might still be -1
@@ -3117,7 +3074,7 @@ function PrintHTML() {
   var ii, jj;
   var text;
 
-  // Show the board as a 8x8 table.
+  // 8x8 table chessboard
 
   text = '<TABLE CLASS="boardTable" ID="boardTable" CELLSPACING=0 CELLPADDING=0';
   text += ((tableSize !== null) && (tableSize !== 0)) ?
@@ -3148,18 +3105,18 @@ function PrintHTML() {
   }
   text += '</TABLE>';
 
-  // Show the HTML for the chessboard
-
   theObject = document.getElementById("GameBoard");
   if (theObject !== null) { theObject.innerHTML = text; }
 
   theObject = document.getElementById("boardTable"); 
   if (theObject !== null) {
     tableSize = theObject.offsetWidth;
-    if (tableSize > 0) { // check to cope with some browser returning always 0 to offsetWidth
+    if (tableSize > 0) { // coping with browser always returning 0 to offsetWidth
       theObject.style.height = tableSize + "px";
     }
   }
+
+  // control buttons
 
   numberOfButtons = 5;
   spaceSize = 3;
@@ -3213,12 +3170,10 @@ function PrintHTML() {
           '</TABLE>' +
           '</FORM>';
 
-  // Show the HTML for the control buttons
-
   theObject = document.getElementById("GameButtons");
   if (theObject !== null) { theObject.innerHTML = text; }
   
-  // Show the HTML for the Game Selector
+  // game selector
 
   if (firstStart) { textSelectOptions=''; }
   theObject = document.getElementById("GameSelector");
@@ -3310,22 +3265,22 @@ function PrintHTML() {
     }
   }
 
-  // Show the HTML for the Game Event
+  // game event
 
   theObject = document.getElementById("GameEvent");
   if (theObject !== null) { theObject.innerHTML = gameEvent[currentGame]; }
 
-  // Show the HTML for the Game Round
+  // game round
 
   theObject = document.getElementById("GameRound");
   if (theObject !== null) { theObject.innerHTML = gameRound[currentGame]; }
 
-  // Show the HTML for the Game Site
+  // game site
 
   theObject = document.getElementById("GameSite");
   if (theObject !== null) { theObject.innerHTML = gameSite[currentGame]; }
 
-  // Show the HTML for the Game Date
+  // game date
 
   theObject = document.getElementById("GameDate");
   if (theObject !== null) { 
@@ -3333,17 +3288,17 @@ function PrintHTML() {
     theObject.style.whiteSpace = "nowrap";
   }
 
-  // Show the HTML for the Game White Player
+  // game white
 
   theObject = document.getElementById("GameWhite");
   if (theObject !== null) { theObject.innerHTML = gameWhite[currentGame]; }
 
-  // Show the HTML for the Game Black Player
+  // game black
 
   theObject = document.getElementById("GameBlack");
   if (theObject !== null) { theObject.innerHTML = gameBlack[currentGame]; }
 
-  // Show the HTML for the Game Result
+  // game result
 
   theObject = document.getElementById("GameResult");
   if (theObject !== null) {
@@ -3351,13 +3306,15 @@ function PrintHTML() {
     theObject.style.whiteSpace = "nowrap";
   } 
   
+  // game text
+
   text = '<SPAN ID="ShowPgnText">';
   for (ii = StartPly; ii < StartPly+PlyNumber; ++ii) {
     printedComment = false;
     // remove PGN extension tags
     thisComment = MoveComments[ii].replace(/\[%.*?\]\s*/g,''); // note trailing spaces are removed also
-    // remove comments that are all spaces
-    if (thisComment.match(/^\s*$/)) { thisComment = ''; }
+    // remove spaces only comments
+    thisComment = thisComment.replace(/^\s+$/,'');
     if (commentsIntoMoveText && (thisComment !== '')) {
       if (commentsOnSeparateLines && (ii > StartPly)) { 
         text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
@@ -3382,20 +3339,18 @@ function PrintHTML() {
   }
   // remove PGN extension tags
   thisComment = MoveComments[StartPly+PlyNumber].replace(/\[%.*?\]\s*/g,''); // note trailing spaces are removed also
-  // remove comments that are all spaces
-  if (thisComment.match(/^\s*$/)) { thisComment = ''; }
+  // remove spaces only comments
+  thisComment = thisComment.replace(/^\s+$/,'');
   if (commentsIntoMoveText && (thisComment !== '')) {
     if (commentsOnSeparateLines) { text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>'; }
     text += '<SPAN CLASS="comment">' + thisComment + '</SPAN><SPAN CLASS="move"> </SPAN>';
   }
   text += '</SPAN>';
 
-  // Show the HTML for the Game Text
-
   theObject = document.getElementById("GameText");
   if (theObject !== null) { theObject.innerHTML = text; }
 
-  // Show the HTML for the Game Search box
+  // gamee searchbox
 
   theObject = document.getElementById("GameSearch");
   if ((firstStart) && (theObject !== null)) {
@@ -3433,10 +3388,9 @@ function FlipBoard() {
 }
 
 function RefreshBoard() {
-  // Check if we need a new set of pieces.
   InitImages();
 
-  // Display all empty squares.
+  // display all squares empty
   var col, row, square;
   for (col = 0; col < 8;++col) {
     for (row = 0; row < 8; ++row) {
@@ -3447,7 +3401,7 @@ function RefreshBoard() {
     }
   }
 
-  // Display all pieces.
+  // display pieces
   var color, ii;
   for (color = 0; color < 2; ++color){
     for (ii = 0; ii < 16; ++ii){
@@ -3463,9 +3417,9 @@ function RefreshBoard() {
 
 function SetAutoPlay(vv) {
   isAutoPlayOn = vv;
-  // No matter what clear the timeout.
+  // clear timeout
   if (AutoPlayInterval) { clearTimeout(AutoPlayInterval); AutoPlayInterval = null; }
-  // If switched on start  moving forward. Also change the button value.
+  // timeout on:  move forward and change button label
   if (isAutoPlayOn){
     if (document.GameButtonsForm) {
       if (document.GameButtonsForm.AutoPlay){
@@ -3494,15 +3448,15 @@ function SetAutoplayDelay(vv) {
 }
 
 function SetLiveBroadcast(delay, alertFlag, demoFlag) {
-  LiveBroadcastDelay = delay; // delay = 0 means no live broadcast
-  LiveBroadcastAlert = (alertFlag === true); // whether to display myAlerts during live broadcast
+  LiveBroadcastDelay = delay; // delay = 0 => no live broadcast
+  LiveBroadcastAlert = (alertFlag === true); // display myAlerts during live broadcast?
   LiveBroadcastDemo = (demoFlag === true);
 }
 
 function SetImage(square, image) {
   if (DocumentImages[square] == image) { return; }
   document.images[square+ImageOffset].src = image;
-  DocumentImages[square]                  = image;   // Store the new image.
+  DocumentImages[square]                  = image;
 }
 
 function SetImagePath(path) {
@@ -3519,13 +3473,13 @@ function SwitchAutoPlay() {
 
 function StoreMove(thisPly) {
 
-  // Stores "square from" history information
+  // "square from" history
   HistPieceId[0][thisPly] = mvPieceId;
   HistCol[0][thisPly]     = PieceCol[MoveColor][mvPieceId];
   HistRow[0][thisPly]     = PieceRow[MoveColor][mvPieceId];
   HistType[0][thisPly]    = PieceType[MoveColor][mvPieceId];
 
-  // Stores "square to" history information
+  // "square to" history
   HistCol[2][thisPly] = mvToCol;
   HistRow[2][thisPly] = mvToRow;
 
@@ -3543,19 +3497,17 @@ function StoreMove(thisPly) {
     HistPieceId[1][thisPly] = -1;
   }
 
-  // Update the from square and the captured square. Remember that the
-  // captured square is not necessarely the to square because of the en-passant.
+  // update "square from" and captured square (not necessarily "square to" e.g. en-passant)
   Board[PieceCol[MoveColor][mvPieceId]][PieceRow[MoveColor][mvPieceId]] = 0;
 
-  // Mark the captured piece as such.
+  // mark the captured piece
   if (mvCapturedId >=0) {
      PieceType[1-MoveColor][mvCapturedId] = -1;
      PieceMoveCounter[1-MoveColor][mvCapturedId]++;
      Board[PieceCol[1-MoveColor][mvCapturedId]][PieceRow[1-MoveColor][mvCapturedId]] = 0;
   }
 
-  // Update the piece arrays. Don't forget to update the type array, since a
-  // pawn might have been replaced by a piece in a promotion.
+  // update piece arrays: a promotion would change piece type
   PieceType[MoveColor][mvPieceId] = mvPieceOnTo;
   PieceMoveCounter[MoveColor][mvPieceId]++;
   PieceCol[MoveColor][mvPieceId]  = mvToCol;
@@ -3566,7 +3518,7 @@ function StoreMove(thisPly) {
     PieceRow[MoveColor][castleRook] = mvToRow;
   }
 
-  // Update the board.
+  // update board
   Board[mvToCol][mvToRow] = PieceType[MoveColor][mvPieceId]*(1-2*MoveColor);
   if (mvIsCastling){
     Board[PieceCol[MoveColor][castleRook]][PieceRow[MoveColor][castleRook]] =
@@ -3577,7 +3529,7 @@ function StoreMove(thisPly) {
 
 function UndoMove(thisPly) {
 
-  // Bring the moved piece back.
+  // bring moved piece back
   Board[mvToCol][mvToRow] = 0;
   Board[HistCol[0][thisPly]][HistRow[0][thisPly]] =
     HistType[0][thisPly]*(1-2*MoveColor);
@@ -3587,7 +3539,7 @@ function UndoMove(thisPly) {
   PieceType[MoveColor][mvPieceId] = HistType[0][thisPly];
   PieceMoveCounter[MoveColor][mvPieceId]--;
 
-  // If capture or castle bring the captured piece or the rook back.
+  // capture/castle: bring captured/rook back
   if (mvCapturedId >=0) {
      PieceType[1-MoveColor][mvCapturedId] = mvCapturedId;
      PieceCol[1-MoveColor][mvCapturedId]  = HistCol[1][thisPly];
@@ -3613,8 +3565,6 @@ function sign(nn) {
 }
 
 function SquareOnBoard(col, row) {
-  if ((col < 0) || (col > 7)) { return false; }
-  if ((row < 0) || (row > 7)) { return false; }
-  return true;
+  return col >= 0 && col <= 7 && row >= 0 && row <= 7;
 }
 
