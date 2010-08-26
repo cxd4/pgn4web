@@ -20,9 +20,9 @@ function displayHelp(section){
   if (!section) { section = "top"; }
   if (helpWin && !helpWin.closed) { helpWin.close(); }
   helpWin = window.open(detectHelpLocation() + "?" + 
-            (Math.floor(900 * Math.random()) + 100) + "#" + section, 
-            "pgn4web_help", 
-            "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
+   (Math.floor(900 * Math.random()) + 100) + "#" + section, 
+   "pgn4web_help", 
+   "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if ((helpWin !== null) && (window.focus)) { helpWin.window.focus(); }
 }
 
@@ -110,8 +110,8 @@ function alertPromptTick(restart) {
     theObject = document.getElementById('tcol0trow0');
     if (alertPromptOn) {
       if ((highlightOption) && 
-          ((lastColFromHighlighted === 0 && lastRowFromHighlighted === 7) || 
-           (lastColToHighlighted === 0 && lastRowToHighlighted === 7))) {
+        ((lastColFromHighlighted === 0 && lastRowFromHighlighted === 7) || 
+        (lastColToHighlighted === 0 && lastRowToHighlighted === 7))) {
           theObject.className = 'highlightWhiteSquare';
         } else { theObject.className = 'whiteSquare'; }
     } else { theObject.className = 'blackSquare'; }
@@ -680,14 +680,14 @@ function displayDebugInfo() {
   debugInfo += 'PGN TEXT: length=';
   if (document.getElementById("pgnText") !== null) { 
     debugInfo += document.getElementById("pgnText").tagName.toLowerCase() == "textarea" ?
-                 document.getElementById("pgnText").value.length :
-                 document.getElementById("pgnText").innerHTML.length +
-                 ' container=' + document.getElementById("pgnText").tagName.toLowerCase();
+      document.getElementById("pgnText").value.length :
+      document.getElementById("pgnText").innerHTML.length +
+      ' container=' + document.getElementById("pgnText").tagName.toLowerCase();
     // compatibility with pgn4web <1.77 when <span> was used for pgnText
   }
   debugInfo += '\n\n';
   debugInfo += 'GAMES: current=' + (currentGame+1) + ' number=' + numberOfGames + '\n' +
-               'PLY: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber + '\n';
+    'PLY: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber + '\n';
   debugInfo += 'AUTOPLAY: ' + (isAutoPlayOn ? 'delay=' + Delay + 'ms' + ' autoplaynext=' + autoplayNextGame : 'off');
   debugInfo += '\n\n';
   debugInfo += 'LIVE BROADCAST: ' + (LiveBroadcastDelay > 0 ? 'ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + ' started=' + LiveBroadcastStarted + ' ended=' + LiveBroadcastEnded + ' paused=' + LiveBroadcastPaused + ' demo=' + LiveBroadcastDemo + ' alert=' + LiveBroadcastAlert + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime() : 'off'); 
@@ -1110,10 +1110,11 @@ function CheckLegalityQueen(thisQueen) {
   if ((mvFromCol >= 0) && (mvFromCol != PieceCol[MoveColor][thisQueen])) { return false; }
   if ((mvFromRow >= 0) && (mvFromRow != PieceRow[MoveColor][thisQueen])) { return false; }
 
-  if (((PieceCol[MoveColor][thisQueen]-mvToCol)*
-       (PieceRow[MoveColor][thisQueen]-mvToRow) !== 0) &&
-      (Math.abs(PieceCol[MoveColor][thisQueen]-mvToCol) !=
-       Math.abs(PieceRow[MoveColor][thisQueen]-mvToRow))) { return false; }
+  if (((PieceCol[MoveColor][thisQueen]-mvToCol) *
+    (PieceRow[MoveColor][thisQueen]-mvToRow) !== 0) &&
+    (Math.abs(PieceCol[MoveColor][thisQueen]-mvToCol) !=
+    Math.abs(PieceRow[MoveColor][thisQueen]-mvToRow)))
+  { return false; }
 
   var clearWay = CheckClearWay(thisQueen);
   if (!clearWay) { return false; }
@@ -1125,8 +1126,9 @@ function CheckLegalityRook(thisRook) {
   if ((mvFromCol >= 0) && (mvFromCol != PieceCol[MoveColor][thisRook])) { return false; }
   if ((mvFromRow >= 0) && (mvFromRow != PieceRow[MoveColor][thisRook])) { return false; }
 
-  if ((PieceCol[MoveColor][thisRook]-mvToCol)*
-      (PieceRow[MoveColor][thisRook]-mvToRow) !== 0) { return false; }
+  if ((PieceCol[MoveColor][thisRook]-mvToCol) *
+    (PieceRow[MoveColor][thisRook]-mvToRow) !== 0)
+  { return false; }
 
   var clearWay = CheckClearWay(thisRook);
   if (!clearWay) { return false; }
@@ -1139,7 +1141,8 @@ function CheckLegalityBishop(thisBishop) {
   if ((mvFromRow >= 0) && (mvFromRow != PieceRow[MoveColor][thisBishop])) { return false; }
 
   if (Math.abs(PieceCol[MoveColor][thisBishop]-mvToCol) !=
-      Math.abs(PieceRow[MoveColor][thisBishop]-mvToRow)) { return false; }
+    Math.abs(PieceRow[MoveColor][thisBishop]-mvToRow))
+  { return false; }
 
   var clearWay = CheckClearWay(thisBishop);
   if (!clearWay) { return false; }
@@ -1151,8 +1154,9 @@ function CheckLegalityKnight(thisKnight) {
   if ((mvFromCol >= 0) && (mvFromCol != PieceCol[MoveColor][thisKnight])) { return false; }
   if ((mvFromRow >= 0) && (mvFromRow != PieceRow[MoveColor][thisKnight])) { return false; }
 
-  if (Math.abs(PieceCol[MoveColor][thisKnight]-mvToCol)*
-      Math.abs(PieceRow[MoveColor][thisKnight]-mvToRow) != 2) { return false; }
+  if (Math.abs(PieceCol[MoveColor][thisKnight]-mvToCol) *
+    Math.abs(PieceRow[MoveColor][thisKnight]-mvToRow) != 2)
+  { return false; }
 
   return true;
 }
@@ -1184,9 +1188,9 @@ function CheckLegalityOO() {
   var legal    = false;
   var thisRook = 0;
   while (thisRook < 16) {
-    if ((PieceCol[MoveColor][thisRook]  >  PieceCol[MoveColor][0]) &&
-	(PieceRow[MoveColor][thisRook]  == MoveColor*7)            &&
-        (PieceType[MoveColor][thisRook] == 3)) {
+    if ((PieceCol[MoveColor][thisRook] > PieceCol[MoveColor][0]) &&
+      (PieceRow[MoveColor][thisRook]  == MoveColor*7) &&
+      (PieceType[MoveColor][thisRook] == 3)) {
       legal = true;
       break;
     }
@@ -1197,7 +1201,7 @@ function CheckLegalityOO() {
   
   // check no piece between king and rook
   // clear king/rook squares for FischerRandom compatibility
-  Board[PieceCol[MoveColor][0]][MoveColor*7]        = 0;
+  Board[PieceCol[MoveColor][0]][MoveColor*7] = 0;
   Board[PieceCol[MoveColor][thisRook]][MoveColor*7] = 0;
   var col = PieceRow[MoveColor][thisRook];
   if (col < 6) { col = 6; }
@@ -1217,9 +1221,9 @@ function CheckLegalityOOO() {
   var legal    = false;
   var thisRook = 0;
   while (thisRook < 16){
-    if ((PieceCol[MoveColor][thisRook]  <  PieceCol[MoveColor][0]) &&
-	(PieceRow[MoveColor][thisRook]  == MoveColor*7)            &&
-        (PieceType[MoveColor][thisRook] == 3)) {
+    if ((PieceCol[MoveColor][thisRook] < PieceCol[MoveColor][0]) &&
+      (PieceRow[MoveColor][thisRook] == MoveColor*7) &&
+      (PieceType[MoveColor][thisRook] == 3)) {
       legal = true;
       break;
     }
@@ -1249,7 +1253,7 @@ function CheckClearWay(thisPiece) {
   var startCol = PieceCol[MoveColor][thisPiece]+stepCol;
   var startRow = PieceRow[MoveColor][thisPiece]+stepRow;
 
-  while ((startCol != mvToCol) || (startRow != mvToRow)){
+  while ((startCol != mvToCol) || (startRow != mvToRow)) {
     if (Board[startCol][startRow] !== 0) { return false; }
     startCol += stepCol;
     startRow += stepRow;
@@ -1381,13 +1385,11 @@ function HighlightLastMove() {
 
   if (lastMoverClockObject !== null) {
     lastMoverClockObject.innerHTML = showThisMove+1 > StartPly ?
-                                     clockFromComment(MoveComments[showThisMove+1]) :
-                                     initialLastMoverClock;
+      clockFromComment(MoveComments[showThisMove+1]) : initialLastMoverClock;
   }
   if (beforeLastMoverClockObject !== null) {
     beforeLastMoverClockObject.innerHTML = showThisMove+1 > StartPly+1 ?
-                                           clockFromComment(MoveComments[showThisMove]) :
-                                           initialBeforeLastMoverClock;
+      clockFromComment(MoveComments[showThisMove]) : initialLastMoverClock;
   }
 
   // show next move
@@ -1397,8 +1399,7 @@ function HighlightLastMove() {
       text = gameResult[currentGame];
     } else {
       text = (Math.floor((showThisMove+1)/2) + 1) + 
-             ((showThisMove+1) % 2 === 0 ? '. ' : '... ') +
-             Moves[showThisMove+1];
+        ((showThisMove+1) % 2 === 0 ? '. ' : '... ') + Moves[showThisMove+1];
     }
     theShowMoveTextObject.innerHTML = text; 
     theShowMoveTextObject.className = 'GameNextMove';
@@ -1411,8 +1412,7 @@ function HighlightLastMove() {
       text = '-';
     } else {
       text = (Math.floor(showThisMove/2) + 1) + 
-             (showThisMove % 2 === 0 ? '. ' : '... ') +
-             Moves[showThisMove];
+       (showThisMove % 2 === 0 ? '. ' : '... ') + Moves[showThisMove+1];
     }
     theShowMoveTextObject.innerHTML = text; 
     theShowMoveTextObject.className = 'GameLastMove';
@@ -1641,9 +1641,8 @@ function checkLiveBroadcastStatus() {
 
   // broadcast started yet?
   // check for fake LiveBroadcastPlaceholderPgn game when no PGN file is found
-  if ((LiveBroadcastStarted === false) || 
-      ((pgnGame == undefined) || 
-      ((numberOfGames == 1) && (gameEvent[0] == LiveBroadcastPlaceholderEvent)))) {
+  if ((LiveBroadcastStarted === false) || ((pgnGame == undefined) ||
+    ((numberOfGames == 1) && (gameEvent[0] == LiveBroadcastPlaceholderEvent)))) {
     LiveBroadcastEnded = false;
     LiveBroadcastStatusString = "live broadcast yet to start";
   } else {
@@ -1722,9 +1721,7 @@ function refreshPgnSource() {
         Init();
         checkLiveBroadcastStatus();
         customFunctionOnPgnTextLoad();
-      } else {
-        checkLiveBroadcastStatus();
-      }
+      } else { checkLiveBroadcastStatus(); }
       break;
 
     case LOAD_PGN_FROM_PGN_URL_OK:
@@ -1796,8 +1793,8 @@ function createBoard(){
   theObject = document.getElementById("GameBoard");
   if (theObject !== null) {
     theObject.innerHTML = '<DIV STYLE="font-size: small; font-family: sans-serif; ' +
-                          'padding: 10px; text-align: center;">' + 
-                          '...loading PGN data<br />please wait...</DIV>';
+      'padding: 10px; text-align: center;">' + 
+      '...loading PGN data<br />please wait...</DIV>';
   }
 
   if (pgnUrl) {
@@ -1952,7 +1949,7 @@ function Init(){
   HighlightLastMove(); 
   if (firstStart || alwaysInitialHalfmove) { GoToInitialHalfmove(); }
   else { customFunctionOnMove(); }
-  // customFunctionOnMove here for consistency, as a null move starting a new game
+  // customFunctionOnMove here for consistency: null move starting new game
 
   if ((firstStart) && (autostartAutoplay)) { SetAutoPlay(true); }
 
@@ -3079,19 +3076,18 @@ function PrintHTML() {
       imageId = 'img_' + squareId;
       linkId = 'link_' + squareId;
       text += (ii+jj)%2 === 0 ? 
-              '<TD CLASS="whiteSquare" ID="' + squareId + '" BGCOLOR="#FFFFFF"' :
-              '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="#D3D3D3"';
+        '<TD CLASS="whiteSquare" ID="' + squareId + '" BGCOLOR="#FFFFFF"' :
+        '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="#D3D3D3"';
       text += ' ALIGN="center" VALIGN="middle" ONCLICK="clickedSquare(' + ii + ',' + jj + ')">';
       squareCoord = IsRotated ? String.fromCharCode(72-jj,49+ii) : String.fromCharCode(jj+65,56-ii);
       squareTitle = squareCoord;
       if (boardTitle[jj][ii] !== '') { squareTitle += ': ' + boardTitle[jj][ii]; }
       text += '<A HREF="javascript:boardOnClick[' + jj + '][' + ii + ']()" ' +
-              'ID="' + linkId + '" ' + 
-              'TITLE="' + squareTitle + '" ' +
-              'STYLE="text-decoration: none; outline: none;" ' +
-              'ONFOCUS="this.blur()">' + 
-              '<IMG CLASS="pieceImage" ID="' + imageId + '" ' + 
-              ' SRC="'+ImagePath+'clear.'+imageType+'" BORDER=0></A></TD>';
+        'ID="' + linkId + '" TITLE="' + squareTitle + '" ' + 
+        'STYLE="text-decoration: none; outline: none;" ' +
+        'ONFOCUS="this.blur()">' + 
+        '<IMG CLASS="pieceImage" ID="' + imageId + '" ' + 
+        ' SRC="'+ImagePath+'clear.'+imageType+'" BORDER=0></A></TD>';
     }
     text += '</TR>';
   }
@@ -3114,53 +3110,45 @@ function PrintHTML() {
   spaceSize = 3;
   buttonSize = (tableSize - spaceSize*(numberOfButtons - 1)) / numberOfButtons;
   text =  '<FORM NAME="GameButtonsForm" STYLE="display:inline;">' +
-          '<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>' + 
-          '<TR>' +
-          '<TD>' +
-          '<INPUT ID="startButton" TYPE="BUTTON" VALUE="&lt;&lt;" STYLE="';
+    '<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>' + 
+    '<TR><TD>' +
+    '<INPUT ID="startButton" TYPE="BUTTON" VALUE="&lt;&lt;" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
   text += '"; CLASS="buttonControl" TITLE="go to game start" ' +
-          ' ID="btnGoToStart" onClick="javascript:GoToMove(StartPly)" ONFOCUS="this.blur()">' +
-          '</TD>' +
-          '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
-          '</TD>' +
-          '<TD>' +
-          '<INPUT ID="backButton" TYPE="BUTTON" VALUE="&lt;" STYLE="';
+    ' ID="btnGoToStart" onClick="javascript:GoToMove(StartPly)" ONFOCUS="this.blur()">' +
+    '</TD>' +
+    '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
+    '</TD><TD>' +
+    '<INPUT ID="backButton" TYPE="BUTTON" VALUE="&lt;" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
   text += '"; CLASS="buttonControl" TITLE="move backward" ' +
-          ' ID="btnMoveBackward1" onClick="javascript:MoveBackward(1)" ONFOCUS="this.blur()">' +
-          '</TD>' +
-          '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
-          '</TD>' +
-          '<TD>';
+    ' ID="btnMoveBackward1" onClick="javascript:MoveBackward(1)" ONFOCUS="this.blur()">' +
+    '</TD>' +
+    '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
+    '</TD><TD>';
   text += '<INPUT ID="autoplayButton" TYPE="BUTTON" VALUE=';
   text += isAutoPlayOn ? "=" : "+";
   text += ' STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
   text += isAutoPlayOn ?
-          '"; CLASS="buttonControlStop" TITLE="toggle autoplay (stop)" ' :
-          '"; CLASS="buttonControlPlay" TITLE="toggle autoplay (start)" ';
+    '"; CLASS="buttonControlStop" TITLE="toggle autoplay (stop)" ' :
+    '"; CLASS="buttonControlPlay" TITLE="toggle autoplay (start)" ';
   text += ' ID="btnPlay" NAME="AutoPlay" onClick="javascript:SwitchAutoPlay()" ONFOCUS="this.blur()">' +
-          '</TD>' +
-          '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
-          '</TD>' +
-          '<TD>' +
-          '<INPUT ID="forwardButton" TYPE="BUTTON" VALUE="&gt;" STYLE="';
+    '</TD>' +
+    '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
+    '</TD><TD>' +
+    '<INPUT ID="forwardButton" TYPE="BUTTON" VALUE="&gt;" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
   text += '"; CLASS="buttonControl" TITLE="move forward" ' +
-          ' ID="btnMoveForward1" onClick="javascript:MoveForward(1)" ONFOCUS="this.blur()">' +
-          '</TD>' +
-          '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
-          '</TD>' +
-          '<TD>' +
-          '<INPUT ID="endButton" TYPE="BUTTON" VALUE="&gt;&gt;" STYLE="';
+    ' ID="btnMoveForward1" onClick="javascript:MoveForward(1)" ONFOCUS="this.blur()">' +
+    '</TD>' +
+    '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
+    '</TD><TD>' +
+    '<INPUT ID="endButton" TYPE="BUTTON" VALUE="&gt;&gt;" STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
   text += '"; CLASS="buttonControl" TITLE="go to game end" ' +
-          ' ID="btnGoToEnd" onClick="javascript:GoToMove(StartPly + PlyNumber)" ONFOCUS="this.blur()">' +
-          '</TD>' +
-          '</TR>' + 
-          '</TABLE>' +
-          '</FORM>';
+    ' ID="btnGoToEnd" onClick="javascript:GoToMove(StartPly + PlyNumber)" ONFOCUS="this.blur()">' +
+    '</TD></TR></TABLE></FORM>';
 
   theObject = document.getElementById("GameButtons");
   if (theObject !== null) { theObject.innerHTML = text; }
@@ -3179,14 +3167,14 @@ function PrintHTML() {
       if(textSelectOptions === '') {
         if (gameSelectorNum) { gameSelectorNumLenght = Math.floor(Math.log(numberOfGames)/Math.log(10)) + 1; }
         text = '<FORM NAME="GameSel" STYLE="display:inline;"> ' +
-               '<SELECT ID="GameSelSelect" NAME="GameSelSelect" STYLE="';
+          '<SELECT ID="GameSelSelect" NAME="GameSelSelect" STYLE="';
         if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + tableSize + 'px; '; }
         text += 'font-family: monospace;" CLASS="selectControl" TITLE="Select a game" ' +
-                'ONCHANGE="this.blur(); if(this.value >= 0) {currentGame=parseInt(this.value); ' +
-                'document.GameSel.GameSelSelect.value = -1; Init();}" ' +
-                'ONFOCUS="disableShortcutKeysAndStoreStatus();" ONBLUR="restoreShortcutKeysStatus();" ' +
-                '> ' +
-                '<OPTION value=-1>';
+          'ONCHANGE="this.blur(); if(this.value >= 0) {currentGame=parseInt(this.value); ' +
+          'document.GameSel.GameSelSelect.value = -1; Init();}" ' +
+          'ONFOCUS="disableShortcutKeysAndStoreStatus();" ONBLUR="restoreShortcutKeysStatus();" ' +
+          '> ' +
+          '<OPTION value=-1>';
 
         blanks = ''; for (ii=0; ii<32; ii++) { blanks += ' '; }
         if (gameSelectorNum) { 
@@ -3326,8 +3314,8 @@ function PrintHTML() {
     }
     jj = ii+1;
     text += '<A HREF="javascript:GoToMove(' + jj + ')" CLASS="move" ID="Mv' + jj + 
-            '" ONFOCUS="this.blur()">' + Moves[ii] + '</A></SPAN>' +
-            '<SPAN CLASS="move"> </SPAN>';
+      '" ONFOCUS="this.blur()">' + Moves[ii] + '</A></SPAN>' +
+      '<SPAN CLASS="move"> </SPAN>';
   }
   // remove PGN extension tags
   thisComment = MoveComments[StartPly+PlyNumber].replace(/\[%.*?\]\s*/g,''); // note trailing spaces also removed
@@ -3351,14 +3339,14 @@ function PrintHTML() {
       while (theObject.firstChild) { theObject.removeChild(theObject.firstChild); }
     } else {
       text = '<FORM ID="searchPgnForm" STYLE="display: inline;" ' +
-             'ACTION="javascript:searchPgnGameForm();">';
+        'ACTION="javascript:searchPgnGameForm();">';
       text += '<INPUT ID="searchPgnButton" CLASS="searchPgnButton" STYLE="display: inline; ';
       if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + (tableSize/4) + 'px; '; }
       text += '" TITLE="find games matching the search string (or regular expression)" ';
       text += 'TYPE="submit" VALUE="?">';
       text += '<INPUT ID="searchPgnExpression" CLASS="searchPgnExpression" ' +
-              'TITLE="find games matching the search string (or regular expression)" ' + 
-              'TYPE="input" VALUE="" STYLE="display: inline; ';
+        'TITLE="find games matching the search string (or regular expression)" ' + 
+        'TYPE="input" VALUE="" STYLE="display: inline; ';
       if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + (3*tableSize/4) + 'px; '; }
       text += '" ONFOCUS="disableShortcutKeysAndStoreStatus();" ONBLUR="restoreShortcutKeysStatus();">'; 
       text += '</FORM>';
@@ -3395,12 +3383,12 @@ function RefreshBoard() {
 
   // display pieces
   var color, ii;
-  for (color = 0; color < 2; ++color){
-    for (ii = 0; ii < 16; ++ii){
-      if (PieceType[color][ii] > 0){
+  for (color = 0; color < 2; ++color) {
+    for (ii = 0; ii < 16; ++ii) {
+      if (PieceType[color][ii] > 0) {
         square = IsRotated ? 
-                 63-PieceCol[color][ii] - (7-PieceRow[color][ii])*8 :
-                 PieceCol[color][ii] + (7-PieceRow[color][ii])*8;
+          63-PieceCol[color][ii] - (7-PieceRow[color][ii])*8 :
+          PieceCol[color][ii] + (7-PieceRow[color][ii])*8;
         SetImage(square, PiecePicture[color][PieceType[color][ii]].src);
       }
     }
@@ -3411,18 +3399,19 @@ function SetAutoPlay(vv) {
   isAutoPlayOn = vv;
   // clear timeout
   if (AutoPlayInterval) { clearTimeout(AutoPlayInterval); AutoPlayInterval = null; }
-  // timeout on:  move forward and change button label
+  // timeout on: move forward and change button label
   if (isAutoPlayOn){
     if (document.GameButtonsForm) {
-      if (document.GameButtonsForm.AutoPlay){
+      if (document.GameButtonsForm.AutoPlay) {
         document.GameButtonsForm.AutoPlay.value="=";
         document.GameButtonsForm.AutoPlay.title="toggle autoplay (stop)";
         document.GameButtonsForm.AutoPlay.className="buttonControlStop";
       }
     }
     if (CurrentPly < StartPly+PlyNumber) { AutoPlayInterval=setTimeout("MoveForward(1)", Delay); }
-    else { if (autoplayNextGame) { AutoPlayInterval=setTimeout("AutoplayNextGame()", Delay); }
-           else { SetAutoPlay(false); }
+    else {
+      if (autoplayNextGame) { AutoPlayInterval=setTimeout("AutoplayNextGame()", Delay); }
+      else { SetAutoPlay(false); }
     }
   } else { 
     if (document.GameButtonsForm) {
@@ -3448,7 +3437,7 @@ function SetLiveBroadcast(delay, alertFlag, demoFlag) {
 function SetImage(square, image) {
   if (DocumentImages[square] == image) { return; }
   document.images[square+ImageOffset].src = image;
-  DocumentImages[square]                  = image;
+  DocumentImages[square] = image;
 }
 
 function SetImagePath(path) {
