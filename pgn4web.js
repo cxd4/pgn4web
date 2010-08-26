@@ -2309,7 +2309,7 @@ function IsCheck(col, row, color) {
 
 
 function fixRegExp(exp) {
-  return exp.replace(/([\[\]\(\)\.\*\+\^\$\|\?\\])/g, "\\$1")
+  return exp.replace(/([\[\]\(\)\.\*\+\^\$\|\?\\])/g, "\\$1");
 }
 
 function LoadGameHeaders(){
@@ -3559,4 +3559,3 @@ function sign(nn) {
 function SquareOnBoard(col, row) {
   return col >= 0 && col <= 7 && row >= 0 && row <= 7;
 }
-
