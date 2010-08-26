@@ -2342,11 +2342,7 @@ function IsCheck(col, row, color) {
 
 
 function fixRegExp(exp) {
-  rexExpSpecialChars = "[\^$.|?*+()";
-  for (ii=0; ii<rexExpSpecialChars.length; ii++) {
-    exp = exp.replace(rexExpSpecialChars.charAt(ii), "\\" + rexExpSpecialChars.charAt(ii));
-  }
-  return exp;
+  return exp.replace(/([\[\]\(\)\.\*\+\^\$\|\?\\])/g, "\\$1")
 }
 
 function LoadGameHeaders(){
