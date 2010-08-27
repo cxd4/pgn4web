@@ -788,20 +788,32 @@ function CurrentFEN() {
 
   CastlingFEN = "";
   columnsLetters = "ABCDEFGHabcdefgh";
-  if ((CastlingShortFEN[0] >= 0) && (CastlingShortFEN[0] <= 7)) { 
-    if (CastlingShortFEN[0] == 7) { CastlingFEN += FenPieceName.toUpperCase().charAt(0); } 
+  if ((CastlingShortFEN[0] >= 0) && (CastlingShortFEN[0] <= 7)) {
+    for (ii = 7; ii > CastlingShortFEN[0]; ii--) {
+      if (Board[ii][0] == 3) { break; } 
+    } 
+    if (ii == CastlingShortFEN[0]) { CastlingFEN += FenPieceName.toUpperCase().charAt(0); } 
     else { CastlingFEN += columnsLetters.charAt(CastlingShortFEN[0]); } 
   }
   if ((CastlingLongFEN[0] >= 0) && (CastlingLongFEN[0] <= 7)) { 
-    if (CastlingLongFEN[0] == 0) { CastlingFEN += FenPieceName.toUpperCase().charAt(1); }
+    for (ii = 0; ii < CastlingLongFEN[0]; ii++) {
+      if (Board[ii][0] == 3) { break; }
+    }
+    if (ii == CastlingLongFEN[0]) { CastlingFEN += FenPieceName.toUpperCase().charAt(1); }
     else { CastlingFEN += columnsLetters.charAt(CastlingLongFEN[0]); }
   }
-  if ((CastlingShortFEN[1] >= 0) && (CastlingShortFEN[1] <= 7)) { 
-    if (CastlingShortFEN[1] == 7) { CastlingFEN += FenPieceName.toLowerCase().charAt(0); }
+  if ((CastlingShortFEN[1] >= 0) && (CastlingShortFEN[1] <= 7)) {
+    for (ii = 7; ii > CastlingShortFEN[1]; ii--) {
+      if (Board[ii][7] == -3) { break; }                 
+    } 
+    if (ii == CastlingShortFEN[1]) { CastlingFEN += FenPieceName.toLowerCase().charAt(0); }
     else { CastlingFEN += columnsLetters.charAt(8 + CastlingShortFEN[1]); }
   }
   if ((CastlingLongFEN[1] >= 0) && (CastlingLongFEN[1] <= 7)) {
-    if (CastlingLongFEN[1] == 0) { CastlingFEN += FenPieceName.toLowerCase().charAt(1); }
+    for (ii = 0; ii < CastlingLongFEN[1]; ii++) {
+      if (Board[ii][7] == 3) { break; }
+    }
+    if (ii == CastlingLongFEN[1]) { CastlingFEN += FenPieceName.toLowerCase().charAt(1); }
     else { CastlingFEN += columnsLetters.charAt(8 + CastlingLongFEN[1]); }
   }
   if (CastlingFEN === "") { CastlingFEN = "-"; }
