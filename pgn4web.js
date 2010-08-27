@@ -1223,7 +1223,7 @@ function CheckLegalityOOO() {
   // which rook was castling
   var legal    = false;
   var thisRook = 0;
-  while (thisRook < 16){
+  while (thisRook < 16) {
     if ((PieceCol[MoveColor][thisRook] < PieceCol[MoveColor][0]) &&
       (PieceRow[MoveColor][thisRook] == MoveColor*7) &&
       (PieceType[MoveColor][thisRook] == 3)) {
@@ -1241,8 +1241,8 @@ function CheckLegalityOOO() {
   Board[PieceCol[MoveColor][thisRook]][MoveColor*7] = 0;
   var col = PieceRow[MoveColor][thisRook];
   if (col > 2) { col = 2; }
-  while ((col > PieceCol[MoveColor][0]) || (col <= 3)) {
-    if (Board[col][MoveColor*7] !== 0) { return false; }
+  while ((col < PieceCol[MoveColor][0]) || (col <= 3)) {
+   if (Board[col][MoveColor*7] !== 0) { return false; }
     ++col;
   }
   castleRook = thisRook;
