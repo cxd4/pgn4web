@@ -763,7 +763,7 @@ function CurrentFEN() {
   // active color
   currentFEN += CurrentPly%2 === 0 ? " w" : " b";
 
-  // castling availability: only standard chess, no FischerRandom
+  // castling availability
   CastlingShortFEN = new Array(2);
   CastlingShortFEN[0] = CastlingShort[0];
   CastlingShortFEN[1] = CastlingShort[1];
@@ -773,16 +773,37 @@ function CurrentFEN() {
   for (thisPly = StartPly; thisPly < CurrentPly; thisPly++) {
     SideToMoveFEN = thisPly%2;
     BackrowSideToMoveFEN = SideToMoveFEN * 7;
-    if (HistType[0][thisPly] == 1) { CastlingShortFEN[SideToMoveFEN] = CastlingLongFEN[SideToMoveFEN] = 0; }
-    if ((HistCol[0][thisPly] === 7) && (HistRow[0][thisPly] == BackrowSideToMoveFEN)) { CastlingShortFEN[SideToMoveFEN] = 0; }
-    if ((HistCol[0][thisPly] === 0) && (HistRow[0][thisPly] == BackrowSideToMoveFEN)) { CastlingLongFEN[SideToMoveFEN] = 0; }
+    if (HistType[0][thisPly] == 1) { 
+      CastlingShortFEN[SideToMoveFEN] = CastlingLongFEN[SideToMoveFEN] = -1;
+    }
+    if ((HistCol[0][thisPly] == CastlingShortFEN[SideToMoveFEN]) && 
+      (HistRow[0][thisPly] == BackrowSideToMoveFEN)) {
+      CastlingShortFEN[SideToMoveFEN] = -1;
+    }
+    if ((HistCol[0][thisPly] == CastlingLongFEN[SideToMoveFEN]) && 
+      (HistRow[0][thisPly] == BackrowSideToMoveFEN)) {
+      CastlingLongFEN[SideToMoveFEN] = -1;
+    }
   }
 
   CastlingFEN = "";
-  if (CastlingShortFEN[0] !== 0) { CastlingFEN += FenPieceName.toUpperCase().charAt(0); }
-  if (CastlingLongFEN[0] !== 0) { CastlingFEN += FenPieceName.toUpperCase().charAt(1); }
-  if (CastlingShortFEN[1] !== 0) { CastlingFEN += FenPieceName.toLowerCase().charAt(0); }
-  if (CastlingLongFEN[1] !== 0) { CastlingFEN += FenPieceName.toLowerCase().charAt(1); }
+  columnsLetters = "ABCDEFGHabcdef";
+  if ((CastlingShortFEN[0] >= 0) && (CastlingShortFEN[0] <= 7)) { 
+    if (CastlingShortFEN[0] == 7) { CastlingFEN += FenPieceName.toUpperCase().charAt(0); } 
+    else { CastlingFEN += columnsLetters.charAt(CastlingShortFEN[0]); } 
+  }
+  if ((CastlingLongFEN[0] >= 0) && (CastlingLongFEN[0] <= 7)) { 
+    if (CastlingLongFEN[0] == 0) { CastlingFEN += FenPieceName.toUpperCase().charAt(1); }
+    else { CastlingFEN += columnsLetters.charAt(CastlingLongFEN[0]); }
+  }
+  if ((CastlingShortFEN[1] >= 0) && (CastlingShortFEN[1] <= 7)) { 
+    if (CastlingShortFEN[1] == 7) { CastlingFEN += FenPieceName.toLowerCase().charAt(0); }
+    else { CastlingFEN += columnsLetters.charAt(8 + CastlingShortFEN[1]); }
+  }
+  if ((CastlingLongFEN[1] >= 0) && (CastlingLongFEN[1] <= 7)) {
+    if (CastlingLongFEN[1] == 0) { CastlingFEN += FenPieceName.toLowerCase().charAt(1); }
+    else { CastlingFEN += columnsLetters.charAt(8 + CastlingLongFEN[1]); }
+  }
   if (CastlingFEN === "") { CastlingFEN = "-"; }
   currentFEN += " " + CastlingFEN;
  
@@ -1184,14 +1205,15 @@ function CheckLegalityPawn(thisPawn) {
 }
 
 function CheckLegalityOO() {
-  if (CastlingShort[MoveColor] === 0) { return false; }
+  if (CastlingShort[MoveColor] < 0) { return false; }
   if (PieceMoveCounter[MoveColor][0] > 0) { return false; }
   
   // which rook was castling
   var legal    = false;
   var thisRook = 0;
   while (thisRook < 16) {
-    if ((PieceCol[MoveColor][thisRook] > PieceCol[MoveColor][0]) &&
+    if ((PieceCol[MoveColor][thisRook] == CastlingShort[MoveColor]) &&
+      (PieceCol[MoveColor][thisRook] > PieceCol[MoveColor][0]) &&
       (PieceRow[MoveColor][thisRook]  == MoveColor*7) &&
       (PieceType[MoveColor][thisRook] == 3)) {
       legal = true;
@@ -1217,14 +1239,15 @@ function CheckLegalityOO() {
 }
 
 function CheckLegalityOOO() {
-  if (CastlingLong[MoveColor] === 0) { return false; }
+  if (CastlingLong[MoveColor] < 0) { return false; }
   if (PieceMoveCounter[MoveColor][0] > 0) { return false; }
 
   // which rook was castling
   var legal    = false;
   var thisRook = 0;
   while (thisRook < 16) {
-    if ((PieceCol[MoveColor][thisRook] < PieceCol[MoveColor][0]) &&
+    if ((PieceCol[MoveColor][thisRook] == CastlingLong[MoveColor]) &&
+      (PieceCol[MoveColor][thisRook] < PieceCol[MoveColor][0]) &&
       (PieceRow[MoveColor][thisRook] == MoveColor*7) &&
       (PieceType[MoveColor][thisRook] == 3)) {
       legal = true;
@@ -1239,7 +1262,7 @@ function CheckLegalityOOO() {
   // clear king/rook squares for FischerRandom compatibility
   Board[PieceCol[MoveColor][0]][MoveColor*7]        = 0;
   Board[PieceCol[MoveColor][thisRook]][MoveColor*7] = 0;
-  var col = PieceRow[MoveColor][thisRook];
+  var col = PieceCol[MoveColor][thisRook];
   if (col > 2) { col = 2; }
   while ((col < PieceCol[MoveColor][0]) || (col <= 3)) {
    if (Board[col][MoveColor*7] !== 0) { return false; }
@@ -1983,7 +2006,8 @@ function InitFEN(startingFEN) {
 
   var newEnPassant = false;
   var newEnPassantCol;
-  for (ii = 0; ii < 2; ii++) { CastlingLong[ii] = CastlingShort[ii] = 1; }
+  CastlingLong[0] = CastlingLong[1] = 0;
+  CastlingShort[0] = CastlingShort[1] = 7;
   InitialHalfMoveClock = 0;
 
   if (FenString == "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1") {
@@ -2134,33 +2158,6 @@ function InitFEN(startingFEN) {
       return;
     }
 
-    ll++;
-    if (ll >= FenString.length) {
-      myAlert("error: invalid FEN [12]: char "+ll+" missing castling availability in game "+(currentGame+1)+"\n"+FenString, true);
-      return;
-    }
-    CastlingShort[0] = CastlingLong[0] = CastlingShort[1] = CastlingLong[1] = 0;
-    cc = FenString.charAt(ll++);
-    while (cc!=" ") {
-      if (cc.charCodeAt(0) == FenPieceName.toUpperCase().charCodeAt(0))
-      { CastlingShort[0] = 1; }
-      if (cc.charCodeAt(0) == FenPieceName.toUpperCase().charCodeAt(1))
-      { CastlingLong[0] = 1; }
-      if (cc.charCodeAt(0) == FenPieceName.toLowerCase().charCodeAt(0))
-      { CastlingShort[1]=1; }
-      if (cc.charCodeAt(0) == FenPieceName.toLowerCase().charCodeAt(1))
-      { CastlingLong[1] = 1; }
-      if ((cc == "E") || (cc == "F") || (cc == "G") || (cc == "H")) // for FischerRandom
-      { CastlingShort[0] = 1; }
-      if ((cc == "A") || (cc == "B") || (cc == "C") || (cc == "D"))
-      { CastlingLong[0] = 1; }
-      if ((cc == "e") || (cc == "f") || (cc == "g") || (cc=="h"))
-      { CastlingShort[1] = 1; }
-      if ((cc == "a") || (cc == "b") || (cc == "c") || (cc == "d"))
-      { CastlingLong[1] = 1; }
-      cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
-    }
-
     // set board
     for (color = 0; color < 2; ++color) {
       for (ii = 0; ii < 16; ii++) {
@@ -2172,6 +2169,65 @@ function InitFEN(startingFEN) {
       }
     }
           
+    ll++;
+    if (ll >= FenString.length) {
+      myAlert("error: invalid FEN [12]: char "+ll+" missing castling availability in game "+(currentGame+1)+"\n"+FenString, true);
+      return;
+    }
+    CastlingShort[0] = CastlingLong[0] = CastlingShort[1] = CastlingLong[1] = -1;
+    cc = FenString.charAt(ll++);
+    while (cc!=" ") {
+      if (cc.charCodeAt(0) == FenPieceName.toUpperCase().charCodeAt(0)) {
+        for (CastlingShort[0] = 7; CastlingShort[0] >= 0; CastlingShort[0]--) {
+          if (Board[CastlingShort[0]][0] == 3) { break; }
+        }
+        if (CastlingShort[0] < 0) {
+          myAlert("error: invalid FEN [12.1]: char "+ll+" missing Rook for castling flag " + cc);
+          CastlingShort[0] = -1;
+        }
+      }
+      if (cc.charCodeAt(0) == FenPieceName.toUpperCase().charCodeAt(1)) {
+        for (CastlingLong[0] = 0; CastlingLong[0] <= 7; CastlingLong[0]++) {
+          if (Board[CastlingLong[0]][0] == 3) { break; }
+        }
+        if (CastlingLong[0] > 7) {
+          myAlert("error: invalid FEN [12.1]: char "+ll+" missing Rook for castling flag " + cc);
+          CastlingLong[0] = -1;
+        }
+      }
+      if (cc.charCodeAt(0) == FenPieceName.toLowerCase().charCodeAt(0)) {
+        for (CastlingShort[1] = 7; CastlingShort[1] >= 0; CastlingShort[1]--) {
+          if (Board[CastlingShort[1]][7] == -3) { break; }
+        }
+        if (CastlingShort[1] < 0) {
+          myAlert("error: invalid FEN [12.1]: char "+ll+" missing Rook for castling flag " + cc);
+          CastlingShort[1] = -1;
+        }
+      }
+      if (cc.charCodeAt(0) == FenPieceName.toLowerCase().charCodeAt(1)) {
+        for (CastlingLong[1] = 0; CastlingLong[1] <= 7; CastlingLong[1]++) {
+          if (Board[CastlingLong[1]][7] == -3) { break; }
+        }
+        if (CastlingLong[1] > 7) {
+          myAlert("error: invalid FEN [12.1]: char "+ll+" missing Rook for castling flag " + cc);
+          CastlingLong[1] = -1;
+        }
+      }
+      columnsLetters = "ABCDEFGHabcdef"; 
+      castlingRookCol = columnsLetters.indexOf(cc);
+      if (castlingRookCol >= 0) {
+        if (castlingRookCol > 7) { color = 1; castlingRookCol -= 8; }
+        else { color = 0;}
+        if (Board[castlingRookCol][color*7] == (1-2*color) * 3) {
+          if (castlingRookCol > PieceCol[color][0]) { CastlingShort[color] = castlingRookCol; }
+          if (castlingRookCol < PieceCol[color][0]) { CastlingLong[color] = castlingRookCol; }
+        } else {
+          myAlert("error: invalid FEN [12.2]: char "+ll+" missing Rook at castling column " + cc);
+        }
+      }
+      cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
+    }
+
     if (ll >= FenString.length) {
       myAlert("error: invalid FEN [13]: char "+ll+" missing en passant target square in game "+(currentGame+1)+"\n"+FenString, true);
       return;
