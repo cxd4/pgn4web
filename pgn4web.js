@@ -787,7 +787,7 @@ function CurrentFEN() {
   }
 
   CastlingFEN = "";
-  columnsLetters = "ABCDEFGHabcdef";
+  columnsLetters = "ABCDEFGHabcdefgh";
   if ((CastlingShortFEN[0] >= 0) && (CastlingShortFEN[0] <= 7)) { 
     if (CastlingShortFEN[0] == 7) { CastlingFEN += FenPieceName.toUpperCase().charAt(0); } 
     else { CastlingFEN += columnsLetters.charAt(CastlingShortFEN[0]); } 
@@ -1208,13 +1208,13 @@ function CheckLegalityOO() {
   if (CastlingShort[MoveColor] < 0) { return false; }
   if (PieceMoveCounter[MoveColor][0] > 0) { return false; }
   
-  // which rook was castling
-  var legal    = false;
+  // which rook is castling
+  var legal = false;
   var thisRook = 0;
   while (thisRook < 16) {
     if ((PieceCol[MoveColor][thisRook] == CastlingShort[MoveColor]) &&
       (PieceCol[MoveColor][thisRook] > PieceCol[MoveColor][0]) &&
-      (PieceRow[MoveColor][thisRook]  == MoveColor*7) &&
+      (PieceRow[MoveColor][thisRook] == MoveColor*7) &&
       (PieceType[MoveColor][thisRook] == 3)) {
       legal = true;
       break;
@@ -1228,7 +1228,7 @@ function CheckLegalityOO() {
   // clear king/rook squares for FischerRandom compatibility
   Board[PieceCol[MoveColor][0]][MoveColor*7] = 0;
   Board[PieceCol[MoveColor][thisRook]][MoveColor*7] = 0;
-  var col = PieceRow[MoveColor][thisRook];
+  var col = PieceCol[MoveColor][thisRook];
   if (col < 6) { col = 6; }
   while ((col > PieceCol[MoveColor][0]) || (col >= 5)) {
     if (Board[col][MoveColor*7] !== 0) { return false; }
@@ -1242,8 +1242,8 @@ function CheckLegalityOOO() {
   if (CastlingLong[MoveColor] < 0) { return false; }
   if (PieceMoveCounter[MoveColor][0] > 0) { return false; }
 
-  // which rook was castling
-  var legal    = false;
+  // which rook is castling
+  var legal = false;
   var thisRook = 0;
   while (thisRook < 16) {
     if ((PieceCol[MoveColor][thisRook] == CastlingLong[MoveColor]) &&
@@ -2213,7 +2213,7 @@ function InitFEN(startingFEN) {
           CastlingLong[1] = -1;
         }
       }
-      columnsLetters = "ABCDEFGHabcdef"; 
+      columnsLetters = "ABCDEFGHabcdefgh"; 
       castlingRookCol = columnsLetters.indexOf(cc);
       if (castlingRookCol >= 0) {
         if (castlingRookCol > 7) { color = 1; castlingRookCol -= 8; }
