@@ -165,7 +165,7 @@ function handlekey(e) {
 
   if (e.altKey || e.ctrlKey || e.metaKey) { return true; }
 
-  // escape always enabled showing help and toggling enabling shortcut keys
+  // escape always enabled: show help and toggle enabling shortcut keys
   if ((keycode != 27) && (shortcutKeysEnabled === false)) { return true; }
 
   switch(keycode)
@@ -176,8 +176,8 @@ function handlekey(e) {
     case 17:  // ctrl
     case 18:  // alt
     case 32:  // space
-    case 33:  // page up
-    case 34:  // page down
+    case 33:  // page-up
+    case 34:  // page-down
     case 35:  // end
     case 36:  // home
     case 45:  // insert
@@ -189,7 +189,7 @@ function handlekey(e) {
 
     case 27: // escape
       if (e.shiftKey) {
-        // shift key + escape (27) toogle enabling shortcut keys 
+        // shift-escape toggle enabling shortcut keys 
         interactivelyToggleShortcutKeys(); 
       } else {
         displayHelp();
@@ -203,25 +203,25 @@ function handlekey(e) {
       return stopKeyPropagation(e);
       break;
 
-    case 37:  // left arrow  
+    case 37:  // left-arrow  
     case 74:  // j
       MoveBackward(1);
       return stopKeyPropagation(e);
       break;
 
-    case 38:  // up arrow
+    case 38:  // up-arrow
     case 72:  // h
       GoToMove(StartPly);
       return stopKeyPropagation(e);
       break;
 
-    case 39:  // right arrow
+    case 39:  // right-arrow
     case 75:  // k
       MoveForward(1);
       return stopKeyPropagation(e);
       break;
 
-    case 40:  // down arrow
+    case 40:  // down-arrow
     case 76:  // l
       GoToMove(StartPly + PlyNumber);
       return stopKeyPropagation(e);
@@ -499,7 +499,7 @@ function configBoardShrortcut(square, title, functionPointer) {
   }
 }
 
-// PLEASE NOTE: 'square' parameter of 'configBoardShrortcut' ALWAYS ASSUMES WHITE ON BOTTOM
+// PLEASE NOTE: 'configBoardShrortcut' ALWAYS ASSUMES 'square' WITH WHITE ON BOTTOM
 
 debugShortcutSquare = "A8";
 // A8
@@ -569,7 +569,7 @@ configBoardShrortcut("H5", "", function(){});
 // A4
 configBoardShrortcut("A4", "search previous event", function(){ searchPgnGame('\\[\\s*Event\\s*"(?!' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])', true); });
 // B4
-// some browsers are very slow processing (?=.*xxx)(?=.*yyy)
+// some browser slow with (?=.*xxx)(?=.*yyy)
 // configBoardShrortcut("B4", "search previous round of same event", function(){ searchPgnGame('(?=.*\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])(?=.*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\]))', true); });
 configBoardShrortcut("B4", "search previous round of same event", function(){ searchPgnGame('\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])|\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])', true); });
 // C4
@@ -581,7 +581,7 @@ configBoardShrortcut("E4", "search next game of same white player", function(){ 
 // F4
 configBoardShrortcut("F4", "search next game of same black player", function(){  searchPgnGame('\\[\\s*Black\\s*"' + fixRegExp(gameBlack[currentGame]) + '"\\s*\\]', false); });
 // G4
-// some browsers are very slow processing (?=.*xxx)(?=.*yyy)
+// some browser slow with (?=.*xxx)(?=.*yyy)
 // configBoardShrortcut("G4", "search next round of same event", function(){ searchPgnGame('(?=.*\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])(?=.*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\]))', false); });
 configBoardShrortcut("G4", "search next round of same event", function(){ searchPgnGame('\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])|\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])', false); });
 // H4
@@ -671,28 +671,28 @@ debugWin = null;
 function displayDebugInfo() {
   stopAlertPrompt();
   debugInfo = 'pgn4web: version=' + pgn4web_version + ' homepage=' + pgn4web_project_url + '\n\n';
-  debugInfo += 'HTML URL: length=' + location.href.length + ' url=';
+  debugInfo += 'HTMLURL: length=' + location.href.length + ' url=';
   debugInfo += (location.href.length < 100 ? location.href : (location.href.substring(0,99) + '...')) + '\n';
   baseLocation = detectBaseLocation();
-  debugInfo += 'BASE URL: url=' + (baseLocation !== '' ? baseLocation : 'none') + '\n';
-  debugInfo += 'JS URL: url=' + detectJavascriptLocation() + '\n\n';
-  debugInfo += 'PGN URL: url=' + (pgnUrl !== '' ? pgnUrl : 'none') + '\n';
-  debugInfo += 'PGN TEXT: length=';
+  debugInfo += 'BASEURL: url=' + (baseLocation !== '' ? baseLocation : 'none') + '\n';
+  debugInfo += 'JSURL: url=' + detectJavascriptLocation() + '\n\n';
+  debugInfo += 'PGNURL: url=' + (pgnUrl !== '' ? pgnUrl : 'none') + '\n';
+  debugInfo += 'PGNTEXT: length=';
   if (document.getElementById("pgnText") !== null) { 
     debugInfo += document.getElementById("pgnText").tagName.toLowerCase() == "textarea" ?
       document.getElementById("pgnText").value.length :
       document.getElementById("pgnText").innerHTML.length +
       ' container=' + document.getElementById("pgnText").tagName.toLowerCase();
-    // compatibility with pgn4web <1.77 when <span> was used for pgnText
+    // compatibility with pgn4web up to 1.77: <span> used for pgnText
   }
   debugInfo += '\n\n';
   debugInfo += 'GAMES: current=' + (currentGame+1) + ' number=' + numberOfGames + '\n' +
     'PLY: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber + '\n';
   debugInfo += 'AUTOPLAY: ' + (isAutoPlayOn ? 'delay=' + Delay + 'ms' + ' autoplaynext=' + autoplayNextGame : 'off');
   debugInfo += '\n\n';
-  debugInfo += 'LIVE BROADCAST: ' + (LiveBroadcastDelay > 0 ? 'ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + ' started=' + LiveBroadcastStarted + ' ended=' + LiveBroadcastEnded + ' paused=' + LiveBroadcastPaused + ' demo=' + LiveBroadcastDemo + ' alert=' + LiveBroadcastAlert + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime() : 'off'); 
+  debugInfo += 'LIVEBROADCAST: ' + (LiveBroadcastDelay > 0 ? 'ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + ' started=' + LiveBroadcastStarted + ' ended=' + LiveBroadcastEnded + ' paused=' + LiveBroadcastPaused + ' demo=' + LiveBroadcastDemo + ' alert=' + LiveBroadcastAlert + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime() : 'off'); 
   debugInfo += '\n\n';
-  debugInfo += 'ALERT LOG: fatalnew=' + fatalErrorNumSinceReset + ' new=' + alertNumSinceReset + ' shown=' + 
+  debugInfo += 'ALERTLOG: fatalnew=' + fatalErrorNumSinceReset + ' new=' + alertNumSinceReset + ' shown=' + 
                Math.min(alertNum, alertLog.length) + ' total=' + alertNum + '\n--';
   if (alertNum > 0) {
     for (ii = 0; ii<alertLog.length; ii++) {
@@ -704,12 +704,13 @@ function displayDebugInfo() {
     if (debugWin && !debugWin.closed) { debugWin.close(); }
     debugWin = window.open("", "debug_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
     if (debugWin !== null) {
+       text = "<html>";
+       text += "<head><title>pgn4web debug info</title><link rel='shortcut icon' href='pawn.ico' /></head>";
+       text += "<body>\n<pre>\n";
+       text += debugInfo;
+       text += "\n</pre>\n</body></html>";
        debugWin.document.open("text/html", "replace");
-       debugWin.document.write("<html>");
-       debugWin.document.write("<head><title>pgn4web debug info</title><link rel='shortcut icon' href='pawn.ico' /></head>");
-       debugWin.document.write("<body>\n<pre>\n");
-       debugWin.document.write(debugInfo);
-       debugWin.document.write("\n</pre>\n</body></html>");
+       debugWin.document.write(text);
        debugWin.document.close();
        if (window.focus) { debugWin.window.focus(); }
     }
@@ -723,13 +724,14 @@ function displayPgnData(allGames) {
   if (pgnWin && !pgnWin.closed) { pgnWin.close(); }
   pgnWin = window.open("", "pgn_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if (pgnWin !== null) {
+    text = "<html>";
+    text += "<head><title>pgn4web PGN source</title><link rel='shortcut icon' href='pawn.ico' /></head>";
+    text += "<body>\n<pre>\n";
+    if (allGames) { for (ii = 0; ii < numberOfGames; ++ii) { text += pgnGame[ii]; } }
+    else { text += pgnGame[currentGame]; }
+    text += "\n</pre>\n</body></html>";
     pgnWin.document.open("text/html", "replace");
-    pgnWin.document.write("<html>");
-    pgnWin.document.write("<head><title>pgn4web PGN source</title><link rel='shortcut icon' href='pawn.ico' /></head>");
-    pgnWin.document.write("<body>\n<pre>\n");
-    if (allGames) { for (ii = 0; ii < numberOfGames; ++ii) { pgnWin.document.write(pgnGame[ii]); } }
-    else { pgnWin.document.write(pgnGame[currentGame]); }
-    pgnWin.document.write("\n</pre>\n</body></html>");
+    pgnWin.document.write(text);
     pgnWin.document.close();
     if (window.focus) { pgnWin.window.focus(); }
   }
@@ -761,7 +763,7 @@ function CurrentFEN() {
   // active color
   currentFEN += CurrentPly%2 === 0 ? " w" : " b";
 
-  // castling availability, only standard chess, no FischerRandom
+  // castling availability: only standard chess, no FischerRandom
   CastlingShortFEN = new Array(2);
   CastlingShortFEN[0] = CastlingShort[0];
   CastlingShortFEN[1] = CastlingShort[1];
@@ -836,23 +838,24 @@ function displayFenData() {
 
   fenWin = window.open("", "fen_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if (fenWin !== null) {
+    text = "<html>";
+    text += "<head><title>pgn4web FEN string</title><link rel='shortcut icon' href='pawn.ico' /></head>";
+    text += "<body>\n";
+    text += "<b><pre>\n\n" + currentFEN + "\n\n</pre></b>\n<hr>\n";
+    text += "<pre>\n\n";
+    text += "[Event \"" + (gameEvent[currentGame] ? gameEvent[currentGame] : "?") + "\"]\n";
+    text += "[Site \"" + (gameSite[currentGame] ? gameSite[currentGame] : "?") + "\"]\n";
+    text += "[Date \"" + (gameDate[currentGame] ? gameDate[currentGame] : "????.??.??") + "\"]\n";
+    text += "[Round \"" + (gameRound[currentGame] ? gameRound[currentGame] : "?") + "\"]\n";
+    text += "[White \"" + (gameWhite[currentGame] ? gameWhite[currentGame] : "?") + "\"]\n";
+    text += "[Black \"" + (gameBlack[currentGame] ? gameBlack[currentGame] : "?") + "\"]\n";
+    text += "[Result \"" + (gameResult[currentGame] ? gameResult[currentGame] : "*") + "\"]\n";
+    text += "[SetUp \"1\"]\n";
+    text += "[FEN \"" + CurrentFEN() + "\"]\n\n";
+    text += currentMovesString;
+    text += "\n</pre>\n</body></html>";
     fenWin.document.open("text/html", "replace");
-    fenWin.document.write("<html>");
-    fenWin.document.write("<head><title>pgn4web FEN string</title><link rel='shortcut icon' href='pawn.ico' /></head>");
-    fenWin.document.write("<body>\n");
-    fenWin.document.write("<b><pre>\n\n" + currentFEN + "\n\n</pre></b>\n<hr>\n");
-    fenWin.document.write("<pre>\n\n");
-    fenWin.document.write("[Event \"" + (gameEvent[currentGame] ? gameEvent[currentGame] : "?") + "\"]\n");
-    fenWin.document.write("[Site \"" + (gameSite[currentGame] ? gameSite[currentGame] : "?") + "\"]\n");
-    fenWin.document.write("[Date \"" + (gameDate[currentGame] ? gameDate[currentGame] : "????.??.??") + "\"]\n");
-    fenWin.document.write("[Round \"" + (gameRound[currentGame] ? gameRound[currentGame] : "?") + "\"]\n");
-    fenWin.document.write("[White \"" + (gameWhite[currentGame] ? gameWhite[currentGame] : "?") + "\"]\n");
-    fenWin.document.write("[Black \"" + (gameBlack[currentGame] ? gameBlack[currentGame] : "?") + "\"]\n");
-    fenWin.document.write("[Result \"" + (gameResult[currentGame] ? gameResult[currentGame] : "*") + "\"]\n");
-    fenWin.document.write("[SetUp \"1\"]\n");
-    fenWin.document.write("[FEN \"" + CurrentFEN() + "\"]\n\n");
-    fenWin.document.write(currentMovesString);
-    fenWin.document.write("\n</pre>\n</body></html>");
+    fenWin.document.write(text);
     fenWin.document.close();
     if (window.focus) { fenWin.window.focus(); }
   }
@@ -1835,7 +1838,7 @@ function createBoard(){
   } else if ( document.getElementById("pgnText") ) {
     if (document.getElementById("pgnText").tagName.toLowerCase() == "textarea") {
       tmpText = document.getElementById("pgnText").value;
-    } else { // compatibility with pgn4web <1.77 when <span> was used for pgnText
+    } else { // compatibility with pgn4web up to 1.77: <span> used for pgnText
       tmpText = document.getElementById("pgnText").innerHTML;
       // fixes browser issue removing \n from innerHTML
       if (tmpText.indexOf('\n') < 0) { tmpText = tmpText.replace(/((\[[^\[\]]*\]\s*)+)/g, "\n$1\n"); }
@@ -2147,7 +2150,7 @@ function InitFEN(startingFEN) {
       { CastlingShort[1]=1; }
       if (cc.charCodeAt(0) == FenPieceName.toLowerCase().charCodeAt(1))
       { CastlingLong[1] = 1; }
-      if ((cc == "E") || (cc == "F") || (cc == "G") || (cc == "H")) // for Fischer Random
+      if ((cc == "E") || (cc == "F") || (cc == "G") || (cc == "H")) // for FischerRandom
       { CastlingShort[0] = 1; }
       if ((cc == "A") || (cc == "B") || (cc == "C") || (cc == "D"))
       { CastlingLong[0] = 1; }
