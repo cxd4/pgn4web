@@ -1236,7 +1236,7 @@ function CheckLegalityOOO() {
   if (PieceMoveCounter[MoveColor][thisRook] > 0) { return false; }
 
   // check no piece between king and rook
-  // clear king/rook squares for fisher-random compatibility
+  // clear king/rook squares for FischerRandom compatibility
   Board[PieceCol[MoveColor][0]][MoveColor*7]        = 0;
   Board[PieceCol[MoveColor][thisRook]][MoveColor*7] = 0;
   var col = PieceRow[MoveColor][thisRook];
