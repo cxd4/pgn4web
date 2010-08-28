@@ -1229,7 +1229,7 @@ function CheckLegalityOO() {
   if (PieceMoveCounter[MoveColor][thisRook] > 0) { return false; }
   
   // check no piece between king and rook
-  // clear king/rook squares for FischerRandom compatibility
+  // clear king/rook squares for Chess960
   Board[PieceCol[MoveColor][0]][MoveColor*7] = 0;
   Board[PieceCol[MoveColor][thisRook]][MoveColor*7] = 0;
   var col = PieceCol[MoveColor][thisRook];
@@ -1263,7 +1263,7 @@ function CheckLegalityOOO() {
   if (PieceMoveCounter[MoveColor][thisRook] > 0) { return false; }
 
   // check no piece between king and rook
-  // clear king/rook squares for FischerRandom compatibility
+  // clear king/rook squares for Chess960
   Board[PieceCol[MoveColor][0]][MoveColor*7]        = 0;
   Board[PieceCol[MoveColor][thisRook]][MoveColor*7] = 0;
   var col = PieceCol[MoveColor][thisRook];
