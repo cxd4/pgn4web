@@ -26,23 +26,30 @@ body {
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30x;
+  border-style: solid;
+  border-width: 2px;
 }
 
-.whiteSquare,
+.whiteSquare {
+  background: #ede8d5;
+  border-color: #ede8d5;
+}
+
+.blackSquare {
+  background: #cfcbb3;
+  border-color: #cfcbb3;
+}
+
 .highlightWhiteSquare {
-  background: #faf4dc;
+  background: #ede8d5;
+  border-color: #fdf88d;
 }
 
-.blackSquare,
 .highlightBlackSquare {
-  background: #e1dbb5;
-}
-
-.highlightWhiteSquare,
-.highlightBlackSquare {
-  background: #fdf88d;
+  background: #cfcbb3;
+  border-color: #fdf88d;
 }
 
 .selectControl,
@@ -50,10 +57,10 @@ body {
 .buttonControlStop,
 .buttonControl {
 /* a "width" attribute here must use the !important flag to override default settings */
-  color: #e1dbb5;
+  color: #969482;
   font-weight: bold;
   border-style: none;
-  background-color: #faf4dc;
+  background-color: #ede8d5;
   padding: 3px;
 }
 
@@ -64,7 +71,7 @@ body {
 
 .buttonControlSpace {
 /* a "width" attribute here must use the !important flag to override default settings */
-  background-color: #faf4dc;
+  background-color: #ede8d5;
 }
 
 .searchPgnButton {
@@ -83,7 +90,7 @@ body {
 }
 
 .moveOn {
-  background: #e1dbb5;
+  background: #fdf88d;
 }
 
 .comment,
