@@ -79,10 +79,9 @@ Next move: <span style="font-weight: bold" id="GameNextMove"></span><br>
 
 <tr><td colspan="2" align="center">
 <form style="display:inline;" action="javascript:loadPgnFromForm()">
-<input id="pgnButton" class="buttonControl" type="submit" value="show games from PGN text box" title="submit PGN data; a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages"> 
-<div style="height:10px;">&nbsp;</div>
-<textarea id="pgnForm" style="padding:10px; border-style:none; width:95%;" rows="11" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="enter PGN data; a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages"></textarea>
-<div style="height:10px;">&nbsp;</div>
+<input id="pgnButton" class="buttonControl" type="submit" value="click here to show chess games from the PGN text box" title="submit PGN data; a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages"> 
+<br>
+<textarea id="pgnForm" style="padding:10px; border-style:none; width:100%;" rows="4" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="enter PGN data; a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages"></textarea>
 </form>
 </td>
 </tr>
