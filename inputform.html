@@ -18,7 +18,7 @@
 <script src="pgn4web.js" type="text/javascript"></script>
 <script type="text/javascript">
 // SetPgnUrl(""); // if set, this has precedence over the inline PGN below
-   SetImagePath("merida/24"); // use "" path if images are in the same folder as this javascript file
+   SetImagePath("merida/26"); // use "" path if images are in the same folder as this javascript file
    SetImageType("png");
    SetHighlightOption(false); // true or false
 // SetGameSelectorOptions(" ...", false, 0, 0, 0, 15, 15, 0, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
@@ -42,19 +42,16 @@
 </textarea></form>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
-<table id=chessboardTable cellspacing=0 cellpadding=0 border=0>
+<table width="100%" cellpadding="10" style="background-color:#faf4dc;">
 
 <tr>
 
-<td width=230 valign=top align=left>
+<td width="272">
 <div id="GameBoard"></div>
 </td>
 
-<td width=20>
-</td>
-
-<td valign=top align=left>
-<span style="font-size: 14;"> 
+<td style="align:left; vertical-align: top;">
+<div style="padding-left:10px; font-size:14px;"> 
 Event: <span style="font-weight: bold; white-space: nowrap;" id="GameEvent"></span><br>
 Site: <span style="font-weight: bold; white-space: nowrap;" id="GameSite"></span><br>
 Round: <span style="font-weight: bold;" id="GameRound"></span><br>
@@ -66,57 +63,33 @@ Result: <span style="font-weight: bold;" id="GameResult"></span><br>
 <br>
 Last move: <span style="font-weight: bold" id="GameLastMove"></span><br>
 Next move: <span style="font-weight: bold" id="GameNextMove"></span><br>
-</span>
+</div>
 </td>
 
 </tr>
 
 <tr>
-
-<td align=center valign=bottom>
-<div style="height: 1.5em;">&nbsp;</div>
+<td>
 <div id="GameButtons"></div>
 </td>
-
-<td width=20>
+<td>
+<div style="padding-left:10px;" id="GameSelector"></div>
 </td>
+</tr>
 
-<td align=center valign=bottom>	
-<div id="GameSelector"></div>
-<div id="GameSearch"></div>
+<tr><td colspan="2" align="center">
+<form style="display:inline;" action="javascript:loadPgnFromForm()">
+<input id="pgnButton" class="buttonControl" type="submit" value="show games from PGN text box" title="submit PGN data; a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages"> 
+<div style="height:10px;">&nbsp;</div>
+<textarea id="pgnForm" style="padding:10px; border-style:none; width:95%;" rows="11" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="enter PGN data; a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages"></textarea>
+<div style="height:10px;">&nbsp;</div>
+</form>
 </td>
-
 </tr>
 
 </table>
 
-<br>
-
-<form style="display:inline;" action="javascript:loadPgnFromForm()">
-<input id="pgnButton" class="actionButton" type="submit" value="show games from PGN text box" title="submit PGN data; a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages"> 
-<br>
-<textarea id="pgnForm" rows=11 cols=80 onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="enter PGN data; a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages"></textarea>
-</form>
-
 <script type="text/javascript">
-
-function customFunctionOnPgnTextLoad() { 
-  theObject = document.getElementById('GameSelSelect');
-  if (theObject !== null) {
-    theObject.style.width = document.getElementById('pgnForm').offsetWidth - 20 - 230;
-  }
-}
-
-function customFunctionOnPgnGameLoad() { 
-  theObject = document.getElementById('searchPgnButton');
-  if (theObject !== null) { 
-     theObject.style.width = (document.getElementById('pgnForm').offsetWidth - 20 - 230) / 4; 
-  }
-  theObject = document.getElementById('searchPgnExpression');
-  if (theObject !== null) { 
-    theObject.style.width = (document.getElementById('pgnForm').offsetWidth - 20 - 230) / 4 * 3;
-  }
-}
 
 function customFunctionOnAlert(message_string) {
   stopAlertPrompt(); 

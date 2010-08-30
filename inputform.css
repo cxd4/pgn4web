@@ -8,7 +8,7 @@
 html, 
 body { 
   margin: 0; 
-  padding: 0; 
+  padding: 0;
 }
 
 body {
@@ -17,23 +17,17 @@ body {
   background: white;
 }
 
-.boardTable {
-  border-style: double; 
-  border-color: #e1dbb5;
-  border-width: 3px;
-}
-
 .pieceImage {
-  width: 24;
-  height: 24;
+  width: 26px;
+  height: 26px;
 }
 
 .whiteSquare,
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 28;
-  height: 28;
+  width: 34px;
+  height: 34px;
 }
 
 .whiteSquare,
@@ -52,22 +46,25 @@ body {
 }
 
 .selectControl,
-.actionButton,
 .buttonControlPlay,
 .buttonControlStop,
-.buttonControl,
-.searchPgnButton,
-.searchPgnExpression {
+.buttonControl {
 /* a "width" attribute here must use the !important flag to override default settings */
-  color: gray;
+  color: #e1dbb5;
+  font-weight: bold;
+  border-style: none;
   background-color: #faf4dc;
-  border-color: #e1dbb5;
-  border-style: solid;
-  border-width: 1px;
+  padding: 3px;
+}
+
+.selectControl {
+/* a "width" attribute here must use the !important flag to override default settings */
+  width: 100% !important;
 }
 
 .buttonControlSpace {
 /* a "width" attribute here must use the !important flag to override default settings */
+  background-color: #faf4dc;
 }
 
 .searchPgnButton {
@@ -86,7 +83,7 @@ body {
 }
 
 .moveOn {
-  background: #DAF4D7;
+  background: #e1dbb5;
 }
 
 .comment,
