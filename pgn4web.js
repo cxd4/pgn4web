@@ -1386,11 +1386,11 @@ function HighlightLastMove() {
   if (theShowCommentTextObject !== null) {
     if (MoveComments[showThisMove+1] != undefined) {
       // remove PGN extension tags
-      thisComment = MoveComments[showThisMove+1].replace(/\[%.*?\]\s*/g,''); // trailing spaces also removed
+      thisComment = MoveComments[showThisMove+1].replace(/\[%[^\]]*\]\s*/g,''); // trailing spaces also removed
       // remove spaces only comments
       thisComment = thisComment.replace(/^\s+$/,'');
     } else { thisComment = ''; }
-    theShowCommentTextObject.innerHTML = thisComment !== '' ? MoveComments[showThisMove+1] : '-';
+    theShowCommentTextObject.innerHTML = thisComment;
     theShowCommentTextObject.className = 'GameLastComment';
   }
   
@@ -1439,12 +1439,10 @@ function HighlightLastMove() {
   // show last move
   theShowMoveTextObject = document.getElementById("GameLastMove");
   if (theShowMoveTextObject !== null) {
-    if (showThisMove < StartPly) {
-      text = '-';
-    } else {
+    if ((showThisMove >= StartPly) && Moves[showThisMove]) {
       text = (Math.floor(showThisMove/2) + 1) + 
        (showThisMove % 2 === 0 ? '. ' : '... ') + Moves[showThisMove];
-    }
+    } else { text = ''; }
     theShowMoveTextObject.innerHTML = text; 
     theShowMoveTextObject.className = 'GameLastMove';
     theShowMoveTextObject.style.whiteSpace = 'nowrap';
@@ -3356,7 +3354,7 @@ function PrintHTML() {
   for (ii = StartPly; ii < StartPly+PlyNumber; ++ii) {
     printedComment = false;
     // remove PGN extension tags
-    thisComment = MoveComments[ii].replace(/\[%.*?\]\s*/g,''); // note trailing spaces also removed
+    thisComment = MoveComments[ii].replace(/\[%[^\]]*?\]\s*/g,''); // note trailing spaces also removed
     // remove spaces only comments
     thisComment = thisComment.replace(/^\s+$/,'');
     if (commentsIntoMoveText && (thisComment !== '')) {
