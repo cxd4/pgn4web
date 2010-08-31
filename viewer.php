@@ -483,7 +483,7 @@ function print_chessboard() {
 </div>
 </tr></table>
 
-<link href="$toolRoot/fonts/pgn4web-fonts.css" type="text/css" rel="stylesheet" />
+<link href="fonts/pgn4web-fonts.css" type="text/css" rel="stylesheet" />
 <style type="text/css">
 
 .boardTable {
