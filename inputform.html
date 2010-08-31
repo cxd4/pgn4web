@@ -51,19 +51,69 @@
 </td>
 
 <td width="100%" align="left" valign="top">
-<div style="padding-left:10px; font-size:14px;"> 
-Event: <span style="font-weight: bold; white-space: nowrap;" id="GameEvent"></span><br>
-Site: <span style="font-weight: bold; white-space: nowrap;" id="GameSite"></span><br>
-Round: <span style="font-weight: bold;" id="GameRound"></span><br>
-Date: <span style="font-weight: bold;" id="GameDate"></span><br>
-<br>
-White: <span style="font-weight: bold; white-space: nowrap;" id="GameWhite"></span><br>
-Black: <span style="font-weight: bold; white-space: nowrap;" id="GameBlack"></span><br>
-Result: <span style="font-weight: bold;" id="GameResult"></span><br>
-<br>
-Last move: <span style="font-weight: bold" id="GameLastMove"></span><br>
-Next move: <span style="font-weight: bold" id="GameNextMove"></span><br>
-</div>
+
+<table>
+
+<tr><td align="right">
+<span class="label">date</span>
+</td><td align="left">
+<span class="pgnheader" id="GameDate"></span>
+</td></tr>
+
+<tr><td align="right">
+<span class="label">site</span>
+</td><td align="left">
+<span class="pgnheader" id="GameSite"></span>
+</td></tr>
+
+<tr><td align="right">
+<span class="label">event</span>
+</td><td align="left">
+<span><span class="pgnheader" id="GameEvent"></span></span>
+</td></tr>
+
+<tr><td align="right">
+<span class="label">round</span>
+</td><td align="left">
+<span class="pgnheader" id="GameRound"></span>
+</td></tr>
+
+<tr><td><span style="line-height: 5px; visibility: hidden;">-</span></td><td></td></tr>
+
+<tr><td align="right">
+<span class="label">white</span>
+</td><td align="left">
+<span class="pgnheader" id="GameWhite"></span>
+</td></tr>
+
+<tr><td align="right">
+<span class="label">black</span>
+</td><td align="left">
+<span class="pgnheader" id="GameBlack"></span>
+</td></tr>
+
+<tr><td align="right">
+<span class="label">result</span>
+</td><td align="left">
+<span class="pgnheader" id="GameResult"></span>
+</td></tr>
+
+<tr><td><span style="line-height: 5px; visibility: hidden;">-</span></td><td></td></tr>
+
+<tr><td align="right">
+<span class="label">last</span>
+</td><td align="left">
+<span class="pgnheader" id="GameLastMove"></span>
+</td></tr>
+
+<tr><td align="right">
+<span class="label">next</span>
+</td><td align="left">
+<span class="pgnheader" id="GameNextMove"></span>
+</td></tr>
+
+</table>
+
 </td>
 
 </tr>
@@ -72,7 +122,7 @@ Next move: <span style="font-weight: bold" id="GameNextMove"></span><br>
 <td>
 <div id="GameButtons"></div>
 </td>
-<td>
+<td style="padding-left:20px;">
 <div id="GameSelector"></div>
 </td>
 </tr>

@@ -1432,7 +1432,6 @@ function HighlightLastMove() {
         ((showThisMove+1) % 2 === 0 ? '. ' : '... ') + Moves[showThisMove+1];
     }
     theShowMoveTextObject.innerHTML = text; 
-    theShowMoveTextObject.className = 'GameNextMove';
     theShowMoveTextObject.style.whiteSpace = 'nowrap';
   }
 
@@ -1444,7 +1443,6 @@ function HighlightLastMove() {
        (showThisMove % 2 === 0 ? '. ' : '... ') + Moves[showThisMove];
     } else { text = ''; }
     theShowMoveTextObject.innerHTML = text; 
-    theShowMoveTextObject.className = 'GameLastMove';
     theShowMoveTextObject.style.whiteSpace = 'nowrap';
   }
 
