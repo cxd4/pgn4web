@@ -47,72 +47,21 @@
 <tr>
 
 <td width="272" align="left" valign="top">
-<div id="GameBoard"></div>
+<div style="width:272px;" id="GameBoard"></div>
 </td>
 
 <td width="100%" align="left" valign="top">
 
-<table>
-
-<tr><td align="right">
-<span class="label">date</span>
-</td><td width="100%" align="left">
-<div class="pgnheader" id="GameDate"></div>
-</td></tr>
-
-<tr><td align="right">
-<span class="label">site</span>
-</td><td width="100%" align="left">
-<div class="pgnheader" id="GameSite"></div>
-</td></tr>
-
-<tr><td align="right">
-<span class="label">event</span>
-</td><td width="100%" align="left">
-<div class="pgnheader" id="GameEvent"></div>
-</td></tr>
-
-<tr><td align="right">
-<span class="label">round</span>
-</td><td width="100%" align="left">
-<div class="pgnheader" id="GameRound"></div>
-</td></tr>
-
-<tr><td><span style="line-height: 5px; visibility: hidden;">-</span></td><td></td></tr>
-
-<tr><td align="right">
-<span class="label">white</span>
-</td><td width="100%" align="left">
-<div class="pgnheader" id="GameWhite"></div>
-</td></tr>
-
-<tr><td align="right">
-<span class="label">black</span>
-</td><td width="100%" align="left">
-<div class="pgnheader" id="GameBlack"></div>
-</td></tr>
-
-<tr><td align="right">
-<span class="label">result</span>
-</td><td width="100%" align="left">
-<div class="pgnheader" id="GameResult"></div>
-</td></tr>
-
-<tr><td><span style="line-height: 5px; visibility: hidden;">-</span></td><td></td></tr>
-
-<tr><td align="right">
-<span class="label">last</span>
-</td><td width="100%" align="left">
-<div class="pgnheader" id="GameLastMove"></div>
-</td></tr>
-
-<tr><td align="right">
-<span class="label">next</span>
-</td><td width="100%" align="left">
-<div class="pgnheader" id="GameNextMove"></div>
-</td></tr>
-
-</table>
+<div class="pgnheader"><span id="GameDate"></span>&nbsp;</div>
+<div class="pgnheader"><span id="GameSite"></span>&nbsp;</div>
+<div class="pgnheader"><span id="GameEvent"></span>&nbsp;</div>
+<div class="pgnheader"><span id="GameRound"></span>&nbsp;</div>
+<div class="pgnheader">&nbsp;</div>
+<div class="pgnheader"><span id="GameWhite"></span>&nbsp;</div>
+<div class="pgnheader"><span id="GameBlack"></span>&nbsp;</div>
+<div class="pgnheader"><span id="GameResult"></span>&nbsp;</div>
+<div class="pgnheader">&nbsp;</div>
+<div class="pgnheader"><span id="GameLastMove"></span>&nbsp;</div>
 
 </td>
 
@@ -122,16 +71,16 @@
 <td>
 <div id="GameButtons"></div>
 </td>
-<td style="padding-left:20px;">
+<td style="padding-left:40px;">
 <div id="GameSelector"></div>
 </td>
 </tr>
 
 <tr><td colspan="2" width="100%" align="center">
-<form style="display:inline;" action="javascript:loadPgnFromForm()">
-<input id="pgnButton" class="buttonControl" style="width:100%;" type="submit" value="click here to show chess games from the PGN text box" title="submit PGN data; a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages"> 
+<div style="text-align:left; padding-left:322px; padding-bottom:5px;">
+<a class="pgnSubmit" href="javascript:loadPgnData();" title="submit PGN data; a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages">click here to show chess games</a>
+</div>
 <textarea id="pgnForm" style="padding:10px; border-style:none; width:100%; overflow:auto; scrollbar-base-color:white;" rows="12" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="enter PGN data; a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages"></textarea>
-</form>
 </td>
 </tr>
 
@@ -144,7 +93,7 @@ function customFunctionOnAlert(message_string) {
   alert(message_string);
 }
 
-function loadPgnFromForm() {
+function loadPgnData() {
   firstStart = true;
   document.getElementById('pgnText').value = document.getElementById('pgnForm').value;
   document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\[/g,'\n\n[');
