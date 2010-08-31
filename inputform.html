@@ -50,7 +50,7 @@
 <div id="GameBoard"></div>
 </td>
 
-<td style="align:left; vertical-align: top;">
+<td width="100%" align="left" valign="top">
 <div style="padding-left:10px; font-size:14px;"> 
 Event: <span style="font-weight: bold; white-space: nowrap;" id="GameEvent"></span><br>
 Site: <span style="font-weight: bold; white-space: nowrap;" id="GameSite"></span><br>
@@ -73,15 +73,14 @@ Next move: <span style="font-weight: bold" id="GameNextMove"></span><br>
 <div id="GameButtons"></div>
 </td>
 <td>
-<div style="padding-left:10px;" id="GameSelector"></div>
+<div id="GameSelector"></div>
 </td>
 </tr>
 
-<tr><td colspan="2" align="center">
+<tr><td colspan="2" width="100%" align="center">
 <form style="display:inline;" action="javascript:loadPgnFromForm()">
-<input id="pgnButton" class="buttonControl" type="submit" value="click here to show chess games from the PGN text box" title="submit PGN data; a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages"> 
-<br>
-<textarea id="pgnForm" style="padding:10px; border-style:none; width:100%;" rows="12" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="enter PGN data; a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages"></textarea>
+<input id="pgnButton" class="buttonControl" style="width:100%;" type="submit" value="click here to show chess games from the PGN text box" title="submit PGN data; a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages"> 
+<textarea id="pgnForm" style="padding:10px; border-style:none; width:100%; overflow:auto; scrollbar-base-color:white;" rows="12" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="enter PGN data; a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages"></textarea>
 </form>
 </td>
 </tr>
