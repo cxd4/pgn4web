@@ -2517,7 +2517,8 @@ function MoveForward(diff) {
 
 function AutoplayNextGame() {
   if (fatalErrorNumSinceReset === 0) {
-    if (++currentGame >= numberOfGames) { currentGame = 0; }
+    currentGame++;
+    if (currentGame >= numberOfGames) { currentGame = 0; }
     Init();
     if ((numberOfGames > 0) || (PlyNumber > 0)) {
       SetAutoPlay(true);
