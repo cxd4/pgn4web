@@ -106,7 +106,7 @@ function get_pgn() {
     $isZip = preg_match("/\.zip$/i",$pgnUrl);
     if ($isZip) {
       if (!$zipSupported) {
-        $pgnStatus = "unable to open zipfile: please <a href='" . $pgnUrl. "'>download the zipfile locally</a> and submit the extracted PGN file";
+        $pgnStatus = "unable to open zipfile&nbsp; &nbsp;<span style='color: gray;'>please <a style='color: gray;' href='" . $pgnUrl. "'>download the zipfile locally</a> and submit the extracted PGN file</span>";
         return FALSE;
       } else {
         $zipFileString = "<a href='" . $pgnUrl . "'>zip URL</a>";
@@ -188,7 +188,7 @@ function get_pgn() {
         return FALSE;
       }
     } else {
-      $pgnStatus = "ZIP support unavailable from this server, only PGN files are supported";
+      $pgnStatus = "ZIP support unavailable from this server&nbsp; &nbsp;<span style='color: gray;'>only PGN files are supported</span>";
       return FALSE;         
     }
   }
@@ -212,7 +212,7 @@ function get_pgn() {
     if ($zipSupported) {
       $pgnStatus = "only PGN and ZIP (zipped pgn) files are supported";
     } else {
-      $pgnStatus = "only PGN files are supported (ZIP support unavailable from this server)";
+      $pgnStatus = "only PGN files are supported&nbsp; &nbsp;<span style='color: gray;'>ZIP support unavailable from this server</span>";
     }
     return FALSE;
   }
