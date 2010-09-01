@@ -106,7 +106,7 @@ function get_pgn() {
     $isZip = preg_match("/\.zip$/i",$pgnUrl);
     if ($isZip) {
       if (!$zipSupported) {
-        $pgnStatus = "unable to open zipfile&nbsp; &nbsp;<span style='color: gray;'>please <a style='color: gray;' href='" . $pgnUrl. "'>download the zipfile locally</a> and submit the extracted PGN file</span>";
+        $pgnStatus = "unable to open zipfile&nbsp; &nbsp;<span style='color: gray;'>please <a style='color: gray;' href='" . $pgnUrl. "'>download zipfile locally</a> and submit extracted PGN</span>";
         return FALSE;
       } else {
         $zipFileString = "<a href='" . $pgnUrl . "'>zip URL</a>";
