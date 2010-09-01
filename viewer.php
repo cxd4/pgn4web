@@ -13,6 +13,10 @@ $tmpDir = "viewer";
 $fileUploadLimitBytes = 4194304;
 $fileUploadLimitText = round(($fileUploadLimitBytes / 1048576), 0) . "MB";
 
+$zipSupported = function_exists('zip_open');
+if ($zipSupported) { $pgnDebugInfo = ""; }
+else { $pgnDebugInfo = $pgnDebugInfo . "ZIP support unavailable from server, missing php ZIP library<br/>"; }
+
 $debugHelpText = "a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages";
 
 if (!($goToView = get_pgn())) { $pgnText = $krabbeStartPosition = get_krabbe_position(); }
@@ -26,7 +30,7 @@ print_footer();
 function set_mode() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
 
   $mode = $_REQUEST["mode"];
 
@@ -71,9 +75,9 @@ function get_krabbe_position() {
 function get_pgn() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
 
-  $pgnDebugInfo = $_REQUEST["debug"];
+  $pgnDebugInfo = $pgnDebugInfo . $_REQUEST["debug"];
 
   $pgnText = $_REQUEST["pgnText"];
   if (!$pgnText) { $pgnText = $_REQUEST["pgnTextbox"]; }
@@ -101,19 +105,24 @@ function get_pgn() {
     $isPgn = preg_match("/\.(pgn|txt)$/i",$pgnUrl);
     $isZip = preg_match("/\.zip$/i",$pgnUrl);
     if ($isZip) {
-      $zipFileString = "<a href='" . $pgnUrl . "'>zip URL</a>";
-      $tempZipName = tempnam($tmpDir, "pgn4webViewer");
-      $pgnUrlHandle = fopen($pgnUrl, "rb");
-      $tempZipHandle = fopen($tempZipName, "wb");
-      $copiedBytes = stream_copy_to_stream($pgnUrlHandle, $tempZipHandle, $fileUploadLimitBytes + 1, 0);
-      fclose($pgnUrlHandle);
-      fclose($tempZipHandle);
-      if (($copiedBytes > 0) & ($copiedBytes <= $fileUploadLimitBytes)) {
-        $pgnSource = $tempZipName;
-      } else {
-	$pgnStatus = "failed to get " . $zipFileString . ": file not found, file exceeds " . $fileUploadLimitText . " size limit or server error";
-        if (($tempZipName) & (file_exists($tempZipName))) { unlink($tempZipName); }
+      if (!$zipSupported) {
+        $pgnStatus = "unable to open zipfile: please <a href='" . $pgnUrl. "'>download the zipfile locally</a> and submit the extracted PGN file";
         return FALSE;
+      } else {
+        $zipFileString = "<a href='" . $pgnUrl . "'>zip URL</a>";
+        $tempZipName = tempnam($tmpDir, "pgn4webViewer");
+        $pgnUrlHandle = fopen($pgnUrl, "rb");
+        $tempZipHandle = fopen($tempZipName, "wb");
+        $copiedBytes = stream_copy_to_stream($pgnUrlHandle, $tempZipHandle, $fileUploadLimitBytes + 1, 0);
+        fclose($pgnUrlHandle);
+        fclose($tempZipHandle);
+        if (($copiedBytes > 0) & ($copiedBytes <= $fileUploadLimitBytes)) {
+          $pgnSource = $tempZipName;
+        } else {
+          $pgnStatus = "failed to get " . $zipFileString . ": file not found, file exceeds " . $fileUploadLimitText . " size limit or server error";
+          if (($tempZipName) & (file_exists($tempZipName))) { unlink($tempZipName); }
+          return FALSE;
+        }
       }
     } else {
       $pgnSource = $pgnUrl;
@@ -148,34 +157,39 @@ function get_pgn() {
   }
 
   if ($isZip) {
-    if ($pgnUrl) { $zipFileString = "<a href='" . $pgnUrl . "'>zip URL</a>"; }
-    else { $zipFileString = "zip file"; }
-    $pgnZip = zip_open($pgnSource);
-    if (is_resource($pgnZip)) {
-      while (is_resource($zipEntry = zip_read($pgnZip))) {
-	if (zip_entry_open($pgnZip, $zipEntry)) {
-	  if (preg_match("/\.pgn$/i",zip_entry_name($zipEntry))) {
-	    $pgnText = $pgnText . zip_entry_read($zipEntry, zip_entry_filesize($zipEntry)) . "\n\n\n";
+    if ($zipSupported) {
+      if ($pgnUrl) { $zipFileString = "<a href='" . $pgnUrl . "'>zip URL</a>"; }
+      else { $zipFileString = "zip file"; }
+      $pgnZip = zip_open($pgnSource);
+      if (is_resource($pgnZip)) {
+        while (is_resource($zipEntry = zip_read($pgnZip))) {
+          if (zip_entry_open($pgnZip, $zipEntry)) {
+            if (preg_match("/\.pgn$/i",zip_entry_name($zipEntry))) {
+              $pgnText = $pgnText . zip_entry_read($zipEntry, zip_entry_filesize($zipEntry)) . "\n\n\n";
+            }
+            zip_entry_close($zipEntry);
+          } else {
+            $pgnStatus = "failed reading " . $zipFileString . " content";
+            zip_close($pgnZip);
+            if (($tempZipName) & (file_exists($tempZipName))) { unlink($tempZipName); }
+            return FALSE;
           }
-          zip_entry_close($zipEntry);
-	} else {
-          $pgnStatus = "failed reading " . $zipFileString . " content";
-          zip_close($pgnZip);
-          if (($tempZipName) & (file_exists($tempZipName))) { unlink($tempZipName); }
-          return FALSE;
         }
-      }
-      zip_close($pgnZip);
-      if (($tempZipName) & (file_exists($tempZipName))) { unlink($tempZipName); }
-      if (!$pgnText) {
-        $pgnStatus = "PGN games not found in " . $zipFileString;
-        return FALSE;
+        zip_close($pgnZip);
+        if (($tempZipName) & (file_exists($tempZipName))) { unlink($tempZipName); }
+        if (!$pgnText) {
+          $pgnStatus = "PGN games not found in " . $zipFileString;
+         return FALSE;
+        } else {
+          return TRUE;
+        }
       } else {
-        return TRUE;
+        $pgnStatus = "failed opening " . $zipFileString;
+        return FALSE;
       }
     } else {
-      $pgnStatus = "failed opening " . $zipFileString;
-      return FALSE;
+      $pgnStatus = "ZIP support unavailable from this server, only PGN files are supported";
+      return FALSE;         
     }
   }
 
@@ -195,7 +209,11 @@ function get_pgn() {
   } 
 
   if($pgnSource) {
-    $pgnStatus = "only PGN and ZIP (zipped pgn) files are supported";
+    if ($zipSupported) {
+      $pgnStatus = "only PGN and ZIP (zipped pgn) files are supported";
+    } else {
+      $pgnStatus = "only PGN files are supported (ZIP support unavailable from this server)";
+    }
     return FALSE;
   }
 
@@ -205,7 +223,7 @@ function get_pgn() {
 function check_tmpDir() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
 
   $tmpDirHandle = opendir($tmpDir);
   while($entryName = readdir($tmpDirHandle)) {
@@ -218,7 +236,7 @@ function check_tmpDir() {
   closedir($tmpDirHandle);
 
   if ($unexpectedFiles) {
-    $pgnDebugInfo = $pgnDebugInfo . "message for sysadmin: clean temporary directory " . $tmpDir . ":" . $unexpectedFiles; 
+    $pgnDebugInfo = $pgnDebugInfo . "clean temporary directory " . $tmpDir . "(" . $unexpectedFiles . ")<br>"; 
   }
 }
 
@@ -278,7 +296,7 @@ END;
 function print_form() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
 
   $thisScript = $_SERVER['SCRIPT_NAME'];
 
@@ -295,22 +313,50 @@ function print_form() {
   function checkPgnUrl() {
     theObject = document.getElementById("urlFormText");
     if (theObject === null) { return false; }
-    if (!theObject.value.match(/\\.(zip|pgn|txt)\$/i)) {
-      alert("only PGN and ZIP (zipped pgn) files are supported");
-      return false;
-    }
-    return (theObject.value !== "");
+    if (!checkPgnExtension(theObject.value)) { return false; }
+    else { return (theObject.value !== ""); }
   }
 
   function checkPgnFile() {
     theObject = document.getElementById("uploadFormFile");
     if (theObject === null) { return false; }
-    if (!theObject.value.match(/\\.(zip|pgn|txt)\$/i)) {
+    if (!checkPgnExtension(theObject.value)) { return false; }
+    else { return (theObject.value !== ""); }
+  }
+
+END;
+
+  if ($zipSupported) { print <<<END
+
+  function checkPgnExtension(uri) {
+    if (uri.match(/\\.(zip|pgn|txt)\$/i)) { return true; }
+    else {
       alert("only PGN and ZIP (zipped pgn) files are supported");
       return false;
     }
-    return (theObject.value !== "");
   }
+
+END;
+
+  } else { print <<<END
+
+  function checkPgnExtension(uri) {
+    
+    if (uri.match(/\\.(pgn|txt)\$/i)) { return true; }
+    else if (uri.match(/\\.zip\$/i))  {
+      alert("ZIP support unavailable from this server, only PGN files are supported");
+      return false;
+    } else {
+      alert("only PGN files are supported (ZIP support unavailable from this server)");
+      return false;
+    }
+  }
+
+END;
+
+  }
+
+  print <<<END
 
   function checkPgnFormTextSize() {
     document.getElementById("pgnFormButton").title = "PGN textbox size is " + document.getElementById("pgnFormText").value.length;
@@ -463,7 +509,7 @@ END;
 function print_chessboard() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
 
   if ($mode == "compact") {
     $squareSize = 30;
@@ -696,15 +742,19 @@ END;
 function print_footer() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode;
+  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
 
   if ($goToView) { $hashStatement = "window.location.hash = 'view';"; }
   else { $hashStatement = ""; }
+
+  if (($pgnDebugInfo) != "") { $pgnDebugMessage = "message for sysadmin: " . $pgnDebugInfo; }
+  else {$pgnDebugMessage = ""; }
+
   print <<<END
 
 <div>&nbsp;</div>
 <table width=100% cellpadding=0 cellspacing=0 border=0><tr><td valign=bottom align=left>
-<div style="color: gray; margin-top: 1em; margin-bottom: 1em;">$pgnDebugInfo</div>
+<div style="color: gray; margin-top: 1em; margin-bottom: 1em;">$pgnDebugMessage</div>
 </td><td valign=bottom align=right>
 &nbsp;&nbsp;&nbsp;<a href="#moves" style="color: gray; font-size: 66%;">moves</a>&nbsp;&nbsp;&nbsp;<a href="#view" style="color: gray; font-size: 66%;">board</a>&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray; font-size: 66%;">form</a>
 </tr></table>
