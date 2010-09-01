@@ -28,28 +28,37 @@ body {
 .highlightBlackSquare {
   width: 34px;
   height: 34px;
-  border-style: solid;
   border-width: 2px;
 }
 
-.whiteSquare {
+.whiteSquare,
+.blackSquare {
+  border-style: solid;
+}
+
+.highlightWhiteSquare,
+.highlightBlackSquare {
+  border-style: dotted;
+}
+
+.whiteSquare,
+.highlightWhiteSquare {
   background: #E8E8E8;
+}
+
+.blackSquare,
+.highlightBlackSquare {
+  background: #C2C9D1;
+}
+
+.whiteSquare,
+.highlightBlackSquare {
   border-color: #E8E8E8;
 }
 
-.blackSquare {
-  background: #C2C9D1;
-  border-color: #C2C9D1;
-}
-
+.blackSquare,
 .highlightWhiteSquare {
-  background: #E8E8E8;
-  border-color: #7496AD;
-}
-
-.highlightBlackSquare {
-  background: #C2C9D1;
-  border-color: #7496AD;
+  border-color: #C2C9D1;
 }
 
 .pgnSubmit,
