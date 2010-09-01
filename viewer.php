@@ -329,11 +329,12 @@ END;
   if ($zipSupported) { print <<<END
 
   function checkPgnExtension(uri) {
-    if (uri.match(/\\.(zip|pgn|txt)\$/i)) { return true; }
-    else {
+    if (uri.match(/\\.(zip|pgn|txt)\$/i)) {
+      return true; 
+    } else if (uri !== "") {
       alert("only PGN and ZIP (zipped pgn) files are supported");
-      return false;
     }
+    return false;
   }
 
 END;
@@ -341,15 +342,14 @@ END;
   } else { print <<<END
 
   function checkPgnExtension(uri) {
-    
-    if (uri.match(/\\.(pgn|txt)\$/i)) { return true; }
-    else if (uri.match(/\\.zip\$/i))  {
+    if (uri.match(/\\.(pgn|txt)\$/i)) {
+      return true; 
+    } else if (uri.match(/\\.zip\$/i)) {
       alert("ZIP support unavailable from this server, only PGN files are supported");
-      return false;
-    } else {
+    } else if (uri !== "") { 
       alert("only PGN files are supported (ZIP support unavailable from this server)");
-      return false;
     }
+    return false;
   }
 
 END;
