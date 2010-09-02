@@ -20,8 +20,7 @@ function displayHelp(section){
   if (!section) { section = "top"; }
   if (helpWin && !helpWin.closed) { helpWin.close(); }
   helpWin = window.open(detectHelpLocation() + "?" + 
-   (Math.floor(900 * Math.random()) + 100) + "#" + section, 
-   "pgn4web_help", 
+   (Math.floor(900 * Math.random()) + 100) + "#" + section, "pgn4web_help",
    "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if ((helpWin !== null) && (window.focus)) { helpWin.window.focus(); }
 }
@@ -76,9 +75,8 @@ function myAlert(msg, fatalError) {
   if (fatalError) { fatalErrorNumSinceReset++; }
   alertLast = (alertLast + 1) % alertLog.length;
   alertLog[alertLast] = msg;
-  alertPlural = alertNum > 1 ? "s" : "";
   configBoardShrortcut(debugShortcutSquare, 
-    "pgn4web v" + pgn4web_version + " debug info, " + alertNum + " alert" + alertPlural); 
+    "pgn4web v" + pgn4web_version + " debug info, " + alertNum + " alert" + (alertNum > 1 ? "s" : "")); 
 
   if ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) {
     startAlertPrompt();
@@ -187,12 +185,8 @@ function handlekey(e) {
       break;
 
     case 27: // escape
-      if (e.shiftKey) {
-        // shift-escape toggle enabling shortcut keys 
-        interactivelyToggleShortcutKeys(); 
-      } else {
-        displayHelp();
-      }
+      if (e.shiftKey) { interactivelyToggleShortcutKeys(); }
+      else { displayHelp(); }
       return stopKeyPropagation(e);
       break;
 
@@ -255,120 +249,76 @@ function handlekey(e) {
 
     case 48:  // 0
       if (e.shiftKey) { customShortcutKey_Shift_0(); }
-      else {
-        SetAutoPlay(false); 
-      }
+      else { SetAutoPlay(false); }
       return stopKeyPropagation(e);
       break;
 
     case 49:  // 1
       if (e.shiftKey) { customShortcutKey_Shift_1(); }
-      else {
-        MoveForward(1);
-        SetAutoplayDelay( 1*1000);
-        SetAutoPlay(true);
-      }
+      else { SetAutoplayDelayAndStart( 1*1000); }
       return stopKeyPropagation(e);
       break;
 
     case 50:  // 2
       if (e.shiftKey) { customShortcutKey_Shift_2(); }
-      else {
-        MoveForward(1);
-        SetAutoplayDelay( 2*1000);
-        SetAutoPlay(true);
-      }
+      else { SetAutoplayDelayAndStart( 2*1000); }
       return stopKeyPropagation(e);
       break;
 
     case 51:  // 3
       if (e.shiftKey) { customShortcutKey_Shift_3(); }
-      else {
-        MoveForward(1);
-        SetAutoplayDelay( 3*1000);
-        SetAutoPlay(true);
-      }
+      else { SetAutoplayDelayAndStart( 3*1000); }
       return stopKeyPropagation(e);
       break;
 
     case 52:  // 4
       if (e.shiftKey) { customShortcutKey_Shift_4(); }
-      else {
-        MoveForward(1);
-        SetAutoplayDelay( 4*1000);
-        SetAutoPlay(true);
-      }
+      else { SetAutoplayDelayAndStart( 4*1000); }
       return stopKeyPropagation(e);
       break;
 
     case 53:  // 5
       if (e.shiftKey) { customShortcutKey_Shift_5(); }
-      else {
-        MoveForward(1);
-        SetAutoplayDelay( 5*1000);
-        SetAutoPlay(true);
-      }
+      else { SetAutoplayDelayAndStart( 5*1000); }
       return stopKeyPropagation(e);
       break;
 
     case 54:  // 6
       if (e.shiftKey) { customShortcutKey_Shift_6(); }
-      else {
-        MoveForward(1);
-        SetAutoplayDelay( 6*1000);
-        SetAutoPlay(true);
-      }
+      else { SetAutoplayDelayAndStart( 6*1000); }
       return stopKeyPropagation(e);
       break;
 
     case 55:  // 7
       if (e.shiftKey) { customShortcutKey_Shift_7(); }
-      else {
-        MoveForward(1);
-        SetAutoplayDelay( 7*1000);
-        SetAutoPlay(true);
-      }
+      else { SetAutoplayDelayAndStart( 7*1000); }
       return stopKeyPropagation(e);
       break;
 
     case 56:  // 8
       if (e.shiftKey) { customShortcutKey_Shift_8(); }
-      else {
-        MoveForward(1);
-        SetAutoplayDelay( 8*1000);
-        SetAutoPlay(true);
-      }
+      else { SetAutoplayDelayAndStart( 8*1000); }
       return stopKeyPropagation(e);
       break;
 
     case 57:  // 9
       if (e.shiftKey) { customShortcutKey_Shift_9(); }
-      else {
-        MoveForward(1);
-        SetAutoplayDelay( 9*1000);
-        SetAutoPlay(true);
-      }
+      else { SetAutoplayDelayAndStart( 9*1000); }
       return stopKeyPropagation(e);
       break;
 
     case 81:  // q
-      MoveForward(1);
-      SetAutoplayDelay(10*1000);
-      SetAutoPlay(true);
+      SetAutoplayDelayAndStart(10*1000);
       return stopKeyPropagation(e);
       break;
 
     case 87:  // w
-      MoveForward(1);
-      SetAutoplayDelay(20*1000);
-      SetAutoPlay(true);
+      SetAutoplayDelayAndStart(20*1000);
       return stopKeyPropagation(e);
       break;
 
     case 69:  // e
-      MoveForward(1);
-      SetAutoplayDelay(30*1000);
-      SetAutoPlay(true);
+      SetAutoplayDelayAndStart(30*1000);
       return stopKeyPropagation(e);
       break;
 
@@ -590,17 +540,17 @@ configBoardShrortcut("A2", "stop autoplay", function(){ SetAutoPlay(false); });
 // B2
 configBoardShrortcut("B2", "toggle autoplay", function(){ SwitchAutoPlay(); });
 // C2
-configBoardShrortcut("C2", "autoplay 1 second", function(){ MoveForward(1); SetAutoplayDelay( 1*1000); SetAutoPlay(true); });
+configBoardShrortcut("C2", "autoplay 1 second", function(){ SetAutoplayDelayAndStart( 1*1000); });
 // D2
-configBoardShrortcut("D2", "autoplay 2 seconds", function(){ MoveForward(1); SetAutoplayDelay( 2*1000); SetAutoPlay(true); });
+configBoardShrortcut("D2", "autoplay 2 seconds", function(){ SetAutoplayDelayAndStart( 2*1000); });
 // E2
-configBoardShrortcut("E2", "autoplay 3 seconds", function(){ MoveForward(1); SetAutoplayDelay( 3*1000); SetAutoPlay(true); });
+configBoardShrortcut("E2", "autoplay 3 seconds", function(){ SetAutoplayDelayAndStart( 3*1000); });
 // F2
-configBoardShrortcut("F2", "autoplay 5 seconds", function(){ MoveForward(1); SetAutoplayDelay( 5*1000); SetAutoPlay(true); });
+configBoardShrortcut("F2", "autoplay 5 seconds", function(){ SetAutoplayDelayAndStart( 5*1000); });
 // G2
-configBoardShrortcut("G2", "autoplay 10 seconds", function(){ MoveForward(1); SetAutoplayDelay( 10*1000); SetAutoPlay(true); });
+configBoardShrortcut("G2", "autoplay 10 seconds", function(){ SetAutoplayDelayAndStart(10*1000); });
 // H2
-configBoardShrortcut("H2", "autoplay 30 seconds", function(){ MoveForward(1); SetAutoplayDelay( 30*1000); SetAutoPlay(true); });
+configBoardShrortcut("H2", "autoplay 30 seconds", function(){ SetAutoplayDelayAndStart(30*1000); });
 // A1
 configBoardShrortcut("A1", "go to game start", function(){ GoToMove(StartPly); });
 // B1
@@ -3478,6 +3428,12 @@ function SetAutoPlay(vv) {
 
 function SetAutoplayDelay(vv) {
   Delay = vv;
+}
+
+function SetAutoplayDelayAndStart(vv) {
+  MoveForward(1);
+  SetAutoplayDelay(vv);
+  SetAutoPlay(true);
 }
 
 function SetLiveBroadcast(delay, alertFlag, demoFlag) {
