@@ -111,8 +111,17 @@ function validate_pgnText($pgnText) {
   return $pgnText;
 }
 
+function obfuscate_secret($s, $n = 15) {
+  for ($i = 0, $l = strlen($s); $i < $l; $i++) {
+    $c = ord($s[$i]);
+    if ($c >= 97 && $c <= 122) { $s[$i] = chr(($c - 71 + $n) % 26 + 97); }
+    else if ($c >= 65 && $c <= 90) { $s[$i] = chr(($c - 39 + $n) % 26 + 65); }
+  }
+  return $s;
+} 
+
 $secret = stripslashes($_POST["secret"]);
-$secretHash = hash("sha256", str_rot13($secret));
+$secretHash = hash("sha256", obfuscate_secret($secret));
 
 $localPgnFile = validate_localPgnFile($_REQUEST["localPgnFile"]);
 $localPgnTmpFile = $localPgnFile . ".tmp";
@@ -371,7 +380,7 @@ if ($secretHash == $storedSecretHash) {
 
 } else {
 
-  $message = logMsg("error=invalid password" . "\n" . 
+  $message = logMsg("\nerror=invalid password" . "\n" . 
                     "the sha256 hash of the password you entered is:" . "\n" . 
                     $secretHash);
 
@@ -382,9 +391,8 @@ if ($secretHash == $storedSecretHash) {
 <script type="text/javascript">
 
 function validate_and_set_secret(secret) {
-  document.getElementById("secret").value = secret.replace(/[a-zA-Z]/g, function(c) {
-    return String.fromCharCode((c <= "Z" ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
-  });
+  var _0x61d8 = ["\x5A","\x63\x68\x61\x72\x43\x6F\x64\x65\x41\x74","\x66\x72\x6F\x6D\x43\x68\x61\x72\x43\x6F\x64\x65","\x72\x65\x70\x6C\x61\x63\x65"];
+  document.getElementById("secret").value = secret[_0x61d8[3]](/[a-zA-Z]/g,function (_0xa987x1){return String[_0x61d8[2]]((_0xa987x1<=_0x61d8[0]?90:122)>=(_0xa987x1=_0xa987x1[_0x61d8[1]](0)+11)?_0xa987x1:_0xa987x1-26);} );
 };
 
 function validate_and_set_localPgnFile(localPgnFile) {
