@@ -582,7 +582,7 @@ function displayDebugInfo() {
     'LIVEBROADCAST: ' + (LiveBroadcastDelay > 0 ? 'ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + ' started=' + LiveBroadcastStarted + ' ended=' + LiveBroadcastEnded + ' paused=' + LiveBroadcastPaused + ' demo=' + LiveBroadcastDemo + ' alert=' + LiveBroadcastAlert + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime() : 'off') + 
     '\n\n' +
     'ALERTLOG: fatalnew=' + fatalErrorNumSinceReset + ' new=' + alertNumSinceReset + 
-       ' shown=' + Math.min(alertNum, alertLog.length) + ' total=' + alertNum + '\n--';
+    ' shown=' + Math.min(alertNum, alertLog.length) + ' total=' + alertNum + '\n--';
   if (alertNum > 0) {
     for (ii = 0; ii<alertLog.length; ii++) {
       if (alertLog[(alertNum - 1 - ii) % alertLog.length] === undefined) { break; }
@@ -611,9 +611,9 @@ function displayPgnData(allGames) {
   if (pgnWin && !pgnWin.closed) { pgnWin.close(); }
   pgnWin = window.open("", "pgn_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if (pgnWin !== null) {
-    text = "<html>";
-    text += "<head><title>pgn4web PGN source</title><link rel='shortcut icon' href='pawn.ico' /></head>";
-    text += "<body>\n<pre>\n";
+    text = "<html>" +
+      "<head><title>pgn4web PGN source</title><link rel='shortcut icon' href='pawn.ico' /></head>" +
+      "<body>\n<pre>\n";
     if (allGames) { for (ii = 0; ii < numberOfGames; ++ii) { text += pgnGame[ii]; } }
     else { text += pgnGame[currentGame]; }
     text += "\n</pre>\n</body></html>";
@@ -873,7 +873,7 @@ for(i=0; i<3; ++i){
   HistRow[i] = new Array(MaxMove);
 }
 
-HistEnPassant =  new Array(MaxMove);
+HistEnPassant = new Array(MaxMove);
 HistEnPassant[0] = false;
 HistEnPassantCol = new Array(MaxMove);
 HistEnPassantCol[0] = -1;
@@ -979,8 +979,8 @@ function CheckLegality(what, plyCount) {
 	(mvToRow != 5-3*MoveColor)) { return false; }
   }
   if (mvIsPromotion) {
-    if (mvPiece     != 6)               { return false; }
-    if (mvPieceOnTo >= 6)               { return false; }
+    if (mvPiece     != 6) { return false; }
+    if (mvPieceOnTo >= 6) { return false; }
     if (mvToRow     != 7*(1-MoveColor)) { return false; }
   }
   
@@ -1068,7 +1068,7 @@ function CheckLegalityPawn(thisPawn) {
   } else {
     if (PieceRow[MoveColor][thisPawn]-mvToRow == 4*MoveColor-2){
       if (PieceRow[MoveColor][thisPawn] != 1+5*MoveColor) { return false; }
-      if (Board[mvToCol][mvToRow+2*MoveColor-1] !== 0)    { return false; }
+      if (Board[mvToCol][mvToRow+2*MoveColor-1] !== 0) { return false; }
     } else {
       if (PieceRow[MoveColor][thisPawn]-mvToRow != 2*MoveColor-1) { return false; }
     }
@@ -1132,7 +1132,7 @@ function CheckLegalityOOO() {
 
   // check no piece between king and rook
   // clear king/rook squares for Chess960
-  Board[PieceCol[MoveColor][0]][MoveColor*7]        = 0;
+  Board[PieceCol[MoveColor][0]][MoveColor*7] = 0;
   Board[PieceCol[MoveColor][thisRook]][MoveColor*7] = 0;
   var col = PieceCol[MoveColor][thisRook];
   if (col > 2) { col = 2; }
@@ -2207,7 +2207,7 @@ function IsCheck(col, row, color) {
 	var checkRow  = row+jj;
 	var thisPiece = 0;
 
-	while (SquareOnBoard(checkCol, checkRow) && (thisPiece === 0)){
+	while (SquareOnBoard(checkCol, checkRow) && (thisPiece === 0)) {
 	  thisPiece = Board[checkCol][checkRow];
 	  if (thisPiece === 0){
 	    checkCol += ii;
@@ -2518,7 +2518,7 @@ function ParsePGNGameString(gameString) {
       default:
         
         searchThis = '1-0';
-        if (ss.indexOf(searchThis,start)==start){
+        if (ss.indexOf(searchThis,start)==start) {
           start += searchThis.length;
           MoveComments[StartPly+PlyNumber] += ss.substring(start, ss.length);
           start = ss.length;
@@ -2526,7 +2526,7 @@ function ParsePGNGameString(gameString) {
         }
         
         searchThis = '0-1';
-        if (ss.indexOf(searchThis,start)==start){
+        if (ss.indexOf(searchThis,start)==start) {
           start += searchThis.length;
           MoveComments[StartPly+PlyNumber] += ss.substring(start, ss.length);
           start = ss.length;
@@ -2534,7 +2534,7 @@ function ParsePGNGameString(gameString) {
         }
         
         searchThis = '1/2-1/2';
-        if (ss.indexOf(searchThis,start)==start){
+        if (ss.indexOf(searchThis,start)==start) {
           start += searchThis.length;
           MoveComments[StartPly+PlyNumber] += ss.substring(start, ss.length);
           start = ss.length;
@@ -2542,7 +2542,7 @@ function ParsePGNGameString(gameString) {
         }
         
         searchThis = '*';
-        if (ss.indexOf(searchThis,start)==start){
+        if (ss.indexOf(searchThis,start)==start) {
           start += searchThis.length;
           MoveComments[StartPly+PlyNumber] += ss.substring(start, ss.length);
           start = ss.length;
@@ -2551,7 +2551,7 @@ function ParsePGNGameString(gameString) {
         
         moveCount = Math.floor((StartPly+PlyNumber)/2)+1;
         searchThis = moveCount.toString()+'.';
-        if(ss.indexOf(searchThis,start)==start){
+        if(ss.indexOf(searchThis,start)==start) {
           start += searchThis.length;
           while ((ss.charAt(start) == '.') || (ss.charAt(start) == ' ')  || (ss.charAt(start) == '\n') || (ss.charAt(start) == '\r')){start++;}
         } else {
@@ -2863,18 +2863,18 @@ function ParseMove(move, plyCount) {
   if (mvCapture) {
     mvCapturedId = 15;
     while((mvCapturedId >= 0) && (mvCaptured < 0)) {
-      if ((PieceType[1-MoveColor][mvCapturedId] >  0)       &&
-	  (PieceCol[1-MoveColor][mvCapturedId]  == mvToCol) &&
-	  (PieceRow[1-MoveColor][mvCapturedId]  == mvToRow)){
+      if ((PieceType[1-MoveColor][mvCapturedId] >  0) &&
+	(PieceCol[1-MoveColor][mvCapturedId] == mvToCol) &&
+	(PieceRow[1-MoveColor][mvCapturedId] == mvToRow)) {
 	mvCaptured = PieceType[1-MoveColor][mvCapturedId];
       } else { --mvCapturedId; }
     }
     if ((mvPiece == 6) && (mvCapturedId < 1) && (HistEnPassant[plyCount-1])) {
       mvCapturedId = 15;
       while((mvCapturedId >= 0) && (mvCaptured < 0)){
-        if ((PieceType[1-MoveColor][mvCapturedId] == 6)       &&
-	    (PieceCol[1-MoveColor][mvCapturedId]  == mvToCol) &&
-	    (PieceRow[1-MoveColor][mvCapturedId]  == 4-MoveColor)) {
+        if ((PieceType[1-MoveColor][mvCapturedId] == 6) &&
+	  (PieceCol[1-MoveColor][mvCapturedId] == mvToCol) &&
+	  (PieceRow[1-MoveColor][mvCapturedId] == 4-MoveColor)) {
 	  mvCaptured = PieceType[1-MoveColor][mvCapturedId];
 	} else { --mvCapturedId; }
       }
