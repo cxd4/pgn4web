@@ -1215,7 +1215,7 @@ function SetInitialHalfmove(number_or_string, always) {
   if (initialHalfmove == "end") { return; }
   if (initialHalfmove == "random") { return; }
   if (initialHalfmove == "comment") { return; }
-  if ((initialHalfmove = parseInt(initialHalfmove, 10)) == NaN) { initialHalfmove = 0; }
+  if ((initialHalfmove = parseInt(initialHalfmove,10)) == NaN) { initialHalfmove = 0; }
 }
 
 function SetInitialGame(number_or_string) {
@@ -1808,7 +1808,7 @@ function Init(nextGame){
 
   if (nextGame !== undefined) {
     if ((! isNaN(nextGame)) && (nextGame >= 0) && (nextGame < numberOfGames)) {
-      currentGame = parseInt(nextGame);
+      currentGame = parseInt(nextGame,10);
     } else { return; }
   }
 
@@ -1933,7 +1933,7 @@ function InitFEN(startingFEN) {
         return;
       }
       if (!isNaN(cc)) {
-        ii += parseInt(cc, 10);
+        ii += parseInt(cc,10);
         if ((ii < 0) || (ii > 8)) {
           myAlert("error: invalid FEN ("+ll+") in game "+(currentGame+1)+"\n"+FenString, true);
           InitFEN();
@@ -2114,7 +2114,7 @@ function InitFEN(startingFEN) {
         myAlert("error: invalid FEN ("+ll+") invalid halfmove clock in game "+(currentGame+1)+"\n"+FenString, true);
         return;
       }
-      InitialHalfMoveClock=InitialHalfMoveClock*10+parseInt(cc, 10);
+      InitialHalfMoveClock=InitialHalfMoveClock*10+parseInt(cc,10);
       cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
     }
     if (ll >= FenString.length) {
@@ -2130,7 +2130,7 @@ function InitFEN(startingFEN) {
       myAlert("error: invalid FEN ("+ll+") invalid fullmove number in game "+(currentGame+1)+"\n"+FenString, true);
       return;
     }
-    StartPly += 2*(parseInt(cc, 10)-1);
+    StartPly += 2*(parseInt(cc,10)-1);
 
     HistEnPassant[StartPly-1] = newEnPassant;
     HistEnPassantCol[StartPly-1] = newEnPassantCol;
@@ -2338,7 +2338,7 @@ function MoveBackward(diff) {
 function MoveForward(diff) {
 
   // CurrentPly counts from 1, starting position 0
-  goToPly = CurrentPly + parseInt(diff, 10);
+  goToPly = CurrentPly + parseInt(diff,10);
 
   if (goToPly > (StartPly+PlyNumber)) { goToPly = StartPly+PlyNumber; }
   var thisPly;
@@ -2740,7 +2740,7 @@ function translateNAGs(comment) {
       jj++; 
       if (jj == comment.length) { break; }
     }
-    nag = parseInt(comment.substring(ii+1,jj), 10);
+    nag = parseInt(comment.substring(ii+1,jj),10);
     if ((nag != undefined) && (NAG[nag] != undefined)) {
       comment = comment.replace(comment.substring(ii,jj), '<SPAN CLASS="nag">' + NAG[nag] + '</SPAN>');
     }
