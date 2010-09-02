@@ -404,50 +404,34 @@ function handlekey(e) {
 
     case 88: // x
       if (numberOfGames > 1) {
-        currentGame = Math.floor(Math.random()*numberOfGames);
-        Init();
+        Init(Math.floor(Math.random()*numberOfGames));
         GoToMove(StartPly + Math.floor(Math.random()*(StartPly + PlyNumber + 1)));
       }
       return stopKeyPropagation(e);
       break;
 
     case 67: // c
-      if (numberOfGames > 1) {
-        currentGame = Math.floor(Math.random()*numberOfGames);
-        Init();
-      }
+      if (numberOfGames > 1) { Init(Math.floor(Math.random()*numberOfGames)); }
       return stopKeyPropagation(e);
       break;
 
     case 86:  // v
-      if (numberOfGames > 1) {
-	currentGame = 0;
-        Init();
-      }
+      if (numberOfGames > 1) { Init(0); }
       return stopKeyPropagation(e);
       break;
 
     case 66:  // b
-      if (currentGame > 0) {
-        currentGame--;
-        Init();
-      }
+      if (currentGame > 0) { Init(currentGame - 1); }
       return stopKeyPropagation(e);
       break;
 
     case 78:  // n
-      if (numberOfGames > currentGame + 1) {
-        currentGame++;
-        Init();
-      }
+      if (numberOfGames > currentGame + 1) { Init(currentGame + 1); }
       return stopKeyPropagation(e);
       break;
 
     case 77:  // m
-      if (numberOfGames > 1) {
-        currentGame = numberOfGames - 1;
-        Init();
-      }
+      if (numberOfGames > 1) { Init(numberOfGames - 1); }
       return stopKeyPropagation(e);
       break;
 
@@ -586,21 +570,21 @@ configBoardShrortcut("G4", "search next round of same event", function(){ search
 // H4
 configBoardShrortcut("H4", "search next event", function(){ searchPgnGame('\\[\\s*Event\\s*"(?!' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])', false); });
 // A3
-configBoardShrortcut("A3", "load first game", function(){ if (numberOfGames > 1) { currentGame = 0; Init(); } });
+configBoardShrortcut("A3", "load first game", function(){ if (numberOfGames > 1) { Init(0); } });
 // B3
-configBoardShrortcut("B3", "junp to previous games decile", function(){ if (currentGame > 0) { calculateDeciles(); for(ii=(deciles.length-2); ii>=0; ii--) { if (currentGame > deciles[ii]) { currentGame = deciles[ii]; break; } } Init(); } });
+configBoardShrortcut("B3", "junp to previous games decile", function(){ if (currentGame > 0) { calculateDeciles(); for(ii=(deciles.length-2); ii>=0; ii--) { if (currentGame > deciles[ii]) { Init(deciles[ii]); break; } } } });
 // C3
-configBoardShrortcut("C3", "load previous game", function(){ if (currentGame > 0){ currentGame--; Init(); } });
+configBoardShrortcut("C3", "load previous game", function(){ if (currentGame > 0){ Init(currentGame - 1); } });
 // D3
-configBoardShrortcut("D3", "load random game", function(){ if (numberOfGames > 1) { currentGame = Math.floor(Math.random()*numberOfGames); Init(); } });
+configBoardShrortcut("D3", "load random game", function(){ if (numberOfGames > 1) { Init(Math.floor(Math.random()*numberOfGames)); } });
 // E3
-configBoardShrortcut("E3", "load random game at random position", function(){ currentGame = Math.floor(Math.random()*numberOfGames); Init(); GoToMove(StartPly + Math.floor(Math.random()*(StartPly + PlyNumber + 1))); });
+configBoardShrortcut("E3", "load random game at random position", function(){ Init(Math.floor(Math.random()*numberOfGames)); GoToMove(StartPly + Math.floor(Math.random()*(StartPly + PlyNumber + 1))); });
 // F3
-configBoardShrortcut("F3", "load next game", function(){ if (numberOfGames > currentGame + 1){ currentGame++; Init(); } });
+configBoardShrortcut("F3", "load next game", function(){ if (numberOfGames > currentGame + 1){ Init(currentGame + 1); } });
 // G3
-configBoardShrortcut("G3", "jump to next games decile", function(){ if (currentGame < numberOfGames - 1) { calculateDeciles(); for(ii=1; ii<deciles.length; ii++) { if (currentGame < deciles[ii]) { currentGame = deciles[ii]; break; } } Init(); } });
+configBoardShrortcut("G3", "jump to next games decile", function(){ if (currentGame < numberOfGames - 1) { calculateDeciles(); for(ii=1; ii<deciles.length; ii++) { if (currentGame < deciles[ii]) { Init(deciles[ii]); break; } } } });
 // H3
-configBoardShrortcut("H3", "load last game", function(){ if (numberOfGames > 1) { currentGame = numberOfGames - 1; Init(); } });
+configBoardShrortcut("H3", "load last game", function(){ if (numberOfGames > 1) { Init(numberOfGames - 1); } });
 // A2
 configBoardShrortcut("A2", "stop autoplay", function(){ SetAutoPlay(false); });
 // B2
@@ -1950,7 +1934,13 @@ function GoToInitialHalfmove(){
   }
 }
 
-function Init(){
+function Init(nextGame){
+
+  if ((nextGame !== undefined) && (! isNaN(nextGame))) {
+    if ((nextGame >= 0) && (nextGame < numberOfGames)) {
+      currentGame = parseInt(nextGame);
+    }
+  }
 
   if (isAutoPlayOn) { SetAutoPlay(false); }
   InitImages();
@@ -2523,9 +2513,8 @@ function MoveForward(diff) {
 
 function AutoplayNextGame() {
   if (fatalErrorNumSinceReset === 0) {
-    currentGame++;
-    if (currentGame >= numberOfGames) { currentGame = 0; }
-    Init();
+    if (currentGame < numberOfGames) { Init(currentGame + 1); }
+    else { Init(0); }
     if ((numberOfGames > 0) || (PlyNumber > 0)) {
       SetAutoPlay(true);
       return;
@@ -3103,10 +3092,7 @@ function searchPgnGame(searchExpression, backward) {
   if ((searchExpression === "") || (! searchExpression)) { return; }
   if (numberOfGames < 2) { return; }
   checkGame = gameNumberSearchPgn(searchExpression, backward);
-  if ((checkGame !== false) && (checkGame != currentGame)) {
-    currentGame = checkGame;
-    Init();
-  }
+  if ((checkGame !== false) && (checkGame != currentGame)) { Init(checkGame); }
 }
 
 function searchPgnGamePrompt() {
@@ -3237,8 +3223,7 @@ function PrintHTML() {
           '<SELECT ID="GameSelSelect" NAME="GameSelSelect" STYLE="';
         if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + tableSize + 'px; '; }
         text += 'font-family: monospace;" CLASS="selectControl" TITLE="Select a game" ' +
-          'ONCHANGE="this.blur(); if(this.value >= 0) {currentGame=parseInt(this.value); ' +
-          'document.GameSel.GameSelSelect.value = -1; Init();}" ' +
+          'ONCHANGE="this.blur(); if(this.value >= 0) { Init(this.value); this.value = -1; }" ' +
           'ONFOCUS="disableShortcutKeysAndStoreStatus();" ONBLUR="restoreShortcutKeysStatus();" ' +
           '> ' +
           '<OPTION value=-1>';
