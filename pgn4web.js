@@ -875,8 +875,10 @@ function displayFenData() {
     text += "[White \"" + (gameWhite[currentGame] ? gameWhite[currentGame] : "?") + "\"]\n";
     text += "[Black \"" + (gameBlack[currentGame] ? gameBlack[currentGame] : "?") + "\"]\n";
     text += "[Result \"" + (gameResult[currentGame] ? gameResult[currentGame] : "*") + "\"]\n";
-    text += "[SetUp \"1\"]\n";
-    text += "[FEN \"" + CurrentFEN() + "\"]\n\n";
+    if (currentFEN != FenStringStart) { 
+      text += "[SetUp \"1\"]\n";
+      text += "[FEN \"" + CurrentFEN() + "\"]\n\n";
+    } else { text += "\n"; }
     text += currentMovesString;
     text += "\n</pre>\n</body></html>";
     fenWin.document.open("text/html", "replace");
