@@ -31,8 +31,8 @@ function displayHelp(section){
 
 function customFunctionOnPgnTextLoad() {}
 function customFunctionOnPgnGameLoad() {}
-function customFunctionOnMove()        {}
-function customFunctionOnAlert(msg)    {}
+function customFunctionOnMove() {}
+function customFunctionOnAlert(msg) {}
 
 
 window.onload = start_pgn4web;
@@ -167,20 +167,20 @@ function handlekey(e) {
 
   switch(keycode) {
 
-    case  8:  // backspace
-    case  9:  // tab
-    case 16:  // shift
-    case 17:  // ctrl
-    case 18:  // alt
-    case 32:  // space
-    case 33:  // page-up
-    case 34:  // page-down
-    case 35:  // end
-    case 36:  // home
-    case 45:  // insert
-    case 46:  // delete
-    case 92:  // super
-    case 93:  // menu
+    case  8: // backspace
+    case  9: // tab
+    case 16: // shift
+    case 17: // ctrl
+    case 18: // alt
+    case 32: // space
+    case 33: // page-up
+    case 34: // page-down
+    case 35: // end
+    case 36: // home
+    case 45: // insert
+    case 46: // delete
+    case 92: // super
+    case 93: // menu
       return true;
 
     case 27: // escape
@@ -193,131 +193,131 @@ function handlekey(e) {
       else { displayDebugInfo(); }
       return stopKeyProp(e);
 
-    case 37:  // left-arrow  
-    case 74:  // j
+    case 37: // left-arrow  
+    case 74: // j
       MoveBackward(1);
       return stopKeyProp(e);
 
-    case 38:  // up-arrow
-    case 72:  // h
+    case 38: // up-arrow
+    case 72: // h
       GoToMove(StartPly);
       return stopKeyProp(e);
 
-    case 39:  // right-arrow
-    case 75:  // k
+    case 39: // right-arrow
+    case 75: // k
       MoveForward(1);
       return stopKeyProp(e);
 
-    case 40:  // down-arrow
-    case 76:  // l
+    case 40: // down-arrow
+    case 76: // l
       GoToMove(StartPly + PlyNumber);
       return stopKeyProp(e);
 
-    case 85:  // u
+    case 85: // u
       MoveToPrevComment();
       return stopKeyProp(e);
 
-    case 73:  // i
+    case 73: // i
       MoveToNextComment();
       return stopKeyProp(e);
 
-    case 83:  // s
+    case 83: // s
       searchPgnGamePrompt();
       return stopKeyProp(e);
 
-    case 13:  // enter
+    case 13: // enter
       if (e.shiftKey) { searchPgnGame(lastSearchPgnExpression, true); }
       else { searchPgnGame(lastSearchPgnExpression); }
       return stopKeyProp(e);
 
-    case 65:  // a
+    case 65: // a
       MoveForward(1);
       SetAutoPlay(true);
       return stopKeyProp(e);
 
-    case 48:  // 0
+    case 48: // 0
       if (e.shiftKey) { customShortcutKey_Shift_0(); }
       else { SetAutoPlay(false); }
       return stopKeyProp(e);
 
-    case 49:  // 1
+    case 49: // 1
       if (e.shiftKey) { customShortcutKey_Shift_1(); }
       else { SetAutoplayDelayAndStart( 1*1000); }
       return stopKeyProp(e);
 
-    case 50:  // 2
+    case 50: // 2
       if (e.shiftKey) { customShortcutKey_Shift_2(); }
       else { SetAutoplayDelayAndStart( 2*1000); }
       return stopKeyProp(e);
 
-    case 51:  // 3
+    case 51: // 3
       if (e.shiftKey) { customShortcutKey_Shift_3(); }
       else { SetAutoplayDelayAndStart( 3*1000); }
       return stopKeyProp(e);
 
-    case 52:  // 4
+    case 52: // 4
       if (e.shiftKey) { customShortcutKey_Shift_4(); }
       else { SetAutoplayDelayAndStart( 4*1000); }
       return stopKeyProp(e);
 
-    case 53:  // 5
+    case 53: // 5
       if (e.shiftKey) { customShortcutKey_Shift_5(); }
       else { SetAutoplayDelayAndStart( 5*1000); }
       return stopKeyProp(e);
 
-    case 54:  // 6
+    case 54: // 6
       if (e.shiftKey) { customShortcutKey_Shift_6(); }
       else { SetAutoplayDelayAndStart( 6*1000); }
       return stopKeyProp(e);
 
-    case 55:  // 7
+    case 55: // 7
       if (e.shiftKey) { customShortcutKey_Shift_7(); }
       else { SetAutoplayDelayAndStart( 7*1000); }
       return stopKeyProp(e);
 
-    case 56:  // 8
+    case 56: // 8
       if (e.shiftKey) { customShortcutKey_Shift_8(); }
       else { SetAutoplayDelayAndStart( 8*1000); }
       return stopKeyProp(e);
 
-    case 57:  // 9
+    case 57: // 9
       if (e.shiftKey) { customShortcutKey_Shift_9(); }
       else { SetAutoplayDelayAndStart( 9*1000); }
       return stopKeyProp(e);
 
-    case 81:  // q
+    case 81: // q
       SetAutoplayDelayAndStart(10*1000);
       return stopKeyProp(e);
 
-    case 87:  // w
+    case 87: // w
       SetAutoplayDelayAndStart(20*1000);
       return stopKeyProp(e);
 
-    case 69:  // e
+    case 69: // e
       SetAutoplayDelayAndStart(30*1000);
       return stopKeyProp(e);
 
-    case 82:  // r
+    case 82: // r
       pauseLiveBroadcast();
       return stopKeyProp(e);
 
-    case 84:  // t
+    case 84: // t
       refreshPgnSource();
       return stopKeyProp(e);
 
-    case 89:  // y
+    case 89: // y
       resumeLiveBroadcast();
       return stopKeyProp(e);
 
-    case 70:  // f
+    case 70: // f
       FlipBoard();
       return stopKeyProp(e);
 
-    case 71:  // g
+    case 71: // g
       SetHighlight(!highlightOption);
       return stopKeyProp(e);
 
-    case 68:  // d
+    case 68: // d
       if (IsRotated) { FlipBoard(); }
       return stopKeyProp(e);
 
@@ -332,28 +332,28 @@ function handlekey(e) {
       if (numberOfGames > 1) { Init(Math.floor(Math.random()*numberOfGames)); }
       return stopKeyProp(e);
 
-    case 86:  // v
+    case 86: // v
       if (numberOfGames > 1) { Init(0); }
       return stopKeyProp(e);
 
-    case 66:  // b
+    case 66: // b
       Init(currentGame - 1);
       return stopKeyProp(e);
 
-    case 78:  // n
+    case 78: // n
       Init(currentGame + 1);
       return stopKeyProp(e);
 
-    case 77:  // m
+    case 77: // m
       if (numberOfGames > 1) { Init(numberOfGames - 1); }
       return stopKeyProp(e);
 
-    case 79:  // o
+    case 79: // o
       SetCommentsOnSeparateLines(!commentsOnSeparateLines);
       Init();
       return stopKeyProp(e);
 
-    case 80:  // p
+    case 80: // p
       SetCommentsIntoMoveText(!commentsIntoMoveText);
       Init();
       return stopKeyProp(e);
@@ -834,19 +834,19 @@ var gameDemoLength = new Array();
 
 var MaxMove = 500;
 
-var castleRook    = -1;
-var mvCapture     =  0;
-var mvIsCastling  =  0;
+var castleRook = -1;
+var mvCapture =  0;
+var mvIsCastling =  0;
 var mvIsPromotion =  0;
-var mvFromCol     = -1;
-var mvFromRow     = -1;
-var mvToCol       = -1;
-var mvToRow       = -1;
-var mvPiece       = -1;
-var mvPieceId     = -1;
-var mvPieceOnTo   = -1;
-var mvCaptured    = -1;
-var mvCapturedId  = -1;
+var mvFromCol = -1;
+var mvFromRow = -1;
+var mvToCol = -1;
+var mvToRow = -1;
+var mvPiece = -1;
+var mvPieceId = -1;
+var mvPieceOnTo = -1;
+var mvCaptured = -1;
+var mvCapturedId = -1;
 
 Board = new Array(8);
 for(i=0; i<8; ++i) { Board[i] = new Array(8); }
@@ -922,7 +922,7 @@ var CurrentPly;
 
 var IsRotated = false;
 
-ClearImg  = new Image();
+ClearImg = new Image();
 DocumentImages = new Array();
 
 var pgnHeaderTagRegExp       = /\[\s*(\w+)\s*"([^"]*)"\s*\]/; 
@@ -932,17 +932,17 @@ var emptyPgnHeader = '[Event ""]\n[Site ""]\n[Date ""]\n[Round ""]\n[White ""]\n
 var templatePgnHeader = '[Event "?"]\n[Site "?"]\n[Date "?"]\n[Round "?"]\n[White "?"]\n[Black "?"]\n[Result "?"]\n';
 var alertPgnHeader = '[Event ""]\n[Site ""]\n[Date ""]\n[Round ""]\n[White ""]\n[Black ""]\n[Result ""]\n\n{error: click on the top left chessboard square for debug info}';
 
-var gameSelectorHead      = ' ...';
-var gameSelectorMono      = true;
-var gameSelectorNum       = false;
+var gameSelectorHead = ' ...';
+var gameSelectorMono = true;
+var gameSelectorNum = false;
 var gameSelectorNumLenght = 0;
-var gameSelectorChEvent   = 0;
-var gameSelectorChSite    = 0;
-var gameSelectorChRound   = 0;
-var gameSelectorChWhite   = 15;
-var gameSelectorChBlack   = 15;
-var gameSelectorChResult  = 0;
-var gameSelectorChDate    = 10;
+var gameSelectorChEvent = 0;
+var gameSelectorChSite = 0;
+var gameSelectorChRound = 0;
+var gameSelectorChWhite = 15;
+var gameSelectorChBlack = 15;
+var gameSelectorChResult = 0;
+var gameSelectorChDate = 10;
 
 function CheckLegality(what, plyCount) {
   var retVal;
@@ -1882,19 +1882,19 @@ function InitFEN(startingFEN) {
 
   if (FenString == "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1") {
     for (color = 0; color < 2; ++color) {
-      PieceType[color][0] = 1;  // King
+      PieceType[color][0] = 1; // King
       PieceCol[color][0]  = 4;
-      PieceType[color][1] = 2;  // Queen
+      PieceType[color][1] = 2; // Queen
       PieceCol[color][1]  = 3;
-      PieceType[color][6] = 3;  // Rooks
+      PieceType[color][6] = 3; // Rooks
       PieceType[color][7] = 3;
       PieceCol[color][6]  = 0;
       PieceCol[color][7]  = 7;
-      PieceType[color][4] = 4;  // Bishops
+      PieceType[color][4] = 4; // Bishops
       PieceType[color][5] = 4;
       PieceCol[color][4]  = 2;
       PieceCol[color][5]  = 5;
-      PieceType[color][2] = 5;  // Knights
+      PieceType[color][2] = 5; // Knights
       PieceType[color][3] = 5;
       PieceCol[color][2]  = 1;
       PieceCol[color][3]  = 6;
@@ -2149,13 +2149,10 @@ function SetImageType(extension) {
 }
 
 function InitImages() {
-  // reset square images array
   DocumentImages.length = 0;
   
-  // proceed only if image path changed
   if (ImagePathOld == ImagePath) { return; }
 
-  // add trailing '/' if missing
   if ((ImagePath.length > 0) && (ImagePath[ImagePath.length-1] != '/')) {
     ImagePath += '/';
   }
@@ -2165,17 +2162,17 @@ function InitImages() {
   var color;
   ColorName = new Array ("w", "b");
   for (color = 0; color < 2; ++color) {
-    PiecePicture[color][1]     = new Image();
+    PiecePicture[color][1] = new Image();
     PiecePicture[color][1].src = ImagePath + ColorName[color] + 'k.'+imageType;
-    PiecePicture[color][2]     = new Image();
+    PiecePicture[color][2] = new Image();
     PiecePicture[color][2].src = ImagePath + ColorName[color] + 'q.'+imageType;
-    PiecePicture[color][3]     = new Image();
+    PiecePicture[color][3] = new Image();
     PiecePicture[color][3].src = ImagePath + ColorName[color] + 'r.'+imageType;
-    PiecePicture[color][4]     = new Image();
+    PiecePicture[color][4] = new Image();
     PiecePicture[color][4].src = ImagePath + ColorName[color] + 'b.'+imageType;
-    PiecePicture[color][5]     = new Image();
+    PiecePicture[color][5] = new Image();
     PiecePicture[color][5].src = ImagePath + ColorName[color] + 'n.'+imageType;
-    PiecePicture[color][6]     = new Image();
+    PiecePicture[color][6] = new Image();
     PiecePicture[color][6].src = ImagePath + ColorName[color] + 'p.'+imageType;
   }
   ImagePathOld = ImagePath;
@@ -2223,7 +2220,7 @@ function IsCheck(col, row, color) {
 	    checkCol += ii;
 	    checkRow += jj;
 	  } else {
-	    if (thisPiece  == sign*2)                                { return true; }
+	    if (thisPiece  == sign*2) { return true; }
 	    if ((thisPiece == sign*3) && ((ii === 0) || (jj === 0))) { return true; }
 	    if ((thisPiece == sign*4) && ((ii !== 0) && (jj !== 0))) { return true; }
 	  }
@@ -2256,19 +2253,19 @@ function LoadGameHeaders(){
     gameWhite[ii] = gameBlack[ii] = gameResult[ii] = "";
     gameInitialWhiteClock[ii] = gameInitialBlackClock[ii] = "";
     gameVariant[ii] = "";
-    while ((parse = pgnHeaderTagRegExpGlobal.exec(ss)) !== null){
-      if       (parse[1] == 'Event')      { gameEvent[ii]  = parse[2]; }
-      else if  (parse[1] == 'Site')       { gameSite[ii]   = parse[2]; }
-      else if  (parse[1] == 'Round')      { gameRound[ii]  = parse[2]; }
-      else if  (parse[1] == 'Date')       { gameDate[ii]   = parse[2]; }
-      else if  (parse[1] == 'White')      { gameWhite[ii]  = parse[2]; }
-      else if  (parse[1] == 'Black')      { gameBlack[ii]  = parse[2]; }
-      else if  (parse[1] == 'Result')     { gameResult[ii] = parse[2]; }
-      else if  (parse[1] == 'SetUp')      { gameSetUp[ii]  = parse[2]; }
-      else if  (parse[1] == 'FEN')        { gameFEN[ii]    = parse[2]; }
-      else if  (parse[1] == 'WhiteClock') { gameInitialWhiteClock[ii] = parse[2]; }
-      else if  (parse[1] == 'BlackClock') { gameInitialBlackClock[ii] = parse[2]; }
-      else if  (parse[1] == 'Variant')    { gameVariant[ii] = parse[2]; }
+    while ((parse = pgnHeaderTagRegExpGlobal.exec(ss)) !== null) {
+      if      (parse[1] == 'Event')      { gameEvent[ii]  = parse[2]; }
+      else if (parse[1] == 'Site')       { gameSite[ii]   = parse[2]; }
+      else if (parse[1] == 'Round')      { gameRound[ii]  = parse[2]; }
+      else if (parse[1] == 'Date')       { gameDate[ii]   = parse[2]; }
+      else if (parse[1] == 'White')      { gameWhite[ii]  = parse[2]; }
+      else if (parse[1] == 'Black')      { gameBlack[ii]  = parse[2]; }
+      else if (parse[1] == 'Result')     { gameResult[ii] = parse[2]; }
+      else if (parse[1] == 'SetUp')      { gameSetUp[ii]  = parse[2]; }
+      else if (parse[1] == 'FEN')        { gameFEN[ii]    = parse[2]; }
+      else if (parse[1] == 'WhiteClock') { gameInitialWhiteClock[ii] = parse[2]; }
+      else if (parse[1] == 'BlackClock') { gameInitialBlackClock[ii] = parse[2]; }
+      else if (parse[1] == 'Variant')    { gameVariant[ii] = parse[2]; }
     }
   }
   if ((LiveBroadcastDemo) && (numberOfGames > 0)) {
@@ -2282,7 +2279,6 @@ function LoadGameHeaders(){
        if (gameDemoMaxPly[ii] <= gameDemoLength[ii]) { gameResult[ii] = '*'; }
     }
   }
-
   return;
 }
 
@@ -2325,8 +2321,7 @@ function MoveBackward(diff) {
     chgPiece -= 16;
     if ((chgPiece >= 0) && (chgPiece < 16)) {
       Board[PieceCol[1-MoveColor][chgPiece]][PieceRow[1-MoveColor][chgPiece]] = 0;
-      Board[HistCol[1][thisPly]][HistRow[1][thisPly]] = HistType[1][thisPly]*
-        (2*MoveColor-1);
+      Board[HistCol[1][thisPly]][HistRow[1][thisPly]] = HistType[1][thisPly] * (2*MoveColor-1);
       PieceType[1-MoveColor][chgPiece] = HistType[1][thisPly];
       PieceCol[1-MoveColor][chgPiece] = HistCol[1][thisPly];
       PieceRow[1-MoveColor][chgPiece] = HistRow[1][thisPly];
@@ -2767,27 +2762,27 @@ function ParseMove(move, plyCount) {
   var remainder;
   var toRowMarker = -1;
 
-  castleRook    = -1;
-  mvIsCastling  =  0;
+  castleRook = -1;
+  mvIsCastling =  0;
   mvIsPromotion =  0;
-  mvCapture     =  0;
-  mvFromCol     = -1;
-  mvFromRow     = -1;
-  mvToCol       = -1;
-  mvToRow       = -1;
-  mvPiece       = -1;
-  mvPieceId     = -1;
-  mvPieceOnTo   = -1;
-  mvCaptured    = -1;
-  mvCapturedId  = -1;
+  mvCapture =  0;
+  mvFromCol = -1;
+  mvFromRow = -1;
+  mvToCol = -1;
+  mvToRow = -1;
+  mvPiece = -1;
+  mvPieceId = -1;
+  mvPieceOnTo = -1;
+  mvCaptured = -1;
+  mvCapturedId = -1;
 
   // get destination column/row remembering what's left e.g. Rdxc3 exf8=Q+
   ii = 1;
   while(ii < move.length) {
     if (!isNaN(move.charAt(ii))) {
-      mvToCol     = move.charCodeAt(ii-1) - 97;
-      mvToRow     = move.charAt(ii)       -  1;
-      remainder   = move.substring(0, ii-1);
+      mvToCol = move.charCodeAt(ii-1) - 97;
+      mvToRow = move.charAt(ii)       -  1;
+      remainder = move.substring(0, ii-1);
       toRowMarker = ii;
     }
     ++ii;
@@ -2799,24 +2794,24 @@ function ParseMove(move, plyCount) {
       // long castling first: looking for o-o will get o-o-o too
       if (move.match('^[Oo0]-?[Oo0]-?[Oo0]$') !== null) {
 	mvIsCastling = 1;
-        mvPiece      = 1;
-        mvPieceId    = 0;
-        mvPieceOnTo  = 1;
-        mvFromCol    = 4;
-        mvToCol      = 2;
-        mvFromRow    = 7*MoveColor;
-        mvToRow      = 7*MoveColor;
+        mvPiece = 1;
+        mvPieceId = 0;
+        mvPieceOnTo = 1;
+        mvFromCol = 4;
+        mvToCol = 2;
+        mvFromRow = 7*MoveColor;
+        mvToRow = 7*MoveColor;
         return CheckLegality('O-O-O', plyCount);
       }
       if (move.match('^[Oo0]-?[Oo0]$') !== null) {
         mvIsCastling = 1;
-        mvPiece      = 1;
-        mvPieceId    = 0;
-        mvPieceOnTo  = 1;
-	mvFromCol    = 4;
-	mvToCol      = 6;
-        mvFromRow    = 7*MoveColor;
-        mvToRow      = 7*MoveColor;
+        mvPiece = 1;
+        mvPieceId = 0;
+        mvPieceOnTo = 1;
+	mvFromCol = 4;
+	mvToCol = 6;
+        mvFromRow = 7*MoveColor;
+        mvToRow = 7*MoveColor;
 	return CheckLegality('O-O', plyCount);
       }
       return false;
@@ -2996,8 +2991,7 @@ function PrintHTML() {
 
   text = '<TABLE CLASS="boardTable" ID="boardTable" CELLSPACING=0 CELLPADDING=0';
   text += ((tableSize !== null) && (tableSize !== 0)) ?
-          ' STYLE="width: ' + tableSize + 'px; height: ' + tableSize + 'px;">' :
-          '>';
+          ' STYLE="width: ' + tableSize + 'px; height: ' + tableSize + 'px;">' : '>';
   for (ii = 0; ii < 8; ++ii) {
     text += '<TR>';
     for (jj = 0; jj < 8; ++jj) {
@@ -3118,51 +3112,36 @@ function PrintHTML() {
           textSO = '';
           if (gameSelectorNum) {
             numText = ' ' + (ii+1);
-            howManyBlanks = gameSelectorNumLenght - (numText.length - 1);
-            if (howManyBlanks > 0) { textSO += blanks.substring(0, howManyBlanks); }
-            textSO += numText + ' ';
+            textSO += blanks.substr(0, gameSelectorNumLenght - (numText.length - 1)) +
+              numText + ' ';
           }
           if (gameSelectorChEvent > 0) {
-            textSO += ' ' + gameEvent[ii].substring(0, gameSelectorChEvent);
-            howManyBlanks = gameSelectorChEvent - gameEvent[ii].length;
-            if (howManyBlanks > 0) { textSO += blanks.substring(0, howManyBlanks); }
-            textSO += ' ';
+            textSO += ' ' + gameEvent[ii].substring(0, gameSelectorChEvent) + 
+              blanks.substr(0, gameSelectorChEvent - gameEvent[ii].length) + ' ';
           }
           if (gameSelectorChSite > 0) {
-            textSO += ' ' + gameSite[ii].substring(0, gameSelectorChSite);
-            howManyBlanks = gameSelectorChSite - gameSite[ii].length;
-            if (howManyBlanks > 0) { textSO += blanks.substring(0, howManyBlanks); }
-            textSO += ' ';
+            textSO += ' ' + gameSite[ii].substring(0, gameSelectorChSite) +
+              blanks.substr(0, gameSelectorChSite - gameSite[ii].length) + ' ';
           }
           if (gameSelectorChRound > 0) {
-            textSO += ' ' + gameRound[ii].substring(0, gameSelectorChRound);
-            howManyBlanks = gameSelectorChRound - gameRound[ii].length;
-            if (howManyBlanks > 0) { textSO += blanks.substring(0, howManyBlanks); }
-            textSO += ' ';
+            textSO += ' ' + blanks.substr(0, gameSelectorChRound - gameRound[ii].length) +
+              gameRound[ii].substring(0, gameSelectorChRound) + ' ';
           }
           if (gameSelectorChWhite > 0) {
-            textSO += ' ' + gameWhite[ii].substring(0, gameSelectorChWhite);
-            howManyBlanks = gameSelectorChWhite - gameWhite[ii].length;
-            if (howManyBlanks > 0) { textSO += blanks.substring(0, howManyBlanks); }
-            textSO += ' ';
+            textSO += ' ' + gameWhite[ii].substring(0, gameSelectorChWhite) +
+              blanks.substr(0, gameSelectorChWhite - gameWhite[ii].length) + ' ';
           }
           if (gameSelectorChBlack > 0) {
-            textSO += ' ' + gameBlack[ii].substring(0, gameSelectorChBlack);
-            howManyBlanks = gameSelectorChBlack - gameBlack[ii].length;
-            if (howManyBlanks > 0) { textSO += blanks.substring(0, howManyBlanks); }
-            textSO += ' ';
+            textSO += ' ' + gameBlack[ii].substring(0, gameSelectorChBlack) +
+              blanks.substr(0, gameSelectorChBlack - gameBlack[ii].length) + ' ';
           }
           if (gameSelectorChResult > 0) {
-            textSO += ' ' + gameResult[ii].substring(0, gameSelectorChResult);
-            howManyBlanks = gameSelectorChResult - gameResult[ii].length;
-            if (howManyBlanks > 0) { textSO += blanks.substring(0, howManyBlanks); }
-            textSO += ' ';
+            textSO += ' ' + gameResult[ii].substring(0, gameSelectorChResult) +
+              blanks.substr(0, gameSelectorChResult - gameResult[ii].length) + ' ';
           }
           if (gameSelectorChDate > 0) {
-            textSO += ' ' + gameDate[ii].substring(0, gameSelectorChDate);
-            howManyBlanks = gameSelectorChDate - gameDate[ii].length;
-            if (howManyBlanks > 0) { textSO += blanks.substring(0, howManyBlanks); }
-            textSO += ' ';
+            textSO += ' ' + gameDate[ii].substring(0, gameSelectorChDate) +
+              blanks.substr(0, gameSelectorChDate - gameDate[ii].length) + ' ';
           }
           // replace spaces with &nbsp; 
           textSelectOptions += textSO.replace(/ /g, '&nbsp;');
