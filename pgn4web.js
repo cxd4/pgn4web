@@ -97,7 +97,6 @@ function stopAlertPrompt() {
     clearTimeout(alertPromptInterval); 
     alertPromptInterval = null;
   }
-  // restore chessboard to correct colors
   if (alertPromptOn) { alertPromptTick(false); }
 }
 
@@ -877,9 +876,10 @@ function displayFenData() {
     text += "[Result \"" + (gameResult[currentGame] ? gameResult[currentGame] : "*") + "\"]\n";
     if (currentFEN != FenStringStart) { 
       text += "[SetUp \"1\"]\n";
-      text += "[FEN \"" + CurrentFEN() + "\"]\n\n";
-    } else { text += "\n"; }
-    text += currentMovesString;
+      text += "[FEN \"" + CurrentFEN() + "\"]\n";
+    }
+    if (gameVariant[currentGame] !== "") { text += "[Variant \"" + gameVariant[currentGame] + "\"]\n"; }
+    text += "\n" + currentMovesString;
     text += "\n</pre>\n</body></html>";
     fenWin.document.open("text/html", "replace");
     fenWin.document.write(text);
@@ -906,6 +906,7 @@ var gameSetUp = new Array();
 var gameFEN = new Array();
 var gameInitialWhiteClock = new Array();
 var gameInitialBlackClock = new Array();
+var gameVariant = new Array();
 
 var oldAnchor = -1;
 
@@ -2378,6 +2379,7 @@ function LoadGameHeaders(){
   gameWhite.length = gameBlack.length = gameResult.length = 0;
   gameSetUp.length = gameFEN.length = 0;
   gameInitialWhiteClock.length = gameInitialBlackClock.length = 0;
+  gameVariant.length = 0;
 
   pgnHeaderTagRegExpGlobal.exec(""); // coping with IE bug when reloading PGN e.g. inputform.html
   for (ii = 0; ii < numberOfGames; ++ii) {
@@ -2386,6 +2388,7 @@ function LoadGameHeaders(){
     gameEvent[ii] = gameSite[ii] = gameRound[ii] = gameDate[ii] = "";
     gameWhite[ii] = gameBlack[ii] = gameResult[ii] = "";
     gameInitialWhiteClock[ii] = gameInitialBlackClock[ii] = "";
+    gameVariant[ii] = "";
     while ((parse = pgnHeaderTagRegExpGlobal.exec(ss)) !== null){
       if       (parse[1] == 'Event')      { gameEvent[ii]  = parse[2]; }
       else if  (parse[1] == 'Site')       { gameSite[ii]   = parse[2]; }
@@ -2398,6 +2401,7 @@ function LoadGameHeaders(){
       else if  (parse[1] == 'FEN')        { gameFEN[ii]    = parse[2]; }
       else if  (parse[1] == 'WhiteClock') { gameInitialWhiteClock[ii] = parse[2]; }
       else if  (parse[1] == 'BlackClock') { gameInitialBlackClock[ii] = parse[2]; }
+      else if  (parse[1] == 'Variant')    { gameVariant[ii] = parse[2]; }
     }
   }
   if ((LiveBroadcastDemo) && (numberOfGames > 0)) {
