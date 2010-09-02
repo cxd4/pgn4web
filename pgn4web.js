@@ -27,7 +27,7 @@ function displayHelp(section){
 
 
 // custom functions executed at the given moments
-// here intentionally empty, to be redefined in the HTML AFTER loading pgn4web.js
+// to be redefined in the HTML AFTER loading pgn4web.js
 
 function customFunctionOnPgnTextLoad() {}
 function customFunctionOnPgnGameLoad() {}
@@ -121,7 +121,7 @@ function alertPromptTick(restart) {
 }
 
 
-function stopKeyPropagation(e) {
+function stopKeyProp(e) {
   e.cancelBubble = true;
   if (e.stopPropagation) { e.stopPropagation(); }
   if (e.preventDefault) { e.preventDefault(); }
@@ -165,8 +165,8 @@ function handlekey(e) {
   // escape always enabled: show help and toggle enabling shortcut keys
   if ((keycode != 27) && (shortcutKeysEnabled === false)) { return true; }
 
-  switch(keycode)
-  {
+  switch(keycode) {
+
     case  8:  // backspace
     case  9:  // tab
     case 16:  // shift
@@ -182,224 +182,184 @@ function handlekey(e) {
     case 92:  // super
     case 93:  // menu
       return true;
-      break;
 
     case 27: // escape
       if (e.shiftKey) { interactivelyToggleShortcutKeys(); }
       else { displayHelp(); }
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 90: // z
       if (e.shiftKey) { window.open(pgn4web_project_url); }
       else { displayDebugInfo(); }
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 37:  // left-arrow  
     case 74:  // j
       MoveBackward(1);
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 38:  // up-arrow
     case 72:  // h
       GoToMove(StartPly);
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 39:  // right-arrow
     case 75:  // k
       MoveForward(1);
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 40:  // down-arrow
     case 76:  // l
       GoToMove(StartPly + PlyNumber);
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 85:  // u
       MoveToPrevComment();
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 73:  // i
       MoveToNextComment();
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 83:  // s
       searchPgnGamePrompt();
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 13:  // enter
       if (e.shiftKey) { searchPgnGame(lastSearchPgnExpression, true); }
       else { searchPgnGame(lastSearchPgnExpression); }
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 65:  // a
       MoveForward(1);
       SetAutoPlay(true);
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 48:  // 0
       if (e.shiftKey) { customShortcutKey_Shift_0(); }
       else { SetAutoPlay(false); }
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 49:  // 1
       if (e.shiftKey) { customShortcutKey_Shift_1(); }
       else { SetAutoplayDelayAndStart( 1*1000); }
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 50:  // 2
       if (e.shiftKey) { customShortcutKey_Shift_2(); }
       else { SetAutoplayDelayAndStart( 2*1000); }
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 51:  // 3
       if (e.shiftKey) { customShortcutKey_Shift_3(); }
       else { SetAutoplayDelayAndStart( 3*1000); }
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 52:  // 4
       if (e.shiftKey) { customShortcutKey_Shift_4(); }
       else { SetAutoplayDelayAndStart( 4*1000); }
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 53:  // 5
       if (e.shiftKey) { customShortcutKey_Shift_5(); }
       else { SetAutoplayDelayAndStart( 5*1000); }
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 54:  // 6
       if (e.shiftKey) { customShortcutKey_Shift_6(); }
       else { SetAutoplayDelayAndStart( 6*1000); }
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 55:  // 7
       if (e.shiftKey) { customShortcutKey_Shift_7(); }
       else { SetAutoplayDelayAndStart( 7*1000); }
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 56:  // 8
       if (e.shiftKey) { customShortcutKey_Shift_8(); }
       else { SetAutoplayDelayAndStart( 8*1000); }
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 57:  // 9
       if (e.shiftKey) { customShortcutKey_Shift_9(); }
       else { SetAutoplayDelayAndStart( 9*1000); }
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 81:  // q
       SetAutoplayDelayAndStart(10*1000);
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 87:  // w
       SetAutoplayDelayAndStart(20*1000);
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 69:  // e
       SetAutoplayDelayAndStart(30*1000);
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 82:  // r
       pauseLiveBroadcast();
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 84:  // t
       refreshPgnSource();
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 89:  // y
       resumeLiveBroadcast();
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 70:  // f
       FlipBoard();
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 71:  // g
       SetHighlight(!highlightOption);
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 68:  // d
       if (IsRotated) { FlipBoard(); }
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 88: // x
       if (numberOfGames > 1) {
         Init(Math.floor(Math.random()*numberOfGames));
         GoToMove(StartPly + Math.floor(Math.random()*(StartPly + PlyNumber + 1)));
       }
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 67: // c
       if (numberOfGames > 1) { Init(Math.floor(Math.random()*numberOfGames)); }
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 86:  // v
       if (numberOfGames > 1) { Init(0); }
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 66:  // b
-      if (currentGame > 0) { Init(currentGame - 1); }
-      return stopKeyPropagation(e);
-      break;
+      Init(currentGame - 1);
+      return stopKeyProp(e);
 
     case 78:  // n
-      if (numberOfGames > currentGame + 1) { Init(currentGame + 1); }
-      return stopKeyPropagation(e);
-      break;
+      Init(currentGame + 1);
+      return stopKeyProp(e);
 
     case 77:  // m
       if (numberOfGames > 1) { Init(numberOfGames - 1); }
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 79:  // o
       SetCommentsOnSeparateLines(!commentsOnSeparateLines);
       Init();
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     case 80:  // p
       SetCommentsIntoMoveText(!commentsIntoMoveText);
       Init();
-      return stopKeyPropagation(e);
-      break;
+      return stopKeyProp(e);
 
     default:
       return true;
-      break;
   }
   return true;
 }
@@ -524,13 +484,13 @@ configBoardShrortcut("A3", "load first game", function(){ if (numberOfGames > 1)
 // B3
 configBoardShrortcut("B3", "junp to previous games decile", function(){ if (currentGame > 0) { calculateDeciles(); for(ii=(deciles.length-2); ii>=0; ii--) { if (currentGame > deciles[ii]) { Init(deciles[ii]); break; } } } });
 // C3
-configBoardShrortcut("C3", "load previous game", function(){ if (currentGame > 0){ Init(currentGame - 1); } });
+configBoardShrortcut("C3", "load previous game", function(){ Init(currentGame - 1); });
 // D3
 configBoardShrortcut("D3", "load random game", function(){ if (numberOfGames > 1) { Init(Math.floor(Math.random()*numberOfGames)); } });
 // E3
 configBoardShrortcut("E3", "load random game at random position", function(){ Init(Math.floor(Math.random()*numberOfGames)); GoToMove(StartPly + Math.floor(Math.random()*(StartPly + PlyNumber + 1))); });
 // F3
-configBoardShrortcut("F3", "load next game", function(){ if (numberOfGames > currentGame + 1){ Init(currentGame + 1); } });
+configBoardShrortcut("F3", "load next game", function(){ Init(currentGame + 1); });
 // G3
 configBoardShrortcut("G3", "jump to next games decile", function(){ if (currentGame < numberOfGames - 1) { calculateDeciles(); for(ii=1; ii<deciles.length; ii++) { if (currentGame < deciles[ii]) { Init(deciles[ii]); break; } } } });
 // H3
@@ -794,7 +754,8 @@ function displayFenData() {
     }
   }
 
-  fenWin = window.open("", "fen_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
+  fenWin = window.open("", "fen_data", 
+    "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if (fenWin !== null) {
     text = "<html>";
     text += "<head><title>pgn4web FEN string</title><link rel='shortcut icon' href='pawn.ico' /></head>";
@@ -1002,7 +963,7 @@ function CheckLegality(what, plyCount) {
     if (!CheckLegalityOO()) { return false; }
     start = PieceCol[MoveColor][0];
     end   = 6;
-    while(start < end) {
+    while (start < end) {
       isCheck = IsCheck(start, MoveColor*7, MoveColor);
       if (isCheck) { return false; }
       ++start;
@@ -1013,7 +974,7 @@ function CheckLegality(what, plyCount) {
     if (!CheckLegalityOOO()) { return false; }
     start = PieceCol[MoveColor][0];
     end   = 2;
-    while(start > end) {
+    while (start > end) {
       isCheck = IsCheck(start, MoveColor*7, MoveColor);
       if (isCheck) { return false; }
       --start;
@@ -1064,74 +1025,59 @@ function CheckLegality(what, plyCount) {
 function CheckLegalityKing(thisKing) {
   if ((mvFromCol >= 0) && (mvFromCol != PieceCol[MoveColor][thisKing])) { return false; }
   if ((mvFromRow >= 0) && (mvFromRow != PieceRow[MoveColor][thisKing])) { return false; }
-
   if (Math.abs(PieceCol[MoveColor][thisKing]-mvToCol) > 1) { return false; }
   if (Math.abs(PieceRow[MoveColor][thisKing]-mvToRow) > 1) { return false; }
-
   return true;
 }
 
 function CheckLegalityQueen(thisQueen) {
   if ((mvFromCol >= 0) && (mvFromCol != PieceCol[MoveColor][thisQueen])) { return false; }
   if ((mvFromRow >= 0) && (mvFromRow != PieceRow[MoveColor][thisQueen])) { return false; }
-
   if (((PieceCol[MoveColor][thisQueen]-mvToCol) *
     (PieceRow[MoveColor][thisQueen]-mvToRow) !== 0) &&
     (Math.abs(PieceCol[MoveColor][thisQueen]-mvToCol) !=
     Math.abs(PieceRow[MoveColor][thisQueen]-mvToRow)))
   { return false; }
-
   var clearWay = CheckClearWay(thisQueen);
   if (!clearWay) { return false; }
-
   return true;
 }
 
 function CheckLegalityRook(thisRook) {
   if ((mvFromCol >= 0) && (mvFromCol != PieceCol[MoveColor][thisRook])) { return false; }
   if ((mvFromRow >= 0) && (mvFromRow != PieceRow[MoveColor][thisRook])) { return false; }
-
   if ((PieceCol[MoveColor][thisRook]-mvToCol) *
     (PieceRow[MoveColor][thisRook]-mvToRow) !== 0)
   { return false; }
-
   var clearWay = CheckClearWay(thisRook);
   if (!clearWay) { return false; }
-
   return true;
 }
 
 function CheckLegalityBishop(thisBishop) {
   if ((mvFromCol >= 0) && (mvFromCol != PieceCol[MoveColor][thisBishop])) { return false; }
   if ((mvFromRow >= 0) && (mvFromRow != PieceRow[MoveColor][thisBishop])) { return false; }
-
   if (Math.abs(PieceCol[MoveColor][thisBishop]-mvToCol) !=
     Math.abs(PieceRow[MoveColor][thisBishop]-mvToRow))
   { return false; }
-
   var clearWay = CheckClearWay(thisBishop);
   if (!clearWay) { return false; }
-
   return true;
 }
 
 function CheckLegalityKnight(thisKnight) {
   if ((mvFromCol >= 0) && (mvFromCol != PieceCol[MoveColor][thisKnight])) { return false; }
   if ((mvFromRow >= 0) && (mvFromRow != PieceRow[MoveColor][thisKnight])) { return false; }
-
   if (Math.abs(PieceCol[MoveColor][thisKnight]-mvToCol) *
     Math.abs(PieceRow[MoveColor][thisKnight]-mvToRow) != 2)
   { return false; }
-
   return true;
 }
 
 function CheckLegalityPawn(thisPawn) {
   if ((mvFromCol >= 0) && (mvFromCol != PieceCol[MoveColor][thisPawn])) { return false; }
   if ((mvFromRow >= 0) && (mvFromRow != PieceRow[MoveColor][thisPawn])) { return false; }
-
   if (Math.abs(PieceCol[MoveColor][thisPawn]-mvToCol) != mvCapture) { return false; }
-
   if (mvCapture) {
     if (PieceRow[MoveColor][thisPawn]-mvToRow != 2*MoveColor-1) { return false; }
   } else {
@@ -1216,10 +1162,8 @@ function CheckLegalityOOO() {
 function CheckClearWay(thisPiece) {
   var stepCol = sign(mvToCol-PieceCol[MoveColor][thisPiece]);
   var stepRow = sign(mvToRow-PieceRow[MoveColor][thisPiece]);
-
   var startCol = PieceCol[MoveColor][thisPiece]+stepCol;
   var startRow = PieceRow[MoveColor][thisPiece]+stepRow;
-
   while ((startCol != mvToCol) || (startRow != mvToRow)) {
     if (Board[startCol][startRow] !== 0) { return false; }
     startCol += stepCol;
@@ -1419,15 +1363,12 @@ var lastRowFromHighlighted = -1;
 var lastColToHighlighted = -1;
 var lastRowToHighlighted = -1;
 function highlightMove(colFrom, rowFrom, colTo, rowTo) {
-
   highlightSquare(lastColFromHighlighted, lastRowFromHighlighted, false);
   highlightSquare(lastColToHighlighted, lastRowToHighlighted, false);
-
   if ( highlightSquare(colFrom, rowFrom, true) ) {
     lastColFromHighlighted = colFrom;
     lastRowFromHighlighted = rowFrom;
   } else { lastColFromHighlighted = lastRowFromHighlighted = -1; }
-
   if ( highlightSquare(colTo, rowTo, true) ) {
     lastColToHighlighted = colTo;
     lastRowToHighlighted = rowTo;
@@ -1437,17 +1378,13 @@ function highlightMove(colFrom, rowFrom, colTo, rowTo) {
 function highlightSquare(col, row, on) {
   if ((col == undefined) || (row == undefined)) { return false; }
   if (! SquareOnBoard(col, row)) { return false; }
-
   // locates coordinates on HTML table
   if (IsRotated) { trow = row; tcol = 7 - col; }
   else { trow = 7 - row; tcol = col; }
-
   theObject = document.getElementById('tcol' + tcol + 'trow' + trow);
   if (theObject === null) { return false; }
-
   if (on) { theObject.className = (trow+tcol)%2 === 0 ? "highlightWhiteSquare" : "highlightBlackSquare"; }
   else { theObject.className = (trow+tcol)%2 === 0 ? "whiteSquare" : "blackSquare"; }
-  
   return true;
 }
 
@@ -1526,12 +1463,12 @@ function loadPgnFromPgnUrl(pgnUrl){
     }
     http_request.send(null);
   } catch(e) {
-      myAlert('error: request failed for PGN URL\n' + pgnUrl, true);
-      return LOAD_PGN_FROM_PGN_URL_FAIL;
+    myAlert('error: request failed for PGN URL\n' + pgnUrl, true);
+    return LOAD_PGN_FROM_PGN_URL_FAIL;
   }
 
   if ( (http_request.readyState == 4) && 
-       ((http_request.status == 200) || (http_request.status === 0) || (http_request.status == 304)) ) {
+    ((http_request.status == 200) || (http_request.status === 0) || (http_request.status == 304)) ) {
 
     if (http_request.status == 304) {
       if (LiveBroadcastDelay > 0) { return LOAD_PGN_FROM_PGN_URL_UNMODIFIED; }
@@ -1748,7 +1685,6 @@ function refreshPgnSource() {
   }
 
   restartLiveBroadcastTimeout();
-
 }
 
 
@@ -1769,14 +1705,13 @@ function createBoard(){
         if (LiveBroadcastDelay > 0) { checkLiveBroadcastStatus(); }
         customFunctionOnPgnTextLoad();
         return;
-        break;
+
       case LOAD_PGN_FROM_PGN_URL_FAIL:
         if (LiveBroadcastDelay === 0) {
           pgnGameFromPgnText(alertPgnHeader);
           Init();
           customFunctionOnPgnTextLoad();
           myAlert('error: failed loading games from PGN URL\n' + pgnUrl, true);
-          return;
         } else { // live broadcast: wait for live show start
           LiveBroadcastStarted = false;
           LiveBroadcastLastModified_Reset(); 
@@ -1784,16 +1719,16 @@ function createBoard(){
           Init();
 	  checkLiveBroadcastStatus();
           customFunctionOnPgnTextLoad();
-          return;
         }
-        break;
+        return;
+
       case LOAD_PGN_FROM_PGN_URL_UNMODIFIED:
         if (LiveBroadcastDelay > 0) { checkLiveBroadcastStatus(); }
         return;
-        break;
+     
       default:
         return;
-        break;
+ 
     }
   } else if ( document.getElementById("pgnText") ) {
     if (document.getElementById("pgnText").tagName.toLowerCase() == "textarea") {
@@ -1856,7 +1791,7 @@ function setCurrentGameFromInitialGame() {
   }
 }
 
-function GoToInitialHalfmove(){
+function GoToInitialHalfmove() {
   switch (initialHalfmove) {
     case "start":
       GoToMove(0);
@@ -1886,10 +1821,10 @@ function GoToInitialHalfmove(){
 
 function Init(nextGame){
 
-  if ((nextGame !== undefined) && (! isNaN(nextGame))) {
-    if ((nextGame >= 0) && (nextGame < numberOfGames)) {
+  if (nextGame !== undefined) {
+    if ((! isNaN(nextGame)) && (nextGame >= 0) && (nextGame < numberOfGames)) {
       currentGame = parseInt(nextGame);
-    }
+    } else { return; }
   }
 
   if (isAutoPlayOn) { SetAutoPlay(false); }
@@ -2386,24 +2321,24 @@ function MoveBackward(diff) {
     // castling: rook back to original square
     chgPiece = HistPieceId[1][thisPly];
     if ((chgPiece >= 0) && (chgPiece < 16)) {
-       Board[PieceCol[MoveColor][chgPiece]][PieceRow[MoveColor][chgPiece]] = 0;
-       Board[HistCol[1][thisPly]][HistRow[1][thisPly]] = HistType[1][thisPly] * (1-2*MoveColor);
-       PieceType[MoveColor][chgPiece] = HistType[1][thisPly];
-       PieceCol[MoveColor][chgPiece] = HistCol[1][thisPly];
-       PieceRow[MoveColor][chgPiece] = HistRow[1][thisPly];
-       PieceMoveCounter[MoveColor][chgPiece]--;
+      Board[PieceCol[MoveColor][chgPiece]][PieceRow[MoveColor][chgPiece]] = 0;
+      Board[HistCol[1][thisPly]][HistRow[1][thisPly]] = HistType[1][thisPly] * (1-2*MoveColor);
+      PieceType[MoveColor][chgPiece] = HistType[1][thisPly];
+      PieceCol[MoveColor][chgPiece] = HistCol[1][thisPly];
+      PieceRow[MoveColor][chgPiece] = HistRow[1][thisPly];
+      PieceMoveCounter[MoveColor][chgPiece]--;
     } 
 
     // capture: captured piece back to original square
     chgPiece -= 16;
     if ((chgPiece >= 0) && (chgPiece < 16)) {
-       Board[PieceCol[1-MoveColor][chgPiece]][PieceRow[1-MoveColor][chgPiece]] = 0;
-       Board[HistCol[1][thisPly]][HistRow[1][thisPly]] = HistType[1][thisPly]*
-	(2*MoveColor-1);
-       PieceType[1-MoveColor][chgPiece] = HistType[1][thisPly];
-       PieceCol[1-MoveColor][chgPiece] = HistCol[1][thisPly];
-       PieceRow[1-MoveColor][chgPiece] = HistRow[1][thisPly];
-       PieceMoveCounter[1-MoveColor][chgPiece]--;
+      Board[PieceCol[1-MoveColor][chgPiece]][PieceRow[1-MoveColor][chgPiece]] = 0;
+      Board[HistCol[1][thisPly]][HistRow[1][thisPly]] = HistType[1][thisPly]*
+        (2*MoveColor-1);
+      PieceType[1-MoveColor][chgPiece] = HistType[1][thisPly];
+      PieceCol[1-MoveColor][chgPiece] = HistCol[1][thisPly];
+      PieceRow[1-MoveColor][chgPiece] = HistRow[1][thisPly];
+      PieceMoveCounter[1-MoveColor][chgPiece]--;
     } 
   }
 
@@ -2906,7 +2841,7 @@ function ParseMove(move, plyCount) {
     if (mvPiece == -1) { if ('abcdefgh'.indexOf(remainder.charAt(0)) >= 0) { mvPiece = 6; } }
     if (mvPiece == -1) { return false; }
     if (remainder.charAt(ll-1) == 'x') { mvCapture = 1; }
-    if (isNaN(move.charAt(ll-1-mvCapture))){
+    if (isNaN(move.charAt(ll-1-mvCapture))) {
       mvFromCol = move.charCodeAt(ll-1-mvCapture) - 97;
       if ((mvFromCol < 0) || (mvFromCol > 7)) { mvFromCol = -1; }
     } else {
@@ -3051,8 +2986,7 @@ function searchPgnGamePrompt() {
     return;
   }
   searchExpression = prompt("Please enter search pattern for PGN games:", lastSearchPgnExpression);
-  if (! searchExpression) { return; }
-  searchPgnGame(searchExpression);
+  if (searchExpression) { searchPgnGame(searchExpression); }
 }
 
 function searchPgnGameForm() {
@@ -3443,9 +3377,10 @@ function SetLiveBroadcast(delay, alertFlag, demoFlag) {
 }
 
 function SetImage(square, image) {
-  if (DocumentImages[square] == image) { return; }
-  document.images[square+ImageOffset].src = image;
-  DocumentImages[square] = image;
+  if (DocumentImages[square] != image) {
+    document.images[square+ImageOffset].src = image;
+    DocumentImages[square] = image;
+  }
 }
 
 function SetImagePath(path) {
