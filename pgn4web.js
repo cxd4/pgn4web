@@ -9,11 +9,9 @@ var pgn4web_version = '2.06+';
 
 var pgn4web_project_url = 'http://pgn4web.casaschi.net';
 var pgn4web_project_author = 'Paolo Casaschi';
-//  pgn4web_project_email could be preassigned in pgn4web-server-config.js
+// pgn4web_project_email could be preassigned in pgn4web-server-config.js
 var pgn4web_project_email;
 if (pgn4web_project_email == undefined) { pgn4web_project_email = 'pgn4web@casaschi.net'; }
-
-var about = '\tpgn4web v' + pgn4web_version + '\n\t' + pgn4web_project_url + '\n';
 
 var helpWin=null;
 function displayHelp(section){
@@ -65,7 +63,7 @@ function resetAlert() {
   alertNum = alertNumSinceReset = fatalErrorNumSinceReset = 0;
   stopAlertPrompt();
   if (!alertFirstResetLoadingPgn) {
-    configBoardShrortcut(debugShortcutSquare, "pgn4web v" + pgn4web_version + " debug info");
+    boardShortcut(debugShortcutSquare, "pgn4web v" + pgn4web_version + " debug info");
   }
 }
 
@@ -75,7 +73,7 @@ function myAlert(msg, fatalError) {
   if (fatalError) { fatalErrorNumSinceReset++; }
   alertLast = (alertLast + 1) % alertLog.length;
   alertLog[alertLast] = msg;
-  configBoardShrortcut(debugShortcutSquare, 
+  boardShortcut(debugShortcutSquare, 
     "pgn4web v" + pgn4web_version + " debug info, " + alertNum + " alert" + (alertNum > 1 ? "s" : "")); 
 
   if ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) {
@@ -375,7 +373,7 @@ for (col=0; col<8; col++) {
   }
 }
 
-function configBoardShrortcut(square, title, functionPointer) {
+function boardShortcut(square, title, functionPointer) {
   if (square.charCodeAt === null) { return; }
   var col = square.charCodeAt(0) - 65; // 65="A"
   if ((col < 0) || (col > 7)) { return; }
@@ -392,141 +390,141 @@ function configBoardShrortcut(square, title, functionPointer) {
   }
 }
 
-// PLEASE NOTE: 'configBoardShrortcut' ALWAYS ASSUMES 'square' WITH WHITE ON BOTTOM
+// PLEASE NOTE: 'boardShortcut' ALWAYS ASSUMES 'square' WITH WHITE ON BOTTOM
 
 debugShortcutSquare = "A8";
 // A8
-configBoardShrortcut("A8", "pgn4web v" + pgn4web_version + " debug info", function(){ displayDebugInfo(); });
+boardShortcut("A8", "pgn4web v" + pgn4web_version + " debug info", function(){ displayDebugInfo(); });
 // B8
-configBoardShrortcut("B8", "show this position FEN string", function(){ displayFenData(); });
+boardShortcut("B8", "show this position FEN string", function(){ displayFenData(); });
 // C8
-configBoardShrortcut("C8", "show this game PGN source data", function(){ displayPgnData(false); });
+boardShortcut("C8", "show this game PGN source data", function(){ displayPgnData(false); });
 // D8
-configBoardShrortcut("D8", "show full PGN source data", function(){ displayPgnData(true); });
+boardShortcut("D8", "show full PGN source data", function(){ displayPgnData(true); });
 // E8
-configBoardShrortcut("E8", "search help", function(){ displayHelp("search"); });
+boardShortcut("E8", "search help", function(){ displayHelp("search"); });
 // F8
-configBoardShrortcut("F8", "shortcut keys help", function(){ displayHelp("keys"); });
+boardShortcut("F8", "shortcut keys help", function(){ displayHelp("keys"); });
 // G8
-configBoardShrortcut("G8", "shortcut squares help", function(){ displayHelp("squares"); });
+boardShortcut("G8", "shortcut squares help", function(){ displayHelp("squares"); });
 // H8
-configBoardShrortcut("H8", "pgn4web help", function(){ displayHelp(); });
+boardShortcut("H8", "pgn4web help", function(){ displayHelp(); });
 // A7
-configBoardShrortcut("A7", "pgn4web website", function(){ window.open(pgn4web_project_url); });
+boardShortcut("A7", "pgn4web website", function(){ window.open(pgn4web_project_url); });
 // B7
-configBoardShrortcut("B7", "toggle show comments in game text", function(){ SetCommentsIntoMoveText(!commentsIntoMoveText); thisPly = CurrentPly; Init(); GoToMove(thisPly); });
+boardShortcut("B7", "toggle show comments in game text", function(){ SetCommentsIntoMoveText(!commentsIntoMoveText); thisPly = CurrentPly; Init(); GoToMove(thisPly); });
 // C7
-configBoardShrortcut("C7", "toggle show comments on separate lines in game text", function(){ SetCommentsOnSeparateLines(!commentsOnSeparateLines); thisPly = CurrentPly; Init(); GoToMove(thisPly); });
+boardShortcut("C7", "toggle show comments on separate lines in game text", function(){ SetCommentsOnSeparateLines(!commentsOnSeparateLines); thisPly = CurrentPly; Init(); GoToMove(thisPly); });
 // D7
-configBoardShrortcut("D7", "toggle highlight last move", function(){ SetHighlight(!highlightOption); });
+boardShortcut("D7", "toggle highlight last move", function(){ SetHighlight(!highlightOption); });
 // E7
-configBoardShrortcut("E7", "flip board", function(){ FlipBoard(); });
+boardShortcut("E7", "flip board", function(){ FlipBoard(); });
 // F7
-configBoardShrortcut("F7", "show white on bottom", function(){ if (IsRotated) { FlipBoard(); } });
+boardShortcut("F7", "show white on bottom", function(){ if (IsRotated) { FlipBoard(); } });
 // G7
-configBoardShrortcut("G7", "toggle autoplay next game", function(){ SetAutoplayNextGame(!autoplayNextGame); });
+boardShortcut("G7", "toggle autoplay next game", function(){ SetAutoplayNextGame(!autoplayNextGame); });
 // H7
-configBoardShrortcut("H7", "toggle enabling shortcut keys", function(){ interactivelyToggleShortcutKeys(); });
+boardShortcut("H7", "toggle enabling shortcut keys", function(){ interactivelyToggleShortcutKeys(); });
 // A6
-configBoardShrortcut("A6", "pause live broadcast automatic refresh", function(){ pauseLiveBroadcast(); });
+boardShortcut("A6", "pause live broadcast automatic refresh", function(){ pauseLiveBroadcast(); });
 // B6
-configBoardShrortcut("B6", "restart live broadcast automatic refresh", function(){ restartLiveBroadcast(); });
+boardShortcut("B6", "restart live broadcast automatic refresh", function(){ restartLiveBroadcast(); });
 // C6
-configBoardShrortcut("C6", "search previous finished game", function(){ searchPgnGame('\\[\\s*Result\\s*"(?!\\*"\\s*\\])', true); });
+boardShortcut("C6", "search previous finished game", function(){ searchPgnGame('\\[\\s*Result\\s*"(?!\\*"\\s*\\])', true); });
 // D6
-configBoardShrortcut("D6", "search previous unfinished game", function(){ searchPgnGame('\\[\\s*Result\\s*"\\*"\\s*\\]', true); });
+boardShortcut("D6", "search previous unfinished game", function(){ searchPgnGame('\\[\\s*Result\\s*"\\*"\\s*\\]', true); });
 // E6
-configBoardShrortcut("E6", "search next unfinished game", function(){  searchPgnGame('\\[\\s*Result\\s*"\\*"\\s*\\]', false); });
+boardShortcut("E6", "search next unfinished game", function(){  searchPgnGame('\\[\\s*Result\\s*"\\*"\\s*\\]', false); });
 // F6
-configBoardShrortcut("F6", "search next finished game", function(){ searchPgnGame('\\[\\s*Result\\s*"(?!\\*"\\s*\\])', false); });
+boardShortcut("F6", "search next finished game", function(){ searchPgnGame('\\[\\s*Result\\s*"(?!\\*"\\s*\\])', false); });
 // G6
-configBoardShrortcut("G6", "", function(){});
+boardShortcut("G6", "", function(){});
 // H6
-configBoardShrortcut("H6", "force games refresh during live broadcast", function(){ refreshPgnSource(); });
+boardShortcut("H6", "force games refresh during live broadcast", function(){ refreshPgnSource(); });
 // A5
-configBoardShrortcut("A5", "repeat last search backward", function(){ searchPgnGame(lastSearchPgnExpression, true); });
+boardShortcut("A5", "repeat last search backward", function(){ searchPgnGame(lastSearchPgnExpression, true); });
 // B5
-configBoardShrortcut("B5", "search prompt", function(){ searchPgnGamePrompt(); });
+boardShortcut("B5", "search prompt", function(){ searchPgnGamePrompt(); });
 // C5
-configBoardShrortcut("C5", "repeat last search", function(){ searchPgnGame(lastSearchPgnExpression); });
+boardShortcut("C5", "repeat last search", function(){ searchPgnGame(lastSearchPgnExpression); });
 // D5
-configBoardShrortcut("D5", "search previous win result", function(){ searchPgnGame('\\[\\s*Result\\s*"(1-0|0-1)"\\s*\\]', true); });
+boardShortcut("D5", "search previous win result", function(){ searchPgnGame('\\[\\s*Result\\s*"(1-0|0-1)"\\s*\\]', true); });
 // E5
-configBoardShrortcut("E5", "search next win result", function(){ searchPgnGame('\\[\\s*Result\\s*"(1-0|0-1)"\\s*\\]', false); });
+boardShortcut("E5", "search next win result", function(){ searchPgnGame('\\[\\s*Result\\s*"(1-0|0-1)"\\s*\\]', false); });
 // F5
-configBoardShrortcut("F5", "", function(){});
+boardShortcut("F5", "", function(){});
 // G5
-configBoardShrortcut("G5", "", function(){});
+boardShortcut("G5", "", function(){});
 // H5
-configBoardShrortcut("H5", "", function(){});
+boardShortcut("H5", "", function(){});
 // A4
-configBoardShrortcut("A4", "search previous event", function(){ searchPgnGame('\\[\\s*Event\\s*"(?!' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])', true); });
+boardShortcut("A4", "search previous event", function(){ searchPgnGame('\\[\\s*Event\\s*"(?!' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])', true); });
 // B4
 // some browser slow with (?=.*xxx)(?=.*yyy)
-// configBoardShrortcut("B4", "search previous round of same event", function(){ searchPgnGame('(?=.*\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])(?=.*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\]))', true); });
-configBoardShrortcut("B4", "search previous round of same event", function(){ searchPgnGame('\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])|\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])', true); });
+// boardShortcut("B4", "search previous round of same event", function(){ searchPgnGame('(?=.*\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])(?=.*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\]))', true); });
+boardShortcut("B4", "search previous round of same event", function(){ searchPgnGame('\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])|\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])', true); });
 // C4
-configBoardShrortcut("C4", "search previous game of same black player", function(){ searchPgnGame('\\[\\s*Black\\s*"' + fixRegExp(gameBlack[currentGame]) + '"\\s*\\]', true); });
+boardShortcut("C4", "search previous game of same black player", function(){ searchPgnGame('\\[\\s*Black\\s*"' + fixRegExp(gameBlack[currentGame]) + '"\\s*\\]', true); });
 // D4
-configBoardShrortcut("D4", "search previous game of same white player", function(){ searchPgnGame('\\[\\s*White\\s*"' + fixRegExp(gameWhite[currentGame]) + '"\\s*\\]', true); });
+boardShortcut("D4", "search previous game of same white player", function(){ searchPgnGame('\\[\\s*White\\s*"' + fixRegExp(gameWhite[currentGame]) + '"\\s*\\]', true); });
 // E4
-configBoardShrortcut("E4", "search next game of same white player", function(){ searchPgnGame('\\[\\s*White\\s*"' + fixRegExp(gameWhite[currentGame]) + '"\\s*\\]', false); });
+boardShortcut("E4", "search next game of same white player", function(){ searchPgnGame('\\[\\s*White\\s*"' + fixRegExp(gameWhite[currentGame]) + '"\\s*\\]', false); });
 // F4
-configBoardShrortcut("F4", "search next game of same black player", function(){  searchPgnGame('\\[\\s*Black\\s*"' + fixRegExp(gameBlack[currentGame]) + '"\\s*\\]', false); });
+boardShortcut("F4", "search next game of same black player", function(){  searchPgnGame('\\[\\s*Black\\s*"' + fixRegExp(gameBlack[currentGame]) + '"\\s*\\]', false); });
 // G4
 // some browser slow with (?=.*xxx)(?=.*yyy)
-// configBoardShrortcut("G4", "search next round of same event", function(){ searchPgnGame('(?=.*\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])(?=.*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\]))', false); });
-configBoardShrortcut("G4", "search next round of same event", function(){ searchPgnGame('\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])|\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])', false); });
+// boardShortcut("G4", "search next round of same event", function(){ searchPgnGame('(?=.*\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])(?=.*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\]))', false); });
+boardShortcut("G4", "search next round of same event", function(){ searchPgnGame('\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])|\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])', false); });
 // H4
-configBoardShrortcut("H4", "search next event", function(){ searchPgnGame('\\[\\s*Event\\s*"(?!' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])', false); });
+boardShortcut("H4", "search next event", function(){ searchPgnGame('\\[\\s*Event\\s*"(?!' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])', false); });
 // A3
-configBoardShrortcut("A3", "load first game", function(){ if (numberOfGames > 1) { Init(0); } });
+boardShortcut("A3", "load first game", function(){ if (numberOfGames > 1) { Init(0); } });
 // B3
-configBoardShrortcut("B3", "junp to previous games decile", function(){ if (currentGame > 0) { calculateDeciles(); for(ii=(deciles.length-2); ii>=0; ii--) { if (currentGame > deciles[ii]) { Init(deciles[ii]); break; } } } });
+boardShortcut("B3", "junp to previous games decile", function(){ if (currentGame > 0) { calculateDeciles(); for(ii=(deciles.length-2); ii>=0; ii--) { if (currentGame > deciles[ii]) { Init(deciles[ii]); break; } } } });
 // C3
-configBoardShrortcut("C3", "load previous game", function(){ Init(currentGame - 1); });
+boardShortcut("C3", "load previous game", function(){ Init(currentGame - 1); });
 // D3
-configBoardShrortcut("D3", "load random game", function(){ if (numberOfGames > 1) { Init(Math.floor(Math.random()*numberOfGames)); } });
+boardShortcut("D3", "load random game", function(){ if (numberOfGames > 1) { Init(Math.floor(Math.random()*numberOfGames)); } });
 // E3
-configBoardShrortcut("E3", "load random game at random position", function(){ Init(Math.floor(Math.random()*numberOfGames)); GoToMove(StartPly + Math.floor(Math.random()*(StartPly + PlyNumber + 1))); });
+boardShortcut("E3", "load random game at random position", function(){ Init(Math.floor(Math.random()*numberOfGames)); GoToMove(StartPly + Math.floor(Math.random()*(StartPly + PlyNumber + 1))); });
 // F3
-configBoardShrortcut("F3", "load next game", function(){ Init(currentGame + 1); });
+boardShortcut("F3", "load next game", function(){ Init(currentGame + 1); });
 // G3
-configBoardShrortcut("G3", "jump to next games decile", function(){ if (currentGame < numberOfGames - 1) { calculateDeciles(); for(ii=1; ii<deciles.length; ii++) { if (currentGame < deciles[ii]) { Init(deciles[ii]); break; } } } });
+boardShortcut("G3", "jump to next games decile", function(){ if (currentGame < numberOfGames - 1) { calculateDeciles(); for(ii=1; ii<deciles.length; ii++) { if (currentGame < deciles[ii]) { Init(deciles[ii]); break; } } } });
 // H3
-configBoardShrortcut("H3", "load last game", function(){ if (numberOfGames > 1) { Init(numberOfGames - 1); } });
+boardShortcut("H3", "load last game", function(){ if (numberOfGames > 1) { Init(numberOfGames - 1); } });
 // A2
-configBoardShrortcut("A2", "stop autoplay", function(){ SetAutoPlay(false); });
+boardShortcut("A2", "stop autoplay", function(){ SetAutoPlay(false); });
 // B2
-configBoardShrortcut("B2", "toggle autoplay", function(){ SwitchAutoPlay(); });
+boardShortcut("B2", "toggle autoplay", function(){ SwitchAutoPlay(); });
 // C2
-configBoardShrortcut("C2", "autoplay 1 second", function(){ SetAutoplayDelayAndStart( 1*1000); });
+boardShortcut("C2", "autoplay 1 second", function(){ SetAutoplayDelayAndStart( 1*1000); });
 // D2
-configBoardShrortcut("D2", "autoplay 2 seconds", function(){ SetAutoplayDelayAndStart( 2*1000); });
+boardShortcut("D2", "autoplay 2 seconds", function(){ SetAutoplayDelayAndStart( 2*1000); });
 // E2
-configBoardShrortcut("E2", "autoplay 3 seconds", function(){ SetAutoplayDelayAndStart( 3*1000); });
+boardShortcut("E2", "autoplay 3 seconds", function(){ SetAutoplayDelayAndStart( 3*1000); });
 // F2
-configBoardShrortcut("F2", "autoplay 5 seconds", function(){ SetAutoplayDelayAndStart( 5*1000); });
+boardShortcut("F2", "autoplay 5 seconds", function(){ SetAutoplayDelayAndStart( 5*1000); });
 // G2
-configBoardShrortcut("G2", "autoplay 10 seconds", function(){ SetAutoplayDelayAndStart(10*1000); });
+boardShortcut("G2", "autoplay 10 seconds", function(){ SetAutoplayDelayAndStart(10*1000); });
 // H2
-configBoardShrortcut("H2", "autoplay 30 seconds", function(){ SetAutoplayDelayAndStart(30*1000); });
+boardShortcut("H2", "autoplay 30 seconds", function(){ SetAutoplayDelayAndStart(30*1000); });
 // A1
-configBoardShrortcut("A1", "go to game start", function(){ GoToMove(StartPly); });
+boardShortcut("A1", "go to game start", function(){ GoToMove(StartPly); });
 // B1
-configBoardShrortcut("B1", "go to previous comment", function(){ MoveToPrevComment(); });
+boardShortcut("B1", "go to previous comment", function(){ MoveToPrevComment(); });
 // C1
-configBoardShrortcut("C1", "move 6 half-moves backward", function(){ MoveBackward(6); });
+boardShortcut("C1", "move 6 half-moves backward", function(){ MoveBackward(6); });
 // D1
-configBoardShrortcut("D1", "move backward", function(){ MoveBackward(1); });
+boardShortcut("D1", "move backward", function(){ MoveBackward(1); });
 // E1
-configBoardShrortcut("E1", "move forward", function(){ MoveForward(1); });
+boardShortcut("E1", "move forward", function(){ MoveForward(1); });
 // F1
-configBoardShrortcut("F1", "move 6 half-moves forward", function(){ MoveForward(6); });
+boardShortcut("F1", "move 6 half-moves forward", function(){ MoveForward(6); });
 // G1
-configBoardShrortcut("G1", "go to next comment", function(){ MoveToNextComment(); });
+boardShortcut("G1", "go to next comment", function(){ MoveToNextComment(); });
 // H1
-configBoardShrortcut("H1", "go to game end", function(){ GoToMove(StartPly + PlyNumber); });
+boardShortcut("H1", "go to game end", function(){ GoToMove(StartPly + PlyNumber); });
 
 
 var deciles = new Array(11);
@@ -562,30 +560,29 @@ function detectBaseLocation() {
 debugWin = null;
 function displayDebugInfo() {
   stopAlertPrompt();
-  debugInfo = 'pgn4web: version=' + pgn4web_version + ' homepage=' + pgn4web_project_url + '\n\n';
-  debugInfo += 'HTMLURL: length=' + location.href.length + ' url=';
-  debugInfo += (location.href.length < 100 ? location.href : (location.href.substring(0,99) + '...')) + '\n';
-  baseLocation = detectBaseLocation();
-  debugInfo += 'BASEURL: url=' + (baseLocation !== '' ? baseLocation : 'none') + '\n';
-  debugInfo += 'JSURL: url=' + detectJavascriptLocation() + '\n\n';
-  debugInfo += 'PGNURL: url=' + (pgnUrl !== '' ? pgnUrl : 'none') + '\n';
-  debugInfo += 'PGNTEXT: length=';
+  debugInfo = 'pgn4web: version=' + pgn4web_version + ' homepage=' + pgn4web_project_url + '\n\n' +
+    'HTMLURL: length=' + location.href.length + ' url=' +
+    (location.href.length < 100 ? location.href : (location.href.substring(0,99) + '...')) + '\n' +
+    'BASEURL: url=' + detectBaseLocation() + '\n' +
+    'JSURL: url=' + detectJavascriptLocation() + '\n\n' +
+    'PGNURL: url=' + pgnUrl + '\n' +
+    'PGNTEXT: length=';
   if (document.getElementById("pgnText") !== null) { 
     debugInfo += document.getElementById("pgnText").tagName.toLowerCase() == "textarea" ?
       document.getElementById("pgnText").value.length :
       document.getElementById("pgnText").innerHTML.length +
       ' container=' + document.getElementById("pgnText").tagName.toLowerCase();
-    // compatibility with pgn4web up to 1.77: <span> used for pgnText
+    // pgn4web up to 1.77 used <span> for pgnText
   }
-  debugInfo += '\n\n';
-  debugInfo += 'GAMES: current=' + (currentGame+1) + ' number=' + numberOfGames + '\n' +
-    'PLY: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber + '\n';
-  debugInfo += 'AUTOPLAY: ' + (isAutoPlayOn ? 'delay=' + Delay + 'ms' + ' autoplaynext=' + autoplayNextGame : 'off');
-  debugInfo += '\n\n';
-  debugInfo += 'LIVEBROADCAST: ' + (LiveBroadcastDelay > 0 ? 'ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + ' started=' + LiveBroadcastStarted + ' ended=' + LiveBroadcastEnded + ' paused=' + LiveBroadcastPaused + ' demo=' + LiveBroadcastDemo + ' alert=' + LiveBroadcastAlert + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime() : 'off'); 
-  debugInfo += '\n\n';
-  debugInfo += 'ALERTLOG: fatalnew=' + fatalErrorNumSinceReset + ' new=' + alertNumSinceReset + ' shown=' + 
-               Math.min(alertNum, alertLog.length) + ' total=' + alertNum + '\n--';
+  debugInfo += '\n\n' +
+    'GAMES: current=' + (currentGame+1) + ' number=' + numberOfGames + '\n' +
+    'PLY: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber + '\n' +
+    'AUTOPLAY: ' + (isAutoPlayOn ? 'delay=' + Delay + 'ms' + ' autoplaynext=' + autoplayNextGame : 'off') +
+    '\n\n' +
+    'LIVEBROADCAST: ' + (LiveBroadcastDelay > 0 ? 'ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + ' started=' + LiveBroadcastStarted + ' ended=' + LiveBroadcastEnded + ' paused=' + LiveBroadcastPaused + ' demo=' + LiveBroadcastDemo + ' alert=' + LiveBroadcastAlert + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime() : 'off') + 
+    '\n\n' +
+    'ALERTLOG: fatalnew=' + fatalErrorNumSinceReset + ' new=' + alertNumSinceReset + 
+       ' shown=' + Math.min(alertNum, alertLog.length) + ' total=' + alertNum + '\n--';
   if (alertNum > 0) {
     for (ii = 0; ii<alertLog.length; ii++) {
       if (alertLog[(alertNum - 1 - ii) % alertLog.length] === undefined) { break; }
@@ -596,15 +593,13 @@ function displayDebugInfo() {
     if (debugWin && !debugWin.closed) { debugWin.close(); }
     debugWin = window.open("", "debug_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
     if (debugWin !== null) {
-       text = "<html>";
-       text += "<head><title>pgn4web debug info</title><link rel='shortcut icon' href='pawn.ico' /></head>";
-       text += "<body>\n<pre>\n";
-       text += debugInfo;
-       text += "\n</pre>\n</body></html>";
-       debugWin.document.open("text/html", "replace");
-       debugWin.document.write(text);
-       debugWin.document.close();
-       if (window.focus) { debugWin.window.focus(); }
+      text = "<html>" +
+        "<head><title>pgn4web debug info</title><link rel='shortcut icon' href='pawn.ico' /></head>" +
+        "<body>\n<pre>\n" + debugInfo + "\n</pre>\n</body></html>";
+      debugWin.document.open("text/html", "replace");
+      debugWin.document.write(text);
+      debugWin.document.close();
+      if (window.focus) { debugWin.window.focus(); }
     }
   }
   alertNumSinceReset = fatalErrorNumSinceReset = 0;
@@ -756,25 +751,23 @@ function displayFenData() {
   fenWin = window.open("", "fen_data", 
     "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if (fenWin !== null) {
-    text = "<html>";
-    text += "<head><title>pgn4web FEN string</title><link rel='shortcut icon' href='pawn.ico' /></head>";
-    text += "<body>\n";
-    text += "<b><pre>\n\n" + currentFEN + "\n\n</pre></b>\n<hr>\n";
-    text += "<pre>\n\n";
-    text += "[Event \"" + (gameEvent[currentGame] ? gameEvent[currentGame] : "?") + "\"]\n";
-    text += "[Site \"" + (gameSite[currentGame] ? gameSite[currentGame] : "?") + "\"]\n";
-    text += "[Date \"" + (gameDate[currentGame] ? gameDate[currentGame] : "????.??.??") + "\"]\n";
-    text += "[Round \"" + (gameRound[currentGame] ? gameRound[currentGame] : "?") + "\"]\n";
-    text += "[White \"" + (gameWhite[currentGame] ? gameWhite[currentGame] : "?") + "\"]\n";
-    text += "[Black \"" + (gameBlack[currentGame] ? gameBlack[currentGame] : "?") + "\"]\n";
-    text += "[Result \"" + (gameResult[currentGame] ? gameResult[currentGame] : "*") + "\"]\n";
+    text = "<html>" +
+      "<head><title>pgn4web FEN string</title><link rel='shortcut icon' href='pawn.ico' /></head>" +
+      "<body>\n" +
+      "<b><pre>\n\n" + currentFEN + "\n\n</pre></b>\n<hr>\n" +
+      "<pre>\n\n" +
+      "[Event \"" + (gameEvent[currentGame] ? gameEvent[currentGame] : "?") + "\"]\n" +
+      "[Site \"" + (gameSite[currentGame] ? gameSite[currentGame] : "?") + "\"]\n" +
+      "[Date \"" + (gameDate[currentGame] ? gameDate[currentGame] : "????.??.??") + "\"]\n" +
+      "[Round \"" + (gameRound[currentGame] ? gameRound[currentGame] : "?") + "\"]\n" +
+      "[White \"" + (gameWhite[currentGame] ? gameWhite[currentGame] : "?") + "\"]\n" +
+      "[Black \"" + (gameBlack[currentGame] ? gameBlack[currentGame] : "?") + "\"]\n" +
+      "[Result \"" + (gameResult[currentGame] ? gameResult[currentGame] : "*") + "\"]\n";
     if (currentFEN != FenStringStart) { 
-      text += "[SetUp \"1\"]\n";
-      text += "[FEN \"" + CurrentFEN() + "\"]\n";
+      text += "[SetUp \"1\"]\n" + "[FEN \"" + CurrentFEN() + "\"]\n";
     }
     if (gameVariant[currentGame] !== "") { text += "[Variant \"" + gameVariant[currentGame] + "\"]\n"; }
-    text += "\n" + currentMovesString;
-    text += "\n</pre>\n</body></html>";
+    text += "\n" + currentMovesString + "\n</pre>\n</body></html>";
     fenWin.document.open("text/html", "replace");
     fenWin.document.write(text);
     fenWin.document.close();
@@ -3049,9 +3042,8 @@ function PrintHTML() {
     '</TD>' +
     '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
     '</TD><TD>';
-  text += '<INPUT ID="autoplayButton" TYPE="BUTTON" VALUE=';
-  text += isAutoPlayOn ? "=" : "+";
-  text += ' STYLE="';
+  text += '<INPUT ID="autoplayButton" TYPE="BUTTON" VALUE=' +
+    (isAutoPlayOn ? "=" : "+") + ' STYLE="';
   if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
   text += isAutoPlayOn ?
     '"; CLASS="buttonControlStop" TITLE="toggle autoplay (stop)" ' :
@@ -3249,9 +3241,9 @@ function PrintHTML() {
         'ACTION="javascript:searchPgnGameForm();">';
       text += '<INPUT ID="searchPgnButton" CLASS="searchPgnButton" STYLE="display: inline; ';
       if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + (tableSize/4) + 'px; '; }
-      text += '" TITLE="find games matching the search string (or regular expression)" ';
-      text += 'TYPE="submit" VALUE="?">';
-      text += '<INPUT ID="searchPgnExpression" CLASS="searchPgnExpression" ' +
+      text += '" TITLE="find games matching the search string (or regular expression)" ' +
+        'TYPE="submit" VALUE="?">' +
+        '<INPUT ID="searchPgnExpression" CLASS="searchPgnExpression" ' +
         'TITLE="find games matching the search string (or regular expression)" ' + 
         'TYPE="input" VALUE="" STYLE="display: inline; ';
       if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + (3*tableSize/4) + 'px; '; }
@@ -3370,9 +3362,9 @@ function StoreMove(thisPly) {
 
   // "square from" history
   HistPieceId[0][thisPly] = mvPieceId;
-  HistCol[0][thisPly]     = PieceCol[MoveColor][mvPieceId];
-  HistRow[0][thisPly]     = PieceRow[MoveColor][mvPieceId];
-  HistType[0][thisPly]    = PieceType[MoveColor][mvPieceId];
+  HistCol[0][thisPly] = PieceCol[MoveColor][mvPieceId];
+  HistRow[0][thisPly] = PieceRow[MoveColor][mvPieceId];
+  HistType[0][thisPly] = PieceType[MoveColor][mvPieceId];
 
   // "square to" history
   HistCol[2][thisPly] = mvToCol;
@@ -3380,14 +3372,14 @@ function StoreMove(thisPly) {
 
   if (mvIsCastling) {
      HistPieceId[1][thisPly] = castleRook;
-     HistCol[1][thisPly]     = PieceCol[MoveColor][castleRook];
-     HistRow[1][thisPly]     = PieceRow[MoveColor][castleRook];
-     HistType[1][thisPly]    = PieceType[MoveColor][castleRook];
+     HistCol[1][thisPly] = PieceCol[MoveColor][castleRook];
+     HistRow[1][thisPly] = PieceRow[MoveColor][castleRook];
+     HistType[1][thisPly] = PieceType[MoveColor][castleRook];
   } else if (mvCapturedId >= 0) {
      HistPieceId[1][thisPly] = mvCapturedId+16;
-     HistCol[1][thisPly]     = PieceCol[1-MoveColor][mvCapturedId];
-     HistRow[1][thisPly]     = PieceRow[1-MoveColor][mvCapturedId];
-     HistType[1][thisPly]    = PieceType[1-MoveColor][mvCapturedId];
+     HistCol[1][thisPly] = PieceCol[1-MoveColor][mvCapturedId];
+     HistRow[1][thisPly] = PieceRow[1-MoveColor][mvCapturedId];
+     HistType[1][thisPly] = PieceType[1-MoveColor][mvCapturedId];
   } else {
     HistPieceId[1][thisPly] = -1;
   }
@@ -3405,8 +3397,8 @@ function StoreMove(thisPly) {
   // update piece arrays: a promotion would change piece type
   PieceType[MoveColor][mvPieceId] = mvPieceOnTo;
   PieceMoveCounter[MoveColor][mvPieceId]++;
-  PieceCol[MoveColor][mvPieceId]  = mvToCol;
-  PieceRow[MoveColor][mvPieceId]  = mvToRow;
+  PieceCol[MoveColor][mvPieceId] = mvToCol;
+  PieceRow[MoveColor][mvPieceId] = mvToRow;
   if (mvIsCastling) {
     PieceMoveCounter[MoveColor][castleRook]++;
     PieceCol[MoveColor][castleRook] = mvToCol == 2 ? 3 : 5;
@@ -3429,17 +3421,17 @@ function UndoMove(thisPly) {
   Board[HistCol[0][thisPly]][HistRow[0][thisPly]] =
     HistType[0][thisPly]*(1-2*MoveColor);
 
-  PieceCol[MoveColor][mvPieceId]  = HistCol[0][thisPly];
-  PieceRow[MoveColor][mvPieceId]  = HistRow[0][thisPly];
+  PieceCol[MoveColor][mvPieceId] = HistCol[0][thisPly];
+  PieceRow[MoveColor][mvPieceId] = HistRow[0][thisPly];
   PieceType[MoveColor][mvPieceId] = HistType[0][thisPly];
   PieceMoveCounter[MoveColor][mvPieceId]--;
 
   // capture/castle: bring captured/rook back
   if (mvCapturedId >=0) {
      PieceType[1-MoveColor][mvCapturedId] = mvCapturedId;
-     PieceCol[1-MoveColor][mvCapturedId]  = HistCol[1][thisPly];
-     PieceRow[1-MoveColor][mvCapturedId]  = HistRow[1][thisPly];
-     PieceCol[1-MoveColor][mvCapturedId]  = HistCol[1][thisPly];
+     PieceCol[1-MoveColor][mvCapturedId] = HistCol[1][thisPly];
+     PieceRow[1-MoveColor][mvCapturedId] = HistRow[1][thisPly];
+     PieceCol[1-MoveColor][mvCapturedId] = HistCol[1][thisPly];
   } else if (mvIsCastling) {
      PieceCol[MoveColor][castleRook] = HistCol[1][thisPly];
      PieceRow[MoveColor][castleRook] = HistRow[1][thisPly];
