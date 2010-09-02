@@ -546,8 +546,7 @@ function detectJavascriptLocation() {
 }
 
 function detectHelpLocation() {
-  helpfile = "help.html";
-  return detectJavascriptLocation().replace(/(pgn4web|pgn4web-compacted)\.js/, helpfile); 
+  return detectJavascriptLocation().replace(/(pgn4web|pgn4web-compacted)\.js/, "help.html"); 
 }
 
 function detectBaseLocation() {
@@ -857,28 +856,28 @@ for(i=0; i<8; ++i) { Board[i] = new Array(8); }
 // HistCol[1] and HistRow[1] contain castling and capture info
 // HistCol[2] and HistRow[2] contain the "square to" (0..7, 0..7 from square a1)
 
-HistCol          = new Array(3);
-HistRow          = new Array(3);
-HistPieceId      = new Array(2);
-HistType         = new Array(2);
+HistCol = new Array(3);
+HistRow = new Array(3);
+HistPieceId = new Array(2);
+HistType = new Array(2);
 
-PieceCol         = new Array(2);
-PieceRow         = new Array(2);
-PieceType        = new Array(2);
+PieceCol = new Array(2);
+PieceRow = new Array(2);
+PieceType = new Array(2);
 PieceMoveCounter = new Array(2);
 
 for(i=0; i<2; ++i){
-  PieceCol[i]         = new Array(16);
-  PieceRow[i]         = new Array(16);
-  PieceType[i]        = new Array(16);
+  PieceCol[i] = new Array(16);
+  PieceRow[i] = new Array(16);
+  PieceType[i] = new Array(16);
   PieceMoveCounter[i] = new Array(16);
-  HistType[i]    = new Array(MaxMove);
+  HistType[i] = new Array(MaxMove);
   HistPieceId[i] = new Array(MaxMove);
 }
 
 for(i=0; i<3; ++i){
-  HistCol[i]     = new Array(MaxMove);
-  HistRow[i]     = new Array(MaxMove);
+  HistCol[i] = new Array(MaxMove);
+  HistRow[i] = new Array(MaxMove);
 }
 
 HistEnPassant =  new Array(MaxMove);
@@ -892,14 +891,7 @@ startingImageSize = -1;
 PiecePicture = new Array(2);
 for(i=0; i<2; ++i) { PiecePicture[i] = new Array(6); }
 
-PieceCode    = new Array(6);
-PieceCode[0] = "K";
-PieceCode[1] = "Q";
-PieceCode[2] = "R";
-PieceCode[3] = "B";
-PieceCode[4] = "N";
-PieceCode[5] = "P";
-
+var PieceCode = "KQRBNP";
 var FenPieceName = "KQRBNP";
 var FenStringStart = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 var ImageOffset  = -1; 
