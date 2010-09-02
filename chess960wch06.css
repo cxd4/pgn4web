@@ -7,13 +7,8 @@
 
 @import url("fonts/pgn4web-fonts.css");
 
-html, 
-body { 
-  margin: 0; 
-  padding: 5; 
-}
-
 body {
+  padding: 5px;
   font-family: sans-serif;
   color: black;
   background: white;
