@@ -101,8 +101,8 @@ function alertPromptTick(restart) {
     clearTimeout(alertPromptInterval); 
     alertPromptInterval = null;
   }
-  if(document.getElementById('tcol0trow0')) {
-    theObject = document.getElementById('tcol0trow0');
+  theObject = document.getElementById('tcol0trow0');
+  if(theObject) {
     if (alertPromptOn) {
       if ((highlightOption) && 
         ((lastColFromHighlighted === 0 && lastRowFromHighlighted === 7) || 
@@ -114,7 +114,7 @@ function alertPromptTick(restart) {
     alertPromptOn = !alertPromptOn;
     if (alertPromptOn) { alertPromptDelay = 500; }
     else { alertPromptDelay = 3000; }
-  } else { alertPromptDelay = 1500; }
+  } else { alertPromptDelay = 1500; } // for alerts before the baord is drawn
   if (restart) { alertPromptInterval = setTimeout("alertPromptTick(true);", alertPromptDelay); }
 }
 
@@ -381,8 +381,7 @@ function boardShortcut(square, title, functionPointer) {
   if ((row < 0) || (row > 7)) { return; }
   boardTitle[col][row] = title;
   if (functionPointer) { boardOnClick[col][row] = functionPointer; }
-  theObject = document.getElementById('link_tcol' + col + 'trow' + row);
-  if (theObject) {
+  if (theObject = document.getElementById('link_tcol' + col + 'trow' + row)) {
     if (IsRotated) { square = String.fromCharCode(72-col,49+row); }
     if (boardTitle[col][row] !== '') { squareTitle = square + ': ' + boardTitle[col][row]; }
     else { squareTitle = square; } 
@@ -460,8 +459,6 @@ boardShortcut("H5", "", function(){});
 // A4
 boardShortcut("A4", "search previous event", function(){ searchPgnGame('\\[\\s*Event\\s*"(?!' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])', true); });
 // B4
-// some browser slow with (?=.*xxx)(?=.*yyy)
-// boardShortcut("B4", "search previous round of same event", function(){ searchPgnGame('(?=.*\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])(?=.*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\]))', true); });
 boardShortcut("B4", "search previous round of same event", function(){ searchPgnGame('\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])|\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])', true); });
 // C4
 boardShortcut("C4", "search previous game of same black player", function(){ searchPgnGame('\\[\\s*Black\\s*"' + fixRegExp(gameBlack[currentGame]) + '"\\s*\\]', true); });
@@ -472,8 +469,6 @@ boardShortcut("E4", "search next game of same white player", function(){ searchP
 // F4
 boardShortcut("F4", "search next game of same black player", function(){  searchPgnGame('\\[\\s*Black\\s*"' + fixRegExp(gameBlack[currentGame]) + '"\\s*\\]', false); });
 // G4
-// some browser slow with (?=.*xxx)(?=.*yyy)
-// boardShortcut("G4", "search next round of same event", function(){ searchPgnGame('(?=.*\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])(?=.*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\]))', false); });
 boardShortcut("G4", "search next round of same event", function(){ searchPgnGame('\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])|\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])', false); });
 // H4
 boardShortcut("H4", "search next event", function(){ searchPgnGame('\\[\\s*Event\\s*"(?!' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])', false); });
@@ -593,8 +588,7 @@ function displayDebugInfo() {
     if (debugWin && !debugWin.closed) { debugWin.close(); }
     debugWin = window.open("", "debug_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
     if (debugWin !== null) {
-      text = "<html>" +
-        "<head><title>pgn4web debug info</title><link rel='shortcut icon' href='pawn.ico' /></head>" +
+      text = "<html><head><title>pgn4web debug info</title><link rel='shortcut icon' href='pawn.ico' /></head>" +
         "<body>\n<pre>\n" + debugInfo + "\n</pre>\n</body></html>";
       debugWin.document.open("text/html", "replace");
       debugWin.document.write(text);
@@ -611,9 +605,8 @@ function displayPgnData(allGames) {
   if (pgnWin && !pgnWin.closed) { pgnWin.close(); }
   pgnWin = window.open("", "pgn_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if (pgnWin !== null) {
-    text = "<html>" +
-      "<head><title>pgn4web PGN source</title><link rel='shortcut icon' href='pawn.ico' /></head>" +
-      "<body>\n<pre>\n";
+    text = "<html><head><title>pgn4web PGN source</title><link rel='shortcut icon' href='pawn.ico' />" +
+      "</head><body>\n<pre>\n";
     if (allGames) { for (ii = 0; ii < numberOfGames; ++ii) { text += pgnGame[ii]; } }
     else { text += pgnGame[currentGame]; }
     text += "\n</pre>\n</body></html>";
@@ -753,9 +746,7 @@ function displayFenData() {
   if (fenWin !== null) {
     text = "<html>" +
       "<head><title>pgn4web FEN string</title><link rel='shortcut icon' href='pawn.ico' /></head>" +
-      "<body>\n" +
-      "<b><pre>\n\n" + currentFEN + "\n\n</pre></b>\n<hr>\n" +
-      "<pre>\n\n" +
+      "<body>\n<b><pre>\n\n" + currentFEN + "\n\n</pre></b>\n<hr>\n<pre>\n\n" +
       "[Event \"" + (gameEvent[currentGame] ? gameEvent[currentGame] : "?") + "\"]\n" +
       "[Site \"" + (gameSite[currentGame] ? gameSite[currentGame] : "?") + "\"]\n" +
       "[Date \"" + (gameDate[currentGame] ? gameDate[currentGame] : "????.??.??") + "\"]\n" +
@@ -1263,8 +1254,8 @@ function HighlightLastMove() {
   // show side to move
   text = (showThisMove+1)%2 === 0 ? 'white' : 'black';
  
-  theObject = document.getElementById("GameSideToMove");
-  if (theObject !== null) { theObject.innerHTML = text; }
+  if (theObject = document.getElementById("GameSideToMove"))
+  { theObject.innerHTML = text; }
 
   // show clock if any
   if ((showThisMove+1)%2 == 1) { // white has just moved
@@ -1366,8 +1357,7 @@ function highlightSquare(col, row, on) {
   // locates coordinates on HTML table
   if (IsRotated) { trow = row; tcol = 7 - col; }
   else { trow = 7 - row; tcol = col; }
-  theObject = document.getElementById('tcol' + tcol + 'trow' + trow);
-  if (theObject === null) { return false; }
+  if (theObject = document.getElementById('tcol' + tcol + 'trow' + trow)) { return false; }
   if (on) { theObject.className = (trow+tcol)%2 === 0 ? "highlightWhiteSquare" : "highlightBlackSquare"; }
   else { theObject.className = (trow+tcol)%2 === 0 ? "whiteSquare" : "blackSquare"; }
   return true;
@@ -1543,15 +1533,15 @@ function checkLiveBroadcastStatus() {
       "live games: " + liveGamesRunning + " &nbsp; finished: " + (numberOfGames - liveGamesRunning);
   }
 
-  theObject = document.getElementById("GameLiveStatus");
-  if (theObject !== null) { theObject.innerHTML = LiveBroadcastStatusString; }
+  if (theObject = document.getElementById("GameLiveStatus"))
+  { theObject.innerHTML = LiveBroadcastStatusString; }
 
-  theObject = document.getElementById("GameLiveLastRefreshed");
-  if (theObject !== null) { theObject.innerHTML = LiveBroadcastLastRefreshedLocal; }
-  theObject = document.getElementById("GameLiveLastReceived");
-  if (theObject !== null) { theObject.innerHTML = LiveBroadcastLastReceivedLocal; }
-  theObject = document.getElementById("GameLiveLastModifiedServer");
-  if (theObject !== null) { theObject.innerHTML = LiveBroadcastLastModified_ServerTime(); }
+  if (theObject = document.getElementById("GameLiveLastRefreshed"))
+  { theObject.innerHTML = LiveBroadcastLastRefreshedLocal; }
+  if (theObject = document.getElementById("GameLiveLastReceived"))
+  { theObject.innerHTML = LiveBroadcastLastReceivedLocal; }
+  if (theObject = document.getElementById("GameLiveLastModifiedServer"))
+  { theObject.innerHTML = LiveBroadcastLastModified_ServerTime(); }
 }
 
 function restartLiveBroadcastTimeout() {
@@ -1675,8 +1665,7 @@ function refreshPgnSource() {
 
 function createBoard(){
 
-  theObject = document.getElementById("GameBoard");
-  if (theObject !== null) {
+  if (theObject = document.getElementById("GameBoard")) {
     theObject.innerHTML = '<DIV STYLE="font-size: small; font-family: sans-serif; ' +
       'padding: 10px; text-align: center;">' + 
       '...loading PGN data<br />please wait...</DIV>';
@@ -2922,11 +2911,11 @@ function clickedSquare(ii, jj) {
 }
 
 function reset_after_click (ii, jj, originalClass, newClass) {
-  squareId = 'tcol' + jj + 'trow' + ii;
-  theObject = document.getElementById(squareId);
-  // square class changed again by pgn4web already: dont touch it anymore e.g. autoplay
-  if (theObject.className == newClass) { theObject.className = originalClass; }
-  clickedSquareInterval = null;
+  if (theObject = document.getElementById('tcol' + jj + 'trow' + ii)) {
+    // square class changed again by pgn4web already: dont touch it anymore e.g. autoplay
+    if (theObject.className == newClass) { theObject.className = originalClass; }
+    clickedSquareInterval = null;
+  }
 }
 
 
@@ -2952,8 +2941,8 @@ function gameNumberSearchPgn(searchExpression, backward) {
 
 function searchPgnGame(searchExpression, backward) {
   lastSearchPgnExpression = searchExpression;
-  theObject = document.getElementById('searchPgnExpression');
-  if (theObject) { theObject.value = searchExpression; }
+  if (theObject = document.getElementById('searchPgnExpression')) 
+  { theObject.value = searchExpression; }
   if ((searchExpression === "") || (! searchExpression)) { return; }
   if (numberOfGames < 2) { return; }
   checkGame = gameNumberSearchPgn(searchExpression, backward);
@@ -2970,8 +2959,8 @@ function searchPgnGamePrompt() {
 }
 
 function searchPgnGameForm() {
-  theObject = document.getElementById('searchPgnExpression');
-  if (theObject) { searchPgnGame(document.getElementById('searchPgnExpression').value); }
+  if (theObject = document.getElementById('searchPgnExpression')) 
+  { searchPgnGame(document.getElementById('searchPgnExpression').value); }
 }
 
 
@@ -2982,38 +2971,38 @@ function PrintHTML() {
 
   // 8x8 table chessboard
 
-  text = '<TABLE CLASS="boardTable" ID="boardTable" CELLSPACING=0 CELLPADDING=0';
-  text += ((tableSize !== null) && (tableSize !== 0)) ?
-          ' STYLE="width: ' + tableSize + 'px; height: ' + tableSize + 'px;">' : '>';
-  for (ii = 0; ii < 8; ++ii) {
-    text += '<TR>';
-    for (jj = 0; jj < 8; ++jj) {
-      squareId = 'tcol' + jj + 'trow' + ii;
-      imageId = 'img_' + squareId;
-      linkId = 'link_' + squareId;
-      text += (ii+jj)%2 === 0 ? 
-        '<TD CLASS="whiteSquare" ID="' + squareId + '" BGCOLOR="#FFFFFF"' :
-        '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="#D3D3D3"';
-      text += ' ALIGN="center" VALIGN="middle" ONCLICK="clickedSquare(' + ii + ',' + jj + ')">';
-      squareCoord = IsRotated ? String.fromCharCode(72-jj,49+ii) : String.fromCharCode(jj+65,56-ii);
-      squareTitle = squareCoord;
-      if (boardTitle[jj][ii] !== '') { squareTitle += ': ' + boardTitle[jj][ii]; }
-      text += '<A HREF="javascript:boardOnClick[' + jj + '][' + ii + ']()" ' +
-        'ID="' + linkId + '" TITLE="' + squareTitle + '" ' + 
-        'STYLE="text-decoration: none; outline: none;" ' +
-        'ONFOCUS="this.blur()">' + 
-        '<IMG CLASS="pieceImage" ID="' + imageId + '" ' + 
-        ' SRC="'+ImagePath+'clear.'+imageType+'" BORDER=0></A></TD>';
+  if (theObject = document.getElementById("GameBoard")) {
+    text = '<TABLE CLASS="boardTable" ID="boardTable" CELLSPACING=0 CELLPADDING=0';
+    text += ((tableSize !== null) && (tableSize !== 0)) ?
+      ' STYLE="width: ' + tableSize + 'px; height: ' + tableSize + 'px;">' : '>';
+    for (ii = 0; ii < 8; ++ii) {
+      text += '<TR>';
+      for (jj = 0; jj < 8; ++jj) {
+        squareId = 'tcol' + jj + 'trow' + ii;
+        imageId = 'img_' + squareId;
+        linkId = 'link_' + squareId;
+        text += (ii+jj)%2 === 0 ? 
+          '<TD CLASS="whiteSquare" ID="' + squareId + '" BGCOLOR="#FFFFFF"' :
+          '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="#D3D3D3"';
+        text += ' ALIGN="center" VALIGN="middle" ONCLICK="clickedSquare(' + ii + ',' + jj + ')">';
+        squareCoord = IsRotated ? String.fromCharCode(72-jj,49+ii) : String.fromCharCode(jj+65,56-ii);
+        squareTitle = squareCoord;
+        if (boardTitle[jj][ii] !== '') { squareTitle += ': ' + boardTitle[jj][ii]; }
+        text += '<A HREF="javascript:boardOnClick[' + jj + '][' + ii + ']()" ' +
+          'ID="' + linkId + '" TITLE="' + squareTitle + '" ' + 
+          'STYLE="text-decoration: none; outline: none;" ' +
+          'ONFOCUS="this.blur()">' + 
+          '<IMG CLASS="pieceImage" ID="' + imageId + '" ' + 
+          ' SRC="'+ImagePath+'clear.'+imageType+'" BORDER=0></A></TD>';
+      }
+      text += '</TR>';
     }
-    text += '</TR>';
+    text += '</TABLE>';
+
+    theObject.innerHTML = text;
   }
-  text += '</TABLE>';
 
-  theObject = document.getElementById("GameBoard");
-  if (theObject !== null) { theObject.innerHTML = text; }
-
-  theObject = document.getElementById("boardTable"); 
-  if (theObject !== null) {
+  if (theObject = document.getElementById("boardTable")) {
     tableSize = theObject.offsetWidth;
     if (tableSize > 0) { // coping with browser always returning 0 to offsetWidth
       theObject.style.height = tableSize + "px";
@@ -3022,58 +3011,57 @@ function PrintHTML() {
 
   // control buttons
 
-  numberOfButtons = 5;
-  spaceSize = 3;
-  buttonSize = (tableSize - spaceSize*(numberOfButtons - 1)) / numberOfButtons;
-  text =  '<FORM NAME="GameButtonsForm" STYLE="display:inline;">' +
-    '<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>' + 
-    '<TR><TD>' +
-    '<INPUT ID="startButton" TYPE="BUTTON" VALUE="&lt;&lt;" STYLE="';
-  if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
-  text += '"; CLASS="buttonControl" TITLE="go to game start" ' +
-    ' ID="btnGoToStart" onClick="javascript:GoToMove(StartPly)" ONFOCUS="this.blur()">' +
-    '</TD>' +
-    '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
-    '</TD><TD>' +
-    '<INPUT ID="backButton" TYPE="BUTTON" VALUE="&lt;" STYLE="';
-  if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
-  text += '"; CLASS="buttonControl" TITLE="move backward" ' +
-    ' ID="btnMoveBackward1" onClick="javascript:MoveBackward(1)" ONFOCUS="this.blur()">' +
-    '</TD>' +
-    '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
-    '</TD><TD>';
-  text += '<INPUT ID="autoplayButton" TYPE="BUTTON" VALUE=' +
-    (isAutoPlayOn ? "=" : "+") + ' STYLE="';
-  if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
-  text += isAutoPlayOn ?
-    '"; CLASS="buttonControlStop" TITLE="toggle autoplay (stop)" ' :
-    '"; CLASS="buttonControlPlay" TITLE="toggle autoplay (start)" ';
-  text += ' ID="btnPlay" NAME="AutoPlay" onClick="javascript:SwitchAutoPlay()" ONFOCUS="this.blur()">' +
-    '</TD>' +
-    '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
-    '</TD><TD>' +
-    '<INPUT ID="forwardButton" TYPE="BUTTON" VALUE="&gt;" STYLE="';
-  if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
-  text += '"; CLASS="buttonControl" TITLE="move forward" ' +
-    ' ID="btnMoveForward1" onClick="javascript:MoveForward(1)" ONFOCUS="this.blur()">' +
-    '</TD>' +
-    '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
-    '</TD><TD>' +
-    '<INPUT ID="endButton" TYPE="BUTTON" VALUE="&gt;&gt;" STYLE="';
-  if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
-  text += '"; CLASS="buttonControl" TITLE="go to game end" ' +
-    ' ID="btnGoToEnd" onClick="javascript:GoToMove(StartPly + PlyNumber)" ONFOCUS="this.blur()">' +
-    '</TD></TR></TABLE></FORM>';
+  if (theObject = document.getElementById("GameButtons")) {
+    numberOfButtons = 5;
+    spaceSize = 3;
+    buttonSize = (tableSize - spaceSize*(numberOfButtons - 1)) / numberOfButtons;
+    text =  '<FORM NAME="GameButtonsForm" STYLE="display:inline;">' +
+      '<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>' + 
+      '<TR><TD>' +
+      '<INPUT ID="startButton" TYPE="BUTTON" VALUE="&lt;&lt;" STYLE="';
+    if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
+    text += '"; CLASS="buttonControl" TITLE="go to game start" ' +
+      ' ID="btnGoToStart" onClick="javascript:GoToMove(StartPly)" ONFOCUS="this.blur()">' +
+      '</TD>' +
+      '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
+      '</TD><TD>' +
+      '<INPUT ID="backButton" TYPE="BUTTON" VALUE="&lt;" STYLE="';
+    if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
+    text += '"; CLASS="buttonControl" TITLE="move backward" ' +
+      ' ID="btnMoveBackward1" onClick="javascript:MoveBackward(1)" ONFOCUS="this.blur()">' +
+      '</TD>' +
+      '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
+      '</TD><TD>';
+    text += '<INPUT ID="autoplayButton" TYPE="BUTTON" VALUE=' +
+      (isAutoPlayOn ? "=" : "+") + ' STYLE="';
+    if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
+    text += isAutoPlayOn ?
+      '"; CLASS="buttonControlStop" TITLE="toggle autoplay (stop)" ' :
+      '"; CLASS="buttonControlPlay" TITLE="toggle autoplay (start)" ';
+    text += ' ID="btnPlay" NAME="AutoPlay" onClick="javascript:SwitchAutoPlay()" ONFOCUS="this.blur()">' +
+      '</TD>' +
+      '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
+      '</TD><TD>' +
+      '<INPUT ID="forwardButton" TYPE="BUTTON" VALUE="&gt;" STYLE="';
+    if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
+    text += '"; CLASS="buttonControl" TITLE="move forward" ' +
+      ' ID="btnMoveForward1" onClick="javascript:MoveForward(1)" ONFOCUS="this.blur()">' +
+      '</TD>' +
+      '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
+      '</TD><TD>' +
+      '<INPUT ID="endButton" TYPE="BUTTON" VALUE="&gt;&gt;" STYLE="';
+    if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
+    text += '"; CLASS="buttonControl" TITLE="go to game end" ' +
+      ' ID="btnGoToEnd" onClick="javascript:GoToMove(StartPly + PlyNumber)" ONFOCUS="this.blur()">' +
+      '</TD></TR></TABLE></FORM>';
 
-  theObject = document.getElementById("GameButtons");
-  if (theObject !== null) { theObject.innerHTML = text; }
+    theObject.innerHTML = text;
+  }
   
   // game selector
 
-  if (firstStart) { textSelectOptions=''; }
-  theObject = document.getElementById("GameSelector");
-
-  if (theObject !== null) {
+  if (theObject = document.getElementById("GameSelector")) {
+    if (firstStart) { textSelectOptions=''; }
     if (numberOfGames < 2) {
       // theObject.innerHTML = ''; // replaced with code below to cope with IE bug
       while (theObject.firstChild) { theObject.removeChild(theObject.firstChild); }
@@ -3146,88 +3134,87 @@ function PrintHTML() {
 
   // game event
 
-  theObject = document.getElementById("GameEvent");
-  if (theObject !== null) { theObject.innerHTML = gameEvent[currentGame]; }
+  if (theObject = document.getElementById("GameEvent")) 
+  { theObject.innerHTML = gameEvent[currentGame]; }
 
   // game round
 
-  theObject = document.getElementById("GameRound");
-  if (theObject !== null) { theObject.innerHTML = gameRound[currentGame]; }
+  if (theObject = document.getElementById("GameRound")) 
+  { theObject.innerHTML = gameRound[currentGame]; }
 
   // game site
 
-  theObject = document.getElementById("GameSite");
-  if (theObject !== null) { theObject.innerHTML = gameSite[currentGame]; }
+  if (theObject = document.getElementById("GameSite")) 
+  { theObject.innerHTML = gameSite[currentGame]; }
 
   // game date
 
-  theObject = document.getElementById("GameDate");
-  if (theObject !== null) { 
+  if (theObject = document.getElementById("GameDate")) { 
     theObject.innerHTML = gameDate[currentGame]; 
     theObject.style.whiteSpace = "nowrap";
   }
 
   // game white
 
-  theObject = document.getElementById("GameWhite");
-  if (theObject !== null) { theObject.innerHTML = gameWhite[currentGame]; }
+  if (theObject = document.getElementById("GameWhite"))
+  { theObject.innerHTML = gameWhite[currentGame]; }
 
   // game black
 
-  theObject = document.getElementById("GameBlack");
-  if (theObject !== null) { theObject.innerHTML = gameBlack[currentGame]; }
+  if (theObject = document.getElementById("GameBlack"))
+  { theObject.innerHTML = gameBlack[currentGame]; }
 
   // game result
 
-  theObject = document.getElementById("GameResult");
-  if (theObject !== null) {
+  if (theObject = document.getElementById("GameResult")) {
     theObject.innerHTML = gameResult[currentGame]; 
     theObject.style.whiteSpace = "nowrap";
   } 
   
   // game text
 
-  text = '<SPAN ID="ShowPgnText">';
-  for (ii = StartPly; ii < StartPly+PlyNumber; ++ii) {
-    printedComment = false;
+  if (theObject = document.getElementById("GameText")) {
+    text = '<SPAN ID="ShowPgnText">';
+    for (ii = StartPly; ii < StartPly+PlyNumber; ++ii) {
+      printedComment = false;
+      // remove PGN extension tags
+      thisComment = MoveComments[ii].replace(/\[%[^\]]*?\]\s*/g,''); // note trailing spaces also removed
+      // remove spaces only comments
+      thisComment = thisComment.replace(/^\s+$/,'');
+      if (commentsIntoMoveText && (thisComment !== '')) {
+        if (commentsOnSeparateLines && (ii > StartPly)) { 
+          text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
+        }
+        text += '<SPAN CLASS="comment">' + thisComment + '</SPAN><SPAN CLASS="move"> </SPAN>';
+        if (commentsOnSeparateLines) { 
+          text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
+        }
+        printedComment = true;
+      }
+      var moveCount = Math.floor(ii/2)+1;
+      text += '<SPAN STYLE="white-space: nowrap;">';
+      if (ii%2 === 0){
+        text += '<SPAN CLASS="move">' + moveCount + '.&nbsp;</SPAN>';
+      } else {
+        if ((printedComment) || (ii == StartPly)) { text += '<SPAN CLASS="move">' + moveCount + '...&nbsp;</SPAN>'; }
+      }
+      jj = ii+1;
+      text += '<A HREF="javascript:GoToMove(' + jj + ')" CLASS="move" ID="Mv' + jj + 
+        '" ONFOCUS="this.blur()">' + Moves[ii] + '</A></SPAN>' +
+        '<SPAN CLASS="move"> </SPAN>';
+    }
     // remove PGN extension tags
-    thisComment = MoveComments[ii].replace(/\[%[^\]]*?\]\s*/g,''); // note trailing spaces also removed
+    thisComment = MoveComments[StartPly+PlyNumber].replace(/\[%.*?\]\s*/g,''); // note trailing spaces also removed
     // remove spaces only comments
     thisComment = thisComment.replace(/^\s+$/,'');
     if (commentsIntoMoveText && (thisComment !== '')) {
-      if (commentsOnSeparateLines && (ii > StartPly)) { 
-        text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
-      }
+      if (commentsOnSeparateLines) { text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>'; }
       text += '<SPAN CLASS="comment">' + thisComment + '</SPAN><SPAN CLASS="move"> </SPAN>';
-      if (commentsOnSeparateLines) { 
-        text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
-      }
-      printedComment = true;
     }
-    var moveCount = Math.floor(ii/2)+1;
-    text += '<SPAN STYLE="white-space: nowrap;">';
-    if (ii%2 === 0){
-      text += '<SPAN CLASS="move">' + moveCount + '.&nbsp;</SPAN>';
-    } else {
-      if ((printedComment) || (ii == StartPly)) { text += '<SPAN CLASS="move">' + moveCount + '...&nbsp;</SPAN>'; }
-    }
-    jj = ii+1;
-    text += '<A HREF="javascript:GoToMove(' + jj + ')" CLASS="move" ID="Mv' + jj + 
-      '" ONFOCUS="this.blur()">' + Moves[ii] + '</A></SPAN>' +
-      '<SPAN CLASS="move"> </SPAN>';
-  }
-  // remove PGN extension tags
-  thisComment = MoveComments[StartPly+PlyNumber].replace(/\[%.*?\]\s*/g,''); // note trailing spaces also removed
-  // remove spaces only comments
-  thisComment = thisComment.replace(/^\s+$/,'');
-  if (commentsIntoMoveText && (thisComment !== '')) {
-    if (commentsOnSeparateLines) { text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>'; }
-    text += '<SPAN CLASS="comment">' + thisComment + '</SPAN><SPAN CLASS="move"> </SPAN>';
-  }
-  text += '</SPAN>';
+    text += '</SPAN>';
 
-  theObject = document.getElementById("GameText");
-  if (theObject !== null) { theObject.innerHTML = text; }
+    theObject.innerHTML = text;
+  }
 
   // gamee searchbox
 

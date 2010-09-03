@@ -34,12 +34,12 @@
 // SetLiveBroadcast(0, false, false); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false)
 
 function customFunctionOnPgnGameLoad() {
-  theObject = document.getElementById('GameFEN');
-  if (theObject) { theObject.innerHTML = gameFEN[currentGame].match(/\s*\S*/); }
-  theObject = document.getElementById('GameWhite');
-  if (theObject) { theObject.innerHTML = theObject.innerHTML.match(/\s*[^,]*/); }
-  theObject = document.getElementById('GameBlack');
-  if (theObject) { theObject.innerHTML = theObject.innerHTML.match(/\s*[^,]*/); }
+  if (theObject = document.getElementById('GameFEN'))
+  { theObject.innerHTML = gameFEN[currentGame].match(/\s*\S*/); }
+  if (theObject = document.getElementById('GameWhite'))
+  { theObject.innerHTML = theObject.innerHTML.match(/\s*[^,]*/); }
+  if (theObject = document.getElementById('GameBlack'))
+  { theObject.innerHTML = theObject.innerHTML.match(/\s*[^,]*/); }
 }
 
 </script>

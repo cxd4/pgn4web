@@ -548,24 +548,26 @@ function update_suggested_iframe_dimensions() {
     document.getElementById('frameWidth_helpText').innerHTML = "a number or <a class='helplink' style='font-weight: bold;' href='' onClick='javascript:document.board.frameWidth.value = \"board\"; return false;'>board</a> or <a class='helplink' style='font-weight: bold;' href='' onClick='javascript:document.board.frameWidth.value = \"page\"; return false;'>page</a>; min " + min_frameWidth + "; when <a class='helplink' href='' onClick='javascript:document.board.frameWidth.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
   }
 
-  theObject = document.getElementById('frameWidth');
-  if (theObject.value !== ""){ 
-    if (!theObject.value.match('/^[^0-9]$/')) { 
-      if (theObject.value < min_frameWidth) { 
-        alert('error: iFrame width too small');
-        theObject.value = "";
-      }
-    } else { alert('error: invalid iFrame width value'); }
-  } 
+  if (theObject = document.getElementById('frameWidth')) {
+    if (theObject.value !== ""){ 
+      if (!theObject.value.match('/^[^0-9]$/')) { 
+        if (theObject.value < min_frameWidth) { 
+          alert('error: iFrame width too small');
+          theObject.value = "";
+        }
+      } else { alert('error: invalid iFrame width value'); }
+    }
+  }
   
-  theObject = document.getElementById('frameHeight');
-  if (theObject.value !== "") { 
-    if (!theObject.value.match('/^[^0-9]$/')) { 
-      if (theObject.value < min_frameHeight) { 
-        alert('error: iFrame height too small');
-        theObject.value = "";
-      }
-    } else { alert('error: invalid iFrame height value'); }
+  if (theObject = document.getElementById('frameHeight')) {
+    if (theObject.value !== "") { 
+      if (!theObject.value.match('/^[^0-9]$/')) { 
+        if (theObject.value < min_frameHeight) { 
+          alert('error: iFrame height too small');
+          theObject.value = "";
+        }
+      } else { alert('error: invalid iFrame height value'); }
+    }
   }
 
 }

@@ -69,21 +69,17 @@
    SetShortcutKeysEnabled(true);
 
    function customFunctionOnPgnTextLoad() {
-     theObject = document.getElementById('numGm');
-     if (theObject) { theObject.innerHTML = numberOfGames; }
+     if (theObject = document.getElementById('numGm')) { theObject.innerHTML = numberOfGames; }
      searchPgnGame(pgnSearchTarget);
    }
 
    function customFunctionOnPgnGameLoad() {
-     theObject = document.getElementById('currGm');
-     if (theObject) { theObject.innerHTML = currentGame+1; }
-     theObject = document.getElementById('numPly');
-     if (theObject) { theObject.innerHTML = PlyNumber; }
+     if (theObject = document.getElementById('currGm')) { theObject.innerHTML = currentGame+1; }
+     if (theObject = document.getElementById('numPly')) { theObject.innerHTML = PlyNumber; }
    }
 
    function customFunctionOnMove() {
-     theObject = document.getElementById('currPly');
-     if (theObject) { theObject.innerHTML = CurrentPly; }
+     if (theObject = document.getElementById('currPly')) { theObject.innerHTML = CurrentPly; }
    }
 
 </script>
