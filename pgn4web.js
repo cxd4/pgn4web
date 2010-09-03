@@ -3131,8 +3131,8 @@ function PrintHTML() {
           // replace spaces with &nbsp; 
           textSelectOptions += textSO.replace(/ /g, '&nbsp;');
         }
-      text += textSelectOptions + '</SELECT></FORM>';
-      theObject.innerHTML = text; 
+        text += textSelectOptions + '</SELECT></FORM>';
+        theObject.innerHTML = text; 
       }
     }
   }
@@ -3208,8 +3208,8 @@ function PrintHTML() {
         '" ONFOCUS="this.blur()">' + Moves[ii] + '</A></SPAN>' +
         '<SPAN CLASS="move"> </SPAN>';
     }
-    // remove PGN extension tags
-    thisComment = MoveComments[StartPly+PlyNumber].replace(/\[%.*?\]\s*/g,''); // note trailing spaces also removed
+    // remove PGN extension tags and trailing spaces
+    thisComment = MoveComments[StartPly+PlyNumber].replace(/\[%.*?\]\s*/g,'');
     // remove spaces only comments
     thisComment = thisComment.replace(/^\s+$/,'');
     if (commentsIntoMoveText && (thisComment !== '')) {
@@ -3221,10 +3221,9 @@ function PrintHTML() {
     theObject.innerHTML = text;
   }
 
-  // gamee searchbox
+  // game searchbox
 
-  theObject = document.getElementById("GameSearch");
-  if ((firstStart) && (theObject !== null)) {
+  if ((theObject = document.getElementById("GameSearch")) && firstStart) {
     if (numberOfGames < 2) {
       // theObject.innerHTML = ''; // replaced with code below to cope with IE bug
       while (theObject.firstChild) { theObject.removeChild(theObject.firstChild); }
@@ -3294,9 +3293,9 @@ function SetAutoPlay(vv) {
   if (isAutoPlayOn){
     if (document.GameButtonsForm) {
       if (document.GameButtonsForm.AutoPlay) {
-        document.GameButtonsForm.AutoPlay.value="=";
-        document.GameButtonsForm.AutoPlay.title="toggle autoplay (stop)";
-        document.GameButtonsForm.AutoPlay.className="buttonControlStop";
+        document.GameButtonsForm.AutoPlay.value = "=";
+        document.GameButtonsForm.AutoPlay.title = "toggle autoplay (stop)";
+        document.GameButtonsForm.AutoPlay.className = "buttonControlStop";
       }
     }
     if (CurrentPly < StartPly+PlyNumber) { AutoPlayInterval=setTimeout("MoveForward(1)", Delay); }
@@ -3307,9 +3306,9 @@ function SetAutoPlay(vv) {
   } else { 
     if (document.GameButtonsForm) {
       if (document.GameButtonsForm.AutoPlay) {
-        document.GameButtonsForm.AutoPlay.value="+";
-        document.GameButtonsForm.AutoPlay.title="toggle autoplay (start)";
-        document.GameButtonsForm.AutoPlay.className="buttonControlPlay";
+        document.GameButtonsForm.AutoPlay.value = "+";
+        document.GameButtonsForm.AutoPlay.title = "toggle autoplay (start)";
+        document.GameButtonsForm.AutoPlay.className = "buttonControlPlay";
       }
     }
   }
@@ -3363,15 +3362,15 @@ function StoreMove(thisPly) {
   HistRow[2][thisPly] = mvToRow;
 
   if (mvIsCastling) {
-     HistPieceId[1][thisPly] = castleRook;
-     HistCol[1][thisPly] = PieceCol[MoveColor][castleRook];
-     HistRow[1][thisPly] = PieceRow[MoveColor][castleRook];
-     HistType[1][thisPly] = PieceType[MoveColor][castleRook];
+    HistPieceId[1][thisPly] = castleRook;
+    HistCol[1][thisPly] = PieceCol[MoveColor][castleRook];
+    HistRow[1][thisPly] = PieceRow[MoveColor][castleRook];
+    HistType[1][thisPly] = PieceType[MoveColor][castleRook];
   } else if (mvCapturedId >= 0) {
-     HistPieceId[1][thisPly] = mvCapturedId+16;
-     HistCol[1][thisPly] = PieceCol[1-MoveColor][mvCapturedId];
-     HistRow[1][thisPly] = PieceRow[1-MoveColor][mvCapturedId];
-     HistType[1][thisPly] = PieceType[1-MoveColor][mvCapturedId];
+    HistPieceId[1][thisPly] = mvCapturedId+16;
+    HistCol[1][thisPly] = PieceCol[1-MoveColor][mvCapturedId];
+    HistRow[1][thisPly] = PieceRow[1-MoveColor][mvCapturedId];
+    HistType[1][thisPly] = PieceType[1-MoveColor][mvCapturedId];
   } else {
     HistPieceId[1][thisPly] = -1;
   }
@@ -3380,7 +3379,7 @@ function StoreMove(thisPly) {
   Board[PieceCol[MoveColor][mvPieceId]][PieceRow[MoveColor][mvPieceId]] = 0;
 
   // mark the captured piece
-  if (mvCapturedId >=0) {
+  if (mvCapturedId >= 0) {
      PieceType[1-MoveColor][mvCapturedId] = -1;
      PieceMoveCounter[1-MoveColor][mvCapturedId]++;
      Board[PieceCol[1-MoveColor][mvCapturedId]][PieceRow[1-MoveColor][mvCapturedId]] = 0;
@@ -3399,7 +3398,7 @@ function StoreMove(thisPly) {
 
   // update board
   Board[mvToCol][mvToRow] = PieceType[MoveColor][mvPieceId]*(1-2*MoveColor);
-  if (mvIsCastling){
+  if (mvIsCastling) {
     Board[PieceCol[MoveColor][castleRook]][PieceRow[MoveColor][castleRook]] =
       PieceType[MoveColor][castleRook]*(1-2*MoveColor);
   }
@@ -3419,7 +3418,7 @@ function UndoMove(thisPly) {
   PieceMoveCounter[MoveColor][mvPieceId]--;
 
   // capture/castle: bring captured/rook back
-  if (mvCapturedId >=0) {
+  if (mvCapturedId >= 0) {
      PieceType[1-MoveColor][mvCapturedId] = mvCapturedId;
      PieceCol[1-MoveColor][mvCapturedId] = HistCol[1][thisPly];
      PieceRow[1-MoveColor][mvCapturedId] = HistRow[1][thisPly];
