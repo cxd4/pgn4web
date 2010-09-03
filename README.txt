@@ -337,7 +337,7 @@ Please email me for review any PGN file that pgn4web fails parsing correctly.
 
 CHESS960 SUPPORT
 
-pgn4web supports Chess960 (a.k.a Fischer random chess) and understands both 
+pgn4web supports Chess960 (a.k.a. Fischer random chess) and understands both 
 the X-FEN and the Shredder-FEN extensions to the FEN notation.
 
 JAVASCRIPT CODING
