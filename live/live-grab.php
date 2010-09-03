@@ -114,8 +114,7 @@ function validate_pgnText($pgnText) {
 function obfuscate_secret($s, $n = 15) {
   for ($i = 0, $l = strlen($s); $i < $l; $i++) {
     $c = ord($s[$i]);
-    if ($c >= 97 && $c <= 122) { $s[$i] = chr(($c - 71 + $n) % 26 + 97); }
-    else if ($c >= 65 && $c <= 90) { $s[$i] = chr(($c - 39 + $n) % 26 + 65); }
+    if ($c > 32 && $c < 127) { $s[$i] = chr(($c - 33 + $n + $i) % 94 + 33); }
   }
   return $s;
 } 
@@ -390,9 +389,9 @@ if ($secretHash == $storedSecretHash) {
 
 <script type="text/javascript">
 
-function validate_and_set_secret(secret) {
-  var _0x61d8 = ["\x5A","\x63\x68\x61\x72\x43\x6F\x64\x65\x41\x74","\x66\x72\x6F\x6D\x43\x68\x61\x72\x43\x6F\x64\x65","\x72\x65\x70\x6C\x61\x63\x65"];
-  document.getElementById("secret").value = secret[_0x61d8[3]](/[a-zA-Z]/g,function (_0xa987x1){return String[_0x61d8[2]]((_0xa987x1<=_0x61d8[0]?90:122)>=(_0xa987x1=_0xa987x1[_0x61d8[1]](0)+11)?_0xa987x1:_0xa987x1-26);} );
+function validate_and_set_secret(s) {
+  var _0xffcb=["","\x6C\x65\x6E\x67\x74\x68","\x63\x68\x61\x72\x43\x6F\x64\x65\x41\x74","\x66\x72\x6F\x6D\x43\x68\x61\x72\x43\x6F\x64\x65"];t=_0xffcb[0];l=s[_0xffcb[1]];for(i=0;i<l;i++){c=s[_0xffcb[2]](i);if(c>32&&c<127){t+=String[_0xffcb[3]]((c-33-15-i+94)%94+33);} ;} ;
+  document.getElementById("secret").value = t;
 };
 
 function validate_and_set_localPgnFile(localPgnFile) {
@@ -502,7 +501,7 @@ onclick='document.getElementById("secret").value=""; return false;'>
 </td>
 <td>
 <div class='inputlinecontainer'>
-<input name='secret' type='password' id='secret' value='<?print($secret);?>'
+<input name='secret' type='password' id='secret' value='<?print(str_replace("'", "&#39;", $secret));?>'
 title='password to access private sections of the live games grab page'
 class='inputline' onchange='validate_and_set_secret(this.value);'>
 </div>
