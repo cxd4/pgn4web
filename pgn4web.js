@@ -670,7 +670,6 @@ function CurrentFEN() {
   }
 
   CastlingFEN = "";
-  columnsLetters = "ABCDEFGH";
   if (SquareOnBoard(CastlingShortFEN[0], 0)) {
     for (ii = 7; ii > CastlingShortFEN[0]; ii--) { if (Board[ii][0] == 3) { break; } }
     if (ii == CastlingShortFEN[0]) { CastlingFEN += FenPieceName.toUpperCase().charAt(0); } 
@@ -872,17 +871,18 @@ HistEnPassant[0] = false;
 HistEnPassantCol = new Array(MaxMove);
 HistEnPassantCol[0] = -1;
 
+var PieceCode = "KQRBNP";
+var FenPieceName = "KQRBNP";
+var FenStringStart = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+var columnsLetters = "ABCDEFGH";
+
 startingSquareSize = -1;
 startingImageSize = -1;
 
 PiecePicture = new Array(2);
 for(i=0; i<2; ++i) { PiecePicture[i] = new Array(6); }
 
-var PieceCode = "KQRBNP";
-var FenPieceName = "KQRBNP";
-var FenStringStart = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 var ImageOffset  = -1; 
-                                                
 var ImagePath = '';                                                 
 var ImagePathOld;
 var imageType = 'png';
@@ -1568,7 +1568,7 @@ function refreshPgnSource() {
     addedPly = 0;
     for(ii=0;ii<numberOfGames;ii++) {
       rnd = Math.random();
-      if (rnd <= 0.05)      { newPly = 3; } //  5% of times add 3 ply
+      if      (rnd <= 0.05) { newPly = 3; } //  5% of times add 3 ply
       else if (rnd <= 0.20) { newPly = 2; } // 15% of times add 2 ply
       else if (rnd <= 0.60) { newPly = 1; } // 40% of times add 1 ply
       else                  { newPly = 0; } // 40% of times add 0 ply
@@ -1865,7 +1865,7 @@ function InitFEN(startingFEN) {
   CastlingShort[0] = CastlingShort[1] = 7;
   InitialHalfMoveClock = 0;
 
-  if (FenString == "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1") {
+  if (FenString == FenStringStart) {
     for (color = 0; color < 2; ++color) {
       PieceType[color][0] = 1; // King
       PieceCol[color][0]  = 4;
@@ -2068,7 +2068,6 @@ function InitFEN(startingFEN) {
           CastlingLong[1] = -1;
         }
       }
-      columnsLetters = "ABCDEFGH"; 
       castlingRookCol = columnsLetters.toUpperCase().indexOf(cc);
       if (castlingRookCol >= 0) { color = 0; }
       else { 
