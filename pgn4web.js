@@ -586,9 +586,11 @@ function displayDebugInfo() {
   }
   if (confirm(debugInfo + '\n\nclick OK to show this debug info in a browser window for cut and paste')) {
     if (debugWin && !debugWin.closed) { debugWin.close(); }
-    debugWin = window.open("", "debug_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
+    debugWin = window.open("", "debug_data",
+      "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
     if (debugWin !== null) {
-      text = "<html><head><title>pgn4web debug info</title><link rel='shortcut icon' href='pawn.ico' /></head>" +
+      text = "<html><head><title>pgn4web debug info</title>" +
+        "<link rel='shortcut icon' href='pawn.ico' /></head>" +
         "<body>\n<pre>\n" + debugInfo + "\n</pre>\n</body></html>";
       debugWin.document.open("text/html", "replace");
       debugWin.document.write(text);
@@ -603,10 +605,11 @@ pgnWin = null;
 function displayPgnData(allGames) {
   if (allGames === null) { allGames = true; }
   if (pgnWin && !pgnWin.closed) { pgnWin.close(); }
-  pgnWin = window.open("", "pgn_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
+  pgnWin = window.open("", "pgn_data",
+    "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if (pgnWin !== null) {
-    text = "<html><head><title>pgn4web PGN source</title><link rel='shortcut icon' href='pawn.ico' />" +
-      "</head><body>\n<pre>\n";
+    text = "<html><head><title>pgn4web PGN source</title>" + 
+      "<link rel='shortcut icon' href='pawn.ico' /></head><body>\n<pre>\n";
     if (allGames) { for (ii = 0; ii < numberOfGames; ++ii) { text += pgnGame[ii]; } }
     else { text += pgnGame[currentGame]; }
     text += "\n</pre>\n</body></html>";
@@ -667,26 +670,26 @@ function CurrentFEN() {
   }
 
   CastlingFEN = "";
-  columnsLetters = "ABCDEFGHabcdefgh";
-  if ((CastlingShortFEN[0] >= 0) && (CastlingShortFEN[0] <= 7)) {
+  columnsLetters = "ABCDEFGH";
+  if (SquareOnBoard(CastlingShortFEN[0], 0)) {
     for (ii = 7; ii > CastlingShortFEN[0]; ii--) { if (Board[ii][0] == 3) { break; } }
     if (ii == CastlingShortFEN[0]) { CastlingFEN += FenPieceName.toUpperCase().charAt(0); } 
-    else { CastlingFEN += columnsLetters.charAt(CastlingShortFEN[0]); } 
+    else { CastlingFEN += columnsLetters.toUpperCase().charAt(CastlingShortFEN[0]); } 
   }
-  if ((CastlingLongFEN[0] >= 0) && (CastlingLongFEN[0] <= 7)) { 
+  if (SquareOnBoard(CastlingLongFEN[0], 0)) {
     for (ii = 0; ii < CastlingLongFEN[0]; ii++) { if (Board[ii][0] == 3) { break; } }
     if (ii == CastlingLongFEN[0]) { CastlingFEN += FenPieceName.toUpperCase().charAt(1); }
-    else { CastlingFEN += columnsLetters.charAt(CastlingLongFEN[0]); }
+    else { CastlingFEN += columnsLetters.toUpperCase().charAt(CastlingLongFEN[0]); }
   }
-  if ((CastlingShortFEN[1] >= 0) && (CastlingShortFEN[1] <= 7)) {
+  if (SquareOnBoard(CastlingShortFEN[1], 7)) {
     for (ii = 7; ii > CastlingShortFEN[1]; ii--) { if (Board[ii][7] == -3) { break; } }
     if (ii == CastlingShortFEN[1]) { CastlingFEN += FenPieceName.toLowerCase().charAt(0); }
-    else { CastlingFEN += columnsLetters.charAt(8 + CastlingShortFEN[1]); }
+    else { CastlingFEN += columnsLetters.toLowerCase().charAt(CastlingShortFEN[1]); }
   }
-  if ((CastlingLongFEN[1] >= 0) && (CastlingLongFEN[1] <= 7)) {
+  if (SquareOnBoard(CastlingLongFEN[1], 7)) {
     for (ii = 0; ii < CastlingLongFEN[1]; ii++) { if (Board[ii][7] == -3) { break; } }
     if (ii == CastlingLongFEN[1]) { CastlingFEN += FenPieceName.toLowerCase().charAt(1); }
-    else { CastlingFEN += columnsLetters.charAt(8 + CastlingLongFEN[1]); }
+    else { CastlingFEN += columnsLetters.toLowerCase().charAt(CastlingLongFEN[1]); }
   }
   if (CastlingFEN === "") { CastlingFEN = "-"; }
   currentFEN += " " + CastlingFEN;
@@ -2065,11 +2068,14 @@ function InitFEN(startingFEN) {
           CastlingLong[1] = -1;
         }
       }
-      columnsLetters = "ABCDEFGHabcdefgh"; 
-      castlingRookCol = columnsLetters.indexOf(cc);
+      columnsLetters = "ABCDEFGH"; 
+      castlingRookCol = columnsLetters.toUpperCase().indexOf(cc);
+      if (castlingRookCol >= 0) { color = 0; }
+      else { 
+        castlingRookCol = columnsLetters.toLowerCase().indexOf(cc);
+        if (castlingRookCol >= 0) { color = 1; }
+      }
       if (castlingRookCol >= 0) {
-        if (castlingRookCol > 7) { color = 1; castlingRookCol -= 8; }
-        else { color = 0;}
         if (Board[castlingRookCol][color*7] == (1-2*color) * 3) {
           if (castlingRookCol > PieceCol[color][0]) { CastlingShort[color] = castlingRookCol; }
           if (castlingRookCol < PieceCol[color][0]) { CastlingLong[color] = castlingRookCol; }
