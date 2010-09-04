@@ -1360,7 +1360,7 @@ function highlightSquare(col, row, on) {
   // locates coordinates on HTML table
   if (IsRotated) { trow = row; tcol = 7 - col; }
   else { trow = 7 - row; tcol = col; }
-  if (theObject = document.getElementById('tcol' + tcol + 'trow' + trow)) { return false; }
+  if (!(theObject = document.getElementById('tcol' + tcol + 'trow' + trow))) { return false; }
   if (on) { theObject.className = (trow+tcol)%2 === 0 ? "highlightWhiteSquare" : "highlightBlackSquare"; }
   else { theObject.className = (trow+tcol)%2 === 0 ? "whiteSquare" : "blackSquare"; }
   return true;
