@@ -882,7 +882,6 @@ startingImageSize = -1;
 PiecePicture = new Array(2);
 for(i=0; i<2; ++i) { PiecePicture[i] = new Array(6); }
 
-var ImageOffset  = -1; 
 var ImagePath = '';                                                 
 var ImagePathOld;
 var imageType = 'png';
@@ -910,7 +909,6 @@ var CurrentPly;
 var IsRotated = false;
 
 ClearImg = new Image();
-DocumentImages = new Array();
 
 var pgnHeaderTagRegExp       = /\[\s*(\w+)\s*"([^"]*)"\s*\]/; 
 var pgnHeaderTagRegExpGlobal = /\[\s*(\w+)\s*"([^"]*)"\s*\]/g;
@@ -1806,7 +1804,7 @@ function Init(nextGame){
 
   if (isAutoPlayOn) { SetAutoPlay(false); }
   InitImages();
-  if (firstStart){
+  if (firstStart) {
     LoadGameHeaders();
     setCurrentGameFromInitialGame();
   }
@@ -1816,16 +1814,6 @@ function Init(nextGame){
   
   OpenGame(currentGame);
   
-  // find index of first square image
-  if (ImageOffset < 0) {
-    for (ii = 0; ii < document.images.length; ++ii) {
-      if (document.images[ii].src == ClearImg.src) {
-        ImageOffset = ii;
-        break;
-      }
-    }
-  }
-
   RefreshBoard();
   CurrentPly = StartPly;
   HighlightLastMove(); 
@@ -2136,8 +2124,6 @@ function SetImageType(extension) {
 }
 
 function InitImages() {
-  DocumentImages.length = 0;
-  
   if (ImagePathOld == ImagePath) { return; }
 
   if ((ImagePath.length > 0) && (ImagePath[ImagePath.length-1] != '/')) {
@@ -2969,7 +2955,7 @@ function searchPgnGameForm() {
 }
 
 
-var tableSize = null;
+var tableSize = 0;
 function PrintHTML() {
   var ii, jj;
   var text;
@@ -2978,8 +2964,7 @@ function PrintHTML() {
 
   if (theObject = document.getElementById("GameBoard")) {
     text = '<TABLE CLASS="boardTable" ID="boardTable" CELLSPACING=0 CELLPADDING=0';
-    text += ((tableSize !== null) && (tableSize !== 0)) ?
-      ' STYLE="width: ' + tableSize + 'px; height: ' + tableSize + 'px;">' : '>';
+    text += (tableSize > 0) ? ' STYLE="width: ' + tableSize + 'px; height: ' + tableSize + 'px;">' : '>';
     for (ii = 0; ii < 8; ++ii) {
       text += '<TR>';
       for (jj = 0; jj < 8; ++jj) {
@@ -2998,7 +2983,7 @@ function PrintHTML() {
           'STYLE="text-decoration: none; outline: none;" ' +
           'ONFOCUS="this.blur()">' + 
           '<IMG CLASS="pieceImage" ID="' + imageId + '" ' + 
-          ' SRC="'+ImagePath+'clear.'+imageType+'" BORDER=0></A></TD>';
+          ' SRC="'+ ClearImg.src +'" BORDER=0></A></TD>';
       }
       text += '</TR>';
     }
@@ -3020,7 +3005,7 @@ function PrintHTML() {
     numberOfButtons = 5;
     spaceSize = 3;
     buttonSize = (tableSize - spaceSize*(numberOfButtons - 1)) / numberOfButtons;
-    text =  '<FORM NAME="GameButtonsForm" STYLE="display:inline;">' +
+    text = '<FORM NAME="GameButtonsForm" STYLE="display:inline;">' +
       '<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>' + 
       '<TR><TD>' +
       '<INPUT ID="startButton" TYPE="BUTTON" VALUE="&lt;&lt;" STYLE="';
@@ -3055,7 +3040,7 @@ function PrintHTML() {
       '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
       '</TD><TD>' +
       '<INPUT ID="endButton" TYPE="BUTTON" VALUE="&gt;&gt;" STYLE="';
-    if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
+    if (buttonSize > 0) { text += 'width: ' + buttonSize + 'px;'; }
     text += '"; CLASS="buttonControl" TITLE="go to game end" ' +
       ' ID="btnGoToEnd" onClick="javascript:GoToMove(StartPly + PlyNumber)" ONFOCUS="this.blur()">' +
       '</TD></TR></TABLE></FORM>';
@@ -3076,7 +3061,7 @@ function PrintHTML() {
         if (gameSelectorNum) { gameSelectorNumLenght = Math.floor(Math.log(numberOfGames)/Math.log(10)) + 1; }
         text = '<FORM NAME="GameSel" STYLE="display:inline;"> ' +
           '<SELECT ID="GameSelSelect" NAME="GameSelSelect" STYLE="';
-        if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + tableSize + 'px; '; }
+        if (tableSize > 0) { text += 'width: ' + tableSize + 'px; '; }
         text += 'font-family: monospace;" CLASS="selectControl" TITLE="Select a game" ' +
           'ONCHANGE="this.blur(); if(this.value >= 0) { Init(this.value); this.value = -1; }" ' +
           'ONFOCUS="disableShortcutKeysAndStoreStatus();" ONBLUR="restoreShortcutKeysStatus();" ' +
@@ -3231,7 +3216,7 @@ function PrintHTML() {
       text = '<FORM ID="searchPgnForm" STYLE="display: inline;" ' +
         'ACTION="javascript:searchPgnGameForm();">';
       text += '<INPUT ID="searchPgnButton" CLASS="searchPgnButton" STYLE="display: inline; ';
-      if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + (tableSize/4) + 'px; '; }
+      if (tableSize > 0) { text += 'width: ' + (tableSize/4) + 'px; '; }
       text += '" TITLE="find games matching the search string (or regular expression)" ' +
         'TYPE="submit" VALUE="?">' +
         '<INPUT ID="searchPgnExpression" CLASS="searchPgnExpression" ' +
@@ -3260,14 +3245,11 @@ function FlipBoard() {
 function RefreshBoard() {
   InitImages();
 
-  // display all squares empty
+  // display all empty squares
   var col, row, square;
   for (col = 0; col < 8;++col) {
     for (row = 0; row < 8; ++row) {
-      if (Board[col][row] === 0) {
-        square = IsRotated ? 63-col-(7-row)*8 : col+(7-row)*8;
-	SetImage(square, ClearImg.src);
-      }
+      if (Board[col][row] === 0) { SetImage(col, row, ClearImg.src); }
     }
   }
 
@@ -3276,10 +3258,7 @@ function RefreshBoard() {
   for (color = 0; color < 2; ++color) {
     for (ii = 0; ii < 16; ++ii) {
       if (PieceType[color][ii] > 0) {
-        square = IsRotated ? 
-          63-PieceCol[color][ii] - (7-PieceRow[color][ii])*8 :
-          PieceCol[color][ii] + (7-PieceRow[color][ii])*8;
-        SetImage(square, PiecePicture[color][PieceType[color][ii]].src);
+        SetImage(PieceCol[color][ii], PieceRow[color][ii], PiecePicture[color][PieceType[color][ii]].src);
       }
     }
   }
@@ -3330,10 +3309,11 @@ function SetLiveBroadcast(delay, alertFlag, demoFlag) {
   LiveBroadcastDemo = (demoFlag === true);
 }
 
-function SetImage(square, image) {
-  if (DocumentImages[square] != image) {
-    document.images[square+ImageOffset].src = image;
-    DocumentImages[square] = image;
+function SetImage(col, row, image) {
+  if (IsRotated) { trow = row; tcol = 7 - col; }
+  else { trow = 7 - row; tcol = col; }
+  if (theObject = document.getElementById('img_' + 'tcol' + tcol + 'trow' + trow)) {
+    if (theObject.src != image) { theObject.src = image; }
   }
 }
 
