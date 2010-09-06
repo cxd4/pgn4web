@@ -41,7 +41,8 @@ function start_pgn4web() {
   // keep startup logs at first run
   // reset alert log when reloading start_pgn4web
   if (alertFirstResetLoadingPgn) { alertFirstResetLoadingPgn = false; }
-  else { resetAlert(); } 
+  else { resetAlert(); }
+  InitImages(); 
   createBoard();
   if (LiveBroadcastDelay > 0) { restartLiveBroadcastTimeout(); }
 }
@@ -883,7 +884,7 @@ PiecePicture = new Array(2);
 for(i=0; i<2; ++i) { PiecePicture[i] = new Array(6); }
 
 var ImagePath = '';                                                 
-var ImagePathOld;
+var ImagePathOld = null;
 var imageType = 'png';
 var defaultImagesSize = 40;
 
@@ -907,8 +908,6 @@ var StartPly;
 var CurrentPly;
 
 var IsRotated = false;
-
-ClearImg = new Image();
 
 var pgnHeaderTagRegExp       = /\[\s*(\w+)\s*"([^"]*)"\s*\]/; 
 var pgnHeaderTagRegExpGlobal = /\[\s*(\w+)\s*"([^"]*)"\s*\]/g;
@@ -1803,7 +1802,8 @@ function Init(nextGame){
   }
 
   if (isAutoPlayOn) { SetAutoPlay(false); }
-  InitImages();
+
+//PAOLO  InitImages();
   if (firstStart) {
     LoadGameHeaders();
     setCurrentGameFromInitialGame();
@@ -2124,12 +2124,13 @@ function SetImageType(extension) {
 }
 
 function InitImages() {
-  if (ImagePathOld == ImagePath) { return; }
+  if (ImagePathOld === ImagePath) { return; }
 
   if ((ImagePath.length > 0) && (ImagePath[ImagePath.length-1] != '/')) {
     ImagePath += '/';
   }
 
+  ClearImg = new Image();
   ClearImg.src = ImagePath+'clear.'+imageType;
 
   var color;
@@ -3243,7 +3244,6 @@ function FlipBoard() {
 }
 
 function RefreshBoard() {
-  InitImages();
 
   // display all empty squares
   var col, row, square;
