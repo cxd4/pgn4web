@@ -11,7 +11,7 @@ var pgn4web_project_url = 'http://pgn4web.casaschi.net';
 var pgn4web_project_author = 'Paolo Casaschi';
 // pgn4web_project_email could be preassigned in pgn4web-server-config.js
 var pgn4web_project_email;
-if (pgn4web_project_email == undefined) { pgn4web_project_email = 'pgn4web@casaschi.net'; }
+if (pgn4web_project_email === undefined) { pgn4web_project_email = 'pgn4web@casaschi.net'; }
 
 var helpWin=null;
 function displayHelp(section){
@@ -1241,7 +1241,7 @@ function HighlightLastMove() {
 
   var theShowCommentTextObject = document.getElementById("GameLastComment");
   if (theShowCommentTextObject !== null) {
-    if (MoveComments[showThisMove+1] != undefined) {
+    if (MoveComments[showThisMove+1] !== undefined) {
       // remove PGN extension tags
       thisComment = MoveComments[showThisMove+1].replace(/\[%[^\]]*\]\s*/g,''); // trailing spaces also removed
       // remove spaces only comments
@@ -1314,10 +1314,10 @@ function HighlightLastMove() {
         highlightColFrom = highlightRowFrom = -1;
         highlightColTo   = highlightRowTo   = -1;
       } else {
-        highlightColFrom = HistCol[0][showThisMove] == undefined ? -1 : HistCol[0][showThisMove];
-        highlightRowFrom = HistRow[0][showThisMove] == undefined ? -1 : HistRow[0][showThisMove];
-        highlightColTo   = HistCol[2][showThisMove] == undefined ? -1 : HistCol[2][showThisMove];
-        highlightRowTo   = HistRow[2][showThisMove] == undefined ? -1 : HistRow[2][showThisMove];
+        highlightColFrom = HistCol[0][showThisMove] === undefined ? -1 : HistCol[0][showThisMove];
+        highlightRowFrom = HistRow[0][showThisMove] === undefined ? -1 : HistRow[0][showThisMove];
+        highlightColTo   = HistCol[2][showThisMove] === undefined ? -1 : HistCol[2][showThisMove];
+        highlightRowTo   = HistRow[2][showThisMove] === undefined ? -1 : HistRow[2][showThisMove];
       }
       highlightMove(highlightColFrom, highlightRowFrom, highlightColTo, highlightRowTo);
     }
@@ -1352,7 +1352,7 @@ function highlightMove(colFrom, rowFrom, colTo, rowTo) {
 }
 
 function highlightSquare(col, row, on) {
-  if ((col == undefined) || (row == undefined)) { return false; }
+  if ((col === undefined) || (row === undefined)) { return false; }
   if (! SquareOnBoard(col, row)) { return false; }
   // locates coordinates on HTML table
   if (IsRotated) { trow = row; tcol = 7 - col; }
@@ -1517,7 +1517,7 @@ function checkLiveBroadcastStatus() {
 
   // broadcast started yet?
   // check for fake LiveBroadcastPlaceholderPgn game when no PGN file is found
-  if ((LiveBroadcastStarted === false) || ((pgnGame == undefined) ||
+  if ((LiveBroadcastStarted === false) || ((pgnGame === undefined) ||
     ((numberOfGames == 1) && (gameEvent[0] == LiveBroadcastPlaceholderEvent)))) {
     LiveBroadcastEnded = false;
     LiveBroadcastStatusString = "live broadcast yet to start";
@@ -1803,13 +1803,13 @@ function Init(nextGame){
 
   if (isAutoPlayOn) { SetAutoPlay(false); }
 
-//PAOLO  InitImages();
+  InitImages();
   if (firstStart) {
     LoadGameHeaders();
     setCurrentGameFromInitialGame();
   }
 
-  if ((gameSetUp[currentGame] != undefined) && (gameSetUp[currentGame] != "1")) { InitFEN(); }
+  if ((gameSetUp[currentGame] !== undefined) && (gameSetUp[currentGame] != "1")) { InitFEN(); }
   else { InitFEN(gameFEN[currentGame]); }
   
   OpenGame(currentGame);
@@ -1830,7 +1830,7 @@ function Init(nextGame){
 
 
 function InitFEN(startingFEN) {
-  FenString = startingFEN != undefined ? startingFEN : FenStringStart;
+  FenString = startingFEN !== undefined ? startingFEN : FenStringStart;
   
   // board reset
   var ii, jj;
@@ -2244,12 +2244,12 @@ function LoadGameHeaders(){
   }
   if ((LiveBroadcastDemo) && (numberOfGames > 0)) {
     for (ii = 0; ii < numberOfGames; ++ii) {
-       if (gameDemoLength[ii] == undefined) {
+       if (gameDemoLength[ii] === undefined) {
          InitFEN(gameFEN[ii]);
          ParsePGNGameString(pgnGame[ii]);
          gameDemoLength[ii] = PlyNumber; 
        }
-       if (gameDemoMaxPly[ii] == undefined) { gameDemoMaxPly[ii] = 0; }
+       if (gameDemoMaxPly[ii] === undefined) { gameDemoMaxPly[ii] = 0; }
        if (gameDemoMaxPly[ii] <= gameDemoLength[ii]) { gameResult[ii] = '*'; }
     }
   }
@@ -2722,7 +2722,7 @@ function translateNAGs(comment) {
       if (jj == comment.length) { break; }
     }
     nag = parseInt(comment.substring(ii+1,jj),10);
-    if ((nag != undefined) && (NAG[nag] != undefined)) {
+    if ((nag !== undefined) && (NAG[nag] !== undefined)) {
       comment = comment.replace(comment.substring(ii,jj), '<SPAN CLASS="nag">' + NAG[nag] + '</SPAN>');
     }
     ii++;  
@@ -3010,14 +3010,14 @@ function PrintHTML() {
       '<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>' + 
       '<TR><TD>' +
       '<INPUT ID="startButton" TYPE="BUTTON" VALUE="&lt;&lt;" STYLE="';
-    if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
+    if (buttonSize > 0) { text += 'width: ' + buttonSize + 'px;'; }
     text += '"; CLASS="buttonControl" TITLE="go to game start" ' +
       ' ID="btnGoToStart" onClick="javascript:GoToMove(StartPly)" ONFOCUS="this.blur()">' +
       '</TD>' +
       '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
       '</TD><TD>' +
       '<INPUT ID="backButton" TYPE="BUTTON" VALUE="&lt;" STYLE="';
-    if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
+    if (buttonSize > 0) { text += 'width: ' + buttonSize + 'px;'; }
     text += '"; CLASS="buttonControl" TITLE="move backward" ' +
       ' ID="btnMoveBackward1" onClick="javascript:MoveBackward(1)" ONFOCUS="this.blur()">' +
       '</TD>' +
@@ -3025,7 +3025,7 @@ function PrintHTML() {
       '</TD><TD>';
     text += '<INPUT ID="autoplayButton" TYPE="BUTTON" VALUE=' +
       (isAutoPlayOn ? "=" : "+") + ' STYLE="';
-    if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
+    if (buttonSize > 0) { text += 'width: ' + buttonSize + 'px;'; }
     text += isAutoPlayOn ?
       '"; CLASS="buttonControlStop" TITLE="toggle autoplay (stop)" ' :
       '"; CLASS="buttonControlPlay" TITLE="toggle autoplay (start)" ';
@@ -3034,7 +3034,7 @@ function PrintHTML() {
       '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
       '</TD><TD>' +
       '<INPUT ID="forwardButton" TYPE="BUTTON" VALUE="&gt;" STYLE="';
-    if ((buttonSize != undefined) && (buttonSize > 0)) { text += 'width: ' + buttonSize + 'px;'; }
+    if (buttonSize > 0) { text += 'width: ' + buttonSize + 'px;'; }
     text += '"; CLASS="buttonControl" TITLE="move forward" ' +
       ' ID="btnMoveForward1" onClick="javascript:MoveForward(1)" ONFOCUS="this.blur()">' +
       '</TD>' +
@@ -3223,7 +3223,7 @@ function PrintHTML() {
         '<INPUT ID="searchPgnExpression" CLASS="searchPgnExpression" ' +
         'TITLE="find games matching the search string (or regular expression)" ' + 
         'TYPE="input" VALUE="" STYLE="display: inline; ';
-      if ((tableSize != undefined) && (tableSize > 0)) { text += 'width: ' + (3*tableSize/4) + 'px; '; }
+      if (tableSize > 0) { text += 'width: ' + (3*tableSize/4) + 'px; '; }
       text += '" ONFOCUS="disableShortcutKeysAndStoreStatus();" ONBLUR="restoreShortcutKeysStatus();">'; 
       text += '</FORM>';
       theObject.innerHTML = text;
