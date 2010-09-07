@@ -2799,7 +2799,7 @@ function ParseMove(move, plyCount) {
   if (ll === 0) { mvPiece = 6; }
   else {
     for(ii = 1; ii < 6; ++ii) { if (remainder.charAt(0) == PieceCode[ii-1]) { mvPiece = ii; } }
-    if (mvPiece == -1) { if ('abcdefgh'.indexOf(remainder.charAt(0)) >= 0) { mvPiece = 6; } }
+    if (mvPiece == -1) { if (columnsLetters.toLowerCase().indexOf(remainder.charAt(0)) >= 0) { mvPiece = 6; } }
     if (mvPiece == -1) { return false; }
     if (remainder.charAt(ll-1) == 'x') { mvCapture = 1; }
     if (isNaN(move.charAt(ll-1-mvCapture))) {
