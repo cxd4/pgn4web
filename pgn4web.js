@@ -872,7 +872,9 @@ HistEnPassant[0] = false;
 HistEnPassantCol = new Array(MaxMove);
 HistEnPassantCol[0] = -1;
 
-var PieceCode = "KQRBNP";
+var PieceCode = new Array(6);
+PieceCode[0] = "K"; PieceCode[1] = "Q"; PieceCode[2] = "R";
+PieceCode[3] = "B"; PieceCode[4] = "N"; PieceCode[5] = "P";
 var FenPieceName = "KQRBNP";
 var FenStringStart = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 var columnsLetters = "ABCDEFGH";
