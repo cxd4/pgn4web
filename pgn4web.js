@@ -872,10 +872,9 @@ HistEnPassant[0] = false;
 HistEnPassantCol = new Array(MaxMove);
 HistEnPassantCol[0] = -1;
 
-var PieceCode = new Array(6);
-PieceCode[0] = "K"; PieceCode[1] = "Q"; PieceCode[2] = "R";
-PieceCode[3] = "B"; PieceCode[4] = "N"; PieceCode[5] = "P";
 var FenPieceName = "KQRBNP";
+var PieceCode = new Array(); // IE needs an array to work with [index]
+for (i=0; i<6; i++) { PieceCode[i] = FenPieceName.charAt(i); }
 var FenStringStart = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 var columnsLetters = "ABCDEFGH";
 
@@ -2329,8 +2328,7 @@ function MoveForward(diff) {
   // reach to selected move checking legality
   for(thisPly = CurrentPly; thisPly < goToPly; ++thisPly) {
     var move = Moves[thisPly];
-    var parse = ParseMove(move, thisPly);
-    if (!parse) {
+    if (! (parse = ParseMove(move, thisPly))) {
       text = (Math.floor(thisPly / 2) + 1) + ((thisPly % 2) === 0 ? '. ' : '... ');
       myAlert('error: invalid ply ' + text + move + ' in game ' + (currentGame+1), true);
       break;
@@ -2865,9 +2863,7 @@ function ParseMove(move, plyCount) {
   }
 
   // check move legality
-  var retVal;
-  retVal = CheckLegality(PieceCode[mvPiece-1], plyCount);
-  if (!retVal) { return false; }
+  if (! CheckLegality(PieceCode[mvPiece-1], plyCount)) { return false; }
 
   // pawn moved => check if en-passant possible
   HistEnPassant[plyCount]    = false;
