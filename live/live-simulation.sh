@@ -39,7 +39,7 @@ delay=17
 # dont touch after this line
 
 umask 0000
-if [ $? -ne 0]
+if [ $? -ne 0 ]
 then
         echo "ERROR: $(basename $0) failed setting umask 0000"
         exit
