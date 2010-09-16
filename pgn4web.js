@@ -525,7 +525,9 @@ boardShortcut("H1", "go to game end", function(){ GoToMove(StartPly + PlyNumber)
 
 var deciles = new Array(11);
 function calculateDeciles() {
-  for (ii=0; ii<deciles.length; ii++) { deciles[ii] = Math.round((numberOfGames - 1) * ii / 10); }
+  for (ii=0; ii<deciles.length; ii++) { 
+    deciles[ii] = Math.round((numberOfGames - 1) * ii / (deciles.length - 1));
+  }
 }
 
 function detectJavascriptLocation() {
