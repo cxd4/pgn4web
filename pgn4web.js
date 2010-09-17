@@ -2361,11 +2361,12 @@ function MoveForward(diff) {
 
 function AutoplayNextGame() {
   if (fatalErrorNumSinceReset === 0) {
-    if (currentGame < numberOfGames) { Init(currentGame + 1); }
-    else { Init(0); }
-    if ((numberOfGames > 0) || (PlyNumber > 0)) {
-      SetAutoPlay(true);
-      return;
+    if (numberOfGames > 0) {
+      Init((currentGame + 1) % numberOfGames);
+      if ((numberOfGames > 1) || (PlyNumber > 0)) {
+        SetAutoPlay(true);
+        return;
+      }
     }
   }
   SetAutoPlay(false);
