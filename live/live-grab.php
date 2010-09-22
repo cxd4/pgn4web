@@ -380,7 +380,7 @@ if ($secretHash == $storedSecretHash) {
 } else {
 
   $message = logMsg("\nerror=invalid password" . "\n" . 
-                    "the sha256 hash of the password you entered is:" . "\n" . 
+                    "the hash of the password you entered is:" . "\n" . 
                     $secretHash);
 
 }
