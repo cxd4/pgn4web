@@ -14,8 +14,8 @@ error_reporting(E_ERROR | E_PARSE);
 // configuration section 
 
 // set this to true to enable the script, set to false by default
-$enableScript = true; 
-$enableScript = false;
+$enableScript = TRUE; 
+$enableScript = FALSE;
 
 // set this to the sha256 hash of your password of choice;
 // you can calculate the sha256 of your password of choice by
@@ -28,7 +28,12 @@ $storedSecretHash = "346e85156ba458d324507f0d4cfa40286d4c052d2640cf6dd2321aa6cfc
 
 
 if (!$enableScript) {
-  print("script " . basename(__FILE__) . " disabled by default<br>please contact your system adminitrator to enable this script");
+  print("<div style='color: black; font-family: sans-serif;'>script " . basename(__FILE__) . " disabled by default<br>please contact your system adminitrator to enable this script</div>");
+  exit();
+}
+
+if ($_SERVER["HTTP_REFERER"] && $_SERVER["SERVER_NAME"] && (!preg_match('#^(http|https)://' . $_SERVER["SERVER_NAME"] . '#i', $_SERVER["HTTP_REFERER"]))) {
+  print("<div style='color: black; font-family: sans-serif;'>referrer error: <a style='color: black; text-decoration: none;' href='" . $_SERVER["PHP_SELF"] . "'>click here to reset</a></div>");
   exit();
 }
 
@@ -257,7 +262,7 @@ function fileInformation($myFile) {
 
 if ($secretHash == $storedSecretHash) { 
 
-  $overwrite = false;
+  $overwrite = FALSE;
   $message = logMsg("\n" . fileInformation($localPgnFile) .
                     "\n" . fileInformation($localPgnTmpFile) .
                     "\n" . fileInformation($localPgnLogFile) .
@@ -265,7 +270,7 @@ if ($secretHash == $storedSecretHash) {
   switch ($action) {
 
     case "grab PGN URL overwrite":
-      $overwrite = true;
+      $overwrite = TRUE;
     case "grab PGN URL":
       $message = $message . "\n" . "action=" . $action . "\n" . "localPgnFile=" . $localPgnFile . 
                  "\n" . "pgnUrl=" . $pgnUrl . "\n" . "refreshSeconds=" . $refreshSeconds . 
@@ -277,7 +282,7 @@ if ($secretHash == $storedSecretHash) {
         if (--$refreshSteps < 0) {
           $message = $message . "\n" . "error=invalid refresh steps";
         } else {
-          $logOk = false;
+          $logOk = FALSE;
           $newLastPgnUrlModification = "";
           $pgnHeaders = get_headers($pgnUrl, 1); 
           if (! $pgnHeaders) { 
@@ -315,7 +320,7 @@ if ($secretHash == $storedSecretHash) {
                     $message = $message . "\n" . "newTimestamp=" . $newLastPgnUrlModification;
                     $lastPgnUrlModification = $newLastPgnUrlModification; 
                   }
-                  $logOk = true;
+                  $logOk = TRUE;
                 }
               }
             }
@@ -433,18 +438,18 @@ function grabPgnUrl() {
 }
 
 function disableStopGrabButton() {
-  document.getElementById('stopGrabbingPgnUrl').disabled = true;
+  document.getElementById('stopGrabbingPgnUrl').disabled = TRUE;
   if (grabTimeout) { 
     clearTimeout(grabTimeout); 
     grabTimeout = null; 
   } 
-  return false;
+  return FALSE;
 }
 
 function setLocalPgnFileToDefault() {
   document.getElementById('pgnText').value = '[Event "Wch"] \n[Site "Moscow"] \n[Date "1985.10.15"] \n[Round "16"] \n[White "Karpov"] \n[Black "Kasparov"] \n[Result "0-1"] \n\n1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nc6 5. Nb5 d6 6. c4 Nf6 7. N1c3 a6 8. \nNa3 d5 9. cxd5 exd5 10. exd5 Nb4 11. Be2 Bc5 12. O-O O-O 13. Bf3 Bf5 14. \nBg5 Re8 15. Qd2 b5 16. Rad1 Nd3 17. Nab1 h6 18. Bh4 b4 19. Na4 Bd6 20. Bg3 \nRc8 21. b3 g5 22. Bxd6 Qxd6 23. g3 Nd7 24. Bg2 Qf6 25. a3 a5 26. axb4 axb4 \n27. Qa2 Bg6 28. d6 g4 29. Qd2 Kg7 30. f3 Qxd6 31. fxg4 Qd4+ 32. Kh1 Nf6 33. \nRf4 Ne4 34. Qxd3 Nf2+ 35. Rxf2 Bxd3 36. Rfd2 Qe3 37. Rxd3 Rc1 38. Nb2 Qf2 \n39. Nd2 Rxd1+ 40. Nxd1 Re1+ 0-1 \n';
   document.getElementById('savePgnText').click();
-  return false;
+  return FALSE;
 }
 
 </script>
