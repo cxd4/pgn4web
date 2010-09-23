@@ -1373,11 +1373,6 @@ function pgnGameFromPgnText(pgnText) {
   pgnText = pgnText.replace(/</g, "&lt;");
   pgnText = pgnText.replace(/>/g, "&gt;");
 
-  // fix common mistakes in PGN data
-  // pgnText = pgnText.replace(/\u2026/g,"..."); // replace ellipsis char with ...
-  // pgnText = pgnText.replace(/\u00BD/g,"1/2"); // replace half fraction with 1/2
-  // pgnText = pgnText.replace(/[\u2010-\u2015]+/g,"-"); // replace hyphens with -
-
   lines = pgnText.split("\n");
   inGameHeader = false;
   inGameBody = false;
@@ -2404,7 +2399,7 @@ function OpenGame(gameId) {
 function ParsePGNGameString(gameString) {
 
   var ss = gameString;
-  // remove PGN tags and result at the end 
+  // remove PGN tags and spaces at the end 
   ss = ss.replace(pgnHeaderTagRegExpGlobal, ''); 
   ss = ss.replace(/^\s/, '');
   ss = ss.replace(/\s$/, '');
@@ -2543,13 +2538,8 @@ function ParsePGNGameString(gameString) {
         if(ss.indexOf(searchThis,start)==start) {
           start += searchThis.length;
           while ((ss.charAt(start) == '.') || (ss.charAt(start) == ' ')  || (ss.charAt(start) == '\n') || (ss.charAt(start) == '\r')){start++;}
-        } else {
-          searchThis = moveCount.toString()+String.fromCharCode(8230); // ellipsis ...
-          if(ss.indexOf(searchThis,start)==start){
-            start += searchThis.length;
-            while ((ss.charAt(start) == '.') || (ss.charAt(start) == ' ')  || (ss.charAt(start) == '\n') || (ss.charAt(start) == '\r')){start++;}
-          }
 	}
+
         end = ss.indexOf(' ',start);
         end2 = ss.indexOf('$',start); if ((end2 > 0) && (end2 < end)) { end = end2; }
         end2 = ss.indexOf('{',start); if ((end2 > 0) && (end2 < end)) { end = end2; } 
