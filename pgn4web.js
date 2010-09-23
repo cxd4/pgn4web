@@ -2537,7 +2537,13 @@ function ParsePGNGameString(gameString) {
         searchThis = moveCount.toString()+'.';
         if(ss.indexOf(searchThis,start)==start) {
           start += searchThis.length;
-          while ((ss.charAt(start) == '.') || (ss.charAt(start) == ' ')  || (ss.charAt(start) == '\n') || (ss.charAt(start) == '\r')){start++;}
+          while ((ss.charAt(start) == '.') || (ss.charAt(start) == ' ') || (ss.charAt(start) == '\n') || (ss.charAt(start) == '\r')){start++;}
+        } else {
+          searchThis = moveCount.toString()+String.fromCharCode(8230); // ellipsis ...
+          if(ss.indexOf(searchThis,start)==start) {
+            start += searchThis.length;
+            while ((ss.charAt(start) == '.') || (ss.charAt(start) == ' ') || (ss.charAt(start) == '\n') || (ss.charAt(start) == '\r')){start++;}
+          }
 	}
 
         end = ss.indexOf(' ',start);
