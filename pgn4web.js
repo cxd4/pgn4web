@@ -1373,6 +1373,11 @@ function pgnGameFromPgnText(pgnText) {
   pgnText = pgnText.replace(/</g, "&lt;");
   pgnText = pgnText.replace(/>/g, "&gt;");
 
+  // fix common mistakes in PGN data
+  // pgnText = pgnText.replace(/\u2026/g,"..."); // replace ellipsis char with ...
+  // pgnText = pgnText.replace(/\u00BD/g,"1/2"); // replace half fraction with 1/2
+  // pgnText = pgnText.replace(/[\u2010-\u2015]+/g,"-"); // replace hyphens with -
+
   lines = pgnText.split("\n");
   inGameHeader = false;
   inGameBody = false;
