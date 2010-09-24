@@ -2334,9 +2334,9 @@ function MoveForward(diff) {
   goToPly = CurrentPly + parseInt(diff,10);
 
   if (goToPly > (StartPly+PlyNumber)) { goToPly = StartPly+PlyNumber; }
-  var thisPly;
 
   // reach to selected move checking legality
+  parse = false;
   for(thisPly = CurrentPly; thisPly < goToPly; ++thisPly) {
     var move = Moves[thisPly];
     if (! (parse = ParseMove(move, thisPly))) {
