@@ -701,8 +701,8 @@ function calculate_html_code() {
   } else {
     iframeUrl += "&fw=" + frameWidth_value;
   }
-  
-  pgnText_value = pgnTextFixFromInput(document.getElementById('pgnText').value);
+
+  pgnText_value = pgnTextFixFromInput(document.getElementById('pgnText').value);  
   if ((document.board.encodePgn.checked) && (pgnText_value != previousPgnTextToEncode)) {
     previousPgnTextToEncode = pgnText_value;
     pgnTextEncoded = EncodePGN(pgnText_value.replace(/\r\n/g,'\n'));
@@ -716,10 +716,7 @@ function calculate_html_code() {
 
 function pgnTextFixFromInput( text ) {
 
-  // fix common mistakes in PGN data
-  text = text.replace(/\u2026/g,"..."); // replace ellipsis char with ...
-  text = text.replace(/\u00BD/g,"1/2"); // replace half fraction with 1/2
-  text = text.replace(/[\u2010-\u2015]+/g,"-"); // replace hyphens with -
+  text = fixCommonPgnMistakes(text);
   text = text.replace(/[\u0100-\uFFFF]+/g,"*"); // replace all chars with code greather than 255 with *
 
   return text;

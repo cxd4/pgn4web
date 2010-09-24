@@ -1366,8 +1366,17 @@ function highlightSquare(col, row, on) {
   return true;
 }
 
+function fixCommonPgnMistakes(text) {
+  text = text.replace(/\u00BD/g,"1/2"); // replace "half fraction" char with "1/2"
+  text = text.replace(/[\u2010-\u2015]/g,"-"); // replace "hyphens" chars with "-"
+  text = text.replace(/\u2024/g,"."); // replace "one dot leader" char with "."
+  text = text.replace(/[\u2025-\u2026]/g,"..."); // replace "two dot leader" and "ellipsis" chars with "..."
+  return text;
+}
 
 function pgnGameFromPgnText(pgnText) {
+
+  pgnText = fixCommonPgnMistakes(pgnText);
 
   // replace < and > with html entities: avoid html injection from PGN data
   pgnText = pgnText.replace(/</g, "&lt;");
@@ -2538,12 +2547,6 @@ function ParsePGNGameString(gameString) {
         if(ss.indexOf(searchThis,start)==start) {
           start += searchThis.length;
           while ((ss.charAt(start) == '.') || (ss.charAt(start) == ' ') || (ss.charAt(start) == '\n') || (ss.charAt(start) == '\r')){start++;}
-        } else {
-          searchThis = moveCount.toString()+String.fromCharCode(8230); // ellipsis ...
-          if(ss.indexOf(searchThis,start)==start) {
-            start += searchThis.length;
-            while ((ss.charAt(start) == '.') || (ss.charAt(start) == ' ') || (ss.charAt(start) == '\n') || (ss.charAt(start) == '\r')){start++;}
-          }
 	}
 
         end = ss.indexOf(' ',start);
