@@ -34,7 +34,7 @@ body {
 
 .gametextDiv {
   padding-right: 20px;
-  max-height: 450px;
+  height: 450px;
   overflow: auto;
 }
 
