@@ -28,6 +28,16 @@ body {
   padding: 20px;
 }
 
+.gametextContainerCell {
+  padding-left: 20px;
+}
+
+.gametextDiv {
+  padding-right: 20px;
+  max-height: 450px;
+  overflow: auto;
+}
+
 .boardTable {
   border-style: solid;
   border-color: #663300;
