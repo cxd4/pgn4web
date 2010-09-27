@@ -152,6 +152,10 @@ to any <div> or <span> containers with the following IDs:
   <div id="GameLiveLastModified"></div>
 
 The file template.css shows a list of customization style options.
+For better chessboard display, it is recommended to explicitly enforce 
+chessboard square sizes using the ".whiteSquare" and ".blackSquare" CSS 
+classes, such as:
+  .whiteSquare, .blacksquare { width:40px; height:40px; }
 
 See template.html file for an example.
 See *mini.html* for an example of embedding the PGN content into the HTML file.
