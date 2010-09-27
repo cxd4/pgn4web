@@ -125,42 +125,38 @@ document.write(pgnTitle);
 
 <td class="containerCell" width=50% style="text-align: left;">
 
-<span class="label">event:</span> <span id="GameEvent"></span> 
-<br>
-<span class="label">site:</span> <span id="GameSite"></span> 
-<p></p>
-<span class="label">round:</span> <span id="GameRound"></span> 
-<br>
-<span class="label">date:</span> <span id="GameDate"></span> 
-<p></p>
-<span class="label">white:</span> <span id="GameWhite" style="font-weight: bold;"></span> 
-<br>
-<span class="label">black:</span> <span id="GameBlack" style="font-weight: bold;"></span> 
-<p></p>
-<span class="label">result:</span> <span id="GameResult" style="font-weight: bold;"></span> 
-<p></p>
-<span class="label">side to move:</span> <span id="GameSideToMove"></span> 
-<br>
-<span class="label">last move:</span> <span class="move"><span id="GameLastMove"></span></span> 
-<br>
-<span class="label">next move:</span> <span class="move"><span id="GameNextMove"></span></span> 
-<p></p>
-<span class="label">ply:</span> <span id=currPly>0</span>/<span id=numPly>0</span>
-<br>
-<span class="label">game:</span> <span id=currGm>0</span>/<span id=numGm>0</span> 
-<p></p>
-<span class="label">archive:</span>
-<span>
+<table>
+<tr><td class="label">event</td><td><span id="GameEvent"></span></td></tr>
+<tr><td class="label">site</td><td><span id="GameSite"></span></td></tr>
+<tr><td colspan=2 class="rowSpace"></td></tr>
+<tr><td class="label">round</td><td><span id="GameRound"></span></td></tr> 
+<tr><td class="label">date</td><td><span id="GameDate"></span></td></tr> 
+<tr><td colspan=2 class="rowSpace"></td></tr>
+<tr><td class="label">white</td><td><span id="GameWhite" class="boldItem"></span></td></tr> 
+<tr><td class="label">black</td><td><span id="GameBlack" class="boldItem"></span></td></tr> 
+<tr><td colspan=2 class="rowSpace"></td></tr>
+<tr><td class="label">result</td><td><span id="GameResult" class="boldItem"></span></td></tr> 
+<tr><td colspan=2 class="rowSpace"></td></tr>
+<tr><td class="label">side to move</td><td><span id="GameSideToMove"></span></td></tr> 
+<tr><td class="label">last move</td><td><span class="move"><span id="GameLastMove"></span></span></td></tr> 
+<tr><td class="label">next move</td><td><span class="move"><span id="GameNextMove"></span></span></td></tr> 
+<tr><td colspan=2 class="rowSpace"></td></tr>
+<tr><td class="label">ply</td><td><span id=currPly>0</span>&nbsp;/&nbsp;<span id=numPly>0</span></td></tr>
+<tr><td class="label">game</td><td><span id=currGm>0</span>&nbsp;/&nbsp;<span id=numGm>0</span></td></tr> 
+<tr><td colspan=2 class="rowSpace"></td></tr>
+<tr><td class="label">archive</td>
+<td>
 <script type="text/javascript">
   if (pgnFilename) { 
-    document.write('<a style="text-decoration:none; color:black;" href="' + pgnFilename + '">' + pgnFilename + '</a>');
+    document.write('<a class="linkItem" href="' + pgnFilename + '">' + pgnFilename + '</a>');
   }
 </script>
-</span>
+</td>
 <!--
-<p></p>
-<span class="label">Move comment:</span><br><span id="GameLastComment"></span>
+<tr><td colspan=2 class="rowSpace"></td></tr>
+<tr><td class="label">Move comment</td><td><span id="GameLastComment"></span></td></tr>
 -->
+</table>
 
 </td>
 

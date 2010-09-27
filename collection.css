@@ -123,5 +123,20 @@ body {
 
 .label {
   color: gray;
+  padding-right: 10px;
+  text-align: right;
+}
+
+.boldItem {
+  font-weight: bold;
+}
+
+.linkItem {
+  text-decoration: none;
+  color: black;
+}
+
+.rowSpace {
+  height: 8px;
 }
 
