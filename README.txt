@@ -280,6 +280,27 @@ allow for execution of custom commands when shift + a number key is pressed:
 - customShortcutKey_Shift_9()
 
 
+SHORTCUT KEYS AND TEXT FORMS
+
+When the HTML page contains the following script command
+
+  SetShortcutKeysEnabled(false);
+
+then all keystrokes for that active page are captured and processed by pgn4web; 
+this allows for instance to browse the game using the arrow keys. If no other 
+precautions are taken, this has also the undesirable side effect of capturing 
+keystrokes intended by the user for typing in text forms when present in the 
+same page: this makes the text forms unusable.
+
+In order to have fully functional text forms in pgn4web pages, the following 
+"onFocus" and "onBlur" actions should be added to the textarea forms:
+
+  <textarea onFocus="disableShortcutKeysAndStoreStatus();" 
+  onBlur="restoreShortcutKeysStatus();"></textarea> 
+
+See the inputform.html HTML file for an example.
+
+
 TECHNICAL NOTES ABOUT WEB BROWSERS
 
 pgn4web is developed and tested with recent versions of a variety of 
