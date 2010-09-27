@@ -125,25 +125,34 @@ document.write(pgnTitle);
 
 <td class="containerCell" width=50% style="text-align: left;">
 
-<span class="label">Event:</span> <span id="GameEvent"></span> 
+<span class="label">event:</span> <span id="GameEvent"></span> 
 <br>
-<span class="label">Site:</span> <span id="GameSite"></span> 
+<span class="label">site:</span> <span id="GameSite"></span> 
 <p></p>
-<span class="label">Round:</span> <span id="GameRound"></span> 
+<span class="label">round:</span> <span id="GameRound"></span> 
 <br>
-<span class="label">Date:</span> <span id="GameDate"></span> 
+<span class="label">date:</span> <span id="GameDate"></span> 
 <p></p>
-<span class="label">White:</span> <span id="GameWhite" style="font-weight: bold;"></span> 
+<span class="label">white:</span> <span id="GameWhite" style="font-weight: bold;"></span> 
 <br>
-<span class="label">Black:</span> <span id="GameBlack" style="font-weight: bold;"></span> 
+<span class="label">black:</span> <span id="GameBlack" style="font-weight: bold;"></span> 
 <p></p>
-<span class="label">Result:</span> <span id="GameResult" style="font-weight: bold;"></span> 
+<span class="label">result:</span> <span id="GameResult" style="font-weight: bold;"></span> 
 <p></p>
-<span class="label">Side to move:</span> <span id="GameSideToMove"></span> 
+<span class="label">side to move:</span> <span id="GameSideToMove"></span> 
 <br>
-<span class="label">Last move:</span> <span class="move"><span id="GameLastMove"></span></span> 
+<span class="label">last move:</span> <span class="move"><span id="GameLastMove"></span></span> 
 <br>
-<span class="label">Next move:</span> <span class="move"><span id="GameNextMove"></span></span> 
+<span class="label">next move:</span> <span class="move"><span id="GameNextMove"></span></span> 
+<p></p>
+<span class="label">ply:</span> <span id=currPly>0</span>/<span id=numPly>0</span>
+<br>
+<span class="label">game:</span> <span id=currGm>0</span>/<span id=numGm>0</span> 
+<p></p>
+<span class="label">archive:</span>
+<span>
+<script type="text/javascript">document.write(pgnFilename);</script>
+</span>
 <!--
 <p></p>
 <span class="label">Move comment:</span><br><span id="GameLastComment"></span>
@@ -156,22 +165,6 @@ document.write(pgnTitle);
 <tr valign=top>
 <td class="gametextContainerCell" style="text-align: justify;" colspan=2>
 <div class="gametextDiv" id="GameText"></div>
-</td>
-</tr>
-
-<tr valign=top>
-<td class="containerCell">
-<div class="label" style="text-align: left; color: #d3d3d3;">
-<script type="text/javascript">
-document.write(pgnFilename);
-</script>
-</div>
-</td>
-<td class="containerCell">
-<div class="label" style="text-align: right; color: #d3d3d3;">
-ply:<span id=currPly>0</span>/<span id=numPly>0</span> 
-game:<span id=currGm>0</span>/<span id=numGm>0</span> 
-</div>
 </td>
 </tr>
 
