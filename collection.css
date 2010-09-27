@@ -34,7 +34,7 @@ body {
 
 .gametextDiv {
   padding-right: 20px;
-  height: 500px;
+  height: 470px;
   overflow: auto;
   scrollbar-base-color: white;
 }
