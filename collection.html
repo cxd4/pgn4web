@@ -151,7 +151,11 @@ document.write(pgnTitle);
 <p></p>
 <span class="label">archive:</span>
 <span>
-<script type="text/javascript">document.write(pgnFilename);</script>
+<script type="text/javascript">
+  if (pgnFilename) { 
+    document.write('<a style="text-decoration:none; color:black;" href="' + pgnFilename + '">' + pgnFilename + '</a>');
+  }
+</script>
 </span>
 <!--
 <p></p>
