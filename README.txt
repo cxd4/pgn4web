@@ -284,7 +284,7 @@ SHORTCUT KEYS AND TEXT FORMS
 
 When the HTML page contains the following script command
 
-  SetShortcutKeysEnabled(false);
+  SetShortcutKeysEnabled(true);
 
 then all keystrokes for that active page are captured and processed by pgn4web; 
 this allows for instance to browse the game using the arrow keys. If no other 
