@@ -767,15 +767,15 @@ END;
       <tr><td colspan=2 class="rowSpace"></td></tr>
       <tr><td class="label">result</td><td><span class="boldItem" id="GameResult"></span></td></tr>
       <tr><td colspan=2 class="rowSpace"></td></tr>
-      <tr><td class="label">side to move</td><td class="normalItem"><span id="GameSideToMove"></span></td></tr>
-      <tr><td class="label">last move</td><td><span class="move"><span id="GameLastMove"></span></span></td></tr>
-      <tr><td class="label">next move</td><td><span class="move"><span id="GameNextMove"></span></span></td></tr>
+      <tr><td class="label">side</td><td class="normalItem"><span id="GameSideToMove"></span></td></tr>
+      <tr><td class="label">last</td><td><span class="move"><span id="GameLastMove"></span></span></td></tr>
+      <tr><td class="label">next</td><td><span class="move"><span id="GameNextMove"></span></span></td></tr>
       <tr><td colspan=2 class="rowSpace"></td></tr>
-      <tr><td class="label">ply</td><td class="normalItem"><span id=currPly>0</span> / <span id=numPly>0</span></td></tr>
-      <tr><td class="label">game</td><td class="normalItem"><span id=currGm>0</span> / <span id=numGm>0</span></td></tr>
+      <tr><td class="label">ply</td><td class="normalItem"><span id=currPly>0</span> (<span id=numPly>0</span>)</td></tr>
+      <tr><td class="label">game</td><td class="normalItem"><span id=currGm>0</span> (<span id=numGm>0</span>)</td></tr>
       <!--
       <tr><td colspan=2 class="rowSpace"></td></tr>
-      <tr><td  class="label">move comment</td><td><span class="nromalItem" id="GameLastComment"></span></td></tr>
+      <tr><td  class="label">comment</td><td><span class="nromalItem" id="GameLastComment"></span></td></tr>
       -->
       </table>
 
