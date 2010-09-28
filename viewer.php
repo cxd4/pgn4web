@@ -512,11 +512,11 @@ function print_chessboard() {
   global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
 
   if ($mode == "compact") {
-    $squareSize = 30;
-    $pieceSize = 26;
+    $pieceSize = 30;
+    $pieceType = "alpha";
   } else {
-    $squareSize = 42;
     $pieceSize = 38;
+    $pieceType = "merida";
   }
 
   print <<<END
@@ -532,9 +532,53 @@ function print_chessboard() {
 <link href="fonts/pgn4web-fonts.css" type="text/css" rel="stylesheet" />
 <style type="text/css">
 
+END;
+
+  if ($mode == "compact") {
+
+    print <<<END
+
 .boardTable {
-  border-style: double;
-  border-color: #a0a0a0;
+  border-style: solid;
+  border-width: 0;
+}
+
+.pieceImage {
+  width: $pieceSize;
+  height: $pieceSize;
+}
+
+.whiteSquare,
+.blackSquare,
+.highlightWhiteSquare,
+.highlightBlackSquare {
+  width: $pieceSize;
+  height: $pieceSize;
+  border-width: 0;
+}
+
+.whiteSquare {
+  background: #ede8d5;
+}
+
+.blackSquare {
+  background: #cfcbb3;
+}
+
+.highlightWhiteSquare,
+.highlightBlackSquare {
+  background: #f5d0a9;
+}
+
+END;
+
+  } else {
+
+    print <<<END
+
+.boardTable {
+  border-style: solid;
+  border-color: #663300;
   border-width: 3;
 }
 
@@ -547,29 +591,35 @@ function print_chessboard() {
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: $squareSize;
-  height: $squareSize;
+  width: 42;
+  height: 42;
   border-style: solid;
   border-width: 2;
 }
 
 .whiteSquare,
 .highlightWhiteSquare {
-  border-color: #ede8d5;
-  background: #ede8d5;
+  border-color: #ffcc99;
+  background: #ffcc99;
 }
 
 .blackSquare,
 .highlightBlackSquare {
-  border-color: #cfcbb3;
-  background: #cfcbb3;
+  border-color: #cc9966;
+  background: #cc9966;
 }
 
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  border-color: yellow;
+  border-color: #663300;
   border-style: solid;
 }
+
+END;
+
+  }
+
+  print <<<END
 
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
@@ -604,7 +654,7 @@ function print_chessboard() {
 }
 
 .moveOn {
-  background: yellow;
+  background: #ffcc99;
 }
 
 .comment {
@@ -615,7 +665,21 @@ function print_chessboard() {
 
 .label {
   color: gray;
-  line-height: 1.3em;
+  padding-right: 10;
+  text-align: right;
+}
+
+.boldItem {
+  font-weight: bold;
+}
+
+.linkItem {
+  text-decoration: none;
+  color: black;
+}
+
+.rowSpace {
+  height: 8px;
 }
 
 </style>
@@ -624,7 +688,7 @@ function print_chessboard() {
 
 <script src="pgn4web.js" type="text/javascript"></script>
 <script type="text/javascript">
-  SetImagePath("merida/$pieceSize"); 
+  SetImagePath("$pieceType/$pieceSize"); 
   SetImageType("png");
   SetHighlightOption(true); 
   SetCommentsIntoMoveText(true);
@@ -686,35 +750,29 @@ END;
     </td>
     <td valign=top align=left width=50%>
 
-      <span class="label">Date:</span> <span id="GameDate"></span> 
-      <br>
-      <span class="label">Site:</span> <span style="white-space: nowrap;" id="GameSite"></span> 
-      <br>
-      <span class="label">Event:</span> <span style="white-space: nowrap;" id="GameEvent"></span> 
-      <br>
-      <span class="label">Round:</span> <span id="GameRound"></span> 
-      <p></p>
-
-      <span class="label">White:</span> <span style="white-space: nowrap;" id="GameWhite"></span> 
-      <br>
-      <span class="label">Black:</span> <span style="white-space: nowrap;" id="GameBlack"></span> 
-      <br>
-      <span class="label">Result:</span> <span id="GameResult"></span> 
-      <p></p>
-
-      <span class="label">game:</span> <span id=currGm>0</span> (<span id=numGm>0</span>)
-      <br>
-      <span class="label">ply:</span> <span id=currPly>0</span> (<span id=numPly>0</span>)
-      <br>
-      <span class="label">Side to move:</span> <span id="GameSideToMove"></span> 
-      <br>
-      <span class="label">Last move:</span> <span class="move"><span id="GameLastMove"></span></span> 
-      <br>
-      <span class="label">Next move:</span> <span class="move"><span id="GameNextMove"></span></span> 
-      <p></p>
-
-      <span class="label">Move comment:</span><br><span id="GameLastComment"></span> 
-      <p></p>
+      <table>
+      <tr><td class="label">event</td><td><span style="white-space: nowrap;" id="GameEvent"></span></td></tr> 
+      <tr><td class="label">site</td><td><span style="white-space: nowrap;" id="GameSite"></span></td></tr> 
+      <tr><td colspan=2 class="rowSpace"></td></tr>
+      <tr><td class="label">round</td><td><span id="GameRound"></span></td></tr> 
+      <tr><td class="label">date</td><td><span id="GameDate"></span></td></tr>
+      <tr><td colspan=2 class="rowSpace"></td></tr>
+      <tr><td class="label">white</td><td><span class="boldItem" style="white-space: nowrap;" id="GameWhite"></span></td></tr>
+      <tr><td class="label">black</td><td><span class="boldItem" style="white-space: nowrap;" id="GameBlack"></span></td></tr>
+      <tr><td colspan=2 class="rowSpace"></td></tr>
+      <tr><td class="label">result</td><td><span class="boldItem" id="GameResult"></span></td></tr>
+      <tr><td colspan=2 class="rowSpace"></td></tr>
+      <tr><td class="label">side to move</td><td><span id="GameSideToMove"></span></td></tr>
+      <tr><td class="label">last move</td><td><span class="move"><span id="GameLastMove"></span></span></td></tr>
+      <tr><td class="label">next move</td><td><span class="move"><span id="GameNextMove"></span></span></td></tr>
+      <tr><td colspan=2 class="rowSpace"></td></tr>
+      <tr><td class="label">ply</td><td><span id=currPly>0</span> / <span id=numPly>0</span></td></tr>
+      <tr><td class="label">game</td><td><span id=currGm>0</span> / <span id=numGm>0</span></td></tr>
+      <!--
+      <tr><td colspan=2 class="rowSpace"></td></tr>
+      <tr><td  class="label">move comment</td><td><span id="GameLastComment"></span></td></tr>
+      -->
+      </table>
 
     </td>
   </tr>
