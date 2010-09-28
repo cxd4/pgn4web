@@ -570,6 +570,13 @@ END;
   background: #f5d0a9;
 }
 
+.move,
+.label,
+.normalItem,
+.boldItem {
+  font-size: 75%;
+}
+
 END;
 
   } else {
@@ -669,13 +676,11 @@ END;
   text-align: right;
 }
 
-.boldItem {
-  font-weight: bold;
+.normalItem {
 }
 
-.linkItem {
-  text-decoration: none;
-  color: black;
+.boldItem {
+  font-weight: bold;
 }
 
 .rowSpace {
@@ -751,26 +756,26 @@ END;
     <td valign=top align=left width=50%>
 
       <table>
-      <tr><td class="label">event</td><td><span style="white-space: nowrap;" id="GameEvent"></span></td></tr> 
-      <tr><td class="label">site</td><td><span style="white-space: nowrap;" id="GameSite"></span></td></tr> 
+      <tr><td class="label">event</td><td class="normalItem"><span style="white-space: nowrap;" id="GameEvent"></span></td></tr> 
+      <tr><td class="label">site</td><td class="normalItem"><span style="white-space: nowrap;" id="GameSite"></span></td></tr> 
       <tr><td colspan=2 class="rowSpace"></td></tr>
-      <tr><td class="label">round</td><td><span id="GameRound"></span></td></tr> 
-      <tr><td class="label">date</td><td><span id="GameDate"></span></td></tr>
+      <tr><td class="label">round</td><td class="normalItem"><span id="GameRound"></span></td></tr> 
+      <tr><td class="label">date</td><td class="normalItem"><span id="GameDate"></span></td></tr>
       <tr><td colspan=2 class="rowSpace"></td></tr>
-      <tr><td class="label">white</td><td><span class="boldItem" style="white-space: nowrap;" id="GameWhite"></span></td></tr>
-      <tr><td class="label">black</td><td><span class="boldItem" style="white-space: nowrap;" id="GameBlack"></span></td></tr>
+      <tr><td class="label">white</td><td class="boldItem"><span style="white-space: nowrap;" id="GameWhite"></span></td></tr>
+      <tr><td class="label">black</td><td class="boldItem"><span style="white-space: nowrap;" id="GameBlack"></span></td></tr>
       <tr><td colspan=2 class="rowSpace"></td></tr>
       <tr><td class="label">result</td><td><span class="boldItem" id="GameResult"></span></td></tr>
       <tr><td colspan=2 class="rowSpace"></td></tr>
-      <tr><td class="label">side to move</td><td><span id="GameSideToMove"></span></td></tr>
+      <tr><td class="label">side to move</td><td class="normalItem"><span id="GameSideToMove"></span></td></tr>
       <tr><td class="label">last move</td><td><span class="move"><span id="GameLastMove"></span></span></td></tr>
       <tr><td class="label">next move</td><td><span class="move"><span id="GameNextMove"></span></span></td></tr>
       <tr><td colspan=2 class="rowSpace"></td></tr>
-      <tr><td class="label">ply</td><td><span id=currPly>0</span> / <span id=numPly>0</span></td></tr>
-      <tr><td class="label">game</td><td><span id=currGm>0</span> / <span id=numGm>0</span></td></tr>
+      <tr><td class="label">ply</td><td class="normalItem"><span id=currPly>0</span> / <span id=numPly>0</span></td></tr>
+      <tr><td class="label">game</td><td class="normalItem"><span id=currGm>0</span> / <span id=numGm>0</span></td></tr>
       <!--
       <tr><td colspan=2 class="rowSpace"></td></tr>
-      <tr><td  class="label">move comment</td><td><span id="GameLastComment"></span></td></tr>
+      <tr><td  class="label">move comment</td><td><span class="nromalItem" id="GameLastComment"></span></td></tr>
       -->
       </table>
 
