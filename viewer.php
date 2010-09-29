@@ -756,11 +756,11 @@ END;
     <td valign=top align=left width=50%>
 
       <table>
-      <tr><td class="label">event</td><td class="normalItem"><span style="white-space: nowrap;" id="GameEvent"></span></td></tr> 
-      <tr><td class="label">site</td><td class="normalItem"><span style="white-space: nowrap;" id="GameSite"></span></td></tr> 
-      <tr><td colspan=2 class="rowSpace"></td></tr>
-      <tr><td class="label">round</td><td class="normalItem"><span id="GameRound"></span></td></tr> 
       <tr><td class="label">date</td><td class="normalItem"><span id="GameDate"></span></td></tr>
+      <tr><td class="label">site</td><td class="normalItem"><span style="white-space: nowrap;" id="GameSite"></span></td></tr>
+      <tr><td colspan=2 class="rowSpace"></td></tr>
+      <tr><td class="label">event</td><td class="normalItem"><span style="white-space: nowrap;" id="GameEvent"></span></td></tr> 
+      <tr><td class="label">round</td><td class="normalItem"><span id="GameRound"></span></td></tr> 
       <tr><td colspan=2 class="rowSpace"></td></tr>
       <tr><td class="label">white</td><td class="boldItem"><span style="white-space: nowrap;" id="GameWhite"></span></td></tr>
       <tr><td class="label">black</td><td class="boldItem"><span style="white-space: nowrap;" id="GameBlack"></span></td></tr>

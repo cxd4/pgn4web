@@ -20,6 +20,7 @@ a {
 }
 
 .boardTable {
+  border-color: #C4B9A0;
   border-width: 2px;
   border-style: outset;
 }
