@@ -349,12 +349,16 @@ function handlekey(e) {
 
     case 79: // o
       SetCommentsOnSeparateLines(!commentsOnSeparateLines);
+      oldPly = CurrentPly;
       Init();
+      GoToMove(oldPly);
       return stopKeyProp(e);
 
     case 80: // p
       SetCommentsIntoMoveText(!commentsIntoMoveText);
+      oldPly = CurrentPly;
       Init();
+      GoToMove(oldPly);
       return stopKeyProp(e);
 
     default:
