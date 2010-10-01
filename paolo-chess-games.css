@@ -20,9 +20,12 @@ body {
 }
 
 .boardTable {
-  border-style: double; 
-  border-color: gray; /* #C6CEC3; */
+  border-style: double;
+  border-color: gray;
   border-width: 3px;
+  box-shadow: 0px 0px 30px #AAAAAA;
+  -webkit-box-shadow: 0px 0px 30px #AAAAAA;
+  -moz-box-shadow: 0px 0px 30px #AAAAAA;
 }
 
 .pieceImage {
@@ -82,11 +85,14 @@ body {
   font-family: 'pgn4web ChessSansPiratf', 'pgn4web Liberation Sans', sans-serif;
   line-height: 1.3em;
   font-weight: normal;
-  text-decoration: none;   
+  text-decoration: none;
 }
 
 .moveOn {
-  background: #C6CEC3;
+  background: #DDDDDD;
+  box-shadow: 0px 0px 20px #AAAAAA;
+  -webkit-box-shadow: 0px 0px 11px #AAAAAA;
+  -moz-box-shadow: 0px 0px 11px #AAAAAA;
 }
 
 .comment,
