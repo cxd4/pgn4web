@@ -23,9 +23,9 @@ body {
   border-style: double;
   border-color: gray;
   border-width: 3px;
-  box-shadow: 0px 0px 30px #AAAAAA;
-  -webkit-box-shadow: 0px 0px 30px #AAAAAA;
-  -moz-box-shadow: 0px 0px 30px #AAAAAA;
+  box-shadow: 0px 0px 22px #AAAAAA;
+  -webkit-box-shadow: 0px 0px 22px #AAAAAA;
+  -moz-box-shadow: 0px 0px 22px #AAAAAA;
 }
 
 .pieceImage {
