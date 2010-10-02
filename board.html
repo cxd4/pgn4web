@@ -227,6 +227,27 @@ if ((boardBorderColor = gup("boardBorderColorName")) === "") {
   }
 }
 
+if ((boardShadowColor = gup("boardShadowColorName")) === "") {
+  if ((boardShadowColor = "#" + gup("boardShadowColorHex")) == "#") {
+    boardShadowColorSex = gup("boardShadowColorSex");
+    if ((boardShadowColorSex == "transparent") || (boardShadowColorSex == "t")) {
+      boardShadowColor = "transparent";
+    } else if ((boardShadowColorSex == "border") || (boardShadowColorSex == "b")) {
+      boardShadowColor = "border";
+    } else {
+      if ((boardShadowColor = "#" + sex2hex(gup("boardShadowColorSex"))) == "#") { boardShadowColor = "transparent"; }
+    }
+  }
+}
+if ((boardShadowColor ==  "border") || (boardShadowColor ==  "b") ||
+    (boardShadowColor == "#border") || (boardShadowColor == "#b")) {
+  boardShadowColor = boardBorderColor;
+}
+if ((boardShadowColor ==  "transparent") || (boardShadowColor ==  "t") ||
+    (boardShadowColor == "#transparent") || (boardShadowColor == "#t")) {
+  boardShadowColor = "transparent";
+}
+
 if ((backgroundColor = gup("backgroundColorName")) === "") {
   if ((backgroundColor = "#" + gup("backgroundColorHex")) == "#") {
     backgroundColorSex = gup("backgroundColorSex");
@@ -615,6 +636,7 @@ if (gup("help") !== "") {
   document.write(" - darkColorHex = dark square color hex code, like FF0000 (default C6CEC3)\n");
   document.write(" - highlightColorHex = highlight color hex code, like FF0000 (default DAF4D7)\n");
   document.write(" - boardBorderColorHex = board border color hex code, like FF0000 (default 000000)\n");
+  document.write(" - boardShadowColorHex = board shadow color hex code, like FF0000, 'transparent' for no shadow, 'border' for same color as board border (default 'transparent')\n");
   document.write("\n");
   document.write(" - buttonsDisplay = hidden | standard (use browser's standard buttons) | custom (use custom color buttons) (default hidden)\n");
   document.write(" - controlBackgroundColorHex = control buttons background color hex code, like FF0000 (default reverts to standard buttons)\n");
@@ -730,6 +752,14 @@ if (highlightMode == 'border') {
 
   newStyleSheet += '.boardTable { border-color: ' + boardBorderColor + '; } \n'; 
   
+  if (boardShadowColor != 'transparent') {
+    newStyleSheet += '.boardTable { ' +   
+      'box-shadow: 0px 0px ' + Math.ceil(squareSize / 2) + 'px ' + boardShadowColor + '; ' +
+      '-webkit-box-shadow: 0px 0px ' + Math.ceil(squareSize / 2) + 'px ' + boardShadowColor + '; ' +
+      '-moz-box-shadow: 0px 0px ' + Math.ceil(squareSize / 2) + 'px ' + boardShadowColor + '; ' +
+      '} \n';
+  }
+
   if (!fontMovesSize.match(/[^0-9]/)) { fontMovesSize += 'px'; }
   newStyleSheet += '.move { color: ' + fontMovesColor + '; font-size: ' + fontMovesSize + '; } \n';
   
