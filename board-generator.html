@@ -1592,9 +1592,9 @@ selects piece font based on piece size</span>
 &nbsp;&nbsp; board shadow color &nbsp;&nbsp;
 <span class="helptext">
 <a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.boardShadowColorHex.color.fromString('FFFFFF'); document.board.boardShadowColorHex.value = 'transparent'; return false;">transparent</a>
-disables shadow;
+disables the board shadow;
 <a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.boardShadowColorHex.color.fromString('FFFFFF'); document.board.boardShadowColorHex.value = 'border'; return false;">border</a>
-copies border color; requires browser's CSS3 support
+copies the board border color
 </span>
 <p></p>
 
@@ -1604,7 +1604,7 @@ copies border color; requires browser's CSS3 support
 <option value="none">none</option>
 </select>
 &nbsp;&nbsp; square highlight mode &nbsp;&nbsp;
-<span class="helptext">when set  to
+<span class="helptext">when set to
 <a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.highlightMode.value = 'border'; validate_ss_ps_hm(); update_controls(); return false;">border</a>
 a larger square size might be required</span>
 <p></p>
@@ -1681,9 +1681,9 @@ uses colors below</span>
 
 <input class="color {adjust:false} input" type="text" id="highlightMoveColorHex" name="input" value="" size="12" onChange="validate_highlightMoveColorHex()">
 &nbsp;&nbsp; highlight move color &nbsp;&nbsp;
-<span class="helptext">when set to
+<span class="helptext">
 <a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.highlightMoveColorHex.color.fromString('FFFFFF'); document.board.highlightMoveColorHex.value = 'background'; return false;">background</a>
-the background color is copied</span>
+copies the background color</span>
 <p></p>
 <br>
 
@@ -1702,9 +1702,9 @@ on separate lines</span>
 
 <input class="input" type="text" id="fontCommentsSize" name="input" value="" size="12" onChange="validate_fontCommentsSize();">
 &nbsp;&nbsp; comments font size &nbsp;&nbsp;
-<span class="helptext">a number or a percentage; when set to
+<span class="helptext">a number or a percentage;
 <a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.fontCommentsSize.value = 'moves'; return false;">moves</a>
-the moves font size is copied</span>
+copies the moves font size</span>
 <p></p>
 
 <input class="color input" type="text" id="fontCommentsColorHex" name="input" value="" size="12" onChange="validate_color(this, 'comments font color', fontCommentsColorHex_default)">
@@ -1741,9 +1741,9 @@ the moves font size is copied</span>
 
 <input class="color input" type="text" id="backgroundColorHex" name="input" value="" size="12" onChange="validate_backgroundColorHex()">
 &nbsp;&nbsp; background color &nbsp;&nbsp;
-<span class="helptext">when set to
+<span class="helptext">
 <a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.backgroundColorHex.color.fromString('FFFFFF'); document.board.backgroundColorHex.value = 'transparent'; return false;">transparent</a>
-the parent's background color is used</span>
+uses the parent's background color</span>
 <p></p>
 
 <!--
