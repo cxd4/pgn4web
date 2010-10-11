@@ -92,6 +92,7 @@ squareSize_default = 40;
 lightColorHex_default = "EFF4EC";
 darkColorHex_default = "C6CEC3";
 boardBorderColorHex_default = "000000";
+boardShadowColorHex_default = "transparent";
 highlightMode_default = "square";
 highlightColorHex_default = "DAF4D7";
 buttonsDisplay_default = "hidden";
@@ -438,6 +439,30 @@ function set_defaults() {
     validate_color(document.board.backgroundColorHex, 'background color', backgroundColorHex_default);
   }
 
+  if ((boardShadowColorHex_value = gup("boardShadowColorHex")) === "") {
+    boardShadowColorSex = gup("boardShadowColorSex");
+    if ((boardShadowColorSex == "transparent") || (boardShadowColorSex == "t")) {
+      boardShadowColorHex_value = "transparent";
+    } else if ((boardShadowColorSex == "border") || (boardShadowColorSex == "b")) {
+      boardShadowColorHex_value = "border";
+    } else {
+      if ((boardShadowColorHex_value = sex2hex(boardShadowColorSex, 'board shadow color')) === "") {
+        boardShadowColorHex_value = boardShadowColorHex_default;
+      }
+    }
+  }
+  if (boardShadowColorHex_value == "t") {
+    boardShadowColorHex_value = "transparent";
+  }
+  if (boardShadowColorHex_value == "b") {
+    boardShadowColorHex_value = "border";
+  }
+  if ((boardShadowColorHex_value == "transparent") || (boardShadowColorHex_value == "border")) {
+    document.board.boardShadowColorHex.value = boardShadowColorHex_value;
+  } else {
+    document.board.boardShadowColorHex.color.fromString(boardShadowColorHex_value);
+  }
+
   if ((horizontalLayout_value = gup("horizontalLayout")) === "") { horizontalLayout_value = horizontalLayout_default; }
   document.board.horizontalLayout.value = horizontalLayout_value == "t" ? "t" : "f";
 
@@ -613,6 +638,11 @@ function calculate_html_code() {
   iframeUrl += "&dcs=" + hex2sex(darkColorHex_value);
   boardBorderColorHex_value = document.board.boardBorderColorHex.value; 
   iframeUrl += "&bbcs=" + hex2sex(boardBorderColorHex_value);
+  boardShadowColorHex_value = document.board.boardShadowColorHex.value;
+  if (boardShadowColorHex_value != "transparent") {
+    if (boardShadowColorHex_value == "border") { iframeUrl += "&bscs=b"; }
+    else { iframeUrl += "&bscs=" + hex2sex(boardShadowColorHex_value); }
+  }
 
   highlightMode_value = document.board.highlightMode.value; 
   iframeUrl += "&hm=" + highlightMode_value.charAt(0); 
@@ -854,6 +884,19 @@ function validate_highlightMoveColorHex() {
   }
 }
 
+function validate_boardShadowColorHex() {
+  object = document.getElementById('boardShadowColorHex');
+  if (object.value == 'transparent') { return true; }
+  if (object.value == 'border') { return true; }
+  if (object.value.match(/^[0-9A-Fa-f]{6}$/)) {
+    return true;
+  } else { 
+    alert('error: the board shadow color must be \'transparent\' or \'border\' or a six digits hexadecimal color code, like FF0000');
+    object.color.fromString(boardShadowColorHex_default);
+    return false;
+  }
+}
+
 function validate_backgroundColorHex() {
   object = document.getElementById('backgroundColorHex');
   if (object.value == 'transparent') { return true; }
@@ -1062,10 +1105,10 @@ common_template = "?am=l&d=3000&fh=&fw=";
 color_template = new Array();
 color_template[0] = new Array("blue ", "&lcs=VdyD&dcs=LHCg&bbcs=LHCg&bd=c&cbcs=PYGy&ctcs=l4It&fhcs=$$$$&fmcs=$$$$&fccs=v71$&hmcs=M___&bcs=VdyD", "&hcs=QtmS", "&hcs=s8pI");
 color_template[1] = new Array("brown", "&lcs=XItn&dcs=NpQK&bbcs=NpQK&bd=c&cbcs=__iz&ctcs=NpQK&fhcs=k03b&fmcs=k03b&fccs=DRYC&hmcs=__X$&bcs=____", "&hcs=MWVi", "&hcs=__X$");
-color_template[2] = new Array("gray ", "&lcs=YeiP&dcs=Qcij&bbcs=D91v&bd=s&cbcs=YeiP&ctcs=$$$$&fhcs=$$$$&fmcs=$$$$&fccs=v71$&hmcs=Qcij&bcs=____", "&hcs=Udiz", "&hcs=s6gP");
+color_template[2] = new Array("gray ", "&lcs=YeiP&dcs=Qcij&bbcs=D91v&bscs=b&bd=s&cbcs=YeiP&ctcs=$$$$&fhcs=$$$$&fmcs=$$$$&fccs=v71$&hmcs=Qcij&bcs=____", "&hcs=Udiz", "&hcs=s6gP");
 color_template[3] = new Array("green", "&lcs=W_iH&dcs=MHW2&bbcs=MHW2&bd=c&cbcs=UtKy&ctcs=x7x7&fhcs=g3g3&fmcs=7x7x&fccs=v71$&hmcs=RKim&bcs=W_iH", "&hcs=RKim", "&hcs=waRy");
 color_template[4] = new Array("pink ", "&lcs=Wtyk&dcs=OXJO&bbcs=OXJO&bd=c&cbcs=UJ2e&ctcs=nkYj&fhcs=nkYi&fmcs=nkYi&fccs=DoRa&hmcs=ZbNv&bcs=Wtyk", "&hcs=UIFV", "&hcs=ZbNv");
-color_template[5] = new Array("wood ", "&lcs=_XNo&dcs=O8AB&bbcs=O8AB&bd=s&cbcs=YeiP&ctcs=$$$$&fhcs=$$$$&fmcs=$$$$&fccs=v71$&hmcs=_XNo&bcs=____", "&hcs=r4fT", "&hcs=r4fT");
+color_template[5] = new Array("wood ", "&lcs=_XNo&dcs=O8AB&bbcs=O8AB&bscs=b&bd=s&cbcs=YeiP&ctcs=$$$$&fhcs=$$$$&fmcs=$$$$&fccs=v71$&hmcs=_XNo&bcs=____", "&hcs=r4fT", "&hcs=r4fT");
 
 // size template array
 size_template = new Array();
@@ -1543,6 +1586,16 @@ selects piece font based on piece size</span>
 
 <input class="color input" type="text" id="boardBorderColorHex" name="input" value="" size="12" onChange="validate_color(this, 'board border color', boardBorderColorHex_default)">
 &nbsp;&nbsp; board border color &nbsp;&nbsp;
+<p></p>
+
+<input class="color input" type="text" id="boardShadowColorHex" name="input" value="" size="12" onChange="validate_boardShadowColorHex()">
+&nbsp;&nbsp; board shadow color &nbsp;&nbsp;
+<span class="helptext">
+<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.boardShadowColorHex.color.fromString('FFFFFF'); document.board.boardShadowColorHex.value = 'transparent'; return false;">transparent</a>
+disables shadow;
+<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.boardShadowColorHex.color.fromString('FFFFFF'); document.board.boardShadowColorHex.value = 'border'; return false;">border</a>
+copies border color; requires browser's CSS3 support
+</span>
 <p></p>
 
 <select class="dropdown" id="highlightMode" name="dropdown" onChange="validate_ss_ps_hm(); update_controls();">
