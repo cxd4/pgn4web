@@ -67,6 +67,15 @@ body {
 .buttonControl {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 60px !important;
+  height: 40px;
+  color: #e9eaee;
+  font-weight: bold;
+}
+
+.buttonControlPlay:hover,
+.buttonControlStop:hover,
+.buttonControl:hover {
+  color: black;
 }
 
 .buttonControlSpace {
