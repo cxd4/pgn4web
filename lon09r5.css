@@ -47,8 +47,8 @@ body {
 
 .whiteSquare,
 .highlightWhiteSquare {
-  background: #e9eaee;
-  border-color: #e9eaee;
+  background: #e3e3e3;
+  border-color: #e3e3e3;
 }
 
 .blackSquare,
@@ -67,15 +67,12 @@ body {
 .buttonControl {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 60px !important;
-  height: 40px;
-  color: #e9eaee;
-  font-weight: bold;
 }
 
 .buttonControlPlay:hover,
 .buttonControlStop:hover,
 .buttonControl:hover {
-  color: black;
+  color: #838383;
 }
 
 .buttonControlSpace {
@@ -90,6 +87,8 @@ body {
 .searchPgnButton,
 .searchPgnExpression {
 /* a "width" attribute here must use the !important flag to override default settings */
+  color: #e3e3e3;
+  font-weight: 900;
   border-style: solid;
   border-width: 5px;
   border-color: #c3c3c3;
@@ -110,7 +109,7 @@ body {
 }
 
 .moveOn {
-  background: #e9eaee;
+  background: #e3e3e3;
   box-shadow: 0px 0px 15px #c3c3c3;
   -webkit-box-shadow: 0px 0px 15px #c3c3c3;
   -moz-box-shadow: 0px 0px 15px #c3c3c3;
