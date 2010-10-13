@@ -879,7 +879,8 @@ function validate_highlightMoveColorHex() {
     return true;
   } else { 
     alert('error: the move highlight color must be \'background\' or a six digits hexadecimal color code, like FF0000');
-    object.color.fromString(highlightMoveColorHex_default);
+    if (highlightMoveColorHex_default == 'background') { object.value = highlightMoveColorHex_default; }
+    else { object.color.fromString(highlightMoveColorHex_default); }
     return false;    
   }
 }
@@ -892,7 +893,9 @@ function validate_boardShadowColorHex() {
     return true;
   } else { 
     alert('error: the board shadow color must be \'transparent\' or \'border\' or a six digits hexadecimal color code, like FF0000');
-    object.color.fromString(boardShadowColorHex_default);
+    if ((boardShadowColorHex_default == 'transparent') || (boardShadowColorHex_default == 'border')) {
+      object.value = boardShadowColorHex_default;
+    } else { object.color.fromString(boardShadowColorHex_default); }
     return false;
   }
 }
@@ -904,7 +907,8 @@ function validate_backgroundColorHex() {
     return true;
   } else { 
     alert('error: the move highlight color must be \'transparent\' or a six digits hexadecimal color code, like FF0000');
-    object.color.fromString(backgroundColorHex_default);
+    if (backgroundColorHex_default == 'transparent') { object.value = backgroundColorHex_default; }
+    else { object.color.fromString(backgroundColorHex_default); }
     return false;
   }
 }
@@ -1576,19 +1580,19 @@ selects piece font based on piece size</span>
 <p></p>
 <br>
 
-<input class="color input" type="text" id="lightColorHex" name="input" value="" size="12" onChange="validate_color(this, 'light squares color', lightColorHex_default)">
+<input class="color {adjust:false} input" type="text" id="lightColorHex" name="input" value="" size="12" onChange="validate_color(this, 'light squares color', lightColorHex_default)">
 &nbsp;&nbsp; light squares color &nbsp;&nbsp;
 <p></p>
 
-<input class="color input" type="text" id="darkColorHex" name="input" value="" size="12" onChange="validate_color(this, 'dark squares color', darkColorHex_default)">
+<input class="color {adjust:false} input" type="text" id="darkColorHex" name="input" value="" size="12" onChange="validate_color(this, 'dark squares color', darkColorHex_default)">
 &nbsp;&nbsp; dark squares color &nbsp;&nbsp;
 <p></p>
 
-<input class="color input" type="text" id="boardBorderColorHex" name="input" value="" size="12" onChange="validate_color(this, 'board border color', boardBorderColorHex_default)">
+<input class="color {adjust:false} input" type="text" id="boardBorderColorHex" name="input" value="" size="12" onChange="validate_color(this, 'board border color', boardBorderColorHex_default)">
 &nbsp;&nbsp; board border color &nbsp;&nbsp;
 <p></p>
 
-<input class="color input" type="text" id="boardShadowColorHex" name="input" value="" size="12" onChange="validate_boardShadowColorHex()">
+<input class="color {adjust:false} input" type="text" id="boardShadowColorHex" name="input" value="" size="12" onChange="validate_boardShadowColorHex()">
 &nbsp;&nbsp; board shadow color &nbsp;&nbsp;
 <span class="helptext">
 <a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.boardShadowColorHex.color.fromString('FFFFFF'); document.board.boardShadowColorHex.value = 'transparent'; return false;">transparent</a>
@@ -1631,7 +1635,7 @@ uses colors below</span>
 &nbsp;&nbsp; custom control buttons background color &nbsp;&nbsp;
 <p></p>
 
-<input class="color input" type="text" id="controlTextColorHex" name="input" value="" size="12" onChange="validate_color(this, 'control buttons text color', controlTextColorHex_default)">
+<input class="color {adjust:false} input" type="text" id="controlTextColorHex" name="input" value="" size="12" onChange="validate_color(this, 'control buttons text color', controlTextColorHex_default)">
 &nbsp;&nbsp; custom control buttons text color &nbsp;&nbsp;
 
 <div style="height: 3em">&nbsp;</div>
@@ -1657,7 +1661,7 @@ uses colors below</span>
 <span class="helptext">a number or a percentage</span>
 <p></p>
 
-<input class="color input" type="text" id="fontHeaderColorHex" name="input" value="" size="12" onChange="validate_color(this, 'header font color', fontHeaderColorHex_default)">
+<input class="color {adjust:false} input" type="text" id="fontHeaderColorHex" name="input" value="" size="12" onChange="validate_color(this, 'header font color', fontHeaderColorHex_default)">
 &nbsp;&nbsp; header font color &nbsp;&nbsp;
 <p></p>
 <br>
@@ -1674,7 +1678,7 @@ uses colors below</span>
 <span class="helptext">a number or a percentage</span>
 <p></p>
 
-<input class="color input" type="text" id="fontMovesColorHex" name="input" value="" size="12" onChange="validate_color(this, 'moves font color', fontMovesColorHex_default)">
+<input class="color {adjust:false} input" type="text" id="fontMovesColorHex" name="input" value="" size="12" onChange="validate_color(this, 'moves font color', fontMovesColorHex_default)">
 
 &nbsp;&nbsp; moves font color &nbsp;&nbsp;
 <p></p>
@@ -1707,7 +1711,7 @@ on separate lines</span>
 copies the moves font size</span>
 <p></p>
 
-<input class="color input" type="text" id="fontCommentsColorHex" name="input" value="" size="12" onChange="validate_color(this, 'comments font color', fontCommentsColorHex_default)">
+<input class="color {adjust:false} input" type="text" id="fontCommentsColorHex" name="input" value="" size="12" onChange="validate_color(this, 'comments font color', fontCommentsColorHex_default)">
 &nbsp;&nbsp; comments font color &nbsp;&nbsp;
 
 <div style="height: 3em">&nbsp;</div>
@@ -1739,7 +1743,7 @@ copies the moves font size</span>
 <p></p>
 <br>
 
-<input class="color input" type="text" id="backgroundColorHex" name="input" value="" size="12" onChange="validate_backgroundColorHex()">
+<input class="color {adjust:false} input" type="text" id="backgroundColorHex" name="input" value="" size="12" onChange="validate_backgroundColorHex()">
 &nbsp;&nbsp; background color &nbsp;&nbsp;
 <span class="helptext">
 <a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.backgroundColorHex.color.fromString('FFFFFF'); document.board.backgroundColorHex.value = 'transparent'; return false;">transparent</a>
@@ -1748,14 +1752,14 @@ uses the parent's background color</span>
 
 <!--
 
-<input class="color input" type="text" id="previewBackgroundColorHex" name="input" value="" size="12" onChange="validate_color(this, 'preview background color', previewBackgroundColorHex_default)"> 
+<input class="color {adjust:false} input" type="text" id="previewBackgroundColorHex" name="input" value="" size="12" onChange="validate_color(this, 'preview background color', previewBackgroundColorHex_default)"> 
 &nbsp;&nbsp; preview background color &nbsp;&nbsp;
 <span class="helptext">not actually used in the HTML code, just for the preview</span>
 <p></p>
 <br>
 
 -->
-<input class="color input" type="hidden" id="previewBackgroundColorHex" value"DDDDDD">
+<input class="color {adjust:false} input" type="hidden" id="previewBackgroundColorHex" value"DDDDDD">
 
 <!--
 
