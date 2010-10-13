@@ -75,6 +75,12 @@ body {
   color: #838383;
 }
 
+.buttonControlPlay:active,
+.buttonControlStop:active,
+.buttonControl:active {
+  color: #e3e3e3; 
+}
+
 .buttonControlSpace {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 22px !important;
