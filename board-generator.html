@@ -1012,7 +1012,7 @@ function validate_frameHeight() {
 function validate_ss_ps_hm() {
   retval = true;
   if (document.getElementById('highlightMode').value == 'border') {
-    minSquareSize = 22; 
+    minSquareSize = 22;
   } else {
     minSquareSize = 20;
   }
@@ -1458,11 +1458,13 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 <option value="none">none</option>
 </select>
 &nbsp;&nbsp; autoplay games &nbsp;&nbsp;
-<span class="helptext">
+<span class="helptext">autoplay first
 <a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.autoplayMode.value = 'game'; return false;">game</a>
-autoplays the first game once,
+once, or 
 <a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.autoplayMode.value = 'loop'; return false;">loop</a>
-loops through games continiously</span>
+continiously, or autoplay
+<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.autoplayMode.value = 'none'; return false;">none</a>
+</span>
 <p></p>
 
 <select class="dropdown" id="delay" name="dropdown">
@@ -1497,12 +1499,12 @@ loops through games continiously</span>
 	<option value="number">custom number</option>
 </select>
 &nbsp;&nbsp; initial halfmove &nbsp;&nbsp;
-<span class="helptext"><b>always</b> settings apply at every game load, <b>once</b> settings only at the first load</span>
+<span class="helptext"><i>always</i> settings apply at every game load, <i>once</i> settings only at the first load</span>
 <p></p>
 
 <input  class="input" type="text" id="initialHalfmoveNumber" name="input" value="" size="12" onChange="javascript:setInitialHalfmove();">
 &nbsp;&nbsp; initial halfmove number &nbsp;&nbsp;
-<span class="helptext">actual halfmove number applied when the setting above is
+<span class="helptext">actual halfmove number when the setting above is
 <a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.initialHalfmoveSelect.value = 'number'; setInitialHalfmove(); return false;">custom number</a>
 </span>
 <p></p>
@@ -1594,9 +1596,9 @@ selects piece font based on piece size</span>
 
 <input class="color {adjust:false} input" type="text" id="boardShadowColorHex" name="input" value="" size="12" onChange="validate_boardShadowColorHex()">
 &nbsp;&nbsp; board shadow color &nbsp;&nbsp;
-<span class="helptext">
+<span class="helptext">a color;
 <a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.boardShadowColorHex.color.fromString('FFFFFF'); document.board.boardShadowColorHex.value = 'transparent'; return false;">transparent</a>
-disables the board shadow,
+disables the shadow,
 <a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.boardShadowColorHex.color.fromString('FFFFFF'); document.board.boardShadowColorHex.value = 'border'; return false;">border</a>
 copies the board border color
 </span>
@@ -1608,9 +1610,6 @@ copies the board border color
 <option value="none">none</option>
 </select>
 &nbsp;&nbsp; square highlight mode &nbsp;&nbsp;
-<span class="helptext">when set to
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.highlightMode.value = 'border'; validate_ss_ps_hm(); update_controls(); return false;">border</a>
-a larger square size might be required</span>
 <p></p>
 
 <input class="color {adjust:false} input" type="text" id="highlightColorHex" name="input" value="" size="12" onChange="validate_color(this, 'highlight squares color', highlightColorHex_default)">
@@ -1624,11 +1623,13 @@ a larger square size might be required</span>
 <option value="custom">custom</option>
 </select>
 &nbsp;&nbsp; how to show control buttons &nbsp;&nbsp;
-<span class="helptext">
+<span class="helptext">browser's
 <a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.buttonsDisplay.value = 'standard'; update_controls(); return false;">standard</a>
-uses browser's buttons,
+buttons, or 
 <a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.buttonsDisplay.value = 'custom'; update_controls(); return false;">custom</a>
-uses colors below</span>
+colors below, or 
+<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.buttonsDisplay.value = 'hidden'; update_controls(); return false;">hidden</a>
+buttons</span>
 <p></p>
 
 <input class="color {adjust:false} input" type="text" id="controlBackgroundColorHex" name="input" value="" size="12" onChange="validate_color(this, 'control buttons background color', controlBackgroundColorHex_default); update_controls()">
@@ -1685,7 +1686,7 @@ uses colors below</span>
 
 <input class="color {adjust:false} input" type="text" id="highlightMoveColorHex" name="input" value="" size="12" onChange="validate_highlightMoveColorHex()">
 &nbsp;&nbsp; highlight move color &nbsp;&nbsp;
-<span class="helptext">
+<span class="helptext">a color;
 <a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.highlightMoveColorHex.color.fromString('FFFFFF'); document.board.highlightMoveColorHex.value = 'background'; return false;">background</a>
 copies the background color</span>
 <p></p>
@@ -1698,10 +1699,12 @@ copies the background color</span>
 </select>
 &nbsp;&nbsp; how to show move comments &nbsp;&nbsp;
 <span class="helptext">
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.commentsDisplay.value = 'inline'; return false;">inline</a>:
-on same line as moves,
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.commentsDisplay.value = 'newline'; return false;">newline</a>:
-on separate lines</span>
+<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.commentsDisplay.value = 'inline'; return false;">inline</a>
+inbetween game moves, or on a 
+<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.commentsDisplay.value = 'newline'; return false;">newline</a>
+, or
+<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.commentsDisplay.value = 'hidden'; return false;">hidden</a>
+</span>
 <p></p>
 
 <input class="input" type="text" id="fontCommentsSize" name="input" value="" size="12" onChange="validate_fontCommentsSize();">
@@ -1745,7 +1748,7 @@ copies the moves font size</span>
 
 <input class="color {adjust:false} input" type="text" id="backgroundColorHex" name="input" value="" size="12" onChange="validate_backgroundColorHex()">
 &nbsp;&nbsp; background color &nbsp;&nbsp;
-<span class="helptext">
+<span class="helptext">a color;
 <a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.backgroundColorHex.color.fromString('FFFFFF'); document.board.backgroundColorHex.value = 'transparent'; return false;">transparent</a>
 uses the parent's background color</span>
 <p></p>
