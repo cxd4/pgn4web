@@ -1,3 +1,23 @@
+
+[Event "London League 2010/2011"]
+[Site "London, UK"]
+[Date "2010.10.14"]
+[Round "?"]
+[White "Casaschi, Paolo"]
+[Black "Djabri, Zafer"]
+[Result "1-0"]
+[ECO "D02"]
+[Opening "Queen's pawn game, Krause variation"]
+
+1. d4 d5 2. Nf3 c5 3. c4 dxc4 4. e3 cxd4 5. Bxc4 Nc6 6. exd4 e6 7. O-O Nf6
+8. Nc3 Be7 9. Bf4 O-O 10. Rc1 Nb4 11. Qb3 Nbd5 12. Nxd5 Nxd5 13. Bxd5 Qxd5
+14. Qxd5 exd5 15. Rc7 Bd8 16. Rc5 Bb6 17. Rc3 Bf5 18. Bc7 Rfc8 19. Rfc1
+Rxc7 20. Rxc7 Bxc7 21. Rxc7 Rc8 22. Rxc8+ Bxc8 23. Kf1 Kf8 24. Ke1 Ke7 25.
+Kd2 f6 26. Ng1 Kd6 27. Ne2 h5 28. Nf4 h4 29. Nh5 g5 30. Nxf6 Bf5 31. h3 Ke6
+32. Ng4 Be4 33. Ne3 Bg6 34. a3 b6 35. Ke2 Be4 36. f3 Bg6 37. Kf2 a5 38. g3
+b5 39. g4 Bd3 40. f4 gxf4 41. Ng2 Be4 42. Nxf4+ Kf6 43. b4 axb4 44. axb4
+Kg5 45. Ne6+ Kf6 46. Nc7 Ke7 47. Nxb5 Kd7 48. Nc3 Bd3 49. Nxd5 1-0
+
 [Event "London League 2009/2010"]
 [Site "London, UK"]
 [Date "2010.04.28"]
