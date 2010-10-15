@@ -89,10 +89,10 @@ body {
 }
 
 .moveOn {
-  background: #E4E4E4;
-  box-shadow: 0px 0px 15px #C8C8C8;
-  -webkit-box-shadow: 0px 0px 15px #C8C8C8;
-  -moz-box-shadow: 0px 0px 15px #C8C8C8;
+  background: #DDDDDD;
+  box-shadow: 0px 0px 11px #AAAAAA;
+  -webkit-box-shadow: 0px 0px 11px #AAAAAA;
+  -moz-box-shadow: 0px 0px 11px #AAAAAA;
 }
 
 .comment,
