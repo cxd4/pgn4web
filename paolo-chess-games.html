@@ -42,26 +42,38 @@
 </textarea></form>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
-<TABLE CELLSPACING=40>
-<TR>
+<table cellpadding=15 border=0>
 
-<TD ALIGN=center VALIGN=top>
-<div style="margin-bottom: 30px;" id="GameSelector"></div>
+<tr>
+
+<td align=center valign=top>
+<div id="GameSelector"></div>
+</td>
+
+<td valign=top>
+<div id="GameDate" style="font-size: 120%; font-weight: bold; text-align: right;"></div>
+</td>
+
+</tr>
+
+<tr>
+
+<td align=center valign=top>
 <div id="GameBoard"></div>
 <div style="margin-top: 30px;" id="GameButtons"></div>
-</TD>
+</td>
 
-<TD VALIGN=top>
-<div id="GameDate" style="font-size: 120%; font-weight: bold; text-align: right; margin-bottom: 20px;"></div>
-<div style="font-size: 150%; font-weight: bold; text-align: left; margin-bottom: 20px;"><span style="white-space: nowrap;" id="GameWhite"></span><span style="white-space: nowrap;">&nbsp;&nbsp;-&nbsp;&nbsp;</span><span style="white-space: nowrap;" id="GameBlack"></span></div>
-<div id="GameEvent" style="font-size: 120%; font-weight: bold; text-align: right; white-space: nowrap;"></div>
-<div id="GameSite" style="font-size: 120%; font-weight: bold; text-align: right; white-space: nowrap; margin-bottom: 20px;"></div>
+<td valign=top>
+<div style="margin-left: 10px;">
+<div style="font-size: 150%; font-weight: bold; text-align: left; margin-bottom: 30px;"><span style="white-space: nowrap;" id="GameWhite"></span><span style="white-space: nowrap;">&nbsp;&nbsp;-&nbsp;&nbsp;</span><span style="white-space: nowrap;" id="GameBlack"></span></div>
 <div style="text-align: justify" id="GameText"></div>
-<div id="GameResult" style="font-size: 120%; font-weight: bold; text-align: left; margin-top: 20px;"></div>
-</TD>
+<div id="GameResult" style="font-size: 120%; font-weight: bold; text-align: right; margin-top: 30px;"></div>
+</div>
+</td>
 
-</TR>
-</TABLE>
+</tr>
+
+</table>
 
 
 </body>
