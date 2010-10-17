@@ -1289,7 +1289,7 @@ function HighlightLastMove() {
   // show next move
   var theShowMoveTextObject = document.getElementById("GameNextMove");
   if (theShowMoveTextObject !== null) {
-    if (showThisMove+1 >= (StartPly+PlyNumber)) {
+    if (showThisMove + 1 >= StartPly + PlyNumber) {
       text = gameResult[currentGame];
     } else {
       text = (Math.floor((showThisMove+1)/2) + 1) + 
@@ -1787,10 +1787,10 @@ function GoToInitialHalfmove() {
       GoToMove(0);
       break;
     case "end":
-      GoToMove(StartPly+PlyNumber);
+      GoToMove(StartPly + PlyNumber);
       break;
     case "random":
-      GoToMove(StartPly + Math.floor(Math.random()*(StartPly+PlyNumber)));
+      GoToMove(StartPly + Math.floor(Math.random()*(StartPly + PlyNumber)));
       break;
     case "comment":
       GoToMove(0);
@@ -1801,9 +1801,9 @@ function GoToInitialHalfmove() {
       initialHalfmove = parseInt(initialHalfmove,10);
       initialHalfmove = initialHalfmove < 0 ? -Math.floor(-initialHalfmove) : Math.floor(initialHalfmove);
       if (initialHalfmove < -3) { initialHalfmove = 0; }
-      if (initialHalfmove == -3) { GoToMove(StartPly+PlyNumber); }
+      if (initialHalfmove == -3) { GoToMove(StartPly + PlyNumber); }
       else if (initialHalfmove == -2) { GoToMove(0); MoveToNextComment(); }
-      else if (initialHalfmove == -1) { GoToMove(StartPly + Math.floor(Math.random()*(StartPly+PlyNumber))); }
+      else if (initialHalfmove == -1) { GoToMove(StartPly + Math.floor(Math.random()*(StartPly + PlyNumber))); }
       else { GoToMove(Math.floor(initialHalfmove)); }
       break;
   }
@@ -2263,7 +2263,7 @@ function LoadGameHeaders(){
        if (gameDemoLength[ii] === undefined) {
          InitFEN(gameFEN[ii]);
          ParsePGNGameString(pgnGame[ii]);
-         gameDemoLength[ii] = PlyNumber; 
+         gameDemoLength[ii] = PlyNumber;
        }
        if (gameDemoMaxPly[ii] === undefined) { gameDemoMaxPly[ii] = 0; }
        if (gameDemoMaxPly[ii] <= gameDemoLength[ii]) { gameResult[ii] = '*'; }
@@ -2336,7 +2336,7 @@ function MoveForward(diff) {
   // CurrentPly counts from 1, starting position 0
   goToPly = CurrentPly + parseInt(diff,10);
 
-  if (goToPly > (StartPly+PlyNumber)) { goToPly = StartPly+PlyNumber; }
+  if (goToPly > (StartPly + PlyNumber)) { goToPly = StartPly + PlyNumber; }
 
   // reach to selected move checking legality
   parse = false;
@@ -2571,7 +2571,7 @@ function ParsePGNGameString(gameString) {
         break;
     }
   }
-  for (ii=StartPly; ii<=PlyNumber; ii++) {
+  for (ii=StartPly; ii<=StartPly+PlyNumber; ii++) {
     MoveComments[ii] = MoveComments[ii].replace(/\s+/g, " ");
     pgn4webCommentTmp = MoveComments[ii].match(/\[%pgn4web\s*(.*?)\]/);
     pgn4webMoveComments[ii] = pgn4webCommentTmp ? pgn4webCommentTmp[1] : "";
