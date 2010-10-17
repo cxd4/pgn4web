@@ -22,7 +22,7 @@
    SetImageType("png");
    SetHighlightOption(false); // true or false
    SetGameSelectorOptions("Select from Paolo's games...", false, 0, 0, 0, 15, 15, 0, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
-   SetCommentsIntoMoveText(true);
+   SetCommentsIntoMoveText(false);
    SetCommentsOnSeparateLines(false);
    SetAutoplayDelay(2000); // milliseconds
 // SetAutostartAutoplay(false);
@@ -51,7 +51,7 @@
 </td>
 
 <td valign=top>
-<div id="GameDate" style="font-size: 120%; font-weight: bold; text-align: right;"></div>
+<a href="javascript:MoveToNextComment();" onfocus="this.blur()"><div id="GameDate" style="font-size: 120%; font-weight: bold; text-align: right;"></div></a>
 </td>
 
 </tr>
@@ -65,9 +65,13 @@
 
 <td valign=top>
 <div style="margin-left: 10px;">
-<div style="font-size: 150%; font-weight: bold; text-align: left; margin-bottom: 30px;"><span style="white-space: nowrap;" id="GameWhite"></span><span style="white-space: nowrap;">&nbsp;&nbsp;-&nbsp;&nbsp;</span><span style="white-space: nowrap;" id="GameBlack"></span></div>
+<div style="font-size: 150%; font-weight: bold; text-align: left; margin-bottom: 30px;">
+<a href="javascript:searchPgnGame(gameWhite[currentGame]);" onfocus="this.blur()"><span style="white-space: nowrap;" id="GameWhite"></span></a>
+<span style="white-space: nowrap;">&nbsp;&nbsp;-&nbsp;&nbsp;</span>
+<a href="javascript:searchPgnGame(gameBlack[currentGame]);" onfocus="this.blur()"><span style="white-space: nowrap;" id="GameBlack"></span></a>
+</div>
 <div style="text-align: justify" id="GameText"></div>
-<div id="GameResult" style="font-size: 120%; font-weight: bold; text-align: right; margin-top: 30px;"></div>
+<a href="javascript:GoToMove(StartPly+PlyNumber);" onfocus="this.blur()"><div id="GameResult" style="font-size: 120%; font-weight: bold; text-align: right; margin-top: 30px;"></div></a>
 </div>
 </td>
 
