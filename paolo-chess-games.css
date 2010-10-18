@@ -25,12 +25,12 @@ a {
 }
 
 .boardTable {
-  border-style: double;
-  border-color: gray;
-  border-width: 3px;
-  box-shadow: 0px 0px 22px #AAAAAA;
-  -webkit-box-shadow: 0px 0px 22px #AAAAAA;
-  -moz-box-shadow: 0px 0px 22px #AAAAAA;
+  border-style: outset;
+  border-width: 2px;
+  border-color: #DAE1D7;
+  box-shadow: 0px 0px 30px #BBBBBB;
+  -webkit-box-shadow: 0px 0px 30px #BBBBBB;
+  -moz-box-shadow: 0px 0px 30px #BBBBBB;
 }
 
 .pieceImage {
@@ -44,21 +44,25 @@ a {
 .highlightBlackSquare {
   width: 40px;
   height: 40px;
+  border-style: solid;
+  border-width: 1px;
 }
 
 .whiteSquare,
 .highlightWhiteSquare {
   background: #EFF4EC;
+  border-color: #EFF4EC;
 }
 
 .blackSquare,
 .highlightBlackSquare {
   background: #C6CEC3;
+  border-color: #C6CEC3;
 }
 
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  background: #DAF4D7;
+  border-style: inset;
 }
 
 .selectControl {
@@ -95,9 +99,9 @@ a {
 
 .moveOn {
   background: #DDDDDD;
-  box-shadow: 0px 0px 11px #AAAAAA;
-  -webkit-box-shadow: 0px 0px 11px #AAAAAA;
-  -moz-box-shadow: 0px 0px 11px #AAAAAA;
+  box-shadow: 0px 0px 11px #BBBBBB;
+  -webkit-box-shadow: 0px 0px 11px #BBBBBB;
+  -moz-box-shadow: 0px 0px 11px #BBBBBB;
 }
 
 .comment,
