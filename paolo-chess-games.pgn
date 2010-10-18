@@ -647,15 +647,15 @@ Kh2 a5 37. Qe5 Qf7 38. Rxa5 h6 { # } 39. Ra7 Bb7 40. Qb5 Rfb8 41. Rxb7 Rxb7
 [Opening "Bird's opening"]
 
 1. f4 d5 2. Nf3 Nf6 3. e3 g6 4. b3 Bg7 5. Bb2 O-O 6. Be2 c5 7. O-O Nc6 8.
-Qe1 Nd7 9. Bxg7 Kxg7 10. Nc3 d4 11. Ne4 Nf6 12. Nxc5 Qd6 13. Nd3 dxe3 14.
-dxe3 Nd5 15. Bd1 Qf6 16. Nfe5 Nxe5 17. Nxe5 Qb6 18. Nc4 Qc5 19. Bf3 Nxf4
-20. Qc3+ Kg8 21. Rad1 Ne6 22. Rd5 Qc7 23. Qb4 Rb8 24. a4 b6 25. Rfd1 Rd8
-26. a5 Rxd5 27. Bxd5 Qc5 28. Qxc5 Nxc5 29. axb6 axb6 30. b4 Ne6 31. Ne5 Nd8
-32. Rf1 e6 33. Bb3 Ba6 34. Rd1 Bb5 35. Rd6 Kf8 36. Bc4 Be8 37. Kf2 Ke7 38.
-Rd1 Nc6 39. Nxc6+ Bxc6 40. Bb3 Be4 41. Rd2 Rc8 42. c4 Ra8 43. Ra2 Rxa2+ 44.
-Bxa2 Kd6 45. g3 f5 46. Ke2 e5 47. Bb3 g5 48. Ba4 Bb1 49. Be8 e4 50. Kf2 Bd3
-51. Bf7 Ke5 52. Bg8 h6 53. Bf7 Bc2 54. Be8 Bb1 55. Bb5 Bd3 56. Ba6 f4 57.
-Bb5 f3 58. Ba6 1/2-1/2
+Qe1 Nd7 9. Bxg7 Kxg7 10. Nc3 d4 11. Ne4 { # } 11... Nf6 12. Nxc5 Qd6 13.
+Nd3 dxe3 14. dxe3 Nd5 15. Bd1 Qf6 16. Nfe5 Nxe5 17. Nxe5 Qb6 18. Nc4 Qc5 {
+# } 19. Bf3 Nxf4 20. Qc3+ Kg8 21. Rad1 Ne6 22. Rd5 Qc7 23. Qb4 Rb8 24. a4
+b6 25. Rfd1 Rd8 26. a5 Rxd5 27. Bxd5 Qc5 28. Qxc5 Nxc5 29. axb6 axb6 30. b4
+Ne6 31. Ne5 Nd8 32. Rf1 e6 33. Bb3 Ba6 34. Rd1 Bb5 35. Rd6 Kf8 36. Bc4 Be8
+37. Kf2 Ke7 38. Rd1 Nc6 39. Nxc6+ Bxc6 40. Bb3 Be4 41. Rd2 Rc8 42. c4 Ra8
+43. Ra2 Rxa2+ 44. Bxa2 Kd6 45. g3 f5 46. Ke2 e5 47. Bb3 g5 48. Ba4 Bb1 49.
+Be8 e4 50. Kf2 Bd3 51. Bf7 Ke5 52. Bg8 h6 53. Bf7 Bc2 54. Be8 Bb1 55. Bb5
+Bd3 56. Ba6 f4 57. Bb5 f3 58. Ba6 1/2-1/2
 
 [Event "Middlesex League 2006/2007"]
 [Site "London, UK"]
@@ -669,9 +669,10 @@ Bb5 f3 58. Ba6 1/2-1/2
 
 1. d4 Nf6 2. c4 g6 3. Nc3 Bg7 4. Nf3 O-O 5. Bg5 h6 6. Bh4 d6 7. e3 c5 8.
 Be2 Qb6 9. a3 g5 10. Bg3 Nc6 11. d5 Nh5 12. Qc2 Na5 13. Nd2 Nxg3 14. hxg3
-e6 15. Rb1 exd5 16. cxd5 c4 17. Bxc4 Nxc4 18. Nxc4 Qa6 19. Qe2 Bf5 20. Rc1
-Rac8 21. Na2 b5 22. Nd2 Rxc1+ 23. Nxc1 Rc8 24. Ncb3 Rc2 25. e4 Bd7 26. O-O
-Qb6 27. Qd3 Rxb2 28. Re1 a5 29. Na1 Qd4 30. Qxd4 Bxd4 31. Ndb3 Bxf2+ 0-1
+e6 15. Rb1 exd5 16. cxd5 { # } 16... c4 17. Bxc4 Nxc4 18. Nxc4 Qa6 19. Qe2
+Bf5 20. Rc1 Rac8 21. Na2 b5 22. Nd2 Rxc1+ 23. Nxc1 Rc8 24. Ncb3 Rc2 25. e4
+Bd7 26. O-O Qb6 27. Qd3 Rxb2 28. Re1 a5 29. Na1 Qd4 30. Qxd4 Bxd4 31. Ndb3
+Bxf2+ 0-1
 
 [Event "Middlesex League 2006/2007"]
 [Site "London, UK"]
@@ -686,10 +687,11 @@ Qb6 27. Qd3 Rxb2 28. Re1 a5 29. Na1 Qd4 30. Qxd4 Bxd4 31. Ndb3 Bxf2+ 0-1
 
 1. d4 c6 2. Nf3 d5 3. c4 Nf6 4. Nc3 e6 5. e3 a6 6. Bd3 b5 7. cxd5 cxd5 8.
 O-O Bb7 9. Qe2 Nc6 10. Rd1 Qb6 11. e4 dxe4 12. Nxe4 Nxe4 13. Bxe4 Be7 14.
-Be3 Qc7 15. Rac1 Rc8 16. Ne5 Qd6 17. Qf3 Nxe5 18. dxe5 Qxe5 19. Bxb7 Rxc1
-20. Bc6+ Kf8 21. Rxc1 f6 22. Qe4 Qxe4 23. Bxe4 Kf7 24. Rc7 Rd8 25. g3 Kf8
-26. Rc6 f5 27. Bf3 Rd6 28. Kf1 e5 29. Rxd6 Bxd6 30. Bd5 Ke7 31. Bb6 Kd7 32.
-Bb7 b4 33. Bxa6 Kc6 34. Be3 h6 35. f4 g5 36. fxg5 f4 37. gxh6 1-0
+Be3 Qc7 15. Rac1 Rc8 16. Ne5 { # } 16... Qd6 17. Qf3 Nxe5 18. dxe5 Qxe5 19.
+Bxb7 Rxc1 20. Bc6+ Kf8 21. Rxc1 f6 22. Qe4 Qxe4 23. Bxe4 Kf7 24. Rc7 Rd8
+25. g3 Kf8 26. Rc6 f5 27. Bf3 Rd6 28. Kf1 e5 29. Rxd6 Bxd6 30. Bd5 Ke7 31.
+Bb6 Kd7 32. Bb7 b4 33. Bxa6 Kc6 34. Be3 h6 35. f4 g5 36. fxg5 f4 37. gxh6
+1-0
 
 [Event "Middlesex League 2006/2007"]
 [Site "London, UK"]
@@ -705,12 +707,12 @@ Bb7 b4 33. Bxa6 Kc6 34. Be3 h6 35. f4 g5 36. fxg5 f4 37. gxh6 1-0
 Nc6 8. Nb5 d5 9. Bg2 O-O 10. cxd5 exd5 11. Nb3 Bf5 12. O-O Qb6 13. N5d4 Be4
 14. Rc1 Rfe8 15. e3 Rac8 16. Bh3 Nxd4 17. Qxd4 Qxd4 18. Nxd4 Rc4 19. b3
 Rxc1 20. Rxc1 Kf8 21. f3 Bd3 22. Kf2 h6 23. Ke1 Ba6 24. Kd2 g6 25. a3 Re7
-26. Rc3 Ne8 27. Rc8 Kg7 28. Rc1 Rc7 29. Rxc7 Nxc7 30. Bc8 Kf6 31. Nc2 b6
-32. Bxa6 Nxa6 33. Kc3 Ke6 34. Nd4+ Kd7 35. Nb5 Nc7 36. Nxa7 Ne6 37. f4 Nc5
-38. Nb5 Ne4+ 39. Kd4 Kc6 40. Nc3 Nf6 41. h3 Ne8 42. a4 Nc7 43. b4 Kd6 44.
-a5 Ne6+ 45. Kd3 bxa5 46. bxa5 Nc5+ 47. Ke2 Kc6 48. Kf3 Nb3 49. a6 d4 50. a7
-Kb7 51. exd4 Nxd4+ 52. Ke4 Nc6 53. Nb5 f6 54. Kd5 Nd8 55. Kd6 g5 56. Ke7
-gxf4 57. gxf4 1-0
+26. Rc3 Ne8 27. Rc8 Kg7 28. Rc1 Rc7 29. Rxc7 Nxc7 { # } 30. Bc8 Kf6 31. Nc2
+b6 32. Bxa6 Nxa6 33. Kc3 Ke6 34. Nd4+ Kd7 35. Nb5 Nc7 36. Nxa7 Ne6 37. f4
+Nc5 38. Nb5 Ne4+ 39. Kd4 Kc6 40. Nc3 Nf6 41. h3 Ne8 42. a4 Nc7 43. b4 Kd6
+44. a5 Ne6+ 45. Kd3 bxa5 46. bxa5 Nc5+ 47. Ke2 Kc6 48. Kf3 Nb3 49. a6 d4
+50. a7 Kb7 51. exd4 Nxd4+ 52. Ke4 Nc6 53. Nb5 f6 54. Kd5 Nd8 55. Kd6 g5 56.
+Ke7 gxf4 57. gxf4 1-0
 
 [Event "Middlesex League 2006/2007"]
 [Site "London, UK"]
@@ -726,8 +728,8 @@ gxf4 57. gxf4 1-0
 1. d4 d5 2. c4 c6 3. Nf3 Nf6 4. Nc3 a6 5. cxd5 cxd5 6. Bf4 Nc6 7. e3 Bg4 8.
 h3 Bh5 9. Bd3 e6 10. Rc1 Bd6 11. Bxd6 Qxd6 12. O-O O-O 13. Na4 Ne4 14. Nc5
 Nxc5 15. dxc5 Qc7 16. Qa4 Bxf3 17. gxf3 Ne5 18. Be2 Qe7 19. Qd4 Qg5+ 20.
-Kh2 Qf5 21. Rg1 f6 22. f4 Nc6 23. Qd1 Qe4 24. Bd3 Qb4 25. Bxh7+ Kxh7 26.
-Qh5+ Kg8 27. Rxg7+ 1-0
+Kh2 Qf5 21. Rg1 f6 22. f4 Nc6 23. Qd1 Qe4 { # } 24. Bd3 Qb4 25. Bxh7+ Kxh7
+26. Qh5+ Kg8 27. Rxg7+ 1-0
 
 [Event "Middlesex League 2006/2007"]
 [Site "London, UK"]
@@ -741,8 +743,8 @@ Qh5+ Kg8 27. Rxg7+ 1-0
 
 1. d4 e6 2. c4 f5 3. Nf3 Nf6 4. g3 Be7 5. Bg2 O-O 6. O-O Qe8 7. Nc3 d5 8.
 Ne5 c6 9. e3 Nbd7 10. Nxd7 Bxd7 11. Qe2 Ne4 12. f3 Nd6 13. c5 Nf7 14. e4 e5
-15. Be3 fxe4 16. fxe4 dxe4 17. Nxe4 Rd8 18. Qc4 Kh8 19. Rae1 Bc8 20. b4 Rd7
-21. Qc3 exd4 22. Bxd4 Rg8 23. h3 Rc7 24. Nd6 1-0
+{ # } 15. Be3 fxe4 16. fxe4 dxe4 17. Nxe4 Rd8 18. Qc4 Kh8 19. Rae1 Bc8 20.
+b4 Rd7 21. Qc3 exd4 22. Bxd4 Rg8 23. h3 Rc7 24. Nd6 { # } 1-0
 
 [Event "Middlesex League 2006/2007"]
 [Site "London, UK"]
@@ -758,12 +760,12 @@ Ne5 c6 9. e3 Nbd7 10. Nxd7 Bxd7 11. Qe2 Ne4 12. f3 Nd6 13. c5 Nf7 14. e4 e5
 1. Nf3 f5 2. c4 Nf6 3. g3 g6 4. Bg2 Bg7 5. O-O O-O 6. d4 d6 7. Nc3 c6 8. d5
 a5 9. Rb1 e5 10. dxe6 Bxe6 11. b3 Na6 12. Bf4 Nh5 13. Bg5 Qc7 14. Qd2 Nf6
 15. Rbd1 Rad8 16. Nd4 Bf7 17. e4 fxe4 18. Nxe4 Nxe4 19. Bxe4 Rfe8 20. Bg2
-Nc5 21. Rfe1 Rxe1+ 22. Rxe1 Bxd4 23. Qxd4 Ne6 24. Qd2 Nxg5 25. Qxg5 Re8 26.
-Rxe8+ Bxe8 27. h4 Kg7 28. h5 h6 29. Qe3 Bf7 30. Qd4+ Kg8 31. hxg6 Bxg6 32.
-Qf6 Kh7 33. Qf8 Bb1 34. Bh3 d5 35. Bf5+ Bxf5 36. Qxf5+ Kg7 37. cxd5 cxd5
-38. Qxd5 b6 39. Kg2 Kg6 40. a3 Kg7 41. b4 axb4 42. axb4 Kh7 43. b5 Kg7 44.
-Qc6 Qd8 45. Kh3 Qd4 46. f4 Qf2 47. Qd7+ Kg8 48. Qe6+ Kg7 49. Kg4 Qg1
-1/2-1/2
+Nc5 21. Rfe1 Rxe1+ 22. Rxe1 { # } 22... Bxd4 23. Qxd4 Ne6 24. Qd2 Nxg5 25.
+Qxg5 Re8 26. Rxe8+ Bxe8 27. h4 Kg7 28. h5 h6 29. Qe3 Bf7 30. Qd4+ Kg8 31.
+hxg6 Bxg6 32. Qf6 Kh7 33. Qf8 Bb1 34. Bh3 { # } 34... d5 35. Bf5+ Bxf5 36.
+Qxf5+ Kg7 37. cxd5 cxd5 38. Qxd5 b6 39. Kg2 Kg6 40. a3 Kg7 41. b4 axb4 42.
+axb4 Kh7 43. b5 Kg7 44. Qc6 Qd8 45. Kh3 Qd4 46. f4 Qf2 47. Qd7+ Kg8 48.
+Qe6+ Kg7 49. Kg4 Qg1 1/2-1/2
 
 [Event "Middlesex League 2006/2007"]
 [Site "London, UK"]
@@ -781,7 +783,8 @@ Ne4 15. Nd4 Nxd4 16. Bxd4 Qd7 17. Kh2 Rac8 18. Rxc8 Rxc8 19. Nb2 b6 20. Nd3
 h5 21. Nf4 h4 22. Be5 Bc5 23. Qxd5 Qxd5 24. Nxd5 Rd8 25. Rd1 Kf8 26. Bxe4
 Bxe4 27. Nc3 Rxd1 28. Nxd1 Bb1 29. Nc3 Bc2 30. Kg2 f6 31. Bb8 a6 32. Na4
 hxg3 33. fxg3 Bd4 34. Ba7 Bb1 35. Bxb6 Bxb6 36. Nxb6 Bxa2 37. b4 Ke7 38.
-Na4 Kd6 39. Nc3 Bc4 40. Kf2 Ke5 41. Ke3 Bf7 42. Kd3 Bg6+ 43. Ke3 1/2-1/2
+Na4 Kd6 39. Nc3 Bc4 40. Kf2 Ke5 41. Ke3 Bf7 { # } 42. Kd3 Bg6+ 43. Ke3
+1/2-1/2
 
 [Event "Middlesex League 2006/2007"]
 [Site "London, UK"]
@@ -795,8 +798,8 @@ Na4 Kd6 39. Nc3 Bc4 40. Kf2 Ke5 41. Ke3 Bf7 42. Kd3 Bg6+ 43. Ke3 1/2-1/2
 
 1. d4 Nf6 2. c4 e6 3. g3 c5 4. Nf3 cxd4 5. Nxd4 Nc6 6. Bg2 Qb6 7. Nb3 d5 8.
 cxd5 Nxd5 9. O-O Be7 10. e4 Nf6 11. Be3 Qd8 12. Qe2 O-O 13. Rd1 Qe8 14. Nc3
-a6 15. Rac1 Bd7 16. h3 Rc8 17. f4 Nb4 18. a3 Ba4 19. Nxa4 Qxa4 20. Nc5 Bxc5
-21. Bxc5 Rxc5 22. Rxc5 Nc6 23. e5 1-0
+a6 15. Rac1 Bd7 16. h3 Rc8 17. f4 Nb4 { # } 18. a3 Ba4 19. Nxa4 Qxa4 20.
+Nc5 Bxc5 21. Bxc5 Rxc5 22. Rxc5 Nc6 23. e5 1-0
 
 [Event "Middlesex League 2006/2007"]
 [Site "London, UK"]
@@ -810,8 +813,8 @@ a6 15. Rac1 Bd7 16. h3 Rc8 17. f4 Nb4 18. a3 Ba4 19. Nxa4 Qxa4 20. Nc5 Bxc5
 [Variation "Tarrasch, closed variation"]
 
 1. e4 e6 2. d4 d5 3. Nd2 Nf6 4. e5 Nfd7 5. c3 c5 6. Bd3 Nc6 7. Ngf3 cxd4 8.
-cxd4 f6 9. exf6 Qxf6 10. O-O Bd6 11. Re1 O-O 12. Bxh7+ Kxh7 13. Rxe6 Qf5
-14. Rxd6 Nf6 15. Nf1 Kg8 16. Ng3 Qh7 17. Bg5 Bg4 18. Bxf6 Rxf6 19. Rxf6
+cxd4 f6 9. exf6 Qxf6 10. O-O Bd6 11. Re1 O-O { # } 12. Bxh7+ Kxh7 13. Rxe6
+Qf5 14. Rxd6 Nf6 15. Nf1 Kg8 16. Ng3 Qh7 17. Bg5 Bg4 18. Bxf6 Rxf6 19. Rxf6
 gxf6 20. h3 Be6 21. Qd2 Kf7 22. Qf4 Rg8 23. Re1 Nd8 24. Ne5+ Kg7 25. Ng4
 Qg6 26. Nh5+ Qxh5 27. Qxf6+ Kh7 28. Rxe6 Nxe6 29. Qxe6 Rg6 30. Qe7+ Rg7 31.
 Nf6+ 1-0
@@ -829,12 +832,12 @@ Nf6+ 1-0
 1. d4 Nf6 2. c4 g6 3. Nf3 Bg7 4. Nc3 O-O 5. Bg5 h6 6. Bh4 d6 7. e3 Bf5 8.
 Be2 c6 9. O-O Nbd7 10. a3 a5 11. b4 Re8 12. Qb3 e5 13. dxe5 dxe5 14. Rfd1
 Qb6 15. Na4 Qc7 16. Bg3 Ne4 17. c5 Be6 18. Bc4 Bxc4 19. Qxc4 Nxg3 20. hxg3
-axb4 21. axb4 Nf6 22. b5 cxb5 23. Qxb5 Ra5 24. Qb6 Qxb6 25. Nxb6 Rxc5 26.
-Nd7 Nxd7 27. Rxd7 Rb8 28. Ra7 Rb5 29. Nd2 Rb4 30. Rc7 Bf8 31. Nc4 Rb1+ 32.
-Kh2 Rc1 33. g4 Bd6 34. Rxf7 Rxc4 35. Rfxb7 Rxb7 36. Rxb7 Rxg4 37. f3 Rb4
-38. Rd7 Rb6 39. e4 Kf8 40. Ra7 Be7 41. Kh3 Kf7 42. Kg4 Kf6 43. Ra8 Bb4 44.
-g3 Bd2 45. Rf8+ Kg7 46. Ra8 h5+ 47. Kh3 Kh6 48. Re8 Bc3 49. g4 Bd4 50. gxh5
-Kxh5 51. Rf8 Kg5 52. Rf7 Rf6 0-1
+axb4 21. axb4 Nf6 { # } 22. b5 cxb5 23. Qxb5 Ra5 24. Qb6 Qxb6 25. Nxb6 Rxc5
+26. Nd7 Nxd7 27. Rxd7 Rb8 28. Ra7 Rb5 29. Nd2 Rb4 30. Rc7 Bf8 31. Nc4 Rb1+
+32. Kh2 Rc1 33. g4 Bd6 34. Rxf7 Rxc4 35. Rfxb7 Rxb7 36. Rxb7 Rxg4 37. f3
+Rb4 38. Rd7 Rb6 39. e4 Kf8 40. Ra7 Be7 41. Kh3 Kf7 42. Kg4 Kf6 43. Ra8 Bb4
+44. g3 Bd2 45. Rf8+ Kg7 46. Ra8 h5+ 47. Kh3 Kh6 48. Re8 Bc3 49. g4 Bd4 50.
+gxh5 Kxh5 51. Rf8 Kg5 52. Rf7 Rf6 0-1
 
 [Event "Middlesex League 2006/2007"]
 [Site "London, UK"]
@@ -849,8 +852,8 @@ Kxh5 51. Rf8 Kg5 52. Rf7 Rf6 0-1
 
 1. e4 e6 2. d4 d5 3. Nd2 Nf6 4. e5 Nfd7 5. Bd3 c5 6. c3 Nc6 7. Ndf3 cxd4 8.
 cxd4 f6 9. Nh3 Bb4+ 10. Kf1 f5 11. Nf4 Nf8 12. h4 Bd7 13. a3 Be7 14. Nh5 g6
-15. Nf4 Qb6 16. Ne2 O-O-O 17. b4 Kb8 18. Be3 Rc8 19. Nc3 Nxb4 20. axb4 Rxc3
-21. Rb1 Rxd3 0-1
+15. Nf4 Qb6 16. Ne2 O-O-O 17. b4 Kb8 18. Be3 Rc8 19. Nc3 { # } 19... Nxb4
+20. axb4 Rxc3 21. Rb1 { # } 21... Rxd3 0-1
 
 [Event "Belgian Interclubs 2000/2001"]
 [Site "Brussels, Belgium"]
