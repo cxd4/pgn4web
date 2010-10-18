@@ -1503,6 +1503,9 @@ function SetPgnUrl(url) {
 function LiveBroadcastLastModified_Reset() {
   LiveBroadcastLastModified = new Date(0);
   LiveBroadcastLastModifiedHeader = LiveBroadcastLastModified.toUTCString();
+}
+
+function LiveBroadcastLastReceivedLocal_Reset() {
   LiveBroadcastLastReceivedLocal = 'unavailable';
 }
 
@@ -1606,6 +1609,7 @@ function refreshPgnSource() {
         LiveBroadcastStarted = false;
         pgnGameFromPgnText(LiveBroadcastPlaceholderPgn);
         LiveBroadcastLastModified_Reset();
+        LiveBroadcastLastReceivedLocal_Reset();
         initialGame = 1;
         firstStart = true;
         textSelectOptions = '';
@@ -1704,7 +1708,8 @@ function createBoard(){
           myAlert('error: failed loading games from PGN URL\n' + pgnUrl, true);
         } else { // live broadcast: wait for live show start
           LiveBroadcastStarted = false;
-          LiveBroadcastLastModified_Reset(); 
+          LiveBroadcastLastModified_Reset();
+          LiveBroadcastLastReceivedLocal_Reset();
           pgnGameFromPgnText(LiveBroadcastPlaceholderPgn); 
           Init();
 	  checkLiveBroadcastStatus();
