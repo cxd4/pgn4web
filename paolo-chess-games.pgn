@@ -843,7 +843,7 @@ gxh5 Kxh5 51. Rf8 Kg5 52. Rf7 Rf6 0-1
 [Site "London, UK"]
 [Date "2006.11.02"]
 [Round "?"]
-[White "Butt, O"]
+[White "Butt, ODR"]
 [Black "Casaschi, Paolo"]
 [Result "0-1"]
 [ECO "C05"]
@@ -867,12 +867,13 @@ cxd4 f6 9. Nh3 Bb4+ 10. Kf1 f5 11. Nf4 Nf8 12. h4 Bd7 13. a3 Be7 14. Nh5 g6
 
 1. d4 e6 2. c4 f5 3. g3 Nf6 4. Bg2 Be7 5. Qc2 O-O 6. Nd2 d5 7. Nh3 c6 8.
 O-O Qb6 9. Nf3 Ne4 10. Nf4 Bf6 11. c5 Qd8 12. Nd3 Nd7 13. Nfe5 Qe7 14. Bf4
-Ng5 15. Nxd7 Qxd7 16. Ne5 Qe8 17. a4 Nf7 18. Nxf7 Rxf7 19. Qd2 e5 20. dxe5
-Bxe5 21. Ra3 Bxf4 22. gxf4 Re7 23. Re1 Be6 24. Rg3 Qf7 25. Qd4 Rf8 26. Rd1
-Bc8 27. Bf3 Qf6 28. Kf1 Qxd4 29. Rxd4 Kf7 30. a5 Kf6 31. h4 g6 32. e3 b6
-33. axb6 axb6 34. cxb6 Ba6+ 35. Be2 Bxe2+ 36. Kxe2 Rb8 37. Rb4 Reb7 38. Kd2
-Rxb6 39. Rxb6 Rxb6 40. Kc3 c5 41. Rg1 Ra6 42. Rd1 Ke6 43. h5 Ra4 44. hxg6
-hxg6 45. Rg1 Kf7 46. Rd1 Ke6 47. Rg1 1/2-1/2
+Ng5 15. Nxd7 Qxd7 16. Ne5 Qe8 17. a4 Nf7 18. Nxf7 Rxf7 19. Qd2 { # } 19...
+e5 20. dxe5 Bxe5 21. Ra3 Bxf4 22. gxf4 Re7 23. Re1 Be6 24. Rg3 Qf7 25. Qd4
+Rf8 26. Rd1 Bc8 27. Bf3 Qf6 28. Kf1 Qxd4 29. Rxd4 Kf7 30. a5 Kf6 31. h4 g6
+32. e3 { # } 32... b6 33. axb6 axb6 34. cxb6 Ba6+ 35. Be2 Bxe2+ 36. Kxe2
+Rb8 37. Rb4 Reb7 38. Kd2 Rxb6 39. Rxb6 Rxb6 40. Kc3 c5 41. Rg1 { # } 41...
+Ra6 42. Rd1 Ke6 43. h5 Ra4 44. hxg6 hxg6 45. Rg1 Kf7 46. Rd1 Ke6 47. Rg1
+1/2-1/2
 
 [Event "Open d'ete 1999"]
 [Site "Nice, France"]
@@ -887,7 +888,7 @@ hxg6 45. Rg1 Kf7 46. Rd1 Ke6 47. Rg1 1/2-1/2
 
 1. e4 e6 2. d4 d5 3. Nd2 Nf6 4. e5 Nfd7 5. Bd3 c5 6. c3 Nc6 7. Ne2 cxd4 8.
 cxd4 f6 9. Nf4 Nxd4 10. Qh5+ Ke7 11. Ng6+ hxg6 12. Qxh8 Nxe5 13. Bb1 Qc7
-14. Kd1 Kf7 15. b3 Bd7 16. Bb2 Ba3 17. Qxa8 Bxb2 0-1
+14. Kd1 Kf7 15. b3 Bd7 16. Bb2 { # } 16... Ba3 17. Qxa8 Bxb2 0-1
 
 [Event "Belgian Interclubs"]
 [Site "Antwerp, Belgium"]
@@ -903,11 +904,11 @@ cxd4 f6 9. Nf4 Nxd4 10. Qh5+ Ke7 11. Ng6+ hxg6 12. Qxh8 Nxe5 13. Bb1 Qc7
 1. c4 f5 2. e4 fxe4 3. d3 Nf6 4. dxe4 e5 5. Bd3 Bc5 6. Nf3 d6 7. Nc3 O-O 8.
 h3 c6 9. a3 a5 10. Be3 Bxe3 11. fxe3 Na6 12. Qc2 Qe7 13. O-O Be6 14. Rab1
 Nc5 15. Na4 Nxa4 16. Qxa4 Nd7 17. Qc2 a4 18. Rbc1 Nc5 19. Qe2 Rf7 20. Rf2
-Raf8 21. Rcf1 Qf6 22. Bc2 g5 23. Nd2 Qg6 24. Rxf7 Rxf7 25. Rxf7 Qxf7 26.
-Qd1 Bxc4 27. Nf3 Qe7 28. Bxa4 Nxe4 29. Bc2 Bd5 30. Nh2 Nf6 31. Ng4 Kg7 32.
-Nxf6 Qxf6 33. Qg4 Be6 34. Qh5 Bf5 35. Bxf5 Qxf5 36. Qe8 Qd3 37. Qe7+ Kg6
-38. Qe6+ Kh5 39. Qg4+ Kh6 40. Qe6+ Qg6 41. Qc8 Qf7 42. Qd8 d5 43. Qd6+ Kg7
-1/2-1/2
+Raf8 21. Rcf1 { # } 21... Qf6 22. Bc2 g5 23. Nd2 Qg6 24. Rxf7 Rxf7 25. Rxf7
+Qxf7 26. Qd1 Bxc4 27. Nf3 Qe7 28. Bxa4 Nxe4 29. Bc2 Bd5 30. Nh2 Nf6 31. Ng4
+Kg7 32. Nxf6 Qxf6 33. Qg4 Be6 34. Qh5 Bf5 35. Bxf5 Qxf5 36. Qe8 Qd3 37.
+Qe7+ Kg6 38. Qe6+ Kh5 39. Qg4+ Kh6 40. Qe6+ Qg6 41. Qc8 Qf7 42. Qd8 d5 43.
+Qd6+ Kg7 1/2-1/2
 
 [Event "Belgian Interclubs 1998/1999"]
 [Site "Antwerp, Belgium"]
@@ -923,9 +924,9 @@ Nxf6 Qxf6 33. Qg4 Be6 34. Qh5 Bf5 35. Bxf5 Qxf5 36. Qe8 Qd3 37. Qe7+ Kg6
 1. e4 e6 2. d4 d5 3. Nc3 Bb4 4. e5 Ne7 5. a3 Bxc3+ 6. bxc3 c5 7. Qg4 Qc7 8.
 Qxg7 Rg8 9. Qxh7 cxd4 10. Ne2 Nbc6 11. f4 dxc3 12. Qd3 Bd7 13. Nxc3 a6 14.
 Rb1 Rc8 15. Ne2 Nf5 16. h3 Na5 17. g4 Ne7 18. Nd4 Ba4 19. Bd2 Nc4 20. Rh2
-Ng6 21. Rf2 b5 22. Be2 Qc5 23. Bb4 Qb6 24. c3 a5 25. Bd6 Nxd6 26. exd6 Qxd6
-27. Nxb5 Qc5 28. Qd4 Qxd4 29. cxd4 Kd7 30. Bd3 Ne7 31. Kd2 Nc6 32. Nc3 Nxd4
-33. Nxa4 Rh8 34. Nb6+ 1-0
+Ng6 21. Rf2 { # } 21... b5 22. Be2 Qc5 23. Bb4 Qb6 24. c3 a5 25. Bd6 Nxd6
+26. exd6 Qxd6 27. Nxb5 Qc5 28. Qd4 Qxd4 29. cxd4 Kd7 30. Bd3 Ne7 31. Kd2
+Nc6 { # } 32. Nc3 Nxd4 33. Nxa4 Rh8 34. Nb6+ 1-0
 
 [Event "Club game"]
 [Site "Tortona, Italy"]
@@ -940,10 +941,10 @@ Ng6 21. Rf2 b5 22. Be2 Qc5 23. Bb4 Qb6 24. c3 a5 25. Bd6 Nxd6 26. exd6 Qxd6
 
 1. d4 Nf6 2. c4 d5 3. cxd5 Nxd5 4. Nc3 e6 5. e4 Nxc3 6. bxc3 Be7 7. Nf3 O-O
 8. Bd3 b6 9. h4 Bb7 10. e5 f5 11. exf6 Bxf6 12. Ng5 h6 13. Qh5 Bxg5 14.
-hxg5 Qe8 15. Bg6 Qb5 16. Qh3 Qd5 17. gxh6 Qxg2 18. Qxg2 Bxg2 19. Rg1 Bd5
-20. hxg7 Kxg7 21. c4 Bc6 22. d5 exd5 23. Bb2+ Kh6 24. Bc1+ Kg7 25. cxd5 Bb7
-26. Bb2+ Kh6 27. O-O-O Rxf2 28. Be5 Nd7 29. Bd4 Re2 30. Bd3 Rh2 31. Be3+
-Kh5 32. Bg6+ Kh4 33. Bg5+ 1-0
+hxg5 Qe8 15. Bg6 Qb5 16. Qh3 Qd5 17. gxh6 Qxg2 { # } 18. Qxg2 Bxg2 19. Rg1
+Bd5 20. hxg7 Kxg7 21. c4 Bc6 22. d5 exd5 23. Bb2+ Kh6 24. Bc1+ Kg7 25. cxd5
+Bb7 26. Bb2+ Kh6 27. O-O-O Rxf2 28. Be5 Nd7 29. Bd4 Re2 30. Bd3 Rh2 31.
+Be3+ Kh5 32. Bg6+ Kh4 33. Bg5+ { # } 1-0
 
 [Event "Club game"]
 [Site "Tortona, Italy"]
@@ -956,9 +957,10 @@ Kh5 32. Bg6+ Kh4 33. Bg5+ 1-0
 [Opening "QGD semi-Slav"]
 
 1. d4 Nf6 2. c4 e6 3. Nf3 d5 4. Nc3 c6 5. Qb3 Bd6 6. Bg5 Qa5 7. e3 Nbd7 8.
-Bxf6 Nxf6 9. cxd5 exd5 10. Bd3 Qb4 11. Qxb4 Bxb4 12. h3 h6 13. O-O O-O 14.
-a3 Bd6 15. b4 Bd7 16. Ne5 Bxe5 17. dxe5 Ne8 18. b5 Nc7 19. Rab1 cxb5 20.
-Nxb5 Nxb5 21. Bxb5 Be6 22. Be2 b6 23. Rfc1 Rfc8 24. Rd1 Rc5 1/2-1/2
+Bxf6 Nxf6 9. cxd5 exd5 10. Bd3 Qb4 { # } 11. Qxb4 Bxb4 12. h3 h6 13. O-O
+O-O 14. a3 Bd6 15. b4 Bd7 16. Ne5 Bxe5 17. dxe5 Ne8 18. b5 Nc7 19. Rab1
+cxb5 20. Nxb5 Nxb5 21. Bxb5 Be6 22. Be2 b6 23. Rfc1 Rfc8 24. Rd1 Rc5
+1/2-1/2
 
 [Event "Club game"]
 [Site "Tortona, Italy"]
@@ -973,9 +975,9 @@ Nxb5 Nxb5 21. Bxb5 Be6 22. Be2 b6 23. Rfc1 Rfc8 24. Rd1 Rc5 1/2-1/2
 1. e4 d6 2. d4 Nf6 3. Bd3 g6 4. h3 Bg7 5. c3 Nbd7 6. Nd2 O-O 7. Ngf3 c5 8.
 d5 Rb8 9. a4 Ne8 10. O-O Nc7 11. c4 Na6 12. Nh2 Nb4 13. Be2 Ne5 14. Ndf3
 Bd7 15. Rb1 a6 16. Bf4 Nxf3+ 17. Nxf3 b5 18. axb5 axb5 19. e5 Bf5 20. Ra1
-Qc7 21. exd6 exd6 22. Qd2 Rfe8 23. Ne1 Re4 24. Be3 bxc4 25. f3 Rxe3 26.
-Qxe3 Bd4 27. Qxd4 cxd4 28. Rc1 c3 29. bxc3 d3 30. cxb4 Qxc1 31. Nxd3 Qe3+
-0-1
+Qc7 21. exd6 exd6 22. Qd2 Rfe8 23. Ne1 Re4 24. Be3 bxc4 25. f3 { # } 25...
+Rxe3 26. Qxe3 Bd4 27. Qxd4 cxd4 28. Rc1 c3 29. bxc3 d3 30. cxb4 Qxc1 31.
+Nxd3 Qe3+ 0-1
 
 [Event "Club game"]
 [Site "Tortona, Italy"]
@@ -989,11 +991,11 @@ Qxe3 Bd4 27. Qxd4 cxd4 28. Rc1 c3 29. bxc3 d3 30. cxb4 Qxc1 31. Nxd3 Qe3+
 [Variation "exchange variation"]
 
 1. e4 e6 2. d4 d5 3. exd5 exd5 4. Bd3 Nc6 5. c3 Bd6 6. Be3 Nf6 7. Nf3 Bg4
-8. Nbd2 Ne7 9. Qc2 c6 10. Ne5 Bh5 11. f4 Ng4 12. Nxg4 Bxg4 13. h3 Bd7 14.
-O-O-O Qc7 15. Rhf1 O-O-O 16. Rde1 Rde8 17. Nb3 b6 18. Rf3 g6 19. Ref1 Bf5
-20. g4 Bxd3 21. Qxd3 f5 22. Bd2 Kb7 23. Be1 Qd7 24. Rg1 Rhf8 25. g5 Bb8 26.
-Bg3 Nc8 27. Re3 Rxe3 28. Qxe3 Re8 29. Qd3 Nd6 30. Nd2 Ne4 31. Nxe4 Rxe4 32.
-Qd2 Qe6 33. Rg2 Re3 34. Qc2 Rxg3 0-1
+8. Nbd2 Ne7 9. Qc2 c6 10. Ne5 Bh5 11. f4 { # } 11... Ng4 12. Nxg4 Bxg4 13.
+h3 Bd7 14. O-O-O Qc7 15. Rhf1 O-O-O 16. Rde1 Rde8 17. Nb3 b6 18. Rf3 g6 19.
+Ref1 Bf5 20. g4 Bxd3 21. Qxd3 f5 22. Bd2 Kb7 23. Be1 Qd7 24. Rg1 Rhf8 25.
+g5 Bb8 26. Bg3 Nc8 27. Re3 Rxe3 28. Qxe3 Re8 29. Qd3 Nd6 30. Nd2 Ne4 31.
+Nxe4 Rxe4 32. Qd2 Qe6 33. Rg2 Re3 34. Qc2 { # } 34... Rxg3 0-1
 
 [Event "Club game"]
 [Site "Tortona, Italy"]
@@ -1010,9 +1012,9 @@ e3 Qc7 9. Qe2 Rd8 10. Nb3 b6 11. Bd2 a5 12. a4 Ba6 13. Qe1 Bc4 14. Qd1 Bxf1
 15. Qxf1 Rab8 16. Qd1 c4 17. Nc1 b5 18. Ne2 bxa4 19. Bc1 Rb3 20. Nd2 Rbb8
 21. Qxa4 Nd7 22. e4 Nb6 23. Qc2 a4 24. e5 Na5 25. f4 f5 26. exf6 gxf6 27.
 f5 e5 28. Nf3 Nb3 29. Rb1 Nxc1 30. Qxc1 e4 31. Nh4 Bd6 32. Qe3 Nd7 33. Qh6
-Nf8 34. Qc1 Rb7 35. Qc2 Rb3 36. Nc1 Rb7 37. Qxa4 Bxg3 38. hxg3 Qxg3 39. Qa6
-Qe1+ 40. Bf1 Rg7+ 41. Ng2 Rdd7 42. Qxf6 Rxg2+ 43. Kxg2 Rg7+ 44. Qxg7+ Kxg7
-45. Ra1 Kf6 46. Nb3 Qe3 47. Nc5 Qf3+ 48. Kg1 e3 0-1
+Nf8 34. Qc1 Rb7 35. Qc2 Rb3 36. Nc1 Rb7 37. Qxa4 { # } 37... Bxg3 38. hxg3
+Qxg3 39. Qa6 Qe1+ 40. Bf1 Rg7+ 41. Ng2 Rdd7 42. Qxf6 Rxg2+ 43. Kxg2 Rg7+
+44. Qxg7+ Kxg7 45. Ra1 Kf6 46. Nb3 Qe3 47. Nc5 Qf3+ 48. Kg1 e3 0-1
 
 [Event "Club game"]
 [Site "Tortona, Italy"]
@@ -1026,12 +1028,12 @@ Qe1+ 40. Bf1 Rg7+ 41. Ng2 Rdd7 42. Qxf6 Rxg2+ 43. Kxg2 Rg7+ 44. Qxg7+ Kxg7
 
 1. Nf3 e6 2. d4 d6 3. c4 Be7 4. Nc3 Bf6 5. e4 Nc6 6. Be3 e5 7. d5 Nce7 8.
 h3 a6 9. b4 Ng6 10. c5 Bd7 11. g3 N8e7 12. Bg2 O-O 13. O-O Qc8 14. Kh2 Kh8
-15. cxd6 cxd6 16. Na4 Bxa4 17. Qxa4 Qb8 18. h4 Rc8 19. Bh3 b5 20. Qb3 Rc4
-21. Nd2 Rc7 22. Rfc1 h5 23. Qb2 Ng8 24. Rxc7 Qxc7 25. Rc1 Qd8 26. Nf3 Be7
-27. Ng5 Bxg5 28. Bxg5 f6 29. Qe2 fxg5 30. Qxh5+ Nh6 31. hxg5 Nf8 32. gxh6
-gxh6 33. Qxh6+ Nh7 34. Bf5 Ra7 35. Rc8 Qxc8 36. Bxc8 Rg7 37. Qxd6 Ng5 38.
-Qf8+ Rg8 39. Qh6+ Nh7 40. Bf5 Rg7 41. d6 Kg8 42. Qxh7+ Rxh7+ 43. Bxh7+ Kxh7
-1-0
+15. cxd6 cxd6 16. Na4 Bxa4 17. Qxa4 Qb8 { # } 18. h4 Rc8 19. Bh3 b5 20. Qb3
+Rc4 21. Nd2 Rc7 22. Rfc1 h5 23. Qb2 Ng8 24. Rxc7 Qxc7 25. Rc1 Qd8 26. Nf3
+Be7 27. Ng5 Bxg5 28. Bxg5 f6 { # } 29. Qe2 fxg5 30. Qxh5+ Nh6 31. hxg5 Nf8
+32. gxh6 gxh6 33. Qxh6+ Nh7 34. Bf5 Ra7 35. Rc8 Qxc8 36. Bxc8 Rg7 37. Qxd6
+Ng5 38. Qf8+ Rg8 39. Qh6+ Nh7 40. Bf5 Rg7 41. d6 Kg8 42. Qxh7+ Rxh7+ 43.
+Bxh7+ Kxh7 1-0
 
 [Event "Club game"]
 [Site "Tortona, Italy"]
@@ -1047,9 +1049,10 @@ Qf8+ Rg8 39. Qh6+ Nh7 40. Bf5 Rg7 41. d6 Kg8 42. Qxh7+ Rxh7+ 43. Bxh7+ Kxh7
 1. c4 e5 2. Nc3 Nc6 3. Nf3 Nf6 4. g3 d5 5. cxd5 Nxd5 6. Bg2 Nb6 7. O-O Be7
 8. d3 O-O 9. a3 Be6 10. b4 Nd4 11. Rb1 f6 12. e3 Nxf3+ 13. Bxf3 Nd5 14. Qb3
 c6 15. Rd1 Nf4 16. Qc2 Nh3+ 17. Kh1 Ng5 18. Bg2 Bg4 19. Ne2 Bf3 20. Bxf3
-Nxf3 21. d4 Qe8 22. Qf5 Ng5 23. f4 g6 24. Qc2 Nf7 25. Bb2 Bd6 26. Qb3 Kh8
-27. dxe5 Be7 28. exf6 Bd8 29. Bd4 h5 30. Qd3 Kh7 31. e4 Bb6 32. Qf3 Rd8 33.
-e5 Qe6 34. f5 gxf5 35. Nf4 Qc8 36. Qxh5+ Kg8 37. Qg6+ Kh8 38. Qg7# 1-0
+Nxf3 21. d4 Qe8 22. Qf5 Ng5 { # } 23. f4 g6 24. Qc2 Nf7 25. Bb2 Bd6 26. Qb3
+Kh8 27. dxe5 Be7 28. exf6 Bd8 29. Bd4 h5 30. Qd3 Kh7 31. e4 Bb6 32. Qf3 Rd8
+33. e5 Qe6 { # } 34. f5 gxf5 35. Nf4 Qc8 36. Qxh5+ Kg8 37. Qg6+ Kh8 38.
+Qg7# 1-0
 
 [Event "Club game"]
 [Site "Tortona, Italy"]
@@ -1063,12 +1066,12 @@ e5 Qe6 34. f5 gxf5 35. Nf4 Qc8 36. Qxh5+ Kg8 37. Qg6+ Kh8 38. Qg7# 1-0
 [Variation "5.Bg5 dc"]
 
 1. c4 Nf6 2. Nc3 e6 3. Nf3 d5 4. d4 c6 5. Bg5 dxc4 6. e3 b5 7. a4 Bb4 8.
-Nd2 Bxc3 9. bxc3 Nbd7 10. Qb1 a6 11. Ne4 Qc7 12. Bf4 e5 13. dxe5 Nxe5 14.
-Nxf6+ gxf6 15. Be2 Qd7 16. Qe4 Qf5 17. Bf3 Qxe4 18. Bxe4 Bb7 19. axb5 axb5
-20. Rxa8+ Bxa8 21. Ke2 Ke7 22. Ra1 Ke6 23. Bxh7 Rxh7 24. Rxa8 Nd3 25. h3
-Nxf4+ 26. exf4 Rh5 27. Rd8 Rd5 28. Rxd5 Kxd5 29. h4 Ke6 30. g4 c5 31. h5
-Ke7 32. g5 f5 33. Kd2 b4 34. Kc2 Kf8 35. Kd2 Kg8 36. Kc2 Kg7 37. Kc1 Kg8
-38. Kb2 Kg7 39. Kb1 1/2-1/2
+Nd2 Bxc3 9. bxc3 Nbd7 10. Qb1 a6 11. Ne4 Qc7 12. Bf4 { # } 12... e5 13.
+dxe5 Nxe5 14. Nxf6+ gxf6 15. Be2 Qd7 16. Qe4 Qf5 17. Bf3 Qxe4 18. Bxe4 Bb7
+19. axb5 axb5 20. Rxa8+ Bxa8 21. Ke2 Ke7 22. Ra1 Ke6 { # } 23. Bxh7 Rxh7
+24. Rxa8 Nd3 25. h3 Nxf4+ 26. exf4 Rh5 27. Rd8 Rd5 28. Rxd5 Kxd5 29. h4 Ke6
+30. g4 c5 31. h5 Ke7 32. g5 f5 33. Kd2 b4 34. Kc2 Kf8 35. Kd2 Kg8 36. Kc2
+Kg7 37. Kc1 Kg8 38. Kb2 Kg7 39. Kb1 1/2-1/2
 
 [Event "Club game"]
 [Site "Tortona, Italy"]
@@ -1082,12 +1085,12 @@ Ke7 32. g5 f5 33. Kd2 b4 34. Kc2 Kf8 35. Kd2 Kg8 36. Kc2 Kg7 37. Kc1 Kg8
 
 1. d4 d5 2. c4 c6 3. Nc3 Nf6 4. Bf4 dxc4 5. Nf3 e6 6. e3 b5 7. a4 Bb4 8.
 Nd2 Bxc3 9. bxc3 Bb7 10. Qb1 a6 11. Nxc4 O-O 12. Nd6 Qb6 13. a5 Qa7 14. e4
-Nbd7 15. Bd3 Rad8 16. Bg5 e5 17. dxe5 Nxe5 18. f4 Qe3+ 19. Be2 Neg4 20. e5
-Qxc3+ 21. Kf1 Ne3+ 22. Kf2 Nfg4+ 23. Bxg4 Nxg4+ 24. Ke2 Qe3+ 25. Kd1 Rxd6+
-26. exd6 Nf2+ 27. Kc2 Qd3+ 28. Kb2 Qd4+ 29. Ka2 Nxh1 30. Qxh1 Qxd6 31. Qc1
-Qd5+ 32. Kb1 Qxg2 33. Ra2 Qe4+ 34. Ka1 Re8 35. Rb2 Qe1 36. Qxe1 Rxe1+ 37.
-Ka2 f6 38. Bh4 Re4 39. Rd2 Rxf4 40. Bg3 Re4 41. Rd8+ Kf7 42. Rd7+ Re7 43.
-Rd4 h6 44. Kb3 c5 0-1
+Nbd7 15. Bd3 Rad8 { # } 16. Bg5 e5 17. dxe5 Nxe5 { # } 18. f4 Qe3+ 19. Be2
+Neg4 20. e5 Qxc3+ 21. Kf1 Ne3+ 22. Kf2 Nfg4+ 23. Bxg4 Nxg4+ 24. Ke2 Qe3+
+25. Kd1 Rxd6+ 26. exd6 Nf2+ 27. Kc2 Qd3+ 28. Kb2 Qd4+ 29. Ka2 Nxh1 30. Qxh1
+Qxd6 31. Qc1 Qd5+ 32. Kb1 Qxg2 33. Ra2 Qe4+ 34. Ka1 Re8 35. Rb2 Qe1 36.
+Qxe1 Rxe1+ 37. Ka2 f6 38. Bh4 Re4 39. Rd2 Rxf4 40. Bg3 Re4 41. Rd8+ Kf7 42.
+Rd7+ Re7 43. Rd4 h6 44. Kb3 c5 0-1
 
 [Event "Club game"]
 [Site "Tortona, Italy"]
@@ -1100,12 +1103,12 @@ Rd4 h6 44. Kb3 c5 0-1
 [Opening "King's Indian"]
 [Variation "Averbakh system"]
 
-1. d4 Nf6 2. c4 g6 3. Nc3 Bg7 4. e4 d6 5. Bg5 O-O 6. Be2 e5 7. dxe5 dxe5 8.
-Qxd8 Rxd8 9. Bxf6 Bxf6 10. Nd5 Nd7 11. Rd1 Bg7 12. Nxc7 Rb8 13. Nd5 Kh8 14.
-Bg4 Nc5 15. Bxc8 Rbxc8 16. f3 Na4 17. b3 Nc5 18. Ne2 Rd7 19. O-O Rcd8 20.
-Nec3 a6 21. Rfe1 Ne6 22. Kf1 Nd4 23. Re3 Bh6 24. Red3 Nc2 25. Kf2 Ne3 26.
-Rxe3 Bxe3+ 27. Kxe3 Kg7 28. b4 f5 29. Rf1 Rf8 30. Rf2 Rdf7 31. a4 fxe4 32.
-Kxe4 Re8 33. Ra2 h5 34. b5 Rc8 35. Kd3 Ra8 36. c5 Rc8 37. bxa6 bxa6 38. Kc4
-Rc6 39. Rb2 Rf8 40. Rb6 Rxb6 41. Nxb6 Rf4+ 42. Ne4 Rf8 43. c6 Rd8 44. c7
-1-0
+1. d4 Nf6 2. c4 g6 3. Nc3 Bg7 4. e4 d6 5. Bg5 O-O 6. Be2 e5 { # } 7. dxe5
+dxe5 8. Qxd8 Rxd8 9. Bxf6 Bxf6 10. Nd5 Nd7 11. Rd1 Bg7 12. Nxc7 Rb8 13. Nd5
+Kh8 14. Bg4 Nc5 15. Bxc8 Rbxc8 16. f3 Na4 17. b3 Nc5 18. Ne2 Rd7 19. O-O
+Rcd8 20. Nec3 a6 21. Rfe1 Ne6 22. Kf1 Nd4 23. Re3 Bh6 24. Red3 Nc2 25. Kf2
+Ne3 26. Rxe3 Bxe3+ 27. Kxe3 Kg7 28. b4 f5 29. Rf1 Rf8 30. Rf2 Rdf7 31. a4
+fxe4 32. Kxe4 Re8 33. Ra2 h5 34. b5 Rc8 35. Kd3 Ra8 36. c5 Rc8 37. bxa6
+bxa6 38. Kc4 Rc6 39. Rb2 Rf8 40. Rb6 Rxb6 41. Nxb6 Rf4+ 42. Ne4 Rf8 43. c6
+Rd8 44. c7 1-0
 
