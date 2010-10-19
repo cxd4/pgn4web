@@ -274,6 +274,12 @@ a:link, a:visited, a:hover, a:active {
 
 </style>
 
+
+<!-- start of google analytics code -->
+
+<!-- end of google analytics code -->
+
+
 </head>
 
 <body>
@@ -837,12 +843,6 @@ function new_start_pgn4web() {
 window.onload = new_start_pgn4web;
 
 </script>
-
-
-<!-- start of google analytics code -->
-
-<!-- end of google analytics code -->
-
 
 </body>
 
