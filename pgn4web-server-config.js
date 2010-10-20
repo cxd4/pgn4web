@@ -41,9 +41,17 @@ pgn4web_generator_url = 'board-generator.html';
 
 //
 // the URL for the content of the live games broadcast, default = 'live-compact.html'
-// used by: live.html only
+// used by: live.html
 //
 pgn4web_live_compact_url = 'live-compact.html';
 // pgn4web_live_compact_url = 'http://pgn4web-live-compact.casaschi.net';
+//
+
+//
+// the URL for the game viewer tool, default = 'demo.html?frame=inputform'
+// used by: home.html
+//
+pgn4web_viewer_url = 'demo.html?frame=inputform';
+// pgn4web_viewer_url = 'viewer.php';
 //
 
