@@ -102,7 +102,7 @@ function gup( name ){
 }
 
 function developer_help() {
-  alert("pgn4web live.html parameters" + "\n" + 
+  alert("pgn4web live-multi.html parameters" + "\n" + 
         " - pgnData = " + pgnFile + "; PGN file to load (default " + pgnFile_default + ")" + "\n" +
         " - refreshMinutes = " + refreshMinutes + "; refresh interval in minutes, decimals allowed (default 1)" + "\n" +
         " - boards = " + boards + "; number of boards to display (default 2)" + "\n" +
@@ -134,7 +134,7 @@ a:link, a:visited, a:hover, a:active
 
 <body>
 
-<h1><a target='_blank' href='http://pgn4web.casaschi.net'>pgn4web</a> multiple live <a href='#row1'>che</a><a href='#row2'>ss</a><a href='#row3'>bo</a><a href='#row4'>ar</a><a href='#row5'>ds</a></h1>
+<h1 name='top'><a href='#row2'>pgn4web</a> <a href='#row3'>multiple</a> <a href='#row4'>live</a> <a href='#row5'>chessboards</a></h1>
 
 <script type="text/javascript">
 
@@ -165,7 +165,7 @@ document.write("<p style='text-align: right; font-size:small; color:white;'><a s
 document.write("</td></tr><tr><td>");
 document.write("<p style='text-align: left; font-size:small; font-weight:bold;'><a href='" + oneLessColumnUrl + "'>less</a> / <a href='" + oneMoreColumnUrl + "'>more</a> columns<br/><a href='" + oneLessBoardUrl + "'>less</a> / <a href='" + oneMoreBoardUrl + "'>more</a> boards</p>");
 document.write("</td><td>");
-document.write("<p style='text-align: right; font-size:small; font-weight:bold;'>control the <a href='#row1'>che</a><a href='#row2'>ss</a><a href='#row3'>bo</a><a href='#row4'>ar</a><a href='#row5'>ds</a> by clicking their squares<br>hover the mouse on each square for help</p>");
+document.write("<p style='text-align: right; font-size:small; font-weight:bold;'>control the <a href='#top'>chessboards</a> by clicking their squares<br>hover the mouse on each square for help</p>");
 document.write("</td></tr></table>");
 
 </script>
