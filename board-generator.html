@@ -35,15 +35,17 @@ a {
 }
 
 .input, .textbox {
-  border-width: 2;
+/* if the border-width value below is changed from 2px
+   then the corresponding padding-right of the boardUrl table cell needs changing accordingly */
+  border-width: 2px;
   border-style: inset;
   border-color: #CCCCCC;
 }
 
 .input, .checkbox, .dropdown, .largeDropdown, .configtext, .inputLabel {
-/* if the margin-left value below is changed from 22 
-   then the corresponding value at the end of the file needs to be changed accordingly */      
-  margin-left: 22;
+/* if the margin-left value below is changed from 22px 
+   then the corresponding value at the end of the file needs changing accordingly */      
+  margin-left: 22px;
 }
 
 .textbox {
@@ -129,6 +131,13 @@ function new_onLoad() {
 
 function set_defaults() {
 
+  if ((gup("extendedOptions") == "true") || (gup("extendedOptions") == "t")) {
+    theObject = document.getElementsByName('extendedOption');
+    for (ii = 0; ii < theObject.length; ii++) {
+      theObject[ii].style.display = 'inline';
+    }
+  }
+
   load_templates();
   document.getElementById('templatesList').options[1].value = location.search.replace(/&(pe|pt)=.*(&|$)/,"");
 
@@ -150,9 +159,9 @@ function set_defaults() {
 
   oldAutoplayMode_value = "";
   //kept for backward compatibility
-  if (gup("loop") === "t") { oldAutoplayMode_value = "loop"; }
+  if ((gup("loop") == "true") || (gup("loop") == "t")) { oldAutoplayMode_value = "loop"; }
   //kept for backward compatibility
-  if (gup("auto") === "f") { oldAutoplayMode_value = "none"; }
+  if ((gup("auto") == "false") || (gup("loop") == "f")) { oldAutoplayMode_value = "none"; }
 
   if ((autoplayMode_value = gup("autoplayMode")) === "") {
     autoplayMode_value = oldAutoplayMode_value === "" ? autoplayMode_default : oldAutoplayMode_value;
@@ -1322,6 +1331,7 @@ function print_menu( item, level, title ) {
   menu += '&nbsp; &nbsp;<a href=#board_options>board</a>';
   menu += '&nbsp; &nbsp;<a href=#header_moves_options>header and moves</a>';
   menu += '&nbsp; &nbsp;<a href=#page_options>page</a>';
+  menu += '<span name="extendedOption" style="display: none;">&nbsp; &nbsp;<a href=#url_options>URL</a></span>';
   menu += '</div>';
   menu += '</td></tr></table>';
   document.write(menu); 
@@ -1449,17 +1459,6 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 <td align="right"><div class="helptext" id="pgnTextLength"></div></td>
 </tr></table>
 <p></p>
-
-<!-- hiding encodePgn option -->
-<div style="display: none;">
-
-<input class="checkbox" type="checkbox" id="encodePgn" name="checkbox" />
-&nbsp;&nbsp; encode PGN text &nbsp;&nbsp;
-<span class="helptext">encode the PGN text to a URL friendly format (this should be normally enabled)</span>
-<p></p>
-
-</div>
-<!-- end hiding encodePgn option -->
 
 <div style="height: 3em">&nbsp;</div>
 <script type="text/javascript">print_menu("templates", 3, "templates");</script>
@@ -1787,42 +1786,58 @@ uses the parent's background color</span>
 <p></p>
 
 <!-- hiding preview background color -->
-<div style="display: none;">
+<span name="extendedOption" style="display: none;">
 
 <input class="color {adjust:false} input" type="text" id="previewBackgroundColorHex" name="input" value="" size="12" onChange="validate_color(this, 'preview background color', previewBackgroundColorHex_default)"> 
 &nbsp;&nbsp; preview background color &nbsp;&nbsp;
 <span class="helptext">not actually used in the HTML code, just for the preview</span>
 <p></p>
 
-</div>
+</span>
 <!-- end hiding preview background color -->
 
-<br>
-
 <!-- hiding URL options -->
-<div style="display: none;">
+<span name="extendedOption" style="display: none;">
 
 <div style="height: 3em">&nbsp;</div>                                                                         
 <script type="text/javascript">print_menu("url_options", 3, "URL options");</script>                 
 <div style="height: 1em">&nbsp;</div>
 
+<input class="checkbox" type="checkbox" id="useTextarea" name="checkbox" />
+&nbsp;&nbsp; use HTML textarea &nbsp;&nbsp;
+<span class="helptext">normally
+<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.useTextarea.checked = false; return false;">disabled</a>
+unless the board widget is on the same server with a local <i>base URL</i></span>
+<p></p>
+
+<input class="checkbox" type="checkbox" id="encodePgn" name="checkbox" />
+&nbsp;&nbsp; encode PGN text &nbsp;&nbsp;
+<span class="helptext">normally
+<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.encodePgn.checked = true; return false;">enabled</a>
+unless <i>use HTML textarea</i> is enabled</span>
+<p></p>
+
 <div class="inputLabel">
-<table width="100%" cellspacing=0 cellpadding=0 border=0><tr><td id="boardUrlLabel">
-board URL: &nbsp;&nbsp;
+<table width="100%" cellspacing=0 cellpadding=0 border=0><tr>
+<td id="boardUrlLabel" align="right">
+board URL
+</td><td style="padding-right: 2px;"> <!-- same 2px as border-width of the input class -->
+&nbsp;&nbsp;&nbsp;&nbsp;
 </td><td>
-<input type="text" id="boardUrl" name="boardUrl" value="" style="width: 100%">
+<input class="input" type="text" id="boardUrl" name="boardUrl" value="" style="margin-left: 0; width: 100%">
+</td></tr><tr><td></td><td></td><td>
+<div class="helptext" style="margin-top: 0.2em;">normally as
+<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.boardUrl.value = boardUrl_default; return false;">default</a>
+unless enabling <i>use HTML textarea</i> requires a <i>board URL</i> relative to the server root or unless the board widget is from a different server</div>
 </td></tr></table>
 </div>
 <p></p>
 
-<input class="checkbox" type="checkbox" id="useTextarea" name="checkbox" />
-&nbsp;&nbsp; use HTML textarea &nbsp;&nbsp;
-<span class="helptext">this should be normally disabled unless pgn4web is locally implemented and a relative base URL is used</span>  
-<p></p>
-<br>
-
-</div>
+</span>
 <!-- end hiding URL options -->
+
+<!-- hidden checkbox for calculating width -->
+<input class="checkbox" type="checkbox" id="hiddenCheckbox" name="checkbox" style="visibility: hidden;" />
 
 <script type="text/javascript">
 
@@ -1832,7 +1847,7 @@ for (ii = 0; ii < theObject.length; ii++) {
   theObject[ii].style.width = inputWidth;
 }
 
-checkboxWidth = document.getElementById('encodePgn').offsetWidth;
+checkboxWidth = document.getElementById('hiddenCheckbox').offsetWidth;
 // the last number added to marginLeft should be equal to the value of the .checkbox style at the top
 theObject = document.getElementsByName('checkbox');
 for (ii = 0; ii < theObject.length; ii++) {
