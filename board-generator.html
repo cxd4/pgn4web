@@ -738,7 +738,7 @@ function calculate_html_code() {
 
   pgnText_value = pgnTextFixFromInput(document.getElementById('pgnText').value);
   if (document.board.useTextarea.checked) {
-    pgnId = "pgn4web_" + crc32(pgnText_value);
+    pgnId = "pgn4web_" + printHex(crc32(pgnText_value));
     iframeUrl += "&pi=" + pgnId;
   } else {
     if ((document.board.encodePgn.checked) && (pgnText_value != previousPgnTextToEncode)) {
