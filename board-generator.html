@@ -1349,7 +1349,7 @@ window.onload = new_onLoad;
   <ul type="square">
   <li>keep PGN data short: due to a limitation of web browsers and web servers with the URL length, only short PGN texts are allowed, usually up to four games without comments; a warning is issued if the max URL length is exceeded, in case try removing unnecessary header tags and comments/variations or try reducing the number of games per chessboard</li>
   <li>beware of "[" and "]" characters in the game text/comments: if square brackets are present in the comments (or the game text) in a pattern similar to the PGN header pattern <code>[tag "value"]</code> then the game parsing might break; if your PGN file is not displayed properly, please check for characters "[" and "]" in the comments and try removing them</li>
-  <li>characters outside the 255 characters ascii set are rejected and replaced with stars "*". This might affect some non English text and names</li>
+  <li>by default the PGN data is compressed and encoded, with characters outside the 255 characters ascii set rejected and replaced with stars "*". This might affect some non English text and names</li>
   <li>in case of errors in the supplied PGN data, the chessboard squares starts flashing at regular intervals to signal the exception; detailed debug information is available clicking the top left chessboard square (A8 assuming White on bottom, H1 otherwise)</li>
   </ul>
 </li>
