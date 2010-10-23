@@ -1198,6 +1198,10 @@ function template_selected() {
        previousPgnTextToEncode = pgnText_value;
        pgnTextEncoded = EncodePGN(pgnText_value);
     }
+    if (( document.getElementById('encodePgn').checked && (encodePgn_default != "t")) || 
+        (!document.getElementById('encodePgn').checked && (encodePgn_default != "f")) ) {
+      newLocationSearch += "&ep=" + (document.board.encodePgn.checked ? "t" : "f");
+    }
     newLocationSearch += document.board.encodePgn.checked ? 
                          "&pe=" + pgnTextEncoded :
                          "&pt=" + pgnTextFixForUrl(pgnText_value);
