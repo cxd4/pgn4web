@@ -115,7 +115,7 @@ fontMovesSize_default = "100%";
 fontCommentsSize_default = "moves";
 backgroundColorHex_default = "FFFFFF";
 previewBackgroundColorHex_default = "DDDDDD";
-baseUrl_default = pgn4web_board_url;
+boardUrl_default = pgn4web_board_url;
 useTextarea_default = "f";
 
 
@@ -490,8 +490,8 @@ function set_defaults() {
   document.board.previewBackgroundColorHex.color.fromString(previewBackgroundColorHex_value);
   validate_color(document.board.previewBackgroundColorHex, 'preview background color', previewBackgroundColorHex_default);
 
-  if ((baseUrl_value = gup("baseUrl")) === "") { baseUrl_value = baseUrl_default; }
-  document.board.baseUrl.value = baseUrl_value;
+  if ((boardUrl_value = gup("boardUrl")) === "") { boardUrl_value = boardUrl_default; }
+  document.board.boardUrl.value = boardUrl_value;
 
   if ((useTextarea_value = gup("useTextarea")) === "") { useTextarea_value = useTextarea_default; }                   
   document.board.useTextarea.checked = (useTextarea_value == "t");
@@ -608,8 +608,8 @@ function update_pgnTextLength() {
 function calculate_html_code() {
 
   // this must be the firts item
-  baseUrl_value = document.board.baseUrl.value;
-  iframeUrl = baseUrl_value + "?";
+  boardUrl_value = document.board.boardUrl.value;
+  iframeUrl = boardUrl_value + "?";
 
   autoplayMode_value = document.board.autoplayMode.value;
   delay_value = parseInt(document.board.delay.value, 10);
@@ -828,16 +828,16 @@ function generate_html_code() {
   
   document.getElementById('html_code').value = html_code_string;
 
+  boardUrl_value = document.board.boardUrl.value;
   thisBookmarkUrl = iframeUrl;
-  thisBookmarkUrl = thisBookmarkUrl.replace(pgn4web_board_url,pgn4web_generator_url);
+  thisBookmarkUrl = thisBookmarkUrl.replace(boardUrl_value, pgn4web_generator_url);
   thisBookmarkUrl = thisBookmarkUrl.replace(/&(pe|pt)=.*(&|$)/,"");
 
   if (document.getElementById('encodePgn').checked) { encodePgn_value = "t"; }
   else { encodePgn_value = "f"; }
   if (encodePgn_value != encodePgn_default) { thisBookmarkUrl += "&ep=" + encodePgn_value; }
 
-  baseUrl_value = document.board.baseUrl.value;
-  if (baseUrl_value != baseUrl_default) { thisBookmarkUrl += "&bu=" + baseUrl_value; }
+  if (boardUrl_value != boardUrl_default) { thisBookmarkUrl += "&bu=" + boardUrl_value; }
 
   if (document.getElementById('useTextarea').checked) { useTextarea_value = "t"; }
   else { useTextarea_value = "f"; }
@@ -1184,8 +1184,8 @@ function template_selected() {
 	  
     newLocationSearch = document.getElementById('templatesList').options[selectedIndex].value;
 
-    if (document.board.baseUrl.value != baseUrl_default) {
-      newLocationSearch += "&bu=" + document.board.baseUrl.value;
+    if (document.board.boardUrl.value != boardUrl_default) {
+      newLocationSearch += "&bu=" + document.board.boardUrl.value;
     }
 
     if (( document.getElementById('useTextarea').checked && (useTextarea_default != "t")) || 
@@ -1807,10 +1807,10 @@ uses the parent's background color</span>
 <div style="height: 1em">&nbsp;</div>
 
 <div class="inputLabel">
-<table width="100%" cellspacing=0 cellpadding=0 border=0><tr><td id="baseUrlLabel">
-base URL: &nbsp;&nbsp;
+<table width="100%" cellspacing=0 cellpadding=0 border=0><tr><td id="boardUrlLabel">
+board URL: &nbsp;&nbsp;
 </td><td>
-<input type="text" id="baseUrl" name="baseUrl" value="" style="width: 100%">
+<input type="text" id="boardUrl" name="boardUrl" value="" style="width: 100%">
 </td></tr></table>
 </div>
 <p></p>
@@ -1839,7 +1839,7 @@ for (ii = 0; ii < theObject.length; ii++) {
   theObject[ii].style.marginLeft +=  inputWidth - checkboxWidth + 22;
 }
 
-document.getElementById('baseUrlLabel').style.width = inputWidth;
+document.getElementById('boardUrlLabel').style.width = inputWidth;
 
 </script>
 
