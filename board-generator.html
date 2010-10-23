@@ -40,7 +40,7 @@ a {
   border-color: #CCCCCC;
 }
 
-.input, .checkbox, .dropdown, .largeDropdown, .configtext {
+.input, .checkbox, .dropdown, .largeDropdown, .configtext, .inputLabel {
 /* if the margin-left value below is changed from 22 
    then the corresponding value at the end of the file needs to be changed accordingly */      
   margin-left: 22;
@@ -116,6 +116,7 @@ fontCommentsSize_default = "moves";
 backgroundColorHex_default = "FFFFFF";
 previewBackgroundColorHex_default = "DDDDDD";
 baseUrl_default = pgn4web_board_url;
+useTextarea_default = "f";
 
 
 // max length of the iframeUrl, if this is exceeded a warning is issued 
@@ -492,6 +493,9 @@ function set_defaults() {
   if ((baseUrl_value = gup("baseUrl")) === "") { baseUrl_value = baseUrl_default; }
   document.board.baseUrl.value = baseUrl_value;
 
+  if ((useTextarea_value = gup("useTextarea")) === "") { useTextarea_value = useTextarea_default; }                   
+  document.board.useTextarea.checked = (useTextarea_value == "t");
+    
   generate_html_code();
   update_controls();
 }
@@ -732,14 +736,19 @@ function calculate_html_code() {
     iframeUrl += "&fw=" + frameWidth_value;
   }
 
-  pgnText_value = pgnTextFixFromInput(document.getElementById('pgnText').value);  
-  if ((document.board.encodePgn.checked) && (pgnText_value != previousPgnTextToEncode)) {
-    previousPgnTextToEncode = pgnText_value;
-    pgnTextEncoded = EncodePGN(pgnText_value.replace(/\r\n/g,'\n'));
+  pgnText_value = pgnTextFixFromInput(document.getElementById('pgnText').value);
+  if (document.board.useTextarea.checked) {
+    pgnId = "pgn4web_" + crc32(pgnText_value);
+    iframeUrl += "&pi=" + pgnId;
+  } else {
+    if ((document.board.encodePgn.checked) && (pgnText_value != previousPgnTextToEncode)) {
+      previousPgnTextToEncode = pgnText_value;
+      pgnTextEncoded = EncodePGN(pgnText_value.replace(/\r\n/g,'\n'));
+    }
+    if (document.board.encodePgn.checked) { iframeUrl += "&pe=" + pgnTextEncoded; }
+    else { iframeUrl += "&pt=" + pgnTextFixForUrl(pgnText_value.replace(/\r\n/g,'\n')); }
   }
-  if (document.board.encodePgn.checked) { iframeUrl += "&pe=" + pgnTextEncoded; }
-  else { iframeUrl += "&pt=" + pgnTextFixForUrl(pgnText_value.replace(/\r\n/g,'\n')); }
-
+  
   // every parameter had an &xxx= format,now we need to remove the first &
   iframeUrl = iframeUrl.replace(/\?&/,"?");
 }
@@ -747,8 +756,9 @@ function calculate_html_code() {
 function pgnTextFixFromInput( text ) {
 
   text = fixCommonPgnMistakes(text);
-  text = text.replace(/[\u0100-\uFFFF]/g,"*"); // replace all chars with code greather than 255 with *
-
+  if (!document.board.useTextarea.checked) {
+    text = text.replace(/[\u0100-\uFFFF]/g,"*"); // replace all chars with code greather than 255 with *
+  }
   return text;
 }
 
@@ -805,8 +815,12 @@ function generate_html_code() {
       outerFrameHeight = frameHeight_value;
       break;
   }
-
-  html_code_string = "<iframe height='" + outerFrameHeight + "' width='" + outerFrameWidth + "' frameborder='0' scrolling='no' marginheight='0' marginwidth='0'";
+  
+  html_code_string = "";
+  if (document.getElementById('useTextarea').checked) {
+    html_code_string += "<textarea id=" + pgnId + " style='display: none;'>\n\n" + pgnText_value + "\n\n</textarea>\n\n";
+  }
+  html_code_string += "<iframe height='" + outerFrameHeight + "' width='" + outerFrameWidth + "' frameborder='0' scrolling='no' marginheight='0' marginwidth='0'";
   if (document.getElementById('backgroundColorHex').value == 'transparent') {
     html_code_string += " allowtransparency='true'";
   }
@@ -824,6 +838,10 @@ function generate_html_code() {
 
   baseUrl_value = document.board.baseUrl.value;
   if (baseUrl_value != baseUrl_default) { thisBookmarkUrl += "&bu=" + baseUrl_value; }
+
+  if (document.getElementById('useTextarea').checked) { useTextarea_value = "t"; }
+  else { useTextarea_value = "f"; }
+  if (useTextarea_value != useTextarea_default) { thisBookmarkUrl += "&ut=" + useTextarea_value; }
 
   previewBackgroundColorHex_value = document.board.previewBackgroundColorHex.value;
   if (previewBackgroundColorHex_value != previewBackgroundColorHex_default) { 
@@ -1166,6 +1184,15 @@ function template_selected() {
 	  
     newLocationSearch = document.getElementById('templatesList').options[selectedIndex].value;
 
+    if (document.board.baseUrl.value != baseUrl_default) {
+      newLocationSearch += "&bu=" + document.board.baseUrl.value;
+    }
+
+    if (( document.getElementById('useTextarea').checked && (useTextarea_default != "t")) || 
+        (!document.getElementById('useTextarea').checked && (useTextarea_default != "f")) ) {
+      newLocationSearch += "&ut=" + (document.board.useTextarea.checked ? "t" : "f");
+    }
+
     pgnText_value = document.getElementById('pgnText').value;
     if ((document.board.encodePgn.checked) && (pgnText_value != previousPgnTextToEncode)) {
        previousPgnTextToEncode = pgnText_value;
@@ -1382,7 +1409,7 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 <div style="font-weight: bold; margin-bottom:6;">automatically generated HTML code for your web page or blog</div>
 <textarea readonly id="html_code" name="html_code" rows=15 class="textbox" style="background-color: #FFFFCC; scrollbar-base-color: #FFFFCC;"></textarea>
 <div id="html_code_status">&nbsp;</div>
-<div style="margin-top:1em;"><a id="shorturl_link" style="font-weight: bold;" href="javascript:document.forms['shorturl'].submit();">click here to create a short url for sharing the chessboard via email or instant messaging</a></div>
+<div style="margin-top:1em;"><a id="shorturl_link" style="font-weight: bold;" href="javascript:if(!document.board.useTextarea.checked){document.forms['shorturl'].submit();}else{alert('URL sharing disabled when useTextarea is active')}">click here to create a short url for sharing the chessboard via email or instant messaging</a></div>
 <p></p>
 <br>
 
@@ -1419,15 +1446,16 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 </tr></table>
 <p></p>
 
-<!--
+<!-- hiding encodePgn option -->
+<div style="display: none;">
 
 <input class="checkbox" type="checkbox" id="encodePgn" name="checkbox" />
 &nbsp;&nbsp; encode PGN text &nbsp;&nbsp;
 <span class="helptext">encode the PGN text to a URL friendly format (this should be normally enabled)</span>
 <p></p>
 
--->
-<input type="hidden" id="encodePgn" />
+</div>
+<!-- end hiding encodePgn option -->
 
 <div style="height: 3em">&nbsp;</div>
 <script type="text/javascript">print_menu("templates", 3, "templates");</script>
@@ -1754,28 +1782,43 @@ copies the moves font size</span>
 uses the parent's background color</span>
 <p></p>
 
-<!--
+<!-- hiding preview background color -->
+<div style="display: none;">
 
 <input class="color {adjust:false} input" type="text" id="previewBackgroundColorHex" name="input" value="" size="12" onChange="validate_color(this, 'preview background color', previewBackgroundColorHex_default)"> 
 &nbsp;&nbsp; preview background color &nbsp;&nbsp;
 <span class="helptext">not actually used in the HTML code, just for the preview</span>
 <p></p>
+
+</div>
+<!-- end hiding preview background color -->
+
 <br>
 
--->
-<input class="color {adjust:false} input" type="hidden" id="previewBackgroundColorHex" value="">
+<!-- hiding URL options -->
+<div style="display: none;">
 
-<!--
+<div style="height: 3em">&nbsp;</div>                                                                         
+<script type="text/javascript">print_menu("url_options", 3, "URL options");</script>                 
+<div style="height: 1em">&nbsp;</div>
 
-<h3><a name=url_options>URL options</a></h3>
-
+<div class="inputLabel">
+<table width="100%" cellspacing=0 cellpadding=0 border=0><tr><td id="baseUrlLabel">
 base URL: &nbsp;&nbsp;
+</td><td>
 <input type="text" id="baseUrl" name="baseUrl" value="" style="width: 100%">
+</td></tr></table>
+</div>
+<p></p>
+
+<input class="checkbox" type="checkbox" id="useTextarea" name="checkbox" />
+&nbsp;&nbsp; use HTML textarea &nbsp;&nbsp;
+<span class="helptext">this should be normally disabled unless pgn4web is locally implemented and a relative base URL is used</span>  
 <p></p>
 <br>
 
--->
-<input type="hidden" id="baseUrl" value="">
+</div>
+<!-- end hiding URL options -->
 
 <script type="text/javascript">
 
@@ -1785,8 +1828,6 @@ for (ii = 0; ii < theObject.length; ii++) {
   theObject[ii].style.width = inputWidth;
 }
 
-/* no more checkboxes left 
-
 checkboxWidth = document.getElementById('encodePgn').offsetWidth;
 // the last number added to marginLeft should be equal to the value of the .checkbox style at the top
 theObject = document.getElementsByName('checkbox');
@@ -1794,7 +1835,7 @@ for (ii = 0; ii < theObject.length; ii++) {
   theObject[ii].style.marginLeft +=  inputWidth - checkboxWidth + 22;
 }
 
- */
+document.getElementById('baseUrlLabel').style.width = inputWidth;
 
 </script>
 
