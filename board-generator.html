@@ -35,11 +35,11 @@ a {
 }
 
 .labeltext, .largeDropdown, .configtext {
-  margin-right: 1em;
+  margin-right: 1.0em;
 }
 
 .labeltext {
-  margin-left: 1.5em;
+  margin-left: 1.3em;
 }
 
 .helptext {
@@ -1551,7 +1551,7 @@ continiously, or autoplay
 <span class="helptext"><i>always</i> settings apply at every game load, <i>once</i> settings only at the first load</span>
 <p></p>
 
-<input  class="input" type="text" id="initialHalfmoveNumber" name="input" value="" size="13" onChange="javascript:setInitialHalfmove();">
+<input  class="input" type="text" id="initialHalfmoveNumber" name="input" value="" size="12" onChange="javascript:setInitialHalfmove();">
 <span class="labeltext">initial halfmove number</span>
 <span class="helptext">actual halfmove number when the setting above is
 <a class="helplink" href="" onClick="javascript:document.board.initialHalfmoveSelect.value = 'number'; setInitialHalfmove(); return false;">custom number</a>
@@ -1562,7 +1562,7 @@ continiously, or autoplay
 <script type="text/javascript">print_menu("board_options", 3, "chessboard options");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<input class="input" type="text" id="squareSize" name="input" value="" size="13" onChange="validate_ss_ps_hm(); update_suggested_iframe_dimensions();">
+<input class="input" type="text" id="squareSize" name="input" value="" size="12" onChange="validate_ss_ps_hm(); update_suggested_iframe_dimensions();">
 <span class="labeltext">square size</span>
 <span class="helptext">a number; must be larger than the piece size plus the highlight border if any</span>
 <p></p>
@@ -1631,19 +1631,19 @@ selects piece font based on piece size</span>
 <p></p>
 <br>
 
-<input class="color {adjust:false} input" type="text" id="lightColorHex" name="input" value="" size="13" onChange="validate_color(this, 'light squares color', lightColorHex_default)">
+<input class="color {adjust:false} input" type="text" id="lightColorHex" name="input" value="" size="12" onChange="validate_color(this, 'light squares color', lightColorHex_default)">
 <span class="labeltext">light squares color</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="darkColorHex" name="input" value="" size="13" onChange="validate_color(this, 'dark squares color', darkColorHex_default)">
+<input class="color {adjust:false} input" type="text" id="darkColorHex" name="input" value="" size="12" onChange="validate_color(this, 'dark squares color', darkColorHex_default)">
 <span class="labeltext">dark squares color</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="boardBorderColorHex" name="input" value="" size="13" onChange="validate_color(this, 'board border color', boardBorderColorHex_default)">
+<input class="color {adjust:false} input" type="text" id="boardBorderColorHex" name="input" value="" size="12" onChange="validate_color(this, 'board border color', boardBorderColorHex_default)">
 <span class="labeltext">board border color</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="boardShadowColorHex" name="input" value="" size="13" onChange="validate_boardShadowColorHex()">
+<input class="color {adjust:false} input" type="text" id="boardShadowColorHex" name="input" value="" size="12" onChange="validate_boardShadowColorHex()">
 <span class="labeltext">board shadow color</span>
 <span class="helptext">a color;
 <a class="helplink" href="" onClick="javascript:document.board.boardShadowColorHex.color.fromString('FFFFFF'); document.board.boardShadowColorHex.value = 'transparent'; return false;">transparent</a>
@@ -1661,7 +1661,7 @@ copies the board border color
 <span class="labeltext">square highlight mode</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="highlightColorHex" name="input" value="" size="13" onChange="validate_color(this, 'highlight squares color', highlightColorHex_default)">
+<input class="color {adjust:false} input" type="text" id="highlightColorHex" name="input" value="" size="12" onChange="validate_color(this, 'highlight squares color', highlightColorHex_default)">
 <span class="labeltext">highlight squares color</span>
 <p></p>
 <br>
@@ -1681,18 +1681,18 @@ colors below, or
 buttons</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="controlBackgroundColorHex" name="input" value="" size="13" onChange="validate_color(this, 'control buttons background color', controlBackgroundColorHex_default); update_controls()">
+<input class="color {adjust:false} input" type="text" id="controlBackgroundColorHex" name="input" value="" size="12" onChange="validate_color(this, 'control buttons background color', controlBackgroundColorHex_default); update_controls()">
 <span class="labeltext">custom control buttons background color</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="controlTextColorHex" name="input" value="" size="13" onChange="validate_color(this, 'control buttons text color', controlTextColorHex_default)">
+<input class="color {adjust:false} input" type="text" id="controlTextColorHex" name="input" value="" size="12" onChange="validate_color(this, 'control buttons text color', controlTextColorHex_default)">
 <span class="labeltext">custom control buttons text color</span>
 
 <div style="height: 3em">&nbsp;</div>
 <script type="text/javascript">print_menu("header_moves_options", 3, "header and moves options");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<input class="input" type="text" id="textMargin" name="input" value="" size="13" onChange="validate_number(this, 'text margin', textMargin_default);">
+<input class="input" type="text" id="textMargin" name="input" value="" size="12" onChange="validate_number(this, 'text margin', textMargin_default);">
 <span class="labeltext">text margin</span>
 <span class="helptext">a number; header/moves margin, nice to have when text overflows with scrollbars</span>
 <p></p>
@@ -1706,12 +1706,12 @@ buttons</span>
 <span class="labeltext"><b>how to show game header</b></span>
 <p></p>
 
-<input class="input" type="text" id="fontHeaderSize" name="input" value="" size="13" onChange="validate_number_percentage(this, 'header font size', fontHeaderSize_default);">
+<input class="input" type="text" id="fontHeaderSize" name="input" value="" size="12" onChange="validate_number_percentage(this, 'header font size', fontHeaderSize_default);">
 <span class="labeltext">header font size</span>
 <span class="helptext">a number or a percentage</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="fontHeaderColorHex" name="input" value="" size="13" onChange="validate_color(this, 'header font color', fontHeaderColorHex_default)">
+<input class="color {adjust:false} input" type="text" id="fontHeaderColorHex" name="input" value="" size="12" onChange="validate_color(this, 'header font color', fontHeaderColorHex_default)">
 <span class="labeltext">header font color</span>
 <p></p>
 <br>
@@ -1723,16 +1723,16 @@ buttons</span>
 <span class="labeltext"><b>how to show game moves</b></span>
 <p></p>
 
-<input class="input" type="text" id="fontMovesSize" name="input" value="" size="13" onChange="validate_number_percentage(this, 'moves font size', fontMovesSize_default);">
+<input class="input" type="text" id="fontMovesSize" name="input" value="" size="12" onChange="validate_number_percentage(this, 'moves font size', fontMovesSize_default);">
 <span class="labeltext">moves font size</span>
 <span class="helptext">a number or a percentage</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="fontMovesColorHex" name="input" value="" size="13" onChange="validate_color(this, 'moves font color', fontMovesColorHex_default)">
+<input class="color {adjust:false} input" type="text" id="fontMovesColorHex" name="input" value="" size="12" onChange="validate_color(this, 'moves font color', fontMovesColorHex_default)">
 <span class="labeltext">moves font color</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="highlightMoveColorHex" name="input" value="" size="13" onChange="validate_highlightMoveColorHex()">
+<input class="color {adjust:false} input" type="text" id="highlightMoveColorHex" name="input" value="" size="12" onChange="validate_highlightMoveColorHex()">
 <span class="labeltext">highlight move color</span> 
 <span class="helptext">a color;
 <a class="helplink" href="" onClick="javascript:document.board.highlightMoveColorHex.color.fromString('FFFFFF'); document.board.highlightMoveColorHex.value = 'background'; return false;">background</a>
@@ -1755,14 +1755,14 @@ inbetween game moves, or on a
 </span>
 <p></p>
 
-<input class="input" type="text" id="fontCommentsSize" name="input" value="" size="13" onChange="validate_fontCommentsSize();">
+<input class="input" type="text" id="fontCommentsSize" name="input" value="" size="12" onChange="validate_fontCommentsSize();">
 <span class="labeltext">comments font size</span>
 <span class="helptext">a number or a percentage;
 <a class="helplink" href="" onClick="javascript:document.board.fontCommentsSize.value = 'moves'; return false;">moves</a>
 copies the moves font size</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="fontCommentsColorHex" name="input" value="" size="13" onChange="validate_color(this, 'comments font color', fontCommentsColorHex_default)">
+<input class="color {adjust:false} input" type="text" id="fontCommentsColorHex" name="input" value="" size="12" onChange="validate_color(this, 'comments font color', fontCommentsColorHex_default)">
 <span class="labeltext">comments font color</span>
 
 <div style="height: 3em">&nbsp;</div>
@@ -1777,23 +1777,23 @@ copies the moves font size</span>
 <p></p>
 <br>
 
-<input class="input" type="text" id="frameHeight" name="input" value="" size="13" onChange="validate_frameHeight(); update_suggested_iframe_dimensions();">
+<input class="input" type="text" id="frameHeight" name="input" value="" size="12" onChange="validate_frameHeight(); update_suggested_iframe_dimensions();">
 <span class="labeltext">iFrame height</span>
 <span id="frameHeight_helpText" class="helptext"></span>
 <p></p>
 
-<input class="input" type="text" id="frameWidth" name="input" value="" size="13" onChange="validate_frameWidth(); update_suggested_iframe_dimensions();"> 
+<input class="input" type="text" id="frameWidth" name="input" value="" size="12" onChange="validate_frameWidth(); update_suggested_iframe_dimensions();"> 
 <span class="labeltext">iFrame width</span>
 <span id="frameWidth_helpText" class="helptext"></span>
 <p></p>
 
-<input class="input" type="text" id="framePadding" name="input" value="" size="13" onChange="validate_number(this, 'frame padding', framePadding_default); update_suggested_iframe_dimensions();">
+<input class="input" type="text" id="framePadding" name="input" value="" size="12" onChange="validate_number(this, 'frame padding', framePadding_default); update_suggested_iframe_dimensions();">
 <span class="labeltext">iFrame padding</span>
 <span class="helptext">a number; border padding around the iframe, included within the iFrame width value</span>
 <p></p>
 <br>
 
-<input class="color {adjust:false} input" type="text" id="backgroundColorHex" name="input" value="" size="13" onChange="validate_backgroundColorHex()">
+<input class="color {adjust:false} input" type="text" id="backgroundColorHex" name="input" value="" size="12" onChange="validate_backgroundColorHex()">
 <span class="labeltext">background color</span>
 <span class="helptext">a color;
 <a class="helplink" href="" onClick="javascript:document.board.backgroundColorHex.color.fromString('FFFFFF'); document.board.backgroundColorHex.value = 'transparent'; return false;">transparent</a>
@@ -1803,7 +1803,7 @@ uses the parent's background color</span>
 <!-- hiding preview background color -->
 <span class="extendedOption">
 
-<input class="color {adjust:false} input" type="text" id="previewBackgroundColorHex" name="input" value="" size="13" onChange="validate_color(this, 'preview background color', previewBackgroundColorHex_default)"> 
+<input class="color {adjust:false} input" type="text" id="previewBackgroundColorHex" name="input" value="" size="12" onChange="validate_color(this, 'preview background color', previewBackgroundColorHex_default)"> 
 <span class="labeltext">preview background color</span>
 <span class="helptext">not actually used in the HTML code, just for the preview</span>
 <p></p>
@@ -1832,11 +1832,11 @@ unless the board widget is on the same server with a local <i>base URL</i></span
 unless <i>use HTML textarea</i> is enabled</span>
 <p></p>
 
-<input class="input" type="text" id="boardUrl" name="boardUrl" value="" size="13">
+<input class="input" type="text" id="boardUrl" name="boardUrl" value="" size="12">
 <span class="labeltext">board URL</span>
 <span class="helptext">normally as
 <a class="helplink" href="" onClick="javascript:document.board.boardUrl.value = boardUrl_default; return false;">default</a>
-unless enabling <i>use HTML textarea</i> or using board widget from different server</span>
+unless <i>use HTML textarea</i> is enabled or the board widget is from a different server</span>
 <p></p>
 
 </span>
