@@ -40,7 +40,7 @@ a {
   border-color: #CCCCCC;
 }
 
-.input, .checkbox, .dropdown, .largeDropdown, .configtext, .inputLabel {
+.input, .checkbox, .dropdown, .largeDropdown, .configtext {
 /* if the margin-left value below is changed from 22px 
    then the corresponding value at the end of the file needs changing accordingly */      
   margin-left: 22px;
@@ -122,19 +122,49 @@ useTextarea_default = "f";
 // max length of the iframeUrl, if this is exceeded a warning is issued 
 iframeUrl_max = 2000;
 
+function gup( name ){
+
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regexS = "[\\?&]"+name+"=([^&#]*)";  
+  regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
+  var regex = new RegExp( regexS, "i" );
+  var results = regex.exec( window.location.href );
+  if( results !== null ) { return decodeURIComponent(results[1]); }
+
+  // allows for short version of the URL parameters, for instance sC matches squareColor
+  compact_name = name.charAt(0);
+  for(i=1; i<name.length; i++){
+    if (name.charAt(i).match(/[A-Z]/)) { compact_name = compact_name + name.charAt(i).toLowerCase(); }
+  }
+  name = compact_name;
+
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  regexS = "[\\?&]"+name+"=([^&#]*)";  
+  regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
+  regex = new RegExp( regexS, "i" );
+  results = regex.exec( window.location.href );
+  if( results !== null ) { return decodeURIComponent(results[1]); }
+
+  return "";
+}
+
+newStyleSheet = '<style type="text/css"> \n';
+newStyleSheet += '.extendedOption { display: ';
+if ((gup("extendedOptions") == "true") || (gup("extendedOptions") == "t")) {
+  newStyleSheet += 'inline';
+} else {
+  newStyleSheet += 'none';
+}
+newStyleSheet += '; } \n';
+newStyleSheet += '</style> \n';
+document.write(newStyleSheet);
+
 function new_onLoad() {
   jscolor.bind(); // needed to cope with IE bug
   set_defaults();
 }
 
 function set_defaults() {
-
-  if ((gup("extendedOptions") == "true") || (gup("extendedOptions") == "t")) {
-    theObject = document.getElementsByName('extendedOption');
-    for (ii = 0; ii < theObject.length; ii++) {
-      theObject[ii].style.display = 'inline';
-    }
-  }
 
   load_templates();
   document.getElementById('templatesList').options[1].value = location.search.replace(/&(pe|pt)=.*(&|$)/,"");
@@ -506,7 +536,6 @@ function set_defaults() {
   generate_html_code();
   update_controls();
 }
-
 
 function reset_form() {
   if (confirm("do you really want to reset the board generator to the default values?\nAll your settings including the PGN text might be lost!")) { set_defaults(); }
@@ -890,7 +919,6 @@ function generate_html_code() {
   location.href='#generate'; return;
 }
 
-
 function validate_color(object, name, def) {
   if (object.value.match(/^[0-9A-Fa-f]{6}$/)) {
     return true;
@@ -1260,33 +1288,6 @@ function hex2sex(hex) {
   return sex;
 }
 
-
-function gup( name ){
-
-  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-  var regexS = "[\\?&]"+name+"=([^&#]*)";  
-  regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
-  var regex = new RegExp( regexS, "i" );
-  var results = regex.exec( window.location.href );
-  if( results !== null ) { return decodeURIComponent(results[1]); }
-
-  // allows for short version of the URL parameters, for instance sC matches squareColor
-  compact_name = name.charAt(0);
-  for(i=1; i<name.length; i++){
-    if (name.charAt(i).match(/[A-Z]/)) { compact_name = compact_name + name.charAt(i).toLowerCase(); }
-  }
-  name = compact_name;
-
-  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-  regexS = "[\\?&]"+name+"=([^&#]*)";  
-  regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
-  regex = new RegExp( regexS, "i" );
-  results = regex.exec( window.location.href );
-  if( results !== null ) { return decodeURIComponent(results[1]); }
-
-  return "";
-}
-
 var bugWin=null;
 function bug_report() {
   var email = pgn4web_project_email;
@@ -1333,7 +1334,7 @@ function print_menu( item, level, title ) {
   menu += '&nbsp; &nbsp;<a href=#board_options>board</a>';
   menu += '&nbsp; &nbsp;<a href=#header_moves_options>header and moves</a>';
   menu += '&nbsp; &nbsp;<a href=#page_options>page</a>';
-  menu += '<span name="extendedOption" style="display: none;">&nbsp; &nbsp;<a href=#url_options>URL</a></span>';
+  menu += '<span class="extendedOption">&nbsp; &nbsp;<a href=#url_options>URL</a></span>';
   menu += '</div>';
   menu += '</td></tr></table>';
   document.write(menu); 
@@ -1788,7 +1789,7 @@ uses the parent's background color</span>
 <p></p>
 
 <!-- hiding preview background color -->
-<span name="extendedOption" style="display: none;">
+<span class="extendedOption">
 
 <input class="color {adjust:false} input" type="text" id="previewBackgroundColorHex" name="input" value="" size="12" onChange="validate_color(this, 'preview background color', previewBackgroundColorHex_default)"> 
 &nbsp;&nbsp; preview background color &nbsp;&nbsp;
@@ -1799,7 +1800,7 @@ uses the parent's background color</span>
 <!-- end hiding preview background color -->
 
 <!-- hiding URL options -->
-<span name="extendedOption" style="display: none;">
+<span class="extendedOption">
 
 <div style="height: 3em">&nbsp;</div>                                                                         
 <script type="text/javascript">print_menu("url_options", 3, "URL options");</script>                 
@@ -1819,20 +1820,11 @@ unless the board widget is on the same server with a local <i>base URL</i></span
 unless <i>use HTML textarea</i> is enabled</span>
 <p></p>
 
-<div class="inputLabel">
-<table width="100%" cellspacing=0 cellpadding=0 border=0><tr>
-<td id="boardUrlLabel" align="right">
-board URL
-</td><td>
-&nbsp;&nbsp;&nbsp;&nbsp;
-</td><td>
-<input class="input" type="text" id="boardUrl" name="boardUrl" value="" style="margin-left: 0; width: 100%">
-</td></tr><tr><td></td><td></td><td>
-<div class="helptext" style="margin-top: 0.2em;">normally as
+<input class="input" type="text" id="boardUrl" name="boardUrl" value="" size="12">
+&nbsp;&nbsp; board URL &nbsp;&nbsp;
+<span class="helptext">normally as
 <a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.boardUrl.value = boardUrl_default; return false;">default</a>
-unless enabling <i>use HTML textarea</i> requires a <i>board URL</i> relative to the server root or unless the board widget is from a different server</div>
-</td></tr></table>
-</div>
+unless enabling <i>use HTML textarea</i> or using board widget from different server</span>
 <p></p>
 
 </span>
@@ -1855,8 +1847,6 @@ theObject = document.getElementsByName('checkbox');
 for (ii = 0; ii < theObject.length; ii++) {
   theObject[ii].style.marginLeft +=  inputWidth - checkboxWidth + 22;
 }
-
-document.getElementById('boardUrlLabel').style.width = inputWidth;
 
 </script>
 
