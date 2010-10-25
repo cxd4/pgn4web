@@ -30,8 +30,22 @@ a {
   color: gray;
 }
 
+.helplink {
+  font-weight: bold;
+}
+
+.labeltext, .largeDropdown, .configtext {
+  margin-right: 1em;
+}
+
+.labeltext {
+  margin-left: 1.5em;
+}
+
 .helptext {
   font-size: 80%;
+  margin-right: 0;
+  margin-left: 0;
 }
 
 .input, .textbox {
@@ -44,6 +58,10 @@ a {
 /* if the margin-left value below is changed from 22px 
    then the corresponding value at the end of the file needs changing accordingly */      
   margin-left: 22px;
+}
+
+.input, .checkbox, .checkbox {
+  margin-right: 0;
 }
 
 .textbox {
@@ -593,8 +611,8 @@ function update_suggested_iframe_dimensions() {
   if (document.board.horizontalLayout.value == "t") {
     suggested_frameHeight = "board";
     suggested_frameWidth = "page";
-    document.getElementById('frameHeight_helpText').innerHTML = "a number or <a class='helplink' style='font-weight: bold;' href='' onClick='javascript:document.board.frameHeight.value = \"board\"; return false;'>board</a>; min " + min_frameHeight + "; when <a class='helplink' href='' onClick='javascript:document.board.frameHeight.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameHeight;
-    document.getElementById('frameWidth_helpText').innerHTML = "a number or <a class='helplink' style='font-weight: bold;' href='' onClick='javascript:document.board.frameWidth.value = \"page\"; return false;'>page</a>; min " + min_frameWidth + "; when <a class='helplink' href='' onClick='javascript:document.board.frameWidth.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
+    document.getElementById('frameHeight_helpText').innerHTML = "a number or <a class='helplink' href='' onClick='javascript:document.board.frameHeight.value = \"board\"; return false;'>board</a>; min " + min_frameHeight + "; when <a class='helplink' href='' onClick='javascript:document.board.frameHeight.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameHeight;
+    document.getElementById('frameWidth_helpText').innerHTML = "a number or <a class='helplink' href='' onClick='javascript:document.board.frameWidth.value = \"page\"; return false;'>page</a>; min " + min_frameWidth + "; when <a class='helplink' href='' onClick='javascript:document.board.frameWidth.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
   } else {
     suggested_frameWidth = boardWidth;
     suggested_frameHeight = estimated_boardHeight;
@@ -610,7 +628,7 @@ function update_suggested_iframe_dimensions() {
     suggested_frameWidth += 2 * parseInt(document.board.framePadding.value, 10);
     suggested_frameHeight += 2 * parseInt(document.board.framePadding.value, 10);
     document.getElementById('frameHeight_helpText').innerHTML = "a number; min " + min_frameHeight + "; when <a class='helplink' href='' onClick='javascript:document.board.frameHeight.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameHeight;
-    document.getElementById('frameWidth_helpText').innerHTML = "a number or <a class='helplink' style='font-weight: bold;' href='' onClick='javascript:document.board.frameWidth.value = \"board\"; return false;'>board</a> or <a class='helplink' style='font-weight: bold;' href='' onClick='javascript:document.board.frameWidth.value = \"page\"; return false;'>page</a>; min " + min_frameWidth + "; when <a class='helplink' href='' onClick='javascript:document.board.frameWidth.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
+    document.getElementById('frameWidth_helpText').innerHTML = "a number or <a class='helplink' href='' onClick='javascript:document.board.frameWidth.value = \"board\"; return false;'>board</a> or <a class='helplink' href='' onClick='javascript:document.board.frameWidth.value = \"page\"; return false;'>page</a>; min " + min_frameWidth + "; when <a class='helplink' href='' onClick='javascript:document.board.frameWidth.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
   }
 
   if (theObject = document.getElementById('frameWidth')) {
@@ -1472,15 +1490,11 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 <option value="reapply">- reapply last loaded template</option>
 <option value="random">- apply random template</option>
 </select>
-&nbsp;&nbsp;
 <span class="helptext">select from preset board generator settings templates</span>
 <p></p>
 
-<div class="configtext">
-<a id="thisConfigBookmark" title=""><b>pgn4web board generator custom template link<span id="bookmarkCrc32" style="display: none;"></span></b></a>
-&nbsp;&nbsp;
+<a class="configtext" id="thisConfigBookmark" title=""><b>pgn4web board generator custom template link<span id="bookmarkCrc32" style="display: none;"></span></b></a>
 <span class="helptext">add link into the browser bookmarks, saving current board settings</span>
-</div>
 <p></p>
 
 <div style="height: 3em">&nbsp;</div>
@@ -1492,13 +1506,13 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 <option value="loop">loop</option>
 <option value="none">none</option>
 </select>
-&nbsp;&nbsp; autoplay games &nbsp;&nbsp;
+<span class="labeltext">autoplay games</span>
 <span class="helptext">autoplay first
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.autoplayMode.value = 'game'; return false;">game</a>
+<a class="helplink" href="" onClick="javascript:document.board.autoplayMode.value = 'game'; return false;">game</a>
 once, or 
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.autoplayMode.value = 'loop'; return false;">loop</a>
+<a class="helplink" href="" onClick="javascript:document.board.autoplayMode.value = 'loop'; return false;">loop</a>
 continiously, or autoplay
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.autoplayMode.value = 'none'; return false;">none</a>
+<a class="helplink" href="" onClick="javascript:document.board.autoplayMode.value = 'none'; return false;">none</a>
 </span>
 <p></p>
 
@@ -1510,7 +1524,7 @@ continiously, or autoplay
 <option value="10000">10 seconds</option>
 <option value="30000">30 seconds</option>
 </select>
-&nbsp;&nbsp; autoplay delay &nbsp;&nbsp;
+<span class="labeltext">autoplay delay</span>
 <p></p>
 
 <select class="dropdown" id="initialGame" name="dropdown">
@@ -1518,7 +1532,7 @@ continiously, or autoplay
 <option value="last">last</option>
 <option value="random">random</option>
 </select>
-&nbsp;&nbsp; initial game &nbsp;&nbsp;
+<span class="labeltext">initial game</span>
 <p></p>
 
 <input type="hidden" id="initialHalfmove" value="">
@@ -1533,14 +1547,14 @@ continiously, or autoplay
 	<option value=-2>comment once</option>
 	<option value="number">custom number</option>
 </select>
-&nbsp;&nbsp; initial halfmove &nbsp;&nbsp;
+<span class="labeltext">initial halfmove</span>
 <span class="helptext"><i>always</i> settings apply at every game load, <i>once</i> settings only at the first load</span>
 <p></p>
 
-<input  class="input" type="text" id="initialHalfmoveNumber" name="input" value="" size="12" onChange="javascript:setInitialHalfmove();">
-&nbsp;&nbsp; initial halfmove number &nbsp;&nbsp;
+<input  class="input" type="text" id="initialHalfmoveNumber" name="input" value="" size="13" onChange="javascript:setInitialHalfmove();">
+<span class="labeltext">initial halfmove number</span>
 <span class="helptext">actual halfmove number when the setting above is
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.initialHalfmoveSelect.value = 'number'; setInitialHalfmove(); return false;">custom number</a>
+<a class="helplink" href="" onClick="javascript:document.board.initialHalfmoveSelect.value = 'number'; setInitialHalfmove(); return false;">custom number</a>
 </span>
 <p></p>
 
@@ -1548,8 +1562,8 @@ continiously, or autoplay
 <script type="text/javascript">print_menu("board_options", 3, "chessboard options");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<input class="input" type="text" id="squareSize" name="input" value="" size="12" onChange="validate_ss_ps_hm(); update_suggested_iframe_dimensions();">
-&nbsp;&nbsp; square size &nbsp;&nbsp;
+<input class="input" type="text" id="squareSize" name="input" value="" size="13" onChange="validate_ss_ps_hm(); update_suggested_iframe_dimensions();">
+<span class="labeltext">square size</span>
 <span class="helptext">a number; must be larger than the piece size plus the highlight border if any</span>
 <p></p>
 
@@ -1597,9 +1611,9 @@ continiously, or autoplay
 <option value="144">144</option>
 <option value="300">300</option>
 </select>
-&nbsp;&nbsp; piece size &nbsp;&nbsp;
+<span class="labeltext">piece size</span>
 <span class="helptext">
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.pieceSize.value = 'default'; return false;">default</a>
+<a class="helplink" href="" onClick="javascript:document.board.pieceSize.value = 'default'; return false;">default</a>
 selects piece size based on square size</span>
 <p></p>
 
@@ -1610,31 +1624,31 @@ selects piece size based on square size</span>
 <option value="uscf">uscf</option>
 <option value="random">random</option>
 </select>
-&nbsp;&nbsp; piece font &nbsp;&nbsp;
+<span class="labeltext">piece font</span>
 <span class="helptext">
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.pieceFont.value = 'default'; return false;">default</a>
+<a class="helplink" href="" onClick="javascript:document.board.pieceFont.value = 'default'; return false;">default</a>
 selects piece font based on piece size</span>
 <p></p>
 <br>
 
-<input class="color {adjust:false} input" type="text" id="lightColorHex" name="input" value="" size="12" onChange="validate_color(this, 'light squares color', lightColorHex_default)">
-&nbsp;&nbsp; light squares color &nbsp;&nbsp;
+<input class="color {adjust:false} input" type="text" id="lightColorHex" name="input" value="" size="13" onChange="validate_color(this, 'light squares color', lightColorHex_default)">
+<span class="labeltext">light squares color</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="darkColorHex" name="input" value="" size="12" onChange="validate_color(this, 'dark squares color', darkColorHex_default)">
-&nbsp;&nbsp; dark squares color &nbsp;&nbsp;
+<input class="color {adjust:false} input" type="text" id="darkColorHex" name="input" value="" size="13" onChange="validate_color(this, 'dark squares color', darkColorHex_default)">
+<span class="labeltext">dark squares color</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="boardBorderColorHex" name="input" value="" size="12" onChange="validate_color(this, 'board border color', boardBorderColorHex_default)">
-&nbsp;&nbsp; board border color &nbsp;&nbsp;
+<input class="color {adjust:false} input" type="text" id="boardBorderColorHex" name="input" value="" size="13" onChange="validate_color(this, 'board border color', boardBorderColorHex_default)">
+<span class="labeltext">board border color</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="boardShadowColorHex" name="input" value="" size="12" onChange="validate_boardShadowColorHex()">
-&nbsp;&nbsp; board shadow color &nbsp;&nbsp;
+<input class="color {adjust:false} input" type="text" id="boardShadowColorHex" name="input" value="" size="13" onChange="validate_boardShadowColorHex()">
+<span class="labeltext">board shadow color</span>
 <span class="helptext">a color;
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.boardShadowColorHex.color.fromString('FFFFFF'); document.board.boardShadowColorHex.value = 'transparent'; return false;">transparent</a>
+<a class="helplink" href="" onClick="javascript:document.board.boardShadowColorHex.color.fromString('FFFFFF'); document.board.boardShadowColorHex.value = 'transparent'; return false;">transparent</a>
 disables the shadow,
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.boardShadowColorHex.color.fromString('FFFFFF'); document.board.boardShadowColorHex.value = 'border'; return false;">border</a>
+<a class="helplink" href="" onClick="javascript:document.board.boardShadowColorHex.color.fromString('FFFFFF'); document.board.boardShadowColorHex.value = 'border'; return false;">border</a>
 copies the board border color
 </span>
 <p></p>
@@ -1644,11 +1658,11 @@ copies the board border color
 <option value="square" selected="selected">square</option>
 <option value="none">none</option>
 </select>
-&nbsp;&nbsp; square highlight mode &nbsp;&nbsp;
+<span class="labeltext">square highlight mode</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="highlightColorHex" name="input" value="" size="12" onChange="validate_color(this, 'highlight squares color', highlightColorHex_default)">
-&nbsp;&nbsp; highlight squares color &nbsp;&nbsp;
+<input class="color {adjust:false} input" type="text" id="highlightColorHex" name="input" value="" size="13" onChange="validate_color(this, 'highlight squares color', highlightColorHex_default)">
+<span class="labeltext">highlight squares color</span>
 <p></p>
 <br>
 
@@ -1657,29 +1671,29 @@ copies the board border color
 <option value="standard">standard</option>
 <option value="custom">custom</option>
 </select>
-&nbsp;&nbsp; how to show control buttons &nbsp;&nbsp;
+<span class="labeltext">how to show control buttons</span>
 <span class="helptext">browser's
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.buttonsDisplay.value = 'standard'; update_controls(); return false;">standard</a>
+<a class="helplink" href="" onClick="javascript:document.board.buttonsDisplay.value = 'standard'; update_controls(); return false;">standard</a>
 buttons, or 
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.buttonsDisplay.value = 'custom'; update_controls(); return false;">custom</a>
+<a class="helplink" href="" onClick="javascript:document.board.buttonsDisplay.value = 'custom'; update_controls(); return false;">custom</a>
 colors below, or 
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.buttonsDisplay.value = 'hidden'; update_controls(); return false;">hidden</a>
+<a class="helplink" href="" onClick="javascript:document.board.buttonsDisplay.value = 'hidden'; update_controls(); return false;">hidden</a>
 buttons</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="controlBackgroundColorHex" name="input" value="" size="12" onChange="validate_color(this, 'control buttons background color', controlBackgroundColorHex_default); update_controls()">
-&nbsp;&nbsp; custom control buttons background color &nbsp;&nbsp;
+<input class="color {adjust:false} input" type="text" id="controlBackgroundColorHex" name="input" value="" size="13" onChange="validate_color(this, 'control buttons background color', controlBackgroundColorHex_default); update_controls()">
+<span class="labeltext">custom control buttons background color</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="controlTextColorHex" name="input" value="" size="12" onChange="validate_color(this, 'control buttons text color', controlTextColorHex_default)">
-&nbsp;&nbsp; custom control buttons text color &nbsp;&nbsp;
+<input class="color {adjust:false} input" type="text" id="controlTextColorHex" name="input" value="" size="13" onChange="validate_color(this, 'control buttons text color', controlTextColorHex_default)">
+<span class="labeltext">custom control buttons text color</span>
 
 <div style="height: 3em">&nbsp;</div>
 <script type="text/javascript">print_menu("header_moves_options", 3, "header and moves options");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<input class="input" type="text" id="textMargin" name="input" value="" size="12" onChange="validate_number(this, 'text margin', textMargin_default);">
-&nbsp;&nbsp; text margin &nbsp;&nbsp;
+<input class="input" type="text" id="textMargin" name="input" value="" size="13" onChange="validate_number(this, 'text margin', textMargin_default);">
+<span class="labeltext">text margin</span>
 <span class="helptext">a number; header/moves margin, nice to have when text overflows with scrollbars</span>
 <p></p>
 <br>
@@ -1689,16 +1703,16 @@ buttons</span>
 <option value="justified" selected="selected">justified</option>
 <option value="hidden">hidden</option>
 </select>
-&nbsp;&nbsp; <b>how to show game header</b> &nbsp;&nbsp;
+<span class="labeltext"><b>how to show game header</b></span>
 <p></p>
 
-<input class="input" type="text" id="fontHeaderSize" name="input" value="" size="12" onChange="validate_number_percentage(this, 'header font size', fontHeaderSize_default);">
-&nbsp;&nbsp; header font size &nbsp;&nbsp;
+<input class="input" type="text" id="fontHeaderSize" name="input" value="" size="13" onChange="validate_number_percentage(this, 'header font size', fontHeaderSize_default);">
+<span class="labeltext">header font size</span>
 <span class="helptext">a number or a percentage</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="fontHeaderColorHex" name="input" value="" size="12" onChange="validate_color(this, 'header font color', fontHeaderColorHex_default)">
-&nbsp;&nbsp; header font color &nbsp;&nbsp;
+<input class="color {adjust:false} input" type="text" id="fontHeaderColorHex" name="input" value="" size="13" onChange="validate_color(this, 'header font color', fontHeaderColorHex_default)">
+<span class="labeltext">header font color</span>
 <p></p>
 <br>
 
@@ -1706,23 +1720,22 @@ buttons</span>
 <option value="justified" selected="selected">justified</option>
 <option value="hidden">hidden</option>
 </select>
-&nbsp;&nbsp; <b>how to show game moves</b> &nbsp;&nbsp;
+<span class="labeltext"><b>how to show game moves</b></span>
 <p></p>
 
-<input class="input" type="text" id="fontMovesSize" name="input" value="" size="12" onChange="validate_number_percentage(this, 'moves font size', fontMovesSize_default);">
-&nbsp;&nbsp; moves font size &nbsp;&nbsp;
+<input class="input" type="text" id="fontMovesSize" name="input" value="" size="13" onChange="validate_number_percentage(this, 'moves font size', fontMovesSize_default);">
+<span class="labeltext">moves font size</span>
 <span class="helptext">a number or a percentage</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="fontMovesColorHex" name="input" value="" size="12" onChange="validate_color(this, 'moves font color', fontMovesColorHex_default)">
-
-&nbsp;&nbsp; moves font color &nbsp;&nbsp;
+<input class="color {adjust:false} input" type="text" id="fontMovesColorHex" name="input" value="" size="13" onChange="validate_color(this, 'moves font color', fontMovesColorHex_default)">
+<span class="labeltext">moves font color</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="highlightMoveColorHex" name="input" value="" size="12" onChange="validate_highlightMoveColorHex()">
-&nbsp;&nbsp; highlight move color &nbsp;&nbsp;
+<input class="color {adjust:false} input" type="text" id="highlightMoveColorHex" name="input" value="" size="13" onChange="validate_highlightMoveColorHex()">
+<span class="labeltext">highlight move color</span> 
 <span class="helptext">a color;
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.highlightMoveColorHex.color.fromString('FFFFFF'); document.board.highlightMoveColorHex.value = 'background'; return false;">background</a>
+<a class="helplink" href="" onClick="javascript:document.board.highlightMoveColorHex.color.fromString('FFFFFF'); document.board.highlightMoveColorHex.value = 'background'; return false;">background</a>
 copies the background color</span>
 <p></p>
 <br>
@@ -1732,25 +1745,25 @@ copies the background color</span>
 <option value="newline">newline</option>
 <option value="hidden">hidden</option>
 </select>
-&nbsp;&nbsp; how to show move comments &nbsp;&nbsp;
+<span class="labeltext">how to show move comments</span>
 <span class="helptext">
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.commentsDisplay.value = 'inline'; return false;">inline</a>
+<a class="helplink" href="" onClick="javascript:document.board.commentsDisplay.value = 'inline'; return false;">inline</a>
 inbetween game moves, or on a 
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.commentsDisplay.value = 'newline'; return false;">newline</a>
+<a class="helplink" href="" onClick="javascript:document.board.commentsDisplay.value = 'newline'; return false;">newline</a>
 , or
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.commentsDisplay.value = 'hidden'; return false;">hidden</a>
+<a class="helplink" href="" onClick="javascript:document.board.commentsDisplay.value = 'hidden'; return false;">hidden</a>
 </span>
 <p></p>
 
-<input class="input" type="text" id="fontCommentsSize" name="input" value="" size="12" onChange="validate_fontCommentsSize();">
-&nbsp;&nbsp; comments font size &nbsp;&nbsp;
+<input class="input" type="text" id="fontCommentsSize" name="input" value="" size="13" onChange="validate_fontCommentsSize();">
+<span class="labeltext">comments font size</span>
 <span class="helptext">a number or a percentage;
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.fontCommentsSize.value = 'moves'; return false;">moves</a>
+<a class="helplink" href="" onClick="javascript:document.board.fontCommentsSize.value = 'moves'; return false;">moves</a>
 copies the moves font size</span>
 <p></p>
 
-<input class="color {adjust:false} input" type="text" id="fontCommentsColorHex" name="input" value="" size="12" onChange="validate_color(this, 'comments font color', fontCommentsColorHex_default)">
-&nbsp;&nbsp; comments font color &nbsp;&nbsp;
+<input class="color {adjust:false} input" type="text" id="fontCommentsColorHex" name="input" value="" size="13" onChange="validate_color(this, 'comments font color', fontCommentsColorHex_default)">
+<span class="labeltext">comments font color</span>
 
 <div style="height: 3em">&nbsp;</div>
 <script type="text/javascript">print_menu("page_options", 3, "web page options");</script>
@@ -1760,39 +1773,38 @@ copies the moves font size</span>
 <option value="t">horizontal</option>
 <option value="f" selected="selected">vertical</option>
 </select>
-&nbsp;&nbsp; chessboard and header/moves layout &nbsp;&nbsp;
+<span class="labeltext">chessboard and header/moves layout</span>
 <p></p>
 <br>
 
-<input class="input" type="text" id="frameHeight" name="input" value="" size="12" onChange="validate_frameHeight(); update_suggested_iframe_dimensions();">
-&nbsp;&nbsp; iFrame height &nbsp;&nbsp;
+<input class="input" type="text" id="frameHeight" name="input" value="" size="13" onChange="validate_frameHeight(); update_suggested_iframe_dimensions();">
+<span class="labeltext">iFrame height</span>
 <span id="frameHeight_helpText" class="helptext"></span>
 <p></p>
 
-<input class="input" type="text" id="frameWidth" name="input" value="" size="12" onChange="validate_frameWidth(); update_suggested_iframe_dimensions();"> 
-&nbsp;&nbsp; iFrame width &nbsp;&nbsp;
+<input class="input" type="text" id="frameWidth" name="input" value="" size="13" onChange="validate_frameWidth(); update_suggested_iframe_dimensions();"> 
+<span class="labeltext">iFrame width</span>
 <span id="frameWidth_helpText" class="helptext"></span>
 <p></p>
 
-<input class="input" type="text" id="framePadding" name="input" value="" size="12" onChange="validate_number(this, 'frame padding', framePadding_default); update_suggested_iframe_dimensions();">
-
-&nbsp;&nbsp; iFrame padding &nbsp;&nbsp;
+<input class="input" type="text" id="framePadding" name="input" value="" size="13" onChange="validate_number(this, 'frame padding', framePadding_default); update_suggested_iframe_dimensions();">
+<span class="labeltext">iFrame padding</span>
 <span class="helptext">a number; border padding around the iframe, included within the iFrame width value</span>
 <p></p>
 <br>
 
-<input class="color {adjust:false} input" type="text" id="backgroundColorHex" name="input" value="" size="12" onChange="validate_backgroundColorHex()">
-&nbsp;&nbsp; background color &nbsp;&nbsp;
+<input class="color {adjust:false} input" type="text" id="backgroundColorHex" name="input" value="" size="13" onChange="validate_backgroundColorHex()">
+<span class="labeltext">background color</span>
 <span class="helptext">a color;
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.backgroundColorHex.color.fromString('FFFFFF'); document.board.backgroundColorHex.value = 'transparent'; return false;">transparent</a>
+<a class="helplink" href="" onClick="javascript:document.board.backgroundColorHex.color.fromString('FFFFFF'); document.board.backgroundColorHex.value = 'transparent'; return false;">transparent</a>
 uses the parent's background color</span>
 <p></p>
 
 <!-- hiding preview background color -->
 <span class="extendedOption">
 
-<input class="color {adjust:false} input" type="text" id="previewBackgroundColorHex" name="input" value="" size="12" onChange="validate_color(this, 'preview background color', previewBackgroundColorHex_default)"> 
-&nbsp;&nbsp; preview background color &nbsp;&nbsp;
+<input class="color {adjust:false} input" type="text" id="previewBackgroundColorHex" name="input" value="" size="13" onChange="validate_color(this, 'preview background color', previewBackgroundColorHex_default)"> 
+<span class="labeltext">preview background color</span>
 <span class="helptext">not actually used in the HTML code, just for the preview</span>
 <p></p>
 
@@ -1802,28 +1814,28 @@ uses the parent's background color</span>
 <!-- hiding URL options -->
 <span class="extendedOption">
 
-<div style="height: 3em">&nbsp;</div>                                                                         
-<script type="text/javascript">print_menu("url_options", 3, "URL options");</script>                 
+<div style="height: 3em">&nbsp;</div>
+<script type="text/javascript">print_menu("url_options", 3, "URL options");</script> 
 <div style="height: 1em">&nbsp;</div>
 
-<input class="checkbox" type="checkbox" id="useTextarea" name="checkbox" />
-&nbsp;&nbsp; use HTML textarea &nbsp;&nbsp;
+<input class="checkbox" type="checkbox" id="useTextarea" name="checkbox">
+<span class="labeltext">use HTML textarea</span>
 <span class="helptext">normally
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.useTextarea.checked = false; return false;">disabled</a>
+<a class="helplink" href="" onClick="javascript:document.board.useTextarea.checked = false; return false;">disabled</a>
 unless the board widget is on the same server with a local <i>base URL</i></span>
 <p></p>
 
-<input class="checkbox" type="checkbox" id="encodePgn" name="checkbox" />
-&nbsp;&nbsp; encode PGN text &nbsp;&nbsp;
+<input class="checkbox" type="checkbox" id="encodePgn" name="checkbox">
+<span class="labeltext">encode PGN text</span>
 <span class="helptext">normally
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.encodePgn.checked = true; return false;">enabled</a>
+<a class="helplink" href="" onClick="javascript:document.board.encodePgn.checked = true; return false;">enabled</a>
 unless <i>use HTML textarea</i> is enabled</span>
 <p></p>
 
-<input class="input" type="text" id="boardUrl" name="boardUrl" value="" size="12">
-&nbsp;&nbsp; board URL &nbsp;&nbsp;
+<input class="input" type="text" id="boardUrl" name="boardUrl" value="" size="13">
+<span class="labeltext">board URL</span>
 <span class="helptext">normally as
-<a class="helplink" style="font-weight: bold;" href="" onClick="javascript:document.board.boardUrl.value = boardUrl_default; return false;">default</a>
+<a class="helplink" href="" onClick="javascript:document.board.boardUrl.value = boardUrl_default; return false;">default</a>
 unless enabling <i>use HTML textarea</i> or using board widget from different server</span>
 <p></p>
 
