@@ -12,6 +12,7 @@ error_reporting(E_ERROR | E_PARSE);
 $tmpDir = "viewer";
 $fileUploadLimitBytes = 4194304;
 $fileUploadLimitText = round(($fileUploadLimitBytes / 1048576), 0) . "MB";
+$fileUploadLimitIniText = ini_get("upload_max_filesize");
 
 $zipSupported = function_exists('zip_open');
 if ($zipSupported) { $pgnDebugInfo = ""; }
@@ -30,7 +31,7 @@ print_footer();
 function set_mode() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
+  global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
 
   $mode = $_REQUEST["mode"];
 
@@ -75,7 +76,7 @@ function get_krabbe_position() {
 function get_pgn() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
+  global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
 
   $pgnDebugInfo = $pgnDebugInfo . $_REQUEST["debug"];
 
@@ -119,7 +120,7 @@ function get_pgn() {
         if (($copiedBytes > 0) && ($copiedBytes <= $fileUploadLimitBytes)) {
           $pgnSource = $tempZipName;
         } else {
-          $pgnStatus = "failed to get " . $zipFileString . ": file not found, file exceeds " . $fileUploadLimitText . " size limit or server error";
+          $pgnStatus = "failed to get " . $zipFileString . ": file not found, file exceeds " . $fileUploadLimitText . " form size limit, file exceeds " . $fileUploadLimitIniText . " server size limit or server error";
           if (($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
           return FALSE;
         }
@@ -128,7 +129,7 @@ function get_pgn() {
       $pgnSource = $pgnUrl;
     }
   } elseif (count($_FILES) == 0) {
-    $pgnStatus = "please enter chess games in PGN format&nbsp; &nbsp;<span style='color: gray;'>file and URL inputs must not exceed " . $fileUploadLimitText . "</span>";
+    $pgnStatus = "please enter chess games in PGN format&nbsp; &nbsp;<span style='color: gray;'>file and URL inputs must not exceed " . $fileUploadLimitText . " (form limit) and " . $fileUploadLimitIniText . " (server limit)</span>";
     return FALSE;
   } elseif ($_FILES['pgnFile']['error'] == UPLOAD_ERR_OK) {
     $pgnFileName = $_FILES['pgnFile']['name'];
@@ -145,15 +146,35 @@ function get_pgn() {
       $isZip = preg_match("/\.zip$/i",$pgnFileName);
       $pgnSource = $_FILES['pgnFile']['tmp_name'];
     }
-  } elseif ($_FILES['pgnFile']['error'] == (UPLOAD_ERR_INI_SIZE | UPLOAD_ERR_FORM_SIZE)) {
-    $pgnStatus = "failed uploading PGN games: file exceeds " . $fileUploadLimitText . " size limit";
-    return FALSE;
-  } elseif ($_FILES['pgnFile']['error'] == (UPLOAD_ERR_PARTIAL | UPLOAD_ERR_NO_FILE | UPLOAD_ERR_NO_TMP_DIR | UPLOAD_ERR_CANT_WRITE | UPLOAD_ERR_EXTENSION)) {
-    $pgnStatus = "failed uploading PGN games: server error";
-    return FALSE;
-  } else {
-    $pgnStatus = "failed uploading PGN games";
-    return FALSE;
+  } elseif ($_FILES['pgnFile']['error'] !== UPLOAD_ERR_OK) {
+    $pgnStatus = "failed uploading PGN games: ";
+    switch ($_FILES['pgnFile']['error']) {
+      case UPLOAD_ERR_INI_SIZE:
+        $pgnStatus = $pgnStatus . "file exceeds " . $fileUploadLimitIniText . " server size limit";
+        break;
+      case UPLOAD_ERR_FORM_SIZE:
+        $pgnStatus = $pgnStatus . "file exceeds " . $fileUploadLimitText . " form size limit";
+        break;
+      case UPLOAD_ERR_PARTIAL:
+        $pgnStatus = $pgnStatus . "file only partially uploaded";
+        break;
+      case UPLOAD_ERR_NO_FILE:
+        $pgnStatus = $pgnStatus . "no file uploaded";
+        break;
+      case UPLOAD_ERR_NO_TMP_DIR:
+        $pgnStatus = $pgnStatus . "missing temporary folder";
+        break;
+      case UPLOAD_ERR_CANT_WRITE:
+        $pgnStatus = $pgnStatus . "failed to write file to disk";
+        break;
+      case UPLOAD_ERR_EXTENSION:
+        $pgnStatus = $pgnStatus . "file upload stopped by extension";
+        break;
+      default:
+        $pgnStatus = $pgnStatus . "unknown upload error";
+        break;
+    }
+    return FALSE; 
   }
 
   if ($isZip) {
@@ -223,7 +244,7 @@ function get_pgn() {
 function check_tmpDir() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
+  global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
 
   $tmpDirHandle = opendir($tmpDir);
   while($entryName = readdir($tmpDirHandle)) {
@@ -302,7 +323,7 @@ END;
 function print_form() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
+  global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
 
   $thisScript = $_SERVER['SCRIPT_NAME'];
 
@@ -443,7 +464,7 @@ function reset_viewer() {
    document.getElementById("urlFormText").value = "";
    document.getElementById("pgnFormText").value = "";
    checkPgnFormTextSize();
-   document.getElementById("pgnStatus").innerHTML = "please enter chess games in PGN format&nbsp; &nbsp;<span style='color: gray;'>file and URL inputs must not exceed $fileUploadLimitText</span>";
+   document.getElementById("pgnStatus").innerHTML = "please enter chess games in PGN format&nbsp; &nbsp;<span style='color: gray;'>file and URL inputs must not exceed $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit)</span>";
    document.getElementById("pgnText").value = '$krabbeStartPosition';
 
    firstStart = true;
@@ -459,12 +480,12 @@ function reset_viewer() {
   <tr>
     <td align="left" valign="top">
       <form id="uploadForm" action="$thisScript" enctype="multipart/form-data" method="POST" style="display: inline;">
-        <input id="uploadFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) file" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText; $debugHelpText" onClick="return checkPgnFile();">
+        <input id="uploadFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) file" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="return checkPgnFile();">
     </td>
     <td colspan=2 width="100%" align="left" valign="top">
         <input type="hidden" name="mode" value="$mode">
         <input type="hidden" name="MAX_FILE_SIZE" value="$fileUploadLimitBytes">
-        <input id="uploadFormFile" name="pgnFile" type="file" class="formControl" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText; $debugHelpText">
+        <input id="uploadFormFile" name="pgnFile" type="file" class="formControl" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) or $fileUploadLimitIniText (server limit); $debugHelpText">
       </form>
     </td>
   </tr>
@@ -472,10 +493,10 @@ function reset_viewer() {
   <tr>
     <td align="left" valign="top">
       <form id="urlForm" action="$thisScript" method="POST" style="display: inline;">
-	<input id="urlFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) URL" title="PGN and ZIP files must be smaller than $fileUploadLimitText; $debugHelpText" onClick="return checkPgnUrl();">
+	<input id="urlFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) URL" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) or $fileUploadLimitIniText (server limit); $debugHelpText" onClick="return checkPgnUrl();">
     </td>
     <td width="100%" align="left" valign="top">
-        <input id="urlFormText" name="pgnUrl" type="text" class="formControl" value="" style="width:100%" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText; $debugHelpText">
+        <input id="urlFormText" name="pgnUrl" type="text" class="formControl" value="" style="width:100%" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) or $fileUploadLimitIniText (server limit); $debugHelpText">
         <input type="hidden" name="mode" value="$mode">
       </form>
     </td>
@@ -515,7 +536,7 @@ END;
 function print_chessboard() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
+  global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
 
   if ($mode == "compact") {
     $pieceSize = 30;
@@ -814,7 +835,7 @@ END;
 function print_footer() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
-  global $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
+  global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
 
   if ($goToView) { $hashStatement = "window.location.hash = 'view';"; }
   else { $hashStatement = ""; }
