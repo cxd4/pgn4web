@@ -110,17 +110,17 @@ function get_pgn() {
         return FALSE;
       } else {
         $zipFileString = "<a href='" . $pgnUrl . "'>zip URL</a>";
-        $tempZipName = tempnam($tmpDir, "pgn4webViewer");
+        $tempZipName = tempnam($tmpDir, "pgn4webViewer_");
         $pgnUrlHandle = fopen($pgnUrl, "rb");
         $tempZipHandle = fopen($tempZipName, "wb");
         $copiedBytes = stream_copy_to_stream($pgnUrlHandle, $tempZipHandle, $fileUploadLimitBytes + 1, 0);
         fclose($pgnUrlHandle);
         fclose($tempZipHandle);
-        if (($copiedBytes > 0) & ($copiedBytes <= $fileUploadLimitBytes)) {
+        if (($copiedBytes > 0) && ($copiedBytes <= $fileUploadLimitBytes)) {
           $pgnSource = $tempZipName;
         } else {
           $pgnStatus = "failed to get " . $zipFileString . ": file not found, file exceeds " . $fileUploadLimitText . " size limit or server error";
-          if (($tempZipName) & (file_exists($tempZipName))) { unlink($tempZipName); }
+          if (($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
           return FALSE;
         }
       }
@@ -171,12 +171,12 @@ function get_pgn() {
           } else {
             $pgnStatus = "failed reading " . $zipFileString . " content";
             zip_close($pgnZip);
-            if (($tempZipName) & (file_exists($tempZipName))) { unlink($tempZipName); }
+            if (($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
             return FALSE;
           }
         }
         zip_close($pgnZip);
-        if (($tempZipName) & (file_exists($tempZipName))) { unlink($tempZipName); }
+        if (($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
         if (!$pgnText) {
           $pgnStatus = "PGN games not found in " . $zipFileString;
          return FALSE;
@@ -201,7 +201,7 @@ function get_pgn() {
       $pgnStatus = "failed reading " . $pgnFileString . ": file not found or server error";
       return FALSE;
     }
-    if ((strlen($pgnText) == 0) | (strlen($pgnText) > $fileUploadLimitBytes)) {
+    if ((strlen($pgnText) == 0) || (strlen($pgnText) > $fileUploadLimitBytes)) {
       $pgnStatus = "failed reading " . $pgnFileString . ": file exceeds " . $fileUploadLimitText . " size limit or server error";
       return FALSE;
     }
@@ -227,7 +227,7 @@ function check_tmpDir() {
 
   $tmpDirHandle = opendir($tmpDir);
   while($entryName = readdir($tmpDirHandle)) {
-    if (($entryName !== ".") & ($entryName !== "..") & ($entryName !== "index.html")) {
+    if (($entryName !== ".") && ($entryName !== "..") && ($entryName !== "index.html")) {
       if ((time() - filemtime($tmpDir . "/" . $entryName)) > 3600) { 
         $unexpectedFiles = $unexpectedFiles . " " . $entryName;
       }
