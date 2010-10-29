@@ -131,7 +131,7 @@ function get_pgn() {
   } elseif (count($_FILES) == 0) {
     $pgnStatus = "please enter chess games in PGN format&nbsp; &nbsp;<span style='color: gray;'></span>";
     return FALSE;
-  } elseif ($_FILES['pgnFile']['error'] == UPLOAD_ERR_OK) {
+  } elseif ($_FILES['pgnFile']['error'] === UPLOAD_ERR_OK) {
     $pgnFileName = $_FILES['pgnFile']['name'];
     $pgnStatus = "PGN games from file: " . $pgnFileName;
     $pgnFileSize = $_FILES['pgnFile']['size'];
@@ -146,29 +146,21 @@ function get_pgn() {
       $isZip = preg_match("/\.zip$/i",$pgnFileName);
       $pgnSource = $_FILES['pgnFile']['tmp_name'];
     }
-  } elseif ($_FILES['pgnFile']['error'] !== UPLOAD_ERR_OK) {
+  } else {
     $pgnStatus = "failed uploading PGN games: ";
     switch ($_FILES['pgnFile']['error']) {
       case UPLOAD_ERR_INI_SIZE:
-        $pgnStatus = $pgnStatus . "file exceeds " . $fileUploadLimitIniText . " server size limit";
-        break;
       case UPLOAD_ERR_FORM_SIZE:
-        $pgnStatus = $pgnStatus . "file exceeds " . $fileUploadLimitText . " form size limit";
+        $pgnStatus = $pgnStatus . "file size exceeds " . $fileUploadLimitText . " form limit or " . $fileUploadLimitIniText . " server limit";
         break;
       case UPLOAD_ERR_PARTIAL:
-        $pgnStatus = $pgnStatus . "file only partially uploaded";
-        break;
       case UPLOAD_ERR_NO_FILE:
-        $pgnStatus = $pgnStatus . "no file uploaded";
+        $pgnStatus = $pgnStatus . "file missing or truncated";
         break;
       case UPLOAD_ERR_NO_TMP_DIR:
-        $pgnStatus = $pgnStatus . "missing temporary folder";
-        break;
       case UPLOAD_ERR_CANT_WRITE:
-        $pgnStatus = $pgnStatus . "failed to write file to disk";
-        break;
       case UPLOAD_ERR_EXTENSION:
-        $pgnStatus = $pgnStatus . "file upload stopped by extension";
+        $pgnStatus = $pgnStatus . "server error";
         break;
       default:
         $pgnStatus = $pgnStatus . "unknown upload error";
@@ -223,7 +215,7 @@ function get_pgn() {
       return FALSE;
     }
     if ((strlen($pgnText) == 0) || (strlen($pgnText) > $fileUploadLimitBytes)) {
-      $pgnStatus = "failed reading " . $pgnFileString . ": file exceeds " . $fileUploadLimitText . " size limit or server error";
+      $pgnStatus = "failed reading " . $pgnFileString . ": file size exceeds " . $fileUploadLimitText . " form limit, " . $fileUploadLimitIniText . " server limit or server error";
       return FALSE;
     }
     return TRUE;
