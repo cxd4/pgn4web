@@ -485,7 +485,7 @@ function reset_viewer() {
     <td colspan=2 width="100%" align="left" valign="top">
         <input type="hidden" name="mode" value="$mode">
         <input type="hidden" name="MAX_FILE_SIZE" value="$fileUploadLimitBytes">
-        <input id="uploadFormFile" name="pgnFile" type="file" class="formControl" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) or $fileUploadLimitIniText (server limit); $debugHelpText">
+        <input id="uploadFormFile" name="pgnFile" type="file" class="formControl" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText">
       </form>
     </td>
   </tr>
@@ -493,10 +493,10 @@ function reset_viewer() {
   <tr>
     <td align="left" valign="top">
       <form id="urlForm" action="$thisScript" method="POST" style="display: inline;">
-	<input id="urlFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) URL" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) or $fileUploadLimitIniText (server limit); $debugHelpText" onClick="return checkPgnUrl();">
+	<input id="urlFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) URL" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="return checkPgnUrl();">
     </td>
     <td width="100%" align="left" valign="top">
-        <input id="urlFormText" name="pgnUrl" type="text" class="formControl" value="" style="width:100%" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) or $fileUploadLimitIniText (server limit); $debugHelpText">
+        <input id="urlFormText" name="pgnUrl" type="text" class="formControl" value="" style="width:100%" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText">
         <input type="hidden" name="mode" value="$mode">
       </form>
     </td>
