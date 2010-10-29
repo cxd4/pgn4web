@@ -120,7 +120,7 @@ function get_pgn() {
         if (($copiedBytes > 0) && ($copiedBytes <= $fileUploadLimitBytes)) {
           $pgnSource = $tempZipName;
         } else {
-          $pgnStatus = "failed to get " . $zipFileString . ": file not found, file exceeds " . $fileUploadLimitText . " form size limit, file exceeds " . $fileUploadLimitIniText . " server size limit or server error";
+          $pgnStatus = "failed to get " . $zipFileString . ": file not found, file size exceeds " . $fileUploadLimitText . " form limit, " . $fileUploadLimitIniText . " server limit or server error";
           if (($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
           return FALSE;
         }
@@ -139,7 +139,7 @@ function get_pgn() {
       $pgnStatus = "failed uploading PGN games: file not found, file empty or upload error";
       return FALSE;
     } elseif ($pgnFileSize > $fileUploadLimitBytes) {
-      $pgnStatus = "failed uploading PGN games: file exceeds " . $fileUploadLimitText . " size limit";
+      $pgnStatus = "failed uploading PGN games: file size exceeds " . $fileUploadLimitText . " limit";
       return FALSE;
     } else { 
       $isPgn = preg_match("/\.(pgn|txt)$/i",$pgnFileName);
