@@ -129,7 +129,7 @@ function get_pgn() {
       $pgnSource = $pgnUrl;
     }
   } elseif (count($_FILES) == 0) {
-    $pgnStatus = "please enter chess games in PGN format&nbsp; &nbsp;<span style='color: gray;'>file and URL inputs must not exceed " . $fileUploadLimitText . " (form limit) and " . $fileUploadLimitIniText . " (server limit)</span>";
+    $pgnStatus = "please enter chess games in PGN format&nbsp; &nbsp;<span style='color: gray;'></span>";
     return FALSE;
   } elseif ($_FILES['pgnFile']['error'] == UPLOAD_ERR_OK) {
     $pgnFileName = $_FILES['pgnFile']['name'];
