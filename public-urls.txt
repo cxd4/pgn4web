@@ -22,9 +22,26 @@ board generator site
 games viewer
  http://pgn4web-viewer.casaschi.net
 
+live broadcast
+ http://pgn4web-live.casaschi.net
+ http://pgn4web-live-compact.casaschi.net
+ http://pgn4web-live-multi.casaschi.net
+
 blog
  http://pgn4web-blog.casaschi.net
 
-live broadcast
- http://pgn4web-live.casaschi.net
+platform integration tests
+ http://pgn4web-test.casaschi.net
+ http://pgn4web-test-blogger.casaschi.net
+ http://pgn4web-test-drupal.casaschi.net
+ http://pgn4web-test-gs.casaschi.net
+ http://pgn4web-test-mediawiki.casaschi.net
+ http://pgn4web-test-joomla.casaschi.net
+ http://pgn4web-test-phpbb.casaschi.net
+ http://pgn4web-test-smf.casaschi.net
+ http://pgn4web-test-vb.casaschi.net
+ http://pgn4web-test-wp.casaschi.net
+
+alternative main location
+ http://pgn4web-backup.casaschi.net
 

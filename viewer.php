@@ -287,12 +287,6 @@ a:link, a:visited, a:hover, a:active {
 
 </style>
 
-
-<!-- start of google analytics code -->
-
-<!-- end of google analytics code -->
-
-
 </head>
 
 <body>

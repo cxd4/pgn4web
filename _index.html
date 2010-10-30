@@ -25,6 +25,8 @@ if (window.location.host.match("board-generator")) {
   window.location.href = main_host + "viewer.php" + window.location.search + window.location.hash;
 } else if (window.location.host.match("live")) {
   window.location.href = main_host + "live.html" + window.location.search + window.location.hash;
+} else if (window.location.host.match("test")) {
+  window.location.href = "test.html" + window.location.search + window.location.hash;
 } else {
   window.location.href = main_host + "home.html" + window.location.search + window.location.hash;
 }
@@ -35,6 +37,12 @@ if (window.location.host.match("board-generator")) {
 <noscript>
 your web browser and/or your host do not support javascript as required by the pgn4web site
 </noscript>
+
+
+<!-- start of google analytics code -->
+
+<!-- end of google analytics code -->
+
 
 </head>
 
