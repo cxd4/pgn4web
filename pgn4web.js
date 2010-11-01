@@ -2233,6 +2233,7 @@ function fixRegExp(exp) {
 
 function LoadGameHeaders(){
   var ii;
+  var parse;
 
   gameEvent.length = gameSite.length = gameRound.length = gameDate.length = 0;
   gameWhite.length = gameBlack.length = gameResult.length = 0;
@@ -2240,10 +2241,9 @@ function LoadGameHeaders(){
   gameInitialWhiteClock.length = gameInitialBlackClock.length = 0;
   gameVariant.length = 0;
 
-  pgnHeaderTagRegExpGlobal.exec(""); // coping with IE bug when reloading PGN e.g. inputform.html
+  pgnHeaderTagRegExpGlobal.lastIndex = 0; // resets global regular expression
   for (ii = 0; ii < numberOfGames; ++ii) {
     var ss = pgnGame[ii];
-    var parse;
     gameEvent[ii] = gameSite[ii] = gameRound[ii] = gameDate[ii] = "";
     gameWhite[ii] = gameBlack[ii] = gameResult[ii] = "";
     gameInitialWhiteClock[ii] = gameInitialBlackClock[ii] = "";
@@ -2344,7 +2344,7 @@ function MoveForward(diff) {
   if (goToPly > (StartPly + PlyNumber)) { goToPly = StartPly + PlyNumber; }
 
   // reach to selected move checking legality
-  parse = false;
+  var parse = false;
   for(var thisPly = CurrentPly; thisPly < goToPly; ++thisPly) {
     var move = Moves[thisPly];
     if (! (parse = ParseMove(move, thisPly))) {
