@@ -1241,23 +1241,28 @@ function template_selected() {
 	  
     newLocationSearch = document.getElementById('templatesList').options[selectedIndex].value;
 
+    if (( document.getElementById('useTextarea').checked && (useTextarea_default != "t")) || 
+        (!document.getElementById('useTextarea').checked && (useTextarea_default != "f")) ) {
+      newLocationSearch += "&ut=" + (document.board.useTextarea.checked ? "t" : "f");
+    }
+
+    if (( document.getElementById('encodePgn').checked && (encodePgn_default != "t")) || 
+        (!document.getElementById('encodePgn').checked && (encodePgn_default != "f")) ) {
+      newLocationSearch += "&ep=" + (document.board.encodePgn.checked ? "t" : "f");
+    }
+
     if (document.board.boardUrl.value != boardUrl_default) {
       newLocationSearch += "&bu=" + document.board.boardUrl.value;
     }
 
-    if (( document.getElementById('useTextarea').checked && (useTextarea_default != "t")) || 
-        (!document.getElementById('useTextarea').checked && (useTextarea_default != "f")) ) {
-      newLocationSearch += "&ut=" + (document.board.useTextarea.checked ? "t" : "f");
+    if ((gup("extendedOptions") == "true") || (gup("extendedOptions") == "t")) {
+      newLocationSearch += "&eo=t";
     }
 
     pgnText_value = document.getElementById('pgnText').value;
     if ((document.board.encodePgn.checked) && (pgnText_value != previousPgnTextToEncode)) {
        previousPgnTextToEncode = pgnText_value;
        pgnTextEncoded = EncodePGN(pgnText_value);
-    }
-    if (( document.getElementById('encodePgn').checked && (encodePgn_default != "t")) || 
-        (!document.getElementById('encodePgn').checked && (encodePgn_default != "f")) ) {
-      newLocationSearch += "&ep=" + (document.board.encodePgn.checked ? "t" : "f");
     }
     newLocationSearch += document.board.encodePgn.checked ? 
                          "&pe=" + pgnTextEncoded :
