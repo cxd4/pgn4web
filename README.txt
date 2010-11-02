@@ -1,6 +1,6 @@
 #
 #  pgn4web javascript chessboard
-#  copyright (C) 2009-2010 Paolo Casaschi
+#  copyright (C) 2009, 2010 Paolo Casaschi
 #  see README file and http://pgn4web.casaschi.net
 #  for credits, license and more details
 #
@@ -406,7 +406,7 @@ See http://jscolor.com/
 
 The above items remains subject to their original licenses (if any).
 
-Remaining pgn4web code is copyright (C) 2009-2010 Paolo Casaschi
+Remaining pgn4web code is copyright (C) 2009, 2010 Paolo Casaschi
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
