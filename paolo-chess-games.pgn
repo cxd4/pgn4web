@@ -1,3 +1,18 @@
+[Event "Middlesex League 2010/2011"]
+[Site "London, UK"]
+[Date "2010.11.03"]
+[Round "?"]
+[White "Crouch, Colin"]
+[Black "Casaschi, Paolo"]
+[Result "1-0"]
+[ECO "E11"]
+[Opening "Bogo-Indian defence"]
+
+1. d4 Nf6 2. Nf3 e6 3. c4 Bb4+ 4. Bd2 Bxd2+ 5. Qxd2 d6 6. Nc3 Nbd7 7. g3
+O-O 8. Bg2 Re8 9. O-O e5 10. Rad1 c6 11. dxe5 dxe5 12. Nh4 Qc7 13. Nf5 Nf8
+14. Nd6 { # } 14... Rd8 15. Ndb5 { # } 15... Rxd2 16. Nxc7 Rxd1 17. Rxd1
+Rb8 18. Rd8 g5 19. Ne4 Nxe4 20. Bxe4 Kg7 21. Ne8+ Kh6 22. Nd6 1-0
+
 [Event "London League 2010/2011"]
 [Site "London, UK"]
 [Date "2010.10.27"]
@@ -13,9 +28,9 @@ Ne5 Bf5 9. Nxc6 bxc6 10. Nc3 h6 11. Qa4 cxd4 12. Qxd4 Be7 13. e4 Nxe4 14.
 Nxe4 dxe4 15. Qe5 Bg6 16. Bxe4 Bxe4 17. Qxe4 O-O 18. Qxc6 Bf6 19. Rb1 Re8
 20. Bf4 Qa5 21. a3 Rac8 22. Qf3 Rc2 23. b4 Qf5 24. Rb3 Rec8 25. Bxh6 Qxf3
 26. Rxf3 Bb2 27. Bf4 f6 28. Bd6 Bd4 29. Rd3 Bb6 30. Bf4 R8c3 31. Rxc3 Rxc3
-32. Ra1 a5 33. bxa5 Bxa5 34. Bd2 Rc5 35. Bxa5 Rxa5 36. a4 { # } Kf7 37. f4 
-g5 38. Kf2 gxf4 39. gxf4 Ke6 40. Ke3 Kd5 41. Rd1+ Ke6 42. Rd4 Rh5 43. Rd2
-Rh3+ 44. Kd4 Ra3 1/2-1/2
+32. Ra1 a5 33. bxa5 Bxa5 34. Bd2 Rc5 35. Bxa5 Rxa5 36. a4 { # } 36... Kf7
+37. f4 g5 38. Kf2 gxf4 39. gxf4 Ke6 40. Ke3 Kd5 41. Rd1+ Ke6 42. Rd4 Rh5
+43. Rd2 Rh3+ 44. Kd4 Ra3 1/2-1/2
 
 [Event "London League 2010/2011"]
 [Site "London, UK"]
