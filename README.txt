@@ -159,7 +159,7 @@ classes, such as:
 
 See template.html file for an example.
 See *mini.html* for an example of embedding the PGN content into the HTML file.
-See http://pgn4web-demo.casaschi.net usage example, including a live broadcast
+See http://pgn4web.casaschi.net/demo/ usage example, including a live broadcast
 demo.
 See http://pgn4web-blog.casaschi for a usage example within a blog using the
 iframe html tag. 
