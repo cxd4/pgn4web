@@ -20,7 +20,7 @@ function pgnLinkLiveRefreshOnClick(info, tab) {
 var contexts = ["link"];
 for (var i = 0; i < contexts.length; i++) {
   var context = contexts[i];
-  var id = chrome.contextMenus.create({"title": "View chess games", "contexts":[context], targetUrlPatterns:["*://*/*.pgn", "*://*/*.PGN"], "onclick": pgnLinkOnClick});
+  var id = chrome.contextMenus.create({"title": "View chess games: pgn4web", "contexts":[context], targetUrlPatterns:["*://*/*.pgn", "*://*/*.PGN"], "onclick": pgnLinkOnClick});
   var id = chrome.contextMenus.create({"title": "View chess games with live refresh", "contexts":[context], targetUrlPatterns:["*://*/*.pgn", "*://*/*.PGN"], "onclick": pgnLinkLiveRefreshOnClick});
 }
 
