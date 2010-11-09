@@ -47,9 +47,8 @@
    }
    thisRegExp = /(&|\?)(title|t)=([^&$]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
-       pgnTitle = unescape(window.location.search.match(thisRegExp)[3]);
+       document.title = pgnTitle = unescape(window.location.search.match(thisRegExp)[3]);
    }
-   document.title = "chess games: " + pgnTitle;
    thisRegExp = /(&|\?)(search|s)=([^&$]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
        pgnSearchTarget = unescape(window.location.search.match(thisRegExp)[3]);
