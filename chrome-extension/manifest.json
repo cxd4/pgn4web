@@ -1,0 +1,26 @@
+
+//  pgn4web javascript chessboard
+//  copyright (C) 2009, 2010 Paolo Casaschi
+//  see README file and http://pgn4web.casaschi.net
+//  for credits, license and more details
+
+{
+  "name": "Chess games viewer",
+  "version": "1.0",
+
+  "description": "Context menu for links to *.pgn URLs to open a chess games viewer. The live refresh option reloads the source file periodically until all games are ended (use for links to chess games live broadcasts). Part of the pgn4web project http://pgn4web.casaschi.net",
+  "icons": {
+    "16": "pawn.ico",
+    "48": "alpha/48/bp.png",
+    "128": "alpha/128/bp.png"
+  },
+
+  "permissions": [
+    "contextMenus",
+    "tabs",
+    "*://*/*.pgn",
+    "*://*/*.PGN"
+  ],
+  // update_url": "http://pgn4web.googlecode.com/svn/trunk/chrome-extension/updateInfo.xml"
+  "background_page": "background.html"
+}

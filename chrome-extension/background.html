@@ -1,0 +1,27 @@
+<!--
+  pgn4web javascript chessboard
+  copyright (C) 2009, 2010 Paolo Casaschi
+  see README file and http://pgn4web.casaschi.net
+  for credits, license and more details
+-->
+
+<script type="text/javascript">
+
+function pgnLinkOnClick(info, tab) {
+  var url = "collection-chrome-extension.html?pgnData=" + info.linkUrl + "&title=" + info.linkUrl.substring(info.linkUrl.lastIndexOf("/") + 1);
+  chrome.tabs.create({url: url});
+}
+
+function pgnLinkLiveRefreshOnClick(info, tab) {
+  var url = "live-chrome-extension.html?pgnData=" + info.linkUrl + "&rm=1";
+  chrome.tabs.create({url: url});
+}
+
+var contexts = ["link"];
+for (var i = 0; i < contexts.length; i++) {
+  var context = contexts[i];
+  var id = chrome.contextMenus.create({"title": "View chess games", "contexts":[context], targetUrlPatterns:["*://*/*.pgn", "*://*/*.PGN"], "onclick": pgnLinkOnClick});
+  var id = chrome.contextMenus.create({"title": "View chess games with live refresh", "contexts":[context], targetUrlPatterns:["*://*/*.pgn", "*://*/*.PGN"], "onclick": pgnLinkLiveRefreshOnClick});
+}
+
+</script>
