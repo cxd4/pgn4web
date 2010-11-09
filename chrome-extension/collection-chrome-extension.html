@@ -11,7 +11,7 @@
 
 <title>chess games</title>
 
-<link href="collection.css" type="text/css" rel="stylesheet" />
+<link href="collection-chrome-extension.css" type="text/css" rel="stylesheet" />
 
 <link rel="shortcut icon" href="pawn.ico" />
 
@@ -24,6 +24,8 @@
              " - pgnFile=filename.pgn" + "\n" +
 	     " - title=page title" + "\n" +
 	     " - search=search expression" + "\n" +
+             " - refreshMinutes=live broadcast delay (default 0 = live broadcast disabled)" + "\n" +
+             " - refreshDemo= if set true sets live demo mode (default false)" + "\n" +
              " - help");
    }
    pgnFilename = "";
@@ -65,21 +67,21 @@
    SetAutostartAutoplay(false);
    SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
    SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are accepted; other string values assumed as PGN search string
-   SetInitialHalfmove(1, true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
+   SetInitialHalfmove(0, true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
    SetShortcutKeysEnabled(true);
 
-   function customFunctionOnPgnTextLoad() {
-     if (theObject = document.getElementById('numGm')) { theObject.innerHTML = numberOfGames; }
-     searchPgnGame(pgnSearchTarget);
+   alertFlag = demoFlag = false;
+   thisRegExp = /(&|\?)(refreshDemo|rd)=([^&$]*)(&|$)/i;
+   if (window.location.search.match(thisRegExp) !== null) {
+       refreshDemo = unescape(window.location.search.match(thisRegExp)[3]);
+       if ((refreshDemo == "true") || (refreshDemo == "t")) { alertFlag = demoFlag = true; }
    }
 
-   function customFunctionOnPgnGameLoad() {
-     if (theObject = document.getElementById('currGm')) { theObject.innerHTML = currentGame+1; }
-     if (theObject = document.getElementById('numPly')) { theObject.innerHTML = PlyNumber; }
-   }
-
-   function customFunctionOnMove() {
-     if (theObject = document.getElementById('currPly')) { theObject.innerHTML = CurrentPly; }
+   thisRegExp = /(&|\?)(refreshMinutes|rm)=([^&$]*)(&|$)/i;
+   if (window.location.search.match(thisRegExp) !== null) {
+       refreshMinutes = unescape(window.location.search.match(thisRegExp)[3]);
+       SetInitialHalfmove("end", true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
+       SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false)
    }
 
 </script>
@@ -95,17 +97,6 @@
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
 <table class="containerTable">
-
-<tr valign=bottom>
-<td class="containerCell" colspan=2>
-<div style="font-size: 200%; font-weight: bold; text-align: center;">
-<script type="text/javascript">
-document.write(pgnTitle);
-</script>
-
-</div>
-</td>
-</tr>
 
 <tr valign=bottom>
 <td class="containerCell" colspan=2>
@@ -132,18 +123,12 @@ document.write(pgnTitle);
 <tr><td class="label">event</td><td><span style="white-space: nowrap;" id="GameEvent"></span></td></tr>
 <tr><td class="label">round</td><td><span id="GameRound"></span></td></tr> 
 <tr><td colspan=2 class="rowSpace"></td></tr>
+<tr><td class="label"></td><td><span id="GameWhiteClock"></span></td></tr>
 <tr><td class="label">white</td><td class="boldItem"><span style="white-space: nowrap;" id="GameWhite"></span></td></tr> 
 <tr><td class="label">black</td><td class="boldItem"><span style="white-space: nowrap;" id="GameBlack"></span></td></tr> 
+<tr><td class="label"></td><td><span id="GameBlackClock"></span></td></tr>
 <tr><td colspan=2 class="rowSpace"></td></tr>
 <tr><td class="label">result</td><td class="boldItem"><span id="GameResult"></span></td></tr> 
-<tr><td colspan=2 class="rowSpace"></td></tr>
-<tr><td class="label">side</td><td><span id="GameSideToMove"></span></td></tr> 
-<tr><td class="label">last</td><td><span class="move"><span id="GameLastMove"></span></span></td></tr> 
-<tr><td class="label">next</td><td><span class="move"><span id="GameNextMove"></span></span></td></tr> 
-<tr><td colspan=2 class="rowSpace"></td></tr>
-<tr><td class="label">ply</td><td><span id=currPly>0</span> (<span id=numPly>0</span>)</td></tr>
-<tr><td class="label">game</td><td><span id=currGm>0</span> (<span id=numGm>0</span>)</td></tr> 
-<tr><td colspan=2 class="rowSpace"></td></tr>
 </table>
 
 </td>
@@ -153,6 +138,16 @@ document.write(pgnTitle);
 <tr valign=top>
 <td class="containerCell" style="text-align: justify;" colspan=2>
 <div id="GameText"></div>
+</td>
+</tr>
+
+<tr valign=bottom>
+<td class="containerCell" colspan=2>
+<div class="title">
+<script type="text/javascript">
+document.write(pgnTitle);
+</script>
+</div>
 </td>
 </tr>
 

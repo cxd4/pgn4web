@@ -8,12 +8,12 @@
 <script type="text/javascript">
 
 function pgnLinkOnClick(info, tab) {
-  var url = "collection-chrome-extension.html?pgnData=" + info.linkUrl + "&title=" + info.linkUrl.substring(info.linkUrl.lastIndexOf("/") + 1);
+  var url = "collection-chrome-extension.html?pgnData=" + info.linkUrl + "&title=games from " + info.linkUrl;
   chrome.tabs.create({url: url});
 }
 
 function pgnLinkLiveRefreshOnClick(info, tab) {
-  var url = "live-chrome-extension.html?pgnData=" + info.linkUrl + "&rm=1";
+  var url = "collection-chrome-extension.html?pgnData=" + info.linkUrl + "&title=live games from " + info.linkUrl + "&refreshMinutes=1";
   chrome.tabs.create({url: url});
 }
 
