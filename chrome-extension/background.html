@@ -7,31 +7,43 @@
 
 <script type="text/javascript">
 
-function pgnLinkOnClick(info, tab) {
-  var url = "collection-chrome-extension.html?pgnData=" + info.linkUrl + "&title=games from " + info.linkUrl;
-  chrome.tabs.create({url: url});
-}
+function pgnOnClick(info, tab, live) {
+  var remoteUrl = null;
+  var defaultRemoteUrl = info.selectionText ? info.selectionText : "";
+  var titleLabel = live ? "live games from " : "games from ";
+  var liveParam = live ? "&refreshMinutes=1" : "";
 
-function pgnLinkLiveRefreshOnClick(info, tab) {
-  var url = "collection-chrome-extension.html?pgnData=" + info.linkUrl + "&title=live games from " + info.linkUrl + "&refreshMinutes=1";
-  chrome.tabs.create({url: url});
-}
-
-function pgnPageOnClick(info, tab) {
-  var remoteUrl = prompt("Enter PGN games URL for vieweing:");
-  if (!remoteUrl) { return; }
-  if (!remoteUrl.match(/\.pgn$/i)) {
-    alert("You entered:\n" + remoteUrl + "\n\nError: only PGN games URL allowed.");
-    return;
+  if (info.linkUrl) {
+    remoteUrl = info.linkUrl;
+  } else {
+    var inputUrl = prompt("Enter PGN games URL for vieweing:", defaultRemoteUrl);
+    if (inputUrl) {
+      if (inputUrl.match(/\.pgn$/i)) {
+        remoteUrl = inputUrl;
+      } else {
+        alert("You entered:\n" + remoteUrl + "\n\nError: only PGN games URL allowed.");
+      }
+    }
   }
-  var url = "collection-chrome-extension.html?pgnData=" + remoteUrl + "&title=games from " + remoteUrl;
-  chrome.tabs.create({url: url});
+  if (remoteUrl) { 
+    url = "collection-chrome-extension.html?pgnData=" + remoteUrl + "&title=" + titleLabel + remoteUrl + liveParam;
+    chrome.tabs.create({url: url});
+  }
 }
 
-chrome.contextMenus.create({"title": "View chess games by pgn4web", "contexts": ["link"], targetUrlPatterns:["*://*/*.pgn", "*://*/*.PGN"], "onclick": pgnLinkOnClick});
-chrome.contextMenus.create({"title": "View chess games with live refresh", "contexts": ["link"], targetUrlPatterns:["*://*/*.pgn", "*://*/*.PGN"], "onclick": pgnLinkLiveRefreshOnClick});
+function pgnviewOnClick(info, tab) {
+  pgnOnClick(info, tab, false);
+}
 
-chrome.contextMenus.create({"title": "Enter PGN games URL for viewing", "contexts": ["page"], "onclick": pgnPageOnClick});
+function pgnliveOnClick(info, tab) {
+  pgnOnClick(info, tab, true);
+}
+
+chrome.contextMenus.create({"title": "View chess games by pgn4web", "contexts": ["link"], targetUrlPatterns:["*://*/*.pgn", "*://*/*.PGN"], "onclick": pgnviewOnClick});
+chrome.contextMenus.create({"title": "View chess games with live refresh", "contexts": ["link"], targetUrlPatterns:["*://*/*.pgn", "*://*/*.PGN"], "onclick": pgnliveOnClick});
+
+chrome.contextMenus.create({"title": "Enter PGN games URL for viewing by pgn4web", "contexts": ["page", "selection"], "onclick": pgnviewOnClick});
+chrome.contextMenus.create({"title": "Enter PGN games URL for viewing with live refresh", "contexts": ["page", "selection"], "onclick": pgnliveOnClick});
 
 </script>
 
