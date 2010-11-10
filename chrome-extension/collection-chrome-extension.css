@@ -10,7 +10,7 @@
 html, 
 body { 
   margin: 0; 
-  padding: 10;
+  padding: 17px;
 }
 
 body {
@@ -29,6 +29,8 @@ body {
 }
 
 .boardTable {
+  width: 382px;
+  height: 382px;
   border-style: solid;
   border-color: #663300;
   border-width: 3px;
