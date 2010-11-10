@@ -6,9 +6,11 @@
 
 {
   "name": "Chess games viewer",
+
   "version": "1.0.1",
 
   "description": "Context menu for links to *.pgn URLs to open a chess games viewer. The live refresh option reloads the pgn file periodically until all games are ended (use for links to chess games live broadcasts). Part of the pgn4web project at http://pgn4web.casaschi.net",
+
   "icons": {
     "16": "pawn.ico",
     "48": "alpha/48/bp.png",
@@ -21,6 +23,10 @@
     "*://*/*.pgn",
     "*://*/*.PGN"
   ],
+
+  "minimum_chrome_version": "7.0",
+
   "update_url": "http://pgn4web.googlecode.com/svn/trunk/chrome-extension/updateInfo.xml",
+
   "background_page": "background.html"
 }
