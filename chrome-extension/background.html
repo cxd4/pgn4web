@@ -9,20 +9,17 @@
 
 function pgnOnClick(info, tab, live) {
   var remoteUrl = null;
-  var defaultRemoteUrl = info.selectionText ? info.selectionText : "";
+  var promptLabel = "Enter PGN games URL for viewing" + (live ? " with live refresh:" : ":");
+  var defaultRemoteUrl = info.selectionText ? info.selectionText.replace(/[\n\r]*/g," ") : "";
   var titleLabel = live ? "live games from " : "games from ";
   var liveParam = live ? "&refreshMinutes=1" : "";
 
-  if (info.linkUrl) {
-    remoteUrl = info.linkUrl;
-  } else {
-    var inputUrl = prompt("Enter PGN games URL for vieweing:", defaultRemoteUrl);
+  if (info.linkUrl) { remoteUrl = info.linkUrl; }
+  else {
+    var inputUrl = prompt(promptLabel, defaultRemoteUrl);
     if (inputUrl) {
-      if (inputUrl.match(/\.pgn$/i)) {
-        remoteUrl = inputUrl;
-      } else {
-        alert("You entered:\n" + remoteUrl + "\n\nError: only PGN games URL allowed.");
-      }
+      if (inputUrl.match(/\.pgn$/i)) { remoteUrl = inputUrl; }
+      else { alert("You entered:\n" + inputUrl + "\n\nError: only PGN games URL allowed."); }
     }
   }
   if (remoteUrl) { 
