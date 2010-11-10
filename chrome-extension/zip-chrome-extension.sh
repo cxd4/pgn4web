@@ -1,7 +1,7 @@
 # bash script to zip the pgn4web chrome extension for packaging
 
 pgn4webVer=$(grep "var pgn4web_version = " ../pgn4web.js | awk -F "\'" '{print$2}')
-chromeExtVer=$(grep "version" manifest.json | awk -F "\"" '{print$4}')
+chromeExtVer=$(grep '"version":' manifest.json | awk -F "\"" '{print$4}')
 
 pgn4webChromeExtFilename="Chess-games-viewer-pgn4web-chrome-extension-$chromeExtVer-$pgn4webVer.zip"
 
