@@ -24,7 +24,7 @@ function pgnLinkOnClick(info, tab, live) {
 
 function pgnPageOnClick(info, tab, live) {
   var promptLabel = "Enter PGN games URL for viewing" + (live ? " with live refresh:" : ":");
-  var defaultRemoteUrl = info.selectionText ? info.selectionText.replace(/[\n\r]*/g," ") : "";
+  var defaultRemoteUrl = info.selectionText ? info.selectionText.replace(/[\n\r]+/g," ") : "";
   var remoteUrl = prompt(promptLabel, defaultRemoteUrl);
   if (!remoteUrl) { return; }
   if (!remoteUrl.match(/\.pgn$/i)) {
