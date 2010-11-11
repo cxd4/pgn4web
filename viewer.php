@@ -358,7 +358,7 @@ END;
     if (uri.match(/\\.(pgn|txt)\$/i)) {
       return true; 
     } else if (uri.match(/\\.zip\$/i)) {
-      alert("ZIP support unavailable from this server, only PGN files are supported\n\nplease download zipfile locally and submit extracted PGN");
+      alert("ZIP support unavailable from this server, only PGN files are supported\\n\\nplease submit locally extracted PGN");
     } else if (uri !== "") { 
       alert("only PGN files are supported (ZIP support unavailable from this server)");
     }
