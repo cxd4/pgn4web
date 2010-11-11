@@ -28,6 +28,7 @@
              " - refreshDemo= if set true sets live demo mode (default false)" + "\n" +
              " - help");
    }
+
    pgnFilename = "";
    thisRegExp = /(&|\?)(pgnFile|pf)=([^&$]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
@@ -45,15 +46,10 @@
        SetPgnUrl(pgnFilename); // if set, this has precedence over the inline PGN in the HTML file
        pgnTitle = pgnFilename;
    }
+
    thisRegExp = /(&|\?)(title|t)=([^&$]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
        document.title = pgnTitle = unescape(window.location.search.match(thisRegExp)[3]);
-   }
-   thisRegExp = /(&|\?)(search|s)=([^&$]*)(&|$)/i;
-   if (window.location.search.match(thisRegExp) !== null) {
-       pgnSearchTarget = unescape(window.location.search.match(thisRegExp)[3]);
-   } else {
-       pgnSearchTarget = "";
    }
 
    SetImagePath("alpha/36"); // use "" path if images are in the same folder as this javascript file
@@ -65,9 +61,15 @@
    SetAutoplayDelay(1000); // milliseconds
    SetAutostartAutoplay(false);
    SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
-   SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are accepted; other string values assumed as PGN search string
    SetInitialHalfmove(0, true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
    SetShortcutKeysEnabled(true);
+
+   thisRegExp = /(&|\?)(search|s)=([^&$]*)(&|$)/i;
+   if (window.location.search.match(thisRegExp) !== null) {
+       SetInitialGame(unescape(window.location.search.match(thisRegExp)[3]));
+   } else {
+       SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are accepted; other string values assumed as PGN search string
+   }
 
    alertFlag = demoFlag = false;
    thisRegExp = /(&|\?)(refreshDemo|rd)=([^&$]*)(&|$)/i;
@@ -81,11 +83,6 @@
        refreshMinutes = unescape(window.location.search.match(thisRegExp)[3]);
        SetInitialHalfmove("end", true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
        SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false)
-   }
-
-   function customFunctionOnPgnTextLoad() {
-     if (theObject = document.getElementById('numGm')) { theObject.innerHTML = numberOfGames; }
-     searchPgnGame(pgnSearchTarget);
    }
 
 </script>
