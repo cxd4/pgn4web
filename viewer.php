@@ -450,7 +450,7 @@ function reset_viewer() {
    document.getElementById("urlFormText").value = "";
    document.getElementById("pgnFormText").value = "";
    checkPgnFormTextSize();
-   document.getElementById("pgnStatus").innerHTML = "please enter chess games in PGN format&nbsp; &nbsp;<span style='color: gray;'>file and URL inputs must not exceed $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit)</span>";
+   document.getElementById("pgnStatus").innerHTML = "please enter chess games in PGN format&nbsp; &nbsp;<span style='color: gray;'></span>";
    document.getElementById("pgnText").value = '$krabbeStartPosition';
 
    firstStart = true;
