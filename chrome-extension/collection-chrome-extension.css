@@ -130,13 +130,13 @@ body {
   font-size: 80%; 
   color: #BBBBBB; 
   text-align: right;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .columnsContainer {
   float: left;
   width: 100%;
-  padding-top: 40px;
+  padding-top: 50px;
   padding-bottom: 40px;
 }
 
