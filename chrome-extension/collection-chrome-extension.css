@@ -10,22 +10,13 @@
 html, 
 body { 
   margin: 0; 
-  padding: 17px;
+  padding: 20px;
 }
 
 body {
   font-family: 'pgn4web Liberation Sans', sans-serif;
   color: black;
   background: white;
-}
-
-.containerTable {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-.containerCell {
-  padding: 20px;
 }
 
 .boardTable {
@@ -81,6 +72,7 @@ body {
 .buttonControlStop,
 .buttonControl {
 /* a "width" attribute here must use the !important flag to override default settings */
+  margin-top: 20px;
 }
 
 .buttonControlSpace {
@@ -103,11 +95,15 @@ body {
   font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
   line-height: 1.3em;
   font-weight: normal;
-  text-decoration: none;   
+  text-decoration: none;
 }
 
 .moveOn {
   background: #FFCC99;
+}
+
+.moveText {
+  text-align: justify;
 }
 
 .comment,
@@ -115,28 +111,37 @@ body {
   color: gray;
 }
 
-.label {
-  color: #BBBBBB;
-  padding-right: 10px;
-  text-align: right;
+.headerItem {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  margin-bottom: 0.33em;
 }
 
 .boldItem {
   font-weight: bold;
 }
 
-.linkItem {
-  text-decoration: none;
-  color: black;
-}
-
-.rowSpace {
-  height: 20px;
-}
-
 .notes {
   font-size: 80%; 
   color: #BBBBBB; 
   text-align: right;
+  margin-top: 20px;
+}
+
+.columnsContainer {
+  float: left;
+  width: 100%;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.boardColumn {
+  float: left;
+  width: 60%;
+}
+
+.headerColumn {
+  margin-left: 60%;
 }
 

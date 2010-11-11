@@ -85,6 +85,14 @@
        SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false)
    }
 
+  function customFunctionOnPgnGameLoad() {
+    if (theObject = document.getElementById("GameRound")) {
+      if (theObject.innerHTML) {
+        theObject.innerHTML = "round " + theObject.innerHTML;
+      }
+    }
+  }
+
 </script>
 
 </head>
@@ -97,62 +105,44 @@
 </textarea></form>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
-<table class="containerTable">
-
-<tr valign=bottom>
-<td class="containerCell" colspan=2>
 <div id="GameSelector"></div>
 <div id="GameSearch"></div>
-</td>
 
-</tr>
+<div class="columnsContainer">
 
-<tr valign=top>
-
-<td class="containerCell" align="left" width=50%>
+<div class="boardColumn">
+<center>
 <div id="GameBoard"></div>
-<p></p>
 <div id="GameButtons"></div>
-</td>
+</center>
+</div>
 
-<td class="containerCell" width=50% style="text-align: left;">
+<div class="headerColumn">
+<div class="headerItem">&nbsp;</div>
+<div class="headerItem"><span title="date" id="GameDate"></span>&nbsp;</div>
+<div class="headerItem"><span title="site" id="GameSite"></span>&nbsp;</div>
+<div class="headerItem">&nbsp;</div>
+<div class="headerItem"><span title="event" id="GameEvent"></span>&nbsp;</div>
+<div class="headerItem"><span title="round" id="GameRound"></span>&nbsp;</div>
+<div class="headerItem">&nbsp;</div>
+<div class="headerItem"><span title="white clock" id="GameWhiteClock"></span>&nbsp;</div>
+<div class="headerItem"><span title="white player" class="boldItem" id="GameWhite"></span>&nbsp;</div>
+<div class="headerItem"><span title="black player" class="boldItem" id="GameBlack"></span>&nbsp;</div>
+<div class="headerItem"><span title="black clock" id="GameBlackClock"></span>&nbsp;</div>
+<div class="headerItem">&nbsp;</div>
+<div class="headerItem"><span title="result" class="boldItem" id="GameResult"></span>&nbsp;</div>
+<div class="headerItem">&nbsp;</div>
+</div>
 
-<table>
-<tr><td class="label">date</td><td><span id="GameDate"></span></td></tr> 
-<tr><td class="label">site</td><td><span style="white-space: nowrap;" id="GameSite"></span></td></tr>
-<tr><td colspan=2 class="rowSpace"></td></tr>
-<tr><td class="label">event</td><td><span style="white-space: nowrap;" id="GameEvent"></span></td></tr>
-<tr><td class="label">round</td><td><span id="GameRound"></span></td></tr> 
-<tr><td colspan=2 class="rowSpace"></td></tr>
-<tr><td class="label"></td><td><span id="GameWhiteClock"></span></td></tr>
-<tr><td class="label">white</td><td class="boldItem"><span style="white-space: nowrap;" id="GameWhite"></span></td></tr> 
-<tr><td class="label">black</td><td class="boldItem"><span style="white-space: nowrap;" id="GameBlack"></span></td></tr> 
-<tr><td class="label"></td><td><span id="GameBlackClock"></span></td></tr>
-<tr><td colspan=2 class="rowSpace"></td></tr>
-<tr><td class="label">result</td><td class="boldItem"><span id="GameResult"></span></td></tr> 
-</table>
+</div>
 
-</td>
+<div class="moveText" id="GameText"></div>
 
-</tr>
-
-<tr valign=top>
-<td class="containerCell" style="text-align: justify;" colspan=2>
-<div id="GameText"></div>
-</td>
-</tr>
-
-<tr valign=bottom>
-<td class="containerCell" colspan=2>
-<div class="notes" id="GameLiveStatus"></div>
-<div class="notes"><script type="text/javascript">document.write(pgnTitle);</script></div>
-</td>
-</tr>
-
-</table>
+<div class="notes">
+<div id="GameLiveStatus"></div>
+<div><script type="text/javascript">document.write(pgnTitle);</script></div>
+</div>
 
 </body>
 
 </html>
-
-
