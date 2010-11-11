@@ -118,6 +118,10 @@ body {
   margin-bottom: 0.33em;
 }
 
+.innerHeaderItem {
+  margin-left: 20px;
+}
+
 .boldItem {
   font-weight: bold;
 }
