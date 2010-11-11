@@ -10,7 +10,7 @@
 function openRemoteUrl(remoteUrl, live) {
   if (!remoteUrl) { return; }
   var titleParam = "&title=" + (live ? "live games from " : "games from ") + remoteUrl;
-  var liveParam = live ? "&refreshMinutes=1" : "";
+  var liveParam = live ? '&refreshMinutes=1&search=\\[\\s*Result\\s*"\\*"\\s*\\]' : "";
   url = "collection-chrome-extension.html?pgnData=" + remoteUrl + titleParam + liveParam;
   chrome.tabs.create({url: url});
 }

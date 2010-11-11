@@ -83,6 +83,11 @@
        SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false)
    }
 
+   function customFunctionOnPgnTextLoad() {
+     if (theObject = document.getElementById('numGm')) { theObject.innerHTML = numberOfGames; }
+     searchPgnGame(pgnSearchTarget);
+   }
+
 </script>
 
 </head>
