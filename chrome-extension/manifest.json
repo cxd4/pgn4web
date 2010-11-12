@@ -7,7 +7,7 @@
 {
   "name": "Chess games viewer",
 
-  "version": "1.0.4",
+  "version": "1.0.5",
 
   "description": "Context menu for *.pgn URLs to open a chess games viewer. The live refresh option reloads the pgn file periodically until all games are ended (use for links to chess games live broadcasts). Part of the pgn4web project at http://pgn4web.casaschi.net",
 
