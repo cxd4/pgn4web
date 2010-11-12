@@ -127,10 +127,15 @@ body {
   font-weight: bold;
 }
 
-.notes {
+.notes,
+.notesLink {
   color: #AAAAAA; 
   text-align: right;
   margin-top: 35px;
+}
+
+.notesLink {
+  text-decoration: none;
 }
 
 .columnsContainer {

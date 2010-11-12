@@ -82,7 +82,7 @@
     if (LiveBroadcastStatusString) {
       document.title = LiveBroadcastStatusString.replace(" &nbsp;", ",");
     } else {
-      document.title = numberOfGames + "game" + (numberOfGames == 1 ? "" : "s");
+      document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s");
     }
   }
 
@@ -130,8 +130,8 @@
 <div class="moveText" id="GameText"></div>
 
 <div class="notes">
-<div style="float: left; text-align: left;" id="GameLiveStatus"></div>
-<div><script type="text/javascript">document.write(pgnData);</script></div>
+<div title="live broadcast status" style="float: left; text-align: left;" id="GameLiveStatus"></div>
+<div><script type="text/javascript">document.write("<a title='chess games source URL' class='notesLink' href=" + pgnData + ">" + pgnData + "</a>");</script></div>
 </div>
 
 </body>
