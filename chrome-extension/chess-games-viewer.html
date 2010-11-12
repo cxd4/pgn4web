@@ -68,7 +68,6 @@
        refreshMinutes = unescape(window.location.search.match(thisRegExp)[3]);
        SetInitialHalfmove("end", true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
        SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false)
-       document.title = "live " + document.title;
    }
 
   function customFunctionOnPgnGameLoad() {
@@ -76,6 +75,14 @@
       if (theObject.innerHTML) {
         theObject.innerHTML = "round " + theObject.innerHTML;
       }
+    }
+  }
+
+  function customFunctionOnPgnTextLoad() {
+    if (LiveBroadcastStatusString) {
+      document.title = LiveBroadcastStatusString.replace(" &nbsp;", ",");
+    } else {
+      document.title = numberOfGames + "game" + (numberOfGames == 1 ? "" : "s");
     }
   }
 
