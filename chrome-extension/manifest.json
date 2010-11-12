@@ -11,7 +11,7 @@
 
   "description": "Context menu for *.pgn URLs to open a chess games viewer. The live refresh option reloads the pgn file periodically until all games are ended (use for links to chess games live broadcasts). Part of the pgn4web project at http://pgn4web.casaschi.net",
 
-  "icons": {"16": "pawn.ico", "48": "alpha/48/bp.png", "128": "alpha/128/bp.png"},
+  "icons": {"16": "alpha-16-bp.png", "48": "alpha/48/bp.png", "128": "alpha/128/bp.png"},
 
   "permissions": ["contextMenus", "tabs", "*://*/*.pgn", "*://*/*.PGN"],
 
