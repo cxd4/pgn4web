@@ -1771,7 +1771,7 @@ function setCurrentGameFromInitialGame() {
       break;
     default:
       if (isNaN(parseInt(initialGame,10))) { 
-        currentGame = gameNumberSearchPgn(initialGame);
+        currentGame = gameNumberSearchPgn(initialGame, false, true);
         if (!currentGame) { currentGame = 0; }
       } else {
         initialGame = parseInt(initialGame,10);
@@ -2925,7 +2925,7 @@ function reset_after_click (ii, jj, originalClass, newClass) {
 
 
 var lastSearchPgnExpression = "";
-function gameNumberSearchPgn(searchExpression, backward) {
+function gameNumberSearchPgn(searchExpression, backward, includeCurrent) {
   lastSearchPgnExpression = searchExpression;
   if (searchExpression === "") { return false; }
   // replace newline with spaces so that we can use regexp "." on whole game
@@ -2933,6 +2933,9 @@ function gameNumberSearchPgn(searchExpression, backward) {
   searchExpressionRegExp = new RegExp(searchExpression, "im");
   // at start currentGame might still be -1
   currentGameSearch = (currentGame < 0) || (currentGame >= numberOfGames) ? 0 : currentGame;
+  if (includeCurrent && pgnGame[currentGameSearch].replace(newlinesRegExp, " ").match(searchExpressionRegExp)) {
+    return ((currentGameSearch === currentGame) ? false : currentGameSearch);
+  }
   delta = backward ? -1 : +1;
   for (checkGame = (currentGameSearch + delta + numberOfGames) % numberOfGames; 
        checkGame != currentGameSearch; 
@@ -2950,7 +2953,7 @@ function searchPgnGame(searchExpression, backward) {
   { theObject.value = searchExpression; }
   if ((searchExpression === "") || (! searchExpression)) { return; }
   if (numberOfGames < 2) { return; }
-  checkGame = gameNumberSearchPgn(searchExpression, backward);
+  checkGame = gameNumberSearchPgn(searchExpression, backward, false);
   if ((checkGame !== false) && (checkGame != currentGame)) { Init(checkGame); }
 }
 
@@ -3438,4 +3441,5 @@ function sign(nn) {
 function SquareOnBoard(col, row) {
   return col >= 0 && col <= 7 && row >= 0 && row <= 7;
 }
+
 
