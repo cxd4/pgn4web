@@ -9,9 +9,8 @@
 
 function openRemoteUrl(remoteUrl, live) {
   if (!remoteUrl) { return; }
-  var titleParam = "&title=" + (live ? "live games from " : "games from ") + remoteUrl;
   var liveParam = live ? '&refreshMinutes=1&search=\\[\\s*Result\\s*"\\*"\\s*\\]' : "";
-  url = "chess-games-viewer.html?pgnData=" + remoteUrl + titleParam + liveParam;
+  url = "chess-games-viewer.html?pgnData=" + remoteUrl + liveParam;
   chrome.tabs.create({url: url});
 }
 

@@ -22,7 +22,6 @@
    if (window.location.search.match(thisRegExp) !== null) {
        alert("pgn4web collection.html parameters" + "\n" +
              " - pgnFile=filename.pgn" + "\n" +
-	     " - title=page title" + "\n" +
 	     " - search=search expression" + "\n" +
              " - refreshMinutes=live broadcast delay (default 0 = live broadcast disabled)" + "\n" +
              " - refreshDemo= if set true sets live demo mode (default false)" + "\n" +
@@ -139,8 +138,8 @@
 <div class="moveText" id="GameText"></div>
 
 <div class="notes">
-<div id="GameLiveStatus"></div>
-<div><script type="text/javascript">document.write(pgnTitle);</script></div>
+<div style="float: left; text-align: left;" id="GameLiveStatus"></div>
+<div><script type="text/javascript">document.write(pgnFilename);</script></div>
 </div>
 
 </body>
