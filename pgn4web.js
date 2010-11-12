@@ -3076,7 +3076,7 @@ function PrintHTML() {
         text = '<FORM NAME="GameSel" STYLE="display:inline;"> ' +
           '<SELECT ID="GameSelSelect" NAME="GameSelSelect" STYLE="';
         if (tableSize > 0) { text += 'width: ' + tableSize + 'px; '; }
-        text += 'font-family: monospace;" CLASS="selectControl" TITLE="Select a game" ' +
+        text += 'font-family: monospace;" CLASS="selectControl" TITLE="select a game" ' +
           'ONCHANGE="this.blur(); if(this.value >= 0) { Init(this.value); this.value = -1; }" ' +
           'ONFOCUS="disableShortcutKeysAndStoreStatus();" ONBLUR="restoreShortcutKeysStatus();" ' +
           '> ' +
