@@ -20,7 +20,7 @@
 <script src="pgn4web.js" type="text/javascript"></script>
 <script type="text/javascript">
 
-   thisRegExp = /(&|\?)(help|h)([^&$]*)(&|$)/i;
+   thisRegExp = /(&|\?)(help|h)([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
        alert("pgn4web collection.html parameters" + "\n" +
              " - pgnData=URL.pgn" + "\n" +
@@ -31,7 +31,7 @@
    }
 
    pgnData = "";
-   thisRegExp = /(&|\?)(pgnData|pd)=([^&$]*)(&|$)/i;
+   thisRegExp = /(&|\?)(pgnData|pd)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
        pgnData = unescape(window.location.search.match(thisRegExp)[3]);
    } 
@@ -51,7 +51,7 @@
    SetInitialHalfmove(0, true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
    SetShortcutKeysEnabled(true);
 
-   thisRegExp = /(&|\?)(search|s)=([^&$]*)(&|$)/i;
+   thisRegExp = /(&|\?)(search|s)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
        SetInitialGame(unescape(window.location.search.match(thisRegExp)[3]));
    } else {
@@ -59,13 +59,13 @@
    }
 
    alertFlag = demoFlag = false;
-   thisRegExp = /(&|\?)(refreshDemo|rd)=([^&$]*)(&|$)/i;
+   thisRegExp = /(&|\?)(refreshDemo|rd)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
        refreshDemo = unescape(window.location.search.match(thisRegExp)[3]);
        if ((refreshDemo == "true") || (refreshDemo == "t")) { alertFlag = demoFlag = true; }
    }
 
-   thisRegExp = /(&|\?)(refreshMinutes|rm)=([^&$]*)(&|$)/i;
+   thisRegExp = /(&|\?)(refreshMinutes|rm)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
        refreshMinutes = unescape(window.location.search.match(thisRegExp)[3]);
        SetInitialHalfmove("end", true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
