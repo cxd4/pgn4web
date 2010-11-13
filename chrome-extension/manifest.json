@@ -9,7 +9,7 @@
 
   "version": "1.0.7",
 
-  "description": "Context menu for *.pgn chess games URLs to open a chess games viewer. Part of the pgn4web project at http://pgn4web.casaschi.net",
+  "description": "Context menu for *.pgn chess games URLs to open a chess games viewer. From the pgn4web project at http://pgn4web.casaschi.net",
 
   "icons": {"16": "alpha-16-bp.png", "48": "alpha/48/bp.png", "128": "alpha/128/bp.png"},
 
@@ -21,3 +21,4 @@
 
   "background_page": "background.html"
 }
+
