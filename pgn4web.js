@@ -480,7 +480,7 @@ boardShortcut("H4", "search next event", function(){ searchPgnGame('\\[\\s*Event
 // A3
 boardShortcut("A3", "load first game", function(){ if (numberOfGames > 1) { Init(0); } });
 // B3
-boardShortcut("B3", "junp to previous games decile", function(){ if (currentGame > 0) { calculateDeciles(); for(ii=(deciles.length-2); ii>=0; ii--) { if (currentGame > deciles[ii]) { Init(deciles[ii]); break; } } } });
+boardShortcut("B3", "jump to previous games decile", function(){ if (currentGame > 0) { calculateDeciles(); for(ii=(deciles.length-2); ii>=0; ii--) { if (currentGame > deciles[ii]) { Init(deciles[ii]); break; } } } });
 // C3
 boardShortcut("C3", "load previous game", function(){ Init(currentGame - 1); });
 // D3
