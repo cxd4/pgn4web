@@ -7,7 +7,7 @@
 {
   "name": "Chess games viewer",
 
-  "version": "1.0.7",
+  "version": "1.0.8",
 
   "description": "Context menu for *.pgn chess games URLs to open a chess games viewer. From the pgn4web project at http://pgn4web.casaschi.net",
 
