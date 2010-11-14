@@ -53,7 +53,12 @@ function pgnlivePageOnClick(info, tab) {
 
 var pgnText = "";
 function pgntextOnClick(info, tab) {
-  pgnText = info.selectionText ? info.selectionText : prompt("Enter PGN chess games TEXT for viewing (" + debugInfo + "):");
+  pgnText = info.selectionText;
+  if (!pgnText) { 
+    pgnText = prompt("Enter PGN chess games TEXT for viewing (" + debugInfo + "):");
+    var pgnHeaderRegExpGlobal = /((\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)+)/g;
+    pgnText = pgnText.replace(pgnHeaderRegExpGlobal, "\n$1\n");
+  }
   if (!pgnText) { return; }
   url = "chess-games-viewer.html?pgnBackground";
   chrome.tabs.create({url: url});
