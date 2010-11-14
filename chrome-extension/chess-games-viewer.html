@@ -42,8 +42,10 @@
              " - help");
    }
 
+   pgnBackground = false;
    thisRegExp = /(&|\?)(pgnBackground|pb)([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
+       pgnBackground = true;
        theObject = document.getElementById("pgnText");
        if (theObject) { theObject.value = chrome.extension.getBackgroundPage().pgnText; }
    } 
@@ -143,7 +145,10 @@
 
 <div class="notes">
 <div title="live broadcast status" style="float: left; text-align: left; margin-right: 20px; margin-bottom: 5px;" id="GameLiveStatus"></div>
-<div><script type="text/javascript">document.write("<a title='chess games source URL' class='notesLink' href=" + pgnData + ">" + pgnData + "</a>");</script></div>
+<div><script type="text/javascript">
+  if (pgnData) { document.write("<a title='chess games source URL' class='notesLink' href=" + pgnData + ">" + pgnData + "</a>"); }
+  if (pgnBackground) { document.write("<span class='notesLink'>chess games from PGN text input</span>"); }
+</script></div>
 </div>
 
 <a name="bottom"></a>
