@@ -18,17 +18,35 @@
 -->
 
 <script src="pgn4web.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+<!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
+<form style="display: none;"><textarea style="display: none;" id="pgnText">
+
+</textarea></form>
+<!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
+
 <script type="text/javascript">
 
    thisRegExp = /(&|\?)(help|h)([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
        alert("pgn4web collection.html parameters" + "\n" +
+             " - pgnBackground" + "\n" +
              " - pgnData=URL.pgn" + "\n" +
 	     " - search=search expression" + "\n" +
              " - refreshMinutes=live broadcast delay (default 0 = live broadcast disabled)" + "\n" +
              " - refreshDemo= if set true sets live demo mode (default false)" + "\n" +
              " - help");
    }
+
+   thisRegExp = /(&|\?)(pgnBackground|pb)([^&]*)(&|$)/i;
+   if (window.location.search.match(thisRegExp) !== null) {
+       theObject = document.getElementById("pgnText");
+       if (theObject) { theObject.value = chrome.extension.getBackgroundPage().pgnText; }
+   } 
 
    pgnData = "";
    thisRegExp = /(&|\?)(pgnData|pd)=([^&]*)(&|$)/i;
@@ -89,16 +107,6 @@
   }
 
 </script>
-
-</head>
-
-<body>
-
-<!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
-<form style="display: none;"><textarea style="display: none;" id="pgnText">
-
-</textarea></form>
-<!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
 <div id="GameSelector"></div>
 <div id="GameSearch"></div>

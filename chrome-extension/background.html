@@ -22,12 +22,12 @@ function pgnLinkOnClick(info, tab, live) {
 }
 
 function pgnPageOnClick(info, tab, live) {
-  var promptLabel = "Enter PGN games URL for viewing" + (live ? " with live refresh:" : ":");
+  var promptLabel = "Enter PGN chess games URL for viewing" + (live ? " with live refresh:" : ":");
   var defaultRemoteUrl = info.selectionText ? info.selectionText.replace(/[\n\r]+/g," ") : "";
   var remoteUrl = prompt(promptLabel, defaultRemoteUrl);
   if (!remoteUrl) { return; }
   if (!remoteUrl.match(/\.pgn$/i)) {
-    alert("You entered:\n" + remoteUrl + "\n\nError: only PGN games URL allowed.");
+    alert("You entered:\n" + remoteUrl + "\n\nError: only PGN chess games URL allowed.");
     retrun;
   }
   openRemoteUrl(remoteUrl, live);
@@ -49,26 +49,47 @@ function pgnlivePageOnClick(info, tab) {
   pgnPageOnClick(info, tab, true);
 }
 
+var pgnText = "";
+function pgntextOnClick(info, tab) {
+  pgnText = info.selectionText ? info.selectionText : prompt("Enter PGN chess games text for viewing:");
+  if (!pgnText) { return; }
+  url = "chess-games-viewer.html?pgnBackground";
+  chrome.tabs.create({url: url});
+}
+
 function aboutChessGamesViewer(info, tab) {
-  var aboutText = "Chess games viewer extension for Google Chrome\n\nContext menu for *.pgn chess games URLs to open a chess games viewer (*.pgn files are commonly used to store and share chess games information).\nThe live refresh option reloads the games periodically until all games are ended, use for links to chess games live broadcasts.\nClick on the viewer's chessboard top right square for help on the user interface.\nMore info at the pgn4web project wiki:\nhttp://pgn4web.casaschi.net";
-  if (confirm(aboutText + "\n\nClick OK to visit the pgn4web homepage or\nCancel to close this about window.")) {
-    chrome.tabs.create({url: "http://pgn4web.casaschi.net"});
-  }
+  var aboutText = "Chess games viewer extension for Google Chrome";
+  aboutText += "\n\n\nA context menu shows chess games from *.PGN chess games URLs; PGN (Portable Games Notation) files are commonly used to store and share chess games information.\nThe live refresh option reloads the games periodically until all games are ended; use for links to chess games live broadcasts.";
+  aboutText += "\n\nA context menu shows chess games from PGN chess games text selecetd in the web page.";
+  aboutText += "\n\nClick on the viewer's chessboard top right square for user interface help.\nMore info at the pgn4web project wiki:\nhttp://pgn4web.casaschi.net";
+  aboutText += "\n\n\nClick OK to visit the pgn4web homepage or\nCancel to close this about window.";
+  if (confirm(aboutText)) { chrome.tabs.create({url: "http://pgn4web.casaschi.net"}); }
 }
 
 chrome.contextMenus.create({"title": "View chess games link", "contexts": ["link"], targetUrlPatterns:["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn"], "onclick": pgnviewLinkOnClick});
+
 chrome.contextMenus.create({"title": "View chess games link with live refresh", "contexts": ["link"], targetUrlPatterns:["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn"], "onclick": pgnliveLinkOnClick});
 
-chrome.contextMenus.create({"title": "Enter PGN games URL for viewing", "contexts": ["page", "selection"], "onclick": pgnviewPageOnClick});
-chrome.contextMenus.create({"title": "Enter PGN games URL for viewing with live refresh", "contexts": ["page", "selection"], "onclick": pgnlivePageOnClick});
+chrome.contextMenus.create({"title": "Enter PGN chess games text for viewing", "contexts": ["page"], "onclick": pgntextOnClick});
+
+chrome.contextMenus.create({"title": "View selected text as PGN chess games", "contexts": ["selection"], "onclick": pgntextOnClick});
+
+chrome.contextMenus.create({"type": "separator", "contexts": ["page", "selection"]});
+
+chrome.contextMenus.create({"title": "Enter PGN chess games URL for viewing", "contexts": ["page", "selection"], "onclick": pgnviewPageOnClick});
+
+chrome.contextMenus.create({"title": "Enter PGN chess games URL for viewing with live refresh", "contexts": ["page", "selection"], "onclick": pgnlivePageOnClick});
 
 chrome.contextMenus.create({"type": "separator", "contexts": ["link"], targetUrlPatterns:["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn"]});
+
 chrome.contextMenus.create({"title": "About the chess games viewer", "contexts": ["link"], targetUrlPatterns:["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn"], "onclick": aboutChessGamesViewer});
 
 // can NOT add separator/about items to the selection context
 // otherwise they would appear twice when selecting a text and
 // pointing to a link at the same time
+
 chrome.contextMenus.create({"type": "separator", "contexts": ["page"]});
+
 chrome.contextMenus.create({"title": "About the chess games viewer", "contexts": ["page"], "onclick": aboutChessGamesViewer});
 
 </script>
