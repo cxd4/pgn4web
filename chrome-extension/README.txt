@@ -5,9 +5,10 @@
 #  for credits, license and more details
 #
 
-Context menu for links to *.pgn URLs to open a chess games viewer.
-The live refresh option reloads the source file periodically until 
-all games are ended (use for links to chess games live broadcasts). 
+Chess games viewer with interactive chessboard, showing chess 
+games from PGN URLs and from PGN text, using context menus.
 
 Part of the pgn4web project http://pgn4web.casaschi.net
+
+See help.html for credits, license and more details.
 
