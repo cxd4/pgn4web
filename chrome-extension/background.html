@@ -65,7 +65,7 @@ function pgntextOnClick(info, tab) {
 }
 
 function aboutChessGamesViewer(info, tab) {
-  var aboutText = "Chess games viewer with interactive chessboard, showing chess games from PGN URLs and from PGN text, using context menus.";
+  var aboutText = "Chess games viewer extension for Google Chrome: interactive chessboard showing chess games from PGN URLs and from PGN text, using context menus.";
   aboutText += "\n\nA context menu shows chess games from *.PGN chess games URLs; PGN (Portable Games Notation) files are commonly used to store and share chess games information. The live refresh option reloads the games periodically until all games are ended; use for links to chess games live broadcasts.";
   aboutText += "\n\nA context menu shows chess games from PGN chess games text selecetd in the web page.";
   aboutText += "\n\nClick on the viewer's chessboard top right square for user interface help, credits and license; " + debugInfo + ".";
@@ -89,7 +89,7 @@ chrome.contextMenus.create({"title": "Enter PGN chess games URL for viewing with
 
 chrome.contextMenus.create({"type": "separator", "contexts": ["link"], targetUrlPatterns:["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn"]});
 
-chrome.contextMenus.create({"title": "About the chess games viewer", "contexts": ["link"], targetUrlPatterns:["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn"], "onclick": aboutChessGamesViewer});
+chrome.contextMenus.create({"title": "About the chess games viewer extension", "contexts": ["link"], targetUrlPatterns:["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn"], "onclick": aboutChessGamesViewer});
 
 // can NOT add separator/about items to the selection context
 // otherwise they would appear twice when selecting a text and
@@ -97,7 +97,7 @@ chrome.contextMenus.create({"title": "About the chess games viewer", "contexts":
 
 chrome.contextMenus.create({"type": "separator", "contexts": ["page"]});
 
-chrome.contextMenus.create({"title": "About the chess games viewer", "contexts": ["page"], "onclick": aboutChessGamesViewer});
+chrome.contextMenus.create({"title": "About the chess games viewer extension", "contexts": ["page"], "onclick": aboutChessGamesViewer});
 
 </script>
 
