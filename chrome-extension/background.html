@@ -7,7 +7,7 @@
 
 <script type="text/javascript">
 
-var debugInfo = "the top left chessboard square will flash in case of PGN data errors; click the square for further details";
+var debugInfo = "the top left chessboard square will flash in case of PGN data errors, click that square for further details";
 
 function openRemoteUrl(remoteUrl, live) {
   if (!remoteUrl) { return; }
@@ -53,7 +53,7 @@ function pgnlivePageOnClick(info, tab) {
 
 var pgnText = "";
 function pgntextOnClick(info, tab) {
-  pgnText = info.selectionText ? info.selectionText : prompt("Enter PGN chess games text for viewing (" + debugInfo + "):");
+  pgnText = info.selectionText ? info.selectionText : prompt("Enter PGN chess games TEXT for viewing (" + debugInfo + "):");
   if (!pgnText) { return; }
   url = "chess-games-viewer.html?pgnBackground";
   chrome.tabs.create({url: url});
@@ -61,10 +61,10 @@ function pgntextOnClick(info, tab) {
 
 function aboutChessGamesViewer(info, tab) {
   var aboutText = "Chess games viewer with interactive chessboard, showing PGN chess games URLs and PGN chess games text using context menus.";
-  aboutText += "\n\nA context menu shows chess games from *.PGN chess games URLs; PGN (Portable Games Notation) files are commonly used to store and share chess games information.\nThe live refresh option reloads the games periodically until all games are ended; use for links to chess games live broadcasts.";
+  aboutText += "\n\nA context menu shows chess games from *.PGN chess games URLs; PGN (Portable Games Notation) files are commonly used to store and share chess games information. The live refresh option reloads the games periodically until all games are ended; use for links to chess games live broadcasts.";
   aboutText += "\n\nA context menu shows chess games from PGN chess games text selecetd in the web page.";
-  aboutText += "\n\nClick on the viewer's chessboard top right square for user interface help.\nThe top left chessboard square will flash in case of PGN data errors; click the square for further details.\nMore info at the pgn4web project wiki:\nhttp://pgn4web.casaschi.net";
-  aboutText += "\n\n\nClick OK to visit the pgn4web homepage or\nCancel to close this about window.";
+  aboutText += "\n\nClick on the viewer's chessboard top right square for user interface help; " + debugInfo + ".";
+  aboutText += "\n\n\nClick OK to visit the pgn4web homepage and wiki for more info.";
   if (confirm(aboutText)) { chrome.tabs.create({url: "http://pgn4web.casaschi.net"}); }
 }
 
@@ -72,9 +72,9 @@ chrome.contextMenus.create({"title": "View chess games link", "contexts": ["link
 
 chrome.contextMenus.create({"title": "View chess games link with live refresh", "contexts": ["link"], targetUrlPatterns:["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn"], "onclick": pgnliveLinkOnClick});
 
-chrome.contextMenus.create({"title": "Enter PGN chess games text for viewing", "contexts": ["page"], "onclick": pgntextOnClick});
+chrome.contextMenus.create({"title": "Enter PGN chess games TEXT for viewing", "contexts": ["page"], "onclick": pgntextOnClick});
 
-chrome.contextMenus.create({"title": "View selected text as PGN chess games", "contexts": ["selection"], "onclick": pgntextOnClick});
+chrome.contextMenus.create({"title": "View selected TEXT as PGN chess games", "contexts": ["selection"], "onclick": pgntextOnClick});
 
 chrome.contextMenus.create({"type": "separator", "contexts": ["page", "selection"]});
 
