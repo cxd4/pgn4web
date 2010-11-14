@@ -6,7 +6,7 @@ chromeExtVer=$(grep '"version":' manifest.json | awk -F "\"" '{print$4}')
 pgn4webChromeExtFilename="Chess-games-viewer-pgn4web-chrome-extension-$chromeExtVer-$pgn4webVer.zip"
 
 if [ -e ../../"$pgn4webChromeExtFilename" ]; then
-  echo "Error: pgn4web package already exists (../../$pgn4webChromeExtFilename)"
+  echo "Error: pgn4web package already exists ../../$pgn4webChromeExtFilename"
   exit 1
 fi
 
