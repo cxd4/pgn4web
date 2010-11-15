@@ -1,0 +1,30 @@
+<html>
+
+<!--
+  pgn4web javascript chessboard
+  copyright (C) 2009, 2010 Paolo Casaschi
+  see README file and http://pgn4web.casaschi.net
+  for credits, license and more details
+-->
+
+<head>
+
+</head>
+
+<body>
+
+pgnLinks.html popup
+<script type="text/javascript">
+
+var pgnLinks = new Array();
+pgnLinks = chrome.extension.getBackgroundPage().pgnLinks;
+
+for(i=0; i<pgnLinks.length; i++) {
+  document.write('<br><a onclick=\'chrome.tabs.create({url: "chess-games-viewer.html?pgnData=' + pgnLinks[i] + '"});\'>' + pgnLinks[i] + '</a>');
+}
+
+</script>
+
+</body>
+
+</html>
