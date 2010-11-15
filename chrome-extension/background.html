@@ -28,6 +28,9 @@ function pgnPageOnClick(info, tab, live) {
   var defaultRemoteUrl = info.selectionText ? info.selectionText.replace(/[\n\r]+/g," ") : "";
   var remoteUrl = prompt(promptLabel, defaultRemoteUrl);
   if (!remoteUrl) { return; }
+  //
+  // allowing any URL when manually eneterd (to cope with some sites using .txt files or using scripts like php
+  //
   // if (!remoteUrl.match(/\.pgn$/i)) {
   //  alert("You entered:\n" + remoteUrl + "\n\nError: only PGN chess games URL allowed.");
   //  return;
@@ -51,11 +54,21 @@ function pgnlivePageOnClick(info, tab) {
   pgnPageOnClick(info, tab, true);
 }
 
+//
+// known bug: load the viewer with text input, then load the viewer with another text input
+// if refreshing the first viewer then the text of the second viewer is used instead.
+// This is because the viewer page reloads the pgnText variable from the background page,
+// that in the meantime has changed. It could be fixed making pgnText an array and passing
+// the index number to the viewer page; when closing the viewer page the array entry should
+// be removed for proper memory management.
+// Probably not worth fixing: why would anyone reload a viewer page with text input?
+//
 var pgnText = "";
 function pgntextOnClick(info, tab) {
   pgnText = info.selectionText;
   if (!pgnText) { 
-    pgnText = prompt("Enter PGN chess games TEXT for viewing (" + debugInfo + "):");
+// maybe replace prompt() with nicer showModalDialog()
+    pgnText = prompt("Enter PGN chess games TEXT for viewing (pasting multi-line PGN data in the textbox is ok; " + debugInfo + "):");
     var pgnHeaderRegExpGlobal = /((\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)+)/g;
     pgnText = pgnText.replace(pgnHeaderRegExpGlobal, "\n$1\n");
   }
