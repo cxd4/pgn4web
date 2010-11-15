@@ -1,9 +1,13 @@
+<html>
+
 <!--
   pgn4web javascript chessboard
   copyright (C) 2009, 2010 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 -->
+
+<head>
 
 <script type="text/javascript">
 
@@ -112,5 +116,24 @@ chrome.contextMenus.create({"type": "separator", "contexts": ["page"]});
 
 chrome.contextMenus.create({"title": "About the chess games viewer extension", "contexts": ["page"], "onclick": aboutChessGamesViewer});
 
+var pgnLinks = new Array();
+var lastPgnLinksSenderId = null;
+function pgnLinksPopupRequest(request, sender, sendResponse) {
+  // concatenates responses from multiple frames of the same page
+  // issue: possible race condition among different pages with frames
+  if (sender.tab.id === lastPgnLinksSenderId) {
+     pgnLinks = pgnLinks.concat(request.pgnLinks);
+  } else {
+     pgnLinks = request.pgnLinks;
+  }
+  chrome.pageAction.show(sender.tab.id);
+  sendResponse({});
+}
+
+chrome.extension.onRequest.addListener(pgnLinksPopupRequest);
+
 </script>
 
+</head>
+
+</html>

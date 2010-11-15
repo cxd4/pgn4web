@@ -11,7 +11,11 @@
 
   "description": "Chess games viewer: interactive chessboard showing chess games from PGN URLs and from PGN text, using context menus. From the pgn4web project at http://pgn4web.casaschi.net",
 
-  "icons": {"16": "alpha-16-bp.png", "48": "alpha/48/bp.png", "128": "alpha/128/bp.png"},
+  "icons": {"16": "alpha-16.png", "48": "alpha/48/bp.png", "128": "alpha/128/bp.png"},
+
+  "page_action": { "default_icon": "alpha-20.png", "default_title": "Chess games viewer: PGN links on this page", "default_popup": "pgnLinks.html" },
+
+  "content_scripts" : [{"matches": ["*://*/*"], "js": ["pgnLinks.js"], "run_at" : "document_idle", "all_frames" : true}], 
 
   "permissions": ["contextMenus", "tabs", "*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn"],
 
