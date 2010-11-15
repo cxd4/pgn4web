@@ -104,7 +104,7 @@
     if (LiveBroadcastStatusString) {
       document.title = LiveBroadcastStatusString.replace(" &nbsp;", ",");
     } else {
-      if (pgnText == alertPgnHeader) {
+      if ((numberOfGames == 1) && (PlyNumber == 0) && (StartPly == 0)) {
         document.title = "PGN data error";
       } else {
         document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s");
