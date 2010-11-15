@@ -28,10 +28,10 @@ function pgnPageOnClick(info, tab, live) {
   var defaultRemoteUrl = info.selectionText ? info.selectionText.replace(/[\n\r]+/g," ") : "";
   var remoteUrl = prompt(promptLabel, defaultRemoteUrl);
   if (!remoteUrl) { return; }
-  if (!remoteUrl.match(/\.pgn$/i)) {
-    alert("You entered:\n" + remoteUrl + "\n\nError: only PGN chess games URL allowed.");
-    retrun;
-  }
+  // if (!remoteUrl.match(/\.pgn$/i)) {
+  //  alert("You entered:\n" + remoteUrl + "\n\nError: only PGN chess games URL allowed.");
+  //  return;
+  // }
   openRemoteUrl(remoteUrl, live);
 }
 
