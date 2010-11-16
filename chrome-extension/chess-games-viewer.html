@@ -34,7 +34,7 @@
    thisRegExp = /(&|\?)(help|h)([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
        alert("pgn4web collection.html parameters" + "\n" +
-             " - pgnBackground" + "\n" +
+             " - pgnBackground=index" + "\n" +
              " - pgnData=URL.pgn" + "\n" +
 	     " - search=search expression" + "\n" +
              " - refreshMinutes=live broadcast delay (default 0 = live broadcast disabled)" + "\n" +
@@ -42,13 +42,18 @@
              " - help");
    }
 
-   pgnBackground = false;
-   thisRegExp = /(&|\?)(pgnBackground|pb)([^&]*)(&|$)/i;
+   pgnBackground = null;
+   thisRegExp = /(&|\?)(pgnBackground|pb)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
-       pgnBackground = true;
+       pgnBackground = unescape(window.location.search.match(thisRegExp)[3]);
        theObject = document.getElementById("pgnText");
-       if (theObject) { theObject.value = chrome.extension.getBackgroundPage().pgnText; }
+       if (theObject) { theObject.value = chrome.extension.getBackgroundPage().pgnText[pgnBackground]; }
+       window.onunload = unloadTrigger;
    } 
+
+   function unloadTrigger() {
+     if (pgnBackground !== null) { chrome.extension.getBackgroundPage().pgnText[pgnBackground] = null; }
+   }
 
    pgnData = "";
    thisRegExp = /(&|\?)(pgnData|pd)=([^&]*)(&|$)/i;
