@@ -110,7 +110,7 @@ chrome.contextMenus.create({"title": "About the chess games viewer extension", "
 
 var pgnLinks = new Array();
 function pgnLinksPopupRequest(request, sender, sendResponse) {
-  if (pgnLinks[sender.tab.id]) {
+  if ((pgnLinks[sender.tab.id]) && (pgnLinks[sender.tab.id] !== undefined)) {
     pgnLinks[sender.tab.id] = pgnLinks[sender.tab.id].concat(request.pgnLinks);
   } else {
     pgnLinks[sender.tab.id] = request.pgnLinks;
@@ -119,13 +119,19 @@ function pgnLinksPopupRequest(request, sender, sendResponse) {
   sendResponse({});
 }
 
-function removePgnLinks(tabId) {
+chrome.extension.onRequest.addListener(pgnLinksPopupRequest);
+
+function removePgnLinksOnRemoved(tabId) {
   if (pgnLinks[tabId]) { delete pgnLinks[tabId]; }
 }
 
-chrome.extension.onRequest.addListener(pgnLinksPopupRequest);
+chrome.tabs.onRemoved.addListener(removePgnLinksOnRemoved);
 
-chrome.tabs.onRemoved.addListener(removePgnLinks);
+function removePgnLinksOnUpdated(tabId, changeInfo, tab) {
+  if ((changeInfo.status == "loading") && (pgnLinks[tabId])) { delete pgnLinks[tabId]; }
+}
+
+chrome.tabs.onUpdated.addListener(removePgnLinksOnUpdated);
 
 </script>
 
