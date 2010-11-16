@@ -119,7 +119,13 @@ function pgnLinksPopupRequest(request, sender, sendResponse) {
   sendResponse({});
 }
 
+function removePgnLinks(tabId) {
+  if (pgnLinks[tabId]) { delete pgnLinks[tabId]; }
+}
+
 chrome.extension.onRequest.addListener(pgnLinksPopupRequest);
+
+chrome.tabs.onRemoved.addListener(removePgnLinks);
 
 </script>
 

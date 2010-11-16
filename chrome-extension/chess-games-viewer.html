@@ -47,10 +47,12 @@
    if (window.location.search.match(thisRegExp) !== null) {
        if ((pgnBackground = unescape(window.location.search.match(thisRegExp)[3])) !== ""); {
          theObject = document.getElementById("pgnText");
-         if (theObject) { theObject.value = chrome.extension.getBackgroundPage().pgnText[pgnBackground]; }
+         theBackgroundPgnText = chrome.extension.getBackgroundPage().pgnText[pgnBackground];
+         if ((theObject) && (theBackgroundPgnText) && (theBackgroundPgnText !== undefined)) 
+         { theObject.value = theBackgroundPgnText; }
          // following line clears data and memory from the background page, 
          // removing it would make the pgnText available for reload on page refresh
-         chrome.extension.getBackgroundPage().pgnText[pgnBackground] = null;
+         delete chrome.extension.getBackgroundPage().pgnText[pgnBackground];
        }
    } 
 
