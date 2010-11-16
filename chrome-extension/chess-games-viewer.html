@@ -45,15 +45,14 @@
    pgnBackground = null;
    thisRegExp = /(&|\?)(pgnBackground|pb)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
-       pgnBackground = unescape(window.location.search.match(thisRegExp)[3]);
-       theObject = document.getElementById("pgnText");
-       if (theObject) { theObject.value = chrome.extension.getBackgroundPage().pgnText[pgnBackground]; }
-       window.onunload = unloadTrigger;
+       if ((pgnBackground = unescape(window.location.search.match(thisRegExp)[3])) !== ""); {
+         theObject = document.getElementById("pgnText");
+         if (theObject) { theObject.value = chrome.extension.getBackgroundPage().pgnText[pgnBackground]; }
+         // following line clears data and memory from the background page, 
+         // removing it would make the pgnText available for reload on page refresh
+         chrome.extension.getBackgroundPage().pgnText[pgnBackground] = null;
+       }
    } 
-
-   function unloadTrigger() {
-     if (pgnBackground !== null) { chrome.extension.getBackgroundPage().pgnText[pgnBackground] = null; }
-   }
 
    pgnData = "";
    thisRegExp = /(&|\?)(pgnData|pd)=([^&]*)(&|$)/i;
