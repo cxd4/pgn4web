@@ -106,7 +106,7 @@ body {
 
 .comment,
 .nag {
-  color: #999999;
+  color: #888888;
 }
 
 .headerItem {
@@ -128,13 +128,13 @@ body {
 }
 
 .notes {
-  color: #CCCCCC; 
+  color: #BBBBBB; 
   text-align: right;
   margin-top: 35px;
 }
 
 .notesLink {
-  color: #CCCCCC; 
+  color: #BBBBBB; 
   text-decoration: none;
 }
 
