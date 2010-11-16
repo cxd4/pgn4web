@@ -117,16 +117,18 @@ chrome.contextMenus.create({"type": "separator", "contexts": ["page"]});
 chrome.contextMenus.create({"title": "About the chess games viewer extension", "contexts": ["page"], "onclick": aboutChessGamesViewer});
 
 var pgnLinks = new Array();
-var lastPgnLinksSenderId = null;
+var pgnLabels = new Array();
+var lastSenderTabId = null;
 function pgnLinksPopupRequest(request, sender, sendResponse) {
-  // concatenates responses from multiple frames of the same page
-  // issue: possible race condition among different pages with frames
-  if (sender.tab.id === lastPgnLinksSenderId) {
-     pgnLinks = pgnLinks.concat(request.pgnLinks);
+  if (sender.tab.id === lastSenderTabId) {
+    pgnLinks = pgnLinks.concat(request.pgnLinks);
+    pgnLabels = pgnLabels.concat(request.pgnLabels);
   } else {
-     pgnLinks = request.pgnLinks;
+    pgnLinks = request.pgnLinks;
+    pgnLabels = request.pgnLabels;
   }
   chrome.pageAction.show(sender.tab.id);
+  lastSenderTabId = sender.tab.id;
   sendResponse({});
 }
 
