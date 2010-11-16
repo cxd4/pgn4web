@@ -41,7 +41,7 @@ body {
 
 <body>
 
-<div class="pgnHeader">Chess games viewer: PGN links on this page</div>
+<div class="pgnHeader">Chess games viewer:<span id="numPgnLinks"> </span>PGN link<span id="numPgnPlural">s</span> on this page</div>
 
 <div id="pgnLinkList"></div>
 
@@ -52,6 +52,8 @@ chrome.tabs.getSelected(null, function(tab){
 });
 
 function printLinks(pgnLinks) {
+  document.getElementById("numPgnLinks").innerHTML = " " + pgnLinks.length + " ";
+  document.getElementById("numPgnPlural").innerHTML = pgnLinks.length == 1 ? "" : "s";
   for(i=0; i<pgnLinks.length; i++) {
     document.getElementById("pgnLinkList").innerHTML += '<div class="pgnItem">' +
       '<a title="view games" class="pgnLink" href=. onclick=\'chrome.tabs.create({url: "chess-games-viewer.html?pgnData=' + pgnLinks[i] + '"});\'><img src="alpha-16.png"></a>&nbsp;&nbsp;' +
