@@ -115,6 +115,8 @@ function pgnLinksPopupRequest(request, sender, sendResponse) {
   } else {
     pgnLinks[sender.tab.id] = request.pgnLinks;
   }
+  pgnLinksTitle = pgnLinks[sender.tab.id].length + " chess games PGN link" + (pgnLinks[sender.tab.id].length == 1 ? "" : "s") + " on this page";
+  chrome.pageAction.setTitle({tabId:sender.tab.id, title:pgnLinksTitle});
   chrome.pageAction.show(sender.tab.id);
   sendResponse({});
 }
