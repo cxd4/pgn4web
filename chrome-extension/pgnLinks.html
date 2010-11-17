@@ -59,7 +59,8 @@ function printLinks(pgnLinks) {
       '<a title="view games" class="pgnLink" href=. onclick=\'chrome.tabs.create({url: "chess-games-viewer.html?pgnData=' + pgnLinks[i] + '"});\'><img src="alpha-16.png"></a>&nbsp;&nbsp;' +
       '<a title="view games with live refresh" class="pgnLink" href=. onclick=\'chrome.tabs.create({url: "chess-games-viewer.html?pgnData=' + pgnLinks[i] + '&rm=1"});\'><img src="refresh.png"></a>&nbsp;&nbsp;' +
       '<a title="download games" class="pgnLink" target="_blank" href="' + pgnLinks[i] + '"><img src="download.png"></a>&nbsp;&nbsp;&nbsp;&nbsp;' +
-      pgnLinks[i] + '</div>';
+      '<span title="' + pgnLinks[i].replace(/(^|^.*\/)([^\/]+)(\.pgn)$/i,'$2">$1<b>$2</b>$3') + '</span>' +
+      '</div>';
   }
 }
 
