@@ -5,6 +5,13 @@
  *  for credits, license and more details
  */
 
+/*
+
+HTML, CSS and Javascript code optimized for use as extension
+of Google Chrome v6 or later. Don't use with any other browser.
+
+*/
+
 var pgn4web_pgnLinks = new Array();
 var pgn4web_pgnLinksNum = 0;
 
