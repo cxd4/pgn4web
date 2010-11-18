@@ -48,9 +48,10 @@ body {
 <script type="text/javascript">
 
 chrome.tabs.getSelected(null, function(tab){
-  chrome.pageAction.setIcon({"tabId": tab.id, "path": "alpha-16-clicked.png"});
+  // uncomment this line and the following setTimeout for a page action icon animation effect
+  // chrome.pageAction.setIcon({"tabId": tab.id, "path": "alpha-16-clicked.png"});
   printLinks(chrome.extension.getBackgroundPage().pgnLinks[tab.id]);
-  setTimeout('chrome.pageAction.setIcon({"tabId": ' + tab.id + ', "path": "alpha-16.png"})', 300);
+  // setTimeout('chrome.pageAction.setIcon({"tabId": ' + tab.id + ', "path": "alpha-16.png"})', 300);
 });
 
 function printLinks(pgnLinks) {
