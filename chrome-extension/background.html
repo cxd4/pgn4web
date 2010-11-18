@@ -15,7 +15,7 @@ var debugInfo = "the top left chessboard square will flash in case of PGN data e
 
 function openRemoteUrl(remoteUrl, live) {
   if (!remoteUrl) { return; }
-  var liveParam = live ? '&refreshMinutes=1&search=\\[\\s*Result\\s*"\\*"\\s*\\]' : "";
+  var liveParam = live ? '&refreshMinutes=1.0' + Math.floor(Math.random()*10) + '&search=\\[\\s*Result\\s*"\\*"\\s*\\]' : "";
   url = "chess-games-viewer.html?pgnData=" + remoteUrl + liveParam;
   chrome.tabs.create({url: url});
 }
