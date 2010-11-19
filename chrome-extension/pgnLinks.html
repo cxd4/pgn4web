@@ -61,7 +61,7 @@ chrome.tabs.getSelected(null, function(tab){
   // setTimeout('chrome.pageAction.setIcon({"tabId": ' + tab.id + ', "path": "alpha-16.png"})', 300);
 });
 
-var cursorName = chrome.extension.getBackgroundPage().cursorName;
+var cursorName = "cursor-small.png";
 function printLinks(pgnLinks) {
   document.getElementById("numPgnLinks").innerHTML = " " + pgnLinks.length + " ";
   document.getElementById("numPgnPlural").innerHTML = pgnLinks.length == 1 ? "" : "s";
