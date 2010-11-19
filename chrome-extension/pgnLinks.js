@@ -15,12 +15,13 @@ of Google Chrome v6 or later. Don't use with any other browser.
 var pgn4web_pgnLinks = new Array();
 var pgn4web_pgnLinksNum = 0;
 
-var pgn4web_cursorUrl = chrome.extension.getURL("cursor-small.png");
+var pgn4web_cursorDef = chrome.extension.getURL("cursor-small.png") + " 1 6";
+// var pgn4web_cursorDef = chrome.extension.getURL("cursor-large.png") + " 1 6";
 
 for(i=0; i<document.links.length; i++) {
   if (document.links[i].href.match(/\.pgn$/i)) {
     pgn4web_pgnLinks[pgn4web_pgnLinksNum++] = document.links[i].href;
-    document.links[i].addEventListener("mouseover", function(){this.style.cursor="url(" + pgn4web_cursorUrl + "), auto";}, false);
+    document.links[i].addEventListener("mouseover", function(){this.style.cursor=cursorDef + ", auto;";}, false);
   }
 }
 
