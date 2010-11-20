@@ -38,6 +38,8 @@ of Google Chrome v6 or later. Don't use with any other browser.
 
 <script type="text/javascript">
 
+   var backgroundPage = chrome.extension.getBackgroundPage();
+
    thisRegExp = /(&|\?)(help|h)([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
        alert("pgn4web collection.html parameters" + "\n" +
@@ -49,17 +51,25 @@ of Google Chrome v6 or later. Don't use with any other browser.
              " - help");
    }
 
+   function setPgnTextIndexFromTabId(tab) {
+     if ((backgroundPage.pgnTextIndexFromTabId[tab.id] !== null) && (backgroundPage.pgnTextIndexFromTabId[tab.id] !== undefined) && (backgroundPage.pgnTextIndexFromTabId[tab.id] !== pgnBackground)) {
+       backgroundPage.removePgnTextOnRemoved(tab.id);
+     }
+     backgroundPage.pgnTextIndexFromTabId[tab.id] = pgnBackground;
+     theObject = document.getElementById("pgnText");
+     if ((theObject) && (theObject.value) && (theObject.value != backgroundPage.pgnText[pgnBackground]))
+     { backgroundPage.pgnText[pgnBackground] = theObject.value; }
+   }
+
    pgnBackground = null;
    thisRegExp = /(&|\?)(pgnBackground|pb)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
        if ((pgnBackground = unescape(window.location.search.match(thisRegExp)[3])) !== ""); {
          theObject = document.getElementById("pgnText");
-         theBackgroundPgnText = chrome.extension.getBackgroundPage().pgnText[pgnBackground];
+         theBackgroundPgnText = backgroundPage.pgnText[pgnBackground];
          if ((theObject) && (theBackgroundPgnText) && (theBackgroundPgnText !== undefined)) 
          { theObject.value = theBackgroundPgnText; }
-         // following line clears data and memory from the background page, 
-         // removing it would make the pgnText available for reload on page refresh
-         delete chrome.extension.getBackgroundPage().pgnText[pgnBackground];
+         chrome.tabs.getCurrent(setPgnTextIndexFromTabId);
        }
    } 
 

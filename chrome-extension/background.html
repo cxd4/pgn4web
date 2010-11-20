@@ -59,6 +59,7 @@ function pgnlivePageOnClick(info, tab) {
 }
 
 var pgnText = new Array();
+var pgnTextIndexFromTabId = new Array();
 pgnTextIndex = 0;
 function pgntextOnClick(info, tab) {
   pgnText[pgnTextIndex] = info.selectionText;
@@ -71,6 +72,18 @@ function pgntextOnClick(info, tab) {
   url = "chess-games-viewer.html?pgnBackground=" + pgnTextIndex++;
   chrome.tabs.create({url: url});
 }
+
+function removePgnTextOnRemoved(tabId) {
+  if ((pgnTextIndexFromTabId[tabId] !== null) && (pgnTextIndexFromTabId[tabId] !== undefined)) {
+    var thisPgnTextIndex = pgnTextIndexFromTabId[tabId];
+    delete pgnTextIndexFromTabId[tabId];
+    if (pgnTextIndexFromTabId.indexOf(thisPgnTextIndex) == -1) {
+      delete pgnText[thisPgnTextIndex];
+    }
+  }
+}
+
+chrome.tabs.onRemoved.addListener(removePgnTextOnRemoved);
 
 function aboutChessGamesViewer(info, tab) {
   var aboutText = "Chess games viewer extension for Google Chrome: interactive chessboard showing chess games from links to *.PGN URLs and from PGN text, using context menus and page actions.";
