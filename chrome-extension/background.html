@@ -73,10 +73,10 @@ function pgntextOnClick(info, tab) {
 }
 
 function aboutChessGamesViewer(info, tab) {
-  var aboutText = "Chess games viewer extension for Google Chrome: interactive chessboard showing chess games from PGN URLs and from PGN text, using context menus and page actions.";
-  aboutText += "\n\nA context menu shows chess games from *.PGN chess games URLs; PGN (Portable Games Notation) files are commonly used to store and share chess games information. The live refresh option reloads the games periodically until all games are ended; use for links to chess games live broadcasts. The mouse cursor icon highlights *.PGN chess games URLs when hovering on them.";
+  var aboutText = "Chess games viewer extension for Google Chrome: interactive chessboard showing chess games from links to *.PGN URLs and from PGN text, using context menus and page actions.";
+  aboutText += "\n\nA context menu shows chess games from links to *.PGN chess games URLs; PGN (Portable Games Notation) files are commonly used to store and share chess games information. The live refresh option reloads the games periodically until all games are ended; use for links to chess games live broadcasts. The mouse cursor icon highlights links to *.PGN chess games URLs when hovering on them.";
   aboutText += "\n\nA context menu shows chess games from PGN chess games text selecetd in the web page.";
-  aboutText += "\n\nA page action looks for PGN chess games URLs in the current page; if found, a page action icon in the address bar provides links for opening the PGN chess games URLs in the chess games viewer.";
+  aboutText += "\n\nA page action looks for links to *.PGN chess games URLs in the current page; if found, a page action icon in the address bar allows or opening the links in the chess games viewer.";
   aboutText += "\n\nClick on the viewer's chessboard top right square for user interface help, credits and license; " + debugInfo + ".";
   aboutText += "\n\n\nClick OK to visit the pgn4web homepage and wiki for more info.";
   if (confirm(aboutText)) { chrome.tabs.create({url: "http://pgn4web.casaschi.net"}); }
