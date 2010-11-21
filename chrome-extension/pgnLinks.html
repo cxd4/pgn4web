@@ -67,7 +67,7 @@ function printLinks(pgnLinks) {
   document.getElementById("numPgnLinks").innerHTML = " " + pgnLinks.length + " ";
   document.getElementById("numPgnPlural").innerHTML = pgnLinks.length == 1 ? "" : "s";
   for(i=0; i<pgnLinks.length; i++) {
-    var pgnFileName = pgnLinks[i].replace(/(^|^.*\/)([^\/]+\.pgn)$/i,'$2');
+    var pgnFileName = pgnLinks[i].replace(/(^|^[^?#]*\/)([^?#\/]+\.pgn)($|\?.*$)/i,'$2');
     document.getElementById("pgnLinkList").innerHTML += '<div class="pgnItem">' +
       '<a title="view ' + pgnFileName + ' games" class="pgnLink" href=. onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'chrome.tabs.create({url: "chess-games-viewer.html?pgnData=' + pgnLinks[i] + '"});\'><img src="alpha-16.png"></a>&nbsp;&nbsp;' +
       '<a title="view ' + pgnFileName + ' games with live refresh" class="pgnLink" href=. onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'chrome.tabs.create({url: "chess-games-viewer.html?pgnData=' + pgnLinks[i] + '&refreshMinutes=1.0' + Math.floor(Math.random()*10) + '"});\'><img src="refresh.png"></a>&nbsp;&nbsp;' +

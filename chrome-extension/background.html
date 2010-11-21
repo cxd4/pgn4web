@@ -23,7 +23,7 @@ function openRemoteUrl(remoteUrl, live) {
 function pgnLinkOnClick(info, tab, live) {
   var remoteUrl = info.linkUrl;
   if (!remoteUrl) { return; }
-  if (!remoteUrl.match(/\.pgn($|\?.*$|#.*$)/i)) { return; }
+  if (!remoteUrl.match(/^[^?#]+\.pgn($|\?.*$)/i)) { return; }
   openRemoteUrl(remoteUrl, live);
 }
 
@@ -35,7 +35,7 @@ function pgnPageOnClick(info, tab, live) {
   //
   // allowing any URL when manually eneterd (to cope with some sites using .txt files or using scripts like php
   //
-  // if (!remoteUrl.match(/\.pgn($|\?.*$|#.*$)/i)) {
+  // if (!remoteUrl.match(/^[^?#]+\.pgn($|\?.*$)/i)) {
   //  alert("You entered:\n" + remoteUrl + "\n\nError: only PGN chess games URL allowed.");
   //  return;
   // }
@@ -97,7 +97,7 @@ function aboutChessGamesViewer(info, tab) {
 
 // which URL patters should be considered as PGN chess games
 
-pgnUrlPatterns = ["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", "*://*/*.PGN?*", "*://*/*.Pgn?*", "*://*/*.pgn#*", "*://*/*.PGN#*", "*://*/*.Pgn#*"];
+pgnUrlPatterns = ["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", "*://*/*.PGN?*", "*://*/*.Pgn?*"];
 
 // "link" context item to open remote PGN chess games URLs
 
