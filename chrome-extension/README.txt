@@ -30,3 +30,10 @@ until chromium bug 63965 is resolved the context menu will not appear for
 links shown as images like this <a href=game.pgn><img src=image.jpeg/></a>
 see http://code.google.com/p/chromium/issues/detail?id=63965
 
+background.html and manifest.json match pattern definition:
+because of how match patterns can be defined, some URLs might be identified
+as PGN chess games URL even if they should not, for instance
+http://host/file.html?pgnData=games.pgn would match *://*/*.pgn
+This will lead to a context menu appearing when it should not (but the
+mouse pointer will not change and the viewer will not open the link). 
+
