@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <gupdate xmlns='http://www.google.com/update2/response' protocol='2.0'>
   <app appid='mcgldbmlklekdhnmdopknbgcnfbondji'>
-    <updatecheck codebase='http://pgn4web.googlecode.com/files/Chess-games-viewer-pgn4web-chrome-extension-1.1.7-2.13.crx' version='1.1.7' />
+    <updatecheck codebase='http://pgn4web.googlecode.com/files/Chess-games-viewer-pgn4web-chrome-extension-1.1.8-2.13.crx' version='1.1.8' />
   </app>
 </gupdate>
