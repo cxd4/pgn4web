@@ -38,7 +38,9 @@ of Google Chrome v6 or later. Don't use with any other browser.
 
 <script type="text/javascript">
 
-   var backgroundPage = chrome.extension.getBackgroundPage();
+   if ((chrome) && (chrome.extension) && (chrome.extension.getBackgroundPage)) {
+     var backgroundPage = chrome.extension.getBackgroundPage();
+   }
 
    thisRegExp = /(&|\?)(help|h)([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
