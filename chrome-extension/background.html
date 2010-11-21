@@ -95,9 +95,17 @@ function aboutChessGamesViewer(info, tab) {
   if (confirm(aboutText)) { chrome.tabs.create({url: "http://pgn4web.casaschi.net"}); }
 }
 
-chrome.contextMenus.create({"title": "View chess games link", "contexts": ["link"], targetUrlPatterns:["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", "*://*/*.PGN?*", "*://*/*.Pgn?*", "*://*/*.pgn#*", "*://*/*.PGN#*", "*://*/*.Pgn#*"], "onclick": pgnviewLinkOnClick});
+// which URL patters should be considered as PGN chess games
 
-chrome.contextMenus.create({"title": "View chess games link with live refresh", "contexts": ["link"], targetUrlPatterns:["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", "*://*/*.PGN?*", "*://*/*.Pgn?*", "*://*/*.pgn#*", "*://*/*.PGN#*", "*://*/*.Pgn#*"], "onclick": pgnliveLinkOnClick});
+pgnUrlPatterns = ["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", "*://*/*.PGN?*", "*://*/*.Pgn?*", "*://*/*.pgn#*", "*://*/*.PGN#*", "*://*/*.Pgn#*"];
+
+// "link" context item to open remote PGN chess games URLs
+
+chrome.contextMenus.create({"title": "View chess games link", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnviewLinkOnClick});
+
+chrome.contextMenus.create({"title": "View chess games link with live refresh", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnliveLinkOnClick});
+
+// "page" and "selection" context menu to open PGN text 
 
 chrome.contextMenus.create({"title": "Enter PGN chess games TEXT for viewing", "contexts": ["page"], "onclick": pgntextOnClick});
 
@@ -105,21 +113,34 @@ chrome.contextMenus.create({"title": "View selected TEXT as PGN chess games", "c
 
 chrome.contextMenus.create({"type": "separator", "contexts": ["page", "selection"]});
 
+// "page" and "selection" context menu to enter PGN chess games URL for opening
+
 chrome.contextMenus.create({"title": "Enter PGN chess games URL for viewing", "contexts": ["page", "selection"], "onclick": pgnviewPageOnClick});
 
 chrome.contextMenus.create({"title": "Enter PGN chess games URL for viewing with live refresh", "contexts": ["page", "selection"], "onclick": pgnlivePageOnClick});
 
-chrome.contextMenus.create({"type": "separator", "contexts": ["link"], targetUrlPatterns:["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", "*://*/*.PGN?*", "*://*/*.Pgn?*", "*://*/*.pgn#*", "*://*/*.PGN#*", "*://*/*.Pgn#*"]});
+// "link", "page" and "selection" about menus
 
-chrome.contextMenus.create({"title": "About the chess games viewer extension", "contexts": ["link"], targetUrlPatterns:["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", "*://*/*.PGN?*", "*://*/*.Pgn?*", "*://*/*.pgn#*", "*://*/*.PGN#*", "*://*/*.Pgn#*"], "onclick": aboutChessGamesViewer});
+// ideally, only those two entries should be required
+//
+// chrome.contextMenus.create({"type": "separator", "contexts": ["link", "page", "selection"], targetUrlPatterns: pgnUrlPatterns});
+//
+// chrome.contextMenus.create({"title": "About the chess games viewer extension", "contexts": ["link", "page", "selection"], targetUrlPatterns: pgnUrlPatterns, "onclick": aboutChessGamesViewer});
+//
+// however, until chromium bug 63545 is resolved, four entries are required
+// and adding the about menu to the "selection" context would result in
+// duplicated items when a selected link is right-clicked
+// see http://code.google.com/p/chromium/issues/detail?id=63545
 
-// can NOT add separator/about items to the selection context
-// otherwise they would appear twice when selecting a text and
-// pointing to a link at the same time
+chrome.contextMenus.create({"type": "separator", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns});
+
+chrome.contextMenus.create({"title": "About the chess games viewer extension", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": aboutChessGamesViewer});
 
 chrome.contextMenus.create({"type": "separator", "contexts": ["page"]});
 
 chrome.contextMenus.create({"title": "About the chess games viewer extension", "contexts": ["page"], "onclick": aboutChessGamesViewer});
+
+// end of about menus entries
 
 var pgnLinks = new Array();
 function pgnLinksPopupRequest(request, sender, sendResponse) {
