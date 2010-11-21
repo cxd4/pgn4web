@@ -101,6 +101,10 @@ pgnUrlPatterns = ["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", 
 
 // "link" context item to open remote PGN chess games URLs
 
+// until chromium bug 63965 is resolved the context menu will not appear for
+// links shown as images like this <a href=game.pgn><img src=image.jpeg/></a>
+// see http://code.google.com/p/chromium/issues/detail?id=63965
+
 chrome.contextMenus.create({"title": "View chess games link", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnviewLinkOnClick});
 
 chrome.contextMenus.create({"title": "View chess games link with live refresh", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnliveLinkOnClick});
