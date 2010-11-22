@@ -1445,8 +1445,8 @@ function loadPgnFromPgnUrl(pgnUrl){
   }
 
   try {
-    // anti-caching #1: add random parameter
-    urlRandomizer = (LiveBroadcastDelay > 0) ? "?nocahce=" + Math.random() : "";
+    // anti-caching #1: add random parameter, only to plain URLs
+    urlRandomizer = ((LiveBroadcastDelay > 0) && (pgnUrl.indexOf("?") == -1) && (pgnUrl.indexOf("#") == -1)) ? "?nocahce=" + Math.random() : "";
     http_request.open("GET", pgnUrl + urlRandomizer, false);
     // anti-caching #2: add header option
     if (LiveBroadcastDelay > 0) {
