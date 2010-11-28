@@ -32,6 +32,19 @@ function customFunctionOnPgnGameLoad() {}
 function customFunctionOnMove() {}
 function customFunctionOnAlert(msg) {}
 
+// API to parse custom tags in customFunctionOnPgnGameLoad
+
+function customPgnHeaderTag(customTagString, htmlElementIdString, gameNumber) {
+  customTagString = customTagString.replace(/\W+/g, "");
+  if (gameNumber === undefined) { gameNumber = currentGame; }
+  if (tagValues = pgnGame[gameNumber].match('\\[\\s*' + customTagString + '\\s*\"([^\"]+)\"\\s*\\]')) {
+    tagValue = tagValues[1];
+  } else { tagValue = ""; }
+  if ((htmlElementIdString) && (theObject = document.getElementById(htmlElementIdString)) && (theObject.innerHTML !== null)) {
+    theObject.innerHTML = tagValue;
+  }
+  return tagValue;
+}
 
 window.onload = start_pgn4web;
 
