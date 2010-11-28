@@ -123,6 +123,10 @@ of Google Chrome v6 or later. Don't use with any other browser.
         theObject.innerHTML = "round " + theObject.innerHTML;
       }
     }
+    customPgnHeaderTag('ECO', 'GameECO');
+    customPgnHeaderTag('Opening', 'GameOpening');
+    customPgnHeaderTag('Variation', 'GameVariation');
+    customPgnHeaderTag('Result', 'ResultAtGametextEnd');
   }
 
   function customFunctionOnPgnTextLoad() {
@@ -166,11 +170,16 @@ of Google Chrome v6 or later. Don't use with any other browser.
 <div class="headerItem"><span class="innerHeaderItem" title="black clock" id="GameBlackClock"></span>&nbsp;</div>
 <div class="headerItem">&nbsp;</div>
 <div class="headerItem"><a href="#bottom" class="innerHeaderItem boldItem" title="result" id="GameResult"></a>&nbsp;</div>
+<div class="headerItem">&nbsp;</div>
+<div class="headerItem">&nbsp;</div>
+<div class="headerItem"><a href="#bottom" class="innerHeaderItem" title="eco" id="GameECO"></a>&nbsp;</div>
+<div class="headerItem"><a href="#bottom" class="innerHeaderItem" title="opening" id="GameOpening"></a>&nbsp;</div>
+<div class="headerItem"><a href="#bottom" class="innerHeaderItem" title="variation" id="GameVariation"></a>&nbsp;</div>
 </div>
 
 </div>
 
-<div class="moveText" id="GameText"></div>
+<div class="moveText"><span id="GameText"></span> <span id="ResultAtGametextEnd"></span></div>
 
 <div class="notes">
 <div title="live broadcast status" style="float: left; text-align: left; margin-right: 20px; margin-bottom: 5px;" id="GameLiveStatus"></div>

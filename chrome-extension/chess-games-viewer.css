@@ -122,8 +122,8 @@ body {
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
-  font-size: 120%;
-  margin-bottom: 0.25em;
+  font-size: 110%;
+  margin-bottom: 0.10em;
 }
 
 .innerHeaderItem {
