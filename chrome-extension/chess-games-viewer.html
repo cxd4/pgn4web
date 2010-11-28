@@ -132,7 +132,8 @@ of Google Chrome v6 or later. Don't use with any other browser.
     customPgnHeaderTag('Variation', 'GameVariation');
     theObject = document.getElementById('GameVariation');
     if ((theObject) && (theObject.innerHTML === "")) { theObject.style.marginLeft = "0"; }
-    customPgnHeaderTag('Result', 'ResultAtGametextEnd');
+    if (PlyNumber > 0) { customPgnHeaderTag('Result', 'ResultAtGametextEnd'); }
+    else { if (theObject = document.getElementById('ResultAtGametextEnd')) { theObject.innerHTML = ""; } }
   }
 
   function customFunctionOnPgnTextLoad() {
