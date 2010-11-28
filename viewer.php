@@ -731,6 +731,10 @@ END;
   function customFunctionOnPgnGameLoad() {
     document.getElementById('currGm').innerHTML = currentGame+1;
     document.getElementById('numPly').innerHTML = PlyNumber;
+    customPgnHeaderTag('ECO', 'GameECO');
+    customPgnHeaderTag('Opening', 'GameOpening');
+    customPgnHeaderTag('Variation', 'GameVariation');
+    customPgnHeaderTag('Result', 'ResultAtGametextEnd');
   }
   function customFunctionOnMove() { 
     document.getElementById('currPly').innerHTML = CurrentPly; 
@@ -776,26 +780,31 @@ END;
     <td valign=top align=left width=50%>
 
       <table>
-      <tr><td class="label">date</td><td class="normalItem"><span id="GameDate"></span></td></tr>
-      <tr><td class="label">site</td><td class="normalItem"><span style="white-space: nowrap;" id="GameSite"></span></td></tr>
+      <tr><td valign="top" class="label">date</td><td class="normalItem"><span id="GameDate"></span></td></tr>
+      <tr><td valign="top" class="label">site</td><td class="normalItem"><span style="white-space: nowrap;" id="GameSite"></span></td></tr>
       <tr><td colspan=2 class="rowSpace"></td></tr>
-      <tr><td class="label">event</td><td class="normalItem"><span style="white-space: nowrap;" id="GameEvent"></span></td></tr> 
-      <tr><td class="label">round</td><td class="normalItem"><span id="GameRound"></span></td></tr> 
+      <tr><td valign="top" class="label">event</td><td class="normalItem"><span style="white-space: nowrap;" id="GameEvent"></span></td></tr> 
+      <tr><td valign="top" class="label">round</td><td class="normalItem"><span id="GameRound"></span></td></tr> 
       <tr><td colspan=2 class="rowSpace"></td></tr>
-      <tr><td class="label">white</td><td class="boldItem"><span style="white-space: nowrap;" id="GameWhite"></span></td></tr>
-      <tr><td class="label">black</td><td class="boldItem"><span style="white-space: nowrap;" id="GameBlack"></span></td></tr>
+      <tr><td valign="top" class="label">white</td><td class="boldItem"><span style="white-space: nowrap;" id="GameWhite"></span></td></tr>
+      <tr><td valign="top" class="label">black</td><td class="boldItem"><span style="white-space: nowrap;" id="GameBlack"></span></td></tr>
       <tr><td colspan=2 class="rowSpace"></td></tr>
-      <tr><td class="label">result</td><td><span class="boldItem" id="GameResult"></span></td></tr>
+      <tr><td valign="top" class="label">result</td><td><span class="boldItem" id="GameResult"></span></td></tr>
       <tr><td colspan=2 class="rowSpace"></td></tr>
+      <tr><td valign="top" class="label">eco</td><td class="normalItem"><span id="GameECO"></span></td></tr>
+      <tr><td valign="top" class="label">opening</td><td class="normalItem"><span id="GameOpening"></span></td></tr>
+      <tr><td valign="top" class="label">variation</td><td class="normalItem"><span id="GameVariation"></span></td></tr>
+      <tr><td colspan=2 class="rowSpace"></td></tr>
+      <!--
       <tr><td class="label">side</td><td class="normalItem"><span id="GameSideToMove"></span></td></tr>
-      <tr><td class="label">last</td><td><span class="move"><span id="GameLastMove"></span></span></td></tr>
-      <tr><td class="label">next</td><td><span class="move"><span id="GameNextMove"></span></span></td></tr>
-      <tr><td colspan=2 class="rowSpace"></td></tr>
-      <tr><td class="label">ply</td><td class="normalItem"><span id=currPly>0</span> (<span id=numPly>0</span>)</td></tr>
-      <tr><td class="label">game</td><td class="normalItem"><span id=currGm>0</span> (<span id=numGm>0</span>)</td></tr>
+      <tr><td valign="top" class="label">last</td><td><span class="move"><span id="GameLastMove"></span></span></td></tr>
+      <tr><td valign="top" class="label">next</td><td><span class="move"><span id="GameNextMove"></span></span></td></tr>
+      -->
+      <tr><td valign="top" class="label">ply</td><td class="normalItem"><span id=currPly>0</span> (<span id=numPly>0</span>)</td></tr>
+      <tr><td valign="top" class="label">game</td><td class="normalItem"><span id=currGm>0</span> (<span id=numGm>0</span>)</td></tr>
       <!--
       <tr><td colspan=2 class="rowSpace"></td></tr>
-      <tr><td  class="label">comment</td><td><span class="nromalItem" id="GameLastComment"></span></td></tr>
+      <tr><td valign="top" class="label">comment</td><td><span class="nromalItem" id="GameLastComment"></span></td></tr>
       -->
       </table>
 
@@ -814,7 +823,7 @@ END;
 <table width=100% cellspacing=0 cellpadding=5>
   <tr>
     <td colspan=2>
-      <div style="padding-top: 2em; padding-bottom: 1em; text-align: justify;" id="GameText"></div>
+      <div style="padding-top: 2em; padding-bottom: 1em; text-align: justify;"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
     </td>
   </tr>
 </table>
