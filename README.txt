@@ -274,6 +274,12 @@ executed, then (when the game has been loaded and the move positioning
 completed) customFunctionOnPgnGameLoad() is executed and finally (when the
 selected game is fully loaded) customFunctionOnPgnTextLoad() is executed.
 
+The function customPgnHeaderTag(customTagString, htmlElementIdString, gameNumber) 
+is available for use in customFunctionOnPgnGameLoad() to parse custom PGN header
+tags and automatically assign their value to the given HTML elements. The function 
+returns the custom tag value and the `gameNumber` parameter, if unassigned, 
+defaults to the current game.
+
 See twic765.html or live.html for examples.
 
 The following functions, if defined in the HTML file after loading pgn4web.js,
