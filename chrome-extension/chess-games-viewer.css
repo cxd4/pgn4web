@@ -126,10 +126,18 @@ body {
   margin-bottom: 0.10em;
 }
 
-.innerHeaderItem {
+.innerHeaderItem,
+.innerHeaderItemNoMargin {
   color: black;
-  margin-left: 20px;
   text-decoration: none;
+}
+
+.innerHeaderItem {
+  margin-left: 20px;
+}
+
+.innerHeaderItemNoMargin {
+  margin-left: 0;
 }
 
 .boldItem {
