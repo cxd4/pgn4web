@@ -124,8 +124,14 @@ of Google Chrome v6 or later. Don't use with any other browser.
       }
     }
     customPgnHeaderTag('ECO', 'GameECO');
+    theObject = document.getElementById('GameECO');
+    if ((theObject) && (theObject.innerHTML === "")) { theObject.style.marginLeft = "0"; }
     customPgnHeaderTag('Opening', 'GameOpening');
+    theObject = document.getElementById('GameOpening');
+    if ((theObject) && (theObject.innerHTML === "")) { theObject.style.marginLeft = "0"; }
     customPgnHeaderTag('Variation', 'GameVariation');
+    theObject = document.getElementById('GameVariation');
+    if ((theObject) && (theObject.innerHTML === "")) { theObject.style.marginLeft = "0"; }
     customPgnHeaderTag('Result', 'ResultAtGametextEnd');
   }
 
@@ -164,6 +170,8 @@ of Google Chrome v6 or later. Don't use with any other browser.
 <div class="headerItem"><span class="innerHeaderItem" title="event" id="GameEvent"></span>&nbsp;</div>
 <div class="headerItem"><span class="innerHeaderItem" title="round" id="GameRound"></span>&nbsp;</div>
 <div class="headerItem">&nbsp;</div>
+<div class="headerItem"><span class="innerHeaderItem" title="eco" id="GameECO"></span><span class="innerHeaderItem" title="opening" id="GameOpening"></span><span class="innerHeaderItem" title="variation" id="GameVariation"></span></div>
+<div class="headerItem">&nbsp;</div>
 <div class="headerItem"><span class="innerHeaderItem" title="white clock" id="GameWhiteClock"></span>&nbsp;</div>
 <div class="headerItem"><a href="#" class="innerHeaderItem boldItem" title="white player" id="GameWhite"></a>&nbsp;</div>
 <div class="headerItem"><a href="#board" class="innerHeaderItem boldItem" title="black player" id="GameBlack"></a>&nbsp;</div>
@@ -171,11 +179,6 @@ of Google Chrome v6 or later. Don't use with any other browser.
 <div class="headerItem">&nbsp;</div>
 <div class="headerItem"><a href="#bottom" class="innerHeaderItem boldItem" title="result" id="GameResult"></a>&nbsp;</div>
 <div class="headerItem">&nbsp;</div>
-<!--
-<div class="headerItem"><span class="innerHeaderItem" title="eco" id="GameECO"></span>&nbsp;</div>
-<div class="headerItem"><span class="innerHeaderItem" title="opening" id="GameOpening"></span>&nbsp;</div>
-<div class="headerItem"><span class="innerHeaderItem" title="variation" id="GameVariation"></span>&nbsp;</div>
--->
 </div>
 
 </div>
