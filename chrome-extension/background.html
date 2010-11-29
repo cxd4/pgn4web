@@ -38,7 +38,7 @@ function pgnLinkOnClick(info, tab, live) {
   var remoteUrl = info.linkUrl;
   if (!remoteUrl) { return; }
   if (!validatePgnUrl(remoteUrl)) { 
-    alert("Because of a limitation of the Google Chrome extensions framework, the clicked link triggers the link context menu of the chess games viewer even though the link's URL does not match the usual pattern of PGN chess games URLs and will not be opened automatically. To open this link in the chess games viewer, copy the link's URL and manually enter the URL using the page context menu.");
+    alert("Because of a limitation of the Google Chrome extensions URL pattern matching capabilities, the clicked link displays the link context menu of the chess games viewer even if the link's URL does not match the usual pattern of PGN chess games URLs; hence the link will not be opened automatically in the chess games viewer; to open the link, copy the link's URL and manually enter the URL using the page context menu.");
     return; 
   }
   openRemoteUrl(remoteUrl, live);
