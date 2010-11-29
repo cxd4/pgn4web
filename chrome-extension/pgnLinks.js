@@ -19,7 +19,7 @@ var pgn4web_cursorDef = "url(" + chrome.extension.getURL("cursor-small.png") + "
 // var pgn4web_cursorDef = "url(" + chrome.extension.getURL("cursor-large.png") + ") 1 6, auto";
 
 for(i=0; i<document.links.length; i++) {
-  if (document.links[i].href.match(/^[^?#]+\.pgn($|\?.*$|#.*$)/i)) {
+  if (validatePgnUrl(document.links[i].href)) {
     pgn4web_pgnLinks[pgn4web_pgnLinksNum++] = document.links[i].href;
     document.links[i].addEventListener("mouseover", function(){this.style.cursor = pgn4web_cursorDef;}, false);
   }
@@ -27,5 +27,9 @@ for(i=0; i<document.links.length; i++) {
 
 if (pgn4web_pgnLinksNum > 0) {
   chrome.extension.sendRequest({pgnLinks: pgn4web_pgnLinks}, function(response) {}); 
+}
+
+function validatePgnUrl(pgnUrl) {
+  return pgnUrl.match(/^[^?#]+\.pgn($|\?.*$|#.*$)/i);
 }
 
