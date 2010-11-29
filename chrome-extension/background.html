@@ -13,13 +13,18 @@
 
 var debugInfo = "the top left chessboard square will flash in case of PGN data errors, click that square for further details";
 
+var pgnHeaderRegExpGlobal = /((\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)+)/g;
+
 function validatePgnUrl(pgnUrl) {
   return pgnUrl.match(/^[^?#]+\.pgn($|\?.*$|#.*$)/i);
 }
 
 function validatePgnText(pgnText) {
-  // to be completed
-  return true;
+  testPgnText = pgnText;
+  testPgnText = testPgnText.replace(/%[^\n]*\n/g, ""); // remove comments, might fail becuase of how prompt boxes work
+  testPgnText = testPgnText.replace(/{[^}]*}/g, ""); // remove comments
+  testPgnText = testPgnText.replace(pgnHeaderRegExpGlobal, ""); // remove headers
+  return (testPgnText.match(/[^\s0-9.a-hx:KQRBNO#+=!?$()\/\n\r\-]+/) === null);
 }
 
 function openRemoteUrl(remoteUrl, live) {
@@ -41,6 +46,9 @@ function pgnPageOnClick(info, tab, live) {
   var defaultRemoteUrl = info.selectionText ? info.selectionText.replace(/[\n\r]+/g," ") : "";
   var remoteUrl = prompt(promptLabel, defaultRemoteUrl);
   if (!remoteUrl) { return; }
+  //
+  // allow arbitrary URLs, like *.txt
+  //
   // if (!validatePgnUrl(remoteUrl)) { return; }
   openRemoteUrl(remoteUrl, live);
 }
@@ -68,10 +76,12 @@ function pgntextOnClick(info, tab) {
   pgnText[pgnTextIndex] = info.selectionText;
   if (!pgnText[pgnTextIndex]) { 
     pgnText[pgnTextIndex] = prompt("Enter PGN chess games TEXT for viewing (pasting multi-line PGN data in the textbox is ok; " + debugInfo + "):");
-    var pgnHeaderRegExpGlobal = /((\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)+)/g;
     pgnText[pgnTextIndex] = pgnText[pgnTextIndex].replace(pgnHeaderRegExpGlobal, "\n$1\n");
   }
   if (!pgnText[pgnTextIndex]) { return; }
+  //
+  // allow arbitrary text
+  //
   // if (!validatePgnText(pgnText[pgnTextIndex])) { 
   //   delete pgnText[pgnTextIndex]);
   //   return; 
