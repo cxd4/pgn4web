@@ -16,7 +16,7 @@ var debugInfo = "the top left chessboard square will flash in case of PGN data e
 var pgnHeaderRegExpGlobal = /((\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)+)/g;
 
 function validatePgnUrl(pgnUrl) {
-  return pgnUrl.match(/^[^?#]+\.pgn($|\?.*$|#.*$)/i);
+  return pgnUrl.match(/^(http|https):\/\/[^?#]+\.pgn($|\?.*$|#.*$)/i);
 }
 
 function validatePgnText(pgnText) {

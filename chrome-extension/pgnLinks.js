@@ -30,6 +30,6 @@ if (pgn4web_pgnLinksNum > 0) {
 }
 
 function validatePgnUrl(pgnUrl) {
-  return pgnUrl.match(/^[^?#]+\.pgn($|\?.*$|#.*$)/i);
+  return pgnUrl.match(/^(http|https):\/\/[^?#]+\.pgn($|\?.*$|#.*$)/i);
 }
 
