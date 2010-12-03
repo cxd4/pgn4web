@@ -16,12 +16,12 @@ var debugInfo = "the top left chessboard square will flash in case of PGN data e
 var pgnHeaderRegExpGlobal = /((\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)+)/g;
 
 function validatePgnUrl(pgnUrl) {
-  return pgnUrl.match(/^(http|https):\/\/[^?#]+\.pgn($|\?.*$|#.*$)/i);
+  return (pgnUrl.match(/^(http|https):\/\/[^?#]+\.pgn($|\?.*$|#.*$)/i) !== null);
 }
 
 function validatePgnText(pgnText) {
   testPgnText = pgnText;
-  testPgnText = testPgnText.replace(/%[^\n]*\n/g, ""); // remove comments, might fail becuase of how prompt boxes work
+  testPgnText = testPgnText.replace(/%[^\n]*(\n|$)/g, ""); // remove comments, might fail because of how prompt boxes work
   testPgnText = testPgnText.replace(/{[^}]*}/g, ""); // remove comments
   testPgnText = testPgnText.replace(pgnHeaderRegExpGlobal, ""); // remove headers
   return (testPgnText.match(/[^\s0-9.a-hx:KQRBNO#+=!?$()\/\n\r\-]+/) === null);
@@ -45,14 +45,9 @@ function pgnLinkOnClick(info, tab, live) {
 }
 
 function pgnPageOnClick(info, tab, live) {
-  var promptLabel = "Enter PGN chess games URL for viewing" + (live ? " with live refresh" : "") + " (" + debugInfo + "):";
-  var defaultRemoteUrl = info.selectionText ? info.selectionText.replace(/[\n\r]+/g," ") : "";
-  var remoteUrl = prompt(promptLabel, defaultRemoteUrl);
+  var remoteUrl = prompt("Enter PGN chess games URL for viewing" + (live ? " with live refresh" : "") + " (" + ((info.selectionText && (!validatePgnUrl(info.selectionText))) ? "supplied URL does not match the usual PGN URL pattern; " : "") + debugInfo + "):", info.selectionText ? info.selectionText : "");
   if (!remoteUrl) { return; }
-  //
-  // allow arbitrary URLs, like *.txt
-  //
-  // if (!validatePgnUrl(remoteUrl)) { return; }
+
   openRemoteUrl(remoteUrl, live);
 }
 
@@ -76,19 +71,25 @@ var pgnText = new Array();
 var pgnTextIndexFromTabId = new Array();
 pgnTextIndex = 0;
 function pgntextOnClick(info, tab) {
-  pgnText[pgnTextIndex] = info.selectionText;
-  if (!pgnText[pgnTextIndex]) { 
+  if (info.selectionText) {
+    var needsValidation = true;
+    pgnText[pgnTextIndex] = info.selectionText;
+  } else {
+    var needsValidation = false;
     pgnText[pgnTextIndex] = prompt("Enter PGN chess games TEXT for viewing (pasting multi-line PGN data in the textbox is ok; " + debugInfo + "):");
+    if (!pgnText[pgnTextIndex]) {
+      delete pgnText[pgnTextIndex];
+      return;
+    }
     pgnText[pgnTextIndex] = pgnText[pgnTextIndex].replace(pgnHeaderRegExpGlobal, "\n$1\n");
   }
-  if (!pgnText[pgnTextIndex]) { return; }
-  //
-  // allow arbitrary text
-  //
-  // if (!validatePgnText(pgnText[pgnTextIndex])) { 
-  //   delete pgnText[pgnTextIndex]);
-  //   return; 
-  // }
+
+  if (needsValidation && (!validatePgnText(pgnText[pgnTextIndex]))) {
+    delete pgnText[pgnTextIndex];
+    alert("Supplied text does not match the usual PGN text pattern. Copy the text and use the chess games viewer page menu to manually enter the amended PGN text.");
+    return; 
+  }
+
   url = "chess-games-viewer.html?pgnBackground=" + pgnTextIndex++;
   chrome.tabs.create({url: url});
 }
