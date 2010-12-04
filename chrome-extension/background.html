@@ -81,8 +81,8 @@ function pgntextOnClick(info, tab) {
       delete pgnText[pgnTextIndex];
       return;
     }
-    pgnText[pgnTextIndex] = pgnText[pgnTextIndex].replace(pgnHeaderRegExpGlobal, "\n$1\n");
   }
+  pgnText[pgnTextIndex] = pgnText[pgnTextIndex].replace(pgnHeaderRegExpGlobal, "\n$1\n");
 
   if (needsValidation && (!validatePgnText(pgnText[pgnTextIndex]))) {
     delete pgnText[pgnTextIndex];
