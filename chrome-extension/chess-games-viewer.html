@@ -39,49 +39,49 @@ of Google Chrome v6 or later. Don't use with any other browser.
 <script type="text/javascript">
 
    if ((chrome) && (chrome.extension) && (chrome.extension.getBackgroundPage)) {
-     var backgroundPage = chrome.extension.getBackgroundPage();
+      var backgroundPage = chrome.extension.getBackgroundPage();
    }
 
    thisRegExp = /(&|\?)(help|h)([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
-       alert("pgn4web collection.html parameters" + "\n" +
-             " - pgnBackground=index" + "\n" +
-             " - pgnData=URL.pgn" + "\n" +
-	     " - search=search expression" + "\n" +
-             " - refreshMinutes=live broadcast delay (default 0 = live broadcast disabled)" + "\n" +
-             " - refreshDemo= if set true sets live demo mode (default false)" + "\n" +
-             " - help");
+      alert("pgn4web collection.html parameters" + "\n" +
+            " - pgnBackground=index" + "\n" +
+            " - pgnData=URL.pgn" + "\n" +
+            " - search=search expression" + "\n" +
+            " - refreshMinutes=live broadcast delay (default 0 = live broadcast disabled)" + "\n" +
+            " - refreshDemo= if set true sets live demo mode (default false)" + "\n" +
+            " - help");
    }
 
    function setPgnTextIndexFromTabId(tab) {
-     if ((backgroundPage.pgnTextIndexFromTabId[tab.id] !== null) && (backgroundPage.pgnTextIndexFromTabId[tab.id] !== undefined) && (backgroundPage.pgnTextIndexFromTabId[tab.id] !== pgnBackground)) {
-       backgroundPage.removePgnTextOnRemoved(tab.id);
-     }
-     backgroundPage.pgnTextIndexFromTabId[tab.id] = pgnBackground;
-     theObject = document.getElementById("pgnText");
-     if ((theObject) && (theObject.value) && (theObject.value != backgroundPage.pgnText[pgnBackground]))
-     { backgroundPage.pgnText[pgnBackground] = theObject.value; }
+      if ((backgroundPage.pgnTextIndexFromTabId[tab.id] !== null) && (backgroundPage.pgnTextIndexFromTabId[tab.id] !== undefined) && (backgroundPage.pgnTextIndexFromTabId[tab.id] !== pgnBackground)) {
+         backgroundPage.removePgnTextOnRemoved(tab.id);
+      }
+      backgroundPage.pgnTextIndexFromTabId[tab.id] = pgnBackground;
+      theObject = document.getElementById("pgnText");
+      if ((theObject) && (theObject.value) && (theObject.value != backgroundPage.pgnText[pgnBackground]))
+      { backgroundPage.pgnText[pgnBackground] = theObject.value; }
    }
 
    pgnBackground = null;
    thisRegExp = /(&|\?)(pgnBackground|pb)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
-       if ((pgnBackground = unescape(window.location.search.match(thisRegExp)[3])) !== ""); {
+      if ((pgnBackground = unescape(window.location.search.match(thisRegExp)[3])) !== ""); {
          theObject = document.getElementById("pgnText");
          theBackgroundPgnText = backgroundPage.pgnText[pgnBackground];
          if ((theObject) && (theBackgroundPgnText) && (theBackgroundPgnText !== undefined)) 
          { theObject.value = theBackgroundPgnText; }
          chrome.tabs.getCurrent(setPgnTextIndexFromTabId);
-       }
+      }
    } 
 
    pgnData = "";
    thisRegExp = /(&|\?)(pgnData|pd)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
-       pgnData = unescape(window.location.search.match(thisRegExp)[3]);
+      pgnData = unescape(window.location.search.match(thisRegExp)[3]);
    } 
    if (pgnData) {
-       SetPgnUrl(pgnData); // if set, this has precedence over the inline PGN in the HTML file
+      SetPgnUrl(pgnData); // if set, this has precedence over the inline PGN in the HTML file
    }
 
    SetImagePath("alpha/36"); // use "" path if images are in the same folder as this javascript file
@@ -98,55 +98,80 @@ of Google Chrome v6 or later. Don't use with any other browser.
 
    thisRegExp = /(&|\?)(search|s)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
-       SetInitialGame(unescape(window.location.search.match(thisRegExp)[3]));
+      SetInitialGame(unescape(window.location.search.match(thisRegExp)[3]));
    } else {
-       SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are accepted; other string values assumed as PGN search string
+      SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are accepted; other string values assumed as PGN search string
    }
 
    alertFlag = demoFlag = false;
    thisRegExp = /(&|\?)(refreshDemo|rd)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
-       refreshDemo = unescape(window.location.search.match(thisRegExp)[3]);
-       if ((refreshDemo == "true") || (refreshDemo == "t")) { alertFlag = demoFlag = true; }
+      refreshDemo = unescape(window.location.search.match(thisRegExp)[3]);
+      if ((refreshDemo == "true") || (refreshDemo == "t")) { alertFlag = demoFlag = true; }
    }
 
    thisRegExp = /(&|\?)(refreshMinutes|rm)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
-       refreshMinutes = unescape(window.location.search.match(thisRegExp)[3]);
-       SetInitialHalfmove("end", true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
-       SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false)
+      refreshMinutes = unescape(window.location.search.match(thisRegExp)[3]);
+      SetInitialHalfmove("end", true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
+      SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false)
    }
 
-  function customFunctionOnPgnGameLoad() {
-    if (theObject = document.getElementById("GameRound")) {
-      if (theObject.innerHTML) {
-        theObject.innerHTML = "round " + theObject.innerHTML;
-      }
-    }
-    customPgnHeaderTag('ECO', 'GameECO');
-    theObject = document.getElementById('GameECO');
-    if (theObject) { theObject.className = (theObject.innerHTML === "") ? "innerHeaderItemNoMargin" : "innerHeaderItem"; }
-    customPgnHeaderTag('Opening', 'GameOpening');
-    theObject = document.getElementById('GameOpening');
-    if (theObject) { theObject.className = (theObject.innerHTML === "") ? "innerHeaderItemNoMargin" : "innerHeaderItem"; }
-    customPgnHeaderTag('Variation', 'GameVariation');
-    theObject = document.getElementById('GameVariation');
-    if (theObject) { theObject.className = (theObject.innerHTML === "") ? "innerHeaderItemNoMargin" : "innerHeaderItem"; }
-//    if (PlyNumber > 0) { customPgnHeaderTag('Result', 'ResultAtGametextEnd'); }
-//    else { if (theObject = document.getElementById('ResultAtGametextEnd')) { theObject.innerHTML = ""; } }
-  }
+   function fixHeaderTagClass(elementId) {
+      theObject = document.getElementById(elementId);
+      if (theObject) { theObject.className = (theObject.innerHTML === "") ? "innerHeaderItemNoMargin" : "innerHeaderItem"; }
+   }
 
-  function customFunctionOnPgnTextLoad() {
-    if (LiveBroadcastStatusString) {
-      document.title = LiveBroadcastStatusString.replace(" &nbsp;", ",");
-    } else {
-      if ((numberOfGames == 1) && (PlyNumber == 0) && (StartPly == 0) && (gameWhite[0] == "") && (gameBlack[0] == "") && (gameResult[0] == "")) {
-        document.title = "PGN data error";
-      } else {
-        document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s");
+   function customPgnHeaderTagWithClass(tag, elementId) {
+      customPgnHeaderTag(tag, elementId);
+      fixHeaderTagClass(elementId);
+   }
+
+   function customFunctionOnPgnGameLoad() {
+      fixHeaderTagClass('GameDate');
+      fixHeaderTagClass('GameSite');
+      fixHeaderTagClass('GameEvent');
+      customPgnHeaderTagWithClass('Section', 'GameSection');
+      customPgnHeaderTagWithClass('Stage', 'GameStage');
+      fixHeaderTagClass('GameRound');
+      if (theObject = document.getElementById("GameRound")) {
+         if (theObject.innerHTML) {
+            theObject.innerHTML = "round " + theObject.innerHTML;
+         }
       }
-    }
-  }
+      customPgnHeaderTagWithClass('Board', 'GameBoardNum');
+      if (theObject = document.getElementById("GameBoardNum")) {
+         if (theObject.innerHTML) {
+            theObject.innerHTML = "board " + theObject.innerHTML;
+         }
+      }
+      fixHeaderTagClass('GameWhite');
+      fixHeaderTagClass('GameBlack');
+      customPgnHeaderTagWithClass('WhiteTitle', 'GameWhiteTitle');
+      customPgnHeaderTagWithClass('BlackTitle', 'GameBlackTitle');
+      customPgnHeaderTagWithClass('WhiteElo', 'GameWhiteElo');
+      customPgnHeaderTagWithClass('BlackElo', 'GameBlackElo');
+      customPgnHeaderTagWithClass('ECO', 'GameEco');
+      customPgnHeaderTagWithClass('Opening', 'GameOpening');
+      customPgnHeaderTagWithClass('Variation', 'GameVariation');
+      customPgnHeaderTagWithClass('SubVariation', 'GameSubVariation');
+      fixHeaderTagClass('GameResult');
+      customPgnHeaderTagWithClass('Termination', 'GameTermination');
+//      if (PlyNumber > 0) { customPgnHeaderTag('Result', 'ResultAtGametextEnd'); }
+//      else { if (theObject = document.getElementById('ResultAtGametextEnd')) { theObject.innerHTML = ""; } }
+   }
+
+   function customFunctionOnPgnTextLoad() {
+      if (LiveBroadcastStatusString) {
+         document.title = LiveBroadcastStatusString.replace(" &nbsp;", ",");
+      } else {
+         if ((numberOfGames == 1) && (PlyNumber == 0) && (StartPly == 0) && (gameWhite[0] == "") && (gameBlack[0] == "") && (gameResult[0] == "")) {
+            document.title = "PGN data error";
+         } else {
+            document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s");
+         }
+      }
+   }
 
 </script>
 
@@ -168,17 +193,17 @@ of Google Chrome v6 or later. Don't use with any other browser.
 <div class="headerItem"><span class="innerHeaderItem" title="date" id="GameDate"></span>&nbsp;</div>
 <div class="headerItem"><span class="innerHeaderItem" title="site" id="GameSite"></span>&nbsp;</div>
 <div class="headerItem">&nbsp;</div>
-<div class="headerItem"><span class="innerHeaderItem" title="event" id="GameEvent"></span>&nbsp;</div>
-<div class="headerItem"><span class="innerHeaderItem" title="round" id="GameRound"></span>&nbsp;</div>
+<div class="headerItem"><span class="innerHeaderItem" title="event" id="GameEvent"></span><span class="innerHeaderItem" title="section" id="GameSection"></span><span class="innerHeaderItem" title="stage" id="GameStage"></span>&nbsp;</div>
+<div class="headerItem"><span class="innerHeaderItem" title="round" id="GameRound"></span><span class="innerHeaderItem" title="board" id="GameBoardNum"></span>&nbsp;</div>
 <div class="headerItem">&nbsp;</div>
-<div class="headerItem"><span class="innerHeaderItem" title="eco" id="GameECO"></span><span class="innerHeaderItem" title="opening" id="GameOpening"></span><span class="innerHeaderItem" title="variation" id="GameVariation"></span>&nbsp;</div>
+<div class="headerItem"><span class="innerHeaderItem" title="eco" id="GameECO"></span><span class="innerHeaderItem" title="opening" id="GameOpening"></span><span class="innerHeaderItem" title="variation" id="GameVariation"></span><span class="innerHeaderItem" title="subvariation" id="GameSubVariation"></span>&nbsp;</div>
 <div class="headerItem">&nbsp;</div>
 <div class="headerItem"><span class="innerHeaderItem" title="white clock" id="GameWhiteClock"></span>&nbsp;</div>
-<div class="headerItem"><a href="#" class="innerHeaderItem boldItem" title="white player" id="GameWhite"></a>&nbsp;</div>
-<div class="headerItem"><a href="#board" class="innerHeaderItem boldItem" title="black player" id="GameBlack"></a>&nbsp;</div>
+<div class="headerItem"><b><a href="#" class="innerHeaderItem" title="white player" id="GameWhite"></a></b><span class="innerHeaderItem" title="white title" id="GameWhiteTitle"></span><span class="innerHeaderItem" title="white elo" id="GameWhiteElo"></span>&nbsp;</div>
+<div class="headerItem"><b><a href="#board" class="innerHeaderItem" title="black player" id="GameBlack"></a></b><span class="innerHeaderItem" title="black title" id="GameBlackTitle"></span><span class="innerHeaderItem" title="black elo" id="GameBlackElo"></span>&nbsp;</div>
 <div class="headerItem"><span class="innerHeaderItem" title="black clock" id="GameBlackClock"></span>&nbsp;</div>
 <div class="headerItem">&nbsp;</div>
-<div class="headerItem"><a href="#bottom" class="innerHeaderItem boldItem" title="result" id="GameResult"></a>&nbsp;</div>
+<div class="headerItem"><b><a href="#bottom" class="innerHeaderItem" title="result" id="GameResult"></a></b><span class="innerHeaderItem" title="termination" id="GameTermination"></span>&nbsp;</div>
 <div class="headerItem">&nbsp;</div>
 </div>
 
