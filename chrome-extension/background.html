@@ -82,7 +82,7 @@ function pgntextOnClick(info, tab) {
       return;
     }
   }
-  pgnText[pgnTextIndex] = pgnText[pgnTextIndex].replace(pgnHeaderRegExpGlobal, "\n$1\n");
+  pgnText[pgnTextIndex] = pgnText[pgnTextIndex].replace(pgnHeaderRegExpGlobal, "\n$1\n"); // add newline after header section
 
   if (needsValidation && (!validatePgnText(pgnText[pgnTextIndex]))) {
     delete pgnText[pgnTextIndex];
