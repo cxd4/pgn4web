@@ -1384,7 +1384,7 @@ function highlightSquare(col, row, on) {
 }
 
 function fixCommonPgnMistakes(text) {
-  text = text.replace(/\s/g," "); // replace any space char with plain space
+  text = text.replace(/[\u00A0\u180E\u2000-\u200A\u202F\u205F\u3000]/g," "); // replace some space char with plain space
   text = text.replace(/\u00BD/g,"1/2"); // replace "half fraction" char with "1/2"
   text = text.replace(/[\u2010-\u2015]/g,"-"); // replace "hyphens" chars with "-"
   text = text.replace(/\u2024/g,"."); // replace "one dot leader" char with "."
