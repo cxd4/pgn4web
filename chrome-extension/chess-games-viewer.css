@@ -124,7 +124,7 @@ body {
   white-space: nowrap;
   overflow: hidden;
   font-size: 120%;
-  margin-bottom: 3px;
+  margin-bottom: 2px;
 }
 
 .innerHeaderItem,
@@ -142,7 +142,7 @@ body {
 }
 
 .headerSpacer {
-  line-height: 75%;
+  line-height: 80%;
 }
 
 .notes {
