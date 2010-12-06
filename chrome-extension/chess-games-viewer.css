@@ -116,6 +116,7 @@ body {
 .comment,
 .nag {
   color: #888888;
+  line-height: 1.4em;
 }
 
 .headerItem {
@@ -123,7 +124,8 @@ body {
   white-space: nowrap;
   overflow: hidden;
   font-size: 120%;
-  margin-bottom: 0.10em;
+  line-height: 1.2;
+  margin-bottom: 3px;
 }
 
 .innerHeaderItem,
