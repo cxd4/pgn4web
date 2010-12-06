@@ -13,7 +13,7 @@
 
   "icons": {"16": "alpha-16.png", "48": "alpha/48/bp.png", "128": "alpha/128/bp.png"},
 
-  "page_action": { "default_icon": "alpha-20.png", "default_title": "Chess games viewer: PGN links on this page", "default_popup": "pgnLinks.html" },
+  "page_action": { "default_icon": "alpha-20.png", "default_title": "Chess games viewer: PGN links on this page", "default_popup": "popup.html" },
 
   "content_scripts" : [{"matches": ["*://*/*"], "js": ["pgnLinks.js"], "run_at": "document_idle", "all_frames": true}], 
 
