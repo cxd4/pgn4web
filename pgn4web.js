@@ -1238,12 +1238,12 @@ function SetInitialGame(number_or_string) {
 // b) check for nn:nn:nn and nn.nn.nn at the comment start 
   
 function clockFromComment(comment) {
-  var clock = "";
-  if ((DGTclock = comment.match(/\[%clk\s*(.*?)\]/)) !== null) { clock = DGTclock[1]; }
-  else { if (!(clock = comment.match(/^\s*[0-9:\.]+/))) {clock = ""; } }
-  return clock;
+  var clock;
+  if ((DGTclock = comment.match(/\[%clk\s*(.*?)\]/)) !== null) { return DGTclock[1]; }
+  else if (clock = comment.match(/^\s*([0-9]+(:[0-9]+)+)($|\s)/)) { return clock[1]; }
+  else if (clock = comment.match(/^\s*([0-9]+(\.[0-9]+)+)($|\s)/)) { return clock[1]; }
+  return "";
 }
-
 
 function HighlightLastMove() {
   var anchorName;
