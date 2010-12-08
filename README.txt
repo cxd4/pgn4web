@@ -153,8 +153,10 @@ to any <div> or <span> containers with the following IDs:
 
 The file template.css shows a list of customization style options.
 For better chessboard display, it is recommended to explicitly enforce 
-chessboard square sizes using the ".whiteSquare" and ".blackSquare" CSS 
-classes, such as:
+chessboard and square size using the ".boardTable", ".whiteSquare" and 
+".blackSquare" CSS classes, such as:
+   /* account for chessboard and squares border here, if any */
+  .boardTable { width:326px; height:326px; border-width:3px; }
   .whiteSquare, .blackSquare { width:40px; height:40px; }
 
 See template.html file for an example.
