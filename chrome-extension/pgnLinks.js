@@ -20,8 +20,10 @@ var pgn4web_cursorDef = "url(" + chrome.extension.getURL("cursor-small.png") + "
 
 for(i=0; i<document.links.length; i++) {
   if (validatePgnUrl(document.links[i].href)) {
-    pgn4web_pgnLinks[pgn4web_pgnLinksNum++] = document.links[i].href;
     document.links[i].addEventListener("mouseover", function(){this.style.cursor = pgn4web_cursorDef;}, false);
+    if (pgn4web_pgnLinks.indexOf(document.links[i].href) == -1) { 
+      pgn4web_pgnLinks[pgn4web_pgnLinksNum++] = document.links[i].href;
+    }
   }
 }
 
