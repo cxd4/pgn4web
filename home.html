@@ -24,13 +24,13 @@ a:link, a:visited, a:hover, a:active
 { color: black; text-decoration: none; }
 
 .menu_heading, .iframe_area 
-{font-weight: normal; margin-left: 0; margin-right: 40px; margin-top: 3em; margin-bottom: 0;}
+{font-weight: normal; margin-left: 0; margin-right: 40px; margin-top: 2.5em; margin-bottom: 0;}
 
 .iframe_area
 {box-shadow: 0px 0px 20px #663300; -webkit-box-shadow: 0px 0px 20px #663300; -moz-box-shadow: 0px 0px 20px #663300; border-style: solid; border-color: #EDE8D5; border-width: 10px; -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px;}
 
 .menu_item
-{font-weight: bold; margin-left: 20px; margin-right: 40px; margin-top: 0.66em; margin-bottom: 0;}
+{font-weight: bold; margin-left: 20px; margin-right: 40px; margin-top: 0.55em; margin-bottom: 0;}
 
 .banner
 {font-size: large; font-weight: bold; margin-top: 1em; margin-bottom: 0em; text-align: center;}
@@ -71,11 +71,21 @@ document.write('<div class="menu_item"><a href=' + pgn4web_viewer_url + '>games&
 <div class="menu_heading">software</div>
 <div class="menu_item"><a href=demo.html>demo</a></div>
 <div class="menu_item"><a href=http://code.google.com/p/pgn4web/downloads/list>downloads</a></div>
+<div class="menu_item"><a id="menuItem_chessGamesViewerChromeExtension" href=http://code.google.com/p/pgn4web/wiki/BrowserExtension_GoogleChrome>chrome&nbsp;extension</a></div>
 <div class="menu_item"><a href=http://code.google.com/p/pgn4web/wiki/Index>wiki</a></div>
 <div class="menu_heading">contacts</div>
 <script type="text/javascript">
 document.write('<div class="menu_item"><a href=' + pgn4web_project_blog + '>blog</a></div>');
 document.write('<div class="menu_item"><a href=mailto:' + pgn4web_project_email + '>email</a></div>');
+
+function checkChessGamesViewerChromeExtension(){ 
+  var chessGamesViewerChromeExtensionId = "mcgldbmlklekdhnmdopknbgcnfbondji";
+  var img = new Image();
+  img.onload = function(){ }
+  img.onerror = function(){ document.getElementById("menuItem_chessGamesViewerChromeExtension").style.color = "red" }
+  img.src = "chrome-extension://" + chessGamesViewerChromeExtensionId + "/pawns.png"; 
+}
+if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) { checkChessGamesViewerChromeExtension(); }
 </script>
 
 
