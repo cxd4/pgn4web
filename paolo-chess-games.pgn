@@ -48,6 +48,24 @@ Kh2 48. Bxg2 Kxg2 49. b4 h6 50. b5 g5 51. hxg5 hxg5 52. a4 f4 53. gxf4 1-0
 
 [Event "London Chess Classic 2010"]
 [Site "London Olympia, UK"]
+[Date "2010.12.13"]
+[Round "6"]
+[White "Mollison, Jamie"]
+[Black "Casaschi, Paolo"]
+[Result "1/2-1/2"]
+[WhiteElo "1906"]
+[ECO "A01"]
+[Opening "Nimzovich-Larsen attack"]
+[Variation "classical variation"]
+
+1. b3 d5 2. Bb2 Nf6 3. e3 g6 4. Bxf6 exf6 5. c4 c5 6. cxd5 Qxd5 7. Nc3 Qd8
+8. Bb5+ Bd7 9. Bxd7+ Nxd7 10. Qf3 Rb8 { # } 11. Qe4+ Qe7 12. Qxe7+ Bxe7 13.
+Nge2 O-O 14. O-O Rfd8 15. d4 f5 16. dxc5 Nxc5 17. Rad1 Kf8 18. Rxd8+ Rxd8
+19. Rd1 Rxd1+ 20. Nxd1 { # } 20... Ne4 21. Ndc3 Bc5 22. Nb5 Ke7 23. Nbd4
+Bxd4 1/2-1/2
+
+[Event "London Chess Classic 2010"]
+[Site "London Olympia, UK"]
 [Date "2010.12.12"]
 [Round "5"]
 [White "Casaschi, Paolo"]
