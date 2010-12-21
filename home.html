@@ -84,11 +84,11 @@ document.write('<div class="menu_item"><a href=mailto:' + pgn4web_project_email 
 function checkChessGamesViewerChromeExtension() { 
   var chessGamesViewerChromeExtensionId = "mcgldbmlklekdhnmdopknbgcnfbondji";
   var img = new Image();
-  img.onload = function() { }
+  img.onload = function() { };
   img.onerror = function() { 
     document.getElementById("menuItem_chessGamesViewerChromeExtension").style.color = "red"; 
     document.getElementById("menuItem_chessGamesViewerChromeExtension").title = "chess games viewer extension for the Google Chrome browser: interactive chessboard showing chess games from links to *.PGN URLs and from PGN text, using context menus and page actions";
-  }
+  };
   img.src = "chrome-extension://" + chessGamesViewerChromeExtensionId + "/pawns.png"; 
 }
 if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) { checkChessGamesViewerChromeExtension(); }
