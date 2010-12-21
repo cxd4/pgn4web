@@ -19,6 +19,16 @@ function validatePgnUrl(pgnUrl) {
   return (pgnUrl.match(/^(http|https):\/\/[^?#]+\.pgn($|\?.*$|#.*$)/i) !== null);
 }
 
+// keep this aligned with the one in pgn4web.js
+function fixCommonPgnMistakes(text) {
+  text = text.replace(/[\u00A0\u180E\u2000-\u200A\u202F\u205F\u3000]/g," "); // replace some "space" char with plain space
+  text = text.replace(/\u00BD/g,"1/2"); // replace "half fraction" char with "1/2"
+  text = text.replace(/[\u2010-\u2015]/g,"-"); // replace "hyphens" chars with "-"
+  text = text.replace(/\u2024/g,"."); // replace "one dot leader" char with "."
+  text = text.replace(/[\u2025-\u2026]/g,"..."); // replace "two dot leader" and "ellipsis" chars with "..."
+  return text;
+}
+
 function validatePgnText(pgnText) {
   testPgnText = pgnText;
   testPgnText = testPgnText.replace(/%[^\n]*(\n|$)/g, ""); // remove comments
@@ -83,6 +93,7 @@ function pgntextOnClick(info, tab) {
     }
   }
   pgnText[pgnTextIndex] = pgnText[pgnTextIndex].replace(pgnHeaderRegExpGlobal, "\n$1\n"); // add newline after header section
+  pgnText[pgnTextIndex] = fixCommonPgnMistakes(pgnText[pgnTextIndex]);
 
   if (needsValidation && (!validatePgnText(pgnText[pgnTextIndex]))) {
     delete pgnText[pgnTextIndex];

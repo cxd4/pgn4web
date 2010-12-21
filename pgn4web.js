@@ -1383,6 +1383,7 @@ function highlightSquare(col, row, on) {
   return true;
 }
 
+// keep this aligned with the one in chrome-extension/background.html
 function fixCommonPgnMistakes(text) {
   text = text.replace(/[\u00A0\u180E\u2000-\u200A\u202F\u205F\u3000]/g," "); // replace some "space" char with plain space
   text = text.replace(/\u00BD/g,"1/2"); // replace "half fraction" char with "1/2"
