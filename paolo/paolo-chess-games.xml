@@ -11,7 +11,7 @@
 <ModulePrefs
    title="Paolo's chess games"
    description="Paolo's chess games"
-   thumbnail="pawns.png"
+   thumbnail="../pawns.png"
    author="pgn4web"
    author_email="pgn4web@casaschi.net"
    author_link="http://pgn4web.casaschi.net"
