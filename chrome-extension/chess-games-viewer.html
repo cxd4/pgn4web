@@ -66,7 +66,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
    pgnBackground = null;
    thisRegExp = /(&|\?)(pgnBackground|pb)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
-      if ((pgnBackground = unescape(window.location.search.match(thisRegExp)[3])) !== ""); {
+      if ((pgnBackground = unescape(window.location.search.match(thisRegExp)[3])) !== "") {
          theObject = document.getElementById("pgnText");
          theBackgroundPgnText = backgroundPage.pgnText[pgnBackground];
          if ((theObject) && (theBackgroundPgnText) && (theBackgroundPgnText !== undefined)) 
@@ -191,7 +191,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
       if (LiveBroadcastStatusString) {
          document.title = LiveBroadcastStatusString.replace(" &nbsp;", ",");
       } else {
-         if ((numberOfGames == 1) && (PlyNumber == 0) && (StartPly == 0) && (gameWhite[0] == "") && (gameBlack[0] == "") && (gameResult[0] == "")) {
+         if ((numberOfGames == 1) && (PlyNumber === 0) && (StartPly === 0) && (!gameWhite[0]) && (!gameBlack[0]) && (!gameResult[0])) {
             document.title = "PGN data error";
          } else {
             document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s");
