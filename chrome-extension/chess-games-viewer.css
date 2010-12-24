@@ -125,14 +125,14 @@ body {
   text-align: justify;
   height: 4.2em;
   line-height: 1.4em;
-  padding-right: 0.66em;
+  padding-right: 1em;
   overflow-y: scroll;
   margin-bottom: 2em;
 }
 
 .lastMove {
   font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
-  margin-right: 1.5em;
+  margin-right: 2em;
 }
 
 .lastMove, .lastComment {
