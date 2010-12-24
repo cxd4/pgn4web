@@ -1268,7 +1268,6 @@ function HighlightLastMove() {
       thisComment = thisComment.replace(/^\s+$/,'');
     } else { thisComment = ''; }
     theShowCommentTextObject.innerHTML = thisComment;
-    theShowCommentTextObject.className = 'GameLastComment';
   }
   
   // show side to move
