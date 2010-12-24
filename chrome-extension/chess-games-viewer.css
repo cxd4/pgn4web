@@ -113,10 +113,31 @@ body {
   text-align: justify;
 }
 
-.comment,
-.nag {
+.comment {
   color: #888888;
   line-height: 1.4em;
+}
+
+.nag {
+}
+
+.lastMoveAndComment {
+  text-align: justify;
+  height: 4em;
+  padding: 0.66em;
+  overflow: auto;
+  margin-bottom: 2em;
+  background-color: #F0F0F0;
+}
+
+.lastMove {
+  font-weight: bold;
+  margin-right: 1em;
+}
+
+.lastMove, .lastComment {
+  text-decoration: none;
+  color: black;
 }
 
 .headerItem {

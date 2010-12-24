@@ -127,6 +127,12 @@ of Google Chrome v6 or later. Don't use with any other browser.
       fixHeaderTagClass(elementId);
    }
 
+   function customFunctionOnMove() {
+     if (theObject = document.getElementById('GameLastMove')) {
+       theObject.style.display = (CurrentPly == StartPly) ? "none" : "inline";
+     }
+   }
+
    function customFunctionOnPgnGameLoad() {
       fixHeaderTagClass('GameDate');
       fixHeaderTagClass('GameSite');
@@ -159,6 +165,16 @@ of Google Chrome v6 or later. Don't use with any other browser.
       customPgnHeaderTagWithClass('Termination', 'GameTermination');
 //      if (PlyNumber > 0) { customPgnHeaderTag('Result', 'ResultAtGametextEnd'); }
 //      else { if (theObject = document.getElementById('ResultAtGametextEnd')) { theObject.innerHTML = ""; } }
+      var lastDisplayStyle = "none";
+      for(ii=StartPly; ii<StartPly+PlyNumber; ii++) {
+        if (MoveComments[ii]) {
+          lastDisplayStyle = "block";
+          break;
+        }
+      }
+      if (theObject = document.getElementById('lastMoveAndComment')) {
+        theObject.style.display = lastDisplayStyle;
+      }
    }
 
    function customFunctionOnPgnTextLoad() {
@@ -208,6 +224,8 @@ of Google Chrome v6 or later. Don't use with any other browser.
 </div>
 
 </div>
+
+<div class="lastMoveAndComment" id="lastMoveAndComment"><a href="javascript:MoveToPrevComment();" class="lastMove" title="last move" id="GameLastMove"></a><a href="javascript:MoveToNextComment();" class="lastComment" title="current position comment" id="GameLastComment"></a></div>
 
 <div class="moveText"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
 
