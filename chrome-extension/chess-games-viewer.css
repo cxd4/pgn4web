@@ -131,6 +131,7 @@ body {
 }
 
 .lastMove {
+  font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
   font-weight: bold;
   margin-right: 1em;
 }
