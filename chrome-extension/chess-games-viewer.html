@@ -173,10 +173,9 @@ of Google Chrome v6 or later. Don't use with any other browser.
       var lastDisplayStyle = "none";
       for(ii=StartPly; ii<=StartPly+PlyNumber; ii++) {
         var thisComment = MoveComments[ii];
-        thisComment = thisComment.replace(/\[%clk\s*(.*?)\]/, "");
+        thisComment = thisComment.replace(/\[%[^\]]*\]\s*/g, "");
         // thisComment = thisComment.replace(/^\s*([0-9]+(:[0-9]+)+)($|\s)/, "");
         // thisComment = thisComment.replace(/^\s*([0-9]+(\.[0-9]+)+)($|\s)/, "");
-        thisComment = thisComment.replace(/\[%pgn4web\s*(.*?)\]/, "");
         if (thisComment.match(/\S/)) {
           lastDisplayStyle = "block";
           break;
