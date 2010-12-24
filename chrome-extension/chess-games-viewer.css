@@ -124,21 +124,20 @@ body {
 .lastMoveAndComment {
   text-align: justify;
   height: 4.2em;
-  padding-right: 0.5em;
+  line-height: 1.4em;
+  padding-right: 0.66em;
   overflow-y: scroll;
   margin-bottom: 2em;
 }
 
 .lastMove {
   font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
-  font-weight: bold;
-  margin-right: 1em;
+  margin-right: 1.5em;
 }
 
 .lastMove, .lastComment {
   text-decoration: none;
   color: black;
-  line-height: 1.4em;
 }
 
 .headerItem {

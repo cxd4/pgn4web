@@ -128,8 +128,10 @@ of Google Chrome v6 or later. Don't use with any other browser.
    }
 
    function customFunctionOnMove() {
-     if (theObject = document.getElementById('GameLastMove')) {
-       theObject.style.display = (CurrentPly == StartPly) ? "none" : "inline";
+     if (CurrentPly == StartPly) {
+       if (theObject = document.getElementById('GameLastMove')) {
+         theObject.innerHTML = ((CurrentPly%2) ? "black" : "white") + " to move";
+       }
      }
    }
 
