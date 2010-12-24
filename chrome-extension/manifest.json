@@ -7,7 +7,7 @@
 {
   "name": "Chess games viewer",
 
-  "version": "1.2.5",
+  "version": "1.2.6",
 
   "description": "Chess games viewer: interactive chessboard showing chess games from links to *.PGN URLs and from PGN text, using context menus and page actions. From the pgn4web project at http://pgn4web.casaschi.net",
 
