@@ -128,10 +128,13 @@ of Google Chrome v6 or later. Don't use with any other browser.
    }
 
    function customFunctionOnMove() {
-     if (CurrentPly == StartPly) {
-       if (theObject = document.getElementById('GameLastMove')) {
+     if (theObject = document.getElementById('GameLastMove')) {
+       if (CurrentPly == StartPly) {
          theObject.innerHTML = ((CurrentPly%2) ? "black" : "white") + " to move";
        }
+     }
+     if (theObject = document.getElementById('pgn4webComment')) {
+       theObject.innerHTML = pgn4webMoveComments[CurrentPly] ? pgn4webMoveComments[CurrentPly] : "";
      }
    }
 
@@ -165,11 +168,16 @@ of Google Chrome v6 or later. Don't use with any other browser.
       customPgnHeaderTagWithClass('SubVariation', 'GameSubVariation');
       fixHeaderTagClass('GameResult');
       customPgnHeaderTagWithClass('Termination', 'GameTermination');
-//      if (PlyNumber > 0) { customPgnHeaderTag('Result', 'ResultAtGametextEnd'); }
-//      else { if (theObject = document.getElementById('ResultAtGametextEnd')) { theObject.innerHTML = ""; } }
+      // if (PlyNumber > 0) { customPgnHeaderTag('Result', 'ResultAtGametextEnd'); }
+      // else { if (theObject = document.getElementById('ResultAtGametextEnd')) { theObject.innerHTML = ""; } }
       var lastDisplayStyle = "none";
       for(ii=StartPly; ii<StartPly+PlyNumber; ii++) {
-        if (MoveComments[ii]) {
+        var thisComment = MoveComments[ii];
+        thisComment = thisComment.replace(/\[%clk\s*(.*?)\]/, "");
+        // thisComment = thisComment.replace(/^\s*([0-9]+(:[0-9]+)+)($|\s)/, "");
+        // thisComment = thisComment.replace(/^\s*([0-9]+(\.[0-9]+)+)($|\s)/, "");
+        thisComment = thisComment.replace(/\[%pgn4web\s*(.*?)\]/, "");
+        if (thisComment.match(/\S/)) {
           lastDisplayStyle = "block";
           break;
         }
@@ -222,7 +230,8 @@ of Google Chrome v6 or later. Don't use with any other browser.
 <div class="headerItem"><span class="innerHeaderItem" title="black clock" id="GameBlackClock"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><b><a href="#bottom" class="innerHeaderItem" title="result" id="GameResult"></a></b><span class="innerHeaderItem" title="termination" id="GameTermination"></span><b>&nbsp;</b></div>
-<div class="headerItem"><b>&nbsp;</b></div>
+<div class="headerItem headerSpacer"><b>&nbsp;</b></div>
+<div class="headerItem"><span class="innerHeaderItem" title="pgn4web comment" id="pgn4webComment"></span>&nbsp;</div>
 </div>
 
 </div>
