@@ -182,14 +182,15 @@ chrome.contextMenus.create({"title": "About the chess games viewer extension", "
 var pgnLinks = new Array();
 function pgnLinksPopupRequest(request, sender, sendResponse) {
   if ((pgnLinks[sender.tab.id]) && (pgnLinks[sender.tab.id] !== undefined)) {
-    for(ii=0; ii<request.pgnLinks.length; ii++) {
-      if (pgnLinks[sender.tab.id].indexOf(request.pgnLinks[ii]) == -1) {
-        pgnLinks[sender.tab.id][pgnLinks[sender.tab.id].length] = request.pgnLinks[ii];
+    for(l in request.pgnLinks) {
+      if (pgnLinks[sender.tab.id].indexOf(request.pgnLinks[l]) == -1) {
+        pgnLinks[sender.tab.id].push(request.pgnLinks[l]);
       }
     }
   } else {
     pgnLinks[sender.tab.id] = request.pgnLinks;
   }
+  pgnLinks[sender.tab.id] = pgnLinks[sender.tab.id].sort();
   pgnLinksTitle = pgnLinks[sender.tab.id].length + " chess games PGN link" + (pgnLinks[sender.tab.id].length == 1 ? "" : "s") + " on this page";
   chrome.pageAction.setTitle({tabId:sender.tab.id, title:pgnLinksTitle});
   chrome.pageAction.show(sender.tab.id);
