@@ -81,11 +81,12 @@ var pgnText = new Array();
 var pgnTextIndexFromTabId = new Array();
 pgnTextIndex = 0;
 function pgntextOnClick(info, tab) {
+  var needsValidation;
   if (info.selectionText) {
-    var needsValidation = true;
+    needsValidation = true;
     pgnText[pgnTextIndex] = info.selectionText;
   } else {
-    var needsValidation = false;
+    needsValidation = false;
     pgnText[pgnTextIndex] = prompt("Enter PGN chess games TEXT for viewing (pasting multi-line PGN data in the textbox is ok; " + debugInfo + "):");
     if (!pgnText[pgnTextIndex]) {
       delete pgnText[pgnTextIndex];
