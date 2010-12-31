@@ -158,8 +158,7 @@
 
   function customFunctionOnMove() {
     document.getElementById("systemMessage").style.display = 
-      pgn4webMoveComments[CurrentPly] !== "" ? "none" : "inline";
-    document.getElementById("pgn4webMessage").innerHTML = pgn4webMoveComments[CurrentPly];
+      customPgnCommentTag("pgn4web", "pgn4webMessage") !== "" ? "none" : "inline";
   }
 
   var checkForNewLiveEventInterval = null;

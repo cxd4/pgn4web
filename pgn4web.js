@@ -32,12 +32,26 @@ function customFunctionOnPgnGameLoad() {}
 function customFunctionOnMove() {}
 function customFunctionOnAlert(msg) {}
 
-// API to parse custom tags in customFunctionOnPgnGameLoad
+// API to parse custom header tags in customFunctionOnPgnGameLoad()
 
 function customPgnHeaderTag(customTagString, htmlElementIdString, gameNumber) {
   customTagString = customTagString.replace(/\W+/g, "");
   if (gameNumber === undefined) { gameNumber = currentGame; }
   if (tagValues = pgnGame[gameNumber].match('\\[\\s*' + customTagString + '\\s*\"([^\"]+)\"\\s*\\]')) {
+    tagValue = tagValues[1];
+  } else { tagValue = ""; }
+  if ((htmlElementIdString) && (theObject = document.getElementById(htmlElementIdString)) && (theObject.innerHTML !== null)) {
+    theObject.innerHTML = tagValue;
+  }
+  return tagValue;
+}
+
+// API to parse custom comment tags in customFunctionOnMove()
+
+function customPgnCommentTag(customTagString, htmlElementIdString, plyNumber) {
+  customTagString = customTagString.replace(/\W+/g, "");
+  if (plyNumber === undefined) { plyNumber = CurrentPly; }
+  if (tagValues = MoveComments[plyNumber].match('\\[%' + customTagString + '\\s*([^\\]]+)\\s*\\]')) {
     tagValue = tagValues[1];
   } else { tagValue = ""; }
   if ((htmlElementIdString) && (theObject = document.getElementById(htmlElementIdString)) && (theObject.innerHTML !== null)) {
@@ -919,7 +933,6 @@ CastlingLong  = new Array(2);
 CastlingShort = new Array(2);
 Moves = new Array(MaxMove);
 MoveComments = new Array(MaxMove);
-pgn4webMoveComments = new Array(MaxMove);
 
 var MoveColor;
 var MoveCount;
@@ -2592,8 +2605,6 @@ function ParsePGNGameString(gameString) {
   }
   for (ii=StartPly; ii<=StartPly+PlyNumber; ii++) {
     MoveComments[ii] = MoveComments[ii].replace(/\s+/g, " ");
-    pgn4webCommentTmp = MoveComments[ii].match(/\[%pgn4web\s*(.*?)\]/);
-    pgn4webMoveComments[ii] = pgn4webCommentTmp ? pgn4webCommentTmp[1] : "";
     MoveComments[ii] = translateNAGs(MoveComments[ii]);
     MoveComments[ii] = MoveComments[ii].replace(/\s+$/g, '');
   }

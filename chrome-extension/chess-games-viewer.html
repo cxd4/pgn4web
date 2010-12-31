@@ -133,9 +133,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
          theObject.innerHTML = ((CurrentPly%2) ? "black" : "white") + " to move";
        }
      }
-     if (theObject = document.getElementById('pgn4webComment')) {
-       theObject.innerHTML = pgn4webMoveComments[CurrentPly] ? pgn4webMoveComments[CurrentPly] : "";
-     }
+     customPgnCommentTag('pgn4web', 'pgn4webComment');
    }
 
    function customFunctionOnPgnGameLoad() {
