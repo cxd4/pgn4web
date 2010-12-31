@@ -285,6 +285,11 @@ is available for use in customFunctionOnPgnGameLoad() to parse custom PGN header
 tags and automatically assign their value to the given HTML elements. The function 
 returns the custom tag value and the `gameNumber` parameter, if unassigned, 
 defaults to the current game.
+The function customPgnCommentTag(customTagString, htmlElementIdString, plyNumber)
+is available for use in customFunctionOnMove() to parse custom PGN comment tags
+like { [%pgn4web info] } and automatically assign their value to the given HTML 
+elements. The function returns the custom tag value and the `plyNumber` parameter,
+if unassigned, defaults to the current ply.
 
 See twic765.html or live.html for examples.
 
