@@ -107,11 +107,12 @@
         (gameEvent[0] != undefined) && (gameEvent[0] !== "")) {
       document.title = originalTitle + ": " + gameEvent[0];
     }
-    document.getElementById("playersDetails").className = LiveBroadcastStarted ? 
-                                                          "headerHighlighted" : "header";
-    document.getElementById("statusDetails").className = ((!LiveBroadcastStarted) || (LiveBroadcastEnded)) ? 
-                                                         "headerHighlighted" : "header";
-    document.getElementById("additionalMessage").innerHTML = LiveBroadcastEnded ? ", click H6 for the next event" : "";
+    document.getElementById("playersDetails").className = 
+      LiveBroadcastStarted ? "headerHighlighted" : "header";
+    document.getElementById("statusDetails").className = 
+      ((!LiveBroadcastStarted) || (LiveBroadcastEnded)) ? "headerHighlighted" : "header";
+    document.getElementById("additionalMessage").innerHTML = 
+      LiveBroadcastEnded ? ", click H6 for the next event" : "";
 
     update_ticker();
 
