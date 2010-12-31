@@ -372,8 +372,8 @@ specifically:
   clock time after each move
 - understands the PGN tags [WhiteClock "2:00:00"] and 
   [BlackClock "2:00:00"] as the clock times at the beginning of the game
-- defines the [%pgn4web internal comment] tag in the PGN comment section 
-and stores the internal comment value for internal use. 
+- allows parsing of generic comment tags using the function
+  customPgnCommentTag()
 
 Please email me for review any PGN file that pgn4web fails parsing correctly. 
 
