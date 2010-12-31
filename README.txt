@@ -423,7 +423,7 @@ See http://jscolor.com/
 
 The above items remains subject to their original licenses (if any).
 
-Remaining pgn4web code is copyright (C) 2009, 2010 Paolo Casaschi
+Remaining pgn4web code is copyright (C) 2009, 2011 Paolo Casaschi
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
