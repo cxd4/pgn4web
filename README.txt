@@ -210,14 +210,15 @@ in the HTML file, pgn4web will periodically refresh the PGN file, showing the
 live progress of the games. PGN files produced by the DGT chessboards are 
 supported.
 
-SetLiveBroadcast(delay, alertFlag, demoFlag) parameters:
+SetLiveBroadcast(delay, alertFlag, demoFlag, stepFlag) parameters:
  - delay = refresh interval in minutes, decimals allowed (default 1)
  - alertFlag = if set true, shows alert debug messages (default false)
  - demoFlag = if set true, sets live demo mode (default false)
  - stepFlag = if set true, autoplays updates in steps (default false)
 
 If you set stepFlag, please note that the autoplay delay is set by
-SetAutoplayDelay(delay), where no more than 2000ms should be used.
+SetAutoplayDelay(delay), where no more than 2000ms should be used for live
+broadcasts.
 
 The bash shell script live-grab.sh, executed on your server allows for grabbing
 the updated game source from anywhere on the Internet to your server.
