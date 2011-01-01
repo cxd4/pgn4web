@@ -100,12 +100,12 @@ function developer_help() {
 
 function addTagToTitle(tagLabel, tagValue, object) {
   if (!tagValue || tagValue[1] == "?" || !object) { return; }
-  object.title += (object.title ? "  \n " : " ") + tagLabel + tagValue;
+  object.title += "  \n " + tagLabel + tagValue;
 }
 
 function customFunctionOnPgnGameLoad() {
   if (theObject = document.getElementById("bottomContainer")) {
-    theObject.title = "";
+    theObject.title = " game " + (currentGame+1) + " of " + numberOfGames;
     addTagToTitle("event:", gameEvent[currentGame], theObject);
     addTagToTitle("site:", gameSite[currentGame], theObject);
     addTagToTitle("date:", gameDate[currentGame], theObject);
