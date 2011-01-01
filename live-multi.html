@@ -23,7 +23,7 @@ if (pgn4web_live_pointer_url == undefined) { pgn4web_live_pointer_url = "."; }
 
 <script type="text/javascript">
 
-  pgnFile_default = location.protocol + "//" + location.hostname + location.pathname.replace(/\/[^\/]*$/, "/live/live.pgn");
+  pgnFile_default = "";
   
   // accepts pgnData as alias for pgnFile for consistency with board.html
   if ((pgnFile = gup("pgnData")) === "") { 
