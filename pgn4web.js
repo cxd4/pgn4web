@@ -1679,10 +1679,14 @@ function refreshPgnSource() {
       }
       if (LiveBroadcastFoundOldGame) { initialGame = ii + 1; }
 
+      liveOptionAlternative = false;
       if (LiveBroadcastFoundOldGame) { 
         oldInitialHalfmove = initialHalfmove; 
-        initialHalfmove = oldCurrentPlyLast ? "end" : oldCurrentPly; // LIVE OPTION A: jump to last
-        // initialHalfmove = oldCurrentPlyLast ? oldCurrentPly+1 : oldCurrentPly; // LIVE OPTION B: autoplay to last
+        if (liveOptionAlternative) {
+          initialHalfmove = oldCurrentPlyLast ? oldCurrentPly+1 : oldCurrentPly; // LIVE OPTION B: autoplay to last
+        } else {
+          initialHalfmove = oldCurrentPlyLast ? "end" : oldCurrentPly; // LIVE OPTION A: jump to last
+        }
       }
   
       Init();
@@ -1695,8 +1699,11 @@ function refreshPgnSource() {
       customFunctionOnPgnTextLoad();
 
       if (LiveBroadcastFoundOldGame) {
-        if (oldAutoplay) { SetAutoPlay(true); } // LIVE OPTION A: jump to last
-        // if (oldAutoplay || oldCurrentPlyLast) { SetAutoPlay(true); } // LIVE OPTION B: autoplay to last
+        if (liveOptionAlternative) {
+          if (oldAutoplay || oldCurrentPlyLast) { SetAutoPlay(true); } // LIVE OPTION B: autoplay to last
+        } else {
+          if (oldAutoplay) { SetAutoPlay(true); } // LIVE OPTION A: jump to last
+        }
       }
 
       break;
