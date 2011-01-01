@@ -34,7 +34,18 @@ fi
 
 pgn_file=live.pgn
 pgn_file_tmp=live-tmp.pgn
+
 delay=17
+if [ -n "$1" ] 
+then
+	if [ "$1" -eq "$1" 2> /dev/null ]
+	then
+		delay="$1"
+	else
+		echo "ERROR: $(basename $0) the delay parameter should be an integer (supplied $1)"
+		exit
+	fi
+fi
 
 # dont touch after this line
 
