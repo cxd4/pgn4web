@@ -40,19 +40,11 @@ pgn4web_generator_url = 'board-generator.html';
 //
 
 //
-// the URL for the content of the live games broadcast, default = 'live-compact.html'
-// used by: live.html
+// pointer URL for the live games broadcast, default = '.'
+// used by: live.html, live-multi.html
 //
-pgn4web_live_compact_url = 'live-compact.html';
-// pgn4web_live_compact_url = 'http://pgn4web-live-compact.casaschi.net';
-//
-
-//
-// the URL for the content of the live games broadcast, default = 'live-multi-frame.html'
-// used by: live-multi.html
-//
-pgn4web_live_multi_frame_url = 'live-multi-frame.html';
-// pgn4web_live_multi_frame_url = 'http://pgn4web-live-multi-frame.casaschi.net';
+pgn4web_live_pointer_url = '.';
+// pgn4web_live_pointer_url = 'http://pgn4web-live-pointer.casaschi.net';
 //
 
 //

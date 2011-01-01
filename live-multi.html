@@ -17,8 +17,8 @@
 <script  type="text/javascript">
 // this should have been defined in pgn4web-server-config.js
 // setting default value here just in case
-var pgn4web_live_multi_frame_url;
-if (pgn4web_live_multi_frame_url == undefined) { pgn4web_live_multi_frame_url = "live-multi-frame.html"; }
+var pgn4web_live_pointer_url;
+if (pgn4web_live_pointer_url == undefined) { pgn4web_live_pointer_url = "."; }
 </script>
 
 <script type="text/javascript">
@@ -165,7 +165,7 @@ for (r = 0; r < rows; r++) {
         rm = Math.floor(1000 * (refreshMinutes * (1 + 0.1 * Math.random()))) / 1000;
         if (displayOrder.charAt(0) == "r") { initialGame = -initialGame; }
         document.write("<a style='color:white; font-size:x-small;' name='row" + (r+1) + "' href='#row" + (r+1) + "'>chessboard row:" + (r+1) + " col:" + (c+1) + "</a><br>");
-          document.write("<iframe width='240' height='290' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='" + pgn4web_live_multi_frame_url + "?pd=" + pgnFile + "&ig=" + initialGame + "&rm=" + rm + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
+          document.write("<iframe width='240' height='290' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='" + pgn4web_live_pointer_url + "/live-multi-frame.html?pd=" + pgnFile + "&ig=" + initialGame + "&rm=" + rm + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
       }
     document.write("</td>");
   }
