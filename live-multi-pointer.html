@@ -1,0 +1,23 @@
+<html> 
+
+<!--
+  pgn4web javascript chessboard
+  copyright (C) 2009, 2011 Paolo Casaschi
+  see README file and http://pgn4web.casaschi.net
+  for credits, license and more details
+-->
+
+<head>
+<script>
+
+// how many boards/columns to display on the live multi page
+boards=3;
+columns=3;
+
+newSearch = "?b=" + boards + "&c=" + columns;
+if (window.location.search) { newSearch += window.location.search.replace(/^\?/, "&"); }
+window.location.href = "live-multi.html" + newSearch + window.location.hash;
+
+</script>
+</head>
+</html>
