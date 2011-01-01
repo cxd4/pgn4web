@@ -48,6 +48,14 @@ pgn4web_live_compact_url = 'live-compact.html';
 //
 
 //
+// the URL for the content of the live games broadcast, default = 'live-multi-frame.html'
+// used by: live-multi.html
+//
+pgn4web_live_multi_frame_url = 'live-multi-frame.html';
+// pgn4web_live_multi_frame_url = 'http://pgn4web-live-multi-frame.casaschi.net';
+//
+
+//
 // the URL for the game viewer tool, default = 'demo.html?frame=inputform'
 // used by: home.html
 //

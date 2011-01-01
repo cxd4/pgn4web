@@ -13,6 +13,14 @@
 
 <link rel="shortcut icon" href="pawn.ico" />
 
+<script src="pgn4web-server-config.js" type="text/javascript"></script>
+<script  type="text/javascript">
+// this should have been defined in pgn4web-server-config.js
+// setting default value here just in case
+var pgn4web_live_multi_frame_url;
+if (pgn4web_live_multi_frame_url == undefined) { pgn4web_live_multi_frame_url = "live-multi-frame.html"; }
+</script>
+
 <script type="text/javascript">
 
   pgnFile_default = location.protocol + "//" + location.hostname + location.pathname.replace(/\/[^\/]*$/, "/live/live.pgn");
@@ -157,8 +165,7 @@ for (r = 0; r < rows; r++) {
         rm = Math.floor(1000 * (refreshMinutes * (1 + 0.1 * Math.random()))) / 1000;
         if (displayOrder.charAt(0) == "r") { initialGame = -initialGame; }
         document.write("<a style='color:white; font-size:x-small;' name='row" + (r+1) + "' href='#row" + (r+1) + "'>chessboard row:" + (r+1) + " col:" + (c+1) + "</a><br>");
-          document.write("<iframe width='240' height='290' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='live-multi-frame.html?pd=" + pgnFile + "&ig=" + initialGame + "&rm=" + rm + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
-//        document.write("<iframe width='240' height='313' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='board.html?am=n&d=1000&ih=e&ss=26&ps=d&pf=d&lcs=VdyD&dcs=LHCg&bbcs=LHCg&bscs=b&hm=b&hcs=x7y_&bd=h&cbcs=VdyD&ctcs=yU1n&hd=j&md=h&tm=0&fhcs=7jdn&fhs=67p&bcs=____&fp=13&hl=f&fh=313&fw=b&pd=" + pgnFile + "&ig=" + initialGame + "&rm=" + rm + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
+          document.write("<iframe width='240' height='290' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='" + pgn4web_live_multi_frame_url + "?pd=" + pgnFile + "&ig=" + initialGame + "&rm=" + rm + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
       }
     document.write("</td>");
   }
