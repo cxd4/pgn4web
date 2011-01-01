@@ -100,7 +100,7 @@ function developer_help() {
 
 function addTagToTitle(tagLabel, tagValue, object) {
   if (!tagValue || tagValue[1] == "?" || !object) { return; }
-  object.title += (object.title ? "   \n" : "") + tagLabel + tagValue;
+  object.title += (object.title ? "  \n " : " ") + tagLabel + tagValue;
 }
 
 function customFunctionOnPgnGameLoad() {
