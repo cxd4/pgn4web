@@ -43,26 +43,28 @@ if (pgn4web_live_pointer_url == undefined) { pgn4web_live_pointer_url = "."; }
     }
   }
 
+  boards_default = 3;
   if ((boards = gup("boards")) === "") {
-    boards = 2;
+    boards = boards_default;
   } else {
     testBoards = boards + "";
     if ((testBoards.match(/[^0-9]/)) || (boards == 0) || (boards > 32)) {
       alert("ERROR: boards parameter must be a positive integer, max 32.\n" +
-            "Supplied " + testBoards + "; defaulting to 2."); 
-      boards = 2;
+            "Supplied " + testBoards + "; defaulting to " + boards_default + "."); 
+      boards = boards_default;
     }
   }
   boards = parseInt(boards, 10);
 
+  columns_default = 3;
   if ((columns = gup("columns")) === "") {
-    columns = 2;
+    columns = columns_default;
   } else {
     testColumns = columns + "";
     if ((testColumns.match(/[^0-9]/)) || (columns == 0) || (columns > 8)) {
       alert("ERROR: columns parameter must be a positive integer, max 8.\n" +
-            "Supplied " + testColumns + "; defaulting to 2."); 
-      columns = 2;
+            "Supplied " + testColumns + "; defaulting to " + columns_default + "."); 
+      columns = columns_default;
     }
   }
   columns = parseInt(columns, 10);
@@ -136,6 +138,15 @@ body
 a:link, a:visited, a:hover, a:active
 { color: #DDDDDD; text-decoration: none; }
 
+.menuLink, .menuHead 
+{ font-size:small; font-weight:bold; }
+
+.menuLink
+{ margin-left: 20px; }
+
+.menuLink:hover
+{ color: #214398; }
+
 </style>
 
 </head>
@@ -144,7 +155,7 @@ a:link, a:visited, a:hover, a:active
 
 <table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
 <td align="left" valign="middle">
-<h1 name='top'><a href='#row2'>pgn4web</a> <a href='#row3'>multiple</a> <a href='#row4'>live</a> <a href='#row5'>chessboards</a></h1>
+<h1 name='top'><a href='#row1'>pgn4web</a> <a href='#row2'>multiple</a> <a href='#row3'>live</a> <a href='#row4'>chessboards</a></h1>
 </td>
 <td align="right" valign="middle">
 <a href=.><img src=pawns.png border=0></a>
@@ -152,6 +163,18 @@ a:link, a:visited, a:hover, a:active
 </tr></tbody></table>
 
 <script type="text/javascript">
+
+document.write("<div style='margin-bottom: 13px;'>");
+document.write("<span class='menuHead'>number of chessboards:</span>");
+document.write("<a class='menuLink' href='" + buildUrl_one + "&b=1&c=1" + buildUrl_two + "'>1</a>");
+document.write("<a class='menuLink' href='" + buildUrl_one + "&b=2&c=2" + buildUrl_two + "'>2</a>");
+document.write("<a class='menuLink' href='" + buildUrl_one + "&b=3&c=3" + buildUrl_two + "'>3</a>");
+document.write("<a class='menuLink' href='" + buildUrl_one + "&b=4&c=4" + buildUrl_two + "'>4</a>");
+document.write("<a class='menuLink' href='" + buildUrl_one + "&b=5&c=3" + buildUrl_two + "'>5</a>");
+document.write("<a class='menuLink' href='" + buildUrl_one + "&b=6&c=3" + buildUrl_two + "'>6</a>");
+document.write("<a class='menuLink' href='" + buildUrl_one + "&b=7&c=4" + buildUrl_two + "'>7</a>");
+document.write("<a class='menuLink' href='" + buildUrl_one + "&b=8&c=4" + buildUrl_two + "'>8</a>");
+document.write("</div>");
 
 rows = Math.ceil(boards / columns);
 
