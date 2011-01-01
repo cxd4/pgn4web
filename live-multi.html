@@ -142,9 +142,9 @@ a:link, a:visited, a:hover, a:active
 { font-size:small; font-weight:bold; }
 
 .menuLink
-{ margin-left: 20px; }
+{ margin-left: 13px; }
 
-.menuLink:hover
+.menuLink:hover, .footerLink:hover
 { color: #214398; }
 
 </style>
@@ -165,7 +165,7 @@ a:link, a:visited, a:hover, a:active
 <script type="text/javascript">
 
 document.write("<div style='margin-bottom: 13px;'>");
-document.write("<span class='menuHead'>number of chessboards:</span>");
+document.write("<span class='menuHead'>number of chessboards</span>");
 document.write("<a class='menuLink' href='" + buildUrl_one + "&b=1&c=1" + buildUrl_two + "'>1</a>");
 document.write("<a class='menuLink' href='" + buildUrl_one + "&b=2&c=2" + buildUrl_two + "'>2</a>");
 document.write("<a class='menuLink' href='" + buildUrl_one + "&b=3&c=3" + buildUrl_two + "'>3</a>");
@@ -201,7 +201,7 @@ document.write("<p style='text-align: left; font-size:small; color:white;'>refre
 document.write("</td><td>");
 document.write("<p style='text-align: right; font-size:small; color:white;'><a style='color:white;' href='" + pgnFile + "'>" + pgnFile + "</a></p>");
 document.write("</td></tr><tr><td>");
-document.write("<p style='text-align: left; font-size:small; font-weight:bold;'><a href='" + oneLessColumnUrl + "'>less</a> / <a href='" + oneMoreColumnUrl + "'>more</a> columns<br/><a href='" + oneLessBoardUrl + "'>less</a> / <a href='" + oneMoreBoardUrl + "'>more</a> boards</p>");
+document.write("<p style='text-align: left; font-size:small; font-weight:bold;'><a class='footerLink' href='" + oneLessColumnUrl + "'>less</a> / <a class='footerLink' href='" + oneMoreColumnUrl + "'>more</a> columns<br/><a class='footerLink' href='" + oneLessBoardUrl + "'>less</a> / <a class='footerLink' href='" + oneMoreBoardUrl + "'>more</a> chessboards</p>");
 document.write("</td><td>");
 document.write("<p style='text-align: right; font-size:small; font-weight:bold;'>control the <a href='#top'>chessboards</a> by clicking their squares<br>hover the mouse on each square for help</p>");
 document.write("</td></tr></table>");
