@@ -41,7 +41,7 @@
     initialGameNumber = 1;
   } else {
     testGameNumber = initialGameNumber + "";
-    if (testGameNumber.match(/[^0-9]/)) {
+    if (testGameNumber.match(/[^0-9]/) || initialGameNumber == 0) {
       alert("ERROR: initialGame parameter must be a positive integer.\n" +
             "Supplied " + initialGameNumber + "; defaulting to 1."); 
       initialGameNumber = 1;
