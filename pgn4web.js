@@ -328,7 +328,8 @@ function handlekey(e) {
       return stopKeyProp(e);
 
     case 84: // t
-      refreshPgnSource();
+      if (e.shiftKey) { LiveBroadcastSteppingMode = !LiveBroadcastSteppingMode; }
+      else { refreshPgnSource(); }
       return stopKeyProp(e);
 
     case 89: // y
@@ -469,7 +470,7 @@ boardShortcut("E6", "search next unfinished game", function(){  searchPgnGame('\
 // F6
 boardShortcut("F6", "search next finished game", function(){ searchPgnGame('\\[\\s*Result\\s*"(?!\\*"\\s*\\])', false); });
 // G6
-boardShortcut("G6", "", function(){});
+boardShortcut("G6", "toggle live broadcast stepping mode", function(){ LiveBroadcastSteppingMode = !LiveBroadcastSteppingMode; });
 // H6
 boardShortcut("H6", "force games refresh during live broadcast", function(){ refreshPgnSource(); });
 // A5
@@ -608,7 +609,7 @@ function displayDebugInfo() {
     'PLY: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber + '\n' +
     'AUTOPLAY: ' + (isAutoPlayOn ? 'delay=' + Delay + 'ms' + ' autoplaynext=' + autoplayNextGame : 'off') +
     '\n\n' +
-    'LIVEBROADCAST: ' + (LiveBroadcastDelay > 0 ? 'ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + ' started=' + LiveBroadcastStarted + ' ended=' + LiveBroadcastEnded + ' paused=' + LiveBroadcastPaused + ' demo=' + LiveBroadcastDemo + ' alert=' + LiveBroadcastAlert + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime() : 'off') + 
+    'LIVEBROADCAST: ' + (LiveBroadcastDelay > 0 ? 'ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + ' started=' + LiveBroadcastStarted + ' ended=' + LiveBroadcastEnded + ' paused=' + LiveBroadcastPaused + ' demo=' + LiveBroadcastDemo + ' alert=' + LiveBroadcastAlert + ' stepping=' + LiveBroadcastSteppingMode + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime() : 'off') + 
     '\n\n' +
     'ALERTLOG: fatalnew=' + fatalErrorNumSinceReset + ' new=' + alertNumSinceReset + 
     ' shown=' + Math.min(alertNum, alertLog.length) + ' total=' + alertNum + '\n--';
@@ -851,6 +852,7 @@ var LiveBroadcastPlaceholderEvent = 'live chess broadcast';
 var LiveBroadcastPlaceholderPgn = '[Event "' + LiveBroadcastPlaceholderEvent + '"]';
 var gameDemoMaxPly = new Array();
 var gameDemoLength = new Array();
+var LiveBroadcastSteppingMode = false;
 
 var MaxMove = 500;
 
@@ -1679,10 +1681,9 @@ function refreshPgnSource() {
       }
       if (LiveBroadcastFoundOldGame) { initialGame = ii + 1; }
 
-      liveOptionAlternative = false;
       if (LiveBroadcastFoundOldGame) { 
         oldInitialHalfmove = initialHalfmove; 
-        if (liveOptionAlternative) {
+        if (LiveBroadcastSteppingMode) {
           initialHalfmove = oldCurrentPlyLast ? oldCurrentPly+1 : oldCurrentPly; // LIVE OPTION B: autoplay to last
         } else {
           initialHalfmove = oldCurrentPlyLast ? "end" : oldCurrentPly; // LIVE OPTION A: jump to last
@@ -1699,7 +1700,7 @@ function refreshPgnSource() {
       customFunctionOnPgnTextLoad();
 
       if (LiveBroadcastFoundOldGame) {
-        if (liveOptionAlternative) {
+        if (LiveBroadcastSteppingMode) {
           if (oldAutoplay || oldCurrentPlyLast) { SetAutoPlay(true); } // LIVE OPTION B: autoplay to last
         } else {
           if (oldAutoplay) { SetAutoPlay(true); } // LIVE OPTION A: jump to last
@@ -3356,10 +3357,11 @@ function SetAutoplayDelayAndStart(vv) {
   SetAutoPlay(true);
 }
 
-function SetLiveBroadcast(delay, alertFlag, demoFlag) {
+function SetLiveBroadcast(delay, alertFlag, demoFlag, stepFlag) {
   LiveBroadcastDelay = delay; // delay = 0 => no live broadcast
   LiveBroadcastAlert = (alertFlag === true); // display myAlerts during live broadcast?
   LiveBroadcastDemo = (demoFlag === true);
+  LiveBroadcastSteppingMode = (stepFlag === true);
 }
 
 function SetImage(col, row, image) {

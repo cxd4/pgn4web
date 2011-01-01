@@ -87,7 +87,7 @@
   SetInitialHalfmove("end",true); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default)
   SetShortcutKeysEnabled(true);
 
-  SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false)
+  SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, false); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false)
 
   originalTitle = document.title;
 

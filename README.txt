@@ -122,7 +122,7 @@ Example:
     SetInitialHalfmove(0,false); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only
     SetShortcutKeysEnabled(false);
 
-    SetLiveBroadcast(0.25, true, true); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false)
+    SetLiveBroadcast(1, false, false, false); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false)
 
   </script>
  
@@ -205,14 +205,19 @@ page or your blog.
 
 THE LIVE BROADCAST OF GAMES
 
-By setting the SetLiveBroadcast(delay, alertFlag, demoFlag) option in the 
-HTML file, pgn4web will periodically refresh the PGN file, showing the live 
-progress of the games. PGN files produced by the DGT chessboards are supported.
+By setting the SetLiveBroadcast(delay, alertFlag, demoFlag, stepFlag) option 
+in the HTML file, pgn4web will periodically refresh the PGN file, showing the  
+live progress of the games. PGN files produced by the DGT chessboards are 
+supported.
 
 SetLiveBroadcast(delay, alertFlag, demoFlag) parameters:
  - delay = refresh interval in minutes, decimals allowed (default 1)
  - alertFlag = if set true, shows alert debug messages (default false)
  - demoFlag = if set true, sets live demo mode (default false)
+ - stepFlag = if set true, autoplays updates in steps (default false)
+
+If you set stepFlag, please note that the autoplay delay is set by
+SetAutoplayDelay(delay), where no more than 2000ms should be used.
 
 The bash shell script live-grab.sh, executed on your server allows for grabbing
 the updated game source from anywhere on the Internet to your server.
