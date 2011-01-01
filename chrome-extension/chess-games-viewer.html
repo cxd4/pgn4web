@@ -110,11 +110,12 @@ of Google Chrome v6 or later. Don't use with any other browser.
       if ((refreshDemo == "true") || (refreshDemo == "t")) { alertFlag = demoFlag = true; }
    }
 
+   stepFlag = false;
    thisRegExp = /(&|\?)(refreshMinutes|rm)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
       refreshMinutes = unescape(window.location.search.match(thisRegExp)[3]);
       SetInitialHalfmove("end", true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
-      SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false)
+      SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, stepFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false)
    }
 
    function fixHeaderTagClass(elementId) {
