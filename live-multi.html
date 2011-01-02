@@ -24,7 +24,6 @@ if (pgn4web_live_pointer_url == undefined) { pgn4web_live_pointer_url = "."; }
 <script type="text/javascript">
 
   pgnFile_default = "";
-  
   // accepts pgnData as alias for pgnFile for consistency with board.html
   if ((pgnFile = gup("pgnData")) === "") { 
     if ((pgnFile = gup("pgnFile")) === "") {
@@ -32,8 +31,9 @@ if (pgn4web_live_pointer_url == undefined) { pgn4web_live_pointer_url = "."; }
     }
   }
 
+  refreshMinutes_default = 1;
   if ((refreshMinutes = gup("refreshMinutes")) === "") { 
-    refreshMinutes = 1;
+    refreshMinutes = refreshMinutes_default;
   } else {
     testMinutes = refreshMinutes + "";
     if (testMinutes.match(/[^0-9\.]/)) {
@@ -75,8 +75,9 @@ function columns_default(b) {
   }
   columns = parseInt(columns, 10);
 
+  displayOrder_default = "sequential";
   if ((displayOrder = gup("displayOrder")) === "") {
-    displayOrder = "sequential";
+    displayOrder = displayOrder_default;
   } else {
     if ( (displayOrder != "reverse")    && (displayOrder != "r") &&
          (displayOrder != "sequential") && (displayOrder != "s")    ) {
@@ -128,7 +129,10 @@ function developer_help() {
 }
 
 buildUrl_one = location.protocol + "//" + location.host + location.pathname + "?";
-buildUrl_two = "&do=" + displayOrder.charAt(0) + "&rm=" + refreshMinutes + "&pd=" + pgnFile;
+buildUrl_two = "";
+if (displayOrder.charAt(0) !== displayOrder_default.charAt(0)) { buildUrl_two += "&do=" + displayOrder.charAt(0); }
+if (refreshMinutes !== refreshMinutes_default) { buildUrl_two += "&rm=" + refreshMinutes; }
+if (pgnFile !== pgnFile_default) { buildUrl_two += "&pd=" + pgnFile; }
 oneMoreBoardUrl = buildUrl_one + "&b=" + (boards < 32 ? (boards + 1) : 32) + "&c=" + columns + buildUrl_two;
 oneLessBoardUrl = buildUrl_one + "&b=" + (boards >  1 ? (boards - 1) :  1) + "&c=" + columns + buildUrl_two;
 oneMoreColumnUrl = buildUrl_one + "&b=" + boards + "&c=" + (columns < 8 ? (columns + 1) : 8) + buildUrl_two;
