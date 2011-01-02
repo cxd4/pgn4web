@@ -56,9 +56,15 @@ if (pgn4web_live_pointer_url == undefined) { pgn4web_live_pointer_url = "."; }
   }
   boards = parseInt(boards, 10);
 
-  columns_default = 3;
+function columns_default(b) {
+  if (b == 1) { return 1; }
+  else if (b == 2) { return 2; }
+  else if ((b == 3) || (b == 5) || (b == 6) || (b == 9)) { return 3; }
+  else return 4;
+}
+
   if ((columns = gup("columns")) === "") {
-    columns = columns_default;
+    columns = columns_default(boards);
   } else {
     testColumns = columns + "";
     if ((testColumns.match(/[^0-9]/)) || (columns == 0) || (columns > 8)) {
@@ -166,14 +172,9 @@ a:link, a:visited, a:hover, a:active
 
 document.write("<div style='margin-bottom: 9px;'>");
 document.write("<span class='menuHead'>number of chessboards</span>");
-document.write("<a class='menuLink' href='" + buildUrl_one + "&b=1&c=1" + buildUrl_two + "'>1</a>");
-document.write("<a class='menuLink' href='" + buildUrl_one + "&b=2&c=2" + buildUrl_two + "'>2</a>");
-document.write("<a class='menuLink' href='" + buildUrl_one + "&b=3&c=3" + buildUrl_two + "'>3</a>");
-document.write("<a class='menuLink' href='" + buildUrl_one + "&b=4&c=4" + buildUrl_two + "'>4</a>");
-document.write("<a class='menuLink' href='" + buildUrl_one + "&b=5&c=3" + buildUrl_two + "'>5</a>");
-document.write("<a class='menuLink' href='" + buildUrl_one + "&b=6&c=3" + buildUrl_two + "'>6</a>");
-document.write("<a class='menuLink' href='" + buildUrl_one + "&b=7&c=4" + buildUrl_two + "'>7</a>");
-document.write("<a class='menuLink' href='" + buildUrl_one + "&b=8&c=4" + buildUrl_two + "'>8</a>");
+for(ii=1; ii<=8; ii++) {
+  document.write("<a class='menuLink' href='" + buildUrl_one + "&b=" + ii + buildUrl_two + "'>" + ii + "</a>");
+}
 document.write("</div>");
 
 rows = Math.ceil(boards / columns);
