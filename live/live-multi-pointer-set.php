@@ -358,7 +358,7 @@ else { print("style='visibility: hidden;'>"); }
 <div class='inputbuttoncontainer'>
 <input type='submit' id='saveHtmlFile' name='action' value='save HTML file'
 title='save the <?print($localHtmlFile);?> HTML file with the given boards and columns numbers'
-class='inputbutton' onclick='return confirm("save the <?print($localHtmlFile);?> HTML file with the given boards and columns values?");'>
+class='inputbutton' onclick='return confirm("save the <?print($localHtmlFile);?> HTML file with boards=" + document.getElementById("boards").value + " and columns=" +  (document.getElementById("columns").value ? document.getElementById("columns").value : "\"\"") + " ?");'>
 </div>
 </td>
 <td>
