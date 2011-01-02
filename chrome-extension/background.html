@@ -21,11 +21,11 @@ function validatePgnUrl(pgnUrl) {
 
 // keep this aligned with the one in pgn4web.js
 function fixCommonPgnMistakes(text) {
-  text = text.replace(/[\u00A0\u180E\u2000-\u200A\u202F\u205F\u3000]/g," "); // replace some "space" char with plain space
-  text = text.replace(/\u00BD/g,"1/2"); // replace "half fraction" char with "1/2"
-  text = text.replace(/[\u2010-\u2015]/g,"-"); // replace "hyphens" chars with "-"
-  text = text.replace(/\u2024/g,"."); // replace "one dot leader" char with "."
-  text = text.replace(/[\u2025-\u2026]/g,"..."); // replace "two dot leader" and "ellipsis" chars with "..."
+  text = text.replace(/[\u00A0\u180E\u2000-\u200A\u202F\u205F\u3000]/g," "); // some "space" to plain space
+  text = text.replace(/\u00BD/g,"1/2"); // "half fraction" to "1/2"
+  text = text.replace(/[\u2010-\u2015]/g,"-"); // "hyphens" to "-"
+  text = text.replace(/\u2024/g,"."); // "one dot leader" to "."
+  text = text.replace(/[\u2025-\u2026]/g,"..."); // "two dot leader" and "ellipsis" to "..."
   return text;
 }
 

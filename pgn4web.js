@@ -188,7 +188,7 @@ function handlekey(e) {
 
   if (e.altKey || e.ctrlKey || e.metaKey) { return true; }
 
-  // escape always enabled: show help and toggle enabling shortcut keys
+  // escape always enabled: help and toggle shortcut keys
   if ((keycode != 27) && (shortcutKeysEnabled === false)) { return true; }
 
   switch(keycode) {
@@ -873,10 +873,10 @@ var mvCapturedId = -1;
 Board = new Array(8);
 for(i=0; i<8; ++i) { Board[i] = new Array(8); }
 
-// HistCol and HistRow contain move history up to the last replayed ply
-// HistCol[0] and HistRow[0] contain the "square from" (0..7, 0..7 from square a1)
-// HistCol[1] and HistRow[1] contain castling and capture info
-// HistCol[2] and HistRow[2] contain the "square to" (0..7, 0..7 from square a1)
+// HistCol, HistRow: move history up to last replayed ply
+// HistCol[0], HistRow[0]: "square from" (0..7, 0..7 from square a1)
+// HistCol[1], HistRow[1]: castling/capture
+// HistCol[2], HistRow[2]: "square to" (0..7, 0..7 from square a1)
 
 HistCol = new Array(3);
 HistRow = new Array(3);
@@ -1248,9 +1248,9 @@ function SetInitialGame(number_or_string) {
   if (number_or_string) { initialGame = number_or_string; }
 }
 
-// clock value detection:
+// clock detection:
 // a) check DGT sequence [%clk 01:02] 
-// b) check for nn:nn:nn and nn.nn.nn at the comment start 
+// b) check for nn:nn:nn and nn.nn.nn at comment start 
   
 function clockFromComment(comment) {
   var clock;
@@ -1405,11 +1405,11 @@ function highlightSquare(col, row, on) {
 
 // keep this aligned with the one in chrome-extension/background.html
 function fixCommonPgnMistakes(text) {
-  text = text.replace(/[\u00A0\u180E\u2000-\u200A\u202F\u205F\u3000]/g," "); // replace some "space" char with plain space
-  text = text.replace(/\u00BD/g,"1/2"); // replace "half fraction" char with "1/2"
-  text = text.replace(/[\u2010-\u2015]/g,"-"); // replace "hyphens" chars with "-"
-  text = text.replace(/\u2024/g,"."); // replace "one dot leader" char with "."
-  text = text.replace(/[\u2025-\u2026]/g,"..."); // replace "two dot leader" and "ellipsis" chars with "..."
+  text = text.replace(/[\u00A0\u180E\u2000-\u200A\u202F\u205F\u3000]/g," "); // some "space" to plain space
+  text = text.replace(/\u00BD/g,"1/2"); // "half fraction" to "1/2"
+  text = text.replace(/[\u2010-\u2015]/g,"-"); // "hyphens" to "-"
+  text = text.replace(/\u2024/g,"."); // "one dot leader" to "."
+  text = text.replace(/[\u2025-\u2026]/g,"..."); // "two dot leader" and "ellipsis" to "..."
   return text;
 }
 
@@ -1619,10 +1619,10 @@ function refreshPgnSource() {
     addedPly = 0;
     for(ii=0;ii<numberOfGames;ii++) {
       rnd = Math.random();
-      if      (rnd <= 0.05) { newPly = 3; } //  5% of times add 3 ply
-      else if (rnd <= 0.20) { newPly = 2; } // 15% of times add 2 ply
-      else if (rnd <= 0.60) { newPly = 1; } // 40% of times add 1 ply
-      else                  { newPly = 0; } // 40% of times add 0 ply
+      if      (rnd <= 0.05) { newPly = 3; } //  5% add 3 ply
+      else if (rnd <= 0.20) { newPly = 2; } // 15% add 2 ply
+      else if (rnd <= 0.60) { newPly = 1; } // 40% add 1 ply
+      else                  { newPly = 0; } // 40% add 0 ply
       if (gameDemoMaxPly[ii] <= gameDemoLength[ii]) { 
         gameDemoMaxPly[ii] += newPly;
         addedPly += newPly;
@@ -1690,9 +1690,9 @@ function refreshPgnSource() {
       if (LiveBroadcastFoundOldGame) { 
         oldInitialHalfmove = initialHalfmove; 
         if (LiveBroadcastSteppingMode) {
-          initialHalfmove = oldCurrentPlyLast ? oldCurrentPly+1 : oldCurrentPly; // LIVE OPTION B: autoplay to last
+          initialHalfmove = oldCurrentPlyLast ? oldCurrentPly+1 : oldCurrentPly;
         } else {
-          initialHalfmove = oldCurrentPlyLast ? "end" : oldCurrentPly; // LIVE OPTION A: jump to last
+          initialHalfmove = oldCurrentPlyLast ? "end" : oldCurrentPly;
         }
       }
   
@@ -1707,9 +1707,9 @@ function refreshPgnSource() {
 
       if (LiveBroadcastFoundOldGame) {
         if (LiveBroadcastSteppingMode) {
-          if (oldAutoplay || oldCurrentPlyLast) { SetAutoPlay(true); } // LIVE OPTION B: autoplay to last
+          if (oldAutoplay || oldCurrentPlyLast) { SetAutoPlay(true); }
         } else {
-          if (oldAutoplay) { SetAutoPlay(true); } // LIVE OPTION A: jump to last
+          if (oldAutoplay) { SetAutoPlay(true); }
         }
       }
 
@@ -2950,7 +2950,7 @@ function SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, ch
 
 var clickedSquareInterval = null;
 function clickedSquare(ii, jj) {
-  if (clickedSquareInterval) { return; } // dont trigger effect twice
+  if (clickedSquareInterval) { return; } // dont trigger twice
   squareId = 'tcol' + jj + 'trow' + ii;
   theObject = document.getElementById(squareId);
   originalClass = theObject.className;
