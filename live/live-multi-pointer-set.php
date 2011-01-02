@@ -415,11 +415,11 @@ class='inputline' onchange='validate_and_set_columns(this.value)'>
 
 </form>
 
-<script src="pgn4web-server-config.js" type="text/javascript"></script>
+<script src="../pgn4web-server-config.js" type="text/javascript"></script>
 <script type="text/javascript">
   if (pgn4web_live_pointer_url != ".") {
     if (theObject = document.getElementById("mainLiveGrabLink")) {
-      theObject.href = pgn4web_live_pointer_url + "live/live-grab.php";
+      theObject.href = pgn4web_live_pointer_url + "/live/live-grab.php";
     }
   }
 </script>
