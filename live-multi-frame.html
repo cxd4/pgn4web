@@ -104,6 +104,12 @@ function addTagToTitle(tagLabel, tagValue, object) {
 }
 
 function customFunctionOnPgnGameLoad() {
+  wObject = document.getElementById("GameWhite");
+  bObject = document.getElementById("GameBlack");
+  if (wObject && bObject) {
+    if ((wObject.innerHTML === "") && (bObject.innerHTML !== "")) { wObject.innerHTML = "-"; }
+    if ((bObject.innerHTML === "") && (wObject.innerHTML !== "")) { bObject.innerHTML = "-"; }
+  }
   if (theObject = document.getElementById("bottomContainer")) {
     theObject.title = " game " + (currentGame+1) + " of " + numberOfGames;
     addTagToTitle("event:", gameEvent[currentGame], theObject);
@@ -117,11 +123,11 @@ function customFunctionOnPgnGameLoad() {
 }
 
 function customFunctionOnMove() {
-  var idList = ["GameLastMove", "GameResult", "GameWhite", "GameBlack", "GameWhiteClock", "GameBlackClock"];
-  for (ii in idList) {
-    if (theObject = document.getElementById(idList[ii])) {
-      if (theObject.innerHTML === "") { theObject.innerHTML = "-"; }
-    }
+  wObject = document.getElementById("GameWhiteClock");
+  bObject = document.getElementById("GameBlackClock");
+  if (wObject && bObject) {
+    if ((wObject.innerHTML === "") && (bObject.innerHTML !== "")) { wObject.innerHTML = "-"; }
+    if ((bObject.innerHTML === "") && (wObject.innerHTML !== "")) { bObject.innerHTML = "-"; }
   }
 }
 
