@@ -47,7 +47,9 @@ if [ "$boards" -lt 1 ]; then print_error; exit; fi
 if [ "$boards" -gt 32 ]; then print_error; exit; fi
 
 columns=$2
-if [ -n "$columns" ]; then 
+if [ -z "$columns" ]; then
+	columns="\"\""
+else
 	if [ "$columns" -eq "$columns" 2> /dev/null ]; then echo -n; else print_error; exit; fi
 	if [ "$columns" -lt 1 ]; then print_error; exit; fi
 	if [ "$columns" -gt 8 ]; then print_error; exit; fi
@@ -65,7 +67,7 @@ cat << EOF
 -->
 
 <head>
-<script>
+<script type="text/javascript">
 
 // how many boards/columns to display on the live multi page
 // boards must be set, columns can be blank for default

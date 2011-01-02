@@ -2,7 +2,7 @@
 % it allows to announce the next broadcast on live.html
 % if the Result tag is set to "*" live.html will automatically refresh games
 
-[White "no event scheduled at this time, please check again later"]
+[White "no live event"]
 % [Result "*"]
 
 {[%pgn4web click square H6 to check for the next event]}
