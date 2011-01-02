@@ -391,7 +391,7 @@ class='inputline' onchange='validate_and_set_columns(this.value)'>
 
 <tr valign='top'>
 <td colspan='2'>
-<div class='header'>chessboard viewers</div>
+<div class='header'>links</div>
 </td>
 </tr>
 <tr valign='top'>
@@ -399,9 +399,14 @@ class='inputline' onchange='validate_and_set_columns(this.value)'>
 </td>
 <td>
 <div class='linkcontainer'>
-<div class='link'>
-<a href='<?print($localHtmlFile);?>' target='liveMulti' class='link'>chess live broadcast with multiple chessboards</a> 
-</div>
+<div class='link'><a href='../live/' target='_blank'>main single live chessboard</a></div>
+<div class='link'><a href='../live-multi/' target='_blank'>main multiple live chessboards</a></div>
+<div class='link'><a href='live-multi-pointer-set.php' target='_blank'>main live-multi-pointer.php configurator</a></div>
+<div class='link'><a id='mainLiveGrabLink' href='live-grab.php' target='_blank'>main live-grab.php configurator</a></div>
+<div class='link'>&nbsp;</div>
+<div class='link'><a href='../live-compact.html' target='_blank'>local single live chessboard</a></div>
+<div class='link'><a href='../live-multi-frame.html'  target='_blank'>local live chessboard frame</a></div>
+<div class='link'><a href='live-grab.php' target='_blank'>local live-grab.php configurator</a></div>
 </div>
 </td>
 </tr>
@@ -409,6 +414,15 @@ class='inputline' onchange='validate_and_set_columns(this.value)'>
 </table>
 
 </form>
+
+<script src="pgn4web-server-config.js" type="text/javascript"></script>
+<script type="text/javascript">
+  if (pgn4web_live_pointer_url != ".") {
+    if (theObject = document.getElementById("mainLiveGrabLink")) {
+      theObject.href = pgn4web_live_pointer_url + "live/live-grab.php";
+    }
+  }
+</script>
 
 </body>
 
