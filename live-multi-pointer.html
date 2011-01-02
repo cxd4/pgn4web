@@ -11,8 +11,11 @@
 <script>
 
 // how many boards/columns to display on the live multi page
+// boards must be set, columns can be blank for default
 boards=3;
 columns=;
+
+// dont edit below this point
 
 newSearch = "?b=" + boards + "&c=" + columns;
 if (window.location.search) { newSearch += window.location.search.replace(/^\?/, "&"); }

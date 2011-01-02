@@ -47,10 +47,11 @@ if [ "$boards" -lt 1 ]; then print_error; exit; fi
 if [ "$boards" -gt 32 ]; then print_error; exit; fi
 
 columns=$2
-if [ -z "$columns" ]; then print_error; exit; fi 
-if [ "$columns" -eq "$columns" 2> /dev/null ]; then echo -n; else print_error; exit; fi
-if [ "$columns" -lt 1 ]; then print_error; exit; fi
-if [ "$columns" -gt 8 ]; then print_error; exit; fi
+if [ -n "$columns" ]; then 
+	if [ "$columns" -eq "$columns" 2> /dev/null ]; then echo -n; else print_error; exit; fi
+	if [ "$columns" -lt 1 ]; then print_error; exit; fi
+	if [ "$columns" -gt 8 ]; then print_error; exit; fi
+fi
 
 (
 cat << EOF 
@@ -67,8 +68,11 @@ cat << EOF
 <script>
 
 // how many boards/columns to display on the live multi page
+// boards must be set, columns can be blank for default
 boards=$boards;
 columns=$columns;
+
+// dont edit below this point
 
 newSearch = "?b=" + boards + "&c=" + columns;
 if (window.location.search) { newSearch += window.location.search.replace(/^\?/, "&"); }
