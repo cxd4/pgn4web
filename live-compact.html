@@ -160,6 +160,12 @@
   function customFunctionOnMove() {
     document.getElementById("systemMessage").style.display = 
       customPgnCommentTag("pgn4web", "pgn4webMessage") !== "" ? "none" : "inline";
+    wObject = document.getElementById("GameWhiteClock");
+    bObject = document.getElementById("GameBlackClock");
+    if (wObject && bObject) {
+      if ((wObject.innerHTML === "") && (bObject.innerHTML !== "")) { wObject.innerHTML = "-"; }
+      if ((bObject.innerHTML === "") && (wObject.innerHTML !== "")) { bObject.innerHTML = "-"; }
+    }
   }
 
   var checkForNewLiveEventInterval = null;
