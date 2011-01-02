@@ -1307,9 +1307,15 @@ function HighlightLastMove() {
   if (lastMoverClockObject !== null) {
     lastMoverClockObject.innerHTML = showThisMove+1 > StartPly ?
       clockFromComment(MoveComments[showThisMove+1]) : initialLastMoverClock;
+    // fix DGT board issue possibly missing last move clock info
+    if ((lastMoverClockObject.innerHTML === "") && 
+      ((LiveBroadcastDelay > 0) || (showThisMove+1 === StartPly+PlyNumber))) {
+      lastMoverClockObject.innerHTML = showThisMove-1 > StartPly ?
+        clockFromComment(MoveComments[showThisMove-1]) : initialLastMoverClock;
+    }
   }
   if (beforeLastMoverClockObject !== null) {
-    beforeLastMoverClockObject.innerHTML = showThisMove+1 > StartPly+1 ?
+    beforeLastMoverClockObject.innerHTML = showThisMove > StartPly ?
       clockFromComment(MoveComments[showThisMove]) : initialLastMoverClock;
   }
 
