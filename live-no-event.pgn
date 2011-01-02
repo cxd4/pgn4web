@@ -3,6 +3,7 @@
 % if the Result tag is set to "*" live.html will automatically refresh games
 
 [White "no live event"]
+[Black "check back later"]
 % [Result "*"]
 
 {[%pgn4web click square H6 to check for the next event]}
