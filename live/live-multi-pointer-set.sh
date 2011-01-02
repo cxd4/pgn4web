@@ -67,6 +67,10 @@ cat << EOF
 -->
 
 <head>
+
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="pragma" content="no-cache">
+
 <script type="text/javascript">
 
 // how many boards/columns to display on the live multi page

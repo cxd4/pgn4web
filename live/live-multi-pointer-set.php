@@ -15,7 +15,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 // set this to true to enable the script, set to false by default
 $enableScript = TRUE; 
-// $enableScript = FALSE;
+$enableScript = FALSE;
 
 // set this to the sha256 hash of your password of choice;
 // you can calculate the sha256 of your password of choice by
@@ -56,11 +56,6 @@ function validate_action($action) {
   }
 }
 
-function validate_localPgnFile($localPgnFile) {
-  if (preg_match("/^[A-Za-z0-9_\-]+\.(pgn|txt)$/", $localPgnFile)) { return $localPgnFile; }
-  else { return "live.pgn"; }
-}
-
 function validate_boards($boards) {
   if (preg_match("/^[0-9]+$/", $boards) && ($boards > 0) && ($boards < 33))
   { return $boards; }
@@ -69,7 +64,7 @@ function validate_boards($boards) {
 
 function validate_columns($columns) {
   if (($columns == "") || (preg_match("/^[0-9]+$/", $columns) && ($columns > 0) && ($columns < 9)))
-  { return $boards; }
+  { return $columns; }
   else { return ""; }
 }
 
@@ -197,10 +192,49 @@ if ($secretHash == $storedSecretHash) {
 
     case "save HTML file":
       $message = $message . "\n" . "action=" . $action;
-/* PAOLO
-        umask(0000);
-        if (! file_put_contents($localPgnFile, $pgnTextToSave)) { 
-*/
+      if ($columns == "") { $columnsValue = "\"\""; }
+      else { $columnsValue = $columns; }
+      umask(0000);
+      $htmlPageToSave = <<<HTMLPAGE
+<html> 
+
+<!--
+  pgn4web javascript chessboard
+  copyright (C) 2009, 2011 Paolo Casaschi
+  see README file and http://pgn4web.casaschi.net
+  for credits, license and more details
+-->
+
+<head>
+
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="pragma" content="no-cache">
+
+<script type="text/javascript">
+
+// how many boards/columns to display on the live multi page
+// boards must be set, columns can be blank for default
+boards=$boards;
+columns=$columnsValue;
+
+// dont edit below this point
+
+newSearch = "?b=" + boards + "&c=" + columns;
+if (window.location.search) { newSearch += window.location.search.replace(/^\?/, "&"); }
+window.location.href = "live-multi.html" + newSearch + window.location.hash;
+
+</script>
+</head>
+</html>
+
+HTMLPAGE;
+        if (! file_put_contents($localHtmlFile, $htmlPageToSave)) { 
+          $message = $message . "\n" . "error=failed saving local html file";
+        } elseif (! chmod($localHtmlFile, 0644)) {
+          $message = $message . "\n" . "error=failed chmod local html file";
+        } else {
+          $message = $message . "\n" . "info=saved name=" . $localHtmlFile . " boards=" . $boards . " columns=" . $columns;
+        }
       break;
 
     case "submit password":
@@ -323,8 +357,8 @@ else { print("style='visibility: hidden;'>"); }
 <td width='25%'>
 <div class='inputbuttoncontainer'>
 <input type='submit' id='saveHtmlFile' name='action' value='save HTML file'
-title='save the HTML file with the given boards and columns numbers'
-class='inputbutton' onclick='return confirm("save HTML file with the given boards and columns values?");'>
+title='save the <?print($localHtmlFile);?> HTML file with the given boards and columns numbers'
+class='inputbutton' onclick='return confirm("save the <?print($localHtmlFile);?> HTML file with the given boards and columns values?");'>
 </div>
 </td>
 <td>
@@ -366,7 +400,7 @@ class='inputline' onchange='validate_and_set_columns(this.value)'>
 <td>
 <div class='linkcontainer'>
 <div class='link'>
-<a href='../live-multi/' target='liveMulti' class='link'>chess live broadcast with multiple chessboards</a> 
+<a href='<?print($localHtmlFile);?>' target='liveMulti' class='link'>chess live broadcast with multiple chessboards</a> 
 </div>
 </div>
 </td>
