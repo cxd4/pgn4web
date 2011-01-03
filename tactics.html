@@ -46,14 +46,12 @@
 // SetInitialHalfmove(0,false); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default)
    SetShortcutKeysEnabled(false);
 
-cols2clear="ABCDEFGH";
-rows2clear="1234567";
-for (c=0; c<cols2clear.length; c++) {
-  for (r=0; r<rows2clear.length; r++) {
-    boardShortcut(cols2clear.charAt(c)+rows2clear.charAt(r), "", function(){});
-  }
-}
+clearShortcutSquares("ABCDEFGH", "1234567");
+boardShortcut("H8", "hint", hint);
 
+function hint() {
+  alert("hint: the solution's main line is " + PlyNumber + " ply long");
+}
 
 function gup( name ){
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");

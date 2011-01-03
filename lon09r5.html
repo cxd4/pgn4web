@@ -45,14 +45,7 @@ a.gamelist:link, a.gamelist:visited, a.gamelist:hover, a.gamelist:active
 // disabling switching games with the usual third/fourth/sixth/seventh row shortcut
 // squares (that would break the game highlighting feature of the page)
 
-cols2clear="ABCDEFGH";
-rows2clear="34567";
-
-for (c=0; c<cols2clear.length; c++) {
-  for (r=0; r<rows2clear.length; r++) {
-    boardShortcut(cols2clear.charAt(c)+rows2clear.charAt(r), "", function(){});
-  }
-}
+clearShortcutSquares("ABCDEFGH", "34567");
 
 </script>
 

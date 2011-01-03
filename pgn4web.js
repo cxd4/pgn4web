@@ -400,10 +400,14 @@ boardTitle = new Array(8);
 for (col=0; col<8; col++) {
   boardOnClick[col] = new Array(8);
   boardTitle[col] = new Array(8);
-  for (row=0; row<8; row++) {
-    boardTitle[col][row] = "";
-    boardOnClick[col][row] = function(){};
-  }
+}
+clearShortcutSquares("ABCDEFGH", "12345678");
+
+function clearShortcutSquares(cols, rows) {
+  if (!cols.charAt || !rows.charAt) { return; }
+  for (c in cols) { for (r in rows) { 
+      boardShortcut(cols.charAt(c).toUpperCase()+rows.charAt(r), "", function(){});
+  } }
 }
 
 function boardShortcut(square, title, functionPointer) {
