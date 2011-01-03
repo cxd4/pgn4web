@@ -95,8 +95,12 @@ function developer_help() {
   SetAutoplayNextGame(false); 
   SetInitialGame(initialGameNumber);
   SetInitialHalfmove("end", true);
-  SetShortcutKeysEnabled(true);
-  SetLiveBroadcast(refreshMinutes, false, false, false);
+  SetShortcutKeysEnabled(false);
+  SetLiveBroadcast(refreshMinutes, false, false, true);
+
+  clearShortcutSquares("CDEFGH", "2");
+  clearShortcutSquares("ABCDEFGH", "345");
+  clearShortcutSquares("BCDEFG", "7");
 
 function addTagToTitle(tagLabel, tagValue, object) {
   if (!tagValue || tagValue[1] == "?" || !object) { return; }
