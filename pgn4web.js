@@ -470,7 +470,7 @@ boardShortcut("E6", "search next unfinished game", function(){  searchPgnGame('\
 // F6
 boardShortcut("F6", "search next finished game", function(){ searchPgnGame('\\[\\s*Result\\s*"(?!\\*"\\s*\\])', false); });
 // G6
-boardShortcut("G6", "toggle live broadcast stepping mode", function(){ LiveBroadcastSteppingMode = !LiveBroadcastSteppingMode; });
+boardShortcut("G6", "toggle live broadcast stepping", function(){ LiveBroadcastSteppingMode = !LiveBroadcastSteppingMode; });
 // H6
 boardShortcut("H6", "force games refresh during live broadcast", function(){ refreshPgnSource(); });
 // A5
