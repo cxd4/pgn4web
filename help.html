@@ -109,8 +109,8 @@ Errors alert messages are logged, such as failures to load PGN games, incorrect 
 <script type="text/javascript">print_menu("squares", 2, "shortcut&nbsp;squares");</script>
 
 <script type="text/javascript">
-  document.write("<table style='padding:0;' border=0>");	
   try {
+    document.write("<table style='padding:0;' border=0>");
     for (r=7; r>=0; r--) {
       rowDisplayed = false;
       for (c=0; c<=7; c++) {
@@ -122,11 +122,9 @@ Errors alert messages are logged, such as failures to load PGN games, incorrect 
       if (rowDisplayed) { print_help_row("&nbsp;", ""); }
     }
     document.write("</table>");	
-    document.write("<i>Squares labeled assuming " + colorAtTheBottom + " on bottom.</i>");
+    document.write("Squares labeled assuming " + colorAtTheBottom + " on bottom.");
   } catch (e) {
-    print_help_row("shortcut squares info not available from the opener window", "");
-    print_help_row("please hover the mouse pointer on each square of the chessboard to check for their shortcut action", "");
-    document.write("</table>");	
+    document.write("Shortcut squares info not available from the opener window, please hover the mouse pointer on each square of the chessboard to check for their shortcut action.");
   }
 </script>
 
@@ -139,15 +137,13 @@ Errors alert messages are logged, such as failures to load PGN games, incorrect 
 
 try {
   var keysEnabled = opener.shortcutKeysEnabled;
-  document.write('<i>Shorcut keys currently ' + 
-    (keysEnabled ? "enabled, disable" : "disabled, enable") +
-    ' in the chessboard with shift+escape or clicking square ' +
-    shortcutSquareKeyEnable + ' (assuming ' +
-    colorAtTheBottom + ' on bottom).</i>\n');
-} catch (e) { keysEnabled = -1; }
+  document.write('Shortcut keys currently ' + (keysEnabled ? "enabled, disable" : "disabled, enable") + ' in the chessboard with shift+escape or clicking square ' + shortcutSquareKeyEnable + ' (assuming ' + colorAtTheBottom + ' on bottom).\n'); 
+} catch (e) {
+  document.write('Shortcut keys info not available from the opener window, please check about shortcut keys in the chessboard with shift+escape or clicking square ' + shortcutSquareKeyEnable + ' (assuming ' + colorAtTheBottom + ' on bottom).\n');
+}
 
 document.write("<table style='padding:0;' border=0>");	
-if (keysEnabled !== -1) { print_help_row("&nbsp;", ""); }
+print_help_row("&nbsp;", "");
 print_help_row("h , l", "game start, end (also arrow up, down keys)");
 print_help_row("u, i", "find previous, next comment");
 print_help_row("j , k", "move backward, forward (also arrow left, right keys)");
