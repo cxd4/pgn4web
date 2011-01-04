@@ -404,8 +404,8 @@ for (col=0; col<8; col++) {
 clearShortcutSquares("ABCDEFGH", "12345678");
 
 function clearShortcutSquares(cols, rows) {
-  if (!cols.charAt || !rows.charAt) { return; }
-  for (c in cols) { for (r in rows) { 
+  if ((typeof cols != "string") || (typeof rows != "string")) { return; }
+  for (c=0; c<cols.length; c++) { for (r=0; r<rows.length; r++) { 
       boardShortcut(cols.charAt(c).toUpperCase()+rows.charAt(r), "", function(){});
   } }
 }
