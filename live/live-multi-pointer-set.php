@@ -306,7 +306,7 @@ function validate_and_set_columns(columns) {
 <td width='25%'>
 <div class='inputbuttoncontainer'>
 <input type='submit' name='action' value='submit password' class='inputbutton' 
-title='submit password to access private sections of the live games grab page'
+title='submit password to access private sections of the page'
 <?
 if ($secretHash == $storedSecretHash) { print("disabled='true'>"); }
 else { print(">"); }
@@ -334,7 +334,7 @@ onclick='document.getElementById("secret").value=""; return false;'>
 <td>
 <div class='inputlinecontainer'>
 <input name='secret' type='password' id='secret' value='<?print(str_replace("'", "&#39;", $secret));?>'
-title='password to access private sections of the live games grab page'
+title='password to access private sections of the page'
 class='inputline' onchange='validate_and_set_secret(this.value);'>
 </div>
 </td>
@@ -417,9 +417,11 @@ class='inputline' onchange='validate_and_set_columns(this.value)'>
 
 <script src="../pgn4web-server-config.js" type="text/javascript"></script>
 <script type="text/javascript">
-  if (pgn4web_live_pointer_url != ".") {
-    if (theObject = document.getElementById("mainLiveGrabLink")) {
+  if (theObject = document.getElementById("mainLiveGrabLink")) {
+    if (pgn4web_live_pointer_url.match("^((/|http(s|)://).*)")) { // different domain or absolute path
       theObject.href = pgn4web_live_pointer_url + "/live/live-grab.php";
+    } else { // same domain AND relative path
+      theObject.href = pgn4web_live_pointer_url + "/../live/live-grab.php";
     }
   }
 </script>
