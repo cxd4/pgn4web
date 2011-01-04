@@ -134,10 +134,15 @@
     }
     if (timeControl = customPgnHeaderTag("TimeControl")) {
       if (theObject = document.getElementById("GameWhiteClock")) { theObject.title = "timecontrol: " + timeControl; }
-      if (theObject = document.getElementById("GameBlackClock")) { theObject.title = "timecontrol:" + timeControl; }
+      if (theObject = document.getElementById("GameBlackClock")) { theObject.title = "timecontrol: " + timeControl; }
     } else {
       if (theObject = document.getElementById("GameWhiteClock")) { theObject.title = ""; }
       if (theObject = document.getElementById("GameBlackClock")) { theObject.title = ""; }
+    }
+    if (gameTermination = customPgnHeaderTag("Termination")) {
+      if (theObject = document.getElementById("GameResult")) { theObject.title = "termination: " + gameTermination; }
+    } else {
+      if (theObject = document.getElementById("GameResult")) { theObject.title = ""; }
     }
     if ((gameRound[currentGame] !==  undefined) && 
       (gameRound[currentGame] !== "") && 
