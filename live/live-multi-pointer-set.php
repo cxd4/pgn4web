@@ -7,6 +7,8 @@
  *  for credits, license and more details
  */
 
+// Web script to set the number of boards and columns of ../live-multi-pointer.html
+
 error_reporting(E_ERROR | E_PARSE);
 
 
