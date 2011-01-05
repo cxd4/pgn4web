@@ -44,8 +44,10 @@ if (pgn4web_live_pointer_url == undefined) { pgn4web_live_pointer_url = "."; }
   }
 
   boards_default = 3;
+  show_board_selector = false;
   if ((boards = gup("boards")) === "") {
     boards = boards_default;
+    show_board_selector = true;
   } else {
     testBoards = boards + "";
     if ((testBoards.match(/[^0-9]/)) || (boards == 0) || (boards > 32)) {
@@ -174,12 +176,14 @@ a:link, a:visited, a:hover, a:active
 
 <script type="text/javascript">
 
-document.write("<div style='margin-bottom: 9px;'>");
-document.write("<span class='menuHead'>number of chessboards</span>");
-for(ii=1; ii<=8; ii++) {
-  document.write("<a class='menuLink' href='" + buildUrl_one + "&b=" + ii + buildUrl_two + "'>" + ii + "</a>");
+if (show_board_selector) {
+  document.write("<div style='margin-bottom: 9px;'>");
+  document.write("<span class='menuHead'>number of chessboards</span>");
+  for(ii=1; ii<=8; ii++) {
+    document.write("<a class='menuLink' href='" + buildUrl_one + "&b=" + ii + buildUrl_two + "'>" + ii + "</a>");
+  }
+  document.write("</div>");
 }
-document.write("</div>");
 
 rows = Math.ceil(boards / columns);
 
