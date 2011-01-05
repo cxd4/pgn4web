@@ -34,10 +34,10 @@ function customFunctionOnAlert(msg) {}
 
 // API to parse custom header tags in customFunctionOnPgnGameLoad()
 
-function customPgnHeaderTag(customTagString, htmlElementIdString, gameNumber) {
+function customPgnHeaderTag(customTagString, htmlElementIdString, gameNum) {
   customTagString = customTagString.replace(/\W+/g, "");
-  if (gameNumber === undefined) { gameNumber = currentGame; }
-  if (tagValues = pgnGame[gameNumber].match('\\[\\s*' + customTagString + '\\s*\"([^\"]+)\"\\s*\\]')) {
+  if (gameNum === undefined) { gameNum = currentGame; }
+  if (tagValues = pgnGame[gameNum].match('\\[\\s*' + customTagString + '\\s*\"([^\"]+)\"\\s*\\]')) {
     tagValue = tagValues[1];
   } else { tagValue = ""; }
   if ((htmlElementIdString) && (theObject = document.getElementById(htmlElementIdString)) && (theObject.innerHTML !== null)) {
@@ -48,10 +48,10 @@ function customPgnHeaderTag(customTagString, htmlElementIdString, gameNumber) {
 
 // API to parse custom comment tags in customFunctionOnMove()
 
-function customPgnCommentTag(customTagString, htmlElementIdString, plyNumber) {
+function customPgnCommentTag(customTagString, htmlElementIdString, plyNum) {
   customTagString = customTagString.replace(/\W+/g, "");
-  if (plyNumber === undefined) { plyNumber = CurrentPly; }
-  if (tagValues = MoveComments[plyNumber].match('\\[%' + customTagString + '\\s*([^\\]]+)\\s*\\]')) {
+  if (plyNum === undefined) { plyNum = CurrentPly; }
+  if (tagValues = MoveComments[plyNum].match('\\[%' + customTagString + '\\s*([^\\]]+)\\s*\\]')) {
     tagValue = tagValues[1];
   } else { tagValue = ""; }
   if ((htmlElementIdString) && (theObject = document.getElementById(htmlElementIdString)) && (theObject.innerHTML !== null)) {
@@ -60,9 +60,9 @@ function customPgnCommentTag(customTagString, htmlElementIdString, plyNumber) {
   return tagValue;
 }
 
-function strippedMoveComment(move) {
-  if (!move || !MoveComments[move]) { return ""; }
-  return MoveComments[move].replace(/\[%[^\]]*\]\s*/g,'').replace(/^\s+$/,'');
+function strippedMoveComment(plyNum) {
+  if (!plyNum || !MoveComments[plyNum]) { return ""; }
+  return MoveComments[plyNum].replace(/\[%[^\]]*\]\s*/g,'').replace(/^\s+$/,'');
 }
 
 window.onload = start_pgn4web;
@@ -1261,11 +1261,12 @@ function SetInitialGame(number_or_string) {
 // a) check DGT sequence [%clk 01:02] 
 // b) check for nn:nn:nn and nn.nn.nn at comment start 
   
-function clockFromComment(comment) {
-  var clock;
-  if ((DGTclock = comment.match(/\[%clk\s*(.*?)\]/)) !== null) { return DGTclock[1]; }
-  else if (clock = comment.match(/^\s*([0-9]+(:[0-9]+)+)($|\s)/)) { return clock[1]; }
-  else if (clock = comment.match(/^\s*([0-9]+(\.[0-9]+)+)($|\s)/)) { return clock[1]; }
+function clockFromComment(plyNum) {
+  if (!plyNum || !MoveComments[plyNum]) { return ""; }
+  var clockString, clockArray;
+  if (clockString = customPgnCommentTag("clk", null, plyNum)) { return clockString; }
+  else if (clockArray = MoveComments[plyNum].match(/^\s*([0-9]+(:[0-9]+)+)($|\s)/)) { return clockArray[1]; }
+  else if (clockArray = MoveComments[plyNum].match(/^\s*([0-9]+(\.[0-9]+)+)($|\s)/)) { return clockArray[1]; }
   return "";
 }
 
@@ -1308,17 +1309,17 @@ function HighlightLastMove() {
 
   if (lastMoverClockObject !== null) {
     lastMoverClockObject.innerHTML = showThisMove+1 > StartPly ?
-      clockFromComment(MoveComments[showThisMove+1]) : initialLastMoverClock;
+      clockFromComment(showThisMove+1) : initialLastMoverClock;
     // fix DGT board issue possibly missing last move clock info
     if ((lastMoverClockObject.innerHTML === "") && 
       ((LiveBroadcastDelay > 0) || (showThisMove+1 === StartPly+PlyNumber))) {
       lastMoverClockObject.innerHTML = showThisMove-1 > StartPly ?
-        clockFromComment(MoveComments[showThisMove-1]) : initialLastMoverClock;
+        clockFromComment(showThisMove-1) : initialLastMoverClock;
     }
   }
   if (beforeLastMoverClockObject !== null) {
     beforeLastMoverClockObject.innerHTML = showThisMove > StartPly ?
-      clockFromComment(MoveComments[showThisMove]) : initialLastMoverClock;
+      clockFromComment(showThisMove) : initialLastMoverClock;
   }
 
   // show next move
