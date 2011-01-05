@@ -1536,6 +1536,8 @@ function loadPgnFromPgnUrl(pgnUrl){
 
 function SetPgnUrl(url) {
   pgnUrl = url;
+  // hidden link for the chrome extension to detect
+  document.write("<a style='display:none;' href=" + url + "></a>"); 
 }
 
 
