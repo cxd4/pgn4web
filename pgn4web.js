@@ -2435,13 +2435,13 @@ function AutoplayNextGame() {
 
 function MoveToNextComment() {
   for(ii=CurrentPly+1; ii<=StartPly+PlyNumber; ii++) {
-    if (MoveComments[ii] !== '') { GoToMove(ii); break; }
+    if (strippedMoveComment(ii)) { GoToMove(ii); break; }
   }
 }
 
 function MoveToPrevComment() {
   for(ii=(CurrentPly-1); ii>=0; ii--) {
-    if (MoveComments[ii] !== '') { GoToMove(ii); break; }
+    if (strippedMoveComment(ii)) { GoToMove(ii); break; }
   }
 }
 
