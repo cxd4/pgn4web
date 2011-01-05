@@ -1257,17 +1257,10 @@ function SetInitialGame(number_or_string) {
   if (number_or_string) { initialGame = number_or_string; }
 }
 
-// clock detection:
-// a) check DGT sequence [%clk 01:02] 
-// b) check for nn:nn:nn and nn.nn.nn at comment start 
+// clock detection: check DGT sequence [%clk 01:02]
   
 function clockFromComment(plyNum) {
-  if (!plyNum || !MoveComments[plyNum]) { return ""; }
-  var clockString, clockArray;
-  if (clockString = customPgnCommentTag("clk", null, plyNum)) { return clockString; }
-  else if (clockArray = MoveComments[plyNum].match(/^\s*([0-9]+(:[0-9]+)+)($|\s)/)) { return clockArray[1]; }
-  else if (clockArray = MoveComments[plyNum].match(/^\s*([0-9]+(\.[0-9]+)+)($|\s)/)) { return clockArray[1]; }
-  return "";
+  return customPgnCommentTag("clk", null, plyNum);
 }
 
 function HighlightLastMove() {
