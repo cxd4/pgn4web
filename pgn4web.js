@@ -1610,6 +1610,8 @@ function restartLiveBroadcastTimeout() {
 var LiveBroadcastFoundOldGame = false;
 var LiveBroadcastGameLoadFailures = 0;
 var LiveBroadcastGameLoadFailuresThreshold = 5;
+var LiveBroadcastOldCurrentPly;
+var LiveBroadcastOldCurrentPlyLast = false;
 function refreshPgnSource() {
   if (LiveBroadcastDelay === 0) { return; }
   if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); LiveBroadcastInterval = null; }
@@ -1668,8 +1670,8 @@ function refreshPgnSource() {
       firstStart = true;
       textSelectOptions = '';
 
-      oldCurrentPly = CurrentPly;
-      oldCurrentPlyLast = (CurrentPly === StartPly + PlyNumber);
+      LiveBroadcastOldCurrentPly = CurrentPly;
+      LiveBroadcastOldCurrentPlyLast = (CurrentPly === StartPly + PlyNumber);
 
       oldAutoplay = isAutoPlayOn;
       if (isAutoPlayOn) { SetAutoPlay(false); }
@@ -1688,9 +1690,10 @@ function refreshPgnSource() {
       if (LiveBroadcastFoundOldGame) { 
         oldInitialHalfmove = initialHalfmove; 
         if (LiveBroadcastSteppingMode) {
-          initialHalfmove = oldCurrentPlyLast ? oldCurrentPly+1 : oldCurrentPly;
+          initialHalfmove = LiveBroadcastOldCurrentPlyLast ? 
+            LiveBroadcastOldCurrentPly+1 : LiveBroadcastOldCurrentPly;
         } else {
-          initialHalfmove = oldCurrentPlyLast ? "end" : oldCurrentPly;
+          initialHalfmove = LiveBroadcastOldCurrentPlyLast ? "end" : LiveBroadcastOldCurrentPly;
         }
       }
   
@@ -1705,7 +1708,7 @@ function refreshPgnSource() {
 
       if (LiveBroadcastFoundOldGame) {
         if (LiveBroadcastSteppingMode) {
-          if (oldAutoplay || oldCurrentPlyLast) { SetAutoPlay(true); }
+          if (oldAutoplay || LiveBroadcastOldCurrentPlyLast) { SetAutoPlay(true); }
         } else {
           if (oldAutoplay) { SetAutoPlay(true); }
         }
