@@ -224,14 +224,11 @@ The bash shell script live-grab.sh, executed on your server allows for grabbing
 the updated game source from anywhere on the Internet to your server.
 The live broadcast stops refreshing once all games are ended.
 
-If your live PGN contains clock info as comments after each game such as
-{1:59:59}, the clock information is displayed in the following sections:
+Clock information provided by the DGT chessboards (like {[%clk 1:59:59]}) is
+displayed in the following sections:
 
   <div id="GameWhiteClock"></div>
   <div id="GameBlackClock"></div>
-
-Clock information provided by the DGT chessboards (like {[%clk 1:59:59]}) is
-also supported.
 
 The status of the live broadcast is displayed in the following sections: 
 
