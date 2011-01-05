@@ -178,11 +178,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
       // else { if (theObject = document.getElementById('ResultAtGametextEnd')) { theObject.innerHTML = ""; } }
       var lastDisplayStyle = "none";
       for(ii=StartPly; ii<=StartPly+PlyNumber; ii++) {
-        var thisComment = MoveComments[ii];
-        thisComment = thisComment.replace(/\[%[^\]]*\]\s*/g, "");
-        // thisComment = thisComment.replace(/^\s*([0-9]+(:[0-9]+)+)($|\s)/, "");
-        // thisComment = thisComment.replace(/^\s*([0-9]+(\.[0-9]+)+)($|\s)/, "");
-        if (thisComment.match(/\S/)) {
+        if (strippedMoveComment(ii)) {
           lastDisplayStyle = "block";
           break;
         }

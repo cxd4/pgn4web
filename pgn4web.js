@@ -60,6 +60,11 @@ function customPgnCommentTag(customTagString, htmlElementIdString, plyNumber) {
   return tagValue;
 }
 
+function strippedMoveComment(move) {
+  if (!move || !MoveComments[move]) { return ""; }
+  return MoveComments[move].replace(/\[%[^\]]*\]\s*/g,'').replace(/^\s+$/,'');
+}
+
 window.onload = start_pgn4web;
 
 document.onkeydown = handlekey;
@@ -1278,15 +1283,8 @@ function HighlightLastMove() {
   var showThisMove = CurrentPly - 1;
   if (showThisMove > StartPly + PlyNumber) { showThisMove = StartPly + PlyNumber; }
 
-  var theShowCommentTextObject = document.getElementById("GameLastComment");
-  if (theShowCommentTextObject !== null) {
-    if (MoveComments[showThisMove+1] !== undefined) {
-      // remove PGN extension tags
-      thisComment = MoveComments[showThisMove+1].replace(/\[%[^\]]*\]\s*/g,''); // trailing spaces also removed
-      // remove spaces only comments
-      thisComment = thisComment.replace(/^\s+$/,'');
-    } else { thisComment = ''; }
-    theShowCommentTextObject.innerHTML = thisComment;
+  if (theShowCommentTextObject = document.getElementById("GameLastComment")) {
+    theShowCommentTextObject.innerHTML = strippedMoveComment(showThisMove+1);
   }
   
   // show side to move
@@ -2621,15 +2619,15 @@ function ParsePGNGameString(gameString) {
         Moves[StartPly+PlyNumber] = ClearMove(move);
         if (ss.charAt(end) == ' ') { start = end; } 
         else { start = end - 1; }
-        if (Moves[StartPly+PlyNumber] !== "") { // to cope with misformed PGN data
+        if (Moves[StartPly+PlyNumber] !== '') { // to cope with misformed PGN data
           PlyNumber++;
-          MoveComments[StartPly+PlyNumber]='';
+          MoveComments[StartPly+PlyNumber] = '';
         }
         break;
     }
   }
   for (ii=StartPly; ii<=StartPly+PlyNumber; ii++) {
-    MoveComments[ii] = MoveComments[ii].replace(/\s+/g, " ");
+    MoveComments[ii] = MoveComments[ii].replace(/\s+/g, ' ');
     MoveComments[ii] = translateNAGs(MoveComments[ii]);
     MoveComments[ii] = MoveComments[ii].replace(/\s+$/g, '');
   }
@@ -3234,11 +3232,7 @@ function PrintHTML() {
     text = '<SPAN ID="ShowPgnText">';
     for (ii = StartPly; ii < StartPly+PlyNumber; ++ii) {
       printedComment = false;
-      // remove PGN extension tags
-      thisComment = MoveComments[ii].replace(/\[%[^\]]*?\]\s*/g,''); // note trailing spaces also removed
-      // remove spaces only comments
-      thisComment = thisComment.replace(/^\s+$/,'');
-      if (commentsIntoMoveText && (thisComment !== '')) {
+      if (commentsIntoMoveText && (thisComment = strippedMoveComment(ii))) {
         if (commentsOnSeparateLines && (ii > StartPly)) { 
           text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
         }
@@ -3260,11 +3254,7 @@ function PrintHTML() {
         '" ONFOCUS="this.blur()">' + Moves[ii] + '</A></SPAN>' +
         '<SPAN CLASS="move"> </SPAN>';
     }
-    // remove PGN extension tags and trailing spaces
-    thisComment = MoveComments[StartPly+PlyNumber].replace(/\[%.*?\]\s*/g,'');
-    // remove spaces only comments
-    thisComment = thisComment.replace(/^\s+$/,'');
-    if (commentsIntoMoveText && (thisComment !== '')) {
+    if (commentsIntoMoveText && (thisComment = strippedMoveComment(StartPly+PlyNumber))) {
       if (commentsOnSeparateLines) { text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>'; }
       text += '<SPAN CLASS="comment">' + thisComment + '</SPAN><SPAN CLASS="move"> </SPAN>';
     }
