@@ -167,7 +167,8 @@
     if ((theObject !== null) && 
       (theObject.scrollHeight !== undefined) && 
       (theObject.scrollTop !== undefined) &&
-      (CurrentPly == StartPly + PlyNumber)) {
+      ((CurrentPly == StartPly + PlyNumber) ||
+      (LiveBroadcastFoundOldGame && oldCurrentPlyLast && LiveBroadcastSteppingMode))) {
       theObject.scrollTop = theObject.scrollHeight;
     }
   }
