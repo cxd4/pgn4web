@@ -404,8 +404,8 @@ class='inputline' onchange='validate_and_set_columns(this.value)'>
 </td>
 <td>
 <div class='linkcontainer'>
-<div class='link'><a href='../live/' target='_blank'>main single live chessboard</a></div>
-<div class='link'><a href='../live-multi/' target='_blank'>main multiple live chessboards</a></div>
+<div class='link'><a href='live.html' target='_blank'>main single live chessboard</a></div>
+<div class='link'><a href='live-multi.html' target='_blank'>main multiple live chessboards</a></div>
 <div class='link'><a href='live-multi-pointer-set.php' target='_blank'>main live-multi-pointer.php configurator</a></div>
 <div class='link'><a id='mainLiveGrabLink' href='live-grab.php' target='_blank'>main live-grab.php configurator</a></div>
 <div class='link'>&nbsp;</div>

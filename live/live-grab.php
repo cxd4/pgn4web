@@ -685,8 +685,8 @@ $refreshMinutes = max(1, floor(($refreshSeconds * 1.25) / 60 * 100) / 100);
 $pdString = str_replace(basename(__FILE__), $localPgnFile, curPageURL());
 ?>
 <div class='linkcontainer'>
-<div class='link'><a href='../live/' target='_blank'>main single live chessboard</a></div>
-<div class='link'><a href='../live-multi/' target='_blank'>main multiple live chessboards</a></div>
+<div class='link'><a href='live.html' target='_blank'>main single live chessboard</a></div>
+<div class='link'><a href='live-multi.html' target='_blank'>main multiple live chessboards</a></div>
 <div class='link'><a href='live-multi-pointer-set.php' target='_blank'>main live-multi-pointer.php configurator</a></div>
 <div class='link'><a id='mainLiveGrabLink' href='live-grab.php' target='_blank'>main live-grab.php configurator</a></div>
 <div class='link'>&nbsp;</div>
