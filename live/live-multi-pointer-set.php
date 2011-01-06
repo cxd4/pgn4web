@@ -222,8 +222,8 @@ columns=$columnsValue;
 
 // dont edit below this point
 
-oldSearch = window.location.search.replace(/(^\?|&)(nocache|n|boards|b|coluns|c)=\d*&/, "$1");
-oldSearch = oldSearch.replace(/(^\?|&)(nocache|n|boards|b|coluns|c)=\d*$/, "");
+oldSearch = window.location.search.replace(/(^\?|&)(nocache|n|boards|b|columns|c)=\d*&/gi, "$1");
+oldSearch = oldSearch.replace(/(^\?|&)(nocache|n|boards|b|columns|c)=\d*$/gi, "");
 newSearch = (oldSearch ? oldSearch + "&" : "?") + "b=" + boards;
 if (columns) { newSearch += "&c=" + columns };
 window.location.href = "../live-multi.html" + newSearch + window.location.hash;
