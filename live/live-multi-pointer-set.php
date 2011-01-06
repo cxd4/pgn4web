@@ -7,7 +7,7 @@
  *  for credits, license and more details
  */
 
-// Web script to set the number of boards and columns of ../live-multi-pointer.html
+// Web script to set the number of boards and columns of live-multi-pointer.html
 
 error_reporting(E_ERROR | E_PARSE);
 
@@ -26,7 +26,7 @@ $enableScript = FALSE;
 $storedSecretHash = "346e85156ba458d324507f0d4cfa40286d4c052d2640cf6dd2321aa6cfcdcb07";
 
 // local HTML file to update
-$localHtmlFile = "../live-multi-pointer.html";
+$localHtmlFile = "live-multi-pointer.html";
 
 // end of configuration section, dont modify below this line
 

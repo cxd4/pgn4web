@@ -26,7 +26,7 @@ oldSearch = window.location.search.replace(/(^\?|&)(nocache|n|boards|b|coluns|c)
 oldSearch = oldSearch.replace(/(^\?|&)(nocache|n|boards|b|coluns|c)=\d*$/, "");
 newSearch = (oldSearch ? oldSearch + "&" : "?") + "b=" + boards;
 if (columns) { newSearch += "&c=" + columns };
-window.location.href = "live-multi.html" + newSearch + window.location.hash;
+window.location.href = "../live-multi.html" + newSearch + window.location.hash;
 
 </script>
 </head>

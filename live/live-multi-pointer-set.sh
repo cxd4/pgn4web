@@ -5,7 +5,7 @@
 #  see README file and http://pgn4web.casaschi.net
 #  for credits, license and more details
 
-#  Shell script to set the number of boards and columns of ../live-multi-pointer.html
+#  Shell script to set the number of boards and columns of live-multi-pointer.html
 
 function print_help {
 	echo
@@ -25,7 +25,7 @@ function print_error {
 	print_help
 }
 
-live_multi_pointer_file="../live-multi-pointer.html"
+live_multi_pointer_file="live-multi-pointer.html"
 
 if [ "$1" == "--help" ]; then print_help; exit; fi
 
