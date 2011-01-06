@@ -265,8 +265,9 @@ refreshed with the live games, then add the following iframe to your page:
 Of course live-compact.html can be edited to customize colors, layout and every
 detail.
 
-http://pgn4web.casaschi.net/live/ will occasionally broadcast live major chess
-events.
+http://pgn4web.casaschi.net/live/live.html and 
+http://pgn4web.casaschi.net/live/live-multi.html will occasionally broadcast live 
+major chess events.
 
 
 CUSTOMIZATION FUNCTIONS
