@@ -164,7 +164,6 @@
       document.getElementById("GameResult").innerHTML = "";
     }
     theObject = document.getElementById("GameText");
-//alert("PAOLO " + !LiveBroadcastFoundOldGame + " || ( " + oldCurrentPlyLast + " && " + (oldCurrentPly < StartPly+PlyNumber) + ")");
     if ((theObject) && (theObject.scrollHeight !== undefined) && (theObject.scrollTop !== undefined) && ((!LiveBroadcastFoundOldGame) || (LiveBroadcastOldCurrentPlyLast && (LiveBroadcastOldCurrentPly < StartPly+PlyNumber)))) {
       theObject.scrollTop = theObject.scrollHeight;
       LiveBroadcastFoundOldGame = false; // next game load wont be seen as a refresh of the current game
