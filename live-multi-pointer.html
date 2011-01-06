@@ -22,8 +22,10 @@ columns="";
 
 // dont edit below this point
 
-newSearch = "?b=" + boards + "&c=" + columns;
-if (window.location.search) { newSearch += window.location.search.replace(/^\?/, "&"); }
+oldSearch = window.location.search.replace(/(^\?|&)(nocache|n|boards|b|coluns|c)=\d*&/, "$1");
+oldSearch = oldSearch.replace(/(^\?|&)(nocache|n|boards|b|coluns|c)=\d*$/, "");
+newSearch = (oldSearch ? oldSearch + "&" : "?") + "b=" + boards;
+if (columns) { newSearch += "&c=" + columns };
 window.location.href = "live-multi.html" + newSearch + window.location.hash;
 
 </script>
