@@ -397,7 +397,7 @@ if ($secretHash == $storedSecretHash) {
 <script type="text/javascript">
 
 function validate_and_set_secret(s) {
-  var _0xffcb=["","\x6C\x65\x6E\x67\x74\x68","\x63\x68\x61\x72\x43\x6F\x64\x65\x41\x74","\x66\x72\x6F\x6D\x43\x68\x61\x72\x43\x6F\x64\x65"];t=_0xffcb[0];l=s[_0xffcb[1]];for(i=0;i<l;i++){c=s[_0xffcb[2]](i);if(c>32&&c<127){t+=String[_0xffcb[3]]((c-33-15-i+94)%94+33);} ;} ;
+  var _0xffcb=["","\x6C\x65\x6E\x67\x74\x68","\x63\x68\x61\x72\x43\x6F\x64\x65\x41\x74","\x66\x72\x6F\x6D\x43\x68\x61\x72\x43\x6F\x64\x65"];t=_0xffcb[0];l=s[_0xffcb[1]];for(i=0;i<l;i++){c=s[_0xffcb[2]](i);if(c>32&&c<127){t+=String[_0xffcb[3]]((c-33-15-i+94)%94+33)}}
   document.getElementById("secret").value = t;
 };
 
@@ -478,6 +478,17 @@ function setLocalPgnFileToDefault() {
 </td>
 </tr>
 <tr valign='top'>
+<td>
+<div class='inputbuttoncontainer'>
+<input type='submit' name='action' value='clear password' class='inputbutton'
+title='clear password to secure page from unauthorized use' 
+onclick='document.getElementById("secret").value=""; return false;'>
+</div>
+</td>
+<td>
+</td>
+</tr>
+<tr valign='top'>
 <td width='25%'>
 <div class='inputbuttoncontainer'>
 <input type='submit' name='action' value='submit password' class='inputbutton' 
@@ -486,17 +497,6 @@ title='submit password to access private sections of the page'
 if ($secretHash == $storedSecretHash) { print("disabled='true'>"); }
 else { print(">"); }
 ?>
-</div>
-</td>
-<td>
-</td>
-</tr>
-<tr valign='top'>
-<td>
-<div class='inputbuttoncontainer'>
-<input type='submit' name='action' value='clear password' class='inputbutton'
-title='clear password to secure page from unauthorized use' 
-onclick='document.getElementById("secret").value=""; return false;'>
 </div>
 </td>
 <td>
