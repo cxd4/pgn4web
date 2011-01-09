@@ -12,6 +12,7 @@
 [BlackTitle "FM"]
 [WhiteElo "2468"]
 [BlackElo "2345"]
+[ECO "A00"]
 [Opening "Some opening"]
 [Variation "Some variation"]
 [SubVariation "Some subvariation"]
