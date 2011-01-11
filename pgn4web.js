@@ -37,7 +37,7 @@ function customFunctionOnAlert(msg) {}
 function customPgnHeaderTag(customTagString, htmlElementIdString, gameNum) {
   customTagString = customTagString.replace(/\W+/g, "");
   if (gameNum === undefined) { gameNum = currentGame; }
-  if (tagValues = pgnGame[gameNum].match('\\[\\s*' + customTagString + '\\s*\"([^\"]+)\"\\s*\\]')) {
+  if ((pgnGame[gameNum]) && (tagValues = pgnGame[gameNum].match('\\[\\s*' + customTagString + '\\s*\"([^\"]+)\"\\s*\\]'))) {
     tagValue = tagValues[1];
   } else { tagValue = ""; }
   if ((htmlElementIdString) && (theObject = document.getElementById(htmlElementIdString)) && (theObject.innerHTML !== null)) {
@@ -51,7 +51,7 @@ function customPgnHeaderTag(customTagString, htmlElementIdString, gameNum) {
 function customPgnCommentTag(customTagString, htmlElementIdString, plyNum) {
   customTagString = customTagString.replace(/\W+/g, "");
   if (plyNum === undefined) { plyNum = CurrentPly; }
-  if (tagValues = MoveComments[plyNum].match('\\[%' + customTagString + '\\s*([^\\]]+)\\s*\\]')) {
+  if ((MoveComments[plyNum]) && (tagValues = MoveComments[plyNum].match('\\[%' + customTagString + '\\s*([^\\]]+)\\s*\\]'))) {
     tagValue = tagValues[1];
   } else { tagValue = ""; }
   if ((htmlElementIdString) && (theObject = document.getElementById(htmlElementIdString)) && (theObject.innerHTML !== null)) {
