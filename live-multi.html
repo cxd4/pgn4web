@@ -23,6 +23,11 @@ if (pgn4web_live_pointer_url == undefined) { pgn4web_live_pointer_url = "."; }
 
 <script type="text/javascript">
 
+  if ((gup("demo") == "true") || (gup("demo") == "t") ||
+      (gup("refreshDemo") == "true") || (gup("refreshDemo") == "t")) {
+    demoFlag = true; alertFlag = true;
+  } else { demoFlag = false; alertFlag = false; }
+
   pgnFile_default = "";
   // accepts pgnData as alias for pgnFile for consistency with board.html
   if ((pgnFile = gup("pgnData")) === "") { 
@@ -124,6 +129,7 @@ function developer_help() {
   alert("pgn4web live-multi.html parameters" + "\n" + 
         " - pgnData = " + pgnFile + "; PGN file to load (default " + pgnFile_default + ")" + "\n" +
         " - refreshMinutes = " + refreshMinutes + "; refresh interval in minutes, decimals allowed (default 1)" + "\n" +
+        " - refreshDemo = " + demoFlag + "; sets live demo mode (default false)" + "\n" +
         " - boards = " + boards + "; number of boards (default " + boards_default + ")" + "\n" +
         " - columns = " + columns + "; number of columns (default empty for automatic selection)" + "\n" +
         " - displayOrder = " + displayOrder + "; order of game display, 'sequential' (default) or 'reverse'" + "\n" + 
@@ -134,6 +140,7 @@ buildUrl_one = location.protocol + "//" + location.host + location.pathname + "?
 buildUrl_two = "";
 if (displayOrder.charAt(0) !== displayOrder_default.charAt(0)) { buildUrl_two += "&do=" + displayOrder.charAt(0); }
 if (refreshMinutes !== refreshMinutes_default) { buildUrl_two += "&rm=" + refreshMinutes; }
+if (demoFlag) { buildUrl_two += "&rd=t"; }
 if (pgnFile !== pgnFile_default) { buildUrl_two += "&pd=" + pgnFile; }
 oneMoreBoardUrl = buildUrl_one + "&b=" + (boards < 32 ? (boards + 1) : 32) + "&c=" + columns + buildUrl_two;
 oneLessBoardUrl = buildUrl_one + "&b=" + (boards >  1 ? (boards - 1) :  1) + "&c=" + columns + buildUrl_two;
@@ -197,7 +204,7 @@ for (r = 0; r < rows; r++) {
         rm = Math.floor(1000 * (refreshMinutes * (1 + 0.1 * Math.random()))) / 1000;
         if (displayOrder.charAt(0) == "r") { initialGame = -initialGame; }
         document.write("<a style='color:white; font-size:x-small;' name='row" + (r+1) + "' href='#row" + (r+1) + "'>chessboard row:" + (r+1) + " col:" + (c+1) + "</a><br>");
-          document.write("<iframe width='240' height='290' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='" + pgn4web_live_pointer_url + "/live-multi-frame.html?pd=" + pgnFile + "&ig=" + initialGame + "&rm=" + rm + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
+          document.write("<iframe width='240' height='290' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='" + pgn4web_live_pointer_url + "/live-multi-frame.html?pd=" + pgnFile + "&ig=" + initialGame + "&rm=" + rm + (demoFlag ? "&rd=t" : "") + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
       }
     document.write("</td>");
   }
