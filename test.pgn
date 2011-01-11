@@ -23,6 +23,7 @@
 [Termination "normal"]
 [WhiteClock "1:00:00"]
 [BlackClock "1:00:00"]
+[Clock "W/00:41:19"]
 
 1. e4 { [%clk 00:59:01] } 1... e5 { [%clk 00:58:02] this is an inline
 comment } 2. Nf3 { [%clk 00:57:03] } 2... Nf6 { [%clk 00:56:04] } (2... Nc6
