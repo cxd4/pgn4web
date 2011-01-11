@@ -61,7 +61,7 @@ function customPgnCommentTag(customTagString, htmlElementIdString, plyNum) {
 }
 
 function strippedMoveComment(plyNum) {
-  if (!plyNum || !MoveComments[plyNum]) { return ""; }
+  if (!MoveComments[plyNum]) { return ""; }
   return MoveComments[plyNum].replace(/\[%[^\]]*\]\s*/g,'').replace(/^\s+$/,'');
 }
 
