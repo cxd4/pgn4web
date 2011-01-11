@@ -1263,6 +1263,14 @@ function clockFromComment(plyNum) {
   return customPgnCommentTag("clk", null, plyNum);
 }
 
+function clockFromHeader(plyNum) {
+  clockHeaderString = customPgnHeaderTag("Clock") + "";
+  if (tagValues = clockHeaderString.match("^" + ((plyNum%2) ? "B" : "W") + "/([0-9:.-]+)$")) {
+    tagValue = tagValues[1];
+  } else { tagValue = ""; }
+  return tagValue;
+}
+
 function HighlightLastMove() {
   var anchorName;
 
@@ -1301,18 +1309,25 @@ function HighlightLastMove() {
   }
 
   if (lastMoverClockObject !== null) {
-    lastMoverClockObject.innerHTML = showThisMove+1 > StartPly ?
+    clockString = showThisMove+1 > StartPly ? 
       clockFromComment(showThisMove+1) : initialLastMoverClock;
     // fix DGT board issue possibly missing last move clock info
-    if ((lastMoverClockObject.innerHTML === "") && 
-      ((LiveBroadcastDelay > 0) || (showThisMove+1 === StartPly+PlyNumber))) {
-      lastMoverClockObject.innerHTML = showThisMove-1 > StartPly ?
-        clockFromComment(showThisMove-1) : initialLastMoverClock;
-    }
+    // if ((clockString === "") && 
+    //  ((LiveBroadcastDelay > 0) || (showThisMove+1 === StartPly+PlyNumber))) {
+    //  clockString = showThisMove-1 > StartPly ?
+    //    clockFromComment(showThisMove-1) : initialLastMoverClock;
+    // }
+    lastMoverClockObject.innerHTML = clockString;
   }
   if (beforeLastMoverClockObject !== null) {
-    beforeLastMoverClockObject.innerHTML = showThisMove > StartPly ?
-      clockFromComment(showThisMove) : initialLastMoverClock;
+    clockString = ((showThisMove+1 === StartPly+PlyNumber) &&
+      ((!LiveBroadcastDemo) || (gameResult[currentGame] !== "*"))) ?
+      clockFromHeader(showThisMove+1) : ""; 
+    if (clockString === "") {
+      clockString = showThisMove > StartPly ?
+        clockFromComment(showThisMove) : initialLastMoverClock;
+    }
+    beforeLastMoverClockObject.innerHTML = clockString;
   }
 
   // show next move
