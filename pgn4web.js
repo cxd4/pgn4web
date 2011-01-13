@@ -1457,7 +1457,7 @@ function pgnGameFromPgnText(pgnText) {
     }
     lines[ii] = lines[ii].replace(/^\s*/,"");
     lines[ii] = lines[ii].replace(/\s*$/,"");
-    if (gameIndex >= 0) { pgnGame[gameIndex] += lines[ii] + ' \n'; } 
+    if (gameIndex >= 0) { pgnGame[gameIndex] += lines[ii] + '\n'; } 
   }
 
   numberOfGames = pgnGame.length;
@@ -2478,6 +2478,7 @@ function OpenGame(gameId) {
 function ParsePGNGameString(gameString) {
 
   var ss = gameString;
+  ss = ss.replace(/[\b\f\n\r\t]/gm, ' ');
   // remove PGN tags and spaces at the end 
   ss = ss.replace(pgnHeaderTagRegExpGlobal, ''); 
   ss = ss.replace(/^\s/, '');
