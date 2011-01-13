@@ -1,3 +1,24 @@
+[Event "London League 2010/2011"]
+[Site "London, UK"]
+[Date "2011.01.12"]
+[Round "?"]
+[White "Casaschi, Paolo"]
+[Black "Wittmann, Jochen"]
+[Result "1/2-1/2"]
+[ECO "A89"]
+[Opening "Dutch"]
+[Variation "Leningrad, main variation with Nc6"]
+
+1. d4 f5 2. c4 Nf6 3. Nc3 d6 4. g3 g6 5. Bg2 Bg7 6. Nf3 O-O 7. O-O Nc6 8.
+d5 Na5 9. Qa4 c5 10. dxc6 Nxc6 11. e4 { # } 11... Qa5 12. Qb3 Nxe4 13. Nxe4
+fxe4 14. Ng5 Nd4 15. Qd1 Nf3+ 16. Nxf3 exf3 17. Bxf3 Bh3 { # } 18. Bxb7
+Bxf1 19. Bxa8 Bxc4 20. Bg2 Bd4 21. Be3 Bxb2 22. Rb1 { # } 22... Bf6 23. Rb7
+a6 24. a4 Qf5 25. h4 Qd3 26. Qg4 Bd5 27. Bxd5+ Qxd5 28. Rb6 Ra8 { # } 29.
+Qe2 Qa5 30. Qc4+ d5 31. Qc6 Rd8 32. Qe6+ Kh8 33. Bg5 Qc3 34. Bxf6+ Qxf6 35.
+Qxf6+ exf6 { # } 36. Rxa6 Rd7 37. Rxf6 Ra7 38. Rf4 Kg7 39. Kf1 h6 40. Ke2
+g5 { # } 41. hxg5 hxg5 42. Rd4 Kf6 43. f4 gxf4 44. gxf4 Ke6 45. Kd3 Kd6 46.
+f5 Ke5 47. f6 Rf7 48. a5 Rxf6 49. Ra4 Ra6 50. Ke3 d4+ 51. Rxd4 Rxa5 1/2-1/2
+
 [Event "London Chess Classic 2010"]
 [Site "London Olympia, UK"]
 [Date "2010.12.15"]
