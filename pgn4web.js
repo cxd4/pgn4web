@@ -2478,7 +2478,7 @@ function OpenGame(gameId) {
 function ParsePGNGameString(gameString) {
 
   var ss = gameString;
-  ss = ss.replace(/[\b\f\n\r\t]/gm, ' ');
+  ss = ss.replace(/(\n)/gm, ' $1');
   // remove PGN tags and spaces at the end 
   ss = ss.replace(pgnHeaderTagRegExpGlobal, ''); 
   ss = ss.replace(/^\s/, '');
