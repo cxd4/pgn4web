@@ -134,6 +134,12 @@ of Google Chrome v6 or later. Don't use with any other browser.
    }
 
    function customFunctionOnMove() {
+     wObject = document.getElementById('GameWhiteClock');
+     bObject = document.getElementById('GameBlackClock');
+     if (wObject && bObject) {
+       if ((!wObject.innerHTML.match(/\S/)) && (bObject.innerHTML.match(/\S/))) { wObject.innerHTML = '-'; }
+       if ((!bObject.innerHTML.match(/\S/)) && (wObject.innerHTML.match(/\S/))) { bObject.innerHTML = '-'; }
+     }
      fixHeaderTag('GameWhiteClock');
      fixHeaderTag('GameBlackClock');
      if (theObject = document.getElementById('GameLastMove')) {
