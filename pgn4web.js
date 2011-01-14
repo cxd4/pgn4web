@@ -1935,30 +1935,12 @@ function InitFEN(startingFEN) {
 
   if (FenString == FenStringStart) {
     for (color = 0; color < 2; ++color) {
-      PieceType[color][0] = 1; // King
-      PieceCol[color][0]  = 4;
-      PieceType[color][1] = 2; // Queen
-      PieceCol[color][1]  = 3;
-      PieceType[color][6] = 3; // Rooks
-      PieceType[color][7] = 3;
-      PieceCol[color][6]  = 0;
-      PieceCol[color][7]  = 7;
-      PieceType[color][4] = 4; // Bishops
-      PieceType[color][5] = 4;
-      PieceCol[color][4]  = 2;
-      PieceCol[color][5]  = 5;
-      PieceType[color][2] = 5; // Knights
-      PieceType[color][3] = 5;
-      PieceCol[color][2]  = 1;
-      PieceCol[color][3]  = 6;
-      for (pawn = 0; pawn < 8; ++pawn) {
-	PieceType[color][pawn+8] = 6;
-	PieceCol[color][pawn+8]  = pawn;
-      }
-      for (ii = 0; ii < 16; ++ii) {
-	PieceMoveCounter[color][ii] = 0;
-	PieceRow[color][ii] = (1-color) * Math.floor(ii/8) + color * (7-Math.floor(ii/8));
-      }
+      //                         K  Q  N     B     R     p
+      PieceType[color]        = [1, 2, 5, 5, 4, 4, 3, 3, 6, 6, 6, 6, 6, 6, 6, 6];
+      PieceCol[color]         = [4, 3, 1, 6, 2, 5, 0, 7, 0, 1, 2, 3, 4, 5, 6, 7];
+      PieceMoveCounter[color] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      PieceRow[color] = color ? [7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6]
+                              : [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1];
       for (ii = 0; ii < 16; ii++) {
         var col = PieceCol[color][ii];
         var row = PieceRow[color][ii];
