@@ -1245,16 +1245,17 @@ function SetAutoplayNextGame(onOff) {
 
 function SetInitialHalfmove(number_or_string, always) {
   if (always === true) { alwaysInitialHalfmove = true; }
+  if (number_or_string === undefined) { initialHalfmove = 0; return; }
   initialHalfmove = number_or_string;
-  if (initialHalfmove == "start") { return; }
-  if (initialHalfmove == "end") { return; }
-  if (initialHalfmove == "random") { return; }
-  if (initialHalfmove == "comment") { return; }
+  if (["start", "end", "random", "comment"].indexOf(initialHalfmove) >= 0) { return; }
   if ((initialHalfmove = parseInt(initialHalfmove,10)) == NaN) { initialHalfmove = 0; }
 }
 
 function SetInitialGame(number_or_string) {
-  if (number_or_string) { initialGame = number_or_string; }
+  if (number_or_string === undefined) { initialGame = 1; return; }
+  initialGame = number_or_string;
+  if (["first", "last", "random"].indexOf(initialGame) >= 0) { return; }
+  if ((initialGame = parseInt(initialGame,10)) == NaN) { initialGame = 1; }
 }
 
 // clock detection: check DGT sequence [%clk 01:02]
