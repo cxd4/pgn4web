@@ -1939,8 +1939,8 @@ function InitFEN(startingFEN) {
       PieceType[color]        = [1, 2, 5, 5, 4, 4, 3, 3, 6, 6, 6, 6, 6, 6, 6, 6];
       PieceCol[color]         = [4, 3, 1, 6, 2, 5, 0, 7, 0, 1, 2, 3, 4, 5, 6, 7];
       PieceMoveCounter[color] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-      PieceRow[color] = color ? [7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6]
-                              : [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1];
+      PieceRow[color] = color ? [7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6]:
+                                [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1];
       for (ii = 0; ii < 16; ii++) {
         var col = PieceCol[color][ii];
         var row = PieceRow[color][ii];
@@ -2195,21 +2195,13 @@ function InitImages() {
   ClearImg = new Image();
   ClearImg.src = ImagePath+'clear.'+imageType;
 
-  var color;
   ColorName = new Array ("w", "b");
+  PiecePrefix = new Array ("k", "q", "r", "b", "n", "p");
   for (color = 0; color < 2; ++color) {
-    PiecePicture[color][1] = new Image();
-    PiecePicture[color][1].src = ImagePath + ColorName[color] + 'k.'+imageType;
-    PiecePicture[color][2] = new Image();
-    PiecePicture[color][2].src = ImagePath + ColorName[color] + 'q.'+imageType;
-    PiecePicture[color][3] = new Image();
-    PiecePicture[color][3].src = ImagePath + ColorName[color] + 'r.'+imageType;
-    PiecePicture[color][4] = new Image();
-    PiecePicture[color][4].src = ImagePath + ColorName[color] + 'b.'+imageType;
-    PiecePicture[color][5] = new Image();
-    PiecePicture[color][5].src = ImagePath + ColorName[color] + 'n.'+imageType;
-    PiecePicture[color][6] = new Image();
-    PiecePicture[color][6].src = ImagePath + ColorName[color] + 'p.'+imageType;
+    for (piece = 1; piece < 7; piece++) {
+      PiecePicture[color][piece] = new Image();
+      PiecePicture[color][piece].src = ImagePath + ColorName[color] + PiecePrefix[piece-1] + '.' + imageType;
+    }
   }
   ImagePathOld = ImagePath;
 }
