@@ -1247,14 +1247,16 @@ function SetInitialHalfmove(number_or_string, always) {
   if (always === true) { alwaysInitialHalfmove = true; }
   if (number_or_string === undefined) { initialHalfmove = 0; return; }
   initialHalfmove = number_or_string;
-  if (["start", "end", "random", "comment"].indexOf(initialHalfmove) >= 0) { return; }
+  if ((typeof number_or_string == "string") &&
+    (number_or_string.match(/^(start|end|random|comment)$/))) { return; }
   if ((initialHalfmove = parseInt(initialHalfmove,10)) == NaN) { initialHalfmove = 0; }
 }
 
 function SetInitialGame(number_or_string) {
   if (number_or_string === undefined) { initialGame = 1; return; }
   initialGame = number_or_string;
-  if (["first", "last", "random"].indexOf(initialGame) >= 0) { return; }
+  if ((typeof number_or_string == "string") &&
+    (number_or_string.match(/^(first|last|random)$/))) { return; }
   if ((initialGame = parseInt(initialGame,10)) == NaN) { initialGame = 1; }
 }
 
