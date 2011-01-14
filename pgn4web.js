@@ -1265,10 +1265,9 @@ function clockFromComment(plyNum) {
 
 function clockFromHeader(whiteToMove) {
   clockHeaderString = customPgnHeaderTag("Clock") + "";
-  if (tagValues = clockHeaderString.match("^" + (whiteToMove ? "W" : "B") + "/(.+)$")) {
-    tagValue = tagValues[1];
-  } else { tagValue = ""; }
-  return tagValue;
+  if (tagValues = clockHeaderString.match("^" + (whiteToMove ? "W" : "B") + "/(.*)$")) {
+    return tagValues[1];
+  } else { return null; }
 }
 
 function HighlightLastMove() {
@@ -1297,23 +1296,20 @@ function HighlightLastMove() {
   { theObject.innerHTML = text; }
 
   // show clock if any
-  if ((showThisMove+1)%2 == 1) { // white has just moved
-    lastMoverClockObject = document.getElementById("GameWhiteClock");
-    initialLastMoverClock = gameInitialWhiteClock[currentGame];
-    beforeLastMoverClockObject = document.getElementById("GameBlackClock"); 
-    initialBeforeLastMoverClock = gameInitialBlackClock[currentGame];
-  } else {
-    lastMoverClockObject = document.getElementById("GameBlackClock");
-    initialLastMoverClock = gameInitialBlackClock[currentGame];
-    beforeLastMoverClockObject = document.getElementById("GameWhiteClock"); 
-    initialBeforeLastMoverClock = gameInitialWhiteClock[currentGame];
-  }
+  lastMoverClockObject = document.getElementById(whiteToMove ?
+    "GameBlackClock" : "GameWhiteClock");
+  initialLastMoverClock = whiteToMove ?
+    gameInitialBlackClock[currentGame] : gameInitialWhiteClock[currentGame];  
+  beforeLastMoverClockObject = document.getElementById(whiteToMove ?
+    "GameWhiteClock" : "GameBlackClock");
+  initialBeforeLastMoverClock = whiteToMove ?
+    gameInitialWhiteClock[currentGame] : gameInitialBlackClock[currentGame];
 
   if (lastMoverClockObject !== null) {
     clockString = ((showThisMove+1 === StartPly+PlyNumber) &&
       ((!LiveBroadcastDemo) || (gameResult[currentGame] !== "*"))) ?
-      clockFromHeader(!whiteToMove) : "";
-    if (clockString === "") {
+      clockFromHeader(!whiteToMove) : null;
+    if (clockString === null) {
       clockString = showThisMove+1 > StartPly ? 
         clockFromComment(showThisMove+1) : initialLastMoverClock;
     }
@@ -1322,10 +1318,10 @@ function HighlightLastMove() {
   if (beforeLastMoverClockObject !== null) {
     clockString = ((showThisMove+1 === StartPly+PlyNumber) &&
       ((!LiveBroadcastDemo) || (gameResult[currentGame] !== "*"))) ?
-      clockFromHeader(whiteToMove) : "";
-    if (clockString === "") {
+      clockFromHeader(whiteToMove) : null;
+    if (clockString === null) {
       clockString = showThisMove > StartPly ?
-        clockFromComment(showThisMove) : initialLastMoverClock;
+        clockFromComment(showThisMove) : initialBeforeLastMoverClock;
     }
     beforeLastMoverClockObject.innerHTML = clockString;
   }
@@ -2478,7 +2474,6 @@ function OpenGame(gameId) {
 function ParsePGNGameString(gameString) {
 
   var ss = gameString;
-  ss = ss.replace(/(\n)/gm, ' $1');
   // remove PGN tags and spaces at the end 
   ss = ss.replace(pgnHeaderTagRegExpGlobal, ''); 
   ss = ss.replace(/^\s/, '');
@@ -2620,14 +2615,7 @@ function ParsePGNGameString(gameString) {
           while ((ss.charAt(start) == '.') || (ss.charAt(start) == ' ') || (ss.charAt(start) == '\n') || (ss.charAt(start) == '\r')){start++;}
 	}
 
-        end = ss.indexOf(' ',start);
-        end2 = ss.indexOf('$',start); if ((end2 > 0) && (end2 < end)) { end = end2; }
-        end2 = ss.indexOf('{',start); if ((end2 > 0) && (end2 < end)) { end = end2; } 
-        end2 = ss.indexOf(';',start); if ((end2 > 0) && (end2 < end)) { end = end2; }
-        end2 = ss.indexOf('(',start); if ((end2 > 0) && (end2 < end)) { end = end2; } 
-        end2 = ss.indexOf('!',start); if ((end2 > 0) && (end2 < end)) { end = end2; }
-        end2 = ss.indexOf('?',start); if ((end2 > 0) && (end2 < end)) { end = end2; }
-        if (end < 0) { end = ss.length; }
+        if ((end = start + ss.substr(start).search(/[\s${;(!?]/)) < start) { end = ss.length; }
         move = ss.substring(start,end);
         Moves[StartPly+PlyNumber] = ClearMove(move);
         if (ss.charAt(end) == ' ') { start = end; } 

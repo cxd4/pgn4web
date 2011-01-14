@@ -119,8 +119,8 @@ function customFunctionOnPgnGameLoad() {
   wObject = document.getElementById("GameWhite");
   bObject = document.getElementById("GameBlack");
   if (wObject && bObject) {
-    if ((wObject.innerHTML === "") && (bObject.innerHTML !== "")) { wObject.innerHTML = "-"; }
-    if ((bObject.innerHTML === "") && (wObject.innerHTML !== "")) { bObject.innerHTML = "-"; }
+    if ((!wObject.innerHTML.match(/\S/)) && (bObject.innerHTML.match(/\S/))) { wObject.innerHTML = "-"; }
+    if ((!bObject.innerHTML.match(/\S/)) && (wObject.innerHTML.match(/\S/))) { bObject.innerHTML = "-"; }
   }
   if (theObject = document.getElementById("bottomContainer")) {
     theObject.title = " game " + (currentGame+1) + " of " + numberOfGames;
@@ -140,8 +140,8 @@ function customFunctionOnMove() {
   wObject = document.getElementById("GameWhiteClock");
   bObject = document.getElementById("GameBlackClock");
   if (wObject && bObject) {
-    if ((wObject.innerHTML === "") && (bObject.innerHTML !== "")) { wObject.innerHTML = "-"; }
-    if ((bObject.innerHTML === "") && (wObject.innerHTML !== "")) { bObject.innerHTML = "-"; }
+    if ((!wObject.innerHTML.match(/\S/)) && (bObject.innerHTML.match(/\S/))) { wObject.innerHTML = "-"; }
+    if ((!bObject.innerHTML.match(/\S/)) && (wObject.innerHTML.match(/\S/))) { bObject.innerHTML = "-"; }
   }
 }
 

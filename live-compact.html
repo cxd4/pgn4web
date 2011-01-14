@@ -175,8 +175,8 @@
     wObject = document.getElementById("GameWhiteClock");
     bObject = document.getElementById("GameBlackClock");
     if (wObject && bObject) {
-      if ((wObject.innerHTML === "") && (bObject.innerHTML !== "")) { wObject.innerHTML = "-"; }
-      if ((bObject.innerHTML === "") && (wObject.innerHTML !== "")) { bObject.innerHTML = "-"; }
+      if ((!wObject.innerHTML.match(/\S/)) && (bObject.innerHTML.match(/\S/))) { wObject.innerHTML = "-"; }
+      if ((!bObject.innerHTML.match(/\S/)) && (wObject.innerHTML.match(/\S/))) { bObject.innerHTML = "-"; }
     }
   }
 
