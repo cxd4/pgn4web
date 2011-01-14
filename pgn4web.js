@@ -691,12 +691,8 @@ function CurrentFEN() {
   currentFEN += CurrentPly%2 === 0 ? " w" : " b";
 
   // castling availability
-  CastlingShortFEN = new Array(2);
-  CastlingShortFEN[0] = CastlingShort[0];
-  CastlingShortFEN[1] = CastlingShort[1];
-  CastlingLongFEN = new Array(2);
-  CastlingLongFEN[0] = CastlingLong[0];
-  CastlingLongFEN[1] = CastlingLong[1];
+  CastlingShortFEN = CastlingShort;
+  CastlingLongFEN = CastlingLong;
   for (var thisPly = StartPly; thisPly < CurrentPly; thisPly++) {
     SideToMoveFEN = thisPly%2;
     BackrowSideToMoveFEN = SideToMoveFEN * 7;
@@ -1931,8 +1927,8 @@ function InitFEN(startingFEN) {
 
   var newEnPassant = false;
   var newEnPassantCol;
-  CastlingLong[0] = CastlingLong[1] = 0;
-  CastlingShort[0] = CastlingShort[1] = 7;
+  CastlingLong = [0, 0];
+  CastlingShort = [7, 7];
   InitialHalfMoveClock = 0;
 
   if (FenString == FenStringStart) {
@@ -2081,7 +2077,8 @@ function InitFEN(startingFEN) {
       myAlert("error: invalid FEN ("+ll+") missing castling availability in game "+(currentGame+1)+"\n"+FenString, true);
       return;
     }
-    CastlingShort[0] = CastlingLong[0] = CastlingShort[1] = CastlingLong[1] = -1;
+    CastlingLong = [-1, -1];
+    CastlingShort = [-1, -1];
     cc = FenString.charAt(ll++);
     while (cc!=" ") {
       if (cc.charCodeAt(0) == FenPieceName.toUpperCase().charCodeAt(0)) {
