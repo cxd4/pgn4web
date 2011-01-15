@@ -1249,11 +1249,8 @@ function SetInitialHalfmove(number_or_string, always) {
 }
 
 function SetInitialGame(number_or_string) {
-  if (number_or_string === undefined) { initialGame = 1; return; }
-  initialGame = number_or_string;
-  if ((typeof number_or_string == "string") &&
-    (number_or_string.match(/^(first|last|random)$/))) { return; }
-  if ((initialGame = parseInt(initialGame,10)) == NaN) { initialGame = 1; }
+  if (number_or_string === undefined) { initialGame = 1; }
+  else { initialGame = number_or_string; }
 }
 
 // clock detection: check DGT sequence [%clk 01:02]

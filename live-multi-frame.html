@@ -17,11 +17,6 @@
  
 <script type="text/javascript"> 
 
-  if ((gup("demo") == "true") || (gup("demo") == "t") ||
-      (gup("refreshDemo") == "true") || (gup("refreshDemo") == "t")) {
-    demoFlag = true; alertFlag = true;
-  } else { demoFlag = false; alertFlag = false; }
- 
   pgnFile_default = location.protocol + "//" + location.hostname + location.pathname.replace(/\/[^\/]*$/, "/live/live.pgn");
   
   // accepts pgnData as alias for pgnFile for consistency with board.html
@@ -42,15 +37,13 @@
     }
   }
 
-  if ((initialGameNumber = gup("initialGame")) === "") { 
-    initialGameNumber = 1;
-  } else {
-    testGameNumber = initialGameNumber + "";
-    if (testGameNumber.match(/[^0-9-]/)) {
-      alert("ERROR: initialGame parameter must be an integer.\n" +
-            "Supplied " + initialGameNumber + "; defaulting to 1."); 
-      initialGameNumber = 1;
-    }
+  if ((gup("demo") == "true") || (gup("demo") == "t") ||
+      (gup("refreshDemo") == "true") || (gup("refreshDemo") == "t")) {
+    demoFlag = true; alertFlag = true;
+  } else { demoFlag = false; alertFlag = false; }
+ 
+  if ((initialGameVal = gup("initialGame")) === "") { 
+    initialGameVal = 1;
   }
 
   if ((gup("help") == "true") || (gup("help") == "t")) { developer_help(); }
@@ -89,6 +82,7 @@ function developer_help() {
         " - pgnData = " + pgnFile + "; PGN file to load (default " + pgnFile_default + ")" + "\n" +
         " - refreshMinutes = " + refreshMinutes + "; refresh interval in minutes, decimals allowed (default 1)" + "\n" +
         " - refreshDemo = " + demoFlag + "; sets live demo mode (default false)" + "\n" +
+        " - initialGame = " + initialGameVal + "; initial game number or search string" + "\n" +
         " - help = true; prints this help (default false)");
 }
  
@@ -99,7 +93,7 @@ function developer_help() {
   SetAutoplayDelay(1000); // milliseconds
   SetAutostartAutoplay(false);
   SetAutoplayNextGame(false); 
-  SetInitialGame(initialGameNumber);
+  SetInitialGame(initialGameVal);
   SetInitialHalfmove("end", true);
   SetShortcutKeysEnabled(false);
   SetLiveBroadcast(refreshMinutes, demoFlag, alertFlag, true);
