@@ -63,7 +63,9 @@ if (pgn4web_live_pointer_url == undefined) { pgn4web_live_pointer_url = "."; }
   }
   boards = parseInt(boards, 10);
 
+var colums_default_used = false;
 function columns_default(b) {
+  colums_default_used = true;
   if (b == 1) { return 1; }
   else if (b == 2) { return 2; }
   else if ((b == 3) || (b == 5) || (b == 6) || (b == 9)) { return 3; }
@@ -76,8 +78,8 @@ function columns_default(b) {
     testColumns = columns + "";
     if ((testColumns.match(/[^0-9]/)) || (columns == 0) || (columns > 8)) {
       alert("ERROR: columns parameter must be a positive integer, max 8.\n" +
-            "Supplied " + testColumns + "; defaulting to " + columns_default + "."); 
-      columns = columns_default;
+            "Supplied " + testColumns + "; defaulting to " + columns_default(boards) + "."); 
+      columns = columns_default(boards);
     }
   }
   columns = parseInt(columns, 10);
@@ -142,8 +144,9 @@ if (displayOrder.charAt(0) !== displayOrder_default.charAt(0)) { buildUrl_two +=
 if (refreshMinutes !== refreshMinutes_default) { buildUrl_two += "&rm=" + refreshMinutes; }
 if (demoFlag) { buildUrl_two += "&rd=t"; }
 if (pgnFile !== pgnFile_default) { buildUrl_two += "&pd=" + pgnFile; }
-oneMoreBoardUrl = buildUrl_one + "&b=" + (boards < 32 ? (boards + 1) : 32) + "&c=" + columns + buildUrl_two;
-oneLessBoardUrl = buildUrl_one + "&b=" + (boards >  1 ? (boards - 1) :  1) + "&c=" + columns + buildUrl_two;
+columns_switch = colums_default_used ? "" : "&c=" + columns;
+oneMoreBoardUrl = buildUrl_one + "&b=" + (boards < 32 ? (boards + 1) : 32) + columns_switch + buildUrl_two;
+oneLessBoardUrl = buildUrl_one + "&b=" + (boards >  1 ? (boards - 1) :  1) + columns_switch + buildUrl_two;
 oneMoreColumnUrl = buildUrl_one + "&b=" + boards + "&c=" + (columns < 8 ? (columns + 1) : 8) + buildUrl_two;
 oneLessColumnUrl = buildUrl_one + "&b=" + boards + "&c=" + (columns > 1 ? (columns - 1) : 1) + buildUrl_two;
 
