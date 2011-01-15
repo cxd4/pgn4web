@@ -145,10 +145,10 @@ if (refreshMinutes !== refreshMinutes_default) { buildUrl_two += "&rm=" + refres
 if (demoFlag) { buildUrl_two += "&rd=t"; }
 if (pgnFile !== pgnFile_default) { buildUrl_two += "&pd=" + pgnFile; }
 columns_switch = colums_default_used ? "" : "&c=" + columns;
-oneMoreBoardUrl = buildUrl_one + "&b=" + (boards < 32 ? (boards + 1) : 32) + columns_switch + buildUrl_two;
-oneLessBoardUrl = buildUrl_one + "&b=" + (boards >  1 ? (boards - 1) :  1) + columns_switch + buildUrl_two;
-oneMoreColumnUrl = buildUrl_one + "&b=" + boards + "&c=" + (columns < 8 ? (columns + 1) : 8) + buildUrl_two;
-oneLessColumnUrl = buildUrl_one + "&b=" + boards + "&c=" + (columns > 1 ? (columns - 1) : 1) + buildUrl_two;
+oneMoreBoardUrl = buildUrl_one + "&b=" + (boards + 1) + columns_switch + buildUrl_two;
+oneLessBoardUrl = buildUrl_one + "&b=" + (boards - 1) + columns_switch + buildUrl_two;
+oneMoreColumnUrl = buildUrl_one + "&b=" + boards + "&c=" + (columns + 1) + buildUrl_two;
+oneLessColumnUrl = buildUrl_one + "&b=" + boards + "&c=" + (columns - 1) + buildUrl_two;
 
 </script>
 
@@ -220,7 +220,31 @@ document.write("<p style='text-align: left; font-size:small; color:white;'>refre
 document.write("</td><td>");
 document.write("<p style='text-align: right; font-size:small; color:white;'><a style='color:white;' href='" + pgnFile + "'>" + pgnFile + "</a></p>");
 document.write("</td></tr><tr><td>");
-document.write("<p style='text-align: left; font-size:small; font-weight:bold;'><a class='footerLink' href='" + oneLessColumnUrl + "'>less</a> / <a class='footerLink' href='" + oneMoreColumnUrl + "'>more</a> columns<br/><a class='footerLink' href='" + oneLessBoardUrl + "'>less</a> / <a class='footerLink' href='" + oneMoreBoardUrl + "'>more</a> chessboards</p>");
+document.write("<p style='text-align: left; font-size:small; font-weight:bold;'>");
+if (columns > 1) {
+  document.write("<a class='footerLink' href='" + oneLessColumnUrl + "'>less</a>");
+} else {
+  document.write("less");
+}
+document.write(" / ");
+if (columns < 8) {
+  document.write("<a class='footerLink' href='" + oneMoreColumnUrl + "'>more</a>");
+} else {
+  document.write("more");
+}
+document.write(" columns<br/>");
+if (boards > 1) {
+  document.write("<a class='footerLink' href='" + oneLessBoardUrl + "'>less</a>");
+} else {
+  document.write("less");
+}
+document.write(" / ");
+if (boards < 32) {
+  document.write("<a class='footerLink' href='" + oneMoreBoardUrl + "'>more</a>");
+} else {
+  document.write("more");
+}
+document.write(" chessboards</p>");
 document.write("</td><td>");
 document.write("<p style='text-align: right; font-size:small; font-weight:bold;'>control the <a href='#top'>chessboards</a> by clicking their squares<br>hover the mouse on each square for help</p>");
 document.write("</td></tr></table>");
