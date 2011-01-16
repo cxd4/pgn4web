@@ -244,7 +244,7 @@ oldSearch = oldSearch.replace(/&$/gi, "");
 oldSearch = oldSearch.replace(/^\?&+/gi, "?");
 oldSearch = oldSearch.replace(/^\?$/gi, "");
 newSearch = (oldSearch ? oldSearch + "&" : "?") + "b=" + boards;
-if (columns) { newSearch += "&c=" + columns };
+if (columns) { newSearch += "&c=" + columns; }
 if (search) { newSearch += "&s=" + search; }
 if (pgnfile) { newSearch += "&pd=" + pgnfile; }
 window.location.href = "../live-multi.html" + newSearch + window.location.hash;
@@ -399,8 +399,8 @@ else { print("style='visibility: hidden;'>"); }
 <td width='25%'>
 <div class='inputbuttoncontainer'>
 <input type='submit' id='saveHtmlFile' name='action' value='save HTML file'
-title='save the <?print($localHtmlFile);?> HTML file with the given boards and columns numbers'
-class='inputbutton' onclick='return confirm("save the <?print($localHtmlFile);?> HTML file?\nboards=" + document.getElementById("boards").value + "\ncolumns=" + (document.getElementById("columns").value ? document.getElementById("columns").value : "\"\"") + "\nsearch=\"" + document.getElementById("search").value + "\"\npgnfile=\"" + document.getElementById("pgnfile").value + "\"");'>
+title='save the <?print($localHtmlFile);?> HTML file with the given parameters'
+class='inputbutton' onclick='return confirm("save the <?print($localHtmlFile);?> HTML file?\n\nboards=" + document.getElementById("boards").value + "\ncolumns=" + (document.getElementById("columns").value ? document.getElementById("columns").value : "\"\"") + "\nsearch=\"" + document.getElementById("search").value + "\"\npgnfile=\"" + document.getElementById("pgnfile").value + "\"");'>
 </div>
 </td>
 <td>
