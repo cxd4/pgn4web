@@ -233,8 +233,8 @@ if ($secretHash == $storedSecretHash) {
 // boards must be set, columns can be blank for default
 boards=$boards;
 columns=$columnsValue;
-search="$searchValue";
-pgnfile="$pgnfileValue";
+search="$search";
+pgnfile="$pgnfile";
 
 // dont edit below this point
 
@@ -400,7 +400,7 @@ else { print("style='visibility: hidden;'>"); }
 <div class='inputbuttoncontainer'>
 <input type='submit' id='saveHtmlFile' name='action' value='save HTML file'
 title='save the <?print($localHtmlFile);?> HTML file with the given boards and columns numbers'
-class='inputbutton' onclick='return confirm("save the <?print($localHtmlFile);?> HTML file with boards=" + document.getElementById("boards").value + " and columns=" +  (document.getElementById("columns").value ? document.getElementById("columns").value : "\"\"") + " ?");'>
+class='inputbutton' onclick='return confirm("save the <?print($localHtmlFile);?> HTML file?\nboards=" + document.getElementById("boards").value + "\ncolumns=" + (document.getElementById("columns").value ? document.getElementById("columns").value : "\"\"") + "\nsearch=\"" + document.getElementById("search").value + "\"\npgnfile=\"" + document.getElementById("pgnfile").value + "\"");'>
 </div>
 </td>
 <td>
