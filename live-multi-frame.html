@@ -42,8 +42,8 @@
     demoFlag = true; alertFlag = true;
   } else { demoFlag = false; alertFlag = false; }
  
-  if ((initialGameVal = gup("initialGame")) === "") { 
-    initialGameVal = 1;
+  if ((iniGame = gup("initialGame")) === "") { 
+    iniGame = 1;
   }
 
   if ((gup("help") == "true") || (gup("help") == "t")) { developer_help(); }
@@ -82,7 +82,7 @@ function developer_help() {
         " - pgnData = " + pgnFile + "; PGN file to load (default " + pgnFile_default + ")" + "\n" +
         " - refreshMinutes = " + refreshMinutes + "; refresh interval in minutes, decimals allowed (default 1)" + "\n" +
         " - refreshDemo = " + demoFlag + "; sets live demo mode (default false)" + "\n" +
-        " - initialGame = " + initialGameVal + "; initial game number or search string" + "\n" +
+        " - initialGame = " + iniGame + "; initial game number or search string" + "\n" +
         " - help = true; prints this help (default false)");
 }
  
@@ -93,7 +93,7 @@ function developer_help() {
   SetAutoplayDelay(1000); // milliseconds
   SetAutostartAutoplay(false);
   SetAutoplayNextGame(false); 
-  SetInitialGame(initialGameVal);
+  SetInitialGame(iniGame);
   SetInitialHalfmove("end", true);
   SetShortcutKeysEnabled(false);
   SetLiveBroadcast(refreshMinutes, demoFlag, alertFlag, true);
@@ -107,6 +107,19 @@ function developer_help() {
 function addTagToTitle(tagLabel, tagValue, object) {
   if (!tagValue || tagValue[1] == "?" || !object) { return; }
   object.title += "  \n " + tagLabel + tagValue;
+}
+
+function customFunctionOnPgnTextLoad() {
+
+  // cope with occasional failures to load the live PGN data
+  if ((LiveBroadcastDelay !== 0) && (LiveBroadcastTicker > 0) && (!LiveBroadcastFoundOldGame)) {
+    SetInitialGame(iniGame);
+    SetInitialHalfmove("end",true);
+    setCurrentGameFromInitialGame();
+    Init();
+    GoToInitialHalfmove();
+  }
+
 }
 
 function customFunctionOnPgnGameLoad() {
