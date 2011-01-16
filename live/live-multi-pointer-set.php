@@ -437,7 +437,7 @@ class='inputline' onchange='validate_and_set_columns(this.value)'>
 <td>
 <div class='inputlinecontainer'>
 <input type='text' id='search' name='search' value='<?print($search);?>'
-title='comma separated list of game search items for each board, default empty'
+title='comma separated list of game search items for each board, must not contain "&" and "=", default empty'
 class='inputline' onchange='validate_and_set_search(this.value)'>
 </div>
 </td>
@@ -449,7 +449,7 @@ class='inputline' onchange='validate_and_set_search(this.value)'>
 <td>
 <div class='inputlinecontainer'>
 <input type='text' id='pgnfile' name='pgnfile' value='<?print($pgnfile);?>'
-title='local PGN filename, left empty for the default value'
+title='local PGN filename, must not contain "&" and "=", left empty for the default value'
 class='inputline' onchange='validate_and_set_pgnfile(this.value)'>
 </div>
 </td>
