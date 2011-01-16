@@ -9,11 +9,13 @@
 
 function print_help {
 	echo
-	echo "$(basename $0) boards columns"
+	echo "$(basename $0) boards columns search pgnfile"
 	echo
 	echo "Shell script to set the number of boards and columns of $live_multi_pointer_file"
-	echo "boards must be an integer between 1 and 32"
-	echo "columns must be an integer between 1 and 8"
+	echo "- boards must be an integer between 1 and 32"
+	echo "- columns must be an integer between 1 and 8 (optional)"
+	echo "- search is a comma separated list of game search items for each board (optional, must not contain \"&\" and \"=\")"
+	echo "- pgnfile is the local PGN filename (optional, must not contain \"&\" and \"=\")"
 	echo
 	echo "Needs to be run using bash"
 	echo
@@ -40,13 +42,13 @@ else
         fi
 fi
 
-boards=$1
+boards="$1"
 if [ -z "$boards" ]; then print_error; exit; fi 
 if [ "$boards" -eq "$boards" 2> /dev/null ]; then echo -n; else print_error; exit; fi
 if [ "$boards" -lt 1 ]; then print_error; exit; fi
 if [ "$boards" -gt 32 ]; then print_error; exit; fi
 
-columns=$2
+columns="$2"
 if [ -z "$columns" ]; then
 	columns="\"\""
 else
@@ -54,6 +56,14 @@ else
 	if [ "$columns" -lt 1 ]; then print_error; exit; fi
 	if [ "$columns" -gt 8 ]; then print_error; exit; fi
 fi
+
+search="$3"
+if [ $(echo "$search" | grep "&") ]; then print_error; exit; fi
+if [ $(echo "$search" | grep "=") ]; then print_error; exit; fi
+
+pgnfile="$4"
+if [ $(echo "$pgnfile" | grep "&") ]; then print_error; exit; fi
+if [ $(echo "$pgnfile" | grep "=") ]; then print_error; exit; fi
 
 (
 cat << EOF 
@@ -78,16 +88,20 @@ cat << EOF
 // boards must be set, columns can be blank for default
 boards=$boards;
 columns=$columns;
+search="$search";
+pgnfile="$pgnfile";
 
 // dont edit below this point
 
-oldSearch = window.location.search.replace(/\b(nocache|n|boards|b|columns|c)=\d*\b/gi, "");
+oldSearch = window.location.search.replace(/\b(nocache|n|boards|b|columns|c|search|s|pgnfile|p)=\d*\b/gi, "");
 oldSearch = oldSearch.replace(/&+/gi, "&");
 oldSearch = oldSearch.replace(/&$/gi, "");
 oldSearch = oldSearch.replace(/^\?&+/gi, "?");
 oldSearch = oldSearch.replace(/^\?$/gi, "");
 newSearch = (oldSearch ? oldSearch + "&" : "?") + "b=" + boards;
-if (columns) { newSearch += "&c=" + columns };
+if (columns) { newSearch += "&c=" + columns; }
+if (search) { newSearch += "&s=" + search; }
+if (pgnfile) { newSearch += "&pd=" + pgnfile; }
 window.location.href = "../live-multi.html" + newSearch + window.location.hash;
 
 </script>

@@ -19,16 +19,20 @@
 // boards must be set, columns can be blank for default
 boards=3;
 columns="";
+search="";
+pgnfile="";
 
 // dont edit below this point
 
-oldSearch = window.location.search.replace(/\b(nocache|n|boards|b|columns|c)=\d*\b/gi, "");
+oldSearch = window.location.search.replace(/\b(nocache|n|boards|b|columns|c|search|s|pgnfile|p)=\d*\b/gi, "");
 oldSearch = oldSearch.replace(/&+/gi, "&");
 oldSearch = oldSearch.replace(/&$/gi, "");
 oldSearch = oldSearch.replace(/^\?&+/gi, "?");
 oldSearch = oldSearch.replace(/^\?$/gi, "");
 newSearch = (oldSearch ? oldSearch + "&" : "?") + "b=" + boards;
-if (columns) { newSearch += "&c=" + columns };
+if (columns) { newSearch += "&c=" + columns; }
+if (search) { newSearch += "&s=" + search; }
+if (pgnfile) { newSearch += "&pd=" + pgnfile; }
 window.location.href = "../live-multi.html" + newSearch + window.location.hash;
 
 </script>

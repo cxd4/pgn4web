@@ -70,6 +70,18 @@ function validate_columns($columns) {
   else { return ""; }
 }
 
+function validate_search($search) {
+  if (($search == "") || (preg_match("/^[^&=]+$/", $search))) 
+  { return $search; }
+  else { return ""; }
+}
+
+function validate_pgnfile($pgnfile) {
+  if (($pgnfile == "") || (preg_match("/^[^&=]+$/", $pgnfile)))
+  { return $pgnfile; }
+  else { return ""; }
+}
+
 function obfuscate_secret($s, $n = 15) {
   for ($i = 0, $l = strlen($s); $i < $l; $i++) {
     $c = ord($s[$i]);
@@ -85,6 +97,8 @@ $action = validate_action($_POST["action"]);
 
 $boards = validate_boards($_REQUEST["boards"]);
 $columns = validate_columns($_REQUEST["columns"]);
+$search = validate_search($_REQUEST["search"]);
+$pgnfile = validate_pgnfile($_REQUEST["pgnfile"]);
 
 ?>
 
@@ -219,16 +233,20 @@ if ($secretHash == $storedSecretHash) {
 // boards must be set, columns can be blank for default
 boards=$boards;
 columns=$columnsValue;
+search="$searchValue";
+pgnfile="$pgnfileValue";
 
 // dont edit below this point
 
-oldSearch = window.location.search.replace(/\b(nocache|n|boards|b|columns|c)=\d*\b/gi, "");
+oldSearch = window.location.search.replace(/\b(nocache|n|boards|b|columns|c|search|s|pgnfile|p)=\d*\b/gi, "");
 oldSearch = oldSearch.replace(/&+/gi, "&");
 oldSearch = oldSearch.replace(/&$/gi, "");
 oldSearch = oldSearch.replace(/^\?&+/gi, "?");
 oldSearch = oldSearch.replace(/^\?$/gi, "");
 newSearch = (oldSearch ? oldSearch + "&" : "?") + "b=" + boards;
 if (columns) { newSearch += "&c=" + columns };
+if (search) { newSearch += "&s=" + search; }
+if (pgnfile) { newSearch += "&pd=" + pgnfile; }
 window.location.href = "../live-multi.html" + newSearch + window.location.hash;
 
 </script>
@@ -241,7 +259,7 @@ HTMLPAGE;
         } elseif (! chmod($localHtmlFile, 0644)) {
           $message = $message . "\n" . "error=failed chmod local html file";
         } else {
-          $message = $message . "\n" . "info=saved name=" . $localHtmlFile . " boards=" . $boards . " columns=" . $columns;
+          $message = $message . "\n" . "info=saved name=" . $localHtmlFile . " boards=" . $boards . " columns=" . $columns . " search=" . $search . " pgnfile=" . $pgnfile;
         }
       break;
 
@@ -284,6 +302,22 @@ function validate_and_set_columns(columns) {
   if (!columns.match("^[0-9]+$") || (columns < 1) || (columns > 8)) { 
     alert("ERROR: invalid columns number: " + columns + "\ndefaulting to empty value (default number of columns)");
     document.getElementById("columns").value = "";
+  }
+}
+
+function validate_and_set_search(search) {
+  if (search === "") { return; }
+  if (search.match("[&=]")) {
+    alert("ERROR: invalid search value, defaulting to empty value (no search)");
+    document.getElementById("search").value = "";
+  }
+}
+
+function validate_and_set_pgnfile(pgnfile) {
+  if (pgnfile === "") { return; }
+  if (pgnfile.match("[&=]")) {
+    alert("ERROR: invalid pgnfile value, defaulting to empty value (default PGN file)");
+    document.getElementById("pgnfile").value = "";
   }
 }
 
@@ -393,6 +427,30 @@ class='inputline' onchange='validate_and_set_boards(this.value)'>
 <input type='text' id='columns' name='columns' value='<?print($columns);?>'
 title='how many board columns: must be a number between 1 and 8, or left empty for the default value'
 class='inputline' onchange='validate_and_set_columns(this.value)'>
+</div>
+</td>
+</tr>
+<tr valign='top'>
+<td>
+<div class='label'>search</div>
+</td>
+<td>
+<div class='inputlinecontainer'>
+<input type='text' id='search' name='search' value='<?print($search);?>'
+title='comma separated list of game search items for each board, default empty'
+class='inputline' onchange='validate_and_set_search(this.value)'>
+</div>
+</td>
+</tr>
+<tr valign='top'>
+<td>
+<div class='label'>local PGN file</div>
+</td>
+<td>
+<div class='inputlinecontainer'>
+<input type='text' id='pgnfile' name='pgnfile' value='<?print($pgnfile);?>'
+title='local PGN filename, left empty for the default value'
+class='inputline' onchange='validate_and_set_pgnfile(this.value)'>
 </div>
 </td>
 </tr>
