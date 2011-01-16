@@ -238,7 +238,7 @@ pgnfile="$pgnfile";
 
 // dont edit below this point
 
-oldSearch = window.location.search.replace(/\b(nocache|n|boards|b|columns|c|search|s|pgnfile|p)=\d*\b/gi, "");
+oldSearch = window.location.search.replace(/\b(nocache|n|boards|b|columns|c|search|s|pgnfile|p)=[^&]*/gi, "");
 oldSearch = oldSearch.replace(/&+/gi, "&");
 oldSearch = oldSearch.replace(/&$/gi, "");
 oldSearch = oldSearch.replace(/^\?&+/gi, "?");
