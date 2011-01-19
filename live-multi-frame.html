@@ -9,7 +9,7 @@
  
 <head> 
  
-<title>pgn4web multiple live chessboards</title> 
+<title>pgn4web live chessboard</title> 
  
 <link rel="shortcut icon" href="pawn.ico" /> 
 
@@ -111,11 +111,13 @@ function addTagToTitle(tagLabel, tagValue, object) {
 
 function customFunctionOnPgnTextLoad() {
 
-  // cope with occasional failures to load the live PGN data
-  if ((LiveBroadcastDelay !== 0) && (LiveBroadcastTicker > 0) && (!LiveBroadcastFoundOldGame)) {
-    SetInitialGame(iniGame);
+  thisCurrentGame = currentGame;
+
+  // force reloading iniGame each time
+  SetInitialGame(iniGame);
+  setCurrentGameFromInitialGame();
+  if (currentGame != thisCurrentGame) {
     SetInitialHalfmove("end",true);
-    setCurrentGameFromInitialGame();
     Init();
     GoToInitialHalfmove();
   }
