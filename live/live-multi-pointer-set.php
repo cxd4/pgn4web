@@ -58,9 +58,10 @@ function validate_action($action) {
   }
 }
 
-function validate_boards($boards) {
+function validate_boards($boards, $search) {
   if (preg_match("/^[0-9]+$/", $boards) && ($boards > 0) && ($boards < 33))
   { return $boards; }
+  elseif ($search != "") { return ""; }
   else { return 3; }
 }
 
@@ -94,11 +95,6 @@ $secret = stripslashes($_POST["secret"]);
 $secretHash = hash("sha256", obfuscate_secret($secret));
 
 $action = validate_action($_POST["action"]);
-
-$boards = validate_boards($_REQUEST["boards"]);
-$columns = validate_columns($_REQUEST["columns"]);
-$search = validate_search($_REQUEST["search"]);
-$pgnfile = validate_pgnfile($_REQUEST["pgnfile"]);
 
 ?>
 
@@ -191,18 +187,53 @@ a:link, a:visited, a:hover, a:active {
 
 <?
 
-function fileInformation($myFile) {
+function getCurrentParams($myFile) {
+  global $boards, $columns, $search, $pgnfile;
+
   $ft = filetype($myFile);
-  if (!$ft) { return "name=" . $myFile . " error=not found or file error"; }
-  else return "name=" . $myFile . " type=" . $ft .
-              " size=" . filesize($myFile) .
-              " permissions=" . substr(sprintf('%o', fileperms($myFile)), -4) .
-              " time=" . date("M d H:i:s e", filemtime($myFile)); 
+  if (!$ft) { 
+    $localMessage = "name=" . $myFile . " error=not found or file error";
+    $fc = "";
+  }
+  else { 
+    $localMessage = "name=" . $myFile . " type=" . $ft .
+      " size=" . filesize($myFile) .
+      " permissions=" . substr(sprintf('%o', fileperms($myFile)), -4) .
+      " time=" . date("M d H:i:s e", filemtime($myFile)); 
+
+    $fc = file_get_contents($myFile);
+    if (!$fc) {
+      $localMessage = "\nname=" . $myFile . " error=failed reading content";
+      $fc = "";
+    }
+  }
+
+  if ($_REQUEST["pgnfile"]) { $pgnfile = $_REQUEST["pgnfile"]; }
+  elseif (preg_match('/\bpgnfile=("|)([^"\n]*)("|);/', $fc, $match)) { $pgnfile = $match[2]; }
+  else { $pgnfile = ""; }
+  $pgnfile = validate_pgnfile($pgnfile);
+
+  if ($_REQUEST["search"]) { $search = $_REQUEST["search"]; }
+  elseif (preg_match('/\bsearch=("|)([^"\n]*)("|);/', $fc, $match)) { $search = $match[2]; }
+  else { $search = ""; }
+  $search = validate_search($search);
+
+  if ($_REQUEST["columns"]) { $columns = $_REQUEST["columns"]; }
+  elseif (preg_match('/\bcolumns=("|)([^"\n]*)("|);/', $fc, $match)) { $columns = $match[2]; }
+  else { $columns = ""; }
+  $columns = validate_columns($columns);
+
+  if ($_REQUEST["boards"]) { $boards = $_REQUEST["boards"]; }
+  elseif (preg_match('/\bboards=("|)([^"\n]*)("|);/', $fc, $match)) { $boards = $match[2]; }
+  else { $boards = ""; }
+  $boards = validate_boards($boards, $search);
+
+  return $localMessage;
 }
 
 if ($secretHash == $storedSecretHash) { 
 
-  $message = logMsg("\n" . fileInformation($localHtmlFile));
+  $message = logMsg("\n" . getCurrentParams($localHtmlFile));
 
   switch ($action) {
 
@@ -291,8 +322,13 @@ function validate_and_set_secret(s) {
 }
 
 function validate_and_set_boards(boards) {
-  if (!boards.match("^[0-9]+$") || (boards < 1) || (boards > 32)) { 
-    alert("ERROR: invalid boards number: " + boards + "\ndefaulting to: 3");
+  if (boards === "") {
+    if (document.getElementById("search").value === "") {
+      alert("ERROR: setting boards to empty while search is also empty, defaulting boards to 3");
+      document.getElementById("boards").value = 3;
+    }
+  } else if (!boards.match("^[0-9]+$") || (boards < 1) || (boards > 32)) { 
+    alert("ERROR: invalid boards number: " + boards + "\ndefaulting to 3");
     document.getElementById("boards").value = 3;
   }
 }
@@ -306,8 +342,12 @@ function validate_and_set_columns(columns) {
 }
 
 function validate_and_set_search(search) {
-  if (search === "") { return; }
-  if (search.match("[&=]")) {
+  if (search === "") {
+    if (document.getElementById("boards").value === "") {
+      alert("ERROR: setting search to empty while boards is also empty, defaulting boards to 3");
+      document.getElementById("boards").value = 3;
+    }
+  } else if (search.match("[&=]")) {
     alert("ERROR: invalid search value, defaulting to empty value (no search)");
     document.getElementById("search").value = "";
   }
@@ -400,7 +440,7 @@ else { print("style='visibility: hidden;'>"); }
 <div class='inputbuttoncontainer'>
 <input type='submit' id='saveHtmlFile' name='action' value='save HTML file'
 title='save the <?print($localHtmlFile);?> HTML file with the given parameters'
-class='inputbutton' onclick='return confirm("save the <?print($localHtmlFile);?> HTML file?\n\nboards=" + document.getElementById("boards").value + "\ncolumns=" + (document.getElementById("columns").value ? document.getElementById("columns").value : "\"\"") + "\nsearch=\"" + document.getElementById("search").value + "\"\npgnfile=\"" + document.getElementById("pgnfile").value + "\"");'>
+class='inputbutton' onclick='return confirm("save the <?print($localHtmlFile);?> HTML file?\n\nboards=" + (document.getElementById("boards").value ? document.getElementById("boards").value : "\"\"") + "\ncolumns=" + (document.getElementById("columns").value ? document.getElementById("columns").value : "\"\"") + "\nsearch=\"" + document.getElementById("search").value + "\"\npgnfile=\"" + document.getElementById("pgnfile").value + "\"");'>
 </div>
 </td>
 <td>
@@ -413,7 +453,7 @@ class='inputbutton' onclick='return confirm("save the <?print($localHtmlFile);?>
 <td>
 <div class='inputlinecontainer'>
 <input type='text' id='boards' name='boards' value='<?print($boards);?>'
-title='how many boards to display: must be a number between 1 and 32'
+title='how many boards to display: must be a number between 1 and 32, might be empty if search is assigned'
 class='inputline' onchange='validate_and_set_boards(this.value)'>
 </div>
 </td>
