@@ -12,10 +12,11 @@ function print_help {
 	echo "$(basename $0) boards columns search pgnfile"
 	echo
 	echo "Shell script to set the number of boards and columns of $live_multi_pointer_file"
-	echo "- boards must be an integer between 1 and 32"
-	echo "- columns must be an integer between 1 and 8 (optional)"
-	echo "- search is a comma separated list of game search items for each board (optional, must not contain \"&\" and \"=\")"
-	echo "- pgnfile is the local PGN filename (optional, must not contain \"&\" and \"=\")"
+	echo "- boards must be an integer between 1 and 32 (defaulting to 3 if both boards and search are unassigned)"
+	echo "- columns must be an integer between 1 and 8"
+	echo "- search is a comma separated list of game search items for each board (must not contain \"&\" and \"=\")"
+	echo "- pgnfile is the local PGN filename (must not contain \"&\" and \"=\")"
+        echo "To leave a parameter unassingned use \"\""
 	echo
 	echo "Needs to be run using bash"
 	echo
@@ -43,10 +44,13 @@ else
 fi
 
 boards="$1"
-if [ -z "$boards" ]; then print_error; exit; fi 
-if [ "$boards" -eq "$boards" 2> /dev/null ]; then echo -n; else print_error; exit; fi
-if [ "$boards" -lt 1 ]; then print_error; exit; fi
-if [ "$boards" -gt 32 ]; then print_error; exit; fi
+if [ -z "$boards" ]; then
+	boards="\"\""
+else
+	if [ "$boards" -eq "$boards" 2> /dev/null ]; then echo -n; else print_error; exit; fi
+	if [ "$boards" -lt 1 ]; then print_error; exit; fi
+	if [ "$boards" -gt 32 ]; then print_error; exit; fi
+fi
 
 columns="$2"
 if [ -z "$columns" ]; then
@@ -64,6 +68,11 @@ if [ $(echo "$search" | grep "=") ]; then print_error; exit; fi
 pgnfile="$4"
 if [ $(echo "$pgnfile" | grep "&") ]; then print_error; exit; fi
 if [ $(echo "$pgnfile" | grep "=") ]; then print_error; exit; fi
+
+if [ -z "$search" ] && [ "$boards"="\"\"" ]; then
+	boards=3
+	echo "WARNING: both boards and search are unassigned, defaulting boards to 3"
+fi
 
 (
 cat << EOF 
@@ -112,5 +121,5 @@ EOF
 
 chmod 644 $live_multi_pointer_file
 
-echo done setting $live_multi_pointer_file
+echo "INFO: done setting $live_multi_pointer_file"
 
