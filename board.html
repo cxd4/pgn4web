@@ -984,11 +984,14 @@ function customFunctionOnPgnTextLoad() {
 
   // cope with occasional failures to load the live PGN data
   if ((LiveBroadcastDelay !== 0) && (LiveBroadcastTicker > 0) && (!LiveBroadcastFoundOldGame)) {
-    SetInitialGame(init_Game);
-    SetInitialHalfmove(init_Halfmove,always_Halfmove);
+    thisCurrentGame = currentGame;
+    SetInitialGame(iniGame);
     setCurrentGameFromInitialGame();
-    Init();
-    GoToInitialHalfmove();
+    if (currentGame != thisCurrentGame) {
+      SetInitialHalfmove("end",true);
+      Init();
+      GoToInitialHalfmove();
+    }
   }
 
   if (gup("showHeightWidth") !== "") { 

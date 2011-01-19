@@ -104,11 +104,14 @@
 
     // cope with occasional failures to load the live PGN data
     if ((LiveBroadcastDelay !== 0) && (LiveBroadcastTicker > 0) && (!LiveBroadcastFoundOldGame)) {
+      thisCurrentGame = currentGame;
       SetInitialGame(iniGame);
-      SetInitialHalfmove("end",true);
       setCurrentGameFromInitialGame();
-      Init();
-      GoToInitialHalfmove();
+      if (currentGame != thisCurrentGame) {
+        SetInitialHalfmove("end",true);
+        Init();
+        GoToInitialHalfmove();
+      }
     }
 
   }
