@@ -58,11 +58,10 @@ function validate_action($action) {
   }
 }
 
-function validate_boards($boards, $search) {
+function validate_boards($boards) {
   if (preg_match("/^[0-9]+$/", $boards) && ($boards > 0) && ($boards < 33))
   { return $boards; }
-  elseif ($search != "") { return ""; }
-  else { return 3; }
+  else { return ""; }
 }
 
 function validate_columns($columns) {
@@ -96,10 +95,15 @@ $secretHash = hash("sha256", obfuscate_secret($secret));
 
 $action = validate_action($_POST["action"]);
 
-$pgnfile = validate_pgnfile($_REQUEST["pgnfile"]);
-$search = validate_search($_REQUEST["search"]);
+$boards = validate_boards($_REQUEST["boards"]);
 $columns = validate_columns($_REQUEST["columns"]);
-$boards = validate_boards($_REQUEST["boards"], $search);
+$search = validate_search($_REQUEST["search"]);
+$pgnfile = validate_pgnfile($_REQUEST["pgnfile"]);
+
+$pgnfileFile = "";
+$searchFile = "";
+$columnsFile = "";
+$boardsFile = "";
 
 ?>
 
@@ -173,7 +177,7 @@ a:link, a:visited, a:hover, a:active {
 
 .log {
   font-size: 90%;
-  height: 8em;
+  height: 10em;
   overflow: auto;
 }
 
@@ -193,6 +197,8 @@ a:link, a:visited, a:hover, a:active {
 <?
 
 function getCurrentParams($myFile) {
+  global $boardsFile, $columnsFile, $searchFile, $pgnfileFile;
+
   $ft = filetype($myFile);
   if (!$ft) { 
     $localMessage = "error=file " . $myFile . " not found or file error";
@@ -210,22 +216,14 @@ function getCurrentParams($myFile) {
       $fc = "";
     } else {
       $localMessage = $localMessage . "\n" . "info=read file " . $myFile . " with";
-      $localMessage = $localMessage . " boards=";
-      if (preg_match('/\bboards="([^"\n]*)";/', $fc, $match)) {
-        $localMessage = $localMessage . $match[1];
-      }
-      $localMessage = $localMessage . " columns=";
-      if (preg_match('/\bcolumns="([^"\n]*)";/', $fc, $match)) {
-        $localMessage = $localMessage . $match[1];
-      }
-      $localMessage = $localMessage . " search=";
-      if (preg_match('/\bsearch="([^"\n]*)";/', $fc, $match)) {
-        $localMessage = $localMessage . $match[1];
-      }
-      $localMessage = $localMessage . " pgnfile=";
-      if (preg_match('/\bpgnfile="([^"\n]*)";/', $fc, $match)) {
-        $localMessage = $localMessage . $match[1];
-      }
+      if (preg_match('/\bboards="([^"\n]*)";/', $fc, $match)) { $boardsFile = $match[1]; }
+      $localMessage = $localMessage . " boards=" . $boardsFile;
+      if (preg_match('/\bcolumns="([^"\n]*)";/', $fc, $match)) { $columnsFile = $match[1]; }
+      $localMessage = $localMessage . " columns=" . $columnsFile;
+      if (preg_match('/\bsearch="([^"\n]*)";/', $fc, $match)) { $searchFile = $match[1]; }
+      $localMessage = $localMessage . " search=" . $searchFile;
+      if (preg_match('/\bpgnfile="([^"\n]*)";/', $fc, $match)) { $pgnfileFile = $match[1]; }
+      $localMessage = $localMessage . " pgnfile=" . $pgnfileFile;
     }
   }
 
@@ -291,6 +289,7 @@ HTMLPAGE;
         } else {
           $message = $message . "\n" . "info=saved file " . $localHtmlFile . " with boards=" . $boards . " columns=" . $columns . " search=" . $search . " pgnfile=" . $pgnfile;
         }
+        $message = $message . "\n" . getCurrentParams($localHtmlFile);
       break;
 
     case "submit password":
@@ -321,14 +320,10 @@ function validate_and_set_secret(s) {
 }
 
 function validate_and_set_boards(boards) {
-  if (boards === "") {
-    if (document.getElementById("search").value === "") {
-      alert("ERROR: setting boards to empty while search is also empty, defaulting boards to 3");
-      document.getElementById("boards").value = 3;
-    }
-  } else if (!boards.match("^[0-9]+$") || (boards < 1) || (boards > 32)) { 
-    alert("ERROR: invalid boards number: " + boards + "\ndefaulting to 3");
-    document.getElementById("boards").value = 3;
+  if (boards === "") { return; }
+  if (!boards.match("^[0-9]+$") || (boards < 1) || (boards > 32)) { 
+    alert("ERROR: invalid boards number: " + boards + "\ndefaulting to empty value (default number of boards)");
+    document.getElementById("boards").value = "";
   }
 }
 
@@ -341,12 +336,8 @@ function validate_and_set_columns(columns) {
 }
 
 function validate_and_set_search(search) {
-  if (search === "") {
-    if (document.getElementById("boards").value === "") {
-      alert("ERROR: setting search to empty while boards is also empty, defaulting boards to 3");
-      document.getElementById("boards").value = 3;
-    }
-  } else if (search.match("[&=]")) {
+  if (search === "") { return; }
+  if (search.match("[&=]")) {
     alert("ERROR: invalid search value, defaulting to empty value (no search)");
     document.getElementById("search").value = "";
   }
@@ -451,8 +442,8 @@ class='inputbutton' onclick='return confirm("save the <?print($localHtmlFile);?>
 </td>
 <td>
 <div class='inputlinecontainer'>
-<input type='text' id='boards' name='boards' value='<?print($boards);?>'
-title='how many boards to display: must be a number between 1 and 32, might be empty if search is assigned'
+<input type='text' id='boards' name='boards' value='<?print($boardsFile);?>'
+title='how many boards to display: must be a number between 1 and 32, or left empty for the default value'
 class='inputline' onchange='validate_and_set_boards(this.value)'>
 </div>
 </td>
@@ -463,7 +454,7 @@ class='inputline' onchange='validate_and_set_boards(this.value)'>
 </td>
 <td>
 <div class='inputlinecontainer'>
-<input type='text' id='columns' name='columns' value='<?print($columns);?>'
+<input type='text' id='columns' name='columns' value='<?print($columnsFile);?>'
 title='how many board columns: must be a number between 1 and 8, or left empty for the default value'
 class='inputline' onchange='validate_and_set_columns(this.value)'>
 </div>
@@ -475,7 +466,7 @@ class='inputline' onchange='validate_and_set_columns(this.value)'>
 </td>
 <td>
 <div class='inputlinecontainer'>
-<input type='text' id='search' name='search' value='<?print($search);?>'
+<input type='text' id='search' name='search' value='<?print($searchFile);?>'
 title='comma separated list of game search items for each board, must not contain "&" and "=", default empty'
 class='inputline' onchange='validate_and_set_search(this.value)'>
 </div>
@@ -487,7 +478,7 @@ class='inputline' onchange='validate_and_set_search(this.value)'>
 </td>
 <td>
 <div class='inputlinecontainer'>
-<input type='text' id='pgnfile' name='pgnfile' value='<?print($pgnfile);?>'
+<input type='text' id='pgnfile' name='pgnfile' value='<?print($pgnfileFile);?>'
 title='local PGN filename, must not contain "&" and "=", left empty for the default value'
 class='inputline' onchange='validate_and_set_pgnfile(this.value)'>
 </div>
