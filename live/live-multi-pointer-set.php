@@ -257,8 +257,8 @@ if ($secretHash == $storedSecretHash) {
 
 <script type="text/javascript">
 
-// how many boards/columns to display on the live multi page
-// boards must be set, columns can be blank for default
+// live multi page parameters
+// leave blank for default
 boards="$boards";
 columns="$columns";
 search="$search";

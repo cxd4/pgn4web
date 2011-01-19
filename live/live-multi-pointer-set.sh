@@ -12,11 +12,11 @@ function print_help {
 	echo "$(basename $0) boards columns search pgnfile"
 	echo
 	echo "Shell script to set the number of boards and columns of $live_multi_pointer_file"
-	echo "- boards must be an integer between 1 and 32 (defaulting to 3 if both boards and search are unassigned)"
+	echo "- boards must be an integer between 1 and 32"
 	echo "- columns must be an integer between 1 and 8"
 	echo "- search is a comma separated list of game search items for each board (must not contain \"&\" and \"=\")"
 	echo "- pgnfile is the local PGN filename (must not contain \"&\" and \"=\")"
-        echo "To leave a parameter unassingned use \"\""
+        echo "To leave a parameter as default use \"\""
 	echo
 	echo "Needs to be run using bash"
 	echo
@@ -65,11 +65,6 @@ pgnfile="$4"
 if [ $(echo "$pgnfile" | grep "&") ]; then print_error; exit; fi
 if [ $(echo "$pgnfile" | grep "=") ]; then print_error; exit; fi
 
-if [ -z "$search" ] && [ -z "$boards" ]; then
-	boards=3
-	echo "WARNING: both boards and search are unassigned, defaulting boards to 3"
-fi
-
 (
 cat << EOF 
 <html> 
@@ -89,8 +84,8 @@ cat << EOF
 
 <script type="text/javascript">
 
-// how many boards/columns to display on the live multi page
-// boards must be set, columns can be blank for default
+// live multi page parameters
+// leave blank for default
 boards="$boards";
 columns="$columns";
 search="$search";
