@@ -96,6 +96,11 @@ $secretHash = hash("sha256", obfuscate_secret($secret));
 
 $action = validate_action($_POST["action"]);
 
+$pgnfile = validate_pgnfile($_REQUEST["pgnfile"]);
+$search = validate_search($_REQUEST["search"]);
+$columns = validate_columns($_REQUEST["columns"]);
+$boards = validate_boards($_REQUEST["boards"], $search);
+
 ?>
 
 <html>
@@ -168,7 +173,7 @@ a:link, a:visited, a:hover, a:active {
 
 .log {
   font-size: 90%;
-  height: 7em;
+  height: 8em;
   overflow: auto;
 }
 
@@ -188,11 +193,9 @@ a:link, a:visited, a:hover, a:active {
 <?
 
 function getCurrentParams($myFile) {
-  global $boards, $columns, $search, $pgnfile;
-
   $ft = filetype($myFile);
   if (!$ft) { 
-    $localMessage = "name=" . $myFile . " error=not found or file error";
+    $localMessage = "error=file " . $myFile . " not found or file error";
     $fc = "";
   }
   else { 
@@ -203,30 +206,28 @@ function getCurrentParams($myFile) {
 
     $fc = file_get_contents($myFile);
     if (!$fc) {
-      $localMessage = "\nname=" . $myFile . " error=failed reading content";
+      $localMessage = $localMessage . "\n" . "error=failed reading file " . $myFile;
       $fc = "";
+    } else {
+      $localMessage = $localMessage . "\n" . "info=read file " . $myFile . " with";
+      $localMessage = $localMessage . " boards=";
+      if (preg_match('/\bboards="([^"\n]*)";/', $fc, $match)) {
+        $localMessage = $localMessage . $match[1];
+      }
+      $localMessage = $localMessage . " columns=";
+      if (preg_match('/\bcolumns="([^"\n]*)";/', $fc, $match)) {
+        $localMessage = $localMessage . $match[1];
+      }
+      $localMessage = $localMessage . " search=";
+      if (preg_match('/\bsearch="([^"\n]*)";/', $fc, $match)) {
+        $localMessage = $localMessage . $match[1];
+      }
+      $localMessage = $localMessage . " pgnfile=";
+      if (preg_match('/\bpgnfile="([^"\n]*)";/', $fc, $match)) {
+        $localMessage = $localMessage . $match[1];
+      }
     }
   }
-
-  if ($_REQUEST["pgnfile"]) { $pgnfile = $_REQUEST["pgnfile"]; }
-  elseif (preg_match('/\bpgnfile=("|)([^"\n]*)("|);/', $fc, $match)) { $pgnfile = $match[2]; }
-  else { $pgnfile = ""; }
-  $pgnfile = validate_pgnfile($pgnfile);
-
-  if ($_REQUEST["search"]) { $search = $_REQUEST["search"]; }
-  elseif (preg_match('/\bsearch=("|)([^"\n]*)("|);/', $fc, $match)) { $search = $match[2]; }
-  else { $search = ""; }
-  $search = validate_search($search);
-
-  if ($_REQUEST["columns"]) { $columns = $_REQUEST["columns"]; }
-  elseif (preg_match('/\bcolumns=("|)([^"\n]*)("|);/', $fc, $match)) { $columns = $match[2]; }
-  else { $columns = ""; }
-  $columns = validate_columns($columns);
-
-  if ($_REQUEST["boards"]) { $boards = $_REQUEST["boards"]; }
-  elseif (preg_match('/\bboards=("|)([^"\n]*)("|);/', $fc, $match)) { $boards = $match[2]; }
-  else { $boards = ""; }
-  $boards = validate_boards($boards, $search);
 
   return $localMessage;
 }
@@ -239,10 +240,6 @@ if ($secretHash == $storedSecretHash) {
 
     case "save HTML file":
       $message = $message . "\n" . "action=" . $action;
-      if ($columns == "") { $columnsValue = "\"\""; }
-      else { $columnsValue = $columns; }
-      if ($boards == "") { $boardsValue = "\"\""; }
-      else { $boardsValue = $boards; }
       umask(0000);
       $htmlPageToSave = <<<HTMLPAGE
 <html> 
@@ -264,23 +261,23 @@ if ($secretHash == $storedSecretHash) {
 
 // how many boards/columns to display on the live multi page
 // boards must be set, columns can be blank for default
-boards=$boardsValue;
-columns=$columnsValue;
+boards="$boards";
+columns="$columns";
 search="$search";
 pgnfile="$pgnfile";
 
 // dont edit below this point
 
-oldSearch = window.location.search.replace(/\b(nocache|n|boards|b|columns|c|search|s|pgnfile|p)=[^&]*/gi, "");
-oldSearch = oldSearch.replace(/&+/gi, "&");
-oldSearch = oldSearch.replace(/&$/gi, "");
-oldSearch = oldSearch.replace(/^\?&+/gi, "?");
-oldSearch = oldSearch.replace(/^\?$/gi, "");
-newSearch = (oldSearch ? oldSearch + "&" : "?") + "b=" + boards;
-if (columns) { newSearch += "&c=" + columns; }
-if (search) { newSearch += "&s=" + search; }
-if (pgnfile) { newSearch += "&pd=" + pgnfile; }
-window.location.href = "../live-multi.html" + newSearch + window.location.hash;
+locSearch = window.location.search.replace(/\b(nocache|n|boards|b|columns|c|search|s|pgnfile|p|pgndata|pf|pd)=[^&]*/gi, "");
+locSearch = locSearch.replace(/&+/gi, "&");
+locSearch = locSearch.replace(/&$/gi, "");
+locSearch = locSearch.replace(/^\?&+/gi, "?");
+locSearch = locSearch.replace(/^\?$/gi, "");
+if (boards) { locSearch = (locSearch ? locSearch + "&" : "?") + "b=" + boards; }
+if (columns) { locSearch = (locSearch ? locSearch + "&" : "?") + "c=" + columns; }
+if (search) { locSearch = (locSearch ? locSearch + "&" : "?") + "s=" + search; }
+if (pgnfile) { locSearch = (locSearch ? locSearch + "&" : "?") + "pd=" + pgnfile; }
+window.location.href = "../live-multi.html" + locSearch + window.location.hash;
 
 </script>
 </head>
@@ -292,7 +289,7 @@ HTMLPAGE;
         } elseif (! chmod($localHtmlFile, 0644)) {
           $message = $message . "\n" . "error=failed chmod local html file";
         } else {
-          $message = $message . "\n" . "info=saved name=" . $localHtmlFile . " boards=" . $boards . " columns=" . $columns . " search=" . $search . " pgnfile=" . $pgnfile;
+          $message = $message . "\n" . "info=saved file " . $localHtmlFile . " with boards=" . $boards . " columns=" . $columns . " search=" . $search . " pgnfile=" . $pgnfile;
         }
       break;
 
@@ -442,7 +439,7 @@ else { print("style='visibility: hidden;'>"); }
 <div class='inputbuttoncontainer'>
 <input type='submit' id='saveHtmlFile' name='action' value='save HTML file'
 title='save the <?print($localHtmlFile);?> HTML file with the given parameters'
-class='inputbutton' onclick='return confirm("save the <?print($localHtmlFile);?> HTML file?\n\nboards=" + (document.getElementById("boards").value ? document.getElementById("boards").value : "\"\"") + "\ncolumns=" + (document.getElementById("columns").value ? document.getElementById("columns").value : "\"\"") + "\nsearch=\"" + document.getElementById("search").value + "\"\npgnfile=\"" + document.getElementById("pgnfile").value + "\"");'>
+class='inputbutton' onclick='return confirm("save the <?print($localHtmlFile);?> HTML file?\n\nboards=\"" + document.getElementById("boards").value + "\"\ncolumns=\"" + document.getElementById("columns").value + "\"\nsearch=\"" + document.getElementById("search").value + "\"\npgnfile=\"" + document.getElementById("pgnfile").value + "\"");'>
 </div>
 </td>
 <td>
