@@ -44,18 +44,14 @@ else
 fi
 
 boards="$1"
-if [ -z "$boards" ]; then
-	boards="\"\""
-else
+if [ -n "$boards" ]; then
 	if [ "$boards" -eq "$boards" 2> /dev/null ]; then echo -n; else print_error; exit; fi
 	if [ "$boards" -lt 1 ]; then print_error; exit; fi
 	if [ "$boards" -gt 32 ]; then print_error; exit; fi
 fi
 
 columns="$2"
-if [ -z "$columns" ]; then
-	columns="\"\""
-else
+if [ -n "$columns" ]; then
 	if [ "$columns" -eq "$columns" 2> /dev/null ]; then echo -n; else print_error; exit; fi
 	if [ "$columns" -lt 1 ]; then print_error; exit; fi
 	if [ "$columns" -gt 8 ]; then print_error; exit; fi
@@ -69,7 +65,7 @@ pgnfile="$4"
 if [ $(echo "$pgnfile" | grep "&") ]; then print_error; exit; fi
 if [ $(echo "$pgnfile" | grep "=") ]; then print_error; exit; fi
 
-if [ -z "$search" ] && [ "$boards"="\"\"" ]; then
+if [ -z "$search" ] && [ -z "$boards" ]; then
 	boards=3
 	echo "WARNING: both boards and search are unassigned, defaulting boards to 3"
 fi
@@ -95,23 +91,23 @@ cat << EOF
 
 // how many boards/columns to display on the live multi page
 // boards must be set, columns can be blank for default
-boards=$boards;
-columns=$columns;
+boards="$boards";
+columns="$columns";
 search="$search";
 pgnfile="$pgnfile";
 
 // dont edit below this point
 
-oldSearch = window.location.search.replace(/\b(nocache|n|boards|b|columns|c|search|s|pgnfile|p)=[^&]*/gi, "");
-oldSearch = oldSearch.replace(/&+/gi, "&");
-oldSearch = oldSearch.replace(/&$/gi, "");
-oldSearch = oldSearch.replace(/^\?&+/gi, "?");
-oldSearch = oldSearch.replace(/^\?$/gi, "");
-newSearch = (oldSearch ? oldSearch + "&" : "?") + "b=" + boards;
-if (columns) { newSearch += "&c=" + columns; }
-if (search) { newSearch += "&s=" + search; }
-if (pgnfile) { newSearch += "&pd=" + pgnfile; }
-window.location.href = "../live-multi.html" + newSearch + window.location.hash;
+locSearch = window.location.search.replace(/\b(nocache|n|boards|b|columns|c|search|s|pgnfile|p|pgndata|pf|pd)=[^&]*/gi, "");
+locSearch = locSearch.replace(/&+/gi, "&");
+locSearch = locSearch.replace(/&$/gi, "");
+locSearch = locSearch.replace(/^\?&+/gi, "?");
+locSearch = locSearch.replace(/^\?$/gi, "");
+if (boards) { locSearch = (locSearch ? locSearch + "&" : "?") + "b=" + boards; }
+if (columns) { locSearch = (locSearch ? locSearch + "&" : "?") + "c=" + columns; }
+if (search) { locSearch = (locSearch ? locSearch + "&" : "?") + "s=" + search; }
+if (pgnfile) { locSearch = (locSearch ? locSearch + "&" : "?") + "pd=" + pgnfile; }
+window.location.href = "../live-multi.html" + locSearch + window.location.hash;
 
 </script>
 </head>
