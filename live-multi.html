@@ -62,7 +62,7 @@ if (pgn4web_live_pointer_url == undefined) { pgn4web_live_pointer_url = "."; }
   show_board_selector = false;
   if ((boards = gup("boards")) === "") {
     boards = boards_default;
-    show_board_selector = true;
+    if (!searchArray.length) { show_board_selector = true; }
   } else {
     testBoards = boards + "";
     if ((testBoards.match(/[^0-9]/)) || (boards == 0) || (boards > 32)) {
