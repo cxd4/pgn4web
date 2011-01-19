@@ -241,6 +241,8 @@ if ($secretHash == $storedSecretHash) {
       $message = $message . "\n" . "action=" . $action;
       if ($columns == "") { $columnsValue = "\"\""; }
       else { $columnsValue = $columns; }
+      if ($boards == "") { $boardsValue = "\"\""; }
+      else { $boardsValue = $boards; }
       umask(0000);
       $htmlPageToSave = <<<HTMLPAGE
 <html> 
@@ -262,7 +264,7 @@ if ($secretHash == $storedSecretHash) {
 
 // how many boards/columns to display on the live multi page
 // boards must be set, columns can be blank for default
-boards=$boards;
+boards=$boardsValue;
 columns=$columnsValue;
 search="$search";
 pgnfile="$pgnfile";
