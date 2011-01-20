@@ -157,10 +157,10 @@ if (demoFlag) { buildUrl_two += "&rd=t"; }
 if (search) { buildUrl_two += "&s=" + search; }
 if (pgnFile !== pgnFile_default) { buildUrl_two += "&pd=" + pgnFile; }
 columns_switch = colums_default_used ? "" : "&c=" + columns;
-oneMoreBoardUrl = buildUrl_one + "&b=" + (boards + 1) + columns_switch + buildUrl_two;
-oneLessBoardUrl = buildUrl_one + "&b=" + (boards - 1) + columns_switch + buildUrl_two;
-oneMoreColumnUrl = buildUrl_one + "&b=" + boards + "&c=" + (columns + 1) + buildUrl_two;
-oneLessColumnUrl = buildUrl_one + "&b=" + boards + "&c=" + (columns - 1) + buildUrl_two;
+oneMoreBoardUrl = buildUrl_one + "b=" + (boards + 1) + columns_switch + buildUrl_two;
+oneLessBoardUrl = buildUrl_one + "b=" + (boards - 1) + columns_switch + buildUrl_two;
+oneMoreColumnUrl = buildUrl_one + "b=" + boards + "&c=" + (columns + 1) + buildUrl_two;
+oneLessColumnUrl = buildUrl_one + "b=" + boards + "&c=" + (columns - 1) + buildUrl_two;
 
 </script>
 
@@ -202,7 +202,7 @@ if (show_board_selector) {
   document.write("<div style='margin-bottom: 9px;'>");
   document.write("<span class='menuHead'>number of chessboards</span>");
   for(ii=1; ii<=8; ii++) {
-    document.write("<a class='menuLink' href='" + buildUrl_one + "&b=" + ii + buildUrl_two + "'>" + ii + "</a>");
+    document.write("<a class='menuLink' href='" + buildUrl_one + "b=" + ii + buildUrl_two + "'>" + ii + "</a>");
   }
   document.write("</div>");
 }
