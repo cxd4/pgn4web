@@ -167,17 +167,17 @@ oneLessColumnUrl = buildUrl_one + "b=" + boards + "&c=" + (columns - 1) + buildU
 <style type="text/css">
 
 body
-{ color: #DDDDDD; background: white; font-family: sans-serif; padding: 20px 20px 10px 20px; 
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#FFEEEE');
-  background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#FEE));
-  background: -moz-linear-gradient(top,  #FFF,  #FEE);
+{ color: #CCCCCC; background: white; font-family: sans-serif; padding: 20px 20px 10px 20px; 
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#EDE8D5');
+  background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#EDE8D5));
+  background: -moz-linear-gradient(top,  #FFFFFF,  #EDE8D5);
 }
 
 .header, .header:link, .header:visited, .header:hover, .header:active
 { color: red; text-decoration: none; padding-bottom: 0.5em; }
 
 a:link, a:visited, a:hover, a:active
-{ color: #DDDDDD; text-decoration: none; }
+{ color: #CCCCCC; text-decoration: none; }
 
 .menuLink, .menuHead 
 { font-size:small; font-weight:bold; }
@@ -205,14 +205,14 @@ a:link, a:visited, a:hover, a:active
 
 <script type="text/javascript">
 
-if (show_board_selector) {
-  document.write("<div style='margin-bottom: 9px;'>");
-  document.write("<span class='menuHead'>number of chessboards</span>");
-  for(ii=1; ii<=8; ii++) {
-    document.write("<a class='menuLink' href='" + buildUrl_one + "b=" + ii + buildUrl_two + "'>" + ii + "</a>");
-  }
-  document.write("</div>");
-}
+// if (show_board_selector) {
+//   document.write("<div style='margin-bottom: 9px;'>");
+//   document.write("<span class='menuHead'>number of chessboards</span>");
+//   for(ii=1; ii<=8; ii++) {
+//     document.write("<a class='menuLink' href='" + buildUrl_one + "b=" + ii + buildUrl_two + "'>" + ii + "</a>");
+//   }
+//   document.write("</div>");
+// }
 
 rows = Math.ceil(boards / columns);
 
@@ -242,7 +242,7 @@ document.write("</table></center>");
 document.write("<table width='100%' cellspacing='5' cellpadding='0'><tr><td>");
 document.write("<p style='text-align:left; font-size:small; color:white; color:transparent;'>refreshMinutes: " + refreshMinutes + "</p>");
 document.write("</td><td>");
-document.write("<p style='text-align:right; font-size:small; color:white; color:transparent;'><a style='color:white;' href='" + pgnFile + "'>" + pgnFile + "</a></p>");
+document.write("<p style='text-align:right; font-size:small; color:white; color:transparent;'><a style='color:white; color:transparent;' href='" + pgnFile + "'>" + pgnFile + "</a></p>");
 document.write("</td></tr><tr><td>");
 document.write("<p style='text-align: left; font-size:small; font-weight:bold;'>");
 if (columns > 1) {
