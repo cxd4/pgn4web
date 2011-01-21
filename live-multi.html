@@ -9,7 +9,7 @@
 
 <head>
 
-<title>pgn4web multiple live chessboards</title>
+<title>pgn4web chess live broadcast</title>
 
 <link rel="shortcut icon" href="pawn.ico" />
 
@@ -169,6 +169,9 @@ oneLessColumnUrl = buildUrl_one + "b=" + boards + "&c=" + (columns - 1) + buildU
 body
 { color: #DDDDDD; background: white; font-family: sans-serif; padding: 20px 20px 10px 20px; }
 
+.header, .header:link, .header:visited, .header:hover, .header:active
+{ color: red; text-decoration: none; padding-bottom: 0.5em; }
+
 a:link, a:visited, a:hover, a:active
 { color: #DDDDDD; text-decoration: none; }
 
@@ -179,7 +182,7 @@ a:link, a:visited, a:hover, a:active
 { margin-left: 13px; }
 
 .menuLink:hover, .footerLink:hover
-{ color: #214398; }
+{ color: red; }
 
 </style>
 
@@ -189,10 +192,10 @@ a:link, a:visited, a:hover, a:active
 
 <table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
 <td align="left" valign="middle">
-<h1 name='top'><a href='#row1'>pgn4web</a> <a href='#row2'>multiple</a> <a href='#row3'>live</a> <a href='#row4'>chessboards</a></h1>
+<h1 class="header" name="top"><a class="header" href="#row1">pgn4web</a> <a class="header" href="#row2">chess</a> <a class="header" href="#row3">live</a> <a class="header" href="#row4">broadcast</a></h1>
 </td>
 <td align="right" valign="middle">
-<a href=.><img src=pawns.png border=0></a>
+<a href=.><img src="pawns.png" border="0"></a>
 </td>
 </tr></tbody></table>
 
@@ -263,7 +266,7 @@ if (boards < 32) {
 }
 document.write(" chessboards</p>");
 document.write("</td><td>");
-document.write("<p style='text-align: right; font-size:small; font-weight:bold;'>control the <a href='#top'>chessboards</a> by clicking their squares<br>hover the mouse on each square for help</p>");
+document.write("<p style='text-align: right; font-size:small; font-weight:bold;'>click on square H8 for help<br><a class='footerLink' href='live/live.html'>try the single chessboard live view</a></p>");
 document.write("</td></tr></table>");
 
 </script>
