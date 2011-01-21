@@ -15,7 +15,6 @@ of Google Chrome v6 or later. Don't use with any other browser.
 var pgn4web_pgnLinks = new Array();
 
 var pgn4web_cursorDef = "url(" + chrome.extension.getURL("cursor-small.png") + ") 1 6, auto";
-// var pgn4web_cursorDef = "url(" + chrome.extension.getURL("cursor-large.png") + ") 1 6, auto";
 
 for(l in document.links) {
   if (validatePgnUrl(document.links[l].href)) {

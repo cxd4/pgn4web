@@ -54,29 +54,23 @@ body {
 
 <script type="text/javascript">
 
-chrome.tabs.getSelected(null, function(tab){
-  // uncomment this line and the following setTimeout for a page action icon animation effect
-  // chrome.pageAction.setIcon({"tabId": tab.id, "path": "alpha-16-clicked.png"});
-  printLinks(chrome.extension.getBackgroundPage().pgnLinks[tab.id]);
-  // setTimeout('chrome.pageAction.setIcon({"tabId": ' + tab.id + ', "path": "alpha-16.png"})', 300);
-});
-
 var cursorDef = "url(cursor-small.png) 1 6, auto";
-// var cursorDef = "url(cursor-large.png) 1 6, auto";
-function printLinks(pgnLinks) {
+ 
+chrome.tabs.getSelected(null, function(tab){
+  pgnLinks = chrome.extension.getBackgroundPage().pgnLinks[tab.id];
   document.getElementById("numPgnLinks").innerHTML = " " + pgnLinks.length + " ";
   document.getElementById("numPgnPlural").innerHTML = pgnLinks.length == 1 ? "" : "s";
   for(l in pgnLinks) {
     var pgnFileName = pgnLinks[l].replace(/(^|^[^?#]*\/)([^?#\/]+\.pgn)($|\?.*$|#.*$)/i,'$2');
     document.getElementById("pgnLinkList").innerHTML += '<div class="pgnItem">' +
-      '<a title="view ' + pgnFileName + ' games" class="pgnLink" href=. onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'chrome.tabs.create({url: "chess-games-viewer.html?pgnData=' + escape(pgnLinks[l]) + '"});\'><img src="alpha-16.png"></a>&nbsp;&nbsp;' +
-      '<a title="view ' + pgnFileName + ' games with live refresh" class="pgnLink" href=. onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'chrome.tabs.create({url: "chess-games-viewer.html?pgnData=' + escape(pgnLinks[l]) + '&refreshMinutes=1.0' + Math.floor(Math.random()*10) + '&search=\\\\[\\\\s*Result\\\\s*\\"\\\\*\\"\\\\s*\\\\]"});\'><img src="refresh.png"></a>&nbsp;&nbsp;' +
-      '<a title="download ' + pgnFileName + ' games" class="pgnLink" target="_blank" href="' + pgnLinks[l] + '" onmouseover=\'this.style.cursor="' + cursorDef + '";\'><img src="download.png"></a>&nbsp;&nbsp;&nbsp;&nbsp;' +
+      '<a title="view ' + pgnFileName + ' games" class="pgnLink" href="javascript: return false;" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'chrome.tabs.create({url: "chess-games-viewer.html?pgnData=' + escape(pgnLinks[l]) + '"});\'><img src="alpha-16.png"></a>&nbsp;&nbsp;' +
+      '<a title="view ' + pgnFileName + ' games with live refresh" class="pgnLink" href="javascript: return false;" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'chrome.tabs.create({url: "chess-games-viewer.html?pgnData=' + escape(pgnLinks[l]) + '&refreshMinutes=1.0' + Math.floor(Math.random()*10) + '&search=\\\\[\\\\s*Result\\\\s*\\"\\\\*\\"\\\\s*\\\\]"});\'><img src="refresh.png"></a>&nbsp;&nbsp;' +
+      '<a title="download ' + pgnFileName + ' games" class="pgnLink" href="javascript: return false;" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'chrome.tabs.update(' + tab.id + ', {url: "' + pgnLinks[l] + '"});\'><img src="download.png"></a>&nbsp;&nbsp;&nbsp;&nbsp;' +
       '<span title="' + pgnFileName + '">' + pgnLinks[l] + '</span>' +
       '</div>';
   }
-}
-
+});
+ 
 </script>
 
 </body>
