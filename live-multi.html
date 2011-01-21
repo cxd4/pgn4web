@@ -201,14 +201,14 @@ a:link, a:visited, a:hover, a:active
 
 <script type="text/javascript">
 
-// if (show_board_selector) {
-//   document.write("<div style='margin-bottom: 9px;'>");
-//   document.write("<span class='menuHead'>number of chessboards</span>");
-//   for(ii=1; ii<=8; ii++) {
-//     document.write("<a class='menuLink' href='" + buildUrl_one + "b=" + ii + buildUrl_two + "'>" + ii + "</a>");
-//   }
-//   document.write("</div>");
-// }
+if (show_board_selector) {
+  document.write("<div style='margin-bottom: 9px;'>");
+  document.write("<span class='menuHead'>number of chessboards</span>");
+  for(ii=1; ii<=8; ii++) {
+    document.write("<a class='menuLink' href='" + buildUrl_one + "b=" + ii + buildUrl_two + "'>" + ii + "</a>");
+  }
+  document.write("</div>");
+}
 
 rows = Math.ceil(boards / columns);
 
@@ -226,7 +226,7 @@ for (r = 0; r < rows; r++) {
         } else {
           initialGame = searchArray[sid] ? searchArray[sid] : sid+1;
         }
-        document.write("<a style='color:white; color:transparent; font-size:x-small;' name='row" + (r+1) + "' href='#row" + (r+1) + "'>chessboard row:" + (r+1) + " col:" + (c+1) + "</a><br>");
+        document.write("<a style='color:white; font-size:x-small;' name='row" + (r+1) + "' href='#row" + (r+1) + "'>chessboard row:" + (r+1) + " col:" + (c+1) + "</a><br>");
           document.write("<iframe width='240' height='290' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='" + pgn4web_live_pointer_url + "/live-multi-frame.html?pd=" + pgnFile + "&ig=" + initialGame + "&rm=" + rm + (demoFlag ? "&rd=t" : "") + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
       }
     document.write("</td>");
@@ -236,9 +236,9 @@ for (r = 0; r < rows; r++) {
 document.write("</table></center>");
 
 document.write("<table width='100%' cellspacing='5' cellpadding='0'><tr><td>");
-document.write("<p style='text-align:left; font-size:small; color:white; color:transparent;'>refreshMinutes: " + refreshMinutes + "</p>");
+document.write("<p style='text-align:left; font-size:small; color:white;'>refreshMinutes: " + refreshMinutes + "</p>");
 document.write("</td><td>");
-document.write("<p style='text-align:right; font-size:small; color:white; color:transparent;'><a style='color:white; color:transparent;' href='" + pgnFile + "'>" + pgnFile + "</a></p>");
+document.write("<p style='text-align:right; font-size:small; color:white;'><a style='color:white;' href='" + pgnFile + "'>" + pgnFile + "</a></p>");
 document.write("</td></tr><tr><td>");
 document.write("<p style='text-align: left; font-size:small; font-weight:bold;'>");
 if (columns > 1) {
