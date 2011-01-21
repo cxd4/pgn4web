@@ -227,7 +227,7 @@ for (r = 0; r < rows; r++) {
           initialGame = searchArray[sid] ? searchArray[sid] : sid+1;
         }
         document.write("<a style='color:white; font-size:x-small;' name='row" + (r+1) + "' href='#row" + (r+1) + "'>chessboard row:" + (r+1) + " col:" + (c+1) + "</a><br>");
-          document.write("<iframe width='240' height='290' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='" + pgn4web_live_pointer_url + "/live-multi-frame.html?pd=" + pgnFile + "&ig=" + initialGame + "&rm=" + rm + (demoFlag ? "&rd=t" : "") + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
+          document.write("<iframe width='240' height='290' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='" + pgn4web_live_pointer_url + "/live-multi-frame.html?rm=" + rm + (demoFlag ? "&rd=t" : "") + "&ig=" + initialGame + (pgnFile !== "" ? "&pd=" + pgnFile : "") + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
       }
     document.write("</td>");
   }
