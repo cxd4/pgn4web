@@ -26,9 +26,15 @@ if (pgn4web_live_pointer_url == undefined) { pgn4web_live_pointer_url = "."; }
 body 
 { color: #DDDDDD; background: white; font-family: sans-serif; padding: 20px; }
 
-.footer
+.footerLeft, .footerRight
 { font-weight: bold; font-size:small; }
- 
+
+.footerLeft
+{ float: left; }
+
+.footerRight
+{ float: right; }
+
 a:link, a:visited, a:hover, a:active
 { color: #DDDDDD; text-decoration: none; }
 
@@ -55,8 +61,10 @@ a:hover, a:active
 </div>
 </div>
 
-<a class="footer" href="live/live-multi.html">try the multiple chessboards live view</a>
-<div style="float: right;" class="footer">click on square H8 for help</div> 
+<div>
+<a class="footerLeft" href="live/live-multi.html">try the multiple chessboards live view</a>
+<span class="footerRight">click on square H8 for help</span> 
+</div>
 
 </body>
 
