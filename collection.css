@@ -119,9 +119,11 @@ body {
   background: #FFCC99;
 }
 
-.comment,
-.nag {
+.comment {
   color: gray;
+}
+
+.nag {
 }
 
 .label {

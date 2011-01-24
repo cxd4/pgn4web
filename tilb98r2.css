@@ -88,8 +88,10 @@ body {
   background: #DAE1D7;
 }
 
-.comment,
-.nag {
+.comment {
   color: gray;
+}
+
+.nag {
 }
 

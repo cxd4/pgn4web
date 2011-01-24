@@ -92,8 +92,10 @@ body {
   background: yellow;
 }
 
-.comment,
-.nag {
+.comment {
   color: #444444;
+}
+
+.nag {
 }
 
