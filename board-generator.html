@@ -549,7 +549,7 @@ function set_defaults() {
   document.board.boardUrl.value = boardUrl_value;
 
   if ((useTextarea_value = gup("useTextarea")) === "") { useTextarea_value = useTextarea_default; }                   
-  document.board.useTextarea.checked = (useTextarea_value == "t");
+  document.board.useTextarea.checked = ((useTextarea_value == "t") || (useTextarea_value == "true"));
     
   generate_html_code();
   update_controls();
