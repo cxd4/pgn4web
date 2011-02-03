@@ -1,3 +1,38 @@
+[Event "London League 2010/2011"]
+[Site "London, UK"]
+[Date "2011.02.02"]
+[Round "?"]
+[White "Smart, Michael"]
+[Black "Casaschi, Paolo"]
+[Result "1/2-1/2"]
+[ECO "B03"]
+[Opening "Alekhine's defence"]
+[Variation "exchange variation"]
+
+1. e4 Nf6 2. e5 Nd5 3. c4 Nb6 4. d4 d6 5. exd6 exd6 6. Nf3 Be7 7. Bd3 { # }
+7... N8d7 8. O-O Nf6 9. h3 c6 10. Re1 O-O 11. Nc3 Nbd7 12. b3 Re8 13. Bb2
+d5 14. Rc1 Nf8 15. cxd5 cxd5 16. Nb5 Ne6 17. Bf5 Bd7 18. Nc3 { # } 18...
+Ng5 19. Bxd7 1/2-1/2
+
+[Event "Middlesex League 2010/2011"]
+[Site "London, UK"]
+[Date "2011.02.01"]
+[Round "?"]
+[White "Reid, John"]
+[Black "Casaschi, Paolo"]
+[Result "1/2-1/2"]
+[ECO "D31"]
+[Opening "QGD"]
+[Variation "Charousek (Petrosian) variation"]
+
+1. d4 d5 2. c4 e6 3. Nc3 Be7 4. Bf4 Nf6 5. e3 O-O 6. Nf3 a6 7. h3 c5 8.
+dxc5 dxc4 9. Qxd8 Rxd8 10. Bc7 Re8 11. Ne5 Bxc5 12. Nxc4 b5 13. Bd6 Nbd7
+14. Bxc5 Nxc5 15. Nb6 Ra7 16. Nxc8 Rxc8 17. a3 Rd7 18. Be2 { # } 18... Nd3+
+19. Bxd3 Rxd3 20. Ke2 Rdd8 21. Rhd1 Kf8 22. Rxd8+ Rxd8 23. e4 Ke7 24. f3
+Nd7 25. a4 b4 26. Na2 a5 27. Rc1 Kd6 28. b3 Nc5 29. Rd1+ Ke7 30. Rxd8 Kxd8
+31. Nc1 Kc7 32. Kd2 e5 33. Kc2 Ne6 34. Ne2 Kd6 35. Kd3 Kc5 36. g3 { # }
+36... Ng5 37. Ng1 Ne6 38. Ne2 1/2-1/2
+
 [Event "Middlesex League 2010/2011"]
 [Site "London, UK"]
 [Date "2011.01.20"]
