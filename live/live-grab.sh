@@ -39,7 +39,7 @@ else
 	fi
 fi
 
-print_log() {
+function print_log() {
 	if [ -n "$1" ]
 	then
 		log="$(date '+%b %d %T') $(hostname) $(basename $0) [$$]: $1"
@@ -55,7 +55,7 @@ print_log() {
 }
 
 first_print_error="notYet";
-print_error() {
+function print_error() {
         if [ -n "$logFile" ]
         then
 		echo $(date) $(basename $0) ERROR: $1 >> $logFile
