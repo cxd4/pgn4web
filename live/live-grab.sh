@@ -39,7 +39,7 @@ else
 	fi
 fi
 
-function print_log() {
+function print_log {
 	if [ -n "$1" ]
 	then
 		log="$(date '+%b %d %T') $(hostname) $(basename $0) [$$]: $1"
@@ -55,7 +55,7 @@ function print_log() {
 }
 
 first_print_error="notYet";
-function print_error() {
+function print_error {
         if [ -n "$logFile" ]
         then
 		echo $(date) $(basename $0) ERROR: $1 >> $logFile
@@ -69,7 +69,7 @@ function print_error() {
 }
 
 umask 0000
-if [ $? -ne 0]
+if [ $? -ne 0 ]
 then
 	print_error "failed setting umask 0000"
         exit
