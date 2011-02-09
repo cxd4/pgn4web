@@ -2,6 +2,24 @@
 [Site "London, UK"]
 [Date "2011.02.02"]
 [Round "?"]
+[White "Maleki, Manuel"]
+[Black "Casaschi, Paolo"]
+[Result "1-0"]
+[ECO "D37"]
+[Opening "QGD"]
+[Variation "classical variation (5.Bf4)"]
+
+1. Nf3 d5 2. d4 Nf6 3. c4 e6 4. Nc3 Be7 5. Bf4 O-O 6. e3 c5 7. dxc5 Bxc5 8.
+cxd5 exd5 9. Be5 Be6 10. Bd4 Be7 11. Bd3 Nc6 12. O-O a6 13. Rc1 Nxd4 14.
+Nxd4 Re8 15. Bb1 Bf8 16. a3 Rc8 17. Ba2 Kh8 18. Qd2 Bd6 19. Rfd1 Bb8 20.
+Nde2 { # } 20... Bxh2+ 21. Kxh2 Ng4+ 22. Kg1 Qh4 23. Ng3 d4 24. exd4 Rxc3
+25. Rxc3 Bxa2 26. Re1 Rd8 27. b3 Qh2+ 28. Kf1 h5 29. Qg5 h4 30. Qxd8+ Kh7
+31. Qg5 Bb1 32. Qxg4 1-0
+
+[Event "London League 2010/2011"]
+[Site "London, UK"]
+[Date "2011.02.02"]
+[Round "?"]
 [White "Smart, Michael"]
 [Black "Casaschi, Paolo"]
 [Result "1/2-1/2"]
