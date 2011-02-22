@@ -172,14 +172,27 @@ CHESS FIGURINE DISPLAY OF MOVES
 pgn4web allows displaying chess moves text using the supplied figurine fonts: 
 'pgn4web ChessSansAlpha', 'pgn4web ChessSansMerida', 'pgn4web ChessSansPiratf',
 'pgn4web ChessSansUscf' and 'pgn4web ChessSansUsual'. These fonts are based on
-the Liberation Sans font, see credits section for more details.
+the Liberation Sans font, see credits section for more details, that is provided
+as well for overall consistent display of moves, text and headers.
+
 To enable figurine display of chess moves text, make sure you include the
-fonts/pgn4web-fonts.css file into your HTML file:
-  <link href="fonts/pgn4web-fonts.css" type="text/css" rel="stylesheet" /> 
+corresponding fonts/pgn4web-font-ChessSansPiratf.css file toghether with the 
+font/pgn4web-font-LiberationSans.css file into your HTML file:
+
+  <link href="fonts/pgn4web-font-LiberationSans.css" type="text/css" rel="stylesheet" /> 
+  <link href="fonts/pgn4web-font-ChessSansPiratf.css" type="text/css" rel="stylesheet" /> 
+
 or into your CSS file:
-  @import url("fonts/pgn4web-fonts.css");
-Then set the font-family for the .move class to the chess font of your choice.
-For example in your CSS file:
+
+  @import url("fonts/pgn4web-font-LiberationSans.css");
+  @import url("fonts/pgn4web-font-ChessSansPiratf.css");
+
+Then set the font-family for the .move class to the chess font of your choice and 
+the rest of the page to the Liberation Sans font. For example in your CSS file:
+
+  .body {
+    font-family: 'pgn4web Liberation Sans', sans-serif;
+  }  
   .move {
     font-family: 'pgn4web ChessSansPiratf', 'pgn4web Liberation Sans', sans-serif;
   }
