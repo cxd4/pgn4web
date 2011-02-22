@@ -5,7 +5,8 @@
  *  for credits, license and more details
  */
 
-@import url("fonts/pgn4web-fonts.css");
+@import url("fonts/pgn4web-font-LiberationSans.css");
+@import url("fonts/pgn4web-font-ChessSansUsual.css");
 
 html, 
 body { 

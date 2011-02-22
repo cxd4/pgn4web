@@ -546,7 +546,8 @@ function print_chessboard() {
 </div>
 </tr></table>
 
-<link href="fonts/pgn4web-fonts.css" type="text/css" rel="stylesheet" />
+<link href="fonts/pgn4web-font-LiberationSans.css" type="text/css" rel="stylesheet" />
+<link href="fonts/pgn4web-font-ChessSansUsual.css" type="text/css" rel="stylesheet" />
 <style type="text/css">
 
 END;

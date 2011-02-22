@@ -12,7 +12,8 @@ of Google Chrome v6 or later. Don't use with any other browser.
 
 */
 
-@import url("fonts/pgn4web-fonts.css");
+@import url("fonts/pgn4web-font-LiberationSans.css");
+@import url("fonts/pgn4web-font-ChessSansUsual.css");
 
 html, 
 body { 
