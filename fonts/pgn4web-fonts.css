@@ -19,52 +19,10 @@
  *  of header and text with the moves.
  */
 
-@font-face {
-  font-family: 'pgn4web ChessSansAlpha';
-  src: url('ChessSansAlpha.eot');
-  src: local('ChessSansAlpha Regular'), local('ChessSansAlpha'), url('ChessSansAlpha.woff') format('woff'), url('ChessSansAlpha.ttf') format('truetype'), url('ChessSansAlpha.svg#ChessSansAlpha') format('svg');
-}
-
-@font-face {
-  font-family: 'pgn4web ChessSansMerida';
-  src: url('ChessSansMerida.eot');
-  src: local('ChessSansMerida Regular'), local('ChessSansMerida'), url('ChessSansMerida.woff') format('woff'), url('ChessSansMerida.ttf') format('truetype'), url('ChessSansMerida.svg#ChessSansMerida') format('svg');
-}
-
-@font-face {
-  font-family: 'pgn4web ChessSansPiratf';
-  src: url('ChessSansPiratf.eot');
-  src: local('ChessSansPiratf Regular'), local('ChessSansPiratf'), url('ChessSansPiratf.woff') format('woff'), url('ChessSansPiratf.ttf') format('truetype'), url('ChessSansPiratf.svg#ChessSansPiratf') format('svg');
-}
-
-@font-face {
-  font-family: 'pgn4web ChessSansUscf';
-  src: url('ChessSansUscf.eot');
-  src: local('ChessSansUscf Regular'), local('ChessSansUscf'), url('ChessSansUscf.woff') format('woff'), url('ChessSansUscf.ttf') format('truetype'), url('ChessSansUscf.svg#ChessSansUscf') format('svg');
-}
-
-@font-face {
-  font-family: 'pgn4web ChessSansUsual';
-  src: url('ChessSansUsual.eot');
-  src: local('ChessSansUsual Regular'), local('ChessSansUsual'), url('ChessSansUsual.woff') format('woff'), url('ChessSansUsual.ttf') format('truetype'), url('ChessSansUsual.svg#ChessSansUsual') format('svg');
-}
-
-/* 
- * below is the standard Liberation Sans font definition, 
- * supplied here to allow for a consistent display of game header
- * and comments with the above fonts used for the moves
- */
-
-@font-face {
-  font-family: 'pgn4web Liberation Sans';
-  src: local('Liberation Sans Bold'), local('LiberationSans-Bold'), url('LiberationSans-Bold.woff') format('woff'), url('LiberationSans-Bold.ttf') format('truetype'), url('LiberationSans-Bold.svg#LiberationSans-Bold') format('svg');
-  font-weight: bold;
-}
-
-@font-face {
-  font-family: 'pgn4web Liberation Sans';
-  src: url('LiberationSans-Regular.eot');
-  src: local('Liberation Sans Regular'), local('Liberation Sans'), local('LiberationSans'), url('LiberationSans-Regular.woff') format('woff'), url('LiberationSans-Regular.ttf') format('truetype'), url('LiberationSans-Regular.svg#LiberationSans') format('svg');
-  font-weight: normal;
-}
+@import url("pgn4web-font-ChessSansAlpha.css");
+@import url("pgn4web-font-ChessSansMerida.css");
+@import url("pgn4web-font-ChessSansPiratf.css");
+@import url("pgn4web-font-ChessSansUscf.css");
+@import url("pgn4web-font-ChessSansUsual.css");
+@import url("pgn4web-font-LiberationSans.css");
 
