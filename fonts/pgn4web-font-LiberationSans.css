@@ -12,6 +12,7 @@
 
 @font-face {
   font-family: 'pgn4web Liberation Sans';
+  src: url('LiberationSans-Bold.eot');
   src: local('Liberation Sans Bold'), local('LiberationSans-Bold'), url('LiberationSans-Bold.woff') format('woff'), url('LiberationSans-Bold.ttf') format('truetype'), url('LiberationSans-Bold.svg#LiberationSans-Bold') format('svg');
   font-weight: bold;
 }
