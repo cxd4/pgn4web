@@ -112,5 +112,7 @@ body {
   white-space: nowrap;
   font-size: 14px;
   font-weight: bold;
+  font-family: monospace;
+  text-align: center;
 }
 
