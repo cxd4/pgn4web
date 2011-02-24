@@ -22,8 +22,6 @@
    if (window.location.search.match(thisRegExp) !== null) {
        alert("pgn4web collection.html parameters" + "\n" +
              " - pgnFile=filename.pgn" + "\n" +
-	     " - title=page title" + "\n" +
-	     " - search=search expression" + "\n" +
              " - help");
    }
    pgnFilename = "";
@@ -43,17 +41,7 @@
        SetPgnUrl(pgnFilename); // if set, this has precedence over the inline PGN in the HTML file
        pgnTitle = pgnFilename;
    }
-   thisRegExp = /(&|\?)(title|t)=([^&]*)(&|$)/i;
-   if (window.location.search.match(thisRegExp) !== null) {
-       pgnTitle = unescape(window.location.search.match(thisRegExp)[3]);
-   }
    document.title = "chess games: " + pgnTitle;
-   thisRegExp = /(&|\?)(search|s)=([^&]*)(&|$)/i;
-   if (window.location.search.match(thisRegExp) !== null) {
-       pgnSearchTarget = unescape(window.location.search.match(thisRegExp)[3]);
-   } else {
-       pgnSearchTarget = "";
-   }
 
    SetImagePath("alpha/35"); // use "" path if images are in the same folder as this javascript file
    SetImageType("png");
