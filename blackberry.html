@@ -68,7 +68,7 @@
    SetShortcutKeysEnabled(true);
 
 function customFunctionOnPgnGameLoad() {
-   maxLen = 20;
+   maxLen = 13;
    document.getElementById("GameDate").innerHTML = document.getElementById("GameDate").innerHTML.substr(0, maxLen);
    document.getElementById("GameSite").innerHTML = document.getElementById("GameSite").innerHTML.substr(0, maxLen);
    document.getElementById("GameEvent").innerHTML = document.getElementById("GameEvent").innerHTML.substr(0, maxLen);
@@ -103,16 +103,14 @@ function customFunctionOnPgnGameLoad() {
 <div class="headerItem">&nbsp;</div>
 <div class="headerItem">&nbsp;</div>
 <div class="headerItem">&nbsp;</div>
-<div class="headerItem">&nbsp;</div>
 <div class="headerItem" id="GameDate">&nbsp;</div>
 <div class="headerItem" id="GameSite">&nbsp;</div>
 <div class="headerItem" id="GameEvent">&nbsp;</div>
 <div class="headerItem" id="GameRound">&nbsp;</div>
 <div class="headerItem">&nbsp;</div>
 <div class="headerItem">&nbsp;</div>
-<div class="headerItemBold" id="GameWhite">&nbsp;</div>
-<div class="headerItemBold" id="GameBlack">&nbsp;</div>
-<div class="headerItem">&nbsp;</div>
+<div class="headerItem" id="GameWhite">&nbsp;</div>
+<div class="headerItem" id="GameBlack">&nbsp;</div>
 <div class="headerItem">&nbsp;</div>
 <div class="headerItem" id="GameResult">&nbsp;</div>
 </div>
@@ -123,4 +121,3 @@ function customFunctionOnPgnGameLoad() {
 </body>
 
 </html>
-
