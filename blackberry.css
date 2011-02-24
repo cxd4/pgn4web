@@ -1,8 +1,8 @@
-/* 
- * pgn4web javascript chessboard
- * copyright (C) 2009, 2011 Paolo Casaschi
- * see README file and http://pgn4web.casaschi.net
- * for credits, license and more details
+/*
+ *  pgn4web javascript chessboard
+ *  copyright (C) 2009, 2011 Paolo Casaschi
+ *  see README file and http://pgn4web.casaschi.net
+ *  for credits, license and more details
  */
 
 html, 
@@ -12,14 +12,14 @@ body {
 }
 
 body {
-  font-family: sans-serif;
-  color: black;
-  background: white;
+  color: white;
+  background: black;
 }
 
 .boardTable {
-  width: 320px;
-  height: 320px;
+  width: 328px;
+  height: 328px;
+  border-width: 0;
 }
 
 .pieceImage {
@@ -31,33 +31,36 @@ body {
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 40px;
-  height: 40px;
+  width: 41px;
+  height: 41px;
+  border-style: solid;
+  border-width: 2px;
 }
 
 .whiteSquare,
 .highlightWhiteSquare {
-  background: #ede8d5;
-  border-color: #ede8d5;
+  border-color: #FFCC99;
+  background: #FFCC99;
 }
 
 .blackSquare,
 .highlightBlackSquare {
-  background: #cfcbb3;
-  border-color: #cfcbb3;
+  border-color: #CC9966;
+  background: #CC9966;
 }
 
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  background: #f5d0a9;
+  border-color: #663300;
+  border-style: solid;
 }
 
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 456px !important;
-  font-size: x-small;
-  border-width: 0px;
-  padding: 2px;
+  width: 142px !important;
+  color: white;
+  background-color: black;
+  font-size: 10px;
 }
 
 .buttonControlPlay,
@@ -72,27 +75,45 @@ body {
 
 .searchPgnButton {
 /* a "width" attribute here must use the !important flag to override default settings */
+  width: 10% !important;
 }
 
 .searchPgnExpression {
 /* a "width" attribute here must use the !important flag to override default settings */
+  width: 90% !important;
 }
 
 .move,
 .moveOn {
   color: black;
+  font-family: sans-serif;
+  font-size: 10px;
   font-weight: normal;
   text-decoration: none;   
 }
 
 .moveOn {
-  background: yellow;
+  background: #FFCC99;
 }
 
-.comment {
+.comment,
+.nag {
   color: gray;
 }
 
-.nag {
+.label {
+  color: #BBBBBB;
+  padding-right: 10px;
+  text-align: right;
+}
+
+.headerItem, .headerItemBold {
+  width: 142px; 
+  white-space: nowrap;
+  font-size: 10px;
+}
+
+.headerItemBold {
+  font-weight: bold;
 }
 
