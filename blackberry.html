@@ -21,7 +21,11 @@
    thisRegExp = /(&|\?)(help|h)([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
        alert("pgn4web collection.html parameters" + "\n" +
-             " - pgnFile=filename.pgn" + "\n" +
+             " - pgnFile = filename.pgn" + "\n" +
+             " - initialGame = 'first' or 'last' or 'random' or the game number or a search string (default first)" +
+             " - initialHalfmove = 'start' or 'end' or 'random' or 'comment' or the halfmove number (default start)" +
+             " - refreshMinutes =  refresh interval in minutes, decimals allowed (default 0 = no live refresh)" +
+             " - refreshDemo = if true sets live demo mode (default false)" +
              " - help");
    }
    pgnFilename = "";
@@ -43,17 +47,45 @@
    }
    document.title = "chess games: " + pgnTitle;
 
+   ini_Game = null;
+   thisRegExp = /(&|\?)(initialGame|ig)=([^&]*)(&|$)/i;
+   if (window.location.search.match(thisRegExp) !== null) {
+       ini_Game = unescape(window.location.search.match(thisRegExp)[3]);
+   }
+
+   ini_Halfmove = null;
+   thisRegExp = /(&|\?)(initialHalfmove|ih)=([^&]*)(&|$)/i;
+   if (window.location.search.match(thisRegExp) !== null) {
+       ini_Halfmove = unescape(window.location.search.match(thisRegExp)[3]);
+   }
+
+   thisRegExp = /(&|\?)(demo|d|refreshDemo|rd)=([^&]*)(&|$)/i;
+   if (window.location.search.match(thisRegExp) !== null) {
+       demo_Flag = alert_Flag = ((window.location.search.match(thisRegExp) == "true") || 
+           (window.location.search.match(thisRegExp) == "t")); 
+   } else { demo_Flag = alert_Flag = false; }
+
+   refresh_Minutes = null;
+   thisRegExp = /(&|\?)(refreshMinutes|rm)=([^&]*)(&|$)/i;
+   if (window.location.search.match(thisRegExp) !== null) {
+       refresh_Minutes = unescape(window.location.search.match(thisRegExp)[3]);
+       if (ini_Halfmove === null) { ini_Halfmove = "end"; }
+   } 
+
    SetImagePath("alpha/35"); // use "" path if images are in the same folder as this javascript file
    SetImageType("png");
-   SetHighlightOption(true); // true or false
+   SetHighlightOption(true); 
    SetCommentsIntoMoveText(false);
    SetCommentsOnSeparateLines(false);
    SetAutoplayDelay(2000); // milliseconds
    SetAutostartAutoplay(false);
-   SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
-   SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are accepted; other string values assumed as PGN search string
-   SetInitialHalfmove(0, true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
+   SetAutoplayNextGame(false); 
+   if (ini_Game === null) { ini_Game = 1; } 
+   SetInitialGame(ini_Game);
+   if (ini_Halfmove === null) { ini_Halfmove = 0; }
+   SetInitialHalfmove(ini_Halfmove, true);
    SetShortcutKeysEnabled(true);
+   if (refresh_Minutes) { SetLiveBroadcast(refresh_Minutes, alert_Flag, demo_Flag, false); }
 
 function customFunctionOnPgnGameLoad() {
    maxLen = 13;
@@ -64,6 +96,13 @@ function customFunctionOnPgnGameLoad() {
    document.getElementById("GameWhite").innerHTML = document.getElementById("GameWhite").innerHTML.substr(0, maxLen);
    document.getElementById("GameBlack").innerHTML = document.getElementById("GameBlack").innerHTML.substr(0, maxLen);
    document.getElementById("GameResult").innerHTML = document.getElementById("GameResult").innerHTML.substr(0, maxLen);
+}
+
+function customFunctionOnMove() {
+   document.getElementById("GameResult").style.visibility = 
+       (gameFEN[currentGame] && (CurrentPly == StartPly) && (PlyNumber > 0)) ? "hidden" : "visible";
+   document.getElementById("GameSideToMoveString").style.visibility =
+       (gameFEN[currentGame] && (CurrentPly == StartPly)) ? "visible" : "hidden";
 }
 
 </script>
@@ -101,6 +140,7 @@ function customFunctionOnPgnGameLoad() {
 <div class="headerItem" id="GameBlack">&nbsp;</div>
 <div class="headerItem">&nbsp;</div>
 <div class="headerItem" id="GameResult">&nbsp;</div>
+<div class="headerItem" id="GameSideToMoveString"><span id="GameSideToMove"></span> to move</div>
 </div>
 
 </td></tr></table>
