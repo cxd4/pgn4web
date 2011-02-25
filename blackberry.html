@@ -39,13 +39,9 @@
            pgnFilename = unescape(window.location.search.match(thisRegExp)[3]);
        }
    } 
-   if (pgnFilename === "") {
-       pgnTitle = "no PGN file loaded";
-   } else {
+   if (pgnFilename !== "") {
        SetPgnUrl(pgnFilename); // if set, this has precedence over the inline PGN in the HTML file
-       pgnTitle = pgnFilename;
    }
-   document.title = "chess games: " + pgnTitle;
 
    ini_Game = null;
    thisRegExp = /(&|\?)(initialGame|ig)=([^&]*)(&|$)/i;
@@ -89,7 +85,13 @@
    if (refresh_Minutes) { SetLiveBroadcast(refresh_Minutes, alert_Flag, demo_Flag, false); }
 
 function customFunctionOnPgnGameLoad() {
-   maxLen = 13;
+   if (pgnFilename !== "") {
+      pgnTitle = pgnFilename + " #" + (currentGame+1);
+   } else {
+      pgnTitle = "no PGN file loaded";
+   }
+   document.title = pgnTitle;
+   var maxLen = 13;
    document.getElementById("GameDate").innerHTML = document.getElementById("GameDate").innerHTML.substr(0, maxLen);
    document.getElementById("GameSite").innerHTML = document.getElementById("GameSite").innerHTML.substr(0, maxLen);
    document.getElementById("GameEvent").innerHTML = document.getElementById("GameEvent").innerHTML.substr(0, maxLen);
