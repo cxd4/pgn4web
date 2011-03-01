@@ -1413,6 +1413,7 @@ function fixCommonPgnMistakes(text) {
   text = text.replace(/[\u2010-\u2015]/g,"-"); // "hyphens" to "-"
   text = text.replace(/\u2024/g,"."); // "one dot leader" to "."
   text = text.replace(/[\u2025-\u2026]/g,"..."); // "two dot leader" and "ellipsis" to "..."
+  text = text.replace(/\\"/g,"'"); // fix parsing headers like: [Opening "King\"s Indian Attack"]
   return text;
 }
 
