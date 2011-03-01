@@ -30,6 +30,14 @@
 // SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are accepted; other string values assumed as PGN search string
    SetInitialHalfmove("comment",true); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default)
    SetShortcutKeysEnabled(true);
+
+function customShortcutKey_Shift_2() {
+   var searchFIDE;
+   if (gameWhite[currentGame].match(/casaschi/i)) { searchFIDE = gameBlack[currentGame]; }
+   if (gameBlack[currentGame].match(/casaschi/i)) { searchFIDE = gameWhite[currentGame]; }
+   window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + searchFIDE + "&offset=0");
+}
+
 </script>
 
 </head>
