@@ -31,11 +31,21 @@
    SetInitialHalfmove("comment",true); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default)
    SetShortcutKeysEnabled(true);
 
+function customShortcutKey_Shift_1() {
+   if (gameWhite[currentGame]) { 
+      window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + gameWhite[currentGame] + "&offset=0"); 
+   }
+}
+
 function customShortcutKey_Shift_2() {
-   var searchFIDE;
-   if (gameWhite[currentGame].match(/casaschi/i)) { searchFIDE = gameBlack[currentGame]; }
-   if (gameBlack[currentGame].match(/casaschi/i)) { searchFIDE = gameWhite[currentGame]; }
-   window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + searchFIDE + "&offset=0");
+   if (gameBlack[currentGame]) { 
+      window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + gameBlack[currentGame] + "&offset=0"); 
+   }
+}
+
+function customShortcutKey_Shift_3() {
+   if (!gameWhite[currentGame].match(/casaschi/i)) { customShortcutKey_Shift_1(); }
+   if (!gameBlack[currentGame].match(/casaschi/i)) { customShortcutKey_Shift_2(); }
 }
 
 </script>
