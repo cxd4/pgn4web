@@ -2548,37 +2548,16 @@ function ParsePGNGameString(gameString) {
 
       default:
         
-        searchThis = '1-0';
-        if (ss.indexOf(searchThis,start)==start) {
-          start += searchThis.length;
-          MoveComments[StartPly+PlyNumber] += ss.substring(start, ss.length);
-          start = ss.length;
-          break;
+        searchThis = new Array('1-0', '0-1', '1/2-1/2', '*');
+        for (ii=0; ii<searchThis.length; ii++) {
+          if (ss.indexOf(searchThis[ii],start)==start) {
+            start += searchThis[ii].length;
+            MoveComments[StartPly+PlyNumber] += ss.substring(start, ss.length).replace(/^\s*{(.*)}\s*$/, '$1');
+            start = ss.length;
+            break;
+          }
         }
-        
-        searchThis = '0-1';
-        if (ss.indexOf(searchThis,start)==start) {
-          start += searchThis.length;
-          MoveComments[StartPly+PlyNumber] += ss.substring(start, ss.length);
-          start = ss.length;
-          break;
-        }
-        
-        searchThis = '1/2-1/2';
-        if (ss.indexOf(searchThis,start)==start) {
-          start += searchThis.length;
-          MoveComments[StartPly+PlyNumber] += ss.substring(start, ss.length);
-          start = ss.length;
-          break;
-        }
-        
-        searchThis = '*';
-        if (ss.indexOf(searchThis,start)==start) {
-          start += searchThis.length;
-          MoveComments[StartPly+PlyNumber] += ss.substring(start, ss.length);
-          start = ss.length;
-          break;
-        }
+        if (start == ss.length) { break; }
         
         moveCount = Math.floor((StartPly+PlyNumber)/2)+1;
         searchThis = moveCount.toString()+'.';
