@@ -2552,7 +2552,7 @@ function ParsePGNGameString(gameString) {
         for (ii=0; ii<searchThis.length; ii++) {
           if (ss.indexOf(searchThis[ii],start)==start) {
             start += searchThis[ii].length;
-            MoveComments[StartPly+PlyNumber] += ss.substring(start, ss.length).replace(/^\s*{(.*)}\s*$/, '$1');
+            MoveComments[StartPly+PlyNumber] += ss.substring(start, ss.length).replace(/^\s*\{(.*)\}\s*$/, '$1');
             start = ss.length;
             break;
           }
