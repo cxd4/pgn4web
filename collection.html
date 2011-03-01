@@ -82,6 +82,19 @@
      if (theObject = document.getElementById('currPly')) { theObject.innerHTML = CurrentPly; }
    }
 
+   function openFidePlayerUrl(name) {
+     if (! name) { return; }
+     window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + name + "&offset=0");
+   }
+
+   function customShortcutKey_Shift_1() {
+     openFidePlayerUrl(gameWhite[currentGame]);
+   }
+
+   function customShortcutKey_Shift_2() {
+     openFidePlayerUrl(gameBlack[currentGame]);
+   }
+
 </script>
 
 </head>

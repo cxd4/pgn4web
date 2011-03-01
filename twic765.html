@@ -39,15 +39,15 @@
      customPgnHeaderTag('Result', 'ResultAtGametextEnd');
    }
    function customFunctionOnMove() { document.getElementById('currPly').innerHTML = CurrentPly; }
+   function openFidePlayerUrl(name) {
+      if (! name) { return; }
+      window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + name + "&offset=0");
+   }
    function customShortcutKey_Shift_1() {
-     if (gameWhite[currentGame]) {
-       window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + gameWhite[currentGame] + "&offset=0");
-     }
+      openFidePlayerUrl(gameWhite[currentGame]);
    }
    function customShortcutKey_Shift_2() {
-     if (gameBlack[currentGame]) {
-       window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + gameBlack[currentGame] + "&offset=0");
-     }
+      openFidePlayerUrl(gameBlack[currentGame]);
    }
 
 </script>
