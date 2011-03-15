@@ -28,7 +28,7 @@ pgn4web_project_blog = 'http://pgn4web-blog.casaschi.net';
 // used by: board-generator.html
 //
 pgn4web_board_url = location.protocol + "//" + location.hostname+location.pathname.substr(0, location.pathname.lastIndexOf("/")) + "/board.html";
-// pgn4web_board_url = 'http://pgn4web-board.casaschi.net';
+// pgn4web_board_url = 'http://pgn4web-board.casaschi.net/';
 //
 
 //
