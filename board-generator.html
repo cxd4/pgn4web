@@ -112,7 +112,7 @@ function shorten_url_with_bitly() {
     }
     document.getElementById("bitly_shorturl").innerHTML += bitly_link ?
       "<a title='right-click, copy and share the chessboard short url' style='font-weight:bold; color:red;' target='_blank' href='" + bitly_link + "'>" + bitly_link + "</a>" :
-      "<span style='font-weight:bold; color:red;'>failed generating short url</span>";
+      "<span title='possible failure causes: url shortening service unavailable, network error, outdated login/apiKey pair, outdated apis or something else; try again later and eventually file a pgn4web board generator bug report' style='font-weight:bold; color:red;'>failed generating short url</span>";
   });
 
 }
