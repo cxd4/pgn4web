@@ -112,7 +112,7 @@ function shorten_url_with_bitly() {
      if (!bitly_link) { 
         document.getElementById("bitly_shorturl").innerHTML = "<span style='font-weight:bold; color:red;'>failed generating short url</span>";
      } else {
-        document.getElementById("bitly_shorturl").innerHTML = "<a style='font-weight:bold; color:red;' href='" + bitly_link + "'>" + bitly_link + "</a>";
+        document.getElementById("bitly_shorturl").innerHTML = "<a style='font-weight:bold; color:red;' target='_blank' href='" + bitly_link + "'>" + bitly_link + "</a>";
      }
   });
 
