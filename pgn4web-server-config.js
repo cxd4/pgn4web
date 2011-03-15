@@ -36,7 +36,7 @@ pgn4web_board_url = location.protocol + "//" + location.hostname+location.pathna
 // used by: board-generator.html, widget.html
 //
 pgn4web_generator_url = 'board-generator.html';
-// pgn4web_generator_url = 'http://pgn4web-board-generator.casaschi.net';
+// pgn4web_generator_url = 'http://pgn4web-board-generator.casaschi.net/';
 //
 
 //
