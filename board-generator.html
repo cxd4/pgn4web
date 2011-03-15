@@ -103,15 +103,16 @@ function shorten_pgn4web_url() {
 // please note the custom login/apiKey in the remote script above
 function shorten_url_with_bitly() {
 
+  document.getElementById("bitly_shorturl").innerHTML = "<b>:</b> ";
   BitlyClient.shorten(encodeURI(iframeUrl), function bitly_shorten_callback(data) {
     var bitly_link;
     for (var r in data.results) {
       bitly_link = data.results[r]['shortUrl']; 
       break;
     }
-    document.getElementById("bitly_shorturl").innerHTML = "<b>:</b> " + (bitly_link ?
+    document.getElementById("bitly_shorturl").innerHTML += bitly_link ?
       "<a style='font-weight:bold; color:red;' target='_blank' href='" + bitly_link + "'>" + bitly_link + "</a>" :
-      "<span style='font-weight:bold; color:red;'>failed generating short url</span>");
+      "<span style='font-weight:bold; color:red;'>failed generating short url</span>";
   });
 
 }
