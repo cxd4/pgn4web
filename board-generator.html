@@ -85,6 +85,46 @@ a {
 <script src="pgn-encoder.js" type="text/javascript"></script>
 <script src="crc32.js" type="text/javascript"></script>
 
+<script src="http://bit.ly/javascript-api.js?version=v3&login=pgn4web&apiKey=R_c8166bc1cb6cc4c48c9533ff823c56af" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+function shorten_pgn4web_url() {
+  if(!document.board.useTextarea.checked) {
+     // pick the preferred short URL service
+     // shorten_url_with_tinyurl();
+     shorten_url_with_bitly();
+  } else {
+     alert('URL sharing creation unavailable when useTextarea is enabled')
+  }
+}
+
+// use this in shorten_pgn4web_url() to generate short urls with bitly, 
+// please note the custom login/apiKey in the remote script above
+function shorten_url_with_bitly() {
+
+  BitlyClient.shorten(encodeURI(iframeUrl), function bitly_shorten_callback(data) {
+     var bitly_link;
+     for (var r in data.results) {
+        bitly_link = data.results[r]['shortUrl']; 
+        break;
+     }
+     if (!bitly_link) { 
+        document.getElementById("bitly_shorturl").innerHTML = "<span style='font-weight:bold; color:red;'>failed generating short url</span>";
+     } else {
+        document.getElementById("bitly_shorturl").innerHTML = "<a style='font-weight:bold; color:red;' href='" + bitly_link + "'>" + bitly_link + "</a>";
+     }
+  });
+
+}
+
+// use this in shorten_pgn4web_url() to generate short urls with tinyurl
+function shorten_url_with_tinyurl() {
+   document.forms['tinyurl_shorturl'].submit();
+}
+
+</script>
+
 <script  type="text/javascript">
 // this should have been defined in pgn4web-server-config.js
 // setting default value here just in case
@@ -847,6 +887,8 @@ function percentFixFromUrl( text ) {
 
 function generate_html_code() {
 
+  document.getElementById("bitly_shorturl").innerHTML = "";
+ 
   calculate_html_code();
 
   switch (frameWidth_value) {
@@ -928,8 +970,8 @@ function generate_html_code() {
   document.getElementById('html_code_status').innerHTML = html_code_status_string;
 
   thisShortUrlCrc32 = printHex(crc32(iframeUrl));
-  document.getElementById('shorturl_url').value = iframeUrl;
-  document.getElementById('shorturl_alias').value = "pgn4web-" + thisShortUrlCrc32;
+  document.getElementById('tinyurl_shorturl_url').value = iframeUrl;
+  document.getElementById('tinyurl_shorturl_alias').value = "pgn4web-" + thisShortUrlCrc32;
   document.getElementById('shorturl_link').title = "pgn4web board short url #" + thisShortUrlCrc32;
 
   if (firstLoad) { firstLoad = false; return; }
@@ -1431,9 +1473,9 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 </li>
 </ul>
 
-<form id="shorturl" action="http://tinyurl.com/create.php" method="post" target="_blank" style="display:inline;"> 
-<input id="shorturl_url" type="hidden" name="url">
-<input id="shorturl_alias" type="hidden" name="alias"> 
+<form id="tinyurl_shorturl" action="http://tinyurl.com/create.php" method="post" target="_blank" style="display:inline;"> 
+<input id="tinyurl_shorturl_url" type="hidden" name="url">
+<input id="tinyurl_shorturl_alias" type="hidden" name="alias"> 
 </form> 
 
 <form id="board" name="board" style="display:inline;" action="javascript:generate_html_code()">
@@ -1446,7 +1488,7 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 <div style="font-weight: bold; margin-bottom:6;">automatically generated HTML code for your web page or blog</div>
 <textarea readonly id="html_code" name="html_code" rows=15 class="textbox" style="background-color: #FFFFCC; scrollbar-base-color: #FFFFCC;"></textarea>
 <div id="html_code_status">&nbsp;</div>
-<div style="margin-top:1em;"><a id="shorturl_link" style="font-weight: bold;" href="javascript:if(!document.board.useTextarea.checked){document.forms['shorturl'].submit();}else{alert('URL sharing creation unavailable when useTextarea is enabled')}">click here to create a short url for sharing the chessboard via email or instant messaging</a></div>
+<div style="margin-top:1em;"><a id="shorturl_link" style="font-weight: bold;" href="javascript:shorten_pgn4web_url();">click here to create a short url for sharing the chessboard via email or instant messaging</a>&nbsp &nbsp;<span id="bitly_shorturl"></span></div>
 <p></p>
 <br>
 
