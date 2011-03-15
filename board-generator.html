@@ -91,11 +91,11 @@ a {
 
 function shorten_pgn4web_url() {
   if(!document.board.useTextarea.checked) {
-     // pick the preferred short URL service
-     // shorten_url_with_tinyurl();
-     shorten_url_with_bitly();
+    // pick the preferred short URL service
+    // shorten_url_with_tinyurl();
+    shorten_url_with_bitly();
   } else {
-     alert('URL sharing creation unavailable when useTextarea is enabled')
+    alert('URL sharing creation unavailable when useTextarea is enabled')
   }
 }
 
@@ -104,23 +104,26 @@ function shorten_pgn4web_url() {
 function shorten_url_with_bitly() {
 
   BitlyClient.shorten(encodeURI(iframeUrl), function bitly_shorten_callback(data) {
-     var bitly_link;
-     for (var r in data.results) {
-        bitly_link = data.results[r]['shortUrl']; 
-        break;
-     }
-     if (!bitly_link) { 
-        document.getElementById("bitly_shorturl").innerHTML = "<b>:</b> <span style='font-weight:bold; color:red;'>failed generating short url</span>";
-     } else {
-        document.getElementById("bitly_shorturl").innerHTML = "<b>:</b> <a style='font-weight:bold; color:red;' target='_blank' href='" + bitly_link + "'>" + bitly_link + "</a>";
-     }
+    var bitly_link;
+    for (var r in data.results) {
+      bitly_link = data.results[r]['shortUrl']; 
+      break;
+    }
+    document.getElementById("bitly_shorturl").innerHTML = "<b>:</b> " + (bitly_link ?
+      "<a style='font-weight:bold; color:red;' target='_blank' href='" + bitly_link + "'>" + bitly_link + "</a>" :
+      "<span style='font-weight:bold; color:red;'>failed generating short url</span>");
   });
 
 }
 
 // use this in shorten_pgn4web_url() to generate short urls with tinyurl
 function shorten_url_with_tinyurl() {
-   document.forms['tinyurl_shorturl'].submit();
+  thisShortUrlCrc32 = printHex(crc32(iframeUrl));
+  document.getElementById('tinyurl_shorturl_url').value = iframeUrl;
+  document.getElementById('tinyurl_shorturl_alias').value = "pgn4web-" + thisShortUrlCrc32;
+  document.getElementById('shorturl_link').title = "pgn4web board short url #" + thisShortUrlCrc32;
+
+  document.forms['tinyurl_shorturl'].submit();
 }
 
 </script>
@@ -968,11 +971,6 @@ function generate_html_code() {
 
   html_code_status_string += "</td></tr></table>";
   document.getElementById('html_code_status').innerHTML = html_code_status_string;
-
-  thisShortUrlCrc32 = printHex(crc32(iframeUrl));
-  document.getElementById('tinyurl_shorturl_url').value = iframeUrl;
-  document.getElementById('tinyurl_shorturl_alias').value = "pgn4web-" + thisShortUrlCrc32;
-  document.getElementById('shorturl_link').title = "pgn4web board short url #" + thisShortUrlCrc32;
 
   if (firstLoad) { firstLoad = false; return; }
   if (iframeUrl.length <= iframeUrl_max) { location.href='#game_preview'; return; }
