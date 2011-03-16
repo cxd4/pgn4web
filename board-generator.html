@@ -994,7 +994,7 @@ function generate_html_code() {
 
   document.getElementById('thisConfigBookmark').href = thisBookmarkUrl;
   thisBookmarkCrc32 = printHex(crc32(thisBookmarkUrl));
-  document.getElementById('thisConfigBookmark').title = "pgn4web board generator custom template link #" + thisBookmarkCrc32;
+  document.getElementById('thisConfigBookmark').title = "right-click, copy and save pgn4web board generator custom template link #" + thisBookmarkCrc32;
   document.getElementById('bookmarkCrc32').innerHTML = "#" + thisBookmarkCrc32;
 
   document.getElementById('preview').innerHTML = "<table border='0' bgcolor='#" + previewBackgroundColorHex_value + "' width='100%' cellpadding='25'><tr><td align='center' valign='middle'> " + html_code_string + "</td></tr></table>";
@@ -1489,7 +1489,7 @@ window.onload = new_onLoad;
 <div style="line-height: 0.5em;">&nbsp;</div>
   
 <li>
-once happy with <a href=#game_preview>the preview chessboard</a>, just <a href=#generate><b>cut and paste the HTML code</b> from the yellow box</a> into your web page or your blog; when entering the code in your website or blog, please make sure you are using the HTML editing option, otherwise an enhanced editor might alter the code you enter; you can also <a href=#generate>generate a short url</a> for sharing the board via email or instant messaging
+once happy with <a href=#game_preview>the preview chessboard</a>, just <a href=#generate><b>cut and paste the HTML code</b> from the yellow box</a> into your web page or your blog; when entering the code in your website or blog, please make sure you are using the HTML editing option, otherwise an enhanced editor might alter the code you enter; you can also <a href=#generate>generate a short url</a> for sharing the board via email, instant messaging or social networking sites
 </li>
 <div style="line-height: 0.5em;">&nbsp;</div>
 
@@ -1540,7 +1540,7 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 <div style="font-weight: bold; margin-bottom:6;">automatically generated HTML code for your web page or blog</div>
 <textarea readonly id="html_code" name="html_code" rows=15 class="textbox" style="background-color: #FFFFCC; scrollbar-base-color: #FFFFCC;"></textarea>
 <div id="html_code_status">&nbsp;</div>
-<div style="margin-top:1em;"><a id="shorturl_link" style="font-weight: bold;" href="javascript:shorten_pgn4web_url();">click here to create a short url for sharing the chessboard via email or instant messaging</a><span id="shorturl_info"></span></div>
+<div style="margin-top:1em;"><a id="shorturl_link" title="generate a short url for sharing the chessboard via email, instant messaging or social networking sites" style="font-weight: bold;" href="javascript:shorten_pgn4web_url();">click here to create a short url for sharing the chessboard</a><span id="shorturl_info"></span></div>
 <p></p>
 <br>
 
