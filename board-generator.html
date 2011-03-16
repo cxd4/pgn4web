@@ -68,6 +68,12 @@ a {
   width: 100%;
 }
 
+.shortUrl {
+  font-weight: bold;
+  color: goldenrod;
+  white-space: nowrap;
+}
+
 </style>
 
 <link rel="shortcut icon" href="pawn.ico" />
@@ -113,9 +119,7 @@ function shorten_url_with_bitly() {
     document.getElementById("shorturl_info").innerHTML = "<b>:</b> ";
     var xhr = new XMLHttpRequest();
     xhr.open("POST", bitly_post_request);
-    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhr.setRequestHeader("Content-length", bitly_params.length);
-    xhr.setRequestHeader("Connection", "close");
+    xhr.setRequestHeader("Content-type", "text/plain");
     xhr.onreadystatechange = function() { 
       if(xhr.readyState == 4) { 
         if(xhr.status==200) {
@@ -124,8 +128,8 @@ function shorten_url_with_bitly() {
           }
         }
         document.getElementById("shorturl_info").innerHTML += bitly_link ?
-          "<a title='right-click, copy and share the chessboard short url' style='font-weight:bold; color:goldenrod;' target='_blank' href='" + bitly_link + "'>" + bitly_link + "</a>" :
-          "<span title='possible failure causes: url shortening service unavailable, network error, outdated login/apiKey pair, outdated apis or something else; try again later and eventually file a pgn4web board generator bug report' style='font-weight:bold; color:goldenrod;'>failed generating short url</span>";
+          "<a title='right-click, copy and share the chessboard short url' class='shortUrl' target='_blank' href='" + bitly_link + "'>" + bitly_link + "</a>" :
+          "<span title='possible failure causes: url shortening service unavailable, network error, outdated login/apiKey pair, outdated apis or something else; try again later and eventually file a pgn4web board generator bug report' class='shortUrl'>failed generating short url</span>";
       } 
     };
     xhr.send(bitly_params);
@@ -139,7 +143,7 @@ function shorten_url_with_bitly() {
     shorturlWin = window.open('', 'shorturl_window');
 
     document.forms['bitly_form_shorturl'].submit();
-    document.getElementById("shorturl_info").innerHTML += "<span title='the chessboard short url should be available in a separate browser window from pb.casaschi.net' style='font-weight:bold; color:goldenrod;'>see pb.casaschi.net window</span>"; 
+    document.getElementById("shorturl_info").innerHTML += "<span title='the chessboard short url should be available in a separate browser window from pb.casaschi.net' class='shortUrl'>see pb.casaschi.net window</span>"; 
     shorturlWin.window.focus();
   }
 
@@ -158,7 +162,7 @@ function shorten_url_with_tinyurl() {
   shorturlWin = window.open('', 'shorturl_window');
 
   document.forms['tinyurl_form_shorturl'].submit();
-  document.getElementById("shorturl_info").innerHTML += "<span title='the chessboard short url should be available in a separate broswer window from tinyurl.com' style='font-weight:bold; color:goldenrod;'>see tinyurl window</span>"; 
+  document.getElementById("shorturl_info").innerHTML += "<span title='the chessboard short url should be available in a separate broswer window from tinyurl.com' class='shortUrl'>see tinyurl window</span>"; 
 }
 
 </script>
