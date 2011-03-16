@@ -98,11 +98,12 @@ function shorten_pgn4web_url() {
   }
 }
 
-// use this in shorten_pgn4web_url() to generate short urls with bitly, 
-// please note the custom login/apiKey
+// use this in shorten_pgn4web_url() to generate short urls with bitly 
+// defaulting to pgn4web bitly login/apiKey pair, please change to your own
+// using bitly apis version 3, correct here if apis are changed
 function shorten_url_with_bitly() {
   var bitly_login = "pgn4web";
-  var bitly_apiKey =  "R_c8166bc1cb6cc4c48c9533ff823c56af";
+  var bitly_apiKey = "R_c8166bc1cb6cc4c48c9533ff823c56af";
   var bitly_post_request = "http://api.bitly.com/v3/shorten";
   var bitly_params = "login=" + bitly_login + "&apiKey=" + bitly_apiKey + "&format=txt" + "&longUrl=" + encodeURIComponent(iframeUrl);
   var bitly_get_request = bitly_post_request + "?" + bitly_params;
@@ -1514,6 +1515,7 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 <input id="tinyurl_form_shorturl_alias" type="hidden" name="alias"> 
 </form> 
 
+// using bitly apis version 3, correct here if apis are changed
 <form id="bitly_form_shorturl" action="http://api.bitly.com/v3/shorten" method="post" target="shorturl_window" style="display:inline;"> 
 <input id="bitly_form_login" type="hidden" name="login">
 <input id="bitly_form_apiKey" type="hidden" name="apiKey"> 
