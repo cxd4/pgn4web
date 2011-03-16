@@ -124,8 +124,8 @@ function shorten_url_with_bitly() {
           }
         }
         document.getElementById("shorturl_info").innerHTML += bitly_link ?
-          "<a title='right-click, copy and share the chessboard short url' style='font-weight:bold; color:red;' target='_blank' href='" + bitly_link + "'>" + bitly_link + "</a>" :
-          "<span title='possible failure causes: url shortening service unavailable, network error, outdated login/apiKey pair, outdated apis or something else; try again later and eventually file a pgn4web board generator bug report' style='font-weight:bold; color:red;'>failed generating short url</span>";
+          "<a title='right-click, copy and share the chessboard short url' style='font-weight:bold; color:goldenrod;' target='_blank' href='" + bitly_link + "'>" + bitly_link + "</a>" :
+          "<span title='possible failure causes: url shortening service unavailable, network error, outdated login/apiKey pair, outdated apis or something else; try again later and eventually file a pgn4web board generator bug report' style='font-weight:bold; color:goldenrod;'>failed generating short url</span>";
       } 
     };
     xhr.send(bitly_params);
@@ -139,7 +139,7 @@ function shorten_url_with_bitly() {
     shorturlWin = window.open('', 'shorturl_window');
 
     document.forms['bitly_form_shorturl'].submit();
-    document.getElementById("shorturl_info").innerHTML += "<span title='the chessboard short url should be available in a separate browser window from pb.casaschi.net' style='font-weight:bold; color:red;'>see pb.casaschi.net window</span>"; 
+    document.getElementById("shorturl_info").innerHTML += "<span title='the chessboard short url should be available in a separate browser window from pb.casaschi.net' style='font-weight:bold; color:goldenrod;'>see pb.casaschi.net window</span>"; 
     shorturlWin.window.focus();
   }
 
@@ -158,7 +158,7 @@ function shorten_url_with_tinyurl() {
   shorturlWin = window.open('', 'shorturl_window');
 
   document.forms['tinyurl_form_shorturl'].submit();
-  document.getElementById("shorturl_info").innerHTML += "<span title='the chessboard short url should be available in a separate broswer window from tinyurl.com' style='font-weight:bold; color:red;'>see tinyurl window</span>"; 
+  document.getElementById("shorturl_info").innerHTML += "<span title='the chessboard short url should be available in a separate broswer window from tinyurl.com' style='font-weight:bold; color:goldenrod;'>see tinyurl window</span>"; 
 }
 
 </script>
