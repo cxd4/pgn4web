@@ -85,8 +85,6 @@ a {
 <script src="pgn-encoder.js" type="text/javascript"></script>
 <script src="crc32.js" type="text/javascript"></script>
 
-<script src="http://bit.ly/javascript-api.js?version=latest&login=pgn4web&apiKey=R_c8166bc1cb6cc4c48c9533ff823c56af" type="text/javascript"></script>
-
 <script type="text/javascript">
 
 function shorten_pgn4web_url() {
@@ -95,25 +93,41 @@ function shorten_pgn4web_url() {
     // shorten_url_with_tinyurl();
     shorten_url_with_bitly();
   } else {
-    alert('URL sharing creation unavailable when useTextarea is enabled')
+    alert('URL sharing creation unavailable when useTextarea is enabled');
   }
 }
 
 // use this in shorten_pgn4web_url() to generate short urls with bitly, 
-// please note the custom login/apiKey in the remote script above
+// please note the custom login/apiKey
+var bitlyWin = null;
 function shorten_url_with_bitly() {
+  var bitly_login = "pgn4web";
+  var bitly_apiKey =  "R_c8166bc1cb6cc4c48c9533ff823c56af";
+  var bitly_request = "http://api.bitly.com/v3/shorten?login=" + bitly_login + "&apiKey=" + bitly_apiKey + "&longUrl=" + encodeURIComponent(iframeUrl);
 
-  document.getElementById("bitly_shorturl").innerHTML = "<b>:</b> ";
-  BitlyClient.shorten(encodeURI(iframeUrl), function bitly_shorten_callback(data) {
-    var bitly_link;
-    for (var r in data.results) {
-      bitly_link = data.results[r]['shortUrl']; 
-      break;
+  var bitly_link = null;
+  try {
+    document.getElementById("bitly_shorturl").innerHTML = "<b>:</b> ";
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", bitly_request + "&format=xml");
+    xhr.onreadystatechange = function() { 
+      if(xhr.readyState == 4) { 
+        if(xhr.status==200) {
+          if (bitly_link_match = xhr.responseText.match(/<url>(.*)<\/url>/)) {
+            bitly_link = decodeURI(bitly_link_match[1]);
+            if (!bitly_link.match(/^http/)) { bitly_link = null; }
+          }
+        }
+        document.getElementById("bitly_shorturl").innerHTML += bitly_link ?
+          "<a title='right-click, copy and share the chessboard short url' style='font-weight:bold; color:red;' target='_blank' href='" + bitly_link + "'>" + bitly_link + "</a>" :
+          "<span title='possible failure causes: url shortening service unavailable, network error, outdated login/apiKey pair, outdated apis or something else; try again later and eventually file a pgn4web board generator bug report' style='font-weight:bold; color:red;'>failed generating short url</span>";
+      } 
     }
-    document.getElementById("bitly_shorturl").innerHTML += bitly_link ?
-      "<a title='right-click, copy and share the chessboard short url' style='font-weight:bold; color:red;' target='_blank' href='" + bitly_link + "'>" + bitly_link + "</a>" :
-      "<span title='possible failure causes: url shortening service unavailable, network error, outdated login/apiKey pair, outdated apis or something else; try again later and eventually file a pgn4web board generator bug report' style='font-weight:bold; color:red;'>failed generating short url</span>";
-  });
+    xhr.send();
+  } catch(e) {
+    document.getElementById("bitly_shorturl").innerHTML += "<a id='bitly_popup' target='_blank' onClick='if (bitlyWin && !bitlyWin.closed) { bitlyWin.close(); } bitlyWin = window.open(\"" + bitly_request + "&format=txt\", \"bitly_shorturl\", \"height=100,width=500,resizable=yes,scrollbars=no,toolbar=no,location=no,menubar=no,status=no\"); if (window.focus) { bitlyWin.window.focus(); }' title='this web browser does not support properly the \"cross-origin resource sharing\" feature, therefore the chessboard short url is shown in a separate popup window; click here to reopen the popup window' style='font-weight:bold; color:red;'>see popup window</a>";
+    document.getElementById("bitly_popup").onclick();
+  }
 
 }
 
@@ -124,7 +138,7 @@ function shorten_url_with_tinyurl() {
   document.getElementById('tinyurl_shorturl_alias').value = "pgn4web-" + thisShortUrlCrc32;
   document.getElementById('shorturl_link').title = "pgn4web board short url #" + thisShortUrlCrc32;
 
-  document.forms['tinyurl_shorturl'].submit();
+  document.forms['tinyurl_shorturl_form'].submit();
 }
 
 </script>
@@ -891,7 +905,9 @@ function percentFixFromUrl( text ) {
 
 function generate_html_code() {
 
+  // cleans the short url stuff
   document.getElementById("bitly_shorturl").innerHTML = "";
+  if (bitlyWin && !bitlyWin.closed) { bitlyWin.close(); }
  
   calculate_html_code();
 
@@ -1472,10 +1488,14 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 </li>
 </ul>
 
-<form id="tinyurl_shorturl" action="http://tinyurl.com/create.php" method="post" target="_blank" style="display:inline;"> 
+<!-- hidden elements for the short url generation -->
+
+<form id="tinyurl_shorturl_form" action="http://tinyurl.com/create.php" method="post" target="_blank" style="display:inline;"> 
 <input id="tinyurl_shorturl_url" type="hidden" name="url">
 <input id="tinyurl_shorturl_alias" type="hidden" name="alias"> 
 </form> 
+
+<!-- end of hidden elements for the short url generation -->
 
 <form id="board" name="board" style="display:inline;" action="javascript:generate_html_code()">
 
@@ -1487,7 +1507,7 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 <div style="font-weight: bold; margin-bottom:6;">automatically generated HTML code for your web page or blog</div>
 <textarea readonly id="html_code" name="html_code" rows=15 class="textbox" style="background-color: #FFFFCC; scrollbar-base-color: #FFFFCC;"></textarea>
 <div id="html_code_status">&nbsp;</div>
-<div style="margin-top:1em;"><a id="shorturl_link" style="font-weight: bold;" href="javascript:shorten_pgn4web_url();">click here to create a short url for sharing the chessboard via email or instant messaging</a><span id="bitly_shorturl"></span></div>
+<div style="margin-top:1em;"><a id="shorturl_link" title="warning: this feature might not work with older browsers" style="font-weight: bold;" href="javascript:shorten_pgn4web_url();">click here to create a short url for sharing the chessboard via email or instant messaging</a><span id="bitly_shorturl"></span></div>
 <p></p>
 <br>
 
