@@ -87,6 +87,7 @@ a {
 
 <script type="text/javascript">
 
+var shorturlWin = null;
 function shorten_pgn4web_url() {
   if(!document.board.useTextarea.checked) {
     // pick the preferred short URL service
@@ -99,7 +100,6 @@ function shorten_pgn4web_url() {
 
 // use this in shorten_pgn4web_url() to generate short urls with bitly, 
 // please note the custom login/apiKey
-var bitlyWin = null;
 function shorten_url_with_bitly() {
   var bitly_login = "pgn4web";
   var bitly_apiKey =  "R_c8166bc1cb6cc4c48c9533ff823c56af";
@@ -134,8 +134,12 @@ function shorten_url_with_bitly() {
     document.getElementById('bitly_form_longUrl').value = iframeUrl;
     document.getElementById('bitly_form_format').value = "txt";
 
+    if (shorturlWin && !shorturlWin.closed) { shorturlWin.close(); } 
+    shorturlWin = window.open('', 'bitly_window');
+
     document.forms['bitly_form_shorturl'].submit();
     document.getElementById("shorturl_info").innerHTML += "<span title='the chessboard short url should be available in a separate browser window from pb.casaschi.net' style='font-weight:bold; color:red;'>see pb.casaschi.net window</span>"; 
+    shorturlWin.window.focus();
   }
 
 }
@@ -148,6 +152,9 @@ function shorten_url_with_tinyurl() {
   document.getElementById('tinyurl_form_shorturl_url').value = iframeUrl;
   document.getElementById('tinyurl_form_shorturl_alias').value = "pgn4web-" + thisShortUrlCrc32;
   document.getElementById('shorturl_link').title = "pgn4web board short url #" + thisShortUrlCrc32;
+
+  if (shorturlWin && !shorturlWin.closed) { shorturlWin.close(); } 
+  shorturlWin = window.open('', 'tinyurl_window');
 
   document.forms['tinyurl_form_shorturl'].submit();
   document.getElementById("shorturl_info").innerHTML += "<span title='the chessboard short url should be available in a separate broswer window from tinyurl.com' style='font-weight:bold; color:red;'>see tinyurl window</span>"; 
@@ -919,7 +926,7 @@ function generate_html_code() {
 
   // cleans the short url stuff
   document.getElementById("shorturl_info").innerHTML = "";
-  if (bitlyWin && !bitlyWin.closed) { bitlyWin.close(); }
+  if (shorturlWin && !shorturlWin.closed) { shorturlWin.close(); }
  
   calculate_html_code();
 
