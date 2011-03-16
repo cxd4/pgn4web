@@ -1346,6 +1346,7 @@ function template_selected() {
                          "&pt=" + pgnTextFixForUrl(pgnText_value);
     newLocationSearch = newLocationSearch.replace(/^&/,"\?");
 
+    if (shorturlWin && !shorturlWin.closed) { shorturlWin.close(); }
     if (newLocationSearch != location.search) {
       location.href = location.pathname + newLocationSearch + "#game_preview";
     } else {
