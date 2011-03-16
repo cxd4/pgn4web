@@ -135,7 +135,7 @@ function shorten_url_with_bitly() {
     document.getElementById('bitly_form_format').value = "txt";
 
     if (shorturlWin && !shorturlWin.closed) { shorturlWin.close(); } 
-    shorturlWin = window.open('', 'bitly_window');
+    shorturlWin = window.open('', 'shorturl_window');
 
     document.forms['bitly_form_shorturl'].submit();
     document.getElementById("shorturl_info").innerHTML += "<span title='the chessboard short url should be available in a separate browser window from pb.casaschi.net' style='font-weight:bold; color:red;'>see pb.casaschi.net window</span>"; 
@@ -154,7 +154,7 @@ function shorten_url_with_tinyurl() {
   document.getElementById('shorturl_link').title = "pgn4web board short url #" + thisShortUrlCrc32;
 
   if (shorturlWin && !shorturlWin.closed) { shorturlWin.close(); } 
-  shorturlWin = window.open('', 'tinyurl_window');
+  shorturlWin = window.open('', 'shorturl_window');
 
   document.forms['tinyurl_form_shorturl'].submit();
   document.getElementById("shorturl_info").innerHTML += "<span title='the chessboard short url should be available in a separate broswer window from tinyurl.com' style='font-weight:bold; color:red;'>see tinyurl window</span>"; 
@@ -1509,12 +1509,12 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 
 <!-- hidden elements for the short url generation -->
 
-<form id="tinyurl_form_shorturl" action="http://tinyurl.com/create.php" method="post" target="tinyurl_window" style="display:inline;"> 
+<form id="tinyurl_form_shorturl" action="http://tinyurl.com/create.php" method="post" target="shorturl_window" style="display:inline;"> 
 <input id="tinyurl_form_shorturl_url" type="hidden" name="url">
 <input id="tinyurl_form_shorturl_alias" type="hidden" name="alias"> 
 </form> 
 
-<form id="bitly_form_shorturl" action="http://api.bitly.com/v3/shorten" method="post" target="bitly_window" style="display:inline;"> 
+<form id="bitly_form_shorturl" action="http://api.bitly.com/v3/shorten" method="post" target="shorturl_window" style="display:inline;"> 
 <input id="bitly_form_login" type="hidden" name="login">
 <input id="bitly_form_apiKey" type="hidden" name="apiKey"> 
 <input id="bitly_form_longUrl" type="hidden" name="longUrl"> 
