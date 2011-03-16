@@ -114,7 +114,7 @@ function shorten_url_with_bitly() {
     xhr.open("POST", bitly_post_request);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhr.setRequestHeader("Content-length", bitly_params.length);
-    xhr.setRequestHeader("Connection", "close")
+    xhr.setRequestHeader("Connection", "close");
     xhr.onreadystatechange = function() { 
       if(xhr.readyState == 4) { 
         if(xhr.status==200) {
@@ -126,7 +126,7 @@ function shorten_url_with_bitly() {
           "<a title='right-click, copy and share the chessboard short url' style='font-weight:bold; color:red;' target='_blank' href='" + bitly_link + "'>" + bitly_link + "</a>" :
           "<span title='possible failure causes: url shortening service unavailable, network error, outdated login/apiKey pair, outdated apis or something else; try again later and eventually file a pgn4web board generator bug report' style='font-weight:bold; color:red;'>failed generating short url</span>";
       } 
-    }
+    };
     xhr.send(bitly_params);
   } catch(e) {
     document.getElementById('bitly_form_login').value = bitly_login;
