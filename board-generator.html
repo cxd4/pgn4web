@@ -97,8 +97,8 @@ var shorturlWin = null;
 function shorten_pgn4web_url() {
   if(!document.board.useTextarea.checked) {
     // pick the preferred short URL service
-    shorten_url_with_tinyurl();
-    // shorten_url_with_bitly();
+    // shorten_url_with_tinyurl();
+    shorten_url_with_bitly();
   } else {
     alert('URL sharing creation unavailable when useTextarea is enabled');
   }
