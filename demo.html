@@ -49,7 +49,7 @@ var pgn4webTestWin = null;
 function openPgn4webTest(url) {
   if (pgn4webTestWin && !pgn4webTestWin.closed) { pgn4webTestWin.close(); }
   pgn4webTestWin = window.open(url, "pgn4webTest");
-  if (window.focus) { pgn4webTestWin.window.focus(); }
+  if (window.focus) { pgn4webTestWin.focus(); }
   return false;
 }
 

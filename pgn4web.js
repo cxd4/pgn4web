@@ -20,7 +20,7 @@ function displayHelp(section){
   helpWin = window.open(detectHelpLocation() + "?" + 
    (Math.floor(900 * Math.random()) + 100) + "#" + section, "pgn4web_help",
    "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
-  if ((helpWin !== null) && (window.focus)) { helpWin.window.focus(); }
+  if ((helpWin !== null) && (window.focus)) { helpWin.focus(); }
 }
 
 
@@ -639,7 +639,7 @@ function displayDebugInfo() {
       debugWin.document.open("text/html", "replace");
       debugWin.document.write(text);
       debugWin.document.close();
-      if (window.focus) { debugWin.window.focus(); }
+      if (window.focus) { debugWin.focus(); }
     }
   }
   alertNumSinceReset = fatalErrorNumSinceReset = 0;
@@ -660,7 +660,7 @@ function displayPgnData(allGames) {
     pgnWin.document.open("text/html", "replace");
     pgnWin.document.write(text);
     pgnWin.document.close();
-    if (window.focus) { pgnWin.window.focus(); }
+    if (window.focus) { pgnWin.focus(); }
   }
 }
 
@@ -804,7 +804,7 @@ function displayFenData() {
     fenWin.document.open("text/html", "replace");
     fenWin.document.write(text);
     fenWin.document.close();
-    if (window.focus) { fenWin.window.focus(); }
+    if (window.focus) { fenWin.focus(); }
   }
 }
 

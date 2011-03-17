@@ -96,9 +96,9 @@ a {
 var shorturlWin = null;
 function shorten_pgn4web_url() {
   if(!document.board.useTextarea.checked) {
-    pick the preferred short URL service
+    // pick the preferred short URL service
     // shorten_url_with_tinyurl();
-    // shorten_url_with_bitly();
+    shorten_url_with_bitly();
   } else {
     alert('URL sharing creation unavailable when useTextarea is enabled');
   }
@@ -130,10 +130,12 @@ function shorten_url_with_bitly() {
         if (bitly_link) {
           document.getElementById("shorturl_link_pointer").innerHTML = bitly_link;
           document.getElementById("shorturl_link_pointer").href = bitly_link;
+          document.getElementById("shorturl_link_pointer").target = "_blank";
           document.getElementById("shorturl_link_pointer").title = "right-click, copy and share the chessboard short url";
         } else {
           document.getElementById("shorturl_link_pointer").innerHTML = "failed generating short url";
-          document.getElementById("shorturl_link_pointer").href = null;
+          document.getElementById("shorturl_link_pointer").href = "";
+          document.getElementById("shorturl_link_pointer").target = "";
           document.getElementById("shorturl_link_pointer").title = "possible failure causes: url shortening service unavailable, network error, outdated login/apiKey pair, outdated apis or something else; try again later and eventually file a pgn4web board generator bug report";
         }
       } 
@@ -152,6 +154,7 @@ function shorten_url_with_bitly() {
 
     document.getElementById("shorturl_link_pointer").innerHTML = "see pb.casaschi.net window";
     document.getElementById("shorturl_link_pointer").href = "javascript:shorturl_window_focus();";
+    document.getElementById("shorturl_link_pointer").target = "";
     document.getElementById("shorturl_link_pointer").title = "the chessboard short url should be available in a separate browser window from pb.casaschi.net";
 
     shorturl_window_focus();
@@ -175,6 +178,7 @@ function shorten_url_with_tinyurl() {
 
   document.getElementById("shorturl_link_pointer").innerHTML = "see tinyurl window";
   document.getElementById("shorturl_link_pointer").href = "javascript:shorturl_window_focus();";
+  document.getElementById("shorturl_link_pointer").target = "";
   document.getElementById("shorturl_link_pointer").title = "the chessboard short url should be available in a separate browser window from tinyurl.com";
 
   shorturl_window_focus();
@@ -182,7 +186,7 @@ function shorten_url_with_tinyurl() {
 
 function shorturl_window_focus() {
   try {
-    if (shorturlWin && window.focus) { shorturlWin.window.focus(); }
+    if (shorturlWin && window.focus) { shorturlWin.focus(); }
   } catch(e) { }
 }
 
@@ -197,6 +201,7 @@ function shorturl_link_clean() {
   document.getElementById("shorturl_link_separator").innerHTML = "";
   document.getElementById("shorturl_link_pointer").innerHTML = "";
   document.getElementById("shorturl_link_pointer").href = "";
+  document.getElementById("shorturl_link_pointer").target = "";
   document.getElementById("shorturl_link_pointer").title = "";
 }
 
@@ -1447,7 +1452,7 @@ function bug_report() {
     bugWin.document.write("</body>");
     bugWin.document.write("<html>");
     bugWin.document.close();
-    if (window.focus) { bugWin.window.focus(); }
+    if (window.focus) { bugWin.focus(); }
   }
 }
 
