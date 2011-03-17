@@ -1,5 +1,25 @@
 [Event "Middlesex League 2010/2011"]
 [Site "London, UK"]
+[Date "2011.03.17"]
+[Round "?"]
+[White "Tennyson, John"]
+[Black "Casaschi, Paolo"]
+[Result "0-1"]
+[ECO "A13"]
+[Opening "English opening"]
+
+1. c4 e6 2. Nc3 d5 3. e3 Nf6 4. g3 Be7 5. Bg2 O-O 6. b3 c6 7. Nge2 Na6 8.
+d4 dxc4 9. bxc4 { # } 9... Qa5 10. O-O e5 11. Bd2 Qc7 12. d5 Rd8 13. e4 Ne8
+14. Nc1 Nd6 15. Qe2 Bd7 16. Nb3 c5 17. f4 Bf6 18. Rac1 { # } 18... Rac8 19.
+Nb5 Bxb5 20. cxb5 Nb8 21. Nxc5 Qe7 22. Nd3 Rxc1 23. Rxc1 exf4 24. Nxf4 Bd4+
+25. Kh1 Nd7 26. Qd3 Bb6 27. Bb4 Ne5 28. Qa3 { # } 28... Nec4 29. Rxc4 Nxc4
+30. Bxe7 Nxa3 31. Bxa3 Rc8 32. Ne2 Rc2 33. Bf3 f6 34. Kg2 Kf7 35. Bg4 Rxa2
+36. Bd6 a5 37. bxa6 bxa6 { # } 38. Bd7 Rxe2+ 39. Kf3 Rxh2 40. e5 fxe5 41.
+Bxe5 a5 42. Be6+ Ke7 43. Bxg7 a4 44. Bg8 Bc5 45. Ke4 a3 46. g4 Bd6 47. Kf5
+Rf2+ 48. Ke4 Rf4+ 49. Kd3 Rxg4 0-1
+
+[Event "Middlesex League 2010/2011"]
+[Site "London, UK"]
 [Date "2011.03.10"]
 [Round "?"]
 [White "Casaschi, Paolo"]
