@@ -139,12 +139,12 @@ function shorten_url_with_bitly() {
     document.getElementById('bitly_form_longUrl').value = iframeUrl;
     document.getElementById('bitly_form_format').value = "txt";
 
-    if (shorturlWin && !shorturlWin.closed) { shorturlWin.close(); } 
+    shorturl_window_close();
     shorturlWin = window.open('', 'shorturl_window');
 
     document.forms['bitly_form_shorturl'].submit();
     document.getElementById("shorturl_info").innerHTML += "<span title='the chessboard short url should be available in a separate browser window from pb.casaschi.net' class='shortUrl'>see pb.casaschi.net window</span>"; 
-    shorturlWin.window.focus();
+    shorturl_window_focus();
   }
 
 }
@@ -158,11 +158,27 @@ function shorten_url_with_tinyurl() {
   document.getElementById('tinyurl_form_shorturl_alias').value = "pgn4web-" + thisShortUrlCrc32;
   document.getElementById('shorturl_link').title = "pgn4web board short url #" + thisShortUrlCrc32;
 
-  if (shorturlWin && !shorturlWin.closed) { shorturlWin.close(); } 
+  shorturl_window_close(); 
   shorturlWin = window.open('', 'shorturl_window');
 
   document.forms['tinyurl_form_shorturl'].submit();
   document.getElementById("shorturl_info").innerHTML += "<span title='the chessboard short url should be available in a separate broswer window from tinyurl.com' class='shortUrl'>see tinyurl window</span>"; 
+  shorturl_window_focus();
+}
+
+function shorturl_window_focus() {
+  try {
+    if (shorturlWin && window.focus) { shorturlWin.window.focus(); }
+  } catch(e) {}
+  return false;
+}
+
+function shorturl_window_close() {
+  try {
+    if (shorturlWin && !shorturlWin.closed) { shorturlWin.close(); }
+    shorturlWin = null;
+  } catch(e) {}
+  return false;
 }
 
 </script>
@@ -931,7 +947,7 @@ function generate_html_code() {
 
   // cleans the short url stuff
   document.getElementById("shorturl_info").innerHTML = "";
-  if (shorturlWin && !shorturlWin.closed) { shorturlWin.close(); }
+  shorturl_window_close();
  
   calculate_html_code();
 
@@ -1350,7 +1366,7 @@ function template_selected() {
                          "&pt=" + pgnTextFixForUrl(pgnText_value);
     newLocationSearch = newLocationSearch.replace(/^&/,"\?");
 
-    if (shorturlWin && !shorturlWin.closed) { shorturlWin.close(); }
+    shorturl_window_close();
     if (newLocationSearch != location.search) {
       location.href = location.pathname + newLocationSearch + "#game_preview";
     } else {
