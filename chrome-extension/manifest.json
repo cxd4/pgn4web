@@ -7,7 +7,7 @@
 {
   "name": "Chess games viewer",
 
-  "version": "1.3.3",
+  "version": "1.3.4",
 
   "description": "Chess games viewer: interactive chessboard showing chess games from links to *.PGN URLs and from PGN text, using context menus and page actions.",
 
