@@ -69,9 +69,52 @@ body {
 
 <script src="pgn4web.js" type="text/javascript"></script>
 
+</head>
+
+<body>
+
+<!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
+<form style="display: none;"><textarea style="display: none;" id="pgnText">
+
+</textarea></form>
+
+<table><tr valign="middle"><td>
+
+<div style="font-weight:bold;">
+<span id="GameEvent"></span>
+&nbsp; &nbsp;
+<span id="GameSite"></span>
+&nbsp; &nbsp;
+<span id="GameDate"></span>
+</div>
+
+</td><td width="20"></td><td>
+
+<div id="debug"></div>
+
+</td></tr><tr valign="middle"><td>
+
+<div id="videodiv">
+depending on your chosen video, you need HTML5 video support or flash player 8+
+</div>
+
+</td><td width=20></td><td>
+
+<div style="font-weight:bold; margin-bottom:1em;">
+<div id="GameBlackClock" style="float:right;"></div>
+<div id="GameBlack"></div>
+</div>
+<div id="GameBoard"></div>
+<div style="font-weight:bold; margin-top:1em;">
+<div id="GameWhiteClock" style="float:right;"></div>
+<div id="GameWhite"></div>
+</div>
+
+</td></tr></table>
+
 <script type="text/javascript">
 
-var pgnFile_default = "youtube.pgn";
+var pgnFile_default = "video.pgn";
 // accepts pgnData as alias for pgnFile for consistency with board.html
 if ((pgnFile = gup("pgnData")) === "") {
   if ((pgnFile = gup("pgnFile")) === "") {
@@ -79,25 +122,37 @@ if ((pgnFile = gup("pgnData")) === "") {
   }
 }
 
-var youtubeVideo_default = "EUEypIgynsk"; // demo video corresponding to the youtube.pgn game
-if ((youtubeVideo = gup("youtubeVideo")) === "") {
-  youtubeVideo = youtubeVideo_default;
+var videoUrl_default = "video.ogv";
+if ((videoUrl = gup("videoUrl")) === "") {
+  videoUrl = videoUrl_default;
 }
 
-var youtubeWidth_default = "640"; // demo video corresponding to the youtube.pgn game
+var youtubeVideoid_default = "";
+if ((youtubeVideoid = gup("youtubeVideoid")) === "") {
+  youtubeVideoid = youtubeVideoid_default;
+}
+
+var youtubeWidth_default = "480";
 if ((youtubeWidth = gup("youtubeWidth")) === "") {
   youtubeWidth = youtubeWidth_default;
 }
 
-var youtubeHeight_default = "390"; // demo video corresponding to the youtube.pgn game
+var youtubeHeight_default = "360";
 if ((youtubeHeight = gup("youtubeHeight")) === "") {
   youtubeHeight = youtubeHeight_default;
+}
+
+if ((gup("debug") == "true") || (gup("debug") == "t")) {
+  document.getElementById("debug").style.display = "inline";
+} else {
+  document.getElementById("debug").style.display = "none";
 }
 
 if ((gup("help") == "true") || (gup("help") == "t")) {
   alert("pgn4web youtube.html parameters" + "\n" +
         " - pgnData = " + pgnFile + "; PGN file to load (default " + pgnFile_default + ")" + "\n" +
-        " - youtubeVideo = " + youtubeVideo + "; youtube video id (default " + youtubeVideo_default + ")" + "\n" +
+        " - videoUrl = " + videoUrl + "; video URL to load (default " + videoUrl_default + ")" + "\n" +
+        " - youtubeVideoid = " + youtubeVideoid + "; youtube video id, overrides videoUrl (default " + youtubeVideoid_default + ")" + "\n" +
         " - youtubeWidth = " + youtubeWidth + "; youtube video width (default " + youtubeWidth_default + ")" + "\n" +
         " - youtubeHeigth = " + youtubeHeight + "; youtube video height (default " + youtubeHeight_default + ")" + "\n" +
         " - debug = true|false; if true timing info is shown to help adjuting the PGN file (default false)" + "\n" +
@@ -133,12 +188,15 @@ function gup( name ){
   return "";
 }
 
-
-var expressInstall = null;
-var flashvars = { };
-var params = { allowScriptAccess: "always", allowFullScreen: "false", play: "true", loop: "false", menu: "false" };
-var atts = { id: "myytplayer" };
-swfobject.embedSWF("http://www.youtube.com/e/" + youtubeVideo + "?enablejsapi=1&playerapiid=ytplayer&autoplay=1&fs=0&loop=0&rel=0&disablekb=1", "ytapiplayer", youtubeWidth, youtubeHeight, "8", expressInstall, flashvars, params, atts);
+if (youtubeVideoid) {
+  var expressInstall = null;
+  var flashvars = { };
+  var params = { allowScriptAccess: "always", play: "true", loop: "false", menu: "false" };
+  var atts = { id: "videoPlayer" };
+  swfobject.embedSWF("http://www.youtube.com/e/" + youtubeVideoid + "?enablejsapi=1&playerapiid=ytplayer&autoplay=1&loop=0&rel=0&disablekb=1", "videodiv", youtubeWidth, youtubeHeight, "8", expressInstall, flashvars, params, atts);
+} else {
+  document.getElementById("videodiv").innerHTML = '<video id="videoPlayer" src="' + videoUrl + '" controls="controls" autoplay="autoplay"></video>'; 
+}
 
 SetPgnUrl(pgnFile); // if set, this has precedence over the inline PGN below
 SetImagePath ("alpha/26"); // use "" path if images are in the same folder as this javascript file
@@ -146,13 +204,24 @@ SetImageType("png");
 SetHighlightOption(true); // true or false
 SetShortcutKeysEnabled(false);
 
-clearShortcutSquares("ABCDEFGH", "1234567");
+clearShortcutSquares("A", "123456");
+clearShortcutSquares("BCDEFGH", "1234567");
+
+var videotimeForGame = new Array();
+function getVideotimeForGame() {
+  videotimeForGame = new Array();
+  for(thisGame=0; thisGame<numberOfGames; thisGame++) {
+    videotimeForGame[thisGame] = parseFloat(customPgnHeaderTag("VideoTime", null, thisGame));
+    if (!videotimeForGame[thisGame]) { videotimeForGame[thisGame] = 0; }
+  }
+}
 
 var videotimeAtPly = new Array();
 function getVideotimeAtPly() {
   videotimeAtPly = new Array();
   for(thisPly=StartPly; thisPly<=StartPly+PlyNumber; thisPly++) {
-    videotimeAtPly[thisPly] = customPgnCommentTag("vt", null, thisPly);
+    videotimeAtPly[thisPly] = parseFloat(customPgnCommentTag("vt", null, thisPly));
+    if (!videotimeAtPly[thisPly]) { videotimeAtPly[thisPly] = 0; }
   }
 }
 
@@ -163,6 +232,7 @@ function customFunctionOnPgnGameLoad() {
 var syncInterval = 456; // milliseconds
 var syncTimer = null;
 function customFunctionOnPgnTextLoad() {
+  getVideotimeForGame();
   if (syncTimer) { clearTimeout(syncTimer); }
   syncTimer = setTimeout("syncBoard();", syncInterval);
 }
@@ -170,71 +240,22 @@ function customFunctionOnPgnTextLoad() {
 function syncBoard() {
   var ytCurrentTime = 0;
   if (syncTimer) { clearTimeout(syncTimer); }
-  ytplayer = document.getElementById("myytplayer");
-  if (ytplayer.getCurrentTime) { ytCurrentTime = ytplayer.getCurrentTime(); }
 
-  // if the video shows multiple games, here you can add a check on the video time 
-  // and load the appropriate game if necessary with: Init(newGameNumber);
+  videoPlayer = document.getElementById("videoPlayer");
+  if (videoPlayer.currentTime) { videoCurrentTime = videoPlayer.currentTime; }
+  else if (videoPlayer.getCurrentTime) { videoCurrentTime = videoPlayer.getCurrentTime(); }
+  document.getElementById("debug").innerHTML = videoCurrentTime;
 
-  document.getElementById("debug").innerHTML = ytCurrentTime;
+  for (thisGame=1; thisGame<numberOfGames; thisGame++) {
+    if (videotimeForGame[thisGame] && (videotimeForGame[thisGame] > videoCurrentTime)) { break; }
+  }
+  if (currentGame != (thisGame-1)) { Init(thisGame-1); }
+
   for (thisPly=StartPly; thisPly<=StartPly+PlyNumber; thisPly++) {
-    if (videotimeAtPly[thisPly] && (videotimeAtPly[thisPly] > ytCurrentTime)) { break; }
+    if (videotimeAtPly[thisPly] && (videotimeAtPly[thisPly] > videoCurrentTime)) { break; }
     GoToMove(thisPly);
   } 
   syncTimer = setTimeout("syncBoard();", syncInterval);
-}
-
-</script>
-
-</head>
-
-<body>
-
-<!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
-<form style="display: none;"><textarea style="display: none;" id="pgnText">
-
-</textarea></form>
-
-<table><tr valign="middle"><td>
-
-<div style="font-weight:bold;">
-<span id="GameEvent"></span>
-&nbsp; &nbsp;
-<span id="GameSite"></span>
-&nbsp; &nbsp;
-<span id="GameDate"></span>
-</div>
-
-</td><td width="20"></td><td>
-
-<div id="debug"></div>
-
-</td></tr><tr valign="middle"><td>
-
-<div id="ytapiplayer">
-You need Flash player 8+ and JavaScript enabled to view this video.
-</div>
-
-</td><td width=20></td><td>
-
-<div style="font-weight:bold; margin-bottom:1em;">
-<div id="GameBlackClock" style="float:right;"></div>
-<div id="GameBlack"></div>
-</div>
-<div id="GameBoard"></div>
-<div style="font-weight:bold; margin-top:1em;">
-<div id="GameWhiteClock" style="float:right;"></div>
-<div id="GameWhite"></div>
-</div>
-
-</td></tr></table>
-
-<script type="text/javascript">
-
-if ((gup("debug") == "true") || (gup("debug") == "t")) {
-  document.getElementById("debug").style.display = "inline";
-} else {
-  document.getElementById("debug").style.display = "none";
 }
 
 </script>
