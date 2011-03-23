@@ -110,6 +110,10 @@ depending on your chosen video,<br>you need HTML5 video support or<br>flash play
 <div id="GameWhite"></div>
 </div>
 
+</td></tr><tr valign="middle"><td colspan="3">
+
+<div id="warning" style="color:lightgray; font-style:italic; text-align:right; margin-top: 0.5em; margin-bottom: 0.5em;"></div>
+
 </td></tr></table>
 
 <script type="text/javascript">
@@ -189,12 +193,14 @@ function gup( name ){
 }
 
 if (youtubeVideoid) {
+  document.getElementById("warning").innerHTML = "experimental integration of pgn4web with youtube";
   var expressInstall = null;
   var flashvars = { };
   var params = { allowScriptAccess: "always", play: "true", loop: "false", menu: "false" };
   var atts = { id: "videoPlayer" };
   swfobject.embedSWF("http://www.youtube.com/e/" + youtubeVideoid + "?enablejsapi=1&playerapiid=ytplayer&autoplay=1&loop=0&rel=0&disablekb=1", "videodiv", videoWidth, videoHeight, "8", expressInstall, flashvars, params, atts);
 } else {
+  document.getElementById("warning").innerHTML = "experimental integration of pgn4web with HTML5 video";
   document.getElementById("videodiv").innerHTML = '<video id="videoPlayer" src="' + videoUrl + '" controls="controls" autoplay="autoplay"' + (videoWidth ? ' width="' + videoWidth + '"' : '') + (videoHeight ? ' height="' + videoHeight + '"' : '') + '></video>'; 
 }
 
