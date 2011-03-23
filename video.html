@@ -95,7 +95,7 @@ body {
 </td></tr><tr valign="middle"><td>
 
 <div id="videodiv">
-depending on your chosen video, you need HTML5 video support or flash player 8+
+depending on your chosen video,<br>you need HTML5 video support or<br>flash player support
 </div>
 
 </td><td width=20></td><td>
@@ -132,14 +132,14 @@ if ((youtubeVideoid = gup("youtubeVideoid")) === "") {
   youtubeVideoid = youtubeVideoid_default;
 }
 
-var youtubeWidth_default = "480";
-if ((youtubeWidth = gup("youtubeWidth")) === "") {
-  youtubeWidth = youtubeWidth_default;
+var videoWidth_default = youtubeVideoid ? "480" : "";
+if ((videoWidth = gup("videoWidth")) === "") {
+  videoWidth = videoWidth_default;
 }
 
-var youtubeHeight_default = "360";
-if ((youtubeHeight = gup("youtubeHeight")) === "") {
-  youtubeHeight = youtubeHeight_default;
+var videoHeight_default = youtubeVideoid ? "360" : "";
+if ((videoHeight = gup("videoHeight")) === "") {
+  videoHeight = videoHeight_default;
 }
 
 if ((gup("debug") == "true") || (gup("debug") == "t")) {
@@ -153,8 +153,8 @@ if ((gup("help") == "true") || (gup("help") == "t")) {
         " - pgnData = " + pgnFile + "; PGN file to load (default " + pgnFile_default + ")" + "\n" +
         " - videoUrl = " + videoUrl + "; video URL to load (default " + videoUrl_default + ")" + "\n" +
         " - youtubeVideoid = " + youtubeVideoid + "; youtube video id, overrides videoUrl (default " + youtubeVideoid_default + ")" + "\n" +
-        " - youtubeWidth = " + youtubeWidth + "; youtube video width (default " + youtubeWidth_default + ")" + "\n" +
-        " - youtubeHeigth = " + youtubeHeight + "; youtube video height (default " + youtubeHeight_default + ")" + "\n" +
+        " - videoWidth = " + videoWidth + "; video width (default " + videoWidth_default + ")" + "\n" +
+        " - videoHeigth = " + videoHeight + "; video height (default " + videoHeight_default + ")" + "\n" +
         " - debug = true|false; if true timing info is shown to help adjuting the PGN file (default false)" + "\n" +
         " - help = true; prints this help (default false)");
 }
@@ -193,9 +193,9 @@ if (youtubeVideoid) {
   var flashvars = { };
   var params = { allowScriptAccess: "always", play: "true", loop: "false", menu: "false" };
   var atts = { id: "videoPlayer" };
-  swfobject.embedSWF("http://www.youtube.com/e/" + youtubeVideoid + "?enablejsapi=1&playerapiid=ytplayer&autoplay=1&loop=0&rel=0&disablekb=1", "videodiv", youtubeWidth, youtubeHeight, "8", expressInstall, flashvars, params, atts);
+  swfobject.embedSWF("http://www.youtube.com/e/" + youtubeVideoid + "?enablejsapi=1&playerapiid=ytplayer&autoplay=1&loop=0&rel=0&disablekb=1", "videodiv", videoWidth, videoHeight, "8", expressInstall, flashvars, params, atts);
 } else {
-  document.getElementById("videodiv").innerHTML = '<video id="videoPlayer" src="' + videoUrl + '" controls="controls" autoplay="autoplay"></video>'; 
+  document.getElementById("videodiv").innerHTML = '<video id="videoPlayer" src="' + videoUrl + '" controls="controls" autoplay="autoplay"' + (videoWidth ? ' width="' + videoWidth + '"' : '') + (videoHeight ? ' height="' + videoHeight + '"' : '') + '></video>'; 
 }
 
 SetPgnUrl(pgnFile); // if set, this has precedence over the inline PGN below
@@ -238,7 +238,7 @@ function customFunctionOnPgnTextLoad() {
 }
 
 function syncBoard() {
-  var ytCurrentTime = 0;
+  var videoCurrentTime = 0;
   if (syncTimer) { clearTimeout(syncTimer); }
 
   videoPlayer = document.getElementById("videoPlayer");
