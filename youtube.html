@@ -84,10 +84,22 @@ if ((youtubeVideo = gup("youtubeVideo")) === "") {
   youtubeVideo = youtubeVideo_default;
 }
 
+var youtubeWidth_default = "640"; // demo video corresponding to the youtube.pgn game
+if ((youtubeWidth = gup("youtubeWidth")) === "") {
+  youtubeWidth = youtubeWidth_default;
+}
+
+var youtubeHeight_default = "390"; // demo video corresponding to the youtube.pgn game
+if ((youtubeHeight = gup("youtubeHeight")) === "") {
+  youtubeHeight = youtubeHeight_default;
+}
+
 if ((gup("help") == "true") || (gup("help") == "t")) {
   alert("pgn4web youtube.html parameters" + "\n" +
         " - pgnData = " + pgnFile + "; PGN file to load (default " + pgnFile_default + ")" + "\n" +
         " - youtubeVideo = " + youtubeVideo + "; youtube video id (default " + youtubeVideo_default + ")" + "\n" +
+        " - youtubeWidth = " + youtubeWidth + "; youtube video width (default " + youtubeWidth_default + ")" + "\n" +
+        " - youtubeHeigth = " + youtubeHeight + "; youtube video height (default " + youtubeHeight_default + ")" + "\n" +
         " - debug = true|false; if true timing info is shown to help adjuting the PGN file (default false)" + "\n" +
         " - help = true; prints this help (default false)");
 }
@@ -124,9 +136,9 @@ function gup( name ){
 
 var expressInstall = null;
 var flashvars = { };
-var params = { allowScriptAccess: "always", play: "true", loop: "false", menu: "false" };
+var params = { allowScriptAccess: "always", allowFullScreen: "false", play: "true", loop: "false", menu: "false" };
 var atts = { id: "myytplayer" };
-swfobject.embedSWF("http://www.youtube.com/e/" + youtubeVideo + "?enablejsapi=1&playerapiid=ytplayer", "ytapiplayer", "640", "390", "8", expressInstall, flashvars, params, atts);
+swfobject.embedSWF("http://www.youtube.com/e/" + youtubeVideo + "?enablejsapi=1&playerapiid=ytplayer&autoplay=1&fs=0&loop=0&rel=0&disablekb=1", "ytapiplayer", youtubeWidth, youtubeHeight, "8", expressInstall, flashvars, params, atts);
 
 SetPgnUrl(pgnFile); // if set, this has precedence over the inline PGN below
 SetImagePath ("alpha/30"); // use "" path if images are in the same folder as this javascript file
@@ -146,10 +158,11 @@ function customFunctionOnPgnGameLoad() {
   getVideotimeAtPly();
 }
 
+var syncInterval = 456; // milliseconds
 var syncTimer = null;
 function customFunctionOnPgnTextLoad() {
   if (syncTimer) { clearTimeout(syncTimer); }
-  syncTimer = setTimeout("syncBoard();", 300);
+  syncTimer = setTimeout("syncBoard();", syncInterval);
 }
 
 function syncBoard() {
@@ -166,7 +179,7 @@ function syncBoard() {
     if (videotimeAtPly[thisPly] && (videotimeAtPly[thisPly] > ytCurrentTime)) { break; }
     GoToMove(thisPly);
   } 
-  syncTimer = setTimeout("syncBoard();", 300);
+  syncTimer = setTimeout("syncBoard();", syncInterval);
 }
 
 </script>
@@ -180,7 +193,21 @@ function syncBoard() {
 
 </textarea></form>
 
-<table cellspacing="20"><tr valign="top"><td>
+<table cellspacing="17"><tr valign="top"><td>
+
+<div style="font-weight:bold;">
+<span id="GameEvent"></span>
+&nbsp; &nbsp;
+<span id="GameSite"></span>
+&nbsp; &nbsp;
+<span id="GameDate"></span>
+</div>
+
+</td><td>
+
+<div id="debug"></div>
+
+</td></tr><tr valign="top"><td>
 
 <div id="ytapiplayer">
 You need Flash player 8+ and JavaScript enabled to view this video.
@@ -188,13 +215,17 @@ You need Flash player 8+ and JavaScript enabled to view this video.
 
 </td><td>
 
-<div style="text-align:center; font-weight:bold; margin-bottom:1em;" id="GameBlackClock"></div>
+<div style="font-weight:bold; margin-bottom:1em;">
+<div id="GameBlackClock" style="float:right;"></div>
+<div id="GameBlack"></div>
+</div>
 <div id="GameBoard"></div>
-<div style="text-align:center; font-weight:bold; margin-top:1em;" id="GameWhiteClock"></div>
+<div style="font-weight:bold; margin-top:1em;">
+<div id="GameWhiteClock" style="float:right;"></div>
+<div id="GameWhite"></div>
+</div>
 
 </td></tr></table>
-
-<div id="debug"></div>
 
 <script type="text/javascript">
 
