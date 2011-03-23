@@ -23,24 +23,24 @@ body {
   border-style: solid;
   border-color: #663300;
   border-width: 3px;
-  height: 318px;
-  width: 318px;
+  height: 270x;
+  width: 270px;
   box-shadow: 0px 0px 20px #663300;
   -webkit-box-shadow: 0px 0px 20px #663300;
   -moz-box-shadow: 0px 0px 20px #663300;
 }
 
 .pieceImage {
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
 }
 
 .whiteSquare,
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 39px;
-  height: 39px;
+  width: 33px;
+  height: 33px;
   border-style: solid;
   border-width: 2px;
 }
@@ -141,7 +141,7 @@ var atts = { id: "myytplayer" };
 swfobject.embedSWF("http://www.youtube.com/e/" + youtubeVideo + "?enablejsapi=1&playerapiid=ytplayer&autoplay=1&fs=0&loop=0&rel=0&disablekb=1", "ytapiplayer", youtubeWidth, youtubeHeight, "8", expressInstall, flashvars, params, atts);
 
 SetPgnUrl(pgnFile); // if set, this has precedence over the inline PGN below
-SetImagePath ("alpha/30"); // use "" path if images are in the same folder as this javascript file
+SetImagePath ("alpha/26"); // use "" path if images are in the same folder as this javascript file
 SetImageType("png");
 SetHighlightOption(true); // true or false
 SetShortcutKeysEnabled(false);
@@ -193,7 +193,7 @@ function syncBoard() {
 
 </textarea></form>
 
-<table cellspacing="17"><tr valign="top"><td>
+<table><tr valign="middle"><td>
 
 <div style="font-weight:bold;">
 <span id="GameEvent"></span>
@@ -203,17 +203,17 @@ function syncBoard() {
 <span id="GameDate"></span>
 </div>
 
-</td><td>
+</td><td width="20"></td><td>
 
 <div id="debug"></div>
 
-</td></tr><tr valign="top"><td>
+</td></tr><tr valign="middle"><td>
 
 <div id="ytapiplayer">
 You need Flash player 8+ and JavaScript enabled to view this video.
 </div>
 
-</td><td>
+</td><td width=20></td><td>
 
 <div style="font-weight:bold; margin-bottom:1em;">
 <div id="GameBlackClock" style="float:right;"></div>
