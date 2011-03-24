@@ -247,6 +247,20 @@ function customFunctionOnPgnTextLoad() {
   syncTimer = setTimeout("syncBoard();", syncInterval);
 }
 
+// assumes arrayValues ordered
+function findIndexInOrderedArray(target, arrayValues, arrayFirst, arrayLast, previous) {
+  if (previous < arrayFirst) { previous = arrayFirst; }
+  if (previous > arrayLast ) { previous = arrayLast ; }
+  if ((previous > arrayFirst) && (target < arrayValues[previous])) {
+    for(index=previous; (index>arrayFirst) && (target < arrayValues[index]); index--) {}
+    found = index;
+  } else if ((previous < arrayLast) && (target > arrayValues[previous+1])) {
+    for(index=previous; (index<arrayLast) && (target > arrayValues[index+1]); index++) {}
+    found = index;
+  } else { found = previous; }
+  return found;
+}
+
 function syncBoard() {
   if (syncTimer) { clearTimeout(syncTimer); }
 
@@ -256,15 +270,11 @@ function syncBoard() {
   else { videoCurrentTime = 0; }
   document.getElementById("debug").innerHTML = videoCurrentTime;
 
-  for (thisGame=1; thisGame<numberOfGames; thisGame++) {
-    if (videotimeForGame[thisGame] && (videotimeForGame[thisGame] > videoCurrentTime)) { break; }
-  }
-  if (currentGame != (thisGame-1)) { Init(thisGame-1); }
+  foundGame = findIndexInOrderedArray(videoCurrentTime, videotimeForGame, 0, numberOfGames-1, currentGame);
+  if (foundGame !== currentGame) { Init(foundGame); }
 
-  for (thisPly=StartPly; thisPly<=StartPly+PlyNumber; thisPly++) {
-    if (videotimeAtPly[thisPly] && (videotimeAtPly[thisPly] > videoCurrentTime)) { break; }
-    GoToMove(thisPly);
-  } 
+  foundPly = findIndexInOrderedArray(videoCurrentTime, videotimeAtPly, StartPly, StartPly+PlyNumber, CurrentPly); 
+  if (foundPly != CurrentPly) { GoToMove(foundPly); }
   syncTimer = setTimeout("syncBoard();", syncInterval);
 }
 

@@ -8,8 +8,8 @@
 [TimeControl "180+2"]
 [WhiteClock "3:02"]
 [BlackClock "3:02"]
+[VideoTime "0.0"]
 
-          {[%vt   0.0]}
  1. d4    {[%vt  18.5] [%clk 3.03]} Nf6   {[%vt  19.2] [%clk 3.03]}
  2. c4    {[%vt  20.1] [%clk 3.04]} e6    {[%vt  20.7] [%clk 3.05]}
  3. Nc3   {[%vt  21.9] [%clk 3.03]} Bb4   {[%vt  22.8] [%clk 3.06]}
