@@ -150,6 +150,8 @@ if ((videoHeight = gup("videoHeight")) === "") {
 }
 if (videoHeight) { document.getElementById("videodiv").style.height = videoHeight + "px"; }
 
+testVideotimes = ((gup("testVideotimes") == "true") || (gup("testVideotimes") == "t"));
+
 if ((gup("debug") == "true") || (gup("debug") == "t")) {
   document.getElementById("debug").style.display = "inline";
 } else {
@@ -160,11 +162,12 @@ if ((gup("help") == "true") || (gup("help") == "t")) {
   alert("pgn4web youtube.html parameters" + "\n" +
         " - pgnData = " + pgnFile + "; PGN file to load (default " + pgnFile_default + ")" + "\n" +
         " - videoUrl = " + videoUrl + "; video URL to load (default " + videoUrl_default + ")" + "\n" +
-        " - youtubeVideoid = " + youtubeVideoid + "; youtube video id, overrides videoUrl (default " + youtubeVideoid_default + ")" + "\n" +
-        " - videoWidth = " + videoWidth + "; video width (default " + videoWidth_default + ")" + "\n" +
-        " - videoHeigth = " + videoHeight + "; video height (default " + videoHeight_default + ")" + "\n" +
-        " - debug = true|false; if true timing info is shown to help adjuting the PGN file (default false)" + "\n" +
-        " - help = true; prints this help (default false)");
+        " - youtubeVideoid = " + (youtubeVideoid ? youtubeVideoid : "null") + "; youtube video id, overrides videoUrl (default " + (youtubeVideoid_default ? youtubeVideoid_default : "null") + ")" + "\n" +
+        " - videoWidth = " + (videoWidth ? videoWidth : "null") + "; video width (default " + (videoWidth_default ? videoWidth_default : "null") + ")" + "\n" +
+        " - videoHeigth = " + (videoHeight ? videoHeight : "null") + "; video height (default " + (videoHeight_default ? videoHeight_default : "null") + ")" + "\n" +
+        " - testVideotimes = true|false; detects missing/wrong video times in the PGN file (default false)" + "\n" +
+        " - debug = true|false; if true shows timing info for adjusting the PGN file (default false)" + "\n" +
+        " - help = true|false; prints this help (default false)");
 }
 
 function gup( name ){
@@ -239,10 +242,28 @@ function customFunctionOnPgnGameLoad() {
   getVideotimeAtPly();
 }
 
+function runTestVidoetimes() {
+  for(thisGame=0; thisGame<numberOfGames; thisGame++) {
+    if ((thisGame>0) && (videotimeForGame[thisGame] <= videotimeForGame[thisGame-1])) {
+      alert("warning: " + pgnFile + " missing/wrong VideoTime header tag for game " + (thisGame+1));
+      return false;
+    }
+    Init(thisGame);
+    for(thisPly=StartPly; thisPly<=StartPly+PlyNumber; thisPly++) {
+      if ((thisPly>StartPly) && (videotimeAtPly[thisPly] <= videotimeAtPly[thisPly-1])) {
+        alert("warning: " + pgnFile + " missing/wrong %vt comment at ply " + thisPly + " of game " + (thisGame+1));
+        return false;
+      }
+    }
+  }
+  alert("info: " + pgnFile + " video time values looks ok");
+}
+
 var syncInterval = 456; // milliseconds
 var syncTimer = null;
 function customFunctionOnPgnTextLoad() {
   getVideotimeForGame();
+  if (testVideotimes) { runTestVidoetimes(); }
   if (syncTimer) { clearTimeout(syncTimer); }
   syncTimer = setTimeout("syncBoard();", syncInterval);
 }
