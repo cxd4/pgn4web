@@ -122,7 +122,7 @@ function openPgn4webTest(url) {
 
 <a class="linklist" id="twic765" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="twic765.html">twic</a>
 
-<a class="linklist" id="youtube" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="video.html?youtubeVideoid=EUEypIgynsk&videoWidth=640&videoHeight=390&pgnData=KrushKosteniuk2010.pgn">youtube</a>
+<a class="linklist" id="youtube" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="video.html?youtubeVideoid=EUEypIgynsk&videoWidth=480&videoHeight=300&pgnData=KrushKosteniuk2010.pgn">youtube</a>
 
 <!-- ogg file backed up on the pgn4web wiki: http://pgn4web.googlecode.com/svn/wiki/video/KrushKosteniuk2010.ogv -->
 <a class="linklist" id="video" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="video.html?videoUrl=http://go.casaschi.net/pgn4web-demo-video-ogg-file&videoWidth=480&videoHeight=300&pgnData=KrushKosteniuk2010.pgn">video</a>
@@ -191,6 +191,10 @@ function select_frame(new_frame){
     if (new_frame == 'tilb98r2') {
     } 
     if (new_frame == 'twic765') {
+    } 
+    if (new_frame == 'youtube') {
+    } 
+    if (new_frame == 'video') {
     } 
     document.getElementById('pgnframe').width = new_frame_width; 
     document.getElementById('pgnframe').height = new_frame_height;
