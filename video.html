@@ -96,10 +96,10 @@ body {
 </td></tr><tr valign="middle"><td>
 
 <div id="videodiv" style="text-align:center; font-style:italic;">
-<video id="videoPlayer" controls="controls" autoplay="autoplay"><br><br>warning: HTML5 video support required</video>
+<video id="videoPlayer" controls="controls" autoplay="autoplay"><br/><br/>warning: HTML5 video support required</video>
 </div>
 
-</td><td width=20></td><td>
+</td><td width="20"></td><td width="270">
 
 <div style="font-weight:bold; margin-bottom:1em;">
 <div id="GameBlackClock" style="float:right;"></div>
@@ -200,7 +200,7 @@ function gup( name ){
 }
 
 if (youtubeVideoid) {
-  document.getElementById("videodiv").innerHTML = "warning: flash video support required";
+  document.getElementById("videodiv").innerHTML = "<br/><br/>warning: flash video support required";
   document.title = document.getElementById("warning").innerHTML = "pgn4web integration with youtube";
   var expressInstall = null;
   var flashvars = { };
