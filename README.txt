@@ -51,6 +51,7 @@ Features:
   portal platforms (such as joomla, drupal and wikimedia), forum platforms
   (such as phpBB, simplemachines and vbulletin) and hosting services (such 
   as google sites)
+- integrated with HTML5 video and YouTube video
 - allows for live broadcast of games
 
 Limitations:
