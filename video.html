@@ -96,8 +96,8 @@ body {
 
 </td></tr><tr valign="middle"><td>
 
-<div id="videodiv">
-depending on your chosen video,<br>you need HTML5 video support or<br>flash player support
+<div id="videodiv" style="text-align:center; font-style:italic;">
+<br><br>warning: depending on the chosen video,<br>HTML5 video support or<br>flash player support is required
 </div>
 
 </td><td width=20></td><td>
@@ -142,11 +142,13 @@ var videoWidth_default = youtubeVideoid ? "480" : "";
 if ((videoWidth = gup("videoWidth")) === "") {
   videoWidth = videoWidth_default;
 }
+if (videoWidth) { document.getElementById("videodiv").style.width = videoWidth + "px"; }
 
 var videoHeight_default = youtubeVideoid ? "360" : "";
 if ((videoHeight = gup("videoHeight")) === "") {
   videoHeight = videoHeight_default;
 }
+if (videoHeight) { document.getElementById("videodiv").style.height = videoHeight + "px"; }
 
 if ((gup("debug") == "true") || (gup("debug") == "t")) {
   document.getElementById("debug").style.display = "inline";
@@ -203,7 +205,7 @@ if (youtubeVideoid) {
   swfobject.embedSWF("http://www.youtube.com/e/" + youtubeVideoid + "?enablejsapi=1&playerapiid=ytplayer&autoplay=1&loop=0&rel=0&disablekb=1", "videodiv", videoWidth, videoHeight, "8", expressInstall, flashvars, params, atts);
 } else {
   document.getElementById("warning").innerHTML = "experimental integration of pgn4web with HTML5 video";
-  document.getElementById("videodiv").innerHTML = '<video id="videoPlayer" src="' + videoUrl + '" controls="controls" autoplay="autoplay"' + (videoWidth ? ' width="' + videoWidth + '"' : '') + (videoHeight ? ' height="' + videoHeight + '"' : '') + '></video>'; 
+  document.getElementById("videodiv").innerHTML = '<video id="videoPlayer" src="' + videoUrl + '" controls="controls" autoplay="autoplay"' + (videoWidth ? ' width="' + videoWidth + '"' : '') + (videoHeight ? ' height="' + videoHeight + '"' : '') + '><br><br>warning: HTML5 video support required</video>'; 
 }
 
 SetPgnUrl(pgnFile); // if set, this has precedence over the inline PGN below
@@ -246,12 +248,12 @@ function customFunctionOnPgnTextLoad() {
 }
 
 function syncBoard() {
-  var videoCurrentTime = 0;
   if (syncTimer) { clearTimeout(syncTimer); }
 
-  videoPlayer = document.getElementById("videoPlayer");
-  if (videoPlayer.currentTime) { videoCurrentTime = videoPlayer.currentTime; }
-  else if (videoPlayer.getCurrentTime) { videoCurrentTime = videoPlayer.getCurrentTime(); }
+  var videoPlayer = document.getElementById("videoPlayer");
+  if (videoPlayer && videoPlayer.currentTime) { videoCurrentTime = videoPlayer.currentTime; }
+  else if (videoPlayer && videoPlayer.getCurrentTime) { videoCurrentTime = videoPlayer.getCurrentTime(); }
+  else { videoCurrentTime = 0; }
   document.getElementById("debug").innerHTML = videoCurrentTime;
 
   for (thisGame=1; thisGame<numberOfGames; thisGame++) {
