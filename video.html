@@ -85,20 +85,10 @@ a {
 
 </textarea></form>
 
+<div id="info" style="font-weight:bold; font-size:small; text-align:center; margin-bottom:0.5em;">&nbsp;</div>
+
 <center>
-<table><tr valign="middle"><td colspan="3">
-
-<div id="info" style="font-weight:bold; font-size:small; text-align:left; margin-bottom:0.5em;">
-<!--
-<span id="GameEvent"></span>
-&nbsp; &nbsp;
-<span id="GameSite"></span>
-&nbsp; &nbsp;
-<span id="GameDate"></span>
--->
-</div>
-
-</td></tr><tr valign="middle"><td>
+<table><tr valign="middle"><td>
 
 <div id="videodiv" style="text-align:center; font-style:italic;">
 <video id="videoPlayer" controls="controls" autoplay="autoplay"><br/><br/>warning: HTML5 video support required</video>
@@ -189,6 +179,8 @@ if ((videoHeight = gup("videoHeight")) === "") {
 }
 if (videoHeight) { document.getElementById("videodiv").style.height = videoHeight + "px"; }
 
+ignoreVideotimes = ((gup("ignoreVideotimes") == "true") || (gup("ignoreVideotimes") == "t"));
+
 testVideotimes = ((gup("testVideotimes") == "true") || (gup("testVideotimes") == "t"));
 
 setupVideotimes = ((gup("setupVideotimes") == "true") || (gup("setupVideotimes") == "t"));
@@ -196,23 +188,29 @@ document.getElementById("videoTimeInfo").style.display = setupVideotimes ? "inli
 document.getElementById("setupContainer").style.display = setupVideotimes ? "inline" : "none";
 
 if (!videoUrl && !youtubeVideoid) {
-  document.getElementById("info").innerHTML = "<a href='" + window.location.pathname + "?help=true'>videoUrl or youtubeVideoid required: use the help=true URL parameter for help</a>";
+  document.getElementById("info").innerHTML = "<a href='#' onclick='return print_video_help();'>videoUrl or youtubeVideoid required: click here for help</a>";
 }
 
 function print_value(s) {
-  return s ? s : "null";
+  if (s === true) { return "true"; }
+  if (s === false) { return "false"; }
+  return s ? s : "unassigned";
 }
 
-if ((gup("help") == "true") || (gup("help") == "t")) {
-  alert("pgn4web youtube.html parameters" + "\n" +
-        " - pgnData = " + print_value(pgnFile) + "; PGN file to load, if missing and youtubeVideoid is assigned then the youtube video description is used as PGN data (default " + print_value(pgnFile_default) + ")" + "\n" +
-        " - videoUrl = " + print_value(videoUrl) + "; video URL to load (default " + print_value(videoUrl_default) + ")" + "\n" +
-        " - youtubeVideoid = " + print_value(youtubeVideoid) + "; youtube video id, overrides videoUrl (default " + print_value(youtubeVideoid_default) + ")" + "\n" +
-        " - videoWidth = " + print_value(videoWidth) + "; video width (default " + print_value(videoWidth_default) + ")" + "\n" +
-        " - videoHeigth = " + print_value(videoHeight) + "; video height (default " + print_value(videoHeight_default) + ")" + "\n" +
-        " - testVideotimes = true or false; detects missing/wrong video times in the PGN file (default false)" + "\n" +
-        " - setupVideotimes = true or false; if true setup special mode to add video times to the PGN file (default false)" + "\n" +
-        " - help = true or false; prints this help (default false)");
+if (video_help = ((gup("help") == "true") || (gup("help") == "t"))) { print_video_help(); }
+
+function print_video_help() {
+  alert("pgn4web video.html URL parameters:" + "\n\n" +
+        "pgnData=" + print_value(pgnFile) + "\nPGN file to load, if unassigned and youtubeVideoid is assigned, then the youtube video description is used as PGN data; default " + print_value(pgnFile_default) + "\n\n" +
+        "videoUrl=" + print_value(videoUrl) + "\nvideo URL to load; default " + print_value(videoUrl_default) + "\n\n" +
+        "youtubeVideoid=" + print_value(youtubeVideoid) + "\nyoutube video id, overrides videoUrl; default " + print_value(youtubeVideoid_default) + "\n\n" +
+        "videoWidth=" + print_value(videoWidth) + "\nvideo width; default " + print_value(videoWidth_default) + "\n\n" +
+        "videoHeigth=" + print_value(videoHeight) + "\nvideo height; default " + print_value(videoHeight_default) + "\n\n" +
+        "setupVideotimes=" + print_value(setupVideotimes) + "\nif true, setup special mode to add video times info to the PGN file; default false" + "\n\n" +
+        "testVideotimes=" + print_value(testVideotimes) + "\nif true, detects missing/wrong video times info in the PGN file; default false" + "\n\n" +
+        "ignoreVideotimes=" + print_value(ignoreVideotimes) + "\nif true, video times info is ignored; default false" + "\n\n" +
+        "help=" + print_value(video_help) + "\nif true, prints this help; default false");
+  return false;
 }
 
 function gup( name ){
@@ -245,7 +243,9 @@ function gup( name ){
 }
 
 function youtubeFeedCallback(res) {
-    document.getElementById("pgnText").value = res["data"]["description"];
+    if (res && res["data"] && res["data"]["description"]) {
+      document.getElementById("pgnText").value = res["data"]["description"];
+    }
     gotYuotubeDetails = true;
     new_start_pgn4web();
 }
@@ -258,6 +258,20 @@ function getYoutubeDetails(videoid) {
   headID.appendChild(newScript);
 }
 
+var checkYoutubeLoadedDelay = 10000; // milliseconds
+var checkYoutubeLoadedCounter = 10;
+function checkYoutubeLoaded() {
+  if (!videoPlayer || !videoPlayer.getCurrentTime) { 
+    document.getElementById("info").innerHTML = "warning: issues embedding youtube video";
+    if (checkYoutubeLoadedCounter--) {
+      setTimeout("checkYoutubeLoaded();", checkYoutubeLoadedDelay);
+      document.getElementById("info").innerHTML += "...";
+    }
+  } else {
+    document.getElementById("info").innerHTML = "&nbsp;";
+  }
+}
+
 if (youtubeVideoid) {
   document.title = "pgn4web integration with youtube";
   document.getElementById("videodiv").innerHTML = "<br/><br/>warning: flash video support required";
@@ -266,6 +280,7 @@ if (youtubeVideoid) {
   var params = { allowScriptAccess: "always" };
   var atts = { id: "videoPlayer" };
   swfobject.embedSWF("http://www.youtube.com/e/" + youtubeVideoid + "?enablejsapi=1&autoplay=1&loop=0&rel=0&disablekb=1", "videodiv", videoWidth, videoHeight, "8", expressInstall, flashvars, params, atts);
+  setTimeout("checkYoutubeLoaded();", checkYoutubeLoadedDelay);
   if (!pgnFile) { getYoutubeDetails(youtubeVideoid); }
 } else {
   if (theObj = document.getElementById("videoPlayer")) {
@@ -281,10 +296,12 @@ if (pgnFile) {
 SetImagePath ("alpha/26"); 
 SetImageType("png");
 SetHighlightOption(true);
-SetShortcutKeysEnabled(false);
+SetShortcutKeysEnabled(ignoreVideotimes);
 
-clearShortcutSquares("A", "123456");
-clearShortcutSquares("BCDEFGH", "1234567");
+if (!ignoreVideotimes) {
+  clearShortcutSquares("A", "123456");
+  clearShortcutSquares("BCDEFGH", "1234567");
+}
 
 var videotimeForGame = new Array();
 function getVideotimeForGame() {
@@ -337,7 +354,7 @@ function customFunctionOnPgnTextLoad() {
   getVideotimeForGame();
   if (testVideotimes) { runTestVidoetimes(); }
   if (syncTimer) { clearTimeout(syncTimer); }
-  syncTimer = setTimeout("syncBoard();", syncInterval);
+  if (!ignoreVideotimes) { syncTimer = setTimeout("syncBoard();", syncInterval); }
 }
 
 // assumes arrayValues ordered
@@ -399,7 +416,7 @@ function newGameHeader(thisGame, videotime) {
 startedVideotimes = false;
 endedVideotimes = false;
 function getVideotime() {
-  if (endedVideotimes) { return; }
+  if (!setupVideotimes || endedVideotimes) { return; }
   storedVideotime = videoPlayerCurrentTime();
   if (timeCorrection = parseFloat(document.getElementById("timeCorrection").value)) {
     storedVideotime += timeCorrection;
