@@ -329,18 +329,22 @@ function customShortcutKey_Shift_0() {
   if (endedVideotimes) { return; }
   storedVideotime = Math.round(videoPlayerCurrentTime() * 10) / 10;
   if (!startedVideotimes) {
-    writeSetupOutput("\nGame " + (currentGame+1) + "\n" + "[VideoTime \"" + storedVideotime + "\"]\n");
+    writeSetupOutput("\nGame " + (currentGame+1) + "\n" + "[VideoTime \"" + storedVideotime + "\"]\n\n");
     startedVideotimes = true;
     return;
   }
   if (CurrentPly === StartPly+PlyNumber) { 
     if (currentGame+1 < numberOfGames) { 
       Init(currentGame + 1); 
-      writeSetupOutput("\nGame " + (currentGame+1) + "\n" + "[VideoTime \"" + storedVideotime + "\"]\n");
+      writeSetupOutput("\nGame " + (currentGame+1) + "\n" + "[VideoTime \"" + storedVideotime + "\"]\n\n");
     }
   } else { 
     MoveForward(1);
-    writeSetupOutput("ply " + CurrentPly + " " + "{[%vt \"" + storedVideotime + "\"]}\n"); 
+    if (CurrentPly % 2) { writeSetupOutput(((CurrentPly+1)/2) + "."); }
+    writeSetupOutput(" " + Moves[CurrentPly-1]);
+    if (comment = MoveComments[CurrentPly].replace(/\s*\[%vt "[\.0-9]*"\]\s*/g, "")) { writeSetupOutput(" {" + comment + "}"); }
+    writeSetupOutput(" {[%vt \"" + storedVideotime + "\"]}");
+    if (!(CurrentPly % 2)) { writeSetupOutput("\n"); }
   }
   if ((CurrentPly === StartPly+PlyNumber) && (currentGame+1 === numberOfGames)) { 
     writeSetupOutput("\n\n{ end of games/moves }"); 
