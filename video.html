@@ -259,13 +259,12 @@ function getYoutubeDetails(videoid) {
 }
 
 var checkYoutubeLoadedDelay = 10000; // milliseconds
-var checkYoutubeLoadedCounter = 10;
+var checkYoutubeLoadedCounter = 6;
 function checkYoutubeLoaded() {
   if (!videoPlayer || !videoPlayer.getCurrentTime) { 
     document.getElementById("info").innerHTML = "warning: issues embedding youtube video";
     if (checkYoutubeLoadedCounter--) {
       setTimeout("checkYoutubeLoaded();", checkYoutubeLoadedDelay);
-      document.getElementById("info").innerHTML += "...";
     }
   } else {
     document.getElementById("info").innerHTML = "&nbsp;";
