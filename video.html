@@ -421,7 +421,7 @@ function getVideotime() {
     writeSetupOutput(moreText);
   }
   if (CurrentPly === StartPly+PlyNumber) {
-    if (GameResult[currentGame]) { writeSetupOutput("\n" + GameResult[currentGame]); }
+    if (gameResult[currentGame]) { writeSetupOutput(gameResult[currentGame] + "\n"); }
     if (currentGame+1 === numberOfGames) { 
       writeSetupOutput("\n\n% end of games and moves"); 
       endedVideotimes = true;
