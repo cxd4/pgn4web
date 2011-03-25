@@ -117,10 +117,20 @@ body {
 
 <div id="warning" style="color:lightgray; font-style:italic; text-align:left; margin-top: 0.5em; margin-bottom: 0.5em;">pgn4web integration with HTML5 video</div>
 
-<textarea id="setupOutput" style="height:200px; width:100%; display:none; padding: 10px; border-color: lightgray;">
-{ you can easily add video times information to the PGN file by pressing shift-0 each time a new game starts, including the first game, and each time a move is made; any other keypress before the end of the moves might disrupt the process }
+<table id="setupContainer" style="width:100%; display:none;"><tr valign="bottom"><td style="width:30%">
+<span style="font-weight:bold; margin-top: 0.5em;">next move: <span id="GameNextMove"></span></span>
+</td><td style="width:35%">
+<input id="togglevideoButton" type="button" value="play/pause video" onclick="alert('to be done');" style="width:100%; margin-top: 1em;" />
+</td><td style="width:35%">
+<input id="captureButton" type="button" value="capture videotime into the PGN data" disabled="1" onclick="getVideotime();" style="width:100%; margin-top: 1em;" />
+</td></tr><tr><td colspan="3">
+<textarea id="setupOutput" style="height:200px; width:100%; padding: 10px; border-color: lightgray;">
+% you can easily add video times information to the PGN file by pressing the capture button above 
+% each time a new game starts, including the first game, and each time a move is made; 
+% this textbox will display the updated PGN data
 
 </textarea>
+</td></tr></table>
 
 </td></tr></table>
 </center>
@@ -161,7 +171,7 @@ testVideotimes = ((gup("testVideotimes") == "true") || (gup("testVideotimes") ==
 
 setupVideotimes = ((gup("setupVideotimes") == "true") || (gup("setupVideotimes") == "t"));
 document.getElementById("videoTimeInfo").style.display = setupVideotimes ? "inline" : "none";
-document.getElementById("setupOutput").style.display = setupVideotimes ? "inline" : "none";
+document.getElementById("setupContainer").style.display = setupVideotimes ? "inline" : "none";
 
 if ((gup("help") == "true") || (gup("help") == "t")) {
   alert("pgn4web youtube.html parameters" + "\n" +
@@ -221,10 +231,10 @@ if (youtubeVideoid) {
 }
 
 SetPgnUrl(pgnFile); // if set, this has precedence over the inline PGN below
-SetImagePath ("alpha/26"); // use "" path if images are in the same folder as this javascript file
+SetImagePath ("alpha/26"); 
 SetImageType("png");
-SetHighlightOption(true); // true or false
-SetShortcutKeysEnabled(setupVideotimes);
+SetHighlightOption(true);
+SetShortcutKeysEnabled(false);
 
 clearShortcutSquares("A", "123456");
 clearShortcutSquares("BCDEFGH", "1234567");
@@ -248,6 +258,10 @@ function getVideotimeAtPly() {
 }
 
 function customFunctionOnPgnGameLoad() {
+  if (setupVideotimes) { 
+    document.getElementById("captureButton").disabled = 0; 
+    document.getElementById("captureButton").focus(); 
+  }
   getVideotimeAtPly();
 }
 
@@ -323,34 +337,50 @@ function writeSetupOutput(text) {
   setupOutputContainer.scrollTop = setupOutputContainer.scrollHeight;
 }
 
+function newGameHeader(thisGame, videotime) {
+  newHeader = "";
+  if (pgnGame[thisGame]) {
+    oldHeaderMatch = pgnGame[thisGame].match(/(\s*\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)+/);
+    if (oldHeaderMatch) { newHeader = oldHeaderMatch[0]; }
+  }
+  newHeader = newHeader.replace(/\[\s*VideoTime\s*"([^"]*)"\s*\]\s*/g, "");
+  newHeader += "[VideoTime \"" + videotime + "\"]";
+  return newHeader;
+}
+
 startedVideotimes = false;
 endedVideotimes = false;
-function customShortcutKey_Shift_0() {
+function getVideotime() {
   if (endedVideotimes) { return; }
   storedVideotime = Math.round(videoPlayerCurrentTime() * 10) / 10;
   if (!startedVideotimes) {
-    writeSetupOutput("\nGame " + (currentGame+1) + "\n" + "[VideoTime \"" + storedVideotime + "\"]\n\n");
+    writeSetupOutput("\n" + newGameHeader(currentGame, storedVideotime) + "\n\n");
     startedVideotimes = true;
     return;
   }
   if (CurrentPly === StartPly+PlyNumber) { 
     if (currentGame+1 < numberOfGames) { 
       Init(currentGame + 1); 
-      writeSetupOutput("\nGame " + (currentGame+1) + "\n" + "[VideoTime \"" + storedVideotime + "\"]\n\n");
+      writeSetupOutput("\n" + newGameHeader(currentGame, storedVideotime) + "\n\n");
     }
   } else { 
     MoveForward(1);
-    if (CurrentPly % 2) { writeSetupOutput(((CurrentPly+1)/2) + "."); }
-    writeSetupOutput(" " + Moves[CurrentPly-1]);
-    writeSetupOutput(" {[%vt " + storedVideotime + "]");
-    if (comment = MoveComments[CurrentPly].replace(/\s*\[%vt [\.0-9]*\]\s*/g, "")) { writeSetupOutput(" " + comment); }
-    writeSetupOutput("}");
-    if (!(CurrentPly % 2)) { writeSetupOutput("\n"); }
+    moreText = "";
+    moreText += Math.ceil((CurrentPly+1)/2) + ".";
+    if (!(CurrentPly % 2)) { moreText += ".."; }
+    moreText += " " + Moves[CurrentPly-1] + " {[%vt " + storedVideotime + "]";
+    if (comment = MoveComments[CurrentPly].replace(/\s*\[%vt [\.0-9]*\]\s*/g, "")) { moreText += " " + comment; }
+    moreText += "}\n";
+    writeSetupOutput(moreText);
   }
   if ((CurrentPly === StartPly+PlyNumber) && (currentGame+1 === numberOfGames)) { 
-    writeSetupOutput("\n\n{ end of games/moves }"); 
+    writeSetupOutput("\n\n% end of games and moves"); 
     endedVideotimes = true;
   }
+}
+
+function customShortcutKey_Shift_0() {
+  getVideotime();
 }
 
 </script>
