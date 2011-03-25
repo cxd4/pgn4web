@@ -81,9 +81,9 @@ body {
 </textarea></form>
 
 <center>
-<table><tr valign="middle"><td>
+<table><tr valign="middle"><td colspan="3">
 
-<div id="info" style="font-weight:bold;">
+<div id="info" style="font-weight:bold; text-align:left;">
 <span id="GameEvent"></span>
 &nbsp; &nbsp;
 <span id="GameSite"></span>
@@ -91,7 +91,6 @@ body {
 <span id="GameDate"></span>
 </div>
 
-</td><td width="20"></td><td>
 </td></tr><tr valign="middle"><td>
 
 <div id="videodiv" style="text-align:center; font-style:italic;">
@@ -191,7 +190,7 @@ document.getElementById("videoTimeInfo").style.display = setupVideotimes ? "inli
 document.getElementById("setupContainer").style.display = setupVideotimes ? "inline" : "none";
 
 if (!videoUrl && !youtubeVideoid) {
-  document.getElementById("info").innerHTML = "missing videoUrl or youtubeVideoid<br/>use the help=true URL parameter for help";
+  document.getElementById("info").innerHTML = "videoUrl or youtubeVideoid required: use the help=true URL parameter for help";
 }
 
 function print_value(s) {
