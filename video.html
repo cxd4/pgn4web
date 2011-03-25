@@ -21,6 +21,11 @@ body {
   font-family: sans-serif;
 }
 
+a {
+  color: black;
+  text-decoration: none;
+}
+
 .boardTable {
   border-style: solid;
   border-color: #663300;
@@ -142,7 +147,6 @@ body {
 <textarea id="setupOutput" style="height:200px; width:100%; padding: 10px; border-color: lightgray;">
 % you can add video times information to the PGN file by pressing the capture button 
 % each time a new game starts, including the first game, and each time a move is made; 
-% this textbox will display the updated PGN data
 
 </textarea>
 
@@ -190,7 +194,7 @@ document.getElementById("videoTimeInfo").style.display = setupVideotimes ? "inli
 document.getElementById("setupContainer").style.display = setupVideotimes ? "inline" : "none";
 
 if (!videoUrl && !youtubeVideoid) {
-  document.getElementById("info").innerHTML = "videoUrl or youtubeVideoid required: use the help=true URL parameter for help";
+  document.getElementById("info").innerHTML = "<a href='" + window.location.pathname + "?help=true'>videoUrl or youtubeVideoid required: use the help=true URL parameter for help</a>";
 }
 
 function print_value(s) {
