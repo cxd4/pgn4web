@@ -120,7 +120,7 @@ body {
 <table id="setupContainer" style="width:100%; display:none;"><tr valign="bottom"><td style="width:30%">
 <span style="font-weight:bold; margin-top: 0.5em;">next move: <span id="GameNextMove"></span></span>
 </td><td style="width:35%">
-<input id="togglevideoButton" type="button" value="play/pause video" onclick="alert('to be done');" style="width:100%; margin-top: 1em;" />
+<input id="togglevideoButton" type="button" value="play/pause video" disabled="1" onclick="alert('to be done');" style="width:100%; margin-top: 1em;" />
 </td><td style="width:35%">
 <input id="captureButton" type="button" value="capture videotime into the PGN data" disabled="1" onclick="getVideotime();" style="width:100%; margin-top: 1em;" />
 </td></tr><tr><td colspan="3">
@@ -259,6 +259,7 @@ function getVideotimeAtPly() {
 
 function customFunctionOnPgnGameLoad() {
   if (setupVideotimes) { 
+    document.getElementById("togglevideoButton").disabled = 0; 
     document.getElementById("captureButton").disabled = 0; 
     document.getElementById("captureButton").focus(); 
   }
