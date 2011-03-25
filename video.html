@@ -92,9 +92,6 @@ body {
 </div>
 
 </td><td width="20"></td><td>
-
-<div id="videoTimeInfo"></div>
-
 </td></tr><tr valign="middle"><td>
 
 <div id="videodiv" style="text-align:center; font-style:italic;">
@@ -113,26 +110,46 @@ body {
 <div id="GameWhite"></div>
 </div>
 
-</td></tr><tr valign="middle"><td colspan="3">
+</td></tr></table>
 
-<div id="warning" style="color:lightgray; font-style:italic; text-align:left; margin-top: 0.5em; margin-bottom: 0.5em;">pgn4web integration with HTML5 video</div>
+<form id="setupContainer" style="display:none;">
+<table style="width:100%;"><tr valign="bottom"><td>
 
-<table id="setupContainer" style="width:100%; display:none;"><tr valign="bottom"><td style="width:30%">
-<span style="font-weight:bold; margin-top: 0.5em;">next move: <span id="GameNextMove"></span></span>
-</td><td style="width:35%">
-<input id="togglevideoButton" type="button" value="play/pause video" disabled="1" onclick="alert('to be done');" style="width:100%; margin-top: 1em;" />
-</td><td style="width:35%">
-<input id="captureButton" type="button" value="capture videotime into the PGN data" disabled="1" onclick="getVideotime();" style="width:100%; margin-top: 1em;" />
+<div id="videoTimeInfo" style="font-weight:bold; font-size:small; margin-top:2em;"></div>
+
+</td><td>
+
+</td><td>
+
+<div style="text-align:right; margin-top:2em;">
+<span style="font-weight:bold; font-size:small; margin-right:0.5em; margin-left:0.5em;">time correction:</span>
+<input id="timeCorrection" type="text" value="-0.3" style="width:6em;" title="time correction in seconds to be added to the captured video time, usually negative to take into account the lag between seeing a move and clicking the capture button, default -0.3" />
+</div>
+
+</td></tr><tr valign="bottom"><td style="width:33.33%">
+
+<div style="font-weight:bold; font-size:small; margin-right:0.5em;">next move: <span id="GameNextMove"></span></div>
+
+</td><td style="width:33.33%">
+
+<input id="togglevideoButton" type="button" value="play/pause video" disabled="1" onclick="toggleVideoPlayPause();" style="width:100%;" />
+
+</td><td style="width:33.33%">
+
+<input id="captureButton" type="button" value="capture videotime into the PGN data" disabled="1" onclick="getVideotime();" style="width:100%;" />
+
 </td></tr><tr><td colspan="3">
+
 <textarea id="setupOutput" style="height:200px; width:100%; padding: 10px; border-color: lightgray;">
 % you can add video times information to the PGN file by pressing the capture button 
 % each time a new game starts, including the first game, and each time a move is made; 
 % this textbox will display the updated PGN data
 
 </textarea>
-</td></tr></table>
 
 </td></tr></table>
+</form>
+
 </center>
 
 <script type="text/javascript">
@@ -215,7 +232,7 @@ function gup( name ){
 }
 
 if (youtubeVideoid) {
-  document.title = document.getElementById("warning").innerHTML = "pgn4web integration with youtube";
+  document.title = "pgn4web integration with youtube";
   document.getElementById("videodiv").innerHTML = "<br/><br/>warning: flash video support required";
   var expressInstall = null;
   var flashvars = { };
@@ -312,7 +329,7 @@ function videoPlayerCurrentTime() {
   if (videoPlayer && videoPlayer.currentTime) { videoCurrentTime = videoPlayer.currentTime; }
   else if (videoPlayer && videoPlayer.getCurrentTime) { videoCurrentTime = videoPlayer.getCurrentTime(); }
   else { videoCurrentTime = 0; }
-  document.getElementById("videoTimeInfo").innerHTML = videoCurrentTime;
+  document.getElementById("videoTimeInfo").innerHTML = "video time: " + videoCurrentTime;
   return videoCurrentTime;
 }
 
@@ -353,7 +370,11 @@ startedVideotimes = false;
 endedVideotimes = false;
 function getVideotime() {
   if (endedVideotimes) { return; }
-  storedVideotime = Math.round(videoPlayerCurrentTime() * 10) / 10;
+  storedVideotime = videoPlayerCurrentTime();
+  if (timeCorrection = parseFloat(document.getElementById("timeCorrection").value)) {
+    storedVideotime += timeCorrection;
+  }
+  storedVideotime = Math.round(storedVideotime * 10) / 10;
   if (!startedVideotimes) {
     writeSetupOutput("\n" + newGameHeader(currentGame, storedVideotime) + "\n\n");
     startedVideotimes = true;
@@ -382,6 +403,20 @@ function getVideotime() {
 
 function customShortcutKey_Shift_0() {
   getVideotime();
+}
+
+function toggleVideoPlayPause() {
+  var videoPlayer = document.getElementById("videoPlayer");
+  if (videoPlayer && videoPlayer.playVideo) {
+    if (videoPlayer.getPlayerState() == 2) { 
+      videoPlayer.playVideo();
+    } else {
+      videoPlayer.pauseVideo();
+    }
+  } else if (videoPlayer && videoPlayer.play) {
+    if (videoPlayer.paused) { videoPlayer.play(); }
+    else { videoPlayer.pause(); }
+  }
 }
 
 </script>
