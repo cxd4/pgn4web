@@ -85,8 +85,6 @@ a {
 
 </textarea></form>
 
-<div id="info" style="font-weight:bold; font-size:small; text-align:center; margin-bottom:0.5em;">&nbsp;</div>
-
 <center>
 <table><tr valign="middle"><td>
 
@@ -187,10 +185,6 @@ setupVideotimes = ((gup("setupVideotimes") == "true") || (gup("setupVideotimes")
 document.getElementById("videoTimeInfo").style.display = setupVideotimes ? "inline" : "none";
 document.getElementById("setupContainer").style.display = setupVideotimes ? "inline" : "none";
 
-if (!videoUrl && !youtubeVideoid) {
-  document.getElementById("info").innerHTML = "<a href='#' onclick='return print_video_help();'>videoUrl or youtubeVideoid required: click here for help</a>";
-}
-
 function print_value(s) {
   if (s === true) { return "true"; }
   if (s === false) { return "false"; }
@@ -211,6 +205,10 @@ function print_video_help() {
         "ignoreVideotimes=" + print_value(ignoreVideotimes) + "\nif true, video times info is ignored; default false" + "\n\n" +
         "help=" + print_value(video_help) + "\nif true, prints this help; default false");
   return false;
+}
+
+if (!videoUrl && !youtubeVideoid) {
+  if (confirm("pgn4web video.html\n\nerror: videoUrl or youtubeVideoid required\n\nclick OK for more help")) { print_video_help(); }
 }
 
 function gup( name ){
@@ -258,19 +256,6 @@ function getYoutubeDetails(videoid) {
   headID.appendChild(newScript);
 }
 
-var checkYoutubeLoadedDelay = 10000; // milliseconds
-var checkYoutubeLoadedCounter = 6;
-function checkYoutubeLoaded() {
-  if (!videoPlayer || !videoPlayer.getCurrentTime) { 
-    document.getElementById("info").innerHTML = "warning: issues embedding youtube video";
-    if (checkYoutubeLoadedCounter--) {
-      setTimeout("checkYoutubeLoaded();", checkYoutubeLoadedDelay);
-    }
-  } else {
-    document.getElementById("info").innerHTML = "&nbsp;";
-  }
-}
-
 if (youtubeVideoid) {
   document.title = "pgn4web integration with youtube";
   document.getElementById("videodiv").innerHTML = "<br/><br/>warning: flash video support required";
@@ -279,7 +264,6 @@ if (youtubeVideoid) {
   var params = { allowScriptAccess: "always" };
   var atts = { id: "videoPlayer" };
   swfobject.embedSWF("http://www.youtube.com/e/" + youtubeVideoid + "?enablejsapi=1&autoplay=1&loop=0&rel=0&disablekb=1", "videodiv", videoWidth, videoHeight, "8", expressInstall, flashvars, params, atts);
-  setTimeout("checkYoutubeLoaded();", checkYoutubeLoadedDelay);
   if (!pgnFile) { getYoutubeDetails(youtubeVideoid); }
 } else {
   if (theObj = document.getElementById("videoPlayer")) {
