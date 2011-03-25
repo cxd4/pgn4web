@@ -154,7 +154,7 @@ body {
 
 <script type="text/javascript">
 
-var pgnFile_default = "video.pgn";
+var pgnFile_default = "";
 // accepts pgnData as alias for pgnFile for consistency with board.html
 if ((pgnFile = gup("pgnData")) === "") {
   if ((pgnFile = gup("pgnFile")) === "") {
@@ -162,7 +162,7 @@ if ((pgnFile = gup("pgnData")) === "") {
   }
 }
 
-var videoUrl_default = "video.ogv";
+var videoUrl_default = "";
 if ((videoUrl = gup("videoUrl")) === "") {
   videoUrl = videoUrl_default;
 }
@@ -190,13 +190,17 @@ setupVideotimes = ((gup("setupVideotimes") == "true") || (gup("setupVideotimes")
 document.getElementById("videoTimeInfo").style.display = setupVideotimes ? "inline" : "none";
 document.getElementById("setupContainer").style.display = setupVideotimes ? "inline" : "none";
 
+function default_value(s) {
+  return s ? s : "null";
+}
+
 if ((gup("help") == "true") || (gup("help") == "t")) {
   alert("pgn4web youtube.html parameters" + "\n" +
-        " - pgnData = " + pgnFile + "; PGN file to load (default " + pgnFile_default + ")" + "\n" +
-        " - videoUrl = " + videoUrl + "; video URL to load (default " + videoUrl_default + ")" + "\n" +
-        " - youtubeVideoid = " + (youtubeVideoid ? youtubeVideoid : "null") + "; youtube video id, overrides videoUrl (default " + (youtubeVideoid_default ? youtubeVideoid_default : "null") + ")" + "\n" +
-        " - videoWidth = " + (videoWidth ? videoWidth : "null") + "; video width (default " + (videoWidth_default ? videoWidth_default : "null") + ")" + "\n" +
-        " - videoHeigth = " + (videoHeight ? videoHeight : "null") + "; video height (default " + (videoHeight_default ? videoHeight_default : "null") + ")" + "\n" +
+        " - pgnData = " + pgnFile + "; PGN file to load (default " + default_value(pgnFile_default) + ")" + "\n" +
+        " - videoUrl = " + videoUrl + "; video URL to load (default " + default_value(videoUrl_default) + ")" + "\n" +
+        " - youtubeVideoid = " + (youtubeVideoid ? youtubeVideoid : "null") + "; youtube video id, overrides videoUrl (default " + default_value(youtubeVideoid_default) + ")" + "\n" +
+        " - videoWidth = " + (videoWidth ? videoWidth : "null") + "; video width (default " + default_value(videoWidth_default) + ")" + "\n" +
+        " - videoHeigth = " + (videoHeight ? videoHeight : "null") + "; video height (default " + default_value(videoHeight_default) + ")" + "\n" +
         " - testVideotimes = true|false; detects missing/wrong video times in the PGN file (default false)" + "\n" +
         " - setupVideotimes = true|false; if true setup special mode to add video times to the PGN file (default false)" + "\n" +
         " - help = true|false; prints this help (default false)");
@@ -231,6 +235,19 @@ function gup( name ){
   return "";
 }
 
+function youtubeFeedCallback(res) {
+    document.getElementById("pgnText").value = res["data"]["description"];
+//    alert("PAOLO " + res["data"]["title"]);
+}
+
+function getYoutubeDetails(videoid) {
+  var headID = document.getElementsByTagName("head")[0];
+  var newScript = document.createElement("script");
+  newScript.type = "text/javascript";
+  newScript.src = "http://gdata.youtube.com/feeds/api/videos/" + videoid + "?v=2&alt=jsonc&callback=youtubeFeedCallback";
+  headID.appendChild(newScript);
+}
+
 if (youtubeVideoid) {
   document.title = "pgn4web integration with youtube";
   document.getElementById("videodiv").innerHTML = "<br/><br/>warning: flash video support required";
@@ -239,6 +256,7 @@ if (youtubeVideoid) {
   var params = { allowScriptAccess: "always" };
   var atts = { id: "videoPlayer" };
   swfobject.embedSWF("http://www.youtube.com/e/" + youtubeVideoid + "?enablejsapi=1&autoplay=1&loop=0&rel=0&disablekb=1", "videodiv", videoWidth, videoHeight, "8", expressInstall, flashvars, params, atts);
+  if (!pgnFile) { getYoutubeDetails(youtubeVideoid); }
 } else {
   if (theObj = document.getElementById("videoPlayer")) {
     theObj.src = videoUrl;
@@ -247,7 +265,9 @@ if (youtubeVideoid) {
   }
 }
 
-SetPgnUrl(pgnFile); // if set, this has precedence over the inline PGN below
+if (pgnFile) {
+  SetPgnUrl(pgnFile); // if set, this has precedence over the inline PGN below
+}
 SetImagePath ("alpha/26"); 
 SetImageType("png");
 SetHighlightOption(true);
