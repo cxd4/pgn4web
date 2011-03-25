@@ -83,7 +83,7 @@ body {
 <center>
 <table><tr valign="middle"><td>
 
-<div style="font-weight:bold;">
+<div id="info" style="font-weight:bold;">
 <span id="GameEvent"></span>
 &nbsp; &nbsp;
 <span id="GameSite"></span>
@@ -190,20 +190,24 @@ setupVideotimes = ((gup("setupVideotimes") == "true") || (gup("setupVideotimes")
 document.getElementById("videoTimeInfo").style.display = setupVideotimes ? "inline" : "none";
 document.getElementById("setupContainer").style.display = setupVideotimes ? "inline" : "none";
 
-function default_value(s) {
+if (!videoUrl && !youtubeVideoid) {
+  document.getElementById("info").innerHTML = "missing videoUrl or youtubeVideoid<br/>use the help=true URL parameter for help";
+}
+
+function print_value(s) {
   return s ? s : "null";
 }
 
 if ((gup("help") == "true") || (gup("help") == "t")) {
   alert("pgn4web youtube.html parameters" + "\n" +
-        " - pgnData = " + pgnFile + "; PGN file to load (default " + default_value(pgnFile_default) + ")" + "\n" +
-        " - videoUrl = " + videoUrl + "; video URL to load (default " + default_value(videoUrl_default) + ")" + "\n" +
-        " - youtubeVideoid = " + (youtubeVideoid ? youtubeVideoid : "null") + "; youtube video id, overrides videoUrl (default " + default_value(youtubeVideoid_default) + ")" + "\n" +
-        " - videoWidth = " + (videoWidth ? videoWidth : "null") + "; video width (default " + default_value(videoWidth_default) + ")" + "\n" +
-        " - videoHeigth = " + (videoHeight ? videoHeight : "null") + "; video height (default " + default_value(videoHeight_default) + ")" + "\n" +
-        " - testVideotimes = true|false; detects missing/wrong video times in the PGN file (default false)" + "\n" +
-        " - setupVideotimes = true|false; if true setup special mode to add video times to the PGN file (default false)" + "\n" +
-        " - help = true|false; prints this help (default false)");
+        " - pgnData = " + print_value(pgnFile) + "; PGN file to load, if missing and youtubeVideoid is assigned then the youtube video description is used as PGN data (default " + print_value(pgnFile_default) + ")" + "\n" +
+        " - videoUrl = " + print_value(videoUrl) + "; video URL to load (default " + print_value(videoUrl_default) + ")" + "\n" +
+        " - youtubeVideoid = " + print_value(youtubeVideoid) + "; youtube video id, overrides videoUrl (default " + print_value(youtubeVideoid_default) + ")" + "\n" +
+        " - videoWidth = " + print_value(videoWidth) + "; video width (default " + print_value(videoWidth_default) + ")" + "\n" +
+        " - videoHeigth = " + print_value(videoHeight) + "; video height (default " + print_value(videoHeight_default) + ")" + "\n" +
+        " - testVideotimes = true or false; detects missing/wrong video times in the PGN file (default false)" + "\n" +
+        " - setupVideotimes = true or false; if true setup special mode to add video times to the PGN file (default false)" + "\n" +
+        " - help = true or false; prints this help (default false)");
 }
 
 function gup( name ){
@@ -237,7 +241,8 @@ function gup( name ){
 
 function youtubeFeedCallback(res) {
     document.getElementById("pgnText").value = res["data"]["description"];
-//    alert("PAOLO " + res["data"]["title"]);
+    gotYuotubeDetails = true;
+    new_start_pgn4web();
 }
 
 function getYoutubeDetails(videoid) {
@@ -438,6 +443,21 @@ function toggleVideoPlayPause() {
     else { videoPlayer.pause(); }
   }
 }
+
+var gotOnload = false;
+var gotYuotubeDetails = false;
+
+function new_onload() {
+  gotOnload = true;
+  new_start_pgn4web();
+}
+
+function new_start_pgn4web() {
+  if (youtubeVideoid && !pgnFile && (!gotYuotubeDetails || !gotOnload)) { return; }
+  start_pgn4web();
+}
+
+window.onload = new_onload;
 
 </script>
 
