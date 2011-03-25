@@ -413,16 +413,19 @@ function getVideotime() {
   } else { 
     MoveForward(1);
     moreText = "";
-    moreText += Math.ceil((CurrentPly+1)/2) + ".";
+    moreText += Math.ceil(CurrentPly/2) + ".";
     if (!(CurrentPly % 2)) { moreText += ".."; }
     moreText += " " + Moves[CurrentPly-1] + " {[%vt " + storedVideotime + "]";
     if (comment = MoveComments[CurrentPly].replace(/\s*\[%vt [\.0-9]*\]\s*/g, "")) { moreText += " " + comment; }
     moreText += "}\n";
     writeSetupOutput(moreText);
   }
-  if ((CurrentPly === StartPly+PlyNumber) && (currentGame+1 === numberOfGames)) { 
-    writeSetupOutput("\n\n% end of games and moves"); 
-    endedVideotimes = true;
+  if (CurrentPly === StartPly+PlyNumber) {
+    if (GameResult[currentGame]) { writeSetupOutput("\n" + GameResult[currentGame]); }
+    if (currentGame+1 === numberOfGames) { 
+      writeSetupOutput("\n\n% end of games and moves"); 
+      endedVideotimes = true;
+    }
   }
 }
 
