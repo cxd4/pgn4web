@@ -342,8 +342,9 @@ function customShortcutKey_Shift_0() {
     MoveForward(1);
     if (CurrentPly % 2) { writeSetupOutput(((CurrentPly+1)/2) + "."); }
     writeSetupOutput(" " + Moves[CurrentPly-1]);
-    if (comment = MoveComments[CurrentPly].replace(/\s*\[%vt "[\.0-9]*"\]\s*/g, "")) { writeSetupOutput(" {" + comment + "}"); }
-    writeSetupOutput(" {[%vt \"" + storedVideotime + "\"]}");
+    writeSetupOutput(" {[%vt " + storedVideotime + "]");
+    if (comment = MoveComments[CurrentPly].replace(/\s*\[%vt [\.0-9]*\]\s*/g, "")) { writeSetupOutput(" " + comment); }
+    writeSetupOutput("}");
     if (!(CurrentPly % 2)) { writeSetupOutput("\n"); }
   }
   if ((CurrentPly === StartPly+PlyNumber) && (currentGame+1 === numberOfGames)) { 
