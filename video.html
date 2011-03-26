@@ -171,11 +171,13 @@ if ((videoWidth = gup("videoWidth")) === "") {
 }
 if (videoWidth) { document.getElementById("videodiv").style.width = videoWidth + "px"; }
 
-var videoHeight_default = youtubeVideoid ? "360" : "";
+var videoHeight_default = youtubeVideoid ? "270" : "";
 if ((videoHeight = gup("videoHeight")) === "") {
   videoHeight = videoHeight_default;
 }
 if (videoHeight) { document.getElementById("videodiv").style.height = videoHeight + "px"; }
+
+videoLoop = ((gup("videoLoop") == "true") || (gup("videoLoop") == "t"));
 
 ignoreVideotimes = ((gup("ignoreVideotimes") == "true") || (gup("ignoreVideotimes") == "t"));
 
@@ -200,6 +202,7 @@ function print_video_help() {
         "youtubeVideoid=" + print_value(youtubeVideoid) + "\nyoutube video id, overrides videoUrl; default " + print_value(youtubeVideoid_default) + "\n\n" +
         "videoWidth=" + print_value(videoWidth) + "\nvideo width; default " + print_value(videoWidth_default) + "\n\n" +
         "videoHeigth=" + print_value(videoHeight) + "\nvideo height; default " + print_value(videoHeight_default) + "\n\n" +
+        "videoLoop=" + print_value(videoLoop) + "\nloop video; default false" + "\n\n" +
         "setupVideotimes=" + print_value(setupVideotimes) + "\nif true, setup special mode to add video times info to the PGN file; default false" + "\n\n" +
         "testVideotimes=" + print_value(testVideotimes) + "\nif true, detects missing/wrong video times info in the PGN file; default false" + "\n\n" +
         "ignoreVideotimes=" + print_value(ignoreVideotimes) + "\nif true, video times info is ignored; default false" + "\n\n" +
@@ -261,15 +264,16 @@ if (youtubeVideoid) {
   document.getElementById("videodiv").innerHTML = "<br/><br/>warning: flash video support required";
   var expressInstall = null;
   var flashvars = { };
-  var params = { allowScriptAccess: "always" };
+  var params = { allowScriptAccess: "always", allowFullScreen: "true" };
   var atts = { id: "videoPlayer" };
-  swfobject.embedSWF("http://www.youtube.com/e/" + youtubeVideoid + "?enablejsapi=1&autoplay=1&loop=0&rel=0&disablekb=1", "videodiv", videoWidth, videoHeight, "8", expressInstall, flashvars, params, atts);
+  swfobject.embedSWF("http://www.youtube.com/e/" + youtubeVideoid + "?enablejsapi=1&autohide=1&autoplay=1&disablekb=1&fs=1&" + (videoLoop ? "loop=1&playlist=" + youtubeVideoid : "loop=0") + "&rel=0&showinfo=0", "videodiv", videoWidth, videoHeight, "8", expressInstall, flashvars, params, atts);
   if (!pgnFile) { getYoutubeDetails(youtubeVideoid); }
 } else {
   if (theObj = document.getElementById("videoPlayer")) {
     theObj.src = videoUrl;
     if (videoWidth) { theObj.width = videoWidth; }
     if (videoHeight) { theObj.height = videoHeight; } 
+    if (videoLoop) { theObj.loop = "loop"; } 
   }
 }
 
