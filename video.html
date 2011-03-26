@@ -123,17 +123,17 @@ a {
 <input id="timeCorrection" type="text" value="-0.3" style="width:6em;" title="time correction in seconds to be added to the captured video time, usually negative to take into account the lag between seeing a move and clicking the capture button, default -0.3" />
 </div>
 
-</td></tr><tr valign="bottom"><td style="width:33.33%">
+</td></tr><tr valign="bottom"><td style="width:30%">
 
 <div style="font-weight:bold; font-size:small; margin-right:0.5em;">next move: <span id="GameNextMove"></span></div>
 
-</td><td style="width:33.33%">
-
-<input id="togglevideoButton" type="button" value="play/pause video" disabled="1" onclick="toggleVideoPlayPause();" style="width:100%;" />
-
-</td><td style="width:33.33%">
+</td><td style="width:40%">
 
 <input id="captureButton" type="button" value="capture videotime into the PGN data" disabled="1" onclick="getVideotime();" style="width:100%;" />
+
+</td><td style="width:30%">
+
+<input id="togglevideoButton" type="button" value="play/pause video" disabled="1" onclick="toggleVideoPlayPause();" style="width:100%;" />
 
 </td></tr><tr><td colspan="3">
 
@@ -187,7 +187,6 @@ ignoreVideotimes = ((gup("ignoreVideotimes") == "true") || (gup("ignoreVideotime
 testVideotimes = ((gup("testVideotimes") == "true") || (gup("testVideotimes") == "t"));
 
 setupVideotimes = ((gup("setupVideotimes") == "true") || (gup("setupVideotimes") == "t"));
-document.getElementById("videoTimeInfo").style.display = setupVideotimes ? "inline" : "none";
 document.getElementById("setupContainer").style.display = setupVideotimes ? "inline" : "none";
 
 function print_value(s) {
@@ -376,7 +375,7 @@ function videoPlayerCurrentTime() {
   if (videoPlayer && videoPlayer.currentTime) { videoCurrentTime = videoPlayer.currentTime; }
   else if (videoPlayer && videoPlayer.getCurrentTime) { videoCurrentTime = videoPlayer.getCurrentTime(); }
   else { videoCurrentTime = 0; }
-  document.getElementById("videoTimeInfo").innerHTML = "video time: " + videoCurrentTime;
+  document.getElementById("videoTimeInfo").innerHTML = "video time: " + (Math.round(videoCurrentTime * 1000) / 1000);
   return videoCurrentTime;
 }
 
