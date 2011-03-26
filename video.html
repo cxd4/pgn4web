@@ -392,7 +392,8 @@ function newGameHeader(thisGame, videotime) {
     if (oldHeaderMatch) { newHeader = oldHeaderMatch[0]; }
   }
   newHeader = newHeader.replace(/\[\s*VideoTime\s*"([^"]*)"\s*\]\s*/g, "");
-  newHeader += "[VideoTime \"" + videotime + "\"]";
+  newHeader = newHeader.replace(/(^\s*|\s*$)/g, "");
+  newHeader += "\n[VideoTime \"" + videotime + "\"]";
   return newHeader;
 }
 
