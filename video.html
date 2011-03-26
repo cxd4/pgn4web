@@ -198,18 +198,18 @@ function print_value(s) {
   return s ? s : "unassigned";
 }
 
-if (video_help = ((gup("help") == "true") || (gup("help") == "t"))) { print_video_help(); }
+video_help = ((gup("help") == "true") || (gup("help") == "t"));
 
 function print_video_help() {
   alert("pgn4web video.html URL parameters:" + "\n\n" +
-        "pgnData=" + print_value(pgnFile) + "\nPGN file to load, if unassigned and youtubeVideoid is assigned, then the youtube video description is used as PGN data; default " + print_value(pgnFile_default) + "\n\n" +
-        "videoUrl=" + print_value(videoUrl) + "\nvideo URL to load; default " + print_value(videoUrl_default) + "\n\n" +
-        "youtubeVideoid=" + print_value(youtubeVideoid) + "\nyoutube video id, overrides videoUrl; default " + print_value(youtubeVideoid_default) + "\n\n" +
+        "pgnData=" + print_value(pgnFile) + "\nPGN URL to load as PGN data source, overrides youtubeVideoid; default " + print_value(pgnFile_default) + "\n\n" +
+        "videoUrl=" + print_value(videoUrl) + "\nvideo URL to load as video source, overrides youtubeVideoid; default " + print_value(videoUrl_default) + "\n\n" +
+        "youtubeVideoid=" + print_value(youtubeVideoid) + "\nyoutube video id to use as video source and/or as PGN data source (PGN data expected in the youtube video description); default " + print_value(youtubeVideoid_default) + "\n\n" +
         "videoWidth=" + print_value(videoWidth) + "\nvideo width; default " + print_value(videoWidth_default) + "\n\n" +
         "videoHeigth=" + print_value(videoHeight) + "\nvideo height; default " + print_value(videoHeight_default) + "\n\n" +
-        "videoLoop=" + print_value(videoLoop) + "\nloop video; default false" + "\n\n" +
-        "setupVideotimes=" + print_value(setupVideotimes) + "\nif true, setup special mode to add video times info to the PGN file; default false" + "\n\n" +
-        "testVideotimes=" + print_value(testVideotimes) + "\nif true, detects missing/wrong video times info in the PGN file; default false" + "\n\n" +
+        "videoLoop=" + print_value(videoLoop) + "\nif true video loops; default false" + "\n\n" +
+        "setupVideotimes=" + print_value(setupVideotimes) + "\nif true, setup special mode to add video times info to the PGN data; default false" + "\n\n" +
+        "testVideotimes=" + print_value(testVideotimes) + "\nif true, detects missing/wrong video times info in the PGN data; default false" + "\n\n" +
         "ignoreVideotimes=" + print_value(ignoreVideotimes) + "\nif true, video times info is ignored; default false" + "\n\n" +
         "help=" + print_value(video_help) + "\nif true, prints this help; default false");
   return false;
@@ -244,6 +244,27 @@ function gup( name ){
   return "";
 }
 
+paramError = "";
+
+if (videoUrl) {
+  if (theObj = document.getElementById("videoPlayer")) {
+    theObj.src = videoUrl;
+    if (videoWidth) { theObj.width = videoWidth; }
+    if (videoHeight) { theObj.height = videoHeight; } 
+    if (videoLoop) { theObj.loop = "loop"; } 
+  }
+} else if (youtubeVideoid) {
+  document.title = "pgn4web integration with youtube";
+  document.getElementById("videodiv").innerHTML = "<br/><br/>warning: flash video support required";
+  var expressInstall = null;
+  var flashvars = { };
+  var params = { allowScriptAccess: "always", allowFullScreen: "true" };
+  var atts = { id: "videoPlayer" };
+  swfobject.embedSWF("http://www.youtube.com/e/" + youtubeVideoid + "?enablejsapi=1&autohide=1&autoplay=1&disablekb=1&fs=1&" + (videoLoop ? "loop=1&playlist=" + youtubeVideoid : "loop=0") + "&rel=0&showinfo=0", "videodiv", videoWidth, videoHeight, "8", expressInstall, flashvars, params, atts);
+} else {
+  paramError += "error: videoUrl or youtubeVideoid URL parameter required as video source\n\n";
+}
+
 function youtubeFeedCallback(res) {
     if (res && res["data"] && res["data"]["description"]) {
       document.getElementById("pgnText").value = res["data"]["description"];
@@ -260,27 +281,20 @@ function getYoutubeDetails(videoid) {
   headID.appendChild(newScript);
 }
 
-if (youtubeVideoid) {
-  document.title = "pgn4web integration with youtube";
-  document.getElementById("videodiv").innerHTML = "<br/><br/>warning: flash video support required";
-  var expressInstall = null;
-  var flashvars = { };
-  var params = { allowScriptAccess: "always", allowFullScreen: "true" };
-  var atts = { id: "videoPlayer" };
-  swfobject.embedSWF("http://www.youtube.com/e/" + youtubeVideoid + "?enablejsapi=1&autohide=1&autoplay=1&disablekb=1&fs=1&" + (videoLoop ? "loop=1&playlist=" + youtubeVideoid : "loop=0") + "&rel=0&showinfo=0", "videodiv", videoWidth, videoHeight, "8", expressInstall, flashvars, params, atts);
-  if (!pgnFile) { getYoutubeDetails(youtubeVideoid); }
+if (pgnFile) {
+  SetPgnUrl(pgnFile);
+} else if (youtubeVideoid) {
+  getYoutubeDetails(youtubeVideoid);
 } else {
-  if (theObj = document.getElementById("videoPlayer")) {
-    theObj.src = videoUrl;
-    if (videoWidth) { theObj.width = videoWidth; }
-    if (videoHeight) { theObj.height = videoHeight; } 
-    if (videoLoop) { theObj.loop = "loop"; } 
-  }
+  paramError += "error: pgnData or youtubeVideoid URL parameter required as PGN data source\n\n";
 }
 
-if (pgnFile) {
-  SetPgnUrl(pgnFile); // if set, this has precedence over the inline PGN below
+if (video_help) {
+  print_video_help();
+} else if (paramError) {
+  if (confirm("pgn4web video.html\n\n" + paramError + "click OK for more help")) { print_video_help(); }
 }
+
 SetImagePath ("alpha/26"); 
 SetImageType("png");
 SetHighlightOption(true);
@@ -472,10 +486,6 @@ function new_start_pgn4web() {
 }
 
 window.onload = new_onload;
-
-if (!videoUrl && !youtubeVideoid) {
-  if (confirm("pgn4web video.html\n\nerror: videoUrl or youtubeVideoid required\n\nclick OK for more help")) { print_video_help(); }
-}
 
 </script>
 
