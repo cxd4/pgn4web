@@ -32,9 +32,12 @@ a {
   border-width: 3px;
   height: 270px;
   width: 270px;
-  box-shadow: 0px 0px 20px #663300;
-  -webkit-box-shadow: 0px 0px 20px #663300;
-  -moz-box-shadow: 0px 0px 20px #663300;
+}
+
+.boardTable, .videoBox {
+  box-shadow: 0px 0px 15px #663300;
+  -webkit-box-shadow: 0px 0px 15px #663300;
+  -moz-box-shadow: 0px 0px 15px #663300;
 }
 
 .pieceImage {
@@ -88,20 +91,22 @@ a {
 <center>
 <table><tr valign="middle"><td>
 
+<div class="videoBox">
 <div id="videodiv" style="text-align:center; font-style:italic;">
 <video id="videoPlayer" controls="controls" autoplay="autoplay"><br/><br/>warning: HTML5 video support required</video>
+</div>
 </div>
 
 </td><td width="20"></td><td width="270">
 
 <div style="font-weight:bold; margin-bottom:1em;">
 <div id="GameBlackClock" style="float:right;"></div>
-<div id="GameBlack"></div>
+<div id="GameBlack"></div>&nbsp;
 </div>
 <div id="GameBoard"></div>
 <div style="font-weight:bold; margin-top:1em;">
 <div id="GameWhiteClock" style="float:right;"></div>
-<div id="GameWhite"></div>
+<div id="GameWhite"></div>&nbsp;
 </div>
 
 </td></tr></table>
@@ -165,13 +170,13 @@ if ((youtubeVideoid = gup("youtubeVideoid")) === "") {
   youtubeVideoid = youtubeVideoid_default;
 }
 
-var videoWidth_default = youtubeVideoid ? "480" : "";
+var videoWidth_default = "480";
 if ((videoWidth = gup("videoWidth")) === "") {
   videoWidth = videoWidth_default;
 }
 if (videoWidth) { document.getElementById("videodiv").style.width = videoWidth + "px"; }
 
-var videoHeight_default = youtubeVideoid ? "270" : "";
+var videoHeight_default = "270";
 if ((videoHeight = gup("videoHeight")) === "") {
   videoHeight = videoHeight_default;
 }
@@ -208,10 +213,6 @@ function print_video_help() {
         "ignoreVideotimes=" + print_value(ignoreVideotimes) + "\nif true, video times info is ignored; default false" + "\n\n" +
         "help=" + print_value(video_help) + "\nif true, prints this help; default false");
   return false;
-}
-
-if (!videoUrl && !youtubeVideoid) {
-  if (confirm("pgn4web video.html\n\nerror: videoUrl or youtubeVideoid required\n\nclick OK for more help")) { print_video_help(); }
 }
 
 function gup( name ){
@@ -471,6 +472,10 @@ function new_start_pgn4web() {
 }
 
 window.onload = new_onload;
+
+if (!videoUrl && !youtubeVideoid) {
+  if (confirm("pgn4web video.html\n\nerror: videoUrl or youtubeVideoid required\n\nclick OK for more help")) { print_video_help(); }
+}
 
 </script>
 
