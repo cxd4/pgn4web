@@ -27,17 +27,17 @@ a {
 }
 
 .boardTable {
-  border-style: solid;
-  border-color: #663300;
-  border-width: 3px;
-  height: 270px;
-  width: 270px;
-}
-
-.boardTable, .videoBox {
+  height: 272px;
+  width: 272px;
   box-shadow: 0px 0px 15px #663300;
   -webkit-box-shadow: 0px 0px 15px #663300;
   -moz-box-shadow: 0px 0px 15px #663300;
+}
+
+.videoBox {
+  box-shadow: 0px 0px 16px #663300;
+  -webkit-box-shadow: 0px 0px 16px #663300;
+  -moz-box-shadow: 0px 0px 16px #663300;
 }
 
 .pieceImage {
@@ -49,10 +49,10 @@ a {
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 33px;
-  height: 33px;
+  width: 34px;
+  height: 34px;
   border-style: solid;
-  border-width: 2px;
+  border-width: 1px;
 }
 
 .whiteSquare,
@@ -69,8 +69,8 @@ a {
 
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  border-color: #663300;
-  border-style: solid;
+  border-style: inset;
+  border-color: #CC9966;
 }
 
 </style>
@@ -103,7 +103,7 @@ a {
 <div id="GameBlackClock" style="float:right;"></div>
 <span id="GameBlack"></span>&nbsp;
 </div>
-<div id="GameBoard"><div style="width:270px; height:270px;"></div></div>
+<div id="GameBoard"><div style="width:272px; height:272px;"></div></div>
 <div style="font-weight:bold; margin-top:1em;">
 <div id="GameWhiteClock" style="float:right;"></div>
 <span id="GameWhite"></span>&nbsp;
