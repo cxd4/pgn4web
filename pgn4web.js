@@ -2856,8 +2856,7 @@ function ParseMove(move, plyCount) {
       else if (newPiece == PieceCode[4]) { mvPieceOnTo = 5; }
       if (mvPieceOnTo != mvPiece) { mvIsPromotion = 1; }
     }
-    if ( mvIsPromotion && !(mvToRow == 7 * (1-MoveColor))) { return false; }
-    if (!mvIsPromotion &&  (mvToRow == 7 * (1-MoveColor))) { return false; }
+    if ((mvToRow == 7 * (1-MoveColor)) ? !mvIsPromotion : mvIsPromotion) { return false; }
   }
 
   // which piece was captured: if nothing found must be en-passant
