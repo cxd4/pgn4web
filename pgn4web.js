@@ -2809,7 +2809,7 @@ function ParseMove(move, plyCount) {
 
   // get piece and origin square: mark captures ('x' is there)
   ll = remainder.length;
-  if (ll > 3) { return false; }
+  if (ll > 4) { return false; }
   mvPiece = -1; // make sure mvPiece is properly assigned later
   if (ll === 0) { mvPiece = 6; }
   else {
@@ -2823,6 +2823,10 @@ function ParseMove(move, plyCount) {
     } else {
       mvFromRow = move.charAt(ll-1-mvCapture) - 1;
       if ((mvFromRow < 0) || (mvFromRow > 7)) { mvFromRow = -1; }
+      else {
+        mvFromCol = move.charCodeAt(ll-2-mvCapture) - 97;
+        if ((mvFromCol < 0) || (mvFromCol > 7)) { mvFromCol = -1; }
+      }
     }
     
     if ( (ll > 1) && (!mvCapture) && (mvFromCol == -1) && (mvFromRow == -1) ) { return false; }
