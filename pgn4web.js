@@ -2831,7 +2831,6 @@ function ParseMove(move, plyCount) {
     
     if ( (ll > 1) && (!mvCapture) && (mvFromCol == -1) && (mvFromRow == -1) ) { return false; }
     if ( (mvPiece == 6) && (!mvCapture) && (mvFromCol == -1) && (mvFromRow == -1) ) { return false; }
-    if ( (mvPiece == 6) && (mvFromCol == mvToCol) ) { return false; }
   }
 
   mvPieceOnTo = mvPiece;
@@ -2845,18 +2844,20 @@ function ParseMove(move, plyCount) {
     }
   }
 
-  // move contains '=' or char after destination row: might be a promotion
-  ii = move.indexOf('=');
-  if (ii < 0) { ii = toRowMarker; }
-  if ((ii > 0) && (ii < move.length-1)) {
-    if (mvPiece == 6) {
+  if (mvPiece == 6) {
+    // move contains '=' or char after destination row: might be a promotion
+    ii = move.indexOf('=');
+    if (ii < 0) { ii = toRowMarker; }
+    if ((ii > 0) && (ii < move.length-1)) {
       var newPiece = move.charAt(ii+1);
       if (newPiece == PieceCode[1]) { mvPieceOnTo = 2; }
       else if (newPiece == PieceCode[2]) { mvPieceOnTo = 3; }
       else if (newPiece == PieceCode[3]) { mvPieceOnTo = 4; }
       else if (newPiece == PieceCode[4]) { mvPieceOnTo = 5; }
-      mvIsPromotion = 1;
+      if (mvPieceOnTo != mvPiece) { mvIsPromotion = 1; }
     }
+    if ( mvIsPromotion && !(mvToRow == 7 * (1-MoveColor))) { return false; }
+    if (!mvIsPromotion &&  (mvToRow == 7 * (1-MoveColor))) { return false; }
   }
 
   // which piece was captured: if nothing found must be en-passant
