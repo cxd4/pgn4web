@@ -17,7 +17,7 @@ function get_param($param, $shortParam, $default) {
   return $default;
 }
 
-$pgnUrl = get_param("pgnUrl", "pu", "tactics.pgn");
+$pgnData = get_param("pgnData", "pd", "tactics.pgn");
 $gameNum = get_param("gameNum", "gn", "");
 $lightColorHex = get_param("lightColorHex", "lch", "EFF4EC"); // FFCC99
 $darkColorHex = get_param("darkColorHex", "dch", "C6CEC3"); // CC9966
@@ -30,7 +30,7 @@ function get_pgnText($pgnUrl) {
   return $pgnText;
 }
 
-$pgnText = get_pgnText($pgnUrl);
+$pgnText = get_pgnText($pgnData);
 
 $numGames = preg_match_all("/(\s*\[\s*(\w+)\s*\"([^\"]*)\"\s*\]\s*)+[^\[]*/", $pgnText, $games );
 
@@ -204,8 +204,8 @@ iframe support required to display the pgn4web puzzle of the day
 </iframe>
 
 the following URL parameters allow customization of the pgn4web puzzle of the day:
-- pgnUrl=... sets the URL of the PGN file containing the puzzles, default: tactics.pgn
-- gameNum=... sets the game number for the puzzle to be shown, default: puzzle of the day
+- pgnData=... selects the PGN file containing the puzzles, default: tactics.pgn
+- gameNum=... sets the game number for the puzzle to be shown, default: blank, showing the puzzle of the day
 - lightColorHex=... sets the light squares color, in hexadecimal format, default: EFF4EC
 - darkColorHex=... sets the dark squares color, in hexadecimal format, default: C6CEC3
 - controlBackgroundColorHex=... sets the buttons background color, in hexadecimal format, default: EFF4EC
