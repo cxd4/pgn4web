@@ -35,7 +35,7 @@ $pgnText = get_pgnText($pgnData);
 $numGames = preg_match_all("/(\s*\[\s*(\w+)\s*\"([^\"]*)\"\s*\]\s*)+[^\[]*/", $pgnText, $games );
 
 if ($gameNum == "random") { $gameNum = rand(1, $numGames); }
-else if (! is_numeric($gameNum)) { $gameNum = ceil((time() / (60 * 60 * 24)) / $numGames); }
+else if (! is_numeric($gameNum)) { $gameNum = ceil((time() / (60 * 60 * 24)) % $numGames); }
 else if ($gameNum < 1) { $gameNum = 1; }
 else if ($gameNum > $numGames) { $gameNum = $numGames; }
 $gameNum -= 1;
