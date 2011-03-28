@@ -42,6 +42,19 @@ $gameNum -= 1;
 
 $pgnGame = $games[0][$gameNum];
 
+function curPageURL() {
+  $pageURL = 'http';
+  if ($_SERVER["HTTPS"] == "on") { $pageURL .= "s"; }
+  $pageURL .= "://";
+  if ($_SERVER["SERVER_PORT"] != "80") {
+  $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+  } else {
+    $pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+  }
+  return $pageURL;
+}
+$thisPage = curPageURL();
+
 print <<<END
 
 <html>
@@ -186,9 +199,7 @@ pgn4web puzzle of the day, updated at 00:00 GMT
 
 you can add the pgn4web puzzle of the day to your site with the following HTML code:
 
-<iframe height='240' width='270' frameborder='0' scrolling='no'
-        marginheight='0' marginwidth='0'
-        src='$thisPage'>
+<iframe height='270' width='240' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='$thisPage'>
 iframe support required to display the pgn4web puzzle of the day
 </iframe>
 
