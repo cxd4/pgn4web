@@ -180,7 +180,27 @@ function rightButtonAction() {
 
 $pgnGame
 
-{ pgn4web puzzle of the day updated at 00:00 GMT }
+{
+
+pgn4web puzzle of the day, updated at 00:00 GMT
+
+you can add the pgn4web puzzle of the day to your site with the following HTML code:
+
+<iframe height='240' width='270' frameborder='0' scrolling='no'
+        marginheight='0' marginwidth='0'
+        src='$thisPage'>
+iframe support required to display the pgn4web puzzle of the day
+</iframe>
+
+the following URL parameters allow customization of the pgn4web puzzle of the day:
+- pgnUrl=... sets the URL of the PGN file containing the puzzles, default: tactics.pgn
+- gameNum=... sets the game number for the puzzle to be shown, default: puzzle of the day
+- lightColorHex=... sets the light squares color, in hexadecimal format, default: EFF4EC
+- darkColorHex=... sets the dark squares color, in hexadecimal format, default: C6CEC3
+- controlBackgroundColorHex=... sets the buttons background color, in hexadecimal format, default: EFF4EC"
+- controlTextColorHex=... sets the buttons text color, in hexadecimal format, default: 888888
+
+}
 
 </textarea></form>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
