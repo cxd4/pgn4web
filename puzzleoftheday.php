@@ -197,7 +197,7 @@ the following URL parameters allow customization of the pgn4web puzzle of the da
 - gameNum=... sets the game number for the puzzle to be shown, default: puzzle of the day
 - lightColorHex=... sets the light squares color, in hexadecimal format, default: EFF4EC
 - darkColorHex=... sets the dark squares color, in hexadecimal format, default: C6CEC3
-- controlBackgroundColorHex=... sets the buttons background color, in hexadecimal format, default: EFF4EC"
+- controlBackgroundColorHex=... sets the buttons background color, in hexadecimal format, default: EFF4EC
 - controlTextColorHex=... sets the buttons text color, in hexadecimal format, default: 888888
 
 }
