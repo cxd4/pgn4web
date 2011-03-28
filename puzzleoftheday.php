@@ -128,7 +128,7 @@ function customFunctionOnMove() {
   switch (CurrentPly) {
     case StartPly:
       document.getElementById("leftButton").value = (CurrentPly % 2) ? "black to move" : "white to move";
-      document.getElementById("leftButton").title = (CurrentPly % 2) ? "black to move" : "white to move";
+      document.getElementById("leftButton").title = ((CurrentPly % 2) ? "black to move" : "white to move") + ": find the best continuation";
       document.getElementById("rightButton").value = "solution";
       document.getElementById("rightButton").title = "show the puzzle solution on the chessboard step by step";
       break;
