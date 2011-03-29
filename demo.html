@@ -138,7 +138,7 @@ function openPgn4webTest(url) {
 
 <p></p>
 <center>
-<iframe id="pgnframe" name="pgnframe" style="border-style:none; border-width:0; border-color:#000000;" height="2000" width="100%" scrolling="no" marginheight="0" marginwidth="0">your browser does not support the required iframe functionality</iframe>
+<iframe id="pgnframe" name="pgnframe" frameborder='0' height="2000" width="100%" scrolling="no" marginheight="0" marginwidth="0">your browser does not support the required iframe functionality</iframe>
 </center>
 <p></p> 
 <br>
@@ -164,9 +164,6 @@ function select_frame(new_frame){
 
     new_frame_width = '100%';
     new_frame_height = '1000px';
-    new_frame_borderStyle = 'none';
-    new_frame_borderWidth = '0';
-    new_frame_borderColor = '#000000';
 
     switch (new_frame) {
       case 'collection':
@@ -183,11 +180,8 @@ function select_frame(new_frame){
         new_frame_height = '450px';
         break;
       case 'puzzleoftheday':
-        new_frame_width = '240px';
-        new_frame_height = '270px';
-        new_frame_borderStyle = 'solid';
-        new_frame_borderWidth = '1px';
-        new_frame_borderColor = '#A4A4A4';
+        new_frame_width = '242px';
+        new_frame_height = '272px';
         break;
       case 'tilb98r2_live':
         new_frame_width = '480px';
@@ -201,9 +195,6 @@ function select_frame(new_frame){
     }
     document.getElementById('pgnframe').width = new_frame_width; 
     document.getElementById('pgnframe').height = new_frame_height;
-    document.getElementById('pgnframe').style.borderStyle = new_frame_borderStyle;
-    document.getElementById('pgnframe').style.borderWidth = new_frame_borderWidth;
-    document.getElementById('pgnframe').style.borderColor = new_frame_borderColor;
   
     selected_object.className = "linkselected"; 
 
