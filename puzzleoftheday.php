@@ -190,7 +190,6 @@ body {
   height: $buttonHeightCss;
   background-color: #$controlBackgroundColorHex;
   border-style:none;
-  display: inline;
 }
 
 </style>
@@ -295,7 +294,11 @@ the following URL parameters allow customization of the pgn4web puzzle of the da
 <div style="display: inline" id="GameBoard"></div>
 
 <form style="display: inline">
-<input id="leftButton" type="button" value="left button" title="" class="newButton" onClick="javascript:leftButtonAction();" onFocus="this.blur()"><input id="rightButton" type="button" value="right button" title="" class="newButton" onClick="javascript:rightButtonAction();" onFocus="this.blur()">
+<table border="0" cellspacing="0" cellpadding="0"><tr><td>
+<input id="leftButton" type="button" value="" title="" class="newButton" onClick="javascript:leftButtonAction();" onFocus="this.blur()">
+</td><td>
+<input id="rightButton" type="button" value="" title="" class="newButton" onClick="javascript:rightButtonAction();" onFocus="this.blur()">
+</td></tr></table>
 </form>
 
 </div></center>
