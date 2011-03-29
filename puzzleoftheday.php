@@ -230,11 +230,11 @@ function customFunctionOnMove() {
           outcome = "draw game";
           break;
         default:
-          outcome = "";
+          outcome = "end";
           break;
       }
       document.getElementById("rightButton").value = outcome;
-      document.getElementById("rightButton").title = "final position" + (outcome ? ": " + outcome : "");
+      document.getElementById("rightButton").title = "final position" + ((outcome == "end") ? "" : ": " + outcome);
       break;
     default:
       document.getElementById("leftButton").value = "back";
