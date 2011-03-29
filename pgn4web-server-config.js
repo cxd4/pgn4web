@@ -55,11 +55,3 @@ pgn4web_viewer_url = 'demo.html?frame=inputform';
 // pgn4web_viewer_url = 'viewer.php';
 //
 
-//
-// the URL for the puzzle of the day tool, default = 'demo.html?frame=tactics'
-// used by: home.html, demo.html
-//
-pgn4web_puzzleoftheday_url = 'demo.html?frame=tactics';
-// pgn4web_puzzleoftheday_url = 'demo.html?frame=puzzleoftheday';
-//
-
