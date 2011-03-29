@@ -64,7 +64,7 @@ $buttonHeight = $squareSize;
 $buttonHeightCss = $buttonHeight . "px";
 $buttonWidth = $squareSize * 4;
 $buttonWidthCss = $buttonWidth . "px";
-$buttonFontSize = ceil($squareSize / 2.5);
+$buttonFontSize = floor($squareSize / 2.5);
 $buttonFontSizeCss = $buttonFontSize . "px";
 
 $frameBorderColorHex = get_param("frameBorderColorHex", "fbch", "A4A4A4");
