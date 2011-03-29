@@ -69,7 +69,7 @@ $buttonFontSizeCss = $buttonFontSize . "px";
 
 $frameBorderColorHex = get_param("frameBorderColorHex", "fbch", "A4A4A4");
 if ($frameBorderColorHex == "none") { 
-  $frameBorderColorHex = false; 
+  $frameBorderColorHex = "000000"; 
   $frameBorderWidth = 0;
 } else {
   $frameBorderWidth = ceil($squareSize / 50);
@@ -293,16 +293,14 @@ the following URL parameters allow customization of the pgn4web puzzle of the da
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
 <center><div class="container">
-<form style="display: inline">
-<table height="$frameHeight" width="$frameWidth" border="0" cellspacing="0" cellpadding="0"><tr><td colspan="2">
 <div style="display: inline" id="GameBoard"></div>
-</td></tr><tr><td>
+<form style="display: inline">
+<table border="0" cellspacing="0" cellpadding="0"><tr><td>
 <input id="leftButton" type="button" value="" title="" class="newButton" onClick="javascript:leftButtonAction();" onFocus="this.blur()">
 </td><td>
 <input id="rightButton" type="button" value="" title="" class="newButton" onClick="javascript:rightButtonAction();" onFocus="this.blur()">
 </td></tr></table>
 </form>
-
 </div></center>
 
 </body>
