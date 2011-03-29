@@ -92,6 +92,13 @@ function get_pgnText($pgnUrl) {
 
 $pgnText = get_pgnText($pgnData);
 
+// for simplicity, remove all comments from the game text 
+// to avoid spurious [ in comments breaking the regular expression 
+// splitting the PGN data into games
+$pgnText = preg_replace("/{[^}]*}/", "", $pgnText);
+$pgnText = preg_replace("/;[^\n$]*/", "", $pgnText);
+$pgnText = preg_replace("/(\n|^)%[^\n$]*/", "", $pgnText);
+
 $numGames = preg_match_all("/(\s*\[\s*(\w+)\s*\"([^\"]*)\"\s*\]\s*)+[^\[]*/", $pgnText, $games );
 
 if ($gameNum == "random") { $gameNum = rand(1, $numGames); }
