@@ -153,6 +153,8 @@ body {
 }
 
 .pieceImage {
+  width: $pieceSizeCss;
+  height: $pieceSizeCss;
 }
 
 .whiteSquare,
