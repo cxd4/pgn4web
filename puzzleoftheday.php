@@ -31,7 +31,7 @@ $squareSize = get_param("squareSize", "ss", "30");
 if ($squareSize < 22) { $squareSize = 22; }
 $squareSizeCss = $squareSize . "px";
 
-$borderSize = floor(0.05 * $squareSize);
+$borderSize = ceil($squareSize / 50);
 $borderSizeCss = $borderSize . "px";
 
 function defaultPieceSize($ss) {
@@ -64,7 +64,7 @@ $buttonHeight = $squareSize;
 $buttonHeightCss = $buttonHeight . "px";
 $buttonWidth = $squareSize * 4;
 $buttonWidthCss = $buttonWidth . "px";
-$buttonFontSize = floor($squareSize / 2.5);
+$buttonFontSize = ceil($squareSize / 3);
 $buttonFontSizeCss = $buttonFontSize . "px";
 
 $frameBorderColorHex = get_param("frameBorderColorHex", "fbch", "A4A4A4");
@@ -72,7 +72,7 @@ if ($frameBorderColorHex == "none") {
   $frameBorderColorHex = false; 
   $frameBorderWidth = 0;
 } else {
-  $frameBorderWidth = floor($squareSize / 20);
+  $frameBorderWidth = ceil($squareSize / 50);
 }
 $frameBorderWidthCss = $frameBorderWidth . "px";
 
@@ -142,7 +142,7 @@ body {
   width: $frameWidthCss;
   height: $frameHeightCss;
   border-color: #$frameBorderColorHex;
-  border-style: solid;
+  border-style: outset;
   border-width: $frameBorderWidthCss;
 }
 
