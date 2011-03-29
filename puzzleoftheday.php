@@ -278,7 +278,7 @@ iframe support required to display the pgn4web puzzle of the day
 the following URL parameters allow customization of the pgn4web puzzle of the day:
 - pgnData=... selects the PGN file containing the puzzles, default: tactics.pgn
 - gameNum=... sets the game number for the puzzle to be shown, default: blank, showing the puzzle of the day
-- squareSize=...sets the chessboard square size, default 30
+- squareSize=... sets the chessboard square size, default 30
 - lightColorHex=... sets the light squares color, in hexadecimal format, default: EFF4EC
 - darkColorHex=... sets the dark squares color, in hexadecimal format, default: C6CEC3
 - pieceFont=... sets the piece font type, either alpha, merida, uscf or default, default: default
