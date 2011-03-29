@@ -82,7 +82,7 @@ $frameHeight = $boardSize + $buttonHeight;
 $frameHeightCss = $frameHeight . "px";
 
 $outerFrameWidth = $frameWidth + 2 * $frameBorderWidth;
-$outerFrameHeight = $frameHeight + 2 * $frameBorderHeight;
+$outerFrameHeight = $frameHeight + 2 * $frameBorderWidth;
 
 function get_pgnText($pgnUrl) {
   $fileLimitBytes = 10000000; // 10Mb
