@@ -66,6 +66,15 @@ $buttonWidth = $squareSize * 4;
 $buttonWidthCss = $buttonWidth . "px";
 $buttonFontSize = floor($squareSize / 2.5);
 $buttonFontSizeCss = $buttonFontSize . "px";
+$buttonPadding = floor($squareSize / 10);
+$buttonPaddingCss = $buttonPadding . "px";
+
+$sidetomoveBorder = floor($buttonFontSize / 8);
+$sidetomoveBorderCss = $sidetomoveBorder . "px";
+$sidetomoveHeight = $buttonFontSize;
+$sidetomoveHeightCss = $sidetomoveHeight . "px";
+$sidetomoveWidth = $buttonFontSize;
+$sidetomoveWidthCss = $sidetomoveWidth . "px";
 
 $frameBorderColorHex = get_param("frameBorderColorHex", "fbch", "A4A4A4");
 if ($frameBorderColorHex == "none") { 
@@ -83,9 +92,6 @@ $frameHeightCss = $frameHeight . "px";
 
 $outerFrameWidth = $frameWidth + 2 * $frameBorderWidth;
 $outerFrameHeight = $frameHeight + 2 * $frameBorderWidth;
-
-$whiteToMoveString = get_param("whiteToMoveString", "wtms", "White to move");
-$blackToMoveString = get_param("blackToMoveString", "wtms", "Black to move");
 
 function get_pgnText($pgnUrl) {
   $fileLimitBytes = 10000000; // 10Mb
@@ -196,14 +202,30 @@ body {
   border-style: inset;
 }
 
-.newButton {
-  font-size: $buttonFontSizeCss;
-  font-weight: bold;
-  color: #$controlTextColorHex;
+.buttonCell {
   width: $buttonWidthCss;
   height: $buttonHeightCss;
   background-color: #$controlBackgroundColorHex;
-  border-style:none;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: $buttonPaddingCss;
+}
+
+.buttonCellLink {
+  font-family: sans-serif;
+  font-size: $buttonFontSizeCss;
+  font-weight: bold;
+  color: #$controlTextColorHex;
+  background-color: #$controlBackgroundColorHex;
+  text-decoration: none;
+}
+
+.sidetomoveBox {
+  width: $sidetomoveWidthCss;
+  height: $sidetomoveHeightCss;
+  border-style: solid;
+  border-width: $sidetomoveBorderCss;
+  border-color: #$controlTextColorHex;
 }
 
 </style>
@@ -221,13 +243,13 @@ clearShortcutSquares("ABCDEFGH", "123456");
 function customFunctionOnMove() {
   switch (CurrentPly) {
     case StartPly:
-      document.getElementById("leftButton").value = (CurrentPly % 2) ? "$blackToMoveString" : "$whiteToMoveString";
+      document.getElementById("leftButtonLink").innerHTML = "<table class='sidetomoveBox' style='background-color:" + (CurrentPly % 2 ? "black" : "white" ) + ";' cellspacing='0' cellpadding='0'><tr><td></td></tr></table>";
       document.getElementById("leftButton").title = ((CurrentPly % 2) ? "Black to move" : "White to move") + ": find the puzzle's solution";
-      document.getElementById("rightButton").value = ">";
+      document.getElementById("rightButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
       document.getElementById("rightButton").title = "show the puzzle's solution step by step on the chessboard";
       break;
     case StartPly+PlyNumber:
-      document.getElementById("leftButton").value = "<";
+      document.getElementById("leftButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
       document.getElementById("leftButton").title = "move one step backwards";
       switch (res = gameResult[currentGame]) {
         case "1-0":
@@ -244,13 +266,13 @@ function customFunctionOnMove() {
           res = "*";
           break;
       }
-      document.getElementById("rightButton").value = res;
+      document.getElementById("rightButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + res + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
       document.getElementById("rightButton").title = "final position" + ((outcome == "end") ? "" : ": " + outcome);
       break;
     default:
-      document.getElementById("leftButton").value = "<";
+      document.getElementById("leftButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
       document.getElementById("leftButton").title = "move one step backwards";
-      document.getElementById("rightButton").value = ">";
+      document.getElementById("rightButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
       document.getElementById("rightButton").title = "continue showing the puzzle's solution step by step on the chessboard";
       break;
   }
@@ -299,24 +321,27 @@ the following URL parameters allow customization of the pgn4web puzzle of the da
 - controlBackgroundColorHex=... sets the buttons background color, in hexadecimal format, default: EFF4EC
 - controlTextColorHex=... sets the buttons text color, in hexadecimal format, default: 888888
 - frameBorderColorHex=... sets the frame border color, in hexadecimal format, or none, default: A4A4A4
-- whiteToMoveString=... sets the puzzle text string for White to move, default: "White to move"
-- blackToMoveString=... sets the puzzle text string for Black to move, default: "Black to move"
 
 }
 
 </textarea></form>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
-<center><div class="container">
+<center>
+<div class="container">
 <div style="display: inline" id="GameBoard"></div>
-<form style="display: inline">
-<table border="0" cellspacing="0" cellpadding="0"><tr><td>
-<input id="leftButton" type="button" value="" title="" class="newButton" onClick="javascript:leftButtonAction();" onFocus="this.blur()">
-</td><td>
-<input id="rightButton" type="button" value="" title="" class="newButton" onClick="javascript:rightButtonAction();" onFocus="this.blur()">
-</td></tr></table>
-</form>
-</div></center>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td id="leftButton" title="" class="buttonCell" onClick="javascript:leftButtonAction();" align="center" valign="middle">
+<a id="leftButtonLink" class="buttonCellLink" href="#" onfocus="blur();"></a>
+</td>
+<td id="rightButton" title="" class="buttonCell" onClick="javascript:rightButtonAction();" align="center" valign="middle">
+<a id="rightButtonLink" class="buttonCellLink" href="#" onfocus="blur();"></a>
+</td>
+</tr>
+</table>
+</div>
+</center>
 
 </body>
 
