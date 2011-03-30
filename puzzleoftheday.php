@@ -134,7 +134,6 @@ function curPageURL() {
 $thisPage = curPageURL();
 
 print <<<END
-
 <html>
 
 <head>
