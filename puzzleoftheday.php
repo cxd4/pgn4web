@@ -336,10 +336,10 @@ the following URL parameters allow customization of the pgn4web puzzle of the da
 <table class="buttonTable" border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td id="leftButton" title="" class="buttonCell" onClick="javascript:leftButtonAction();" align="center" valign="middle">
-<a id="leftButtonLink" class="buttonCellLink" href="javascript: return null;" onfocus="blur();"></a>
+<a id="leftButtonLink" class="buttonCellLink" href="javascript:void(0);" onfocus="blur();"></a>
 </td>
 <td id="rightButton" title="" class="buttonCell" onClick="javascript:rightButtonAction();" align="center" valign="middle">
-<a id="rightButtonLink" class="buttonCellLink" href="javascript: return null;" onfocus="blur();"></a>
+<a id="rightButtonLink" class="buttonCellLink" href="javascript:void(0);" onfocus="blur();"></a>
 </td>
 </tr>
 </table>
