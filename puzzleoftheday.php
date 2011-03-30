@@ -84,6 +84,9 @@ $frameHeightCss = $frameHeight . "px";
 $outerFrameWidth = $frameWidth + 2 * $frameBorderWidth;
 $outerFrameHeight = $frameHeight + 2 * $frameBorderWidth;
 
+$whiteToMoveString = get_param("whiteToMoveString", "wtms", "White to move");
+$blackToMoveString = get_param("blackToMoveString", "wtms", "Black to move");
+
 function get_pgnText($pgnUrl) {
   $fileLimitBytes = 10000000; // 10Mb
   $pgnText = file_get_contents($pgnUrl, NULL, NULL, 0, $fileLimitBytes + 1);
@@ -218,15 +221,15 @@ clearShortcutSquares("ABCDEFGH", "123456");
 function customFunctionOnMove() {
   switch (CurrentPly) {
     case StartPly:
-      document.getElementById("leftButton").value = (CurrentPly % 2) ? "black to move" : "white to move";
-      document.getElementById("leftButton").title = ((CurrentPly % 2) ? "black to move" : "white to move") + ": find the best continuation";
-      document.getElementById("rightButton").value = "solution";
-      document.getElementById("rightButton").title = "show the puzzle solution on the chessboard step by step";
+      document.getElementById("leftButton").value = (CurrentPly % 2) ? "$blackToMoveString" : "$whiteToMoveString";
+      document.getElementById("leftButton").title = ((CurrentPly % 2) ? "Black to move" : "White to move") + ": find the puzzle's solution";
+      document.getElementById("rightButton").value = ">";
+      document.getElementById("rightButton").title = "show the puzzle's solution step by step on the chessboard";
       break;
     case StartPly+PlyNumber:
-      document.getElementById("leftButton").value = "back";
+      document.getElementById("leftButton").value = "<";
       document.getElementById("leftButton").title = "move one step backwards";
-      switch (gameResult[currentGame]) {
+      switch (res = gameResult[currentGame]) {
         case "1-0":
           outcome = "white wins";
           break;
@@ -234,20 +237,21 @@ function customFunctionOnMove() {
           outcome = "black wins";
           break;
         case "1/2-1/2":
-          outcome = "draw game";
+          outcome = "draw";
           break;
         default:
           outcome = "end";
+          res = "*";
           break;
       }
-      document.getElementById("rightButton").value = outcome;
+      document.getElementById("rightButton").value = res;
       document.getElementById("rightButton").title = "final position" + ((outcome == "end") ? "" : ": " + outcome);
       break;
     default:
-      document.getElementById("leftButton").value = "back";
+      document.getElementById("leftButton").value = "<";
       document.getElementById("leftButton").title = "move one step backwards";
-      document.getElementById("rightButton").value = "continue";
-      document.getElementById("rightButton").title = "continue showing the puzzle solution on the chessboard step by step";
+      document.getElementById("rightButton").value = ">";
+      document.getElementById("rightButton").title = "continue showing the puzzle's solution step by step on the chessboard";
       break;
   }
 }
@@ -295,6 +299,8 @@ the following URL parameters allow customization of the pgn4web puzzle of the da
 - controlBackgroundColorHex=... sets the buttons background color, in hexadecimal format, default: EFF4EC
 - controlTextColorHex=... sets the buttons text color, in hexadecimal format, default: 888888
 - frameBorderColorHex=... sets the frame border color, in hexadecimal format, or none, default: A4A4A4
+- whiteToMoveString=... sets the puzzle text string for White to move, default: "White to move"
+- blackToMoveString=... sets the puzzle text string for Black to move, default: "Black to move"
 
 }
 
