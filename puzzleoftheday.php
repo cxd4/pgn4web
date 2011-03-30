@@ -69,7 +69,7 @@ $buttonFontSizeCss = $buttonFontSize . "px";
 $buttonPadding = floor($squareSize / 10);
 $buttonPaddingCss = $buttonPadding . "px";
 
-$sidetomoveBorder = floor($buttonFontSize / 8);
+$sidetomoveBorder = floor($buttonFontSize / 10);
 $sidetomoveBorderCss = $sidetomoveBorder . "px";
 $sidetomoveHeight = $buttonFontSize - 2 * $sidetomoveBorder;
 $sidetomoveHeightCss = $sidetomoveHeight . "px";
