@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
-<!--
-  pgn4web javascript chessboard
-  copyright (C) 2009, 2011 Paolo Casaschi
-  see README file and http://pgn4web.casaschi.net
-  for credits, license and more details
--->
-
 <Module>
   <ModulePrefs
     title="chess puzzle of the day from pgn4web"
@@ -32,7 +24,12 @@
   <Content type="html">
     <![CDATA[
       <script type="text/javascript">
-
+/*
+ *  pgn4web javascript chessboard
+ *  copyright (C) 2009, 2011 Paolo Casaschi
+ *  see README file and http://pgn4web.casaschi.net
+ *  for credits, license and more details
+ */
         var lightColorHex = new Array("E8E8E8", "F2D798", "F4F4F4", "EFF4EC", "EDE8D5", "FFCC99");
         var darkColorHex = new Array("C2C9D1", "C9AD6F", "D4D4D4", "C6CEC3", "CFCBB3", "CC9966");
         var controlBackgroundColorHex = new Array("E8E8E8", "F2D798", "F4F4F4", "EFF4EC", "EDE8D5", "FFCC99");
@@ -42,7 +39,7 @@
 
         var iframeCode = "<center><iframe height='270' width='240' frameborder='0' " +
           "scrolling='no' marginheight='0' marginwidth='0' " +
-          "src='puzzleoftheday.php?pgnData=&gameNum=&squareSize=30" +
+          "src='http://go.casaschi.net/pgn4web-puzzleoftheday?pgnData=&gameNum=&squareSize=30" +
           "&lightColorHex=" + lightColorHex[colorScheme] + 
           "&darkColorHex=" + darkColorHex[colorScheme] +
           "&controlBackgroundColorHex=" + controlBackgroundColorHex[colorScheme] +
@@ -57,4 +54,3 @@
     ]]>
   </Content>
 </Module>
-
