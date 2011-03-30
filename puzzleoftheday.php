@@ -244,41 +244,33 @@ clearShortcutSquares("BCDEFGH", "7");
 clearShortcutSquares("ABCDEFGH", "123456");
 
 function customFunctionOnMove() {
-  switch (CurrentPly) {
-    case StartPly:
-      document.getElementById("leftButtonLink").innerHTML = "<table class='sidetomoveBox' style='background-color:" + (CurrentPly % 2 ? "black" : "white" ) + ";' cellspacing='0' cellpadding='0'><tr><td></td></tr></table>";
-      document.getElementById("leftButton").title = ((CurrentPly % 2) ? "Black to move" : "White to move") + ": find the puzzle's solution";
-      document.getElementById("rightButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-      document.getElementById("rightButton").title = "show the puzzle's solution step by step on the chessboard";
-      break;
-    case StartPly+PlyNumber:
-      document.getElementById("leftButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-      document.getElementById("leftButton").title = "move one step backwards";
-      switch (res = gameResult[currentGame]) {
-        case "1-0":
-          outcome = "white wins";
-          break;
-        case "0-1":
-          outcome = "black wins";
-          break;
-        case "1/2-1/2":
-          outcome = "draw";
-          break;
-        default:
-          outcome = "end";
-          res = "*";
-          break;
-      }
-      document.getElementById("rightButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + res + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-      document.getElementById("rightButton").title = "final position" + ((outcome == "end") ? "" : ": " + outcome);
-      break;
-    default:
-      document.getElementById("leftButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-      document.getElementById("leftButton").title = "move one step backwards";
-      document.getElementById("rightButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-      document.getElementById("rightButton").title = "continue showing the puzzle's solution step by step on the chessboard";
-      break;
+
+  if (CurrentPly == StartPly) {
+    document.getElementById("leftButtonLink").innerHTML = "<table class='sidetomoveBox' style='background-color:" + (CurrentPly % 2 ? "black" : "white" ) + ";' cellspacing='0' cellpadding='0'><tr><td></td></tr></table>";
+    document.getElementById("leftButton").title = ((CurrentPly % 2) ? "Black to move" : "White to move") + ": find the puzzle's solution";
+  } else {
+    document.getElementById("leftButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+    document.getElementById("leftButton").title = "move one step backwards";
   }
+
+  if (CurrentPly == StartPly+PlyNumber) {
+    switch (res = gameResult[currentGame]) {
+      case "1-0": outcome = "white wins"; break;
+      case "0-1": outcome = "black wins"; break;
+      case "1/2-1/2": outcome = "draw"; break;
+      default: outcome = "end"; res = "*"; break;
+    }
+    document.getElementById("rightButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + res + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+    document.getElementById("rightButton").title = "final position" + ((outcome == "end") ? "" : ": " + outcome);
+  } else {
+    document.getElementById("rightButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+    if (CurrentPly == StartPly) {
+      document.getElementById("rightButton").title = "show the puzzle's solution step by step on the chessboard";
+    } else {
+      document.getElementById("rightButton").title = "continue showing the puzzle's solution step by step on the chessboard";
+    }
+  }
+
 }
 
 function leftButtonAction() {
