@@ -71,9 +71,9 @@ $buttonPaddingCss = $buttonPadding . "px";
 
 $sidetomoveBorder = floor($buttonFontSize / 8);
 $sidetomoveBorderCss = $sidetomoveBorder . "px";
-$sidetomoveHeight = $buttonFontSize;
+$sidetomoveHeight = $buttonFontSize - 2 * $sidetomoveBorder;
 $sidetomoveHeightCss = $sidetomoveHeight . "px";
-$sidetomoveWidth = $buttonFontSize;
+$sidetomoveWidth = $sidetomoveHeight;
 $sidetomoveWidthCss = $sidetomoveWidth . "px";
 
 $frameBorderColorHex = get_param("frameBorderColorHex", "fbch", "A4A4A4");
@@ -202,10 +202,15 @@ body {
   border-style: inset;
 }
 
+.buttonTable {
+  width: $boardSizeCss;
+  height: $buttonHeightCss;
+  background-color: #$controlBackgroundColorHex;
+}
+
 .buttonCell {
   width: $buttonWidthCss;
   height: $buttonHeightCss;
-  background-color: #$controlBackgroundColorHex;
   white-space: nowrap;
   overflow: hidden;
   padding: $buttonPaddingCss;
@@ -216,7 +221,6 @@ body {
   font-size: $buttonFontSizeCss;
   font-weight: bold;
   color: #$controlTextColorHex;
-  background-color: #$controlBackgroundColorHex;
   text-decoration: none;
 }
 
@@ -330,13 +334,13 @@ the following URL parameters allow customization of the pgn4web puzzle of the da
 <center>
 <div class="container">
 <div style="display: inline" id="GameBoard"></div>
-<table border="0" cellspacing="0" cellpadding="0">
+<table class="buttonTable" border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td id="leftButton" title="" class="buttonCell" onClick="javascript:leftButtonAction();" align="center" valign="middle">
-<a id="leftButtonLink" class="buttonCellLink" href="#" onfocus="blur();"></a>
+<a id="leftButtonLink" class="buttonCellLink" href="javascript: return null;" onfocus="blur();"></a>
 </td>
 <td id="rightButton" title="" class="buttonCell" onClick="javascript:rightButtonAction();" align="center" valign="middle">
-<a id="rightButtonLink" class="buttonCellLink" href="#" onfocus="blur();"></a>
+<a id="rightButtonLink" class="buttonCellLink" href="javascript: return null;" onfocus="blur();"></a>
 </td>
 </tr>
 </table>
