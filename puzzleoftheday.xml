@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+  pgn4web javascript chessboard
+  copyright (C) 2009, 2011 Paolo Casaschi
+  see README file and http://pgn4web.casaschi.net
+  for credits, license and more details
+-->
+
+<Module>
+  <ModulePrefs
+    title="chess puzzle of the day from pgn4web"
+    directory_title="chess puzzle of the day from pgn4web"
+    title_url="http://pgn4web.casaschi.net"
+    description="chess puzzle of the day from the pgn4web project at http://pgn4web.casaschi.net"
+    author="Paolo Casaschi"
+    author_email="pgn4web@casaschi.net"
+    thumbnail="http://pgn4web.casaschi.net/pawns.png"
+    height="270"
+  width="240"/>
+  <UserPref name="colorScheme" 
+     display_name="color scheme"
+     datatype="enum"
+     default_value="0">
+    <EnumValue value="0" display_value="blue"/>
+    <EnumValue value="1" display_value="braun"/>
+    <EnumValue value="2" display_value="gray"/>
+    <EnumValue value="3" display_value="green"/>
+    <EnumValue value="4" display_value="pink"/>
+    <EnumValue value="5" display_value="wood"/>
+  </UserPref>
+  <Content type="html">
+    <![CDATA[
+      <script type="text/javascript">
+
+        var lightColorHex = new Array("E8E8E8", "F2D798", "F4F4F4", "EFF4EC", "EDE8D5", "FFCC99");
+        var darkColorHex = new Array("C2C9D1", "C9AD6F", "D4D4D4", "C6CEC3", "CFCBB3", "CC9966");
+        var controlBackgroundColorHex = new Array("E8E8E8", "F2D798", "F4F4F4", "EFF4EC", "EDE8D5", "FFCC99");
+        var controlTextColorHex = new Array("585B5E", "54110C", "888888", "888888", "615F54", "705438");
+        var prefs = new _IG_Prefs();
+        var colorScheme = prefs.getInt("colorScheme");
+
+        var iframeCode = "<center><iframe height='270' width='240' frameborder='0' " +
+          "scrolling='no' marginheight='0' marginwidth='0' " +
+          "src='http://pgn4web.casaschi.net/puzzleoftheday.php?" +
+          "pgnData=&gameNum=&squareSize=30" +
+          "&lightColorHex=" + lightColorHex[colorScheme] + 
+          "&darkColorHex=" + darkColorHex[colorScheme] +
+          "&controlBackgroundColorHex=" + controlBackgroundColorHex[colorScheme] +
+          "&controlTextColorHex=" + controlTextColorHex[colorScheme] +
+          "&frameBorderColorHex=none'>" +
+          "iframe support required to display the pgn4web puzzle of the day" +
+          "</iframe></center>";
+
+        document.write(iframeCode);
+
+      </script>
+    ]]>
+  </Content>
+</Module>
+

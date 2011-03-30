@@ -247,10 +247,10 @@ function customFunctionOnMove() {
 
   if (CurrentPly == StartPly) {
     document.getElementById("leftButtonLink").innerHTML = "<table class='sidetomoveBox' style='background-color:" + (CurrentPly % 2 ? "black" : "white" ) + ";' cellspacing='0' cellpadding='0'><tr><td></td></tr></table>";
-    document.getElementById("leftButton").title = ((CurrentPly % 2) ? "Black to move" : "White to move") + ": find the puzzle's solution";
+    document.getElementById("leftButton").title = ((CurrentPly % 2) ? "Black" : "White") + " to play: find the best move";
   } else {
     document.getElementById("leftButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-    document.getElementById("leftButton").title = "move one step backwards";
+    document.getElementById("leftButton").title = "step backwards one move";
   }
 
   if (CurrentPly == StartPly+PlyNumber) {
