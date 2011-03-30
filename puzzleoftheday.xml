@@ -42,8 +42,7 @@
 
         var iframeCode = "<center><iframe height='270' width='240' frameborder='0' " +
           "scrolling='no' marginheight='0' marginwidth='0' " +
-          "src='http://pgn4web.casaschi.net/puzzleoftheday.php?" +
-          "pgnData=&gameNum=&squareSize=30" +
+          "src='puzzleoftheday.php?pgnData=&gameNum=&squareSize=30" +
           "&lightColorHex=" + lightColorHex[colorScheme] + 
           "&darkColorHex=" + darkColorHex[colorScheme] +
           "&controlBackgroundColorHex=" + controlBackgroundColorHex[colorScheme] +
