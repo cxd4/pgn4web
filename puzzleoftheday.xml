@@ -9,7 +9,8 @@
     author_email="pgn4web@casaschi.net"
     thumbnail="http://pgn4web.casaschi.net/pawns.png"
     height="270"
-  width="240"/>
+    width="240">
+  </ModulePrefs>
   <UserPref name="colorScheme" 
      display_name="color scheme"
      datatype="enum"
@@ -24,6 +25,13 @@
   </UserPref>
   <Content type="html">
     <![CDATA[
+
+      <center>
+      <iframe id='mainframe' frameborder='0' scrolling='no' marginheight='0' marginwidth='0'>
+      iframe support required to display the pgn4web puzzle of the day
+      </iframe>
+      </center>
+
       <script type="text/javascript">
 /*
  *  pgn4web javascript chessboard
@@ -31,25 +39,26 @@
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
+        var prefs = new _IG_Prefs();
         var lightColorHex =             new Array("E8E8E8", "F2D798", "F4F4F4", "EFF4EC", "EDE8D5", "FFFFFF", "FFCC99");
         var darkColorHex =              new Array("C2C9D1", "C9AD6F", "E0E0E0", "C6CEC3", "CFCBB3", "E4E4E4", "CC9966");
         var controlBackgroundColorHex = new Array("E8E8E8", "F2D798", "F4F4F4", "EFF4EC", "EDE8D5", "FFFFFF", "FFCC99");
         var controlTextColorHex =       new Array("585B5E", "54110C", "888888", "888888", "615F54", "888888", "705438");
-        var prefs = new _IG_Prefs();
         var colorScheme = prefs.getInt("colorScheme");
 
-        var iframeCode = "<center><iframe height='270' width='240' frameborder='0' " +
-          "scrolling='no' marginheight='0' marginwidth='0' " +
-          "src='http://go.casaschi.net/pgn4web-puzzleoftheday?pgnData=&gameNum=&squareSize=30" +
-          "&lightColorHex=" + lightColorHex[colorScheme] + 
-          "&darkColorHex=" + darkColorHex[colorScheme] +
-          "&controlBackgroundColorHex=" + controlBackgroundColorHex[colorScheme] +
-          "&controlTextColorHex=" + controlTextColorHex[colorScheme] +
-          "&frameBorderColorHex=none'>" +
-          "iframe support required to display the pgn4web puzzle of the day" +
-          "</iframe></center>";
+        var squareSize = 30;
 
-        document.write(iframeCode);
+        if (theObj = document.getElementById('mainframe')) {
+          theObj.height = squareSize * 9;
+          theObj.width = squareSize * 8;
+          theObj.src = "http://go.casaschi.net/pgn4web-puzzleoftheday?pgnData=&gameNum=" +
+            "&squareSize=" + squareSize +
+            "&lightColorHex=" + lightColorHex[colorScheme] +
+            "&darkColorHex=" + darkColorHex[colorScheme] +
+            "&controlBackgroundColorHex=" + controlBackgroundColorHex[colorScheme] +
+            "&controlTextColorHex=" + controlTextColorHex[colorScheme] +
+            "&frameBorderColorHex=none";
+        }
 
       </script>
     ]]>
