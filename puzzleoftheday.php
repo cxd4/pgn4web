@@ -278,9 +278,11 @@ function rightButtonAction() {
 
 </script>		  
 
+
 <!-- start of google analytics code -->
 
 <!-- end of google analytics code -->
+
 
 </head>
 
