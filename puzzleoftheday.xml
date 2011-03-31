@@ -10,6 +10,7 @@
     thumbnail="http://pgn4web.casaschi.net/pawns.png"
     height="270"
     width="240">
+    <Require feature="dynamic-height"/>
   </ModulePrefs>
   <UserPref name="colorScheme" 
      display_name="color scheme"
@@ -22,6 +23,15 @@
     <EnumValue value="4" display_value="pink"/>
     <EnumValue value="5" display_value="white"/>
     <EnumValue value="6" display_value="wood"/>
+  </UserPref>
+  <UserPref name="size" 
+     display_name="size"
+     datatype="enum"
+     default_value="1">
+    <EnumValue value="0" display_value="small"/>
+    <EnumValue value="1" display_value="medium"/>
+    <EnumValue value="2" display_value="large"/>
+    <EnumValue value="3" display_value="extralarge"/>
   </UserPref>
   <Content type="html">
     <![CDATA[
@@ -46,11 +56,14 @@
         var controlTextColorHex =       new Array("585B5E", "54110C", "888888", "888888", "615F54", "888888", "705438");
         var colorScheme = prefs.getInt("colorScheme");
 
-        var squareSize = 30;
+        var size = new Array(22, 30, 40, 60);
+        var squareSize = size[prefs.getInt("size")];
 
         if (theObj = document.getElementById('mainframe')) {
           theObj.height = squareSize * 9;
+          theObj.style.height = (squareSize * 9) + "px";
           theObj.width = squareSize * 8;
+          theObj.style.width = (squareSize * 8) + "px";
           theObj.src = "http://go.casaschi.net/pgn4web-puzzleoftheday?pgnData=&gameNum=" +
             "&squareSize=" + squareSize +
             "&lightColorHex=" + lightColorHex[colorScheme] +
@@ -59,6 +72,8 @@
             "&controlTextColorHex=" + controlTextColorHex[colorScheme] +
             "&frameBorderColorHex=none";
         }
+
+        gadgets.window.adjustHeight();
 
       </script>
     ]]>
