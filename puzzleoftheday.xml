@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
   <ModulePrefs
-    title="chess puzzle of the day from pgn4web"
-    directory_title="chess puzzle of the day from pgn4web"
+    title="chess puzzle of the day"
+    directory_title="chess puzzle of the day"
     title_url="http://pgn4web.casaschi.net"
     description="chess puzzle of the day from the pgn4web project at http://pgn4web.casaschi.net"
     author="Paolo Casaschi"

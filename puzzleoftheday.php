@@ -150,11 +150,6 @@ body {
   padding: 0; 
 }
 
-body {
-  background: white;
-  background: transparent;
-}
-
 .container {
   width: $frameWidthCss;
   height: $frameHeightCss;
