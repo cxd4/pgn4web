@@ -22,10 +22,14 @@ $pgnData = get_param("pgnData", "pd", "tactics.pgn");
 $gameNum = get_param("gameNum", "gn", "");
 
 $lightColorHex = get_param("lightColorHex", "lch", "EFF4EC"); // FFCC99
+$lightColorHexCss = "#" . $lightColorHex;
 $darkColorHex = get_param("darkColorHex", "dch", "C6CEC3"); // CC9966
+$darkColorHexCss = "#" . $darkColorHex;
 
 $controlBackgroundColorHex = get_param("controlBackgroundColorHex", "cbch", "EFF4EC"); // FFCC99
+$controlBackgroundColorHexCss = "#" . $controlBackgroundColorHex;
 $controlTextColorHex = get_param("controlTextColorHex", "ctch", "888888"); // 663300
+$controlTextColorHexCss = "#" . $controlTextColorHex;
 
 $squareSize = get_param("squareSize", "ss", "30");
 if ($squareSize < 22) { $squareSize = 22; }
@@ -83,6 +87,7 @@ if ($frameBorderColorHex == "none") {
 } else {
   $frameBorderWidth = ceil($squareSize / 50);
 }
+$frameBorderColorHexCss = "#" . $frameBorderColorHex;
 $frameBorderWidthCss = $frameBorderWidth . "px";
 
 $frameWidth = $boardSize;
@@ -92,6 +97,17 @@ $frameHeightCss = $frameHeight . "px";
 
 $outerFrameWidth = $frameWidth + 2 * $frameBorderWidth;
 $outerFrameHeight = $frameHeight + 2 * $frameBorderWidth;
+
+// undocumented features
+
+$backgroundColorHex = get_param("backgroundColorHex", "bch", "transparent");
+if (preg_match("/^[0123456789ABCDEF]{6}$/i", $backgroundColorHex)) {
+  $backgroundColorHexCss = "#" . $backgroundColorHex;
+} else {
+  $backgroundColorHexCss = $backgroundColorHex;
+}
+
+// end of  undocumented features
 
 function get_pgnText($pgnUrl) {
   $fileLimitBytes = 10000000; // 10Mb
@@ -148,12 +164,13 @@ html,
 body { 
   margin: 0; 
   padding: 0; 
+  background: $backgroundColorHexCss;
 }
 
 .container {
   width: $frameWidthCss;
   height: $frameHeightCss;
-  border-color: #$frameBorderColorHex;
+  border-color: $frameBorderColorHexCss;
   border-style: outset;
   border-width: $frameBorderWidthCss;
 }
@@ -181,14 +198,14 @@ body {
 
 .whiteSquare,
 .highlightWhiteSquare {
-  border-color: #$lightColorHex;
-  background: #$lightColorHex;
+  border-color: $lightColorHexCss;
+  background: $lightColorHexCss;
 }
 
 .blackSquare,
 .highlightBlackSquare {
-  border-color: #$darkColorHex;
-  background: #$darkColorHex;
+  border-color: $darkColorHexCss;
+  background: $darkColorHexCss;
 }
 
 .highlightWhiteSquare,
@@ -199,7 +216,7 @@ body {
 .buttonTable {
   width: $boardSizeCss;
   height: $buttonHeightCss;
-  background-color: #$controlBackgroundColorHex;
+  background-color: $controlBackgroundColorHexCss;
 }
 
 .buttonCell {
@@ -214,7 +231,7 @@ body {
   font-family: sans-serif;
   font-size: $buttonFontSizeCss;
   font-weight: bold;
-  color: #$controlTextColorHex;
+  color: $controlTextColorHexCss;
   text-decoration: none;
 }
 
@@ -223,7 +240,7 @@ body {
   height: $sidetomoveHeightCss;
   border-style: solid;
   border-width: $sidetomoveBorderCss;
-  border-color: #$controlTextColorHex;
+  border-color: $controlTextColorHexCss;
 }
 
 </style>
