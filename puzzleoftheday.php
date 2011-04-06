@@ -126,12 +126,12 @@ $pgnText = preg_replace("/(\n|^)%[^\n$]*/", "", $pgnText);
 
 $numGames = preg_match_all("/(\s*\[\s*(\w+)\s*\"([^\"]*)\"\s*\]\s*)+[^\[]*/", $pgnText, $games );
 
-$expiresHeader = "";
+$expiresDate = "";
 if ($gameNum == "random") { $gameNum = rand(1, $numGames); }
 else if (! is_numeric($gameNum)) {
   $timeNow = time(); 
   $gameNum = floor(($timeNow / (60 * 60 * 24)) % $numGames) + 1; 
-  $expiresHeader = "Expires: " . gmdate("D, d M Y H:i:s", (floor($timeNow / (60 * 60 * 24)) + 1) * (60 * 60 * 24)) . " GMT";
+  $expiresDate = gmdate("D, d M Y H:i:s", (floor($timeNow / (60 * 60 * 24)) + 1) * (60 * 60 * 24)) . " GMT";
 }
 else if ($gameNum < 1) { $gameNum = 1; }
 else if ($gameNum > $numGames) { $gameNum = $numGames; }
@@ -154,14 +154,19 @@ function curPageURL() {
 }
 $thisPage = curPageURL();
 
-if ($expiresHeader) { header($expiresHeader); }
+$expiresMeta = "";
+if ($expiresDate) { 
+  header("Expires: " . $expiresDate);
+  $expiresMeta = "<meta http-equiv=\"Expires\" content=\"" . $expiresDate . "\">";
+}
 
 print <<<END
 <html>
 
 <head>
 
-<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+$expiresMeta
 
 <title>pgn4web puzzle of the day</title>
 
