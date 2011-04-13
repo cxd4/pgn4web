@@ -264,8 +264,20 @@ body {
 SetImagePath("$pieceFont/$pieceSize");
 SetShortcutKeysEnabled(false);
 
-clearShortcutSquares("BCDEFGH", "7");
-clearShortcutSquares("ABCDEFGH", "123456");
+function setPuzzleHelpShortcutSquares(cols, rows) {
+  var puzzleHelp = "pgn4web puzzle of the day" + "\\n\\n";
+  puzzleHelp += "- the white or black small square below the chessboard's left side indicates the side to move" + "\\n\\n";
+  puzzleHelp += "- show the puzzle's solution step by step on the chessboard by clicking the > button below the chessboard's right side" + "\\n\\n";
+  puzzleHelp += "- step backwards one move by clicking the < button below the chessboard's left side" + "\\n\\n";
+  puzzleHelp += "click OK to learn how to add the pgn4web puzzle of the day to your website, blog or iGoogle page";
+  if ((typeof cols != "string") || (typeof rows != "string")) { return; }
+  for (c=0; c<cols.length; c++) { for (r=0; r<rows.length; r++) {
+      boardShortcut(cols.charAt(c).toUpperCase()+rows.charAt(r), "puzzle of the day help", function(){ if (confirm(puzzleHelp)) { window.open("http://code.google.com/p/pgn4web/wiki/Example_PuzzleOfTheDay", "_blank"); } });
+  } }
+}
+
+setPuzzleHelpShortcutSquares("BCDEFGH", "7");
+setPuzzleHelpShortcutSquares("ABCDEFGH", "123456");
 
 function customFunctionOnMove() {
 
