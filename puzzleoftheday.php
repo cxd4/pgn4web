@@ -260,7 +260,9 @@ body {
 <link rel="shortcut icon" href="pawn.ico" />
 
 <script src="pgn4web.js" type="text/javascript"></script>
+
 <script type="text/javascript">
+
 SetImagePath("$pieceFont/$pieceSize");
 SetShortcutKeysEnabled(false);
 
@@ -307,14 +309,6 @@ function customFunctionOnMove() {
     }
   }
 
-}
-
-function leftButtonAction() {
-  MoveBackward(1);
-}
-
-function rightButtonAction() {
-  MoveForward(1);
 }
 
 </script>		  
@@ -365,10 +359,10 @@ the following URL parameters allow customization of the pgn4web puzzle of the da
 <div style="display: inline" id="GameBoard"></div>
 <table class="buttonTable" border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td id="leftButton" title="" class="buttonCell" onClick="javascript:leftButtonAction();" align="center" valign="middle">
+<td id="leftButton" title="" class="buttonCell" onClick="javascript:MoveBackward(1);" align="center" valign="middle">
 <a id="leftButtonLink" class="buttonCellLink" href="javascript:void(0);" onfocus="blur();"></a>
 </td>
-<td id="rightButton" title="" class="buttonCell" onClick="javascript:rightButtonAction();" align="center" valign="middle">
+<td id="rightButton" title="" class="buttonCell" onClick="javascript:MoveForward(1);" align="center" valign="middle">
 <a id="rightButtonLink" class="buttonCellLink" href="javascript:void(0);" onfocus="blur();"></a>
 </td>
 </tr>
