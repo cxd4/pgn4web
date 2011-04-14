@@ -441,10 +441,8 @@ function getVideotime() {
     if (!(CurrentPly % 2)) { moreText += ".."; }
     moreText += " " + Moves[CurrentPly-1] + " {[%vt " + storedVideotime + "]";
     if (comment = MoveComments[CurrentPly].replace(/\s*\[%vt [\.0-9]*\]\s*/g, "")) { 
-      comment = comment.replace(/{/g, "(");
-      comment = comment.replace(/}/g, ")");
-      moreText += " " + comment; 
-     }
+      moreText += " " + comment.replace(/[{}]/g, ""); 
+    }
     moreText += "}\n";
     writeSetupOutput(moreText);
   }

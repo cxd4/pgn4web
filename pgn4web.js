@@ -2738,7 +2738,7 @@ function translateNAGs(comment) {
     }
     nag = parseInt(comment.substring(ii+1,jj),10);
     if ((nag !== undefined) && (NAG[nag] !== undefined)) {
-      comment = comment.replace(comment.substring(ii,jj), '<SPAN CLASS="nag">' + NAG[nag] + '</SPAN>');
+      comment = comment.replace(comment.substring(ii,jj), NAG[nag]);
     }
     ii++;  
   }
