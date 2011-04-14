@@ -100,8 +100,7 @@ body {
 
 .move,
 .moveOn,
-.comment,
-.nag {
+.comment {
   font-size: 14px;
 }
 
@@ -116,9 +115,6 @@ body {
 
 .comment {
   color: gray;
-}
-
-.nag {
 }
 
 .pgnheader {

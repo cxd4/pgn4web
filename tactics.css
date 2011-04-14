@@ -80,8 +80,7 @@ body {
 
 .move,
 .moveOn,
-.comment,
-.nag {
+.comment {
   color: black;
   font-weight: normal;
   font-size: 14;
@@ -94,8 +93,5 @@ body {
 
 .comment {
   color: #444444;
-}
-
-.nag {
 }
 

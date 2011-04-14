@@ -101,8 +101,7 @@ a {
 .helplinkNosizeHighlighted,
 .move,
 .moveOn,
-.comment,
-.nag {
+.comment {
   text-decoration: none;   
 }
 
@@ -140,8 +139,7 @@ a {
   background: #F8CCA0;
 }
 
-.comment,
-.nag {
+.comment {
   color: #A19D8B;
   line-height: 1.4em;
 }

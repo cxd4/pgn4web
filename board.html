@@ -69,8 +69,7 @@ body {
   background: #DAF4D7;
 }
 
-.comment,
-.nag {
+.comment {
   color: gray;
   line-height: 1.3em;
 }
@@ -785,9 +784,6 @@ if (highlightMode == 'border') {
                    '; font-size: ' + (fontCommentsSize == 'moves' ? fontMovesSize : fontCommentsSize) + '; ' + 
                    '} \n';
  
-  newStyleSheet += '.nag { color: ' + fontCommentsColor + '; } \n';
-  //  the nag is always embedded in the comment, no need to add font-size: fontCommentsSize
-
   if ((controlBackgroundColor != 'default') && (controlBackgroundColor != '#default')) { 
     controlFontSize = Math.floor(squareSize / 2.5);
     newStyleSheet += '.buttonControl, .buttonControlPlay, .buttonControlStop { ' +
