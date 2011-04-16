@@ -138,8 +138,6 @@ else if ($gameNum > $numGames) { $gameNum = $numGames; }
 $gameNum -= 1;
 
 $pgnGame = $games[0][$gameNum];
-// hack to hide game number from tactics.pgn where it's stored as a three digit number in the PGN Round header tag
-$pgnGame = preg_replace("/\[Round \"\d{3,}\"\]/", "[Round \"?\"]", $pgnGame);
 
 function curPageURL() {
   $pageURL = 'http';
