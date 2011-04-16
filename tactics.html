@@ -65,6 +65,12 @@ function gup( name ){
 
 if ((assignedInitialGame = gup('n')) !== '') { SetInitialGame(assignedInitialGame); }
 
+function customFunctionOnPgnGameLoad() {
+  if (theObject = document.getElementById('GameNumber')) {
+    theObject.innerHTML = (currentGame+1);
+  }
+}
+
 </script>		  
 
 </head>
@@ -93,7 +99,7 @@ if ((assignedInitialGame = gup('n')) !== '') { SetInitialGame(assignedInitialGam
 <table width=246 cellspacing=0 cellpadding=0 border=0>
 <tr>
 <td width=50%>
-<div style="text-align: left; font-size: 14;">#<span id="GameRound"></span></div>
+<div style="text-align: left; font-size: 14;">#<span id="GameNumber"></span></div>
 </td>
 <td width=50%>
 <div style="text-align: right;">&nbsp;<span id="task" style="font-size: 14; background: yellow;">&nbsp;<span id="GameSideToMove"></span>&nbsp;to&nbsp;move&nbsp;</span></div>
