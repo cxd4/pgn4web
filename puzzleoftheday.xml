@@ -5,7 +5,7 @@
   <ModulePrefs
     title="chess puzzle of the day"
     directory_title="chess puzzle of the day from pgn4web"
-    title_url="http://pgn4web.casaschi.net"
+    title_url="http://pgn4web.casaschi.net/"
     description="chess puzzle of the day from the pgn4web project at http://pgn4web.casaschi.net"
     author="Paolo Casaschi"
     author_email="pgn4web@casaschi.net"
