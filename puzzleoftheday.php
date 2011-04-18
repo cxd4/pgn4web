@@ -154,6 +154,7 @@ else if (! is_numeric($gameNum)) {
 }
 else if ($gameNum < 1) { $gameNum = 1; }
 else if ($gameNum > $numGames) { $gameNum = $numGames; }
+$gameNumDisplay = $gameNum;
 $gameNum -= 1;
 
 $pgnGame = $games[0][$gameNum];
@@ -344,6 +345,10 @@ function customFunctionOnMove() {
     }
   }
 
+}
+
+function customShortcutKey_Shift_0() {
+  alert("gameNum=" + $gameNumDisplay);
 }
 
 </script>		  
