@@ -53,6 +53,15 @@ $pieceFont = get_param("pieceFont", "pf", "default");
 if ($pieceFont == "a") { $pieceFont = "alpha"; }
 if ($pieceFont == "m") { $pieceFont = "merida"; }
 if ($pieceFont == "u") { $pieceFont = "uscf"; }
+if (($pieceFont == "random") || ($pieceFont == "r")) {
+  $randomPiece = rand(0, 2);
+  switch ($randomPiece) {
+    case 1: $pieceFont = "alpha"; break;
+    case 2: $pieceFont = "merida"; break;
+    default: $pieceFont = "uscf"; break;
+  }
+}
+// for hash see after pgnGame is assigned
 if (($pieceFont == "default") || ($pieceFont == "d")) {
   if ($pieceSize < 28) { $pieceFont = "uscf"; }
   else { 
@@ -138,6 +147,24 @@ else if ($gameNum > $numGames) { $gameNum = $numGames; }
 $gameNum -= 1;
 
 $pgnGame = $games[0][$gameNum];
+
+
+function hashString($str, $num) {
+  for ($tot = $i = 0; $i < strlen($str); $i += 13) {
+    $tot += ord($str{$i});
+  }
+  return ($tot % $num);
+}
+
+if (($pieceFont == "hash") || ($pieceFont == "h")) {
+  $hashPiece = hashString($pgnGame, 3);
+  switch ($hashPiece) {
+    case 1: $pieceFont = "alpha"; break;
+    case 2: $pieceFont = "merida"; break;
+    default: $pieceFont = "uscf"; break;
+  }
+}
+
 
 function curPageURL() {
   $pageURL = 'http';
@@ -342,7 +369,7 @@ the following URL parameters allow customization of the pgn4web puzzle of the da
 - squareSize=... sets the chessboard square size, default 30
 - lightColorHex=... sets the light squares color, in hexadecimal format, default: EFF4EC
 - darkColorHex=... sets the dark squares color, in hexadecimal format, default: C6CEC3
-- pieceFont=... sets the piece font type, either alpha, merida, uscf or default, default: default
+- pieceFont=... sets the piece font type, either alpha, merida, uscf, random, hash or default, default: default
 - controlBackgroundColorHex=... sets the buttons background color, in hexadecimal format, default: EFF4EC
 - controlTextColorHex=... sets the buttons text color, in hexadecimal format, default: 888888
 - frameBorderColorHex=... sets the frame border color, in hexadecimal format, or none, default: A4A4A4

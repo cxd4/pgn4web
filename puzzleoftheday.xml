@@ -66,7 +66,7 @@
           theObj.style.height = (squareSize * 9) + "px";
           theObj.width = squareSize * 8;
           theObj.style.width = (squareSize * 8) + "px";
-          theObj.src = "http://go.casaschi.net/pgn4web-puzzleoftheday?pgnData=&gameNum=" +
+          theObj.src = "http://go.casaschi.net/pgn4web-puzzleoftheday?pieceFont=hash" +
             "&squareSize=" + squareSize +
             "&lightColorHex=" + lightColorHex[colorScheme] +
             "&darkColorHex=" + darkColorHex[colorScheme] +
