@@ -104,8 +104,6 @@ $frameWidthCss = $frameWidth . "px";
 $frameHeight = $boardSize + $buttonHeight;
 $frameHeightCss = $frameHeight . "px";
 
-$outerFrameWidth = $frameWidth + 2 * $frameBorderWidth;
-$outerFrameHeight = $frameHeight + 2 * $frameBorderWidth;
 
 // undocumented features
 
@@ -116,7 +114,19 @@ if (preg_match("/^[0123456789ABCDEF]{6}$/i", $backgroundColorHex)) {
   $backgroundColorHexCss = $backgroundColorHex;
 }
 
+$framePadding = get_param("framePadding", "fp", 0);
+if ($framePadding != 0) {
+  $framePaddingCss = $framePadding . "px";
+} else {
+  $framePaddingCss = $framePadding;
+}
+
 // end of  undocumented features
+
+
+$outerFrameWidth = $frameWidth + 2 * $frameBorderWidth + 2 * $framePadding;
+$outerFrameHeight = $frameHeight + 2 * $frameBorderWidth + 2 * $framePadding;
+
 
 function get_pgnText($pgnUrl) {
   $fileLimitBytes = 10000000; // 10Mb
@@ -200,7 +210,7 @@ $expiresMeta
 html, 
 body { 
   margin: 0; 
-  padding: 0; 
+  padding: $framePadding;
   background: $backgroundColorHexCss;
 }
 

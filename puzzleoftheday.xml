@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+
 <Module>
+
   <ModulePrefs
     title="chess puzzle of the day"
     directory_title="chess puzzle of the day from pgn4web"
@@ -13,6 +15,17 @@
     width="240">
     <Require feature="dynamic-height"/>
   </ModulePrefs>
+
+  <UserPref name="size" 
+     display_name="size"
+     datatype="enum"
+     default_value="1">
+    <EnumValue value="0" display_value="small"/>
+    <EnumValue value="1" display_value="medium"/>
+    <EnumValue value="2" display_value="large"/>
+    <EnumValue value="3" display_value="extralarge"/>
+    <EnumValue value="4" display_value="huge"/>
+  </UserPref>
   <UserPref name="colorScheme" 
      display_name="color scheme"
      datatype="enum"
@@ -25,16 +38,7 @@
     <EnumValue value="5" display_value="white"/>
     <EnumValue value="6" display_value="wood"/>
   </UserPref>
-  <UserPref name="size" 
-     display_name="size"
-     datatype="enum"
-     default_value="1">
-    <EnumValue value="0" display_value="small"/>
-    <EnumValue value="1" display_value="medium"/>
-    <EnumValue value="2" display_value="large"/>
-    <EnumValue value="3" display_value="extralarge"/>
-    <EnumValue value="4" display_value="huge"/>
-  </UserPref>
+
   <Content type="html">
     <![CDATA[
 
@@ -66,7 +70,8 @@
           theObj.style.height = (squareSize * 9) + "px";
           theObj.width = squareSize * 8;
           theObj.style.width = (squareSize * 8) + "px";
-          theObj.src = "http://go.casaschi.net/pgn4web-puzzleoftheday?pieceFont=hash" +
+          theObj.src = "http://go.casaschi.net/pgn4web-puzzleoftheday?" + 
+            "pieceFont=hash" +
             "&squareSize=" + squareSize +
             "&lightColorHex=" + lightColorHex[colorScheme] +
             "&darkColorHex=" + darkColorHex[colorScheme] +
@@ -80,4 +85,5 @@
       </script>
     ]]>
   </Content>
+
 </Module>
