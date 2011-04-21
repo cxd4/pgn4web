@@ -274,7 +274,7 @@ body {
 .buttonCellLink {
   font-family: sans-serif;
   font-size: $buttonFontSizeCss;
-  font-weight: bold;
+  font-weight: 900;
   color: $controlTextColorHexCss;
   text-decoration: none;
 }
