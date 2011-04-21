@@ -17,9 +17,43 @@ function get_param($param, $shortParam, $default) {
   return $default;
 }
 
+
 $pgnData = get_param("pgnData", "pd", "tactics.pgn");
 
+function get_pgnText($pgnUrl) {
+  $fileLimitBytes = 10000000; // 10Mb
+  $pgnText = file_get_contents($pgnUrl, NULL, NULL, 0, $fileLimitBytes + 1);
+  return $pgnText;
+}
+
+$pgnText = get_pgnText($pgnData);
+
+// for simplicity, remove all comments from the game text 
+// to avoid spurious [ in comments breaking the regular expression 
+// splitting the PGN data into games
+$pgnText = preg_replace("/{[^}]*}/", "", $pgnText);
+$pgnText = preg_replace("/;[^\n$]*/", "", $pgnText);
+$pgnText = preg_replace("/(\n|^)%[^\n$]*/", "", $pgnText);
+
+$numGames = preg_match_all("/(\s*\[\s*(\w+)\s*\"([^\"]*)\"\s*\]\s*)+[^\[]*/", $pgnText, $games );
+
+
 $gameNum = get_param("gameNum", "gn", "");
+
+$expiresDate = "";
+if ($gameNum == "random") { $gameNum = rand(1, $numGames); }
+else if (! is_numeric($gameNum)) {
+  $timeNow = time(); 
+  $gameNum = floor(($timeNow / (60 * 60 * 24)) % $numGames) + 1; 
+  $expiresDate = gmdate("D, d M Y H:i:s", (floor($timeNow / (60 * 60 * 24)) + 1) * (60 * 60 * 24)) . " GMT";
+}
+else if ($gameNum < 1) { $gameNum = 1; }
+else if ($gameNum > $numGames) { $gameNum = $numGames; }
+$gameNumDisplay = ($gameNum ^ $numGames) . " + \"/\" + " . $numGames;
+$gameNum -= 1;
+
+$pgnGame = $games[0][$gameNum];
+
 
 $lightColorHex = get_param("lightColorHex", "lch", "EFF4EC"); // FFCC99
 $lightColorHexCss = "#" . $lightColorHex;
@@ -31,12 +65,14 @@ $controlBackgroundColorHexCss = "#" . $controlBackgroundColorHex;
 $controlTextColorHex = get_param("controlTextColorHex", "ctch", "888888"); // 663300
 $controlTextColorHexCss = "#" . $controlTextColorHex;
 
+
 $squareSize = get_param("squareSize", "ss", "30");
 if ($squareSize < 22) { $squareSize = 22; }
 $squareSizeCss = $squareSize . "px";
 
 $borderSize = ceil($squareSize / 50);
 $borderSizeCss = $borderSize . "px";
+
 
 function defaultPieceSize($ss) {
   $pieceSizeOptions = array(20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 52, 56, 60, 64, 72, 80, 88, 96, 112, 128, 144, 300);
@@ -48,6 +84,7 @@ function defaultPieceSize($ss) {
 }
 $pieceSize = defaultPieceSize($squareSize - 2 * $borderSize);
 $pieceSizeCss = $pieceSize . "px";
+
 
 $pieceFont = get_param("pieceFont", "pf", "default");
 if ($pieceFont == "a") { $pieceFont = "alpha"; }
@@ -61,7 +98,15 @@ if (($pieceFont == "random") || ($pieceFont == "r")) {
     default: $pieceFont = "uscf"; break;
   }
 }
-// for hash see after pgnGame is assigned
+if (($pieceFont == "hash") || ($pieceFont == "h")) {
+//  $hashPiece = strlen($pgnGame) % 3;
+  $hashPiece = $gameNum % 3;
+  switch ($hashPiece) {
+    case 1: $pieceFont = "alpha"; break;
+    case 2: $pieceFont = "merida"; break;
+    default: $pieceFont = "uscf"; break;
+  }
+}
 if (($pieceFont == "default") || ($pieceFont == "d")) {
   if ($pieceSize < 28) { $pieceFont = "uscf"; }
   else { 
@@ -70,8 +115,10 @@ if (($pieceFont == "default") || ($pieceFont == "d")) {
   }
 }
 
+
 $boardSize = $squareSize * 8;
 $boardSizeCss = $boardSize . "px";
+
 
 $buttonHeight = $squareSize;
 $buttonHeightCss = $buttonHeight . "px";
@@ -82,12 +129,14 @@ $buttonFontSizeCss = $buttonFontSize . "px";
 $buttonPadding = floor($squareSize / 10);
 $buttonPaddingCss = $buttonPadding . "px";
 
+
 $sidetomoveBorder = floor($buttonFontSize / 18) + 1;
 $sidetomoveBorderCss = $sidetomoveBorder . "px";
 $sidetomoveHeight = $buttonFontSize - 2 * $sidetomoveBorder;
 $sidetomoveHeightCss = $sidetomoveHeight . "px";
 $sidetomoveWidth = $sidetomoveHeight;
 $sidetomoveWidthCss = $sidetomoveWidth . "px";
+
 
 $frameBorderColorHex = get_param("frameBorderColorHex", "fbch", "A4A4A4");
 if ($frameBorderColorHex == "none") { 
@@ -126,55 +175,6 @@ if ($framePadding != 0) {
 
 $outerFrameWidth = $frameWidth + 2 * $frameBorderWidth + 2 * $framePadding;
 $outerFrameHeight = $frameHeight + 2 * $frameBorderWidth + 2 * $framePadding;
-
-
-function get_pgnText($pgnUrl) {
-  $fileLimitBytes = 10000000; // 10Mb
-  $pgnText = file_get_contents($pgnUrl, NULL, NULL, 0, $fileLimitBytes + 1);
-  return $pgnText;
-}
-
-$pgnText = get_pgnText($pgnData);
-
-// for simplicity, remove all comments from the game text 
-// to avoid spurious [ in comments breaking the regular expression 
-// splitting the PGN data into games
-$pgnText = preg_replace("/{[^}]*}/", "", $pgnText);
-$pgnText = preg_replace("/;[^\n$]*/", "", $pgnText);
-$pgnText = preg_replace("/(\n|^)%[^\n$]*/", "", $pgnText);
-
-$numGames = preg_match_all("/(\s*\[\s*(\w+)\s*\"([^\"]*)\"\s*\]\s*)+[^\[]*/", $pgnText, $games );
-
-$expiresDate = "";
-if ($gameNum == "random") { $gameNum = rand(1, $numGames); }
-else if (! is_numeric($gameNum)) {
-  $timeNow = time(); 
-  $gameNum = floor(($timeNow / (60 * 60 * 24)) % $numGames) + 1; 
-  $expiresDate = gmdate("D, d M Y H:i:s", (floor($timeNow / (60 * 60 * 24)) + 1) * (60 * 60 * 24)) . " GMT";
-}
-else if ($gameNum < 1) { $gameNum = 1; }
-else if ($gameNum > $numGames) { $gameNum = $numGames; }
-$gameNumDisplay = ($gameNum ^ $numGames) . " + \"/\" + " . $numGames;
-$gameNum -= 1;
-
-$pgnGame = $games[0][$gameNum];
-
-
-function hashString($str, $num) {
-  for ($tot = $i = 0; $i < strlen($str); $i += 13) {
-    $tot += ord($str{$i});
-  }
-  return ($tot % $num);
-}
-
-if (($pieceFont == "hash") || ($pieceFont == "h")) {
-  $hashPiece = hashString($pgnGame, 3);
-  switch ($hashPiece) {
-    case 1: $pieceFont = "alpha"; break;
-    case 2: $pieceFont = "merida"; break;
-    default: $pieceFont = "uscf"; break;
-  }
-}
 
 
 function curPageURL() {
