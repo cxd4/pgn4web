@@ -121,6 +121,7 @@ $buttonHeightCss = $buttonHeight . "px";
 $buttonWidth = $squareSize * 4;
 $buttonWidthCss = $buttonWidth . "px";
 $buttonFontSize = floor($squareSize / 2.5);
+if ($buttonFontSize < 10) { $buttonFontSize = 10; }
 $buttonFontSizeCss = $buttonFontSize . "px";
 $buttonPadding = floor($squareSize / 10);
 $buttonPaddingCss = $buttonPadding . "px";
