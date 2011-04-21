@@ -311,7 +311,7 @@ function setPuzzleHelpShortcutSquares(cols, rows) {
 
 setPuzzleHelpShortcutSquares("BCDEFGH", "7");
 setPuzzleHelpShortcutSquares("ABCDEFGH", "23456");
-setPuzzleHelpShortcutSquares("ADEH", "1");
+setPuzzleHelpShortcutSquares("BCFG", "1");
 
 function solutionSoFar() {
   sol = "";
