@@ -310,7 +310,8 @@ function setPuzzleHelpShortcutSquares(cols, rows) {
 }
 
 setPuzzleHelpShortcutSquares("BCDEFGH", "7");
-setPuzzleHelpShortcutSquares("ABCDEFGH", "123456");
+setPuzzleHelpShortcutSquares("ABCDEFGH", "23456");
+setPuzzleHelpShortcutSquares("ADEH", "1");
 
 function solutionSoFar() {
   sol = "";
