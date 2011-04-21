@@ -317,7 +317,7 @@ function setPuzzleHelpShortcutSquares(cols, rows) {
   } }
 }
 
-setPuzzleHelpShortcutSquares("BCDEFGH", "7");
+setPuzzleHelpShortcutSquares("BCEFGH", "7");
 setPuzzleHelpShortcutSquares("ABCDEFGH", "123456");
 
 function customFunctionOnMove() {
