@@ -69,13 +69,6 @@ $controlTextColorHexCss = "#" . $controlTextColorHex;
 $squareSize = get_param("squareSize", "ss", "30");
 if ($squareSize < 20) { $squareSize = 20; }
 $squareSizeCss = $squareSize . "px";
-if ($squareSize < 22) { 
-  $borderSize = 0;
-  $borderSizeCss = $borderSize;
-} else {
-  $borderSize = ceil($squareSize / 50);
-  $borderSizeCss = $borderSize . "px";
-}
 
 function defaultPieceSize($ss) {
   $pieceSizeOptions = array(20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 52, 56, 60, 64, 72, 80, 88, 96, 112, 128, 144, 300);
@@ -85,7 +78,7 @@ function defaultPieceSize($ss) {
   }
   return $pieceSizeOptions[0];
 }
-$pieceSize = defaultPieceSize($squareSize - 2 * $borderSize);
+$pieceSize = defaultPieceSize($squareSize);
 $pieceSizeCss = $pieceSize . "px";
 
 
@@ -243,8 +236,8 @@ body {
 .highlightBlackSquare {
   width: $squareSizeCss;
   height: $squareSizeCss;
-  border-style: solid;
-  border-width: $borderSizeCss;
+  border-style: none;
+  border-width: 0;
 }
 
 .whiteSquare,
@@ -261,7 +254,6 @@ body {
 
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  border-style: inset;
 }
 
 .buttonTable {
@@ -317,8 +309,21 @@ function setPuzzleHelpShortcutSquares(cols, rows) {
   } }
 }
 
-setPuzzleHelpShortcutSquares("BCEFGH", "7");
+setPuzzleHelpShortcutSquares("BCDEFGH", "7");
 setPuzzleHelpShortcutSquares("ABCDEFGH", "123456");
+
+function solutionSoFar() {
+  sol = "";
+  for (thisPly = StartPly; thisPly < CurrentPly; thisPly++) {
+    if (thisPly % 2 == 0) {
+      sol += ((thisPly / 2) + 1) + ". ";
+    } else if (thisPly == StartPly) {
+      sol += ((thisPly + 1) / 2) + "... ";
+    }
+    sol += Moves[thisPly] + " ";
+  }
+  return sol;
+}
 
 function customFunctionOnMove() {
 
@@ -338,13 +343,13 @@ function customFunctionOnMove() {
       default: outcome = "end"; res = "*"; break;
     }
     document.getElementById("rightButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + res + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-    document.getElementById("rightButton").title = "final position" + ((outcome == "end") ? "" : ": " + outcome);
+    document.getElementById("rightButton").title = solutionSoFar() + "   ..." + outcome;
   } else {
     document.getElementById("rightButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
     if (CurrentPly == StartPly) {
       document.getElementById("rightButton").title = "show the puzzle's solution step by step on the chessboard";
     } else {
-      document.getElementById("rightButton").title = "continue showing the puzzle's solution step by step on the chessboard";
+      document.getElementById("rightButton").title = solutionSoFar() + "   ...continue showing the puzzle's solution step by step on the chessboard";
     }
   }
 
