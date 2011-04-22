@@ -17,7 +17,7 @@
   </ModulePrefs>
 
   <UserPref name="size" 
-     display_name="square size"
+     display_name="chessboard size"
      datatype="enum"
      default_value="0">
     <EnumValue value="0" display_value="auto resize"/>
