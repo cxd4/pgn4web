@@ -17,14 +17,18 @@
   </ModulePrefs>
 
   <UserPref name="size" 
-     display_name="size"
+     display_name="square size"
      datatype="enum"
-     default_value="1">
-    <EnumValue value="0" display_value="small"/>
-    <EnumValue value="1" display_value="medium"/>
-    <EnumValue value="2" display_value="large"/>
-    <EnumValue value="3" display_value="extralarge"/>
-    <EnumValue value="4" display_value="huge"/>
+     default_value="0">
+    <EnumValue value="0" display_value="auto resize"/>
+    <EnumValue value="20" display_value="tiny"/>
+    <EnumValue value="24" display_value="small"/>
+    <EnumValue value="30" display_value=" medium"/>
+    <EnumValue value="40" display_value="large"/>
+    <EnumValue value="60" display_value="big"/>
+    <EnumValue value="80" display_value="huge"/>
+    <EnumValue value="110" display_value="giant"/>
+    <EnumValue value="150" display_value="colossal"/>
   </UserPref>
   <UserPref name="colorScheme" 
      display_name="color scheme"
@@ -49,12 +53,22 @@
       </center>
 
       <script type="text/javascript">
+
 /*
  *  pgn4web javascript chessboard
  *  copyright (C) 2009, 2011 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
+
+        function getWidth() {
+          if (self.innerHeight) { return self.innerWidth; }
+          else if (document.documentElement && document.documentElement.clientHeight) {
+            return document.documentElement.clientWidth;
+          } else if (document.body) { return document.body.clientWidth; }
+          return 0;
+        }
+
         var prefs = new _IG_Prefs();
         var lightColorHex =             new Array("E8E8E8", "F2D798", "F4F4F4", "EFF4EC", "EDE8D5", "FFFFFF", "FFCC99");
         var darkColorHex =              new Array("C2C9D1", "C9AD6F", "E0E0E0", "C6CEC3", "CFCBB3", "E4E4E4", "CC9966");
@@ -62,8 +76,11 @@
         var controlTextColorHex =       new Array("585B5E", "54110C", "888888", "888888", "615F54", "888888", "705438");
         var colorScheme = prefs.getInt("colorScheme");
 
-        var size = new Array(22, 30, 40, 60, 80);
-        var squareSize = size[prefs.getInt("size")];
+        var squareSize = prefs.getInt("size");
+        if (squareSize == 0) {
+          squareSize = Math.floor(getWidth() / 8);
+          if (squareSize == 0) { squareSize = 30; }
+        }
 
         if (theObj = document.getElementById('mainframe')) {
           theObj.height = squareSize * 9;
