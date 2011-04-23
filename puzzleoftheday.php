@@ -9,6 +9,9 @@
 
 error_reporting(E_ERROR | E_PARSE);
 
+$debugInfo = "\n";
+
+
 function get_param($param, $shortParam, $default) {
   $out = $_REQUEST[$param];
   if ($out != "") { return $out; }
@@ -50,7 +53,7 @@ else if (!preg_match("/^\d+$/", $gameNum)) {
 }
 else if ($gameNum < 1) { $gameNum = 1; }
 else if ($gameNum > $numGames) { $gameNum = $numGames; }
-$gameNumDisplay = ($gameNum ^ $numGames) . " + \"/\" + " . $numGames;
+$debugInfo .= "#" . ($gameNum ^ $numGames) . "." . $numGames . "\n";
 $gameNum -= 1;
 
 $pgnGame = $games[0][$gameNum];
@@ -212,6 +215,10 @@ $expiresMeta
 
 <title>pgn4web puzzle of the day</title>
 
+<!-- debug info
+$debugInfo 
+end of debug info -->
+
 <style type="text/css">
 
 html, 
@@ -365,10 +372,6 @@ function customFunctionOnMove() {
     }
   }
 
-}
-
-function customShortcutKey_Shift_0() {
-  alert($gameNumDisplay);
 }
 
 </script>		  
