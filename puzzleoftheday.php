@@ -42,10 +42,11 @@ $gameNum = get_param("gameNum", "gn", "");
 
 $expiresDate = "";
 if ($gameNum == "random") { $gameNum = rand(1, $numGames); }
-else if (! is_numeric($gameNum)) {
+else if (!preg_match("/^\d+$/", $gameNum)) {
   $timeNow = time(); 
-  $gameNum = floor(($timeNow / (60 * 60 * 24)) % $numGames) + 1; 
   $expiresDate = gmdate("D, d M Y H:i:s", (floor($timeNow / (60 * 60 * 24)) + 1) * (60 * 60 * 24)) . " GMT";
+  if (!preg_match("/^[ +-]\d+$/", $gameNum)) { $gameNum = 0; } // space is needed since + is urldecoded as space
+  $gameNum = floor(($gameNum + ($timeNow / (60 * 60 * 24))) % $numGames) + 1; 
 }
 else if ($gameNum < 1) { $gameNum = 1; }
 else if ($gameNum > $numGames) { $gameNum = $numGames; }
@@ -193,6 +194,7 @@ function curPageURL() {
   return $pageURL;
 }
 $thisPage = curPageURL();
+
 
 $expiresMeta = "";
 if ($expiresDate) { 
