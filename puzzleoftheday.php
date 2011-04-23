@@ -343,8 +343,8 @@ function customFunctionOnMove() {
     document.getElementById("leftButtonLink").innerHTML = "<table class='sidetomoveBox' style='background-color:" + (CurrentPly % 2 ? "black" : "white" ) + ";' cellspacing='0' cellpadding='0'><tr><td></td></tr></table>";
     document.getElementById("leftButton").title = ((CurrentPly % 2) ? "Black" : "White") + " to play: find the best move";
   } else {
-    document.getElementById("leftButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-    document.getElementById("leftButton").title = "step backwards one move";
+    document.getElementById("leftButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&lt;&nbsp;&nbsp;&nbsp;&nbsp;";
+    document.getElementById("leftButton").title = "click > to step backwards one move";
   }
 
   if (CurrentPly == StartPly+PlyNumber) {
@@ -354,14 +354,14 @@ function customFunctionOnMove() {
       case "1/2-1/2": outcome = "draw"; break;
       default: outcome = "end"; res = "*"; break;
     }
-    document.getElementById("rightButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + res + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-    document.getElementById("rightButton").title = solutionSoFar() + "   ..." + outcome;
+    document.getElementById("rightButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;" + res + "&nbsp;&nbsp;&nbsp;&nbsp;";
+    document.getElementById("rightButton").title = solutionSoFar() + " ..." + outcome;
   } else {
-    document.getElementById("rightButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+    document.getElementById("rightButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;&nbsp;&nbsp;&nbsp;";
     if (CurrentPly == StartPly) {
-      document.getElementById("rightButton").title = "show the puzzle's solution step by step on the chessboard";
+      document.getElementById("rightButton").title = "click > to show the puzzle's solution step by step on the chessboard";
     } else {
-      document.getElementById("rightButton").title = solutionSoFar() + "   ...continue showing the puzzle's solution step by step on the chessboard";
+      document.getElementById("rightButton").title = solutionSoFar() + " ...click > to continue showing the puzzle's solution step by step on the chessboard";
     }
   }
 
