@@ -1476,7 +1476,7 @@ function updatePgnFromPgnUrl() {
         loadPgnFromPgnUrlResult = LOAD_PGN_FROM_PGN_URL_FAIL;
       }
 
-// dirty hack for Opera's failure reporting 304 status
+// dirty hack for some old Opera versions failure with reporting 304 status
     } else if (window.opera && (! this.responseText) && (this.status === 0)) {
       http_request.abort(); 
       loadPgnFromPgnUrlResult = LOAD_PGN_FROM_PGN_URL_UNMODIFIED;
