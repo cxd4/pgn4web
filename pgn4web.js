@@ -1522,7 +1522,6 @@ function updatePgnFromPgnUrl() {
 
         initialGame = currentGame + 1;
         firstStart = true;
-        textSelectOptions = '';
 
         LiveBroadcastOldCurrentPly = CurrentPly;
         LiveBroadcastOldCurrentPlyLast = (CurrentPly === StartPly + PlyNumber);
@@ -1598,7 +1597,6 @@ function updatePgnFromPgnUrl() {
           LiveBroadcastLastReceivedLocal_Reset();
           initialGame = 1;
           firstStart = true;
-          textSelectOptions = '';
           LoadGameHeaders();
           Init();
           checkLiveBroadcastStatus();
@@ -1769,8 +1767,6 @@ function createBoard(){
     pgnGameFromPgnText(emptyPgnHeader);
     Init();
     firstStart = true;
-    textSelectOptions = '';
-    if ((LiveBroadcastDelay > 0) && LiveBroadcastDemo) { gameDemoLength = new Array(); }
     loadPgnFromPgnUrl(pgnUrl);
   } else if ( document.getElementById("pgnText") ) {
     if (document.getElementById("pgnText").tagName.toLowerCase() == "textarea") {
@@ -2287,13 +2283,13 @@ function LoadGameHeaders(){
   }
   if ((LiveBroadcastDemo) && (numberOfGames > 0)) {
     for (ii = 0; ii < numberOfGames; ++ii) {
-       if (gameDemoLength[ii] === undefined) {
+      if ((gameDemoLength[ii] === undefined) || (gameDemoLength[ii] === 0)) {
          InitFEN(gameFEN[ii]);
          ParsePGNGameString(pgnGame[ii]);
          gameDemoLength[ii] = PlyNumber;
-       }
-       if (gameDemoMaxPly[ii] === undefined) { gameDemoMaxPly[ii] = 0; }
-       if (gameDemoMaxPly[ii] <= gameDemoLength[ii]) { gameResult[ii] = '*'; }
+      }
+      if (gameDemoMaxPly[ii] === undefined) { gameDemoMaxPly[ii] = 0; }
+      if (gameDemoMaxPly[ii] <= gameDemoLength[ii]) { gameResult[ii] = '*'; }
     }
   }
   return;
