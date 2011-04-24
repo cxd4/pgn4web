@@ -1458,9 +1458,161 @@ function pgnGameFromPgnText(pgnText) {
   return (gameIndex >= 0);
 }
 
-var LOAD_PGN_FROM_PGN_URL_FAIL = 0;
-var LOAD_PGN_FROM_PGN_URL_OK = 1;
-var LOAD_PGN_FROM_PGN_URL_UNMODIFIED = 2;
+LOAD_PGN_FROM_PGN_URL_FAIL = 0;
+LOAD_PGN_FROM_PGN_URL_OK = 1;
+LOAD_PGN_FROM_PGN_URL_UNMODIFIED = 2;
+
+function updatePgnFromPgnUrl() {
+
+  if (this.readyState != 4) { return; } 
+
+  if ((this.status == 200) || (this.status === 0) || (this.status == 304)) {
+
+    if (this.status == 304) {
+      if (LiveBroadcastDelay > 0) {
+        loadPgnFromPgnUrlResult = LOAD_PGN_FROM_PGN_URL_UNMODIFIED;
+      } else { 
+        myAlert('error: unexpected unmodified PGN URL when not in live mode');
+        loadPgnFromPgnUrlResult = LOAD_PGN_FROM_PGN_URL_FAIL;
+      }
+
+// dirty hack for Opera's failure reporting 304 status
+    } else if (window.opera && (! this.responseText) && (this.status === 0)) {
+      http_request.abort(); 
+      loadPgnFromPgnUrlResult = LOAD_PGN_FROM_PGN_URL_UNMODIFIED;
+// end of dirty hack
+
+    } else if (! pgnGameFromPgnText(this.responseText)) {
+      myAlert('error: no games found in PGN file\n' + pgnUrl, true);
+      loadPgnFromPgnUrlResult = LOAD_PGN_FROM_PGN_URL_FAIL;
+    } else {
+      if (LiveBroadcastDelay > 0) {
+        LiveBroadcastLastModifiedHeader = this.getResponseHeader("Last-Modified");
+        if (LiveBroadcastLastModifiedHeader) { 
+          LiveBroadcastLastModified = new Date(LiveBroadcastLastModifiedHeader); 
+          LiveBroadcastLastReceivedLocal = (new Date()).toLocaleString();
+        }
+        else { LiveBroadcastLastModified_Reset(); }
+      }
+      loadPgnFromPgnUrlResult = LOAD_PGN_FROM_PGN_URL_OK;
+    }
+
+  } else { 
+    myAlert('error: failed reading PGN from URL\n' + pgnUrl, true);
+    loadPgnFromPgnUrlResult = LOAD_PGN_FROM_PGN_URL_FAIL;
+  }
+
+  if (LiveBroadcastDemo && (loadPgnFromPgnUrlResult == LOAD_PGN_FROM_PGN_URL_UNMODIFIED)) {
+    loadPgnFromPgnUrlResult = LOAD_PGN_FROM_PGN_URL_OK;
+  }
+
+  switch ( loadPgnFromPgnUrlResult ) {
+
+    case LOAD_PGN_FROM_PGN_URL_OK:
+      if (LiveBroadcastDelay > 0) {
+        LiveBroadcastGameLoadFailures = 0;
+        LiveBroadcastStarted = true;
+
+        oldGameWhite = gameWhite[currentGame];
+        oldGameBlack = gameBlack[currentGame];
+        oldGameEvent = gameEvent[currentGame];
+        oldGameRound = gameRound[currentGame];
+        oldGameSite  = gameSite[currentGame];
+        oldGameDate  = gameDate[currentGame];
+
+        initialGame = currentGame + 1;
+        firstStart = true;
+        textSelectOptions = '';
+
+        LiveBroadcastOldCurrentPly = CurrentPly;
+        LiveBroadcastOldCurrentPlyLast = (CurrentPly === StartPly + PlyNumber);
+
+        oldAutoplay = isAutoPlayOn;
+        if (isAutoPlayOn) { SetAutoPlay(false); }
+
+        LoadGameHeaders();
+        LiveBroadcastFoundOldGame = false;
+        for (ii=0; ii<numberOfGames; ii++) {
+          LiveBroadcastFoundOldGame = 
+            (gameWhite[ii]==oldGameWhite) && (gameBlack[ii]==oldGameBlack) && 
+            (gameEvent[ii]==oldGameEvent) && (gameRound[ii]==oldGameRound) &&
+            (gameSite[ii] ==oldGameSite ) && (gameDate[ii] ==oldGameDate );
+          if (LiveBroadcastFoundOldGame) { break; }
+        }
+        if (LiveBroadcastFoundOldGame) { initialGame = ii + 1; }
+
+        if (LiveBroadcastFoundOldGame) { 
+          oldInitialHalfmove = initialHalfmove; 
+          if (LiveBroadcastSteppingMode) {
+            initialHalfmove = LiveBroadcastOldCurrentPlyLast ? 
+              LiveBroadcastOldCurrentPly+1 : LiveBroadcastOldCurrentPly;
+          } else {
+            initialHalfmove = LiveBroadcastOldCurrentPlyLast ? "end" : LiveBroadcastOldCurrentPly;
+          }
+        }
+      }
+
+      Init();
+
+      if (LiveBroadcastDelay > 0) {
+        if (LiveBroadcastFoundOldGame) { 
+          initialHalfmove = oldInitialHalfmove; 
+        } 
+        checkLiveBroadcastStatus();
+      }
+  
+      customFunctionOnPgnTextLoad();
+
+      if (LiveBroadcastDelay > 0) {
+        if (LiveBroadcastFoundOldGame) {
+          if (LiveBroadcastSteppingMode) {
+            if (oldAutoplay || LiveBroadcastOldCurrentPlyLast) { SetAutoPlay(true); }
+          } else {
+            if (oldAutoplay) { SetAutoPlay(true); }
+          }
+        }
+      }
+
+      break;
+
+    case LOAD_PGN_FROM_PGN_URL_UNMODIFIED: 
+      if (LiveBroadcastDelay > 0) { 
+        LiveBroadcastGameLoadFailures = 0;
+        checkLiveBroadcastStatus();
+      }
+      break;
+
+    case LOAD_PGN_FROM_PGN_URL_FAIL:
+    default:
+      if (LiveBroadcastDelay === 0) {
+        pgnGameFromPgnText(alertPgnHeader);
+        Init();
+        customFunctionOnPgnTextLoad();
+        myAlert('error: failed loading games from PGN URL\n' + pgnUrl, true);
+      } else { // live broadcast: wait for live show start
+        LiveBroadcastGameLoadFailures++;
+        if (LiveBroadcastGameLoadFailures >= LiveBroadcastGameLoadFailuresThreshold) {
+          LiveBroadcastStarted = false;
+          pgnGameFromPgnText(LiveBroadcastPlaceholderPgn);
+          LiveBroadcastLastModified_Reset();
+          LiveBroadcastLastReceivedLocal_Reset();
+          initialGame = 1;
+          firstStart = true;
+          textSelectOptions = '';
+          LoadGameHeaders();
+          Init();
+          checkLiveBroadcastStatus();
+          customFunctionOnPgnTextLoad();
+        } else { checkLiveBroadcastStatus(); }
+      }
+      break;
+
+  }
+
+  if (LiveBroadcastDelay > 0) { restartLiveBroadcastTimeout(); }
+}
+
+
 function loadPgnFromPgnUrl(pgnUrl){
   
   LiveBroadcastLastRefreshedLocal = (new Date()).toLocaleString();
@@ -1480,13 +1632,15 @@ function loadPgnFromPgnUrl(pgnUrl){
     }
   if (!http_request) {
     myAlert('error: XMLHttpRequest failed for PGN URL\n' + pgnUrl, true);
-    return LOAD_PGN_FROM_PGN_URL_FAIL; 
+    return false; 
   }
+
+  http_request.onreadystatechange = updatePgnFromPgnUrl;
 
   try {
     // anti-caching #1: add random parameter, only to plain URLs
     urlRandomizer = ((LiveBroadcastDelay > 0) && (pgnUrl.indexOf("?") == -1) && (pgnUrl.indexOf("#") == -1)) ? "?nocahce=" + Math.random() : "";
-    http_request.open("GET", pgnUrl + urlRandomizer, false);
+    http_request.open("GET", pgnUrl + urlRandomizer);
     // anti-caching #2: add header option
     if (LiveBroadcastDelay > 0) {
       http_request.setRequestHeader( "If-Modified-Since", LiveBroadcastLastModifiedHeader );
@@ -1494,44 +1648,10 @@ function loadPgnFromPgnUrl(pgnUrl){
     http_request.send(null);
   } catch(e) {
     myAlert('error: request failed for PGN URL\n' + pgnUrl, true);
-    return LOAD_PGN_FROM_PGN_URL_FAIL;
+    return false;
   }
 
-  if ( (http_request.readyState == 4) && 
-    ((http_request.status == 200) || (http_request.status === 0) || (http_request.status == 304)) ) {
-
-    if (http_request.status == 304) {
-      if (LiveBroadcastDelay > 0) { return LOAD_PGN_FROM_PGN_URL_UNMODIFIED; }
-      else { 
-        myAlert('error: unexpected unmodified PGN URL when not in live mode');
-        return LOAD_PGN_FROM_PGN_URL_FAIL;
-      }
-
-// dirty hack for Opera's failure reporting 304 status
-    } else if (window.opera && (! http_request.responseText) && (http_request.status === 0)) {
-      http_request.abort(); 
-      return LOAD_PGN_FROM_PGN_URL_UNMODIFIED;
-// end of dirty hack
-
-    } else if (! pgnGameFromPgnText(http_request.responseText)) {
-      myAlert('error: no games found in PGN file\n' + pgnUrl, true);
-      return LOAD_PGN_FROM_PGN_URL_FAIL;
-    } else {
-      if (LiveBroadcastDelay > 0) {
-        LiveBroadcastLastModifiedHeader = http_request.getResponseHeader("Last-Modified");
-        if (LiveBroadcastLastModifiedHeader) { 
-          LiveBroadcastLastModified = new Date(LiveBroadcastLastModifiedHeader); 
-          LiveBroadcastLastReceivedLocal = (new Date()).toLocaleString();
-        }
-        else { LiveBroadcastLastModified_Reset(); }
-      }
-    }
-  } else { 
-    myAlert('error: failed reading PGN from URL\n' + pgnUrl, true);
-    return LOAD_PGN_FROM_PGN_URL_FAIL;
-  }
-
-  return LOAD_PGN_FROM_PGN_URL_OK;
+  return true;
 }
 
 function SetPgnUrl(url) {
@@ -1639,147 +1759,18 @@ function refreshPgnSource() {
     if (addedPly > 0) { LiveBroadcastLastReceivedLocal = (new Date()).toLocaleString(); }
   }
 
-  loadPgnFromPgnUrlResult = loadPgnFromPgnUrl(pgnUrl);
-  if (LiveBroadcastDemo && (loadPgnFromPgnUrlResult == LOAD_PGN_FROM_PGN_URL_UNMODIFIED)) {
-    loadPgnFromPgnUrlResult = LOAD_PGN_FROM_PGN_URL_OK;
-  }
-
-  switch ( loadPgnFromPgnUrlResult ) {
-  
-    case LOAD_PGN_FROM_PGN_URL_FAIL:
-      LiveBroadcastGameLoadFailures++;
-      if (LiveBroadcastGameLoadFailures >= LiveBroadcastGameLoadFailuresThreshold) {
-        LiveBroadcastStarted = false;
-        pgnGameFromPgnText(LiveBroadcastPlaceholderPgn);
-        LiveBroadcastLastModified_Reset();
-        LiveBroadcastLastReceivedLocal_Reset();
-        initialGame = 1;
-        firstStart = true;
-        textSelectOptions = '';
-        LoadGameHeaders();
-        Init();
-        checkLiveBroadcastStatus();
-        customFunctionOnPgnTextLoad();
-      } else { checkLiveBroadcastStatus(); }
-      break;
-
-    case LOAD_PGN_FROM_PGN_URL_OK:
-      LiveBroadcastGameLoadFailures = 0;
-      LiveBroadcastStarted = true;
-
-      oldGameWhite = gameWhite[currentGame];
-      oldGameBlack = gameBlack[currentGame];
-      oldGameEvent = gameEvent[currentGame];
-      oldGameRound = gameRound[currentGame];
-      oldGameSite  = gameSite[currentGame];
-      oldGameDate  = gameDate[currentGame];
-
-      initialGame = currentGame + 1;
-      firstStart = true;
-      textSelectOptions = '';
-
-      LiveBroadcastOldCurrentPly = CurrentPly;
-      LiveBroadcastOldCurrentPlyLast = (CurrentPly === StartPly + PlyNumber);
-
-      oldAutoplay = isAutoPlayOn;
-      if (isAutoPlayOn) { SetAutoPlay(false); }
-
-      LoadGameHeaders();
-      LiveBroadcastFoundOldGame = false;
-      for (ii=0; ii<numberOfGames; ii++) {
-        LiveBroadcastFoundOldGame = 
-          (gameWhite[ii]==oldGameWhite) && (gameBlack[ii]==oldGameBlack) && 
-          (gameEvent[ii]==oldGameEvent) && (gameRound[ii]==oldGameRound) &&
-          (gameSite[ii] ==oldGameSite ) && (gameDate[ii] ==oldGameDate );
-        if (LiveBroadcastFoundOldGame) { break; }
-      }
-      if (LiveBroadcastFoundOldGame) { initialGame = ii + 1; }
-
-      if (LiveBroadcastFoundOldGame) { 
-        oldInitialHalfmove = initialHalfmove; 
-        if (LiveBroadcastSteppingMode) {
-          initialHalfmove = LiveBroadcastOldCurrentPlyLast ? 
-            LiveBroadcastOldCurrentPly+1 : LiveBroadcastOldCurrentPly;
-        } else {
-          initialHalfmove = LiveBroadcastOldCurrentPlyLast ? "end" : LiveBroadcastOldCurrentPly;
-        }
-      }
-  
-      Init();
-
-      if (LiveBroadcastFoundOldGame) { 
-        initialHalfmove = oldInitialHalfmove; 
-      } 
-  
-      checkLiveBroadcastStatus();
-      customFunctionOnPgnTextLoad();
-
-      if (LiveBroadcastFoundOldGame) {
-        if (LiveBroadcastSteppingMode) {
-          if (oldAutoplay || LiveBroadcastOldCurrentPlyLast) { SetAutoPlay(true); }
-        } else {
-          if (oldAutoplay) { SetAutoPlay(true); }
-        }
-      }
-
-      break;
-
-    case LOAD_PGN_FROM_PGN_URL_UNMODIFIED: 
-      LiveBroadcastGameLoadFailures = 0;
-      checkLiveBroadcastStatus();
-      break;
-
-    default:
-      break;
-
-  }
-
-  restartLiveBroadcastTimeout();
+  loadPgnFromPgnUrl(pgnUrl);
 }
 
 
 function createBoard(){
 
-  if (theObject = document.getElementById("GameBoard")) {
-    theObject.innerHTML = '<DIV STYLE="font-size: small; font-family: sans-serif; ' +
-      'padding: 10px; text-align: center;">' + 
-      '...loading PGN data<br />please wait...</DIV>';
-  }
-
   if (pgnUrl) {
-    switch (loadPgnFromPgnUrl(pgnUrl)) {
-      case LOAD_PGN_FROM_PGN_URL_OK:
-        if (LiveBroadcastDelay > 0) { LiveBroadcastStarted = true; }
-        Init();
-        if (LiveBroadcastDelay > 0) { checkLiveBroadcastStatus(); }
-        customFunctionOnPgnTextLoad();
-        return;
-
-      case LOAD_PGN_FROM_PGN_URL_FAIL:
-        if (LiveBroadcastDelay === 0) {
-          pgnGameFromPgnText(alertPgnHeader);
-          Init();
-          customFunctionOnPgnTextLoad();
-          myAlert('error: failed loading games from PGN URL\n' + pgnUrl, true);
-        } else { // live broadcast: wait for live show start
-          LiveBroadcastStarted = false;
-          LiveBroadcastLastModified_Reset();
-          LiveBroadcastLastReceivedLocal_Reset();
-          pgnGameFromPgnText(LiveBroadcastPlaceholderPgn); 
-          Init();
-	  checkLiveBroadcastStatus();
-          customFunctionOnPgnTextLoad();
-        }
-        return;
-
-      case LOAD_PGN_FROM_PGN_URL_UNMODIFIED:
-        if (LiveBroadcastDelay > 0) { checkLiveBroadcastStatus(); }
-        return;
-     
-      default:
-        return;
- 
-    }
+    pgnGameFromPgnText(emptyPgnHeader);
+    Init();
+    firstStart = true;
+    textSelectOptions = '';
+    loadPgnFromPgnUrl(pgnUrl);
   } else if ( document.getElementById("pgnText") ) {
     if (document.getElementById("pgnText").tagName.toLowerCase() == "textarea") {
       tmpText = document.getElementById("pgnText").value;
