@@ -33,7 +33,7 @@
 
 function customFunctionOnPgnGameLoad() {
   if (theObject = document.getElementById('GameFEN'))
-  { theObject.innerHTML = gameFEN[currentGame].match(/\s*\S*/); }
+  { if (gameFEN[currentGame]) { theObject.innerHTML = gameFEN[currentGame].match(/\s*\S*/); } }
   if (theObject = document.getElementById('GameWhite'))
   { theObject.innerHTML = theObject.innerHTML.match(/\s*[^,]*/); }
   if (theObject = document.getElementById('GameBlack'))
