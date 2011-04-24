@@ -1770,6 +1770,7 @@ function createBoard(){
     Init();
     firstStart = true;
     textSelectOptions = '';
+    if ((LiveBroadcastDelay > 0) && LiveBroadcastDemo) { gameDemoLength = new Array(); }
     loadPgnFromPgnUrl(pgnUrl);
   } else if ( document.getElementById("pgnText") ) {
     if (document.getElementById("pgnText").tagName.toLowerCase() == "textarea") {
