@@ -1774,6 +1774,12 @@ function refreshPgnSource() {
 
 function createBoard(){
 
+  if (theObject = document.getElementById("GameBoard")) {
+    theObject.innerHTML = '<DIV STYLE="font-size: small; font-family: sans-serif; ' +
+      'padding: 10px; text-align: center;">' + 
+      '...loading PGN data<br />please wait...</DIV>';
+  }
+
   if (pgnUrl) {
     loadPgnFromPgnUrl(pgnUrl);
   } else if ( document.getElementById("pgnText") ) {
