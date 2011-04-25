@@ -1518,42 +1518,44 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
     case LOAD_PGN_FROM_PGN_URL_OK:
       if (LiveBroadcastDelay > 0) {
         LiveBroadcastGameLoadFailures = 0;
-        LiveBroadcastStarted = true;
+        if (! LiveBroadcastStarted) {
+          LiveBroadcastStarted = true;
+        } else {
+          oldGameWhite = gameWhite[currentGame];
+          oldGameBlack = gameBlack[currentGame];
+          oldGameEvent = gameEvent[currentGame];
+          oldGameRound = gameRound[currentGame];
+          oldGameSite  = gameSite[currentGame];
+          oldGameDate  = gameDate[currentGame];
 
-        oldGameWhite = gameWhite[currentGame];
-        oldGameBlack = gameBlack[currentGame];
-        oldGameEvent = gameEvent[currentGame];
-        oldGameRound = gameRound[currentGame];
-        oldGameSite  = gameSite[currentGame];
-        oldGameDate  = gameDate[currentGame];
+          initialGame = currentGame + 1;
+          firstStart = true;
 
-        initialGame = currentGame + 1;
-        firstStart = true;
+          LiveBroadcastOldCurrentPly = CurrentPly;
+          LiveBroadcastOldCurrentPlyLast = (CurrentPly === StartPly + PlyNumber);
 
-        LiveBroadcastOldCurrentPly = CurrentPly;
-        LiveBroadcastOldCurrentPlyLast = (CurrentPly === StartPly + PlyNumber);
+          oldAutoplay = isAutoPlayOn;
+          if (isAutoPlayOn) { SetAutoPlay(false); }
 
-        oldAutoplay = isAutoPlayOn;
-        if (isAutoPlayOn) { SetAutoPlay(false); }
+          LoadGameHeaders();
+          LiveBroadcastFoundOldGame = false;
+          for (ii=0; ii<numberOfGames; ii++) {
+            LiveBroadcastFoundOldGame = 
+              (gameWhite[ii]==oldGameWhite) && (gameBlack[ii]==oldGameBlack) && 
+              (gameEvent[ii]==oldGameEvent) && (gameRound[ii]==oldGameRound) &&
+              (gameSite[ii] ==oldGameSite ) && (gameDate[ii] ==oldGameDate );
+            if (LiveBroadcastFoundOldGame) { break; }
+          }
+          if (LiveBroadcastFoundOldGame) { initialGame = ii + 1; }
 
-        LoadGameHeaders();
-        LiveBroadcastFoundOldGame = false;
-        for (ii=0; ii<numberOfGames; ii++) {
-          LiveBroadcastFoundOldGame = 
-            (gameWhite[ii]==oldGameWhite) && (gameBlack[ii]==oldGameBlack) && 
-            (gameEvent[ii]==oldGameEvent) && (gameRound[ii]==oldGameRound) &&
-            (gameSite[ii] ==oldGameSite ) && (gameDate[ii] ==oldGameDate );
-          if (LiveBroadcastFoundOldGame) { break; }
-        }
-        if (LiveBroadcastFoundOldGame) { initialGame = ii + 1; }
-
-        if (LiveBroadcastFoundOldGame) { 
-          oldInitialHalfmove = initialHalfmove; 
-          if (LiveBroadcastSteppingMode) {
-            initialHalfmove = LiveBroadcastOldCurrentPlyLast ? 
-              LiveBroadcastOldCurrentPly+1 : LiveBroadcastOldCurrentPly;
-          } else {
-            initialHalfmove = LiveBroadcastOldCurrentPlyLast ? "end" : LiveBroadcastOldCurrentPly;
+          if (LiveBroadcastFoundOldGame) { 
+            oldInitialHalfmove = initialHalfmove; 
+            if (LiveBroadcastSteppingMode) {
+              initialHalfmove = LiveBroadcastOldCurrentPlyLast ? 
+                LiveBroadcastOldCurrentPly+1 : LiveBroadcastOldCurrentPly;
+            } else {
+              initialHalfmove = LiveBroadcastOldCurrentPlyLast ? "end" : LiveBroadcastOldCurrentPly;
+            }
           }
         }
       }
@@ -1602,7 +1604,6 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
           pgnGameFromPgnText(LiveBroadcastPlaceholderPgn);
           LiveBroadcastLastModified_Reset();
           LiveBroadcastLastReceivedLocal_Reset();
-          initialGame = 1;
           firstStart = true;
           LoadGameHeaders();
           Init();
