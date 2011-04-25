@@ -1518,6 +1518,7 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
     case LOAD_PGN_FROM_PGN_URL_OK:
       if (LiveBroadcastDelay > 0) {
         LiveBroadcastGameLoadFailures = 0;
+        firstStart = true;
         if (! LiveBroadcastStarted) {
           LiveBroadcastStarted = true;
         } else {
@@ -1529,7 +1530,6 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
           oldGameDate  = gameDate[currentGame];
 
           initialGame = currentGame + 1;
-          firstStart = true;
 
           LiveBroadcastOldCurrentPly = CurrentPly;
           LiveBroadcastOldCurrentPlyLast = (CurrentPly === StartPly + PlyNumber);
