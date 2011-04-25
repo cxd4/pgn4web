@@ -1486,7 +1486,9 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
 // end of dirty hack
 
     } else if (! pgnGameFromPgnText(this_http_request.responseText)) {
-      myAlert('error: no games found in PGN file\n' + pgnUrl, true);
+      if ((LiveBroadcastDelay === 0) || (LiveBroadcastGameLoadFailures >= LiveBroadcastGameLoadFailuresThreshold)) { 
+        myAlert('error: no games found in PGN file\n' + pgnUrl, true); 
+      }
       loadPgnFromPgnUrlResult = LOAD_PGN_FROM_PGN_URL_FAIL;
     } else {
       if (LiveBroadcastDelay > 0) {
@@ -1501,7 +1503,9 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
     }
 
   } else { 
-    myAlert('error: failed reading PGN from URL\n' + pgnUrl, true);
+    if ((LiveBroadcastDelay === 0) || (LiveBroadcastGameLoadFailures >= LiveBroadcastGameLoadFailuresThreshold)) { 
+      myAlert('error: failed reading PGN from URL\n' + pgnUrl, true);
+    }
     loadPgnFromPgnUrlResult = LOAD_PGN_FROM_PGN_URL_FAIL;
   }
 
@@ -1593,7 +1597,7 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
         myAlert('error: failed loading games from PGN URL\n' + pgnUrl, true);
       } else { // live broadcast: wait for live show start
         LiveBroadcastGameLoadFailures++;
-        if (LiveBroadcastGameLoadFailures >= LiveBroadcastGameLoadFailuresThreshold) {
+        if ((LiveBroadcastGameLoadFailures >= LiveBroadcastGameLoadFailuresThreshold) || (! LiveBroadcastStarted)) {
           LiveBroadcastStarted = false;
           pgnGameFromPgnText(LiveBroadcastPlaceholderPgn);
           LiveBroadcastLastModified_Reset();
@@ -1771,9 +1775,6 @@ function refreshPgnSource() {
 function createBoard(){
 
   if (pgnUrl) {
-    pgnGameFromPgnText(emptyPgnHeader);
-    Init();
-    firstStart = true;
     loadPgnFromPgnUrl(pgnUrl);
   } else if ( document.getElementById("pgnText") ) {
     if (document.getElementById("pgnText").tagName.toLowerCase() == "textarea") {
