@@ -66,6 +66,7 @@
    if (window.location.search.match(thisRegExp) !== null) {
        refresh_Minutes = unescape(window.location.search.match(thisRegExp)[3]);
        if (ini_Halfmove === null) { ini_Halfmove = "end"; }
+       if (ini_Game === null) { ini_Game = '\[\s*Result\s*"\*"\s*\]'; }
    } 
 
    SetImagePath("alpha/35"); // use "" path if images are in the same folder as this javascript file
