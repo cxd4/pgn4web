@@ -1462,13 +1462,13 @@ LOAD_PGN_FROM_PGN_URL_FAIL = 0;
 LOAD_PGN_FROM_PGN_URL_OK = 1;
 LOAD_PGN_FROM_PGN_URL_UNMODIFIED = 2;
 
-function updatePgnFromPgnUrl() {
+function updatePgnFromHttpRequest(this_http_request) {
 
-  if (this.readyState != 4) { return; } 
+  if (this_http_request.readyState != 4) { return; } 
 
-  if ((this.status == 200) || (this.status === 0) || (this.status == 304)) {
+  if ((this_http_request.status == 200) || (this_http_request.status === 0) || (this_http_request.status == 304)) {
 
-    if (this.status == 304) {
+    if (this_http_request.status == 304) {
       if (LiveBroadcastDelay > 0) {
         loadPgnFromPgnUrlResult = LOAD_PGN_FROM_PGN_URL_UNMODIFIED;
       } else { 
@@ -1477,17 +1477,17 @@ function updatePgnFromPgnUrl() {
       }
 
 // dirty hack for some old Opera versions failure with reporting 304 status
-    } else if (window.opera && (! this.responseText) && (this.status === 0)) {
-      http_request.abort(); 
+    } else if (window.opera && (! this_http_request.responseText) && (this_http_request.status === 0)) {
+      this_http_request.abort(); 
       loadPgnFromPgnUrlResult = LOAD_PGN_FROM_PGN_URL_UNMODIFIED;
 // end of dirty hack
 
-    } else if (! pgnGameFromPgnText(this.responseText)) {
+    } else if (! pgnGameFromPgnText(this_http_request.responseText)) {
       myAlert('error: no games found in PGN file\n' + pgnUrl, true);
       loadPgnFromPgnUrlResult = LOAD_PGN_FROM_PGN_URL_FAIL;
     } else {
       if (LiveBroadcastDelay > 0) {
-        LiveBroadcastLastModifiedHeader = this.getResponseHeader("Last-Modified");
+        LiveBroadcastLastModifiedHeader = this_http_request.getResponseHeader("Last-Modified");
         if (LiveBroadcastLastModifiedHeader) { 
           LiveBroadcastLastModified = new Date(LiveBroadcastLastModifiedHeader); 
           LiveBroadcastLastReceivedLocal = (new Date()).toLocaleString();
@@ -1612,28 +1612,31 @@ function updatePgnFromPgnUrl() {
 
 
 function loadPgnFromPgnUrl(pgnUrl){
-  
+
   LiveBroadcastLastRefreshedLocal = (new Date()).toLocaleString();
 
   var http_request = false;
-    if (window.XMLHttpRequest) { // not IE
-      http_request = new XMLHttpRequest();
-      if (http_request.overrideMimeType) {
-        http_request.overrideMimeType('text/plain');
-      }
-    } else if (window.ActiveXObject) { // IE
-      try { http_request = new ActiveXObject("Msxml2.XMLHTTP"); }
-      catch (e) {
-        try { http_request = new ActiveXObject("Microsoft.XMLHTTP"); }
-        catch (e) { }
+  if (window.XMLHttpRequest) { // not IE
+    http_request = new XMLHttpRequest();
+    if (http_request.overrideMimeType) {
+      http_request.overrideMimeType('text/plain');
+    }
+  } else if (window.ActiveXObject) { // IE
+    try { http_request = new ActiveXObject("Msxml2.XMLHTTP"); }
+    catch (e) {
+      try { http_request = new ActiveXObject("Microsoft.XMLHTTP"); }
+      catch (e) { 
+        myAlert('error: no XMLHttpRequest options for PGN URL\n' + pgnUrl, true);
+        return false; 
       }
     }
+  }
   if (!http_request) {
     myAlert('error: XMLHttpRequest failed for PGN URL\n' + pgnUrl, true);
     return false; 
   }
 
-  http_request.onreadystatechange = updatePgnFromPgnUrl;
+  http_request.onreadystatechange = function () { updatePgnFromHttpRequest(http_request); }
 
   try {
     // anti-caching #1: add random parameter, only to plain URLs
