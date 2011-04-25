@@ -1461,13 +1461,13 @@ function pgnGameFromPgnText(pgnText) {
 var LOAD_PGN_FROM_PGN_URL_FAIL = 0;
 var LOAD_PGN_FROM_PGN_URL_OK = 1;
 var LOAD_PGN_FROM_PGN_URL_UNMODIFIED = 2;
-var last_processed_http_request = 0;
-function updatePgnFromHttpRequest(this_http_request, request_number) {
+var http_request_last_processed_id = 0;
+function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
 
   if (this_http_request.readyState != 4) { return; } 
 
-  if (request_number < last_processed_http_request) { return; }
-  else { last_processed_http_request = request_number; }
+  if (this_http_request_id < http_request_last_processed_id) { return; }
+  else { http_request_last_processed_id = this_http_request_id; }
 
   if ((this_http_request.status == 200) || (this_http_request.status === 0) || (this_http_request.status == 304)) {
 
@@ -1613,7 +1613,7 @@ function updatePgnFromHttpRequest(this_http_request, request_number) {
   if (LiveBroadcastDelay > 0) { restartLiveBroadcastTimeout(); }
 }
 
-var last_made_http_request = 0;
+var http_request_last_id = 0;
 function loadPgnFromPgnUrl(pgnUrl){
 
   LiveBroadcastLastRefreshedLocal = (new Date()).toLocaleString();
@@ -1639,8 +1639,8 @@ function loadPgnFromPgnUrl(pgnUrl){
     return false; 
   }
 
-  http_request.onreadystatechange = function () { updatePgnFromHttpRequest(http_request, last_made_http_request); }
-  last_made_http_request++;
+  var http_request_id = http_request_last_id++;
+  http_request.onreadystatechange = function () { updatePgnFromHttpRequest(http_request, http_request_id); }
 
   try {
     // anti-caching #1: add random parameter, only to plain URLs
