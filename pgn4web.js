@@ -1639,7 +1639,8 @@ function loadPgnFromPgnUrl(pgnUrl){
     return false; 
   }
 
-  http_request.onreadystatechange = function () { updatePgnFromHttpRequest(http_request, last_made_http_request++); }
+  http_request.onreadystatechange = function () { updatePgnFromHttpRequest(http_request, last_made_http_request); }
+  last_made_http_request++;
 
   try {
     // anti-caching #1: add random parameter, only to plain URLs
