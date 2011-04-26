@@ -1043,7 +1043,7 @@ function generate_html_code() {
   if (iframeUrl.length <= iframeUrl_max) {
     html_code_status_string += "<span class='helptext'>HTML code ready to cut and paste in your web page or blog</span>";
   } else {
-    html_code_status_string += "<span class='helptext' style='color: red'>URL (" + iframeUrl.length + " chars) is longer than " + iframeUrl_max + " chars and might be rejected by some web browser/server, try shortening your PGN data</span>";
+    html_code_status_string += "<span class='helptext' style='color: red; font-weight: bold;'>error: generated iframe URL is " + iframeUrl.length + " chars long<br/>some web browser/server are likely to reject URLs longer than " + iframeUrl_max + " chars<br/></span><a class='helptext' style='color: red; font-weight: bold; text-decoration: none;' href='#pgn_form'>please shorten the input PGN data in the green textbox below</a>";
   }  
   html_code_status_string += "</td><td align=right valign=top>";
   html_code_status_string += "<span class='helptext'>&nbsp;&nbsp;&nbsp;" + document.getElementById('pgnText').value.replace(/\r\n/g,'\n').length + "p";
