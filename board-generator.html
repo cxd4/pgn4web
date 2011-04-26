@@ -1043,7 +1043,7 @@ function generate_html_code() {
   if (iframeUrl.length <= iframeUrl_max) {
     html_code_status_string += "<span class='helptext'>HTML code ready to cut and paste in your web page or blog</span>";
   } else {
-    html_code_status_string += "<span class='helptext' style='color: red; font-weight: bold;'>error: generated iframe URL is " + iframeUrl.length + " chars long<br/>some web browser/server are likely to reject URLs longer than " + iframeUrl_max + " chars<br/></span><a class='helptext' style='color: red; font-weight: bold; text-decoration: none;' href='#pgn_form'>please shorten the input PGN data in the green textbox below</a>";
+    html_code_status_string += "<a class='helptext' style='color: red; font-weight: bold; text-decoration: none;' href='#pgn_form' title='the generated iFrame URL exceeds the 2000 chars limit as enforced by some web browser and by some web server; even if the chessboard looks properly in the preview window below, some users will not view correcly the chessboard; the URL lenght needs to be reduced within the allowed limit by shortening the input PGN data in the green textbox below and generating an updated iFrame URL'>error: generated " + iframeUrl.length + " chars long iFrame URL, please shorten the PGN data for a URL within the " + iframeUrl_max + " chars limit</a>";
   }  
   html_code_status_string += "</td><td align=right valign=top>";
   html_code_status_string += "<span class='helptext'>&nbsp;&nbsp;&nbsp;" + document.getElementById('pgnText').value.replace(/\r\n/g,'\n').length + "p";
