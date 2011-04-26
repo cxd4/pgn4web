@@ -1043,7 +1043,7 @@ function generate_html_code() {
   if (iframeUrl.length <= iframeUrl_max) {
     html_code_status_string += "<span class='helptext'>HTML code ready to cut and paste in your web page or blog</span>";
   } else {
-    html_code_status_string += "<a class='helptext' style='color: red; font-weight: bold; text-decoration: none;' href='#pgn_form' title='the generated iFrame URL exceeds the 2000 chars limit as enforced by some web browser and by some web server; even if the chessboard looks properly in the preview window below, some users will not view correcly the chessboard; the URL lenght needs to be reduced within the allowed limit by shortening the input PGN data in the green textbox below and generating an updated iFrame URL'>error: generated " + iframeUrl.length + " chars long iFrame URL, please shorten the PGN data for a URL within the " + iframeUrl_max + " chars limit</a>";
+    html_code_status_string += "<a class='helptext' style='color: red; font-weight: bold; text-decoration: none;' href='#pgn_form' title='the generated iFrame URL exceeds the max URL length limit as enforced by some web browser and by some web server; even if the chessboard looks properly in the preview window below, some users will not view correcly the chessboard; the URL length needs to be reduced within the allowed limit by shortening the input PGN data in the green textbox below and generating an updated iFrame URL'>error: generated " + iframeUrl.length + " chars long iFrame URL, please shorten the PGN data for a URL within the " + iframeUrl_max + " chars limit</a>";
   }  
   html_code_status_string += "</td><td align=right valign=top>";
   html_code_status_string += "<span class='helptext'>&nbsp;&nbsp;&nbsp;" + document.getElementById('pgnText').value.replace(/\r\n/g,'\n').length + "p";
@@ -1502,7 +1502,7 @@ window.onload = new_onLoad;
 <li>
 <a href=#pgn_form><b>enter your PGN text</b> in the green textbox below</a>
   <ul type="square">
-  <li>keep PGN data short: due to a limitation of web browsers and web servers with the URL length, only short PGN texts are allowed, usually up to four games without comments; a warning is issued if the max URL length is exceeded, in case try removing unnecessary header tags and comments/variations or try reducing the number of games per chessboard</li>
+  <li>keep PGN data short: due to a limitation of web browsers and web servers with the URL length, only short PGN texts are allowed, usually up to four games without comments; a warning is issued if the max URL length limit is exceeded, in case try removing unnecessary header tags and comments/variations or try reducing the number of games per chessboard</li>
   <li>beware of "[" and "]" characters in the game text/comments: if square brackets are present in the comments (or the game text) in a pattern similar to the PGN header pattern <code>[tag "value"]</code> then the game parsing might break; if your PGN file is not displayed properly, please check for characters "[" and "]" in the comments and try removing them</li>
   <li>by default the PGN data is compressed and encoded, with characters outside the 255 characters ascii set rejected and replaced with stars "*"; this might affect some non English text and names</li>
   <li>in case of errors in the supplied PGN data, the chessboard squares starts flashing at regular intervals to signal the exception; detailed debug information is available clicking the top left chessboard square (A8 assuming White on bottom, H1 otherwise)</li>
