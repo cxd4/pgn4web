@@ -213,7 +213,7 @@ print <<<END
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 $expiresMeta
 
-<title>pgn4web puzzle of the day</title>
+<title>chess puzzler</title>
 
 <!-- debug info
 $debugInfo 
@@ -315,21 +315,21 @@ body {
 SetImagePath("$pieceFont/$pieceSize");
 SetShortcutKeysEnabled(false);
 
-function setPuzzleHelpShortcutSquares(cols, rows) {
-  var puzzleHelp = "pgn4web puzzle of the day" + "\\n\\n";
-  puzzleHelp += "- the white or black small square below the chessboard's left side indicates the side to move" + "\\n\\n";
-  puzzleHelp += "- show the puzzle's solution step by step on the chessboard by clicking the > button below the chessboard's right side" + "\\n\\n";
-  puzzleHelp += "- step backwards one move by clicking the < button below the chessboard's left side" + "\\n\\n";
-  puzzleHelp += "click OK to learn how to add the pgn4web puzzle of the day to your website, blog or iGoogle page";
+function setPuzzlerHelpShortcutSquares(cols, rows) {
+  var puzzlerHelp = "chess puzzler" + "\\n\\n";
+  puzzlerHelp += "- the white or black small square below the chessboard's left side indicates the side to move" + "\\n\\n";
+  puzzlerHelp += "- show the puzzler's solution step by step on the chessboard by clicking the > button below the chessboard's right side" + "\\n\\n";
+  puzzlerHelp += "- step backwards one move by clicking the < button below the chessboard's left side" + "\\n\\n";
+  puzzlerHelp += "click OK to learn how to add the chess puzzler to your website, blog or iGoogle page";
   if ((typeof cols != "string") || (typeof rows != "string")) { return; }
   for (c=0; c<cols.length; c++) { for (r=0; r<rows.length; r++) {
-      boardShortcut(cols.charAt(c).toUpperCase()+rows.charAt(r), "puzzle of the day help", function(){ if (confirm(puzzleHelp)) { window.open("http://code.google.com/p/pgn4web/wiki/Example_PuzzleOfTheDay", "_blank"); } });
+      boardShortcut(cols.charAt(c).toUpperCase()+rows.charAt(r), "chess puzzler help", function(){ if (confirm(puzzlerHelp)) { window.open("http://code.google.com/p/pgn4web/wiki/Example_Puzzler", "_blank"); } });
   } }
 }
 
-setPuzzleHelpShortcutSquares("BCDEFGH", "7");
-setPuzzleHelpShortcutSquares("ABCDEFGH", "23456");
-setPuzzleHelpShortcutSquares("BCFG", "1");
+setPuzzlerHelpShortcutSquares("BCDEFGH", "7");
+setPuzzlerHelpShortcutSquares("ABCDEFGH", "23456");
+setPuzzlerHelpShortcutSquares("BCFG", "1");
 
 function solutionSoFar() {
   sol = "";
@@ -366,9 +366,9 @@ function customFunctionOnMove() {
   } else {
     document.getElementById("rightButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;&nbsp;&nbsp;&nbsp;";
     if (CurrentPly == StartPly) {
-      document.getElementById("rightButton").title = "click > to show the puzzle's solution step by step on the chessboard";
+      document.getElementById("rightButton").title = "click > to show the puzzler's solution step by step on the chessboard";
     } else {
-      document.getElementById("rightButton").title = solutionSoFar() + " ...click > to continue showing the puzzle's solution step by step on the chessboard";
+      document.getElementById("rightButton").title = solutionSoFar() + " ...click > to continue showing the puzzler's solution step by step on the chessboard";
     }
   }
 
@@ -393,17 +393,17 @@ $pgnGame
 
 {
 
-pgn4web puzzle of the day, updated at 00:00 GMT
+chess puzzler, updated at 00:00 GMT
 
-you can add the pgn4web puzzle of the day to your site with the following HTML code:
+you can add the chess puzzler to your site with the following HTML code:
 
 <iframe height='$outerFrameHeight' width='$outerFrameWidth' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='$thisPage'>
-iframe support required to display the pgn4web puzzle of the day
+iframe support required to display the chess puzzler
 </iframe>
 
-the following URL parameters allow customization of the pgn4web puzzle of the day:
-- pgnData=... selects the PGN file containing the puzzles, default: tactics.pgn
-- gameNum=... sets the game number for the puzzle to be shown, default: blank, showing the puzzle of the day
+the following URL parameters allow customization of the chess puzzler:
+- pgnData=... selects the PGN file containing the puzzler, default: tactics.pgn
+- gameNum=... sets the game number for the puzzler to be shown, default: blank, showing the puzzler of the day
 - squareSize=... sets the chessboard square size, default 30
 - lightColorHex=... sets the light squares color, in hexadecimal format, default: EFF4EC
 - darkColorHex=... sets the dark squares color, in hexadecimal format, default: C6CEC3

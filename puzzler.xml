@@ -3,10 +3,10 @@
 <Module>
 
   <ModulePrefs
-    title="chess puzzle of the day"
-    directory_title="chess puzzle of the day from pgn4web"
+    title="chess puzzler"
+    directory_title="chess puzzler of the day from pgn4web"
     title_url="http://pgn4web.casaschi.net/"
-    description="chess puzzle of the day from the pgn4web project at http://pgn4web.casaschi.net"
+    description="chess puzzler of the day from the pgn4web project at http://pgn4web.casaschi.net"
     author="Paolo Casaschi"
     author_email="pgn4web@casaschi.net"
     screenshot="http://pgn4web.googlecode.com/svn/wiki/screenshots/screenshot-igooglegadget.png"
@@ -17,7 +17,7 @@
   </ModulePrefs>
 
   <UserPref name="size" 
-     display_name="chessboard size"
+     display_name="size"
      datatype="enum"
      default_value="0">
     <EnumValue value="0" display_value="auto resize"/>
@@ -31,7 +31,7 @@
     <EnumValue value="150" display_value="colossal"/>
   </UserPref>
   <UserPref name="colorScheme" 
-     display_name="color scheme"
+     display_name="color"
      datatype="enum"
      default_value="0">
     <EnumValue value="0" display_value="blue"/>
@@ -48,7 +48,7 @@
 
       <center>
       <iframe id='mainframe' frameborder='0' scrolling='no' marginheight='0' marginwidth='0'>
-      iframe support required to display the pgn4web puzzle of the day
+      iframe support required to display the chess puzzler
       </iframe>
       </center>
 
@@ -87,7 +87,7 @@
           theObj.style.height = (squareSize * 9) + "px";
           theObj.width = squareSize * 8;
           theObj.style.width = (squareSize * 8) + "px";
-          theObj.src = "http://go.casaschi.net/pgn4web-puzzleoftheday?" + 
+          theObj.src = "http://go.casaschi.net/pgn4web-puzzler?" + 
             "pieceFont=hash" +
             "&squareSize=" + squareSize +
             "&lightColorHex=" + lightColorHex[colorScheme] +
