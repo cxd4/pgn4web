@@ -3,8 +3,8 @@
 <Module>
 
   <ModulePrefs
-    title="chess puzzler"
-    directory_title="chess puzzler"
+    title="Chess Puzzler"
+    directory_title="Chess Puzzler"
     title_url="http://pgn4web.casaschi.net/"
     description="chess puzzler of the day from the pgn4web project at http://pgn4web.casaschi.net"
     author="Paolo Casaschi"
