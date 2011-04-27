@@ -1,5 +1,25 @@
 [Event "London League 2010/2011"]
 [Site "London, UK"]
+[Date "2011.04.27"]
+[Round "?"]
+[White "Casaschi, Paolo"]
+[Black "French, Angus"]
+[Result "1/2-1/2"]
+[ECO "D15"]
+[Opening "QGD Slav"]
+[Variation "Tolush-Geller gambit"]
+
+1. d4 d5 2. Nf3 Nf6 3. c4 c6 4. Nc3 dxc4 5. e4 b5 6. e5 Nd5 7. a4 e6 8. Ng5
+h6 9. Nge4 b4 10. Nb1 c3 11. Bc4 cxb2 12. Bxb2 a5 13. Qg4 h5 14. Qg3 Nd7
+15. Nbd2 Rh6 16. Bd3 N7b6 17. Nf3 Ba6 18. Bc2 h4 19. Qg4 { # } 19... Rg6
+20. Nd6+ Qxd6 21. Bxg6 Qd7 22. Bc2 O-O-O 23. Qe4 Kb7 { # } 24. Bd3 Bxd3 25.
+Qxd3 Nf4 26. Qe4 Nxg2+ 27. Kf1 h3 28. Ng5 { # } 28... Qd5 29. Qxd5 cxd5 30.
+Nxh3 Nh4 31. Ke2 Nf5 32. Rhd1 Be7 33. Ng1 Rh8 34. Nf3 Nh4 35. Rg1 g6 36.
+Bc1 Nxf3 37. Kxf3 Rxh2 38. Bf4 Rh3+ 39. Rg3 Rh4 40. Rg4 Rh3+ 41. Rg3 Rh4
+42. Rg4 1/2-1/2
+
+[Event "London League 2010/2011"]
+[Site "London, UK"]
 [Date "2011.04.18"]
 [Round "?"]
 [White "Casaschi, Paolo"]
