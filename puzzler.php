@@ -393,7 +393,7 @@ $pgnGame
 
 {
 
-chess puzzler, updated at 00:00 GMT
+pgn4web chess puzzler
 
 you can add the chess puzzler to your site with the following HTML code:
 
@@ -403,7 +403,7 @@ iframe support required to display the chess puzzler
 
 the following URL parameters allow customization of the chess puzzler:
 - pgnData=... selects the PGN file containing the puzzler, default: tactics.pgn
-- gameNum=... sets the game number for the puzzler to be shown, default: blank, showing the puzzler of the day
+- gameNum=... sets the game number for the puzzler to be shown, default: blank, showing the puzzler of the day updated at 00:00 GMT
 - squareSize=... sets the chessboard square size, default 30
 - lightColorHex=... sets the light squares color, in hexadecimal format, default: EFF4EC
 - darkColorHex=... sets the dark squares color, in hexadecimal format, default: C6CEC3
