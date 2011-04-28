@@ -24,7 +24,9 @@ body {
 body {
   font-family: 'pgn4web Liberation Sans', sans-serif;
   color: black;
-  background: white;
+  background: white; /* fallback */
+  background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0)); /* chrome 9- */
+  background: -webkit-linear-gradient(#FFFFFF, #F0F0F0); /* chrome 10+ */
 }
 
 .boardTable {
