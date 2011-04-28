@@ -3219,10 +3219,10 @@ function PrintHTML() {
         'ACTION="javascript:searchPgnGameForm();">';
       text += '<INPUT ID="searchPgnButton" CLASS="searchPgnButton" STYLE="display: inline; ';
       if (tableSize > 0) { text += 'width: ' + (tableSize/4) + 'px; '; }
-      text += '" TITLE="find games matching the search string (or regular expression)" ' +
+      text += '" TITLE="find games matching the search string (regular expression)" ' +
         'TYPE="submit" VALUE="?">' +
         '<INPUT ID="searchPgnExpression" CLASS="searchPgnExpression" ' +
-        'TITLE="find games matching the search string (or regular expression)" ' + 
+        'TITLE="find games matching the search string (regular expression)" ' + 
         'TYPE="input" VALUE="" STYLE="display: inline; ';
       if (tableSize > 0) { text += 'width: ' + (3*tableSize/4) + 'px; '; }
       text += '" ONFOCUS="disableShortcutKeysAndStoreStatus();" ONBLUR="restoreShortcutKeysStatus();">'; 
