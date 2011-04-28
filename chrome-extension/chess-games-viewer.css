@@ -125,10 +125,8 @@ body {
   text-align: justify;
   height: 4.2em;
   line-height: 1.4em;
-  overflow-y: scroll;
-  padding-right: 1em;
+  overflow-y: auto;
   margin-bottom: 2em;
-  display: none;
 }
 
 .lastMove {
