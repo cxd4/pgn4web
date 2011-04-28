@@ -28,7 +28,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
 
 </head>
 
-<body>
+<body onresize="fixCommentScrollbar();">
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
 <form style="display: none;"><textarea style="display: none;" id="pgnText">
@@ -135,20 +135,28 @@ of Google Chrome v6 or later. Don't use with any other browser.
       fixHeaderTag(elementId);
    }
 
+   function fixCommentScrollbar() {
+     if (theObject = document.getElementById('lastMoveAndComment')) {
+        theObject.style.paddingRight = "0";
+        if (theObject.clientHeight < theObject.scrollHeight) { theObject.style.paddingRight = "1em"; };
+     }
+   }
+
    function customFunctionOnMove() {
-     wObject = document.getElementById('GameWhiteClock');
-     bObject = document.getElementById('GameBlackClock');
-     if (wObject && bObject) {
-       if ((!wObject.innerHTML.match(/\S/)) && (bObject.innerHTML.match(/\S/))) { wObject.innerHTML = '-'; }
-       if ((!bObject.innerHTML.match(/\S/)) && (wObject.innerHTML.match(/\S/))) { bObject.innerHTML = '-'; }
-     }
-     fixHeaderTag('GameWhiteClock');
-     fixHeaderTag('GameBlackClock');
-     if (theObject = document.getElementById('GameLastMove')) {
-       if (CurrentPly == StartPly) {
-         theObject.innerHTML = ((CurrentPly%2) ? "black" : "white") + " to move";
-       }
-     }
+      wObject = document.getElementById('GameWhiteClock');
+      bObject = document.getElementById('GameBlackClock');
+      if (wObject && bObject) {
+         if ((!wObject.innerHTML.match(/\S/)) && (bObject.innerHTML.match(/\S/))) { wObject.innerHTML = '-'; }
+         if ((!bObject.innerHTML.match(/\S/)) && (wObject.innerHTML.match(/\S/))) { bObject.innerHTML = '-'; }
+      }
+      fixHeaderTag('GameWhiteClock');
+      fixHeaderTag('GameBlackClock');
+      if (theObject = document.getElementById('GameLastMove')) {
+         if (CurrentPly == StartPly) {
+            theObject.innerHTML = ((CurrentPly%2) ? "black" : "white") + " to move";
+         }
+      }
+      fixCommentScrollbar();
    }
 
    function customFunctionOnPgnGameLoad() {
