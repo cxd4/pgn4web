@@ -125,7 +125,8 @@ body {
   text-align: justify;
   height: 4.2em;
   line-height: 1.4em;
-  overflow-y: auto;
+  overflow-y: scroll;
+  padding-right: 1em;
   margin-bottom: 2em;
 }
 

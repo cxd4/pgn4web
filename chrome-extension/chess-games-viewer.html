@@ -28,7 +28,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
 
 </head>
 
-<body onresize="fixCommentScrollbar();">
+<body>
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
 <form style="display: none;"><textarea style="display: none;" id="pgnText">
@@ -135,13 +135,6 @@ of Google Chrome v6 or later. Don't use with any other browser.
       fixHeaderTag(elementId);
    }
 
-   function fixCommentScrollbar() {
-     if (theObject = document.getElementById('lastMoveAndComment')) {
-        theObject.style.paddingRight = "0";
-        if (theObject.clientHeight < theObject.scrollHeight) { theObject.style.paddingRight = "1em"; };
-     }
-   }
-
    function customFunctionOnMove() {
       wObject = document.getElementById('GameWhiteClock');
       bObject = document.getElementById('GameBlackClock');
@@ -156,7 +149,6 @@ of Google Chrome v6 or later. Don't use with any other browser.
             theObject.innerHTML = ((CurrentPly%2) ? "black" : "white") + " to move";
          }
       }
-      fixCommentScrollbar();
    }
 
    function customFunctionOnPgnGameLoad() {
