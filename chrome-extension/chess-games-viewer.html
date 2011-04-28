@@ -110,7 +110,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
       if ((refreshDemo == "true") || (refreshDemo == "t")) { alertFlag = demoFlag = true; }
    }
 
-   stepFlag = false;
+   stepFlag = true;
    thisRegExp = /(&|\?)(refreshMinutes|rm)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
       refreshMinutes = unescape(window.location.search.match(thisRegExp)[3]);
