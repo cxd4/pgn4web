@@ -90,10 +90,8 @@ of Google Chrome v6 or later. Don't use with any other browser.
    SetGameSelectorOptions(null, true, 12, 12, 2, 15, 15, 3, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);   
    SetCommentsIntoMoveText(true);
    SetCommentsOnSeparateLines(false);
-   SetAutoplayDelay(2000); // milliseconds
    SetAutostartAutoplay(false);
    SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
-   SetInitialHalfmove(0, true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
    SetShortcutKeysEnabled(true);
 
    thisRegExp = /(&|\?)(search|s)=([^&]*)(&|$)/i;
@@ -114,8 +112,12 @@ of Google Chrome v6 or later. Don't use with any other browser.
    thisRegExp = /(&|\?)(refreshMinutes|rm)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
       refreshMinutes = unescape(window.location.search.match(thisRegExp)[3]);
-      SetInitialHalfmove("end", true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
       SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, stepFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false)
+      SetAutoplayDelay(1000); // milliseconds
+      SetInitialHalfmove("end", true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
+   } else {
+      SetAutoplayDelay(2000); // milliseconds
+      SetInitialHalfmove(0, true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
    }
 
    function fixHeaderTag(elementId) {
