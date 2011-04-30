@@ -54,13 +54,14 @@
       </center>
 
       <script type="text/javascript">
+      <!--
 
-/*
- *  pgn4web javascript chessboard
- *  copyright (C) 2009, 2011 Paolo Casaschi
- *  see README file and http://pgn4web.casaschi.net
- *  for credits, license and more details
- */
+      /*
+       *  pgn4web javascript chessboard
+       *  copyright (C) 2009, 2011 Paolo Casaschi
+       *  see README file and http://pgn4web.casaschi.net
+       *  for credits, license and more details
+       */
 
         function getWidth() {
           if (self.innerHeight) { return self.innerWidth; }
@@ -100,6 +101,7 @@
 
         gadgets.window.adjustHeight();
 
+      // -->
       </script>
     ]]>
   </Content>
