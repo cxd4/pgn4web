@@ -10,7 +10,7 @@
     author="Paolo Casaschi"
     author_email="pgn4web@casaschi.net"
     screenshot="http://pgn4web.googlecode.com/svn/wiki/screenshots/screenshot-igooglegadget.png"
-    thumbnail="http://pgn4web.casaschi.net/pawns.png"
+    thumbnail="http://pgn4web.googlecode.com/svn/wiki/screenshots/thumbnail-igooglegadget.png"
     height="270"
     width="240">
     <Require feature="dynamic-height"/>
