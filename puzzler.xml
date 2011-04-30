@@ -74,8 +74,8 @@
 
         var prefs = new _IG_Prefs();
         var lightColorHex =             new Array("E8E8E8","F2D798","F4F4F4","EFF4EC","EDE8D5","FFFFFF","FFCC99","999999", "F4F4FF");
-        var darkColorHex =              new Array("C2C9D1","C9AD6F","E0E0E0","C6CEC3","CFCBB3","E4E4E4","CC9966","888888", "E5ECF9");
-        var controlBackgroundColorHex = new Array("E8E8E8","F2D798","F4F4F4","EFF4EC","EDE8D5","FFFFFF","FFCC99","888888", "E5ECF9");
+        var darkColorHex =              new Array("C2C9D1","C9AD6F","E0E0E0","C6CEC3","CFCBB3","E4E4E4","CC9966","888888", "D4E6FC");
+        var controlBackgroundColorHex = new Array("E8E8E8","F2D798","F4F4F4","EFF4EC","EDE8D5","FFFFFF","FFCC99","888888", "D4E6FC");
         var controlTextColorHex =       new Array("585B5E","54110C","888888","888888","615F54","888888","705438","000000", "87AFDA");
         var colorScheme = prefs.getInt("colorScheme");
 
