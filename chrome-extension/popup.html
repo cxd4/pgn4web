@@ -19,8 +19,8 @@ of Google Chrome v6 or later. Don't use with any other browser.
 <style type="text/css">
 
 body {
-  margin: 0; 
-  padding: 25px; 
+  margin: 2em; 
+  padding: 0; 
   background: white; /* fallback */
   background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0)); /* chrome 9- */
   background: -webkit-linear-gradient(#FFFFFF, #F0F0F0); /* chrome 10+ */
@@ -62,15 +62,18 @@ chrome.tabs.getSelected(null, function(tab){
   pgnLinks = chrome.extension.getBackgroundPage().pgnLinks[tab.id];
   document.getElementById("numPgnLinks").innerHTML = " " + pgnLinks.length + " ";
   document.getElementById("numPgnPlural").innerHTML = pgnLinks.length == 1 ? "" : "s";
+  document.getElementById("pgnLinkList").innerHTML = '<div class="pgnItem">...please wait...</div>';
+  pgnLinkListInnerHTML = "";
   for(l in pgnLinks) {
     var pgnFileName = pgnLinks[l].replace(/(^|^[^?#]*\/)([^?#\/]+\.pgn)($|\?.*$|#.*$)/i,'$2');
-    document.getElementById("pgnLinkList").innerHTML += '<div class="pgnItem">' +
+    pgnLinkListInnerHTML += '<div class="pgnItem">' +
       '<a title="view ' + pgnFileName + ' games" class="pgnLink" href="javascript: return false;" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'chrome.tabs.create({url: "chess-games-viewer.html?pgnData=' + escape(pgnLinks[l]) + '"});\'><img src="alpha-16.png"></a>&nbsp;&nbsp;' +
       '<a title="view ' + pgnFileName + ' games with live refresh" class="pgnLink" href="javascript: return false;" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'chrome.tabs.create({url: "chess-games-viewer.html?pgnData=' + escape(pgnLinks[l]) + '&refreshMinutes=1.0' + Math.floor(Math.random()*10) + '&search=\\\\[\\\\s*Result\\\\s*\\"\\\\*\\"\\\\s*\\\\]"});\'><img src="refresh.png"></a>&nbsp;&nbsp;' +
       '<a title="download ' + pgnFileName + ' games" class="pgnLink" href="javascript: return false;" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'chrome.tabs.update(' + tab.id + ', {url: "' + pgnLinks[l] + '"});\'><img src="download.png"></a>&nbsp;&nbsp;&nbsp;&nbsp;' +
       '<span title="' + pgnFileName + '">' + pgnLinks[l] + '</span>' +
       '</div>';
   }
+  document.getElementById("pgnLinkList").innerHTML = pgnLinkListInnerHTML;
 });
  
 </script>
