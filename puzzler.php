@@ -152,7 +152,7 @@ $sidetomoveWidth = $sidetomoveHeight;
 $sidetomoveWidthCss = $sidetomoveWidth . "px";
 
 
-$frameBorderColorHex = get_param("frameBorderColorHex", "fbch", "A4A4A4");
+$frameBorderColorHex = get_param("frameBorderColorHex", "fbch", "C6CEC3");
 if ($frameBorderColorHex == "none") { 
   $frameBorderStyleCss = "none";
   $frameBorderWidth = 0;
