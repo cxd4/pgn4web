@@ -44,6 +44,9 @@
     <EnumValue value="5" display_value="white"/>
     <EnumValue value="6" display_value="wood"/>
   </UserPref>
+  <UserPref name="advancedUrlParameters"
+     display_name="advanced"
+     default_value=""/>
 
   <Content type="html">
     <![CDATA[
@@ -89,19 +92,25 @@
           if (squareSize == 0) { squareSize = 30; }
         }
 
+        var advancedUrlParameters = prefs.getString("advancedUrlParameters");
+        if (advancedUrlParameters && (advancedUrlParameters.charAt(0) != "&")) {
+           advancedUrlParameters = "&" + advancedUrlParameters;
+        }
+
         if (theObj = document.getElementById('mainframe')) {
           theObj.height = squareSize * 9;
           theObj.style.height = (squareSize * 9) + "px";
           theObj.width = squareSize * 8;
           theObj.style.width = (squareSize * 8) + "px";
           theObj.src = "http://go.casaschi.net/pgn4web-puzzler?" + 
-            "pieceFont=hash" +
-            "&squareSize=" + squareSize +
-            "&lightColorHex=" + lightColorHex[colorScheme] +
-            "&darkColorHex=" + darkColorHex[colorScheme] +
-            "&controlBackgroundColorHex=" + controlBackgroundColorHex[colorScheme] +
-            "&controlTextColorHex=" + controlTextColorHex[colorScheme] +
-            "&frameBorderColorHex=none";
+            "pf=hash" +
+            "&ss=" + squareSize +
+            "&lch=" + lightColorHex[colorScheme] +
+            "&dch=" + darkColorHex[colorScheme] +
+            "&cbch=" + controlBackgroundColorHex[colorScheme] +
+            "&ctch=" + controlTextColorHex[colorScheme] +
+            "&fbch=none" + 
+            advancedUrlParameters;
         }
 
         gadgets.window.adjustHeight();
