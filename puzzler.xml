@@ -107,7 +107,7 @@
                borderSize = Math.ceil(squareSize / 50);
             }
           } else {
-            frameBorderColorHexValue = "value";
+            frameBorderColorHexValue = "none";
             borderSize = 0;
           }
         }
