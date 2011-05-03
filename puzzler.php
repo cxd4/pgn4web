@@ -76,9 +76,13 @@ $squareSize = get_param("squareSize", "ss", "30");
 if ($squareSize < 20) { $squareSize = 20; }
 $squareSizeCss = $squareSize . "px";
 if ($squareSize < 30) {
+  $borderStyleCss = "none";
+  $highlightBorderStyleCss = "none";
   $borderSize = 0;
   $borderSizeCss = $borderSize;
 } else {
+  $borderStyleCss = "solid";
+  $highlightBorderStyleCss = "inset";
   $borderSize = ceil($squareSize / 50);
   $borderSizeCss = $borderSize . "px";
 }
@@ -150,13 +154,16 @@ $sidetomoveWidthCss = $sidetomoveWidth . "px";
 
 $frameBorderColorHex = get_param("frameBorderColorHex", "fbch", "A4A4A4");
 if ($frameBorderColorHex == "none") { 
-  $frameBorderColorHex = "000000"; 
+  $frameBorderStyleCss = "none";
   $frameBorderWidth = 0;
+  $frameBorderWidthCss = "0";
+  $frameBorderColorHex = "000000"; 
 } else {
+  $frameBorderStyleCss = "outset";
   $frameBorderWidth = ceil($squareSize / 50);
+  $frameBorderWidthCss = $frameBorderWidth . "px";
 }
 $frameBorderColorHexCss = "#" . $frameBorderColorHex;
-$frameBorderWidthCss = $frameBorderWidth . "px";
 
 $frameWidth = $boardSize;
 $frameWidthCss = $frameWidth . "px";
@@ -226,16 +233,16 @@ end of debug info -->
 html, 
 body { 
   margin: 0; 
-  padding: $framePadding;
+  padding: $framePaddingCss;
   background: $backgroundColorHexCss;
 }
 
 .container {
   width: $frameWidthCss;
   height: $frameHeightCss;
-  border-color: $frameBorderColorHexCss;
-  border-style: outset;
+  border-style: $frameBorderStyleCss;
   border-width: $frameBorderWidthCss;
+  border-color: $frameBorderColorHexCss;
 }
 
 .boardTable {
@@ -255,7 +262,7 @@ body {
 .highlightBlackSquare {
   width: $squareSizeCss;
   height: $squareSizeCss;
-  border-style: solid;
+  border-style: $borderStyleCss;
   border-width: $borderSizeCss;
 }
 
@@ -273,7 +280,7 @@ body {
 
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  border-style: inset;
+  border-style: $highlightBorderStyleCss;
 }
 
 .buttonTable {
