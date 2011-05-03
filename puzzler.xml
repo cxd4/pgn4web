@@ -95,15 +95,15 @@
 
         var squareSize = prefs.getInt("squareSize");
         var showBorder = prefs.getBool("showBorder");
-        var borderSize = 0;
-        var frameBorderColorHexValue = "none";
+        var borderSize = showBorder ? Math.ceil(squareSize / 50) : 0;
+        var frameBorderColorHexValue = showBorder ? frameBorderColorHex[colorScheme] : "none";
         if (squareSize == 0) {
-          squareSize = Math.floor(getWidth() / 8);
+          var containerWidth = getWidth();
+          squareSize = Math.floor(containerWidth / 8);
           if (squareSize == 0) { squareSize = 30; }
           if (showBorder) {
-            frameBorderColorHexValue = frameBorderColorHex[colorScheme];
             borderSize = Math.ceil(squareSize / 50);
-            if (squareSize * 8 + borderSize * 2 > getWidth()) {
+            if (squareSize * 8 + borderSize * 2 > containerWidth) {
                squareSize = squareSize - Math.ceil(squareSize / (50 * 8 / 2));
                borderSize = Math.ceil(squareSize / 50);
             }
