@@ -93,9 +93,10 @@
             new Array("C2C9D1","C9AD6F","E0E0E0","C6CEC3","CFCBB3","E4E4E4","CC9966","888888", "D4E6FC");
         var colorScheme = prefs.getInt("colorScheme");
 
-        var showBorder = prefs.getBool("showBorder");
-
         var squareSize = prefs.getInt("squareSize");
+        var showBorder = prefs.getBool("showBorder");
+        var borderSize = 0;
+        var frameBorderColorHexValue = "none";
         if (squareSize == 0) {
           squareSize = Math.floor(getWidth() / 8);
           if (squareSize == 0) { squareSize = 30; }
@@ -106,9 +107,6 @@
                squareSize = squareSize - Math.ceil(squareSize / (50 * 8 / 2));
                borderSize = Math.ceil(squareSize / 50);
             }
-          } else {
-            frameBorderColorHexValue = "none";
-            borderSize = 0;
           }
         }
 
