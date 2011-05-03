@@ -24,8 +24,10 @@ function get_param($param, $shortParam, $default) {
 $pgnData = get_param("pgnData", "pd", "tactics.pgn");
 
 function get_pgnText($pgnUrl) {
+  if (strpos($pgnUrl, ":") | (strpos($pgnUrl,"%3A"))) { return "[Event \"error: invalid pgnData parameter\"]\n"; }
   $fileLimitBytes = 10000000; // 10Mb
   $pgnText = file_get_contents($pgnUrl, NULL, NULL, 0, $fileLimitBytes + 1);
+  if (! $pgnText) { return "[Event \"error: failed to get pgnData content\"]\n"; }
   return $pgnText;
 }
 
