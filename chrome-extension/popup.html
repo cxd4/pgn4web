@@ -81,11 +81,9 @@ chrome.tabs.getSelected(null, function(tab){
   var listObject = document.getElementById("pgnLinkList");
   var scrollObject = document.getElementById("measureScrollbar");
   if (pgnLinks.length > 12) {
-    listObject.style.marginRight = 0;
     listObject.style.paddingRight = (25 + scrollObject.offsetWidth - scrollObject.clientWidth) + "px";
   } else {
     listObject.style.marginRight = "25px";
-    listObject.style.paddingRight = 0;
   }
   listObject.innerHTML = '<div class="pgnItem">...please wait...</div>';
   pgnLinkListInnerHTML = "";
