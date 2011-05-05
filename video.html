@@ -182,7 +182,7 @@ if (! horizontalLayout) { document.write('<tr><td height="20"></td></tr>'); }
 
 <div class="videoBox">
 <div id="videodiv" style="text-align:center; font-style:italic;">
-<video id="videoPlayer" controls="controls" autoplay="autoplay"><br/><br/>warning: HTML5 video support required</video>
+<video id="videoPlayer" controls="controls"><br/><br/>warning: HTML5 video support required</video>
 </div>
 </div>
 
@@ -277,6 +277,8 @@ if ((videoHeight = gup("videoHeight")) === "") {
 }
 if (videoHeight) { document.getElementById("videodiv").style.height = videoHeight + "px"; }
 
+videoAutoplay = ((gup("videoAutoplay") != "false") && (gup("videoAutoplay") != "f"));
+
 videoLoop = ((gup("videoLoop") == "true") || (gup("videoLoop") == "t"));
 
 ignoreVideotimes = ((gup("ignoreVideotimes") == "true") || (gup("ignoreVideotimes") == "t"));
@@ -294,6 +296,7 @@ if (videoUrl) {
     theObj.src = videoUrl;
     if (videoWidth) { theObj.width = videoWidth; }
     if (videoHeight) { theObj.height = videoHeight; } 
+    if (videoAutoplay) { theObj.autoplay = "autoplay"; } 
     if (videoLoop) { theObj.loop = "loop"; } 
   }
 } else if (youtubeVideoid) {
@@ -303,7 +306,7 @@ if (videoUrl) {
   var flashvars = { };
   var params = { allowScriptAccess: "always", allowFullScreen: "true" };
   var atts = { id: "videoPlayer" };
-  swfobject.embedSWF("http://www.youtube.com/e/" + youtubeVideoid + "?enablejsapi=1&autohide=1&autoplay=1&disablekb=1&fs=1&" + (videoLoop ? "loop=1&playlist=" + youtubeVideoid : "loop=0") + "&rel=0&showinfo=0", "videodiv", videoWidth, videoHeight, "8", expressInstall, flashvars, params, atts);
+  swfobject.embedSWF("http://www.youtube.com/e/" + youtubeVideoid + "?enablejsapi=1&autohide=1" + (videoAutoplay ? "&autoplay=1" : "&autoplay=0") + "&disablekb=1&fs=1" + (videoLoop ? "&loop=1&playlist=" + youtubeVideoid : "&loop=0") + "&rel=0&showinfo=0", "videodiv", videoWidth, videoHeight, "8", expressInstall, flashvars, params, atts);
 } else {
   paramError += "error: videoUrl or youtubeVideoid URL parameter required as video source\n\n";
 }
