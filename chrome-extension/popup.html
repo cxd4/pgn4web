@@ -42,7 +42,7 @@ body {
 }
 
 .pgnLinkList {
-  margin-right: 25px;
+  padding-right: 25px;
   line-height: 26px;
   max-height: 312px;
   overflow-x: hidden;
@@ -83,11 +83,7 @@ chrome.tabs.getSelected(null, function(tab){
       '</div>';
   }
   var theObject = document.getElementById("pgnLinkList");
-  theObject.innerHTML = pgnLinkListInnerHTML;
-  if (theObject.offsetWidth > theObject.clientWidth) {
-    theObject.style.marginRight = 0;
-    theObject.style.paddingRight = (25 + theObject.offsetWidth - theObject.clientWidth) + "px";
-  }
+  document.getElementById("pgnLinkList").innerHTML = pgnLinkListInnerHTML;
 });
 
 </script>
