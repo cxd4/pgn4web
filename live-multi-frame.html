@@ -152,6 +152,9 @@ function customFunctionOnMove() {
     if ((!wObject.innerHTML.match(/\S/)) && (bObject.innerHTML.match(/\S/))) { wObject.innerHTML = "-"; }
     if ((!bObject.innerHTML.match(/\S/)) && (wObject.innerHTML.match(/\S/))) { bObject.innerHTML = "-"; }
   }
+  if (theObject = document.getElementById("GameMoreMoves")) {
+    theObject.innerHTML = CurrentPly == StartPly + PlyNumber ? "" : ">&nbsp;&nbsp;";
+  }
 }
 
 </script>
@@ -165,6 +168,11 @@ body {
   font-size: 11px;
   font-weight: bold;
   padding: 13px;
+}
+
+a {
+  color: #214398; 
+  text-decoration: none;
 }
 
 .boardTable {
@@ -255,7 +263,7 @@ body {
 <div id="bottomContainer" class="bottomContainer">
 
 <div class="leftHeaderItem"><span id="GameLastMove"></span>&nbsp;</div>
-<div class="rightHeaderItem">&nbsp;<span id="GameResult"></span></div>
+<div class="rightHeaderItem"><a href="javascript:void(0);" onclick="MoveForward(1);" title="more moves available: click > to move forward" style="float:left;" id="GameMoreMoves"></a>&nbsp;<span id="GameResult"></span></div>
 
 <div class="leftHeaderItem"><span id="GameWhite"></span>&nbsp;</div>
 <div class="rightHeaderItem">&nbsp;<span id="GameBlack"></span></div>
