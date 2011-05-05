@@ -19,8 +19,9 @@ of Google Chrome v6 or later. Don't use with any other browser.
 <style type="text/css">
 
 body {
-  margin: 0; 
-  padding: 25px; 
+  padding: 0; 
+  margin: 25px; 
+  margin-right: 0;
   background: white; /* fallback */
   background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0)); /* chrome 9- */
   background: -webkit-linear-gradient(#FFFFFF, #F0F0F0); /* chrome 10+ */
@@ -32,16 +33,24 @@ body {
 
 .pgnHeader {
   font-weight: bold;
-  padding-bottom: 0.6em;
-}
-
-.pgnItem {
-  padding-top: 0.4em;
+  padding-bottom: 1em;
 }
 
 .pgnLink {
   color: black;
   text-decoration: none;
+}
+
+.pgnLinkList {
+  padding-right: 25px;
+  line-height: 26px;
+  max-height: 312px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-base-color: #F0F0F0;
+}
+
+.pgnItem {
 }
 
 </style>
@@ -50,9 +59,9 @@ body {
 
 <body>
 
-<div class="pgnHeader"><a class="pgnLink" title="chess games viewer from the pgn4web project" target="_blank" href="http://pgn4web.casaschi.net">Chess games viewer</a>:<span id="numPgnLinks"> </span>PGN link<span id="numPgnPlural">s</span> on this page</div>
+<div id="pgnHeader" class="pgnHeader"><a class="pgnLink" title="chess games viewer from the pgn4web project" target="_blank" href="http://pgn4web.casaschi.net">Chess games viewer</a>:<span id="numPgnLinks"> </span>PGN link<span id="numPgnPlural">s</span> on this page</div>
 
-<div id="pgnLinkList"></div>
+<div id="pgnLinkList" class="pgnLinkList"></div>
 
 <script type="text/javascript">
 
@@ -75,7 +84,7 @@ chrome.tabs.getSelected(null, function(tab){
   }
   document.getElementById("pgnLinkList").innerHTML = pgnLinkListInnerHTML;
 });
- 
+
 </script>
 
 </body>
