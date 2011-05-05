@@ -33,7 +33,6 @@ body {
 
 .pgnHeader {
   font-weight: bold;
-  padding-bottom: 1em;
 }
 
 .pgnLink {
@@ -41,8 +40,15 @@ body {
   text-decoration: none;
 }
 
+.measureScrollbar {
+  height: 1em;
+  width: 10em;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  visibility: hidden;
+}
+
 .pgnLinkList {
-  padding-right: 25px;
   line-height: 26px;
   max-height: 312px;
   overflow-x: hidden;
@@ -60,19 +66,28 @@ body {
 <body>
 
 <div id="pgnHeader" class="pgnHeader"><a class="pgnLink" title="chess games viewer from the pgn4web project" target="_blank" href="http://pgn4web.casaschi.net">Chess games viewer</a>:<span id="numPgnLinks"> </span>PGN link<span id="numPgnPlural">s</span> on this page</div>
+<div id="measureScrollbar" class="measureScrollbar">hidden text to measure scrollbar width</div>
 
 <div id="pgnLinkList" class="pgnLinkList"></div>
 
 <script type="text/javascript">
 
 var cursorDef = "url(cursor-small.png) 1 6, auto";
- 
+
 chrome.tabs.getSelected(null, function(tab){
   pgnLinks = chrome.extension.getBackgroundPage().pgnLinks[tab.id];
-  if (pgnLinks.length > 12) { document.getElementById("pgnLinkList").style.paddingRight = "50px"; }
   document.getElementById("numPgnLinks").innerHTML = " " + pgnLinks.length + " ";
   document.getElementById("numPgnPlural").innerHTML = pgnLinks.length == 1 ? "" : "s";
-  document.getElementById("pgnLinkList").innerHTML = '<div class="pgnItem">...please wait...</div>';
+  var listObject = document.getElementById("pgnLinkList");
+  var scrollObject = document.getElementById("measureScrollbar");
+  if (pgnLinks.length > 12) {
+    listObject.style.marginRight = 0;
+    listObject.style.paddingRight = (25 + scrollObject.offsetWidth - scrollObject.clientWidth) + "px";
+  } else {
+    listObject.style.marginRight = "25px";
+    listObject.style.paddingRight = 0;
+  }
+  listObject.innerHTML = '<div class="pgnItem">...please wait...</div>';
   pgnLinkListInnerHTML = "";
   for(l in pgnLinks) {
     var pgnFileName = pgnLinks[l].replace(/(^|^[^?#]*\/)([^?#\/]+\.pgn)($|\?.*$|#.*$)/i,'$2');
@@ -83,8 +98,7 @@ chrome.tabs.getSelected(null, function(tab){
       '<span title="' + pgnFileName + '">' + pgnLinks[l] + '</span>' +
       '</div>';
   }
-  var theObject = document.getElementById("pgnLinkList");
-  document.getElementById("pgnLinkList").innerHTML = pgnLinkListInnerHTML;
+  listObject.innerHTML = pgnLinkListInnerHTML;
 });
 
 </script>
