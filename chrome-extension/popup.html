@@ -69,6 +69,7 @@ var cursorDef = "url(cursor-small.png) 1 6, auto";
  
 chrome.tabs.getSelected(null, function(tab){
   pgnLinks = chrome.extension.getBackgroundPage().pgnLinks[tab.id];
+  if (pgnLinks.length > 12) { document.getElementById("pgnLinkList").style.paddingRight = "50px"; }
   document.getElementById("numPgnLinks").innerHTML = " " + pgnLinks.length + " ";
   document.getElementById("numPgnPlural").innerHTML = pgnLinks.length == 1 ? "" : "s";
   document.getElementById("pgnLinkList").innerHTML = '<div class="pgnItem">...please wait...</div>';
