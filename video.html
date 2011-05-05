@@ -95,8 +95,6 @@ a {
 
 </textarea></form>
 
-<pre id="help" style="display: none;"></pre>
-
 <script type="text/javascript">
 
 function gup( name ){
@@ -126,6 +124,44 @@ function gup( name ){
   if( results !== null ) { return decodeURIComponent(results[1]); }
 
   return "";
+}
+
+var pgnFile_default = "";
+var videoUrl_default = "";
+var youtubeVideoid_default = "";
+var videoWidth_default = "480";
+var videoHeight_default = "270";
+function print_default(value) { return value ? value : "null"; }
+
+videoHelp = ((gup("help") == "true") || (gup("help") == "t"));
+
+if (videoHelp) {
+  document.write("<PRE>");
+  document.write("pgn4web video.html URL parameters:\n");
+  document.write("\n");
+  document.write(" - pgnData = PGN URL to load as PGN data source, overrides youtubeVideoid; default " + print_default(pgnFile_default) + "\n");
+  document.write(" - videoUrl = video URL to load as video source, overrides youtubeVideoid; default " + print_default(videoUrl_default) + "\n");
+  document.write(" - youtubeVideoid = youtube video id to use as video source and/or as PGN data source (PGN data expected in the youtube video description); default " + print_default(youtubeVideoid_default) + "\n");
+  document.write("\n");
+  document.write(" - videoWidth = video width; default " + print_default(videoWidth_default) + "\n");
+  document.write(" - videoHeigth = video height; default " + print_default(videoHeight_default) + "\n");
+  document.write(" - videoAutoplay = if set true video autoplays at page load; default true\n");
+  document.write(" - videoLoop = if set true video loops; default false\n");
+  document.write(" - horizontalLayout = if set true the chessboard is next to the video, otherwise underneath; default true\n");
+  document.write("\n");
+  document.write(" - setupVideotimes = if set true, setup special mode to add video times info to the PGN data; default false\n"); 
+  document.write(" - testVideotimes = if set true, detects missing/wrong video times info in the PGN data; default false\n");
+  document.write(" - ignoreVideotimes = if set true, video times info is ignored; default false\n");
+  document.write("\n");
+  document.write(" - help = if set true, shows help info (default false)\n");
+  document.write("\n");
+  document.write("Either the pgnData or the youtubeVideoid URL parameter is required as PGN data source\n");
+  document.write("Either the videoUrl or the youtubeVideoid URL parameter is required as video source\n");
+  document.write("\n");
+  document.write("URL parameters can be shortened: for example pgnData => pd, videoUrl => vu, youtubeVideoid => yv\n");
+  document.write("Also supplied textual values can be shortened: true => t, false => f\n");
+  document.write("\n");
+  document.write("</PRE>\n<HR>\n");
 }
 
 var horizontalLayout = ((gup("horizontalLayout") != "false") && (gup("hl") != "f"));
@@ -216,7 +252,6 @@ else { document.write('</tr><tr><td height="20"></td></tr><tr>'); }
 
 <script type="text/javascript">
 
-var pgnFile_default = "";
 // accepts pgnData as alias for pgnFile for consistency with board.html
 if ((pgnFile = gup("pgnData")) === "") {
   if ((pgnFile = gup("pgnFile")) === "") {
@@ -224,23 +259,19 @@ if ((pgnFile = gup("pgnData")) === "") {
   }
 }
 
-var videoUrl_default = "";
 if ((videoUrl = gup("videoUrl")) === "") {
   videoUrl = videoUrl_default;
 }
 
-var youtubeVideoid_default = "";
 if ((youtubeVideoid = gup("youtubeVideoid")) === "") {
   youtubeVideoid = youtubeVideoid_default;
 }
 
-var videoWidth_default = "480";
 if ((videoWidth = gup("videoWidth")) === "") {
   videoWidth = videoWidth_default;
 }
 if (videoWidth) { document.getElementById("videodiv").style.width = videoWidth + "px"; }
 
-var videoHeight_default = "270";
 if ((videoHeight = gup("videoHeight")) === "") {
   videoHeight = videoHeight_default;
 }
@@ -255,35 +286,6 @@ testVideotimes = ((gup("testVideotimes") == "true") || (gup("testVideotimes") ==
 setupVideotimes = ((gup("setupVideotimes") == "true") || (gup("setupVideotimes") == "t"));
 document.getElementById("setupBox").style.display = setupVideotimes ? "inline" : "none";
 
-function print_value(s) {
-  if (s === true) { return "true"; }
-  if (s === false) { return "false"; }
-  return s ? s : "unassigned";
-}
-
-video_help = ((gup("help") == "true") || (gup("help") == "t"));
-
-function print_video_help() {
-  var helpText = "pgn4web video.html URL parameters:" + "<p/><br/>" +
-     "pgnData=" + print_value(pgnFile) + "<br/>PGN URL to load as PGN data source, overrides youtubeVideoid; default " + print_value(pgnFile_default) + "<p/><br/>" +
-     "videoUrl=" + print_value(videoUrl) + "<br/>video URL to load as video source, overrides youtubeVideoid; default " + print_value(videoUrl_default) + "<p/><br/>" +
-     "youtubeVideoid=" + print_value(youtubeVideoid) + "<br/>youtube video id to use as video source and/or as PGN data source (PGN data expected in the youtube video description); default " + print_value(youtubeVideoid_default) + "<p/><br/>" +
-     "videoWidth=" + print_value(videoWidth) + "<br/>video width; default " + print_value(videoWidth_default) + "<p/><br/>" +
-     "videoHeigth=" + print_value(videoHeight) + "<br/>video height; default " + print_value(videoHeight_default) + "<p/><br/>" +
-     "videoLoop=" + print_value(videoLoop) + "<br/>if true video loops; default false" + "<p/><br/>" +
-     "horizontalLayout=" + print_value(horizontalLayout) + "<br/>if true chessboard is next to the video, otherwise underneath; default true" + "<p/><br/>" +
-     "setupVideotimes=" + print_value(setupVideotimes) + "<br/>if true, setup special mode to add video times info to the PGN data; default false" + "<p/><br/>" +
-     "testVideotimes=" + print_value(testVideotimes) + "<br/>if true, detects missing/wrong video times info in the PGN data; default false" + "<p/><br/>" +
-     "ignoreVideotimes=" + print_value(ignoreVideotimes) + "<br/>if true, video times info is ignored; default false" + "<p/><br/>" +
-     "help=" + print_value(video_help) + "<br/>if true, prints this help; default false";
-
-  if (theObj = document.getElementById("help")) {
-    theObj.innerHTML = helpText;
-    theObj.style.display = "block";
-  }
-
-  return false;
-}
 
 paramError = "";
 
@@ -330,10 +332,10 @@ if (pgnFile) {
   paramError += "error: pgnData or youtubeVideoid URL parameter required as PGN data source\n\n";
 }
 
-if (video_help) {
-  print_video_help();
-} else if (paramError) {
-  if (confirm("pgn4web video.html\n\n" + paramError + "click OK for more help")) { print_video_help(); }
+if (paramError && (! videoHelp)) {
+  if (confirm("pgn4web video.html\n\n" + paramError + "click OK for more help")) {
+    window.location.search += (window.location.search ? "&" : "?") + "help=true";
+  }
 }
 
 SetImagePath ("alpha/26"); 
