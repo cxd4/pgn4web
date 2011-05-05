@@ -82,7 +82,9 @@ chrome.tabs.getSelected(null, function(tab){
       '<span title="' + pgnFileName + '">' + pgnLinks[l] + '</span>' +
       '</div>';
   }
-  document.getElementById("pgnLinkList").innerHTML = pgnLinkListInnerHTML;
+  var theObject = document.getElementById("pgnLinkList");
+  theObject.innerHTML = pgnLinkListInnerHTML;
+  document.getElementById("pgnLinkList").style.paddingRight = (25 + theObject.offsetWidth - theObject.clientWidth) + "px";
 });
 
 </script>
