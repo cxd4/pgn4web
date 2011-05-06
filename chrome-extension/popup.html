@@ -1,23 +1,23 @@
-<html>
-
+<html> 
+ 
 <!--
   pgn4web javascript chessboard
   copyright (C) 2009, 2011 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
--->
-
+--> 
+ 
 <!--
-
+ 
 HTML, CSS and Javascript code optimized for use as extension
 of Google Chrome v6 or later. Don't use with any other browser.
-
--->
-
-<head>
-
-<style type="text/css">
-
+ 
+--> 
+ 
+<head> 
+ 
+<style type="text/css"> 
+ 
 body {
   padding: 0; 
   margin: 25px; 
@@ -30,16 +30,16 @@ body {
   font-size: 16px;
   white-space: nowrap;
 }
-
+ 
 .pgnHeader {
   font-weight: bold;
 }
-
+ 
 .pgnLink {
   color: black;
   text-decoration: none;
 }
-
+ 
 .measureScrollbar {
   height: 1em;
   width: 10em;
@@ -47,7 +47,7 @@ body {
   overflow-x: hidden;
   visibility: hidden;
 }
-
+ 
 .pgnLinkList {
   line-height: 26px;
   max-height: 312px;
@@ -55,38 +55,37 @@ body {
   overflow-y: auto;
   scrollbar-base-color: #F0F0F0;
 }
-
+ 
 .pgnItem {
 }
-
-</style>
-
-</head>
-
-<body>
-
-<div id="pgnHeader" class="pgnHeader"><a class="pgnLink" title="chess games viewer from the pgn4web project" target="_blank" href="http://pgn4web.casaschi.net">Chess games viewer</a>:<span id="numPgnLinks"> </span>PGN link<span id="numPgnPlural">s</span> on this page</div>
-<div id="measureScrollbar" class="measureScrollbar">hidden text to measure scrollbar width</div>
-
-<div id="pgnLinkList" class="pgnLinkList"></div>
-
-<script type="text/javascript">
-
+ 
+</style> 
+ 
+</head> 
+ 
+<body> 
+ 
+<div id="pgnHeader" class="pgnHeader"><a class="pgnLink" title="chess games viewer from the pgn4web project" target="_blank" href="http://pgn4web.casaschi.net">Chess games viewer</a></div> 
+<div id="measureScrollbar" class="measureScrollbar">hidden text to measure scrollbar width</div> 
+ 
+<div id="pgnLinkList" class="pgnLinkList"></div> 
+ 
+<script type="text/javascript"> 
+ 
 var cursorDef = "url(cursor-small.png) 1 6, auto";
-
+ 
 chrome.tabs.getSelected(null, function(tab){
+ 
   pgnLinks = chrome.extension.getBackgroundPage().pgnLinks[tab.id];
-  document.getElementById("numPgnLinks").innerHTML = " " + pgnLinks.length + " ";
-  document.getElementById("numPgnPlural").innerHTML = pgnLinks.length == 1 ? "" : "s";
+ 
+  var headerObject = document.getElementById("pgnHeader");
   var listObject = document.getElementById("pgnLinkList");
   var scrollObject = document.getElementById("measureScrollbar");
-  if (pgnLinks.length > 12) {
-    listObject.style.paddingRight = (25 + scrollObject.offsetWidth - scrollObject.clientWidth) + "px";
-  } else {
-    listObject.style.marginRight = "25px";
-  }
-  listObject.innerHTML = '<div class="pgnItem">...please wait...</div>';
-  pgnLinkListInnerHTML = "";
+ 
+  if (pgnLinks.length > 12) { listObject.style.paddingRight = (25 + scrollObject.offsetWidth - scrollObject.clientWidth) + "px"; }
+  else { listObject.style.marginRight = "25px"; }
+ 
+  var pgnLinkListInnerHTML = "";
   for(l in pgnLinks) {
     var pgnFileName = pgnLinks[l].replace(/(^|^[^?#]*\/)([^?#\/]+\.pgn)($|\?.*$|#.*$)/i,'$2');
     pgnLinkListInnerHTML += '<div class="pgnItem">' +
@@ -97,10 +96,12 @@ chrome.tabs.getSelected(null, function(tab){
       '</div>';
   }
   listObject.innerHTML = pgnLinkListInnerHTML;
+  
+  headerObject.innerHTML += ': ' + pgnLinks.length + ' PGN ' + (pgnLinks.length == 1 ? "link" : "links") + ' on this page';
 });
-
-</script>
-
-</body>
-
-</html>
+ 
+</script> 
+ 
+</body> 
+ 
+</html> 
