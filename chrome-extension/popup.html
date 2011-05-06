@@ -97,7 +97,7 @@ chrome.tabs.getSelected(null, function(tab){
   var emObject = document.getElementById("measureEm");
 
   var em = emObject.offsetWidth;
-  var maxLinkListItems = Math.ceil((0.6 * self.screen.availHeight - 6 * em) / (2 * em));
+  var maxLinkListItems = Math.max(1, Math.ceil((0.6 * self.screen.availHeight - 6 * em) / (2 * em)));
   var imgResizeString = 'height="' + em + 'px" width="' + em + 'px" ';
 
   if (pgnLinks.length > maxLinkListItems) {
