@@ -192,7 +192,7 @@ function pgnLinksPopupRequest(request, sender, sendResponse) {
     pgnLinks[sender.tab.id] = request.pgnLinks;
   }
   pgnLinks[sender.tab.id] = pgnLinks[sender.tab.id].sort();
-  pgnLinksTitle = pgnLinks[sender.tab.id].length + " chess games PGN link" + (pgnLinks[sender.tab.id].length == 1 ? "" : "s") + " on this page";
+  pgnLinksTitle = pgnLinks[sender.tab.id].length + " chess games PGN " + (pgnLinks[sender.tab.id].length == 1 ? "link" : "links") + " on this page";
   chrome.pageAction.setTitle({tabId:sender.tab.id, title:pgnLinksTitle});
   chrome.pageAction.show(sender.tab.id);
   sendResponse({});
