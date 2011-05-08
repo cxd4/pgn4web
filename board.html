@@ -1085,6 +1085,19 @@ function customFunctionOnPgnGameLoad() {
 
 }
 
+function customFunctionOnMove() {
+  if (theContainerObject = document.getElementById("headerMoves")) {
+    if (CurrentPly === 0) { theContainerObject.scrollTop = 0; }
+    else if (theMoveObject = document.getElementById('Mv' + CurrentPly)) { 
+      if (theMoveObject.offsetTop + theMoveObject.offsetHeight > theContainerObject.scrollTop + theContainerObject.offsetHeight) {
+        theContainerObject.scrollTop = theMoveObject.offsetTop + theMoveObject.offsetHeight - theContainerObject.offsetHeight;
+      } else if (theMoveObject.offsetTop < theContainerObject.scrollTop) {
+        theContainerObject.scrollTop = theMoveObject.offsetTop;
+      }
+    }
+  }
+}
+
 var boardGeneratorWin=null;
 function customShortcutKey_Shift_0() {
   if ((newPgnEncoded === "") && (newPgnText === "")) { return; }
