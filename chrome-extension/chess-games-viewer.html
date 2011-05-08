@@ -139,6 +139,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
       if (theObject = document.getElementById('lastMoveAndComment')) {
          theObject.style.paddingRight = "1em";
          if (theObject.offsetWidth == theObject.clientWidth) { theObject.style.paddingRight = '0'; }
+         else { theObject.scrollTop = 0; }
       }
    }
 
