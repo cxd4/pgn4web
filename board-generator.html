@@ -96,9 +96,11 @@ a {
 var shorturlWin = null;
 function shorten_pgn4web_url() {
   if(!document.board.useTextarea.checked) {
-    // pick the preferred short URL service
-    // shorten_url_with_tinyurl();
-    shorten_url_with_bitly();
+    //
+    // pick the short URL service: bitly on pb.casaschi.net for casaschi.net sites, tinyurl otherwise
+    //
+    if (pgn4web_board_url.indexOf("casaschi.net") == -1) { shorten_url_with_tinyurl(); }
+    else { shorten_url_with_bitly(); }
   } else {
     alert('URL sharing creation unavailable when useTextarea is enabled');
   }
