@@ -187,11 +187,11 @@ function mergePgnLinksAndShowIcon(tabId) {
   pgnHrefLinks[tabId] = pgnHrefLinks[tabId].sort();
   for (r in pgnWebRequests[tabId]) {
     for (l in pgnHrefLinks[tabId]) {
-	  if (pgnHrefLinks[tabId][l].match(pgnWebRequests[tabId][r].replace(/(\?|#).*$/, ""))) {
-	    delete pgnWebRequests[tabId][r];
-		break;
-	  }
-	}
+      if (pgnHrefLinks[tabId][l].match(pgnWebRequests[tabId][r].replace(/(\?|#).*$/, ""))) {
+        delete pgnWebRequests[tabId][r];
+        break;
+      }
+    }
   }
   pgnWebRequests[tabId] = pgnWebRequests[tabId].filter(function(element, index, array) { return ((element !== null) && (element !== undefined))}).sort();
   pgnLinksTitle = (pgnHrefLinks[tabId].length + pgnWebRequests[tabId].length) + " chess games PGN " + ((pgnHrefLinks[tabId].length + pgnWebRequests[tabId].length) == 1 ? "link" : "links") + " on this page";
@@ -239,8 +239,8 @@ function checkWebRequestForPgnFiles(requestDetails) {
   if (pgnWebRequests[requestDetails.tabId]) { 
     for (r in pgnWebRequests[requestDetails.tabId]) {
       if (pgnWebRequests[requestDetails.tabId][r].match(requestDetails.url.replace(/(\?|#).*$/, ""))) {
-	      return;
-	  }
+        return;
+      }
     }
   } else {
     pgnHrefLinks[requestDetails.tabId] = new Array();
