@@ -1088,11 +1088,11 @@ function customFunctionOnPgnGameLoad() {
 function customFunctionOnMove() {
   if (theContainerObject = document.getElementById("headerMoves")) {
     if (CurrentPly == StartPly) { theContainerObject.scrollTop = 0; }
-    else if (theMoveObject = document.getElementById('Mv' + CurrentPly)) { 
+    else if (theMoveObject = document.getElementById('Mv' + CurrentPly)) {
       if ((theMoveObject.offsetTop + theMoveObject.offsetHeight >
-           theContainerObject.scrollTop + theContainerObject.offsetHeight) || 
-          (theMoveObject.offsetTop < theContainerObject.scrollTop)) {
-        theContainerObject.scrollTop = theMoveObject.offsetTop;
+           theContainerObject.offsetTop + theContainerObject.scrollTop + theContainerObject.clientHeight) || 
+          (theMoveObject.offsetTop < theContainerObject.offsetTop + theContainerObject.scrollTop)) {
+        theContainerObject.scrollTop = theMoveObject.offsetTop - theContainerObject.offsetTop;
       }
     }
   }
