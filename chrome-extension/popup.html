@@ -89,8 +89,10 @@ var cursorDef = "url(cursor-small.png) 1 6, auto";
  
 chrome.tabs.getSelected(null, function(tab){
  
-  pgnLinks = chrome.extension.getBackgroundPage().pgnLinks[tab.id];
- 
+  pgnLinks = chrome.extension.getBackgroundPage().pgnHrefLinks[tab.id];
+  pgnLinks = pgnLinks.concat(chrome.extension.getBackgroundPage().pgnWebRequests[tab.id]);
+  pgnLinks = pgnLinks.sort();
+  
   var headerObject = document.getElementById("pgnHeader");
   var listObject = document.getElementById("pgnLinkList");
   var scrollObject = document.getElementById("measureScrollbar");

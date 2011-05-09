@@ -180,37 +180,79 @@ chrome.contextMenus.create({"title": "About the chess games viewer extension", "
 
 // end of about menus entries
 
-var pgnLinks = new Array();
-function pgnLinksPopupRequest(request, sender, sendResponse) {
-  if ((pgnLinks[sender.tab.id]) && (pgnLinks[sender.tab.id] !== undefined)) {
-    for(l in request.pgnLinks) {
-      if (pgnLinks[sender.tab.id].indexOf(request.pgnLinks[l]) == -1) {
-        pgnLinks[sender.tab.id].push(request.pgnLinks[l]);
+var pgnHrefLinks = new Array();
+var pgnWebRequests = new Array();
+
+function mergePgnLinksAndShowIcon(tabId) {
+  pgnHrefLinks[tabId] = pgnHrefLinks[tabId].sort();
+  for (r in pgnWebRequests[tabId]) {
+    for (l in pgnHrefLinks[tabId]) {
+	  if (pgnHrefLinks[tabId][l].match(pgnWebRequests[tabId][r].replace(/(\?|#).*$/, ""))) {
+	    delete pgnWebRequests[tabId][r];
+		break;
+	  }
+	}
+  }
+  pgnWebRequests[tabId] = pgnWebRequests[tabId].filter(function(element, index, array) { return ((element !== null) && (element !== undefined))}).sort();
+  pgnLinksTitle = (pgnHrefLinks[tabId].length + pgnWebRequests[tabId].length) + " chess games PGN " + ((pgnHrefLinks[tabId].length + pgnWebRequests[tabId].length) == 1 ? "link" : "links") + " on this page";
+  chrome.pageAction.setTitle({tabId:tabId, title:pgnLinksTitle});
+  chrome.pageAction.show(tabId);
+}
+
+function pgnHrefLinksRequest(request, sender, sendResponse) {
+  if (pgnHrefLinks[sender.tab.id]) {
+    for(l in request.pgnHrefLinks) {
+      if (pgnHrefLinks[sender.tab.id].indexOf(request.pgnHrefLinks[l]) == -1) {
+        pgnHrefLinks[sender.tab.id].push(request.pgnHrefLinks[l]);
       }
     }
   } else {
-    pgnLinks[sender.tab.id] = request.pgnLinks;
+    pgnHrefLinks[sender.tab.id] = request.pgnHrefLinks;
+    pgnWebRequests[sender.tab.id] = new Array();
   }
-  pgnLinks[sender.tab.id] = pgnLinks[sender.tab.id].sort();
-  pgnLinksTitle = pgnLinks[sender.tab.id].length + " chess games PGN " + (pgnLinks[sender.tab.id].length == 1 ? "link" : "links") + " on this page";
-  chrome.pageAction.setTitle({tabId:sender.tab.id, title:pgnLinksTitle});
-  chrome.pageAction.show(sender.tab.id);
+  mergePgnLinksAndShowIcon(sender.tab.id);
   sendResponse({});
 }
 
-chrome.extension.onRequest.addListener(pgnLinksPopupRequest);
+chrome.extension.onRequest.addListener(pgnHrefLinksRequest);
 
 function removePgnLinksOnRemoved(tabId) {
-  if (pgnLinks[tabId]) { delete pgnLinks[tabId]; }
+  if (pgnHrefLinks[tabId]) { delete pgnHrefLinks[tabId]; }
+  if (pgnWebRequests[tabId]) { delete pgnWebRequests[tabId]; }
 }
 
 chrome.tabs.onRemoved.addListener(removePgnLinksOnRemoved);
 
 function removePgnLinksOnUpdated(tabId, changeInfo, tab) {
-  if ((changeInfo.status == "loading") && (changeInfo.url) && (pgnLinks[tabId])) { delete pgnLinks[tabId]; }
+  if ((changeInfo.status == "loading") && (changeInfo.url)) { 
+    if (pgnHrefLinks[tabId]) { delete pgnHrefLinks[tabId]; }
+    if (pgnWebRequests[tabId]) { delete pgnWebRequests[tabId]; }
+  }
 }
 
 chrome.tabs.onUpdated.addListener(removePgnLinksOnUpdated);
+
+function checkWebRequestForPgnFiles(requestDetails) {
+  if (requestDetails.tabId === null) { return; }
+  if (!validatePgnUrl(requestDetails.url)) { return; }
+  
+  if (pgnWebRequests[requestDetails.tabId]) { 
+    for (r in pgnWebRequests[requestDetails.tabId]) {
+      if (pgnWebRequests[requestDetails.tabId][r].match(requestDetails.url.replace(/(\?|#).*$/, ""))) {
+	      return;
+	  }
+    }
+  } else {
+    pgnHrefLinks[requestDetails.tabId] = new Array();
+    pgnWebRequests[requestDetails.tabId] = new Array();
+  }
+  pgnWebRequests[requestDetails.tabId].push(requestDetails.url);
+  mergePgnLinksAndShowIcon(requestDetails.tabId);
+}
+
+// enables using the webRequest API, currently disable because experimental
+//
+// chrome.experimental.webRequest.onBeforeRequest.addListener(checkWebRequestForPgnFiles, {"urls": pgnUrlPatterns});
 
 </script>
 
