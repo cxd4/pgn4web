@@ -108,7 +108,8 @@ chrome.tabs.getSelected(null, function(tab){
   } else { listObject.style.marginRight = "2em"; }
  
   var pgnHeaderInnerHTML = '<a class="pgnHeaderLink" title="chess games viewer from the pgn4web project" target="_blank" href="http://pgn4web.casaschi.net">Chess games viewer</a>';
-  pgnHeaderInnerHTML += ': ' + pgnLinks.length + ' PGN ' + (pgnLinks.length == 1 ? "link" : "links") + ' on this page';
+  pgnHeaderInnerHTML += ': <span title="the chess games viewer extension detected on this page the following links to chess games in PGN format">' + 
+    pgnLinks.length + (pgnLinks.length == 1 ? ' link' : ' links') + ' on this page</span>';
  
   var pgnLinkListInnerHTML = "";
   for(l in pgnLinks) {
