@@ -1098,6 +1098,8 @@ function objectOffsetVeryTop(object) {
 }
 
 function autoScrollToCurrentMove() {
+  // currently disabled because of IE issue
+  return;  
   if (theContainerObject = document.getElementById("headerMoves")) {
     if (CurrentPly == StartPly) { theContainerObject.scrollTop = 0; }
     else if (theMoveObject = document.getElementById('Mv' + CurrentPly)) {
