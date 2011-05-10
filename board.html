@@ -1085,14 +1085,21 @@ function customFunctionOnPgnGameLoad() {
 
 }
 
+function objectOffsetVeryTop(object) {
+  for (offset = object.offsetTop; object = object.offsetParent; offset += object.offsetTop) {}
+  return offset;
+}
+
 function customFunctionOnMove() {
   if (theContainerObject = document.getElementById("headerMoves")) {
     if (CurrentPly == StartPly) { theContainerObject.scrollTop = 0; }
     else if (theMoveObject = document.getElementById('Mv' + CurrentPly)) {
-      if ((theMoveObject.offsetTop + theMoveObject.offsetHeight >
-           theContainerObject.offsetTop + theContainerObject.scrollTop + theContainerObject.clientHeight) || 
-          (theMoveObject.offsetTop < theContainerObject.offsetTop + theContainerObject.scrollTop)) {
-        theContainerObject.scrollTop = theMoveObject.offsetTop - theContainerObject.offsetTop;
+      theContainerObjectOffsetVeryTop = objectOffsetVeryTop(theContainerObject);
+      theMoveObjectOffsetVeryTop = objectOffsetVeryTop(theMoveObject);
+      if ((theMoveObjectOffsetVeryTop + theMoveObject.offsetHeight >
+           theContainerObjectOffsetVeryTop + theContainerObject.scrollTop + theContainerObject.clientHeight) ||
+          (theMoveObjectOffsetVeryTop < theContainerObjectOffsetVeryTop + theContainerObject.scrollTop)) {
+        theContainerObject.scrollTop = theMoveObjectOffsetVeryTop - theContainerObjectOffsetVeryTop;
       }
     }
   }
