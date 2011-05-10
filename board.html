@@ -1085,25 +1085,31 @@ function customFunctionOnPgnGameLoad() {
 
 }
 
-function objectOffsetVeryTop(object) {
-  for (offset = object.offsetTop; object = object.offsetParent; offset += object.offsetTop + object.clientTop) {}
-  return offset;
-}
-
-function customFunctionOnMove() {
-  if (theContainerObject = document.getElementById("headerMoves")) {
-    if (CurrentPly == StartPly) { theContainerObject.scrollTop = 0; }
-    else if (theMoveObject = document.getElementById('Mv' + CurrentPly)) {
-      theContainerObjectOffsetVeryTop = objectOffsetVeryTop(theContainerObject);
-      theMoveObjectOffsetVeryTop = objectOffsetVeryTop(theMoveObject);
-      if ((theMoveObjectOffsetVeryTop + theMoveObject.offsetHeight >
-           theContainerObjectOffsetVeryTop + theContainerObject.scrollTop + theContainerObject.clientHeight) ||
-          (theMoveObjectOffsetVeryTop < theContainerObjectOffsetVeryTop + theContainerObject.scrollTop)) {
-        theContainerObject.scrollTop = theMoveObjectOffsetVeryTop - theContainerObjectOffsetVeryTop;
-      }
-    }
-  }
-}
+// experimental code to auto-scroll the moves text to always show the current move
+// issues: 
+// - IE7 bug with lines starting with a Black move
+// - initialHalmove support
+//
+//
+// function objectOffsetVeryTop(object) {
+//  for (offset = object.offsetTop; object = object.offsetParent; offset += object.offsetTop + object.clientTop) {}
+//  return offset;
+// }
+//
+// function customFunctionOnMove() {
+//   if (theContainerObject = document.getElementById("headerMoves")) {
+//     if (CurrentPly == StartPly) { theContainerObject.scrollTop = 0; }
+//     else if (theMoveObject = document.getElementById('Mv' + CurrentPly)) {
+//       theContainerObjectOffsetVeryTop = objectOffsetVeryTop(theContainerObject);
+//       theMoveObjectOffsetVeryTop = objectOffsetVeryTop(theMoveObject);
+//       if ((theMoveObjectOffsetVeryTop + theMoveObject.offsetHeight >
+//            theContainerObjectOffsetVeryTop + theContainerObject.scrollTop + theContainerObject.clientHeight) ||
+//           (theMoveObjectOffsetVeryTop < theContainerObjectOffsetVeryTop + theContainerObject.scrollTop)) {
+//         theContainerObject.scrollTop = theMoveObjectOffsetVeryTop - theContainerObjectOffsetVeryTop;
+//       }
+//     }
+//   }
+// }
 
 var boardGeneratorWin=null;
 function customShortcutKey_Shift_0() {
