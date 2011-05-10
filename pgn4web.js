@@ -1337,7 +1337,7 @@ function HighlightLastMove() {
     } else {
       text = (Math.floor((showThisMove+1)/2) + 1) + 
         ((showThisMove+1) % 2 === 0 ? '. ' : '... ') + Moves[showThisMove+1];
-      if (commentsIntoMoveText) { text += basicNAGsMoveComment(showThisMove+1); }
+      if (commentsIntoMoveText) { text += basicNAGsMoveComment(showThisMove+2); }
     }
     theShowMoveTextObject.innerHTML = text; 
     theShowMoveTextObject.style.whiteSpace = 'nowrap';
@@ -1349,7 +1349,7 @@ function HighlightLastMove() {
     if ((showThisMove >= StartPly) && Moves[showThisMove]) {
       text = (Math.floor(showThisMove/2) + 1) + 
        (showThisMove % 2 === 0 ? '. ' : '... ') + Moves[showThisMove];
-      if (commentsIntoMoveText) { text += basicNAGsMoveComment(showThisMove); }
+      if (commentsIntoMoveText) { text += basicNAGsMoveComment(showThisMove+1); }
     } else { text = ''; }
     theShowMoveTextObject.innerHTML = text; 
     theShowMoveTextObject.style.whiteSpace = 'nowrap';
