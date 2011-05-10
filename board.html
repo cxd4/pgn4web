@@ -1086,7 +1086,7 @@ function customFunctionOnPgnGameLoad() {
 }
 
 function objectOffsetVeryTop(object) {
-  for (offset = object.offsetTop; object = object.offsetParent; offset += object.offsetTop) {}
+  for (offset = object.offsetTop; object = object.offsetParent; offset += object.offsetTop + object.clientTop) {}
   return offset;
 }
 
