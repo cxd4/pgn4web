@@ -851,7 +851,7 @@ function display_header_moves() {
     }
   }  
   if ((headerDisplay != "hidden") || (movesDisplay != "hidden")) {
-  document.write("<div id='headerMoves' onresize='autoScrollToCurrentMoveIfEnabled();' style='overflow:auto; overflow-x:hidden;" +
+  document.write("<div id='headerMoves' style='overflow:auto; overflow-x:hidden;" +
                  " height: " + textHeight + "; width: " + textWidth + 
                  "; scrollbar-base-color: " + backgroundColor + ";'>");
   } 
@@ -1102,6 +1102,8 @@ function toggleAutoScrollToCurrentMoveFlag() { autoScrollToCurrentMoveFlag = !au
 boardShortcut("G5", "toggle auto-scroll moves text to current move", toggleAutoScrollToCurrentMoveFlag);
 // H5
 boardShortcut("H5", "scroll moves text to current move", autoScrollToCurrentMove);
+
+window.onresize = autoScrollToCurrentMoveIfEnabled;
 
 function objectOffsetVeryTop(object) {
   for (offset = object.offsetTop; object = object.offsetParent; offset += object.offsetTop + object.clientTop) {}
