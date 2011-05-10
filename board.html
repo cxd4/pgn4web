@@ -91,7 +91,7 @@ body {
 
 </head>
 
-<body>
+<body onresize="autoScrollToCurrentMoveIfEnabled();">
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
 <form style="display: none;"><textarea style="display: none;" id="pgnText">
@@ -1102,8 +1102,6 @@ function toggleAutoScrollToCurrentMoveFlag() { autoScrollToCurrentMoveFlag = !au
 boardShortcut("G5", "toggle auto-scroll moves text to current move", toggleAutoScrollToCurrentMoveFlag);
 // H5
 boardShortcut("H5", "scroll moves text to current move", autoScrollToCurrentMove);
-
-window.onresize = autoScrollToCurrentMoveIfEnabled;
 
 function objectOffsetVeryTop(object) {
   for (offset = object.offsetTop; object = object.offsetParent; offset += object.offsetTop + object.clientTop) {}
