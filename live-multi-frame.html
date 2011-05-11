@@ -90,6 +90,8 @@ function developer_help() {
   SetImagePath("uscf/20");
   SetImageType("png");
   SetHighlightOption(true); // true or false
+  SetCommentsIntoMoveText(false);
+  SetCommentsOnSeparateLines(false);
   SetAutoplayDelay(1000); // milliseconds
   SetAutostartAutoplay(false);
   SetAutoplayNextGame(false); 
@@ -101,8 +103,7 @@ function developer_help() {
   clearShortcutSquares("CDEFGH", "2");
   clearShortcutSquares("ABCDEFGH", "345");
   clearShortcutSquares("CDEF", "6");
-  clearShortcutSquares("BC", "7");
-  clearShortcutSquares("G", "7");
+  clearShortcutSquares("CG", "7");
 
 function addTagToTitle(tagLabel, tagValue, object) {
   if (!tagValue || tagValue[1] == "?" || !object) { return; }
