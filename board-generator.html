@@ -93,6 +93,13 @@ a {
 
 <script type="text/javascript">
 
+// this should have been defined in pgn4web-server-config.js
+// setting default value here just in case
+var pgn4web_bitly_login;
+if (pgn4web_bitly_login === undefined) { pgn4web_bitly_login = ""; }
+var pgn4web_bitly_apiKey;
+if (pgn4web_bitly_apiKey === undefined) { pgn4web_bitly_apiKey = ""; }
+
 var shorturlWin = null;
 function shorten_pgn4web_url() {
   if(!document.board.useTextarea.checked) {
@@ -100,8 +107,7 @@ function shorten_pgn4web_url() {
     // pick the short URL service: bitly is used if login/key pair
     // is defined in pgn4web-server-config.js, tinyurl otherwise
     //
-    if ((typeof(pgn4web_bitly_login) !== "undefined") && (pgn4web_bitly_login !== "") &&
-        (typeof(pgn4web_bitly_apiKey) !== "undefined") && (pgn4web_bitly_apiKey !== "")) {
+    if (pgn4web_bitly_login && pgn4web_bitly_apiKey) {
       shorten_url_with_bitly(pgn4web_bitly_login, pgn4web_bitly_apiKey);
     } else { shorten_url_with_tinyurl(); }
   } else {
