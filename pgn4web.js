@@ -3209,9 +3209,9 @@ function PrintHTML() {
       }
       jj = ii+1;
       text += '<A HREF="javascript:GoToMove(' + jj + ')" CLASS="move" ID="Mv' + jj +  
-        '" ONFOCUS="this.blur()">' + Moves[ii] + '</A>';
-      if (commentsIntoMoveText) { text += '<SPAN CLASS="move">' + basicNAGsMoveComment(jj) + '</SPAN>'; }
-      text += '</SPAN>' + '<SPAN CLASS="move"> </SPAN>';
+        '" ONFOCUS="this.blur()">' + Moves[ii];
+      if (commentsIntoMoveText) { text += basicNAGsMoveComment(jj); }
+      text += '</A></SPAN>' + '<SPAN CLASS="move"> </SPAN>';
     }
     if (commentsIntoMoveText && (thisComment = strippedMoveComment(StartPly+PlyNumber))) {
       if (commentsOnSeparateLines) { text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>'; }
