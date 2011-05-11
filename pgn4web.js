@@ -2481,7 +2481,7 @@ function ParsePGNGameString(gameString) {
       case '?':
         commentStart = start;
         commentEnd = commentStart + 1;
-        while ('!? '.indexOf(ss.charAt(commentEnd)) >= 0) {
+        while ('!?'.indexOf(ss.charAt(commentEnd)) >= 0) {
           commentEnd++;
           if (commentEnd == ss.length) { break; }
         }
