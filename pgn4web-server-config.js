@@ -40,6 +40,16 @@ pgn4web_generator_url = 'board-generator.html';
 //
 
 //
+// login/key pair for the bitly URL shortening service, default blank (then tinyurl is used instead)
+// used by: board-generator.html
+//
+pgn4web_bitly_login = "";
+pgn4web_bitly_apiKey = "";
+// pgn4web_bitly_login = "";
+// pgn4web_bitly_apiKey = "";
+//
+
+//
 // pointer URL for the live games broadcast, default = '.'
 // used by: live.html, live-multi.html
 //

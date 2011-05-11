@@ -97,21 +97,20 @@ var shorturlWin = null;
 function shorten_pgn4web_url() {
   if(!document.board.useTextarea.checked) {
     //
-    // pick the short URL service: bitly on pb.casaschi.net for casaschi.net sites, tinyurl otherwise
+    // pick the short URL service: bitly is used if login/key pair
+    // is defined in pgn4web-server-config.js, tinyurl otherwise
     //
-    if (pgn4web_board_url.indexOf("casaschi.net") == -1) { shorten_url_with_tinyurl(); }
-    else { shorten_url_with_bitly(); }
+    if (pgn4web_bitly_login && pgn4web_bitly_apiKey) {
+      shorten_url_with_bitly(pgn4web_bitly_login, pgn4web_bitly_apiKey);
+    } else { shorten_url_with_tinyurl(); }
   } else {
     alert('URL sharing creation unavailable when useTextarea is enabled');
   }
 }
 
 // use this in shorten_pgn4web_url() to generate short urls with bitly 
-// defaulting to pgn4web bitly login/apiKey pair, please change to your own
 // using bitly apis version 3, correct here if apis are changed
-function shorten_url_with_bitly() {
-  var bitly_login = "pgn4web";
-  var bitly_apiKey = "R_c8166bc1cb6cc4c48c9533ff823c56af";
+function shorten_url_with_bitly(bitly_login, bitly_apiKey) {
   var bitly_post_request = "http://api.bitly.com/v3/shorten";
   var bitly_params = "login=" + bitly_login + "&apiKey=" + bitly_apiKey + "&format=txt" + "&longUrl=" + encodeURIComponent(iframeUrl);
   var bitly_get_request = bitly_post_request + "?" + bitly_params;
