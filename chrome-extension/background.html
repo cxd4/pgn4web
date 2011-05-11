@@ -42,7 +42,7 @@ function validatePgnText(pgnText) {
 
 function openRemoteUrl(remoteUrl, live) {
   if (!remoteUrl) { return; }
-  var liveParam = live ? '&refreshMinutes=1.0' + Math.floor(Math.random()*10) + '&search=\\[\\s*Result\\s*"\\*"\\s*\\]' : "";
+  var liveParam = live ? '&refreshMinutes=1.0' + Math.floor(Math.random()*10) : "";
   url = "chess-games-viewer.html?pgnData=" + escape(remoteUrl) + liveParam;
   chrome.tabs.create({url: url});
 }

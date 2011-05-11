@@ -44,12 +44,13 @@ of Google Chrome v6 or later. Don't use with any other browser.
 
    thisRegExp = /(&|\?)(help|h)([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
-      alert("pgn4web collection.html parameters" + "\n" +
-            " - pgnBackground=index" + "\n" +
-            " - pgnData=URL.pgn" + "\n" +
-            " - search=search expression" + "\n" +
-            " - refreshMinutes=live broadcast delay (default 0 = live broadcast disabled)" + "\n" +
-            " - refreshDemo= if set true sets live demo mode (default false)" + "\n" +
+      alert("pgn4web google chrome chess games viewer" + "\n" + 
+            "chess-games-viewer.html parameters" + "\n\n" +
+            " - pgnBackground = index" + "\n\n" +
+            " - pgnData = URL.pgn" + "\n\n" +
+            " - refreshMinutes = live broadcast delay (default 0 = live broadcast disabled)" + "\n\n" +
+            " - refreshDemo = if set true sets live demo mode (default false)" + "\n\n" +
+            " - search = search expression (default first game for normal view and first unfinished game for live broadcast view)" + "\n\n" +
             " - help");
    }
 
@@ -94,13 +95,6 @@ of Google Chrome v6 or later. Don't use with any other browser.
    SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
    SetShortcutKeysEnabled(true);
 
-   thisRegExp = /(&|\?)(search|s)=([^&]*)(&|$)/i;
-   if (window.location.search.match(thisRegExp) !== null) {
-      SetInitialGame(unescape(window.location.search.match(thisRegExp)[3]));
-   } else {
-      SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are accepted; other string values assumed as PGN search string
-   }
-
    alertFlag = demoFlag = false;
    thisRegExp = /(&|\?)(refreshDemo|rd)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
@@ -108,6 +102,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
       if ((refreshDemo == "true") || (refreshDemo == "t")) { alertFlag = demoFlag = true; }
    }
 
+   refreshMinutes = 0;
    stepFlag = true;
    thisRegExp = /(&|\?)(refreshMinutes|rm)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
@@ -118,6 +113,15 @@ of Google Chrome v6 or later. Don't use with any other browser.
    } else {
       SetAutoplayDelay(2000); // milliseconds
       SetInitialHalfmove(0, true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
+   }
+
+   thisRegExp = /(&|\?)(search|s)=([^&]*)(&|$)/i;
+   if (window.location.search.match(thisRegExp) !== null) {
+      SetInitialGame(unescape(window.location.search.match(thisRegExp)[3])); // search for game matching search string
+   } else if (refreshMinutes) {
+      SetInitialGame("\\[\\s*Result\\s*\"\\*\"\\s*\\]"); // search for first unfinished game ([Result "*"])
+   } else {
+      SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are accepted; other string values assumed as PGN search string
    }
 
    function fixHeaderTag(elementId) {
