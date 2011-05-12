@@ -1518,13 +1518,6 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
     loadPgnFromPgnUrlResult = LOAD_PGN_FROM_PGN_URL_OK;
   }
 
-  updateLiveBroadcastStatusAndShowBoardFromNewPgn(loadPgnFromPgnUrlResult);
-
-  if (LiveBroadcastDelay > 0) { restartLiveBroadcastTimeout(); }
-}
-
-function updateLiveBroadcastStatusAndShowBoardFromNewPgn(loadPgnFromPgnUrlResult) {
-
   switch ( loadPgnFromPgnUrlResult ) {
 
     case LOAD_PGN_FROM_PGN_URL_OK:
@@ -1618,6 +1611,8 @@ function updateLiveBroadcastStatusAndShowBoardFromNewPgn(loadPgnFromPgnUrlResult
       break;
 
   }
+
+  if (LiveBroadcastDelay > 0) { restartLiveBroadcastTimeout(); }
 }
 
 var http_request_last_id = 0;
