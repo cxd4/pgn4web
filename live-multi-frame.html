@@ -17,8 +17,9 @@
  
 <script type="text/javascript"> 
 
+  useTextarea = ((gup("useTextarea") == "true") || (gup("useTextarea") == "t"));
+
   pgnFile_default = location.protocol + "//" + location.hostname + location.pathname.replace(/\/[^\/]*$/, "/live/live.pgn");
-  
   // accepts pgnData as alias for pgnFile for consistency with board.html
   if ((pgnFile = gup("pgnData")) === "") { 
     if ((pgnFile = gup("pgnFile")) === "") {
@@ -78,7 +79,8 @@ function gup( name ){
 }
  
 function developer_help() {
-  alert("pgn4web live-multi-frame.html parameters" + "\n" + 
+  alert("pgn4web live-multi-frame.html parameters" + "\n" +
+        " - useTextarea = " + useTextarea + "; if set true uses textarea as PGN input (default false = use pgnData)" + "\n" +
         " - pgnData = " + pgnFile + "; PGN file to load (default " + pgnFile_default + ")" + "\n" +
         " - refreshMinutes = " + refreshMinutes + "; refresh interval in minutes, decimals allowed (default 1)" + "\n" +
         " - refreshDemo = " + demoFlag + "; sets live demo mode (default false)" + "\n" +
@@ -86,7 +88,7 @@ function developer_help() {
         " - help = true; prints this help (default false)");
 }
  
-  SetPgnUrl(pgnFile);
+  if (! useTextarea) { SetPgnUrl(pgnFile); }
   SetImagePath("uscf/20");
   SetImageType("png");
   SetHighlightOption(true); // true or false

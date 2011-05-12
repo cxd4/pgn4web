@@ -1,0 +1,142 @@
+<html>
+
+<!--
+  pgn4web javascript chessboard
+  copyright (C) 2009, 2011 Paolo Casaschi
+  see README file and http://pgn4web.casaschi.net
+  for credits, license and more details
+-->
+
+<head>
+
+<title>pgn4web chess live broadcast</title>
+
+<link rel="shortcut icon" href="pawn.ico" />
+
+<script src="pgn4web-server-config.js" type="text/javascript"></script>
+
+<script src="pgn4web.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+  pgnData_default = "live/live.pgn";
+  maxBoards_default = 12;
+  refreshMinutes_default = 1;
+
+  thisRegExp = /(&|\?)(help|h)([^&]*)(&|$)/i;
+  if (window.location.search.match(thisRegExp) !== null) {
+    alert("pgn4web live-all.html parameters" + "\n\n" + 
+          " - pgnData = file.pgn" + "\n\n" +
+          " - maxBoards = max number of boards to display in a page (default " + maxBoards_default +  ")" + "\n\n" +
+          " - refreshMinutes = live broadcast delay (default " + refreshMinutes_default + ")" + "\n\n" +
+          " - refreshDemo = if set true sets live demo mode (default false)" + "\n\n" +
+          " - help");
+   }
+
+  pgnData = pgnData_default;
+  // accepts pgnData as alias for pgnFile for consistency with board.html
+  thisRegExp = /(&|\?)(pgnData|pd)=([^&]*)(&|$)/i;
+  if (! thisRegExp) { thisRegExp = /(&|\?)(pgnFile|pf)=([^&]*)(&|$)/i; }
+  if (window.location.search.match(thisRegExp) !== null) {
+     pgnData = unescape(window.location.search.match(thisRegExp)[3]);
+  } 
+  if (pgnData) {
+     SetPgnUrl(pgnData); // if set, this has precedence over the inline PGN in the HTML file
+  }
+
+  maxBoards = maxBoards_default;
+  thisRegExp = /(&|\?)(maxBoards|mb)=([^&]*)(&|$)/i;
+  if (window.location.search.match(thisRegExp) !== null) {
+    maxBoards = unescape(window.location.search.match(thisRegExp)[3]);
+  }
+
+  alertFlag = demoFlag = false;
+  thisRegExp = /(&|\?)(refreshDemo|rd)=([^&]*)(&|$)/i;
+  if (window.location.search.match(thisRegExp) !== null) {
+    refreshDemo = unescape(window.location.search.match(thisRegExp)[3]);
+    if ((refreshDemo == "true") || (refreshDemo == "t")) { alertFlag = demoFlag = true; }
+  }
+ 
+  refreshMinutes = refreshMinutes_default;
+  stepFlag = true;
+  thisRegExp = /(&|\?)(refreshMinutes|rm)=([^&]*)(&|$)/i;
+  if (window.location.search.match(thisRegExp) !== null) {
+    refreshMinutes = unescape(window.location.search.match(thisRegExp)[3]);
+  }
+  SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, stepFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false)
+
+</script>
+
+<style type="text/css">
+
+body
+{ color: #DDDDDD; background: white; font-family: sans-serif; padding: 20px 20px 10px 20px; }
+
+.header
+{ color: red; text-decoration: none; padding-bottom: 0.5em; }
+
+a:link, a:visited, a:hover, a:active
+{ color: #DDDDDD; text-decoration: none; }
+
+.hiddenFrame, .visibleFrame {
+  width: 240px;
+  height: 290px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.hiddenFrame {
+  display: none;
+  visibility: hidden;
+}
+
+.visibleFrame {
+  display: inline;
+  visibility: visible;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
+<td align="left" valign="middle">
+<h1 class="header" name="top">pgn4web chess live broadcast</h1>
+</td>
+<td align="right" valign="middle">
+<img src="pawns.png" border="0">
+</td>
+</tr></tbody></table>
+
+<script type="text/javascript">
+
+document.write("<center>");
+for (board = 0; board < maxBoards; board++) {
+  document.write("<iframe name='board" + board + "' id='board" + board + "' class='hiddenFrame' width='240' height='290' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='live-multi-frame.html?ut=t&rm=" + refreshMinutes + (alertFlag ? "&rd=t" : "") + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
+}
+document.write("</center>");
+
+function customFunctionOnPgnTextLoad() {
+  for (board = 0; board < maxBoards; board++) {
+    if (thisFrame = document.getElementById("board" + board)) {
+      if (board < numberOfGames) {
+        thisFrame.className = "visibleFrame";
+        window.frames["board" + board].document.getElementById("pgnText").value = pgnGame[board];
+        window.frames["board" + board].refreshPgnSource();
+      } else {
+        thisFrame.className = "hiddenFrame";
+      }
+    }
+  }
+}
+
+</script>
+
+</body>
+
+</html>
+
