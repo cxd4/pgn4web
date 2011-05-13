@@ -196,7 +196,7 @@ document.write("</center>");
 
 <table class="footer footerTable" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
 <td align="left" valign="bottom">
-<div><a id="GameLiveStatus" href="javascript:void();" onclick="displayDebugInfo();" title="live broadcast status: show more details"></a></div>
+<div><a id="GameLiveStatus" href="javascript:void();" style="display:none;" onclick="displayDebugInfo();" title="live broadcast status: show more details"></a> <span id="StartupMessage">...loading PGN data, please wait...</span></div>
 <div id="leftFooter_2"></div>
 <div id="leftFooter_3"></div>
 </td>
@@ -285,13 +285,18 @@ function customFunctionOnPgnTextLoad() {
     theObject.innerHTML = "";
     if (LiveBroadcastEnded) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='restartLiveBroadcast();' title='check for the start of a new live broadcast event'>check</a> / "; }
     else if (LiveBroadcastPaused) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='restartLiveBroadcast();' title='restart live broadcast automatic refresh of games'>restart</a> / "; }
-    else if (LiveBroadcastStarted) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='pauseLiveBroadcast(); customFunctionOnPgnTextLoad();' title='pause live broadcast automatic refresh of games'>pause</a> / "; }
-    else { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='restartLiveBroadcast();' title='start live broadcast automatic refresh of games'>start</a> / "; }
+    else { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='pauseLiveBroadcast(); customFunctionOnPgnTextLoad();' title='pause live broadcast automatic refresh of games'>pause</a> / "; }
     theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='refreshPgnSource();' title='force games refresh'>force</a> games refresh</a>"; 
   }
 
-  document.title = LiveBroadcastStatusString.replace(" &nbsp;", ",");
+  if (loadPgnTextCounter > 0) {
+    document.title = LiveBroadcastStatusString.replace(" &nbsp;", ",");
+    document.getElementById("GameLiveStatus").style.display = "inline";
+    document.getElementById("StartupMessage").innerHTML = "";
+    loadPgnTextCounter--;
+  }
 }
+loadPgnTextCounter = 2;
 
 function startFromFirstGame(firstGame, numberOfGamesForDisplay) {
   if (firstGame >= numberOfGamesForDisplay) { return numberOfGamesForDisplay - 1; }
