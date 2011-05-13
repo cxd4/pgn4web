@@ -83,11 +83,17 @@
 body
 { color: #DDDDDD; background: white; font-family: sans-serif; padding: 20px 20px 10px 20px; }
 
-.header
-{ color: red; font-weight: normal; text-decoration: none; padding-bottom: 0.5em; }
+.header, .header:link, .header:visited, .header:hover, .header:active
+{ color: red; text-decoration: none; }
+
+.headerBoardsFiller 
+{ height: 20px; }
 
 .footer 
-{ font-weight: bold; margin-top: 20px; margin-bottom: 10px; }
+{ font-size: small; font-weight: bold; margin-top: 20px; margin-bottom: 10px; line-height: 1.3em; }
+
+.footerTable
+{ height: 3.9em; }
 
 a:link, a:visited, a:active 
 { color: #DDDDDD; text-decoration: none; }
@@ -99,8 +105,8 @@ a:hover
   height: 290px;
   margin-left: 20px;
   margin-right: 20px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 20px;
+  margin-bottom: 0;
 }
 
 .hiddenFrame {
@@ -121,89 +127,148 @@ a:hover
 
 <table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
 <td align="left" valign="middle">
-<h1 class="header" name="top">pgn4web chess live broadcast</h1>
+<h1 class="header" name="top">pgn4web <a class="header" href="#boards">chess live broadcast</a></h1>
 </td>
 <td align="right" valign="middle">
-<img src="pawns.png" style="border-width:1px; border-color:#DDDDDD; border-style:outset;">
+<img src="pawns.png" border="0">
 </td>
 </tr></tbody></table>
 
+<center>
+<div class="headerBoardsFiller"><a name="boards">&nbsp</a></div>
 <script type="text/javascript">
 
-document.write("<center>");
 for (board = 0; board < maxBoards; board++) {
-  document.write("<iframe name='board" + board + "' id='board" + board + "' class='hiddenFrame' width='240' height='290' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='live-multi-frame.html?ut=t&rm=" + refreshMinutes + (alertFlag ? "&rd=t" : "") + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
+  document.write("<iframe name='board" + board + "' id='board" + board + "' class='hiddenFrame' width='240' height='290' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='live-all-frame.html?ut=t&rm=" + refreshMinutes + (alertFlag ? "&rd=t" : "") + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
 }
-document.write("</center>");
 
 </script>
+</center>
 
-<table class="footer" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
-<td id="leftFooter" align="left" valign="bottom">
+<table class="footer footerTable" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
+<td align="left" valign="bottom">
+<div><a id="GameLiveStatus" href="javascript:void();" onclick="displayDebugInfo();"></a></div>
+<div id="leftFooter_2"></div>
+<div id="leftFooter_3"></div>
 </td>
-<td id="rightFooter" align="right" valign="bottom">
+<td align="right" valign="bottom">
+<div id="rightFooter_1"></div>
+<div id="rightFooter_2"></div>
+<div id="rightFooter_3"></div>
 </td>
 </tr></tbody></table>
 
 <script type="text/javascript">
+
+var filteredGames = new Array();
+var numberOfGamesForDisplay = numberOfGames;
+
+function filterEndedGames(gamesList) {
+  filteredGames = new Array();
+  for (g in gamesList) {
+    if (LiveBroadcastDemo) { if (gameDemoMaxPly[gamesList[g]] <= gameDemoLength[gamesList[g]]) { continue; } }
+    else { if ((typeof(gameResult[gamesList[g]]) != "undefined") && (gameResult[gamesList[g]] == "*")) { continue; } }
+    filteredGames.push(gamesList[g]);
+  }
+}
+
+function skipEndedGames() {
+  n = new Array();
+  for (g = 0; g < numberOfGames; g++) { n.push(g); }
+  filterEndedGames(n);
+  customFunctionOnPgnTextLoad();
+}
+
+function restoreEndedGames() {
+  filteredGames = new Array();
+  customFunctionOnPgnTextLoad();
+}
 
 function customFunctionOnPgnTextLoad() {
 
-  numBoards = Math.min(numberOfGames, maxBoards);
+  filterEndedGames(filteredGames);
+  unfilteredGames = new Array();
+  for (g = 0; g < numberOfGames; g++) {
+    found_g = false;
+    for (f in filteredGames) { if (found_g = (filteredGames[f] == g)) { break; } }
+    if (! found_g) { unfilteredGames.push(g); }
+  }
+  numberOfGamesForDisplay = unfilteredGames.length;
+  if (numberOfGamesForDisplay < 1) { numberOfGamesForDisplay = 1; }
+  numBoards = Math.min(numberOfGamesForDisplay, maxBoards);
 
-  startGame = startFromFirstGame(firstGame, numberOfGames);
-  for (board = 0; board < numBoards; board++) {
-    if (startGame >= 0) { gameForBoard = (startGame + board) % numberOfGames; }
-    else { gameForBoard = (2 * numberOfGames + startGame - board) % numberOfGames; }
+  startGame = startFromFirstGame(firstGame, numberOfGamesForDisplay);
+  for (board = 0; board < maxBoards; board++) {
+    if (startGame >= 0) { gameForBoard = (startGame + board) % numberOfGamesForDisplay; }
+    else { gameForBoard = (2 * numberOfGamesForDisplay + startGame - board) % numberOfGamesForDisplay; }
     if (thisFrame = document.getElementById("board" + board)) {
-      if (board < numberOfGames) {
+      if (board < numberOfGamesForDisplay) {
         thisFrame.className = "visibleFrame";
-        window.frames["board" + board].document.getElementById("pgnText").value = pgnGame[gameForBoard];
+        window.frames["board" + board].document.getElementById("pgnText").value = pgnGame[unfilteredGames[gameForBoard]];
         window.frames["board" + board].refreshPgnSource();
       } else {
         thisFrame.className = "hiddenFrame";
       }
     }
   }
-  if (theObject = document.getElementById("leftFooter")) {
-    theObject.innerHTML = numberOfGames > maxBoards ? "more games available: <a class='footer' href='javascript:void(0);' onclick='previousPage();'>previous</a> / <a class='footer' href='javascript:void(0);' onclick='nextPage();'>next</a>" : "";
+
+  if (theObject = document.getElementById("rightFooter_1")) {
+    theObject.innerHTML = numberOfGamesForDisplay > maxBoards ? "<a class='footer' href='javascript:void(0);' onclick='previousPage();'>previous</a> / <a class='footer' href='javascript:void(0);' onclick='nextPage();'>next</a> games" : "";
   }
-  if (theObject = document.getElementById("rightFooter")) {
+
+  if (theObject = document.getElementById("rightFooter_2")) {
     theObject.innerHTML = "";
-    if (maxBoards > 1) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='newBoards(" + Math.min(maxBoards - 1, numberOfGames - 1) + ");'>less</a> "; }
-    if (maxBoards > 1 && numberOfGames > maxBoards) { theObject.innerHTML += "/ "; }
-    if (numberOfGames > maxBoards) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='newBoards(" + (maxBoards + 1) + ");'>more</a> "; }
-    if (maxBoards > 1 || numberOfGames > maxBoards) { theObject.innerHTML += "boards"; }
+    if (maxBoards > 1 && numberOfGamesForDisplay > 1) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='newBoards(" + Math.min(maxBoards - 1, numberOfGamesForDisplay - 1) + ");'>less</a> "; }
+    if (maxBoards > 1 && numberOfGamesForDisplay > maxBoards) { theObject.innerHTML += "/ "; }
+    if (numberOfGamesForDisplay > maxBoards) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='newBoards(" + (maxBoards + 1) + ");'>more</a> "; }
+    if (maxBoards > 1 || numberOfGamesForDisplay > maxBoards) { theObject.innerHTML += "boards"; }
+  }
+
+  if (theObject = document.getElementById("rightFooter_3")) {
+    theObject.innerHTML = "";
+    if (LiveBroadcastStarted && !LiveBroadcastEnded) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='skipEndedGames();'>skip</a> "; }
+    if (filteredGames.length > 0 && (LiveBroadcastStarted && !LiveBroadcastEnded)) { theObject.innerHTML += "/ "; }
+    if (filteredGames.length > 0) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='restoreEndedGames();'>restore</a> "; }
+    if (filteredGames.length > 0 || (LiveBroadcastStarted && !LiveBroadcastEnded)) { theObject.innerHTML += "ended games "; }
+  }
+
+  if (theObject = document.getElementById("leftFooter_2")) {
+    theObject.innerHTML = "";
+    if (LiveBroadcastEnded) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='restartLiveBroadcast();'>check</a> / "; }
+    else if (LiveBroadcastPaused) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='restartLiveBroadcast();'>restart</a> / "; }
+    else if (LiveBroadcastStarted) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='pauseLiveBroadcast(); customFunctionOnPgnTextLoad();'>pause</a> / "; }
+    else { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='restartLiveBroadcast();'>start</a> / "; }
+    theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='refreshPgnSource();'>force</a> games refresh</a>"; 
   }
 }
 
-function startFromFirstGame(firstGame, numberOfGames) {
-  if (firstGame >= numberOfGames) { return numberOfGames - 1; }
-  if (firstGame < -numberOfGames) { return 0; }
-  if (firstGame < 0) { return numberOfGames + firstGame; }
+function startFromFirstGame(firstGame, numberOfGamesForDisplay) {
+  if (firstGame >= numberOfGamesForDisplay) { return numberOfGamesForDisplay - 1; }
+  if (firstGame < -numberOfGamesForDisplay) { return 0; }
+  if (firstGame < 0) { return numberOfGamesForDisplay + firstGame; }
   else { return firstGame; }
 }
 
 function nextPage() {
-  firstGame = (startFromFirstGame(firstGame, numberOfGames) + maxBoards) % numberOfGames;
-  firstGame -= (firstGame < 0 ? numberOfGames : 0); 
+  firstGame = (startFromFirstGame(firstGame, numberOfGamesForDisplay) + maxBoards) % numberOfGamesForDisplay;
+  firstGame -= (firstGame < 0 ? numberOfGamesForDisplay : 0); 
   customFunctionOnPgnTextLoad();
 }
 
 function previousPage() {
-  firstGame = (startFromFirstGame(firstGame, numberOfGames) - maxBoards + numberOfGames) % numberOfGames; 
-  firstGame -= (firstGame < 0 ? numberOfGames : 0);
+  firstGame = (startFromFirstGame(firstGame, numberOfGamesForDisplay) - maxBoards + numberOfGamesForDisplay) % numberOfGamesForDisplay; 
+  firstGame -= (firstGame < 0 ? numberOfGamesForDisplay : 0);
   customFunctionOnPgnTextLoad();
 }
 
 function newBoards(newMaxBoards) {
-  currentLocationSearch = document.location.search;
-  currentLocationSearch.replace(/(\?|&)(maxBoards|mb)=[^&]*/g, "");
-  currentLocationSearch.replace(/(\?|&)(firstGame|fg)=[^&]*/g, "");
-  currentLocationSearch += (currentLocationSearch ? "&" : "");
-  currentLocationSearch += "mb=" + newMaxBoards;
-  currentLocationSearch += "&fg=" + (firstGame < 0 ? firstGame : firstGame + 1);
-  document.location.search = currentLocationSearch;
+  currentLocationSearch = "";
+  if (pgnData !== pgnData_default) { currentLocationSearch += "&pd=" + pgnData; }
+  if (refreshMinutes !== refreshMinutes_default) { currentLocationSearch += "&rm=" + refreshMinutes; }
+  if (alertFlag) { currentLocationSearch += "&rd=t"; }
+  if (newMaxBoards !== maxBoards_default) { currentLocationSearch += "&mb=" + newMaxBoards; }
+  if (firstGame !== firstGame_default) { currentLocationSearch += "&fg=" + (firstGame < 0 ? firstGame : firstGame + 1); }
+  document.location.search = currentLocationSearch.replace(/^&/, "?");
 }
 
 </script>
