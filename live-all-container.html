@@ -195,7 +195,7 @@ document.write("</center>");
 
 <table class="footer footerTable" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
 <td align="left" valign="bottom">
-<div><a id="GameLiveStatus" href="javascript:void();" style="display:none;" onclick="displayDebugInfo();" title="live broadcast status: show more details"></a> <span id="StartupMessage">...loading PGN data, please wait...</span></div>
+<div><a id="GameLiveStatus" href="javascript:void();" style="display:none;" onclick="displayDebugInfo();" title="live broadcast status"></a> <span id="StartupMessage">...loading PGN data, please wait...</span></div>
 <div id="leftFooter_2"></div>
 <div id="leftFooter_3"></div>
 </td>
@@ -234,6 +234,8 @@ function restoreEndedGames() {
 
 var pgn4webClearShortCutSquaresForChildFrames =  [ ["DH", "8"], ["H", "7"], ["AB", "6"] ];
 
+var loadPgnTextCounter = 2;
+
 function customFunctionOnPgnTextLoad() {
 
   filterEndedGames(filteredGames);
@@ -254,10 +256,12 @@ function customFunctionOnPgnTextLoad() {
     if (thisFrame = document.getElementById("board" + board)) {
       if (board < numberOfGamesForDisplay) {
         thisFrame.className = "visibleFrame";
-        window.frames["board" + board].pauseLiveBroadcast();
-        window.frames["board" + board].document.getElementById("pgnText").value = pgnGame[unfilteredGames[gameForBoard]];
-        window.frames["board" + board].refreshPgnSource();
-        window.frames["board" + board].clearShortcutSquares("A","8");
+        try {  
+          window.frames["board" + board].pauseLiveBroadcast();
+          window.frames["board" + board].document.getElementById("pgnText").value = pgnGame[unfilteredGames[gameForBoard]];
+          window.frames["board" + board].refreshPgnSource();
+          window.frames["board" + board].clearShortcutSquares("A","8");
+        } catch(e) { myAlert("error: failed accessing iframe for board #" + board, true); }
       } else {
         thisFrame.className = "hiddenFrame";
       }
@@ -284,6 +288,20 @@ function customFunctionOnPgnTextLoad() {
     if (filteredGames.length > 0 || (LiveBroadcastStarted && !LiveBroadcastEnded)) { theObject.innerHTML += "ended games "; }
   }
 
+  // leftFooter_1
+  if (theObject = document.getElementById("GameLiveStatus")) {
+    theObject.title = "live broadcast status";
+    if (alertNumSinceReset) { 
+      theObject.title += ": " + alertNumSinceReset + " new alert" + (alertNumSinceReset > 1 ? "s" : "");
+    }
+    if (loadPgnTextCounter > 0) {
+      document.title = LiveBroadcastStatusString.replace(" &nbsp;", ",");
+      document.getElementById("GameLiveStatus").style.display = "inline";
+      document.getElementById("StartupMessage").innerHTML = "";
+      loadPgnTextCounter--;
+    }
+  }
+
   if (theObject = document.getElementById("leftFooter_2")) {
     theObject.innerHTML = "";
     if (LiveBroadcastEnded) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='restartLiveBroadcast();' title='check for the start of a new live broadcast event'>check</a> / "; }
@@ -294,14 +312,7 @@ function customFunctionOnPgnTextLoad() {
     theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='refreshPgnSource();' title='force games refresh'>force</a> games refresh</a>"; 
   }
 
-  if (loadPgnTextCounter > 0) {
-    document.title = LiveBroadcastStatusString.replace(" &nbsp;", ",");
-    document.getElementById("GameLiveStatus").style.display = "inline";
-    document.getElementById("StartupMessage").innerHTML = "";
-    loadPgnTextCounter--;
-  }
 }
-loadPgnTextCounter = 2;
 
 function startFromFirstGame(firstGame, numberOfGamesForDisplay) {
   if (firstGame >= numberOfGamesForDisplay) { return numberOfGamesForDisplay - 1; }

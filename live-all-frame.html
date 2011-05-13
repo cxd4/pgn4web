@@ -91,7 +91,7 @@
     if (parent && (pcscsfcf = parent.pgn4webClearShortCutSquaresForChildFrames)) {
       for (cscs in pcscsfcf) { clearShortcutSquares(pcscsfcf[cscs][0], pcscsfcf[cscs][1]); }
     }
-  } catch(e) {}
+  } catch(e) { myAlert("warning: failed accessing parent for shortcut squares to clear", false); }
 
   function addTagToTitle(tagLabel, tagValue, object) {
     if (!tagValue || tagValue[1] == "?" || !object) { return; }
