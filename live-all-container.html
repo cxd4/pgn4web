@@ -19,23 +19,23 @@
 
 <script type="text/javascript">
 
-  pgnData_default = "live/live.pgn";
-  maxBoards_default = 8;
-  firstGame_default = 1;
-  refreshMinutes_default = 1;
+  var pgnData_default = "live/live.pgn";
+  var maxBoards_default = 8;
+  var firstGame_default = 1;
+  var refreshMinutes_default = 1;
 
-  thisRegExp = /(&|\?)(help|h)([^&]*)(&|$)/i;
+  var thisRegExp = /(&|\?)(help|h)([^&]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
-    alert("pgn4web live-all.html parameters" + "\n\n" + 
-          " - pgnData = file.pgn" + "\n\n" +
-          " - maxBoards = max number of boards to display in a page (default " + maxBoards_default +  ")" + "\n\n" +
-          " - firstGame = number of first game to show, negative counts backwards (default " + firstGame_default + ")" + "\n\n" +
-          " - refreshMinutes = live broadcast delay (default " + refreshMinutes_default + ")" + "\n\n" +
-          " - refreshDemo = if set true sets live demo mode (default false)" + "\n\n" +
-          " - help");
-   }
+    alert("pgn4web live-all-container.html parameters" + "\n\n" + 
+     " - pgnData = file.pgn" + "\n\n" +
+     " - maxBoards = max number of boards to display in a page (default " + maxBoards_default +  ")" + "\n\n" +
+     " - firstGame = number of first game to show, negative counts backwards (default " + firstGame_default + ")" + "\n\n" +
+     " - refreshMinutes = live broadcast delay (default " + refreshMinutes_default + ")" + "\n\n" +
+     " - refreshDemo = if set true sets live demo mode (default false)" + "\n\n" +
+     " - help");
+  }
 
-  pgnData = pgnData_default;
+  var pgnData = pgnData_default;
   // accepts pgnData as alias for pgnFile for consistency with board.html
   thisRegExp = /(&|\?)(pgnData|pd)=([^&]*)(&|$)/i;
   if (! thisRegExp) { thisRegExp = /(&|\?)(pgnFile|pf)=([^&]*)(&|$)/i; }
@@ -46,8 +46,8 @@
      SetPgnUrl(pgnData); // if set, this has precedence over the inline PGN in the HTML file
   }
 
-  maxBoards = getMaxBoardFromLocalStorage();
-  if (maxBoards == 0) { maxBoards = maxBoards_default; }
+  var maxBoards = parseInt(getMaxBoardFromLocalStorage(), 10);
+  if (! maxBoards) { maxBoards = maxBoards_default; }
   thisRegExp = /(&|\?)(maxBoards|mb)=([\d]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
     maxBoards = unescape(window.location.search.match(thisRegExp)[3]);
@@ -55,7 +55,7 @@
   maxBoards = parseInt(maxBoards, 10);
   setMaxBoardToLocalStorage();
 
-  firstGame = firstGame_default;
+  var firstGame = firstGame_default;
   thisRegExp = /(&|\?)(firstGame|fg)=((\+|-|)[\d]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
     firstGame = unescape(window.location.search.match(thisRegExp)[3]);
@@ -63,16 +63,16 @@
   firstGame = parseInt(firstGame, 10);
   if (firstGame > 0) { firstGame--; }
 
-  alertFlag = demoFlag = false;
+  var alertFlag = demoFlag = false;
   thisRegExp = /(&|\?)(refreshDemo|rd)=([^&]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
     refreshDemo = unescape(window.location.search.match(thisRegExp)[3]);
     if ((refreshDemo == "true") || (refreshDemo == "t")) { alertFlag = demoFlag = true; }
   }
  
-  refreshMinutes = refreshMinutes_default;
-  stepFlag = true;
-  thisRegExp = /(&|\?)(refreshMinutes|rm)=([^&]*)(&|$)/i;
+  var refreshMinutes = refreshMinutes_default;
+  var stepFlag = true;
+  thisRegExp = /(&|\?)(refreshMinutes|rm)=([\d.]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
     refreshMinutes = unescape(window.location.search.match(thisRegExp)[3]);
   }
@@ -85,7 +85,7 @@
     return mb;
   }
 
-  funciton setMaxBoardToLocalStorage() {
+  function setMaxBoardToLocalStorage() {
     if (typeof(localStorage) == "undefined") { return false; }
     try { localStorage.setItem("pgn4web_live_all_maxBoards", maxBoards); }
     catch (e) { return false; }
@@ -96,27 +96,53 @@
 
 <style type="text/css">
 
-body
-{ color: #DDDDDD; background: white; font-family: sans-serif; padding: 20px 20px 10px 20px; }
+body {
+  color: #DDDDDD;
+  background: white;
+  font-family: sans-serif;
+  padding-top: 20px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
 
-.header, .header:link, .header:visited, .header:hover, .header:active
-{ color: red; text-decoration: none; }
+.header,
+.header:link,
+.header:visited,
+.header:hover,
+.header:active {
+  color: red;
+  text-decoration: none;
+}
 
-.headerBoardsFiller 
-{ height: 20px; }
+.headerBoardsFiller {
+  height: 20px;
+}
 
-.footer 
-{ font-size: small; font-weight: bold; margin-top: 20px; margin-bottom: 10px; line-height: 1.3em; }
+.footer {
+  font-size: small;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  line-height: 1.3em;
+}
 
-.footerTable
-{ height: 3.9em; }
+.footerTable {
+  height: 3.9em;
+}
 
-a:link, a:visited, a:active 
-{ color: #DDDDDD; text-decoration: none; }
-a:hover
-{ color: red; text-decoration: none; }
+a:link, a:visited, a:active {
+  color: #DDDDDD;
+  text-decoration: none;
+}
 
-.hiddenFrame, .visibleFrame {
+a:hover {
+  color: red;
+  text-decoration: none;
+}
+
+.hiddenFrame,
+.visibleFrame {
   width: 240px;
   height: 290px;
   margin-left: 20px;
@@ -229,7 +255,6 @@ function customFunctionOnPgnTextLoad() {
   }
 
   if (theObject = document.getElementById("rightFooter_1")) {
-
     theObject.innerHTML = numberOfGamesForDisplay > maxBoards ? "<a class='footer' href='javascript:void(0);' onclick='previousPage();' title='more games available: show the previous set of games'>previous</a> / <a class='footer' href='javascript:void(0);' onclick='nextPage();' title='more games available: show the next set of games'>next</a> games" : "";
   }
 
