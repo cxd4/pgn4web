@@ -40,28 +40,33 @@ function validatePgnText(pgnText) {
   return (testPgnText.match(/[^\s0-9.a-hx:KQRBNO#+=!?$()*\/\n\r\-]+/) === null);
 }
 
-function openRemoteUrl(remoteUrl, live) {
+function openRemoteUrl(remoteUrl, live, all) {
   if (!remoteUrl) { return; }
-  var liveParam = live ? '&refreshMinutes=1.0' + Math.floor(Math.random()*10) : "";
-  url = "chess-games-viewer.html?pgnData=" + escape(remoteUrl) + liveParam;
+  if (all) {
+    var liveParam = live ? "&refreshMinutes=1" : "";
+    url = "live-all-container.html?pgnData=" + escape(remoteUrl) + liveParam + "&hp=t";
+  } else {
+    var liveParam = live ? "&refreshMinutes=1.0" + Math.floor(Math.random()*10) : "";
+    url = "chess-games-viewer.html?pgnData=" + escape(remoteUrl) + liveParam;
+  }
   chrome.tabs.create({url: url});
 }
 
-function pgnLinkOnClick(info, tab, live) {
+function pgnLinkOnClick(info, tab, live, all) {
   var remoteUrl = info.linkUrl;
   if (!remoteUrl) { return; }
   if (!validatePgnUrl(remoteUrl)) { 
     alert("Because of a limitation of the Google Chrome extensions URL pattern matching capabilities, the clicked link displays the link context menu of the chess games viewer even if the link's URL does not match the usual pattern of PGN chess games URLs; hence the link will not be opened automatically in the chess games viewer; to open the link, copy the link's URL and manually enter the URL using the page context menu.");
     return; 
   }
-  openRemoteUrl(remoteUrl, live);
+  openRemoteUrl(remoteUrl, live, all);
 }
 
-function pgnPageOnClick(info, tab, live) {
-  var remoteUrl = prompt("Enter PGN chess games URL for viewing" + (live ? " with live refresh" : "") + " (" + ((info.selectionText && (!validatePgnUrl(info.selectionText))) ? "the supplied URL does not match the usual PGN URL pattern; " : "") + debugInfo + "):", info.selectionText ? info.selectionText : "");
+function pgnPageOnClick(info, tab, live, all) {
+  var remoteUrl = prompt("Enter PGN chess games URL for viewing" + (all ? " on multiple boards" : "") + (live ? " with live refresh" : "") + " (" + ((info.selectionText && (!validatePgnUrl(info.selectionText))) ? "the supplied URL does not match the usual PGN URL pattern; " : "") + debugInfo + "):", info.selectionText ? info.selectionText : "");
   if (!remoteUrl) { return; }
 
-  openRemoteUrl(remoteUrl, live);
+  openRemoteUrl(remoteUrl, live, all);
 }
 
 function pgnviewLinkOnClick(info, tab) {
@@ -69,7 +74,11 @@ function pgnviewLinkOnClick(info, tab) {
 }
 
 function pgnliveLinkOnClick(info, tab) {
-  pgnLinkOnClick(info, tab, true);
+  pgnLinkOnClick(info, tab, true, false);
+}
+
+function pgnliveallLinkOnClick(info, tab) {
+  pgnLinkOnClick(info, tab, true, true);
 }
 
 function pgnviewPageOnClick(info, tab) {
@@ -77,7 +86,11 @@ function pgnviewPageOnClick(info, tab) {
 }
 
 function pgnlivePageOnClick(info, tab) {
-  pgnPageOnClick(info, tab, true);
+  pgnPageOnClick(info, tab, true, false);
+}
+
+function pgnliveallPageOnClick(info, tab) {
+  pgnPageOnClick(info, tab, true, true);
 }
 
 var pgnText = new Array();
@@ -145,6 +158,8 @@ chrome.contextMenus.create({"title": "View chess games link", "contexts": ["link
 
 chrome.contextMenus.create({"title": "View chess games link with live refresh", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnliveLinkOnClick});
 
+chrome.contextMenus.create({"title": "View chess games link on multiple boards with live refresh", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnliveallLinkOnClick});
+
 // "page" and "selection" context menu to open PGN text 
 
 chrome.contextMenus.create({"title": "Enter PGN chess games TEXT for viewing", "contexts": ["page"], "onclick": pgntextOnClick});
@@ -158,6 +173,8 @@ chrome.contextMenus.create({"type": "separator", "contexts": ["page", "selection
 chrome.contextMenus.create({"title": "Enter PGN chess games URL for viewing", "contexts": ["page", "selection"], "onclick": pgnviewPageOnClick});
 
 chrome.contextMenus.create({"title": "Enter PGN chess games URL for viewing with live refresh", "contexts": ["page", "selection"], "onclick": pgnlivePageOnClick});
+
+chrome.contextMenus.create({"title": "Enter PGN chess games URL for viewing on multiple boards with live refresh", "contexts": ["page", "selection"], "onclick": pgnliveallPageOnClick});
 
 // "link", "page" and "selection" about menus
 
