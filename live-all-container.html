@@ -46,12 +46,14 @@
      SetPgnUrl(pgnData); // if set, this has precedence over the inline PGN in the HTML file
   }
 
-  maxBoards = maxBoards_default;
+  maxBoards = getMaxBoardFromLocalStorage();
+  if (maxBoards == 0) { maxBoards = maxBoards_default; }
   thisRegExp = /(&|\?)(maxBoards|mb)=([\d]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
     maxBoards = unescape(window.location.search.match(thisRegExp)[3]);
   }
   maxBoards = parseInt(maxBoards, 10);
+  setMaxBoardToLocalStorage();
 
   firstGame = firstGame_default;
   thisRegExp = /(&|\?)(firstGame|fg)=((\+|-|)[\d]*)(&|$)/i;
@@ -75,6 +77,20 @@
     refreshMinutes = unescape(window.location.search.match(thisRegExp)[3]);
   }
   SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, stepFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false)
+
+  function getMaxBoardFromLocalStorage() {
+    if (typeof(localStorage) == "undefined") { return 0; }
+    try { mb = localStorage.getItem("pgn4web_live_all_maxBoards"); }
+    catch (e) { return 0; }
+    return mb;
+  }
+
+  funciton setMaxBoardToLocalStorage() {
+    if (typeof(localStorage) == "undefined") { return false; }
+    try { localStorage.setItem("pgn4web_live_all_maxBoards", maxBoards); }
+    catch (e) { return false; }
+    return true;
+  }
 
 </script>
 
@@ -279,4 +295,3 @@ function newBoards(newMaxBoards) {
 </body>
 
 </html>
-
