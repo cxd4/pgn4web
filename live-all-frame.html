@@ -68,7 +68,7 @@
   }
  
   if (! useTextarea) { SetPgnUrl(pgnFile); }
-  SetImagePath("uscf/20");
+  SetImagePath("uscf/22");
   SetImageType("png");
   SetHighlightOption(true); // true or false
   SetCommentsIntoMoveText(false);
@@ -158,67 +158,68 @@
  
 body {
   background: transparent; 
-  color: #4F4D44; 
+  color: #000000; 
   font-family: 'pgn4web Liberation Sans', sans-serif; 
-  font-size: 11px;
+  font-size: 12px;
   font-weight: bold;
   padding: 13px;
 }
 
 a {
-  color: #4F4D44; 
+  color: #000000; 
   text-decoration: none;
 }
 
 .boardTable {
-  border-style: double; 
-  border-color: #CFCBB3;
+  border-style: solid; 
+  border-color: #663300;
   border-width: 3px;
-  background: #EDE8D5;
-  box-shadow: 0px 0px 13px #CFCBB3;
-  -webkit-box-shadow: 0px 0px 13px #CFCBB3;
-  -moz-box-shadow: 0px 0px 13px #CFCBB3;
-  width: 214px;
-  height: 214px;
+  background: #CC9966;
+  box-shadow: 0px 0px 13px #663300;
+  -webkit-box-shadow: 0px 0px 13px #663300;
+  -moz-box-shadow: 0px 0px 13px #663300;
+  width: 230px;
+  height: 230px;
 }
 
 .pieceImage {
-  width: 20;
-  height: 20;
+  width: 22;
+  height: 22;
 }
 
 .whiteSquare,
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 26;
-  height: 26;
+  width: 28;
+  height: 28;
   border-style: solid;
   border-width: 1;
 }
 
 .whiteSquare,
 .highlightWhiteSquare {
-  border-color: #EDE8D5;
-  background: #EDE8D5;
+  border-color: #FFCC99;
+  background: #FFCC99;
 }
 
 .blackSquare,
 .highlightBlackSquare {
-  border-color: #CFCBB3;
-  background: #CFCBB3;
+  border-color: #CC9966;
+  background: #CC9966;
 }
 
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  border-color: #F8CCA0; /* #C99997; */
+  border-style: inset;
+  border-color: #CC9966;
 }
 
 .move {
 }
 
 .bottomContainer { 
-  width: 214px;
+  width: 230px;
   margin-top: 10px;
 }
 
