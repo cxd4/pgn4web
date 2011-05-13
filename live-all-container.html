@@ -221,7 +221,7 @@ function filterEndedGames(gamesList) {
   }
 }
 
-function skipEndedGames() {
+function hideEndedGames() {
   n = new Array();
   for (g = 0; g < numberOfGames; g++) { n.push(g); }
   filterEndedGames(n);
@@ -275,9 +275,9 @@ function customFunctionOnPgnTextLoad() {
 
   if (theObject = document.getElementById("rightFooter_3")) {
     theObject.innerHTML = "";
-    if (LiveBroadcastStarted && !LiveBroadcastEnded) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='skipEndedGames();' title='skip games ended so far'>skip</a> "; }
+    if (LiveBroadcastStarted && !LiveBroadcastEnded) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='hideEndedGames();' title='hide games ended so far'>hide</a> "; }
     if (filteredGames.length > 0 && (LiveBroadcastStarted && !LiveBroadcastEnded)) { theObject.innerHTML += "/ "; }
-    if (filteredGames.length > 0) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='restoreEndedGames();' title='restore the ended games previously skipped'>restore</a> "; }
+    if (filteredGames.length > 0) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='restoreEndedGames();' title='restore the ended games previously hidden'>restore</a> "; }
     if (filteredGames.length > 0 || (LiveBroadcastStarted && !LiveBroadcastEnded)) { theObject.innerHTML += "ended games "; }
   }
 
