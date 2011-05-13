@@ -168,6 +168,12 @@ a:hover {
   visibility: visible;
 }
 
+.startupMessage {
+  color: black;
+  font-weight: bold;
+  margin-left: 50px;
+}
+
 </style>
 
 </head>
@@ -195,7 +201,7 @@ document.write("</center>");
 
 <table class="footer footerTable" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
 <td align="left" valign="bottom">
-<div><a id="GameLiveStatus" href="javascript:void();" style="display:none;" onclick="displayDebugInfo();" title="live broadcast status"></a> <span id="StartupMessage">...loading PGN data, please wait...</span></div>
+<div><a id="GameLiveStatus" href="javascript:void();" style="display:none;" onclick="displayDebugInfo();" title="live broadcast status"></a> <span id="StartupMessage" class="startupMessage">chess games viewer: loading PGN data, please wait...</span></div>
 <div id="leftFooter_2"></div>
 <div id="leftFooter_3"></div>
 </td>
