@@ -20,7 +20,8 @@
 <script type="text/javascript">
 
   pgnData_default = "live/live.pgn";
-  maxBoards_default = 12;
+  maxBoards_default = 8;
+  firstGame_default = 1;
   refreshMinutes_default = 1;
 
   thisRegExp = /(&|\?)(help|h)([^&]*)(&|$)/i;
@@ -28,6 +29,7 @@
     alert("pgn4web live-all.html parameters" + "\n\n" + 
           " - pgnData = file.pgn" + "\n\n" +
           " - maxBoards = max number of boards to display in a page (default " + maxBoards_default +  ")" + "\n\n" +
+          " - firstGame = number of first game to show, negative counts backwards (default " + firstGame_default + ")" + "\n\n" +
           " - refreshMinutes = live broadcast delay (default " + refreshMinutes_default + ")" + "\n\n" +
           " - refreshDemo = if set true sets live demo mode (default false)" + "\n\n" +
           " - help");
@@ -45,10 +47,19 @@
   }
 
   maxBoards = maxBoards_default;
-  thisRegExp = /(&|\?)(maxBoards|mb)=([^&]*)(&|$)/i;
+  thisRegExp = /(&|\?)(maxBoards|mb)=([\d]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
     maxBoards = unescape(window.location.search.match(thisRegExp)[3]);
   }
+  maxBoards = parseInt(maxBoards, 10);
+
+  firstGame = firstGame_default;
+  thisRegExp = /(&|\?)(firstGame|fg)=((\+|-|)[\d]*)(&|$)/i;
+  if (window.location.search.match(thisRegExp) !== null) {
+    firstGame = unescape(window.location.search.match(thisRegExp)[3]);
+  }
+  firstGame = parseInt(firstGame, 10);
+  if (firstGame > 0) { firstGame--; }
 
   alertFlag = demoFlag = false;
   thisRegExp = /(&|\?)(refreshDemo|rd)=([^&]*)(&|$)/i;
@@ -73,10 +84,15 @@ body
 { color: #DDDDDD; background: white; font-family: sans-serif; padding: 20px 20px 10px 20px; }
 
 .header
-{ color: red; text-decoration: none; padding-bottom: 0.5em; }
+{ color: red; font-weight: normal; text-decoration: none; padding-bottom: 0.5em; }
 
-a:link, a:visited, a:hover, a:active
+.footer 
+{ font-weight: bold; margin-top: 20px; margin-bottom: 10px; }
+
+a:link, a:visited, a:active 
 { color: #DDDDDD; text-decoration: none; }
+a:hover
+{ color: red; text-decoration: none; }
 
 .hiddenFrame, .visibleFrame {
   width: 240px;
@@ -108,7 +124,7 @@ a:link, a:visited, a:hover, a:active
 <h1 class="header" name="top">pgn4web chess live broadcast</h1>
 </td>
 <td align="right" valign="middle">
-<img src="pawns.png" border="0">
+<img src="pawns.png" style="border-width:1px; border-color:#DDDDDD; border-style:outset;">
 </td>
 </tr></tbody></table>
 
@@ -120,18 +136,74 @@ for (board = 0; board < maxBoards; board++) {
 }
 document.write("</center>");
 
+</script>
+
+<table class="footer" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
+<td id="leftFooter" align="left" valign="bottom">
+</td>
+<td id="rightFooter" align="right" valign="bottom">
+</td>
+</tr></tbody></table>
+
+<script type="text/javascript">
+
 function customFunctionOnPgnTextLoad() {
-  for (board = 0; board < maxBoards; board++) {
+
+  numBoards = Math.min(numberOfGames, maxBoards);
+
+  startGame = startFromFirstGame(firstGame, numberOfGames);
+  for (board = 0; board < numBoards; board++) {
+    if (startGame >= 0) { gameForBoard = (startGame + board) % numberOfGames; }
+    else { gameForBoard = (2 * numberOfGames + startGame - board) % numberOfGames; }
     if (thisFrame = document.getElementById("board" + board)) {
       if (board < numberOfGames) {
         thisFrame.className = "visibleFrame";
-        window.frames["board" + board].document.getElementById("pgnText").value = pgnGame[board];
+        window.frames["board" + board].document.getElementById("pgnText").value = pgnGame[gameForBoard];
         window.frames["board" + board].refreshPgnSource();
       } else {
         thisFrame.className = "hiddenFrame";
       }
     }
   }
+  if (theObject = document.getElementById("leftFooter")) {
+    theObject.innerHTML = numberOfGames > maxBoards ? "more games available: <a class='footer' href='javascript:void(0);' onclick='previousPage();'>previous</a> / <a class='footer' href='javascript:void(0);' onclick='nextPage();'>next</a>" : "";
+  }
+  if (theObject = document.getElementById("rightFooter")) {
+    theObject.innerHTML = "";
+    if (maxBoards > 1) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='newBoards(" + Math.min(maxBoards - 1, numberOfGames - 1) + ");'>less</a> "; }
+    if (maxBoards > 1 && numberOfGames > maxBoards) { theObject.innerHTML += "/ "; }
+    if (numberOfGames > maxBoards) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='newBoards(" + (maxBoards + 1) + ");'>more</a> "; }
+    if (maxBoards > 1 || numberOfGames > maxBoards) { theObject.innerHTML += "boards"; }
+  }
+}
+
+function startFromFirstGame(firstGame, numberOfGames) {
+  if (firstGame >= numberOfGames) { return numberOfGames - 1; }
+  if (firstGame < -numberOfGames) { return 0; }
+  if (firstGame < 0) { return numberOfGames + firstGame; }
+  else { return firstGame; }
+}
+
+function nextPage() {
+  firstGame = (startFromFirstGame(firstGame, numberOfGames) + maxBoards) % numberOfGames;
+  firstGame -= (firstGame < 0 ? numberOfGames : 0); 
+  customFunctionOnPgnTextLoad();
+}
+
+function previousPage() {
+  firstGame = (startFromFirstGame(firstGame, numberOfGames) - maxBoards + numberOfGames) % numberOfGames; 
+  firstGame -= (firstGame < 0 ? numberOfGames : 0);
+  customFunctionOnPgnTextLoad();
+}
+
+function newBoards(newMaxBoards) {
+  currentLocationSearch = document.location.search;
+  currentLocationSearch.replace(/(\?|&)(maxBoards|mb)=[^&]*/g, "");
+  currentLocationSearch.replace(/(\?|&)(firstGame|fg)=[^&]*/g, "");
+  currentLocationSearch += (currentLocationSearch ? "&" : "");
+  currentLocationSearch += "mb=" + newMaxBoards;
+  currentLocationSearch += "&fg=" + (firstGame < 0 ? firstGame : firstGame + 1);
+  document.location.search = currentLocationSearch;
 }
 
 </script>
