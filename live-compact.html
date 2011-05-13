@@ -171,6 +171,18 @@
     checkForNewLiveEventInterval = setTimeout('refreshPgnSource();document.getElementById("messageLine").style.visibility = "visible";', 111);
   }
 
+  function customShortcutKey_Shift_1() {
+    if (gameWhite[currentGame]) {
+      window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + gameWhite[currentGame] + "&offset=0");
+    }
+  }
+
+  function customShortcutKey_Shift_2() {
+    if (gameBlack[currentGame]) {
+      window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + gameBlack[currentGame] + "&offset=0");
+    }
+  }
+
 
 function gup( name ){
 
