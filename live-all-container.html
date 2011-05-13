@@ -232,6 +232,8 @@ function restoreEndedGames() {
   customFunctionOnPgnTextLoad();
 }
 
+var pgn4webClearShortCutSquaresForChildFrames =  [ ["DH", "8"], ["H", "7"], ["AB", "6"] ];
+
 function customFunctionOnPgnTextLoad() {
 
   filterEndedGames(filteredGames);
@@ -252,8 +254,10 @@ function customFunctionOnPgnTextLoad() {
     if (thisFrame = document.getElementById("board" + board)) {
       if (board < numberOfGamesForDisplay) {
         thisFrame.className = "visibleFrame";
+        window.frames["board" + board].pauseLiveBroadcast();
         window.frames["board" + board].document.getElementById("pgnText").value = pgnGame[unfilteredGames[gameForBoard]];
         window.frames["board" + board].refreshPgnSource();
+        window.frames["board" + board].clearShortcutSquares("A","8");
       } else {
         thisFrame.className = "hiddenFrame";
       }
