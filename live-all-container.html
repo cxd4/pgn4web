@@ -284,8 +284,10 @@ function customFunctionOnPgnTextLoad() {
   if (theObject = document.getElementById("leftFooter_2")) {
     theObject.innerHTML = "";
     if (LiveBroadcastEnded) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='restartLiveBroadcast();' title='check for the start of a new live broadcast event'>check</a> / "; }
-    else if (LiveBroadcastPaused) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='restartLiveBroadcast();' title='restart live broadcast automatic refresh of games'>restart</a> / "; }
-    else { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='pauseLiveBroadcast(); customFunctionOnPgnTextLoad();' title='pause live broadcast automatic refresh of games'>pause</a> / "; }
+    else if (LiveBroadcastPaused && LiveBroadcastStarted) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='restartLiveBroadcast();' title='restart live broadcast automatic refresh of games'>restart</a> / "; }
+    else if (LiveBroadcastPaused && !LiveBroadcastStarted) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='restartLiveBroadcast();' title='start polling for a new live broadcast'>start</a> / "; }
+    else if (LiveBroadcastStarted) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='pauseLiveBroadcast(); customFunctionOnPgnTextLoad();' title='pause live broadcast automatic refresh of games'>pause</a> / "; }
+    else { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='pauseLiveBroadcast(); customFunctionOnPgnTextLoad();' title='stop polling for a new live broadcast'>stop</a> / "; }
     theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='refreshPgnSource();' title='force games refresh'>force</a> games refresh</a>"; 
   }
 
