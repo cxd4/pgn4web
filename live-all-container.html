@@ -27,12 +27,12 @@
   var thisRegExp = /(&|\?)(help|h)([^&]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
     alert("pgn4web live-all-container.html parameters" + "\n\n" + 
-     " - pgnData = file.pgn" + "\n\n" +
-     " - maxBoards = max number of boards to display in a page (default " + maxBoards_default +  ")" + "\n\n" +
-     " - firstGame = number of first game to show, negative counts backwards (default " + firstGame_default + ")" + "\n\n" +
-     " - refreshMinutes = live broadcast delay (default " + refreshMinutes_default + ")" + "\n\n" +
-     " - refreshDemo = if set true sets live demo mode (default false)" + "\n\n" +
-     " - help");
+      " - pgnData = file.pgn" + "\n\n" +
+      " - maxBoards = max number of boards to display in a page (default " + maxBoards_default +  ")" + "\n\n" +
+      " - firstGame = number of first game to show, negative counts backwards (default " + firstGame_default + ")" + "\n\n" +
+      " - refreshMinutes = live broadcast delay (default " + refreshMinutes_default + ")" + "\n\n" +
+      " - refreshDemo = if set true sets live demo mode (default false)" + "\n\n" +
+      " - help");
   }
 
   var pgnData = pgnData_default;
@@ -263,7 +263,7 @@ function customFunctionOnPgnTextLoad() {
     if (maxBoards > 1 && numberOfGamesForDisplay > 1) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='newBoards(" + Math.min(maxBoards - 1, numberOfGamesForDisplay - 1) + ");' title='show fewer chessboards on the page'>less</a> "; }
     if (maxBoards > 1 && numberOfGamesForDisplay > maxBoards) { theObject.innerHTML += "/ "; }
     if (numberOfGamesForDisplay > maxBoards) { theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='newBoards(" + (maxBoards + 1) + ");' title='show more chessboards on the page'>more</a> "; }
-    if (maxBoards > 1 || numberOfGamesForDisplay > maxBoards) { theObject.innerHTML += "boards"; }
+    if ((maxBoards > 1 && numberOfGamesForDisplay > 1) || numberOfGamesForDisplay > maxBoards) { theObject.innerHTML += "boards"; }
   }
 
   if (theObject = document.getElementById("rightFooter_3")) {
