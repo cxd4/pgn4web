@@ -56,7 +56,7 @@
     iniGame = unescape(window.location.search.match(thisRegExp)[3]);
   }
 
-  var thisRegExp = /(&|\?)(help|h)([^&]*)(&|$)/i;
+  var thisRegExp = /(&|\?)(help|h)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
     alert("pgn4web live-all-frame.html parameters" + "\n" +
       " - useTextarea = " + useTextarea + "; if set true uses textarea as PGN input (default false = use pgnData)" + "\n" +
@@ -211,7 +211,7 @@ a {
 
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  border-color: #C99997;
+  border-color: #F8CCA0; /* #C99997; */
 }
 
 .move {

@@ -24,7 +24,7 @@
   var firstGame_default = 1;
   var refreshMinutes_default = 1;
 
-  var thisRegExp = /(&|\?)(help|h)([^&]*)(&|$)/i;
+  var thisRegExp = /(&|\?)(help|h)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
     alert("pgn4web live-all-container.html parameters" + "\n\n" + 
       " - pgnData = file.pgn" + "\n\n" +
@@ -32,6 +32,7 @@
       " - firstGame = number of first game to show, negative counts backwards (default " + firstGame_default + ")" + "\n\n" +
       " - refreshMinutes = live broadcast delay (default " + refreshMinutes_default + ")" + "\n\n" +
       " - refreshDemo = if set true sets live demo mode (default false)" + "\n\n" +
+      " - headlessPage = if set true displays a page without heading (default false)" + "\n\n" +
       " - help");
   }
 
@@ -90,6 +91,13 @@
     try { localStorage.setItem("pgn4web_live_all_maxBoards", maxBoards); }
     catch (e) { return false; }
     return true;
+  }
+
+  var headlessPage = false;
+  thisRegExp = /(&|\?)(headlessPage|hp)=([^&]*)(&|$)/i;
+  if (window.location.search.match(thisRegExp) !== null) {
+    headlessPageValue = unescape(window.location.search.match(thisRegExp)[3]);
+    if ((headlessPageValue == "true") || (headlessPageValue == "t")) { headlessPage = true; }
   }
 
 </script>
@@ -167,25 +175,23 @@ a:hover {
 
 <body>
 
-<table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
-<td align="left" valign="middle">
-<h1 class="header" name="top">pgn4web <a class="header" href="#boards">chess live broadcast</a></h1>
-</td>
-<td align="right" valign="middle">
-<img src="pawns.png" border="0">
-</td>
-</tr></tbody></table>
-
-<center>
-<div class="headerBoardsFiller"><a name="boards">&nbsp</a></div>
 <script type="text/javascript">
 
-for (board = 0; board < maxBoards; board++) {
-  document.write("<iframe name='board" + board + "' id='board" + board + "' class='hiddenFrame' width='240' height='290' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='live-all-frame.html?ut=t&rm=" + refreshMinutes + (alertFlag ? "&rd=t" : "") + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
+if (! headlessPage) {
+   document.write("<style type='text/cssr'> body { color: #AAAAAA; background: white; /* fallback */ background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0)); /* chrome 9- */ background: -webkit-linear-gradient(#FFFFFF, #F0F0F0); /* chrome 10+ */ } a:link, a:visited, a:active { color: #AAAAAA; } </style>");
+  document.write("<table border='0' cellpadding='0' cellspacing='0' width='100%'><tbody><tr><td align='left' valign='middle'><h1 class='header' name='top'>pgn4web <a class='header' href='#boards'>chess live broadcast</a></h1></td><td align='right' valign='middle'><img src='pawns.png' border='0'></td></tr></tbody></table><div class='headerBoardsFiller'><a name='boards'>&nbsp</a></div>"); 
 }
 
+document.write("<center>");
+
+for (board = 0; board < maxBoards; board++) {
+  rm = Math.floor(1000 * (refreshMinutes * (1 + 0.1 * Math.random()))) / 1000;
+  document.write("<iframe name='board" + board + "' id='board" + board + "' class='hiddenFrame' width='240' height='290' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='live-all-frame.html?ut=t&rm=" + rm + (alertFlag ? "&rd=t" : "") + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
+}
+
+document.write("</center>");
+
 </script>
-</center>
 
 <table class="footer footerTable" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
 <td align="left" valign="bottom">
