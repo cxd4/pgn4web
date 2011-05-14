@@ -1496,8 +1496,11 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
       loadPgnFromPgnUrlResult = LOAD_PGN_UNMODIFIED;
 // end of dirty hack
 
+    } else if (! this_http_request.responseText) {
+      myAlert('error: no data received from PGN URL\n' + pgnUrl + '\n' + (new Date()).toLocaleString(), true); 
+      loadPgnFromPgnUrlResult = LOAD_PGN_FAIL;
     } else if (! pgnGameFromPgnText(this_http_request.responseText)) {
-      myAlert('error: no games found in PGN file\n' + pgnUrl + '\n' + (new Date()).toLocaleString(), true); 
+      myAlert('error: no games found at PGN URL\n' + pgnUrl + '\n' + (new Date()).toLocaleString(), true); 
       loadPgnFromPgnUrlResult = LOAD_PGN_FAIL;
     } else {
       if (LiveBroadcastDelay > 0) {
@@ -1512,7 +1515,7 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
     }
 
   } else { 
-    myAlert('error: failed reading PGN from URL\n' + pgnUrl + '\n' + (new Date()).toLocaleString(), true);
+    myAlert('error: failed reading PGN URL\n' + pgnUrl + '\n' + (new Date()).toLocaleString(), true);
     loadPgnFromPgnUrlResult = LOAD_PGN_FAIL;
   }
 
@@ -1641,13 +1644,13 @@ function loadPgnFromPgnUrl(pgnUrl){
     catch (e) {
       try { http_request = new ActiveXObject("Microsoft.XMLHTTP"); }
       catch (e) { 
-        myAlert('error: no XMLHttpRequest options for PGN URL\n' + pgnUrl, true);
+        myAlert('error: XMLHttpRequest unavailable for PGN URL\n' + pgnUrl, true);
         return false; 
       }
     }
   }
   if (!http_request) {
-    myAlert('error: XMLHttpRequest failed for PGN URL\n' + pgnUrl, true);
+    myAlert('error: failed creating XMLHttpRequest for PGN URL\n' + pgnUrl, true);
     return false; 
   }
 
@@ -1664,7 +1667,7 @@ function loadPgnFromPgnUrl(pgnUrl){
     }
     http_request.send(null);
   } catch(e) {
-    myAlert('error: request failed for PGN URL\n' + pgnUrl, true);
+    myAlert('error: failed sending XMLHttpRequest for PGN URL\n' + pgnUrl, true);
     return false;
   }
 
@@ -1782,7 +1785,7 @@ function refreshPgnSource() {
     pgnGameFromPgnText(alertPgnHeader);
     Init();
     customFunctionOnPgnTextLoad();
-    myAlert('error: missing PGN URL location or pgnText in the HTML file', true);
+    myAlert('error: missing PGN URL location and pgnText object in the HTML file', true);
   }
 }
 
@@ -1791,7 +1794,7 @@ function loadPgnFromTextarea(textareaId) {
   LiveBroadcastLastRefreshedLocal = (new Date()).toLocaleString();
 
   if (!(theObject = document.getElementById(textareaId))) {
-    myAlert('error: missing ' + textareaId + ' textarea object', true);
+    myAlert('error: missing ' + textareaId + ' textarea object in the HTML file', true);
     loadPgnFromTextareaResult = LOAD_PGN_FAIL;
   } else {
     if (document.getElementById(textareaId).tagName.toLowerCase() == "textarea") {
@@ -1811,7 +1814,7 @@ function loadPgnFromTextarea(textareaId) {
       loadPgnFromTextareaResult = LOAD_PGN_OK;
       LiveBroadcastLastReceivedLocal = (new Date()).toLocaleString();
     } else {
-      myAlert('error: PAOLO');
+      myAlert('error: no games found in ' + textareaId + 'object in the HTML file');
       loadPgnFromTextareaResult = LOAD_PGN_FAIL;
     }
   }
