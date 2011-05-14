@@ -20,8 +20,8 @@
 var pgn4web_live_pointer_url;
 if (pgn4web_live_pointer_url === undefined) { pgn4web_live_pointer_url = "."; }
 
-if (pgn4web_live_pointer_url == ".") { window.location.href = "live-mosaic-viewer.html" + location.search; }
-else {document.write("<frameset cols='100%' rows='100%'><frame src=" + pgn4web_live_pointer_url +  "/live-mosaic-viewer.html" + location.search + " /></frameset>"); }
+if (pgn4web_live_pointer_url == ".") { location.href = "live-mosaic-viewer.html" + location.search; }
+else { document.write("<frameset cols='100%' rows='100%'><frame src=" + pgn4web_live_pointer_url +  "/live-mosaic-viewer.html" + location.search + " /></frameset>"); }
 
 </script>
 
