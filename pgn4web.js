@@ -1782,6 +1782,9 @@ function refreshPgnSource() {
 }
 
 function loadPgnFromTextarea(textareaId) {
+
+  LiveBroadcastLastRefreshedLocal = (new Date()).toLocaleString();
+
   if (!(theObject = document.getElementById(textareaId))) {
     myAlert('error: missing ' + textareaId + ' textarea object', true);
     loadPgnFromTextareaResult = LOAD_PGN_FAIL;
@@ -1801,6 +1804,7 @@ function loadPgnFromTextarea(textareaId) {
 
     if ( pgnGameFromPgnText(tmpText) ) {
       loadPgnFromTextareaResult = LOAD_PGN_OK;
+      LiveBroadcastLastReceivedLocal = (new Date()).toLocaleString();
     } else {
       myAlert('error: PAOLO');
       loadPgnFromTextareaResult = LOAD_PGN_FAIL;
