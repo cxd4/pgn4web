@@ -1438,7 +1438,9 @@ function pgnGameFromPgnText(pgnText) {
   inGameHeader = false;
   inGameBody = false;
   gameIndex = -1;
-  pgnGame.length = 0;
+  
+  newPgnGame = new Array();
+
   for(ii in lines) {
 
     // PGN standard: lines starting with % must be ignored
@@ -1447,7 +1449,7 @@ function pgnGameFromPgnText(pgnText) {
     if(pgnHeaderTagRegExp.test(lines[ii]) === true) {
       if(!inGameHeader) {
         gameIndex++;
-        pgnGame[gameIndex] = '';
+        newPgnGame[gameIndex] = '';
       }
       inGameHeader = true;
       inGameBody = false;
@@ -1459,10 +1461,13 @@ function pgnGameFromPgnText(pgnText) {
     }
     lines[ii] = lines[ii].replace(/^\s*/,"");
     lines[ii] = lines[ii].replace(/\s*$/,"");
-    if (gameIndex >= 0) { pgnGame[gameIndex] += lines[ii] + '\n'; } 
+    if (gameIndex >= 0) { newPgnGame[gameIndex] += lines[ii] + '\n'; } 
   }
 
-  numberOfGames = pgnGame.length;
+  if (gameIndex >= 0) {
+    pgnGame = newPgnGame;
+    numberOfGames = pgnGame.length;
+  }
 
   return (gameIndex >= 0);
 }
