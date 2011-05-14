@@ -26,7 +26,7 @@
 
   var thisRegExp = /(&|\?)(help|h)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
-    alert("pgn4web live-all-container.html parameters" + "\n\n" + 
+    alert("pgn4web live-mosaic-viewer.html parameters" + "\n\n" + 
       " - pgnData = file.pgn" + "\n\n" +
       " - maxBoards = max number of boards to display in a page (default " + maxBoards_default +  ")" + "\n\n" +
       " - firstGame = number of first game to show, negative counts backwards (default " + firstGame_default + ")" + "\n\n" +
@@ -81,14 +81,14 @@
 
   function getMaxBoardFromLocalStorage() {
     if (typeof(localStorage) == "undefined") { return 0; }
-    try { mb = localStorage.getItem("pgn4web_live_all_maxBoards"); }
+    try { mb = localStorage.getItem("pgn4web_chess_live_mosaic_viewer_maxBoards"); }
     catch (e) { return 0; }
     return mb;
   }
 
   function setMaxBoardToLocalStorage() {
     if (typeof(localStorage) == "undefined") { return false; }
-    try { localStorage.setItem("pgn4web_live_all_maxBoards", maxBoards); }
+    try { localStorage.setItem("pgn4web_chess_live_mosaic_viewer_maxBoards", maxBoards); }
     catch (e) { return false; }
     return true;
   }
@@ -192,7 +192,7 @@ document.write("<center>");
 
 for (board = 0; board < maxBoards; board++) {
   rm = Math.floor(1000 * (refreshMinutes * (1 + 0.1 * Math.random()))) / 1000;
-  document.write("<iframe name='board" + board + "' id='board" + board + "' class='hiddenFrame' width='256' height='306' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='live-all-frame.html?ut=t&rm=" + rm + (alertFlag ? "&rd=t" : "") + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
+  document.write("<iframe name='board" + board + "' id='board" + board + "' class='hiddenFrame' width='256' height='306' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='live-mosaic-tile.html?ut=t&rm=" + rm + (alertFlag ? "&rd=t" : "") + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
 }
 
 document.write("</center>");

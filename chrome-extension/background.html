@@ -44,7 +44,7 @@ function openRemoteUrl(remoteUrl, live, all) {
   if (!remoteUrl) { return; }
   if (all) {
     var liveParam = live ? "&refreshMinutes=1" : "";
-    url = "live-all-container.html?pgnData=" + escape(remoteUrl) + liveParam + "&hp=t";
+    url = "live-mosaic-viewer.html?pgnData=" + escape(remoteUrl) + liveParam + "&hp=t";
   } else {
     var liveParam = live ? "&refreshMinutes=1.0" + Math.floor(Math.random()*10) : "";
     url = "chess-games-viewer.html?pgnData=" + escape(remoteUrl) + liveParam;

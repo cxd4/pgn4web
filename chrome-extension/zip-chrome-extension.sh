@@ -13,5 +13,5 @@ fi
 zip -9r ../../"$pgn4webChromeExtFilename" * -x *.svn/* -x zip-chrome-extension.sh -x updateInfo.xml
 
 cd ..
-zip -9r ../"$pgn4webChromeExtFilename" help.html live-all-container.html live-all-frame.html pawn.ico pawns.png pgn4web.js alpha/README.txt alpha/index.html alpha/24/* alpha/36/* alpha/48/bp.png alpha/48/index.html alpha/128/bp.png alpha/128/index.html fonts/README.txt fonts/index.html fonts/pgn4web-font-LiberationSans.css fonts/LiberationSans-Regular.woff fonts/LiberationSans-Bold.woff fonts/pgn4web-font-ChessSansUsual.css fonts/ChessSansUsual.woff -x *.svn/*
+zip -9r ../"$pgn4webChromeExtFilename" help.html live-mosaic-tile.html live-mosaic-viewer.html pawn.ico pawns.png pgn4web.js alpha/README.txt alpha/index.html alpha/24/* alpha/36/* alpha/48/bp.png alpha/48/index.html alpha/128/bp.png alpha/128/index.html fonts/README.txt fonts/index.html fonts/pgn4web-font-LiberationSans.css fonts/LiberationSans-Regular.woff fonts/LiberationSans-Bold.woff fonts/pgn4web-font-ChessSansUsual.css fonts/ChessSansUsual.woff -x *.svn/*
 
