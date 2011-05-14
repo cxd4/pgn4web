@@ -323,6 +323,11 @@ function customFunctionOnPgnTextLoad() {
     theObject.innerHTML += "<a class='footer' href='javascript:void(0);' onclick='refreshPgnSource();' title='force games refresh'>force</a> games refresh</a>"; 
   }
 
+  if (theObject = document.getElementById("leftFooter_3")) { 
+    if (headlessPage) {
+      theObject.innerHTML = "<a title='chess games source' class='footer' href=" + pgnData + ">" + pgnData + "</a>";
+    }
+  }
 }
 
 function startFromFirstGame(firstGame, numberOfGamesForDisplay) {
