@@ -200,6 +200,9 @@ document.write("</center>");
 
 </script>
 
+<!-- chat box code here -->
+<!-- end of chat box code -->
+
 <table class="footer footerTable" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
 <td align="left" valign="bottom">
 <div><a id="GameLiveStatus" href="javascript:void();" style="display:none;" onclick="displayDebugInfo();" title="live broadcast status"></a> <span id="StartupMessage" class="startupMessage">chess games viewer: loading PGN data, please wait...</span></div>
@@ -241,7 +244,7 @@ function restoreEndedGames() {
 
 var pgn4webClearShortCutSquaresForChildFrames =  [ ["DH", "8"], ["H", "7"], ["ABH", "6"] ];
 
-var loadPgnTextCounter = 2;
+var firstLoadPgnText = true;
 
 function customFunctionOnPgnTextLoad() {
 
@@ -301,11 +304,12 @@ function customFunctionOnPgnTextLoad() {
     if (alertNumSinceReset) { 
       theObject.title += ": " + alertNumSinceReset + " new alert" + (alertNumSinceReset > 1 ? "s" : "");
     }
-    if (loadPgnTextCounter > 0) {
+    if (firstLoadPgnText) {
+      theObject.style.display = "inline";
+      if (theObject = document.getElementById("StartupMessage")) { theObject.innerHTML = ""; }
+      firstLoadPgnText = false;
+    } else {
       document.title = LiveBroadcastStatusString.replace(" &nbsp;", ",");
-      document.getElementById("GameLiveStatus").style.display = "inline";
-      document.getElementById("StartupMessage").innerHTML = "";
-      loadPgnTextCounter--;
     }
   }
 
