@@ -228,7 +228,7 @@ var numberOfGamesForDisplay = numberOfGames;
 function filterEndedGames(gamesList) {
   var localFilteredGames = new Array();
   for (g in gamesList) {
-    if ((typeof(gameResult[gamesList[g]]) == "undefined") || (gameResult[gamesList[g]] == "*")) { 
+    if ((typeof(gameResult[gamesList[g]]) == "undefined") || (gameResult[gamesList[g]] != "*")) { 
       localFilteredGames.push(gamesList[g]);
     }
   }
