@@ -866,6 +866,8 @@ var gameDemoMaxPly = new Array();
 var gameDemoLength = new Array();
 var LiveBroadcastSteppingMode = false;
 
+var ParseMoveErrorInPGN = false;
+
 var MaxMove = 500;
 
 var castleRook = -1;
@@ -1539,6 +1541,7 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
         if (! LiveBroadcastStarted) {
           LiveBroadcastStarted = true;
         } else {
+          oldParseMoveErrorInPGN = ParseMoveErrorInPGN;
           oldGameWhite = gameWhite[currentGame];
           oldGameBlack = gameBlack[currentGame];
           oldGameEvent = gameEvent[currentGame];
@@ -1565,7 +1568,7 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
           }
           if (LiveBroadcastFoundOldGame) { initialGame = ii + 1; }
 
-          if (LiveBroadcastFoundOldGame) { 
+          if (LiveBroadcastFoundOldGame || oldParseMoveErrorInPGN) { 
             oldInitialHalfmove = initialHalfmove; 
             if (LiveBroadcastSteppingMode) {
               initialHalfmove = LiveBroadcastOldCurrentPlyLast ? 
@@ -1577,6 +1580,7 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
         }
       }
 
+      ParseMoveErrorInPGN = false;
       Init();
 
       if (LiveBroadcastDelay > 0) {
@@ -1589,7 +1593,7 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
       customFunctionOnPgnTextLoad();
 
       if (LiveBroadcastDelay > 0) {
-        if (LiveBroadcastFoundOldGame) {
+        if (LiveBroadcastFoundOldGame || oldParseMoveErrorInPGN) {
           if (LiveBroadcastSteppingMode) {
             if (oldAutoplay || LiveBroadcastOldCurrentPlyLast) { SetAutoPlay(true); }
           } else {
@@ -2407,6 +2411,7 @@ function MoveForward(diff) {
   for(var thisPly = CurrentPly; thisPly < goToPly; ++thisPly) {
     var move = Moves[thisPly];
     if (! (parse = ParseMove(move, thisPly))) {
+      ParseMoveErrorInPGN = true;
       text = (Math.floor(thisPly / 2) + 1) + ((thisPly % 2) === 0 ? '. ' : '... ');
       myAlert('error: invalid ply ' + text + move + ' in game ' + (currentGame+1), true);
       break;
