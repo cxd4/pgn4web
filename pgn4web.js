@@ -1538,10 +1538,10 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
     case LOAD_PGN_OK:
       if (LiveBroadcastDelay > 0) {
         firstStart = true;
+        oldParseMoveErrorInPGN = ParseMoveErrorInPGN;
         if (! LiveBroadcastStarted) {
           LiveBroadcastStarted = true;
         } else {
-          oldParseMoveErrorInPGN = ParseMoveErrorInPGN;
           oldGameWhite = gameWhite[currentGame];
           oldGameBlack = gameBlack[currentGame];
           oldGameEvent = gameEvent[currentGame];
@@ -1568,13 +1568,14 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
           }
           if (LiveBroadcastFoundOldGame) { initialGame = ii + 1; }
 
-          if (LiveBroadcastFoundOldGame || oldParseMoveErrorInPGN) { 
+          if (LiveBroadcastFoundOldGame) { 
             oldInitialHalfmove = initialHalfmove; 
             if (LiveBroadcastSteppingMode) {
-              initialHalfmove = LiveBroadcastOldCurrentPlyLast ? 
+              initialHalfmove = (LiveBroadcastOldCurrentPlyLast || oldParseMoveErrorInPGN) ? 
                 LiveBroadcastOldCurrentPly+1 : LiveBroadcastOldCurrentPly;
             } else {
-              initialHalfmove = LiveBroadcastOldCurrentPlyLast ? "end" : LiveBroadcastOldCurrentPly;
+              initialHalfmove = (LiveBroadcastOldCurrentPlyLast || oldParseMoveErrorInPGN) ?
+                "end" : LiveBroadcastOldCurrentPly;
             }
           }
         }
@@ -1593,9 +1594,9 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
       customFunctionOnPgnTextLoad();
 
       if (LiveBroadcastDelay > 0) {
-        if (LiveBroadcastFoundOldGame || oldParseMoveErrorInPGN) {
+        if (LiveBroadcastFoundOldGame) {
           if (LiveBroadcastSteppingMode) {
-            if (oldAutoplay || LiveBroadcastOldCurrentPlyLast) { SetAutoPlay(true); }
+            if (oldAutoplay || LiveBroadcastOldCurrentPlyLast || oldParseMoveErrorInPGN) { SetAutoPlay(true); }
           } else {
             if (oldAutoplay) { SetAutoPlay(true); }
           }
