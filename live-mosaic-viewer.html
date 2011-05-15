@@ -225,9 +225,9 @@ var numberOfGamesForDisplay = numberOfGames;
 function filterEndedGames(gamesList) {
   var localFilteredGames = new Array();
   for (g in gamesList) {
-    if (LiveBroadcastDemo) { if (gameDemoMaxPly[gamesList[g]] <= gameDemoLength[gamesList[g]]) { continue; } }
-    else { if ((typeof(gameResult[gamesList[g]]) != "undefined") && (gameResult[gamesList[g]] == "*")) { continue; } }
-    localFilteredGames.push(gamesList[g]);
+    if ((typeof(gameResult[gamesList[g]]) == "undefined") || (gameResult[gamesList[g]] == "*")) { 
+      localFilteredGames.push(gamesList[g]);
+    }
   }
   return localFilteredGames;
 }
@@ -258,7 +258,7 @@ function pgnGameForBoard(gameNum) {
   if (gameRound[gameNum]) { localPgnGame += "[Round \"" + gameRound[gameNum] + "\"]\n"; }
   if (gameWhite[gameNum]) { localPgnGame += "[White \"" + gameWhite[gameNum] + "\"]\n"; }
   if (gameBlack[gameNum]) { localPgnGame += "[Black \"" + gameBlack[gameNum] + "\"]\n"; }
-  localPgnGame += "[Result \"*\"]\n";
+  if (gameResult[gameNum]) { localPgnGame += "[Result \"" + gameResult[gameNum] + "\"]\n"; }
   if (gameFEN[gameNum]) { localPgnGame += "[FEN \"" + gameFEN[gameNum] + "\"]\n"; }
   if (gameSetUp[gameNum]) { localPgnGame += "[SetUp \"" + gameSetUp[gameNum] + "\"]\n"; }
   if (gameVariant[gameNum]) { localPgnGame += "[Variant \"" + gameVariant[gameNum] + "\"]\n"; }
