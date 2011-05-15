@@ -192,8 +192,7 @@ if (headlessPage) {
 document.write("<center>");
 
 for (board = 0; board < maxBoards; board++) {
-  rm = Math.floor(1000 * (refreshMinutes * (1 + 0.1 * Math.random()))) / 1000;
-  document.write("<iframe name='board" + board + "' id='board" + board + "' class='hiddenFrame' width='256' height='306' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='live-mosaic-tile.html?ut=t&rm=" + rm + (alertFlag ? "&rd=t" : "") + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
+  document.write("<iframe name='board" + board + "' id='board" + board + "' class='hiddenFrame' width='256' height='306' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='live-mosaic-tile.html?ut=t&rm=" + refreshMinutes + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
 }
 
 document.write("</center>");
@@ -218,22 +217,25 @@ document.write("</center>");
 
 <script type="text/javascript">
 
+var pgn4webClearShortCutSquaresForChildFrames =  [ ["DH", "8"], ["H", "7"], ["ABH", "6"] ];
+
 var filteredGames = new Array();
 var numberOfGamesForDisplay = numberOfGames;
 
 function filterEndedGames(gamesList) {
-  filteredGames = new Array();
+  var localFilteredGames = new Array();
   for (g in gamesList) {
     if (LiveBroadcastDemo) { if (gameDemoMaxPly[gamesList[g]] <= gameDemoLength[gamesList[g]]) { continue; } }
     else { if ((typeof(gameResult[gamesList[g]]) != "undefined") && (gameResult[gamesList[g]] == "*")) { continue; } }
-    filteredGames.push(gamesList[g]);
+    localFilteredGames.push(gamesList[g]);
   }
+  return localFilteredGames;
 }
 
 function hideEndedGames() {
   n = new Array();
   for (g = 0; g < numberOfGames; g++) { n.push(g); }
-  filterEndedGames(n);
+  filteredGames = filterEndedGames(n);
   customFunctionOnPgnTextLoad();
 }
 
@@ -242,13 +244,54 @@ function restoreEndedGames() {
   customFunctionOnPgnTextLoad();
 }
 
-var pgn4webClearShortCutSquaresForChildFrames =  [ ["DH", "8"], ["H", "7"], ["ABH", "6"] ];
+function pgnGameForBoard(gameNum) {
+  if (!LiveBroadcastDemo) { return pgnGame[gameNum]; }
+
+  if (gameDemoMaxPly[gameNum] > gameDemoLength[gameNum]) { return pgnGame[gameNum]; } 
+
+  Init(gameNum);
+
+  localPgnGame = "";
+  if (gameEvent[gameNum]) { localPgnGame += "[Event \"" + gameEvent[gameNum] + "\"]\n"; }
+  if (gameSite[gameNum]) { localPgnGame += "[Site \"" + gameSite[gameNum] + "\"]\n"; }
+  if (gameDate[gameNum]) { localPgnGame += "[Date \"" + gameDate[gameNum] + "\"]\n"; }
+  if (gameRound[gameNum]) { localPgnGame += "[Round \"" + gameRound[gameNum] + "\"]\n"; }
+  if (gameWhite[gameNum]) { localPgnGame += "[White \"" + gameWhite[gameNum] + "\"]\n"; }
+  if (gameBlack[gameNum]) { localPgnGame += "[Black \"" + gameBlack[gameNum] + "\"]\n"; }
+  localPgnGame += "[Result \"*\"]\n";
+  if (gameFEN[gameNum]) { localPgnGame += "[FEN \"" + gameFEN[gameNum] + "\"]\n"; }
+  if (gameSetUp[gameNum]) { localPgnGame += "[SetUp \"" + gameSetUp[gameNum] + "\"]\n"; }
+  if (gameVariant[gameNum]) { localPgnGame += "[Variant \"" + gameVariant[gameNum] + "\"]\n"; }
+  if (gameInitialWhiteClock[gameNum]) { localPgnGame += "[WhiteClock \"" + gameInitialWhiteClock[gameNum] + "\"]\n"; }
+  if (gameInitialBlackClock[gameNum]) { localPgnGame += "[BlackClock \"" + gameInitialBlackClock[gameNum] + "\"]\n"; }
+  if (thisTag = customPgnHeaderTag("Clock")) { localPgnGame += "[Clock \"" + thisTag + "\"]\n"; }
+  if (thisTag = customPgnHeaderTag("TimeControl")) { localPgnGame += "[TimeControl \"" + thisTag + "\"]\n"; }
+  localPgnGame += "\n";
+
+  for (thisPly = StartPly; thisPly <= gameDemoMaxPly[gameNum]; thisPly++) {
+    if (thisPly % 2) {
+      if (thisComment = MoveComments[thisPly].replace(/{/g, "")) { 
+        localPgnGame += "{" + thisComment + "} " + ((thisPly+1)/2) + "... ";
+      }
+      localPgnGame += Moves[thisPly] + " \n";
+    } else {
+      if (thisComment = MoveComments[thisPly].replace(/{/g, "")) { localPgnGame += "{" + thisComment + "} "; }
+      localPgnGame += (thisPly/2+1) + ". " + Moves[thisPly] + " ";
+    }
+  }
+  if (thisComment = MoveComments[thisPly].replace(/{/g, "")) { localPgnGame += "{" + thisComment + "} "; }
+  localPgnGame += " *";
+
+  return localPgnGame;
+}
 
 var firstLoadPgnText = true;
 
 function customFunctionOnPgnTextLoad() {
 
-  filterEndedGames(filteredGames);
+  /* make sure what was previously filtered still it should be (think new PGN or transmission errors) */
+  filteredGames = filterEndedGames(filteredGames);
+
   unfilteredGames = new Array();
   for (g = 0; g < numberOfGames; g++) {
     found_g = false;
@@ -256,7 +299,12 @@ function customFunctionOnPgnTextLoad() {
     if (! found_g) { unfilteredGames.push(g); }
   }
   numberOfGamesForDisplay = unfilteredGames.length;
-  if (numberOfGamesForDisplay < 1) { numberOfGamesForDisplay = 1; }
+  if (numberOfGamesForDisplay < 1) { 
+    /* this should never happen, so we show all games */
+    for (g = 0; g < numberOfGames; g++) { unfilteredGames.push(g); }
+    numberOfGamesForDisplay = unfilteredGames.length;
+  }
+
   numBoards = Math.min(numberOfGamesForDisplay, maxBoards);
 
   startGame = startFromFirstGame(firstGame, numberOfGamesForDisplay);
@@ -265,10 +313,11 @@ function customFunctionOnPgnTextLoad() {
     else { gameForBoard = (2 * numberOfGamesForDisplay + startGame - board) % numberOfGamesForDisplay; }
     if (thisFrame = document.getElementById("board" + board)) {
       if (board < numberOfGamesForDisplay) {
+        thisPgnGame = pgnGameForBoard(unfilteredGames[gameForBoard]);
         thisFrame.className = "visibleFrame";
         try {  
           window.frames["board" + board].pauseLiveBroadcast();
-          window.frames["board" + board].document.getElementById("pgnText").value = pgnGame[unfilteredGames[gameForBoard]];
+          window.frames["board" + board].document.getElementById("pgnText").value = thisPgnGame;
           window.frames["board" + board].refreshPgnSource();
           window.frames["board" + board].clearShortcutSquares("A","8");
         } catch(e) { myAlert("error: failed accessing iframe for board #" + board, true); }
