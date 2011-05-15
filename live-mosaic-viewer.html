@@ -105,13 +105,23 @@
 <style type="text/css">
 
 body {
-  color: #DDDDDD;
+  color: #AAAAAA;
   background: white;
   font-family: sans-serif;
   padding-top: 20px;
   padding-bottom: 10px;
   padding-left: 20px;
   padding-right: 20px;
+}
+
+a:link, a:visited, a:active {
+  color: #AAAAAA;
+  text-decoration: none;
+}
+
+a:hover {
+  color: red;
+  text-decoration: none;
 }
 
 .header,
@@ -128,7 +138,6 @@ body {
 }
 
 .footer {
-  font-weight: bold;
   font-size: small;
   margin-top: 20px;
   margin-bottom: 10px;
@@ -137,16 +146,6 @@ body {
 
 .footerTable {
   height: 5em;
-}
-
-a:link, a:visited, a:active {
-  color: #DDDDDD;
-  text-decoration: none;
-}
-
-a:hover {
-  color: red;
-  text-decoration: none;
 }
 
 .hiddenFrame,
@@ -184,7 +183,7 @@ a:hover {
 <script type="text/javascript">
 
 if (headlessPage) {
-   document.write("<style type='text/css'> body { color: #AAAAAA; background: white; /* fallback */ background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0)); /* chrome 9- */ background: -webkit-linear-gradient(#FFFFFF, #F0F0F0); /* chrome 10+ */ } a:link, a:visited, a:active { color: #AAAAAA; } a:hover { color: black; } .footer { font-weight: normal; } </style>");
+   document.write("<style type='text/css'> body { background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0)); /* chrome 9- */ background: -webkit-linear-gradient(#FFFFFF, #F0F0F0); /* chrome 10+ */ } a:hover { color: black; } </style>");
 } else {
   document.write("<table border='0' cellpadding='0' cellspacing='0' width='100%'><tbody><tr><td align='left' valign='middle'><h1 class='header' name='top'>pgn4web <a class='header' href='#boards'>chess live broadcast</a></h1></td><td align='right' valign='middle'><img src='pawns.png' border='0'></td></tr></tbody></table><div class='headerBoardsFiller'><a name='boards'>&nbsp</a></div>"); 
 }
