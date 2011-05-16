@@ -335,14 +335,14 @@ function customFunctionOnPgnTextLoad() {
   }
 
   if (theObject = document.getElementById("leftMenu")) {
-    theObject.innerHTML = "<span class='menuLine' style='margin-right:1em;' title='hover the mouse over each letter for help on each command'>commands: </span>";
+    theObject.innerHTML = "<span class='menuLine' style='margin-right:1em;' title='hover the mouse over each letter for help on the associated command'>commands: </span>";
 
     if (LiveBroadcastDelay > 0) {
       if (LiveBroadcastEnded) { theObject.innerHTML += "<span class='menuLink'><a href='javascript:void(0);' onclick='restartLiveBroadcast();' title='Check for the start of a new live broadcast event'>C</a></span>"; }
-      else if (LiveBroadcastPaused && LiveBroadcastStarted) { theObject.innerHTML += "<span class='menuLink'><a href='javascript:void(0);' onclick='restartLiveBroadcast();' title='restart live broadcast automatic refresh of games'>R</a></span>"; }
-      else if (LiveBroadcastPaused && !LiveBroadcastStarted) { theObject.innerHTML += "<span class='menuLink'><a href='javascript:void(0);' onclick='restartLiveBroadcast();' title='Start polling for a new live broadcast'>S</a></span>"; }
+      else if (LiveBroadcastPaused && LiveBroadcastStarted) { theObject.innerHTML += "<span class='menuLink'><a href='javascript:void(0);' onclick='restartLiveBroadcast();' title='Restart live broadcast automatic refresh of games'>R</a></span>"; }
+      else if (LiveBroadcastPaused && !LiveBroadcastStarted) { theObject.innerHTML += "<span class='menuLink'><a href='javascript:void(0);' onclick='restartLiveBroadcast();' title='Restart polling for a new live broadcast'>R</a></span>"; }
       else if (LiveBroadcastStarted) { theObject.innerHTML += "<span class='menuLink'><a href='javascript:void(0);' onclick='pauseLiveBroadcast(); customFunctionOnPgnTextLoad();' title='Pause live broadcast automatic refresh of games'>P</a></span>"; }
-      else { theObject.innerHTML += "<span class='menuLink'><a href='javascript:void(0);' onclick='pauseLiveBroadcast(); customFunctionOnPgnTextLoad();' title='stop polling for a new live broadcast'>S</a></span>"; }
+      else { theObject.innerHTML += "<span class='menuLink'><a href='javascript:void(0);' onclick='pauseLiveBroadcast(); customFunctionOnPgnTextLoad();' title='Stop polling for a new live broadcast'>S</a></span>"; }
       theObject.innerHTML += "<span class='menuLink'><a href='javascript:void(0);' onclick='refreshPgnSource();' title='Force games refresh'>F</a></span>";
       if (headlessPage) {
         theObject.innerHTML += "<span class='menuLink'><a title='Download chess games PGN source: " + pgnData + "' href=" + pgnData + ">D</a></span>";
