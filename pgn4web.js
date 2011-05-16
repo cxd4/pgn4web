@@ -866,7 +866,7 @@ var gameDemoMaxPly = new Array();
 var gameDemoLength = new Array();
 var LiveBroadcastSteppingMode = false;
 
-var ParseMoveErrorInPGN = false;
+var ParseLastMoveError = false;
 
 var MaxMove = 500;
 
@@ -1538,7 +1538,7 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
     case LOAD_PGN_OK:
       if (LiveBroadcastDelay > 0) {
         firstStart = true;
-        oldParseMoveErrorInPGN = ParseMoveErrorInPGN;
+        oldParseLastMoveError = ParseLastMoveError;
         if (! LiveBroadcastStarted) {
           LiveBroadcastStarted = true;
         } else {
@@ -1571,17 +1571,16 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
           if (LiveBroadcastFoundOldGame) { 
             oldInitialHalfmove = initialHalfmove; 
             if (LiveBroadcastSteppingMode) {
-              initialHalfmove = (LiveBroadcastOldCurrentPlyLast || oldParseMoveErrorInPGN) ? 
+              initialHalfmove = (LiveBroadcastOldCurrentPlyLast || oldParseLastMoveError) ? 
                 LiveBroadcastOldCurrentPly+1 : LiveBroadcastOldCurrentPly;
             } else {
-              initialHalfmove = (LiveBroadcastOldCurrentPlyLast || oldParseMoveErrorInPGN) ?
+              initialHalfmove = (LiveBroadcastOldCurrentPlyLast || oldParseLastMoveError) ?
                 "end" : LiveBroadcastOldCurrentPly;
             }
           }
         }
       }
 
-      ParseMoveErrorInPGN = false;
       Init();
 
       if (LiveBroadcastDelay > 0) {
@@ -1596,7 +1595,7 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
       if (LiveBroadcastDelay > 0) {
         if (LiveBroadcastFoundOldGame) {
           if (LiveBroadcastSteppingMode) {
-            if (oldAutoplay || LiveBroadcastOldCurrentPlyLast || oldParseMoveErrorInPGN) { SetAutoPlay(true); }
+            if (oldAutoplay || LiveBroadcastOldCurrentPlyLast || oldParseLastMoveError) { SetAutoPlay(true); }
           } else {
             if (oldAutoplay) { SetAutoPlay(true); }
           }
@@ -2408,11 +2407,9 @@ function MoveForward(diff) {
   if (goToPly > (StartPly + PlyNumber)) { goToPly = StartPly + PlyNumber; }
 
   // reach to selected move checking legality
-  var parse = false;
   for(var thisPly = CurrentPly; thisPly < goToPly; ++thisPly) {
     var move = Moves[thisPly];
-    if (! (parse = ParseMove(move, thisPly))) {
-      ParseMoveErrorInPGN = true;
+    if (ParseLastMoveError = !ParseMove(move, thisPly)) {
       text = (Math.floor(thisPly / 2) + 1) + ((thisPly % 2) === 0 ? '. ' : '... ');
       myAlert('error: invalid ply ' + text + move + ' in game ' + (currentGame+1), true);
       break;
@@ -2427,7 +2424,7 @@ function MoveForward(diff) {
 
   // autoplay: restart timeout
   if (AutoPlayInterval) { clearTimeout(AutoPlayInterval); AutoPlayInterval = null; }
-  if (!parse) { SetAutoPlay(false); } 
+  if (ParseLastMoveError) { SetAutoPlay(false); } 
   else if (thisPly == goToPly) {
     if (isAutoPlayOn) {
       if (goToPly < StartPly + PlyNumber) {
@@ -2470,7 +2467,8 @@ function MoveToPrevComment() {
 function OpenGame(gameId) {
   ParsePGNGameString(pgnGame[gameId]);
   currentGame = gameId;
- 
+  ParseLastMoveError = false;
+
   if (LiveBroadcastDemo) {
     if (gameDemoMaxPly[gameId] <= PlyNumber) { PlyNumber = gameDemoMaxPly[gameId]; }
   }
