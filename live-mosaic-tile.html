@@ -121,7 +121,7 @@
       if ((!bObject.innerHTML.match(/\S/)) && (wObject.innerHTML.match(/\S/))) { bObject.innerHTML = "-"; }
     }
     if (theObject = document.getElementById("bottomContainer")) {
-      theObject.title = " game " + (currentGame+1) + " of " + numberOfGames;
+      if (numberOfGames > 1) { theObject.title = " game " + (currentGame+1) + " of " + numberOfGames; }
       addTagToTitle("event:", gameEvent[currentGame], theObject);
       addTagToTitle("site:", gameSite[currentGame], theObject);
       addTagToTitle("date:", gameDate[currentGame], theObject);
