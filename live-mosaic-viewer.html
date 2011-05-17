@@ -190,7 +190,7 @@ a:hover {
 
 </head>
 
-<body>
+<body id="body">
 
 <script type="text/javascript">
 
@@ -384,6 +384,11 @@ function customFunctionOnPgnTextLoad() {
     if (LiveBroadcastStarted && !LiveBroadcastEnded) { theObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='hideEndedGames();' title='Hide games finished so far' onfocus='this.blur();'>H</a></span>"; }
     if (filteredGames.length > 0) { theObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restoreEndedGames();' title='Unhide the finished games previously hidden' onfocus='this.blur();'>U</a></span>"; }
   }
+
+  if (theBody = document.getElementById("body")) {
+    if (theBody.clientHeight < theBody.scrollHeight) { theObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='#boards' title='scroll page to the top of the Boards section' onfocus='this.blur();'>B</a></span>"; }
+  }
+
 }
 
 function startFromFirstGame(firstGame, numberOfGamesForDisplay) {
