@@ -219,13 +219,8 @@ for (board = 0; board < maxBoards; board++) {
   document.write("<iframe name='board" + board + "' id='board" + board + "' class='hiddenFrame' width='256' height='306' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='live-mosaic-tile.html?ut=t&rm=" + refreshMinutes + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>");
 }
 
-document.write("</center><a class='afterBoards' name='bottom'>&nbsp</a>");
-
-if (!headlessPage) {
-  printMenu();
-}
-
 </script>
+
 
 <!-- chat box code here -->
 
@@ -233,6 +228,13 @@ if (!headlessPage) {
 
 
 <script type="text/javascript">
+
+document.write("</center><a class='afterBoards' name='bottom'>&nbsp</a>");
+
+if (!headlessPage) {
+  printMenu();
+}
+
 
 var pgn4webClearShortCutSquaresForChildFrames =  [ ["DH", "8"], ["H", "7"], ["ABH", "6"] ];
 
