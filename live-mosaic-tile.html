@@ -95,7 +95,7 @@
 
   function addTagToTitle(tagLabel, tagValue, object) {
     if (!tagValue || tagValue[1] == "?" || !object) { return; }
-    object.title += "  \n " + tagLabel + tagValue;
+    object.title += (object.title ? "\n " : " ") + tagLabel + tagValue + "  ";
   }
 
   function customFunctionOnPgnTextLoad() {
@@ -121,7 +121,7 @@
       if ((!bObject.innerHTML.match(/\S/)) && (wObject.innerHTML.match(/\S/))) { bObject.innerHTML = "-"; }
     }
     if (theObject = document.getElementById("bottomContainer")) {
-      if (numberOfGames > 1) { theObject.title = " game " + (currentGame+1) + " of " + numberOfGames; }
+      theObject.title = numberOfGames > 1 ? " game " + (currentGame+1) + " of " + numberOfGames + "  " : "";
       addTagToTitle("event:", gameEvent[currentGame], theObject);
       addTagToTitle("site:", gameSite[currentGame], theObject);
       addTagToTitle("date:", gameDate[currentGame], theObject);
