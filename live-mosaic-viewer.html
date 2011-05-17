@@ -381,8 +381,8 @@ function customFunctionOnPgnTextLoad() {
     if (maxBoards > 1 && numberOfGamesForDisplay > 1) { theObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='newBoards(" + Math.min(maxBoards - 1, numberOfGamesForDisplay - 1) + ");' title='show one chessboard Less' onfocus='this.blur();'>L</a></span>"; }
     if (numberOfGamesForDisplay > maxBoards) { theObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='newBoards(" + (maxBoards + 1) + ");' title='show one chessboard More' onfocus='this.blur();'>M</a></span>"; }
 
-    if (LiveBroadcastStarted && !LiveBroadcastEnded) { theObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='hideEndedGames();' title='Hide games ended so far' onfocus='this.blur();'>H</a></span>"; }
-    if (filteredGames.length > 0) { theObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restoreEndedGames();' title='Unhide the ended games previously hidden' onfocus='this.blur();'>U</a></span>"; }
+    if (LiveBroadcastStarted && !LiveBroadcastEnded) { theObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='hideEndedGames();' title='Hide games finished so far' onfocus='this.blur();'>H</a></span>"; }
+    if (filteredGames.length > 0) { theObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restoreEndedGames();' title='Unhide the finished games previously hidden' onfocus='this.blur();'>U</a></span>"; }
   }
 }
 
