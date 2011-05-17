@@ -360,7 +360,7 @@ function customFunctionOnMove() {
     document.getElementById("leftButton").title = ((CurrentPly % 2) ? "Black" : "White") + " to play: find the best move";
   } else {
     document.getElementById("leftButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&lt;&nbsp;&nbsp;&nbsp;&nbsp;";
-    document.getElementById("leftButton").title = "click > to step backwards one move";
+    document.getElementById("leftButton").title = "click < to step backwards one move";
   }
 
   if (CurrentPly == StartPly+PlyNumber) {
