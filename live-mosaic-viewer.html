@@ -385,9 +385,7 @@ function customFunctionOnPgnTextLoad() {
     if (filteredGames.length > 0) { theObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restoreEndedGames();' title='Unhide the finished games previously hidden' onfocus='this.blur();'>U</a></span>"; }
   }
 
-  if (theBody = document.getElementById("body")) {
-    if (theBody.clientHeight < theBody.scrollHeight) { theObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='#boards' title='scroll page to the top of the Boards section' onfocus='this.blur();'>B</a></span>"; }
-  }
+  theObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='#boards' title='scroll page to the top of the Boards section' onfocus='this.blur();'>B</a></span>";
 
 }
 
