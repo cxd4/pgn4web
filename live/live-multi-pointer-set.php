@@ -255,6 +255,8 @@ if ($secretHash == $storedSecretHash) {
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="expires" content="-1">
 
+<link rel="shortcut icon" href="pawn.ico" />
+
 <script type="text/javascript">
 
 // live multi page parameters
