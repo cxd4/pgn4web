@@ -116,7 +116,7 @@ function openPgn4webTest(url) {
 
 <a class="linklist" id="board" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href='board.html?am=g&d=1000&ss=50&ps=40&pf=u&lcs=Ut65&dcs=ObJH&bbcs=$$$$&hm=b&hcs=__X$&bd=h&hd=c&md=j&tm=50&fhcs=$$$$&fhs=100p&fmcs=$$$$&fccs=_L$$&hmcs=__X$&fms=90p&fcs=m&cd=i&bcs=____&fp=10&hl=f&fh=1000&fw=609&pe=1227$zlax9RvmYXZNS4XYTucLSNGYTbS4coab2l8$JzaLr6WMr52wilheKl8$y2xz1BHASUtGJ05n9pNmXX5Hh0oyuOYZ64Tef4XZ2eMilh1NYfdvls2eVe3u0Vd_c3ul4coaE6V_9P1je54cnHb11nvoaz7$ij2qQ2$gK3qU5$fbzN3ZgD30jM$Om7T1$BBf3BjH90$OlPfJeaDr02O7YF0L7YxcQ8F29$yshpvqS7bn3ayNV0FpvN$fVg3dzrl5n10xnvoFKHfq$71GW32kYx2p06h5voGz5T1$IDyR7bj1$zYfYN2d$v8W308pwnnr13Xf3iz7j0$RXf4i37b16sDwSoj7f1dZRpdE3rw2$fAx$IVw5$fcijdPrl7P16pbvC7gL3me7vqoj790$RRgij7r0$OlDsEN32vfcKzdQSN59$vAsXv9I5a5502kpbwazbf13YfYkejbn13FEVwajbL1$zRgrzk2c$vnBKP2k8F5r0$khpwGhMwf7VzpdKdfML308ryO7nd06jHgU3nj04bf4lB7Ln3q9vatDLv3m8HyKBuAB5$xy7VYUNbn06mHfijnP1dK4uDJ8Nbr06h4uDJSNb4$yIhpyIpb_gwL3m87yI3uAB0L7J7paFW9yhv7VhJYuDJENc506sX_grPk5z$yJNKPmtU5B$yElPgRJPgG$7JGI3cnlpP16HgrQFcr02RDExc4$yKyfCkWjpr01u7tM5wL7i9wUzrj0$g1DVBU1Owvf3zU2N7Tv3mjg4QdgMv7WHPcb_gO$7JDN6yoDW6c$yImygsKjrT1aBzfAwoLD3sRqY4MbgML3sDpaIHyvT3sRqY4M3fjD1dPc1i79b1$FpyIjND9f1dQExdW9l4b06hn_grzp1H$vat7hg0uRt2eTDXgZ_pZXZS$_2qi8p9tkwDzq2eRZmxXir0AnaSNYY$_7P_2l81OUY2lmNr0ZmKWfPmD29KNeG0AjTY2XbeBZg7u3h7Z7Gfz6fNJfojz8eK2TCZxSPtwJBGvuzpwGWOWra$ZWCPjmKWu2TcBUcLeLQCDaSNYY4We2gKQKgUmr4WUtZwJZ7zgXglw6U_fDtb0'>reykjavik</a>
  
-<a class="linklist" id="tallinn10_live" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="live-mosaic-viewer.html?pgnData=dgt.pgn&refreshMinutes=0.25&refreshDemo=true&headlessPage=t">tallinn live</a>
+<a class="linklist" id="tallinn11_live" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="live-mosaic-viewer.html?pgnData=dgt.pgn&refreshMinutes=0.25&refreshDemo=true&headlessPage=t">tallinn live</a>
 
 <a class="linklist" id="tilb98r2" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="tilb98r2.html">tilburg replay</a> 
 
@@ -151,54 +151,60 @@ function select_frame(new_frame){
 
     if (selected_object !== null) {
       if (new_object == selected_object) { return false; }
-      selected_object.className='linklist';
+      selected_object.className="linklist";
     }
     selected_object = new_object;
     frames['pgnframe'].location.href = selected_object.href;
 
-    new_frame_width = '100%';
-    new_frame_height = '1000px';
+    new_frame_width = "100%";
+    new_frame_height = "1000px";
 
     switch (new_frame) {
-      case 'collection':
-        new_frame_height = '2000px';
+      case "collection":
+        new_frame_height = "2000px";
         break;    
-      case 'inputform':
-        new_frame_width = '753px';
+      case "inputform":
+        new_frame_width = "753px";
         break;
-      case 'lon09r5_live':
-        new_frame_height = '419px';
-        new_frame_width = '660px'; 
+      case "lon09r5_live":
+        new_frame_height = "419px";
+        new_frame_width = "660px"; 
         break;
-      case 'mini':
-        new_frame_height = '450px';
+      case "mini":
+        new_frame_height = "450px";
         break;
-      case 'tallinn10_live':
-        new_frame_height = '800px';
+      case "tallinn11_live":
+        new_frame_height = "800px";
         break;
-      case 'tilb98r2_live':
-        new_frame_width = '480px';
-        new_frame_height = '360px';
+      case "tilb98r2_live":
+        new_frame_width = "480px";
+        new_frame_height = "360px";
         break;
-      case 'wch08ak':
-        new_frame_height = '2500px';
+      case "wch08ak":
+        new_frame_height = "2500px";
         break;
       default:
         break;
     }
-    document.getElementById('pgnframe').width = new_frame_width; 
-    document.getElementById('pgnframe').height = new_frame_height;
+    document.getElementById("pgnframe").width = new_frame_width; 
+    document.getElementById("pgnframe").height = new_frame_height;
   
     selected_object.className = "linkselected"; 
 
   } else { 
-    alert('unknown frame: ' + new_frame);
+    select_frame("mini");
   }
   return false;
 }
 
+function random_frame() {
+  var random_selection = ["board", "chess960", "chess960", "lon09r5_live", "lon09r5", "lon09r5", "mini", "mini", "mini", "mini", "mini", "tactics", "tactics", "tactics", "tallinn11_live", "tallinn11_live", "tallinn11_live", "tilb98r2_live", "tilb98r2", "tilb98r2", "video", "wch08ak", "widget", "widget", "widget", "youtube", "youtube", "youtube"];
+  return random_selection[Math.floor(random_selection.length * Math.random())];
+}
+
 initial_frame = gup("frame");
-if (initial_frame === "") { initial_frame = "mini"; }
+if (initial_frame === "") { initial_frame = "random"; }
+if (initial_frame == "random") { initial_frame = random_frame(); }
 select_frame(initial_frame);
 
 </script> 
