@@ -221,6 +221,19 @@ of Google Chrome v6 or later. Don't use with any other browser.
       }
    }
 
+   function underlineByTicker(text, ticker) {
+      position = ticker % text.length;
+      return (text.substring(0, position) + "<u>" +text.substring(position, position + 1) + "</u>" + text.substring(position + 1));
+   }
+
+   function customFunctionOnCheckLiveBroadcastStatus() {
+      if (theObject = document.getElementById("GameLiveStatus")) {
+         if (LiveBroadcastTicker > 1) {
+            theObject.innerHTML =  theObject.innerHTML.replace(/live/, underlineByTicker("live", LiveBroadcastTicker-2));
+         }
+      }
+   }
+
    function customShortcutKey_Shift_1() {
       if (gameWhite[currentGame]) {
          window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + gameWhite[currentGame] + "&offset=0");

@@ -203,7 +203,7 @@ function printHeader() {
 }
 
 function printMenu() {
-  document.write("<div id='leftMenu' class='menuLine' style='text-align:left; float:left;'></div><div class='menuLine' style='text-align:right; float:right;'><a id='GameLiveStatus' href='javascript:void(0);' style='display:none;' onclick='displayDebugInfo();' title='live broadcast status'></a><span id='GameLiveStatusHeading' class='menuLine' style='margin-left:1em; display:none' title='live broadcast status' onfocus='this.blur();'>:status</span></div><div id='StartupMessage' class='menuLine startupMessage'>chess games viewer: loading PGN data, please wait...</div>");
+  document.write("<div id='leftMenu' class='menuLine' style='text-align:left; float:left;'></div><div class='menuLine' style='text-align:right; float:right;'><a id='GameLiveStatus' href='javascript:void(0);' style='display:none;' onclick='displayDebugInfo();' title='live broadcast status'></a><span id='GameLiveStatusHeading' class='menuLine' style='margin-left:1em; display:none' title='live broadcast status'>:status</span></div><div id='StartupMessage' class='menuLine startupMessage'>chess games viewer: loading PGN data, please wait...</div>");
 }
 
 if (headlessPage) {
@@ -417,6 +417,21 @@ function newBoards(newMaxBoards) {
   if (firstGame !== firstGame_default) { currentLocationSearch += "&fg=" + (firstGame < 0 ? firstGame : firstGame + 1); }
   if (headlessPage) { currentLocationSearch += "&hp=t"; }
   document.location.search = currentLocationSearch.replace(/^&/, "?");
+}
+
+function underlineByTicker(text, ticker) {
+  position = ticker % text.length;
+  return (text.substring(0, position) +
+    "<u>" +text.substring(position, position + 1) + "</u>" +
+    text.substring(position + 1));
+}
+
+function customFunctionOnCheckLiveBroadcastStatus() {
+  if (theObject = document.getElementById("GameLiveStatusHeading")) {
+    if (LiveBroadcastTicker > 1) {
+      theObject.innerHTML = ":" + underlineByTicker("status", LiveBroadcastTicker-2);
+    } else { theObject.innerHTML = ":status"; }
+  }
 }
 
 function customShortcutKey_Shift_0() {

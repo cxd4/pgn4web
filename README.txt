@@ -297,6 +297,7 @@ allow for execution of custom commands at given points:
 - customFunctionOnPgnGameLoad(): when loading a new game
 - customFunctionOnMove(): when a  move is made
 - customFunctionOnAlert(message_string): when an error alert is raised
+- customFunctionOnCheckLiveBroadcastStatus(): when a live broadcast is checked
 Please note the order these functions are executed; for example, when loading 
 a new PGN file at the end of the first game, first customFunctionOnMove() is 
 executed, then (when the game has been loaded and the move positioning 

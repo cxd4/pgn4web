@@ -75,15 +75,20 @@
 
   SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, false); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false)
 
-  ticker_string = demoFlag ? " demo" : " help";
-  
-  ticker_counter = 0;
-  function update_ticker() {
-    document.getElementById("ticker").innerHTML = ticker_string.substring(0, ticker_counter) +
-      ticker_string.substring(ticker_counter, ticker_counter + 1).toUpperCase() +
-      ticker_string.substring(ticker_counter + 1);
-    ticker_counter = (ticker_counter + 1) % ticker_string.length;
+  function underlineByTicker(text, ticker) {
+    position = ticker % text.length;
+    return (text.substring(0, position) + 
+      "<u>" +text.substring(position, position + 1) + "</u>" +
+      text.substring(position + 1));
   }
+
+  function customFunctionOnCheckLiveBroadcastStatus() {
+    if (theObject = document.getElementById("ticker")) {
+      if (LiveBroadcastTicker > 1) {
+        theObject.innerHTML = underlineByTicker(demoFlag ? "demo" : "help", LiveBroadcastTicker-2);
+      } else { theObject.innerHTML = demoFlag ? "demo" : "help"; }
+    }
+  } 
 
   function customFunctionOnPgnTextLoad() {
       
@@ -93,8 +98,6 @@
       ((!LiveBroadcastStarted) || (LiveBroadcastEnded)) ? "headerHighlighted" : "header";
     document.getElementById("additionalMessage").innerHTML = 
       LiveBroadcastEnded ? ", click H6 for the next event" : "";
-
-    update_ticker();
 
     // cope with occasional failures to load the live PGN data
     if ((LiveBroadcastDelay !== 0) && (LiveBroadcastTicker > 0) && (!LiveBroadcastFoundOldGame)) {
@@ -360,7 +363,7 @@ function user_help() {
 </td>
 <td width=55 align=left valign=middle style="padding: 3px;">
 <div style="width: 49px; height: 1.3em; line-height: 1.3em; overflow: hidden; white-space: nowrap;">
-<a id="ticker" class="helplinkNosize" href="javascript: user_help();" onFocus="this.blur()" title="pgn4web live broadcast help">HELP</a>
+<a id="ticker" class="helplinkNosize" href="javascript: user_help();" onFocus="this.blur()" title="pgn4web live broadcast help">help</a>
 </div>
 </td>
 </tr>

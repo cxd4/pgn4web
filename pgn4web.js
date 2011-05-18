@@ -31,6 +31,7 @@ function customFunctionOnPgnTextLoad() {}
 function customFunctionOnPgnGameLoad() {}
 function customFunctionOnMove() {}
 function customFunctionOnAlert(msg) {}
+function customFunctionOnCheckLiveBroadcastStatus() {}
 
 // API to parse custom header tags in customFunctionOnPgnGameLoad()
 
@@ -1746,6 +1747,8 @@ function checkLiveBroadcastStatus() {
   { theObject.innerHTML = LiveBroadcastLastReceivedLocal; }
   if (theObject = document.getElementById("GameLiveLastModifiedServer"))
   { theObject.innerHTML = LiveBroadcastLastModified_ServerTime(); }
+
+  customFunctionOnCheckLiveBroadcastStatus();
 }
 
 function restartLiveBroadcastTimeout() {
