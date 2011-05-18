@@ -410,6 +410,8 @@ function customFunctionOnPgnTextLoad() {
         else { theSite = gameSite[n]; }
       }
     }
+    if (theEvent == "?") { theEvent = ""; }
+    if (theSite == "?") { theSite = ""; }
     if (theEvent) { theEvent = theEvent.replace(/\s/g, "&nbsp;"); }
     if (theSite) { theSite = theSite.replace(/\s/g, "&nbsp;"); }
 
