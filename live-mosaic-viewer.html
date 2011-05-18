@@ -391,6 +391,8 @@ function customFunctionOnPgnTextLoad() {
   theLeftObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='#boards' title='scroll page to the top of the Boards section' onfocus='this.blur();'>B</a></span>";
 
   if (theLeftObject && (theRightObject = document.getElementById("rightMenu"))) {
+    theLeftObject.style.minWidth = 0;
+    theRightObject.style.minWidth = 0;
     theLeftObject.style.minWidth = theRightObject.offsetWidth;
     theRightObject.style.minWidth = theLeftObject.offsetWidth;
   }
