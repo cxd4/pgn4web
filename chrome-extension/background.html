@@ -63,7 +63,7 @@ function pgnLinkOnClick(info, tab, live, all) {
 }
 
 function pgnPageOnClick(info, tab, live, all) {
-  var remoteUrl = prompt("Enter PGN chess games URL for viewing" + (all ? " on multiple boards" : "") + (live ? " with live refresh" : "") + " (" + ((info.selectionText && (!validatePgnUrl(info.selectionText))) ? "the supplied URL does not match the usual PGN URL pattern; " : "") + debugInfo + "):", info.selectionText ? info.selectionText : "");
+  var remoteUrl = prompt("Enter PGN chess games URL for viewing" + (all ? " on multiple boards" : " on a single board") + (live ? " with live refresh" : "") + " (" + ((info.selectionText && (!validatePgnUrl(info.selectionText))) ? "the supplied URL does not match the usual PGN URL pattern; " : "") + debugInfo + "):", info.selectionText ? info.selectionText : "");
   if (!remoteUrl) { return; }
 
   openRemoteUrl(remoteUrl, live, all);
@@ -103,7 +103,7 @@ function pgntextOnClick(info, tab) {
     pgnText[pgnTextIndex] = info.selectionText;
   } else {
     needsValidation = false;
-    pgnText[pgnTextIndex] = prompt("Enter PGN chess games TEXT for viewing (pasting multi-line PGN data in the textbox is ok; " + debugInfo + "):");
+    pgnText[pgnTextIndex] = prompt("Enter PGN chess games TEXT for viewing on a single board (pasting multi-line PGN data in the textbox is ok; " + debugInfo + "):");
     if (!pgnText[pgnTextIndex]) {
       delete pgnText[pgnTextIndex];
       return;
@@ -136,7 +136,7 @@ chrome.tabs.onRemoved.addListener(removePgnTextOnRemoved);
 
 function aboutChessGamesViewer(info, tab) {
   var aboutText = "Chess games viewer extension for Google Chrome: interactive chessboard showing chess games from links to *.PGN URLs and from PGN text, using context menus and page actions.";
-  aboutText += "\n\nA context menu shows chess games from links to *.PGN chess games URLs; PGN (Portable Games Notation) files are commonly used to store and share chess games information. The live refresh option reloads the games periodically until all games are ended; use for links to chess games live broadcasts; a single large chessboard view is offered as well as a multiple small chessboards view. The mouse cursor icon highlights links to *.PGN chess games URLs when hovering on them.";
+  aboutText += "\n\nA context menu shows chess games from links to *.PGN chess games URLs; PGN (Portable Games Notation) files are commonly used to store and share chess games information. The live refresh option reloads the games periodically until all games are ended; use for links to chess games live broadcasts; a single large chessboard view is offered as well as a view with multiple small chessboards. The mouse cursor icon highlights links to *.PGN chess games URLs when hovering on them.";
   aboutText += "\n\nA context menu shows chess games from PGN chess games text selecetd in the web page.";
   aboutText += "\n\nA page action looks for links to *.PGN chess games URLs in the current page; if found, a page action icon in the address bar allows for opening the links in the chess games viewer.";
   aboutText += "\n\nClick on the viewer's chessboard top right square for user interface help, credits and license; " + debugInfo + ".";
@@ -154,25 +154,25 @@ pgnUrlPatterns = ["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", 
 // links shown as images like this <a href=game.pgn><img src=image.jpeg/></a>
 // see http://code.google.com/p/chromium/issues/detail?id=63965
 
-chrome.contextMenus.create({"title": "View chess games link", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnviewLinkOnClick});
+chrome.contextMenus.create({"title": "View chess games link on a single board", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnviewLinkOnClick});
 
-chrome.contextMenus.create({"title": "View chess games link with live refresh", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnliveLinkOnClick});
+chrome.contextMenus.create({"title": "View chess games link on a single board with live refresh", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnliveLinkOnClick});
 
 chrome.contextMenus.create({"title": "View chess games link on multiple boards with live refresh", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnliveallLinkOnClick});
 
 // "page" and "selection" context menu to open PGN text 
 
-chrome.contextMenus.create({"title": "Enter PGN chess games TEXT for viewing", "contexts": ["page"], "onclick": pgntextOnClick});
+chrome.contextMenus.create({"title": "Enter PGN chess games TEXT for viewing on a single board", "contexts": ["page"], "onclick": pgntextOnClick});
 
-chrome.contextMenus.create({"title": "View selected TEXT as PGN chess games", "contexts": ["selection"], "onclick": pgntextOnClick});
+chrome.contextMenus.create({"title": "View selected TEXT as PGN chess games on a single board", "contexts": ["selection"], "onclick": pgntextOnClick});
 
 chrome.contextMenus.create({"type": "separator", "contexts": ["page", "selection"]});
 
 // "page" and "selection" context menu to enter PGN chess games URL for opening
 
-chrome.contextMenus.create({"title": "Enter PGN chess games URL for viewing", "contexts": ["page", "selection"], "onclick": pgnviewPageOnClick});
+chrome.contextMenus.create({"title": "Enter PGN chess games URL for viewing on a single board", "contexts": ["page", "selection"], "onclick": pgnviewPageOnClick});
 
-chrome.contextMenus.create({"title": "Enter PGN chess games URL for viewing with live refresh", "contexts": ["page", "selection"], "onclick": pgnlivePageOnClick});
+chrome.contextMenus.create({"title": "Enter PGN chess games URL for viewing on a single board with live refresh", "contexts": ["page", "selection"], "onclick": pgnlivePageOnClick});
 
 chrome.contextMenus.create({"title": "Enter PGN chess games URL for viewing on multiple boards with live refresh", "contexts": ["page", "selection"], "onclick": pgnliveallPageOnClick});
 
