@@ -395,23 +395,23 @@ function customFunctionOnPgnTextLoad() {
     theEvent = "";
     theSite = "";
     for (n = 0; n < numberOfGames; n++) {
-      if ((theEvent !== false) && (gameEvent[n]) && (theEvent !== gameEvent[n])) {
+      if ((theEvent !== false) && (theEvent !== gameEvent[n])) {
         if (theEvent) { theEvent = false; }
         else { theEvent = gameEvent[n]; }
       }
-      if ((theSite !== false) && (gameSite[n]) && (theSite !== gameSite[n])) {
+      if ((theSite !== false) && (theSite !== gameSite[n])) {
         if (theSite) { theSite = false; }
         else { theSite = gameSite[n]; }
       }
     }
-    theEvent = theEvent.replace(/\s/g, "&nbsp;");
-    theSite = theSite.replace(/\s/g, "&nbsp;");
+    if (theEvent) { theEvent = theEvent.replace(/\s/g, "&nbsp;"); }
+    if (theSite) { theSite = theSite.replace(/\s/g, "&nbsp;"); }
 
     theInfoObject.innerHTML = "";
     if (theEvent) { theInfoObject.innerHTML += "&nbsp;&nbsp;&nbsp;" + theEvent; }
     if (theEvent && theSite) { theInfoObject.innerHTML += "&nbsp;&nbsp;&nbsp;"; }
     if (theSite) { theInfoObject.innerHTML += theSite + "&nbsp;&nbsp;&nbsp;"; }
-    if (theInfoObject.innerHTML) {
+    if (theEvent || theSite) { 
       theInfoObject.title = "event currently on display: hover the mouse below each chessboard for more details";
     } else { theInfoObject.innerHTML = "&nbsp;"; }
   }
