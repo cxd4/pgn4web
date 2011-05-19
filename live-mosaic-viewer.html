@@ -208,7 +208,7 @@ function printHeader() {
 }
 
 function printMenu() {
-  document.write("<div id='rightMenu' class='menuLine' style='text-align:left; float:right;'></div><div id='leftMenu' class='menuLine' style='text-align:left; float:left;'><a id='GameLiveStatus' href='javascript:void(0);' style='display:none;' onclick='displayDebugInfo();' title='live broadcast status'></a></div><div id='infoMessage' class='menuLine infoMessage'>chess games viewer: loading PGN data, please wait...</div>");
+  document.write("<div id='rightMenu' class='menuLine' style='text-align:right; float:right;'></div><div id='leftMenu' class='menuLine' style='text-align:left; float:left;'><a id='GameLiveStatus' href='javascript:void(0);' style='display:none;' onclick='displayDebugInfo();' title='live broadcast status'></a></div><div id='infoMessage' class='menuLine infoMessage'>chess games viewer: loading PGN data, please wait...</div>");
 }
 
 if (headlessPage) {
@@ -367,7 +367,7 @@ function customFunctionOnPgnTextLoad() {
   if (theRightObject = document.getElementById("rightMenu")) {
     theRightObject.innerHTML = "";
 
-    if (headlessPage) {  theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='" + pgnData + "' title='Download chess games PGN source: " + pgnData + "' onfocus='this.blur();'>D</a></span>"; }
+    if (headlessPage) {  theRightObject.innerHTML += "<span class='menuLink' style='width:auto;'><a class='commandLink' href='" + pgnData + "' title='Download chess games PGN source: " + pgnData + "' onfocus='this.blur();'>D</a></span>"; }
 
     if (numberOfGamesForDisplay > maxBoards) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='previousPage();' title='more games available: show the Earlier set of games' onfocus='this.blur();'>E</a></span><span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='nextPage();' title='more games available: show the Next set of games' onfocus='this.blur();'>N</a></span>"; }
 
@@ -386,15 +386,14 @@ function customFunctionOnPgnTextLoad() {
       theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' class='commandLink' href='javascript:void(0);' onclick='refreshPgnSource();' title='Force games refresh' onfocus='this.blur();'>F</a></span>";
     }
 
-    theRightObject.innerHTML += "<span class='menuLink' style='width:auto;'><a class='commandLink' href='#boards' title='scroll page to the top of the Boards section' onfocus='this.blur();'>B</a></span>";
+    theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='#boards' title='scroll page to the top of the Boards section' onfocus='this.blur();'>B</a></span>";
 
     if (theRightObject && (theLeftObject = document.getElementById("leftMenu"))) {
+      theRightObject.style.minWidth = 0;
+      theLeftObject.style.minWidth = 0;
+      theRightObject.style.minWidth = theLeftObject.offsetWidth;
+      theLeftObject.style.minWidth = theRightObject.offsetWidth;
     }
-
-    theRightObject.style.minWidth = 0;
-    theLeftObject.style.minWidth = 0;
-    theRightObject.style.minWidth = theLeftObject.offsetWidth;
-    theLeftObject.style.minWidth = theRightObject.offsetWidth;
   }
   
   if (theInfoObject = document.getElementById("infoMessage")) {
