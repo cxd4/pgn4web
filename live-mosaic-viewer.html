@@ -416,13 +416,16 @@ function customFunctionOnPgnTextLoad() {
     if (theEvent) { theEvent = theEvent.replace(/\s/g, "&nbsp;"); }
     if (theSite) { theSite = theSite.replace(/\s/g, "&nbsp;"); }
 
-    theInfoObject.innerHTML = "";
-    if (theEvent) { theInfoObject.innerHTML += "&nbsp;&nbsp;&nbsp;" + theEvent; }
-    if (theEvent && theSite) { theInfoObject.innerHTML += "&nbsp;&nbsp;&nbsp;"; }
-    if (theSite) { theInfoObject.innerHTML += theSite + "&nbsp;&nbsp;&nbsp;"; }
     if (theEvent || theSite) { 
+      theInfoObject.innerHTML = "";
+      if (theEvent) { theInfoObject.innerHTML += "&nbsp;&nbsp;&nbsp;" + theEvent; }
+      if (theEvent && theSite) { theInfoObject.innerHTML += "&nbsp;&nbsp;&nbsp;"; }
+      if (theSite) { theInfoObject.innerHTML += theSite + "&nbsp;&nbsp;&nbsp;"; }
       theInfoObject.title = "event currently on display: hover the mouse below each chessboard for more details";
-    } else { theInfoObject.innerHTML = "&nbsp;"; }
+    } else {
+      theInfoObject.innerHTML = "&nbsp;";
+      theInfoObject.title = "";
+    }
   }
 
 }
