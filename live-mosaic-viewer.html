@@ -370,22 +370,17 @@ function customFunctionOnPgnTextLoad() {
     if (headlessPage) {  theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='" + pgnData + "' title='Download chess games PGN source: " + pgnData + "' onfocus='this.blur();'>D</a></span>"; }
 
     if (numberOfGamesForDisplay > maxBoards) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='previousPage();' title='more games available: show the Earlier set of games' onfocus='this.blur();'>E</a></span><span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='nextPage();' title='more games available: show the Next set of games' onfocus='this.blur();'>N</a></span>"; }
-    else { theRightObject.innerHTML += "<span class='menuLink'><span class='commandLink'></span><span class='commandLink'></span></span>"; }
 
     if (maxBoards > 1 && numberOfGamesForDisplay > 1) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='newBoards(" + Math.min(maxBoards - 1, numberOfGamesForDisplay - 1) + ");' title='show one chessboard Less' onfocus='this.blur();'>L</a></span>"; }
-    else { theRightObject.innerHTML += "<span class='menuLink'><span class='commandLink'></span></span>"; }
     if (numberOfGamesForDisplay > maxBoards) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='newBoards(" + (maxBoards + 1) + ");' title='show one chessboard More' onfocus='this.blur();'>M</a></span>"; }
-    else { theRightObject.innerHTML += "<span class='menuLink'><span class='commandLink'></span></span>"; }
 
-    if (LiveBroadcastStarted && !LiveBroadcastEnded) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='hideEndedGames();' title='Hide games finished so far' onfocus='this.blur();'>H</a></span>"; }
-    else { theRightObject.innerHTML += "<span class='menuLink'><span class='commandLink'></span></span>"; }
     if (filteredGames.length > 0) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restoreEndedGames();' title='Unhide the finished games previously hidden' onfocus='this.blur();'>U</a></span>"; }
-    else { theRightObject.innerHTML += "<span class='menuLink'><span class='commandLink'></span></span>"; }
+    if (LiveBroadcastStarted && !LiveBroadcastEnded) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='hideEndedGames();' title='Hide games finished so far' onfocus='this.blur();'>H</a></span>"; }
 
     if (LiveBroadcastDelay > 0) {
       if (LiveBroadcastEnded) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast();' title='Check for the start of a new live broadcast event' onfocus='this.blur();'>C</a></span>"; }
-      else if (LiveBroadcastPaused && LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast();' title='Restart live broadcast automatic refresh of games' onfocus='this.blur();'>R</a></span>"; }
-      else if (LiveBroadcastPaused && !LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast();' title='Restart polling for a new live broadcast' onfocus='this.blur();'>R</a></span>"; }
+      else if (LiveBroadcastPaused && LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast(); customFunctionOnPgnTextLoad();' title='Restart live broadcast automatic refresh of games' onfocus='this.blur();'>R</a></span>"; }
+      else if (LiveBroadcastPaused && !LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast(); customFunctionOnPgnTextLoad();' title='Restart polling for a new live broadcast' onfocus='this.blur();'>R</a></span>"; }
       else if (LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='pauseLiveBroadcast(); customFunctionOnPgnTextLoad();' title='Pause live broadcast automatic refresh of games' onfocus='this.blur();'>P</a></span>"; }
       else { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='pauseLiveBroadcast(); customFunctionOnPgnTextLoad();' title='Pause polling for a new live broadcast' onfocus='this.blur();'>P</a></span>"; }
       theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' class='commandLink' href='javascript:void(0);' onclick='refreshPgnSource();' title='Force games refresh' onfocus='this.blur();'>F</a></span>";
