@@ -367,26 +367,26 @@ function customFunctionOnPgnTextLoad() {
   if (theRightObject = document.getElementById("rightMenu")) {
     theRightObject.innerHTML = "";
 
-    if (headlessPage) {  theRightObject.innerHTML += "<span class='menuLink' style='width:auto;'><a class='commandLink' href='" + pgnData + "' title='Download chess games PGN source: " + pgnData + "' onfocus='this.blur();'>D</a></span>"; }
+    if (headlessPage) {  theRightObject.innerHTML += "<span class='menuLink' style='width:auto;'><a class='commandLink' href='" + pgnData + "' title='Download chess games PGN source: " + pgnData + "' onfocus='this.blur();'>&nbsp;d&nbsp;</a></span>"; }
 
-    if (numberOfGamesForDisplay > maxBoards) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='previousPage();' title='more games available: show the Earlier set of games' onfocus='this.blur();'>E</a></span><span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='nextPage();' title='more games available: show the Next set of games' onfocus='this.blur();'>N</a></span>"; }
+    if (numberOfGamesForDisplay > maxBoards) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='previousPage();' title='more games available: show the Earlier set of games' onfocus='this.blur();'>&nbsp;e&nbsp;</a></span><span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='nextPage();' title='more games available: show the Next set of games' onfocus='this.blur();'>&nbsp;n&nbsp;</a></span>"; }
 
-    if (maxBoards > 1 && numberOfGamesForDisplay > 1) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='newBoards(" + Math.min(maxBoards - 1, numberOfGamesForDisplay - 1) + ");' title='show one chessboard Less' onfocus='this.blur();'>L</a></span>"; }
-    if (numberOfGamesForDisplay > maxBoards) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='newBoards(" + (maxBoards + 1) + ");' title='show one chessboard More' onfocus='this.blur();'>M</a></span>"; }
+    if (maxBoards > 1 && numberOfGamesForDisplay > 1) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='newBoards(" + Math.min(maxBoards - 1, numberOfGamesForDisplay - 1) + ");' title='show one chessboard Less' onfocus='this.blur();'>&nbsp;l&nbsp;</a></span>"; }
+    if (numberOfGamesForDisplay > maxBoards) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='newBoards(" + (maxBoards + 1) + ");' title='show one chessboard More' onfocus='this.blur();'>&nbsp;m&nbsp;</a></span>"; }
 
-    if (filteredGames.length > 0) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restoreEndedGames();' title='Unhide the finished games previously hidden' onfocus='this.blur();'>U</a></span>"; }
-    if (LiveBroadcastStarted && !LiveBroadcastEnded) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='hideEndedGames();' title='Hide games finished so far' onfocus='this.blur();'>H</a></span>"; }
+    if (filteredGames.length > 0) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restoreEndedGames();' title='Unhide the finished games previously hidden' onfocus='this.blur();'>&nbsp;u&nbsp;</a></span>"; }
+    if (LiveBroadcastStarted && !LiveBroadcastEnded) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='hideEndedGames();' title='Hide games finished so far' onfocus='this.blur();'>&nbsp;h&nbsp;</a></span>"; }
 
     if (LiveBroadcastDelay > 0) {
-      if (LiveBroadcastEnded) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast();' title='Check for the start of a new live broadcast event' onfocus='this.blur();'>C</a></span>"; }
-      else if (LiveBroadcastPaused && LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast(); customFunctionOnPgnTextLoad();' title='Restart live broadcast automatic refresh of games' onfocus='this.blur();'>R</a></span>"; }
-      else if (LiveBroadcastPaused && !LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast(); customFunctionOnPgnTextLoad();' title='Restart polling for a new live broadcast' onfocus='this.blur();'>R</a></span>"; }
-      else if (LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='pauseLiveBroadcast(); customFunctionOnPgnTextLoad();' title='Pause live broadcast automatic refresh of games' onfocus='this.blur();'>P</a></span>"; }
-      else { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='pauseLiveBroadcast(); customFunctionOnPgnTextLoad();' title='Pause polling for a new live broadcast' onfocus='this.blur();'>P</a></span>"; }
-      theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' class='commandLink' href='javascript:void(0);' onclick='refreshPgnSource();' title='Force games refresh' onfocus='this.blur();'>F</a></span>";
+      if (LiveBroadcastEnded) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast();' title='Check for the start of a new live broadcast event' onfocus='this.blur();'>&nbsp;c&nbsp;</a></span>"; }
+      else if (LiveBroadcastPaused && LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast(); customFunctionOnPgnTextLoad();' title='Restart live broadcast automatic refresh of games' onfocus='this.blur();'>&nbsp;r&nbsp;</a></span>"; }
+      else if (LiveBroadcastPaused && !LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast(); customFunctionOnPgnTextLoad();' title='Restart polling for a new live broadcast' onfocus='this.blur();'>&nbsp;r&nbsp;</a></span>"; }
+      else if (LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='pauseLiveBroadcast(); customFunctionOnPgnTextLoad();' title='Pause live broadcast automatic refresh of games' onfocus='this.blur();'>&nbsp;p&nbsp;</a></span>"; }
+      else { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='pauseLiveBroadcast(); customFunctionOnPgnTextLoad();' title='Pause polling for a new live broadcast' onfocus='this.blur();'>&nbsp;p&nbsp;</a></span>"; }
+      theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' class='commandLink' href='javascript:void(0);' onclick='refreshPgnSource();' title='Force games refresh' onfocus='this.blur();'>&nbsp;f&nbsp;</a></span>";
     }
 
-    theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='#boards' title='scroll page to the top of the Boards section' onfocus='this.blur();'>B</a></span>";
+    theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='#boards' title='scroll page to the top of the Boards section' onfocus='this.blur();'>&nbsp;b&nbsp;</a></span>";
 
     if (theRightObject && (theLeftObject = document.getElementById("leftMenu"))) {
       theRightObject.style.minWidth = 0;
