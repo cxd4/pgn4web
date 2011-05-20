@@ -415,10 +415,11 @@ function customFunctionOnPgnTextLoad() {
     if (theSite) { theSite = theSite.replace(/\s/g, "&nbsp;"); }
 
     if (theEvent || theSite) { 
-      theInfoObject.innerHTML = "";
-      if (theEvent) { theInfoObject.innerHTML += "&nbsp;&nbsp;&nbsp;" + theEvent; }
+      theInfoObject.innerHTML = "&nbsp;&nbsp;&nbsp;";
+      if (theEvent) { theInfoObject.innerHTML += theEvent; }
       if (theEvent && theSite) { theInfoObject.innerHTML += "&nbsp;&nbsp;&nbsp;"; }
-      if (theSite) { theInfoObject.innerHTML += theSite + "&nbsp;&nbsp;&nbsp;"; }
+      if (theSite) { theInfoObject.innerHTML += theSite; }
+      theInfoObject.innerHTML += "&nbsp;&nbsp;&nbsp;";
       theInfoObject.title = "event currently on display: hover the mouse below each chessboard for more details";
     } else {
       theInfoObject.innerHTML = "&nbsp;";
