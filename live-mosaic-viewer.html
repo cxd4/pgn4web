@@ -317,10 +317,14 @@ function customFunctionOnPgnTextLoad() {
   filteredGames = filterEndedGames(filteredGames);
 
   unfilteredGames = new Array();
+  gamesForHiding = 0;
   for (g = 0; g < numberOfGames; g++) {
     found_g = false;
     for (f in filteredGames) { if (found_g = (filteredGames[f] == g)) { break; } }
-    if (! found_g) { unfilteredGames.push(g); }
+    if (! found_g) {
+      unfilteredGames.push(g);
+      if ((typeof(gameResult[g]) == "undefined") || (gameResult[g].indexOf("*") == -1)) { gamesForHiding++; }
+    }
   }
   numberOfGamesForDisplay = unfilteredGames.length;
   if (numberOfGamesForDisplay < 1) { 
@@ -374,8 +378,8 @@ function customFunctionOnPgnTextLoad() {
     if (maxBoards > 1 && numberOfGamesForDisplay > 1) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='newBoards(" + Math.min(maxBoards - 1, numberOfGamesForDisplay - 1) + ");' title='show one chessboard Less' onfocus='this.blur();'>&nbsp;l&nbsp;</a></span>"; }
     if (numberOfGamesForDisplay > maxBoards) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='newBoards(" + (maxBoards + 1) + ");' title='show one chessboard More' onfocus='this.blur();'>&nbsp;m&nbsp;</a></span>"; }
 
+    if (LiveBroadcastStarted && !LiveBroadcastEnded && gamesForHiding) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='hideEndedGames();' title='Hide games finished so far' onfocus='this.blur();'>&nbsp;h&nbsp;</a></span>"; }
     if (filteredGames.length > 0) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restoreEndedGames();' title='Unhide the finished games previously hidden' onfocus='this.blur();'>&nbsp;u&nbsp;</a></span>"; }
-    if (LiveBroadcastStarted && !LiveBroadcastEnded) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='hideEndedGames();' title='Hide games finished so far' onfocus='this.blur();'>&nbsp;h&nbsp;</a></span>"; }
 
     if (LiveBroadcastDelay > 0) {
       if (LiveBroadcastEnded) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast();' title='Check for the start of a new live broadcast event' onfocus='this.blur();'>&nbsp;c&nbsp;</a></span>"; }
