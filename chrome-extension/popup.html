@@ -60,15 +60,20 @@ body {
   scrollbar-base-color: #F0F0F0;
 }
  
+.pgnItem {
+}
+
 .pgnListLink {
   margin-right: 0.6em;
 }
  
-.pgnFileName {
-  margin-left: 1em;
+.linkImage {
+  height: 1em;
+  width: 1em;
 }
  
-.pgnItem {
+.pgnFileName {
+  margin-left: 1em;
 }
  
 </style>
@@ -100,7 +105,6 @@ chrome.tabs.getSelected(null, function(tab){
 
   var em = emObject.offsetWidth;
   var maxLinkListItems = Math.max(1, Math.ceil((0.6 * self.screen.availHeight - 6 * em) / (2 * em)));
-  var imgResizeString = 'height="' + em + 'px" width="' + em + 'px" ';
 
   if (pgnLinks.length > maxLinkListItems) {
     listObject.style.maxHeight = (maxLinkListItems * 2) + "em";
@@ -116,10 +120,10 @@ chrome.tabs.getSelected(null, function(tab){
   for(l in pgnLinks) {
     var pgnFileName = pgnLinks[l].replace(/(^|^[^?#]*\/)([^?#\/]+\.pgn)($|\?.*$|#.*$)/i,'$2');
     pgnLinkListInnerHTML += '<div class="pgnItem">' +
-      '<a title="view on a single board ' + pgnFileName + ' games" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'chrome.tabs.create({url: "chess-games-viewer.html?pgnData=' + escape(pgnLinks[l]) + '"}); self.close();\'><img ' + imgResizeString + 'src="alpha-16.png"></a>' +
-      '<a title="view on a single board with live refresh ' + pgnFileName + ' games" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'chrome.tabs.create({url: "chess-games-viewer.html?pgnData=' + escape(pgnLinks[l]) + '&refreshMinutes=1.0' + Math.floor(Math.random()*10) + '"}); self.close();\'><img ' + imgResizeString + 'src="refresh.png"></a>' +
-      '<a title="view on multiple boards with live refresh ' + pgnFileName + ' games" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'chrome.tabs.create({url: "live-mosaic-viewer.html?pgnData=' + escape(pgnLinks[l]) + '&refreshMinutes=1&headlessPage=true"}); self.close();\'><img ' + imgResizeString + 'src="refresh-all.png"></a>' +
-      '<a title="download ' + pgnFileName + ' games" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'chrome.tabs.update(' + tab.id + ', {url: "' + pgnLinks[l] + '"}); self.close();\'><img ' + imgResizeString + 'src="download.png"></a>' +
+      '<a title="view on a single board ' + pgnFileName + ' games" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'chrome.tabs.create({url: "chess-games-viewer.html?pgnData=' + escape(pgnLinks[l]) + '"}); self.close();\'><img src="alpha-16.png" class="linkImage"></a>' +
+      '<a title="view on a single board with live refresh ' + pgnFileName + ' games" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'chrome.tabs.create({url: "chess-games-viewer.html?pgnData=' + escape(pgnLinks[l]) + '&refreshMinutes=1.0' + Math.floor(Math.random()*10) + '"}); self.close();\'><img src="refresh.png" class="linkImage"></a>' +
+      '<a title="view on multiple boards with live refresh ' + pgnFileName + ' games" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'chrome.tabs.create({url: "live-mosaic-viewer.html?pgnData=' + escape(pgnLinks[l]) + '&refreshMinutes=1&headlessPage=true"}); self.close();\'><img src="refresh-all.png" class="linkImage"></a>' +
+      '<a title="download ' + pgnFileName + ' games" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'chrome.tabs.update(' + tab.id + ', {url: "' + pgnLinks[l] + '"}); self.close();\'><img src="download.png" class="linkImage"></a>' +
       '<span class="pgnFileName" title="' + pgnFileName + '">' + pgnLinks[l] + '</span>' +
       '</div>';
   }
