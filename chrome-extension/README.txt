@@ -48,3 +48,10 @@ mouse pointer will not change and the viewer will not open the link).
 Verify this on the page:
 http://code.google.com/p/pgn4web/wiki/BrowserExtension_GoogleChrome
 
+popup.html size:
+popup.html is over-engineered to cope with following issues:
+- wrong height assigned by default (on small screen netbooks)
+- max-height attribute ignored for the body element
+http://code.google.com/p/chromium/issues/detail?id=29452
+- scrollbar width is not taken into account for margins/padding
+http://code.google.com/p/chromium/issues/detail?id=31494
