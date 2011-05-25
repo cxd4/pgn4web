@@ -40,17 +40,12 @@ body {
   text-decoration: none;
 }
  
-.measureScrollbar {
-  height: 0.5em;
+.measure {
+  height: 1em;
   width: 3em;
   overflow-y: scroll;
   overflow-x: hidden;
   visibility: hidden;
-}
- 
-.measureEm {
-  height: 0.5em;
-  padding-right: 1em;
 }
  
 .pgnLinkList {
@@ -83,9 +78,7 @@ body {
 <body>
  
 <div id="pgnHeader" class="pgnHeader"></div>
-<div id="measureScrollbar" class="measureScrollbar">hidden text to measure scrollbar width</div>
-<div id="measureEm" class="measureEm"></div>
-
+<div id="measure" class="measure">hidden text to measure some page elements</div>
 <div id="pgnLinkList" class="pgnLinkList"></div>
 
 <script type="text/javascript">
@@ -100,15 +93,14 @@ chrome.tabs.getSelected(null, function(tab){
   
   var headerObject = document.getElementById("pgnHeader");
   var listObject = document.getElementById("pgnLinkList");
-  var scrollObject = document.getElementById("measureScrollbar");
-  var emObject = document.getElementById("measureEm");
-
-  var em = emObject.offsetWidth;
+  var measureObject = document.getElementById("measure");
+  
+  var em = measureObject.offsetHeight; /* measuring em in px */
   var maxLinkListItems = Math.max(1, Math.ceil((0.6 * self.screen.availHeight - 6 * em) / (2 * em)));
 
   if (pgnLinks.length > maxLinkListItems) {
     listObject.style.maxHeight = (maxLinkListItems * 2) + "em";
-    listObject.style.paddingRight = (2 * em + scrollObject.offsetWidth - scrollObject.clientWidth) + "px"; 
+    listObject.style.paddingRight = (2 * em + measureObject.offsetWidth - measureObject.clientWidth) + "px"; /* measuring scrollbar width */
   } else { listObject.style.marginRight = "2em"; }
  
   var pgnHeaderInnerHTML = '<a class="pgnHeaderLink" title="chess games viewer from the pgn4web project" target="_blank" href="http://pgn4web.casaschi.net">Chess games viewer</a>';
