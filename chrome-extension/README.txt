@@ -44,7 +44,8 @@ because of how match patterns can be defined, some URLs might be identified
 as PGN chess games URL even if they should not, for instance
 http://host/file.html?pgnData=games.pgn would match *://*/*.pgn
 This will lead to a context menu appearing when it should not (but the
-mouse pointer will not change and the viewer will not open the link). 
+mouse pointer will not change and the viewer will not open the link).
+see http://code.google.com/p/chromium/issues/detail?id=84024
 Verify this on the page:
 http://code.google.com/p/pgn4web/wiki/BrowserExtension_GoogleChrome
 
