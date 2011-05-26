@@ -26,7 +26,7 @@ http://code.google.com/chrome/extensions/api_index.html
 Bugs:
 
 background.html, about context menu item:
-until chromium bug 63545 is resolved, four entries are required
+until chromium bug 63545 is resolved, two entries are required
 and adding the about menu to the "selection" context would result in
 duplicated items when a selected link is right-clicked
 see http://code.google.com/p/chromium/issues/detail?id=63545

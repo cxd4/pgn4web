@@ -164,6 +164,8 @@ chrome.contextMenus.create({"title": "View chess games link on a single board wi
 
 chrome.contextMenus.create({"title": "View chess games link on multiple boards with live refresh", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnliveallLinkOnClick});
 
+chrome.contextMenus.create({"type": "separator", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns});
+
 // "page" and "selection" context menu to open PGN text 
 
 chrome.contextMenus.create({"title": "Enter PGN chess games TEXT for viewing on a single board", "contexts": ["page"], "onclick": pgntextOnClick});
@@ -180,28 +182,24 @@ chrome.contextMenus.create({"title": "Enter PGN chess games URL for viewing on a
 
 chrome.contextMenus.create({"title": "Enter PGN chess games URL for viewing on multiple boards with live refresh", "contexts": ["page", "selection"], "onclick": pgnliveallPageOnClick});
 
+chrome.contextMenus.create({"type": "separator", "contexts": ["page", "selection"]});
+
 // "link", "page" and "selection" about menus
 
-// ideally, only those two entries should be required
-//
-// chrome.contextMenus.create({"type": "separator", "contexts": ["link", "page", "selection"], targetUrlPatterns: pgnUrlPatterns});
+// ideally, only this entry should be required
 //
 // chrome.contextMenus.create({"title": "About the chess games viewer extension", "contexts": ["link", "page", "selection"], targetUrlPatterns: pgnUrlPatterns, "onclick": aboutChessGamesViewer});
 //
-// however, until chromium bug 63545 is resolved, four entries are required
+// however, until chromium bug 63545 is resolved, two entries are required
 // and adding the about menu to the "selection" context would result in
 // duplicated items when a selected link is right-clicked
 // see http://code.google.com/p/chromium/issues/detail?id=63545
 
-chrome.contextMenus.create({"type": "separator", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns});
-
 chrome.contextMenus.create({"title": "About the chess games viewer extension", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": aboutChessGamesViewer});
-
-chrome.contextMenus.create({"type": "separator", "contexts": ["page"]});
 
 chrome.contextMenus.create({"title": "About the chess games viewer extension", "contexts": ["page"], "onclick": aboutChessGamesViewer});
 
-// end of about menus entries
+// end of context menus entries
 
 var pgnHrefLinks = new Array();
 var pgnWebRequests = new Array();
