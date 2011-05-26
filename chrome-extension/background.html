@@ -148,24 +148,6 @@ function aboutChessGamesViewer(info, tab) {
   if (confirm(aboutText)) { chrome.tabs.create({url: "http://pgn4web.casaschi.net"}); }
 }
 
-// which URL patters should be considered as PGN chess games
-
-pgnUrlPatterns = ["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", "*://*/*.PGN?*", "*://*/*.Pgn?*"];
-
-// "link" context item to open remote PGN chess games URLs
-
-// until chromium bug 63965 is resolved the context menu will not appear for
-// links shown as images like this <a href=game.pgn><img src=image.jpeg/></a>
-// see http://code.google.com/p/chromium/issues/detail?id=63965
-
-chrome.contextMenus.create({"title": "View chess games link on a single board", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnviewLinkOnClick});
-
-chrome.contextMenus.create({"title": "View chess games link on a single board with live refresh", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnliveLinkOnClick});
-
-chrome.contextMenus.create({"title": "View chess games link on multiple boards with live refresh", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnliveallLinkOnClick});
-
-chrome.contextMenus.create({"type": "separator", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns});
-
 // "page" and "selection" context menu to open PGN text 
 
 chrome.contextMenus.create({"title": "Enter PGN chess games TEXT for viewing on a single board", "contexts": ["page"], "onclick": pgntextOnClick});
@@ -183,6 +165,24 @@ chrome.contextMenus.create({"title": "Enter PGN chess games URL for viewing on a
 chrome.contextMenus.create({"title": "Enter PGN chess games URL for viewing on multiple boards with live refresh", "contexts": ["page", "selection"], "onclick": pgnliveallPageOnClick});
 
 chrome.contextMenus.create({"type": "separator", "contexts": ["page", "selection"]});
+
+// "link" context menu to open remote PGN chess games URLs
+
+// which URL patters should be considered as PGN chess games
+
+pgnUrlPatterns = ["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", "*://*/*.PGN?*", "*://*/*.Pgn?*"];
+
+// until chromium bug 63965 is resolved the context menu will not appear for
+// links shown as images like this <a href=game.pgn><img src=image.jpeg/></a>
+// see http://code.google.com/p/chromium/issues/detail?id=63965
+
+chrome.contextMenus.create({"title": "View chess games link on a single board", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnviewLinkOnClick});
+
+chrome.contextMenus.create({"title": "View chess games link on a single board with live refresh", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnliveLinkOnClick});
+
+chrome.contextMenus.create({"title": "View chess games link on multiple boards with live refresh", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnliveallLinkOnClick});
+
+chrome.contextMenus.create({"type": "separator", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns});
 
 // "link", "page" and "selection" about menus
 
