@@ -54,7 +54,7 @@ pgn4web_bitly_apiKey = "";
 // used by: live.html, live-multi.html
 //
 pgn4web_live_pointer_url = '.';
-// pgn4web_live_pointer_url = 'http://pgn4web-live-pointer.casaschi.net';
+// pgn4web_live_pointer_url = 'http://pgn4web-live.casaschi.net';
 //
 
 //
