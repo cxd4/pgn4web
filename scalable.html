@@ -54,9 +54,7 @@ function myOnResize() {
     boardBorder = Math.floor(squareSize / 8);
     shadowBorder = Math.floor(squareSize / 2);
     document.getElementById("style").innerHTML = 
-      ".boardTable { height: " + (squareSize * 8 + boardBorder * 2) + "px; " + 
-        "width: " + (squareSize * 8 + boardBorder * 2) + "px; " +
-        "border-width: " + boardBorder + "px; " +
+      ".boardTable { border-width: " + boardBorder + "px; " + 
         "box-shadow: 0px 0px " + shadowBorder + "px #663300; " +
         "-webkit-box-shadow: 0px 0px " + shadowBorder + "px #663300; " +
         "-moz-box-shadow: 0px 0px " + shadowBorder + "px #663300; } " +
@@ -69,10 +67,8 @@ function myOnResize() {
     boardObject.style.paddingRight = (window.innerWidth - 8 * squareSize - 2 * boardBorder) / 2 + "px";
   }
   if (theObject = document.getElementById("boardTable")) {
-    tableSize = theObject.offsetWidth;
-    if (tableSize > 0) { // coping with browser always returning 0 to offsetWidth
-      theObject.style.height = tableSize + "px";
-    }
+    theObject.style.height = (squareSize * 8 + boardBorder * 2) + "px";
+    theObject.style.width = (squareSize * 8 + boardBorder * 2) + "px";
   }
 }
 
