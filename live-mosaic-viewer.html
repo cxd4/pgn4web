@@ -457,7 +457,7 @@ function newBoards(newMaxBoards) {
   if (pgnData !== pgnData_default) { currentLocationSearch += "&pd=" + pgnData; }
   if (refreshMinutes !== refreshMinutes_default) { currentLocationSearch += "&rm=" + refreshMinutes; }
   if (demoFlag) { currentLocationSearch += "&rd=t"; }
-  if (newMaxBoards !== maxBoards_default) { currentLocationSearch += "&mb=" + newMaxBoards; }
+  currentLocationSearch += "&mb=" + newMaxBoards;
   if (firstGame !== firstGame_default) { currentLocationSearch += "&fg=" + (firstGame < 0 ? firstGame : firstGame + 1); }
   if (headlessPage) { currentLocationSearch += "&hp=t"; }
   document.location.search = currentLocationSearch.replace(/^&/, "?");
