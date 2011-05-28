@@ -28,7 +28,7 @@ body {
 
 .boardTable {
   border-style: solid;
-  border-color: #663300;
+  border-color: #734C27;
 }
 
 .whiteSquare, .highlightWhiteSquare {
@@ -51,16 +51,16 @@ function myOnResize() {
   squareSize = Math.floor(Math.min(window.innerWidth, window.innerHeight) / 9);
   if (squareSize > 0) {
     pieceSize = Math.floor(squareSize * 0.9);
-    boardBorder = Math.floor(squareSize / 8);
+    boardBorder = Math.floor(squareSize / 5);
     shadowBorder = Math.floor(squareSize / 2);
     document.getElementById("style").innerHTML = 
       ".boardTable { border-width: " + boardBorder + "px; " + 
         "-webkit-border-radius: " + boardBorder + "px; " +
         "-moz-border-radius: " + boardBorder + "px; " +
         "border-radius: " + boardBorder + "px; " +
-        "box-shadow: 0px 0px " + shadowBorder + "px #663300; " +
-        "-webkit-box-shadow: 0px 0px " + shadowBorder + "px #663300; " +
-        "-moz-box-shadow: 0px 0px " + shadowBorder + "px #663300; } " +
+        "box-shadow: 0px 0px " + shadowBorder + "px #734C27; " +
+        "-webkit-box-shadow: 0px 0px " + shadowBorder + "px #734C27; " +
+        "-moz-box-shadow: 0px 0px " + shadowBorder + "px #734C27; } " +
       ".pieceImage { width:" + pieceSize + "px; height:" + pieceSize + "px; } " +
       ".whiteSquare, .blackSquare, .highlightWhiteSquare, .highlightBlackSquare " +
       "{ width:" + squareSize + "px; height:" + squareSize + "px; } ";
