@@ -428,7 +428,11 @@ from the http://ficsgames.com database, in turn likely based on code from the
 LT PGN viewer at http://www.lutanho.net/pgn/pgnviewer.html
 
 PNG images from http://ixian.com/chess/jin-piece-sets (creative commons 
-attribution-share alike 3.0 unported license)
+attribution-share alike 3.0 unported license) by Eric De Mund.
+SVG images from http://commons.wikimedia.org/wiki/Category:SVG_chess_pieces
+by Colin M.L. Burnett; licensed under GFDL (www.gnu.org/copyleft/fdl.html),
+CC-BY-SA-3.0 (www.creativecommons.org/licenses/by-sa/3.0/) or
+GPL (www.gnu.org/licenses/gpl.html)], via Wikimedia Commons.
 
 The figurine fonts are derived from the Liberation Sans font (released under
 GNU General Public License, see https://fedorahosted.org/liberation-fonts/)
