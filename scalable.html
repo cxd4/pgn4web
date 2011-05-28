@@ -39,7 +39,8 @@ body {
 
 </style>
 
-<style id="style" type="text/css"></style>
+<style id="style" type="text/css">
+</style>
 
 <script type="text/javascript">
 
@@ -52,8 +53,13 @@ function myOnResize() {
     pieceSize = Math.floor(squareSize * 0.9);
     boardBorder = Math.floor(squareSize / 8);
     shadowBorder = Math.floor(squareSize / 2);
-    document.getElementById("style").innerHTML = "body { margin:0; padding:0; } " +
-      ".boardTable { height: " + (squareSize * 8 + boardBorder * 2) + "px; width: " + (squareSize * 8 + boardBorder * 2) + "px; border-width: " + boardBorder + "px; box-shadow: 0px 0px " + shadowBorder + "px #663300; -webkit-box-shadow: 0px 0px " + shadowBorder + "px #663300; -moz-box-shadow: 0px 0px " + shadowBorder + "px #663300; } " +
+    document.getElementById("style").innerHTML = 
+      ".boardTable { height: " + (squareSize * 8 + boardBorder * 2) + "px; " + 
+        "width: " + (squareSize * 8 + boardBorder * 2) + "px; " +
+        "border-width: " + boardBorder + "px; " +
+        "box-shadow: 0px 0px " + shadowBorder + "px #663300; " +
+        "-webkit-box-shadow: 0px 0px " + shadowBorder + "px #663300; " +
+        "-moz-box-shadow: 0px 0px " + shadowBorder + "px #663300; } " +
       ".pieceImage { width:" + pieceSize + "px; height:" + pieceSize + "px; } " +
       ".whiteSquare, .blackSquare, .highlightWhiteSquare, .highlightBlackSquare " +
       "{ width:" + squareSize + "px; height:" + squareSize + "px; } ";
