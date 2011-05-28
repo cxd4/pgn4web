@@ -43,28 +43,24 @@ body {
 
 <script type="text/javascript">
 
-function myOnLoad() {
-  document.getElementById("GameBoard").innerHTML = "loading, please wait...";
-  bodyObject = document.getElementById("body");
-  squareSize = Math.floor(Math.min(bodyObject.clientWidth, bodyObject.clientHeight) / 9);
+function myOnResize() {
+  boardObject = document.getElementById("GameBoard");
+  oldBoardDisplay = boardObject.style.display;
+  boardObject.style.display = "none";
+  squareSize = Math.floor(Math.min(window.innerWidth, window.innerHeight) / 9);
   if (squareSize > 0) {
     pieceSize = Math.floor(squareSize * 0.9);
     boardBorder = Math.floor(squareSize / 8);
     shadowBorder = Math.floor(squareSize / 2);
     document.getElementById("style").innerHTML = "body { margin:0; padding:0; } " +
-      ".boardTable { border-width: " + boardBorder + "px; box-shadow: 0px 0px " + shadowBorder + "px #663300; -webkit-box-shadow: 0px 0px " + shadowBorder + "px #663300; -moz-box-shadow: 0px 0px " + shadowBorder + "px #663300; } " +
+      ".boardTable { height: " + (squareSize * 8 + boardBorder * 2) + "px; width: " + (squareSize * 8 + boardBorder * 2) + "px; border-width: " + boardBorder + "px; box-shadow: 0px 0px " + shadowBorder + "px #663300; -webkit-box-shadow: 0px 0px " + shadowBorder + "px #663300; -moz-box-shadow: 0px 0px " + shadowBorder + "px #663300; } " +
       ".pieceImage { width:" + pieceSize + "px; height:" + pieceSize + "px; } " +
       ".whiteSquare, .blackSquare, .highlightWhiteSquare, .highlightBlackSquare " +
       "{ width:" + squareSize + "px; height:" + squareSize + "px; } ";
-    boardObject = document.getElementById("GameBoard");
-    boardObject.style.paddingTop = (bodyObject.clientHeight - 8 * squareSize - 2 * boardBorder) / 2 + "px";
-    boardObject.style.paddingLeft = (bodyObject.clientWidth - 8 * squareSize - 2 * boardBorder) / 2 + "px";
+    boardObject.style.paddingTop = (window.innerHeight - 8 * squareSize - 2 * boardBorder) / 2 + "px";
+    boardObject.style.paddingLeft = (window.innerWidth - 8 * squareSize - 2 * boardBorder) / 2 + "px";
   }
-  start_pgn4web();
-}
-
-function myOnResize() {
-  location.href = location.href.replace(/\?.*/, "?" + CurrentPly);
+  boardObject.style.display = oldBoardDisplay;
 }
 
 </script>
@@ -78,15 +74,11 @@ SetAutoplayDelay(2000); // milliseconds
 SetAutostartAutoplay(true);
 SetAutoplayNextGame(true);
 SetShortcutKeysEnabled(false);
-
-if (iniHalfmove = location.search.replace(/\?/, "")) {
-  SetInitialHalfmove(iniHalfmove);
-}
 </script>
 
 </head>
 
-<body id="body" onload="myOnLoad();" onResize="myOnResize();">
+<body onLoad="myOnResize(); start_pgn4web();" onResize="myOnResize();">
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
 <form style="display: none;"><textarea style="display: none;" id="pgnText">
