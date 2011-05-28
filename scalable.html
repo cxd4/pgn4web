@@ -55,6 +55,9 @@ function myOnResize() {
     shadowBorder = Math.floor(squareSize / 2);
     document.getElementById("style").innerHTML = 
       ".boardTable { border-width: " + boardBorder + "px; " + 
+        "-webkit-border-radius: " + boardBorder + "px; " +
+        "-moz-border-radius: " + boardBorder + "px; " +
+        "border-radius: " + boardBorder + "px; " +
         "box-shadow: 0px 0px " + shadowBorder + "px #663300; " +
         "-webkit-box-shadow: 0px 0px " + shadowBorder + "px #663300; " +
         "-moz-box-shadow: 0px 0px " + shadowBorder + "px #663300; } " +
