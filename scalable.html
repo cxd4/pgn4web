@@ -28,7 +28,7 @@ body {
 
 .boardTable {
   border-style: solid;
-  border-color: #734C27;
+  border-color: transparent;
 }
 
 .whiteSquare, .highlightWhiteSquare {
@@ -51,7 +51,7 @@ function myOnResize() {
   squareSize = Math.floor(Math.min(window.innerWidth, window.innerHeight) / 9);
   if (squareSize > 0) {
     pieceSize = Math.floor(squareSize * 0.9);
-    boardBorder = Math.floor(squareSize / 5);
+    boardBorder = Math.ceil(squareSize / 20);
     shadowBorder = Math.floor(squareSize / 2);
     document.getElementById("style").innerHTML = 
       ".boardTable { border-width: " + boardBorder + "px; " + 
