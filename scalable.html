@@ -19,9 +19,10 @@ body {
   margin:0;
   padding:0;
   background-color: white;
-  background: -moz-linear-gradient(top,  #FFFFFF,  #E0E0E0);
+  background: -moz-linear-gradient(top,  #FFFFFF,  #E0E0E0); /* firefox 3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#E0E0E0)); /* chrome 9- */
   background: -webkit-linear-gradient(#FFFFFF, #E0E0E0); /* chrome 10+ */
+  background: -o-linear-gradient(#FFFFFF, #E0E0E0); /* opera 11.10+ */
 }
 
 .boardTable {
@@ -46,8 +47,6 @@ body {
 
 function myOnResize() {
   boardObject = document.getElementById("GameBoard");
-  oldBoardDisplay = boardObject.style.display;
-  boardObject.style.display = "none";
   squareSize = Math.floor(Math.min(window.innerWidth, window.innerHeight) / 9);
   if (squareSize > 0) {
     pieceSize = Math.floor(squareSize * 0.9);
@@ -66,7 +65,12 @@ function myOnResize() {
     boardObject.style.paddingTop = (window.innerHeight - 8 * squareSize - 2 * boardBorder) / 2 + "px";
     boardObject.style.paddingLeft = (window.innerWidth - 8 * squareSize - 2 * boardBorder) / 2 + "px";
   }
-  boardObject.style.display = oldBoardDisplay;
+  if (theObject = document.getElementById("boardTable")) {
+    tableSize = theObject.offsetWidth;
+    if (tableSize > 0) { // coping with browser always returning 0 to offsetWidth
+      theObject.style.height = tableSize + "px";
+    }
+  }
 }
 
 </script>
