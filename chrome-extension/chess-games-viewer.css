@@ -18,7 +18,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
 html, 
 body { 
   margin: 0; 
-  padding: 20px;
+  padding: 1.25em;
 }
 
 body {
@@ -30,28 +30,27 @@ body {
 }
 
 .boardTable {
-  width: 382px;
-  height: 382px;
   border-style: solid;
   border-color: #663300;
-  border-width: 3px;
-  /* -webkit-border-radius: 3px; */
-  -webkit-box-shadow: 0px 0px 20px #663300;
+  border-width: 0.25em; /* default 4px */
+  -webkit-box-shadow: 0 0 1.25em #663300;
+  width: 24.5em; /* default 392px */
+  height: 24.5em;
 }
 
 .pieceImage {
-  width: 36px;
-  height: 36px;
+  width: 2.25em; /* default 36px */
+  height: 2.25em;
 }
 
 .whiteSquare,
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 47px;
-  height: 47px;
+  width: 2.75em; /* default 44px */
+  height: 2.75em; 
   border-style: solid;
-  border-width: 2px;
+  border-width: 0.125em; /* default 2px */
 }
 
 .whiteSquare,
@@ -69,33 +68,37 @@ body {
 .highlightWhiteSquare,
 .highlightBlackSquare {
   border-color: #663300;
-  border-style: solid;
 }
 
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 100% !important;
+  font-size: 1em;
 }
 
 .buttonControlPlay,
 .buttonControlStop,
 .buttonControl {
 /* a "width" attribute here must use the !important flag to override default settings */
-  margin-top: 20px;
+  margin-top: 1.25em;
+  font-size: 1em;
 }
 
 .buttonControlSpace {
 /* a "width" attribute here must use the !important flag to override default settings */
+  font-size: 1em;
 }
 
 .searchPgnButton {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 10% !important;
+  font-size: 1em;
 }
 
 .searchPgnExpression {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 90% !important;
+  font-size: 1em;
 }
 
 .move,
@@ -109,7 +112,7 @@ body {
 
 .moveOn {
   background: #FFCC99;
-  -webkit-box-shadow: 0px 0px 17px #FF8000;
+  -webkit-box-shadow: 0 0 1em #FF8000;
 }
 
 .moveText {
@@ -143,8 +146,7 @@ body {
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
-  font-size: 120%;
-  margin-bottom: 2px;
+  font-size: 1.25em;
 }
 
 .innerHeaderItem,
@@ -154,7 +156,7 @@ body {
 }
 
 .innerHeaderItem {
-  margin-left: 20px;
+  margin-left: 1.25em;
 }
 
 .innerHeaderItemNoMargin {
@@ -162,13 +164,13 @@ body {
 }
 
 .headerSpacer {
-  line-height: 80%;
+  line-height: 0.75em;
 }
 
 .notes {
   color: #AAAAAA; 
   text-align: right;
-  margin-top: 35px;
+  margin-top: 2em;
 }
 
 .notesLink {
@@ -179,8 +181,8 @@ body {
 .columnsContainer {
   float: left;
   width: 100%;
-  padding-top: 50px;
-  padding-bottom: 40px;
+  padding-top: 3em;
+  padding-bottom: 2.5em;
 }
 
 .boardColumn {
