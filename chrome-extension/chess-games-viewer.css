@@ -80,14 +80,14 @@ body {
 .buttonControlStop,
 .buttonControl {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 4.75em !important;
+  width: 4.7em !important;
   margin-top: 1.25em;
   font-size: 1em;
 }
 
 .buttonControlSpace {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 0.1875em !important;
+  width: 0.25em !important;
   font-size: 1em;
 }
 
