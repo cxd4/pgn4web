@@ -68,10 +68,10 @@ function myOnResize() {
     boardObject.style.paddingBottom = (window.innerHeight - 8 * squareSize - 2 * boardBorder) / 2 + "px";
     boardObject.style.paddingLeft = (window.innerWidth - 8 * squareSize - 2 * boardBorder) / 2 + "px";
     boardObject.style.paddingRight = (window.innerWidth - 8 * squareSize - 2 * boardBorder) / 2 + "px";
-  }
-  if (theObject = document.getElementById("boardTable")) {
-    theObject.style.height = (squareSize * 8 + boardBorder * 2) + "px";
-    theObject.style.width = (squareSize * 8 + boardBorder * 2) + "px";
+    if (theObject = document.getElementById("boardTable")) {
+      theObject.style.height = (squareSize * 8 + boardBorder * 2) + "px";
+      theObject.style.width = (squareSize * 8 + boardBorder * 2) + "px";
+    }
   }
 }
 
