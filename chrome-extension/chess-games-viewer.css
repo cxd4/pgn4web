@@ -34,8 +34,8 @@ body {
   border-color: #663300;
   border-width: 0.25em; /* default 4px */
   -webkit-box-shadow: 0 0 1.25em #663300;
-  width: 24.5em; /* default 392px */
-  height: 24.5em;
+  width: 24.5em !important; /* default 392px */
+  height: 24.5em !important;
 }
 
 .pieceImage {
@@ -80,12 +80,14 @@ body {
 .buttonControlStop,
 .buttonControl {
 /* a "width" attribute here must use the !important flag to override default settings */
+  width: 4.75em !important;
   margin-top: 1.25em;
   font-size: 1em;
 }
 
 .buttonControlSpace {
 /* a "width" attribute here must use the !important flag to override default settings */
+  width: 0.1875em !important;
   font-size: 1em;
 }
 
