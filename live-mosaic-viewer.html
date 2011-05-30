@@ -362,11 +362,13 @@ function customFunctionOnPgnTextLoad() {
       if (board < numberOfGamesForDisplay) {
         thisPgnGame = pgnGameForBoard(unfilteredGames[gameForBoard]);
         thisFrame.className = "visibleFrame";
-        try {  
-          window.frames["board" + board].pauseLiveBroadcast();
-          window.frames["board" + board].document.getElementById("pgnText").value = thisPgnGame;
-          window.frames["board" + board].refreshPgnSource();
-          window.frames["board" + board].clearShortcutSquares("A","8");
+        try {
+          if (!window.frames.firstStart) {
+            window.frames["board" + board].pauseLiveBroadcast();
+            window.frames["board" + board].document.getElementById("pgnText").value = thisPgnGame;
+            window.frames["board" + board].refreshPgnSource();
+            window.frames["board" + board].clearShortcutSquares("A","8");
+          }
         } catch(e) { myAlert("error: failed accessing iframe for board #" + board, true); }
       } else {
         thisFrame.className = "hiddenFrame";
