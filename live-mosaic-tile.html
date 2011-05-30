@@ -91,11 +91,22 @@
     if (parent && (pcscsfcf = parent.pgn4webClearShortCutSquaresForChildFrames)) {
       for (cscs in pcscsfcf) { clearShortcutSquares(pcscsfcf[cscs][0], pcscsfcf[cscs][1]); }
     }
+    if (parent && parent.pgn4webHideChildFrameGame) {
+      boardShortcut("A6", "hide this game", hideThisGame);
+    }
   } catch(e) { myAlert("warning: failed accessing parent for shortcut squares to clear", false); }
 
   function addTagToTitle(tagLabel, tagValue, object) {
     if (!tagValue || tagValue[1] == "?" || !object) { return; }
     object.title += (object.title ? "\n " : " ") + tagLabel + tagValue + "  ";
+  }
+
+  function hideThisGame() {
+    try {
+      if (parent && parent.pgn4webHideChildFrameGame) {
+        parent.pgn4webHideChildFrameGame(gameEvent[currentGame], gameSite[currentGame], gameDate[currentGame], gameRound[currentGame], gameWhite[currentGame], gameBlack[currentGame]);
+      }
+    } catch(e) { myAlert("error: failed accessing parent for hiding game", true); }
   }
 
   function customFunctionOnPgnTextLoad() {
@@ -110,7 +121,7 @@
       Init();
       GoToInitialHalfmove();
     }
-
+  
   }
 
   function customFunctionOnPgnGameLoad() {
@@ -132,6 +143,17 @@
       addTagToTitle("termination:", customPgnHeaderTag("Termination"), theObject);
       addTagToTitle("timecontrol:", customPgnHeaderTag("TimeControl"), theObject);
     }
+
+    try {  
+      if (parent && parent.pgn4webHideChildFrameGame) {
+        if (parent.pgn4webHideChildFrameGame(gameEvent[currentGame], gameSite[currentGame], gameDate[currentGame], gameRound[currentGame], gameWhite[currentGame], gameBlack[currentGame], true)) {
+          boardShortcut("A6", "hide this game", hideThisGame);
+        } else {
+          boardShortcut("A6", "hiding option not available for this game", function(){} );
+        }
+      }
+    } catch(e) { myAlert("warning: failed accessing parent for hiding game option", false); }
+
   }
 
   function customFunctionOnMove() {

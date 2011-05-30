@@ -246,24 +246,54 @@ var pgn4webClearShortCutSquaresForChildFrames =  [ ["DH", "8"], ["H", "7"], ["AB
 var filteredGames = new Array();
 var numberOfGamesForDisplay = numberOfGames;
 
-function filterEndedGames(gamesList) {
-  var localFilteredGames = new Array();
-  for (g in gamesList) {
-    if ((typeof(gameResult[gamesList[g]]) == "undefined") || (gameResult[gamesList[g]] != "*")) { 
-      localFilteredGames.push(gamesList[g]);
-    }
+function gameKey(event, site, date, round, white, black) {
+  key = "";
+  key += "[" + (typeof(event) == "string" ? event : "") + "]";
+  key += "[" + (typeof(site) == "string" ? site : "") + "]";
+  key += "[" + (typeof(round) == "string" ? round : "") + "]";
+  key += "[" + (typeof(white) == "string" ? white : "") + "]";
+  key += "[" + (typeof(black) == "string" ? black : "") + "]";
+  return key;
+}
+
+function pgn4webHideChildFrameGame(event, site, date, round, white, black, test) {
+  if (numberOfGamesForDisplay > 1) {
+    res = hideGame(event, site, date, round, white, black, test);
+    if (res && (test !== true)) { customFunctionOnPgnTextLoad(); }
+  } else {
+    res = false;
   }
-  return localFilteredGames;
+  return res;
+}
+
+function hideGame(event, site, date, round, white, black, test) {
+  key = gameKey(event, site, date, round, white, black);
+  meaningful = key.match(/[A-Za-z0-9]/);
+  if (meaningful && (test !== true)) {
+    for (f in filteredGames) { if (key == filteredGames[f]) { return meaningful; } }
+    filteredGames.push(key);
+  }
+  return meaningful;
+}
+
+function checkForHiddenGame(event, site, date, round, white, black) {
+  key = gameKey(event, site, date, round, white, black);
+  for (f in filteredGames) {
+    if (key == filteredGames[f]) { return true; }
+  }
+  return false;
 }
 
 function hideEndedGames() {
-  n = new Array();
-  for (g = 0; g < numberOfGames; g++) { n.push(g); }
-  filteredGames = filterEndedGames(n);
+  for (g = 0; g < numberOfGames; g++) {
+    if ((typeof(gameResult[g]) == "undefined") || (gameResult[g] != "*")) { 
+      hideGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g]);
+    }
+  }
   customFunctionOnPgnTextLoad();
 }
 
-function restoreEndedGames() {
+function restoreHiddenGames() {
   filteredGames = new Array();
   customFunctionOnPgnTextLoad();
 }
@@ -313,25 +343,15 @@ var firstLoadPgnText = true;
 
 function customFunctionOnPgnTextLoad() {
 
-  /* make sure what was previously filtered still it should be (think new PGN or transmission errors) */
-  filteredGames = filterEndedGames(filteredGames);
-
   unfilteredGames = new Array();
   gamesForHiding = 0;
   for (g = 0; g < numberOfGames; g++) {
-    found_g = false;
-    for (f in filteredGames) { if (found_g = (filteredGames[f] == g)) { break; } }
-    if (! found_g) {
+    if (!checkForHiddenGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g])) { 
       unfilteredGames.push(g);
       if ((typeof(gameResult[g]) == "undefined") || (gameResult[g].indexOf("*") == -1)) { gamesForHiding++; }
     }
   }
   numberOfGamesForDisplay = unfilteredGames.length;
-  if (numberOfGamesForDisplay < 1) { 
-    /* this should never happen, so we show all games */
-    for (g = 0; g < numberOfGames; g++) { unfilteredGames.push(g); }
-    numberOfGamesForDisplay = unfilteredGames.length;
-  }
 
   numBoards = Math.min(numberOfGamesForDisplay, maxBoards);
 
@@ -378,8 +398,8 @@ function customFunctionOnPgnTextLoad() {
     if (maxBoards > 1 && numberOfGamesForDisplay > 1) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='newBoards(" + Math.min(maxBoards - 1, numberOfGamesForDisplay - 1) + ");' title='show one chessboard Less' onfocus='this.blur();'>&nbsp;l&nbsp;</a></span>"; }
     if (numberOfGamesForDisplay > maxBoards) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='newBoards(" + (maxBoards + 1) + ");' title='show one chessboard More' onfocus='this.blur();'>&nbsp;m&nbsp;</a></span>"; }
 
-    if (LiveBroadcastStarted && !LiveBroadcastEnded && gamesForHiding) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='hideEndedGames();' title='Hide games finished so far' onfocus='this.blur();'>&nbsp;h&nbsp;</a></span>"; }
-    if (filteredGames.length > 0) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restoreEndedGames();' title='Unhide the finished games previously hidden' onfocus='this.blur();'>&nbsp;u&nbsp;</a></span>"; }
+    if (LiveBroadcastStarted && !LiveBroadcastEnded && gamesForHiding && numberOfGamesForDisplay > 1) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='hideEndedGames();' title='Hide games finished so far' onfocus='this.blur();'>&nbsp;h&nbsp;</a></span>"; }
+    if (filteredGames.length > 0) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restoreHiddenGames();' title='Unhide games previously hidden' onfocus='this.blur();'>&nbsp;u&nbsp;</a></span>"; }
 
     if (LiveBroadcastDelay > 0) {
       if (LiveBroadcastEnded) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast();' title='Check for the start of a new live broadcast event' onfocus='this.blur();'>&nbsp;c&nbsp;</a></span>"; }
@@ -401,33 +421,37 @@ function customFunctionOnPgnTextLoad() {
   }
   
   if (theInfoObject = document.getElementById("infoMessage")) {
-    theEvent = "";
-    theSite = "";
-    for (n = 0; n < numberOfGames; n++) {
-      if ((theEvent !== false) && (theEvent !== gameEvent[n])) {
-        if (theEvent) { theEvent = false; }
-        else { theEvent = gameEvent[n]; }
-      }
-      if ((theSite !== false) && (theSite !== gameSite[n])) {
-        if (theSite) { theSite = false; }
-        else { theSite = gameSite[n]; }
-      }
-    }
-    if (theEvent == "?") { theEvent = ""; }
-    if (theSite == "?") { theSite = ""; }
-    if (theEvent) { theEvent = theEvent.replace(/\s/g, "&nbsp;"); }
-    if (theSite) { theSite = theSite.replace(/\s/g, "&nbsp;"); }
-
-    if (theEvent || theSite) { 
-      theInfoObject.innerHTML = "&nbsp;&nbsp;&nbsp;";
-      if (theEvent) { theInfoObject.innerHTML += theEvent; }
-      if (theEvent && theSite) { theInfoObject.innerHTML += "&nbsp;&nbsp;&nbsp;"; }
-      if (theSite) { theInfoObject.innerHTML += theSite; }
-      theInfoObject.innerHTML += "&nbsp;&nbsp;&nbsp;";
-      theInfoObject.title = "event currently on display: hover the mouse below each chessboard for more details";
+    if (numberOfGamesForDisplay < 1) { 
+      theInfoObject.innerHTML = "warning: all games hidden, <a class='commandLink' href='javascript:void(0);' onclick='restoreHiddenGames();' onfocus='this.blur();'>unhide games</a> or <a class='commandLink' class='commandLink' href='javascript:void(0);' onclick='refreshPgnSource();' onfocus='this.blur();'>force live refresh</a>";
     } else {
-      theInfoObject.innerHTML = "&nbsp;";
-      theInfoObject.title = "";
+      theEvent = "";
+      theSite = "";
+      for (n = 0; n < numberOfGames; n++) {
+        if ((theEvent !== false) && (theEvent !== gameEvent[n])) {
+          if (theEvent) { theEvent = false; }
+          else { theEvent = gameEvent[n]; }
+        }
+        if ((theSite !== false) && (theSite !== gameSite[n])) {
+          if (theSite) { theSite = false; }
+          else { theSite = gameSite[n]; }
+        }
+      }
+      if (theEvent == "?") { theEvent = ""; }
+      if (theSite == "?") { theSite = ""; }
+      if (theEvent) { theEvent = theEvent.replace(/\s/g, "&nbsp;"); }
+      if (theSite) { theSite = theSite.replace(/\s/g, "&nbsp;"); }
+
+      if (theEvent || theSite) { 
+        theInfoObject.innerHTML = "&nbsp;&nbsp;&nbsp;";
+        if (theEvent) { theInfoObject.innerHTML += theEvent; }
+        if (theEvent && theSite) { theInfoObject.innerHTML += "&nbsp;&nbsp;&nbsp;"; }
+        if (theSite) { theInfoObject.innerHTML += theSite; }
+        theInfoObject.innerHTML += "&nbsp;&nbsp;&nbsp;";
+        theInfoObject.title = "event currently on display: hover the mouse below each chessboard for more details";
+      } else {
+        theInfoObject.innerHTML = "&nbsp;";
+        theInfoObject.title = "";
+      }
     }
   }
 
