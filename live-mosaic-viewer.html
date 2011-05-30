@@ -351,7 +351,7 @@ function pgnGameForBoard(gameNum) {
 }
 
 function updateBoard(board) {
-  if (board < numberOfGamesForDisplay) {
+  if (board < maxBoards) {
     if (startGame >= 0) { gameForBoard = (startGame + board) % numberOfGamesForDisplay; }
     else { gameForBoard = (2 * numberOfGamesForDisplay + startGame - board) % numberOfGamesForDisplay; }
     if (thisFrame = document.getElementById("board" + board)) {
@@ -386,8 +386,6 @@ function customFunctionOnPgnTextLoad() {
     }
   }
   numberOfGamesForDisplay = unfilteredGames.length;
-
-  numBoards = Math.min(numberOfGamesForDisplay, maxBoards);
 
   startGame = startFromFirstGame(firstGame, numberOfGamesForDisplay);
   for (board = 0; board < maxBoards; board++) { updateBoard(board); }
