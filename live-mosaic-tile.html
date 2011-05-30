@@ -17,6 +17,8 @@
  
 <script type="text/javascript"> 
 
+  var readyToReceivePgn = false;
+
   var useTextarea = false;
   thisRegExp = /(&|\?)(useTextarea|ut)=([^&]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
@@ -179,6 +181,19 @@
       window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + gameBlack[currentGame] + "&offset=0");
     }
   }
+
+  window.onload = function() {
+    start_pgn4web();
+    readyToReceivePgn = true;
+
+    try {
+      if (parent && parent.updateBoard) {
+        board = parseInt(window.name.substr(5), 10);
+        if (!isNaN(board)) { parent.updateBoard(board); }
+        else { myAlert("warning: failed detecting board number", false); }
+      }
+    } catch(e) { myAlert("warning: failed forcing board update from parent", false); }
+  };
 
 </script>
 
