@@ -118,8 +118,7 @@ body {
 }
 
 a:link, a:visited, a:active {
-  color: black; /* IE does not support inherit */
-  color: inherit;
+  color: black;
   text-decoration: none;
 }
 
@@ -187,7 +186,6 @@ a:hover {
 }
 
 .infoMessage {
-  color: black;
   font-weight: bold;
   text-align: center;
 }
@@ -201,7 +199,7 @@ a:hover {
 <script type="text/javascript">
 
 function fixCSSforHeadelessPage() {
-  document.write("<style type='text/css'> body { color: #AAAAAA; background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0)); /* chrome 9- */ background: -webkit-linear-gradient(#FFFFFF, #F0F0F0); /* chrome 10+ */ } a:hover { color: black; } .commandLink:hover { background: #FFCC99; box-shadow: 0px 0px 17px #FF8000; -webkit-box-shadow: 0px 0px 17px #FF8000; -moz-box-shadow: 0px 0px 17px #FF8000; } .beforeBoards { margin-top: 10px; } </style>");
+  document.write("<style type='text/css'> body { color: #AAAAAA; background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0)); /* chrome 9- */ background: -webkit-linear-gradient(#FFFFFF, #F0F0F0); /* chrome 10+ */ } a:link, a:visited, a:active { color: #AAAAAA; } a:hover { color: black; } .commandLink:hover { background: #FFCC99; box-shadow: 0px 0px 17px #FF8000; -webkit-box-shadow: 0px 0px 17px #FF8000; -moz-box-shadow: 0px 0px 17px #FF8000; } .beforeBoards { margin-top: 10px; } </style>");
 }
 
 function printHeader() {
@@ -423,7 +421,7 @@ function customFunctionOnPgnTextLoad() {
   
   if (theInfoObject = document.getElementById("infoMessage")) {
     if (numberOfGamesForDisplay < 1) { 
-      theInfoObject.innerHTML = "warning: all games hidden: <a class='commandLink' href='javascript:void(0);' onclick='restoreHiddenGames();' onfocus='this.blur();'>unhide games</a> or <a class='commandLink' href='javascript:void(0);' onclick='refreshPgnSource();' onfocus='this.blur();'>force live refresh</a>";
+      theInfoObject.innerHTML = "warning: all games hidden: <a href='javascript:void(0);' onclick='restoreHiddenGames();' onfocus='this.blur();'>unhide games</a> or <a href='javascript:void(0);' onclick='refreshPgnSource();' onfocus='this.blur();'>force live refresh</a>";
     } else {
       theEvent = "";
       theSite = "";
