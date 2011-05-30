@@ -363,7 +363,7 @@ function customFunctionOnPgnTextLoad() {
         thisPgnGame = pgnGameForBoard(unfilteredGames[gameForBoard]);
         thisFrame.className = "visibleFrame";
         try {
-          if (!window.frames.firstStart) {
+          if (!window.frames["board" + board].firstStart) {
             window.frames["board" + board].pauseLiveBroadcast();
             window.frames["board" + board].document.getElementById("pgnText").value = thisPgnGame;
             window.frames["board" + board].refreshPgnSource();
