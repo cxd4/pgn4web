@@ -285,7 +285,7 @@ function hideGame(event, site, date, round, white, black, test) {
   key = gameKey(event, site, date, round, white, black);
   meaningful = (key.match(/[A-Za-z0-9]/) !== null);
   if (meaningful && (test !== true)) {
-    for (f in filteredGames) { if (key == filteredGames[f]) { return true; } }
+    for (f in filteredGames) { if (key == filteredGames[f]) { return false; } }
     filteredGames.push(key);
   }
   return meaningful;
@@ -301,11 +301,11 @@ function checkForHiddenGame(event, site, date, round, white, black) {
 
 function hideEndedGames() {
   for (g = 0; g < numberOfGames; g++) {
-    if ((typeof(gameResult[g]) == "undefined") || (gameResult[g] != "*")) { 
+    if ((typeof(gameResult[g]) == "undefined") || (gameResult[g].indexOf("*") == -1)) { 
       hideGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g]);
     }
   }
-  updateMenu();
+  customFunctionOnPgnTextLoad();
 }
 
 function restoreHiddenGames() {
