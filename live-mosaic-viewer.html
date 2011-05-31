@@ -210,22 +210,26 @@ function printMenu() {
   document.write("<div id='rightMenu' class='menuLine' style='text-align:right; float:right;'></div><div id='leftMenu' class='menuLine' style='text-align:left; float:left;'><a id='GameLiveStatus' href='javascript:void(0);' style='display:none;' onclick='displayDebugInfo();' title='live broadcast status'></a></div><div id='infoMessage' class='menuLine infoMessage'>chess games viewer: loading PGN data, please wait...</div>");
 }
 
+lastBoardId = 0;
+boardId = new Array();
+
 function updateBoardFrames(howManyBoards) {
   if (theObject = document.getElementById("boardFrames")) {
     if (howManyBoards > maxBoards) {
       for (board = maxBoards; board < howManyBoards; board++) {
         newFrame = document.createElement("iframe");
-        newFrame.setAttribute("id", "board" + board);
-        newFrame.setAttribute("name", "board" + board);
         newFrame.setAttribute("class", "hiddenFrame");
-        newFrame.setAttribute("width", "256");
-        newFrame.setAttribute("height", "306");
-        newFrame.setAttribute("frameborder", "0");
+        newFrame.setAttribute("id", "board" + lastBoardId);
+        newFrame.setAttribute("name", "board" + lastBoardId);
+        newFrame.setAttribute("width", 256);
+        newFrame.setAttribute("height", 306);
+        newFrame.setAttribute("frameborder", 0);
+        newFrame.setAttribute("marginheight", 0);
+        newFrame.setAttribute("marginwidth", 0);
         newFrame.setAttribute("scrolling", "no");
-        newFrame.setAttribute("marginheight", "0");
-        newFrame.setAttribute("marginwidth", "0");
-        theObject.appendChild(newFrame);
         newFrame.setAttribute("src", "live-mosaic-tile.html?ut=t&rm=" + refreshMinutes);
+        theObject.appendChild(newFrame);
+        boardId[board] = lastBoardId++;
       }
     } else if (howManyBoards < maxBoards) {
       for (board = maxBoards - 1; board >= howManyBoards; board--) {
@@ -370,19 +374,21 @@ function pgnGameForBoard(gameNum) {
   return localPgnGame;
 }
 
-function updateBoard(thisBoard) {
-  if (thisFrame = document.getElementById("board" + thisBoard)) {
+function updateBoard(thisBoardId) {
+  thisBoard = -1;
+  for (thisBoard in boardId) { if (thisBoardId === boardId[thisBoard]) { break; } }
+  if ((thisBoard < boardId.length) && (thisFrame = document.getElementById("board" + thisBoardId))) {
     if (startGame >= 0) { gameForBoard = (startGame + thisBoard) % numberOfGamesForDisplay; }
     else { gameForBoard = (2 * numberOfGamesForDisplay + startGame - thisBoard) % numberOfGamesForDisplay; }
     if (thisBoard < numberOfGamesForDisplay) {
       thisPgnGame = pgnGameForBoard(unfilteredGames[gameForBoard]);
       thisFrame.className = "visibleFrame";
       try {
-        if (window.frames["board" + thisBoard].readyToReceivePgn) {
-          window.frames["board" + thisBoard].pauseLiveBroadcast();
-          window.frames["board" + thisBoard].document.getElementById("pgnText").value = thisPgnGame;
-          window.frames["board" + thisBoard].refreshPgnSource();
-          window.frames["board" + thisBoard].clearShortcutSquares("A","8");
+        if (window.frames["board" + thisBoardId].readyToReceivePgn) {
+          window.frames["board" + thisBoardId].pauseLiveBroadcast();
+          window.frames["board" + thisBoardId].document.getElementById("pgnText").value = thisPgnGame;
+          window.frames["board" + thisBoardId].refreshPgnSource();
+          window.frames["board" + thisBoardId].clearShortcutSquares("A","8");
         }
       } catch(e) { myAlert("error: failed accessing iframe for board #" + thisBoard, true); }
     } else {

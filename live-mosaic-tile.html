@@ -187,9 +187,9 @@
     readyToReceivePgn = true;
     try {
       if (parent && parent.updateBoard) {
-        board = parseInt(window.name.substr(5), 10);
-        if (!isNaN(board)) { parent.updateBoard(board); }
-        else { myAlert("warning: failed detecting board number", false); }
+        boardId = parseInt(window.name.substr(5), 10);
+        if (!isNaN(boardId)) { parent.updateBoard(boardId); }
+        else { myAlert("warning: failed detecting board id", false); }
       }
     } catch(e) { myAlert("warning: failed forcing board update from parent", false); }
   };
