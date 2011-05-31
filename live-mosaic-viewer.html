@@ -47,14 +47,13 @@
      SetPgnUrl(pgnData); // if set, this has precedence over the inline PGN in the HTML file
   }
 
-  var maxBoards = parseInt(getMaxBoardFromLocalStorage(), 10);
-  if (! maxBoards) { maxBoards = maxBoards_default; }
+  var newMaxBoards = parseInt(getMaxBoardFromLocalStorage(), 10);
+  if (! newMaxBoards) { newMaxBoards = maxBoards_default; }
   thisRegExp = /(&|\?)(maxBoards|mb)=([\d]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
-    maxBoards = unescape(window.location.search.match(thisRegExp)[3]);
+    newMaxBoards = unescape(window.location.search.match(thisRegExp)[3]);
   }
-  maxBoards = parseInt(maxBoards, 10);
-  setMaxBoardToLocalStorage();
+  newMaxBoards = parseInt(newMaxBoards, 10);
 
   var firstGame = firstGame_default;
   thisRegExp = /(&|\?)(firstGame|fg)=((\+|-|)[\d]*)(&|$)/i;
@@ -79,6 +78,7 @@
   }
   SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, stepFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false)
 
+  var maxBoards = 0;
   function getMaxBoardFromLocalStorage() {
     if (typeof(localStorage) == "undefined") { return 0; }
     try { mb = localStorage.getItem("pgn4web_chess_live_mosaic_viewer_maxBoards"); }
@@ -212,11 +212,31 @@ function printMenu() {
 
 function updateBoardFrames(howManyBoards) {
   if (theObject = document.getElementById("boardFrames")) {
-    theObject.innerHTML = "";
-    for (board = 0; board < howManyBoards; board++) {
-      theObject.innerHTML += "<iframe name='board" + board + "' id='board" + board + "' class='hiddenFrame' width='256' height='306' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='live-mosaic-tile.html?ut=t&rm=" + refreshMinutes + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>";
+    if (howManyBoards > maxBoards) {
+      for (board = maxBoards; board < howManyBoards; board++) {
+        newFrame = document.createElement("iframe");
+        newFrame.setAttribute("id", "board" + board);
+        newFrame.setAttribute("name", "board" + board);
+        newFrame.setAttribute("class", "hiddenFrame");
+        newFrame.setAttribute("width", "256");
+        newFrame.setAttribute("height", "306");
+        newFrame.setAttribute("frameborder", "0");
+        newFrame.setAttribute("scrolling", "no");
+        newFrame.setAttribute("marginheight", "0");
+        newFrame.setAttribute("marginwidth", "0");
+        theObject.appendChild(newFrame);
+        newFrame.setAttribute("src", "live-mosaic-tile.html?ut=t&rm=" + refreshMinutes);
+      }
+    } else if (howManyBoards < maxBoards) {
+      for (board = maxBoards - 1; board >= howManyBoards; board--) {
+        if (theObject.hasChildNodes()) {
+          theObject.removeChild(theObject.lastChild);
+        }
+      }
     }
   }
+  maxBoards = howManyBoards;
+  setMaxBoardToLocalStorage();
 }
 
 if (headlessPage) {
@@ -243,7 +263,7 @@ if (headlessPage) {
 
 <script type="text/javascript">
 
-updateBoardFrames(maxBoards);
+updateBoardFrames(newMaxBoards);
 
 if (!headlessPage) {
   printMenu();
@@ -301,7 +321,7 @@ function hideEndedGames() {
       hideGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g]);
     }
   }
-  customFunctionOnPgnTextLoad();
+  updateMenu();
 }
 
 function restoreHiddenGames() {
@@ -350,25 +370,23 @@ function pgnGameForBoard(gameNum) {
   return localPgnGame;
 }
 
-function updateBoard(board) {
-  if (board < maxBoards) {
-    if (startGame >= 0) { gameForBoard = (startGame + board) % numberOfGamesForDisplay; }
-    else { gameForBoard = (2 * numberOfGamesForDisplay + startGame - board) % numberOfGamesForDisplay; }
-    if (thisFrame = document.getElementById("board" + board)) {
-      if (board < numberOfGamesForDisplay) {
-        thisPgnGame = pgnGameForBoard(unfilteredGames[gameForBoard]);
-        thisFrame.className = "visibleFrame";
-        try {
-          if (window.frames["board" + board].readyToReceivePgn) {
-            window.frames["board" + board].pauseLiveBroadcast();
-            window.frames["board" + board].document.getElementById("pgnText").value = thisPgnGame;
-            window.frames["board" + board].refreshPgnSource();
-            window.frames["board" + board].clearShortcutSquares("A","8");
-          }
-        } catch(e) { myAlert("error: failed accessing iframe for board #" + board, true); }
-      } else {
-        thisFrame.className = "hiddenFrame";
-      }
+function updateBoard(thisBoard) {
+  if (thisFrame = document.getElementById("board" + thisBoard)) {
+    if (startGame >= 0) { gameForBoard = (startGame + thisBoard) % numberOfGamesForDisplay; }
+    else { gameForBoard = (2 * numberOfGamesForDisplay + startGame - thisBoard) % numberOfGamesForDisplay; }
+    if (thisBoard < numberOfGamesForDisplay) {
+      thisPgnGame = pgnGameForBoard(unfilteredGames[gameForBoard]);
+      thisFrame.className = "visibleFrame";
+      try {
+        if (window.frames["board" + thisBoard].readyToReceivePgn) {
+          window.frames["board" + thisBoard].pauseLiveBroadcast();
+          window.frames["board" + thisBoard].document.getElementById("pgnText").value = thisPgnGame;
+          window.frames["board" + thisBoard].refreshPgnSource();
+          window.frames["board" + thisBoard].clearShortcutSquares("A","8");
+        }
+      } catch(e) { myAlert("error: failed accessing iframe for board #" + thisBoard, true); }
+    } else {
+      thisFrame.className = "hiddenFrame";
     }
   }
 }
@@ -402,6 +420,11 @@ function customFunctionOnPgnTextLoad() {
       document.title = LiveBroadcastStatusString.replace(" &nbsp;", ",");
     }
   }
+  
+  updateMenu();
+}
+
+function updateMenu() {
 
   if (theRightObject = document.getElementById("rightMenu")) {
     theRightObject.innerHTML = "";
@@ -418,10 +441,10 @@ function customFunctionOnPgnTextLoad() {
 
     if (LiveBroadcastDelay > 0) {
       if (LiveBroadcastEnded) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast();' title='Check for the start of a new live broadcast event' onfocus='this.blur();'>&nbsp;c&nbsp;</a></span>"; }
-      else if (LiveBroadcastPaused && LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast(); customFunctionOnPgnTextLoad();' title='Restart live broadcast automatic refresh of games' onfocus='this.blur();'>&nbsp;r&nbsp;</a></span>"; }
-      else if (LiveBroadcastPaused && !LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast(); customFunctionOnPgnTextLoad();' title='Restart polling for a new live broadcast' onfocus='this.blur();'>&nbsp;r&nbsp;</a></span>"; }
-      else if (LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='pauseLiveBroadcast(); customFunctionOnPgnTextLoad();' title='Pause live broadcast automatic refresh of games' onfocus='this.blur();'>&nbsp;p&nbsp;</a></span>"; }
-      else { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='pauseLiveBroadcast(); customFunctionOnPgnTextLoad();' title='Pause polling for a new live broadcast' onfocus='this.blur();'>&nbsp;p&nbsp;</a></span>"; }
+      else if (LiveBroadcastPaused && LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast(); updateMenu();' title='Restart live broadcast automatic refresh of games' onfocus='this.blur();'>&nbsp;r&nbsp;</a></span>"; }
+      else if (LiveBroadcastPaused && !LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast(); updateMenu();' title='Restart polling for a new live broadcast' onfocus='this.blur();'>&nbsp;r&nbsp;</a></span>"; }
+      else if (LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='pauseLiveBroadcast(); updateMenu();' title='Pause live broadcast automatic refresh of games' onfocus='this.blur();'>&nbsp;p&nbsp;</a></span>"; }
+      else { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='pauseLiveBroadcast(); updateMenu();' title='Pause polling for a new live broadcast' onfocus='this.blur();'>&nbsp;p&nbsp;</a></span>"; }
       theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' class='commandLink' href='javascript:void(0);' onclick='refreshPgnSource();' title='Force games refresh' onfocus='this.blur();'>&nbsp;f&nbsp;</a></span>";
     }
 
@@ -492,10 +515,8 @@ function previousPage() {
 }
 
 function newBoards(newMaxBoards) {
-  maxBoards = newMaxBoards;
-  setMaxBoardToLocalStorage();
-  updateBoardFrames(maxBoards);
-  customFunctionOnPgnTextLoad();
+  updateBoardFrames(newMaxBoards);
+  updateMenu();
 }
 
 function underlineByTicker(text, ticker) {
