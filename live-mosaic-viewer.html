@@ -402,9 +402,8 @@ function customFunctionOnPgnTextLoad() {
     if (firstLoadPgnText) {
       theObject.style.display = "inline";
       firstLoadPgnText = false;
-    } else {
-      document.title = LiveBroadcastStatusString.replace(" &nbsp;", ",");
     }
+    document.title = LiveBroadcastStatusString.replace(" &nbsp;", ",");
   }
   
   updateMenu();
