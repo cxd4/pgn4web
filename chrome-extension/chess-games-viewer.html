@@ -288,12 +288,16 @@ of Google Chrome v6 or later. Don't use with any other browser.
 <div class="notes">
 <div style="float: left; text-align: left; margin-right: 20px; margin-bottom: 5px;">
 <span title="live broadcast status" id="GameLiveStatus"></span>
+<input type='file' id='files' name='files[]' multiple style="display:none;"/>
 </div>
-<div><script type="text/javascript">
-  if (pgnData) { document.write("<a title='chess games source' class='notesLink' href=" + pgnData + ">" + pgnData + "</a>"); }
-  else if (pgnBackground) { document.write("<span class='notesLink'>chess games from PGN text input</span>"); }
-  else { document.write("<span id='localPgnFilesInput' class='notesLink'>drag and drop PGN files on this page or use the file selector input: <input type='file' id='files' name='files[]' multiple /></span>"); }
-</script></div>
+<div>
+<span id="localPgnFilesInput" class="notesLink" style="display:none;">use the file selector input to open chess games in PGN format or drag and drop PGN files on this page</span>
+<script type="text/javascript">
+  if (pgnData) { document.write("<a id='pgnSource' title='chess games source' class='notesLink' href=" + pgnData + ">" + pgnData + "</a>"); }
+  else if (pgnBackground) { document.write("<span id='pgnSource' class='notesLink'>chess games from PGN text input</span>"); }
+  else { document.getElementById("localPgnFilesInput").style.display = document.getElementById("files").style.display = "inline"; }
+</script>
+</div>
 </div>
 
 <script type="text/javascript">
@@ -352,6 +356,10 @@ of Google Chrome v6 or later. Don't use with any other browser.
     SetInitialHalfmove(0, true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
     firstStart = true;
     document.getElementById('pgnText').value = newPgnText;
+    document.getElementById("GameLiveStatus").innerHTML = "";
+    document.getElementById("pgnSource").style.display = "none";
+    document.getElementById("files").style.display = "inline";
+    document.getElementById("localPgnFilesInput").style.display = "inline";
     start_pgn4web();
   }
 
