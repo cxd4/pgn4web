@@ -217,7 +217,7 @@ function updateBoardFrames(howManyBoards) {
   if (theObject = document.getElementById("boardFrames")) {
     theObject.innerHTML = "";
     for (board = 0; board < howManyBoards; board++) {
-      theObject.innerHTML += "<iframe src='live-mosaic-tile.html?ut=t&rm=" + refreshMinutes + "' class='hiddenFrame' id='board" + lastBoardId + "' name='board" + lastBoardId + "' width='256' height='306' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'></iframe>";
+      theObject.innerHTML += "<iframe src='live-mosaic-tile.html?ut=t&rm=" + refreshMinutes + "' class='hiddenFrame' id='board" + lastBoardId + "' name='board" + lastBoardId + "' width='256' height='306' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>";
       boardId[board] = lastBoardId++;
     }
   }
