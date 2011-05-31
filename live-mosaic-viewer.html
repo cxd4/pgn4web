@@ -47,13 +47,12 @@
      SetPgnUrl(pgnData); // if set, this has precedence over the inline PGN in the HTML file
   }
 
-  var newMaxBoards = parseInt(getMaxBoardFromLocalStorage(), 10);
-  if (! newMaxBoards) { newMaxBoards = maxBoards_default; }
+  var maxBoards = parseInt(getMaxBoardFromLocalStorage(), 10);
   thisRegExp = /(&|\?)(maxBoards|mb)=([\d]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
-    newMaxBoards = unescape(window.location.search.match(thisRegExp)[3]);
+    maxBoards = unescape(window.location.search.match(thisRegExp)[3]);
   }
-  newMaxBoards = parseInt(newMaxBoards, 10);
+  maxBoards = parseInt(maxBoards, 10);
 
   var firstGame = firstGame_default;
   thisRegExp = /(&|\?)(firstGame|fg)=((\+|-|)[\d]*)(&|$)/i;
@@ -76,11 +75,11 @@
   if (window.location.search.match(thisRegExp) !== null) {
     refreshMinutes = unescape(window.location.search.match(thisRegExp)[3]);
   }
+  refreshMinutes = parseInt(refreshMinutes, 10);
   SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, stepFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false)
 
-  var maxBoards = 0;
   function getMaxBoardFromLocalStorage() {
-    if (typeof(localStorage) == "undefined") { return 0; }
+    if (typeof(localStorage) == "undefined") { return maxBoards_default; }
     try { mb = localStorage.getItem("pgn4web_chess_live_mosaic_viewer_maxBoards"); }
     catch (e) { return 0; }
     return mb;
@@ -210,18 +209,18 @@ function printMenu() {
   document.write("<div id='rightMenu' class='menuLine' style='text-align:right; float:right;'></div><div id='leftMenu' class='menuLine' style='text-align:left; float:left;'><a id='GameLiveStatus' href='javascript:void(0);' style='display:none;' onclick='displayDebugInfo();' title='live broadcast status'></a></div><div id='infoMessage' class='menuLine infoMessage'>chess games viewer: loading PGN data, please wait...</div>");
 }
 
-lastBoardId = 0;
+nextBoardId = 1000;
 boardId = new Array();
 
-function updateBoardFrames(howManyBoards) {
+function updateBoardFrames(newMaxBoards) {
   if (theObject = document.getElementById("boardFrames")) {
     theObject.innerHTML = "";
-    for (board = 0; board < howManyBoards; board++) {
-      theObject.innerHTML += "<iframe src='live-mosaic-tile.html?ut=t&rm=" + refreshMinutes + "' class='hiddenFrame' id='board" + lastBoardId + "' name='board" + lastBoardId + "' width='256' height='306' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>";
-      boardId[board] = lastBoardId++;
+    for (board = 0; board < newMaxBoards; board++) {
+      theObject.innerHTML += "<iframe src='live-mosaic-tile.html?ut=t&rm=" + refreshMinutes + "' class='hiddenFrame' id='board" + nextBoardId + "' name='board" + nextBoardId + "' width='256' height='306' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>";
+      boardId[board] = nextBoardId++;
     }
   }
-  maxBoards = howManyBoards;
+  maxBoards = newMaxBoards;
   setMaxBoardToLocalStorage();
 }
 
@@ -249,7 +248,7 @@ if (headlessPage) {
 
 <script type="text/javascript">
 
-updateBoardFrames(newMaxBoards);
+updateBoardFrames(maxBoards);
 
 if (!headlessPage) {
   printMenu();
@@ -285,9 +284,9 @@ function pgn4webHideChildFrameGame(event, site, date, round, white, black, test)
 
 function hideGame(event, site, date, round, white, black, test) {
   key = gameKey(event, site, date, round, white, black);
-  meaningful = key.match(/[A-Za-z0-9]/);
+  meaningful = (key.match(/[A-Za-z0-9]/) !== null);
   if (meaningful && (test !== true)) {
-    for (f in filteredGames) { if (key == filteredGames[f]) { return meaningful; } }
+    for (f in filteredGames) { if (key == filteredGames[f]) { return true; } }
     filteredGames.push(key);
   }
   return meaningful;
@@ -359,7 +358,9 @@ function pgnGameForBoard(gameNum) {
 function updateBoard(thisBoardId) {
   thisBoard = -1;
   for (thisBoard in boardId) { if (thisBoardId === boardId[thisBoard]) { break; } }
+  thisBoard = parseInt(thisBoard, 10);
   if ((thisBoard < boardId.length) && (thisFrame = document.getElementById("board" + thisBoardId))) {
+    startGame = startFromFirstGame(firstGame, numberOfGamesForDisplay);
     if (startGame >= 0) { gameForBoard = (startGame + thisBoard) % numberOfGamesForDisplay; }
     else { gameForBoard = (2 * numberOfGamesForDisplay + startGame - thisBoard) % numberOfGamesForDisplay; }
     if (thisBoard < numberOfGamesForDisplay) {
@@ -393,8 +394,7 @@ function customFunctionOnPgnTextLoad() {
   }
   numberOfGamesForDisplay = unfilteredGames.length;
 
-  startGame = startFromFirstGame(firstGame, numberOfGamesForDisplay);
-  for (board = 0; board < maxBoards; board++) { updateBoard(board); }
+  for (board = 0; board < maxBoards; board++) { updateBoard(boardId[board]); }
 
   if (theObject = document.getElementById("GameLiveStatus")) {
     theObject.title = "live broadcast status";
