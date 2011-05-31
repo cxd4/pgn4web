@@ -47,12 +47,13 @@
      SetPgnUrl(pgnData); // if set, this has precedence over the inline PGN in the HTML file
   }
 
-  var maxBoards = parseInt(getMaxBoardFromLocalStorage(), 10);
+  var maxBoards = getMaxBoardFromLocalStorage();
   thisRegExp = /(&|\?)(maxBoards|mb)=([\d]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
     maxBoards = unescape(window.location.search.match(thisRegExp)[3]);
   }
   maxBoards = parseInt(maxBoards, 10);
+  if (isNaN(maxBoards) || (maxBoards < 1)) { maxBoards = maxBoards_default; }
 
   var firstGame = firstGame_default;
   thisRegExp = /(&|\?)(firstGame|fg)=((\+|-|)[\d]*)(&|$)/i;
@@ -81,7 +82,7 @@
   function getMaxBoardFromLocalStorage() {
     if (typeof(localStorage) == "undefined") { return maxBoards_default; }
     try { mb = localStorage.getItem("pgn4web_chess_live_mosaic_viewer_maxBoards"); }
-    catch (e) { return 0; }
+    catch (e) { return maxBoards_default; }
     return mb;
   }
 
