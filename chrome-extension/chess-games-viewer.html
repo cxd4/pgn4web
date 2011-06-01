@@ -318,6 +318,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
    var pgnFilesLoaded;
    var invalidFiles;
    var validFiles;
+   var fileErrors;
    function handleFileSelect(evt) {
       evt.stopPropagation();
       evt.preventDefault();
@@ -332,6 +333,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
          pgnFilesLoaded = 0;
          invalidFiles = "";
          validFiles = "";
+         fileErrors = 0;
          for (f=0; f<files.length; f++) {
             if (files[f].name.match(/\.pgn$/i)) {
                validFiles += "\n" + files[f].name;
@@ -342,6 +344,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
                   if (! --pgnFilesLeft) { useNewPgnText(); }
                };
                reader.onerror = function(e) {
+                  fileErrors++;
                   if (! --pgnFilesLeft) { useNewPgnText(); }
                }; 
                reader.readAsText(files[f]);
@@ -374,6 +377,9 @@ of Google Chrome v6 or later. Don't use with any other browser.
       if (invalidFiles) {
          alert((newPgnText ? "warning: " : "error: ") + "the chess games viewers only accepts chess games *.PGN files, other files are rejected:\n" + invalidFiles);
       }
+      if (fileErrors) {
+         alert((newPgnText ? "warning: " : "error: ") + "failed accessing " + fileErrors + (fileErrors == 1 ? " file" : " files"));
+      }
       if (newPgnText) {
          SetPgnUrl("");
          SetLiveBroadcast(0, true, false, false);
@@ -383,8 +389,9 @@ of Google Chrome v6 or later. Don't use with any other browser.
          if (theObject = document.getElementById('pgnText')) { theObject.value = newPgnText; }
          if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = ""; }
          if (theObject = document.getElementById("notesRight")) {
-            text = "chess games from " + pgnFilesLoaded + " local PGN " + (pgnFilesLoaded == 1 ? "file" : "files");
-            theObject.innerHTML = "<span title='" + text + ": " + validFiles + "'>" + text + "</span>";
+            text1 = "chess games from " + pgnFilesLoaded + " local PGN " + (pgnFilesLoaded == 1 ? "file" : "files");
+            text2 = fileErrors ? "\nwith " + fileErrors + " file " + (fileErrors == 1 ? "error" : "errors") : "";
+            theObject.innerHTML = "<span title='" + text1 + text2 + ": " + validFiles + "'>" + text1 + "</span>";
             theObject.style.marginTop = "";
          }
          if (theObject = document.getElementById("localPgnFiles")) { 
