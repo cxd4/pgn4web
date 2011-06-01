@@ -380,8 +380,8 @@ of Google Chrome v6 or later. Don't use with any other browser.
          if (theObject = document.getElementById('pgnText')) { theObject.value = newPgnText; }
          if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = ""; }
          if (theObject = document.getElementById("notesRight")) {
-            theObject.innerHTML = "chess games from " + pgnFilesLoaded + " local PGN " + (pgnFilesLoaded == 1 ? "file" : "files");
-            if (validFiles) { theObject.innerHTML = "<span title='chess games from local PGN files:\n " + validFiles + "'>" + theObject.innerHTML + "</span>"; }
+            text = "chess games from " + pgnFilesLoaded + " local PGN " + (pgnFilesLoaded == 1 ? "file" : "files");
+            theObject.innerHTML = "<span title='" + text + ": " + validFiles + "'>" + text + "</span>";
             theObject.style.marginTop = "";
          }
          if (theObject = document.getElementById("localPgnFiles")) { 
