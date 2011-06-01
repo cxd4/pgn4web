@@ -379,7 +379,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
 
    function useNewPgnText() {
       if (invalidFiles || fileErrors) {
-         text1 = (newPgnText ? "warning: " : "error: ") + "the chess games viewer only accepts chess games *.PGN files; empty files, non *.PGN files and folders are rejected or generate file errors";
+         text1 = (newPgnText ? "warning: " : "error: ") + "the chess games viewer only accepts chess games *.PGN files; empty files, non *.PGN files and folders are rejected as invalid or generate file errors";
          if (invalidFiles) { text1 += "\n\ninvalid files:" + invalidFiles; }
          if (fileErrors) { text1 += "\n\n" + fileErrors + " file " + (fileErrors == 1 ? "error" : "errors") + " detected"; }
          alert(text1);
