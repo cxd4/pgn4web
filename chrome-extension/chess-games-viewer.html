@@ -286,78 +286,79 @@ of Google Chrome v6 or later. Don't use with any other browser.
 <div class="moveText"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
 
 <div class="notes">
-<span id="localPgnFilesInput" class="notesLink" style="display:none;">use the file selector input to open chess games in PGN format or drag and drop PGN files on this page<br /><input type='file' id='files' name='files[]' multiple class="inputFiles" /></span>
-<span title="live broadcast status" id="GameLiveStatus"></span>
-<div style="float: right; text-align: right; margin-left: 20px;">
-<script type="text/javascript">
-  if (pgnData) { document.write("<a id='pgnSource' title='chess games source' class='notesLink' href=" + pgnData + ">" + pgnData + "</a>"); }
-  else if (pgnBackground) { document.write("<span id='pgnSource' class='notesLink'>chess games from PGN text input</span>"); }
-  else { document.getElementById("localPgnFilesInput").style.display = "inline"; }
-</script>
-</div>
+<div id="notesRight" class="notesLink" style="float: right; text-align: right; margin-left: 20px;">&nbsp;</div>
+<div title="live broadcast status" id="GameLiveStatus">&nbsp;</div>
+<div id="localPgnFilesInput" class="notesLink" style="display:none;">use the file selector input to open chess games in PGN format or drag and drop PGN files on this page</div>
+<input type='file' id='files' name='files[]' multiple class="inputFiles" style="display:none;" />
 </div>
 
 <script type="text/javascript">
 
-  var newPgnText;
-  var pgnFilesLeft;
-  var pgnFilesLoaded;
-  function handleFileSelect(evt) {
-    evt.stopPropagation();
-    evt.preventDefault();
+   if (pgnData) { document.getElementById("notesRight").innerHTML = "<a title='chess games source' class='notesLink' href=" + pgnData + ">" + pgnData + "</a>"; }
+   else if (pgnBackground) { document.getElementById("notesRight").innerHTML = "chess games from PGN text input"; }
+   else { document.getElementById("localPgnFilesInput").style.display = document.getElementById("files").style.display = "block"; }
 
-    var files = new Array();
-    if (evt.target.files) { files = evt.target.files; }
-    else if (evt.dataTransfer.files) { files = evt.dataTransfer.files; }
+   var newPgnText;
+   var pgnFilesLeft;
+   var pgnFilesLoaded;
+   function handleFileSelect(evt) {
+      evt.stopPropagation();
+      evt.preventDefault();
 
-    try {
-      newPgnText = "";
-      pgnFilesLeft = files.length;
-      pgnFilesLoaded = 0;
-      for (f in files) {
-        if (files[f].name.match(/\.pgn$/i)) {
-          var reader = new FileReader();
-          reader.onload = function(e) {
-            newPgnText += "\n% file " + files[f].name + "\n\n" + e.target.result + "\n";
-            pgnFilesLoaded++;
-            if (! --pgnFilesLeft) { useNewPgnText(); }
-          }
-          reader.readAsText(files[f]);
-        } else {
-          --pgnFilesLeft;
-          alert("error: invalid file " + files[f].name + "\n\nonly *.pgn files allowed by the chess games viewer");
-          if (! pgnFilesLeft) { useNewPgnText(); }
-        }
-      }
-    } catch(e) {}
-  }
+      var files = new Array();
+      if (evt.target.files) { files = evt.target.files; }
+      else if (evt.dataTransfer.files) { files = evt.dataTransfer.files; }
 
-  function handleDragOver(evt) {
-    evt.stopPropagation();
-    evt.preventDefault();
-  }
+      try {
+         newPgnText = "";
+         pgnFilesLeft = files.length;
+         pgnFilesLoaded = 0;
+         for (f in files) {
+            if (files[f].name.match(/\.pgn$/i)) {
+               var reader = new FileReader();
+               reader.onload = function(e) {
+                  newPgnText += "\n% file " + files[f].name + "\n\n" + e.target.result + "\n";
+                  pgnFilesLoaded++;
+                  if (! --pgnFilesLeft) { useNewPgnText(); }
+               }
+               reader.readAsText(files[f]);
+            } else {
+               --pgnFilesLeft;
+               alert("error: invalid file " + files[f].name + "\n\nonly *.pgn files allowed by the chess games viewer");
+               if (! pgnFilesLeft) { useNewPgnText(); }
+            }
+         }
+      } catch(e) {}
+   }
 
-  if (theObject = document.getElementById('files')) {
-    theObject.addEventListener('change', handleFileSelect, false);
-  }
+   function handleDragOver(evt) {
+      evt.stopPropagation();
+      evt.preventDefault();
+   }
 
-  if (theObject = document.getElementById('body')) {
-    theObject.addEventListener('dragover', handleDragOver, false);
-    theObject.addEventListener('drop', handleFileSelect, false);
-  }
+   if (theObject = document.getElementById('files')) {
+      theObject.addEventListener('change', handleFileSelect, false);
+   }
 
-  function useNewPgnText() {
-    SetPgnUrl("");
-    SetLiveBroadcast(0, true, false, false);
-    SetAutoplayDelay(2000); // milliseconds
-    SetInitialHalfmove(0, true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
-    firstStart = true;
-    if (theObject = document.getElementById('pgnText')) { theObject.value = newPgnText; }
-    if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = ""; }
-    if (theObject = document.getElementById("pgnSource")) { theObject.style.display = "none"; }
-    if (theObject = document.getElementById("localPgnFilesInput")) { theObject.style.display = "inline"; }
-    start_pgn4web();
-  }
+   if (theObject = document.getElementById('body')) {
+      theObject.addEventListener('dragover', handleDragOver, false);
+      theObject.addEventListener('drop', handleFileSelect, false);
+   }
+
+   function useNewPgnText() {
+      SetPgnUrl("");
+      SetLiveBroadcast(0, true, false, false);
+      SetAutoplayDelay(2000); // milliseconds
+      SetInitialHalfmove(0, true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
+      firstStart = true;
+      if (theObject = document.getElementById('pgnText')) { theObject.value = newPgnText; }
+      if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = "&nbsp;"; }
+      if (theObject = document.getElementById("notesRight")) { theObject.innerHTML = "&nbsp;"; }
+      if (theObject = document.getElementById("localPgnFilesInput")) { theObject.style.display = "block"; }
+      if (theObject = document.getElementById("files")) { theObject.style.display = "block"; }
+      start_pgn4web();
+      fixCommentScrollbar();
+   }
 
 </script>
 
