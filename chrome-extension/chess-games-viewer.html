@@ -43,7 +43,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
    }
 
    var highlightOption_default = true;
-   var commentsOnSeparateLines_default = true;
+   var commentsOnSeparateLines_default = false;
 
    thisRegExp = /(&|\?)(help|h)([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
@@ -142,7 +142,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
 
    function getCommentsOnSeparateLinesFromLocalStorage() {
       if (typeof(localStorage) == "undefined") { return commentsOnSeparateLines_default; }
-      try { cosl = (localStorage.getItem("pgn4web_chess_games_viewer_commentsOnSeparateLines") != "false"); }
+      try { cosl = (localStorage.getItem("pgn4web_chess_games_viewer_commentsOnSeparateLines") == "true"); }
       catch (e) { return commentsOnSeparateLines_default; }
       return cosl;
    }
@@ -438,7 +438,6 @@ of Google Chrome v6 or later. Don't use with any other browser.
             theObject.value = "";
          }
          start_pgn4web();
-         fixCommentScrollbar();
          location.hash = "top"; location.hash = "board";
       }
    }
