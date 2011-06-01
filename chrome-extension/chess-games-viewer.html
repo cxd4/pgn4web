@@ -214,7 +214,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
          document.title = LiveBroadcastStatusString.replace(" &nbsp;", ",");
       } else {
          if ((numberOfGames == 1) && (PlyNumber === 0) && (StartPly === 0) && (!gameWhite[0]) && (!gameBlack[0]) && (!gameResult[0])) {
-            document.title = "chess games viewer";
+            document.title = alertNum ? "PGN data error" : "chess games viewer";
          } else {
             document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s");
          }
