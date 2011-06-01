@@ -286,20 +286,32 @@ of Google Chrome v6 or later. Don't use with any other browser.
 <div class="moveText"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
 
 <div class="notes">
-<div id="notesRight" class="notesLink" style="float: right; text-align: right; margin-left: 20px;">&nbsp;</div>
+
+<div id="notesRight" class="notesRight"></div>
+
 <div title="live broadcast status" id="GameLiveStatus">&nbsp;</div>
-<input type='file' id='localPgnFiles' name='localPgnFiles[]' multiple class="inputFiles" size="11" style="display:none;" title="use the file selector input to open chess games in PGN format or drag and drop *.PGN files on this page" />
+<input type='file' id='localPgnFiles' name='localPgnFiles[]' multiple class="inputFiles" size="11" style="display:none;" title="use the file selector input to open *.PGN chess games or drag and drop *.PGN files on this page" />
+&nbsp;
 </div>
 
 <script type="text/javascript">
 
-   if (pgnData) { document.getElementById("notesRight").innerHTML = "<a title='chess games source' class='notesLink' href=" + pgnData + ">" + pgnData + "</a>"; }
-   else if (pgnBackground) { document.getElementById("notesRight").innerHTML = "chess games from PGN text input"; }
-   else { document.getElementById("localPgnFiles").style.display = ""; }
+   if (pgnData && (theObject = document.getElementById("notesRight"))) {
+      theObject.innerHTML = "<a title='chess games source' class='notesLink' href=" + pgnData + ">" + pgnData + "</a>";
+   } else if (pgnBackground && (theObject = document.getElementById("notesRight"))) {
+      theObject.innerHTML = "chess games from PGN text input";
+   } else if (theObject = document.getElementById("localPgnFiles")) {
+      theObject.style.display = "";
+      theObject.click(); /* currently does not have any effect, hopefully chrome will actually click the file input button */
+      if (theObject = document.getElementById("notesRight")) {
+         theObject.innerHTML = "use the file selector input to open *.PGN chess games or drag and drop *.PGN files on this page"; 
+      }
+   }
 
    var newPgnText;
    var pgnFilesLeft;
    var pgnFilesLoaded;
+   var invalidFiles;
    function handleFileSelect(evt) {
       evt.stopPropagation();
       evt.preventDefault();
@@ -312,6 +324,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
          newPgnText = "";
          pgnFilesLeft = files.length;
          pgnFilesLoaded = 0;
+         invalidFiles = "";
          for (f in files) {
             if (files[f].name.match(/\.pgn$/i)) {
                var reader = new FileReader();
@@ -323,7 +336,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
                reader.readAsText(files[f]);
             } else {
                --pgnFilesLeft;
-               alert("error: invalid chess games file: " + files[f].name + "\n\nthe chess games viewer only supports *.PGN chess games files in PGN format");
+               invalidFiles += "\n" + files[f].name;
                if (! pgnFilesLeft) { useNewPgnText(); }
             }
          }
@@ -335,16 +348,21 @@ of Google Chrome v6 or later. Don't use with any other browser.
       evt.preventDefault();
    }
 
-   if (theObject = document.getElementById('localPgnFiles')) {
-      theObject.addEventListener('change', handleFileSelect, false);
-   }
+   try {
+      if (theObject = document.getElementById('localPgnFiles')) {
+         theObject.addEventListener('change', handleFileSelect, false);
+      }
 
-   if (theObject = document.getElementById('body')) {
-      theObject.addEventListener('dragover', handleDragOver, false);
-      theObject.addEventListener('drop', handleFileSelect, false);
-   }
+      if (theObject = document.getElementById('body')) {
+         theObject.addEventListener('dragover', handleDragOver, false);
+         theObject.addEventListener('drop', handleFileSelect, false);
+      }
+   } catch(e) {}
 
    function useNewPgnText() {
+      if (invalidFiles) {
+         alert((newPgnText ? "warning: " : "error: ") + "the chess games viewers only accepts chess games *.PGN files, other files are rejected:\n" + invalidFiles);
+      }
       if (newPgnText) {
          SetPgnUrl("");
          SetLiveBroadcast(0, true, false, false);
@@ -352,15 +370,15 @@ of Google Chrome v6 or later. Don't use with any other browser.
          SetInitialHalfmove(0, true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
          firstStart = true;
          if (theObject = document.getElementById('pgnText')) { theObject.value = newPgnText; }
-         if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = "&nbsp;"; }
-         if (theObject = document.getElementById("notesRight")) { theObject.innerHTML = "&nbsp;"; }
+         if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = ""; }
+         if (theObject = document.getElementById("notesRight")) { theObject.innerHTML = "chess games from " + pgnFilesLoaded + " local PGN " + (pgnFilesLoaded == 1 ? "file" : "files"); }
          if (theObject = document.getElementById("localPgnFiles")) { 
             theObject.style.display = "";
             theObject.value = "";
          }
          start_pgn4web();
          fixCommentScrollbar();
-         location.hash = "board";
+         location.hash = "top"; location.hash = "board";
       }
    }
 

@@ -153,12 +153,6 @@ function aboutChessGamesViewer(info, tab) {
   if (confirm(aboutText)) { chrome.tabs.create({url: "http://pgn4web.casaschi.net"}); }
 }
 
-// "page" and "selection" context menu to open local PGN files
-
-chrome.contextMenus.create({"title": "Open local PGN chess games files for viewing on a single board", "contexts": ["page", "selection"], "onclick": openlocalpgnOnClick});
-
-chrome.contextMenus.create({"type": "separator", "contexts": ["page", "selection"]});
-
 // "page" and "selection" context menu to open PGN text 
 
 chrome.contextMenus.create({"title": "Enter PGN chess games TEXT for viewing on a single board", "contexts": ["page"], "onclick": pgntextOnClick});
@@ -194,6 +188,12 @@ chrome.contextMenus.create({"title": "View chess games link on a single board wi
 chrome.contextMenus.create({"title": "View chess games link on multiple boards with live refresh", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnliveallLinkOnClick});
 
 chrome.contextMenus.create({"type": "separator", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns});
+
+// "page" and "selection" context menu to open local PGN files
+
+chrome.contextMenus.create({"title": "Open local PGN chess games files for viewing on a single board", "contexts": ["page", "selection"], "onclick": openlocalpgnOnClick});
+
+chrome.contextMenus.create({"type": "separator", "contexts": ["page", "selection"]});
 
 // "link", "page" and "selection" about menus
 
