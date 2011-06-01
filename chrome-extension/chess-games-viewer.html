@@ -340,7 +340,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
                   newPgnText += e.target.result + "\n\n\n";
                   pgnFilesLoaded++;
                   if (! --pgnFilesLeft) { useNewPgnText(); }
-               }
+               };
                reader.readAsText(files[f]);
             } else {
                --pgnFilesLeft;

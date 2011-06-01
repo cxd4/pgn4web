@@ -43,10 +43,10 @@ function validatePgnText(pgnText) {
 function openRemoteUrl(remoteUrl, live, all) {
   if (!remoteUrl) { return; }
   if (all) {
-    var liveParam = live ? "&refreshMinutes=1" : "";
+    liveParam = live ? "&refreshMinutes=1" : "";
     url = "live-mosaic-viewer.html?pgnData=" + escape(remoteUrl) + liveParam + "&hp=t";
   } else {
-    var liveParam = live ? "&refreshMinutes=1.0" + Math.floor(Math.random()*10) : "";
+    liveParam = live ? "&refreshMinutes=1.0" + Math.floor(Math.random()*10) : "";
     url = "chess-games-viewer.html?pgnData=" + escape(remoteUrl) + liveParam;
   }
   chrome.tabs.create({url: url});
@@ -225,7 +225,7 @@ function mergePgnLinksAndShowIcon(tabId) {
       }
     }
   }
-  pgnWebRequests[tabId] = pgnWebRequests[tabId].filter(function(element, index, array) { return ((element !== null) && (element !== undefined))}).sort();
+  pgnWebRequests[tabId] = pgnWebRequests[tabId].filter(function(element, index, array) { return ((element !== null) && (element !== undefined)); }).sort();
   pgnLinksTitle = (pgnHrefLinks[tabId].length + pgnWebRequests[tabId].length) + " chess games " + ((pgnHrefLinks[tabId].length + pgnWebRequests[tabId].length) == 1 ? "link" : "links") + " on this page";
   chrome.pageAction.setTitle({tabId:tabId, title:pgnLinksTitle});
   chrome.pageAction.show(tabId);
