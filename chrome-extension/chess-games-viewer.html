@@ -42,8 +42,8 @@ of Google Chrome v6 or later. Don't use with any other browser.
       var backgroundPage = chrome.extension.getBackgroundPage();
    }
 
-   highlightOption_default = true;
-   commentsOnSeparateLines = true;
+   var highlightOption_default = true;
+   var commentsOnSeparateLines_default = true;
 
    thisRegExp = /(&|\?)(help|h)([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
