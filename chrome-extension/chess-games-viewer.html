@@ -129,7 +129,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
 
    function getHighlightOptionFromLocalStorage() {
       if (typeof(localStorage) == "undefined") { return highlightOption_default; }
-      try { ho = (localStorage.getItem("pgn4web_chess_games_viewer_highlightOption") == "true"); }
+      try { ho = (localStorage.getItem("pgn4web_chess_games_viewer_highlightOption") != "false"); }
       catch (e) { return highlightOption_default; }
       return ho;
    }
