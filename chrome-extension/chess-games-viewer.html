@@ -317,6 +317,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
    var pgnFilesLeft;
    var pgnFilesLoaded;
    var invalidFiles;
+   var validFiles;
    function handleFileSelect(evt) {
       evt.stopPropagation();
       evt.preventDefault();
@@ -330,11 +331,13 @@ of Google Chrome v6 or later. Don't use with any other browser.
          pgnFilesLeft = files.length;
          pgnFilesLoaded = 0;
          invalidFiles = "";
+         validFiles = "";
          for (f in files) {
             if (files[f].name.match(/\.pgn$/i)) {
+               validFiles += "\n" + files[f].name;
                var reader = new FileReader();
                reader.onload = function(e) {
-                  newPgnText += "\n% file " + files[f].name + "\n\n" + e.target.result + "\n";
+                  newPgnText += e.target.result + "\n\n\n";
                   pgnFilesLoaded++;
                   if (! --pgnFilesLeft) { useNewPgnText(); }
                }
@@ -378,6 +381,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
          if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = ""; }
          if (theObject = document.getElementById("notesRight")) {
             theObject.innerHTML = "chess games from " + pgnFilesLoaded + " local PGN " + (pgnFilesLoaded == 1 ? "file" : "files");
+            if (validFiles) { theObject.innerHTML = "<span title='chess games from local PGN files:\n " + validFiles + "'>" + theObject.innerHTML + "</span>"; }
             theObject.style.marginTop = "";
          }
          if (theObject = document.getElementById("localPgnFiles")) { 
