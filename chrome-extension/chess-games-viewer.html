@@ -333,8 +333,8 @@ of Google Chrome v6 or later. Don't use with any other browser.
          invalidFiles = "";
          validFiles = "";
          for (f in files) {
-            if (files[f].name.match(/\.pgn$/i)) {
-               validFiles += "\n" + files[f].name;
+            if (files[f].fileName.match(/\.pgn$/i)) {
+               validFiles += "\n" + files[f].fileName;
                var reader = new FileReader();
                reader.onload = function(e) {
                   newPgnText += e.target.result + "\n\n\n";
@@ -344,7 +344,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
                reader.readAsText(files[f]);
             } else {
                --pgnFilesLeft;
-               invalidFiles += "\n" + files[f].name;
+               invalidFiles += "\n" + files[f].fileName;
                if (! pgnFilesLeft) { useNewPgnText(); }
             }
          }
