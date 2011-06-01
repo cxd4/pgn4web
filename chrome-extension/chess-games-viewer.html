@@ -332,19 +332,22 @@ of Google Chrome v6 or later. Don't use with any other browser.
          pgnFilesLoaded = 0;
          invalidFiles = "";
          validFiles = "";
-         for (f in files) {
-            if (files[f].fileName.match(/\.pgn$/i)) {
-               validFiles += "\n" + files[f].fileName;
+         for (f=0; f<files.length; f++) {
+            if (files[f].name.match(/\.pgn$/i)) {
+               validFiles += "\n" + files[f].name;
                var reader = new FileReader();
                reader.onload = function(e) {
                   newPgnText += e.target.result + "\n\n\n";
                   pgnFilesLoaded++;
                   if (! --pgnFilesLeft) { useNewPgnText(); }
                };
+               reader.onerror = function(e) {
+                  if (! --pgnFilesLeft) { useNewPgnText(); }
+               }; 
                reader.readAsText(files[f]);
             } else {
                --pgnFilesLeft;
-               invalidFiles += "\n" + files[f].fileName;
+               invalidFiles += "\n" + files[f].name;
                if (! pgnFilesLeft) { useNewPgnText(); }
             }
          }
