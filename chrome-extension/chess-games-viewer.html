@@ -42,6 +42,9 @@ of Google Chrome v6 or later. Don't use with any other browser.
       var backgroundPage = chrome.extension.getBackgroundPage();
    }
 
+   highlightOption_default = true;
+   commentsOnSeparateLines = true;
+
    thisRegExp = /(&|\?)(help|h)([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
       alert("pgn4web google chrome chess games viewer" + "\n" + 
@@ -87,10 +90,10 @@ of Google Chrome v6 or later. Don't use with any other browser.
 
    SetImagePath("alpha/128"); // use "" path if images are in the same folder as this javascript file
    SetImageType("png");
-   SetHighlightOption(true); // true or false
+   SetHighlightOption(getHighlightOptionFromLocalStorage()); // true or false
    SetGameSelectorOptions(null, true, 12, 12, 2, 15, 15, 3, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);   
    SetCommentsIntoMoveText(true);
-   SetCommentsOnSeparateLines(true);
+   SetCommentsOnSeparateLines(getCommentsOnSeparateLinesFromLocalStorage());
    SetAutostartAutoplay(false);
    SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
    SetShortcutKeysEnabled(true);
@@ -123,6 +126,37 @@ of Google Chrome v6 or later. Don't use with any other browser.
    } else {
       SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are accepted; other string values assumed as PGN search string
    }
+
+   function getHighlightOptionFromLocalStorage() {
+      if (typeof(localStorage) == "undefined") { return highlightOption_default; }
+      try { ho = (localStorage.getItem("pgn4web_chess_games_viewer_highlightOption") == "true"); }
+      catch (e) { return highlightOption_default; }
+      return ho;
+   }
+   function setHighlightOptionToLocalStorage() {
+      if (typeof(localStorage) == "undefined") { return false; }
+      try { localStorage.setItem("pgn4web_chess_games_viewer_highlightOption", highlightOption ? "true" : "false"); }
+      catch (e) { return false; }
+      return true;
+   }
+
+   function getCommentsOnSeparateLinesFromLocalStorage() {
+      if (typeof(localStorage) == "undefined") { return commentsOnSeparateLines_default; }
+      try { cosl = (localStorage.getItem("pgn4web_chess_games_viewer_commentsOnSeparateLines") != "false"); }
+      catch (e) { return commentsOnSeparateLines_default; }
+      return cosl;
+   }
+   function setCommentsOnSeparateLinesToLocalStorage() {
+      if (typeof(localStorage) == "undefined") { return false; }
+      try { localStorage.setItem("pgn4web_chess_games_viewer_commentsOnSeparateLines", commentsOnSeparateLines ? "true" : "false"); }
+      catch (e) { return false; }
+      return true;
+   }
+
+   // C7
+   boardShortcut("C7", "toggle show comments on separate lines in game text and save setting", function(){ SetCommentsOnSeparateLines(!commentsOnSeparateLines); oldPly = CurrentPly; Init(); GoToMove(oldPly); setCommentsOnSeparateLinesToLocalStorage(); });
+   // D7
+   boardShortcut("D7", "toggle highlight last move and save setting", function(){ SetHighlight(!highlightOption); setHighlightOptionToLocalStorage(); });
 
    function fixHeaderTag(elementId) {
       var headerId = ["GameEvent", "GameSite", "GameDate", "GameRound", "GameWhite", "GameBlack", "GameResult", "GameSection", "GameStage", "GameBoardNum", "Timecontrol", "GameWhiteTitle", "GameBlackTitle", "GameWhiteElo", "GameBlackElo", "GameECO", "GameOpening", "GameVariation", "GameSubVariation", "GameTermination", "GameWhiteClock", "GameBlackClock", "GameTimeControl"];
