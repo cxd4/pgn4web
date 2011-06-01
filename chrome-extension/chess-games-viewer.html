@@ -285,13 +285,16 @@ of Google Chrome v6 or later. Don't use with any other browser.
 
 <div class="moveText"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
 
-<div class="notes">
+<div id="notes" class="notes">
 
 <div id="notesRight" class="notesRight"></div>
 
-<div title="live broadcast status" id="GameLiveStatus">&nbsp;</div>
-<input type='file' id='localPgnFiles' name='localPgnFiles[]' multiple class="inputFiles" size="11" style="display:none;" title="use the file selector input to open *.PGN chess games or drag and drop *.PGN files on this page" />
+<div id="notesLeft" class="notesLeft">
+<span title="live broadcast status" id="GameLiveStatus">&nbsp;</span>
+<input type='file' id='localPgnFiles' name='localPgnFiles[]' multiple class="inputFiles" size="11" style="display:none;" title="use the file selector input to choose *.PGN chess games or drag and drop *.PGN files on this page" />
 &nbsp;
+</div>
+
 </div>
 
 <script type="text/javascript">
@@ -301,10 +304,12 @@ of Google Chrome v6 or later. Don't use with any other browser.
    } else if (pgnBackground && (theObject = document.getElementById("notesRight"))) {
       theObject.innerHTML = "chess games from PGN text input";
    } else if (theObject = document.getElementById("localPgnFiles")) {
+      theObject.style.marginTop = "3em";
       theObject.style.display = "";
-      theObject.click(); /* currently does not have any effect, hopefully chrome will actually click the file input button */
+      theObject.click(); /* currently does not have any effect, hopefully someday chrome will comply */
       if (theObject = document.getElementById("notesRight")) {
-         theObject.innerHTML = "use the file selector input to open *.PGN chess games or drag and drop *.PGN files on this page"; 
+         theObject.style.marginTop = "3em";
+         theObject.innerHTML = "<span title='use the file selector input to choose *.PGN chess games or drag and drop *.PGN files on this page'>choose *.PGN chess games files or drag and drop them on this page</span>";
       }
    }
 
@@ -371,8 +376,12 @@ of Google Chrome v6 or later. Don't use with any other browser.
          firstStart = true;
          if (theObject = document.getElementById('pgnText')) { theObject.value = newPgnText; }
          if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = ""; }
-         if (theObject = document.getElementById("notesRight")) { theObject.innerHTML = "chess games from " + pgnFilesLoaded + " local PGN " + (pgnFilesLoaded == 1 ? "file" : "files"); }
+         if (theObject = document.getElementById("notesRight")) {
+            theObject.innerHTML = "chess games from " + pgnFilesLoaded + " local PGN " + (pgnFilesLoaded == 1 ? "file" : "files");
+            theObject.style.marginTop = "";
+         }
          if (theObject = document.getElementById("localPgnFiles")) { 
+            theObject.style.marginTop = "";
             theObject.style.display = "";
             theObject.value = "";
          }

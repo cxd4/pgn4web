@@ -172,7 +172,16 @@ body {
 .notes {
   color: #AAAAAA; 
   text-align: left;
-  margin-top: 2.5em;
+  margin-top: 3em;
+}
+
+.notesLink, .notesLeft, .notesRight  {
+  color: #AAAAAA; 
+  text-decoration: none;
+}
+
+.notesLeft {
+  text-align: left;
 }
 
 .notesRight {
@@ -180,11 +189,6 @@ body {
   text-align: right;
   margin-left: 2em;
   line-height: 2em;
-}
-
-.notesLink, .notesRight {
-  color: #AAAAAA; 
-  text-decoration: none;
 }
 
 .inputFiles {
