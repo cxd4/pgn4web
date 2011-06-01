@@ -126,23 +126,20 @@ body {
   line-height: 1.4em;
 }
 
-.lastMoveAndComment {
-  clear: both;
-  text-align: justify;
-  height: 4.2em;
-  line-height: 1.4em;
-  overflow-y: auto;
-  margin-bottom: 2em;
+.columnsContainer {
+  float: left;
+  width: 100%;
+  padding-top: 3em;
+  padding-bottom: 2.5em;
 }
 
-.lastMove {
-  font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
-  margin-right: 2em;
+.boardColumn {
+  float: left;
+  width: 60%;
 }
 
-.lastMove, .lastComment {
-  text-decoration: none;
-  color: black;
+.headerColumn {
+  margin-left: 60%;
 }
 
 .headerItem {
@@ -168,6 +165,25 @@ body {
 
 .headerSpacer {
   line-height: 0.75em;
+}
+
+.lastMoveAndComment {
+  clear: both;
+  text-align: justify;
+  height: 4.2em;
+  line-height: 1.4em;
+  overflow-y: auto;
+  margin-bottom: 2em;
+}
+
+.lastMove {
+  font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
+  margin-right: 2em;
+}
+
+.lastMove, .lastComment {
+  text-decoration: none;
+  color: black;
 }
 
 .notes {
@@ -197,20 +213,3 @@ body {
   font-size: 1em;
   margin-top: 0.3em;
 }
-
-.columnsContainer {
-  float: left;
-  width: 100%;
-  padding-top: 3em;
-  padding-bottom: 2.5em;
-}
-
-.boardColumn {
-  float: left;
-  width: 60%;
-}
-
-.headerColumn {
-  margin-left: 60%;
-}
-
