@@ -9,7 +9,7 @@
 
   "version": "1.4.7",
 
-  "description": "Chess games viewer: interactive chessboard showing chess games from links to *.PGN URLs, from local PGN files and from PGN text.",
+  "description": "Chess games viewer: interactive chessboard showing chess games from links to *.PGN URLs, from local *.PGN files and from PGN text.",
 
   "icons": {"16": "alpha-16.png", "48": "alpha/48/bp.png", "128": "alpha/128/bp.png"},
 
