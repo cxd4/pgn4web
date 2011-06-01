@@ -171,13 +171,20 @@ body {
 
 .notes {
   color: #AAAAAA; 
-  text-align: right;
+  text-align: left;
   margin-top: 3em;
 }
 
 .notesLink {
   color: #AAAAAA; 
   text-decoration: none;
+}
+
+.inputFiles {
+  width: 100%;
+  color: #AAAAAA; 
+  font-size: 1em;
+  margin-top: 0.3em;
 }
 
 .columnsContainer {

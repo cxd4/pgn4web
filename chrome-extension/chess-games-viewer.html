@@ -214,7 +214,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
          document.title = LiveBroadcastStatusString.replace(" &nbsp;", ",");
       } else {
          if ((numberOfGames == 1) && (PlyNumber === 0) && (StartPly === 0) && (!gameWhite[0]) && (!gameBlack[0]) && (!gameResult[0])) {
-            document.title = "PGN data error";
+            document.title = "chess games viewer";
          } else {
             document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s");
          }
@@ -286,16 +286,13 @@ of Google Chrome v6 or later. Don't use with any other browser.
 <div class="moveText"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
 
 <div class="notes">
-<div style="float: left; text-align: left; margin-right: 20px; margin-bottom: 5px;">
+<span id="localPgnFilesInput" class="notesLink" style="display:none;">use the file selector input to open chess games in PGN format or drag and drop PGN files on this page<br /><input type='file' id='files' name='files[]' multiple class="inputFiles" /></span>
 <span title="live broadcast status" id="GameLiveStatus"></span>
-<input type='file' id='files' name='files[]' multiple style="display:none;"/>
-</div>
-<div>
-<span id="localPgnFilesInput" class="notesLink" style="display:none;">use the file selector input to open chess games in PGN format or drag and drop PGN files on this page</span>
+<div style="float: right; text-align: right; margin-left: 20px;">
 <script type="text/javascript">
   if (pgnData) { document.write("<a id='pgnSource' title='chess games source' class='notesLink' href=" + pgnData + ">" + pgnData + "</a>"); }
   else if (pgnBackground) { document.write("<span id='pgnSource' class='notesLink'>chess games from PGN text input</span>"); }
-  else { document.getElementById("localPgnFilesInput").style.display = document.getElementById("files").style.display = "inline"; }
+  else { document.getElementById("localPgnFilesInput").style.display = "inline"; }
 </script>
 </div>
 </div>
@@ -355,11 +352,10 @@ of Google Chrome v6 or later. Don't use with any other browser.
     SetAutoplayDelay(2000); // milliseconds
     SetInitialHalfmove(0, true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
     firstStart = true;
-    document.getElementById('pgnText').value = newPgnText;
-    document.getElementById("GameLiveStatus").innerHTML = "";
-    document.getElementById("pgnSource").style.display = "none";
-    document.getElementById("files").style.display = "inline";
-    document.getElementById("localPgnFilesInput").style.display = "inline";
+    if (theObject = document.getElementById('pgnText')) { theObject.value = newPgnText; }
+    if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = ""; }
+    if (theObject = document.getElementById("pgnSource")) { theObject.style.display = "none"; }
+    if (theObject = document.getElementById("localPgnFilesInput")) { theObject.style.display = "inline"; }
     start_pgn4web();
   }
 

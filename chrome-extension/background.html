@@ -97,6 +97,10 @@ function pgnliveallPageOnClick(info, tab) {
   pgnPageOnClick(info, tab, true, true);
 }
 
+function openlocalpgnOnClick(info, tab) {
+  chrome.tabs.create({url: "chess-games-viewer.html"});
+}
+
 var pgnText = new Array();
 var pgnTextIndexFromTabId = new Array();
 pgnTextIndex = 0;
@@ -147,6 +151,12 @@ function aboutChessGamesViewer(info, tab) {
   aboutText += "\n\n\nClick OK to visit the pgn4web homepage and wiki for more info.";
   if (confirm(aboutText)) { chrome.tabs.create({url: "http://pgn4web.casaschi.net"}); }
 }
+
+// "page" and "selection" context menu to open local PGN files
+
+chrome.contextMenus.create({"title": "Open local PGN chess games for viewing on a single board", "contexts": ["page", "selection"], "onclick": openlocalpgnOnClick});
+
+chrome.contextMenus.create({"type": "separator", "contexts": ["page", "selection"]});
 
 // "page" and "selection" context menu to open PGN text 
 
