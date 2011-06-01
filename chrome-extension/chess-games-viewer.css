@@ -127,6 +127,7 @@ body {
 }
 
 .lastMoveAndComment {
+  clear: both;
   text-align: justify;
   height: 4.2em;
   line-height: 1.4em;
