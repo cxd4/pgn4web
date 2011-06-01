@@ -38,7 +38,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
 
 <script type="text/javascript">
 
-   if ((chrome) && (chrome.extension) && (chrome.extension.getBackgroundPage)) {
+   if ((typeof(chrome) != "undefined") && (chrome.extension) && (chrome.extension.getBackgroundPage)) {
       var backgroundPage = chrome.extension.getBackgroundPage();
    }
 
@@ -289,14 +289,14 @@ of Google Chrome v6 or later. Don't use with any other browser.
 <div id="notesRight" class="notesLink" style="float: right; text-align: right; margin-left: 20px;">&nbsp;</div>
 <div title="live broadcast status" id="GameLiveStatus">&nbsp;</div>
 <div id="localPgnFilesInput" class="notesLink" style="display:none;">use the file selector input to open chess games in PGN format or drag and drop PGN files on this page</div>
-<input type='file' id='files' name='files[]' multiple class="inputFiles" style="display:none;" />
+<input type='file' id='files' name='files[]' multiple class="inputFiles" size="40" style="display:none;" />
 </div>
 
 <script type="text/javascript">
 
    if (pgnData) { document.getElementById("notesRight").innerHTML = "<a title='chess games source' class='notesLink' href=" + pgnData + ">" + pgnData + "</a>"; }
    else if (pgnBackground) { document.getElementById("notesRight").innerHTML = "chess games from PGN text input"; }
-   else { document.getElementById("localPgnFilesInput").style.display = document.getElementById("files").style.display = "block"; }
+   else { document.getElementById("localPgnFilesInput").style.display = document.getElementById("files").style.display = ""; }
 
    var newPgnText;
    var pgnFilesLeft;
@@ -324,7 +324,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
                reader.readAsText(files[f]);
             } else {
                --pgnFilesLeft;
-               alert("error: invalid file " + files[f].name + "\n\nonly *.pgn files allowed by the chess games viewer");
+               alert("error: invalid chess games file: " + files[f].name + "\n\nthe chess games viewer only supports chess games files in the *.PGN format");
                if (! pgnFilesLeft) { useNewPgnText(); }
             }
          }
@@ -346,18 +346,23 @@ of Google Chrome v6 or later. Don't use with any other browser.
    }
 
    function useNewPgnText() {
-      SetPgnUrl("");
-      SetLiveBroadcast(0, true, false, false);
-      SetAutoplayDelay(2000); // milliseconds
-      SetInitialHalfmove(0, true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
-      firstStart = true;
-      if (theObject = document.getElementById('pgnText')) { theObject.value = newPgnText; }
-      if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = "&nbsp;"; }
-      if (theObject = document.getElementById("notesRight")) { theObject.innerHTML = "&nbsp;"; }
-      if (theObject = document.getElementById("localPgnFilesInput")) { theObject.style.display = "block"; }
-      if (theObject = document.getElementById("files")) { theObject.style.display = "block"; }
-      start_pgn4web();
-      fixCommentScrollbar();
+      if (newPgnText) {
+         SetPgnUrl("");
+         SetLiveBroadcast(0, true, false, false);
+         SetAutoplayDelay(2000); // milliseconds
+         SetInitialHalfmove(0, true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
+         firstStart = true;
+         if (theObject = document.getElementById('pgnText')) { theObject.value = newPgnText; }
+         if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = "&nbsp;"; }
+         if (theObject = document.getElementById("notesRight")) { theObject.innerHTML = "&nbsp;"; }
+         if (theObject = document.getElementById("localPgnFilesInput")) { theObject.style.display = ""; }
+         if (theObject = document.getElementById("files")) { 
+            theObject.style.display = "";
+            theObject.value = "";
+         }
+         start_pgn4web();
+         fixCommentScrollbar();
+      }
    }
 
 </script>
