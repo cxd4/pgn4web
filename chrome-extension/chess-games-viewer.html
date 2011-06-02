@@ -414,7 +414,7 @@ of Google Chrome. Don't use with any other browser.
    function useNewPgnText() {
       if ((invalidFiles.length > 0) || (errorFiles.length > 0)) {
         text = (newPgnText ? "warning: " : "error: ") + "the chess games viewer only accepts chess games *.PGN files; files generating errors while loading, empty files, files other than *.PGN files and folders are rejected:\n\n" + invalidFiles.concat(errorFiles).sort().join("\n");
-         if (validFiles.length > 0) { text += "\n\n\nloaded *.PGN files:\n\n" + validFiles.sort().join("\n"); }
+         if (validFiles.length > 0) { text += "\n\n\nloading *.PGN files:\n\n" + validFiles.sort().join("\n"); }
          alert(text);
       }
       if (newPgnText && (validFiles.length > 0)) {
