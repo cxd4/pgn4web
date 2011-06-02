@@ -118,6 +118,7 @@ body {
 }
 
 .moveText {
+  clear: both;
   text-align: justify;
 }
 
@@ -187,6 +188,7 @@ body {
 }
 
 .notes {
+  clear: both;
   color: #AAAAAA; 
   text-align: left;
   margin-top: 3em;
@@ -212,4 +214,8 @@ body {
   background-color: transparent; 
   font-size: 1em;
   margin-top: 0.3em;
+}
+
+.footer {
+  clear: both;
 }
