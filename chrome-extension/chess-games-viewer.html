@@ -349,7 +349,6 @@ of Google Chrome. Don't use with any other browser.
 
    var newPgnText;
    var pgnFilesLeft;
-   var pgnFilesLoaded;
    var invalidFiles;
    var validFiles;
    var errorFiles;
@@ -364,10 +363,9 @@ of Google Chrome. Don't use with any other browser.
       try {
          newPgnText = "";
          pgnFilesLeft = files.length;
-         pgnFilesLoaded = 0;
-         invalidFiles = "";
-         validFiles = "";
-         errorFiles = "";
+         invalidFiles = new Array();
+         validFiles = new Array();
+         errorFiles = new Array();
          for (f=0; f<files.length; f++) {
             if (files[f].name.match(/\.pgn$/i)) {
                var reader = new FileReader();
@@ -375,23 +373,22 @@ of Google Chrome. Don't use with any other browser.
                   return function(e) {
                      if (e.target.result) {
                         newPgnText += e.target.result + "\n\n\n";
-                        validFiles += "\n" + theFileName;
-                        pgnFilesLoaded++;
+                        validFiles.push(theFileName);
                      } else {
-                        errorFiles += "\n" + theFileName;
+                        errorFiles.push(theFileName);
                      }
                      if (! --pgnFilesLeft) { useNewPgnText(); }                            
                   };
                })(files[f].name);
                reader.onerror = (function(theFileName) {
                   return function(e) {
-                     errorFiles += "\n" + theFileName;
+                     errorFiles.push(theFileName);
                      if (! --pgnFilesLeft) { useNewPgnText(); }                            
                   };
                })(files[f].name);
                reader.readAsText(files[f]);
             } else {
-               invalidFiles += "\n" + files[f].name;
+               invalidFiles.push(files[f].name);
                if (! --pgnFilesLeft) { useNewPgnText(); }
             }
          }
@@ -415,12 +412,12 @@ of Google Chrome. Don't use with any other browser.
    } catch(e) {}
 
    function useNewPgnText() {
-      if (invalidFiles || errorFiles) {
-        text = (newPgnText ? "warning: " : "error: ") + "the chess games viewer only accepts chess games *.PGN files; files generating errors while loading, empty files, files other than *.PGN files and folders are rejected:\n" + invalidFiles + errorFiles;
-         if (validFiles) { text += "\n\n\nloaded *.PGN files:\n" + validFiles; }
+      if ((invalidFiles.length > 0) || (errorFiles.length > 0)) {
+        text = (newPgnText ? "warning: " : "error: ") + "the chess games viewer only accepts chess games *.PGN files; files generating errors while loading, empty files, files other than *.PGN files and folders are rejected:\n\n" + invalidFiles.concat(errorFiles).sort().join("\n");
+         if (validFiles.length > 0) { text += "\n\n\nloaded *.PGN files:\n\n" + validFiles.sort().join("\n"); }
          alert(text);
       }
-      if (newPgnText) {
+      if (newPgnText && (validFiles.length > 0)) {
          SetPgnUrl("");
          SetLiveBroadcast(0, true, false, false);
          SetAutoplayDelay(2000); // milliseconds
@@ -429,8 +426,8 @@ of Google Chrome. Don't use with any other browser.
          if (theObject = document.getElementById("pgnText")) { theObject.value = newPgnText; }
          if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = ""; }
          if (theObject = document.getElementById("notesRight")) {
-            text = "chess games from " + pgnFilesLoaded + " local PGN " + (pgnFilesLoaded == 1 ? "file" : "files");
-            theObject.innerHTML = "<span title='" + text + ": " + validFiles + "'>" + text + "</span>";
+            text = "chess games from " + validFiles.length + " local PGN " + (validFiles.length == 1 ? "file" : "files");
+            theObject.innerHTML = "<span title='" + text + ":\n" + validFiles.sort().join("\n") + "'>" + text + "</span>";
             theObject.style.marginTop = "";
          }
          if (theObject = document.getElementById("localPgnFiles")) { 
