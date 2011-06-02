@@ -128,26 +128,22 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function getHighlightOptionFromLocalStorage() {
-      if (typeof(localStorage) == "undefined") { return highlightOption_default; }
       try { ho = (localStorage.getItem("pgn4web_chess_games_viewer_highlightOption") != "false"); }
       catch (e) { return highlightOption_default; }
       return ho;
    }
    function setHighlightOptionToLocalStorage() {
-      if (typeof(localStorage) == "undefined") { return false; }
       try { localStorage.setItem("pgn4web_chess_games_viewer_highlightOption", highlightOption ? "true" : "false"); }
       catch (e) { return false; }
       return true;
    }
 
    function getCommentsOnSeparateLinesFromLocalStorage() {
-      if (typeof(localStorage) == "undefined") { return commentsOnSeparateLines_default; }
       try { cosl = (localStorage.getItem("pgn4web_chess_games_viewer_commentsOnSeparateLines") == "true"); }
       catch (e) { return commentsOnSeparateLines_default; }
       return cosl;
    }
    function setCommentsOnSeparateLinesToLocalStorage() {
-      if (typeof(localStorage) == "undefined") { return false; }
       try { localStorage.setItem("pgn4web_chess_games_viewer_commentsOnSeparateLines", commentsOnSeparateLines ? "true" : "false"); }
       catch (e) { return false; }
       return true;

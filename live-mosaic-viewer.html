@@ -79,14 +79,12 @@
   SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, stepFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false)
 
   function getMaxBoardFromLocalStorage() {
-    if (typeof(localStorage) == "undefined") { return maxBoards_default; }
     try { mb = localStorage.getItem("pgn4web_chess_live_mosaic_viewer_maxBoards"); }
     catch (e) { return maxBoards_default; }
     return mb;
   }
 
   function setMaxBoardToLocalStorage() {
-    if (typeof(localStorage) == "undefined") { return false; }
     try { localStorage.setItem("pgn4web_chess_live_mosaic_viewer_maxBoards", maxBoards); }
     catch (e) { return false; }
     return true;
