@@ -8,7 +8,7 @@
 /*
 
 HTML, CSS and Javascript code optimized for use as extension
-of Google Chrome v7 or later. Don't use with any other browser.
+of Google Chrome. Don't use with any other browser.
 
 */
 
