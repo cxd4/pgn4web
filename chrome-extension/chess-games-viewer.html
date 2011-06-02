@@ -338,11 +338,9 @@ of Google Chrome. Don't use with any other browser.
    } else if (pgnBackground && (theObject = document.getElementById("notesRight"))) {
       theObject.innerHTML = "chess games from PGN text input";
    } else if (theObject = document.getElementById("localPgnFiles")) {
-      theObject.style.marginTop = "3em";
       theObject.style.display = "";
       theObject.click(); /* currently does not have any effect, hopefully someday chrome will comply */
       if (theObject = document.getElementById("notesRight")) {
-         theObject.style.marginTop = "3em";
          theObject.innerHTML = "<span title='use the file selector input to choose *.PGN chess games or drag and drop *.PGN files on this page'>choose *.PGN chess games files or drag and drop them on this page</span>";
       }
    }
@@ -431,7 +429,6 @@ of Google Chrome. Don't use with any other browser.
             theObject.style.marginTop = "";
          }
          if (theObject = document.getElementById("localPgnFiles")) { 
-            theObject.style.marginTop = "";
             theObject.style.display = "";
             theObject.value = "";
          }
