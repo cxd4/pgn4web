@@ -1,4 +1,4 @@
-<html>
+<html id="html">
 
 <!--
   pgn4web javascript chessboard
@@ -401,13 +401,13 @@ of Google Chrome v6 or later. Don't use with any other browser.
    }
 
    try {
-      if (theObject = document.getElementById('localPgnFiles')) {
-         theObject.addEventListener('change', handleFileSelect, false);
+      if (theObject = document.getElementById("localPgnFiles")) {
+         theObject.addEventListener("change", handleFileSelect, false);
       }
 
-      if (theObject = document.getElementById('body')) {
-         theObject.addEventListener('dragover', handleDragOver, false);
-         theObject.addEventListener('drop', handleFileSelect, false);
+      if (theObject = document.getElementById("html")) {
+         theObject.addEventListener("dragover", handleDragOver, false);
+         theObject.addEventListener("drop", handleFileSelect, false);
       }
    } catch(e) {}
 
@@ -424,7 +424,7 @@ of Google Chrome v6 or later. Don't use with any other browser.
          SetAutoplayDelay(2000); // milliseconds
          SetInitialHalfmove(0, true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
          firstStart = true;
-         if (theObject = document.getElementById('pgnText')) { theObject.value = newPgnText; }
+         if (theObject = document.getElementById("pgnText")) { theObject.value = newPgnText; }
          if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = ""; }
          if (theObject = document.getElementById("notesRight")) {
             text1 = "chess games from " + pgnFilesLoaded + " local PGN " + (pgnFilesLoaded == 1 ? "file" : "files");
