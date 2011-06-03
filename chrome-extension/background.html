@@ -214,6 +214,7 @@ chrome.contextMenus.create({"title": "About the chess games viewer extension", "
 
 var pgnHrefLinks = new Array();
 var pgnWebRequests = new Array();
+var processedUrls = new Array();
 
 function mergePgnLinksAndShowIcon(tabId) {
   pgnHrefLinks[tabId] = pgnHrefLinks[tabId].sort();
@@ -251,14 +252,18 @@ chrome.extension.onRequest.addListener(pgnHrefLinksRequest);
 function removePgnLinksOnRemoved(tabId) {
   if (pgnHrefLinks[tabId]) { delete pgnHrefLinks[tabId]; }
   if (pgnWebRequests[tabId]) { delete pgnWebRequests[tabId]; }
+  if (processedUrls[tabId]) { delete processedUrls[tabId]; }
 }
 
 chrome.tabs.onRemoved.addListener(removePgnLinksOnRemoved);
 
 function removePgnLinksOnUpdated(tabId, changeInfo, tab) {
-  if ((changeInfo.status == "loading") && (changeInfo.url)) { 
-    if (pgnHrefLinks[tabId]) { delete pgnHrefLinks[tabId]; }
-    if (pgnWebRequests[tabId]) { delete pgnWebRequests[tabId]; }
+  if ((changeInfo.status == "loading") && (changeInfoUrlWithoutHash = changeInfo.url.replace(/#.*$/, ""))) {
+    if ((processedUrls[tabId]) && (changeInfoUrlWithoutHash != processedUrls[tabId])) {
+      if (pgnHrefLinks[tabId]) { delete pgnHrefLinks[tabId]; }
+      if (pgnWebRequests[tabId]) { delete pgnWebRequests[tabId]; }
+    }
+    processedUrls[tabId] = changeInfoUrlWithoutHash;
   }
 }
 
