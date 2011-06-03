@@ -29,6 +29,10 @@ body {
   background: -webkit-linear-gradient(#FFFFFF, #F0F0F0); /* chrome 10+ */
 }
 
+ul {
+  list-style-type: square;
+}
+
 .boardTable {
   border-style: solid;
   border-color: #663300;
@@ -174,7 +178,7 @@ body {
   padding: 2em;
   background-color: #FFCC99;
   background-color: rgba(255, 204, 153, 0.5);
-  -webkit-border-radius: 1em;
+  -webkit-border-radius: 0.5em;
 }
 
 .infoMessageHighlight {
