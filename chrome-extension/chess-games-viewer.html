@@ -191,6 +191,10 @@ of Google Chrome. Don't use with any other browser.
             theObject.innerHTML = ((CurrentPly%2) ? "black" : "white") + " to move";
          }
       }
+      if ((theObject = document.getElementById("infoMessage")) && (theObject.innerHTML)) {
+         theObject.innerHTML = "";
+         theObject.style.display = "";
+      }
       fixCommentScrollbar();
    }
 
@@ -311,6 +315,7 @@ of Google Chrome. Don't use with any other browser.
 
 </div>
 
+<div class="infoMessage" id="infoMessage"></div>
 <div class="lastMoveAndComment" id="lastMoveAndComment"><a href="javascript:MoveToPrevComment();" class="lastMove" title="last move" id="GameLastMove"></a><a href="javascript:MoveToNextComment();" class="lastComment" title="current position comment" id="GameLastComment"></a></div>
 
 <div class="moveText"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
@@ -320,7 +325,7 @@ of Google Chrome. Don't use with any other browser.
 <div id="notesRight" class="notesRight"></div>
 
 <div id="notesLeft" class="notesLeft">
-<span title="live broadcast status" id="GameLiveStatus">&nbsp;</span>
+<span title="live broadcast status" id="GameLiveStatus"></span>
 <input type="file" id="localPgnFiles" name="localPgnFiles[]" multiple="multiple" class="inputFiles" size="4" style="display:none;" title="use the file selector input to choose *.PGN chess games or drag and drop *.PGN files on this page" />
 &nbsp;
 </div>
@@ -406,11 +411,6 @@ of Google Chrome. Don't use with any other browser.
    } catch(e) {}
 
    function useNewPgnText() {
-      if ((invalidFiles.length > 0) || (errorFiles.length > 0)) {
-        text = (newPgnText ? "warning: " : "error: ") + "the chess games viewer only accepts chess games *.PGN files; files generating errors while loading, empty files, files other than *.PGN files and folders are rejected: \n\n" + invalidFiles.concat(errorFiles).sort().join(" \n");
-         if (validFiles.length > 0) { text += "\n\n\nloading *.PGN files: \n\n" + validFiles.sort().join(" \n"); }
-         alert(text);
-      }
       if (newPgnText && (validFiles.length > 0)) {
          SetPgnUrl("");
          SetLiveBroadcast(0, true, false, false);
@@ -430,6 +430,17 @@ of Google Chrome. Don't use with any other browser.
          }
          start_pgn4web();
          location.hash = "top"; location.hash = "board";
+      }
+      if (theObject = document.getElementById("infoMessage")) {
+         if ((invalidFiles.length > 0) || (errorFiles.length > 0)) {
+            text = "<span class='infoMessageHighlight'>" + (newPgnText ? "warning:" : "error:") + "</span> the chess games viewer only accepts chess games *.PGN files; files generating errors while loading, empty files, files other than *.PGN files and folders are rejected:<ul type='square'><li>" + invalidFiles.concat(errorFiles).sort().join("</li><li>") + "</li></ul>";
+            if (validFiles.length > 0) { text += "loaded *.PGN files:<ul><li type='square'>" + validFiles.sort().join("</li><li>") + "</li></ul>"; }
+            theObject.innerHTML = text;
+            theObject.style.display = "block";
+         } else {
+            theObject.innerHTML = "";
+            theObject.style.display = "";
+         }
       }
    }
 

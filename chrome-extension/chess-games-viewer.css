@@ -168,13 +168,28 @@ body {
   line-height: 0.75em;
 }
 
-.lastMoveAndComment {
+.infoMessage {
+  display: none;
+  text-align: justify;
+  padding: 2em;
+  background-color: #E8E8E8;
+  -webkit-border-radius: 1em;
+}
+
+.infoMessageHighlight {
+  font-weight: bold;
+}
+
+.infoMessage, .lastMoveAndComment {
   clear: both;
+  margin-bottom: 2em;
+}
+
+.lastMoveAndComment {
   text-align: justify;
   height: 4.2em;
   line-height: 1.4em;
   overflow-y: auto;
-  margin-bottom: 2em;
 }
 
 .lastMove {
