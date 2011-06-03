@@ -1,0 +1,88 @@
+<html id="html">
+
+<!--
+  pgn4web javascript chessboard
+  copyright (C) 2009, 2011 Paolo Casaschi
+  see README file and http://pgn4web.casaschi.net
+  for credits, license and more details
+-->
+
+<!--
+
+HTML, CSS and Javascript code optimized for use as extension
+of Google Chrome. Don't use with any other browser.
+
+-->
+
+<head>
+
+<title>about the chess games viewer extension</title>
+
+<style type="text/css">
+
+html,
+body {
+  margin: 0;
+  padding: 1.25em;
+}
+
+body {
+  font-family: sans-serif;
+  color: black;
+  text-align: justify;
+  background: white; /* fallback */
+  background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F0F0)); /* chrome 9- */
+  background: -webkit-linear-gradient(#FFFFFF, #F0F0F0); /* chrome 10+ */
+}
+
+a:link, a:visited, a:active, a:hover {
+  color: black;
+  text-decoration: none;
+}
+
+a:hover {
+  background-color: #FFCC99;
+  background-color: rgba(255, 204, 153, 0.3);
+}
+
+.imglink {
+  float: right;
+}
+
+.imglink:hover {
+  background-color: transparent;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<a href="http://pgn4web.casaschi.net" target="_blank" class="imglink" title="the chess games viewer extension for google chrome is part of the pgn4web project">
+<img style="width:2em; heigth:2em;" src="alpha/128/bp.png">
+</a>
+<h1>about the chess games viewer extension</h1>
+
+<p style="clear:both">
+The chess games viewer extension for Google Chrome is an interactive chessboard showing chess games from links to *.PGN URLs, from local *.PGN files and from PGN text, using context menus and page actions.
+<ul type='square'>
+<li>A context menu shows chess games from links to *.PGN chess games URLs; PGN (Portable Games Notation) files are commonly used to store and share chess games information. The live refresh option reloads the games periodically until all games are ended; use for links to chess games live broadcasts; a single large chessboard view is offered as well as a view with multiple small chessboards. The mouse cursor icon highlights links to *.PGN chess games URLs when hovering on them.</li>
+<li>A context menu allows showing chess games from local *.PGN files; drag and drop on the large chessboard view page also opens local *.PGN files.</li>
+<li>A context menu shows chess games from PGN chess games text selecetd in the web page.</li>
+<li>A page action looks for links to *.PGN chess games URLs in the current page; if found, a page action icon in the address bar allows for opening the links in the chess games viewer.</li>
+</ul>
+</p>
+<p>
+The top left chessboard square will flash in case of PGN data errors, click that square for further details.
+<p/>
+<p>
+Click on the viewer's chessboard top right square for user interface help, credits and license.
+<p/>
+<p>
+The chess games viewer extension for Google Chrome is part of <a href="http://pgn4web.casaschi.net">the pgn4web project</a>; visit <a href="http://code.google.com/p/pgn4web/wiki/Index">the pgn4web project wiki</a> <a href="http://code.google.com/p/pgn4web/wiki/BrowserExtension_GoogleChrome">for more information about the chess games viewer extension and for usage examples</a>.
+</p>
+
+</body>
+
+</html>
