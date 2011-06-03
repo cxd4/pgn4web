@@ -172,7 +172,8 @@ body {
   display: none;
   text-align: justify;
   padding: 2em;
-  background-color: #E8E8E8;
+  background-color: #FFCC99;
+  background-color: rgba(255, 204, 153, 0.5);
   -webkit-border-radius: 1em;
 }
 
