@@ -215,9 +215,10 @@ body {
   text-decoration: none;
 }
 
-.inputFiles {
-  color: transparent; 
-  background-color: transparent; 
+.localPgnFiles {
+  color: transparent;
+  border-color: transparent;
+  background-color: transparent;
   font-size: 1em;
 }
 
