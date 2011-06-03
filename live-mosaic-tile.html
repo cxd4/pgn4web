@@ -98,9 +98,7 @@
     }
   } catch(e) { myAlert("warning: failed accessing parent for shortcut squares to clear", false); }
 
-  if ((typeof(chrome) != "undefined") && (typeof(chrome.tabs) != "undefined") && (typeof(chrome.tabs.create) != "undefined")) {
-    boardShortcut("H5", "about the chess games viewer extension for google chrome", function(){ chrome.tabs.create({url: "about.html"}); });
-  }
+  if ((typeof(chrome) != "undefined") && (typeof(chrome.tabs) != "undefined") && (typeof(chrome.tabs.create) != "undefined")) { boardShortcut("A7", "about the chess games viewer extension for google chrome", function(){ chrome.tabs.create({url: "about.html"}); }); }
 
   function addTagToTitle(tagLabel, tagValue, object) {
     if (!tagValue || tagValue[1] == "?" || !object) { return; }

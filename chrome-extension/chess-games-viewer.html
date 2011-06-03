@@ -38,8 +38,9 @@ of Google Chrome. Don't use with any other browser.
 
 <script type="text/javascript">
 
+   var backgroundPage;
    if ((typeof(chrome) != "undefined") && (chrome.extension) && (chrome.extension.getBackgroundPage)) {
-      var backgroundPage = chrome.extension.getBackgroundPage();
+      backgroundPage = chrome.extension.getBackgroundPage();
    }
 
    var highlightOption_default = true;
@@ -58,26 +59,30 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function setPgnTextIndexFromTabId(tab) {
-      if ((backgroundPage.pgnTextIndexFromTabId[tab.id] !== null) && (backgroundPage.pgnTextIndexFromTabId[tab.id] !== undefined) && (backgroundPage.pgnTextIndexFromTabId[tab.id] !== pgnBackground)) {
-         backgroundPage.removePgnTextOnRemoved(tab.id);
+      if (backgroundPage) {
+         if ((backgroundPage.pgnTextIndexFromTabId[tab.id] !== null) && (backgroundPage.pgnTextIndexFromTabId[tab.id] !== undefined) && (backgroundPage.pgnTextIndexFromTabId[tab.id] !== pgnBackground)) {
+            backgroundPage.removePgnTextOnRemoved(tab.id);
+         }
+         backgroundPage.pgnTextIndexFromTabId[tab.id] = pgnBackground;
+         theObject = document.getElementById("pgnText");
+         if ((theObject) && (theObject.value) && (theObject.value != backgroundPage.pgnText[pgnBackground]))
+         { backgroundPage.pgnText[pgnBackground] = theObject.value; }
       }
-      backgroundPage.pgnTextIndexFromTabId[tab.id] = pgnBackground;
-      theObject = document.getElementById("pgnText");
-      if ((theObject) && (theObject.value) && (theObject.value != backgroundPage.pgnText[pgnBackground]))
-      { backgroundPage.pgnText[pgnBackground] = theObject.value; }
    }
 
    pgnBackground = null;
-   thisRegExp = /(&|\?)(pgnBackground|pb)=([^&]*)(&|$)/i;
-   if (window.location.search.match(thisRegExp) !== null) {
-      if ((pgnBackground = unescape(window.location.search.match(thisRegExp)[3])) !== "") {
-         theObject = document.getElementById("pgnText");
-         theBackgroundPgnText = backgroundPage.pgnText[pgnBackground];
-         if ((theObject) && (theBackgroundPgnText) && (theBackgroundPgnText !== undefined)) 
-         { theObject.value = theBackgroundPgnText; }
-         chrome.tabs.getCurrent(setPgnTextIndexFromTabId);
+   if (backgroundPage) {
+      thisRegExp = /(&|\?)(pgnBackground|pb)=([^&]*)(&|$)/i;
+      if (window.location.search.match(thisRegExp) !== null) {
+         if ((pgnBackground = unescape(window.location.search.match(thisRegExp)[3])) !== "") {
+            theObject = document.getElementById("pgnText");
+            theBackgroundPgnText = backgroundPage.pgnText[pgnBackground];
+            if ((theObject) && (theBackgroundPgnText) && (theBackgroundPgnText !== undefined)) 
+            { theObject.value = theBackgroundPgnText; }
+            chrome.tabs.getCurrent(setPgnTextIndexFromTabId);
+         }
       }
-   } 
+   }
 
    pgnData = "";
    thisRegExp = /(&|\?)(pgnData|pd)=([^&]*)(&|$)/i;
@@ -149,14 +154,12 @@ of Google Chrome. Don't use with any other browser.
       return true;
    }
 
+   // A7
+   if ((typeof(chrome) != "undefined") && (typeof(chrome.tabs) != "undefined") && (typeof(chrome.tabs.create) != "undefined")) { boardShortcut("A7", "about the chess games viewer extension for google chrome", function(){ chrome.tabs.create({url: "about.html"}); }); }
    // C7
    boardShortcut("C7", "toggle show comments on separate lines in game text and save setting", function(){ SetCommentsOnSeparateLines(!commentsOnSeparateLines); oldPly = CurrentPly; Init(); GoToMove(oldPly); setCommentsOnSeparateLinesToLocalStorage(); });
    // D7
    boardShortcut("D7", "toggle highlight last move and save setting", function(){ SetHighlight(!highlightOption); setHighlightOptionToLocalStorage(); });
-   // H5
-   if ((typeof(chrome) != "undefined") && (typeof(chrome.tabs) != "undefined") && (typeof(chrome.tabs.create) != "undefined")) {
-      boardShortcut("H5", "about the chess games viewer extension for google chrome", function(){ chrome.tabs.create({url: "about.html"}); });
-   }
 
    function fixHeaderTag(elementId) {
       var headerId = ["GameEvent", "GameSite", "GameDate", "GameRound", "GameWhite", "GameBlack", "GameResult", "GameSection", "GameStage", "GameBoardNum", "Timecontrol", "GameWhiteTitle", "GameBlackTitle", "GameWhiteElo", "GameBlackElo", "GameECO", "GameOpening", "GameVariation", "GameSubVariation", "GameTermination", "GameWhiteClock", "GameBlackClock", "GameTimeControl"];
