@@ -258,7 +258,7 @@ function removePgnLinksOnRemoved(tabId) {
 chrome.tabs.onRemoved.addListener(removePgnLinksOnRemoved);
 
 function removePgnLinksOnUpdated(tabId, changeInfo, tab) {
-  if ((changeInfo.status == "loading") && (changeInfoUrlWithoutHash = changeInfo.url.replace(/#.*$/, ""))) {
+  if ((changeInfo.status == "loading") && (changeInfo.url) && (changeInfoUrlWithoutHash = changeInfo.url.replace(/#.*$/, ""))) {
     if ((processedUrls[tabId]) && (changeInfoUrlWithoutHash != processedUrls[tabId])) {
       if (pgnHrefLinks[tabId]) { delete pgnHrefLinks[tabId]; }
       if (pgnWebRequests[tabId]) { delete pgnWebRequests[tabId]; }
