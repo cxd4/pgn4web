@@ -56,3 +56,16 @@ popup.html is over-engineered to cope with following issues:
 http://code.google.com/p/chromium/issues/detail?id=29452
 - scrollbar width is not taken into account for margins/padding
 http://code.google.com/p/chromium/issues/detail?id=31494
+
+about.html:
+currently the about.html is very basic; ideally it should be a showcase of
+the extension itself, offering a PGN text and some links to test. This is
+not possible at the moment because extension pages apparently dont load
+content scripts and dont get context menus; if this is ever fixed, then
+about.html should be enhanced.
+There is a bug open for the context scripts:
+http://code.google.com/p/chromium/issues/detail?id=51461
+Not sure it actually makes sense in general to ask for content scripts to
+be injected in extension pages. See:
+http://code.google.com/p/chromium/issues/detail?id=84843
+
