@@ -435,8 +435,9 @@ of Google Chrome. Don't use with any other browser.
             theObject.style.display = "";
             theObject.value = "";
          }
+         location.hash = "top";
          start_pgn4web();
-         location.hash = "top"; location.hash = "board";
+         location.hash = "board";
       }
       if (theObject = document.getElementById("infoMessage")) {
          if ((invalidFiles.length > 0) || (errorFiles.length > 0)) {
