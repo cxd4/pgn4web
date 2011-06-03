@@ -328,29 +328,15 @@ of Google Chrome. Don't use with any other browser.
 <div class="moveText"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
 
 <div id="notes" class="notes">
-
-<div id="notesRight" class="notesRight"></div>
-
-<div id="notesLeft" class="notesLeft">
 <span title="live broadcast status" id="GameLiveStatus"></span>
-<input type="file" id="localPgnFiles" name="localPgnFiles[]" multiple="multiple" class="inputFiles" size="4" style="display:none;" title="use the file selector input to choose *.PGN chess games or drag and drop *.PGN files on this page" />
+<input type="file" id="localPgnFiles" name="localPgnFiles[]" multiple="multiple" class="inputFiles" size="4" title="use the file selector input to choose local *.PGN chess games or drag and drop *.PGN files on this page" />
 &nbsp;
-</div>
-
 </div>
 
 <script type="text/javascript">
 
-   if (pgnData && (theObject = document.getElementById("notesRight"))) {
-      theObject.innerHTML = "<a title='chess games source' class='notesLink' href=" + pgnData + ">" + pgnData + "</a>";
-   } else if (pgnBackground && (theObject = document.getElementById("notesRight"))) {
-      theObject.innerHTML = "chess games from PGN text input";
-   } else if (theObject = document.getElementById("localPgnFiles")) {
-      theObject.style.display = "";
-      theObject.click(); /* currently does not have any effect, hopefully someday chrome will comply */
-      if (theObject = document.getElementById("notesRight")) {
-         theObject.innerHTML = "<span title='use the file selector input to choose *.PGN chess games or drag and drop *.PGN files on this page'>choose *.PGN chess games files or drag and drop them on this page</span>";
-      }
+   if ((LiveBroadcastDelay > 0) && (theObject = document.getElementById("localPgnFiles"))) {
+      theObject.style.display = "none";
    }
 
    var newPgnText;
@@ -426,15 +412,7 @@ of Google Chrome. Don't use with any other browser.
          firstStart = true;
          if (theObject = document.getElementById("pgnText")) { theObject.value = newPgnText; }
          if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = ""; }
-         if (theObject = document.getElementById("notesRight")) {
-            text = "chess games from " + validFiles.length + " local PGN " + (validFiles.length == 1 ? "file" : "files");
-            theObject.innerHTML = "<span title='" + text + ": \n" + validFiles.sort().join(" \n") + "'>" + text + "</span>";
-            theObject.style.marginTop = "";
-         }
-         if (theObject = document.getElementById("localPgnFiles")) { 
-            theObject.style.display = "";
-            theObject.value = "";
-         }
+         if (theObject = document.getElementById("localPgnFiles")) { theObject.value = theObject.style.display = ""; }
          location.hash = "top";
          start_pgn4web();
          location.hash = "board";
