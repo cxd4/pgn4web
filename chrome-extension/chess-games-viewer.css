@@ -197,7 +197,8 @@ ul {
   min-height: 1.4em;
   max-height: 21em;
   line-height: 1.4em;
-  overflow-y: auto;
+  overflow-y: scroll;
+  padding-right: 1em;
 }
 
 .lastMove {
