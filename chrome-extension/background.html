@@ -269,7 +269,7 @@ function removePgnLinksOnUpdated(tabId, changeInfo, tab) {
       }
       processedUrls[tabId] = changeInfoUrlWithoutHash;
     } else {
-      mergePgnLinksAndShowIcon(tabId); // this fixes am obscure issue with clicking twice on a hash link
+      mergePgnLinksAndShowIcon(tabId); // this seems to fix am obscure issue with clicking twice on a hash link
     }
   }
 }
