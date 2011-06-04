@@ -69,8 +69,14 @@ Not sure it actually makes sense in general to ask for content scripts to
 be injected in extension pages. See:
 http://code.google.com/p/chromium/issues/detail?id=84843
 
+about.html:
+this page is currently assigned as the "options" page while there are not
+any configurable options; it should rather assigned as "help" page once
+available, see this bug:
+http://code.google.com/p/chromium/issues/detail?id=29849
+
 background.html
 needs validation whether in removePgnLinksOnUpdated() the call to
-mergePgnLinksAndShowIcon(tabId) is required to fixes am obscure issue 
+mergePgnLinksAndShowIcon(tabId) is required to fix an obscure issue 
 with clicking twice on a hash link.
  
