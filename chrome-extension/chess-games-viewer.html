@@ -28,7 +28,7 @@ of Google Chrome. Don't use with any other browser.
 
 </head>
 
-<body id="body" onresize="fixCommentScrollbar();">
+<body id="body">
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
 <form style="display: none;"><textarea style="display: none;" id="pgnText">
@@ -323,7 +323,7 @@ of Google Chrome. Don't use with any other browser.
 </div>
 
 <div class="infoMessage" id="infoMessage"></div>
-<div class="lastMoveAndComment" id="lastMoveAndComment"><a href="javascript:MoveToPrevComment();" class="lastMove" title="last move" id="GameLastMove"></a><a href="javascript:MoveToNextComment();" class="lastComment" title="current position comment" id="GameLastComment"></a></div>
+<div class="lastMoveAndComment" id="lastMoveAndComment" onresize="fixCommentScrollbar();"><a href="javascript:MoveToPrevComment();" class="lastMove" title="last move" id="GameLastMove"></a><a href="javascript:MoveToNextComment();" class="lastComment" title="current position comment" id="GameLastComment"></a></div>
 
 <div class="moveText"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
 
