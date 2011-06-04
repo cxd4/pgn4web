@@ -69,3 +69,8 @@ Not sure it actually makes sense in general to ask for content scripts to
 be injected in extension pages. See:
 http://code.google.com/p/chromium/issues/detail?id=84843
 
+background.html
+needs validation whether in removePgnLinksOnUpdated() the call to
+mergePgnLinksAndShowIcon(tabId) is required to fixes am obscure issue 
+with clicking twice on a hash link.
+ 
