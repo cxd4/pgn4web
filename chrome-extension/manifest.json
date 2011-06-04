@@ -19,6 +19,8 @@
 
   "permissions": ["contextMenus", "tabs", "*://*/"],
 
+  "options_page": "about.html",
+
   "homepage_url": "http://pgn4web.casaschi.net",
 
   "incognito": "split",

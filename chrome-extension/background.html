@@ -189,11 +189,11 @@ chrome.contextMenus.create({"title": "View chess games link on multiple boards w
 
 chrome.contextMenus.create({"type": "separator", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns});
 
-// "page" and "selection" context menu to open local PGN files
+// "page" context menu to open local PGN files
 
-chrome.contextMenus.create({"title": "Open local PGN chess games files for viewing on a single board", "contexts": ["page", "selection"], "onclick": openlocalpgnOnClick});
+chrome.contextMenus.create({"title": "Open local PGN chess games files for viewing on a single board", "contexts": ["page"], "onclick": openlocalpgnOnClick});
 
-chrome.contextMenus.create({"type": "separator", "contexts": ["page", "selection"]});
+chrome.contextMenus.create({"type": "separator", "contexts": ["page"]});
 
 // "link", "page" and "selection" about menus
 
