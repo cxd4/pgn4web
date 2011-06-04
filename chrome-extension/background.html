@@ -217,6 +217,8 @@ var pgnWebRequests = new Array();
 var processedUrls = new Array();
 
 function mergePgnLinksAndShowIcon(tabId) {
+  if (! pgnHrefLinks[tabId]) { return; }
+  if (! pgnWebRequests[tabId]) { return; }
   pgnHrefLinks[tabId] = pgnHrefLinks[tabId].sort();
   for (r in pgnWebRequests[tabId]) {
     for (l in pgnHrefLinks[tabId]) {
@@ -258,12 +260,17 @@ function removePgnLinksOnRemoved(tabId) {
 chrome.tabs.onRemoved.addListener(removePgnLinksOnRemoved);
 
 function removePgnLinksOnUpdated(tabId, changeInfo, tab) {
-  if ((changeInfo.status == "loading") && (changeInfo.url) && (changeInfoUrlWithoutHash = changeInfo.url.replace(/#.*$/, ""))) {
-    if ((processedUrls[tabId]) && (changeInfoUrlWithoutHash != processedUrls[tabId])) {
-      if (pgnHrefLinks[tabId]) { delete pgnHrefLinks[tabId]; }
-      if (pgnWebRequests[tabId]) { delete pgnWebRequests[tabId]; }
+  if (changeInfo.status == "loading") {
+    if (changeInfo.url) {
+      changeInfoUrlWithoutHash = changeInfo.url.replace(/#.*$/, "");
+      if ((processedUrls[tabId]) && (processedUrls[tabId] !== changeInfoUrlWithoutHash)) {
+        if (pgnHrefLinks[tabId]) { delete pgnHrefLinks[tabId]; }
+        if (pgnWebRequests[tabId]) { delete pgnWebRequests[tabId]; }
+      }
+      processedUrls[tabId] = changeInfoUrlWithoutHash;
+    } else {
+      mergePgnLinksAndShowIcon(tabId); // this fixes am obscure issue with clicking twice on a hash link
     }
-    processedUrls[tabId] = changeInfoUrlWithoutHash;
   }
 }
 
