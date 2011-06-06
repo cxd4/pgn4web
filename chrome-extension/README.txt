@@ -31,7 +31,7 @@ until chromium bug 63545 is resolved, two entries are required
 and adding the about menu to the "selection" context would result in
 duplicated items when a selected link is right-clicked
 see http://code.google.com/p/chromium/issues/detail?id=63545
-It should have been fixed in google chrome v12, verify in background.html
+It should have been fixed in google chrome v13, verify in background.html
 
 background.html, "link" context menu:
 until chromium bug 63965 is resolved the context menu will not appear for
