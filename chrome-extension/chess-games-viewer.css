@@ -80,6 +80,10 @@ ul {
   font-size: 1em;
 }
 
+.gameButtons {
+  width: 24.5em; /* default 392px */
+}
+
 .buttonControlPlay,
 .buttonControlStop,
 .buttonControl {
