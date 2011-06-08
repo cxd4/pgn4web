@@ -46,9 +46,11 @@
   var refreshMinutes_default = 1;
   var refreshMinutes = refreshMinutes_default;
   var stepFlag = true;
-  thisRegExp = /(&|\?)(refreshMinutes|rm)=([\d.]*)(&|$)/i;
+  thisRegExp = /(&|\?)(refreshMinutes|rm)=([^&]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
-    refreshMinutes = unescape(window.location.search.match(thisRegExp)[3]);
+    refreshMinutes = parseFloat(unescape(window.location.search.match(thisRegExp)[3]));
+    if (isNaN(refreshMinutes)) { refreshMinutes = refreshMinutes_default; }
+    if (refreshMinutes <= 0) { refreshMinutes = refreshMinutes_default; }
   }
 
   var iniGame_default = 1;
@@ -63,7 +65,7 @@
     alert("pgn4web live-mosaic-tile.html parameters" + "\n" +
       " - useTextarea = " + useTextarea + "; if set true uses textarea as PGN input (default false = use pgnData)" + "\n" +
       " - pgnData = " + pgnFile + "; PGN file to load (default " + pgnFile_default + ")" + "\n" +
-      " - refreshMinutes = " + refreshMinutes + "; refresh interval in minutes, decimals allowed (default 1)" + "\n" +
+      " - refreshMinutes = " + refreshMinutes + "; refresh interval in minutes, decimals allowed (default " + refreshMinutes_default + ")" + "\n" +
       " - refreshDemo = " + demoFlag + "; sets live demo mode (default false)" + "\n" +
       " - initialGame = " + iniGame + "; initial game number or search string" + "\n" +
       " - help = true; prints this help (default false)");
