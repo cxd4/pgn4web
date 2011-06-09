@@ -233,7 +233,7 @@ of Google Chrome. Don't use with any other browser.
       // else { if (theObject = document.getElementById('ResultAtGametextEnd')) { theObject.innerHTML = ""; } }
       if (theObject = document.getElementById('lastMoveAndComment')) {
          var lastDisplayStyle = "none";
-         if ((numberOfGames > 1) || (PlyNumber > 0) || (gameFEN[currentGame])) {
+         if ((PlyNumber > 0) || (gameFEN[currentGame])) {
             for(ii=StartPly; ii<=StartPly+PlyNumber; ii++) {
                if (strippedMoveComment(ii)) {
                   lastDisplayStyle = "block";
