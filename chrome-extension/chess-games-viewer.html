@@ -447,7 +447,7 @@ of Google Chrome. Don't use with any other browser.
       }
       if (theObject = document.getElementById("infoMessage")) {
          if ((invalidFiles.length > 0) || (errorFiles.length > 0)) {
-            text = "<span class='infoMessageHighlight'>" + (newPgnText ? "warning:" : "error:") + "</span> the chess games viewer only accepts chess games *.PGN files; files generating errors while loading, empty files, files other than *.PGN files and folders are rejected:<ul><li>" + invalidFiles.concat(errorFiles).sort().join("</li><li>") + "</li></ul>";
+            text = "<span class='infoMessageHighlight'>" + (newPgnText ? "warning:" : "error:") + "</span> the chess games viewer only accepts chess games *.PGN files and zipfiles containing *.PGN files; files generating errors while loading, empty files, zipfiles not containing any *.PGN file, files other than *.PGN files and folders are rejected:<ul><li>" + invalidFiles.concat(errorFiles).sort().join("</li><li>") + "</li></ul>";
             if (validFiles.length > 0) { text += "loaded *.PGN files:<ul><li>" + validFiles.sort().join("</li><li>") + "</li></ul>"; }
             theObject.innerHTML = text;
             theObject.style.display = "block";
