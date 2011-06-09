@@ -1475,6 +1475,41 @@ function pgnGameFromPgnText(pgnText) {
   return (gameIndex >= 0);
 }
 
+function pgnGameFromHttpRequest(httpResponseData) {
+
+  if (pgnUrl && pgnUrl.match(/\.zip(\?|#|$)/i)) {
+    var unzippedPgnText = "";
+    try {
+      // requires loading js-unzip/js-unzip.js and js-unzip/js-inflate.js
+      var unzipper = new JSUnzip(httpResponseData);
+      if (unzipper.isZipFile()) {
+        unzipper.readEntries();
+        for (u in unzipper.entries) {
+          if (unzipper.entries[u].fileName.match(/\.pgn$/i)) {
+            switch (unzipper.entries[u].compressionMethod) {
+              case 0:
+                unzippedPgnText += "\n" + unzipper.entries[u].data + "\n";
+                break;
+              case 8:
+                unzippedPgnText += "\n" + JSInflate.inflate(unzipper.entries[u].data) + "\n";
+                break;
+              default:
+                myAlert("warning: unsupported compression method " + unzipper.entries[u].compressionMethod + " at ZIP URL\nPGNURL: " + pgnUrl, false);
+                break;
+            }
+          }
+        }
+        if (!unzippedPgnText) { myAlert("error: no PGN games found at ZIP URL\nPGNURL: " + pgnUrl, true); }
+      } else { myAlert("error: invalid zipfile\nPGNURL: " + pgnUrl, true); }
+    } catch(e) { myAlert("error: missing unzip library or unzip error\nPGNURL: " + pgnUrl, true); }
+    if (!unzippedPgnText) { unzippedPgnText = alertPgnHeader; }
+  } else {
+    unzippedPgnText = httpResponseData;
+  }
+
+  return pgnGameFromPgnText(unzippedPgnText);
+}
+
 var http_request_last_processed_id = 0;
 function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
 
@@ -1502,7 +1537,7 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
     } else if (! this_http_request.responseText) {
       myAlert('error: no data received from PGN URL\n' + pgnUrl + '\n' + (new Date()).toLocaleString(), true); 
       loadPgnFromPgnUrlResult = LOAD_PGN_FAIL;
-    } else if (! pgnGameFromPgnText(this_http_request.responseText)) {
+    } else if (! pgnGameFromHttpRequest(this_http_request.responseText)) {
       myAlert('error: no games found at PGN URL\n' + pgnUrl + '\n' + (new Date()).toLocaleString(), true); 
       loadPgnFromPgnUrlResult = LOAD_PGN_FAIL;
     } else {
@@ -1642,7 +1677,7 @@ function loadPgnFromPgnUrl(pgnUrl){
   if (window.XMLHttpRequest) { // not IE
     http_request = new XMLHttpRequest();
     if (http_request.overrideMimeType) {
-      http_request.overrideMimeType('text/plain');
+      http_request.overrideMimeType('text/plain; charset=x-user-defined');
     }
   } else if (window.ActiveXObject) { // IE
     try { http_request = new ActiveXObject("Msxml2.XMLHTTP"); }
