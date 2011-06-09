@@ -231,15 +231,17 @@ of Google Chrome. Don't use with any other browser.
       customPgnHeaderTagWithFix('Termination', 'GameTermination');
       // if (PlyNumber > 0) { customPgnHeaderTag('Result', 'ResultAtGametextEnd'); }
       // else { if (theObject = document.getElementById('ResultAtGametextEnd')) { theObject.innerHTML = ""; } }
-      var lastDisplayStyle = "none";
-      for(ii=StartPly; ii<=StartPly+PlyNumber; ii++) {
-        if (strippedMoveComment(ii)) {
-          lastDisplayStyle = "block";
-          break;
-        }
-      }
       if (theObject = document.getElementById('lastMoveAndComment')) {
-        theObject.style.display = lastDisplayStyle;
+         var lastDisplayStyle = "none";
+         if ((numberOfGames > 1) || (PlyNumber > 0) || (gameFEN[currentGame])) {
+            for(ii=StartPly; ii<=StartPly+PlyNumber; ii++) {
+               if (strippedMoveComment(ii)) {
+                  lastDisplayStyle = "block";
+                  break;
+               }
+            }
+         }
+         theObject.style.display = lastDisplayStyle;
       }
    }
 
