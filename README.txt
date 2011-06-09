@@ -451,7 +451,20 @@ The jscolor javascript code is  maintained by Honza Odvarko
 (http://www.gnu.org/copyleft/lesser.html)
 See http://jscolor.com/
 
+The SWFObject javascript library (http://code.google.com/p/swfobject/) is
+released under the MIT License
+(http://www.opensource.org/licenses/mit-license.php).
+
+The js-unzip.js library (https://github.com/augustl/js-unzip) is 
+Copyright (c) 2010 August Lilleaas.
+The js-inflate.js library (https://github.com/augustl/js-inflate) is
+Copyright (c) 2010 August Lilleaas and Copyright (c) 1999 Masanao Izumo.
+Both are released under the MIT License
+(http://www.opensource.org/licenses/mit-license.php).
+
+
 The above items remains subject to their original licenses (if any).
+
 
 Remaining pgn4web code is copyright (C) 2009, 2011 Paolo Casaschi
 
