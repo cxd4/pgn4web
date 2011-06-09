@@ -352,13 +352,47 @@ of Google Chrome. Don't use with any other browser.
          validFiles = new Array();
          errorFiles = new Array();
          for (f=0; f<files.length; f++) {
-            if (files[f].name.match(/\.pgn$/i)) {
+            if (files[f].name.match(/\.(pgn|zip)$/i)) {
                var reader = new FileReader();
                reader.onload = (function(theFileName) {
                   return function(e) {
                      if (e.target.result) {
-                        newPgnText += e.target.result + "\n\n\n";
-                        validFiles.push(theFileName);
+                        if (theFileName.match(/\.(pgn)$/i)) {
+                           newPgnText += e.target.result + "\n\n\n";
+                           validFiles.push(theFileName);
+                        } else if (theFileName.match(/\.(zip)$/i)) {
+                           var unzippedPgnText = "";
+                           try {
+                              var unzipper = new JSUnzip(e.target.result);
+                              if (unzipper.isZipFile()) {
+                                 unzipper.readEntries();
+                                 for (u in unzipper.entries) {
+                                    if (unzipper.entries[u].fileName.match(/\.pgn$/i)) {
+                                       switch (unzipper.entries[u].compressionMethod) {
+                                          case 0:
+                                             unzippedPgnText += "\n" + unzipper.entries[u].data + "\n";
+                                             break;
+                                          case 8:
+                                             unzippedPgnText += "\n" + JSInflate.inflate(unzipper.entries[u].data) + "\n";
+                                             break;
+                                          default:
+                                             myAlert("warning: unsupported compression method " + unzipper.entries[u].compressionMethod + " in ZIP file\n" + theFileName, false);
+                                             break;
+                                       }
+                                    }
+                                 } 
+                                 if (!unzippedPgnText) { myAlert("error: no PGN games found in ZIP file\n" + theFileName, true); }
+                              } else { myAlert("error: invalid ZIP file\n" + theFileName, true); }
+                           } catch(e) { myAlert("error: missing unzip library or unzip error for ZIP file\n" + theFileName, true); }
+                           if (unzippedPgnText) {
+                              newPgnText += unzippedPgnText + "\n\n\n";
+                              validFiles.push(theFileName);
+                           } else {
+                              errorFiles.push(theFileName);
+                           }
+                        } else {
+                           errorFiles.push(theFileName);
+                        }
                      } else {
                         errorFiles.push(theFileName);
                      }
@@ -371,7 +405,8 @@ of Google Chrome. Don't use with any other browser.
                      if (! --pgnFilesLeft) { useNewPgnText(); }                            
                   };
                })(files[f].name);
-               reader.readAsText(files[f]);
+               if (files[f].name.match(/\.(zip)$/i)) { reader.readAsBinaryString(files[f]); }
+               else { reader.readAsText(files[f]); }
             } else {
                invalidFiles.push(files[f].name);
                if (! --pgnFilesLeft) { useNewPgnText(); }
