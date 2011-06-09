@@ -51,7 +51,7 @@ pgn4web_bitly_apiKey = "";
 
 //
 // pointer URL for the live games broadcast, default = '.'
-// used by: live.html, live-multi.html
+// used by: live.html, live-multi.html, live-mosaic.html
 //
 pgn4web_live_pointer_url = '.';
 // pgn4web_live_pointer_url = 'http://pgn4web-live.casaschi.net';
