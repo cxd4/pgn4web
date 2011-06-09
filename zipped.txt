@@ -1,2 +1,0 @@
-test zipfile showing pgn4web ability to read PGN games from zipfiles
-browse zipped.html
