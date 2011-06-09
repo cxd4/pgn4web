@@ -322,7 +322,7 @@ of Google Chrome. Don't use with any other browser.
 
 <div id="notes" class="notes">
 <span title="live broadcast status" id="GameLiveStatus"></span>
-<input type="file" id="localPgnFiles" name="localPgnFiles[]" multiple="multiple" class="localPgnFiles" size="4" title="choose local *.PGN chess games file or drag and drop local *.PGN chess games files on this page for viewing"/>
+<input type="file" id="localPgnFiles" name="localPgnFiles[]" multiple="multiple" class="localPgnFiles" size="4" title="choose local PGN chess games file or drag and drop local PGN chess games files on this page for viewing"/>
 &nbsp;
 </div>
 
@@ -376,14 +376,13 @@ of Google Chrome. Don't use with any other browser.
                                              unzippedPgnText += "\n" + JSInflate.inflate(unzipper.entries[u].data) + "\n";
                                              break;
                                           default:
-                                             myAlert("warning: unsupported compression method " + unzipper.entries[u].compressionMethod + " in ZIP file\n" + theFileName, false);
+                                             // unsupported compression method
                                              break;
                                        }
                                     }
                                  } 
-                                 if (!unzippedPgnText) { myAlert("warning: no PGN games found in ZIP file\n" + theFileName, false); }
-                              } else { myAlert("warning: invalid ZIP file\n" + theFileName, false); }
-                           } catch(e) { myAlert("warning: missing unzip library or unzip error for ZIP file\n" + theFileName, false); }
+                              }
+                           } catch(e) { /* missing unzip library or unzip error */ }
                            if (unzippedPgnText) {
                               newPgnText += unzippedPgnText + "\n\n\n";
                               validFiles.push(theFileName);
@@ -447,8 +446,8 @@ of Google Chrome. Don't use with any other browser.
       }
       if (theObject = document.getElementById("infoMessage")) {
          if ((invalidFiles.length > 0) || (errorFiles.length > 0)) {
-            text = "<span class='infoMessageHighlight'>" + (newPgnText ? "warning:" : "error:") + "</span> the chess games viewer only accepts chess games *.PGN files and ZIP archives containing *.PGN files; files generating errors while loading, empty files, ZIP archives not containing any *.PGN file, files other than *.PGN files and folders are rejected:<ul><li>" + invalidFiles.concat(errorFiles).sort().join("</li><li>") + "</li></ul>";
-            if (validFiles.length > 0) { text += "loaded *.PGN files:<ul><li>" + validFiles.sort().join("</li><li>") + "</li></ul>"; }
+            text = "<span class='infoMessageHighlight'>" + (newPgnText ? "warning:" : "error:") + "</span> the chess games viewer only accepts chess games PGN files and ZIP archives containing PGN files; files generating errors while loading, empty files, ZIP archives not containing any PGN file, files other than PGN files and folders are rejected:<ul><li>" + invalidFiles.concat(errorFiles).sort().join("</li><li>") + "</li></ul>";
+            if (validFiles.length > 0) { text += "loaded PGN files and ZIP archives:<ul><li>" + validFiles.sort().join("</li><li>") + "</li></ul>"; }
             theObject.innerHTML = text;
             theObject.style.display = "block";
          } else {
