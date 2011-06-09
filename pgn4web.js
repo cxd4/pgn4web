@@ -1494,14 +1494,14 @@ function pgnGameFromHttpRequest(httpResponseData) {
                 unzippedPgnText += "\n" + JSInflate.inflate(unzipper.entries[u].data) + "\n";
                 break;
               default:
-                myAlert("warning: unsupported compression method " + unzipper.entries[u].compressionMethod + " at ZIP URL\nPGNURL: " + pgnUrl, false);
+                myAlert("warning: unsupported compression method " + unzipper.entries[u].compressionMethod + " at ZIP URL\n" + pgnUrl, false);
                 break;
             }
           }
         }
-        if (!unzippedPgnText) { myAlert("error: no PGN games found at ZIP URL\nPGNURL: " + pgnUrl, true); }
-      } else { myAlert("error: invalid zipfile\nPGNURL: " + pgnUrl, true); }
-    } catch(e) { myAlert("error: missing unzip library or unzip error\nPGNURL: " + pgnUrl, true); }
+        if (!unzippedPgnText) { myAlert("error: no PGN games found at ZIP URL\n" + pgnUrl, true); }
+      } else { myAlert("error: invalid zipfile at ZIP URL\n" + pgnUrl, true); }
+    } catch(e) { myAlert("error: missing unzip library or unzip error at ZIP URL\n" + pgnUrl, true); }
     if (!unzippedPgnText) { unzippedPgnText = alertPgnHeader; }
   } else {
     unzippedPgnText = httpResponseData;

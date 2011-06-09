@@ -25,7 +25,7 @@ var debugInfo = "the top left chessboard square will flash in case of PGN data e
 var pgnHeaderRegExpGlobal = /((\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)+)/g;
 
 function validatePgnUrl(pgnUrl) {
-  return (pgnUrl.match(/^(http|https):\/\/[^?#]+\.pgn($|\?.*$|#.*$)/i) !== null);
+  return (pgnUrl.match(/^(http|https):\/\/[^?#]+\.(pgn|zip)($|\?.*$|#.*$)/i) !== null);
 }
 
 // keep this aligned with the one in pgn4web.js
@@ -176,6 +176,8 @@ chrome.contextMenus.create({"type": "separator", "contexts": ["page", "selection
 // which URL patters should be considered as PGN chess games
 
 pgnUrlPatterns = ["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", "*://*/*.PGN?*", "*://*/*.Pgn?*"];
+zipUrlPatterns = ["*://*/*.zip", "*://*/*.ZIP", "*://*/*.Zip", "*://*/*.zip?*", "*://*/*.ZIP?*", "*://*/*.Zgn?*"];
+pgnZipUrlPatterns = pgnUrlPatterns.concat(zipUrlPatterns);
 
 // until chromium bug 63965 is resolved the context menu will not appear for
 // links shown as images like this <a href=game.pgn><img src=image.jpeg/></a>
@@ -187,7 +189,9 @@ chrome.contextMenus.create({"title": "View chess games link on a single board wi
 
 chrome.contextMenus.create({"title": "View chess games link on multiple boards with live refresh", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnliveallLinkOnClick});
 
-chrome.contextMenus.create({"type": "separator", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns});
+chrome.contextMenus.create({"title": "Look for PGN chess games in the ZIP archive link", "contexts": ["link"],  targetUrlPatterns: zipUrlPatterns, "onclick": pgnviewLinkOnClick});
+
+chrome.contextMenus.create({"type": "separator", "contexts": ["link"], targetUrlPatterns: pgnZipUrlPatterns});
 
 // "page" context menu to open local PGN files
 
@@ -199,14 +203,14 @@ chrome.contextMenus.create({"type": "separator", "contexts": ["page"]});
 
 // ideally, only this entry should be required
 //
-// chrome.contextMenus.create({"title": "About the chess games viewer extension", "contexts": ["link", "page", "selection"], targetUrlPatterns: pgnUrlPatterns, "onclick": aboutChessGamesViewer});
+// chrome.contextMenus.create({"title": "About the chess games viewer extension", "contexts": ["link", "page", "selection"], targetUrlPatterns: pgnZipUrlPatterns, "onclick": aboutChessGamesViewer});
 //
 // however, until chromium bug 63545 is resolved, two entries are required
 // and adding the about menu to the "selection" context would result in
 // duplicated items when a selected link is right-clicked
 // see http://code.google.com/p/chromium/issues/detail?id=63545
 
-chrome.contextMenus.create({"title": "About the chess games viewer extension", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": aboutChessGamesViewer});
+chrome.contextMenus.create({"title": "About the chess games viewer extension", "contexts": ["link"], targetUrlPatterns: pgnZipUrlPatterns, "onclick": aboutChessGamesViewer});
 
 chrome.contextMenus.create({"title": "About the chess games viewer extension", "contexts": ["page"], "onclick": aboutChessGamesViewer});
 
