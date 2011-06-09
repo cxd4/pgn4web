@@ -381,9 +381,9 @@ of Google Chrome. Don't use with any other browser.
                                        }
                                     }
                                  } 
-                                 if (!unzippedPgnText) { myAlert("error: no PGN games found in ZIP file\n" + theFileName, true); }
-                              } else { myAlert("error: invalid ZIP file\n" + theFileName, true); }
-                           } catch(e) { myAlert("error: missing unzip library or unzip error for ZIP file\n" + theFileName, true); }
+                                 if (!unzippedPgnText) { myAlert("warning: no PGN games found in ZIP file\n" + theFileName, false); }
+                              } else { myAlert("warning: invalid ZIP file\n" + theFileName, false); }
+                           } catch(e) { myAlert("warning: missing unzip library or unzip error for ZIP file\n" + theFileName, false); }
                            if (unzippedPgnText) {
                               newPgnText += unzippedPgnText + "\n\n\n";
                               validFiles.push(theFileName);
