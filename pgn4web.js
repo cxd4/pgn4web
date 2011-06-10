@@ -113,7 +113,7 @@ function myAlert(msg, fatalError) {
   alertNumSinceReset++;
   if (fatalError) { fatalErrorNumSinceReset++; }
   alertLast = (alertLast + 1) % alertLog.length;
-  alertLog[alertLast] = msg;
+  alertLog[alertLast] = msg  + "\n" + (new Date()).toLocaleString();
   boardShortcut(debugShortcutSquare, 
     "pgn4web v" + pgn4web_version + " debug info, " + alertNum + " alert" + (alertNum > 1 ? "s" : "")); 
 
@@ -1501,8 +1501,11 @@ function pgnGameFromHttpRequest(httpResponseData) {
         }
         if (!unzippedPgnText) { myAlert("error: no PGN games found in ZIP archive at URL\n" + pgnUrl, true); }
       } else { myAlert("error: invalid ZIP archive at URL\n" + pgnUrl, true); }
-    } catch(e) { myAlert("error: missing unzip library or unzip error for ZIP archive at URL\n" + pgnUrl, true); }
-    if (!unzippedPgnText) { unzippedPgnText = alertPgnHeader; }
+      if (!unzippedPgnText) { unzippedPgnText = alertPgnHeader; }
+    } catch(e) {
+      myAlert("error: missing unzip library or unzip error for ZIP archive at URL\n" + pgnUrl, true);
+      unzippedPgnText = httpResponseData; // passing through the data for backward compatibility
+    }
   } else {
     unzippedPgnText = httpResponseData;
   }
@@ -1524,7 +1527,7 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
       if (LiveBroadcastDelay > 0) {
         loadPgnFromPgnUrlResult = LOAD_PGN_UNMODIFIED;
       } else { 
-        myAlert('error: unmodified PGN URL when not in live mode\n' + (new Date()).toLocaleString());
+        myAlert('error: unmodified PGN URL when not in live mode');
         loadPgnFromPgnUrlResult = LOAD_PGN_FAIL;
       }
 
@@ -1535,10 +1538,10 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
 // end of dirty hack
 
     } else if (! this_http_request.responseText) {
-      myAlert('error: no data received from PGN URL\n' + pgnUrl + '\n' + (new Date()).toLocaleString(), true); 
+      myAlert('error: no data received from PGN URL\n' + pgnUrl, true); 
       loadPgnFromPgnUrlResult = LOAD_PGN_FAIL;
     } else if (! pgnGameFromHttpRequest(this_http_request.responseText)) {
-      myAlert('error: no games found at PGN URL\n' + pgnUrl + '\n' + (new Date()).toLocaleString(), true); 
+      myAlert('error: no games found at PGN URL\n' + pgnUrl, true); 
       loadPgnFromPgnUrlResult = LOAD_PGN_FAIL;
     } else {
       if (LiveBroadcastDelay > 0) {
@@ -1553,7 +1556,7 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
     }
 
   } else { 
-    myAlert('error: failed reading PGN URL\n' + pgnUrl + '\n' + (new Date()).toLocaleString(), true);
+    myAlert('error: failed reading PGN URL\n' + pgnUrl, true);
     loadPgnFromPgnUrlResult = LOAD_PGN_FAIL;
   }
 
