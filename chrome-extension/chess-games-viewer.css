@@ -227,6 +227,14 @@ ul {
   text-decoration: none;
 }
 
+.loadButtons {
+}
+
+.remotePgnUrl {
+  margin-right: 0.5em;
+  font-size: 1em;
+}
+
 .localPgnFiles {
   color: transparent;
   border-color: transparent;
