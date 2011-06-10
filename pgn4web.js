@@ -1480,8 +1480,10 @@ function pgnGameFromHttpRequest(httpResponseData) {
   if (pgnUrl && pgnUrl.match(/\.zip(\?|#|$)/i)) {
     var unzippedPgnText = "";
     try {
+      zipData = "";
+      for (h in httpResponseData) { zipData += String.fromCharCode(httpResponseData.charCodeAt(h) & 255); }
       // requires loading js-unzip/js-unzip.js and js-unzip/js-inflate.js
-      var unzipper = new JSUnzip(httpResponseData);
+      var unzipper = new JSUnzip(zipData);
       if (unzipper.isZipFile()) {
         unzipper.readEntries();
         for (u in unzipper.entries) {
