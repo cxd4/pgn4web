@@ -98,7 +98,8 @@
         // why, and do that here if neccesary. So far, I've never gotten a
         // char code higher than 255.
         getByteAt: function (index) {
-            return this.stream.charCodeAt(index);
+            return this.stream.charCodeAt(index) & 0xff; // pgn4web patch for data from XMLHttpRequests
+            // return this.stream.charCodeAt(index);
         },
 
         getNextBytesAsNumber: function (steps) {
