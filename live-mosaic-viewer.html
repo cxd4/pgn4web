@@ -364,18 +364,20 @@ function updateBoard(thisBoardId) {
       if (startGame >= 0) { gameForBoard = (startGame + thisBoard) % numberOfGamesForDisplay; }
       else { gameForBoard = (2 * numberOfGamesForDisplay + startGame - thisBoard) % numberOfGamesForDisplay; }
       thisPgnGame = pgnGameForBoard(unfilteredGames[gameForBoard]);
-      try {
-        if (window.frames["board" + thisBoardId].readyToReceivePgn) {
-          window.frames["board" + thisBoardId].pauseLiveBroadcast();
-          window.frames["board" + thisBoardId].document.getElementById("pgnText").value = thisPgnGame;
-          window.frames["board" + thisBoardId].refreshPgnSource();
-          window.frames["board" + thisBoardId].clearShortcutSquares("A","8");
-        }
-      } catch(e) { myAlert("error: failed accessing iframe for board #" + thisBoard, true); }
-      thisFrame.className = "visibleFrame";
+      thisFrameClass = "visibleFrame";
     } else {
-      thisFrame.className = "hiddenFrame";
+      thisPgnGame = "";
+      thisFrameClass = "hiddenFrame";
     }
+    try {
+      if (window.frames["board" + thisBoardId].readyToReceivePgn) {
+        window.frames["board" + thisBoardId].pauseLiveBroadcast();
+        window.frames["board" + thisBoardId].document.getElementById("pgnText").value = thisPgnGame;
+        window.frames["board" + thisBoardId].refreshPgnSource();
+        window.frames["board" + thisBoardId].clearShortcutSquares("A","8");
+      }
+    } catch(e) { myAlert("error: failed accessing iframe for board #" + thisBoard, true); }
+    thisFrame.className = thisFrameClass;
   }
 }
 
