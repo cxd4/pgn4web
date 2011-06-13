@@ -95,12 +95,15 @@
     if (parent && (pcscsfcf = parent.pgn4webClearShortCutSquaresForChildFrames)) {
       for (cscs in pcscsfcf) { clearShortcutSquares(pcscsfcf[cscs][0], pcscsfcf[cscs][1]); }
     }
-    if (parent && parent.pgn4webHideChildFrameGame) {
-      boardShortcut("A6", "hide this game", hideThisGame);
+    if (parent && parent.displayPgnData) {
+      boardShortcut("D8", "show full PGN source data", function(){ parent.displayPgnData(true); });
     }
   } catch(e) { myAlert("warning: failed accessing parent for shortcut squares to clear", false); }
 
-  if ((typeof(chrome) != "undefined") && (typeof(chrome.tabs) != "undefined") && (typeof(chrome.tabs.create) != "undefined")) { boardShortcut("A7", "about the chess games viewer extension for google chrome", function(){ chrome.tabs.create({url: "about.html"}); }); }
+  if ((typeof(chrome) != "undefined") && (typeof(chrome.tabs) != "undefined") && (typeof(chrome.tabs.create) != "undefined")) {
+     boardShortcut("A7", "about the chess games viewer extension for google chrome", function(){ chrome.tabs.create({url: "about.html"}); });
+     boardShortcut("H8", "about the chess games viewer extension for google chrome", function(){ chrome.tabs.create({url: "about.html"}); });
+  }
 
   function addTagToTitle(tagLabel, tagValue, object) {
     if (!tagValue || tagValue[1] == "?" || !object) { return; }
@@ -174,7 +177,7 @@
     }
   }
 
-  function customShortcutKey_Shift_0(){if (parent && parent.customShortcutKey_Shift_0) {parent.customShortcutKey_Shift_0();}}
+  function customShortcutKey_Shift_0() { try { if (parent && parent.customShortcutKey_Shift_0) {parent.customShortcutKey_Shift_0(); } } catch(e) { myAlert("error: failed accessing parent custom shortcut key function"); } }
 
   function customShortcutKey_Shift_1() {
     if (gameWhite[currentGame]) {
@@ -188,13 +191,13 @@
     }
   }
 
-  function customShortcutKey_Shift_3(){if (parent && parent.customShortcutKey_Shift_3) {parent.customShortcutKey_Shift_3();}}
-  function customShortcutKey_Shift_4(){if (parent && parent.customShortcutKey_Shift_4) {parent.customShortcutKey_Shift_4();}}
-  function customShortcutKey_Shift_5(){if (parent && parent.customShortcutKey_Shift_5) {parent.customShortcutKey_Shift_5();}}
-  function customShortcutKey_Shift_6(){if (parent && parent.customShortcutKey_Shift_6) {parent.customShortcutKey_Shift_6();}}
-  function customShortcutKey_Shift_7(){if (parent && parent.customShortcutKey_Shift_7) {parent.customShortcutKey_Shift_7();}}
-  function customShortcutKey_Shift_8(){if (parent && parent.customShortcutKey_Shift_8) {parent.customShortcutKey_Shift_8();}}
-  function customShortcutKey_Shift_9(){if (parent && parent.customShortcutKey_Shift_9) {parent.customShortcutKey_Shift_9();}}
+  function customShortcutKey_Shift_3() { try { if (parent && parent.customShortcutKey_Shift_3) {parent.customShortcutKey_Shift_3(); } } catch(e) { myAlert("error: failed accessing parent custom shortcut key function"); } }
+  function customShortcutKey_Shift_4() { try { if (parent && parent.customShortcutKey_Shift_4) {parent.customShortcutKey_Shift_4(); } } catch(e) { myAlert("error: failed accessing parent custom shortcut key function"); } }
+  function customShortcutKey_Shift_5() { try { if (parent && parent.customShortcutKey_Shift_5) {parent.customShortcutKey_Shift_5(); } } catch(e) { myAlert("error: failed accessing parent custom shortcut key function"); } }
+  function customShortcutKey_Shift_6() { try { if (parent && parent.customShortcutKey_Shift_6) {parent.customShortcutKey_Shift_6(); } } catch(e) { myAlert("error: failed accessing parent custom shortcut key function"); } }
+  function customShortcutKey_Shift_7() { try { if (parent && parent.customShortcutKey_Shift_7) {parent.customShortcutKey_Shift_7(); } } catch(e) { myAlert("error: failed accessing parent custom shortcut key function"); } }
+  function customShortcutKey_Shift_8() { try { if (parent && parent.customShortcutKey_Shift_8) {parent.customShortcutKey_Shift_8(); } } catch(e) { myAlert("error: failed accessing parent custom shortcut key function"); } }
+  function customShortcutKey_Shift_9() { try { if (parent && parent.customShortcutKey_Shift_9) {parent.customShortcutKey_Shift_9(); } } catch(e) { myAlert("error: failed accessing parent custom shortcut key function"); } }
 
   window.onload = function() {
     start_pgn4web();
