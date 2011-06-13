@@ -286,7 +286,7 @@ of Google Chrome. Don't use with any other browser.
       if ((typeof(chrome) != "undefined") && (chrome.extension) && (pgnUrl) && (refreshMinutes)) {
          url = "live-mosaic-viewer.html?pgnData=" + escape(pgnUrl) + "&refreshMinutes=" + escape(refreshMinutes) + "&hp=t";
          if (demoFlag) { url += "&refreshDemo=true"; }
-         locatio.href = url;
+         location.href = url;
       }
    }
 
