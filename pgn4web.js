@@ -202,7 +202,8 @@ function handlekey(e) {
   if (e.altKey || e.ctrlKey || e.metaKey) { return true; }
 
   // escape always enabled: help and toggle shortcut keys
-  if ((keycode != 27) && (shortcutKeysEnabled === false)) { return true; }
+  // custom shortcut keys shift 0..9 always enabled
+  if (!shortcutKeysEnabled && !(keycode == 27 || (e.shiftKey && (keycode >= 48 || keycode <= 57)))) { return true; }
 
   switch(keycode) {
 

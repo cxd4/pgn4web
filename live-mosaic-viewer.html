@@ -524,17 +524,17 @@ function customShortcutKey_Shift_0() {
   displayPgnData(true);
 }
 
-function customShortcutKey_Shift_1() {
+function customShortcutKey_Shift_8() {
   firstGame = firstGameAtStartup;
   customFunctionOnPgnTextLoad();
 }
 
-function customShortcutKey_Shift_2() {
+function customShortcutKey_Shift_9() {
   firstGame = firstGameAtStartup;
   restoreHiddenGames();
 }
 
-function customShortcutKey_Shift_8() {
+function customShortcutKey_Shift_6() {
   if ((typeof(chrome) != "undefined") && (chrome.extension) && (pgnUrl) && (refreshMinutes)) {
     url = "chess-games-viewer.html?pgnData=" + escape(pgnUrl) + "&refreshMinutes=" + escape(refreshMinutes);
     if (demoFlag) { url += "&refreshDemo=true"; }
