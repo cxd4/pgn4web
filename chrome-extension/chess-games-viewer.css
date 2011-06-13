@@ -32,16 +32,13 @@ ul {
   list-style-type: square;
 }
 
-.gameBoard, .boardTable {
-  width: 24.5em !important; /* default 392px */
-  height: 24.5em !important;
-}
-
 .boardTable {
   border-style: solid;
   border-color: #663300;
   border-width: 0.25em; /* default 4px */
   -webkit-box-shadow: 0 0 1.25em #663300;
+  width: 24.5em !important; /* default 392px */
+  height: 24.5em !important;
 }
 
 .pieceImage {
