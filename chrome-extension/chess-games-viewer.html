@@ -307,7 +307,7 @@ of Google Chrome. Don't use with any other browser.
 
 <div class="boardColumn">
 <center>
-<div id="GameBoard" class="gameBoard"></div>
+<div id="GameBoard"></div>
 <div id="GameButtons" class="gameButtons"></div>
 </center>
 </div>
@@ -353,18 +353,16 @@ of Google Chrome. Don't use with any other browser.
 
    function fetchNewPgnUrl() {
       if (newPgnUrl = prompt("Enter PGN chess games URL for viewing:", "")) {
-         SetPgnUrl(newPgnUrl);
-         SetLiveBroadcast(0, true, false, false);
-         SetAutoplayDelay(2000); // milliseconds
-         SetInitialHalfmove(0, true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
-         firstStart = true;
-         if (theObject = document.getElementById("pgnText")) { theObject.value = newPgnText; }
-         if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = ""; }
-         if (theObject = document.getElementById("localPgnFiles")) { theObject.value = ""; }
-         if (theObject = document.getElementById("loadButtons")) { theObject.style.display = ""; }
-         location.hash = "top";
-         start_pgn4web();
-         location.hash = "board";
+         location.hash = "";
+         if (location.search.match(/pd=/)) {
+            location.search = location.search.replace(/pd=[^&]*/, "pd=" + unescape(newPgnUrl));
+         } else if (location.search.match(/pgnData=/)) {
+            location.search = location.search.replace(/pgnData=[^&]*/, "pgnData=" + unescape(newPgnUrl));
+         } else if (location.search) {
+            location.search += "&pgnData=" + unescape(newPgnUrl);
+         } else {
+            location.search = "?pgnData=" + unescape(newPgnUrl);
+         }
       }
    }
 
