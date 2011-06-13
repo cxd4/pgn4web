@@ -255,6 +255,12 @@ of Google Chrome. Don't use with any other browser.
             document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s");
          }
       }
+      // H5
+      if ((typeof(chrome) != "undefined") && (chrome.extension) && (pgnUrl) && (LiveBroadcastDelay > 0)) {
+         boardShortcut("H5", "switch to the multiple small boards view", switchBoardView);
+      } else {
+        clearShortcutSquares("H", "5");
+      }
    }
 
    function underlineByTicker(text, ticker) {
@@ -282,7 +288,7 @@ of Google Chrome. Don't use with any other browser.
       }
    }
 
-   function customShortcutKey_Shift_6() {
+   function switchBoardView() {
       if ((typeof(chrome) != "undefined") && (chrome.extension) && (pgnUrl) && (LiveBroadcastDelay > 0)) {
          url = "live-mosaic-viewer.html?pgnData=" + escape(pgnUrl) + "&refreshMinutes=" + escape(refreshMinutes) + "&hp=t";
          if (demoFlag) { url += "&refreshDemo=true"; }

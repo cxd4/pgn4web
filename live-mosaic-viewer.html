@@ -520,7 +520,7 @@ function customFunctionOnCheckLiveBroadcastStatus() {
   }
 }
 
-function customShortcutKey_Shift_6() {
+function switchBoardView() {
   if ((typeof(chrome) != "undefined") && (chrome.extension) && (pgnUrl) && (LiveBroadcastDelay > 0)) {
     url = "chess-games-viewer.html?pgnData=" + escape(pgnUrl) + "&refreshMinutes=" + escape(refreshMinutes);
     if (demoFlag) { url += "&refreshDemo=true"; }

@@ -98,6 +98,9 @@
     if (parent && parent.displayPgnData) {
       boardShortcut("D8", "show full PGN source data", function(){ parent.displayPgnData(true); });
     }
+    if (parent && parent.switchBoardView) {
+      boardShortcut("H5", "switch to the sigle large board view", function(){ parent.switchBoardView(); });
+    }
   } catch(e) { myAlert("warning: failed accessing parent for shortcut squares to clear", false); }
 
   if ((typeof(chrome) != "undefined") && (typeof(chrome.tabs) != "undefined") && (typeof(chrome.tabs.create) != "undefined")) {
