@@ -1318,7 +1318,8 @@ function HighlightLastMove() {
     if (clockString === null) {
       clockString = showThisMove+1 > StartPly ? 
         clockFromComment(showThisMove+1) : initialLastMoverClock;
-      if (!clockString) { // support for time info in the last comment as { White Time: 0h:12min Black Time: 1h:23min }
+      if (!clockString && (CurrentPly === StartPly+PlyNumber)) {
+        // support for time info in the last comment as { White Time: 0h:12min Black Time: 1h:23min }
         clockRegExp = new RegExp((whiteToMove ? "Black" : "White") + " Time:\\s*(\\S+)", "i");
         if (clockMatch = strippedMoveComment(StartPly+PlyNumber).match(clockRegExp)) {
           clockString = clockMatch[1];
@@ -1334,7 +1335,8 @@ function HighlightLastMove() {
     if (clockString === null) {
       clockString = showThisMove > StartPly ?
         clockFromComment(showThisMove) : initialBeforeLastMoverClock;
-      if (!clockString) { // support for time info in the last comment as { White Time: 0h:12min Black Time: 1h:23min }
+      if (!clockString && (CurrentPly === StartPly+PlyNumber)) {
+        // support for time info in the last comment as { White Time: 0h:12min Black Time: 1h:23min }
         clockRegExp = new RegExp((whiteToMove ? "White" : "Black") + " Time:\\s*(\\S+)", "i");
         if (clockMatch = strippedMoveComment(StartPly+PlyNumber).match(clockRegExp)) {
           clockString = clockMatch[1];
@@ -3467,5 +3469,3 @@ function sign(nn) {
 function SquareOnBoard(col, row) {
   return col >= 0 && col <= 7 && row >= 0 && row <= 7;
 }
-
-
