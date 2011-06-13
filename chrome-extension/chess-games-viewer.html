@@ -282,6 +282,14 @@ of Google Chrome. Don't use with any other browser.
       }
    }
 
+   function customShortcutKey_Shift_8() {
+      if ((typeof(chrome) != "undefined") && (chrome.tabs) && (chrome.tabs.create) && (pgnUrl) && (refreshMinutes)) {
+         url = "live-mosaic-viewer.html?pgnData=" + escape(pgnUrl) + "&refreshMinutes=" + escape(refreshMinutes) + "&hp=t";
+         if (demoFlag) { url += "&refreshDemo=true"; }
+         chrome.tabs.create({url: url}, function(newTab){chrome.tabs.getCurrent(function(tab){ chrome.tabs.remove(tab.id); });} );
+      }
+   }
+
 </script>
 
 <div id="GameSelector"></div>
