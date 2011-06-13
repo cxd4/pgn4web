@@ -534,6 +534,14 @@ function customShortcutKey_Shift_2() {
   restoreHiddenGames();
 }
 
+function customShortcutKey_Shift_8() {
+  if ((typeof(chrome) != "undefined") && (chrome.tabs) && (chrome.tabs.create) && (pgnUrl) && (refreshMinutes)) {
+    url = "chess-games-viewer.html?pgnData=" + escape(pgnUrl) + "&refreshMinutes=" + escape(refreshMinutes);
+    if (demoFlag) { url += "&refreshDemo=true"; }
+    chrome.tabs.create({url: url}, function(newTab){chrome.tabs.getCurrent(function(tab){ chrome.tabs.remove(tab.id); });} );
+  }
+}
+
 </script>
 
 </body>
