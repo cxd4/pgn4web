@@ -41,7 +41,7 @@ of Google Chrome. Don't use with any other browser.
 <script type="text/javascript">
 
    var backgroundPage;
-   if ((typeof(chrome) != "undefined") && (chrome.extension) && (chrome.extension.getBackgroundPage)) {
+   if ((typeof(chrome) != "undefined") && (chrome.extension)) {
       backgroundPage = chrome.extension.getBackgroundPage();
    }
 
@@ -283,10 +283,10 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function customShortcutKey_Shift_8() {
-      if ((typeof(chrome) != "undefined") && (chrome.tabs) && (chrome.tabs.create) && (pgnUrl) && (refreshMinutes)) {
+      if ((typeof(chrome) != "undefined") && (chrome.extension) && (pgnUrl) && (refreshMinutes)) {
          url = "live-mosaic-viewer.html?pgnData=" + escape(pgnUrl) + "&refreshMinutes=" + escape(refreshMinutes) + "&hp=t";
          if (demoFlag) { url += "&refreshDemo=true"; }
-         chrome.tabs.create({url: url}, function(newTab){chrome.tabs.getCurrent(function(tab){ chrome.tabs.remove(tab.id); });} );
+         locatio.href = url;
       }
    }
 
