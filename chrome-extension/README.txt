@@ -12,17 +12,26 @@ Part of the pgn4web project http://pgn4web.casaschi.net
 
 See about.html and help.html for credits, license and more details.
 
+
 Additional credits:
 
 the download.png and refresh.png icons licensed by interactivemania
 http://www.interactivemania.com under a Creative Commons Attribution-No 
 Derivative Works 3.0 license http://creativecommons.org/licenses/by-nd/3.0/
 
+
 Enhancements:
 
 background.html, manifest.json: enable the webRequest extension API when
 stable. Info on this page:
 http://code.google.com/chrome/extensions/api_index.html
+
+when adding the webRequest API permission, consider adding the bookmarks
+permission also and offer a one time popup to add a link to the bookmarks
+bar;and have a link to do the same from the about page. See the bookmark
+bar switcher extension code for an example:
+https://github.com/Codegasm/Bookmark-Bar-Switcher/blob/master/background.js
+
 
 Bugs:
 
