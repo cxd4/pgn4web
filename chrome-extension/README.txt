@@ -33,6 +33,9 @@ bar;and have a link to do the same from the about page; some code for that:
 // bookmarks[0].children[0].id is the bookmarks bar id
 chrome.bookmarks.getTree(function(bookmarks) { chrome.bookmarks.create({'parentId': bookmarks[0].children[0].id, 'title': 'chess games viewer', 'url': 'chess-games-viewer.html#bottom'}); });
 
+this unless extensions will be allowed to have a launch page/icon, see
+http://code.google.com/p/chromium/issues/detail?id=85735
+
 
 Bugs:
 
@@ -89,7 +92,7 @@ any configurable options; it should rather assigned as "help" page once
 available, see this bug:
 http://code.google.com/p/chromium/issues/detail?id=29849
 
-background.html
+background.html:
 needs validation whether in removePgnLinksOnUpdated() the call to
 mergePgnLinksAndShowIcon(tabId) is required to fix an obscure issue 
 with clicking twice on a hash link.
