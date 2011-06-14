@@ -28,9 +28,10 @@ http://code.google.com/chrome/extensions/api_index.html
 
 when adding the webRequest API permission, consider adding the bookmarks
 permission also and offer a one time popup to add a link to the bookmarks
-bar;and have a link to do the same from the about page. See the bookmark
-bar switcher extension code for an example:
-https://github.com/Codegasm/Bookmark-Bar-Switcher/blob/master/background.js
+bar;and have a link to do the same from the about page; some code for that:
+
+// bookmarks[0].children[0].id is the bookmarks bar id
+chrome.bookmarks.getTree(function(bookmarks) { chrome.bookmarks.create({'parentId': bookmarks[0].children[0].id, 'title': 'chess games viewer', 'url': 'chess-games-viewer.html#bottom'}); });
 
 
 Bugs:
