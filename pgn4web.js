@@ -1716,7 +1716,9 @@ function loadPgnFromPgnUrl(pgnUrl){
 
   try {
     // anti-caching #1: add random parameter, only to plain URLs
-    urlRandomizer = ((LiveBroadcastDelay > 0) && (pgnUrl.indexOf("?") == -1) && (pgnUrl.indexOf("#") == -1)) ? "?nocahce=" + Math.random() : "";
+    if ((LiveBroadcastDelay > 0) && (pgnUrl.indexOf("?") == -1) && (pgnUrl.indexOf("#") == -1)) {
+      urlRandomizer = "?noCache=" + (0x1000000000 + Math.floor((Math.random() * 0xF000000000))).toString(16).toUpperCase();
+    } else { urlRandomizer = ""; }
     http_request.open("GET", pgnUrl + urlRandomizer);
     // anti-caching #2: add header option
     if (LiveBroadcastDelay > 0) {
