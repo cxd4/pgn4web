@@ -292,6 +292,7 @@ of Google Chrome. Don't use with any other browser.
       if ((typeof(chrome) != "undefined") && (chrome.extension) && (pgnUrl) && (LiveBroadcastDelay > 0)) {
          url = "live-mosaic-viewer.html?pgnData=" + escape(pgnUrl) + "&refreshMinutes=" + escape(refreshMinutes) + "&hp=t";
          if (demoFlag) { url += "&refreshDemo=true"; }
+         url += "&firstGame=" + (currentGame + 1);
          location.href = url;
       }
    }
