@@ -88,7 +88,6 @@ context menu or a documentUrlPatterns filter should be added in background.html
 to chrome.contextMenus.create() calls:
 http://code.google.com/p/chromium/issues/detail?id=51461
 
-
 about.html:
 this page is currently assigned as the "options" page while there are not
 any configurable options; it should rather assigned as "help" page once
@@ -99,4 +98,5 @@ background.html:
 needs validation whether in removePgnLinksOnUpdated() the call to
 mergePgnLinksAndShowIcon(tabId) is required to fix an obscure issue 
 with clicking twice on a hash link.
- 
+Verify by removing that call and using
+http://pgn4web.devio.us/pgn4web/testHashclick.html
