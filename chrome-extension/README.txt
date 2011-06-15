@@ -83,7 +83,7 @@ dont get context menus:
 http://code.google.com/p/chromium/issues/detail?id=51461
 If this is ever fixed, then about.html should be enhanced. 
 Please note that extension pages dont get content scripts either (see bug
-#84843), but it should be easy to manually/explicitely inject the script.
+#84843), but about.html explicitely loads the script at the end of the page.
 
 about.html:
 this page is currently assigned as the "options" page while there are not
