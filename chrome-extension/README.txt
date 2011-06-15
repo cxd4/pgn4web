@@ -29,11 +29,13 @@ http://code.google.com/chrome/extensions/api_index.html
 when adding the webRequest API permission, consider adding the bookmarks
 permission also and offer a one time popup to add a link to the bookmarks
 bar;and have a link to do the same from the about page; some code for that:
-
+//
 // bookmarks[0].children[0].id is the bookmarks bar id
 chrome.bookmarks.getTree(function(bookmarks) { chrome.bookmarks.create({'parentId': bookmarks[0].children[0].id, 'title': 'chess games viewer', 'url': 'chess-games-viewer.html#bottom'}); });
-
-this unless extensions will be allowed to have a launch page/icon, see
+//
+Otherwise, it might be enough to highlight better in the about.html page
+how such a bookmark could be created.
+This is a workaround for the extensions missing a launch page/icon, see
 http://code.google.com/p/chromium/issues/detail?id=85735
 
 
