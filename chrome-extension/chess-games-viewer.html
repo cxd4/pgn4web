@@ -246,7 +246,7 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function customFunctionOnPgnTextLoad() {
-      if (LiveBroadcastStatusString) {
+      if (LiveBroadcastDelay > 0) {
          document.title = LiveBroadcastStatusString.replace(" &nbsp;", ",");
       } else {
          if ((numberOfGames == 1) && (PlyNumber === 0) && (StartPly === 0) && (!gameWhite[0]) && (!gameBlack[0]) && (!gameResult[0])) {
@@ -257,9 +257,9 @@ of Google Chrome. Don't use with any other browser.
       }
       // H5
       if ((typeof(chrome) != "undefined") && (chrome.extension) && (pgnUrl) && (LiveBroadcastDelay > 0)) {
-         boardShortcut("H5", "zoom out to the multiple small boards view", switchBoardView);
+         boardShortcut("H5", "switch to the multiple small boards view", switchBoardView);
       } else {
-        clearShortcutSquares("H", "5");
+         clearShortcutSquares("H", "5");
       }
    }
 
@@ -340,16 +340,43 @@ of Google Chrome. Don't use with any other browser.
 <div id="notes" class="notes">
 <span title="live broadcast status" id="GameLiveStatus"></span>
 <span id="loadButtons" class="loadButtons">
-<input type="button" id="remotePgnUrl" name="remotePgnUrl" class="remotePgnUrl" onclick="fetchNewPgnUrl();" value=" Enter URL " title="enter PGN chess games URL for viewing; ZIP archives containing PGN chess games files are also accepted"/>
+<input type="button" id="inputPgnText" name="inputPgnText" class="bottomButton" onclick="fetchInputPgnText();" value="Enter Text" title="enter PGN chess games TEXT for viewing"/>
+<input type="button" id="remotePgnUrl" name="remotePgnUrl" class="bottomButton" onclick="fetchNewPgnUrl();" value="Enter URL" title="enter PGN chess games URL for viewing; ZIP archives containing PGN chess games files are also accepted"/>
 <input type="file" id="localPgnFiles" name="localPgnFiles[]" multiple="multiple" class="localPgnFiles" size="4" title="choose local PGN chess games file or drag and drop local PGN chess games files on this page for viewing; ZIP archives containing PGN chess games files are also accepted"/>
+<input type="button" id="measureButton" class="bottomButton" onclick="void(0);" value="Choose File"/>
 </span>
 &nbsp;
 </div>
 
 <script type="text/javascript">
 
-   if ((LiveBroadcastDelay > 0) && (theObject = document.getElementById("loadButtons"))) {
-      theObject.style.display = "none";
+   if (theObject = document.getElementById("loadButtons")) {
+      if (measureObject = document.getElementById("measureButton")) {
+         if (otherObject = document.getElementById("inputPgnText")) { otherObject.style.width = measureObject.offsetWidth; }
+         if (otherObject = document.getElementById("remotePgnUrl")) { otherObject.style.width = measureObject.offsetWidth; }
+         measureObject.style.display = "none";
+      }
+      if (LiveBroadcastDelay > 0) { theObject.style.display = "none"; }
+   }
+
+   function fetchInputPgnText() {
+      if (inputPgnText = prompt("Enter PGN chess games TEXT for viewing on a single board; pasting multi-line PGN data in the textbox is allowed:", "")) {
+         pgnHeaderRegExpGlobal = /((\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)+)/g;
+         inputPgnText = inputPgnText.replace(pgnHeaderRegExpGlobal, "\n$1\n"); // add newline after header section
+         inputPgnText = fixCommonPgnMistakes(inputPgnText);
+         SetPgnUrl("");
+         SetLiveBroadcast(0, true, false, false);
+         SetAutoplayDelay(2000); // milliseconds
+         SetInitialHalfmove(0, true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
+         firstStart = true;
+         if (theObject = document.getElementById("pgnText")) { theObject.value = inputPgnText; }
+         if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = ""; }
+         if (theObject = document.getElementById("localPgnFiles")) { theObject.value = ""; }
+         if (theObject = document.getElementById("loadButtons")) { theObject.style.display = ""; }
+         location.hash = "top";
+         start_pgn4web();
+         location.hash = "board";
+      }
    }
 
    function fetchNewPgnUrl() {
@@ -438,14 +465,14 @@ of Google Chrome. Don't use with any other browser.
                reader.onerror = (function(theFileName) {
                   return function(e) {
                      errorFiles.push(theFileName);
-                     if (! --pgnFilesLeft) { useNewPgnText(); }                            
+                     if (! --pgnFilesLeft) { useNewPgnTextFromFiles(); }                            
                   };
                })(files[f].name);
                if (files[f].name.match(/\.(zip)$/i)) { reader.readAsBinaryString(files[f]); }
                else { reader.readAsText(files[f]); }
             } else {
                invalidFiles.push(files[f].name);
-               if (! --pgnFilesLeft) { useNewPgnText(); }
+               if (! --pgnFilesLeft) { useNewPgnTextFromFiles(); }
             }
          }
       } catch(e) {}
@@ -467,7 +494,7 @@ of Google Chrome. Don't use with any other browser.
       }
    } catch(e) {}
 
-   function useNewPgnText() {
+   function useNewPgnTextFromFiles() {
       if (newPgnText && (validFiles.length > 0)) {
          SetPgnUrl("");
          SetLiveBroadcast(0, true, false, false);

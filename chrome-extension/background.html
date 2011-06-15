@@ -118,7 +118,7 @@ function pgntextOnClick(info, tab) {
     pgnText[pgnTextIndex] = info.selectionText;
   } else {
     needsValidation = false;
-    pgnText[pgnTextIndex] = prompt("Enter PGN chess games TEXT for viewing on a single board (pasting multi-line PGN data in the textbox is ok; " + debugInfo + "):");
+    pgnText[pgnTextIndex] = prompt("Enter PGN chess games TEXT for viewing on a single board; pasting multi-line PGN data in the textbox is allowed; " + debugInfo + ":");
     if (!pgnText[pgnTextIndex]) {
       delete pgnText[pgnTextIndex];
       return;
