@@ -343,20 +343,14 @@ of Google Chrome. Don't use with any other browser.
 <input type="button" id="inputPgnText" name="inputPgnText" class="bottomButton" onclick="fetchInputPgnText();" value="Enter Text" title="enter PGN chess games TEXT for viewing"/>
 <input type="button" id="remotePgnUrl" name="remotePgnUrl" class="bottomButton" onclick="fetchNewPgnUrl();" value="Enter URL" title="enter PGN chess games URL for viewing; ZIP archives containing PGN chess games files are also accepted"/>
 <input type="file" id="localPgnFiles" name="localPgnFiles[]" multiple="multiple" class="localPgnFiles" size="4" title="choose local PGN chess games file or drag and drop local PGN chess games files on this page for viewing; ZIP archives containing PGN chess games files are also accepted"/>
-<input type="button" id="measureButton" class="bottomButton" onclick="void(0);" value="Choose File"/>
 </span>
 &nbsp;
 </div>
 
 <script type="text/javascript">
 
-   if (theObject = document.getElementById("loadButtons")) {
-      if (measureObject = document.getElementById("measureButton")) {
-         if (otherObject = document.getElementById("inputPgnText")) { otherObject.style.width = measureObject.offsetWidth; }
-         if (otherObject = document.getElementById("remotePgnUrl")) { otherObject.style.width = measureObject.offsetWidth; }
-         measureObject.style.display = "none";
-      }
-      if (LiveBroadcastDelay > 0) { theObject.style.display = "none"; }
+   if ((LiveBroadcastDelay > 0) && (theObject = document.getElementById("loadButtons"))) {
+      theObject.style.display = "none";
    }
 
    function fetchInputPgnText() {
