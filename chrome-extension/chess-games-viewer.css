@@ -235,9 +235,8 @@ ul {
 }
 
 .bottomButton {
-  margin-right: 1em;
+  margin-right: 2em;
   font-size: 1em;
-  /* min-width: 6em; */
 }
 
 .localPgnFiles {
