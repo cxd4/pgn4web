@@ -76,17 +76,14 @@ http://code.google.com/p/chromium/issues/detail?id=31494
 
 about.html:
 currently the about.html is very basic; ideally it should be a showcase of
-the extension itself, offering a PGN text and some links to test. This is
-not possible at the moment because extension pages apparently dont load
-content scripts and dont get context menus; if this is ever fixed, then
-about.html should be enhanced. At the moment, it looks unlikely to be fixed,
-ee bug reply about context scripts (that actually makes sense):
-http://code.google.com/p/chromium/issues/detail?id=84843
-There is also a bug open for the context menus, if this ever gets fixed, need
-considering whether the extension pages should have the chess games viewer
-context menu or a documentUrlPatterns filter should be added in background.html
-to chrome.contextMenus.create() calls:
+the extension itself, offering a PGN text and some links to test the context
+menus and showing the page icon. Possibly also a simulation of the live pages
+too. This is not possible at the moment because extension pages apparently
+dont get context menus:
 http://code.google.com/p/chromium/issues/detail?id=51461
+If this is ever fixed, then about.html should be enhanced. 
+Please note that extension pages dont get content scripts either (see bug
+#84843), but it should be easy to manually/explicitely inject the script.
 
 about.html:
 this page is currently assigned as the "options" page while there are not
