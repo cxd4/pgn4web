@@ -80,7 +80,7 @@ the extension itself, offering a PGN text and some links to test. This is
 not possible at the moment because extension pages apparently dont load
 content scripts and dont get context menus; if this is ever fixed, then
 about.html should be enhanced.
-There is a bug open for the context scripts:
+There is a bug open for the context menus:
 http://code.google.com/p/chromium/issues/detail?id=51461
 Not sure it actually makes sense in general to ask for content scripts to
 be injected in extension pages. See:
