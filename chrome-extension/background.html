@@ -54,7 +54,7 @@ function openRemoteUrl(remoteUrl, live, all) {
     url = "live-mosaic-viewer.html?pgnData=" + escape(remoteUrl) + liveParam + "&hp=t";
   } else {
     liveParam = live ? "&refreshMinutes=1.0" + Math.floor(Math.random()*10) : "";
-    url = "chess-games-viewer.html?pgnData=" + escape(remoteUrl) + liveParam;
+    url = "chess-games-viewer.html?pgnData=" + escape(remoteUrl) + liveParam + "#board";
   }
   chrome.tabs.create({url: url});
 }
@@ -133,7 +133,7 @@ function pgntextOnClick(info, tab) {
     return; 
   }
 
-  url = "chess-games-viewer.html?pgnBackground=" + pgnTextIndex++;
+  url = "chess-games-viewer.html?pgnBackground=" + pgnTextIndex++ + "#board";
   chrome.tabs.create({url: url});
 }
 
