@@ -453,7 +453,7 @@ of Google Chrome. Don't use with any other browser.
                      } else {
                         errorFiles.push(theFileName);
                      }
-                     if (! --pgnFilesLeft) { useNewPgnText(); }                            
+                     if (! --pgnFilesLeft) { useNewPgnTextFromFiles(); }                            
                   };
                })(files[f].name);
                reader.onerror = (function(theFileName) {
