@@ -498,12 +498,13 @@ of Google Chrome. Don't use with any other browser.
       location.hash = "top";
       start_pgn4web();
       location.hash = "board";
-      if (invalidFiles.length + errorFiles.length) {
-         msg = (noNewPgnText ? "error" : "warning") + ": failed reading PGN games";
-         msg += " from " + (invalidFiles.length + errorFiles.length) + " local ";
-         msg += (invalidFiles.length + errorFiles.length == 1 ? "file" : "files");
-         for (f in invalidFiles) { msg += "\n" + invalidFiles[f]; }
-         for (f in errorFiles) { msg += "\n" + errorFiles[f]; }
+      allRejectedFiles = invalidFiles.concat(errorFiles).sort();
+      if (allRejectedFiles.length) {
+         msg = (noNewPgnText ? "error" : "warning");
+         msg += ": failed reading PGN games from ";
+         msg += (allRejectedFiles.length) + " local ";
+         msg += (allRejectedFiles.length == 1 ? "file" : "files");
+         for (f in allRejectedFiles) { msg += "\n" + allRejectedFiles[f]; }
          myAlert(msg, noNewPgnText);
       }
    }
