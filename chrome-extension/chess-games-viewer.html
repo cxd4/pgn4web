@@ -192,10 +192,6 @@ of Google Chrome. Don't use with any other browser.
             theObject.innerHTML = ((CurrentPly%2) ? "black" : "white") + " to move";
          }
       }
-      if ((theObject = document.getElementById("infoMessage")) && (theObject.innerHTML)) {
-         theObject.innerHTML = "";
-         theObject.style.display = "";
-      }
    }
 
    function customFunctionOnPgnGameLoad() {
@@ -332,7 +328,6 @@ of Google Chrome. Don't use with any other browser.
 
 </div>
 
-<div class="infoMessage" id="infoMessage"></div>
 <div class="lastMoveAndComment" id="lastMoveAndComment"><a href="javascript:MoveToPrevComment();" class="lastMove" title="last move" id="GameLastMove"></a><a href="javascript:MoveToNextComment();" class="lastComment" title="current position comment" id="GameLastComment"></a></div>
 
 <div class="moveText"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
@@ -490,30 +485,26 @@ of Google Chrome. Don't use with any other browser.
    } catch(e) {}
 
    function useNewPgnTextFromFiles() {
-      if (newPgnText && (validFiles.length > 0)) {
-         SetPgnUrl("");
-         SetLiveBroadcast(0, true, false, false);
-         SetAutoplayDelay(2000); // milliseconds
-         SetInitialHalfmove(0, true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
-         firstStart = true;
-         if (theObject = document.getElementById("pgnText")) { theObject.value = newPgnText; }
-         if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = ""; }
-         if (theObject = document.getElementById("localPgnFiles")) { theObject.value = ""; }
-         if (theObject = document.getElementById("loadButtons")) { theObject.style.display = ""; }
-         location.hash = "top";
-         start_pgn4web();
-         location.hash = "board";
-      }
-      if (theObject = document.getElementById("infoMessage")) {
-         if ((invalidFiles.length > 0) || (errorFiles.length > 0)) {
-            text = "<span class='infoMessageHighlight'>" + (newPgnText ? "warning:" : "error:") + "</span> the chess games viewer only accepts chess games PGN files and ZIP archives containing PGN files; files generating errors while loading, empty files, ZIP archives not containing any PGN file, files other than PGN files and folders are rejected:<ul><li>" + invalidFiles.concat(errorFiles).sort().join("</li><li>") + "</li></ul>";
-            if (validFiles.length > 0) { text += "loaded PGN files and ZIP archives:<ul><li>" + validFiles.sort().join("</li><li>") + "</li></ul>"; }
-            theObject.innerHTML = text;
-            theObject.style.display = "block";
-         } else {
-            theObject.innerHTML = "";
-            theObject.style.display = "";
-         }
+      if (noNewPgnText = !newPgnText) { newPgnText = alertPgnHeader; }
+      SetPgnUrl("");
+      SetLiveBroadcast(0, true, false, false);
+      SetAutoplayDelay(2000); // milliseconds
+      SetInitialHalfmove(0, true); // halfmove number to be shown at load, 0 for start position, -1 for random halfmove
+      firstStart = true;
+      if (theObject = document.getElementById("pgnText")) { theObject.value = newPgnText; }
+      if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = ""; }
+      if (theObject = document.getElementById("localPgnFiles")) { theObject.value = ""; }
+      if (theObject = document.getElementById("loadButtons")) { theObject.style.display = ""; }
+      location.hash = "top";
+      start_pgn4web();
+      location.hash = "board";
+      if (invalidFiles.length + errorFiles.length) {
+         msg = (noNewPgnText ? "error" : "warning") + ": failed reading PGN games";
+         msg += " from " + (invalidFiles.length + errorFiles.length) + " local ";
+         msg += (invalidFiles.length + errorFiles.length == 1 ? "file" : "files");
+         for (f in invalidFiles) { msg += (f > 0 ? ", " : "\ninvalid files: ") + invalidFiles[f]; }
+         for (f in errorFiles) { msg += (f > 0 ? ", " : "\nerror files: ") + errorFiles[f]; }
+         myAlert(msg, noNewPgnText);
       }
    }
 

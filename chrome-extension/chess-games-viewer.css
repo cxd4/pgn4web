@@ -179,25 +179,8 @@ ul {
   line-height: 0.75em;
 }
 
-.infoMessage {
-  display: none;
-  text-align: justify;
-  padding: 2em;
-  background-color: #FFCC99;
-  background-color: rgba(255, 204, 153, 0.5);
-  -webkit-border-radius: 0.5em;
-}
-
-.infoMessageHighlight {
-  font-weight: bold;
-}
-
-.infoMessage, .lastMoveAndComment {
-  clear: both;
-  margin-bottom: 2em;
-}
-
 .lastMoveAndComment {
+  clear: both;
   text-align: justify;
   resize: vertical;
   height: 4.2em;
@@ -206,6 +189,7 @@ ul {
   line-height: 1.4em;
   overflow-y: scroll;
   padding-right: 1em;
+  margin-bottom: 2em;
   display: none;
 }
 
