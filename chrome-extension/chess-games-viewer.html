@@ -502,8 +502,8 @@ of Google Chrome. Don't use with any other browser.
          msg = (noNewPgnText ? "error" : "warning") + ": failed reading PGN games";
          msg += " from " + (invalidFiles.length + errorFiles.length) + " local ";
          msg += (invalidFiles.length + errorFiles.length == 1 ? "file" : "files");
-         for (f in invalidFiles) { msg += (f > 0 ? ", " : "\ninvalid files: ") + invalidFiles[f]; }
-         for (f in errorFiles) { msg += (f > 0 ? ", " : "\nerror files: ") + errorFiles[f]; }
+         for (f in invalidFiles) { msg += "\n" + invalidFiles[f]; }
+         for (f in errorFiles) { msg += "\n" + errorFiles[f]; }
          myAlert(msg, noNewPgnText);
       }
    }
