@@ -29,10 +29,7 @@ html {
 
 body {
   margin: 0;
-  padding: 2.5em;
-}
-
-body {
+  padding: 40px;
   font-family: sans-serif;
   color: black;
   text-align: justify;
@@ -50,8 +47,8 @@ a:hover {
   background-color: rgba(255, 204, 153, 0.3);
 }
 
-ul {
-  list-style-type: square;
+p, h3 {
+  padding-left: 40px;
 }
 
 .imglink {
@@ -73,52 +70,92 @@ ul {
 </a>
 <h1>about the chess games viewer extension</h1>
 
-<a name="features"></a>
+<a name="features" style="clear:both"></a>
 <h2>features</h2>
 
-<p style="clear:both">
+<p>
 The chess games viewer extension for Google Chrome is an interactive chessboard showing chess games from links to PGN URLs, from local PGN files and from PGN text, using context menus and page actions.
-<ul>
-<li>A context menu shows chess games from links to PGN chess games URLs; PGN (Portable Games Notation) files are commonly used to store and share chess games information. The live refresh option reloads the games periodically until all games are ended; use for links to chess games live broadcasts; a single large chessboard view is offered as well as a view with multiple small chessboards. The mouse cursor icon highlights links to PGN chess games URLs when hovering on them.</li>
-<li>A context menu for links to ZIP archives offers to inspect each ZIP archive for PGN chess games files; please note: loading ZIP archives is a slow process; only the <i>deflate</i> and <i>store</i> compression methods are supported; encryption is not supported.</li>
-<li>A context menu allows <a href="chess-games-viewer.html#bottom">showing chess games from local PGN files or local ZIP archives containing PGN files; drag and drop on the large chessboard view page also opens local files</a>.</li>
-<li>A context menu shows chess games from PGN chess games text selecetd in the web page.</li>
-<li>A page action looks for links to PGN chess games URLs in the current page; if found, a page action icon in the address bar allows for opening the links in the chess games viewer.</li>
-</ul>
 </p>
+<p>
+PGN (Portable Games Notation) files are commonly used by chess websites and by chess software to store and share chess games information.
+</p>
+
+<h3>context menu for links to PGN chess games URLs</h3>
+<p>
+A context menu shows chess games from links to PGN chess games URLs.
+</p>
+<p>
+The mouse cursor icon highlights links to PGN chess games URLs when hovering on them.
+</p>
+
+<h3>live refresh option</h3>
+<p>
+The live refresh option reloads the games periodically until all games are ended; use for links to chess games live broadcasts; a single large chessboard view is offered as well as a view with multiple small chessboards.
+</p>
+
+<h3>context menu for links to ZIP archives</h3>
+<p>
+A context menu for links to ZIP archives offers to inspect each ZIP archive for PGN chess games files; please note: loading ZIP archives is a slow process; only the <i>deflate</i> and <i>store</i> compression methods are supported; encryption is not supported.
+</p>
+
+<h3>context menu for local PGN and ZIP files</h3>
+<p>
+A context menu allows <a href="chess-games-viewer.html#bottom">showing chess games from local PGN files or local ZIP archives containing PGN files; drag and drop on the large chessboard view page also opens local files</a>.
+</p>
+<p>
+A browser bookmark can be created for easy access to the chess games viewer page for local PGN and ZIP files.
+</p>
+
+<h3>context menu for selected PGN chess games text</h3>
+<p>
+A context menu shows chess games from PGN chess games text selecetd in the web page.
+</p>
+
+<h3>page action for links to PGN chess games URLs</h3>
+<p>
+A page action looks for links to PGN chess games URLs in the current page; if found, a black pawn page action icon appears in the address bar, clicking that icon a popup allows for opening the links in the chess games viewer.
+</p>
+
+<h3>PGN data error notifications</h3>
 <p>
 The top left chessboard square will flash in case of PGN data errors, click that square for further details.
 <p/>
+
 <a name="settings"></a>
 <h2>settings</h2>
 <p>
 The chess games viewer extension does not have any configurable option, however each chessboard view remembers some settings between sessions.
-<ul>
-<li>Single large chessboard view
-  <ul>
-    <li>Comment display within the game text: clicking on square C7 (assuming White on bottom) changes how comments are displayed respect to the move text, either inline or on separate lines.</li>
-    <li>Chessboard move highlight: clicking on square D7 (assuming White on bottom) toggles the highlighting of the last move's from/to squares.</li>
-  </ul>
-</li>
-<li>Multiple small chessboards view
-  <ul>
-    <li>Maximum number of shown chessboards: if more games are available than currently shown, the "m" command at the top right of the page allows increasing the number of shown chessboards; if more than one game is currently shown, the "l" command allows reducing the number of shown chessboards; select the number of chessboard that better fits the screen.</li>
-  </ul>
-</li>
-</ul>
 </p>
-<a name="links"></a>
-<h2>credits, license and support links</h2>
+
+<h3>single large chessboard view</h3>
+<p>
+Comment display within the game text: clicking on square C7 (assuming White on bottom) changes how comments are displayed respect to the move text, either inline or on separate lines.
+</p>
+<p>
+Chessboard move highlight: clicking on square D7 (assuming White on bottom) toggles the highlighting of the last move's from/to squares.
+</p>
+
+<h3>multiple small chessboards view</h3>
+<p>
+Maximum number of shown chessboards: if more games are available than currently shown, the "m" command at the top right of the page allows increasing the number of shown chessboards; if more than one game is currently shown, the "l" command allows reducing the number of shown chessboards; select the number of chessboard that better fits the screen.
+</p>
+
+<a name="credits"></a>
+<h2>credits and license</h2>
 <p>
 From the single large board view, click on the chessboard top right square for user interface help, credits and license.
 </p>
+
+<a name="links"></a>
+<h2>support links</h2>
 <p>
-Support links
-<ul>
-<li><a href="http://pgn4web.casaschi.net">The pgn4web project that provides the chess games viewer extension.</a></l>
-<li><a href="http://code.google.com/p/pgn4web/wiki/Index">The pgn4web project's support wiki.</a></li>
-<li><a href="http://code.google.com/p/pgn4web/wiki/BrowserExtension_GoogleChrome">Support info about the chess games viewer extension, with usage examples and users' feedback options.</a></li>
-</ul>
+<a href="http://pgn4web.casaschi.net">The pgn4web project that provides the chess games viewer extension.</a>
+</p>
+<p>
+<a href="http://code.google.com/p/pgn4web/wiki/Index">The pgn4web project's support wiki.</a>
+</p>
+<p>
+<a href="http://code.google.com/p/pgn4web/wiki/BrowserExtension_GoogleChrome">Support info about the chess games viewer extension, with usage examples and users' feedback options.</a>
 </p>
 <a name="bottom"></a>
 
