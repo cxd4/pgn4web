@@ -99,3 +99,4 @@ mergePgnLinksAndShowIcon(tabId) is required to fix an obscure issue
 with clicking twice on a hash link.
 Verify by removing that call and using
 http://pgn4web.devio.us/pgn4web/testHashclick.html
+Seems required.
