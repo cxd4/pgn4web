@@ -92,11 +92,3 @@ this page is currently assigned as the "options" page while there are not
 any configurable options; it should rather assigned as "help" page once
 available, see this bug:
 http://crbug.com/29849
-
-background.html: check removePgnLinksOnUpdated()
-needs validation whether in removePgnLinksOnUpdated() the call to
-mergePgnLinksAndShowIcon(tabId) is required to fix an obscure issue 
-with clicking twice on a hash link.
-Verify by removing that call and using
-http://pgn4web.devio.us/pgn4web/testHashclick.html
-Seems required.
