@@ -22,10 +22,9 @@ Derivative Works 3.0 license http://creativecommons.org/licenses/by-nd/3.0/
 
 Enhancements:
 
-background.html, manifest.json: enable the webRequest extension API when
-stable. Info on this page:
+background.html, manifest.json: webRequest 
+enable the webRequest extension API when stable. Info on this page:
 http://code.google.com/chrome/extensions/api_index.html
-
 when adding the webRequest API permission, consider adding the bookmarks
 permission also and offer a one time popup to add a link to the bookmarks
 bar;and have a link to do the same from the about page; some code for that:
@@ -38,10 +37,21 @@ how such a bookmark could be created.
 This is a workaround for the extensions missing a launch page/icon, see
 http://code.google.com/p/chromium/issues/detail?id=85735
 
+about.html: examples
+currently the about.html is very basic; ideally it should be a showcase of
+the extension itself, offering a PGN text and some links to test the context
+menus and showing the page icon. Possibly also a simulation of the live pages
+too. This is not possible at the moment because extension pages apparently
+dont get context menus:
+http://code.google.com/p/chromium/issues/detail?id=51461
+If this is ever fixed, then about.html should be enhanced. 
+Please note that extension pages dont get content scripts either (see bug
+#84843), but about.html explicitely loads the script at the end of the page.
+
 
 Bugs:
 
-background.html, about context menu item:
+background.html: "about" context menu item
 until chromium bug 63545 is resolved, two entries are required
 and adding the about menu to the "selection" context would result in
 duplicated items when a selected link is right-clicked
@@ -49,7 +59,7 @@ see http://code.google.com/p/chromium/issues/detail?id=63545
 Verify in background.html
 Fixed in google chrome v13.0.782.10
 
-background.html, "link" context menu:
+background.html: "link" context menu
 until chromium bug 63965 is resolved the context menu will not appear for
 links shown as images like this <a href=game.pgn><img src=image.jpeg/></a>
 see http://code.google.com/p/chromium/issues/detail?id=63965
@@ -67,7 +77,7 @@ see http://code.google.com/p/chromium/issues/detail?id=84024
 Verify this on the page:
 http://code.google.com/p/pgn4web/wiki/BrowserExtension_GoogleChrome
 
-popup.html size:
+popup.html: popup css
 popup.html is over-engineered to cope with following issues:
 - wrong height assigned by default (on small screen netbooks)
 http://code.google.com/p/chromium/issues/detail?id=76899
@@ -76,24 +86,13 @@ http://code.google.com/p/chromium/issues/detail?id=50192
 - scrollbar width is not taken into account for margins/padding
 http://code.google.com/p/chromium/issues/detail?id=31494
 
-about.html:
-currently the about.html is very basic; ideally it should be a showcase of
-the extension itself, offering a PGN text and some links to test the context
-menus and showing the page icon. Possibly also a simulation of the live pages
-too. This is not possible at the moment because extension pages apparently
-dont get context menus:
-http://code.google.com/p/chromium/issues/detail?id=51461
-If this is ever fixed, then about.html should be enhanced. 
-Please note that extension pages dont get content scripts either (see bug
-#84843), but about.html explicitely loads the script at the end of the page.
-
-about.html:
+about.html: help page
 this page is currently assigned as the "options" page while there are not
 any configurable options; it should rather assigned as "help" page once
 available, see this bug:
 http://code.google.com/p/chromium/issues/detail?id=29849
 
-background.html:
+background.html: check removePgnLinksOnUpdated()
 needs validation whether in removePgnLinksOnUpdated() the call to
 mergePgnLinksAndShowIcon(tabId) is required to fix an obscure issue 
 with clicking twice on a hash link.
