@@ -46,7 +46,8 @@ dont get context menus:
 http://crbug.com/51461
 If this is ever fixed, then about.html should be enhanced. 
 Please note that extension pages dont get content scripts either (see bug
-#84843), but about.html explicitely loads the script at the end of the page.
+http://crbug.com/84843), but about.html explicitely loads the script at the
+end of the page.
 
 
 Bugs:
