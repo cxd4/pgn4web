@@ -90,8 +90,6 @@ of Google Chrome. Don't use with any other browser.
    thisRegExp = /(&|\?)(pgnData|pd)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
       pgnData = unescape(window.location.search.match(thisRegExp)[3]);
-   } 
-   if (pgnData) {
       SetPgnUrl(pgnData); // if set, this has precedence over the inline PGN in the HTML file
    }
 
@@ -346,7 +344,7 @@ of Google Chrome. Don't use with any other browser.
 
 <script type="text/javascript">
 
-   if ((LiveBroadcastDelay > 0) && (theObject = document.getElementById("loadButtons"))) {
+   if ((pgnBackground || pgnData) && (theObject = document.getElementById("loadButtons"))) {
       theObject.style.display = "none";
    }
 
