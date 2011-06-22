@@ -21,8 +21,6 @@ of Google Chrome. Don't use with any other browser.
 
 <script type="text/javascript">
 
-var debugInfo = "the top left chessboard square will flash in case of PGN data errors, click that square for further details";
-
 var pgnHeaderRegExpGlobal = /((\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)+)/g;
 
 function validatePgnUrl(pgnUrl) {
@@ -75,7 +73,7 @@ function pgnLinkOnClick(info, tab, live, all) {
 }
 
 function pgnPageOnClick(info, tab, live, all) {
-  var remoteUrl = prompt("Enter PGN chess games URL for viewing" + (all ? " on multiple boards" : " on a single board") + (live ? " with live refresh" : "") + " (" + ((info.selectionText && (!validatePgnUrl(info.selectionText))) ? "the supplied URL does not match the usual PGN URL pattern; " : "") + debugInfo + "):", info.selectionText ? info.selectionText : "");
+  var remoteUrl = prompt("Enter PGN chess games URL for viewing" + (all ? " on multiple boards" : " on a single board") + (live ? " with live refresh" : "") + ((info.selectionText && (!validatePgnUrl(info.selectionText))) ? "; the supplied URL does not match the usual PGN URL pattern:" : ":"), info.selectionText ? info.selectionText : "");
   if (!remoteUrl) { return; }
 
   openRemoteUrl(remoteUrl, live, all);
@@ -119,7 +117,7 @@ function pgntextOnClick(info, tab) {
     pgnText[pgnTextIndex] = info.selectionText;
   } else {
     needsValidation = false;
-    pgnText[pgnTextIndex] = prompt("Enter PGN chess games TEXT for viewing on a single board; pasting multi-line PGN data in the textbox is allowed; " + debugInfo + ":");
+    pgnText[pgnTextIndex] = prompt("Enter PGN chess games TEXT for viewing on a single board; pasting multi-line PGN data in the textbox is allowed:");
     if (!pgnText[pgnTextIndex]) {
       delete pgnText[pgnTextIndex];
       return;
