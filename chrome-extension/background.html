@@ -132,7 +132,7 @@ function pgntextOnClick(info, tab) {
     return; 
   }
 
-  url = "chess-games-viewer.html?pgnBackground=" + pgnTextIndex++ + "#board";
+  url = "chess-games-viewer.html?pgnBackground=" + (pgnTextIndex++) + "#board";
   chrome.tabs.create({url: url});
 }
 
