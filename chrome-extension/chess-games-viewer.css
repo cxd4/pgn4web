@@ -211,11 +211,13 @@ ul {
 }
 
 .bottomButton {
+  margin-top: 0.25em;
   margin-right: 2em;
 }
 
 .localPgnFiles {
   color: transparent;
+  margin-top: 0.25em;
 }
 
 .footer {
