@@ -5,8 +5,10 @@
 #  for credits, license and more details
 #
 
-Chess games viewer with interactive chessboard, showing chess 
-games from PGN URLs and from PGN text, using context menus.
+Chess games viewer extension for Google Chrome, providing 
+an interactive chessboard showing chess games from links to
+PGN URLs, from local PGN files and from PGN text, using 
+context menus and page actions.
 
 Part of the pgn4web project http://pgn4web.casaschi.net
 
