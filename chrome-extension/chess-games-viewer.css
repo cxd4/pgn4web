@@ -80,7 +80,6 @@ ul {
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 100% !important;
-  font-size: 1em;
 }
 
 .gameButtons {
@@ -105,13 +104,11 @@ ul {
 .searchPgnButton {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 10% !important;
-  font-size: 1em;
 }
 
 .searchPgnExpression {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 90% !important;
-  font-size: 1em;
 }
 
 .move,
@@ -220,12 +217,10 @@ ul {
 
 .bottomButton {
   margin-right: 2em;
-  font-size: 1em;
 }
 
 .localPgnFiles {
   color: transparent;
-  font-size: 1em;
 }
 
 .footer {
