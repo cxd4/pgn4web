@@ -92,5 +92,3 @@ this page is currently assigned as the "options" page while there are not
 any configurable options; it should rather assigned as "help" page once
 available, see this bug:
 http://crbug.com/29849
-
-chess-games-viewer.css: check file input button size on chrome 13+
