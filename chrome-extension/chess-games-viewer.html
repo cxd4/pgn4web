@@ -121,11 +121,10 @@ of Google Chrome. Don't use with any other browser.
    if (window.location.search.match(thisRegExp) !== null) {
       searchGame = unescape(window.location.search.match(thisRegExp)[3]);
    }
-   setInitialGameFromSearchGame();
 
    function setInitialGameFromSearchGame() {
       if (searchGame) { SetInitialGame(searchGame); }
-      else if (refreshMinutes) { SetInitialGame("\\[\\s*Result\\s*\"\\*\"\\s*\\]"); }
+      else if (LiveBroadcastDelay > 0) { SetInitialGame("\\[\\s*Result\\s*\"\\*\"\\s*\\]"); }
       else { SetInitialGame(1); }
    }
 
@@ -290,7 +289,10 @@ of Google Chrome. Don't use with any other browser.
 
    window.onload = function() {
       if (pgnData) { useNewPgnUrl(pgnData, refreshMinutes); }
-      else { start_pgn4web(); }
+      else { 
+         setInitialGameFromSearchGame();
+         start_pgn4web();
+      }
    };
 
 </script>
@@ -343,31 +345,6 @@ of Google Chrome. Don't use with any other browser.
 </div>
 
 <script type="text/javascript">
-
-   if ((LiveBroadcastDelay > 0) && (theObject = document.getElementById("loadButtons"))) {
-      theObject.style.display = "none";
-   }
-
-   function fetchInputPgnText() {
-      if (inputPgnText = prompt("Enter PGN chess games TEXT for viewing; pasting multi-line PGN data in the textbox is allowed:", "")) {
-         pgnHeaderRegExpGlobal = /((\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)+)/g;
-         inputPgnText = inputPgnText.replace(pgnHeaderRegExpGlobal, "\n$1\n"); // add newline after header section
-         inputPgnText = fixCommonPgnMistakes(inputPgnText);
-         SetPgnUrl("");
-         SetLiveBroadcast(0, true, false, false);
-         SetAutoplayDelay(2000);
-         setInitialGameFromSearchGame();
-         SetInitialHalfmove(0, true);
-         firstStart = true;
-         if (theObject = document.getElementById("pgnText")) { theObject.value = inputPgnText; }
-         if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = ""; }
-         if (theObject = document.getElementById("localPgnFiles")) { theObject.value = ""; }
-         if (theObject = document.getElementById("loadButtons")) { theObject.style.display = ""; }
-         location.hash = "top";
-         start_pgn4web();
-         location.hash = "board";
-      }
-   }
 
    function fetchNewPgnUrl(live) {
       if (newPgnUrl = prompt("Enter PGN chess games URL for viewing" + (live ? " with live refresh:" : ":"), "")) {
@@ -507,6 +484,19 @@ of Google Chrome. Don't use with any other browser.
 
    function useNewPgnTextFromFiles() {
       if (noNewPgnText = !newPgnText) { newPgnText = alertPgnHeader; }
+      useNewPgnText(newPgnText);
+      allRejectedFiles = invalidFiles.concat(errorFiles).sort();
+      if (allRejectedFiles.length) {
+         msg = (noNewPgnText ? "error" : "warning");
+         msg += ": failed reading PGN games from ";
+         msg += (allRejectedFiles.length) + " local ";
+         msg += (allRejectedFiles.length == 1 ? "file" : "files");
+         for (f in allRejectedFiles) { msg += "\n" + allRejectedFiles[f]; }
+         myAlert(msg, noNewPgnText);
+      }
+   }
+
+   function useNewPgnText(newPgnText) {
       SetPgnUrl("");
       SetLiveBroadcast(0, true, false, false);
       SetAutoplayDelay(2000);
@@ -520,14 +510,14 @@ of Google Chrome. Don't use with any other browser.
       location.hash = "top";
       start_pgn4web();
       location.hash = "board";
-      allRejectedFiles = invalidFiles.concat(errorFiles).sort();
-      if (allRejectedFiles.length) {
-         msg = (noNewPgnText ? "error" : "warning");
-         msg += ": failed reading PGN games from ";
-         msg += (allRejectedFiles.length) + " local ";
-         msg += (allRejectedFiles.length == 1 ? "file" : "files");
-         for (f in allRejectedFiles) { msg += "\n" + allRejectedFiles[f]; }
-         myAlert(msg, noNewPgnText);
+   }
+
+   function fetchInputPgnText() {
+      if (inputPgnText = prompt("Enter PGN chess games TEXT for viewing; pasting multi-line PGN data in the textbox is allowed:", "")) {
+         pgnHeaderRegExpGlobal = /((\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)+)/g;
+         inputPgnText = inputPgnText.replace(pgnHeaderRegExpGlobal, "\n$1\n"); // add newline after header section
+         inputPgnText = fixCommonPgnMistakes(inputPgnText);
+         useNewPgnText(inputPgnText);
       }
    }
 
