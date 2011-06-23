@@ -130,6 +130,7 @@ ul {
 .moveText {
   clear: both;
   text-align: justify;
+  min-height: 7em;
 }
 
 .comment {
