@@ -53,7 +53,7 @@ function openRemoteUrl(remoteUrl, live, all) {
     url = "live-mosaic-viewer.html?pgnData=" + escape(remoteUrl) + liveParam + "&hp=t";
   } else {
     liveParam = live ? "&refreshMinutes=1.0" + Math.floor(Math.random()*10) : "";
-    url = "chess-games-viewer.html?pgnData=" + escape(remoteUrl) + liveParam + "#board";
+    url = "chess-games-viewer.html?pgnData=" + escape(remoteUrl) + liveParam;
   }
   chrome.tabs.create({url: url});
 }
@@ -104,7 +104,7 @@ function pgnliveallPageOnClick(info, tab) {
 }
 
 function openlocalpgnOnClick(info, tab) {
-  chrome.tabs.create({url: "chess-games-viewer.html#bottom"});
+  chrome.tabs.create({url: "chess-games-viewer.html"});
 }
 
 var pgnText = new Array();
@@ -132,7 +132,7 @@ function pgntextOnClick(info, tab) {
     return; 
   }
 
-  url = "chess-games-viewer.html?pgnBackground=" + (pgnTextIndex++) + "#board";
+  url = "chess-games-viewer.html?pgnBackground=" + pgnTextIndex++;
   chrome.tabs.create({url: url});
 }
 
