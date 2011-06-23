@@ -202,9 +202,8 @@ ul {
 
 .notes {
   clear: both;
-  color: #AAAAAA; 
   text-align: left;
-  margin-top: 3em;
+  margin-bottom: 1em;
 }
 
 .loadButtons {
@@ -212,7 +211,7 @@ ul {
 
 .bottomButton {
   margin-top: 0.5em;
-  margin-right: 2em;
+  margin-right: 1em;
 }
 
 .localPgnFiles {
