@@ -251,6 +251,10 @@ of Google Chrome. Don't use with any other browser.
       } else {
          clearShortcutSquares("H", "5");
       }
+      if ((LiveBroadcastDelay === 0) || (LiveBroadcastDelay > 0) && (LiveBroadcastTicker == 1)) {
+         location.hash = "";
+         location.hash = "board";
+      }
    }
 
    function underlineByTicker(text, ticker) {
@@ -377,9 +381,7 @@ of Google Chrome. Don't use with any other browser.
       LiveBroadcastStatusString = "";
       LiveBroadcastLastModified_Reset();
       LiveBroadcastLastReceivedLocal_Reset();
-      location.hash = "top";
       start_pgn4web();
-      location.hash = "board";
    }
 
    var newPgnText;
@@ -505,9 +507,7 @@ of Google Chrome. Don't use with any other browser.
       if (theObject = document.getElementById("pgnText")) { theObject.value = newPgnText; }
       if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = ""; }
       if (theObject = document.getElementById("localPgnFiles")) { theObject.value = ""; }
-      location.hash = "top";
       start_pgn4web();
-      location.hash = "board";
    }
 
    function fetchInputPgnText() {
