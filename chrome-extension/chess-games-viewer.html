@@ -287,6 +287,11 @@ of Google Chrome. Don't use with any other browser.
    function customShortcutKey_Shift_9() { scrollToEmOffset(-1.5); }
    function customShortcutKey_Shift_0() { window.scrollTo(0, document.body.offsetHeight); }
 
+   function toggleScrollPosition() {
+      if (document.body.scrollTop) { window.scrollTo(0, 0); }
+      else { window.scrollTo(0, document.body.scrollHeight); }
+   }
+
    function lookupFidePlayer(name) {
       if (name) {
          window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + escape(name) + "&offset=0");
@@ -335,7 +340,7 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem"><b><a href="javascript:void(0);" onclick="lookupFidePlayer(this.innerHTML);" class="innerHeaderItem" id="GameBlack"></a></b><span class="innerHeaderItem" id="GameBlackTitle"></span><span class="innerHeaderItem" id="GameBlackElo"></span><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameBlackClock"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><b><a href="javascript:void(0);" onclick="toggleHashPosition();" class="innerHeaderItem" id="GameResult"></a></b><span class="innerHeaderItem" id="GameTermination"></span><b>&nbsp;</b></div>
+<div class="headerItem"><b><a href="javascript:void(0);" onclick="toggleScrollPosition();" class="innerHeaderItem" id="GameResult"></a></b><span class="innerHeaderItem" id="GameTermination"></span><b>&nbsp;</b></div>
 </div>
 
 </div>
@@ -526,11 +531,6 @@ of Google Chrome. Don't use with any other browser.
          inputPgnText = fixCommonPgnMistakes(inputPgnText);
          useNewPgnText(inputPgnText);
       }
-   }
-
-   function toggleHashPosition() {
-      if (document.body.scrollTop) { window.scrollTo(0, 0); }
-      else { window.scrollTo(0, document.body.scrollHeight); }
    }
 
 </script>
