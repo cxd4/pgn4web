@@ -527,7 +527,6 @@ function switchBoardView(search) {
     if ((search !== null) && ((searchGame = gameNumberSearchPgn(search, false, true)) !== false)) {
       url += "&search=" + escape(searchGame + 1);
     }
-    url += "#board";
     location.href = url;
   }
 }
