@@ -220,6 +220,11 @@ ul {
   margin-top: 0.5em;
 }
 
+.gameLiveStatus {
+  float: right;
+  margin-top: 0.5em;
+}
+
 .footer {
   clear: both;
 }
