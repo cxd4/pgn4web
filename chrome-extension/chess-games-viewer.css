@@ -104,11 +104,13 @@ ul {
 .searchPgnButton {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 10% !important;
+  margin-top: 3.5em;
 }
 
 .searchPgnExpression {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 90% !important;
+  margin-top: 3.5em;
 }
 
 .move,
@@ -128,7 +130,6 @@ ul {
 .moveText {
   clear: both;
   text-align: justify;
-  min-height: 7em;
 }
 
 .comment {
@@ -139,7 +140,7 @@ ul {
 .columnsContainer {
   float: left;
   width: 100%;
-  padding-top: 3em;
+  padding-top: 2.5em;
   padding-bottom: 2.5em;
 }
 
@@ -204,25 +205,25 @@ ul {
 .notes {
   clear: both;
   text-align: left;
-  margin-bottom: 1em;
+  margin-top: 1.5em;
 }
 
 .loadButtons {
 }
 
 .bottomButton {
-  margin-bottom: 0.5em;
+  margin-top: 0.5em;
   margin-right: 1em;
 }
 
 .localPgnFiles {
   color: transparent;
-  margin-bottom: 0.5em;
+  margin-top: 0.5em;
 }
 
 .gameLiveStatus {
   float: right;
-  margin-bottom: 0.5em;
+  margin-top: 0.5em;
 }
 
 .footer {
