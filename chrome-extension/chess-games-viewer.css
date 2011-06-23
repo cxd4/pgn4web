@@ -210,18 +210,18 @@ ul {
 }
 
 .bottomButton {
-  margin-top: 0.5em;
+  margin-bottom: 0.5em;
   margin-right: 1em;
 }
 
 .localPgnFiles {
   color: transparent;
-  margin-top: 0.5em;
+  margin-bottom: 0.5em;
 }
 
 .gameLiveStatus {
   float: right;
-  margin-top: 0.5em;
+  margin-bottom: 0.5em;
 }
 
 .footer {
