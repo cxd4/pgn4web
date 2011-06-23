@@ -525,7 +525,7 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function fetchInputPgnText() {
-      if (inputPgnText = prompt("Enter PGN chess games TEXT for viewing; pasting multi-line PGN data in the textbox is allowed:", "")) {
+      if ((inputPgnText = prompt("Enter PGN chess games TEXT for viewing; pasting multi-line PGN data in the textbox is allowed:", "")) !== null) {
          pgnHeaderRegExpGlobal = /((\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)+)/g;
          inputPgnText = inputPgnText.replace(pgnHeaderRegExpGlobal, "\n$1\n"); // add newline after header section
          inputPgnText = fixCommonPgnMistakes(inputPgnText);
