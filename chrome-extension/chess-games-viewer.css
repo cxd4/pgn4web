@@ -26,7 +26,7 @@ body {
   font-family: 'pgn4web Liberation Sans', sans-serif;
   color: black;
   background: white;
-  background: -webkit-linear-gradient(#FFFFFF, #F0F0F0); /* chrome 10+ */
+  background: -webkit-linear-gradient(#F8F8F8, #FFFFFF); /* chrome 10+ */
 }
 
 ul {
