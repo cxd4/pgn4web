@@ -238,11 +238,13 @@ of Google Chrome. Don't use with any other browser.
    function customFunctionOnPgnTextLoad() {
       if (LiveBroadcastDelay > 0) {
          document.title = LiveBroadcastStatusString.replace(" &nbsp;", ",");
+         if (LiveBroadcastTicker == 1) { location.hash = ""; location.hash = "board"; }
       } else {
          if ((numberOfGames == 1) && (PlyNumber === 0) && (StartPly === 0) && (!gameWhite[0]) && (!gameBlack[0]) && (!gameResult[0])) {
             document.title = alertNum ? "PGN data error" : "chess games viewer";
          } else {
             document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s");
+            location.hash = ""; location.hash = "board";
          }
       }
       // H5
@@ -250,10 +252,6 @@ of Google Chrome. Don't use with any other browser.
          boardShortcut("H5", "zoom out to the multiple small boards view", switchBoardView);
       } else {
          clearShortcutSquares("H", "5");
-      }
-      if ((LiveBroadcastDelay === 0) || (LiveBroadcastDelay > 0) && (LiveBroadcastTicker == 1)) {
-         location.hash = "";
-         location.hash = "board";
       }
    }
 
