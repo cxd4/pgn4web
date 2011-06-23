@@ -239,12 +239,12 @@ of Google Chrome. Don't use with any other browser.
       if (LiveBroadcastDelay > 0) {
          document.title = LiveBroadcastStatusString.replace(" &nbsp;", ",");
       } else {
-         if ((numberOfGames == 1) && (PlyNumber === 0) && (StartPly === 0) && (!gameWhite[0]) && (!gameBlack[0]) && (!gameResult[0])) {
-            document.title = alertNum ? "PGN data error" : "chess games viewer";
-         } else {
-            document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s");
-         }
+         noGamesLoaded = (numberOfGames == 1) && (PlyNumber === 0) && (StartPly === 0) && (!gameWhite[0]) && (!gameBlack[0]) && (!gameResult[0]); 
+         if (noGamesLoaded) { document.title = alertNum ? "PGN data error" : "chess games viewer"; }
+         else { document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s"); }
+         if (theObject = document.getElementById("moveText")) { theObject.style.minHeight = noGamesLoaded ? "1.4em" : "7em"; }
       }
+
       // H5
       if ((typeof(chrome) != "undefined") && (chrome.extension) && (pgnUrl) && (LiveBroadcastDelay > 0)) {
          boardShortcut("H5", "zoom out to the multiple small boards view", switchBoardView);
@@ -347,7 +347,7 @@ of Google Chrome. Don't use with any other browser.
 
 <div class="lastMoveAndComment" id="lastMoveAndComment"><a href="javascript:MoveToPrevComment();" class="lastMove" title="last move" id="GameLastMove"></a><a href="javascript:MoveToNextComment();" class="lastComment" title="current position comment" id="GameLastComment"></a></div>
 
-<div class="moveText"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
+<div id="moveText" class="moveText"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
 
 <div id="GameSearch"></div>
 <div id="GameSelector"></div>
