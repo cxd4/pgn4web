@@ -266,25 +266,26 @@ of Google Chrome. Don't use with any other browser.
       }
    }
 
-   boardTableInEm = 24.5;
-   function customShortcutKey_Shift_1() { 
-      if (theObject = document.getElementById("boardTable")) { window.scrollTo(0, 0); }
+   function scrollToEmOffset(offset) {
+      boardTableInEm = 24.5;
+      if (theObject = document.getElementById("boardTable")) {
+         if (offset < 0) {
+            window.scrollTo(0, document.body.offsetHeight - document.body.clientHeight + offset * theObject.offsetHeight / boardTableInEm);
+         } else {
+            window.scrollTo(0, offset * theObject.offsetHeight / boardTableInEm);
+         }
+      }
    }
-   function customShortcutKey_Shift_2() { 
-      if (theObject = document.getElementById("boardTable")) { window.scrollTo(0, 3 * theObject.offsetHeight / boardTableInEm); }
-   }
-   function customShortcutKey_Shift_3() { 
-      if (theObject = document.getElementById("boardTable")) { window.scrollTo(0, 5 * theObject.offsetHeight / boardTableInEm); }
-   }
-   function customShortcutKey_Shift_4() { 
-      if (theObject = document.getElementById("boardTable")) { window.scrollTo(0, 29.5 * theObject.offsetHeight / boardTableInEm); }
-   }
-   function customShortcutKey_Shift_5() { 
-      if (theObject = document.getElementById("boardTable")) { window.scrollTo(0, 33.5 * theObject.offsetHeight / boardTableInEm); }
-   }
-   function customShortcutKey_Shift_6() { 
-      window.scrollTo(0, document.body.offsetHeight);
-   }
+   function customShortcutKey_Shift_1() { window.scrollTo(0, 0); }
+   function customShortcutKey_Shift_2() { scrollToEmOffset(1); }
+   function customShortcutKey_Shift_3() { scrollToEmOffset(2); }
+   function customShortcutKey_Shift_4() { scrollToEmOffset(3); }
+   function customShortcutKey_Shift_5() { scrollToEmOffset(5); }
+   function customShortcutKey_Shift_6() { scrollToEmOffset(29.5); }
+   function customShortcutKey_Shift_7() { scrollToEmOffset(33.5); }
+   function customShortcutKey_Shift_8() { scrollToEmOffset(-6); }
+   function customShortcutKey_Shift_9() { scrollToEmOffset(-1.5); }
+   function customShortcutKey_Shift_0() { window.scrollTo(0, document.body.offsetHeight); }
 
    function lookupFidePlayer(name) {
       if (name) {
