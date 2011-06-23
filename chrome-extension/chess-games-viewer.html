@@ -238,13 +238,11 @@ of Google Chrome. Don't use with any other browser.
    function customFunctionOnPgnTextLoad() {
       if (LiveBroadcastDelay > 0) {
          document.title = LiveBroadcastStatusString.replace(" &nbsp;", ",");
-         if (LiveBroadcastTicker == 1) { location.hash = ""; location.hash = "board"; }
       } else {
          if ((numberOfGames == 1) && (PlyNumber === 0) && (StartPly === 0) && (!gameWhite[0]) && (!gameBlack[0]) && (!gameResult[0])) {
             document.title = alertNum ? "PGN data error" : "chess games viewer";
          } else {
             document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s");
-            location.hash = ""; location.hash = "board";
          }
       }
       // H5
@@ -299,21 +297,6 @@ of Google Chrome. Don't use with any other browser.
 
 </script>
 
-<div id="notes" class="notes">
-<div title="live broadcast status" id="GameLiveStatus" class="gameLiveStatus"></div>
-<div id="loadButtons" class="loadButtons">
-<input type="button" id="remoteLivePgnUrl" name="remoteLivePgnUrl" class="bottomButton" onclick="fetchNewPgnUrl(true);" value="Enter Live URL" title="enter PGN chess games URL for viewing with live refresh"/>
-<input type="button" id="remotePgnUrl" name="remotePgnUrl" class="bottomButton" onclick="fetchNewPgnUrl(false);" value="Enter URL" title="enter PGN chess games URL for viewing; ZIP archives containing PGN chess games files are also accepted"/>
-<input type="button" id="inputPgnText" name="inputPgnText" class="bottomButton" onclick="fetchInputPgnText();" value="Enter Text" title="enter PGN chess games TEXT for viewing"/>
-<input type="file" id="localPgnFiles" name="localPgnFiles[]" multiple="multiple" class="localPgnFiles" size="4" title="choose local PGN chess games file or drag and drop local PGN chess games files on this page for viewing; ZIP archives containing PGN chess games files are also accepted"/>
-</div>
-</div>
-
-<div id="GameSelector"></div>
-<div id="GameSearch"></div>
-
-<a name="board"></a>
-
 <div class="columnsContainer">
 
 <div class="boardColumn">
@@ -345,6 +328,19 @@ of Google Chrome. Don't use with any other browser.
 <div class="lastMoveAndComment" id="lastMoveAndComment"><a href="javascript:MoveToPrevComment();" class="lastMove" title="last move" id="GameLastMove"></a><a href="javascript:MoveToNextComment();" class="lastComment" title="current position comment" id="GameLastComment"></a></div>
 
 <div class="moveText"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
+
+<div id="GameSearch"></div>
+<div id="GameSelector"></div>
+
+<div id="notes" class="notes">
+<div title="live broadcast status" id="GameLiveStatus" class="gameLiveStatus"></div>
+<div id="loadButtons" class="loadButtons">
+<input type="button" id="remoteLivePgnUrl" name="remoteLivePgnUrl" class="bottomButton" onclick="fetchNewPgnUrl(true);" value="Enter Live URL" title="enter PGN chess games URL for viewing with live refresh"/>
+<input type="button" id="remotePgnUrl" name="remotePgnUrl" class="bottomButton" onclick="fetchNewPgnUrl(false);" value="Enter URL" title="enter PGN chess games URL for viewing; ZIP archives containing PGN chess games files are also accepted"/>
+<input type="button" id="inputPgnText" name="inputPgnText" class="bottomButton" onclick="fetchInputPgnText();" value="Enter Text" title="enter PGN chess games TEXT for viewing"/>
+<input type="file" id="localPgnFiles" name="localPgnFiles[]" multiple="multiple" class="localPgnFiles" size="4" title="choose local PGN chess games file or drag and drop local PGN chess games files on this page for viewing; ZIP archives containing PGN chess games files are also accepted"/>
+</div>
+</div>
 
 <script type="text/javascript">
 
