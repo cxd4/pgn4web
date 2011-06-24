@@ -104,13 +104,11 @@ ul {
 .searchPgnButton {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 10% !important;
-  margin-top: 3.5em;
 }
 
 .searchPgnExpression {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 90% !important;
-  margin-top: 3.5em;
 }
 
 .move,
@@ -201,6 +199,12 @@ ul {
 .lastMove, .lastComment {
   text-decoration: none;
   color: black;
+}
+
+.toolbarSpacer {
+  width: 100%;
+  margin-top: 2em;
+  margin-bottom: 0.5em;
 }
 
 .notes {
