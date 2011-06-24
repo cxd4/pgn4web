@@ -108,11 +108,13 @@ ul {
 .searchPgnButton {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 10% !important;
+  margin-top: 3.5em;
 }
 
 .searchPgnExpression {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 90% !important;
+  margin-top: 3.5em;
 }
 
 .move,
@@ -209,14 +211,13 @@ ul {
   display: block;
   width: 100%;
   line-height: 1em;
-  margin-top: 2em;
-  margin-bottom: 0.5em;
+  margin-top: 0.5em;
+  margin-bottom: 1em;
 }
 
 .notes {
   clear: both;
   text-align: left;
-  margin-top: 2.5em;
 }
 
 .loadButtons {
