@@ -236,13 +236,13 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function customFunctionOnPgnTextLoad() {
+      noGamesLoaded = (numberOfGames == 1) && (PlyNumber === 0) && (StartPly === 0) && (!gameWhite[0]) && (!gameBlack[0]) && (!gameResult[0]); 
+      if (theObject = document.getElementById("moveText")) { theObject.style.minHeight = noGamesLoaded ? "1.4em" : "7em"; }
       if (LiveBroadcastDelay > 0) {
          document.title = LiveBroadcastStatusString.replace(" &nbsp;", ",");
       } else {
-         noGamesLoaded = (numberOfGames == 1) && (PlyNumber === 0) && (StartPly === 0) && (!gameWhite[0]) && (!gameBlack[0]) && (!gameResult[0]); 
          if (noGamesLoaded) { document.title = alertNum ? "PGN data error" : "chess games viewer"; }
          else { document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s"); }
-         if (theObject = document.getElementById("moveText")) { theObject.style.minHeight = noGamesLoaded ? "1.4em" : "7em"; }
       }
 
       // H5
