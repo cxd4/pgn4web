@@ -402,6 +402,7 @@ of Google Chrome. Don't use with any other browser.
       LiveBroadcastLastModified_Reset();
       LiveBroadcastLastReceivedLocal_Reset();
       start_pgn4web();
+      window.scrollTo(0, 0);
    }
 
    var newPgnText;
@@ -528,6 +529,7 @@ of Google Chrome. Don't use with any other browser.
       if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = ""; }
       if (theObject = document.getElementById("localPgnFiles")) { theObject.value = ""; }
       start_pgn4web();
+      window.scrollTo(0, 0);
    }
 
    function fetchInputPgnText() {
