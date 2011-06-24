@@ -29,6 +29,10 @@ body {
   background: -webkit-linear-gradient(#F8F8F8, #F8F8F8 32.5em, #FFFFFF); /* chrome 10+ */
 }
 
+a {
+  text-decoration: none;
+}
+
 ul {
   list-style-type: square;
 }
@@ -202,7 +206,9 @@ ul {
 }
 
 .toolbarSpacer {
+  display: block;
   width: 100%;
+  line-height: 1em;
   margin-top: 2em;
   margin-bottom: 0.5em;
 }
