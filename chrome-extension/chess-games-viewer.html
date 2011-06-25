@@ -244,17 +244,8 @@ of Google Chrome. Don't use with any other browser.
          else { document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s"); }
       }
 
-      if (theMeasureButtonObject = document.getElementById("measureButton")) {
-         theMeasureButtonObject.style.display = "";
-         if (theObject = document.getElementById("localPgnFiles")) {
-            theObject.style.width = theMeasureButtonObject.offsetWidth;
-         }
-         if (theObject = document.getElementById("GameSelSelect")) {
-            theObject.style.height = theMeasureButtonObject.offsetHeight;
-         }
-         theMeasureButtonObject.style.display = "none";
-      }
-
+      fixMenuBar();
+      
       // H5
       if ((typeof(chrome) != "undefined") && (chrome.extension) && (pgnUrl) && (LiveBroadcastDelay > 0)) {
          boardShortcut("H5", "zoom out to the multiple small boards view", switchBoardView);
@@ -365,14 +356,21 @@ of Google Chrome. Don't use with any other browser.
 
 <script type="text/javascript">
 
-  if (theMeasureButtonObject = document.getElementById("measureButton")) {
-      theMeasureButtonObject.style.display = "";
-      if (theObject = document.getElementById("localPgnFiles")) {
-         theObject.style.width = theMeasureButtonObject.offsetWidth;
+   function fixMenuBar() {
+      if (theMeasureButtonObject = document.getElementById("measureButton")) {
+         theMeasureButtonObject.style.display = "";
+         if (theObject = document.getElementById("localPgnFiles")) {
+            theObject.style.width = theMeasureButtonObject.offsetWidth;
+         }
+         if (theObject = document.getElementById("GameSelSelect")) {
+            theObject.style.height = theMeasureButtonObject.offsetHeight;
+         }
+         theMeasureButtonObject.style.display = "none";
       }
-      theMeasureButtonObject.style.display = "none";
    }
 
+   fixMenuBar();
+   
    function fetchNewPgnUrl(live) {
       if (newPgnUrl = prompt("Enter PGN chess games URL for viewing" + (live ? " with live refresh:" : ":"), "")) {
          if (live) { newRefreshMinutes = refreshMinutes ? refreshMinutes : 1 + 0.01 * Math.floor(Math.random()*10); }
