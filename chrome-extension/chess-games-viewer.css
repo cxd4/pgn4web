@@ -22,19 +22,15 @@ html {
 
 body {
   margin: 0;
-  padding: 2.5em;
+  padding: 0.5em;
   font-family: 'pgn4web Liberation Sans', sans-serif;
   color: black;
   background: white;
-  background: -webkit-linear-gradient(#F8F8F8, #F8F8F8 32.5em, #FFFFFF); /* chrome 10+ */
+  background: -webkit-linear-gradient(#FFFFFF, #F0F0F0); /* chrome 10+ */
 }
 
 a {
   text-decoration: none;
-}
-
-ul {
-  list-style-type: square;
 }
 
 .gameBoard, .boardTable {
@@ -107,14 +103,10 @@ ul {
 
 .searchPgnButton {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 10% !important;
-  margin-top: 3.5em;
 }
 
 .searchPgnExpression {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 90% !important;
-  margin-top: 3.5em;
 }
 
 .move,
@@ -134,12 +126,38 @@ ul {
 .moveText {
   clear: both;
   text-align: justify;
-  min-height: 1.4em;
 }
 
 .comment {
   color: #888888;
   line-height: 1.4em;
+}
+
+.topMenu {
+  margin-bottom: 1em;
+}
+
+.topButton {
+  margin-left: 0.5em;
+}
+
+.localPgnFiles {
+  margin-left: 0.5em;
+  color: transparent;
+}
+
+.positionLink {
+  display: block;
+  clear: both;
+  width: 100%;
+  line-height: 1em;
+}
+
+.mainContainer {
+  padding-top: 0;
+  padding-bottom: 1em;
+  padding-left: 2em;
+  padding-right: 2em;
 }
 
 .columnsContainer {
@@ -205,39 +223,4 @@ ul {
 .lastMove, .lastComment {
   text-decoration: none;
   color: black;
-}
-
-.toolbarSpacer {
-  display: block;
-  width: 100%;
-  line-height: 1em;
-  margin-top: 0.5em;
-  margin-bottom: 1em;
-}
-
-.notes {
-  clear: both;
-  text-align: left;
-}
-
-.loadButtons {
-}
-
-.bottomButton {
-  margin-top: 0.5em;
-  margin-right: 1em;
-}
-
-.localPgnFiles {
-  color: transparent;
-  margin-top: 0.5em;
-}
-
-.gameLiveStatus {
-  float: right;
-  margin-top: 0.5em;
-}
-
-.footer {
-  clear: both;
 }
