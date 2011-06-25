@@ -137,6 +137,10 @@ a {
   margin-bottom: 1em;
 }
 
+.gameSelector {
+  margin-right: 0.5em;
+}
+
 .topButton {
   margin-left: 0.5em;
 }
