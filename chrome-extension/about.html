@@ -113,9 +113,15 @@ A context menu shows chess games from PGN chess games text selecetd in the web p
 A page action looks for links to PGN chess games URLs in the current page; if found, a black pawn page action icon appears in the address bar, clicking that icon a popup allows for opening the links in the chess games viewer.
 </p>
 
-<h3>PGN data error notifications</h3>
+<h3>user interface help</h3>
 <p>
-The top left chessboard square will flash in case of PGN data errors, click that square for further details.
+The user can interact with the chessboard using the keyboard or clicking chessboard squares; hovering the mouse on each square displays an help summary. Clicking square H8 (assuming White on bottom) displays detailed help.
+</p>
+<p>
+A search tool allows searching within the PGN games.
+</p>
+<p>
+Errors alert messages are logged, such as failures to load PGN games, incorrect PGN games or incorrect FEN strings. When an error is encountered, the top left chessboard square will flash to signal the exception. The error alert log can be reviewed clicking on the same top left chessboard square.
 <p/>
 
 </div> <!-- h2content -->
