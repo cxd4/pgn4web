@@ -156,10 +156,6 @@ of Google Chrome. Don't use with any other browser.
    boardShortcut("C7", "toggle show comments on separate lines in game text and save setting", function(){ SetCommentsOnSeparateLines(!commentsOnSeparateLines); oldPly = CurrentPly; Init(); GoToMove(oldPly); setCommentsOnSeparateLinesToLocalStorage(); });
    // D7
    boardShortcut("D7", "toggle highlight last move and save setting", function(){ SetHighlight(!highlightOption); setHighlightOptionToLocalStorage(); });
-   // F5
-   boardShortcut("F5", "scroll to chessboard's top", function(){ scrollToEmOffset(2); });
-   // G5
-   boardShortcut("G5", "toggle scrolling between page's top and bottom", function(){ toggleScrollPosition(); });
 
    function fixHeaderTag(elementId) {
       var headerId = ["GameEvent", "GameSite", "GameDate", "GameRound", "GameWhite", "GameBlack", "GameResult", "GameSection", "GameStage", "GameBoardNum", "Timecontrol", "GameWhiteTitle", "GameBlackTitle", "GameWhiteElo", "GameBlackElo", "GameECO", "GameOpening", "GameVariation", "GameSubVariation", "GameTermination", "GameWhiteClock", "GameBlackClock", "GameTimeControl"];
@@ -241,14 +237,23 @@ of Google Chrome. Don't use with any other browser.
 
    function customFunctionOnPgnTextLoad() {
       noGamesLoaded = (numberOfGames == 1) && (PlyNumber === 0) && (StartPly === 0) && (!gameWhite[0]) && (!gameBlack[0]) && (!gameResult[0]) && (!gameFEN[0]); 
-      if (theObject = document.getElementById("moveText")) { theObject.style.minHeight = noGamesLoaded ? "1.4em" : "7em"; }
       if (LiveBroadcastDelay > 0) {
          document.title = LiveBroadcastStatusString.replace(" &nbsp;", ",");
       } else {
          if (noGamesLoaded) { document.title = alertNum ? "PGN data error" : "chess games viewer"; }
          else { document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s"); }
       }
-      scrollToEmOffset(noGamesLoaded ? 32.5 : 0);
+
+      if (theMeasureButtonObject = document.getElementById("measureButton")) {
+         theMeasureButtonObject.style.display = "";
+         if (theObject = document.getElementById("localPgnFiles")) {
+            theObject.style.width = theMeasureButtonObject.offsetWidth;
+         }
+         if (theObject = document.getElementById("GameSelSelect")) {
+            theObject.style.height = theMeasureButtonObject.offsetHeight;
+         }
+         theMeasureButtonObject.style.display = "none";
+      }
 
       // H5
       if ((typeof(chrome) != "undefined") && (chrome.extension) && (pgnUrl) && (LiveBroadcastDelay > 0)) {
@@ -271,32 +276,6 @@ of Google Chrome. Don't use with any other browser.
       }
    }
 
-   function scrollToEmOffset(offset) {
-      boardTableInEm = 24.5;
-      if (theObject = document.getElementById("boardTable")) {
-         if (offset < 0) {
-            window.scrollTo(0, document.body.offsetHeight - document.body.clientHeight + offset * theObject.offsetHeight / boardTableInEm);
-         } else {
-            window.scrollTo(0, offset * theObject.offsetHeight / boardTableInEm);
-         }
-      }
-   }
-   function customShortcutKey_Shift_1() { window.scrollTo(0, 0); }
-   function customShortcutKey_Shift_2() { scrollToEmOffset(1); }
-   function customShortcutKey_Shift_3() { scrollToEmOffset(2); }
-   function customShortcutKey_Shift_4() { scrollToEmOffset(3); }
-   function customShortcutKey_Shift_5() { scrollToEmOffset(4); }
-   function customShortcutKey_Shift_6() { scrollToEmOffset(28.5); }
-   function customShortcutKey_Shift_7() { scrollToEmOffset(32.5); }
-   function customShortcutKey_Shift_8() { scrollToEmOffset(-6); }
-   function customShortcutKey_Shift_9() { scrollToEmOffset(-1.5); }
-   function customShortcutKey_Shift_0() { window.scrollTo(0, document.body.offsetHeight); }
-
-   function toggleScrollPosition() {
-      if (document.body.scrollTop) { window.scrollTo(0, 0); }
-      else { window.scrollTo(0, document.body.scrollHeight); }
-   }
-
    function lookupFidePlayer(name) {
       if (name) {
          window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + escape(name) + "&offset=0");
@@ -312,6 +291,11 @@ of Google Chrome. Don't use with any other browser.
       }
    }
 
+   function goToHash(hash) {
+      if (hash) { location.hash = ""; }
+      location.hash = hash;
+   }
+
    window.onload = function() {
       if (pgnData) { useNewPgnUrl(pgnData, refreshMinutes); }
       else { 
@@ -321,6 +305,24 @@ of Google Chrome. Don't use with any other browser.
    };
 
 </script>
+
+<table class="topMenu" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td width="99%">
+<div id="GameSelector"></div>
+</td><td>
+<input type="button" id="measureButton" name="measureButton" class="topButton" style="visibility:hidden;" value="Choose File"/>
+</td><td>
+<input type="button" id="remoteLivePgnUrl" name="remoteLivePgnUrl" class="topButton" onclick="fetchNewPgnUrl(true);" value="Enter Live URL" title="enter PGN chess games URL for viewing with live refresh"/>
+</td><td>
+<input type="button" id="remotePgnUrl" name="remotePgnUrl" class="topButton" onclick="fetchNewPgnUrl(false);" value="Enter URL" title="enter PGN chess games URL for viewing; ZIP archives containing PGN chess games files are also accepted"/>
+</td><td>
+<input type="button" id="inputPgnText" name="inputPgnText" class="topButton" onclick="fetchInputPgnText();" value="Enter Text" title="enter PGN chess games TEXT for viewing"/>
+</td><td>
+<input type="file" id="localPgnFiles" name="localPgnFiles[]" multiple="multiple" class="localPgnFiles" size="4" title="choose local PGN chess games file or drag and drop local PGN chess games files on this page for viewing; ZIP archives containing PGN chess games files are also accepted"/>
+</td></tr></table>
+
+<a name="board" href="javascript:void(0);" onclick="goToHash('board')" class="positionLink">&nbsp;</a>
+
+<div class="mainContainer">
 
 <div class="columnsContainer">
 
@@ -346,6 +348,9 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem"><span class="innerHeaderItem" id="GameBlackClock"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><b><span class="innerHeaderItem" id="GameResult"></span></b><span class="innerHeaderItem" id="GameTermination"></span><b>&nbsp;</b></div>
+<div class="headerItem headerSpacer"><b>&nbsp;</b></div>
+<div class="headerItem"><span class="innerHeaderItem" id="GameLiveStatus" title="live broadcast status"></span><b>&nbsp;</b></div>
+
 </div>
 
 </div>
@@ -354,22 +359,19 @@ of Google Chrome. Don't use with any other browser.
 
 <div id="moveText" class="moveText"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
 
-<div id="GameSearch"></div>
-<div id="GameSelector"></div>
-
-<a id="toolbarSpacer" class="toolbarSpacer" href="javascript:void(0);" onclick="window.scrollTo(0, 0);">&nbsp</a>
-
-<div id="notes" class="notes">
-<div title="live broadcast status" id="GameLiveStatus" class="gameLiveStatus"></div>
-<div id="loadButtons" class="loadButtons">
-<input type="button" id="remoteLivePgnUrl" name="remoteLivePgnUrl" class="bottomButton" onclick="fetchNewPgnUrl(true);" value="Enter Live URL" title="enter PGN chess games URL for viewing with live refresh"/>
-<input type="button" id="remotePgnUrl" name="remotePgnUrl" class="bottomButton" onclick="fetchNewPgnUrl(false);" value="Enter URL" title="enter PGN chess games URL for viewing; ZIP archives containing PGN chess games files are also accepted"/>
-<input type="button" id="inputPgnText" name="inputPgnText" class="bottomButton" onclick="fetchInputPgnText();" value="Enter Text" title="enter PGN chess games TEXT for viewing"/>
-<input type="file" id="localPgnFiles" name="localPgnFiles[]" multiple="multiple" class="localPgnFiles" size="4" title="choose local PGN chess games file or drag and drop local PGN chess games files on this page for viewing; ZIP archives containing PGN chess games files are also accepted"/>
 </div>
-</div>
+
+<a name="bottom" href="javascript:void(0);" onclick="goToHash('')" class="positionLink">&nbsp;</a>
 
 <script type="text/javascript">
+
+  if (theMeasureButtonObject = document.getElementById("measureButton")) {
+      theMeasureButtonObject.style.display = "";
+      if (theObject = document.getElementById("localPgnFiles")) {
+         theObject.style.width = theMeasureButtonObject.offsetWidth;
+      }
+      theMeasureButtonObject.style.display = "none";
+   }
 
    function fetchNewPgnUrl(live) {
       if (newPgnUrl = prompt("Enter PGN chess games URL for viewing" + (live ? " with live refresh:" : ":"), "")) {
@@ -541,8 +543,6 @@ of Google Chrome. Don't use with any other browser.
    }
 
 </script>
-
-<div class="footer"><a name="bottom"></a></div>
 
 </body>
 
