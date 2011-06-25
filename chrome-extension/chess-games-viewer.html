@@ -372,7 +372,7 @@ of Google Chrome. Don't use with any other browser.
    fixMenuBar();
    
    function fetchNewPgnUrl(live) {
-      if (newPgnUrl = prompt("Enter PGN chess games URL for viewing" + (live ? " with live refresh:" : ":"), "")) {
+      if (newPgnUrl = prompt("Enter PGN chess games URL for viewing" + (live ? " with live refresh:" : ":"), pgnData)) {
          if (live) { newRefreshMinutes = refreshMinutes ? refreshMinutes : 1 + 0.01 * Math.floor(Math.random()*10); }
          else { newRefreshMinutes = 0; }
          useNewPgnUrl(newPgnUrl, newRefreshMinutes);
@@ -381,7 +381,7 @@ of Google Chrome. Don't use with any other browser.
 
    function useNewPgnUrl(newPgnUrl, newRefreshMinutes) {
       refreshMinutes = newRefreshMinutes;
-      SetPgnUrl(newPgnUrl);
+      SetPgnUrl(pgnData = newPgnUrl);
       SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, stepFlag);
       setInitialGameFromSearchGame();
       if (refreshMinutes) {
@@ -519,7 +519,7 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function useNewPgnText(newPgnText) {
-      SetPgnUrl("");
+      SetPgnUrl(pgnData = "");
       SetLiveBroadcast(0, true, false, false);
       SetAutoplayDelay(2000);
       setInitialGameFromSearchGame();
