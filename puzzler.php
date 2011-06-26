@@ -187,17 +187,17 @@ if ($framePadding != 0) {
   $framePaddingCss = $framePadding;
 }
 
-$pgnFull = get_param("pgnFull", "pf", "");
-if (($pgnFull == "true") || ($pgnFull == "t")) {
-  print $pgnGame;
-  exit;
-}
+$rawGame = "";
 
 $pgnMini = get_param("pgnMini", "pm", "");
 if (($pgnMini == "true") || ($pgnMini == "t")) {
-  if (preg_match('/\[\s*FEN\s*"[^"]*"\s*\]/', $pgnGame, $matches)) { print $matches[0] . "\n\n"; }
-  print preg_replace('/\[\s*\w+\s*"[^"]*"\s*\]\s*/', "", $pgnGame);
-  exit;
+  if (preg_match('/\[\s*FEN\s*"[^"]*"\s*\]/', $pgnGame, $matches)) { $rawGame = $rawGame . $matches[0] . "\n\n"; }
+  $rawGame = $rawGame . preg_replace('/\[\s*\w+\s*"[^"]*"\s*\]\s*/', "", $pgnGame);
+}
+
+$pgnFull = get_param("pgnFull", "pf", "");
+if (($pgnFull == "true") || ($pgnFull == "t")) {
+  $rawGame = $pgnGame;
 }
 
 // end of  undocumented features
@@ -225,6 +225,11 @@ $expiresMeta = "";
 if ($expiresDate) { 
   header("Expires: " . $expiresDate);
   $expiresMeta = "<meta http-equiv=\"Expires\" content=\"" . $expiresDate . "\">";
+}
+
+if ($rawGame) { 
+  print $rawGame;
+  exit;
 }
 
 print <<<END
