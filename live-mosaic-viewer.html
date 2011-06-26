@@ -531,6 +531,15 @@ function switchBoardView(search) {
   }
 }
 
+function goToHash(hash) {
+  if (hash) { location.hash = ""; }
+  location.hash = hash;
+}
+
+function customShortcutKey_Shift_1() { goToHash(""); }
+function customShortcutKey_Shift_2() { goToHash("boards"); }
+function customShortcutKey_Shift_3() { goToHash("bottom"); }
+
 function customShortcutKey_Shift_8() {
   firstGame = firstGameAtStartup;
   customFunctionOnPgnTextLoad();
