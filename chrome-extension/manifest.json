@@ -5,30 +5,30 @@
 //  for credits, license and more details
 
 {
-  "name": "Chess games viewer",
-
-  "version": "1.6.0",
-
-  "description": "Chess games viewer: interactive chessboard showing chess games from links to PGN URLs, from local PGN files and from PGN text.",
-
-  "icons": {"16": "alpha-16.png", "48": "alpha/48/bp.png", "128": "alpha/128/bp.png"},
-
-  "page_action": { "default_icon": "alpha-20.png", "default_title": "Chess games viewer: PGN links on this page", "default_popup": "popup.html" },
-
-  "content_scripts" : [{"matches": ["*://*/*"], "js": ["pgnLinks.js"], "run_at": "document_idle", "all_frames": true}], 
-
-  "permissions": ["contextMenus", "tabs", "*://*/"],
-
-  "options_page": "about.html",
-
-  "homepage_url": "http://pgn4web.casaschi.net",
-
-  "incognito": "split",
-
-  "minimum_chrome_version": "7.0",
-
-  "update_url": "http://pgn4web.googlecode.com/svn/trunk/chrome-extension/updateInfo.xml",
-
-  "background_page": "background.html"
+   "background_page": "background.html",
+   "content_scripts": [ {
+      "all_frames": true,
+      "js": [ "pgnLinks.js" ],
+      "matches": [ "*://*/*" ],
+      "run_at": "document_idle"
+   } ],
+   "description": "Chess games viewer: interactive chessboard showing chess games from links to PGN URLs, from local PGN files and from PGN text.",
+   "homepage_url": "http://pgn4web.casaschi.net",
+   "icons": {
+      "128": "alpha/128/bp.png",
+      "16": "alpha-16.png",
+      "48": "alpha/48/bp.png"
+   },
+   "incognito": "split",
+   "minimum_chrome_version": "7.0",
+   "name": "Chess games viewer",
+   "options_page": "about.html",
+   "page_action": {
+      "default_icon": "alpha-20.png",
+      "default_popup": "popup.html",
+      "default_title": "Chess games viewer: PGN links on this page"
+   },
+   "permissions": [ "contextMenus", "tabs", "*://*/" ],
+   "update_url": "http://pgn4web.googlecode.com/svn/trunk/chrome-extension/updateInfo.xml",
+   "version": "1.6.0"
 }
-
