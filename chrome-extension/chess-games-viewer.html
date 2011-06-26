@@ -292,6 +292,10 @@ of Google Chrome. Don't use with any other browser.
       location.hash = hash;
    }
 
+   function customShortcutKey_Shift_1() { goToHash(""); }
+   function customShortcutKey_Shift_2() { goToHash("board"); }
+   function customShortcutKey_Shift_3() { goToHash("bottom"); }
+
    window.onload = function() {
       if (pgnData) { useNewPgnUrl(pgnData, refreshMinutes); }
       else { 
