@@ -187,6 +187,19 @@ if ($framePadding != 0) {
   $framePaddingCss = $framePadding;
 }
 
+$pgnFull = get_param("pgnFull", "pf", "");
+if (($pgnFull == "true") || ($pgnFull == "t")) {
+  print $pgnGame;
+  exit;
+}
+
+$pgnMini = get_param("pgnMini", "pm", "");
+if (($pgnMini == "true") || ($pgnMini == "t")) {
+  if (preg_match('/\[\s*FEN\s*"[^"]*"\s*\]/', $pgnGame, $matches)) { print $matches[0] . "\n\n"; }
+  print preg_replace('/\[\s*\w+\s*"[^"]*"\s*\]\s*/', "", $pgnGame);
+  exit;
+}
+
 // end of  undocumented features
 
 
