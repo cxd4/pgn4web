@@ -226,11 +226,11 @@ a {
 }
 
 .lastMoveAndComment::-webkit-scrollbar {
-  -webkit-box-shadow: inset 0 0 0.2em #E8E8E8; 
+  -webkit-box-shadow: inset 0 0 0.2em #E0E0E0; 
 }
 
 .lastMoveAndCommentHover::-webkit-scrollbar {
-  -webkit-box-shadow: inset 0 0 0.2em #C8C8C8; 
+  -webkit-box-shadow: inset 0 0 0.2em #C0C0C0; 
 }
 
 .lastMoveAndComment::-webkit-scrollbar-thumb, .lastMoveAndCommentHover::-webkit-scrollbar-thumb {
@@ -240,11 +240,11 @@ a {
 }
 
 .lastMoveAndComment::-webkit-scrollbar-thumb {
-  background: #E8E8E8;
+  background: #E0E0E0;
 }
 
 .lastMoveAndCommentHover::-webkit-scrollbar-thumb {
-  background: #C8C8C8;
+  background: #C0C0C0;
 }
 
 .lastMoveAndComment::-webkit-resizer, .lastMoveAndCommentHover::-webkit-resizer {
@@ -253,11 +253,11 @@ a {
 }
 
 .lastMoveAndComment::-webkit-resizer {
-  background: #E8E8E8;
+  background: #E0E0E0;
 }
 
 .lastMoveAndCommentHover::-webkit-resizer {
-  background: #C8C8C8;
+  background: #C0C0C0;
 }
 
 end of scrollbar styling code ***/
