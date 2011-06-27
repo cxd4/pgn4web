@@ -89,7 +89,7 @@ a {
 .buttonControl {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 4.7em !important;
-  margin-top: 1em;
+  margin-top: 1.25em;
   font-size: 1em;
 }
 
