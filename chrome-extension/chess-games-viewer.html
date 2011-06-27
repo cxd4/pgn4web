@@ -319,6 +319,7 @@ of Google Chrome. Don't use with any other browser.
       }
    }
 
+
    function goToHash(hash) {
       if (hash) { location.hash = ""; }
       else { location.hash = "board"; }
@@ -328,6 +329,26 @@ of Google Chrome. Don't use with any other browser.
    function customShortcutKey_Shift_1() { goToHash(""); }
    function customShortcutKey_Shift_2() { goToHash("board"); }
    function customShortcutKey_Shift_3() { goToHash("bottom"); }
+
+   function customShortcutKey_Shift_7() {
+      if (theObject = document.getElementById("lastMoveAndComment")) {
+         theObject.style.height = "";
+      }
+   }
+
+   function customShortcutKey_Shift_8() {
+      if (theObject = document.getElementById("lastMoveAndComment")) {
+         theObject.style.height = "";
+         theObject.style.height = theObject.scrollHeight;
+      }
+   }
+
+   function customShortcutKey_Shift_9() {
+      if (theObject = document.getElementById("lastMoveAndComment")) {
+         theObject.style.height = "21em";
+      }
+   }
+
 
    window.onload = function() {
       if (pgnData) { useNewPgnUrl(pgnData, refreshMinutes); }
