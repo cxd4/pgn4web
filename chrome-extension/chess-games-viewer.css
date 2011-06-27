@@ -220,7 +220,9 @@ a {
 
 /*** scrollbar styling code, uncomment to enable
 
-.lastMoveAndComment::-webkit-scrollbar, .lastMoveAndCommentHover::-webkit-scrollbar {
+.lastMoveAndComment::-webkit-scrollbar, .lastMoveAndCommentHover::-webkit-scrollbar,
+.lastMoveAndComment::-webkit-scrollbar-thumb, .lastMoveAndCommentHover::-webkit-scrollbar-thumb,
+.lastMoveAndComment::-webkit-resizer, .lastMoveAndCommentHover::-webkit-resizer {
   width: 0.75em;
   height: 0.75em;
 }
@@ -233,28 +235,12 @@ a {
   -webkit-box-shadow: inset 0 0 0.2em #888888;
 }
 
-.lastMoveAndComment::-webkit-scrollbar-thumb, .lastMoveAndCommentHover::-webkit-scrollbar-thumb {
-  width: 0.75em;
-  height: 0.75em;
-}
-
-.lastMoveAndComment::-webkit-scrollbar-thumb {
-  background: #E0E0E0;
-}
-
-.lastMoveAndCommentHover::-webkit-scrollbar-thumb {
-  background: #888888;
-}
-
-.lastMoveAndComment::-webkit-resizer, .lastMoveAndCommentHover::-webkit-resizer {
-  width: 0.75em;
-  height: 0.75em;
-}
-
+.lastMoveAndComment::-webkit-scrollbar-thumb,
 .lastMoveAndComment::-webkit-resizer {
   background: #E0E0E0;
 }
 
+.lastMoveAndCommentHover::-webkit-scrollbar-thumb,
 .lastMoveAndCommentHover::-webkit-resizer {
   background: #888888;
 }
