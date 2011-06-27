@@ -193,9 +193,9 @@ of Google Chrome. Don't use with any other browser.
    // D7
    boardShortcut("D7", "toggle highlight last move and save setting", function(){ SetHighlight(!highlightOption); setHighlightOptionToLocalStorage(); });
    // F5
-   boardShortcut("F5", "reset last move and current comment text area", customShortcutKey_Shift_7);
+   boardShortcut("F5", "reset last move and current comment text area", resetLastMoveAndCommentArea);
    // G5
-   boardShortcut("G5", "fit last move and current comment text area", customShortcutKey_Shift_8);
+   boardShortcut("G5", "fit last move and current comment text area", fitLastMoveAndCommentArea);
 
 
    function fixHeaderTag(elementId) {
@@ -336,20 +336,24 @@ of Google Chrome. Don't use with any other browser.
    function customShortcutKey_Shift_2() { goToHash("board"); }
    function customShortcutKey_Shift_3() { goToHash("bottom"); }
 
-   function customShortcutKey_Shift_7() {
+   function customShortcutKey_Shift_7() { resetLastMoveAndCommentArea(); }
+   function customShortcutKey_Shift_8() { fitLastMoveAndCommentArea(); }
+   function customShortcutKey_Shift_9() { maximizeLastMoveAndCommentArea(); }
+
+   function resetLastMoveAndCommentArea() {
       if (theObject = document.getElementById("lastMoveAndComment")) {
          theObject.style.height = "";
       }
    }
 
-   function customShortcutKey_Shift_8() {
+   function fitLastMoveAndCommentArea() {
       if (theObject = document.getElementById("lastMoveAndComment")) {
          theObject.style.height = "";
          theObject.style.height = theObject.scrollHeight;
       }
    }
 
-   function customShortcutKey_Shift_9() {
+   function maximizeLastMoveAndCommentArea() {
       if (theObject = document.getElementById("lastMoveAndComment")) {
          theObject.style.height = "21em";
       }
