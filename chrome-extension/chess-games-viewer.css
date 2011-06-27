@@ -15,14 +15,12 @@ of Google Chrome. Don't use with any other browser.
 @import url("fonts/pgn4web-font-LiberationSans.css");
 @import url("fonts/pgn4web-font-ChessSansUsual.css");
 
-html {
+html, body {
   margin: 0;
   padding: 0;
 }
 
 body {
-  margin: 0;
-  padding: 1em;
   font-family: 'pgn4web Liberation Sans', sans-serif;
   color: black;
   background: white;
@@ -91,7 +89,7 @@ a {
 .buttonControl {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 4.7em !important;
-  margin-top: 1.25em;
+  margin-top: 1em;
   font-size: 1em;
 }
 
@@ -134,7 +132,7 @@ a {
 }
 
 .topMenu {
-  margin-bottom: 1em;
+  padding: 1em;
 }
 
 .gameSelector {
@@ -154,20 +152,19 @@ a {
   display: block;
   clear: both;
   width: 100%;
-  line-height: 1em;
+  height: 1em;
 }
 
 .mainContainer {
-  padding-top: 0;
-  padding-bottom: 1em;
-  padding-left: 2em;
-  padding-right: 2em;
+  padding-top: 1em;
+  padding-bottom: 2em;
+  padding-left: 3em;
+  padding-right: 3em;
 }
 
 .columnsContainer {
   float: left;
   width: 100%;
-  padding-top: 1.5em;
   padding-bottom: 2.5em;
 }
 
