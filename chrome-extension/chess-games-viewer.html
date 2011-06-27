@@ -321,10 +321,11 @@ of Google Chrome. Don't use with any other browser.
 
    function goToHash(hash) {
       if (hash) { location.hash = ""; }
+      else { location.hash = "board"; }
       location.hash = hash;
    }
 
-   function customShortcutKey_Shift_1() { goToHash("top"); }
+   function customShortcutKey_Shift_1() { goToHash(""); }
    function customShortcutKey_Shift_2() { goToHash("board"); }
    function customShortcutKey_Shift_3() { goToHash("bottom"); }
 
@@ -337,8 +338,6 @@ of Google Chrome. Don't use with any other browser.
    };
 
 </script>
-
-<a name="top"></a>
 
 <table class="topMenu" width="100%" cellpadding="0" cellspacing="0" border="0" style="opacity:0.1" onmouseover="this.style.opacity = 1;" onmouseout="this.style.opacity = 0.1;"><tr><td width="99%">
 <div id="GameSelector" class="gameSelector"></div>
@@ -396,7 +395,7 @@ of Google Chrome. Don't use with any other browser.
 
 </div>
 
-<a name="bottom" href="javascript:void(0);" onclick="goToHash('top')" class="positionLink">&nbsp;</a>
+<a name="bottom" href="javascript:void(0);" onclick="goToHash('')" class="positionLink">&nbsp;</a>
 
 <script type="text/javascript">
 
