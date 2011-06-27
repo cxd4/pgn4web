@@ -230,23 +230,15 @@ a {
 .lastMoveAndComment::-webkit-scrollbar, .lastMoveAndCommentHover::-webkit-scrollbar {
   border-style: solid;
   border-width: 1px;
-}
-
-.lastMoveAndComment::-webkit-scrollbar {
   border-color: #E0E0E0;
 }
 
-.lastMoveAndCommentHover::-webkit-scrollbar {
-  border-color: #888888;
-}
-
 .lastMoveAndComment::-webkit-scrollbar-thumb,
-.lastMoveAndComment::-webkit-resizer {
+.lastMoveAndComment::-webkit-resizer, .lastMoveAndCommentHover::-webkit-resizer {
   background-color: #E0E0E0;
 }
 
-.lastMoveAndCommentHover::-webkit-scrollbar-thumb,
-.lastMoveAndCommentHover::-webkit-resizer {
+.lastMoveAndCommentHover::-webkit-scrollbar-thumb {
   background-color: #888888;
 }
 
