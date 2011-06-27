@@ -208,10 +208,11 @@ chrome.contextMenus.create({"type": "separator", "contexts": ["page"]});
 // and adding the about menu to the "selection" context would result in
 // duplicated items when a selected link is right-clicked
 // see http://code.google.com/p/chromium/issues/detail?id=63545
-
+//
 chrome.contextMenus.create({"title": "About the chess games viewer extension", "contexts": ["link"], targetUrlPatterns: pgnZipUrlPatterns, "onclick": aboutChessGamesViewer});
-
+//
 chrome.contextMenus.create({"title": "About the chess games viewer extension", "contexts": ["page"], "onclick": aboutChessGamesViewer});
+//
 
 // end of context menus entries
 
@@ -300,6 +301,7 @@ function checkWebRequestForPgnFiles(requestDetails) {
 // enables using the webRequest API, currently disable because experimental
 //
 // chrome.experimental.webRequest.onBeforeRequest.addListener(checkWebRequestForPgnFiles, {"urls": pgnUrlPatterns});
+//
 
 </script>
 
