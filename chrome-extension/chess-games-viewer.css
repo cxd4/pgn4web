@@ -226,7 +226,7 @@ a {
 }
 
 .lastMoveAndComment::-webkit-scrollbar {
-  -webkit-box-shadow: inset 0 0 0.2em #D8D8D8; 
+  -webkit-box-shadow: inset 0 0 0.2em #E0E0E0;
 }
 
 .lastMoveAndCommentHover::-webkit-scrollbar {
@@ -239,7 +239,7 @@ a {
 }
 
 .lastMoveAndComment::-webkit-scrollbar-thumb {
-  background: #D8D8D8;
+  background: #E0E0E0;
 }
 
 .lastMoveAndCommentHover::-webkit-scrollbar-thumb {
@@ -252,7 +252,7 @@ a {
 }
 
 .lastMoveAndComment::-webkit-resizer {
-  background: #D8D8D8;
+  background: #E0E0E0;
 }
 
 .lastMoveAndCommentHover::-webkit-resizer {
