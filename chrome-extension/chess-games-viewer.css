@@ -218,8 +218,6 @@ a {
   display: none;
 }
 
-/*** scrollbar styling code, uncomment to enable
-
 .lastMoveAndComment::-webkit-scrollbar, .lastMoveAndCommentHover::-webkit-scrollbar,
 .lastMoveAndComment::-webkit-scrollbar-thumb, .lastMoveAndCommentHover::-webkit-scrollbar-thumb,
 .lastMoveAndComment::-webkit-resizer, .lastMoveAndCommentHover::-webkit-resizer {
@@ -241,8 +239,6 @@ a {
 .lastMoveAndCommentHover::-webkit-scrollbar-thumb {
   background-color: #888888;
 }
-
-end of scrollbar styling code ***/
 
 .lastMove {
   font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
