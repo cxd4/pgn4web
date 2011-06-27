@@ -236,7 +236,6 @@ a {
 .lastMoveAndComment::-webkit-scrollbar-thumb, .lastMoveAndCommentHover::-webkit-scrollbar-thumb {
   width: 0.75em;
   height: 0.75em;
-  -webkit-border-radius: 0.2em;
 }
 
 .lastMoveAndComment::-webkit-scrollbar-thumb {
