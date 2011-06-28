@@ -192,10 +192,8 @@ of Google Chrome. Don't use with any other browser.
    boardShortcut("C7", "toggle show comments on separate lines in game text and save setting", function(){ SetCommentsOnSeparateLines(!commentsOnSeparateLines); oldPly = CurrentPly; Init(); GoToMove(oldPly); setCommentsOnSeparateLinesToLocalStorage(); });
    // D7
    boardShortcut("D7", "toggle highlight last move and save setting", function(){ SetHighlight(!highlightOption); setHighlightOptionToLocalStorage(); });
-   // F5
-   boardShortcut("F5", "reset last move and current comment text area", resetLastMoveAndCommentArea);
    // G5
-   boardShortcut("G5", "fit last move and current comment text area", fitLastMoveAndCommentArea);
+   boardShortcut("G5", "adjust last move and current comment text area, if present", toggleFitResetLastMoveAndCommentArea);
 
 
    function fixHeaderTag(elementId) {
@@ -339,6 +337,13 @@ of Google Chrome. Don't use with any other browser.
    function customShortcutKey_Shift_7() { resetLastMoveAndCommentArea(); }
    function customShortcutKey_Shift_8() { fitLastMoveAndCommentArea(); }
    function customShortcutKey_Shift_9() { maximizeLastMoveAndCommentArea(); }
+
+   function toggleFitResetLastMoveAndCommentArea() {
+      if (theObject = document.getElementById("lastMoveAndComment")) {
+         if (theObject.style.height) { resetLastMoveAndCommentArea(); }
+         else { fitLastMoveAndCommentArea(); }
+      }
+   }
 
    function resetLastMoveAndCommentArea() {
       if (theObject = document.getElementById("lastMoveAndComment")) {
