@@ -204,7 +204,7 @@ a {
   height: 0.7em;
 }
 
-.lastMoveAndComment, .lastMoveAndCommentHover {
+.lastMoveAndComment {
   clear: both;
   text-align: justify;
   resize: vertical;
@@ -218,21 +218,21 @@ a {
   display: none;
 }
 
-.lastMoveAndComment::-webkit-scrollbar, .lastMoveAndCommentHover::-webkit-scrollbar,
-.lastMoveAndComment::-webkit-scrollbar-thumb, .lastMoveAndCommentHover::-webkit-scrollbar-thumb,
-.lastMoveAndComment::-webkit-resizer, .lastMoveAndCommentHover::-webkit-resizer {
+.lastMoveAndComment::-webkit-scrollbar,
+.lastMoveAndComment::-webkit-scrollbar-thumb,
+.lastMoveAndComment::-webkit-resizer {
   width: 0.75em;
   height: 0.75em;
 }
 
-.lastMoveAndComment::-webkit-scrollbar, .lastMoveAndCommentHover::-webkit-scrollbar {
+.lastMoveAndComment::-webkit-scrollbar {
   border-style: solid;
   border-width: 1px;
   border-color: #E0E0E0;
 }
 
 .lastMoveAndComment::-webkit-scrollbar-thumb,
-.lastMoveAndComment::-webkit-resizer, .lastMoveAndCommentHover::-webkit-resizer {
+.lastMoveAndComment::-webkit-resizer {
   background-color: #E0E0E0;
 }
 
