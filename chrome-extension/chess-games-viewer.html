@@ -338,9 +338,12 @@ of Google Chrome. Don't use with any other browser.
    function customShortcutKey_Shift_8() { fitLastMoveAndCommentArea(); }
    function customShortcutKey_Shift_9() { maximizeLastMoveAndCommentArea(); }
 
+
+   function emPixels(em) { return em * document.getElementById("boardTable").offsetHeight / 24.5; } 
+
    function toggleFitResetLastMoveAndCommentArea() {
       if (theObject = document.getElementById("lastMoveAndComment")) {
-         if (theObject.style.height) { resetLastMoveAndCommentArea(); }
+         if ((theObject.scrollHeight === theObject.clientHeight) || (theObject.offsetHeight == emPixels(21))) { resetLastMoveAndCommentArea(); }
          else { fitLastMoveAndCommentArea(); }
       }
    }
