@@ -146,17 +146,13 @@ a {
   opacity: 1;
 }
 
-.gameSelector {
-  margin-right: 0.5em;
-}
-
 .topButton {
   margin-left: 0.5em;
 }
 
 .localPgnFiles {
-  margin-left: 0.5em;
-  color: transparent;
+  width: 0.5em;
+  visibility: hidden;
 }
 
 .positionLink {
