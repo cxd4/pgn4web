@@ -416,7 +416,7 @@ of Google Chrome. Don't use with any other browser.
 </td><td>
 <input type="button" id="inputPgnText" name="inputPgnText" class="topButton" onclick="fetchInputPgnText();" value="text" title="enter PGN chess games TEXT for viewing"/>
 </td><td>
-<input type="button" id="openLocalPgnFiles" name="openLocalPgnFiles" class="topButton" onclick="openPgnFiles();" value="files" title="open local PGN chess games files or drag and drop local PGN chess games files on this page for viewing; ZIP archives containing PGN chess games files are also accepted"/>
+<input type="button" id="openLocalPgnFiles" name="openLocalPgnFiles" class="topButton" onclick="openPgnFiles();" value=" files " title="open local PGN chess games files or drag and drop local PGN chess games files on this page for viewing; ZIP archives containing PGN chess games files are also accepted"/>
 </td><td>
 <input type="button" id="remotePgnUrl" name="remotePgnUrl" class="topButton" onclick="fetchNewPgnUrl(false);" value="url" title="enter PGN chess games URL for viewing; ZIP archives containing PGN chess games files are also accepted"/>
 </td><td>
@@ -478,14 +478,20 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function fixMenuBar() {
-      try {
-         buttonWidth = emPixels(1) + Math.max(document.getElementById("remoteLivePgnUrl").offsetWidth, document.getElementById("remotePgnUrl").offsetWidth, document.getElementById("openLocalPgnFiles").offsetWidth, document.getElementById("inputPgnText").offsetWidth);
-         document.getElementById("remoteLivePgnUrl").style.width = buttonWidth;
-         document.getElementById("remotePgnUrl").style.width = buttonWidth;
-         document.getElementById("openLocalPgnFiles").style.width = buttonWidth;
-         document.getElementById("inputPgnText").style.width = buttonWidth;
-         document.getElementById("GameSelSelect").style.height = document.getElementById("openLocalPgnFiles").offsetHeight;
-      } catch(e) {}
+      if (theStandardButtonObject = document.getElementById("openLocalPgnFiles")) {
+         if (theObject = document.getElementById("remoteLivePgnUrl")) {
+            theObject.style.width = theStandardButtonObject.offsetWidth;
+         }
+         if (theObject = document.getElementById("remotePgnUrl")) {
+            theObject.style.width = theStandardButtonObject.offsetWidth;
+         }
+         if (theObject = document.getElementById("inputPgnText")) {
+            theObject.style.width = theStandardButtonObject.offsetWidth;
+         }
+         if (theObject = document.getElementById("GameSelSelect")) {
+            theObject.style.height = theStandardButtonObject.offsetHeight;
+         }
+      }
    }
 
    fixMenuBar();
