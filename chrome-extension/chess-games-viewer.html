@@ -381,15 +381,15 @@ of Google Chrome. Don't use with any other browser.
 <table class="topMenu" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td width="99%">
 <div id="GameSelector" class="gameSelector"></div>
 </td><td>
-<input type="button" id="measureButton" name="measureButton" class="topButton" style="visibility:hidden;" value="Choose File"/>
+<input type="file" id="localPgnFiles" name="localPgnFiles[]" multiple="multiple" class="localPgnFiles" />
 </td><td>
-<input type="button" id="remoteLivePgnUrl" name="remoteLivePgnUrl" class="topButton" onclick="fetchNewPgnUrl(true);" value="Enter Live URL" title="enter PGN chess games URL for viewing with live refresh"/>
+<input type="button" id="inputPgnText" name="inputPgnText" class="topButton" onclick="fetchInputPgnText();" value=" text " title="enter PGN chess games TEXT for viewing"/>
 </td><td>
-<input type="button" id="remotePgnUrl" name="remotePgnUrl" class="topButton" onclick="fetchNewPgnUrl(false);" value="Enter URL" title="enter PGN chess games URL for viewing; ZIP archives containing PGN chess games files are also accepted"/>
+<input type="button" id="openLocalPgnFiles" name="openLocalPgnFiles" class="topButton" onclick="openPgnFiles();" value=" files " title="open local PGN chess games file or drag and drop local PGN chess games files on this page for viewing; ZIP archives containing PGN chess games files are also accepted"/>
 </td><td>
-<input type="button" id="inputPgnText" name="inputPgnText" class="topButton" onclick="fetchInputPgnText();" value="Enter Text" title="enter PGN chess games TEXT for viewing"/>
+<input type="button" id="remotePgnUrl" name="remotePgnUrl" class="topButton" onclick="fetchNewPgnUrl(false);" value=" url " title="enter PGN chess games URL for viewing; ZIP archives containing PGN chess games files are also accepted"/>
 </td><td>
-<input type="file" id="localPgnFiles" name="localPgnFiles[]" multiple="multiple" class="localPgnFiles" size="4" title="choose local PGN chess games file or drag and drop local PGN chess games files on this page for viewing; ZIP archives containing PGN chess games files are also accepted"/>
+<input type="button" id="remoteLivePgnUrl" name="remoteLivePgnUrl" class="topButton" onclick="fetchNewPgnUrl(true);" value=" live url " title="enter PGN chess games URL for viewing with live refresh"/>
 </td></tr></table>
 
 <a name="board" href="javascript:void(0);" onclick="goToHash('board')" class="positionLink">&nbsp;</a>
@@ -438,16 +438,24 @@ of Google Chrome. Don't use with any other browser.
 
 <script type="text/javascript">
 
+   function openPgnFiles() {
+      if (theObject = document.getElementById("localPgnFiles")) { theObject.click(); }
+   }
+
    function fixMenuBar() {
-      if (theMeasureButtonObject = document.getElementById("measureButton")) {
-         theMeasureButtonObject.style.display = "";
-         if (theObject = document.getElementById("localPgnFiles")) {
-            theObject.style.width = theMeasureButtonObject.offsetWidth;
+      if (theStandardButtonObject = document.getElementById("remoteLivePgnUrl")) {
+         if (theObject = document.getElementById("remotePgnUrl")) {
+            theObject.style.width = theStandardButtonObject.offsetWidth;
+         }
+         if (theObject = document.getElementById("openLocalPgnFiles")) {
+            theObject.style.width = theStandardButtonObject.offsetWidth;
+         }
+         if (theObject = document.getElementById("inputPgnText")) {
+            theObject.style.width = theStandardButtonObject.offsetWidth;
          }
          if (theObject = document.getElementById("GameSelSelect")) {
-            theObject.style.height = theMeasureButtonObject.offsetHeight;
+            theObject.style.height = theStandardButtonObject.offsetHeight;
          }
-         theMeasureButtonObject.style.display = "none";
       }
    }
 
