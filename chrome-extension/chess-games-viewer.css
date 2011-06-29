@@ -82,6 +82,11 @@ a {
 
 .gameButtons {
   width: 24.5em; /* default 392px */
+  opacity: 0.2;
+}
+
+.gameButtons:hover {
+  opacity: 1;
 }
 
 .buttonControlPlay,
@@ -134,6 +139,14 @@ a {
 
 .topMenu {
   padding: 1em;
+  opacity: 0.2;
+  background: #F0F0F0;
+  background: -webkit-linear-gradient(#F0F0F0, #FFFFFF); /* chrome 10+ */
+}
+
+.topMenu:hover {
+  opacity: 1;
+  background: #FFFFFF;
 }
 
 .gameSelector {
