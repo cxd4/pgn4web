@@ -119,7 +119,7 @@ of Google Chrome. Don't use with any other browser.
          '[FEN "r3kbnr/p1pp1qpp/b1n1P3/6N1/1p6/8/Pp3PPP/RNBQR1K1 b kq - 0 12"] 12... O-O-O',
          '[FEN "r2qkb1r/pb1p1p1p/1pn2np1/2p1p3/2P1P3/2NP1NP1/PP3PBP/R1BQ1RK1 w kq - 0 9"] 9. Nxe5'
       );
-      onceEveryN = 7;
+      onceEveryN = 10;
       if (theObject = document.getElementById("pgnText")) {
          if ((randomPick = Math.floor(onceEveryN * tkFEN.length * Math.random())) < tkFEN.length) {
             theObject.innerHTML = tkFEN[Math.floor(tkFEN.length * Math.random())];
