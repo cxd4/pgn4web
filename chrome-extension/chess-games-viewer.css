@@ -78,6 +78,7 @@ a {
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 100% !important;
+  font-size: 1em;
 }
 
 .gameButtons {
