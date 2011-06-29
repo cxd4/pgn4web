@@ -310,7 +310,7 @@ of Google Chrome. Don't use with any other browser.
 
       if (pgnData == puzzlerUrl) {
          if (theObject = document.getElementById("GameText")) { theObject.style.visibility = "hidden"; }
-         alert("chess puzzler of the day: " + (CurrentPly%2 === 0 ? "White" : "Black") + " to move\n\nclick OK to reveal the solution");
+         alert("chess puzzler of the day: " + (CurrentPly%2 === 0 ? "White" : "Black") + " to move\n\nclick OK to show the solution");
          if (theObject = document.getElementById("GameText")) { theObject.style.visibility = ""; }
          MoveForward(1);
       }
