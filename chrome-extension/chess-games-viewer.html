@@ -95,6 +95,7 @@ of Google Chrome. Don't use with any other browser.
       pgnData = unescape(window.location.search.match(thisRegExp)[3]);
    }
 
+
    // when opening the plain bookmark, once every N times, as a surprise, one of Tim Krabbe's most fantastic moves is shown
    if (!pgnData && !pgnBackground) {
       tkFEN = new Array(
@@ -140,6 +141,7 @@ of Google Chrome. Don't use with any other browser.
          }
       }
    }
+
 
    SetImagePath("alpha/128");
    SetImageType("png");
@@ -206,6 +208,8 @@ of Google Chrome. Don't use with any other browser.
    boardShortcut("C7", "toggle show comments on separate lines in game text and save setting", function(){ SetCommentsOnSeparateLines(!commentsOnSeparateLines); oldPly = CurrentPly; Init(); GoToMove(oldPly); setCommentsOnSeparateLinesToLocalStorage(); });
    // D7
    boardShortcut("D7", "toggle highlight last move and save setting", function(){ SetHighlight(!highlightOption); setHighlightOptionToLocalStorage(); });
+   // F5
+   boardShortcut("F5", "show the chess puzzler of the day", showPuzzler);
    // G5
    boardShortcut("G5", "adjust last move and current comment text area, if present", toggleFitResetLastMoveAndCommentArea);
 
@@ -310,7 +314,7 @@ of Google Chrome. Don't use with any other browser.
 
       if (pgnData == puzzlerUrl) {
          if (theObject = document.getElementById("GameText")) { theObject.style.visibility = "hidden"; }
-         alert("chess puzzler of the day: " + (CurrentPly%2 === 0 ? "White" : "Black") + " to move\n\nclick OK to show the solution");
+         alert("chess puzzler of the day: " + (CurrentPly%2 === 0 ? "White" : "Black") + " to move\n\nclick OK to view the solution");
          if (theObject = document.getElementById("GameText")) { theObject.style.visibility = ""; }
          MoveForward(1);
       }
@@ -357,7 +361,6 @@ of Google Chrome. Don't use with any other browser.
 
    function customShortcutKey_Shift_4() { chrome.tabs.create({url: "http://www.google.com/search?q=chess+games+PGN"}); }
    function customShortcutKey_Shift_5() { chrome.tabs.create({url: "http://www.chess.co.uk/twic/twic.html"}); }
-   function customShortcutKey_Shift_6() { showPuzzler(); }
 
    function customShortcutKey_Shift_7() { resetLastMoveAndCommentArea(); }
    function customShortcutKey_Shift_8() { fitLastMoveAndCommentArea(); }
