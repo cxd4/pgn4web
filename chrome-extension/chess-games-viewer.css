@@ -89,6 +89,15 @@ a {
   opacity: 1;
 }
 
+.gameButtons {
+  width: 24.5em; /* default 392px */
+  opacity: 0.2;
+}
+
+.gameButtons:hover {
+  opacity: 1;
+}
+
 .buttonControlPlay,
 .buttonControlStop,
 .buttonControl {
@@ -138,16 +147,31 @@ a {
 }
 
 .topMenu {
+  height: 4em;
   padding: 1em;
+  color: #888888;
   opacity: 0.2;
 }
 
 .topMenu:hover {
+  color: black;
   opacity: 1;
 }
 
 .topButton {
+  color: inherit;
   margin-left: 0.5em;
+}
+
+.topButton:hover {
+  background: #FFCC99; 
+  -webkit-box-shadow: 0px 0px 1em #FF8000;
+}
+
+.hiddenSelect {
+  width: 0.5em;
+  font-family: monospace;
+  visibility: hidden;
 }
 
 .localPgnFiles {
