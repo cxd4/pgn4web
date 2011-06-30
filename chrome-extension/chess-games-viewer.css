@@ -25,6 +25,7 @@ body {
   color: black;
   background: white;
   background: -webkit-linear-gradient(#FFFFFF, #F0F0F0); /* chrome 10+ */
+  overflow-y: scroll;
 }
 
 a {
