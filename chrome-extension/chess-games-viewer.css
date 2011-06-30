@@ -89,15 +89,6 @@ a {
   opacity: 1;
 }
 
-.gameButtons {
-  width: 24.5em; /* default 392px */
-  opacity: 0.2;
-}
-
-.gameButtons:hover {
-  opacity: 1;
-}
-
 .buttonControlPlay,
 .buttonControlStop,
 .buttonControl {
