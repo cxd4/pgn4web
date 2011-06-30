@@ -128,7 +128,6 @@ a {
 
 .moveText {
   clear: both;
-  text-align: justify;
   padding-bottom: 1em;
 }
 
@@ -229,14 +228,12 @@ a {
 
 .lastMoveAndComment {
   clear: both;
-  text-align: justify;
   resize: vertical;
   height: 4.2em;
   min-height: 1.4em;
   max-height: 21em;
   line-height: 1.4em;
   overflow-y: auto;
-  padding-left: 1em;
   padding-right: 1em;
   margin-bottom: 2.5em;
   display: none;
