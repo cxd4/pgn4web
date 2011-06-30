@@ -50,6 +50,7 @@ of Google Chrome. Don't use with any other browser.
 
    var highlightOption_default = true;
    var commentsOnSeparateLines_default = false;
+   var commentsIntoMoveText_default = true;
 
    thisRegExp = /(&|\?)(help|h)([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
@@ -147,7 +148,7 @@ of Google Chrome. Don't use with any other browser.
    SetImageType("png");
    SetHighlightOption(getHighlightOptionFromLocalStorage());
    SetGameSelectorOptions(null, true, 12, 12, 2, 15, 15, 3, 10);
-   SetCommentsIntoMoveText(true);
+   SetCommentsIntoMoveText(getCommentsIntoMoveTextFromLocalStorage());
    SetCommentsOnSeparateLines(getCommentsOnSeparateLinesFromLocalStorage());
    SetAutostartAutoplay(false);
    SetAutoplayNextGame(false);
@@ -190,6 +191,17 @@ of Google Chrome. Don't use with any other browser.
       return true;
    }
 
+   function getCommentsIntoMoveTextFromLocalStorage() {
+      try { cimt = !(localStorage.getItem("pgn4web_chess_games_viewer_commentsIntoMoveText") == "false"); }
+      catch (e) { return commentsIntoMoveText_default; }
+      return cimt;
+   }
+   function setCommentsIntoMoveTextToLocalStorage() {
+      try { localStorage.setItem("pgn4web_chess_games_viewer_commentsIntoMoveText", commentsIntoMoveText ? "true" : "false"); }
+      catch (e) { return false; }
+      return true;
+   }
+   
    function getCommentsOnSeparateLinesFromLocalStorage() {
       try { cosl = (localStorage.getItem("pgn4web_chess_games_viewer_commentsOnSeparateLines") == "true"); }
       catch (e) { return commentsOnSeparateLines_default; }
@@ -204,6 +216,8 @@ of Google Chrome. Don't use with any other browser.
 
    // A7
    if ((typeof(chrome) != "undefined") && (typeof(chrome.tabs) != "undefined") && (typeof(chrome.tabs.create) != "undefined")) { boardShortcut("A7", "about the chess games viewer extension for google chrome", function(){ chrome.tabs.create({url: "about.html"}); }); }
+   // B7
+   boardShortcut("B7", "toggle show comments in game text and save setting", function(){ SetCommentsIntoMoveText(!commentsIntoMoveText); oldPly = CurrentPly; Init(); GoToMove(oldPly); setCommentsIntoMoveTextToLocalStorage(); });
    // C7
    boardShortcut("C7", "toggle show comments on separate lines in game text and save setting", function(){ SetCommentsOnSeparateLines(!commentsOnSeparateLines); oldPly = CurrentPly; Init(); GoToMove(oldPly); setCommentsOnSeparateLinesToLocalStorage(); });
    // D7
