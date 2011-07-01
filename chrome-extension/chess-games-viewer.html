@@ -306,13 +306,23 @@ of Google Chrome. Don't use with any other browser.
          }
          theObject.style.display = lastDisplayStyle;
       }
+      if (previousCurrentGame !== currentGame) { 
+         previousPlyNumber = PlyNumber;
+         previousCurrentGame = currentGame
+      }
    }
 
-   var liveBroadcastUpdateTicker = 0;
+   var liveBroadcastUpdateTicker = -1;
+   var previousPlyNumber = -1;
+   var previousCurrentGame = -1;
    function customFunctionOnPgnTextLoad() {
       noGamesLoaded = (numberOfGames == 1) && (PlyNumber === 0) && (StartPly === 0) && (!gameWhite[0]) && (!gameBlack[0]) && (!gameResult[0]) && (!gameFEN[0]); 
       if (LiveBroadcastDelay > 0) {
-         document.title = LiveBroadcastStatusString.replace(" &nbsp;", liveBroadcastUpdateTicker++ % 2 ? ";" : ",");
+         if (previousPlyNumber !== PlyNumber) {
+            previousPlyNumber = PlyNumber;
+            liveBroadcastUpdateTicker++;
+         } 
+         document.title = LiveBroadcastStatusString.replace(" &nbsp;", liveBroadcastUpdateTicker % 2 ? ";" : ",");
       } else {
          if (noGamesLoaded) { document.title = alertNum ? "PGN data error" : "chess games viewer"; }
          else { document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s"); }
