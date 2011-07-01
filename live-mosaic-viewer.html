@@ -382,6 +382,7 @@ function updateBoard(thisBoardId) {
 }
 
 var firstLoadPgnText = true;
+var liveBroadcastUpdateTicker = 0;
 
 function customFunctionOnPgnTextLoad() {
 
@@ -406,7 +407,7 @@ function customFunctionOnPgnTextLoad() {
       theObject.style.display = "inline";
       firstLoadPgnText = false;
     }
-    document.title = LiveBroadcastStatusString.replace(" &nbsp;", ",");
+    document.title = LiveBroadcastStatusString.replace(" &nbsp;", liveBroadcastUpdateTicker++ % 2 ? ";" : ",");
   }
   
   updateMenu();
