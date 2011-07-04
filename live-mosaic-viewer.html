@@ -355,6 +355,7 @@ function pgnGameForBoard(gameNum) {
 }
 
 function updateBoard(thisBoardId) {
+  gameNum = -1;
   thisBoard = -1;
   for (thisBoard in boardId) { if (thisBoardId === boardId[thisBoard]) { break; } }
   thisBoard = parseInt(thisBoard, 10);
@@ -363,7 +364,8 @@ function updateBoard(thisBoardId) {
       startGame = startFromFirstGame(firstGame, numberOfGamesForDisplay);
       if (startGame >= 0) { gameForBoard = (startGame + thisBoard) % numberOfGamesForDisplay; }
       else { gameForBoard = (2 * numberOfGamesForDisplay + startGame - thisBoard) % numberOfGamesForDisplay; }
-      thisPgnGame = pgnGameForBoard(unfilteredGames[gameForBoard]);
+      gameNum = unfilteredGames[gameForBoard];
+      thisPgnGame = pgnGameForBoard(gameNum);
       thisFrameClass = "visibleFrame";
     } else {
       thisPgnGame = "";
@@ -379,6 +381,7 @@ function updateBoard(thisBoardId) {
     } catch(e) { myAlert("error: failed accessing iframe for board #" + thisBoard, true); }
     thisFrame.className = thisFrameClass;
   }
+  return gameNum;
 }
 
 var firstLoadPgnText = true;
@@ -388,24 +391,28 @@ var previousPgnGameLength = new Array();
 function customFunctionOnPgnTextLoad() {
 
   unfilteredGames = new Array();
-  newMovesInUnfilteredGames = false;
+  newMovesInShownGames = false;
   gamesForHiding = 0;
   for (g = 0; g < numberOfGames; g++) {
     if (!checkForHiddenGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g])) { 
       unfilteredGames.push(g);
-      if (LiveBroadcastDemo) {
-         currentPgnGameLength = gameDemoMaxPly[g] > gameDemoLength[g] ? gameDemoLength[g] + 1 : gameDemoMaxPly[g];
-      } else {
-         currentPgnGameLength = pgnGame[g].replace(/{[^}]*}/g, " ").replace(/\([^)]*\)/g, " ").length;
-      }
-      newMovesInUnfilteredGames = newMovesInUnfilteredGames || (typeof(previousPgnGameLength[g]) == "undefined") || (previousPgnGameLength[g] !== currentPgnGameLength);
       if ((typeof(gameResult[g]) == "undefined") || (gameResult[g].indexOf("*") == -1)) { gamesForHiding++; }
     }
-    previousPgnGameLength[g] = currentPgnGameLength;
   }
   numberOfGamesForDisplay = unfilteredGames.length;
 
-  for (board = 0; board < maxBoards; board++) { updateBoard(boardId[board]); }
+  for (board = 0; board < maxBoards; board++) {
+    g = updateBoard(boardId[board]);
+    if (unfilteredGames.indexOf(g) != -1) {
+      if (LiveBroadcastDemo) {
+        currentPgnGameLength = gameDemoMaxPly[g] > gameDemoLength[g] ? gameDemoLength[g] + 1 : gameDemoMaxPly[g];
+      } else {
+        currentPgnGameLength = pgnGame[g].replace(/{[^}]*}/g, " ").replace(/\([^)]*\)/g, " ").length;
+      }
+      newMovesInShownGames = newMovesInShownGames || (typeof(previousPgnGameLength[g]) == "undefined") || (previousPgnGameLength[g] !== currentPgnGameLength);
+    }
+    previousPgnGameLength[g] = currentPgnGameLength;
+  }
 
   if (theObject = document.getElementById("GameLiveStatus")) {
     theObject.title = "live broadcast status";
@@ -418,7 +425,7 @@ function customFunctionOnPgnTextLoad() {
     }
   }
   
-  if (newMovesInUnfilteredGames) { liveBroadcastUpdateTicker++; } 
+  if (newMovesInShownGames) { liveBroadcastUpdateTicker++; } 
   if (LiveBroadcastStarted && !LiveBroadcastEnded) {
     document.title = liveBroadcastUpdateTicker + LiveBroadcastStatusString.replace("live games: ", ".").replace(" &nbsp; finished: ", ".") + " live broadcast";
   } else { document.title = LiveBroadcastStatusString; }
