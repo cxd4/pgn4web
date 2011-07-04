@@ -412,10 +412,11 @@ function customFunctionOnPgnTextLoad() {
       theObject.style.display = "inline";
       firstLoadPgnText = false;
     }
-    if (newMovesInUnfilteredGames) { liveBroadcastUpdateTicker++; } 
-    document.title = LiveBroadcastStatusString.replace(" &nbsp;", liveBroadcastUpdateTicker % 2 ? "," : ";");
   }
   
+  if (newMovesInUnfilteredGames) { liveBroadcastUpdateTicker++; } 
+  document.title = LiveBroadcastStatusString.replace(" &nbsp;", liveBroadcastUpdateTicker % 2 ? "," : ";");
+
   updateMenu();
 }
 
