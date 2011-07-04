@@ -864,7 +864,7 @@ var LiveBroadcastLastRefreshedLocal = 'unavailable';
 var LiveBroadcastPlaceholderEvent = 'live chess broadcast';
 var LiveBroadcastPlaceholderPgn = '[Event "' + LiveBroadcastPlaceholderEvent + '"]';
 var gameDemoMaxPly = new Array();
-var gameDemoLastPly = new Array();
+var gameDemoLength = new Array();
 var LiveBroadcastSteppingMode = false;
 
 var ParseLastMoveError = false;
@@ -1828,7 +1828,7 @@ function refreshPgnSource() {
       else if (rnd <= 0.20) { newPly = 2; } // 15% add 2 ply
       else if (rnd <= 0.60) { newPly = 1; } // 40% add 1 ply
       else                  { newPly = 0; } // 40% add 0 ply
-      if (gameDemoMaxPly[ii] <= gameDemoLastPly[ii]) { 
+      if (gameDemoMaxPly[ii] <= gameDemoLength[ii]) { 
         gameDemoMaxPly[ii] += newPly;
         addedPly += newPly;
       }
@@ -2383,13 +2383,13 @@ function LoadGameHeaders(){
   }
   if ((LiveBroadcastDemo) && (numberOfGames > 0)) {
     for (ii = 0; ii < numberOfGames; ++ii) {
-      if (typeof(gameDemoLastPly[ii]) == "undefined") {
+      if ((gameDemoLength[ii] === undefined) || (gameDemoLength[ii] === 0)) {
          InitFEN(gameFEN[ii]);
          ParsePGNGameString(pgnGame[ii]);
-         gameDemoLastPly[ii] = StartPly + PlyNumber;
+         gameDemoLength[ii] = PlyNumber;
       }
-      if (typeof(gameDemoMaxPly[ii]) == "undefined") { gameDemoMaxPly[ii] = 0; }
-      if (gameDemoMaxPly[ii] <= gameDemoLastPly[ii]) { gameResult[ii] = '*'; }
+      if (gameDemoMaxPly[ii] === undefined) { gameDemoMaxPly[ii] = 0; }
+      if (gameDemoMaxPly[ii] <= gameDemoLength[ii]) { gameResult[ii] = '*'; }
     }
   }
   return;
