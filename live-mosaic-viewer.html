@@ -393,10 +393,11 @@ function customFunctionOnPgnTextLoad() {
   for (g = 0; g < numberOfGames; g++) {
     if (!checkForHiddenGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g])) { 
       unfilteredGames.push(g);
-      newMovesInUnfilteredGames = newMovesInUnfilteredGames || (typeof(previousPgnGameLength[g]) == "undefined") || (previousPgnGameLength[g] !== pgnGame[g].length);
+      currentPgnGameLength = pgnGame[g].replace(/{[^}]*}/g, " ").replace(/\([^)]*\)/g, " ").length;
+      newMovesInUnfilteredGames = newMovesInUnfilteredGames || (typeof(previousPgnGameLength[g]) == "undefined") || (previousPgnGameLength[g] !== currentPgnGameLength);
       if ((typeof(gameResult[g]) == "undefined") || (gameResult[g].indexOf("*") == -1)) { gamesForHiding++; }
     }
-    previousPgnGameLength[g] = pgnGame[g].length;
+    previousPgnGameLength[g] = currentPgnGameLength;
   }
   numberOfGamesForDisplay = unfilteredGames.length;
 
