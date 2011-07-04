@@ -316,7 +316,7 @@ function restoreHiddenGames() {
 function pgnGameForBoard(gameNum) {
   if (!LiveBroadcastDemo) { return pgnGame[gameNum]; }
 
-  if (gameDemoMaxPly[gameNum] > gameDemoLength[gameNum]) { return pgnGame[gameNum]; } 
+  if (gameDemoMaxPly[gameNum] > gameDemoLastPly[gameNum]) { return pgnGame[gameNum]; } 
 
   Init(gameNum);
 
@@ -337,7 +337,7 @@ function pgnGameForBoard(gameNum) {
   if (thisTag = customPgnHeaderTag("TimeControl")) { localPgnGame += "[TimeControl \"" + thisTag + "\"]\n"; }
   localPgnGame += "\n";
 
-  for (thisPly = StartPly; thisPly <= gameDemoMaxPly[gameNum]; thisPly++) {
+  for (thisPly = StartPly; thisPly <= (gameDemoMaxPly[gameNum] <= gameDemoLastPly[gameNum] ? gameDemoMaxPly[gameNum] : gameDemoLastPly[gameNum] + 1); thisPly++) {
     if (thisPly % 2) {
       if (thisComment = MoveComments[thisPly].replace(/{/g, "")) { 
         localPgnGame += "{" + thisComment + "} " + ((thisPly+1)/2) + "... ";
@@ -393,7 +393,11 @@ function customFunctionOnPgnTextLoad() {
   for (g = 0; g < numberOfGames; g++) {
     if (!checkForHiddenGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g])) { 
       unfilteredGames.push(g);
-      currentPgnGameLength = pgnGame[g].replace(/{[^}]*}/g, " ").replace(/\([^)]*\)/g, " ").length;
+      if (LiveBroadcastDemo) {
+         currentPgnGameLength = gameDemoMaxPly[g] > gameDemoLastPly[g] ? gameDemoLastPly[g] + 1 : gameDemoMaxPly[g];
+      } else {
+         currentPgnGameLength = pgnGame[g].replace(/{[^}]*}/g, " ").replace(/\([^)]*\)/g, " ").length;
+      }
       newMovesInUnfilteredGames = newMovesInUnfilteredGames || (typeof(previousPgnGameLength[g]) == "undefined") || (previousPgnGameLength[g] !== currentPgnGameLength);
       if ((typeof(gameResult[g]) == "undefined") || (gameResult[g].indexOf("*") == -1)) { gamesForHiding++; }
     }
