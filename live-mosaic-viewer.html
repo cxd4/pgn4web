@@ -233,7 +233,7 @@ if (headlessPage) {
 </script>
 
 <center>
-<a class="beforeBoards" name="boards" href="#boards" onfocus="this.blur();">&nbsp</a>
+<a class="beforeBoards" name="boards" href="javascript:void(0);" onclick="goToHash('boards');" onfocus="this.blur();">&nbsp</a>
 <div id="boardFrames"></div>
 
 
@@ -243,7 +243,7 @@ if (headlessPage) {
 
 
 </center>
-<a class="afterBoards" name="bottom">&nbsp</a>
+<a class="afterBoards" name="bottom" href="javascript:void(0);" onclick="goToHash('');" onfocus="this.blur();">&nbsp</a>
 
 <script type="text/javascript">
 
@@ -540,6 +540,7 @@ function switchBoardView(search) {
 
 function goToHash(hash) {
   if (hash) { location.hash = ""; }
+  else { location.hash = "boards"; }
   location.hash = hash;
 }
 
