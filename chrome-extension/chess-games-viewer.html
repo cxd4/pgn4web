@@ -321,8 +321,10 @@ of Google Chrome. Don't use with any other browser.
          if (previousPlyNumber !== PlyNumber) {
             previousPlyNumber = PlyNumber;
             liveBroadcastUpdateTicker++;
-         } 
-         document.title = LiveBroadcastStatusString.replace(" &nbsp;", liveBroadcastUpdateTicker % 2 ? ";" : ",");
+         }
+         if (LiveBroadcastStarted && !LiveBroadcastEnded) {
+            document.title = liveBroadcastUpdateTicker + LiveBroadcastStatusString.replace("live games: ", ".").replace(" &nbsp; finished: ", ".") + " live broadcast";
+         } else { document.title = LiveBroadcastStatusString; }
       } else {
          if (noGamesLoaded) { document.title = alertNum ? "PGN data error" : "chess games viewer"; }
          else { document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s"); }
