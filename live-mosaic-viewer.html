@@ -403,16 +403,17 @@ function customFunctionOnPgnTextLoad() {
   numberOfGamesForDisplay = unfilteredGames.length;
 
   for (board = 0; board < maxBoards; board++) {
-    g = updateBoard(boardId[board]);
-    if (unfilteredGames.indexOf(g) != -1) {
-      if (LiveBroadcastDemo) {
-        currentPgnGameLength = gameDemoMaxPly[g] > gameDemoLength[g] ? gameDemoLength[g] + 1 : gameDemoMaxPly[g];
-      } else {
-        currentPgnGameLength = pgnGame[g].replace(/{[^}]*}/g, " ").replace(/\([^)]*\)/g, " ").length;
+    if ((g = updateBoard(boardId[board])) != -1) {
+      if (unfilteredGames.indexOf(g) != -1) {
+        if (LiveBroadcastDemo) {
+          currentPgnGameLength = gameDemoMaxPly[g] > gameDemoLength[g] ? gameDemoLength[g] + 1 : gameDemoMaxPly[g];
+        } else {
+          currentPgnGameLength = pgnGame[g].replace(/{[^}]*}/g, " ").replace(/\([^)]*\)/g, " ").length;
+        }
+        newMovesInShownGames = newMovesInShownGames || (typeof(previousPgnGameLength[g]) == "undefined") || (previousPgnGameLength[g] !== currentPgnGameLength);
+        previousPgnGameLength[g] = currentPgnGameLength;
       }
-      newMovesInShownGames = newMovesInShownGames || (typeof(previousPgnGameLength[g]) == "undefined") || (previousPgnGameLength[g] !== currentPgnGameLength);
     }
-    previousPgnGameLength[g] = currentPgnGameLength;
   }
 
   if (theObject = document.getElementById("GameLiveStatus")) {
