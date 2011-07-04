@@ -383,16 +383,20 @@ function updateBoard(thisBoardId) {
 
 var firstLoadPgnText = true;
 var liveBroadcastUpdateTicker = 0;
+var previousPgnGameLength = new Array();
 
 function customFunctionOnPgnTextLoad() {
 
   unfilteredGames = new Array();
+  newMovesInUnfilteredGames = false;
   gamesForHiding = 0;
   for (g = 0; g < numberOfGames; g++) {
     if (!checkForHiddenGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g])) { 
       unfilteredGames.push(g);
+      newMovesInUnfilteredGames = newMovesInUnfilteredGames || (typeof(previousPgnGameLength[g]) == "undefined") || (previousPgnGameLength[g] !== pgnGame[g].length);
       if ((typeof(gameResult[g]) == "undefined") || (gameResult[g].indexOf("*") == -1)) { gamesForHiding++; }
     }
+    previousPgnGameLength[g] = pgnGame[g].length;
   }
   numberOfGamesForDisplay = unfilteredGames.length;
 
@@ -407,7 +411,8 @@ function customFunctionOnPgnTextLoad() {
       theObject.style.display = "inline";
       firstLoadPgnText = false;
     }
-    document.title = LiveBroadcastStatusString.replace(" &nbsp;", liveBroadcastUpdateTicker++ % 2 ? ";" : ",");
+    if (newMovesInUnfilteredGames) { liveBroadcastUpdateTicker++; } 
+    document.title = LiveBroadcastStatusString.replace(" &nbsp;", liveBroadcastUpdateTicker % 2 ? "," : ";");
   }
   
   updateMenu();
