@@ -45,7 +45,31 @@ div.h2content {
   margin-left: 1.5em;
 }
 
+.menuCell {
+  padding-top: 1em;
+}
+
+.menu {
+  font-size: 60%;
+  padding-left: 1em;
+}
+
 </style>
+
+<script type="text/javascript">
+
+function print_menu(item) {
+  text = "<table width='100%' cellspacing='0' cellpadding='0' border='0'><tr valign='top'><td align='left'>";
+  text += "<h2>" + item + "</h2>";
+  text += "</td><td align='right' class='menuCell'>";
+  text += "<a " + (item == "features" ? "name='features' " : "") + "href='#features' class='menu'>features</a>";
+  text += "<a " + (item == "settings" ? "name='settings' " : "") + "href='#settings' class='menu'>settings</a>";
+  text += "<a " + (item == "support" ? "name='support' " : "") + "href='#support' class='menu'>support</a>";
+  text += "</td></tr></table>";
+  document.write(text);
+}
+
+</script>
 
 </head>
 
@@ -59,9 +83,8 @@ div.h2content {
 <h1>about the chess games viewer extension</h1>
 <div style="clear:both;"></div>
 
-<a name="features"></a>
-<h2>features</h2>
 
+<script type="text/javascript">print_menu("features");</script>
 <div class="h2content">
 
 <p>
@@ -122,9 +145,8 @@ Errors alert messages are logged, such as failures to load PGN games, incorrect 
 
 </div> <!-- h2content -->
 
-<a name="settings"></a>
-<h2>settings</h2>
 
+<script type="text/javascript">print_menu("settings");</script>
 <div class="h2content">
 
 <p>
@@ -146,27 +168,19 @@ The chess games viewer extension does not have any configurable option, however 
 
 </div> <!-- h2content -->
 
-<a name="credits"></a>
-<h2>credits and license</h2>
 
+<script type="text/javascript">print_menu("support");</script>
 <div class="h2content">
 
 <p>
 From the single large board view, click the chessboard top right square for user interface help, credits and license.
 </p>
-
-</div> <!-- h2content -->
-
-<a name="links"></a>
-<h2>support</h2>
-
-<div class="h2content">
-
 <p>
 The chess games viewer extension for Google Chrome is part of the <a href="http://pgn4web.casaschi.net">pgn4web project</a>. The <a href="http://code.google.com/p/pgn4web/wiki/Index">pgn4web project's wiki</a> provides more information, including a <a href="http://code.google.com/p/pgn4web/wiki/BrowserExtension_GoogleChrome">support page for the chess games viewer extension</a> with usage examples and options for leaving feedback to the development team.
 </p>
 
 </div> <!-- h2content -->
+
 
 <a name="bottom"></a>
 
