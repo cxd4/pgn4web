@@ -159,7 +159,7 @@ a {
 .topButton:hover {
   background-image: -webkit-radial-gradient(circle, #FFAA66, #FFCC99);
   border-radius: 0.4em;
-  -webkit-box-shadow: 0px 0px 1em #FF8000;
+  -webkit-box-shadow: 0 0 1em #FF8000;
 }
 
 .hiddenSelect {
