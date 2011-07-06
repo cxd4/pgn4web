@@ -124,6 +124,7 @@ a {
 
 .moveOn {
   background: #FFCC99;
+  border-radius: 0.4em;
   -webkit-box-shadow: 0 0 1em #FF8000;
 }
 
@@ -156,7 +157,8 @@ a {
 }
 
 .topButton:hover {
-  background: #FFCC99; 
+  background: #FFCC99;
+  border-radius: 0.4em;
   -webkit-box-shadow: 0px 0px 1em #FF8000;
 }
 
