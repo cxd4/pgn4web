@@ -24,7 +24,7 @@ body {
   font-family: 'pgn4web Liberation Sans', sans-serif;
   color: black;
   background: white;
-  background: -webkit-linear-gradient(#FFFFFF, #F0F0F0);
+  background-image: -webkit-linear-gradient(#FFFFFF, #F0F0F0);
   overflow-y: scroll;
 }
 
