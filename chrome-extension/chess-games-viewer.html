@@ -100,45 +100,58 @@ of Google Chrome. Don't use with any other browser.
    // when opening the plain bookmark, once every N times, as a surprise, one of Tim Krabbe's most fantastic moves is shown
    if (!pgnData && !pgnBackground) {
       tkFEN = new Array(
-         '[FEN "rnq2rk1/1pn3bp/p2p2p1/2pPp1PP/P1P1Pp2/2N2N2/1P1B1P2/R2QK2R b KQ - 1 16"] 16... Nc6',
-         '[FEN "8/8/4kpp1/3p1b2/p6P/2B5/6P1/6K1 b - - 2 47"] 47... Bh3',
-         '[FEN "5rk1/pp4pp/4p3/2R3Q1/3n4/2q4r/P1P2PPP/5RK1 b - - 1 23"] 23. Qg3',
-         '[FEN "1r6/4k3/r2p2p1/2pR1p1p/2P1pP1P/pPK1P1P1/P7/1B6 b - - 0 48"] 48... Rxb3+',
-         '[FEN "2k2b1r/pb1r1p2/5P2/1qnp4/Npp3Q1/4B1P1/1P3PBP/R4RK1 w - - 4 21"] 21. Qg7',
-         '[FEN "r1bq1rk1/1p3ppp/p1pp2n1/3N3Q/B1PPR2b/8/PP3PPP/R1B3K1 w - - 0 14"] 14. Rxh4',
-         '[FEN "r4k1r/1b2bPR1/p4n2/3p4/4P2P/1q2B2B/PpP5/1K4R1 w - - 0 26"] 26. Bh6',
-         '[FEN "r1b2r1k/4qp1p/p2ppb1Q/4nP2/1p1NP3/2N5/PPP4P/2KR1BR1 w - - 4 18"] 18. Nc6',
-         '[FEN "8/5B2/6Kp/6pP/5b2/p7/1k3P2/8 b - - 3 69"] 69... Be3',
-         '[FEN "4r1k1/q6p/2p4P/2P2QP1/1p6/rb2P3/1B6/1K4RR w - - 1 38"] 38. Qxh7+',
-         '[FEN "6k1/3Q4/5p2/5P2/8/1KP5/PP4qp/2B5 w - - 0 99"] 99. Bg5',
-         '[FEN "k4b1r/p3pppp/B1p2n2/3rB1N1/7q/8/PPP2P2/R2Q1RK1 w - - 1 18"] 18. c4',
-         '[FEN "1nbk1b1r/r3pQpp/pq2P3/1p1P2B1/2p5/2P5/5PPP/R3KB1R b KQ - 0 15"] 15... Rd7',
-         '[FEN "5r2/7k/1pPP3P/8/4p3/3p4/P4R1P/7K b - - 0 48"] 48... e3',
-         '[FEN "rnb1kr2/pp1p1pQp/6q1/4PpB1/1P6/8/1PP2PPP/2KR3R w q - 2 15"] 15. e6',
-         '[FEN "7k/1p1P2pp/p7/3P4/1Q5P/5pPK/PP3r2/1q5B b - - 1 37"] 37... h5',
-         '[FEN "r2q1rk1/pp2bpp1/4p2p/2pPB2P/2P3n1/3Q2N1/PP3PP1/2KR3R w - - 1 17"] 17. Bxg7',
-         '[FEN "r2qk2r/1b3ppp/p2p1b2/2nNp3/1R2P3/2P5/1PN2PPP/3QKB1R w Kkq - 3 17"] 17. Rxb7',
          '[FEN "r3kbnr/p1pp1qpp/b1n1P3/6N1/1p6/8/Pp3PPP/RNBQR1K1 b kq - 0 12"] 12... O-O-O',
          '[FEN "r2qkb1r/pb1p1p1p/1pn2np1/2p1p3/2P1P3/2NP1NP1/PP3PBP/R1BQ1RK1 w kq - 0 9"] 9. Nxe5',
+         '[FEN "5rk1/pp4pp/4p3/2R3Q1/3n4/2q4r/P1P2PPP/5RK1 b - - 1 23"] 23. Qg3',
          '[FEN "r1bq1rk1/3nbppp/pp1p1n2/2pPp3/P1P1P3/2N3P1/1P2QPBP/R1B1K1NR w KQ - 0 10"] 10. Kd1',
+         '[FEN "1nbk1b1r/r3pQpp/pq2P3/1p1P2B1/2p5/2P5/5PPP/R3KB1R b KQ - 0 15"] 15... Rd7',
          '[FEN "5r2/q3ppkp/3p2p1/3P4/Nr2PPn1/1R3BP1/P3N2P/R2Q2K1 w - - 1 24"] 24. Nb6',
-         '[FEN "2kr3r/ppp1qpp1/2p5/2b2b2/2P1pPP1/1P2P1p1/PBQPB3/RN2K1R1 b Q - 1 14"] 14... Rh1',
-         '[FEN "rn1q1r1k/2pp4/5pQ1/1b1PB3/8/4P3/PP1K1P1P/R7 b - - 2 19"] 19... Bd3',
-         '[FEN "r3kb1r/1p2pppp/1pn5/3p1b2/3P4/4PN2/PP1B1PPP/R3KB1R b KQkq - 2 10"] 10... Bd7 ',
-         '[FEN "r2q1rk1/3nbpp1/4p2p/p1p1P3/1p1P3P/3B1b1R/PPQB1PP1/R3K3 w Q - 0 18"] 18. Bxh6 ',
-         '[FEN "rn1r2k1/pq1p1ppp/3Rp3/2p5/2P1b3/4QNP1/P3PPBP/3R2K1 w - - 2 17"] 17. Rxe6 ',
-         '[FEN "8/8/p2k1p2/1p1p3p/1P1P3p/P3NPP1/5K2/1b6 w - - 0 47"] 47. Ng2 ',
-         '[FEN "3rrk2/2p1n1bQ/1p3pp1/1q2B1N1/p1b1PP2/6PB/P1P5/3R1RK1 w - - 4 25"] 25. Rd5 ',
-         '[FEN "r2q1k1r/p3bpp1/2p4p/2Bp4/4B1PP/4Q3/PPP5/2K1R3 w - - 1 22"] 22. Bh7 ',
-         '[FEN "1nq3k1/r3b1p1/pp2prNp/2p5/4Q3/2P1P1B1/P4PPP/2R2RK1 w - - 6 21"] 21. Qa8 ',
          '[FEN "4r1k1/1p4p1/pPp2r1p/P1Pp1p2/3P1Pn1/2NR1P2/3Q2Bq/R4K2 b - - 0 31"] 31... Re4 ',
+         '[FEN "2kr3r/ppp1qpp1/2p5/2b2b2/2P1pPP1/1P2P1p1/PBQPB3/RN2K1R1 b Q - 1 14"] 14... Rh1',
+         '[FEN "1nq3k1/r3b1p1/pp2prNp/2p5/4Q3/2P1P1B1/P4PPP/2R2RK1 w - - 6 21"] 21. Qa8 ',
+         '[FEN "rn1q1r1k/2pp4/5pQ1/1b1PB3/8/4P3/PP1K1P1P/R7 b - - 2 19"] 19... Bd3',
+         '[FEN "4r1k1/q6p/2p4P/2P2QP1/1p6/rb2P3/1B6/1K4RR w - - 1 38"] 38. Qxh7+',
+         '[FEN "rnq2rk1/1pn3bp/p2p2p1/2pPp1PP/P1P1Pp2/2N2N2/1P1B1P2/R2QK2R b KQ - 1 16"] 16... Nc6',
+         '[FEN "r3kb1r/1p2pppp/1pn5/3p1b2/3P4/4PN2/PP1B1PPP/R3KB1R b KQkq - 2 10"] 10... Bd7 ',
+         '[FEN "r1b2r1k/4qp1p/p2ppb1Q/4nP2/1p1NP3/2N5/PPP4P/2KR1BR1 w - - 4 18"] 18. Nc6',
+         '[FEN "8/8/4kpp1/3p1b2/p6P/2B5/6P1/6K1 b - - 2 47"] 47... Bh3',
+         '[FEN "r2q1rk1/3nbpp1/4p2p/p1p1P3/1p1P3P/3B1b1R/PPQB1PP1/R3K3 w Q - 0 18"] 18. Bxh6 ',
+         '[FEN "r4k1r/1b2bPR1/p4n2/3p4/4P2P/1q2B2B/PpP5/1K4R1 w - - 0 26"] 26. Bh6',
+         '[FEN "rn1r2k1/pq1p1ppp/3Rp3/2p5/2P1b3/4QNP1/P3PPBP/3R2K1 w - - 2 17"] 17. Rxe6 ',
+         '[FEN "k4b1r/p3pppp/B1p2n2/3rB1N1/7q/8/PPP2P2/R2Q1RK1 w - - 1 18"] 18. c4',
+         '[FEN "8/5B2/6Kp/6pP/5b2/p7/1k3P2/8 b - - 3 69"] 69... Be3',
+         '[FEN "5r2/7k/1pPP3P/8/4p3/3p4/P4R1P/7K b - - 0 48"] 48... e3',
+         '[FEN "8/8/p2k1p2/1p1p3p/1P1P3p/P3NPP1/5K2/1b6 w - - 0 47"] 47. Ng2 ',
+         '[FEN "1r6/4k3/r2p2p1/2pR1p1p/2P1pP1P/pPK1P1P1/P7/1B6 b - - 0 48"] 48... Rxb3+',
+         '[FEN "6k1/3Q4/5p2/5P2/8/1KP5/PP4qp/2B5 w - - 0 99"] 99. Bg5',
+         '[FEN "r2qk2r/1b3ppp/p2p1b2/2nNp3/1R2P3/2P5/1PN2PPP/3QKB1R w Kkq - 3 17"] 17. Rxb7',
+         '[FEN "3rrk2/2p1n1bQ/1p3pp1/1q2B1N1/p1b1PP2/6PB/P1P5/3R1RK1 w - - 4 25"] 25. Rd5 ',
+         '[FEN "rnb1kr2/pp1p1pQp/6q1/4PpB1/1P6/8/1PP2PPP/2KR3R w q - 2 15"] 15. e6',
+         '[FEN "r1bq1rk1/1p3ppp/p1pp2n1/3N3Q/B1PPR2b/8/PP3PPP/R1B3K1 w - - 0 14"] 14. Rxh4',
+         '[FEN "7k/1p1P2pp/p7/3P4/1Q5P/5pPK/PP3r2/1q5B b - - 1 37"] 37... h5',
+         '[FEN "r2q1rk1/pp2bpp1/4p2p/2pPB2P/2P3n1/3Q2N1/PP3PP1/2KR3R w - - 1 17"] 17. Bxg7',
+         '[FEN "r2q1k1r/p3bpp1/2p4p/2Bp4/4B1PP/4Q3/PPP5/2K1R3 w - - 1 22"] 22. Bh7 ',
+         '[FEN "2k2b1r/pb1r1p2/5P2/1qnp4/Npp3Q1/4B1P1/1P3PBP/R4RK1 w - - 4 21"] 21. Qg7',
          '[FEN "r1bqkb1r/1p3ppp/p1nppn2/8/2P1P3/N1N5/PP3PPP/R1BQKB1R b KQkq - 1 8"] 8... d5'
       );
-      onceEveryN = 10;
+      hints = new Array(
+         "click square H8 for user interface help, credits and license",
+         "interact with the chessboard using clicking chessboard squares: hovering the mouse on each square displays an help summary",
+         "interact with the chessboard using keyboard shortcuts keys: click square F8 for the list of keyboard shortcuts keys",
+         "click square B5 to search games in large PGN files: click square E8 for help",
+         "when in live broadcast mode, click square H5 to switch between the single large chessboard view and the smaller multiple chessboards view",
+         "drag and drop local PGN files or zipped PGN files on the single large chessboard page for viewing",
+         "click on the menu items at the top right of the page to enter PGN text, to load local PGN files or to view a remote PGN URL, optionally with live refresh",
+         "click square F5 for the chess puzzler of the day"
+      );
       if (theObject = document.getElementById("pgnText")) {
-         if ((randomPick = Math.floor(onceEveryN * tkFEN.length * Math.random())) < tkFEN.length) {
-            theObject.innerHTML = tkFEN[Math.floor(tkFEN.length * Math.random())];
+         showTKfenEveryN = 20;
+         showHintEveryN = showTKfenEveryN - 1;
+         if ((randomPick = Math.floor(showTKfenEveryN * tkFEN.length * Math.random())) < tkFEN.length) {
+            theObject.innerHTML = '[Site "amazing moves collection"] [Event "#' + (randomPick+1) + '"] ' + tkFEN[randomPick];
             SetInitialHalfmove("end", true);
+         } else if ((randomPick = Math.floor(showHintEveryN * hints.length * Math.random())) < hints.length) {
+            theObject.innerHTML = "{" + hints[randomPick] + "}";
          }
       }
    }
