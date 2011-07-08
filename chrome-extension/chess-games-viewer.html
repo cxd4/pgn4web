@@ -415,27 +415,27 @@ of Google Chrome. Don't use with any other browser.
    function emPixels(em) { return em * document.getElementById("boardTable").offsetHeight / 24.5; } 
 
    function toggleFitResetLastMoveAndCommentArea() {
-      if (theObject = document.getElementById("lastMoveAndComment")) {
+      if ((theObject = document.getElementById("lastMoveAndComment")) && (theObject.style.display == "block")) {
          if ((theObject.scrollHeight === theObject.clientHeight) || (theObject.offsetHeight == emPixels(21))) { resetLastMoveAndCommentArea(); }
          else { fitLastMoveAndCommentArea(); }
       }
    }
 
    function resetLastMoveAndCommentArea() {
-      if (theObject = document.getElementById("lastMoveAndComment")) {
+      if ((theObject = document.getElementById("lastMoveAndComment")) && (theObject.style.display == "block")) {
          theObject.style.height = "";
       }
    }
 
    function fitLastMoveAndCommentArea() {
-      if (theObject = document.getElementById("lastMoveAndComment")) {
+      if ((theObject = document.getElementById("lastMoveAndComment")) && (theObject.style.display == "block")) {
          theObject.style.height = "";
          theObject.style.height = theObject.scrollHeight;
       }
    }
 
    function maximizeLastMoveAndCommentArea() {
-      if (theObject = document.getElementById("lastMoveAndComment")) {
+      if ((theObject = document.getElementById("lastMoveAndComment")) && (theObject.style.display == "block")) {
          theObject.style.height = "21em";
       }
    }
