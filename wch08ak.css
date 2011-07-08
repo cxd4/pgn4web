@@ -18,6 +18,7 @@ body {
 }
 
 .boardTable {
+  width: 420px !important;
   border-style: outset;
   border-color: #c9ad6f;
   border-width: 2;
