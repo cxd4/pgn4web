@@ -3058,7 +3058,8 @@ function PrintHTML() {
     numberOfButtons = 5;
     spaceSize = 3;
     buttonSize = (tableSize - spaceSize*(numberOfButtons - 1)) / numberOfButtons;
-    text = '<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>' +
+    text = '<FORM NAME="GameButtonsForm" STYLE="display:inline;">' +
+      '<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>' + 
       '<TR><TD>' +
       '<INPUT ID="startButton" TYPE="BUTTON" VALUE="&lt;&lt;" STYLE="';
     if (buttonSize > 0) { text += 'width: ' + buttonSize + 'px;'; }
@@ -3095,7 +3096,7 @@ function PrintHTML() {
     if (buttonSize > 0) { text += 'width: ' + buttonSize + 'px;'; }
     text += '"; CLASS="buttonControl" TITLE="go to game end" ' +
       ' ID="btnGoToEnd" onClick="javascript:GoToMove(StartPly + PlyNumber)" ONFOCUS="this.blur()">' +
-      '</TD></TR></TABLE>';
+      '</TD></TR></TABLE></FORM>';
 
     theObject.innerHTML = text;
   }
@@ -3111,7 +3112,8 @@ function PrintHTML() {
     } else {
       if(textSelectOptions === '') {
         if (gameSelectorNum) { gameSelectorNumLenght = Math.floor(Math.log(numberOfGames)/Math.log(10)) + 1; }
-        text = '<SELECT ID="GameSelSelect" NAME="GameSelSelect" STYLE="';
+        text = '<FORM NAME="GameSel" STYLE="display:inline;"> ' +
+          '<SELECT ID="GameSelSelect" NAME="GameSelSelect" STYLE="';
         if (tableSize > 0) { text += 'width: ' + tableSize + 'px; '; }
         text += 'font-family: monospace;" CLASS="selectControl" TITLE="select a game" ' +
           'ONCHANGE="this.blur(); if(this.value >= 0) { Init(this.value); this.value = -1; }" ' +
@@ -3167,7 +3169,7 @@ function PrintHTML() {
           // replace spaces with &nbsp; 
           textSelectOptions += textSO.replace(/ /g, '&nbsp;');
         }
-        text += textSelectOptions + '</SELECT>';
+        text += textSelectOptions + '</SELECT></FORM>';
         theObject.innerHTML = text; 
       }
     }
