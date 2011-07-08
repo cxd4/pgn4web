@@ -310,7 +310,7 @@ of Google Chrome. Don't use with any other browser.
          var lastDisplayStyle = "none";
          if ((PlyNumber === 0) && (gameFEN[currentGame])) {
             lastDisplayStyle = "block";
-         } else if ((PlyNumber > 0) || (gameFEN[currentGame])) {
+         } else if (commentsIntoMoveText && ((PlyNumber > 0) || (gameFEN[currentGame]))) {
             for(ii=StartPly; ii<=StartPly+PlyNumber; ii++) {
                if (strippedMoveComment(ii)) {
                   lastDisplayStyle = "block";
