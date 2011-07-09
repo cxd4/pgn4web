@@ -124,7 +124,7 @@ function pgntextOnClick(info, tab) {
     }
   }
   if (pgnText[pgnTextIndex].match(/^\s*[1-8KQRBNP]{1,8}(\/[1-8KQRBNP]{1,8}){7}[\s0-9A-HKQW-]*$/i)) {
-     pgnText[pgnTextIndex] = '[FEN "' + pgnText[pgnTextIndex] + '"]';
+     pgnText[pgnTextIndex] = '[SetUp "1"]\n[FEN "' + pgnText[pgnTextIndex] + '"]';
   }
   pgnText[pgnTextIndex] = pgnText[pgnTextIndex].replace(pgnHeaderRegExpGlobal, "\n$1\n"); // add newline after header section
   pgnText[pgnTextIndex] = fixCommonPgnMistakes(pgnText[pgnTextIndex]);
