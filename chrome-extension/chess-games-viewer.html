@@ -535,7 +535,8 @@ of Google Chrome. Don't use with any other browser.
    }
    
    function fetchNewPgnUrl(live) {
-      if (newPgnUrl = prompt("Enter PGN chess games URL for viewing" + (live ? " with live refresh:" : ":"), pgnData)) {
+      newPgnUrl = prompt("Enter PGN chess games URL for viewing" + (live ? " with live refresh:" : ":"), pgnData);
+      if (newPgnUrl = newPgnUrl.replace(/^\s*/, "")) {
          if (live) { newRefreshMinutes = refreshMinutes ? refreshMinutes : 1 + 0.01 * Math.floor(Math.random()*10); }
          else { newRefreshMinutes = 0; }
          useNewPgnUrl(newPgnUrl, newRefreshMinutes);
