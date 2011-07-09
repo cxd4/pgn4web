@@ -306,20 +306,32 @@ of Google Chrome. Don't use with any other browser.
       customPgnHeaderTagWithFix('Termination', 'GameTermination');
       // if (PlyNumber > 0) { customPgnHeaderTag('Result', 'ResultAtGametextEnd'); }
       // else { if (theObject = document.getElementById('ResultAtGametextEnd')) { theObject.innerHTML = ""; } }
+
+      commentsPresent = false;
+      for(ii=StartPly; ii<=StartPly+PlyNumber; ii++) {
+         if (strippedMoveComment(ii)) {
+            commentsPresent = true;
+            break;
+         }
+      }
       if (theObject = document.getElementById('lastMoveAndComment')) {
-         var lastDisplayStyle = "none";
          if ((PlyNumber === 0) && (gameFEN[currentGame])) {
             lastDisplayStyle = "block";
          } else if (commentsIntoMoveText && ((PlyNumber > 0) || (gameFEN[currentGame]))) {
-            for(ii=StartPly; ii<=StartPly+PlyNumber; ii++) {
-               if (strippedMoveComment(ii)) {
-                  lastDisplayStyle = "block";
-                  break;
-               }
-            }
+            lastDisplayStyle = commentsPresent ? "block" : "none";
+         } else {
+            lastDisplayStyle = "none";
          }
          theObject.style.display = lastDisplayStyle;
       }
+      if (theObject = document.getElementById('toggleCommentsLink')) {
+         if (commentsPresent) {
+             theObject.innerHTML = commentsIntoMoveText ? "&times;" : "+";
+         } else {
+             theObject.innerHTML = "";
+         }
+      }
+
       if (previousCurrentGame !== currentGame) { 
          previousPlyNumber = PlyNumber;
          previousCurrentGame = currentGame;
@@ -506,6 +518,8 @@ of Google Chrome. Don't use with any other browser.
 
 </div>
 
+<div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="SetCommentsIntoMoveText(!commentsIntoMoveText); oldPly = CurrentPly; Init(); GoToMove(oldPly); setCommentsIntoMoveTextToLocalStorage();" title="toggle show comments in game text and save setting"></a></div>
+
 <div class="lastMoveAndComment" id="lastMoveAndComment"><a href="javascript:MoveToNextComment();" class="lastMove" title="last move" id="GameLastMove"></a><a href="javascript:MoveToPrevComment();" class="lastComment" title="current position comment" id="GameLastComment"></a></div>
 
 <div id="moveText" class="moveText"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
@@ -683,6 +697,9 @@ of Google Chrome. Don't use with any other browser.
 
    function fetchInputPgnText() {
       if ((inputPgnText = prompt("Enter PGN chess games TEXT for viewing; pasting multi-line PGN data in the textbox is allowed:", "")) !== null) {
+         if (inputPgnText.match(/^\s*[1-8KQRBNP]{1,8}(\/[1-8KQRBNP]{1,8}){7}[\s0-9A-HKQW-]*$/i)) {
+            inputPgnText = '[FEN "' + inputPgnText + '"]';
+         }
          pgnHeaderRegExpGlobal = /((\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)+)/g;
          inputPgnText = inputPgnText.replace(pgnHeaderRegExpGlobal, "\n$1\n"); // add newline after header section
          inputPgnText = fixCommonPgnMistakes(inputPgnText);
