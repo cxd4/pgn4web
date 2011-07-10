@@ -236,19 +236,23 @@ a {
   width: 100%;
   height: 1em;
   padding-bottom: 0.5em;
-}
-
-.toggleCommentsLink {
   color: #888888;
   opacity: 0.25;
 }
 
-.toggleCommentsLink:hover {
+.toggleComments:hover {
   color: #000000;
+  opacity: 1;
+}
+
+.toggleCommentsLink {
+  color: inherit;
+}
+
+.toggleCommentsLink:hover {
   background: #FFCC99;
   border-radius: 0.4em;
   -webkit-box-shadow: 0 0 1em #FF8000;
-  opacity: 1;
 }
 
 .lastMoveAndComment {
