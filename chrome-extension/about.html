@@ -41,11 +41,16 @@ a:link, a:visited, a:active, a:hover {
   color: black;
 }
 
+div {
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+}
+
 div.h2content {
   margin-left: 1.5em;
 }
 
-p.try {
+div.try {
   /* hiding the "try" example until the context menu bug http://crbug.com/51461 is fixed */
   display: none;
   background-color: #EAEAEA;
@@ -55,6 +60,10 @@ p.try {
 span.try {
   font-weight: bold;
   padding-right: 0.66em;
+}
+
+pre.try {
+  padding-top: 1em;
 }
 
 .menuCell {
@@ -99,113 +108,112 @@ function print_menu(item) {
 <script type="text/javascript">print_menu("features");</script>
 <div class="h2content">
 
-<p>
+<div>
 The chess games viewer extension for Google Chrome is an interactive chessboard showing chess games from links to PGN URLs, from local PGN files and from PGN text, using context menus and page actions.
-</p>
-<p>
+</div>
+<div>
 PGN (Portable Games Notation) files are commonly used by chess websites and by chess software to store and share chess games information.
-</p>
+</div>
 
 <h3>context menu for links to PGN chess games URLs</h3>
-<p>
+<div>
 A context menu shows chess games from links to PGN chess games URLs.
-</p>
-<p>
+</div>
+<div>
 The mouse cursor icon highlights links to PGN chess games URLs when hovering on them.
-</p>
-<p class="try"><span class="try">try</span>
+</div>
+<div class="try"><span class="try">try</span>
 right-click <a href="dgt.pgn">this link to a PGN file</a> and select the menu item for viewing the chess games.
-</p>
+</div>
 
 <h3>live refresh mode</h3>
-<p>
+<div>
 The live refresh mode reloads the games periodically until all games are ended, as designed for links to chess games live broadcasts.
-<p>
+</div>
+<div>
 A single large chessboard view is offered as well as a view with multiple small chessboards; click square H5 (assuming White on bottom) to switch between chessboard views.
-</p>
-<p>
+</div>
+<div>
 During a live broadcast, the window title contains a set of three numbers, like "1.2.3 live broadcast" where the first number increases each time a new move is received for the visible games (acting as new move notification), the second is the overall number of live games and the third is the overall number of finished games.
-</p>
+</div>
 
-<p class="try"><span class="try">try</span>
+<div class="try"><span class="try">try</span>
 the PGN files used for demo are not from a current live broadcast; using the chess games viewer extension menu items and links for viewing games with live refresh always reports the live broadcast as already ended; instead <a href="javascript:void(0);" onclick="chrome.tabs.create({url: 'chess-games-viewer.html?pgnData=dgt.pgn&refreshMinutes=0.1&refreshDemo=true'});">this link opens a demo live broadcast using the single large chessboard view</a> and <a href="javascript:void(0);" onclick="chrome.tabs.create({url: 'live-mosaic-viewer.html?pgnData=dgt.pgn&refreshMinutes=0.1&refreshDemo=true&headlessPage=true'});">this link opens a demo live broadcast using the multiple small chessboards view</a>.
-</p>
+</div>
 
 <h3>context menu for links to ZIP archives</h3>
-<p>
+<div>
 A context menu for links to ZIP archives offers to inspect each ZIP archive for PGN chess games files.
-</p>
-<p>
+</div>
+<div>
 Loading ZIP archives is a slow process; only the <i>deflate</i> and <i>store</i> compression methods are supported; encryption is not supported.
-</p>
-<p class="try"><span class="try">try</span>
+</div>
+<div class="try"><span class="try">try</span>
 right-click <a href="zipped.zip">this link to a ZIP file</a> and select the menu item for inspecting the ZIP file for viewing the chess games.
-</p>
+</div>
 
 <h3>context menu for local PGN and ZIP files</h3>
-<p>
+<div>
 A context menu allows <a href="chess-games-viewer.html">showing chess games from local PGN files and local ZIP archives containing PGN files</a>; drag and drop on the large chessboard view page also opens local files.
-</p>
-<p>
+</div>
+<div>
 A browser bookmark can be created for easy access to the chess games viewer page for showing local PGN and ZIP files.
-</p>
-<p class="try"><span class="try">try</span>
+</div>
+<div class="try"><span class="try">try</span>
 first save locally <a href="dgt.pgn">this PGN file</a> and <a href="zipped.zip">this ZIP file</a>, then right-click on the background of this page and select the menu item for opening local chess games files for viewing.
-</p>
+</div>
 
 <h3>context menu for selected PGN chess games text</h3>
-<p>
+<div>
 A context menu shows chess games from PGN chess games text selected in the web page.
-</p>
-<p class="try"><span class="try">try</span>
+</div>
+<div class="try"><span class="try">try</span>
 select the PGN text below, then right-click and select the menu item for viewing the selected text as chess games.
-<span>
-<br>
-<br>[Event "Wch"]
-<br>[Site "Moscow URS"]
-<br>[Date "1985.10.15"]
-<br>[Round "16"]
-<br>[White "Karpov"]
-<br>[Black "Kasparov"]
-<br>[Result "0-1"]
-<br>[Opening "Sicilian"]
-<br>[ECO "B44"]
-<br>
-<br>1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nc6 5. Nb5 d6 6. c4 Nf6 7. N1c3 a6 8.
-<br>Na3 d5 9. cxd5 exd5 10. exd5 Nb4 11. Be2 Bc5 12. O-O O-O 13. Bf3 Bf5 14.
-<br>Bg5 Re8 15. Qd2 b5 16. Rad1 Nd3 17. Nab1 h6 18. Bh4 b4 19. Na4 Bd6 20. Bg3
-<br>Rc8 21. b3 g5 22. Bxd6 Qxd6 23. g3 Nd7 24. Bg2 Qf6 25. a3 a5 26. axb4 axb4
-<br>27. Qa2 Bg6 28. d6 g4 29. Qd2 Kg7 30. f3 Qxd6 31. fxg4 Qd4+ 32. Kh1 Nf6 33.
-<br>Rf4 Ne4 34. Qxd3 Nf2+ 35. Rxf2 Bxd3 36. Rfd2 Qe3 37. Rxd3 Rc1 38. Nb2 Qf2
-<br>39. Nd2 Rxd1+ 40. Nxd1 Re1+ 0-1
-</span>
-</p>
-<p>
+<pre class="try">
+[Event "Wch"]
+[Site "Moscow URS"]
+[Date "1985.10.15"]
+[Round "16"]
+[White "Karpov"]
+[Black "Kasparov"]
+[Result "0-1"]
+[Opening "Sicilian"]
+[ECO "B44"]
+
+1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nc6 5. Nb5 d6 6. c4 Nf6 7. N1c3 a6 8.
+Na3 d5 9. cxd5 exd5 10. exd5 Nb4 11. Be2 Bc5 12. O-O O-O 13. Bf3 Bf5 14.
+Bg5 Re8 15. Qd2 b5 16. Rad1 Nd3 17. Nab1 h6 18. Bh4 b4 19. Na4 Bd6 20. Bg3
+Rc8 21. b3 g5 22. Bxd6 Qxd6 23. g3 Nd7 24. Bg2 Qf6 25. a3 a5 26. axb4 axb4
+27. Qa2 Bg6 28. d6 g4 29. Qd2 Kg7 30. f3 Qxd6 31. fxg4 Qd4+ 32. Kh1 Nf6 33.
+Rf4 Ne4 34. Qxd3 Nf2+ 35. Rxf2 Bxd3 36. Rfd2 Qe3 37. Rxd3 Rc1 38. Nb2 Qf2
+39. Nd2 Rxd1+ 40. Nxd1 Re1+ 0-1
+</pre>
+</div>
+<div>
 A single FEN position string is also a valid text input.
-</p>
-<p class="try"><span class="try">try</span>
+</div>
+<div class="try"><span class="try">try</span>
 select the FEN string below, then right-click and select the menu item for viewing the selected text as chess games.
-<span>
-<br>
-<br>r1bqkb1r/1p3ppp/p1n1pn2/3p4/2P1P3/N1N5/PP3PPP/R1BQKB1R w KQkq - 0 9
-</span>
-</p>
+<pre class="try">
+r1bqkb1r/1p3ppp/p1n1pn2/3p4/2P1P3/N1N5/PP3PPP/R1BQKB1R w KQkq - 0 9
+</pre>
+</div>
 
 <h3>page action for links to PGN chess games URLs</h3>
-<p>
+<div>
 A page action looks for links to PGN chess games URLs in the current page; if found, a black pawn page action icon appears in the address bar, clicking that icon a popup page allows for opening the links in the chess games viewer.
-</p>
-<p class="try"><span class="try">try</span>
+</div>
+<div class="try"><span class="try">try</span>
 the black pawn icon should have appeared at the right end of the address bar of this page; click that icon to display the popup page and try clicking the action icons.
-</p>
+</div>
 
 <h3>user interface help</h3>
-<p>
+<div>
 Using the keyboard or clicking squares interacts with the chessboards; for instance, click square F5 (assuming White on bottom) to display the chess puzzler of the day; hovering the mouse on each square displays an help summary. Click square H8 (assuming White on bottom) to display detailed help.
-</p>
-<p>
+</div>
+<div>
 Errors alert messages are logged, such as failures to load PGN games, incorrect PGN games or incorrect FEN strings. When an error is encountered, the top left chessboard square will flash to signal the exception. The error alert log can be reviewed clicking the same top left chessboard square.
-<p/>
+</div>
 
 </div> <!-- h2content -->
 
@@ -213,27 +221,27 @@ Errors alert messages are logged, such as failures to load PGN games, incorrect 
 <script type="text/javascript">print_menu("settings");</script>
 <div class="h2content">
 
-<p>
+<div>
 The chess games viewer extension does not have any configurable option, however each chessboard view remembers some settings between sessions.
-</p>
+</div>
 
 <h3>single large chessboard view</h3>
-<p>
+<div>
 <i>Comment display within the game text:</i> click square B7 (assuming White on bottom) to change whether comments are displayed or not into the move text; when comments are shown, click square C7 (assuming White on bottom) to change how comments are displayed respect to the move text, either inline or on separate lines.
-</p>
-<p>
+</div>
+<div>
 <i>Chessboard move highlight:</i> click square D7 (assuming White on bottom) to toggle the highlighting of the last move's from/to squares.
-</p>
+</div>
 
 <h3>multiple small chessboards view</h3>
-<p>
+<div>
 <i>Maximum number of shown chessboards:</i> if more games are available than currently shown, the <i>"m"</i> command at the top right of the page allows increasing the number of shown chessboards; if more than one game is currently shown, the <i>"l"</i> command allows reducing the number of shown chessboards; select the number of chessboard that better fits the screen.
-</p>
+</div>
 
 <h3>reset settings to default values</h3>
-<p>
+<div>
 <a href="javascript:void(0);" onclick="if (confirm('reset all chess games viewer settings to their default values?')) { window.localStorage.clear(); }">Click here to reset all settings to their default values</a>. Reload any open chess games viewer page for the restored default settings to apply.
-</p>
+</div>
 
 </div> <!-- h2content -->
 
@@ -241,12 +249,12 @@ The chess games viewer extension does not have any configurable option, however 
 <script type="text/javascript">print_menu("support");</script>
 <div class="h2content">
 
-<p>
+<div>
 From the single large board view, click the chessboard top right square for user interface help, credits and license.
-</p>
-<p>
+</div>
+<div>
 The chess games viewer extension for Google Chrome is part of the <a href="http://pgn4web.casaschi.net">pgn4web project</a>. The <a href="http://code.google.com/p/pgn4web/wiki/Index">pgn4web project's wiki</a> provides more information, including a <a href="http://code.google.com/p/pgn4web/wiki/BrowserExtension_GoogleChrome">support page for the chess games viewer extension</a> with usage examples, answers to frequently asked questions and options for leaving feedback to the development team.
-</p>
+</div>
 
 </div> <!-- h2content -->
 
