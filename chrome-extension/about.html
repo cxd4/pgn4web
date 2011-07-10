@@ -84,13 +84,13 @@ pre.try {
 <script type="text/javascript">
 
 function print_menu(item) {
-  text = "<div class='extraSpacer'></div>";
+  text = "<div class='extraSpacer'><a name='" + item + "'><a></div>";
   text += "<table width='100%' cellspacing='0' cellpadding='0' border='0'><tr valign='top'><td align='left'>";
   text += "<h2>" + item + "</h2>";
   text += "</td><td align='right' class='menuCell'>";
-  text += "<a " + (item == "features" ? "name='features' " : "") + "href='#features' class='menu'>features</a>";
-  text += "<a " + (item == "settings" ? "name='settings' " : "") + "href='#settings' class='menu'>settings</a>";
-  text += "<a " + (item == "support" ? "name='support' " : "") + "href='#support' class='menu'>support</a>";
+  text += "<a href='#features' class='menu'>features</a>";
+  text += "<a href='#settings' class='menu'>settings</a>";
+  text += "<a href='#support' class='menu'>support</a>";
   text += "</td></tr></table>";
   document.write(text);
 }
