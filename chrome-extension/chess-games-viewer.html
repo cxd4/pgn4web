@@ -188,6 +188,14 @@ of Google Chrome. Don't use with any other browser.
       refreshMinutes = unescape(window.location.search.match(thisRegExp)[3]);
    }
 
+   // special mode for the about.html page of the chess games viewer extension for google chrome
+   if (pgnData.match(/^chrome-extension:\/\/\w+\/dgt.pgn$/) && refreshMinutes) {
+      refreshMinutes = 0.1;
+      alertFlag = false;
+      demoFlag = true;
+      gameDemoMaxPly = new Array(1, 2, 3, 4);
+   }
+
    searchGame = "";
    thisRegExp = /(&|\?)(search|s)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
