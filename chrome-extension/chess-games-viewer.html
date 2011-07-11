@@ -175,6 +175,12 @@ of Google Chrome. Don't use with any other browser.
       if ((refreshDemo == "true") || (refreshDemo == "t")) { alertFlag = demoFlag = true; }
    }
 
+   thisRegExp = /(&|\?)(demoPly|dp)=([^&]*)(&|$)/i;
+   if (window.location.search.match(thisRegExp) !== null) {
+      gameDemoMaxPly = unescape(window.location.search.match(thisRegExp)[3]).split(",");
+      for (g in gameDemoMaxPly) { gameDemoMaxPly[g] = isNaN(p = parseInt(gameDemoMaxPly[g], 10)) ? 0 : p; }
+   }
+
    refreshMinutes = 0;
    stepFlag = true;
    thisRegExp = /(&|\?)(refreshMinutes|rm)=([^&]*)(&|$)/i;
@@ -398,7 +404,7 @@ of Google Chrome. Don't use with any other browser.
             alert("warning: zoom out to the multiple small boards view is not available with ZIP files");
          } else {
             url = "live-mosaic-viewer.html?pgnData=" + escape(pgnUrl) + "&refreshMinutes=" + escape(refreshMinutes) + "&hp=t";
-            if (demoFlag) { url += "&refreshDemo=true"; }
+            if (demoFlag) { url += "&refreshDemo=true&demoPly=" + gameDemoMaxPly.join(); }
             url += "&firstGame=" + (currentGame + 1);
             location.href = url;
          }
