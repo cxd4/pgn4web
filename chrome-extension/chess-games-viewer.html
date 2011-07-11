@@ -189,7 +189,7 @@ of Google Chrome. Don't use with any other browser.
    }
 
    // special mode for the about.html page of the chess games viewer extension for google chrome
-   if (pgnData.match(/^chrome-extension:\/\/\w+\/dgt.pgn$/) && refreshMinutes) {
+   if ((typeof(chrome) != "undefined") && (typeof(chrome.extension) != "undefined") && (typeof(chrome.extension.getURL) != "undefined") && (pgnData == chrome.extension.getURL("dgt.pgn")) && (refreshMinutes)) {
       refreshMinutes = 0.1;
       alertFlag = false;
       demoFlag = true;
