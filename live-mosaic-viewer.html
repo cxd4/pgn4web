@@ -68,6 +68,12 @@
     refreshDemo = unescape(window.location.search.match(thisRegExp)[3]);
     if ((refreshDemo == "true") || (refreshDemo == "t")) { alertFlag = demoFlag = true; }
   }
+
+  thisRegExp = /(&|\?)(demoPly|dp)=([^&]*)(&|$)/i;
+  if (window.location.search.match(thisRegExp) !== null) {
+    gameDemoMaxPly = unescape(window.location.search.match(thisRegExp)[3]).split(",");
+    for (g in gameDemoMaxPly) { gameDemoMaxPly[g] = isNaN(p = parseInt(gameDemoMaxPly[g], 10)) ? 0 : p; }
+  }
  
   var refreshMinutes = refreshMinutes_default;
   var stepFlag = true;
@@ -549,7 +555,7 @@ function customFunctionOnCheckLiveBroadcastStatus() {
 function switchBoardView(search) {
   if ((typeof(chrome) != "undefined") && (chrome.extension) && (pgnUrl) && (LiveBroadcastDelay > 0)) {
     url = "chess-games-viewer.html?pgnData=" + escape(pgnUrl) + "&refreshMinutes=" + escape(refreshMinutes);
-    if (demoFlag) { url += "&refreshDemo=true"; }
+    if (demoFlag) { url += "&refreshDemo=true&demoPly=" + gameDemoMaxPly.join(); }
     if ((search !== null) && ((searchGame = gameNumberSearchPgn(search, false, true)) !== false)) {
       url += "&search=" + escape(searchGame + 1);
     }
