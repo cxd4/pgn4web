@@ -83,6 +83,15 @@
     if (isNaN(refreshMinutes)) { refreshMinutes = refreshMinutes_default; }
     if (refreshMinutes <= 0) { refreshMinutes = refreshMinutes_default; }
   }
+  
+  // special mode for the about.html page of the chess games viewer extension for google chrome
+  if (pgnData.match(/^chrome-extension:\/\/\w+\/dgt.pgn$/) && refreshMinutes) {
+    refreshMinutes = 0.1;
+    alertFlag = false;
+    demoFlag = true;
+    gameDemoMaxPly = new Array(1, 2, 3, 4);
+  }
+
   SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, stepFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false)
 
   function getMaxBoardFromLocalStorage() {
