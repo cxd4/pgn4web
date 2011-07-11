@@ -41,6 +41,10 @@ a:link, a:visited, a:active, a:hover {
   color: black;
 }
 
+ul {
+  list-style-type: square;
+}
+  
 div {
   margin-top: 0.5em;
   margin-bottom: 1em;
@@ -156,7 +160,11 @@ During a live broadcast, the window title contains a set of three numbers, like 
 </div>
 
 <div class="try"><span class="try">try this</span>
-the PGN data of this demo is from local static files rather than from a current live broadcast: using the chess games viewer extension menu items and links for viewing games with live refresh always reports the live broadcast as already ended; to demonstrate the live refresh functionality <a href="javascript:void(0);" onclick="chrome.tabs.create({url: 'chess-games-viewer.html?pgnData=dgt.pgn&refreshMinutes=0.1&refreshDemo=true'});">this link opens a live broadcast demo using the single large chessboard view</a> and <a href="javascript:void(0);" onclick="chrome.tabs.create({url: 'live-mosaic-viewer.html?pgnData=dgt.pgn&refreshMinutes=0.1&refreshDemo=true&headlessPage=true'});">this link opens a live broadcast demo using the multiple small chessboards view</a>.
+the PGN data of this demo is from local static files rather than from a current live broadcast: using the chess games viewer extension menu items and links for viewing games with live refresh always reports the live broadcast as already ended; to demonstrate the live refresh functionality try the following links:
+<ul style="">
+<li><a href="javascript:void(0);" onclick="chrome.tabs.create({url: 'chess-games-viewer.html?pgnData=dgt.pgn&refreshMinutes=0.1&refreshDemo=true'});">this link opens a live broadcast demo using the single large chessboard view</a></li>
+<li><a href="javascript:void(0);" onclick="chrome.tabs.create({url: 'live-mosaic-viewer.html?pgnData=dgt.pgn&refreshMinutes=0.1&refreshDemo=true&headlessPage=true'});">this link opens a live broadcast demo using the multiple small chessboards view</a></li>
+</ul>
 </div>
 
 <div class="extraSpacer"></div>
