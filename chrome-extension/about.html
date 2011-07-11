@@ -53,6 +53,7 @@ div.h2content {
 div.try {
   /* hiding the "try" example until the context menu bug http://crbug.com/51461 is fixed */
   display: none;
+  font-style: italic;
   background-color: #EAEAEA;
   padding: 1em;
 }
@@ -63,6 +64,7 @@ span.try {
 }
 
 pre.try {
+  font-style: normal;
 }
 
 .menuCell {
@@ -128,7 +130,7 @@ A context menu shows chess games from links to PGN chess games URLs.
 <div>
 The mouse cursor icon highlights links to PGN chess games URLs when hovering on them.
 </div>
-<div class="try"><span class="try">try</span>
+<div class="try"><span class="try">try this</span>
 right-click <a href="dgt.pgn">this link to a PGN file</a> and select the menu item for viewing the chess games.
 </div>
 
@@ -144,7 +146,7 @@ A single large chessboard view is offered as well as a view with multiple small 
 During a live broadcast, the window title contains a set of three numbers, like "1.2.3 live broadcast" where the first number increases each time a new move is received for the visible games (acting as new move notification), the second is the overall number of live games and the third is the overall number of finished games.
 </div>
 
-<div class="try"><span class="try">try</span>
+<div class="try"><span class="try">try this</span>
 the PGN data of this demo is from local static files rather than from a current live broadcast: using the chess games viewer extension menu items and links for viewing games with live refresh always reports the live broadcast as already ended; to demonstrate the live refresh functionality <a href="javascript:void(0);" onclick="chrome.tabs.create({url: 'chess-games-viewer.html?pgnData=dgt.pgn&refreshMinutes=0.1&refreshDemo=true'});">this link opens a live broadcast demo using the single large chessboard view</a> and <a href="javascript:void(0);" onclick="chrome.tabs.create({url: 'live-mosaic-viewer.html?pgnData=dgt.pgn&refreshMinutes=0.1&refreshDemo=true&headlessPage=true'});">this link opens a live broadcast demo using the multiple small chessboards view</a>.
 </div>
 
@@ -156,7 +158,7 @@ A context menu for links to ZIP archives offers to inspect each ZIP archive for 
 <div>
 Loading ZIP archives is a slow process; only the <i>deflate</i> and <i>store</i> compression methods are supported; encryption is not supported.
 </div>
-<div class="try"><span class="try">try</span>
+<div class="try"><span class="try">try this</span>
 right-click <a href="zipped.zip">this link to a ZIP file</a> and select the menu item for inspecting the ZIP file for viewing the chess games.
 </div>
 
@@ -168,7 +170,7 @@ A context menu allows <a href="chess-games-viewer.html">showing chess games from
 <div>
 A browser bookmark can be created for easy access to the chess games viewer page for showing local PGN and ZIP files.
 </div>
-<div class="try"><span class="try">try</span>
+<div class="try"><span class="try">try this</span>
 first save locally <a href="dgt.pgn">this PGN file</a> and <a href="zipped.zip">this ZIP file</a>, then right-click on the background of this page and select the menu item for opening local chess games files for viewing.
 </div>
 
@@ -177,7 +179,7 @@ first save locally <a href="dgt.pgn">this PGN file</a> and <a href="zipped.zip">
 <div>
 A context menu shows chess games from PGN chess games text selected in the web page.
 </div>
-<div class="try"><span class="try">try</span>
+<div class="try"><span class="try">try this</span>
 select the PGN text below, then right-click and select the menu item for viewing the selected text as chess games.
 <pre class="try">
 
@@ -203,7 +205,7 @@ Rf4 Ne4 34. Qxd3 Nf2+ 35. Rxf2 Bxd3 36. Rfd2 Qe3 37. Rxd3 Rc1 38. Nb2 Qf2
 <div>
 A single FEN position string is also a valid text input.
 </div>
-<div class="try"><span class="try">try</span>
+<div class="try"><span class="try">try this</span>
 select the FEN string below, then right-click and select the menu item for viewing the selected text as chess games.
 <pre class="try">
 
@@ -216,7 +218,7 @@ r1bqkb1r/1p3ppp/p1n1pn2/3p4/2P1P3/N1N5/PP3PPP/R1BQKB1R w KQkq - 0 9
 <div>
 A page action looks for links to PGN chess games URLs in the current page; if found, a black pawn page action icon appears in the address bar, clicking that icon a popup page allows for opening the links in the chess games viewer.
 </div>
-<div class="try"><span class="try">try</span>
+<div class="try"><span class="try">try this</span>
 the black pawn icon should have appeared at the right end of the address bar of this page; click that icon to display the popup page and try clicking the action icons.
 </div>
 
