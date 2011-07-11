@@ -339,8 +339,8 @@ function pgnGameForBoard(gameNum) {
   if (thisTag = customPgnHeaderTag("TimeControl")) { localPgnGame += "[TimeControl \"" + thisTag + "\"]\n"; }
   localPgnGame += "\n";
 
-  gameDemoPlyNumber = gameDemoMaxPly[gameNum] <= gameDemoLength[gameNum] ? gameDemoMaxPly[gameNum] : gameDemoLength[gameNum];
-  for (thisPly = StartPly; thisPly <= StartPly + gameDemoPlyNumber; thisPly++) {
+  gameDemoPlyNumber = gameDemoMaxPly[gameNum] <= gameDemoLength[gameNum] ? gameDemoMaxPly[gameNum] : gameDemoLength[gameNum] + 1;
+  for (thisPly = StartPly; thisPly < StartPly + gameDemoPlyNumber; thisPly++) {
     if (thisPly % 2) {
       if (thisComment = MoveComments[thisPly].replace(/{/g, "")) { 
         localPgnGame += "{" + thisComment + "} " + ((thisPly+1)/2) + "... ";
