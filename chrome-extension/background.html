@@ -24,7 +24,7 @@ of Google Chrome. Don't use with any other browser.
 var pgnHeaderRegExpGlobal = /((\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)+)/g;
 
 function validatePgnUrl(pgnUrl) {
-  return (pgnUrl.match(/^(http|https):\/\/[^?#]+\.(pgn|zip)($|\?.*$|#.*$)/i) !== null);
+  return (pgnUrl.match(/^(http|https|chrome-extension):\/\/[^?#]+\.(pgn|zip)($|\?.*$|#.*$)/i) !== null);
 }
 
 // keep this aligned with the one in pgn4web.js
