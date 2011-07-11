@@ -40,10 +40,6 @@ body {
 a:link, a:visited, a:active, a:hover {
   color: black;
 }
-
-ul {
-  list-style-type: square;
-}
   
 div {
   margin-top: 0.5em;
@@ -161,10 +157,8 @@ During a live broadcast, the window title contains a set of three numbers, like 
 
 <div class="try"><span class="try">try this</span>
 the PGN data of this page is from local static files rather than from a current live broadcast: using the menu items and links for viewing games with live refresh always reports the live broadcast as already ended; for a demo of the live refresh functionality try these links:
-<ul style="">
-<li><a href="javascript:void(0);" onclick="chrome.tabs.create({url: 'chess-games-viewer.html?pgnData=dgt.pgn&refreshMinutes=0.1&refreshDemo=true'});">live broadcast demo with the single large chessboard view</a></li>
-<li><a href="javascript:void(0);" onclick="chrome.tabs.create({url: 'live-mosaic-viewer.html?pgnData=dgt.pgn&refreshMinutes=0.1&refreshDemo=true&headlessPage=true'});">live broadcast demo with the multiple small chessboards view</a></li>
-</ul>
+<br><a href="javascript:void(0);" onclick="chrome.tabs.create({url: 'chess-games-viewer.html?pgnData=dgt.pgn&refreshMinutes=0.1&refreshDemo=true'});"><img src="refresh.png" class="icon">live broadcast demo with the single large chessboard view</a>
+<br><a href="javascript:void(0);" onclick="chrome.tabs.create({url: 'live-mosaic-viewer.html?pgnData=dgt.pgn&refreshMinutes=0.1&refreshDemo=true&headlessPage=true'});"><img src="refresh-mosaic.png" class="icon">live broadcast demo with the multiple small chessboards view</a>
 </div>
 
 <div class="extraSpacer"></div>
@@ -236,7 +230,11 @@ r1bqkb1r/1p3ppp/p1n1pn2/3p4/2P1P3/N1N5/PP3PPP/R1BQKB1R w KQkq - 0 9
 A page action looks for links to PGN chess games URLs in the current page; if found, a black pawn page action icon appears in the address bar, clicking that icon a popup page allows for opening the links in the chess games viewer.
 </div>
 <div class="try"><span class="try">try this</span>
-the black pawn icon should have appeared at the right end of the address bar of this page; click that icon to display the popup page and then click the action icons: <br><img src="alpha-16.png" class="icon">for viewing the games on a single board <br><img src="refresh.png" class="icon">for viewing the games on a single board with live refresh <br><img src="refresh-mosaic.png" class="icon">for viewing the games on multiple boards with live refresh <br><img src="download.png" class="icon">for downloading the games
+the black pawn icon should have appeared at the right end of the address bar of this page; click that icon to display the popup page and then click the action icons:
+<br><img src="alpha-16.png" class="icon">for viewing the games on a single board
+<br><img src="refresh.png" class="icon">for viewing the games on a single board with live refresh
+<br><img src="refresh-mosaic.png" class="icon">for viewing the games on multiple boards with live refresh
+<br><img src="download.png" class="icon">for downloading the games
 </div>
 
 <div class="extraSpacer"></div>
