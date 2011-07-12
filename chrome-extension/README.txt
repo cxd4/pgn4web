@@ -25,15 +25,15 @@ Derivative Works 3.0 license http://creativecommons.org/licenses/by-nd/3.0/
 Enhancements:
 
 background.html, manifest.json: webRequest 
-enable the webRequest extension API when stable.
-http://code.google.com/chrome/extensions/api_index.html
-http://crbug.com/60101
+enable the webRequest extension API when stable
+info http://code.google.com/chrome/extensions/api_index.html
+see http://crbug.com/60101
 
 about.html: demos
-enable the "try this" demo paragraphs in about.html by removing the
-"display: none;" css attribute of "div.try". Demo paragraphs are
-disabled at the moment because extension pages dont get context menus:
-http://crbug.com/51461
+enable the demo paragraphs in about.html by removing the "display: none;"
+css attribute of "div.try", demo paragraphs being disabled at the moment
+because extension pages dont get context menus
+see http://crbug.com/51461
 
 
 Bugs:
