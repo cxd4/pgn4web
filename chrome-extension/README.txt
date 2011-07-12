@@ -65,12 +65,15 @@ Verify this on the page:
 http://code.google.com/p/pgn4web/wiki/BrowserExtension_GoogleChrome
 
 popup.html: popup css
-popup.html is over-engineered to cope with following issues:
-- wrong height assigned by default (on small screen netbooks)
+popup.html is affected by following issues:
+- wrong height assigned by default (especially on small screen netbooks),
+with as workaround setting maxHeight of pgnLinkList
 http://crbug.com/76899
-- min-/max-/height attribute ignored for the body element
+- min-/max-/height attribute ignored for the body element, otherwise the
+above workaround could be simpler
 http://crbug.com/50192
-- scrollbar width is not taken into account for margins/padding
+- scrollbar width is not taken into account for margins/padding, no
+workaround implemented (anymore since r6921)
 http://crbug.com/31494
 
 about.html: help page
