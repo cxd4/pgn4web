@@ -100,9 +100,9 @@ chrome.tabs.getSelected(null, function(tab){
   // fixing 50192 could make the workaround simpler, for instance with a body max height
   var em = measureObject.offsetHeight; /* measuring em in px */
   var maxLinkListItems = Math.max(1, Math.ceil((0.6 * self.screen.availHeight - 6 * em) / (2 * em)));
-  if (pgnLinks.length > maxLinkListItems) { 
+  if (pgnLinks.length > maxLinkListItems) {
     listObject.style.maxHeight = (maxLinkListItems * 2) + "em";
-    listObject.style.paddingRight = "2em"; ﻿
+    listObject.style.paddingRight = "2em";
   } else { listObject.style.marginRight = "2em"; }
 
   var pgnHeaderInnerHTML = '<a class="pgnHeaderLink" title="chess games viewer from the pgn4web project" target="_blank" href="javascript:void(0);" onclick="chrome.tabs.create({url: \'about.html\'});">Chess games viewer</a>';
