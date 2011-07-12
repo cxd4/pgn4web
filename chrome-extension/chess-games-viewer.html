@@ -192,7 +192,7 @@ of Google Chrome. Don't use with any other browser.
    if ((typeof(chrome) != "undefined") && (typeof(chrome.extension) != "undefined") && (typeof(chrome.extension.getURL) != "undefined") && (pgnData == chrome.extension.getURL("liveBroadcastDemoGames.pgn")) && (refreshMinutes)) {
       refreshMinutes = 0.1;
       alertFlag = demoFlag = true;
-      gameDemoMaxPly = new Array(1, 2, 3, 4);
+      if ((!gameDemoMaxPly) || (gameDemoMaxPly.length === 0)) { gameDemoMaxPly = new Array(1, 2, 3, 4); }
    }
 
    searchGame = "";

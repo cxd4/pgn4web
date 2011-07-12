@@ -88,7 +88,7 @@
   if ((typeof(chrome) != "undefined") && (typeof(chrome.extension) != "undefined") && (typeof(chrome.extension.getURL) != "undefined") && (pgnData == chrome.extension.getURL("liveBroadcastDemoGames.pgn")) && (refreshMinutes)) {
     refreshMinutes = 0.1;
     alertFlag = demoFlag = true;
-    gameDemoMaxPly = new Array(1, 2, 3, 4);
+    if ((!gameDemoMaxPly) || (gameDemoMaxPly.length === 0)) { gameDemoMaxPly = new Array(1, 2, 3, 4); }
   }
 
   SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, stepFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false)
