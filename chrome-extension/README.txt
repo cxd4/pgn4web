@@ -32,8 +32,9 @@ see http://crbug.com/60101
 about.html: demos
 enable the demo paragraphs in about.html by removing the "display: none;"
 css attribute of "div.try", demo paragraphs being disabled at the moment
-because extension pages dont get context menus
+because extension pages dont get context menus. 
 see http://crbug.com/51461
+Consider adding a documentUrlPatterns to exclude pages of other extensions.
 
 
 Bugs:
