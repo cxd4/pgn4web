@@ -42,8 +42,8 @@ body {
  
 .measure {
   height: 1em;
-  width: 3em;
-  overflow-y: scroll;
+  width: 1em;
+  overflow-y: hidden;
   overflow-x: hidden;
   visibility: hidden;
 }
@@ -52,6 +52,7 @@ body {
   line-height: 2em;
   overflow-x: hidden;
   overflow-y: auto;
+  padding-right: 2em;
   scrollbar-base-color: #F0F0F0;
 }
  
@@ -98,11 +99,8 @@ chrome.tabs.getSelected(null, function(tab){
   var em = measureObject.offsetHeight; /* measuring em in px */
   var maxLinkListItems = Math.max(1, Math.ceil((0.6 * self.screen.availHeight - 6 * em) / (2 * em)));
 
-  if (pgnLinks.length > maxLinkListItems) {
-    listObject.style.maxHeight = (maxLinkListItems * 2) + "em";
-    listObject.style.paddingRight = (2 * em + measureObject.offsetWidth - measureObject.clientWidth) + "px"; /* measuring scrollbar width */
-  } else { listObject.style.marginRight = "2em"; }
- 
+  listObject.style.maxHeight = (maxLinkListItems * 2) + "em";
+
   var pgnHeaderInnerHTML = '<a class="pgnHeaderLink" title="chess games viewer from the pgn4web project" target="_blank" href="javascript:void(0);" onclick="chrome.tabs.create({url: \'about.html\'});">Chess games viewer</a>';
   pgnHeaderInnerHTML += ': <span title="the chess games viewer extension detected on this page ' + 
     pgnLinks.length + (pgnLinks.length == 1 ? ' link' : ' links') + ' to chess games in PGN format">' + 
