@@ -43,19 +43,17 @@ body {
 .measure {
   height: 1em;
   width: 1em;
-  overflow-x: hidden;
   overflow-y: hidden;
+  overflow-x: hidden;
   visibility: hidden;
 }
-
-.pgnLinkListOuter {
-  padding-right: 2em;
-  overflow-y: auto;
-}
-
-.pgnLinkListInner {
+ 
+.pgnLinkList {
+  margin: 0;
+  padding: 0;
   line-height: 2em;
   overflow-x: hidden;
+  overflow-y: auto;
 }
  
 .pgnItem {
@@ -82,10 +80,7 @@ body {
  
 <div id="pgnHeader" class="pgnHeader"></div>
 <div id="measure" class="measure">hidden text to measure some page elements</div>
-<div id="pgnLinkListOuter" class="pgnLinkListOuter">
-  <div id="pgnLinkListInner" class="pgnLinkListInner">
-  </div>
-</div>
+<div id="pgnLinkList" class="pgnLinkList"></div>
 
 <script type="text/javascript">
  
@@ -98,8 +93,7 @@ chrome.tabs.getSelected(null, function(tab){
   pgnLinks = pgnLinks.sort();
   
   var headerObject = document.getElementById("pgnHeader");
-  var innerListObject = document.getElementById("pgnLinkListInner");
-  var outerListObject = document.getElementById("pgnLinkListOuter");
+  var listObject = document.getElementById("pgnLinkList");
   var measureObject = document.getElementById("measure");
   
   // workaround to cope with http://crbug.com/76899 and http://crbug.com/50192
@@ -107,7 +101,10 @@ chrome.tabs.getSelected(null, function(tab){
   // fixing 50192 could make the workaround simpler, for instance with a body max height
   var em = measureObject.offsetHeight; /* measuring em in px */
   var maxLinkListItems = Math.max(1, Math.ceil((0.6 * self.screen.availHeight - 6 * em) / (2 * em)));
-  outerListObject.style.maxHeight = (maxLinkListItems * 2) + "em";
+  if (pgnLinks.length > maxLinkListItems) {
+    listObject.style.maxHeight = (maxLinkListItems * 2) + "em";
+    listObject.style.paddingRight = "2em";
+  } else { listObject.style.marginRight = "2em"; }
 
   var pgnHeaderInnerHTML = '<a class="pgnHeaderLink" title="chess games viewer from the pgn4web project" target="_blank" href="javascript:void(0);" onclick="chrome.tabs.create({url: \'about.html\'});">Chess games viewer</a>';
   pgnHeaderInnerHTML += ': <span title="the chess games viewer extension detected on this page ' + 
@@ -126,7 +123,7 @@ chrome.tabs.getSelected(null, function(tab){
       '</div>';
   }
  
-  innerListObject.innerHTML = pgnLinkListInnerHTML;
+  listObject.innerHTML = pgnLinkListInnerHTML;
   headerObject.innerHTML = pgnHeaderInnerHTML;
 });
  
