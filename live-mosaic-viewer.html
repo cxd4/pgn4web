@@ -446,7 +446,7 @@ function customFunctionOnPgnTextLoad() {
   
   if (newMovesInShownGames) { liveBroadcastUpdateTicker++; } 
   if (LiveBroadcastStarted && !LiveBroadcastEnded) {
-    document.title = liveBroadcastUpdateTicker + LiveBroadcastStatusString.replace("live games: ", ".").replace(" &nbsp; finished: ", ".") + " live broadcast";
+    document.title = liveBroadcastUpdateTicker + LiveBroadcastStatusString.replace("live games: ", ".").replace(" &nbsp; finished: ", ".") + " live broadcast" + (demoFlag ? " demo" : "");
   } else { document.title = LiveBroadcastStatusString; }
 
   updateMenu();

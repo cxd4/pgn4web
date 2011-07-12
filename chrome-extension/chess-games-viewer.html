@@ -362,7 +362,7 @@ of Google Chrome. Don't use with any other browser.
             liveBroadcastUpdateTicker++;
          }
          if (LiveBroadcastStarted && !LiveBroadcastEnded) {
-            document.title = liveBroadcastUpdateTicker + LiveBroadcastStatusString.replace("live games: ", ".").replace(" &nbsp; finished: ", ".") + " live broadcast";
+            document.title = liveBroadcastUpdateTicker + LiveBroadcastStatusString.replace("live games: ", ".").replace(" &nbsp; finished: ", ".") + " live broadcast" + (demoFlag ? " demo" : "");
          } else { document.title = LiveBroadcastStatusString; }
       } else {
          if (noGamesLoaded) { document.title = alertNum ? "PGN data error" : "chess games viewer"; }
