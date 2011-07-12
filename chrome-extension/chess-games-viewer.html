@@ -181,18 +181,11 @@ of Google Chrome. Don't use with any other browser.
       for (g in gameDemoMaxPly) { gameDemoMaxPly[g] = isNaN(p = parseInt(gameDemoMaxPly[g], 10)) ? 0 : p; }
    }
 
-   refreshMinutes = 0;
+   refreshMinutes = inputRefreshMinutes = 0;
    stepFlag = true;
    thisRegExp = /(&|\?)(refreshMinutes|rm)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
-      refreshMinutes = unescape(window.location.search.match(thisRegExp)[3]);
-   }
-
-   // special mode for the about.html page of the chess games viewer extension for google chrome
-   if ((typeof(chrome) != "undefined") && (typeof(chrome.extension) != "undefined") && (typeof(chrome.extension.getURL) != "undefined") && (pgnData == chrome.extension.getURL("demoLiveGames.pgn")) && (refreshMinutes)) {
-      refreshMinutes = 0.1;
-      alertFlag = demoFlag = true;
-      if ((!gameDemoMaxPly) || (gameDemoMaxPly.length === 0)) { gameDemoMaxPly = new Array(1, 2, 3, 4); }
+      refreshMinutes = inputRefreshMinutes = unescape(window.location.search.match(thisRegExp)[3]);
    }
 
    searchGame = "";
@@ -575,8 +568,10 @@ of Google Chrome. Don't use with any other browser.
    function fetchNewPgnUrl(live) {
       newPgnUrl = prompt("Enter PGN chess games URL for viewing" + (live ? " with live refresh:" : ":"), pgnData);
       if (newPgnUrl.replace(/^\s*/, "")) {
-         if (live) { newRefreshMinutes = refreshMinutes ? refreshMinutes : 1 + 0.01 * Math.floor(Math.random()*10); }
+         if (live) { newRefreshMinutes = inputRefreshMinutes ? inputRefreshMinutes : 1 + 0.01 * Math.floor(Math.random()*10); }
          else { newRefreshMinutes = 0; }
+         alertFlag = demoFlag = false;
+         gameDemoMaxPly = new Array();
          useNewPgnUrl(newPgnUrl, newRefreshMinutes);
       }
    }
@@ -584,6 +579,14 @@ of Google Chrome. Don't use with any other browser.
    function useNewPgnUrl(newPgnUrl, newRefreshMinutes) {
       refreshMinutes = newRefreshMinutes;
       SetPgnUrl(pgnData = newPgnUrl);
+
+      // special mode for the about.html page of the chess games viewer extension for google chrome
+      if ((typeof(chrome) != "undefined") && (typeof(chrome.extension) != "undefined") && (typeof(chrome.extension.getURL) != "undefined") && (pgnData == chrome.extension.getURL("demoLiveGames.pgn")) && (refreshMinutes)) {
+         refreshMinutes = 0.1;
+         alertFlag = demoFlag = true;
+         if ((!gameDemoMaxPly) || (gameDemoMaxPly.length === 0)) { gameDemoMaxPly = new Array(1, 2, 3, 4); }
+      }
+
       SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, stepFlag);
       setInitialGameFromSearchGame();
       if (refreshMinutes) {
