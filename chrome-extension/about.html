@@ -146,7 +146,10 @@ right-click <a href="kramnikPetrov.pgn">this link to a PGN file</a> and select t
 <div class="extraSpacer"></div>
 <h3>live refresh mode</h3>
 <div>
-The live refresh mode reloads the games periodically until all games are ended, as designed for links to chess games live broadcasts.
+The live refresh mode reloads the games periodically until all games are ended, as designed for links to chess games live broadcasts, i.e. links to chess games files periodically updated on their server with new moves from games currently in progress. Many chess tournaments offer such live broadcast links from their websites.
+</div>
+<div>
+Using the live refresh mode, the chess games viewer assumes the chess games link points to a live broadcast; if the live refresh mode is used instead with a link to a static chess games file, the chess games viewer will likely report that the live broadcast already ended, since the static games file will likely contain no games in progress.
 </div>
 <div>
 A single large chessboard view is offered as well as a view with multiple small chessboards; click square H5 (assuming White on bottom) to switch between chessboard views.
@@ -156,9 +159,9 @@ During a live broadcast, the window title contains a set of three numbers, like 
 </div>
 
 <div class="try"><span class="try">try this</span>
-the PGN data of this page is from local static files rather than from a current live broadcast: using the menu items and links for viewing games with live refresh always reports the live broadcast as already ended; for a demo of the live refresh functionality try these links:
-<br><a href="javascript:void(0);" onclick="chrome.tabs.create({url: 'chess-games-viewer.html?pgnData=dgt.pgn&refreshMinutes=0.1&refreshDemo=true&demoPly=2,3,4,5'});"><img src="refresh.png" class="icon">live broadcast demo with the single large chessboard view</a>
-<br><a href="javascript:void(0);" onclick="chrome.tabs.create({url: 'live-mosaic-viewer.html?pgnData=dgt.pgn&refreshMinutes=0.1&refreshDemo=true&demoPly=2,3,4,5&headlessPage=true'});"><img src="refresh-mosaic.png" class="icon">live broadcast demo with the multiple small chessboards view</a>
+right-click <a href="dgt.pgn">this link to a PGN file that simulates a live broadcast</a> and select the menu item for viewing the chess games with live refresh, either on a single board or on multiple boards. Click square H5 (assuming White on bottom) to switch between chessboard views.
+<p/>
+If you try instead the live refresh mode with <a href="kramnikPetrov.pgn">this link to a static PGN file</a>, the chess games viewer will not find any game in progress and will report the live broadcast as already ended.
 </div>
 
 <div class="extraSpacer"></div>
@@ -192,8 +195,8 @@ A context menu shows chess games from PGN chess games text selected in the web p
 </div>
 <div class="try"><span class="try">try this</span>
 select the PGN text below, then right-click and select the menu item for viewing the selected text as chess games:
+<p/>
 <pre class="try">
-
 [Event "Wch"]
 [Site "Moscow URS"]
 [Date "1985.10.15"]
@@ -218,8 +221,8 @@ A single FEN position string is also a valid text input.
 </div>
 <div class="try"><span class="try">try this</span>
 select the FEN string below, then right-click and select the menu item for viewing the selected text as chess games:
+<p/>
 <pre class="try">
-
 r1bqkb1r/1p3ppp/p1n1pn2/3p4/2P1P3/N1N5/PP3PPP/R1BQKB1R w KQkq - 0 9
 </pre>
 </div>
@@ -235,6 +238,8 @@ the black pawn icon should have appeared at the right end of the address bar of 
 <br><img src="refresh.png" class="icon">for viewing the games on a single board with live refresh
 <br><img src="refresh-mosaic.png" class="icon">for viewing the games on multiple boards with live refresh
 <br><img src="download.png" class="icon">for downloading the games
+<p/>
+Notes: the file "dgt.pgn" simulates a live chess broadcast if opened with live refresh, while the file "kramnikPetrov.pgn" is a static chess file with no games in progress; when opening a static chess file with live refresh the chess games viewer will report the live broadcast as already ended.
 </div>
 
 <div class="extraSpacer"></div>
