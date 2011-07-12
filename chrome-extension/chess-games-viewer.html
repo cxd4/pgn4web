@@ -59,7 +59,6 @@ of Google Chrome. Don't use with any other browser.
             " - pgnBackground = index" + "\n\n" +
             " - pgnData = URL.pgn" + "\n\n" +
             " - refreshMinutes = live broadcast delay (default 0 = live broadcast disabled)" + "\n\n" +
-            " - refreshDemo = if set true sets live demo mode (default false)" + "\n\n" +
             " - search = search expression (default first game for normal view and first unfinished game for live broadcast view)" + "\n\n" +
             " - help");
    }
@@ -169,12 +168,14 @@ of Google Chrome. Don't use with any other browser.
    SetShortcutKeysEnabled(true);
 
    alertFlag = demoFlag = false;
+   // undocumented URL parameter, use only in the about page and for testing purposes
    thisRegExp = /(&|\?)(refreshDemo|rd)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
       refreshDemo = unescape(window.location.search.match(thisRegExp)[3]);
       if ((refreshDemo == "true") || (refreshDemo == "t")) { alertFlag = demoFlag = true; }
    }
 
+   // undocumented URL parameter, use only for switching between single/multiple boards views
    thisRegExp = /(&|\?)(demoPly|dp)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
       gameDemoMaxPly = unescape(window.location.search.match(thisRegExp)[3]).split(",");
