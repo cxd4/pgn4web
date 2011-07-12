@@ -13,8 +13,8 @@ fi
 zip -9r ../../"$pgn4webChromeExtFilename" * -x *.svn/* -x zip-chrome-extension.sh -x updateInfo.xml
 
 cd ..
+ln -s kramnikPetrov.pgn demoGames.pgn
 ln -s dgt.pgn liveBroadcastDemoGames.pgn
-ln -s kramnikPetrov.pgn staticGames.pgn
-zip -9r ../"$pgn4webChromeExtFilename" help.html js-unzip/* live-mosaic-tile.html live-mosaic-viewer.html liveBroadcastDemoGames.pgn pawn.ico pawns.png pgn4web.js staticGames.pgn zipped.zip alpha/README.txt alpha/index.html alpha/24/* alpha/48/bp.png alpha/48/index.html alpha/128/* fonts/README.txt fonts/index.html fonts/pgn4web-font-LiberationSans.css fonts/LiberationSans-Regular.woff fonts/LiberationSans-Bold.woff fonts/pgn4web-font-ChessSansUsual.css fonts/ChessSansUsual.woff -x *.svn/*
-rm liveBroadcastDemoGames.pgn staticGames.pgn
+zip -9r ../"$pgn4webChromeExtFilename" demoGames.pgn help.html js-unzip/* live-mosaic-tile.html live-mosaic-viewer.html liveBroadcastDemoGames.pgn pawn.ico pawns.png pgn4web.js zipped.zip alpha/README.txt alpha/index.html alpha/24/* alpha/48/bp.png alpha/48/index.html alpha/128/* fonts/README.txt fonts/index.html fonts/pgn4web-font-LiberationSans.css fonts/LiberationSans-Regular.woff fonts/LiberationSans-Bold.woff fonts/pgn4web-font-ChessSansUsual.css fonts/ChessSansUsual.woff -x *.svn/*
+rm demoStaticGames.pgn liveBroadcastDemoGames.pgn
 

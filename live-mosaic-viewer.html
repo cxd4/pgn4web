@@ -85,7 +85,7 @@
   }
   
   // special mode for the about.html page of the chess games viewer extension for google chrome
-  if ((typeof(chrome) != "undefined") && (typeof(chrome.extension) != "undefined") && (typeof(chrome.extension.getURL) != "undefined") && (pgnData == chrome.extension.getURL("dgt.pgn")) && (refreshMinutes)) {
+  if ((typeof(chrome) != "undefined") && (typeof(chrome.extension) != "undefined") && (typeof(chrome.extension.getURL) != "undefined") && (pgnData == chrome.extension.getURL("liveBroadcastDemoGames.pgn")) && (refreshMinutes)) {
     refreshMinutes = 0.1;
     alertFlag = demoFlag = true;
     gameDemoMaxPly = new Array(1, 2, 3, 4);
