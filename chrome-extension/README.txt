@@ -25,31 +25,15 @@ Derivative Works 3.0 license http://creativecommons.org/licenses/by-nd/3.0/
 Enhancements:
 
 background.html, manifest.json: webRequest 
-enable the webRequest extension API when stable. Info on this page:
+enable the webRequest extension API when stable.
 http://code.google.com/chrome/extensions/api_index.html
-when adding the webRequest API permission, consider adding the bookmarks
-permission also and offer a one time popup to add a link to the bookmarks
-bar;and have a link to do the same from the about page; some code for that:
-//
-// bookmarks[0].children[0].id is the bookmarks bar id
-chrome.bookmarks.getTree(function(bookmarks) { chrome.bookmarks.create({'parentId': bookmarks[0].children[0].id, 'title': 'chess games viewer', 'url': 'chess-games-viewer.html#bottom'}); });
-//
-Otherwise, it might be enough to highlight better in the about.html page
-how such a bookmark could be created.
-This is a workaround for the extensions missing a launch page/icon, see
-http://crbug.com/85735
+http://crbug.com/60101
 
-about.html: examples
-currently the about.html is very basic; ideally it should be a showcase of
-the extension itself, offering a PGN text and some links to test the context
-menus and showing the page icon. Possibly also a simulation of the live pages
-too. This is not possible at the moment because extension pages apparently
-dont get context menus:
+about.html: demos
+enable the "try this" demo paragraphs in about.html by removing the
+"display: none;" css attribute of "div.try". Demo paragraphs are
+disabled at the moment because extension pages dont get context menus:
 http://crbug.com/51461
-If this is ever fixed, then about.html should be enhanced. 
-Please note that extension pages dont get content scripts either (see bug
-http://crbug.com/84843), but about.html explicitely loads the script at the
-end of the page.
 
 
 Bugs:
