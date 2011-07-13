@@ -358,11 +358,11 @@ of Google Chrome. Don't use with any other browser.
          if (LiveBroadcastStarted && !LiveBroadcastEnded) {
             document.title = liveBroadcastUpdateTicker + LiveBroadcastStatusString.replace("live games: ", ".").replace(" &nbsp; finished: ", ".") + " live broadcast" + (demoFlag ? " demo" : "");
          } else { document.title = LiveBroadcastStatusString; }
-         if (theObject = document.getElementById("GameLiveStatusDemo")) { theObject.innerHTML = LiveBroadcastDemo ? "demo" : ""; } 
       } else {
          if (noGamesLoaded) { document.title = alertNum ? "PGN data error" : "chess games viewer"; }
          else { document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s"); }
       }
+      if (theObject = document.getElementById("GameLiveStatusDemo")) { theObject.innerHTML = (LiveBroadcastDelay > 0) && LiveBroadcastDemo ? "demo" : ""; }
 
       // H5
       if ((typeof(chrome) != "undefined") && (chrome.extension) && (pgnUrl) && (LiveBroadcastDelay > 0)) {
