@@ -358,6 +358,7 @@ of Google Chrome. Don't use with any other browser.
          if (LiveBroadcastStarted && !LiveBroadcastEnded) {
             document.title = liveBroadcastUpdateTicker + LiveBroadcastStatusString.replace("live games: ", ".").replace(" &nbsp; finished: ", ".") + " live broadcast" + (demoFlag ? " demo" : "");
          } else { document.title = LiveBroadcastStatusString; }
+         if (theObject = document.getElementById("GameLiveStatusDemo")) { theObject.innerHTML = LiveBroadcastDemo ? "demo" : ""; } 
       } else {
          if (noGamesLoaded) { document.title = alertNum ? "PGN data error" : "chess games viewer"; }
          else { document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s"); }
@@ -549,7 +550,7 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem"><b><span class="innerHeaderItem" id="GameResult"></span></b><span class="innerHeaderItem" id="GameTermination"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><span class="innerHeaderItem" id="GameLiveStatus" title="live broadcast status"></span><b>&nbsp;</b></div>
+<div class="headerItem"><span class="innerHeaderItem" id="GameLiveStatus" title="live broadcast status"></span><span class="innerHeaderItem" id="GameLiveStatusDemo" title="this is a simulation of the live broadcast functionality"></span><b>&nbsp;</b></div>
 
 </div>
 
