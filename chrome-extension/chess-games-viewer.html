@@ -487,6 +487,8 @@ of Google Chrome. Don't use with any other browser.
 
    puzzlerUrl = "http://pgn4web.casaschi.net/puzzler.php?pgnMini=true";
    function showPuzzler() {
+      alertFlag = demoFlag = false;
+      gameDemoMaxPly = new Array();
       if (pgnData.indexOf(puzzlerUrl) == -1) { useNewPgnUrl(puzzlerUrl, 0); }
       else if (pgnData == puzzlerUrl) { useNewPgnUrl(puzzlerUrl + "&gameNum=-1", 0); }
       else if (match = pgnData.match(/gameNum=(-[1-8])$/)) { useNewPgnUrl(puzzlerUrl + "&gameNum=" + (match[1]-1), 0); }
