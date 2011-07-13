@@ -373,7 +373,7 @@ of Google Chrome. Don't use with any other browser.
       if (pgnData.indexOf(puzzlerUrl) === 0) {
          if (theObject = document.getElementById("GameText")) { theObject.style.visibility = "hidden"; }
          if (theObject = document.getElementById("GameLastComment")) { theObject.style.visibility = "hidden"; }
-         alert((pgnData == puzzlerUrl ? "chess puzzler of the day: " : "") + (CurrentPly%2 === 0 ? "White" : "Black") + " to move\n\nclick OK to view the solution");
+         alert((pgnData == puzzlerUrl ? "chess puzzler of the day: " : "chess puzzler: ") + (CurrentPly%2 === 0 ? "White" : "Black") + " to move\n\nclick OK to view the solution");
          if (theObject = document.getElementById("GameText")) { theObject.style.visibility = ""; }
          if (theObject = document.getElementById("GameLastComment")) { theObject.style.visibility = ""; }
          MoveForward(1);
