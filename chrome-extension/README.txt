@@ -29,6 +29,12 @@ enable the webRequest extension API when stable
 info http://code.google.com/chrome/extensions/api_index.html
 see http://crbug.com/60101
 
+background.html: 
+register the extension as content handler for application/x-chess-pgn
+when registerContentHandler support is available; need assessing impact
+on the download of PGN (clicking a link on the page or from the popup).
+see http://crbug.com/86115
+
 about.html: demos
 enable the demo paragraphs in about.html by removing the "display: none;"
 css attribute of "div.try", demo paragraphs being disabled at the moment
