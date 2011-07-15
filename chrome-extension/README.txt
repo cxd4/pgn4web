@@ -31,8 +31,11 @@ see http://crbug.com/60101
 
 background.html: 
 register the extension as content handler for application/x-chess-pgn
-when registerContentHandler support is available; need assessing impact
-on the download of PGN (clicking a link on the page or from the popup).
+when registerContentHandler support is available; hopefullt this allows
+opening the chess games viewer by doubleclicking items in the chrome
+downloads page; needs assessing impact on the plain download of a PGN file:
+check what happens when clicking a link on the page or the download icon
+of the popup.
 see http://crbug.com/86115
 
 about.html: demos
