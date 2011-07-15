@@ -12,7 +12,8 @@ context menus and page actions.
 
 Part of the pgn4web project http://pgn4web.casaschi.net
 
-See about.html and help.html for credits, license and more details.
+See about.html and help.html for more details, including
+full credits and license.
 
 
 Additional credits:
