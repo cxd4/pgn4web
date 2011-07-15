@@ -37,7 +37,7 @@ opening the chess games viewer by doubleclicking items in the chrome
 downloads page; needs assessing impact on the plain download of a PGN file:
 check what happens when clicking a link on the page or the download icon
 of the popup.
-http://crbug.com/86115
+http://crbug.com/86115 (and other, search for registerContentHandler)
 
 about.html: demos
 enable the demo paragraphs in about.html by removing the "display: none;"
