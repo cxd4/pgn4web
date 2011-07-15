@@ -28,7 +28,7 @@ Enhancements:
 background.html, manifest.json: webRequest 
 enable the webRequest extension API when stable
 info http://code.google.com/chrome/extensions/api_index.html
-see http://crbug.com/60101
+http://crbug.com/60101
 
 background.html: 
 register the extension as content handler for application/x-chess-pgn
@@ -37,13 +37,13 @@ opening the chess games viewer by doubleclicking items in the chrome
 downloads page; needs assessing impact on the plain download of a PGN file:
 check what happens when clicking a link on the page or the download icon
 of the popup.
-see http://crbug.com/86115
+http://crbug.com/86115
 
 about.html: demos
 enable the demo paragraphs in about.html by removing the "display: none;"
 css attribute of "div.try", demo paragraphs being disabled at the moment
 because extension pages dont get context menus. 
-see http://crbug.com/51461
+http://crbug.com/51461
 
 
 Bugs:
@@ -51,15 +51,15 @@ Bugs:
 background.html: "about" context menu item
 until chromium bug 63545 is resolved, two entries are required
 and adding the about menu to the "selection" context would result in
-duplicated items when a selected link is right-clicked
-see http://crbug.com/63545
+duplicated items when a selected link is right-clicked.
+http://crbug.com/63545
 Verify in background.html
 Fixed in google chrome v13.0.782.10
 
 background.html: "link" context menu
 until chromium bug 63965 is resolved the context menu will not appear for
 links shown as images like this <a href=game.pgn><img src=image.jpeg/></a>
-see http://crbug.com/63965
+http://crbug.com/63965
 Verify this on the page (after login):
 http://www.chessgames.com/perl/chessplayer?pid=18000
 Fixed in google chrome v13.0.782.10
@@ -70,7 +70,7 @@ as PGN chess games URL even if they should not, for instance
 http://host/file.html?pgnData=games.pgn would match *://*/*.pgn
 This will lead to a context menu appearing when it should not (but the
 mouse pointer will not change and the viewer will not open the link).
-see http://crbug.com/84024
+http://crbug.com/84024
 Verify this on the page:
 http://code.google.com/p/pgn4web/wiki/BrowserExtension_GoogleChrome
 
@@ -88,6 +88,5 @@ http://crbug.com/31494
 
 about.html: help page
 this page is currently assigned as the "options" page while there are not
-any configurable options; it should rather assigned as "help" page once
-available, see this bug:
+any configurable options; it should rather assigned as "help" page.
 http://crbug.com/29849
