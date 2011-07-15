@@ -579,6 +579,7 @@ of Google Chrome. Don't use with any other browser.
    function fetchNewPgnUrl(live) {
       newPgnUrl = prompt("Enter PGN chess games URL for viewing" + (live ? " with live refresh:" : ":"), pgnData);
       if (newPgnUrl && newPgnUrl.replace(/^\s*/, "")) {
+         if (pgnData.indexOf(puzzlerUrl) != -1) { live = false; } // assume the puzzler URL is not a live broadcast
          if (live) { newRefreshMinutes = inputRefreshMinutes ? inputRefreshMinutes : 1 + 0.01 * Math.floor(Math.random()*10); }
          else { newRefreshMinutes = 0; }
          alertFlag = demoFlag = false;
