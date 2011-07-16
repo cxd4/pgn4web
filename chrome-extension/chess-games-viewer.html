@@ -249,6 +249,10 @@ of Google Chrome. Don't use with any other browser.
    boardShortcut("G5", "adjust last move and current comment text area, if present", toggleFitResetLastMoveAndCommentArea);
 
 
+   function searchTag(tag, key) {
+      searchPgnGame('\\[\\s*' + tag + '\\s*"' + fixRegExp(key) + '"\\s*\\]', false);
+   }
+
    function fixHeaderTag(elementId) {
       var headerId = ["GameEvent", "GameSite", "GameDate", "GameRound", "GameWhite", "GameBlack", "GameResult", "GameSection", "GameStage", "GameBoardNum", "Timecontrol", "GameWhiteTitle", "GameBlackTitle", "GameWhiteElo", "GameBlackElo", "GameECO", "GameOpening", "GameVariation", "GameSubVariation", "GameTermination", "GameWhiteClock", "GameBlackClock", "GameTimeControl"];
       var headerLabel = ["event", "site", "date", "round", "white player", "black player", "result", "section", "stage", "board", "time control", "white title", "black title", "white elo", "black elo", "eco", "opening", "variation", "subvariation", "termination", "white clock", "black clock", "time control"];
@@ -544,7 +548,7 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem"><span class="innerHeaderItem" id="GameEvent"></span><span class="innerHeaderItem" id="GameSection"></span><span class="innerHeaderItem" id="GameStage"></span><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameRound"></span><span class="innerHeaderItem" id="GameBoardNum"></span><span class="innerHeaderItem" id="GameTimeControl"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><span class="innerHeaderItem" id="GameECO"></span><span class="innerHeaderItem" id="GameOpening"></span><span class="innerHeaderItem" id="GameVariation"></span><span class="innerHeaderItem" id="GameSubVariation"></span><b>&nbsp;</b></div>
+<div class="headerItem"><a class="innerHeaderItem" id="GameECO" href="javascript:void(0);" onclick="searchTag('ECO', this.innerHTML);"></a><a class="innerHeaderItem" id="GameOpening" href="javascript:void(0);" onclick="searchTag('Opening', this.innerHTML);"></a><a class="innerHeaderItem" id="GameVariation" href="javascript:void(0);" onclick="searchTag('Variation', this.innerHTML);"></a><span class="innerHeaderItem" id="GameSubVariation" href="javascript:void(0);" onclick="searchTag('SubVariation', this.innerHTML);"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameWhiteClock"></span><b>&nbsp;</b></div>
 <div class="headerItem"><b><a href="javascript:void(0);" onclick="lookupFidePlayer(this.innerHTML);" class="innerHeaderItem" id="GameWhite"></a></b><span class="innerHeaderItem" id="GameWhiteTitle"></span><span class="innerHeaderItem" id="GameWhiteElo"></span><b>&nbsp;</b></div>
