@@ -268,6 +268,10 @@ of Google Chrome. Don't use with any other browser.
          }
       }
       if (analysisStarted) { restartAnalysis(); }
+      else {
+         if (theObject = document.getElementById("GameAnalysisEval")) { theObject.innerHTML = ""; }
+         if (theObject = document.getElementById("GameAnalysisPv")) { theObject.innerHTML = ""; }
+      }
    }
 
    function customFunctionOnPgnGameLoad() {
@@ -549,7 +553,7 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem"><span class="innerHeaderItem" id="GameLiveStatus" title="live broadcast status"></span><span class="innerHeaderItem" id="GameLiveStatusDemo" title="this is a simulation of the live broadcast functionality"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><b><span class="innerHeaderItem analysisScore" id="GameAnalysisScore" title="score from engine's analysis: -1 means Black is 1 pawn ahead"></span></b><span class="innerHeaderItem move" id="GameAnalysisPv" title="principal variation from engine's analysis"></span><b>&nbsp;</b></div>
+<div class="headerItem"><b><span class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from engine's analysis: -1 means Black is 1 pawn ahead"></span></b><span class="innerHeaderItem move" id="GameAnalysisPv" title="principal variation from engine's analysis"></span><b>&nbsp;</b></div>
 </div>
 
 </div>
@@ -582,12 +586,14 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function analysisOutputHandler(request, sender, sendResponse) {
-     if (typeof(request.analysisScore) == "undefined") { return; }
+     if (typeof(request.analysisEval) == "undefined") { return; }
      chrome.tabs.getCurrent( function(tab) {
         if (tab.id === request.tabId) {
-           if (theObject = document.getElementById("GameAnalysisScore")) { theObject.innerHTML = request.analysisScore; }
-           if (theObject = document.getElementById("GameAnalysisPv")) { theObject.innerHTML = request.analysisPv; }
-           analysisStarted = (request.analysisScore !== "");
+           analysisStarted = (request.analysisEval !== "");
+           if (analysisStarted && (theObject = document.getElementById("GameAnalysisEval"))) { theObject.innerHTML = request.analysisEval; }
+           if (analysisStarted && (theObject = document.getElementById("GameAnalysisPv"))) { theObject.innerHTML = request.analysisPv; }
+           if (theObject = document.getElementById("GameAnalysisEval")) { theObject.style.color = analysisStarted ? "" : "#888888"; }
+           if (theObject = document.getElementById("GameAnalysisPv")) { theObject.style.color = analysisStarted ? "" : "#888888"; }
            if (theObject = document.getElementById("toggleAnalysisLink")) { theObject.innerHTML = analysisStarted ? "&times;" : "+"; }
         }
      });
