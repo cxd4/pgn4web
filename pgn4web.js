@@ -699,8 +699,8 @@ function CurrentFEN() {
   currentFEN += CurrentPly%2 === 0 ? " w" : " b";
 
   // castling availability
-  CastlingShortFEN = CastlingShort;
-  CastlingLongFEN = CastlingLong;
+  CastlingShortFEN = new Array(CastlingShort[0], CastlingShort[1]);
+  CastlingLongFEN = new Array(CastlingLong[0], CastlingLong[1]);
   for (var thisPly = StartPly; thisPly < CurrentPly; thisPly++) {
     SideToMoveFEN = thisPly%2;
     BackrowSideToMoveFEN = SideToMoveFEN * 7;
