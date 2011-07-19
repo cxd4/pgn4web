@@ -1,22 +1,21 @@
-
 THE GARBOCHESS CHESS ENGINE
 
-garbochess is a javascript chess engine by Gary Linscott.
+GarboChess is a javascript chess engine by Gary Linscott.
 Homepage: http://forwardcoding.com/projects/ajaxchess/chess.html
 Repository: https://github.com/glinscott/Garbochess-JS/
 
 
 IMPLEMENTATION NOTES
 
-Please note that the garbochess code is CPU intensive, hence the chess
-games viewer extension allows only one chessboard to be analyzed at
-any time. If you start analyzing a second chessboard, the analysis will
-stop at the first chessboard.
+Please note that GarboChess is processor intensive; in order to optimise
+computing resources, the chess games viewer extension allows only one chessboard
+to be analyzed at any time; when starting analyzing a second chessboard, the
+analysis of the first chessboard stops.
 
 
 CREDITS AND LICENSE
 
-The garbochess chess engine code is licensed by Gary Linscott under
+The GarboChess chess engine code is licensed by Gary Linscott under
 BSD license. See below for permission to use with the chess games viewer
 extension for Google Chrome.
 
