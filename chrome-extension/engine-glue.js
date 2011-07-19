@@ -34,7 +34,7 @@ function AnalysisStart(tabId, FEN) {
 
 function AnalysisStop(tabId) {
    if ((tabId !== null) && (tabId !== g_tabId)) { return; }
-   if (g_analyzing && g_backgroundEngine != null) {
+   if (g_analyzing && g_backgroundEngine) {
       g_backgroundEngine.terminate();
       g_backgroundEngine = null;
    }
@@ -50,7 +50,7 @@ var g_backgroundEngine;
 function InitializeBackgroundEngine() {
    if (!g_backgroundEngineValid) { return false; }
 
-   if (g_backgroundEngine == null) {
+   if (!g_backgroundEngine) {
       g_backgroundEngineValid = true;
       try {
           g_backgroundEngine = new Worker("garbochess/garbochess.js");
