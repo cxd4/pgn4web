@@ -90,7 +90,13 @@ function analysisRequestHandler(request, sender, sendResponse) {
 
 chrome.extension.onRequest.addListener(analysisRequestHandler);
 
-function stopAnalysisOnRemovedAndUpdated(tabId) { AnalysisStop(tabId); }
+function stopAnalysisOnRemoved(tabId) { AnalysisStop(tabId); }
 
-chrome.tabs.onRemoved.addListener(stopAnalysisOnRemovedAndUpdated);
-chrome.tabs.onUpdated.addListener(stopAnalysisOnRemovedAndUpdated);
+function stopAnalysisOnUpdated(tabId) { 
+   chrome.tabs.get(tabId, function (tab) {
+      if (tab.url.indexOf(chrome.extension.getURL("chess-games-viewer.html")) == -1) { AnalysisStop(tabId); }
+   });
+}
+
+chrome.tabs.onRemoved.addListener(stopAnalysisOnRemoved);
+chrome.tabs.onUpdated.addListener(stopAnalysisOnUpdated);
