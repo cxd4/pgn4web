@@ -90,7 +90,7 @@ function InitializeBackgroundEngine() {
                    if (ev.indexOf(".") == -1) { ev += ".0"; }
                    nodes = matches[3];
                    nodesPerSecond = matches[4];
-                   pv = matches[5];
+                   pv = matches[5].replace(/[+#]/g, "");
                    notifyAnalysis(g_tabId, ply, ev, nodes, nodesPerSecond, pv);
                 }
              }
