@@ -60,14 +60,14 @@ function InitializeBackgroundEngine() {
                    ply = matches[1];
                    score = Math.floor(matches[2] / 100) / 10;
                    if (g_FEN.indexOf(" b ") !== -1) { score = - score; }
-                   if (score - Math.floor(score) == 0) { score += ".0"; }
+                   if (score - Math.floor(score) === 0) { score += ".0"; }
                    nodes = matches[3];
                    nodesPerSecond = matches[4];
                    pv = matches[5];
                    notifyAnalysis(g_tabId, ply, score, nodes, nodesPerSecond, pv);
                 }
              }
-          }
+          };
       } catch (error) { g_backgroundEngineValid = false; }
    }
    return g_backgroundEngineValid;
