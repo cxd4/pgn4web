@@ -11,37 +11,63 @@
 // important: in order to avoid that multiple web workers instances of garbochess hog google chrome,
 // only one instance of GarboChess is allowed and managed by the extension's background page.
 
-var g_analyzing = false;
+var g_analysis_status = "stop"; // "analysis", "pause", "stop", "error"
 var g_FEN = "";
 var g_tabId = null;
 
-function AnalysisStart(tabId, FEN) {
-   if (g_analyzing && (tabId === g_tabId) && (FEN === g_FEN)) { return; }
-   if (g_analyzing) {
-      AnalysisStop(null);
-      if ((g_tabId !== null) && (tabId !== g_tabId)) { notifyAnalysisStop(g_tabId); }
-   }
-   if (InitializeBackgroundEngine()) {
-      g_tabId = tabId;
-      ResetGame();
-      g_FEN = FEN;
-      InitializeFromFen(g_FEN);
-      g_backgroundEngine.postMessage("position " + GetFen());
-      g_backgroundEngine.postMessage("analyze");
-      g_analyzing = true;
+function setAnalysisStatus(newStatus, newTabId, newFEN) {
+   switch (newStatus) {
+      case "analysis":
+         if ((newStatus == g_analysis_status) && (newTabId === g_tabId) && (newFEN === g_FEN)) { return; }
+         if ((g_analysis_status == "analysis") && g_backgroundEngine) {
+            g_backgroundEngine.terminate();
+            g_backgroundEngine = null;
+         }
+         if ((g_tabId !== null) && (newTabId !== g_tabId)) { notifyAnalysis(g_tabId, "", "", "", "", ""); }
+         if (InitializeBackgroundEngine()) {
+            g_tabId = newTabId;
+            ResetGame();
+            InitializeFromFen(g_FEN = newFEN);
+            g_backgroundEngine.postMessage("position " + GetFen());
+            g_backgroundEngine.postMessage("analyze");
+            g_analysis_status = "analysis";
+            setAnalysisTimeout(g_tabId);
+         }
+         break;
+      case "pause":
+      case "stop":
+         if ((newTabId !== null) && (newTabId !== g_tabId)) { return; }
+         if ((g_analysis_status == "analysis") && g_backgroundEngine) {
+            g_backgroundEngine.terminate();
+            g_backgroundEngine = null;
+         }
+         clearAnalysisTimeout();
+         if ((newStatus == "stop") && (g_tabId !== null)) {
+            notifyAnalysis(g_tabId, "", "", "", "", "");
+            g_FEN = "";
+            g_tabId = null;
+         }
+         g_analysis_status = newStatus;
+         break;
+      default:
+         g_FEN = "";
+         g_tabId = null;
+         g_analysis_status = "error";
+         break;
    }
 }
 
-function AnalysisStop(tabId) {
-   if ((tabId !== null) && (tabId !== g_tabId)) { return; }
-   if (g_analyzing && g_backgroundEngine) {
-      g_backgroundEngine.terminate();
-      g_backgroundEngine = null;
-   }
-   g_analyzing = false;
-   if (g_tabId !== null) { notifyAnalysisStop(g_tabId); }
-   g_FEN = "";
-   g_tabId = null;
+var analysisTimeoutDelaySeconds = 180; // 3 minutes
+var analysisTimeout = null;
+function setAnalysisTimeout(tabId) {
+   if (analysisTimeout !== null) { clearAnalysisTimeout(); }
+   analysisTimeout = setTimeout('setAnalysisStatus("pause", ' + tabId + ', "")', analysisTimeoutDelaySeconds * 1000);
+}
+
+function clearAnalysisTimeout() {
+   if (analysisTimeout === null) { return; }
+   clearTimeout(analysisTimeout);
+   analysisTimeout = null;
 }
 
 var g_backgroundEngineValid = true;
@@ -78,23 +104,18 @@ function notifyAnalysis(tabId, ply, score, nodes, nodesPerSecond, pv) {
    chrome.extension.sendRequest({tabId: tabId, analysisPly: ply, analysisScore: score, analysisNodes: nodes, analysisnodesPerSecond: nodesPerSecond, analysisPv: pv}, function(response) {});
 }
 
-function notifyAnalysisStop(tabId) {
-   chrome.extension.sendRequest({tabId: tabId, analysisPly: "", analysisScore: "", analysisNodes: "", analysisnodesPerSecond: "", analysisPv: ""}, function(response) {});
-}
-
 function analysisRequestHandler(request, sender, sendResponse) {
   if (typeof(request.analysisCommand) == "undefined") { return; }
-  if (request.analysisCommand == "start") { AnalysisStart(sender.tab.id, request.FEN); }
-  if (request.analysisCommand == "stop") { AnalysisStop(sender.tab.id); }
+  setAnalysisStatus(request.analysisCommand, sender.tab.id, request.FEN);
 }
 
 chrome.extension.onRequest.addListener(analysisRequestHandler);
 
-function stopAnalysisOnRemoved(tabId) { AnalysisStop(tabId); }
+function stopAnalysisOnRemoved(tabId) { setAnalysisStatus("stop", sender.tabId, ""); }
 
 function stopAnalysisOnUpdated(tabId) { 
    chrome.tabs.get(tabId, function (tab) {
-      if (tab.url.indexOf(chrome.extension.getURL("chess-games-viewer.html")) == -1) { AnalysisStop(tabId); }
+      if (tab.url.indexOf(chrome.extension.getURL("chess-games-viewer.html")) == -1) { setAnalysisStatus("stop", tab.id, ""); }
    });
 }
 
