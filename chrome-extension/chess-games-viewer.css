@@ -192,7 +192,6 @@ a {
 .columnsContainer {
   float: left;
   width: 100%;
-  padding-bottom: 1em;
 }
 
 .boardColumn {
@@ -230,26 +229,26 @@ a {
   height: 0.7em;
 }
 
-.toggleComments {
+.toggleComments, .toggleAnalysis {
   clear: both;
   text-align: right;
   width: 100%;
   height: 1em;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.25em;
   color: #888888;
   opacity: 0.25;
 }
 
-.toggleComments:hover {
+.toggleComments:hover, .toggleAnalysis:hover {
   color: #000000;
   opacity: 1;
 }
 
-.toggleCommentsLink {
+.toggleCommentsLink, .toggleAnalysisLink {
   color: inherit;
 }
 
-.toggleCommentsLink:hover {
+.toggleCommentsLink:hover, .toggleAnalysisLink:hover {
   background: #FFCC99;
   border-radius: 0.4em;
   -webkit-box-shadow: 0 0 1em #FF8000;
@@ -276,4 +275,9 @@ a {
 .lastMove, .lastComment {
   text-decoration: none;
   color: black;
+}
+
+.analysisScore {
+  display: inline-block;
+  min-width: 2em;
 }
