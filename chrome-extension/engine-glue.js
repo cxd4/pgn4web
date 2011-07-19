@@ -111,7 +111,7 @@ function analysisRequestHandler(request, sender, sendResponse) {
 
 chrome.extension.onRequest.addListener(analysisRequestHandler);
 
-function stopAnalysisOnRemoved(tabId) { setAnalysisStatus("stop", sender.tabId, ""); }
+function stopAnalysisOnRemoved(tabId) { setAnalysisStatus("stop", tabId, ""); }
 
 function stopAnalysisOnUpdated(tabId) { 
    chrome.tabs.get(tabId, function (tab) {
