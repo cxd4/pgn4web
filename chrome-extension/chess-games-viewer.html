@@ -234,21 +234,6 @@ of Google Chrome. Don't use with any other browser.
       return true;
    }
 
-
-   // A7
-   if ((typeof(chrome) != "undefined") && (typeof(chrome.tabs) != "undefined") && (typeof(chrome.tabs.create) != "undefined")) { boardShortcut("A7", "about the chess games viewer extension for google chrome", function(){ chrome.tabs.create({url: "about.html"}); }); }
-   // B7
-   boardShortcut("B7", "toggle show comments in game text and save setting", function(){ SetCommentsIntoMoveText(!commentsIntoMoveText); oldPly = CurrentPly; Init(); GoToMove(oldPly); setCommentsIntoMoveTextToLocalStorage(); });
-   // C7
-   boardShortcut("C7", "toggle show comments on separate lines in game text and save setting", function(){ SetCommentsOnSeparateLines(!commentsOnSeparateLines); oldPly = CurrentPly; Init(); GoToMove(oldPly); setCommentsOnSeparateLinesToLocalStorage(); });
-   // D7
-   boardShortcut("D7", "toggle highlight last move and save setting", function(){ SetHighlight(!highlightOption); setHighlightOptionToLocalStorage(); });
-   // F5
-   boardShortcut("F5", "show the chess puzzler of the day", showPuzzler);
-   // G5
-   boardShortcut("G5", "adjust last move and current comment text area, if present", toggleFitResetLastMoveAndCommentArea);
-
-
    function searchTag(tag, key) {
       searchPgnGame('\\[\\s*' + tag + '\\s*"' + fixRegExp(key) + '"\\s*\\]', false);
    }
@@ -282,6 +267,7 @@ of Google Chrome. Don't use with any other browser.
             theObject.innerHTML = ((CurrentPly%2) ? "black" : "white") + " to move";
          }
       }
+      if (analysisStarted) { restartAnalysis(); }
    }
 
    function customFunctionOnPgnGameLoad() {
@@ -428,8 +414,9 @@ of Google Chrome. Don't use with any other browser.
    function customShortcutKey_Shift_2() { goToHash("board"); }
    function customShortcutKey_Shift_3() { goToHash("bottom"); }
 
-   function customShortcutKey_Shift_4() { chrome.tabs.create({url: "http://www.google.com/search?q=chess+games+PGN"}); }
-   function customShortcutKey_Shift_5() { chrome.tabs.create({url: "http://www.chess.co.uk/twic/twic.html"}); }
+   function customShortcutKey_Shift_4() { chrome.tabs.create({url: "http://www.chess.co.uk/twic/twic.html"}); }
+
+   function customShortcutKey_Shift_5() { toggleAnalysis(); }
  
    function customShortcutKey_Shift_6() { cycleLastMoveAndCommentArea(); }
  
@@ -559,11 +546,14 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameLiveStatus" title="live broadcast status"></span><span class="innerHeaderItem" id="GameLiveStatusDemo" title="this is a simulation of the live broadcast functionality"></span><b>&nbsp;</b></div>
-
+<div class="headerItem headerSpacer"><b>&nbsp;</b></div>
+<div class="headerItem headerSpacer"><b>&nbsp;</b></div>
+<div class="headerItem"><span class="innerHeaderItem analysisScore" id="GameAnalysisScore" title="score from engine's analysis: -1 means Black is 1 pawn ahead"></span><span class="innerHeaderItem move" id="GameAnalysisPv" title="principal variation from engine's analysis"></span><b>&nbsp;</b></div>
 </div>
 
 </div>
 
+<div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleAnalysisLink" id="toggleAnalysisLink" href="javascript:void(0);" onclick="toggleAnalysis();" title="toggle engine analysis">+</a></div>
 <div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="SetCommentsIntoMoveText(!commentsIntoMoveText); oldPly = CurrentPly; Init(); GoToMove(oldPly);" title="toggle show comments in game text for this page; click square B7 instead to save setting"></a></div>
 
 <div class="lastMoveAndComment" id="lastMoveAndComment"><a href="javascript:MoveToNextComment();" class="lastMove" title="last move" id="GameLastMove"></a><a href="javascript:MoveToPrevComment();" class="lastComment" title="current position comment" id="GameLastComment"></a></div>
@@ -575,6 +565,51 @@ of Google Chrome. Don't use with any other browser.
 </div>
 
 <script type="text/javascript">
+
+   var analysisStarted = false;
+   function toggleAnalysis() {
+      if (analysisStarted) { stopAnalysis(); }
+      else { restartAnalysis(); }
+   }
+   
+   function restartAnalysis() {
+      chrome.extension.sendRequest({analysisCommand: 'start', FEN: CurrentFEN()}, function(response) {});
+   }
+
+   function stopAnalysis() {
+      chrome.extension.sendRequest({analysisCommand: 'stop'}, function(response) {});
+   }
+
+   function analysisOutputHandler(request, sender, sendResponse) {
+     if (typeof(request.analysisScore) == "undefined") { return; }
+     chrome.tabs.getCurrent( function(tab) {
+        if (tab.id === request.tabId) {
+           if (theObject = document.getElementById("GameAnalysisScore")) { theObject.innerHTML = request.analysisScore; }
+           if (theObject = document.getElementById("GameAnalysisPv")) { theObject.innerHTML = request.analysisPv; }
+           analysisStarted = (request.analysisScore !== "");
+           if (theObject = document.getElementById("toggleAnalysisLink")) { theObject.innerHTML = analysisStarted ? "&times;" : "+"; }
+        }
+     });
+   }
+
+   chrome.extension.onRequest.addListener(analysisOutputHandler);
+
+
+   // A7
+   if ((typeof(chrome) != "undefined") && (typeof(chrome.tabs) != "undefined") && (typeof(chrome.tabs.create) != "undefined")) { boardShortcut("A7", "about the chess games viewer extension for google chrome", function(){ chrome.tabs.create({url: "about.html"}); }); }
+   // B7
+   boardShortcut("B7", "toggle show comments in game text and save setting", function(){ SetCommentsIntoMoveText(!commentsIntoMoveText); oldPly = CurrentPly; Init(); GoToMove(oldPly); setCommentsIntoMoveTextToLocalStorage(); });
+   // C7
+   boardShortcut("C7", "toggle show comments on separate lines in game text and save setting", function(){ SetCommentsOnSeparateLines(!commentsOnSeparateLines); oldPly = CurrentPly; Init(); GoToMove(oldPly); setCommentsOnSeparateLinesToLocalStorage(); });
+   // D7
+   boardShortcut("D7", "toggle highlight last move and save setting", function(){ SetHighlight(!highlightOption); setHighlightOptionToLocalStorage(); });
+   // F5
+   boardShortcut("F5", "show the chess puzzler of the day", showPuzzler);
+   // G5
+   boardShortcut("G5", "adjust last move and current comment text area, if present", toggleFitResetLastMoveAndCommentArea);
+   // H2
+   boardShortcut("H2", "toggle engine analysis", toggleAnalysis);
+
 
    function openPgnFiles() {
       if (theObject = document.getElementById("localPgnFiles")) { theObject.click(); }
