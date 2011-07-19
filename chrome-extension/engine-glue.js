@@ -11,7 +11,7 @@
 // important: in order to avoid that multiple web workers instances of garbochess hog google chrome,
 // only one instance of GarboChess is allowed and managed by the extension's background page.
 
-var g_analysis_status = "stop"; // "analysis", "pause", "stop", "error"
+var g_analysis_status = "stop"; // "analysis", "stop", "error"
 var g_FEN = "";
 var g_tabId = null;
 
@@ -34,7 +34,6 @@ function setAnalysisStatus(newStatus, newTabId, newFEN) {
             setAnalysisTimeout(g_tabId);
          }
          break;
-      case "pause":
       case "stop":
          if ((newTabId !== null) && (newTabId !== g_tabId)) { return; }
          if ((g_analysis_status == "analysis") && g_backgroundEngine) {
@@ -61,7 +60,7 @@ var analysisTimeoutDelayMinutes = 5;
 var analysisTimeout = null;
 function setAnalysisTimeout(tabId) {
    if (analysisTimeout !== null) { clearAnalysisTimeout(); }
-   analysisTimeout = setTimeout('setAnalysisStatus("pause", ' + tabId + ', "")', analysisTimeoutDelayMinutes * 60 * 1000);
+   analysisTimeout = setTimeout('setAnalysisStatus("stop", ' + tabId + ', "")', analysisTimeoutDelayMinutes * 60 * 1000);
 }
 
 function clearAnalysisTimeout() {
@@ -84,14 +83,14 @@ function InitializeBackgroundEngine() {
              if (e.data.match("^pv") == "pv") {
                 if (matches = e.data.substr(3, e.data.length - 3).match(/Ply:(\d+) Score:(-*\d+) Nodes:(\d+) NPS:(\d+) (.+)/)) {
                    ply = matches[1];
-                   score = Math.floor(matches[2] / 100) / 10;
-                   if (g_FEN.indexOf(" b ") !== -1) { score = - score; }
-                   score = (score < 0 ? "" : "+") + score; 
-                   if (score.indexOf(".") == -1) { score += ".0"; }
+                   ev = Math.floor(matches[2] / 100) / 10;
+                   if (g_FEN.indexOf(" b ") !== -1) { ev = - ev; }
+                   ev = (ev < 0 ? "" : "+") + ev; 
+                   if (ev.indexOf(".") == -1) { ev += ".0"; }
                    nodes = matches[3];
                    nodesPerSecond = matches[4];
                    pv = matches[5];
-                   notifyAnalysis(g_tabId, ply, score, nodes, nodesPerSecond, pv);
+                   notifyAnalysis(g_tabId, ply, ev, nodes, nodesPerSecond, pv);
                 }
              }
           };
@@ -100,8 +99,8 @@ function InitializeBackgroundEngine() {
    return g_backgroundEngineValid;
 }
 
-function notifyAnalysis(tabId, ply, score, nodes, nodesPerSecond, pv) {
-   chrome.extension.sendRequest({tabId: tabId, analysisPly: ply, analysisScore: score, analysisNodes: nodes, analysisnodesPerSecond: nodesPerSecond, analysisPv: pv}, function(response) {});
+function notifyAnalysis(tabId, ply, ev, nodes, nodesPerSecond, pv) {
+   chrome.extension.sendRequest({tabId: tabId, analysisPly: ply, analysisEval: ev, analysisNodes: nodes, analysisnodesPerSecond: nodesPerSecond, analysisPv: pv}, function(response) {});
 }
 
 function analysisRequestHandler(request, sender, sendResponse) {
