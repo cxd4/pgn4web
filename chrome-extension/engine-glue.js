@@ -57,11 +57,11 @@ function setAnalysisStatus(newStatus, newTabId, newFEN) {
    }
 }
 
-var analysisTimeoutDelaySeconds = 180; // 3 minutes
+var analysisTimeoutDelayMinutes = 5;
 var analysisTimeout = null;
 function setAnalysisTimeout(tabId) {
    if (analysisTimeout !== null) { clearAnalysisTimeout(); }
-   analysisTimeout = setTimeout('setAnalysisStatus("pause", ' + tabId + ', "")', analysisTimeoutDelaySeconds * 1000);
+   analysisTimeout = setTimeout('setAnalysisStatus("pause", ' + tabId + ', "")', analysisTimeoutDelayMinutes * 60 * 1000);
 }
 
 function clearAnalysisTimeout() {
