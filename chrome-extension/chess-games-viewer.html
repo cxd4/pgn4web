@@ -589,8 +589,49 @@ of Google Chrome. Don't use with any other browser.
            if (theObject = document.getElementById("GameAnalysisPv")) { theObject.innerHTML = request.analysisPv; }
            analysisStarted = (request.analysisEval !== "");
            if (theObject = document.getElementById("toggleAnalysisLink")) { theObject.innerHTML = analysisStarted ? "&times;" : "+"; }
+           if (request.analysisEval && request.analysisNodes) {
+              updateAnnotationGraphData(currentGame, CurrentPly, parseFloat(request.analysisEval), parseFloat(request.analysisNodes), request.analysisFEN);
+           }
         }
      });
+   }
+
+   var annotationGraphEval;
+   var annotationGraphNodes;
+   var annotationGraphFEN;
+   resetAnnotationGraphData(-1);
+   minNodesForAnnotation = 23456;
+
+   function resetAnnotationGraphData(thisGame) {
+      if (thisGame == -1) {
+         annotationGraphEval = new Array();
+         annotationGraphNodes = new Array();
+         annotationGraphFEN = new Array();
+      } else {
+         annotationGraphEval[thisGame] = new Array();
+         annotationGraphNodes[thisGame] = new Array();
+         annotationGraphFEN[thisGame] = new Array();
+      }
+   }
+ 
+   function updateAnnotationGraphData(thisGame, thisPly, ev, nodes, FEN) {
+      if (FEN === "") { return; }
+      if ((typeof(annotationGraphFEN[thisGame]) != "undefined") && (typeof(annotationGraphFEN[thisGame][thisPly]) != "undefined") && (FEN !== annotationGraphFEN[thisGame][thisPly])) { 
+         resetAnnotationGraphData(thisGame);
+      }
+      if ((nodes > minNodesForAnnotation) && ((typeof(annotationGraphNodes[thisGame]) == "undefined") || (typeof(annotationGraphNodes[thisGame][thisPly]) == "undefined") || (nodes > annotationGraphNodes[thisGame][thisPly]))) {
+         if (typeof(annotationGraphEval[thisGame]) == "undefined") { annotationGraphEval[thisGame] = new Array(); }
+         annotationGraphEval[thisGame][thisPly] = ev;
+         if (typeof(annotationGraphNodes[thisGame]) == "undefined") { annotationGraphNodes[thisGame] = new Array(); }
+         annotationGraphNodes[thisGame][thisPly] = nodes;
+         if (typeof(annotationGraphFEN[thisGame]) == "undefined") { annotationGraphFEN[thisGame] = new Array(); }
+         annotationGraphFEN[thisGame][thisPly] = FEN;
+         updateAnnotationGraph(thisGame);
+      }
+   }
+
+   function updateAnnotationGraph(thisGame) {
+      // TODO
    }
 
    chrome.extension.onRequest.addListener(analysisOutputHandler);
@@ -625,6 +666,7 @@ of Google Chrome. Don't use with any other browser.
          alertFlag = demoFlag = false;
          gameDemoMaxPly = new Array();
          searchGame = "";
+         resetAnnotationGraphData(-1);
          useNewPgnUrl(newPgnUrl, newRefreshMinutes);
       }
    }
@@ -787,6 +829,7 @@ of Google Chrome. Don't use with any other browser.
       if (theObject = document.getElementById("pgnText")) { theObject.value = newPgnText; }
       if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = ""; }
       if (theObject = document.getElementById("localPgnFiles")) { theObject.value = ""; }
+      resetAnnotationGraphData(-1);
       start_pgn4web();
    }
 
