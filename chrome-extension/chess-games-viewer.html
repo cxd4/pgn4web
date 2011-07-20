@@ -333,6 +333,8 @@ of Google Chrome. Don't use with any other browser.
          previousPlyNumber = PlyNumber;
          previousCurrentGame = currentGame;
       }
+
+      updateAnnotationGraph(currentGame);
    }
 
    var liveBroadcastUpdateTicker = 1;
@@ -550,6 +552,7 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><b><span class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the engine's analysis: -1 means Black is 1 pawn ahead"></span></b><span class="innerHeaderItem move" id="GameAnalysisPv" title="principal variation from the engine's analysis"></span><b>&nbsp;</b></div>
+<div id="GameAnnotationGraph"></div>
 </div>
 
 </div>
@@ -589,7 +592,7 @@ of Google Chrome. Don't use with any other browser.
            if (theObject = document.getElementById("GameAnalysisPv")) { theObject.innerHTML = request.analysisPv; }
            analysisStarted = (request.analysisEval !== "");
            if (theObject = document.getElementById("toggleAnalysisLink")) { theObject.innerHTML = analysisStarted ? "&times;" : "+"; }
-           if (request.analysisEval && request.analysisNodes) {
+           if (request.analysisEval !== "") {
               updateAnnotationGraphData(currentGame, CurrentPly, parseFloat(request.analysisEval), parseFloat(request.analysisNodes), request.analysisFEN);
            }
         }
@@ -615,7 +618,6 @@ of Google Chrome. Don't use with any other browser.
    }
  
    function updateAnnotationGraphData(thisGame, thisPly, ev, nodes, FEN) {
-      if (FEN === "") { return; }
       if ((typeof(annotationGraphFEN[thisGame]) != "undefined") && (typeof(annotationGraphFEN[thisGame][thisPly]) != "undefined") && (FEN !== annotationGraphFEN[thisGame][thisPly])) { 
          resetAnnotationGraphData(thisGame);
       }
@@ -631,7 +633,12 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function updateAnnotationGraph(thisGame) {
-      // TODO
+      if (theObject = document.getElementById("GameAnnotationGraph")) {
+         for (thisPly = StartPly; thisPly <= StartPly+PlyNumber; thisPly++) {
+            ev = ((typeof(annotationGraphEval[thisGame]) != "undefined") && (typeof(annotationGraphEval[thisGame][thisPly]) != "undefined") ? annotationGraphEval[thisGame][thisPly] : 0);
+           // TODO: do something with ev
+         }
+      }
    }
 
    chrome.extension.onRequest.addListener(analysisOutputHandler);
