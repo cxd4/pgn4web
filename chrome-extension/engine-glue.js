@@ -5,8 +5,10 @@
  *  for credits, license and more details
  */
 
-// code to integrate the pgn4web chess viewer extension for Google Chrome with
-// the GarboChess javascript code from Gary Linscott http://forwardcoding.com/projects/ajaxchess/chess.html
+// this code integrates the chess viewer extension for Google Chrome
+// with the GarboChess javascript code from Gary Linscott at 
+// http://forwardcoding.com/projects/ajaxchess/chess.html and
+// it's derived from the code at that page.
 
 // important: in order to avoid that multiple web workers instances of garbochess hog google chrome,
 // only one instance of GarboChess is allowed and managed by the extension's background page.
