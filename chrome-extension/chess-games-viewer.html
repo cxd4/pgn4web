@@ -267,7 +267,12 @@ of Google Chrome. Don't use with any other browser.
             theObject.innerHTML = ((CurrentPly%2) ? "black" : "white") + " to move";
          }
       }
-      if (analysisStarted) { restartAnalysis(); }
+      if (analysisStarted) {
+         updateAnnotationGraph(currentGame);
+         restartAnalysis();
+      } else {
+        clearAnnotationGraph(currentGame);
+      }
    }
 
    function customFunctionOnPgnGameLoad() {
@@ -333,8 +338,6 @@ of Google Chrome. Don't use with any other browser.
          previousPlyNumber = PlyNumber;
          previousCurrentGame = currentGame;
       }
-
-      updateAnnotationGraph(currentGame);
    }
 
    var liveBroadcastUpdateTicker = 1;
@@ -552,7 +555,7 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><b><span class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the engine's analysis: -1 means Black is 1 pawn ahead"></span></b><span class="innerHeaderItem move" id="GameAnalysisPv" title="principal variation from the engine's analysis"></span><b>&nbsp;</b></div>
-<div id="GameAnnotationGraph"></div>
+<div id="GameAnnotation"></div>
 </div>
 
 </div>
@@ -592,7 +595,10 @@ of Google Chrome. Don't use with any other browser.
            if (theObject = document.getElementById("GameAnalysisPv")) { theObject.innerHTML = request.analysisPv; }
            analysisStarted = (request.analysisEval !== "");
            if (theObject = document.getElementById("toggleAnalysisLink")) { theObject.innerHTML = analysisStarted ? "&times;" : "+"; }
-           if (request.analysisEval !== "") {
+           if (request.analysisEval === "") {
+              clearAnnotationGraph(currentGame);
+           } else {
+              updateAnnotationGraph(currentGame);
               updateAnnotationGraphData(currentGame, CurrentPly, parseFloat(request.analysisEval), parseFloat(request.analysisNodes), request.analysisFEN);
            }
         }
@@ -604,6 +610,8 @@ of Google Chrome. Don't use with any other browser.
    var annotationGraphFEN;
    resetAnnotationGraphData(-1);
    minNodesForAnnotation = 23456;
+   maxGraphEval = 3;
+   minGraphEval = -maxGraphEval;
 
    function resetAnnotationGraphData(thisGame) {
       if (thisGame == -1) {
@@ -623,22 +631,40 @@ of Google Chrome. Don't use with any other browser.
       }
       if ((nodes > minNodesForAnnotation) && ((typeof(annotationGraphNodes[thisGame]) == "undefined") || (typeof(annotationGraphNodes[thisGame][thisPly]) == "undefined") || (nodes > annotationGraphNodes[thisGame][thisPly]))) {
          if (typeof(annotationGraphEval[thisGame]) == "undefined") { annotationGraphEval[thisGame] = new Array(); }
+         graphNeedsUpdate = ((typeof(annotationGraphEval[thisGame][thisPly]) == "undefined") || ev !== annotationGraphEval[thisGame][thisPly]);
          annotationGraphEval[thisGame][thisPly] = ev;
          if (typeof(annotationGraphNodes[thisGame]) == "undefined") { annotationGraphNodes[thisGame] = new Array(); }
          annotationGraphNodes[thisGame][thisPly] = nodes;
          if (typeof(annotationGraphFEN[thisGame]) == "undefined") { annotationGraphFEN[thisGame] = new Array(); }
          annotationGraphFEN[thisGame][thisPly] = FEN;
-         updateAnnotationGraph(thisGame);
+         if (graphNeedsUpdate) { updateAnnotationGraph(thisGame); }
       }
    }
 
    function updateAnnotationGraph(thisGame) {
-      if (theObject = document.getElementById("GameAnnotationGraph")) {
+      if (theObject = document.getElementById("GameAnnotation")) {
+         ev = new Array();
          for (thisPly = StartPly; thisPly <= StartPly+PlyNumber; thisPly++) {
-            ev = ((typeof(annotationGraphEval[thisGame]) != "undefined") && (typeof(annotationGraphEval[thisGame][thisPly]) != "undefined") ? annotationGraphEval[thisGame][thisPly] : 0);
-           // TODO: do something with ev
+            ev[thisPly] = ((typeof(annotationGraphEval[thisGame]) != "undefined") && (typeof(annotationGraphEval[thisGame][thisPly]) != "undefined") ? annotationGraphEval[thisGame][thisPly] : 0);
+            ev[thisPly] = Math.min(maxGraphEval, Math.max(minGraphEval, ev[thisPly]));
          }
+
+         // TODO: do something sensible with ev
+         text = "";
+         for (thisPly = StartPly; thisPly <= StartPly+PlyNumber; thisPly++) {
+            text += (thisPly === CurrentPly ? "->   " : "") + thisPly + ":" + ev[thisPly] + "\n";
+         }
+         theObject.innerHTML = "<pre>" + text + "</pre>";
+         //
       }
+   }
+
+   function clearAnnotationGraph(thisGame) {
+      if (theObject = document.getElementById("GameAnnotation")) {
+         // TODO: clean graph
+         theObject.innerHTML = "";
+         //
+      }  
    }
 
    chrome.extension.onRequest.addListener(analysisOutputHandler);
