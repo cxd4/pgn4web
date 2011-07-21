@@ -21,8 +21,8 @@ extension for Google Chrome.
 
 --
 
-from	Gary Linscott premandrake@hotmail.com
-to	paolo@casaschi.net
+from	Gary Linscott premandrake(at)hotmail.com
+to	paolo(at)casaschi.net
 date	Mon, Jul 18, 2011 at 03:38
 subject	RE: about your javascript chess code
 mailed-by	hotmail.com
@@ -33,10 +33,10 @@ Sure, you are welcome to integrate the code!  It's a BSD license, so feel free.
 
 [...]
 
-> From: paolo@casaschi.net
+> From: paolo(at)casaschi.net
 > Date: Sun, 17 Jul 2011 13:22:00 +0100
 > Subject: about your javascript chess code
-> To: premandrake@hotmail.com
+> To: premandrake(at)hotmail.com
 > 
 > Hello,
 > 
