@@ -251,7 +251,10 @@ The single large chessboard view of the chess games viewer integrates the <a hre
 Toggle the chess engine game analysis clicking square H2 of the single large chessboard view. A positive evaluation favour White, while -1 means Black is approximately 1 pawn ahead.
 </div>
 <div>
-In order to optimise computing resources, the chess games viewer extension allows only one chessboard to be analyzed at any time; when starting analyzing a second chessboard, the analysis of the first chessboard stops. The analysis of each position pauses after 5 minutes. The performance of a javascript based engine like GarboChess is relatively limited compared to professional engines optimized for each processing environment; use the chess games viewer engine analysis for high-level assessments, for detailed analysis please refer to a chess engine optimized for the chosen computing platform.
+When the analysis engine is active, a graph shows the position's evaluation throughout the game. A vertical bar above the orizontal line corresponds to a positive evaluation (White's advantage). For easier reading, the graph truncates evaluation scores at +3 and -3. The current move is highlighted. Clicking any of the vertical bars moves the chessboard to the corresponding move. Click square G2 for automatic annotation of the current game.
+</div>
+<div>
+In order to optimize computing resources, the chess games viewer extension allows only one chessboard to be analyzed at any time; when starting analyzing a second chessboard, the analysis of the first chessboard stops. The analysis of each position pauses after 5 minutes. The performance of a javascript based engine like GarboChess is relatively limited compared to professional engines optimized for each processing environment; use the chess games viewer engine analysis for high-level assessments, for detailed analysis please refer to a chess engine optimized for the chosen computing platform.
 </div>
 
 <div class="extraSpacer"></div>
