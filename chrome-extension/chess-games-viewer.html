@@ -594,6 +594,8 @@ of Google Chrome. Don't use with any other browser.
       chrome.extension.sendRequest({analysisCommand: 'stop', FEN: ""}, function(response) {});
    }
 
+   window.onunload = function() { if (analysisStarted) { stopAnalysis(); } }
+
    chrome.extension.onRequest.addListener(analysisOutputHandler);
 
    function analysisOutputHandler(request, sender, sendResponse) {
