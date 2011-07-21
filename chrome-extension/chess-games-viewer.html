@@ -605,7 +605,7 @@ of Google Chrome. Don't use with any other browser.
            analysisStarted = (request.analysisEval !== "");
            if (theObject = document.getElementById("toggleAnalysisLink")) { theObject.innerHTML = analysisStarted ? "&times;" : "+"; }
            if (request.analysisEval === "") { clearAnnotationGraph(currentGame); }
-           else { updateAnnotationGraphData(currentGame, CurrentPly, parseFloat(request.analysisEval), parseFloat(request.analysisNodes), request.analysisFEN); }
+           else { updateAnnotationGraphData(currentGame, parseFloat(request.analysisEval), parseFloat(request.analysisNodes), request.analysisFEN); }
         }
      });
    }
@@ -634,8 +634,11 @@ of Google Chrome. Don't use with any other browser.
  
    fenMismatchCounter = 0;
    fenMismatchCounterThreshold = 1;
-   function updateAnnotationGraphData(annGame, annPly, ev, nodes, FEN) {
+   function updateAnnotationGraphData(annGame, ev, nodes, FEN) {
       graphNeedsUpdate = forceAnnotationGraphUpdate;
+      fenMatches = FEN.match(/\s*(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s*/);
+      try { annPly = 2 * (parseInt(fenMatches[6], 10) - 1) + (fenMatches[2] == "b" ? 1 : 0); }
+      catch(e) { return; }
       if ((nodes > minNodesForAnnotation) || (Math.abs(ev) > minEvalForCheckmateAssumption)) {
          if ((typeof(annotationGraphFEN[annGame]) != "undefined") && (typeof(annotationGraphFEN[annGame][annPly]) != "undefined") && (FEN !== annotationGraphFEN[annGame][annPly])) { 
             if (nodes >= minNodesForAnnotation) {
