@@ -632,22 +632,14 @@ of Google Chrome. Don't use with any other browser.
       }
    }
  
-   fenMismatchCounter = 0;
-   fenMismatchCounterThreshold = 1;
    function updateAnnotationGraphData(annGame, ev, nodes, FEN) {
       graphNeedsUpdate = forceAnnotationGraphUpdate;
       fenMatches = FEN.match(/\s*(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s*/);
       try { annPly = 2 * (parseInt(fenMatches[6], 10) - 1) + (fenMatches[2] == "b" ? 1 : 0); }
       catch(e) { return; }
       if ((nodes > minNodesForAnnotation) || (Math.abs(ev) > minEvalForCheckmateAssumption)) {
-         if ((typeof(annotationGraphFEN[annGame]) != "undefined") && (typeof(annotationGraphFEN[annGame][annPly]) != "undefined") && (FEN !== annotationGraphFEN[annGame][annPly])) { 
-            if (nodes >= minNodesForAnnotation) {
-               if (fenMismatchCounter++ > fenMismatchCounterThreshold) {
-                  fenMismatchCounter = 0;
-                  resetAnnotationGraphData(annGame);
-               }
-            }
-         } else if ((typeof(annotationGraphNodes[annGame]) == "undefined") || (typeof(annotationGraphNodes[annGame][annPly]) == "undefined") || (nodes > annotationGraphNodes[annGame][annPly])) {
+         if ((typeof(annotationGraphFEN[annGame]) != "undefined") && (typeof(annotationGraphFEN[annGame][annPly]) != "undefined") && (FEN !== annotationGraphFEN[annGame][annPly])) { resetAnnotationGraphData(annGame); }
+         else if ((typeof(annotationGraphNodes[annGame]) == "undefined") || (typeof(annotationGraphNodes[annGame][annPly]) == "undefined") || (nodes > annotationGraphNodes[annGame][annPly])) {
             fenMismatchCounter = 0;
             if (typeof(annotationGraphEval[annGame]) == "undefined") { annotationGraphEval[annGame] = new Array(); }
             if ((typeof(annotationGraphEval[annGame][annPly]) == "undefined") || (ev !== annotationGraphEval[annGame][annPly])) { graphNeedsUpdate = true; }
