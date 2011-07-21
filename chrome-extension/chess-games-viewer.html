@@ -676,7 +676,7 @@ of Google Chrome. Don't use with any other browser.
          thisBarHeight = lineHeight;
          thisBarTopLeftY = lineTop;
          context.rect(thisBarTopLeftX, thisBarTopLeftY, (PlyNumber + 1) * annotationBarWidth, thisBarHeight);
-         context.fillStyle = "#000000";
+         context.fillStyle = "#666666";
          context.fill();
          for (thisPly = StartPly; thisPly <= StartPly + PlyNumber; thisPly++) {
             if ((ev[thisPly] !== 0) || (thisPly === CurrentPly)) {
@@ -688,7 +688,7 @@ of Google Chrome. Don't use with any other browser.
                   thisBarHeight = Math.max(maxBarHeight * ev[thisPly] / minGraphEval, lineHeight);
                   thisBarTopLeftY = lineTop;
                }
-               fillStyle = thisPly === CurrentPly ? "#FF6633" : "#000000";
+               fillStyle = thisPly === CurrentPly ? "#FF6633" : "#666666";
                context.beginPath();
                context.rect(thisBarTopLeftX, thisBarTopLeftY, annotationBarWidth + barOverlap, thisBarHeight);
                context.fillStyle = fillStyle;
