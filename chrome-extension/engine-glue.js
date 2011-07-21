@@ -113,8 +113,6 @@ function analysisRequestHandler(request, sender, sendResponse) {
 
 chrome.extension.onRequest.addListener(analysisRequestHandler);
 
-function stopAnalysisOnRemoved(tabId) { setAnalysisStatus("stop", tabId, ""); }
-
 function stopAnalysisOnUpdated(tabId) { 
    chrome.tabs.get(tabId, function (tab) {
       if (tab.url.indexOf(chrome.extension.getURL("chess-games-viewer.html")) == -1) { setAnalysisStatus("stop", tab.id, ""); }
