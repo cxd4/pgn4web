@@ -634,7 +634,7 @@ of Google Chrome. Don't use with any other browser.
    }
  
    fenMismatchCounter = 0;
-   fenMismatchCounterThreshold = 1;
+   fenMismatchCounterThreshold = 2;
    function updateAnnotationGraphData(thisGame, thisPly, ev, nodes, FEN) {
       if ((typeof(annotationGraphFEN[thisGame]) != "undefined") && (typeof(annotationGraphFEN[thisGame][thisPly]) != "undefined") && (FEN !== annotationGraphFEN[thisGame][thisPly])) { 
          fenMismatchCounter++;
