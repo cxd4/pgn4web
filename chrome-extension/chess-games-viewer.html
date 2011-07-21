@@ -555,7 +555,8 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><b><span class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the engine's analysis: -1 means Black is 1 pawn ahead"></span></b><span class="innerHeaderItem move" id="GameAnalysisPv" title="principal variation from the engine's analysis"></span><b>&nbsp;</b></div>
-<div id="GameAnnotation"></div>
+<div class="headerItem headerSpacer" id="GameAnnotationMeasure"><b>&nbsp;</b></div>
+<canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1"></canvas>
 </div>
 
 </div>
@@ -609,9 +610,9 @@ of Google Chrome. Don't use with any other browser.
    var annotationGraphNodes;
    var annotationGraphFEN;
    resetAnnotationGraphData(-1);
-   minNodesForAnnotation = 23456;
-   maxGraphEval = 3;
-   minGraphEval = -maxGraphEval;
+   var minNodesForAnnotation = 23456;
+   var maxGraphEval = 3;
+   var minGraphEval = -maxGraphEval;
 
    function resetAnnotationGraphData(thisGame) {
       if (thisGame == -1) {
@@ -631,8 +632,8 @@ of Google Chrome. Don't use with any other browser.
       }
       if ((nodes > minNodesForAnnotation) && ((typeof(annotationGraphNodes[thisGame]) == "undefined") || (typeof(annotationGraphNodes[thisGame][thisPly]) == "undefined") || (nodes > annotationGraphNodes[thisGame][thisPly]))) {
          if (typeof(annotationGraphEval[thisGame]) == "undefined") { annotationGraphEval[thisGame] = new Array(); }
-         graphNeedsUpdate = ((typeof(annotationGraphEval[thisGame][thisPly]) == "undefined") || ev !== annotationGraphEval[thisGame][thisPly]);
-         annotationGraphEval[thisGame][thisPly] = ev;
+         graphNeedsUpdate = ((typeof(annotationGraphEval[thisGame][thisPly]) == "undefined") || (ev !== annotationGraphEval[thisGame][thisPly]));
+         annotationGraphEval[thisGame][thisPly] = parseFloat(ev);
          if (typeof(annotationGraphNodes[thisGame]) == "undefined") { annotationGraphNodes[thisGame] = new Array(); }
          annotationGraphNodes[thisGame][thisPly] = nodes;
          if (typeof(annotationGraphFEN[thisGame]) == "undefined") { annotationGraphFEN[thisGame] = new Array(); }
@@ -642,30 +643,54 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function updateAnnotationGraph(thisGame) {
-      if (theObject = document.getElementById("GameAnnotation")) {
+      if (theObject = document.getElementById("GameAnnotationGraph")) {
          ev = new Array();
          for (thisPly = StartPly; thisPly <= StartPly+PlyNumber; thisPly++) {
             ev[thisPly] = ((typeof(annotationGraphEval[thisGame]) != "undefined") && (typeof(annotationGraphEval[thisGame][thisPly]) != "undefined") ? annotationGraphEval[thisGame][thisPly] : 0);
             ev[thisPly] = Math.min(maxGraphEval, Math.max(minGraphEval, ev[thisPly]));
          }
 
-         // TODO: do something sensible with ev
-         text = "";
+         if (!(theMeasureObject = document.getElementById("GameAnnotationMeasure"))) { return; }
+         canvasWidth = theObject.width = theMeasureObject.offsetWidth;
+         canvasHeight = theObject.height = 5 * theMeasureObject.offsetHeight;
+
+         annotationPlyBlock = 40;
+         barWidth = Math.floor(canvasWidth / (Math.ceil((PlyNumber + 1) / annotationPlyBlock) * annotationPlyBlock));
+         barOverlap = Math.ceil(barWidth / 12);
+
+         context = theObject.getContext("2d");
+         context.moveTo(0, canvasHeight / 2);
+         context.lineTo(PlyNumber * barWidth, canvasHeight / 2);
+         context.lineWidth = barOverlap;
+         context.stroke();
          for (thisPly = StartPly; thisPly <= StartPly+PlyNumber; thisPly++) {
-            text += (thisPly === CurrentPly ? "->   " : "") + thisPly + ":" + ev[thisPly] + "\n";
+            thisBarTopLeftX = (thisPly-StartPly) * barWidth;
+            if (ev[thisPly] > 0) {
+               thisBarHeight = (canvasHeight / 2) * ev[thisPly] / maxGraphEval;
+               thisBarTopLeftY = canvasHeight / 2 - thisBarHeight;
+            } else if (ev[thisPly] < 0 ) {
+               thisBarHeight = (canvasHeight / 2) * ev[thisPly] / minGraphEval;
+               thisBarTopLeftY = canvasHeight / 2;
+            } else {
+               thisBarHeight = barOverlap;
+               thisBarTopLeftY = (canvasHeight - barOverlap) / 2;            
+            }
+            fillStyle = thisPly === CurrentPly ? "#FF0000" : "#000000";
+            context.beginPath();
+            context.rect(thisBarTopLeftX, thisBarTopLeftY, barWidth+barOverlap, thisBarHeight+barOverlap);
+            context.fillStyle = fillStyle;
+            context.fill();
          }
-         theObject.innerHTML = "<pre>" + text + "</pre>";
-         //
       }
    }
 
    function clearAnnotationGraph(thisGame) {
-      if (theObject = document.getElementById("GameAnnotation")) {
-         // TODO: clean graph
-         theObject.innerHTML = "";
-         //
-      }  
+      if (theObject = document.getElementById("GameAnnotationGraph")) {
+         context = theObject.getContext("2d");
+         context.clearRect (0, 0, theObject.width, theObject.height);
+      }
    }
+
 
    chrome.extension.onRequest.addListener(analysisOutputHandler);
 
