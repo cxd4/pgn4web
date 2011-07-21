@@ -59,7 +59,7 @@ function setAnalysisStatus(newStatus, newTabId, newFEN) {
    }
 }
 
-var analysisTimeoutDelayMinutes = 5;
+var analysisTimeoutDelayMinutes = 10;
 var analysisTimeout = null;
 function setAnalysisTimeout(tabId) {
    if (analysisTimeout !== null) { clearAnalysisTimeout(); }
