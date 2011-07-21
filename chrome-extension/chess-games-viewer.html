@@ -343,6 +343,8 @@ of Google Chrome. Don't use with any other browser.
          previousPlyNumber = PlyNumber;
          previousCurrentGame = currentGame;
       }
+
+      forceAnnotationGraphUpdate = true;
    }
 
    var liveBroadcastUpdateTicker = 1;
@@ -603,12 +605,8 @@ of Google Chrome. Don't use with any other browser.
            if (theObject = document.getElementById("GameAnalysisPv")) { theObject.innerHTML = request.analysisPv; }
            analysisStarted = (request.analysisEval !== "");
            if (theObject = document.getElementById("toggleAnalysisLink")) { theObject.innerHTML = analysisStarted ? "&times;" : "+"; }
-           if (request.analysisEval === "") {
-              clearAnnotationGraph(currentGame);
-           } else {
-              updateAnnotationGraph(currentGame);
-              updateAnnotationGraphData(currentGame, CurrentPly, parseFloat(request.analysisEval), parseFloat(request.analysisNodes), request.analysisFEN);
-           }
+           if (request.analysisEval === "") { clearAnnotationGraph(currentGame); }
+           else { updateAnnotationGraphData(currentGame, CurrentPly, parseFloat(request.analysisEval), parseFloat(request.analysisNodes), request.analysisFEN); }
         }
      });
    }
@@ -618,47 +616,55 @@ of Google Chrome. Don't use with any other browser.
    var annotationGraphFEN;
    resetAnnotationGraphData(-1);
    var minNodesForAnnotation = 23456;
+   var minEvalForCheckmateAssumption = 1900;
    var maxGraphEval = 3;
    var minGraphEval = -maxGraphEval;
+   var forceAnnotationGraphUpdate = false;
 
-   function resetAnnotationGraphData(thisGame) {
-      if (thisGame == -1) {
+   function resetAnnotationGraphData(annGame) {
+      if (annGame == -1) {
          annotationGraphEval = new Array();
          annotationGraphNodes = new Array();
          annotationGraphFEN = new Array();
       } else {
-         annotationGraphEval[thisGame] = new Array();
-         annotationGraphNodes[thisGame] = new Array();
-         annotationGraphFEN[thisGame] = new Array();
+         annotationGraphEval[annGame] = new Array();
+         annotationGraphNodes[annGame] = new Array();
+         annotationGraphFEN[annGame] = new Array();
       }
    }
  
    fenMismatchCounter = 0;
    fenMismatchCounterThreshold = 2;
-   function updateAnnotationGraphData(thisGame, thisPly, ev, nodes, FEN) {
-      if ((typeof(annotationGraphFEN[thisGame]) != "undefined") && (typeof(annotationGraphFEN[thisGame][thisPly]) != "undefined") && (FEN !== annotationGraphFEN[thisGame][thisPly])) { 
+   function updateAnnotationGraphData(annGame, annPly, ev, nodes, FEN) {
+      if ((typeof(annotationGraphFEN[annGame]) != "undefined") && (typeof(annotationGraphFEN[annGame][annPly]) != "undefined") && (FEN !== annotationGraphFEN[annGame][annPly])) { 
          fenMismatchCounter++;
-      } else if ((nodes > minNodesForAnnotation) && ((typeof(annotationGraphNodes[thisGame]) == "undefined") || (typeof(annotationGraphNodes[thisGame][thisPly]) == "undefined") || (nodes > annotationGraphNodes[thisGame][thisPly]))) {
+      } else if (((nodes > minNodesForAnnotation) || (Math.abs(ev) > minEvalForCheckmateAssumption)) && ((typeof(annotationGraphNodes[annGame]) == "undefined") || (typeof(annotationGraphNodes[annGame][annPly]) == "undefined") || (nodes > annotationGraphNodes[annGame][annPly]))) {
          fenMismatchCounter = 0;
-         if (typeof(annotationGraphEval[thisGame]) == "undefined") { annotationGraphEval[thisGame] = new Array(); }
-         graphNeedsUpdate = ((typeof(annotationGraphEval[thisGame][thisPly]) == "undefined") || (ev !== annotationGraphEval[thisGame][thisPly]));
-         annotationGraphEval[thisGame][thisPly] = parseFloat(ev);
-         if (typeof(annotationGraphNodes[thisGame]) == "undefined") { annotationGraphNodes[thisGame] = new Array(); }
-         annotationGraphNodes[thisGame][thisPly] = nodes;
-         if (typeof(annotationGraphFEN[thisGame]) == "undefined") { annotationGraphFEN[thisGame] = new Array(); }
-         annotationGraphFEN[thisGame][thisPly] = FEN;
-         if (graphNeedsUpdate) { updateAnnotationGraph(thisGame); }
+         if (typeof(annotationGraphEval[annGame]) == "undefined") { annotationGraphEval[annGame] = new Array(); }
+         graphNeedsUpdate = ((typeof(annotationGraphEval[annGame][annPly]) == "undefined") || (ev !== annotationGraphEval[annGame][annPly]));
+         annotationGraphEval[annGame][annPly] = ev;
+         if (typeof(annotationGraphNodes[annGame]) == "undefined") { annotationGraphNodes[annGame] = new Array(); }
+         annotationGraphNodes[annGame][annPly] = nodes;
+         if (typeof(annotationGraphFEN[annGame]) == "undefined") { annotationGraphFEN[annGame] = new Array(); }
+         annotationGraphFEN[annGame][annPly] = FEN;
+         if (graphNeedsUpdate || forceAnnotationGraphUpdate) {
+            forceAnnotationGraphUpdate = false;
+            updateAnnotationGraph(annGame);
+         }
       }
-      if (fenMismatchCounter > fenMismatchCounterThreshold) { resetAnnotationGraphData(thisGame); }
+      if (fenMismatchCounter > fenMismatchCounterThreshold) {
+         fenMismatchCounter = 0;
+         resetAnnotationGraphData(annGame);
+      }
    }
 
    var annotationBarWidth;
-   function updateAnnotationGraph(thisGame) {
+   function updateAnnotationGraph(annGame) {
       if (theObject = document.getElementById("GameAnnotationGraph")) {
-         ev = new Array();
-         for (thisPly = StartPly; thisPly <= StartPly+PlyNumber; thisPly++) {
-            ev[thisPly] = ((typeof(annotationGraphEval[thisGame]) != "undefined") && (typeof(annotationGraphEval[thisGame][thisPly]) != "undefined") ? annotationGraphEval[thisGame][thisPly] : 0);
-            ev[thisPly] = Math.min(maxGraphEval, Math.max(minGraphEval, ev[thisPly]));
+         annEval = new Array();
+         for (annPly = StartPly; annPly <= StartPly+PlyNumber; annPly++) {
+            annEval[annPly] = ((typeof(annotationGraphEval[annGame]) != "undefined") && (typeof(annotationGraphEval[annGame][annPly]) != "undefined") ? annotationGraphEval[annGame][annPly] : 0);
+            annEval[annPly] = Math.min(maxGraphEval, Math.max(minGraphEval, annEval[annPly]));
          }
 
          if (!(theMeasureObject = document.getElementById("GameAnnotationMeasure"))) { return; }
@@ -681,17 +687,17 @@ of Google Chrome. Don't use with any other browser.
          context.rect(thisBarTopLeftX, thisBarTopLeftY, (PlyNumber + 1) * annotationBarWidth, thisBarHeight);
          context.fillStyle = "#666666";
          context.fill();
-         for (thisPly = StartPly; thisPly <= StartPly + PlyNumber; thisPly++) {
-            if ((ev[thisPly] !== 0) || (thisPly === CurrentPly)) {
-               thisBarTopLeftX = (thisPly - StartPly) * annotationBarWidth;
-               if (ev[thisPly] >= 0) {
-                  thisBarHeight = Math.max(maxBarHeight * ev[thisPly] / maxGraphEval, lineHeight);
+         for (annPly = StartPly; annPly <= StartPly + PlyNumber; annPly++) {
+            if ((annEval[annPly] !== 0) || (annPly === CurrentPly)) {
+               thisBarTopLeftX = (annPly - StartPly) * annotationBarWidth;
+               if (annEval[annPly] >= 0) {
+                  thisBarHeight = Math.max(maxBarHeight * annEval[annPly] / maxGraphEval, lineHeight);
                   thisBarTopLeftY = lineBottom - thisBarHeight;
                } else {
-                  thisBarHeight = Math.max(maxBarHeight * ev[thisPly] / minGraphEval, lineHeight);
+                  thisBarHeight = Math.max(maxBarHeight * annEval[annPly] / minGraphEval, lineHeight);
                   thisBarTopLeftY = lineTop;
                }
-               fillStyle = thisPly === CurrentPly ? "#FF6633" : "#666666";
+               fillStyle = (annPly === CurrentPly) ? "#FF6633" : "#666666";
                context.beginPath();
                context.rect(thisBarTopLeftX, thisBarTopLeftY, annotationBarWidth + barOverlap, thisBarHeight);
                context.fillStyle = fillStyle;
@@ -701,7 +707,7 @@ of Google Chrome. Don't use with any other browser.
       }
    }
 
-   function clearAnnotationGraph(thisGame) {
+   function clearAnnotationGraph() {
       if (theObject = document.getElementById("GameAnnotationGraph")) {
          context = theObject.getContext("2d");
          context.clearRect (0, 0, theObject.width, theObject.height);
