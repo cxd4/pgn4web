@@ -273,6 +273,11 @@ of Google Chrome. Don't use with any other browser.
       } else {
         clearAnnotationGraph(currentGame);
       }
+
+      if ((annotateInProgress) && (CurrentPly === StartPly + PlyNumber)) {
+         annotateInProgress = false;
+         SetAutoplayDelay(2000);
+      }
    }
 
    function customFunctionOnPgnGameLoad() {
@@ -704,6 +709,25 @@ of Google Chrome. Don't use with any other browser.
       }
    }
 
+   annotateInProgress = false;
+   function annotateGame() {
+      minAnnotationDelay = 3;
+      maxAnnotationDelay = 180;
+      annotationDelayDefault = 10;
+      if (annotationDelay = prompt("Enter thinking time in seconds to annotate the current game, between " + minAnnotationDelay + " and " + maxAnnotationDelay + " seconds.\n\nPlease do not intercat with the chessboard until the analysis has reached the end of the game.", annotationDelayDefault)) {
+         if (isNaN(annotationDelay = parseInt(annotationDelay))) { annotationDelay = annotationDelayDefault; }
+         annotationDelay = Math.min(maxAnnotationDelay, Math.max(minAnnotationDelay, annotationDelay));
+         SetAutoPlay(false);
+         GoToMove(0);
+         if (!analysisStarted) { toggleAnalysis(); }
+         setTimeout("SetAutoplayDelayAndStart(" + annotationDelay + "*1000);", annotationDelay*1000);
+         annotateInProgress = true;
+      } else {
+         SetAutoplayDelay(2000);
+      }
+   }
+
+
    chrome.extension.onRequest.addListener(analysisOutputHandler);
 
 
@@ -719,6 +743,8 @@ of Google Chrome. Don't use with any other browser.
    boardShortcut("F5", "show the chess puzzler of the day", showPuzzler);
    // G5
    boardShortcut("G5", "adjust last move and current comment text area, if present", toggleFitResetLastMoveAndCommentArea);
+   // G2
+   boardShortcut("G2", "annotate game", function(){ annotateGame(); });
    // H2
    boardShortcut("H2", "toggle engine analysis", toggleAnalysis);
 
@@ -754,13 +780,8 @@ of Google Chrome. Don't use with any other browser.
 
       SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, stepFlag);
       setInitialGameFromSearchGame();
-      if (refreshMinutes) {
-         SetAutoplayDelay(1000);
-         SetInitialHalfmove("end", true);
-      } else {
-         SetAutoplayDelay(2000);
-         SetInitialHalfmove(0, true);
-      }
+      SetAutoplayDelay(2000);
+      SetInitialHalfmove(refreshMinutes ? "end" : "start", true);
       firstStart = true;
       if (theObject = document.getElementById("pgnText")) { theObject.value = ""; }
       if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = ""; }
