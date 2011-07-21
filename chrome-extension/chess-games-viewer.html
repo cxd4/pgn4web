@@ -586,6 +586,7 @@ of Google Chrome. Don't use with any other browser.
    }
    
    function restartAnalysis() {
+      forceAnnotationGraphUpdate = true;
       chrome.extension.sendRequest({analysisCommand: 'analysis', FEN: CurrentFEN()}, function(response) {});
    }
 
@@ -634,26 +635,29 @@ of Google Chrome. Don't use with any other browser.
    fenMismatchCounter = 0;
    fenMismatchCounterThreshold = 1;
    function updateAnnotationGraphData(annGame, annPly, ev, nodes, FEN) {
-      if ((nodes < minNodesForAnnotation) && (Math.abs(ev) < minEvalForCheckmateAssumption)) { return; }
-      if ((typeof(annotationGraphFEN[annGame]) != "undefined") && (typeof(annotationGraphFEN[annGame][annPly]) != "undefined") && (FEN !== annotationGraphFEN[annGame][annPly])) { 
-         if (nodes >= minNodesForAnnotation) { fenMismatchCounter++; }
-      } else if ((typeof(annotationGraphNodes[annGame]) == "undefined") || (typeof(annotationGraphNodes[annGame][annPly]) == "undefined") || (nodes > annotationGraphNodes[annGame][annPly])) {
-         fenMismatchCounter = 0;
-         if (typeof(annotationGraphEval[annGame]) == "undefined") { annotationGraphEval[annGame] = new Array(); }
-         graphNeedsUpdate = ((typeof(annotationGraphEval[annGame][annPly]) == "undefined") || (ev !== annotationGraphEval[annGame][annPly]));
-         annotationGraphEval[annGame][annPly] = ev;
-         if (typeof(annotationGraphNodes[annGame]) == "undefined") { annotationGraphNodes[annGame] = new Array(); }
-         annotationGraphNodes[annGame][annPly] = nodes;
-         if (typeof(annotationGraphFEN[annGame]) == "undefined") { annotationGraphFEN[annGame] = new Array(); }
-         annotationGraphFEN[annGame][annPly] = FEN;
-         if (graphNeedsUpdate || forceAnnotationGraphUpdate) {
-            forceAnnotationGraphUpdate = false;
-            updateAnnotationGraph(annGame);
+      graphNeedsUpdate = forceAnnotationGraphUpdate;
+      if ((nodes > minNodesForAnnotation) || (Math.abs(ev) > minEvalForCheckmateAssumption)) {
+         if ((typeof(annotationGraphFEN[annGame]) != "undefined") && (typeof(annotationGraphFEN[annGame][annPly]) != "undefined") && (FEN !== annotationGraphFEN[annGame][annPly])) { 
+            if (nodes >= minNodesForAnnotation) {
+               if (fenMismatchCounter++ > fenMismatchCounterThreshold) {
+                  fenMismatchCounter = 0;
+                  resetAnnotationGraphData(annGame);
+               }
+            }
+         } else if ((typeof(annotationGraphNodes[annGame]) == "undefined") || (typeof(annotationGraphNodes[annGame][annPly]) == "undefined") || (nodes > annotationGraphNodes[annGame][annPly])) {
+            fenMismatchCounter = 0;
+            if (typeof(annotationGraphEval[annGame]) == "undefined") { annotationGraphEval[annGame] = new Array(); }
+            if ((typeof(annotationGraphEval[annGame][annPly]) == "undefined") || (ev !== annotationGraphEval[annGame][annPly])) { graphNeedsUpdate = true; }
+            annotationGraphEval[annGame][annPly] = ev;
+            if (typeof(annotationGraphNodes[annGame]) == "undefined") { annotationGraphNodes[annGame] = new Array(); }
+            annotationGraphNodes[annGame][annPly] = nodes;
+            if (typeof(annotationGraphFEN[annGame]) == "undefined") { annotationGraphFEN[annGame] = new Array(); }
+            annotationGraphFEN[annGame][annPly] = FEN;
          }
       }
-      if (fenMismatchCounter > fenMismatchCounterThreshold) {
-         fenMismatchCounter = 0;
-         resetAnnotationGraphData(annGame);
+      if (graphNeedsUpdate) {
+         forceAnnotationGraphUpdate = false;
+         updateAnnotationGraph(annGame);
       }
    }
 
