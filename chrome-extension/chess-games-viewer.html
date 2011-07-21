@@ -634,11 +634,12 @@ of Google Chrome. Don't use with any other browser.
    }
  
    fenMismatchCounter = 0;
-   fenMismatchCounterThreshold = 2;
+   fenMismatchCounterThreshold = 1;
    function updateAnnotationGraphData(annGame, annPly, ev, nodes, FEN) {
+      if ((nodes < minNodesForAnnotation) && (Math.abs(ev) < minEvalForCheckmateAssumption)) { return; }
       if ((typeof(annotationGraphFEN[annGame]) != "undefined") && (typeof(annotationGraphFEN[annGame][annPly]) != "undefined") && (FEN !== annotationGraphFEN[annGame][annPly])) { 
-         fenMismatchCounter++;
-      } else if (((nodes > minNodesForAnnotation) || (Math.abs(ev) > minEvalForCheckmateAssumption)) && ((typeof(annotationGraphNodes[annGame]) == "undefined") || (typeof(annotationGraphNodes[annGame][annPly]) == "undefined") || (nodes > annotationGraphNodes[annGame][annPly]))) {
+         if (nodes >= minNodesForAnnotation) { fenMismatchCounter++; }
+      } else if ((typeof(annotationGraphNodes[annGame]) == "undefined") || (typeof(annotationGraphNodes[annGame][annPly]) == "undefined") || (nodes > annotationGraphNodes[annGame][annPly])) {
          fenMismatchCounter = 0;
          if (typeof(annotationGraphEval[annGame]) == "undefined") { annotationGraphEval[annGame] = new Array(); }
          graphNeedsUpdate = ((typeof(annotationGraphEval[annGame][annPly]) == "undefined") || (ev !== annotationGraphEval[annGame][annPly]));
@@ -726,7 +727,7 @@ of Google Chrome. Don't use with any other browser.
    annotationDelayDefault = 10;
    function annotateGame() {
       if (annotationDelay = prompt("Automatic game annotation from the current position, please do not interact with the chessboard until the analysis has reached the last available move.\n\nEnter engine's time per move, in seconds, between " + minAnnotationDelay + " and " + maxAnnotationDelay + ":", annotationDelayDefault)) {
-         if (isNaN(annotationDelay = parseInt(annotationDelay))) { annotationDelay = annotationDelayDefault; }
+         if (isNaN(annotationDelay = parseInt(annotationDelay, 10))) { annotationDelay = annotationDelayDefault; }
          annotationDelay = Math.min(maxAnnotationDelay, Math.max(minAnnotationDelay, annotationDelay));
          SetAutoPlay(false);
          if (!analysisStarted) { toggleAnalysis(); }
@@ -736,7 +737,7 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function setCustomAutoplayDelay() {
-      if ((newDelaySec = prompt("Enter custom autoplay delay, in seconds, between " + minAnnotationDelay + " and " + maxAnnotationDelay + ":", Math.floor(Delay / 1000))) && (! isNaN(newDelaySec = parseInt(newDelaySec)))) {
+      if ((newDelaySec = prompt("Enter custom autoplay delay, in seconds, between " + minAnnotationDelay + " and " + maxAnnotationDelay + ":", Math.floor(Delay / 1000))) && (! isNaN(newDelaySec = parseInt(newDelaySec, 10)))) {
          newDelaySec = Math.min(maxAnnotationDelay, Math.max(minAnnotationDelay, newDelaySec));
          SetAutoplayDelayAndStart(newDelaySec * 1000);
       }
