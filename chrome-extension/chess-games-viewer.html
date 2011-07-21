@@ -556,7 +556,7 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><b><span class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the engine's analysis: -1 means Black is 1 pawn ahead"></span></b><span class="innerHeaderItem move" id="GameAnalysisPv" title="principal variation from the engine's analysis"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer" id="GameAnnotationMeasure"><b>&nbsp;</b></div>
-<canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1"></canvas>
+<canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick();" title="annotation graph from the engine's analysis: for more info click square A7"></canvas>
 </div>
 
 </div>
@@ -642,6 +642,7 @@ of Google Chrome. Don't use with any other browser.
       }
    }
 
+   var annotationBarWidth;
    function updateAnnotationGraph(thisGame) {
       if (theObject = document.getElementById("GameAnnotationGraph")) {
          ev = new Array();
@@ -655,8 +656,8 @@ of Google Chrome. Don't use with any other browser.
          canvasHeight = theObject.height = 5 * theMeasureObject.offsetHeight;
 
          annotationPlyBlock = 20;
-         barWidth = canvasWidth / (Math.ceil((PlyNumber + 1) / annotationPlyBlock) * annotationPlyBlock);
-         barOverlap = Math.ceil(barWidth / 20);
+         annotationBarWidth = canvasWidth / (Math.ceil((PlyNumber + 1) / annotationPlyBlock) * annotationPlyBlock);
+         barOverlap = Math.ceil(annotationBarWidth / 20);
          lineHeight = Math.ceil(canvasHeight / 80);
          lineTop = Math.floor((canvasHeight - lineHeight) / 2);
          lineBottom = lineTop + lineHeight;
@@ -667,12 +668,12 @@ of Google Chrome. Don't use with any other browser.
          thisBarTopLeftX = 0;
          thisBarHeight = lineHeight;
          thisBarTopLeftY = lineTop;
-         context.rect(thisBarTopLeftX, thisBarTopLeftY, (PlyNumber + 1) * barWidth, thisBarHeight);
+         context.rect(thisBarTopLeftX, thisBarTopLeftY, (PlyNumber + 1) * annotationBarWidth, thisBarHeight);
          context.fillStyle = "#000000";
          context.fill();
          for (thisPly = StartPly; thisPly <= StartPly + PlyNumber; thisPly++) {
             if ((ev[thisPly] !== 0) || (thisPly === CurrentPly)) {
-               thisBarTopLeftX = (thisPly - StartPly) * barWidth;
+               thisBarTopLeftX = (thisPly - StartPly) * annotationBarWidth;
                if (ev[thisPly] >= 0) {
                   thisBarHeight = Math.max(maxBarHeight * ev[thisPly] / maxGraphEval, lineHeight);
                   thisBarTopLeftY = lineBottom - thisBarHeight;
@@ -682,7 +683,7 @@ of Google Chrome. Don't use with any other browser.
                }
                fillStyle = thisPly === CurrentPly ? "#FF6633" : "#000000";
                context.beginPath();
-               context.rect(thisBarTopLeftX, thisBarTopLeftY, barWidth + barOverlap, thisBarHeight);
+               context.rect(thisBarTopLeftX, thisBarTopLeftY, annotationBarWidth + barOverlap, thisBarHeight);
                context.fillStyle = fillStyle;
                context.fill();
             }
@@ -697,6 +698,11 @@ of Google Chrome. Don't use with any other browser.
       }
    }
 
+   function annotationGraphClick() {
+      if (typeof(annotationBarWidth) != "undefined") {
+         GoToMove(Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth));
+      }
+   }
 
    chrome.extension.onRequest.addListener(analysisOutputHandler);
 
