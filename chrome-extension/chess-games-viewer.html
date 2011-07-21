@@ -30,7 +30,7 @@ of Google Chrome. Don't use with any other browser.
 
 </head>
 
-<body>
+<body onresize="if (analysisStarted) { updateAnnotationGraph(currentGame); }">
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
 <form style="display: none;"><textarea style="display: none;" id="pgnText">
