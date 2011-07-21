@@ -719,7 +719,7 @@ of Google Chrome. Don't use with any other browser.
    maxAnnotationDelay = 180;
    annotationDelayDefault = 10;
    function annotateGame() {
-      if (annotationDelay = prompt("Automatic game annotation: please do not interact with the chessboard until the analysis has reached the end of the game.\n\nEnter engine's time per move to annotate the current game, in seconds between " + minAnnotationDelay + " and " + maxAnnotationDelay + ":", annotationDelayDefault)) {
+      if (annotationDelay = prompt("Automatic game annotation from the current position, please do not interact with the chessboard until the analysis has reached the last available move.\n\nEnter engine's time per move, in seconds, between " + minAnnotationDelay + " and " + maxAnnotationDelay + ":", annotationDelayDefault)) {
          if (isNaN(annotationDelay = parseInt(annotationDelay))) { annotationDelay = annotationDelayDefault; }
          annotationDelay = Math.min(maxAnnotationDelay, Math.max(minAnnotationDelay, annotationDelay));
          SetAutoPlay(false);
@@ -731,7 +731,7 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function setCustomAutoplayDelay() {
-      if ((newDelaySec = prompt("Enter custom autoplay delay, in seconds between " + minAnnotationDelay + " and " + maxAnnotationDelay + ":", Math.floor(Delay / 1000))) && (! isNaN(newDelaySec = parseInt(newDelaySec)))) {
+      if ((newDelaySec = prompt("Enter custom autoplay delay, in seconds, between " + minAnnotationDelay + " and " + maxAnnotationDelay + ":", Math.floor(Delay / 1000))) && (! isNaN(newDelaySec = parseInt(newDelaySec)))) {
          newDelaySec = Math.min(maxAnnotationDelay, Math.max(minAnnotationDelay, newDelaySec));
          SetAutoplayDelayAndStart(newDelaySec * 1000);
       }
