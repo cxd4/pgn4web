@@ -593,6 +593,8 @@ of Google Chrome. Don't use with any other browser.
       chrome.extension.sendRequest({analysisCommand: 'stop', FEN: ""}, function(response) {});
    }
 
+   chrome.extension.onRequest.addListener(analysisOutputHandler);
+
    function analysisOutputHandler(request, sender, sendResponse) {
      if (typeof(request.analysisEval) == "undefined") { return; }
      chrome.tabs.getCurrent( function(tab) {
@@ -710,11 +712,11 @@ of Google Chrome. Don't use with any other browser.
    }
 
    annotateInProgress = false;
+   minAnnotationDelay = 3;
+   maxAnnotationDelay = 180;
+   annotationDelayDefault = 10;
    function annotateGame() {
-      minAnnotationDelay = 3;
-      maxAnnotationDelay = 180;
-      annotationDelayDefault = 10;
-      if (annotationDelay = prompt("Enter thinking time in seconds to annotate the current game, between " + minAnnotationDelay + " and " + maxAnnotationDelay + " seconds.\n\nPlease do not intercat with the chessboard until the analysis has reached the end of the game.", annotationDelayDefault)) {
+      if (annotationDelay = prompt("Enter engine's thinking time in seconds to annotate the current game, between " + minAnnotationDelay + " and " + maxAnnotationDelay + " seconds.\n\nPlease do not intercat with the chessboard until the analysis has reached the end of the game.", annotationDelayDefault)) {
          if (isNaN(annotationDelay = parseInt(annotationDelay))) { annotationDelay = annotationDelayDefault; }
          annotationDelay = Math.min(maxAnnotationDelay, Math.max(minAnnotationDelay, annotationDelay));
          SetAutoPlay(false);
@@ -722,13 +724,15 @@ of Google Chrome. Don't use with any other browser.
          if (!analysisStarted) { toggleAnalysis(); }
          setTimeout("SetAutoplayDelayAndStart(" + annotationDelay + "*1000);", annotationDelay*1000);
          annotateInProgress = true;
-      } else {
-         SetAutoplayDelay(2000);
       }
    }
 
-
-   chrome.extension.onRequest.addListener(analysisOutputHandler);
+   function setCustomAutoplayDelay() {
+      if ((newDelaySec = prompt("Enter custom autoplay delay in seconds, between " + minAnnotationDelay + " and " + maxAnnotationDelay + " seconds.", Math.floor(Delay / 1000))) && (! isNaN(newDelaySec = parseInt(newDelaySec)))) {
+         newDelaySec = Math.min(maxAnnotationDelay, Math.max(minAnnotationDelay, newDelaySec));
+         SetAutoplayDelayAndStart(newDelaySec * 1000);
+      }
+   }
 
 
    // A7
@@ -743,8 +747,10 @@ of Google Chrome. Don't use with any other browser.
    boardShortcut("F5", "show the chess puzzler of the day", showPuzzler);
    // G5
    boardShortcut("G5", "adjust last move and current comment text area, if present", toggleFitResetLastMoveAndCommentArea);
+   // F2
+   boardShortcut("F2", "autoplay: custom delay", setCustomAutoplayDelay);
    // G2
-   boardShortcut("G2", "annotate game", function(){ annotateGame(); });
+   boardShortcut("G2", "annotate game", annotateGame);
    // H2
    boardShortcut("H2", "toggle engine analysis", toggleAnalysis);
 
