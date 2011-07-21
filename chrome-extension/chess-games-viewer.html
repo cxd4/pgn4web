@@ -723,7 +723,6 @@ of Google Chrome. Don't use with any other browser.
          if (isNaN(annotationDelay = parseInt(annotationDelay))) { annotationDelay = annotationDelayDefault; }
          annotationDelay = Math.min(maxAnnotationDelay, Math.max(minAnnotationDelay, annotationDelay));
          SetAutoPlay(false);
-         GoToMove(0);
          if (!analysisStarted) { toggleAnalysis(); }
          setTimeout("SetAutoplayDelayAndStart(" + annotationDelay + "*1000);", annotationDelay*1000);
          annotateInProgress = true;
