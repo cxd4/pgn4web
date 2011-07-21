@@ -654,32 +654,38 @@ of Google Chrome. Don't use with any other browser.
          canvasWidth = theObject.width = theMeasureObject.offsetWidth;
          canvasHeight = theObject.height = 5 * theMeasureObject.offsetHeight;
 
-         annotationPlyBlock = 40;
-         barWidth = Math.floor(canvasWidth / (Math.ceil((PlyNumber + 1) / annotationPlyBlock) * annotationPlyBlock));
-         barOverlap = Math.ceil(barWidth / 12);
+         annotationPlyBlock = 20;
+         barWidth = canvasWidth / (Math.ceil((PlyNumber + 1) / annotationPlyBlock) * annotationPlyBlock);
+         barOverlap = Math.ceil(barWidth / 20);
+         lineHeight = Math.ceil(canvasHeight / 40);
+         lineTop = Math.floor((canvasHeight - lineHeight) / 2);
+         lineBottom = lineTop + lineHeight;
+         maxBarHeight = lineTop + barOverlap;
 
          context = theObject.getContext("2d");
-         context.moveTo(0, canvasHeight / 2);
-         context.lineTo(PlyNumber * barWidth, canvasHeight / 2);
-         context.lineWidth = barOverlap;
-         context.stroke();
-         for (thisPly = StartPly; thisPly <= StartPly+PlyNumber; thisPly++) {
-            thisBarTopLeftX = (thisPly-StartPly) * barWidth;
-            if (ev[thisPly] > 0) {
-               thisBarHeight = (canvasHeight / 2) * ev[thisPly] / maxGraphEval;
-               thisBarTopLeftY = canvasHeight / 2 - thisBarHeight;
-            } else if (ev[thisPly] < 0 ) {
-               thisBarHeight = (canvasHeight / 2) * ev[thisPly] / minGraphEval;
-               thisBarTopLeftY = canvasHeight / 2;
-            } else {
-               thisBarHeight = barOverlap;
-               thisBarTopLeftY = (canvasHeight - barOverlap) / 2;            
+         context.beginPath();
+         thisBarTopLeftX = 0;
+         thisBarHeight = lineHeight;
+         thisBarTopLeftY = lineTop;
+         context.rect(thisBarTopLeftX, thisBarTopLeftY, (PlyNumber + 1) * barWidth, thisBarHeight);
+         context.fillStyle = "#000000";
+         context.fill();
+         for (thisPly = StartPly; thisPly <= StartPly + PlyNumber; thisPly++) {
+            if ((ev[thisPly] !== 0) || (thisPly === CurrentPly)) {
+               thisBarTopLeftX = (thisPly - StartPly) * barWidth;
+               if (ev[thisPly] >= 0) {
+                  thisBarHeight = Math.max(maxBarHeight * ev[thisPly] / maxGraphEval, lineHeight);
+                  thisBarTopLeftY = lineBottom - thisBarHeight;
+               } else {
+                  thisBarHeight = Math.max(maxBarHeight * ev[thisPly] / minGraphEval, lineHeight);
+                  thisBarTopLeftY = lineTop;
+               }
+               fillStyle = thisPly === CurrentPly ? "#FF6633" : "#000000";
+               context.beginPath();
+               context.rect(thisBarTopLeftX, thisBarTopLeftY, barWidth + barOverlap, thisBarHeight);
+               context.fillStyle = fillStyle;
+               context.fill();
             }
-            fillStyle = thisPly === CurrentPly ? "#FF0000" : "#000000";
-            context.beginPath();
-            context.rect(thisBarTopLeftX, thisBarTopLeftY, barWidth+barOverlap, thisBarHeight+barOverlap);
-            context.fillStyle = fillStyle;
-            context.fill();
          }
       }
    }
