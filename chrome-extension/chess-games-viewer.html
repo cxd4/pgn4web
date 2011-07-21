@@ -670,8 +670,9 @@ of Google Chrome. Don't use with any other browser.
             annEval[annPly] = Math.min(maxGraphEval, Math.max(minGraphEval, annEval[annPly]));
          }
 
+         // set canvas size, check calculations if headerItem and headerSpacer are changed in chess-games-viewer.css
          if (!(theMeasureObject = document.getElementById("GameAnnotationMeasure"))) { return; }
-         canvasWidth = theObject.width = theMeasureObject.offsetWidth;
+         canvasWidth = theObject.width = theMeasureObject.offsetWidth - theMeasureObject.offsetHeight * 1.25 / 0.7;
          canvasHeight = theObject.height = 7 * theMeasureObject.offsetHeight;
 
          annotationPlyBlock = 20;
