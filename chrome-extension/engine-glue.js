@@ -88,7 +88,7 @@ function InitializeBackgroundEngine() {
                    ply = matches[1];
                    ev = Math.floor(matches[2] / 100) / 10;
                    if (g_FEN.indexOf(" b ") !== -1) { ev = - ev; }
-                   ev = (ev < 0 ? "" : "+") + ev; 
+                   ev = (ev > 0 ? "+" : "") + ev; 
                    if (ev.indexOf(".") == -1) { ev += ".0"; }
                    nodes = matches[3];
                    nodesPerSecond = matches[4];
