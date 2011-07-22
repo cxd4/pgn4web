@@ -618,8 +618,6 @@ of Google Chrome. Don't use with any other browser.
    resetAnnotationGraphData(-1);
    var minNodesForAnnotation = 23456;
    var minEvalForCheckmateAssumption = 1900;
-   var maxGraphEval = 3;
-   var minGraphEval = -maxGraphEval;
    var forceAnnotationGraphUpdate = false;
 
    function resetAnnotationGraphData(annGame) {
@@ -664,7 +662,14 @@ of Google Chrome. Don't use with any other browser.
          annEval = new Array();
          for (annPly = StartPly; annPly <= StartPly+PlyNumber; annPly++) {
             annEval[annPly] = ((typeof(annotationGraphEval[annGame]) != "undefined") && (typeof(annotationGraphEval[annGame][annPly]) != "undefined") ? annotationGraphEval[annGame][annPly] : 0);
-            annEval[annPly] = Math.min(maxGraphEval, Math.max(minGraphEval, annEval[annPly]));
+            //
+            // grpah option 1: linear scale capped at maxAnnEval 
+            // maxAnnEval = 3;
+            // annEval[annPly] = annEval[annPly] < 0 ? Math.max(annEval[annPly], -maxAnnEval) : Math.min(annEval[annPly], maxAnnEval);
+            //
+            // grpah option 2: logarithmic scale
+            annEval[annPly] = annEval[annPly] < 0 ? -1 + Math.pow(2, annEval[annPly]) : 1 - Math.pow(2, -annEval[annPly]);
+            //
          }
 
          // set canvas size, check calculations if headerItem and headerSpacer are changed in chess-games-viewer.css
@@ -692,10 +697,10 @@ of Google Chrome. Don't use with any other browser.
             if ((annEval[annPly] !== 0) || (annPly === CurrentPly)) {
                thisBarTopLeftX = (annPly - StartPly) * annotationBarWidth;
                if (annEval[annPly] >= 0) {
-                  thisBarHeight = Math.max(maxBarHeight * annEval[annPly] / maxGraphEval, lineHeight);
+                  thisBarHeight = Math.max(  annEval[annPly] * maxBarHeight, lineHeight);
                   thisBarTopLeftY = lineBottom - thisBarHeight;
                } else {
-                  thisBarHeight = Math.max(maxBarHeight * annEval[annPly] / minGraphEval, lineHeight);
+                  thisBarHeight = Math.max(- annEval[annPly] * maxBarHeight, lineHeight);
                   thisBarTopLeftY = lineTop;
                }
                fillStyle = (annPly === CurrentPly) ? "#FF6633" : "#666666";
