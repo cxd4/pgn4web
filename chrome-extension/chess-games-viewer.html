@@ -637,7 +637,8 @@ of Google Chrome. Don't use with any other browser.
       fenMatches = FEN.match(/\s*(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s*/);
       try { annPly = 2 * (parseInt(fenMatches[6], 10) - 1) + (fenMatches[2] == "b" ? 1 : 0); }
       catch(e) { return; }
-      if ((nodes > minNodesForAnnotation) || (Math.abs(ev) > minEvalForCheckmateAssumption)) {
+      // require a minimum node count unless a checkmate is detected or a draw is detected
+      if ((nodes > minNodesForAnnotation) || (Math.abs(ev) > minEvalForCheckmateAssumption) || (ev === 0)) {
          if ((typeof(annotationGraphFEN[annGame]) != "undefined") && (typeof(annotationGraphFEN[annGame][annPly]) != "undefined") && (FEN !== annotationGraphFEN[annGame][annPly])) { resetAnnotationGraphData(annGame); }
          else if ((typeof(annotationGraphNodes[annGame]) == "undefined") || (typeof(annotationGraphNodes[annGame][annPly]) == "undefined") || (nodes > annotationGraphNodes[annGame][annPly])) {
             fenMismatchCounter = 0;
