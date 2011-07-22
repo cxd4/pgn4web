@@ -769,7 +769,8 @@ of Google Chrome. Don't use with any other browser.
          annotationDelay = Math.min(maxAnnotationDelay, Math.max(minAnnotationDelay, annotationDelay));
          SetAutoPlay(false);
          if (!analysisStarted) { toggleAnalysis(); }
-         setTimeout("SetAutoplayDelayAndStart(" + annotationDelay + "*1000);", annotationDelay*1000);
+         SetAutoplayDelay(annotationDelay * 1000);
+         SetAutoPlay(true);
          annotateInProgress = true;
       }
    }
