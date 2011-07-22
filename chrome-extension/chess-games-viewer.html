@@ -724,7 +724,7 @@ of Google Chrome. Don't use with any other browser.
    annotateInProgress = false;
    minAnnotationDelay = 3;
    maxAnnotationDelay = 300;
-   annotationDelayDefault = 10;
+   annotationDelayDefault = 15;
    function annotateGame() {
       if (annotationDelay = prompt("Automatic game annotation from the current position, please do not interact with the chessboard until the analysis has reached the last available move.\n\nEnter engine's time per move, in seconds, between " + minAnnotationDelay + " and " + maxAnnotationDelay + ":", annotationDelayDefault)) {
          if (isNaN(annotationDelay = parseInt(annotationDelay, 10))) { annotationDelay = annotationDelayDefault; }
@@ -756,6 +756,8 @@ of Google Chrome. Don't use with any other browser.
    boardShortcut("F5", "show the chess puzzler of the day", showPuzzler);
    // G5
    boardShortcut("G5", "adjust last move and current comment text area, if present", toggleFitResetLastMoveAndCommentArea);
+   // E2
+   boardShortcut("E2", "autoplay 5 seconds", function(){ SetAutoplayDelayAndStart( 5*1000); });
    // F2
    boardShortcut("F2", "autoplay: custom delay", setCustomAutoplayDelay);
    // G2
