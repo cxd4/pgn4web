@@ -559,9 +559,9 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameLiveStatus" title="live broadcast status"></span><span class="innerHeaderItem" id="GameLiveStatusDemo" title="this is a simulation of the live broadcast functionality"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><b><span class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the engine's analysis: -1 means Black is 1 pawn ahead"></span></b><span class="innerHeaderItem move" id="GameAnalysisPv" title="principal variation from the engine's analysis"></span><b>&nbsp;</b></div>
+<div class="headerItem"><b><span class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the engine's analysis: -1 means Black is 1 pawn ahead"></span></b><span class="innerHeaderItem annotationMove move" id="GameAnnotationMove"></span><span class="innerHeaderItem annotationEval" id="GameAnnotationEval"></span><span class="innerHeaderItem move" id="GameAnalysisPv" title="principal variation from the engine's analysis"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer" id="GameAnnotationMeasure"><b>&nbsp;</b></div>
-<canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick();" title="annotation graph from the engine's analysis: for more info click square A7"></canvas>
+<canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick();" onmousemove="annotationGraphMousemove();" onmouseover="annotationGraphMouseover();" onmouseout="annotationGraphMouseout();" title="annotation graph from the engine's analysis: for more info click square A7"></canvas>
 </div>
 
 </div>
@@ -594,7 +594,7 @@ of Google Chrome. Don't use with any other browser.
       chrome.extension.sendRequest({analysisCommand: 'stop', FEN: ""}, function(response) {});
    }
 
-   window.onunload = function() { if (analysisStarted) { stopAnalysis(); } }
+   window.onunload = function() { if (analysisStarted) { stopAnalysis(); } };
 
    chrome.extension.onRequest.addListener(analysisOutputHandler);
 
@@ -674,8 +674,8 @@ of Google Chrome. Don't use with any other browser.
 
          // set canvas size, check calculations if headerItem and headerSpacer are changed in chess-games-viewer.css
          if (!(theMeasureObject = document.getElementById("GameAnnotationMeasure"))) { return; }
-         canvasWidth = theObject.width = theMeasureObject.offsetWidth - theMeasureObject.offsetHeight * 1.25 / 0.7;
-         canvasHeight = theObject.height = 7 * theMeasureObject.offsetHeight;
+         canvasWidth = theMeasureObject.offsetWidth - theMeasureObject.offsetHeight * 1.25 / 0.7;
+         canvasHeight = 7 * theMeasureObject.offsetHeight;
 
          annotationPlyBlock = 20;
          annotationBarWidth = canvasWidth / (Math.ceil((PlyNumber + 1) / annotationPlyBlock) * annotationPlyBlock);
@@ -684,6 +684,9 @@ of Google Chrome. Don't use with any other browser.
          lineTop = Math.floor((canvasHeight - lineHeight) / 2);
          lineBottom = lineTop + lineHeight;
          maxBarHeight = lineTop + barOverlap;
+
+         theObject.width = canvasWidth = annotationBarWidth * (PlyNumber + 1);
+         theObject.height = canvasHeight;
 
          context = theObject.getContext("2d");
          context.beginPath();
@@ -722,7 +725,36 @@ of Google Chrome. Don't use with any other browser.
 
    function annotationGraphClick() {
       if (typeof(annotationBarWidth) != "undefined") {
-         GoToMove(Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth));
+         annPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
+         if ((annPly >= StartPly) && (annPly <= StartPly + PlyNumber)) { GoToMove(StartPly + annPly); }
+      }
+   }
+
+   function annotationGraphMouseover() {
+      if (theObject = document.getElementById("GameAnalysisEval")) { theObject.style.display = "none"; }
+      if (theObject = document.getElementById("GameAnalysisPv")) { theObject.style.display = "none"; }
+      if (theObject = document.getElementById("GameAnnotationMove")) { theObject.style.display = "inline-block"; }
+      if (theObject = document.getElementById("GameAnnotationEval")) { theObject.style.display = "inline-block"; }
+   }
+
+   function annotationGraphMouseout() {
+      if (theObject = document.getElementById("GameAnalysisEval")) { theObject.style.display = ""; }
+      if (theObject = document.getElementById("GameAnalysisPv")) { theObject.style.display = ""; }
+      if (theObject = document.getElementById("GameAnnotationMove")) { theObject.style.display = ""; }
+      if (theObject = document.getElementById("GameAnnotationEval")) { theObject.style.display = ""; }
+   }
+
+   function annotationGraphMousemove() {
+      annPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
+      if ((annPly >= StartPly) && (annPly <= StartPly + PlyNumber)) {
+         annMove = (annPly ? (Math.floor(annPly / 2) + (annPly % 2)) + (annPly % 2 ? ". " : "... ") + Moves[annPly - 1] : "");
+         if (theObject = document.getElementById("GameAnnotationMove")) { theObject.innerHTML = annMove; }
+         annEval = typeof(annotationGraphEval[currentGame]) != "undefined" && typeof(annotationGraphEval[currentGame][annPly]) != "undefined" ? annotationGraphEval[currentGame][annPly] : "";
+         if (annEval !== "") {
+            annEval = (annEval < 0 ? "" : "+") + annEval;
+            if (annEval.indexOf(".") == -1) { annEval += ".0"; }
+         }
+         if (theObject = document.getElementById("GameAnnotationEval")) { theObject.innerHTML = annEval; }
       }
    }
 
