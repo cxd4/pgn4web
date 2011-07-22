@@ -748,11 +748,11 @@ of Google Chrome. Don't use with any other browser.
    function annotationGraphMousemove() {
       annPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
       if ((annPly >= StartPly) && (annPly <= StartPly + PlyNumber)) {
-         annMove = (annPly ? (Math.floor(annPly / 2) + (annPly % 2)) + (annPly % 2 ? ". " : "... ") + Moves[annPly - 1] : "");
+         annMove = (annPly > StartPly ? (Math.floor(annPly / 2) + (annPly % 2)) + (annPly % 2 ? ". " : "... ") + Moves[annPly - 1] : "");
          if (theObject = document.getElementById("GameAnnotationMove")) { theObject.innerHTML = annMove; }
          annEval = typeof(annotationGraphEval[currentGame]) != "undefined" && typeof(annotationGraphEval[currentGame][annPly]) != "undefined" ? annotationGraphEval[currentGame][annPly] : "";
          if (annEval !== "") {
-            annEval = (annEval < 0 ? "" : "+") + annEval;
+            annEval = (annEval > 0 ? "+" : "") + annEval;
             if (annEval.indexOf(".") == -1) { annEval += ".0"; }
          }
          if (theObject = document.getElementById("GameAnnotationEval")) { theObject.innerHTML = annEval; }
