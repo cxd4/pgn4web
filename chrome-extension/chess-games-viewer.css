@@ -276,7 +276,11 @@ a {
   color: black;
 }
 
-.analysisEval {
+.analysisEval, .annotationMove {
   display: inline-block;
   min-width: 3em;
+}
+
+.annotationEval, .annotationMove {
+  display: none;
 }
