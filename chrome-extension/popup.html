@@ -88,13 +88,19 @@ var cursorDef = "url(cursor-small.png) 1 6, auto";
  
 chrome.tabs.getSelected(null, function(tab){
  
-  pgnLinks = chrome.extension.getBackgroundPage().pgnHrefLinks[tab.id];
-  pgnLinks = pgnLinks.concat(chrome.extension.getBackgroundPage().pgnWebRequests[tab.id]);
-  pgnLinks = pgnLinks.sort();
-  
   var headerObject = document.getElementById("pgnHeader");
   var listObject = document.getElementById("pgnLinkList");
   var measureObject = document.getElementById("measure");
+
+  if ((typeof(chrome.extension.getBackgroundPage().pgnHrefLinks[tab.id]) == "undefined") || (typeof(chrome.extension.getBackgroundPage().pgnWebRequests[tab.id]) == "undefined")) {
+    listObject.style.marginRight = "2em";
+    listObject.innerHTML = "please reload the page to rescan for links to PGN chess games URLs";
+    headerObject.innerHTML = "Chess games viewer: error";
+    return;
+  }
+  pgnLinks = chrome.extension.getBackgroundPage().pgnHrefLinks[tab.id];
+  pgnLinks = pgnLinks.concat(chrome.extension.getBackgroundPage().pgnWebRequests[tab.id]);
+  pgnLinks = pgnLinks.sort();
   
   // workaround to cope with http://crbug.com/76899 and http://crbug.com/50192
   // fixing 76899 would avoid the need of the workaround
