@@ -119,5 +119,4 @@ function stopAnalysisOnUpdated(tabId) {
    });
 }
 
-chrome.tabs.onRemoved.addListener(stopAnalysisOnRemoved);
 chrome.tabs.onUpdated.addListener(stopAnalysisOnUpdated);
