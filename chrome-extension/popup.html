@@ -94,7 +94,7 @@ chrome.tabs.getSelected(null, function(tab){
 
   if ((typeof(chrome.extension.getBackgroundPage().pgnHrefLinks[tab.id]) == "undefined") || (typeof(chrome.extension.getBackgroundPage().pgnWebRequests[tab.id]) == "undefined")) {
     listObject.style.marginRight = "2em";
-    listObject.innerHTML = "please reload the page to rescan for links to PGN chess games URLs";
+    listObject.innerHTML = "please reload the page to look again for links to PGN chess games";
     headerObject.innerHTML = "Chess games viewer: error";
     return;
   }
