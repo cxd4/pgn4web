@@ -1,7 +1,7 @@
-// garbochess.js code dated 2011-03-30, downloaded on 2011-07-14 from 
+// garbochess.js code dated 2011-07-23, downloaded on 2011-07-23 from 
 // the garbochess repository https://github.com/glinscott/Garbochess-JS/
 // See README.txt for more info including full credits and license.
-// Changes to the orginal code, if any, are clearly maked with the "pgn4web" tag. 
+// Changes to the orginal code, if any, are clearly maked with the "pgn4web" tag.
 
 "use strict";
 
@@ -164,13 +164,13 @@ function GetMoveFromString(moveString) {
 }
 
 function PVFromHash(move, ply) {
-// pgn4web patch: avoids javascript exception when analysis is started in a position with no valid moves, see GarboChess issue #2
-    if (! move)
-        return "";
-// end of pgn4web patch    
-
     if (ply == 0) 
         return "";
+
+    if (move == 0) {
+	if (g_inCheck) return "checkmate";
+	return "stalemate";
+    }
     
     var pvString = " " + GetMoveSAN(move);
     MakeMove(move);
@@ -206,7 +206,7 @@ function Search(finishMoveCallback, maxPly, finishPlyCallback) {
     g_qNodeCount = 0;
     g_searchValid = true;
     
-    var bestMove;
+    var bestMove = 0;
     var value;
     
     g_startTime = (new Date()).getTime();
@@ -880,7 +880,7 @@ function AllCutNode(ply, depth, beta, allowNull) {
     }
 
     var moveMade = false;
-    var realEval = minEval;
+    var realEval = minEval - 1;
     var inCheck = g_inCheck;
 
     var movePicker = new MovePicker(hashMove, depth, g_killers[depth][0], g_killers[depth][1]);
