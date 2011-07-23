@@ -607,7 +607,7 @@ of Google Chrome. Don't use with any other browser.
            analysisStarted = (request.analysisEval !== "");
            if (theObject = document.getElementById("toggleAnalysisLink")) { theObject.innerHTML = analysisStarted ? "&times;" : "+"; }
            if (theObject = document.getElementById("GameAnnotationGraph")) {
-              theObject.style.visibility = analysisStarted ? "visible" : "hidden";
+              theObject.style.visibility = analysisStarted && (PlyNumber > 0) ? "visible" : "hidden";
            }
            if (analysisStarted) { updateAnnotationGraphData(currentGame, parseFloat(request.analysisEval), parseFloat(request.analysisNodes), request.analysisFEN); }
            else { clearAnnotationGraph(currentGame); }
