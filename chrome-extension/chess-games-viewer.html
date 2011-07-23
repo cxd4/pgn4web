@@ -606,8 +606,11 @@ of Google Chrome. Don't use with any other browser.
            if (theObject = document.getElementById("GameAnalysisPv")) { theObject.innerHTML = request.analysisPv; }
            analysisStarted = (request.analysisEval !== "");
            if (theObject = document.getElementById("toggleAnalysisLink")) { theObject.innerHTML = analysisStarted ? "&times;" : "+"; }
-           if (request.analysisEval === "") { clearAnnotationGraph(currentGame); }
-           else { updateAnnotationGraphData(currentGame, parseFloat(request.analysisEval), parseFloat(request.analysisNodes), request.analysisFEN); }
+           if (theObject = document.getElementById("GameAnnotationGraph")) {
+              theObject.style.visibility = analysisStarted ? "visible" : "hidden";
+           }
+           if (analysisStarted) { updateAnnotationGraphData(currentGame, parseFloat(request.analysisEval), parseFloat(request.analysisNodes), request.analysisFEN); }
+           else { clearAnnotationGraph(currentGame); }
         }
      });
    }
