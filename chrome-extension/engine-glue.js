@@ -84,7 +84,7 @@ function InitializeBackgroundEngine() {
           g_backgroundEngine = new Worker("garbochess/garbochess.js");
           g_backgroundEngine.onmessage = function (e) {
              if (e.data.match("^pv") == "pv") {
-                if (matches = e.data.substr(3, e.data.length - 3).match(/Ply:(\d+) Score:(-*\d+) Nodes:(\d+) NPS:(\d+) (.+)/)) {
+                if (matches = e.data.substr(3, e.data.length - 3).match(/Ply:(\d+) Score:(-*\d+) Nodes:(\d+) NPS:(\d+) (.*)/)) {
                    ply = matches[1];
                    ev = Math.floor(matches[2] / 100) / 10;
                    if (g_FEN.indexOf(" b ") !== -1) { ev = - ev; }
