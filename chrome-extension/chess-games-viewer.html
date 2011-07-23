@@ -682,14 +682,14 @@ of Google Chrome. Don't use with any other browser.
          canvasHeight = 7 * theMeasureObject.offsetHeight;
 
          annotationPlyBlock = 20;
-         annotationBarWidth = canvasWidth / (Math.ceil((PlyNumber + 1) / annotationPlyBlock) * annotationPlyBlock);
+         annotationBarWidth = canvasWidth / (Math.ceil((PlyNumber + 2) / annotationPlyBlock) * annotationPlyBlock);
          barOverlap = Math.ceil(annotationBarWidth / 20);
          lineHeight = Math.ceil(canvasHeight / 80);
          lineTop = Math.floor((canvasHeight - lineHeight) / 2);
          lineBottom = lineTop + lineHeight;
          maxBarHeight = lineTop + barOverlap;
 
-         theObject.width = canvasWidth = annotationBarWidth * (PlyNumber + 1);
+         theObject.width = canvasWidth = annotationBarWidth * (PlyNumber + 2);
          theObject.height = canvasHeight;
 
          context = theObject.getContext("2d");
