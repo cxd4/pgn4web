@@ -164,6 +164,11 @@ function GetMoveFromString(moveString) {
 }
 
 function PVFromHash(move, ply) {
+// pgn4web patch: avoids javascript exception when analysis is started in a position with no valid moves, see GarboChess issue #2
+    if (! move)
+        return "";
+// end of pgn4web patch    
+
     if (ply == 0) 
         return "";
     
