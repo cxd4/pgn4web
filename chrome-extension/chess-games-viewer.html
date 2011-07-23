@@ -700,6 +700,7 @@ of Google Chrome. Don't use with any other browser.
          context.rect(thisBarTopLeftX, thisBarTopLeftY, (PlyNumber + 1) * annotationBarWidth, thisBarHeight);
          context.fillStyle = "#666666";
          context.fill();
+         highlightTopLeftX = highlightTopLeftY = highlightBarHeight = null;
          for (annPly = StartPly; annPly <= StartPly + PlyNumber; annPly++) {
             if ((annEval[annPly] !== 0) || (annPly === CurrentPly)) {
                thisBarTopLeftX = (annPly - StartPly) * annotationBarWidth;
@@ -710,12 +711,22 @@ of Google Chrome. Don't use with any other browser.
                   thisBarHeight = Math.max(- annEval[annPly] * maxBarHeight, lineHeight);
                   thisBarTopLeftY = lineTop;
                }
-               fillStyle = (annPly === CurrentPly) ? "#FF6633" : "#666666";
-               context.beginPath();
-               context.rect(thisBarTopLeftX, thisBarTopLeftY, annotationBarWidth + barOverlap, thisBarHeight);
-               context.fillStyle = fillStyle;
-               context.fill();
+               if (annPly !== CurrentPly) {
+                  context.beginPath();
+                  context.rect(thisBarTopLeftX, thisBarTopLeftY, annotationBarWidth + barOverlap, thisBarHeight);
+                  context.fill();
+               } else {
+                  highlightTopLeftX = thisBarTopLeftX;
+                  highlightTopLeftY = thisBarTopLeftY;
+                  highlightBarHeight = thisBarHeight;
+               }
             }
+         }
+         if (highlightBarHeight !== null) {
+            context.beginPath();
+            context.rect(highlightTopLeftX, highlightTopLeftY, annotationBarWidth + barOverlap, highlightBarHeight);
+            context.fillStyle = "#FF6633";
+            context.fill();
          }
       }
    }
