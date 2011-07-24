@@ -92,7 +92,7 @@ function InitializeBackgroundEngine() {
                    if (ev.indexOf(".") == -1) { ev += ".0"; }
                    nodes = matches[3];
                    nodesPerSecond = matches[4];
-                   pv = matches[5].replace(/[+#]/g, "");
+                   pv = matches[5].replace(/(\+|#|checkmate|stalemate)/g, "");
                    notifyAnalysis(g_tabId, ply, ev, nodes, nodesPerSecond, pv, g_FEN);
                 }
              }
