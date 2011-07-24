@@ -268,10 +268,10 @@ of Google Chrome. Don't use with any other browser.
          }
       }
       if (analysisStarted) {
-         updateAnnotationGraph(currentGame);
          restartAnalysis();
+         updateAnnotationGraph(currentGame);
       } else {
-        clearAnnotationGraph(currentGame);
+         clearAnnotationGraph(currentGame);
       }
 
       if ((annotateInProgress) && (CurrentPly === StartPly + PlyNumber)) {
@@ -342,9 +342,8 @@ of Google Chrome. Don't use with any other browser.
       if (previousCurrentGame !== currentGame) { 
          previousPlyNumber = PlyNumber;
          previousCurrentGame = currentGame;
+         forceAnnotationGraphUpdate = true;
       }
-
-      forceAnnotationGraphUpdate = true;
    }
 
    var liveBroadcastUpdateTicker = 1;
@@ -644,7 +643,6 @@ of Google Chrome. Don't use with any other browser.
       if ((nodes > minNodesForAnnotation) || (Math.abs(ev) > minEvalForCheckmateAssumption) || (ev === 0)) {
          if ((typeof(annotationGraphFEN[annGame]) != "undefined") && (typeof(annotationGraphFEN[annGame][annPly]) != "undefined") && (FEN !== annotationGraphFEN[annGame][annPly])) { resetAnnotationGraphData(annGame); }
          else if ((typeof(annotationGraphNodes[annGame]) == "undefined") || (typeof(annotationGraphNodes[annGame][annPly]) == "undefined") || (nodes > annotationGraphNodes[annGame][annPly])) {
-            fenMismatchCounter = 0;
             if (typeof(annotationGraphEval[annGame]) == "undefined") { annotationGraphEval[annGame] = new Array(); }
             if ((typeof(annotationGraphEval[annGame][annPly]) == "undefined") || (ev !== annotationGraphEval[annGame][annPly])) { graphNeedsUpdate = true; }
             annotationGraphEval[annGame][annPly] = ev;
