@@ -254,6 +254,13 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function customFunctionOnMove() {
+      if (analysisStarted) {
+         restartAnalysis();
+         updateAnnotationGraph(currentGame);
+      } else {
+         clearAnnotationGraph(currentGame);
+      }
+      
       wObject = document.getElementById('GameWhiteClock');
       bObject = document.getElementById('GameBlackClock');
       if (wObject && bObject) {
@@ -266,12 +273,6 @@ of Google Chrome. Don't use with any other browser.
          if (CurrentPly == StartPly) {
             theObject.innerHTML = ((CurrentPly%2) ? "black" : "white") + " to move";
          }
-      }
-      if (analysisStarted) {
-         restartAnalysis();
-         updateAnnotationGraph(currentGame);
-      } else {
-         clearAnnotationGraph(currentGame);
       }
 
       if ((annotateInProgress) && (CurrentPly === StartPly + PlyNumber)) {
