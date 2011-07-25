@@ -558,7 +558,7 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameLiveStatus" title="live broadcast status"></span><span class="innerHeaderItem" id="GameLiveStatusDemo" title="this is a simulation of the live broadcast functionality"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><b><span class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the engine's analysis: -1 means Black is 1 pawn ahead"></span></b><span class="innerHeaderItem annotationMove move" id="GameAnnotationMove"></span><span class="innerHeaderItem annotationEval" id="GameAnnotationEval"></span><span class="innerHeaderItem move" id="GameAnalysisPv" title="principal variation from the engine's analysis"></span><b>&nbsp;</b></div>
+<div class="headerItem"><b><span class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the engine's analysis: -1 means Black is 1 pawn ahead"></span></b><span class="innerHeaderItem annotationMove move notranslate" id="GameAnnotationMove"></span><span class="innerHeaderItem annotationEval" id="GameAnnotationEval"></span><span class="innerHeaderItem move notranslate" id="GameAnalysisPv" title="principal variation from the engine's analysis"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer" id="GameAnnotationMeasure"><b>&nbsp;</b></div>
 <canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick();" onmousemove="annotationGraphMousemove();" onmouseover="annotationGraphMouseover();" onmouseout="annotationGraphMouseout();" title="annotation graph from the engine's analysis"></canvas>
 </div>
@@ -568,7 +568,7 @@ of Google Chrome. Don't use with any other browser.
 <div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleAnalysisLink" id="toggleAnalysisLink" href="javascript:void(0);" onclick="toggleAnalysis();" title="toggle engine analysis">+</a></div>
 <div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="SetCommentsIntoMoveText(!commentsIntoMoveText); oldPly = CurrentPly; Init(); GoToMove(oldPly);" title="toggle show comments in game text for this page; click square B7 instead to save setting"></a></div>
 
-<div class="lastMoveAndComment" id="lastMoveAndComment"><a href="javascript:MoveToNextComment();" class="lastMove" title="last move" id="GameLastMove"></a><a href="javascript:MoveToPrevComment();" class="lastComment" title="current position comment" id="GameLastComment"></a></div>
+<div class="lastMoveAndComment" id="lastMoveAndComment"><a href="javascript:MoveToNextComment();" class="lastMove notranslate" title="last move" id="GameLastMove"></a><a href="javascript:MoveToPrevComment();" class="lastComment" title="current position comment" id="GameLastComment"></a></div>
 
 <div id="moveText" class="moveText"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
 
