@@ -580,17 +580,20 @@ of Google Chrome. Don't use with any other browser.
 <script type="text/javascript">
 
    var analysisStarted = false;
+   var analysisGameNum = -1;
    function toggleAnalysis() {
       if (analysisStarted) { stopAnalysis(); }
       else { restartAnalysis(); }
    }
    
    function restartAnalysis() {
-      forceAnnotationGraphUpdate = true;
       chrome.extension.sendRequest({analysisCommand: 'analysis', FEN: CurrentFEN()}, function(response) {});
+      analysisGameNum = currentGame;
+      forceAnnotationGraphUpdate = true;
    }
 
    function stopAnalysis() {
+      analysisGameNum = -1;
       chrome.extension.sendRequest({analysisCommand: 'stop', FEN: ""}, function(response) {});
    }
 
@@ -609,8 +612,8 @@ of Google Chrome. Don't use with any other browser.
            if (theObject = document.getElementById("GameAnnotationGraph")) {
               theObject.style.visibility = analysisStarted && (PlyNumber > 0) ? "visible" : "hidden";
            }
-           if (analysisStarted) { updateAnnotationGraphData(currentGame, parseFloat(request.analysisEval), parseFloat(request.analysisNodes), request.analysisFEN); }
-           else { clearAnnotationGraph(currentGame); }
+           if (analysisStarted) { updateAnnotationGraphData(analysisGameNum, parseFloat(request.analysisEval), parseFloat(request.analysisNodes), request.analysisFEN); }
+           else { clearAnnotationGraph(); }
         }
      });
    }
@@ -640,8 +643,10 @@ of Google Chrome. Don't use with any other browser.
       fenMatches = FEN.match(/\s*(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s*/);
       try { annPly = 2 * (parseInt(fenMatches[6], 10) - 1) + (fenMatches[2] == "b" ? 1 : 0); }
       catch(e) { return; }
+      // discard evals for previous games and
       // require a minimum node count unless a checkmate is detected or a draw is detected
-      if ((nodes > minNodesForAnnotation) || (Math.abs(ev) > minEvalForCheckmateAssumption) || (ev === 0)) {
+      if ((annGame === currentGame) && ((nodes > minNodesForAnnotation) || (Math.abs(ev) > minEvalForCheckmateAssumption) || (ev === 0))) {
+         // deals with live transmission errors where games number/order is changing during a broadcast
          if ((typeof(annotationGraphFEN[annGame]) != "undefined") && (typeof(annotationGraphFEN[annGame][annPly]) != "undefined") && (FEN !== annotationGraphFEN[annGame][annPly])) { resetAnnotationGraphData(annGame); }
          else if ((typeof(annotationGraphNodes[annGame]) == "undefined") || (typeof(annotationGraphNodes[annGame][annPly]) == "undefined") || (nodes > annotationGraphNodes[annGame][annPly])) {
             if (typeof(annotationGraphEval[annGame]) == "undefined") { annotationGraphEval[annGame] = new Array(); }
