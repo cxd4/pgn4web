@@ -49,7 +49,7 @@ enable the demo paragraphs in about.html by removing the "display: none;"
 css attribute of "div.try", demo paragraphs being disabled at the moment
 because extension pages dont get context menus. 
 http://crbug.com/51461
-
+Fixed in google chrome (dev) v14.0.825.0
 
 Bugs:
 
@@ -59,7 +59,7 @@ and adding the about menu to the "selection" context would result in
 duplicated items when a selected link is right-clicked.
 http://crbug.com/63545
 Verify in background.html
-Fixed in google chrome v13.0.782.10
+Fixed in google chrome (dev) v13.0.782.10
 
 background.html: "link" context menu
 until chromium bug 63965 is resolved the context menu will not appear for
@@ -67,7 +67,7 @@ links shown as images like this <a href=game.pgn><img src=image.jpeg/></a>
 http://crbug.com/63965
 Verify this on the page (after login):
 http://www.chessgames.com/perl/chessplayer?pid=18000
-Fixed in google chrome v13.0.782.10
+Fixed in google chrome (dev) v13.0.782.10
 
 background.html and manifest.json match pattern definition:
 because of how match patterns can be defined, some URLs might be identified
