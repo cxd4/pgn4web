@@ -771,6 +771,9 @@ of Google Chrome. Don't use with any other browser.
             if (annEval.indexOf(".") == -1) { annEval += ".0"; }
          }
          if (theObject = document.getElementById("GameAnnotationEval")) { theObject.innerHTML = annEval; }
+      } else {
+         if (theObject = document.getElementById("GameAnnotationMove")) { theObject.innerHTML = ""; }
+         if (theObject = document.getElementById("GameAnnotationEval")) { theObject.innerHTML = ""; }
       }
    }
 
