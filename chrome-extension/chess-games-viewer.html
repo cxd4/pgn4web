@@ -580,21 +580,18 @@ of Google Chrome. Don't use with any other browser.
 <script type="text/javascript">
 
    var analysisStarted = false;
-   var analysisGameNum = -1;
    function toggleAnalysis() {
       if (analysisStarted) { stopAnalysis(); }
       else { restartAnalysis(); }
    }
    
    function restartAnalysis() {
-      chrome.extension.sendRequest({analysisCommand: 'analysis', FEN: CurrentFEN()}, function(response) {});
-      analysisGameNum = currentGame;
+      chrome.extension.sendRequest({analysisCommand: 'analysis', FEN: CurrentFEN(), gameNum: currentGame}, function(response) {});
       forceAnnotationGraphUpdate = true;
    }
 
    function stopAnalysis() {
-      analysisGameNum = -1;
-      chrome.extension.sendRequest({analysisCommand: 'stop', FEN: ""}, function(response) {});
+      chrome.extension.sendRequest({analysisCommand: 'stop', FEN: "", gameNum: ""}, function(response) {});
    }
 
    window.onunload = function() { if (analysisStarted) { stopAnalysis(); } };
@@ -612,7 +609,7 @@ of Google Chrome. Don't use with any other browser.
            if (theObject = document.getElementById("GameAnnotationGraph")) {
               theObject.style.visibility = analysisStarted && (PlyNumber > 0) ? "visible" : "hidden";
            }
-           if (analysisStarted) { updateAnnotationGraphData(analysisGameNum, parseFloat(request.analysisEval), parseFloat(request.analysisNodes), request.analysisFEN); }
+           if (analysisStarted) { updateAnnotationGraphData(parseFloat(request.analysisGameNum), parseFloat(request.analysisEval), parseFloat(request.analysisNodes), request.analysisFEN); }
            else { clearAnnotationGraph(); }
         }
      });
@@ -637,7 +634,7 @@ of Google Chrome. Don't use with any other browser.
          annotationGraphFEN[annGame] = new Array();
       }
    }
- 
+
    function updateAnnotationGraphData(annGame, ev, nodes, FEN) {
       graphNeedsUpdate = forceAnnotationGraphUpdate;
       fenMatches = FEN.match(/\s*(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s*/);
