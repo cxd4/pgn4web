@@ -15,21 +15,23 @@
 
 var g_analysis_status = "stop"; // "analysis", "pause", "stop", "error"
 var g_FEN = "";
+var g_gameNum = "";
 var g_tabId = null;
 
-function setAnalysisStatus(newStatus, newTabId, newFEN) {
+function setAnalysisStatus(newStatus, newTabId, newGameNum, newFEN) {
    switch (newStatus) {
       case "analysis":
-         if ((newStatus == g_analysis_status) && (newTabId === g_tabId) && (newFEN === g_FEN)) { return; }
+         if ((newStatus == g_analysis_status) && (newTabId === g_tabId) && (newGameNum === g_gameNum) && (newFEN === g_FEN)) { return; }
          if ((g_analysis_status == "analysis") && g_backgroundEngine) {
             g_backgroundEngine.terminate();
             g_backgroundEngine = null;
          }
-         if ((g_tabId !== null) && (newTabId !== g_tabId)) { notifyAnalysis(g_tabId, "", "", "", "", "", ""); }
+         if ((g_tabId !== null) && (newTabId !== g_tabId)) { notifyAnalysis(g_tabId, "", "", "", "", "", "", ""); }
          if (InitializeBackgroundEngine()) {
             g_tabId = newTabId;
             ResetGame();
             InitializeFromFen(g_FEN = newFEN);
+            g_gameNum = newGameNum;
             g_backgroundEngine.postMessage("position " + GetFen());
             g_backgroundEngine.postMessage("analyze");
             g_analysis_status = "analysis";
@@ -45,14 +47,16 @@ function setAnalysisStatus(newStatus, newTabId, newFEN) {
          }
          clearAnalysisTimeout();
          if ((newStatus == "stop") && (g_tabId !== null)) {
-            notifyAnalysis(g_tabId, "", "", "", "", "", "");
+            notifyAnalysis(g_tabId, "", "", "", "", "", "", "");
             g_FEN = "";
+            g_gameNum = "";
             g_tabId = null;
          }
          g_analysis_status = newStatus;
          break;
       default:
          g_FEN = "";
+         g_gameNum = "";
          g_tabId = null;
          g_analysis_status = "error";
          break;
@@ -93,7 +97,7 @@ function InitializeBackgroundEngine() {
                    nodes = matches[3];
                    nodesPerSecond = matches[4];
                    pv = matches[5].replace(/(\+|#|checkmate|stalemate)/g, "");
-                   notifyAnalysis(g_tabId, ply, ev, nodes, nodesPerSecond, pv, g_FEN);
+                   notifyAnalysis(g_tabId, ply, ev, nodes, nodesPerSecond, pv, g_FEN, g_gameNum);
                 }
              }
           };
@@ -102,20 +106,20 @@ function InitializeBackgroundEngine() {
    return g_backgroundEngineValid;
 }
 
-function notifyAnalysis(tabId, ply, ev, nodes, nodesPerSecond, pv, FEN) {
-   chrome.extension.sendRequest({tabId: tabId, analysisPly: ply, analysisEval: ev, analysisNodes: nodes, analysisnodesPerSecond: nodesPerSecond, analysisPv: pv, analysisFEN: FEN}, function(response) {});
+function notifyAnalysis(tabId, ply, ev, nodes, nodesPerSecond, pv, FEN, gameNum) {
+   chrome.extension.sendRequest({tabId: tabId, analysisPly: ply, analysisEval: ev, analysisNodes: nodes, analysisnodesPerSecond: nodesPerSecond, analysisPv: pv, analysisFEN: FEN, analysisGameNum: gameNum}, function(response) {});
 }
 
 function analysisRequestHandler(request, sender, sendResponse) {
   if (typeof(request.analysisCommand) == "undefined") { return; }
-  setAnalysisStatus(request.analysisCommand, sender.tab.id, request.FEN);
+  setAnalysisStatus(request.analysisCommand, sender.tab.id, request.gameNum, request.FEN);
 }
 
 chrome.extension.onRequest.addListener(analysisRequestHandler);
 
 function stopAnalysisOnUpdated(tabId) { 
    chrome.tabs.get(tabId, function (tab) {
-      if (tab.url.indexOf(chrome.extension.getURL("chess-games-viewer.html")) == -1) { setAnalysisStatus("stop", tab.id, ""); }
+      if (tab.url.indexOf(chrome.extension.getURL("chess-games-viewer.html")) == -1) { setAnalysisStatus("stop", tab.id, "", ""); }
    });
 }
 
