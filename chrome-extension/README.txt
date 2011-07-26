@@ -18,7 +18,7 @@ full credits and license.
 
 Additional credits:
 
-the garbochess chess engine code is licensed by Gary Linscott under
+the GarboChess chess engine code is licensed by Gary Linscott under
 BSD license. See garbochess/README.txt for more info.
 Homepage: http://forwardcoding.com/projects/ajaxchess/chess.html
 Repository: https://github.com/glinscott/Garbochess-JS/
