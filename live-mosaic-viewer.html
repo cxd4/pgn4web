@@ -573,15 +573,21 @@ function switchBoardView(search) {
   }
 }
 
+function cycleHash() {
+  switch (location.hash) {
+    case "#boards": goToHash("bottom"); break;
+    case "#bottom": goToHash(""); break;
+    default: goToHash("boards"); break;
+  }
+}
+
 function goToHash(hash) {
   if (hash) { location.hash = ""; }
   else { location.hash = "boards"; }
   location.hash = hash;
 }
 
-function customShortcutKey_Shift_1() { goToHash(""); }
-function customShortcutKey_Shift_2() { goToHash("boards"); }
-function customShortcutKey_Shift_3() { goToHash("bottom"); }
+function customShortcutKey_Shift_3() { cycleHash(); }
 
 function customShortcutKey_Shift_8() {
   firstGame = firstGameAtStartup;
