@@ -417,28 +417,38 @@ of Google Chrome. Don't use with any other browser.
    }
 
 
+   function cycleHash() {
+      switch (location.hash) {
+         case "#board": goToHash("bottom"); break;
+         case "#bottom": goToHash(""); break;
+         default: goToHash("board"); break;
+      }
+   }
+
    function goToHash(hash) {
       if (hash) { location.hash = ""; }
       else { location.hash = "board"; }
       location.hash = hash;
    }
 
-   function customShortcutKey_Shift_1() { goToHash(""); }
-   function customShortcutKey_Shift_2() { goToHash("board"); }
-   function customShortcutKey_Shift_3() { goToHash("bottom"); }
 
-   function customShortcutKey_Shift_4() { chrome.tabs.create({url: "http://www.chess.co.uk/twic/twic.html"}); }
+   function customShortcutKey_Shift_1() { chrome.tabs.create({url: "http://www.chess.co.uk/twic/twic.html"}); }
+
+   function customShortcutKey_Shift_2() { chrome.tabs.create({url: "http://www.google.com/search?q=PGN+chess+games"}); }
+
+   function customShortcutKey_Shift_3() { cycleHash(); }
+
+   function customShortcutKey_Shift_4() { cycleLastMoveAndCommentArea(); }
 
    function customShortcutKey_Shift_5() { toggleAnalysis(); }
- 
-   function customShortcutKey_Shift_6() { cycleLastMoveAndCommentArea(); }
- 
+   function customShortcutKey_Shift_6() { resetAnnotationGraphData(-1); updateAnnotationGraph(currentGame); }
+
    function customShortcutKey_Shift_7() { fetchInputPgnText(); }
    function customShortcutKey_Shift_8() { openPgnFiles(); }
    function customShortcutKey_Shift_9() { fetchNewPgnUrl(false); }
    function customShortcutKey_Shift_0() { fetchNewPgnUrl(true); }
- 
- 
+
+
    function emPixels(em) { return em * document.getElementById("boardTable").offsetHeight / 24.5; } 
  
    var cycleLMACA = 0;
