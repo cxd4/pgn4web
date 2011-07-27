@@ -61,7 +61,7 @@ function customPgnCommentTag(customTagString, htmlElementIdString, plyNum) {
   return tagValue;
 }
 
-var basicNAGs = /^[\?!+#\s]*/;
+var basicNAGs = /^[\?!+#\s]*(\s|$)/;
 function strippedMoveComment(plyNum) {
   if (!MoveComments[plyNum]) { return ""; }
   return MoveComments[plyNum].replace(/\[%[^\]]*\]\s*/g,'').replace(basicNAGs, '').replace(/^\s+$/,'');
