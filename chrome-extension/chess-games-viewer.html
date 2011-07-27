@@ -441,7 +441,7 @@ of Google Chrome. Don't use with any other browser.
    function customShortcutKey_Shift_4() { cycleLastMoveAndCommentArea(); }
 
    function customShortcutKey_Shift_5() { toggleAnalysis(); }
-   function customShortcutKey_Shift_6() { resetAnnotationGraphData(-1); updateAnnotationGraph(currentGame); }
+   function customShortcutKey_Shift_6() { if (analysisStarted) { resetAnnotationGraphData(-1); updateAnnotationGraph(currentGame); } }
 
    function customShortcutKey_Shift_7() { fetchInputPgnText(); }
    function customShortcutKey_Shift_8() { openPgnFiles(); }
