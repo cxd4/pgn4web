@@ -107,7 +107,7 @@ function InitializeBackgroundEngine() {
 }
 
 function notifyAnalysis(tabId, ply, ev, nodes, nodesPerSecond, pv, FEN, gameNum) {
-   chrome.extension.sendRequest({tabId: tabId, analysisPly: ply, analysisEval: ev, analysisNodes: nodes, analysisnodesPerSecond: nodesPerSecond, analysisPv: pv, analysisFEN: FEN, analysisGameNum: gameNum}, function(response) {});
+   chrome.extension.sendRequest({tabId: tabId, analysisPly: ply, analysisEval: ev, analysisNodes: nodes, analysisNodesPerSecond: nodesPerSecond, analysisPv: pv, analysisFEN: FEN, analysisGameNum: gameNum}, function(response) {});
 }
 
 function analysisRequestHandler(request, sender, sendResponse) {
