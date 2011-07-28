@@ -797,8 +797,8 @@ of Google Chrome. Don't use with any other browser.
          else if (analysisMaxNodesPerSecond > 1000000) { anps = Math.floor(analysisMaxNodesPerSecond / 1000000) + "M"; }
          else if (analysisMaxNodesPerSecond > 1000) { anps = Math.floor(analysisMaxNodesPerSecond / 1000) + "K"; }
          else { anps = analysisMaxNodesPerSecond; }
-         if (theObject = document.getElementById("GameAnnotationMove")) { theObject.innerHTML = "analysis engine"; }
-         if (theObject = document.getElementById("GameAnnotationEval")) { theObject.innerHTML = "up to " + anps + " nodes per second"; }
+         if (theObject = document.getElementById("GameAnnotationMove")) { theObject.innerHTML = ""; }
+         if (theObject = document.getElementById("GameAnnotationEval")) { theObject.innerHTML = "analysis up to " + anps + " nodes per second"; }
       }
    }
 
