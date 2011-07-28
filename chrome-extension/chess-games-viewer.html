@@ -503,6 +503,7 @@ of Google Chrome. Don't use with any other browser.
    function showPuzzler() {
       alertFlag = demoFlag = false;
       gameDemoMaxPly = new Array();
+      resetAnnotationGraphData(-1);
       // replace the following line with the commented code to show the last 10 puzzlers when clicking F5 in sequence
       useNewPgnUrl(puzzlerUrl, 0);
       // if (pgnData.indexOf(puzzlerUrl) == -1) { useNewPgnUrl(puzzlerUrl, 0); }
