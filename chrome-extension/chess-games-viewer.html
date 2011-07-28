@@ -772,10 +772,17 @@ of Google Chrome. Don't use with any other browser.
       if (theObject = document.getElementById("GameAnalysisPv")) { theObject.style.display = ""; }
       if (theObject = document.getElementById("GameAnnotationMove")) { theObject.style.display = ""; }
       if (theObject = document.getElementById("GameAnnotationEval")) { theObject.style.display = ""; }
+      lastMousemoveAnnPly = -1;
+      lastMousemoveAnnGame = -1;
    }
 
+   lastMousemoveAnnPly = -1;
+   lastMousemoveAnnGame = -1;
    function annotationGraphMousemove() {
       annPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
+      if ((annPly === lastMousemoveAnnPly) && (currentGame === lastMousemoveAnnGame)){ return; }
+      lastMousemoveAnnPly = annPly;
+      lastMousemoveAnnGame = currentGame;
       if ((annPly >= StartPly) && (annPly <= StartPly + PlyNumber)) {
          annMove = (annPly > StartPly ? (Math.floor(annPly / 2) + (annPly % 2)) + (annPly % 2 ? ". " : "... ") + Moves[annPly - 1] : "");
          if (theObject = document.getElementById("GameAnnotationMove")) { theObject.innerHTML = annMove; }
