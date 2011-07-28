@@ -619,8 +619,10 @@ of Google Chrome. Don't use with any other browser.
            if (theObject = document.getElementById("GameAnnotationGraph")) {
               theObject.style.visibility = analysisStarted && (PlyNumber > 0) ? "visible" : "hidden";
            }
-           if (analysisStarted) { updateAnnotationGraphData(parseFloat(request.analysisGameNum), parseFloat(request.analysisEval), parseFloat(request.analysisNodes), request.analysisFEN); }
-           else { clearAnnotationGraph(); }
+           if (analysisStarted) { 
+              updateAnnotationGraphData(parseFloat(request.analysisGameNum), parseFloat(request.analysisEval), parseFloat(request.analysisNodes), request.analysisFEN);
+              if ((anps = parseFloat(request.analysisNodesPerSecond)) > analysisMaxNodesPerSecond) { analysisMaxNodesPerSecond = anps; }
+           } else { clearAnnotationGraph(); }
         }
      });
    }
@@ -632,6 +634,7 @@ of Google Chrome. Don't use with any other browser.
    var minNodesForAnnotation = 12345;
    var minEvalForCheckmateAssumption = 1900;
    var forceAnnotationGraphUpdate = false;
+   var analysisMaxNodesPerSecond = 0;
 
    function resetAnnotationGraphData(annGame) {
       if (annGame == -1) {
@@ -782,8 +785,12 @@ of Google Chrome. Don't use with any other browser.
          }
          if (theObject = document.getElementById("GameAnnotationEval")) { theObject.innerHTML = annEval; }
       } else {
-         if (theObject = document.getElementById("GameAnnotationMove")) { theObject.innerHTML = ""; }
-         if (theObject = document.getElementById("GameAnnotationEval")) { theObject.innerHTML = ""; }
+         if (analysisMaxNodesPerSecond > 1000000000) { anps = Math.floor(analysisMaxNodesPerSecond / 1000000000) + "T"; }
+         else if (analysisMaxNodesPerSecond > 1000000) { anps = Math.floor(analysisMaxNodesPerSecond / 1000000) + "M"; }
+         else if (analysisMaxNodesPerSecond > 1000) { anps = Math.floor(analysisMaxNodesPerSecond / 1000) + "K"; }
+         else { anps = analysisMaxNodesPerSecond; }
+         if (theObject = document.getElementById("GameAnnotationMove")) { theObject.innerHTML = "analysis engine"; }
+         if (theObject = document.getElementById("GameAnnotationEval")) { theObject.innerHTML = "up to " + anps + " nodes per second"; }
       }
    }
 
