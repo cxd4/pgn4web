@@ -757,6 +757,14 @@ of Google Chrome. Don't use with any other browser.
       if (typeof(annotationBarWidth) != "undefined") {
          annPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
          if ((annPly >= StartPly) && (annPly <= StartPly + PlyNumber)) { GoToMove(StartPly + annPly); }
+         else {
+            if (analysisMaxNodesPerSecond > 1000000000) { anps = Math.floor(analysisMaxNodesPerSecond / 1000000000) + "T"; }
+            else if (analysisMaxNodesPerSecond > 1000000) { anps = Math.floor(analysisMaxNodesPerSecond / 1000000) + "M"; }
+            else if (analysisMaxNodesPerSecond > 1000) { anps = Math.floor(analysisMaxNodesPerSecond / 1000) + "K"; }
+            else { anps = analysisMaxNodesPerSecond; }
+            if (theObject = document.getElementById("GameAnnotationMove")) { theObject.innerHTML = ""; }
+            if (theObject = document.getElementById("GameAnnotationEval")) { theObject.innerHTML = "analysis up to " + anps + " nodes per second"; }
+         }
       }
    }
 
@@ -793,12 +801,8 @@ of Google Chrome. Don't use with any other browser.
          }
          if (theObject = document.getElementById("GameAnnotationEval")) { theObject.innerHTML = annEval; }
       } else {
-         if (analysisMaxNodesPerSecond > 1000000000) { anps = Math.floor(analysisMaxNodesPerSecond / 1000000000) + "T"; }
-         else if (analysisMaxNodesPerSecond > 1000000) { anps = Math.floor(analysisMaxNodesPerSecond / 1000000) + "M"; }
-         else if (analysisMaxNodesPerSecond > 1000) { anps = Math.floor(analysisMaxNodesPerSecond / 1000) + "K"; }
-         else { anps = analysisMaxNodesPerSecond; }
          if (theObject = document.getElementById("GameAnnotationMove")) { theObject.innerHTML = ""; }
-         if (theObject = document.getElementById("GameAnnotationEval")) { theObject.innerHTML = "analysis up to " + anps + " nodes per second"; }
+         if (theObject = document.getElementById("GameAnnotationEval")) { theObject.innerHTML = ""; }
       }
    }
 
