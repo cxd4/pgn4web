@@ -179,6 +179,8 @@ chrome.contextMenus.create({"type": "separator", "contexts": ["page", "selection
 
 // "link" context menu to open remote PGN chess games URLs
 
+// when bug 51461 is fixed and about.html shows the "try this" examples, add "chrome-extension://*/*.xxx" to each xxxUrlPatterns
+
 // which URL patters should be considered as PGN chess games
 
 pgnUrlPatterns = ["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", "*://*/*.PGN?*", "*://*/*.Pgn?*"];
