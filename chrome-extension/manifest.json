@@ -29,5 +29,5 @@
    },
    "permissions": [ "contextMenus", "tabs", "*://*/*" ],
    "update_url": "http://pgn4web.googlecode.com/svn/trunk/chrome-extension/updateInfo.xml",
-   "version": "1.6.6"
+   "version": "1.6.7"
 }
