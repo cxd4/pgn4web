@@ -49,7 +49,8 @@ enable the demo paragraphs in about.html by removing the "display: none;"
 css attribute of "div.try", demo paragraphs being disabled at the moment
 because extension pages dont get context menus. 
 http://crbug.com/51461
-Fixed in google chrome (dev) v14.0.825.0
+Fixed in google chrome (dev) v14.0.825.0, but needs to verify that "link"
+context menu appear for links to chrome-extension:// files.
 
 Bugs:
 
