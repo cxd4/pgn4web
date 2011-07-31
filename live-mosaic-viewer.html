@@ -349,7 +349,6 @@ function pgnGameForBoard(gameNum) {
   if (gameVariant[gameNum]) { localPgnGame += "[Variant \"" + gameVariant[gameNum] + "\"]\n"; }
   if (gameInitialWhiteClock[gameNum]) { localPgnGame += "[WhiteClock \"" + gameInitialWhiteClock[gameNum] + "\"]\n"; }
   if (gameInitialBlackClock[gameNum]) { localPgnGame += "[BlackClock \"" + gameInitialBlackClock[gameNum] + "\"]\n"; }
-  if (thisTag = customPgnHeaderTag("Clock")) { localPgnGame += "[Clock \"" + thisTag + "\"]\n"; }
   if (thisTag = customPgnHeaderTag("TimeControl")) { localPgnGame += "[TimeControl \"" + thisTag + "\"]\n"; }
   localPgnGame += "\n";
 
