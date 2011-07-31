@@ -92,10 +92,12 @@ chrome.tabs.getSelected(null, function(tab){
   var listObject = document.getElementById("pgnLinkList");
   var measureObject = document.getElementById("measure");
 
+  var pgnHeaderInnerHTML = '<a class="pgnHeaderLink" title="chess games viewer from the pgn4web project" target="_blank" href="javascript:void(0);" onclick="chrome.tabs.create({url: \'about.html\'});">Chess games viewer</a>';
+
   if ((typeof(chrome.extension.getBackgroundPage().pgnHrefLinks[tab.id]) == "undefined") || (typeof(chrome.extension.getBackgroundPage().pgnWebRequests[tab.id]) == "undefined")) {
     listObject.style.marginRight = "2em";
     listObject.innerHTML = "please reload the page to look again for links to PGN chess games";
-    headerObject.innerHTML = "Chess games viewer: error";
+    headerObject.innerHTML = pgnHeaderInnerHTML + ": error";
     return;
   }
   pgnLinks = chrome.extension.getBackgroundPage().pgnHrefLinks[tab.id];
@@ -112,7 +114,6 @@ chrome.tabs.getSelected(null, function(tab){
     listObject.style.paddingRight = "2em";
   } else { listObject.style.marginRight = "2em"; }
 
-  var pgnHeaderInnerHTML = '<a class="pgnHeaderLink" title="chess games viewer from the pgn4web project" target="_blank" href="javascript:void(0);" onclick="chrome.tabs.create({url: \'about.html\'});">Chess games viewer</a>';
   pgnHeaderInnerHTML += ': <span title="the chess games viewer extension detected on this page ' + 
     pgnLinks.length + (pgnLinks.length == 1 ? ' link' : ' links') + ' to chess games in PGN format">' + 
     pgnLinks.length + (pgnLinks.length == 1 ? ' link' : ' links') + ' on this page</span>';
