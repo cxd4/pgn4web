@@ -44,13 +44,15 @@ check what happens when clicking a link on the page or the download icon
 of the popup.
 http://crbug.com/86115 (and other, search for registerContentHandler)
 
-about.html: demos
+about.html, background.html: demos
 enable the demo paragraphs in about.html by removing the "display: none;"
 css attribute of "div.try", demo paragraphs being disabled at the moment
 because extension pages dont get context menus. 
 http://crbug.com/51461
-Fixed in google chrome (dev) v14.0.825.0, but needs to verify that a "link"
-context menu appears for links to chrome-extension://*/*.pgn files.
+Fixed in google chrome (dev) v14.0.825.0, but check that a "link" context menu
+appears for links to chrome-extension://thisExtensionId/*.pgn files (and it
+does not appear for pages of other extensions); background.html might need
+fixing the pgnUrlPattern/zipUrlPattern definition.
 
 Bugs:
 
