@@ -180,12 +180,13 @@ chrome.contextMenus.create({"type": "separator", "contexts": ["page", "selection
 
 // "link" context menu to open remote PGN chess games URLs
 
-// when bug 51461 is fixed and about.html shows the "try this" examples, add "chrome-extension://*/*.xxx" to each xxxUrlPatterns
-
 // which URL patters should be considered as PGN chess games
 
 pgnUrlPatterns = ["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", "*://*/*.PGN?*", "*://*/*.Pgn?*"];
 zipUrlPatterns = ["*://*/*.zip", "*://*/*.ZIP", "*://*/*.Zip", "*://*/*.zip?*", "*://*/*.ZIP?*", "*://*/*.Zip?*"];
+// when bug 51461 is fixed and about.html shows the "try this" examples, make sure the links on the extension page get the context menus
+// pgnUrlPatterns = ["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", "*://*/*.PGN?*", "*://*/*.Pgn?*", chrome.extension.getURL("*.pgn")];
+// zipUrlPatterns = ["*://*/*.zip", "*://*/*.ZIP", "*://*/*.Zip", "*://*/*.zip?*", "*://*/*.ZIP?*", "*://*/*.Zip?*", chrome.extension.getURL("*.zip")];
 pgnZipUrlPatterns = pgnUrlPatterns.concat(zipUrlPatterns);
 
 // until chromium bug 63965 is resolved the context menu will not appear for
