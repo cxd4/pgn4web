@@ -184,7 +184,7 @@ chrome.contextMenus.create({"type": "separator", "contexts": ["page", "selection
 
 pgnUrlPatterns = ["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", "*://*/*.PGN?*", "*://*/*.Pgn?*"];
 zipUrlPatterns = ["*://*/*.zip", "*://*/*.ZIP", "*://*/*.Zip", "*://*/*.zip?*", "*://*/*.ZIP?*", "*://*/*.Zip?*"];
-// when bug 51461 is fixed and about.html shows the "try this" examples, make sure the links on the extension page get the context menus
+// when chromium bug 51461 is fixed and about.html shows the "try this" examples, make sure the links on the extension page get the context menus
 // pgnUrlPatterns = ["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", "*://*/*.PGN?*", "*://*/*.Pgn?*", chrome.extension.getURL("*.pgn")];
 // zipUrlPatterns = ["*://*/*.zip", "*://*/*.ZIP", "*://*/*.Zip", "*://*/*.zip?*", "*://*/*.ZIP?*", "*://*/*.Zip?*", chrome.extension.getURL("*.zip")];
 pgnZipUrlPatterns = pgnUrlPatterns.concat(zipUrlPatterns);
