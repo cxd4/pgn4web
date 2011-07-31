@@ -14,8 +14,9 @@ of Google Chrome. Don't use with any other browser.
 
 function notifyPgnHrefLinks() {
 
+  pgnLinkRegExp = new RegExp("^(http|https|chrome-extension):\\/\\/[^?#]+\\.pgn($|\\?.*$|#.*$)", "i");
   function validatePgnUrl(pgnUrl) {
-    return (pgnUrl && (pgnUrl.match(/^(http|https|chrome-extension):\/\/[^?#]+\.pgn($|\?.*$|#.*$)/i) !== null));
+    return (pgnUrl && pgnLinkRegExp.test(pgnUrl));
   }
 
   var pgn4web_pgnHrefLinks = new Array();
