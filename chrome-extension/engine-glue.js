@@ -29,7 +29,6 @@ function setAnalysisStatus(newStatus, newTabId, newGameNum, newFEN) {
          if ((g_tabId !== null) && (newTabId !== g_tabId)) { notifyAnalysis(g_tabId, "", "", "", "", "", "", ""); }
          if (InitializeBackgroundEngine()) {
             g_tabId = newTabId;
-            ResetGame();
             InitializeFromFen(g_FEN = newFEN);
             g_gameNum = newGameNum;
             g_backgroundEngine.postMessage("position " + GetFen());
@@ -83,6 +82,7 @@ function InitializeBackgroundEngine() {
    if (!g_backgroundEngineValid) { return false; }
 
    if (!g_backgroundEngine) {
+      ResetGame();
       g_backgroundEngineValid = true;
       try {
           g_backgroundEngine = new Worker("garbochess/garbochess.js");
