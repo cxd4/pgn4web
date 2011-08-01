@@ -77,12 +77,17 @@ function clearAnalysisTimeout() {
 
 var g_backgroundEngineValid = true;
 var g_backgroundEngine;
+var g_resetGame;
 
 function InitializeBackgroundEngine() {
    if (!g_backgroundEngineValid) { return false; }
 
-   if (!g_backgroundEngine) {
+   if (!g_resetGame) {
       ResetGame();
+      g_resetGame = true;
+   }
+
+   if (!g_backgroundEngine) {
       g_backgroundEngineValid = true;
       try {
           g_backgroundEngine = new Worker("garbochess/garbochess.js");
