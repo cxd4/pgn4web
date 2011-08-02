@@ -56,22 +56,6 @@ fixing the pgnUrlPattern/zipUrlPattern definition.
 
 Bugs:
 
-background.html: "about" context menu item
-until chromium bug 63545 is resolved, two entries are required
-and adding the about menu to the "selection" context would result in
-duplicated items when a selected link is right-clicked.
-http://crbug.com/63545
-Verify in background.html
-Fixed in google chrome (dev) v13.0.782.10
-
-background.html: "link" context menu
-until chromium bug 63965 is resolved the context menu will not appear for
-links shown as images like this <a href=game.pgn><img src=image.jpeg/></a>
-http://crbug.com/63965
-Verify this on the page (after login):
-http://www.chessgames.com/perl/chessplayer?pid=18000
-Fixed in google chrome (dev) v13.0.782.10
-
 background.html and manifest.json match pattern definition:
 because of how match patterns can be defined, some URLs might be identified
 as PGN chess games URL even if they should not, for instance
