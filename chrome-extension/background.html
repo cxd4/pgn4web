@@ -188,10 +188,6 @@ zipUrlPatterns = ["*://*/*.zip", "*://*/*.ZIP", "*://*/*.Zip", "*://*/*.zip?*", 
 // zipUrlPatterns = ["*://*/*.zip", "*://*/*.ZIP", "*://*/*.Zip", "*://*/*.zip?*", "*://*/*.ZIP?*", "*://*/*.Zip?*", chrome.extension.getURL("*.zip")];
 pgnZipUrlPatterns = pgnUrlPatterns.concat(zipUrlPatterns);
 
-// until chromium bug 63965 is resolved the context menu will not appear for
-// links shown as images like this <a href=game.pgn><img src=image.jpeg/></a>
-// see http://code.google.com/p/chromium/issues/detail?id=63965
-
 chrome.contextMenus.create({"title": "View chess games link on a single board", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnviewLinkOnClick});
 
 chrome.contextMenus.create({"title": "View chess games link on a single board with live refresh", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnliveLinkOnClick});
@@ -210,19 +206,7 @@ chrome.contextMenus.create({"type": "separator", "contexts": ["page"]});
 
 // "link", "page" and "selection" about menus
 
-// ideally, only this entry should be required
-//
-// chrome.contextMenus.create({"title": "About the chess games viewer", "contexts": ["link", "page", "selection"], targetUrlPatterns: pgnZipUrlPatterns, "onclick": aboutChessGamesViewer});
-//
-// however, until chromium bug 63545 is resolved, two entries are required
-// and adding the about menu to the "selection" context would result in
-// duplicated items when a selected link is right-clicked
-// see http://code.google.com/p/chromium/issues/detail?id=63545
-//
-chrome.contextMenus.create({"title": "About the chess games viewer", "contexts": ["link"], targetUrlPatterns: pgnZipUrlPatterns, "onclick": aboutChessGamesViewer});
-//
-chrome.contextMenus.create({"title": "About the chess games viewer", "contexts": ["page"], "onclick": aboutChessGamesViewer});
-//
+chrome.contextMenus.create({"title": "About the chess games viewer", "contexts": ["link", "page", "selection"], targetUrlPatterns: pgnZipUrlPatterns, "onclick": aboutChessGamesViewer});
 
 // end of context menus entries
 
