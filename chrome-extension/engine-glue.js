@@ -28,10 +28,10 @@ function setAnalysisStatus(newStatus, newTabId, newGameNum, newFEN) {
          }
          if ((g_tabId !== null) && (newTabId !== g_tabId)) { notifyAnalysis(g_tabId, "", "", "", "", "", "", ""); }
          if (InitializeBackgroundEngine()) {
-            g_tabId = newTabId;
-            InitializeFromFen(g_FEN = newFEN);
+            g_FEN = newFEN;
             g_gameNum = newGameNum;
-            g_backgroundEngine.postMessage("position " + GetFen());
+            g_tabId = newTabId;
+            g_backgroundEngine.postMessage("position " + g_FEN);
             g_backgroundEngine.postMessage("analyze");
             g_analysis_status = "analysis";
             setAnalysisTimeout(g_tabId);
@@ -77,15 +77,9 @@ function clearAnalysisTimeout() {
 
 var g_backgroundEngineValid = true;
 var g_backgroundEngine;
-var g_resetGame;
 
 function InitializeBackgroundEngine() {
    if (!g_backgroundEngineValid) { return false; }
-
-   if (!g_resetGame) {
-      ResetGame();
-      g_resetGame = true;
-   }
 
    if (!g_backgroundEngine) {
       g_backgroundEngineValid = true;
