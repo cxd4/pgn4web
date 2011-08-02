@@ -44,7 +44,7 @@ function fixCommonPgnMistakes(text) {
 
 function validatePgnText(pgnText) {
   testPgnText = pgnText;
-  testPgnText = testPgnText.replace(/%[^\n]*(\n|$)/g, ""); // remove comments
+  testPgnText = testPgnText.replace(/(^|\n)%[^\n]*(?=\n|$)/g, ""); // remove comments
   testPgnText = testPgnText.replace(/{[^}]*}/g, ""); // remove comments
   testPgnText = testPgnText.replace(pgnHeaderRegExpGlobal, ""); // remove headers
   return (testPgnText.match(/[^\s0-9.a-hx:KQRBNO#+=!?$()*\/\n\r\-]+/) === null);
