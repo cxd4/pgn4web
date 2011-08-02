@@ -131,6 +131,7 @@ a {
 .moveText {
   clear: both;
   padding-bottom: 1em;
+  text-align: justiy;
 }
 
 .comment {
@@ -263,6 +264,7 @@ a {
   overflow-y: auto;
   padding-right: 1em;
   margin-bottom: 2.5em;
+  text-align: justiy;
   display: none;
 }
 
