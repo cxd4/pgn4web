@@ -448,7 +448,7 @@ of Google Chrome. Don't use with any other browser.
 
    function customShortcutKey_Shift_4() { cycleLastMoveAndCommentArea(); }
 
-   function customShortcutKey_Shift_5() { if (checkEngineUnderstandsGameAndWarn()) { toggleAnalysis(); } }
+   function customShortcutKey_Shift_5() { userToggleAnalysis(); }
    function customShortcutKey_Shift_6() { if (analysisStarted) { resetAnnotationGraphData(currentGame); updateAnnotationGraph(currentGame); } else { resetAnnotationGraphData(-1); } }
 
    function customShortcutKey_Shift_7() { fetchInputPgnText(); }
@@ -585,7 +585,7 @@ of Google Chrome. Don't use with any other browser.
 
 </div>
 
-<div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleAnalysisLink" id="toggleAnalysisLink" href="javascript:void(0);" onclick="if (checkEngineUnderstandsGameAndWarn()) { toggleAnalysis(); }" title="toggle engine analysis">+</a></div>
+<div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleAnalysisLink" id="toggleAnalysisLink" href="javascript:void(0);" onclick="userToggleAnalysis();" title="toggle engine analysis">+</a></div>
 <div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="SetCommentsIntoMoveText(!commentsIntoMoveText); oldPly = CurrentPly; Init(); GoToMove(oldPly);" title="toggle show comments in game text for this page; click square B7 instead to save setting"></a></div>
 
 <div class="lastMoveAndComment" id="lastMoveAndComment"><a href="javascript:MoveToNextComment();" class="lastMove notranslate" title="last move" id="GameLastMove"></a><a href="javascript:MoveToPrevComment();" class="lastComment" title="current position comment" id="GameLastComment"></a></div>
@@ -603,7 +603,7 @@ of Google Chrome. Don't use with any other browser.
       if (analysisStarted) { stopAnalysis(); }
       else { restartAnalysis(); }
    }
-   
+
    function restartAnalysis() {
       chrome.extension.sendRequest({analysisCommand: 'analysis', FEN: CurrentFEN(), gameNum: currentGame}, function(response) {});
       forceAnnotationGraphUpdate = true;
@@ -818,7 +818,7 @@ of Google Chrome. Don't use with any other browser.
    maxAnnotationDelay = 300;
    annotationDelayDefault = 15;
    function annotateGame() {
-      if (annotationDelay = prompt("Automatic game annotation from the current position, please do not interact with the chessboard until the analysis has reached the last available move.\n\nEnter engine's time per move, in seconds, between " + minAnnotationDelay + " and " + maxAnnotationDelay + ":", annotationDelayDefault)) {
+      if ((checkEngineUnderstandsGameAndWarn()) && (annotationDelay = prompt("Automatic game annotation from the current position, please do not interact with the chessboard until the analysis has reached the last available move.\n\nEnter engine's time per move, in seconds, between " + minAnnotationDelay + " and " + maxAnnotationDelay + ":", annotationDelayDefault))) {
          if (isNaN(annotationDelay = parseInt(annotationDelay, 10))) { annotationDelay = annotationDelayDefault; }
          annotationDelay = Math.min(maxAnnotationDelay, Math.max(minAnnotationDelay, annotationDelay));
          SetAutoPlay(false);
@@ -846,6 +846,8 @@ of Google Chrome. Don't use with any other browser.
       return retVal;
    }
 
+   function userToggleAnalysis() { if (checkEngineUnderstandsGameAndWarn()) { toggleAnalysis(); }
+
 
    // A7
    if ((typeof(chrome) != "undefined") && (typeof(chrome.tabs) != "undefined") && (typeof(chrome.tabs.create) != "undefined")) { boardShortcut("A7", "about the chess games viewer extension for google chrome", function(){ chrome.tabs.create({url: "about.html"}); }); }
@@ -862,9 +864,9 @@ of Google Chrome. Don't use with any other browser.
    // E2
    boardShortcut("E2", "autoplay: custom delay", setCustomAutoplayDelay);
    // G2
-   boardShortcut("G2", "annotate game", function(){ if (checkEngineUnderstandsGameAndWarn()) { annotateGame(); } });
+   boardShortcut("G2", "annotate game", annotateGame);
    // H2
-   boardShortcut("H2", "toggle engine analysis", function(){ if (checkEngineUnderstandsGameAndWarn()) { toggleAnalysis(); } });
+   boardShortcut("H2", "toggle engine analysis", userToggleAnalysis);
 
 
    function openPgnFiles() {
