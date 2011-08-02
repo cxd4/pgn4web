@@ -348,7 +348,10 @@ of Google Chrome. Don't use with any other browser.
       if (previousCurrentGame !== currentGame) { 
          previousPlyNumber = PlyNumber;
          previousCurrentGame = currentGame;
-         forceAnnotationGraphUpdate = true;
+         if (analysisStarted) {
+            if (engineUnderstandsGame(currentGame)) { forceAnnotationGraphUpdate = true; }
+            else { stopAnalysis(); }
+         }
       }
    }
 
@@ -445,7 +448,7 @@ of Google Chrome. Don't use with any other browser.
 
    function customShortcutKey_Shift_4() { cycleLastMoveAndCommentArea(); }
 
-   function customShortcutKey_Shift_5() { toggleAnalysis(); }
+   function customShortcutKey_Shift_5() { if (checkEngineUnderstandsGameAndWarn()) { toggleAnalysis(); } }
    function customShortcutKey_Shift_6() { if (analysisStarted) { resetAnnotationGraphData(currentGame); updateAnnotationGraph(currentGame); } else { resetAnnotationGraphData(-1); } }
 
    function customShortcutKey_Shift_7() { fetchInputPgnText(); }
@@ -582,7 +585,7 @@ of Google Chrome. Don't use with any other browser.
 
 </div>
 
-<div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleAnalysisLink" id="toggleAnalysisLink" href="javascript:void(0);" onclick="toggleAnalysis();" title="toggle engine analysis">+</a></div>
+<div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleAnalysisLink" id="toggleAnalysisLink" href="javascript:void(0);" onclick="if (checkEngineUnderstandsGameAndWarn()) { toggleAnalysis(); }" title="toggle engine analysis">+</a></div>
 <div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="SetCommentsIntoMoveText(!commentsIntoMoveText); oldPly = CurrentPly; Init(); GoToMove(oldPly);" title="toggle show comments in game text for this page; click square B7 instead to save setting"></a></div>
 
 <div class="lastMoveAndComment" id="lastMoveAndComment"><a href="javascript:MoveToNextComment();" class="lastMove notranslate" title="last move" id="GameLastMove"></a><a href="javascript:MoveToPrevComment();" class="lastComment" title="current position comment" id="GameLastComment"></a></div>
@@ -833,6 +836,16 @@ of Google Chrome. Don't use with any other browser.
       }
    }
 
+   function engineUnderstandsGame(gameNum) {
+      return ((typeof(gameVariant[gameNum]) == "undefined") || (gameVariant[gameNum].match(/^(chess|normal|standard|)$/i) !== null));
+   }
+
+   function checkEngineUnderstandsGameAndWarn() {
+      retVal = engineUnderstandsGame(currentGame);
+      if (!retVal) { alert("warning: engine analysis not available for chess variants"); }
+      return retVal;
+   }
+
 
    // A7
    if ((typeof(chrome) != "undefined") && (typeof(chrome.tabs) != "undefined") && (typeof(chrome.tabs.create) != "undefined")) { boardShortcut("A7", "about the chess games viewer extension for google chrome", function(){ chrome.tabs.create({url: "about.html"}); }); }
@@ -849,9 +862,9 @@ of Google Chrome. Don't use with any other browser.
    // E2
    boardShortcut("E2", "autoplay: custom delay", setCustomAutoplayDelay);
    // G2
-   boardShortcut("G2", "annotate game", annotateGame);
+   boardShortcut("G2", "annotate game", function(){ if (checkEngineUnderstandsGameAndWarn()) { annotateGame(); } });
    // H2
-   boardShortcut("H2", "toggle engine analysis", toggleAnalysis);
+   boardShortcut("H2", "toggle engine analysis", function(){ if (checkEngineUnderstandsGameAndWarn()) { toggleAnalysis(); } });
 
 
    function openPgnFiles() {
