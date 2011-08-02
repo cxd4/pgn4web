@@ -254,7 +254,7 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function customFunctionOnMove() {
-      if (analysisStarted) {
+      if (analysisStarted && engineUnderstandsGame(currentGame)) {
          restartAnalysis();
          updateAnnotationGraph(currentGame);
       } else {
@@ -348,11 +348,9 @@ of Google Chrome. Don't use with any other browser.
       if (previousCurrentGame !== currentGame) { 
          previousPlyNumber = PlyNumber;
          previousCurrentGame = currentGame;
-         if (analysisStarted) {
-            if (engineUnderstandsGame(currentGame)) { forceAnnotationGraphUpdate = true; }
-            else { stopAnalysis(); }
-         }
+         forceAnnotationGraphUpdate = true;
       }
+      if (analysisStarted && (!engineUnderstandsGame(currentGame))) { stopAnalysis(); }
    }
 
    var liveBroadcastUpdateTicker = 1;
