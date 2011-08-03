@@ -5,9 +5,9 @@
 #  for credits, license and more details
 #
 
-Chess games viewer extension for Google Chrome, providing 
+Chess games viewer extension for Google Chrome, providing
 an interactive chessboard showing chess games from links to
-PGN URLs, from local PGN files and from PGN text, using 
+PGN URLs, from local PGN files and from PGN text, using
 context menus and page actions.
 
 Part of the pgn4web project http://pgn4web.casaschi.net
@@ -24,13 +24,13 @@ Homepage: http://forwardcoding.com/projects/ajaxchess/chess.html
 Repository: https://github.com/glinscott/Garbochess-JS/
 
 the download.png and refresh.png icons licensed by interactivemania
-http://www.interactivemania.com under a Creative Commons Attribution-No 
+http://www.interactivemania.com under a Creative Commons Attribution-No
 Derivative Works 3.0 license http://creativecommons.org/licenses/by-nd/3.0/
 
 
 Enhancements:
 
-background.html, manifest.json: webRequest 
+background.html, manifest.json: webRequest
 enable the webRequest extension API when stable
 info http://code.google.com/chrome/extensions/api_index.html
 http://crbug.com/60101
@@ -49,7 +49,7 @@ requires increasing minimum_chrome_version
 about.html, background.html: "try this" examples
 enable the example paragraphs in about.html by removing the "display: none;"
 css attribute of "div.try", example paragraphs being disabled at the moment
-because extension pages dont get context menus. 
+because extension pages dont get context menus.
 http://crbug.com/51461
 Fixed in google chrome (dev) v14.0.835.15, but check that a "link" context
 menu appears for links to chrome-extension://thisExtensionId/*.pgn files and
@@ -82,7 +82,7 @@ http://crbug.com/50192
 workaround implemented (anymore since pgn4web r6921)
 http://crbug.com/31494
 
-about.html: help page
+about.html, manifest.json: help page
 this page is currently assigned as the "options" page while there are not
 any configurable options; it should rather assigned as "help" page.
 http://crbug.com/29849
