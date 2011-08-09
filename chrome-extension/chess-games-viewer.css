@@ -141,7 +141,9 @@ a {
 
 .topMenu {
   height: 4em;
-  padding: 1em;
+  padding-top: 1em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
   padding-bottom: 0;
   color: #888888;
   opacity: 0.25;
@@ -154,6 +156,7 @@ a {
 
 .topButton {
   margin-left: 0.5em;
+  margin-right: 0.5em;
   color: inherit;
 }
 
