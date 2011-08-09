@@ -134,15 +134,19 @@ of Google Chrome. Don't use with any other browser.
          '[FEN "r1bqkb1r/1p3ppp/p1nppn2/8/2P1P3/N1N5/PP3PPP/R1BQKB1R b KQkq - 1 8"] 8... d5'
       );
       hints = new Array(
-         "click square A7 for detailed information about the chess games viewer extension",
-         "interact with the chessboard clicking chessboard squares; hovering the mouse on each square displays an help summary",
-         "interact with the chessboard using keyboard shortcuts keys; click square F8 for a comprehensive list",
-         "click square B5 to search games in large PGN files: click square E8 for help",
-         "in case of errors, the top left chessboard square will flash; click the flashing square for detailed error info",
-         "when in live broadcast mode, click square H5 to switch between the single large board view and the multiple small boards view",
-         "drag and drop local PGN files or zipped PGN files on the single large chessboard page for viewing",
+         "click the about menu item at the top left of the page for detailed information about the chess games viewer extension",
          "select the menu items at the top right of the page to enter PGN text, to load local PGN files or to view a remote PGN URL, optionally with live refresh",
-         "click square F5 for the chess puzzler of the day"
+         "drag and drop local PGN files or zipped PGN files on the single large chessboard page for viewing",
+         "interact with the chessboard clicking chessboard squares; hovering the mouse on each square displays an help summary",
+         "in case of errors, the top left chessboard square will flash; click the flashing square for detailed error info",
+         "click square B8 for the FEN string of the current position",
+         "click square C8 for the PGN data of the current game and click square D8 for the PGN data of all games",
+         "click square B5 to search games in large PGN files: click square E8 for help",
+         "interact with the chessboard using keyboard shortcuts keys; click square F8 for a comprehensive list",
+         "click square F5 for the chess puzzler of the day",
+         "click square G2 to annotate the game from the current position",
+         "click square H2 to toggle the analysis engine",
+         "when in live broadcast mode, click square H5 to switch between the single large board view and the multiple small boards view"
       );
       if (theObject = document.getElementById("pgnText")) {
          showTKfenEveryN = 20;
@@ -529,7 +533,11 @@ of Google Chrome. Don't use with any other browser.
 
 </script>
 
-<table class="topMenu" width="100%" cellpadding="0" cellspacing="0" border="0"><tr valign="top"><td width="99%">
+<table class="topMenu" width="100%" cellpadding="0" cellspacing="0" border="0"><tr valign="top"><td>
+<a id="aboutButton" name="aboutButton" class="topButton" href="javascript:void(0);" onclick="chrome.tabs.create({url: 'about.html'})" title="about the chess games viewer extension for google chrome">&nbsp;about&nbsp;</a>
+</td><td>
+<select class="hiddenSelect" />
+<td width="99%">
 <div id="GameSelector" class="gameSelector"></div>
 </td><td>
 <select class="hiddenSelect" />
