@@ -180,12 +180,12 @@ chrome.tabs.getSelected(null, function(tab){
 var toggledFullUrlNum = null;
 var toggledFullUrlDisplay;
 function toggleFullPgnUrl(l, displayUrl, fullUrl) {
-  if (link = document.getElementById("pgnLinkUrl_" + l)) { link.innerHTML = (link.innerHTML == displayUrl) ? fullUrl : displayUrl; }
+  link = document.getElementById("pgnLinkUrl_" + l);
+  if ((link) && (displayUrl !== fullUrl)) { link.innerHTML = (link.innerHTML == displayUrl) ? fullUrl : displayUrl; }
   if ((toggledFullUrlNum !== null) && (toggledFullUrlLink = document.getElementById("pgnLinkUrl_" + toggledFullUrlNum))) { toggledFullUrlLink.innerHTML = toggledFullUrlDisplay; }
-  toggledFullUrlNum = (link.innerHTML == fullUrl) ? l : null;
+  toggledFullUrlNum = ((link) && (link.innerHTML == fullUrl) && (displayUrl !== fullUrl)) ? l : null;
   toggledFullUrlDisplay = displayUrl;
 }
-
 
 </script>
 
