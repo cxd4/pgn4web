@@ -166,19 +166,14 @@ a {
   -webkit-box-shadow: 0 0 1em #FF8000;
 }
 
-.topMenuSpacer {
-  width: 1em;
-  font-family: monospace;
-}
-
 .hiddenSelect {
-  width: 0.5em;
+  width: 1em;
   font-family: monospace;
   visibility: hidden;
 }
 
 .localPgnFiles {
-  width: 0.5em;
+  width: 1em;
   height: 0.5em;
   visibility: hidden;
 }
