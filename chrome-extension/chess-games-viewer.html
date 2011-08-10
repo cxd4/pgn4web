@@ -769,7 +769,7 @@ of Google Chrome. Don't use with any other browser.
    function annotationGraphClick() {
       if (typeof(annotationBarWidth) != "undefined") {
          annPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
-         if ((annPly >= StartPly) && (annPly <= StartPly + PlyNumber)) { GoToMove(StartPly + annPly); }
+         if ((annPly >= StartPly) && (annPly <= StartPly + PlyNumber)) { GoToMove(annPly); }
          else {
             if (analysisMaxNodesPerSecond > 1000000000) { anps = Math.floor(analysisMaxNodesPerSecond / 1000000000) + "T"; }
             else if (analysisMaxNodesPerSecond > 1000000) { anps = Math.floor(analysisMaxNodesPerSecond / 1000000) + "M"; }
