@@ -26,7 +26,7 @@ of Google Chrome. Don't use with any other browser.
 
 var pgnHeaderRegExpGlobal = /((\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)+)/g;
 
-var pgnZipLinkRegExp = new RegExp("^(http|https|chrome-extension):\\/\\/[^?#]+\\.(pgn|zip)($|\\?.*$|#.*$)" , "i");
+var pgnZipLinkRegExp = new RegExp("^((http|https):\\/\\/|" + chrome.extension.getURL("") + ")[^?#]+\\.(pgn|zip)($|\\?.*$|#.*$)", "i");
 function validatePgnUrl(pgnUrl) {
   return (pgnUrl && pgnZipLinkRegExp.test(pgnUrl));
 }
