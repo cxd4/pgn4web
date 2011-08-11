@@ -112,6 +112,18 @@
     if ((headlessPageValue == "true") || (headlessPageValue == "t")) { headlessPage = true; }
   }
 
+  var filteredGames = new Array();
+  thisRegExp = /(&|\?)(rememberHidden|rh)=([^&]*)(&|$)/i;
+  if (window.location.search.match(thisRegExp) !== null) {
+    try { 
+       filteredGames = JSON.parse(unescape(window.location.search.match(thisRegExp)[3]));
+       if (filteredGames[filteredGames.length - 1] === pgnData) {
+          filteredGames.splice(filteredGames.length - 1, 1);
+       } else { filteredGames = new Array(); }
+    }
+    catch(e) { filteredGames = new Array(); }
+  }
+
   SetImagePath("alpha/24"); // just to avoid console errors
 
 </script>
@@ -249,7 +261,7 @@ if (headlessPage) {
 </script>
 
 <center>
-<a class="beforeBoards" name="boards" href="javascript:void(0);" onclick="goToHash('boards');" onfocus="this.blur();">&nbsp</a>
+<a class="beforeBoards" name="boards" href="javascript:void(0);" onclick="goToHash('boards');" onfocus="this.blur();">&nbsp;</a>
 <div id="boardFrames"></div>
 
 
@@ -259,7 +271,7 @@ if (headlessPage) {
 
 
 </center>
-<a class="afterBoards" name="bottom" href="javascript:void(0);" onclick="goToHash('');" onfocus="this.blur();">&nbsp</a>
+<a class="afterBoards" name="bottom" href="javascript:void(0);" onclick="goToHash('');" onfocus="this.blur();">&nbsp;</a>
 
 <script type="text/javascript">
 
@@ -272,7 +284,6 @@ if (!headlessPage) {
 
 var pgn4webClearShortCutSquaresForChildFrames =  [ ["DH", "8"], ["H", "7"], ["ABH", "6"] ];
 
-var filteredGames = new Array();
 var unfilteredGames = new Array();
 var numberOfGamesForDisplay = 0;
 var startGame = startFromFirstGame(firstGame, numberOfGamesForDisplay);
@@ -567,6 +578,12 @@ function switchBoardView(search) {
     if (demoFlag) { url += "&refreshDemo=true&demoPly=" + gameDemoMaxPly.join(); }
     if ((search !== null) && ((searchGame = gameNumberSearchPgn(search, false, true)) !== false)) {
       url += "&search=" + escape(searchGame + 1);
+    }
+    if (filteredGames.length) {
+       try { rememberHiddenValue = escape(JSON.stringify(filteredGames.concat(pgnData))); } 
+       catch(e) { rememberHiddenValue = null; }
+       rememberHiddenValueMaxLength = 65432;
+       if (rememberHiddenValue && (rememberHiddenValue.length < rememberHiddenValueMaxLength)) { url += "&rememberHidden=" + rememberHiddenValue; }
     }
     location.href = url;
   }
