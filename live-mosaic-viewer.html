@@ -425,6 +425,9 @@ function customFunctionOnPgnTextLoad() {
      firstGameAdjustment = 0;
      if (firstGame >= numberOfGames) { firstGame = numberOfGames - 1; }
      else if (firstGame < -numberOfGames) { firstGame = -numberOfGames; }
+     if ((g = filteredGames.indexOf(gameKey(gameEvent[firstGame], gameSite[firstGame], gameDate[firstGame], gameRound[firstGame], gameWhite[firstGame], gameBlack[firstGame]))) != -1 ) {
+        filteredGames.splice(g,1);
+     }
      if (firstGame >= 0) {
         for (g = 0; g < firstGame; g++) {
            if (checkForHiddenGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g])) {
