@@ -289,29 +289,29 @@ var unfilteredGames = new Array();
 var numberOfGamesForDisplay = 0;
 var firstGame;
 var startGame;
-var firstBoardGameNum = 0;
+var firstBoardDisplayGame = 0;
 
-function firstFromDisplayGame(displayGame) {
-  if (displayGame > numberOfGames) { displayGame = numberOfGames; }
-  else if (displayGame < -numberOfGames) { displayGame = -numberOfGames; }
+function firstFromDisplayGame(dGame) {
+  if (dGame > numberOfGames) { dGame = numberOfGames; }
+  else if (dGame < -numberOfGames) { dGame = -numberOfGames; }
 
-  if (displayGame === 0) { displayGame = 1; }
+  if (dGame === 0) { dGame = 1; }
 
-  displayGameAdjustment = 0;
-  if (displayGame > 0) {
-    for (g = 0; g < displayGame; g++) {
+  dGameAdjustment = 0;
+  if (dGame >= 0) {
+    for (g = 0; g < dGame - 1; g++) {
       if (checkForHiddenGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g])) {
-        displayGameAdjustment++;
+        dGameAdjustment--;
       }
     }
-    return displayGame - displayGameAdjustment - 1;  
+    return dGame + dGameAdjustment - 1;
   } else {
-    for (g = numberOfGames - 1; g >= numberOfGames + displayGame; g--) {
+    for (g = numberOfGames - 1; g > numberOfGames + dGame; g--) {
       if (checkForHiddenGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g])) {
-        displayGameAdjustment--;
+        dGameAdjustment--;
       }
     }
-    return displayGame - displayGameAdjustment;
+    return dGame - dGameAdjustment;
   }
 }
 
@@ -328,7 +328,10 @@ function gameKey(event, site, date, round, white, black) {
 function pgn4webHideChildFrameGame(event, site, date, round, white, black, test) {
   if (numberOfGamesForDisplay > 1) {
     res = hideGame(event, site, date, round, white, black, test);
-    if (res && (test !== true)) { customFunctionOnPgnTextLoad(); }
+    if (res && (test !== true)) {
+      firstGame = firstFromDisplayGame(firstBoardDisplayGame);
+      customFunctionOnPgnTextLoad();
+    }
   } else {
     res = false;
   }
@@ -341,7 +344,6 @@ function hideGame(event, site, date, round, white, black, test) {
   if (meaningful && (test !== true)) {
     for (f in filteredGames) { if (key == filteredGames[f]) { return false; } }
     filteredGames.push(key);
-    firstGame = firstFromDisplayGame(firstBoardGameNum);
   }
   return meaningful;
 }
@@ -360,12 +362,13 @@ function hideEndedGames() {
       hideGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g]);
     }
   }
+  firstGame = firstFromDisplayGame(firstBoardDisplayGame);
   customFunctionOnPgnTextLoad();
 }
 
 function restoreHiddenGames() {
   filteredGames = new Array();
-  firstGame = firstFromDisplayGame(firstBoardGameNum);
+  firstGame = firstFromDisplayGame(firstBoardDisplayGame);
   customFunctionOnPgnTextLoad();
 }
 
@@ -417,7 +420,7 @@ function updateBoard(thisBoardId) {
   thisBoard = parseInt(thisBoard, 10);
   if ((thisBoard < boardId.length) && (thisFrame = document.getElementById("board" + thisBoardId))) {
     if (thisBoard < numberOfGamesForDisplay) {
-      startGame = startFromFirstGame(firstGame, numberOfGamesForDisplay);
+      startGame = startFromFirstGame(firstGame);
       if (startGame >= 0) { gameForBoard = (startGame + thisBoard) % numberOfGamesForDisplay; }
       else { gameForBoard = (2 * numberOfGamesForDisplay + startGame - thisBoard) % numberOfGamesForDisplay; }
       gameNum = unfilteredGames[gameForBoard];
@@ -476,7 +479,7 @@ function customFunctionOnPgnTextLoad() {
 
   for (board = 0; board < maxBoards; board++) {
     if ((g = updateBoard(boardId[board])) != -1) {
-      if (board === 0) { firstBoardGameNum = g; }
+      if (board === 0) { firstBoardDisplayGame = displayGame >=0 ? g + 1 : numberOfGames - g; }
       found_g = false; for (f in unfilteredGames) { if (unfilteredGames[f] === g) { found_g = true; break; } }
       if (found_g) {
         if (LiveBroadcastDemo) {
@@ -579,21 +582,21 @@ function updateMenu() {
 
 }
 
-function startFromFirstGame(firstGame, numberOfGamesForDisplay) {
-  if (firstGame >= numberOfGamesForDisplay) { return numberOfGamesForDisplay - 1; }
-  if (firstGame < -numberOfGamesForDisplay) { return 0; }
-  if (firstGame < 0) { return numberOfGamesForDisplay + firstGame; }
-  else { return firstGame; }
+function startFromFirstGame(fGame) {
+  if (fGame >= numberOfGamesForDisplay) { return numberOfGamesForDisplay - 1; }
+  if (fGame < -numberOfGamesForDisplay) { return 0; }
+  if (fGame < 0) { return numberOfGamesForDisplay + fGame; }
+  else { return fGame; }
 }
 
 function nextPage() {
-  firstGame = (startFromFirstGame(firstGame, numberOfGamesForDisplay) + maxBoards) % numberOfGamesForDisplay;
+  firstGame = (startFromFirstGame(firstGame) + maxBoards) % numberOfGamesForDisplay;
   firstGame -= (firstGame < 0 ? numberOfGamesForDisplay : 0); 
   customFunctionOnPgnTextLoad();
 }
 
 function previousPage() {
-  firstGame = (startFromFirstGame(firstGame, numberOfGamesForDisplay) - maxBoards + numberOfGamesForDisplay) % numberOfGamesForDisplay; 
+  firstGame = (startFromFirstGame(firstGame) - maxBoards + numberOfGamesForDisplay) % numberOfGamesForDisplay; 
   firstGame -= (firstGame < 0 ? numberOfGamesForDisplay : 0);
   customFunctionOnPgnTextLoad();
 }
