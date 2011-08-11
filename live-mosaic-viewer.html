@@ -117,10 +117,10 @@
   thisRegExp = /(&|\?)(rememberHidden|rh)=([^&]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
     try { 
-       rememberedFilteredGames = JSON.parse(unescape(window.location.search.match(thisRegExp)[3]));
-       if (rememberedFilteredGames[rememberedFilteredGames.length - 1] === pgnData) {
-          rememberedFilteredGames.splice(rememberedFilteredGames.length - 1, 1);
-       } else { rememberedFilteredGames = null; }
+      rememberedFilteredGames = JSON.parse(unescape(window.location.search.match(thisRegExp)[3]));
+      if (rememberedFilteredGames[rememberedFilteredGames.length - 1] === pgnData) {
+        rememberedFilteredGames.splice(rememberedFilteredGames.length - 1, 1);
+      } else { rememberedFilteredGames = null; }
     }
     catch(e) { rememberedFilteredGames = null; }
   }
@@ -420,28 +420,28 @@ var previousPgnGameLength = new Array();
 function customFunctionOnPgnTextLoad() {
 
   if (rememberedFilteredGames) {
-     filteredGames = rememberedFilteredGames;
-     rememberedFilteredGames = null;
-     firstGameAdjustment = 0;
-     if (firstGame >= numberOfGames) { firstGame = numberOfGames - 1; }
-     else if (firstGame < -numberOfGames) { firstGame = -numberOfGames; }
-     if ((g = filteredGames.indexOf(gameKey(gameEvent[firstGame], gameSite[firstGame], gameDate[firstGame], gameRound[firstGame], gameWhite[firstGame], gameBlack[firstGame]))) != -1 ) {
-        filteredGames.splice(g,1);
-     }
-     if (firstGame >= 0) {
-        for (g = 0; g < firstGame; g++) {
-           if (checkForHiddenGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g])) {
-              firstGameAdjustment++;
-           }
+    filteredGames = rememberedFilteredGames;
+    rememberedFilteredGames = null;
+    firstGameAdjustment = 0;
+    if (firstGame >= numberOfGames) { firstGame = numberOfGames - 1; }
+    else if (firstGame < -numberOfGames) { firstGame = -numberOfGames; }
+    if ((g = filteredGames.indexOf(gameKey(gameEvent[firstGame], gameSite[firstGame], gameDate[firstGame], gameRound[firstGame], gameWhite[firstGame], gameBlack[firstGame]))) != -1 ) {
+      filteredGames.splice(g,1);
+    }
+    if (firstGame >= 0) {
+      for (g = 0; g < firstGame; g++) {
+        if (checkForHiddenGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g])) {
+          firstGameAdjustment++;
         }
-     } else {
-        for (g = numberOfGames - 1; g >= numberOfGames + firstGame; g--) {
-           if (checkForHiddenGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g])) {
-              firstGameAdjustment--;
-           }
+      }
+    } else {
+      for (g = numberOfGames - 1; g >= numberOfGames + firstGame; g--) {
+        if (checkForHiddenGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g])) {
+          firstGameAdjustment--;
         }
-     }
-     firstGame -= firstGameAdjustment;
+      }
+    }
+    firstGame -= firstGameAdjustment;
   }
 
   unfilteredGames = new Array();
