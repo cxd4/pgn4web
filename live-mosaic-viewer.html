@@ -19,7 +19,7 @@
 
   var pgnData_default = "live/live.pgn";
   var maxBoards_default = 8;
-  var firstGame_default = 1;
+  var displayGame_default = 1;
   var refreshMinutes_default = 1;
 
   var thisRegExp = /(&|\?)(help|h)(&|$)/i;
@@ -27,7 +27,7 @@
     alert("pgn4web live-mosaic-viewer.html parameters" + "\n\n" + 
       " - pgnData = file.pgn" + "\n\n" +
       " - maxBoards = max number of boards to display in a page (default " + maxBoards_default +  ")" + "\n\n" +
-      " - firstGame = number of first game to show, negative counts backwards (default " + firstGame_default + ")" + "\n\n" +
+      " - displayGame = number of game for display, negative counts backwards (default " + displayGame_default + ")" + "\n\n" +
       " - refreshMinutes = live broadcast delay (default " + refreshMinutes_default + ")" + "\n\n" +
       " - refreshDemo = if set true sets live demo mode (default false)" + "\n\n" +
       " - headlessPage = if set true displays a page without heading (default false)" + "\n\n" +
@@ -53,15 +53,14 @@
   maxBoards = parseInt(maxBoards, 10);
   if (isNaN(maxBoards) || (maxBoards < 1)) { maxBoards = maxBoards_default; }
 
-  var firstGame = firstGame_default;
-  thisRegExp = /(&|\?)(firstGame|fg)=((\+|-|)[\d]*)(&|$)/i;
+  var displayGame = displayGame_default;
+  thisRegExp = /(&|\?)(displayGame|dg)=((\+|-|)[\d]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
-    firstGame = unescape(window.location.search.match(thisRegExp)[3]);
+    displayGame = unescape(window.location.search.match(thisRegExp)[3]);
   }
-  firstGame = parseInt(firstGame, 10);
-  if (firstGame > 0) { firstGame--; }
-  var firstGameAtStartup = firstGame;
-
+  displayGame = parseInt(displayGame, 10);
+  if (displayGame > 0) { displayGame--; }
+ 
   var alertFlag = demoFlag = false;
   thisRegExp = /(&|\?)(refreshDemo|rd)=([^&]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
@@ -285,6 +284,7 @@ if (!headlessPage) {
 
 var pgn4webClearShortCutSquaresForChildFrames =  [ ["DH", "8"], ["H", "7"], ["ABH", "6"] ];
 
+var firstGame = displayGame;
 var filteredGames = new Array();
 var unfilteredGames = new Array();
 var numberOfGamesForDisplay = 0;
@@ -633,14 +633,24 @@ function goToHash(hash) {
 
 function customShortcutKey_Shift_3() { cycleHash(); }
 
-function customShortcutKey_Shift_8() {
-  firstGame = firstGameAtStartup;
+function customShortcutKey_Shift_6() {
+  firstGame = displayGame = displayGame_default;
+  restoreHiddenGames();
+}
+
+function customShortcutKey_Shift_7() {
+  firstGame = displayGame = displayGame_default;
   customFunctionOnPgnTextLoad();
 }
 
-function customShortcutKey_Shift_9() {
-  firstGame = firstGameAtStartup;
+function customShortcutKey_Shift_8() {
+  firstGame = displayGame;
   restoreHiddenGames();
+}
+
+function customShortcutKey_Shift_9() {
+  firstGame = displayGame;
+  customFunctionOnPgnTextLoad();
 }
 
 </script>
