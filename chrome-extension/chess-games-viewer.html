@@ -205,6 +205,13 @@ of Google Chrome. Don't use with any other browser.
       else { SetInitialGame(1); }
    }
 
+   // undocumented URL parameter: use only within the chrome extension
+   rememberHiddenValue = "";
+   thisRegExp = /(&|\?)(rememberHidden|rh)=([^&]*)(&|$)/i;
+   if (window.location.search.match(thisRegExp) !== null) {
+      rememberHiddenValue = unescape(window.location.search.match(thisRegExp)[3]);
+   }
+
    function getHighlightOptionFromLocalStorage() {
       try { ho = (localStorage.getItem("pgn4web_chess_games_viewer_highlightOption") != "false"); }
       catch (e) { return highlightOption_default; }
@@ -421,6 +428,7 @@ of Google Chrome. Don't use with any other browser.
             url = "live-mosaic-viewer.html?pgnData=" + escape(pgnUrl) + "&refreshMinutes=" + escape(refreshMinutes) + "&hp=t";
             if (demoFlag) { url += "&refreshDemo=true&demoPly=" + gameDemoMaxPly.join(); }
             url += "&firstGame=" + (currentGame + 1);
+            if (rememberHiddenValue) { url += "&rememberHidden=" + escape(rememberHiddenValue); }
             location.href = url;
          }
       }
