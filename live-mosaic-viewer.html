@@ -584,7 +584,7 @@ function switchBoardView(search) {
     if (filteredGames.length) {
        try { rememberHiddenValue = escape(JSON.stringify(filteredGames.concat(pgnData))); } 
        catch(e) { rememberHiddenValue = null; }
-       rememberHiddenValueMaxLength = 65432;
+       rememberHiddenValueMaxLength = 59876; // keep total URL shorter than 64k
        if (rememberHiddenValue && (rememberHiddenValue.length < rememberHiddenValueMaxLength)) { url += "&rememberHidden=" + rememberHiddenValue; }
     }
     location.href = url;
