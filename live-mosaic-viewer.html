@@ -461,7 +461,7 @@ function customFunctionOnPgnTextLoad() {
     }
   }
 
-  firstGame = firstFromDisplayGame(displayGame);
+  if (firstLoadPgnText) { firstGame = firstFromDisplayGame(displayGame); }
 
   unfilteredGames = new Array();
   newMovesInShownGames = false;
@@ -495,10 +495,7 @@ function customFunctionOnPgnTextLoad() {
     if (alertNumSinceReset) { 
       theObject.title += ": " + alertNumSinceReset + " new alert" + (alertNumSinceReset > 1 ? "s" : "");
     }
-    if (firstLoadPgnText) {
-      theObject.style.display = "inline";
-      firstLoadPgnText = false;
-    }
+    if (firstLoadPgnText) { theObject.style.display = "inline"; }
   }
   
   if (newMovesInShownGames) { liveBroadcastUpdateTicker++; } 
@@ -510,6 +507,7 @@ function customFunctionOnPgnTextLoad() {
 
   updateMenu();
 
+  if (firstLoadPgnText) { firstLoadPgnText = false; }
 }
 
 function updateMenu() {
