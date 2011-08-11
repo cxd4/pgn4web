@@ -113,6 +113,7 @@
   }
 
   var filteredGames = new Array();
+  // undocumented URL parameter: use only within the chrome extension
   thisRegExp = /(&|\?)(rememberHidden|rh)=([^&]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
     try { 
