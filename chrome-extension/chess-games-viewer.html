@@ -427,7 +427,7 @@ of Google Chrome. Don't use with any other browser.
          } else {
             url = "live-mosaic-viewer.html?pgnData=" + escape(pgnUrl) + "&refreshMinutes=" + escape(refreshMinutes) + "&hp=t";
             if (demoFlag) { url += "&refreshDemo=true&demoPly=" + gameDemoMaxPly.join(); }
-            url += "&firstGame=" + (currentGame + 1);
+            url += "&displayGame=" + (currentGame + 1);
             if (rememberHiddenValue) { url += "&rememberHidden=" + escape(rememberHiddenValue); }
             location.href = url;
          }
