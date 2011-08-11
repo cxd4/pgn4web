@@ -205,7 +205,7 @@ of Google Chrome. Don't use with any other browser.
       else { SetInitialGame(1); }
    }
 
-   // undocumented URL parameter: use only within the chrome extension
+   // undocumented URL parameter: use only when opened from the mosaic view
    rememberHiddenValue = "";
    thisRegExp = /(&|\?)(rememberHidden|rh)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
