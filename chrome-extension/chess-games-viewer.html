@@ -249,19 +249,19 @@ of Google Chrome. Don't use with any other browser.
       searchPgnGame('\\[\\s*' + tag + '\\s*"' + fixRegExp(key) + '"\\s*\\]', false);
    }
 
-   function fixHeaderTag(elementId, fixMargin) {
+   function fixHeaderTag(elementId) {
       var headerId = ["GameEvent", "GameSite", "GameDate", "GameRound", "GameWhite", "GameBlack", "GameResult", "GameSection", "GameStage", "GameBoardNum", "Timecontrol", "GameWhiteTitle", "GameBlackTitle", "GameWhiteElo", "GameBlackElo", "GameECO", "GameOpening", "GameVariation", "GameSubVariation", "GameTermination", "GameWhiteClock", "GameBlackClock", "GameTimeControl"];
       var headerLabel = ["event", "site", "date", "round", "white player", "black player", "result", "section", "stage", "board", "time control", "white title", "black title", "white elo", "black elo", "eco", "opening", "variation", "subvariation", "termination", "white clock", "black clock", "time control"];
       theObject = document.getElementById(elementId);
       if (theObject) { 
-        if (fixMargin) { theObject.className = (theObject.innerHTML === "") ? "innerHeaderItemNoMargin" : "innerHeaderItem"; }
+        theObject.className = (theObject.innerHTML === "") ? "innerHeaderItemNoMargin" : "innerHeaderItem";
         theObject.title = (headerId.indexOf(elementId) < 0 ? elementId : headerLabel[headerId.indexOf(elementId)] ) + ": " + theObject.innerHTML;
       }
    }
 
-   function customPgnHeaderTagWithFix(tag, elementId, fixMargin) {
+   function customPgnHeaderTagWithFix(tag, elementId) {
       customPgnHeaderTag(tag, elementId);
-      fixHeaderTag(elementId, fixMargin);
+      fixHeaderTag(elementId);
    }
 
    function customFunctionOnMove() {
@@ -278,8 +278,8 @@ of Google Chrome. Don't use with any other browser.
          if ((!wObject.innerHTML.match(/\S/)) && (bObject.innerHTML.match(/\S/))) { wObject.innerHTML = '-'; }
          if ((!bObject.innerHTML.match(/\S/)) && (wObject.innerHTML.match(/\S/))) { bObject.innerHTML = '-'; }
       }
-      fixHeaderTag('GameWhiteClock', true);
-      fixHeaderTag('GameBlackClock', true);
+      fixHeaderTag('GameWhiteClock');
+      fixHeaderTag('GameBlackClock');
       if (theObject = document.getElementById('GameLastMove')) {
          if (CurrentPly == StartPly) {
             theObject.innerHTML = ((CurrentPly%2) ? "black" : "white") + " to move";
@@ -293,36 +293,36 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function customFunctionOnPgnGameLoad() {
-      fixHeaderTag('GameDate', true);
-      fixHeaderTag('GameSite', true);
-      fixHeaderTag('GameEvent', true);
-      customPgnHeaderTagWithFix('Section', 'GameSection', true);
-      customPgnHeaderTagWithFix('Stage', 'GameStage', true);
-      fixHeaderTag('GameRound', true);
+      fixHeaderTag('GameDate');
+      fixHeaderTag('GameSite');
+      fixHeaderTag('GameEvent');
+      customPgnHeaderTagWithFix('Section', 'GameSection');
+      customPgnHeaderTagWithFix('Stage', 'GameStage');
+      fixHeaderTag('GameRound');
       if (theObject = document.getElementById("GameRound")) {
          if (theObject.innerHTML) {
             theObject.innerHTML = "round " + theObject.innerHTML;
          }
       }
-      customPgnHeaderTagWithFix('Board', 'GameBoardNum', true);
+      customPgnHeaderTagWithFix('Board', 'GameBoardNum');
       if (theObject = document.getElementById("GameBoardNum")) {
          if (theObject.innerHTML) {
             theObject.innerHTML = "board " + theObject.innerHTML;
          }
       }
-      customPgnHeaderTagWithFix('TimeControl', 'GameTimeControl', true);
-      fixHeaderTag('GameWhite', false);
-      fixHeaderTag('GameBlack', false);
-      customPgnHeaderTagWithFix('WhiteTitle', 'GameWhiteTitle', true);
-      customPgnHeaderTagWithFix('BlackTitle', 'GameBlackTitle', true);
-      customPgnHeaderTagWithFix('WhiteElo', 'GameWhiteElo', true);
-      customPgnHeaderTagWithFix('BlackElo', 'GameBlackElo', true);
-      customPgnHeaderTagWithFix('ECO', 'GameECO', true);
-      customPgnHeaderTagWithFix('Opening', 'GameOpening', true);
-      customPgnHeaderTagWithFix('Variation', 'GameVariation', true);
-      customPgnHeaderTagWithFix('SubVariation', 'GameSubVariation', true);
-      fixHeaderTag('GameResult', true);
-      customPgnHeaderTagWithFix('Termination', 'GameTermination', true);
+      customPgnHeaderTagWithFix('TimeControl', 'GameTimeControl');
+      fixHeaderTag('GameWhite');
+      fixHeaderTag('GameBlack');
+      customPgnHeaderTagWithFix('WhiteTitle', 'GameWhiteTitle');
+      customPgnHeaderTagWithFix('BlackTitle', 'GameBlackTitle');
+      customPgnHeaderTagWithFix('WhiteElo', 'GameWhiteElo');
+      customPgnHeaderTagWithFix('BlackElo', 'GameBlackElo');
+      customPgnHeaderTagWithFix('ECO', 'GameECO');
+      customPgnHeaderTagWithFix('Opening', 'GameOpening');
+      customPgnHeaderTagWithFix('Variation', 'GameVariation');
+      customPgnHeaderTagWithFix('SubVariation', 'GameSubVariation');
+      fixHeaderTag('GameResult');
+      customPgnHeaderTagWithFix('Termination', 'GameTermination');
       // if (PlyNumber > 0) { customPgnHeaderTag('Result', 'ResultAtGametextEnd'); }
       // else { if (theObject = document.getElementById('ResultAtGametextEnd')) { theObject.innerHTML = ""; } }
 
@@ -584,11 +584,11 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem"><a class="innerHeaderItem" id="GameECO" href="javascript:void(0);" onclick="searchTag('ECO', this.innerHTML);"></a><a class="innerHeaderItem" id="GameOpening" href="javascript:void(0);" onclick="searchTag('Opening', this.innerHTML);"></a><a class="innerHeaderItem" id="GameVariation" href="javascript:void(0);" onclick="searchTag('Variation', this.innerHTML);"></a><a class="innerHeaderItem" id="GameSubVariation" href="javascript:void(0);" onclick="searchTag('SubVariation', this.innerHTML);"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameWhiteClock"></span><b>&nbsp;</b></div>
-<div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPgnGame(lastSearchPgnExpression);" class="innerHeaderRepeatSearch">&nbsp;</a><a href="javascript:void(0);" onclick="searchPlayer(this.innerHTML);" class="innerHeaderItemNoMargin" id="GameWhite"></a></b><span class="innerHeaderItem" id="GameWhiteTitle"></span><span class="innerHeaderItem" id="GameWhiteElo"></span><b>&nbsp;</b></div>
-<div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPgnGame(lastSearchPgnExpression);" class="innerHeaderRepeatSearch">&nbsp;</a><a href="javascript:void(0);" onclick="searchPlayer(this.innerHTML);" class="innerHeaderItemNoMargin" id="GameBlack"></a></b><span class="innerHeaderItem" id="GameBlackTitle"></span><span class="innerHeaderItem" id="GameBlackElo"></span><b>&nbsp;</b></div>
+<div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPlayer(this.innerHTML);" class="innerHeaderItem" id="GameWhite"></a></b><span class="innerHeaderItem" id="GameWhiteTitle"></span><span class="innerHeaderItem" id="GameWhiteElo"></span><b>&nbsp;</b></div>
+<div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPlayer(this.innerHTML);" class="innerHeaderItem" id="GameBlack"></a></b><span class="innerHeaderItem" id="GameBlackTitle"></span><span class="innerHeaderItem" id="GameBlackElo"></span><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameBlackClock"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><b><span class="innerHeaderItem" id="GameResult"></span></b><span class="innerHeaderItem" id="GameTermination"></span><b>&nbsp;</b></div>
+<div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPgnGame(lastSearchPgnExpression);" class="innerHeaderItem" id="GameResult"></a></b><span class="innerHeaderItem" id="GameTermination"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameLiveStatus" title="live broadcast status"></span><span class="innerHeaderItem" id="GameLiveStatusDemo" title="this is a simulation of the live broadcast functionality"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
