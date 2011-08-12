@@ -656,19 +656,23 @@ function goToHash(hash) {
 
 function customShortcutKey_Shift_3() { cycleHash(); }
 
-function customShortcutKey_Shift_6() {
+function customShortcutKey_Shift_5() {
   displayGame = displayGame_default;
   firstLoadPgnText = true;
   customFunctionOnPgnTextLoad();
 }
 
-function customShortcutKey_Shift_7() {
+function customShortcutKey_Shift_6() {
   firstLoadPgnText = true;
   customFunctionOnPgnTextLoad();
 }
 
-function customShortcutKey_Shift_8() {
+function customShortcutKey_Shift_7() {
   restoreHiddenGames();
+}
+
+function customShortcutKey_Shift_8() {
+  newBoards(maxBoards_default);
 }
 
 </script>
