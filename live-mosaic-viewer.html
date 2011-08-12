@@ -24,7 +24,7 @@
 
   var thisRegExp = /(&|\?)(help|h)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
-    alert("pgn4web live-mosaic-viewer.html parameters" + "\n\n" + 
+    alert("pgn4web live-mosaic-viewer.html parameters" + "\n\n" +
       " - pgnData = file.pgn" + "\n\n" +
       " - maxBoards = max number of boards to display in a page (default " + maxBoards_default +  ")" + "\n\n" +
       " - displayGame = number of game for display, negative counts backwards (default " + displayGame_default + ")" + "\n\n" +
@@ -229,7 +229,7 @@ function fixCSSforHeadelessPage() {
 }
 
 function printHeader() {
-  document.write("<table border='0' cellpadding='0' cellspacing='0' width='100%'><tbody><tr><td align='left' valign='middle'><h1 class='header' name='top'>pgn4web <a class='header' href='#boards' onfocus='this.blur();'>chess live broadcast</a></h1></td><td align='right' valign='middle'><img src='pawns.png' border='0'></td></tr></tbody></table></div>"); 
+  document.write("<table border='0' cellpadding='0' cellspacing='0' width='100%'><tbody><tr><td align='left' valign='middle'><h1 class='header' name='top'>pgn4web <a class='header' href='#boards' onfocus='this.blur();'>chess live broadcast</a></h1></td><td align='right' valign='middle'><img src='pawns.png' border='0'></td></tr></tbody></table></div>");
 }
 
 function printMenu() {
@@ -400,7 +400,7 @@ function pgnGameForBoard(gameNum) {
   gameDemoPlyNumber = gameDemoMaxPly[gameNum] <= gameDemoLength[gameNum] ? gameDemoMaxPly[gameNum] : gameDemoLength[gameNum] + 1;
   for (thisPly = StartPly; thisPly < StartPly + gameDemoPlyNumber; thisPly++) {
     if (thisPly % 2) {
-      if (thisComment = MoveComments[thisPly].replace(/{/g, "")) { 
+      if (thisComment = MoveComments[thisPly].replace(/{/g, "")) {
         localPgnGame += "{" + thisComment + "} " + ((thisPly+1)/2) + "... ";
       }
       localPgnGame += Moves[thisPly] + " \n";
@@ -472,7 +472,7 @@ function customFunctionOnPgnTextLoad() {
   newMovesInShownGames = false;
   gamesForHiding = 0;
   for (g = 0; g < numberOfGames; g++) {
-    if (!checkForHiddenGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g])) { 
+    if (!checkForHiddenGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g])) {
       unfilteredGames.push(g);
       if ((typeof(gameResult[g]) == "undefined") || (gameResult[g].indexOf("*") == -1)) { gamesForHiding++; }
     }
@@ -497,18 +497,18 @@ function customFunctionOnPgnTextLoad() {
 
   if (theObject = document.getElementById("GameLiveStatus")) {
     theObject.title = "live broadcast status";
-    if (alertNumSinceReset) { 
+    if (alertNumSinceReset) {
       theObject.title += ": " + alertNumSinceReset + " new alert" + (alertNumSinceReset > 1 ? "s" : "");
     }
     if (firstLoadPgnText) { theObject.style.display = "inline"; }
   }
-  
-  if (newMovesInShownGames) { liveBroadcastUpdateTicker++; } 
+
+  if (newMovesInShownGames) { liveBroadcastUpdateTicker++; }
   if (LiveBroadcastStarted && !LiveBroadcastEnded) {
     document.title = liveBroadcastUpdateTicker + LiveBroadcastStatusString.replace("live games: ", ".").replace(" &nbsp; finished: ", ".") + " live broadcast" + (demoFlag ? " demo" : "");
   } else { document.title = LiveBroadcastStatusString; }
 
-  if (theObject = document.getElementById("GameLiveStatusDemo")) { theObject.innerHTML = LiveBroadcastDemo ? "demo &nbsp; " : ""; } 
+  if (theObject = document.getElementById("GameLiveStatusDemo")) { theObject.innerHTML = LiveBroadcastDemo ? "demo &nbsp; " : ""; }
 
   updateMenu();
 
@@ -546,9 +546,9 @@ function updateMenu() {
       theLeftObject.style.minWidth = theRightObject.offsetWidth;
     }
   }
-  
+
   if (theInfoObject = document.getElementById("infoMessage")) {
-    if (numberOfGamesForDisplay < 1) { 
+    if (numberOfGamesForDisplay < 1) {
       theInfoObject.innerHTML = "warning: all games hidden: <a href='javascript:void(0);' onclick='restoreHiddenGames();' onfocus='this.blur();'>unhide games</a> or <a href='javascript:void(0);' onclick='refreshPgnSource();' onfocus='this.blur();'>force live refresh</a>";
     } else {
       theEvent = "";
@@ -568,7 +568,7 @@ function updateMenu() {
       if (theEvent) { theEvent = theEvent.replace(/\s/g, "&nbsp;"); }
       if (theSite) { theSite = theSite.replace(/\s/g, "&nbsp;"); }
 
-      if (theEvent || theSite) { 
+      if (theEvent || theSite) {
         theInfoObject.innerHTML = "&nbsp;&nbsp;&nbsp;";
         if (theEvent) { theInfoObject.innerHTML += theEvent; }
         if (theEvent && theSite) { theInfoObject.innerHTML += "&nbsp;&nbsp;&nbsp;"; }
@@ -593,12 +593,12 @@ function startFromFirstGame(fGame) {
 
 function nextPage() {
   firstGame = (startFromFirstGame(firstGame) + maxBoards) % numberOfGamesForDisplay;
-  firstGame -= (firstGame < 0 ? numberOfGamesForDisplay : 0); 
+  firstGame -= (firstGame < 0 ? numberOfGamesForDisplay : 0);
   customFunctionOnPgnTextLoad();
 }
 
 function previousPage() {
-  firstGame = (startFromFirstGame(firstGame) - maxBoards + numberOfGamesForDisplay) % numberOfGamesForDisplay; 
+  firstGame = (startFromFirstGame(firstGame) - maxBoards + numberOfGamesForDisplay) % numberOfGamesForDisplay;
   firstGame -= (firstGame < 0 ? numberOfGamesForDisplay : 0);
   customFunctionOnPgnTextLoad();
 }
@@ -631,7 +631,7 @@ function switchBoardView(search) {
       url += "&search=" + escape(searchGame + 1);
     }
     if (filteredGames.length) {
-       try { rememberHiddenValue = escape(JSON.stringify(filteredGames.concat(pgnData))); } 
+       try { rememberHiddenValue = escape(JSON.stringify(filteredGames.concat(pgnData))); }
        catch(e) { rememberHiddenValue = null; }
        rememberHiddenValueMaxLength = 59876; // keep total URL shorter than 64k
        if (rememberHiddenValue && (rememberHiddenValue.length < rememberHiddenValueMaxLength)) { url += "&rememberHidden=" + rememberHiddenValue; }
