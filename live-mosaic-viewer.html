@@ -295,24 +295,26 @@ function firstFromDisplayGame(dGame) {
   if (dGame > numberOfGames) { dGame = numberOfGames; }
   else if (dGame < -numberOfGames) { dGame = -numberOfGames; }
 
-  if (dGame === 0) { dGame = 1; }
+  if (dGame > 0) { dGame--; } // positive displayGame starts from +1 as first game 
 
   dGameAdjustment = 0;
-  if (dGame >= 0) {
-    for (g = 0; g < dGame - 1; g++) {
-      if (checkForHiddenGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g])) {
-        dGameAdjustment--;
+  if (filteredGames.length > 0) {
+    if (dGame >= 0) {
+      for (g = 0; g < dGame; g++) {
+        if (checkForHiddenGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g])) {
+          dGameAdjustment--;
+        }
+      }
+    } else {
+      for (g = numberOfGames - 1; g > numberOfGames + dGame; g--) {
+        if (checkForHiddenGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g])) {
+          dGameAdjustment++;
+        }
       }
     }
-    return dGame + dGameAdjustment - 1;
-  } else {
-    for (g = numberOfGames - 1; g > numberOfGames + dGame; g--) {
-      if (checkForHiddenGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g])) {
-        dGameAdjustment--;
-      }
-    }
-    return dGame - dGameAdjustment;
   }
+
+  return (dGame + dGameAdjustment);
 }
 
 function gameKey(event, site, date, round, white, black) {
