@@ -658,24 +658,17 @@ function customShortcutKey_Shift_3() { cycleHash(); }
 
 function customShortcutKey_Shift_6() {
   displayGame = displayGame_default;
-  firstGame = firstFromDisplayGame(displayGame);
-  restoreHiddenGames();
+  firstLoadPgnText = true;
+  customFunctionOnPgnTextLoad();
 }
 
 function customShortcutKey_Shift_7() {
-  displayGame = displayGame_default;
-  firstGame = firstFromDisplayGame(displayGame);
+  firstLoadPgnText = true;
   customFunctionOnPgnTextLoad();
 }
 
 function customShortcutKey_Shift_8() {
-  firstGame = firstFromDisplayGame(displayGame);
   restoreHiddenGames();
-}
-
-function customShortcutKey_Shift_9() {
-  firstGame = firstFromDisplayGame(displayGame);
-  customFunctionOnPgnTextLoad();
 }
 
 </script>
