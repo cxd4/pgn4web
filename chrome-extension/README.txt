@@ -84,4 +84,4 @@ about.html, manifest.json: help page
 this page is currently assigned as the "options" page while there are not
 any configurable options; it should rather assigned as "help" page.
 http://crbug.com/29849
-requires increasing minimum_chrome_version
+requires increasing minimum_chrome_version (new manifest entry)
