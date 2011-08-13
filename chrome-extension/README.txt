@@ -65,6 +65,8 @@ http://host/file.html?pgnData=games.pgn would match *://*/*.pgn
 This will lead to a context menu appearing when it should not (but the
 mouse pointer will not change and the viewer will not open the link).
 http://crbug.com/84024
+Possible workaround if context scripts could manipulate context menus, see
+http://crbug.com/77023
 Verify this on the page:
 http://code.google.com/p/pgn4web/wiki/SandBox
 
