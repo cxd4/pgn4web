@@ -35,28 +35,26 @@ enable the webRequest extension API when stable
 info http://code.google.com/chrome/extensions/api_index.html
 http://crbug.com/60101
 verify on http://chesstempo.com/pgn-viewer.html and http://www.bennedik.de/Silverboard.html
-requires increasing minimum_chrome_version
+requires increasing minimum_chrome_version (new API and permission)
 
 background.html, manifest.json: registerContentHandler
 register the extension as content handler for application/x-chess-pgn
 this should allow opening the chess games viewer by doubleclicking items in
-he chrome downloads page; needs assessing impact on the plain download of
+the chrome downloads page; needs assessing impact on the plain download of
 a PGN file: check what happens when clicking a link on the page or the
 download icon of the popup.
 http://crbug.com/86115 (and other, search for registerContentHandler)
-requires increasing minimum_chrome_version
+requires increasing minimum_chrome_version (new API and permission)
 
 about.html, background.html: "try this" examples
 enable the example paragraphs in about.html by removing the "display: none;"
-css attribute of "div.try", example paragraphs being disabled at the moment
-because extension pages dont get context menus.
+css attribute of "div.try" and updating the pgnUrlPattern/zipUrlPattern
+definitions in background.html; example paragraphs being disabled at the
+moment because extension pages dont get context menus.
 http://crbug.com/51461
-Fixed in google chrome (dev) v14.0.835.15, but check that a "link" context
-menu appears for links to chrome-extension://thisExtensionId/*.pgn files and
-that it does not appear for other extension IDs; background.html might need
-fixing the pgnUrlPattern/zipUrlPattern definition.
-requires increasing minimum_chrome_version (if the pgnUrlPattern/zipUrlPattern
-definition is changed to something not backward compatible)
+Fixed in google chrome (dev) v14.0.835.15
+requires increasing minimum_chrome_version (new pgnUrlPattern/zipUrlPattern
+definition not backward compatible)
 
 Bugs:
 
@@ -68,7 +66,7 @@ This will lead to a context menu appearing when it should not (but the
 mouse pointer will not change and the viewer will not open the link).
 http://crbug.com/84024
 Verify this on the page:
-http://code.google.com/p/pgn4web/wiki/BrowserExtension_GoogleChrome
+http://code.google.com/p/pgn4web/wiki/SandBox
 
 popup.html: popup css
 popup.html is affected by following issues:
