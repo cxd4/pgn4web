@@ -907,7 +907,7 @@ of Google Chrome. Don't use with any other browser.
 
       // until chrome bug 92395 is fixed, the following code forces the page action on the chessboard page
       if ((typeof(chrome) != "undefined") && (typeof(chrome.tabs) != "undefined") && (typeof(chrome.tabs.getCurrent) != "undefined") && (typeof(backgroundPage) != "undefined") && (typeof(backgroundPage.checkWebRequestForPgnFiles) != "undefined")) {
-         chrome.tabs.getCurrent( function(tab) { backgroundPage.checkWebRequestForPgnFiles({ "tabId": tab.id, url: newPgnUrl }); }); 
+         chrome.tabs.getCurrent( function(tab) { backgroundPage.checkWebRequestForPgnFiles({ "tabId": tab.id, url: newPgnUrl }); });
       }
 
       // special mode for the about.html page of the chess games viewer extension for google chrome
