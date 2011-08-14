@@ -64,7 +64,6 @@ function openRemoteUrl(remoteUrl, live, all) {
 
 // until chromium bug 84024 is resolved, context menus might appear for links that
 // do not validate as PGN links, such as http://host/file.html?pgnData=games.pgn
-// see http://code.google.com/p/chromium/issues/detail?id=84024
  
 function pgnLinkOnClick(info, tab, live, all) {
   var remoteUrl = info.linkUrl;
