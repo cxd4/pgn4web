@@ -39,10 +39,15 @@
   thisRegExp = /(&|\?)(pgnData|pd)=([^&]*)(&|$)/i;
   if (! thisRegExp) { thisRegExp = /(&|\?)(pgnFile|pf)=([^&]*)(&|$)/i; }
   if (window.location.search.match(thisRegExp) !== null) {
-     pgnData = unescape(window.location.search.match(thisRegExp)[3]);
+    pgnData = unescape(window.location.search.match(thisRegExp)[3]);
   } 
   if (pgnData) {
-     SetPgnUrl(pgnData); // if set, this has precedence over the inline PGN in the HTML file
+    SetPgnUrl(pgnData); // if set, this has precedence over the inline PGN in the HTML file
+
+    // until chrome bug 92395 is fixed, the following code forces the page action on the chessboard page
+    if ((typeof(chrome) != "undefined") && (typeof(chrome.tabs) != "undefined") && (typeof(chrome.tabs.getCurrent) != "undefined") && (typeof(chrome.extension) != "undefined") && (typeof(chrome.extension.getBackgroundPage) != "undefined") && (backgroundPage = chrome.extension.getBackgroundPage()) && (typeof(backgroundPage.checkWebRequestForPgnFiles) != "undefined")) {
+      chrome.tabs.getCurrent( function(tab) { backgroundPage.checkWebRequestForPgnFiles({ "tabId": tab.id, url: pgnData }); });
+    }
   }
 
   var maxBoards = getMaxBoardFromLocalStorage();
@@ -81,11 +86,6 @@
     refreshMinutes = parseFloat(unescape(window.location.search.match(thisRegExp)[3]));
     if (isNaN(refreshMinutes)) { refreshMinutes = refreshMinutes_default; }
     if (refreshMinutes <= 0) { refreshMinutes = refreshMinutes_default; }
-  }
-
-  // until chrome bug 92395 is fixed, the following code forces the page action on the chessboard page
-  if ((typeof(chrome) != "undefined") && (typeof(chrome.tabs) != "undefined") && (typeof(chrome.tabs.getCurrent) != "undefined") && (typeof(chrome.extension) != "undefined") && (typeof(chrome.extension.getBackgroundPage) != "undefined") && (backgroundPage = chrome.extension.getBackgroundPage()) && (typeof(backgroundPage.checkWebRequestForPgnFiles) != "undefined")) {
-    chrome.tabs.getCurrent( function(tab) { backgroundPage.checkWebRequestForPgnFiles({ "tabId": tab.id, url: pgnData }); });
   }
   
   // special mode for the about.html page of the chess games viewer extension for google chrome
