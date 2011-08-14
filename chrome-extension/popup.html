@@ -157,9 +157,9 @@ chrome.tabs.getSelected(null, function(tab){
     listObject.style.paddingRight = "2em";
   } else { listObject.style.marginRight = "2em"; }
 
-  pgnHeaderInnerHTML += ': <span title="the chess games viewer extension detected from this page ' + 
+  pgnHeaderInnerHTML += ': <span title="the chess games viewer extension detected on this page ' + 
     pgnLinks.length + (pgnLinks.length == 1 ? ' link' : ' links') + ' to chess games in PGN format">' + 
-    pgnLinks.length + (pgnLinks.length == 1 ? ' link' : ' links') + ' from this page</span>';
+    pgnLinks.length + (pgnLinks.length == 1 ? ' link' : ' links') + ' on this page</span>';
 
   var pgnLinkListInnerHTML = "";
   for(ll in pgnLinks) {
