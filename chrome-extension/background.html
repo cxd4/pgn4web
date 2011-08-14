@@ -226,7 +226,7 @@ function mergePgnLinksAndShowIcon(tabId) {
     }
   }
   pgnWebRequests[tabId] = pgnWebRequests[tabId].filter(function(element, index, array) { return ((element !== null) && (element !== undefined)); }).sort();
-  pgnLinksTitle = (pgnHrefLinks[tabId].length + pgnWebRequests[tabId].length) + " chess games " + ((pgnHrefLinks[tabId].length + pgnWebRequests[tabId].length) == 1 ? "link" : "links") + " from this page";
+  pgnLinksTitle = (pgnHrefLinks[tabId].length + pgnWebRequests[tabId].length) + " chess games " + ((pgnHrefLinks[tabId].length + pgnWebRequests[tabId].length) == 1 ? "link" : "links") + " on this page";
   chrome.pageAction.setTitle({tabId:tabId, title:pgnLinksTitle});
   chrome.pageAction.show(tabId);
 }
