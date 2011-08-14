@@ -90,7 +90,7 @@ chrome.tabs.getSelected(null, function(tab){
 
   function displayUrl(url, base) {
     adjUrl = url.replace(/(?=:)\/+/, "/");
-    adjBase = base.replace(/(?=:)\/+/, "/").replace(/\/[^\/]*$/, "") + "/";
+    adjBase = base.replace(/[?#].*$/, "").replace(/(?=:)\/+/, "/").replace(/\/[^\/]*$/, "") + "/";
     if (adjUrl.indexOf(adjBase) === 0) { return (adjUrl.substr(adjBase.length)); }
 
     if (hostBaseMatch = adjBase.match(/^[^:\/]+:\/\/[^\/]+/, "")) {
