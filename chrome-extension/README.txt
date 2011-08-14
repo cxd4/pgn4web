@@ -58,6 +58,11 @@ definition not backward compatible)
 
 Bugs:
 
+chess-games-viewer.html and live-mosaic-viewer.html page actions:
+the page action for the chessboard pages needs to be forced since the webRequest
+API does not see events for chrome-extension://*
+http://crbug.com/92395
+
 background.html and manifest.json match pattern definition:
 because of how match patterns can be defined, some URLs might be identified
 as PGN chess games URL even if they should not, for instance
