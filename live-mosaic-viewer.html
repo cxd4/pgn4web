@@ -535,11 +535,13 @@ function updateMenu() {
 
     if (LiveBroadcastDelay > 0) {
       if (LiveBroadcastEnded) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast();' title='Check for the start of a new live broadcast event' onfocus='this.blur();'>&nbsp;c&nbsp;</a></span>"; }
-      else if (LiveBroadcastPaused && LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast(); updateMenu();' title='Restart live broadcast automatic refresh of games' onfocus='this.blur();'>&nbsp;r&nbsp;</a></span>"; }
-      else if (LiveBroadcastPaused && !LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast(); updateMenu();' title='Restart polling for a new live broadcast' onfocus='this.blur();'>&nbsp;r&nbsp;</a></span>"; }
-      else if (LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='pauseLiveBroadcast(); updateMenu();' title='Pause live broadcast automatic refresh of games' onfocus='this.blur();'>&nbsp;p&nbsp;</a></span>"; }
-      else { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='pauseLiveBroadcast(); updateMenu();' title='Pause polling for a new live broadcast' onfocus='this.blur();'>&nbsp;p&nbsp;</a></span>"; }
-      theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' class='commandLink' href='javascript:void(0);' onclick='refreshPgnSource();' title='Force games refresh: last moves received on " + LiveBroadcastLastReceivedLocal + "' onfocus='this.blur();'>&nbsp;f&nbsp;</a></span>";
+      else {
+        if (LiveBroadcastPaused && LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast(); updateMenu();' title='Restart live broadcast automatic refresh of games' onfocus='this.blur();'>&nbsp;r&nbsp;</a></span>"; }
+        else if (LiveBroadcastPaused && !LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast(); updateMenu();' title='Restart polling for a new live broadcast' onfocus='this.blur();'>&nbsp;r&nbsp;</a></span>"; }
+        else if (LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='pauseLiveBroadcast(); updateMenu();' title='Pause live broadcast automatic refresh of games' onfocus='this.blur();'>&nbsp;p&nbsp;</a></span>"; }
+        else { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='pauseLiveBroadcast(); updateMenu();' title='Pause polling for a new live broadcast' onfocus='this.blur();'>&nbsp;p&nbsp;</a></span>"; }
+        theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' class='commandLink' href='javascript:void(0);' onclick='refreshPgnSource();' title='Force games refresh: last moves received on " + LiveBroadcastLastReceivedLocal + "' onfocus='this.blur();'>&nbsp;f&nbsp;</a></span>";
+      }
     }
 
     if (theRightObject && (theLeftObject = document.getElementById("leftMenu"))) {
