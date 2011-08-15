@@ -414,10 +414,11 @@ of Google Chrome. Don't use with any other browser.
       }
    }
 
-   function searchPlayer(name) {
+   function searchPlayer(name, FideId) {
       if (name) {
          if (event.shiftKey) {
-            window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + escape(name) + "&offset=0");
+            if (FideId) { window.open("http://ratings.fide.com/seek.phtml?idcode=" + escape(FideId) + "&name=&offset=0"); }
+            else { window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + escape(name) + "&offset=0"); }
          } else {
             searchPgnGame('\\[\\s*(White|Black)\\s*"' + fixRegExp(name) + '"\\s*\\]', false);
          }
@@ -584,8 +585,8 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem"><a class="innerHeaderItem" id="GameECO" href="javascript:void(0);" onclick="searchTag('ECO', this.innerHTML);"></a><a class="innerHeaderItem" id="GameOpening" href="javascript:void(0);" onclick="searchTag('Opening', this.innerHTML);"></a><a class="innerHeaderItem" id="GameVariation" href="javascript:void(0);" onclick="searchTag('Variation', this.innerHTML);"></a><a class="innerHeaderItem" id="GameSubVariation" href="javascript:void(0);" onclick="searchTag('SubVariation', this.innerHTML);"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameWhiteClock"></span><b>&nbsp;</b></div>
-<div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPlayer(this.innerHTML);" class="innerHeaderItem" id="GameWhite"></a></b><span class="innerHeaderItem" id="GameWhiteTitle"></span><span class="innerHeaderItem" id="GameWhiteElo"></span><b>&nbsp;</b></div>
-<div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPlayer(this.innerHTML);" class="innerHeaderItem" id="GameBlack"></a></b><span class="innerHeaderItem" id="GameBlackTitle"></span><span class="innerHeaderItem" id="GameBlackElo"></span><b>&nbsp;</b></div>
+<div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId'));" class="innerHeaderItem" id="GameWhite"></a></b><span class="innerHeaderItem" id="GameWhiteTitle"></span><span class="innerHeaderItem" id="GameWhiteElo"></span><b>&nbsp;</b></div>
+<div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId'));" class="innerHeaderItem" id="GameBlack"></a></b><span class="innerHeaderItem" id="GameBlackTitle"></span><span class="innerHeaderItem" id="GameBlackElo"></span><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameBlackClock"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPgnGame(lastSearchPgnExpression);" class="innerHeaderItem" id="GameResult"></a></b><span class="innerHeaderItem" id="GameTermination"></span><b>&nbsp;</b></div>
