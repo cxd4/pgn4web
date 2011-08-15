@@ -101,7 +101,7 @@ if ((typeof(chrome) != "undefined") && (typeof(chrome.extension) != "undefined")
 }
 
 /* hiding the "try this" demos until the context menu chrome bug http://crbug.com/51461 is fixed */
-if ((extensionChannel != "beta") || (extensionChannel != "development")) {
+if ((extensionChannel != "beta") && (extensionChannel != "development")) {
   document.write('<style type="text/css"> div.try { display: none; } </style>');
 }
 
