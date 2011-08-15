@@ -40,7 +40,7 @@ function validatePgnUrl(pgnUrl) {
 }
 
 function validateUrl(pgnUrl, live) {
-  return (pgnUrl && (live ? validatePgnUrl(pgnUrl) : validatePgnZipUrl(pgnUrl)))
+  return (pgnUrl && (live ? validatePgnUrl(pgnUrl) : validatePgnZipUrl(pgnUrl)));
 }
 
 // keep this aligned with the one in pgn4web.js
