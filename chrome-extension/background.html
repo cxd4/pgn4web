@@ -30,8 +30,17 @@ var extensionChannel = "stable"; // "stable", "beta" or "development"
 var pgnHeaderRegExpGlobal = /((\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)+)/g;
 
 var pgnZipLinkRegExp = new RegExp("^((http|https):\\/\\/|" + chrome.extension.getURL("") + ")[^?#]+\\.(pgn|zip)($|\\?.*$|#.*$)", "i");
-function validatePgnUrl(pgnUrl) {
+function validatePgnZipUrl(pgnUrl) {
   return (pgnUrl && pgnZipLinkRegExp.test(pgnUrl));
+}
+
+var pgnLinkRegExp = new RegExp("^((http|https):\\/\\/|" + chrome.extension.getURL("") + ")[^?#]+\\.pgn($|\\?.*$|#.*$)", "i");
+function validatePgnUrl(pgnUrl) {
+  return (pgnUrl && pgnLinkRegExp.test(pgnUrl));
+}
+
+function validateUrl(pgnUrl, live) {
+  return (pgnUrl && (live ? validatePgnUrl(pgnUrl) : validatePgnZipUrl(pgnUrl)))
 }
 
 // keep this aligned with the one in pgn4web.js
@@ -71,7 +80,7 @@ function openRemoteUrl(remoteUrl, live, all) {
 function pgnLinkOnClick(info, tab, live, all) {
   var remoteUrl = info.linkUrl;
   if (!remoteUrl) { return; }
-  if (!validatePgnUrl(remoteUrl)) { 
+  if (!validateUrl(remoteUrl, live)) { 
     alert("Because of a limitation of the Google Chrome extensions URL pattern matching capabilities, the clicked link displays the link context menu of the chess games viewer even if the link's URL does not match the usual pattern of PGN chess games URLs; hence the link will not be opened automatically in the chess games viewer; to open the link, copy the link's URL and manually enter the URL using the page context menu.");
     return; 
   }
@@ -79,7 +88,7 @@ function pgnLinkOnClick(info, tab, live, all) {
 }
 
 function pgnPageOnClick(info, tab, live, all) {
-  var remoteUrl = prompt("Enter PGN chess games URL for viewing" + (all ? " on multiple boards" : " on a single board") + (live ? " with live refresh" : "") + ((info.selectionText && (!validatePgnUrl(info.selectionText))) ? "; the supplied URL does not match the usual PGN URL pattern:" : ":"), info.selectionText ? info.selectionText : "");
+  var remoteUrl = prompt("Enter PGN chess games URL for viewing" + (all ? " on multiple boards" : " on a single board") + (live ? " with live refresh" : "") + ((info.selectionText && (!validateUrl(info.selectionText, live))) ? "; the supplied URL does not match the usual PGN URL pattern:" : ":"), info.selectionText ? info.selectionText : "");
   if (!remoteUrl) { return; }
 
   openRemoteUrl(remoteUrl, live, all);
