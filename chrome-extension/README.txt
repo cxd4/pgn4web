@@ -28,12 +28,20 @@ http://www.interactivemania.com under a Creative Commons Attribution-No
 Derivative Works 3.0 license http://creativecommons.org/licenses/by-nd/3.0/
 
 
+Beta and development versions:
+
+for testing new functionality with the beta and development versions of Google
+Chrome, in background.html the variable extensionChannel can be set to "stable"
+(default), "beta" or "development".
+
 Enhancements:
 
 background.html, manifest.json: webRequest
 enable the webRequest extension API when stable
 info http://code.google.com/chrome/extensions/api_index.html
 http://crbug.com/60101
+implemented for extensionChannel "development" (also needs "experimental"
+permission in manifest.json).
 verify on http://chesstempo.com/pgn-viewer.html and http://www.bennedik.de/Silverboard.html
 requires increasing minimum_chrome_version (new API and permission)
 
@@ -52,6 +60,7 @@ css attribute of "div.try" and updating the pgnUrlPattern/zipUrlPattern
 definitions in background.html; example paragraphs being disabled at the
 moment because extension pages dont get context menus.
 http://crbug.com/51461
+implemented for extensionChannel "beta" and "development"
 Fixed in google chrome (dev) v14.0.835.15
 requires increasing minimum_chrome_version (new pgnUrlPattern/zipUrlPattern
 definition not backward compatible)
@@ -62,6 +71,7 @@ chess-games-viewer.html and live-mosaic-viewer.html page actions:
 the page action for the chessboard pages needs to be forced since the webRequest
 API does not see events for chrome-extension://*
 http://crbug.com/92395
+workaround implmented for all channels, to be removed if the bug is fixed
 Verify removing the code forcing the page action on chess-games-viewer.html
 
 background.html and manifest.json match pattern definition:
