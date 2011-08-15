@@ -905,7 +905,7 @@ of Google Chrome. Don't use with any other browser.
       refreshMinutes = newRefreshMinutes;
       SetPgnUrl(pgnData = newPgnUrl);
 
-      // force the page action on the chessboard page, without nochache URL parameter
+      // force the page action on the chessboard page, without noCache URL parameter
       if ((typeof(chrome) != "undefined") && (typeof(chrome.tabs) != "undefined") && (typeof(chrome.tabs.getCurrent) != "undefined") && (typeof(backgroundPage) != "undefined") && (typeof(backgroundPage.checkWebRequestForPgnFiles) != "undefined")) {
          chrome.tabs.getCurrent( function(tab) { backgroundPage.checkWebRequestForPgnFiles({ "tabId": tab.id, url: newPgnUrl }); });
       }
