@@ -24,8 +24,7 @@ of Google Chrome. Don't use with any other browser.
 
 <script type="text/javascript">
 
-var betaVersion = false;
-var devVersion = false;
+var extensionChannel = "stable"; // "stable", "beta" or "development"
 
 var pgnHeaderRegExpGlobal = /((\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)+)/g;
 
@@ -184,7 +183,7 @@ chrome.contextMenus.create({"type": "separator", "contexts": ["page", "selection
 // which URL patters should be considered as PGN chess games
 
 // when chromium bug http://crbug.com/51461 is fixed and about.html shows the "try this" examples, make sure the links on the extension page get the context menus
-if (betaVersion || devVersion) {
+if ((extensionChannel == "beta") || (extensionChannel == "development")) {
   pgnUrlPatterns = ["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", "*://*/*.PGN?*", "*://*/*.Pgn?*", chrome.extension.getURL("*.pgn")];
   zipUrlPatterns = ["*://*/*.zip", "*://*/*.ZIP", "*://*/*.Zip", "*://*/*.zip?*", "*://*/*.ZIP?*", "*://*/*.Zip?*", chrome.extension.getURL("*.zip")];
 } else {
@@ -298,7 +297,7 @@ function checkWebRequestForPgnFiles(requestDetails) {
 }
 
 // enables using the experimental webRequest API, see chrome bug http://crbug.com/60101
-if (devVersion) {
+if (extensionChannel == "development") {
   chrome.experimental.webRequest.onBeforeRequest.addListener(checkWebRequestForPgnFiles, {"urls": pgnUrlPatterns});
 }
 
