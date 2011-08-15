@@ -95,11 +95,13 @@ pre.try {
 
 <script type="text/javascript">
 
-var betaVersion = false;
-var devVersion = false;
+var extensionChannel;
+if ((typeof(chrome) != "undefined") && (typeof(chrome.extension) != "undefined")) {
+  extensionChannel = chrome.extension.getBackgroundPage().extensionChannel;
+}
 
 /* hiding the "try this" demos until the context menu chrome bug http://crbug.com/51461 is fixed */
-if (!betaVersion && !devVersion) {
+if ((extensionChannel != "beta") || (extensionChannel != "development")) {
   document.write('<style type="text/css"> div.try { display: none; } </style>');
 }
 
