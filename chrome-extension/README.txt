@@ -99,3 +99,13 @@ this page is currently assigned as the "options" page while there are not
 any configurable options; it should rather assigned as "help" page.
 http://crbug.com/29849
 Requires increasing minimum_chrome_version (new manifest entry)
+
+
+Other:
+
+chess-games-viewer.html, live-mosaic-viewer.html: forcing page action
+currently chessboard pages force the page action in order to include the PGN URL
+since chrome-extension://*.pgn pages do not trigger webRequests events;
+if the underlying issue is fixed, consider not forcing the page action (this
+might expose a noCache URL parameter)
+http://crbug.com/92395
