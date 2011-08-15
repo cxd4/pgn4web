@@ -44,7 +44,7 @@
   if (pgnData) {
     SetPgnUrl(pgnData); // if set, this has precedence over the inline PGN in the HTML file
 
-    // until chrome bug 92395 is fixed, the following code forces the page action on the chessboard page
+    // until chrome bug http://crbug.com/92395 is fixed, the following code forces the page action on the chessboard page
     if ((typeof(chrome) != "undefined") && (typeof(chrome.tabs) != "undefined") && (typeof(chrome.tabs.getCurrent) != "undefined") && (typeof(chrome.extension) != "undefined") && (typeof(chrome.extension.getBackgroundPage) != "undefined") && (backgroundPage = chrome.extension.getBackgroundPage()) && (typeof(backgroundPage.checkWebRequestForPgnFiles) != "undefined")) {
       chrome.tabs.getCurrent( function(tab) { backgroundPage.checkWebRequestForPgnFiles({ "tabId": tab.id, url: pgnData }); });
     }
