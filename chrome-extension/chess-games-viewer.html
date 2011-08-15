@@ -44,7 +44,7 @@ of Google Chrome. Don't use with any other browser.
    alertPgnHeader = '[Site "chess games error"]\n[Event "click on the top left"]\n[Board "square for info"]\n';
    
    var backgroundPage;
-   if ((typeof(chrome) != "undefined") && (chrome.extension)) {
+   if ((typeof(chrome) != "undefined") && (typeof(chrome.extension) != "undefined")) {
       backgroundPage = chrome.extension.getBackgroundPage();
    }
 
