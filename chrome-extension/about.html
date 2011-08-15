@@ -53,8 +53,6 @@ div.h2content {
 }
 
 div.try {
-  /* hiding the "try this" demos until the context menu bug http://crbug.com/51461 is fixed */
-  display: none;
   background-color: #EAEAEA;
   border-radius: 0.3em;
   padding: 1em;
@@ -96,6 +94,14 @@ pre.try {
 </style>
 
 <script type="text/javascript">
+
+var betaVersion = false;
+var devVersion = false;
+
+/* hiding the "try this" demos until the context menu chrome bug http://crbug.com/51461 is fixed */
+if (!betaVersion && !devVersion) {
+  document.write('<style type="text/css"> div.try { display: none; } </style>');
+}
 
 function print_menu(item) {
   text = "<div class='extraSpacer'><a name='" + item + "'><a></div>";
