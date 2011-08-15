@@ -31,8 +31,11 @@ Derivative Works 3.0 license http://creativecommons.org/licenses/by-nd/3.0/
 Beta and development versions:
 
 for testing new functionality with the beta and development versions of Google
-Chrome, in background.html the variable extensionChannel can be set to "stable"
-(default), "beta" or "development".
+Chrome, the background.html variable extensionChannel can be set to "stable"
+(default), "beta" or "development" in order to trigger testing code in the 
+extension's HTML, CSS and JAVASCRIPT (remember to manually update manifest.json
+if needed).
+
 
 Enhancements:
 
@@ -40,10 +43,10 @@ background.html, manifest.json: webRequest
 enable the webRequest extension API when stable
 info http://code.google.com/chrome/extensions/api_index.html
 http://crbug.com/60101
-implemented for extensionChannel "development" (also needs "experimental"
+Implemented for extensionChannel "development" (also needs "experimental"
 permission in manifest.json).
-verify on http://chesstempo.com/pgn-viewer.html and http://www.bennedik.de/Silverboard.html
-requires increasing minimum_chrome_version (new API and permission)
+Verify on http://chesstempo.com/pgn-viewer.html and http://www.bennedik.de/Silverboard.html
+Requires increasing minimum_chrome_version (new API and permission)
 
 background.html, manifest.json: registerContentHandler
 register the extension as content handler for application/x-chess-pgn
@@ -52,7 +55,7 @@ the chrome downloads page; needs assessing impact on the plain download of
 a PGN file: check what happens when clicking a link on the page or the
 download icon of the popup.
 http://crbug.com/86115 (and other, search for registerContentHandler)
-requires increasing minimum_chrome_version (new API and permission)
+Requires increasing minimum_chrome_version (new API and permission)
 
 about.html, background.html: "try this" examples
 enable the example paragraphs in about.html by removing the "display: none;"
@@ -60,10 +63,11 @@ css attribute of "div.try" and updating the pgnUrlPattern/zipUrlPattern
 definitions in background.html; example paragraphs being disabled at the
 moment because extension pages dont get context menus.
 http://crbug.com/51461
-implemented for extensionChannel "beta" and "development"
+Implemented for extensionChannel "beta" and "development"
 Fixed in google chrome (dev) v14.0.835.15
-requires increasing minimum_chrome_version (new pgnUrlPattern/zipUrlPattern
+Requires increasing minimum_chrome_version (new pgnUrlPattern/zipUrlPattern
 definition not backward compatible)
+
 
 Bugs:
 
@@ -76,8 +80,7 @@ mouse pointer will not change and the viewer will not open the link).
 http://crbug.com/84024
 Possible workaround if context scripts could manipulate context menus, see
 http://crbug.com/77023
-Verify this on the page:
-http://code.google.com/p/pgn4web/wiki/SandBox
+Verify on http://code.google.com/p/pgn4web/wiki/SandBox
 
 popup.html: popup css
 popup.html is affected by following issues:
@@ -95,4 +98,4 @@ about.html, manifest.json: help page
 this page is currently assigned as the "options" page while there are not
 any configurable options; it should rather assigned as "help" page.
 http://crbug.com/29849
-requires increasing minimum_chrome_version (new manifest entry)
+Requires increasing minimum_chrome_version (new manifest entry)
