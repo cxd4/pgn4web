@@ -266,10 +266,12 @@ of Google Chrome. Don't use with any other browser.
 
    function customFunctionOnMove() {
       if (analysisStarted && engineUnderstandsGame(currentGame)) {
-         if ((theObject = document.getElementById("GameAnalysisEval")) && (typeof(annotationGraphEval[currentGame]) != "undefined") && (typeof(annotationGraphEval[currentGame][CurrentPly]) != "undefined")) {
-            theObject.innerHTML = evalText(annotationGraphEval[currentGame][CurrentPly]);
+         if (theObject = document.getElementById("GameAnalysisEval")) {
+            theObject.innerHTML = ((typeof(annotationGraphEval[currentGame]) != "undefined") && (typeof(annotationGraphEval[currentGame][CurrentPly]) != "undefined")) ? evalText(annotationGraphEval[currentGame][CurrentPly]) : "";
          }
-         if ((theObject = document.getElementById("GameAnalysisPv")) && (typeof(annotationGraphPv[currentGame]) != "undefined") && (typeof(annotationGraphPv[currentGame][CurrentPly]) != "undefined")) { theObject.innerHTML = annotationGraphPv[currentGame][CurrentPly]; }
+         if (theObject = document.getElementById("GameAnalysisPv")) {
+            theObject.innerHTML = ((typeof(annotationGraphPv[currentGame]) != "undefined") && (typeof(annotationGraphPv[currentGame][CurrentPly]) != "undefined")) ? annotationGraphPv[currentGame][CurrentPly] : "";
+         }
          restartAnalysis();
          updateAnnotationGraph(currentGame);
       } else {
