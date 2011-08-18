@@ -269,6 +269,7 @@ of Google Chrome. Don't use with any other browser.
          restartAnalysis();
          updateAnnotationGraph(currentGame);
       } else {
+         clearAnnotationHeader();
          clearAnnotationGraph(currentGame);
       }
       
@@ -464,7 +465,7 @@ of Google Chrome. Don't use with any other browser.
    function customShortcutKey_Shift_4() { cycleLastMoveAndCommentArea(); }
 
    function customShortcutKey_Shift_5() { userToggleAnalysis(); }
-   function customShortcutKey_Shift_6() { if (analysisStarted) { resetAnnotationGraphData(currentGame); updateAnnotationGraph(currentGame); } else { resetAnnotationGraphData(-1); } }
+   function customShortcutKey_Shift_6() { if (analysisStarted) { resetAnnotationGraphData(currentGame); updateAnnotationGraph(currentGame); clearAnnotationHeader(); } else { resetAnnotationGraphData(-1); } }
 
    function customShortcutKey_Shift_7() { fetchInputPgnText(); }
    function customShortcutKey_Shift_8() { openPgnFiles(); }
@@ -621,13 +622,13 @@ of Google Chrome. Don't use with any other browser.
 
    function restartAnalysis() {
       chrome.extension.sendRequest({analysisCommand: 'analysis', FEN: CurrentFEN(), gameNum: currentGame}, function(response) {});
+      forceAnnotationGraphUpdate = true;
       if (theObject = document.getElementById("GameAnalysisEval")) {
          theObject.innerHTML = ((typeof(annotationGraphEval[currentGame]) != "undefined") && (typeof(annotationGraphEval[currentGame][CurrentPly]) != "undefined")) ? evalText(annotationGraphEval[currentGame][CurrentPly]) : "";
       }
       if (theObject = document.getElementById("GameAnalysisPv")) {
          theObject.innerHTML = ((typeof(annotationGraphPv[currentGame]) != "undefined") && (typeof(annotationGraphPv[currentGame][CurrentPly]) != "undefined")) ? annotationGraphPv[currentGame][CurrentPly] : "";
       }
-      forceAnnotationGraphUpdate = true;
    }
 
    function stopAnalysis() {
@@ -650,7 +651,10 @@ of Google Chrome. Don't use with any other browser.
            if (analysisStarted) { 
               updateAnnotationGraphData(parseFloat(request.analysisGameNum), parseFloat(request.analysisEval), parseFloat(request.analysisNodes), request.analysisPv, request.analysisFEN);
               if ((anps = parseFloat(request.analysisNodesPerSecond)) > analysisMaxNodesPerSecond) { analysisMaxNodesPerSecond = anps; }
-           } else { clearAnnotationGraph(); }
+           } else {
+              clearAnnotationHeader();
+              clearAnnotationGraph();
+           }
         }
      });
    }
@@ -785,6 +789,9 @@ of Google Chrome. Don't use with any other browser.
          context = theObject.getContext("2d");
          context.clearRect (0, 0, theObject.width, theObject.height);
       }
+   }
+   
+   function clearAnnotationHeader() {
       if (theObject = document.getElementById("GameAnalysisEval")) { theObject.innerHTML = ""; }
       if (theObject = document.getElementById("GameAnalysisPv")) { theObject.innerHTML = ""; }
    }
