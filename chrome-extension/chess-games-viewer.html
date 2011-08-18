@@ -826,12 +826,11 @@ of Google Chrome. Don't use with any other browser.
    function annotationGraphyPlyUpdate(annPly) {
       lastMousemoveAnnPly = annPly;
       lastMousemoveAnnGame = currentGame;
-      placeholder = "&nbsp;";
       if ((annPly >= StartPly) && (annPly <= StartPly + PlyNumber)) {
-         annMove = (annPly > StartPly ? (Math.floor(annPly / 2) + (annPly % 2)) + (annPly % 2 ? ". " : "... ") + Moves[annPly - 1] : placeholder);
+         annMove = (annPly > StartPly ? (Math.floor(annPly / 2) + (annPly % 2)) + (annPly % 2 ? ". " : "... ") + Moves[annPly - 1] : "&middot;");
          if (theObject = document.getElementById("GameAnnotationMove")) { theObject.innerHTML = annMove; }
-         annEval = typeof(annotationGraphEval[currentGame]) != "undefined" && typeof(annotationGraphEval[currentGame][annPly]) != "undefined" ? annotationGraphEval[currentGame][annPly] : placeholder;
-         if (annEval !== placeholder) {
+         annEval = typeof(annotationGraphEval[currentGame]) != "undefined" && typeof(annotationGraphEval[currentGame][annPly]) != "undefined" ? annotationGraphEval[currentGame][annPly] : "";
+         if (annEval !== "") {
             annEval = (annEval > 0 ? "+" : "") + annEval;
             if (annEval.indexOf(".") == -1) { annEval += ".0"; }
          }
