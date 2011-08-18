@@ -296,7 +296,3 @@ a {
 .analysisEval, .annotationEval {
   min-width: 3em;
 }
-
-.annotationMove {
-  min-width: 6em;
-}
