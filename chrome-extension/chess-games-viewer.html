@@ -266,12 +266,6 @@ of Google Chrome. Don't use with any other browser.
 
    function customFunctionOnMove() {
       if (analysisStarted && engineUnderstandsGame(currentGame)) {
-         if (theObject = document.getElementById("GameAnalysisEval")) {
-            theObject.innerHTML = ((typeof(annotationGraphEval[currentGame]) != "undefined") && (typeof(annotationGraphEval[currentGame][CurrentPly]) != "undefined")) ? evalText(annotationGraphEval[currentGame][CurrentPly]) : "";
-         }
-         if (theObject = document.getElementById("GameAnalysisPv")) {
-            theObject.innerHTML = ((typeof(annotationGraphPv[currentGame]) != "undefined") && (typeof(annotationGraphPv[currentGame][CurrentPly]) != "undefined")) ? annotationGraphPv[currentGame][CurrentPly] : "";
-         }
          restartAnalysis();
          updateAnnotationGraph(currentGame);
       } else {
@@ -627,6 +621,12 @@ of Google Chrome. Don't use with any other browser.
 
    function restartAnalysis() {
       chrome.extension.sendRequest({analysisCommand: 'analysis', FEN: CurrentFEN(), gameNum: currentGame}, function(response) {});
+      if (theObject = document.getElementById("GameAnalysisEval")) {
+         theObject.innerHTML = ((typeof(annotationGraphEval[currentGame]) != "undefined") && (typeof(annotationGraphEval[currentGame][CurrentPly]) != "undefined")) ? evalText(annotationGraphEval[currentGame][CurrentPly]) : "";
+      }
+      if (theObject = document.getElementById("GameAnalysisPv")) {
+         theObject.innerHTML = ((typeof(annotationGraphPv[currentGame]) != "undefined") && (typeof(annotationGraphPv[currentGame][CurrentPly]) != "undefined")) ? annotationGraphPv[currentGame][CurrentPly] : "";
+      }
       forceAnnotationGraphUpdate = true;
    }
 
