@@ -90,6 +90,8 @@ function InitializeBackgroundEngine() {
                 if (matches = e.data.substr(3, e.data.length - 3).match(/Ply:(\d+) Score:(-*\d+) Nodes:(\d+) NPS:(\d+) (.*)/)) {
                    ply = matches[1];
                    ev = Math.floor(matches[2] / 100) / 10;
+                   maxEv = 99.9;
+                   if (ev < -maxEv) { ev = -maxEv; } else if (ev > maxEv) { ev = maxEv; }
                    if (g_FEN.indexOf(" b ") !== -1) { ev = - ev; }
                    ev = (ev > 0 ? "+" : "") + ev; 
                    if (ev.indexOf(".") == -1) { ev += ".0"; }
