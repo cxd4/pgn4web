@@ -656,7 +656,7 @@ of Google Chrome. Don't use with any other browser.
    var annotationGraphFEN;
    resetAnnotationGraphData(-1);
    var minNodesForAnnotation = 12345;
-   var minEvalForCheckmateAssumption = 1900;
+   var minEvalForCheckmateAssumption = 99.9;
    var forceAnnotationGraphUpdate = false;
    var analysisMaxNodesPerSecond = 0;
 
@@ -682,7 +682,7 @@ of Google Chrome. Don't use with any other browser.
          resetAnnotationGraphData(annGame);
          if (annGame === currentGame) { graphNeedsUpdate = true; }
       }
-      else if (((nodes > minNodesForAnnotation) || (Math.abs(ev) > minEvalForCheckmateAssumption) || (ev === 0)) && ((typeof(annotationGraphNodes[annGame]) == "undefined") || (typeof(annotationGraphNodes[annGame][annPly]) == "undefined") || (nodes > annotationGraphNodes[annGame][annPly]))) {
+      else if (((nodes > minNodesForAnnotation) || (Math.abs(ev) >= minEvalForCheckmateAssumption) || (ev === 0)) && ((typeof(annotationGraphNodes[annGame]) == "undefined") || (typeof(annotationGraphNodes[annGame][annPly]) == "undefined") || (nodes > annotationGraphNodes[annGame][annPly]))) {
          if (typeof(annotationGraphEval[annGame]) == "undefined") { annotationGraphEval[annGame] = new Array(); }
          if ((annGame === currentGame) && ((typeof(annotationGraphEval[annGame][annPly]) == "undefined") || (ev !== annotationGraphEval[annGame][annPly]))) { graphNeedsUpdate = true; }
          annotationGraphEval[annGame][annPly] = ev;
