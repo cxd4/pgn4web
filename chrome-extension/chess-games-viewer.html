@@ -826,7 +826,7 @@ of Google Chrome. Don't use with any other browser.
    function annotationGraphyPlyUpdate(annPly) {
       lastMousemoveAnnPly = annPly;
       lastMousemoveAnnGame = currentGame;
-      placeholder = "&middot;";
+      placeholder = "&nbsp;";
       if ((annPly >= StartPly) && (annPly <= StartPly + PlyNumber)) {
          annMove = (annPly > StartPly ? (Math.floor(annPly / 2) + (annPly % 2)) + (annPly % 2 ? ". " : "... ") + Moves[annPly - 1] : placeholder);
          if (theObject = document.getElementById("GameAnnotationMove")) { theObject.innerHTML = annMove; }
