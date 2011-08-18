@@ -281,11 +281,23 @@ a {
   color: black;
 }
 
-.analysisEval, .annotationMove {
+.analysisEval {
+  font-weight: bold;
+}
+
+.analysisPv {
+}
+
+.analysisEval, .annotationEval {
   display: inline-block;
   min-width: 3em;
 }
 
-.annotationEval, .annotationMove {
+.annotationMove {
+  display: inline-block;
+  min-width: 6em;
+}
+
+.annotationMove, .annotationEval, .annotationPv {
   display: none;
 }
