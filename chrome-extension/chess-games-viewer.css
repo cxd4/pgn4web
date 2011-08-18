@@ -281,23 +281,22 @@ a {
   color: black;
 }
 
-.analysisEval {
-  font-weight: bold;
-}
-
-.analysisPv {
-}
-
-.analysisEval, .annotationEval {
+.analysisEval, .analysisPv {
   display: inline-block;
-  min-width: 3em;
-}
-
-.annotationMove {
-  display: inline-block;
-  min-width: 6em;
 }
 
 .annotationMove, .annotationEval, .annotationPv {
   display: none;
+}
+
+.analysisEval {
+  font-weight: bold;
+}
+
+.analysisEval, .annotationEval {
+  min-width: 3em;
+}
+
+.annotationMove {
+  min-width: 6em;
 }
