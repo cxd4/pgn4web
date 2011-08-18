@@ -695,6 +695,7 @@ of Google Chrome. Don't use with any other browser.
          annotationGraphNodes[annGame][annPly] = nodes;
          if (typeof(annotationGraphFEN[annGame]) == "undefined") { annotationGraphFEN[annGame] = new Array(); }
          annotationGraphFEN[annGame][annPly] = FEN;
+         if ((annGame === lastMousemoveAnnGame) && (annPly === lastMousemoveAnnPly)) { annotationGraphyPlyUpdate(annPly); }
       }
       if (graphNeedsUpdate) {
          forceAnnotationGraphUpdate = false;
@@ -814,14 +815,18 @@ of Google Chrome. Don't use with any other browser.
       lastMousemoveAnnGame = -1;
    }
 
+   function annotationGraphMousemove() {
+      annPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
+      annotationGraphyPlyUpdate(annPly);
+      if ((annPly === lastMousemoveAnnPly) && (currentGame === lastMousemoveAnnGame)) { return; }
+   }
+
    lastMousemoveAnnPly = -1;
    lastMousemoveAnnGame = -1;
-   function annotationGraphMousemove() {
-      placeholder = "&middot;";
-      annPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
-      if ((annPly === lastMousemoveAnnPly) && (currentGame === lastMousemoveAnnGame)){ return; }
+   function annotationGraphyPlyUpdate(annPly) {
       lastMousemoveAnnPly = annPly;
       lastMousemoveAnnGame = currentGame;
+      placeholder = "&middot;";
       if ((annPly >= StartPly) && (annPly <= StartPly + PlyNumber)) {
          annMove = (annPly > StartPly ? (Math.floor(annPly / 2) + (annPly % 2)) + (annPly % 2 ? ". " : "... ") + Moves[annPly - 1] : placeholder);
          if (theObject = document.getElementById("GameAnnotationMove")) { theObject.innerHTML = annMove; }
