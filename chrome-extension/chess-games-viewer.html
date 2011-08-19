@@ -627,8 +627,6 @@ of Google Chrome. Don't use with any other browser.
 
    function stopAnalysis() {
       chrome.extension.sendRequest({analysisCommand: 'stop', FEN: "", gameNum: ""}, function(response) {});
-      clearAnalysisHeader(currentGame, CurrentPly);
-      clearAnnotationGraph(currentGame);
    }
 
    window.onunload = function() { if (analysisStarted) { stopAnalysis(); } };
@@ -797,7 +795,7 @@ of Google Chrome. Don't use with any other browser.
    function clearAnnotationGraph() {
       if (theObject = document.getElementById("GameAnnotationGraph")) {
          context = theObject.getContext("2d");
-         context.clearRect (0, 0, theObject.width, theObject.height);
+         context.clearRect(0, 0, theObject.width, theObject.height);
       }
    }
 
