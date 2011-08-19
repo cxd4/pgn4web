@@ -862,9 +862,12 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function annotationGraphMousemove() {
-      lastMousemoveAnnPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
-      lastMousemoveAnnGame = currentGame;
-      updateAnalysisHeader(lastMousemoveAnnGame, lastMousemoveAnnPly);
+      newMousemoveAnnPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
+      if ((newMousemoveAnnPly !== lastMousemoveAnnPly) || (currentGame !== lastMousemoveAnnGame)) { 
+         lastMousemoveAnnPly = newMousemoveAnnPly;
+         lastMousemoveAnnGame = currentGame;
+         updateAnalysisHeader(lastMousemoveAnnGame, lastMousemoveAnnPly);
+      }
    }
 
    var showMaxNodesPerSecond = "";
