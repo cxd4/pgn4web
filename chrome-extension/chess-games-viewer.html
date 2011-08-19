@@ -805,7 +805,14 @@ of Google Chrome. Don't use with any other browser.
          if ((annGame !== currentGame) || (annPly !== CurrentPly)) { return; }
       }
 
-      if (annPly <= StartPly + PlyNumber) { showMaxNodesPerSecond = ""; }
+      if (showMaxNodesPerSecond) {
+         if (annPly <= StartPly + PlyNumber) {
+           if (theObject = document.getElementById("GameAnalysisMove")) { theObject.style.minWidth = ""; }
+           showMaxNodesPerSecond = "";
+         } else {
+           if (theObject = document.getElementById("GameAnalysisMove")) { theObject.style.minWidth = "0"; }
+         } 
+      }
 
       if (theObject = document.getElementById("GameAnalysisMove")) {
          annMove = "&middot;";
@@ -869,7 +876,7 @@ of Google Chrome. Don't use with any other browser.
             else if (analysisMaxNodesPerSecond > 1000000) { anps = Math.floor(analysisMaxNodesPerSecond / 1000000) + "M"; }
             else if (analysisMaxNodesPerSecond > 1000) { anps = Math.floor(analysisMaxNodesPerSecond / 1000) + "K"; }
             else { anps = analysisMaxNodesPerSecond; }
-            showMaxNodesPerSecond = "up to " + anps + " nodes per second analysis";
+            showMaxNodesPerSecond = "analysis up to " + anps + " nodes per second";
          }
       }
    }
