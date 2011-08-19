@@ -621,10 +621,14 @@ of Google Chrome. Don't use with any other browser.
 
    function restartAnalysis() {
       chrome.extension.sendRequest({analysisCommand: 'analysis', FEN: CurrentFEN(), gameNum: currentGame}, function(response) {});
+      updateAnalysisHeader(currentGame, CurrentPly);
+      updateAnnotationGraph(currentGame);
    }
 
    function stopAnalysis() {
       chrome.extension.sendRequest({analysisCommand: 'stop', FEN: "", gameNum: ""}, function(response) {});
+      clearAnalysisHeader(currentGame, CurrentPly);
+      clearAnnotationGraph(currentGame);
    }
 
    window.onunload = function() { if (analysisStarted) { stopAnalysis(); } };
