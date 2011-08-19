@@ -699,7 +699,7 @@ of Google Chrome. Don't use with any other browser.
 
    function updateAnnotationGraphData(annGame, ev, nodes, Pv, FEN) {
       uiNeedsUpdate = false;
-      if ((annPly = plyFromFEN(FEN)) === null) { return; }
+      if ((annPly = plyFromFEN(FEN)) === null) { return uiNeedsUpdate; }
       // deals with live transmission errors where games number/order is changing during a broadcast
       if ((typeof(annotationGraphFEN[annGame]) != "undefined") && (typeof(annotationGraphFEN[annGame][annPly]) != "undefined") && (FEN !== annotationGraphFEN[annGame][annPly])) {
          resetAnnotationGraphData(annGame);
