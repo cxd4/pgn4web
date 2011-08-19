@@ -878,6 +878,7 @@ of Google Chrome. Don't use with any other browser.
             else if (analysisMaxNodesPerSecond > 1000) { anps = Math.floor(analysisMaxNodesPerSecond / 1000) + "K"; }
             else { anps = analysisMaxNodesPerSecond; }
             showMaxNodesPerSecond = "analysis up to " + anps + " nodes per second";
+            updateAnalysisHeader(currentGame, annPly);
          }
       }
    }
