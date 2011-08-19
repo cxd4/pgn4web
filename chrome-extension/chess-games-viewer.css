@@ -281,10 +281,6 @@ a {
   color: black;
 }
 
-.analysisPv {
-  display: inline-block;
-}
-
 .analysisMove {
   display: none;
   min-width: 6em;
@@ -294,4 +290,8 @@ a {
   display: inline-block;
   min-width: 3em;
   font-weight: bold;
+}
+
+.analysisPv {
+  display: inline-block;
 }
