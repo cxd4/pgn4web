@@ -9,7 +9,7 @@
 
 <!-- 
 
-HTML, CSS and Javascript code optimized for use as extension 
+HTML, CSS and Javascript code optimized for use as extension
 of Google Chrome. Don't use with any other browser.
 
 -->
@@ -54,7 +54,7 @@ of Google Chrome. Don't use with any other browser.
 
    thisRegExp = /(&|\?)(help|h)([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
-      alert("pgn4web google chrome chess games viewer" + "\n" + 
+      alert("pgn4web google chrome chess games viewer" + "\n" +
             "chess-games-viewer.html parameters" + "\n\n" +
             " - pgnBackground = index" + "\n\n" +
             " - pgnData = URL.pgn" + "\n\n" +
@@ -82,8 +82,7 @@ of Google Chrome. Don't use with any other browser.
          if ((pgnBackground = unescape(window.location.search.match(thisRegExp)[3])) !== "") {
             theObject = document.getElementById("pgnText");
             theBackgroundPgnText = backgroundPage.pgnText[pgnBackground];
-            if ((theObject) && (theBackgroundPgnText) && (theBackgroundPgnText !== undefined)) 
-            { theObject.value = theBackgroundPgnText; }
+            if ((theObject) && (theBackgroundPgnText) && (theBackgroundPgnText !== undefined)) { theObject.value = theBackgroundPgnText; }
             chrome.tabs.getCurrent(setPgnTextIndexFromTabId);
          }
       }
@@ -253,7 +252,7 @@ of Google Chrome. Don't use with any other browser.
       var headerId = ["GameEvent", "GameSite", "GameDate", "GameRound", "GameWhite", "GameBlack", "GameResult", "GameSection", "GameStage", "GameBoardNum", "Timecontrol", "GameWhiteTitle", "GameBlackTitle", "GameWhiteElo", "GameBlackElo", "GameECO", "GameOpening", "GameVariation", "GameSubVariation", "GameTermination", "GameWhiteClock", "GameBlackClock", "GameTimeControl"];
       var headerLabel = ["event", "site", "date", "round", "white player", "black player", "result", "section", "stage", "board", "time control", "white title", "black title", "white elo", "black elo", "eco", "opening", "variation", "subvariation", "termination", "white clock", "black clock", "time control"];
       theObject = document.getElementById(elementId);
-      if (theObject) { 
+      if (theObject) {
         theObject.className = (theObject.innerHTML === "") ? "innerHeaderItemNoMargin" : "innerHeaderItem";
         theObject.title = (headerId.indexOf(elementId) < 0 ? elementId : headerLabel[headerId.indexOf(elementId)] ) + ": " + theObject.innerHTML;
       }
@@ -273,7 +272,7 @@ of Google Chrome. Don't use with any other browser.
          clearAnalysisHeader();
          clearAnnotationGraph(currentGame);
       }
-      
+
       wObject = document.getElementById('GameWhiteClock');
       bObject = document.getElementById('GameBlackClock');
       if (wObject && bObject) {
@@ -358,7 +357,7 @@ of Google Chrome. Don't use with any other browser.
       //    resetAnnotationGraphData(currentGame);
       // }
 
-      if (previousCurrentGame !== currentGame) { 
+      if (previousCurrentGame !== currentGame) {
          previousPlyNumber = PlyNumber;
          previousCurrentGame = currentGame;
       }
@@ -369,7 +368,7 @@ of Google Chrome. Don't use with any other browser.
    var previousPlyNumber = -1;
    var previousCurrentGame = -1;
    function customFunctionOnPgnTextLoad() {
-      noGamesLoaded = (numberOfGames == 1) && (PlyNumber === 0) && (StartPly === 0) && (!gameWhite[0]) && (!gameBlack[0]) && (!gameResult[0]) && (!gameFEN[0]); 
+      noGamesLoaded = (numberOfGames == 1) && (PlyNumber === 0) && (StartPly === 0) && (!gameWhite[0]) && (!gameBlack[0]) && (!gameResult[0]) && (!gameFEN[0]);
       if (LiveBroadcastDelay > 0) {
          if (previousPlyNumber !== PlyNumber) {
             previousPlyNumber = PlyNumber;
@@ -539,7 +538,7 @@ of Google Chrome. Don't use with any other browser.
 
    window.onload = function() {
       if (pgnData) { useNewPgnUrl(pgnData, refreshMinutes); }
-      else { 
+      else {
          setInitialGameFromSearchGame();
          start_pgn4web();
       }
