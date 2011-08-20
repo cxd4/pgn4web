@@ -73,10 +73,10 @@ function storeAnalysis(FEN, ev, pv, nodes) {
    maxEv = 99.9;
    minNodesForAnnotation = 12345;
 
-   ev = Math.floor(matches[2] / 100) / 10;
+   ev = Math.floor(ev / 100) / 10;
    if (ev < -maxEv) { ev = -maxEv; } else if (ev > maxEv) { ev = maxEv; }
 
-   if ((nodes < minNodesForAnnotation) && (ev < 99.9) && (ev > -99.9) && (ev !== 0)) { return false; }
+   if ((nodes < minNodesForAnnotation) && (ev < maxEv) && (ev > -maxEv) && (ev !== 0)) { return false; }
 
    index = egStored_FEN.indexOf(FEN);
    if ((index != -1) && (nodes > egStored_nodes[index])) {
@@ -144,10 +144,10 @@ function InitializeBackgroundEngine() {
           g_backgroundEngine.onmessage = function (e) {
              if (e.data.match("^pv") == "pv") {
                 if (matches = e.data.substr(3, e.data.length - 3).match(/Ply:(\d+) Score:(-*\d+) Nodes:(\d+) NPS:(\d+) (.*)/)) {
-                   ply = matches[1];
-                   ev = matches[2];
-                   nodes = matches[3];
-                   nodesPerSecond = matches[4];
+                   ply = parseInt(matches[1], 10);
+                   ev = parseInt(matches[2], 10);
+                   nodes = parseInt(matches[3], 10);
+                   nodesPerSecond = parseInt(matches[4], 10);
                    egStored_maxNodesPerSecond = Math.max(egStored_maxNodesPerSecond, nodesPerSecond);
                    pv = matches[5].replace(/(\+|#|checkmate|stalemate)/g, "");
                    if (storeAnalysis(g_FEN, ev, pv, nodes)) {
