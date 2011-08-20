@@ -162,8 +162,10 @@ function InitializeBackgroundEngine() {
 }
 
 function analysisRequestHandler(request, sender, sendResponse) {
-  if (typeof(request.analysisCommand) == "undefined") { return; }
-  setAnalysisStatus(request.analysisCommand, sender.tab.id, request.FEN);
+  if (typeof(request.analysisCommand) != "undefined") { 
+     setAnalysisStatus(request.analysisCommand, sender.tab.id, request.FEN);
+  }
+  sendResponse({});
 }
 
 chrome.extension.onRequest.addListener(analysisRequestHandler);
