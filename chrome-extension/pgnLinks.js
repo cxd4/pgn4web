@@ -33,7 +33,7 @@ function notifyPgnHrefLinks() {
   }
 
   if (pgn4web_pgnHrefLinks.length > 0) {
-    chrome.extension.sendRequest({pgnHrefLinks: pgn4web_pgnHrefLinks}, function(response) {}); 
+    chrome.extension.sendRequest({pgnHrefLinks: pgn4web_pgnHrefLinks}, function(res){}); 
   }
 
 }
@@ -48,4 +48,3 @@ function notifyPgnHrefLinks() {
 // else { window.addEventListener("load", notifyPgnHrefLinks, false); }
 //
 notifyPgnHrefLinks();
-
