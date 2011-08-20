@@ -26,7 +26,7 @@ function setAnalysisStatus(newStatus, newTabId, newFEN) {
             g_backgroundEngine = null;
          }
          if ((g_tabId !== null) && (newTabId !== g_tabId)) {
-            chrome.extension.sendRequest({tabId: g_tabId, analysisNotification: "stopped"}, function(res){});
+            chrome.tabs.sendRequest(g_tabId, {analysisNotification: "stopped"}, function(res){});
          }
          if (InitializeBackgroundEngine()) {
             g_FEN = newFEN;
@@ -151,7 +151,7 @@ function InitializeBackgroundEngine() {
                    egStored_maxNodesPerSecond = Math.max(egStored_maxNodesPerSecond, nodesPerSecond);
                    pv = matches[5].replace(/(\+|#|checkmate|stalemate)/g, "");
                    if (storeAnalysis(g_FEN, ev, pv, nodes)) {
-                      chrome.extension.sendRequest({tabId: g_tabId, analysisNotification: "newData"}, function(res){});
+                      chrome.tabs.sendRequest(g_tabId, {analysisNotification: "newData"}, function(res){});
                    }
                 }
              }
