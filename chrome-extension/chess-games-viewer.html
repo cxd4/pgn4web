@@ -628,7 +628,7 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function stopAnalysis(notifyBackgroundPage) {
-      if (notifyBackgroundPage) { chrome.extension.sendRequest({analysisCommand: 'stop'}, function(response) {}); }
+      if (notifyBackgroundPage) { chrome.extension.sendRequest({analysisCommand: 'stop', FEN: ""}, function(response) {}); }
       analysisStarted = false;
       if (theObject = document.getElementById("toggleAnalysisLink")) { theObject.innerHTML = "+"; }
       clearAnnotationGraph();
@@ -655,6 +655,7 @@ of Google Chrome. Don't use with any other browser.
            }
         }
      });
+     sendResponse({});
    }
 
    var fenPositions;
