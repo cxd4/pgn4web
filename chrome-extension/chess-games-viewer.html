@@ -30,7 +30,7 @@ of Google Chrome. Don't use with any other browser.
 
 </head>
 
-<body onresize="if (analysisStarted) { updateAnnotationGraph(currentGame); }">
+<body onresize="updateAnnotationGraph();">
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
 <form style="display: none;"><textarea style="display: none;" id="pgnText">
@@ -264,13 +264,18 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function customFunctionOnMove() {
-      if (analysisStarted && engineUnderstandsGame(currentGame)) {
-         restartAnalysis();
-         updateAnalysisHeader(currentGame, CurrentPly);
-         updateAnnotationGraph(currentGame);
+
+      if (typeof(fenPositions[currentGame]) == "undefined") { fenPositions[currentGame] = new Array(); }
+      thisFen = CurrentFEN();
+      if ((typeof(fenPositions[currentGame][CurrentPly]) != "undefined") && (fenPositions[currentGame][CurrentPly] !== thisFen)) { resetFenPositions(currentGame); }
+      fenPositions[currentGame][CurrentPly] = thisFen;
+
+      if (analysisStarted) {
+         if (engineUnderstandsGame(currentGame)) { restartAnalysis(); }
+         else { stopAnalysis(); }
       } else {
          clearAnalysisHeader();
-         clearAnnotationGraph(currentGame);
+         clearAnnotationGraph();
       }
 
       wObject = document.getElementById('GameWhiteClock');
@@ -351,11 +356,6 @@ of Google Chrome. Don't use with any other browser.
              theObject.innerHTML = "";
          }
       }
-
-      // check disabled to allow for live transmission errors where fewer moves are received
-      // if ((typeof(annotationGraphEval[currentGame]) != "undefined") && (annotationGraphEval[currentGame].length > StartPly + PlyNumber + 1)) {
-      //    resetAnnotationGraphData(currentGame);
-      // }
 
       if (previousCurrentGame !== currentGame) {
          previousPlyNumber = PlyNumber;
@@ -464,7 +464,7 @@ of Google Chrome. Don't use with any other browser.
    function customShortcutKey_Shift_4() { cycleLastMoveAndCommentArea(); }
 
    function customShortcutKey_Shift_5() { userToggleAnalysis(); }
-   function customShortcutKey_Shift_6() { if (analysisStarted) { resetAnnotationGraphData(currentGame); updateAnnotationGraph(currentGame); updateAnalysisHeader(currentGame, CurrentPly); } else { resetAnnotationGraphData(-1); } }
+   function customShortcutKey_Shift_6() { if (analysisStarted) { resetFenPositions(currentGame); fenPositions[currentGame][CurrentPly] = CurrentFEN(); updateAnnotationGraph(); updateAnalysisHeader(); } else { resetFenPositions(-1); if (backgroundPage) { backgroundPage.resetAnalysisData(); } } }
 
    function customShortcutKey_Shift_7() { fetchInputPgnText(); }
    function customShortcutKey_Shift_8() { openPgnFiles(); }
@@ -526,7 +526,7 @@ of Google Chrome. Don't use with any other browser.
    function showPuzzler() {
       alertFlag = demoFlag = false;
       gameDemoMaxPly = new Array();
-      resetAnnotationGraphData(-1);
+      resetFenPositions(-1);
       // replace the following line with the commented code to show the last 10 puzzlers when clicking F5 in sequence
       useNewPgnUrl(puzzlerUrl, 0);
       // if (pgnData.indexOf(puzzlerUrl) == -1) { useNewPgnUrl(puzzlerUrl, 0); }
@@ -621,112 +621,52 @@ of Google Chrome. Don't use with any other browser.
 
    function restartAnalysis() {
       chrome.extension.sendRequest({analysisCommand: 'analysis', FEN: CurrentFEN(), gameNum: currentGame}, function(response) {});
-      updateAnalysisHeader(currentGame, CurrentPly);
-      updateAnnotationGraph(currentGame);
+      analysisStarted = true;
+      if (theObject = document.getElementById("toggleAnalysisLink")) { theObject.innerHTML = "&times;"; }
+      updateAnnotationGraph();
+      updateAnalysisHeader();
    }
 
    function stopAnalysis() {
       chrome.extension.sendRequest({analysisCommand: 'stop', FEN: "", gameNum: ""}, function(response) {});
+      analysisStarted = false;
+      if (theObject = document.getElementById("toggleAnalysisLink")) { theObject.innerHTML = "+"; }
+      clearAnnotationGraph();
+      clearAnalysisHeader();
    }
 
    window.onunload = function() { if (analysisStarted) { stopAnalysis(); } };
 
    chrome.extension.onRequest.addListener(analysisOutputHandler);
 
-   function plyFromFEN(FEN) {
-      fenMatches = FEN.match(/\s*(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s*/);
-      try { return (2 * (parseInt(fenMatches[6], 10) - 1) + (fenMatches[2] == "b" ? 1 : 0)); }
-      catch(e) { return (null); }
-   }
-
-   function evalText(annEval) {
-      if (annEval !== "") {
-         annEval = (annEval > 0 ? "+" : "") + annEval;
-         if (annEval.indexOf(".") == -1) { annEval += ".0"; }
-      }
-      return annEval;
-   }
-
    function analysisOutputHandler(request, sender, sendResponse) {
-     if (typeof(request.analysisEval) == "undefined") { return; }
      chrome.tabs.getCurrent( function(tab) {
-        if (tab.id === request.tabId) {
-           analysisStarted = (request.analysisEval !== "");
-           if (theObject = document.getElementById("toggleAnalysisLink")) { theObject.innerHTML = analysisStarted ? "&times;" : "+"; }
-           if (theObject = document.getElementById("GameAnnotationGraph")) {
-              theObject.style.visibility = analysisStarted && (PlyNumber > 0) ? "visible" : "hidden";
-           }
-           if (analysisStarted) {
-              annGame = parseFloat(request.analysisGameNum);
-              ev = parseFloat(request.analysisEval);
-              nodes = parseFloat(request.analysisNodes);
-              if (updateAnnotationGraphData(annGame, ev, nodes, request.analysisPv, request.analysisFEN)) {
-                 if (currentGame === annGame) {
-                    updateAnnotationGraph(annGame);
-                    if ((annPly = plyFromFEN(request.analysisFEN)) !== null) { updateAnalysisHeader(annGame, annPly); }
-                 }
-              }
-              if ((anps = parseFloat(request.analysisNodesPerSecond)) > analysisMaxNodesPerSecond) { analysisMaxNodesPerSecond = anps; }
-           } else {
-              clearAnalysisHeader();
-              clearAnnotationGraph();
-           }
+        if ((tab.id === request.tabId) && (typeof(request.analysisNotification) != "undefined") && (request.analysisNotification == "newData")) {
+           updateAnnotationGraph();
+           updateAnalysisHeader();
         }
      });
    }
 
-   var annotationGraphEval;
-   var annotationGraphPv;
-   var annotationGraphNodes;
-   var annotationGraphFEN;
-   resetAnnotationGraphData(-1);
-   var minNodesForAnnotation = 12345;
-   var minEvalForCheckmateAssumption = 99.9;
-   var forceAnnotationGraphUpdate = false;
-   var analysisMaxNodesPerSecond = 0;
+   var fenPositions;
+   resetFenPositions(-1);
 
-   function resetAnnotationGraphData(annGame) {
-      if (annGame == -1) {
-         annotationGraphEval = new Array();
-         annotationGraphPv = new Array();
-         annotationGraphNodes = new Array();
-         annotationGraphFEN = new Array();
-      } else {
-         annotationGraphEval[annGame] = new Array();
-         annotationGraphPv[annGame] = new Array();
-         annotationGraphNodes[annGame] = new Array();
-         annotationGraphFEN[annGame] = new Array();
-      }
-   }
-
-   function updateAnnotationGraphData(annGame, ev, nodes, Pv, FEN) {
-      uiNeedsUpdate = false;
-      if ((annPly = plyFromFEN(FEN)) === null) { return uiNeedsUpdate; }
-      // deals with live transmission errors where games number/order is changing during a broadcast
-      if ((typeof(annotationGraphFEN[annGame]) != "undefined") && (typeof(annotationGraphFEN[annGame][annPly]) != "undefined") && (FEN !== annotationGraphFEN[annGame][annPly])) {
-         resetAnnotationGraphData(annGame);
-         if (annGame === currentGame) { uiNeedsUpdate = true; }
-      }
-      else if (((nodes > minNodesForAnnotation) || (Math.abs(ev) >= minEvalForCheckmateAssumption) || (ev === 0)) && ((typeof(annotationGraphNodes[annGame]) == "undefined") || (typeof(annotationGraphNodes[annGame][annPly]) == "undefined") || (nodes > annotationGraphNodes[annGame][annPly]))) {
-         if (typeof(annotationGraphEval[annGame]) == "undefined") { annotationGraphEval[annGame] = new Array(); }
-         if ((annGame === currentGame) && ((typeof(annotationGraphEval[annGame][annPly]) == "undefined") || (ev !== annotationGraphEval[annGame][annPly]))) { uiNeedsUpdate = true; }
-         annotationGraphEval[annGame][annPly] = ev;
-         if (typeof(annotationGraphPv[annGame]) == "undefined") { annotationGraphPv[annGame] = new Array(); }
-         annotationGraphPv[annGame][annPly] = Pv;
-         if (typeof(annotationGraphNodes[annGame]) == "undefined") { annotationGraphNodes[annGame] = new Array(); }
-         annotationGraphNodes[annGame][annPly] = nodes;
-         if (typeof(annotationGraphFEN[annGame]) == "undefined") { annotationGraphFEN[annGame] = new Array(); }
-         annotationGraphFEN[annGame][annPly] = FEN;
-      }
-      return uiNeedsUpdate;
+   function resetFenPositions(annGame) {
+      if (annGame == -1) { fenPositions = new Array(); }
+      else { fenPositions[annGame] = new Array(); }
    }
 
    var annotationBarWidth;
-   function updateAnnotationGraph(annGame) {
-      if (theObject = document.getElementById("GameAnnotationGraph")) {
+   function updateAnnotationGraph() {
+      if (!analysisStarted) { clearAnnotationGraph(); }
+      else if (theObject = document.getElementById("GameAnnotationGraph")) {
          annEval = new Array();
          for (annPly = StartPly; annPly <= StartPly+PlyNumber; annPly++) {
-            annEval[annPly] = ((typeof(annotationGraphEval[annGame]) != "undefined") && (typeof(annotationGraphEval[annGame][annPly]) != "undefined") ? annotationGraphEval[annGame][annPly] : 0);
+            annEval[annPly] = 0;
+            if (backgroundPage && (typeof(fenPositions[currentGame]) != "undefined") && (typeof(fenPositions[currentGame][annPly]) != "undefined")) {
+               index = backgroundPage.getAnalysisIndexFromFEN(fenPositions[currentGame][annPly]);
+               if (index != -1) { annEval[annPly] = backgroundPage.getAnalysisEvFromIndex(index); }
+            }
             //
             // grpah option 1: linear scale capped at maxAnnEval 
             // maxAnnEval = 3;
@@ -737,10 +677,8 @@ of Google Chrome. Don't use with any other browser.
             //
          }
 
-         // set canvas size, check calculations if headerItem and headerSpacer are changed in chess-games-viewer.css
-         if (!(theMeasureObject = document.getElementById("GameAnnotationMeasure"))) { return; }
-         canvasWidth = theMeasureObject.offsetWidth - theMeasureObject.offsetHeight * 1.25 / 0.7;
-         canvasHeight = 7 * theMeasureObject.offsetHeight;
+         theObject.width = canvasWidth = graphCanvasWidth();
+         theObject.height = canvasHeight = graphCanvasHeight();
 
          annotationPlyBlock = 20;
          annotationBarWidth = canvasWidth / (Math.ceil((PlyNumber + 2) / annotationPlyBlock) * annotationPlyBlock);
@@ -749,9 +687,6 @@ of Google Chrome. Don't use with any other browser.
          lineTop = Math.floor((canvasHeight - lineHeight) / 2);
          lineBottom = lineTop + lineHeight;
          maxBarHeight = lineTop + barOverlap;
-
-         theObject.width = canvasWidth = annotationBarWidth * (PlyNumber + 2);
-         theObject.height = canvasHeight;
 
          context = theObject.getContext("2d");
          context.beginPath();
@@ -795,16 +730,31 @@ of Google Chrome. Don't use with any other browser.
    function clearAnnotationGraph() {
       if (theObject = document.getElementById("GameAnnotationGraph")) {
          context = theObject.getContext("2d");
+         theObject.width = graphCanvasWidth();
+         theObject.height = graphCanvasHeight();
          context.clearRect(0, 0, theObject.width, theObject.height);
       }
    }
 
-   function updateAnalysisHeader(annGame, annPly) {
-      if ((lastMousemoveAnnGame != -1) && (lastMousemoveAnnPly != -1)) {
-         if ((annGame !== lastMousemoveAnnGame) || (annPly !== lastMousemoveAnnPly)) { return; }
-      } else {
-         if ((annGame !== currentGame) || (annPly !== CurrentPly)) { return; }
+   // set canvas size, check calculations if headerItem and headerSpacer are changed in chess-games-viewer.css
+   function graphCanvasWidth() {
+      if (theMeasureObject = document.getElementById("GameAnnotationMeasure")) {
+         return (theMeasureObject.offsetWidth - theMeasureObject.offsetHeight * 1.25 / 0.7);
+      } else { return 300; }
+   }
+   function graphCanvasHeight() {
+      if (theMeasureObject = document.getElementById("GameAnnotationMeasure")) {
+         return (theObject.height = 7 * theMeasureObject.offsetHeight);
+      } else { return 100; }
+   }
+
+   function updateAnalysisHeader() {
+      if (!analysisStarted) {
+         clearAnalysisHeader();
+         return;
       }
+
+      annPly = (lastMousemoveAnnPly == -1) ? CurrentPly : lastMousemoveAnnPly;
 
       if (showMaxNodesPerSecond) {
          if (annPly <= StartPly + PlyNumber) {
@@ -822,26 +772,30 @@ of Google Chrome. Don't use with any other browser.
          }
          theObject.innerHTML = annMove;
       }
+
+      annEval = (lastMousemoveAnnPly == -1) ? "&middot;" : "";
+      annPv = "";
+      if (backgroundPage && (typeof(fenPositions[currentGame]) != "undefined") && (typeof(fenPositions[currentGame][annPly]) != "undefined")) {
+         index = backgroundPage.getAnalysisIndexFromFEN(fenPositions[currentGame][annPly]);
+         if (index != -1) {
+            annEval = backgroundPage.getAnalysisEvFromIndex(index);
+            annPv = backgroundPage.getAnalysisPvFromIndex(index);
+         }
+      }
+
       if (theObject = document.getElementById("GameAnalysisEval")) {
-         theObject.innerHTML = ((typeof(annotationGraphEval[annGame]) != "undefined") && (typeof(annotationGraphEval[annGame][annPly]) != "undefined")) ? evalText(annotationGraphEval[annGame][annPly]) : showMaxNodesPerSecond;
+         if (showMaxNodesPerSecond) { theObject.innerHTML = showMaxNodesPerSecond; }
+         else { theObject.innerHTML = (typeof(annEval) != "undefined") ? annEval : ""; }
       }
       if (theObject = document.getElementById("GameAnalysisPv")) {
-         theObject.innerHTML = ((typeof(annotationGraphPv[annGame]) != "undefined") && (typeof(annotationGraphPv[annGame][annPly]) != "undefined")) ? annotationGraphPv[annGame][annPly] : "";
+         theObject.innerHTML = (typeof(annEval) != "undefined") ? annPv : "";
       }
    }   
 
    function clearAnalysisHeader() {
-      if (theObject = document.getElementById("GameAnalysisMove")) {
-         theObject.innerHTML = "";
-         theObject.style.display = "";
-      }
-      if (theObject = document.getElementById("GameAnalysisEval")) {
-         theObject.innerHTML = "";
-         theObject.style.fontWeigth = "";
-      }
-      if (theObject = document.getElementById("GameAnalysisPv")) {
-         theObject.innerHTML = "";
-      }
+      if (theObject = document.getElementById("GameAnalysisMove")) { theObject.innerHTML = ""; }
+      if (theObject = document.getElementById("GameAnalysisEval")) { theObject.innerHTML = ""; }
+      if (theObject = document.getElementById("GameAnalysisPv")) { theObject.innerHTML = ""; }
    }
 
 
@@ -858,7 +812,7 @@ of Google Chrome. Don't use with any other browser.
       if (theObject = document.getElementById("GameAnalysisEval")) { theObject.style.fontWeight = ""; }
       lastMousemoveAnnPly = -1;
       lastMousemoveAnnGame = -1;
-      if (analysisStarted) { updateAnalysisHeader(currentGame, CurrentPly); }
+      if (analysisStarted) { updateAnalysisHeader(); }
    }
 
    function annotationGraphMousemove() {
@@ -866,22 +820,22 @@ of Google Chrome. Don't use with any other browser.
       if ((newMousemoveAnnPly !== lastMousemoveAnnPly) || (currentGame !== lastMousemoveAnnGame)) { 
          lastMousemoveAnnPly = newMousemoveAnnPly;
          lastMousemoveAnnGame = currentGame;
-         updateAnalysisHeader(lastMousemoveAnnGame, lastMousemoveAnnPly);
+         if (analysisStarted) { updateAnalysisHeader(); }
       }
    }
 
    var showMaxNodesPerSecond = "";
    function annotationGraphClick() {
-      if (typeof(annotationBarWidth) != "undefined") {
+      if ((analysisStarted) && (typeof(annotationBarWidth) != "undefined")) {
          annPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
          if ((annPly >= StartPly) && (annPly <= StartPly + PlyNumber)) { GoToMove(annPly); }
-         else {
-            if (analysisMaxNodesPerSecond > 1000000000) { anps = Math.floor(analysisMaxNodesPerSecond / 1000000000) + "T"; }
-            else if (analysisMaxNodesPerSecond > 1000000) { anps = Math.floor(analysisMaxNodesPerSecond / 1000000) + "M"; }
-            else if (analysisMaxNodesPerSecond > 1000) { anps = Math.floor(analysisMaxNodesPerSecond / 1000) + "K"; }
-            else { anps = analysisMaxNodesPerSecond; }
+         else if (backgroundPage) {
+            anps = backgroundPage.getAnalysisMaxNodesPerSecond();
+            if (anps > 1000000000) { anps = Math.floor(anps / 1000000000) + "T"; }
+            else if (anps > 1000000) { anps = Math.floor(anps / 1000000) + "M"; }
+            else if (anps > 1000) { anps = Math.floor(anps / 1000) + "K"; }
             showMaxNodesPerSecond = "analysis up to " + anps + " nodes per second";
-            updateAnalysisHeader(currentGame, annPly);
+            updateAnalysisHeader();
          }
       }
    }
@@ -955,7 +909,7 @@ of Google Chrome. Don't use with any other browser.
          alertFlag = demoFlag = false;
          gameDemoMaxPly = new Array();
          searchGame = "";
-         resetAnnotationGraphData(-1);
+         resetFenPositions(-1);
          useNewPgnUrl(newPgnUrl, newRefreshMinutes);
       }
    }
@@ -1118,7 +1072,7 @@ of Google Chrome. Don't use with any other browser.
       if (theObject = document.getElementById("pgnText")) { theObject.value = newPgnText; }
       if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = ""; }
       if (theObject = document.getElementById("localPgnFiles")) { theObject.value = ""; }
-      resetAnnotationGraphData(-1);
+      resetFenPositions(-1);
       start_pgn4web();
    }
 
