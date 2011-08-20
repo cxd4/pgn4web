@@ -94,14 +94,19 @@ http://crbug.com/50192
 workaround implemented (anymore since pgn4web r6921)
 http://crbug.com/31494
 
+background.html: default empty call to sendResponse({})
+the empty response messging sendResponse({}); is causing an error even if
+recommended in http://code.google.com/chrome/extensions/messaging.html
+see http://crbug.com/77695
+
+
+Other:
+
 about.html, manifest.json: help page
 this page is currently assigned as the "options" page while there are not
 any configurable options; it should rather assigned as "help" page.
 http://crbug.com/29849
 Requires increasing minimum_chrome_version (new manifest entry)
-
-
-Other:
 
 chess-games-viewer.html, live-mosaic-viewer.html: forcing page action
 currently chessboard pages force the page action in order to include the PGN URL
