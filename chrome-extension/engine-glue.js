@@ -73,7 +73,7 @@ function storeAnalysis(FEN, ev, pv, nodes) {
    maxEv = 99.9;
    minNodesForAnnotation = 12345;
 
-   ev = Math.floor(ev / 100) / 10;
+   ev = Math.round(ev / 100) / 10;
    if (ev < -maxEv) { ev = -maxEv; } else if (ev > maxEv) { ev = maxEv; }
 
    if ((nodes < minNodesForAnnotation) && (ev < maxEv) && (ev > -maxEv) && (ev !== 0)) { return false; }
