@@ -24,6 +24,9 @@ function setAnalysisStatus(newStatus, newTabId, newFEN) {
          if ((g_analysis_status == "analysis") && g_backgroundEngine) {
             g_backgroundEngine.terminate();
             g_backgroundEngine = null;
+            if ((g_tabId !== null) && (newTabId !== g_tabId)) {
+               chrome.extension.sendRequest({tabId: g_tabId, analysisNotification: "stopped"}, function(response) {});
+            }
          }
          if (InitializeBackgroundEngine()) {
             g_FEN = newFEN;
