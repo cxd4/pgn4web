@@ -13,7 +13,7 @@
 // important: in order to avoid that multiple web workers instances of garbochess hog google chrome,
 // only one instance of GarboChess is allowed and managed by the extension's background page.
 
-var g_analysis_status = "stop"; // "analysis", "stop", "error"
+var g_analysis_status = "stop"; // "analysis", "pause", "stop", "error"
 var g_FEN = "";
 var g_tabId = null;
 
@@ -24,9 +24,9 @@ function setAnalysisStatus(newStatus, newTabId, newFEN) {
          if ((g_analysis_status == "analysis") && g_backgroundEngine) {
             g_backgroundEngine.terminate();
             g_backgroundEngine = null;
-            if ((g_tabId !== null) && (newTabId !== g_tabId)) {
-               chrome.extension.sendRequest({tabId: g_tabId, analysisNotification: "stopped"}, function(response) {});
-            }
+         }
+         if ((g_tabId !== null) && (newTabId !== g_tabId)) {
+            chrome.extension.sendRequest({tabId: g_tabId, analysisNotification: "stopped"}, function(response) {});
          }
          if (InitializeBackgroundEngine()) {
             g_FEN = newFEN;
@@ -37,6 +37,7 @@ function setAnalysisStatus(newStatus, newTabId, newFEN) {
             setAnalysisTimeout(g_tabId);
          }
          break;
+      case "pause":
       case "stop":
          if ((newTabId !== null) && (newTabId !== g_tabId)) { return; }
          if ((g_analysis_status == "analysis") && g_backgroundEngine) {
@@ -44,8 +45,10 @@ function setAnalysisStatus(newStatus, newTabId, newFEN) {
             g_backgroundEngine = null;
          }
          clearAnalysisTimeout();
-         g_FEN = "";
-         g_tabId = null;
+         if ((newStatus == "stop") && (g_tabId !== null)) {
+            g_FEN = "";
+            g_tabId = null;
+         }
          g_analysis_status = newStatus;
          break;
       default:
@@ -119,7 +122,7 @@ var analysisTimeoutDelayMinutes = 10;
 var analysisTimeout = null;
 function setAnalysisTimeout(tabId) {
    if (analysisTimeout !== null) { clearAnalysisTimeout(); }
-   analysisTimeout = setTimeout('setAnalysisStatus("stop", ' + tabId + ', "")', analysisTimeoutDelayMinutes * 60 * 1000);
+   analysisTimeout = setTimeout('setAnalysisStatus("pause", ' + tabId + ', "")', analysisTimeoutDelayMinutes * 60 * 1000);
 }
 
 function clearAnalysisTimeout() {
