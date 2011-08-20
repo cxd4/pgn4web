@@ -247,18 +247,20 @@ function mergePgnLinksAndShowIcon(tabId) {
 }
 
 function pgnHrefLinksRequest(request, sender, sendResponse) {
-  if (typeof(request.pgnHrefLinks) == "undefined") { return; }
-  if (pgnHrefLinks[sender.tab.id]) {
-    for(l in request.pgnHrefLinks) {
-      if (pgnHrefLinks[sender.tab.id].indexOf(request.pgnHrefLinks[l]) == -1) {
-        pgnHrefLinks[sender.tab.id].push(request.pgnHrefLinks[l]);
+  if (typeof(request.pgnHrefLinks) != "undefined") {
+    if (pgnHrefLinks[sender.tab.id]) {
+      for(l in request.pgnHrefLinks) {
+        if (pgnHrefLinks[sender.tab.id].indexOf(request.pgnHrefLinks[l]) == -1) {
+          pgnHrefLinks[sender.tab.id].push(request.pgnHrefLinks[l]);
+        }
       }
+    } else {
+      pgnHrefLinks[sender.tab.id] = request.pgnHrefLinks;
+      pgnWebRequests[sender.tab.id] = new Array();
     }
-  } else {
-    pgnHrefLinks[sender.tab.id] = request.pgnHrefLinks;
-    pgnWebRequests[sender.tab.id] = new Array();
+    mergePgnLinksAndShowIcon(sender.tab.id);
   }
-  mergePgnLinksAndShowIcon(sender.tab.id);
+  sendResponse({});
 }
 
 chrome.extension.onRequest.addListener(pgnHrefLinksRequest);
