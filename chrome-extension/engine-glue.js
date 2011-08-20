@@ -110,11 +110,11 @@ function getAnalysisPvFromIndex(index) { return egStored_pv[index]; }
 function getAnalysisMaxNodesPerSecond() { return egStored_maxNodesPerSecond; }
 
 function resetAnalysisData() {
-   egStored_index = 0;
-   egStored_FEN = new Array();
-   egStored_ev = new Array();
-   egStored_pv = new Array();
-   egStored_nodes = new Array();
+   egStored_index = 1;
+   egStored_FEN = new Array("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+   egStored_ev = new Array("0.0");
+   egStored_pv = new Array(" e4 e5 Nf3 Nf6 Nc3 Nc6 d4 exd4 Nxd4");
+   egStored_nodes = new Array("5123456");
    egStored_maxNodesPerSecond = 0;
 }
 
