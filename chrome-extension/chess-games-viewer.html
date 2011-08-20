@@ -640,22 +640,20 @@ of Google Chrome. Don't use with any other browser.
    chrome.extension.onRequest.addListener(analysisOutputHandler);
 
    function analysisOutputHandler(request, sender, sendResponse) {
-     chrome.tabs.getCurrent( function(tab) {
-        if ((tab.id === request.tabId) && (typeof(request.analysisNotification) != "undefined")) {
-           switch (request.analysisNotification) {
-              case "newData":
-                 updateAnnotationGraph();
-                 updateAnalysisHeader();
-                 break;
-              case "stopped":
-                 stopAnalysis(false);
-                 break;
-              default:
-                 break;
-           }
-        }
-     });
-     sendResponse({});
+      if (typeof(request.analysisNotification) != "undefined") {
+         switch (request.analysisNotification) {
+            case "newData":
+               updateAnnotationGraph();
+               updateAnalysisHeader();
+               break;
+            case "stopped":
+               stopAnalysis(false);
+               break;
+            default:
+               break;
+         }
+      }
+      sendResponse({});
    }
 
    var fenPositions;
