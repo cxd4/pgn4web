@@ -260,6 +260,9 @@ function pgnHrefLinksRequest(request, sender, sendResponse) {
     }
     mergePgnLinksAndShowIcon(sender.tab.id);
   }
+  // the empty response recommended in http://code.google.com/chrome/extensions/messaging.html is causing an error
+  // see http://crbug.com/77695
+  // sendResponse({});
 }
 
 chrome.extension.onRequest.addListener(pgnHrefLinksRequest);
