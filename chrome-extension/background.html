@@ -260,7 +260,7 @@ function pgnHrefLinksRequest(request, sender, sendResponse) {
     }
     mergePgnLinksAndShowIcon(sender.tab.id);
   }
-  sendResponse({});
+
 }
 
 chrome.extension.onRequest.addListener(pgnHrefLinksRequest);
