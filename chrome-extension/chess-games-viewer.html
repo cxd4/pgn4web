@@ -620,7 +620,7 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function restartAnalysis() {
-      chrome.extension.sendRequest({analysisCommand: 'analysis', FEN: CurrentFEN()}, function(response) { void(0); });
+      chrome.extension.sendRequest({analysisCommand: 'analysis', FEN: CurrentFEN()}, function(res){});
       analysisStarted = true;
       if (theObject = document.getElementById("toggleAnalysisLink")) { theObject.innerHTML = "&times;"; }
       updateAnnotationGraph();
@@ -628,7 +628,7 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function stopAnalysis(notifyBackgroundPage) {
-      if (notifyBackgroundPage) { chrome.extension.sendRequest({analysisCommand: 'stop', FEN: ""}, function(response) { void(0); }); }
+      if (notifyBackgroundPage) { chrome.extension.sendRequest({analysisCommand: 'stop', FEN: ""}, function(res){}); }
       analysisStarted = false;
       if (theObject = document.getElementById("toggleAnalysisLink")) { theObject.innerHTML = "+"; }
       clearAnnotationGraph();
@@ -655,7 +655,6 @@ of Google Chrome. Don't use with any other browser.
            }
         }
      });
-     sendResponse({});
    }
 
    var fenPositions;
