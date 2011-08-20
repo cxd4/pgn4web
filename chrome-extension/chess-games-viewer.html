@@ -272,7 +272,7 @@ of Google Chrome. Don't use with any other browser.
 
       if (analysisStarted) {
          if (engineUnderstandsGame(currentGame)) { restartAnalysis(); }
-         else { stopAnalysis(); }
+         else { stopAnalysis(true); }
       } else {
          clearAnalysisHeader();
          clearAnnotationGraph();
@@ -361,7 +361,7 @@ of Google Chrome. Don't use with any other browser.
          previousPlyNumber = PlyNumber;
          previousCurrentGame = currentGame;
       }
-      if (analysisStarted && (!engineUnderstandsGame(currentGame))) { stopAnalysis(); }
+      if (analysisStarted && (!engineUnderstandsGame(currentGame))) { stopAnalysis(true); }
    }
 
    var liveBroadcastUpdateTicker = 1;
@@ -391,7 +391,7 @@ of Google Chrome. Don't use with any other browser.
       }
 
       if (pgnData.indexOf(puzzlerUrl) === 0) {
-         if (analysisStarted) { stopAnalysis(); }
+         if (analysisStarted) { stopAnalysis(true); }
          if (theObject = document.getElementById("GameText")) { theObject.style.visibility = "hidden"; }
          if (theObject = document.getElementById("GameLastComment")) { theObject.style.visibility = "hidden"; }
          alert((pgnData == puzzlerUrl ? "chess puzzler of the day: " : "chess puzzler: ") + (CurrentPly%2 === 0 ? "White" : "Black") + " to move\n\nclick OK to view the solution");
@@ -615,35 +615,44 @@ of Google Chrome. Don't use with any other browser.
 
    var analysisStarted = false;
    function toggleAnalysis() {
-      if (analysisStarted) { stopAnalysis(); }
+      if (analysisStarted) { stopAnalysis(true); }
       else { restartAnalysis(); }
    }
 
    function restartAnalysis() {
-      chrome.extension.sendRequest({analysisCommand: 'analysis', FEN: CurrentFEN(), gameNum: currentGame}, function(response) {});
+      chrome.extension.sendRequest({analysisCommand: 'analysis', FEN: CurrentFEN()}, function(response) {});
       analysisStarted = true;
       if (theObject = document.getElementById("toggleAnalysisLink")) { theObject.innerHTML = "&times;"; }
       updateAnnotationGraph();
       updateAnalysisHeader();
    }
 
-   function stopAnalysis() {
-      chrome.extension.sendRequest({analysisCommand: 'stop', FEN: "", gameNum: ""}, function(response) {});
+   function stopAnalysis(notifyBackgroundPage) {
+      if (notifyBackgroundPage) { chrome.extension.sendRequest({analysisCommand: 'stop'}, function(response) {}); }
       analysisStarted = false;
       if (theObject = document.getElementById("toggleAnalysisLink")) { theObject.innerHTML = "+"; }
       clearAnnotationGraph();
       clearAnalysisHeader();
    }
 
-   window.onunload = function() { if (analysisStarted) { stopAnalysis(); } };
+   window.onunload = function() { if (analysisStarted) { stopAnalysis(true); } };
 
    chrome.extension.onRequest.addListener(analysisOutputHandler);
 
    function analysisOutputHandler(request, sender, sendResponse) {
      chrome.tabs.getCurrent( function(tab) {
-        if ((tab.id === request.tabId) && (typeof(request.analysisNotification) != "undefined") && (request.analysisNotification == "newData")) {
-           updateAnnotationGraph();
-           updateAnalysisHeader();
+        if ((tab.id === request.tabId) && (typeof(request.analysisNotification) != "undefined")) {
+           switch (request.analysisNotification) {
+              case "newData":
+                 updateAnnotationGraph();
+                 updateAnalysisHeader();
+                 break;
+              case "stopped":
+                 stopAnalysis(false);
+                 break;
+              default:
+                 break;
+           }
         }
      });
    }
