@@ -80,6 +80,7 @@ function storeAnalysis(FEN, ev, pv, nodes) {
    additionNeeded = false;
    deletionNeeded = false;
 
+   FEN = FEN.replace(/\s+\d+\s+\d+\s*$/, "");
    index = egStored_FEN.indexOf(FEN);
    
    if (index == -1) {
@@ -115,7 +116,7 @@ function storeAnalysis(FEN, ev, pv, nodes) {
    return additionNeeded;
 }
 
-function getAnalysisIndexFromFEN(FEN) { return egStored_FEN.indexOf(FEN); }
+function getAnalysisIndexFromFEN(FEN) { return egStored_FEN.indexOf(FEN.replace(/\s+\d+\s+\d+\s*$/, "")); }
 
 function getAnalysisEvFromIndex(index) { return egStored_ev[index]; }
 
@@ -125,7 +126,7 @@ function getAnalysisMaxNodesPerSecond() { return egStored_maxNodesPerSecond; }
 
 function resetAnalysisData() {
    egStored_index = 1;
-   egStored_FEN = new Array("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+   egStored_FEN = new Array("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".replace(/\s+\d+\s+\d+\s*$/, ""));
    egStored_ev = new Array("0.0");
    egStored_pv = new Array(" e4 e5 Nf3 Nf6 Nc3 Nc6 d4 exd4 Nxd4");
    egStored_nodes = new Array(); egStored_nodes[0] = 123456789;
