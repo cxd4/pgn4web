@@ -270,6 +270,8 @@ of Google Chrome. Don't use with any other browser.
       if ((typeof(fenPositions[currentGame][CurrentPly]) != "undefined") && (fenPositions[currentGame][CurrentPly] !== thisFen)) { resetFenPositions(currentGame); }
       fenPositions[currentGame][CurrentPly] = thisFen;
 
+      if (scanningGameFen) { return; }
+
       if (analysisStarted) {
          if (engineUnderstandsGame(currentGame)) { restartAnalysis(); }
          else { stopAnalysis(true); }
@@ -464,7 +466,8 @@ of Google Chrome. Don't use with any other browser.
    function customShortcutKey_Shift_4() { cycleLastMoveAndCommentArea(); }
 
    function customShortcutKey_Shift_5() { userToggleAnalysis(); }
-   function customShortcutKey_Shift_6() { if (analysisStarted) { resetFenPositions(currentGame); fenPositions[currentGame][CurrentPly] = CurrentFEN(); updateAnnotationGraph(); updateAnalysisHeader(); } else { resetFenPositions(-1); if (backgroundPage) { backgroundPage.resetAnalysisData(); } } }
+   // function customShortcutKey_Shift_6() { if (analysisStarted) { resetFenPositions(currentGame); fenPositions[currentGame][CurrentPly] = CurrentFEN(); updateAnnotationGraph(); updateAnalysisHeader(); } else { resetFenPositions(-1); if (backgroundPage) { backgroundPage.resetAnalysisData(); } } }
+   function customShortcutKey_Shift_6() { if (analysisStarted) { scanGame(); } else { resetFenPositions(-1); if (backgroundPage) { backgroundPage.resetAnalysisData(); } } }
 
    function customShortcutKey_Shift_7() { fetchInputPgnText(); }
    function customShortcutKey_Shift_8() { openPgnFiles(); }
@@ -882,6 +885,19 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function userToggleAnalysis() { if (checkEngineUnderstandsGameAndWarn()) { toggleAnalysis(); } }
+
+   var scanningGameFen = false;
+   function scanGame() {
+      scanningGameFen = true;
+      savedCurrentPly = CurrentPly;
+      for (thisPly = savedCurrentPly + 1; ; thisPly++) {
+         if (thisPly > StartPly + PlyNumber) { thisPly = StartPly; }
+         GoToMove(thisPly);
+         if (thisPly === savedCurrentPly) { break; }
+      }
+      scanningGameFen = false;
+      GoToMove(savedCurrentPly);
+   }
 
 
    // A7
