@@ -833,14 +833,13 @@ of Google Chrome. Don't use with any other browser.
 
    var freezeAnalysisHeader = false;
    function showAnalysisMaxNodesPerSecond() {
-      if ((backgroundPage) && (theObject = document.getElementById("GameAnalysisEval"))) {
+      if ((backgroundPage) && (theObject = document.getElementById("GameAnalysisPv"))) {
          freezeAnalysisHeader = true;
          anps = backgroundPage.getAnalysisMaxNodesPerSecond();
          if (anps > 1000000000) { anps = Math.floor(anps / 1000000000) + "T"; }
          else if (anps > 1000000) { anps = Math.floor(anps / 1000000) + "M"; }
          else if (anps > 1000) { anps = Math.floor(anps / 1000) + "K"; }
-         theObject.innerHTML = "<span style='font-weight:normal;'>analysis up to " + anps + " nodes per second</span>";
-         if (theObject = document.getElementById("GameAnalysisPv")) { theObject.innerHTML = ""; }
+         theObject.innerHTML = "<span class='analysisMaxNodes'>analysis up to " + anps + " nodes per second</span>";
       }
    }
 
