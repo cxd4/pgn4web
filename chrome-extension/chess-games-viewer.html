@@ -466,8 +466,7 @@ of Google Chrome. Don't use with any other browser.
    function customShortcutKey_Shift_4() { cycleLastMoveAndCommentArea(); }
 
    function customShortcutKey_Shift_5() { userToggleAnalysis(); }
-   // function customShortcutKey_Shift_6() { if (analysisStarted) { resetFenPositions(currentGame); fenPositions[currentGame][CurrentPly] = CurrentFEN(); updateAnnotationGraph(); updateAnalysisHeader(); } else { resetFenPositions(-1); if (backgroundPage) { backgroundPage.resetAnalysisData(); } } }
-   function customShortcutKey_Shift_6() { if (analysisStarted) { scanGame(); } else { resetFenPositions(-1); if (backgroundPage) { backgroundPage.resetAnalysisData(); } } }
+   function customShortcutKey_Shift_6() { if (analysisStarted) { resetFenPositions(currentGame); fenPositions[currentGame][CurrentPly] = CurrentFEN(); updateAnnotationGraph(); updateAnalysisHeader(); } else { if (confirm("reset engine analysis for all chess games viewer chessboards?")) { resetFenPositions(-1); if (backgroundPage) { backgroundPage.resetAnalysisData(); } } } }
 
    function customShortcutKey_Shift_7() { fetchInputPgnText(); }
    function customShortcutKey_Shift_8() { openPgnFiles(); }
@@ -596,7 +595,7 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameLiveStatus" title="live broadcast status"></span><span class="innerHeaderItem" id="GameLiveStatusDemo" title="this is a simulation of the live broadcast functionality"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><span class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the engine's analysis: -1 means Black is a pawn ahead"></span><span class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv" title="principal variation from the engine's analysis"></span><b>&nbsp;</b></div>
+<div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="showAnalysisMaxNodesPerSecond();" onmouseout="freezeAnalysisHeader = false; updateAnalysisHeader();" class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the engine's analysis: -1 means Black is a pawn ahead"></a><span class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv" title="principal variation from the engine's analysis"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer" id="GameAnnotationMeasure"><b>&nbsp;</b></div>
 <canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick();" onmousemove="annotationGraphMousemove();" onmouseover="annotationGraphMouseover();" onmouseout="annotationGraphMouseout();" title="annotation graph from the engine's analysis"></canvas>
 </div>
@@ -760,21 +759,10 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function updateAnalysisHeader() {
-      if (!analysisStarted) {
-         clearAnalysisHeader();
-         return;
-      }
+      if (freezeAnalysisHeader) { return; }
+      if (!analysisStarted) { clearAnalysisHeader(); return; }
 
       annPly = (lastMousemoveAnnPly == -1) ? CurrentPly : lastMousemoveAnnPly;
-
-      if (showMaxNodesPerSecond) {
-         if (annPly <= StartPly + PlyNumber) {
-           if (theObject = document.getElementById("GameAnalysisMove")) { theObject.style.minWidth = ""; }
-           showMaxNodesPerSecond = "";
-         } else {
-           if (theObject = document.getElementById("GameAnalysisMove")) { theObject.style.minWidth = "0"; }
-         } 
-      }
 
       if (theObject = document.getElementById("GameAnalysisMove")) {
          annMove = "&middot;";
@@ -795,8 +783,7 @@ of Google Chrome. Don't use with any other browser.
       }
 
       if (theObject = document.getElementById("GameAnalysisEval")) {
-         if (showMaxNodesPerSecond) { theObject.innerHTML = showMaxNodesPerSecond; }
-         else { theObject.innerHTML = (typeof(annEval) != "undefined") ? annEval : ""; }
+         theObject.innerHTML = (typeof(annEval) != "undefined") ? annEval : "";
       }
       if (theObject = document.getElementById("GameAnalysisPv")) {
          theObject.innerHTML = (typeof(annEval) != "undefined") ? annPv : "";
@@ -804,6 +791,7 @@ of Google Chrome. Don't use with any other browser.
    }   
 
    function clearAnalysisHeader() {
+      if (freezeAnalysisHeader) { return; }
       if (theObject = document.getElementById("GameAnalysisMove")) { theObject.innerHTML = ""; }
       if (theObject = document.getElementById("GameAnalysisEval")) { theObject.innerHTML = ""; }
       if (theObject = document.getElementById("GameAnalysisPv")) { theObject.innerHTML = ""; }
@@ -835,19 +823,24 @@ of Google Chrome. Don't use with any other browser.
       }
    }
 
-   var showMaxNodesPerSecond = "";
    function annotationGraphClick() {
       if ((analysisStarted) && (typeof(annotationBarWidth) != "undefined")) {
          annPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
          if ((annPly >= StartPly) && (annPly <= StartPly + PlyNumber)) { GoToMove(annPly); }
-         else if (backgroundPage) {
-            anps = backgroundPage.getAnalysisMaxNodesPerSecond();
-            if (anps > 1000000000) { anps = Math.floor(anps / 1000000000) + "T"; }
-            else if (anps > 1000000) { anps = Math.floor(anps / 1000000) + "M"; }
-            else if (anps > 1000) { anps = Math.floor(anps / 1000) + "K"; }
-            showMaxNodesPerSecond = "analysis up to " + anps + " nodes per second";
-            updateAnalysisHeader();
-         }
+         else { scanGame(); }
+      }
+   }
+
+   var freezeAnalysisHeader = false;
+   function showAnalysisMaxNodesPerSecond() {
+      if ((backgroundPage) && (theObject = document.getElementById("GameAnalysisEval"))) {
+         freezeAnalysisHeader = true;
+         anps = backgroundPage.getAnalysisMaxNodesPerSecond();
+         if (anps > 1000000000) { anps = Math.floor(anps / 1000000000) + "T"; }
+         else if (anps > 1000000) { anps = Math.floor(anps / 1000000) + "M"; }
+         else if (anps > 1000) { anps = Math.floor(anps / 1000) + "K"; }
+         theObject.innerHTML = "<span style='font-weight:normal;'>analysis up to " + anps + " nodes per second</span>";
+         if (theObject = document.getElementById("GameAnalysisPv")) { theObject.innerHTML = ""; }
       }
    }
 
