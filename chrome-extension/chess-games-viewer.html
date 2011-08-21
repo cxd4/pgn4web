@@ -890,6 +890,7 @@ of Google Chrome. Don't use with any other browser.
    function scanGame() {
       scanningGameFen = true;
       savedCurrentPly = CurrentPly;
+      if (wasAutoPlayOn = isAutoPlayOn) { SetAutoPlay(false); }
       for (thisPly = savedCurrentPly + 1; ; thisPly++) {
          if (thisPly > StartPly + PlyNumber) { thisPly = StartPly; }
          GoToMove(thisPly);
@@ -897,6 +898,7 @@ of Google Chrome. Don't use with any other browser.
       }
       scanningGameFen = false;
       GoToMove(savedCurrentPly);
+      if (wasAutoPlayOn) { SetAutoPlay(true); }
    }
 
 
