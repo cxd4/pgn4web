@@ -60,7 +60,6 @@ function setAnalysisStatus(newStatus, newTabId, newFEN) {
 }
 
 var egStored_max = 10000;
-var egStored_index;
 var egStored_FEN;
 var egStored_ev;
 var egStored_pv;
@@ -78,27 +77,42 @@ function storeAnalysis(FEN, ev, pv, nodes) {
 
    if ((nodes < minNodesForAnnotation) && (ev < maxEv) && (ev > -maxEv) && (ev !== 0)) { return false; }
 
+   additionNeeded = false;
+   deletionNeeded = false;
+
    index = egStored_FEN.indexOf(FEN);
-   if ((index != -1) && (nodes > egStored_nodes[index])) {
-      delete egStored_FEN[index];
-      delete egStored_ev[index];
-      delete egStored_pv[index];
-      delete egStored_nodes[index];
-      index = -1;
-   }
+   
    if (index == -1) {
+      additionNeeded = true;
+      if (egStored_FEN.length >= egStored_max) {
+         deletionNeeded = true;
+         index = 0;
+      }
+   } else {
+      if (nodes > egStored_nodes[index]) {
+         additionNeeded = true;
+         deletionNeeded = true;
+      }
+   }
+
+   if (deletionNeeded) {
+      egStored_FEN.splice(index,1);
+      egStored_ev.splice(index,1);
+      egStored_pv.splice(index,1);
+      egStored_nodes.splice(index,1);
+   }
+
+   if (additionNeeded) {
       if (FEN.indexOf(" b ") !== -1) { ev = -ev; }
       ev = (ev > 0 ? "+" : "") + ev; 
       if (ev.indexOf(".") == -1) { ev += ".0"; }
 
-      egStored_FEN[egStored_index] = FEN;
-      egStored_ev[egStored_index] = ev;
-      egStored_pv[egStored_index] = pv;
-      egStored_nodes[egStored_index] = nodes;
-      egStored_index = (egStored_index + 1) % egStored_max;
-      return true;
+      egStored_FEN.push(FEN);
+      egStored_ev.push(ev);
+      egStored_pv.push(pv);
+      egStored_nodes.push(nodes);
    }
-   return false;
+   return additionNeeded;
 }
 
 function getAnalysisIndexFromFEN(FEN) { return egStored_FEN.indexOf(FEN); }
@@ -114,7 +128,7 @@ function resetAnalysisData() {
    egStored_FEN = new Array("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
    egStored_ev = new Array("0.0");
    egStored_pv = new Array(" e4 e5 Nf3 Nf6 Nc3 Nc6 d4 exd4 Nxd4");
-   egStored_nodes = new Array(123456789);
+   egStored_nodes = new Array(); egStored_nodes[0] = 123456789;
    egStored_maxNodesPerSecond = 0;
 }
 
