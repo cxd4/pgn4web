@@ -2128,10 +2128,16 @@ function InitFEN(startingFEN) {
     }
     if (ll == FenString.length) {
       FenString += " w ";
-      FenString += FenPieceName.toUpperCase().charAt(0);
-      FenString += FenPieceName.toUpperCase().charAt(1);
-      FenString += FenPieceName.toLowerCase().charAt(0);
-      FenString += FenPieceName.toLowerCase().charAt(1);      
+      assumedCastleRights = "";
+      for (ii = 0; ii < PieceType[0].length; ii++) {
+        if ((PieceType[0][ii] === 3) && (PieceRow[0][ii] === 0) && (PieceCol[0][ii] === 7)) { assumedCastleRights += FenPieceName.toUpperCase().charAt(0); }
+        if ((PieceType[0][ii] === 3) && (PieceRow[0][ii] === 0) && (PieceCol[0][ii] === 0)) { assumedCastleRights += FenPieceName.toUpperCase().charAt(1); }
+      }
+      for (ii = 0; ii < PieceType[1].length; ii++) {
+        if ((PieceType[1][ii] === 3) && (PieceRow[1][ii] === 7) && (PieceCol[1][ii] === 7)) { assumedCastleRights += FenPieceName.toLowerCase().charAt(0); }
+        if ((PieceType[1][ii] === 3) && (PieceRow[1][ii] === 7) && (PieceCol[1][ii] === 0)) { assumedCastleRights += FenPieceName.toLowerCase().charAt(1); }
+      }
+      FenString += assumedCastleRights ? assumedCastleRights : "-";
       FenString += " - 0 1";
       ll++;
     }
