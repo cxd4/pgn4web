@@ -466,7 +466,7 @@ of Google Chrome. Don't use with any other browser.
    function customShortcutKey_Shift_4() { cycleLastMoveAndCommentArea(); }
 
    function customShortcutKey_Shift_5() { userToggleAnalysis(); }
-   function customShortcutKey_Shift_6() { if (analysisStarted) { resetFenPositions(currentGame); fenPositions[currentGame][CurrentPly] = CurrentFEN(); updateAnnotationGraph(); updateAnalysisHeader(); } else { if (confirm("reset engine analysis for all chess games viewer chessboards?")) { resetFenPositions(-1); if (backgroundPage) { backgroundPage.resetAnalysisData(); } } } }
+   function customShortcutKey_Shift_6() { if (analysisStarted) { resetFenPositions(currentGame); fenPositions[currentGame][CurrentPly] = CurrentFEN(); updateAnnotationGraph(); updateAnalysisHeader(); } else { if (confirm("reset engine analysis for all chess games viewer chessboards?")) { resetFenPositions(-1); fenPositions[currentGame] = new Array(); fenPositions[currentGame][CurrentPly] = CurrentFEN(); if (backgroundPage) { backgroundPage.resetAnalysisData(); } } } }
 
    function customShortcutKey_Shift_7() { fetchInputPgnText(); }
    function customShortcutKey_Shift_8() { openPgnFiles(); }
