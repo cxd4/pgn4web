@@ -595,7 +595,7 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameLiveStatus" title="live broadcast status"></span><span class="innerHeaderItem" id="GameLiveStatusDemo" title="this is a simulation of the live broadcast functionality"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="showExtraAnalysisInfo();" onmouseout="hideExtraAnalysisInfo();" class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the engine's analysis: -1 means Black is a pawn ahead"></a><span class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv" title="principal variation from the engine's analysis"></span><b>&nbsp;</b></div>
+<div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="showExtraAnalysisInfo();" onmouseout="hideExtraAnalysisInfo();" class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the engine's analysis: -1 means Black is a pawn ahead"></a><a href="javascript:void(0);" onclick="scanGame(true);" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv" title="principal variation from the engine's analysis"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer" id="GameAnnotationMeasure"><b>&nbsp;</b></div>
 <canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick();" onmousemove="annotationGraphMousemove();" onmouseover="annotationGraphMouseover();" onmouseout="annotationGraphMouseout();" title="annotation graph from the engine's analysis"></canvas>
 </div>
@@ -827,7 +827,7 @@ of Google Chrome. Don't use with any other browser.
       if ((analysisStarted) && (typeof(annotationBarWidth) != "undefined")) {
          annPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
          if ((annPly >= StartPly) && (annPly <= StartPly + PlyNumber)) { GoToMove(annPly); }
-         else { scanGame(); }
+         else { scanGame(false); }
       }
    }
 
@@ -896,7 +896,7 @@ of Google Chrome. Don't use with any other browser.
    function userToggleAnalysis() { if (checkEngineUnderstandsGameAndWarn()) { toggleAnalysis(); } }
 
    var scanningGameFen = false;
-   function scanGame() {
+   function scanGame(stopWhenMissingAnalysis) {
       scanningGameFen = true;
       savedCurrentPly = CurrentPly;
       if (wasAutoPlayOn = isAutoPlayOn) { SetAutoPlay(false); }
@@ -905,8 +905,14 @@ of Google Chrome. Don't use with any other browser.
          if (thisPly === savedCurrentPly) { break; }
          GoToMove(thisPly);
       }
+      if ((stopWhenMissingAnalysis) && (backgroundPage)) {
+         for (thisPly = savedCurrentPly + 1; ; thisPly++) {
+            if (thisPly > StartPly + PlyNumber) { thisPly = StartPly; }
+            if ((thisPly === savedCurrentPly) || (backgroundPage.getAnalysisIndexFromFEN(fenPositions[currentGame][thisPly]) == -1)) { break; }
+         }
+      }
       scanningGameFen = false;
-      GoToMove(savedCurrentPly);
+      GoToMove(thisPly);
       if (wasAutoPlayOn) { SetAutoPlay(true); }
    }
 
