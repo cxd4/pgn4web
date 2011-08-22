@@ -684,8 +684,8 @@ function CurrentFEN() {
           currentFEN += "" + emptyCounterFen;
           emptyCounterFen = 0;
         }
-        if (Board[col][row] > 0) { currentFEN += FenPieceName.toUpperCase().charAt(Board[col][row]-1); }
-        else if (Board[col][row] < 0) { currentFEN += FenPieceName.toLowerCase().charAt(-Board[col][row]-1); }
+        if (Board[col][row] > 0) { currentFEN += FenPieceName.charAt(Board[col][row]-1).toUpperCase(); }
+        else if (Board[col][row] < 0) { currentFEN += FenPieceName.charAt(-Board[col][row]-1).toLowerCase(); }
       }
     }
     if (emptyCounterFen > 0) {
@@ -699,48 +699,13 @@ function CurrentFEN() {
   currentFEN += CurrentPly%2 === 0 ? " w" : " b";
 
   // castling availability
-  CastlingShortFEN = new Array(CastlingShort[0], CastlingShort[1]);
-  CastlingLongFEN = new Array(CastlingLong[0], CastlingLong[1]);
-  for (var thisPly = StartPly; thisPly < CurrentPly; thisPly++) {
-    SideToMoveFEN = thisPly%2;
-    BackrowSideToMoveFEN = SideToMoveFEN * 7;
-    if (HistType[0][thisPly] == 1) { 
-      CastlingShortFEN[SideToMoveFEN] = CastlingLongFEN[SideToMoveFEN] = -1;
-    }
-    if ((HistCol[0][thisPly] == CastlingShortFEN[SideToMoveFEN]) && 
-      (HistRow[0][thisPly] == BackrowSideToMoveFEN)) {
-      CastlingShortFEN[SideToMoveFEN] = -1;
-    }
-    if ((HistCol[0][thisPly] == CastlingLongFEN[SideToMoveFEN]) && 
-      (HistRow[0][thisPly] == BackrowSideToMoveFEN)) {
-      CastlingLongFEN[SideToMoveFEN] = -1;
-    }
-  }
-
   CastlingFEN = "";
-  if (SquareOnBoard(CastlingShortFEN[0], 0)) {
-    for (ii = 7; ii > CastlingShortFEN[0]; ii--) { if (Board[ii][0] == 3) { break; } }
-    if (ii == CastlingShortFEN[0]) { CastlingFEN += FenPieceName.toUpperCase().charAt(0); } 
-    else { CastlingFEN += columnsLetters.toUpperCase().charAt(CastlingShortFEN[0]); } 
-  }
-  if (SquareOnBoard(CastlingLongFEN[0], 0)) {
-    for (ii = 0; ii < CastlingLongFEN[0]; ii++) { if (Board[ii][0] == 3) { break; } }
-    if (ii == CastlingLongFEN[0]) { CastlingFEN += FenPieceName.toUpperCase().charAt(1); }
-    else { CastlingFEN += columnsLetters.toUpperCase().charAt(CastlingLongFEN[0]); }
-  }
-  if (SquareOnBoard(CastlingShortFEN[1], 7)) {
-    for (ii = 7; ii > CastlingShortFEN[1]; ii--) { if (Board[ii][7] == -3) { break; } }
-    if (ii == CastlingShortFEN[1]) { CastlingFEN += FenPieceName.toLowerCase().charAt(0); }
-    else { CastlingFEN += columnsLetters.toLowerCase().charAt(CastlingShortFEN[1]); }
-  }
-  if (SquareOnBoard(CastlingLongFEN[1], 7)) {
-    for (ii = 0; ii < CastlingLongFEN[1]; ii++) { if (Board[ii][7] == -3) { break; } }
-    if (ii == CastlingLongFEN[1]) { CastlingFEN += FenPieceName.toLowerCase().charAt(1); }
-    else { CastlingFEN += columnsLetters.toLowerCase().charAt(CastlingLongFEN[1]); }
-  }
-  if (CastlingFEN === "") { CastlingFEN = "-"; }
-  currentFEN += " " + CastlingFEN;
- 
+  if (RookForOOCastling(0) !== null) { CastlingFEN += FenPieceName.charAt(0).toUpperCase(); }
+  if (RookForOOOCastling(0) !== null) { CastlingFEN += FenPieceName.charAt(1).toUpperCase(); }
+  if (RookForOOCastling(1) !== null) { CastlingFEN += FenPieceName.charAt(0).toLowerCase(); }
+  if (RookForOOOCastling(1) !== null) { CastlingFEN += FenPieceName.charAt(1).toLowerCase(); }
+  currentFEN += " " + (CastlingFEN ? CastlingFEN : "-");   
+
   // en-passant square
   if (HistEnPassant[CurrentPly-1]) {
     currentFEN += " " + String.fromCharCode(HistEnPassantCol[CurrentPly-1] + 97);
@@ -1117,26 +1082,32 @@ function CheckLegalityPawn(thisPawn) {
   return true;
 }
 
-function CheckLegalityOO() {
-  if (CastlingShort[MoveColor] < 0) { return false; }
-  if (PieceMoveCounter[MoveColor][0] > 0) { return false; }
+function RookForOOCastling(color) {
+  if (CastlingShort[color] < 0) { return null; }
+  if (PieceMoveCounter[color][0] > 0) { return null; }
   
-  // which rook is castling
-  var legal = false;
-  var thisRook = 0;
+  legal = false;
+  thisRook = 0;
   while (thisRook < 16) {
-    if ((PieceCol[MoveColor][thisRook] == CastlingShort[MoveColor]) &&
-      (PieceCol[MoveColor][thisRook] > PieceCol[MoveColor][0]) &&
-      (PieceRow[MoveColor][thisRook] == MoveColor*7) &&
-      (PieceType[MoveColor][thisRook] == 3)) {
+    if ((PieceCol[color][thisRook] == CastlingShort[color]) &&
+      (PieceCol[color][thisRook] > PieceCol[color][0]) &&
+      (PieceRow[color][thisRook] == color*7) &&
+      (PieceType[color][thisRook] == 3)) {
       legal = true;
       break;
     }
     ++thisRook;
   }
-  if (!legal) { return false; }
-  if (PieceMoveCounter[MoveColor][thisRook] > 0) { return false; }
-  
+  if (!legal) { return null; }
+  if (PieceMoveCounter[color][thisRook] > 0) { return null; }
+
+  return thisRook;
+}
+
+function CheckLegalityOO() {
+
+  if ((thisRook = RookForOOCastling(MoveColor)) === null) { return false; }
+
   // check no piece between king and rook
   // clear king/rook squares for Chess960
   Board[PieceCol[MoveColor][0]][MoveColor*7] = 0;
@@ -1151,25 +1122,31 @@ function CheckLegalityOO() {
   return true;
 }
 
-function CheckLegalityOOO() {
-  if (CastlingLong[MoveColor] < 0) { return false; }
-  if (PieceMoveCounter[MoveColor][0] > 0) { return false; }
+function RookForOOOCastling(color) {
+  if (CastlingLong[color] < 0) { return null; }
+  if (PieceMoveCounter[color][0] > 0) { return null; }
 
-  // which rook is castling
-  var legal = false;
-  var thisRook = 0;
+  legal = false;
+  thisRook = 0;
   while (thisRook < 16) {
-    if ((PieceCol[MoveColor][thisRook] == CastlingLong[MoveColor]) &&
-      (PieceCol[MoveColor][thisRook] < PieceCol[MoveColor][0]) &&
-      (PieceRow[MoveColor][thisRook] == MoveColor*7) &&
-      (PieceType[MoveColor][thisRook] == 3)) {
+    if ((PieceCol[color][thisRook] == CastlingLong[color]) &&
+      (PieceCol[color][thisRook] < PieceCol[color][0]) &&
+      (PieceRow[color][thisRook] == color*7) &&
+      (PieceType[color][thisRook] == 3)) {
       legal = true;
       break;
     }
     ++thisRook;
   }
-  if (!legal) { return false; }
-  if (PieceMoveCounter[MoveColor][thisRook] > 0) { return false; }
+  if (!legal) { return null; }
+  if (PieceMoveCounter[color][thisRook] > 0) { return null; }
+
+  return thisRook;
+}
+
+function CheckLegalityOOO() {
+
+  if ((thisRook = RookForOOOCastling(MoveColor)) === null) { return false; }
 
   // check no piece between king and rook
   // clear king/rook squares for Chess960
