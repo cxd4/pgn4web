@@ -893,8 +893,8 @@ of Google Chrome. Don't use with any other browser.
       if (wasAutoPlayOn = isAutoPlayOn) { SetAutoPlay(false); }
       for (thisPly = savedCurrentPly + 1; ; thisPly++) {
          if (thisPly > StartPly + PlyNumber) { thisPly = StartPly; }
-         GoToMove(thisPly);
          if (thisPly === savedCurrentPly) { break; }
+         GoToMove(thisPly);
       }
       scanningGameFen = false;
       GoToMove(savedCurrentPly);
