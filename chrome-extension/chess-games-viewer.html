@@ -896,7 +896,7 @@ of Google Chrome. Don't use with any other browser.
    function userToggleAnalysis() { if (checkEngineUnderstandsGameAndWarn()) { toggleAnalysis(); } }
 
    var scanningGameFen = false;
-   function scanGame(stopWhenMissingAnalysis) {
+   function scanGame(goWhereMissingAnalysis) {
       scanningGameFen = true;
       savedCurrentPly = CurrentPly;
       if (wasAutoPlayOn = isAutoPlayOn) { SetAutoPlay(false); }
@@ -905,7 +905,7 @@ of Google Chrome. Don't use with any other browser.
          if (thisPly === savedCurrentPly) { break; }
          GoToMove(thisPly);
       }
-      if ((stopWhenMissingAnalysis) && (backgroundPage)) {
+      if ((goWhereMissingAnalysis) && (backgroundPage)) {
          for (thisPly = savedCurrentPly + 1; ; thisPly++) {
             if (thisPly > StartPly + PlyNumber) { thisPly = StartPly; }
             if ((thisPly === savedCurrentPly) || (backgroundPage.getAnalysisIndexFromFEN(fenPositions[currentGame][thisPly]) == -1)) { break; }
