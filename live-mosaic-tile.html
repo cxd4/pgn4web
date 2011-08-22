@@ -100,7 +100,7 @@
       boardShortcut("D8", "show full PGN source data", function(){ parent.displayPgnData(true); });
     }
     if (parent && parent.switchBoardView && (typeof(chrome) != "undefined") && (chrome.extension)) {
-      boardShortcut("H5", "zoom into the single large board view", function(){ parent.switchBoardView("\\[White\\s+\"" + gameWhite[currentGame] + "\"\\].*\\[Black\\s+\"" + gameBlack[currentGame] + "\"\\]"); });
+      boardShortcut("H5", "zoom into the single large board view", function(){ parent.switchBoardView("\\[White\\s+\"" + fixRegExp(gameWhite[currentGame]) + "\"\\].*\\[Black\\s+\"" + fixRegExp(gameBlack[currentGame]) + "\"\\]"); });
     }
   } catch(e) { myAlert("warning: failed accessing parent for shortcut squares to clear", false); }
 
