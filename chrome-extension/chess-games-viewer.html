@@ -836,8 +836,7 @@ of Google Chrome. Don't use with any other browser.
       if ((backgroundPage) && (theObject = document.getElementById("GameAnalysisPv"))) {
          freezeAnalysisHeader = true;
          if (event.shiftKey) {
-            storedPos = num2string(backgroundPage.getStoredPositions());
-            theObject.innerHTML = "<span class='analysisExtraInfo'>" + storedPos + " " + (storedPos == 1 ? "postion" : "positions") + " in the analysis database</span>";
+            theObject.innerHTML = "<span class='analysisExtraInfo'>analysis database size: " + num2string(backgroundPage.getStoredPositions()) + "</span>";
          }  else {
             theObject.innerHTML = "<span class='analysisExtraInfo'>analysis up to " + num2string(backgroundPage.getAnalysisMaxNodesPerSecond()) + " nodes per second</span>";
          }
