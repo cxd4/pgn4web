@@ -470,7 +470,7 @@ of Google Chrome. Don't use with any other browser.
    function customShortcutKey_Shift_4() { cycleLastMoveAndCommentArea(); }
 
    function customShortcutKey_Shift_5() { userToggleAnalysis(); }
-   function customShortcutKey_Shift_6() { if (analysisStarted) { resetFenPositions(currentGame); fenPositions[currentGame][CurrentPly] = CurrentFEN(); updateAnnotationGraph(); updateAnalysisHeader(); } else { if (confirm("reset engine's analysis for all chess games viewer chessboards?")) { resetFenPositions(-1); fenPositions[currentGame] = new Array(); fenPositions[currentGame][CurrentPly] = CurrentFEN(); if (backgroundPage) { backgroundPage.resetAnalysisData(); } } } }
+   function customShortcutKey_Shift_6() { if (analysisStarted) { resetFenPositions(currentGame); fenPositions[currentGame][CurrentPly] = CurrentFEN(); updateAnnotationGraph(); updateAnalysisHeader(); } else { if (confirm("reset analysis engine's data for all chess games viewer chessboards?")) { resetFenPositions(-1); fenPositions[currentGame] = new Array(); fenPositions[currentGame][CurrentPly] = CurrentFEN(); if (backgroundPage) { backgroundPage.resetAnalysisData(); } } } }
 
    function customShortcutKey_Shift_7() { fetchInputPgnText(); }
    function customShortcutKey_Shift_8() { openPgnFiles(); }
@@ -599,14 +599,14 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameLiveStatus" title="live broadcast status"></span><span class="innerHeaderItem" id="GameLiveStatusDemo" title="this is a simulation of the live broadcast functionality"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="showExtraAnalysisInfo();" onmouseout="hideExtraAnalysisInfo();" class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the engine's analysis: -1 means Black is a pawn ahead"></a><a href="javascript:void(0);" onclick="pvClicked();" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv" title="principal variation from the engine's analysis"></a><b>&nbsp;</b></div>
+<div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="showExtraAnalysisInfo();" onmouseout="hideExtraAnalysisInfo();" class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the analysis engine: -1 means Black is a pawn ahead"></a><a href="javascript:void(0);" onclick="pvClicked();" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv" title="principal variation from the analysis engine"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer" id="GameAnnotationMeasure"><b>&nbsp;</b></div>
-<canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick();" onmousemove="annotationGraphMousemove();" onmouseover="annotationGraphMouseover();" onmouseout="annotationGraphMouseout();" title="annotation graph from the engine's analysis"></canvas>
+<canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick();" onmousemove="annotationGraphMousemove();" onmouseover="annotationGraphMouseover();" onmouseout="annotationGraphMouseout();" title="annotation graph from the analysis engine"></canvas>
 </div>
 
 </div>
 
-<div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleAnalysisLink" id="toggleAnalysisLink" href="javascript:void(0);" onclick="userToggleAnalysis();" title="toggle engine's analysis">+</a></div>
+<div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleAnalysisLink" id="toggleAnalysisLink" href="javascript:void(0);" onclick="userToggleAnalysis();" title="toggle analysis engine">+</a></div>
 <div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="SetCommentsIntoMoveText(!commentsIntoMoveText); oldPly = CurrentPly; Init(); GoToMove(oldPly);" title="toggle show comments in game text for this page; click square B7 instead to save setting"></a></div>
 
 <div class="lastMoveAndComment" id="lastMoveAndComment"><a href="javascript:MoveToNextComment();" class="lastMove notranslate" title="last move" id="GameLastMove"></a><a href="javascript:MoveToPrevComment();" class="lastComment" title="current position comment" id="GameLastComment"></a></div>
@@ -866,22 +866,22 @@ of Google Chrome. Don't use with any other browser.
 
    function pvClicked() {
       if (event.shiftKey) {
-         if (backgroundPage && confirm("delete saved engine's analysis data?")) {
+         if (backgroundPage && confirm("delete saved analysis engine's data?")) {
             backgroundPage.deleteAnalysisInLocalStorage();
          }
       } else if (event.ctrlKey) {
-         if (backgroundPage && confirm("load saved engine's analysis data?\n\nwarning: current engine's analysis data will be lost")) {
+         if (backgroundPage && confirm("load saved analysis engine's data?\n\nwarning: current analysis engine's data of all chess games viewer chessboards will be lost")) {
             if (backgroundPage.loadAnalysisFromLocalStorage()) {
                updateAnalysisHeader();
                updateAnnotationGraph();
             } else {
-               alert("error: no saved engine's analysis data available or failed loading saved engine's analysis data; current engine's analysis data has been kept");
+               alert("error: no saved analysis engine's data available or failed loading saved analysis engine's data; current analysis engine's data has been kept");
             }
          }
       } else if (event.altKey) {
-         if (backgroundPage && confirm("save current engine's analysis data?\n\nwarning: any previously saved engine's analysis data will be lost")) {
+         if (backgroundPage && confirm("save current analysis engine's data?\n\nwarning: any previously saved analysis engine's data will be lost")) {
             if (!backgroundPage.saveAnalysisToLocalStorage()) {
-               alert("error: failed saving engine's analysis data, saved engine's analysis data reset");
+               alert("error: failed saving analysis engine's data, saved analysis engine's data has been reset");
             }
          }
       } else {
@@ -918,7 +918,7 @@ of Google Chrome. Don't use with any other browser.
 
    function checkEngineUnderstandsGameAndWarn() {
       retVal = engineUnderstandsGame(currentGame);
-      if (!retVal) { alert("warning: engine's analysis not available for chess variants"); }
+      if (!retVal) { alert("warning: analysis engine not available for chess variants"); }
       return retVal;
    }
 
@@ -969,7 +969,7 @@ of Google Chrome. Don't use with any other browser.
    // G2
    boardShortcut("G2", "annotate game", annotateGame);
    // H2
-   boardShortcut("H2", "toggle engine's analysis", userToggleAnalysis);
+   boardShortcut("H2", "toggle analysis engine", userToggleAnalysis);
 
 
    function openPgnFiles() {
