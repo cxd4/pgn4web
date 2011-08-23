@@ -599,7 +599,7 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameLiveStatus" title="live broadcast status"></span><span class="innerHeaderItem" id="GameLiveStatusDemo" title="this is a simulation of the live broadcast functionality"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="showExtraAnalysisInfo();" onmouseout="hideExtraAnalysisInfo();" class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the engine's analysis: -1 means Black is a pawn ahead"></a><a href="javascript:void(0);" onclick="scanGame(true);" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv" title="principal variation from the engine's analysis"></a><b>&nbsp;</b></div>
+<div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="showExtraAnalysisInfo();" onmouseout="hideExtraAnalysisInfo();" class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the engine's analysis: -1 means Black is a pawn ahead"></a><a href="javascript:void(0);" onclick="pvClicked();" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv" title="principal variation from the engine's analysis"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer" id="GameAnnotationMeasure"><b>&nbsp;</b></div>
 <canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick();" onmousemove="annotationGraphMousemove();" onmouseover="annotationGraphMouseover();" onmouseout="annotationGraphMouseout();" title="annotation graph from the engine's analysis"></canvas>
 </div>
@@ -840,7 +840,7 @@ of Google Chrome. Don't use with any other browser.
       if ((backgroundPage) && (theObject = document.getElementById("GameAnalysisPv"))) {
          freezeAnalysisHeader = true;
          if (event.shiftKey) {
-            theObject.innerHTML = "<span class='analysisExtraInfo'>analysis database size: " + (event.ctrlKey ? backgroundPage.getStoredPositions() : num2string(backgroundPage.getStoredPositions())) + "</span>";
+            theObject.innerHTML = "<span class='analysisExtraInfo'>analysis database size: " + num2string(backgroundPage.getStoredPositions()) + "</span>";
          }  else {
             theObject.innerHTML = "<span class='analysisExtraInfo'>analysis up to " + num2string(backgroundPage.getAnalysisMaxNodesPerSecond()) + " nodes per second</span>";
          }
@@ -862,6 +862,31 @@ of Google Chrome. Don't use with any other browser.
       else if (num >= 1000) { num = Math.floor(num / 1000) + "K"; }
       else { num = num + ""; }
       return num;
+   }
+
+   function pvClicked() {
+      if (event.shiftKey) {
+         if (backgroundPage && confirm("delete saved analysis data?")) {
+            backgroundPage.deleteAnalysisInLocalStorage();
+         }
+      } else if (event.ctrlKey) {
+         if (backgroundPage && confirm("load saved analysis and replace current analysis data?")) {
+            if (backgroundPage.loadAnalysisFromLocalStorage()) {
+               updateAnalysisHeader();
+               updateAnnotationGraph();
+            } else {
+               alert("error: failed loading saved analysis data, kept current analysis data");
+            }
+         }
+      } else if (event.altKey) {
+         if (backgroundPage && confirm("save current analysis data and replace any previously saved analysis data?")) {
+            if (!backgroundPage.saveAnalysisToLocalStorage()) {
+               alert("error: failed saving analysis data, saved analysis data reset");
+            }
+         }
+      } else {
+         scanGame(true);
+      }
    }
 
    annotateInProgress = false;
