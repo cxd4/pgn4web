@@ -866,22 +866,22 @@ of Google Chrome. Don't use with any other browser.
 
    function pvClicked() {
       if (event.shiftKey) {
-         if (backgroundPage && confirm("delete saved analysis data?")) {
+         if (backgroundPage && confirm("delete saved engine analysis data?")) {
             backgroundPage.deleteAnalysisInLocalStorage();
          }
       } else if (event.ctrlKey) {
-         if (backgroundPage && confirm("load saved analysis data?\n\nwarning: current analysis data will be lost")) {
+         if (backgroundPage && confirm("load saved engine analysis data?\n\nwarning: current engine analysis data will be lost")) {
             if (backgroundPage.loadAnalysisFromLocalStorage()) {
                updateAnalysisHeader();
                updateAnnotationGraph();
             } else {
-               alert("error: no saved analysis data available or failed loading saved analysis data; current analysis data has been kept");
+               alert("error: no saved engine analysis data available or failed loading saved engine analysis data; current engine analysis data has been kept");
             }
          }
       } else if (event.altKey) {
-         if (backgroundPage && confirm("save current analysis data?\n\nwarning: any previously saved analysis data will be lost")) {
+         if (backgroundPage && confirm("save current engine analysis data?\n\nwarning: any previously saved engine analysis data will be lost")) {
             if (!backgroundPage.saveAnalysisToLocalStorage()) {
-               alert("error: failed saving analysis data, saved analysis data reset");
+               alert("error: failed saving engine analysis data, saved engine analysis data reset");
             }
          }
       } else {
