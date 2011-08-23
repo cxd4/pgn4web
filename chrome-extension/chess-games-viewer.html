@@ -359,13 +359,15 @@ of Google Chrome. Don't use with any other browser.
          }
       }
 
-      // scanGame(false); // this would automatically load available analysis data for each game; disabled because of the slowdown in game load
-
       if (previousCurrentGame !== currentGame) {
          previousPlyNumber = PlyNumber;
          previousCurrentGame = currentGame;
       }
-      if (analysisStarted && (!engineUnderstandsGame(currentGame))) { stopAnalysis(true); }
+      if (analysisStarted) { 
+         if (!engineUnderstandsGame(currentGame)) { stopAnalysis(true); }
+         // then next line would automatically load available analysis data; disabled because of the slowdown in game load
+         // else { scanGame(false); }
+      }
    }
 
    var liveBroadcastUpdateTicker = 1;
@@ -895,7 +897,13 @@ of Google Chrome. Don't use with any other browser.
       return retVal;
    }
 
-   function userToggleAnalysis() { if (checkEngineUnderstandsGameAndWarn()) { toggleAnalysis(); } }
+   function userToggleAnalysis() { 
+      if (checkEngineUnderstandsGameAndWarn()) {
+         // then next line would automatically load available analysis data; disabled because of the slowdown in game load
+         // if (!analysisStarted) { scanGame(false); }
+         toggleAnalysis();
+      }
+   }
 
    var scanningGameFen = false;
    function scanGame(goWhereMissingAnalysis) {
