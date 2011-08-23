@@ -193,3 +193,44 @@ function stopAnalysisOnUpdated(tabId) {
 }
 
 chrome.tabs.onUpdated.addListener(stopAnalysisOnUpdated);
+
+
+function deleteAnalysisInLocalStorage() {
+   try {
+      localStorage.removeItem("pgn4web_chess_games_viewer_egSaved_FEN");
+      localStorage.removeItem("pgn4web_chess_games_viewer_egSaved_ev");
+      localStorage.removeItem("pgn4web_chess_games_viewer_egSaved_pv");
+      localStorage.removeItem("pgn4web_chess_games_viewer_egSaved_nodes");
+   } catch (e) { return false; }
+   return true;
+}
+
+function loadAnalysisFromLocalStorage() {
+   error = false;
+   try {
+      val_FEN = JSON.parse(localStorage.getItem("pgn4web_chess_games_viewer_egSaved_FEN"));
+      val_ev = JSON.parse(localStorage.getItem("pgn4web_chess_games_viewer_egSaved_ev"));
+      val_pv = JSON.parse(localStorage.getItem("pgn4web_chess_games_viewer_egSaved_pv"));
+      val_nodes = JSON.parse(localStorage.getItem("pgn4web_chess_games_viewer_egSaved_nodes"));
+      if ((typeof(val_FEN.length) != "undefined") && (typeof(val_ev.length) != "undefined") && (typeof(val_pv.length) != "undefined") && (typeof(val_nodes.length) != "undefined")) {
+         egStored_FEN = val_FEN;
+         egStored_ev = val_ev;
+         egStored_pv = val_pv;
+         egStored_nodes = val_nodes;
+      }
+   } catch (e) { return false; }
+   return true;
+}
+
+function saveAnalysisToLocalStorage() {
+   try {
+      localStorage.setItem("pgn4web_chess_games_viewer_egSaved_FEN", JSON.stringify(egStored_FEN));
+      localStorage.setItem("pgn4web_chess_games_viewer_egSaved_ev", JSON.stringify(egStored_ev));
+      localStorage.setItem("pgn4web_chess_games_viewer_egSaved_pv", JSON.stringify(egStored_pv));
+      localStorage.setItem("pgn4web_chess_games_viewer_egSaved_nodes", JSON.stringify(egStored_nodes));
+   } catch (e) {
+      deleteAnalysisInLocalStorage();
+      return false;
+   }
+   return true;
+}
