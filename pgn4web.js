@@ -2108,14 +2108,14 @@ function InitFEN(startingFEN) {
       assumedCastleRights = "";
       if ((PieceType[0][0] === 1) && (PieceRow[0][0] === 0) && (PieceCol[0][0] === 4)) {
         for (ii = 0; ii < PieceType[0].length; ii++) {
-          if ((PieceType[0][ii] === 3) && (PieceRow[0][ii] === 0) && (PieceCol[0][ii] > PieceCol[0][0])) { assumedCastleRights += FenPieceName.toUpperCase().charAt(0); }
-          if ((PieceType[0][ii] === 3) && (PieceRow[0][ii] === 0) && (PieceCol[0][ii] < PieceCol[0][0])) { assumedCastleRights += FenPieceName.toUpperCase().charAt(1); }
+          if ((PieceType[0][ii] === 3) && (PieceRow[0][ii] === 0) && (PieceCol[0][ii] > PieceCol[0][0])) { assumedCastleRights += FenPieceName.charAt(0).toUpperCase(); }
+          if ((PieceType[0][ii] === 3) && (PieceRow[0][ii] === 0) && (PieceCol[0][ii] < PieceCol[0][0])) { assumedCastleRights += FenPieceName.charAt(1).toUpperCase(); }
         }
       }
       if ((PieceType[1][0] === 1) && (PieceRow[1][0] === 7) && (PieceCol[1][0] === 4)) {
         for (ii = 0; ii < PieceType[1].length; ii++) {
-          if ((PieceType[1][ii] === 3) && (PieceRow[1][ii] === 7) && (PieceCol[1][ii] > PieceCol[1][0])) { assumedCastleRights += FenPieceName.toLowerCase().charAt(0); }
-          if ((PieceType[1][ii] === 3) && (PieceRow[1][ii] === 7) && (PieceCol[1][ii] < PieceCol[1][0])) { assumedCastleRights += FenPieceName.toLowerCase().charAt(1); }
+          if ((PieceType[1][ii] === 3) && (PieceRow[1][ii] === 7) && (PieceCol[1][ii] > PieceCol[1][0])) { assumedCastleRights += FenPieceName.charAt(0).toLowerCase(); }
+          if ((PieceType[1][ii] === 3) && (PieceRow[1][ii] === 7) && (PieceCol[1][ii] < PieceCol[1][0])) { assumedCastleRights += FenPieceName.charAt(1).toLowerCase(); }
         }
       }
       FenString += assumedCastleRights ? assumedCastleRights : "-";
