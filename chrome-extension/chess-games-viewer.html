@@ -470,7 +470,7 @@ of Google Chrome. Don't use with any other browser.
    function customShortcutKey_Shift_4() { cycleLastMoveAndCommentArea(); }
 
    function customShortcutKey_Shift_5() { userToggleAnalysis(); }
-   function customShortcutKey_Shift_6() { if (analysisStarted) { resetFenPositions(currentGame); fenPositions[currentGame][CurrentPly] = CurrentFEN(); updateAnnotationGraph(); updateAnalysisHeader(); } else { if (confirm("reset engine analysis for all chess games viewer chessboards?")) { resetFenPositions(-1); fenPositions[currentGame] = new Array(); fenPositions[currentGame][CurrentPly] = CurrentFEN(); if (backgroundPage) { backgroundPage.resetAnalysisData(); } } } }
+   function customShortcutKey_Shift_6() { if (analysisStarted) { resetFenPositions(currentGame); fenPositions[currentGame][CurrentPly] = CurrentFEN(); updateAnnotationGraph(); updateAnalysisHeader(); } else { if (confirm("reset engine's analysis for all chess games viewer chessboards?")) { resetFenPositions(-1); fenPositions[currentGame] = new Array(); fenPositions[currentGame][CurrentPly] = CurrentFEN(); if (backgroundPage) { backgroundPage.resetAnalysisData(); } } } }
 
    function customShortcutKey_Shift_7() { fetchInputPgnText(); }
    function customShortcutKey_Shift_8() { openPgnFiles(); }
@@ -606,7 +606,7 @@ of Google Chrome. Don't use with any other browser.
 
 </div>
 
-<div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleAnalysisLink" id="toggleAnalysisLink" href="javascript:void(0);" onclick="userToggleAnalysis();" title="toggle engine analysis">+</a></div>
+<div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleAnalysisLink" id="toggleAnalysisLink" href="javascript:void(0);" onclick="userToggleAnalysis();" title="toggle engine's analysis">+</a></div>
 <div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="SetCommentsIntoMoveText(!commentsIntoMoveText); oldPly = CurrentPly; Init(); GoToMove(oldPly);" title="toggle show comments in game text for this page; click square B7 instead to save setting"></a></div>
 
 <div class="lastMoveAndComment" id="lastMoveAndComment"><a href="javascript:MoveToNextComment();" class="lastMove notranslate" title="last move" id="GameLastMove"></a><a href="javascript:MoveToPrevComment();" class="lastComment" title="current position comment" id="GameLastComment"></a></div>
@@ -918,7 +918,7 @@ of Google Chrome. Don't use with any other browser.
 
    function checkEngineUnderstandsGameAndWarn() {
       retVal = engineUnderstandsGame(currentGame);
-      if (!retVal) { alert("warning: engine analysis not available for chess variants"); }
+      if (!retVal) { alert("warning: engine's analysis not available for chess variants"); }
       return retVal;
    }
 
@@ -969,7 +969,7 @@ of Google Chrome. Don't use with any other browser.
    // G2
    boardShortcut("G2", "annotate game", annotateGame);
    // H2
-   boardShortcut("H2", "toggle engine analysis", userToggleAnalysis);
+   boardShortcut("H2", "toggle engine's analysis", userToggleAnalysis);
 
 
    function openPgnFiles() {
