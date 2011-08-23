@@ -870,7 +870,7 @@ of Google Chrome. Don't use with any other browser.
             backgroundPage.deleteAnalysisInLocalStorage();
          }
       } else if (event.ctrlKey) {
-         if (backgroundPage && confirm("load saved analysis and replace current analysis data?")) {
+         if (backgroundPage && confirm("load saved analysis data and replace current analysis data?")) {
             if (backgroundPage.loadAnalysisFromLocalStorage()) {
                updateAnalysisHeader();
                updateAnnotationGraph();
