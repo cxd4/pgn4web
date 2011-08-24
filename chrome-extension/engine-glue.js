@@ -212,7 +212,7 @@ function loadAnalysisFromLocalStorage() {
       val_ev = JSON.parse(localStorage.getItem("pgn4web_engine_glue_egSaved_ev"));
       val_pv = JSON.parse(localStorage.getItem("pgn4web_engine_glue_egSaved_pv"));
       val_nodes = JSON.parse(localStorage.getItem("pgn4web_engine_glue_egSaved_nodes"));
-      if ((val_FEN.length === val_ev.length) && (val_FEN.length === val_pv.length) && (val_FEN.length === val_nodes.length)) {
+      if ((typeof(val_FEN.length) != "undefined") && (typeof(val_ev.length) != "undefined") && (typeof(val_pv.length) != "undefined") && (typeof(val_nodes.length) != "undefined") && (val_FEN.length === val_ev.length) && (val_FEN.length === val_pv.length) && (val_FEN.length === val_nodes.length)) {
          egStored_FEN = val_FEN;
          egStored_ev = val_ev;
          egStored_pv = val_pv;
