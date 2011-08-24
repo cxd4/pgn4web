@@ -841,7 +841,7 @@ of Google Chrome. Don't use with any other browser.
          freezeAnalysisHeader = true;
          if (event.shiftKey) {
             storedPositions = backgroundPage.getStoredPositions();
-            theObject.innerHTML = "<span class='analysisExtraInfo'>analysis engine's data: " + storedPositions + " " + (storedPositions == 1 ? "entry" : "entries") + "</span>";
+            theObject.innerHTML = "<span class='analysisExtraInfo'>analysis engine's data at " + storedPositions + " " + (storedPositions == 1 ? "entry" : "entries") + "</span>";
          }  else {
             theObject.innerHTML = "<span class='analysisExtraInfo'>analysis up to " + num2string(backgroundPage.getAnalysisMaxNodesPerSecond()) + " nodes per second</span>";
          }
