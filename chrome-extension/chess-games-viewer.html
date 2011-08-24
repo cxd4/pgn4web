@@ -840,7 +840,8 @@ of Google Chrome. Don't use with any other browser.
       if ((backgroundPage) && (theObject = document.getElementById("GameAnalysisPv"))) {
          freezeAnalysisHeader = true;
          if (event.shiftKey) {
-            theObject.innerHTML = "<span class='analysisExtraInfo'>" + num2string(backgroundPage.getStoredPositions()) + " analysis engine's data entries</span>";
+            storedPositions = backgroundPage.getStoredPositions();
+            theObject.innerHTML = "<span class='analysisExtraInfo'>" + num2string(storedPositions) + " analysis engine's data " + (storedPositions == 1 ? "entry" : "entries") + "</span>";
          }  else {
             theObject.innerHTML = "<span class='analysisExtraInfo'>analysis up to " + num2string(backgroundPage.getAnalysisMaxNodesPerSecond()) + " nodes per second</span>";
          }
