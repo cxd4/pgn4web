@@ -470,7 +470,7 @@ of Google Chrome. Don't use with any other browser.
    function customShortcutKey_Shift_4() { cycleLastMoveAndCommentArea(); }
 
    function customShortcutKey_Shift_5() { userToggleAnalysis(); }
-   function customShortcutKey_Shift_6() { if (analysisStarted) { resetFenPositions(currentGame); fenPositions[currentGame][CurrentPly] = CurrentFEN(); updateAnnotationGraph(); updateAnalysisHeader(); } else { if (confirm("reset analysis engine's data for all chess games viewer chessboards?")) { resetFenPositions(-1); fenPositions[currentGame] = new Array(); fenPositions[currentGame][CurrentPly] = CurrentFEN(); if (backgroundPage) { backgroundPage.resetAnalysisData(); } } } }
+   function customShortcutKey_Shift_6() { if (analysisStarted) { resetFenPositions(-1); fenPositions[currentGame] = new Array(); fenPositions[currentGame][CurrentPly] = CurrentFEN(); updateAnnotationGraph(); updateAnalysisHeader(); } else { if (confirm("reset analysis engine's data for all chess games viewer chessboards?")) { resetFenPositions(-1); fenPositions[currentGame] = new Array(); fenPositions[currentGame][CurrentPly] = CurrentFEN(); if (backgroundPage) { backgroundPage.resetAnalysisData(); } } } }
 
    function customShortcutKey_Shift_7() { fetchInputPgnText(); }
    function customShortcutKey_Shift_8() { openPgnFiles(); }
@@ -599,7 +599,7 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameLiveStatus" title="live broadcast status"></span><span class="innerHeaderItem" id="GameLiveStatusDemo" title="this is a simulation of the live broadcast functionality"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="showExtraAnalysisInfo();" onmouseout="hideExtraAnalysisInfo();" class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the analysis engine: -1 means Black is a pawn ahead"></a><a href="javascript:void(0);" onclick="pvClicked();" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv" title="principal variation from the analysis engine"></a><b>&nbsp;</b></div>
+<div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="showExtraAnalysisInfo();" onmouseout="hideExtraAnalysisInfo();" class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the analysis engine: -1 means Black is a pawn ahead"></a><a href="javascript:void(0);" onclick="scanGame(true);" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv" title="principal variation from the analysis engine"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer" id="GameAnnotationMeasure"><b>&nbsp;</b></div>
 <canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick();" onmousemove="annotationGraphMousemove();" onmouseover="annotationGraphMouseover();" onmouseout="annotationGraphMouseout();" title="annotation graph from the analysis engine"></canvas>
 </div>
@@ -641,7 +641,10 @@ of Google Chrome. Don't use with any other browser.
       clearAnalysisHeader();
    }
 
-   window.onunload = function() { if (analysisStarted) { stopAnalysis(true); } };
+   window.onunload = function() {
+      if (analysisStarted) { stopAnalysis(true); }
+      if (backgroundPage) { backgroundPage.saveAnalysisToLocalStorage(); }
+   };
 
    chrome.extension.onRequest.addListener(analysisOutputHandler);
 
@@ -865,30 +868,6 @@ of Google Chrome. Don't use with any other browser.
       return num;
    }
 
-   function pvClicked() {
-      if (event.shiftKey) {
-         if (backgroundPage && confirm("delete saved analysis engine's data?")) {
-            backgroundPage.deleteAnalysisInLocalStorage();
-         }
-      } else if (event.ctrlKey) {
-         if (backgroundPage && confirm("load saved analysis engine's data?\n\nwarning: current analysis engine's data of all chess games viewer chessboards will be lost")) {
-            if (backgroundPage.loadAnalysisFromLocalStorage()) {
-               updateAnalysisHeader();
-               updateAnnotationGraph();
-            } else {
-               alert("error: no saved analysis engine's data available or failed loading saved analysis engine's data; current analysis engine's data has been kept");
-            }
-         }
-      } else if (event.altKey) {
-         if (backgroundPage && confirm("save current analysis engine's data?\n\nwarning: any previously saved analysis engine's data will be lost")) {
-            if (!backgroundPage.saveAnalysisToLocalStorage()) {
-               alert("error: failed saving analysis engine's data, saved analysis engine's data has been reset");
-            }
-         }
-      } else {
-         scanGame(true);
-      }
-   }
 
    annotateInProgress = false;
    minAnnotationDelay = 3;
