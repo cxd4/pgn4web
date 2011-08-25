@@ -20,6 +20,10 @@ var g_tabId = null;
 function setAnalysisStatus(newStatus, newTabId, newFEN) {
    switch (newStatus) {
       case "analysis":
+         if (egStored_neverLoadedAnalysisData) {
+            loadAnalysisFromLocalStorage();
+            egStored_neverLoadedAnalysisData = false;
+         }
          if ((newStatus == g_analysis_status) && (newTabId === g_tabId) && (newFEN === g_FEN)) { return; }
          if ((g_analysis_status == "analysis") && g_backgroundEngine) {
             g_backgroundEngine.terminate();
@@ -66,6 +70,7 @@ var egStored_pv;
 var egStored_nodes;
 var egStored_maxNodesPerSecond;
 var egStored_newAnalysisAdded = false;
+var egStored_neverLoadedAnalysisData = true;
 resetAnalysisData();
 
 function storeAnalysis(FEN, ev, pv, nodes) {
@@ -219,7 +224,9 @@ function loadAnalysisFromLocalStorage() {
          egStored_ev = val_ev;
          egStored_pv = val_pv;
          egStored_nodes = val_nodes;
-      } else { return false; }
+      } else {
+         console.warn("chess games viewer: invalid analysis engine's data found in local storage");
+      }
    } catch (e) { return false; }
    return true;
 }
@@ -233,6 +240,7 @@ function saveAnalysisToLocalStorage() {
          localStorage.setItem("pgn4web_engine_glue_egSaved_nodes", JSON.stringify(egStored_nodes));
          egStored_newAnalysisAdded = false;
       } catch (e) {
+         console.warn("chess games viewer: failed saving analysis engine's data to local storage");
          deleteAnalysisInLocalStorage();
          return false;
       }
