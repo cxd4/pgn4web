@@ -861,9 +861,9 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function num2string(num) {
-      if (num >= 1000000000) { num = Math.floor(num / 1000000000) + "G"; }
-      else if (num >= 1000000) { num = Math.floor(num / 1000000) + "M"; }
-      else if (num >= 1000) { num = Math.floor(num / 1000) + "K"; }
+      if (num >= Math.pow(10, 9)) { num = Math.floor(num / Math.pow(10, 9)) + "G"; }
+      else if (num >= Math.pow(10, 6)) { num = Math.floor(num / Math.pow(10, 6)) + "M"; }
+      else if (num >= Math.pow(10, 3)) { num = Math.floor(num / Math.pow(10, 3)) + "K"; }
       else { num = num + ""; }
       return num;
    }
