@@ -203,7 +203,10 @@ function stopAnalysisOnUpdated(tabId) {
 chrome.tabs.onUpdated.addListener(stopAnalysisOnUpdated);
 
 
+enableAnalysisLocalStorage = true;
+
 function deleteAnalysisInLocalStorage() {
+   if (!enableAnalysisLocalStorage) { return true; }
    try {
       localStorage.removeItem("pgn4web_engine_glue_egSaved_FEN");
       localStorage.removeItem("pgn4web_engine_glue_egSaved_ev");
@@ -214,6 +217,7 @@ function deleteAnalysisInLocalStorage() {
 }
 
 function loadAnalysisFromLocalStorage() {
+   if (!enableAnalysisLocalStorage) { return true; }
    try {
       val_FEN = JSON.parse(localStorage.getItem("pgn4web_engine_glue_egSaved_FEN"));
       val_ev = JSON.parse(localStorage.getItem("pgn4web_engine_glue_egSaved_ev"));
@@ -232,6 +236,7 @@ function loadAnalysisFromLocalStorage() {
 }
 
 function saveAnalysisToLocalStorage() {
+   if (!enableAnalysisLocalStorage) { return true; }
    if (egStored_newAnalysisAdded) {   
       try {
          localStorage.setItem("pgn4web_engine_glue_egSaved_FEN", JSON.stringify(egStored_FEN));
