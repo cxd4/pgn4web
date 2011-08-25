@@ -65,6 +65,7 @@ var egStored_ev;
 var egStored_pv;
 var egStored_nodes;
 var egStored_maxNodesPerSecond;
+var egStored_newAnalysisAdded = false;
 resetAnalysisData();
 
 function storeAnalysis(FEN, ev, pv, nodes) {
@@ -112,6 +113,8 @@ function storeAnalysis(FEN, ev, pv, nodes) {
       egStored_ev.push(ev);
       egStored_pv.push(pv);
       egStored_nodes.push(nodes);
+      
+      egStored_newAnalysisAdded = true;
    }
    return additionNeeded;
 }
@@ -223,14 +226,17 @@ function loadAnalysisFromLocalStorage() {
 }
 
 function saveAnalysisToLocalStorage() {
-   try {
-      localStorage.setItem("pgn4web_engine_glue_egSaved_FEN", JSON.stringify(egStored_FEN));
-      localStorage.setItem("pgn4web_engine_glue_egSaved_ev", JSON.stringify(egStored_ev));
-      localStorage.setItem("pgn4web_engine_glue_egSaved_pv", JSON.stringify(egStored_pv));
-      localStorage.setItem("pgn4web_engine_glue_egSaved_nodes", JSON.stringify(egStored_nodes));
-   } catch (e) {
-      deleteAnalysisInLocalStorage();
-      return false;
+   if (egStored_newAnalysisAdded) {   
+      try {
+         localStorage.setItem("pgn4web_engine_glue_egSaved_FEN", JSON.stringify(egStored_FEN));
+         localStorage.setItem("pgn4web_engine_glue_egSaved_ev", JSON.stringify(egStored_ev));
+         localStorage.setItem("pgn4web_engine_glue_egSaved_pv", JSON.stringify(egStored_pv));
+         localStorage.setItem("pgn4web_engine_glue_egSaved_nodes", JSON.stringify(egStored_nodes));
+         egStored_newAnalysisAdded = false;
+      } catch (e) {
+         deleteAnalysisInLocalStorage();
+         return false;
+      }
    }
    return true;
 }
