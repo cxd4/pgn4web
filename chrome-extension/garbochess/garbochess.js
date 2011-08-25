@@ -1,7 +1,7 @@
-// garbochess.js code dated 2011-08-01, downloaded on 2011-08-02 from 
-// the garbochess repository https://github.com/glinscott/Garbochess-JS/
+// garbochess.js code as of 2011-08-24
+// from the garbochess repository https://github.com/glinscott/Garbochess-JS/
 // See README.txt for more info including full credits and license.
-// Changes to the orginal code, if any, are clearly maked with the "pgn4web" tag.
+// Changes to the orginal code, if any, are marked with the "pgn4web" tag.
 
 "use strict";
 
