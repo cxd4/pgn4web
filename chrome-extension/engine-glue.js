@@ -209,7 +209,6 @@ function deleteAnalysisInLocalStorage() {
 }
 
 function loadAnalysisFromLocalStorage() {
-   error = false;
    try {
       val_FEN = JSON.parse(localStorage.getItem("pgn4web_engine_glue_egSaved_FEN"));
       val_ev = JSON.parse(localStorage.getItem("pgn4web_engine_glue_egSaved_ev"));
