@@ -2105,7 +2105,7 @@ function InitFEN(startingFEN) {
     }
     if (ll == FenString.length) {
       FenString += " w ";
-      assumedCastleRights = ""; // castling rights will be guessed assuming normal chess rules
+      assumedCastleRights = ""; // castling rights will be guessed assuming Kings and Rooks original starting positions as in normal chess rules
       if ((PieceRow[0][0] === 0) && (PieceCol[0][0] === 4)) {
         for (ii = 0; ii < PieceType[0].length; ii++) {
           if ((PieceType[0][ii] === 3) && (PieceRow[0][ii] === 0) && (PieceCol[0][ii] === 7)) { assumedCastleRights += FenPieceName.charAt(0).toUpperCase(); }
