@@ -916,22 +916,18 @@ of Google Chrome. Don't use with any other browser.
          if (thisPly > StartPly + PlyNumber) { thisPly = StartPly; }
          if (thisPly === savedCurrentPly) { break; }
          GoToMove(thisPly);
-         if (thisPly !== CurrentPly) { break; }
+         if (thisPly !== CurrentPly) { thisPly = savedCurrentPly; break; }
       }
-      if (thisPly !== savedCurrentPly) {
-         scanningGameFen = false;
-         GoToMove(savedCurrentPly);
-      } else {
-         if ((goWhereMissingAnalysis) && (backgroundPage)) {
-            for (thisPly = savedCurrentPly + 1; ; thisPly++) {
-               if (thisPly > StartPly + PlyNumber) { thisPly = StartPly; }
-               if ((thisPly === savedCurrentPly) || (backgroundPage.getAnalysisIndexFromFEN(fenPositions[currentGame][thisPly]) == -1)) { break; }
-            }
+      if ((goWhereMissingAnalysis) && (backgroundPage)) {
+         for (thisPly = savedCurrentPly + 1; ; thisPly++) {
+            if (thisPly > StartPly + PlyNumber) { thisPly = StartPly; }
+            if ((typeof(fenPositions[currentGame]) == "undefined") || (typeof(fenPositions[currentGame][thisPly]) == "undefined")) { thisPly = savedCurrentPly; break; }
+            if ((thisPly === savedCurrentPly) || (backgroundPage.getAnalysisIndexFromFEN(fenPositions[currentGame][thisPly]) == -1)) { break; }
          }
-         scanningGameFen = false;
-         GoToMove(thisPly);
-         if (wasAutoPlayOn) { SetAutoPlay(true); }
       }
+      scanningGameFen = false;
+      GoToMove(thisPly);
+      if (wasAutoPlayOn) { SetAutoPlay(true); }
    }
 
 
