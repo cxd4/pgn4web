@@ -920,10 +920,11 @@ of Google Chrome. Don't use with any other browser.
       scanningGameFen = true;
       savedCurrentPly = CurrentPly;
       if (wasAutoPlayOn = isAutoPlayOn) { SetAutoPlay(false); }
-      for (thisPly = savedCurrentPly + 1; ; thisPly++) {
+      for (var thisPly = savedCurrentPly + 1; ; thisPly++) {
          if (thisPly > StartPly + PlyNumber) { thisPly = StartPly; }
          if (thisPly === savedCurrentPly) { break; }
          GoToMove(thisPly);
+         if (thisPly !== CurrentPly) { thisPly = savedCurrentPly; break; }
       }
       if ((goWhereMissingAnalysis) && (backgroundPage)) {
          for (thisPly = savedCurrentPly + 1; ; thisPly++) {
