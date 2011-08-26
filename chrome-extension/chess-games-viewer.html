@@ -363,11 +363,7 @@ of Google Chrome. Don't use with any other browser.
          previousPlyNumber = PlyNumber;
          previousCurrentGame = currentGame;
       }
-      if (analysisStarted) { 
-         if (!engineUnderstandsGame(currentGame)) { stopAnalysis(true); }
-         // then next line would automatically load available analysis data; disabled because of the slowdown in game load
-         // else { scanGame(false); }
-      }
+      if ((analysisStarted) && (!engineUnderstandsGame(currentGame))) { stopAnalysis(true); }
    }
 
    var liveBroadcastUpdateTicker = 1;
@@ -903,11 +899,7 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function userToggleAnalysis() { 
-      if (checkEngineUnderstandsGameAndWarn()) {
-         // then next line would automatically load available analysis data; disabled because of the slowdown in game load
-         // if (!analysisStarted) { scanGame(false); }
-         toggleAnalysis();
-      }
+      if (checkEngineUnderstandsGameAndWarn()) { toggleAnalysis(); }
    }
 
    function pvClicked() {
@@ -924,17 +916,22 @@ of Google Chrome. Don't use with any other browser.
          if (thisPly > StartPly + PlyNumber) { thisPly = StartPly; }
          if (thisPly === savedCurrentPly) { break; }
          GoToMove(thisPly);
-         if (thisPly !== CurrentPly) { thisPly = savedCurrentPly; break; }
+         if (thisPly !== CurrentPly) { break; }
       }
-      if ((goWhereMissingAnalysis) && (backgroundPage)) {
-         for (thisPly = savedCurrentPly + 1; ; thisPly++) {
-            if (thisPly > StartPly + PlyNumber) { thisPly = StartPly; }
-            if ((thisPly === savedCurrentPly) || (backgroundPage.getAnalysisIndexFromFEN(fenPositions[currentGame][thisPly]) == -1)) { break; }
+      if (thisPly !== savedCurrentPly) {
+         scanningGameFen = false;
+         GoToMove(savedCurrentPly);
+      } else {
+         if ((goWhereMissingAnalysis) && (backgroundPage)) {
+            for (thisPly = savedCurrentPly + 1; ; thisPly++) {
+               if (thisPly > StartPly + PlyNumber) { thisPly = StartPly; }
+               if ((thisPly === savedCurrentPly) || (backgroundPage.getAnalysisIndexFromFEN(fenPositions[currentGame][thisPly]) == -1)) { break; }
+            }
          }
+         scanningGameFen = false;
+         GoToMove(thisPly);
+         if (wasAutoPlayOn) { SetAutoPlay(true); }
       }
-      scanningGameFen = false;
-      GoToMove(thisPly);
-      if (wasAutoPlayOn) { SetAutoPlay(true); }
    }
 
 
