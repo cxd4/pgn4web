@@ -94,11 +94,6 @@ http://crbug.com/50192
 workaround implemented (anymore since pgn4web r6921)
 http://crbug.com/31494
 
-background.html: default empty call to sendResponse({})
-the empty response messging sendResponse({}); is causing an error even if
-recommended in http://code.google.com/chrome/extensions/messaging.html
-see http://crbug.com/77695
-
 
 Other:
 
