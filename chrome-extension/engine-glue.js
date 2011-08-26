@@ -188,8 +188,8 @@ function InitializeBackgroundEngine() {
 function analysisRequestHandler(request, sender, sendResponse) {
   if (typeof(request.analysisCommand) != "undefined") { 
      setAnalysisStatus(request.analysisCommand, sender.tab.id, request.FEN);
+     sendResponse({});
   }
-  sendResponse({});
 }
 
 chrome.extension.onRequest.addListener(analysisRequestHandler);
