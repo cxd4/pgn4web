@@ -300,6 +300,8 @@ of Google Chrome. Don't use with any other browser.
       }
    }
 
+   var scanGameAtGameLoad = false; // disabled because of the excessive delay added at every game load
+
    function customFunctionOnPgnGameLoad() {
       fixHeaderTag('GameDate');
       fixHeaderTag('GameSite');
@@ -363,7 +365,9 @@ of Google Chrome. Don't use with any other browser.
          previousPlyNumber = PlyNumber;
          previousCurrentGame = currentGame;
       }
-      if ((analysisStarted) && (!engineUnderstandsGame(currentGame))) { stopAnalysis(true); }
+      if (analysisStarted) {
+         if (engineUnderstandsGame(currentGame)) { if (scanGameAtGameLoad) { scanGame(false); } }
+         else { stopAnalysis(true); }
    }
 
    var liveBroadcastUpdateTicker = 1;
@@ -899,7 +903,10 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function userToggleAnalysis() { 
-      if (checkEngineUnderstandsGameAndWarn()) { toggleAnalysis(); }
+      if (checkEngineUnderstandsGameAndWarn()) {
+         if ((!analysisStarted) && (scanGameAtGameLoad)) { scanGame(false); }
+         toggleAnalysis();
+      }
    }
 
    function pvClicked() {
