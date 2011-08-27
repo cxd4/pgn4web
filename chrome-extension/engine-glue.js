@@ -64,7 +64,7 @@ function setAnalysisStatus(newStatus, newTabId, newFEN) {
    }
 }
 
-var egStored_max = 10000;
+var egStored_max = 5432;
 var egStored_FEN;
 var egStored_ev;
 var egStored_pv;
