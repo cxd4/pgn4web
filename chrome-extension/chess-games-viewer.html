@@ -915,11 +915,15 @@ of Google Chrome. Don't use with any other browser.
       if (wasAutoPlayOn) { SetAutoPlay(true); }
    }
 
-   function goToMissingAnalysis() {
+   function goToMissingAnalysis(forward) {
       if ((!backgroundPage) || (!analysisStarted)) { return; }
+      if (typeof(forward) == "undefined") {
+         forward = ((typeof(event) != "undefined") && (typeof(event.shiftKey) != "undefined")) ? !event.shiftKey : true; 
+      }
       if (wasAutoPlayOn = isAutoPlayOn) { SetAutoPlay(false); }
-      for (var thisPly = CurrentPly + 1; ; thisPly++) {
-         if (thisPly > StartPly + PlyNumber) { thisPly = StartPly; }
+      for (var thisPly = CurrentPly + (forward ? 1 : -1); ; thisPly = thisPly + (forward ? 1 : -1)) {
+         if (forward) { if (thisPly > StartPly + PlyNumber) { thisPly = StartPly; } }
+         else { if (thisPly < StartPly) { thisPly = StartPly + PlyNumber; } }
          if (thisPly === CurrentPly) { break; }
          if ((typeof(fenPositions[currentGame]) == "undefined") || (typeof(fenPositions[currentGame][thisPly]) == "undefined")) { break; }
          if (backgroundPage.getAnalysisIndexFromFEN(fenPositions[currentGame][thisPly]) == -1) { GoToMove(thisPly); break; }
