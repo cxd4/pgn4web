@@ -2383,7 +2383,7 @@ function LoadGameHeaders(){
 }
 
 
-function MoveBackward(diff) {
+function MoveBackward(diff, scanOnly) {
 
   // CurrentPly counts from 1, starting position 0
   var goFromPly  = CurrentPly - 1;
@@ -2428,6 +2428,8 @@ function MoveBackward(diff) {
     } 
   }
 
+  if (scanOnly) { return; }
+
   // old position reconstructed: refresh board
   RefreshBoard();
   HighlightLastMove(); 
@@ -2441,7 +2443,7 @@ function MoveBackward(diff) {
   customFunctionOnMove();
 }
 
-function MoveForward(diff) {
+function MoveForward(diff, scanOnly) {
 
   // CurrentPly counts from 1, starting position 0
   goToPly = CurrentPly + parseInt(diff,10);
@@ -2459,8 +2461,11 @@ function MoveForward(diff) {
     MoveColor = 1-MoveColor; 
   }
 
-  // new position: refresh board and update ply count
+  // new position: update ply count, then refresh board
   CurrentPly = thisPly;
+
+  if (scanOnly) { return; }
+
   RefreshBoard();
   HighlightLastMove(); 
 
