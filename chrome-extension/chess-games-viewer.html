@@ -680,19 +680,12 @@ of Google Chrome. Don't use with any other browser.
       else if (theObject = document.getElementById("GameAnnotationGraph")) {
          annEval = new Array();
          for (annPly = StartPly; annPly <= StartPly+PlyNumber; annPly++) {
-            annEval[annPly] = 0;
+            annEval[annPly] = annPly === CurrentPly ? 0 : null;
             if (backgroundPage && (typeof(fenPositions[currentGame]) != "undefined") && (typeof(fenPositions[currentGame][annPly]) != "undefined")) {
                index = backgroundPage.getAnalysisIndexFromFEN(fenPositions[currentGame][annPly]);
                if (index != -1) { annEval[annPly] = backgroundPage.getAnalysisEvFromIndex(index); }
             }
-            //
-            // grpah option 1: linear scale capped at maxAnnEval 
-            // maxAnnEval = 3;
-            // annEval[annPly] = annEval[annPly] < 0 ? Math.max(annEval[annPly], -maxAnnEval) : Math.min(annEval[annPly], maxAnnEval);
-            //
-            // grpah option 2: logarithmic scale
-            annEval[annPly] = annEval[annPly] < 0 ? -1 + Math.pow(2, annEval[annPly]) : 1 - Math.pow(2, -annEval[annPly]);
-            //
+            if (annEval[annPly] !== null) { annEval[annPly] = annEval[annPly] < 0 ? -1 + Math.pow(2, annEval[annPly]) : 1 - Math.pow(2, -annEval[annPly]); }
          }
 
          theObject.width = canvasWidth = graphCanvasWidth();
@@ -712,11 +705,12 @@ of Google Chrome. Don't use with any other browser.
          thisBarHeight = lineHeight;
          thisBarTopLeftY = lineTop;
          context.rect(thisBarTopLeftX, thisBarTopLeftY, (PlyNumber + 1) * annotationBarWidth, thisBarHeight);
-         context.fillStyle = "#666666";
+         context.fillStyle = "#D9D9D9";
          context.fill();
+         context.fillStyle = "#666666";
          highlightTopLeftX = highlightTopLeftY = highlightBarHeight = null;
          for (annPly = StartPly; annPly <= StartPly + PlyNumber; annPly++) {
-            if ((annEval[annPly] !== 0) || (annPly === CurrentPly)) {
+            if ((annEval[annPly] !== null) || (annPly === CurrentPly)) {
                thisBarTopLeftX = (annPly - StartPly) * annotationBarWidth;
                if (annEval[annPly] >= 0) {
                   thisBarHeight = Math.max(  annEval[annPly] * maxBarHeight, lineHeight);
