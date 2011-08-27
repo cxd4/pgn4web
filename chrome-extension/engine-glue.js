@@ -221,9 +221,13 @@ function loadAnalysisFromLocalStorage() {
    if (!enableAnalysisLocalStorage) { return true; }
    try {
       val_FEN = JSON.parse(localStorage.getItem("pgn4web_engine_glue_egSaved_FEN"));
+      if (val_FEN.length > egStored_max) { val_FEN.splice(0, val_FEN.length - egStored_max); }
       val_ev = JSON.parse(localStorage.getItem("pgn4web_engine_glue_egSaved_ev"));
+      if (val_ev.length > egStored_max) { val_ev.splice(0, val_ev.length - egStored_max); }
       val_pv = JSON.parse(localStorage.getItem("pgn4web_engine_glue_egSaved_pv"));
+      if (val_pv.length > egStored_max) { val_pv.splice(0, val_pv.length - egStored_max); }
       val_nodes = JSON.parse(localStorage.getItem("pgn4web_engine_glue_egSaved_nodes"));
+      if (val_nodes.length > egStored_max) { val_nodes.splice(0, val_nodes.length - egStored_max); }
       if ((typeof(val_FEN.length) != "undefined") && (typeof(val_ev.length) != "undefined") && (typeof(val_pv.length) != "undefined") && (typeof(val_nodes.length) != "undefined") && (val_FEN.length === val_ev.length) && (val_FEN.length === val_pv.length) && (val_FEN.length === val_nodes.length)) {
          egStored_FEN = val_FEN;
          egStored_ev = val_ev;
