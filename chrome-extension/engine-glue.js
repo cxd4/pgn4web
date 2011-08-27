@@ -23,6 +23,7 @@ function setAnalysisStatus(newStatus, newTabId, newFEN) {
          if (egStored_neverLoadedAnalysisData) {
             loadAnalysisFromLocalStorage();
             egStored_neverLoadedAnalysisData = false;
+            chrome.tabs.sendRequest(newTabId, {analysisNotification: "newData"}, function(res){});
          }
          if ((newStatus == g_analysis_status) && (newTabId === g_tabId) && (newFEN === g_FEN)) { return; }
          if ((g_analysis_status == "analysis") && g_backgroundEngine) {
