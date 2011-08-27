@@ -265,13 +265,6 @@ of Google Chrome. Don't use with any other browser.
 
    function customFunctionOnMove() {
 
-      if (typeof(fenPositions[currentGame]) == "undefined") { fenPositions[currentGame] = new Array(); }
-      thisFen = CurrentFEN();
-      if ((typeof(fenPositions[currentGame][CurrentPly]) != "undefined") && (fenPositions[currentGame][CurrentPly] !== thisFen)) { resetFenPositions(currentGame); }
-      fenPositions[currentGame][CurrentPly] = thisFen;
-
-      if (scanningGameFen) { return; }
-
       if (analysisStarted) {
          if (engineUnderstandsGame(currentGame)) { restartAnalysis(); }
          else { stopAnalysis(true); }
@@ -826,14 +819,11 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function annotationGraphClick() {
-      if (analysisStarted) {
-         if (!event.shiftKey) {
-            if (typeof(annotationBarWidth) != "undefined") {
-               annPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
-               if ((annPly >= StartPly) && (annPly <= StartPly + PlyNumber)) { GoToMove(annPly); }
-            }
-         } else {
-            if (backgroundPage) { backgroundPage.saveAnalysisToLocalStorage(); }
+      if ((analysisStarted) && (typeof(annotationBarWidth) != "undefined")) {
+         annPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
+         if ((annPly >= StartPly) && (annPly <= StartPly + PlyNumber)) {
+            if (event.shiftKey) { if (backgroundPage) { backgroundPage.saveAnalysisToLocalStorage(); } }
+            else { GoToMove(annPly); }
          }
       }
    }
@@ -909,19 +899,19 @@ of Google Chrome. Don't use with any other browser.
       }
    }
 
-   var scanningGameFen = false;
    function scanGameForFen() {
-      scanningGameFen = true;
       savedCurrentPly = CurrentPly;
       if (wasAutoPlayOn = isAutoPlayOn) { SetAutoPlay(false); }
-      for (var thisPly = savedCurrentPly + 1; ; thisPly++) {
-         if (thisPly > StartPly + PlyNumber) { thisPly = StartPly; }
-         if (thisPly === savedCurrentPly) { break; }
-         GoToMove(thisPly);
-         if (thisPly !== CurrentPly) { thisPly = savedCurrentPly; break; }
+      MoveForward(StartPly + PlyNumber - savedCurrentPly, true);
+      resetFenPositions(currentGame);
+      while (true) {
+         fenPositions[currentGame][CurrentPly] = CurrentFEN();
+         if (CurrentPly === StartPly) { break; }
+         MoveBackward(1, true);
       }
-      scanningGameFen = false;
-      GoToMove(thisPly);
+      MoveForward(savedCurrentPly, true);
+      updateAnnotationGraph();
+      updateAnalysisHeader();
       if (wasAutoPlayOn) { SetAutoPlay(true); }
    }
 
