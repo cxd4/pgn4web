@@ -300,8 +300,6 @@ of Google Chrome. Don't use with any other browser.
       }
    }
 
-   var scanGameAtGameLoad = false; // disabled because of the excessive delay added at every game load
-
    function customFunctionOnPgnGameLoad() {
       fixHeaderTag('GameDate');
       fixHeaderTag('GameSite');
@@ -366,7 +364,7 @@ of Google Chrome. Don't use with any other browser.
          previousCurrentGame = currentGame;
       }
       if (analysisStarted) {
-         if (engineUnderstandsGame(currentGame)) { if (scanGameAtGameLoad) { scanGame(false); } }
+         if (engineUnderstandsGame(currentGame)) { scanGame(false); }
          else { stopAnalysis(true); }
       }
    }
@@ -600,7 +598,7 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameLiveStatus" title="live broadcast status"></span><span class="innerHeaderItem" id="GameLiveStatusDemo" title="this is a simulation of the live broadcast functionality"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="showExtraAnalysisInfo();" onmouseout="hideExtraAnalysisInfo();" class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the analysis engine: -1 means Black is a pawn ahead"></a><a href="javascript:void(0);" onclick="pvClicked();" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv" title="principal variation from the analysis engine"></a><b>&nbsp;</b></div>
+<div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="showExtraAnalysisInfo();" onmouseout="hideExtraAnalysisInfo();" class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the analysis engine: -1 means Black is a pawn ahead"></a><a href="javascript:void(0);" onclick="scanGame(!event.shiftKey);" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv" title="principal variation from the analysis engine"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer" id="GameAnnotationMeasure"><b>&nbsp;</b></div>
 <canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick();" onmousemove="annotationGraphMousemove();" onmouseover="annotationGraphMouseover();" onmouseout="annotationGraphMouseout();" title="annotation graph from the analysis engine"></canvas>
 </div>
@@ -767,9 +765,10 @@ of Google Chrome. Don't use with any other browser.
       annPly = (lastMousemoveAnnPly == -1) ? CurrentPly : lastMousemoveAnnPly;
 
       if (theObject = document.getElementById("GameAnalysisMove")) {
-         annMove = "&middot;";
          if ((annPly > StartPly) && (annPly <= StartPly + PlyNumber)) {
             annMove = (Math.floor(annPly / 2) + (annPly % 2)) + (annPly % 2 ? ". " : "... ") + Moves[annPly - 1];
+         } else {
+            annMove = "&middot;";
          }
          theObject.innerHTML = annMove;
       }
@@ -804,8 +803,6 @@ of Google Chrome. Don't use with any other browser.
    lastMousemoveAnnGame = -1;
 
    function annotationGraphMouseover() {
-      if (theObject = document.getElementById("GameAnalysisMove")) { theObject.style.display = "inline-block"; }
-      if (theObject = document.getElementById("GameAnalysisEval")) { theObject.style.fontWeight = "normal"; }
    }
 
    function annotationGraphMouseout() {
@@ -819,17 +816,25 @@ of Google Chrome. Don't use with any other browser.
    function annotationGraphMousemove() {
       newMousemoveAnnPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
       if ((newMousemoveAnnPly !== lastMousemoveAnnPly) || (currentGame !== lastMousemoveAnnGame)) { 
-         lastMousemoveAnnPly = newMousemoveAnnPly;
+         lastMousemoveAnnPly = newMousemoveAnnPly <= StartPly + PlyNumber ? newMousemoveAnnPly : -1;
          lastMousemoveAnnGame = currentGame;
+         onGraph = ((lastMousemoveAnnPly >= StartPly) && (lastMousemoveAnnPly <= StartPly + PlyNumber));
+         if (theObject = document.getElementById("GameAnalysisMove")) { theObject.style.display = onGraph ? "inline-block" : ""; }
+         if (theObject = document.getElementById("GameAnalysisEval")) { theObject.style.fontWeight = onGraph ? "normal" : ""; }
          if (analysisStarted) { updateAnalysisHeader(); }
       }
    }
 
    function annotationGraphClick() {
-      if ((analysisStarted) && (typeof(annotationBarWidth) != "undefined")) {
-         annPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
-         if ((annPly >= StartPly) && (annPly <= StartPly + PlyNumber)) { GoToMove(annPly); }
-         else { scanGame(false); }
+      if (analysisStarted) {
+         if (!event.shiftKey) {
+            if (typeof(annotationBarWidth) != "undefined") {
+               annPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
+               if ((annPly >= StartPly) && (annPly <= StartPly + PlyNumber)) { GoToMove(annPly); }
+            }
+         } else {
+            if (backgroundPage) { backgroundPage.saveAnalysisToLocalStorage(); }
+         }
       }
    }
 
@@ -899,14 +904,9 @@ of Google Chrome. Don't use with any other browser.
 
    function userToggleAnalysis() { 
       if (checkEngineUnderstandsGameAndWarn()) {
-         if ((!analysisStarted) && (scanGameAtGameLoad)) { scanGame(false); }
+         if (!analysisStarted) { scanGame(false); }
          toggleAnalysis();
       }
-   }
-
-   function pvClicked() {
-      if (event.shiftKey) { if (backgroundPage) { backgroundPage.saveAnalysisToLocalStorage(); } }
-      else { scanGame(true); }
    }
 
    var scanningGameFen = false;
