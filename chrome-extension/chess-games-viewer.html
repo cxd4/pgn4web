@@ -462,7 +462,7 @@ of Google Chrome. Don't use with any other browser.
    function customShortcutKey_Shift_4() { cycleLastMoveAndCommentArea(); }
 
    function customShortcutKey_Shift_5() { userToggleAnalysis(); }
-   function customShortcutKey_Shift_6() { if (backgroundPage && confirm("reset analysis engine's data for all chess games viewer chessboards?")) { backgroundPage.resetAnalysisData(); updateAnnotationGraph(); updateAnalysisHeader(); } }
+   function customShortcutKey_Shift_6() { goToMissingAnalysis(true); }
 
    function customShortcutKey_Shift_7() { fetchInputPgnText(); }
    function customShortcutKey_Shift_8() { openPgnFiles(); }
@@ -919,6 +919,9 @@ of Google Chrome. Don't use with any other browser.
 
    function goToMissingAnalysis(forward) {
       if ((!backgroundPage) || (!analysisStarted)) { return; }
+      if ((typeof(fenPositions[currentGame]) == "undefined") || (typeof(fenPositions[currentGame][CurrentPly]) == "undefined")) { return; }
+      if (backgroundPage.getAnalysisIndexFromFEN(fenPositions[currentGame][CurrentPly]) == -1) { return; }
+
       if (typeof(forward) == "undefined") {
          forward = ((typeof(event) != "undefined") && (typeof(event.shiftKey) != "undefined")) ? !event.shiftKey : true; 
       }
