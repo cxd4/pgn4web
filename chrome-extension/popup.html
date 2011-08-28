@@ -95,6 +95,7 @@ scrollLinkListTimeout = null;
 function scrollLinkList(up, allTheWay) {
    if (theObject = document.getElementById("pgnLinkList")) {
       if ((up && theObject.scrollTop === 0) || (!up && theObject.scrollTop === theObject.scrollHeight - theObject.scrollTop)) { return; }
+      stopScrollLinkList();
       if (allTheWay) {
          theObject.scrollTop = up ? 0 : theObject.scrollHeight - theObject.scrollTop;
       } else {
