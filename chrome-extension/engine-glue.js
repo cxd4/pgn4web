@@ -88,7 +88,7 @@ function storeAnalysis(FEN, ev, pv, nodes) {
    deletionNeeded = false;
 
    FEN = FEN.replace(/\s+\d+\s+\d+\s*$/, "");
-   index = egStored_FEN.indexOf(FEN);
+   index = egStored_FEN.lastIndexOf(FEN);
    
    if (index == -1) {
       additionNeeded = true;
@@ -125,7 +125,7 @@ function storeAnalysis(FEN, ev, pv, nodes) {
    return additionNeeded;
 }
 
-function getAnalysisIndexFromFEN(FEN) { return egStored_FEN.indexOf(FEN.replace(/\s+\d+\s+\d+\s*$/, "")); }
+function getAnalysisIndexFromFEN(FEN) { return egStored_FEN.lastIndexOf(FEN.replace(/\s+\d+\s+\d+\s*$/, "")); }
 
 function getAnalysisEvFromIndex(index) { return egStored_ev[index]; }
 
