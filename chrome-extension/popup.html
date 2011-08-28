@@ -21,6 +21,7 @@ of Google Chrome. Don't use with any other browser.
 
 body {
   margin: 2em;
+  margin-bottom: 1em;
   margin-right: 0;
   background: white;
   background: -webkit-linear-gradient(#FFFFFF, #F0F0F0);
@@ -42,10 +43,7 @@ body {
 
 .measure {
   height: 1em;
-  width: 1em;
-  overflow-y: hidden;
-  overflow-x: hidden;
-  visibility: hidden;
+  width: 100%;
 }
 
 .pgnLinkList {
@@ -72,6 +70,11 @@ body {
   margin-left: 1em;
 }
 
+.pgnFooter {
+  height: 1em;
+  width: 100%;
+}
+
 </style>
 
 </head>
@@ -79,10 +82,30 @@ body {
 <body>
 
 <div id="pgnHeader" class="pgnHeader"></div>
-<div id="measure" class="measure">hidden text to measure some page elements</div>
+<div id="measure" class="measure" onmouseover="scrollLinkList(true);" onmouseout="stopScrollLinkList();">&nbsp</div>
 <div id="pgnLinkList" class="pgnLinkList"></div>
+<div class="pgnFooter" onmouseover="scrollLinkList(false);" onmouseout="stopScrollLinkList();">&nbsp;</div>
 
 <script type="text/javascript">
+
+var em = document.getElementById("measure").offsetHeight; /* measuring em in px */
+
+scrollLinkListTimeout = null;
+
+function scrollLinkList(up) {
+   if (theObject = document.getElementById("pgnLinkList")) {
+      if ((up && theObject.scrollTop === 0) || (!up && theObject.scrollTop + theObject.offsetHeight === theObject.scrollHeight)) { return; } 
+      theObject.scrollTop = theObject.scrollTop + (up ? -2 : 2) * em;
+      scrollLinkListTimeout = setTimeout("scrollLinkList(" + up + ");", 666);
+   }
+}
+
+function stopScrollLinkList() {
+   if (scrollLinkListTimeout) {
+      clearTimeout(scrollLinkListTimeout);
+      scrollLinkListTimeout = null;
+   }
+}
 
 var cursorDef = "url(cursor-small.png) 1 6, auto";
 
@@ -126,7 +149,6 @@ chrome.tabs.getSelected(null, function(tab){
 
   var headerObject = document.getElementById("pgnHeader");
   var listObject = document.getElementById("pgnLinkList");
-  var measureObject = document.getElementById("measure");
 
   var pgnHeaderInnerHTML = '<a class="pgnHeaderLink" title="chess games viewer from the pgn4web project" target="_blank" href="javascript:void(0);" onclick="chrome.tabs.create({url: \'about.html\'});">Chess games viewer</a>';
 
@@ -150,7 +172,6 @@ chrome.tabs.getSelected(null, function(tab){
   // workaround to cope with http://crbug.com/76899 and http://crbug.com/50192
   // fixing 76899 would avoid the need of the workaround
   // fixing 50192 could make the workaround simpler, for instance with a body max height
-  var em = measureObject.offsetHeight; /* measuring em in px */
   var maxLinkListItems = Math.max(1, Math.ceil((0.6 * self.screen.availHeight - 6 * em) / (2 * em)));
   if (pgnLinks.length > maxLinkListItems) {
     listObject.style.maxHeight = (maxLinkListItems * 2) + "em";
