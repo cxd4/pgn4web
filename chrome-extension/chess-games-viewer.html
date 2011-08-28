@@ -462,7 +462,7 @@ of Google Chrome. Don't use with any other browser.
    function customShortcutKey_Shift_4() { cycleLastMoveAndCommentArea(); }
 
    function customShortcutKey_Shift_5() { userToggleAnalysis(); }
-   function customShortcutKey_Shift_6() { if (analysisStarted) { resetFenPositions(-1); fenPositions[currentGame] = new Array(); fenPositions[currentGame][CurrentPly] = CurrentFEN(); updateAnnotationGraph(); updateAnalysisHeader(); } else { if (confirm("reset analysis engine's data for all chess games viewer chessboards?")) { resetFenPositions(-1); fenPositions[currentGame] = new Array(); fenPositions[currentGame][CurrentPly] = CurrentFEN(); if (backgroundPage) { backgroundPage.resetAnalysisData(); } } } }
+   function customShortcutKey_Shift_6() { if (backgroundPage && confirm("reset analysis engine's data for all chess games viewer chessboards?")) { backgroundPage.resetAnalysisData(); updateAnnotationGraph(); updateAnalysisHeader(); } }
 
    function customShortcutKey_Shift_7() { fetchInputPgnText(); }
    function customShortcutKey_Shift_8() { openPgnFiles(); }
@@ -695,7 +695,7 @@ of Google Chrome. Don't use with any other browser.
          thisBarTopLeftX = 0;
          thisBarHeight = lineHeight;
          thisBarTopLeftY = lineTop;
-         context.rect(thisBarTopLeftX, thisBarTopLeftY, (PlyNumber + 1) * annotationBarWidth, thisBarHeight);
+         context.rect(thisBarTopLeftX, thisBarTopLeftY, (PlyNumber + 1) * annotationBarWidth + barOverlap, thisBarHeight);
          context.fillStyle = "#D9D9D9";
          context.fill();
          context.fillStyle = "#666666";
@@ -860,7 +860,7 @@ of Google Chrome. Don't use with any other browser.
 
 
    annotateInProgress = false;
-   minAnnotationDelay = 3;
+   minAnnotationDelay = 1;
    maxAnnotationDelay = 300;
    annotationDelayDefault = 15;
    function annotateGame() {
@@ -875,9 +875,11 @@ of Google Chrome. Don't use with any other browser.
       }
    }
 
+   minAutoplayDelay = minAnnotationDelay;
+   maxAutoplayDelay = maxAnnotationDelay; 
    function setCustomAutoplayDelay() {
-      if ((newDelaySec = prompt("Enter custom autoplay delay, in seconds, between " + minAnnotationDelay + " and " + maxAnnotationDelay + ":", Math.floor(Delay / 1000))) && (! isNaN(newDelaySec = parseInt(newDelaySec, 10)))) {
-         newDelaySec = Math.min(maxAnnotationDelay, Math.max(minAnnotationDelay, newDelaySec));
+      if ((newDelaySec = prompt("Enter custom autoplay delay, in seconds, between " + minAutoplayDelay + " and " + maxAutoplayDelay + ":", Math.floor(Delay / 1000))) && (! isNaN(newDelaySec = parseInt(newDelaySec, 10)))) {
+         newDelaySec = Math.min(maxAutoplayDelay, Math.max(minAutoplayDelay, newDelaySec));
          SetAutoplayDelayAndStart(newDelaySec * 1000);
       }
    }
