@@ -82,9 +82,9 @@ body {
 <body>
 
 <div id="pgnHeader" class="pgnHeader"></div>
-<div id="measure" class="measure" onmouseover="scrollLinkList(true);" onmouseout="stopScrollLinkList();">&nbsp</div>
+<div id="measure" class="measure" onmouseover="scrollLinkList(true, false);" onmouseout="stopScrollLinkList();" onclick="scrollLinkList(true, true);">&nbsp</div>
 <div id="pgnLinkList" class="pgnLinkList"></div>
-<div class="pgnFooter" onmouseover="scrollLinkList(false);" onmouseout="stopScrollLinkList();">&nbsp;</div>
+<div class="pgnFooter" onmouseover="scrollLinkList(false, false);" onmouseout="stopScrollLinkList();" onclick="scrollLinkList(false, true);">&nbsp;</div>
 
 <script type="text/javascript">
 
@@ -92,11 +92,15 @@ var em = document.getElementById("measure").offsetHeight; /* measuring em in px 
 
 scrollLinkListTimeout = null;
 
-function scrollLinkList(up) {
+function scrollLinkList(up, allTheWay) {
    if (theObject = document.getElementById("pgnLinkList")) {
-      if ((up && theObject.scrollTop === 0) || (!up && theObject.scrollTop + theObject.offsetHeight === theObject.scrollHeight)) { return; } 
-      theObject.scrollTop = theObject.scrollTop + (up ? -2 : 2) * em;
-      scrollLinkListTimeout = setTimeout("scrollLinkList(" + up + ");", 666);
+      if ((up && theObject.scrollTop === 0) || (!up && theObject.scrollTop === theObject.scrollHeight - theObject.scrollTop)) { return; }
+      if (allTheWay) {
+         theObject.scrollTop = up ? 0 : theObject.scrollHeight - theObject.scrollTop;
+      } else {
+         theObject.scrollTop = theObject.scrollTop + (up ? -2 : 2) * em;
+         scrollLinkListTimeout = setTimeout("scrollLinkList(" + up + ", false);", 666);
+      }
    }
 }
 
