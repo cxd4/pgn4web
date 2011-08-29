@@ -911,7 +911,7 @@ of Google Chrome. Don't use with any other browser.
          if (CurrentPly === StartPly) { break; }
          MoveBackward(1, true);
       }
-      MoveForward(savedCurrentPly, true);
+      MoveForward(savedCurrentPly - StartPly, true);
       updateAnnotationGraph();
       updateAnalysisHeader();
       if (wasAutoPlayOn) { SetAutoPlay(true); }
