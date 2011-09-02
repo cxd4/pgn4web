@@ -2689,7 +2689,7 @@ NAG[14] = 'White has a slight advantage'; // NAG[15] = '=/+';
 NAG[16] = 'White has a moderate advantage'; // NAG[17] = '-/+';
 NAG[18] = 'White has a decisive advantage'; // NAG[19] = '-+';
 NAG[20] = 'White has a crushing advantage'; // NAG[21] = '-+';
-NAG[22] = 'White is in zugzwang'; // NAG[23] = '(&middot;)';
+NAG[22] = 'White is in zugzwang'; // NAG[23] = '(.)';
 NAG[24] = 'White has a slight space advantage'; // NAG[25] = '()';
 NAG[26] = 'White has a moderate space advantage'; // NAG[27] = '()';
 NAG[28] = 'White has a decisive space advantage'; // NAG[29] = '()';
