@@ -281,12 +281,12 @@ refreshed with the live games, then add the following iframe to your page:
 Of course live-compact.html can be edited to customize colors, layout and every
 detail.
 
-The live-multi.html file has been designed in a similar way, while offering
+The live-mosaic.html file has been designed in a similar way, while offering
 a layout with multiple live boards on the same page.
 
 http://pgn4web.casaschi.net/live/live.html and 
-http://pgn4web.casaschi.net/live/live-multi.html will occasionally broadcast live 
-major chess events.
+http://pgn4web.casaschi.net/live/live-mosaic.html will occasionally broadcast
+live major chess events.
 
 
 CUSTOMIZATION FUNCTIONS

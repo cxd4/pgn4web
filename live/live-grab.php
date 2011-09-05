@@ -686,12 +686,11 @@ $pdString = str_replace(basename(__FILE__), $localPgnFile, curPageURL());
 ?>
 <div class='linkcontainer'>
 <div class='link'><a href='live.html' target='_blank'>main single live chessboard</a></div>
-<div class='link'><a href='live-multi.html' target='_blank'>main multiple live chessboards</a></div>
-<div class='link'><a href='live-multi-pointer-set.php' target='_blank'>main live-multi-pointer.php configurator</a></div>
+<div class='link'><a href='live-mosaic.html' target='_blank'>main multiple live chessboards</a></div>
 <div class='link'><a id='mainLiveGrabLink' href='live-grab.php' target='_blank'>main live-grab.php configurator</a></div>
 <div class='link'>&nbsp;</div>
 <div class='link'><a href='../live-compact.html?rm=<?print($refreshMinutes);?>&pd=<?print($pdString);?>' target='_blank'>local single live chessboard</a></div>
-<div class='link'><a href='../live-multi-frame.html?rm=<?print($refreshMinutes);?>&pd=<?print($pdString);?>'  target='_blank'>local live chessboard frame</a></div>
+<div class='link'><a href='../live-mosaic-frame.html?rm=<?print($refreshMinutes);?>&pd=<?print($pdString);?>'  target='_blank'>local live chessboard frame</a></div>
 <div class='link'><a href='live-grab.php' target='_blank'>local live-grab.php configurator</a></div>
 </div>
 </td>
