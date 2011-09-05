@@ -690,7 +690,7 @@ $pdString = str_replace(basename(__FILE__), $localPgnFile, curPageURL());
 <div class='link'><a id='mainLiveGrabLink' href='live-grab.php' target='_blank'>main live-grab.php configurator</a></div>
 <div class='link'>&nbsp;</div>
 <div class='link'><a href='../live-compact.html?rm=<?print($refreshMinutes);?>&pd=<?print($pdString);?>' target='_blank'>local single live chessboard</a></div>
-<div class='link'><a href='../live-mosaic-frame.html?rm=<?print($refreshMinutes);?>&pd=<?print($pdString);?>'  target='_blank'>local live chessboard frame</a></div>
+<div class='link'><a href='../live-mosaic-tile.html?rm=<?print($refreshMinutes);?>&pd=<?print($pdString);?>'  target='_blank'>local live chessboard tile</a></div>
 <div class='link'><a href='live-grab.php' target='_blank'>local live-grab.php configurator</a></div>
 </div>
 </td>
