@@ -18,7 +18,7 @@ of Google Chrome. Don't use with any other browser.
 <head>
 <script type="text/javascript">
 chrome.extension.getBackgroundPage().showAboutPage(location.search.substr(1));
-window.close();
+chrome.tabs.getCurrent(function(tab) { chrome.tabs.remove(tab.id); });
 </script>
 </head>
 <body>
