@@ -98,10 +98,13 @@ http://crbug.com/31494
 Other:
 
 about.html, manifest.json: help page
-this page is currently assigned as the "options" page while there are not
-any configurable options; it should rather assigned as "help" page.
+the about.html page is currently assigned as the "options" page; once a "help" page
+is also available, consider splitting about.html in about_options.html (with settings
+and support sections) and about_help.html (features and support sections) with links
+to each other.
 http://crbug.com/29849
-Requires increasing minimum_chrome_version (new manifest entry)
+Should not require increasing minimum_chrome_version (new manifest entry ignored by
+older versions)
 
 chess-games-viewer.html, live-mosaic-viewer.html: forcing page action
 currently chessboard pages force the page action in order to include the PGN URL
