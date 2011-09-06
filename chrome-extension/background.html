@@ -166,8 +166,24 @@ function removePgnTextOnRemoved(tabId) {
 
 chrome.tabs.onRemoved.addListener(removePgnTextOnRemoved);
 
+function showAboutPage(section) {
+  done = false;
+  extviews = chrome.extension.getViews({"type": "tab"});
+  for (ee in extviews) {
+    if (extviews[ee].location.href.indexOf(chrome.extension.getURL("about.html")) === 0) {
+      if (done) {
+        extviews[ee].chrome.tabs.getCurrent(function(tab) { chrome.tabs.remove(tab.id); });
+      } else {
+        extviews[ee].chrome.tabs.getCurrent(function(tab) { chrome.tabs.update(tab.id, {"url": "about.html?" + section, "selected": true}); });
+      }
+      done = true;
+    }
+  }
+  if (!done) { chrome.tabs.create({"url": chrome.extension.getURL("about.html?" + section)}); }
+}
+
 function aboutChessGamesViewer(info, tab) {
-  chrome.tabs.create({url: "about.html"});
+  showAboutPage("features");
 }
 
 // "page" and "selection" context menu to open PGN text 
@@ -311,22 +327,6 @@ function checkWebRequestForPgnFiles(requestDetails) {
 // enables using the experimental webRequest API, see chrome bug http://crbug.com/60101
 if (extensionChannel == "development") {
   chrome.experimental.webRequest.onBeforeRequest.addListener(checkWebRequestForPgnFiles, {"urls": pgnUrlPatterns});
-}
-
-function showAboutPage(section) {
-  extviews = chrome.extension.getViews({"type": "tab"});
-  done = false;
-  for (ee in extviews) {
-    if (extviews[ee].location.href.indexOf(chrome.extension.getURL("about.html")) === 0) {
-      if (done) {
-        extviews[ee].chrome.tabs.getCurrent(function(tab) { chrome.tabs.remove(tab.id); });
-      } else {
-        extviews[ee].chrome.tabs.getCurrent(function(tab) { chrome.tabs.update(tab.id, {"url": "about.html?" + section, "selected": true}); });
-      }
-      done = true;
-    }
-  }
-  if (!done) { chrome.tabs.create({"url": chrome.extension.getURL("about.html?" + section)}); }
 }
 
 </script>
