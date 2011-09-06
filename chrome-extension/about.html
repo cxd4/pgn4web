@@ -17,7 +17,7 @@ of Google Chrome. Don't use with any other browser.
 
 <head>
 
-<title>about the chess games viewer extension</title>
+<title>about the chess games viewer</title>
 
 <!-- not needed within a google chrome extension
 <link rel="shortcut icon" href="pawn.ico" />
@@ -48,8 +48,6 @@ a:link, a:visited, a:active, a:hover {
 
 a.heading, a.headingSelected {
   text-decoration: none;
-  margin-left: 1em;
-  margin-right: 1em;
 }
 
 a.heading {
@@ -57,7 +55,7 @@ a.heading {
 }
 
 a.heading:hover {
-  opacity: 0.27;
+  text-decoration: underline;
 }
 
 a.headingSelected {
@@ -128,13 +126,13 @@ if ((extensionChannel != "beta") && (extensionChannel != "development")) {
 
 <body>
 
-<h2 style="text-align:right; margin:0; padding:0;">about the chess games viewer extension</h2>
-
-<div class="extraSpacer"></div>
-<div class="extraSpacer"></div>
-<h1 style="text-align: center;">
+<h1 style="text-align:left;">
+chess&nbsp;games&nbsp;viewer: 
+&nbsp;&nbsp;&nbsp;
 <a id="featuresHead" class="heading" href="javascript:void(0);" onclick="showSection(this.innerHTML)">features</a>
+&nbsp;&nbsp;&nbsp;
 <a id="settingsHead" class="heading" href="javascript:void(0);" onclick="showSection(this.innerHTML)">settings</a>
+&nbsp;&nbsp;&nbsp;
 <a id="supportHead" class="heading" href="javascript:void(0);" onclick="showSection(this.innerHTML)">support</a>
 </h1>
 <div class="extraSpacer"></div>
@@ -352,6 +350,7 @@ function showSection(section) {
   for (s in sections) {
      document.getElementById(sections[s]).style.display = sections[s] === section ? "block" : "";
      document.getElementById(sections[s] + "Head").className = sections[s] === section ? "headingSelected" : "heading";
+     if (sections[s] === section) { document.title = "about " + section; }
   }
 }
 showSection(location.search ? location.search.substr(1) : "features");
