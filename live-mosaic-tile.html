@@ -104,8 +104,8 @@
     }
   } catch(e) { myAlert("warning: failed accessing parent for shortcut squares to clear", false); }
 
-  if ((typeof(chrome) != "undefined") && (typeof(chrome.tabs) != "undefined") && (typeof(chrome.tabs.create) != "undefined")) {
-     boardShortcut("A7", "about the chess games viewer extension for google chrome", function(){ chrome.tabs.create({url: "about.html"}); });
+  if ((typeof(chrome) != "undefined") && (typeof(chrome.extension) != "undefined") && (typeof(chrome.extension.getBackgroundPage) != "undefined") && (typeof(chrome.extension.getBackgroundPage().showAboutPage) != "undefined")) {
+    boardShortcut("A7", "about the chess games viewer extension for google chrome", function(){ chrome.extension.getBackgroundPage().showAboutPage("features"); });
   }
 
   function addTagToTitle(tagLabel, tagValue, object) {
