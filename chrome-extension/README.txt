@@ -98,10 +98,8 @@ http://crbug.com/31494
 Other:
 
 about.html, manifest.json: help page
-the about.html page is currently assigned as the "options" page; once a "help" page
-is also available, consider splitting about.html in about_options.html (with settings
-and support sections) and about_help.html (features and support sections) with links
-to each other.
+verify the manifest syntax for the upcoming "help" page and update manifest.json if
+needed
 http://crbug.com/29849
 Should not require increasing minimum_chrome_version (new manifest entry ignored by
 older versions)
