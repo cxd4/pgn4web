@@ -46,15 +46,22 @@ a:link, a:visited, a:active, a:hover {
   color: black;
 }
 
-a.h1 {
+a.heading, a.headingSelected {
   text-decoration: none;
   margin-left: 1em;
   margin-right: 1em;
+}
+
+a.heading {
   opacity: 0.25;
 }
 
-a.h1:hover {
+a.heading:hover {
   opacity: 0.33;
+}
+
+a.headingSelected {
+  opacity: 1;
 }
 
 div {
@@ -135,9 +142,9 @@ if ((extensionChannel != "beta") && (extensionChannel != "development")) {
 <div class="extraSpacer"></div>
 <div class="extraSpacer"></div>
 <h1 style="text-align: center;">
-<a id="featuresHead" class="h1" href="javascript:void(0);" onclick="showSection(this.innerHTML)">features</a>
-<a id="settingsHead" class="h1" href="javascript:void(0);" onclick="showSection(this.innerHTML)">settings</a>
-<a id="supportHead" class="h1" href="javascript:void(0);" onclick="showSection(this.innerHTML)">support</a>
+<a id="featuresHead" class="heading" href="javascript:void(0);" onclick="showSection(this.innerHTML)">features</a>
+<a id="settingsHead" class="heading" href="javascript:void(0);" onclick="showSection(this.innerHTML)">settings</a>
+<a id="supportHead" class="heading" href="javascript:void(0);" onclick="showSection(this.innerHTML)">support</a>
 </h1>
 <div class="extraSpacer"></div>
 <div class="extraSpacer"></div>
@@ -353,7 +360,7 @@ function showSection(section) {
   var sections = ["features", "settings", "support"];
   for (s in sections) {
      document.getElementById(sections[s]).style.display = sections[s] === section ? "block" : "";
-     document.getElementById(sections[s] + "Head").style.opacity = sections[s] === section ? "1" : "";
+     document.getElementById(sections[s] + "Head").className = sections[s] === section ? "headingSelected" : "heading";
   }
 }
 showSection(location.search ? location.search.substr(1) : "features");
