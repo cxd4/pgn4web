@@ -129,16 +129,47 @@ if ((extensionChannel != "beta") && (extensionChannel != "development")) {
 <h1 style="text-align:left;">
 chess&nbsp;games&nbsp;viewer: 
 &nbsp;&nbsp;&nbsp;
-<a id="featuresHead" class="heading" href="javascript:void(0);" onclick="showSection(this.innerHTML)">features</a>
+<a id="optionsHead" class="heading" href="javascript:void(0);" onclick="showSection(this.innerHTML)">options</a>
 &nbsp;&nbsp;&nbsp;
-<a id="settingsHead" class="heading" href="javascript:void(0);" onclick="showSection(this.innerHTML)">settings</a>
+<a id="helpHead" class="heading" href="javascript:void(0);" onclick="showSection(this.innerHTML)">help</a>
 &nbsp;&nbsp;&nbsp;
-<a id="supportHead" class="heading" href="javascript:void(0);" onclick="showSection(this.innerHTML)">support</a>
+<a id="aboutHead" class="heading" href="javascript:void(0);" onclick="showSection(this.innerHTML)">about</a>
 </h1>
 <div class="extraSpacer"></div>
 <div class="extraSpacer"></div>
 
-<div id="features" class="h2content">
+
+<div id="options" class="h2content">
+
+<div class="h3content">
+The chess games viewer extension does not have any configurable option, however the settings listed below are saved between sessions.
+</div>
+
+<div class="extraSpacer"></div>
+<h3>single large chessboard view</h3>
+<div class="h3content">
+<i>Comment display within the game text:</i> click square B7 (assuming White on bottom) to change whether comments are displayed or not into the move text; when comments are shown, click square C7 (assuming White on bottom) to change how comments are displayed respect to the move text, either inline or on separate lines.
+</div>
+<div class="h3content">
+<i>Chessboard move highlight:</i> click square D7 (assuming White on bottom) to toggle the highlighting of the last move's from/to squares.
+</div>
+
+<div class="extraSpacer"></div>
+<h3>multiple small chessboards view</h3>
+<div class="h3content">
+<i>Maximum number of shown chessboards:</i> if more games are available than currently shown, the <i>"m"</i> command at the top right of the page allows increasing the number of shown chessboards; if more than one game is currently shown, the <i>"l"</i> command allows reducing the number of shown chessboards; select the number of chessboard that better fits the screen.
+</div>
+
+<div class="extraSpacer"></div>
+<h3>reset settings to default values</h3>
+<div class="h3content">
+<a href="javascript:void(0);" onclick="if (confirm('reset any settings to their default values and delete any stored data?')) { window.localStorage.clear(); if ((typeof(chrome) != 'undefined') && (typeof(chrome.extension) != 'undefined')) { chrome.extension.getBackgroundPage().resetAnalysisData(); } }">Click here to reset any stored settings to their default values and to delete any stored data</a> (including current analysis engine's data). Reload any open chess games viewer page for the changes to apply.
+</div>
+
+</div> <!-- h2content -->
+
+
+<div id="help" class="h2content">
 
 <div class="h3content">
 The <i>chess games viewer extension for Google Chrome</i> is an interactive chessboard showing chess games from links to PGN URLs, from local PGN files and from PGN text, using <span title="Google Chrome's context menus appear when right-clicking a page, a link or selected text">context menus</span> and <span title="page actions icons appear at the right end of the Google Chrome's address bar; clicking a page action icon a popup page is shown">page actions</span>.
@@ -265,7 +296,7 @@ In the popup of this page, "demoLiveGames.pgn" simulates a live chess broadcast 
 <div class="extraSpacer"></div>
 <h3>chess engine game analysis</h3>
 <div class="h3content">
-The single large chessboard view of the chess games viewer integrates the <a href="http://forwardcoding.com/projects/ajaxchess/chess.html">GarboChess engine</a> by Gary Linscott.
+The single large chessboard view of the chess games viewer integrates a chess engine for game analysis.
 </div>
 <div class="h3content">
 Toggle the chess engine game analysis clicking square H2 of the single large chessboard view. Positive evaluations favor White, while -1 means Black is approximately a pawn ahead.
@@ -274,7 +305,7 @@ Toggle the chess engine game analysis clicking square H2 of the single large che
 When the analysis engine is active, a graph shows the position's evaluation throughout the game. A vertical bar above the horizontal line corresponds to a positive evaluation (White's advantage). The graph uses a logarithmic scale for easier appreciation of small changes for values below 1 pawn unit. The current move is highlighted. Clicking any of the vertical bars moves the chessboard to the corresponding move. Click square G2 for automatic game annotation.
 </div>
 <div class="h3content">
-In order to optimize computing resources, the chess games viewer extension allows only one chessboard to be analyzed at any time; when starting analyzing a second chessboard, the analysis of the first chessboard stops. The analysis of each position pauses after 10 minutes. Some analysis engine's data is automatically saved for use in following sessions. The performance of a javascript based engine like GarboChess is relatively limited compared to professional engines optimized for each processing environment; use the chess games viewer analysis engine for high-level assessments, for detailed analysis please refer to a chess engine optimized for the chosen computing platform.
+In order to optimize computing resources, the chess games viewer extension allows only one chessboard to be analyzed at any time; when starting analyzing a second chessboard, the analysis of the first chessboard stops. The analysis of each position pauses after 10 minutes. Some analysis engine's data is automatically saved for use in following sessions. The performance the javascript based engine is relatively limited compared to professional engines optimized for each processing environment; use the chess games viewer analysis engine for high-level assessments, for detailed analysis please refer to a chess engine optimized for the chosen computing platform.
 </div>
 
 <div class="extraSpacer"></div>
@@ -289,44 +320,20 @@ Errors alert messages are logged, such as failures to load PGN games, incorrect 
 </div> <!-- h2content -->
 
 
-<div id="settings" class="h2content">
-
-<div class="h3content">
-The chess games viewer extension does not have any configurable option, however the settings listed below are saved between sessions.
-</div>
-
-<div class="extraSpacer"></div>
-<h3>single large chessboard view</h3>
-<div class="h3content">
-<i>Comment display within the game text:</i> click square B7 (assuming White on bottom) to change whether comments are displayed or not into the move text; when comments are shown, click square C7 (assuming White on bottom) to change how comments are displayed respect to the move text, either inline or on separate lines.
-</div>
-<div class="h3content">
-<i>Chessboard move highlight:</i> click square D7 (assuming White on bottom) to toggle the highlighting of the last move's from/to squares.
-</div>
-
-<div class="extraSpacer"></div>
-<h3>multiple small chessboards view</h3>
-<div class="h3content">
-<i>Maximum number of shown chessboards:</i> if more games are available than currently shown, the <i>"m"</i> command at the top right of the page allows increasing the number of shown chessboards; if more than one game is currently shown, the <i>"l"</i> command allows reducing the number of shown chessboards; select the number of chessboard that better fits the screen.
-</div>
-
-<div class="extraSpacer"></div>
-<h3>reset settings to default values</h3>
-<div class="h3content">
-<a href="javascript:void(0);" onclick="if (confirm('reset any settings to their default values and delete any stored data?')) { window.localStorage.clear(); if ((typeof(chrome) != 'undefined') && (typeof(chrome.extension) != 'undefined')) { chrome.extension.getBackgroundPage().resetAnalysisData(); } }">Click here to reset any stored settings to their default values and to delete any stored data</a> (including current analysis engine's data). Reload any open chess games viewer page for the changes to apply.
-</div>
-
-</div> <!-- h2content -->
-
-
-<div id="support" class="h2content">
+<div id="about" class="h2content">
 
 <div class="h3content">
 The chess games viewer extension for Google Chrome is part of the <a href="http://pgn4web.casaschi.net">pgn4web project</a>. The <a href="http://code.google.com/p/pgn4web/wiki/Index">pgn4web project's wiki</a> provides more information, including a <a href="http://code.google.com/p/pgn4web/wiki/BrowserExtension_GoogleChrome">support page for the chess games viewer extension</a> with answers to frequently asked questions.
 </div>
+
+<div class="extraSpacer"></div>
+<h3>credits &amp; license</h3>
 <div class="h3content">
-From the single large chessboard view, click square H8 (assuming White on bottom) for credits and license.
+From the single large chessboard view, click square H8 (assuming White on bottom) for general credits and license information of the pgn4web project. In addition, the GarboChess chess analysis engine is licensed by Gary Linscott http://forwardcoding.com/projects/ajaxchess/chess.html under BSD license and some icons are licensed by Interactivemania http://www.interactivemania.com under a Creative Commons Attribution-No Derivative Works 3.0 license (see extension's README.txt for more details).
 </div>
+
+<div class="extraSpacer"></div>
+<h3>feedback</h3>
 <div class="h3content">
 Please <a href="mailto:pgn4web@casaschi.net?subject=chess%20games%20viewer%20feedback">email your feedback to the pgn4web development team</a>.
 </div>
@@ -337,25 +344,27 @@ Please <a href="mailto:pgn4web@casaschi.net?subject=chess%20games%20viewer%20fee
 <a name="bottom"></a>
 
 
+<script type="text/javascript">
+
+function showSection(section) {
+  if (typeof(section) == "undefined") { section = "help"; }
+  var sections = ["options", "help", "about"];
+  for (s in sections) {
+     document.getElementById(sections[s]).style.display = sections[s] === section ? "block" : "";
+     document.getElementById(sections[s] + "Head").className = sections[s] === section ? "headingSelected" : "heading";
+     if (sections[s] === section) { document.title = section; }
+  }
+}
+showSection();
+
+</script>
+
+
 <!--
 manually injects content script since chrome-extension:// pages dont get it automatically
 see chrom bug 84843 closed as WontFix
 -->
 <script src="pgnLinks.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-
-function showSection(section) {
-  var sections = ["features", "settings", "support"];
-  for (s in sections) {
-     document.getElementById(sections[s]).style.display = sections[s] === section ? "block" : "";
-     document.getElementById(sections[s] + "Head").className = sections[s] === section ? "headingSelected" : "heading";
-     if (sections[s] === section) { document.title = "about " + section; }
-  }
-}
-showSection(location.search ? location.search.substr(1) : "features");
-
-</script>
 
 </body>
 

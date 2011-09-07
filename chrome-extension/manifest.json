@@ -12,7 +12,7 @@
       "run_at": "document_idle"
    } ],
    "description": "Chess games viewer: interactive chessboard showing chess games from links to PGN URLs, from local PGN files and from PGN text.",
-   "help_page": "aboutOpen.html?features",
+   "help_page": "aboutOpen.html?help",
    "homepage_url": "http://pgn4web.casaschi.net",
    "icons": {
       "128": "alpha/128/bp.png",
@@ -22,7 +22,7 @@
    "incognito": "split",
    "minimum_chrome_version": "7.0",
    "name": "Chess games viewer",
-   "options_page": "aboutOpen.html?settings",
+   "options_page": "aboutOpen.html?options",
    "page_action": {
       "default_icon": "alpha-20.png",
       "default_popup": "popup.html",

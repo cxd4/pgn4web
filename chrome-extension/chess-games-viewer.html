@@ -938,7 +938,7 @@ of Google Chrome. Don't use with any other browser.
 
 
    // A7
-   if (backgroundPage && (typeof(backgroundPage.showAboutPage)) != "undefined") { boardShortcut("A7", "about the chess games viewer extension for google chrome", function(){ backgroundPage.showAboutPage("features"); }); }
+   if (backgroundPage && (typeof(backgroundPage.showAboutPage)) != "undefined") { boardShortcut("A7", "about the chess games viewer extension for google chrome", function(){ backgroundPage.showAboutPage(); }); }
    // B7
    boardShortcut("B7", "toggle show comments in game text and save setting", function(){ SetCommentsIntoMoveText(!commentsIntoMoveText); oldPly = CurrentPly; Init(); GoToMove(oldPly); setCommentsIntoMoveTextToLocalStorage(); });
    // C7
