@@ -355,7 +355,7 @@ function showSection(section) {
      if (sections[s] === section) { document.title = section; }
   }
 }
-showSection();
+showSection(location.search.substr(1));
 
 </script>
 
