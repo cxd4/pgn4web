@@ -97,9 +97,9 @@ http://crbug.com/31494
 
 Other:
 
-about.html, manifest.json: help page
-verify the manifest syntax for the upcoming "help" page and update manifest.json if
-needed
+about.html, aboutOpen.html, manifest.json: help page
+verify the naming convention ("help") and the manifest syntax for the upcoming
+"help" page and update manifest.json, about.html and aboutOpen.html if needed.
 http://crbug.com/29849
 Should not require increasing minimum_chrome_version (new manifest entry ignored by
 older versions)
