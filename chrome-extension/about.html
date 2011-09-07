@@ -347,7 +347,7 @@ Please <a href="mailto:pgn4web@casaschi.net?subject=chess%20games%20viewer%20fee
 <script type="text/javascript">
 
 function showSection(section) {
-  if (typeof(section) == "undefined") { section = "help"; }
+  if ((typeof(section) == "undefined") || !section) { section = "help"; }
   var sections = ["options", "help", "about"];
   for (s in sections) {
      document.getElementById(sections[s]).style.display = sections[s] === section ? "block" : "";
