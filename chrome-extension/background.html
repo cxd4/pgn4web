@@ -166,21 +166,28 @@ function removePgnTextOnRemoved(tabId) {
 
 chrome.tabs.onRemoved.addListener(removePgnTextOnRemoved);
 
-function showAboutPage(section) {
+function showAboutPage(section, tabId) {
+console.log(section);
   done = false;
   if (typeof(section) == "undefined") { section = "help"; }
   extviews = chrome.extension.getViews({"type": "tab"});
   for (ee in extviews) {
     if (extviews[ee].location.href.indexOf(chrome.extension.getURL("about.html")) === 0) {
-      if (done) {
+      if ((typeof(tabId) != "undefined") || done) {
         extviews[ee].chrome.tabs.getCurrent(function(tab) { chrome.tabs.remove(tab.id); });
       } else {
         extviews[ee].chrome.tabs.getCurrent(function(tab) { chrome.tabs.update(tab.id, {"url": "about.html?" + section, "selected": true}); });
       }
-      done = true;
+      if (typeof(tabId) == "undefined") { done = true; }
     }
   }
-  if (!done) { chrome.tabs.create({"url": chrome.extension.getURL("about.html?" + section)}); }
+  if (!done) {
+    if (typeof(tabId) == "undefined") {
+      chrome.tabs.create({"url": "about.html?" + section, "selected": true});
+    } else {
+      chrome.tabs.update(tabId, {"url": "about.html?" + section, "selected": true});
+    }
+  }
 }
 
 function aboutChessGamesViewer(info, tab) {
