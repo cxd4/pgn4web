@@ -684,6 +684,7 @@ of Google Chrome. Don't use with any other browser.
       if (theObject = document.getElementById("toggleAnalysisLink")) { theObject.innerHTML = "&times;"; }
       updateAnnotationGraph();
       updateAnalysisHeader();
+      probeTablebaseResult();
    }
 
    function stopAnalysis(notifyBackgroundPage) {
@@ -692,6 +693,7 @@ of Google Chrome. Don't use with any other browser.
       if (theObject = document.getElementById("toggleAnalysisLink")) { theObject.innerHTML = "+"; }
       clearAnnotationGraph();
       clearAnalysisHeader();
+      probeTablebaseResult();
    }
 
    window.onunload = function() {
