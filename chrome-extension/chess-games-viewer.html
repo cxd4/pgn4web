@@ -453,22 +453,22 @@ of Google Chrome. Don't use with any other browser.
    }
 
 
-   var maxTablebasesMen = 6;
-   function fenFitsTablebases(fenString) {
-      return (fenString.replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length <= maxTablebasesMen);
+   var maxTablebaseMen = 6;
+   function fenFitsTablebase(fenString) {
+      return (fenString.replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length <= maxTablebaseMen);
    }
 
-   function probeTablebasesResult(res, fenString) {
+   function probeTablebaseResult(res, fenString) {
       if (fenString) {
-         if (confirm("endgame tablebases lookup\n\n" + res + "\n\nclick OK to analyze the position at the Lokasoft tablebases server")) {
+         if (confirm("endgame tablebase lookup\n\n" + res + "\n\nclick OK to analyze the position at the Lokasoft tablebase server")) {
             chrome.tabs.create({url: "http://www.lokasoft.nl/tbweb/tbweb2.asp?feninp=" + fenString});
          }
       } else {
-         alert("endgame tablebases lookup\n\n" + res);
+         alert("endgame tablebase lookup\n\n" + res);
       }
    }
 
-   function probeTablebases(fenString) {
+   function probeTablebase(fenString) {
       try {
          var xhr = new XMLHttpRequest();
          xhr.open("GET", "http://www.lokasoft.nl/tbweb/tbweb2.asp?feninp=" + fenString);
@@ -476,25 +476,25 @@ of Google Chrome. Don't use with any other browser.
          xhr.onreadystatechange = function() {
             if(xhr.readyState == 4) {
                if(xhr.status==200) {
-                  if (xhr.responseText.indexOf(fenString) == -1) { probeTablebasesResult("error: position mismatch"); }
-                  else if (xhr.responseText.indexOf("Position not in TB") != -1) { probeTablebasesResult("error: position not available"); }
-                  else if (xhr.responseText.indexOf("Invalid FEN string") != -1) { probeTablebasesResult("error: invalid position"); }
+                  if (xhr.responseText.indexOf(fenString) == -1) { probeTablebaseResult("error: position mismatch"); }
+                  else if (xhr.responseText.indexOf("Position not in TB") != -1) { probeTablebaseResult("error: position not available"); }
+                  else if (xhr.responseText.indexOf("Invalid FEN string") != -1) { probeTablebaseResult("error: invalid position"); }
                   else if (matches = xhr.responseText.match(/Position: ([0-9M-]*)[<\n\r]/)) {
                      colorToMove = CurrentPly % 2 ? "Black" : "White";
                      colorNotToMove = CurrentPly % 2 ? "White" : "Black";
-                     if (matches[1] === "0") { probeTablebasesResult(colorToMove + " moves and game is a draw", fenString); }
+                     if (matches[1] === "0") { probeTablebaseResult(colorToMove + " moves and game is a draw", fenString); }
                      else if (matches[1].indexOf("-M") === 0) {
-                        probeTablebasesResult(colorToMove + " moves and " + colorNotToMove + " wins by checkmate in " + matches[1].substr(2), fenString);
+                        probeTablebaseResult(colorToMove + " moves and " + colorNotToMove + " wins by checkmate in " + matches[1].substr(2), fenString);
                      } else if (matches[1].indexOf("M") === 0) {
-                        probeTablebasesResult(colorToMove + " moves and wins by checkmate in " + matches[1].substr(1), fenString);
-                     } else { probeTablebasesResult("error: invalid response"); }
-                  } else { probeTablebasesResult("error: invalid response"); }
+                        probeTablebaseResult(colorToMove + " moves and wins by checkmate in " + matches[1].substr(1), fenString);
+                     } else { probeTablebaseResult("error: invalid response"); }
+                  } else { probeTablebaseResult("error: invalid response"); }
                }
             }
          };
          xhr.send();
       } catch(e) {
-         probeTablebasesResult("error: lookup failed");
+         probeTablebaseResult("error: lookup failed");
       }
    }
 
@@ -505,7 +505,7 @@ of Google Chrome. Don't use with any other browser.
 
    function customShortcutKey_Shift_3() { cycleLastMoveAndCommentArea(); }
 
-   function customShortcutKey_Shift_4() { probeTablebases(CurrentFEN()); }
+   function customShortcutKey_Shift_4() { probeTablebase(CurrentFEN()); }
 
    function customShortcutKey_Shift_5() { userToggleAnalysis(); }
    function customShortcutKey_Shift_6() { goToMissingAnalysis(true); }
@@ -998,7 +998,7 @@ of Google Chrome. Don't use with any other browser.
    // C2
    boardShortcut("C2", "autoplay custom delay", setCustomAutoplayDelay);
    // E2
-   boardShortcut("E2", "probe endgame tablebases", function(){ setTimeout("if (fenFitsTablebases(thisFEN = CurrentFEN())) { probeTablebases(thisFEN); } else { alert('warning: endgame tablebases only available for positions up to ' + maxTablebasesMen + ' men'); }", 99); });
+   boardShortcut("E2", "probe endgame tablebase", function(){ setTimeout("if (fenFitsTablebase(thisFEN = CurrentFEN())) { probeTablebase(thisFEN); } else { alert('warning: the endgame tablebase only supports positions up to ' + maxTablebaseMen + ' men'); }", 99); });
    // G2
    boardShortcut("G2", "annotate game", annotateGame);
    // H2
