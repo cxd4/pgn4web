@@ -495,9 +495,15 @@ of Google Chrome. Don't use with any other browser.
                      colorNotToMove = CurrentPly % 2 ? "White" : "Black";
                      if (matches[1] === "0") { probeTablebaseResult("<b>game is a draw</b>", fenString); }
                      else if (matches[1].indexOf("-M") === 0) {
-                        probeTablebaseResult("<b>" + colorNotToMove + " wins in " + matches[1].substr(2) + "</b>", fenString);
+                        if (matches[1].substr(2) === "0") {
+                           probeTablebaseResult("<b>" + colorNotToMove + " won</b>", fenString);
+                        } else {
+                           howManyMoves = matches[1].substr(2) + (matches[1].substr(2) == "1" ? " move" : " moves");
+                           probeTablebaseResult("<b>" + colorNotToMove + " wins in " + howManyMoves + "</b>", fenString);
+                        }
                      } else if (matches[1].indexOf("M") === 0) {
-                        probeTablebaseResult("<b>" + colorToMove + " wins in " + matches[1].substr(1) + "</b>", fenString);
+                        howManyMoves = matches[1].substr(1) + (matches[1].substr(1) == "1" ? " move" : " moves");
+                        probeTablebaseResult("<b>" + colorToMove + " wins in " + howManyMoves + "</b>", fenString);
                      } else { probeTablebaseResult("error", fenString); }
                   } else { probeTablebaseResult("error", fenString); }
                }
