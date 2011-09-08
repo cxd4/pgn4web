@@ -453,6 +453,10 @@ of Google Chrome. Don't use with any other browser.
    }
 
 
+   function howManyPiecesInFen(fenString) {
+      return fenString.replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length;
+   }
+
    function probeTablebasesResult(res, fenString) {
       if (fenString) {
          if (confirm("tablebases lookup\n\n" + res + "\n\nclick OK to view the position in the Lokasoft tablebase server")) {
@@ -496,11 +500,11 @@ of Google Chrome. Don't use with any other browser.
 
    function customShortcutKey_Shift_1() { chrome.tabs.create({url: "http://www.chess.co.uk/twic/twic.html"}); }
 
-   function customShortcutKey_Shift_2() { probeTablebases(CurrentFEN()); }
+   function customShortcutKey_Shift_2() { cycleHash(); }
 
-   function customShortcutKey_Shift_3() { cycleHash(); }
+   function customShortcutKey_Shift_3() { cycleLastMoveAndCommentArea(); }
 
-   function customShortcutKey_Shift_4() { cycleLastMoveAndCommentArea(); }
+   function customShortcutKey_Shift_4() { probeTablebases(CurrentFEN()); }
 
    function customShortcutKey_Shift_5() { userToggleAnalysis(); }
    function customShortcutKey_Shift_6() { goToMissingAnalysis(true); }
@@ -628,7 +632,7 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId'));" class="innerHeaderItem" id="GameBlack"></a></b><span class="innerHeaderItem" id="GameBlackTitle"></span><span class="innerHeaderItem" id="GameBlackElo"></span><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameBlackClock"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPgnGame(lastSearchPgnExpression, !event.shiftKey);" class="innerHeaderItem" id="GameResult"></a></b><span class="innerHeaderItem" id="GameTermination"></span><b>&nbsp;</b></div>
+<div class="headerItem"><b><a href="javascript:void(0);" onclick="if (howManyPiecesInFen(thisFEN = CurrentFEN()) <= 6) { probeTablebases(thisFEN); }" class="innerHeaderItem" id="GameResult"></a></b><span class="innerHeaderItem" id="GameTermination"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameLiveStatus" title="live broadcast status"></span><span class="innerHeaderItem" id="GameLiveStatusDemo" title="this is a simulation of the live broadcast functionality"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
