@@ -453,8 +453,8 @@ of Google Chrome. Don't use with any other browser.
    }
 
 
-   function howManyPiecesInFen(fenString) {
-      return fenString.replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length;
+   function fenFitsTablebases(fenString) {
+      return (fenString.replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length <= 6);
    }
 
    function probeTablebasesResult(res, fenString) {
@@ -632,7 +632,7 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId'));" class="innerHeaderItem" id="GameBlack"></a></b><span class="innerHeaderItem" id="GameBlackTitle"></span><span class="innerHeaderItem" id="GameBlackElo"></span><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameBlackClock"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><b><a href="javascript:void(0);" onclick="if (howManyPiecesInFen(thisFEN = CurrentFEN()) <= 6) { probeTablebases(thisFEN); }" class="innerHeaderItem" id="GameResult"></a></b><span class="innerHeaderItem" id="GameTermination"></span><b>&nbsp;</b></div>
+<div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPgnGame(lastSearchPgnExpression, !event.shiftKey);" class="innerHeaderItem" id="GameResult"></a></b><span class="innerHeaderItem" id="GameTermination"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameLiveStatus" title="live broadcast status"></span><span class="innerHeaderItem" id="GameLiveStatusDemo" title="this is a simulation of the live broadcast functionality"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
@@ -994,8 +994,10 @@ of Google Chrome. Don't use with any other browser.
    boardShortcut("F5", "show the chess puzzler of the day", showPuzzler);
    // G5
    boardShortcut("G5", "adjust last move and current comment text area, if present", toggleFitResetLastMoveAndCommentArea);
+   // C2
+   boardShortcut("C2", "autoplay custom delay", setCustomAutoplayDelay);
    // E2
-   boardShortcut("E2", "autoplay custom delay", setCustomAutoplayDelay);
+   boardShortcut("E2", "probe tablebases", function(){ setTimeout("if (fenFitsTablebases(thisFEN = CurrentFEN())) { probeTablebases(thisFEN); } else { alert('tablebases only validate positions up to 6 men'); }", 99); });
    // G2
    boardShortcut("G2", "annotate game", annotateGame);
    // H2
