@@ -453,17 +453,18 @@ of Google Chrome. Don't use with any other browser.
    }
 
 
+   var maxTablebasesMen = 6;
    function fenFitsTablebases(fenString) {
-      return (fenString.replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length <= 6);
+      return (fenString.replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length <= maxTablebasesMen);
    }
 
    function probeTablebasesResult(res, fenString) {
       if (fenString) {
-         if (confirm("tablebases lookup\n\n" + res + "\n\nclick OK to view the position in the Lokasoft tablebase server")) {
+         if (confirm("endgame tablebases lookup\n\n" + res + "\n\nclick OK to view the position in the Lokasoft tablebase server")) {
             chrome.tabs.create({url: "http://www.lokasoft.nl/tbweb/tbweb2.asp?feninp=" + fenString});
          }
       } else {
-         alert("tablebases lookup\n\n" + res);
+         alert("endgame tablebases lookup\n\n" + res);
       }
    }
 
@@ -493,7 +494,7 @@ of Google Chrome. Don't use with any other browser.
          };
          xhr.send();
       } catch(e) {
-         probeTablebasesResult("error: tablebases lookup failed");
+         probeTablebasesResult("error: lookup failed");
       }
    }
 
@@ -997,7 +998,7 @@ of Google Chrome. Don't use with any other browser.
    // C2
    boardShortcut("C2", "autoplay custom delay", setCustomAutoplayDelay);
    // E2
-   boardShortcut("E2", "probe tablebases", function(){ setTimeout("if (fenFitsTablebases(thisFEN = CurrentFEN())) { probeTablebases(thisFEN); } else { alert('tablebases only validate positions up to 6 men'); }", 99); });
+   boardShortcut("E2", "probe endgame tablebases", function(){ setTimeout("if (fenFitsTablebases(thisFEN = CurrentFEN())) { probeTablebases(thisFEN); } else { alert('endgame tablebases only available for positions up to ' + maxTablebasesMen + ' men'); }", 99); });
    // G2
    boardShortcut("G2", "annotate game", annotateGame);
    // H2
