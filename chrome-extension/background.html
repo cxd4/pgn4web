@@ -193,7 +193,7 @@ function showAboutPage(section, tabIdForReuse) {
   }
 }
 
-function aboutChessGamesViewer(info, tab) {
+function helpAboutChessGamesViewer(info, tab) {
   showAboutPage();
 }
 
@@ -245,9 +245,9 @@ chrome.contextMenus.create({"title": "Open local PGN chess games FILES for viewi
 
 chrome.contextMenus.create({"type": "separator", "contexts": ["page"]});
 
-// "link", "page" and "selection" about menus
+// "link", "page" and "selection" help menus
 
-chrome.contextMenus.create({"title": "About the chess games viewer", "contexts": ["link", "page", "selection"], targetUrlPatterns: pgnZipUrlPatterns, "onclick": aboutChessGamesViewer});
+chrome.contextMenus.create({"title": "Help about the chess games viewer", "contexts": ["link", "page", "selection"], targetUrlPatterns: pgnZipUrlPatterns, "onclick": helpAboutChessGamesViewer});
 
 // end of context menus entries
 
