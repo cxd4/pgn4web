@@ -998,7 +998,7 @@ of Google Chrome. Don't use with any other browser.
    // C2
    boardShortcut("C2", "autoplay custom delay", setCustomAutoplayDelay);
    // E2
-   boardShortcut("E2", "probe endgame tablebases", function(){ setTimeout("if (fenFitsTablebases(thisFEN = CurrentFEN())) { probeTablebases(thisFEN); } else { alert('endgame tablebases only available for positions up to ' + maxTablebasesMen + ' men'); }", 99); });
+   boardShortcut("E2", "probe endgame tablebases", function(){ setTimeout("if (fenFitsTablebases(thisFEN = CurrentFEN())) { probeTablebases(thisFEN); } else { alert('warning: endgame tablebases only available for positions up to ' + maxTablebasesMen + ' men'); }", 99); });
    // G2
    boardShortcut("G2", "annotate game", annotateGame);
    // H2
