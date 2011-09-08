@@ -455,7 +455,8 @@ of Google Chrome. Don't use with any other browser.
 
    function customShortcutKey_Shift_1() { chrome.tabs.create({url: "http://www.chess.co.uk/twic/twic.html"}); }
 
-   function customShortcutKey_Shift_2() { chrome.tabs.create({url: "http://www.google.com/search?q=PGN+chess+games"}); }
+   // function customShortcutKey_Shift_2() { chrome.tabs.create({url: "http://www.google.com/search?q=PGN+chess+games"}); }
+   function customShortcutKey_Shift_2() { chrome.tabs.create({url: "http://www.lokasoft.nl/tbweb/tbweb2.asp?feninp=" + escape(CurrentFEN())}); }
 
    function customShortcutKey_Shift_3() { cycleHash(); }
 
