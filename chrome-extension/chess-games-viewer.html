@@ -291,6 +291,8 @@ of Google Chrome. Don't use with any other browser.
          annotateInProgress = false;
          SetAutoplayDelay(2000);
       }
+
+      probeTablebaseResult();
    }
 
    function customFunctionOnPgnGameLoad() {
@@ -453,22 +455,25 @@ of Google Chrome. Don't use with any other browser.
    }
 
 
-   var maxTablebaseMen = 6;
-   function fenFitsTablebase(fenString) {
-      return (fenString.replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length <= maxTablebaseMen);
-   }
-
    function probeTablebaseResult(res, fenString) {
-      if (fenString) {
-         if (confirm("endgame tablebase lookup\n\n" + res + "\n\nclick OK to analyze the position at the Lokasoft tablebase server")) {
-            chrome.tabs.create({url: "http://www.lokasoft.nl/tbweb/tbweb2.asp?feninp=" + fenString});
+      if (theObject = document.getElementById("GameTablebaseProbe")) {
+         if (typeof(res) != "undefined") {
+            if (fenString !== CurrentFEN()) { res = "error"; }
+            theObject.className = "innerHeaderItem notranslate";
+            theObject.innerHTML = "egtb: " + res;
+         } else {
+            theObject.className = "innerHeaderItemNoMargin notranslate";
+            theObject.innerHTML = "";
          }
-      } else {
-         alert("endgame tablebase lookup\n\n" + res);
       }
    }
 
    function probeTablebase(fenString) {
+      if (fenString.replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length > 6) { // if this changes update note in about.html
+         probeTablebaseResult("unsupported position", fenString);
+         return;
+      }
+
       try {
          var xhr = new XMLHttpRequest();
          xhr.open("GET", "http://www.lokasoft.nl/tbweb/tbweb2.asp?feninp=" + fenString);
@@ -476,19 +481,19 @@ of Google Chrome. Don't use with any other browser.
          xhr.onreadystatechange = function() {
             if(xhr.readyState == 4) {
                if(xhr.status==200) {
-                  if (xhr.responseText.indexOf(fenString) == -1) { probeTablebaseResult("error: position mismatch"); }
-                  else if (xhr.responseText.indexOf("Position not in TB") != -1) { probeTablebaseResult("error: position not available"); }
-                  else if (xhr.responseText.indexOf("Invalid FEN string") != -1) { probeTablebaseResult("error: invalid position"); }
+                  if (xhr.responseText.indexOf(fenString) == -1) { probeTablebaseResult("error", fenString); }
+                  else if (xhr.responseText.indexOf("Position not in TB") != -1) { probeTablebaseResult("unsupported position", fenString); }
+                  else if (xhr.responseText.indexOf("Invalid FEN string") != -1) { probeTablebaseResult("error", fenString); }
                   else if (matches = xhr.responseText.match(/Position: ([0-9M-]*)[<\n\r]/)) {
                      colorToMove = CurrentPly % 2 ? "Black" : "White";
                      colorNotToMove = CurrentPly % 2 ? "White" : "Black";
-                     if (matches[1] === "0") { probeTablebaseResult(colorToMove + " moves and game is a draw", fenString); }
+                     if (matches[1] === "0") { probeTablebaseResult("<b>draw</b>", fenString); }
                      else if (matches[1].indexOf("-M") === 0) {
-                        probeTablebaseResult(colorToMove + " moves and " + colorNotToMove + " wins by checkmate in " + matches[1].substr(2), fenString);
+                        probeTablebaseResult("<b>" + colorNotToMove + " wins in " + matches[1].substr(2) + "</b>", fenString);
                      } else if (matches[1].indexOf("M") === 0) {
-                        probeTablebaseResult(colorToMove + " moves and wins by checkmate in " + matches[1].substr(1), fenString);
-                     } else { probeTablebaseResult("error: invalid response"); }
-                  } else { probeTablebaseResult("error: invalid response"); }
+                        probeTablebaseResult("<b>" + colorToMove + " wins in " + matches[1].substr(1) + "</b>", fenString);
+                     } else { probeTablebaseResult("error", fenString); }
+                  } else { probeTablebaseResult("error", fenString); }
                }
             }
          };
@@ -637,7 +642,7 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameLiveStatus" title="live broadcast status"></span><span class="innerHeaderItem" id="GameLiveStatusDemo" title="this is a simulation of the live broadcast functionality"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="showExtraAnalysisInfo();" onmouseout="hideExtraAnalysisInfo();" class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the analysis engine: -1 means Black is a pawn ahead"></a><a href="javascript:void(0);" onclick="goToMissingAnalysis();" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv" title="principal variation from the analysis engine"></a><b>&nbsp;</b></div>
+<div class="headerItem"><span class="innerHeaderItemNoMargin notranslate" id="GameTablebaseProbe" title="endgame tablebase assessment"></span><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="showExtraAnalysisInfo();" onmouseout="hideExtraAnalysisInfo();" class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the analysis engine: -1 means Black is a pawn ahead"></a><a href="javascript:void(0);" onclick="goToMissingAnalysis();" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv" title="principal variation from the analysis engine"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer" id="GameAnnotationMeasure"><b>&nbsp;</b></div>
 <canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick();" onmousemove="annotationGraphMousemove();" onmouseover="annotationGraphMouseover();" onmouseout="annotationGraphMouseout();" title="annotation graph from the analysis engine"></canvas>
 </div>
@@ -842,6 +847,7 @@ of Google Chrome. Don't use with any other browser.
    lastMousemoveAnnGame = -1;
 
    function annotationGraphMouseover() {
+      probeTablebaseResult();
    }
 
    function annotationGraphMouseout() {
@@ -998,7 +1004,7 @@ of Google Chrome. Don't use with any other browser.
    // C2
    boardShortcut("C2", "autoplay custom delay", setCustomAutoplayDelay);
    // E2
-   boardShortcut("E2", "probe endgame tablebase", function(){ setTimeout("if (fenFitsTablebase(thisFEN = CurrentFEN())) { probeTablebase(thisFEN); } else { alert('warning: the endgame tablebase only supports positions up to ' + maxTablebaseMen + ' men'); }", 99); });
+   boardShortcut("E2", "probe endgame tablebase", function(){ probeTablebase(CurrentFEN()); });
    // G2
    boardShortcut("G2", "annotate game", annotateGame);
    // H2
