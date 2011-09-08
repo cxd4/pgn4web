@@ -482,7 +482,7 @@ of Google Chrome. Don't use with any other browser.
                   else if (matches = xhr.responseText.match(/Position: ([0-9M-]*)[<\n\r]/)) {
                      colorToMove = CurrentPly % 2 ? "Black" : "White";
                      colorNotToMove = CurrentPly % 2 ? "White" : "Black";
-                     if (matches[1] === "0") { probeTablebasesResult(colorToMove + " moves and game draw", fenString); }
+                     if (matches[1] === "0") { probeTablebasesResult(colorToMove + " moves and game is a draw", fenString); }
                      else if (matches[1].indexOf("-M") === 0) {
                         probeTablebasesResult(colorToMove + " moves and " + colorNotToMove + " wins by checkmate in " + matches[1].substr(2), fenString);
                      } else if (matches[1].indexOf("M") === 0) {
