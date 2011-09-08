@@ -460,7 +460,7 @@ of Google Chrome. Don't use with any other browser.
 
    function probeTablebasesResult(res, fenString) {
       if (fenString) {
-         if (confirm("endgame tablebases lookup\n\n" + res + "\n\nclick OK to analyze the position at the Lokasoft tablebase server")) {
+         if (confirm("endgame tablebases lookup\n\n" + res + "\n\nclick OK to analyze the position at the Lokasoft tablebases server")) {
             chrome.tabs.create({url: "http://www.lokasoft.nl/tbweb/tbweb2.asp?feninp=" + fenString});
          }
       } else {
