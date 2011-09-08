@@ -453,10 +453,50 @@ of Google Chrome. Don't use with any other browser.
    }
 
 
+   function probeTablebasesResult(res, fenString) {
+      if (fenString) {
+         if (confirm("tablebases lookup\n\n" + res + "\n\nclick OK to view the position in the Lokasoft tablebase server")) {
+            chrome.tabs.create({url: "http://www.lokasoft.nl/tbweb/tbweb2.asp?feninp=" + fenString});
+         }
+      } else {
+         alert("tablebases lookup\n\n" + res);
+      }
+   }
+
+   function probeTablebases(fenString) {
+      try {
+         var xhr = new XMLHttpRequest();
+         xhr.open("GET", "http://www.lokasoft.nl/tbweb/tbweb2.asp?feninp=" + fenString);
+         xhr.setRequestHeader("Content-type", "text/plain");
+         xhr.onreadystatechange = function() {
+            if(xhr.readyState == 4) {
+               if(xhr.status==200) {
+                  if (xhr.responseText.indexOf(fenString) == -1) { probeTablebasesResult("error: position mismatch"); }
+                  else if (xhr.responseText.indexOf("Position not in TB") != -1) { probeTablebasesResult("error: position not available"); }
+                  else if (xhr.responseText.indexOf("Invalid FEN string") != -1) { probeTablebasesResult("error: invalid position"); }
+                  else if (matches = xhr.responseText.match(/Position: ([0-9M-]*)[<\n\r]/)) {
+                     colorToMove = CurrentPly % 2 ? "Black" : "White";
+                     colorNotToMove = CurrentPly % 2 ? "White" : "Black";
+                     if (matches[1] === "0") { probeTablebasesResult(colorToMove + " moves and draws", fenString); }
+                     else if (matches[1].indexOf("-M") === 0) {
+                        probeTablebasesResult(colorToMove + " moves and " + colorNotToMove + " wins by checkmate in " + matches[1].substr(2), fenString);
+                     } else if (matches[1].indexOf("M") === 0) {
+                        probeTablebasesResult(colorToMove + " moves and wins by checkmate in " + matches[1].substr(1), fenString);
+                     } else { probeTablebasesResult("error: invalid response"); }
+                  } else { probeTablebasesResult("error: invalid response"); }
+               }
+            }
+         };
+         xhr.send();
+      } catch(e) {
+         probeTablebasesResult("error: tablebases lookup failed");
+      }
+   }
+
+
    function customShortcutKey_Shift_1() { chrome.tabs.create({url: "http://www.chess.co.uk/twic/twic.html"}); }
 
-   // function customShortcutKey_Shift_2() { chrome.tabs.create({url: "http://www.google.com/search?q=PGN+chess+games"}); }
-   function customShortcutKey_Shift_2() { chrome.tabs.create({url: "http://www.lokasoft.nl/tbweb/tbweb2.asp?feninp=" + escape(CurrentFEN())}); }
+   function customShortcutKey_Shift_2() { probeTablebases(CurrentFEN()); }
 
    function customShortcutKey_Shift_3() { cycleHash(); }
 
