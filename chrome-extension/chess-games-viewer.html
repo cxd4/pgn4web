@@ -506,7 +506,7 @@ of Google Chrome. Don't use with any other browser.
                         showProbeTablebaseResults("<b>" + colorToMove + " wins in " + howManyMoves + "</b>", fenString);
                      } else { showProbeTablebaseResults("error", fenString); }
                   } else { showProbeTablebaseResults("error", fenString); }
-               }
+               } else { showProbeTablebaseResults("error", fenString); }
             }
          };
          xhr.send();
