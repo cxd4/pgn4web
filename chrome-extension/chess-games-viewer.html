@@ -513,6 +513,13 @@ of Google Chrome. Don't use with any other browser.
       } catch(e) { showProbeTablebaseResults("error", fenString); }
    }
 
+   function toggleProbeTablebase() {
+      if (theObject = document.getElementById("GameTablebaseProbe")) {
+         if (theObject.innerHTML) { showProbeTablebaseResults(); }
+         else { probeTablebase(CurrentFEN()); }
+      }
+   }
+
 
    function customShortcutKey_Shift_1() { chrome.tabs.create({url: "http://www.chess.co.uk/twic/twic.html"}); }
 
@@ -520,7 +527,7 @@ of Google Chrome. Don't use with any other browser.
 
    function customShortcutKey_Shift_3() { cycleLastMoveAndCommentArea(); }
 
-   function customShortcutKey_Shift_4() { probeTablebase(CurrentFEN()); }
+   function customShortcutKey_Shift_4() { toggleProbeTablebase(); }
 
    function customShortcutKey_Shift_5() { userToggleAnalysis(); }
    function customShortcutKey_Shift_6() { goToMissingAnalysis(true); }
@@ -1016,7 +1023,7 @@ of Google Chrome. Don't use with any other browser.
    // C2
    boardShortcut("C2", "autoplay custom delay", setCustomAutoplayDelay);
    // E2
-   boardShortcut("E2", "probe endgame tablebase", function(){ probeTablebase(CurrentFEN()); });
+   boardShortcut("E2", "probe endgame tablebase", function(){ toggleProbeTablebase(); });
    // G2
    boardShortcut("G2", "annotate game", annotateGame);
    // H2
