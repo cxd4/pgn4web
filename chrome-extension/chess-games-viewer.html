@@ -464,18 +464,24 @@ of Google Chrome. Don't use with any other browser.
             if (secondObject = document.getElementById("GameAnalysisPv")) { secondObject.style.visibility = "hidden"; }
             theObject.className = "innerHeaderItem notranslate";
             theObject.innerHTML = "egtb: " + res;
+            if (secondObject = document.getElementById("toggleTablebaseLink")) { secondObject.innerHTML = "&times;"; }
          } else {
             if (secondObject = document.getElementById("GameAnalysisMove")) { secondObject.style.visibility = ""; }
             if (secondObject = document.getElementById("GameAnalysisEval")) { secondObject.style.visibility = ""; }
             if (secondObject = document.getElementById("GameAnalysisPv")) { secondObject.style.visibility = ""; }
             theObject.className = "innerHeaderItemNoMargin notranslate";
             theObject.innerHTML = "";
+            if (secondObject = document.getElementById("toggleTablebaseLink")) { secondObject.innerHTML = tablebaseSupportsFen(CurrentFEN()) ? "+" : ""; }
          }
       }
    }
 
+   function tablebaseSupportsFen(fenString) {
+      return (fenString.replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length <= 5); // if this changes update note in about.html
+   }
+
    function probeTablebase(fenString) {
-      if (fenString.replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length > 6) { // if this changes update note in about.html
+      if (!tablebaseSupportsFen(fenString)) {
          showProbeTablebaseResults("position assessment not available", fenString);
          return;
       }
@@ -666,7 +672,7 @@ of Google Chrome. Don't use with any other browser.
 
 </div>
 
-<div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleAnalysisLink" id="toggleAnalysisLink" href="javascript:void(0);" onclick="userToggleAnalysis();" title="toggle analysis engine">+</a></div>
+<div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleTablebaseLink" id="toggleTablebaseLink" href="javascript:void(0);" onclick="toggleProbeTablebase();" title="probe endgame tablebase"></a><a class="toggleAnalysisLink" id="toggleAnalysisLink" href="javascript:void(0);" onclick="userToggleAnalysis();" title="toggle analysis engine">+</a></div>
 <div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="SetCommentsIntoMoveText(!commentsIntoMoveText); oldPly = CurrentPly; Init(); GoToMove(oldPly);" title="toggle show comments in game text for this page; click square B7 instead to save setting"></a></div>
 
 <div class="lastMoveAndComment" id="lastMoveAndComment"><a href="javascript:MoveToNextComment();" class="lastMove notranslate" title="last move" id="GameLastMove"></a><a href="javascript:MoveToPrevComment();" class="lastComment" title="current position comment" id="GameLastComment"></a></div>
