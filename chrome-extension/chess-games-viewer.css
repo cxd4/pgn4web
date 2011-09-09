@@ -253,7 +253,6 @@ a {
 
 .toggleTablebaseLink {
   margin-right: 0.7em;
-  visibility: hidden;
 }
 
 .toggleCommentsLink:hover, .toggleAnalysisLink:hover, .toggleTablebaseLink:hover {
