@@ -104,12 +104,10 @@ about.html, aboutOpen.html, manifest.json: help page
 verify the naming convention ("help") and the manifest syntax for the upcoming
 "help" page and update manifest.json, about.html and aboutOpen.html if needed.
 http://crbug.com/29849
-Should not require increasing minimum_chrome_version (new manifest entry ignored by
-older versions)
 
-chess-games-viewer.html, live-mosaic-viewer.html: forcing page action
-currently chessboard pages force the page action in order to include the PGN URL
-since chrome-extension://*.pgn pages do not trigger webRequests events;
-if the underlying issue is fixed, consider not forcing the page action (this
-might expose a noCache URL parameter)
+chess-games-viewer.html, live-mosaic-viewer.html: force page action
+currently chrome-extension://*.pgn pages do not trigger webRequests events;
+hence chessboard pages need to force the page action in order to include the
+loaded PGN URL; if the underlying issue is fixed, consider not forcing the page
+action (allthough this might expose a noCache URL parameter)
 http://crbug.com/92395
