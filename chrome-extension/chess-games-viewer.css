@@ -247,11 +247,16 @@ a {
   opacity: 1;
 }
 
-.toggleCommentsLink, .toggleAnalysisLink {
+.toggleCommentsLink, .toggleAnalysisLink, .toggleTablebaseLink {
   color: inherit;
 }
 
-.toggleCommentsLink:hover, .toggleAnalysisLink:hover {
+.toggleTablebaseLink {
+  margin-right: 0.7em;
+  visibility: hidden;
+}
+
+.toggleCommentsLink:hover, .toggleAnalysisLink:hover, .toggleTablebaseLink:hover {
   background: #FFCC99;
   border-radius: 0.4em;
   -webkit-box-shadow: 0 0 1em #FF8000;
