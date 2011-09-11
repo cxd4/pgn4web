@@ -477,7 +477,7 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function tablebaseSupportsFen(fenString) {
-      return (fenString.replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length <= 5); // if this changes update note in about.html
+      return ((l = fenString.replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length > 2) && (l <= 5)); // if the tablebase set changes update note in about.html
    }
 
    var probeTablebaseXMLHTTPRequest = null;
