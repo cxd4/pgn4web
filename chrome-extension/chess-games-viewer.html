@@ -479,7 +479,7 @@ of Google Chrome. Don't use with any other browser.
    var maxMenInTablebase = 5; // if the tablebase set changes please update note in about.html
    var minMenInTablebase = 3;
    function tablebaseSupportsFen(fenString) {
-      return ((l = fenString.replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length >= minMenInTablebase) && (l <= maxMenInTablebase)); 
+      return (((l = fenString.replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length) >= minMenInTablebase) && (l <= maxMenInTablebase)); 
    }
 
    var probeTablebaseXMLHTTPRequest = null;
