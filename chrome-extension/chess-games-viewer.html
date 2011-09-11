@@ -480,6 +480,7 @@ of Google Chrome. Don't use with any other browser.
       return (fenString.replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length <= 5); // if this changes update note in about.html
    }
 
+   var probeTablebaseXMLHTTPRequest = null;
    function probeTablebase(fenString) {
       if (!tablebaseSupportsFen(fenString)) {
          showProbeTablebaseResults("position assessment not available", fenString);
@@ -487,37 +488,40 @@ of Google Chrome. Don't use with any other browser.
       }
 
       try {
+         if ((probeTablebaseXMLHTTPRequest !== null) && (typeof(probeTablebaseXMLHTTPRequest.abort) != "undefined")) { probeTablebaseXMLHTTPRequest.abort(); }
          probeTablebaseXMLHTTPRequest = new XMLHttpRequest();
          probeTablebaseXMLHTTPRequest.open("POST", "http://www.lokasoft.nl/tbweb/tbapi.asp", true);
          probeTablebaseXMLHTTPRequest.setRequestHeader("Content-Type", "text/xml; charset=utf-8");
          probeTablebaseXMLHTTPRequest.setRequestHeader("SOAPAction", "http://lokasoft.org/action/TB2ComObj.ProbePosition");
          probeTablebaseXMLHTTPRequest.onreadystatechange = function() {
-            try {
-               if (probeTablebaseXMLHTTPRequest.readyState == 4) {
-                  if (probeTablebaseXMLHTTPRequest.status == 200) {
-                     if (matches = probeTablebaseXMLHTTPRequest.responseText.match(/<SOAP-ENV:Body><m:ProbePositionResponse xmlns:m="http:\/\/lokasoft.org\/message\/"><Result>([0-9M-]*)<\/Result><\/m:ProbePositionResponse>/)) {
-                        colorToMove = CurrentPly % 2 ? "Black" : "White";
-                        colorNotToMove = CurrentPly % 2 ? "White" : "Black";
-                        if (matches[1] === "0") { showProbeTablebaseResults("<b>game is a draw</b>", fenString); }
-                        else if (matches[1].indexOf("-M") === 0) {
-                           if (matches[1].substr(2) === "0") {
-                              showProbeTablebaseResults("<b>" + colorNotToMove + " won</b>", fenString);
-                           } else {
-                              howManyMoves = matches[1].substr(2) + (matches[1].substr(2) == "1" ? " move" : " moves");
-                              showProbeTablebaseResults("<b>" + colorNotToMove + " wins in " + howManyMoves + "</b>", fenString);
-                           }
-                        } else if (matches[1].indexOf("M") === 0) {
-                           howManyMoves = matches[1].substr(1) + (matches[1].substr(1) == "1" ? " move" : " moves");
-                           showProbeTablebaseResults("<b>" + colorToMove + " wins in " + howManyMoves + "</b>", fenString);
-                        } else { showProbeTablebaseResults("error", fenString); }
+            if (probeTablebaseXMLHTTPRequest.readyState == 4) {
+               if (probeTablebaseXMLHTTPRequest.status == 200) {
+                  if (matches = probeTablebaseXMLHTTPRequest.responseText.match(/<SOAP-ENV:Body><m:ProbePositionResponse xmlns:m="http:\/\/lokasoft.org\/message\/"><Result>([0-9M-]*)<\/Result><\/m:ProbePositionResponse>/)) {
+                     colorToMove = CurrentPly % 2 ? "Black" : "White";
+                     colorNotToMove = CurrentPly % 2 ? "White" : "Black";
+                     if (matches[1] === "0") { showProbeTablebaseResults("<b>game is a draw</b>", fenString); }
+                     else if (matches[1].indexOf("-M") === 0) {
+                        if (matches[1].substr(2) === "0") {
+                           showProbeTablebaseResults("<b>" + colorNotToMove + " won</b>", fenString);
+                        } else {
+                           howManyMoves = matches[1].substr(2) + (matches[1].substr(2) == "1" ? " move" : " moves");
+                           showProbeTablebaseResults("<b>" + colorNotToMove + " wins in " + howManyMoves + "</b>", fenString);
+                        }
+                     } else if (matches[1].indexOf("M") === 0) {
+                        howManyMoves = matches[1].substr(1) + (matches[1].substr(1) == "1" ? " move" : " moves");
+                        showProbeTablebaseResults("<b>" + colorToMove + " wins in " + howManyMoves + "</b>", fenString);
                      } else { showProbeTablebaseResults("error", fenString); }
                   } else { showProbeTablebaseResults("error", fenString); }
-               }
-            } catch(e) { showProbeTablebaseResults("error", fenString); }
+               } else { showProbeTablebaseResults("error", fenString); }
+               probeTablebaseXMLHTTPRequest = null;
+            }
          };
          request = '<SOAP-ENV:Envelope xmlns:ns3="http://www.w3.org/2001/XMLSchema" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns0="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns1="http://lokasoft.org/message/" xmlns:ns2="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"><SOAP-ENV:Header/><ns2:Body><ns1:ProbePosition><fen xsi:type="ns3:string">' + fenString + '</fen></ns1:ProbePosition></ns2:Body></SOAP-ENV:Envelope>';
          probeTablebaseXMLHTTPRequest.send(request);
-      } catch(e) { showProbeTablebaseResults("error", fenString); }
+      } catch(e) {
+         probeTablebaseXMLHTTPRequest = null;
+         showProbeTablebaseResults("error", fenString);
+      }
    }
 
    function toggleProbeTablebase() {
