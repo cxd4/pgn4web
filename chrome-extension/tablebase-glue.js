@@ -9,7 +9,7 @@ function tablebaseSupportsFen(fenString) { return tablebaseSupportsFenLokasoft(f
 
 function probeTablebase(fenString, probeTablebaseCallback) { probeTablebaseLokasoft(fenString, probeTablebaseCallback); }
 
-var maxMenInTablebaseLokasoft = 5; // if the tablebase set changes please update note in about.html
+var maxMenInTablebase = maxMenInTablebaseLokasoft = 5;
 var minMenInTablebaseLokasoft = 3;
 function tablebaseSupportsFenLokasoft(fenString) {
    return (((l = fenString.replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length) >= minMenInTablebaseLokasoft) && (l <= maxMenInTablebaseLokasoft));
