@@ -245,7 +245,10 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function searchTag(tag, key) {
-      searchPgnGame('\\[\\s*' + tag + '\\s*"' + fixRegExp(key) + '"\\s*\\]', false);
+      searchPgnGame('\\[\\s*' + tag + '\\s*"' + fixRegExp(key) + '"\\s*\\]', event.shiftKey);
+   }
+   function searchTagDifferent(tag, key) {
+      searchPgnGame('\\[\\s*' + tag + '\\s*"(?!' + fixRegExp(key) + '"\\s*\\])', event.shiftKey);
    }
 
    function fixHeaderTag(elementId) {
@@ -605,11 +608,11 @@ of Google Chrome. Don't use with any other browser.
 </div>
 
 <div class="headerColumn">
-<div class="headerItem"><span class="innerHeaderItem" id="GameDate"></span><b>&nbsp;</b></div>
-<div class="headerItem"><span class="innerHeaderItem" id="GameSite"></span><b>&nbsp;</b></div>
+<div class="headerItem"><a class="innerHeaderItem" id="GameDate" href="javascript:void(0);" onclick="searchTagDifferent('Date', this.innerHTML);"></a><b>&nbsp;</b></div>
+<div class="headerItem"><a class="innerHeaderItem" id="GameSite" href="javascript:void(0);" onclick="searchTagDifferent('Site', this.innerHTML);"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><span class="innerHeaderItem" id="GameEvent"></span><span class="innerHeaderItem" id="GameSection"></span><span class="innerHeaderItem" id="GameStage"></span><b>&nbsp;</b></div>
-<div class="headerItem"><span class="innerHeaderItem" id="GameRound"></span><span class="innerHeaderItem" id="GameBoardNum"></span><span class="innerHeaderItem" id="GameTimeControl"></span><b>&nbsp;</b></div>
+<div class="headerItem"><a class="innerHeaderItem" id="GameEvent" href="javascript:void(0);" onclick="searchTagDifferent('Event', this.innerHTML);"></a><a class="innerHeaderItem" id="GameSection" href="javascript:void(0);" onclick="searchTagDifferent('Section', this.innerHTML);"></a><a class="innerHeaderItem" id="GameStage" href="javascript:void(0);" onclick="searchTagDifferent('Stage', this.innerHTML);"></a><b>&nbsp;</b></div>
+<div class="headerItem"><a class="innerHeaderItem" id="GameRound" href="javascript:void(0);" onclick="searchTagDifferent('Round', this.innerHTML);"></a><a class="innerHeaderItem" id="GameBoardNum" href="javascript:void(0);" onclick="searchTagDifferent('Board', this.innerHTML);"></a><a class="innerHeaderItem" id="GameTimeControl"  href="javascript:void(0);" onclick="searchTagDifferent('TimeControl', this.innerHTML);"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><a class="innerHeaderItem" id="GameECO" href="javascript:void(0);" onclick="searchTag('ECO', this.innerHTML);"></a><a class="innerHeaderItem" id="GameOpening" href="javascript:void(0);" onclick="searchTag('Opening', this.innerHTML);"></a><a class="innerHeaderItem" id="GameVariation" href="javascript:void(0);" onclick="searchTag('Variation', this.innerHTML);"></a><a class="innerHeaderItem" id="GameSubVariation" href="javascript:void(0);" onclick="searchTag('SubVariation', this.innerHTML);"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
@@ -620,7 +623,7 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPgnGame(lastSearchPgnExpression, !event.shiftKey);" class="innerHeaderItem" id="GameResult"></a></b><span class="innerHeaderItem" id="GameTermination"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><span class="innerHeaderItem" id="GameLiveStatus" title="live broadcast status"></span><span class="innerHeaderItem" id="GameLiveStatusDemo" title="this is a simulation of the live broadcast functionality"></span><b>&nbsp;</b></div>
+<div class="headerItem"><a class="innerHeaderItem" id="GameLiveStatus" title="live broadcast status" href="javascript:void(0);" onclick="refreshPgnSource();"></a><span class="innerHeaderItem" id="GameLiveStatusDemo" title="this is a simulation of the live broadcast functionality"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItemNoMargin notranslate" id="GameTablebaseProbe" onmouseout="showProbeTablebaseResults();" title="endgame tablebase assessment"></span><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="showExtraAnalysisInfo();" onmouseout="hideExtraAnalysisInfo();" class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the analysis engine: -1 means Black is a pawn ahead"></a><a href="javascript:void(0);" onclick="goToMissingAnalysis();" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv" title="principal variation from the analysis engine"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer" id="GameAnnotationMeasure"><b>&nbsp;</b></div>
