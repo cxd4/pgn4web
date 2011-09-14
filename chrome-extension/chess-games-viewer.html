@@ -470,14 +470,20 @@ of Google Chrome. Don't use with any other browser.
             if (secondObject = document.getElementById("GameAnalysisPv")) { secondObject.style.visibility = "hidden"; }
             theObject.className = "innerHeaderItem notranslate";
             theObject.innerHTML = "egtb: " + res;
-            if (secondObject = document.getElementById("toggleTablebaseLink")) { secondObject.innerHTML = "&times;"; }
+            if (secondObject = document.getElementById("toggleTablebaseLink")) {
+               secondObject.innerHTML = "&times;";
+               secondObject.style.visibility = "";
+            }
          } else {
             if (secondObject = document.getElementById("GameAnalysisMove")) { secondObject.style.visibility = ""; }
             if (secondObject = document.getElementById("GameAnalysisEval")) { secondObject.style.visibility = ""; }
             if (secondObject = document.getElementById("GameAnalysisPv")) { secondObject.style.visibility = ""; }
             theObject.className = "innerHeaderItemNoMargin notranslate";
             theObject.innerHTML = "";
-            if (secondObject = document.getElementById("toggleTablebaseLink")) { secondObject.innerHTML = (tablebaseUnderstandsGame(currentGame) && backgroundPage && backgroundPage.tablebaseSupportsFen(CurrentFEN())) ? "+" : ""; }
+            if (secondObject = document.getElementById("toggleTablebaseLink")) {
+               secondObject.innerHTML = "+";
+               secondObject.style.visibility = (tablebaseUnderstandsGame(currentGame) && backgroundPage && backgroundPage.tablebaseSupportsFen(CurrentFEN())) ? "" : "hidden";
+            }
          }
       }
    }
