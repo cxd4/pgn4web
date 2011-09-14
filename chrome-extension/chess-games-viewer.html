@@ -480,10 +480,22 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function toggleProbeTablebase() {
-      if (theObject = document.getElementById("GameTablebaseProbe")) {
-         if (theObject.innerHTML) { showProbeTablebaseResults(); }
-         else if (backgroundPage) { backgroundPage.probeTablebase(CurrentFEN(), showProbeTablebaseResults); }
+      if (checkTablebaseUnderstandsGameAndWarn()) {
+         if (theObject = document.getElementById("GameTablebaseProbe")) {
+            if (theObject.innerHTML) { showProbeTablebaseResults(); }
+            else if (backgroundPage) { backgroundPage.probeTablebase(CurrentFEN(), showProbeTablebaseResults); }
+         }
       }
+   }
+
+   function tablebaseUnderstandsGame(gameNum) {
+      return ((typeof(gameVariant[gameNum]) == "undefined") || (gameVariant[gameNum].match(/^(chess|normal|standard|)$/i) !== null));
+   }
+
+   function checkTablebaseUnderstandsGameAndWarn() {
+      retVal = engineUnderstandsGame(currentGame);
+      if (!retVal) { alert("warning: endgame tablebase not available for chess variants"); }
+      return retVal;
    }
 
 
