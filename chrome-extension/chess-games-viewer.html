@@ -480,7 +480,7 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function toggleProbeTablebase() {
-      if (checkTablebaseUnderstandsGameAndWarn()) {
+      if (checkTablebaseUnderstandsGameAndWarn(currentGame)) {
          if (theObject = document.getElementById("GameTablebaseProbe")) {
             if (theObject.innerHTML) { showProbeTablebaseResults(); }
             else if (backgroundPage) { backgroundPage.probeTablebase(CurrentFEN(), showProbeTablebaseResults); }
