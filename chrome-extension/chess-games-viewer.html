@@ -349,7 +349,7 @@ of Google Chrome. Don't use with any other browser.
          }
          theObject.style.display = lastDisplayStyle;
       }
-      if (theObject = document.getElementById('toggleCommentsLink')) {
+      if (theObject = document.getElementById("toggleCommentsLink")) {
          if (commentsPresent) {
              theObject.innerHTML = commentsIntoMoveText ? "&times;" : "+";
          } else {
@@ -364,6 +364,9 @@ of Google Chrome. Don't use with any other browser.
       if (analysisStarted) {
          if (engineUnderstandsGame(currentGame)) { scanGameForFen(); }
          else { stopAnalysis(true); }
+      }
+      if (theObject = document.getElementById("toggleAnalysisLink")) {
+         theObject.style.visibility = engineUnderstandsGame(currentGame) ? "" : "hidden";
       }
    }
 
@@ -474,7 +477,7 @@ of Google Chrome. Don't use with any other browser.
             if (secondObject = document.getElementById("GameAnalysisPv")) { secondObject.style.visibility = ""; }
             theObject.className = "innerHeaderItemNoMargin notranslate";
             theObject.innerHTML = "";
-            if (secondObject = document.getElementById("toggleTablebaseLink")) { secondObject.innerHTML = (backgroundPage && backgroundPage.tablebaseSupportsFen(CurrentFEN())) ? "+" : ""; }
+            if (secondObject = document.getElementById("toggleTablebaseLink")) { secondObject.innerHTML = (tablebaseUnderstandsGame(currentGame) && backgroundPage && backgroundPage.tablebaseSupportsFen(CurrentFEN())) ? "+" : ""; }
          }
       }
    }
@@ -489,7 +492,7 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function tablebaseUnderstandsGame(gameNum) {
-      return ((typeof(gameVariant[gameNum]) == "undefined") || (gameVariant[gameNum].match(/^(chess|normal|standard|)$/i) !== null));
+      return gameIsNormalChess(gameNum);
    }
 
    function checkTablebaseUnderstandsGameAndWarn() {
@@ -514,6 +517,11 @@ of Google Chrome. Don't use with any other browser.
    function customShortcutKey_Shift_8() { openPgnFiles(); }
    function customShortcutKey_Shift_9() { fetchNewPgnUrl(false); }
    function customShortcutKey_Shift_0() { fetchNewPgnUrl(true); }
+
+
+   function gameIsNormalChess(gameNum) {
+      return ((typeof(gameVariant[gameNum]) == "undefined") || (gameVariant[gameNum].match(/^(chess|normal|standard|)$/i) !== null));
+   }
 
 
    function emPixels(em) { return em * document.getElementById("boardTable").offsetHeight / 24.5; } 
@@ -934,7 +942,7 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function engineUnderstandsGame(gameNum) {
-      return ((typeof(gameVariant[gameNum]) == "undefined") || (gameVariant[gameNum].match(/^(chess|normal|standard|)$/i) !== null));
+      return gameIsNormalChess(gameNum);
    }
 
    function checkEngineUnderstandsGameAndWarn() {
