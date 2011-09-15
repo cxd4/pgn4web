@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<!--
+  pgn4web javascript chessboard
+  copyright (C) 2009, 2011 Paolo Casaschi
+  see README file and http://pgn4web.casaschi.net
+  for credits, license and more details
+-->
+
+<!--
+
+HTML, CSS and Javascript code optimized for use as extension
+of Google Chrome. Don't use with any other browser.
+
+-->
+
+<head>
+<script type="text/javascript">
+document.title = "help";
+chrome.tabs.getCurrent(function(tab) { chrome.extension.getBackgroundPage().showAboutPage(document.title, tab.id); });
+</script>
+</head>
+<body>
+</body>
+</html>

@@ -17,8 +17,8 @@ of Google Chrome. Don't use with any other browser.
 
 <head>
 <script type="text/javascript">
-document.title = location.search.substr(1);
-chrome.tabs.getCurrent(function(tab) { chrome.extension.getBackgroundPage().showAboutPage(location.search.substr(1), tab.id); });
+document.title = "options";
+chrome.tabs.getCurrent(function(tab) { chrome.extension.getBackgroundPage().showAboutPage(document.title, tab.id); });
 </script>
 </head>
 <body>

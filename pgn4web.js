@@ -590,7 +590,7 @@ function detectJavascriptLocation() {
 }
 
 function detectHelpLocation() {
-  return detectJavascriptLocation().replace(/(pgn4web|pgn4web-compacted)\.js/, "help.html"); 
+  return detectJavascriptLocation().replace(/(pgn4web|pgn4web-compacted)\.js/, "pgn4web-help.html"); 
 }
 
 function detectBaseLocation() {
