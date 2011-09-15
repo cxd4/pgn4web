@@ -30,7 +30,7 @@ a {
 }
 
 .heading, .headingSelected {
-  color: lightgray;
+  color: #CCCCCC;
   margin: 20px;
   line-height: 1.5em;
   font-weight: bold;
@@ -58,13 +58,15 @@ a {
 sections = ["user_interface", "shortcut_squares", "shortcut_keys", "search_tool", "credits_and_license"];
 
 function showSection(section) {
+  section2show = sections[0];
   for (s in sections) {
     if (theObject = document.getElementById(sections[s] + "_section")) { theObject.style.display = ""; }
     if (theObject = document.getElementById(sections[s] + "_heading")) { theObject.className = "heading"; }
+    if (sections[s] === section) { section2show = section; }
   }
-  if (theObject = document.getElementById(section + "_section")) { theObject.style.display = "inline"; }
-  if (theObject = document.getElementById(section + "_heading")) { theObject.className = "headingSelected"; }
-  document.title = "pgn4web help: " + section.replace(/_/g, " ");
+  if (theObject = document.getElementById(section2show + "_section")) { theObject.style.display = "inline"; }
+  if (theObject = document.getElementById(section2show + "_heading")) { theObject.className = "headingSelected"; }
+  document.title = "pgn4web help: " + section2show.replace(/_/g, " ");
 }
 
 function print_help_row (one, two) {

@@ -15,7 +15,6 @@ if (pgn4web_project_email === undefined) { pgn4web_project_email = 'pgn4web@casa
 
 var helpWin=null;
 function displayHelp(section){
-  if (!section) { section = "user_interface"; }
   if (helpWin && !helpWin.closed) { helpWin.close(); }
   helpWin = window.open(detectHelpLocation() + "?" + section, "pgn4web_help",
     "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
