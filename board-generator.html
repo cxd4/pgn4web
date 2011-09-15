@@ -1466,8 +1466,9 @@ function bug_report() {
 
 function print_menu( item, level, title ) {
 
-  menu =  '<table width=100% cellspacing=0 cellpadding=0><tr><td td valign=middle align=left>';
-  menu += '<h' + level + '><a name=' + item + '>' + title + '</a></h' + level + '>';
+  menu = '<div style="height:1em;"><a name=' + item + '>&nbsp;</a></div>';
+  menu += '<table width=100% cellspacing=0 cellpadding=0><tr><td td valign=middle align=left>';
+  menu += '<h' + level + '>' + title + '</h' + level + '>';
   menu += '</td><td valign=top align=right>';
   menu += '<div style="font-size: 70%;">';
   menu += '<a href=#top>instructions</a>';
@@ -1502,7 +1503,7 @@ window.onload = new_onLoad;
 <a href=.><img src=pawns.png border=0></a>
 </td></tr></table>
 
-<div style="height: 1em">&nbsp;</div>
+<div style="height: 2em">&nbsp;</div>
 <script type="text/javascript">print_menu("instructions", 2, "instructions");</script>
 
 <ul type="square" style="text-align: justify; font-size: smaller;">
@@ -1602,7 +1603,7 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 <p></p>
 <br>
 
-<div style="height: 1em">&nbsp;</div>
+<div style="height: 2em">&nbsp;</div>
 <script type="text/javascript">print_menu("game_preview", 2, "preview");</script>
 <div style="height: 1em">&nbsp;</div>
 
@@ -1610,10 +1611,9 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 <div class="textbox" id=preview>&nbsp;</div>
 </center>
 
-<div style="height: 2em">&nbsp;</div>
+<div style="height: 4em">&nbsp;</div>
 <h2>configuration options</h2>
 
-<div style="height: 2em">&nbsp;</div>
 <script type="text/javascript">print_menu("pgn_form", 3, "chess games notation in PGN format");</script>
 
 <div style="height: 1em">&nbsp;</div>
@@ -1700,7 +1700,6 @@ continiously, or autoplay
 <span class="helptext">actual halfmove number when the setting above is
 <a class="helplink" href="" onClick="javascript:document.board.initialHalfmoveSelect.value = 'number'; setInitialHalfmove(); return false;">custom number</a>
 </span>
-<p></p>
 
 <div style="height: 3em">&nbsp;</div>
 <script type="text/javascript">print_menu("board_options", 3, "chessboard options");</script>
