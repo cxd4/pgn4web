@@ -81,7 +81,7 @@ function showSection(section) {
 }
 
 function print_help_row (one, two) {
-  document.write("<tr><td style='text-align: left; vertical-align: top; padding-left:40; white-space:nowrap;'>" + one + "</td><td style='text-align: left; vertical-align: top; padding-left:20'>" + two + "</td></tr>");
+  document.write("<tr><td style='text-align:left; vertical-align:top; padding-left:40px; white-space:nowrap;'>" + one + "</td><td style='text-align:left; vertical-align:top; padding-left:20px'>" + two + "</td></tr>");
 }
 
 try {
@@ -116,14 +116,14 @@ if (isRotated) {
 
 </script>
 
-<table name="top" width=100% cellspacing=0 cellpadding=0><tr>
-<td align=left valign=middle>
-<h1> pgn4web help</h1>
-</td><td align=right valign=middle>
-<img src=pawns.png border=0>
+<table name="top" width="100%" cellspacing="0" cellpadding="0"><tr>
+<td align="left" valign="middle">
+<h1>pgn4web help</h1>
+</td><td align="right" valign="middle">
+<img src="pawns.png" border="0">
 </td></tr></table>
 
-<div style="text-align:center; margin-top:50px; margin-bottom:50px;">
+<div style="text-align:center; margin-top:40px; margin-bottom:50px;">
 
 <script type="text/javascript">
 
@@ -154,7 +154,7 @@ The user can interact with the pgn4web chessboard clicking chessboard squares:
 <script type="text/javascript">
 try {
   openerBoardTitle = opener.boardTitle;
-  document.write("<table style='padding:0;' border=0>");
+  document.write("<table style='padding:0;' border='0'>");
   for (r=7; r>=0; r--) {
     rowDisplayed = false;
     for (c=0; c<=7; c++) {
@@ -182,7 +182,7 @@ The user can interact with the pgn4web chessboard using the keyboard:
 
 <script type="text/javascript">
 
-document.write("<table style='padding:0;' border=0>");	
+document.write("<table style='padding:0;' border='0'>");	
 print_help_row("h , l", "game start, end (also arrow up, down keys)");
 print_help_row("u, i", "find previous, next comment");
 print_help_row("j , k", "move backward, forward (also arrow left, right keys)");
@@ -238,7 +238,7 @@ document.write('Access the search tool either directly with the search form (if 
 For full details about the search tool (implemented as regular expression match of the text of the PGN game), please refer to <a href="http://code.google.com/p/pgn4web/wiki/SearchTool" target="_blank">the pgn4web search tool wiki page</a>; please find below a sample list of useful search patterns:
 <p></p>
 <script type="text/javascript">
-document.write("<table style='padding:0;' border=0>");	
+document.write("<table style='padding:0;' border='0'>");	
 print_help_row("something", "search for text <i>something</i> anywhere in the PGN game");
 print_help_row("White\\s*\"Somebody", "search for player <i>Somebody</i> as White");
 print_help_row("\(White|Black\)\\s*\"Somebody", "search for player <i>Somebody</i> as either White or Black");
@@ -271,11 +271,11 @@ Remaining pgn4web code is copyright (C) 2009, 2011 <a href=mailto:pgn4web@casasc
 </div>
 
 
-<table style="margin-top:40px;" width=100% cellspacing=0 cellpadding=0><tr>
-<td align=left valign=bottom>
+<table style="margin-top:40px;" width="100%" cellspacing="0" cellpadding="0"><tr>
+<td align="left" valign="bottom">
 <script type="text/javascript">document.write("<b>pgn4web " + displayVersion + "</b>");</script>
-</td><td align=right valign=bottom>
-<img src=pawns.png border=0>
+</td><td align="right" valign="bottom">
+<img src="pawns.png" border="0">
 </td></tr></table>
 
 
