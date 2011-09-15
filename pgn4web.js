@@ -15,11 +15,10 @@ if (pgn4web_project_email === undefined) { pgn4web_project_email = 'pgn4web@casa
 
 var helpWin=null;
 function displayHelp(section){
-  if (!section) { section = "top"; }
+  if (!section) { section = "user_interface"; }
   if (helpWin && !helpWin.closed) { helpWin.close(); }
-  helpWin = window.open(detectHelpLocation() + "?" + 
-   (Math.floor(900 * Math.random()) + 100) + "#" + section, "pgn4web_help",
-   "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
+  helpWin = window.open(detectHelpLocation() + "?" + section, "pgn4web_help",
+    "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if ((helpWin !== null) && (window.focus)) { helpWin.focus(); }
 }
 
@@ -451,13 +450,13 @@ boardShortcut("C8", "show this game PGN source data", function(){ displayPgnData
 // D8
 boardShortcut("D8", "show full PGN source data", function(){ displayPgnData(true); });
 // E8
-boardShortcut("E8", "search help", function(){ displayHelp("search"); });
+boardShortcut("E8", "search help", function(){ displayHelp("search_tool"); });
 // F8
-boardShortcut("F8", "shortcut keys help", function(){ displayHelp("keys"); });
+boardShortcut("F8", "shortcut keys help", function(){ displayHelp("shortcut_keys"); });
 // G8
-boardShortcut("G8", "shortcut squares help", function(){ displayHelp("squares"); });
+boardShortcut("G8", "shortcut squares help", function(){ displayHelp("shortcut_squares"); });
 // H8
-boardShortcut("H8", "pgn4web help", function(){ displayHelp(); });
+boardShortcut("H8", "pgn4web help", function(){ displayHelp("user_interface"); });
 // A7
 boardShortcut("A7", "pgn4web website", function(){ window.open(pgn4web_project_url); });
 // B7

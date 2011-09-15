@@ -13,17 +13,36 @@
 
 <style type="text/css">
 
-html,
+html {
+}
+
 body {
   font-family: sans-serif;
   color: black;
   background: white;
-  padding: 10px;
+  padding: 20px;
+  overflow-y: scroll;
 }
 
 a {
   text-decoration: none;
   color: black;
+}
+
+.heading, .headingSelected {
+  color: lightgray;
+  margin: 20px;
+  line-height: 1.5em;
+  font-weight: bold;
+  font-size: 125%;
+}
+
+.headingSelected {
+  color: black;
+}
+
+.section {
+  display: none;
 }
 
 </style>
@@ -36,19 +55,16 @@ a {
 
 <script type="text/javascript">
 
-function print_menu( item, level, title ) {
-  menu  = '<table width=100% cellspacing=0 cellpadding=0><tr><td valign=top>';
-  menu += '<h' + level + '>' + title + '</h' + level + '>';
-  menu += '</td><td valign=top>';
-  menu += '<div style="font-size: 66%; text-align: right">';
-  menu += '<a name="' + item + '" href=#ui>user&nbsp;interface</a>';
-  menu += '&nbsp; &nbsp;<a href=#squares>shortcut&nbsp;squares</a>';
-  menu += '&nbsp; &nbsp;<a href=#keys>shortcut&nbsp;keys</a>';
-  menu += '&nbsp; &nbsp;<a href=#search>search&nbsp;tool</a>';
-  menu += '&nbsp; &nbsp;<a href=#credits>credits&nbsp;&amp;&nbsp;license</a>';
-  menu += '</div>';
-  menu += '</td></tr></table>';
-  document.write(menu); 
+sections = ["user_interface", "shortcut_squares", "shortcut_keys", "search_tool", "credits_and_license"];
+
+function showSection(section) {
+  for (s in sections) {
+    if (theObject = document.getElementById(sections[s] + "_section")) { theObject.style.display = ""; }
+    if (theObject = document.getElementById(sections[s] + "_heading")) { theObject.className = "heading"; }
+  }
+  if (theObject = document.getElementById(section + "_section")) { theObject.style.display = "inline"; }
+  if (theObject = document.getElementById(section + "_heading")) { theObject.className = "headingSelected"; }
+  document.title = "pgn4web help: " + section.replace(/_/g, " ");
 }
 
 function print_help_row (one, two) {
@@ -94,44 +110,56 @@ if (isRotated) {
 <img src=pawns.png border=0>
 </td></tr></table>
 
-<div style="height: 1em">&nbsp;</div>
+<div style="text-align:center; margin-top:40px; margin-bottom:40px;">
 
-<script type="text/javascript">print_menu("ui", 2, "user&nbsp;interface");</script>
+<script type="text/javascript">
+
+for (s in sections) {
+  document.write("<a id='" + sections[s] + "_heading' class='heading' href='javascript:void(0);' onclick='showSection(\"" + sections[s] + "\")'>" + sections[s].replace(/_/g, "&nbsp;") + "</a> ");
+}
+
+</script>
+
+</div>
+
+<div id="user_interface_section" class="section">
 
 The user can interact with the pgn4web chessboard <a href="#keys">using the keyboard</a> or <a href="#squares">clicking chessboard squares</a>; hovering the mouse on each square displays an help summary.
 <p></p>
 A <a href="#search">search tool</a> allows searching within the PGN games.
 <p></p>
 Errors alert messages are logged, such as failures to load PGN games, incorrect PGN games or incorrect FEN strings. When an error is encountered, the top left chessboard square will flash to signal the exception. The error alert log can be reviewed clicking on the same top left chessboard square. 
-<p></p>
-<br>
 
-<script type="text/javascript">print_menu("squares", 2, "shortcut&nbsp;squares");</script>
+</div>
+
+
+<div id="shortcut_squares_section" class="section">
 
 <script type="text/javascript">
-  try {
-    document.write("<table style='padding:0;' border=0>");
-    for (r=7; r>=0; r--) {
-      rowDisplayed = false;
-      for (c=0; c<=7; c++) {
-        if (opener.boardTitle[c][r] !== "") {
-          print_help_row(colLetters.charAt(c) + rowNumbers.charAt(7-r), opener.boardTitle[c][r]);
-          rowDisplayed = true;
-        }
+try {
+  openerBoardTitle = opener.boardTitle;
+  document.write("<table style='padding:0;' border=0>");
+  for (r=7; r>=0; r--) {
+    rowDisplayed = false;
+    for (c=0; c<=7; c++) {
+      if (openerBoardTitle[c][r] !== "") {
+        print_help_row(colLetters.charAt(c) + rowNumbers.charAt(7-r), opener.boardTitle[c][r]);
+        rowDisplayed = true;
       }
-      if (rowDisplayed) { print_help_row("&nbsp;", ""); }
     }
-    document.write("</table>");	
-    document.write("Squares labeled assuming " + colorAtTheBottom + " on bottom.");
-  } catch (e) {
-    document.write("Shortcut squares info not available from the opener window, please hover the mouse pointer on each square of the chessboard to check for their shortcut action.");
+    if (rowDisplayed) { print_help_row("&nbsp;", ""); }
   }
+  document.write("</table>");	
+  document.write("Squares labeled assuming " + colorAtTheBottom + " on bottom.");
+} catch(e) {
+  document.write("Shortcut squares info not available from the opener window, please hover the mouse pointer on each square of the chessboard to check for their shortcut action.");
+}
 </script>
 
-<p></p>
-<br>
+</div>
 
-<script type="text/javascript">print_menu("keys", 2, "shortcut&nbsp;keys");</script>
+
+<div id="shortcut_keys_section" class="section">
 
 <script type="text/javascript">
 
@@ -178,10 +206,10 @@ document.write("</table>");
 
 </script>
 
-<p></p>
-<br>
+</div>
 
-<script type="text/javascript">print_menu("search", 2, "search&nbsp;tool");</script>
+
+<div id="search_tool_section" class="section">
 
 <script type="text/javascript">
 document.write('Access the search tool either directly with the search form (if available on the web page) or via the popup search box invoked with the ' + shortcutSquareSearchPopup + ' shortcut square (assuming ' + colorAtTheBottom + ' on bottom) and/or the \'s\' shortcut key. The ' + shortcutSquareSearchRepeat + ' shortcut square (assuming ' + colorAtTheBottom + ' on bottom) and/or the \'enter\' shortcut key repeat the last search. The ' + shortcutSquareSearchRepeatBackward + ' shortcut square (assuming ' + colorAtTheBottom + ' on bottom) and/or the \'shift-enter\' shortcut key repeat the last search backward.'); 
@@ -204,10 +232,10 @@ document.write("</table>");
 
 </script>
 
-<p></p>
-<br>
+</div>
 
-<script type="text/javascript">print_menu("credits", 2, "credits&nbsp;&amp;&nbsp;license");</script>
+
+<div id="credits_and_license_section" class="section">
 
 Javascript modifications of <a href=mailto:pgn4web@casaschi.net target=_blank>Paolo Casaschi (pgn4web@casaschi.net)</a> on code from the http://ficsgames.com database, in turn likely based on code from the <i>LT PGN viewer</i> at http://www.lutanho.net/pgn/pgnviewer.html
 <p></p>
@@ -221,14 +249,22 @@ Some functionality of specific applications of pgn4web or specific demo pages de
 <p></p>
 Remaining pgn4web code is copyright (C) 2009, 2011 <a href=mailto:pgn4web@casaschi.net target=_blank>Paolo Casaschi (pgn4web@casaschi.net)</a> and licensed under the terms of the <a href=license-gpl-2.0.txt>GNU General Public License version 2</a> as published by the <a href=http://www.fsf.org target=_blank>Free Software Foundation</a>; either <a href=license-gpl-2.0.txt>version 2 of the License</a>, or (at your option) any later version.
 
-<p></p>
+</div>
 
-<table width=100% cellspacing=0 cellpadding=0><tr>
+
+<table style="margin-top:40px;" width=100% cellspacing=0 cellpadding=0><tr>
 <td align=left valign=bottom>
 <script type="text/javascript">document.write("<b>pgn4web " + displayVersion + "</b>");</script>
 </td><td align=right valign=bottom>
 <img src=pawns.png border=0>
 </td></tr></table>
+
+
+<script type="text/javascript">
+
+showSection(location.search.substr(1));
+
+</script>
 
 </body>
 
