@@ -31,7 +31,8 @@ a {
 
 .heading, .headingSelected {
   color: lightgray;
-  margin: 20px;
+  margin-right: 20px;
+  margin-left: 20px;
   line-height: 1.5em;
   font-weight: bold;
   font-size: 125%;
@@ -124,9 +125,9 @@ for (s in sections) {
 
 <div id="user_interface_section" class="section">
 
-The user can interact with the pgn4web chessboard <a href="#keys">using the keyboard</a> or <a href="#squares">clicking chessboard squares</a>; hovering the mouse on each square displays an help summary.
+The user can interact with the pgn4web chessboard <a href="javascript:void(0);" onclick="showSection('shortcut_keys');">using the keyboard</a> or <a href="javascript:void(0);" onclick="showSection('shortcut_squares');">clicking chessboard squares</a>; hovering the mouse on each square displays an help summary.
 <p></p>
-A <a href="#search">search tool</a> allows searching within the PGN games.
+A <a href="javascript:void(0);" onclick="showSection('search_tool')">search tool</a> allows searching within the PGN games.
 <p></p>
 Errors alert messages are logged, such as failures to load PGN games, incorrect PGN games or incorrect FEN strings. When an error is encountered, the top left chessboard square will flash to signal the exception. The error alert log can be reviewed clicking on the same top left chessboard square. 
 
@@ -134,6 +135,9 @@ Errors alert messages are logged, such as failures to load PGN games, incorrect 
 
 
 <div id="shortcut_squares_section" class="section">
+
+The user can interact with the pgn4web chessboard clicking chessboard squares:
+<p></p>
 
 <script type="text/javascript">
 try {
@@ -161,17 +165,12 @@ try {
 
 <div id="shortcut_keys_section" class="section">
 
+The user can interact with the pgn4web chessboard using the keyboard:
+<p></p>
+
 <script type="text/javascript">
 
-try {
-  var keysEnabled = opener.shortcutKeysEnabled;
-  document.write('Shortcut keys currently ' + (keysEnabled ? "enabled, disable" : "disabled, enable") + ' in the chessboard with shift+escape or clicking square ' + shortcutSquareKeyEnable + ' (assuming ' + colorAtTheBottom + ' on bottom).\n'); 
-} catch (e) {
-  document.write('Shortcut keys info not available from the opener window, please check about shortcut keys in the chessboard with shift+escape or clicking square ' + shortcutSquareKeyEnable + ' (assuming ' + colorAtTheBottom + ' on bottom).\n');
-}
-
 document.write("<table style='padding:0;' border=0>");	
-print_help_row("&nbsp;", "");
 print_help_row("h , l", "game start, end (also arrow up, down keys)");
 print_help_row("u, i", "find previous, next comment");
 print_help_row("j , k", "move backward, forward (also arrow left, right keys)");
@@ -202,7 +201,15 @@ print_help_row("z", "pgn4web debug info");
 print_help_row("shift-z", "pgn4web website");
 print_help_row("esc", "pgn4web help");
 print_help_row("shift-esc", "toggle enabling shortcut keys");
+print_help_row("&nbsp;", "");
 document.write("</table>");
+
+try {
+  var keysEnabled = opener.shortcutKeysEnabled;
+  document.write('Shortcut keys currently ' + (keysEnabled ? "enabled, disable" : "disabled, enable") + ' in the chessboard with shift+escape or clicking square ' + shortcutSquareKeyEnable + ' (assuming ' + colorAtTheBottom + ' on bottom).\n'); 
+} catch (e) {
+  document.write('Shortcut keys info not available from the opener window, please check about shortcut keys in the chessboard with shift+escape or clicking square ' + shortcutSquareKeyEnable + ' (assuming ' + colorAtTheBottom + ' on bottom).\n');
+}
 
 </script>
 
