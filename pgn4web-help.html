@@ -66,7 +66,7 @@ a.headingSelected:hover {
 
 <script type="text/javascript">
 
-sections = ["user_interface", "shortcut_squares", "shortcut_keys", "search_tool", "credits_and_license"];
+sections = ["user_interface", "shortcut_keys", "shortcut_squares", "search_tool", "credits_and_license"];
 
 function showSection(section) {
   section2show = sections[0];
@@ -84,15 +84,15 @@ function print_help_row (one, two) {
   document.write("<tr><td style='text-align:left; vertical-align:top; padding-left:40px; white-space:nowrap;'>" + one + "</td><td style='text-align:left; vertical-align:top; padding-left:20px'>" + two + "</td></tr>");
 }
 
-try {
+if (opener && (typeof(opener.pgn4web_version) != "undefined")) {
   displayVersion = 'v' + opener.pgn4web_version;
-} catch(e) {
+} else {
   displayVersion = '';
 }
 
-try {
+if (opener && (typeof(opener.IsRotated) != "undefined")) {
   isRotated = opener.IsRotated;
-} catch(e) {
+} else {
   isRotated = false;
 }
 
@@ -146,35 +146,6 @@ Errors alert messages are logged, such as failures to load PGN games, incorrect 
 </div>
 
 
-<div id="shortcut_squares_section" class="section">
-
-The user can interact with the pgn4web chessboard clicking chessboard squares:
-<p></p>
-
-<script type="text/javascript">
-try {
-  openerBoardTitle = opener.boardTitle;
-  document.write("<table style='padding:0;' border='0'>");
-  for (r=7; r>=0; r--) {
-    rowDisplayed = false;
-    for (c=0; c<=7; c++) {
-      if (openerBoardTitle[c][r] !== "") {
-        print_help_row(colLetters.charAt(c) + rowNumbers.charAt(7-r), opener.boardTitle[c][r]);
-        rowDisplayed = true;
-      }
-    }
-    if (rowDisplayed) { print_help_row("&nbsp;", ""); }
-  }
-  document.write("</table>");	
-  document.write("Squares labeled assuming " + colorAtTheBottom + " on bottom.");
-} catch(e) {
-  document.write("shortcut squares info not available from the opener window, please hover the mouse pointer on each square of the chessboard to check for their shortcut action.");
-}
-</script>
-
-</div>
-
-
 <div id="shortcut_keys_section" class="section">
 
 The user can interact with the pgn4web chessboard using the keyboard:
@@ -216,13 +187,40 @@ print_help_row("shift-esc", "toggle enabling shortcut keys");
 print_help_row("&nbsp;", "");
 document.write("</table>");
 
-try {
-  var keysEnabled = opener.shortcutKeysEnabled;
-  document.write('Shortcut keys currently ' + (keysEnabled ? "enabled, disable" : "disabled, enable") + ' in the chessboard with shift+escape or clicking square ' + shortcutSquareKeyEnable + ' (assuming ' + colorAtTheBottom + ' on bottom).\n'); 
-} catch (e) {
+if (opener && (typeof(opener.shortcutKeysEnabled) != "undefined")) {
+  document.write('Shortcut keys currently ' + (opener.shortcutKeysEnabled ? "enabled, disable" : "disabled, enable") + ' in the chessboard with shift+escape or clicking square ' + shortcutSquareKeyEnable + ' (assuming ' + colorAtTheBottom + ' on bottom).\n'); 
+} else {
   document.write('Shortcut keys info not available from the opener window, please check about shortcut keys in the chessboard with shift+escape or clicking square ' + shortcutSquareKeyEnable + ' (assuming ' + colorAtTheBottom + ' on bottom).\n');
 }
 
+</script>
+
+</div>
+
+
+<div id="shortcut_squares_section" class="section">
+
+The user can interact with the pgn4web chessboard clicking chessboard squares:
+<p></p>
+
+<script type="text/javascript">
+if (opener && (typeof(opener.boardTitle) != "undefined")) {
+  document.write("<table style='padding:0;' border='0'>");
+  for (r=7; r>=0; r--) {
+    rowDisplayed = false;
+    for (c=0; c<=7; c++) {
+      if (opener.boardTitle[c][r] !== "") {
+        print_help_row(colLetters.charAt(c) + rowNumbers.charAt(7-r), opener.boardTitle[c][r]);
+        rowDisplayed = true;
+      }
+    }
+    if (rowDisplayed) { print_help_row("&nbsp;", ""); }
+  }
+  document.write("</table>");	
+  document.write("Squares labeled assuming " + colorAtTheBottom + " on bottom.");
+} else {
+  document.write("shortcut squares info not available from the opener window, please hover the mouse pointer on each square of the chessboard to check for their shortcut action.");
+}
 </script>
 
 </div>
