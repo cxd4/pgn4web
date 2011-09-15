@@ -14,9 +14,10 @@ var pgn4web_project_email;
 if (pgn4web_project_email === undefined) { pgn4web_project_email = 'pgn4web@casaschi.net'; }
 
 var helpWin=null;
-function displayHelp(section){
+function displayHelp(section) {
+  section = typeof(section) == "undefined" ? "" : "?" + section;
   if (helpWin && !helpWin.closed) { helpWin.close(); }
-  helpWin = window.open(detectHelpLocation() + "?" + section, "pgn4web_help",
+  helpWin = window.open(detectHelpLocation() + section, "pgn4web_help",
     "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if ((helpWin !== null) && (window.focus)) { helpWin.focus(); }
 }
@@ -455,7 +456,7 @@ boardShortcut("F8", "shortcut keys help", function(){ displayHelp("shortcut_keys
 // G8
 boardShortcut("G8", "shortcut squares help", function(){ displayHelp("shortcut_squares"); });
 // H8
-boardShortcut("H8", "pgn4web help", function(){ displayHelp("user_interface"); });
+boardShortcut("H8", "pgn4web help", function(){ displayHelp(); });
 // A7
 boardShortcut("A7", "pgn4web website", function(){ window.open(pgn4web_project_url); });
 // B7
