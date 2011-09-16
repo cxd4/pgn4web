@@ -84,9 +84,6 @@ the pgnLinkLists element and the overflow property of the body element.
 - min-/max-/height attribute ignored for the body element, otherwise the
 above workaround could be simpler
 http://crbug.com/50192
-- scrollbar width is not taken into account for margins/padding, no
-workaround implemented (anymore since pgn4web r6921)
-http://crbug.com/31494
 
 
 Other:
