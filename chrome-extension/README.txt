@@ -89,9 +89,9 @@ http://crbug.com/31494
 
 Other:
 
-about.html, aboutOpen.html, manifest.json: help page
+about.html, help.html, manifest.json: help page
 verify the naming convention ("help") and the manifest syntax for the upcoming
-"help" page and update manifest.json, about.html and aboutOpen.html if needed.
+"help" page and update manifest.json, about.html and help.html if needed.
 http://crbug.com/29849
 
 chess-games-viewer.html, live-mosaic-viewer.html: force page action
@@ -99,4 +99,4 @@ currently chrome-extension://*.pgn pages do not trigger webRequests events;
 hence chessboard pages need to force the page action in order to include the
 loaded PGN URL; if the underlying issue is fixed, consider not forcing the page
 action (allthough this might expose a noCache URL parameter)
-http://crbug.com/92395
+http://crbug.com/92395 (see also webRequest http://crbug.com/60101 above)
