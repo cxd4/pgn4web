@@ -129,7 +129,7 @@ if (isRotated) {
 <script type="text/javascript">
 
 for (s in sections) {
-  document.write("<a id='" + sections[s] + "_heading' class='heading' href='javascript:void(0);' onclick='showSection(\"" + sections[s] + "\")'>" + sections[s].replace(/_/g, "&nbsp;") + "</a> ");
+  document.write("<a id='" + sections[s] + "_heading' class='heading' href='javascript:void(0);' onclick='showSection(\"" + sections[s] + "\"); this.blur();'>" + sections[s].replace(/_/g, "&nbsp;") + "</a> ");
 }
 
 </script>
@@ -274,7 +274,7 @@ Remaining pgn4web code is copyright (C) 2009, 2011 <a href="mailto:pgn4web@casas
 <td align="left" valign="bottom">
 <script type="text/javascript">document.write("<b>pgn4web " + displayVersion + "</b>");</script>
 </td><td align="right" valign="bottom">
-<img src="pawns.png" border="0">
+<a href="javascript:void(0);" onclick="document.body.scrollTop = 0; this.blur();"><img src="pawns.png" border="0"></a>
 </td></tr></table>
 
 
