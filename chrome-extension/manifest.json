@@ -20,7 +20,7 @@
       "48": "alpha/48/bp.png"
    },
    "incognito": "split",
-   "minimum_chrome_version": "7.0",
+   "minimum_chrome_version": "14.0",
    "name": "Chess games viewer",
    "options_page": "options.html",
    "page_action": {

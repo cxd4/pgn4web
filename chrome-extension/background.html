@@ -221,14 +221,8 @@ chrome.contextMenus.create({"type": "separator", "contexts": ["page", "selection
 
 // which URL patters should be considered as PGN chess games
 
-// when chromium bug http://crbug.com/51461 is fixed and about.html shows the "try this" examples, make sure the links on the extension page get the context menus
-if ((extensionChannel == "beta") || (extensionChannel == "development")) {
-  pgnUrlPatterns = ["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", "*://*/*.PGN?*", "*://*/*.Pgn?*", chrome.extension.getURL("*.pgn")];
-  zipUrlPatterns = ["*://*/*.zip", "*://*/*.ZIP", "*://*/*.Zip", "*://*/*.zip?*", "*://*/*.ZIP?*", "*://*/*.Zip?*", chrome.extension.getURL("*.zip")];
-} else {
-  pgnUrlPatterns = ["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", "*://*/*.PGN?*", "*://*/*.Pgn?*"];
-  zipUrlPatterns = ["*://*/*.zip", "*://*/*.ZIP", "*://*/*.Zip", "*://*/*.zip?*", "*://*/*.ZIP?*", "*://*/*.Zip?*"];
-}
+pgnUrlPatterns = ["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", "*://*/*.PGN?*", "*://*/*.Pgn?*", chrome.extension.getURL("*.pgn")];
+zipUrlPatterns = ["*://*/*.zip", "*://*/*.ZIP", "*://*/*.Zip", "*://*/*.zip?*", "*://*/*.ZIP?*", "*://*/*.Zip?*", chrome.extension.getURL("*.zip")];
 pgnZipUrlPatterns = pgnUrlPatterns.concat(zipUrlPatterns);
 
 chrome.contextMenus.create({"title": "View chess games link on a single board", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnviewLinkOnClick});

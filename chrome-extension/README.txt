@@ -60,17 +60,6 @@ download icon of the popup.
 http://crbug.com/86115 (and other, search for registerContentHandler)
 Requires increasing minimum_chrome_version (new API and permission)
 
-about.html, background.html: "try this" examples
-enable the example paragraphs in about.html by removing the "display: none;"
-css attribute of "div.try" and updating the pgnUrlPattern/zipUrlPattern
-definitions in background.html; example paragraphs being disabled at the
-moment because extension pages dont get context menus.
-http://crbug.com/51461
-Implemented for extensionChannel "beta" and "development"
-Fixed in google chrome (dev) v14.0.835.15
-Requires increasing minimum_chrome_version (new pgnUrlPattern/zipUrlPattern
-definition not backward compatible)
-
 
 Bugs:
 
