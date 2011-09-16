@@ -79,6 +79,8 @@ popup.html is affected by following issues:
 - wrong height assigned by default (especially on small screen netbooks),
 with as workaround setting maxHeight of pgnLinkList
 http://crbug.com/76899
+Verify inspecting the popup window, disabling the max-height property of
+the pgnLinkLists element and the overflow property of the body element.
 - min-/max-/height attribute ignored for the body element, otherwise the
 above workaround could be simpler
 http://crbug.com/50192
