@@ -201,6 +201,7 @@ function get_pgn() {
           return TRUE;
         }
       } else {
+        if (($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
         $pgnStatus = "failed opening " . $zipFileString;
         return FALSE;
       }
