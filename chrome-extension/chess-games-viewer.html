@@ -615,7 +615,9 @@ of Google Chrome. Don't use with any other browser.
 </td><td>
 <a id="remotePgnUrl" name="remotePgnUrl" class="topButton" href="javascript:void(0);" onclick="fetchNewPgnUrl(false);" title="enter PGN chess games URL for viewing; ZIP archives containing PGN chess games files are also accepted"><img class="topButtonImage" src="alpha-16.png"/></a>
 </td><td>
-<a id="remoteLivePgnUrl" name="remoteLivePgnUrl" class="topButton" href="javascript:void(0);" onclick="fetchNewPgnUrl(true);" title="enter PGN chess games URL for viewing with live refresh"><img class="topButtonImage" src="refresh.png"/></a>
+<a id="remoteLivePgnUrl" name="remoteLivePgnUrl" class="topButton" href="javascript:void(0);" onclick="fetchNewPgnUrl(true);" title="enter PGN chess games URL for viewing on a single board with live refresh"><img class="topButtonImage" src="refresh.png"/></a>
+</td><td>
+<a id="remoteLiveMosaicPgnUrl" name="remoteLiveMosaicPgnUrl" class="topButton" href="javascript:void(0);" onclick="fetchNewMosaicPgnUrl();" title="enter PGN chess games URL for viewing on multiple boards with live refresh"><img class="topButtonImage" src="refresh-mosaic.png"/></a>
 </td></tr></table>
 
 <a class="positionLink" name="board" href="javascript:void(0);" onclick="goToHash('board')" onfocus="this.blur();">&nbsp;</a>
@@ -1023,9 +1025,20 @@ of Google Chrome. Don't use with any other browser.
    function openPgnFiles() {
       if (theObject = document.getElementById("localPgnFiles")) { theObject.click(); }
    }
-   
+
+   function fetchNewMosaicPgnUrl() {
+      newPgnUrl = prompt("Enter PGN chess games URL for viewing on multiple boards with live refresh:", pgnData);
+      if (newPgnUrl && newPgnUrl.replace(/^\s*/, "")) {
+         if ((newPgnUrl === pgnData) && (newPgnUrl === pgnUrl) && (LiveBroadcastDelay > 0) && (!newPgnUrl.match(/\.zip(\?|#|$)/i))) {
+            switchBoardView();
+         } else {
+            location.href = "live-mosaic-viewer.html?pgnData=" + escape(newPgnUrl) + "&refreshMinutes=1&hp=t"; 
+         }
+      }
+   }
+
    function fetchNewPgnUrl(live) {
-      newPgnUrl = prompt("Enter PGN chess games URL for viewing" + (live ? " with live refresh:" : ":"), pgnData);
+      newPgnUrl = prompt("Enter PGN chess games URL for viewing on a single board" + (live ? " with live refresh:" : ":"), pgnData);
       if (newPgnUrl && newPgnUrl.replace(/^\s*/, "")) {
          if (pgnData.indexOf(puzzlerUrl) != -1) { live = false; } // assume the puzzler URL is not a live broadcast
          if (live) { newRefreshMinutes = inputRefreshMinutes ? inputRefreshMinutes : 1 + 0.01 * Math.floor(Math.random()*10); }
