@@ -157,13 +157,16 @@ a {
 .topButton {
   margin-left: 0.5em;
   margin-right: 0.5em;
-  color: inherit;
 }
 
-.topButton:hover {
-  background-image: -webkit-radial-gradient(circle, #FFAA66, #FFCC99);
-  border-radius: 0.4em;
-  -webkit-box-shadow: 0 0 1em #FF8000;
+.topButtonImage {
+  width: 1em;
+  height: 1em;
+  opacity: 0.66;
+}
+
+.topButtonImage:hover {
+  opacity: 1;
 }
 
 .hiddenSelect {
@@ -173,8 +176,8 @@ a {
 }
 
 .localPgnFiles {
-  width: 1em;
-  height: 0.5em;
+  width: 1.25em;
+  height: 1em;
   visibility: hidden;
 }
 
@@ -251,14 +254,11 @@ a {
   color: inherit;
 }
 
-.toggleTablebaseLink {
-  margin-right: 0.7em;
+.toggleCommentsLink:hover, .toggleAnalysisLink:hover, .toggleTablebaseLink:hover {
 }
 
-.toggleCommentsLink:hover, .toggleAnalysisLink:hover, .toggleTablebaseLink:hover {
-  background: #FFCC99;
-  border-radius: 0.4em;
-  -webkit-box-shadow: 0 0 1em #FF8000;
+.toggleTablebaseLink {
+  margin-right: 0.7em;
 }
 
 .lastMoveAndComment {
