@@ -95,6 +95,10 @@ verify the naming convention ("help") and the manifest syntax for the upcoming
 "help" page and update manifest.json, about.html and help.html if needed.
 http://crbug.com/29849
 
+background.html: context menu icons
+add icons to context menus (same menu icons of chess-games-viewer.html)
+http://crbug.com/53820
+
 chess-games-viewer.html, live-mosaic-viewer.html: force page action
 currently chrome-extension://*.pgn pages do not trigger webRequests events;
 hence chessboard pages need to force the page action in order to include the
