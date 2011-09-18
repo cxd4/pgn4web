@@ -162,21 +162,21 @@ a {
 .topButtonImage {
   width: 1em;
   height: 1em;
-  opacity: 0.66;
+  opacity: 0.4;
 }
 
 .topButtonImage:hover {
-  opacity: 1;
+  opacity: 0.8;
 }
 
 .hiddenSelect {
-  width: 1em;
+  width: 1.5em;
   font-family: monospace;
   visibility: hidden;
 }
 
 .localPgnFiles {
-  width: 1em;
+  width: 1.5em;
   height: 1em;
   visibility: hidden;
 }
