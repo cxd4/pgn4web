@@ -95,8 +95,9 @@ verify the naming convention ("help") and the manifest syntax for the upcoming
 "help" page and update manifest.json, about.html and help.html if needed.
 http://crbug.com/29849
 
-background.html: context menu icons
-add icons to context menus (same menu icons of chess-games-viewer.html)
+about.html, background.html: context menu icons
+add icons to context menus (same menu icons of chess-games-viewer.html) and to
+the help/practice text in about.html
 http://crbug.com/53820
 
 chess-games-viewer.html, live-mosaic-viewer.html: force page action
