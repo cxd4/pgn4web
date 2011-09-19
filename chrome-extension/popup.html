@@ -155,7 +155,7 @@ chrome.tabs.getSelected(null, function(tab){
   var headerObject = document.getElementById("pgnHeader");
   var listObject = document.getElementById("pgnLinkList");
 
-  var pgnHeaderInnerHTML = '<a class="pgnHeaderLink" title="chess games viewer extension help" target="_blank" href="javascript:void(0);" onclick="chrome.extension.getBackgroundPage().showAboutPage(); window.close();">Chess games viewer</a>';
+  var pgnHeaderInnerHTML = '<a class="pgnHeaderLink" title="chess games viewer extension help" target="_blank" href="javascript:void(0);" onclick="chrome.extension.getBackgroundPage().showAboutPage(); self.close();">Chess games viewer</a>';
 
   if ((typeof(chrome.extension.getBackgroundPage().pgnHrefLinks[tab.id]) == "undefined") || (typeof(chrome.extension.getBackgroundPage().pgnWebRequests[tab.id]) == "undefined")) {
     listObject.style.marginRight = "2em";
