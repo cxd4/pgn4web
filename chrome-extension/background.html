@@ -207,6 +207,12 @@ chrome.contextMenus.create({"title": "View selected TEXT as PGN chess games on a
 
 chrome.contextMenus.create({"type": "separator", "contexts": ["page", "selection"]});
 
+// "page" context menu to open local PGN files
+
+chrome.contextMenus.create({"title": "Open local PGN chess games FILES for viewing on a single board", "contexts": ["page"], "onclick": openlocalpgnOnClick});
+
+chrome.contextMenus.create({"type": "separator", "contexts": ["page"]});
+
 // "page" and "selection" context menu to enter PGN chess games URL for opening
 
 chrome.contextMenus.create({"title": "Enter PGN chess games URL for viewing on a single board", "contexts": ["page", "selection"], "onclick": pgnviewPageOnClick});
@@ -220,7 +226,6 @@ chrome.contextMenus.create({"type": "separator", "contexts": ["page", "selection
 // "link" context menu to open remote PGN chess games URLs
 
 // which URL patters should be considered as PGN chess games
-
 pgnUrlPatterns = ["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", "*://*/*.PGN?*", "*://*/*.Pgn?*", chrome.extension.getURL("*.pgn")];
 zipUrlPatterns = ["*://*/*.zip", "*://*/*.ZIP", "*://*/*.Zip", "*://*/*.zip?*", "*://*/*.ZIP?*", "*://*/*.Zip?*", chrome.extension.getURL("*.zip")];
 pgnZipUrlPatterns = pgnUrlPatterns.concat(zipUrlPatterns);
@@ -234,12 +239,6 @@ chrome.contextMenus.create({"title": "View chess games link on multiple boards w
 chrome.contextMenus.create({"title": "Inspect ZIP archive link for PGN chess games", "contexts": ["link"],  targetUrlPatterns: zipUrlPatterns, "onclick": pgnviewLinkOnClick});
 
 chrome.contextMenus.create({"type": "separator", "contexts": ["link"], targetUrlPatterns: pgnZipUrlPatterns});
-
-// "page" context menu to open local PGN files
-
-chrome.contextMenus.create({"title": "Open local PGN chess games FILES for viewing on a single board", "contexts": ["page"], "onclick": openlocalpgnOnClick});
-
-chrome.contextMenus.create({"type": "separator", "contexts": ["page"]});
 
 // "link", "page" and "selection" help menus
 
