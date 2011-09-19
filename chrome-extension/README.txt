@@ -97,7 +97,7 @@ http://crbug.com/29849
 
 about.html, background.html: context menu icons
 add icons to context menus (same menu icons of chess-games-viewer.html) and to
-the help/practice text in about.html
+the help/practice text in about.html when referencing context menu items.
 http://crbug.com/53820
 
 chess-games-viewer.html, live-mosaic-viewer.html: force page action
