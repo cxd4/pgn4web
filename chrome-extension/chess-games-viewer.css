@@ -252,9 +252,12 @@ a {
 
 .toggleCommentsLink, .toggleAnalysisLink, .toggleTablebaseLink {
   color: inherit;
+  font-weight: bold;
+  opacity: 0.75;
 }
 
 .toggleCommentsLink:hover, .toggleAnalysisLink:hover, .toggleTablebaseLink:hover {
+  opacity: 1;
 }
 
 .toggleTablebaseLink {
