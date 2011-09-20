@@ -464,7 +464,7 @@ of Google Chrome. Don't use with any other browser.
    function showProbeTablebaseResults(res, fenString) {
       if (theObject = document.getElementById("GameTablebaseProbe")) {
          if (typeof(res) != "undefined") {
-            if (fenString !== CurrentFEN()) { res = "error"; }
+            if ((typeof(fenString) != "undefined") && (fenString !== CurrentFEN())) { res = "error"; }
             if (secondObject = document.getElementById("GameAnalysisMove")) { secondObject.style.visibility = "hidden"; }
             if (secondObject = document.getElementById("GameAnalysisEval")) { secondObject.style.visibility = "hidden"; }
             if (secondObject = document.getElementById("GameAnalysisPv")) { secondObject.style.visibility = "hidden"; }
@@ -491,7 +491,10 @@ of Google Chrome. Don't use with any other browser.
    function toggleProbeTablebase() {
       if (theObject = document.getElementById("GameTablebaseProbe")) {
          if (theObject.innerHTML) { showProbeTablebaseResults(); }
-         else if (checkTablebaseUnderstandsGameAndWarn()) { backgroundPage.probeTablebase(CurrentFEN(), showProbeTablebaseResults); }
+         else if (checkTablebaseUnderstandsGameAndWarn()) {
+            showProbeTablebaseResults("...");
+            backgroundPage.probeTablebase(CurrentFEN(), showProbeTablebaseResults);
+         }
       }
    }
 
