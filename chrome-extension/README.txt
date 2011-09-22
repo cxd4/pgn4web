@@ -39,6 +39,8 @@ Chrome, the background.html variable extensionChannel can be set to "stable"
 (default), "beta" or "development" in order to trigger testing code in the 
 extension's HTML, CSS and JAVASCRIPT (remember to manually update manifest.json
 if needed).
+Consider auto-detecting the release channel if possible:
+http://crbug.com/35070
 
 
 Enhancements:
@@ -103,10 +105,13 @@ verify the naming convention ("help") and the manifest syntax for the upcoming
 "help" page and update manifest.json, about.html and help.html if needed.
 http://crbug.com/29849
 
-about.html, background.html: context menu icons
+about.html, background.html: context menu icons and filename
 add icons to context menus (same menu icons of chess-games-viewer.html) and to
 the help/practice text in about.html when referencing context menu items.
 http://crbug.com/53820
+Also consider adding filename to the context menu string once the feature is
+available.
+http://crbug.com/60758
 
 chess-games-viewer.html, live-mosaic-viewer.html: force page action
 currently chrome-extension://*.pgn pages do not trigger webRequests events;
