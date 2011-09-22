@@ -63,6 +63,11 @@ download icon of the popup.
 http://crbug.com/86115 (and other, search for registerContentHandler)
 Requires increasing minimum_chrome_version (new API and permission)
 
+manifest.json: match mime-types in content scripts
+enhance PGN/ZIP URL detection/validation by matching by mime-type when
+supported.
+http://crbug.com/35070
+
 
 Bugs:
 
@@ -82,8 +87,10 @@ XHR access to file:// URLs is broken; once this is fixed consider extending
 the PGN URL definition to include file:// URLs (in the URL validation of
 background.html and pgnLinks.js) and injecting the content script into
 file:// pages (replace the match pattern *://*/* with <all_urls> in
-manifest.json)
+manifest.json). Relevant for testing sites locally.
 http://crbugs.com/41024
+monitor similar bug for ftp:// URLs, allthough less relevant.
+http://crbug.com/64826
 
 popup.html: popup css
 popup.html is affected by following issues:
@@ -112,6 +119,8 @@ http://crbug.com/53820
 Also consider adding filename to the context menu string once the feature is
 available.
 http://crbug.com/60758
+Also monitor scrollbar width bug if ever fixed.
+http://crbug.com/91922
 
 chess-games-viewer.html, live-mosaic-viewer.html: force page action
 currently chrome-extension://*.pgn pages do not trigger webRequests events;
