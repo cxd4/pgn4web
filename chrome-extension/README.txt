@@ -75,6 +75,14 @@ Possible workaround if context scripts could manipulate context menus, see
 http://crbug.com/77023
 Verify on http://code.google.com/p/pgn4web/wiki/SandBox
 
+manifest.json, background.html and pgnLinks.js: access to file:// URLs
+XHR access to file:// URLs is broken; once this is fixed consider extending
+the PGN URL definition to include file:// URLs (in the URL validation of
+background.html and pgnLinks.js) and injecting the content script into
+file:// pages (replace the match pattern *://*/* with <all_urls> in
+manifest.json)
+http://crbugs.com/41024
+
 popup.html: popup css
 popup.html is affected by following issues:
 - wrong height assigned by default (especially on small screen netbooks),
