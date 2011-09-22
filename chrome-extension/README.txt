@@ -88,7 +88,7 @@ the PGN URL definition to include file:// URLs (in the URL validation of
 background.html and pgnLinks.js) and injecting the content script into
 file:// pages (replace the match pattern *://*/* with <all_urls> in
 manifest.json). Relevant for testing sites locally.
-http://crbugs.com/41024
+http://crbug.com/41024
 monitor similar bug for ftp:// URLs, allthough less relevant.
 http://crbug.com/64826
 
