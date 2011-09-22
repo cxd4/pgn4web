@@ -120,6 +120,11 @@ Also consider adding filename to the context menu string once the feature is
 available.
 http://crbug.com/60758
 Also monitor scrollbar width bug if ever fixed.
+http://crbug.com/31494
+
+chess-games-viewer.html:  fixed-width font size change issue
+monitor fixed-width font size change issue and check layout of the game
+selection dropdown menu once the bug is fixed.
 http://crbug.com/91922
 
 chess-games-viewer.html, live-mosaic-viewer.html: force page action
