@@ -115,6 +115,7 @@ http://crbug.com/29849
 about.html, background.html: context menu icons and filename
 add icons to context menus (same menu icons of chess-games-viewer.html) and to
 the help/practice text in about.html when referencing context menu items.
+Maybe remove context menu separators other than the help one.
 http://crbug.com/53820
 Also consider adding filename to the context menu string once the feature is
 available.
