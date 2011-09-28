@@ -39,20 +39,20 @@ Chrome, the background.html variable extensionChannel can be set to "stable"
 (default), "beta" or "development" in order to trigger testing code in the 
 extension's HTML, CSS and JAVASCRIPT (remember to manually update manifest.json
 if needed).
-Consider auto-detecting the release channel if possible:
+Consider auto-detecting the release channel if possible.
 http://crbug.com/35070
 
 
 Enhancements:
 
 background.html, manifest.json: webRequest
-enable the webRequest extension API when stable
+enable the webRequest extension API when stable.
 info http://code.google.com/chrome/extensions/api_index.html
 http://crbug.com/60101
 Implemented for extensionChannel "development" (also needs "experimental"
-permission in manifest.json).
+permission in manifest.json). Might need new permission in manifest.json.
 Verify on http://chesstempo.com/pgn-viewer.html and http://www.bennedik.de/Silverboard.html
-Requires increasing minimum_chrome_version (new API and permission)
+Requires increasing minimum_chrome_version (new API).
 
 background.html, manifest.json: registerContentHandler
 register the extension as content handler for application/x-chess-pgn
@@ -61,7 +61,7 @@ the chrome downloads page; needs assessing impact on the plain download of
 a PGN file: check what happens when clicking a link on the page or the
 download icon of the popup.
 http://crbug.com/86115 (and other, search for registerContentHandler)
-Requires increasing minimum_chrome_version (new API and permission)
+Requires increasing minimum_chrome_version (new API).
 
 manifest.json: match mime-types in content scripts
 enhance PGN/ZIP URL detection/validation by matching by mime-type when
@@ -78,7 +78,7 @@ http://host/file.html?pgnData=games.pgn would match *://*/*.pgn
 This will lead to a context menu appearing when it should not (but the
 mouse pointer will not change and the viewer will not open the link).
 http://crbug.com/84024
-Possible workaround if context scripts could manipulate context menus, see
+Possible workaround exist if context scripts could manipulate context menus.
 http://crbug.com/77023
 Verify on http://code.google.com/p/pgn4web/wiki/SandBox
 
@@ -101,9 +101,10 @@ http://crbug.com/76899
 Verify inspecting the popup window, disabling the max-height property of
 pgnLinkLists and the overflow property of the body element.
 - min-/max-/height attribute ignored for the body element, otherwise the
-above workaround could be simpler
+above workaround could be simpler.
 http://crbug.com/50192
-
+Also monitor scrollbar width bug if ever fixed.
+http://crbug.com/31494
 
 Other:
 
@@ -120,8 +121,6 @@ http://crbug.com/53820
 Also consider adding filename to the context menu string once the feature is
 available.
 http://crbug.com/60758
-Also monitor scrollbar width bug if ever fixed.
-http://crbug.com/31494
 
 chess-games-viewer.html:  fixed-width font size change issue
 monitor fixed-width font size change issue and check layout of the game
@@ -132,5 +131,5 @@ chess-games-viewer.html, live-mosaic-viewer.html: force page action
 currently chrome-extension://*.pgn pages do not trigger webRequests events;
 hence chessboard pages need to force the page action in order to include the
 loaded PGN URL; if the underlying issue is fixed, consider not forcing the page
-action (allthough this might expose a noCache URL parameter)
+action (allthough this might expose a noCache URL parameter).
 http://crbug.com/92395 (see also webRequest http://crbug.com/60101 above)
