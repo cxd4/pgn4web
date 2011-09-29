@@ -33,6 +33,7 @@ body {
 
 .pgnHeader {
   margin-right: 2em;
+  line-height: 2em;
   font-weight: bold;
 }
 
@@ -177,7 +178,7 @@ chrome.tabs.getSelected(null, function(tab){
   // workaround to cope with http://crbug.com/76899 and http://crbug.com/50192
   // fixing 76899 would avoid the need of the workaround
   // fixing 50192 could make the workaround simpler, for instance with a body max height
-  var maxLinkListItems = Math.max(1, Math.ceil((0.6 * self.screen.availHeight - 6 * em) / (2 * em)));
+  var maxLinkListItems = Math.max(1, Math.ceil((0.6 * self.screen.availHeight - 7 * em) / (2 * em)));
   if (pgnLinks.length > maxLinkListItems) {
     listObject.style.maxHeight = (maxLinkListItems * 2) + "em";
     listObject.style.paddingRight = "2em";
