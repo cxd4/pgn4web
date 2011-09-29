@@ -51,13 +51,11 @@ body {
   margin: 0;
   padding: 0;
   line-height: 2em;
-  max-height: 20em; /* fix the link list height to show 10 items to cope with chrome bugs http://crbug.com/76899 and http://crbug.com/50192 */
   overflow-x: hidden;
   overflow-y: auto;
 }
 
 .pgnItem {
-  margin-right: 2em;
 }
 
 .pgnListLink {
@@ -176,6 +174,14 @@ chrome.tabs.getSelected(null, function(tab){
     pgnLinksId[l] = l;
   }
   pgnLinksId = pgnLinksId.sort(sortPgnLinks);
+
+  // fix the link list height to show up to 10 items
+  // to cope with chrome bugs http://crbug.com/76899 and http://crbug.com/50192
+  maxLinkListItems = 10;
+  if (pgnLinks.length > maxLinkListItems) {
+    listObject.style.maxHeight = (maxLinkListItems * 2) + "em";
+    listObject.style.paddingRight = "2em";
+  } else { listObject.style.marginRight = "2em"; }
 
   pgnHeaderInnerHTML += ': <span title="the chess games viewer extension detected on this page ' + 
     pgnLinks.length + (pgnLinks.length == 1 ? ' link' : ' links') + ' to chess games in PGN format">' + 
