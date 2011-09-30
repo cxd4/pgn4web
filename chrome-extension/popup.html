@@ -132,7 +132,7 @@ chrome.tabs.getSelected(null, function(tab){
         if (adjUrl.indexOf(hostBase) != -1) { retUrl = adjUrl.substr(hostBase.length); }
       }
     }
-    return unescape(retUrl).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    return decodeURI(retUrl).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
 
   function sortPgnLinks(a, b) {
