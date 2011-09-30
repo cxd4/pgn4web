@@ -172,7 +172,7 @@ chrome.tabs.getSelected(null, function(tab){
   pgnLinks = pgnLinks.concat(chrome.extension.getBackgroundPage().pgnWebRequests[tab.id]);
 
   for (l in pgnLinks) {
-    pgnLinksDisplay[l] = displayUrl(pgnLinks[l], tab.url);
+    pgnLinksDisplay[l] = unescape(displayUrl(pgnLinks[l], tab.url)).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
     pgnLinksId[l] = l;
   }
   pgnLinksId = pgnLinksId.sort(sortPgnLinks);
@@ -197,7 +197,7 @@ chrome.tabs.getSelected(null, function(tab){
       '<a title="view on a single board with live refresh games from\n' + pgnLinks[l] + '" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'chrome.tabs.create({url: "chess-games-viewer.html?pgnData=' + escape(pgnLinks[l]) + '&refreshMinutes=1.0' + Math.floor(Math.random()*10) + '"}); self.close();\'><img src="refresh.png" class="linkImage"></a>' +
       '<a title="view on multiple boards with live refresh games from\n' + pgnLinks[l] + '" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'chrome.tabs.create({url: "live-mosaic-viewer.html?pgnData=' + escape(pgnLinks[l]) + '&refreshMinutes=1.0' + Math.floor(Math.random()*10) + '&headlessPage=true"}); self.close();\'><img src="refresh-mosaic.png" class="linkImage"></a>' +
       '<a title="download games from\n' + pgnLinks[l] + '" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'chrome.tabs.update(' + tab.id + ', {url: "' + pgnLinks[l] + '"}); self.close();\'><img src="download.png" class="linkImage"></a>' +
-      '<a id="pgnLinkUrl_' + l + '" title="chess games link #' + (parseInt(ll, 10) + 1) + '\n' + pgnLinks[l] + '" class="pgnFileName" href="javascript:void(0);" onclick="toggleFullPgnUrl(' + l + ');">' + url4print(pgnLinksDisplay[l]) + '</a>' +
+      '<a id="pgnLinkUrl_' + l + '" title="chess games link #' + (parseInt(ll, 10) + 1) + '\n' + pgnLinks[l] + '" class="pgnFileName" href="javascript:void(0);" onclick="toggleFullPgnUrl(' + l + ');">' + pgnLinksDisplay[l] + '</a>' +
       '</div>';
   }
 
@@ -208,13 +208,12 @@ chrome.tabs.getSelected(null, function(tab){
 var toggledFullUrlNum = null;
 function toggleFullPgnUrl(l) {
   if (link = document.getElementById("pgnLinkUrl_" + l)) {
-    if ((toggledFullUrlNum !== null) && (toggledFullUrlLink = document.getElementById("pgnLinkUrl_" + toggledFullUrlNum))) { toggledFullUrlLink.innerHTML = url4print(pgnLinksDisplay[toggledFullUrlNum]); }
-    link.innerHTML = url4print((toggledFullUrlNum === l) ? pgnLinksDisplay[l] : pgnLinks[l]);
+    previousToggledFullUrlNum = toggledFullUrlNum;
+    link.innerHTML = (toggledFullUrlNum === l) ? pgnLinksDisplay[l] : pgnLinks[l];
     toggledFullUrlNum = (toggledFullUrlNum === l) ? null : l;
+    if ((previousToggledFullUrlNum !== l) && (previousToggledFullUrlNum !== null) && (previousToggledFullUrlLink = document.getElementById("pgnLinkUrl_" + previousToggledFullUrlNum))) { previousToggledFullUrlLink.innerHTML = pgnLinksDisplay[previousToggledFullUrlNum]; }
   }
 }
-
-function url4print(url) { return unescape(url).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
 
 </script>
 
