@@ -124,14 +124,15 @@ chrome.tabs.getSelected(null, function(tab){
   function displayUrl(url, base) {
     adjUrl = url.replace(/(?=:)\/+/, "/");
     adjBase = base.replace(/[?#].*$/, "").replace(/(?=:)\/+/, "/").replace(/\/[^\/]*$/, "") + "/";
-    if (adjUrl.indexOf(adjBase) === 0) { return (adjUrl.substr(adjBase.length)); }
-
-    if (hostBaseMatch = adjBase.match(/^[^:\/]+:\/\/[^\/]+/, "")) {
-      hostBase = hostBaseMatch[0];
-      if (adjUrl.indexOf(hostBase) != -1) { return adjUrl.substr(hostBase.length); }
+    retUrl = url;
+    if (adjUrl.indexOf(adjBase) === 0) { retUrl = adjUrl.substr(adjBase.length); }
+    else {
+      if (hostBaseMatch = adjBase.match(/^[^:\/]+:\/\/[^\/]+/, "")) {
+        hostBase = hostBaseMatch[0];
+        if (adjUrl.indexOf(hostBase) != -1) { retUrl = adjUrl.substr(hostBase.length); }
+      }
     }
-
-    return url;
+    return unescape(retUrl).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/\s/g, "&nbsp;");
   }
 
   function sortPgnLinks(a, b) {
@@ -172,7 +173,7 @@ chrome.tabs.getSelected(null, function(tab){
   pgnLinks = pgnLinks.concat(chrome.extension.getBackgroundPage().pgnWebRequests[tab.id]);
 
   for (l in pgnLinks) {
-    pgnLinksDisplay[l] = unescape(displayUrl(pgnLinks[l], tab.url)).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    pgnLinksDisplay[l] = displayUrl(pgnLinks[l], tab.url);
     pgnLinksId[l] = l;
   }
   pgnLinksId = pgnLinksId.sort(sortPgnLinks);
