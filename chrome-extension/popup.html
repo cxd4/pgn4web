@@ -69,7 +69,7 @@ body {
 
 .pgnFileName {
   margin-left: 1em;
-  white-space: nowrap;
+  white-space: pre;
 }
 
 .pgnFooter {
@@ -132,7 +132,7 @@ chrome.tabs.getSelected(null, function(tab){
         if (adjUrl.indexOf(hostBase) != -1) { retUrl = adjUrl.substr(hostBase.length); }
       }
     }
-    return unescape(retUrl).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/\s/g, "&nbsp;");
+    return unescape(retUrl).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
 
   function sortPgnLinks(a, b) {
@@ -204,6 +204,7 @@ chrome.tabs.getSelected(null, function(tab){
 
   listObject.innerHTML = pgnLinkListInnerHTML;
   headerObject.innerHTML = pgnHeaderInnerHTML;
+
 });
 
 var toggledFullUrlNum = null;
