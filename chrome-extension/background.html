@@ -140,8 +140,8 @@ function pgntextOnClick(info, tab) {
       return;
     }
   }
-  if (pgnText[pgnTextIndex].match(/^\s*[1-8KQRBNP]{1,8}(\/[1-8KQRBNP]{1,8}){7}[\s0-9A-HKQW-]*$/i)) {
-     pgnText[pgnTextIndex] = '[FEN "' + pgnText[pgnTextIndex] + '"]';
+  if (pgnText[pgnTextIndex].match(/^([\r\n\s]*([1-8rnbkpqRNBKPQ]{1,8}\/){7}[1-8rnbkpqRNBKPQ]{1,8}(\s+[wb]\s+([A-Ha-hKQkq]{1,4}|-)\s+([a-h][36]|-)\s+[\d]+\s+[\d]+){0,1})+[\r\n\s]*$/)) {
+    pgnText[pgnTextIndex] = pgnText[pgnTextIndex].replace(/(([1-8rnbkpqRNBKPQ]{1,8}\/){7}[1-8rnbkpqRNBKPQ]{1,8}(\s+[wb]\s+([A-Ha-hKQkq]{1,4}|-)\s+([a-h][36]|-)\s+[\d]+\s+[\d]+){0,1})/g, '[FEN "$1"]\n*\n');
   }
   pgnText[pgnTextIndex] = pgnText[pgnTextIndex].replace(pgnHeaderRegExpGlobal, "\n$1\n"); // add newline after header section
   pgnText[pgnTextIndex] = fixCommonPgnMistakes(pgnText[pgnTextIndex]);
