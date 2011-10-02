@@ -1224,8 +1224,8 @@ of Google Chrome. Don't use with any other browser.
 
    function fetchInputPgnText() {
       if ((inputPgnText = prompt("Enter PGN chess games TEXT for viewing on a single board; pasting multi-line PGN data in the textbox is allowed:", "")) !== null) {
-         if (inputPgnText.match(/^\s*[1-8KQRBNP]{1,8}(\/[1-8KQRBNP]{1,8}){7}[\s0-9A-HKQW-]*$/i)) {
-            inputPgnText = '[FEN "' + inputPgnText + '"]';
+         if (inputPgnText.match(/^([\r\n\s]*([1-8rnbkpqRNBKPQ]{1,8}\/){7}[1-8rnbkpqRNBKPQ]{1,8}(\s+[wb]\s+([A-Ha-hKQkq]{1,4}|-)\s+([a-h][36]|-)\s+[\d]+\s+[\d]+){0,1})+[\r\n\s]*$/)) {
+            inputPgnText = inputPgnText.replace(/(([1-8rnbkpqRNBKPQ]{1,8}\/){7}[1-8rnbkpqRNBKPQ]{1,8}(\s+[wb]\s+([A-Ha-hKQkq]{1,4}|-)\s+([a-h][36]|-)\s+[\d]+\s+[\d]+){0,1})/g, '[FEN "$1"]\n*\n');
          }
          pgnHeaderRegExpGlobal = /((\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)+)/g;
          inputPgnText = inputPgnText.replace(pgnHeaderRegExpGlobal, "\n$1\n"); // add newline after header section
