@@ -83,7 +83,7 @@ function pgnLinkOnClick(info, tab, live, all) {
   var remoteUrl = info.linkUrl;
   if (!remoteUrl) { return; }
   if (!validateUrl(remoteUrl, live)) { 
-    alert("Because of a limitation of the Google Chrome extensions URL pattern matching capabilities, the clicked link displays the link context menu of the chess games viewer even if the link's URL does not match the usual pattern of PGN chess games URLs; hence the link will not be opened automatically in the chess games viewer; to open the link, copy the link's URL and manually enter the URL using the page context menu.");
+    alert("warning: because of a limitation of the Google Chrome extensions URL pattern matching capabilities, the clicked link displays the link context menu of the chess games viewer even if the link's URL does not match the usual pattern of PGN chess games URLs; hence the link will not be opened automatically in the chess games viewer; to open the link, copy the link's URL and manually enter the URL using the page context menu.");
     return; 
   }
   openRemoteUrl(remoteUrl, live, all);
@@ -148,7 +148,7 @@ function pgntextOnClick(info, tab) {
 
   if (needsValidation && (!validatePgnText(pgnText[pgnTextIndex]))) {
     delete pgnText[pgnTextIndex];
-    alert("The supplied text does not match the usual PGN text pattern. Copy the text and use the chess games viewer page menu to manually enter the amended PGN text.");
+    alert("warning: the supplied text does not match the usual PGN text pattern; copy the text and use the chess games viewer page menu to manually enter the amended PGN text.");
     return; 
   }
 
