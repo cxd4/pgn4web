@@ -122,7 +122,7 @@ Also consider adding filename to the context menu string once the feature is
 available.
 http://crbug.com/60758
 
-chess-games-viewer.html:  fixed-width font size change issue
+chess-games-viewer.html: fixed-width font size change issue
 monitor fixed-width font size change issue and check layout of the game
 selection dropdown menu once the bug is fixed.
 http://crbug.com/91922
