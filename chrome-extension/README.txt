@@ -97,6 +97,7 @@ popup.html: hardcoded maximum popup height
 Monitor the bug report below and update the popup.html code in case of any
 changes to the hardcoded maximum popup height.
 http://crbug.com/36080
+http://src.chromium.org/viewvc/chrome/trunk/src/chrome/browser/ui/views/extensions/extension_popup.cc?view=markup
 Verify the hardcoded popup height by inpsecting the popup from a page with a 
 large number of PGN links such as http://pgnmentor.com/files.html, clearing 
 document.getElementById("pgnLinkList").style.maxHeight and reading the
