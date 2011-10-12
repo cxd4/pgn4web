@@ -92,19 +92,14 @@ http://crbug.com/41024
 monitor similar bug for ftp:// URLs, allthough less relevant.
 http://crbug.com/64826
 
-popup.html: popup css
-popup.html is affected by following issues:
-- wrong height assigned by default (especially on small screen netbooks),
-with as workaround setting max-height of the pgnLinkList element and hiding
-overflow on the body element.
+popup.html: hardcoded maximum popup height
+- Google Chrome has an hardcoded maximums popup height of 600px (width is 800px);
+Monitor the bug report below and update the popup.html code in case of any
+changes to the hardcoded maximum popup height.
 http://crbug.com/36080
-http://crbug.com/76899
-Verify inspecting the popup window, disabling the max-height property of
-pgnLinkLists and the overflow property of the body element.
-- min-/max-/height attribute ignored for the body element, otherwise the
-above workaround could be simpler.
-http://crbug.com/50192
-Also monitor scrollbar width bug if ever fixed.
+
+popup.html: scrollbar width ignored
+no fix implemented/required, just monitor the bug report below
 http://crbug.com/31494
 
 Other:
