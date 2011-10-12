@@ -97,6 +97,10 @@ popup.html: hardcoded maximum popup height
 Monitor the bug report below and update the popup.html code in case of any
 changes to the hardcoded maximum popup height.
 http://crbug.com/36080
+Verify the hardcoded popup height by inpsecting the popup from a page with a 
+large number of PGN links such as http://pgnmentor.com/files.html, clearing 
+document.getElementById("pgnLinkList").style.maxHeight and reading the
+popup outerHeight value.
 
 popup.html: scrollbar width ignored
 no fix implemented/required, just monitor the bug report below
