@@ -178,9 +178,9 @@ chrome.tabs.getSelected(null, function(tab){
   }
   pgnLinksId = pgnLinksId.sort(sortPgnLinks);
 
-  // fix the link list height to show up to 10 items
-  // to cope with chrome bugs http://crbug.com/76899 and http://crbug.com/50192
-  maxLinkListItems = 10;
+  // limit the popup height to 10 items and 60% of the screen height (taking into account the hardcoded maximum popup height of 600)
+  // check chrome bugs http://crbug.com/36080 for changes in the hardcoded maximum popup height
+  var maxLinkListItems = Math.min(10, Math.max(1, Math.ceil((Math.min(0.6 * self.screen.availHeight, 600) - 8 * em) / (2 * em))));
   if (pgnLinks.length > maxLinkListItems) {
     listObject.style.maxHeight = (maxLinkListItems * 2) + "em";
     listObject.style.paddingRight = "2em";
