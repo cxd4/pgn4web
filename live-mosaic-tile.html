@@ -136,6 +136,9 @@
   
   }
 
+  var old_currentGame = -1;
+  var old_PlyNumber = -1;
+  var old_gameValid = false;
   function customFunctionOnPgnGameLoad() {
     wObject = document.getElementById("GameWhite");
     bObject = document.getElementById("GameBlack");
@@ -166,6 +169,10 @@
       }
     } catch(e) { myAlert("warning: failed accessing parent for hiding game option", false); }
 
+    newMovesFlag((old_gameValid) && ((old_currentGame !== currentGame) || (old_PlyNumber !== PlyNumber)));
+    old_currentGame = currentGame;
+    old_PlyNumber = PlyNumber;
+    old_gameValid = (PlyNumber > 0) || (gameWhite[currentGame] !== "") || (gameBlack[currentGame] !== "");
   }
 
   function customFunctionOnMove() {
@@ -178,6 +185,18 @@
     if (theObject = document.getElementById("GameMoreMoves")) {
       theObject.innerHTML = CurrentPly == StartPly + PlyNumber ? "" : ">&nbsp;&nbsp;";
     }
+  }
+
+  var newMovesFlagTimeout = null;
+  function newMovesFlag(onOff) {
+    if (newMovesFlagTimeout) {
+      clearTimeout(newMovesFlagTimeout);
+      newMovesFlagTimeout = null;
+    }
+    if (theObject = document.getElementById("GameNewMoves")) {
+      theObject.innerHTML = onOff ? "&times;" : "";
+    }
+    if (onOff) { newMovesFlagTimeout = setTimeout("newMovesFlag(false);", refreshMinutes * 60000 + 2000); }
   }
 
   function customShortcutKey_Shift_0() { try { if (parent && parent.customShortcutKey_Shift_0) {parent.customShortcutKey_Shift_0(); } } catch(e) { myAlert("error: failed accessing parent custom shortcut key function"); } }
@@ -325,7 +344,7 @@ a {
 
 <div id="bottomContainer" class="bottomContainer">
 
-<div class="leftHeaderItem"><span id="GameLastMove"></span>&nbsp;</div>
+<div class="leftHeaderItem"><span id="GameLastMove"></span>&nbsp;<a href="javascript:void(0);" onclick="newMovesFlag(false);" title="new moves recently received" style="float:right;" id="GameNewMoves"></a></div>
 <div class="rightHeaderItem"><a href="javascript:void(0);" onclick="MoveForward(1);" title="more moves available: click > to move forward" style="float:left;" id="GameMoreMoves"></a>&nbsp;<span id="GameResult"></span></div>
 
 <div class="leftHeaderItem"><span id="GameWhite" class="notranslate"></span>&nbsp;</div>
