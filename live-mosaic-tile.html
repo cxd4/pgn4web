@@ -182,7 +182,7 @@
       if ((!bObject.innerHTML.match(/\S/)) && (wObject.innerHTML.match(/\S/))) { bObject.innerHTML = "-"; }
     }
     if (theObject = document.getElementById("GameMoreMoves")) {
-      theObject.innerHTML = CurrentPly == StartPly + PlyNumber ? "" : "&gt;";
+      theObject.innerHTML = (CurrentPly == StartPly + PlyNumber) ? "" : ">";
     }
   }
 
@@ -193,7 +193,7 @@
       newMovesFlagTimeout = null;
     }
     if (theObject = document.getElementById("GameNewMoves")) {
-      theObject.innerHTML = onOff ? "&times;" : "";
+      theObject.innerHTML = onOff ? "^" : "";
     }
     if (onOff) { newMovesFlagTimeout = setTimeout("newMovesFlag(false);", refreshMinutes * 60000 + 2000); }
   }
