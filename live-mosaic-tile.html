@@ -136,9 +136,8 @@
   
   }
 
-  var old_currentGame = -1;
+  var old_gameKey = "";
   var old_PlyNumber = -1;
-  var old_gameValid = false;
   function customFunctionOnPgnGameLoad() {
     wObject = document.getElementById("GameWhite");
     bObject = document.getElementById("GameBlack");
@@ -169,10 +168,10 @@
       }
     } catch(e) { myAlert("warning: failed accessing parent for hiding game option", false); }
 
-    newMovesFlag((old_gameValid) && ((old_currentGame !== currentGame) || (old_PlyNumber !== PlyNumber)));
-    old_currentGame = currentGame;
+    this_gameKey = gameKey(gameEvent[currentGame], gameSite[currentGame], gameDate[currentGame], gameRound[currentGame], gameWhite[currentGame], gameBlack[currentGame]);
+    newMovesFlag((old_gameKey === this_gameKey) && (old_PlyNumber !== PlyNumber));
+    old_gameKey = this_gameKey;
     old_PlyNumber = PlyNumber;
-    old_gameValid = (PlyNumber > 0) || (gameWhite[currentGame] !== "") || (gameBlack[currentGame] !== "");
   }
 
   function customFunctionOnMove() {
@@ -197,6 +196,16 @@
       theObject.innerHTML = onOff ? "&times;" : "";
     }
     if (onOff) { newMovesFlagTimeout = setTimeout("newMovesFlag(false);", refreshMinutes * 60000 + 2000); }
+  }
+
+  function gameKey(event, site, date, round, white, black) {
+    key = "";
+    key += "[" + (typeof(event) == "string" ? event : "") + "]";
+    key += "[" + (typeof(site) == "string" ? site : "") + "]";
+    key += "[" + (typeof(round) == "string" ? round : "") + "]";
+    key += "[" + (typeof(white) == "string" ? white : "") + "]";
+    key += "[" + (typeof(black) == "string" ? black : "") + "]";
+    return key;
   }
 
   function customShortcutKey_Shift_0() { try { if (parent && parent.customShortcutKey_Shift_0) {parent.customShortcutKey_Shift_0(); } } catch(e) { myAlert("error: failed accessing parent custom shortcut key function"); } }
