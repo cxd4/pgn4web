@@ -27,6 +27,7 @@ the download.png, edit.png, file.png, files.png, help.png and refresh.png PNG
 icons are licensed by Interactivemania http://www.interactivemania.com under a
 Creative Commons Attribution-No Derivative Works 3.0 license
 http://creativecommons.org/licenses/by-nd/3.0/
+the refresh-mosaic.png PNG icon is derived from refresh.png
 
 the endgame tablebase assessments are from the Lokasoft tablebase
 webservice http://www.lokasoft.nl/tbweb.htm
