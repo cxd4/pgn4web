@@ -140,7 +140,7 @@ a {
 }
 
 .topMenu {
-  height: 4em;
+  min-height: 4em;
   padding-top: 1em;
   padding-left: 0.5em;
   padding-right: 0.5em;
