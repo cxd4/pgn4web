@@ -326,7 +326,7 @@ function checkWebRequestForPgnFiles(requestDetails) {
     pgnHrefLinks[requestDetails.tabId] = new Array();
     pgnWebRequests[requestDetails.tabId] = new Array();
   }
-  pgnWebRequests[requestDetails.tabId].push(requestDetails.url);
+  pgnWebRequests[requestDetails.tabId].push(requestDetails.url.replace(/\?noCache=[0-9A-F]{10}$/, ""));
   mergePgnLinksAndShowIcon(requestDetails.tabId);
 }
 
