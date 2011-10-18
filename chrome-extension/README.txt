@@ -132,6 +132,6 @@ http://crbug.com/91922
 chess-games-viewer.html, live-mosaic-viewer.html: force page action
 currently chrome-extension://*.pgn pages do not trigger webRequests events;
 hence chessboard pages need to force the page action in order to include the
-loaded PGN URL; if the underlying issue is fixed, consider not forcing the page
-action (allthough this might expose a noCache URL parameter).
+loaded PGN URL; if the underlying issue is fixed, avoid forcing the page
+action.
 http://crbug.com/92395 (see also webRequest http://crbug.com/60101 above)
