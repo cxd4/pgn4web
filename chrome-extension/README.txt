@@ -135,3 +135,4 @@ hence chessboard pages need to force the page action in order to include the
 loaded PGN URL; if the underlying issue is fixed, avoid forcing the page
 action.
 http://crbug.com/92395 (see also webRequest http://crbug.com/60101 above)
+fixed in google chrome v16.0.912.1 (canary/development)
