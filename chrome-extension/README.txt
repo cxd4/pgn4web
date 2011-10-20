@@ -35,8 +35,8 @@ webservice http://www.lokasoft.nl/tbweb.htm
 
 Beta and development versions:
 
-test new functionality with the beta and development versions of Google Chrome
-changing manifest.json to background.html?beta or background.html?development
+test new functionality with the beta and development versions of Google Chrome:
+change manifest.json to "background.html?beta" or "background.html?development"
 update other parts of manifest.json as needed.
 
 
