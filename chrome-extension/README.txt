@@ -35,11 +35,9 @@ webservice http://www.lokasoft.nl/tbweb.htm
 
 Beta and development versions:
 
-for testing new functionality with the beta and development versions of Google
-Chrome, the background.html variable extensionChannel can be set to "stable"
-(default), "beta" or "development" in order to trigger testing code in the 
-extension's HTML, CSS and JAVASCRIPT (remember to manually update manifest.json
-if needed).
+test new functionality with the beta and development versions of Google Chrome
+changing manifest.json to background.html?beta or background.html?development
+update other parts of manifest.json as needed.
 Consider auto-detecting the release channel if possible.
 http://crbug.com/35070
 
