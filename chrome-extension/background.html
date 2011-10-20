@@ -26,8 +26,11 @@ of Google Chrome. Don't use with any other browser.
 
 <script type="text/javascript">
 
-// optionally triggers testing code in the extension's HTML, CSS and JAVASCRIPT, remember to manually update manifest.json if needed
-var extensionChannel = "stable"; // "stable", "beta" or "development"
+// triggers testing code in the extension's HTML, CSS and JAVASCRIPT,
+// change manifest.json to background.html?beta or background.html?development
+var extensionChannel = "stable";
+if (location.search == "?beta") { extensionChannel = "beta"; }
+if (location.search == "?development") { extensionChannel = "development"; }
 
 var pgnHeaderRegExpGlobal = /((\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)+)/g;
 
