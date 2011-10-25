@@ -1066,8 +1066,8 @@ of Google Chrome. Don't use with any other browser.
       refreshMinutes = newRefreshMinutes;
       SetPgnUrl(pgnData = newPgnUrl);
 
-      // force the page action on the chessboard page, until http://crbug.com/92395 is fixed
-      if ((typeof(chrome) != "undefined") && (typeof(chrome.tabs) != "undefined") && (typeof(chrome.tabs.getCurrent) != "undefined") && backgroundPage && (typeof(backgroundPage.checkWebRequestForPgnFiles) != "undefined") && (backgroundPage.extensionChannel != "development")) {
+      // force the page action on the chessboard page, until the webRequest API is available http://crbug.com/60101
+      if ((typeof(chrome) != "undefined") && (typeof(chrome.tabs) != "undefined") && (typeof(chrome.tabs.getCurrent) != "undefined") && backgroundPage && (typeof(backgroundPage.checkWebRequestForPgnFiles) != "undefined") && (!backgroundPage.testing_webRequest)) {
          chrome.tabs.getCurrent( function(tab) { backgroundPage.checkWebRequestForPgnFiles({ "tabId": tab.id, url: newPgnUrl }); });
       }
 
@@ -1147,7 +1147,7 @@ of Google Chrome. Don't use with any other browser.
                                     }
                                  } 
                               }
-                           } catch(e) { /* missing unzip library or unzip error */ }
+                           } catch (e) { /* missing unzip library or unzip error */ }
                            if (unzippedPgnText) {
                               newPgnText += unzippedPgnText + "\n\n\n";
                               validFiles.push(theFileName);
@@ -1176,7 +1176,7 @@ of Google Chrome. Don't use with any other browser.
                if (! --pgnFilesLeft) { useNewPgnTextFromFiles(); }
             }
          }
-      } catch(e) {}
+      } catch (e) {}
       if (theObject = document.getElementById("localPgnFiles")) { theObject.value = ""; }
    }
 
@@ -1194,7 +1194,7 @@ of Google Chrome. Don't use with any other browser.
          theObject.addEventListener("dragover", handleDragOver, false);
          theObject.addEventListener("drop", handleFileSelect, false);
       }
-   } catch(e) {}
+   } catch (e) {}
 
    function useNewPgnTextFromFiles() {
       if (noNewPgnText = !newPgnText) { newPgnText = alertPgnHeader; }

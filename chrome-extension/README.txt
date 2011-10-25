@@ -35,19 +35,19 @@ webservice http://www.lokasoft.nl/tbweb.htm
 
 Beta and development versions:
 
-test new functionality with the beta and development versions of Google Chrome:
-change manifest.json to "background.html?beta" or "background.html?development"
-update other parts of manifest.json as needed.
+check for testing_* variables used for testing new functionality in beta,
+development and canary versions of Google Chrome; updates of some settings of
+manifest.json might be required for testing.
 
 
 Enhancements:
 
-background.html, manifest.json: webRequest
-enable the webRequest extension API when stable.
+background.html, manifest.json, chess-games-viewer.html,
+live-mosaic-viewer.html: webRequest API
 info http://code.google.com/chrome/extensions/api_index.html
 http://crbug.com/60101
-Implemented for extensionChannel "development" (also needs "experimental"
-permission in manifest.json). Might need new permission in manifest.json.
+Implemented for the experimental API, see testing_webRequest in background.html,
+also needs "experimental" permission in manifest.json.
 Verify on http://chesstempo.com/pgn-viewer.html and http://www.bennedik.de/Silverboard.html
 Requires increasing minimum_chrome_version (new API).
 
@@ -125,10 +125,3 @@ monitor fixed-width font size change issue and check layout of the game
 selection dropdown menu once the bug is fixed.
 http://crbug.com/91922
 
-chess-games-viewer.html, live-mosaic-viewer.html: force page action
-currently chrome-extension://*.pgn pages do not trigger webRequests events;
-hence chessboard pages need to force the page action in order to include the
-loaded PGN URL; if the underlying issue is fixed, avoid forcing the page
-action.
-http://crbug.com/92395 (see also webRequest http://crbug.com/60101 above)
-fixed in google chrome v16.0.912.1 (canary/development)

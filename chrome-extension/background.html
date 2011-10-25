@@ -26,12 +26,6 @@ of Google Chrome. Don't use with any other browser.
 
 <script type="text/javascript">
 
-// triggers testing code in the extension's HTML, CSS and JAVASCRIPT,
-// change manifest.json to background.html?beta or background.html?development
-var extensionChannel = "stable";
-if (location.search == "?beta") { extensionChannel = "beta"; }
-if (location.search == "?development") { extensionChannel = "development"; }
-
 var pgnHeaderRegExpGlobal = /((\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)+)/g;
 
 var pgnZipLinkRegExp = new RegExp("^((http|https):\\/\\/|" + chrome.extension.getURL("") + ")[^?#]+\\.(pgn|zip)($|\\?.*$|#.*$)", "i");
@@ -334,9 +328,12 @@ function checkWebRequestForPgnFiles(requestDetails) {
 }
 
 // enables using the experimental webRequest API, see chrome bug http://crbug.com/60101
-if (extensionChannel == "development") {
+var testing_webRequest = false;
+try {
   chrome.experimental.webRequest.onBeforeRequest.addListener(checkWebRequestForPgnFiles, {"urls": pgnUrlPatterns});
-}
+  testing_webRequest = true;
+  console.log("testing experimental webRequest API");
+} catch (e) {}
 
 </script>
 

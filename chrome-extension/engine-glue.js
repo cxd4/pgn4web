@@ -181,7 +181,7 @@ function InitializeBackgroundEngine() {
                 }
              }
           };
-      } catch (error) { g_backgroundEngineValid = false; }
+      } catch (e) { g_backgroundEngineValid = false; }
    }
    return g_backgroundEngineValid;
 }

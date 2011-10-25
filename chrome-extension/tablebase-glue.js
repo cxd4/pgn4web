@@ -51,7 +51,7 @@ function probeTablebaseLokasoft(fenString, probeTablebaseCallback) {
       };
       request = '<SOAP-ENV:Envelope xmlns:ns3="http://www.w3.org/2001/XMLSchema" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns0="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns1="http://lokasoft.org/message/" xmlns:ns2="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"><SOAP-ENV:Header/><ns2:Body><ns1:ProbePosition><fen xsi:type="ns3:string">' + fenString + '</fen></ns1:ProbePosition></ns2:Body></SOAP-ENV:Envelope>';
       probeTablebaseXMLHTTPRequest.send(request);
-   } catch(e) {
+   } catch (e) {
       probeTablebaseXMLHTTPRequest = null;
       probeTablebaseCallback("error", fenString);
    }
