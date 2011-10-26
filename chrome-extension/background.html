@@ -332,7 +332,7 @@ var testing_webRequest = false;
 try {
   chrome.experimental.webRequest.onBeforeRequest.addListener(checkWebRequestForPgnFiles, {"urls": pgnUrlPatterns});
   testing_webRequest = true;
-  console.log("testing experimental webRequest API");
+  console.log("chess games viewer LOG: testing experimental webRequest API, verify at http://pgn4web.casaschi.net/tilb98r2.html");
 } catch (e) {}
 
 </script>
