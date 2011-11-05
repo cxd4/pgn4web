@@ -1,11 +1,11 @@
 /**
  * jscolor, JavaScript Color Picker
  *
- * @version 1.3.9
+ * @version 1.3.10
  * @license GNU Lesser General Public License, http://www.gnu.org/copyleft/lesser.html
  * @author  Jan Odvarko, http://odvarko.cz
  * @created 2008-06-15
- * @updated 2011-07-28
+ * @updated 2011-11-03
  * @link    http://jscolor.com
  */
 
@@ -333,6 +333,7 @@ var jscolor = {
 		this.slider = true; // show the value/saturation slider?
 		this.valueElement = target; // value holder
 		this.styleElement = target; // where to reflect current color
+		this.onImmediateChange = null; // onchange callback (can be either string or function)
 		this.hsv = [0, 0, 1]; // read-only  0-6, 0-1, 0-1
 		this.rgb = [1, 1, 1]; // read-only  0-1, 0-1, 0-1
 
@@ -594,14 +595,23 @@ var jscolor = {
 					} else if (window.getSelection) {
 						window.getSelection().removeAllRanges();
 					}
+					dispatchImmediateChange();
 				}
 			};
 			p.padM.onmouseup =
 			p.padM.onmouseout = function() { if(holdPad) { holdPad=false; jscolor.fireEvent(valueElement,'change'); } };
-			p.padM.onmousedown = function(e) { holdPad=true; setPad(e); };
+			p.padM.onmousedown = function(e) {
+				holdPad=true;
+				setPad(e);
+				dispatchImmediateChange();
+			};
 			p.sldM.onmouseup =
 			p.sldM.onmouseout = function() { if(holdSld) { holdSld=false; jscolor.fireEvent(valueElement,'change'); } };
-			p.sldM.onmousedown = function(e) { holdSld=true; setSld(e); };
+			p.sldM.onmousedown = function(e) {
+				holdSld=true;
+				setSld(e);
+				dispatchImmediateChange();
+			};
 
 			// picker
 			var dims = getPickerDims(THIS);
@@ -827,6 +837,17 @@ var jscolor = {
 			switch(modeID) {
 				case 0: THIS.fromHSV(null, null, 1 - y/(jscolor.images.sld[1]-1), leavePad); break;
 				case 1: THIS.fromHSV(null, 1 - y/(jscolor.images.sld[1]-1), null, leavePad); break;
+			}
+		}
+
+
+		function dispatchImmediateChange() {
+			if (THIS.onImmediateChange) {
+				if (typeof THIS.onImmediateChange === 'string') {
+					eval(THIS.onImmediateChange);
+				} else {
+					THIS.onImmediateChange(THIS);
+				}
 			}
 		}
 
