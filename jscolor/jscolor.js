@@ -1,11 +1,11 @@
 /**
  * jscolor, JavaScript Color Picker
  *
- * @version 1.3.10
+ * @version 1.3.11
  * @license GNU Lesser General Public License, http://www.gnu.org/copyleft/lesser.html
  * @author  Jan Odvarko, http://odvarko.cz
  * @created 2008-06-15
- * @updated 2011-11-03
+ * @updated 2011-11-07
  * @link    http://jscolor.com
  */
 
@@ -340,6 +340,7 @@ var jscolor = {
 		this.pickerOnfocus = true; // display picker on focus?
 		this.pickerMode = 'HSV'; // HSV | HVS
 		this.pickerPosition = 'bottom'; // left | right | top | bottom
+		this.pickerSmartPosition = true; // automatically adjust picker position when necessary
 		this.pickerButtonHeight = 20; // px
 		this.pickerClosable = false;
 		this.pickerCloseText = 'Close';
@@ -382,14 +383,23 @@ var jscolor = {
 					default:     a=0; b=1; c=1; break;
 				}
 				var l = (ts[b]+ps[b])/2;
-				var pp = [ // picker pos
-					-vp[a]+tp[a]+ps[a] > vs[a] ?
-						(-vp[a]+tp[a]+ts[a]/2 > vs[a]/2 && tp[a]+ts[a]-ps[a] >= 0 ? tp[a]+ts[a]-ps[a] : tp[a]) :
+
+				// picker pos
+				if (!this.pickerSmartPosition) {
+					var pp = [
 						tp[a],
-					-vp[b]+tp[b]+ts[b]+ps[b]-l+l*c > vs[b] ?
-						(-vp[b]+tp[b]+ts[b]/2 > vs[b]/2 && tp[b]+ts[b]-l-l*c >= 0 ? tp[b]+ts[b]-l-l*c : tp[b]+ts[b]-l+l*c) :
-						(tp[b]+ts[b]-l+l*c >= 0 ? tp[b]+ts[b]-l+l*c : tp[b]+ts[b]-l-l*c)
-				];
+						tp[b]+ts[b]-l+l*c
+					];
+				} else {
+					var pp = [
+						-vp[a]+tp[a]+ps[a] > vs[a] ?
+							(-vp[a]+tp[a]+ts[a]/2 > vs[a]/2 && tp[a]+ts[a]-ps[a] >= 0 ? tp[a]+ts[a]-ps[a] : tp[a]) :
+							tp[a],
+						-vp[b]+tp[b]+ts[b]+ps[b]-l+l*c > vs[b] ?
+							(-vp[b]+tp[b]+ts[b]/2 > vs[b]/2 && tp[b]+ts[b]-l-l*c >= 0 ? tp[b]+ts[b]-l-l*c : tp[b]+ts[b]-l+l*c) :
+							(tp[b]+ts[b]-l+l*c >= 0 ? tp[b]+ts[b]-l+l*c : tp[b]+ts[b]-l-l*c)
+					];
+				}
 				drawPicker(pp[a], pp[b]);
 			}
 		};
@@ -883,6 +893,7 @@ var jscolor = {
 		if(valueElement) {
 			var updateField = function() {
 				THIS.fromString(valueElement.value, leaveValue);
+				dispatchImmediateChange();
 			};
 			jscolor.addEvent(valueElement, 'keyup', updateField);
 			jscolor.addEvent(valueElement, 'input', updateField);
