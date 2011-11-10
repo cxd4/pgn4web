@@ -58,6 +58,7 @@ of Google Chrome. Don't use with any other browser.
             "chess-games-viewer.html parameters" + "\n\n" +
             " - pgnBackground = index" + "\n\n" +
             " - pgnData = URL.pgn" + "\n\n" +
+            " - pgnLocalfilesindex = index" + "\n\n" +
             " - refreshMinutes = live broadcast delay (default 0 = live broadcast disabled)" + "\n\n" +
             " - search = search expression (default first game for normal view and first unfinished game for live broadcast view)" + "\n\n" +
             " - help");
@@ -88,6 +89,20 @@ of Google Chrome. Don't use with any other browser.
       }
    }
 
+   function setLocalPgnFilesIndexFromTabId(tab) {
+      if (backgroundPage) { backgroundPage.localPgnFilesIndexFromTabId[tab.id] = pgnLocalfilesindex; }
+   }
+
+   pgnLocalfilesindex = null;
+   if (backgroundPage) {
+      thisRegExp = /(&|\?)(pgnLocalfilesindex|pl)=([^&]*)(&|$)/i;
+      if (window.location.search.match(thisRegExp) !== null) {
+         if ((pgnLocalfilesindex = unescape(window.location.search.match(thisRegExp)[3])) !== "") {
+            chrome.tabs.getCurrent(setLocalPgnFilesIndexFromTabId);
+         }
+      }
+   }
+
    pgnData = "";
    thisRegExp = /(&|\?)(pgnData|pd)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
@@ -96,7 +111,7 @@ of Google Chrome. Don't use with any other browser.
 
 
    // when opening the plain bookmark, once every N times, as a surprise, one of Tim Krabbe's most fantastic moves is shown
-   if (!pgnData && !pgnBackground) {
+   if (!pgnData && !pgnBackground && !pgnLocalfilesindex) {
       tkFEN = new Array(
          '[FEN "r3kbnr/p1pp1qpp/b1n1P3/6N1/1p6/8/Pp3PPP/RNBQR1K1 b kq - 0 12"] 12... O-O-O',
          '[FEN "r2qkb1r/pb1p1p1p/1pn2np1/2p1p3/2P1P3/2NP1NP1/PP3PBP/R1BQ1RK1 w kq - 0 9"] 9. Nxe5',
@@ -597,6 +612,7 @@ of Google Chrome. Don't use with any other browser.
 
    window.onload = function() {
       if (pgnData) { useNewPgnUrl(pgnData, refreshMinutes); }
+      else if (pgnLocalfilesindex) { processLocalPgnFilesIndex(); }
       else {
          setInitialGameFromSearchGame();
          start_pgn4web();
@@ -1185,7 +1201,7 @@ of Google Chrome. Don't use with any other browser.
             reader.onerror = (function(theFileName) {
                return function(e) {
                   errorFiles.push(theFileName);
-                  if (! --pgnFilesLeft) { useNewPgnTextFromFiles(newPgnText, validFiles, invalidFiles, errorFiles); }                            
+                  if (! --pgnFilesLeft) { useNewPgnTextFromFiles(newPgnText, validFiles, invalidFiles, errorFiles); }
                };
             })(files[f].name);
             if (files[f].name.match(/\.(zip)$/i)) { reader.readAsBinaryString(files[f]); }
@@ -1235,6 +1251,35 @@ of Google Chrome. Don't use with any other browser.
          inputPgnText = fixCommonPgnMistakes(inputPgnText);
          useNewPgnText(inputPgnText);
       }
+   }
+
+   var localPgnFiles;
+   var localPgnFilesCount;
+   function processLocalPgnFilesIndex() {
+      if (backgroundPage && (pgnLocalfilesindex !== null)) {
+         localPgnFiles = new Array();
+         localPgnFilesCount = 0;
+         if (backgroundPage.localPgnFiles[pgnLocalfilesindex]) {
+            for (f in backgroundPage.localPgnFiles[pgnLocalfilesindex]) {
+               backgroundPage.localPgnFiles[pgnLocalfilesindex][f].filesystem.root.getFile(backgroundPage.localPgnFiles[pgnLocalfilesindex][f].fullPath, {}, function(thisFile){ thisFile.file(function(oneFile){ localPgnFiles.push(oneFile); processLocalPgnFiles(); }); }, function(e){ processLocalPgnFiles(); });
+            }
+         } else { localPgnFilesError(false); }
+      }
+   }
+
+   function processLocalPgnFiles() {
+      if (backgroundPage && (pgnLocalfilesindex !== null)) {
+         if (++localPgnFilesCount === backgroundPage.localPgnFiles[pgnLocalfilesindex].length) {
+            if (localPgnFiles && localPgnFiles.length > 0) { readLocalPgnFiles(localPgnFiles); }
+            else { localPgnFilesError(localPgnFilesCount > 1); }
+         }
+      }
+   }
+
+   function localPgnFilesError(multierror) {
+      useNewPgnText(alertPgnHeader);
+      console.log("PAOLO " + multierror);
+      myAlert("error: failed reading input " + (multierror ? "files" : "file"), true);
    }
 
 </script>

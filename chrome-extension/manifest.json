@@ -12,6 +12,15 @@
       "run_at": "document_idle"
    } ],
    "description": "Interactive chessboard showing chess games from links to PGN URLs, from local PGN files and from PGN text.",
+   "file_browser_handlers": [ {
+      "id": "view",
+      "default_title": "View chess games",
+      "file_filters": [ "filesystem:*.pgn", "filesystem:*.Pgn", "filesystem:*.PGN" ]
+   }, {
+      "id": "inspect",
+      "default_title": "Inspect for chess games",
+      "file_filters": [ "filesystem:*.zip", "filesystem:*.Zip", "filesystem:*.ZIP" ]
+   } ],
    "help_page": "help.html",
    "homepage_url": "http://pgn4web.casaschi.net",
    "icons": {
@@ -28,7 +37,7 @@
       "default_popup": "popup.html",
       "default_title": "Chess games viewer: PGN links on this page"
    },
-   "permissions": [ "contextMenus", "tabs", "*://*/*" ],
+   "permissions": [ "contextMenus", "fileBrowserHandler", "tabs", "*://*/*" ],
    "update_url": "http://pgn4web.googlecode.com/svn/trunk/chrome-extension/updateInfo.xml",
-   "version": "1.9.1"
+   "version": "1.9.2"
 }

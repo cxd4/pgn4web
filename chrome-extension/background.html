@@ -309,6 +309,31 @@ function removePgnLinksOnUpdated(tabId, changeInfo, tab) {
 
 chrome.tabs.onUpdated.addListener(removePgnLinksOnUpdated);
 
+var localPgnFilesIndex = 0;
+var localPgnFiles = new Array();
+var localPgnFilesIndexFromTabId = new Array();
+
+function loadLocalPgnFiles(id, details) {
+  if ((id == "view") || (id == "inspect")) {
+    localPgnFiles[localPgnFilesIndex] = details.entries;
+    url = "chess-games-viewer.html?pgnLocalfilesindex=" + localPgnFilesIndex++;
+    chrome.tabs.create({url: url});
+  }
+}
+
+chrome.fileBrowserHandler.onExecute.addListener(loadLocalPgnFiles);
+
+function removeLocalPgnFilesOnRemoved(tabId) {
+  if ((localPgnFilesIndexFromTabId[tabId] !== null) && (localPgnFilesIndexFromTabId[tabId] !== undefined)) {
+    if ((localPgnFiles[localPgnFilesIndexFromTabId[tabId]] !== null) && (localPgnFiles[localPgnFilesIndexFromTabId[tabId]] !== undefined)) {
+      delete localPgnFiles[localPgnFilesIndexFromTabId[tabId]];
+    }
+    delete localPgnFilesIndexFromTabId[tabId];
+  }
+}
+
+chrome.tabs.onRemoved.addListener(removeLocalPgnFilesOnRemoved);
+
 function checkWebRequestForPgnFiles(requestDetails) {
   if (requestDetails.tabId === null) { return; }
   if (!validatePgnUrl(requestDetails.url)) { return; }
