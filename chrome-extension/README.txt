@@ -49,7 +49,8 @@ http://crbug.com/60101
 Implemented for the experimental API, see testing_webRequest in background.html,
 also needs "experimental" permission in manifest.json.
 Verify on http://chesstempo.com/pgn-viewer.html and http://www.bennedik.de/Silverboard.html
-Requires increasing minimum_chrome_version (new API).
+Requires increasing minimum_chrome_version, unless the new API call
+chrome.webRequest.onBeforeRequest.addListener is within a "try".
 
 background.html, manifest.json: registerContentHandler
 register the extension as content handler for application/x-chess-pgn
