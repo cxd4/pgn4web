@@ -427,7 +427,7 @@ END;
         nowDate = new Date();
         epochTimeNow = nowDate.getTime() / 1000;
         twicNum = givenTwicNumber + Math.floor((epochTimeNow - epochTimeOfGivenTwic) / (60 * 60 * 24 * 7));
-	setPgnUrl("http://www.chesscenter.com/twic/zips/twic" + twicNum + "g.zip");
+	setPgnUrl("http://www.chess.co.uk/twic/zips/twic" + twicNum + "g.zip");
         theObject.value = "header";
       break;
 
