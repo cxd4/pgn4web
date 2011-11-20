@@ -116,7 +116,8 @@ function get_pgn() {
       } else {
         $zipFileString = "<a href='" . $pgnUrl . "'>zip URL</a>";
         $tempZipName = tempnam($tmpDir, "pgn4webViewer_");
-        $pgnUrlHandle = fopen($pgnUrl, "rb");
+        $pgnUrlOpts = array("http" => array( "method" => "GET", "max_redirects" => 20));
+        $pgnUrlHandle = fopen($pgnUrl, "rb", false, stream_context_create($pgnUrlOpts));
         $tempZipHandle = fopen($tempZipName, "wb");
         $copiedBytes = stream_copy_to_stream($pgnUrlHandle, $tempZipHandle, $fileUploadLimitBytes + 1, 0);
         fclose($pgnUrlHandle);
