@@ -116,6 +116,8 @@ function get_pgn() {
       } else {
         $zipFileString = "<a href='" . $pgnUrl . "'>zip URL</a>";
         $tempZipName = tempnam($tmpDir, "pgn4webViewer_");
+        // $pgnUrlOpts tries forcing following location redirects
+        // depending on server configuration, the script might still fail if the ZIP URL is redirected
         $pgnUrlOpts = array("http" => array("follow_location" => TRUE, "max_redirects" => 20));
         $pgnUrlHandle = fopen($pgnUrl, "rb", false, stream_context_create($pgnUrlOpts));
         $tempZipHandle = fopen($tempZipName, "wb");
