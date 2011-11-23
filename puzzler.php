@@ -403,7 +403,11 @@ function customFunctionOnMove() {
 
 </script>		  
 
-<script src="google-analytics.js" type="text/javascript"></script>
+
+<!-- start of google analytics code -->
+
+<!-- end of google analytics code -->
+
 
 </head>
 
