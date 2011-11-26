@@ -5,7 +5,7 @@
  *  for credits, license and more details
  */
 
-var pgn4web_version = '2.29+';
+var pgn4web_version = '2.29';
 
 var pgn4web_project_url = 'http://pgn4web.casaschi.net';
 var pgn4web_project_author = 'Paolo Casaschi';
@@ -2751,19 +2751,13 @@ NAG[138] = 'White has severe time control pressure'; // NAG[139] = '(+)';
 for (ii = 14; ii < 139; ii += 2) { NAG[ii+1] = NAG[ii].replace("White", "Black"); }
 
 function translateNAGs(comment) {
-  var jj, ii = 0;
-  numString = "01234567890";
-  while ((ii = comment.indexOf('$', ii)) >= 0) {
-    jj=ii+1;
-    while(('0123456789'.indexOf(comment.charAt(jj)) >= 0) && (jj<comment.length)) { 
-      jj++; 
-      if (jj == comment.length) { break; }
+  if (matches = comment.match(/\$[0-9]+/g)) {
+    for (var ii = 0; ii < matches.length; ii++) {
+      nag = matches[ii].substr(1);
+      if (NAG[nag] !== undefined) {
+        comment = comment.replace(new RegExp("\\$" + nag + "\\b", "g"), NAG[nag]);
+      }
     }
-    nag = parseInt(comment.substring(ii+1,jj),10);
-    if ((nag !== undefined) && (NAG[nag] !== undefined)) {
-      comment = comment.replace(comment.substring(ii,jj), NAG[nag]);
-    }
-    ii++;  
   }
   return comment;
 }
