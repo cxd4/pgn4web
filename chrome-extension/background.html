@@ -352,12 +352,9 @@ function checkWebRequestForPgnFiles(requestDetails) {
   mergePgnLinksAndShowIcon(requestDetails.tabId);
 }
 
-// enables using the experimental webRequest API, see chrome bug http://crbug.com/60101
-var testing_webRequest = false;
+// enables the webRequest API, within a try statement for backward compatibility
 try {
-  chrome.experimental.webRequest.onBeforeRequest.addListener(checkWebRequestForPgnFiles, {"urls": pgnUrlPatterns});
-  testing_webRequest = true;
-  console.log("chess games viewer LOG: testing experimental webRequest API, verify at http://pgn4web.casaschi.net/tilb98r2.html");
+  chrome.webRequest.onBeforeRequest.addListener(checkWebRequestForPgnFiles, {"urls": pgnUrlPatterns});
 } catch (e) {}
 
 </script>

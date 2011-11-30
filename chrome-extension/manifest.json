@@ -37,7 +37,7 @@
       "default_popup": "popup.html",
       "default_title": "Chess games viewer: PGN links on this page"
    },
-   "permissions": [ "contextMenus", "fileBrowserHandler", "tabs", "*://*/*" ],
+   "permissions": [ "contextMenus", "fileBrowserHandler", "tabs", "webRequest", "*://*/*" ],
    "update_url": "http://pgn4web.googlecode.com/svn/trunk/chrome-extension/updateInfo.xml",
    "version": "1.9.2"
 }

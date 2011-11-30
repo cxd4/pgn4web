@@ -41,10 +41,10 @@ function notifyPgnHrefLinks() {
 //
 // if any dynamically added links are missing, the code below could replace the
 // plain call to notifyPgnHrefLinks() in order to be sure notifyPgnHrefLinks()
-// is executed after page load; it should not be necessary especially once the
-// webRequest API is available
+// is executed after page load; normally it should not be necessary
 // 
 // if (document.readyState == "complete") { notifyPgnHrefLinks(); }
 // else { window.addEventListener("load", notifyPgnHrefLinks, false); }
 //
 notifyPgnHrefLinks();
+
