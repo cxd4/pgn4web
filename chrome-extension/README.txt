@@ -46,11 +46,10 @@ background.html, manifest.json, chess-games-viewer.html,
 live-mosaic-viewer.html: webRequest API
 info http://code.google.com/chrome/extensions/api_index.html
 http://crbug.com/60101
-Implemented for the experimental API, see testing_webRequest in background.html,
-also needs "experimental" permission in manifest.json.
+Implemented for the upcoming webRequest API planned for chrome 17.
 Verify on http://chesstempo.com/pgn-viewer.html and http://www.bennedik.de/Silverboard.html
-Requires increasing minimum_chrome_version, unless the new API call
-chrome.webRequest.onBeforeRequest.addListener is within a "try".
+Initially preserving backward compatibility with chrome before version 17,
+eventually remove "try" statements and set minimum_chrome_version to 17.
 
 background.html, manifest.json: registerContentHandler
 register the extension as content handler for application/x-chess-pgn

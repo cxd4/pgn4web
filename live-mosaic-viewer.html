@@ -44,9 +44,9 @@
   if (pgnData) {
     SetPgnUrl(pgnData); // if set, this has precedence over the inline PGN in the HTML file
 
-    // force the page action on the chessboard page, for backward compatibility when the webRequest API is not available
+    // force the page action on the chessboard page, for backward compatibility with chrome before version 17
     try {
-      if ((backgroundPage = chrome.extension.getBackgroundPage()) && (typeof(chrome.webRequest) == "undefined")) {
+      if ((typeof(chrome.webRequest) == "undefined") && (backgroundPage = chrome.extension.getBackgroundPage())) {
         chrome.tabs.getCurrent( function(tab) { backgroundPage.checkWebRequestForPgnFiles({ "tabId": tab.id, url: pgnData }); });
       }
     } catch (e) {}

@@ -352,7 +352,7 @@ function checkWebRequestForPgnFiles(requestDetails) {
   mergePgnLinksAndShowIcon(requestDetails.tabId);
 }
 
-// enables the webRequest API, within a try statement for backward compatibility
+// enables the webRequest API, within a try statement for backward compatibility with chrome before version 17
 try {
   chrome.webRequest.onBeforeRequest.addListener(checkWebRequestForPgnFiles, {"urls": pgnUrlPatterns});
 } catch (e) {}
