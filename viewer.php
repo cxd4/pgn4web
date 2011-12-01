@@ -510,7 +510,7 @@ function reset_viewer() {
       <form id="textForm" style="display: inline;">
         <input id="pgnFormButton" type="button" class="formControl" value="show games from PGN textbox" style="width:100%;" onClick="loadPgnFromForm();">
     </td>
-    <td colspan=2 rowspan=2 width="100%" align="right" valign="bottom">
+    <td colspan=2 rowspan=2 width="100%" align="right" valign="top">
         <input type="hidden" name="mode" value="$mode">
         <textarea id="pgnFormText" class="formControl" name="pgnTextbox" rows=4 style="width:100%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" onChange="checkPgnFormTextSize();">$pgnTextbox</textarea>
       </form>
