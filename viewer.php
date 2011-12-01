@@ -291,6 +291,7 @@ a:link, a:visited, a:hover, a:active {
 
 .formControl {
   font-size: smaller;
+  margin: 0;
 }
 
 </style>
