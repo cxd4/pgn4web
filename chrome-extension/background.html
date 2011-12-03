@@ -353,6 +353,7 @@ function checkWebRequestForPgnFiles(requestDetails) {
 }
 
 // enables the webRequest API, within a try statement for backward compatibility with chrome before version 17
+// see README.txt note about http://crbug.com/60101
 try {
   chrome.webRequest.onBeforeRequest.addListener(checkWebRequestForPgnFiles, {"types": ["object", "xmlhttprequest", "other"], "urls": pgnUrlPatterns});
 } catch (e) {}
