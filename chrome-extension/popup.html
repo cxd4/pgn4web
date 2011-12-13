@@ -123,12 +123,12 @@ var pgnLinksId = new Array();
 // chrome.tabs.getSelected is deprecated as of chrome 16
 // maintaining backward compatibility until minimum_chrome_version is set to 16.0 or above
 try {
-  chrome.windows.getCurrent(function(win) { chrome.tabs.query({'windowId': win.id, 'active': true}, function(tabArray) { if (tabArray) { processPgnLinksForTab(tabArray[0]); } }); });
+  chrome.windows.getCurrent(function(win) { chrome.tabs.query({'windowId': win.id, 'active': true}, function(tabArray) { if (tabArray) { showPgnLinksForTab(tabArray[0]); } }); });
 } catch (e) {
-  chrome.tabs.getSelected(null, processPgnLinksForTab);
+  chrome.tabs.getSelected(null, showPgnLinksForTab);
 }
 
-function processPgnLinksForTab(tab) {
+function showPgnLinksForTab(tab) {
 
   function displayUrl(url, base) {
     adjUrl = url.replace(/(?=:)\/+/, "/");
