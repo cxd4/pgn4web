@@ -511,10 +511,11 @@ function set_defaults() {
   if (headerDisplay_value == "c") { headerDisplay_value = "centered"; }
   if (headerDisplay_value == "h") { headerDisplay_value = "hidden"; }
   if (headerDisplay_value == "j") { headerDisplay_value = "justified"; }
+  if (headerDisplay_value == "l") { headerDisplay_value = "live"; }
   document.board.headerDisplay.value = headerDisplay_value;
   if (!((headerDisplay_value == "centered") || (headerDisplay_value == "hidden") ||
-        (headerDisplay_value == "justified")) ) {
-    alert("error: header display must be either 'centered', 'hidden', 'justified' or their initials");
+        (headerDisplay_value == "justified") || (headerDisplay_value == "live")) ) {
+    alert("error: header display must be either 'centered', 'hidden', 'justified', 'live' or their initials");
     document.board.headerDisplay.value = headerDisplay_value = headerDisplay_default;
   }
 
@@ -1849,6 +1850,7 @@ buttons</span>
 <option value="centered">centered</option>
 <option value="justified" selected="selected">justified</option>
 <option value="hidden">hidden</option>
+<option value="live">live</option>
 </select>
 <span class="labeltext"><b>how to show game header</b></span>
 <p></p>

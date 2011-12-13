@@ -57,8 +57,13 @@ body {
   font-weight: bold;
 }
 
+.headerLive {
+  font-weight: normal;
+}
+
 .move,
-.moveOn {
+.moveOn,
+.lastMove {
   color: black;
   font-family: 'pgn4web ChessSansPiratf', 'pgn4web Liberation Sans', sans-serif;
   line-height: 1.3em;
@@ -526,7 +531,8 @@ if ((headerDisplay = gup("headerDisplay")) === "") {
 if (headerDisplay == "c") { headerDisplay = "centered"; }
 if (headerDisplay == "h") { headerDisplay = "hidden"; }
 if (headerDisplay == "j") { headerDisplay = "justified"; }
-if ((headerDisplay != "centered") && (headerDisplay != "hidden")) { headerDisplay = "justified"; }
+if (headerDisplay == "l") { headerDisplay = "live"; }
+if ((headerDisplay != "centered") && (headerDisplay != "live") && (headerDisplay != "hidden")) { headerDisplay = "justified"; }
 
 oldMovesDisplay = "";
 showMoves = gup("showMoves");
@@ -654,7 +660,7 @@ if (gup("help") !== "") {
   document.write(" - controlBackgroundColorHex = control buttons background color hex code, like FF0000 (default reverts to standard buttons)\n");
   document.write(" - controlTextColorHex = control buttons text color hex code, like FF0000 (default 000000)\n");
   document.write("\n");
-  document.write(" - headerDisplay = justified | centered | hidden (default hidden)\n");
+  document.write(" - headerDisplay = justified | centered | hidden | live (default hidden)\n");
   document.write(" - movesDisplay = justified | hidden (default hidden)\n");
   document.write(" - textHeight = set height of the textual section, header and/or moves text, might be ingored if frameHeight is set (default 100%)\n");
   document.write(" - textWidth = set width of the textual section, header and/or moves text, might be ignored if frameWidth is set (default 100%)\n");
@@ -861,6 +867,37 @@ function display_header_moves() {
                  "; scrollbar-base-color: " + backgroundColor + ";'>");
   } 
 
+  if (headerDisplay == "live") {
+
+    document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
+    document.write("<td align=left>");
+    document.write("<div class='header headerLive' style='white-space: nowrap; margin-left: "  + textMargin + 
+                   "; margin-right: 3%;' id=GameWhite></div>");
+    document.write("</td><td align=right>");
+    document.write("<div class='header headerLive' style='white-space: nowrap; margin-right: " + textMargin +
+                   "; margin-left: 3%;'  id=GameWhiteClock></div>");
+    document.write("</td></tr></table>");
+
+    document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
+    document.write("<td align=left>");
+    document.write("<div class='header headerLive' style='white-space: nowrap; margin-left: "  + textMargin + 
+                   "; margin-right: 3%;' id=GameBlack></div>");
+    document.write("</td><td align=right>");
+    
+    document.write("<div class='header headerLive' style='white-space: nowrap; margin-right: " + textMargin +
+                   "; margin-left: 3%;'  id=GameBlackClock></div>");
+    document.write("</td></tr></table>");
+
+    document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
+    document.write("<td align=left>");
+    document.write("<div class='header headerLive' style='white-space: nowrap; margin-left: "  + textMargin + 
+                   "; margin-right: 3%;' id=GameResult></div>");
+    document.write("</td><td align=right>");
+    document.write("<div class='header headerLive' style='white-space: nowrap; margin-right: " + textMargin +
+		    "; margin-left: 3%;'><span class='lastMove header headerLive'>&nbsp;<span id=GameLastMove></span></span></div>");
+    document.write("</td></tr></table>");
+  }
+   
   if (headerDisplay == "justified") {
 
     document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
