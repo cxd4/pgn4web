@@ -130,3 +130,8 @@ monitor fixed-width font size change issue and check layout of the game
 selection dropdown menu once the bug is fixed.
 http://crbug.com/91922
 bug fixed in google chrome 17.0.937.0, extension looks ok
+
+popup.html, manifest.json: avoid using deprecated chrome.tabs.getSelected
+chrome.tabs.getSelected is deprecated as of chrome 16, at the moment backward
+compatibility is maintained until minimum_chrome_version is set to 16.0 or
+above
