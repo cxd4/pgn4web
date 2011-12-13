@@ -21,7 +21,7 @@
    maxFn = 1; // max PGN file number "n" available as paolo-chess-games-n.pgn, update each time the PGN file is split
 
    gamesUrl = "paolo-chess-games";
-   if (fn = location.search.match(/fn=\d+/)) { fn = fn[0].substr(3); } else { fn = 0; }
+   if (fns = location.search.match(/fn=\d+/)) { fn = parseInt(fns[0].substr(3), 10); } else { fn = 0; }
    if ((fn > 0) && (fn <= maxFn)) { gamesUrl += "-" + fn; }
    gamesUrl += ".pgn";
    SetPgnUrl(gamesUrl); // if set, this has precedence over the inline PGN in the HTML file
