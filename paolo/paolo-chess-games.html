@@ -17,7 +17,14 @@
 
 <script src="../pgn4web.js" type="text/javascript"></script>
 <script type="text/javascript">
-   SetPgnUrl("paolo-chess-games.pgn"); // if set, this has precedence over the inline PGN in the HTML file
+
+   maxFn = 1; // max PGN file number "n" available as paolo-chess-games-n.pgn, update each time the PGN file is split
+
+   gamesUrl = "paolo-chess-games";
+   if (fn = location.search.match(/fn=\d+/)) { fn = fn[0].substr(3); } else { fn = 0; }
+   if ((fn > 0) && (fn <= maxFn)) { gamesUrl += "-" + fn; }
+   gamesUrl += ".pgn";
+   SetPgnUrl(gamesUrl); // if set, this has precedence over the inline PGN in the HTML file
    SetImagePath("../alpha/32"); // use "" path if images are in the same folder as this javascript file
    SetImageType("png");
    SetHighlightOption(true); // true or false
@@ -48,6 +55,17 @@ function customShortcutKey_Shift_3() {
    if (!gameWhite[currentGame].match(/casaschi/i)) { customShortcutKey_Shift_1(); }
    if (!gameBlack[currentGame].match(/casaschi/i)) { customShortcutKey_Shift_2(); }
 }
+
+function loadNextGames() {
+   if (fn < maxFn) { location.href = "paolo-chess-games.html?fn=" + (fn + 1); }
+}
+
+function loadPrevGames() {
+   if (fn > 0) { location.href = "paolo-chess-games.html?fn=" + (fn - 1); }
+}
+
+   if (fn < maxFn) { boardShortcut("G5", "load next set of Paolo's games", loadNextGames); }
+   if (fn > 0) { boardShortcut("F5", "load previous set of Paolo's games", loadPrevGames); }
 
 </script>
 
