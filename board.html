@@ -616,7 +616,7 @@ else {
 }
 
 if (refreshMinutes > 0) {
-  if (pgnData !== "") { SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, false); }
+  if (pgnData !== "") { SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, true); }
   else { 
     myAlert("error: live broadcast requires using pgnData parameter as PGN source.", true); 
   }
