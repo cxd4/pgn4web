@@ -64,11 +64,15 @@ body {
 .move,
 .moveOn,
 .lastMove {
-  color: black;
   font-family: 'pgn4web ChessSansPiratf', 'pgn4web Liberation Sans', sans-serif;
   line-height: 1.3em;
   text-decoration: none;
   position: relative; /* fixes IE offsetTop issue */
+}
+
+.move,
+.moveOn {
+  color: black;
 }
 
 .moveOn {
@@ -894,7 +898,7 @@ function display_header_moves() {
                    "; margin-right: 3%;' id=GameResult></div>");
     document.write("</td><td align=right>");
     document.write("<div class='header headerLive' style='white-space: nowrap; margin-right: " + textMargin +
-		    "; margin-left: 3%;'><span class='lastMove header headerLive'>&nbsp;<span id=GameLastMove></span></span></div>");
+		    "; margin-left: 3%;'><span class='lastMove'>&nbsp;<span id=GameLastMove></span></span></div>");
     document.write("</td></tr></table>");
   }
    
