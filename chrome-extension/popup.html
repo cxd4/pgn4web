@@ -120,7 +120,15 @@ var cursorDef = "url(cursor-small.png) 1 6, auto";
 var pgnLinksDisplay = new Array();
 var pgnLinksId = new Array();
 
-chrome.tabs.getSelected(null, function(tab){
+// chrome.tabs.getSelected is deprecated as of chrome 16
+// maintaining backward compatibility until minimum_chrome_version is set to 16.0 or above
+if (chrome.tabs.query) {
+  chrome.windows.getCurrent(function(win) { chrome.tabs.query( {'windowId': win.id, 'active': true}, function(tabArray){ if (tabArray) { processPgnLinksForTab(tabArray[0]); } }); });
+} else {
+  chrome.tabs.getSelected(null, processPgnLinksForTab);
+}
+
+function processPgnLinksForTab(tab) {
 
   function displayUrl(url, base) {
     adjUrl = url.replace(/(?=:)\/+/, "/");
@@ -211,7 +219,7 @@ chrome.tabs.getSelected(null, function(tab){
   listObject.innerHTML = pgnLinkListInnerHTML;
   headerObject.innerHTML = pgnHeaderInnerHTML;
 
-});
+}
 
 var toggledFullUrlNum = null;
 function toggleFullPgnUrl(l) {
