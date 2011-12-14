@@ -1,0 +1,218 @@
+<html>
+
+<!--
+  pgn4web javascript chessboard
+  copyright (C) 2009, 2011 Paolo Casaschi
+  see README file and http://pgn4web.casaschi.net
+  for credits, license and more details
+-->
+
+<head>
+
+<title>chess games</title>
+
+<link rel="shortcut icon" href="pawn.ico" />
+
+<style type="text/css">
+
+</style>
+
+<style id="dynamicStyle" type="text/css"></style>
+
+<script src="pgn4web.js" type="text/javascript"></script>
+<script type="text/javascript">
+SetImagePath("svgchess");
+SetImageType("svg");
+SetHighlightOption(true);
+SetGameSelectorOptions(" ...", false, 0, 0, 0, 15, 15, 3, 0); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
+SetAutoplayDelay(2000); // milliseconds
+SetAutostartAutoplay(false);
+SetAutoplayNextGame(false);
+SetShortcutKeysEnabled(false);
+
+var pgnData_default = "live/live.pgn";
+var refreshMinutes_default = 0;
+var initialGame_default = "first";
+var fontColorHex_default = "000000";
+var backgroundColorHex_default = "FFFFFF";
+var lightColorHex_default = "FFCE9E";
+var darkColorHex_default = "D18B47";
+
+var thisRegExp = /(&|\?)(help|h)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+  alert("pgn4web live-mosaic-viewer.html parameters" + "\n\n" +
+    " - pgnData = file.pgn" + "\n\n" +
+    " - initialGame = initial game (default " + initialGame_default + ")" + "\n\n" +
+    " - refreshMinutes = live broadcast delay (default " + refreshMinutes_default + ")" + "\n\n" +
+    " - refreshDemo = if set true sets live demo mode (default false)" + "\n\n" +
+    " - fontColorHex = font color hex code, like FF0000 (default " + fontColorHex_default + ")" + "\n\n" +
+    " - backgroundColorHex = page background color hex code, like FF0000 (default " + backgroundColorHex_default + ")" + "\n\n" +
+    " - lightColorHex = light square color hex code, like FF0000 (default " + lightColorHex_default + ")" + "\n\n" +
+    " - darkColorHex = dark square color hex code, like FF0000 (default " + darkColorHex_default + ")" + "\n\n" +
+    " - help");
+}
+
+var pgnData = pgnData_default;
+// accepts pgnData as alias for pgnFile for consistency with board.html
+thisRegExp = /(&|\?)(pgnData|pd)=([^&]*)(&|$)/i;
+if (! thisRegExp) { thisRegExp = /(&|\?)(pgnFile|pf)=([^&]*)(&|$)/i; }
+if (window.location.search.match(thisRegExp) !== null) {
+  pgnData = unescape(window.location.search.match(thisRegExp)[3]);
+} 
+SetPgnUrl(pgnData); // if set, this has precedence over the inline PGN in the HTML file
+
+var iniGame = initialGame_default;
+thisRegExp = /(&|\?)(initialGame|ig)=([^&]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+  iniGame = unescape(window.location.search.match(thisRegExp)[3]);
+}
+SetInitialGame(iniGame);
+
+var alertFlag = demoFlag = false;
+thisRegExp = /(&|\?)(refreshDemo|rd)=([^&]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+  refreshDemo = unescape(window.location.search.match(thisRegExp)[3]);
+  if ((refreshDemo == "true") || (refreshDemo == "t")) { alertFlag = demoFlag = true; }
+}
+
+var refreshMinutes = refreshMinutes_default;
+var stepFlag = true;
+thisRegExp = /(&|\?)(refreshMinutes|rm)=([^&]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+  refreshMinutes = parseFloat(unescape(window.location.search.match(thisRegExp)[3]));
+  if (isNaN(refreshMinutes)) { refreshMinutes = refreshMinutes_default; }
+  if (refreshMinutes <= 0) { refreshMinutes = refreshMinutes_default; }
+}
+
+SetInitialHalfmove(refreshMinutes ? "end" : "start", true);
+ 
+SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, stepFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false)
+
+
+var fontColorHex = fontColorHex_default;
+thisRegExp = /(&|\?)(fontColorHex|fch)=([A-F0-9]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+  fontColorHex = unescape(window.location.search.match(thisRegExp)[3]);
+}
+
+var backgroundColorHex = backgroundColorHex_default;
+thisRegExp = /(&|\?)(backgroundColorHex|bch)=([A-F0-9]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+  backgroundColorHex = unescape(window.location.search.match(thisRegExp)[3]);
+}
+
+var lightColorHex = lightColorHex_default;
+thisRegExp = /(&|\?)(lightColorHex|lch)=([A-F0-9]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+  lightColorHex = unescape(window.location.search.match(thisRegExp)[3]);
+}
+
+var darkColorHex = darkColorHex_default;
+thisRegExp = /(&|\?)(darkColorHex|dch)=([A-F0-9]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+  darkColorHex = unescape(window.location.search.match(thisRegExp)[3]);
+}
+
+
+function myOnResize() {
+  squareSize = Math.floor(Math.min(window.innerWidth / 16, window.innerHeight / 10));
+  if (squareSize > 0) {
+    lineHeight = squareSize / 2;
+    fontSize = Math.floor(lineHeight * 0.8);
+    if (squareSize < 20) { squareBorderWidth = 0; }
+    else if (squareSize < 40) { squareBorderWidth = 1; }
+    else if (squareSize < 80) { squareBorderWidth = 2; }
+    else { squareBorderWidth = 3; }
+    pieceSize = Math.floor(squareSize * 0.9);
+    selectControlWidth = window.innerWidth - 11 * squareSize;
+    document.getElementById("dynamicStyle").innerHTML = 
+      "body { padding: 0; margin: " + squareSize + "px; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px; } " +
+      "a { text-decoration: none; color: #" + fontColorHex + "; }" +
+      ".boardTable { margin-right: " + squareSize + "px; } " +
+      ".pieceImage { width:" + pieceSize + "px; height:" + pieceSize + "px; } " +
+      ".whiteSquare, .blackSquare, .highlightWhiteSquare, .highlightBlackSquare { width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px; } " +
+      ".whiteSquare, .highlightWhiteSquare { background-color: #" + lightColorHex + "; border-color: #" + lightColorHex + "; } " +
+      ".blackSquare, .highlightBlackSquare { background-color: #" + darkColorHex + "; border-color:  #" + darkColorHex + "; } " +
+      ".highlightWhiteSquare, .highlightBlackSquare { border-style: inset; } " +
+      ".selectControl { width: " + selectControlWidth + "px !important; height: " + lineHeight + "px; font-size: " + fontSize + "px; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; border-width: 0; } " +
+      "";
+    if (theObject = document.getElementById("boardTable")) {
+      theObject.style.height = (squareSize * 8) + "px";
+      theObject.style.width = (squareSize * 8) + "px";
+    }
+  }
+}
+
+
+function customFunctionOnPgnTextLoad() {
+  if (refresMinutes) {
+    if (LiveBroadcastStarted && !LiveBroadcastEnded) {
+      document.title = LiveBroadcastStatusString.replace("live games: ", ".").replace(" &nbsp; finished: ", ".") + " live broadcast" + (demoFlag ? " demo" : "");
+    } else { document.title = LiveBroadcastStatusString; }
+  }
+}
+
+function customFunctionOnPgnGameLoad() { myOnResize(); }
+
+function customFunctionOnMove() {
+  if (theObject = document.getElementById("GameMoreMoves")) {
+    theObject.innerHTML = (CurrentPly == StartPly + PlyNumber) ? "" : ">";
+  }
+}
+
+function searchPlayer(name, FideId) {
+  if (FideId) { window.open("http://ratings.fide.com/seek.phtml?idcode=" + escape(FideId) + "&name=&offset=0"); }
+  else if (name) { window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + escape(name) + "&offset=0"); }
+}
+
+</script>
+
+</head>
+
+<body onLoad="myOnResize(); start_pgn4web();" onResize="myOnResize();">
+
+<!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
+<form style="display: none;"><textarea style="display: none;" id="pgnText">
+
+</textarea></form>
+<!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
+
+<div style="float:left;" id="GameBoard"></div>
+
+<div style="white-space: nowrap; overflow: hidden;">
+<div id="GameSelector"></div>
+<div>&nbsp;</div>
+<div><span id="GameSite" title="site"></span>&nbsp;</div>
+<div><span id="GameEvent" title="event"></span>&nbsp;</div>
+<div>&nbsp;</div>
+<div><span id="GameWhiteClock" title="White clock"></span>&nbsp;</div>
+<div><a style="font-weight: bold;" id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId'));" title="White player"></a>&nbsp;</div>
+<div><a style="font-weight: bold;" id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId'));" title="Black player"></a>&nbsp;</div>
+<div><span id="GameBlackClock" title="Black clock"></span>&nbsp;</div>
+<div>&nbsp;</div>
+<div><span style="font-weight: bold;" id="GameResult" title="result"></span>&nbsp;</div>
+<div>&nbsp;</div>
+<div><span id="GameLastMove" title="last move"></span>&nbsp;</div>
+<div>&nbsp;</div>
+<div><a id="GameMoreMoves" href="javascript:void(0);" onclick="MoveForward(1);" title="more moves available: click > to move forward"></a>&nbsp;</div>
+<div><a id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource();" title="live broadcast status"></a>&nbsp;<span id="GameLiveStatusDemo"></span></div>
+</div>
+
+<script type="text/javascript">
+
+if (refreshMinutes) {
+  if (theObject = document.getElementById("GameLiveStatusDemo")) {
+     theObject.innerHTML = LiveBroadcastDemo ? "&nbsp;&nbsp;demo" : "";
+  }
+} else {
+  if (theObject = document.getElementById("GameLiveStatus")) {
+    theObject.style.visibility = "hidden";
+  }
+}
+
+
+</script>
+
+</body>
+
+</html>
