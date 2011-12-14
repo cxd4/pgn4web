@@ -135,7 +135,7 @@ if (window.location.search.match(thisRegExp) !== null) {
 
 function myOnResize() {
   squareSize = Math.min(window.innerWidth / (16 * 8 / 9), window.innerHeight / 8);
-  lineHeight = squareSize / 2;
+  lineHeight = Math.floor(squareSize / 2);
   fontSize = Math.floor(lineHeight * 0.8);
   squareBorderWidth = Math.min(Math.ceil(squareSize / 50), 3);  
   pieceSize = Math.floor(squareSize * 0.9);
