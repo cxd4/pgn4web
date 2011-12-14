@@ -59,7 +59,9 @@ function myOnResize() {
       sheet.insertRule(".pieceImage { width:" + pieceSize + "px; height:" + pieceSize + "px; } ", sheet.cssRules.length);
       sheet.insertRule(".whiteSquare, .blackSquare, .highlightWhiteSquare, .highlightBlackSquare { width:" + squareSize + "px; height:" + squareSize + "px; } ", sheet.cssRules.length);
       for (ii = 0; ii < oldRules; ii++) { sheet.deleteRule(0); }
-    } catch (e) { }
+    } catch (e) {
+      document.body.innerHTML = "<p style='font-family: sans-serif; text-align: center'><br>this web browser<br>is not supported</p>";
+    }
     boardObject.style.paddingTop = (window.innerHeight - 8 * squareSize - 2 * boardBorder) / 2 + "px";
     boardObject.style.paddingBottom = (window.innerHeight - 8 * squareSize - 2 * boardBorder) / 2 + "px";
     boardObject.style.paddingLeft = (window.innerWidth - 8 * squareSize - 2 * boardBorder) / 2 + "px";
