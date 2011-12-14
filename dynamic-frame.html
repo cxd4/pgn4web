@@ -160,9 +160,9 @@ function myOnResize() {
 
 
 function customFunctionOnPgnTextLoad() {
-  if (refreshMinutes) {
+  if (LiveBroadcastDelay) {
     if (LiveBroadcastStarted && !LiveBroadcastEnded) {
-      document.title = LiveBroadcastStatusString.replace("live games: ", ".").replace(" &nbsp; finished: ", ".") + " live broadcast" + (demoFlag ? " demo" : "");
+      document.title = "chess live broadcast" + (demoFlag ? " demo" : "");
     } else { document.title = LiveBroadcastStatusString; }
   }
 }
@@ -215,7 +215,7 @@ function searchPlayer(name, FideId) {
 
 <script type="text/javascript">
 
-if (refreshMinutes) {
+if (LiveBroadcastDelay) {
   if (theObject = document.getElementById("GameLiveStatusDemo")) {
      theObject.innerHTML = LiveBroadcastDemo ? "&nbsp;&nbsp;demo" : "";
   }
