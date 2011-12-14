@@ -40,7 +40,7 @@ var darkColorHex_default = "D18B47";
 
 var thisRegExp = /(&|\?)(help|h)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
-  alert("pgn4web live-mosaic-viewer.html parameters" + "\n\n" +
+  alert("pgn4web dynamic-frame.html parameters" + "\n\n" +
     " - pgnData = file.pgn" + "\n\n" +
     " - initialGame = initial game (default " + initialGame_default + ")" + "\n\n" +
     " - refreshMinutes = live broadcast delay (default " + refreshMinutes_default + ")" + "\n\n" +
@@ -49,7 +49,8 @@ if (window.location.search.match(thisRegExp) !== null) {
     " - backgroundColorHex = page background color hex code, like FF0000 (default " + backgroundColorHex_default + ")" + "\n\n" +
     " - lightColorHex = light square color hex code, like FF0000 (default " + lightColorHex_default + ")" + "\n\n" +
     " - darkColorHex = dark square color hex code, like FF0000 (default " + darkColorHex_default + ")" + "\n\n" +
-    " - help");
+    " - help" + "\n\n" +
+    "note: SVG support is required from the browser");
 }
 
 var pgnData = pgnData_default;
@@ -195,7 +196,7 @@ function searchPlayer(name, FideId) {
 <div><span id="GameLastMove" title="last move"></span>&nbsp;</div>
 <div>&nbsp;</div>
 <div><a id="GameMoreMoves" href="javascript:void(0);" onclick="MoveForward(1);" title="more moves available: click > to move forward"></a>&nbsp;</div>
-<div><a id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource();" title="live broadcast status"></a>&nbsp;<span id="GameLiveStatusDemo"></span></div>
+<div><a id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource();" title="live broadcast status"></a>&nbsp;<span id="GameLiveStatusDemo" title="this is a broadcast simulation"></span></div>
 </div>
 
 <script type="text/javascript">
