@@ -33,8 +33,8 @@ SetShortcutKeysEnabled(true);
 var pgnData_default = "live/live.pgn";
 var refreshMinutes_default = 0;
 var initialGame_default = "first";
-var fontColorHex_default = "000000";
-var backgroundColorHex_default = "FFFFFF";
+var fontColorHex_default = "221100";
+var backgroundColorHex_default = "FFCE9E";
 var lightColorHex_default = "FFCE9E";
 var darkColorHex_default = "D18B47";
 var highlightColorHex_default = "663300";
@@ -59,10 +59,14 @@ if (window.location.search.match(thisRegExp) !== null) {
 var pgnData = pgnData_default;
 // accepts pgnData as alias for pgnFile for consistency with board.html
 thisRegExp = /(&|\?)(pgnData|pd)=([^&]*)(&|$)/i;
-if (! thisRegExp) { thisRegExp = /(&|\?)(pgnFile|pf)=([^&]*)(&|$)/i; }
 if (window.location.search.match(thisRegExp) !== null) {
   pgnData = unescape(window.location.search.match(thisRegExp)[3]);
-} 
+} else { 
+  thisRegExp = /(&|\?)(pgnFile|pf)=([^&]*)(&|$)/i;
+  if (window.location.search.match(thisRegExp) !== null) {
+    pgnData = unescape(window.location.search.match(thisRegExp)[3]);
+  }
+}
 SetPgnUrl(pgnData); // if set, this has precedence over the inline PGN in the HTML file
 
 var iniGame = initialGame_default;

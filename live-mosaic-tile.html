@@ -29,11 +29,15 @@
   var pgnFile_default = location.protocol + "//" + location.hostname + 
     location.pathname.replace(/\/[^\/]*$/, "/live/live.pgn");
   var pgnFile = pgnFile_default;
-  // accepts pgnData as alias for pgnFile for consistency with board.html
   thisRegExp = /(&|\?)(pgnData|pd)=([^&]*)(&|$)/i;
-  if (! thisRegExp) { thisRegExp = /(&|\?)(pgnFile|pf)=([^&]*)(&|$)/i; }
   if (window.location.search.match(thisRegExp) !== null) {
-     pgnFile = unescape(window.location.search.match(thisRegExp)[3]);
+    pgnFile = unescape(window.location.search.match(thisRegExp)[3]);
+  } else {
+    // accepts pgnData as alias for pgnFile for consistency with board.html
+    thisRegExp = /(&|\?)(pgnFile|pf)=([^&]*)(&|$)/i;
+    if (window.location.search.match(thisRegExp) !== null) {
+      pgnFile = unescape(window.location.search.match(thisRegExp)[3]);
+    }
   }
 
   var alertFlag = demoFlag = false;
