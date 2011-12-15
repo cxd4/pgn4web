@@ -177,6 +177,7 @@ function myDeleteRule(sheet, index) {
 }
 
 function myOnResize() {
+  // IE9 fails here
   if ((typeof(window.innerWidth) != "number") || (typeof(window.innerHeight) != "number")) { throw("failed to get window size"); }
 
   squareSize = Math.min(window.innerWidth / (16 * 8 / 9), window.innerHeight / 8);
@@ -279,6 +280,7 @@ window.onerror = function(msg, url, linenumber) {
 
 function checkSVGSupport() {
   var img = document.createElement("img");
+  // IE8 and before fail here
   img.onerror = function() { throw("SVG browser support required for the IMG HTML tag"); };
   img.onload = function() { };
   img.setAttribute("src","data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNzUiIGhlaWdodD0iMjc1Ij48L3N2Zz4%3D");
