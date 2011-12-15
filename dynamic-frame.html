@@ -190,7 +190,7 @@ function searchPlayer(name, FideId) {
 
 </head>
 
-<body onLoad="myOnResize(); start_pgn4web();" onResize="myOnResize();">
+<body onLoad="checkSVGSupport(); myOnResize(); start_pgn4web();" onResize="myOnResize();">
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
 <form style="display: none;"><textarea style="display: none;" id="pgnText">
@@ -236,7 +236,12 @@ window.onerror = function(msg, url, linenumber) {
   if (debug) { document.body.innerHTML += "<p style='font-family: sans-serif; text-align: left;'><br><br>message: " + msg + "<br><br>url: " + url + "<br><br>line: " + linenumber + "<br><br>browser: " + navigator.userAgent + "</p>"; }
 }
 
-if (!window.SVGSVGElement) { throw("SVG support"); }
+function checkSVGSupport() {
+  var img = document.createElement("img");
+  img.onerror = function() { throw("SVG browser support required for the IMG HTML tag"); };
+  img.onload = function() { };
+  img.setAttribute("src","data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNzUiIGhlaWdodD0iMjc1Ij48L3N2Zz4%3D");
+}
 
 </script>
 
