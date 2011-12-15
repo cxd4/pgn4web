@@ -30,9 +30,9 @@ SetAutostartAutoplay(false);
 SetAutoplayNextGame(false);
 SetShortcutKeysEnabled(true);
 
-var pgnData_default = "live/live.pgn";
-var refreshMinutes_default = 0;
-var initialGame_default = "first";
+pgnData_default = "live/live.pgn";
+refreshMinutes_default = 0;
+initialGame_default = "first";
 theme = new Array();
 theme[0] = new Array("black", "FFFFFF", "000000", "999999", "777777", "000000");
 theme[1] = new Array("blue", "000000", "80B0E0", "E6EDF3", "A0BED8", "596978");
@@ -42,12 +42,12 @@ theme[4] = new Array("green", "333333", "EFF4EC", "EFF4EC", "C6CEC3", "999999");
 theme[5] = new Array("pink", "615F54", "EDE8D5", "EDE8D5", "CFCBB3", "9B9786");
 theme[6] = new Array("white", "000000", "FFFFFF", "FFFFFF", "E4E4E4", "000000");
 theme[7] = new Array("yellow", "54110C", "F2D798", "F2D798", "C9AD6F", "54110C");
-var colorTheme_indexDefault = 2;
+colorTheme_indexDefault = 2;
 colorThemeOptions = "";
 for (ii = 0; ii < theme.length; ii++) { colorThemeOptions += "'" + theme[ii][0] + "' | "; }
 colorThemeOptions += "random";
 
-var thisRegExp = /(&|\?)(help|h)(&|$)/i;
+thisRegExp = /(&|\?)(help|h)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   document.write("<pre style='font-size: smaller;'>pgn4web dynamic-frame.html parameters" + "\n" +
     " - pgnData = file.pgn (default: " + pgnData_default + ")" + "\n" +
@@ -66,10 +66,10 @@ if (window.location.search.match(thisRegExp) !== null) {
     "</pre>");
 }
 
-var thisRegExp = /(&|\?)(debug|d)(&|$)/i;
-var debug = (window.location.search.match(thisRegExp) !== null);
+thisRegExp = /(&|\?)(debug|d)(&|$)/i;
+debug = (window.location.search.match(thisRegExp) !== null);
 
-var pgnData = pgnData_default;
+pgnData = pgnData_default;
 // accepts pgnData as alias for pgnFile for consistency with board.html
 thisRegExp = /(&|\?)(pgnData|pd)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
@@ -82,22 +82,22 @@ if (window.location.search.match(thisRegExp) !== null) {
 }
 SetPgnUrl(pgnData); // if set, this has precedence over the inline PGN in the HTML file
 
-var iniGame = initialGame_default;
+iniGame = initialGame_default;
 thisRegExp = /(&|\?)(initialGame|ig)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   iniGame = unescape(window.location.search.match(thisRegExp)[3]);
 }
 SetInitialGame(iniGame);
 
-var alertFlag = demoFlag = false;
+alertFlag = demoFlag = false;
 thisRegExp = /(&|\?)(refreshDemo|rd)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   refreshDemo = unescape(window.location.search.match(thisRegExp)[3]);
   if ((refreshDemo == "true") || (refreshDemo == "t")) { alertFlag = demoFlag = true; }
 }
 
-var refreshMinutes = refreshMinutes_default;
-var stepFlag = true;
+refreshMinutes = refreshMinutes_default;
+stepFlag = true;
 thisRegExp = /(&|\?)(refreshMinutes|rm)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   refreshMinutes = parseFloat(unescape(window.location.search.match(thisRegExp)[3]));
@@ -119,37 +119,37 @@ colorTheme_index = colorTheme_indexDefault;
 if (colorTheme == "random") { colorTheme_index = Math.floor(theme.length * Math.random()); }
 else { for (ii = 0; ii < theme.length; ii++) { if (theme[ii][0] === colorTheme) { colorTheme_index = ii; break; } } }
 
-var fontColorHex_default = theme[colorTheme_index][1];
-var backgroundColorHex_default = theme[colorTheme_index][2];
-var lightColorHex_default = theme[colorTheme_index][3];
-var darkColorHex_default = theme[colorTheme_index][4];
-var highlightColorHex_default = theme[colorTheme_index][5];
+fontColorHex_default = theme[colorTheme_index][1];
+backgroundColorHex_default = theme[colorTheme_index][2];
+lightColorHex_default = theme[colorTheme_index][3];
+darkColorHex_default = theme[colorTheme_index][4];
+highlightColorHex_default = theme[colorTheme_index][5];
 
-var fontColorHex = fontColorHex_default;
+fontColorHex = fontColorHex_default;
 thisRegExp = /(&|\?)(fontColorHex|fch)=([A-F0-9]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   fontColorHex = unescape(window.location.search.match(thisRegExp)[3]);
 }
 
-var backgroundColorHex = backgroundColorHex_default;
+backgroundColorHex = backgroundColorHex_default;
 thisRegExp = /(&|\?)(backgroundColorHex|bch)=([A-F0-9]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   backgroundColorHex = unescape(window.location.search.match(thisRegExp)[3]);
 }
 
-var lightColorHex = lightColorHex_default;
+lightColorHex = lightColorHex_default;
 thisRegExp = /(&|\?)(lightColorHex|lch)=([A-F0-9]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   lightColorHex = unescape(window.location.search.match(thisRegExp)[3]);
 }
 
-var darkColorHex = darkColorHex_default;
+darkColorHex = darkColorHex_default;
 thisRegExp = /(&|\?)(darkColorHex|dch)=([A-F0-9]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   darkColorHex = unescape(window.location.search.match(thisRegExp)[3]);
 }
 
-var highlightColorHex = highlightColorHex_default;
+highlightColorHex = highlightColorHex_default;
 thisRegExp = /(&|\?)(highlightColorHex|hch)=(t|transparent)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   highlightColorHex = "";
@@ -160,6 +160,21 @@ if (window.location.search.match(thisRegExp) !== null) {
   }
 }
 
+function myRulesLength(sheet) {
+  if (sheet.cssRules) { return sheet.cssRules.length; }
+  if (sheet.rules) { return sheet.rules.length; }
+  return null;
+}
+
+function myInsertRule(sheet, selector, declaration) {
+  if (sheet.insertRule) { sheet.insertRule(selector + "{ " + declaration + " }", sheet.cssRules.length); }
+  else if (sheet.addRule) { sheet.addRule(selector, declaration); }
+}
+
+function myDeleteRule(sheet, index) {
+  if (sheet.deleteRule) { sheet.deleteRule(index); }
+  else if (sheet.removeRule) { sheet.removeRule(index); }
+}
 
 function myOnResize() {
   squareSize = Math.min(window.innerWidth / (16 * 8 / 9), window.innerHeight / 8);
@@ -170,17 +185,17 @@ function myOnResize() {
   selectControlWidth = window.innerWidth - 9 * squareSize;
 
   sheet = document.styleSheets[0];
-  oldRules = sheet.cssRules.length;
-  sheet.insertRule("body { padding: 0; margin: 0; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px; } ", sheet.cssRules.length);
-  sheet.insertRule("a { text-decoration: none; color: #" + fontColorHex + "; }", sheet.cssRules.length); 
-  sheet.insertRule(".boardTable { margin-right: " + squareSize + "px; } ", sheet.cssRules.length);
-  sheet.insertRule(".pieceImage { width:" + pieceSize + "px; height:" + pieceSize + "px; } ", sheet.cssRules.length);
-  sheet.insertRule(".whiteSquare, .blackSquare, .highlightWhiteSquare, .highlightBlackSquare { width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px; } ", sheet.cssRules.length);
-  sheet.insertRule(".whiteSquare, .highlightWhiteSquare { background-color: #" + lightColorHex + "; border-color: #" + lightColorHex + "; } ", sheet.cssRules.length);
-  sheet.insertRule(".blackSquare, .highlightBlackSquare { background-color: #" + darkColorHex + "; border-color:  #" + darkColorHex + "; } ", sheet.cssRules.length);
-  sheet.insertRule(".selectControl { width: " + selectControlWidth + "px !important; height: " + lineHeight + "px; font-size: " + fontSize + "px; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; border-width: 0; } ", sheet.cssRules.length);
-  sheet.insertRule(highlightColorHex ? ".highlightWhiteSquare, .highlightBlackSquare { border-color: #" + highlightColorHex + "; } " : ".highlightWhiteSquare { border-color: #" + lightColorHex + "; } .highlightBlackSquare{ border-color: #" + darkColorHex + "; } ", sheet.cssRules.length);
-  for (ii = 0; ii < oldRules; ii++) { sheet.deleteRule(0); }
+  oldRules = myRulesLength(sheet);
+  myInsertRule(sheet, "body", "padding: 0; margin: 0; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;");
+  myInsertRule(sheet, "a", "text-decoration: none; color: #" + fontColorHex + ";"); 
+  myInsertRule(sheet, ".boardTable", "margin-right: " + squareSize + "px;");
+  myInsertRule(sheet, ".pieceImage", "width:" + pieceSize + "px; height:" + pieceSize + "px;");
+  myInsertRule(sheet, ".whiteSquare", "width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + lightColorHex + "; border-color: #" + lightColorHex + ";");
+  myInsertRule(sheet, ".blackSquare", "width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + darkColorHex + "; border-color:  #" + darkColorHex + ";");
+  myInsertRule(sheet, ".highlightWhiteSquare", "width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + lightColorHex + "; border-color: #" + (highlightColorHex ? highlightColorHex : lightColorHex) + ";");
+  myInsertRule(sheet, ".highlightBlackSquare", "width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + darkColorHex + "; border-color:  #" + (highlightColorHex ? highlightColorHex : darkColorHex) + ";");
+  myInsertRule(sheet, ".selectControl", "width: " + selectControlWidth + "px !important; height: " + lineHeight + "px; font-size: " + fontSize + "px; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; border-width: 0;");
+  for (ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
 
   if (theObject = document.getElementById("boardTable")) {
     theObject.style.height = (squareSize * 8) + "px";
@@ -258,7 +273,7 @@ if (LiveBroadcastDelay) {
 window.onerror = function(msg, url, linenumber) {
   document.body.innerHTML = "<p style='font-family: sans-serif; text-align: center;'><br>this web browser<br>is not supported</p>";
   if (debug) { document.body.innerHTML += "<p style='font-family: sans-serif; text-align: left;'><br><br>message: " + msg + "<br><br>url: " + url + "<br><br>line: " + linenumber + "<br><br>browser: " + navigator.userAgent + "</p>"; }
-}
+};
 
 function checkSVGSupport() {
   var img = document.createElement("img");
