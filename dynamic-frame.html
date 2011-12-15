@@ -177,6 +177,8 @@ function myDeleteRule(sheet, index) {
 }
 
 function myOnResize() {
+  if ((typeof(window.innerWidth) != "number") || (typeof(window.innerHeight) != "number")) { throw("failed to get window size"); }
+
   squareSize = Math.min(window.innerWidth / (16 * 8 / 9), window.innerHeight / 8);
   lineHeight = Math.floor(squareSize / 2);
   fontSize = Math.floor(lineHeight * 0.8);
