@@ -167,7 +167,7 @@ function myRulesLength(sheet) {
 }
 
 function myInsertRule(sheet, selector, declaration) {
-  if (sheet.insertRule) { sheet.insertRule(selector + "{ " + declaration + " }", sheet.cssRules.length); }
+  if (sheet.insertRule) { sheet.insertRule(selector + "{ " + declaration + " }", myRulesLength(sheet)); }
   else if (sheet.addRule) { sheet.addRule(selector, declaration); }
 }
 
