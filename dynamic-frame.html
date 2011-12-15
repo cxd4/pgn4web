@@ -271,7 +271,7 @@ if (LiveBroadcastDelay) {
 }
 
 window.onerror = function(msg, url, linenumber) {
-  document.body.innerHTML = "<p style='font-family: sans-serif; text-align: center;'><br>this web browser is not supported<br>by the pgn4web dynamic frame viewer</p>";
+  document.body.innerHTML = "<p style='font-family: sans-serif; text-align: center;'><br>this web browser<br>is not supported<br>by the dynamic frame<br>chess games viewer<br>from <a style='color: inherit; text-decoration: none;' href='http://pgn4web.casaschi.net' target='_blank'>the pgn4web project</a></p>";
   if (debug) { document.body.innerHTML += "<p style='font-family: sans-serif; text-align: left;'><br><br>message: " + msg + "<br><br>url: " + url + "<br><br>line: " + linenumber + "<br><br>browser: " + navigator.userAgent + "</p>"; }
 };
 
