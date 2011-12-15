@@ -140,22 +140,20 @@ function myOnResize() {
   squareBorderWidth = Math.min(Math.ceil(squareSize / 50), 3);  
   pieceSize = Math.floor(squareSize * 0.9);
   selectControlWidth = window.innerWidth - 9 * squareSize;
+
   sheet = document.styleSheets[0];
-  try {
-    oldRules = sheet.cssRules.lenght;
-    sheet.insertRule("body { padding: 0; margin: 0; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px; } ", sheet.cssRules.length);
-    sheet.insertRule("a { text-decoration: none; color: #" + fontColorHex + "; }", sheet.cssRules.length); 
-    sheet.insertRule(".boardTable { margin-right: " + squareSize + "px; } ", sheet.cssRules.length);
-    sheet.insertRule(".pieceImage { width:" + pieceSize + "px; height:" + pieceSize + "px; } ", sheet.cssRules.length);
-    sheet.insertRule(".whiteSquare, .blackSquare, .highlightWhiteSquare, .highlightBlackSquare { width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px; } ", sheet.cssRules.length);
-    sheet.insertRule(".whiteSquare, .highlightWhiteSquare { background-color: #" + lightColorHex + "; border-color: #" + lightColorHex + "; } ", sheet.cssRules.length);
-    sheet.insertRule(".blackSquare, .highlightBlackSquare { background-color: #" + darkColorHex + "; border-color:  #" + darkColorHex + "; } ", sheet.cssRules.length);
-    sheet.insertRule(".selectControl { width: " + selectControlWidth + "px !important; height: " + lineHeight + "px; font-size: " + fontSize + "px; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; border-width: 0; } ", sheet.cssRules.length);
-    sheet.insertRule(highlightColorHex ? ".highlightWhiteSquare, .highlightBlackSquare { border-color: #" + highlightColorHex + "; } " : ".highlightWhiteSquare { border-color: #" + lightColorHex + "; } .highlightBlackSquare{ border-color: #" + darkColorHex + "; } ", sheet.cssRules.length);
-    for (ii = 0; ii < oldRules; ii++) { sheet.deleteRule(0); }
-  } catch (e) {
-    document.body.innerHTML = "<p style='font-family: sans-serif; text-align: center'><br>this web browser<br>is not supported</p>";
-  }
+  oldRules = sheet.cssRules.lenght;
+  sheet.insertRule("body { padding: 0; margin: 0; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px; } ", sheet.cssRules.length);
+  sheet.insertRule("a { text-decoration: none; color: #" + fontColorHex + "; }", sheet.cssRules.length); 
+  sheet.insertRule(".boardTable { margin-right: " + squareSize + "px; } ", sheet.cssRules.length);
+  sheet.insertRule(".pieceImage { width:" + pieceSize + "px; height:" + pieceSize + "px; } ", sheet.cssRules.length);
+  sheet.insertRule(".whiteSquare, .blackSquare, .highlightWhiteSquare, .highlightBlackSquare { width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px; } ", sheet.cssRules.length);
+  sheet.insertRule(".whiteSquare, .highlightWhiteSquare { background-color: #" + lightColorHex + "; border-color: #" + lightColorHex + "; } ", sheet.cssRules.length);
+  sheet.insertRule(".blackSquare, .highlightBlackSquare { background-color: #" + darkColorHex + "; border-color:  #" + darkColorHex + "; } ", sheet.cssRules.length);
+  sheet.insertRule(".selectControl { width: " + selectControlWidth + "px !important; height: " + lineHeight + "px; font-size: " + fontSize + "px; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; border-width: 0; } ", sheet.cssRules.length);
+  sheet.insertRule(highlightColorHex ? ".highlightWhiteSquare, .highlightBlackSquare { border-color: #" + highlightColorHex + "; } " : ".highlightWhiteSquare { border-color: #" + lightColorHex + "; } .highlightBlackSquare{ border-color: #" + darkColorHex + "; } ", sheet.cssRules.length);
+  for (ii = 0; ii < oldRules; ii++) { sheet.deleteRule(0); }
+
   if (theObject = document.getElementById("boardTable")) {
     theObject.style.height = (squareSize * 8) + "px";
     theObject.style.width = (squareSize * 8) + "px";
@@ -229,6 +227,9 @@ if (LiveBroadcastDelay) {
   }
 }
 
+window.onerror = function() {
+  document.body.innerHTML = "<p style='font-family: sans-serif; text-align: center'><br>this web browser<br>is not supported</p>";
+}
 
 </script>
 

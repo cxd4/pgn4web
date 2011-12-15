@@ -53,15 +53,12 @@ function myOnResize() {
     shadowBorder = Math.floor(squareSize / 2);
 
     sheet = document.styleSheets[1];
-    try {
-      oldRules = sheet.cssRules.lenght;
-      sheet.insertRule(".boardTable { border-width: " + boardBorder + "px; -webkit-border-radius: " + boardBorder + "px; -moz-border-radius: " + boardBorder + "px; box-shadow: 0px 0px " + shadowBorder + "px #734C27; -webkit-box-shadow: 0px 0px " + shadowBorder + "px #734C27; -moz-box-shadow: 0px 0px " + shadowBorder + "px #734C27; } ", sheet.cssRules.length);
-      sheet.insertRule(".pieceImage { width:" + pieceSize + "px; height:" + pieceSize + "px; } ", sheet.cssRules.length);
-      sheet.insertRule(".whiteSquare, .blackSquare, .highlightWhiteSquare, .highlightBlackSquare { width:" + squareSize + "px; height:" + squareSize + "px; } ", sheet.cssRules.length);
-      for (ii = 0; ii < oldRules; ii++) { sheet.deleteRule(0); }
-    } catch (e) {
-      document.body.innerHTML = "<p style='font-family: sans-serif; text-align: center'><br>this web browser<br>is not supported</p>";
-    }
+    oldRules = sheet.cssRules.lenght;
+    sheet.insertRule(".boardTable { border-width: " + boardBorder + "px; -webkit-border-radius: " + boardBorder + "px; -moz-border-radius: " + boardBorder + "px; box-shadow: 0px 0px " + shadowBorder + "px #734C27; -webkit-box-shadow: 0px 0px " + shadowBorder + "px #734C27; -moz-box-shadow: 0px 0px " + shadowBorder + "px #734C27; } ", sheet.cssRules.length);
+    sheet.insertRule(".pieceImage { width:" + pieceSize + "px; height:" + pieceSize + "px; } ", sheet.cssRules.length);
+    sheet.insertRule(".whiteSquare, .blackSquare, .highlightWhiteSquare, .highlightBlackSquare { width:" + squareSize + "px; height:" + squareSize + "px; } ", sheet.cssRules.length);
+    for (ii = 0; ii < oldRules; ii++) { sheet.deleteRule(0); }
+
     boardObject.style.paddingTop = (window.innerHeight - 8 * squareSize - 2 * boardBorder) / 2 + "px";
     boardObject.style.paddingBottom = (window.innerHeight - 8 * squareSize - 2 * boardBorder) / 2 + "px";
     boardObject.style.paddingLeft = (window.innerWidth - 8 * squareSize - 2 * boardBorder) / 2 + "px";
@@ -114,6 +111,14 @@ Qc4+ 1-0
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
 <div id="GameBoard"></div>
+
+<script type="text/javascript">
+
+window.onerror = function() {
+  document.body.innerHTML = "<p style='font-family: sans-serif; text-align: center'><br>this web browser<br>is not supported</p>";
+}
+
+</script>
 
 </body>
 
