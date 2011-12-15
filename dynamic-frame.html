@@ -236,6 +236,8 @@ window.onerror = function(msg, url, linenumber) {
   if (debug) { document.body.innerHTML += "<p style='font-family: sans-serif; text-align: left;'><br><br>message: " + msg + "<br><br>url: " + url + "<br><br>line: " + linenumber + "<br><br>browser: " + navigator.userAgent + "</p>"; }
 }
 
+if (!window.SVGSVGElement) { throw("SVG support"); }
+
 </script>
 
 </body>
