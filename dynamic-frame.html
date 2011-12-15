@@ -44,7 +44,8 @@ theme[6] = new Array("white", "000000", "FFFFFF", "FFFFFF", "E4E4E4", "000000");
 theme[7] = new Array("yellow", "54110C", "F2D798", "F2D798", "C9AD6F", "54110C");
 var colorTheme_indexDefault = 2;
 colorThemeOptions = "";
-for (ii = 0; ii < theme.length; ii++) { colorThemeOptions += "'" + theme[ii][0] + "' "; }
+for (ii = 0; ii < theme.length; ii++) { colorThemeOptions += "'" + theme[ii][0] + "' | "; }
+colorThemeOptions += "random";
 
 var thisRegExp = /(&|\?)(help|h)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
@@ -115,7 +116,8 @@ if (window.location.search.match(thisRegExp) !== null) {
   colorTheme = unescape(window.location.search.match(thisRegExp)[3]);
 }
 colorTheme_index = colorTheme_indexDefault;
-for (ii = 0; ii < theme.length; ii++) { if (theme[ii][0] === colorTheme) { colorTheme_index = ii; break; } }
+if (colorTheme == "random") { colorTheme_index = Math.floor(theme.length * Math.random()); }
+else { for (ii = 0; ii < theme.length; ii++) { if (theme[ii][0] === colorTheme) { colorTheme_index = ii; break; } } }
 
 var fontColorHex_default = theme[colorTheme_index][1];
 var backgroundColorHex_default = theme[colorTheme_index][2];
