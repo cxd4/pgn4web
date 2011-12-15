@@ -51,10 +51,14 @@ if (window.location.search.match(thisRegExp) !== null) {
     " - lightColorHex = light square color hex code, like FF0000 (default " + lightColorHex_default + ")" + "\n" +
     " - darkColorHex = dark square color hex code, like FF0000 (default " + darkColorHex_default + ")" + "\n" +
     " - highlightColorHex = highlight square color hex code, like FF0000, or 'transparent' for no highlight (default " + highlightColorHex_default + ")" + "\n" +
+    " - debug" + "\n" +
     " - help" + "\n" +
     "note: browser support required for SVG images" + "\n" +
     "</pre>");
 }
+
+var thisRegExp = /(&|\?)(debug|d)(&|$)/i;
+var debug = (window.location.search.match(thisRegExp) !== null);
 
 var pgnData = pgnData_default;
 // accepts pgnData as alias for pgnFile for consistency with board.html
@@ -142,7 +146,7 @@ function myOnResize() {
   selectControlWidth = window.innerWidth - 9 * squareSize;
 
   sheet = document.styleSheets[0];
-  oldRules = sheet.cssRules.lenght;
+  oldRules = sheet.cssRules.length;
   sheet.insertRule("body { padding: 0; margin: 0; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px; } ", sheet.cssRules.length);
   sheet.insertRule("a { text-decoration: none; color: #" + fontColorHex + "; }", sheet.cssRules.length); 
   sheet.insertRule(".boardTable { margin-right: " + squareSize + "px; } ", sheet.cssRules.length);
@@ -227,8 +231,9 @@ if (LiveBroadcastDelay) {
   }
 }
 
-window.onerror = function() {
-  document.body.innerHTML = "<p style='font-family: sans-serif; text-align: center'><br>this web browser<br>is not supported</p>";
+window.onerror = function(msg, url, linenumber) {
+  document.body.innerHTML = "<p style='font-family: sans-serif; text-align: center;'><br>this web browser<br>is not supported</p>";
+  if (debug) { document.body.innerHTML += "<p style='font-family: sans-serif; text-align: left;'><br><br>message: " + msg + "<br><br>url: " + url + "<br><br>line: " + linenumber + "<br><br>browser: " + navigator.userAgent + "</p>"; }
 }
 
 </script>
