@@ -33,11 +33,19 @@ SetShortcutKeysEnabled(true);
 var pgnData_default = "live/live.pgn";
 var refreshMinutes_default = 0;
 var initialGame_default = "first";
-var fontColorHex_default = "221100";
-var backgroundColorHex_default = "FFCE9E";
-var lightColorHex_default = "FFCE9E";
-var darkColorHex_default = "D18B47";
-var highlightColorHex_default = "663300";
+theme = new Array();
+theme[0] = new Array("black", "000000", "888888", "999999", "888888", "FFFFFF");
+theme[1] = new Array("blue", "585B5E", "E8E8E8", "E8E8E8", "C2C9D1", "FFFFFF");
+theme[2] = new Array("braun", "54110C", "F2D798", "F2D798", "C9AD6F", "FFFFFF");
+theme[3] = new Array("cyan", "87AFDA", "D4E6FC", "F4F4FF", "D4E6FC", "FFFFFF");
+theme[4] = new Array("gray", "888888", "F4F4F4", "F4F4F4", "E0E0E0", "FFFFFF");
+theme[5] = new Array("green", "888888", "EFF4EC", "EFF4EC", "C6CEC3", "FFFFFF");
+theme[6] = new Array("pink", "615F54", "EDE8D5", "EDE8D5", "CFCBB3", "FFFFFF");
+theme[7] = new Array("white", "888888", "FFFFFF", "FFFFFF", "E4E4E4", "FFFFFF");
+theme[8] = new Array("wood", "221100", "FFCE9E", "FFCE9E", "D18B47", "663300");
+var colorTheme_indexDefault = 8;
+colorThemeOptions = "";
+for (ii = 0; ii < theme.length; ii++) { colorThemeOptions += theme[ii][0] + " "; }
 
 var thisRegExp = /(&|\?)(help|h)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
@@ -46,11 +54,12 @@ if (window.location.search.match(thisRegExp) !== null) {
     " - initialGame = initial game (default " + initialGame_default + ")" + "\n" +
     " - refreshMinutes = live broadcast delay (default " + refreshMinutes_default + ")" + "\n" +
     " - refreshDemo = if set true sets live demo mode (default false)" + "\n" +
-    " - fontColorHex = font color hex code, like FF0000 (default " + fontColorHex_default + ")" + "\n" +
-    " - backgroundColorHex = page background color hex code, like FF0000 (default " + backgroundColorHex_default + ")" + "\n" +
-    " - lightColorHex = light square color hex code, like FF0000 (default " + lightColorHex_default + ")" + "\n" +
-    " - darkColorHex = dark square color hex code, like FF0000 (default " + darkColorHex_default + ")" + "\n" +
-    " - highlightColorHex = highlight square color hex code, like FF0000, or 'transparent' for no highlight (default " + highlightColorHex_default + ")" + "\n" +
+    " - colorTheme = " + colorThemeOptions + "(default " + theme[colorTheme_indexDefault][0] + ")" + "\n" +
+    " - fontColorHex = font color hex code, like FF0000 (default according to the selected color theme)" + "\n" +
+    " - backgroundColorHex = page background color hex code, like FF0000 (default according to the selected color theme)" + "\n" +
+    " - lightColorHex = light square color hex code, like FF0000 (default according to the selected color theme)" + "\n" +
+    " - darkColorHex = dark square color hex code, like FF0000 (default according to the selected color theme)" + "\n" +
+    " - highlightColorHex = highlight square color hex code, like FF0000, or 'transparent' for no highlight (default according to the selected color theme)" + "\n" +
     " - debug" + "\n" +
     " - help" + "\n" +
     "note: browser support required for SVG images" + "\n" +
@@ -100,6 +109,20 @@ SetInitialHalfmove(refreshMinutes ? "end" : "start", true);
  
 SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, stepFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false)
 
+
+colorTheme = theme[colorTheme_indexDefault][0];
+thisRegExp = /(&|\?)(colorTheme|ct)=([\w]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+  colorTheme = unescape(window.location.search.match(thisRegExp)[3]);
+}
+colorTheme_index = colorTheme_indexDefault;
+for (ii = 0; ii < theme.length; ii++) { if (theme[ii][0] === colorTheme) { colorTheme_index = ii; break; } }
+
+var fontColorHex_default = theme[colorTheme_index][1];
+var backgroundColorHex_default = theme[colorTheme_index][2];
+var lightColorHex_default = theme[colorTheme_index][3];
+var darkColorHex_default = theme[colorTheme_index][4];
+var highlightColorHex_default = theme[colorTheme_index][5];
 
 var fontColorHex = fontColorHex_default;
 thisRegExp = /(&|\?)(fontColorHex|fch)=([A-F0-9]*)(&|$)/i;
