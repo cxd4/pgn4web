@@ -33,14 +33,15 @@ refreshMinutes_default = 0;
 initialGame_default = "first";
 pieceFont_default = "uscf";
 theme = new Array();
-theme[0] = new Array("black", "FFFFFF", "000000", "999999", "777777", "000000");
-theme[1] = new Array("blue", "000000", "80B0E0", "E6EDF3", "A0BED8", "596978");
-theme[2] = new Array("braun", "221100", "FFCE9E", "FFCE9E", "D18B47", "663300");
-theme[3] = new Array("gray", "666666", "F4F4F4", "F4F4F4", "E0E0E0", "AAAAAA");
-theme[4] = new Array("green", "333333", "EFF4EC", "EFF4EC", "C6CEC3", "999999");
-theme[5] = new Array("pink", "615F54", "EDE8D5", "EDE8D5", "CFCBB3", "9B9786");
-theme[6] = new Array("white", "000000", "FFFFFF", "FFFFFF", "E4E4E4", "000000");
-theme[7] = new Array("yellow", "54110C", "F2D798", "F2D798", "C9AD6F", "54110C");
+theme[0] = new Array("black",  "FFFFFF", "000000", "999999", "777777", "000000");
+theme[1] = new Array("blue",   "000000", "80B0E0", "E6EDF3", "A0BED8", "596978");
+theme[2] = new Array("braun",  "221100", "FFCE9E", "FFCE9E", "D18B47", "663300");
+theme[3] = new Array("gray",   "666666", "F4F4F4", "F4F4F4", "E0E0E0", "AAAAAA");
+theme[4] = new Array("green",  "333333", "EFF4EC", "EFF4EC", "C6CEC3", "999999");
+theme[5] = new Array("tan",    "615F54", "EDE8D5", "EDE8D5", "CFCBB3", "9B9786");
+theme[6] = new Array("white",  "000000", "FFFFFF", "FFFFFF", "E4E4E4", "000000");
+theme[7] = new Array("wood",   "663300", "FFFFFF", "FFCC99", "CC9966", "663300");
+theme[8] = new Array("yellow", "54110C", "F2D798", "F2D798", "C9AD6F", "54110C");
 colorTheme_indexDefault = 2;
 colorThemeOptions = "";
 for (ii = 0; ii < theme.length; ii++) { colorThemeOptions += "'" + theme[ii][0] + "' | "; }
@@ -112,6 +113,7 @@ if (window.location.search.match(thisRegExp) !== null) {
 if (pieceFont == "a") { pieceFont = "alpha"; }
 if (pieceFont == "m") { pieceFont = "merida"; }
 if (pieceFont == "u") { pieceFont = "uscf"; }
+if (pieceFont == "s") { pieceFont = "svgchess"; }
 if ((pieceFont == "random") || (pieceFont == "r")) {
   randomPiece = Math.floor(Math.random() * 3);
   switch (randomPiece) {
@@ -120,9 +122,14 @@ if ((pieceFont == "random") || (pieceFont == "r")) {
     default: pieceFont = "alpha"; break;
   }
 }
-if ((pieceFont != "alpha") && (pieceFont != "merida") && (pieceFont != "uscf")) { pieceFont = pieceFont_default; }
-SetImagePath(pieceFont + "/96");
-SetImageType("png"); // consider switching to SVG once broader support is available
+if ((pieceFont != "alpha") && (pieceFont != "merida") && (pieceFont != "uscf") && (pieceFont != "svgchess")) { pieceFont = pieceFont_default; }
+if (pieceFont == "svgchess") {
+  SetImagePath(pieceFont);
+  SetImageType("svg");
+} else {
+  SetImagePath(pieceFont + "/96");
+  SetImageType("png");
+}
 
 colorTheme = theme[colorTheme_indexDefault][0];
 thisRegExp = /(&|\?)(colorTheme|ct)=([\w]*)(&|$)/i;
