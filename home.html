@@ -32,6 +32,9 @@ a:hover, a:active
 .menu_item
 { font-weight: bold; margin-left: 20px; margin-right: 40px; margin-top: 0.4em; margin-bottom: 0; }
 
+.menu_subitem
+{ font-size: 80%; margin-left: 1em; }
+
 .banner
 { font-size: larger; font-weight: bold; margin-top: 1.5em; margin-bottom: 0; text-align: center; }
 
@@ -64,8 +67,8 @@ iframe support required to display the chess puzzler
 <div class="menu_item"><a title="online service adding an interactive chessboard to your website or your blog" href=board-generator.html>board&nbsp;generator</a></div> 
 <script type="text/javascript"> 
 document.write('<div class="menu_item"><a title="online service for viewing chess games from *.PGN files, from links to *.PGN URLs and from PGN text" href=' + pgn4web_viewer_url + '>games&nbsp;viewer</a></div>');
-</script> 
-<div class="menu_item"><a title="online service broadcasting live games from current chess events (single chessboard)" href=live/live.html>live</a>&nbsp;<a title="online service broadcasting live games from current chess events (multiple chessboards)" href=live/live-mosaic.html>broadcast</a></div> 
+</script>
+<div class="menu_item"><a title="online service broadcasting live games from current chess events" href=live/live.html>live&nbsp;broadcast</a><br/><a class="menu_subitem" title="live broadcast fullscreen view" href=live/live-fullscreen.html>fullscreen&nbsp;view</a><br/><a class="menu_subitem" title="live broadcast mosaic view with multiple chessboards" href=live/live-mosaic.html>mosaic&nbsp;view</a></div> 
 <div class="menu_heading">software</div>
 <div class="menu_item"><a href=demo.html>demo</a></div>
 <div class="menu_item"><a href=http://code.google.com/p/pgn4web/downloads/list>downloads</a></div>
