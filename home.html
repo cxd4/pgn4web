@@ -72,7 +72,7 @@ document.write('<div class="menu_item"><a title="online service for viewing ches
 <div class="menu_heading">software</div>
 <div class="menu_item"><a href=demo.html>demo</a></div>
 <div class="menu_item"><a href=http://code.google.com/p/pgn4web/downloads/list>downloads</a></div>
-<div class="menu_item"><a id="menuItem_chessGamesViewerChromeExtension" href=http://code.google.com/p/pgn4web/wiki/BrowserExtension_GoogleChrome>chrome&nbsp;extension</a></div>
+<div class="menu_item"><a id="menuItem_chessGamesViewerChromeExtension" href=http://code.google.com/p/pgn4web/wiki/BrowserExtension_GoogleChrome>chrome&nbsp;extension</a><div class="menu_subitem"><a style="display: none;" id="menuItem_chessGamesViewerChromeExtension_install" href="http://go.casaschi.net/install-chess-games-viewer-extension-for-google-chrome">install</a></div></div>
 <div class="menu_item"><a href=http://code.google.com/p/pgn4web/wiki/Index>wiki</a></div>
 <div class="menu_heading">contacts</div>
 <script type="text/javascript">
@@ -86,6 +86,9 @@ function checkChessGamesViewerChromeExtension() {
   img.onerror = function() { 
     document.getElementById("menuItem_chessGamesViewerChromeExtension").style.color = "red"; 
     document.getElementById("menuItem_chessGamesViewerChromeExtension").title = "chess games viewer extension for the Google Chrome browser: interactive chessboard showing chess games from links to *.PGN URLs and from PGN text, using context menus and page actions";
+    document.getElementById("menuItem_chessGamesViewerChromeExtension_install").style.color = "red";
+    document.getElementById("menuItem_chessGamesViewerChromeExtension_install").style.display = "";
+    document.getElementById("menuItem_chessGamesViewerChromeExtension_install").title = "click here to install the chess games viewer extension for the Google Chrome browser";
   };
   img.src = "chrome-extension://" + chessGamesViewerChromeExtensionId + "/pawns.png"; 
 }
