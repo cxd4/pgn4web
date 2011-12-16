@@ -24,10 +24,10 @@ if (pgn4web_live_pointer_url === undefined) { pgn4web_live_pointer_url = "."; }
 <style type="text/css"> 
  
 body 
-{ color: #DDDDDD; background: white; font-family: sans-serif; padding: 20px; }
+{ color: #BBBBBB; background: white; font-family: sans-serif; font-size: small; padding: 20px; }
 
 a:link, a:visited, a:hover, a:active
-{ color: #DDDDDD; text-decoration: none; }
+{ color: #BBBBBB; text-decoration: none; }
 
 a:hover, a:active
 { color: red; }
@@ -51,6 +51,9 @@ a:hover, a:active
 <script type="text/javascript">iniGame='\\[\\s*Result\\s*"\\*"\\s*\\]'; document.write('<iframe src=\'' + pgn4web_live_pointer_url + '/live-compact.html?ig=' + iniGame + '\' height="360" width="480" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" style="margin: 40px;">your browser does not support the required iframe functionality</iframe>');</script>
 </div>
 </div>
+
+<a style="float: left;" href="live-mosaic.html">try the mosaic view with multiple chessboards</a>
+<script type="text/javascript">document.write('<a style="float: right;" href="' + pgn4web_live_pointer_url + '/dynamic-frame.html?rm=1">try the fullscreen view</a>');</script>
 
 </body>
 
