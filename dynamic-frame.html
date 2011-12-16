@@ -21,8 +21,6 @@
 
 <script src="pgn4web.js" type="text/javascript"></script>
 <script type="text/javascript">
-SetImagePath("uscf/96");
-SetImageType("png"); // consider switching to SVG once broad support is available
 SetHighlightOption(true);
 SetGameSelectorOptions(" ...", false, 0, 0, 0, 15, 15, 3, 0); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
 SetAutoplayDelay(2000); // milliseconds
@@ -33,6 +31,7 @@ SetShortcutKeysEnabled(true);
 pgnData_default = "live/live.pgn";
 refreshMinutes_default = 0;
 initialGame_default = "first";
+pieceFont_default = "uscf";
 theme = new Array();
 theme[0] = new Array("black", "FFFFFF", "000000", "999999", "777777", "000000");
 theme[1] = new Array("blue", "000000", "80B0E0", "E6EDF3", "A0BED8", "596978");
@@ -54,6 +53,7 @@ if (window.location.search.match(thisRegExp) !== null) {
     " - initialGame = initial game (default " + initialGame_default + ")" + "\n" +
     " - refreshMinutes = live broadcast delay (default " + refreshMinutes_default + ")" + "\n" +
     " - refreshDemo = if set true sets live demo mode (default false)" + "\n" +
+    " - pieceFont = 'alpha' | 'merida' | 'uscf' | 'random' (default " + pieceFont_default + ")" + "\n" +
     " - colorTheme = " + colorThemeOptions + "(default '" + theme[colorTheme_indexDefault][0] + "')" + "\n" +
     " - fontColorHex = font color hex code, like FF0000 (default according to the selected color theme)" + "\n" +
     " - backgroundColorHex = page background color hex code, like FF0000 (default according to the selected color theme)" + "\n" +
@@ -104,6 +104,25 @@ SetInitialHalfmove(refreshMinutes ? "end" : "start", true);
  
 SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, stepFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false)
 
+pieceFont = pieceFont_default;
+thisRegExp = /(&|\?)(pieceFont|pf)=([^&]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+  pieceFont = unescape(window.location.search.match(thisRegExp)[3]);
+}
+if (pieceFont == "a") { pieceFont = "alpha"; }
+if (pieceFont == "m") { pieceFont = "merida"; }
+if (pieceFont == "u") { pieceFont = "uscf"; }
+if ((pieceFont == "random") || (pieceFont == "r")) {
+  randomPiece = Math.floor(Math.random() * 3);
+  switch (randomPiece) {
+    case 1: pieceFont = "merida"; break;
+    case 2: pieceFont = "uscf"; break;
+    default: pieceFont = "alpha"; break;
+  }
+}
+if ((pieceFont != "alpha") && (pieceFont != "merida") && (pieceFont != "uscf")) { pieceFont = pieceFont_default; }
+SetImagePath(pieceFont + "/96");
+SetImageType("png"); // consider switching to SVG once broader support is available
 
 colorTheme = theme[colorTheme_indexDefault][0];
 thisRegExp = /(&|\?)(colorTheme|ct)=([\w]*)(&|$)/i;
