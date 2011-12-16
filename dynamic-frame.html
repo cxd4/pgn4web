@@ -203,18 +203,26 @@ function myOnResize() {
   else if (document.body && document.body.clientWidth) { ww = document.body.clientWidth; wh = document.body.clientHeight; IEfix = true; }
   else { throw("failed to get window size"); }
 
-  squareSize = Math.min(ww / (16 * 8 / 9), wh / 8);
+  horizontalLayout = (wh < ww);
+  if (horizontalLayout) {
+    squareSize = Math.min(ww / (16 * 8 / 9), wh / 8);
+  } else {
+    squareSize = Math.min(ww / 8, wh / 17.25);
+  }
   lineHeight = Math.floor(squareSize / 2);
   fontSize = Math.floor(lineHeight * 0.8);
   squareBorderWidth = Math.min(Math.ceil(squareSize / 50), 3);  
   pieceSize = Math.floor(squareSize * 0.8);
-  headerContainerWidth = ww - (IEfix ? 10 : 9) * squareSize;
-
+  if (horizontalLayout) {
+    headerContainerWidth = ww - (IEfix ? 10 : 9) * squareSize;
+  } else {
+    headerContainerWidth = (IEfix ? 7.5 : 8) * squareSize;
+  }
   sheet = document.styleSheets[0];
   oldRules = myRulesLength(sheet);
-  myInsertRule(sheet, "body", "padding: 0; margin: 0; white-space: nowrap; overflow: hidden; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;");
+  myInsertRule(sheet, "body", "padding: 0; margin: 0; white-space: nowrap; overflow: hidden; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;" + (horizontalLayout ? "" : " text-align: center; margin-left: " + ((ww - 8 * squareSize) / 2) + "px;"));
   myInsertRule(sheet, "a", "text-decoration: none; color: #" + fontColorHex + ";"); 
-  myInsertRule(sheet, ".boardTable", "margin-right: " + squareSize + "px;");
+  myInsertRule(sheet, ".boardTable", (horizontalLayout ? "float: left; margin-right: " + squareSize + "px;" : "margin-bottom: " + squareSize + "px;"));
   myInsertRule(sheet, ".pieceImage", "width:" + pieceSize + "px; height:" + pieceSize + "px;");
   myInsertRule(sheet, ".whiteSquare", "width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + lightColorHex + "; border-color: #" + lightColorHex + ";");
   myInsertRule(sheet, ".blackSquare", "width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + darkColorHex + "; border-color:  #" + darkColorHex + ";");
@@ -264,7 +272,7 @@ function searchPlayer(name, FideId) {
 </textarea></form>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
-<div style="float:left;" id="GameBoard"></div>
+<div id="GameBoard"></div>
 
 <div class="headerContainer">
 <div><span id="GameSelector"></span></div>
