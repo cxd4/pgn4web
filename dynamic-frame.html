@@ -21,8 +21,8 @@
 
 <script src="pgn4web.js" type="text/javascript"></script>
 <script type="text/javascript">
-SetImagePath("svgchess");
-SetImageType("svg");
+SetImagePath("uscf/96");
+SetImageType("png"); // consider switching to SVG once broad support is available
 SetHighlightOption(true);
 SetGameSelectorOptions(" ...", false, 0, 0, 0, 15, 15, 3, 0); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
 SetAutoplayDelay(2000); // milliseconds
@@ -181,7 +181,7 @@ function myOnResize() {
   lineHeight = Math.floor(squareSize / 2);
   fontSize = Math.floor(lineHeight * 0.8);
   squareBorderWidth = Math.min(Math.ceil(squareSize / 50), 3);  
-  pieceSize = Math.floor(squareSize * 0.9);
+  pieceSize = Math.floor(squareSize * 0.8);
   headerContainerWidth = ww - (IEfix ? 10 : 9) * squareSize;
 
   sheet = document.styleSheets[0];
@@ -230,7 +230,7 @@ function searchPlayer(name, FideId) {
 
 </head>
 
-<body onLoad="checkSVGSupport(); myOnResize(); start_pgn4web();" onResize="myOnResize();">
+<body onLoad="myOnResize(); start_pgn4web();" onResize="myOnResize();">
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
 <form style="display: none;"><textarea style="display: none;" id="pgnText">
@@ -241,7 +241,7 @@ function searchPlayer(name, FideId) {
 <div style="float:left;" id="GameBoard"></div>
 
 <div class="headerContainer">
-<div><span style="font-weight: bold;" id="ErrorMessage"></span><span id="GameSelector"></span></div>
+<div><span id="GameSelector"></span></div>
 <div>&nbsp;</div>
 <div><span id="GameSite" title="site"></span>&nbsp;</div>
 <div><span id="GameEvent" title="event"></span>&nbsp;</div>
@@ -269,16 +269,6 @@ if (LiveBroadcastDelay) {
   if (theObject = document.getElementById("GameLiveStatus")) {
     theObject.style.visibility = "hidden";
   }
-}
-
-function checkSVGSupport() {
-  var img = document.createElement("img");
-  img.onerror = function() {
-    if (theObject = document.getElementById("ErrorMessage")) { theObject.innerHTML = "error: browser SVG images support required&nbsp; &nbsp;"; }
-    if (theObject = document.getElementById("GameSelector")) { theObject.style.display = "none"; }
-  };
-  img.onload = function() { };
-  img.setAttribute("src","data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNzUiIGhlaWdodD0iMjc1Ij48L3N2Zz4%3D");
 }
 
 </script>
