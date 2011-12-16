@@ -20,7 +20,9 @@
 var pgn4web_live_pointer_url;
 if (pgn4web_live_pointer_url === undefined) { pgn4web_live_pointer_url = "."; }
 
-location.href = pgn4web_live_pointer_url + "/dynamic-frame.html" + (location.search ? location.search + "&rm=1" : "?rm=1");
+newLocationSearch = location.search ? location.search + "&rm=1" : "?rm=1";
+if (pgn4web_live_pointer_url == ".") { location.href = "dynamic-frame.html" + newLocationSearch; }
+else { document.write("<frameset cols='100%' rows='100%'><frame src=" + pgn4web_live_pointer_url +  "/dynamic-frame.html" + newLocationSearch + " /></frameset>"); }
 
 </script>
 
