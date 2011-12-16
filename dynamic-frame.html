@@ -177,19 +177,21 @@ function myDeleteRule(sheet, index) {
 }
 
 function myOnResize() {
-  // IE9 fails here
-  if ((typeof(window.innerWidth) != "number") || (typeof(window.innerHeight) != "number")) { throw("failed to get window size"); }
+  if (window.innerWidth && window.innerHeight) { ww = window.innerWidth; wh = window.innerHeight; IEfix = false; }
+  else if (document.documentElement && document.documentElement.clientWidth) { ww = document.documentElement.clientWidth; wh = document.documentElement.clientHeight; IEfix = true; }
+  else if (document.body && document.body.clientWidth) { ww = document.body.clientWidth; wh = document.body.clientHeight; IEfix = true; }
+  else { throw("failed to get window size"); }
 
-  squareSize = Math.min(window.innerWidth / (16 * 8 / 9), window.innerHeight / 8);
+  squareSize = Math.min(ww / (16 * 8 / 9), wh / 8);
   lineHeight = Math.floor(squareSize / 2);
   fontSize = Math.floor(lineHeight * 0.8);
   squareBorderWidth = Math.min(Math.ceil(squareSize / 50), 3);  
   pieceSize = Math.floor(squareSize * 0.9);
-  selectControlWidth = window.innerWidth - 9 * squareSize;
+  headerContainerWidth = ww - (IEfix ? 10 : 9) * squareSize;
 
   sheet = document.styleSheets[0];
   oldRules = myRulesLength(sheet);
-  myInsertRule(sheet, "body", "padding: 0; margin: 0; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;");
+  myInsertRule(sheet, "body", "padding: 0; margin: 0; white-space: nowrap; overflow: hidden; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;");
   myInsertRule(sheet, "a", "text-decoration: none; color: #" + fontColorHex + ";"); 
   myInsertRule(sheet, ".boardTable", "margin-right: " + squareSize + "px;");
   myInsertRule(sheet, ".pieceImage", "width:" + pieceSize + "px; height:" + pieceSize + "px;");
@@ -197,7 +199,8 @@ function myOnResize() {
   myInsertRule(sheet, ".blackSquare", "width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + darkColorHex + "; border-color:  #" + darkColorHex + ";");
   myInsertRule(sheet, ".highlightWhiteSquare", "width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + lightColorHex + "; border-color: #" + (highlightColorHex ? highlightColorHex : lightColorHex) + ";");
   myInsertRule(sheet, ".highlightBlackSquare", "width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + darkColorHex + "; border-color:  #" + (highlightColorHex ? highlightColorHex : darkColorHex) + ";");
-  myInsertRule(sheet, ".selectControl", "width: " + selectControlWidth + "px !important; height: " + lineHeight + "px; font-size: " + fontSize + "px; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; border-width: 0;");
+  myInsertRule(sheet, ".headerContainer", "width: " + headerContainerWidth + "px; white-space: nowrap; overflow: hidden;");
+  myInsertRule(sheet, ".selectControl", "width: " + headerContainerWidth + "px !important; height: " + lineHeight + "px; font-size: " + fontSize + "px; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; border-width: 0;");
   for (ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
 
   if (theObject = document.getElementById("boardTable")) {
@@ -242,7 +245,7 @@ function searchPlayer(name, FideId) {
 
 <div style="float:left;" id="GameBoard"></div>
 
-<div style="white-space: nowrap; overflow: hidden;">
+<div class="headerContainer">
 <div id="GameSelector"></div>
 <div>&nbsp;</div>
 <div><span id="GameSite" title="site"></span>&nbsp;</div>
@@ -279,8 +282,8 @@ window.onerror = function(msg, url, linenumber) {
 };
 
 function checkSVGSupport() {
+  return; // PAOLO: disabling the check
   var img = document.createElement("img");
-  // IE8 and before fail here
   img.onerror = function() { throw("SVG browser support required for the IMG HTML tag"); };
   img.onload = function() { };
   img.setAttribute("src","data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNzUiIGhlaWdodD0iMjc1Ij48L3N2Zz4%3D");
