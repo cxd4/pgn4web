@@ -246,7 +246,7 @@ function searchPlayer(name, FideId) {
 <div style="float:left;" id="GameBoard"></div>
 
 <div class="headerContainer">
-<div id="GameSelector"></div>
+<div><span style="font-weight: bold;" id="ErrorMessage"></span><span id="GameSelector"></span></div>
 <div>&nbsp;</div>
 <div><span id="GameSite" title="site"></span>&nbsp;</div>
 <div><span id="GameEvent" title="event"></span>&nbsp;</div>
@@ -268,7 +268,7 @@ function searchPlayer(name, FideId) {
 
 if (LiveBroadcastDelay) {
   if (theObject = document.getElementById("GameLiveStatusDemo")) {
-     theObject.innerHTML = LiveBroadcastDemo ? "&nbsp;&nbsp;demo" : "";
+    theObject.innerHTML = LiveBroadcastDemo ? "&nbsp;&nbsp;demo" : "";
   }
 } else {
   if (theObject = document.getElementById("GameLiveStatus")) {
@@ -276,15 +276,12 @@ if (LiveBroadcastDelay) {
   }
 }
 
-window.onerror = function(msg, url, linenumber) {
-  document.body.innerHTML = "<p style='font-family: sans-serif; text-align: center;'><br>this web browser<br>is not supported<br>by the dynamic frame<br>chess games viewer<br>from <a style='color: inherit; text-decoration: none;' href='http://pgn4web.casaschi.net' target='_blank'>the pgn4web project</a></p>";
-  if (debug) { document.body.innerHTML += "<p style='font-family: sans-serif; text-align: left;'><br><br>message: " + msg + "<br><br>url: " + url + "<br><br>line: " + linenumber + "<br><br>browser: " + navigator.userAgent + "</p>"; }
-};
-
 function checkSVGSupport() {
-  return; // PAOLO: disabling the check
   var img = document.createElement("img");
-  img.onerror = function() { throw("SVG browser support required for the IMG HTML tag"); };
+  img.onerror = function() {
+    if (theObject = document.getElementById("ErrorMessage")) { theObject.innerHTML = "error: browser SVG images support required&nbsp; &nbsp;"; }
+    if (theObject = document.getElementById("GameSelector")) { theObject.style.display = "none"; }
+  };
   img.onload = function() { };
   img.setAttribute("src","data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNzUiIGhlaWdodD0iMjc1Ij48L3N2Zz4%3D");
 }
