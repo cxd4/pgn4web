@@ -60,14 +60,9 @@ if (window.location.search.match(thisRegExp) !== null) {
     " - lightColorHex = light square color hex code, like FF0000 (default according to the selected color theme)" + "\n" +
     " - darkColorHex = dark square color hex code, like FF0000 (default according to the selected color theme)" + "\n" +
     " - highlightColorHex = highlight square color hex code, like FF0000, or 'transparent' for no highlight (default according to the selected color theme)" + "\n" +
-    " - debug" + "\n" +
     " - help" + "\n" +
-    "note: browser support required for SVG images" + "\n" +
     "</pre>");
 }
-
-thisRegExp = /(&|\?)(debug|d)(&|$)/i;
-debug = (window.location.search.match(thisRegExp) !== null);
 
 pgnData = pgnData_default;
 // accepts pgnData as alias for pgnFile for consistency with board.html
