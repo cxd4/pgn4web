@@ -216,11 +216,11 @@ function myOnResize() {
   if (horizontalLayout) {
     headerContainerWidth = ww - (IEfix ? 10 : 9) * squareSize;
   } else {
-    headerContainerWidth = (IEfix ? 7.5 : 8) * squareSize;
+    headerContainerWidth = 8 * squareSize;
   }
   sheet = document.styleSheets[0];
   oldRules = myRulesLength(sheet);
-  myInsertRule(sheet, "body", "padding: 0; margin: 0; white-space: nowrap; overflow: hidden; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;" + (horizontalLayout ? "" : " text-align: center; margin-left: " + ((ww - 8 * squareSize) / 2) + "px;"));
+  myInsertRule(sheet, "body", "padding: 0; margin: 0; white-space: nowrap; overflow: hidden; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;" + (horizontalLayout ? "" : " margin-left: " + ((ww - 8 * squareSize) / 2) + "px;"));
   myInsertRule(sheet, "a", "text-decoration: none; color: #" + fontColorHex + ";"); 
   myInsertRule(sheet, ".boardTable", (horizontalLayout ? "float: left; margin-right: " + squareSize + "px;" : "margin-bottom: " + squareSize + "px;"));
   myInsertRule(sheet, ".pieceImage", "width:" + pieceSize + "px; height:" + pieceSize + "px;");
@@ -228,7 +228,7 @@ function myOnResize() {
   myInsertRule(sheet, ".blackSquare", "width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + darkColorHex + "; border-color:  #" + darkColorHex + ";");
   myInsertRule(sheet, ".highlightWhiteSquare", "width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + lightColorHex + "; border-color: #" + (highlightColorHex ? highlightColorHex : lightColorHex) + ";");
   myInsertRule(sheet, ".highlightBlackSquare", "width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + darkColorHex + "; border-color:  #" + (highlightColorHex ? highlightColorHex : darkColorHex) + ";");
-  myInsertRule(sheet, ".headerContainer", "width: " + headerContainerWidth + "px; white-space: nowrap; overflow: hidden;");
+  myInsertRule(sheet, ".headerContainer", "width: " + headerContainerWidth + "px; white-space: nowrap; overflow: hidden;" + (horizontalLayout ? "" : " text-align: center;"));
   myInsertRule(sheet, ".selectControl", "width: " + headerContainerWidth + "px !important; height: " + lineHeight + "px; font-size: " + fontSize + "px; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; border-width: 0;");
   for (ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
 
