@@ -211,13 +211,13 @@ function myOnResize() {
     headerContainerWidth = ww - (IEfix ? 10 : 9) * squareSize;
     selectWidth = ww - 9 * squareSize;
   } else {
-    headerContainerWidth = selectWidth = 8 * squareSize;
+    headerContainerWidth = selectWidth = ww;
   }
   sheet = document.styleSheets[0];
   oldRules = myRulesLength(sheet);
-  myInsertRule(sheet, "body", "padding: 0; margin: 0; white-space: nowrap; overflow: hidden; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;" + (horizontalLayout ? "" : " margin-left: " + ((ww - 8 * squareSize) / 2) + "px;"));
+  myInsertRule(sheet, "body", "padding: 0; margin: 0; white-space: nowrap; overflow: hidden; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;");
   myInsertRule(sheet, "a", "text-decoration: none; color: #" + fontColorHex + ";"); 
-  myInsertRule(sheet, ".boardTable", (horizontalLayout ? "float: left; margin-right: " + squareSize + "px;" : "margin-top: " + (squareSize / 2) + "px; margin-bottom: " + (squareSize / 2) + "px;"));
+  myInsertRule(sheet, ".boardTable", (horizontalLayout ? "float: left; margin-right: " + squareSize + "px;" : "margin-top: " + (squareSize / 2) + "px; margin-bottom: " + (squareSize / 2) + "px; margin-left: " + ((ww - 8 * squareSize) / 2) + "px;"));
   myInsertRule(sheet, ".pieceImage", "width:" + pieceSize + "px; height:" + pieceSize + "px;");
   myInsertRule(sheet, ".whiteSquare", "width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + lightColorHex + "; border-color: #" + lightColorHex + ";");
   myInsertRule(sheet, ".blackSquare", "width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + darkColorHex + "; border-color:  #" + darkColorHex + ";");
