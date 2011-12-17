@@ -66,15 +66,9 @@ if (window.location.search.match(thisRegExp) !== null) {
 }
 
 pgnData = pgnData_default;
-// accepts pgnData as alias for pgnFile for consistency with board.html
 thisRegExp = /(&|\?)(pgnData|pd)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   pgnData = unescape(window.location.search.match(thisRegExp)[3]);
-} else { 
-  thisRegExp = /(&|\?)(pgnFile|pf)=([^&]*)(&|$)/i;
-  if (window.location.search.match(thisRegExp) !== null) {
-    pgnData = unescape(window.location.search.match(thisRegExp)[3]);
-  }
 }
 SetPgnUrl(pgnData); // if set, this has precedence over the inline PGN in the HTML file
 
