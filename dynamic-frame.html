@@ -61,6 +61,7 @@ if (window.location.search.match(thisRegExp) !== null) {
     " - lightColorHex = light square color hex code, like FF0000 (default according to the selected color theme)" + "\n" +
     " - darkColorHex = dark square color hex code, like FF0000 (default according to the selected color theme)" + "\n" +
     " - highlightColorHex = highlight square color hex code, like FF0000, or 'transparent' for no highlight (default according to the selected color theme)" + "\n" +
+    " - bare = if set true shows chessboard only (default false)" + "\n" +
     " - help" + "\n" +
     "</pre>");
 }
@@ -175,6 +176,14 @@ if (window.location.search.match(thisRegExp) !== null) {
   }
 }
 
+bareString = "";
+thisRegExp = /(&|\?)(bare|b)=([^&]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+  bareString = unescape(window.location.search.match(thisRegExp)[3]);
+}
+bare = ((bareString == "true") || (bareString == "t"));
+
+
 function myRulesLength(sheet) {
   if (sheet.cssRules) { return sheet.cssRules.length; }
   if (sheet.rules) { return sheet.rules.length; }
@@ -198,7 +207,9 @@ function myOnResize() {
   else { throw("failed to get window size"); }
 
   horizontalLayout = (wh < ww);
-  if (horizontalLayout) {
+  if (bare) {
+    squareSize = Math.min(ww / 8, wh / 8);
+  } else if (horizontalLayout) {
     squareSize = Math.min(ww / (16 * 8 / 9), wh / 8);
   } else {
     squareSize = Math.min(ww / 8, wh / 17.25);
@@ -230,6 +241,11 @@ function myOnResize() {
   if (theObject = document.getElementById("boardTable")) {
     theObject.style.height = (squareSize * 8) + "px";
     theObject.style.width = (squareSize * 8) + "px";
+  }
+  
+  if (bare) {
+    if (theObject = document.getElementById("GameSelector")) { theObject.style.display = "none"; }
+    if (theObject = document.getElementById("HeaderContainer")) { theObject.style.display = "none"; }
   }
 }
 
@@ -271,7 +287,7 @@ function searchPlayer(name, FideId) {
 
 <div id="GameBoard"></div>
 
-<div class="headerContainer">
+<div class="headerContainer" id="HeaderContainer">
 <div>&nbsp;</div>
 <div><span id="GameSite" title="site"></span>&nbsp;</div>
 <div><span id="GameEvent" title="event"></span>&nbsp;</div>
