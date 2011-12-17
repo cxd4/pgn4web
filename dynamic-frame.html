@@ -226,6 +226,9 @@ function myOnResize() {
   }
   sheet = document.styleSheets[0];
   oldRules = myRulesLength(sheet);
+
+  if ((IEfix) && (theObject = document.getElementById("GameSelector"))) { theObject.innerHTML = theObject.innerHTML; }
+
   myInsertRule(sheet, "body", "padding: 0; margin: 0; white-space: nowrap; overflow: hidden; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;");
   myInsertRule(sheet, "a", "text-decoration: none; color: #" + fontColorHex + ";"); 
   myInsertRule(sheet, ".boardTable", (horizontalLayout ? "float: left; margin-right: " + squareSize + "px;" : "margin-bottom: " + (squareSize / 2) + "px; margin-left: " + ((ww - 8 * squareSize) / 2) + "px;"));
@@ -249,11 +252,6 @@ function myOnResize() {
     if (theObject = document.getElementById("HeaderContainer")) { theObject.style.display = "none"; }
   }
 
-  if ((IEfix) && (theObject = document.getElementById("GameSelector"))) {
-    selectorContent = theObject.innerHTML;
-    theObject.innerHTML = "&nbsp;";
-    theObject.innerHTML = selectorContent;
-  }
 }
 
 
