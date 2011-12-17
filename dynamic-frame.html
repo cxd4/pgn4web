@@ -28,7 +28,7 @@ SetAutostartAutoplay(false);
 SetAutoplayNextGame(false);
 SetShortcutKeysEnabled(true);
 
-pgnData_default = "live/live.pgn";
+pgnData_default = "";
 refreshMinutes_default = 0;
 initialGame_default = "first";
 pieceFont_default = "uscf";
@@ -50,8 +50,9 @@ colorThemeOptions += "'random' ";
 thisRegExp = /(&|\?)(help|h)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   document.write("<pre style='font-size: smaller;'>pgn4web dynamic-frame.html parameters" + "\n" +
-    " - pgnData = file.pgn (default: " + pgnData_default + ")" + "\n" +
+    " - pgnData = file.pgn (no default)" + "\n" +
     " - initialGame = initial game (default " + initialGame_default + ")" + "\n" +
+    " - live = if set true enables live broadcast with default values (default false)" + "\n" +
     " - refreshMinutes = live broadcast delay (default " + refreshMinutes_default + ")" + "\n" +
     " - refreshDemo = if set true sets live demo mode (default false)" + "\n" +
     " - pieceFont = 'alpha' | 'merida' | 'uscf' | 'random' (default " + pieceFont_default + ")" + "\n" +
@@ -66,19 +67,14 @@ if (window.location.search.match(thisRegExp) !== null) {
     "</pre>");
 }
 
-pgnData = pgnData_default;
-thisRegExp = /(&|\?)(pgnData|pd)=([^&]*)(&|$)/i;
+liveString = "";
+thisRegExp = /(&|\?)(live|l)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
-  pgnData = unescape(window.location.search.match(thisRegExp)[3]);
+  liveString = unescape(window.location.search.match(thisRegExp)[3]);
 }
-SetPgnUrl(pgnData); // if set, this has precedence over the inline PGN in the HTML file
-
-iniGame = initialGame_default;
-thisRegExp = /(&|\?)(initialGame|ig)=([^&]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-  iniGame = unescape(window.location.search.match(thisRegExp)[3]);
+if ((liveString == "true") || (liveString == "t")) {
+  refreshMinutes_default = 1;
 }
-SetInitialGame(iniGame);
 
 alertFlag = demoFlag = false;
 thisRegExp = /(&|\?)(refreshDemo|rd)=([^&]*)(&|$)/i;
@@ -95,10 +91,25 @@ if (window.location.search.match(thisRegExp) !== null) {
   if (isNaN(refreshMinutes)) { refreshMinutes = refreshMinutes_default; }
   if (refreshMinutes <= 0) { refreshMinutes = refreshMinutes_default; }
 }
+if (refreshMinutes) {  pgnData_default = "live/live.pgn"; }
 
 SetInitialHalfmove(refreshMinutes ? "end" : "start", true);
  
 SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, stepFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false)
+
+pgnData = pgnData_default;
+thisRegExp = /(&|\?)(pgnData|pd)=([^&]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+  pgnData = unescape(window.location.search.match(thisRegExp)[3]);
+}
+SetPgnUrl(pgnData); // if set, this has precedence over the inline PGN in the HTML file
+
+iniGame = initialGame_default;
+thisRegExp = /(&|\?)(initialGame|ig)=([^&]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+  iniGame = unescape(window.location.search.match(thisRegExp)[3]);
+}
+SetInitialGame(iniGame);
 
 pieceFont = pieceFont_default;
 thisRegExp = /(&|\?)(pieceFont|pf)=([^&]*)(&|$)/i;
