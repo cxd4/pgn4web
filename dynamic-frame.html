@@ -248,6 +248,12 @@ function myOnResize() {
     if (theObject = document.getElementById("GameSelector")) { theObject.style.display = "none"; }
     if (theObject = document.getElementById("HeaderContainer")) { theObject.style.display = "none"; }
   }
+
+  if ((IEfix) && (theObject = document.getElementById("GameSelector"))) {
+    selectorContent = theObject.innerHTML;
+    theObject.innerHTML = "&nbsp;";
+    theObject.innerHTML = selectorContent;
+  }
 }
 
 
