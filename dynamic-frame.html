@@ -235,7 +235,8 @@ function myOnResize() {
   myInsertRule(sheet, ".highlightWhiteSquare", "width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + lightColorHex + "; border-color: #" + (highlightColorHex ? highlightColorHex : lightColorHex) + ";");
   myInsertRule(sheet, ".highlightBlackSquare", "width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + darkColorHex + "; border-color:  #" + (highlightColorHex ? highlightColorHex : darkColorHex) + ";");
   myInsertRule(sheet, ".headerContainer", "width: " + headerContainerWidth + "px; white-space: nowrap; overflow: hidden;" + (horizontalLayout ? " clear: right; " : " text-align: center;"));
-  myInsertRule(sheet, ".selectControl", "width: " + selectWidth + "px !important; height: " + lineHeight + "px; font-size: " + fontSize + "px; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; border-width: 0;" + (horizontalLayout ? " float: right;" : " margin-bottom: " + (squareSize / 2) + "px;"));
+  myInsertRule(sheet, ".selectControl", "margin: 0; padding: 0; width: " + selectWidth + "px !important; height: " + lineHeight + "px; font-size: " + fontSize + "px; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; border-width: 0;");
+  myInsertRule(sheet, ".gameSelector", (horizontalLayout ? "float: right;" : "margin-bottom: " + (squareSize / 2) + "px;"));
   for (ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
 
   if (theObject = document.getElementById("boardTable")) {
@@ -283,7 +284,7 @@ function searchPlayer(name, FideId) {
 </textarea></form>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
-<div id="GameSelector"></div>
+<div class="gameSelector" id="GameSelector"></div>
 
 <div id="GameBoard"></div>
 
