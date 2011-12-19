@@ -222,11 +222,11 @@ function myOnResize() {
     squareSize = Math.min(ww / 8, wh / 8);
   } else {
     squareSize_H = Math.min(ww / (16 * 8 / 9), wh / 8);
-    squareSize_V = Math.min(ww / 8, wh / 16.1);
+    squareSize_V = Math.min(ww / 8, wh / 16.2);
     horizontalLayout = (squareSize_H >= squareSize_V);
     squareSize = horizontalLayout ? squareSize_H : squareSize_V;
   }
-  lineHeight = Math.floor(squareSize/ 2);
+  lineHeight = Math.floor(squareSize * 8 / 16.1);
   fontSize = Math.floor(lineHeight * 0.8);
   squareBorderWidth = Math.min(Math.ceil(squareSize / 50), 3);  
   pieceSize = Math.floor(squareSize * 0.8);
@@ -252,7 +252,7 @@ function myOnResize() {
   myInsertRule(sheet, ".headerContainer", "width: " + headerContainerWidth + "px; white-space: nowrap; overflow: hidden;" + (horizontalLayout ? " clear: right; " : " text-align: center;"));
   myInsertRule(sheet, ".selectControl", "margin: 0; padding: 0; width: " + selectWidth + "px !important; height: " + lineHeight + "px; font-size: " + fontSize + "px; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; border-width: 0;");
   myInsertRule(sheet, ".gameSelector", (horizontalLayout ? "float: right;" : "margin-bottom: " + (squareSize / 2) + "px;"));
-  myInsertRule(sheet, ".lowerSpacer", (horizontalLayout ? "" : "line-height: " + (lineHeight / 2) + "px; font-size: " + (fontSize / 2) + "px;"));
+  if (!horizontalLayout) { myInsertRule(sheet, ".variableSpacer", "line-height: " + Math.floor(lineHeight / 2) + "px; font-size: " + Math.floor(fontSize / 2) + "px;"); }
   for (ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
 
   if (theObject = document.getElementById("boardTable")) {
@@ -309,16 +309,16 @@ function searchPlayer(name, FideId) {
 <div>&nbsp;</div>
 <div><span id="GameSite" title="site"></span>&nbsp;</div>
 <div><span id="GameEvent" title="event"></span>&nbsp;</div>
-<div class="lowerSpacer">&nbsp;</div>
+<div class="variableSpacer">&nbsp;</div>
 <div><span id="GameWhiteClock" title="White clock"></span>&nbsp;</div>
 <div><a style="font-weight: bold;" id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId'));" title="White player"></a>&nbsp;</div>
 <div><a style="font-weight: bold;" id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId'));" title="Black player"></a>&nbsp;</div>
 <div><span id="GameBlackClock" title="Black clock"></span>&nbsp;</div>
-<div class="lowerSpacer">&nbsp;</div>
+<div class="variableSpacer">&nbsp;</div>
 <div><span style="font-weight: bold;" id="GameResult" title="result"></span>&nbsp;</div>
-<div class="lowerSpacer">&nbsp;</div>
+<div class="variableSpacer">&nbsp;</div>
 <div><span id="GameLastMove" title="last move"></span>&nbsp;</div>
-<div class="lowerSpacer">&nbsp;</div>
+<div class="variableSpacer">&nbsp;</div>
 <div><a id="GameMoreMoves" href="javascript:void(0);" onclick="MoveForward(1);" title="more moves available: click > to move forward"></a>&nbsp;</div>
 <div><a id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource();" title="live broadcast status"></a>&nbsp;<span id="GameLiveStatusDemo" title="this is a broadcast simulation"></span></div>
 </div>
