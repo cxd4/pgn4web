@@ -224,11 +224,11 @@ function myOnResize() {
     squareSize = Math.min(ww / 8, wh / 8);
   } else {
     squareSize_H = Math.min(ww / (16 * 8 / 9), wh / 8);
-    squareSize_V = Math.min(ww / 8, wh / 16.2);
+    squareSize_V = Math.min(ww / 8, wh / 16);
     horizontalLayout = (squareSize_H >= squareSize_V);
     squareSize = horizontalLayout ? squareSize_H : squareSize_V;
   }
-  lineHeight = Math.floor(squareSize * 8 / 16.1);
+  lineHeight = Math.floor(squareSize * 8 / 16);
   fontSize = Math.floor(lineHeight * 0.8);
   squareBorderWidth = Math.min(Math.ceil(squareSize / 50), 3);  
   pieceSize = Math.floor(squareSize * 0.8);
@@ -278,9 +278,25 @@ function customFunctionOnPgnTextLoad() {
 function customFunctionOnPgnGameLoad() { myOnResize(); }
 
 function customFunctionOnMove() {
-  if (theObject = document.getElementById("GameMoreMoves")) {
-    theObject.innerHTML = (CurrentPly == StartPly + PlyNumber) ? "" : ">";
+  extraMoves = 2;
+
+  document.getElementById("GamePrevMoves").innerHTML = "";
+  document.getElementById("GameCurrMove").innerHTML = "";
+  document.getElementById("GameNextMoves").innerHTML = "";
+  theObject = document.getElementById("GamePrevMoves");
+  thisPly = Math.max(CurrentPly - extraMoves - 1, StartPly);
+  if (thisPly > StartPly) { theObject.innerHTML += "... "; }
+  for (; thisPly < Math.min(CurrentPly + extraMoves, StartPly + PlyNumber); thisPly++) {
+    if (thisPly == CurrentPly) {
+      theObject = document.getElementById("GameNextMoves");
+    }
+    if (thisPly % 2 == 0) { theObject.innerHTML += Math.floor(1 + thisPly / 2) + ". "; }
+    if (thisPly == CurrentPly - 1) {
+      theObject = document.getElementById("GameCurrMove");
+    }
+    theObject.innerHTML += Moves[thisPly] + " ";
   }
+  if (thisPly < StartPly + PlyNumber) { theObject.innerHTML += " ..."; }
 }
 
 function searchPlayer(name, FideId) {
@@ -310,15 +326,14 @@ function searchPlayer(name, FideId) {
 <div><span id="GameEvent" title="event"></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
 <div><span id="GameWhiteClock" title="White clock"></span>&nbsp;</div>
-<div><a style="font-weight: bold;" id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId'));" title="White player"></a>&nbsp;</div>
-<div><a style="font-weight: bold;" id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId'));" title="Black player"></a>&nbsp;</div>
+<div><a style="font-weight: 900;" id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId'));" title="White player"></a>&nbsp;</div>
+<div><a style="font-weight: 900;" id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId'));" title="Black player"></a>&nbsp;</div>
 <div><span id="GameBlackClock" title="Black clock"></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
-<div><span style="font-weight: bold;" id="GameResult" title="result"></span>&nbsp;</div>
+<div><span style="font-weight: 900;" id="GameResult" title="result"></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
-<div><span id="GameLastMove" title="last move"></span>&nbsp;</div>
+<div><a id="GamePrevMoves" href="javascript:void(0);" onclick="MoveBackward(1);" title="click to move backward"></a><span style="font-weight: 900;" id="GameCurrMove" title="current move on chessboard"></span><a id="GameNextMoves" href="javascript:void(0);" onclick="MoveForward(1);" title="click to move forward"></a>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
-<div><a id="GameMoreMoves" href="javascript:void(0);" onclick="MoveForward(1);" title="more moves available: click > to move forward"></a>&nbsp;</div>
 <div><a id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource();" title="live broadcast status"></a>&nbsp;<span id="GameLiveStatusDemo" title="this is a broadcast simulation"></span></div>
 </div>
 
