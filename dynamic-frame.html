@@ -290,7 +290,7 @@ function customFunctionOnMove() {
     if (thisPly == CurrentPly) {
       theObject = document.getElementById("GameNextMoves");
     }
-    if (thisPly % 2 == 0) { theObject.innerHTML += Math.floor(1 + thisPly / 2) + ". "; }
+    if (thisPly % 2 === 0) { theObject.innerHTML += Math.floor(1 + thisPly / 2) + ". "; }
     if (thisPly == CurrentPly - 1) {
       theObject = document.getElementById("GameCurrMove");
     }
