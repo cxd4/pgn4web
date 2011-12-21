@@ -240,7 +240,10 @@ function myOnResize() {
   if ((IEfix) && (theObject = document.getElementById("GameSelector"))) { theObject.innerHTML = theObject.innerHTML; }
 
   myInsertRule(sheet, "body", "padding: 0; margin: 0; white-space: nowrap; overflow: hidden; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;");
-  myInsertRule(sheet, "a", "text-decoration: none; color: #" + fontColorHex + ";"); 
+  myInsertRule(sheet, "a:link", "text-decoration: none; color: #" + fontColorHex + ";"); 
+  myInsertRule(sheet, "a:visited", "text-decoration: none; color: #" + fontColorHex + ";"); 
+  myInsertRule(sheet, "a:active", "text-decoration: none; color: #" + fontColorHex + ";"); 
+  myInsertRule(sheet, "a:hover", "text-decoration: none; color: #" + fontColorHex + ";");
   myInsertRule(sheet, ".boardTable", (horizontalLayout ? "float: left;" : "margin-bottom: " + (squareSize / 2) + "px; margin-left: " + ((ww - 8 * squareSize) / 2) + "px;"));
   myInsertRule(sheet, ".pieceImage", "width:" + pieceSize + "px; height:" + pieceSize + "px;");
   myInsertRule(sheet, ".whiteSquare", "width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + lightColorHex + "; border-color: #" + lightColorHex + ";");
@@ -326,15 +329,15 @@ function searchPlayer(name, FideId) {
 <div><span id="GameEvent" title="event"></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
 <div><span id="GameWhiteClock" title="White clock"></span>&nbsp;</div>
-<div><a style="font-weight: 900;" id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId'));" title="White player"></a>&nbsp;</div>
-<div><a style="font-weight: 900;" id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId'));" title="Black player"></a>&nbsp;</div>
+<div><a style="font-weight: 900;" id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();" title="White player"></a>&nbsp;</div>
+<div><a style="font-weight: 900;" id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();" title="Black player"></a>&nbsp;</div>
 <div><span id="GameBlackClock" title="Black clock"></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
 <div><span style="font-weight: 900;" id="GameResult" title="result"></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
-<div><a id="GamePrevMoves" href="javascript:void(0);" onclick="MoveBackward(1);" title="previous moves"></a><span style="font-weight: 900;" id="GameCurrMove" title="current move as shown on chessboard"></span><a id="GameNextMoves" href="javascript:void(0);" onclick="MoveForward(1);" title="next moves"></a>&nbsp;</div>
+<div><a id="GamePrevMoves" href="javascript:void(0);" onclick="MoveBackward(1); this.blur();" title="previous moves"></a><span style="font-weight: 900;" id="GameCurrMove" title="current move as shown on chessboard"></span><a id="GameNextMoves" href="javascript:void(0);" onclick="MoveForward(1); this.blur();" title="next moves"></a>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
-<div><a id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource();" title="live broadcast status"></a>&nbsp;<span id="GameLiveStatusDemo" title="this is a broadcast simulation"></span></div>
+<div><a id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();" title="live broadcast status"></a>&nbsp;<span id="GameLiveStatusDemo" title="this is a broadcast simulation"></span></div>
 </div>
 
 <script type="text/javascript">
