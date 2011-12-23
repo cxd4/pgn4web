@@ -256,7 +256,7 @@ function myOnResize() {
   } else {
     myInsertRule(sheet, ".liveStatusLine", "display: none;");
     if (horizontalLayout) { myInsertRule(sheet, ".gameButtons", "width: " + headerContainerWidth + "px; " + "text-align: left;"); }
-    buttonCss = "width: " + (2 * squareSize / 3) + "px !important; height: " + lineHeight + "px;" + "border-style: none; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;";
+    buttonCss = "width: " + (2 * squareSize / 3) + "px !important; height: " + lineHeight + "px; color: #" + fontColorHex + "; border-style: none; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;";
     myInsertRule(sheet, ".buttonControl", buttonCss);
     myInsertRule(sheet, ".buttonControlPlay", buttonCss);
     myInsertRule(sheet, ".buttonControlStop", buttonCss);
