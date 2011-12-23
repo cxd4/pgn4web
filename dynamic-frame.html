@@ -251,6 +251,17 @@ function myOnResize() {
   myInsertRule(sheet, ".headerContainer", "width: " + headerContainerWidth + "px; white-space: nowrap; overflow: hidden;" + (horizontalLayout ? " float: right; text-align: left;" : " text-align: center;"));
   myInsertRule(sheet, ".selectControl", "margin: 0; padding: 0; width: " + selectWidth + "px !important; height: " + lineHeight + "px; font-size: " + fontSize + "px; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; border-width: 0;");
   myInsertRule(sheet, ".gameSelector", (horizontalLayout ? "float: right; width: " + selectWidth + "px; " : "margin-bottom: " + (lineHeight / 2) + "px;") + " height: " + (3 * lineHeight / 2) + "px; overflow: hidden;");
+  if (LiveBroadcastDelay > 0) {
+    myInsertRule(sheet, ".gameButtons", "display: none;");
+  } else {
+    myInsertRule(sheet, ".liveStatusLine", "display: none;");
+    if (horizontalLayout) { myInsertRule(sheet, ".gameButtons", "width: " + headerContainerWidth + "px; " + "text-align: left;"); }
+    buttonCss = "width: " + (2 * squareSize / 3) + "px !important; height: " + lineHeight + "px;" + "border-style: none; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;";
+    myInsertRule(sheet, ".buttonControl", buttonCss);
+    myInsertRule(sheet, ".buttonControlPlay", buttonCss);
+    myInsertRule(sheet, ".buttonControlStop", buttonCss);
+    myInsertRule(sheet, ".buttonControlSpace", "width: 0 !important;");
+  }
   if (!horizontalLayout) { myInsertRule(sheet, ".variableSpacer", "line-height: " + Math.floor(lineHeight / 2) + "px; font-size: " + Math.floor(fontSize / 2) + "px;"); }
   myInsertRule(sheet, ".firstVariableSpacer", "line-height: " + Math.floor(lineHeight / 2) + "px; font-size: " + Math.floor(fontSize / 2) + "px;");
 
@@ -334,21 +345,16 @@ function searchPlayer(name, FideId) {
 <div class="variableSpacer">&nbsp;</div>
 <div><span style="font-weight: bold;" id="GameResult" title="result"></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
-<div><a id="GamePrevMoves" href="javascript:void(0);" onclick="MoveBackward(1); this.blur();" title="previous moves"></a><span style="font-weight: bold;" id="GameCurrMove" title="current move as shown on chessboard"></span><a id="GameNextMoves" href="javascript:void(0);" onclick="MoveForward(1); this.blur();" title="next moves"></a>&nbsp;</div>
+<div><a id="GamePrevMoves" href="javascript:void(0);" onclick="MoveBackward(1); this.blur();" title="previous moves"></a><span style="font-weight: bold;" id="GameCurrMove" title="current move as shown on chessboard"></span><a id="GameNextMoves" href="javascript:void(0);" onclick="MoveForward(1); this.blur();" title="next moves"></a><span style="font-weight: bold;">&nbsp;</span></div>
 <div class="variableSpacer">&nbsp;</div>
-<div><a id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();" title="live broadcast status"></a>&nbsp;<span id="GameLiveStatusDemo" title="this is a broadcast simulation"></span></div>
+<center><div class="gameButtons" id="GameButtons"></div></center>
+<div class="liveStatusLine"><a id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();" title="live broadcast status"></a>&nbsp;<span id="GameLiveStatusDemo" title="this is a broadcast simulation"></span></div>
 </div>
 
 <script type="text/javascript">
 
-if (LiveBroadcastDelay) {
-  if (theObject = document.getElementById("GameLiveStatusDemo")) {
-    theObject.innerHTML = LiveBroadcastDemo ? "&nbsp;&nbsp;demo" : "";
-  }
-} else {
-  if (theObject = document.getElementById("GameLiveStatus")) {
-    theObject.style.visibility = "hidden";
-  }
+if ((LiveBroadcastDelay) && (theObject = document.getElementById("GameLiveStatusDemo"))) {
+  theObject.innerHTML = LiveBroadcastDemo ? "&nbsp;&nbsp;demo" : "";
 }
 
 </script>
