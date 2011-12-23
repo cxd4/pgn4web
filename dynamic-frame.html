@@ -256,11 +256,11 @@ function myOnResize() {
   } else {
     myInsertRule(sheet, ".liveStatusLine", "display: none;");
     if (horizontalLayout) { myInsertRule(sheet, ".gameButtons", "width: " + headerContainerWidth + "px; " + "text-align: left;"); }
-    buttonCss = "width: " + (2 * squareSize / 3) + "px !important; height: " + lineHeight + "px; color: #" + fontColorHex + "; border-style: none; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;";
+    buttonCss = "margin: 0; padding: 0; width: " + (3 * squareSize / 5) + "px !important; height: " + lineHeight + "px; color: #" + fontColorHex + "; border-style: none; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;";
     myInsertRule(sheet, ".buttonControl", buttonCss);
     myInsertRule(sheet, ".buttonControlPlay", buttonCss);
     myInsertRule(sheet, ".buttonControlStop", buttonCss);
-    myInsertRule(sheet, ".buttonControlSpace", "width: 0 !important;");
+    myInsertRule(sheet, ".buttonControlSpace", "margin: 0; padding: 0; width: " + (squareSize / 5) + "px !important;");
   }
   if (!horizontalLayout) { myInsertRule(sheet, ".variableSpacer", "line-height: " + Math.floor(lineHeight / 2) + "px; font-size: " + Math.floor(fontSize / 2) + "px;"); }
   myInsertRule(sheet, ".firstVariableSpacer", "line-height: " + Math.floor(lineHeight / 2) + "px; font-size: " + Math.floor(fontSize / 2) + "px;");
