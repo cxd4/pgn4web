@@ -93,7 +93,10 @@ if (window.location.search.match(thisRegExp) !== null) {
   if (isNaN(refreshMinutes)) { refreshMinutes = refreshMinutes_default; }
   if (refreshMinutes <= 0) { refreshMinutes = refreshMinutes_default; }
 }
-if (refreshMinutes) {  pgnData_default = "live/live.pgn"; }
+if (refreshMinutes) {
+  pgnData_default = "live/live.pgn";
+  initialGame_default = "\\[\\s*Result\\s*\"\\*\"\\s*\\]";
+}
 
 SetInitialHalfmove(refreshMinutes ? "end" : "start", true);
  
