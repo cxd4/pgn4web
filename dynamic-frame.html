@@ -227,7 +227,7 @@ function myOnResize() {
     squareSize = Math.min(ww / 8, wh / 8);
   } else {
     squareSize_H = Math.min(ww / (16 * 8 / 9), wh / 8);
-    squareSize_V = Math.min(ww / 8, wh / 14.75);
+    squareSize_V = Math.min(ww / 8, wh / 15);
     horizontalLayout = (squareSize_H >= squareSize_V);
     squareSize = horizontalLayout ? squareSize_H : squareSize_V;
   }
@@ -265,7 +265,7 @@ function myOnResize() {
     myInsertRule(sheet, ".buttonControlStop", buttonCss);
     myInsertRule(sheet, ".buttonControlSpace", "margin: 0; padding: 0; width: " + (squareSize / 8) + "px !important;");
   }
-  if (horizontalLayout) { myInsertRule(sheet, ".firstVariableSpacer", "line-height: " + (lineHeight / 2) + "px;"); }
+  myInsertRule(sheet, ".firstVariableSpacer", "line-height: " + (horizontalLayout ? lineHeight / 2 : 3 * lineHeight / 2) + "px;");
   if (!horizontalLayout) { myInsertRule(sheet, ".variableSpacer", "line-height: " + Math.floor(lineHeight / 2) + "px; font-size: " + Math.floor(fontSize / 2) + "px;"); }
 
   for (ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
