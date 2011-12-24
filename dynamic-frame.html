@@ -224,7 +224,7 @@ function myOnResize() {
     squareSize = Math.min(ww / 8, wh / 8);
   } else {
     squareSize_H = Math.min(ww / (16 * 8 / 9), wh / 8);
-    squareSize_V = Math.min(ww / 8, wh / 15.5);
+    squareSize_V = Math.min(ww / 8, wh / 14.75);
     horizontalLayout = (squareSize_H >= squareSize_V);
     squareSize = horizontalLayout ? squareSize_H : squareSize_V;
   }
@@ -242,15 +242,15 @@ function myOnResize() {
   myInsertRule(sheet, "a:visited", "text-decoration: none; color: #" + fontColorHex + ";"); 
   myInsertRule(sheet, "a:active", "text-decoration: none; color: #" + fontColorHex + ";"); 
   myInsertRule(sheet, "a:hover", "text-decoration: none; color: #" + fontColorHex + ";");
-  myInsertRule(sheet, ".boardTable", (horizontalLayout ? "float: left;" : "margin-bottom: " + (squareSize / 2) + "px; margin-left: " + ((ww - 8 * squareSize) / 2) + "px;"));
+  myInsertRule(sheet, ".boardTable", (horizontalLayout ? "float: left;" : "margin-left: " + ((ww - 8 * squareSize) / 2) + "px;"));
   myInsertRule(sheet, ".pieceImage", "width:" + pieceSize + "px; height:" + pieceSize + "px;");
   myInsertRule(sheet, ".whiteSquare", "width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + lightColorHex + "; border-color: #" + lightColorHex + ";");
   myInsertRule(sheet, ".blackSquare", "width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + darkColorHex + "; border-color:  #" + darkColorHex + ";");
   myInsertRule(sheet, ".highlightWhiteSquare", "width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + lightColorHex + "; border-color: #" + (highlightColorHex ? highlightColorHex : lightColorHex) + ";");
   myInsertRule(sheet, ".highlightBlackSquare", "width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + darkColorHex + "; border-color:  #" + (highlightColorHex ? highlightColorHex : darkColorHex) + ";");
   myInsertRule(sheet, ".headerContainer", "width: " + headerContainerWidth + "px; white-space: nowrap; overflow: hidden;" + (horizontalLayout ? " float: right; text-align: left;" : " text-align: center;"));
+  myInsertRule(sheet, ".gameSelector", (horizontalLayout ? "float: right; width: " + selectWidth + "px; height: " + (3 * lineHeight / 2) + "px;" : "position: absolute; bottom: 0; z-index: 1; height: " + lineHeight + "px;") + " overflow: hidden;");
   myInsertRule(sheet, ".selectControl", "margin: 0; padding: 0; width: " + selectWidth + "px !important; height: " + lineHeight + "px; font-size: " + fontSize + "px; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; border-style: solid; border-width: 1px; border-color: #" + backgroundColorHex + ";");
-  myInsertRule(sheet, ".gameSelector", (horizontalLayout ? "float: right; width: " + selectWidth + "px; " : "margin-bottom: " + (lineHeight / 2) + "px;") + " height: " + (3 * lineHeight / 2) + "px; overflow: hidden;");
   if (LiveBroadcastDelay > 0) {
     myInsertRule(sheet, ".gameButtons", "display: none;");
   } else {
@@ -262,8 +262,8 @@ function myOnResize() {
     myInsertRule(sheet, ".buttonControlStop", buttonCss);
     myInsertRule(sheet, ".buttonControlSpace", "margin: 0; padding: 0; width: " + (squareSize / 8) + "px !important;");
   }
+  if (horizontalLayout) { myInsertRule(sheet, ".firstVariableSpacer", "line-height: " + (lineHeight / 2) + "px;"); }
   if (!horizontalLayout) { myInsertRule(sheet, ".variableSpacer", "line-height: " + Math.floor(lineHeight / 2) + "px; font-size: " + Math.floor(fontSize / 2) + "px;"); }
-  myInsertRule(sheet, ".firstVariableSpacer", "line-height: " + Math.floor(lineHeight / 2) + "px; font-size: " + Math.floor(fontSize / 2) + "px;");
 
   for (ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
 
