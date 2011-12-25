@@ -110,9 +110,6 @@
     }
   } catch(e) { myAlert("warning: failed accessing parent for shortcut squares to clear", false); }
 
-  boardShortcut("F5", "lookup White player", function(){ openFidePlayerUrl(gameWhite[currentGame], customPgnHeaderTag('WhiteFideId')); });
-  boardShortcut("G5", "lookup Black player", function(){ openFidePlayerUrl(gameBlack[currentGame], customPgnHeaderTag('BlackFideId')); });
-
   if ((typeof(chrome) != "undefined") && (typeof(chrome.extension) != "undefined") && (typeof(chrome.extension.getBackgroundPage) != "undefined") && (typeof(chrome.extension.getBackgroundPage().showAboutPage) != "undefined")) {
     boardShortcut("A7", "chess games viewer extension help", function(){ setTimeout("chrome.extension.getBackgroundPage().showAboutPage();", 99); });
   }
