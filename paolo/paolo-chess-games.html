@@ -38,17 +38,17 @@
    SetInitialHalfmove("comment",true); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default)
    SetShortcutKeysEnabled(true);
 
-function openFidePlayerUrl(name) {
-   if (! name) { return; }
-   window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + name + "&offset=0");
+function openFidePlayerUrl(name, FideId) {
+   if (FideId) { window.open("http://ratings.fide.com/card.phtml?event=" + escape(FideId)); }
+   else if (name) { window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + name + "&offset=0"); }
 }
 
 function customShortcutKey_Shift_1() {
-   openFidePlayerUrl(gameWhite[currentGame]); 
+   openFidePlayerUrl(gameWhite[currentGame], customPgnHeaderTag('WhiteFideId'));
 }
 
 function customShortcutKey_Shift_2() {
-   openFidePlayerUrl(gameBlack[currentGame]); 
+   openFidePlayerUrl(gameBlack[currentGame], customPgnHeaderTag('BlackFideId'));
 }
 
 function customShortcutKey_Shift_3() {

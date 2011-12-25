@@ -745,15 +745,15 @@ END;
   function customFunctionOnMove() { 
     document.getElementById('currPly').innerHTML = CurrentPly; 
   }
-  function openFidePlayerUrl(name) {
-    if (! name) { return; }
-    window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + name + "&offset=0");
+  function openFidePlayerUrl(name, FideId) {
+    if (FideId) { window.open("http://ratings.fide.com/card.phtml?event=" + escape(FideId)); }
+    else if (name) { window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + name + "&offset=0"); }
   }
   function customShortcutKey_Shift_1() {
-    openFidePlayerUrl(gameWhite[currentGame]);
+    openFidePlayerUrl(gameWhite[currentGame], customPgnHeaderTag('WhiteFideId'));
   }
   function customShortcutKey_Shift_2() {
-    openFidePlayerUrl(gameBlack[currentGame]);
+    openFidePlayerUrl(gameBlack[currentGame], customPgnHeaderTag('BlackFideId'));
   }
 
 </script>

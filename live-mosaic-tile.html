@@ -212,19 +212,16 @@
     return key;
   }
 
+  function openFidePlayerUrl(name, FideId) {
+    if (FideId) { window.open("http://ratings.fide.com/card.phtml?event=" + escape(FideId)); }
+    else if (name) { window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + name + "&offset=0"); }
+  }
+
   function customShortcutKey_Shift_0() { try { if (parent && parent.customShortcutKey_Shift_0) {parent.customShortcutKey_Shift_0(); } } catch(e) { myAlert("error: failed accessing parent custom shortcut key function"); } }
 
-  function customShortcutKey_Shift_1() {
-    if (gameWhite[currentGame]) {
-      window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + gameWhite[currentGame] + "&offset=0");
-    }
-  }
+  function customShortcutKey_Shift_1() { openFidePlayerUrl(gameWhite[currentGame], customPgnHeaderTag('WhiteFideId')); }
 
-  function customShortcutKey_Shift_2() {
-    if (gameBlack[currentGame]) {
-      window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + gameBlack[currentGame] + "&offset=0");
-    }
-  }
+  function customShortcutKey_Shift_2() { openFidePlayerUrl(gameBlack[currentGame], customPgnHeaderTag('BlackFideId')); }
 
   function customShortcutKey_Shift_3() { try { if (parent && parent.customShortcutKey_Shift_3) {parent.customShortcutKey_Shift_3(); } } catch(e) { myAlert("error: failed accessing parent custom shortcut key function"); } }
   function customShortcutKey_Shift_4() { try { if (parent && parent.customShortcutKey_Shift_4) {parent.customShortcutKey_Shift_4(); } } catch(e) { myAlert("error: failed accessing parent custom shortcut key function"); } }

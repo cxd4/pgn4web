@@ -316,7 +316,7 @@ function customFunctionOnMove() {
 }
 
 function searchPlayer(name, FideId) {
-  if (FideId) { window.open("http://ratings.fide.com/seek.phtml?idcode=" + escape(FideId) + "&name=&offset=0"); }
+  if (FideId) { window.open("http://ratings.fide.com/card.phtml?event=" + escape(FideId)); }
   else if (name) { window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + escape(name) + "&offset=0"); }
 }
 
