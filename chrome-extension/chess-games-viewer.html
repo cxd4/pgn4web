@@ -27,6 +27,7 @@ of Google Chrome. Don't use with any other browser.
 <script src="js-unzip/js-unzip.js" type="text/javascript"></script>
 <script src="js-unzip/js-inflate.js" type="text/javascript"></script>
 <script src="pgn4web.js" type="text/javascript"></script>
+<script src="fide-lookup.js" type="text/javascript"></script>
 
 </head>
 
@@ -438,8 +439,7 @@ of Google Chrome. Don't use with any other browser.
    function searchPlayer(name, FideId) {
       if (name) {
          if (event.shiftKey) {
-            if (FideId) { window.open("http://ratings.fide.com/card.phtml?event=" + escape(FideId)); }
-            else { window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + escape(name) + "&offset=0"); }
+            if (typeof(openFidePlayerUrl) == "function") { openFidePlayerUrl(name, FideId); }
          } else {
             searchPgnGame('\\[\\s*(White|Black)\\s*"' + fixRegExp(name) + '"\\s*\\]', false);
          }

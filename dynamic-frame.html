@@ -20,6 +20,9 @@
 <style id="dynamicStyle" type="text/css"></style>
 
 <script src="pgn4web.js" type="text/javascript"></script>
+
+<script src="fide-lookup.js" type="text/javascript"></script>
+
 <script type="text/javascript">
 SetHighlightOption(true);
 SetGameSelectorOptions("&middot;&middot;&middot;", false, 0, 0, 0, 15, 15, 3, 0); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
@@ -316,8 +319,7 @@ function customFunctionOnMove() {
 }
 
 function searchPlayer(name, FideId) {
-  if (FideId) { window.open("http://ratings.fide.com/card.phtml?event=" + escape(FideId)); }
-  else if (name) { window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + escape(name) + "&offset=0"); }
+  if (typeof(openFidePlayerUrl) == "function") { openFidePlayerUrl(name, FideId); }
 }
 
 </script>

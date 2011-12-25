@@ -14,6 +14,8 @@
 [BlackClock "0:15.10"] 
 [Clock "B/0:15.29"]
 [TimeControl "900+10"] 
+[WhiteFideId "4500016"]
+[BlackFideId "2209390"]
  
 1. c4 { [%clk 0:15.16] } e5 { [%clk 0:15.18] } 2. g3 { [%clk 0:15.11] } Nf6 { 
 [%clk 0:15.24] } 3. Bg2 { [%clk 0:15.19] } d5 { [%clk 0:15.29] } 4. cxd5 { 
@@ -35,6 +37,8 @@
 [BlackClock "0:15.10"] 
 [Clock "B/0:00.04"] 
 [TimeControl "900+10"]
+[WhiteFideId "4501764"]
+[BlackFideId "4143256"]
  
 1. d4 { [%clk 0:15.17] } Nf6 { [%clk 0:15.19] } 2. c4 { [%clk 0:15.26] } c5 { 
 [%clk 0:15.27] } 3. d5 { [%clk 0:15.33] } e5 { [%clk 0:15.35] } 4. Nc3 { [%clk 
@@ -70,6 +74,8 @@
 [BlackClock "0:15.10"] 
 [Clock "W/0:00.18"] 
 [TimeControl "900+10"] 
+[WhiteFideId "4500814"]
+[BlackFideId "4501950"]
 
 1. d4 { [%clk 0:15.19] } Nf6 { [%clk 0:15.09] } 2. Nf3 { [%clk 0:15.28] } c5 { 
 [%clk 0:15.26] } 3. e3 { [%clk 0:15.18] } e6 { [%clk 0:15.29] } 4. Be2 { [%clk 
@@ -116,6 +122,8 @@
 [BlackClock "0:15.10"] 
 [Clock "W/0:00.55"] 
 [TimeControl "900+10"] 
+[WhiteFideId "11600136"]
+[BlackFideId "4116194"]
 
 1. c4 { [%clk 0:15.15] } Nf6 { [%clk 0:15.17] } 2. Nc3 { [%clk 0:15.22] } d5 { 
 [%clk 0:15.26] } 3. cxd5 { [%clk 0:15.29] } Nxd5 { [%clk 0:15.35] } 4. g3 { 

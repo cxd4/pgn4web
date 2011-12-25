@@ -718,6 +718,9 @@ END;
 <link rel="shortcut icon" href="pawn.ico" />
 
 <script src="pgn4web.js" type="text/javascript"></script>
+
+<script src="fide-lookup.js" type="text/javascript"></script>
+
 <script type="text/javascript">
   SetImagePath("$pieceType/$pieceSize"); 
   SetImageType("png");
@@ -745,15 +748,15 @@ END;
   function customFunctionOnMove() { 
     document.getElementById('currPly').innerHTML = CurrentPly; 
   }
-  function openFidePlayerUrl(name, FideId) {
-    if (FideId) { window.open("http://ratings.fide.com/card.phtml?event=" + escape(FideId)); }
-    else if (name) { window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + name + "&offset=0"); }
-  }
   function customShortcutKey_Shift_1() {
-    openFidePlayerUrl(gameWhite[currentGame], customPgnHeaderTag('WhiteFideId'));
+    if (typeof(openFidePlayerUrl) == "function") {
+      openFidePlayerUrl(gameWhite[currentGame], customPgnHeaderTag('WhiteFideId'));
+    }
   }
   function customShortcutKey_Shift_2() {
-    openFidePlayerUrl(gameBlack[currentGame], customPgnHeaderTag('BlackFideId'));
+    if (typeof(openFidePlayerUrl) == "function") {
+      openFidePlayerUrl(gameBlack[currentGame], customPgnHeaderTag('BlackFideId'));
+    }
   }
 
 </script>
