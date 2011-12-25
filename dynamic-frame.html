@@ -322,6 +322,14 @@ function searchPlayer(name, FideId) {
   if (typeof(openFidePlayerUrl) == "function") { openFidePlayerUrl(name, FideId); }
 }
 
+function customShortcutKey_Shift_1() {
+  searchPlayer(gameWhite[currentGame], customPgnHeaderTag('WhiteFideId'));
+}
+
+function customShortcutKey_Shift_2() {
+  searchPlayer(gameBlack[currentGame], customPgnHeaderTag('BlackFideId'));
+}
+
 </script>
 
 </head>
