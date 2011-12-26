@@ -12,6 +12,20 @@ error_reporting(E_ERROR | E_PARSE);
 $debugInfo = "\n";
 
 
+if (false && preg_match("/^(http|https):\/\/(www.|)example.com/i", $_SERVER['HTTP_REFERER'])) {
+  print <<<END
+<html>
+<head>
+</head>
+<body style="padding:10px; font-size:x-small; font-family:sans-serif;">
+<p style="font-weight:bold;">Note from the pgn4web project</p><p>Your site generates a substantial load on the pgn4web chess puzzler server. Please install the pgn4web chess puzzler on your own server following these <a href="http://code.google.com/p/pgn4web/wiki/ServiceAvailability#Use_on_a_professional_site" target="_blank">instructions</a>. Sorry for any inconvenience, our previous attempts contacting the administrator of your site were unsuccessful.</p>
+</body>
+</html>
+END;
+  exit;
+}
+
+
 function get_param($param, $shortParam, $default) {
   $out = $_REQUEST[$param];
   if ($out != "") { return $out; }
