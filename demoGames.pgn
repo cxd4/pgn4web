@@ -5,12 +5,12 @@
 [White "Anand, Viswanathan"]
 [Black "Kramnik, Vladimir"]
 [Result "1-0"]
-[WhiteFideId "5000017"]
-[BlackFideId "4101588"]
 [ECO "C42"]
 [Opening "Petrov"]
 [Variation "classical attack, Chigorin variation"]
 [Annotator "pgn4web with notes from http://www.chessgames.com"]
+[WhiteFideId "5000017"]
+[BlackFideId "4101588"]
 
 { pgn4web personal account on Kramnik and the Petrov, part 1: in October
 1998, I watched this game live from the tournament hall in Tilburg. At some
@@ -48,12 +48,12 @@ later. } 1-0
 [White "Howell, David"]
 [Black "Kramnik, Vladimir"]
 [Result "1/2-1/2"]
-[WhiteFideId "410608"]
-[BlackFideId "4101588"]
 [ECO "C42"]
 [Opening "Petrov"]
 [Variation "classical attack, Chigorin variation"]
 [Annotator "pgn4web"]
+[WhiteFideId "410608"]
+[BlackFideId "4101588"]
 
 { pgn4web personal account on Kramnik and the Petrov, part 2: since the
 previous game at Tilburg 1998 I did not attend in person any other top
