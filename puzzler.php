@@ -9,10 +9,10 @@
 
 error_reporting(E_ERROR | E_PARSE);
 
-$debugInfo = "\n";
 
 // add temporarily blocked sites here
 $blockedReferrers = array();
+
 
 $referrerHost = parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST);
 if ($referrerHost) {
@@ -34,6 +34,7 @@ END;
   }
 }
 
+$debugInfo = "\n";
 
 function get_param($param, $shortParam, $default) {
   $out = $_REQUEST[$param];
