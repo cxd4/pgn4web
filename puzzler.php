@@ -11,11 +11,16 @@ error_reporting(E_ERROR | E_PARSE);
 
 $debugInfo = "\n";
 
+// add temporarily blocked sites here
+$blockedReferrers = array();
 
-if (false && preg_match("/^(http|https):\/\/(www.|)example.com/i", $_SERVER['HTTP_REFERER'])) {
-  $thisPage = curPageURL();
-  $thisPage .= ((strstr($thisPage, "?") ? "&" : "?") . "dummy=true");
-  print <<<END
+$referrerHost = parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST);
+if ($referrerHost) {
+  foreach ($blockedReferrers as $blockedReferrer) {
+    if (strstr($referrerHost, $blockedReferrer)) {
+      $thisPage = curPageURL();
+      $thisPage .= ((strstr($thisPage, "?") ? "&" : "?") . "selfReferred=true");
+      print <<<END
 <html>
 <head>
 </head>
@@ -24,7 +29,9 @@ if (false && preg_match("/^(http|https):\/\/(www.|)example.com/i", $_SERVER['HTT
 </body>
 </html>
 END;
-  exit;
+      exit;
+    }
+  }
 }
 
 
