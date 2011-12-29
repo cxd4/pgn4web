@@ -294,7 +294,13 @@ function customFunctionOnPgnTextLoad() {
   }
 }
 
-function customFunctionOnPgnGameLoad() { myOnResize(); }
+function customFunctionOnPgnGameLoad() {
+  myOnResize();
+  if (theObject = document.getElementById("GameSite")) { theObject.title = "site" + (gameSite[currentGame] ? ": " + gameSite[currentGame] : ""); }
+  if (theObject = document.getElementById("GameEvent")) { theObject.title = "event" + (gameEvent[currentGame] ? ": " + gameEvent[currentGame] : ""); }
+  if (theObject = document.getElementById("GameWhite")) { theObject.title = "white player" + (gameWhite[currentGame] ? ": " + gameWhite[currentGame] : ""); }
+  if (theObject = document.getElementById("GameBlack")) { theObject.title = "black player" + (gameBlack[currentGame] ? ": " + gameBlack[currentGame] : ""); }
+}
 
 function customFunctionOnMove() {
   extraMoves = 2;
@@ -351,10 +357,10 @@ function customShortcutKey_Shift_2() {
 <div><span id="GameSite" title="site"></span>&nbsp;</div>
 <div><span id="GameEvent" title="event"></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
-<div><span id="GameWhiteClock" title="White clock"></span>&nbsp;</div>
-<div><a style="font-weight: bold;" id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();" title="White player"></a>&nbsp;</div>
-<div><a style="font-weight: bold;" id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();" title="Black player"></a>&nbsp;</div>
-<div><span id="GameBlackClock" title="Black clock"></span>&nbsp;</div>
+<div><span id="GameWhiteClock" title="white clock"></span>&nbsp;</div>
+<div><a style="font-weight: bold;" id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();" title="white player"></a>&nbsp;</div>
+<div><a style="font-weight: bold;" id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();" title="black player"></a>&nbsp;</div>
+<div><span id="GameBlackClock" title="black clock"></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
 <div><span style="font-weight: bold;" id="GameResult" title="result"></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
