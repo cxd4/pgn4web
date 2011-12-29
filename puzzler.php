@@ -25,7 +25,7 @@ if ($referrerHost) {
 <head>
 </head>
 <body style="padding:10px; font-size:x-small; font-family:sans-serif;">
-<p style="font-weight:bold;">Note from the pgn4web project</p><p>Your site generates a substantial load on the pgn4web chess puzzler server. Please install the pgn4web chess puzzler on your own server following these <a href="http://code.google.com/p/pgn4web/wiki/ServiceAvailability#Use_on_a_professional_site" target="_blank">instructions</a>. Sorry for any inconvenience, our previous attempts contacting the administrator of your site were unsuccessful.</p><p>Click <a href="$thisPage">here</a> to view the pgn4web chess puzzler.</p>
+<p style="font-weight:bold;">pgn4web chess puzzler: warning</p><p>Your site generates a substantial load on the pgn4web chess puzzler server. Please install the pgn4web chess puzzler on your own server following these <a href="http://code.google.com/p/pgn4web/wiki/ServiceAvailability#Use_on_a_professional_site" target="_blank">instructions</a>. Sorry for any inconvenience, previous attempts contacting your site's administrators were unsuccessful.</p><p>Click <a href="$thisPage">here</a> to view the pgn4web chess puzzler.</p>
 </body>
 </html>
 END;
