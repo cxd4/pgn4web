@@ -1,6 +1,6 @@
 #
 #  pgn4web javascript chessboard
-#  copyright (C) 2009, 2011 Paolo Casaschi
+#  copyright (C) 2009, 2012 Paolo Casaschi
 #  see README file and http://pgn4web.casaschi.net
 #  for credits, license and more details
 #
