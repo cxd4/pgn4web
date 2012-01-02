@@ -52,6 +52,9 @@ body {
 /* a "width" attribute here must use the !important flag to override default settings */
 }
 
+.optionSelectControl {
+}
+
 .header {
   color: black;
   font-weight: bold;
@@ -820,6 +823,10 @@ if (highlightMode == 'border') {
                      'background-color: ' + controlBackgroundColor + '; ' +
                      'color: ' + controlTextColor + '; ' +
                      'font-size: ' + controlFontSize + 'px; ' +
+                     ' } \n';
+
+    newStyleSheet += '.optionSelectControl { ' +
+                     'background-color: ' + controlBackgroundColor + '; ' +
                      ' } \n';
   }
 

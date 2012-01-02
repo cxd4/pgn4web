@@ -257,6 +257,7 @@ function myOnResize() {
   myInsertRule(sheet, ".headerContainer", "width: " + headerContainerWidth + "px; white-space: nowrap; overflow: hidden;" + (horizontalLayout ? " float: right; text-align: left;" : " text-align: center;"));
   myInsertRule(sheet, ".gameSelector", (horizontalLayout ? "float: right; width: " + selectWidth + "px; height: " + (3 * lineHeight / 2) + "px;" : "position: absolute; bottom: 0; z-index: 1; height: " + lineHeight + "px;") + " overflow: hidden;");
   myInsertRule(sheet, ".selectControl", "margin: 0; padding: 0; width: " + selectWidth + "px !important; height: " + lineHeight + "px; font-size: " + fontSize + "px; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; border-style: solid; border-width: 1px; border-color: #" + backgroundColorHex + ";");
+  myInsertRule(sheet, ".optionSelectControl", "background-color: #" + backgroundColorHex + ";");
   if (LiveBroadcastDelay > 0) {
     myInsertRule(sheet, ".gameButtons", "display: none;");
   } else {

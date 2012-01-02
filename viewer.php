@@ -659,6 +659,9 @@ END;
   width: 100% !important;
 }
 
+.optionSelectControl {
+}
+
 .buttonControl {
 /* a "width" attribute here must use the !important flag to override default settings */
 }
