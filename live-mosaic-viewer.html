@@ -580,8 +580,8 @@ function updateMenu() {
       }
       if (theEvent == "?") { theEvent = ""; }
       if (theSite == "?") { theSite = ""; }
-      if (theEvent) { theEvent = theEvent.replace(/\s/g, "&nbsp;"); }
-      if (theSite) { theSite = theSite.replace(/\s/g, "&nbsp;"); }
+      if (theEvent) { theEvent = theEvent.replace(/\s/g, "&nbsp;").replace(/-/g, "&#8209;"); }
+      if (theSite) { theSite = theSite.replace(/\s/g, "&nbsp;").replace(/-/g, "&#8209;"); }
 
       if (theEvent || theSite) {
         theInfoObjectText = "<span class='notranslate'>&nbsp;&nbsp;&nbsp;";
