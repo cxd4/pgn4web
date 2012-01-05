@@ -28,11 +28,11 @@ input {
 
 </head>
 
-<body style="margin:0; padding:0; overflow-x:auto; overflow-y:scroll; font-size:10px; font-family:sans-serif;" onload="atLoad();">
+<body style="margin:0; padding:0; overflow-x:hidden; overflow-y:hidden; font-size:10px; font-family:sans-serif;" onload="atLoad();">
 
 <center>
 
-<div style="padding:10px;" id="header">
+<div style="padding:10px; padding-bottom:0;" id="header">
 <span>&nbsp; width <input id="width" size="5" onchange="change_w(this.value);"> &nbsp;</span>
 <span>&nbsp; height <input id="height" size="5" onchange="change_h(this.value);"> &nbsp;</span>
 <span>&nbsp; <input type="button" value="swap" onclick="swap_wh();"/> &nbsp;</span>
@@ -48,7 +48,7 @@ input {
 <span>&nbsp; <input type="button" value="refresh" onclick="frameRefresh();"/> &nbsp;</span>
 </div>
 
-<iframe id="frame" src="" height="" width="" style="margin-bottom:10px;" frameborder="no" scrolling='no' marginheight='0' marginwidth='0'></iframe>
+<iframe id="frame" src="" height="" width="" style="margin:10px;" frameborder="no" scrolling='no' marginheight='0' marginwidth='0'></iframe>
 
 </center>
 
@@ -69,7 +69,7 @@ function preselect(w, h) {
   else if (document.body && document.body.clientWidth) { ww = document.body.clientWidth; wh = document.body.clientHeight; }
   else { throw("failed to get window size"); }
   aw = ww - 20;
-  ah = wh - document.getElementById("header").offsetHeight - 10;
+  ah = wh - document.getElementById("header").offsetHeight - 20;
   fw = Math.floor(Math.min(aw, ah * w / h));
   fh = Math.floor(fw * h / w);
   change_w(fw); 
