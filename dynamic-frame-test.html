@@ -80,7 +80,7 @@ function modify(dw, dh) {
   if (dw === null) { dw = Math.floor(-15 + 30 * Math.random()); }
   if (dh === null) { dh = Math.floor(-15 + 30 * Math.random()); }
   if (dw != 0) { change_w(Math.floor(document.getElementById("width").value * (100 + dw) / 100)); }
-  if (dh != 0) { change_h(document.getElementById(Math.floor(document.getElementById("height").value * (100 + dh) / 100)); }
+  if (dh != 0) { change_h(Math.floor(document.getElementById("height").value * (100 + dh) / 100)); }
 }
 
 function swap_wh() {
