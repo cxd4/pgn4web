@@ -347,6 +347,10 @@ function customShortcutKey_Shift_2() {
   searchPlayer(gameBlack[currentGame], customPgnHeaderTag('BlackFideId'));
 }
 
+if (window.parent !== window) {
+  boardShortcut("H5", "show fullscreen chessboard", function(){ win = window; while (win.parent !== win) { win = win.parent; }; win.location.href = location.href; });
+}
+
 </script>
 
 </head>
