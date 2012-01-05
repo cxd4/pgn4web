@@ -230,7 +230,7 @@ function myOnResize() {
     squareSize = Math.min(ww / 8, wh / 8);
   } else {
     squareSize_H = Math.min(ww / (16 * 8 / 9), wh / 8);
-    squareSize_V = Math.min(ww / 8, wh / 14.23); // 14.23 = 8 * 16 / 9
+    squareSize_V = Math.min(ww / 8, wh / (16 * 8 / 9));
     horizontalLayout = (squareSize_H >= squareSize_V);
     squareSize = horizontalLayout ? squareSize_H : squareSize_V;
   }
