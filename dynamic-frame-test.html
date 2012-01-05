@@ -13,27 +13,40 @@
 
 <link rel="shortcut icon" href="pawn.ico" />
 
+<style type="text/css">
+
+span {
+  white-space:nowrap;
+}
+
+input {
+  height:20px;
+  font-size:10px;
+}
+
+</style>
+
 </head>
 
-  <body style="margin:0; padding:0; overflow-x:auto; overflow-y:scroll; font-family:sans-serif;" onload="atLoad();">
+<body style="margin:0; padding:0; overflow-x:auto; overflow-y:scroll; font-size:10px; font-family:sans-serif;" onload="atLoad();">
 
 <center>
 
-<div id="header" style="padding:1em;">
-<span style="white-space:nowrap;">&nbsp; width <input id="width" size="5" onchange="change_w(this.value);"> &nbsp;</span>
-<span style="white-space:nowrap;">&nbsp; height <input id="height" size="5" onchange="change_h(this.value);"> &nbsp;</span>
-<span style="white-space:nowrap;">&nbsp; <input type="button" value="swap" onclick="swap_wh();"/> &nbsp;</span>
-<span style="white-space:nowrap;">&nbsp; <input type="button" value="16:9" onclick="preselect(16,9);"/> &nbsp;</span>
-<span style="white-space:nowrap;">&nbsp; <input type="button" value="9:16" onclick="preselect(9,16);"/> &nbsp;</span>
-<span style="white-space:nowrap;">&nbsp; <input type="button" value="4:3" onclick="preselect(4,3);"/> &nbsp;</span>
-<span style="white-space:nowrap;">&nbsp; <input type="button" value="3:4" onclick="preselect(3,4);"/> &nbsp;</span>
-<span style="white-space:nowrap;">&nbsp; <input type="button" value="-w-" onclick="modify(-10, 0);"/> &nbsp;</span>
-<span style="white-space:nowrap;">&nbsp; <input type="button" value="+W+" onclick="modify(+10, 0);"/> &nbsp;</span>
-<span style="white-space:nowrap;">&nbsp; <input type="button" value="-h-" onclick="modify(0, -10);"/> &nbsp;</span>
-<span style="white-space:nowrap;">&nbsp; <input type="button" value="+H+" onclick="modify(0 ,+10);"/> &nbsp;</span>
-<span style="white-space:nowrap;">&nbsp; <input type="button" value="random" onclick="modify(null, null);"/>&nbsp;</span>
-<span style="white-space:nowrap;">&nbsp; <input type="button" value="refresh" onclick="frameRefresh();"/> &nbsp;</span>
-<span style="white-space:nowrap;">&nbsp; <input type="button" value="fullscreen" onclick="location.href=document.getElementById('frame').src"/>&nbsp;</span>
+<div style="padding:10px;" id="header">
+<span>&nbsp; width <input id="width" size="5" onchange="change_w(this.value);"> &nbsp;</span>
+<span>&nbsp; height <input id="height" size="5" onchange="change_h(this.value);"> &nbsp;</span>
+<span>&nbsp; <input type="button" value="swap" onclick="swap_wh();"/> &nbsp;</span>
+<span>&nbsp; <input type="button" value="16:9" onclick="preselect(16,9);"/> &nbsp;</span>
+<span>&nbsp; <input type="button" value="9:16" onclick="preselect(9,16);"/> &nbsp;</span>
+<span>&nbsp; <input type="button" value="4:3" onclick="preselect(4,3);"/> &nbsp;</span>
+<span>&nbsp; <input type="button" value="3:4" onclick="preselect(3,4);"/> &nbsp;</span>
+<span>&nbsp; <input type="button" value="-w-" onclick="modify(-10, 0);"/> &nbsp;</span>
+<span>&nbsp; <input type="button" value="+W+" onclick="modify(+10, 0);"/> &nbsp;</span>
+<span>&nbsp; <input type="button" value="-h-" onclick="modify(0, -10);"/> &nbsp;</span>
+<span>&nbsp; <input type="button" value="+H+" onclick="modify(0 ,+10);"/> &nbsp;</span>
+<span>&nbsp; <input type="button" value="random" onclick="modify(null, null);"/>&nbsp;</span>
+<span>&nbsp; <input type="button" value="refresh" onclick="frameRefresh();"/> &nbsp;</span>
+<span>&nbsp; <input type="button" value="fullscreen" onclick="location.href=document.getElementById('frame').src"/>&nbsp;</span>
 </div>
 
 <iframe id="frame" src="dynamic-frame.html?pd=demoLiveGames.pgn" height="" width="" frameborder="no" scrolling='no' marginheight='0' marginwidth='0'></iframe>
@@ -56,9 +69,9 @@ function preselect(w, h) {
   else if (document.documentElement && document.documentElement.clientWidth) { ww = document.documentElement.clientWidth; wh = document.documentElement.clientHeight; }
   else if (document.body && document.body.clientWidth) { ww = document.body.clientWidth; wh = document.body.clientHeight; }
   else { throw("failed to get window size"); }
-  aw = ww;
-  ah = wh - document.getElementById("header").offsetHeight;
-  fw = Math.floor(0.9 * Math.min(aw, ah * w / h));
+  aw = ww - 20;
+  ah = wh - document.getElementById("header").offsetHeight - 10;
+  fw = Math.floor(Math.min(aw, ah * w / h));
   fh = Math.floor(fw * h / w);
   change_w(fw); 
   change_h(fh); 
