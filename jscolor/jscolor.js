@@ -1,11 +1,11 @@
 /**
  * jscolor, JavaScript Color Picker
  *
- * @version 1.3.11
+ * @version 1.3.12
  * @license GNU Lesser General Public License, http://www.gnu.org/copyleft/lesser.html
  * @author  Jan Odvarko, http://odvarko.cz
  * @created 2008-06-15
- * @updated 2011-11-07
+ * @updated 2012-01-05
  * @link    http://jscolor.com
  */
 
@@ -411,12 +411,14 @@ var jscolor = {
 			} else {
 				if(!this.adjust) {
 					if(!this.fromString(valueElement.value, leaveValue)) {
+						styleElement.style.backgroundImage = styleElement.jscStyle.backgroundImage;
 						styleElement.style.backgroundColor = styleElement.jscStyle.backgroundColor;
 						styleElement.style.color = styleElement.jscStyle.color;
 						this.exportColor(leaveValue | leaveStyle);
 					}
 				} else if(!this.required && /^\s*$/.test(valueElement.value)) {
 					valueElement.value = '';
+					styleElement.style.backgroundImage = styleElement.jscStyle.backgroundImage;
 					styleElement.style.backgroundColor = styleElement.jscStyle.backgroundColor;
 					styleElement.style.color = styleElement.jscStyle.color;
 					this.exportColor(leaveValue | leaveStyle);
@@ -438,6 +440,7 @@ var jscolor = {
 				valueElement.value = value;
 			}
 			if(!(flags & leaveStyle) && styleElement) {
+				styleElement.style.backgroundImage = "none";
 				styleElement.style.backgroundColor =
 					'#'+this.toString();
 				styleElement.style.color =
@@ -904,6 +907,7 @@ var jscolor = {
 		// styleElement
 		if(styleElement) {
 			styleElement.jscStyle = {
+				backgroundImage : styleElement.style.backgroundImage,
 				backgroundColor : styleElement.style.backgroundColor,
 				color : styleElement.style.color
 			};
