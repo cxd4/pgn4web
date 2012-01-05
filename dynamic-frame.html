@@ -269,7 +269,9 @@ function myOnResize() {
     myInsertRule(sheet, ".buttonControlStop", buttonCss);
     myInsertRule(sheet, ".buttonControlSpace", "margin: 0; padding: 0; width: " + (squareSize / 8) + "px !important;");
   }
-  myInsertRule(sheet, ".firstVariableSpacer", "line-height: " + (horizontalLayout ? lineHeight / 2 : 3 * lineHeight / 2) + "px;");
+  firstVariableSpacerLineHeight = Math.floor(horizontalLayout ? lineHeight / 2 : 3 * lineHeight / 2);
+  firstVariableSpacerFontSize = Math.floor(firstVariableSpacerLineHeight * 0.8);
+  myInsertRule(sheet, ".firstVariableSpacer", "line-height: " + firstVariableSpacerLineHeight + "px; font-size: " + firstVariableSpacerFontSize + "px;");
   if (!horizontalLayout) { myInsertRule(sheet, ".variableSpacer", "line-height: " + Math.floor(lineHeight / 2) + "px; font-size: " + Math.floor(fontSize / 2) + "px;"); }
 
   for (ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
