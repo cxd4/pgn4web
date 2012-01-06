@@ -229,8 +229,8 @@ function myOnResize() {
     horizontalLayout = true;
     squareSize = Math.min(ww / 8, wh / 8);
   } else {
-    squareSize_H = Math.min(ww / (16 * 8 / 9), wh / 8);
-    squareSize_V = Math.min(ww / 8, wh / (16 * 8 / 9));
+    squareSize_H = Math.min(ww / (16 / 9), wh) / 8;
+    squareSize_V = Math.min(ww, wh / (16 / 9)) / 8;
     horizontalLayout = (squareSize_H >= squareSize_V);
     squareSize = horizontalLayout ? squareSize_H : squareSize_V;
   }
@@ -267,11 +267,11 @@ function myOnResize() {
   } else {
     myInsertRule(sheet, ".liveStatusLine", "display: none;");
     if (horizontalLayout) { myInsertRule(sheet, ".gameButtons", "width: " + headerContainerWidth + "px; " + "text-align: left;"); }
-    buttonCss = "margin: 0; padding: 0; width: " + (3 * squareSize / 4) + "px !important; height: " + lineHeight + "px; color: #" + fontColorHex + "; border-style: none; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;";
+    buttonCss = "margin: 0; padding: 0; width: " + (3 * lineHeight / 2) + "px !important; height: " + lineHeight + "px; color: #" + fontColorHex + "; border-style: none; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;";
     myInsertRule(sheet, ".buttonControl", buttonCss);
     myInsertRule(sheet, ".buttonControlPlay", buttonCss);
     myInsertRule(sheet, ".buttonControlStop", buttonCss);
-    myInsertRule(sheet, ".buttonControlSpace", "margin: 0; padding: 0; width: " + (squareSize / 8) + "px !important;");
+    myInsertRule(sheet, ".buttonControlSpace", "margin: 0; padding: 0; width: " + (lineHeight / 4) + "px !important;");
   }
   firstVariableSpacerLineHeight = Math.floor(horizontalLayout ? lineHeight / 2 : 3 * lineHeight / 2);
   firstVariableSpacerFontSize = Math.floor(firstVariableSpacerLineHeight * 0.8);
@@ -348,7 +348,7 @@ function customShortcutKey_Shift_2() {
 }
 
 if (window.parent !== window) {
-  boardShortcut("H5", "show fullscreen chessboard", function(){ win = window; while (win.parent !== win) { win = win.parent; }; win.location.href = location.href; });
+  boardShortcut("H5", "show fullscreen chessboard", function(){ win = window; while (win.parent !== win) { win = win.parent; } win.location.href = location.href; });
 }
 
 </script>
