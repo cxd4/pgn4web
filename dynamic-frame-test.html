@@ -32,19 +32,23 @@ input {
 
 <center>
 
-<div style="padding:10px; padding-bottom:0;" id="header">
-<span>&nbsp; width <input id="width" size="5" onchange="change_w(this.value);"> &nbsp;</span>
-<span>&nbsp; height <input id="height" size="5" onchange="change_h(this.value);"> &nbsp;</span>
+<div style="padding:10px;" id="header">
+<span>&nbsp; width <input id="width" style="width:6em;" type="number" onchange="change_w(this.value);"> &nbsp;</span>
+<span>&nbsp; height <input id="height" style="width:6em;" type="number" onchange="change_h(this.value);"> &nbsp;</span>
 <span>&nbsp; <input type="button" value="swap" onclick="swap_wh();"/> &nbsp;</span>
+<span>&nbsp;&nbsp;</span>
 <span>&nbsp; <input type="button" value="16:9" onclick="preselect(16,9);"/> &nbsp;</span>
 <span>&nbsp; <input type="button" value="9:16" onclick="preselect(9,16);"/> &nbsp;</span>
 <span>&nbsp; <input type="button" value="4:3" onclick="preselect(4,3);"/> &nbsp;</span>
 <span>&nbsp; <input type="button" value="3:4" onclick="preselect(3,4);"/> &nbsp;</span>
-<span>&nbsp; <input type="button" value="-w-" onclick="modify(-10, 0);"/> &nbsp;</span>
-<span>&nbsp; <input type="button" value="+W+" onclick="modify(+10, 0);"/> &nbsp;</span>
-<span>&nbsp; <input type="button" value="-h-" onclick="modify(0, -10);"/> &nbsp;</span>
-<span>&nbsp; <input type="button" value="+H+" onclick="modify(0 ,+10);"/> &nbsp;</span>
-<span>&nbsp; <input type="button" value="random" onclick="modify(null, null);"/>&nbsp;</span>
+<span>&nbsp;&nbsp;</span>
+<span>&nbsp; <input type="button" value="narrower" onclick="modify(1/1.05, 1);"/> &nbsp;</span>
+<span>&nbsp; <input type="button" value="wider" onclick="modify(1.05, 1);"/> &nbsp;</span>
+<span>&nbsp; <input type="button" value="shorter" onclick="modify(1, 1/1.05);"/> &nbsp;</span>
+<span>&nbsp; <input type="button" value="taller" onclick="modify(1, 1.05);"/> &nbsp;</span>
+<span>&nbsp;&nbsp;</span>
+<span>&nbsp; <input type="button" value="poke" onclick="modify(0, 0);"/>&nbsp;</span>
+<span>&nbsp;&nbsp;</span>
 <span>&nbsp; <input type="button" value="refresh" onclick="frameRefresh();"/> &nbsp;</span>
 </div>
 
@@ -53,6 +57,13 @@ input {
 </center>
 
 <script type="text/javascript">
+
+minBoardSize = 200;
+
+try {
+  document.getElementById("width").min = minBoardSize;
+  document.getElementById("height").min = minBoardSize;
+} catch (e) {}
 
 function atLoad() {
   preselect(16, 9);
@@ -77,22 +88,22 @@ function preselect(w, h) {
 }
 
 function change_w(w) {
-  if (isNaN(w)) { w = document.getElementById("width").value = 256; }
+  if (isNaN(w) || (w < minBoardSize)) { w = document.getElementById("width").value = minBoardSize; }
   document.getElementById("frame").width = w;
   if (w !== document.getElementById("width").value) { document.getElementById("width").value = w; }
 }
 
 function change_h(h) {
-  if (isNaN(h)) { h = document.getElementById("height").value = 256; }
+  if (isNaN(h) || (h < minBoardSize)) { h = document.getElementById("height").value = minBoardSize; }
   document.getElementById("frame").height = h;
   if (h !== document.getElementById("height").value) { document.getElementById("height").value = h; }
 }
 
 function modify(dw, dh) {
-  if (dw === null) { dw = Math.floor(-15 + 30 * Math.random()); }
-  if (dh === null) { dh = Math.floor(-15 + 30 * Math.random()); }
-  if (dw != 0) { change_w(Math.floor(document.getElementById("width").value * (100 + dw) / 100)); }
-  if (dh != 0) { change_h(Math.floor(document.getElementById("height").value * (100 + dh) / 100)); }
+  if (dw == 0) { dw = (95 + 10 * Math.random()) / 100; }
+  if (dh == 0) { dh = (95 + 10 * Math.random()) / 100; }
+  if (dw != 1) { change_w(Math.round(document.getElementById("width").value * dw)); }
+  if (dh != 1) { change_h(Math.round(document.getElementById("height").value * dh)); }
 }
 
 function swap_wh() {
