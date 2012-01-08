@@ -391,7 +391,7 @@ if (window.parent !== window) {
 function updateBareShortcut() {
   if (bare) {
     str = "show game info\n\ngame " + (currentGame+1) + " of " + numberOfGames;
-    if (LiveBroadcastDelay > 0) { str += "\nliveStatus: " + LiveBroadcastStatusString; }
+    if (LiveBroadcastDelay > 0) { str += "\nliveStatus: " + LiveBroadcastStatusString.replace("&nbsp;", " "); }
     if (gameEvent[currentGame]) { str+= "\nevent: " + gameEvent[currentGame]; }
     if (gameSite[currentGame]) { str+= "\nsite: " + gameSite[currentGame]; }
     if (gameDate[currentGame]) { str+= "\ndate: " + gameDate[currentGame]; }
