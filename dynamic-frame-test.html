@@ -21,14 +21,14 @@ span {
 
 input {
   height:20px;
-  font-size:10px;
+  font-size:9px;
 }
 
 </style>
 
 </head>
 
-<body style="margin:0; padding:0; overflow-x:hidden; overflow-y:hidden; font-size:10px; font-family:sans-serif;" onload="atLoad();">
+<body style="margin:0; padding:0; overflow-x:hidden; overflow-y:hidden; font-size:9px; font-family:sans-serif;" onload="atLoad();">
 
 <center>
 
@@ -37,10 +37,13 @@ input {
 <span>&nbsp; height <input id="height" style="width:6em;" type="number" onchange="change_h(this.value);"> &nbsp;</span>
 <span>&nbsp; <input type="button" value="swap" onclick="swap_wh();"/> &nbsp;</span>
 <span>&nbsp;&nbsp;</span>
+<span>&nbsp; <input type="button" value="2:1" onclick="preselect(2,1);"/> &nbsp;</span>
 <span>&nbsp; <input type="button" value="16:9" onclick="preselect(16,9);"/> &nbsp;</span>
-<span>&nbsp; <input type="button" value="9:16" onclick="preselect(9,16);"/> &nbsp;</span>
 <span>&nbsp; <input type="button" value="4:3" onclick="preselect(4,3);"/> &nbsp;</span>
+<span>&nbsp; <input type="button" value="1:1" onclick="preselect(1,1);"/> &nbsp;</span>
 <span>&nbsp; <input type="button" value="3:4" onclick="preselect(3,4);"/> &nbsp;</span>
+<span>&nbsp; <input type="button" value="9:16" onclick="preselect(9,16);"/> &nbsp;</span>
+<span>&nbsp; <input type="button" value="1:2" onclick="preselect(1,2);"/> &nbsp;</span>
 <span>&nbsp;&nbsp;</span>
 <span>&nbsp; <input type="button" value="narrower" onclick="modify(1/1.05, 1);"/> &nbsp;</span>
 <span>&nbsp; <input type="button" value="wider" onclick="modify(1.05, 1);"/> &nbsp;</span>
