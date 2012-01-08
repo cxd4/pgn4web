@@ -364,8 +364,28 @@ function customShortcutKey_Shift_2() {
   searchPlayer(gameBlack[currentGame], customPgnHeaderTag('BlackFideId'));
 }
 
+function customShortcutKey_Shift_3() {
+  toggleBareChessboard();
+}
+
+function customShortcutKey_Shift_4() {
+  showFullscreenChessboard();
+}
+
+function toggleBareChessboard() {
+  bare = !bare;
+  myOnResize();
+  updateBareShortcut();
+}
+
+function showFullscreenChessboard() {
+  win = window;
+  while (win.parent !== win) { win = win.parent; }
+  win.location.href = location.href;
+}
+
 if (window.parent !== window) {
-  boardShortcut("H5", "show fullscreen chessboard", function(){ win = window; while (win.parent !== win) { win = win.parent; } win.location.href = location.href; });
+  boardShortcut("H5", "show fullscreen chessboard", showFullscreenChessboard);
 }
 
 function updateBareShortcut() {
@@ -382,7 +402,7 @@ function updateBareShortcut() {
   } else {
     str = "maximize chessboard and hide game info";
   }
-  boardShortcut("G5", str, function(){ bare = !bare; myOnResize(); updateBareShortcut(); }); 
+  boardShortcut("G5", str, toggleBareChessboard); 
 }
 
 </script>
