@@ -307,8 +307,10 @@ function fixHeaderItem(tag, objectId, label) {
   if (theObject = document.getElementById(objectId)) {
     if (tagValue = customPgnHeaderTag(tag, objectId)) {
       theObject.title = "label: " + tagValue;
+      theObject.style.paddingLeft = "1em";
     } else {
       theObject.title = "label";
+      theObject.style.paddingLeft = "";
     }
   }
 }
@@ -402,11 +404,11 @@ function updateBareShortcut() {
 <div class="headerContainer" id="HeaderContainer">
 <div class="firstVariableSpacer">&nbsp;</div>
 <div><span id="GameSite" title="site"></span>&nbsp;</div>
-<div><span id="GameEvent" title="event"></span>&nbsp;&nbsp;&nbsp;<span id="GameSection" title="section"></span>&nbsp;&nbsp;&nbsp;<span id="GameStage" title="stage"></span>&nbsp;</div>
+<div><span id="GameEvent" title="event"></span><span id="GameSection" title="section"></span><span id="GameStage" title="stage"></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
 <div><span id="GameWhiteClock" title="white clock"></span>&nbsp;</div>
-<div><a style="font-weight: bold;" id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();" title="white player"></a>&nbsp;&nbsp;&nbsp;<span id="GameWhiteTitle" title="white title"></span>&nbsp;&nbsp;&nbsp;<span id="GameWhiteElo" title="white elo"></span>&nbsp;</div>
-<div><a style="font-weight: bold;" id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();" title="black player"></a>&nbsp;&nbsp;&nbsp;<span id="GameBlackTitle" title="black title"></span>&nbsp;&nbsp;&nbsp;<span id="GameBlackElo" title="black elo"></span>&nbsp;</div>
+<div><a style="font-weight: bold;" id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();" title="white player"></a><span id="GameWhiteTitle" title="white title"></span><span id="GameWhiteElo" title="white elo"></span>&nbsp;</div>
+<div><a style="font-weight: bold;" id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();" title="black player"></a><span id="GameBlackTitle" title="black title"></span><span id="GameBlackElo" title="black elo"></span>&nbsp;</div>
 <div><span id="GameBlackClock" title="black clock"></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
 <div><span style="font-weight: bold;" id="GameResult" title="result"></span>&nbsp;</div>
