@@ -81,8 +81,15 @@ function preselect(w, h) {
   else { throw("failed to get window size"); }
   aw = ww - 20;
   ah = wh - document.getElementById("header").offsetHeight - 20;
-  fw = Math.floor(Math.min(aw, ah * w / h));
-  fh = Math.floor(fw * h / w);
+  if (w > h) {
+    fw = Math.ceil(Math.min(aw, ah * w / h));
+    fh = Math.floor(fw * h / w);
+  } else if (w < h) {
+    fw = Math.floor(Math.min(aw, ah * w / h));
+    fh = Math.ceil(fw * h / w);
+  } else {
+    fw = fh = Math.floor(Math.min(aw, ah));
+  }
   change_w(fw); 
   change_h(fh); 
 }
