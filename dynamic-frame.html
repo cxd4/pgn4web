@@ -303,9 +303,13 @@ function customFunctionOnPgnTextLoad() {
   }
 }
 
+function meaningfulHeader(tagValue) {
+  return ((typeof(tagValue) == "string") && (tagValue.match(/[^\s?.-]/)));
+}
+
 function fixHeaderItem(tag, objectId, label) {
   if (theObject = document.getElementById(objectId)) {
-    if (tagValue = customPgnHeaderTag(tag, objectId)) {
+    if (meaningfulHeader(tagValue = customPgnHeaderTag(tag, objectId))) {
       theObject.title = label + ": " + tagValue;
       theObject.style.paddingLeft = "1em";
     } else {
@@ -317,10 +321,10 @@ function fixHeaderItem(tag, objectId, label) {
 
 function customFunctionOnPgnGameLoad() {
   myOnResize();
-  if (theObject = document.getElementById("GameSite")) { theObject.title = "site" + (gameSite[currentGame] ? ": " + gameSite[currentGame] : ""); }
-  if (theObject = document.getElementById("GameEvent")) { theObject.title = "event" + (gameEvent[currentGame] ? ": " + gameEvent[currentGame] : ""); }
-  if (theObject = document.getElementById("GameWhite")) { theObject.title = "white player" + (gameWhite[currentGame] ? ": " + gameWhite[currentGame] : ""); }
-  if (theObject = document.getElementById("GameBlack")) { theObject.title = "black player" + (gameBlack[currentGame] ? ": " + gameBlack[currentGame] : ""); }
+  if (theObject = document.getElementById("GameSite")) { theObject.title = "site" + (meaningfulHeader(gameSite[currentGame]) ? ": " + gameSite[currentGame] : ""); }
+  if (theObject = document.getElementById("GameEvent")) { theObject.title = "event" + (meaningfulHeader(gameEvent[currentGame]) ? ": " + gameEvent[currentGame] : ""); }
+  if (theObject = document.getElementById("GameWhite")) { theObject.title = "white player" + (meaningfulHeader(gameWhite[currentGame]) ? ": " + gameWhite[currentGame] : ""); }
+  if (theObject = document.getElementById("GameBlack")) { theObject.title = "black player" + (meaningfulHeader(gameBlack[currentGame]) ? ": " + gameBlack[currentGame] : ""); }
   fixHeaderItem("Section", "GameSection", "section");
   fixHeaderItem("Stage", "GameStage", "stage");
   fixHeaderItem("WhiteTitle", "GameWhiteTitle", "white title");
@@ -390,15 +394,15 @@ if (window.parent !== window) {
 
 function updateBareShortcut() {
   if (bare) {
-    str = "show game info\n\ngame " + (currentGame+1) + " of " + numberOfGames;
-    if (LiveBroadcastDelay > 0) { str += "\nliveStatus: " + LiveBroadcastStatusString.replace("&nbsp;", " "); }
-    if (gameEvent[currentGame]) { str+= "\nevent: " + gameEvent[currentGame]; }
-    if (gameSite[currentGame]) { str+= "\nsite: " + gameSite[currentGame]; }
-    if (gameDate[currentGame]) { str+= "\ndate: " + gameDate[currentGame]; }
-    if (gameRound[currentGame]) { str+= "\nround: " + gameRound[currentGame]; }
-    if (gameWhite[currentGame]) { str+= "\nwhite: " + gameWhite[currentGame]; }
-    if (gameBlack[currentGame]) { str+= "\nblack: " + gameBlack[currentGame]; }
-    if (gameResult[currentGame]) { str+= "\nresult: " + gameResult[currentGame]; }
+    str = "show game info  \n\n game " + (currentGame+1) + " of " + numberOfGames + "  ";
+    if (LiveBroadcastDelay > 0) { str += "\n liveStatus: " + LiveBroadcastStatusString.replace("&nbsp;", " ") + "  "; }
+    if (meaningfulHeader(gameEvent[currentGame])) { str+= "\n event: " + gameEvent[currentGame] + "  "; }
+    if (meaningfulHeader(gameSite[currentGame])) { str+= "\n site: " + gameSite[currentGame] + "  "; }
+    if (meaningfulHeader(gameDate[currentGame])) { str+= "\n date: " + gameDate[currentGame] + "  "; }
+    if (meaningfulHeader(gameRound[currentGame])) { str+= "\n round: " + gameRound[currentGame] + "  "; }
+    if (meaningfulHeader(gameWhite[currentGame])) { str+= "\n white: " + gameWhite[currentGame] + "  "; }
+    if (meaningfulHeader(gameBlack[currentGame])) { str+= "\n black: " + gameBlack[currentGame] + "  "; }
+    if (meaningfulHeader(gameResult[currentGame])) { str+= "\n result: " + gameResult[currentGame] + "  "; }
   } else {
     str = "maximize chessboard and hide game info";
   }
