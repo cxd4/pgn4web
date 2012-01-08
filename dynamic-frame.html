@@ -306,10 +306,10 @@ function customFunctionOnPgnTextLoad() {
 function fixHeaderItem(tag, objectId, label) {
   if (theObject = document.getElementById(objectId)) {
     if (tagValue = customPgnHeaderTag(tag, objectId)) {
-      theObject.title = "label: " + tagValue;
+      theObject.title = label + ": " + tagValue;
       theObject.style.paddingLeft = "1em";
     } else {
-      theObject.title = "label";
+      theObject.title = label;
       theObject.style.paddingLeft = "";
     }
   }
