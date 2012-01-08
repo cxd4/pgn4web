@@ -289,10 +289,8 @@ function myOnResize() {
     theObject.style.width = (squareSize * 8) + "px";
   }
 
-  if (bare) {
-    if (theObject = document.getElementById("GameSelector")) { theObject.style.display = "none"; }
-    if (theObject = document.getElementById("HeaderContainer")) { theObject.style.display = "none"; }
-  }
+  if (theObject = document.getElementById("GameSelector")) { theObject.style.display = bare ? "none" : ""; }
+  if (theObject = document.getElementById("HeaderContainer")) { theObject.style.display = bare ? "none" : ""; }
 
 }
 
@@ -305,12 +303,29 @@ function customFunctionOnPgnTextLoad() {
   }
 }
 
+function fixHeaderItem(tag, objectId, label) {
+  if (theObject = document.getElementById(objectId)) {
+    if (tagValue = customPgnHeaderTag(tag, objectId)) {
+      theObject.title = "label: " + tagValue;
+    } else {
+      theObject.title = "label";
+    }
+  }
+}
+
 function customFunctionOnPgnGameLoad() {
   myOnResize();
   if (theObject = document.getElementById("GameSite")) { theObject.title = "site" + (gameSite[currentGame] ? ": " + gameSite[currentGame] : ""); }
   if (theObject = document.getElementById("GameEvent")) { theObject.title = "event" + (gameEvent[currentGame] ? ": " + gameEvent[currentGame] : ""); }
   if (theObject = document.getElementById("GameWhite")) { theObject.title = "white player" + (gameWhite[currentGame] ? ": " + gameWhite[currentGame] : ""); }
   if (theObject = document.getElementById("GameBlack")) { theObject.title = "black player" + (gameBlack[currentGame] ? ": " + gameBlack[currentGame] : ""); }
+  fixHeaderItem("Section", "GameSection", "section");
+  fixHeaderItem("Stage", "GameStage", "stage");
+  fixHeaderItem("WhiteTitle", "GameWhiteTitle", "white title");
+  fixHeaderItem("WhiteElo", "GameWhiteElo", "white elo");
+  fixHeaderItem("BlackTitle", "GameBlackTitle", "black title");
+  fixHeaderItem("BlackElo", "GameBlackElo", "black elo");
+  updateBareShortcut();
 }
 
 function customFunctionOnMove() {
@@ -351,6 +366,23 @@ if (window.parent !== window) {
   boardShortcut("H5", "show fullscreen chessboard", function(){ win = window; while (win.parent !== win) { win = win.parent; } win.location.href = location.href; });
 }
 
+function updateBareShortcut() {
+  if (bare) {
+    str = "show game info\n-\ngame " + (currentGame+1) + " of " + numberOfGames;
+    if (LiveBroadcastDelay > 0) { str += "\nliveStatus: " + LiveBroadcastStatusString; }
+    if (gameEvent[currentGame]) { str+= "\nevent: " + gameEvent[currentGame]; }
+    if (gameSite[currentGame]) { str+= "\nsite: " + gameSite[currentGame]; }
+    if (gameDate[currentGame]) { str+= "\ndate: " + gameDate[currentGame]; }
+    if (gameRound[currentGame]) { str+= "\nround: " + gameRound[currentGame]; }
+    if (gameWhite[currentGame]) { str+= "\nwhite: " + gameWhite[currentGame]; }
+    if (gameBlack[currentGame]) { str+= "\nblack: " + gameBlack[currentGame]; }
+    if (gameResult[currentGame]) { str+= "\nresult: " + gameResult[currentGame]; }
+  } else {
+    str = "maximize chessboard and hide game info";
+  }
+  boardShortcut("G5", str, function(){ bare = !bare; myOnResize(); updateBareShortcut(); }); 
+}
+
 </script>
 
 </head>
@@ -370,11 +402,11 @@ if (window.parent !== window) {
 <div class="headerContainer" id="HeaderContainer">
 <div class="firstVariableSpacer">&nbsp;</div>
 <div><span id="GameSite" title="site"></span>&nbsp;</div>
-<div><span id="GameEvent" title="event"></span>&nbsp;</div>
+<div><span id="GameEvent" title="event"></span>&nbsp;&nbsp;&nbsp;<span id="GameSection" title="section"></span>&nbsp;&nbsp;&nbsp;<span id="GameStage" title="stage"></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
 <div><span id="GameWhiteClock" title="white clock"></span>&nbsp;</div>
-<div><a style="font-weight: bold;" id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();" title="white player"></a>&nbsp;</div>
-<div><a style="font-weight: bold;" id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();" title="black player"></a>&nbsp;</div>
+<div><a style="font-weight: bold;" id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();" title="white player"></a>&nbsp;&nbsp;&nbsp;<span id="GameWhiteTitle" title="white title"></span>&nbsp;&nbsp;&nbsp;<span id="GameWhiteElo" title="white elo"></span>&nbsp;</div>
+<div><a style="font-weight: bold;" id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();" title="black player"></a>&nbsp;&nbsp;&nbsp;<span id="GameBlackTitle" title="black title"></span>&nbsp;&nbsp;&nbsp;<span id="GameBlackElo" title="black elo"></span>&nbsp;</div>
 <div><span id="GameBlackClock" title="black clock"></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
 <div><span style="font-weight: bold;" id="GameResult" title="result"></span>&nbsp;</div>
