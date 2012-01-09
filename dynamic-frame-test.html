@@ -45,10 +45,10 @@ input {
 <span>&nbsp; <input type="button" value="9:16" onclick="preselect(9,16);"/> &nbsp;</span>
 <span>&nbsp; <input type="button" value="1:2" onclick="preselect(1,2);"/> &nbsp;</span>
 <span>&nbsp;&nbsp;</span>
-<span>&nbsp; <input type="button" value="narrower" onclick="modify(1/1.05, 1);"/> &nbsp;</span>
-<span>&nbsp; <input type="button" value="wider" onclick="modify(1.05, 1);"/> &nbsp;</span>
-<span>&nbsp; <input type="button" value="shorter" onclick="modify(1, 1/1.05);"/> &nbsp;</span>
-<span>&nbsp; <input type="button" value="taller" onclick="modify(1, 1.05);"/> &nbsp;</span>
+<span>&nbsp; <input type="button" value="narrow" onclick="modify(1/1.05, 1);"/> &nbsp;</span>
+<span>&nbsp; <input type="button" value="wide" onclick="modify(1.05, 1);"/> &nbsp;</span>
+<span>&nbsp; <input type="button" value="short" onclick="modify(1, 1/1.05);"/> &nbsp;</span>
+<span>&nbsp; <input type="button" value="tall" onclick="modify(1, 1.05);"/> &nbsp;</span>
 <span>&nbsp;&nbsp;</span>
 <span>&nbsp; <input type="button" value="poke" onclick="modify(0, 0);"/>&nbsp;</span>
 <span>&nbsp;&nbsp;</span>
@@ -63,18 +63,36 @@ input {
 
 minBoardSize = 200;
 
+frameWidth = "";
+thisRegExp = /(&|\?)(frameWidth|fw)=([^&]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+  frameWidth = unescape(window.location.search.match(thisRegExp)[3]);
+}
+
+frameHeight = "";
+thisRegExp = /(&|\?)(frameHeight|fh)=([^&]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+  frameHeight = unescape(window.location.search.match(thisRegExp)[3]);
+}
+
 try {
   document.getElementById("width").min = minBoardSize;
   document.getElementById("height").min = minBoardSize;
 } catch (e) {}
 
 function atLoad() {
-  preselect(16, 9);
+  if (frameHeight || frameWidth) {
+    if (frameWidth && !frameHeight) { try { frameHeight = Math.floor(frameWidth * 9 / 16); } catch (e) {} }
+    if (frameHeight && !frameWidth) { try { frameWidth = Math.ceil(frameHeight / 9 * 16); } catch (e) {} }
+    change_w(frameWidth);
+    change_h(frameHeight);
+  } else { preselect(16, 9); }
   frameRefresh();
 }
 
+frameUrlSearch = location.search.replace(/(&|\?)(frameWidth|fw|frameHeight|fh)=([^&]*)/ig, "$1").replace(/(&|\?)&+/ig, "$1")
 function frameRefresh() {
-  document.getElementById("frame").src = "dynamic-frame.html" + location.search;
+  document.getElementById("frame").src = "dynamic-frame.html" + frameUrlSearch;
 }
 
 function preselect(w, h) {
