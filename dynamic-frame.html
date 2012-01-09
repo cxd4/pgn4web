@@ -226,7 +226,7 @@ function myOnResize() {
   else { throw("failed to get window size"); }
 
   if (bare) {
-    horizontalLayout = true;
+    horizontalLayout = (ww >= wh);
     squareSize = Math.min(ww / 8, wh / 8);
   } else {
     squareSize_H = Math.min(ww / (16 / 9), wh) / 8;
@@ -252,7 +252,13 @@ function myOnResize() {
   myInsertRule(sheet, "a:visited", "text-decoration: none; color: #" + fontColorHex + ";"); 
   myInsertRule(sheet, "a:active", "text-decoration: none; color: #" + fontColorHex + ";"); 
   myInsertRule(sheet, "a:hover", "text-decoration: none; color: #" + fontColorHex + ";");
-  myInsertRule(sheet, ".boardTable", (horizontalLayout ? "float: left;" : "margin-left: " + ((ww - 8 * squareSize) / 2) + "px;"));
+  if (bare) {
+    if (horizontalLayout) { myInsertRule(sheet, ".boardTable", "margin-left: " + ((ww - 8 * squareSize) / 2) + "px;"); }
+    else { myInsertRule(sheet, ".boardTable", "margin-top: " + ((wh - 8 * squareSize) / 2) + "px;"); }
+  } else {
+    if (horizontalLayout) { myInsertRule(sheet, ".boardTable", "float: left;"); }
+    else { myInsertRule(sheet, ".boardTable", "margin-left: " + ((ww - 8 * squareSize) / 2) + "px;"); }
+  }
   myInsertRule(sheet, ".pieceImage", "width:" + pieceSize + "px; height:" + pieceSize + "px;");
   myInsertRule(sheet, ".whiteSquare", "width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + lightColorHex + "; border-color: #" + lightColorHex + ";");
   myInsertRule(sheet, ".blackSquare", "width:" + squareSize + "px; height:" + squareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + darkColorHex + "; border-color:  #" + darkColorHex + ";");
