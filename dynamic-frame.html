@@ -379,7 +379,11 @@ function customShortcutKey_Shift_3() {
 }
 
 function customShortcutKey_Shift_4() {
-  showFullscreenChessboard();
+  showFullscreenChessboard(false);
+}
+
+function customShortcutKey_Shift_5() {
+  showFullscreenChessboard(true);
 }
 
 function toggleBareChessboard() {
@@ -388,14 +392,15 @@ function toggleBareChessboard() {
   updateBareShortcut();
 }
 
-function showFullscreenChessboard() {
+function showFullscreenChessboard(newWin) {
   win = window;
   while (win.parent !== win) { win = win.parent; }
-  win.location.href = location.href;
+  if (newWin) { win.open(location.href, "_blank"); }
+  else { win.location.href = location.href; }
 }
 
 if (window.parent !== window) {
-  boardShortcut("H5", "show fullscreen chessboard", showFullscreenChessboard);
+  boardShortcut("H5", "show fullscreen chessboard", function(){ showFullscreenChessboard(false); });
 }
 
 function updateBareShortcut() {
