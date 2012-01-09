@@ -301,6 +301,10 @@ function myOnResize() {
 }
 
 
+function customFunctionOnCheckLiveBroadcastStatus() {
+  updateBareShortcut();
+}
+
 function customFunctionOnPgnTextLoad() {
   if (LiveBroadcastDelay) {
     if (LiveBroadcastStarted && !LiveBroadcastEnded) {
@@ -404,20 +408,21 @@ if (window.parent !== window) {
 }
 
 function updateBareShortcut() {
-  if (bare) {
-    str = "show game info  \n\n game " + (currentGame+1) + " of " + numberOfGames + "  ";
-    if (LiveBroadcastDelay > 0) { str += "\n liveStatus: " + LiveBroadcastStatusString.replace("&nbsp;", " ") + "  "; }
-    if (meaningfulHeader(gameEvent[currentGame])) { str+= "\n event: " + gameEvent[currentGame] + "  "; }
-    if (meaningfulHeader(gameSite[currentGame])) { str+= "\n site: " + gameSite[currentGame] + "  "; }
-    if (meaningfulHeader(gameDate[currentGame])) { str+= "\n date: " + gameDate[currentGame] + "  "; }
-    if (meaningfulHeader(gameRound[currentGame])) { str+= "\n round: " + gameRound[currentGame] + "  "; }
-    if (meaningfulHeader(gameWhite[currentGame])) { str+= "\n white: " + gameWhite[currentGame] + "  "; }
-    if (meaningfulHeader(gameBlack[currentGame])) { str+= "\n black: " + gameBlack[currentGame] + "  "; }
-    if (meaningfulHeader(gameResult[currentGame])) { str+= "\n result: " + gameResult[currentGame] + "  "; }
-  } else {
-    str = "maximize chessboard and hide game info";
-  }
-  boardShortcut("G5", str, toggleBareChessboard); 
+  boardShortcut("G5", bare ? "unhide game info" : "maximize chessboard and hide game info", toggleBareChessboard); 
+  boardShortcut("F5", "popup game info" + (bare ? "\n\n" + gameInfo() : ""), function(){ alert(gameInfo()); }); 
+}
+
+function gameInfo() {
+  str = " game " + (currentGame+1) + " of " + numberOfGames + "  ";
+  if (LiveBroadcastDelay > 0) { str += "\n liveStatus: " + LiveBroadcastStatusString.replace("&nbsp;", " ") + "  "; }
+  if (meaningfulHeader(gameEvent[currentGame])) { str+= "\n event: " + gameEvent[currentGame] + "  "; }
+  if (meaningfulHeader(gameSite[currentGame])) { str+= "\n site: " + gameSite[currentGame] + "  "; }
+  if (meaningfulHeader(gameDate[currentGame])) { str+= "\n date: " + gameDate[currentGame] + "  "; }
+  if (meaningfulHeader(gameRound[currentGame])) { str+= "\n round: " + gameRound[currentGame] + "  "; }
+  if (meaningfulHeader(gameWhite[currentGame])) { str+= "\n white: " + gameWhite[currentGame] + "  "; }
+  if (meaningfulHeader(gameBlack[currentGame])) { str+= "\n black: " + gameBlack[currentGame] + "  "; }
+  if (meaningfulHeader(gameResult[currentGame])) { str+= "\n result: " + gameResult[currentGame] + "  "; }
+  return str;
 }
 
 </script>
