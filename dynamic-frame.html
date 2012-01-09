@@ -414,7 +414,7 @@ function updateBareShortcut() {
 
 function gameInfo() {
   str = " game " + (currentGame+1) + " of " + numberOfGames + "  ";
-  if (LiveBroadcastDelay > 0) { str += "\n liveStatus: " + LiveBroadcastStatusString.replace("&nbsp;", " ") + "  "; }
+  if (LiveBroadcastDelay > 0) { str += "\n " + LiveBroadcastStatusString.replace("&nbsp;", " ") + "  "; }
   if (meaningfulHeader(gameEvent[currentGame])) { str+= "\n event: " + gameEvent[currentGame] + "  "; }
   if (meaningfulHeader(gameSite[currentGame])) { str+= "\n site: " + gameSite[currentGame] + "  "; }
   if (meaningfulHeader(gameDate[currentGame])) { str+= "\n date: " + gameDate[currentGame] + "  "; }
