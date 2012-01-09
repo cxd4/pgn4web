@@ -90,7 +90,7 @@ function atLoad() {
   frameRefresh();
 }
 
-frameUrlSearch = location.search.replace(/(&|\?)(frameWidth|fw|frameHeight|fh)=([^&]*)/ig, "$1").replace(/(&|\?)&+/ig, "$1")
+frameUrlSearch = location.search.replace(/(&|\?)(frameWidth|fw|frameHeight|fh)=([^&]*)/ig, "$1").replace(/(&|\?)&+/ig, "$1");
 function frameRefresh() {
   document.getElementById("frame").src = "dynamic-frame.html" + frameUrlSearch;
 }
@@ -128,8 +128,8 @@ function change_h(h) {
 }
 
 function modify(dw, dh) {
-  if (dw == 0) { dw = (95 + 10 * Math.random()) / 100; }
-  if (dh == 0) { dh = (95 + 10 * Math.random()) / 100; }
+  if (dw === 0) { dw = (95 + 10 * Math.random()) / 100; }
+  if (dh === 0) { dh = (95 + 10 * Math.random()) / 100; }
   if (dw != 1) { change_w(Math.round(document.getElementById("width").value * dw)); }
   if (dh != 1) { change_h(Math.round(document.getElementById("height").value * dh)); }
 }
