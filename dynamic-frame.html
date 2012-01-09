@@ -408,11 +408,10 @@ if (window.parent !== window) {
 }
 
 function updateBareShortcut() {
-  boardShortcut("G5", bare ? "unhide game info" : "maximize chessboard and hide game info", toggleBareChessboard); 
-  boardShortcut("F5", "popup game info" + (bare ? "\n\n" + gameInfo() : ""), function(){ alert(gameInfo()); }); 
+  boardShortcut("G5", bare ? "unhide game info\n\n" + gameTooltipInfo() : "maximize chessboard and hide game info", toggleBareChessboard); 
 }
 
-function gameInfo() {
+function gameTooltipInfo() {
   str = " game " + (currentGame+1) + " of " + numberOfGames + "  ";
   if (LiveBroadcastDelay > 0) { str += "\n " + LiveBroadcastStatusString.replace("&nbsp;", " ") + "  "; }
   if (meaningfulHeader(gameEvent[currentGame])) { str+= "\n event: " + gameEvent[currentGame] + "  "; }
