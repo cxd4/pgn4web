@@ -29,7 +29,7 @@
       "48": "alpha/48/bp.png"
    },
    "incognito": "split",
-   "manifest_version": "2",
+   "manifest_version": 2,
    "minimum_chrome_version": "14.0",
    "name": "Chess games viewer",
    "options_page": "options.html",
