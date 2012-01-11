@@ -139,4 +139,5 @@ above
 manifest.json: monitor any requirement for adding "manifest_version" and
 "content_security_policy" fields without breaking the extension
 http://crbug.com/105796
+http://crbug.com/107538
 
