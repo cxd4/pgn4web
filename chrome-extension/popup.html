@@ -120,10 +120,11 @@ var cursorDef = "url(cursor-small.png) 1 6, auto";
 var pgnLinksDisplay = new Array();
 var pgnLinksId = new Array();
 
-// chrome.tabs.getSelected is deprecated as of chrome 16
-// maintaining backward compatibility until minimum_chrome_version is set to 16.0 or above
+// chrome.tabs.getSelected is deprecated as of chrome 16, however the constant
+// chrome.windows.WINDOW_ID_CURRENT is defined in only in chrome 18; maintaining
+// backward compatibility until minimum_chrome_version is set to 18.0 or above
 try {
-  chrome.windows.getCurrent(function(win) { chrome.tabs.query({'windowId': win.id, 'active': true}, function(tabArray) { if (tabArray) { showPgnLinksForTab(tabArray[0]); } }); });
+  chrome.tabs.query({'windowId': chrome.windows.WINDOW_ID_CURRENT, 'active': true}, function(tabArray) { if (tabArray) { showPgnLinksForTab(tabArray[0]); } });
 } catch (e) {
   chrome.tabs.getSelected(null, showPgnLinksForTab);
 }
