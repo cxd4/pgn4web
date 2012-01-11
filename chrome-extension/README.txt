@@ -133,5 +133,10 @@ bug partially fixed in google chrome 17.0.937.0, extension looks ok
 
 popup.html, manifest.json: avoid using deprecated chrome.tabs.getSelected
 chrome.tabs.getSelected is deprecated as of chrome 16, at the moment backward
-compatibility is maintained until minimum_chrome_version is set to 16.0 or
+compatibility is maintained until minimum_chrome_version is set to 18.0 or
 above
+
+manifest.json: monitor any requirement for adding "manifest_version" and
+"content_security_policy" fields without breaking the extension
+http://crbug.com/105796
+
