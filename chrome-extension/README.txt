@@ -58,7 +58,7 @@ the chrome downloads page; needs assessing impact on the plain download of
 a PGN file: check what happens when clicking a link on the page or the
 download icon of the popup.
 http://crbug.com/86115 (and other, search for registerContentHandler)
-Requires increasing minimum_chrome_version (new API).
+Likely requires increasing minimum_chrome_version.
 
 manifest.json: match mime-types in content scripts
 enhance PGN/ZIP URL detection/validation by matching by mime-type when
@@ -137,7 +137,7 @@ compatibility is maintained until minimum_chrome_version is set to 18.0 or
 above
 
 manifest.json: monitor any requirement for adding "manifest_version" and
-"content_security_policy" fields without breaking the extension
+"content_security_policy" fields
 http://crbug.com/105796
 http://crbug.com/107538
-
+http://code.google.com/p/pgn4web/issues/detail?id=111
