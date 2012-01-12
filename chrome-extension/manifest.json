@@ -11,7 +11,7 @@
       "matches": [ "*://*/*" ],
       "run_at": "document_idle"
    } ],
-//   "content_security_policy": "default-src 'self' 'unsafe-inline'",
+//   "content_security_policy": "default-src 'self'; connect-src: *;",
    "description": "Interactive chessboard showing chess games from links to PGN URLs, from local PGN files and from PGN text.",
    "file_browser_handlers": [ {
       "id": "view",
