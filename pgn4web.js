@@ -3016,7 +3016,7 @@ function PrintHTML() {
         squareCoord = IsRotated ? String.fromCharCode(72-jj,49+ii) : String.fromCharCode(jj+65,56-ii);
         squareTitle = squareCoord;
         if (boardTitle[jj][ii] !== '') { squareTitle += ': ' + boardTitle[jj][ii]; }
-        text += '<A HREF="javascript:boardOnClick[' + jj + '][' + ii + ']()" ' +
+        text += '<A HREF="javascript:void(0);" ONCLICK="boardOnClick[' + jj + '][' + ii + ']();" ' +
           'ID="' + linkId + '" TITLE="' + squareTitle + '" ' + 
           'STYLE="text-decoration: none; outline: none;" ' +
           'ONFOCUS="this.blur()">' + 
