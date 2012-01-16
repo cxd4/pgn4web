@@ -3223,8 +3223,8 @@ function PrintHTML() {
         if ((printedComment) || (ii == StartPly)) { text += '<SPAN CLASS="move notranslate">' + moveCount + '...&nbsp;</SPAN>'; }
       }
       jj = ii+1;
-      text += '<A HREF="javascript:GoToMove(' + jj + ')" CLASS="move notranslate" ID="Mv' + jj +  
-        '" ONFOCUS="this.blur()">' + Moves[ii];
+      text += '<A HREF="javascript:void(0);" ONCLICK="GoToMove(' + jj + ')" ' +
+        'CLASS="move notranslate" ID="Mv' + jj + '" ONFOCUS="this.blur()">' + Moves[ii];
       if (commentsIntoMoveText) { text += basicNAGsMoveComment(jj); }
       text += '</A></SPAN>' + '<SPAN CLASS="move notranslate"> </SPAN>';
     }
