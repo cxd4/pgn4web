@@ -21,6 +21,7 @@ body {
 }
 
 .containerTable {
+  font-family: 'pgn4web Liberation Sans', sans-serif;
   border-collapse: collapse;
   width: 100%;
 }
