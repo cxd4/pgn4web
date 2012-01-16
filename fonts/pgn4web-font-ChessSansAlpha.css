@@ -15,7 +15,7 @@
 
 @font-face {
   font-family: 'pgn4web ChessSansAlpha';
-  src: url('ChessSansAlpha.eot');
+  src: url('ChessSansAlpha.eot') format('embedded-opentype');
   src: local('ChessSansAlpha Regular'), local('ChessSansAlpha'), url('ChessSansAlpha.woff') format('woff'), url('ChessSansAlpha.ttf') format('truetype'), url('ChessSansAlpha.svg#ChessSansAlpha') format('svg');
 }
 
