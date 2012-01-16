@@ -97,8 +97,8 @@ $controlTextColorHexCss = "#" . $controlTextColorHex;
 
 
 $squareSize = get_param("squareSize", "ss", "30");
-if ($squareSize < 20) { $squareSize = 20; }
 $squareSizeCss = $squareSize . "px";
+if ($squareSize < 20) { $squareSize = 20; }
 if ($squareSize < 30) {
   $borderStyleCss = "none";
   $highlightBorderStyleCss = "none";
@@ -110,6 +110,8 @@ if ($squareSize < 30) {
   $borderSize = ceil($squareSize / 50);
   $borderSizeCss = $borderSize . "px";
 }
+$bareSquareSize = $squareSize - 2 * $borderSize;
+$bareSquareSizeCss = $bareSquareSize . "px";
 
 function defaultPieceSize($ss) {
   $pieceSizeOptions = array(20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 52, 56, 60, 64, 72, 80, 88, 96, 112, 128, 144, 300);
@@ -302,8 +304,8 @@ body {
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: $squareSizeCss;
-  height: $squareSizeCss;
+  width: $bareSquareSizeCss;
+  height: $bareSquareSizeCss;
   border-style: $borderStyleCss;
   border-width: $borderSizeCss;
 }
