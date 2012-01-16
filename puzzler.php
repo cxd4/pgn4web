@@ -167,7 +167,6 @@ $buttonFontSize = floor($squareSize / 2.5);
 if ($buttonFontSize < 10) { $buttonFontSize = 10; }
 $buttonFontSizeCss = $buttonFontSize . "px";
 $buttonPadding = floor($squareSize / 10);
-$buttonPaddingCss = $buttonPadding . "px";
 
 
 $sidetomoveBorder = floor($buttonFontSize / 18) + 1;
@@ -338,7 +337,6 @@ body {
   height: $buttonHeightCss;
   white-space: nowrap;
   overflow: hidden;
-  padding: $buttonPaddingCss;
 }
 
 .buttonCellLink {
