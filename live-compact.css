@@ -107,6 +107,7 @@ a {
 .moveOn,
 .comment {
   text-decoration: none;   
+  font-family: 'pgn4web Liberation Sans', sans-serif; /* fixes IE9 iframe issue */
 }
 
 .header,
@@ -144,6 +145,7 @@ a {
 }
 
 .comment {
+  font-family: 'pgn4web Liberation Sans', sans-serif; /* fixes IE9 iframe issue */
   color: #A19D8B;
   line-height: 1.4em;
 }
