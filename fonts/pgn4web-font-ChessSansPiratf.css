@@ -15,7 +15,7 @@
 
 @font-face {
   font-family: 'pgn4web ChessSansPiratf';
-  src: url('ChessSansPiratf.eot') format('embedded-opentype');
+  src: url('ChessSansPiratf.eot');
   src: local('ChessSansPiratf Regular'), local('ChessSansPiratf'), url('ChessSansPiratf.woff') format('woff'), url('ChessSansPiratf.ttf') format('truetype'), url('ChessSansPiratf.svg#ChessSansPiratf') format('svg');
 }
 
