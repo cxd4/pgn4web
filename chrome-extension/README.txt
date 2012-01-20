@@ -68,7 +68,8 @@ http://crbug.com/35070
 manifest.json, background.html chess-games-viewer.html, 
 live-mosaic-viewer.html: storage API
 consider using the storage API once out of experimental, for storing local
-settings and/or to synch settings (if any) across computers.
+settings and/or to synch settings (if any) across computers; settings synch
+might not be supported for self-hosted extensions.
 http://crbug.com/47327
 
 Bugs:
@@ -105,10 +106,6 @@ large number of PGN links such as http://pgnmentor.com/files.html, clearing
 document.getElementById("pgnLinkList").style.maxHeight and reading the
 popup outerHeight value.
 
-popup.html: scrollbar width ignored
-no fix implemented/required, just monitor the bug report below
-http://crbug.com/31494
-
 Other:
 
 about.html, help.html, manifest.json: help page
@@ -124,12 +121,6 @@ http://crbug.com/53820
 Also consider adding filename to the context menu string once the feature is
 available.
 http://crbug.com/60758
-
-chess-games-viewer.html: fixed-width font size change issue
-monitor fixed-width font size change issue and check layout of the game
-selection dropdown menu once the bug is fixed.
-http://crbug.com/91922
-bug partially fixed in google chrome 17.0.937.0, extension looks ok
 
 popup.html, manifest.json: avoid using deprecated chrome.tabs.getSelected
 chrome.tabs.getSelected is deprecated as of chrome 16, at the moment backward
