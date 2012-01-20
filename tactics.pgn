@@ -2981,6 +2981,18 @@ Nh6 1-0
 
 [Event "?"]
 [Site "?"]
+[Date "1967.??.??"]
+[Round "?"]
+[White "Faurnoville"]
+[Black "N.N"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "r1b1r1k1/1p3pb1/1qn1p1p1/3pP1P1/3P1QP1/1N1B3R/PP3PK1/7R w - - 0 1"]
+
+1. Qf6 1-0
+
+[Event "?"]
+[Site "?"]
 [Date "1983.??.??"]
 [Round "?"]
 [White "Uhlmann"]
@@ -6202,18 +6214,6 @@ Bh4+ 1-0
 
 [Event "?"]
 [Site "?"]
-[Date "1967.??.??"]
-[Round "?"]
-[White "Faurnoville"]
-[Black "N.N"]
-[Result "1-0"]
-[SetUp "1"]
-[FEN "r1b1r1k1/1p3pb1/1qn1p1p1/3pP1P1/3P1QP1/1N1B3R/PP3PK1/7R w - - 0 1"]
-
-1. Qf6 1-0
-
-[Event "?"]
-[Site "?"]
 [Date "1951.??.??"]
 [Round "?"]
 [White "Szabo"]
@@ -6223,18 +6223,6 @@ Bh4+ 1-0
 [FEN "r5k1/r4pb1/2p1p1p1/p1q1P1P1/1p1p1Q1R/1P1B4/P2B1P2/6KR w - - 0 1"]
 
 1. Qf6 1-0
-
-[Event "?"]
-[Site "?"]
-[Date "1932.??.??"]
-[Round "?"]
-[White "Karstens"]
-[Black "Ulbrich"]
-[Result "1-0"]
-[SetUp "1"]
-[FEN "1rb1r1k1/2q1pp1p/p2p2pB/2pP4/1pP2Q2/1P1n4/P4PPP/2R1R1K1 w - - 0 1"]
-
-1. Qf6 exf6 2. Rxe8# 1-0
 
 [Event "?"]
 [Site "?"]
@@ -8890,6 +8878,18 @@ Rh5+ 9. Kg2 Qg6+ 10. Kf2 Rh2+ 11. Ke1 Rh1+ 12. Kd2 Qg2+ 13. Qe2) 8... Qxh6+
 [FEN "8/kp2q3/p3r3/1Pp5/7R/1P2Q2P/4K3/8 w - - 0 2"]
 
 2. b6+ Kxb6 3. Rh6 1-0
+
+[Event "?"]
+[Site "?"]
+[Date "1932.??.??"]
+[Round "?"]
+[White "Karstens"]
+[Black "Ulbrich"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "1rb1r1k1/2q1pp1p/p2p2pB/2pP4/1pP2Q2/1P1n4/P4PPP/2R1R1K1 w - - 0 1"]
+
+1. Qf6 exf6 2. Rxe8# 1-0
 
 [Event "?"]
 [Site "?"]
