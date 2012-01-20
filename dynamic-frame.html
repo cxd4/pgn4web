@@ -99,6 +99,7 @@ if (window.location.search.match(thisRegExp) !== null) {
 if (refreshMinutes) {
   pgnData_default = "live/live.pgn";
   initialGame_default = "\\[\\s*Result\\s*\"\\*\"\\s*\\]";
+  SetAutoplayDelay(1000); // milliseconds
 }
 
 SetInitialHalfmove(refreshMinutes ? "end" : "start", true);
@@ -410,6 +411,27 @@ if (window.parent !== window) {
 
 function updateBareShortcut() {
   boardShortcut("G5", bare ? "unhide game info\n\n" + gameTooltipInfo() : "maximize chessboard and hide game info", toggleBareChessboard); 
+}
+
+function replayPreviousMoves(numPlies) {
+  targetPly = numPlies ? CurrentPly - numPlies : StartPly;
+  if (targetPly < StartPly) { targetPly = StartPly; }
+  if (targetPly !== CurrentPly) {
+    GoToMove(targetPly);
+    SetAutoPlay(true);
+  }
+}
+
+if (LiveBroadcastDelay) {
+  boardShortcut("C2", "replay all previous moves", function() { replayPreviousMoves(0); });
+  boardShortcut("D2", "replay 20 previous half-moves", function() { replayPreviousMoves(20); });
+  boardShortcut("E2", "replay 10 previous half-moves", function() { replayPreviousMoves(10); });
+  boardShortcut("F2", "replay 6 previous half-moves", function() { replayPreviousMoves(6); });
+  boardShortcut("G2", "replay 4 previous half-moves", function() { replayPreviousMoves(4); });
+  boardShortcut("H2", "replay 2 previous half-moves", function() { replayPreviousMoves(2); });
+
+  boardShortcut("B1", "move 10 half-moves backward", function() { MoveBackward(10); });
+  boardShortcut("G1", "move 10 half-moves forward", function() { MoveForward(10); });
 }
 
 function gameTooltipInfo() {
