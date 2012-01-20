@@ -285,7 +285,7 @@ body {
 }
 
 div, span, table, tr, td {
-  font-family: 'pgn4web Liberation Sans', sans-serif; /* fixes IE9 iframe issue */
+  font-family: 'pgn4web Liberation Sans', sans-serif; /* fixes IE9 body css issue */
 }
 
 a:link, a:visited, a:hover, a:active { 
