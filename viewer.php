@@ -284,6 +284,10 @@ body {
   $bodyFontSize
 }
 
+div, span, table, tr, td {
+  font-family: 'pgn4web Liberation Sans', sans-serif; /* fixes IE9 iframe issue */
+}
+
 a:link, a:visited, a:hover, a:active { 
   color: black; 
   text-decoration: none;
