@@ -99,7 +99,6 @@ if (window.location.search.match(thisRegExp) !== null) {
 if (refreshMinutes) {
   pgnData_default = "live/live.pgn";
   initialGame_default = "\\[\\s*Result\\s*\"\\*\"\\s*\\]";
-  SetAutoplayDelay(1000); // milliseconds
 }
 
 SetInitialHalfmove(refreshMinutes ? "end" : "start", true);
@@ -423,8 +422,6 @@ function replayPreviousMoves(numPlies) {
 }
 
 if (LiveBroadcastDelay) {
-  boardShortcut("C2", "replay all previous moves", function() { replayPreviousMoves(0); });
-  boardShortcut("D2", "replay 20 previous half-moves", function() { replayPreviousMoves(20); });
   boardShortcut("E2", "replay 10 previous half-moves", function() { replayPreviousMoves(10); });
   boardShortcut("F2", "replay 6 previous half-moves", function() { replayPreviousMoves(6); });
   boardShortcut("G2", "replay 4 previous half-moves", function() { replayPreviousMoves(4); });
