@@ -96,7 +96,6 @@
   clearShortcutSquares("BCG", "7");
   clearShortcutSquares("CDEF", "6");
   clearShortcutSquares("ABCDEFGH", "345");
-  clearShortcutSquares("CDEFGH", "2");
 
   try { 
     if (parent && (pcscsfcf = parent.pgn4webClearShortCutSquaresForChildFrames)) {
@@ -113,6 +112,22 @@
   if ((typeof(chrome) != "undefined") && (typeof(chrome.extension) != "undefined") && (typeof(chrome.extension.getBackgroundPage) != "undefined") && (typeof(chrome.extension.getBackgroundPage().showAboutPage) != "undefined")) {
     boardShortcut("A7", "chess games viewer extension help", function(){ setTimeout("chrome.extension.getBackgroundPage().showAboutPage();", 99); });
   }
+
+  function replayLastMoves(numPlies) {
+    targetPly = numPlies ? CurrentPly - numPlies : StartPly;
+    if (targetPly < StartPly) { targetPly = StartPly; }
+    if (targetPly !== CurrentPly) {
+      GoToMove(targetPly);
+      SetAutoPlay(true);
+    }
+  }
+
+  boardShortcut("C2", "replay all moves", function() { replayLastMoves(0); });
+  boardShortcut("D2", "replay last 20 half-moves", function() { replayLastMoves(20); });
+  boardShortcut("E2", "replay last 10 half-moves", function() { replayLastMoves(10); });
+  boardShortcut("F2", "replay last 6 half-moves", function() { replayLastMoves(6); });
+  boardShortcut("G2", "replay last 4 half-moves", function() { replayLastMoves(4); });
+  boardShortcut("H2", "replay last 2 half-moves", function() { replayLastMoves(2); });
 
   function addTagToTitle(tagLabel, tagValue, object) {
     if (!tagValue || tagValue[1] == "?" || !object) { return; }
