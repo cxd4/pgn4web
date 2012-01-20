@@ -25,6 +25,8 @@ div, span, table, tr, td {
 }
 
 .boardTable {
+  width: 366px;
+  height: 366px;
   border-style: double;
   border-color: black;
   border-width: 3;
