@@ -138,7 +138,9 @@ function openPgn4webTest(url) {
 
 <p></p>
 <center>
-<iframe id="pgnframe" name="pgnframe" frameborder="0" height="2000" width="100%" scrolling="no" marginheight="0" marginwidth="0">your browser does not support the required iframe functionality</iframe>
+<div id="frameContainer" style="height:2000px; width:100%;">
+<iframe id="pgnframe" name="pgnframe" frameborder="0" height="100%" width="100%" scrolling="no" marginheight="0" marginwidth="0">your browser does not support the required iframe functionality</iframe>
+</div>
 </center>
 
 <script type="text/javascript">
@@ -149,15 +151,9 @@ function select_frame(new_frame){
   new_object = document.getElementById(new_frame);
   if (new_object !== null) {
 
-    if (selected_object !== null) {
-      if (new_object == selected_object) { return false; }
-      selected_object.className="linklist";
-    }
-    selected_object = new_object;
-    frames['pgnframe'].location.href = selected_object.href;
-
     new_frame_width = "100%";
     new_frame_height = "1000px";
+    new_frame_resize = false;
 
     switch (new_frame) {
       case "collection":
@@ -170,8 +166,16 @@ function select_frame(new_frame){
         new_frame_height = "450px";
         break;
       case "tallinn11_live_dynamic":
-        new_frame_width = Math.floor(30 + 50 * Math.random()) + "%";
-        new_frame_height = Math.floor(30 + 30 * Math.random()) + "%"; 
+        if (Math.random() > 0.5) {
+          fw = Math.round(400 + 400 * Math.random());
+          fh = Math.round(fw * 9 / 16  * (1 - Math.random() / 5));
+        } else {
+          fh = Math.round(400 + 200 * Math.random());
+          fw = Math.round(fh * 9 / 16 * (1 - Math.random() / 5));
+        }
+        new_frame_width = fw + "px";
+        new_frame_height = fh + "px";
+        new_frame_resize = true;
         break;
       case "tallinn11_live_mosaic":
         new_frame_height = "900px";
@@ -190,9 +194,21 @@ function select_frame(new_frame){
       default:
         break;
     }
-    document.getElementById("pgnframe").width = new_frame_width; 
-    document.getElementById("pgnframe").height = new_frame_height;
+    document.getElementById("frameContainer").style.width = new_frame_width; 
+    document.getElementById("frameContainer").style.height = new_frame_height;
+    document.getElementById("frameContainer").style.minHeight = new_frame_resize ? "100px" : "";
+    document.getElementById("frameContainer").style.minWidth = new_frame_resize ? "180px" : "";
+    document.getElementById("frameContainer").style.overflow = new_frame_resize ? "hidden" : "";
+    document.getElementById("frameContainer").style.resize = new_frame_resize ? "both" : "";
+    document.getElementById("frameContainer").style.padding = new_frame_resize ? "0.5em" : "";
   
+    if (selected_object !== null) {
+      if (new_object == selected_object) { return false; }
+      selected_object.className="linklist";
+    }
+    selected_object = new_object;
+    frames['pgnframe'].location.href = selected_object.href;
+    
     selected_object.className = "linkselected"; 
 
   } else { 
