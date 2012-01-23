@@ -158,6 +158,7 @@ function select_frame(new_frame){
 
     new_frame_width = "100%";
     new_frame_height = "1000px";
+    new_frame_border = "";
 
     switch (new_frame) {
       case "collection":
@@ -177,6 +178,7 @@ function select_frame(new_frame){
           new_frame_width = "333px";
           new_frame_height = "592px";
         }
+        new_frame_border = "double 6px #80B0E0";
         break;
       case "tallinn11_live_mosaic":
         new_frame_height = "900px";
@@ -197,7 +199,8 @@ function select_frame(new_frame){
     }
     document.getElementById("pgnframe").width = new_frame_width; 
     document.getElementById("pgnframe").height = new_frame_height;
-  
+    document.getElementById("pgnframe").style.border = new_frame_border;
+ 
     selected_object.className = "linkselected"; 
 
   } else { 
