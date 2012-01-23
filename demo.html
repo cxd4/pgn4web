@@ -16,7 +16,7 @@
 <style type="text/css"> 
  
 body 
-{ color: black; background: white; font-family: sans-serif; padding: 20px; }
+{ color: black; background: white; font-family: sans-serif; padding: 20px; padding-bottom: 60px; }
  
 a:link, a:visited, a:hover, a:active
 { color: black; text-decoration: none; }
@@ -160,16 +160,23 @@ function select_frame(new_frame){
     new_frame_height = "1000px";
     new_frame_border = "";
     new_frame_borderRadius = "";
+    new_frame_boxShadow = "";
 
     switch (new_frame) {
       case "collection":
         new_frame_height = "2000px";
-        break;    
+        break;
       case "inputform":
         new_frame_width = "753px";
         break;
       case "mini":
         new_frame_height = "450px";
+        break;
+      case "tactics":
+        new_frame_width = "508px";
+        new_frame_height = "246px";
+        new_frame_border = "solid 50px transparent";
+        new_frame_boxShadow = "0 0 20px #C9AD6F";
         break;
       case "tallinn11_live_dynamic":
         if (Math.random() > 0.33) {
@@ -179,8 +186,8 @@ function select_frame(new_frame){
           new_frame_width = "333px";
           new_frame_height = "592px";
         }
-        new_frame_border = "double 18px #80B0E0";
-        new_frame_borderRadius = "12px";
+        new_frame_border = "double 8px #80B0E0";
+        new_frame_borderRadius = "4px";
         break;
       case "tallinn11_live_mosaic":
         new_frame_height = "900px";
@@ -188,10 +195,16 @@ function select_frame(new_frame){
       case "tallinn11_live_widget":
         new_frame_height = "520px";
         new_frame_width = "330px"; 
+        new_frame_border = "solid 10px #EDE8D5";
+        new_frame_borderRadius = "10px";
+        new_frame_boxShadow = "0px 0px 20px #663300";
         break;
       case "tilb98r2_live":
         new_frame_width = "480px";
         new_frame_height = "360px";
+        new_frame_border = "solid 10px #EDE8D5";
+        new_frame_borderRadius = "10px";
+        new_frame_boxShadow = "0px 0px 20px #663300";
         break;
       case "wch08ak":
         new_frame_height = "2500px";
@@ -203,6 +216,7 @@ function select_frame(new_frame){
     document.getElementById("pgnframe").height = new_frame_height;
     document.getElementById("pgnframe").style.border = new_frame_border;
     document.getElementById("pgnframe").style.borderRadius = new_frame_borderRadius;
+    document.getElementById("pgnframe").style.boxShadow = new_frame_boxShadow;
  
     selected_object.className = "linkselected"; 
 
