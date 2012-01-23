@@ -615,8 +615,6 @@ END;
   border-color: #663300;
   border-width: 3;
   box-shadow: 0px 0px 20px #663300;
-  -webkit-box-shadow: 0px 0px 20px #663300;
-  -moz-box-shadow: 0px 0px 20px #663300;
 }
 
 .pieceImage {

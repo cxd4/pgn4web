@@ -54,7 +54,7 @@ function myOnResize() {
 
     sheet = document.styleSheets[1];
     oldRules = sheet.cssRules.lenght;
-    sheet.insertRule(".boardTable { border-width: " + boardBorder + "px; border-radius: " + boardBorder + "px; box-shadow: 0px 0px " + shadowBorder + "px #734C27; -webkit-box-shadow: 0px 0px " + shadowBorder + "px #734C27; -moz-box-shadow: 0px 0px " + shadowBorder + "px #734C27; } ", sheet.cssRules.length);
+    sheet.insertRule(".boardTable { border-width: " + boardBorder + "px; border-radius: " + boardBorder + "px; box-shadow: 0px 0px " + shadowBorder + "px #734C27; } ", sheet.cssRules.length);
     sheet.insertRule(".pieceImage { width:" + pieceSize + "px; height:" + pieceSize + "px; } ", sheet.cssRules.length);
     sheet.insertRule(".whiteSquare, .blackSquare, .highlightWhiteSquare, .highlightBlackSquare { width:" + squareSize + "px; height:" + squareSize + "px; } ", sheet.cssRules.length);
     for (ii = 0; ii < oldRules; ii++) { sheet.deleteRule(0); }

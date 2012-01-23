@@ -41,7 +41,7 @@ a {
   border-style: solid;
   border-color: #663300;
   border-width: 0.25em; /* default 4px */
-  -webkit-box-shadow: 0 0 1.25em #663300;
+  box-shadow: 0 0 1.25em #663300;
 }
 
 .pieceImage {
@@ -128,7 +128,7 @@ a {
 .moveOn {
   background-image: -webkit-radial-gradient(circle, #FFAA66, #FFCC99);
   border-radius: 0.4em;
-  -webkit-box-shadow: 0 0 1em #FF8000;
+  box-shadow: 0 0 1em #FF8000;
 }
 
 .moveText {
