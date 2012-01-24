@@ -16,6 +16,7 @@ body {
 
 body {
   font-family: 'pgn4web Liberation Sans', sans-serif;
+  font-size: 14px;
   color: #615F54;
   background: #EDE8D5;
 }
@@ -65,7 +66,7 @@ a {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 450px !important;
   color: #615F54;
-  font-size: 90%;
+  font-size: 14px;
   padding: 2px;
   border-width: 1px;
   border-color: #CFCBB3;
@@ -80,7 +81,7 @@ a {
 .buttonControlStop,
 .buttonControl {
 /* a "width" attribute here must use the !important flag to override default settings */
-  font-size: 75%;
+  font-size: 14px;
   text-align: center;
   vertical-align: middle;
 }
@@ -112,13 +113,13 @@ a {
 
 .header,
 .headerHighlighted {
-  font-size: 75%;
+  font-size: 14px;
 }
 
 .move,
 .moveOn,
 .comment {
-  font-size: 70%; 
+  font-size: 12px; 
 }
 
 .move,
