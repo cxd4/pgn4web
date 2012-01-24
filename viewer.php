@@ -264,7 +264,6 @@ function check_tmpDir() {
 function print_header() {
 
   print <<<END
-
 <html>
 
 <head>
@@ -544,6 +543,7 @@ function print_chessboard() {
     $pieceSize = 38;
     $pieceType = "merida";
   }
+  $pieceSizeCss = $pieceSize . "px";
 
   print <<<END
 
@@ -571,8 +571,8 @@ END;
 }
 
 .pieceImage {
-  width: $pieceSize;
-  height: $pieceSize;
+  width: $pieceSizeCss;
+  height: $pieceSizeCss;
 }
 
 .whiteSquare,
@@ -615,21 +615,23 @@ END;
   border-color: #663300;
   border-width: 3;
   box-shadow: 0px 0px 20px #663300;
+  width: 374px;
+  height: 374px;
 }
 
 .pieceImage {
-  width: $pieceSize;
-  height: $pieceSize;
+  width: $pieceSizeCss;
+  height: $pieceSizeCss;
 }
 
 .whiteSquare,
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 42;
-  height: 42;
+  width: 42px;
+  height: 42px;
   border-style: solid;
-  border-width: 2;
+  border-width: 2px;
 }
 
 .whiteSquare,
@@ -647,7 +649,6 @@ END;
 .highlightWhiteSquare,
 .highlightBlackSquare {
   border-color: #663300;
-  border-style: solid;
 }
 
 END;

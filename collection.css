@@ -25,7 +25,6 @@ div, span, table, tr, td {
 }
 
 .containerTable {
-  border-collapse: collapse;
   width: 100%;
 }
 
