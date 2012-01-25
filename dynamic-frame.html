@@ -188,6 +188,7 @@ highlightColorHex = highlightColorHex_default;
 thisRegExp = /(&|\?)(highlightColorHex|hch)=(t|transparent)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   highlightColorHex = "";
+  clearShortcutSquares("D", "7");
 } else {
   thisRegExp = /(&|\?)(highlightColorHex|hch)=([A-F0-9]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
