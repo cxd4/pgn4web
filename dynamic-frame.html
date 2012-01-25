@@ -301,9 +301,22 @@ function myOnResize() {
 
 }
 
+function underlineByTicker(text, ticker) {
+  position = ticker % text.length;
+  return (text.substring(0, position) +
+    "<u>" +text.substring(position, position + 1) + "</u>" +
+    text.substring(position + 1));
+}
 
 function customFunctionOnCheckLiveBroadcastStatus() {
+
   updateBareShortcut();
+
+  if (theObject = document.getElementById("GameLiveStatus")) {
+    if (LiveBroadcastTicker > 1) {
+      theObject.innerHTML =  theObject.innerHTML.replace(/live/, underlineByTicker("live", LiveBroadcastTicker-2));
+    }
+  }
 }
 
 function customFunctionOnPgnTextLoad() {
@@ -417,10 +430,8 @@ function updateBareShortcut() {
 function replayPreviousMoves(numPlies) {
   targetPly = numPlies ? CurrentPly - numPlies : StartPly;
   if (targetPly < StartPly) { targetPly = StartPly; }
-  if (targetPly !== CurrentPly) {
-    GoToMove(targetPly);
-    SetAutoPlay(true);
-  }
+  if (targetPly !== CurrentPly) { GoToMove(targetPly); }
+  SetAutoPlay(true);
 }
 
 if (LiveBroadcastDelay) {

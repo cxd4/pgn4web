@@ -116,10 +116,8 @@
   function replayPreviousMoves(numPlies) {
     targetPly = numPlies ? CurrentPly - numPlies : StartPly;
     if (targetPly < StartPly) { targetPly = StartPly; }
-    if (targetPly !== CurrentPly) {
-      GoToMove(targetPly);
-      SetAutoPlay(true);
-    }
+    if (targetPly !== CurrentPly) { GoToMove(targetPly); }
+    SetAutoPlay(true);
   }
 
   boardShortcut("C2", "replay all previous moves", function() { replayPreviousMoves(0); });
