@@ -251,7 +251,16 @@ function printHeader() {
 }
 
 function printMenu() {
-  document.write("<div id='rightMenu' class='menuLine' style='text-align:right; float:right;'></div><div id='leftMenu' class='menuLine' style='text-align:left; float:left;'><span id='GameLiveStatusDemo' title='this is a simulation of the live broadcast functionality'></span><a id='GameLiveStatus' href='javascript:void(0);' style='display:none;' onclick='displayDebugInfo();' title='live broadcast status'></a></div><div id='infoMessage' class='menuLine infoMessage'>chess games viewer: loading PGN data, please wait...</div>");
+  document.write("<div id='rightMenu' class='menuLine' style='text-align:right; float:right;'></div><div id='leftMenu' class='menuLine' style='text-align:left; float:left;'><span id='GameLiveStatusDemo' title='this is a simulation of the live broadcast functionality'></span><a id='GameLiveStatus' href='javascript:void(0);' style='display:none;' onclick='replayPreviousMoves();' title='live broadcast status'></a></div><div id='infoMessage' class='menuLine infoMessage'>chess games viewer: loading PGN data, please wait...</div>");
+}
+
+function replayPreviousMoves() {
+  showAll = LiveBroadcastEnded;
+  for (thisBoard in boardId) {
+    if ((wf = window.frames["board" + boardId[thisBoard]]) && (rpm = wf.replayPreviousMoves)) {
+      if (showAll || wf.newMovesFlagTimeout) { rpm(1); }
+    }
+  }
 }
 
 nextBoardId = 1000;
