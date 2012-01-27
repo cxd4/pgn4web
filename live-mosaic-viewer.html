@@ -251,7 +251,19 @@ function printHeader() {
 }
 
 function printMenu() {
-  document.write("<div id='rightMenu' class='menuLine' style='text-align:right; float:right;'></div><div id='leftMenu' class='menuLine' style='text-align:left; float:left;'><span id='GameLiveStatusDemo' title='this is a simulation of the live broadcast functionality'></span><a id='GameLiveStatus' href='javascript:void(0);' style='display:none;' onclick='replayPreviousMoves(); this.blur();' title='live broadcast status'></a></div><div id='infoMessage' class='menuLine infoMessage'>chess games viewer: loading PGN data, please wait...</div>");
+  document.write("<div id='rightMenu' class='menuLine' style='text-align:right; float:right;'></div><div id='leftMenu' class='menuLine' style='text-align:left; float:left;'><span id='GameLiveStatusDemo' title='this is a simulation of the live broadcast functionality'></span><a id='GameLiveStatus' href='javascript:void(0);' style='display:none;' onclick='clickGameLiveStatus(); this.blur();' title='live broadcast status'></a></div><div id='infoMessage' class='menuLine infoMessage'>chess games viewer: loading PGN data, please wait...</div>");
+}
+
+timeOfLastReplayPreviousMoves = 0;
+function clickGameLiveStatus() {
+  thisTime = (new Date()).getTime();
+  if (thisTime - timeOfLastReplayPreviousMoves < 333) {
+    displayDebugInfo();
+    timeOfLastReplayPreviousMoves = 0;
+  } else {
+    timeOfLastReplayPreviousMoves = thisTime;
+    replayPreviousMoves();
+  }
 }
 
 function replayPreviousMoves() {
@@ -562,7 +574,7 @@ function updateMenu() {
         else if (LiveBroadcastPaused && !LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='restartLiveBroadcast(); updateMenu();' title='Restart polling for a new live broadcast' onfocus='this.blur();'>&nbsp;r&nbsp;</a></span>"; }
         else if (LiveBroadcastStarted) { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='pauseLiveBroadcast(); updateMenu();' title='Pause live broadcast automatic refresh of games' onfocus='this.blur();'>&nbsp;p&nbsp;</a></span>"; }
         else { theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' href='javascript:void(0);' onclick='pauseLiveBroadcast(); updateMenu();' title='Pause polling for a new live broadcast' onfocus='this.blur();'>&nbsp;p&nbsp;</a></span>"; }
-        theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' class='commandLink' href='javascript:void(0);' onclick='refreshPgnSource();' title='Force games refresh: last moves received on " + LiveBroadcastLastReceivedLocal + "' onfocus='this.blur();'>&nbsp;f&nbsp;</a></span>";
+        theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' class='commandLink' href='javascript:void(0);' onclick='refreshPgnSource();' title='Force games refresh" + (LiveBroadcastStarted ? ": last moves received on " + LiveBroadcastLastReceivedLocal : "") + "' onfocus='this.blur();'>&nbsp;f&nbsp;</a></span>";
       }
     }
 
