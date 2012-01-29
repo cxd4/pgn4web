@@ -83,7 +83,6 @@ mouse pointer will not change and the viewer will not open the link).
 http://crbug.com/84024
 Possible workaround exist if context scripts could manipulate context menus.
 http://crbug.com/77023
-Verify on http://code.google.com/p/pgn4web/wiki/SandBox
 
 manifest.json, background.html and pgnLinks.js: access to file:// URLs
 XHR access to file:// URLs is broken; once this is fixed consider extending
