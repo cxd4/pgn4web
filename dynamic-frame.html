@@ -243,12 +243,11 @@ function myDeleteRule(sheet, index) {
   else if (sheet.removeRule) { sheet.removeRule(index); }
 }
 
-needAnotherResize = false;
 function myOnResize() {
   if (window.innerWidth && window.innerHeight) { ww = window.innerWidth; wh = window.innerHeight; }
   else if (document.documentElement && document.documentElement.clientWidth) { ww = document.documentElement.clientWidth; wh = document.documentElement.clientHeight; }
   else if (document.body && document.body.clientWidth) { ww = document.body.clientWidth; wh = document.body.clientHeight; }
-  else { needAnotherResize = true; return; }
+  else { return false; }
 
   if (bare) {
     horizontalLayout = (ww >= wh);
@@ -326,6 +325,7 @@ function myOnResize() {
   if (theObject = document.getElementById("GameSelector")) { theObject.style.display = bare ? "none" : ""; }
   if (theObject = document.getElementById("HeaderContainer")) { theObject.style.display = bare ? "none" : ""; }
 
+  return true;
 }
 
 function underlineByTicker(text, ticker) {
@@ -490,7 +490,7 @@ function gameTooltipInfo() {
 
 </head>
 
-<body onLoad="myOnResize(); start_pgn4web(); if (needAnotherResize) { myOnResize(); }" onResize="myOnResize();">
+<body onLoad="done = myOnResize(); start_pgn4web(); if (!done) { myOnResize(); }" onResize="myOnResize();">
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
 <form style="display: none;"><textarea style="display: none;" id="pgnText">
