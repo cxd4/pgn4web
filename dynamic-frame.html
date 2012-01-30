@@ -52,6 +52,11 @@ colorThemeOptions = "";
 for (ii = 0; ii < theme.length; ii++) { colorThemeOptions += "'" + theme[ii][0] + "' | "; }
 colorThemeOptions += "'random' ";
 
+fontSizeRatio_default = 0.8;
+pieceSizeRatio_default = 0.8;
+sizeRatio_min = 0.3;
+sizeRatio_max = 1;
+
 thisRegExp = /(&|\?)(help|h)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   document.write("<pre style='font-size: smaller;'>pgn4web dynamic-frame.html parameters" + "\n" +
@@ -67,6 +72,8 @@ if (window.location.search.match(thisRegExp) !== null) {
     " - lightColorHex = light square color hex code, like FF0000 (default according to the selected color theme)" + "\n" +
     " - darkColorHex = dark square color hex code, like FF0000 (default according to the selected color theme)" + "\n" +
     " - highlightColorHex = highlight square color hex code, like FF0000, or 'transparent' for no highlight (default according to the selected color theme)" + "\n" +
+    " - fontSizeRatio = font size ratio, from " + sizeRatio_min + " to " + sizeRatio_max + " (default " + fontSizeRatio_default + ")" + "\n" +
+    " - pieceSizeRatio = piece size ratio, from " + sizeRatio_min + " to " + sizeRatio_max + " (default " + pieceSizeRatio_default + ")" + "\n" +
     " - bare = if set true shows chessboard only (default false)" + "\n" +
     " - help" + "\n" +
     "</pre>");
@@ -196,6 +203,20 @@ if (window.location.search.match(thisRegExp) !== null) {
   }
 }
 
+fontSizeRatio = fontSizeRatio_default;
+thisRegExp = /(&|\?)(fontSizeRatio|fsr)=([0-9.]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+  fontSizeRatio = parseFloat(unescape(window.location.search.match(thisRegExp)[3]));
+  if (isNaN(fontSizeRatio) || (fontSizeRatio < sizeRatio_min) || (fontSizeRatio > sizeRatio_max)) { fontSizeRatio = fontSizeRatio_default; }
+}
+
+pieceSizeRatio = pieceSizeRatio_default;
+thisRegExp = /(&|\?)(pieceSizeRatio|psr)=([0-9.]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+  pieceSizeRatio = parseFloat(unescape(window.location.search.match(thisRegExp)[3]));
+  if (isNaN(pieceSizeRatio) || (pieceSizeRatio < sizeRatio_min) || (pieceSizeRatio > sizeRatio_max)) { pieceSizeRatio = pieceSizeRatio_default; }
+}
+
 bareString = "";
 thisRegExp = /(&|\?)(bare|b)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
@@ -220,11 +241,12 @@ function myDeleteRule(sheet, index) {
   else if (sheet.removeRule) { sheet.removeRule(index); }
 }
 
+needAnotherResize = false;
 function myOnResize() {
   if (window.innerWidth && window.innerHeight) { ww = window.innerWidth; wh = window.innerHeight; }
   else if (document.documentElement && document.documentElement.clientWidth) { ww = document.documentElement.clientWidth; wh = document.documentElement.clientHeight; }
   else if (document.body && document.body.clientWidth) { ww = document.body.clientWidth; wh = document.body.clientHeight; }
-  else { throw("failed to get window size"); }
+  else { needAnotherResize = true; return; }
 
   if (bare) {
     horizontalLayout = (ww >= wh);
@@ -240,10 +262,12 @@ function myOnResize() {
   } else {
     lineHeight = Math.floor(Math.min((wh - squareSize * 8) / (7 * 2), squareSize * 8 / 16));
   }
-  fontSize = Math.floor(lineHeight * 0.8);
+  fontSize = Math.floor(lineHeight * fontSizeRatio);
+  if (fontSize > lineHeight) { fontSize = lineHeight; }
   squareBorderWidth = Math.min(Math.ceil(squareSize / 50), 3);
   bareSquareSize = squareSize - 2 * squareBorderWidth;
-  pieceSize = Math.floor(squareSize * 0.8);
+  pieceSize = Math.floor(squareSize * pieceSizeRatio);
+  if (pieceSize > bareSquareSize) { pieceSize = Math.floor(bareSquareSize); }
   headerContainerWidth = selectWidth = horizontalLayout ? ww - 9 * squareSize : ww;
 
   sheet = document.styleSheets[0];
@@ -413,9 +437,11 @@ function toggleBareChessboard() {
 
 function showFullscreenChessboard(newWin) {
   win = window;
-  while (win.parent !== win) { win = win.parent; }
   if (newWin) { win.open(location.href, "_blank"); }
-  else { win.location.href = location.href; }
+  else {
+    while (win.parent !== win) { win = win.parent; }
+    win.location.href = location.href;
+  }
 }
 
 clearShortcutSquares("BCEF", "7");
@@ -462,7 +488,7 @@ function gameTooltipInfo() {
 
 </head>
 
-<body onLoad="myOnResize(); start_pgn4web();" onResize="myOnResize();">
+<body onLoad="myOnResize(); start_pgn4web(); if (needAnotherResize) { myOnResize(); }" onResize="myOnResize();">
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
 <form style="display: none;"><textarea style="display: none;" id="pgnText">
