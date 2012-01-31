@@ -34,7 +34,7 @@ SetShortcutKeysEnabled(true);
 pgnData_default = "";
 refreshMinutes_default = 0;
 initialGame_default = "first";
-pieceBaseSize_default = "96";
+pieceBaseSize_default = 96;
 pieceFont_default = "uscf";
 theme = new Array();
 theme[0]  = new Array("black",  "FFFFFF", "000000", "999999", "777777", "000000");
@@ -84,8 +84,10 @@ if (window.location.search.match(thisRegExp) !== null) {
 
 // undocumented feature
 thisRegExp = /(&|\?)(debug|d)(&|$)/i;
-debug = (window.location.search.match(thisRegExp) !== null);
-debugString = "";
+if (debug = (window.location.search.match(thisRegExp) !== null)) {
+  boardShortcut("A7", "dynamic frame debug info", function() { alert(dynamicFrameDebugString); });
+}
+dynamicFrameDebugString = "dynamic frame debug info:\n\nnone";
 
 liveString = "";
 thisRegExp = /(&|\?)(live|l)=([^&]*)(&|$)/i;
@@ -135,11 +137,11 @@ if (window.location.search.match(thisRegExp) !== null) {
 SetInitialGame(iniGame);
 
 // undocumented feature
-allowedPieceBaseSize = new Array("20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "52", "56", "60", "64", "72", "80", "88", "96", "112", "128", "144", "300");
+allowedPieceBaseSize = new Array(20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 52, 56, 60, 64, 72, 80, 88, 96, 112, 128, 144, 300);
 pieceBaseSize = pieceBaseSize_default;
 thisRegExp = /(&|\?)(pieceBaseSize|pbs)=([0-9]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
-  pieceBaseSize = unescape(window.location.search.match(thisRegExp)[3]);
+  pieceBaseSize = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
   validPieceBaseSize = false;
   for (pieceBaseIndex in allowedPieceBaseSize) {
     if (pieceBaseSize === allowedPieceBaseSize[pieceBaseIndex]) {
@@ -350,10 +352,10 @@ function myOnResize() {
   if (theObject = document.getElementById("HeaderContainer")) { theObject.style.display = bare ? "none" : ""; }
 
   if (debug && (theObject = document.getElementById("DebugInfo"))) {
-    debugString = "fw=" + ww + ", fh=" + wh + ", fs=" + fontSize + ", ss=" + Math.round(squareSize*100)/100 + ", ps=" + pieceSize + ", sb=" + squareBorderWidth;
-    theObject.innerHTML = "&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='alert(debugString);'>" + debugString + "</a>";
-    debugString = "dynamic-frame debug info:\n" + debugString.replace(/, /g, "\n");
-    theObject.title = debugString;
+    dynamicFrameDebugString = "fw=" + ww + ", fh=" + wh + ", fs=" + fontSize + ", ss=" + Math.round(squareSize*100)/100 + ", sb=" + squareBorderWidth + ", ps=" + pieceSize + ", pbs=" + pieceBaseSize;
+    theObject.innerHTML = "&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='alert(dynamicFrameDebugString);'>" + dynamicFrameDebugString + "</a>";
+    dynamicFrameDebugString = "dynamic-frame debug info:\n\n" + dynamicFrameDebugString.replace(/, /g, "\n");
+    theObject.title = dynamicFrameDebugString;
   }
 
   return pieceSize;
