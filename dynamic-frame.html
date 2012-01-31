@@ -77,9 +77,14 @@ if (window.location.search.match(thisRegExp) !== null) {
 //    " - fontSizeRatio = font size ratio, from " + sizeRatio_min + " to " + sizeRatio_max + " (default " + fontSizeRatio_default + ")" + "\n" +
 //    " - pieceSizeRatio = piece size ratio, from " + sizeRatio_min + " to " + sizeRatio_max + " (default " + pieceSizeRatio_default + ")" + "\n" +
     " - bare = if set true shows chessboard only (default false)" + "\n" +
+//    " - debug" + "\n" +
     " - help" + "\n" +
     "</pre>");
 }
+
+// undocumented feature
+thisRegExp = /(&|\?)(debug|d)(&|$)/i;
+debug = (window.location.search.match(thisRegExp) !== null);
 
 liveString = "";
 thisRegExp = /(&|\?)(live|l)=([^&]*)(&|$)/i;
@@ -343,6 +348,12 @@ function myOnResize() {
   if (theObject = document.getElementById("GameSelector")) { theObject.style.display = bare ? "none" : ""; }
   if (theObject = document.getElementById("HeaderContainer")) { theObject.style.display = bare ? "none" : ""; }
 
+  if (debug && (theObject = document.getElementById("DebugInfo"))) {
+    debugString = "fw=" + ww + ", fh=" + wh + ", fs=" + fontSize + ", ss=" + Math.round(squareSize*100)/100 + ", ps=" + pieceSize + ", sb=" + squareBorderWidth;
+    theObject.innerHTML = "&nbsp;&nbsp;&nbsp;" + debugString;
+    theObject.title = "dynamic-frame debug info:\n" + debugString.replace(/, /g, "\n");
+  }
+
   return pieceSize;
 }
 
@@ -457,10 +468,10 @@ function toggleBareChessboard() {
 
 function showFullscreenChessboard(newWin) {
   win = window;
-  if (newWin) { win.open(location.href, "_blank"); }
+  if (newWin) { win.open(location.href.replace(/(pieceBaseSize|pbs)=[^&]*/gi, ""), "_blank"); }
   else {
     while (win.parent !== win) { win = win.parent; }
-    win.location.href = location.href;
+    win.location.href = location.href.replace(/(pieceBaseSize|pbs)=[^&]*/gi, "");
   }
 }
 
@@ -536,7 +547,7 @@ function myOnLoad() {
 <div><a style="font-weight: bold;" id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();" title="black player"></a><span id="GameBlackTitle" title="black title"></span><span id="GameBlackElo" title="black elo"></span>&nbsp;</div>
 <div><span id="GameBlackClock" title="black clock"></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
-<div><span style="font-weight: bold;" id="GameResult" title="result"></span>&nbsp;</div>
+<div><span style="font-weight: bold;" id="GameResult" title="result"></span>&nbsp;<span id="DebugInfo"></span></div>
 <div class="variableSpacer">&nbsp;</div>
 <div><a id="GamePrevMoves" href="javascript:void(0);" onclick="MoveBackward(1); this.blur();" title="previous moves"></a><span style="font-weight: bold;" id="GameCurrMove" title="current move as shown on chessboard"></span><a id="GameNextMoves" href="javascript:void(0);" onclick="MoveForward(1); this.blur();" title="next moves"></a><span style="font-weight: bold;">&nbsp;</span></div>
 <div class="variableSpacer">&nbsp;</div>
