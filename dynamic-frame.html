@@ -356,7 +356,7 @@ function myOnResize() {
 
   if (debug && (theObject = document.getElementById("DebugInfo"))) {
     dynamicFrameDebugString = "fw=" + ww + ", fh=" + wh + ", fs=" + fontSize + ", ss=" + Math.round(squareSize*100)/100 + ", sb=" + squareBorderWidth + ", ps=" + pieceSize + ", pbs=" + pieceBaseSize;
-    theObject.innerHTML = "&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='alert(dynamicFrameDebugString);'>" + dynamicFrameDebugString + "</a>";
+    theObject.innerHTML = "&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='alert(dynamicFrameDebugString); this.blur();'>" + dynamicFrameDebugString + "</a>";
     dynamicFrameDebugString = "dynamic-frame debug info:\n\n" + dynamicFrameDebugString.replace(/, /g, "\n");
     theObject.title = dynamicFrameDebugString;
   }
