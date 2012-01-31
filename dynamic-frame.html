@@ -139,9 +139,9 @@ SetInitialGame(iniGame);
 // undocumented feature
 allowedPieceBaseSize = new Array(20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 52, 56, 60, 64, 72, 80, 88, 96, 112, 128, 144, 300);
 pieceBaseSize = pieceBaseSize_default;
-thisRegExp = /(&|\?)(pieceBaseSize|pbs)=([0-9]*)(&|$)/i;
+thisRegExp = /(&|\?)(pieceBaseSize|pbs)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
-  pieceBaseSize = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
+  pieceBaseSize = parseInt(pieceBaseSize_input = unescape(window.location.search.match(thisRegExp)[3]), 10);
   validPieceBaseSize = false;
   for (pieceBaseIndex in allowedPieceBaseSize) {
     if (pieceBaseSize === allowedPieceBaseSize[pieceBaseIndex]) {
@@ -149,7 +149,10 @@ if (window.location.search.match(thisRegExp) !== null) {
       break;
     }
   }
-  if (!validPieceBaseSize) { pieceBaseSize = pieceBaseSize_default; }
+  if (!validPieceBaseSize) {
+    myAlert("warning: invalid pieceBaseSize=" + pieceBaseSize_input + ", reverting to " + pieceBaseSize_default + " as default");
+    pieceBaseSize = pieceBaseSize_default;
+  }
 }
 
 pieceFont = pieceFont_default;
