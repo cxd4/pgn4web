@@ -34,6 +34,7 @@ SetShortcutKeysEnabled(true);
 pgnData_default = "";
 refreshMinutes_default = 0;
 initialGame_default = "first";
+pieceBaseSize_default = "96";
 pieceFont_default = "uscf";
 theme = new Array();
 theme[0]  = new Array("black",  "FFFFFF", "000000", "999999", "777777", "000000");
@@ -65,6 +66,7 @@ if (window.location.search.match(thisRegExp) !== null) {
     " - live = if set true enables live broadcast with default values (default false)" + "\n" +
     " - refreshMinutes = live broadcast delay (default " + refreshMinutes_default + ")" + "\n" +
     " - refreshDemo = if set true sets live demo mode (default false)" + "\n" +
+//    " - pieceBaseSize = size of baseline piece bitmap (default " + pieceBaseSize_default + ")" + "\n" +
     " - pieceFont = 'alpha' | 'merida' | 'uscf' | 'random' (default " + pieceFont_default + ")" + "\n" +
     " - colorTheme = " + colorThemeOptions + "(default '" + theme[colorTheme_indexDefault][0] + "')" + "\n" +
     " - fontColorHex = font color hex code, like FF0000 (default according to the selected color theme)" + "\n" +
@@ -126,6 +128,22 @@ if (window.location.search.match(thisRegExp) !== null) {
 }
 SetInitialGame(iniGame);
 
+// undocumented feature
+allowedPieceBaseSize = new Array("20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "52", "56", "60", "64", "72", "80", "88", "96", "112", "128", "144", "300");
+pieceBaseSize = pieceBaseSize_default;
+thisRegExp = /(&|\?)(pieceBaseSize|pbs)=([0-9]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+  pieceBaseSize = unescape(window.location.search.match(thisRegExp)[3]);
+  validPieceBaseSize = false;
+  for (pieceBaseIndex in allowedPieceBaseSize) {
+    if (pieceBaseSize === allowedPieceBaseSize[pieceBaseIndex]) {
+      validPieceBaseSize = true;
+      break;
+    }
+  }
+  if (!validPieceBaseSize) { pieceBaseSize = pieceBaseSize_default; }
+}
+
 pieceFont = pieceFont_default;
 thisRegExp = /(&|\?)(pieceFont|pf)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
@@ -148,7 +166,7 @@ if (pieceFont == "svgchess") {
   SetImagePath(pieceFont);
   SetImageType("svg");
 } else {
-  SetImagePath(pieceFont + "/96");
+  SetImagePath(pieceFont + "/" + pieceBaseSize);
   SetImageType("png");
 }
 
@@ -325,7 +343,7 @@ function myOnResize() {
   if (theObject = document.getElementById("GameSelector")) { theObject.style.display = bare ? "none" : ""; }
   if (theObject = document.getElementById("HeaderContainer")) { theObject.style.display = bare ? "none" : ""; }
 
-  return true;
+  return pieceSize;
 }
 
 function underlineByTicker(text, ticker) {
@@ -486,11 +504,17 @@ function gameTooltipInfo() {
   return str;
 }
 
+function myOnLoad() {
+  calculatedPieceSize = myOnResize();
+  start_pgn4web();
+  if (calculatedPieceSize === false) { myOnResize(); }
+}
+
 </script>
 
 </head>
 
-<body onLoad="wasReady = myOnResize(); start_pgn4web(); if (!wasReady) { myOnResize(); }" onResize="myOnResize();">
+<body onLoad="myOnLoad();" onResize="myOnResize();">
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
 <form style="display: none;"><textarea style="display: none;" id="pgnText">
