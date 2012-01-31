@@ -85,6 +85,7 @@ if (window.location.search.match(thisRegExp) !== null) {
 // undocumented feature
 thisRegExp = /(&|\?)(debug|d)(&|$)/i;
 debug = (window.location.search.match(thisRegExp) !== null);
+debugString = "";
 
 liveString = "";
 thisRegExp = /(&|\?)(live|l)=([^&]*)(&|$)/i;
@@ -350,8 +351,9 @@ function myOnResize() {
 
   if (debug && (theObject = document.getElementById("DebugInfo"))) {
     debugString = "fw=" + ww + ", fh=" + wh + ", fs=" + fontSize + ", ss=" + Math.round(squareSize*100)/100 + ", ps=" + pieceSize + ", sb=" + squareBorderWidth;
-    theObject.innerHTML = "&nbsp;&nbsp;&nbsp;" + debugString;
-    theObject.title = "dynamic-frame debug info:\n" + debugString.replace(/, /g, "\n");
+    theObject.innerHTML = "&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='alert(debugString);'>" + debugString + "</a>";
+    debugString = "dynamic-frame debug info:\n" + debugString.replace(/, /g, "\n");
+    theObject.title = debugString;
   }
 
   return pieceSize;
