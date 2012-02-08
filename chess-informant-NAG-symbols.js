@@ -5,7 +5,7 @@
  *  for credits, license and more details
  */
 
-document.write('<style type="text/css">.NAGs, .NAGl { color:red; }</style>');
+document.write('<style type="text/css">.NAGs, .NAGl { }</style>');
 
 var basicNAGs = /^([\?!+#\s]|<span class="NAGs">[^<]*<\/span>)*(\s|$)/;
 
@@ -52,7 +52,7 @@ NAG[146] = 'N'; // 'novelty';
 NAG[147] = NAG[244] = Nl + 'x' + Ne; // 'weak point';
 NAG[148] = NAG[245] = Nl + '_|_' + Ne; // 'endgame';
 NAG[149] = NAG[239] = Nl + '<->' + Ne; // 'file';
-NAG[150] = NAG[240] = Nl + '/' + Ne; // 'diagonal';
+NAG[150] = NAG[240] = Nl + '/^' + Ne; // 'diagonal';
 NAG[151] = NAG[152] = NAG[246] = Nl + '^^' + Ne; // 'bishop pair';
 NAG[153] = NAG[247] = Nl + '^-' + Ne; // 'opposite bishops';
 NAG[154] = NAG[248] = Nl + '^=' + Ne; // 'same bishops';
