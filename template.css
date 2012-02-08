@@ -28,6 +28,8 @@ div, span, table, tr, td {
   border-style: double; 
   border-color: black;
   border-width: 3px;
+  width: 352px;
+  height: 352px;
 }
 
 .pieceImage {
