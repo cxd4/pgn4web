@@ -2684,10 +2684,10 @@ NAG[10] = 'drawish position'; // '=';
 NAG[11] = 'equal chances, quiet position'; // '=';
 NAG[12] = 'equal chances, active position'; // '=';
 NAG[13] = 'unclear position'; // '~~';
-NAG[14] = 'White has a slight advantage'; // NAG[15] = '=/+';
-NAG[16] = 'White has a moderate advantage'; // NAG[17] = '-/+';
-NAG[18] = 'White has a decisive advantage'; // NAG[19] = '-+';
-NAG[20] = 'White has a crushing advantage'; // NAG[21] = '-+';
+NAG[14] = 'White has a slight advantage'; // NAG[15] = '+/=';
+NAG[16] = 'White has a moderate advantage'; // NAG[17] = '+/-';
+NAG[18] = 'White has a decisive advantage'; // NAG[19] = '+-';
+NAG[20] = 'White has a crushing advantage'; // NAG[21] = '+-';
 NAG[22] = 'White is in zugzwang'; // NAG[23] = '(.)';
 NAG[24] = 'White has a slight space advantage'; // NAG[25] = '()';
 NAG[26] = 'White has a moderate space advantage'; // NAG[27] = '()';
@@ -2699,8 +2699,8 @@ NAG[36] = 'White has the initiative'; // NAG[37] = '|^';
 NAG[38] = 'White has a lasting initiative'; // NAG[39] = '|^';
 NAG[40] = 'White has the attack'; // NAG[41] = '->';
 NAG[42] = 'White has insufficient compensation for material deficit';
-NAG[44] = 'White has sufficient compensation for material deficit'; // NAG[45] = '~/=';
-NAG[46] = 'White has more than adequate compensation for material deficit'; // NAG[47] = '~/=';
+NAG[44] = 'White has sufficient compensation for material deficit'; // NAG[45] = '=/~';
+NAG[46] = 'White has more than adequate compensation for material deficit'; // NAG[47] = '=/~';
 NAG[48] = 'White has a slight center control advantage'; // NAG[49] = '[+]';
 NAG[50] = 'White has a moderate center control advantage'; // NAG[51] = '[+]';
 NAG[52] = 'White has a decisive center control advantage'; // NAG[53] = '[+]';
@@ -2751,11 +2751,11 @@ NAG[138] = 'White has severe time control pressure'; // NAG[139] = '(+)';
 for (ii = 14; ii < 139; ii += 2) { NAG[ii+1] = NAG[ii].replace("White", "Black"); }
 
 function translateNAGs(comment) {
-  if (matches = comment.match(/\$[0-9]+/g)) {
+  if (matches = comment.match(/\$+[0-9]+/g)) {
     for (var ii = 0; ii < matches.length; ii++) {
       nag = matches[ii].substr(1);
       if (NAG[nag] !== undefined) {
-        comment = comment.replace(new RegExp("\\$" + nag + "\\b"), NAG[nag]);
+        comment = comment.replace(new RegExp("\\$+" + nag + "\\b"), NAG[nag]);
       }
     }
   }

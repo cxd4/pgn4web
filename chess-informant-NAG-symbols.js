@@ -36,7 +36,7 @@ NAG[30] = NAG[31] = NAG[32] = NAG[33] = NAG[34] = NAG[35] = Ns + '@' + Ne; // 't
 NAG[36] = NAG[37] = NAG[38] = NAG[39] = Ns + '|^' + Ne; // 'initiative';
 NAG[40] = NAG[41] = Ns + '->' + Ne; // 'attack';
 NAG[42] = NAG[43] = ''; // 'insufficient compensation for material deficit';
-NAG[44] = NAG[45] = NAG[46] = NAG[47] = Ns + '~/=' + Ne; // 'sufficient compensation for material deficit';
+NAG[44] = NAG[45] = NAG[46] = NAG[47] = Ns + '=/~' + Ne; // 'sufficient compensation for material deficit';
 NAG[48] = NAG[49] = NAG[50] = NAG[51] = NAG[52] = NAG[53] = Ns + '[+]' + Ne; // 'center control advantage';
 for (ii = 54; ii <= 129; ii++) { NAG[ii] = ''; }
 NAG[130] = NAG[131] = NAG[132] = NAG[133] = NAG[134] = NAG[135] = Ns + '<=>' + Ne; // 'counterplay';
