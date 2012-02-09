@@ -63,13 +63,13 @@ function customPgnCommentTag(customTagString, htmlElementIdString, plyNum) {
 var basicNAGs = /^[\?!+#\s]*(\s|$)/;
 function strippedMoveComment(plyNum) {
   if (!MoveComments[plyNum]) { return ""; }
-  return MoveComments[plyNum].replace(/\[%[^\]]*\]\s*/g,'').replace(basicNAGs, '');
+  return MoveComments[plyNum].replace(/\[%[^\]]*\]\s*/g,'').replace(basicNAGs, '').replace(/^\s+$/,'');
 }
 
 function basicNAGsMoveComment(plyNum) {
   if (!MoveComments[plyNum]) { return ""; }
   thisBasicNAGs = MoveComments[plyNum].replace(/\[%[^\]]*\]\s*/g,'').match(basicNAGs, '');
-  return thisBasicNAGs ? thisBasicNAGs[0] : '';
+  return thisBasicNAGs ? thisBasicNAGs[0].replace(/(^\s+|\s+$)/g,'') : '';
 }
 
 window.onload = start_pgn4web;
