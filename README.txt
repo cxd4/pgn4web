@@ -204,6 +204,22 @@ the 'smooth fonts display' feature of the client operating system.
 See the template.html and template.css files for an example.
 
 
+CHESS INFORMANT SYMBOLS
+
+pgn4web allows for showing chess informant style symbols when the corresponding
+PGN NAGs (Numeric Annotation Glyphs) are found in the PGN comments. This feature
+is disabled by default; in order to enable it in your HTML page, please include
+the script below immediately after the main pgn4web script:
+
+  <script src="pgn4web.js" type="text/javascript"></script>
+  <script src="chess-informant-NAG-symbols.js" type="text/javascript"></script>
+
+Please note, differently than when using the figurine fonts, if the user's web
+browser does not support web fonts, there's not elegant textual fallback.
+
+See the chess-informant-template.html file for an example.
+
+
 THE BOARD GENERATOR WEB TOOL
 
 The board widget allows showing games and positions in web pages and blogs, 
