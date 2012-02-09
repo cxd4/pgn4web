@@ -217,7 +217,8 @@ the script below immediately after the main pgn4web script:
 Please note, differently than when using the figurine fonts, if the user's web
 browser does not support web fonts, there's not elegant textual fallback.
 
-See the chess-informant-template.html file for an example.
+See the chess-informant-template.html and the collection-example.thml (chess
+informant sample) files for an example.
 
 
 THE BOARD GENERATOR WEB TOOL
