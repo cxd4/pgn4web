@@ -69,7 +69,7 @@ function strippedMoveComment(plyNum) {
 function basicNAGsMoveComment(plyNum) {
   if (!MoveComments[plyNum]) { return ""; }
   thisBasicNAGs = MoveComments[plyNum].replace(/\[%[^\]]*\]\s*/g,'').match(basicNAGs, '');
-  return thisBasicNAGs ? thisBasicNAGs[0].replace(/(^\s+|\s+$)/g,'') : '';
+  return thisBasicNAGs ? thisBasicNAGs[0].replace(/\s+(?!class=)/gi,'') : '';
 }
 
 window.onload = start_pgn4web;

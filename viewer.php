@@ -724,6 +724,7 @@ END;
 <link rel="shortcut icon" href="pawn.ico" />
 
 <script src="pgn4web.js" type="text/javascript"></script>
+<script src="chess-informant-NAG-symbols.js" type="text/javascript"></script>
 
 <script src="fide-lookup.js" type="text/javascript"></script>
 
