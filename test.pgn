@@ -48,6 +48,7 @@ Nxd6 { [%clk 00:48:12] } 7. Bd3 { [%clk 00:47:13] } 7... Nc6 { [%clk
 [SetUp "1"]
 [FEN "rnbqkb1r/pppppppp/5n2/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 1 2"]
 
-2. Nc3 d5 3. e5!? d4! 4. exf6 dxc3 5. d4 cxb2 6. fxg7 bxa1=Q 7. gxh8=Q Qb1 {??} 8.
-Qxf8+ $1 Kxf8 9. Bh6+ *
+2. Nc3 d5 { $140 3. exd5 Nxd5 $10 } 3. e5 $5 d4 $1 4. exf6 dxc3 5. d4 $142
+(5. exg7 $10) 5... cxb2 $15 6. fxg7 bxa1=Q 7. gxh8=Q Qb1 { ?? } 8. Qxf8+ $1
+Kxf8 9. Bh6+ $18 *
 
