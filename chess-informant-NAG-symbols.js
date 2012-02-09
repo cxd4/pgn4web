@@ -6,10 +6,13 @@
  */
 
 document.write('<link href="fonts/pgn4web-font-ChessInformantReader.css" type="text/css" rel="stylesheet" />');
-document.write('<style type="text/css">.NAG { font-family: "pgn4web ChessInformantReader"; }</style>');
+document.write('<style type="text/css">.NAGs, .NAGl { font-family: "pgn4web ChessInformantReader"; }</style>');
 
-Ns = Nl = '<span class="NAG">';
+Ns = '<span class="NAGs">';
+Nl = '<span class="NAGl">';
 Ne = '</span>';
+
+basicNAGs = /^([\?!+#\s]|<span class="NAGs">[^<]*<.span>)*(\s|$)/;
 
 NAG[0] = '';
 NAG[1] = '!';  // 'good move';
