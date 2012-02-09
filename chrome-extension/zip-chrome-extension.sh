@@ -13,5 +13,7 @@ fi
 zip -9r ../../"$pgn4webChromeExtFilename" * -x *.svn/* -x zip-chrome-extension.sh -x updateInfo.xml
 
 cd ..
-zip -9r ../"$pgn4webChromeExtFilename" chess-informant-NAG-symbols.js chess-informant-sample.pgn demoGames.pgn demoLiveGames.pgn fide-lookup.js js-unzip/* license-gpl-2.0.txt live-mosaic-tile.html live-mosaic-viewer.html pawn.ico pawns.png pgn4web.js pgn4web-help.html zipped.zip alpha/README.txt alpha/index.html alpha/24/* alpha/48/bp.png alpha/48/index.html alpha/128/* fonts/README.txt fonts/index.html fonts/pgn4web-font-LiberationSans.css fonts/LiberationSans-Regular.woff fonts/LiberationSans-Bold.woff fonts/pgn4web-font-ChessSansUsual.css fonts/ChessSansUsual.woff fonts/pgn4web-font-ChessInformantReader.css fonts/ChessInformantReader.woff -x *.svn/*
+zip -9 chess-informant-sample.zip chess-informant-sample.pgn
+zip -9r ../"$pgn4webChromeExtFilename" chess-informant-NAG-symbols.js chess-informant-sample.zip demoGames.pgn demoLiveGames.pgn fide-lookup.js js-unzip/* license-gpl-2.0.txt live-mosaic-tile.html live-mosaic-viewer.html pawn.ico pawns.png pgn4web.js pgn4web-help.html zipped.zip alpha/README.txt alpha/index.html alpha/24/* alpha/48/bp.png alpha/48/index.html alpha/128/* fonts/README.txt fonts/index.html fonts/pgn4web-font-LiberationSans.css fonts/LiberationSans-Regular.woff fonts/LiberationSans-Bold.woff fonts/pgn4web-font-ChessSansUsual.css fonts/ChessSansUsual.woff fonts/pgn4web-font-ChessInformantReader.css fonts/ChessInformantReader.woff -x *.svn/*
+rm -f chess-informant-sample.zip
 
