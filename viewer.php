@@ -278,7 +278,7 @@ body {
   color: black;
   background: white; 
   font-family: 'pgn4web Liberation Sans', sans-serif;
-  line-height: 1.3em;
+  line-height: 1.4em;
   padding: 20px;
   $bodyFontSize
 }
@@ -689,7 +689,7 @@ END;
   font-weight: normal;
   text-decoration: none;   
   font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
-  line-height: 1.3em;
+  line-height: 1.4em;
 }
 
 .moveOn {
@@ -699,7 +699,7 @@ END;
 .comment {
   color: gray;
   font-family: 'pgn4web Liberation Sans', sans-serif;
-  line-height: 1.3em;
+  line-height: 1.4em;
 }
 
 .label {
