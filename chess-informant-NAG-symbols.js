@@ -8,7 +8,7 @@
 if ((typeof(blockChessInformantNAGSymbols) != "boolean") || (!blockChessInformantNAGSymbols)) {
 
   document.write('<link href="fonts/pgn4web-font-ChessInformantReader.css" type="text/css" rel="stylesheet" />');
-  document.write('<style type="text/css">.NAGs, .NAGl { font-family: "pgn4web ChessInformantReader"; }</style>');
+  document.write('<style type="text/css">.NAGs, .NAGl { font-family: "pgn4web ChessInformantReader"; line-height: 100%; }</style>');
 
   Ns = '<span class="NAGs">';
   Nl = '<span class="NAGl">';
