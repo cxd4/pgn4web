@@ -27,7 +27,6 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  line-height: 1.3em;
   color: black;
 }
 
@@ -62,14 +61,13 @@ body {
 
 .headerLive {
   font-weight: normal;
-  height: 1.3em;
   overflow-y: hidden;
 }
 
 .move,
 .moveOn,
 .lastMove {
-  line-height: 1.3em;
+  line-height: 133%;
   text-decoration: none;
 }
 
@@ -84,7 +82,7 @@ body {
 
 .comment {
   color: gray;
-  line-height: 1.3em;
+  line-height: 133%;
 }
 
 </style>
@@ -924,7 +922,7 @@ function display_header_moves() {
                    "; margin-right: 3%;' id=GameResult></div>");
     document.write("</td><td align=right>");
     document.write("<div class='header headerLive' style='white-space: nowrap; margin-right: " + textMargin +
-		    "; margin-left: 3%;'><span class='lastMove'>&nbsp;<span id=GameLastMove></span></span></div>");
+		    "; margin-left: 3%;'><span class='lastMove'><span class='NAGs'>&nbsp;</span><span id=GameLastMove></span></span></div>");
     document.write("</td></tr></table>");
   }
    
