@@ -61,7 +61,7 @@ print <<<END
 
 <center>
 
-<iframe src="board.html?am=l&d=1000&ss=26&ps=d&pf=d&lcs=YeiP&dcs=Qcij&bbcs=D91v&hm=n&hcs=Udiz&bd=s&cbcs=YeiP&ctcs=\$\$\$\$&hd=j&md=j&tm=13&fhcs=\$\$\$\$&fhs=80p&fmcs=\$\$\$\$&fccs=v71\$&hmcs=Qcij&fms=80p&fcs=m&cd=i&bcs=____&fp=13&hl=t&fh=b&fw=p&pe=$pgnEncoded" 
+<iframe src="board.html?am=l&d=1000&ss=26&ps=d&pf=d&lcs=YeiP&dcs=Qcij&bbcs=D91v&hm=n&hcs=Udiz&bd=s&cbcs=YeiP&ctcs=\$\$\$\$&hd=j&md=f&tm=13&fhcs=\$\$\$\$&fhs=80p&fmcs=\$\$\$\$&fccs=v71\$&hmcs=Qcij&fms=80p&fcs=m&cd=i&bcs=____&fp=13&hl=t&fh=b&fw=p&pe=$pgnEncoded" 
  height="312" width="900" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
 your web browser and/or your host do not support iframes as required to display the chessboard
 </iframe>
