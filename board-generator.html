@@ -252,7 +252,7 @@ controlBackgroundColorHex_default = "EFF4EC";
 controlTextColorHex_default = "000000";
 textMargin_default = 0;
 headerDisplay_default = "justified";
-movesDisplay_default = "justified";
+movesDisplay_default = "figurine";
 horizontalLayout_default = "f";
 frameHeight_default = "";
 frameWidth_default = "";
@@ -521,7 +521,7 @@ function set_defaults() {
 
   oldMovesDisplay_value = "";
   //kept for backward compatibility
-  if (gup("showMoves") === "t") { oldMovesDisplay_value = "justified"; }
+  if (gup("showMoves") === "t") { oldMovesDisplay_value = "figurine"; }
   //kept for backward compatibility
   if (gup("showMoves") === "f") { oldMovesDisplay_value = "hidden"; }
 
@@ -529,10 +529,13 @@ function set_defaults() {
     movesDisplay_value = oldMovesDisplay_value === "" ? movesDisplay_default : oldMovesDisplay_value;
   }
   if (movesDisplay_value == "h") { movesDisplay_value = "hidden"; }
-  if (movesDisplay_value == "j") { movesDisplay_value = "justified"; }
+  if (movesDisplay_value == "f") { movesDisplay_value = "figurine"; }
+  if (movesDisplay_value == "t") { movesDisplay_value = "text"; }
+  //kept for backward compatibility
+  if ((movesDisplay_value == "justified") || (movesDisplay_value == "j")) { movesDisplay_value = "figurine"; }
   document.board.movesDisplay.value = movesDisplay_value;
-  if (!((movesDisplay_value == "hidden") || (movesDisplay_value == "justified")) ) {
-    alert("error: moves display must be either 'hidden', 'justified' or their initials");
+  if (!((movesDisplay_value == "hidden") || (movesDisplay_value == "figurine") || (movesDisplay_value == "text"))) {
+    alert("error: moves display must be either 'hidden', 'figurine', 'text' or their initials");
     document.board.movesDisplay.value = movesDisplay_value = movesDisplay_default;
   }
 
@@ -1331,8 +1334,8 @@ size_template[2] = new Array("large ", "&ss=50&ps=d&pf=d&hm=b&tm=25&fhs=120p&fms
 
 // layout template array
 layout_template = new Array();
-layout_template[0] = new Array("vertical  ", "&hl=f&hd=c&md=j&cd=i");
-layout_template[1] = new Array("horizontal", "&hl=t&hd=j&md=j&cd=i");
+layout_template[0] = new Array("vertical  ", "&hl=f&hd=c&md=f&cd=i");
+layout_template[1] = new Array("horizontal", "&hl=t&hd=j&md=f&cd=i");
 
 function load_templates() {
       
@@ -1866,7 +1869,8 @@ buttons</span>
 <br>
 
 <select class="dropdown" id="movesDisplay" name="dropdown" onChange="update_controls()">
-<option value="justified" selected="selected">justified</option>
+<option value="figurine" selected="selected">figurine</option>
+<option value="text">text</option>
 <option value="hidden">hidden</option>
 </select>
 <span class="labeltext"><b>how to show game moves</b></span>
