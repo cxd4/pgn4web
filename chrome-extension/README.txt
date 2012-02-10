@@ -109,7 +109,7 @@ Other:
 
 about.html, help.html, manifest.json: help page
 verify the naming convention ("help") and the manifest syntax for the upcoming
-"help" page and update manifest.json, about.html and help.html if needed.
+"help" page and update manifest.json, about.html and help.html as needed.
 http://crbug.com/29849
 
 about.html, background.html: context menu icons and filename
