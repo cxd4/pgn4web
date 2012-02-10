@@ -48,6 +48,10 @@ a:link, a:visited, a:active, a:hover {
   text-decoration: underline;
 }
 
+a.firstHeading {
+  text-decoration: none;
+}
+
 a.heading, a.headingSelected {
   margin-left: 1em;
 }
@@ -122,7 +126,7 @@ td.versionNum {
 <body>
 
 <h1 style="text-align:left;">
-chess games viewer: 
+<a class="firstHeading" href="chess-games-viewer.html">chess games viewer:</a>
 <a id="optionsHead" class="heading" href="javascript:void(0);" onclick="showSection(this.innerHTML)">options</a>
 <a id="helpHead" class="heading" href="javascript:void(0);" onclick="showSection(this.innerHTML)">help</a>
 <a id="aboutHead" class="heading" href="javascript:void(0);" onclick="showSection(this.innerHTML)">about</a>
