@@ -73,7 +73,6 @@ body {
   font-family: 'pgn4web ChessSansPiratf', 'pgn4web Liberation Sans', sans-serif;
   line-height: 1.3em;
   text-decoration: none;
-  position: relative; /* fixes IE offsetTop issue */
 }
 
 .move,
@@ -92,6 +91,12 @@ body {
 }
 
 </style>
+
+<!--[if lt IE 9]>
+<style type="text/css">
+.move, .moveOn, .lastMove { position: relative; /* fixes IE offsetTop issue */ }
+</style>
+<![endif]-->
 
 <link rel="shortcut icon" href="pawn.ico" />
 
