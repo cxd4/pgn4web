@@ -4,9 +4,6 @@
 //  for credits, license and more details
 
 {
-   "background": {
-      "page": ["background.html"]
-   },
    "background_page": "background.html",
    "content_scripts": [ {
       "all_frames": true,
