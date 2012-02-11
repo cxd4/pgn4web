@@ -74,6 +74,7 @@ if (window.location.search.match(thisRegExp) !== null) {
     " - lightColorHex = light square color hex code, like FF0000 (default according to the selected color theme)" + "\n" +
     " - darkColorHex = dark square color hex code, like FF0000 (default according to the selected color theme)" + "\n" +
     " - highlightColorHex = highlight square color hex code, like FF0000, or 'transparent' for no highlight (default according to the selected color theme)" + "\n" +
+    " - showColorflag = if set true show color flag for side to move (default true)" + "\n" +
 //    " - fontSizeRatio = font size ratio, from " + sizeRatio_min + " to " + sizeRatio_max + " (default " + fontSizeRatio_default + ")" + "\n" +
 //    " - pieceSizeRatio = piece size ratio, from " + sizeRatio_min + " to " + sizeRatio_max + " (default " + pieceSizeRatio_default + ")" + "\n" +
     " - bare = if set true shows chessboard only (default false)" + "\n" +
@@ -232,6 +233,13 @@ if (window.location.search.match(thisRegExp) !== null) {
   }
 }
 
+showColorflag = "true";
+thisRegExp = /(&|\?)(showColorflag|sc)=([^&]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+  showColorflag = unescape(window.location.search.match(thisRegExp)[3]);
+}
+colorFlagDisplay = ((showColorflag == "true") || (showColorflag == "t")) ? "inline" : "none";
+
 // undocumented feature
 fontSizeRatio = fontSizeRatio_default;
 thisRegExp = /(&|\?)(fontSizeRatio|fsr)=([0-9.]*)(&|$)/i;
@@ -272,7 +280,6 @@ function myDeleteRule(sheet, index) {
   else if (sheet.removeRule) { sheet.removeRule(index); }
 }
 
-colorFlagDisplay = "none";
 function toggleColorFlagDisplay() {
   colorFlagDisplay = colorFlagDisplay == "none" ? "inline" : "none";
   myOnResize();
@@ -448,6 +455,13 @@ function customFunctionOnMove() {
     theObject.innerHTML += Moves[thisPly] + " ";
   }
   if (thisPly < StartPly + PlyNumber) { theObject.innerHTML += "..."; }
+
+  if (theObject = document.getElementById("whiteColorFlag")) {
+    theObject.style.visibility = CurrentPly % 2 ? "hidden" : "visible";
+  }
+  if (theObject = document.getElementById("blackColorFlag")) {
+    theObject.style.visibility = CurrentPly % 2 ? "visible" : "hidden";
+  }
 }
 
 function searchPlayer(name, FideId) {
@@ -556,10 +570,10 @@ function myOnLoad() {
 <div>&nbsp;<span id="GameSite" title="site"></span>&nbsp;</div>
 <div>&nbsp;<span id="GameEvent" title="event"></span><span id="GameSection" title="section"></span><span id="GameStage" title="stage"></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
-<div>&nbsp;<img class="colorFlag" style="background:white; margin-left:0.1em; margin-right:1em;" src="clear.png"/><span id="GameWhiteClock" title="white clock"></span><img class="colorFlag" style="visibility:hidden; margin-left:1em; margin-right:0.1em" src="clear.png"/>&nbsp;</div>
+<div>&nbsp;<img class="colorFlag" style="background:white; margin-left:0.1em; margin-right:1em; visibility:hidden;" id="whiteColorFlag" src="clear.png"/><a id="GameWhiteClock" href="javascript:void(0);" onclick="toggleColorFlagDisplay();" title="white clock"></a><img class="colorFlag" style="visibility:hidden; margin-left:1em; margin-right:0.1em" src="clear.png"/>&nbsp;</div>
 <div>&nbsp;<a style="font-weight: bold;" id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();" title="white player"></a><span id="GameWhiteTitle" title="white title"></span><span id="GameWhiteElo" title="white elo"></span><span style="font-weight: bold;">&nbsp;</span></div>
 <div>&nbsp;<a style="font-weight: bold;" id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();" title="black player"></a><span id="GameBlackTitle" title="black title"></span><span id="GameBlackElo" title="black elo"></span><span style="font-weight: bold;">&nbsp;</span></div>
-<div>&nbsp;<img class="colorFlag" style="background:black; margin-left:0.1em; margin-right:1em;" src="clear.png"/><span id="GameBlackClock" title="black clock"></span><img class="colorFlag" style="visibility:hidden; margin-left:1em; margin-right:0.1em;" src="clear.png"/>&nbsp;</div>
+<div>&nbsp;<img class="colorFlag" style="background:black; margin-left:0.1em; margin-right:1em; visibility:hidden;" id="blackColorFlag" src="clear.png"/><a id="GameBlackClock" href="javascript:void(0);" onclick="toggleColorFlagDisplay();" title="black clock"></a><img class="colorFlag" style="visibility:hidden; margin-left:1em; margin-right:0.1em;" src="clear.png"/>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
 <div>&nbsp;<span style="font-weight: bold;" id="GameResult" title="result"></span><span style="font-weight: bold;">&nbsp;</span><span id="DebugInfo"></span></div>
 <div class="variableSpacer">&nbsp;</div>
