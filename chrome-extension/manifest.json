@@ -4,6 +4,9 @@
 //  for credits, license and more details
 
 {
+   "background": {
+      "page": ["background.html"]
+   },
    "background_page": "background.html",
    "content_scripts": [ {
       "all_frames": true,
@@ -21,7 +24,6 @@
       "default_title": "Inspect for chess games",
       "file_filters": [ "filesystem:*.zip", "filesystem:*.Zip", "filesystem:*.ZIP" ]
    } ],
-   "help_page": "help.html",
    "homepage_url": "http://pgn4web.casaschi.net",
    "icons": {
       "128": "alpha/128/bp.png",
@@ -31,7 +33,7 @@
    "incognito": "split",
    "minimum_chrome_version": "14.0",
    "name": "Chess games viewer",
-   "options_page": "options.html",
+   "options_page": "help.html",
    "page_action": {
       "default_icon": "alpha-20.png",
       "default_popup": "popup.html",
