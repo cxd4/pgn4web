@@ -74,7 +74,7 @@ if (window.location.search.match(thisRegExp) !== null) {
     " - lightColorHex = light square color hex code, like FF0000 (default according to the selected color theme)" + "\n" +
     " - darkColorHex = dark square color hex code, like FF0000 (default according to the selected color theme)" + "\n" +
     " - highlightColorHex = highlight square color hex code, like FF0000, or 'transparent' for no highlight (default according to the selected color theme)" + "\n" +
-    " - showColorflag = if set true show color flag for side to move (default true)" + "\n" +
+    " - showColorFlag = if set true show color flag for side to move (default true)" + "\n" +
 //    " - fontSizeRatio = font size ratio, from " + sizeRatio_min + " to " + sizeRatio_max + " (default " + fontSizeRatio_default + ")" + "\n" +
 //    " - pieceSizeRatio = piece size ratio, from " + sizeRatio_min + " to " + sizeRatio_max + " (default " + pieceSizeRatio_default + ")" + "\n" +
     " - bare = if set true shows chessboard only (default false)" + "\n" +
@@ -233,12 +233,12 @@ if (window.location.search.match(thisRegExp) !== null) {
   }
 }
 
-showColorflag = "true";
-thisRegExp = /(&|\?)(showColorflag|sc)=([^&]*)(&|$)/i;
+showColorFlag = "true";
+thisRegExp = /(&|\?)(showColorFlag|scf)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
-  showColorflag = unescape(window.location.search.match(thisRegExp)[3]);
+  showColorFlag = unescape(window.location.search.match(thisRegExp)[3]);
 }
-colorFlagDisplay = ((showColorflag == "true") || (showColorflag == "t")) ? "inline" : "none";
+colorFlagDisplay = ((showColorFlag == "true") || (showColorFlag == "t")) ? "inline" : "none";
 
 // undocumented feature
 fontSizeRatio = fontSizeRatio_default;
