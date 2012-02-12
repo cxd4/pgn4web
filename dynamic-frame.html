@@ -233,12 +233,12 @@ if (window.location.search.match(thisRegExp) !== null) {
   }
 }
 
-showColorFlag = "true";
+showColorFlagString = "true";
 thisRegExp = /(&|\?)(showColorFlag|scf)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
-  showColorFlag = unescape(window.location.search.match(thisRegExp)[3]);
+  showColorFlagString = unescape(window.location.search.match(thisRegExp)[3]);
 }
-colorFlagDisplay = ((showColorFlag == "true") || (showColorFlag == "t")) ? "inline" : "none";
+showColorFlag = ((showColorFlagString == "true") || (showColorFlagString == "t"));
 
 // undocumented feature
 fontSizeRatio = fontSizeRatio_default;
@@ -280,11 +280,18 @@ function myDeleteRule(sheet, index) {
   else if (sheet.removeRule) { sheet.removeRule(index); }
 }
 
-function toggleColorFlagDisplay() {
-  colorFlagDisplay = colorFlagDisplay == "none" ? "inline" : "none";
+function toggleColorFlag() {
+  showColorFlag = !showColorFlag;
+  if (!showColorFlag) {
+    if (theObject = document.getElementById("whiteColorFlag")) { theObject.style.display = "none"; }
+    if (theObject = document.getElementById("whiteColorFlagFiller")) { theObject.style.display = "none"; }
+    if (theObject = document.getElementById("blackColorFlag")) { theObject.style.display = "none"; }
+    if (theObject = document.getElementById("blackColorFlagFiller")) { theObject.style.display = "none"; }
+  }
   myOnResize();
 }
 
+var horizontalLayout;
 function myOnResize() {
   if (window.innerWidth && window.innerHeight) { ww = window.innerWidth; wh = window.innerHeight; }
   else if (document.documentElement && document.documentElement.clientWidth) { ww = document.documentElement.clientWidth; wh = document.documentElement.clientHeight; }
@@ -348,7 +355,7 @@ function myOnResize() {
     myInsertRule(sheet, ".buttonControlStop", buttonCss);
     myInsertRule(sheet, ".buttonControlSpace", "margin: 0; padding: 0; width: " + (lineHeight / 4) + "px !important;");
   }
-  myInsertRule(sheet, ".colorFlag", "display: " + colorFlagDisplay + "; height: 0.8ex; width: 0.8ex; border-width: 1px; border-color: #" + fontColorHex + "; border-style: solid; margin-bottom: 0.2ex;");
+  myInsertRule(sheet, ".colorFlag", "height: 0.8ex; width: 0.8ex; border-width: 1px; border-color: #" + fontColorHex + "; border-style: solid; margin-bottom: 0.2ex;");
   firstVariableSpacerLineHeight = Math.floor(horizontalLayout ? lineHeight / 2 : 3 * lineHeight / 2);
   firstVariableSpacerFontSize = Math.floor(firstVariableSpacerLineHeight * 0.8);
   myInsertRule(sheet, ".firstVariableSpacer", "line-height: " + firstVariableSpacerLineHeight + "px; font-size: " + firstVariableSpacerFontSize + "px;");
@@ -367,6 +374,8 @@ function myOnResize() {
 
   if (theObject = document.getElementById("GameSelector")) { theObject.style.display = bare ? "none" : ""; }
   if (theObject = document.getElementById("HeaderContainer")) { theObject.style.display = bare ? "none" : ""; }
+
+  fixColorFlag();
 
   if (debug && (theObject = document.getElementById("DebugInfo"))) {
     dynamicFrameDebugString = "fw=" + ww + ", fh=" + wh + ", fs=" + fontSize + ", ss=" + Math.round(squareSize*100)/100 + ", sb=" + squareBorderWidth + ", ps=" + pieceSize + ", pbs=" + pieceBaseSize;
@@ -456,11 +465,39 @@ function customFunctionOnMove() {
   }
   if (thisPly < StartPly + PlyNumber) { theObject.innerHTML += "..."; }
 
-  if (theObject = document.getElementById("whiteColorFlag")) {
-    theObject.style.visibility = CurrentPly % 2 ? "hidden" : "visible";
-  }
-  if (theObject = document.getElementById("blackColorFlag")) {
-    theObject.style.visibility = CurrentPly % 2 ? "visible" : "hidden";
+  fixColorFlag();
+}
+
+
+function fixColorFlag() {
+
+  if (showColorFlag) {
+    whiteFlagPadding = (horizontalLayout || ((clockObject = document.getElementById("GameWhiteClock")) && (clockObject.innerHTML)));
+    if (theObject = document.getElementById("whiteColorFlag")) {
+      theObject.style.display = "inline";
+      theObject.style.visibility = CurrentPly % 2 ? "hidden" : "visible";
+      theObject.style.marginLeft = whiteFlagPadding ? "0.1em" : "";
+      theObject.style.marginRight = whiteFlagPadding ? "1em" : ""; 
+    }
+    if (theObject = document.getElementById("whiteColorFlagFiller")) {
+      theObject.style.display = whiteFlagPadding ? "inline" : "none";
+      theObject.style.visibility = "hidden";
+      theObject.style.marginRight = "0.1em";
+      theObject.style.marginLeft = "1em";
+    }
+    blackFlagPadding = (horizontalLayout || ((clockObject = document.getElementById("GameBlackClock")) && (clockObject.innerHTML)));
+    if (theObject = document.getElementById("blackColorFlag")) {
+      theObject.style.display = "inline";
+      theObject.style.visibility = CurrentPly % 2 ? "visible" : "hidden";
+      theObject.style.marginLeft = blackFlagPadding ? "0.1em" : "";
+      theObject.style.marginRight = blackFlagPadding ? "1em" : "";
+    }
+    if (theObject = document.getElementById("blackColorFlagFiller")) {
+      theObject.style.display = blackFlagPadding ? "inline" : "none";
+      theObject.style.visibility = "hidden";
+      theObject.style.marginRight = "0.1em";
+      theObject.style.marginLeft = "1em";
+    }
   }
 }
 
@@ -505,7 +542,7 @@ function showFullscreenChessboard(newWin) {
 
 clearShortcutSquares("BCEF", "7");
 
-boardShortcut("C7", "toggle side to move flag", function() { toggleColorFlagDisplay(); });
+boardShortcut("C7", "toggle side to move flag", function() { toggleColorFlag(); });
 
 if (window.parent !== window) {
   boardShortcut("H5", "show fullscreen chessboard", function() { showFullscreenChessboard(false); });
@@ -572,10 +609,10 @@ function myOnLoad() {
 <div>&nbsp;<span id="GameSite" title="site"></span>&nbsp;</div>
 <div>&nbsp;<span id="GameEvent" title="event"></span><span id="GameSection" title="section"></span><span id="GameStage" title="stage"></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
-<div>&nbsp;<img class="colorFlag" style="background:white; margin-left:0.1em; margin-right:1em; visibility:hidden;" id="whiteColorFlag" src="clear.png"/><a id="GameWhiteClock" href="javascript:void(0);" onclick="toggleColorFlagDisplay();" title="white clock"></a><img class="colorFlag" style="visibility:hidden; margin-left:1em; margin-right:0.1em" src="clear.png"/>&nbsp;</div>
+<div>&nbsp;<img class="colorFlag" style="background:white; display:none;" id="whiteColorFlag" src="clear.png"/><a id="GameWhiteClock" href="javascript:void(0);" onclick="toggleColorFlag();" title="white clock"></a><img class="colorFlag" style="background:white; display:none;" id="whiteColorFlagFiller" src="clear.png"/>&nbsp;</div>
 <div>&nbsp;<a style="font-weight: bold;" id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();" title="white player"></a><span id="GameWhiteTitle" title="white title"></span><span id="GameWhiteElo" title="white elo"></span><span style="font-weight: bold;">&nbsp;</span></div>
 <div>&nbsp;<a style="font-weight: bold;" id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();" title="black player"></a><span id="GameBlackTitle" title="black title"></span><span id="GameBlackElo" title="black elo"></span><span style="font-weight: bold;">&nbsp;</span></div>
-<div>&nbsp;<img class="colorFlag" style="background:black; margin-left:0.1em; margin-right:1em; visibility:hidden;" id="blackColorFlag" src="clear.png"/><a id="GameBlackClock" href="javascript:void(0);" onclick="toggleColorFlagDisplay();" title="black clock"></a><img class="colorFlag" style="visibility:hidden; margin-left:1em; margin-right:0.1em;" src="clear.png"/>&nbsp;</div>
+<div>&nbsp;<img class="colorFlag" style="background:black; display:none;" id="blackColorFlag" src="clear.png"/><a id="GameBlackClock" href="javascript:void(0);" onclick="toggleColorFlag();" title="black clock"></a><img class="colorFlag" style="background:black; display:none;" id="blackColorFlagFiller" src="clear.png"/>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
 <div>&nbsp;<span style="font-weight: bold;" id="GameResult" title="result"></span><span style="font-weight: bold;">&nbsp;</span><span id="DebugInfo"></span></div>
 <div class="variableSpacer">&nbsp;</div>
