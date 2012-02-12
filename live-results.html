@@ -70,7 +70,7 @@
       resultString += fillWithBlanks("white", 15) + "   ";
       resultString += fillWithBlanks("black", 15) + "   ";
       resultString += fillWithBlanks("result", 7) + "   ";
-      resultString += fillWithBlanks("last move", 10) + "\n\n";
+      resultString += fillWithBlanks("last move", 10) + "\n \n";
       for (gg = 0; gg < numberOfGames; gg++) {
         resultString += fillWithBlanks(gameWhite[gg], 15) + "   ";
         resultString += fillWithBlanks(gameBlack[gg], 15) + "   ";
@@ -82,7 +82,7 @@
         } else { lastMove = ''; }
         resultString += fillWithBlanks(lastMove, 10) + "\n";
       }
-      resultObject.innerHTML = resultString;
+      resultObject.innerText = resultString;
     }
   }
 
@@ -129,7 +129,7 @@ function gup( name ){
 
 <pre id="results"></pre>
 
-<a id="GameLiveStatus" style="text-decoration:none; color:black;" href="javascript:void(0);" onclick="refreshPgnSource();" title="click here to force a live games refresh"></a>
+<a id="GameLiveStatus" style="text-decoration:none; color:black;" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();" title="click here to force a live games refresh"></a>
 
 </body>
 
