@@ -505,8 +505,10 @@ function showFullscreenChessboard(newWin) {
 
 clearShortcutSquares("BCEF", "7");
 
+boardShortcut("C7", "toggle side to move flag", function() { toggleColorFlagDisplay(); });
+
 if (window.parent !== window) {
-  boardShortcut("H5", "show fullscreen chessboard", function(){ showFullscreenChessboard(false); });
+  boardShortcut("H5", "show fullscreen chessboard", function() { showFullscreenChessboard(false); });
 }
 
 function updateBareShortcut() {
