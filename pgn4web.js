@@ -1267,7 +1267,7 @@ function HighlightLastMove() {
   if (showThisMove > StartPly + PlyNumber) { showThisMove = StartPly + PlyNumber; }
 
   if (theShowCommentTextObject = document.getElementById("GameLastComment")) {
-    theShowCommentTextObject.innerHTML = strippedMoveComment(showThisMove+1);
+    theShowCommentTextObject.innerHTML = fixCommentForDisplay(strippedMoveComment(showThisMove+1));
   }
   
   // show side to move
@@ -2992,8 +2992,11 @@ function searchPgnGameForm() {
   { searchPgnGame(document.getElementById('searchPgnExpression').value); }
 }
 
+function fixCommentForDisplay(comment) {
+  var chessMovesRegExp = new RegExp("(((\d+\.+\s*|)([KQRBNP]|)([a-h1-8]|)(x|)[a-h][1-8](=[QRNB]|)([+#]|)))", "g");
+  return comment.replace(chessMovesRegExp, "<SPAN CLASS='variation'>$1</SPAN>");
+}
 
-var chessMovesRegExp = new RegExp("(((\d+\.+\s*|)([KQRBNP]|)([a-h1-8]|)(x|)[a-h][1-8](=[QRNB]|)([+#]|)))", "g");
 var tableSize = 0;
 function PrintHTML() {
   var ii, jj;
@@ -3207,11 +3210,10 @@ function PrintHTML() {
     for (ii = StartPly; ii < StartPly+PlyNumber; ++ii) {
       printedComment = false;
       if (commentsIntoMoveText && (thisComment = strippedMoveComment(ii))) {
-        thisComment = thisComment.replace(chessMovesRegExp, "<SPAN CLASS='variation'>$1</SPAN>");
         if (commentsOnSeparateLines && (ii > StartPly)) { 
           text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
         }
-        text += '<SPAN CLASS="comment">' + thisComment + '</SPAN><SPAN CLASS="move notranslate"> </SPAN>';
+        text += '<SPAN CLASS="comment">' + fixCommentForDisplay(thisComment) + '</SPAN><SPAN CLASS="move notranslate"> </SPAN>';
         if (commentsOnSeparateLines) { 
           text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
         }
@@ -3231,9 +3233,8 @@ function PrintHTML() {
       text += '</A></SPAN>' + '<SPAN CLASS="move notranslate"> </SPAN>';
     }
     if (commentsIntoMoveText && (thisComment = strippedMoveComment(StartPly+PlyNumber))) {
-      thisComment = thisComment.replace(chessMovesRegExp, "<SPAN CLASS='variation'>$1</SPAN>");
       if (commentsOnSeparateLines) { text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>'; }
-      text += '<SPAN CLASS="comment">' + thisComment + '</SPAN><SPAN CLASS="move notranslate"> </SPAN>';
+      text += '<SPAN CLASS="comment">' + fixCommentForDisplay(thisComment) + '</SPAN><SPAN CLASS="move notranslate"> </SPAN>';
     }
     text += '</SPAN>';
 
