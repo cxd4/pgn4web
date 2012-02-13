@@ -197,6 +197,9 @@ the rest of the page to the Liberation Sans font. For example in your CSS file:
   .move {
     font-family: 'pgn4web ChessSansPiratf', 'pgn4web Liberation Sans', sans-serif;
   }
+  .variation {
+    font-family: 'pgn4web ChessSansPiratf', 'pgn4web Liberation Sans', sans-serif;
+  }
 
 When using chess figurine fonts it's strongly recommended to activate
 the 'smooth fonts display' feature of the client operating system.
