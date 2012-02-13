@@ -135,8 +135,11 @@ if ((showMoves == "false") || (showMoves == "f")) { oldMovesDisplay = "hidden"; 
 if ((movesDisplay = gup("movesDisplay")) === "") {
   movesDisplay = oldMovesDisplay === "" ? "hidden" : oldMovesDisplay;
 }
+if (movesDisplay == "f") { movesDisplay = "figurine"; }
+if (movesDisplay == "t") { movesDisplay = "text"; }
 if (movesDisplay == "h") { movesDisplay = "hidden"; }
 if ((movesDisplay == "justified") || (movesDisplay == "j")) { movesDisplay = "figurine"; } // backward compatibility
+if ((movesDisplay != "figurine") && (movesDisplay != "text") && (movesDisplay != "hidden")) { movesDisplay = "figurine"; }
 
 blockChessInformantNAGSymbols = ((movesDisplay != "figurine") && (movesDisplay != "f"));
 if (!blockChessInformantNAGSymbols) {
