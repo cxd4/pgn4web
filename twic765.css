@@ -108,6 +108,7 @@ div, span, table, tr, td {
 
 .comment {
   color: gray;
+  line-height: 1.3em;
 }
 
 .variation {

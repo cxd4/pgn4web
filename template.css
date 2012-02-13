@@ -103,6 +103,10 @@ div, span, table, tr, td {
   background: #DAF4D7;
 }
 
+.comment {
+  line-height: 1.4em;
+}
+
 .variation {
   font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
 }
