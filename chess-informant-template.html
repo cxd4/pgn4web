@@ -17,6 +17,11 @@
 
 <script src="pgn4web.js" type="text/javascript"></script>
 <script src="chess-informant-NAG-symbols.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+if (location.search == "?alternative") { document.write('<script src="chess-informant-NAG-symbols-alternative.js" type="text/javascript"><\/script>'); }
+</script>
+
 <script type="text/javascript">
    SetPgnUrl("chess-informant-sample.pgn"); // if set, this has precedence over the inline PGN in the HTML file
 // SetImagePath(""); // use "" path if images are in the same folder as this javascript file
