@@ -191,13 +191,10 @@ or into your CSS file:
 Then set the font-family for the .move class to the chess font of your choice and 
 the rest of the page to the Liberation Sans font. For example in your CSS file:
 
-  .body {
+  body {
     font-family: 'pgn4web Liberation Sans', sans-serif;
   }  
-  .move {
-    font-family: 'pgn4web ChessSansPiratf', 'pgn4web Liberation Sans', sans-serif;
-  }
-  .variation {
+  .move, .variation {
     font-family: 'pgn4web ChessSansPiratf', 'pgn4web Liberation Sans', sans-serif;
   }
 
