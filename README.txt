@@ -188,8 +188,9 @@ or into your CSS file:
   @import url("fonts/pgn4web-font-LiberationSans.css");
   @import url("fonts/pgn4web-font-ChessSansPiratf.css");
 
-Then set the font-family for the .move class to the chess font of your choice and 
-the rest of the page to the Liberation Sans font. For example in your CSS file:
+Then set the font-family for the .move and .variation classes to the chess font
+of your choice and the rest of the page to the Liberation Sans font. For example
+in your CSS file:
 
   body {
     font-family: 'pgn4web Liberation Sans', sans-serif;
