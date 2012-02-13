@@ -103,6 +103,10 @@ div, span, table, tr, td {
   background: #DAF4D7;
 }
 
+.variation {
+  font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
+}
+
 .label,
 .comment {
   color: gray;

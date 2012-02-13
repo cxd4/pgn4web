@@ -702,6 +702,10 @@ END;
   line-height: 1.4em;
 }
 
+.variation {
+  font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
+}
+
 .label {
   color: gray;
   padding-right: 10;

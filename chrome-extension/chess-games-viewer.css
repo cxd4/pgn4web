@@ -142,6 +142,10 @@ a {
   line-height: 1.4em;
 }
 
+.variation {
+  font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
+}
+
 .topMenu {
   min-height: 4em;
   padding-top: 1em;

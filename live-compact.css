@@ -152,6 +152,10 @@ a {
   line-height: 1.4em;
 }
 
+.variation {
+  font-family: 'pgn4web ChessSansPiratf', 'pgn4web Liberation Sans', sans-serif;
+}
+
 .movebox {
   scrollbar-base-color: #E8E3D0;
   text-align: justify;

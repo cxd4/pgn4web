@@ -110,6 +110,10 @@ div, span, table, tr, td {
   color: gray;
 }
 
+.variation {
+  font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
+}
+
 .label {
   color: gray;
 }
