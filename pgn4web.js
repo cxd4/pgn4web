@@ -2993,7 +2993,7 @@ function searchPgnGameForm() {
 }
 
 function fixCommentForDisplay(comment) {
-  var chessMovesRegExp = new RegExp("(((\d+\.+\s*|)(([KQRBNP]|)([a-h1-8]|)(x|)[a-h][1-8](=[QRNB]|)|O-O-O|O-O)([+#]|)))", "g");
+  chessMovesRegExp = new RegExp("((\\d+(\\.|\\.\\.\\.|)\\s*|)(([KQRBNP]|)([a-h1-8]|)(x|)[a-h][1-8](=[QRNB]|)|O-O-O|O-O)([+#]|))", "g");
   return comment.replace(chessMovesRegExp, "<SPAN CLASS='variation'>$1</SPAN>");
 }
 
