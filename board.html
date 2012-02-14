@@ -138,11 +138,12 @@ if ((movesDisplay = gup("movesDisplay")) === "") {
 if (movesDisplay == "f") { movesDisplay = "figurine"; }
 if (movesDisplay == "t") { movesDisplay = "text"; }
 if (movesDisplay == "h") { movesDisplay = "hidden"; }
+if (movesDisplay == "n") { movesDisplay = "nosymbols"; } // "nosymbols" option is undocumented
 if ((movesDisplay == "justified") || (movesDisplay == "j")) { movesDisplay = "figurine"; } // backward compatibility
-if ((movesDisplay != "figurine") && (movesDisplay != "text") && (movesDisplay != "hidden")) { movesDisplay = "figurine"; }
+if ((movesDisplay != "figurine") && (movesDisplay != "nosymbols") && (movesDisplay != "text") && (movesDisplay != "hidden")) { movesDisplay = "figurine"; }
 
-blockChessInformantNAGSymbols = ((movesDisplay != "figurine") && (movesDisplay != "f"));
-if (!blockChessInformantNAGSymbols) {
+blockChessInformantNAGSymbols = (movesDisplay != "figurine");
+if ((movesDisplay == "figurine") || (movesDisplay == "nosymbols")) {
   newStyleSheet = '<style type="text/css"> \n';
   newStyleSheet += 'body, .header, .comment { font-family: \'pgn4web Liberation Sans\', sans-serif; } \n';
   newStyleSheet += '.move, .moveOn, .variation, .lastMove { font-family: \'pgn4web ChessSansPiratf\', \'pgn4web Liberation Sans\', sans-serif; } \n';

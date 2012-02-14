@@ -531,10 +531,12 @@ function set_defaults() {
   if (movesDisplay_value == "h") { movesDisplay_value = "hidden"; }
   if (movesDisplay_value == "f") { movesDisplay_value = "figurine"; }
   if (movesDisplay_value == "t") { movesDisplay_value = "text"; }
+  // "nosymbols" option is undocumented
+  if (movesDisplay_value == "n") { movesDisplay_value = "nosymbols"; }
   //kept for backward compatibility
   if ((movesDisplay_value == "justified") || (movesDisplay_value == "j")) { movesDisplay_value = "figurine"; }
   document.board.movesDisplay.value = movesDisplay_value;
-  if (!((movesDisplay_value == "hidden") || (movesDisplay_value == "figurine") || (movesDisplay_value == "text"))) {
+  if (!((movesDisplay_value == "hidden") || (movesDisplay_value == "figurine") || (movesDisplay_value == "nosymbols") || (movesDisplay_value == "text"))) {
     alert("error: moves display must be either 'hidden', 'figurine', 'text' or their initials");
     document.board.movesDisplay.value = movesDisplay_value = movesDisplay_default;
   }
