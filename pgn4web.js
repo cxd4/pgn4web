@@ -2625,7 +2625,7 @@ function ParsePGNGameString(gameString) {
           }
         }
         if (MoveComments[StartPly+PlyNumber].length>0) { MoveComments[StartPly+PlyNumber] += ' '; }
-        MoveComments[StartPly+PlyNumber] += ss.substring(variationStart, variationEnd); 
+        MoveComments[StartPly+PlyNumber] += ss.substring(variationStart, variationEnd).replace(/([({])\s+/g, '$1').replace(/\s+([)}])/g, '$1'); 
         start = variationEnd-1;
         break;
 
