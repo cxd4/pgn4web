@@ -8,10 +8,10 @@
 @import url("fonts/pgn4web-font-LiberationSans.css");
 @import url("fonts/pgn4web-font-ChessSansPiratf.css");
 
-html, 
-body { 
-  margin: 0; 
-  padding: 0; 
+html,
+body {
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -47,7 +47,7 @@ a {
 .whiteSquare,
 .highlightWhiteSquare {
   border-color: #EDE8D5;
-  background: #EDE8D5; 
+  background: #EDE8D5;
 }
 
 .blackSquare,
@@ -108,7 +108,7 @@ a {
 .move,
 .moveOn,
 .comment {
-  text-decoration: none;   
+  text-decoration: none;
   font-family: 'pgn4web Liberation Sans', sans-serif; /* fixes IE9 body css issue */
 }
 
@@ -120,7 +120,7 @@ a {
 .move,
 .moveOn,
 .comment {
-  font-size: 12px; 
+  font-size: 12px;
 }
 
 .move,

@@ -21,9 +21,9 @@
     location.protocol + "//" + location.hostname + location.pathname.replace(/\/[^\/]*$/, "/live/live.pgn") :
     "live/live.pgn";
   // accepts pgnData as alias for pgnFile for consistency with board.html
-  if ((pgnFile = gup("pgnData")) === "") { 
+  if ((pgnFile = gup("pgnData")) === "") {
     if ((pgnFile = gup("pgnFile")) === "") {
-      pgnFile = pgnFile_default; 
+      pgnFile = pgnFile_default;
     }
   }
 
@@ -32,20 +32,20 @@
     demoFlag = true; alertFlag = true;
   } else { demoFlag = false; alertFlag = false; }
 
-  if ((refreshMinutes = gup("refreshMinutes")) === "") { 
+  if ((refreshMinutes = gup("refreshMinutes")) === "") {
     refreshMinutes = 1;
   } else {
     testMinutes = refreshMinutes + "";
     if ((testMinutes.match(/[^0-9\.]/)) || (refreshMinutes === 0)) {
-      if (alertFlag) { 
+      if (alertFlag) {
 	      alert("ERROR: refreshMinutes parameter must be a positive number.\n" +
-		    "Supplied " + testMinutes + "; defaulting to 1."); 
+		    "Supplied " + testMinutes + "; defaulting to 1.");
       }
       refreshMinutes = 1;
     }
   }
 
-  SetPgnUrl(pgnFile); 
+  SetPgnUrl(pgnFile);
   SetShortcutKeysEnabled(true);
   SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, false);
 

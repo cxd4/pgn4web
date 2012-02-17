@@ -46,7 +46,7 @@
       pgnData = unescape(window.location.search.match(thisRegExp)[3]);
     }
   }
- 
+
   if (pgnData) {
     SetPgnUrl(pgnData); // if set, this has precedence over the inline PGN in the HTML file
 
@@ -75,7 +75,7 @@
   }
   displayGame = parseInt(displayGame, 10);
   if (displayGame === 0) { displayGame = 1; }
- 
+
   var alertFlag = demoFlag = false;
   thisRegExp = /(&|\?)(refreshDemo|rd)=([^&]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
@@ -88,7 +88,7 @@
     gameDemoMaxPly = unescape(window.location.search.match(thisRegExp)[3]).split(",");
     for (g in gameDemoMaxPly) { gameDemoMaxPly[g] = isNaN(p = parseInt(gameDemoMaxPly[g], 10)) ? 0 : p; }
   }
- 
+
   var refreshMinutes = refreshMinutes_default;
   var stepFlag = true;
   thisRegExp = /(&|\?)(refreshMinutes|rm)=([^&]*)(&|$)/i;
@@ -97,7 +97,7 @@
     if (isNaN(refreshMinutes)) { refreshMinutes = refreshMinutes_default; }
     if (refreshMinutes <= 0) { refreshMinutes = refreshMinutes_default; }
   }
-  
+
   // special mode for the about.html page of the chess games viewer extension for google chrome
   if ((typeof(chrome) != "undefined") && (typeof(chrome.extension) != "undefined") && (typeof(chrome.extension.getURL) != "undefined") && (pgnData == chrome.extension.getURL("demoLiveGames.pgn")) && (refreshMinutes)) {
     refreshMinutes = 0.1;
@@ -130,7 +130,7 @@
   // undocumented URL parameter: use only within the chrome extension
   thisRegExp = /(&|\?)(rememberHidden|rh)=([^&]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
-    try { 
+    try {
       rememberedFilteredGames = JSON.parse(unescape(window.location.search.match(thisRegExp)[3]));
       if (rememberedFilteredGames[rememberedFilteredGames.length - 1] === pgnData) {
         rememberedFilteredGames.splice(rememberedFilteredGames.length - 1, 1);
@@ -334,7 +334,7 @@ function firstFromDisplayGame(dGame) {
   if (dGame > numberOfGames) { dGame = numberOfGames; }
   else if (dGame < -numberOfGames) { dGame = -numberOfGames; }
 
-  if (dGame > 0) { dGame--; } // positive displayGame starts from +1 as first game 
+  if (dGame > 0) { dGame--; } // positive displayGame starts from +1 as first game
 
   dGameAdjustment = 0;
   if (filteredGames.length > 0) {
@@ -399,7 +399,7 @@ function checkForHiddenGame(event, site, date, round, white, black) {
 
 function hideEndedGames() {
   for (g = 0; g < numberOfGames; g++) {
-    if ((typeof(gameResult[g]) == "undefined") || (gameResult[g].indexOf("*") == -1)) { 
+    if ((typeof(gameResult[g]) == "undefined") || (gameResult[g].indexOf("*") == -1)) {
       hideGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g]);
     }
   }
@@ -416,7 +416,7 @@ function restoreHiddenGames() {
 function pgnGameForBoard(gameNum) {
   if (!LiveBroadcastDemo) { return pgnGame[gameNum]; }
 
-  if (gameDemoMaxPly[gameNum] > gameDemoLength[gameNum]) { return pgnGame[gameNum]; } 
+  if (gameDemoMaxPly[gameNum] > gameDemoLength[gameNum]) { return pgnGame[gameNum]; }
 
   Init(gameNum);
 
