@@ -142,7 +142,7 @@ The user can interact with the pgn4web chessboard <a href="javascript:void(0);" 
 <p></p>
 A <a href="javascript:void(0);" onclick="showSection('search_tool')">search tool</a> allows searching within the PGN games.
 <p></p>
-Errors alert messages are logged, such as failures to load PGN games, incorrect PGN games or incorrect FEN strings. When an error is encountered, the top left chessboard square will flash to signal the exception. The error alert log can be reviewed clicking on the same top left chessboard square. 
+Errors alert messages are logged, such as failures to load PGN games, incorrect PGN games or incorrect FEN strings. When an error is encountered, the top left chessboard square will flash to signal the exception. The error alert log can be reviewed clicking on the same top left chessboard square.
 
 </div>
 
@@ -154,7 +154,7 @@ The user can interact with the pgn4web chessboard using the keyboard:
 
 <script type="text/javascript">
 
-document.write("<table style='padding:0;' border='0'>");	
+document.write("<table style='padding:0;' border='0'>");
 print_help_row("h , l", "game start, end (also arrow up, down keys)");
 print_help_row("u, i", "find previous, next comment");
 print_help_row("j , k", "move backward, forward (also arrow left, right keys)");
@@ -189,7 +189,7 @@ print_help_row("&nbsp;", "");
 document.write("</table>");
 
 if (opener && (typeof(opener.shortcutKeysEnabled) != "undefined")) {
-  document.write('Shortcut keys currently ' + (opener.shortcutKeysEnabled ? "enabled, disable" : "disabled, enable") + ' in the chessboard with shift+escape or clicking square ' + shortcutSquareKeyEnable + ' (assuming ' + colorAtTheBottom + ' on bottom).\n'); 
+  document.write('Shortcut keys currently ' + (opener.shortcutKeysEnabled ? "enabled, disable" : "disabled, enable") + ' in the chessboard with shift+escape or clicking square ' + shortcutSquareKeyEnable + ' (assuming ' + colorAtTheBottom + ' on bottom).\n');
 } else {
   document.write('Shortcut keys info not available from the opener window, please check about shortcut keys in the chessboard with shift+escape or clicking square ' + shortcutSquareKeyEnable + ' (assuming ' + colorAtTheBottom + ' on bottom).\n');
 }
@@ -217,7 +217,7 @@ if (opener && (typeof(opener.boardTitle) != "undefined")) {
     }
     if (rowDisplayed) { print_help_row("&nbsp;", ""); }
   }
-  document.write("</table>");	
+  document.write("</table>");
   document.write("Squares labeled assuming " + colorAtTheBottom + " on bottom.");
 } else {
   document.write("shortcut squares info not available from the opener window, please hover the mouse pointer on each square of the chessboard to check for their shortcut action.");
@@ -230,14 +230,14 @@ if (opener && (typeof(opener.boardTitle) != "undefined")) {
 <div id="search_tool_section" class="section">
 
 <script type="text/javascript">
-document.write('Access the search tool either directly with the search form (if available on the web page) or via the popup search box invoked with the ' + shortcutSquareSearchPopup + ' shortcut square (assuming ' + colorAtTheBottom + ' on bottom) and/or the \'s\' shortcut key. The ' + shortcutSquareSearchRepeat + ' shortcut square (assuming ' + colorAtTheBottom + ' on bottom) and/or the \'enter\' shortcut key repeat the last search. The ' + shortcutSquareSearchRepeatBackward + ' shortcut square (assuming ' + colorAtTheBottom + ' on bottom) and/or the \'shift-enter\' shortcut key repeat the last search backward.'); 
+document.write('Access the search tool either directly with the search form (if available on the web page) or via the popup search box invoked with the ' + shortcutSquareSearchPopup + ' shortcut square (assuming ' + colorAtTheBottom + ' on bottom) and/or the \'s\' shortcut key. The ' + shortcutSquareSearchRepeat + ' shortcut square (assuming ' + colorAtTheBottom + ' on bottom) and/or the \'enter\' shortcut key repeat the last search. The ' + shortcutSquareSearchRepeatBackward + ' shortcut square (assuming ' + colorAtTheBottom + ' on bottom) and/or the \'shift-enter\' shortcut key repeat the last search backward.');
 </script>
 
 <p></p>
 For full details about the search tool (implemented as regular expression match of the text of the PGN game), please refer to <a href="http://code.google.com/p/pgn4web/wiki/SearchTool" target="_blank">the pgn4web search tool wiki page</a>; please find below a sample list of useful search patterns:
 <p></p>
 <script type="text/javascript">
-document.write("<table style='padding:0;' border='0'>");	
+document.write("<table style='padding:0;' border='0'>");
 print_help_row("something", "search for text <i>something</i> anywhere in the PGN game");
 print_help_row("White\\s*\"Somebody", "search for player <i>Somebody</i> as White");
 print_help_row("\(White|Black\)\\s*\"Somebody", "search for player <i>Somebody</i> as either White or Black");

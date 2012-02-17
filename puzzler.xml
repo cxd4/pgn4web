@@ -16,7 +16,7 @@
     <Require feature="dynamic-height"/>
   </ModulePrefs>
 
-  <UserPref name="squareSize" 
+  <UserPref name="squareSize"
      display_name="size"
      datatype="enum"
      default_value="0">
@@ -30,7 +30,7 @@
     <EnumValue value="110" display_value="giant"/>
     <EnumValue value="150" display_value="colossal"/>
   </UserPref>
-  <UserPref name="colorScheme" 
+  <UserPref name="colorScheme"
      display_name="color"
      datatype="enum"
      default_value="0">
@@ -129,7 +129,7 @@
           theObj.style.height = frameHeight + "px";
           theObj.width = frameWidth;
           theObj.style.width = frameWidth + "px";
-          theObj.src = "http://go.casaschi.net/pgn4web-puzzler?" + 
+          theObj.src = "http://go.casaschi.net/pgn4web-puzzler?" +
             "pf=hash" +
             "&ss=" + squareSize +
             "&lch=" + lightColorHex[colorScheme] +

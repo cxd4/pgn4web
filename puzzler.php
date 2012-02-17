@@ -57,8 +57,8 @@ function get_pgnText($pgnUrl) {
 
 $pgnText = get_pgnText($pgnData);
 
-// for simplicity, remove all comments from the game text 
-// to avoid spurious [ in comments breaking the regular expression 
+// for simplicity, remove all comments from the game text
+// to avoid spurious [ in comments breaking the regular expression
 // splitting the PGN data into games
 $pgnText = preg_replace("/{[^}]*}/", "", $pgnText);
 $pgnText = preg_replace("/;[^\n$]*/", "", $pgnText);
@@ -72,10 +72,10 @@ $gameNum = get_param("gameNum", "gn", "");
 $expiresDate = "";
 if ($gameNum == "random") { $gameNum = rand(1, $numGames); }
 else if (!preg_match("/^\d+$/", $gameNum)) {
-  $timeNow = time(); 
+  $timeNow = time();
   $expiresDate = gmdate("D, d M Y H:i:s", (floor($timeNow / (60 * 60 * 24)) + 1) * (60 * 60 * 24)) . " GMT";
   if (!preg_match("/^[ +-]\d+$/", $gameNum)) { $gameNum = 0; } // space is needed since + is urldecoded as space
-  $gameNum = floor(($gameNum + ($timeNow / (60 * 60 * 24))) % $numGames) + 1; 
+  $gameNum = floor(($gameNum + ($timeNow / (60 * 60 * 24))) % $numGames) + 1;
 }
 else if ($gameNum < 1) { $gameNum = 1; }
 else if ($gameNum > $numGames) { $gameNum = $numGames; }
@@ -148,7 +148,7 @@ if (($pieceFont == "hash") || ($pieceFont == "h")) {
 }
 if (($pieceFont == "default") || ($pieceFont == "d")) {
   if ($pieceSize < 28) { $pieceFont = "uscf"; }
-  else { 
+  else {
     if ($pieceSize > 39) { $pieceFont = "merida"; }
     else { $pieceFont = "alpha"; }
   }
@@ -178,11 +178,11 @@ $sidetomoveWidthCss = $sidetomoveWidth . "px";
 
 
 $frameBorderColorHex = get_param("frameBorderColorHex", "fbch", "C6CEC3");
-if ($frameBorderColorHex == "none") { 
+if ($frameBorderColorHex == "none") {
   $frameBorderStyleCss = "none";
   $frameBorderWidth = 0;
   $frameBorderWidthCss = "0";
-  $frameBorderColorHex = "000000"; 
+  $frameBorderColorHex = "000000";
 } else {
   $frameBorderStyleCss = "outset";
   $frameBorderWidth = ceil($squareSize / 50);
@@ -247,12 +247,12 @@ $thisPage = curPageURL();
 
 
 $expiresMeta = "";
-if ($expiresDate) { 
+if ($expiresDate) {
   header("Expires: " . $expiresDate);
   $expiresMeta = "<meta http-equiv=\"Expires\" content=\"" . $expiresDate . "\">";
 }
 
-if ($rawGame) { 
+if ($rawGame) {
   print $rawGame;
   exit;
 }
@@ -268,14 +268,14 @@ $expiresMeta
 <title>chess puzzler</title>
 
 <!-- debug info
-$debugInfo 
+$debugInfo
 end of debug info -->
 
 <style type="text/css">
 
-html, 
-body { 
-  margin: 0; 
+html,
+body {
+  margin: 0;
   padding: $framePaddingCss;
   background: $backgroundColorHexCss;
 }
@@ -425,7 +425,7 @@ function customFunctionOnMove() {
 
 }
 
-</script>		  
+</script>
 
 
 <!-- start of google analytics code -->
