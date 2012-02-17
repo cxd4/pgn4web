@@ -40,7 +40,7 @@
        if (window.location.search.match(thisRegExp) !== null) {
            pgnFilename = unescape(window.location.search.match(thisRegExp)[3]);
        }
-   } 
+   }
    if (pgnFilename === "") {
        pgnTitle = "no PGN file loaded";
    } else {
@@ -62,7 +62,7 @@
    SetImagePath("alpha/36"); // use "" path if images are in the same folder as this javascript file
    SetImageType("png");
    SetHighlightOption(false); // true or false
-   SetGameSelectorOptions(" Event         Site          Rd  White            Black            Res  Date", true, 12, 12, 2, 15, 15, 3, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);   
+   SetGameSelectorOptions(" Event         Site          Rd  White            Black            Res  Date", true, 12, 12, 2, 15, 15, 3, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
    SetCommentsIntoMoveText(true);
    SetCommentsOnSeparateLines(false);
    SetAutoplayDelay(1000); // milliseconds
@@ -87,7 +87,7 @@
    }
 
    function customShortcutKey_Shift_1() {
-     if (typeof(openFidePlayerUrl) == "function") { 
+     if (typeof(openFidePlayerUrl) == "function") {
        openFidePlayerUrl(gameWhite[currentGame], customPgnHeaderTag('WhiteFideId'));
      }
    }
@@ -142,28 +142,28 @@ document.write(pgnTitle);
 <td class="containerCell" width=50% style="text-align: left;">
 
 <table>
-<tr><td class="label">date</td><td><span id="GameDate"></span></td></tr> 
+<tr><td class="label">date</td><td><span id="GameDate"></span></td></tr>
 <tr><td class="label">site</td><td><span style="white-space: nowrap;" id="GameSite"></span></td></tr>
 <tr><td colspan=2 class="rowSpace"></td></tr>
 <tr><td class="label">event</td><td><span style="white-space: nowrap;" id="GameEvent"></span></td></tr>
-<tr><td class="label">round</td><td><span id="GameRound"></span></td></tr> 
+<tr><td class="label">round</td><td><span id="GameRound"></span></td></tr>
 <tr><td colspan=2 class="rowSpace"></td></tr>
-<tr><td class="label">white</td><td class="boldItem"><span style="white-space: nowrap;" id="GameWhite"></span></td></tr> 
-<tr><td class="label">black</td><td class="boldItem"><span style="white-space: nowrap;" id="GameBlack"></span></td></tr> 
+<tr><td class="label">white</td><td class="boldItem"><span style="white-space: nowrap;" id="GameWhite"></span></td></tr>
+<tr><td class="label">black</td><td class="boldItem"><span style="white-space: nowrap;" id="GameBlack"></span></td></tr>
 <tr><td colspan=2 class="rowSpace"></td></tr>
-<tr><td class="label">result</td><td class="boldItem"><span id="GameResult"></span></td></tr> 
+<tr><td class="label">result</td><td class="boldItem"><span id="GameResult"></span></td></tr>
 <tr><td colspan=2 class="rowSpace"></td></tr>
-<tr><td class="label">side</td><td><span id="GameSideToMove"></span></td></tr> 
-<tr><td class="label">last</td><td><span class="move" id="GameLastMove"></span></td></tr> 
-<tr><td class="label">next</td><td><span class="move" id="GameNextMove"></span></td></tr> 
+<tr><td class="label">side</td><td><span id="GameSideToMove"></span></td></tr>
+<tr><td class="label">last</td><td><span class="move" id="GameLastMove"></span></td></tr>
+<tr><td class="label">next</td><td><span class="move" id="GameNextMove"></span></td></tr>
 <tr><td colspan=2 class="rowSpace"></td></tr>
 <tr><td class="label">ply</td><td><span id=currPly>0</span> (<span id=numPly>0</span>)</td></tr>
-<tr><td class="label">game</td><td><span id=currGm>0</span> (<span id=numGm>0</span>)</td></tr> 
+<tr><td class="label">game</td><td><span id=currGm>0</span> (<span id=numGm>0</span>)</td></tr>
 <tr><td colspan=2 class="rowSpace"></td></tr>
 <tr><td class="label">archive</td>
 <td>
 <script type="text/javascript">
-  if (pgnFilename) { 
+  if (pgnFilename) {
     document.write('<a class="linkItem" href="' + pgnFilename + '">' + pgnFilename + '</a>');
   }
 </script>

@@ -35,7 +35,7 @@ e5 { [%clk 00:53:07] } 4... Ne4 { [%clk 00:52:08] } 5. Qxd4 { [%clk
 00:51:09] } 5... d5 { $5 [%clk 00:50:10] } 6. exd6 { [%clk 00:49:11] } 6...
 Nxd6 { [%clk 00:48:12] } 7. Bd3 { [%clk 00:47:13] } 7... Nc6 { [%clk
 00:46:14] } 8. Qf4 { [%clk 00:45:15] } ; the rest of this line is a comment
-8... Be7 { [%clk 00:44:16] [%pgn4web pgn4web message] } 9. O-O { [%clk 
+8... Be7 { [%clk 00:44:16] [%pgn4web pgn4web message] } 9. O-O { [%clk
 00:43:17] } 9... O-O { [%clk 00:42:18] } 1/2-1/2
 
 [Event "Another event"]
@@ -48,7 +48,7 @@ Nxd6 { [%clk 00:48:12] } 7. Bd3 { [%clk 00:47:13] } 7... Nc6 { [%clk
 [SetUp "1"]
 [FEN "rnbqkb1r/pppppppp/5n2/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 1 2"]
 
-2. Nc3 d5 { $140 3. exd5 Nxd5 $10 } 3. e5 $5 d4 $1 4. exf6 dxc3 5. d4 ($142 
+2. Nc3 d5 { $140 3. exd5 Nxd5 $10 } 3. e5 $5 d4 $1 4. exf6 dxc3 5. d4 ($142
 5. exg7 $10) 5... cxb2 $15 6. fxg7 bxa1=Q 7. gxh8=Q Qb1 { ?? } 8. Qxf8+ $1
 Kxf8 9. Bh6+ $18 *
 
