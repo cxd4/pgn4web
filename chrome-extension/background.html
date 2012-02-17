@@ -3,14 +3,14 @@
 
 <!--
   pgn4web javascript chessboard
-  copyright (C) 2009, 2011 Paolo Casaschi
+  copyright (C) 2009, 2012 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 -->
 
 <!--
 
-HTML, CSS and Javascript code optimized for use as extension 
+HTML, CSS and Javascript code optimized for use as extension
 of Google Chrome. Don't use with any other browser.
 
 -->
@@ -75,13 +75,13 @@ function openRemoteUrl(remoteUrl, live, all) {
 
 // until chromium bug http://crbug.com/84024 is resolved, context menus might appear
 // for links not validating as PGN, such as http://host/file.html?pgnData=games.pgn
- 
+
 function pgnLinkOnClick(info, tab, live, all) {
   var remoteUrl = info.linkUrl;
   if (!remoteUrl) { return; }
-  if (!validateUrl(remoteUrl, live)) { 
+  if (!validateUrl(remoteUrl, live)) {
     alert("warning: because of a limitation of the Google Chrome extensions URL pattern matching capabilities, the clicked link displays the link context menu of the chess games viewer even if the link's URL does not match the usual pattern of PGN chess games URLs; hence the link will not be opened automatically in the chess games viewer; to open the link, copy the link's URL and manually enter the URL using the page context menu.");
-    return; 
+    return;
   }
   openRemoteUrl(remoteUrl, live, all);
 }
@@ -146,7 +146,7 @@ function pgntextOnClick(info, tab) {
   if (needsValidation && (!validatePgnText(pgnText[pgnTextIndex]))) {
     delete pgnText[pgnTextIndex];
     alert("warning: the supplied text does not match the usual PGN text pattern; copy the text and use the chess games viewer page menu to manually enter the amended PGN text.");
-    return; 
+    return;
   }
 
   url = "chess-games-viewer.html?pgnBackground=" + pgnTextIndex++;
@@ -196,7 +196,7 @@ function helpAboutChessGamesViewer(info, tab) {
   showAboutPage();
 }
 
-// "page" and "selection" context menu to open PGN text 
+// "page" and "selection" context menu to open PGN text
 
 chrome.contextMenus.create({"title": "Enter PGN chess games TEXT for viewing on a single board", "contexts": ["page"], "onclick": pgntextOnClick});
 
@@ -337,8 +337,8 @@ chrome.tabs.onRemoved.addListener(removeLocalPgnFilesOnRemoved);
 function checkWebRequestForPgnFiles(requestDetails) {
   if (requestDetails.tabId === null) { return; }
   if (!validatePgnUrl(requestDetails.url)) { return; }
-  
-  if (pgnWebRequests[requestDetails.tabId]) { 
+
+  if (pgnWebRequests[requestDetails.tabId]) {
     for (r in pgnWebRequests[requestDetails.tabId]) {
       if (pgnWebRequests[requestDetails.tabId][r].match(requestDetails.url.replace(/(\?|#).*$/, ""))) {
         return;

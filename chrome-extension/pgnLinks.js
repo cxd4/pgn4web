@@ -1,6 +1,6 @@
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009, 2011 Paolo Casaschi
+ *  copyright (C) 2009, 2012 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
@@ -33,7 +33,7 @@ function notifyPgnHrefLinks() {
   }
 
   if (pgn4web_pgnHrefLinks.length > 0) {
-    chrome.extension.sendRequest({pgnHrefLinks: pgn4web_pgnHrefLinks}, function(res){}); 
+    chrome.extension.sendRequest({pgnHrefLinks: pgn4web_pgnHrefLinks}, function(res){});
   }
 
 }
@@ -42,7 +42,7 @@ function notifyPgnHrefLinks() {
 // if any dynamically added links are missing, the code below could replace the
 // plain call to notifyPgnHrefLinks() in order to be sure notifyPgnHrefLinks()
 // is executed after page load; normally it should not be necessary
-// 
+//
 // if (document.readyState == "complete") { notifyPgnHrefLinks(); }
 // else { window.addEventListener("load", notifyPgnHrefLinks, false); }
 //
