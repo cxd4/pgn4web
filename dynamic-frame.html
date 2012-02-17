@@ -120,7 +120,7 @@ if (refreshMinutes) {
 }
 
 SetInitialHalfmove(refreshMinutes ? "end" : "start", true);
- 
+
 SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, stepFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false)
 
 pgnData = pgnData_default;
@@ -324,9 +324,9 @@ function myOnResize() {
   oldRules = myRulesLength(sheet);
 
   myInsertRule(sheet, "body", "padding: 0; margin: 0; white-space: nowrap; overflow: hidden; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;");
-  myInsertRule(sheet, "a:link", "text-decoration: none; color: #" + fontColorHex + ";"); 
-  myInsertRule(sheet, "a:visited", "text-decoration: none; color: #" + fontColorHex + ";"); 
-  myInsertRule(sheet, "a:active", "text-decoration: none; color: #" + fontColorHex + ";"); 
+  myInsertRule(sheet, "a:link", "text-decoration: none; color: #" + fontColorHex + ";");
+  myInsertRule(sheet, "a:visited", "text-decoration: none; color: #" + fontColorHex + ";");
+  myInsertRule(sheet, "a:active", "text-decoration: none; color: #" + fontColorHex + ";");
   myInsertRule(sheet, "a:hover", "text-decoration: none; color: #" + fontColorHex + ";");
   if (bare) {
     if (horizontalLayout) { myInsertRule(sheet, ".boardTable", "margin-left: " + ((ww - 8 * squareSize) / 2) + "px;"); }
@@ -477,7 +477,7 @@ function fixColorFlag() {
       theObject.style.display = "inline";
       theObject.style.visibility = CurrentPly % 2 ? "hidden" : "visible";
       theObject.style.marginLeft = whiteFlagPadding ? "0.1em" : "";
-      theObject.style.marginRight = whiteFlagPadding ? "1em" : ""; 
+      theObject.style.marginRight = whiteFlagPadding ? "1em" : "";
     }
     if (theObject = document.getElementById("whiteColorFlagFiller")) {
       theObject.style.display = whiteFlagPadding ? "inline" : "none";
@@ -549,7 +549,7 @@ if (window.parent !== window) {
 }
 
 function updateBareShortcut() {
-  boardShortcut("G5", bare ? "unhide game info\n\n" + gameTooltipInfo() : "maximize chessboard and hide game info", toggleBareChessboard); 
+  boardShortcut("G5", bare ? "unhide game info\n\n" + gameTooltipInfo() : "maximize chessboard and hide game info", toggleBareChessboard);
 }
 
 function replayPreviousMoves(numPlies) {
