@@ -17,7 +17,7 @@
 
 -->
 
-<style type="text/css"> 
+<style type="text/css">
 
 @import url("fonts/pgn4web-font-ChessSansPiratf.css");
 @import url("fonts/pgn4web-font-LiberationSans.css");
@@ -96,7 +96,6 @@ body {
 
 <link rel="shortcut icon" href="pawn.ico" />
 
-<script src="pgn4web.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 // reads the URL search string and sets parameters
@@ -104,11 +103,11 @@ body {
 function gup( name ){
 
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-  var regexS = "[\\?&]"+name+"=([^&#]*)";  
+  var regexS = "[\\?&]"+name+"=([^&#]*)";
   regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   var regex = new RegExp( regexS, "i" );
   var results = regex.exec( window.location.href );
-  if( results !== null ) { return decodeURIComponent(results[1]); } 
+  if( results !== null ) { return decodeURIComponent(results[1]); }
 
   // allows for short version of the URL parameters, for instance sC matches squareColor
   compact_name = name.charAt(0);
@@ -116,15 +115,15 @@ function gup( name ){
     if (name.charAt(i).match(/[A-Z]/)) { compact_name = compact_name + name.charAt(i).toLowerCase(); }
   }
   name = compact_name;
-  
+
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-  regexS = "[\\?&]"+name+"=([^&#]*)";  
+  regexS = "[\\?&]"+name+"=([^&#]*)";
   regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   regex = new RegExp( regexS, "i" );
 
   results = regex.exec( window.location.href );
   if( results !== null ) { return decodeURIComponent(results[1]); }
-  
+
   return "";
 }
 
@@ -143,15 +142,10 @@ if ((movesDisplay == "justified") || (movesDisplay == "j")) { movesDisplay = "fi
 if ((movesDisplay != "figurine") && (movesDisplay != "nosymbols") && (movesDisplay != "text") && (movesDisplay != "hidden")) { movesDisplay = "figurine"; }
 
 blockChessInformantNAGSymbols = (movesDisplay != "figurine");
-if ((movesDisplay == "figurine") || (movesDisplay == "nosymbols")) {
-  newStyleSheet = '<style type="text/css"> \n';
-  newStyleSheet += 'body, .header, .comment { font-family: \'pgn4web Liberation Sans\', sans-serif; } \n';
-  newStyleSheet += '.move, .moveOn, .variation, .lastMove { font-family: \'pgn4web ChessSansPiratf\', \'pgn4web Liberation Sans\', sans-serif; } \n';
-  newStyleSheet += '</style>';
-  document.write(newStyleSheet);
-}
 
 </script>
+
+<script src="pgn4web.js" type="text/javascript"></script>
 <script src="chess-informant-NAG-symbols.js" type="text/javascript"></script>
 
 <script src="pgn-decoder.js" type="text/javascript"></script>
@@ -217,7 +211,7 @@ if (highlightMode == "n") { highlightMode = "none"; }
 if (highlightMode == "s") { highlightMode = "square"; }
 borderSize = highlightMode == "border" ? Math.floor(0.05 * squareSize) : 0;
 
-if ((lightColor = gup("lightColorName")) === "") { 
+if ((lightColor = gup("lightColorName")) === "") {
   if ((lightColor = "#" + gup("lightColorHex")) == "#") {
     if ((lightColor = "#" + sex2hex(gup("lightColorSex"))) == "#") { lightColor = "#EFF4EC"; }
   }
@@ -233,12 +227,12 @@ if ((highlightColor  = gup("highlightColorName")) === "") {
   }
 }
 if ((highlightMode == 'none') || (highlightColor == 'none') || (highlightColor == '#none')) {
-  highlightMode = 'none';    
+  highlightMode = 'none';
   borderSize = 0;
   highlightLightColor = lightColor;
   highlightDarkColor = darkColor;
   clearShortcutSquares("D", "7");
-} else { 
+} else {
   highlightLightColor = highlightColor;
   highlightDarkColor = highlightColor;
 }
@@ -266,7 +260,7 @@ if ((pieceFont == "random") || (pieceFont == "r")) {
 }
 if ((pieceFont == "default") || (pieceFont == "d")) {
   if (pieceSize < 28) { pieceFont = "uscf"; }
-  else { 
+  else {
     if (pieceSize > 39) { pieceFont = "merida"; }
     else { pieceFont = "alpha"; }
   }
@@ -276,7 +270,7 @@ SetImagePath("" + pieceFont + "/" + pieceSize);
 if (pieceFont == "svgchess") {
   SetImagePath("" + pieceFont);
   SetImageType("svg");
-} 
+}
 
 if ((boardBorderColor = gup("boardBorderColorName")) === "") {
   if ((boardBorderColor = "#" + gup("boardBorderColorHex")) == "#") {
@@ -347,8 +341,8 @@ if ((fontHeaderColor = gup("fontHeaderColorName")) === "") {
 
 if ((fontMovesSize = percentFixFromUrl( gup("fontMovesSize") )) === "") { fontMovesSize = "100%"; }
 if ((fontMovesColor = gup("fontMovesColorName")) === "") {
-  if ((fontMovesColor = "#" + gup("fontMovesColorHex")) == "#") { 
-    if ((fontMovesColor = "#" + sex2hex(gup("fontMovesColorSex"))) == "#") { fontMovesColor = "#000000";} 
+  if ((fontMovesColor = "#" + gup("fontMovesColorHex")) == "#") {
+    if ((fontMovesColor = "#" + sex2hex(gup("fontMovesColorSex"))) == "#") { fontMovesColor = "#000000";}
   }
 }
 
@@ -392,18 +386,18 @@ if (gup("delay") === "") { SetAutoplayDelay(1000); }
 else { SetAutoplayDelay(gup("delay")); }
 
 // use init_Game to avoid overlap with existing global var initialGame in pgn4web.js
-if ((init_Game = gup("initialGame")) === "") { 
-  init_Game = "first"; 
+if ((init_Game = gup("initialGame")) === "") {
+  init_Game = "first";
 } else {
-  if (init_Game == "f") { init_Game = "first"; } 
+  if (init_Game == "f") { init_Game = "first"; }
   if (init_Game == "l") { init_Game = "last"; }
   if (init_Game == "r") { init_Game = "random"; }
 }
 SetInitialGame(init_Game);
 
 // use init_Halfmove to avoid overlap with existing global var initialHalfmove in pgn4web.js
-always_Halfmove = false;     	
-if ((init_Halfmove = gup("initialHalfmove")) === "") { 
+always_Halfmove = false;
+if ((init_Halfmove = gup("initialHalfmove")) === "") {
   init_Halfmove = "start";
 } else {
   if (init_Halfmove == "s") { init_Halfmove = "start"; }
@@ -431,10 +425,10 @@ if ((buttonsDisplay != "custom") && (buttonsDisplay != "standard")) { buttonsDis
 
 // SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
 // default:           (" ...", false, 0, 0, 0, 15, 15, 0, 10)
-SetGameSelectorOptions(null, false,  0, 0, 0, 15, 15, 3, 10); 
+SetGameSelectorOptions(null, false,  0, 0, 0, 15, 15, 3, 10);
 
 if (buttonsDisplay == "custom") {
-      
+
   if ((controlBackgroundColor = gup("controlBackgroundColorName")) === "") {
     if ((controlBackgroundColor = "#" + gup("controlBackgroundColorHex")) == "#") {
       controlBackgroundColorSex = gup("controlBackgroundColorSex");
@@ -443,8 +437,8 @@ if (buttonsDisplay == "custom") {
       } else if (controlBackgroundColorSex == "d") {
             controlBackgroundColor = "#d";
       } else {
-        if ((controlBackgroundColor = "#" + sex2hex(controlBackgroundColorSex)) == "#") { 
-          controlBackgroundColor = "#default"; 
+        if ((controlBackgroundColor = "#" + sex2hex(controlBackgroundColorSex)) == "#") {
+          controlBackgroundColor = "#default";
         }
       }
     }
@@ -456,10 +450,10 @@ if (buttonsDisplay == "custom") {
   if (controlBackgroundColor == "default") { buttonsDisplay = "standard"; }
 
   if ((controlTextColor = gup("controlTextColorName")) === "") {
-    if ((controlTextColor = "#" + gup("controlTextColorHex")) == "#") { 
-      if ((controlTextColor = "#" + sex2hex(gup("controlTextColorSex"))) == "#") { controlTextColor = "#000000"; } 
+    if ((controlTextColor = "#" + gup("controlTextColorHex")) == "#") {
+      if ((controlTextColor = "#" + sex2hex(gup("controlTextColorSex"))) == "#") { controlTextColor = "#000000"; }
     }
-  } 
+  }
 
 } else {
   controlBackgroundColor = "default";
@@ -532,19 +526,19 @@ if ((fenString = gup("fenString")) !== "") {
 
 if ((newPgnText = gup("pgnText")) !== "") {
   document.getElementById('pgnText').value = newPgnText = cleanPgnInput(newPgnText);
-} 
+}
 
 if ((newPgnEncoded = gup("pgnEncoded")) !== "") {
   newPgnDecoded = DecodePGN(newPgnEncoded);
   document.getElementById('pgnText').value = newPgnDecoded = cleanPgnInput(newPgnDecoded);
-} 
+}
 
 if ((pgnData = gup("pgnData")) !== "") {
   SetPgnUrl(pgnData);
   document.getElementById('pgnText').value = "";
 }
 
-if ((pgnData !== "") && ((newPgnEncoded !== "") || (newPgnText !== "") || 
+if ((pgnData !== "") && ((newPgnEncoded !== "") || (newPgnText !== "") ||
 			 (fenString !== "") || (newPgnId !==""))) {
   myAlert("warning: pgnData value superseeds pgnEncoded, pgnText, pgnId and/or fenString values.", false);
 }
@@ -612,7 +606,7 @@ switch (frameWidth) {
   case "p":
   case "page":
     frameWidth = "";
-    textWidth = "100%"; 
+    textWidth = "100%";
     fixFrameWidthToBoard = false;
     break;
   case "":
@@ -625,29 +619,29 @@ switch (frameWidth) {
 }
 
 if ((gup("horizontalLayout") == "true") || (gup("horizontalLayout") == "t")) { horizontalLayout = true; }
-else { horizontalLayout = false; }	
+else { horizontalLayout = false; }
 
 if ((gup("refreshDemo") == "true") || (gup("refreshDemo") == "t")) { demoFlag = true; alertFlag = true; }
 else { demoFlag = false; alertFlag = false; }
 
-if ((refreshMinutes = gup("refreshMinutes")) === "") { 
+if ((refreshMinutes = gup("refreshMinutes")) === "") {
   refreshMinutes = 0;
 }
 else {
   testMinutes = refreshMinutes + "";
   if ((testMinutes.match(/[^0-9\.]/)) || (refreshMinutes === 0)) {
     myAlert("error: refreshMinutes parameter must be a positive number.\n" +
-	    "Supplied " + testMinutes + "; live refresh disabled.", true); 
+	    "Supplied " + testMinutes + "; live refresh disabled.", true);
     refreshMinutes = 0;
   }
 }
 
 if (refreshMinutes > 0) {
   if (pgnData !== "") { SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, true); }
-  else { 
-    myAlert("error: live broadcast requires using pgnData parameter as PGN source.", true); 
+  else {
+    myAlert("error: live broadcast requires using pgnData parameter as PGN source.", true);
   }
-  if (gup("initialHalfmove") === "") { 
+  if (gup("initialHalfmove") === "") {
     SetInitialHalfmove(init_Halfmove = "end", always_Halfmove = true);
   }
   if (gup("autoplayMode") === "") {
@@ -729,103 +723,108 @@ if (gup("help") !== "") {
 
 newStyleSheet = '<style type="text/css"> \n';
 
+if ((movesDisplay == "figurine") || (movesDisplay == "nosymbols")) {
+  newStyleSheet += 'body, .header, .comment { font-family: \'pgn4web Liberation Sans\', sans-serif; } \n';
+  newStyleSheet += '.move, .moveOn, .variation, .lastMove { font-family: \'pgn4web ChessSansPiratf\', \'pgn4web Liberation Sans\', sans-serif; } \n';
+}
+
 newStyleSheet += 'body { background: ' + backgroundColor + '; padding: ' + framePadding + '; } \n';
 
 newStyleSheet += '.pieceImage { width: ' + pieceSize + '; height: ' + pieceSize + '; } \n';
 
 if (highlightMode == 'border') {
 
-  newStyleSheet += '.whiteSquare { ' + 
+  newStyleSheet += '.whiteSquare { ' +
                    'width: ' + (squareSize - 2 * borderSize) + 'px; ' +
                    'height: ' + (squareSize - 2 * borderSize) + 'px; ' +
-                   'background: ' + lightColor + '; ' + 
+                   'background: ' + lightColor + '; ' +
                    'border-style: solid; ' +
                    'border-width: ' + borderSize + 'px; ' +
                    'border-color: ' + lightColor + '; ' +
                    '} \n';
-				   
-  newStyleSheet += '.blackSquare { ' + 
+
+  newStyleSheet += '.blackSquare { ' +
                    'width: ' + (squareSize - 2 * borderSize) + 'px; ' +
                    'height: ' + (squareSize - 2 * borderSize) + 'px; ' +
-                   'background: ' + darkColor + '; ' + 
+                   'background: ' + darkColor + '; ' +
                    'border-style: solid; ' +
                    'border-width: ' + borderSize + 'px; ' +
                    'border-color: ' + darkColor + '; ' +
                    '} \n';
-  
-  newStyleSheet += '.highlightWhiteSquare { ' + 
+
+  newStyleSheet += '.highlightWhiteSquare { ' +
                    'width: ' + (squareSize - 2 * borderSize) + 'px; ' +
                    'height: ' + (squareSize - 2 * borderSize) + 'px; ' +
-                   'background: ' + lightColor + '; ' + 
+                   'background: ' + lightColor + '; ' +
                    'border-style: solid; ' +
                    'border-width: ' + borderSize + 'px; ' +
                    'border-color: ' + highlightLightColor + '; ' +
                    '} \n';
 
-  newStyleSheet += '.highlightBlackSquare { ' + 
+  newStyleSheet += '.highlightBlackSquare { ' +
                    'width: ' + (squareSize - 2 * borderSize) + 'px; ' +
                    'height: ' + (squareSize - 2 * borderSize) + 'px; ' +
-                   'background: ' + darkColor + '; ' + 
+                   'background: ' + darkColor + '; ' +
                    'border-style: solid; ' +
                    'border-width: ' + borderSize + 'px; ' +
                    'border-color: ' + highlightDarkColor + '; ' +
-                   '} \n';  
+                   '} \n';
 
 } else {
 
-  newStyleSheet += '.whiteSquare { ' + 
+  newStyleSheet += '.whiteSquare { ' +
                    'width: ' + (squareSize - 2 * borderSize) + 'px; ' +
                    'height: ' + (squareSize - 2 * borderSize) + 'px; ' +
-                   'background: ' + lightColor + '; ' + 
-                   '} \n';
-				   
-  newStyleSheet += '.blackSquare { ' + 
-                   'width: ' + (squareSize - 2 * borderSize) + 'px; ' +
-                   'height: ' + (squareSize - 2 * borderSize) + 'px; ' +
-                   'background: ' + darkColor + '; ' + 
-                   '} \n';
-  
-  newStyleSheet += '.highlightWhiteSquare { ' + 
-                   'width: ' + (squareSize - 2 * borderSize) + 'px; ' +
-                   'height: ' + (squareSize - 2 * borderSize) + 'px; ' +
-                   'background: ' + highlightLightColor + '; ' + 
+                   'background: ' + lightColor + '; ' +
                    '} \n';
 
-  newStyleSheet += '.highlightBlackSquare { ' + 
+  newStyleSheet += '.blackSquare { ' +
                    'width: ' + (squareSize - 2 * borderSize) + 'px; ' +
                    'height: ' + (squareSize - 2 * borderSize) + 'px; ' +
-                   'background: ' + highlightDarkColor + '; ' + 
-                   '} \n';  
+                   'background: ' + darkColor + '; ' +
+                   '} \n';
+
+  newStyleSheet += '.highlightWhiteSquare { ' +
+                   'width: ' + (squareSize - 2 * borderSize) + 'px; ' +
+                   'height: ' + (squareSize - 2 * borderSize) + 'px; ' +
+                   'background: ' + highlightLightColor + '; ' +
+                   '} \n';
+
+  newStyleSheet += '.highlightBlackSquare { ' +
+                   'width: ' + (squareSize - 2 * borderSize) + 'px; ' +
+                   'height: ' + (squareSize - 2 * borderSize) + 'px; ' +
+                   'background: ' + highlightDarkColor + '; ' +
+                   '} \n';
 
   }
 
-  newStyleSheet += '.boardTable { border-color: ' + boardBorderColor + '; } \n'; 
-  
+  newStyleSheet += '.boardTable { border-color: ' + boardBorderColor + '; } \n';
+
   if (boardShadowColor != 'transparent') {
-    newStyleSheet += '.boardTable { ' +   
+    newStyleSheet += '.boardTable { ' +
       'box-shadow: 0px 0px ' + Math.ceil(squareSize / 2) + 'px ' + boardShadowColor + '; ' +
       '} \n';
   }
 
   if (!fontMovesSize.match(/[^0-9]/)) { fontMovesSize += 'px'; }
   newStyleSheet += '.move { color: ' + fontMovesColor + '; font-size: ' + fontMovesSize + '; } \n';
-  
+
   if (!fontMovesSize.match(/[^0-9]/)) { fontMovesSize += 'px'; }
   newStyleSheet += '.moveOn { ' +
                    ' background: ' + (highlightMoveColor == 'none' ? backgroundColor : highlightMoveColor) + '; ' +
-                   ' color: ' + fontMovesColor + '; font-size: ' + fontMovesSize + '; ' + 
+                   ' color: ' + fontMovesColor + '; font-size: ' + fontMovesSize + '; ' +
                    '} \n';
-  
+
   if (!fontHeaderSize.match(/[^0-9]/)) { fontHeaderSize += 'px'; }
   newStyleSheet += '.header { color: ' + fontHeaderColor + '; font-size: ' + fontHeaderSize + '; } \n';
-  
+
   if (!fontCommentsSize.match(/[^0-9]/)) { fontCommentsSize += 'px'; }
-  newStyleSheet += '.comment { ' + 
-                   'color: ' + fontCommentsColor + 
-                   '; font-size: ' + (fontCommentsSize == 'moves' ? fontMovesSize : fontCommentsSize) + '; ' + 
+  newStyleSheet += '.comment { ' +
+                   'color: ' + fontCommentsColor +
+                   '; font-size: ' + (fontCommentsSize == 'moves' ? fontMovesSize : fontCommentsSize) + '; ' +
                    '} \n';
- 
-  if ((controlBackgroundColor != 'default') && (controlBackgroundColor != '#default')) { 
+
+  if ((controlBackgroundColor != 'default') && (controlBackgroundColor != '#default')) {
     controlFontSize = Math.floor(squareSize / 2.5);
     newStyleSheet += '.buttonControl, .buttonControlPlay, .buttonControlStop { ' +
                      'border-style: solid; ' +
@@ -864,10 +863,10 @@ document.write("<tr>");
 document.write("<td id='extendedBoard' align=center valign=top>");
 display_board();
 document.write("</td>");
-if (horizontalLayout === true) { 
+if (horizontalLayout === true) {
   document.write("<td id='headerMovesPadding' width='0px' >");
-  document.write("<td id='extendedHeaderMoves' align=left valign=top>"); 
-} else { 
+  document.write("<td id='extendedHeaderMoves' align=left valign=top>");
+} else {
   document.write("</tr><tr><td id='extendedHeaderMoves' align=center valign=top>");
 }
 display_header_moves();
@@ -880,7 +879,7 @@ function display_board() {
   document.write("<table width=100% cellpadding=0 cellspacing=0 border=0>");
   document.write("<tr><td align=center valign=top>");
   if (buttonsDisplay != "hidden") { document.write("<div id='GameSelector'></div>"); }
-  document.write("<div id='GameBoard'></div>"); 
+  document.write("<div id='GameBoard'></div>");
   if (buttonsDisplay != "hidden") { document.write("<div id='GameButtons'></div>"); }
   document.write("</td></tr></table>");
 }
@@ -893,18 +892,18 @@ function display_header_moves() {
     } else {
       document.write("<div id='boardHeadermovesPadding' class='moves' style='text-align: center;'>&nbsp;</div>");
     }
-  }  
+  }
   if ((headerDisplay != "hidden") || (movesDisplay != "hidden")) {
   document.write("<div id='headerMoves' style='overflow:auto; overflow-x:hidden;" +
-                 " height: " + textHeight + "; width: " + textWidth + 
+                 " height: " + textHeight + "; width: " + textWidth +
                  "; scrollbar-base-color: " + backgroundColor + ";'>");
-  } 
+  }
 
   if (headerDisplay == "live") {
 
     document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
     document.write("<td align=left>");
-    document.write("<div class='header headerLive' style='white-space: nowrap; margin-left: "  + textMargin + 
+    document.write("<div class='header headerLive' style='white-space: nowrap; margin-left: "  + textMargin +
                    "; margin-right: 3%;' id=GameWhite></div>");
     document.write("</td><td align=right>");
     document.write("<div class='header headerLive' style='white-space: nowrap; margin-right: " + textMargin +
@@ -913,29 +912,29 @@ function display_header_moves() {
 
     document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
     document.write("<td align=left>");
-    document.write("<div class='header headerLive' style='white-space: nowrap; margin-left: "  + textMargin + 
+    document.write("<div class='header headerLive' style='white-space: nowrap; margin-left: "  + textMargin +
                    "; margin-right: 3%;' id=GameBlack></div>");
     document.write("</td><td align=right>");
-    
+
     document.write("<div class='header headerLive' style='white-space: nowrap; margin-right: " + textMargin +
                    "; margin-left: 3%;'  id=GameBlackClock></div>");
     document.write("</td></tr></table>");
 
     document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
     document.write("<td align=left>");
-    document.write("<div class='header headerLive' style='white-space: nowrap; margin-left: "  + textMargin + 
+    document.write("<div class='header headerLive' style='white-space: nowrap; margin-left: "  + textMargin +
                    "; margin-right: 3%;' id=GameResult></div>");
     document.write("</td><td align=right>");
     document.write("<div class='header headerLive' style='white-space: nowrap; margin-right: " + textMargin +
 		   "; margin-left: 3%;'><span class='lastMove'>&nbsp;<span class='NAGs'>&nbsp;</span><span id=GameLastMove></span></span></div>");
     document.write("</td></tr></table>");
   }
-   
+
   if (headerDisplay == "justified") {
 
     document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
     document.write("<td align=left>");
-    document.write("<div class='header' style='white-space: nowrap; margin-left: "  + textMargin + 
+    document.write("<div class='header' style='white-space: nowrap; margin-left: "  + textMargin +
                    "; margin-right: 3%;' id=GameWhite></div>");
     document.write("</td><td align=right>");
     document.write("<div class='header' style='white-space: nowrap; margin-right: " + textMargin +
@@ -944,39 +943,39 @@ function display_header_moves() {
 
     document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
     document.write("<td align=left>");
-    document.write("<div class='header' style='white-space: nowrap; margin-left: "  + textMargin + 
+    document.write("<div class='header' style='white-space: nowrap; margin-left: "  + textMargin +
                    "; margin-right: 3%;' id=GameBlack></div>");
     document.write("</td><td align=right>");
-    
+
     document.write("<div class='header' style='white-space: nowrap; margin-right: " + textMargin +
                    "; margin-left: 3%;'  id=GameSite></div>");
     document.write("</td></tr></table>");
 
     document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
     document.write("<td align=left>");
-    document.write("<div class='header' style='white-space: nowrap; margin-left: "  + textMargin + 
+    document.write("<div class='header' style='white-space: nowrap; margin-left: "  + textMargin +
                    "; margin-right: 3%;' id=GameResult></div>");
     document.write("</td><td align=right>");
     document.write("<div class='header' style='white-space: nowrap; margin-right: " + textMargin +
 		    "; margin-left: 3%;'><span id=GameEvent></span><span id=roundDetails></span></div>");
     document.write("</td></tr></table>");
   }
-   
+
   if (headerDisplay == "centered") {
 
     document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
     document.write("<td align=center>");
-    document.write("<div id=playersDetails class='header' style='white-space: nowrap; margin-left: "  + textMargin + 
+    document.write("<div id=playersDetails class='header' style='white-space: nowrap; margin-left: "  + textMargin +
                    "; margin-right: " + textMargin + ";'>");
     document.write("<span id=GameWhite></span><span id=whiteBlackSpacer></span><span id=GameBlack></span><span id=blackResultSpacer></span><span id=GameResult></span>");
     document.write("</div>");
     document.write("</td></tr><tr><td align=center>");
-    document.write("<div class='header' style='white-space: nowrap; margin-left: "  + textMargin + 
+    document.write("<div class='header' style='white-space: nowrap; margin-left: "  + textMargin +
                    "; margin-right: " + textMargin + ";'>");
     document.write("<span id=GameEvent></span><span id=roundDetails></span>");
     document.write("</div>");
     document.write("</td></tr><tr><td align=center>");
-    document.write("<div class='header' style='white-space: nowrap; margin-left: "  + textMargin + 
+    document.write("<div class='header' style='white-space: nowrap; margin-left: "  + textMargin +
                    "; margin-right: " + textMargin + ";'>");
     document.write("<span id=GameSite></span><span id=siteDateSpacer></span><span id=GameDate></span>");
     document.write("</div>");
@@ -988,13 +987,13 @@ function display_header_moves() {
     if (headerDisplay != "hidden") {
       document.write("<div id='headerMovesSpacer' class='header' style='text-align: center;'>&nbsp;</div>");
     }
-    document.write("<div style='margin-left:" + textMargin + "; margin-right:" + textMargin + 
+    document.write("<div style='margin-left:" + textMargin + "; margin-right:" + textMargin +
                    "; text-align: justify;' id=GameText></div>");
-  }  
+  }
 
   if ((headerDisplay != "hidden") || (movesDisplay != "hidden")) {
     document.write("</div>");
-  } 
+  }
 
 }
 
@@ -1006,17 +1005,17 @@ function customFunctionOnPgnTextLoad() {
   if (theObject = document.getElementById("GameButtons"))
   { theObject.style.paddingTop = paddingControlHeight; }
 
-  if (theObject = document.getElementById("GameSelector")) { 
-    if ((buttonsDisplay != "hidden") && (numberOfGames > 1)) { 
-      theObject.style.paddingBottom = paddingControlHeight; 
+  if (theObject = document.getElementById("GameSelector")) {
+    if ((buttonsDisplay != "hidden") && (numberOfGames > 1)) {
+      theObject.style.paddingBottom = paddingControlHeight;
       theObject.style.display = "block";
-    } else { 
-      theObject.style.paddingBottom = "0px"; 
+    } else {
+      theObject.style.paddingBottom = "0px";
       theObject.style.display = "inline";
     }
   }
 
-  if (theObject = document.getElementById("headerMovesPadding")) { 
+  if (theObject = document.getElementById("headerMovesPadding")) {
     if (horizontalLayout === true) { theObject.width = paddingControlWidth + 'px'; }
     else { theObject.style.minHeight = paddingControlHeight; }
   }
@@ -1048,9 +1047,9 @@ function customFunctionOnPgnTextLoad() {
     } else {
       theObject.style.width = frameWidth === "" ? textWidth : frameWidth - 2 * framePadding;
       if (frameHeight === "") { theObject.style.height = textHeight; }
-      else { 
+      else {
        boardHeadermovesPaddingHeight = document.getElementById("boardHeadermovesPadding") ? document.getElementById("boardHeadermovesPadding").offsetHeight : 0;
-	theObject.style.height = frameHeight - boardHeight - 2 * framePadding - boardHeadermovesPaddingHeight; 
+	theObject.style.height = frameHeight - boardHeight - 2 * framePadding - boardHeadermovesPaddingHeight;
       }
     }
   }
@@ -1069,7 +1068,7 @@ function customFunctionOnPgnTextLoad() {
 
   autoScrollToCurrentMoveIfEnabled();
 
-  if (gup("showHeightWidth") !== "") { 
+  if (gup("showHeightWidth") !== "") {
     myAlert("info: board width=" + boardWidth + " height=" + boardHeight, false);
   }
 }
@@ -1123,9 +1122,9 @@ function customFunctionOnPgnGameLoad() {
   if (theObject = document.getElementById("playersDetails")) {
     if ( ( ((gameWhite[currentGame] != undefined) && (gameWhite[currentGame] !== ""))   ||
            ((gameBlack[currentGame] != undefined) && (gameBlack[currentGame] !== ""))   ||
-           ((gameResult[currentGame] != undefined) && (gameResult[currentGame] !== "")) )  && 
+           ((gameResult[currentGame] != undefined) && (gameResult[currentGame] !== "")) )  &&
          ( ((gameEvent[currentGame] != undefined) && (gameEvent[currentGame] !== ""))   ||
-	   ((gameRound[currentGame] != undefined) && (gameRound[currentGame] !== "") && 
+	   ((gameRound[currentGame] != undefined) && (gameRound[currentGame] !== "") &&
 	    (gameRound[currentGame] != "?") && (gameRound[currentGame] != "*"))        ||
 	   ((gameSite[currentGame] != undefined) && (gameSite[currentGame] !== ""))     ||
            ((gameDate[currentGame] != undefined) && (gameDate[currentGame] !== "")) ) ) {
@@ -1138,9 +1137,9 @@ function customFunctionOnPgnGameLoad() {
   if (theObject = document.getElementById("headerMovesSpacer")) {
     if ( ((gameWhite[currentGame] != undefined) && (gameWhite[currentGame] !== ""))   ||
          ((gameBlack[currentGame] != undefined) && (gameBlack[currentGame] !== ""))   ||
-         ((gameResult[currentGame] != undefined) && (gameResult[currentGame] !== "")) || 
+         ((gameResult[currentGame] != undefined) && (gameResult[currentGame] !== "")) ||
          ((gameEvent[currentGame] != undefined) && (gameEvent[currentGame] !== ""))   ||
-	 ((gameRound[currentGame] != undefined) && (gameRound[currentGame] !== "") && 
+	 ((gameRound[currentGame] != undefined) && (gameRound[currentGame] !== "") &&
 	  (gameRound[currentGame] != "?") && (gameRound[currentGame] != "*"))         ||
 	 ((gameSite[currentGame] != undefined) && (gameSite[currentGame] !== ""))     ||
          ((gameDate[currentGame] != undefined) && (gameDate[currentGame] !== "")) ) {
@@ -1153,11 +1152,11 @@ function customFunctionOnPgnGameLoad() {
 // uncomment this to show the result at the end of the moves text
 //
 //   if (theObject = document.getElementById("GameText")) {
-//     if ( (gameResult[currentGame] == "1-0")     || 
+//     if ( (gameResult[currentGame] == "1-0")     ||
 //          (gameResult[currentGame] == "0-1")     ||
 //          (gameResult[currentGame] == "1/2-1/2") ||
 //          (gameResult[currentGame] == "*") ) {
-//       theObject.innerHTML += '<span class="move"> ' + gameResult[currentGame] + '</span>'; 
+//       theObject.innerHTML += '<span class="move"> ' + gameResult[currentGame] + '</span>';
 //     }
 //   }
 
