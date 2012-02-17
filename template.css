@@ -8,10 +8,10 @@
 @import url("fonts/pgn4web-font-LiberationSans.css");
 @import url("fonts/pgn4web-font-ChessSansUsual.css");
 
-html, 
-body { 
-  margin: 0; 
-  padding: 10; 
+html,
+body {
+  margin: 0;
+  padding: 10;
 }
 
 body {
@@ -25,7 +25,7 @@ div, span, table, tr, td {
 }
 
 .boardTable {
-  border-style: double; 
+  border-style: double;
   border-color: black;
   border-width: 3px;
   width: 352px;
@@ -96,7 +96,7 @@ div, span, table, tr, td {
   font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
   line-height: 1.4em;
   font-weight: normal;
-  text-decoration: none;   
+  text-decoration: none;
 }
 
 .moveOn {

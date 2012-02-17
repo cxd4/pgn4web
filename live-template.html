@@ -2,7 +2,7 @@
 
 <!--
   pgn4web javascript chessboard
-  copyright (C) 2009, 2011 Paolo Casaschi
+  copyright (C) 2009, 2012 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 -->
@@ -20,7 +20,7 @@
 
 // SetPgnUrl("live.pgn"); // enable this one for real live broadcast using the live-grab.sh script
    SetPgnUrl("demoLiveGames.pgn"); // enable this one for live broadcast demo
-   
+
 // SetImagePath(""); // use "" path if images are in the same folder as this javascript file
 // SetImageType("png");
 // SetHighlightOption(true); // true or false
@@ -36,7 +36,7 @@
 
    // make sure each time a game is loaded the last played move is shown
    SetInitialHalfmove("end", true); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default)
-   
+
    SetShortcutKeysEnabled(true);
 
    // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false)
@@ -73,7 +73,7 @@
 </td>
 
 <td>
-<span class="label">Live broadcast status:</span> <span id="GameLiveStatus"></span> 
+<span class="label">Live broadcast status:</span> <span id="GameLiveStatus"></span>
 <br>
 <span class="label">Live broadcast refreshed:</span> <span id="GameLiveLastRefreshed"></span>
 <br>
@@ -81,33 +81,33 @@
 <br>
 <span class="label">Live broadcast modified (server time):</span> <span id="GameLiveLastModifiedServer"></span>
 <p></p>
-<span class="label">Event:</span> <span id="GameEvent"></span> 
+<span class="label">Event:</span> <span id="GameEvent"></span>
 <br>
-<span class="label">Site:</span> <span id="GameSite"></span> 
+<span class="label">Site:</span> <span id="GameSite"></span>
 <br>
-<span class="label">Round:</span> <span id="GameRound"></span> 
+<span class="label">Round:</span> <span id="GameRound"></span>
 <br>
-<span class="label">Date:</span> <span id="GameDate"></span> 
+<span class="label">Date:</span> <span id="GameDate"></span>
 <br>
-<span class="label">Time control:</span> <span id="GameTimeControl"></span> 
+<span class="label">Time control:</span> <span id="GameTimeControl"></span>
 <p></p>
-<span class="label">White:</span> <span id="GameWhite"></span> 
+<span class="label">White:</span> <span id="GameWhite"></span>
 <br>
-<span class="label">White clock:</span> <span id="GameWhiteClock"></span> 
+<span class="label">White clock:</span> <span id="GameWhiteClock"></span>
 <p></p>
-<span class="label">Black:</span> <span id="GameBlack"></span> 
+<span class="label">Black:</span> <span id="GameBlack"></span>
 <br>
-<span class="label">Black clock:</span> <span id="GameBlackClock"></span> 
+<span class="label">Black clock:</span> <span id="GameBlackClock"></span>
 <p></p>
-<span class="label">Result:</span> <span id="GameResult"></span> 
+<span class="label">Result:</span> <span id="GameResult"></span>
 <p></p>
-<span class="label">Side to move:</span> <span id="GameSideToMove"></span> 
+<span class="label">Side to move:</span> <span id="GameSideToMove"></span>
 <br>
 <span class="label">Last move:</span> <span class="move" id="GameLastMove"></span>
 <br>
-<span class="label">Next move:</span> <span class="move" id="GameNextMove"></span> 
+<span class="label">Next move:</span> <span class="move" id="GameNextMove"></span>
 <p></p>
-<span class="label">Move comment:</span><br><span id="GameLastComment"></span> 
+<span class="label">Move comment:</span><br><span id="GameLastComment"></span>
 </td>
 
 </tr>
