@@ -168,7 +168,7 @@ function showPgnLinksForTab(tab) {
     if (pgnLinksDisplay[a].toLowerCase() < pgnLinksDisplay[b].toLowerCase()) { return -1; }
     if (pgnLinksDisplay[a].toLowerCase() > pgnLinksDisplay[b].toLowerCase()) { return 1; }
     if (pgnLinksDisplay[a] > pgnLinksDisplay[b]) { return -1; } // if lowercase comparison is equal, place lowercase first
-    if (pgnLinksDisplay[a] < pgnLinksDisplay[b]) { return 1; } 
+    if (pgnLinksDisplay[a] < pgnLinksDisplay[b]) { return 1; }
     return 0;
   }
 
@@ -205,8 +205,8 @@ function showPgnLinksForTab(tab) {
     listObject.style.paddingRight = headerObject.style.paddingRight = "2em";
   } else { listObject.style.marginRight = headerObject.style.marginRight = "2em"; }
 
-  pgnHeaderInnerHTML += ': <span title="the chess games viewer extension detected on this page ' + 
-    pgnLinks.length + (pgnLinks.length == 1 ? ' link' : ' links') + ' to chess games in PGN format">' + 
+  pgnHeaderInnerHTML += ': <span title="the chess games viewer extension detected on this page ' +
+    pgnLinks.length + (pgnLinks.length == 1 ? ' link' : ' links') + ' to chess games in PGN format">' +
     pgnLinks.length + (pgnLinks.length == 1 ? ' link' : ' links') + ' on this page</span>';
 
   var pgnLinkListInnerHTML = "";

@@ -54,7 +54,7 @@ a {
 .highlightWhiteSquare,
 .highlightBlackSquare {
   width: 2.75em; /* default 44px */
-  height: 2.75em; 
+  height: 2.75em;
   border-style: solid;
   border-width: 0.125em; /* default 2px */
 }

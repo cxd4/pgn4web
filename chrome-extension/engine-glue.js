@@ -1,12 +1,12 @@
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009, 2011 Paolo Casaschi
+ *  copyright (C) 2009, 2012 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
 
 // this code integrates the chess viewer extension for Google Chrome
-// with the GarboChess javascript code from Gary Linscott at 
+// with the GarboChess javascript code from Gary Linscott at
 // http://forwardcoding.com/projects/ajaxchess/chess.html and
 // it's derived from the code at that page.
 
@@ -89,7 +89,7 @@ function storeAnalysis(FEN, ev, pv, nodes) {
 
    FEN = FEN.replace(/\s+\d+\s+\d+\s*$/, "");
    index = egStored_FEN.lastIndexOf(FEN);
-   
+
    if (index == -1) {
       additionNeeded = true;
       if (egStored_FEN.length >= egStored_max) {
@@ -112,14 +112,14 @@ function storeAnalysis(FEN, ev, pv, nodes) {
 
    if (additionNeeded) {
       if (FEN.indexOf(" b ") !== -1) { ev = -ev; }
-      ev = (ev > 0 ? "+" : "") + ev; 
+      ev = (ev > 0 ? "+" : "") + ev;
       if (ev.indexOf(".") == -1) { ev += ".0"; }
 
       egStored_FEN.push(FEN);
       egStored_ev.push(ev);
       egStored_pv.push(pv);
       egStored_nodes.push(nodes);
-      
+
       egStored_newAnalysisAdded = true;
    }
    return additionNeeded;
@@ -187,7 +187,7 @@ function InitializeBackgroundEngine() {
 }
 
 function analysisRequestHandler(request, sender, sendResponse) {
-  if (typeof(request.analysisCommand) != "undefined") { 
+  if (typeof(request.analysisCommand) != "undefined") {
      setAnalysisStatus(request.analysisCommand, sender.tab.id, request.FEN);
      sendResponse({});
   }
@@ -195,7 +195,7 @@ function analysisRequestHandler(request, sender, sendResponse) {
 
 chrome.extension.onRequest.addListener(analysisRequestHandler);
 
-function stopAnalysisOnUpdated(tabId) { 
+function stopAnalysisOnUpdated(tabId) {
    chrome.tabs.get(tabId, function (tab) {
       if (tab.url.indexOf(chrome.extension.getURL("chess-games-viewer.html")) == -1) { setAnalysisStatus("stop", tab.id, ""); }
    });
@@ -242,7 +242,7 @@ function loadAnalysisFromLocalStorage() {
 
 function saveAnalysisToLocalStorage() {
    if (!enableAnalysisLocalStorage) { return true; }
-   if (egStored_newAnalysisAdded) {   
+   if (egStored_newAnalysisAdded) {
       try {
          localStorage.setItem("pgn4web_engine_glue_egSaved_FEN", JSON.stringify(egStored_FEN));
          localStorage.setItem("pgn4web_engine_glue_egSaved_ev", JSON.stringify(egStored_ev));

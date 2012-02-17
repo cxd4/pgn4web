@@ -7,7 +7,7 @@
   for credits, license and more details
 -->
 
-<!-- 
+<!--
 
 HTML, CSS and Javascript code optimized for use as extension
 of Google Chrome. Don't use with any other browser.
@@ -44,7 +44,7 @@ of Google Chrome. Don't use with any other browser.
 
    // alert message redefined to take advantage of page layout
    alertPgnHeader = '[Site "chess games error"]\n[Event "click the top left board square for info"]\n';
-   
+
    var backgroundPage;
    if ((typeof(chrome) != "undefined") && (typeof(chrome.extension) != "undefined")) {
       backgroundPage = chrome.extension.getBackgroundPage();
@@ -249,7 +249,7 @@ of Google Chrome. Don't use with any other browser.
       catch (e) { return false; }
       return true;
    }
-   
+
    function getCommentsOnSeparateLinesFromLocalStorage() {
       try { cosl = (localStorage.getItem("pgn4web_chess_games_viewer_commentsOnSeparateLines") == "true"); }
       catch (e) { return commentsOnSeparateLines_default; }
@@ -547,8 +547,8 @@ of Google Chrome. Don't use with any other browser.
    }
 
 
-   function emPixels(em) { return em * document.getElementById("boardTable").offsetHeight / 24.5; } 
- 
+   function emPixels(em) { return em * document.getElementById("boardTable").offsetHeight / 24.5; }
+
    var cycleLMACA = 0;
    function cycleLastMoveAndCommentArea() {
       if ((theObject = document.getElementById("lastMoveAndComment")) && (theObject.style.display == "block")) {
@@ -570,7 +570,7 @@ of Google Chrome. Don't use with any other browser.
          }
       }
    }
- 
+
    function toggleFitResetLastMoveAndCommentArea() {
       if ((theObject = document.getElementById("lastMoveAndComment")) && (theObject.style.display == "block")) {
          if ((theObject.scrollHeight === theObject.clientHeight) || (theObject.offsetHeight == emPixels(21))) { resetLastMoveAndCommentArea(); }
@@ -872,7 +872,7 @@ of Google Chrome. Don't use with any other browser.
       if (theObject = document.getElementById("GameAnalysisPv")) {
          theObject.innerHTML = (typeof(annEval) != "undefined") ? annPv : "";
       }
-   }   
+   }
 
    function clearAnalysisHeader() {
       if (freezeAnalysisHeader) { return; }
@@ -899,7 +899,7 @@ of Google Chrome. Don't use with any other browser.
 
    function annotationGraphMousemove() {
       newMousemoveAnnPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
-      if ((newMousemoveAnnPly !== lastMousemoveAnnPly) || (currentGame !== lastMousemoveAnnGame)) { 
+      if ((newMousemoveAnnPly !== lastMousemoveAnnPly) || (currentGame !== lastMousemoveAnnGame)) {
          lastMousemoveAnnPly = newMousemoveAnnPly <= StartPly + PlyNumber ? newMousemoveAnnPly : -1;
          lastMousemoveAnnGame = currentGame;
          onGraph = ((lastMousemoveAnnPly >= StartPly) && (lastMousemoveAnnPly <= StartPly + PlyNumber));
@@ -967,7 +967,7 @@ of Google Chrome. Don't use with any other browser.
    }
 
    minAutoplayDelay = minAnnotationDelay;
-   maxAutoplayDelay = maxAnnotationDelay; 
+   maxAutoplayDelay = maxAnnotationDelay;
    function setCustomAutoplayDelay() {
       if ((newDelaySec = prompt("Enter custom autoplay delay, in seconds, between " + minAutoplayDelay + " and " + maxAutoplayDelay + ":", Math.floor(Delay / 1000))) && (! isNaN(newDelaySec = parseInt(newDelaySec, 10)))) {
          newDelaySec = Math.min(maxAutoplayDelay, Math.max(minAutoplayDelay, newDelaySec));
@@ -985,7 +985,7 @@ of Google Chrome. Don't use with any other browser.
       return retVal;
    }
 
-   function userToggleAnalysis() { 
+   function userToggleAnalysis() {
       if (checkEngineUnderstandsGameAndWarn()) {
          if (!analysisStarted) { scanGameForFen(); }
          toggleAnalysis();
@@ -1014,7 +1014,7 @@ of Google Chrome. Don't use with any other browser.
       if (backgroundPage.getAnalysisIndexFromFEN(fenPositions[currentGame][CurrentPly]) == -1) { return; }
 
       if (typeof(forward) == "undefined") {
-         forward = ((typeof(event) != "undefined") && (typeof(event.shiftKey) != "undefined")) ? !event.shiftKey : true; 
+         forward = ((typeof(event) != "undefined") && (typeof(event.shiftKey) != "undefined")) ? !event.shiftKey : true;
       }
       if (wasAutoPlayOn = isAutoPlayOn) { SetAutoPlay(false); }
       for (var thisPly = CurrentPly + (forward ? 1 : -1); ; thisPly = thisPly + (forward ? 1 : -1)) {
@@ -1060,7 +1060,7 @@ of Google Chrome. Don't use with any other browser.
          if ((newPgnUrl === pgnData) && (newPgnUrl === pgnUrl) && (LiveBroadcastDelay > 0) && (!newPgnUrl.match(/\.zip(\?|#|$)/i))) {
             switchBoardView();
          } else {
-            location.href = "live-mosaic-viewer.html?pgnData=" + escape(newPgnUrl) + "&refreshMinutes=1&hp=t"; 
+            location.href = "live-mosaic-viewer.html?pgnData=" + escape(newPgnUrl) + "&refreshMinutes=1&hp=t";
          }
       }
    }
@@ -1185,7 +1185,7 @@ of Google Chrome. Don't use with any other browser.
                                        break;
                                  }
                               }
-                           } 
+                           }
                         }
                         if (unzippedPgnText) {
                            newPgnText += unzippedPgnText + "\n\n\n";
@@ -1199,7 +1199,7 @@ of Google Chrome. Don't use with any other browser.
                   } else {
                      errorFiles.push(theFileName);
                   }
-                  if (! --pgnFilesLeft) { useNewPgnTextFromFiles(newPgnText, validFiles, invalidFiles, errorFiles); }                            
+                  if (! --pgnFilesLeft) { useNewPgnTextFromFiles(newPgnText, validFiles, invalidFiles, errorFiles); }
                };
             })(files[f].name);
             reader.onerror = (function(theFileName) {
