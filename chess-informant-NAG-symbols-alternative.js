@@ -49,7 +49,7 @@ if ((typeof(blockChessInformantNAGSymbols) != "boolean") || (!blockChessInforman
   NAG[141] = ''; // 'aimed against';
   NAG[142] = Nl + '&#87;' + Ne; // 'better is';
   NAG[143] = ''; // 'worse is';
-  NAG[144] = Nl + '&#61; + Ne'; // 'equivalent is';
+  NAG[144] = Nl + '&#61;' + Ne; // 'equivalent is';
   NAG[145] = 'RR'; // 'editorial comment';
   NAG[146] = 'N'; // 'novelty';
   NAG[147] = NAG[244] = Nl + '&#88;' + Ne; // 'weak point';
@@ -73,7 +73,7 @@ if ((typeof(blockChessInformantNAGSymbols) != "boolean") || (!blockChessInforman
   for (ii = 202; ii <= 219; ii++) { NAG[ii] = ''; }
   for (ii = 222; ii <= 237; ii++) { NAG[ii] = ''; }
   NAG[238] = Nl + '&#70;' + Ne; // 'space advantage';
-  NAG[241] = Nl + '&#80;' + Ne; // 'center';
+  NAG[241] = Nl + '&#90;' + Ne; // 'center';
   NAG[242] = Nl + '&#62;' + Ne; // 'kingside';
   NAG[243] = Nl + '&#60;' + Ne; // 'queenside';
   NAG[254] = Nl + '&#34;' + Ne; // 'with';

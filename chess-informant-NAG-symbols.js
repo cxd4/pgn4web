@@ -49,7 +49,7 @@ if ((typeof(blockChessInformantNAGSymbols) != "boolean") || (!blockChessInforman
   NAG[141] = ''; // 'aimed against';
   NAG[142] = Nl + '&#196;' + Ne; // 'better is';
   NAG[143] = ''; // 'worse is';
-  NAG[144] = Nl + '&#61; + Ne'; // 'equivalent is';
+  NAG[144] = Nl + '&#61;' + Ne; // 'equivalent is';
   NAG[145] = 'RR'; // 'editorial comment';
   NAG[146] = 'N'; // 'novelty';
   NAG[147] = NAG[244] = Nl + '&#94;' + Ne; // 'weak point';
