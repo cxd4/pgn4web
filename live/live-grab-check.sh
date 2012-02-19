@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #  pgn4web javascript chessboard
-#  copyright (C) 2009, 2011 Paolo Casaschi
+#  copyright (C) 2009, 2012 Paolo Casaschi
 #  see README file and http://pgn4web.casaschi.net
 #  for credits, license and more details
 
@@ -9,7 +9,7 @@ if [ "$1" == "--help" ]
 then
 	echo
 	echo "$(basename $0)"
-	echo 
+	echo
 	echo "Shell script to check status of live-grab.sh processes"
 	echo
 	echo "Note: note it assumes that live-grab.sh is always starter from its own"
@@ -43,7 +43,7 @@ eval $pgn4web_scan
 length=${#pgn4web_pid[@]}
 if [ $length -gt 0 ]
 then
-	echo pgn4web live-grab.sh processes: $length 
+	echo pgn4web live-grab.sh processes: $length
 fi
 
 pgn4web_dir=$(dirname $0)

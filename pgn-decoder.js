@@ -1,6 +1,6 @@
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009, 2011 Paolo Casaschi
+ *  copyright (C) 2009, 2012 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  *
@@ -21,17 +21,17 @@ var encodingVersion_dec;
 var encodingVersion_enc;
 var encodingVersion = encodingVersion_dec = 1;
 
-if (((encodingCharSet_enc != undefined) && (encodingCharSet_enc != encodingCharSet_dec)) || 
+if (((encodingCharSet_enc != undefined) && (encodingCharSet_enc != encodingCharSet_dec)) ||
     ((encodingVersion_enc != undefined) && (encodingVersion_enc != encodingVersion_dec))) {
   errorString = "error: PGN encoding/decoding mismatch";
-  if (typeof myAlert == "function") { myAlert(errorString); } 
+  if (typeof myAlert == "function") { myAlert(errorString); }
   else { alert(errorString); }
 }
 
 function DecodePGN(bytes) {
 
   if (bytes.charAt(bytes.length - 1) != encodingCharSet.charAt(encodingVersion)) {
-    errorString = "error: PGN encoding version mismatch (e:" + 
+    errorString = "error: PGN encoding version mismatch (e:" +
                   bytes.charAt(bytes.length - 1) + " d:" + encodingCharSet.charAt(encodingVersion) + ")";
     if (typeof myAlert == "function") { myAlert(errorString); }
     else { alert(errorString); }
@@ -559,9 +559,9 @@ function DecodePGN(bytes) {
   o="";
 
   function B() { if(a===0) { b=encodingCharSet.indexOf(bytes.charAt(e++)); a=6; } return ((b>>--a)&0x01); }
-  
-  while(originalLength>0) { i=0; 
-    while(l[i]<0) { 
+
+  while(originalLength>0) { i=0;
+    while(l[i]<0) {
       if(B()) { i=-l[i]; }
       else { i++; }
     }

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #  pgn4web javascript chessboard
-#  copyright (C) 2009, 2011 Paolo Casaschi
+#  copyright (C) 2009, 2012 Paolo Casaschi
 #  see README file and http://pgn4web.casaschi.net
 #  for credits, license and more details
 
@@ -13,7 +13,7 @@ if [ -z "$1" ] || [ "$1" == "--help" ]
 then
   echo
   echo "$(basename $0) remotePgnUrl localPgnFile refreshSeconds timeoutHours"
-  echo 
+  echo
   echo "Shell script periodically fetching a PGN file for a pgn4web live broadcast."
   echo
   echo "Parameters:"
@@ -73,10 +73,10 @@ if [ $? -ne 0 ]
 then
 	print_error "failed setting umask 0000"
         exit
-fi 
+fi
 
 if [ -z "$1" ]
-then 
+then
 	exit
 else
 	remotePgnUrl=$1
@@ -94,22 +94,22 @@ then
 	print_error "delete the file or choose another filename and restart"
 	exit
 fi
-if [ $(echo "$localPgnFile" | grep "\*") ] 
+if [ $(echo "$localPgnFile" | grep "\*") ]
 then
-	print_error "localPgnFile should not contain \"*\"" 
+	print_error "localPgnFile should not contain \"*\""
 	exit
 fi
-if [ $(echo "$localPgnFile" | grep "\?") ] 
+if [ $(echo "$localPgnFile" | grep "\?") ]
 then
 	print_error "localPgnFile should not contain \"?\""
 	exit
 fi
-if [ $(echo "$localPgnFile" | grep "\[") ] 
+if [ $(echo "$localPgnFile" | grep "\[") ]
 then
 	print_error "localPgnFile should not contain \"[\""
 	exit
 fi
-if [ $(echo "$localPgnFile" | grep "\]") ] 
+if [ $(echo "$localPgnFile" | grep "\]") ]
 then
 	print_error "localPgnFile should not contain \"]\""
 	exit
@@ -144,7 +144,7 @@ if [ -z "$(which curl)" ]
 then
 	print_error "missing curl"
 	exit
-else 
+else
 	grabCmdLine="curl --silent --remote-time --time-cond $tmpLocalPgnFile --output $tmpLocalPgnFile --url $remotePgnUrl"
 fi
 	# wget alternative to curl, but --timestamp option is not compatible with --output-document
@@ -156,7 +156,7 @@ print_log "refreshSeconds: $refreshSeconds"
 print_log "timeoutHours: $timeoutHours"
 
 step=0
-while [ $step -le $timeoutSteps ] 
+while [ $step -le $timeoutSteps ]
 do
 	$grabCmdLine
 	cmp -s "$tmpLocalPgnFile" "$localPgnFile"

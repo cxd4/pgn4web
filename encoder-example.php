@@ -2,7 +2,7 @@
 
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009, 2011 Paolo Casaschi
+ *  copyright (C) 2009, 2012 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
@@ -22,7 +22,7 @@ if ($pgnText) {
   $pgnText = preg_replace("/\]\s*\[/", "]\n[", $pgnText);
   $pgnText = preg_replace("/^\s*\[/", "[", $pgnText);
   $pgnText = preg_replace("/\n[\s*\n]+/", "\n\n", $pgnText);
-} else { 
+} else {
   $pgnTextbox = $pgnText = <<<END
 
 [White "?"]
@@ -47,9 +47,9 @@ print <<<END
 
 <head>
 
-<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"> 
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
 
-<title>pgn4web PGN encoder/decoder php example</title> 
+<title>pgn4web PGN encoder/decoder php example</title>
 
 <link rel="shortcut icon" href="pawn.ico" />
 
@@ -61,13 +61,13 @@ print <<<END
 
 <center>
 
-<iframe src="board.html?am=l&d=1000&ss=26&ps=d&pf=d&lcs=YeiP&dcs=Qcij&bbcs=D91v&hm=n&hcs=Udiz&bd=s&cbcs=YeiP&ctcs=\$\$\$\$&hd=j&md=f&tm=13&fhcs=\$\$\$\$&fhs=80p&fmcs=\$\$\$\$&fccs=v71\$&hmcs=Qcij&fms=80p&fcs=m&cd=i&bcs=____&fp=13&hl=t&fh=b&fw=p&pe=$pgnEncoded" 
+<iframe src="board.html?am=l&d=1000&ss=26&ps=d&pf=d&lcs=YeiP&dcs=Qcij&bbcs=D91v&hm=n&hcs=Udiz&bd=s&cbcs=YeiP&ctcs=\$\$\$\$&hd=j&md=f&tm=13&fhcs=\$\$\$\$&fhs=80p&fmcs=\$\$\$\$&fccs=v71\$&hmcs=Qcij&fms=80p&fcs=m&cd=i&bcs=____&fp=13&hl=t&fh=b&fw=p&pe=$pgnEncoded"
  height="312" width="900" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
 your web browser and/or your host do not support iframes as required to display the chessboard
 </iframe>
 
 <form action="$thisScript" method="POST">
-<input type="submit" style="width:900px;" value="pgn4web PGN encoder/decoder php example"> 
+<input type="submit" style="width:900px;" value="pgn4web PGN encoder/decoder php example">
 <textarea id="pgnTextbox" name="pgnTextbox" style="height:300px; width:900px;">$pgnTextbox</textarea>
 </form>
 

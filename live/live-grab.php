@@ -2,7 +2,7 @@
 
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009, 2011 Paolo Casaschi
+ *  copyright (C) 2009, 2012 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
@@ -13,16 +13,16 @@ error_reporting(E_ERROR | E_PARSE);
 
 
 
-// configuration section 
+// configuration section
 
 // set this to true to enable the script, set to false by default
-$enableScript = TRUE; 
+$enableScript = TRUE;
 $enableScript = FALSE;
 
 // set this to the sha256 hash of your password of choice;
 // you can calculate the sha256 of your password of choice by
 // entering that passowrd in the form, submitting it and then
-// looking at the invalid password error message; 
+// looking at the invalid password error message;
 $storedSecretHash = "346e85156ba458d324507f0d4cfa40286d4c052d2640cf6dd2321aa6cfcdcb07";
 
 // end of configuration section, dont modify below this line
@@ -97,8 +97,8 @@ function validate_pgnUrl($pgnUrl) {
 }
 
 function validate_refreshSeconds($refreshSeconds) {
-  if (preg_match("/^[0-9]+$/", $refreshSeconds) && 
-      ($refreshSeconds > 9) && ($refreshSeconds < 3601)) 
+  if (preg_match("/^[0-9]+$/", $refreshSeconds) &&
+      ($refreshSeconds > 9) && ($refreshSeconds < 3601))
   { return $refreshSeconds; }
   else { return 49; }
 }
@@ -124,7 +124,7 @@ function obfuscate_secret($s, $n = 15) {
     if ($c > 32 && $c < 127) { $s[$i] = chr(($c - 33 + $n + $i) % 94 + 33); }
   }
   return $s;
-} 
+}
 
 $secret = stripslashes($_POST["secret"]);
 $secretHash = hash("sha256", obfuscate_secret($secret));
@@ -148,9 +148,9 @@ $pgnText = validate_pgnText(stripslashes($_POST["pgnText"]));
 
 <head>
 
-<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"> 
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
 
-<title>pgn4web live games grab</title> 
+<title>pgn4web live games grab</title>
 
 <link rel="shortcut icon" href="../pawn.ico" />
 
@@ -158,13 +158,13 @@ $pgnText = validate_pgnText(stripslashes($_POST["pgnText"]));
 
 body {
   color: black;
-  background: white; 
+  background: white;
   font-family: sans-serif;
   padding: 20px;
 }
 
-a:link, a:visited, a:hover, a:active { 
-  color: black; 
+a:link, a:visited, a:hover, a:active {
+  color: black;
   text-decoration: none;
 }
 
@@ -229,7 +229,7 @@ a:link, a:visited, a:hover, a:active {
 
 <body>
 
-<h1 name="top">pgn4web live games grab</h1> 
+<h1 name="top">pgn4web live games grab</h1>
 
 <script type='text/javascript'>grabTimeout = null;</script>
 
@@ -259,10 +259,10 @@ function fileInformation($myFile) {
   else return "name=" . $myFile . " type=" . $ft .
               " size=" . filesize($myFile) .
               " permissions=" . substr(sprintf('%o', fileperms($myFile)), -4) .
-              " time=" . date("M d H:i:s e", filemtime($myFile)); 
+              " time=" . date("M d H:i:s e", filemtime($myFile));
 }
 
-if ($secretHash == $storedSecretHash) { 
+if ($secretHash == $storedSecretHash) {
 
   $overwrite = FALSE;
   $message = logMsg("\n" . fileInformation($localPgnFile) .
@@ -274,8 +274,8 @@ if ($secretHash == $storedSecretHash) {
     case "grab PGN URL overwrite":
       $overwrite = TRUE;
     case "grab PGN URL":
-      $message = $message . "\n" . "action=" . $action . "\n" . "localPgnFile=" . $localPgnFile . 
-                 "\n" . "pgnUrl=" . $pgnUrl . "\n" . "refreshSeconds=" . $refreshSeconds . 
+      $message = $message . "\n" . "action=" . $action . "\n" . "localPgnFile=" . $localPgnFile .
+                 "\n" . "pgnUrl=" . $pgnUrl . "\n" . "refreshSeconds=" . $refreshSeconds .
                  "\n" . "refreshSteps=" . $refreshSteps;
       $errorMessage = checkFileExisting($localPgnFile, $localPgnTmpFile, $localPgnLogFile);
       if (!$overwrite && $errorMessage) {
@@ -286,12 +286,12 @@ if ($secretHash == $storedSecretHash) {
         } else {
           $logOk = FALSE;
           $newLastPgnUrlModification = "";
-          $pgnHeaders = get_headers($pgnUrl, 1); 
-          if (! $pgnHeaders) { 
+          $pgnHeaders = get_headers($pgnUrl, 1);
+          if (! $pgnHeaders) {
             $message = $message . "\n" . "error=failed getting PGN URL headers";
           } else {
-            if (! $pgnHeaders['Last-Modified']) { 
-              $message = $message . "\n" . "warning=failed getting PGN URL last modified header"; 
+            if (! $pgnHeaders['Last-Modified']) {
+              $message = $message . "\n" . "warning=failed getting PGN URL last modified header";
             } else {
               $newLastPgnUrlModification = $pgnHeaders['Last-Modified'];
             }
@@ -305,7 +305,7 @@ if ($secretHash == $storedSecretHash) {
               } else {
                 if ($newLastPgnUrlModification != "") {
                   $timeNewLastPgnUrlModification = strtotime($newLastPgnUrlModification);
-                  if (! $timeNewLastPgnUrlModification) { 
+                  if (! $timeNewLastPgnUrlModification) {
                     $message = $message . "\n" . "warning=failed parsing time of last modification from server";
                   } else {
                     if (! touch($localPgnTmpFile, $timeNewLastPgnUrlModification)) {
@@ -317,10 +317,10 @@ if ($secretHash == $storedSecretHash) {
                   $message = $message . "\n" . "error=failed renaming " . $localPgnTmpFile . " as " . $localPgnFile;
                 } else {
                   $message = $message . "\n" . "info=updated " . $localPgnFile;
-                  if ($newLastPgnUrlModification != "") { 
+                  if ($newLastPgnUrlModification != "") {
                     $message = $message . "\n" . "oldTimestamp=" . $lastPgnUrlModification;
                     $message = $message . "\n" . "newTimestamp=" . $newLastPgnUrlModification;
-                    $lastPgnUrlModification = $newLastPgnUrlModification; 
+                    $lastPgnUrlModification = $newLastPgnUrlModification;
                   }
                   $logOk = TRUE;
                 }
@@ -333,12 +333,12 @@ if ($secretHash == $storedSecretHash) {
             $message = $message . "\n" . "info=timer not restarted";
           } else {
             $message = $message . "\n" . "info=timer restarted";
-            print("<script type='text/javascript'>" . 
+            print("<script type='text/javascript'>" .
                   "if (grabTimeout) { clearTimeout(grabTimeout); } " .
                   "grabTimeout = setTimeout('grabPgnUrl()'," . (1000 * $refreshSeconds) . "); " .
                   "</script>");
           }
-        } 
+        }
       }
       break;
 
@@ -356,7 +356,7 @@ if ($secretHash == $storedSecretHash) {
           $pgnTextToSave = $pgnText . "\n";
         }
         umask(0000);
-        if (! file_put_contents($localPgnFile, $pgnTextToSave)) { 
+        if (! file_put_contents($localPgnFile, $pgnTextToSave)) {
           $message = $message . "\n" . "error=failed updating file " . $localPgnFile;
         } else {
           $message = $message . "\n" . "info=file " . $localPgnFile . " updated";
@@ -386,8 +386,8 @@ if ($secretHash == $storedSecretHash) {
 
 } else {
 
-  $message = logMsg("\nerror=invalid password" . "\n" . 
-                    "the hash of the password you entered is:" . "\n" . 
+  $message = logMsg("\nerror=invalid password" . "\n" .
+                    "the hash of the password you entered is:" . "\n" .
                     $secretHash);
 
 }
@@ -402,14 +402,14 @@ function validate_and_set_secret(s) {
 };
 
 function validate_and_set_localPgnFile(localPgnFile) {
-  if (!localPgnFile.match("^[A-Za-z0-9_\-]+\.(pgn|txt)$")) { 
+  if (!localPgnFile.match("^[A-Za-z0-9_\-]+\.(pgn|txt)$")) {
     alert("ERROR: invalid local PGN file: " + localPgnFile + "\ndefaulting to: live.pgn");
     document.getElementById("localPgnFile").value = "live.pgn";
   }
 }
 
 function validate_and_set_refreshSeconds(refreshSeconds) {
-  if (!refreshSeconds.match("^[0-9]+$") || (refreshSeconds < 10) || (refreshSeconds > 3600)) { 
+  if (!refreshSeconds.match("^[0-9]+$") || (refreshSeconds < 10) || (refreshSeconds > 3600)) {
     alert("ERROR: invalid refresh seconds: " + refreshSeconds + "\ndefaulting to: 49");
     document.getElementById("refreshSeconds").value = 49;
   }
@@ -418,7 +418,7 @@ function validate_and_set_refreshSeconds(refreshSeconds) {
 
 function validate_and_set_refreshSteps(refreshSteps) {
   if (!refreshSteps.match("^[0-9]+$")) {
-    defaultRefreshSteps = Math.ceil(8 * 60 * 60 / document.getElementById("refreshSeconds").value); 
+    defaultRefreshSteps = Math.ceil(8 * 60 * 60 / document.getElementById("refreshSeconds").value);
     alert("ERROR: invalid refresh steps: " + refreshSteps + "\ndefaulting to: " + defaultRefreshSteps);
     document.getElementById("refreshSteps").value = defaultRefreshSteps;
   }
@@ -441,10 +441,10 @@ function grabPgnUrl() {
 
 function disableStopGrabButton() {
   document.getElementById('stopGrabbingPgnUrl').disabled = TRUE;
-  if (grabTimeout) { 
-    clearTimeout(grabTimeout); 
-    grabTimeout = null; 
-  } 
+  if (grabTimeout) {
+    clearTimeout(grabTimeout);
+    grabTimeout = null;
+  }
   return FALSE;
 }
 
@@ -481,7 +481,7 @@ function setLocalPgnFileToDefault() {
 <td>
 <div class='inputbuttoncontainer'>
 <input type='submit' name='action' value='clear password' class='inputbutton'
-title='clear password to secure page from unauthorized use' 
+title='clear password to secure page from unauthorized use'
 onclick='document.getElementById("secret").value=""; return false;'>
 </div>
 </td>
@@ -491,7 +491,7 @@ onclick='document.getElementById("secret").value=""; return false;'>
 <tr valign='top'>
 <td width='25%'>
 <div class='inputbuttoncontainer'>
-<input type='submit' name='action' value='submit password' class='inputbutton' 
+<input type='submit' name='action' value='submit password' class='inputbutton'
 title='submit password to access private sections of the page'
 <?
 if ($secretHash == $storedSecretHash) { print("disabled='true'>"); }
@@ -532,7 +532,7 @@ else { print("style='visibility: hidden;'>"); }
 </td>
 <td>
 <div class='inputlinecontainer'>
-<input type='text' id='localPgnFile' name='localPgnFile' value='<?print($localPgnFile)?>' 
+<input type='text' id='localPgnFile' name='localPgnFile' value='<?print($localPgnFile)?>'
 title='name for the local PGN file: must be plain alphanumeric name with .pgn or .txt extension'
 class='inputline' onchange='validate_and_set_localPgnFile(this.value);'>
 </div>

@@ -5,10 +5,10 @@
  *  for credits, license and more details
  */
 
-html, 
-body { 
-  margin: 0; 
-  padding: 0; 
+html,
+body {
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -74,7 +74,7 @@ body {
 .buttonControlPlay:active,
 .buttonControlStop:active,
 .buttonControl:active {
-  color: #e3e3e3; 
+  color: #e3e3e3;
 }
 
 .buttonControlSpace {

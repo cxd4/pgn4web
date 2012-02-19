@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #  pgn4web javascript chessboard
-#  copyright (C) 2009, 2011 Paolo Casaschi
+#  copyright (C) 2009, 2012 Paolo Casaschi
 #  see README file and http://pgn4web.casaschi.net
 #  for credits, license and more details
 
@@ -36,7 +36,7 @@ pgn_file=live.pgn
 pgn_file_tmp=live-tmp.pgn
 
 delay=17
-if [ -n "$1" ] 
+if [ -n "$1" ]
 then
 	if [ "$1" -eq "$1" 2> /dev/null ]
 	then
@@ -54,7 +54,7 @@ if [ $? -ne 0 ]
 then
         echo "ERROR: $(basename $0) failed setting umask 0000"
         exit
-fi 
+fi
 
 game1_header="[Event \"Tilburg Fontys\"]\n[Site \"Tilburg\"]\n[Date \"1998.10.24\"]\n[Round \"2\"]\n[White \"Anand, Viswanathan\"]\n[Black \"Kramnik, Vladimir\"]\n[WhiteClock \"2:00:00\"]\n[BlackClock \"2:00:00\"]"
 game1_header_live="$game1_header\n[Result \"*\"]"

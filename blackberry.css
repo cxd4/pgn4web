@@ -5,9 +5,9 @@
  *  for credits, license and more details
  */
 
-html, 
-body { 
-  margin: 0; 
+html,
+body {
+  margin: 0;
   padding: 0;
 }
 
@@ -93,7 +93,7 @@ body {
   color: black;
   font-size: 14px;
   font-weight: normal;
-  text-decoration: none;   
+  text-decoration: none;
 }
 
 .moveOn {
@@ -111,7 +111,7 @@ body {
 }
 
 .headerItem {
-  width: 142px; 
+  width: 142px;
   white-space: nowrap;
   font-size: 14px;
   font-weight: bold;

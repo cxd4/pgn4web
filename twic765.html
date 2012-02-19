@@ -2,7 +2,7 @@
 
 <!--
   pgn4web javascript chessboard
-  copyright (C) 2009, 2011 Paolo Casaschi
+  copyright (C) 2009, 2012 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 -->
@@ -24,7 +24,7 @@
    SetImagePath("merida/36"); // use "" path if images are in the same folder as this javascript file
    SetImageType("png");
    SetHighlightOption(true); // true or false
-   SetGameSelectorOptions(" Event         Site          Rd  White            Black            Res  Date", true, 12, 12, 2, 15, 15, 3, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);   
+   SetGameSelectorOptions(" Event         Site          Rd  White            Black            Res  Date", true, 12, 12, 2, 15, 15, 3, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
    SetCommentsIntoMoveText(false);
    SetCommentsOnSeparateLines(true);
    SetAutoplayDelay(1000); // milliseconds
@@ -35,9 +35,9 @@
    SetShortcutKeysEnabled(true);
 
    function customFunctionOnPgnTextLoad() { document.getElementById('numGm').innerHTML = numberOfGames; }
-   function customFunctionOnPgnGameLoad() { 
+   function customFunctionOnPgnGameLoad() {
      document.getElementById('currGm').innerHTML = currentGame+1;
-     document.getElementById('numPly').innerHTML = PlyNumber; 
+     document.getElementById('numPly').innerHTML = PlyNumber;
      customPgnHeaderTag('ECO', 'GameECO');
      customPgnHeaderTag('Result', 'ResultAtGametextEnd');
    }
@@ -65,20 +65,20 @@
 </textarea></form>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
-<div style="font-weight: bold; font-size: 200%; text-align: center;"> 
+<div style="font-weight: bold; font-size: 200%; text-align: center;">
 &nbsp;<br>
 The Week In Chess #765
 </div>
 <p></p>
 
-<table width=100% cellspacing=25 cellpadding=0>
+<table width="100%" cellspacing="25" cellpadding="0">
 
-<tr valign=bottom>
+<tr valign="bottom">
 
-<td colspan=3>
+<td colspan="2">
 <div class="label" style="text-align: right; font-size: 85%;">
-ply:<span id=currPly>0</span>/<span id=numPly>0</span> 
-game:<span id=currGm>0</span>/<span id=numGm>0</span> 
+ply:<span id=currPly>0</span>/<span id=numPly>0</span>
+game:<span id=currGm>0</span>/<span id=numGm>0</span>
 </div>
 <div id="GameSelector"></div>
 <div id="GameSearch"></div>
@@ -86,46 +86,44 @@ game:<span id=currGm>0</span>/<span id=numGm>0</span>
 
 </tr>
 
-<tr valign=top>
+<tr valign="top">
 
-<td  width=30% style="text-align: left; font-size: 85%">
-
-<span class="label">Date:</span> <span id="GameDate"></span> 
-<br>
-<span class="label">Site:</span> <span id="GameSite"></span> 
-<p></p>
-<span class="label">Event:</span> <span id="GameEvent"></span> 
-<br>
-<span class="label">Round:</span> <span id="GameRound"></span> 
-<p></p>
-<span class="label">White:</span> <span id="GameWhite"></span> 
-<br>
-<span class="label">Black:</span> <span id="GameBlack"></span> 
-<p></p>
-<span class="label">Result:</span> <span id="GameResult"></span> 
-<p></p>
-<span class="label">ECO:</span> <span id="GameECO"></span> 
-<p></p>
-<span class="label">Side to move:</span> <span id="GameSideToMove"></span> 
-<br>
-<span class="label">Last move:</span> <span class="move"><span id="GameLastMove"></span></span> 
-<br>
-<span class="label">Next move:</span> <span class="move"><span id="GameNextMove"></span></span> 
-<!--
-<p></p>
-<span class="label">Move comment:</span><br><span id="GameLastComment"></span>
--->
-
-</td>
-
-<td align="center" width=366px>
+<td align="center" width="366px">
 <div id="GameBoard"></div>
 <p></p>
 <div id="GameButtons"></div>
 </td>
 
-<td style="text-align: justify; font-size: 85%" width=30%>
-<span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span>
+<td style="font-size: 85%">
+
+<span class="label">Date:</span> <span id="GameDate"></span>
+<br>
+<span class="label">Site:</span> <span id="GameSite"></span>
+<p></p>
+<span class="label">Event:</span> <span id="GameEvent"></span>
+<br>
+<span class="label">Round:</span> <span id="GameRound"></span>
+<p></p>
+<span class="label">White:</span> <span id="GameWhite"></span>
+<br>
+<span class="label">Black:</span> <span id="GameBlack"></span>
+<p></p>
+<span class="label">Result:</span> <span id="GameResult"></span>
+<p></p>
+<span class="label">ECO:</span> <span id="GameECO"></span>
+<!--
+<p></p>
+<span class="label">Side to move:</span> <span id="GameSideToMove"></span>
+<br>
+<span class="label">Last move:</span> <span class="move" id="GameLastMove"></span>
+<br>
+<span class="label">Next move:</span> <span class="move" id="GameNextMove"></span>
+<p></p>
+<span class="label">Move comment:</span><br><span id="GameLastComment"></span>
+-->
+<p></p>
+<div style="text-align: justify;"><span id="GameText"></span><span class="move" id="ResultAtGametextEnd"></span></div>
+
 </td>
 
 </tr>

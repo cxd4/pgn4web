@@ -25,29 +25,12 @@ if (!$zipSupported) { $pgnDebugInfo = $pgnDebugInfo . "ZIP support unavailable f
 $debugHelpText = "a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages";
 
 if (!($goToView = get_pgn())) { $pgnText = $krabbeStartPosition = get_krabbe_position(); }
-set_mode();
+
 print_header();
 print_form();
 check_tmpDir();
 print_chessboard();
 print_footer();
-
-function set_mode() {
-
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
-  global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
-
-  $mode = $_REQUEST["mode"];
-
-  if (!$mode) {
-    $mode = "normal";
-    $ua = $_SERVER["HTTP_USER_AGENT"];
-    $mobileagents = array ("Android", "Blackberry", "iPhone", "iPod", "Nokia", "Opera Mini", "Palm", "PlayStation Portable", "Pocket", "Smartphone", "Symbian", "WAP", "Windows CE"); 
-    foreach ($mobileagents as $ma) {
-      if(stristr($ua, $ma)) { $mode = "compact"; } 
-    }
-  }
-}
 
 function get_krabbe_position() {
 
@@ -80,7 +63,7 @@ function get_krabbe_position() {
 function get_pgn() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
-  global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
+  global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $zipSupported;
 
   $pgnDebugInfo = $pgnDebugInfo . $_REQUEST["debug"];
 
@@ -101,7 +84,7 @@ function get_pgn() {
     $pgnText = preg_replace("/\]\s*\[/", "]\n[", $pgnText);
     $pgnText = preg_replace("/^\s*\[/", "[", $pgnText);
     $pgnText = preg_replace("/\n[\s*\n]+/", "\n\n", $pgnText);
-    
+
     $pgnTextbox = $pgnText;
 
     return TRUE;
@@ -148,7 +131,7 @@ function get_pgn() {
     } elseif ($pgnFileSize > $fileUploadLimitBytes) {
       $pgnStatus = "failed uploading PGN games: file size exceeds " . $fileUploadLimitText . " limit";
       return FALSE;
-    } else { 
+    } else {
       $isPgn = preg_match("/\.(pgn|txt)$/i",$pgnFileName);
       $isZip = preg_match("/\.zip$/i",$pgnFileName);
       $pgnSource = $_FILES['pgnFile']['tmp_name'];
@@ -173,7 +156,7 @@ function get_pgn() {
         $pgnStatus = $pgnStatus . "unknown upload error";
         break;
     }
-    return FALSE; 
+    return FALSE;
   }
 
   if ($isZip) {
@@ -210,7 +193,7 @@ function get_pgn() {
       }
     } else {
       $pgnStatus = "ZIP support unavailable from this server&nbsp; &nbsp;<span style='color: gray;'>only PGN files are supported</span>";
-      return FALSE;         
+      return FALSE;
     }
   }
 
@@ -227,7 +210,7 @@ function get_pgn() {
       return FALSE;
     }
     return TRUE;
-  } 
+  }
 
   if($pgnSource) {
     if ($zipSupported) {
@@ -244,12 +227,12 @@ function get_pgn() {
 function check_tmpDir() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
-  global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
+  global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $zipSupported;
 
   $tmpDirHandle = opendir($tmpDir);
   while($entryName = readdir($tmpDirHandle)) {
     if (($entryName !== ".") && ($entryName !== "..") && ($entryName !== "index.html")) {
-      if ((time() - filemtime($tmpDir . "/" . $entryName)) > 3600) { 
+      if ((time() - filemtime($tmpDir . "/" . $entryName)) > 3600) {
         $unexpectedFiles = $unexpectedFiles . " " . $entryName;
       }
     }
@@ -257,7 +240,7 @@ function check_tmpDir() {
   closedir($tmpDirHandle);
 
   if ($unexpectedFiles) {
-    $pgnDebugInfo = $pgnDebugInfo . "clean temporary directory " . $tmpDir . "(" . $unexpectedFiles . ")<br>"; 
+    $pgnDebugInfo = $pgnDebugInfo . "clean temporary directory " . $tmpDir . "(" . $unexpectedFiles . ")<br>";
   }
 }
 
@@ -268,15 +251,15 @@ function print_header() {
 
 <head>
 
-<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"> 
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
 
-<title>pgn4web games viewer</title> 
+<title>pgn4web games viewer</title>
 
 <style type="text/css">
 
 body {
   color: black;
-  background: white; 
+  background: white;
   font-family: 'pgn4web Liberation Sans', sans-serif;
   line-height: 1.4em;
   padding: 20px;
@@ -287,8 +270,8 @@ div, span, table, tr, td {
   font-family: 'pgn4web Liberation Sans', sans-serif; /* fixes IE9 body css issue */
 }
 
-a:link, a:visited, a:hover, a:active { 
-  color: black; 
+a:link, a:visited, a:hover, a:active {
+  color: black;
   text-decoration: none;
 }
 
@@ -304,8 +287,8 @@ a:link, a:visited, a:hover, a:active {
 <body>
 
 <table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
-<td align="left" valign="middle"> 
-<h1 name="top" style="font-family: sans-serif; color: red;"><a style="color: red;" href=.>pgn4web</a> games viewer</h1> 
+<td align="left" valign="middle">
+<h1 name="top" style="font-family: sans-serif; color: red;"><a style="color: red;" href=.>pgn4web</a> games viewer</h1>
 </td>
 <td align="right" valign="middle">
 <a href=.><img src=pawns.png border=0></a>
@@ -321,7 +304,7 @@ END;
 function print_form() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
-  global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
+  global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $zipSupported;
 
   $thisScript = $_SERVER['SCRIPT_NAME'];
 
@@ -355,7 +338,7 @@ END;
 
   function checkPgnExtension(uri) {
     if (uri.match(/\\.(zip|pgn|txt)\$/i)) {
-      return true; 
+      return true;
     } else if (uri !== "") {
       alert("only PGN and ZIP (zipped pgn) files are supported");
     }
@@ -368,10 +351,10 @@ END;
 
   function checkPgnExtension(uri) {
     if (uri.match(/\\.(pgn|txt)\$/i)) {
-      return true; 
+      return true;
     } else if (uri.match(/\\.zip\$/i)) {
       alert("ZIP support unavailable from this server, only PGN files are supported\\n\\nplease submit locally extracted PGN");
-    } else if (uri !== "") { 
+    } else if (uri !== "") {
       alert("only PGN files are supported (ZIP support unavailable from this server)");
     }
     return false;
@@ -417,16 +400,16 @@ END;
 
     firstStart = true;
     start_pgn4web();
-    if (window.location.hash == "view") { window.location.reload(); }   
-    else {window.location.hash = "view"; }  
- 
+    if (window.location.hash == "view") { window.location.reload(); }
+    else {window.location.hash = "view"; }
+
     return;
   }
 
   function urlFormSelectChange() {
     theObject = document.getElementById("urlFormSelect");
     if (theObject === null) { return; }
-  
+
     switch (theObject.value) {
       case "twic":
         givenTwicNumber = 765;
@@ -481,7 +464,6 @@ function reset_viewer() {
         <input id="uploadFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) file" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="return checkPgnFile();">
     </td>
     <td colspan=2 width="100%" align="left" valign="top">
-        <input type="hidden" name="mode" value="$mode">
         <input type="hidden" name="MAX_FILE_SIZE" value="$fileUploadLimitBytes">
         <input id="uploadFormFile" name="pgnFile" type="file" class="formControl" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText">
       </form>
@@ -495,7 +477,6 @@ function reset_viewer() {
     </td>
     <td width="100%" align="left" valign="top">
         <input id="urlFormText" name="pgnUrl" type="text" class="formControl" value="" style="width:100%" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText">
-        <input type="hidden" name="mode" value="$mode">
       </form>
     </td>
     <td align="right" valign="top">
@@ -514,7 +495,6 @@ function reset_viewer() {
         <input id="pgnFormButton" type="button" class="formControl" value="show games from PGN textbox" style="width:100%;" onClick="loadPgnFromForm();">
     </td>
     <td colspan=2 rowspan=2 width="100%" align="right" valign="top">
-        <input type="hidden" name="mode" value="$mode">
         <textarea id="pgnFormText" class="formControl" name="pgnTextbox" rows=4 style="width:100%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" onChange="checkPgnFormTextSize();">$pgnTextbox</textarea>
       </form>
     </td>
@@ -534,15 +514,10 @@ END;
 function print_chessboard() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
-  global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
+  global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $zipSupported;
 
-  if ($mode == "compact") {
-    $pieceSize = 30;
-    $pieceType = "alpha";
-  } else {
-    $pieceSize = 38;
-    $pieceType = "merida";
-  }
+  $pieceSize = 38;
+  $pieceType = "merida";
   $pieceSizeCss = $pieceSize . "px";
 
   print <<<END
@@ -558,57 +533,6 @@ function print_chessboard() {
 <link href="fonts/pgn4web-font-LiberationSans.css" type="text/css" rel="stylesheet" />
 <link href="fonts/pgn4web-font-ChessSansUsual.css" type="text/css" rel="stylesheet" />
 <style type="text/css">
-
-END;
-
-  if ($mode == "compact") {
-
-    print <<<END
-
-.boardTable {
-  border-style: solid;
-  border-width: 0;
-}
-
-.pieceImage {
-  width: $pieceSizeCss;
-  height: $pieceSizeCss;
-}
-
-.whiteSquare,
-.blackSquare,
-.highlightWhiteSquare,
-.highlightBlackSquare {
-  width: $pieceSize;
-  height: $pieceSize;
-  border-width: 0;
-}
-
-.whiteSquare {
-  background: #ede8d5;
-}
-
-.blackSquare {
-  background: #cfcbb3;
-}
-
-.highlightWhiteSquare,
-.highlightBlackSquare {
-  background: #f5d0a9;
-}
-
-.move,
-.label,
-.normalItem,
-.boldItem {
-  font-size: 75%;
-}
-
-END;
-
-  } else {
-
-    print <<<END
 
 .boardTable {
   border-style: solid;
@@ -651,12 +575,6 @@ END;
   border-color: #663300;
 }
 
-END;
-
-  }
-
-  print <<<END
-
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 100% !important;
@@ -687,7 +605,7 @@ END;
 .moveOn {
   color: black;
   font-weight: normal;
-  text-decoration: none;   
+  text-decoration: none;
   font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
   line-height: 1.4em;
 }
@@ -713,6 +631,8 @@ END;
 }
 
 .normalItem {
+  white-space: nowrap;
+  line-height: 1.4em;
 }
 
 .boldItem {
@@ -733,31 +653,32 @@ END;
 <script src="fide-lookup.js" type="text/javascript"></script>
 
 <script type="text/javascript">
-  SetImagePath("$pieceType/$pieceSize"); 
+  SetImagePath("$pieceType/$pieceSize");
   SetImageType("png");
-  SetHighlightOption(true); 
+  SetHighlightOption(false);
   SetCommentsIntoMoveText(true);
   SetCommentsOnSeparateLines(true);
-  SetInitialGame(1); 
+  SetInitialGame(1);
   SetInitialHalfmove(0);
   SetGameSelectorOptions(" Event         Site          Rd  White            Black            Res  Date", true, 12, 12, 2, 15, 15, 3, 10);
   SetAutostartAutoplay(false);
   SetAutoplayDelay(2000);
   SetShortcutKeysEnabled(true);
 
-  function customFunctionOnPgnTextLoad() { 
-    document.getElementById('numGm').innerHTML = numberOfGames; 
+  function customFunctionOnPgnTextLoad() {
+    if (theObject = document.getElementById('numGm')) { theObject.innerHTML = numberOfGames; }
   }
   function customFunctionOnPgnGameLoad() {
-    document.getElementById('currGm').innerHTML = currentGame+1;
-    document.getElementById('numPly').innerHTML = PlyNumber;
+    if (theObject = document.getElementById('currGm')) { theObject.innerHTML = currentGame+1; }
+    if (theObject = document.getElementById('numPly')) { theObject.innerHTML = PlyNumber; }
     customPgnHeaderTag('ECO', 'GameECO');
     customPgnHeaderTag('Opening', 'GameOpening');
     customPgnHeaderTag('Variation', 'GameVariation');
+    customPgnHeaderTag('Annotator', 'GameAnnotator');
     customPgnHeaderTag('Result', 'ResultAtGametextEnd');
   }
-  function customFunctionOnMove() { 
-    document.getElementById('currPly').innerHTML = CurrentPly; 
+  function customFunctionOnMove() {
+    if (theObject = document.getElementById('currPly')) { theObject.innerHTML = CurrentPly; }
   }
   function customShortcutKey_Shift_1() {
     if (typeof(openFidePlayerUrl) == "function") {
@@ -780,11 +701,7 @@ $pgnText
 </textarea></form>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
-<table width=100% cellspacing=0 cellpadding=5>
-
-END;
-
-  if ($mode != "compact") print <<<END
+<table width=100% cellspacing=0 cellpadding=0 border=0>
 
   <tr valign=bottom>
     <td align="center" colspan=2>
@@ -793,50 +710,39 @@ END;
 
       <div id="GameSearch"></div>
 
-      <div style="padding-top: 1em;">&nbsp;</div>
+      <div style="padding-top: 2em;">&nbsp;</div>
 
     </td>
   </tr>
 
-END;
-
-  print <<<END
-
   <tr valign=top>
     <td valign=top align=center width=50%>
-      <span id="GameBoard"></span> 
+      <span id="GameBoard"></span>
       <p></p>
-      <div id="GameButtons"></div> 
+      <div id="GameButtons"></div>
     </td>
     <td valign=top align=left width=50%>
 
-      <table>
-      <tr><td class="label">date</td><td class="normalItem"><span id="GameDate"></span></td></tr>
-      <tr><td class="label">site</td><td class="normalItem"><span style="white-space: nowrap;" id="GameSite"></span></td></tr>
+      <table valign=bottom>
+      <tr><td class="label">date</td><td class="normalItem"><span id="GameDate"></span>&nbsp;</td></tr>
+      <tr><td class="label">site</td><td class="normalItem"><span id="GameSite"></span>&nbsp;</td></tr>
       <tr><td colspan=2 class="rowSpace"></td></tr>
-      <tr><td class="label">event</td><td class="normalItem"><span style="white-space: nowrap;" id="GameEvent"></span></td></tr> 
-      <tr><td class="label">round</td><td class="normalItem"><span id="GameRound"></span></td></tr> 
+      <tr><td class="label">event</td><td class="normalItem"><span id="GameEvent"></span>&nbsp;</td></tr>
+      <tr><td class="label">round</td><td class="normalItem"><span id="GameRound"></span>&nbsp;</td></tr>
       <tr><td colspan=2 class="rowSpace"></td></tr>
-      <tr><td class="label">white</td><td class="boldItem"><span style="white-space: nowrap;" id="GameWhite"></span></td></tr>
-      <tr><td class="label">black</td><td class="boldItem"><span style="white-space: nowrap;" id="GameBlack"></span></td></tr>
+      <tr><td class="label">white</td><td class="boldItem"><span id="GameWhite"></span>&nbsp;</td></tr>
+      <tr><td class="label">black</td><td class="boldItem"><span id="GameBlack"></span>&nbsp;</td></tr>
       <tr><td colspan=2 class="rowSpace"></td></tr>
-      <tr><td class="label">result</td><td><span class="boldItem" id="GameResult"></span></td></tr>
+      <tr><td class="label">result</td><td class="boldItem"><span id="GameResult"></span>&nbsp;</td></tr>
       <tr><td colspan=2 class="rowSpace"></td></tr>
-      <tr><td class="label">eco</td><td class="normalItem"><span id="GameECO"></span></td></tr>
-      <tr><td class="label">opening</td><td class="normalItem"><span id="GameOpening"></span></td></tr>
-      <tr><td class="label">variation</td><td class="normalItem"><span id="GameVariation"></span></td></tr>
+      <tr><td class="label">eco</td><td class="normalItem"><span id="GameECO"></span>&nbsp;</td></tr>
+      <tr><td class="label">opening</td><td class="normalItem"><span id="GameOpening"></span>&nbsp;</td></tr>
+      <tr><td class="label">variation</td><td class="normalItem"><span id="GameVariation"></span>&nbsp;</td></tr>
       <tr><td colspan=2 class="rowSpace"></td></tr>
-      <!--
-      <tr><td class="label">side</td><td class="normalItem"><span id="GameSideToMove"></span></td></tr>
-      <tr><td class="label">last</td><td><span class="move"><span id="GameLastMove"></span></span></td></tr>
-      <tr><td class="label">next</td><td><span class="move"><span id="GameNextMove"></span></span></td></tr>
-      -->
-      <tr><td class="label">ply</td><td class="normalItem"><span id=currPly>0</span> (<span id=numPly>0</span>)</td></tr>
-      <tr><td class="label">game</td><td class="normalItem"><span id=currGm>0</span> (<span id=numGm>0</span>)</td></tr>
-      <!--
+      <tr><td class="label">last</td><td class="normalItem"><span class="move" id="GameLastMove"></span>&nbsp;</td></tr>
+      <tr><td class="label">next</td><td class="normalItem"><span class="move" id="GameNextMove"></span>&nbsp;</td></tr>
       <tr><td colspan=2 class="rowSpace"></td></tr>
-      <tr><td class="label">comment</td><td><span class="nromalItem" id="GameLastComment"></span></td></tr>
-      -->
+      <tr><td class="label">annotator</td><td class="normalItem"><span id="GameAnnotator"></span>&nbsp;</td></tr>
       </table>
 
     </td>
@@ -847,11 +753,7 @@ END;
 &nbsp;&nbsp;&nbsp;<a name="moves" href="#moves" style="color: gray; font-size: 66%;">moves</a>&nbsp;&nbsp;&nbsp;<a href="#view" style="color: gray; font-size: 66%;">board</a>&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray; font-size: 66%;">form</a>
 </tr></table>
 
-END;
- 
-  if ($mode != "compact") print <<<END
-
-<table width=100% cellspacing=0 cellpadding=5>
+<table width=100% cellspacing=0 cellpadding=0 border=0>
   <tr>
     <td colspan=2>
       <div style="padding-top: 2em; padding-bottom: 1em; text-align: justify;"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
@@ -865,7 +767,7 @@ END;
 function print_footer() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
-  global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $mode, $zipSupported;
+  global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $zipSupported;
 
   if ($goToView) { $hashStatement = "window.location.hash = 'view';"; }
   else { $hashStatement = ""; }

@@ -1,6 +1,6 @@
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009, 2011 Paolo Casaschi
+ *  copyright (C) 2009, 2012 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  *
@@ -39,7 +39,7 @@ function EncodePGN(ov) {
     if (i.charAt(4) == '1') { o +=  2; }
     if (i.charAt(5) == '1') { o +=  1; }
     return encodingCharSet.charAt(o);
-  }  
+  }
 
   var LetterCodes = new Array(256);
   LetterCodes[0]   = '00111111111111110';
@@ -297,7 +297,7 @@ function EncodePGN(ov) {
   LetterCodes[252] = '10111111111111100';
   LetterCodes[253] = '10111111111111101';
   LetterCodes[254] = '1111111111101110';
-  LetterCodes[255] = '1111111111101111'; 
+  LetterCodes[255] = '1111111111101111';
 
   // Build resulting data stream
   // The bits string could get very large

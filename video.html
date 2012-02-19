@@ -145,7 +145,7 @@ if (videoHelp) {
   document.write(" - videoLoop = if set true video loops; default false\n");
   document.write(" - horizontalLayout = if set true the chessboard is next to the video, otherwise underneath; default true\n");
   document.write("\n");
-  document.write(" - setupVideotimes = if set true, setup special mode to add video times info to the PGN data; default false\n"); 
+  document.write(" - setupVideotimes = if set true, setup special mode to add video times info to the PGN data; default false\n");
   document.write(" - testVideotimes = if set true, detects missing/wrong video times info in the PGN data; default false\n");
   document.write(" - ignoreVideotimes = if set true, video times info is ignored; default false\n");
   document.write("\n");
@@ -236,8 +236,8 @@ else { document.write('</tr><tr><td height="20"></td></tr><tr>'); }
 </td></tr><tr><td colspan="3">
 
 <textarea id="setupOutput" style="height:200px; width:100%; padding: 10px; border-color: lightgray;">
-% you can add video times information to the PGN file by pressing the capture button 
-% each time a new game starts, including the first game, and each time a move is made; 
+% you can add video times information to the PGN file by pressing the capture button
+% each time a new game starts, including the first game, and each time a move is made;
 
 </textarea>
 
@@ -291,9 +291,9 @@ if (videoUrl) {
   if (theObj = document.getElementById("videoPlayer")) {
     theObj.src = videoUrl;
     if (videoWidth) { theObj.width = videoWidth; }
-    if (videoHeight) { theObj.height = videoHeight; } 
-    if (videoAutoplay) { theObj.autoplay = "autoplay"; } 
-    if (videoLoop) { theObj.loop = "loop"; } 
+    if (videoHeight) { theObj.height = videoHeight; }
+    if (videoAutoplay) { theObj.autoplay = "autoplay"; }
+    if (videoLoop) { theObj.loop = "loop"; }
   }
 } else if (youtubeVideoid) {
   document.title = "pgn4web integration with youtube";
@@ -337,7 +337,7 @@ if (paramError && (! videoHelp)) {
   }
 }
 
-SetImagePath ("alpha/26"); 
+SetImagePath ("alpha/26");
 SetImageType("png");
 SetHighlightOption(true);
 SetShortcutKeysEnabled(ignoreVideotimes);
@@ -366,10 +366,10 @@ function getVideotimeAtPly() {
 }
 
 function customFunctionOnPgnGameLoad() {
-  if (setupVideotimes) { 
-    document.getElementById("togglevideoButton").disabled = 0; 
-    document.getElementById("captureButton").disabled = 0; 
-    document.getElementById("captureButton").focus(); 
+  if (setupVideotimes) {
+    document.getElementById("togglevideoButton").disabled = 0;
+    document.getElementById("captureButton").disabled = 0;
+    document.getElementById("captureButton").focus();
   }
   getVideotimeAtPly();
 }
@@ -433,7 +433,7 @@ function syncBoard() {
     foundGame = findIndexInOrderedArray(videoCurrentTime, videotimeForGame, 0, numberOfGames-1, currentGame);
     if (foundGame !== currentGame) { Init(foundGame); }
 
-    foundPly = findIndexInOrderedArray(videoCurrentTime, videotimeAtPly, StartPly, StartPly+PlyNumber, CurrentPly); 
+    foundPly = findIndexInOrderedArray(videoCurrentTime, videotimeAtPly, StartPly, StartPly+PlyNumber, CurrentPly);
     if (foundPly != CurrentPly) { GoToMove(foundPly); }
   }
 
@@ -472,27 +472,27 @@ function getVideotime() {
     startedVideotimes = true;
     return;
   }
-  if (CurrentPly === StartPly+PlyNumber) { 
-    if (currentGame+1 < numberOfGames) { 
-      Init(currentGame + 1); 
+  if (CurrentPly === StartPly+PlyNumber) {
+    if (currentGame+1 < numberOfGames) {
+      Init(currentGame + 1);
       writeSetupOutput("\n" + newGameHeader(currentGame, storedVideotime) + "\n\n");
     }
-  } else { 
+  } else {
     MoveForward(1);
     moreText = "";
     moreText += Math.ceil(CurrentPly/2) + ".";
     if (!(CurrentPly % 2)) { moreText += ".."; }
     moreText += " " + Moves[CurrentPly-1] + " {[%vt " + storedVideotime + "]";
-    if (comment = MoveComments[CurrentPly].replace(/\s*\[%vt [\.0-9]*\]\s*/g, "")) { 
-      moreText += " " + comment.replace(/[{}]/g, ""); 
+    if (comment = MoveComments[CurrentPly].replace(/\s*\[%vt [\.0-9]*\]\s*/g, "")) {
+      moreText += " " + comment.replace(/[{}]/g, "");
     }
     moreText += "}\n";
     writeSetupOutput(moreText);
   }
   if (CurrentPly === StartPly+PlyNumber) {
     if (gameResult[currentGame]) { writeSetupOutput(gameResult[currentGame] + "\n"); }
-    if (currentGame+1 === numberOfGames) { 
-      writeSetupOutput("\n\n% end of games and moves"); 
+    if (currentGame+1 === numberOfGames) {
+      writeSetupOutput("\n\n% end of games and moves");
       endedVideotimes = true;
     }
   }
@@ -505,7 +505,7 @@ function customShortcutKey_Shift_0() {
 function toggleVideoPlayPause() {
   var videoPlayer = document.getElementById("videoPlayer");
   if (videoPlayer && videoPlayer.playVideo) {
-    if (videoPlayer.getPlayerState() == 2) { 
+    if (videoPlayer.getPlayerState() == 2) {
       videoPlayer.playVideo();
     } else {
       videoPlayer.pauseVideo();

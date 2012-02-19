@@ -2,7 +2,7 @@
 
 <!--
   pgn4web javascript chessboard
-  copyright (C) 2009, 2011 Paolo Casaschi
+  copyright (C) 2009, 2012 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 -->
@@ -38,7 +38,7 @@
        if (window.location.search.match(thisRegExp) !== null) {
            pgnFilename = unescape(window.location.search.match(thisRegExp)[3]);
        }
-   } 
+   }
    if (pgnFilename !== "") {
        SetPgnUrl(pgnFilename); // if set, this has precedence over the inline PGN in the HTML file
    }
@@ -57,8 +57,8 @@
 
    thisRegExp = /(&|\?)(demo|d|refreshDemo|rd)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
-       demo_Flag = alert_Flag = ((window.location.search.match(thisRegExp) == "true") || 
-           (window.location.search.match(thisRegExp) == "t")); 
+       demo_Flag = alert_Flag = ((window.location.search.match(thisRegExp) == "true") ||
+           (window.location.search.match(thisRegExp) == "t"));
    } else { demo_Flag = alert_Flag = false; }
 
    refresh_Minutes = null;
@@ -67,18 +67,18 @@
        refresh_Minutes = unescape(window.location.search.match(thisRegExp)[3]);
        if (ini_Halfmove === null) { ini_Halfmove = "end"; }
        if (ini_Game === null) { ini_Game = '\\[\\s*Result\\s*"\\*"\\s*\\]'; }
-   } 
+   }
 
    SetImagePath("alpha/35"); // use "" path if images are in the same folder as this javascript file
    SetImageType("png");
-   SetHighlightOption(true); 
+   SetHighlightOption(true);
    SetGameSelectorOptions(" ...", true, 0, 0, 0, 11, 11, 0, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
    SetCommentsIntoMoveText(false);
    SetCommentsOnSeparateLines(false);
    SetAutoplayDelay(2000); // milliseconds
    SetAutostartAutoplay(false);
-   SetAutoplayNextGame(false); 
-   if (ini_Game === null) { ini_Game = 1; } 
+   SetAutoplayNextGame(false);
+   if (ini_Game === null) { ini_Game = 1; }
    SetInitialGame(ini_Game);
    if (ini_Halfmove === null) { ini_Halfmove = 0; }
    SetInitialHalfmove(ini_Halfmove, true);
@@ -103,7 +103,7 @@ function customFunctionOnPgnGameLoad() {
 }
 
 function customFunctionOnMove() {
-   document.getElementById("GameResult").style.visibility = 
+   document.getElementById("GameResult").style.visibility =
        (gameFEN[currentGame] && (CurrentPly == StartPly) && (PlyNumber > 0)) ? "hidden" : "visible";
    document.getElementById("GameSideToMoveString").style.visibility =
        (gameFEN[currentGame] && (CurrentPly == StartPly)) ? "visible" : "hidden";

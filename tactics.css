@@ -5,10 +5,10 @@
  *  for credits, license and more details
  */
 
-html, 
-body { 
-  margin: 0; 
-  padding: 0; 
+html,
+body {
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -18,7 +18,7 @@ body {
 }
 
 .boardTable {
-  border-style: double; 
+  border-style: double;
   border-color: #c9ad6f;
   border-width: 3px;
   background-color: #f2d798;

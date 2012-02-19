@@ -2,11 +2,11 @@
 
 <!--
   pgn4web javascript chessboard
-  copyright (C) 2009, 2011 Paolo Casaschi
+  copyright (C) 2009, 2012 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 
-  Huffman encoding/decoding derived from code at http://rumkin.com/tools/compression/compress_huff.php 
+  Huffman encoding/decoding derived from code at http://rumkin.com/tools/compression/compress_huff.php
 
   PLEASE NOTE THIS FILE IS USED ONLY TO FINE TUNE HUFFMANN ENCODING:
   actual functions for PGN encoding/decoding are contained in pgn-decoder.js and pgn-encoder.js
@@ -216,15 +216,15 @@ function EncodePGN(ov) {
   Letters[156] = 1;
   Letters[157] = 1;
   Letters[158] = 1;
-  Letters[159] = 1; 
+  Letters[159] = 1;
   Letters[160] = 1;
-  Letters[161] = 1; 
+  Letters[161] = 1;
   Letters[162] = 1;
   Letters[163] = 1;
   Letters[164] = 1;
   Letters[165] = 1;
   Letters[166] = 1;
-  Letters[167] = 1; 
+  Letters[167] = 1;
   Letters[168] = 1;
   Letters[169] = 1;
   Letters[170] = 1;
@@ -368,9 +368,9 @@ function EncodePGN(ov) {
   }
 
   // We have constructed the nodes.  Now rewrite the list into a single array.
-  // The value of an array element will be positive if it is the character 
-  // code we want.  Otherwise, it branches.  The left branch will be the next 
-  // array element.  The value of the array will be (offset * -1), which is 
+  // The value of an array element will be positive if it is the character
+  // code we want.  Otherwise, it branches.  The left branch will be the next
+  // array element.  The value of the array will be (offset * -1), which is
   // the right branch.
   var FinalNodes = Array(NextParent);
   var DepthIndex = Array(256);
@@ -386,7 +386,7 @@ function EncodePGN(ov) {
       DepthIndex[Depth] = idx;
       NextFinal ++;
     } else if (NodeChild1[DepthIndex[Depth]] < 0 && NodeChild2[DepthIndex[Depth]] > -1) {
-      // If there is a left and a right, but the left was taken, 
+      // If there is a left and a right, but the left was taken,
       // push the right on the stack.
       // Update the FinalNodes[] with the location for the right branch.
       idx = NodeChild1[DepthIndex[Depth]];
@@ -691,7 +691,7 @@ function EncodePGN(ov) {
   LetterCodes[252] = '10111111111111100';
   LetterCodes[253] = '10111111111111101';
   LetterCodes[254] = '1111111111101110';
-  LetterCodes[255] = '1111111111101111'; 
+  LetterCodes[255] = '1111111111101111';
   }
 
   // Build resulting data stream
@@ -700,7 +700,7 @@ function EncodePGN(ov) {
   bytes = ov.length + "$";
   for (i = 0; i < ov.length; i ++) {
     // converts ASCII chars above 255 to a star (code 42) avoiding decoding failure
-    if (ov.charCodeAt(i) > 255) { bits += LetterCodes[42]; } 
+    if (ov.charCodeAt(i) > 255) { bits += LetterCodes[42]; }
     else { bits += LetterCodes[ov.charCodeAt(i)]; }
     while (bits.length > 5) {
       bytes += BitsToBytes(bits);
@@ -728,7 +728,7 @@ function EncodePGN(ov) {
 function DecodePGN(bytes, encodedNodes) {
 
   if (bytes.charAt(bytes.length - 1) != encodingCharSet.charAt(encodingVersion)) {
-    alert("ERROR: PGN encoding version mismatch (e:" + 
+    alert("ERROR: PGN encoding version mismatch (e:" +
            bytes.charAt(bytes.length - 1) + " d:" + encodingCharSet.charAt(encodingVersion) + ")");
   } else {
     bytes.length--;
@@ -738,9 +738,9 @@ function DecodePGN(bytes, encodedNodes) {
   bytes = bytes.replace(/^[0-9]*\$/,"");
 
   l = new Array();
-  while(encodedNodes.length) { 
+  while(encodedNodes.length) {
     l.push((encodingCharSet.indexOf(encodedNodes.charAt(0))<<6)+encodingCharSet.indexOf(encodedNodes.charAt(1))-512);
-    encodedNodes = encodedNodes.slice(2,encodedNodes.length); 
+    encodedNodes = encodedNodes.slice(2,encodedNodes.length);
   }
 
   if (USE_PRESET_DECODING_SET) {
@@ -1261,9 +1261,9 @@ function DecodePGN(bytes, encodedNodes) {
   o="";
 
   function B() { if(a===0) { b=encodingCharSet.indexOf(bytes.charAt(e++)); a=6; } return ((b>>--a)&0x01); }
-  
-  while(originalLength>0) { i=0; 
-    while(l[i]<0) { 
+
+  while(originalLength>0) { i=0;
+    while(l[i]<0) {
       if(B()) { i=-l[i]; }
       else { i++; }
     }
@@ -1291,7 +1291,7 @@ function DecodePGN(bytes, encodedNodes) {
 </form>
 <div style="width: 900px; text-align: left"><b>status: </b><span id="status">enter PGN data and press the test button</span></div>
 <br>
-<table cellspacing=2 cellpadding=0 border=1> 
+<table cellspacing=2 cellpadding=0 border=1>
 <tr style="font-weight: bold; text-align: center;">
 <td>original</td>
 <td>decoded</td>
@@ -1378,13 +1378,13 @@ function testPGNencode() {
   test_LetterCodes = ret[2];
 
   document.getElementById("status").innerHTML = "decoding data, please wait...";
-  
+
   document.getElementById("encoded").value = bytes;
 
   document.getElementById("decoded").value = DecodePGN(test_bytes, test_encodedNodes);
 
   compressPerc = Math.floor(100 * (document.getElementById("original").value.length - document.getElementById("encoded").value.length) / document.getElementById("original").value.length);
-  
+
   document.getElementById("status").innerHTML = "encoding/decoding test completed;" +
     " original: " + document.getElementById("original").value.length + ";" +
     " encoded: " + document.getElementById("encoded").value.length + ";" +
@@ -1408,7 +1408,7 @@ function testPGNencode() {
   o = "";
   for(i=0; i<l.length; i++) {
     o += "l[" + i + "]";
-    if (i < 10) { o += "  "; } 
+    if (i < 10) { o += "  "; }
     else { if (i < 100) { o += " "; } }
     o += " = " + l[i] + ";\n";
   }
@@ -1451,24 +1451,24 @@ function letter_frequency(s) {
 [Site "Reykjavik"]
 [Round "13"]
 
-1. e4 Nf6 2. e5 Nd5 3. d4 d6 4. Nf3 g6 
-5. Bc4 Nb6 6. Bb3 Bg7 7. Nbd2 O-O 8. h3 a5 
-9. a4 dxe5 10. dxe5 Na6 11. O-O Nc5 12. Qe2 Qe8 
-13. Ne4 Nbxa4 14. Bxa4 Nxa4 15. Re1 Nb6 16. Bd2 a4 
-17. Bg5 h6 18. Bh4 Bf5 19. g4 Be6 20. Nd4 Bc4 
-21. Qd2 Qd7 22. Rad1 Rfe8 23. f4 Bd5 24. Nc5 Qc8 
-25. Qc3 e6 26. Kh2 Nd7 27. Nd3 c5 28. Nb5 Qc6 
-29. Nd6 Qxd6 30. exd6 Bxc3 31. bxc3 f6 32. g5 hxg5 
-33. fxg5 f5 34. Bg3 Kf7 35. Ne5 Nxe5 36. Bxe5 b5 
-37. Rf1 Rh8 38. Bf6 a3 39. Rf4 a2 40. c4 Bxc4 
-41. d7 Bd5 42. Kg3 Ra3 43. c3 Rha8 44. Rh4 e5 
-45. Rh7 Ke6 46. Re7 Kd6 47. Rxe5 Rxc3 48. Kf2 Rc2 
-49. Ke1 Kxd7 50. Rexd5 Kc6 51. Rd6 Kb7 52. Rd7 Ka6 
-53. R7d2 Rxd2 54. Kxd2 b4 55. h4 Kb5 56. h5 c4 
-57. Ra1 gxh5 58. g6 h4 59. g7 h3 60. Be7 Rg8 
-61. Bf8 h2 62. Kc2 Kc6 63. Rd1 b3 64. Kc3 h1Q 
-65. Rxh1 Kd5 66. Kb2 f4 67. Rd1 Ke4 68. Rc1 Kd3 
-69. Rd1 Ke2 70. Rc1 f3 71. Bc5 Rxg7 72. Rxc4 Rd7 
+1. e4 Nf6 2. e5 Nd5 3. d4 d6 4. Nf3 g6
+5. Bc4 Nb6 6. Bb3 Bg7 7. Nbd2 O-O 8. h3 a5
+9. a4 dxe5 10. dxe5 Na6 11. O-O Nc5 12. Qe2 Qe8
+13. Ne4 Nbxa4 14. Bxa4 Nxa4 15. Re1 Nb6 16. Bd2 a4
+17. Bg5 h6 18. Bh4 Bf5 19. g4 Be6 20. Nd4 Bc4
+21. Qd2 Qd7 22. Rad1 Rfe8 23. f4 Bd5 24. Nc5 Qc8
+25. Qc3 e6 26. Kh2 Nd7 27. Nd3 c5 28. Nb5 Qc6
+29. Nd6 Qxd6 30. exd6 Bxc3 31. bxc3 f6 32. g5 hxg5
+33. fxg5 f5 34. Bg3 Kf7 35. Ne5 Nxe5 36. Bxe5 b5
+37. Rf1 Rh8 38. Bf6 a3 39. Rf4 a2 40. c4 Bxc4
+41. d7 Bd5 42. Kg3 Ra3 43. c3 Rha8 44. Rh4 e5
+45. Rh7 Ke6 46. Re7 Kd6 47. Rxe5 Rxc3 48. Kf2 Rc2
+49. Ke1 Kxd7 50. Rexd5 Kc6 51. Rd6 Kb7 52. Rd7 Ka6
+53. R7d2 Rxd2 54. Kxd2 b4 55. h4 Kb5 56. h5 c4
+57. Ra1 gxh5 58. g6 h4 59. g7 h3 60. Be7 Rg8
+61. Bf8 h2 62. Kc2 Kc6 63. Rd1 b3 64. Kc3 h1Q
+65. Rxh1 Kd5 66. Kb2 f4 67. Rd1 Ke4 68. Rc1 Kd3
+69. Rd1 Ke2 70. Rc1 f3 71. Bc5 Rxg7 72. Rxc4 Rd7
 73. Re4 Kf1 74. Bd4 f2 0-1
 </textarea>
 

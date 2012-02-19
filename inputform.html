@@ -2,7 +2,7 @@
 
 <!--
   pgn4web javascript chessboard
-  copyright (C) 2009, 2011 Paolo Casaschi
+  copyright (C) 2009, 2012 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 -->
@@ -77,8 +77,8 @@
 </tr>
 
 <tr><td colspan="2" width="100%" align="center">
-<!-- 
-padding-left = (8 * square-width) + (2 * table-cellpadding) + (pgnheader-padding) = 
+<!--
+padding-left = (8 * square-width) + (2 * table-cellpadding) + (pgnheader-padding) =
          322 = (8 * 34)           + (2 * 10)                + (30)
 -->
 <div style="text-align:left; padding-left:322px; padding-bottom:5px;">
@@ -93,7 +93,7 @@ padding-left = (8 * square-width) + (2 * table-cellpadding) + (pgnheader-padding
 <script type="text/javascript">
 
 function customFunctionOnAlert(message_string) {
-  stopAlertPrompt(); 
+  stopAlertPrompt();
   alert(message_string);
 }
 
@@ -107,19 +107,19 @@ function loadPgnData() {
   document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/^\s*\[/g,'[');
   document.getElementById('pgnText').value = document.getElementById('pgnText').value.replace(/\n[\s*\n]+/g,'\n\n');
 
-  start_pgn4web(); 
+  start_pgn4web();
 }
 
 
 function gup( name ){
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-  var regexS = "[\\?&]"+name+"=([^&#]*)";  
+  var regexS = "[\\?&]"+name+"=([^&#]*)";
   regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   var regex = new RegExp( regexS, "i" );
   var results = regex.exec( window.location.href );
   if( results === null ) { return ""; }
   else { return decodeURIComponent(results[1]); }
-} 
+}
 
 newPgnText = gup("pgnText");
 if (newPgnText === "") { newPgnText = gup("pt"); }
