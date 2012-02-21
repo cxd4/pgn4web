@@ -1,3 +1,4 @@
+<!DOCTYPE>
 <html>
 
 <!--
@@ -72,19 +73,64 @@ body {
   width: 5em;
 }
 
-.liveStatus {
-  color: black;
-  text-decoration: none;
-}
-
 .gameLiveStatusTicker {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   text-align: center;
   width: 1em;
   color: gray;
   text-decoration: none;
+}
+
+.gameBoard {
+/*  float: right; */
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+
+.boardTable {
+  border-style: double;
+  border-color: black;
+  border-width: 3px;
+  box-shadow: 0px 0px 15px #AAAAAA;
+  width: 320px;
+  height: 320px;
+  margin: 2em;
+}
+
+.pieceImage {
+  width: 32px;
+  height: 32px;
+}
+
+.whiteSquare,
+.blackSquare,
+.highlightWhiteSquare,
+.highlightBlackSquare {
+  width: 40px;
+  height: 40px;
+}
+
+.whiteSquare,
+.highlightWhiteSquare {
+  background: #EFF4EC;
+}
+
+.blackSquare,
+.highlightBlackSquare {
+  background: #C6CEC3;
+}
+
+.blackSquare,
+.highlightBlackSquare {
+  background: #C6CEC3;
+}
+
+.highlightWhiteSquare,
+.highlightBlackSquare {
+  background: #DAF4D7;
 }
 
 </style>
@@ -122,6 +168,9 @@ body {
     }
   }
 
+  showBoard = false;
+  if ((gup("showBoard") == "true") || (gup("showBoard") == "t")) { showBoard = true; }
+
   showEvent = true;
   if ((gup("showEvent") == "false") || (gup("showEvent") == "f")) { showEvent = false; }
 
@@ -132,18 +181,25 @@ body {
   if ((gup("showLastMove") == "false") || (gup("showLastMove") == "f")) { showLastMove = false; }
 
   if ((gup("help") == "true") || (gup("help") == "t")) {
-    alert("pgn4web live-results.html parameters" + "\n \n" +
+      document.write("<pre>" +
+      "pgn4web live-results.html parameters" + "\n\n" +
       " - pgnData = " + pgnFile + "; PGN file to load (default " + pgnFile_default + ")" + "\n" +
       " - refreshMinutes = " + refreshMinutes + "; refresh interval in minutes, decimals allowed (default 1)" + "\n" +
       " - refreshDemo = " + demoFlag + "; sets live demo mode (default false)" + "\n" +
+      " - showBoard = true|false; whether to show/hide the chessboard (default true)" + "\n" +
       " - showEvent = true|false; whether to show/hide event information (default true)" + "\n" +
       " - showMatch = true|false; whether to show/hide team match information (default true)" + "\n" +
       " - showLastMove = true|false; whether to show/hide game's last move (default true)" + "\n" +
-      " - help = true; prints this help (default false)");
+      " - help = true; prints this help (default false)" + "\n\n" +
+      "</pre>");
   }
 
   SetPgnUrl(pgnFile);
+  SetImagePath ("alpha/32");
+  SetImageType("png");
+  SetHighlightOption(false);
   SetShortcutKeysEnabled(false);
+  SetInitialHalfmove("end", true);
   SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, false);
 
   liveStatusTickerString = "o.oO";
@@ -153,6 +209,18 @@ body {
       theObject.title = LiveBroadcastStatusString.replace("&nbsp;", " ");
     }
   }
+
+  function customFunctionOnPgnGameLoad() {
+    highlightGame(currentGame);
+  }
+
+  function customShortcutKey_Shift_1() {
+    refreshPgnSource();
+  }
+
+  clearShortcutSquares("ABCDEFGH", "1234");
+  clearShortcutSquares("G", "6");
+  clearShortcutSquares("BCEFG", "7");
 
   var gameId;
   var gameWhiteTeam;
@@ -167,9 +235,13 @@ body {
     gameMatch = new Array();
     gameBoard = new Array();
     gameLastMove = new Array();
-    for (gg = 0; gg < numberOfGames; gg++) {
+    for (cc = 0; cc < numberOfGames; cc++) {
+      gg = (cc + oldSelectedGame + 1) % numberOfGames;
       gameId[gg] = gg;
+      oldShowBoard = showBoard;
+      showBoard = false;
       Init(gg);
+      showBoard = oldShowBoard;
       gameWhiteTeam[gg] = customPgnHeaderTag("WhiteTeam");
       gameBlackTeam[gg] = customPgnHeaderTag("BlackTeam");
       gameMatch[gg] = crc32(gameWhiteTeam[gg]) + crc32(gameBlackTeam[gg]);
@@ -228,7 +300,7 @@ body {
           resultTable += "<tr>" + matchRow(gameMatch[gg]) + "</tr>";
           lastMatch = gameMatch[gg];
         }
-        resultTable += "<tr><td><span class='player'>" + gameWhite[gameId[gg]] + "</span></td><td><span class='player'>" + gameBlack[gameId[gg]] + "</span></td><td>" + (showLastMove ? "<span class='lastMove'>" + gameLastMove[gameId[gg]] + "</span>" : "") + "</td><td><span class='result'>" + gameResult[gameId[gg]] + "</span></td></tr>";
+        resultTable += "<tr id='gameRow_" + gameId[gg] + "' onclick='selectGame(" + gameId[gg] + ");' style='font-weight: " + (showBoard && (gameId[gg] === oldSelectedGame) ? "bold" : "") + "'><td><span class='player'>" + gameWhite[gameId[gg]] + "</span></td><td><span class='player'>" + gameBlack[gameId[gg]] + "</span></td><td>" + (showLastMove ? "<span class='lastMove'>" + gameLastMove[gameId[gg]] + "</span>" : "") + "</td><td><span class='result'>" + gameResult[gameId[gg]] + "</span><span class='lastMove' style='font-weight:bold; width:auto; margin:0;'>&nbsp;</span></td></tr>";
       }
       resultTable += "</table>";
       theObject.innerHTML = resultTable;
@@ -260,10 +332,32 @@ body {
             firstTeamScore += 0.5;
             secondTeamScore += 0.5;
             break;
+          default:
+            break;
         }
       }
     }
     return "<td colspan='3'><span class='match'>" + firstTeam + " - " + secondTeam + "</span></td><td colspan='1'><span class='score'>" + firstTeamScore + " - " + secondTeamScore + "</span></td>";
+  }
+
+  oldSelectedGame = -1;
+  function selectGame(gameNum) {
+    if (!showBoard) { return; }
+    Init(gameNum);
+    highlightGame(gameNum);
+  }
+
+  function highlightGame(gameNum) {
+    if (!showBoard) { return; }
+    if (theObject = document.getElementById("gameRow_" + oldSelectedGame)) {
+      if (oldSelectedGame !== gameNum) {
+        theObject.style.fontWeight = "";
+      }
+    }
+    if (theObject = document.getElementById("gameRow_" + gameNum)) {
+       theObject.style.fontWeight = "bold";
+    }
+    oldSelectedGame = gameNum;
   }
 
 function gup( name ){
@@ -295,11 +389,6 @@ function gup( name ){
   return "";
 }
 
-function customShortcutKey_Shift_1() {
-  refreshPgnSource();
-}
-
-
 </script>
 
 </head>
@@ -307,7 +396,19 @@ function customShortcutKey_Shift_1() {
 <body>
 
 <a class="gameLiveStatusTicker" id="GameLiveStatusTicker" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();">&nbsp;</a>
+<div class="gameBoard" id="GameBoard"></div>
 <div id="results"></div>
+
+<script type="text/javascript">
+
+  if (theObject = document.getElementById("GameBoard")) {
+    theObject.style.display = showBoard ? "" : "none";
+  }
+  if (theObject = document.getElementById("GameLiveStatusTicker")) {
+    theObject.style.display = showBoard ? "none" : "";
+  }
+
+</script>
 
 </body>
 
