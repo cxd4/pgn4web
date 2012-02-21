@@ -62,6 +62,10 @@ body {
   width: 10em;
 }
 
+.secondTeam {
+  background-color: #F0F0F0;
+}
+
 .move, .lastMove {
 }
 
@@ -84,7 +88,6 @@ body {
 }
 
 .gameBoard {
-/*  float: right; */
   position: fixed;
   top: 0;
   right: 0;
@@ -293,17 +296,19 @@ body {
           resultTable += "<tr>" + matchRow(gameMatch[gg]) + "</tr>";
           lastMatch = gameMatch[gg];
         }
-        resultTable += "<tr id='gameRow_" + gameId[gg] + "' onclick='selectGame(" + gameId[gg] + ");' style='font-weight: " + (showBoard && (gameId[gg] === oldSelectedGame) ? "bold" : "") + "'><td><span class='player'>" + gameWhite[gameId[gg]] + "</span></td><td><span class='player'>" + gameBlack[gameId[gg]] + "</span></td><td>" + (showLastMove ? "<span class='lastMove'>" + gameLastMove[gameId[gg]] + "</span>" : "") + "</td><td><span class='result' style='width:auto; margin:0;'><span class='result'>" + gameResult[gameId[gg]] + "</span><span class='lastMove' style='font-weight:bold; width:auto; margin:0;'>&nbsp;</span></span></td></tr>";
+        resultTable += "<tr id='gameRow_" + gameId[gg] + "' onclick='selectGame(" + gameId[gg] + ");' style='font-weight: " + (showBoard && (gameId[gg] === oldSelectedGame) ? "bold" : "") + "'><td><span class='player'><span class='" + (secondTeam && gameWhiteTeam[gameId[gg]] === secondTeam ? "secondTeam" : "") + "'>" + gameWhite[gameId[gg]] + "</span></span></td><td><span class='player'><span class='" + (secondTeam && gameBlackTeam[gameId[gg]] === secondTeam ? "secondTeam" : "") + "'>" + gameBlack[gameId[gg]] + "</span></span></td><td>" + (showLastMove ? "<span class='lastMove'>" + gameLastMove[gameId[gg]] + "</span>" : "") + "</td><td><span class='result' style='width:auto; margin:0;'><span class='result'>" + gameResult[gameId[gg]] + "</span><span class='lastMove' style='font-weight:bold; width:auto; margin:0;'>&nbsp;</span></span></td></tr>";
       }
       resultTable += "</table>";
       theObject.innerHTML = resultTable;
     }
   }
 
+  var firstTeam = "";
+  var secondTeam = "";
   function matchRow(id) {
-    if (id === 0) { return ""; }
     firstTeam = "";
     secondTeam = "";
+    if (id === 0) { return ""; }
     firstTeamScore = 0;
     secondTeamScore = 0;
     for (ii in gameId) {
@@ -330,7 +335,7 @@ body {
         }
       }
     }
-    return "<td colspan='3'><span class='match'>" + firstTeam + " - " + secondTeam + "</span></td><td colspan='1'><span class='score'>" + firstTeamScore + " - " + secondTeamScore + "</span></td>";
+    return "<td colspan='3'><span class='match'>" + firstTeam + " - <span class='secondTeam'>" + secondTeam + "</span></span></td><td colspan='1'><span class='score'>" + firstTeamScore + " - " + secondTeamScore + "</span></td>";
   }
 
   oldSelectedGame = -1;
