@@ -113,18 +113,11 @@ body {
   height: 40px;
 }
 
-.whiteSquare,
-.highlightWhiteSquare {
+.whiteSquare {
   background: #EFF4EC;
 }
 
-.blackSquare,
-.highlightBlackSquare {
-  background: #C6CEC3;
-}
-
-.blackSquare,
-.highlightBlackSquare {
+.blackSquare {
   background: #C6CEC3;
 }
 
@@ -289,7 +282,7 @@ body {
     lastMatch = 0;
     if (theObject = document.getElementById("results")) {
       resultTable = "";
-      resultTable += "<table cellspacing=0 cellpadding=0 border=0>";
+      resultTable += "<table cellspacing='0' cellpadding='0' border='0'>";
       for (gg in gameId) {
         currentEventRound = gameEvent[gameId[gg]] + " - " + gameRound[gameId[gg]];
         if (showEvent && (currentEventRound !== lastEventRound)) {
@@ -300,7 +293,7 @@ body {
           resultTable += "<tr>" + matchRow(gameMatch[gg]) + "</tr>";
           lastMatch = gameMatch[gg];
         }
-        resultTable += "<tr id='gameRow_" + gameId[gg] + "' onclick='selectGame(" + gameId[gg] + ");' style='font-weight: " + (showBoard && (gameId[gg] === oldSelectedGame) ? "bold" : "") + "'><td><span class='player'>" + gameWhite[gameId[gg]] + "</span></td><td><span class='player'>" + gameBlack[gameId[gg]] + "</span></td><td>" + (showLastMove ? "<span class='lastMove'>" + gameLastMove[gameId[gg]] + "</span>" : "") + "</td><td><span class='result'>" + gameResult[gameId[gg]] + "</span><span class='lastMove' style='font-weight:bold; width:auto; margin:0;'>&nbsp;</span></td></tr>";
+        resultTable += "<tr id='gameRow_" + gameId[gg] + "' onclick='selectGame(" + gameId[gg] + ");' style='font-weight: " + (showBoard && (gameId[gg] === oldSelectedGame) ? "bold" : "") + "'><td><span class='player'>" + gameWhite[gameId[gg]] + "</span></td><td><span class='player'>" + gameBlack[gameId[gg]] + "</span></td><td>" + (showLastMove ? "<span class='lastMove'>" + gameLastMove[gameId[gg]] + "</span>" : "") + "</td><td><span class='result' style='width:auto; margin:0;'><span class='result'>" + gameResult[gameId[gg]] + "</span><span class='lastMove' style='font-weight:bold; width:auto; margin:0;'>&nbsp;</span></span></td></tr>";
       }
       resultTable += "</table>";
       theObject.innerHTML = resultTable;
