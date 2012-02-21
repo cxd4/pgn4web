@@ -132,7 +132,7 @@ td {
   liveStatusTickerString = "o.oO";
   function customFunctionOnCheckLiveBroadcastStatus() {
     if (theObject = document.getElementById("GameLiveStatusTicker")) {
-      theObject.innerHTML =  theObject.innerHTML = liveStatusTickerString[LiveBroadcastTicker % liveStatusTickerString.length];
+      theObject.innerHTML =  theObject.innerHTML = liveStatusTickerString.charAt(LiveBroadcastTicker % liveStatusTickerString.length);
       theObject.title = LiveBroadcastStatusString.replace("&nbsp;", " ");
     }
   }
@@ -288,7 +288,7 @@ function customShortcutKey_Shift_1() {
 
 <body>
 
-<a class="gameLiveStatusTicker" id="GameLiveStatusTicker" href="javascript:void(0);" onclick="refreshPgnSource();">&nbsp;</a>
+<a class="gameLiveStatusTicker" id="GameLiveStatusTicker" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();">&nbsp;</a>
 <div id="results"></div>
 
 </body>
