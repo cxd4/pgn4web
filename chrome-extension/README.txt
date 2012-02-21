@@ -67,9 +67,10 @@ http://crbug.com/35070
 
 manifest.json, background.html chess-games-viewer.html,
 live-mosaic-viewer.html: storage API
-consider using the storage API once out of experimental, for storing local
-settings and/or to synch settings (if any) across computers; settings synch
-might not be supported for self-hosted extensions.
+consider using the storage API, for storing local settings and/or to synch
+settings (if any) across computers; check limitations in the amount of data
+stored (the engine analysis data is about 1MB for 4000 entries); settings
+synch might not be supported for self-hosted extensions.
 http://crbug.com/47327
 
 Bugs:
