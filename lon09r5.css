@@ -19,6 +19,7 @@ body {
 
 .boardTable {
   width: 388px;
+  height: 388px;
   border-style: solid;
   border-color: #c3c3c3;
   border-width: 10px;
@@ -27,16 +28,16 @@ body {
 }
 
 .pieceImage {
-  width: 36;
-  height: 36;
+  width: 36px;
+  height: 36px;
 }
 
 .whiteSquare,
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 44;
-  height: 44;
+  width: 44px;
+  height: 44px;
   border-width: 1px;
   border-style: solid;
 }
