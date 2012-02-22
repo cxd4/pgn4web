@@ -18,7 +18,7 @@
 
 body {
   font-family: sans-serif;
-  padding: 2em;
+  padding: 40px;
   margin: 0;
 }
 
@@ -28,41 +28,41 @@ body {
   overflow-x: hidden;
 }
 
-.event, .round, .match, .score, .player, .resultValue, .resultNewMoves, .resultNoNewMoves {
-  margin-right: 1em;
+.event, .round, .match, .score, .player {
+  margin-right: 20px;
 }
 
 .event, .round {
   font-size: 22px;
-  padding-top: 1em;
-  padding-bottom: 1em;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .event {
-  width: 12em;
+  width: 400px;
 }
 
 .round {
-  width: 6em;
+  width: 100px;
 }
 
 .match, .score {
   font-size: 18px;
   font-weight: bold;
-  padding-top: 1em;
-  padding-bottom: 1em;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .match {
-  width: 15em;
+  width: 400px;
 }
 
 .score {
-  width: 5em;
+  width: 100px;
 }
 
 .player {
-  width: 10em;
+  width: 200px;
 }
 
 .firstTeam {
@@ -72,7 +72,7 @@ body {
 }
 
 .secondTeam {
-  margin-left: 2em;
+  margin-left: 30px;
 }
 
 .secondTeam, .secondTeamPlayer {
@@ -83,7 +83,7 @@ body {
 }
 
 .resultValue {
-  width: 4em;
+  width: 100px;
 }
 
 .resultNewMoves, .resultNoNewMoves {
@@ -107,8 +107,8 @@ body {
 
 .gameBoardContainer {
   position: fixed;
-  top: 2em;
-  right: 2em;
+  top: 40px;
+  right: 40px;
   width: 326px;
   background: white;
 }
@@ -419,14 +419,14 @@ body {
       for (gg in gameId) {
         currentEventRound = gameEvent[gameId[gg]] + " - " + gameRound[gameId[gg]];
         if (showEvent && (currentEventRound !== lastEventRound)) {
-          resultTable += "<tr><td colspan='2'><span class='event'>" + gameEvent[gameId[gg]] + "</span></td><td colspan='1'><span class='round'>" + (gameRound[gameId[gg]] !== "" ? "round " + gameRound[gameId[gg]] : "") + "</span></td></tr>";
+          resultTable += "<tr><td colspan='2'><span class='event' title='" + gameEvent[gameId[gg]] + "'>" + gameEvent[gameId[gg]] + "</span></td><td colspan='1'><span class='round' title='" + "round " + gameRound[gameId[gg]] + "'>" + (gameRound[gameId[gg]] !== "" ? "round " + gameRound[gameId[gg]] : "") + "</span></td></tr>";
           lastEventRound = currentEventRound;
         }
         if (showTeams && (gameMatch[gg] !== lastMatch)) {
           resultTable += "<tr>" + matchRow(gameMatch[gg]) + "</tr>";
           lastMatch = gameMatch[gg];
         }
-        resultTable += "<tr id='gameRow_" + gameId[gg] + "' onclick='selectGame(" + gameId[gg] + ");' style='font-weight: " + (showBoard && (gameId[gg] === oldSelectedGame) ? "bold" : "") + "'><td><span class='player'><span class='" + (firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam ? "firstTeamPlayer " : "") + (secondTeam && gameWhiteTeam[gameId[gg]] === secondTeam ? "secondTeamPlayer" : "") + "'>" + gameWhite[gameId[gg]] + "</span></span></td><td><span class='player'><span class='" + (firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam ? "firstTeamPlayer " : "") + (secondTeam && gameBlackTeam[gameId[gg]] === secondTeam ? "secondTeamPlayer" : "") + "'>" + gameBlack[gameId[gg]] + "</span></span></td><td><span class='resultContainer'><span class='resultValue'>" + gameResult[gameId[gg]] + "</span><span class='" + (gameNewMoves[gg] ? "resultNewMoves" : "resultNoNewMoves") + "' title='new moves received'>*</span></span></td></tr>";
+        resultTable += "<tr id='gameRow_" + gameId[gg] + "' onclick='selectGame(" + gameId[gg] + ");' style='font-weight: " + (showBoard && (gameId[gg] === oldSelectedGame) ? "bold" : "") + "'><td><span class='player'><span class='" + (firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam ? "firstTeamPlayer " : "") + (secondTeam && gameWhiteTeam[gameId[gg]] === secondTeam ? "secondTeamPlayer" : "") + "' title='" + gameWhite[gameId[gg]] + "'>" + gameWhite[gameId[gg]] + "</span></span></td><td><span class='player'><span class='" + (firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam ? "firstTeamPlayer " : "") + (secondTeam && gameBlackTeam[gameId[gg]] === secondTeam ? "secondTeamPlayer" : "") + "' title='" + gameBlack[gameId[gg]] + "'>" + gameBlack[gameId[gg]] + "</span></span></td><td><span class='resultContainer'><span class='resultValue' title='" + gameResult[gameId[gg]] + "'>" + gameResult[gameId[gg]] + "</span><span class='" + (gameNewMoves[gg] ? "resultNewMoves" : "resultNoNewMoves") + "' title='new moves received'>*</span></span></td></tr>";
       }
       resultTable += "</table>";
       theObject.innerHTML = resultTable;
@@ -465,7 +465,7 @@ body {
         }
       }
     }
-    return "<td colspan='2'><span class='match'><span class='firstTeam'>" + firstTeam + "</span><span class='secondTeam'>" + secondTeam + "</span></span></td><td colspan='1'><span class='score'>" + firstTeamScore + " - " + secondTeamScore + "</span></td>";
+    return "<td colspan='2'><span class='match' title='" + firstTeam + " - " + secondTeam + "'><span class='firstTeam'>" + firstTeam + "</span><span class='secondTeam'>" + secondTeam + "</span></span></td><td colspan='1'><span class='score' title='" + firstTeamScore + " - " + secondTeamScore + "'>" + firstTeamScore + " - " + secondTeamScore + "</span></td>";
   }
 
   oldSelectedGame = -1;
