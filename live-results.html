@@ -22,15 +22,18 @@ body {
   margin: 0;
 }
 
-.event, .round, .match, .score, .player, .move, .lastMove, .result {
+.event, .round, .match, .score, .player, .resultContainer, .resultValue, .resultNewMoves, .resultNoNewMoves {
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.event, .round, .match, .score, .player, .resultValue, .resultNewMoves, .resultNoNewMoves {
   margin-right: 1em;
 }
 
 .event, .round {
-  font-size: 133%;
+  font-size: 22px;
   padding-top: 1em;
   padding-bottom: 1em;
 }
@@ -44,7 +47,7 @@ body {
 }
 
 .match, .score {
-  font-size: 111%;
+  font-size: 18px;
   font-weight: bold;
   padding-top: 1em;
   padding-bottom: 1em;
@@ -62,19 +65,34 @@ body {
   width: 10em;
 }
 
+.firstTeam {
+}
+
+.firstTeamPlayer {
+}
+
 .secondTeam {
+  margin-left: 2em;
+}
+
+.secondTeam, .secondTeamPlayer {
   background-color: #F0F0F0;
 }
 
-.move, .lastMove {
+.move, .moveOn {
 }
 
-.lastMove {
-  width: 7em;
+.resultValue {
+  width: 4em;
 }
 
-.result {
-  width: 5em;
+.resultNewMoves, .resultNoNewMoves {
+  color: gray;
+  font-weight: bold;
+}
+
+.resultNoNewMoves {
+  visibility: hidden;
 }
 
 .gameLiveStatusTicker {
@@ -87,10 +105,12 @@ body {
   text-decoration: none;
 }
 
-.gameBoard {
+.gameBoardContainer {
   position: fixed;
-  top: 0;
-  right: 0;
+  top: 2em;
+  right: 2em;
+  width: 326px;
+  background: white;
 }
 
 .boardTable {
@@ -98,9 +118,8 @@ body {
   border-color: black;
   border-width: 3px;
   box-shadow: 0px 0px 15px #AAAAAA;
-  width: 320px;
-  height: 320px;
-  margin: 2em;
+  width: 326px;
+  height: 326px;
 }
 
 .pieceImage {
@@ -127,6 +146,90 @@ body {
 .highlightWhiteSquare,
 .highlightBlackSquare {
   background: #DAF4D7;
+}
+
+.selectControl {
+/* a "width" attribute here must use the !important flag to override default settings */
+}
+
+.optionSelectControl {
+}
+
+.buttonControlPlay,
+.buttonControlStop,
+.buttonControl {
+/* a "width" attribute here must use the !important flag to override default settings */
+  border-style: none;
+  background-color: transparent;
+}
+
+.buttonControlSpace {
+/* a "width" attribute here must use the !important flag to override default settings */
+}
+
+.searchPgnButton {
+/* a "width" attribute here must use the !important flag to override default settings */
+}
+
+.searchPgnExpression {
+/* a "width" attribute here must use the !important flag to override default settings */
+}
+
+.move,
+.moveOn {
+  text-decoration: none;
+  color: black;
+}
+
+.moveOn {
+  background: #DAF4D7;
+}
+
+.comment {
+  color: gray;
+}
+
+.variation {
+  color: gray;
+}
+
+.gameText {
+  font-size: 11px;
+  text-align: justify;
+  line-height: 1.4em;
+}
+
+.header {
+  font-size: 11px;
+  line-height: 1.4em;
+  white-space: nowrap;
+  margin-left: 3px;
+  margin-right: 3px;
+  width: 320px;
+  overflow: hidden;
+}
+
+.gameWhite, .gameWhiteClock, .gameBlackClock, .gameBlack {
+  display: inline-block;
+  overflow: hidden;
+}
+
+.gameWhite, .gameBlack {
+  width: 80px;
+}
+
+.gameWhiteClock, .gameBlackClock {
+  width: 50px;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.gameWhite, .gameBlackClock {
+  text-align: left;
+}
+
+.gameWhiteClock, .gameBlack {
+  text-align: right;
 }
 
 </style>
@@ -170,11 +273,8 @@ body {
   showEvent = true;
   if ((gup("showEvent") == "false") || (gup("showEvent") == "f")) { showEvent = false; }
 
-  showMatch = true;
-  if ((gup("showMatch") == "false") || (gup("showMatch") == "f")) { showMatch = false; }
-
-  showLastMove = true;
-  if ((gup("showLastMove") == "false") || (gup("showLastMove") == "f")) { showLastMove = false; }
+  showTeams = true;
+  if ((gup("showTeams") == "false") || (gup("showTeams") == "f")) { showTeams = false; }
 
   if ((gup("help") == "true") || (gup("help") == "t")) {
       document.write("<pre>" +
@@ -182,10 +282,9 @@ body {
       " - pgnData = " + pgnFile + "; PGN file to load (default " + pgnFile_default + ")" + "\n" +
       " - refreshMinutes = " + refreshMinutes + "; refresh interval in minutes, decimals allowed (default 1)" + "\n" +
       " - refreshDemo = " + demoFlag + "; sets live demo mode (default false)" + "\n" +
-      " - showBoard = true|false; whether to show/hide the chessboard (default true)" + "\n" +
+      " - showBoard = true|false; whether to show/hide the chessboard (default false)" + "\n" +
       " - showEvent = true|false; whether to show/hide event information (default true)" + "\n" +
-      " - showMatch = true|false; whether to show/hide team match information (default true)" + "\n" +
-      " - showLastMove = true|false; whether to show/hide game's last move (default true)" + "\n" +
+      " - showTeams = true|false; whether to show/hide teams information (default true)" + "\n" +
       " - help = true; prints this help (default false)" + "\n\n" +
       "</pre>");
   }
@@ -194,9 +293,15 @@ body {
   SetImagePath ("alpha/32");
   SetImageType("png");
   SetHighlightOption(false);
-  SetShortcutKeysEnabled(false);
+  SetCommentsIntoMoveText(false);
+  SetCommentsOnSeparateLines(false);
+  SetAutoplayDelay(1000);
+  SetAutostartAutoplay(false);
+  SetAutoplayNextGame(false);
   SetInitialHalfmove("end", true);
-  SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, false);
+  SetInitialGame("first");
+  SetShortcutKeysEnabled(showBoard);
+  SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, true);
 
   liveStatusTickerString = "o.oO";
   function customFunctionOnCheckLiveBroadcastStatus() {
@@ -214,38 +319,49 @@ body {
     refreshPgnSource();
   }
 
-  clearShortcutSquares("ABCDEFGH", "1234");
-  clearShortcutSquares("G", "6");
-  clearShortcutSquares("BCEFG", "7");
+  function replayPreviousMoves(numPlies) {
+    targetPly = numPlies ? CurrentPly - numPlies : StartPly;
+    if (targetPly < StartPly) { targetPly = StartPly; }
+    if (targetPly !== CurrentPly) { GoToMove(targetPly); }
+    SetAutoPlay(true);
+  }
+
+  if (LiveBroadcastDelay) {
+    boardShortcut("E2", "replay 10 previous half-moves", function() { replayPreviousMoves(10); });
+    boardShortcut("F2", "replay 6 previous half-moves", function() { replayPreviousMoves(6); });
+    boardShortcut("G2", "replay 3 previous half-moves", function() { replayPreviousMoves(3); });
+    boardShortcut("H2", "replay the previous half-move", function() { replayPreviousMoves(1); });
+
+    boardShortcut("B1", "move 10 half-moves backward", function() { MoveBackward(10); });
+    boardShortcut("G1", "move 10 half-moves forward", function() { MoveForward(10); });
+  }
 
   var gameId;
   var gameWhiteTeam;
   var gameBlackTeam;
   var gameMatch;
   var gameBoard;
-  var gameLastMove;
+  var gameLength;
+  var oldGameLength = new Array();
+  var gameNewMoves;
   function customFunctionOnPgnTextLoad() {
     gameId = new Array();
+
     gameWhiteTeam = new Array();
     gameBlackTeam = new Array();
     gameMatch = new Array();
     gameBoard = new Array();
-    gameLastMove = new Array();
-    for (cc = 0; cc < numberOfGames; cc++) {
-      gg = (cc + oldSelectedGame + 1) % numberOfGames;
+    gameLength = new Array();
+    gameNewMoves = new Array();
+    for (gg = 0; gg < numberOfGames; gg++) {
       gameId[gg] = gg;
-      oldShowBoard = showBoard;
-      showBoard = false;
-      Init(gg);
-      showBoard = oldShowBoard;
-      gameWhiteTeam[gg] = customPgnHeaderTag("WhiteTeam");
-      gameBlackTeam[gg] = customPgnHeaderTag("BlackTeam");
+      gameWhiteTeam[gg] = customPgnHeaderTag("WhiteTeam", null, gg);
+      gameBlackTeam[gg] = customPgnHeaderTag("BlackTeam", null, gg);
       gameMatch[gg] = crc32(gameWhiteTeam[gg]) + crc32(gameBlackTeam[gg]);
-      gameBoard[gg] = customPgnHeaderTag("Board");
-      showThisMove = StartPly + PlyNumber - 1;
-      if ((showThisMove >= StartPly) && Moves[showThisMove]) {
-        gameLastMove[gg] = (Math.floor(showThisMove/2) + 1) + (showThisMove % 2 === 0 ? '. ' : '... ') + Moves[showThisMove];
-      } else { gameLastMove[gg] = ''; }
+      gameBoard[gg] = customPgnHeaderTag("Board", null, gg);
+      gameLength[gg] = LiveBroadcastDemo ? gameDemoMaxPly[gg] : pgnGame[gg].length;
+      gameNewMoves[gg] = ((!oldGameLength[gg]) || (gameLength[gg] !== oldGameLength[gg])) && (!LiveBroadcastEnded);
+      oldGameLength[gg] = gameLength[gg];
     }
 
     gameId.sort(sortGameId);
@@ -285,18 +401,18 @@ body {
     lastMatch = 0;
     if (theObject = document.getElementById("results")) {
       resultTable = "";
-      resultTable += "<table cellspacing='0' cellpadding='0' border='0'>";
+      resultTable += "<table cellspaning='0' cellpadding='0' border='0'>";
       for (gg in gameId) {
         currentEventRound = gameEvent[gameId[gg]] + " - " + gameRound[gameId[gg]];
         if (showEvent && (currentEventRound !== lastEventRound)) {
-          resultTable += "<tr><td colspan='2'><span class='event'>" + gameEvent[gameId[gg]] + "</span></td><td colspan='2'><span class='round'>" + (gameRound[gameId[gg]] !== "" ? "round " + gameRound[gameId[gg]] : "") + "</span></td></tr>";
+          resultTable += "<tr><td colspan='2'><span class='event'>" + gameEvent[gameId[gg]] + "</span></td><td colspan='1'><span class='round'>" + (gameRound[gameId[gg]] !== "" ? "round " + gameRound[gameId[gg]] : "") + "</span></td></tr>";
           lastEventRound = currentEventRound;
         }
-        if (showMatch && (gameMatch[gg] !== lastMatch)) {
+        if (showTeams && (gameMatch[gg] !== lastMatch)) {
           resultTable += "<tr>" + matchRow(gameMatch[gg]) + "</tr>";
           lastMatch = gameMatch[gg];
         }
-        resultTable += "<tr id='gameRow_" + gameId[gg] + "' onclick='selectGame(" + gameId[gg] + ");' style='font-weight: " + (showBoard && (gameId[gg] === oldSelectedGame) ? "bold" : "") + "'><td><span class='player'><span class='" + (secondTeam && gameWhiteTeam[gameId[gg]] === secondTeam ? "secondTeam" : "") + "'>" + gameWhite[gameId[gg]] + "</span></span></td><td><span class='player'><span class='" + (secondTeam && gameBlackTeam[gameId[gg]] === secondTeam ? "secondTeam" : "") + "'>" + gameBlack[gameId[gg]] + "</span></span></td><td>" + (showLastMove ? "<span class='lastMove'>" + gameLastMove[gameId[gg]] + "</span>" : "") + "</td><td><span class='result' style='width:auto; margin:0;'><span class='result'>" + gameResult[gameId[gg]] + "</span><span class='lastMove' style='font-weight:bold; width:auto; margin:0;'>&nbsp;</span></span></td></tr>";
+        resultTable += "<tr id='gameRow_" + gameId[gg] + "' onclick='selectGame(" + gameId[gg] + ");' style='font-weight: " + (showBoard && (gameId[gg] === oldSelectedGame) ? "bold" : "") + "'><td><span class='player'><span class='" + (firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam ? "firstTeamPlayer " : "") + (secondTeam && gameWhiteTeam[gameId[gg]] === secondTeam ? "secondTeamPlayer" : "") + "'>" + gameWhite[gameId[gg]] + "</span></span></td><td><span class='player'><span class='" + (firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam ? "firstTeamPlayer " : "") + (secondTeam && gameBlackTeam[gameId[gg]] === secondTeam ? "secondTeamPlayer" : "") + "'>" + gameBlack[gameId[gg]] + "</span></span></td><td><span class='resultContainer'><span class='resultValue'>" + gameResult[gameId[gg]] + "</span><span class='" + (gameNewMoves[gg] ? "resultNewMoves" : "resultNoNewMoves") + "' title='new moves received'>*</span></span></td></tr>";
       }
       resultTable += "</table>";
       theObject.innerHTML = resultTable;
@@ -335,7 +451,7 @@ body {
         }
       }
     }
-    return "<td colspan='3'><span class='match'>" + firstTeam + " - <span class='secondTeam'>" + secondTeam + "</span></span></td><td colspan='1'><span class='score'>" + firstTeamScore + " - " + secondTeamScore + "</span></td>";
+    return "<td colspan='2'><span class='match'><span class='firstTeam'>" + firstTeam + "</span><span class='secondTeam'>" + secondTeam + "</span></span></td><td colspan='1'><span class='score'>" + firstTeamScore + " - " + secondTeamScore + "</span></td>";
   }
 
   oldSelectedGame = -1;
@@ -394,16 +510,23 @@ function gup( name ){
 <body>
 
 <a class="gameLiveStatusTicker" id="GameLiveStatusTicker" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();">&nbsp;</a>
-<div class="gameBoard" id="GameBoard"></div>
+
+<div class="gameBoardContainer" id="GameBoardContainer">
+<div class="header"><span class="gameWhite" id="GameWhite" title="white player"></span><span class="gameWhiteClock" id="GameWhiteClock" title="white clock"></span><span class="gameBlackClock" id="GameBlackClock" title="black clock"></span><span class="gameBlack" id="GameBlack" title="black player"></span></div>
+<div>&nbsp;</div>
+<div id="GameBoard"></div>
+<div>&nbsp;</div>
+<div id="GameButtons"></div>
+<div>&nbsp;</div>
+<div class="gameText" id="GameText"></div>
+</div>
+
 <div id="results"></div>
 
 <script type="text/javascript">
 
-  if (theObject = document.getElementById("GameBoard")) {
+  if (theObject = document.getElementById("GameBoardContainer")) {
     theObject.style.display = showBoard ? "" : "none";
-  }
-  if (theObject = document.getElementById("GameLiveStatusTicker")) {
-    theObject.style.display = showBoard ? "none" : "";
   }
 
 </script>

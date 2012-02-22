@@ -1,88 +1,125 @@
 [Event "Test team event"]
-[Round "5"]
-[White "Player 7"]
-[Black "Player 8"]
-[Result "1/2-1/2"]
-[WhiteTeam "Team B"]
-[BlackTeam "Team A"]
-[Board "4"]
-
-1.e4 c5 2.Nf3 d6 3.d4 cxd4 4.Nxd4 Nf6 5.Nc3 g6 6.Be2 Bg7 7.Be3 Nc6 8.O-O O-O 9.f4 Qb6 10.e5
-
-[Event "Test team event"]
-[Round "5"]
-[White "Player 5"]
-[Black "Player 6"]
-[Result "1/2-1/2"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "6"]
+[White "Player 1a"]
+[Black "Player 1b"]
+[Result "1-0"]
+[Board "1"]
 [WhiteTeam "Team A"]
 [BlackTeam "Team B"]
-[Board "3"]
 
-1.e4 e5 2.f4 exf4 3.Nf3 g5 4.Bc4 Bg7 5.h4 h6 6.d4 d6 7.Nc3 c6 8.hxg5 hxg5 9.Rxh8 Bxh8 10.Ne5
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O d6 6. c3 Be7 7. d4 b5 8.
+Bb3 Bg4 9. h3 Bxf3 10. Qxf3 exd4 11. Qg3 g6 12. Bd5 Qd7 13. Bh6 Rb8 14. f4
+Nd8 15. Nd2 c6 16. Bb3 dxc3 17. Qxc3 Qa7+ 18. Kh1 Qc5 19. Qd3 Nd7 20. e5 d5
+21. f5 gxf5 22. Qxf5 Nf8 23. Ne4 dxe4 24. Rad1 f6 25. Qh5+ Ng6 26. exf6 Rf8
+27. Rf5 1-0
 
 [Event "Test team event"]
-[Round "5"]
-[White "Player 3"]
-[Black "Player 4"]
-[Result "1-0"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "6"]
+[White "Player 2b"]
+[Black "Player 2a"]
+[Result "0-1"]
+[Board "2"]
 [WhiteTeam "Team B"]
 [BlackTeam "Team A"]
-[Board "2"]
 
-1.e4 e6 2.d4 d5 3.e5 c5 4.c3 Nc6 5.Nf3 Qb6 6.Bd3 cxd4 7.cxd4 Bd7 8.Nc3 Nxd4 9.Nxd4 Qxd4
+1. d4 Nf6 2. c4 e5 3. dxe5 Ne4 4. Nc3 Bb4 5. Qc2 d5 6. exd6 Bf5 7. Qb3 Nc6
+8. Nf3 Qxd6 9. e3 O-O-O 10. Be2 Qg6 11. Nh4 Qf6 12. Nxf5 Qxf5 13. O-O Nc5
+0-1
 
 [Event "Test team event"]
-[Round "5"]
-[White "Player 1"]
-[Black "Player 2"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "6"]
+[White "Player 3a"]
+[Black "Player 3b"]
 [Result "1-0"]
+[Board "3"]
 [WhiteTeam "Team A"]
 [BlackTeam "Team B"]
-[Board "1"]
 
-1.e4 e5 2.Nf3 Nc6 3.Bb5 a6 4.Ba4 Nf6 5.O-O Be7 6.Re1 b5 7.Bb3 O-O 8.c3 d5
-
-[Event "Test team event"]
-[Round "5"]
-[White "Player 11"]
-[Black "Player 12"]
-[Result "1-0"]
-[WhiteTeam "Team C"]
-[BlackTeam "Team D"]
-[Board "1"]
-
-1.e4 e5 2.f4 exf4 3.Nf3 g5 4.Bc4 g4 5.O-O gxf3 6.Qxf3 Qf6 7.e5 Qxe5 8.Bxf7+
+1. d4 Nf6 2. Nf3 b6 3. g3 Bb7 4. Bg2 c5 5. O-O e6 6. c4 cxd4 7. Nxd4 Bxg2
+8. Kxg2 Qc8 9. b3 Be7 10. Bb2 d5 11. cxd5 Qb7 12. e4 Nxe4 13. f3 Nf6 14.
+dxe6 O-O 15. Nf5 Rd8 16. exf7+ Kxf7 17. Qxd8 1-0
 
 [Event "Test team event"]
-[Round "5"]
-[White "Player 13"]
-[Black "Player 14"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "6"]
+[White "Player 4b"]
+[Black "Player 4a"]
 [Result "0-1"]
-[WhiteTeam "Team D"]
-[BlackTeam "Team C"]
-[Board "2"]
-
- 1.e4 Nf6 2.e5 Nd5 3.c4 Nb6 4.d4 d6 5.Nf3 Bg4 6.Be2 dxe5 7.Nxe5
-
-[Event "Test team event"]
-[Round "5"]
-[White "Player 15"]
-[Black "Player 16"]
-[Result "1-0"]
-[WhiteTeam "Team C"]
-[BlackTeam "Team D"]
-[Board "3"]
-
-1.e4 e5 2.Nf3 Nf6 3.Bc4 Nxe4 4.Nc3 Nxc3 5.dxc3 f6
-
-[Event "Test team event"]
-[Round "5"]
-[White "Player 17"]
-[Black "Player 18"]
-[Result "0-1"]
-[WhiteTeam "Team D"]
-[BlackTeam "Team C"]
 [Board "4"]
+[WhiteTeam "Team B"]
+[BlackTeam "Team A"]
 
-1.e4 e5 2.Bc4 Bc5 3.b4 Bxb4 4.f4 exf4 5.Nf3 Be7 6.d4 Bh4+ 7.g3 fxg3 8.O-O gxh2+ 9.Kh1
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Nxe4 6. d4 b5 7. Bb3 d5 8.
+Nxe5 Nxe5 9. dxe5 Bb7 10. Be3 Bc5 11. Qg4 Bxe3 12. Qxg7 Qg5 13. Qxh8+ Ke7
+14. Qxh7 Bxf2+ 15. Kh1 Rg8 16. Qh3 Bc8 17. g4 Bxg4 0-1
+
+[Event "Test team event"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "6"]
+[White "Player 4d"]
+[Black "Player 4c"]
+[Result "1/2-1/2"]
+[Board "4"]
+[WhiteTeam "Team D"]
+[BlackTeam "Team C"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6 4. Ng5 Bc5 5. Nxf7 Bxf2+ 6. Kxf2 Nxe4+ 7.
+Kg1 Qh4 8. g3 Nxg3 9. hxg3 Qxg3+ 10. Kf1 Rf8 11. Qh5 d6 12. Nc3 Bg4 13. Qh2
+Qf3+ 14. Kg1 Nd4 15. Bd5 Ne2+ 16. Qxe2 Qg3+ 17. Qg2 Qe1+ 18. Qf1 Qg3+ 19.
+Qg2 Qe1+ 1/2-1/2
+
+[Event "Test team event"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "6"]
+[White "Player 3c"]
+[Black "Player 3d"]
+[Result "1/2-1/2"]
+[Board "3"]
+[WhiteTeam "Team C"]
+[BlackTeam "Team D"]
+
+1. e4 e6 2. d4 d5 3. Nc3 Nf6 4. Bg5 Be7 5. e5 Nfd7 6. h4 c5 7. Nb5 f6 8.
+Bd3 a6 9. Qh5+ Kf8 10. Rh3 axb5 11. Bh6 Qa5+ 12. Bd2 Qc7 13. Rg3 cxd4 14.
+Nf3 Nxe5 15. Rxg7 h6 16. Bh7 Kxg7 17. Qxh6+ Kf7 18. Qh5+ Kg7 1/2-1/2
+
+[Event "Test team event"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "6"]
+[White "Player 2d"]
+[Black "Player 2c"]
+[Result "1-0"]
+[Board "2"]
+[WhiteTeam "Team D"]
+[BlackTeam "Team C"]
+
+1. e4 e5 2. Nf3 Nf6 3. Nxe5 d6 4. Nf3 Nxe4 5. d4 d5 6. Bd3 Be7 7. O-O Nc6
+8. Re1 Bg4 9. c3 Nf6 10. Bg5 Qd7 11. Nbd2 O-O-O 12. Qa4 h6 13. Bh4 g5 14.
+Bg3 Bxf3 15. Nxf3 g4 16. Ne5 Nxe5 17. Bf5 Qxf5 18. Rxe5 Qd3 19. Rxe7 Rd7
+20. Re3 Qa6 21. Qxa6 bxa6 22. Be5 1-0
+
+[Event "Test team event"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "6"]
+[White "Player 1c"]
+[Black "Player 1d"]
+[Result "1-0"]
+[Board "1"]
+[WhiteTeam "Team C"]
+[BlackTeam "Team D"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 d6 5. c3 Bd7 6. d4 Nf6 7. Nbd2 Be7 8.
+O-O O-O 9. Re1 b5 10. Bc2 Bg4 11. h3 Bh5 12. d5 Nb8 13. a4 Nbd7 14. Qe2 Rb8
+15. Nb3 Nc5 16. Na5 Qd7 17. Nc6 Ra8 18. axb5 axb5 19. Rxa8 Rxa8 20. Qxb5
+Bg6 21. Bg5 Kh8 22. Bxf6 Bxf6 23. b4 1-0
 
