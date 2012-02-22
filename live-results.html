@@ -392,12 +392,35 @@ body {
     return 0;
   }
 
+  function myCompareRound(AA, ZZ) {
+    try {
+      if (!AA && !ZZ) { return 0; }
+      if (AA && !ZZ) { return -1; }
+      if (!AA && ZZ) { return 1; }
+      AA_A = AA.split ? AA.split(".") : [AA];
+      ZZ_Z = ZZ.split ? ZZ.split(".") : [ZZ];
+      jm = Math.max(AA_A.length, ZZ_Z.length);
+      for (jj = 0; jj < jm; jj++) {
+        if (AA_A[jj] && !ZZ_Z[jj]) { return -1; }
+        if (!AA_A[jj] && ZZ_Z[jj]) { return 1; }
+        if (!isNaN(AA_A[jj])) { AA_A[jj] = parseInt(AA_A[jj], 10); }
+        if (!isNaN(ZZ_Z[jj])) { ZZ_Z[jj] = parseInt(ZZ_Z[jj], 10); }
+        if (AA_A[jj] > ZZ_Z[jj]) { return 1; }
+       if (AA_A[jj] < ZZ_Z[jj]) { return -1; }
+      }
+      return 0;
+    } catch(e) {
+      myAlert("warming: myCompareRound failed with AA=" + AA + "; ZZ=" + ZZ + ";", false);
+      return myCompare(AA, ZZ);
+    }
+  }
+
   function sortGameId(aa, zz) {
 
     res = myCompare(gameEvent[aa], gameEvent[zz]);
     if (res !== 0) { return res; }
 
-    res = myCompare(gameRound[aa], gameRound[zz]);
+    res = myCompareRound(gameRound[aa], gameRound[zz]);
     if (res !== 0) { return res; }
 
     res = myCompare(gameMatch[aa], gameMatch[zz]);
