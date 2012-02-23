@@ -300,6 +300,12 @@ body {
     }
   }
 
+  if ((iniGame = gup("initialGame")) === "") {iniGame = 1; }
+  if (!(isNaN(parseInt(iniGame, 10)))) {
+    iniGame = parseInt(iniGame, 10);
+    delayIniGame = (iniGame > 0);
+  } else { delayIniGame = false; }
+
   showBoard = false;
   if ((gup("showBoard") == "true") || (gup("showBoard") == "t")) { showBoard = true; }
 
@@ -310,11 +316,12 @@ body {
   if ((gup("showTeams") == "false") || (gup("showTeams") == "f")) { showTeams = false; }
 
   if ((gup("help") == "true") || (gup("help") == "t")) {
-      document.write("<pre>" +
+      document.write("<pre style='font-size:11px;'>" +
       "pgn4web live-results.html parameters" + "\n\n" +
       " - pgnData = " + pgnFile + "; PGN file to load (default " + pgnFile_default + ")" + "\n" +
       " - refreshMinutes = " + refreshMinutes + "; refresh interval in minutes, decimals allowed (default 1)" + "\n" +
       " - refreshDemo = " + demoFlag + "; sets live demo mode (default false)" + "\n" +
+      " - initialGame = " + iniGame + "; initial game to load, a number or first, last, random or a search string (default 1)" + "\n" +
       " - showBoard = " + showBoard + "; shows the chessboard (default false)" + "\n" +
       " - showEvent = " + showEvent + "; shows event information (default true)" + "\n" +
       " - showTeams = " + showTeams + "; shows teams information (default true)" + "\n" +
@@ -332,7 +339,7 @@ body {
   SetAutostartAutoplay(false);
   SetAutoplayNextGame(false);
   SetInitialHalfmove("end", true);
-  SetInitialGame("first");
+  SetInitialGame(delayIniGame ? "first" : iniGame);
   SetShortcutKeysEnabled(showBoard);
   SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, true);
 
@@ -400,6 +407,10 @@ body {
     gameId.sort(sortGameId);
 
     printGames();
+
+    if ((LiveBroadcastTicker < 2) && delayIniGame) {
+      Init(typeof(gameId[iniGame - 1]) != "undefined" ? gameId[iniGame - 1] : "0");
+    }
   }
 
   function myCompare(AA, ZZ) {
