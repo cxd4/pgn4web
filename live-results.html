@@ -23,10 +23,18 @@ body {
   font-size: 16px;
 }
 
-.event, .round, .match, .team, .firstTeam, .secondTeam, .score, .firstTeamScore, .secondTeamScore, .player, .firstPlayer, .secondPlayer, .firstTeamPlayer, .secondTeamPlayer, .result, .newMoves, .noNewMoves {
-  display: inline-block;
+.event, .round, .match, .score, .player, .result, .newMoves, .noNewMoves {
   white-space: nowrap;
+  display: inline-block;
   overflow-x: hidden;
+}
+
+.eventRound, .matchScore, .game {
+  white-space: nowrap;
+}
+
+.team, .firstTeam, .secondTeam, .firstTeamScore, .secondTeamScore, .firstPlayer, .secondPlayer, .firstTeamPlayer, .secondTeamPlayer,  {
+  white-space: nowrap;
 }
 
 .eventRound, .event, .match, .firstTeam, .secondTeam, .game, .firstPlayer, .secondPlayer, .firstTeamPlayer, .secondTeamPlayer {
@@ -69,22 +77,22 @@ body {
 .eventRound {
   font-size: 24px;
   font-weight: normal;
-  padding-top: 25px;
-  padding-bottom: 10px;
+  margin-top: 50px;
+  margin-bottom: 10px;
 }
 
 .matchScore {
   font-size: 18px;
   font-weight: bold;
-  padding-top: 30px;
-  padding-bottom: 10px;
+  margin-top: 25px;
+  margin-bottom: 10px;
 }
 
 .game {
   font-size: 16px;
   font-weight: normal;
-  padding-top: 0;
-  padding-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .secondTeam, .secondTeamPlayer {
@@ -454,7 +462,7 @@ body {
         fixedRound = gameRound[gameId[gg]].replace(/\..*$/, ""); // only use the first number of rounds like 1.2.3
         currentEventRound = gameEvent[gameId[gg]] + " - " + fixedRound;
         if (showEvent && (currentEventRound !== lastEventRound)) {
-          resultTable += "<div class='eventRound'" + (firstRow ? " style='padding-top:0;'" : "") + "><span class='event' title='" + gameEvent[gameId[gg]] + "'>" + gameEvent[gameId[gg]] + "</span><span class='round' title='" + "round " + fixedRound + "'>" + (fixedRound !== "" ? "round " + fixedRound : "") + "</span></div>";
+          resultTable += "<div class='eventRound'" + (firstRow ? " style='margin-top:0;'" : "") + "><span class='event' title='" + gameEvent[gameId[gg]] + "'>" + gameEvent[gameId[gg]] + "</span><span class='round' title='" + "round " + fixedRound + "'>" + (fixedRound !== "" ? "round " + fixedRound : "") + "</span></div>";
           if (firstRow) { firstRow = false; }
           lastEventRound = currentEventRound;
           lastMatch = 0;
@@ -464,7 +472,7 @@ body {
           if (firstRow) { firstRow = false; }
           lastMatch = gameMatch[gg];
         }
-        resultTable += "<div class='game'"+ (firstRow ? " style='padding-top:0;'" : "") + " id='gameRow_" + gameId[gg] + "' onclick='selectGame(" + gameId[gg] + ");' style='font-weight: " + (showBoard && (gameId[gg] === oldSelectedGame) ? "bold" : "") + "'><span class='player'><span class='firstPlayer" + (firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam ? " firstTeamPlayer" : "") + (secondTeam && gameWhiteTeam[gameId[gg]] === secondTeam ? " secondTeamPlayer" : "") + "' title='" + gameWhite[gameId[gg]] + "'>" + gameWhite[gameId[gg]] + "</span></span><span class='player'><span class='secondPlayer" + (firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam ? " firstTeamPlayer" : "") + (secondTeam && gameBlackTeam[gameId[gg]] === secondTeam ? " secondTeamPlayer" : "") + "' title='" + gameBlack[gameId[gg]] + "'>" + gameBlack[gameId[gg]] + "</span></span><span class='result' title='" + gameResult[gameId[gg]] + "'>" + gameResult[gameId[gg]] + "</span><span class='" + (gameNewMoves[gg] ? "newMoves" : "noNewMoves") + "' title='new moves received'>*</span></div>";
+        resultTable += "<div class='game'"+ (firstRow ? " style='margin-top:0;'" : "") + " id='gameRow_" + gameId[gg] + "' onclick='selectGame(" + gameId[gg] + ");' style='font-weight: " + (showBoard && (gameId[gg] === oldSelectedGame) ? "bold" : "") + "'><span class='player'><span class='firstPlayer" + (firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam ? " firstTeamPlayer" : "") + (secondTeam && gameWhiteTeam[gameId[gg]] === secondTeam ? " secondTeamPlayer" : "") + "' title='" + gameWhite[gameId[gg]] + "'>" + gameWhite[gameId[gg]] + "</span></span><span class='player'><span class='secondPlayer" + (firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam ? " firstTeamPlayer" : "") + (secondTeam && gameBlackTeam[gameId[gg]] === secondTeam ? " secondTeamPlayer" : "") + "' title='" + gameBlack[gameId[gg]] + "'>" + gameBlack[gameId[gg]] + "</span></span><span class='result' title='" + gameResult[gameId[gg]] + "'>" + gameResult[gameId[gg]] + "</span><span class='" + (gameNewMoves[gg] ? "newMoves" : "noNewMoves") + "' title='new moves received'>*</span></div>";
         if (firstRow) { firstRow = false; }
       }
       theObject.innerHTML = resultTable;
@@ -503,7 +511,7 @@ body {
         }
       }
     }
-    return "<div class='matchScore'" + (firstRow? " style='padding-top:0;'" : "") + "><span class='match' title='" + firstTeam + " - " + secondTeam + "'><span class='team'><span class='firstTeam'>" + firstTeam + "</span></span><span class='team'><span class='secondTeam'>" + secondTeam + "</span></span></span><span class='score' title='" + firstTeamScore + " - " + secondTeamScore + "'>" + firstTeamScore + " - " + secondTeamScore + "</span></div>";
+    return "<div class='matchScore'" + (firstRow? " style='margin-top:0;'" : "") + "><span class='match' title='" + firstTeam + " - " + secondTeam + "'><span class='team'><span class='firstTeam'>" + firstTeam + "</span></span><span class='team'><span class='secondTeam'>" + secondTeam + "</span></span></span><span class='score' title='" + firstTeamScore + " - " + secondTeamScore + "'>" + firstTeamScore + " - " + secondTeamScore + "</span></div>";
   }
 
   oldSelectedGame = -1;
