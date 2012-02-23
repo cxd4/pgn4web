@@ -21,6 +21,12 @@ body {
   margin: 0;
   font-family: sans-serif;
   font-size: 16px;
+  color: black;
+}
+
+a {
+  color: black;
+  text-decoration: none;
 }
 
 .event, .round, .match, .score, .player, .result, .newMoves, .noNewMoves {
@@ -213,20 +219,21 @@ body {
   color: gray;
 }
 
-.gameText {
-  font-size: 11px;
-  text-align: justify;
-  line-height: 1.4em;
-}
-
-.header {
+.header, .footer {
   font-size: 11px;
   line-height: 1.4em;
   white-space: nowrap;
   margin-left: 3px;
   margin-right: 3px;
   width: 320px;
-  overflow: hidden;
+}
+
+.header {
+  margin-bottom: 20px;
+}
+
+.footer {
+  margin-top: 20px;
 }
 
 .gameWhite, .gameWhiteClock, .gameBlackClock, .gameBlack {
@@ -254,13 +261,31 @@ body {
   text-align: right;
 }
 
+.gameSideToMove, .gameText, .gameResult {
+  white-space: nowrap;
+  display: inline-block;
+  overflow-x: hidden;
+}
+
+.gameSideToMove, .gameResult {
+  width: 50px;
+}
+
+.gameText {
+  width: 220px;
+  text-align: center;
+}
+
+.gameResult {
+  text-align: right;
+}
+
 .sideToMove {
   height: 4px;
   width: 4px;
   border-style: solid;
   border-color: black;
   border-width: 1px;
-  margin-right: 10px;
   margin-bottom: 1px;
 }
 
@@ -546,6 +571,26 @@ body {
   }
 
   function customFunctionOnMove() {
+    extraMoves = 2;
+
+    document.getElementById("GamePrevMoves").innerHTML = "";
+    document.getElementById("GameCurrMove").innerHTML = "";
+    document.getElementById("GameNextMoves").innerHTML = "";
+    theObject = document.getElementById("GamePrevMoves");
+    thisPly = Math.max(CurrentPly - extraMoves - 1, StartPly);
+    if (thisPly > StartPly) { theObject.innerHTML += "... "; }
+    for (; thisPly < Math.min(CurrentPly + extraMoves, StartPly + PlyNumber); thisPly++) {
+      if (thisPly == CurrentPly) {
+        theObject = document.getElementById("GameNextMoves");
+      }
+      if (thisPly % 2 === 0) { theObject.innerHTML += Math.floor(1 + thisPly / 2) + ". "; }
+      if (thisPly == CurrentPly - 1) {
+        theObject = document.getElementById("GameCurrMove");
+      }
+      theObject.innerHTML += Moves[thisPly] + " ";
+    }
+    if (thisPly < StartPly + PlyNumber) { theObject.innerHTML += "..."; }
+
     if (theObject = document.getElementById("SideToMove")) {
       theObject.style.backgroundColor = CurrentPly % 2 ? "black" : "white";
     }
@@ -590,12 +635,8 @@ function gup( name ){
 
 <div class="gameBoardContainer" id="GameBoardContainer">
 <div class="header"><a class="gameWhite" id="GameWhite" title="white player" href="javascript:void(0);" onclick="openFidePlayerUrl(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();"></a><span class="gameWhiteClock" id="GameWhiteClock" title="white clock"></span><span class="gameBlackClock" id="GameBlackClock" title="black clock"></span><a class="gameBlack" id="GameBlack" title="black player" href="javascript:void(0);" onclick="openFidePlayerUrl(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();"></a></div>
-<div>&nbsp;</div>
 <div id="GameBoard"></div>
-<div>&nbsp;</div>
-<div id="GameButtons"></div>
-<div>&nbsp;</div>
-<div class="gameText"><img class="sideToMove" id="SideToMove" src="clear.png" title="side to move"><span id="GameText"></span><span id="GameResult"></span></div>
+<div class="footer"><span class="gameSideToMove"><img class="sideToMove" id="SideToMove" src="clear.png" title="side to move"/>&nbsp;</span><span class="gameText">&nbsp;<a id="GamePrevMoves" href="javascript:void(0);" onclick="MoveBackward(1); this.blur();" title="previous moves"></a><span style="font-weight: bold;" id="GameCurrMove" title="current move as shown on chessboard"></span><a id="GameNextMoves" href="javascript:void(0);" onclick="MoveForward(1); this.blur();" title="next moves"></a><span style="font-weight: bold;">&nbsp;</span></span><a class="gameResult" id="GameResult" href="javascript:void(0);" onclick="GoToMove(StartPly + PlyNumber); this.blur();" title="go to game end"></a></div>
 </div>
 
 <div id="results"></div>
