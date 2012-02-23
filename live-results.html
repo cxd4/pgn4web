@@ -17,45 +17,36 @@
 <style type="text/css">
 
 body {
-  font-family: sans-serif;
-  font-size: 16px;
   padding: 40px;
   margin: 0;
+  font-family: sans-serif;
+  font-size: 16px;
 }
 
-.event, .round, .match, .score, .player, .resultContainer, .resultValue, .resultNewMoves, .resultNoNewMoves {
+.event, .round, .match, .team, .firstTeam, .secondTeam, .score, .firstTeamScore, .secondTeamScore, .player, .firstPlayer, .secondPlayer, .firstTeamPlayer, .secondTeamPlayer, .result, .newMoves, .noNewMoves {
   display: inline-block;
   white-space: nowrap;
   overflow-x: hidden;
 }
 
-.event, .round, .match, .score, .player {
-  margin-right: 20px;
+.eventRound, .event, .match, .firstTeam, .secondTeam, .game, .firstPlayer, .secondPlayer, .firstTeamPlayer, .secondTeamPlayer {
+  margin-left: 0;
 }
 
-.event, .round {
-  font-size: 24px;
-  padding-top: 25px;
-  padding-bottom: 10px;
+.round, .team, .score, .player, .result, .newMoves, .noNewMoves {
+  margin-left: 20px;
 }
 
 .event {
-  width: 400px;
+  width: 430px;
 }
 
 .round {
   width: 100px;
 }
 
-.match, .score {
-  font-size: 18px;
-  font-weight: bold;
-  padding-top: 30px;
-  padding-bottom: 10px;
-}
-
 .match {
-  width: 400px;
+  width: 440px;
 }
 
 .score {
@@ -66,32 +57,41 @@ body {
   width: 200px;
 }
 
-.player, .resultContainer {
+.result {
+  width: 75px;
+}
+
+.event, .firstTeam, .secondTeam, .firstPlayer, .secondPlayer {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.eventRound {
+  font-size: 24px;
+  font-weight: normal;
+  padding-top: 25px;
+  padding-bottom: 10px;
+}
+
+.matchScore {
+  font-size: 18px;
+  font-weight: bold;
+  padding-top: 30px;
+  padding-bottom: 10px;
+}
+
+.game {
   font-size: 16px;
-}
-
-.firstTeam {
-}
-
-.firstTeamPlayer {
-}
-
-.secondTeam {
-  margin-left: 30px;
+  font-weight: normal;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .secondTeam, .secondTeamPlayer {
   background-color: #F0F0F0;
 }
 
-.move, .moveOn {
-}
-
-.resultValue {
-  width: 100px;
-}
-
-.resultNewMoves, .resultNoNewMoves {
+.newMoves, .noNewMoves {
   color: gray;
   font-weight: bold;
 }
@@ -444,33 +444,35 @@ body {
   }
 
   function printGames() {
+    firstRow = true;
     lastEventRound = "";
     lastMatch = 0;
     if (theObject = document.getElementById("results")) {
       resultTable = "";
-      resultTable += "<table cellspaning='0' cellpadding='0' border='0'>";
       for (gg in gameId) {
         fixedRound = gameRound[gameId[gg]].replace(/\..*$/, ""); // only use the first number of rounds like 1.2.3
         currentEventRound = gameEvent[gameId[gg]] + " - " + fixedRound;
         if (showEvent && (currentEventRound !== lastEventRound)) {
-          resultTable += "<tr><td colspan='2'><span class='event' title='" + gameEvent[gameId[gg]] + "'>" + gameEvent[gameId[gg]] + "</span></td><td colspan='1'><span class='round' title='" + "round " + fixedRound + "'>" + (fixedRound !== "" ? "round " + fixedRound : "") + "</span></td></tr>";
+          resultTable += "<div class='eventRound'" + (firstRow ? " style='padding-top:0;'" : "") + "><span class='event' title='" + gameEvent[gameId[gg]] + "'>" + gameEvent[gameId[gg]] + "</span><span class='round' title='" + "round " + fixedRound + "'>" + (fixedRound !== "" ? "round " + fixedRound : "") + "</span></div>";
+          if (firstRow) { firstRow = false; }
           lastEventRound = currentEventRound;
           lastMatch = 0;
         }
         if (showTeams && (gameMatch[gg] !== lastMatch)) {
-          resultTable += "<tr>" + matchRow(gameMatch[gg]) + "</tr>";
+          resultTable += matchRow(gameMatch[gg], firstRow);
+          if (firstRow) { firstRow = false; }
           lastMatch = gameMatch[gg];
         }
-        resultTable += "<tr id='gameRow_" + gameId[gg] + "' onclick='selectGame(" + gameId[gg] + ");' style='font-weight: " + (showBoard && (gameId[gg] === oldSelectedGame) ? "bold" : "") + "'><td><span class='player'><span class='" + (firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam ? "firstTeamPlayer " : "") + (secondTeam && gameWhiteTeam[gameId[gg]] === secondTeam ? "secondTeamPlayer" : "") + "' title='" + gameWhite[gameId[gg]] + "'>" + gameWhite[gameId[gg]] + "</span></span></td><td><span class='player'><span class='" + (firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam ? "firstTeamPlayer " : "") + (secondTeam && gameBlackTeam[gameId[gg]] === secondTeam ? "secondTeamPlayer" : "") + "' title='" + gameBlack[gameId[gg]] + "'>" + gameBlack[gameId[gg]] + "</span></span></td><td><span class='resultContainer'><span class='resultValue' title='" + gameResult[gameId[gg]] + "'>" + gameResult[gameId[gg]] + "</span><span class='" + (gameNewMoves[gg] ? "resultNewMoves" : "resultNoNewMoves") + "' title='new moves received'>*</span></span></td></tr>";
+        resultTable += "<div class='game'"+ (firstRow ? " style='padding-top:0;'" : "") + " id='gameRow_" + gameId[gg] + "' onclick='selectGame(" + gameId[gg] + ");' style='font-weight: " + (showBoard && (gameId[gg] === oldSelectedGame) ? "bold" : "") + "'><span class='player'><span class='firstPlayer" + (firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam ? " firstTeamPlayer" : "") + (secondTeam && gameWhiteTeam[gameId[gg]] === secondTeam ? " secondTeamPlayer" : "") + "' title='" + gameWhite[gameId[gg]] + "'>" + gameWhite[gameId[gg]] + "</span></span><span class='player'><span class='secondPlayer" + (firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam ? " firstTeamPlayer" : "") + (secondTeam && gameBlackTeam[gameId[gg]] === secondTeam ? " secondTeamPlayer" : "") + "' title='" + gameBlack[gameId[gg]] + "'>" + gameBlack[gameId[gg]] + "</span></span><span class='result' title='" + gameResult[gameId[gg]] + "'>" + gameResult[gameId[gg]] + "</span><span class='" + (gameNewMoves[gg] ? "newMoves" : "noNewMoves") + "' title='new moves received'>*</span></div>";
+        if (firstRow) { firstRow = false; }
       }
-      resultTable += "</table>";
       theObject.innerHTML = resultTable;
     }
   }
 
   var firstTeam = "";
   var secondTeam = "";
-  function matchRow(id) {
+  function matchRow(id, firstRow) {
     firstTeam = "";
     secondTeam = "";
     if (id === 0) { return ""; }
@@ -500,7 +502,7 @@ body {
         }
       }
     }
-    return "<td colspan='2'><span class='match' title='" + firstTeam + " - " + secondTeam + "'><span class='firstTeam'>" + firstTeam + "</span><span class='secondTeam'>" + secondTeam + "</span></span></td><td colspan='1'><span class='score' title='" + firstTeamScore + " - " + secondTeamScore + "'>" + firstTeamScore + " - " + secondTeamScore + "</span></td>";
+    return "<div class='matchScore'" + (firstRow? " style='padding-top:0;'" : "") + "><span class='match' title='" + firstTeam + " - " + secondTeam + "'><span class='team'><span class='firstTeam'>" + firstTeam + "</span></span><span class='team'><span class='secondTeam'>" + secondTeam + "</span></span></span><span class='score' title='" + firstTeamScore + " - " + secondTeamScore + "'>" + firstTeamScore + " - " + secondTeamScore + "</span></div>";
   }
 
   oldSelectedGame = -1;
