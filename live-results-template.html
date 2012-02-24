@@ -70,17 +70,12 @@
       resultString += fillWithBlanks("white", 15) + "   ";
       resultString += fillWithBlanks("black", 15) + "   ";
       resultString += fillWithBlanks("result", 7) + "   ";
-      resultString += fillWithBlanks("last move", 10) + "\n \n";
+      resultString += "\n \n";
       for (gg = 0; gg < numberOfGames; gg++) {
         resultString += fillWithBlanks(gameWhite[gg], 15) + "   ";
         resultString += fillWithBlanks(gameBlack[gg], 15) + "   ";
         resultString += fillWithBlanks(gameResult[gg], 7) + "   ";
-        Init(gg);
-        showThisMove = StartPly + PlyNumber - 1;
-        if ((showThisMove >= StartPly) && Moves[showThisMove]) {
-          lastMove = (Math.floor(showThisMove/2) + 1) + (showThisMove % 2 === 0 ? '. ' : '... ') + Moves[showThisMove];
-        } else { lastMove = ''; }
-        resultString += fillWithBlanks(lastMove, 10) + "\n";
+        resultString += "\n";
       }
       resultObject.innerText = resultString;
     }
@@ -125,9 +120,9 @@ function gup( name ){
 
 </head>
 
-<body style="font-family:monospace; color:black;">
+<body style="font-family:monospace; color:black; font-size:16px;">
 
-<pre id="results"></pre>
+<pre id="results" style="font-size:16px;"></pre>
 
 <a id="GameLiveStatus" style="text-decoration:none; color:black;" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();" title="click here to force a live games refresh"></a>
 
