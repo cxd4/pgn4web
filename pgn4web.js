@@ -1782,7 +1782,6 @@ function checkLiveBroadcastStatus() {
 function restartLiveBroadcastTimeout() {
   if (LiveBroadcastDelay === 0) { return; }
   if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); LiveBroadcastInterval = null; }
-  checkLiveBroadcastStatus();
   needRestart = (!LiveBroadcastEnded);
   if ((needRestart === true) && (!LiveBroadcastPaused)) {
     LiveBroadcastInterval = setTimeout("refreshPgnSource()", LiveBroadcastDelay * 60000);

@@ -376,14 +376,11 @@ a {
       theObject.innerHTML =  theObject.innerHTML = liveStatusTickerString.charAt(LiveBroadcastTicker % liveStatusTickerString.length);
       theObject.title = LiveBroadcastStatusString.replace("&nbsp;", " ");
     }
-  }
-
-  function customFunctionOnPgnGameLoad() {
-    highlightGame(currentGame);
-  }
-
-  function customShortcutKey_Shift_1() {
-    refreshPgnSource();
+    for (gg in gameId) {
+      if (theObject = document.getElementById("newMoves_" + gameId[gg])) {
+        theObject.className = "noNewMoves";
+      }
+    }
   }
 
   function replayPreviousMoves(numPlies) {
@@ -510,7 +507,7 @@ a {
           if (firstRow) { firstRow = false; }
           lastMatch = gameMatch[gg];
         }
-        resultTable += "<div class='game'"+ (firstRow ? " style='margin-top:0;'" : "") + " id='gameRow_" + gameId[gg] + "' onclick='selectGame(" + gameId[gg] + ");' style='font-weight: " + (showBoard && (gameId[gg] === oldSelectedGame) ? "bold" : "") + "'><span class='player'><span class='firstPlayer" + (firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam ? " firstTeamPlayer" : "") + (secondTeam && gameWhiteTeam[gameId[gg]] === secondTeam ? " secondTeamPlayer" : "") + "' title='" + gameWhite[gameId[gg]] + "'>" + gameWhite[gameId[gg]] + "</span></span><span class='player'><span class='secondPlayer" + (firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam ? " firstTeamPlayer" : "") + (secondTeam && gameBlackTeam[gameId[gg]] === secondTeam ? " secondTeamPlayer" : "") + "' title='" + gameBlack[gameId[gg]] + "'>" + gameBlack[gameId[gg]] + "</span></span><span class='result' title='" + gameResult[gameId[gg]] + "'>" + gameResult[gameId[gg]] + "</span><span class='" + (gameNewMoves[gg] ? "newMoves" : "noNewMoves") + "' title='new moves received'>*</span></div>";
+        resultTable += "<div class='game'"+ (firstRow ? " style='margin-top:0;'" : "") + " id='gameRow_" + gameId[gg] + "' onclick='selectGame(" + gameId[gg] + ");' style='font-weight: " + (showBoard && (gameId[gg] === oldSelectedGame) ? "bold" : "") + "'><span class='player'><span class='firstPlayer" + (firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam ? " firstTeamPlayer" : "") + (secondTeam && gameWhiteTeam[gameId[gg]] === secondTeam ? " secondTeamPlayer" : "") + "' title='" + gameWhite[gameId[gg]] + "'>" + gameWhite[gameId[gg]] + "</span></span><span class='player'><span class='secondPlayer" + (firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam ? " firstTeamPlayer" : "") + (secondTeam && gameBlackTeam[gameId[gg]] === secondTeam ? " secondTeamPlayer" : "") + "' title='" + gameBlack[gameId[gg]] + "'>" + gameBlack[gameId[gg]] + "</span></span><span class='result' title='" + gameResult[gameId[gg]] + "'>" + gameResult[gameId[gg]] + "</span><span id='newMoves_" + gameId[gg] + "' class='" + (gameNewMoves[gg] ? "newMoves" : "noNewMoves") + "' title='new moves received'>*</span></div>";
         if (firstRow) { firstRow = false; }
       }
       theObject.innerHTML = resultTable;
@@ -572,6 +569,10 @@ a {
     oldSelectedGame = gameNum;
   }
 
+  function customFunctionOnPgnGameLoad() {
+    highlightGame(currentGame);
+  }
+
   function customFunctionOnMove() {
     extraMoves = 2;
 
@@ -597,6 +598,11 @@ a {
       theObject.style.backgroundColor = CurrentPly % 2 ? "black" : "white";
     }
   }
+
+  function customShortcutKey_Shift_1() {
+    refreshPgnSource();
+  }
+
 
 function gup( name ){
 
