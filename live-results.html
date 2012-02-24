@@ -370,10 +370,10 @@ a {
   SetShortcutKeysEnabled(showBoard);
   SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, true);
 
-  liveStatusTickerString = "o.oO";
+  liveStatusTickerArray = new Array(".", "&nbsp;", ".", ":");
   function customFunctionOnCheckLiveBroadcastStatus() {
     if (theObject = document.getElementById("GameLiveStatusTicker")) {
-      theObject.innerHTML =  theObject.innerHTML = liveStatusTickerString.charAt(LiveBroadcastTicker % liveStatusTickerString.length);
+      theObject.innerHTML = liveStatusTickerArray[LiveBroadcastTicker % liveStatusTickerArray.length];
       theObject.title = LiveBroadcastStatusString.replace("&nbsp;", " ");
     }
     for (gg in gameId) {
