@@ -571,6 +571,13 @@ a {
 
   function customFunctionOnPgnGameLoad() {
     highlightGame(currentGame);
+
+    if (theObject = document.getElementById("GameWhite")) {
+      theObject.title = "white player: " + gameWhite[currentGame];
+    }
+    if (theObject = document.getElementById("GameBlack")) {
+      theObject.title = "black player: " + gameBlack[currentGame];
+    }
   }
 
   function customFunctionOnMove() {
