@@ -342,6 +342,9 @@ a {
   showTeams = true;
   if ((gup("showTeams") == "false") || (gup("showTeams") == "f")) { showTeams = false; }
 
+  showPlayersInfo = true;
+  if ((gup("showPlayersInfo") == "false") || (gup("showPlayersInfo") == "f")) { showPlayersInfo = false; }
+
   if ((gup("help") == "true") || (gup("help") == "t")) {
       document.write("<pre style='font-size:11px;'>" +
       "pgn4web live-results.html parameters" + "\n\n" +
@@ -352,6 +355,7 @@ a {
       " - showBoard = " + showBoard + "; shows the chessboard (default false)" + "\n" +
       " - showEvent = " + showEvent + "; shows event information (default true)" + "\n" +
       " - showTeams = " + showTeams + "; shows teams information (default true)" + "\n" +
+      " - showPlayersInfo = " + showPlayersInfo + "; shows title/elo players information (default true)" + "\n" +
       " - help = true; prints this help (default false)" + "\n\n" +
       "</pre>");
   }
@@ -413,6 +417,10 @@ a {
 
     gameWhiteTeam = new Array();
     gameBlackTeam = new Array();
+    gameWhiteTitle = new Array();
+    gameBlackTitle = new Array();
+    gameWhiteElo = new Array();
+    gameBlackElo = new Array();
     gameMatch = new Array();
     gameBoard = new Array();
     gameLength = new Array();
@@ -421,6 +429,10 @@ a {
       gameId[gg] = gg;
       gameWhiteTeam[gg] = customPgnHeaderTag("WhiteTeam", null, gg);
       gameBlackTeam[gg] = customPgnHeaderTag("BlackTeam", null, gg);
+      gameWhiteTitle[gg] = customPgnHeaderTag("WhiteTitle", null, gg);
+      gameBlackTitle[gg] = customPgnHeaderTag("BlackTitle", null, gg);
+      gameWhiteElo[gg] = customPgnHeaderTag("WhiteElo", null, gg);
+      gameBlackElo[gg] = customPgnHeaderTag("BlackElo", null, gg);
       gameMatch[gg] = crc32(gameWhiteTeam[gg]) + crc32(gameBlackTeam[gg]);
       gameBoard[gg] = customPgnHeaderTag("Board", null, gg);
       gameLength[gg] = LiveBroadcastDemo ? gameDemoMaxPly[gg] : pgnGame[gg].length;
@@ -507,7 +519,9 @@ a {
           if (firstRow) { firstRow = false; }
           lastMatch = gameMatch[gg];
         }
-        resultTable += "<div class='game'"+ (firstRow ? " style='margin-top:0;'" : "") + " id='gameRow_" + gameId[gg] + "' onclick='selectGame(" + gameId[gg] + ");' style='font-weight: " + (showBoard && (gameId[gg] === oldSelectedGame) ? "bold" : "") + "'><span class='player'><span class='firstPlayer" + (firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam ? " firstTeamPlayer" : "") + (secondTeam && gameWhiteTeam[gameId[gg]] === secondTeam ? " secondTeamPlayer" : "") + "' title='" + gameWhite[gameId[gg]] + "'>" + gameWhite[gameId[gg]] + "</span></span><span class='player'><span class='secondPlayer" + (firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam ? " firstTeamPlayer" : "") + (secondTeam && gameBlackTeam[gameId[gg]] === secondTeam ? " secondTeamPlayer" : "") + "' title='" + gameBlack[gameId[gg]] + "'>" + gameBlack[gameId[gg]] + "</span></span><span class='result' title='" + gameResult[gameId[gg]] + "'>" + gameResult[gameId[gg]] + "</span><span id='newMoves_" + gameId[gg] + "' class='" + (gameNewMoves[gg] ? "newMoves" : "noNewMoves") + "' title='new moves received'>*</span></div>";
+        whitePlayer = gameWhite[gameId[gg]] + (showPlayersInfo ? ((whiteTitle = gameWhiteTitle[gameId[gg]]) ? " &nbsp; " + whiteTitle : "") + ((whiteElo = gameWhiteElo[gameId[gg]]) ? " &nbsp; " + whiteElo : "") : "");
+        blackPlayer = gameBlack[gameId[gg]] + (showPlayersInfo ? ((blackTitle = gameBlackTitle[gameId[gg]]) ? " &nbsp; " + blackTitle : "") + ((blackElo = gameBlackElo[gameId[gg]]) ? " &nbsp; " + blackElo : "") : "");
+        resultTable += "<div class='game'"+ (firstRow ? " style='margin-top:0;'" : "") + " id='gameRow_" + gameId[gg] + "' onclick='selectGame(" + gameId[gg] + ");' style='font-weight: " + (showBoard && (gameId[gg] === oldSelectedGame) ? "bold" : "") + "'><span class='player'><span class='firstPlayer" + (firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam ? " firstTeamPlayer" : "") + (secondTeam && gameWhiteTeam[gameId[gg]] === secondTeam ? " secondTeamPlayer" : "") + "' title='" + whitePlayer.replace(/&nbsp;/, " ") + "'>" + whitePlayer + "</span></span><span class='player'><span class='secondPlayer" + (firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam ? " firstTeamPlayer" : "") + (secondTeam && gameBlackTeam[gameId[gg]] === secondTeam ? " secondTeamPlayer" : "") + "' title='" + blackPlayer.replace(/&nbsp;/, " ") + "'>" + blackPlayer + "</span></span><span class='result' title='" + gameResult[gameId[gg]] + "'>" + gameResult[gameId[gg]] + "</span><span id='newMoves_" + gameId[gg] + "' class='" + (gameNewMoves[gg] ? "newMoves" : "noNewMoves") + "' title='new moves received'>*</span></div>";
         if (firstRow) { firstRow = false; }
       }
       theObject.innerHTML = resultTable;
@@ -573,10 +587,10 @@ a {
     highlightGame(currentGame);
 
     if (theObject = document.getElementById("GameWhite")) {
-      theObject.title = "white player: " + gameWhite[currentGame];
+      theObject.title = "white player:   " + gameWhite[currentGame] + (showPlayersInfo ? ((whiteTitle = customPgnHeaderTag("WhiteTitle")) ? "   " + whiteTitle : "") + ((whiteElo = customPgnHeaderTag("WhiteElo")) ? "   " + whiteElo : "") : "");
     }
     if (theObject = document.getElementById("GameBlack")) {
-      theObject.title = "black player: " + gameBlack[currentGame];
+      theObject.title = "black player:   " + gameBlack[currentGame] + (showPlayersInfo ? ((blackTitle = customPgnHeaderTag("BlackTitle")) ? "   " + blackTitle : "") + ((blackElo = customPgnHeaderTag("BlackElo")) ? "   " + blackElo : "") : "");
     }
   }
 
@@ -606,10 +620,40 @@ a {
     }
   }
 
-  function customShortcutKey_Shift_1() {
-    refreshPgnSource();
+  function customShortcutKey_Shift_1() { refreshPgnSource(); }
+  function customShortcutKey_Shift_5() { toggleShowBoard(); }
+  function customShortcutKey_Shift_7() { toggleShowPlayersInfo(); }
+  function customShortcutKey_Shift_8() { toggleShowTeams(); }
+  function customShortcutKey_Shift_9() { toggleShowEvent(); }
+
+  boardShortcut("F5", "toggle event information", toggleShowEvent);
+  boardShortcut("G5", "toggle teams information", toggleShowTeams);
+  boardShortcut("H5", "toggle title/elo players information", toggleShowPlayersInfo);
+
+  function toggleShowEvent() {
+    showEvent = !showEvent;
+    printGames();
   }
 
+  function toggleShowTeams() {
+    showTeams = !showTeams;
+    printGames();
+   }
+
+  function toggleShowPlayersInfo() {
+    showPlayersInfo = !showPlayersInfo;
+    printGames();
+    customFunctionOnPgnGameLoad();
+  }
+
+  function toggleShowBoard() {
+    showBoard = !showBoard;
+    if (theObject = document.getElementById("GameBoardContainer")) {
+      theObject.style.display = showBoard ? "" : "none";
+    }
+    if (showBoard) { Init(currentGame); }
+    printGames();
+  }
 
 function gup( name ){
 
