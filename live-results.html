@@ -17,10 +17,10 @@
 <style type="text/css">
 
 body {
-  padding: 40px;
+  padding: 40px; /* defined as body.padding */
   margin: 0;
   font-family: sans-serif;
-  font-size: 16px;
+  font-size: 16px; /* defined as body.fontSize */
   color: black;
 }
 
@@ -47,59 +47,56 @@ a {
   margin-left: 0;
 }
 
-.round, .secondTeam, .score, .newMoves, .noNewMoves {
-  margin-left: 20px;
-}
-
 .player {
-  margin-right: 20px;
-}
-
-.event {
-  width: 370px;
-}
-
-.round {
-  width: 90px;
-}
-
-.match {
-  width: 380px;
-}
-
-.score {
-  width: 90px;
-}
-
-.player {
-  width: 180px;
-}
-
-.result {
-  width: 60px;
+  width: 180px; /* defined as player.width */
+  margin-right: 20px; /* defined as player.marginRight */
 }
 
 .event, .firstTeam, .secondTeam, .firstPlayer, .secondPlayer {
-  padding-left: 5px;
-  padding-right: 5px;
+  padding-left: 5px; /* defined as player.paddingLeft */
+  padding-right: 5px; /* = player.paddingLeft */
+}
+
+.round, .secondTeam, .score, .newMoves, .noNewMoves {
+  margin-left: 20px; /* defined as player.marginRight */
+}
+
+.event {
+  width: 370px; /* = 2 * player.width + 2 * player.paddingLeft */
+}
+
+.round {
+  width: 90px; /* defined as round.width */
+}
+
+.match {
+  width: 380px; /* = 2 * player.width + 4 *  player.paddingLeft */
+}
+
+.score {
+  width: 90px; /* = round.width */
+}
+
+.result {
+  width: 60px; /* defined as result.width < round.width */
 }
 
 .eventRound {
-  font-size: 20px;
+  font-size: 20px; /* = 5/4 * body.fontSize */
   font-weight: normal;
-  margin-top: 50px;
-  margin-bottom: 10px;
+  margin-top: 48px; /* = 3 * body.fontSize */
+  margin-bottom: 8px; /* = 1/2 * body.fontSize */
 }
 
 .matchScore {
-  font-size: 16px;
+  font-size: 16px; /* = body.fontSize */
   font-weight: bold;
-  margin-top: 25px;
-  margin-bottom: 10px;
+  margin-top: 24px; /* = 3/2 * body.fontSize */
+  margin-bottom: 8px; /* = 1/2 * body.fontSize */
 }
 
 .game {
-  font-size: 14px;
+  font-size: 14px; /* defined as game.fontSize */
   font-weight: normal;
   margin-top: 0;
   margin-bottom: 0;
@@ -107,7 +104,7 @@ a {
 
 .secondTeam, .secondTeamPlayer {
   background-color: #F4F4F4;
-  border-radius: 3px;
+  border-radius: 3px; /* = 1/4 * game.fontSize */
 }
 
 .newMoves, .noNewMoves {
@@ -120,7 +117,7 @@ a {
 }
 
 .gameLiveStatusTicker {
-  font-size: 16px;
+  font-size: 16px; /* = body.fontSize */
   position: fixed;
   top: 0;
   right: 0;
@@ -132,33 +129,33 @@ a {
 
 .gameBoardContainer {
   position: fixed;
-  top: 30px;
-  right: 30px;
+  top: 30px; /* defined as gameBoardContainer.top */
+  right: 30px; /* = gameBoardContainer.top */
   width: 326px;
   background: white;
-  padding: 10px;
-}
-
-.boardTable {
-  border-style: double;
-  border-color: black;
-  border-width: 3px;
-  box-shadow: 0px 0px 15px #AAAAAA;
-  width: 326px;
-  height: 326px;
-}
-
-.pieceImage {
-  width: 32px;
-  height: 32px;
+  padding: 10px; /* = body.padding - gameBoardContainer.top */
 }
 
 .whiteSquare,
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 40px;
-  height: 40px;
+  width: 40px; /* defined as whiteSquare.width */
+  height: 40px; /* = whiteSquare.width */
+}
+
+.boardTable {
+  border-style: double;
+  border-color: black;
+  border-width: 3px; /* defined as boardTable.borderWidth */
+  box-shadow: 0px 0px 15px #AAAAAA;
+  width: 326px; /* = 8 * whiteSquare.width + 2 * boardTable.borderWidth */
+  height: 326px; /* = 8 * whiteSquare.width + 2 * boardTable.borderWidth */
+}
+
+.pieceImage {
+  width: 32px; /* defined as pieceImage.width < whiteSquare.width */
+  height: 32px; /* = pieceImage.width */
 }
 
 .whiteSquare {
@@ -176,7 +173,7 @@ a {
 
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
-  font-size: 16px;
+  font-size: 16px; /* = body.fontSize */
 }
 
 .optionSelectControl {
@@ -186,24 +183,24 @@ a {
 .buttonControlStop,
 .buttonControl {
 /* a "width" attribute here must use the !important flag to override default settings */
-  font-size: 16px;
+  font-size: 16px; /* = body.fontSize */
   border-style: none;
   background-color: transparent;
 }
 
 .buttonControlSpace {
 /* a "width" attribute here must use the !important flag to override default settings */
-  font-size: 16px;
+  font-size: 16px; /* = body.fontSize */
 }
 
 .searchPgnButton {
 /* a "width" attribute here must use the !important flag to override default settings */
-  font-size: 16px;
+  font-size: 16px; /* = body.fontSize */
 }
 
 .searchPgnExpression {
 /* a "width" attribute here must use the !important flag to override default settings */
-  font-size: 16px;
+  font-size: 16px; /* = body.fontSize */
 }
 
 .move,
@@ -225,20 +222,20 @@ a {
 }
 
 .header, .footer {
-  font-size: 11px;
+  font-size: 11px; /* defined as header.fontSize */
   line-height: 1.4em;
   white-space: nowrap;
-  margin-left: 3px;
-  margin-right: 3px;
-  width: 320px;
+  margin-left: 3px; /* = boardTable.borderWidth */
+  margin-right: 3px; /* = boardTable.borderWidth */
+  width: 320px; /* = 8 * whiteSquare.width */
 }
 
 .header {
-  margin-bottom: 20px;
+  margin-bottom: 22px; /* 2 * header.fontSize */
 }
 
 .footer {
-  margin-top: 20px;
+  margin-top: 22px; /* 2 * header.fontSize */
 }
 
 .gameWhite, .gameWhiteClock, .gameBlackClock, .gameBlack {
@@ -247,15 +244,15 @@ a {
 }
 
 .gameWhite, .gameBlack {
-  width: 80px;
+  width: 80px; /* = 2 * whiteSquare.width */
   text-decoration: none;
   color: black;
 }
 
 .gameWhiteClock, .gameBlackClock {
-  width: 50px;
-  margin-left: 15px;
-  margin-right: 15px;
+  width: 50px; /* defined as gameWhiteClock.width */
+  margin-left: 15px; /* = 1/2 * (2 * whiteSquare.width - gameWhiteClock.width) */
+  margin-right: 15px; /* = 1/2 * (2 * whiteSquare.width - gameWhiteClock.width) */
 }
 
 .gameWhite, .gameBlackClock {
@@ -273,11 +270,11 @@ a {
 }
 
 .gameSideToMove, .gameResult {
-  width: 50px;
+  width: 50px; /* = gameWhiteClock.width */
 }
 
 .gameText {
-  width: 220px;
+  width: 220px; /* = 8 * whiteSquare.width - 2 * gameWhiteClock.width */
   text-align: center;
 }
 
@@ -286,8 +283,8 @@ a {
 }
 
 .sideToMove {
-  height: 4px;
-  width: 4px;
+  height: 1ex;
+  width: 1ex;
   border-style: solid;
   border-color: black;
   border-width: 1px;
