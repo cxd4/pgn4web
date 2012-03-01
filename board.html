@@ -577,26 +577,31 @@ if ((textMargin = gup("textMargin")) === "") { textMargin = 0; }
 else { textMargin = parseInt(textMargin, 10); }
 
 frameHeight = gup("frameHeight");
-// next statement is for compatibility with older version of board/board-generator
-if (frameHeight.match("pct") || frameHeight.match("p")) { frameHeight = ""; textHeight = "100%"; }
 switch (frameHeight) {
   case "b":
   case "board":
     frameHeight = "";
     fixFrameHeightToBoard = true;
     break;
+  case "p":
+  case "page":
+    if (window.innerHeight) { frameHeight = window.innerHeight; }
+    else if (document.documentElement && document.documentElement.clientHeight) { frameHeight = document.documentElement.clientHeight; }
+    else if (document.body && document.body.clientHeight) { frameHeight = document.body.clientHeight; }
+    else { frameHeight = ""; }
+    fixFrameHeightToBoard = false;
+    break;
   case "":
     fixFrameHeightToBoard = false;
     break;
   default:
     frameHeight = parseInt(frameHeight, 10);
+    if (isNaN(frameHeight)) { frameHeight = ""; }
     fixFrameHeightToBoard = false;
     break;
 }
 
 frameWidth = gup("frameWidth");
-// next statement is for compatibility with older version of board/board-generator
-if (frameWidth.match("pct") || frameWidth.match("p")) { frameWidth = "page"; }
 switch (frameWidth) {
   case "b":
   case "board":
@@ -614,6 +619,7 @@ switch (frameWidth) {
     break;
   default:
     frameWidth = parseInt(frameWidth, 10);
+    if (isNaN(frameWidth)) { frameWidth = ""; }
     fixFrameWidthToBoard = false;
     break;
 }
@@ -701,7 +707,7 @@ if (gup("help") !== "") {
   document.write("\n");
   document.write(" - backgroundColorHex = page background color hex code, like FF0000, 'transparent' to use the parent's background color (default FFFFFF)\n");
   document.write(" - horizontalLayout = if set true, shows header/moves text at the right of the board, below otherwise (default false)\n");
-  document.write(" - frameHeight = set height of the overall frame, as a number or as 'board' overriding textHeight (default not set)\n");
+  document.write(" - frameHeight = set height of the overall frame, as a number, as 'board' or as 'page', overriding textHeight (default not set)\n");
   document.write(" - frameWidth = set width of the overall frame, as a number, as 'board' or as 'page', overriding textWidth (default not set)\n");
   document.write(" - framePadding = padding within the frame (default 0)\n");
   document.write("\n");
