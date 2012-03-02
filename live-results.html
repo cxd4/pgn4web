@@ -66,7 +66,7 @@ a {
 }
 
 .round {
-  width: 90px; /* defined as round.width */
+  width: 100px; /* defined as round.width */
 }
 
 .match {
@@ -74,11 +74,11 @@ a {
 }
 
 .score {
-  width: 90px; /* = round.width */
+  width: 70px; /* = defined as score.width < round.width */
 }
 
 .result {
-  width: 60px; /* defined as result.width < round.width */
+  width: 70px; /* = score.width */
 }
 
 .eventRound {
@@ -105,6 +105,10 @@ a {
 .secondTeam, .secondTeamPlayer {
   background-color: #F4F4F4;
   border-radius: 3px; /* = 1/4 * game.fontSize */
+}
+
+.score, .result {
+  text-align: center;
 }
 
 .newMoves, .noNewMoves {
@@ -560,7 +564,7 @@ a {
         }
       }
     }
-    return "<div class='matchScore'" + (firstRow? " style='margin-top:0;'" : "") + "><span class='match' title='" + firstTeam + " - " + secondTeam + "'><span class='team'><span class='firstTeam'>" + firstTeam + "</span></span><span class='team'><span class='secondTeam'>" + secondTeam + "</span></span></span><span class='score' title='" + firstTeamScore + " - " + secondTeamScore + "'>" + firstTeamScore + " - " + secondTeamScore + "</span></div>";
+    return "<div class='matchScore'" + (firstRow? " style='margin-top:0;'" : "") + "><span class='match' title='" + firstTeam + " - " + secondTeam + "'><span class='team'><span class='firstTeam'>" + firstTeam + "</span></span><span class='team'><span class='secondTeam'>" + secondTeam + "</span></span></span><span class='score' title='" + firstTeamScore + "-" + secondTeamScore + "'>" + firstTeamScore + "-" + secondTeamScore + "</span></div>";
   }
 
   oldSelectedGame = -1;
