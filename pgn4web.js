@@ -1348,7 +1348,7 @@ function HighlightLastMove() {
   if (showThisMove >= (StartPlyVar[CurrentVar]-1)) {
     anchorName = 'Var' + CurrentVar + 'Mv' + (showThisMove + 1);
     if (theObject = document.getElementById(anchorName)) {
-      theObject.className = (CurrentVar ? 'variation variationOn' : 'move moveOn') + ' notranslate'; 
+      theObject.className = (CurrentVar ? 'variation variationOn' : 'move moveOn') + ' notranslate';
     }
     oldAnchorName = anchorName;
 
