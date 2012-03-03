@@ -823,8 +823,6 @@ var LiveBroadcastSteppingMode = false;
 
 var ParseLastMoveError = false;
 
-var MaxMove = 500;
-
 var castleRook = -1;
 var mvCapture =  0;
 var mvIsCastling =  0;
@@ -851,6 +849,7 @@ HistCol = new Array(3);
 HistRow = new Array(3);
 HistPieceId = new Array(2);
 HistType = new Array(2);
+HistVar = new Array();
 
 PieceCol = new Array(2);
 PieceRow = new Array(2);
@@ -862,18 +861,18 @@ for(i=0; i<2; ++i){
   PieceRow[i] = new Array(16);
   PieceType[i] = new Array(16);
   PieceMoveCounter[i] = new Array(16);
-  HistType[i] = new Array(MaxMove);
-  HistPieceId[i] = new Array(MaxMove);
+  HistType[i] = new Array();
+  HistPieceId[i] = new Array();
 }
 
 for(i=0; i<3; ++i){
-  HistCol[i] = new Array(MaxMove);
-  HistRow[i] = new Array(MaxMove);
+  HistCol[i] = new Array();
+  HistRow[i] = new Array();
 }
 
-HistEnPassant = new Array(MaxMove);
+HistEnPassant = new Array();
 HistEnPassant[0] = false;
-HistEnPassantCol = new Array(MaxMove);
+HistEnPassantCol = new Array();
 HistEnPassantCol[0] = -1;
 
 var FenPieceName = "KQRBNP";
@@ -902,8 +901,8 @@ var pgnUrl = '';
 
 CastlingLong  = new Array(2);
 CastlingShort = new Array(2);
-Moves = new Array(MaxMove);
-MoveComments = new Array(MaxMove);
+Moves = new Array();
+MoveComments = new Array();
 
 var MoveColor;
 var MoveCount;
@@ -2422,6 +2421,8 @@ function MoveBackward(diff, scanOnly) {
       PieceRow[1-MoveColor][chgPiece] = HistRow[1][thisPly];
       PieceMoveCounter[1-MoveColor][chgPiece]--;
     }
+
+    CurrentVar = HistVar[thisPly];
   }
 
   if (scanOnly) { return; }
@@ -2546,8 +2547,8 @@ function startVar() {
   }
   CurrentVar = numberOfVars;
   numberOfVars += 1;
-  MovesVar[CurrentVar] = new Array(MaxMove);
-  MoveCommentsVar[CurrentVar] = new Array(MaxMove);
+  MovesVar[CurrentVar] = new Array();
+  MoveCommentsVar[CurrentVar] = new Array();
   PlyNumber -= 1;
   MoveCommentsVar[CurrentVar][PlyNumber] = "";
   StartPlyVar[CurrentVar] = StartPly + PlyNumber;
@@ -2710,8 +2711,8 @@ function ParsePGNGameString(gameString) {
 
   StartPlyVar[CurrentVar] = StartPly;
   PlyNumberVar[CurrentVar] = PlyNumber;
-  Moves = MovesVar[CurrentVar];
-  MoveComments = MoveCommentsVar[CurrentVar];
+  Moves = MovesVar[CurrentVar].slice(0);
+  MoveComments = MoveCommentsVar[CurrentVar].slice(0);
 }
 
 
@@ -3479,6 +3480,8 @@ function StoreMove(thisPly) {
   } else {
     HistPieceId[1][thisPly] = -1;
   }
+
+  HistVar[thisPly] = CurrentVar;
 
   // update "square from" and captured square (not necessarily "square to" e.g. en-passant)
   Board[PieceCol[MoveColor][mvPieceId]][PieceRow[MoveColor][mvPieceId]] = 0;
