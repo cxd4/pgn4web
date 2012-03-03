@@ -1189,9 +1189,19 @@ function GoToMove(thisPly, thisVar) {
     if (diff > 0) { MoveForward(diff); }
     else { MoveBackward(-diff); }
   } else {
-    MoveBackward(CurrentPly - StartPly);
-    MoveForward(thisPly, thisVar);
-  } // PAOLO need optimizing this
+    backStart = StartPly;
+loopCommonPredecessor:
+    for (var ii = PredecessorsVars[CurrentVar].length - 1; ii >= 0; ii--) {
+      for (var jj = PredecessorsVars[thisVar].length - 1; jj >= 0; jj--) {
+        if (PredecessorsVars[CurrentVar][ii] === PredecessorsVars[thisVar][jj]) {
+          backStart = Math.min(PredecessorsVars[CurrentVar][ii+1] ? StartPlyVar[PredecessorsVars[CurrentVar][ii+1]] - 1 : CurrentPly, PredecessorsVars[thisVar][jj+1] ? StartPlyVar[PredecessorsVars[thisVar][jj+1]] - 1 : thisPly);
+          break loopCommonPredecessor;
+        }
+      }
+    }
+    MoveBackward(CurrentPly - backStart, true);
+    MoveForward(thisPly - backStart, thisVar);
+  }
 }
 
 function SetShortcutKeysEnabled(onOff) {
@@ -1264,7 +1274,7 @@ function HighlightLastMove() {
   if (theShowCommentTextObject = document.getElementById("GameLastComment")) {
     variationTextDepth = CurrentVar === 0 ? 0 : 1;
     theShowCommentTextObject.innerHTML = '<SPAN CLASS="comment">' +
-      strippedMoveComment(showThisMove+1).replace(/\sID="[^"]*"/g, '') + '</SPAN>';
+      strippedMoveComment(showThisMove+1, CurrentVar, true).replace(/\sID="[^"]*"/g, '') + '</SPAN>';
   }
 
   // show side to move
@@ -2596,7 +2606,6 @@ function initVar () {
   CurrentVarStack = new Array();
   PlyNumberStack = new Array();
   PredecessorsVars = new Array();
-  PredecessorsVars[0] = new Array(0);
   startVar();
 }
 
@@ -2607,7 +2616,7 @@ function startVar() {
   }
   CurrentVar = numberOfVars;
   numberOfVars += 1;
-  PredecessorsVars[CurrentVar] = CurrentVarStack.slice();
+  PredecessorsVars[CurrentVar] = CurrentVarStack.slice(0);
   PredecessorsVars[CurrentVar].push(CurrentVar);
   MovesVar[CurrentVar] = new Array();
   MoveCommentsVar[CurrentVar] = new Array();
@@ -3101,7 +3110,7 @@ function searchPgnGameForm() {
 
 function fixCommentForDisplay(comment) {
   chessMovesRegExp = new RegExp("((\\d+(\\.|\\.\\.\\.|)\\s*|)(([KQRBNP]|)([a-h1-8]|)(x|)[a-h][1-8](=[QRNB]|)|O-O-O|O-O)([+#]|))", "g");
-  return comment.replace(chessMovesRegExp, '<SPAN STYLE="white-space: nowrap;"><SPAN CLASS="variation">$1</SPAN></SPAN>');
+  return comment.replace(chessMovesRegExp, '</SPAN><SPAN STYLE="white-space: nowrap;"><SPAN CLASS="variation">$1</SPAN></SPAN><SPAN CLASS="comment">');
 }
 
 var tableSize = 0;
@@ -3345,10 +3354,11 @@ function PrintHTML() {
 }
 
 var basicNAGs = /^[\?!+#\s]+/;
-function strippedMoveComment(plyNum, varId) {
+function strippedMoveComment(plyNum, varId, addHtmlTags) {
+  if (typeof(addHtmlTags) == "undefined") { addHtmlTags = false; }
   if (typeof(varId) == "undefined") { varId = CurrentVar; }
   if (!MoveCommentsVar[varId][plyNum]) { return ""; }
-  return fixCommentForDisplay(MoveCommentsVar[varId][plyNum]).replace(/\[%pgn4web_variation \d+\]/g, variationTextFromTag).replace(/\[%[^\]]*\]\s*/g,'').replace(basicNAGs, '').replace(/^\s+$/,'');
+  return fixCommentForDisplay(MoveCommentsVar[varId][plyNum]).replace(/\[%pgn4web_variation \d+\]/g, function (m) { return variationTextFromTag(m, addHtmlTags); }).replace(/\[%[^\]]*\]\s*/g,'').replace(basicNAGs, '').replace(/^\s+$/,'');
 }
 
 function basicNAGsMoveComment(plyNum, varId) {
@@ -3358,13 +3368,18 @@ function basicNAGsMoveComment(plyNum, varId) {
   return thisBasicNAGs ? thisBasicNAGs[0].replace(/\s+(?!class=)/gi,'') : '';
 }
 
-function variationTextFromTag(variationTag) {
+function variationTextFromTag(variationTag, addHtmlTags) {
+  if (typeof(addHtmlTags) == "undefined") { addHtmlTags = false; }
   var varId = variationTag.replace(/(\[%pgn4web_variation |\])/g, "");
   if (isNaN(varId)) {
     myAlert("error: issue parsing variation tag " + variationTag, true);
     return "";
   }
-  return variationTextFromId(varId);
+  var text = variationTextFromId(varId);
+  if (text) {
+    if (addHtmlTags) { text = '</SPAN>' + text + '<SPAN CLASS="comment">'; }
+  } else { text = ''; }
+  return text;
 }
 
 var variationTextDepth;
@@ -3377,7 +3392,7 @@ function variationTextFromId(varId) {
   printedVariation = false;
   for (var ii = StartPlyVar[varId]; ii < StartPlyVar[varId] + PlyNumberVar[varId]; ii++) {
     printedComment = false;
-    if (commentsIntoMoveText && (thisComment = strippedMoveComment(ii, varId))) {
+    if (commentsIntoMoveText && (thisComment = strippedMoveComment(ii, varId, true))) {
       if (commentsOnSeparateLines && variationTextDepth === 0 && ii > StartPlyVar[varId]) {
         text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
       }
@@ -3407,7 +3422,7 @@ function variationTextFromId(varId) {
     if (commentsIntoMoveText) { text += basicNAGsMoveComment(jj, varId); }
     text += '</A></SPAN>';
   }
-  if (commentsIntoMoveText && (thisComment = strippedMoveComment(StartPlyVar[varId] + PlyNumberVar[varId], varId))) {
+  if (commentsIntoMoveText && (thisComment = strippedMoveComment(StartPlyVar[varId] + PlyNumberVar[varId], varId, true))) {
     if (commentsOnSeparateLines && variationTextDepth === 0) {
       text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
     }

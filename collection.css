@@ -122,16 +122,19 @@ div, span, table, tr, td {
   text-decoration: none;
 }
 
-.moveOn {
+.moveOn, .variationOn {
   background: #FFCC99;
 }
 
-.comment {
+.comment, .variation {
   color: gray;
   line-height: 1.4em;
+  font-weight: normal;
+  text-decoration: none;
 }
 
-.variation {
+.variation,
+.variationOn {
   font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
 }
 
