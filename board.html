@@ -67,6 +67,8 @@ body {
 
 .move,
 .moveOn,
+.variation,
+.variationOn,
 .lastMove {
   line-height: 1.4em;
   text-decoration: none;
@@ -77,11 +79,14 @@ body {
   color: black;
 }
 
-.moveOn {
+.moveOn,
+.variationOn {
   background: #DAF4D7;
 }
 
-.comment {
+.comment,
+.variation,
+.variationOn {
   color: gray;
   line-height: 1.4em;
 }
@@ -731,7 +736,7 @@ newStyleSheet = '<style type="text/css"> \n';
 
 if ((movesDisplay == "figurine") || (movesDisplay == "nosymbols")) {
   newStyleSheet += 'body, .header, .comment { font-family: \'pgn4web Liberation Sans\', sans-serif; } \n';
-  newStyleSheet += '.move, .moveOn, .variation, .lastMove { font-family: \'pgn4web ChessSansPiratf\', \'pgn4web Liberation Sans\', sans-serif; } \n';
+  newStyleSheet += '.move, .moveOn, .variation, .variationOn, .lastMove { font-family: \'pgn4web ChessSansPiratf\', \'pgn4web Liberation Sans\', sans-serif; } \n';
 }
 
 newStyleSheet += 'body { background: ' + backgroundColor + '; padding: ' + framePadding + '; } \n';
@@ -816,7 +821,7 @@ if (highlightMode == 'border') {
   newStyleSheet += '.move { color: ' + fontMovesColor + '; font-size: ' + fontMovesSize + '; } \n';
 
   if (!fontMovesSize.match(/[^0-9]/)) { fontMovesSize += 'px'; }
-  newStyleSheet += '.moveOn { ' +
+  newStyleSheet += '.moveOn, .variationOn { ' +
                    ' background: ' + (highlightMoveColor == 'none' ? backgroundColor : highlightMoveColor) + '; ' +
                    ' color: ' + fontMovesColor + '; font-size: ' + fontMovesSize + '; ' +
                    '} \n';
@@ -824,10 +829,13 @@ if (highlightMode == 'border') {
   if (!fontHeaderSize.match(/[^0-9]/)) { fontHeaderSize += 'px'; }
   newStyleSheet += '.header { color: ' + fontHeaderColor + '; font-size: ' + fontHeaderSize + '; } \n';
 
+  newStyleSheet += '.comment, .variation, .variationOn { ' +
+                   ' color: ' + fontCommentsColor + ';' +
+                   '} \n';
+
   if (!fontCommentsSize.match(/[^0-9]/)) { fontCommentsSize += 'px'; }
   newStyleSheet += '.comment { ' +
-                   'color: ' + fontCommentsColor +
-                   '; font-size: ' + (fontCommentsSize == 'moves' ? fontMovesSize : fontCommentsSize) + '; ' +
+                   ' font-size: ' + (fontCommentsSize == 'moves' ? fontMovesSize : fontCommentsSize) + '; ' +
                    '} \n';
 
   if ((controlBackgroundColor != 'default') && (controlBackgroundColor != '#default')) {

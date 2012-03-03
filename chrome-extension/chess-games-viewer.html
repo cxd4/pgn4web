@@ -994,15 +994,16 @@ of Google Chrome. Don't use with any other browser.
 
    function scanGameForFen() {
       savedCurrentPly = CurrentPly;
+      savedCurrentVar = CurrentVar;
       if (wasAutoPlayOn = isAutoPlayOn) { SetAutoPlay(false); }
-      MoveForward(StartPly + PlyNumber - savedCurrentPly, true);
+      MoveForward(StartPly + PlyNumber - savedCurrentPly, CurrentVar, true);
       resetFenPositions(currentGame);
       while (true) {
          fenPositions[currentGame][CurrentPly] = CurrentFEN();
          if (CurrentPly === StartPly) { break; }
          MoveBackward(1, true);
       }
-      MoveForward(savedCurrentPly - StartPly, true);
+      MoveForward(savedCurrentPly - StartPly, savedCurrentVar, true);
       updateAnnotationGraph();
       updateAnalysisHeader();
       if (wasAutoPlayOn) { SetAutoPlay(true); }

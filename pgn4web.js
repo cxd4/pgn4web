@@ -849,7 +849,7 @@ HistCol = new Array(3);
 HistRow = new Array(3);
 HistPieceId = new Array(2);
 HistType = new Array(2);
-HistVar = new Array();
+HistVar = [0];
 
 PieceCol = new Array(2);
 PieceRow = new Array(2);
@@ -1183,14 +1183,15 @@ function ClearMove(move) {
 }
 
 function GoToMove(thisPly, thisVar) {
-  if (typeof(thisVar) == "undefined") { thisVar = 0; }
-  if (thisVar !== 0) {
-    alert("PAOLO\n\nshowing positions from variations is coming...\n\nvar=" + thisVar + " ply=" + thisPly);
-    return;
-  }
-  var diff = thisPly - CurrentPly;
-  if (diff > 0) { MoveForward(diff); }
-  else { MoveBackward(-diff); }
+  if (typeof(thisVar) == "undefined") { thisVar = CurrentVar; }
+  if (thisVar === CurrentVar) {
+    var diff = thisPly - CurrentPly;
+    if (diff > 0) { MoveForward(diff); }
+    else { MoveBackward(-diff); }
+  } else {
+    MoveBackward(CurrentPly - StartPly);
+    MoveForward(thisPly, thisVar);
+  } // PAOLO need optimizing this
 }
 
 function SetShortcutKeysEnabled(onOff) {
@@ -1258,7 +1259,7 @@ function HighlightLastMove() {
 
   // find halfmove to be highlighted, negative for starting position (nothing to highlight)
   var showThisMove = CurrentPly - 1;
-  if (showThisMove > StartPly + PlyNumber) { showThisMove = StartPly + PlyNumber; }
+  if (showThisMove > StartPly[CurrentVar] + PlyNumber[CurrentVar]) { showThisMove = StartPly[CurrentVar] + PlyNumber[CurrentVar]; }
 
   if (theShowCommentTextObject = document.getElementById("GameLastComment")) {
     variationTextDepth = CurrentVar === 0 ? 0 : 1;
@@ -1323,6 +1324,8 @@ function HighlightLastMove() {
   if (theShowMoveTextObject !== null) {
     if (showThisMove + 1 >= StartPly + PlyNumber) {
       text = gameResult[currentGame];
+    } else if (typeof(Moves[showThisMove+1]) == "undefined") {
+      text = "";
     } else {
       text = (Math.floor((showThisMove+1)/2) + 1) +
         ((showThisMove+1) % 2 === 0 ? '. ' : '... ') + Moves[showThisMove+1];
@@ -1950,12 +1953,13 @@ function Init(nextGame){
 
   OpenGame(currentGame);
 
-  RefreshBoard();
   CurrentPly = StartPly;
-  HighlightLastMove();
   if (firstStart || alwaysInitialHalfmove) { GoToInitialHalfmove(); }
-  else { customFunctionOnMove(); }
+  else { synchMoves(); customFunctionOnMove(); }
   // customFunctionOnMove here for consistency: null move starting new game
+
+  RefreshBoard();
+  HighlightLastMove();
 
   if ((firstStart) && (autostartAutoplay)) { SetAutoPlay(true); }
 
@@ -2427,6 +2431,8 @@ function MoveBackward(diff, scanOnly) {
 
   if (scanOnly) { return; }
 
+  synchMoves();
+
   // old position reconstructed: refresh board
   RefreshBoard();
   HighlightLastMove();
@@ -2434,34 +2440,59 @@ function MoveBackward(diff, scanOnly) {
   // autoplay: restart timeout
   if (AutoPlayInterval) { clearTimeout(AutoPlayInterval); AutoPlayInterval = null; }
   if (isAutoPlayOn) {
-    if(goToPly >= StartPly) { AutoPlayInterval=setTimeout("MoveBackward(1)", Delay); }
+    if(goToPly >= StartPlyVar[CurrentVar]) { AutoPlayInterval=setTimeout("MoveBackward(1)", Delay); }
     else { SetAutoPlay(false); }
   }
+
   customFunctionOnMove();
 }
 
-function MoveForward(diff, scanOnly) {
+function MoveForward(diff, targetVar, scanOnly) {
+
+  if (typeof(targetVar) == "undefined") { targetVar = CurrentVar; }
 
   // CurrentPly counts from 1, starting position 0
   goToPly = CurrentPly + parseInt(diff,10);
 
-  if (goToPly > (StartPly + PlyNumber)) { goToPly = StartPly + PlyNumber; }
+  if (goToPly > StartPlyVar[targetVar] + PlyNumberVar[targetVar]) {
+    goToPly = StartPlyVar[targetVar] + PlyNumberVar[targetVar];
+  }
 
   // reach to selected move checking legality
   for(var thisPly = CurrentPly; thisPly < goToPly; ++thisPly) {
-    var move = Moves[thisPly];
+
+    if (targetVar !== CurrentVar) {
+      for (currentVarIndex = 0; currentVarIndex < PredecessorsVars[targetVar].length; currentVarIndex++) {
+        if (PredecessorsVars[targetVar][currentVarIndex] === CurrentVar) { break; }
+      }
+      if (currentVarIndex === PredecessorsVars[targetVar].length) {
+        myAlert("error: dont know how to reach variation " + targetVar + " from " + CurrentVar, true);
+        return;
+      } else {
+        nextVar = PredecessorsVars[targetVar][currentVarIndex + 1];
+        nextVarStartPly = StartPlyVar[nextVar];
+      }
+    } else { nextVar = nextVarStartPly = -1; }
+
+    if (thisPly === nextVarStartPly) { CurrentVar = nextVar; }
+
+    if (typeof(move = MovesVar[CurrentVar][thisPly]) == "undefined") { break; }
+
     if (ParseLastMoveError = !ParseMove(move, thisPly)) {
       text = (Math.floor(thisPly / 2) + 1) + ((thisPly % 2) === 0 ? '. ' : '... ');
       myAlert('error: invalid ply ' + text + move + ' in game ' + (currentGame+1), true);
       break;
     }
     MoveColor = 1-MoveColor;
+
   }
 
   // new position: update ply count, then refresh board
   CurrentPly = thisPly;
 
   if (scanOnly) { return; }
+
+  synchMoves();
 
   RefreshBoard();
   HighlightLastMove();
@@ -2479,7 +2510,33 @@ function MoveForward(diff, scanOnly) {
       }
     }
   }
+
   customFunctionOnMove();
+}
+
+lastSynchCurrentVar = -1;
+function synchMoves() {
+  if (CurrentVar === lastSynchCurrentVar) { return; }
+  Moves = new Array();
+  MoveComments = new Array();
+  for (var ii = 0; ii < PredecessorsVars[CurrentVar].length; ii++) {
+    start = StartPlyVar[PredecessorsVars[CurrentVar][ii]];
+    if (ii < PredecessorsVars[CurrentVar].length - 1) {
+      end = StartPlyVar[PredecessorsVars[CurrentVar][ii+1]];
+    } else {
+      end = StartPlyVar[PredecessorsVars[CurrentVar][ii]] + PlyNumberVar[PredecessorsVars[CurrentVar][ii]];
+    }
+    for (var jj = start; jj < end; jj++) {
+      Moves[jj] = MovesVar[PredecessorsVars[CurrentVar][ii]][jj];
+      if (theComment = MoveCommentsVar[PredecessorsVars[CurrentVar][ii]][jj]) {
+        MoveComments[jj] = theComment;
+      }
+    }
+  }
+  if (theComment = MoveCommentsVar[PredecessorsVars[CurrentVar][ii-1]][jj]) {
+    MoveComments[jj] = theComment;
+  }
+  lastSynchCurrentVar = CurrentVar;
 }
 
 function AutoplayNextGame() {
@@ -2539,7 +2596,7 @@ function initVar () {
   CurrentVarStack = new Array();
   PlyNumberStack = new Array();
   PredecessorsVars = new Array();
-  PredecessorsVars[0] = new Array();
+  PredecessorsVars[0] = new Array(0);
   startVar();
 }
 
@@ -2551,6 +2608,7 @@ function startVar() {
   CurrentVar = numberOfVars;
   numberOfVars += 1;
   PredecessorsVars[CurrentVar] = CurrentVarStack.slice();
+  PredecessorsVars[CurrentVar].push(CurrentVar);
   MovesVar[CurrentVar] = new Array();
   MoveCommentsVar[CurrentVar] = new Array();
   PlyNumber -= 1;
@@ -2715,8 +2773,6 @@ function ParsePGNGameString(gameString) {
 
   StartPlyVar[CurrentVar] = StartPly;
   PlyNumberVar[CurrentVar] = PlyNumber;
-  Moves = MovesVar[CurrentVar].slice(0);
-  MoveComments = MoveCommentsVar[CurrentVar].slice(0);
 }
 
 
@@ -3290,13 +3346,13 @@ function PrintHTML() {
 
 var basicNAGs = /^[\?!+#\s]+/;
 function strippedMoveComment(plyNum, varId) {
-  if (typeof(varId) == "undefined") { varId = 0; }
+  if (typeof(varId) == "undefined") { varId = CurrentVar; }
   if (!MoveCommentsVar[varId][plyNum]) { return ""; }
   return fixCommentForDisplay(MoveCommentsVar[varId][plyNum]).replace(/\[%pgn4web_variation \d+\]/g, variationTextFromTag).replace(/\[%[^\]]*\]\s*/g,'').replace(basicNAGs, '').replace(/^\s+$/,'');
 }
 
 function basicNAGsMoveComment(plyNum, varId) {
-  if (typeof(varId) == "undefined") { varId = 0; }
+  if (typeof(varId) == "undefined") { varId = CurrentVar; }
   if (!MoveCommentsVar[varId][plyNum]) { return ""; }
   thisBasicNAGs = MoveCommentsVar[varId][plyNum].replace(/\[%[^\]]*\]\s*/g,'').match(basicNAGs, '');
   return thisBasicNAGs ? thisBasicNAGs[0].replace(/\s+(?!class=)/gi,'') : '';
@@ -3485,7 +3541,7 @@ function StoreMove(thisPly) {
     HistPieceId[1][thisPly] = -1;
   }
 
-  HistVar[thisPly] = CurrentVar;
+  HistVar[thisPly+1] = CurrentVar;
 
   // update "square from" and captured square (not necessarily "square to" e.g. en-passant)
   Board[PieceCol[MoveColor][mvPieceId]][PieceRow[MoveColor][mvPieceId]] = 0;
