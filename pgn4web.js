@@ -5,7 +5,7 @@
  *  for credits, license and more details
  */
 
-var pgn4web_version = '2.44';
+var pgn4web_version = '2.44+';
 
 var pgn4web_project_url = 'http://pgn4web.casaschi.net';
 var pgn4web_project_author = 'Paolo Casaschi';
@@ -48,10 +48,11 @@ function customPgnHeaderTag(customTagString, htmlElementIdString, gameNum) {
 
 // custom comment tags APIS for customFunctionOnMove()
 
-function customPgnCommentTag(customTagString, htmlElementIdString, plyNum) {
+function customPgnCommentTag(customTagString, htmlElementIdString, plyNum, varId) {
   customTagString = customTagString.replace(/\W+/g, "");
-  if (plyNum === undefined) { plyNum = CurrentPly; }
-  if ((MoveComments[plyNum]) && (tagValues = MoveComments[plyNum].match('\\[%' + customTagString + '\\s*([^\\]]+)\\s*\\]'))) {
+  if (typeof(varId) == "undefined") { varId = 0; }
+  if (typeof(plyNum) == "undefined") { plyNum = CurrentPly; }
+  if ((MoveCommentsVar[varId][plyNum]) && (tagValues = MoveCommentsVar[varId][plyNum].match('\\[%' + customTagString + '\\s*([^\\]]+)\\s*\\]'))) {
     tagValue = tagValues[1];
   } else { tagValue = ""; }
   if ((htmlElementIdString) && (theObject = document.getElementById(htmlElementIdString)) && (theObject.innerHTML !== null)) {
@@ -60,16 +61,54 @@ function customPgnCommentTag(customTagString, htmlElementIdString, plyNum) {
   return tagValue;
 }
 
-var basicNAGs = /^[\?!+#\s]*(\s|$)/;
-function strippedMoveComment(plyNum) {
-  if (!MoveComments[plyNum]) { return ""; }
-  return MoveComments[plyNum].replace(/\[%[^\]]*\]\s*/g,'').replace(basicNAGs, '').replace(/^\s+$/,'');
+var basicNAGs = /^[\?!+#\s]+/;
+function strippedMoveComment(plyNum, varId) {
+  if (typeof(varId) == "undefined") { varId = 0; }
+  if (!MoveCommentsVar[varId][plyNum]) { return ""; }
+  return fixCommentForDisplay(MoveCommentsVar[varId][plyNum]).replace(/\[%pgn4web_variation \d+\]/g, variationText).replace(/\[%[^\]]*\]\s*/g,'').replace(basicNAGs, '').replace(/^\s+$/,'');
 }
 
-function basicNAGsMoveComment(plyNum) {
-  if (!MoveComments[plyNum]) { return ""; }
-  thisBasicNAGs = MoveComments[plyNum].replace(/\[%[^\]]*\]\s*/g,'').match(basicNAGs, '');
+function basicNAGsMoveComment(plyNum, varId) {
+  if (typeof(varId) == "undefined") { varId = 0; }
+  if (!MoveCommentsVar[varId][plyNum]) { return ""; }
+  thisBasicNAGs = MoveCommentsVar[varId][plyNum].replace(/\[%[^\]]*\]\s*/g,'').match(basicNAGs, '');
   return thisBasicNAGs ? thisBasicNAGs[0].replace(/\s+(?!class=)/gi,'') : '';
+}
+
+var variationTextDepth = 0;
+function variationText(variationTag) {
+  var variation = variationTag.replace(/(\[%pgn4web_variation |\])/g, "");
+  if ((variation === "") || typeof(StartPlyVar[variation]) == "undefined" || typeof(PlyNumberVar[variation]) == "undefined") { return ""; }
+  var thisVariationText = '<SPAN CLASS="notranslate"> </SPAN><SPAN CLASS="variation">' + (variationTextDepth++ ? '(' : '[');
+  var printedVariation = false;
+  for (var ii = StartPlyVar[variation]; ii < StartPlyVar[variation] + PlyNumberVar[variation]; ii++) {
+    printedCommentVar = false;
+    if (commentsIntoMoveText && (thisCommentVar = strippedMoveComment(ii, variation))) {
+      if (printedVariation) { thisVariationText += '<SPAN CLASS="notranslate"> </SPAN>'; }
+      else { printedVariation = true; }
+      thisVariationText += '<SPAN CLASS="comment">' + thisCommentVar + '</SPAN>';
+      printedCommentVar = true;
+    }
+    if (printedVariation) { thisVariationText += '<SPAN CLASS="notranslate"> </SPAN>'; }
+    else { printedVariation = true; }
+    thisVariationText += '<SPAN STYLE="white-space: nowrap;">';
+    moveCountVar = Math.floor(ii/2)+1;
+    if (ii%2 === 0){
+      thisVariationText += '<SPAN CLASS="notranslate">' + moveCountVar + '.&nbsp;</SPAN>'
+    } else {
+      if ((printedCommentVar) || (ii == StartPlyVar[variation])) { thisVariationText += '<SPAN CLASS="notranslate">' + moveCountVar + '...&nbsp;</SPAN>'; }
+    }
+    thisVariationText += '<A HREF="javascript:void(0);" ONCLICK="alert(\'PAOLO: var=' + variation + ' ply=' + ii + '\')" ' +
+      'CLASS="variation notranslate" ID="" ONFOCUS="this.blur()">' + MovesVar[variation][ii];
+    if (commentsIntoMoveText) { thisVariationText += basicNAGsMoveComment(ii+1, variation); }
+    thisVariationText += '</A></SPAN>';
+  }
+  if (commentsIntoMoveText && (thisCommentVar = strippedMoveComment(StartPlyVar[variation] + PlyNumberVar[variation], variation))) {
+    thisVariationText += '<SPAN CLASS="notranslate"> </SPAN><SPAN CLASS="comment">' + thisCommentVar + '</SPAN>';
+    printedCommentVar = true;
+  }
+  thisVariationText += (--variationTextDepth ? ')' : ']') + '</SPAN>';
+  return thisVariationText;
 }
 
 window.onload = start_pgn4web;
@@ -1267,7 +1306,8 @@ function HighlightLastMove() {
   if (showThisMove > StartPly + PlyNumber) { showThisMove = StartPly + PlyNumber; }
 
   if (theShowCommentTextObject = document.getElementById("GameLastComment")) {
-    theShowCommentTextObject.innerHTML = fixCommentForDisplay(strippedMoveComment(showThisMove+1));
+    theShowCommentTextObject.innerHTML = '<SPAN CLASS="comment">' +
+      strippedMoveComment(showThisMove+1).replace(/\sID="[^"]*"/g, '') + '</SPAN>';
   }
 
   // show side to move
@@ -2521,6 +2561,59 @@ function OpenGame(gameId) {
   PrintHTML();
 }
 
+var CurrentVar;
+var numberOfVars;
+var MovesVar;
+var MoveCommentsVar;
+var StartPlyVar;
+var PlyNumberVar;
+var CurrentVarStack;
+var PlyNumberStack;
+
+function initVar () {
+  MovesVar = new Array();
+  MoveCommentsVar = new Array();
+  StartPlyVar = new Array();
+  PlyNumberVar = new Array();
+  numberOfVars = 0;
+  CurrentVarStack = new Array();
+  PlyNumberStack = new Array();
+  startVar();
+}
+
+function startVar() {
+  if (typeof(CurrentVar) != "undefined") {
+    CurrentVarStack.push(CurrentVar);
+    PlyNumberStack.push(PlyNumber);
+  }
+  CurrentVar = numberOfVars;
+  numberOfVars += 1;
+  MovesVar[CurrentVar] = new Array(MaxMove);
+  MoveCommentsVar[CurrentVar] = new Array(MaxMove);
+  PlyNumber -= 1;
+  MoveCommentsVar[CurrentVar][PlyNumber] = "";
+  StartPlyVar[CurrentVar] = StartPly + PlyNumber;
+}
+
+function closeVar() {
+  PlyNumberVar[CurrentVar] = StartPly + PlyNumber - StartPlyVar[CurrentVar];
+  for (var ii=StartPlyVar[CurrentVar]; ii<=StartPlyVar[CurrentVar]+PlyNumberVar[CurrentVar]; ii++) {
+    if (MoveCommentsVar[CurrentVar][ii]) {
+      MoveCommentsVar[CurrentVar][ii] = MoveCommentsVar[CurrentVar][ii].replace(/\s+/g, ' ');
+      MoveCommentsVar[CurrentVar][ii] = translateNAGs(MoveCommentsVar[CurrentVar][ii]);
+      MoveCommentsVar[CurrentVar][ii] = MoveCommentsVar[CurrentVar][ii].replace(/\s+$/g, '');
+    } else {
+      MoveCommentsVar[CurrentVar][ii] = '';
+    }
+  }
+  if (CurrentVarStack.length) {
+    CurrentVar = CurrentVarStack.pop();
+    PlyNumber = PlyNumberStack.pop();
+  } else {
+    myAlert("error: closeVar error", true);
+  }
+}
+
 function ParsePGNGameString(gameString) {
 
   var ss = gameString;
@@ -2529,9 +2622,11 @@ function ParsePGNGameString(gameString) {
   ss = ss.replace(/^\s/, '');
   ss = ss.replace(/\s$/, '');
 
+  initVar ();
+
   PlyNumber = 0;
-  for (ii=0; ii<StartPly; ii++) { Moves[ii]=''; }
-  MoveComments[StartPly+PlyNumber]='';
+  for (ii=0; ii<StartPly; ii++) { MovesVar[CurrentVar][ii]=''; }
+  MoveCommentsVar[CurrentVar][StartPly+PlyNumber]='';
 
   for (start=0; start<ss.length; start++) {
 
@@ -2552,9 +2647,9 @@ function ParsePGNGameString(gameString) {
           commentEnd++;
           if (commentEnd == ss.length) { break; }
         }
-        if (MoveComments[StartPly+PlyNumber].length>0) { MoveComments[StartPly+PlyNumber] += ' '; }
-        MoveComments[StartPly+PlyNumber] += ss.substring(commentStart, commentEnd);
-        start = commentEnd;
+        if (MoveCommentsVar[CurrentVar][StartPly+PlyNumber]) { MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' '; }
+        MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ss.substring(commentStart, commentEnd);
+        start = commentEnd - 1;
         break;
 
       case '!':
@@ -2565,19 +2660,19 @@ function ParsePGNGameString(gameString) {
           commentEnd++;
           if (commentEnd == ss.length) { break; }
         }
-        if (MoveComments[StartPly+PlyNumber].length>0) { MoveComments[StartPly+PlyNumber] += ' '; }
-        MoveComments[StartPly+PlyNumber] += ss.substring(commentStart, commentEnd);
-        start = commentEnd;
+        if (MoveCommentsVar[CurrentVar][StartPly+PlyNumber]) { MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' '; }
+        MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ss.substring(commentStart, commentEnd);
+        start = commentEnd - 1;
         break;
 
       case '{':
         commentStart = start+1;
         commentEnd = ss.indexOf('}',start+1);
         if (commentEnd > 0){
-          if (MoveComments[StartPly+PlyNumber].length>0) { MoveComments[StartPly+PlyNumber] += ' '; }
-          MoveComments[StartPly+PlyNumber] += ss.substring(commentStart, commentEnd);
+          if (MoveCommentsVar[CurrentVar][StartPly+PlyNumber]) { MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' '; }
+          MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ss.substring(commentStart, commentEnd);
           start = commentEnd;
-        }else{
+        } else {
           myAlert('error: missing end comment char } while parsing game ' + (currentGame+1), true);
           return;
         }
@@ -2590,8 +2685,8 @@ function ParsePGNGameString(gameString) {
         commentEnd = ss.indexOf('\n',start+1);
         if (commentEnd < 0) { commentEnd = ss.length; }
         // dont store % lines as comments
-        // if (MoveComments[StartPly+PlyNumber].length>0) { MoveComments[StartPly+PlyNumber] += ' '; }
-        // MoveComments[StartPly+PlyNumber] += ss.substring(commentStart, commentEnd);
+        // if (MoveCommentsVar[CurrentVar][StartPly+PlyNumber]) { MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' '; }
+        // MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ss.substring(commentStart, commentEnd);
         start = commentEnd;
         break;
 
@@ -2599,33 +2694,18 @@ function ParsePGNGameString(gameString) {
         commentStart = start+1;
         commentEnd = ss.indexOf('\n',start+1);
         if (commentEnd < 0) { commentEnd = ss.length; }
-        if (MoveComments[StartPly+PlyNumber].length>0) { MoveComments[StartPly+PlyNumber] += ' '; }
-        MoveComments[StartPly+PlyNumber] += ss.substring(commentStart, commentEnd);
+        if (MoveCommentsVar[CurrentVar][StartPly+PlyNumber]) { MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' '; }
+        MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ss.substring(commentStart, commentEnd);
         start = commentEnd;
         break;
 
       case '(':
-        openVariation = 1;
-        variationStart = start;
-        variationEnd = start+1;
-        while ((openVariation > 0) && (variationEnd<ss.length)) {
-          nextOpen = ss.indexOf('(', variationEnd);
-          nextClosed = ss.indexOf(')', variationEnd);
-          if (nextClosed < 0) {
-            myAlert('error: missing end variation char ) while parsing game ' + (currentGame+1), true);
-            return;
-          }
-          if ((nextOpen >= 0) && (nextOpen < nextClosed)) {
-            openVariation++;
-            variationEnd = nextOpen+1;
-          } else {
-            openVariation--;
-            variationEnd = nextClosed+1;
-          }
-        }
-        if (MoveComments[StartPly+PlyNumber].length>0) { MoveComments[StartPly+PlyNumber] += ' '; }
-        MoveComments[StartPly+PlyNumber] += ss.substring(variationStart, variationEnd).replace(/([({])\s+/g, '$1').replace(/\s+([)}])/g, '$1');
-        start = variationEnd-1;
+        MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += '[%pgn4web_variation ' + numberOfVars + ']';
+        startVar();
+        break;
+
+      case ')':
+        closeVar();
         break;
 
       default:
@@ -2634,7 +2714,7 @@ function ParsePGNGameString(gameString) {
         for (ii=0; ii<searchThis.length; ii++) {
           if (ss.indexOf(searchThis[ii],start)==start) {
             start += searchThis[ii].length;
-            MoveComments[StartPly+PlyNumber] += ss.substring(start, ss.length).replace(/^\s*\{(.*)\}\s*$/, '$1');
+            MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ss.substring(start, ss.length).replace(/^\s*\{(.*)\}\s*$/, '$1');
             start = ss.length;
             break;
           }
@@ -2648,23 +2728,32 @@ function ParsePGNGameString(gameString) {
           while ((ss.charAt(start) == '.') || (ss.charAt(start) == ' ') || (ss.charAt(start) == '\n') || (ss.charAt(start) == '\r')){start++;}
         }
 
-        if ((end = start + ss.substr(start).search(/[\s${;(!?]/)) < start) { end = ss.length; }
+        if ((end = start + ss.substr(start).search(/[\s${;!?()]/)) < start) { end = ss.length; }
         move = ss.substring(start,end);
-        Moves[StartPly+PlyNumber] = ClearMove(move);
+        MovesVar[CurrentVar][StartPly+PlyNumber] = ClearMove(move);
         if (ss.charAt(end) == ' ') { start = end; }
         else { start = end - 1; }
-        if (Moves[StartPly+PlyNumber] !== '') { // to cope with misformed PGN data
+        if (MovesVar[CurrentVar][StartPly+PlyNumber] !== '') { // to cope with misformed PGN data
           PlyNumber++;
-          MoveComments[StartPly+PlyNumber] = '';
+          MoveCommentsVar[CurrentVar][StartPly+PlyNumber] = '';
         }
         break;
     }
   }
   for (ii=StartPly; ii<=StartPly+PlyNumber; ii++) {
-    MoveComments[ii] = MoveComments[ii].replace(/\s+/g, ' ');
-    MoveComments[ii] = translateNAGs(MoveComments[ii]);
-    MoveComments[ii] = MoveComments[ii].replace(/\s+$/g, '');
+    if (MoveCommentsVar[CurrentVar][ii]) {
+      MoveCommentsVar[CurrentVar][ii] = MoveCommentsVar[CurrentVar][ii].replace(/\s+/g, ' ');
+      MoveCommentsVar[CurrentVar][ii] = translateNAGs(MoveCommentsVar[CurrentVar][ii]);
+      MoveCommentsVar[CurrentVar][ii] = MoveCommentsVar[CurrentVar][ii].replace(/\s+$/g, '');
+    } else {
+      MoveCommentsVar[CurrentVar][ii] = '';
+    }
   }
+
+  StartPlyVar[CurrentVar] = StartPly;
+  PlyNumberVar[CurrentVar] = PlyNumber;
+  Moves = MovesVar[CurrentVar];
+  MoveComments = MoveCommentsVar[CurrentVar];
 }
 
 
@@ -3212,7 +3301,7 @@ function PrintHTML() {
         if (commentsOnSeparateLines && (ii > StartPly)) {
           text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
         }
-        text += '<SPAN CLASS="comment">' + fixCommentForDisplay(thisComment) + '</SPAN><SPAN CLASS="move notranslate"> </SPAN>';
+        text += '<SPAN CLASS="comment">' + thisComment + '</SPAN><SPAN CLASS="move notranslate"> </SPAN>';
         if (commentsOnSeparateLines) {
           text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
         }
@@ -3233,7 +3322,7 @@ function PrintHTML() {
     }
     if (commentsIntoMoveText && (thisComment = strippedMoveComment(StartPly+PlyNumber))) {
       if (commentsOnSeparateLines) { text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>'; }
-      text += '<SPAN CLASS="comment">' + fixCommentForDisplay(thisComment) + '</SPAN><SPAN CLASS="move notranslate"> </SPAN>';
+      text += '<SPAN CLASS="comment">' + thisComment + '</SPAN><SPAN CLASS="move notranslate"> </SPAN>';
     }
     text += '</SPAN>';
 
