@@ -99,7 +99,7 @@ div, span, table, tr, td {
   text-decoration: none;
 }
 
-.moveOn {
+.moveOn, .variationOn {
   background: #DAF4D7;
 }
 
