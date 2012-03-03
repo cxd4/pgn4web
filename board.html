@@ -823,7 +823,7 @@ if (highlightMode == 'border') {
   if (!fontMovesSize.match(/[^0-9]/)) { fontMovesSize += 'px'; }
   newStyleSheet += '.moveOn, .variationOn { ' +
                    ' background: ' + (highlightMoveColor == 'none' ? backgroundColor : highlightMoveColor) + '; ' +
-                   ' color: ' + fontMovesColor + '; font-size: ' + fontMovesSize + '; ' +
+                   ' color: ' + fontMovesColor + '; ' +
                    '} \n';
 
   if (!fontHeaderSize.match(/[^0-9]/)) { fontHeaderSize += 'px'; }
@@ -1203,7 +1203,7 @@ function autoScrollToCurrentMoveIfEnabled() {
 function autoScrollToCurrentMove() {
   if (theContainerObject = document.getElementById("headerMoves")) {
     if (CurrentPly == StartPly) { theContainerObject.scrollTop = 0; }
-    else if (theMoveObject = document.getElementById('Mv' + CurrentPly)) {
+    else if (theMoveObject = document.getElementById('Var' + CurrentVar + 'Mv' + CurrentPly)) {
       theContainerObjectOffsetVeryTop = objectOffsetVeryTop(theContainerObject);
       theMoveObjectOffsetVeryTop = objectOffsetVeryTop(theMoveObject);
       if ((theMoveObjectOffsetVeryTop + theMoveObject.offsetHeight >

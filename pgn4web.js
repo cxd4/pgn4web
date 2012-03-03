@@ -2502,10 +2502,10 @@ function MoveForward(diff, targetVar, scanOnly) {
   if (ParseLastMoveError) { SetAutoPlay(false); }
   else if (thisPly == goToPly) {
     if (isAutoPlayOn) {
-      if (goToPly < StartPly + PlyNumber) {
+      if (goToPly < StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]) {
         AutoPlayInterval=setTimeout("MoveForward(1)", Delay);
       } else {
-        if (autoplayNextGame) { AutoPlayInterval=setTimeout("AutoplayNextGame()", Delay); }
+        if (autoplayNextGame && (CurrentVar === 0)) { AutoPlayInterval=setTimeout("AutoplayNextGame()", Delay); }
         else { SetAutoPlay(false); }
       }
     }
@@ -3462,9 +3462,9 @@ function SetAutoPlay(vv) {
         document.GameButtonsForm.AutoPlay.className = "buttonControlStop";
       }
     }
-    if (CurrentPly < StartPly+PlyNumber) { AutoPlayInterval=setTimeout("MoveForward(1)", Delay); }
+    if (CurrentPly < StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]) { AutoPlayInterval=setTimeout("MoveForward(1)", Delay); }
     else {
-      if (autoplayNextGame) { AutoPlayInterval=setTimeout("AutoplayNextGame()", Delay); }
+      if (autoplayNextGame && (CurrentVar === 0)) { AutoPlayInterval=setTimeout("AutoplayNextGame()", Delay); }
       else { SetAutoPlay(false); }
     }
   } else {
