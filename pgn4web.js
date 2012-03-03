@@ -2528,6 +2528,7 @@ var StartPlyVar;
 var PlyNumberVar;
 var CurrentVarStack;
 var PlyNumberStack;
+var PredecessorsVars;
 
 function initVar () {
   MovesVar = new Array();
@@ -2537,6 +2538,8 @@ function initVar () {
   numberOfVars = 0;
   CurrentVarStack = new Array();
   PlyNumberStack = new Array();
+  PredecessorsVars = new Array();
+  PredecessorsVars[0] = new Array();
   startVar();
 }
 
@@ -2547,6 +2550,7 @@ function startVar() {
   }
   CurrentVar = numberOfVars;
   numberOfVars += 1;
+  PredecessorsVars[CurrentVar] = CurrentVarStack.slice();
   MovesVar[CurrentVar] = new Array();
   MoveCommentsVar[CurrentVar] = new Array();
   PlyNumber -= 1;
