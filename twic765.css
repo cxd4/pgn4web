@@ -94,25 +94,27 @@ div, span, table, tr, td {
 }
 
 .move,
-.moveOn {
+.variation,
+.comment {
   color: black;
-  font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
   line-height: 1.3em;
   font-weight: normal;
   text-decoration: none;
 }
 
-.moveOn {
+.move,
+.variation {
+  font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
+}
+
+.moveOn,
+.variationOn {
   background: yellow;
 }
 
-.comment {
-  color: gray;
-  line-height: 1.3em;
-}
-
+.comment,
 .variation {
-  font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
+  color: gray;
 }
 
 .label {

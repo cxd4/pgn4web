@@ -37,11 +37,9 @@
    function customFunctionOnPgnTextLoad() { document.getElementById('numGm').innerHTML = numberOfGames; }
    function customFunctionOnPgnGameLoad() {
      document.getElementById('currGm').innerHTML = currentGame+1;
-     document.getElementById('numPly').innerHTML = PlyNumber;
      customPgnHeaderTag('ECO', 'GameECO');
      customPgnHeaderTag('Result', 'ResultAtGametextEnd');
    }
-   function customFunctionOnMove() { document.getElementById('currPly').innerHTML = CurrentPly; }
    function customShortcutKey_Shift_1() {
      if (typeof(openFidePlayerUrl) == "function") {
        openFidePlayerUrl(gameWhite[currentGame], customPgnHeaderTag('WhiteFideId'));
@@ -77,7 +75,6 @@ The Week In Chess #765
 
 <td colspan="2">
 <div class="label" style="text-align: right; font-size: 85%;">
-ply:<span id=currPly>0</span>/<span id=numPly>0</span>
 game:<span id=currGm>0</span>/<span id=numGm>0</span>
 </div>
 <div id="GameSelector"></div>

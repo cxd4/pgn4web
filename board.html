@@ -66,16 +66,13 @@ body {
 }
 
 .move,
-.moveOn,
 .variation,
-.variationOn,
 .lastMove {
   line-height: 1.4em;
   text-decoration: none;
 }
 
-.move,
-.moveOn {
+.move {
   color: black;
 }
 
@@ -735,7 +732,7 @@ newStyleSheet = '<style type="text/css"> \n';
 
 if ((movesDisplay == "figurine") || (movesDisplay == "nosymbols")) {
   newStyleSheet += 'body, .header, .comment { font-family: \'pgn4web Liberation Sans\', sans-serif; } \n';
-  newStyleSheet += '.move, .moveOn, .variation, .variationOn, .lastMove { font-family: \'pgn4web ChessSansPiratf\', \'pgn4web Liberation Sans\', sans-serif; } \n';
+  newStyleSheet += '.move, .variation, .lastMove { font-family: \'pgn4web ChessSansPiratf\', \'pgn4web Liberation Sans\', sans-serif; } \n';
 }
 
 newStyleSheet += 'body { background: ' + backgroundColor + '; padding: ' + framePadding + '; } \n';
@@ -816,17 +813,15 @@ if (highlightMode == 'border') {
       '} \n';
   }
 
+  if (!fontHeaderSize.match(/[^0-9]/)) { fontHeaderSize += 'px'; }
+  newStyleSheet += '.header { color: ' + fontHeaderColor + '; font-size: ' + fontHeaderSize + '; } \n';
+
   if (!fontMovesSize.match(/[^0-9]/)) { fontMovesSize += 'px'; }
   newStyleSheet += '.move { color: ' + fontMovesColor + '; font-size: ' + fontMovesSize + '; } \n';
 
-  if (!fontMovesSize.match(/[^0-9]/)) { fontMovesSize += 'px'; }
   newStyleSheet += '.moveOn, .variationOn { ' +
                    ' background: ' + (highlightMoveColor == 'none' ? backgroundColor : highlightMoveColor) + '; ' +
-                   ' color: ' + fontMovesColor + '; ' +
                    '} \n';
-
-  if (!fontHeaderSize.match(/[^0-9]/)) { fontHeaderSize += 'px'; }
-  newStyleSheet += '.header { color: ' + fontHeaderColor + '; font-size: ' + fontHeaderSize + '; } \n';
 
   if (!fontCommentsSize.match(/[^0-9]/)) { fontCommentsSize += 'px'; }
   newStyleSheet += '.comment, .variation { ' +

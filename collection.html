@@ -82,10 +82,6 @@
      if (theObject = document.getElementById('numPly')) { theObject.innerHTML = PlyNumber; }
    }
 
-   function customFunctionOnMove() {
-     if (theObject = document.getElementById('currPly')) { theObject.innerHTML = CurrentPly; }
-   }
-
    function customShortcutKey_Shift_1() {
      if (typeof(openFidePlayerUrl) == "function") {
        openFidePlayerUrl(gameWhite[currentGame], customPgnHeaderTag('WhiteFideId'));
@@ -159,9 +155,7 @@ document.write(pgnTitle);
 <tr><td class="label">side</td><td><span id="GameSideToMove"></span>&nbsp;</td></tr>
 -->
 <tr><td colspan=2 class="rowSpace"></td></tr>
-<tr><td class="label">ply</td><td><span id=currPly>0</span>&nbsp;(<span id=numPly>0</span>)</td></tr>
 <tr><td class="label">game</td><td><span id=currGm>0</span>&nbsp;(<span id=numGm>0</span>)</td></tr>
-<tr><td colspan=2 class="rowSpace"></td></tr>
 <tr><td class="label">archive</td>
 <td>
 <script type="text/javascript">
