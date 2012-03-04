@@ -615,7 +615,7 @@ function print_chessboard() {
 }
 
 .move {
-  color: black;
+  color: black !important;
 }
 
 .moveOn,
@@ -625,7 +625,7 @@ function print_chessboard() {
 
 .comment,
 .variation {
-  color: gray;
+  color: gray !important;
 }
 
 .label {

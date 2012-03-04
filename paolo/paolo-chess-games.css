@@ -97,20 +97,30 @@ a {
 }
 
 .move,
-.moveOn {
-  color: black;
-  font-family: 'pgn4web ChessSansPiratf', 'pgn4web Liberation Sans', sans-serif;
+.variation,
+.comment {
   line-height: 1.3em;
   font-weight: normal;
+}
+
+.move,
+.variation {
+  font-family: 'pgn4web ChessSansPiratf', 'pgn4web Liberation Sans', sans-serif;
   text-decoration: none;
 }
 
-.moveOn {
+.move {
+  color: black;
+}
+
+.moveOn,
+.variationOn {
   background: #DDDDDD;
   box-shadow: 0px 0px 11px #BBBBBB;
 }
 
-.comment {
+.comment,
+.variation {
   color: gray;
 }
 
