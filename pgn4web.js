@@ -1200,7 +1200,7 @@ loopCommonPredecessor:
     for (var ii = PredecessorsVars[CurrentVar].length - 1; ii >= 0; ii--) {
       for (var jj = PredecessorsVars[thisVar].length - 1; jj >= 0; jj--) {
         if (PredecessorsVars[CurrentVar][ii] === PredecessorsVars[thisVar][jj]) {
-          backStart = Math.min(PredecessorsVars[CurrentVar][ii+1] ? StartPlyVar[PredecessorsVars[CurrentVar][ii+1]] - 1 : CurrentPly, PredecessorsVars[thisVar][jj+1] ? StartPlyVar[PredecessorsVars[thisVar][jj+1]] - 1 : thisPly);
+          backStart = Math.min(PredecessorsVars[CurrentVar][ii+1] ? StartPlyVar[PredecessorsVars[CurrentVar][ii+1]] : CurrentPly, PredecessorsVars[thisVar][jj+1] ? StartPlyVar[PredecessorsVars[thisVar][jj+1]] : thisPly);
           break loopCommonPredecessor;
         }
       }
@@ -2552,7 +2552,7 @@ function synchMoves() {
   if (theComment = MoveCommentsVar[PredecessorsVars[CurrentVar][ii-1]][jj]) {
     MoveComments[jj] = theComment;
   }
-  PlyNumber = StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar] - StartPly; // PAOLO do I need/want this?
+  PlyNumber = StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar] - StartPly;
   lastSynchCurrentVar = CurrentVar;
 }
 
@@ -2641,6 +2641,11 @@ function closeVar() {
       MoveCommentsVar[CurrentVar][ii] = MoveCommentsVar[CurrentVar][ii].replace(/\s+$/g, '');
     } else {
       MoveCommentsVar[CurrentVar][ii] = '';
+    }
+  }
+  for (var ii = PredecessorsVars[CurrentVar].length - 1; ii > 0; ii--) {
+    if (StartPlyVar[PredecessorsVars[CurrentVar][ii]] === StartPlyVar[PredecessorsVars[CurrentVar][ii - 1]]) {
+      PredecessorsVars[CurrentVar].splice(ii - 1, 1);
     }
   }
   if (CurrentVarStack.length) {
