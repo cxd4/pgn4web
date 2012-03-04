@@ -1337,7 +1337,7 @@ function HighlightLastMove() {
   // show next move
   var theShowMoveTextObject = document.getElementById("GameNextMove");
   if (theShowMoveTextObject !== null) {
-    if (showThisMove + 1 >= StartPly + PlyNumber) {
+    if (CurrentVar === 0 && showThisMove + 1 >= StartPly + PlyNumber) {
       text = gameResult[currentGame];
     } else if (typeof(Moves[showThisMove+1]) == "undefined") {
       text = "";
@@ -2551,6 +2551,7 @@ function synchMoves() {
   if (theComment = MoveCommentsVar[PredecessorsVars[CurrentVar][ii-1]][jj]) {
     MoveComments[jj] = theComment;
   }
+  PlyNumber = PlyNumberVar[CurrentVar]; // PAOLO do I need/want this?
   lastSynchCurrentVar = CurrentVar;
 }
 
