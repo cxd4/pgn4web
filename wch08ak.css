@@ -91,17 +91,21 @@ body {
 }
 
 .move,
-.moveOn {
-  color: black;
-  font-weight: normal;
+.variation {
   text-decoration: none;
 }
 
-.moveOn {
+.move {
+  color: black;
+}
+
+.moveOn,
+.variationOn {
   color: red;
 }
 
-.comment {
+.comment,
+.variation {
   color: gray;
 }
 
