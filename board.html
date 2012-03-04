@@ -76,15 +76,15 @@ body {
   color: black;
 }
 
-.moveOn,
-.variationOn {
-  background: #DAF4D7;
-}
-
 .comment,
 .variation {
   color: gray;
   line-height: 1.4em;
+}
+
+.moveOn,
+.variationOn {
+  background: #DAF4D7;
 }
 
 </style>
@@ -819,14 +819,14 @@ if (highlightMode == 'border') {
   if (!fontMovesSize.match(/[^0-9]/)) { fontMovesSize += 'px'; }
   newStyleSheet += '.move { color: ' + fontMovesColor + '; font-size: ' + fontMovesSize + '; } \n';
 
-  newStyleSheet += '.moveOn, .variationOn { ' +
-                   ' background: ' + (highlightMoveColor == 'none' ? backgroundColor : highlightMoveColor) + '; ' +
-                   '} \n';
-
   if (!fontCommentsSize.match(/[^0-9]/)) { fontCommentsSize += 'px'; }
   newStyleSheet += '.comment, .variation { ' +
                    ' color: ' + fontCommentsColor + ';' +
                    ' font-size: ' + (fontCommentsSize == 'moves' ? fontMovesSize : fontCommentsSize) + '; ' +
+                   '} \n';
+
+  newStyleSheet += '.moveOn, .variationOn { ' +
+                   ' background: ' + (highlightMoveColor == 'none' ? backgroundColor : highlightMoveColor) + '; ' +
                    '} \n';
 
   if ((controlBackgroundColor != 'default') && (controlBackgroundColor != '#default')) {
