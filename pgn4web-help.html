@@ -156,8 +156,11 @@ The user can interact with the pgn4web chessboard using the keyboard:
 
 document.write("<table style='padding:0;' border='0'>");
 print_help_row("h , l", "game start, end (also arrow up, down keys)");
+print_help_row("shift-h , shift-l", "variation start, end (also shift arrow up, down keys)");
 print_help_row("u, i", "find previous, next comment");
 print_help_row("j , k", "move backward, forward (also arrow left, right keys)");
+print_help_row("shift-j", "go to parent variation (also shift arrow left key)");
+print_help_row("shift-k", "go to sibling variation (also shift arrow right key)");
 print_help_row("&nbsp;", "");
 print_help_row("a", "start autoplay");
 print_help_row("0", "stop autoplay");

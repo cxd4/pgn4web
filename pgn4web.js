@@ -235,7 +235,8 @@ function handlekey(e) {
 
     case 39: // right-arrow
     case 75: // k
-      MoveForward(1);
+      if (e.shiftKey) { goToNextVariationSibling(); }
+      else { MoveForward(1); }
       return stopKeyProp(e);
 
     case 40: // down-arrow
@@ -2647,6 +2648,30 @@ function closeVar() {
     PlyNumber = PlyNumberStack.pop();
   } else {
     myAlert("error: closeVar error", true);
+  }
+}
+
+function goToNextVariationSibling() {
+  if (CurrentPly === StartPly) { return; }
+  if (CurrentPly === StartPlyVar[CurrentVar] + 1) {
+    if (PredecessorsVars[CurrentVar].lenght < 2) {
+      myAlert("warning: failed detecting variation siblings", false);
+      return;
+    }
+    parentVar = PredecessorsVars[CurrentVar][PredecessorsVars[CurrentVar].length - 2];
+  } else {
+    parentVar = -1;
+  }
+  for (var thisVar = (CurrentVar + 1) % numberOfVars; thisVar !== CurrentVar; thisVar = (thisVar + 1) % numberOfVars) {
+    if (thisVar === parentVar) {
+      GoToMove(CurrentPly, parentVar);
+      break;
+    }
+    if (StartPlyVar[thisVar] !== CurrentPly - 1) { continue; }
+    if (PredecessorsVars[thisVar][PredecessorsVars[thisVar].length - 2] === CurrentVar || PredecessorsVars[thisVar][PredecessorsVars[thisVar].length - 2] === parentVar) {
+      GoToMove(CurrentPly, thisVar);
+      break;
+    }
   }
 }
 
