@@ -99,13 +99,13 @@ body {
   color: black;
 }
 
-.moveOn,
-.variationOn {
-  color: red;
-}
-
 .comment,
 .variation {
   color: gray;
+}
+
+.moveOn,
+.variationOn {
+  color: red;
 }
 
