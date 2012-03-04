@@ -368,7 +368,7 @@ a {
 <div id="bottomContainer" class="bottomContainer">
 
 <div class="leftHeaderItem"><a href="javascript:void(0);" onclick="MoveBackward(1); this.blur();" id="GameLastMove"></a>&nbsp;</div>
-<div class="rightHeaderItem"><a href="javascript:void(0);" onclick="MoveForward(1); this.blur();" title="more moves available: click > to move forward" style="float:left;" id="GameMoreMoves"></a>&nbsp;<a href="javascript:void(0);" onclick="GoToMove(StartPly + PlyNumber); this.blur();" id="GameResult"></a></div>
+<div class="rightHeaderItem"><a href="javascript:void(0);" onclick="MoveForward(1); this.blur();" title="more moves available: click > to move forward" style="float:left;" id="GameMoreMoves"></a>&nbsp;<a href="javascript:void(0);" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); this.blur();" id="GameResult"></a></div>
 <div>&nbsp;<a href="javascript:void(0);" onclick="newMovesFlag(false); this.blur();" title="new moves received" id="GameNewMoves"></a>&nbsp;</div>
 
 <div class="leftHeaderItem"><a href="javascript:void(0);" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(gameWhite[currentGame], customPgnHeaderTag('WhiteFideId')); } this.blur();" id="GameWhite" class="notranslate"></a>&nbsp;</div>
