@@ -102,21 +102,22 @@ body {
 }
 
 .move,
-.moveOn,
+.variation,
 .comment {
   font-size: 14px;
 }
 
-.move,
-.moveOn {
+.move {
   color: black;
 }
 
-.moveOn {
+.moveOn,
+.variationOn {
   background: #C2C9D1;
 }
 
-.comment {
+.comment,
+.variation {
   color: gray;
 }
 

@@ -91,30 +91,30 @@ div, span, table, tr, td {
 }
 
 .move,
-.moveOn {
-  color: black;
-  font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
+.variation,
+.comment {
   line-height: 1.4em;
   font-weight: normal;
+}
+
+.move,
+.variation {
+  font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
   text-decoration: none;
 }
 
-.moveOn, .variationOn {
+.move {
+  color: black;
+}
+
+.moveOn,
+.variationOn {
   background: #DAF4D7;
 }
 
-.comment {
-  line-height: 1.4em;
-}
-
-.variation {
-  color: gray;
-  font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
-  text-decoration: none;
-}
-
-.label,
-.comment {
+.comment,
+.variation,
+.label {
   color: gray;
 }
 

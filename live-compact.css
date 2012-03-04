@@ -105,8 +105,6 @@ a {
 .headerHighlightedNosize,
 .helplinkNosize,
 .helplinkNosizeHighlighted,
-.move,
-.moveOn,
 .comment {
   text-decoration: none;
   font-family: 'pgn4web Liberation Sans', sans-serif; /* fixes IE9 body css issue */
@@ -118,15 +116,16 @@ a {
 }
 
 .move,
-.moveOn,
+.variation,
 .comment {
   font-size: 12px;
+  line-height: 1.4em;
 }
 
 .move,
-.moveOn {
+.variation {
+  text-decoration: none;
   font-family: 'pgn4web ChessSansPiratf', 'pgn4web Liberation Sans', sans-serif;
-  line-height: 1.4em;
 }
 
 .helplinkNosize {
@@ -135,25 +134,21 @@ a {
 
 .header,
 .headerNosize,
-.move {
+.move,
+.variation {
   color: #615F54;
 }
 
 .headerHighlighted,
 .headerHighlightedNosize,
-.moveOn {
+.moveOn,
+.variationOn {
   color: black;
   background: #F8CCA0;
 }
 
 .comment {
-  font-family: 'pgn4web Liberation Sans', sans-serif; /* fixes IE9 body css issue */
   color: #A19D8B;
-  line-height: 1.4em;
-}
-
-.variation {
-  font-family: 'pgn4web ChessSansPiratf', 'pgn4web Liberation Sans', sans-serif;
 }
 
 .movebox {

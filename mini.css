@@ -78,17 +78,22 @@ body {
 }
 
 .move,
-.moveOn {
-  color: black;
+.variation {
   font-weight: normal;
   text-decoration: none;
 }
 
-.moveOn {
+.move {
+  color: black;
+}
+
+.moveOn,
+.variation {
   background: #DAF4D7;
 }
 
-.comment {
+.comment,
+.variation {
   color: gray;
 }
 
