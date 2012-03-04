@@ -2589,7 +2589,7 @@ function OpenGame(gameId) {
   PrintHTML();
 }
 
-var CurrentVar;
+var CurrentVar = -1;
 var numberOfVars;
 var MovesVar;
 var MoveCommentsVar;
@@ -2604,6 +2604,7 @@ function initVar () {
   MoveCommentsVar = new Array();
   StartPlyVar = new Array();
   PlyNumberVar = new Array();
+  CurrentVar = -1;
   numberOfVars = 0;
   CurrentVarStack = new Array();
   PlyNumberStack = new Array();
@@ -2612,12 +2613,11 @@ function initVar () {
 }
 
 function startVar() {
-  if (typeof(CurrentVar) != "undefined") {
+  if (CurrentVar >= 0) {
     CurrentVarStack.push(CurrentVar);
     PlyNumberStack.push(PlyNumber);
   }
-  CurrentVar = numberOfVars;
-  numberOfVars += 1;
+  CurrentVar = numberOfVars++;
   PredecessorsVars[CurrentVar] = CurrentVarStack.slice(0);
   PredecessorsVars[CurrentVar].push(CurrentVar);
   MovesVar[CurrentVar] = new Array();
@@ -2784,6 +2784,8 @@ function ParsePGNGameString(gameString) {
 
   StartPlyVar[CurrentVar] = StartPly;
   PlyNumberVar[CurrentVar] = PlyNumber;
+
+  lastSynchCurrentVar = -1;
 }
 
 
