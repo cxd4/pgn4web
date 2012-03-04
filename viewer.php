@@ -618,14 +618,14 @@ function print_chessboard() {
   color: black !important;
 }
 
-.moveOn,
-.variationOn {
-  background: #ffcc99;
-}
-
 .comment,
 .variation {
   color: gray !important;
+}
+
+.moveOn,
+.variationOn {
+  background: #ffcc99;
 }
 
 .label {

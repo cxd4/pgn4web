@@ -111,14 +111,14 @@ body {
   color: black;
 }
 
-.moveOn,
-.variationOn {
-  background: #C2C9D1;
-}
-
 .comment,
 .variation {
   color: gray;
+}
+
+.moveOn,
+.variationOn {
+  background: #C2C9D1;
 }
 
 .pgnheader {

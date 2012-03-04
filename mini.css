@@ -87,13 +87,13 @@ body {
   color: black;
 }
 
-.moveOn,
-.variation {
-  background: #DAF4D7;
-}
-
 .comment,
 .variation {
   color: gray;
+}
+
+.moveOn,
+.variation {
+  background: #DAF4D7;
 }
 

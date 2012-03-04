@@ -95,13 +95,13 @@ body {
   color: black;
 }
 
-.moveOn,
-.variationOn {
-  background: yellow;
-}
-
 .comment,
 .variation {
   color: #444444;
+}
+
+.moveOn,
+.variationOn {
+  background: yellow;
 }
 

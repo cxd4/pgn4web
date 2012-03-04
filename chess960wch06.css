@@ -90,14 +90,14 @@ a {
   text-decoration: none;
 }
 
-.moveOn,
-.variationOn {
-  background: #EFE6D0;
-}
-
 .comment,
 .variation {
   color: gray;
+}
+
+.moveOn,
+.variationOn {
+  background: #EFE6D0;
 }
 
 .label {

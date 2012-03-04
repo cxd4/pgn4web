@@ -127,14 +127,14 @@ div, span, table, tr, td {
   font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
 }
 
-.moveOn,
-.variationOn {
-  background: #FFCC99;
-}
-
 .comment,
 .variation {
   color: gray;
+}
+
+.moveOn,
+.variationOn {
+  background: #FFCC99;
 }
 
 .label {

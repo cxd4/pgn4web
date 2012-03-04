@@ -139,16 +139,16 @@ a {
   color: #615F54;
 }
 
+.comment {
+  color: #A19D8B;
+}
+
 .headerHighlighted,
 .headerHighlightedNosize,
 .moveOn,
 .variationOn {
   color: black;
   background: #F8CCA0;
-}
-
-.comment {
-  color: #A19D8B;
 }
 
 .movebox {
