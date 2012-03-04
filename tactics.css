@@ -85,18 +85,23 @@ body {
 
 .move,
 .moveOn,
-.comment {
+.comment,
+.variation,
+.variationOn {
   color: black;
   font-weight: normal;
   font-size: 14px;
   text-decoration: none;
 }
 
-.moveOn {
+.moveOn,
+.variationOn {
   background: yellow;
 }
 
-.comment {
+.comment,
+.variation,
+.variationOn {
   color: #444444;
 }
 
