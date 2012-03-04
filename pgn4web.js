@@ -223,12 +223,14 @@ function handlekey(e) {
 
     case 37: // left-arrow
     case 74: // j
-      MoveBackward(1);
+      if (e.shiftKey) { MoveBackward(CurrentPly - StartPlyVar[CurrentVar]); }
+      else { MoveBackward(1); }
       return stopKeyProp(e);
 
     case 38: // up-arrow
     case 72: // h
-      GoToMove(StartPly);
+      if (e.shiftKey) { GoToMove(StartPlyVar[CurrentVar] + 1); }
+      else { GoToMove(StartPlyVar[0], 0); }
       return stopKeyProp(e);
 
     case 39: // right-arrow
@@ -238,7 +240,8 @@ function handlekey(e) {
 
     case 40: // down-arrow
     case 76: // l
-      GoToMove(StartPly + PlyNumber);
+      if (e.shiftKey) { GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]); }
+      else { GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); }
       return stopKeyProp(e);
 
     case 85: // u
@@ -546,7 +549,7 @@ boardShortcut("G2", "autoplay 10 seconds", function(){ SetAutoplayDelayAndStart(
 // H2
 boardShortcut("H2", "autoplay 30 seconds", function(){ SetAutoplayDelayAndStart(30*1000); });
 // A1
-boardShortcut("A1", "go to game start", function(){ GoToMove(StartPly); });
+boardShortcut("A1", "go to game start", function(){ GoToMove(StartPlyVar[0], 0); });
 // B1
 boardShortcut("B1", "go to previous comment", function(){ MoveToPrevComment(); });
 // C1
@@ -560,7 +563,7 @@ boardShortcut("F1", "move 6 half-moves forward", function(){ MoveForward(6); });
 // G1
 boardShortcut("G1", "go to next comment", function(){ MoveToNextComment(); });
 // H1
-boardShortcut("H1", "go to game end", function(){ GoToMove(StartPly + PlyNumber); });
+boardShortcut("H1", "go to game end", function(){ GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); });
 
 
 var deciles = new Array(11);
@@ -725,14 +728,14 @@ function displayFenData() {
 
   currentMovesString = "";
   lastLineStart = 0;
-  for(var thisPly = CurrentPly; thisPly <= StartPly + PlyNumber; thisPly++) {
+  for(var thisPly = CurrentPly; thisPly <= StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]; thisPly++) {
     addToMovesString = "";
-    if (thisPly == StartPly + PlyNumber) {
-      if ((gameResult[currentGame]) && (gameResult[currentGame] != "*")) {
+    if (thisPly == StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]) {
+      if (CurrentVar === 0 && gameResult[currentGame] && gameResult[currentGame] != "*") {
         addToMovesString = gameResult[currentGame];
       }
     } else {
-      if ((thisPly%2) === 0) { addToMovesString = (Math.floor(thisPly/2)+1) + ". "; }
+      if (thisPly%2 === 0) { addToMovesString = (Math.floor(thisPly/2)+1) + ". "; }
       else if (thisPly == CurrentPly) {
         addToMovesString = (Math.floor(thisPly/2)+1) + "... ";
       }
@@ -2583,7 +2586,7 @@ function OpenGame(gameId) {
   ParseLastMoveError = false;
 
   if (LiveBroadcastDemo) {
-    if (gameDemoMaxPly[gameId] <= PlyNumber) { PlyNumber = gameDemoMaxPly[gameId]; }
+    if (gameDemoMaxPly[gameId] <= PlyNumber) { PlyNumber = PlyNumberVar[0] = gameDemoMaxPly[gameId]; }
   }
 
   PrintHTML();
