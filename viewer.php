@@ -602,26 +602,30 @@ function print_chessboard() {
 }
 
 .move,
-.moveOn {
-  color: black;
+.variation,
+.comment {
   font-weight: normal;
-  text-decoration: none;
-  font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
   line-height: 1.4em;
 }
 
-.moveOn {
+.move,
+.variation {
+  font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
+  text-decoration: none;
+}
+
+.move {
+  color: black;
+}
+
+.moveOn,
+.variationOn {
   background: #ffcc99;
 }
 
-.comment {
-  color: gray;
-  font-family: 'pgn4web Liberation Sans', sans-serif;
-  line-height: 1.4em;
-}
-
+.comment,
 .variation {
-  font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
+  color: gray;
 }
 
 .label {
