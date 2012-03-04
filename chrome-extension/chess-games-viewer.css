@@ -117,18 +117,20 @@ a {
 }
 
 .move,
-.moveOn {
-  color: black;
-  font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
+.variation,
+.comment {
   line-height: 1.4em;
   font-weight: normal;
+}
+
+.move,
+.variation {
+  font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
   text-decoration: none;
 }
 
-.moveOn {
-  background-image: -webkit-radial-gradient(circle, #FFAA66, #FFCC99);
-  border-radius: 0.4em;
-  box-shadow: 0 0 1em #FF8000;
+.move {
+  color: black;
 }
 
 .moveText {
@@ -137,13 +139,16 @@ a {
   text-align: justify;
 }
 
-.comment {
+.comment,
+.variation {
   color: #888888;
-  line-height: 1.4em;
 }
 
-.variation {
-  font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
+.moveOn,
+.variationOn {
+  background-image: -webkit-radial-gradient(circle, #FFAA66, #FFCC99);
+  border-radius: 0.4em;
+  box-shadow: 0 0 1em #FF8000;
 }
 
 .topMenu {
