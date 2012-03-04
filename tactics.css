@@ -84,14 +84,15 @@ body {
 }
 
 .move,
-.moveOn,
 .comment,
-.variation,
-.variationOn {
-  color: black;
+.variation {
   font-weight: normal;
   font-size: 14px;
   text-decoration: none;
+}
+
+.move {
+  color: black;
 }
 
 .moveOn,
@@ -100,8 +101,7 @@ body {
 }
 
 .comment,
-.variation,
-.variationOn {
+.variation {
   color: #444444;
 }
 
