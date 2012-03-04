@@ -2551,7 +2551,7 @@ function synchMoves() {
   if (theComment = MoveCommentsVar[PredecessorsVars[CurrentVar][ii-1]][jj]) {
     MoveComments[jj] = theComment;
   }
-  PlyNumber = PlyNumberVar[CurrentVar]; // PAOLO do I need/want this?
+  PlyNumber = StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar] - StartPly; // PAOLO do I need/want this?
   lastSynchCurrentVar = CurrentVar;
 }
 
