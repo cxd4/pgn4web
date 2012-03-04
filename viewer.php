@@ -247,6 +247,7 @@ function check_tmpDir() {
 function print_header() {
 
   print <<<END
+<!DOCTYPE>
 <html>
 
 <head>
