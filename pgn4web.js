@@ -379,16 +379,18 @@ function handlekey(e) {
 
     case 79: // o
       SetCommentsOnSeparateLines(!commentsOnSeparateLines);
-      oldPly = CurrentPly;
+      var oldPly = CurrentPly;
+      var oldVar = CurrentVar;
       Init();
-      GoToMove(oldPly);
+      GoToMove(oldPly, oldVar);
       return stopKeyProp(e);
 
     case 80: // p
       SetCommentsIntoMoveText(!commentsIntoMoveText);
-      oldPly = CurrentPly;
+      var oldPly = CurrentPly;
+      var oldVar = CurrentVar;
       Init();
-      GoToMove(oldPly);
+      GoToMove(oldPly, oldVar);
       return stopKeyProp(e);
 
     default:
@@ -450,9 +452,9 @@ boardShortcut("H8", "pgn4web help", function(){ displayHelp(); });
 // A7
 boardShortcut("A7", "pgn4web website", function(){ window.open(pgn4web_project_url); });
 // B7
-boardShortcut("B7", "toggle show comments in game text", function(){ SetCommentsIntoMoveText(!commentsIntoMoveText); oldPly = CurrentPly; Init(); GoToMove(oldPly); });
+boardShortcut("B7", "toggle show comments in game text", function(){ SetCommentsIntoMoveText(!commentsIntoMoveText); var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar); });
 // C7
-boardShortcut("C7", "toggle show comments on separate lines in game text", function(){ SetCommentsOnSeparateLines(!commentsOnSeparateLines); oldPly = CurrentPly; Init(); GoToMove(oldPly); });
+boardShortcut("C7", "toggle show comments on separate lines in game text", function(){ SetCommentsOnSeparateLines(!commentsOnSeparateLines); var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar); });
 // D7
 boardShortcut("D7", "toggle highlight last move", function(){ SetHighlight(!highlightOption); });
 // E7
