@@ -996,12 +996,12 @@ function CheckLegality(what, plyCount) {
       else if (mvPiece == 5) { retVal = CheckLegalityKnight(pieceId); }
       else if (mvPiece == 6) { retVal = CheckLegalityPawn(pieceId); }
       if (retVal) {
-	mvPieceId = pieceId;
+        mvPieceId = pieceId;
         // board updated: king check?
         StoreMove(plyCount);
         isCheck = IsCheck(PieceCol[MoveColor][0], PieceRow[MoveColor][0], MoveColor);
-	if (!isCheck) { return true; }
-	else { UndoMove(plyCount); }
+        if (!isCheck) { return true; }
+        else { UndoMove(plyCount); }
       }
     }
   }
@@ -1179,8 +1179,8 @@ function ClearMove(move) {
     cc = move.charCodeAt(ii);
     if ((cc == 45) || ((cc >= 48) && (cc <= 57)) || (cc == 61) ||
 //        (cc == 35) || (cc == 43) || // patch this to pass through '+' and '#' signs
-	((cc >= 65) && (cc <= 90)) || ((cc >=97) && (cc <= 122))) {
-	  mm += move.charAt(ii);
+        ((cc >= 65) && (cc <= 90)) || ((cc >=97) && (cc <= 122))) {
+      mm += move.charAt(ii);
     }
     ++ii;
   }
@@ -2167,10 +2167,10 @@ function InitFEN(startingFEN) {
     for (color = 0; color < 2; ++color) {
       for (ii = 0; ii < 16; ii++) {
         if (PieceType[color][ii] != -1) {
-   	  col = PieceCol[color][ii];
-	  row = PieceRow[color][ii];
-	  Board[col][row] = (1-2*color)*(PieceType[color][ii]);
-	}
+          col = PieceCol[color][ii];
+          row = PieceRow[color][ii];
+          Board[col][row] = (1-2*color)*(PieceType[color][ii]);
+        }
       }
     }
 
@@ -2320,10 +2320,10 @@ function IsCheck(col, row, color) {
   for (ii = -2; ii <= 2; ii += 4) {
     for(jj = -1; jj <= 1; jj += 2) {
       if (SquareOnBoard(col+ii, row+jj)) {
-	if (Board[col+ii][row+jj] == sign*5) { return true; }
+        if (Board[col+ii][row+jj] == sign*5) { return true; }
       }
       if (SquareOnBoard(col+jj, row+ii)) {
-	if (Board[col+jj][row+ii] == sign*5) { return true; }
+        if (Board[col+jj][row+ii] == sign*5) { return true; }
       }
     }
   }
@@ -2339,21 +2339,21 @@ function IsCheck(col, row, color) {
   for (ii = -1; ii <= 1; ++ii) {
     for (jj = -1; jj <= 1; ++jj) {
       if ((ii !== 0) || (jj !== 0)) {
-	var checkCol  = col+ii;
-	var checkRow  = row+jj;
-	var thisPiece = 0;
+        var checkCol  = col+ii;
+        var checkRow  = row+jj;
+        var thisPiece = 0;
 
-	while (SquareOnBoard(checkCol, checkRow) && (thisPiece === 0)) {
-	  thisPiece = Board[checkCol][checkRow];
-	  if (thisPiece === 0){
-	    checkCol += ii;
-	    checkRow += jj;
-	  } else {
-	    if (thisPiece  == sign*2) { return true; }
-	    if ((thisPiece == sign*3) && ((ii === 0) || (jj === 0))) { return true; }
-	    if ((thisPiece == sign*4) && ((ii !== 0) && (jj !== 0))) { return true; }
-	  }
-	}
+        while (SquareOnBoard(checkCol, checkRow) && (thisPiece === 0)) {
+          thisPiece = Board[checkCol][checkRow];
+          if (thisPiece === 0){
+            checkCol += ii;
+            checkRow += jj;
+          } else {
+            if (thisPiece  == sign*2) { return true; }
+            if ((thisPiece == sign*3) && ((ii === 0) || (jj === 0))) { return true; }
+            if ((thisPiece == sign*4) && ((ii !== 0) && (jj !== 0))) { return true; }
+          }
+        }
       }
     }
   }
@@ -2971,7 +2971,7 @@ function ParseMove(move, plyCount) {
     if ((move.indexOf('O') >= 0) || (move.indexOf('o') >= 0) || (move.indexOf('0') >= 0)) {
       // long castling first: looking for o-o will get o-o-o too
       if (move.match('^[Oo0]-?[Oo0]-?[Oo0]$') !== null) {
-	mvIsCastling = 1;
+        mvIsCastling = 1;
         mvPiece = 1;
         mvPieceId = 0;
         mvPieceOnTo = 1;
@@ -2986,11 +2986,11 @@ function ParseMove(move, plyCount) {
         mvPiece = 1;
         mvPieceId = 0;
         mvPieceOnTo = 1;
-	mvFromCol = 4;
-	mvToCol = 6;
+        mvFromCol = 4;
+        mvToCol = 6;
         mvFromRow = 7*MoveColor;
         mvToRow = 7*MoveColor;
-	return CheckLegality('O-O', plyCount);
+        return CheckLegality('O-O', plyCount);
       }
       return false;
     } else { return false; }
@@ -3028,7 +3028,7 @@ function ParseMove(move, plyCount) {
   else {
     if ((mvPiece == 6) && (HistEnPassant[plyCount-1]) &&
         (mvToCol == HistEnPassantCol[plyCount-1]) &&
-	(mvToRow == 5-3*MoveColor)) {
+        (mvToRow == 5-3*MoveColor)) {
       mvCapture = 1;
     }
   }
@@ -3053,19 +3053,19 @@ function ParseMove(move, plyCount) {
     mvCapturedId = 15;
     while((mvCapturedId >= 0) && (mvCaptured < 0)) {
       if ((PieceType[1-MoveColor][mvCapturedId] >  0) &&
-	(PieceCol[1-MoveColor][mvCapturedId] == mvToCol) &&
-	(PieceRow[1-MoveColor][mvCapturedId] == mvToRow)) {
-	mvCaptured = PieceType[1-MoveColor][mvCapturedId];
+          (PieceCol[1-MoveColor][mvCapturedId] == mvToCol) &&
+          (PieceRow[1-MoveColor][mvCapturedId] == mvToRow)) {
+        mvCaptured = PieceType[1-MoveColor][mvCapturedId];
       } else { --mvCapturedId; }
     }
     if ((mvPiece == 6) && (mvCapturedId < 1) && (HistEnPassant[plyCount-1])) {
       mvCapturedId = 15;
       while((mvCapturedId >= 0) && (mvCaptured < 0)){
         if ((PieceType[1-MoveColor][mvCapturedId] == 6) &&
-	  (PieceCol[1-MoveColor][mvCapturedId] == mvToCol) &&
-	  (PieceRow[1-MoveColor][mvCapturedId] == 4-MoveColor)) {
-	  mvCaptured = PieceType[1-MoveColor][mvCapturedId];
-	} else { --mvCapturedId; }
+            (PieceCol[1-MoveColor][mvCapturedId] == mvToCol) &&
+            (PieceRow[1-MoveColor][mvCapturedId] == 4-MoveColor)) {
+          mvCaptured = PieceType[1-MoveColor][mvCapturedId];
+        } else { --mvCapturedId; }
       }
     }
   }
