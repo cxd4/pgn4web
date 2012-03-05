@@ -38,8 +38,8 @@
     testMinutes = refreshMinutes + "";
     if ((testMinutes.match(/[^0-9\.]/)) || (refreshMinutes === 0)) {
       if (alertFlag) {
-	      alert("ERROR: refreshMinutes parameter must be a positive number.\n" +
-		    "Supplied " + testMinutes + "; defaulting to 1.");
+         alert("ERROR: refreshMinutes parameter must be a positive number.\n" +
+               "Supplied " + testMinutes + "; defaulting to 1.");
       }
       refreshMinutes = 1;
     }
