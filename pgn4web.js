@@ -2570,7 +2570,7 @@ function AutoplayNextGame() {
 }
 
 function MoveToNextComment() {
-  for(ii=CurrentPly+1; ii<=StartPly+PlyNumber; ii++) {
+  for(ii=CurrentPly+1; ii<=StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]; ii++) {
     if (strippedMoveComment(ii)) { GoToMove(ii); break; }
   }
 }
@@ -3207,14 +3207,14 @@ function PrintHTML() {
       '<INPUT ID="startButton" TYPE="BUTTON" VALUE="&lt;&lt;" STYLE="';
     if (buttonSize > 0) { text += 'width: ' + buttonSize + 'px;'; }
     text += '"; CLASS="buttonControl" TITLE="go to game start" ' +
-      ' ID="btnGoToStart" onClick="javascript:GoToMove(StartPly)" ONFOCUS="this.blur()">' +
+      ' ID="btnGoToStart" onClick="GoToMove(StartPly);" ONFOCUS="this.blur();">' +
       '</TD>' +
       '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
       '</TD><TD>' +
       '<INPUT ID="backButton" TYPE="BUTTON" VALUE="&lt;" STYLE="';
     if (buttonSize > 0) { text += 'width: ' + buttonSize + 'px;'; }
     text += '"; CLASS="buttonControl" TITLE="move backward" ' +
-      ' ID="btnMoveBackward1" onClick="javascript:MoveBackward(1)" ONFOCUS="this.blur()">' +
+      ' ID="btnMoveBackward1" onClick="MoveBackward(1);" ONFOCUS="this.blur();">' +
       '</TD>' +
       '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
       '</TD><TD>';
@@ -3224,21 +3224,21 @@ function PrintHTML() {
     text += isAutoPlayOn ?
       '"; CLASS="buttonControlStop" TITLE="toggle autoplay (stop)" ' :
       '"; CLASS="buttonControlPlay" TITLE="toggle autoplay (start)" ';
-    text += ' ID="btnPlay" NAME="AutoPlay" onClick="javascript:SwitchAutoPlay()" ONFOCUS="this.blur()">' +
+    text += ' ID="btnPlay" NAME="AutoPlay" onClick="SwitchAutoPlay();" ONFOCUS="this.blur();">' +
       '</TD>' +
       '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
       '</TD><TD>' +
       '<INPUT ID="forwardButton" TYPE="BUTTON" VALUE="&gt;" STYLE="';
     if (buttonSize > 0) { text += 'width: ' + buttonSize + 'px;'; }
     text += '"; CLASS="buttonControl" TITLE="move forward" ' +
-      ' ID="btnMoveForward1" onClick="javascript:MoveForward(1)" ONFOCUS="this.blur()">' +
+      ' ID="btnMoveForward1" onClick="MoveForward(1);" ONFOCUS="this.blur();">' +
       '</TD>' +
       '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
       '</TD><TD>' +
       '<INPUT ID="endButton" TYPE="BUTTON" VALUE="&gt;&gt;" STYLE="';
     if (buttonSize > 0) { text += 'width: ' + buttonSize + 'px;'; }
     text += '"; CLASS="buttonControl" TITLE="go to game end" ' +
-      ' ID="btnGoToEnd" onClick="javascript:GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0)" ONFOCUS="this.blur()">' +
+      ' ID="btnGoToEnd" onClick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0);" ONFOCUS="this.blur();">' +
       '</TD></TR></TABLE></FORM>';
 
     theObject.innerHTML = text;
