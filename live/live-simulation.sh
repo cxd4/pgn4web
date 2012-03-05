@@ -10,26 +10,26 @@
 
 if [ "$1" == "--help" ]
 then
-	echo
-	echo "$(basename $0)"
-	echo
-	echo "Shell script to create a pgn file over time, same as a live broadcast"
-	echo "and more realistic than simulating the live broadcast within pgn4web"
-	echo
-	echo "Needs to be run using bash"
-	echo
-	exit
+   echo
+   echo "$(basename $0)"
+   echo
+   echo "Shell script to create a pgn file over time, same as a live broadcast"
+   echo "and more realistic than simulating the live broadcast within pgn4web"
+   echo
+   echo "Needs to be run using bash"
+   echo
+   exit
 fi
 
 if [ "$1" == "--no-shell-check" ]
 then
-        shift 1
+   shift 1
 else
-        if [ "$(basename $SHELL)" != "bash" ]
-        then
-                echo "ERROR: $(basename $0) should be run with bash. Prepend --no-shell-check as first parameters to skip checking the shell type."
-                exit
-        fi
+   if [ "$(basename $SHELL)" != "bash" ]
+   then
+      echo "ERROR: $(basename $0) should be run with bash. Prepend --no-shell-check as first parameters to skip checking the shell type."
+      exit
+   fi
 fi
 
 pgn_file=live.pgn
@@ -38,13 +38,13 @@ pgn_file_tmp=live-tmp.pgn
 delay=17
 if [ -n "$1" ]
 then
-	if [ "$1" -eq "$1" 2> /dev/null ]
-	then
-		delay="$1"
-	else
-		echo "ERROR: $(basename $0) the delay parameter should be an integer (supplied $1)"
-		exit
-	fi
+   if [ "$1" -eq "$1" 2> /dev/null ]
+   then
+      delay="$1"
+   else
+      echo "ERROR: $(basename $0) the delay parameter should be an integer (supplied $1)"
+      exit
+   fi
 fi
 
 # dont touch after this line
@@ -52,8 +52,8 @@ fi
 umask 0000
 if [ $? -ne 0 ]
 then
-        echo "ERROR: $(basename $0) failed setting umask 0000"
-        exit
+   echo "ERROR: $(basename $0) failed setting umask 0000"
+   exit
 fi
 
 game1_header="[Event \"Tilburg Fontys\"]\n[Site \"Tilburg\"]\n[Date \"1998.10.24\"]\n[Round \"2\"]\n[White \"Anand, Viswanathan\"]\n[Black \"Kramnik, Vladimir\"]\n[WhiteClock \"2:00:00\"]\n[BlackClock \"2:00:00\"]"
@@ -278,9 +278,9 @@ steps=34
 
 if [ -e "$pgn_file" ]
 then
-	echo "ERROR: $(basename $0): $pgn_file exists"
-        echo "Delete the file or choose another filename and restart $(basename $0)"
-        exit
+   echo "ERROR: $(basename $0): $pgn_file exists"
+   echo "Delete the file or choose another filename and restart $(basename $0)"
+   exit
 fi
 
 echo Generating PGN file $pgn_file simulating live game broadcast
@@ -295,35 +295,35 @@ sleep $delay
 upto=0;
 while [ $upto -lt $steps ]
 do
-	echo " step $upto of $steps"
-	echo > $pgn_file_tmp
+   echo " step $upto of $steps"
+   echo > $pgn_file_tmp
 
-	echo -e $game1_header_live >> $pgn_file_tmp
+   echo -e $game1_header_live >> $pgn_file_tmp
         echo -e ${game1_clock[$upto]} >> $pgn_file_tmp
-	echo >> $pgn_file_tmp
-	move=0
-	while [ $move -le $upto ]
-	do
-		echo ${game1_moves[$move]} >> $pgn_file_tmp
-		move=$(($move + 1))
-	done
+   echo >> $pgn_file_tmp
+   move=0
+   while [ $move -le $upto ]
+   do
+      echo ${game1_moves[$move]} >> $pgn_file_tmp
+      move=$(($move + 1))
+   done
 
-	echo >> $pgn_file_tmp
+   echo >> $pgn_file_tmp
 
-	echo -e $game2_header_live >> $pgn_file_tmp
+   echo -e $game2_header_live >> $pgn_file_tmp
         echo -e ${game2_clock[$upto]} >> $pgn_file_tmp
-	echo >> $pgn_file_tmp
-	move=0
-	while [ $move -le $upto ]
-	do
-		echo ${game2_moves[$move]} >> $pgn_file_tmp
-		move=$(($move + 1))
-	done
+   echo >> $pgn_file_tmp
+   move=0
+   while [ $move -le $upto ]
+   do
+      echo ${game2_moves[$move]} >> $pgn_file_tmp
+      move=$(($move + 1))
+   done
 
-	mv $pgn_file_tmp $pgn_file
-	sleep $delay
+   mv $pgn_file_tmp $pgn_file
+   sleep $delay
 
-	upto=$(($upto + 1))
+   upto=$(($upto + 1))
 done
 
 echo " step $upto of $steps"
@@ -334,8 +334,8 @@ echo >> $pgn_file_tmp
 move=0
 while [ $move -le $upto ]
 do
-	echo ${game1_moves[$move]} >> $pgn_file_tmp
-	move=$(($move + 1))
+   echo ${game1_moves[$move]} >> $pgn_file_tmp
+   move=$(($move + 1))
 done
 echo >> $pgn_file_tmp
 echo -e $game2_header_end >> $pgn_file_tmp
@@ -344,13 +344,12 @@ echo >> $pgn_file_tmp
 move=0
 while [ $move -le $upto ]
 do
-	echo ${game2_moves[$move]} >> $pgn_file_tmp
-	move=$(($move + 1))
+   echo ${game2_moves[$move]} >> $pgn_file_tmp
+   move=$(($move + 1))
 done
 mv $pgn_file_tmp $pgn_file
 echo done with games... waiting for a while before deleting $pgn_file
 
 sleep 3600
 rm $pgn_file
-
 
