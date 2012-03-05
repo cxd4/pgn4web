@@ -1077,8 +1077,6 @@ function customFunctionOnPgnTextLoad() {
     }
   }
 
-  autoScrollToCurrentMoveIfEnabled();
-
   if (gup("showHeightWidth") !== "") {
     myAlert("info: board width=" + boardWidth + " height=" + boardHeight, false);
   }
@@ -1171,46 +1169,14 @@ function customFunctionOnPgnGameLoad() {
 //     }
 //   }
 
-  autoScrollToCurrentMoveIfEnabled();
 }
 
-function customFunctionOnMove() {
-  autoScrollToCurrentMoveIfEnabled();
-}
-
-var autoScrollToCurrentMoveFlag = true;
-function enableAutoScrollToCurrentMoveFlag() { autoScrollToCurrentMoveFlag = true; }
-function disableAutoScrollToCurrentMoveFlag() { autoScrollToCurrentMoveFlag = false; }
-function toggleAutoScrollToCurrentMoveFlag() { autoScrollToCurrentMoveFlag = !autoScrollToCurrentMoveFlag; }
+enableAutoScrollToCurrentMove("headerMoves");
 
 // G5
-boardShortcut("G5", "toggle auto-scroll moves text to current move", toggleAutoScrollToCurrentMoveFlag);
+boardShortcut("G5", "toggle auto-scroll moves text to current move", function(){ toggleAutoScrollToCurrentMove('headerMoves'); });
 // H5
-boardShortcut("H5", "scroll moves text to current move", autoScrollToCurrentMove);
-
-function objectOffsetVeryTop(object) {
-  for (offset = object.offsetTop; object = object.offsetParent; offset += object.offsetTop + object.clientTop) {}
-  return offset;
-}
-
-function autoScrollToCurrentMoveIfEnabled() {
-  if (autoScrollToCurrentMoveFlag) { autoScrollToCurrentMove(); }
-}
-
-function autoScrollToCurrentMove() {
-  if (theContainerObject = document.getElementById("headerMoves")) {
-    if (CurrentPly == StartPly) { theContainerObject.scrollTop = 0; }
-    else if (theMoveObject = document.getElementById('Var' + CurrentVar + 'Mv' + CurrentPly)) {
-      theContainerObjectOffsetVeryTop = objectOffsetVeryTop(theContainerObject);
-      theMoveObjectOffsetVeryTop = objectOffsetVeryTop(theMoveObject);
-      if ((theMoveObjectOffsetVeryTop + theMoveObject.offsetHeight >
-           theContainerObjectOffsetVeryTop + theContainerObject.scrollTop + theContainerObject.clientHeight) ||
-          (theMoveObjectOffsetVeryTop < theContainerObjectOffsetVeryTop + theContainerObject.scrollTop)) {
-        theContainerObject.scrollTop = theMoveObjectOffsetVeryTop - theContainerObjectOffsetVeryTop;
-      }
-    }
-  }
-}
+boardShortcut("H5", "scroll moves text to current move", function(){ autoScrollToCurrentMove('headerMoves'); });
 
 var boardGeneratorWin=null;
 function customShortcutKey_Shift_0() {

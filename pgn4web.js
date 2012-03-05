@@ -1980,7 +1980,11 @@ function Init(nextGame){
 
   CurrentPly = StartPly;
   if (firstStart || alwaysInitialHalfmove) { GoToInitialHalfmove(); }
-  else { synchMoves(); customFunctionOnMove(); }
+  else {
+    autoScrollToCurrentMoveIfEnabled();
+    synchMoves();
+    customFunctionOnMove();
+  }
   // customFunctionOnMove here for consistency: null move starting new game
 
   RefreshBoard();
@@ -2463,6 +2467,8 @@ function MoveBackward(diff, scanOnly) {
   RefreshBoard();
   HighlightLastMove();
 
+  autoScrollToCurrentMoveIfEnabled();
+
   // autoplay: restart timeout
   if (AutoPlayInterval) { clearTimeout(AutoPlayInterval); AutoPlayInterval = null; }
   if (isAutoPlayOn) {
@@ -2522,6 +2528,8 @@ function MoveForward(diff, targetVar, scanOnly) {
 
   RefreshBoard();
   HighlightLastMove();
+
+  autoScrollToCurrentMoveIfEnabled();
 
   // autoplay: restart timeout
   if (AutoPlayInterval) { clearTimeout(AutoPlayInterval); AutoPlayInterval = null; }
@@ -3479,6 +3487,38 @@ function variationTextFromId(varId) {
   }
   text += variationTextDepth-- ? ('<SPAN CLASS="variation">' + (variationTextDepth ? ')' : ']') + '</SPAN>') : '';
   return text;
+}
+
+
+// undocumented API to autoscroll gane text to show current move
+// enable with "enableAutoScrollToCurrentMove(objectId)", with objectId as the game text container
+// add onresize="autoScrollToCurrentMoveIfEnabled" to the body tag for autoscrolling on page resize
+
+function enableAutoScrollToCurrentMove(objectId) { autoScrollToCurrentMove_objectId = objectId; }
+function disableAutoScrollToCurrentMove() { autoScrollToCurrentMove_objectId = ""; }
+function toggleAutoScrollToCurrentMove(objectId) { autoScrollToCurrentMove_objectId = autoScrollToCurrentMove_objectId ? "" : objectId; }
+
+var autoScrollToCurrentMove_objectId = "";
+function autoScrollToCurrentMoveIfEnabled() { autoScrollToCurrentMove(autoScrollToCurrentMove_objectId); }
+
+function objectOffsetVeryTop(object) {
+  for (offset = object.offsetTop; object = object.offsetParent; offset += object.offsetTop + object.clientTop) {}
+  return offset;
+}
+
+function autoScrollToCurrentMove(objectId) {
+  if (objectId && (theContainerObject = document.getElementById(objectId))) {
+    if (CurrentPly == StartPly) { theContainerObject.scrollTop = 0; }
+    else if (theMoveObject = document.getElementById('Var' + CurrentVar + 'Mv' + CurrentPly)) {
+      theContainerObjectOffsetVeryTop = objectOffsetVeryTop(theContainerObject);
+      theMoveObjectOffsetVeryTop = objectOffsetVeryTop(theMoveObject);
+      if ((theMoveObjectOffsetVeryTop + theMoveObject.offsetHeight >
+           theContainerObjectOffsetVeryTop + theContainerObject.scrollTop + theContainerObject.clientHeight) ||
+          (theMoveObjectOffsetVeryTop < theContainerObjectOffsetVeryTop + theContainerObject.scrollTop)) {
+        theContainerObject.scrollTop = theMoveObjectOffsetVeryTop - theContainerObjectOffsetVeryTop;
+      }
+    }
+  }
 }
 
 
