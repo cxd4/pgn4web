@@ -418,16 +418,16 @@ END;
         nowDate = new Date();
         epochTimeNow = nowDate.getTime() / 1000;
         twicNum = givenTwicNumber + Math.floor((epochTimeNow - epochTimeOfGivenTwic) / (60 * 60 * 24 * 7));
-	setPgnUrl("http://www.chess.co.uk/twic/zips/twic" + twicNum + "g.zip");
+        setPgnUrl("http://www.chess.co.uk/twic/zips/twic" + twicNum + "g.zip");
         theObject.value = "header";
       break;
 
       case "nic":
-	givenNicYear = 2009;
+        givenNicYear = 2009;
         givenNicIssue = 1;
         epochTimeOfGivenNic = 1232585999; // Jan 21st, 23:59:59 GMT
         nowDate = new Date();
-	epochTimeNow = nowDate.getTime() / 1000;
+        epochTimeNow = nowDate.getTime() / 1000;
         nicYear = givenNicYear + Math.floor((epochTimeNow - epochTimeOfGivenNic) / (60 * 60 * 24 * 365.25));
         nicIssue = 1 + Math.floor((epochTimeNow - (epochTimeOfGivenNic + (nicYear - givenNicYear) * (60 * 60 * 24 * 365.25))) / (60 * 60 * 24 * 365.25 / 8));
         setPgnUrl("http://www.newinchess.com/Magazine/GameFiles/mag_" + nicYear + "_" + nicIssue + "_pgn.zip");
@@ -474,7 +474,7 @@ function reset_viewer() {
   <tr>
     <td align="left" valign="top">
       <form id="urlForm" action="$thisScript" method="POST" style="display: inline;">
-	<input id="urlFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) URL" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="return checkPgnUrl();">
+        <input id="urlFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) URL" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="return checkPgnUrl();">
     </td>
     <td width="100%" align="left" valign="top">
         <input id="urlFormText" name="pgnUrl" type="text" class="formControl" value="" style="width:100%" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText">
