@@ -2683,7 +2683,7 @@ function goToNextVariationSibling() {
 function ParsePGNGameString(gameString) {
 
   var ss = gameString;
-  // remove PGN tags and spaces at the end
+  ss = ss.replace(/\[%pgn4web_variation (\d+)\]/g, "[%pgn4web_variation_ $1]");
   ss = ss.replace(pgnHeaderTagRegExpGlobal, '');
   ss = ss.replace(/^\s/, '');
   ss = ss.replace(/\s$/, '');
@@ -3238,7 +3238,7 @@ function PrintHTML() {
       '<INPUT ID="endButton" TYPE="BUTTON" VALUE="&gt;&gt;" STYLE="';
     if (buttonSize > 0) { text += 'width: ' + buttonSize + 'px;'; }
     text += '"; CLASS="buttonControl" TITLE="go to game end" ' +
-      ' ID="btnGoToEnd" onClick="javascript:GoToMove(StartPly + PlyNumber)" ONFOCUS="this.blur()">' +
+      ' ID="btnGoToEnd" onClick="javascript:GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0)" ONFOCUS="this.blur()">' +
       '</TD></TR></TABLE></FORM>';
 
     theObject.innerHTML = text;
