@@ -761,7 +761,7 @@ $pgnText
 <table width=100% cellspacing=0 cellpadding=0 border=0>
   <tr>
     <td colspan=2>
-      <div style="padding-top: 2em; padding-bottom: 1em; text-align: justify;"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
+      <div style="padding-top: 2em; padding-bottom: 1em; text-align: justify;"><span id="GameText"></span>&nbsp;<span class="move" id="ResultAtGametextEnd"></span></div>
     </td>
   </tr>
 </table>
