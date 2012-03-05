@@ -2564,11 +2564,15 @@ function synchMoves() {
       Moves[jj] = MovesVar[PredecessorsVars[CurrentVar][ii]][jj];
       if (theComment = MoveCommentsVar[PredecessorsVars[CurrentVar][ii]][jj]) {
         MoveComments[jj] = theComment;
+      } else {
+        MoveComments[jj] = "";
       }
     }
   }
   if (theComment = MoveCommentsVar[PredecessorsVars[CurrentVar][ii-1]][jj]) {
     MoveComments[jj] = theComment;
+  } else {
+    MoveComments[jj] = "";
   }
   PlyNumber = StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar] - StartPly;
   lastSynchCurrentVar = CurrentVar;
