@@ -194,7 +194,7 @@ var pieceSizeOptions = new Array(20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
 function defaultPieceSize(squareSize) {
   targetPieceSize = Math.floor(0.8 * squareSize);
   for (ii=(pieceSizeOptions.length-1); ii>=0; ii--) {
-	  if (pieceSizeOptions[ii] <= targetPieceSize) { return pieceSizeOptions[ii]; }
+    if (pieceSizeOptions[ii] <= targetPieceSize) { return pieceSizeOptions[ii]; }
   }
   return pieceSizeOptions[0];
 }
@@ -545,7 +545,7 @@ if ((pgnData = gup("pgnData")) !== "") {
 }
 
 if ((pgnData !== "") && ((newPgnEncoded !== "") || (newPgnText !== "") ||
-			 (fenString !== "") || (newPgnId !==""))) {
+  (fenString !== "") || (newPgnId !==""))) {
   myAlert("warning: pgnData value superseeds pgnEncoded, pgnText, pgnId and/or fenString values.", false);
 }
 
@@ -643,7 +643,7 @@ else {
   testMinutes = refreshMinutes + "";
   if ((testMinutes.match(/[^0-9\.]/)) || (refreshMinutes === 0)) {
     myAlert("error: refreshMinutes parameter must be a positive number.\n" +
-	    "Supplied " + testMinutes + "; live refresh disabled.", true);
+      "Supplied " + testMinutes + "; live refresh disabled.", true);
     refreshMinutes = 0;
   }
 }
@@ -937,7 +937,7 @@ function display_header_moves() {
                    "; margin-right: 3%;' id=GameResult></div>");
     document.write("</td><td align=right>");
     document.write("<div class='header headerLive' style='white-space: nowrap; margin-right: " + textMargin +
-		   "; margin-left: 3%;'><span class='lastMove'>&nbsp;<span class='NAGs'>&nbsp;</span><span id=GameLastMove></span></span></div>");
+                   "; margin-left: 3%;'><span class='lastMove'>&nbsp;<span class='NAGs'>&nbsp;</span><span id=GameLastMove></span></span></div>");
     document.write("</td></tr></table>");
   }
 
@@ -968,7 +968,7 @@ function display_header_moves() {
                    "; margin-right: 3%;' id=GameResult></div>");
     document.write("</td><td align=right>");
     document.write("<div class='header' style='white-space: nowrap; margin-right: " + textMargin +
-		    "; margin-left: 3%;'><span id=GameEvent></span><span id=roundDetails></span></div>");
+                   "; margin-left: 3%;'><span id=GameEvent></span><span id=roundDetails></span></div>");
     document.write("</td></tr></table>");
   }
 
@@ -1060,7 +1060,7 @@ function customFunctionOnPgnTextLoad() {
       if (frameHeight === "") { theObject.style.height = textHeight; }
       else {
        boardHeadermovesPaddingHeight = document.getElementById("boardHeadermovesPadding") ? document.getElementById("boardHeadermovesPadding").offsetHeight : 0;
-	theObject.style.height = frameHeight - boardHeight - 2 * framePadding - boardHeadermovesPaddingHeight;
+       theObject.style.height = frameHeight - boardHeight - 2 * framePadding - boardHeadermovesPaddingHeight;
       }
     }
   }
@@ -1133,9 +1133,9 @@ function customFunctionOnPgnGameLoad() {
            ((gameBlack[currentGame] != undefined) && (gameBlack[currentGame] !== ""))   ||
            ((gameResult[currentGame] != undefined) && (gameResult[currentGame] !== "")) )  &&
          ( ((gameEvent[currentGame] != undefined) && (gameEvent[currentGame] !== ""))   ||
-	   ((gameRound[currentGame] != undefined) && (gameRound[currentGame] !== "") &&
-	    (gameRound[currentGame] != "?") && (gameRound[currentGame] != "*"))        ||
-	   ((gameSite[currentGame] != undefined) && (gameSite[currentGame] !== ""))     ||
+           ((gameRound[currentGame] != undefined) && (gameRound[currentGame] !== "") &&
+            (gameRound[currentGame] != "?") && (gameRound[currentGame] != "*"))        ||
+           ((gameSite[currentGame] != undefined) && (gameSite[currentGame] !== ""))     ||
            ((gameDate[currentGame] != undefined) && (gameDate[currentGame] !== "")) ) ) {
       theObject.style.paddingBottom = "0.33em";
     } else {
@@ -1148,9 +1148,9 @@ function customFunctionOnPgnGameLoad() {
          ((gameBlack[currentGame] != undefined) && (gameBlack[currentGame] !== ""))   ||
          ((gameResult[currentGame] != undefined) && (gameResult[currentGame] !== "")) ||
          ((gameEvent[currentGame] != undefined) && (gameEvent[currentGame] !== ""))   ||
-	 ((gameRound[currentGame] != undefined) && (gameRound[currentGame] !== "") &&
-	  (gameRound[currentGame] != "?") && (gameRound[currentGame] != "*"))         ||
-	 ((gameSite[currentGame] != undefined) && (gameSite[currentGame] !== ""))     ||
+         ((gameRound[currentGame] != undefined) && (gameRound[currentGame] !== "") &&
+          (gameRound[currentGame] != "?") && (gameRound[currentGame] != "*"))         ||
+         ((gameSite[currentGame] != undefined) && (gameSite[currentGame] !== ""))     ||
          ((gameDate[currentGame] != undefined) && (gameDate[currentGame] !== "")) ) {
       theObject.style.display = "inline";
     } else {

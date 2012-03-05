@@ -122,11 +122,11 @@ selectmenu.onchange = function() {
     if ((chosenoption.value !== "") && (chosenoption.value != oldChosenoptionValue)){
         oldChosenoptionValue = chosenoption.value;
         if (theObject = frames['inlineframe'].document.getElementById('searchPgnExpression')) {
-	    searchPgnString = '&search=' + escape(theObject.value);
-	} else {
-	    searchPgnString = '';
+            searchPgnString = '&search=' + escape(theObject.value);
+        } else {
+            searchPgnString = '';
         }
-	frames['inlineframe'].location.href = "collection.html?pgnFile=" + chosenoption.value + "&title=" + escape(chosenoption.innerHTML) + searchPgnString;
+        frames['inlineframe'].location.href = "collection.html?pgnFile=" + chosenoption.value + "&title=" + escape(chosenoption.innerHTML) + searchPgnString;
     }
     this.selectedIndex = 0;
 };

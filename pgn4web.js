@@ -977,7 +977,7 @@ function CheckLegality(what, plyCount) {
   }
   if ((mvCapture) && (Color(Board[mvToCol][mvToRow]) != 1-MoveColor)) {
     if ((mvPiece != 6) || (!HistEnPassant[plyCount-1]) || (HistEnPassantCol[plyCount-1] != mvToCol) ||
-	(mvToRow != 5-3*MoveColor)) { return false; }
+      (mvToRow != 5-3*MoveColor)) { return false; }
   }
   if (mvIsPromotion) {
     if (mvPiece     != 6) { return false; }

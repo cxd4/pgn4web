@@ -346,11 +346,11 @@ function EncodePGN(ov) {
           if (NodeCount[i] < NodeCount[SmallestNode1]) {
             SmallestNode2 = SmallestNode1;
             SmallestNode1 = i;
-	  } else {
-	    SmallestNode2 = i;
-	  }
+          } else {
+            SmallestNode2 = i;
+          }
         } else if (NodeCount[i] <= NodeCount[SmallestNode1]) {
-	  SmallestNode2 = SmallestNode1;
+          SmallestNode2 = SmallestNode1;
           SmallestNode1 = i;
         }
       }

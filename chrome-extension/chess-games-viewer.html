@@ -284,16 +284,21 @@ of Google Chrome. Don't use with any other browser.
       fixHeaderTag(elementId);
    }
 
+   var previousCurrentVar = -1;
    function customFunctionOnMove() {
 
       if (analysisStarted) {
-         if (engineUnderstandsGame(currentGame)) { restartAnalysis(); }
+         if (engineUnderstandsGame(currentGame)) { 
+            if (previousCurrentVar !== CurrentVar) { scanGameForFen(); }
+            restartAnalysis();
+         }
          else { stopAnalysis(true); }
       } else {
          clearAnalysisHeader();
          clearAnnotationGraph();
       }
-
+      previousCurrentVar = CurrentVar;
+  
       wObject = document.getElementById('GameWhiteClock');
       bObject = document.getElementById('GameBlackClock');
       if (wObject && bObject) {
@@ -316,6 +321,7 @@ of Google Chrome. Don't use with any other browser.
       showProbeTablebaseResults();
    }
 
+   var PlyNumberMax;
    function customFunctionOnPgnGameLoad() {
       fixHeaderTag('GameDate');
       fixHeaderTag('GameSite');
@@ -375,6 +381,11 @@ of Google Chrome. Don't use with any other browser.
          }
       }
 
+      PlyNumberMax = 0;
+      for (ii = 0; ii < numberOfVars; ii++) {
+         PlyNumberMax = Math.max(PlyNumberMax, StartPlyVar[ii] + PlyNumberVar[ii] - StartPly);
+      }
+
       if (previousCurrentGame !== currentGame) {
          previousPlyNumber = PlyNumber;
          previousCurrentGame = currentGame;
@@ -386,6 +397,7 @@ of Google Chrome. Don't use with any other browser.
       if (theObject = document.getElementById("toggleAnalysisLink")) {
          theObject.style.visibility = engineUnderstandsGame(currentGame) ? "" : "hidden";
       }
+      previousCurrentVar = CurrentVar;
    }
 
    var liveBroadcastUpdateTicker = 1;
@@ -690,7 +702,7 @@ of Google Chrome. Don't use with any other browser.
 <div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleTablebaseLink" id="toggleTablebaseLink" href="javascript:void(0);" onclick="toggleProbeTablebase();" title="probe endgame tablebase"></a><a class="toggleAnalysisLink" id="toggleAnalysisLink" href="javascript:void(0);" onclick="userToggleAnalysis();" title="toggle analysis engine">+</a></div>
 <div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="SetCommentsIntoMoveText(!commentsIntoMoveText); oldPly = CurrentPly; Init(); GoToMove(oldPly);" title="toggle show comments in game text for this page; click square B7 instead to save setting"></a></div>
 
-<div class="lastMoveAndComment" id="lastMoveAndComment"><a href="javascript:MoveToNextComment();" class="lastMove notranslate" title="last move" id="GameLastMove"></a><a href="javascript:MoveToPrevComment();" class="lastComment" title="current position comment" id="GameLastComment"></a></div>
+<div class="lastMoveAndComment" id="lastMoveAndComment"><a href="javascript:MoveToNextComment();" class="lastMove notranslate" title="last move" id="GameLastMove"></a><span class="lastComment" title="current position comment" id="GameLastComment"></span></div>
 
 <div id="moveText" class="moveText"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
 
@@ -774,7 +786,7 @@ of Google Chrome. Don't use with any other browser.
          theObject.height = canvasHeight = graphCanvasHeight();
 
          annotationPlyBlock = 20;
-         annotationBarWidth = canvasWidth / (Math.ceil((PlyNumber + 2) / annotationPlyBlock) * annotationPlyBlock);
+         annotationBarWidth = canvasWidth / (Math.ceil((PlyNumberMax + 2) / annotationPlyBlock) * annotationPlyBlock);
          barOverlap = Math.ceil(annotationBarWidth / 20);
          lineHeight = Math.ceil(canvasHeight / 80);
          lineTop = Math.floor((canvasHeight - lineHeight) / 2);

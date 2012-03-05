@@ -290,11 +290,11 @@ a {
 .lastMove {
   font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
   margin-right: 2em;
-}
-
-.lastMove, .lastComment {
   text-decoration: none;
   color: black;
+}
+
+.lastComment {
 }
 
 .analysisMove {
@@ -315,3 +315,4 @@ a {
 .analysisExtraInfo {
   font-family: 'pgn4web Liberation Sans', sans-serif;
 }
+
