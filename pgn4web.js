@@ -2496,15 +2496,18 @@ function MoveForward(diff, targetVar, scanOnly) {
   for(var thisPly = CurrentPly; thisPly < goToPly; ++thisPly) {
 
     if (targetVar !== CurrentVar) {
-      for (currentVarIndex = 0; currentVarIndex < PredecessorsVars[targetVar].length; currentVarIndex++) {
-        if (PredecessorsVars[targetVar][currentVarIndex] === CurrentVar) { break; }
+      for (var ii = 0; ii < PredecessorsVars[targetVar].length; ii++) {
+        if (PredecessorsVars[targetVar][ii] === CurrentVar) { break; }
       }
-      if (currentVarIndex === PredecessorsVars[targetVar].length) {
+      if (ii === PredecessorsVars[targetVar].length) {
         myAlert("error: dont know how to reach variation " + targetVar + " from " + CurrentVar, true);
         return;
       } else {
-        nextVar = PredecessorsVars[targetVar][currentVarIndex + 1];
-        nextVarStartPly = StartPlyVar[nextVar];
+        nextVarStartPly = StartPlyVar[PredecessorsVars[targetVar][ii + 1]];
+        for (ii = ii+1; ii < PredecessorsVars[targetVar].length - 1; ii++) {
+          if (StartPlyVar[PredecessorsVars[targetVar][ii+1]] !== StartPlyVar[PredecessorsVars[targetVar][ii]] ) { break; }
+        }
+        nextVar = PredecessorsVars[targetVar][ii];
       }
     } else { nextVar = nextVarStartPly = -1; }
 
@@ -2636,6 +2639,7 @@ function initVar () {
   CurrentVar = -1;
   numberOfVars = 0;
   CurrentVarStack = new Array();
+  PlyNumber = 1;
   PlyNumberStack = new Array();
   PredecessorsVars = new Array();
   startVar();
@@ -2651,8 +2655,9 @@ function startVar() {
   PredecessorsVars[CurrentVar].push(CurrentVar);
   MovesVar[CurrentVar] = new Array();
   MoveCommentsVar[CurrentVar] = new Array();
-  PlyNumber -= 1;
-  MoveCommentsVar[CurrentVar][PlyNumber] = "";
+  if (PlyNumber < 1) { myAlert("error: malformed PGN data with variant starting before mainline", true); }
+  else { PlyNumber -= 1; }
+  MoveCommentsVar[CurrentVar][StartPly + PlyNumber] = "";
   StartPlyVar[CurrentVar] = StartPly + PlyNumber;
 }
 
@@ -2667,11 +2672,12 @@ function closeVar() {
       MoveCommentsVar[CurrentVar][ii] = '';
     }
   }
-  for (var ii = PredecessorsVars[CurrentVar].length - 1; ii > 0; ii--) {
-    if (StartPlyVar[PredecessorsVars[CurrentVar][ii]] === StartPlyVar[PredecessorsVars[CurrentVar][ii - 1]]) {
-      PredecessorsVars[CurrentVar].splice(ii - 1, 1);
-    }
-  }
+// PAOLO
+//  for (var ii = PredecessorsVars[CurrentVar].length - 1; ii > 0; ii--) {
+//    if (StartPlyVar[PredecessorsVars[CurrentVar][ii]] === StartPlyVar[PredecessorsVars[CurrentVar][ii - 1]]) {
+//      PredecessorsVars[CurrentVar].splice(ii - 1, 1);
+//    }
+//  }
   if (CurrentVarStack.length) {
     CurrentVar = CurrentVarStack.pop();
     PlyNumber = PlyNumberStack.pop();
@@ -2715,8 +2721,6 @@ function ParsePGNGameString(gameString) {
   initVar ();
 
   PlyNumber = 0;
-  for (ii=0; ii<StartPly; ii++) { MovesVar[CurrentVar][ii]=''; }
-  MoveCommentsVar[CurrentVar][StartPly+PlyNumber]='';
 
   for (start=0; start<ss.length; start++) {
 
@@ -3466,8 +3470,8 @@ function variationTextFromId(varId) {
       }
       printedComment = true;
     }
-    if (printedVariation) { text += '<SPAN CLASS="variation"> </SPAN>'; }
-    else { printedVariation = true; }
+    if (printedComment || printedVariation) { text += '<SPAN CLASS="variation"> </SPAN>'; }
+    printedVariation = true;
     text += '<SPAN STYLE="white-space: nowrap;">';
     moveCount = Math.floor(ii/2)+1;
     if (ii%2 === 0){
