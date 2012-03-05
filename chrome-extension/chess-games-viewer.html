@@ -357,8 +357,8 @@ of Google Chrome. Don't use with any other browser.
       // else { if (theObject = document.getElementById('ResultAtGametextEnd')) { theObject.innerHTML = ""; } }
 
       commentsPresent = false;
-      for(ii=StartPly; ii<=StartPly+PlyNumber; ii++) {
-         if (strippedMoveComment(ii)) {
+      for(ii=StartPly; ii<=StartPly+PlyNumberVar[0]) {
+         if (strippedMoveComment(ii, 0)) {
             commentsPresent = true;
             break;
          }

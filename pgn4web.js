@@ -856,7 +856,7 @@ HistCol = new Array(3);
 HistRow = new Array(3);
 HistPieceId = new Array(2);
 HistType = new Array(2);
-HistVar = [0];
+HistVar = new Array();
 
 PieceCol = new Array(2);
 PieceRow = new Array(2);
@@ -1279,7 +1279,7 @@ function HighlightLastMove() {
 
   // find halfmove to be highlighted, negative for starting position (nothing to highlight)
   var showThisMove = CurrentPly - 1;
-  if (showThisMove > StartPly[CurrentVar] + PlyNumber[CurrentVar]) { showThisMove = StartPly[CurrentVar] + PlyNumber[CurrentVar]; }
+  if (showThisMove > StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]) { showThisMove = StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]; }
 
   if (theShowCommentTextObject = document.getElementById("GameLastComment")) {
     variationTextDepth = CurrentVar === 0 ? 0 : 1;
@@ -2037,6 +2037,7 @@ function InitFEN(startingFEN) {
         Board[col][row] = (1-2*color)*PieceType[color][ii];
       }
     }
+    HistVar[StartPly] = 0;
   } else {
     var cc, kk, ll, nn, mm;
     for (ii = 0; ii < 2; ii++) {
@@ -2279,6 +2280,7 @@ function InitFEN(startingFEN) {
 
     HistEnPassant[StartPly-1] = newEnPassant;
     HistEnPassantCol[StartPly-1] = newEnPassantCol;
+    HistVar[StartPly] = 0;
   }
 }
 
