@@ -664,6 +664,7 @@ function print_chessboard() {
   SetCommentsIntoMoveText(true);
   SetCommentsOnSeparateLines(true);
   SetInitialGame(1);
+  SetInitialVariation(0);
   SetInitialHalfmove(0);
   SetGameSelectorOptions(" Event         Site          Rd  White            Black            Res  Date", true, 12, 12, 2, 15, 15, 3, 10);
   SetAutostartAutoplay(false);

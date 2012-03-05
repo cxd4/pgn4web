@@ -87,6 +87,7 @@
   SetAutostartAutoplay(false);
   SetAutoplayNextGame(false);
   SetInitialGame(iniGame);
+  SetInitialVariation(0);
   SetInitialHalfmove("end", true);
   SetShortcutKeysEnabled(false);
   SetLiveBroadcast(refreshMinutes, demoFlag, alertFlag, stepFlag);
@@ -151,6 +152,7 @@
     SetInitialGame(iniGame);
     setCurrentGameFromInitialGame();
     if (currentGame != thisCurrentGame) {
+      SetInitialVariation(0);
       SetInitialHalfmove("end",true);
       Init();
       GoToInitialHalfmove();

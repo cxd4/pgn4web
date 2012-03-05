@@ -169,6 +169,7 @@ of Google Chrome. Don't use with any other browser.
          showHintEveryN = showTKfenEveryN - 1;
          if ((randomPick = Math.floor(showTKfenEveryN * tkFEN.length * Math.random())) < tkFEN.length) {
             theObject.innerHTML = '[Site "amazing moves collection"] [Event "#' + (randomPick+1) + '"] ' + tkFEN[randomPick];
+            SetInitialVariation(0);
             SetInitialHalfmove("end", true);
          } else if ((randomPick = Math.floor(showHintEveryN * hints.length * Math.random())) < hints.length) {
             theObject.innerHTML = "{chess games viewer tip: " + hints[randomPick] + "}";
@@ -1102,6 +1103,7 @@ of Google Chrome. Don't use with any other browser.
       SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, stepFlag);
       setInitialGameFromSearchGame();
       SetAutoplayDelay(2000);
+      SetInitialVariation(0);
       SetInitialHalfmove(refreshMinutes ? "end" : "start", true);
       firstStart = true;
       if (theObject = document.getElementById("pgnText")) { theObject.value = ""; }
@@ -1237,6 +1239,7 @@ of Google Chrome. Don't use with any other browser.
       SetLiveBroadcast(0, true, false, false);
       SetAutoplayDelay(2000);
       setInitialGameFromSearchGame();
+      SetInitialVariation(0);
       SetInitialHalfmove(0, true);
       firstStart = true;
       if (theObject = document.getElementById("pgnText")) { theObject.value = newPgnText; }
