@@ -237,6 +237,7 @@ encodePgn_default = "t";
 autoplayMode_default = "game";
 delay_default = 3000;
 initialGame_default = "first";
+initialVariation_default = "";
 initialHalfmove_default = initialHalfmoveSelect_default = "start"; initialHalfmoveNumber_default = "0";
 pieceFont_default = "default";
 pieceSize_default = "default";
@@ -369,6 +370,8 @@ function set_defaults() {
     alert("error: initial game must be either 'first', 'last', 'random' or their initials");
     document.board.initialGame.value = initialGame_value = initialGame_default;
   }
+
+  if ((initialVariation_value = gup("initialVariation")) === "") { initialVariation_value = initialVariation_default; }
 
   if ((initialHalfmove_value = gup("initialHalfmove")) === "") { initialHalfmove_value = initialHalfmove_default; }
   if (initialHalfmove_value == "s") { initialHalfmove_value = "start"; }
@@ -811,6 +814,9 @@ function calculate_html_code() {
 
   initialGame_value = document.board.initialGame.value;
   if (initialGame_value != "first") { iframeUrl += "&ig=" + initialGame_value.charAt(0); }
+
+  initialVariation_value = document.board.initialVariation.value;
+  if (!isNaN(parseInt(initialHalfmove_value, 10)) && parseInt(initialVariation_value, 10) > 0) { iframeUrl += "&iv=" + initialVariation_value; }
 
   initialHalfmove_value = document.board.initialHalfmove.value;
   if (initialHalfmove_value != "start") {
@@ -1680,6 +1686,7 @@ continiously, or autoplay
 </select>
 <span class="labeltext">autoplay delay</span>
 <p></p>
+<br>
 
 <select class="dropdown" id="initialGame" name="dropdown">
 <option value="first" selected="selected">first</option>
@@ -1687,6 +1694,13 @@ continiously, or autoplay
 <option value="random">random</option>
 </select>
 <span class="labeltext">initial game</span>
+<p></p>
+
+<input class="input" type="text" id="initialVariation" name="input" value="" size="12" onChange="validate_number(this, 'initial variation', initialVariation_default);">
+<span class="labeltext">initial variation</span>
+<span class="helptext">a number; applies only at the first game load; when
+<a class="helplink" href="" onClick="javascript:document.board.initialVariation.value = ''; return false;">blank</a>,
+defaults to the main variation</span>
 <p></p>
 
 <input type="hidden" id="initialHalfmove" value="">

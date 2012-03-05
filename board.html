@@ -396,6 +396,11 @@ if ((init_Game = gup("initialGame")) === "") {
 }
 SetInitialGame(init_Game);
 
+// use init_Variation to avoid overlap with existing global var initialVariation in pgn4web.js
+if ((init_Variation = gup("initialVariation")) !== "") {
+  SetInitialVariation(init_Variation);
+}
+
 // use init_Halfmove to avoid overlap with existing global var initialHalfmove in pgn4web.js
 always_Halfmove = false;
 if ((init_Halfmove = gup("initialHalfmove")) === "") {
@@ -673,6 +678,7 @@ if (gup("help") !== "") {
   document.write(" - refreshDemo = if set true sets live demo mode (default false)\n");
   document.write("\n");
   document.write(" - initialGame = first | last | random | a number | a search expression (default first)\n");
+  document.write(" - initialVariation = a number (default 0)\n");
   document.write(" - initialHalfmove = start | end | random | comment | a number (default start)\n");
   document.write("\n");
   document.write(" - autoplayMode = game (autoplay first game once) | loop (loops through games continiously) | none (default game)\n");

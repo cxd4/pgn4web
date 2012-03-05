@@ -805,6 +805,7 @@ var autostartAutoplay = false;
 var autoplayNextGame = false;
 
 var initialGame = 1;
+var initialVariation = 0;
 var initialHalfmove = 0;
 var alwaysInitialHalfmove = false;
 
@@ -1245,9 +1246,12 @@ function SetInitialHalfmove(number_or_string, always) {
   if ((initialHalfmove = parseInt(initialHalfmove,10)) == NaN) { initialHalfmove = 0; }
 }
 
+function SetInitialVariation(number) {
+  initialVariation = isNaN(number = parseInt(number, 10)) ? 0 : number;
+}
+
 function SetInitialGame(number_or_string) {
-  if (number_or_string === undefined) { initialGame = 1; }
-  else { initialGame = number_or_string; }
+  initialGame = typeof(number_or_string) == "undefined" ? 1 : number_or_string;
 }
 
 // clock detection: check DGT sequence [%clk 01:02]
@@ -1596,8 +1600,9 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
 
           initialGame = currentGame + 1;
 
+          LiveBroadcastOldCurrentVar = CurrentVar;
           LiveBroadcastOldCurrentPly = CurrentPly;
-          LiveBroadcastOldCurrentPlyLast = (CurrentPly === StartPly + PlyNumber);
+          LiveBroadcastOldCurrentPlyLast = (CurrentVar === 0 && CurrentPly === StartPlyVar[0] + PlyNumberVar[0]);
 
           oldAutoplay = isAutoPlayOn;
           if (isAutoPlayOn) { SetAutoPlay(false); }
@@ -1614,7 +1619,9 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
           if (LiveBroadcastFoundOldGame) { initialGame = ii + 1; }
 
           if (LiveBroadcastFoundOldGame) {
+            oldInitialVariation = initialVariation;
             oldInitialHalfmove = initialHalfmove;
+            initialVariation = CurrentVar;
             if (LiveBroadcastSteppingMode) {
               initialHalfmove = (LiveBroadcastOldCurrentPlyLast || oldParseLastMoveError) ?
                 LiveBroadcastOldCurrentPly+1 : LiveBroadcastOldCurrentPly;
@@ -1631,6 +1638,7 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
       if (LiveBroadcastDelay > 0) {
         if (LiveBroadcastFoundOldGame) {
           initialHalfmove = oldInitialHalfmove;
+          initialVariation = oldInitialVariation;
         }
         checkLiveBroadcastStatus();
       }
@@ -1806,6 +1814,7 @@ function restartLiveBroadcastTimeout() {
 }
 
 var LiveBroadcastFoundOldGame = false;
+var LiveBroadcastOldCurrentVar;
 var LiveBroadcastOldCurrentPly;
 var LiveBroadcastOldCurrentPlyLast = false;
 function refreshPgnSource() {
@@ -1923,13 +1932,13 @@ function setCurrentGameFromInitialGame() {
 function GoToInitialHalfmove() {
   switch (initialHalfmove) {
     case "start":
-      GoToMove(0);
+      GoToMove(0, initialVariation);
       break;
     case "end":
-      GoToMove(StartPly + PlyNumber);
+      GoToMove(StartPlyVar[initialVariation] + PlyNumberVar[initialVariation], initialVariation);
       break;
     case "random":
-      GoToMove(StartPly + Math.floor(Math.random()*(StartPly + PlyNumber)));
+      GoToMove(StartPlyVar[initialVariation] + Math.floor(Math.random()*(StartPlyVar[initialVariation] + PlyNumberVar[initialVariation])), initialVariation);
       break;
     case "comment":
       GoToMove(0);
@@ -1940,10 +1949,10 @@ function GoToInitialHalfmove() {
       initialHalfmove = parseInt(initialHalfmove,10);
       initialHalfmove = initialHalfmove < 0 ? -Math.floor(-initialHalfmove) : Math.floor(initialHalfmove);
       if (initialHalfmove < -3) { initialHalfmove = 0; }
-      if (initialHalfmove == -3) { GoToMove(StartPly + PlyNumber); }
-      else if (initialHalfmove == -2) { GoToMove(0); MoveToNextComment(); }
-      else if (initialHalfmove == -1) { GoToMove(StartPly + Math.floor(Math.random()*(StartPly + PlyNumber))); }
-      else { GoToMove(Math.floor(initialHalfmove)); }
+      if (initialHalfmove == -3) { GoToMove(StartPlyVar[initialVariation] + PlyNumberVar[initialVariation], initialVariation); }
+      else if (initialHalfmove == -2) { GoToMove(0, initialVariation); MoveToNextComment(); }
+      else if (initialHalfmove == -1) { GoToMove(StartPlyVar[initialVariation] + Math.floor(Math.random()*(StartPlyVar[initialVariation] + PlyNumberVar[initialVariation])), initialVariation); }
+      else { GoToMove(Math.floor(initialHalfmove), initialVariation); }
       break;
   }
 }
@@ -1981,6 +1990,7 @@ function Init(nextGame){
 
   customFunctionOnPgnGameLoad();
 
+  initialVariation = 0;
   firstStart = false;
 }
 
