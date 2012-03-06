@@ -47,14 +47,7 @@ div, span {
   overflow-y: scroll;
   overflow-x: hidden;
   text-align: justify;
-}
-
-.gameselectorDiv {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  padding: 30px;
-  background-color: white;
+  scrollbar-base-color: #FFFFFF;
 }
 
 .tallRowSpace {
@@ -77,9 +70,9 @@ div, span {
   width: 376px;
   height: 376px;
   border-style: solid;
-  border-color: #663300;
+  border-color: #AAAAAA;
   border-width: 3px;
-  box-shadow: 0px 0px 20px #663300;
+  box-shadow: 0px 0px 20px #DDDDDD;
 }
 
 .pieceImage {
@@ -99,47 +92,20 @@ div, span {
 
 .whiteSquare,
 .highlightWhiteSquare {
-  border-color: #FFCC99;
-  background: #FFCC99;
+  border-color: #FFFFFF;
+  background: #FFFFFF;
 }
 
 .blackSquare,
 .highlightBlackSquare {
-  border-color: #CC9966;
-  background: #CC9966;
+  border-color: #DDDDDD;
+  background: #DDDDDD;
 }
 
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  border-color: #663300;
+  border-color: #AAAAAA;
   border-style: solid;
-}
-
-.selectControl {
-/* a "width" attribute here must use the !important flag to override default settings */
-}
-
-.optionSelectControl {
-}
-
-.buttonControlPlay,
-.buttonControlStop,
-.buttonControl {
-/* a "width" attribute here must use the !important flag to override default settings */
-}
-
-.buttonControlSpace {
-/* a "width" attribute here must use the !important flag to override default settings */
-}
-
-.searchPgnButton {
-/* a "width" attribute here must use the !important flag to override default settings */
-  width: 10% !important;
-}
-
-.searchPgnExpression {
-/* a "width" attribute here must use the !important flag to override default settings */
-  width: 90% !important;
 }
 
 .move,
@@ -163,6 +129,7 @@ div, span {
 
 .moveOn,
 .variationOn {
-  background: #FFCC99;
+  background: #DDDDDD;
+  border-radius: 2px;
 }
 
