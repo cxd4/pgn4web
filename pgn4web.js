@@ -3481,7 +3481,7 @@ function variationTextFromId(varId) {
     text += '<SPAN STYLE="white-space: nowrap;">';
     moveCount = Math.floor(ii/2)+1;
     if (ii%2 === 0){
-      text += '<SPAN CLASS="' + (variationTextDepth > 0 ? 'variation' : 'move') + ' notranslate">' + moveCount + '.&nbsp;</SPAN>'
+      text += '<SPAN CLASS="' + (variationTextDepth > 0 ? 'variation' : 'move') + ' notranslate">' + moveCount + '.&nbsp;</SPAN>';
     } else {
       if ((printedComment) || (ii == StartPlyVar[varId])) {
         text += '<SPAN CLASS="' + (variationTextDepth > 0 ? 'variation' : 'move') + ' notranslate">' + moveCount + '...&nbsp;</SPAN>';
@@ -3518,7 +3518,7 @@ var autoScrollToCurrentMove_objectId = "";
 function autoScrollToCurrentMoveIfEnabled() { autoScrollToCurrentMove(autoScrollToCurrentMove_objectId); }
 
 function objectOffsetVeryTop(object) {
-  for (offset = object.offsetTop; object = object.offsetParent; offset += object.offsetTop + object.clientTop) {}
+  for (offset = object.offsetTop; object = object.offsetParent; /* */) { offset += object.offsetTop + object.clientTop; }
   return offset;
 }
 
