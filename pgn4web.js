@@ -2622,6 +2622,7 @@ function OpenGame(gameId) {
 }
 
 var CurrentVar = -1;
+var lastVarEmpty;
 var numberOfVars;
 var MovesVar;
 var MoveCommentsVar;
@@ -2637,6 +2638,7 @@ function initVar () {
   StartPlyVar = new Array();
   PlyNumberVar = new Array();
   CurrentVar = -1;
+  lastVarEmpty = false;
   numberOfVars = 0;
   CurrentVarStack = new Array();
   PlyNumber = 1;
@@ -2655,8 +2657,11 @@ function startVar() {
   PredecessorsVars[CurrentVar].push(CurrentVar);
   MovesVar[CurrentVar] = new Array();
   MoveCommentsVar[CurrentVar] = new Array();
-  if (PlyNumber < 1) { myAlert("error: malformed PGN data with variant starting before mainline", true); }
-  else { PlyNumber -= 1; }
+  if (lastVarEmpty) { myAlert("warning: malformed PGN data with variant starting before mainline", true); }
+  else {
+    lastVarEmpty = true;
+    PlyNumber -= 1;
+  }
   MoveCommentsVar[CurrentVar][StartPly + PlyNumber] = "";
   StartPlyVar[CurrentVar] = StartPly + PlyNumber;
 }
@@ -2822,6 +2827,7 @@ function ParsePGNGameString(gameString) {
         if ((end = start + ss.substr(start).search(/[\s${;!?()]/)) < start) { end = ss.length; }
         move = ss.substring(start,end);
         MovesVar[CurrentVar][StartPly+PlyNumber] = ClearMove(move);
+        lastVarEmpty = false;
         if (ss.charAt(end) == ' ') { start = end; }
         else { start = end - 1; }
         if (MovesVar[CurrentVar][StartPly+PlyNumber] !== '') { // to cope with misformed PGN data

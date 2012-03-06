@@ -61,7 +61,7 @@ Kxf8 9. Bh6+ $18 *
 [Result "1-0"]
 
 1. d4 (1. c4 (1. b4 (1. a4 a5) 1... b5) 1... c5) (1. e4 (1. f4 (1. g4 (1. h4
-h5) 1... g5) 1... f5) 1... e5) 1... d5 (1... c5) (1... b5) (1... a5) (1... e5
+h5) 1... g5) 1... f5) 1... e5) 1... d5 (1... c5 (1... b5 (1... a5))) (1... e5
 (1... f5 (1... g5 2. g3) 2. f3) 2. e3) Qd3
 
 [Event "Testing advanced variations: comments before/after variations"]
