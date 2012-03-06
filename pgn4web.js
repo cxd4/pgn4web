@@ -419,6 +419,7 @@ function clearShortcutSquares(cols, rows) {
 }
 
 function boardShortcut(square, title, functionPointer) {
+  var theObject;
   if (square.charCodeAt === null) { return; }
   var col = square.charCodeAt(0) - 65; // 65="A"
   if ((col < 0) || (col > 7)) { return; }
@@ -2657,8 +2658,9 @@ function startVar() {
   PredecessorsVars[CurrentVar].push(CurrentVar);
   MovesVar[CurrentVar] = new Array();
   MoveCommentsVar[CurrentVar] = new Array();
-  if (lastVarEmpty) { myAlert("warning: malformed PGN data with variant starting before mainline", true); }
-  else {
+  if (lastVarEmpty) {
+    myAlert("warning: malformed PGN data with variant " + CurrentVar + " starting before parent", true);
+  } else {
     lastVarEmpty = true;
     PlyNumber -= 1;
   }
@@ -3186,6 +3188,7 @@ var tableSize = 0;
 function PrintHTML() {
   var ii, jj;
   var text;
+  var theObject;
 
   // 8x8 table chessboard
 
