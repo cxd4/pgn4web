@@ -6,12 +6,14 @@
  */
 
 function testAllMoves() {
+  var ii = 0;
   resetAlert();
   for (var gg = 0; gg < numberOfGames; gg++) {
     Init(gg);
     for (var vv = 0; vv < numberOfVars; vv++) {
       for (var hh = StartPlyVar[vv]; hh <= StartPlyVar[vv] + PlyNumberVar[vv]; hh++) {
         GoToMove(hh, vv);
+        if ((++ii % 100) === 0) { console.log("i=" + ii + " g=" + gg + "/" + numberOfGames + " a=" + alertNumSinceReset); }
       }
     }
   }
@@ -25,7 +27,7 @@ function testRandomMoves(nn, pv, pg) {
   if (typeof(pg) == "undefined") { pg = 0.1; }
   var vv = 0;
   var gg = 0;
-  for (var ii = 0; ii < nn; ii++) {
+  for (var ii = 1; ii <= nn; ii++) {
     if (Math.random() < pg) {
       gg = Math.floor(numberOfGames * Math.random());
       Init(gg);
@@ -36,6 +38,7 @@ function testRandomMoves(nn, pv, pg) {
     }
     var hh = StartPlyVar[vv] + Math.floor((PlyNumberVar[vv] + 1) * Math.random());
     GoToMove(hh, vv);
+    if ((ii % 100) === 0) { console.log("i=" + ii + "/" + nn + " a=" + alertNumSinceReset); }
   }
   return alertNumSinceReset;
 }

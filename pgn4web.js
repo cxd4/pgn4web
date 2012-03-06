@@ -2721,9 +2721,11 @@ function goToNextVariationSibling() {
 
 function ParsePGNGameString(gameString) {
 
-  var ss = gameString;
+  var ssRep, ss = gameString;
   ss = ss.replace(/\[%pgn4web_variation (\d+)\]/g, "[%pgn4web_variation_ $1]");
   ss = ss.replace(pgnHeaderTagRegExpGlobal, '');
+  // replace empty variations with comments
+  while ((ssRep = ss.replace(/\((([\?!+#\s\r\n]|\$\d+|{[^}]*})*)\)/g, ' $1 ')) !== ss) { ss = ssRep; }
   ss = ss.replace(/^\s/, '');
   ss = ss.replace(/\s$/, '');
 
