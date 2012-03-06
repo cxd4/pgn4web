@@ -816,7 +816,7 @@ function calculate_html_code() {
   if (initialGame_value != "first") { iframeUrl += "&ig=" + initialGame_value.charAt(0); }
 
   initialVariation_value = document.board.initialVariation.value;
-  if (!isNaN(parseInt(initialHalfmove_value, 10)) && parseInt(initialVariation_value, 10) > 0) { iframeUrl += "&iv=" + initialVariation_value; }
+  if (!isNaN(parseInt(initialVariation_value, 10)) && parseInt(initialVariation_value, 10) > 0) { iframeUrl += "&iv=" + initialVariation_value; }
 
   initialHalfmove_value = document.board.initialHalfmove.value;
   if (initialHalfmove_value != "start") {
