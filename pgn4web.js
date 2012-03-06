@@ -618,7 +618,8 @@ function displayDebugInfo() {
     // pgn4web up to 1.77 used <span> for pgnText
   }
   debugInfo += '\n\n' +
-    'GAMES: current=' + (currentGame+1) + ' number=' + numberOfGames + '\n' +
+    'GAME: current=' + (currentGame+1) + ' number=' + numberOfGames + '\n' +
+    'VARIATION: current=' + CurrentVar + ' number=' + (numberOfVars-1) + '\n' +
     'PLY: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber + '\n' +
     'AUTOPLAY: ' + (isAutoPlayOn ? 'delay=' + Delay + 'ms' + ' autoplaynext=' + autoplayNextGame : 'off') +
     '\n\n' +
@@ -2853,6 +2854,41 @@ function ParsePGNGameString(gameString) {
   PlyNumberVar[CurrentVar] = PlyNumber;
 
   lastSynchCurrentVar = -1;
+}
+
+function testAllMoves() {
+  resetAlert();
+  for (var gg = 0; gg < numberOfGames; gg++) {
+    Init(gg);
+    for (var vv = 0; vv < numberOfVars; vv++) {
+      for (var hh = StartPlyVar[vv]; hh <= StartPlyVar[vv] + PlyNumberVar[vv]; hh++) {
+        GoToMove(hh, vv);
+      }
+    }
+  }
+  return alertNumSinceReset;
+}
+
+function testRandomMoves(nn, pv, pg) {
+  resetAlert();
+  if (typeof(nn) == "undefined") { nn = numberOfGames * 100; }
+  if (typeof(pv) == "undefined") { pv = 0.5; }
+  if (typeof(pg) == "undefined") { pg = 0.1; }
+  var vv = 0;
+  var gg = 0;
+  for (var ii = 0; ii < nn; ii++) {
+    if (Math.random() < pg) {
+      gg = Math.floor(numberOfGames * Math.random());
+      Init(gg);
+      vv = 0;
+    }
+    if (Math.random() < pv) {
+      vv = Math.floor(numberOfVars * Math.random());
+    }
+    var hh = StartPlyVar[vv] + Math.floor((PlyNumberVar[vv] + 1) * Math.random());
+    GoToMove(hh, vv);
+  }
+  return alertNumSinceReset;
 }
 
 
