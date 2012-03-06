@@ -52,7 +52,7 @@ Nxd6 { [%clk 00:48:12] } 7. Bd3 { [%clk 00:47:13] } 7... Nc6 { [%clk
 5. fxg7 $10) 5... cxb2 $15 6. fxg7 bxa1=Q 7. gxh8=Q Qb1 { ?? } 8. Qxf8+ $1
 Kxf8 9. Bh6+ $18 *
 
-[Event "Testing advanced variations: nesting"]
+[Event "Testing advanced variations: nesting and siblings"]
 [Site "Another site"]
 [Date "2345.67.89"]
 [Round "2"]
