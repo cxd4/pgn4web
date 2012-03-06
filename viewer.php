@@ -455,6 +455,10 @@ function reset_viewer() {
    else {window.location.hash = "top"; }
 }
 
+// fake functions to avoid warnings before pgn4web.js is loaded
+function disableShortcutKeysAndStoreStatus() {}
+function restoreShortcutKeysStatus() {}
+
 </script>
 
 <table width="100%" cellspacing=0 cellpadding=3 border=0><tbody>
