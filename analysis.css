@@ -84,10 +84,10 @@ div, span {
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 43px;
-  height: 43px;
+  width: 45px;
+  height: 45px;
   border-style: solid;
-  border-width: 2px;
+  border-width: 1px;
 }
 
 .whiteSquare,
