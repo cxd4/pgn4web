@@ -2670,7 +2670,7 @@ function startVar() {
 }
 
 function closeVar() {
-  if (StartPly + PlyNumber ===  StartPlyVar[CurrentVar]) { myAlert("warning: empty variation", false); }
+  if (StartPly + PlyNumber ===  StartPlyVar[CurrentVar]) { myAlert("warning: empty variation " + CurrentVar, false); }
   PlyNumberVar[CurrentVar] = StartPly + PlyNumber - StartPlyVar[CurrentVar];
   for (var ii=StartPlyVar[CurrentVar]; ii<=StartPlyVar[CurrentVar]+PlyNumberVar[CurrentVar]; ii++) {
     if (MoveCommentsVar[CurrentVar][ii]) {
