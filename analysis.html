@@ -61,7 +61,7 @@
     SetInitialHalfmove(unescape(window.location.search.match(thisRegExp)[3]), false);
   }
 
-  SetImagePath("alpha/36");
+  SetImagePath("merida/39");
   SetImageType("png");
   SetHighlightOption(true);
   SetGameSelectorOptions(" ...", true, 12, 12, 2, 15, 15, 3, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
@@ -88,6 +88,10 @@
     myOnResize();
   }
 
+  function customFunctionOnPgnGameLoad() {
+    customPgnHeaderTag('Result', 'ResultAtGametextEnd');
+  }
+
   function myOnResize() {
     if (window.innerWidth && window.innerHeight) { ww = window.innerWidth; wh = window.innerHeight; }
     else if (document.documentElement && document.documentElement.clientWidth) { ww = document.documentElement.clientWidth; wh = document.documentElement.clientHeight; }
@@ -95,12 +99,12 @@
     else { return; }
 
     if (theObject = document.getElementById("boardHeader")) { theObject.style.height = (wh - 60) + "px"; }
-    if (theObject = document.getElementById("GameText")) { theObject.style.height = (wh - 60) + "px"; }
+    if (theObject = document.getElementById("GameTextResult")) { theObject.style.height = (wh - 60) + "px"; }
 
     autoScrollToCurrentMoveIfEnabled();
   }
 
-  enableAutoScrollToCurrentMove("GameText");
+  enableAutoScrollToCurrentMove("GameTextResult");
 
 </script>
 
@@ -129,14 +133,7 @@
 
 <div class="gameselectorDiv" id="GameSelector"></div>
 
-<div class="gametextDiv" id="GameText"></div>
-
-</td>
-
-</tr>
-
-
-</table>
+<div class="gametextresultDiv" id="GameTextResult"><span id="GameText"></span>&nbsp;<span id="ResultAtGametextEnd"></span></div>
 
 </body>
 

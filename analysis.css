@@ -38,7 +38,7 @@ div, span {
   overflow: hidden;
 }
 
-.gametextDiv {
+.gametextresultDiv {
   padding-left: 30px;
   padding-right: 30px;
   margin-left: 421px;
@@ -83,8 +83,8 @@ div, span {
 }
 
 .pieceImage {
-  width: 36px;
-  height: 36px;
+  width: 39px;
+  height: 39px;
 }
 
 .whiteSquare,
