@@ -3503,10 +3503,11 @@ function variationTextFromId(varId) {
     if (commentsOnSeparateLines && variationTextDepth === 0) {
       text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
     }
-    text += '<SPAN CLASS="notranslate"> </SPAN><SPAN CLASS="comment">' + thisComment + '</SPAN>';
+    text += (printedVariation ? '<SPAN CLASS="notranslate"> </SPAN>' : '') + '<SPAN CLASS="comment">' + thisComment + '</SPAN>';
     printedComment = true;
   }
   text += variationTextDepth-- ? ('<SPAN CLASS="variation">' + (variationTextDepth ? ')' : ']') + '</SPAN>') : '';
+  printedVariation = true;
   return text;
 }
 
