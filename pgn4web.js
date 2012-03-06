@@ -2672,12 +2672,6 @@ function closeVar() {
       MoveCommentsVar[CurrentVar][ii] = '';
     }
   }
-// PAOLO
-//  for (var ii = PredecessorsVars[CurrentVar].length - 1; ii > 0; ii--) {
-//    if (StartPlyVar[PredecessorsVars[CurrentVar][ii]] === StartPlyVar[PredecessorsVars[CurrentVar][ii - 1]]) {
-//      PredecessorsVars[CurrentVar].splice(ii - 1, 1);
-//    }
-//  }
   if (CurrentVarStack.length) {
     CurrentVar = CurrentVarStack.pop();
     PlyNumber = PlyNumberStack.pop();
@@ -2686,26 +2680,29 @@ function closeVar() {
   }
 }
 
+function realParentVar(childVar) {
+  for (ii = PredecessorsVars[childVar].length - 1; ii > 0; ii--) {
+    if (StartPlyVar[PredecessorsVars[childVar][ii]] !== StartPlyVar[PredecessorsVars[childVar][ii-1]]) {
+      return PredecessorsVars[childVar][ii-1];
+    }
+  }
+  return -1;
+}
+
 function goToNextVariationSibling() {
   if (CurrentPly === StartPly) { return; }
-  if (CurrentPly === StartPlyVar[CurrentVar] + 1) {
-    if (PredecessorsVars[CurrentVar].lenght < 2) {
-      myAlert("warning: failed detecting variation siblings", false);
-      return;
-    }
-    parentVar = PredecessorsVars[CurrentVar][PredecessorsVars[CurrentVar].length - 2];
-  } else {
-    parentVar = -1;
-  }
+  parentCurrentVar = realParentVar(CurrentVar);
   for (var thisVar = (CurrentVar + 1) % numberOfVars; thisVar !== CurrentVar; thisVar = (thisVar + 1) % numberOfVars) {
-    if (thisVar === parentVar) {
-      GoToMove(CurrentPly, parentVar);
-      break;
-    }
-    if (StartPlyVar[thisVar] !== CurrentPly - 1) { continue; }
-    if (PredecessorsVars[thisVar][PredecessorsVars[thisVar].length - 2] === CurrentVar || PredecessorsVars[thisVar][PredecessorsVars[thisVar].length - 2] === parentVar) {
+    if (StartPlyVar[CurrentVar] === CurrentPly -1 && thisVar === parentCurrentVar) {
       GoToMove(CurrentPly, thisVar);
       break;
+    }
+    if (StartPlyVar[thisVar] === CurrentPly - 1) {
+      parentThisVar = realParentVar(thisVar);
+      if (parentThisVar === CurrentVar || parentThisVar === parentCurrentVar) {
+        GoToMove(CurrentPly, thisVar);
+        break;
+      }
     }
   }
 }
