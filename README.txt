@@ -36,7 +36,7 @@ Contact email: pgn4web@casaschi.net
 Features:
 - display chess games form a PGN file on a dynamic chessboard on your
   webpage or blog
-- full support for viewing comments and browsing game variations
+- full support for browsing game variations and reviewing comments
 - shortcut keys for navigating through the game, for selecting the
   game from the file and much more; also uses chessboard squares as
   input buttons (hit escape for help)
