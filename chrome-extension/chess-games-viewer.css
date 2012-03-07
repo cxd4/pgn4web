@@ -141,7 +141,7 @@ a {
 
 .comment,
 .variation {
-  color: #888888;
+  color: #808080;
 }
 
 .moveOn,
@@ -157,7 +157,7 @@ a {
   padding-left: 0.5em;
   padding-right: 0.5em;
   padding-bottom: 0;
-  color: #888888;
+  color: #808080;
   opacity: 0.25;
 }
 
@@ -253,7 +253,7 @@ a {
   width: 100%;
   height: 1em;
   margin-bottom: 0.25em;
-  color: #888888;
+  color: #808080;
   opacity: 0.25;
 }
 
