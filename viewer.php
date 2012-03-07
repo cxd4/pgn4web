@@ -582,7 +582,7 @@ function print_chessboard() {
 
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 100% !important;
+  width: 99% !important;
 }
 
 .optionSelectControl {
@@ -598,12 +598,13 @@ function print_chessboard() {
 
 .searchPgnButton {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 10% !important;
+  width: 9.5% !important;
+  margin-right: 0.5%;
 }
 
 .searchPgnExpression {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 90% !important;
+  width: 89% !important;
 }
 
 .move,
