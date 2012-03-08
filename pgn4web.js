@@ -1202,6 +1202,8 @@ function ClearMove(move) {
 
 function GoToMove(thisPly, thisVar) {
   if (typeof(thisVar) == "undefined") { thisVar = CurrentVar; }
+  else if (thisVar < 0) { thisVar = 0; }
+  else if (thisVar > numberOfVars) { thisVar = numberOfVars - 1; }
   if (thisVar === CurrentVar) {
     var diff = thisPly - CurrentPly;
     if (diff > 0) { MoveForward(diff); }
