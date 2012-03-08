@@ -146,9 +146,9 @@ a {
 
 .moveOn,
 .variationOn {
-  background-image: -webkit-radial-gradient(circle, #FFDDAA, #FFEECC);
+  background-image: -webkit-radial-gradient(circle, #FFCC99, #FFDDAA);
   border-radius: 0.4em;
-  box-shadow: 0 0 1.2em #FFDD77;
+  box-shadow: 0 0 1.2em #FFBB66;
 }
 
 .topMenu {
