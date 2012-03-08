@@ -136,7 +136,11 @@ a {
 .headerNosize,
 .move,
 .variation {
-  color: #615F54;
+  color: #615F54 !important;
+}
+
+a.variation {
+  color: #615F54 !important;
 }
 
 .comment {

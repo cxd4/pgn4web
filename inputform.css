@@ -116,6 +116,10 @@ body {
   color: gray;
 }
 
+a.variation {
+  color: gray;
+}
+
 .moveOn,
 .variationOn {
   background: #C2C9D1;

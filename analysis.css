@@ -131,6 +131,10 @@ div, span {
   color: gray !important;
 }
 
+a.variation {
+  color: gray !important;
+}
+
 .moveOn,
 .variationOn {
   background: #DDDDDD;

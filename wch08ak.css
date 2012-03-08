@@ -104,6 +104,10 @@ body {
   color: gray;
 }
 
+a.variation {
+  color: gray;
+}
+
 .moveOn,
 .variationOn {
   color: red;

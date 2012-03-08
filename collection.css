@@ -132,6 +132,10 @@ div, span, table, tr, td {
   color: gray;
 }
 
+a.variation {
+  color: gray;
+}
+
 .moveOn,
 .variationOn {
   background: #FFCC99;

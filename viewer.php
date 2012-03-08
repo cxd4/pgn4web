@@ -629,6 +629,10 @@ function print_chessboard() {
   color: gray !important;
 }
 
+a.variation {
+  color: gray !important;
+}
+
 .moveOn,
 .variationOn {
   background: #ffcc99;
