@@ -845,6 +845,7 @@ var mvPieceId = -1;
 var mvPieceOnTo = -1;
 var mvCaptured = -1;
 var mvCapturedId = -1;
+var mvIsNull = 0;
 
 Board = new Array(8);
 for(i=0; i<8; ++i) { Board[i] = new Array(8); }
@@ -883,6 +884,9 @@ HistEnPassant = new Array();
 HistEnPassant[0] = false;
 HistEnPassantCol = new Array();
 HistEnPassantCol[0] = -1;
+
+HistNull = new Array();
+HistNull[0] = 0;
 
 var FenPieceName = "KQRBNP";
 var PieceCode = new Array(); // IE needs an array to work with [index]
@@ -945,6 +949,11 @@ function CheckLegality(what, plyCount) {
   var start;
   var end;
   var isCheck;
+
+  if (what == '--') {
+    StoreMove(plyCount);
+    return true;
+  }
 
   // castling move?
   if (what == 'O-O') {
@@ -1377,7 +1386,7 @@ function HighlightLastMove() {
     oldAnchorName = anchorName;
 
     if (highlightOption) {
-      if (showThisMove < StartPly) {
+      if ((showThisMove < StartPly) || HistNull[showThisMove]) {
         highlightColFrom = highlightRowFrom = -1;
         highlightColTo   = highlightRowTo   = -1;
       } else {
@@ -2282,6 +2291,7 @@ function InitFEN(startingFEN) {
 
     HistEnPassant[StartPly-1] = newEnPassant;
     HistEnPassantCol[StartPly-1] = newEnPassantCol;
+    HistNull[StartPly] = 0;
     HistVar[StartPly] = 0;
   }
 }
@@ -2428,6 +2438,10 @@ function MoveBackward(diff, scanOnly) {
     CurrentPly--;
     MoveColor = 1-MoveColor;
 
+    CurrentVar = HistVar[thisPly];
+
+    if (HistNull[thisPly]) { continue; }
+
     // moved piece back to original square
     var chgPiece = HistPieceId[0][thisPly];
     Board[PieceCol[MoveColor][chgPiece]][PieceRow[MoveColor][chgPiece]] = 0;
@@ -2459,8 +2473,6 @@ function MoveBackward(diff, scanOnly) {
       PieceRow[1-MoveColor][chgPiece] = HistRow[1][thisPly];
       PieceMoveCounter[1-MoveColor][chgPiece]--;
     }
-
-    CurrentVar = HistVar[thisPly];
   }
 
   if (scanOnly) { return; }
@@ -2975,6 +2987,13 @@ function ParseMove(move, plyCount) {
   mvPieceOnTo = -1;
   mvCaptured = -1;
   mvCapturedId = -1;
+  mvIsNull = 0;
+
+  if (move == "--") {
+    mvIsNull = 1;
+    CheckLegality(move, plyCount);
+    return true;
+  }
 
   // get destination column/row remembering what's left e.g. Rdxc3 exf8=Q+
   ii = 1;
@@ -3644,6 +3663,10 @@ function SwitchAutoPlay() {
 
 function StoreMove(thisPly) {
 
+  HistVar[thisPly+1] = CurrentVar;
+
+  if(HistNull[thisPly] = mvIsNull) { return; }
+
   // "square from" history
   HistPieceId[0][thisPly] = mvPieceId;
   HistCol[0][thisPly] = PieceCol[MoveColor][mvPieceId];
@@ -3667,8 +3690,6 @@ function StoreMove(thisPly) {
   } else {
     HistPieceId[1][thisPly] = -1;
   }
-
-  HistVar[thisPly+1] = CurrentVar;
 
   // update "square from" and captured square (not necessarily "square to" e.g. en-passant)
   Board[PieceCol[MoveColor][mvPieceId]][PieceRow[MoveColor][mvPieceId]] = 0;
@@ -3701,6 +3722,8 @@ function StoreMove(thisPly) {
 }
 
 function UndoMove(thisPly) {
+
+  if (HistNull[thisPly]) { return; }
 
   // bring moved piece back
   Board[mvToCol][mvToRow] = 0;

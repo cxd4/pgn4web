@@ -63,7 +63,7 @@ Qxf4 Nxf2#) (3. Qxe4 Qc1+) (3. Nc3 Qxe3 4. fxe3 Nf2#) 3... Qg4 0-1
 [Event "Testing advanced variations: nesting and siblings"]
 [Site "Another site"]
 [Date "2345.67.89"]
-[Round "2"]
+[Round "3"]
 [White "Another White player"]
 [Black "Another Black player"]
 [Result "1-0"]
@@ -75,7 +75,7 @@ h5) 1... g5) 1... f5) 1... e5) 1... d5 (1... c5 (1... b5 (1... a5))) (1... e5
 [Event "Testing advanced variations: comments before/after variations"]
 [Site "Another site"]
 [Date "2345.67.89"]
-[Round "2"]
+[Round "4"]
 [White "Another White player"]
 [Black "Another Black player"]
 [Result "1-0"]
@@ -87,11 +87,22 @@ is outside the variation } d5 c4
 [Event "Testing advanced variations: empty variations"]
 [Site "Another site"]
 [Date "2345.67.89"]
-[Round "2"]
+[Round "5"]
 [White "Another White player"]
 [Black "Another Black player"]
 [Result "*"]
 
 1. d4 () d5 ( ) 2. c4 ({ variations without moves should become comments })
 (2. Nf3) 2... dxc4 ( ( { accepting the gambit } ) ) 3. e4 *
+
+[Event "Testing null moves"]
+[Site "Another site"]
+[Date "2345.67.89"]
+[Round "6"]
+[White "Another White player"]
+[Black "Another Black player"]
+[Result "*"]
+
+1. e4 e5 2. Bc4 ($140 2. Bc4 -- 3. Qf3 -- 4. Qxf7#) Nf6 3. d3 ({ defending
+against } 3. -- Nxe4) 3... Bc5
 
