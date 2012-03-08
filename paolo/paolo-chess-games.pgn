@@ -1,5 +1,24 @@
 [Event "London League 2011/2012"]
 [Site "London ENG"]
+[Date "2012.03.07"]
+[Round "?"]
+[White "Casaschi, Paolo"]
+[Black "Eames, Robert"]
+[Result "0-1"]
+[ECO "B96"]
+[Opening "Sicilian"]
+[Variation "Najdorf, 7.f4"]
+
+1. e4 c5 2. Nc3 a6 3. Nf3 d6 4. d4 cxd4 5. Nxd4 Nf6 6. Bg5 e6 7. f4 Qc7 8.
+Qf3 b5 9. O-O-O b4 { D } 10. Nd5 exd5 11. Bxf6 gxf6 12. exd5 Be7 13. Bd3 a5
+14. Rhe1 Kd8 15. Qe2 Re8 16. Bb5 Bd7 17. Qh5 Bxb5 18. Nxb5 Qc4 19. Nd4 Qxa2
+20. Qxf7 Qa1+ 21. Kd2 Qxb2 22. Ne6+ Kd7 23. Re3 Na6 24. Nf8+ Kd8 25. Ne6+
+Kd7 26. Rde1 Rad8 { D } 27. Nf8+ Rxf8 28. Rxe7+ Kc8 29. Qe6+ Kb8 30. Qe2
+Qc3+ 31. Kc1 Nc7 32. Qf2 Qc5 33. Qf3 a4 34. Kb1 Nxd5 35. Rxh7 Rfe8 36. Rd1
+b3 37. c4 Qxc4 38. Rc1 Qe4+ 0-1
+
+[Event "London League 2011/2012"]
+[Site "London ENG"]
 [Date "2012.02.29"]
 [Round "?"]
 [White "Pert, Richard"]
