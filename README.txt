@@ -419,6 +419,9 @@ specifically:
 - allows parsing of generic comment tags using the function
   customPgnCommentTag()
 
+pgn4web also support null moves in the "--" representation used by a number
+of chess softwares such as scid and chessbase.
+
 Please email me for review any PGN file that pgn4web fails parsing correctly.
 
 CHESS960 SUPPORT
