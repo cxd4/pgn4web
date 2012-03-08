@@ -355,6 +355,14 @@ if ((fontCommentsColor = gup("fontCommentsColorName")) === "") {
   }
 }
 
+if ((fontVariationsSize = percentFixFromUrl( gup("fontVariationsSize") )) === "") { fontVariationsSize = "comments"; }
+if (fontVariationsSize == "c") { fontVariationsSize = "comments"; }
+if ((fontVariationsColor = gup("fontVariationsColorName")) === "") {
+  if ((fontVariationsColor = "#" + gup("fontVariationsColorHex")) == "#") {
+    if ((fontVariationsColor = "#" + sex2hex(gup("fontVariationsColorSex"))) == "#") { fontVariationsColor = "#808080"; }
+  }
+}
+
 oldAutoplayMode = "";
 auto = gup("auto");
 if ((auto == "false") || (auto == "f")) { oldAutoplayMode = "none"; }
@@ -706,11 +714,13 @@ if (gup("help") !== "") {
   document.write(" - commentsDisplay = hidden | inline (same line as moves) | newline (new lines) (default inline)\n");
   document.write(" - fontHeaderColorHex = header color hex code, like FF0000 (default 000000)\n");
   document.write(" - fontMovesColorHex = moves color hex code, like FF0000 (default 000000)\n");
-  document.write(" - fontCommentsColorHex = commentss color hex code, like FF0000 (default 808080)\n");
+  document.write(" - fontCommentsColorHex = comments color hex code, like FF0000 (default 808080)\n");
+  document.write(" - fontVariationsColorHex = variations color hex code, like FF0000; if set as 'comments' fontCommentsColorHex is copied (default comments)\n");
   document.write(" - highlightMoveColorHex = background color hex code to highlight current move, like FF0000, 'background' for no highligh (default DAF4D7)\n");
   document.write(" - fontHeaderSize = header font size, like 20 or 120% (default 100p = 100pct meaning 100%)\n");
-  document.write(" - fontMovesSize = header font size, like 20 or 120% (default 100p = 100pct meaning 100%)\n");
-  document.write(" - fontCommentsSize = header font size, like 20 or 120%; if set as 'moves' fontMovesSize is copied (default moves)\n");
+  document.write(" - fontMovesSize = moves font size, like 20 or 120% (default 100p = 100pct meaning 100%)\n");
+  document.write(" - fontCommentsSize = comments font size, like 20 or 120%; if set as 'moves' fontMovesSize is copied (default moves)\n");
+  document.write(" - fontVariationSize = variations font size, like 20 or 120%; if set as 'comments' fontCommentsSize is copied (default comments)\n");
   document.write("\n");
   document.write(" - backgroundColorHex = page background color hex code, like FF0000, 'transparent' to use the parent's background color (default FFFFFF)\n");
   document.write(" - horizontalLayout = if set true, shows header/moves text at the right of the board, below otherwise (default false)\n");
@@ -830,6 +840,18 @@ if (highlightMode == 'border') {
                    ' color: ' + fontCommentsColor + ';' +
                    ' font-size: ' + (fontCommentsSize == 'moves' ? fontMovesSize : fontCommentsSize) + '; ' +
                    '} \n';
+
+  if (!fontVariationsSize.match(/[^0-9]/)) { fontCommentsSize += 'px'; }
+  if (fontVariationsColor !== 'comments') {
+    newStyleSheet += 'a.variation { ' +
+                     ' color: ' + fontVariationsColor + '; ' +
+                     '} \n';
+  }
+  if (fontVariationsSize !== 'comments') {
+    newStyleSheet += '.variation { ' +
+                     ' font-size: ' + fontVariationsSize + '; ' +
+                     '} \n';
+  }
 
   newStyleSheet += '.moveOn, .variationOn { ' +
                    ' background: ' + (highlightMoveColor == 'none' ? backgroundColor : highlightMoveColor) + '; ' +
