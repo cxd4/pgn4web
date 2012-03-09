@@ -1202,8 +1202,18 @@ function ClearMove(move) {
 
 function GoToMove(thisPly, thisVar) {
   if (typeof(thisVar) == "undefined") { thisVar = CurrentVar; }
-  else if (thisVar < 0) { thisVar = 0; }
-  else if (thisVar > numberOfVars) { thisVar = numberOfVars - 1; }
+  else {
+    if (thisVar < 0) { thisVar = numberOfVars + thisVar; }
+    if (thisVar < 0) { thisVar = 0; }
+    else if (thisVar >= numberOfVars) { thisVar = numberOfVars - 1; }
+  }
+  if (thisPly < 0) { thisPly = StartPlyVar[thisVar] + PlyNumberVar[thisVar] + 1 + thisPly; }
+  if (thisPly < 0) {
+    thisPly = 0;
+  } else if (thisPly >= StartPlyVar[thisVar] + PlyNumberVar[thisVar]) {
+    thisPly = StartPlyVar[thisVar] + PlyNumberVar[thisVar];
+  }
+
   if (thisVar === CurrentVar) {
     var diff = thisPly - CurrentPly;
     if (diff > 0) { MoveForward(diff); }
@@ -1958,14 +1968,8 @@ function GoToInitialHalfmove() {
       MoveToNextComment();
       break;
     default:
-      if (isNaN(initialHalfmove)) { initialHalfmove = 0; }
-      initialHalfmove = parseInt(initialHalfmove,10);
-      initialHalfmove = initialHalfmove < 0 ? -Math.floor(-initialHalfmove) : Math.floor(initialHalfmove);
-      if (initialHalfmove < -3) { initialHalfmove = 0; }
-      if (initialHalfmove == -3) { GoToMove(StartPlyVar[initialVariation] + PlyNumberVar[initialVariation], initialVariation); }
-      else if (initialHalfmove == -2) { GoToMove(0, initialVariation); MoveToNextComment(); }
-      else if (initialHalfmove == -1) { GoToMove(StartPlyVar[initialVariation] + Math.floor(Math.random()*(StartPlyVar[initialVariation] + PlyNumberVar[initialVariation])), initialVariation); }
-      else { GoToMove(Math.floor(initialHalfmove), initialVariation); }
+      if (isNaN(initialHalfmove = parseInt(initialHalfmove, 10))) { initialHalfmove = 0; }
+      GoToMove(initialHalfmove, initialVariation);
       break;
   }
 }
