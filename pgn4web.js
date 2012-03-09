@@ -1996,13 +1996,14 @@ function Init(nextGame){
   OpenGame(currentGame);
 
   CurrentPly = StartPly;
-  if (firstStart || alwaysInitialHalfmove) { GoToInitialHalfmove(); }
-  else {
-    autoScrollToCurrentMoveIfEnabled();
+  if (firstStart || alwaysInitialHalfmove) {
+    GoToInitialHalfmove();
+  } else {
     synchMoves();
     customFunctionOnMove();
+    // customFunctionOnMove here for consistency: null move starting new game
   }
-  // customFunctionOnMove here for consistency: null move starting new game
+  autoScrollToCurrentMoveIfEnabled();
 
   RefreshBoard();
   HighlightLastMove();
