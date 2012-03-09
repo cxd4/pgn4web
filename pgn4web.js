@@ -2499,6 +2499,8 @@ function MoveBackward(diff, scanOnly) {
 
 function MoveForward(diff, targetVar, scanOnly) {
 
+  var oldVar = -1;
+
   if (typeof(targetVar) == "undefined") { targetVar = CurrentVar; }
 
   // CurrentPly counts from 1, starting position 0
@@ -2516,7 +2518,7 @@ function MoveForward(diff, targetVar, scanOnly) {
         if (PredecessorsVars[targetVar][ii] === CurrentVar) { break; }
       }
       if (ii === PredecessorsVars[targetVar].length) {
-        myAlert("error: dont know how to reach variation " + targetVar + " from " + CurrentVar, true);
+        myAlert("error: unknown path to reach variation " + targetVar + " from " + CurrentVar + " in game " + (currentGame+1), true);
         return;
       } else {
         nextVarStartPly = StartPlyVar[PredecessorsVars[targetVar][ii + 1]];
@@ -2527,13 +2529,17 @@ function MoveForward(diff, targetVar, scanOnly) {
       }
     } else { nextVar = nextVarStartPly = -1; }
 
-    if (thisPly === nextVarStartPly) { CurrentVar = nextVar; }
+    if (thisPly === nextVarStartPly) {
+      oldVar = CurrentVar;
+      CurrentVar = nextVar;
+    }
 
     if (typeof(move = MovesVar[CurrentVar][thisPly]) == "undefined") { break; }
 
     if (ParseLastMoveError = !ParseMove(move, thisPly)) {
       text = (Math.floor(thisPly / 2) + 1) + ((thisPly % 2) === 0 ? '. ' : '... ');
-      myAlert('error: invalid ply ' + text + move + ' in game ' + (currentGame+1), true);
+      myAlert('error: invalid ply ' + text + move + ' in game ' + (currentGame+1) + ' variation ' + CurrentVar, true);
+      if (thisPly === nextVarStartPly) { CurrentVar = oldVar; }
       break;
     }
     MoveColor = 1-MoveColor;
@@ -2674,7 +2680,7 @@ function startVar() {
   MovesVar[CurrentVar] = new Array();
   MoveCommentsVar[CurrentVar] = new Array();
   if (lastVarWithNoMoves) {
-    myAlert("warning: malformed PGN data with variant " + CurrentVar + " starting before parent", true);
+    myAlert("warning: malformed PGN data in game " + (currentGame+1) + ": variant " + CurrentVar + " starting before parent", true);
   } else {
     lastVarWithNoMoves = true;
     PlyNumber -= 1;
@@ -2686,7 +2692,7 @@ function startVar() {
 function closeVar() {
   if (StartPly + PlyNumber ===  StartPlyVar[CurrentVar]) {
     lastVarWithNoMoves = false;
-    myAlert("warning: empty variation " + CurrentVar, false);
+    myAlert("warning: empty variation " + CurrentVar + " in game " + (currentGame+1), false);
   }
   PlyNumberVar[CurrentVar] = StartPly + PlyNumber - StartPlyVar[CurrentVar];
   for (var ii=StartPlyVar[CurrentVar]; ii<=StartPlyVar[CurrentVar]+PlyNumberVar[CurrentVar]; ii++) {
@@ -2702,7 +2708,7 @@ function closeVar() {
     CurrentVar = CurrentVarStack.pop();
     PlyNumber = PlyNumberStack.pop();
   } else {
-    myAlert("error: closeVar error", true);
+    myAlert("error: closeVar error" + " in game " + (currentGame+1), true);
   }
 }
 
@@ -2990,6 +2996,8 @@ function ParseMove(move, plyCount) {
   mvCaptured = -1;
   mvCapturedId = -1;
   mvIsNull = 0;
+
+  if (typeof(move) == "undefined") { return false; }
 
   if (move == "--") {
     mvIsNull = 1;
@@ -3472,7 +3480,7 @@ function variationTextFromTag(variationTag, addHtmlTags) {
   if (typeof(addHtmlTags) == "undefined") { addHtmlTags = false; }
   var varId = variationTag.replace(/(\[%pgn4web_variation |\])/g, "");
   if (isNaN(varId)) {
-    myAlert("error: issue parsing variation tag " + variationTag, true);
+    myAlert("error: issue parsing variation tag " + variationTag + " in game " + (currentGame+1), true);
     return "";
   }
   var text = variationTextFromId(varId);
@@ -3485,7 +3493,7 @@ function variationTextFromTag(variationTag, addHtmlTags) {
 var variationTextDepth;
 function variationTextFromId(varId) {
   if (isNaN(varId) || varId < 0 || varId >= numberOfVars || typeof(StartPlyVar[varId]) == "undefined" || typeof(PlyNumberVar[varId]) == "undefined") {
-    myAlert("error: issue parsing variation id " + varId, true);
+    myAlert("error: issue parsing variation id " + varId + " in game " + (currentGame+1), true);
     return "";
   }
   var text = ++variationTextDepth ? ('<SPAN CLASS="variation">' + (printedVariation ? ' ' : '') + (variationTextDepth > 1 ? '(' : '[')) + '</SPAN>' : '';

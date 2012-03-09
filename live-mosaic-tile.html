@@ -108,7 +108,7 @@
     if (parent && parent.switchBoardView && (typeof(chrome) != "undefined") && (chrome.extension)) {
       boardShortcut("H5", "zoom into the single large board view", function(){ parent.switchBoardView("\\[White\\s+\"" + fixRegExp(gameWhite[currentGame]) + "\"\\].*\\[Black\\s+\"" + fixRegExp(gameBlack[currentGame]) + "\"\\]"); });
     }
-  } catch(e) { myAlert("warning: failed accessing parent for shortcut squares to clear", false); }
+  } catch(e) { myAlert("warning: failed accessing frame's parent for shortcut squares to clear", false); }
 
   if ((typeof(chrome) != "undefined") && (typeof(chrome.extension) != "undefined") && (typeof(chrome.extension.getBackgroundPage) != "undefined") && (typeof(chrome.extension.getBackgroundPage().showAboutPage) != "undefined")) {
     boardShortcut("A7", "chess games viewer extension help", function(){ setTimeout("chrome.extension.getBackgroundPage().showAboutPage();", 99); });
@@ -141,7 +141,7 @@
       if (parent && parent.pgn4webHideChildFrameGame) {
         parent.pgn4webHideChildFrameGame(gameEvent[currentGame], gameSite[currentGame], gameDate[currentGame], gameRound[currentGame], gameWhite[currentGame], gameBlack[currentGame]);
       }
-    } catch(e) { myAlert("error: failed accessing parent for hiding game", true); }
+    } catch(e) { myAlert("error: failed accessing frame's parent for hiding game", true); }
   }
 
   function customFunctionOnPgnTextLoad() {
@@ -190,7 +190,7 @@
           boardShortcut("A6", "hiding option not available for this game", function(){} );
         }
       }
-    } catch(e) { myAlert("warning: failed accessing parent for hiding game option", false); }
+    } catch(e) { myAlert("warning: failed accessing frame's parent for hiding game option", false); }
 
     this_gameKey = gameKey(gameEvent[currentGame], gameSite[currentGame], gameDate[currentGame], gameRound[currentGame], gameWhite[currentGame], gameBlack[currentGame]);
     newMovesFlag((old_gameKey === this_gameKey) && (old_PlyNumber !== PlyNumber));
@@ -232,19 +232,19 @@
     return key;
   }
 
-  function customShortcutKey_Shift_0() { try { if (parent && parent.customShortcutKey_Shift_0) {parent.customShortcutKey_Shift_0(); } } catch(e) { myAlert("error: failed accessing parent custom shortcut key function"); } }
+  function customShortcutKey_Shift_0() { try { if (parent && parent.customShortcutKey_Shift_0) {parent.customShortcutKey_Shift_0(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
 
   function customShortcutKey_Shift_1() { if (typeof(openFidePlayerUrl) == "function") { openFidePlayerUrl(gameWhite[currentGame], customPgnHeaderTag("WhiteFideId")); } }
 
   function customShortcutKey_Shift_2() { if (typeof(openFidePlayerUrl) == "function") { openFidePlayerUrl(gameBlack[currentGame], customPgnHeaderTag("BlackFideId")); } }
 
-  function customShortcutKey_Shift_3() { try { if (parent && parent.customShortcutKey_Shift_3) {parent.customShortcutKey_Shift_3(); } } catch(e) { myAlert("error: failed accessing parent custom shortcut key function"); } }
-  function customShortcutKey_Shift_4() { try { if (parent && parent.customShortcutKey_Shift_4) {parent.customShortcutKey_Shift_4(); } } catch(e) { myAlert("error: failed accessing parent custom shortcut key function"); } }
-  function customShortcutKey_Shift_5() { try { if (parent && parent.customShortcutKey_Shift_5) {parent.customShortcutKey_Shift_5(); } } catch(e) { myAlert("error: failed accessing parent custom shortcut key function"); } }
-  function customShortcutKey_Shift_6() { try { if (parent && parent.customShortcutKey_Shift_6) {parent.customShortcutKey_Shift_6(); } } catch(e) { myAlert("error: failed accessing parent custom shortcut key function"); } }
-  function customShortcutKey_Shift_7() { try { if (parent && parent.customShortcutKey_Shift_7) {parent.customShortcutKey_Shift_7(); } } catch(e) { myAlert("error: failed accessing parent custom shortcut key function"); } }
-  function customShortcutKey_Shift_8() { try { if (parent && parent.customShortcutKey_Shift_8) {parent.customShortcutKey_Shift_8(); } } catch(e) { myAlert("error: failed accessing parent custom shortcut key function"); } }
-  function customShortcutKey_Shift_9() { try { if (parent && parent.customShortcutKey_Shift_9) {parent.customShortcutKey_Shift_9(); } } catch(e) { myAlert("error: failed accessing parent custom shortcut key function"); } }
+  function customShortcutKey_Shift_3() { try { if (parent && parent.customShortcutKey_Shift_3) {parent.customShortcutKey_Shift_3(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
+  function customShortcutKey_Shift_4() { try { if (parent && parent.customShortcutKey_Shift_4) {parent.customShortcutKey_Shift_4(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
+  function customShortcutKey_Shift_5() { try { if (parent && parent.customShortcutKey_Shift_5) {parent.customShortcutKey_Shift_5(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
+  function customShortcutKey_Shift_6() { try { if (parent && parent.customShortcutKey_Shift_6) {parent.customShortcutKey_Shift_6(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
+  function customShortcutKey_Shift_7() { try { if (parent && parent.customShortcutKey_Shift_7) {parent.customShortcutKey_Shift_7(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
+  function customShortcutKey_Shift_8() { try { if (parent && parent.customShortcutKey_Shift_8) {parent.customShortcutKey_Shift_8(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
+  function customShortcutKey_Shift_9() { try { if (parent && parent.customShortcutKey_Shift_9) {parent.customShortcutKey_Shift_9(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
 
   window.onload = function() {
     start_pgn4web();
@@ -255,7 +255,7 @@
         if (!isNaN(boardId)) { parent.updateBoard(boardId); }
         else { myAlert("warning: failed detecting board id", false); }
       }
-    } catch(e) { myAlert("warning: failed forcing board update from parent", false); }
+    } catch(e) { myAlert("warning: failed forcing board update from frame's parent", false); }
   };
 
 </script>
