@@ -547,9 +547,9 @@ boardShortcut("E2", "autoplay 3 seconds", function(){ SetAutoplayDelayAndStart( 
 // F2
 boardShortcut("F2", "autoplay 5 seconds", function(){ SetAutoplayDelayAndStart( 5*1000); });
 // G2
-boardShortcut("G2", "autoplay 10 seconds", function(){ SetAutoplayDelayAndStart(10*1000); });
+boardShortcut("G2", "cycle through alternative variations", function(){ goToNextVariationSibling(); });
 // H2
-boardShortcut("H2", "autoplay 30 seconds", function(){ SetAutoplayDelayAndStart(30*1000); });
+boardShortcut("H2", "autoplay 15 seconds", function(){ SetAutoplayDelayAndStart(15*1000); });
 // A1
 boardShortcut("A1", "go to game start", function(){ GoToMove(StartPlyVar[0], 0); });
 // B1
