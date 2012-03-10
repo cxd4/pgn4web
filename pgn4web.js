@@ -2286,16 +2286,22 @@ function InitFEN(startingFEN) {
       myAlert("error: invalid FEN ("+ll+") missing fullmove number in game "+(currentGame+1)+"\n"+FenString, true);
       return;
     }
-    cc = FenString.substring(ll++);
-    if (isNaN(cc)) {
-      myAlert("error: invalid FEN ("+ll+") invalid fullmove number in game "+(currentGame+1)+"\n"+FenString, true);
-      return;
+
+    InitialFullMoveNumber = 0;
+    cc = FenString.charAt(ll++);
+    while (cc != " ") {
+      if (isNaN(cc)) {
+        myAlert("error: invalid FEN ("+ll+") invalid fullmove number in game "+(currentGame+1)+"\n"+FenString, true);
+        return;
+      }
+      InitialFullMoveNumber=InitialFullMoveNumber*10+parseInt(cc,10);
+      cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
     }
-    if (cc <= 0) {
-      myAlert("error: invalid FEN ("+ll+") invalid fullmove number in game "+(currentGame+1)+"\n"+FenString, true);
-      return;
+    if (InitialFullMoveNumber === 0) {
+      myAlert("warning: invalid FEN ("+ll+") invalid 0 fullmove number corrected to 1 in game "+(currentGame+1)+"\n"+FenString, true);
+      InitialFullMoveNumber = 1;
     }
-    StartPly += 2*(parseInt(cc,10)-1);
+    StartPly += 2*(InitialFullMoveNumber-1);
 
     HistEnPassant[StartPly-1] = newEnPassant;
     HistEnPassantCol[StartPly-1] = newEnPassantCol;
