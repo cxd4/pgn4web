@@ -109,7 +109,8 @@ a.variation {
 }
 
 .moveOn,
-.variationOn {
+.variationOn,
+a.variationOn {
   color: red;
 }
 
