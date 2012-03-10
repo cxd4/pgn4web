@@ -149,7 +149,7 @@ Errors alert messages are logged, such as failures to load PGN games, incorrect 
 
 <div id="shortcut_keys_section" class="section">
 
-The user can interact with the pgn4web chessboard using the keyboard:
+The user can interact with the pgn4web chessboard using the keyboard (<a href="http://code.google.com/p/pgn4web/wiki/ShortcutKeysSquares" target="_blank">see the pgn4web wiki for some examples</a>):
 <p></p>
 
 <script type="text/javascript">
@@ -157,10 +157,11 @@ The user can interact with the pgn4web chessboard using the keyboard:
 document.write("<table style='padding:0;' border='0'>");
 print_help_row("h , l", "game start, end (also arrow up, down keys)");
 print_help_row("shift-h , shift-l", "variation start, end (also shift arrow up, down keys)");
-print_help_row("u, i", "find previous, next comment");
 print_help_row("j , k", "move backward, forward (also arrow left, right keys)");
 print_help_row("shift-j", "go to parent variation (also shift arrow left key)");
 print_help_row("shift-k", "cycle through <span title='alternative variations are moves with the same predecessor move as the last move played on the chessboard; in the game 1. e4 e5 (1... e6) (1... c5) the moves e6 and c5 are alternatives to e5'>alternative variations</span>, if any (also shift arrow right key)");
+print_help_row("u, i", "find previous, next comment or variation (also page up, down keys)");
+print_help_row("shift-u, shift-i", "find previous, next variation (also shift page up, down keys)");
 print_help_row("&nbsp;", "");
 print_help_row("a", "start autoplay");
 print_help_row("0", "stop autoplay");
@@ -237,7 +238,7 @@ document.write('Access the search tool either directly with the search form (if 
 </script>
 
 <p></p>
-For full details about the search tool (implemented as regular expression match of the text of the PGN game), please refer to <a href="http://code.google.com/p/pgn4web/wiki/SearchTool" target="_blank">the pgn4web search tool wiki page</a>; please find below a sample list of useful search patterns:
+For full details about the search tool (implemented as regular expression match of the text of the PGN game), please refer to <a href="http://code.google.com/p/pgn4web/wiki/SearchTool" target="_blank">the pgn4web wiki</a>; please find below a sample list of useful search patterns:
 <p></p>
 <script type="text/javascript">
 document.write("<table style='padding:0;' border='0'>");

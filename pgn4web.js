@@ -201,8 +201,6 @@ function handlekey(e) {
     case 17: // ctrl
     case 18: // alt
     case 32: // space
-    case 33: // page-up
-    case 34: // page-down
     case 35: // end
     case 36: // home
     case 45: // insert
@@ -245,12 +243,14 @@ function handlekey(e) {
       else { GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); }
       return stopKeyProp(e);
 
+    case 33: // page-up
     case 85: // u
-      MoveToPrevComment();
+      MoveToPrevComment(e.shiftKey);
       return stopKeyProp(e);
 
+    case 34: // page-down
     case 73: // i
-      MoveToNextComment();
+      MoveToNextComment(e.shiftKey);
       return stopKeyProp(e);
 
     case 83: // s
@@ -527,7 +527,7 @@ boardShortcut("C3", "load previous game", function(){ Init(currentGame - 1); });
 // D3
 boardShortcut("D3", "load random game", function(){ if (numberOfGames > 1) { Init(Math.floor(Math.random()*numberOfGames)); } });
 // E3
-boardShortcut("E3", "load random game at random position", function(){ Init(Math.floor(Math.random()*numberOfGames)); GoToMove(StartPly + Math.floor(Math.random()*(StartPly + PlyNumber + 1))); });
+boardShortcut("E3", "load random game at random position", function(){ Init(Math.floor(Math.random()*numberOfGames)); GoToMove(StartPlyVar[0] + Math.floor(Math.random()*(StartPlyVar[0] + PlyNumberVar[0] + 1)), 0); });
 // F3
 boardShortcut("F3", "load next game", function(){ Init(currentGame + 1); });
 // G3
@@ -553,7 +553,7 @@ boardShortcut("H2", "autoplay 30 seconds", function(){ SetAutoplayDelayAndStart(
 // A1
 boardShortcut("A1", "go to game start", function(){ GoToMove(StartPlyVar[0], 0); });
 // B1
-boardShortcut("B1", "go to previous comment", function(){ MoveToPrevComment(); });
+boardShortcut("B1", "go to previous comment or variation", function(){ MoveToPrevComment(); });
 // C1
 boardShortcut("C1", "move 6 half-moves backward", function(){ MoveBackward(6); });
 // D1
@@ -563,7 +563,7 @@ boardShortcut("E1", "move forward", function(){ MoveForward(1); });
 // F1
 boardShortcut("F1", "move 6 half-moves forward", function(){ MoveForward(6); });
 // G1
-boardShortcut("G1", "go to next comment", function(){ MoveToNextComment(); });
+boardShortcut("G1", "go to next comment or variation", function(){ MoveToNextComment(); });
 // H1
 boardShortcut("H1", "go to game end", function(){ GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); });
 
@@ -931,6 +931,9 @@ var dummyPgnHeader = '[x""]';
 var emptyPgnHeader = '[Event ""]\n[Site ""]\n[Date ""]\n[Round ""]\n[White ""]\n[Black ""]\n[Result ""]\n\n';
 var templatePgnHeader = '[Event "?"]\n[Site "?"]\n[Date "?"]\n[Round "?"]\n[White "?"]\n[Black "?"]\n[Result "?"]\n';
 var alertPgnHeader = '[Event ""]\n[Site ""]\n[Date ""]\n[Round ""]\n[White ""]\n[Black ""]\n[Result ""]\n\n{error: click on the top left chessboard square for debug info}';
+
+var pgn4webVariationRegExp       = /\[%pgn4web_variation (\d+)\]/;
+var pgn4webVariationRegExpGlobal = /\[%pgn4web_variation (\d+)\]/g;
 
 var gameSelectorHead = ' ...';
 var gameSelectorMono = true;
@@ -2630,15 +2633,16 @@ function AutoplayNextGame() {
   SetAutoPlay(false);
 }
 
-function MoveToNextComment() {
+function MoveToNextComment(varOnly) {
   for(ii=CurrentPly+1; ii<=StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]; ii++) {
-    if (strippedMoveComment(ii)) { GoToMove(ii); break; }
+    if (MoveComments[ii].match(pgn4webVariationRegExp) || (!varOnly && strippedMoveComment(ii))) { GoToMove(ii); break; }
   }
 }
 
-function MoveToPrevComment() {
-  for(ii=(CurrentPly-1); ii>=0; ii--) {
-    if (strippedMoveComment(ii)) { GoToMove(ii); break; }
+function MoveToPrevComment(varOnly) {
+  for(ii=(CurrentPly-1); ii>=StartPly; ii--) {
+    if (ii === StartPlyVar[HistVar[ii+1]]) { GoToMove(ii+1, HistVar[ii]); break; } 
+    if (MoveComments[ii].match(pgn4webVariationRegExp) || (!varOnly && strippedMoveComment(ii))) { GoToMove(ii); break; }
   }
 }
 
@@ -2754,7 +2758,7 @@ function goToNextVariationSibling() {
 function ParsePGNGameString(gameString) {
 
   var ssRep, ss = gameString;
-  ss = ss.replace(/\[%pgn4web_variation (\d+)\]/g, "[%pgn4web_variation_ $1]");
+  ss = ss.replace(pgn4webVariationRegExpGlobal, "[%_pgn4web_variation_ $1]");
   ss = ss.replace(pgnHeaderTagRegExpGlobal, '');
   // replace empty variations with comments
   while ((ssRep = ss.replace(/\((([\?!+#\s\r\n]|\$\d+|{[^}]*})*)\)/g, ' $1 ')) !== ss) { ss = ssRep; }
@@ -3478,7 +3482,7 @@ function strippedMoveComment(plyNum, varId, addHtmlTags) {
   if (typeof(addHtmlTags) == "undefined") { addHtmlTags = false; }
   if (typeof(varId) == "undefined") { varId = CurrentVar; }
   if (!MoveCommentsVar[varId][plyNum]) { return ""; }
-  return fixCommentForDisplay(MoveCommentsVar[varId][plyNum]).replace(/\[%pgn4web_variation \d+\]/g, function (m) { return variationTextFromTag(m, addHtmlTags); }).replace(/\[%[^\]]*\]\s*/g,'').replace(basicNAGs, '').replace(/^\s+$/,'');
+  return fixCommentForDisplay(MoveCommentsVar[varId][plyNum]).replace(pgn4webVariationRegExpGlobal, function (m) { return variationTextFromTag(m, addHtmlTags); }).replace(/\[%[^\]]*\]\s*/g,'').replace(basicNAGs, '').replace(/^\s+$/,'');
 }
 
 function basicNAGsMoveComment(plyNum, varId) {
@@ -3490,7 +3494,7 @@ function basicNAGsMoveComment(plyNum, varId) {
 
 function variationTextFromTag(variationTag, addHtmlTags) {
   if (typeof(addHtmlTags) == "undefined") { addHtmlTags = false; }
-  var varId = variationTag.replace(/(\[%pgn4web_variation |\])/g, "");
+  var varId = variationTag.replace(pgn4webVariationRegExp, "$1");
   if (isNaN(varId)) {
     myAlert("error: issue parsing variation tag " + variationTag + " in game " + (currentGame+1), true);
     return "";
