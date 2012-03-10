@@ -2641,7 +2641,7 @@ function MoveToNextComment(varOnly) {
 
 function MoveToPrevComment(varOnly) {
   for(ii=(CurrentPly-1); ii>=StartPly; ii--) {
-    if (ii === StartPlyVar[HistVar[ii+1]]) { GoToMove(ii+1, HistVar[ii]); break; } 
+    if ((ii > 0 || CurrentVar > 0) && ii === StartPlyVar[HistVar[ii+1]]) { GoToMove(ii+1, HistVar[ii]); break; }
     if (MoveComments[ii].match(pgn4webVariationRegExp) || (!varOnly && strippedMoveComment(ii))) { GoToMove(ii); break; }
   }
 }
