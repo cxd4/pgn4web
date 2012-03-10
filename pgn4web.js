@@ -3641,7 +3641,7 @@ function SetAutoPlay(vv) {
 }
 
 function SetAutoplayDelay(vv) {
-  if (vv = isNaN(parseInt(vv, 10))) { return; }
+  if (isNaN(vv = parseInt(vv, 10))) { return; }
   Delay = Math.max(vv, 500);
 }
 
