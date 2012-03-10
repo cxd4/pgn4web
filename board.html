@@ -830,7 +830,7 @@ if (highlightMode == 'border') {
   }
 
   if (!fontHeaderSize.match(/[^0-9]/)) { fontHeaderSize += 'px'; }
-  newStyleSheet += '.header { color: ' + fontHeaderColor + '; font-size: ' + fontHeaderSize + '; } \n';
+  newStyleSheet += 'body, table, tr, td, .header { color: ' + fontHeaderColor + '; font-size: ' + fontHeaderSize + '; } \n';
 
   if (!fontMovesSize.match(/[^0-9]/)) { fontMovesSize += 'px'; }
   newStyleSheet += '.move { color: ' + fontMovesColor + '; font-size: ' + fontMovesSize + '; } \n';
