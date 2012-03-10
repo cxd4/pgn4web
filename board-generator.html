@@ -537,11 +537,12 @@ function set_defaults() {
   if (movesDisplay_value == "t") { movesDisplay_value = "text"; }
   // "nosymbols" option is undocumented
   if (movesDisplay_value == "n") { movesDisplay_value = "nosymbols"; }
+  if (movesDisplay_value == "p") { movesDisplay_value = "puzzle"; }
   //kept for backward compatibility
   if ((movesDisplay_value == "justified") || (movesDisplay_value == "j")) { movesDisplay_value = "figurine"; }
   document.board.movesDisplay.value = movesDisplay_value;
-  if (!((movesDisplay_value == "hidden") || (movesDisplay_value == "figurine") || (movesDisplay_value == "nosymbols") || (movesDisplay_value == "text"))) {
-    alert("error: moves display must be either 'hidden', 'figurine', 'text' or their initials");
+  if (!((movesDisplay_value == "hidden") || (movesDisplay_value == "figurine") || (movesDisplay_value == "nosymbols") || (movesDisplay_value == "puzzle") || (movesDisplay_value == "text"))) {
+    alert("error: moves display must be either 'hidden', 'figurine', 'puzzle', 'text' or their initials");
     document.board.movesDisplay.value = movesDisplay_value = movesDisplay_default;
   }
 
@@ -1424,6 +1425,14 @@ function template_selected() {
   document.getElementById('templatesList').value = "heading";
 }
 
+function oneClickPuzzleSetup() {
+  if (confirm("the one click optimized puzzle setup will set\n \nmoves display to 'puzzle'\nheader display to 'live'\nbuttons display to 'none'\nautoplay mode to 'none'\n \nproceed?")) {
+    document.board.movesDisplay.value = movesDisplay_value = "puzzle";
+    document.board.headerDisplay.value = headerDisplay_value = "live";
+    document.board.buttonsDisplay.value = buttonsDisplay_value = "hidden";
+    document.board.autoplayMode.value = autoplayMode_value = "none";
+  }
+}
 
 var  sexEncodingCharSet = "$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
 
@@ -1884,9 +1893,11 @@ buttons</span>
 <select class="dropdown" id="movesDisplay" name="dropdown" onChange="update_controls()">
 <option value="figurine" selected="selected">figurine</option>
 <option value="text">text</option>
+<option value="puzzle">puzzle</option>
 <option value="hidden">hidden</option>
 </select>
 <span class="labeltext"><b>how to show game moves</b></span>
+<span class="helptext">select a game moves display option or use <a class="helplink" href="javascript: oneClickPuzzleSetup(); return false;">the one click optimized puzzle setup</a></span>
 <p></p>
 
 <input class="input" type="text" id="fontMovesSize" name="input" value="" size="12" onChange="validate_number_percentage(this, 'moves font size', fontMovesSize_default);">

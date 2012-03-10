@@ -139,10 +139,11 @@ if (movesDisplay == "f") { movesDisplay = "figurine"; }
 if (movesDisplay == "t") { movesDisplay = "text"; }
 if (movesDisplay == "h") { movesDisplay = "hidden"; }
 if (movesDisplay == "n") { movesDisplay = "nosymbols"; } // "nosymbols" option is undocumented
+if (movesDisplay == "p") { movesDisplay = "puzzle"; } // "nosymbols" option is undocumented
 if ((movesDisplay == "justified") || (movesDisplay == "j")) { movesDisplay = "figurine"; } // backward compatibility
-if ((movesDisplay != "figurine") && (movesDisplay != "nosymbols") && (movesDisplay != "text") && (movesDisplay != "hidden")) { movesDisplay = "figurine"; }
+if ((movesDisplay != "figurine") && (movesDisplay != "nosymbols") && (movesDisplay != "puzzle") && (movesDisplay != "text") && (movesDisplay != "hidden")) { movesDisplay = "figurine"; }
 
-blockChessInformantNAGSymbols = (movesDisplay != "figurine");
+blockChessInformantNAGSymbols = ((movesDisplay != "figurine") && ((movesDisplay != "puzzle")));
 
 </script>
 
@@ -709,7 +710,7 @@ if (gup("help") !== "") {
   document.write(" - controlTextColorHex = control buttons text color hex code, like FF0000 (default 000000)\n");
   document.write("\n");
   document.write(" - headerDisplay = justified | centered | hidden | live (default hidden)\n");
-  document.write(" - movesDisplay = figurine | text | hidden (default hidden)\n");
+  document.write(" - movesDisplay = figurine | text | puzzle | hidden (default hidden)\n");
   document.write(" - textHeight = set height of the textual section, header and/or moves text, might be ingored if frameHeight is set (default 100%)\n");
   document.write(" - textWidth = set width of the textual section, header and/or moves text, might be ignored if frameWidth is set (default 100%)\n");
   document.write(" - textMargin = set left/right margin width of the  textual section, header and/or moves text (default 0)\n");
@@ -748,7 +749,7 @@ if (gup("help") !== "") {
 
 newStyleSheet = '<style type="text/css"> \n';
 
-if ((movesDisplay == "figurine") || (movesDisplay == "nosymbols")) {
+if ((movesDisplay == "figurine") || (movesDisplay == "nosymbols") || (movesDisplay == "puzzle")) {
   newStyleSheet += 'body, .header, .comment { font-family: \'pgn4web Liberation Sans\', sans-serif; } \n';
   newStyleSheet += '.move, .variation, .lastMove { font-family: \'pgn4web ChessSansPiratf\', \'pgn4web Liberation Sans\', sans-serif; } \n';
 }
@@ -1025,6 +1026,11 @@ function display_header_moves() {
     if (headerDisplay != "hidden") {
       document.write("<div id='headerMovesSpacer' class='header' style='text-align: center;'>&nbsp;</div>");
     }
+    if (movesDisplay == "puzzle") {
+      document.write("<a style='margin-left:" + textMargin + "; margin-right:" + textMargin + ";" +
+                     "display:none;' class='move' href='javascript:void(0);' " +
+                     "onclick='MoveForward(1);' id=GamePuzzleTask></a>");
+    }
     document.write("<div style='margin-left:" + textMargin + "; margin-right:" + textMargin +
                    "; text-align: justify;' id=GameText></div>");
   }
@@ -1109,7 +1115,27 @@ function customFunctionOnPgnTextLoad() {
   }
 }
 
+var objectHiddenPuzzler = ["GameResult", "GameLastMove", "GameNextMove", "GameLastComment"];
+
 function customFunctionOnPgnGameLoad() {
+
+  if (movesDisplay == "puzzle") {
+    for (var ii = 0; ii < objectHiddenPuzzler.length; ii++) {
+      if (theObject = document.getElementById(objectHiddenPuzzler[ii])) {
+        theObject.style.visibility = "hidden";
+      }
+    }
+    if (theObject = document.getElementById("GameText")) {
+        theObject.style.display = "none";
+    }
+    if (theObject = document.getElementById("GamePuzzleTask")) {
+      theObject.innerHTML = Math.floor((CurrentPly / 2) + 1) +
+        (CurrentPly % 2 ? "..." : ".") + " ?";
+      theObject.title = (CurrentPly % 2 ? "Black" : "White") +
+        "to move: find the best move... click the ? for the solution";
+      theObject.style.display = "block";
+    }
+  }
 
   if (theObject = document.getElementById("roundDetails")) {
     if ((gameRound[currentGame] !=  undefined) &&
@@ -1197,6 +1223,26 @@ function customFunctionOnPgnGameLoad() {
 //   }
 
 }
+
+function customFunctionOnMove() {
+
+  if (movesDisplay == "puzzle") {
+    if (theObject = document.getElementById("GamePuzzleTask")) {
+      theObject.style.display = "none";
+      theObject.innerHTML = "";
+    }
+    for (var ii = 0; ii < objectHiddenPuzzler.length; ii++) {
+      if (theObject = document.getElementById(objectHiddenPuzzler[ii])) {
+        theObject.style.visibility = "";
+      }
+    }
+    if (theObject = document.getElementById("GameText")) {
+      theObject.style.display = "";
+    }
+  }
+
+}
+
 
 enableAutoScrollToCurrentMove("headerMoves");
 
