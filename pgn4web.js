@@ -1998,12 +1998,13 @@ function Init(nextGame){
   CurrentPly = StartPly;
   if (firstStart || alwaysInitialHalfmove) {
     GoToInitialHalfmove();
+    setTimeout("autoScrollToCurrentMoveIfEnabled();", Math.min(666, Delay));
   } else {
     synchMoves();
-    customFunctionOnMove();
+    autoScrollToCurrentMoveIfEnabled();
     // customFunctionOnMove here for consistency: null move starting new game
+    customFunctionOnMove();
   }
-  autoScrollToCurrentMoveIfEnabled();
 
   RefreshBoard();
   HighlightLastMove();
