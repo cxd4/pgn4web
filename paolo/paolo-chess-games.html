@@ -27,19 +27,17 @@
    if (fns = location.search.match(/fn=\d+/)) { fn = parseInt(fns[0].substr(3), 10); } else { fn = 0; }
    if ((fn > 0) && (fn <= maxFn)) { gamesUrl += "-" + fn; }
    gamesUrl += ".pgn";
-   SetPgnUrl(gamesUrl); // if set, this has precedence over the inline PGN in the HTML file
-   SetImagePath("../alpha/32"); // use "" path if images are in the same folder as this javascript file
+   SetPgnUrl(gamesUrl);
+   SetImagePath("../alpha/32");
    SetImageType("png");
-   SetHighlightOption(true); // true or false
+   SetHighlightOption(true);
    SetGameSelectorOptions("Select from Paolo's games...", false, 0, 0, 0, 15, 15, 0, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
    SetCommentsIntoMoveText(false);
    SetCommentsOnSeparateLines(false);
    SetAutoplayDelay(2000); // milliseconds
    SetAutostartAutoplay(false);
-   SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
-   SetInitialGame(1); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are accepted; other string values assumed as PGN search string
-   SetInitialVariation(0); // halfmove number to be shown at load, 0 (default) for main variation
-   SetInitialHalfmove("comment",true); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default)
+   SetAutoplayNextGame(false);
+   SetInitialHalfmove("comment",true);
    SetShortcutKeysEnabled(true);
 
 function customShortcutKey_Shift_1() {
