@@ -263,8 +263,8 @@ fontHeaderColorHex_default = "000000";
 fontMovesColorHex_default = "000000";
 fontCommentsColorHex_default = "808080";
 highlightMoveColorHex_default = "DAF4D7";
-fontHeaderSize_default = "100%";
-fontMovesSize_default = "100%";
+fontHeaderSize_default = "16";
+fontMovesSize_default = "16";
 fontCommentsSize_default = "moves";
 backgroundColorHex_default = "FFFFFF";
 previewBackgroundColorHex_default = "DDDDDD";
@@ -1183,7 +1183,7 @@ function validate_fontCommentsSize() {
   object = document.getElementById('fontCommentsSize');
   if (object.value == "moves") { return true; }
   if (!(vv = object.value.match(/^([0-9]+)(%$|p$|pct$|px$|$)/))) {
-    alert('error: the comments font size must be \'moves\' or a non integer number or percentage');
+    alert('error: the comments font size must be \'moves\' or a non integer number or (deprecated) a percentage');
     object.value = fontCommentsSize_default;
     return false;
   } else {
@@ -1870,7 +1870,7 @@ buttons</span>
 
 <input class="input" type="text" id="fontHeaderSize" name="input" value="" size="12" onChange="validate_number_percentage(this, 'header font size', fontHeaderSize_default);">
 <span class="labeltext">header font size</span>
-<span class="helptext">a number or a percentage</span>
+<span class="helptext">a number</span>
 <p></p>
 
 <input class="color {adjust:false} input" type="text" id="fontHeaderColorHex" name="input" value="" size="12" onChange="validate_color(this, 'header font color', fontHeaderColorHex_default)">
@@ -1888,7 +1888,7 @@ buttons</span>
 
 <input class="input" type="text" id="fontMovesSize" name="input" value="" size="12" onChange="validate_number_percentage(this, 'moves font size', fontMovesSize_default);">
 <span class="labeltext">moves font size</span>
-<span class="helptext">a number or a percentage</span>
+<span class="helptext">a number</span>
 <p></p>
 
 <input class="color {adjust:false} input" type="text" id="fontMovesColorHex" name="input" value="" size="12" onChange="validate_color(this, 'moves font color', fontMovesColorHex_default)">
@@ -1920,7 +1920,7 @@ inbetween game moves, or on a
 
 <input class="input" type="text" id="fontCommentsSize" name="input" value="" size="12" onChange="validate_fontCommentsSize();">
 <span class="labeltext">comments and variations font size</span>
-<span class="helptext">a number or a percentage;
+<span class="helptext">a number;
 <a class="helplink" href="" onClick="javascript:document.board.fontCommentsSize.value = 'moves'; return false;">moves</a>
 copies the moves font size</span>
 <p></p>
