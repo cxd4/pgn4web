@@ -378,6 +378,7 @@ function set_defaults() {
   if (initialHalfmove_value == "e") { initialHalfmove_value = "end"; }
   if (initialHalfmove_value == "r") { initialHalfmove_value = "random"; }
   if (initialHalfmove_value == "c") { initialHalfmove_value = "comment"; }
+  if (initialHalfmove_value == "v") { initialHalfmove_value = "variation"; }
   document.board.initialHalfmove.value = initialHalfmove_value;
   checkInitialHalfmove();
 
@@ -1273,6 +1274,7 @@ function checkInitialHalfmove() {
     case "end":
     case "random":
     case "comment":
+    case "variation":
       document.board.initialHalfmoveSelect.value = document.board.initialHalfmove.value;
       document.board.initialHalfmoveNumber.value = initialHalfmoveNumber_default;
       retVal = true;
@@ -1283,7 +1285,7 @@ function checkInitialHalfmove() {
         document.board.initialHalfmoveNumber.value = initialHalfmove_value;
         retVal = true;
       } else {
-        alert("error: initial halfmove (as URL parameter) must be either a number or 'start', 'end', 'random', 'comment' or their initials");
+        alert("error: initial halfmove (as URL parameter) must be either a number or 'start', 'end', 'random', 'comment', 'variation' or their initials");
         document.board.initialHalfmove.value = initialHalfmove_value = initialHalfmove_default;
         document.board.initialHalfmoveSelect.value = initialHalfmoveSelect_default;
         document.board.initialHalfmoveNumber.value = initialHalfmoveNumber_default;
@@ -1707,6 +1709,7 @@ defaults to the main variation</span>
         <option value="end">end</option>
         <option value="random">random</option>
         <option value="comment">comment</option>
+        <option value="variation">variation</option>
         <option value="number">custom number</option>
 </select>
 <span class="labeltext">initial halfmove</span>

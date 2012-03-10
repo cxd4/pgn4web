@@ -71,13 +71,13 @@
   SetCommentsOnSeparateLines(true);
   SetAutoplayDelay(1000); // milliseconds
   SetAutostartAutoplay(false);
-  SetAutoplayNextGame(false); // if set, move to the next game at the end of the current game during autoplay
-  SetInitialGame(iniGame); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are accepted; other string values assumed as PGN search string
-  SetInitialVariation(0); // halfmove number to be shown at load, 0 (default) for main variation
-  SetInitialHalfmove("end",true); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random" and "comment" (go to first comment) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only (default)
+  SetAutoplayNextGame(false);
+  SetInitialGame(iniGame);
+  SetInitialVariation(0);
+  SetInitialHalfmove("end",true);
   SetShortcutKeysEnabled(true);
 
-  SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, false); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false)
+  SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, false);
 
   function underlineByTicker(text, ticker) {
     position = ticker % text.length;

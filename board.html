@@ -418,8 +418,10 @@ if ((init_Halfmove = gup("initialHalfmove")) === "") {
   if (init_Halfmove == "e") { init_Halfmove = "end"; }
   if (init_Halfmove == "r") { init_Halfmove = "random"; }
   if (init_Halfmove == "c") { init_Halfmove = "comment"; }
+  if (init_Halfmove == "v") { init_Halfmove = "variatiion"; }
   if ((init_Halfmove == "start")  || (init_Halfmove == "end") ||
-      (init_Halfmove == "random") || (init_Halfmove == "comment")) {
+      (init_Halfmove == "random") || (init_Halfmove == "comment") ||
+      (init_Halfmove == "variation")) {
      always_Halfmove = true;
   }
 }
@@ -687,7 +689,7 @@ if (gup("help") !== "") {
   document.write("\n");
   document.write(" - initialGame = first | last | random | a number | a search expression (default first)\n");
   document.write(" - initialVariation = a number (default 0)\n");
-  document.write(" - initialHalfmove = start | end | random | comment | a number (default start)\n");
+  document.write(" - initialHalfmove = start | end | random | comment | variation | a number (default start)\n");
   document.write("\n");
   document.write(" - autoplayMode = game (autoplay first game once) | loop (loops through games continiously) | none (default game)\n");
   document.write(" - delay = autoplay delay in ms (default 1000)\n");

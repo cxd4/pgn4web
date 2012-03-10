@@ -1967,8 +1967,9 @@ function GoToInitialHalfmove() {
       GoToMove(StartPlyVar[initialVariation] + Math.floor(Math.random()*(StartPlyVar[initialVariation] + PlyNumberVar[initialVariation])), initialVariation);
       break;
     case "comment":
-      GoToMove(0);
-      MoveToNextComment();
+    case "variation":
+      GoToMove(0, initialVariation);
+      MoveToNextComment(initialHalfmove == "variation");
       break;
     default:
       if (isNaN(initialHalfmove = parseInt(initialHalfmove, 10))) { initialHalfmove = 0; }
