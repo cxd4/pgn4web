@@ -1998,7 +1998,7 @@ function Init(nextGame){
   CurrentPly = StartPly;
   if (firstStart || alwaysInitialHalfmove) {
     GoToInitialHalfmove();
-    setTimeout("autoScrollToCurrentMoveIfEnabled();", Math.min(666, Delay));
+    setTimeout("autoScrollToCurrentMoveIfEnabled();", Math.min(666, 0.9 * Delay));
   } else {
     synchMoves();
     autoScrollToCurrentMoveIfEnabled();
