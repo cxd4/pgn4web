@@ -1498,9 +1498,9 @@ function pgnGameFromPgnText(pgnText) {
         inGameBody = true;
       }
     }
-    lines[ii] = lines[ii].replace(/^\s*/,"");
-    lines[ii] = lines[ii].replace(/\s*$/,"");
-    if (gameIndex >= 0) { newPgnGame[gameIndex] += lines[ii] + '\n'; }
+    if (gameIndex >= 0) {
+      newPgnGame[gameIndex] += lines[ii].replace(/(^\s*|\s*$)/, "") + '\n';
+    }
   }
 
   if (gameIndex >= 0) {
