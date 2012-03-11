@@ -2677,7 +2677,7 @@ function initVar () {
   StartPlyVar = new Array();
   PlyNumberVar = new Array();
   CurrentVar = -1;
-  lastVarWithNoMoves = false;
+  lastVarWithNoMoves = [false];
   numberOfVars = 0;
   CurrentVarStack = new Array();
   PlyNumber = 1;
@@ -2696,21 +2696,21 @@ function startVar() {
   PredecessorsVars[CurrentVar].push(CurrentVar);
   MovesVar[CurrentVar] = new Array();
   MoveCommentsVar[CurrentVar] = new Array();
-  if (lastVarWithNoMoves) {
+  if (lastVarWithNoMoves[lastVarWithNoMoves.length - 1]) {
     myAlert("warning: malformed PGN data in game " + (currentGame+1) + ": variant " + CurrentVar + " starting before parent", true);
   } else {
-    lastVarWithNoMoves = true;
     PlyNumber -= 1;
   }
+  lastVarWithNoMoves.push(true);
   MoveCommentsVar[CurrentVar][StartPly + PlyNumber] = "";
   StartPlyVar[CurrentVar] = StartPly + PlyNumber;
 }
 
 function closeVar() {
   if (StartPly + PlyNumber ===  StartPlyVar[CurrentVar]) {
-    lastVarWithNoMoves = false;
     myAlert("warning: empty variation " + CurrentVar + " in game " + (currentGame+1), false);
   }
+  lastVarWithNoMoves.pop();
   PlyNumberVar[CurrentVar] = StartPly + PlyNumber - StartPlyVar[CurrentVar];
   for (var ii=StartPlyVar[CurrentVar]; ii<=StartPlyVar[CurrentVar]+PlyNumberVar[CurrentVar]; ii++) {
     if (MoveCommentsVar[CurrentVar][ii]) {
@@ -2873,7 +2873,7 @@ function ParsePGNGameString(gameString) {
         if ((end = start + ss.substr(start).search(/[\s${;!?()]/)) < start) { end = ss.length; }
         move = ss.substring(start,end);
         MovesVar[CurrentVar][StartPly+PlyNumber] = ClearMove(move);
-        lastVarWithNoMoves = false;
+        lastVarWithNoMoves[lastVarWithNoMoves.length - 1] = false;
         if (ss.charAt(end) == ' ') { start = end; }
         else { start = end - 1; }
         if (MovesVar[CurrentVar][StartPly+PlyNumber] !== '') { // to cope with misformed PGN data

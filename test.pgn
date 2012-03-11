@@ -66,11 +66,11 @@ Qxf4 Nxf2#) (3. Qxe4 Qc1+) (3. Nc3 Qxe3 4. fxe3 Nf2#) 3... Qg4 0-1
 [Round "3"]
 [White "Another White player"]
 [Black "Another Black player"]
-[Result "1-0"]
+[Result "*"]
 
 1. d4 (1. c4 (1. b4 (1. a4 a5) 1... b5) 1... c5) (1. e4 (1. f4 (1. g4 (1. h4
 h5) 1... g5) 1... f5) 1... e5) 1... d5 (1... c5 (1... b5 (1... a5))) (1... e5
-(1... f5 (1... g5 2. g3) 2. f3) 2. e3) Qd3
+(1... f5 (1... g5 2. g3) 2. f3) 2. e3) e3 (f3 f6) (g3 g6) (h3 h6) e6 *
 
 [Event "Testing advanced variations: comments before/after variations"]
 [Site "Another site"]
@@ -78,11 +78,11 @@ h5) 1... g5) 1... f5) 1... e5) 1... d5 (1... c5 (1... b5 (1... a5))) (1... e5
 [Round "4"]
 [White "Another White player"]
 [Black "Another Black player"]
-[Result "1-0"]
+[Result "*"]
 
 1. d4 { this comment is right after White's first move } ( { this also, but
 already inside a variation } e4 { this is after the variation } ) { this is
-is outside the variation } d5 c4
+is outside the variation } d5 c4 *
 
 [Event "Testing advanced variations: empty variations"]
 [Site "Another site"]
@@ -104,5 +104,5 @@ is outside the variation } d5 c4
 [Result "*"]
 
 1. e4 e5 2. Bc4 ($140 2. Bc4 -- 3. Qf3 -- 4. Qxf7#) Nf6 3. d3 ({ defending
-against } 3. -- Nxe4) 3... Bc5
+against } 3. -- Nxe4) 3... Bc5 *
 
