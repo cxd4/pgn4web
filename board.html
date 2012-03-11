@@ -1027,9 +1027,7 @@ function display_header_moves() {
       document.write("<div id='headerMovesSpacer' class='header' style='text-align: center;'>&nbsp;</div>");
     }
     if (movesDisplay == "puzzle") {
-      document.write("<a style='margin-left:" + textMargin + "; margin-right:" + textMargin + ";" +
-                     "display:none;' class='move' href='javascript:void(0);' " +
-                     "onclick='MoveForward(1);' id=GamePuzzleTask></a>");
+      document.write("<div id=GamePuzzleTask></div>");
     }
     document.write("<div style='margin-left:" + textMargin + "; margin-right:" + textMargin +
                    "; text-align: justify;' id=GameText></div>");
@@ -1129,8 +1127,11 @@ function customFunctionOnPgnGameLoad() {
         theObject.style.display = "none";
     }
     if (theObject = document.getElementById("GamePuzzleTask")) {
-      theObject.innerHTML = Math.floor((CurrentPly / 2) + 1) +
-        (CurrentPly % 2 ? "..." : ".") + " ?";
+      theObject.innerHTML = "<A STYLE='margin-left:" + textMargin +
+        "; margin-right:" + textMargin + ";' CLASS='move moveOn'" +
+        "HREF='javascript:void(0);' " + "ONCLICK='MoveForward(1);'>" +
+        Math.floor((CurrentPly / 2) + 1) +
+        (CurrentPly % 2 ? "..." : ".") + " ?</A>";
       theObject.title = (CurrentPly % 2 ? "Black" : "White") +
         " to move: find the best move... click the ? for the solution";
       theObject.style.display = "block";
