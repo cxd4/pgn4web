@@ -64,7 +64,10 @@ Bugs:
 pattern similar to the PGN header pattern '[tag "value"]' then the game
 parsing might break. If your PGN file is not displayed properly, please
 check for characters "[" and "]" in the comments and try removing them.
-Please email me for review at pgn4web@casaschi.net any PGN file that
+
+User feedback:
+Please email the pgn4web project (pgn4web@casaschi.net) your feedback,
+suggestions and bug reports. Please send for review any PGN file that
 pgn4web fails parsing correctly.
 
 Enjoy!
