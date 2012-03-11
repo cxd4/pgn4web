@@ -360,7 +360,7 @@ if ((fontVariationsSize = percentFixFromUrl( gup("fontVariationsSize") )) === ""
 if (fontVariationsSize == "c") { fontVariationsSize = "comments"; }
 if ((fontVariationsColor = gup("fontVariationsColorName")) === "") {
   if ((fontVariationsColor = "#" + gup("fontVariationsColorHex")) == "#") {
-    if ((fontVariationsColor = "#" + sex2hex(gup("fontVariationsColorSex"))) == "#") { fontVariationsColor = "#808080"; }
+    if ((fontVariationsColor = "#" + sex2hex(gup("fontVariationsColorSex"))) == "#") { fontVariationsColor = "comments"; }
   }
 }
 
