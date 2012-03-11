@@ -1466,10 +1466,10 @@ function fixCommonPgnMistakes(text) {
   return text;
 }
 
-var pgnGameFromPgnText_SLOW_threshold = 65535;
+var pgnGameFromPgnText_SLOW_threshold = 65536;
 var pgnGameFromPgnText_used = "none";
 function pgnGameFromPgnText(pgnText) {
-  var useSlow = (pgnText.length <= pgnGameFromPgnText_SLOW_threshold);
+  var useSlow = (pgnText.length < pgnGameFromPgnText_SLOW_threshold);
   pgnGameFromPgnText_used = useSlow ? "slow" : "fast";
   return useSlow ? pgnGameFromPgnText_SLOW(pgnText) : pgnGameFromPgnText_FAST(pgnText);
 }
