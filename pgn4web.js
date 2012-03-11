@@ -182,7 +182,7 @@ function customShortcutKey_Shift_9() {}
 
 var shortcutKeysEnabled = false;
 function handlekey(e) {
-  var keycode;
+  var keycode, oldPly, oldVar;
 
   if (!e) { e = window.event; }
 
@@ -383,16 +383,16 @@ function handlekey(e) {
 
     case 79: // o
       SetCommentsOnSeparateLines(!commentsOnSeparateLines);
-      var oldPly = CurrentPly;
-      var oldVar = CurrentVar;
+      oldPly = CurrentPly;
+      oldVar = CurrentVar;
       Init();
       GoToMove(oldPly, oldVar);
       return stopKeyProp(e);
 
     case 80: // p
       SetCommentsIntoMoveText(!commentsIntoMoveText);
-      var oldPly = CurrentPly;
-      var oldVar = CurrentVar;
+      oldPly = CurrentPly;
+      oldVar = CurrentVar;
       Init();
       GoToMove(oldPly, oldVar);
       return stopKeyProp(e);
@@ -927,6 +927,7 @@ var IsRotated = false;
 
 var pgnHeaderTagRegExp       = /\[\s*(\w+)\s*"([^"]*)"\s*\]/;
 var pgnHeaderTagRegExpGlobal = /\[\s*(\w+)\s*"([^"]*)"\s*\]/g;
+var pgnHeaderBlockRegExp     = /^(\[\s*\w+\s*"[^"]*"\s*\][\s\n\r\t]*)+/;
 var dummyPgnHeader = '[x""]';
 var emptyPgnHeader = '[Event ""]\n[Site ""]\n[Date ""]\n[Round ""]\n[White ""]\n[Black ""]\n[Result ""]\n\n';
 var templatePgnHeader = '[Event "?"]\n[Site "?"]\n[Date "?"]\n[Round "?"]\n[White "?"]\n[Black "?"]\n[Result "?"]\n';
@@ -1465,7 +1466,15 @@ function fixCommonPgnMistakes(text) {
   return text;
 }
 
+var pgnGameFromPgnText_SLOW_threshold = 65535;
+var pgnGameFromPgnText_used = "none";
 function pgnGameFromPgnText(pgnText) {
+  var useSlow = (pgnText.length <= pgnGameFromPgnText_SLOW_threshold);
+  pgnGameFromPgnText_used = useSlow ? "slow" : "fast";
+  return useSlow ? pgnGameFromPgnText_SLOW(pgnText) : pgnGameFromPgnText_FAST(pgnText);
+}
+
+function pgnGameFromPgnText_FAST(pgnText) {
 
   pgnText = fixCommonPgnMistakes(pgnText);
 
@@ -1478,8 +1487,6 @@ function pgnGameFromPgnText(pgnText) {
   inGameBody = false;
   gameIndex = -1;
 
-  newPgnGame = new Array();
-
   for(ii in lines) {
 
     // PGN standard: lines starting with % must be ignored
@@ -1487,8 +1494,7 @@ function pgnGameFromPgnText(pgnText) {
 
     if(pgnHeaderTagRegExp.test(lines[ii]) === true) {
       if(!inGameHeader) {
-        gameIndex++;
-        newPgnGame[gameIndex] = '';
+        pgnGame[++gameIndex] = '';
       }
       inGameHeader = true;
       inGameBody = false;
@@ -1499,17 +1505,65 @@ function pgnGameFromPgnText(pgnText) {
       }
     }
     if (gameIndex >= 0) {
-      newPgnGame[gameIndex] += lines[ii].replace(/(^\s*|\s*$)/, "") + '\n';
+      pgnGame[gameIndex] += lines[ii].replace(/(^\s*|\s*$)/, "") + '\n';
     }
   }
 
-  if (gameIndex >= 0) {
-    pgnGame = newPgnGame;
-    numberOfGames = pgnGame.length;
+  return ((numberOfGames = gameIndex+1) > 0);
+}
+
+function pgnGameFromPgnText_SLOW(pgnText) {
+
+  var ss, start, end, headerBlock, previousHeaderBlock;
+
+  pgnText = fixCommonPgnMistakes(pgnText);
+
+  // replace < and > with html entities: avoid html injection from PGN data
+  pgnText = pgnText.replace(/</g, "&lt;");
+  pgnText = pgnText.replace(/>/g, "&gt;");
+
+  // PGN standard: lines starting with % must be ignored
+  pgnText = pgnText.replace(/(^|\n)%.*(\n|$)/g, "\n");
+
+  numberOfGames = 0;
+  ss = 0;
+  start = end = -1;
+  while (ss < pgnText.length) {
+    nextSquareBracket = pgnText.indexOf("[", ss);
+    if (nextSquareBracket == -1) { nextSquareBracket = pgnText.length; }
+    nextCurlyBracket = pgnText.indexOf("{", ss);
+    if (nextCurlyBracket == -1) { nextCurlyBracket = pgnText.length + 1; }
+    if (nextCurlyBracket < nextSquareBracket) {
+      if ((ss = pgnText.indexOf("}", ss) + 1) === 0) { ss = pgnText.length; }
+    } else {
+      if (headerBlock = pgnHeaderBlockRegExp.exec(pgnText.substr(nextSquareBracket))) {
+        end = nextSquareBracket - 1;
+        if (start >= 0) {
+          // once browser's speed gets better, consider using the slow function all the time
+          // and split header and game here (so no need to clean the game replacing [] with ()
+          // pgnHeader[numberOfGames] = previousHeaderBlock.replace(/(^\s*|\s*$)/g, "");
+          // pgnGame[numberOfGames++] = pgnText.substr(start, end - start + 1).replace(/(^\s*|\s*$)/g, "");
+          pgnGame[numberOfGames++] = previousHeaderBlock + "\n\n" +
+            pgnText.substr(start, end - start + 1).replace(/\[(\s*\w+\s*"[^"]*"\s*)\]/g, "($1)").replace(/(^\s*|\s*$)/g, "");
+        }
+        ss = start = nextSquareBracket + headerBlock[0].length;
+        previousHeaderBlock = headerBlock[0].replace(/(^\s*|\s*$)/g, "");
+      } else {
+        ss = nextSquareBracket + 1;
+      }
+    }
+  }
+  if (start >= 0) {
+    // same as above
+    // pgnHeader[numberOfGames] = previousHeaderBlock.replace(/(^\s*|\s*$)/g, "");
+    // pgnGame[numberOfGames++] = pgnText.substr(start).replace(/(^\s*|\s*$)/g, "");
+    pgnGame[numberOfGames++] = previousHeaderBlock + "\n\n" +
+     pgnText.substr(start).replace(/\[(\s*\w+\s*"[^"]*"\s*)\]/g, "($1)").replace(/(^\s*|\s*$)/g, "");
   }
 
-  return (gameIndex >= 0);
+  return (numberOfGames > 0);
 }
+
 
 function pgnGameFromHttpRequest(httpResponseData) {
 
@@ -2759,8 +2813,8 @@ function goToNextVariationSibling() {
 function ParsePGNGameString(gameString) {
 
   var ssRep, ss = gameString;
+  ss = ss.replace(pgnHeaderBlockRegExp, '');
   ss = ss.replace(pgn4webVariationRegExpGlobal, "[%_pgn4web_variation_ $1]");
-  ss = ss.replace(pgnHeaderTagRegExpGlobal, '');
   // replace empty variations with comments
   while ((ssRep = ss.replace(/\((([\?!+#\s\r\n]|\$\d+|{[^}]*})*)\)/g, ' $1 ')) !== ss) { ss = ssRep; }
   ss = ss.replace(/^\s/, '');
