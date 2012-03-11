@@ -43,3 +43,7 @@ function testRandomMoves(nn, pv, pg) {
   return alertNumSinceReset;
 }
 
+function customFunctionOnAlert (msg) {
+  console.log("  alert: g=" + currentGame + " v=" + CurrentVar + " p=" + CurrentPly + " m=" + msg); 
+}
+
