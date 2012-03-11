@@ -26,8 +26,10 @@
   thisRegExp = /(&|\?)(help|h)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
     alert("pgn4web collection.html parameters" + "\n" +
-          " - pgnFile=filename.pgn" + "\n" +
-          " - search=search expression" + "\n" +
+          " - pgnFile = filename.pgn" + "\n" +
+          " - initialGame = first | last | random | a number | a search expression (default first)" + "\n" +
+          " - initialVariation = a number (default 0)" + "\n" +
+          " - initialHalfmove = start | end | random | comment | variation | a number (default start)" + "\n" +
           " - help");
   }
 
@@ -42,9 +44,7 @@
       pgnFilename = unescape(window.location.search.match(thisRegExp)[3]);
     }
   }
-  if (pgnFilename !== "") {
-    SetPgnUrl(pgnFilename); // if set, this has precedence over the inline PGN in the HTML file
-  }
+  if (pgnFilename !== "") { SetPgnUrl(pgnFilename); }
 
   thisRegExp = /(&|\?)(initialGame|ig)=([^&]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {

@@ -44,6 +44,6 @@ function testRandomMoves(nn, pv, pg) {
 }
 
 function customFunctionOnAlert (msg) {
-  console.log("  alert: g=" + currentGame + " v=" + CurrentVar + " p=" + CurrentPly + " m=" + msg); 
+  console.log("  alert: g=" + currentGame + " v=" + CurrentVar + " p=" + CurrentPly + " m=" + msg);
 }
 
