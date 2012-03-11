@@ -1466,7 +1466,7 @@ function fixCommonPgnMistakes(text) {
   return text;
 }
 
-var pgnGameFromPgnText_SLOW_threshold = 65536;
+var pgnGameFromPgnText_SLOW_threshold = 65535; // 64KB = 50 games without comments = 10 games with detailed comments
 var pgnGameFromPgnText_used = "none";
 function pgnGameFromPgnText(pgnText) {
   var useSlow = (pgnText.length < pgnGameFromPgnText_SLOW_threshold);
