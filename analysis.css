@@ -136,7 +136,9 @@ a.variation {
 }
 
 .moveOn,
-.variationOn {
+.variationOn,
+a.move:hover,
+a.variation:hover {
   background: #DDDDDD;
   border-radius: 2px;
 }
