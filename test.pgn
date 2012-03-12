@@ -1,6 +1,8 @@
 
 % test.pgn file showing a number of PGN features
 
+some garbage at the start of the PGN file
+
 [Event "Testing PGN header tags, comments and clock information"]
 [Site "Some site"]
 [Date "1234.56.78"]
