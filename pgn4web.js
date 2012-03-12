@@ -1478,7 +1478,7 @@ function pgnGameFromPgnText(pgnText) {
 
 PAOLO = (new Date()).getTime();
 
-  var headMatch, prevHead, newHead, startNew, afterNew, lastOpen, checkedGame;
+  var headMatch, prevHead, newHead, startNew, afterNew, lastOpen, checkedGame, validHead;
 
   pgnText = fixCommonPgnMistakes(pgnText);
 
@@ -1497,15 +1497,18 @@ PAOLO = (new Date()).getTime();
     afterNew = startNew + newHead.length;
     if (prevHead) {
       checkedGame += pgnText.substr(0, startNew);
-      if (((lastOpen = checkedGame.lastIndexOf("{")) < 0) || (checkedGame.lastIndexOf("}")) > lastOpen) {
+      validHead = ((lastOpen = checkedGame.lastIndexOf("{")) < 0) || (checkedGame.lastIndexOf("}")) > lastOpen;
+      if (validHead) {
         pgnHeader[numberOfGames] = prevHead;
         pgnGame[numberOfGames++] = checkedGame;
         checkedGame = "";
       } else {
         checkedGame += newHead;
       }
+    } else {
+      validHead = true;
     }
-    prevHead = newHead;
+    if (validHead) { prevHead = newHead; }
     pgnText = pgnText.slice(afterNew);
   }
   if (prevHead) {

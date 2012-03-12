@@ -106,3 +106,12 @@ is outside the variation } d5 c4 *
 1. e4 e5 2. Bc4 ($140 2. Bc4 -- 3. Qf3 -- 4. Qxf7#) Nf6 3. d3 ({ defending
 against } 3. -- Nxe4) 3... Bc5 *
 
+[Event "Testing header patterns in comments"]
+[Site "Another site"]
+[Date "2345.67.89"]
+[Round "6"]
+[Result "*"]
+
+1. e4 e6 { [White "Another White player"] [Black "Another Black player"] }
+d4 d5 *
+
