@@ -4,11 +4,11 @@ pgn4webBaseFiles="README.txt pgn4web.js pgn4web-help.html license-gpl-2.0.txt pa
 
 case "$1" in
 
-  "board-minimal" ) pgn4webPackageFileList="$pgn4webBaseFiles board.html chess-informant-NAG-symbols.js pgn-decoder.js fide-lookup.js uscf/index.html uscf/README.txt uscf/20/* fonts/index.html fonts/README.txt fonts/LiberationSans* fonts/pgn4web-font-LiberationSans.css fonts/ChessSansPiratf* fonts/pgn4web-font-ChessSansPiratf.css fonts/ChessInformantReader* fonts/pgn4web-font-ChessInformantReader.css";;
+  "board-minimal" ) pgn4webPackageFileList="$pgn4webBaseFiles board.html chess-informant-NAG-symbols.js fide-lookup.js pgn-decoder.js uscf/index.html uscf/README.txt uscf/20/* fonts/index.html fonts/README.txt fonts/LiberationSans* fonts/pgn4web-font-LiberationSans.css fonts/ChessSansPiratf* fonts/pgn4web-font-ChessSansPiratf.css fonts/ChessInformantReader* fonts/pgn4web-font-ChessInformantReader.css";;
 
-  "live-minimal" ) pgn4webPackageFileList="$pgn4webBaseFiles live-compact.* live-mosaic* live-fullscreen.html dynamic-frame.html live*.pgn demoLiveGames.pgn alpha/index.html alpha/README.txt alpha/24/* alpha/26/* alpha/96/* merida/index.html merida/README.txt merida/96/* uscf/index.html uscf/README.txt uscf/96/* fonts/index.html fonts/README.txt fonts/LiberationSans* fonts/pgn4web-font-LiberationSans.css fonts/ChessSansPiratf* fonts/pgn4web-font-ChessSansPiratf.css fonts/ChessInformantReader* fonts/pgn4web-font-ChessInformantReader.css live/index.html live/live-grab* live/live-simulation.sh";;
+  "live-minimal" ) pgn4webPackageFileList="$pgn4webBaseFiles dynamic-frame.html live-compact.* live-fullscreen.html live-mosaic* live-results.html live*.pgn demoLiveGames.pgn alpha/index.html alpha/README.txt alpha/24/* alpha/26/* alpha/96/* merida/index.html merida/README.txt merida/96/* uscf/index.html uscf/README.txt uscf/96/* fonts/index.html fonts/README.txt fonts/LiberationSans* fonts/pgn4web-font-LiberationSans.css fonts/ChessSansPiratf* fonts/pgn4web-font-ChessSansPiratf.css fonts/ChessInformantReader* fonts/pgn4web-font-ChessInformantReader.css live/index.html live/live-grab* live/live-simulation.sh";;
 
-  * ) echo "bash `basename $0` [board-minimal live-minimal]"; exit 0 ;;
+  * ) echo "bash `basename $0` [board-minimal | live-minimal]"; exit 0 ;;
 
 esac
 

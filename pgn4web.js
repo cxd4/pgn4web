@@ -659,7 +659,7 @@ function displayPgnData(allGames) {
   if (pgnWin !== null) {
     text = "<html><head><title>pgn4web PGN source</title>" +
       "<link rel='shortcut icon' href='pawn.ico' /></head><body>\n<pre>\n";
-    if (allGames) { for (ii = 0; ii < numberOfGames; ++ii) { text += fullPgnGame(ii); } }
+    if (allGames) { for (ii = 0; ii < numberOfGames; ++ii) { text += fullPgnGame(ii) + "\n\n"; } }
     else { text += fullPgnGame(currentGame); }
     text += "\n</pre>\n</body></html>";
     pgnWin.document.open("text/html", "replace");
@@ -928,7 +928,7 @@ var IsRotated = false;
 
 var pgnHeaderTagRegExp       = /\[\s*(\w+)\s*"([^"]*)"\s*\]/;
 var pgnHeaderTagRegExpGlobal = /\[\s*(\w+)\s*"([^"]*)"\s*\]/g;
-var pgnHeaderBlockRegExp     = /[\s\n\r\t]*(\[\s*\w+\s*"[^"]*"\s*\][\s\n\r\t]*)+/;
+var pgnHeaderBlockRegExp     = /\s*(\[\s*\w+\s*"[^"]*"\s*\]\s*)+/;
 var dummyPgnHeader = '[x""]';
 var emptyPgnHeader = '[Event ""]\n[Site ""]\n[Date ""]\n[Round ""]\n[White ""]\n[Black ""]\n[Result ""]\n\n';
 var templatePgnHeader = '[Event "?"]\n[Site "?"]\n[Date "?"]\n[Round "?"]\n[White "?"]\n[Black "?"]\n[Result "?"]\n';
@@ -1468,17 +1468,14 @@ function fixCommonPgnMistakes(text) {
 }
 
 function fullPgnGame(gameNum) {
-  res = pgnHeader[gameNum] ? pgnHeader[gameNum].replace(/(^[\s\r\n\t]*|[\s\r\n\t]*$)/g, "") : "";
-  res += "\n\n";
-  res += pgnGame[gameNum] ? pgnGame[gameNum].replace(/(^[\s\r\n\t]*|[\s\r\n\t]*$)/g, "") : "";
+  res = pgnHeader[gameNum] ? pgnHeader[gameNum].replace(/^[^[]*/g, "") : "";
+  res = res.replace(/\[\s*(\w+)\s*"([^"]*)"\s*\][^[]*/g, '[$1 "$2"]\n');
+  res += "\n";
+  res += pgnGame[gameNum] ? pgnGame[gameNum].replace(/(^[\s]*|[\s]*$)/g, "") : "";
   return res;
 }
 
-PAOLO = false;
-
 function pgnGameFromPgnText(pgnText) {
-
-if (PAOLO) { PAOLO = (new Date()).getTime(); }
 
   var headMatch, prevHead, newHead, startNew, afterNew, lastOpen, checkedGame, validHead;
 
@@ -1515,10 +1512,9 @@ if (PAOLO) { PAOLO = (new Date()).getTime(); }
   }
   if (prevHead) {
     pgnHeader[numberOfGames] = prevHead;
-    pgnGame[numberOfGames++] = checkedGame + pgnText;
+    checkedGame += pgnText;
+    pgnGame[numberOfGames++] = checkedGame;
   }
-
-  if (PAOLO) { myAlert("pgnGameFromPgnText benchmark=" + (b = (new Date()).getTime() - PAOLO) + "; games=" + numberOfGames + "; unit=" + (Math.floor((b/numberOfGames) * 100)/100), false); }
 
   return (numberOfGames > 0);
 }
@@ -2774,7 +2770,7 @@ function ParsePGNGameString(gameString) {
   var ssRep, ss = gameString;
   ss = ss.replace(pgn4webVariationRegExpGlobal, "[%_pgn4web_variation_ $1]");
   // replace empty variations with comments
-  while ((ssRep = ss.replace(/\((([\?!+#\s\r\n]|\$\d+|{[^}]*})*)\)/g, ' $1 ')) !== ss) { ss = ssRep; }
+  while ((ssRep = ss.replace(/\((([\?!+#\s]|\$\d+|{[^}]*})*)\)/g, ' $1 ')) !== ss) { ss = ssRep; }
   ss = ss.replace(/^\s/, '');
   ss = ss.replace(/\s$/, '');
 
@@ -2879,7 +2875,9 @@ function ParsePGNGameString(gameString) {
         searchThis = moveCount.toString()+'.';
         if(ss.indexOf(searchThis,start)==start) {
           start += searchThis.length;
-          while ((ss.charAt(start) == '.') || (ss.charAt(start) == ' ') || (ss.charAt(start) == '\n') || (ss.charAt(start) == '\r')){start++;}
+          while ((ss.charAt(start) == '.') || (ss.charAt(start) == ' ') ||
+                 (ss.charAt(start) == '\n') || (ss.charAt(start) == '\r'))
+            { start++; }
         }
 
         if ((end = start + ss.substr(start).search(/[\s${;!?()]/)) < start) { end = ss.length; }
