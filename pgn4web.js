@@ -37,7 +37,7 @@ function customFunctionOnCheckLiveBroadcastStatus() {}
 function customPgnHeaderTag(customTagString, htmlElementIdString, gameNum) {
   customTagString = customTagString.replace(/\W+/g, "");
   if (gameNum === undefined) { gameNum = currentGame; }
-  if ((pgnGame[gameNum]) && (tagValues = pgnGame[gameNum].match('\\[\\s*' + customTagString + '\\s*\"([^\"]+)\"\\s*\\]'))) {
+  if ((pgnHeader[gameNum]) && (tagValues = pgnHeader[gameNum].match('\\[\\s*' + customTagString + '\\s*\"([^\"]+)\"\\s*\\]'))) {
     tagValue = tagValues[1];
   } else { tagValue = ""; }
   if ((htmlElementIdString) && (theObject = document.getElementById(htmlElementIdString)) && (theObject.innerHTML !== null)) {
@@ -659,8 +659,8 @@ function displayPgnData(allGames) {
   if (pgnWin !== null) {
     text = "<html><head><title>pgn4web PGN source</title>" +
       "<link rel='shortcut icon' href='pawn.ico' /></head><body>\n<pre>\n";
-    if (allGames) { for (ii = 0; ii < numberOfGames; ++ii) { text += pgnGame[ii]; } }
-    else { text += pgnGame[currentGame]; }
+    if (allGames) { for (ii = 0; ii < numberOfGames; ++ii) { text += fullPgnGame(ii); } }
+    else { text += fullPgnGame(currentGame); }
     text += "\n</pre>\n</body></html>";
     pgnWin.document.open("text/html", "replace");
     pgnWin.document.write(text);
@@ -779,6 +779,7 @@ function displayFenData() {
 }
 
 
+var pgnHeader = new Array();
 var pgnGame = new Array();
 var numberOfGames = -1;
 var currentGame   = -1;
@@ -927,7 +928,7 @@ var IsRotated = false;
 
 var pgnHeaderTagRegExp       = /\[\s*(\w+)\s*"([^"]*)"\s*\]/;
 var pgnHeaderTagRegExpGlobal = /\[\s*(\w+)\s*"([^"]*)"\s*\]/g;
-var pgnHeaderBlockRegExp     = /^(\[\s*\w+\s*"[^"]*"\s*\][\s\n\r\t]*)+/;
+var pgnHeaderBlockRegExp     = /[\s\n\r\t]*(\[\s*\w+\s*"[^"]*"\s*\][\s\n\r\t]*)+/;
 var dummyPgnHeader = '[x""]';
 var emptyPgnHeader = '[Event ""]\n[Site ""]\n[Date ""]\n[Round ""]\n[White ""]\n[Black ""]\n[Result ""]\n\n';
 var templatePgnHeader = '[Event "?"]\n[Site "?"]\n[Date "?"]\n[Round "?"]\n[White "?"]\n[Black "?"]\n[Result "?"]\n';
@@ -1466,55 +1467,18 @@ function fixCommonPgnMistakes(text) {
   return text;
 }
 
-var pgnGameFromPgnText_SLOW_threshold = 65535; // 64KB = 50 games without comments = 10 games with detailed comments
-var pgnGameFromPgnText_used = "none";
+function fullPgnGame(gameNum) {
+  res = pgnHeader[gameNum] ? pgnHeader[gameNum].replace(/(^[\s\r\n\t]*|[\s\r\n\t]*$)/g, "") : "";
+  res += "\n\n";
+  res += pgnGame[gameNum] ? pgnGame[gameNum].replace(/(^[\s\r\n\t]*|[\s\r\n\t]*$)/g, "") : "";
+  return res;
+}
+
 function pgnGameFromPgnText(pgnText) {
-  var useSlow = (pgnText.length < pgnGameFromPgnText_SLOW_threshold);
-  pgnGameFromPgnText_used = useSlow ? "slow" : "fast";
-  return useSlow ? pgnGameFromPgnText_SLOW(pgnText) : pgnGameFromPgnText_FAST(pgnText);
-}
 
-function pgnGameFromPgnText_FAST(pgnText) {
+PAOLO = (new Date()).getTime();
 
-  pgnText = fixCommonPgnMistakes(pgnText);
-
-  // replace < and > with html entities: avoid html injection from PGN data
-  pgnText = pgnText.replace(/</g, "&lt;");
-  pgnText = pgnText.replace(/>/g, "&gt;");
-
-  lines = pgnText.split("\n");
-  inGameHeader = false;
-  inGameBody = false;
-  gameIndex = -1;
-
-  for(ii in lines) {
-
-    // PGN standard: lines starting with % must be ignored
-    if(lines[ii].charAt(0) == '%') { continue; }
-
-    if(pgnHeaderTagRegExp.test(lines[ii]) === true) {
-      if(!inGameHeader) {
-        pgnGame[++gameIndex] = '';
-      }
-      inGameHeader = true;
-      inGameBody = false;
-    } else {
-      if(inGameHeader) {
-        inGameHeader = false;
-        inGameBody = true;
-      }
-    }
-    if (gameIndex >= 0) {
-      pgnGame[gameIndex] += lines[ii].replace(/(^\s*|\s*$)/, "") + '\n';
-    }
-  }
-
-  return ((numberOfGames = gameIndex+1) > 0);
-}
-
-function pgnGameFromPgnText_SLOW(pgnText) {
-
-  var ss, start, end, headerBlock, previousHeaderBlock;
+  var headMatch, prevHead, newHead, startNew, afterNew, lastOpen, checkedGame;
 
   pgnText = fixCommonPgnMistakes(pgnText);
 
@@ -1526,40 +1490,30 @@ function pgnGameFromPgnText_SLOW(pgnText) {
   pgnText = pgnText.replace(/(^|\n)%.*(\n|$)/g, "\n");
 
   numberOfGames = 0;
-  ss = 0;
-  start = end = -1;
-  while (ss < pgnText.length) {
-    nextSquareBracket = pgnText.indexOf("[", ss);
-    if (nextSquareBracket == -1) { nextSquareBracket = pgnText.length; }
-    nextCurlyBracket = pgnText.indexOf("{", ss);
-    if (nextCurlyBracket == -1) { nextCurlyBracket = pgnText.length + 1; }
-    if (nextCurlyBracket < nextSquareBracket) {
-      if ((ss = pgnText.indexOf("}", ss) + 1) === 0) { ss = pgnText.length; }
-    } else {
-      if (headerBlock = pgnHeaderBlockRegExp.exec(pgnText.substr(nextSquareBracket))) {
-        end = nextSquareBracket - 1;
-        if (start >= 0) {
-          // once browser's speed gets better, consider using the slow function all the time
-          // and split header and game here (so no need to clean the game replacing [] with ()
-          // pgnHeader[numberOfGames] = previousHeaderBlock.replace(/(^\s*|\s*$)/g, "");
-          // pgnGame[numberOfGames++] = pgnText.substr(start, end - start + 1).replace(/(^\s*|\s*$)/g, "");
-          pgnGame[numberOfGames++] = previousHeaderBlock + "\n\n" +
-            pgnText.substr(start, end - start + 1).replace(/\[(\s*\w+\s*"[^"]*"\s*)\]/g, "($1)").replace(/(^\s*|\s*$)/g, "");
-        }
-        ss = start = nextSquareBracket + headerBlock[0].length;
-        previousHeaderBlock = headerBlock[0].replace(/(^\s*|\s*$)/g, "");
+  checkedGame = "";
+  while (headMatch = pgnHeaderBlockRegExp.exec(pgnText)) {
+    newHead = headMatch[0];
+    startNew = pgnText.indexOf(newHead);
+    afterNew = startNew + newHead.length;
+    if (prevHead) {
+      checkedGame += pgnText.substr(0, startNew);
+      if (((lastOpen = checkedGame.lastIndexOf("{")) < 0) || (checkedGame.lastIndexOf("}")) > lastOpen) {
+        pgnHeader[numberOfGames] = prevHead;
+        pgnGame[numberOfGames++] = checkedGame;
+        checkedGame = "";
       } else {
-        ss = nextSquareBracket + 1;
+        checkedGame += newHead;
       }
     }
+    prevHead = newHead;
+    pgnText = pgnText.slice(afterNew);
   }
-  if (start >= 0) {
-    // same as above
-    // pgnHeader[numberOfGames] = previousHeaderBlock.replace(/(^\s*|\s*$)/g, "");
-    // pgnGame[numberOfGames++] = pgnText.substr(start).replace(/(^\s*|\s*$)/g, "");
-    pgnGame[numberOfGames++] = previousHeaderBlock + "\n\n" +
-     pgnText.substr(start).replace(/\[(\s*\w+\s*"[^"]*"\s*)\]/g, "($1)").replace(/(^\s*|\s*$)/g, "");
+  if (prevHead) {
+    pgnHeader[numberOfGames] = prevHead;
+    pgnGame[numberOfGames++] = checkedGame + pgnText;
   }
+
+  if (PAOLO) { myAlert("pgnGameFromPgnText benchmark=" + (b = (new Date()).getTime() - PAOLO) + "; games=" + numberOfGames + "; unit=" + (Math.floor((b/numberOfGames) * 100)/100), false); }
 
   return (numberOfGames > 0);
 }
@@ -1854,7 +1808,7 @@ function checkLiveBroadcastStatus() {
 
   // broadcast started yet?
   // check for fake LiveBroadcastPlaceholderPgn game when no PGN file is found
-  if ((LiveBroadcastStarted === false) || ((pgnGame === undefined) ||
+  if ((LiveBroadcastStarted === false) || ((pgnHeader === undefined) ||
     ((numberOfGames == 1) && (gameEvent[0] == LiveBroadcastPlaceholderEvent)))) {
     LiveBroadcastEnded = false;
     LiveBroadcastStatusString = "live broadcast yet to start";
@@ -2463,7 +2417,7 @@ function LoadGameHeaders(){
 
   pgnHeaderTagRegExpGlobal.lastIndex = 0; // resets global regular expression
   for (ii = 0; ii < numberOfGames; ++ii) {
-    var ss = pgnGame[ii];
+    var ss = pgnHeader[ii];
     gameEvent[ii] = gameSite[ii] = gameRound[ii] = gameDate[ii] = "";
     gameWhite[ii] = gameBlack[ii] = gameResult[ii] = "";
     gameInitialWhiteClock[ii] = gameInitialBlackClock[ii] = "";
@@ -2813,7 +2767,6 @@ function goToNextVariationSibling() {
 function ParsePGNGameString(gameString) {
 
   var ssRep, ss = gameString;
-  ss = ss.replace(pgnHeaderBlockRegExp, '');
   ss = ss.replace(pgn4webVariationRegExpGlobal, "[%_pgn4web_variation_ $1]");
   // replace empty variations with comments
   while ((ssRep = ss.replace(/\((([\?!+#\s\r\n]|\$\d+|{[^}]*})*)\)/g, ' $1 ')) !== ss) { ss = ssRep; }
@@ -3241,6 +3194,7 @@ function reset_after_click (ii, jj, originalClass, newClass) {
 
 var lastSearchPgnExpression = "";
 function gameNumberSearchPgn(searchExpression, backward, includeCurrent) {
+  var searchThis;
   lastSearchPgnExpression = searchExpression;
   if (searchExpression === "") { return false; }
   // replace newline with spaces so that we can use regexp "." on whole game
@@ -3248,14 +3202,16 @@ function gameNumberSearchPgn(searchExpression, backward, includeCurrent) {
   searchExpressionRegExp = new RegExp(searchExpression, "im");
   // at start currentGame might still be -1
   currentGameSearch = (currentGame < 0) || (currentGame >= numberOfGames) ? 0 : currentGame;
-  if (includeCurrent && pgnGame[currentGameSearch].replace(newlinesRegExp, " ").match(searchExpressionRegExp)) {
+  searchThis = fullPgnGame(currentGameSearch);
+  if (includeCurrent && searchThis.replace(newlinesRegExp, " ").match(searchExpressionRegExp)) {
     return currentGameSearch;
   }
   delta = backward ? -1 : +1;
   for (checkGame = (currentGameSearch + delta + numberOfGames) % numberOfGames;
        checkGame != currentGameSearch;
        checkGame = (checkGame + delta + numberOfGames) % numberOfGames) {
-    if (pgnGame[checkGame].replace(newlinesRegExp, " ").match(searchExpressionRegExp)) {
+    searchThis = fullPgnGame(checkGame);
+    if (searchThis.replace(newlinesRegExp, " ").match(searchExpressionRegExp)) {
       return checkGame;
     }
   }

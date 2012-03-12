@@ -447,11 +447,7 @@ function writeSetupOutput(text) {
 }
 
 function newGameHeader(thisGame, videotime) {
-  newHeader = "";
-  if (pgnGame[thisGame]) {
-    oldHeaderMatch = pgnGame[thisGame].match(/(\s*\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)+/);
-    if (oldHeaderMatch) { newHeader = oldHeaderMatch[0]; }
-  }
+  newHeader = pgnHeader[thisGame] ? pgnHeader[thisGame] : "";
   newHeader = newHeader.replace(/\[\s*VideoTime\s*"([^"]*)"\s*\]\s*/g, "");
   newHeader = newHeader.replace(/(^\s*|\s*$)/g, "");
   newHeader += "\n[VideoTime \"" + videotime + "\"]";

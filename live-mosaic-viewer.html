@@ -414,9 +414,9 @@ function restoreHiddenGames() {
 }
 
 function pgnGameForBoard(gameNum) {
-  if (!LiveBroadcastDemo) { return pgnGame[gameNum]; }
+  if (!LiveBroadcastDemo) { return fullPgnGame(gameNum); }
 
-  if (gameDemoMaxPly[gameNum] > gameDemoLength[gameNum]) { return pgnGame[gameNum]; }
+  if (gameDemoMaxPly[gameNum] > gameDemoLength[gameNum]) { return fullPgnGame(gameNum); }
 
   Init(gameNum);
 
