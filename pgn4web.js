@@ -1474,9 +1474,11 @@ function fullPgnGame(gameNum) {
   return res;
 }
 
+PAOLO = false;
+
 function pgnGameFromPgnText(pgnText) {
 
-PAOLO = (new Date()).getTime();
+if (PAOLO) { PAOLO = (new Date()).getTime(); }
 
   var headMatch, prevHead, newHead, startNew, afterNew, lastOpen, checkedGame, validHead;
 

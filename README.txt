@@ -60,10 +60,8 @@ Limitations:
   more in the same view)
 
 Bugs:
-- if square brackets are present in the comments (or the game text) in a
-pattern similar to the PGN header pattern '[tag "value"]' then the game
-parsing might break. If your PGN file is not displayed properly, please
-check for characters "[" and "]" in the comments and try removing them.
+- no major issue at the moment of writing, please check the project
+  issues tracker at http://code.google.com/p/pgn4web/issues/list
 
 User feedback:
 Please email the pgn4web project (pgn4web@casaschi.net) your feedback,
