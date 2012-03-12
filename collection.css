@@ -122,6 +122,10 @@ div, span, table, tr, td {
   text-decoration: none;
 }
 
+a.move:hover, a.variation:hover {
+  text-decoration: underline;
+}
+
 .move,
 .variation {
   font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
@@ -154,6 +158,10 @@ a.variation {
 .linkItem {
   text-decoration: none;
   color: black;
+}
+
+.linkItem:hover {
+  text-decoration: underline;
 }
 
 .rowSpace {

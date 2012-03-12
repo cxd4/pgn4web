@@ -276,6 +276,10 @@ a:link, a:visited, a:hover, a:active {
   text-decoration: none;
 }
 
+a:hover {
+  text-decoration: underline;
+}
+
 .formControl {
   font-size: smaller;
   margin: 0;
