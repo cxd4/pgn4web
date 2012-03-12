@@ -1496,7 +1496,7 @@ PAOLO = (new Date()).getTime();
     startNew = pgnText.indexOf(newHead);
     afterNew = startNew + newHead.length;
     if (prevHead) {
-      checkedGame += pgnText.substr(0, startNew);
+      checkedGame += pgnText.slice(0, startNew);
       validHead = ((lastOpen = checkedGame.lastIndexOf("{")) < 0) || (checkedGame.lastIndexOf("}")) > lastOpen;
       if (validHead) {
         pgnHeader[numberOfGames] = prevHead;
