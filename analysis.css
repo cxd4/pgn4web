@@ -20,7 +20,7 @@ html {
 
 body {
   font-family: 'pgn4web Liberation Sans', sans-serif;
-  font-size: 16px;
+  font-size: 19px;
   color: black;
   background: white;
 }
@@ -65,7 +65,7 @@ div, span {
 .headerLine {
   overflow: hidden;
   width: 376px;
-  font-size: 24px;
+  font-size: 25px;
   font-weight: bold;
   text-align: center;
 }
