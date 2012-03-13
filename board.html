@@ -1031,7 +1031,8 @@ function display_header_moves() {
       document.write("<div id='headerMovesSpacer' class='header' style='text-align: center;'>&nbsp;</div>");
     }
     if (movesDisplay == "puzzle") {
-      document.write("<div id=GamePuzzleTask></div>");
+      document.write("<div style='margin-left:" + textMargin + "; margin-right:" + textMargin +
+                     "; text-align: justify;' id=GamePuzzleTask></div>");
     }
     document.write("<div style='margin-left:" + textMargin + "; margin-right:" + textMargin +
                    "; text-align: justify;' id=GameText></div>");
@@ -1131,8 +1132,7 @@ function customFunctionOnPgnGameLoad() {
         theObject.style.display = "none";
     }
     if (theObject = document.getElementById("GamePuzzleTask")) {
-      theObject.innerHTML = "<A STYLE='margin-left:" + textMargin +
-        "; margin-right:" + textMargin + ";' CLASS='move moveOn'" +
+      theObject.innerHTML = "<A CLASS='move moveOn'" +
         "HREF='javascript:void(0);' " + "ONCLICK='MoveForward(1);'>" +
         Math.floor((CurrentPly / 2) + 1) +
         (CurrentPly % 2 ? "..." : ".") + " ?</A>";
