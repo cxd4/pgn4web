@@ -201,6 +201,8 @@ function handlekey(e) {
     case 17: // ctrl
     case 18: // alt
     case 32: // space
+    case 35: // end
+    case 36: // home
     case 92: // super
     case 93: // menu
       return true;
@@ -222,10 +224,9 @@ function handlekey(e) {
       else { MoveBackward(1); }
       return stopKeyProp(e);
 
-    case 36: // home
     case 38: // up-arrow
     case 72: // h
-      if (keycode != 36 ? e.shiftKey : !e.shiftKey) { GoToMove(StartPlyVar[CurrentVar] + 1); }
+      if (e.shiftKey) { GoToMove(StartPlyVar[CurrentVar] + 1); }
       else { GoToMove(StartPlyVar[0], 0); }
       return stopKeyProp(e);
 
@@ -235,10 +236,9 @@ function handlekey(e) {
       else { MoveForward(1); }
       return stopKeyProp(e);
 
-    case 35: // end
     case 40: // down-arrow
     case 76: // l
-      if (keycode != 35 ? e.shiftKey : !e.shiftKey) { GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]); }
+      if (e.shiftKey) { GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]); }
       else { GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); }
       return stopKeyProp(e);
 
