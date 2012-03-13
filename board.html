@@ -139,7 +139,7 @@ if (movesDisplay == "f") { movesDisplay = "figurine"; }
 if (movesDisplay == "t") { movesDisplay = "text"; }
 if (movesDisplay == "h") { movesDisplay = "hidden"; }
 if (movesDisplay == "n") { movesDisplay = "nosymbols"; } // "nosymbols" option is undocumented
-if (movesDisplay == "p") { movesDisplay = "puzzle"; } // "nosymbols" option is undocumented
+if (movesDisplay == "p") { movesDisplay = "puzzle"; }
 if ((movesDisplay == "justified") || (movesDisplay == "j")) { movesDisplay = "figurine"; } // backward compatibility
 if ((movesDisplay != "figurine") && (movesDisplay != "nosymbols") && (movesDisplay != "puzzle") && (movesDisplay != "text") && (movesDisplay != "hidden")) { movesDisplay = "figurine"; }
 
@@ -1251,6 +1251,8 @@ function customFunctionOnMove() {
 
 enableAutoScrollToCurrentMove("headerMoves");
 
+// F5
+if (movesDisplay == "puzzle") { boardShortcut("F5", "reset puzzle", function(){ Init(currentGame); }); }
 // G5
 boardShortcut("G5", "toggle auto-scroll moves text to current move", function(){ toggleAutoScrollToCurrentMove('headerMoves'); });
 // H5
