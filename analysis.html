@@ -122,7 +122,11 @@
 <div class="boardheaderDiv" id="boardHeader">
 
 <div id="GameBoard"></div>
-<div class="tallRowSpace">&nbsp;</div>
+<div class="shortRowSpace">&nbsp;</div>
+<div class="gameNextMove">
+<span id="GameNextMove"></span>&nbsp;
+</div>
+<div class="tallRowSpace" style="clear:both;">&nbsp;</div>
 
 <div class="headerLine"><a id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();" title="white player"></a>&nbsp;</div>
 <div class="headerLine"><a id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();" title="black player"></a>&nbsp;</div>

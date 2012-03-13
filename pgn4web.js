@@ -201,10 +201,6 @@ function handlekey(e) {
     case 17: // ctrl
     case 18: // alt
     case 32: // space
-    case 35: // end
-    case 36: // home
-    case 45: // insert
-    case 46: // delete
     case 92: // super
     case 93: // menu
       return true;
@@ -219,15 +215,17 @@ function handlekey(e) {
       else { displayDebugInfo(); }
       return stopKeyProp(e);
 
+    case 46: // delete
     case 37: // left-arrow
     case 74: // j
       if (e.shiftKey) { MoveBackward(CurrentPly - StartPlyVar[CurrentVar]); }
       else { MoveBackward(1); }
       return stopKeyProp(e);
 
+    case 36: // home
     case 38: // up-arrow
     case 72: // h
-      if (e.shiftKey) { GoToMove(StartPlyVar[CurrentVar] + 1); }
+      if (keycode != 36 ? e.shiftKey : !e.shiftKey) { GoToMove(StartPlyVar[CurrentVar] + 1); }
       else { GoToMove(StartPlyVar[0], 0); }
       return stopKeyProp(e);
 
@@ -237,9 +235,10 @@ function handlekey(e) {
       else { MoveForward(1); }
       return stopKeyProp(e);
 
+    case 35: // end
     case 40: // down-arrow
     case 76: // l
-      if (e.shiftKey) { GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]); }
+      if (keycode != 35 ? e.shiftKey : !e.shiftKey) { GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]); }
       else { GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); }
       return stopKeyProp(e);
 
@@ -251,6 +250,11 @@ function handlekey(e) {
     case 34: // page-down
     case 73: // i
       MoveToNextComment(e.shiftKey);
+      return stopKeyProp(e);
+
+    case 45: // insert
+      if (e.shiftKey) { MoveForward(1); }
+      else { nextVariationLoop(); }
       return stopKeyProp(e);
 
     case 83: // s
@@ -1375,9 +1379,21 @@ function HighlightLastMove() {
     } else if (typeof(Moves[showThisMove+1]) == "undefined") {
       text = "";
     } else {
-      text = (Math.floor((showThisMove+1)/2) + 1) +
-        ((showThisMove+1) % 2 === 0 ? '. ' : '... ') + Moves[showThisMove+1];
-      if (commentsIntoMoveText) { text += basicNAGsMoveComment(showThisMove+2); }
+      text = "";
+      var childVars = childrenVars(showThisMove+1, CurrentVar);
+      for (ii = 0; ii < childVars.length; ii++) {
+        text += '<SPAN CLASS="' + (childVars[ii] === CurrentVar ? 'move' : 'variation') + ' notranslate">' +
+                (childVars[ii] === CurrentVar ? '' : (CurrentVar === 0 ? ' [' : ' (')) +
+                (Math.floor((showThisMove+1)/2) + 1) +
+                ((showThisMove+1) % 2 === 0 ? '. ' : '... ') +
+                '</SPAN>';
+        text += '<A CLASS="' + (childVars[ii] === CurrentVar ? 'move' : 'variation') + ' notranslate" ' +
+                'HREF="javascript:void(0);" ONCLICK="GoToMove(' + (showThisMove+2) + ', ' + childVars[ii] +');">' +
+                MovesVar[childVars[ii]][showThisMove+1];
+        if (commentsIntoMoveText) { text += basicNAGsMoveComment(showThisMove+2, childVars[ii]); }
+        text += '</A>';
+        text += (childVars[ii] === CurrentVar ? '' : '<SPAN CLASS="variation notranslate">' + ((CurrentVar === 0 ? ']' : ')')) + '</SPAN>');
+      }
     }
     theShowMoveTextObject.innerHTML = text;
     theShowMoveTextObject.style.whiteSpace = 'nowrap';
@@ -2630,6 +2646,32 @@ function synchMoves() {
   lastSynchCurrentVar = CurrentVar;
 }
 
+var variationLoopPly = -1;
+var variationLoopVarList;
+var variationLoopVarIndex;
+function nextVariationLoop() {
+  if (CurrentPly === variationLoopPly && CurrentVar === variationLoopVarList[variationLoopVarIndex]) {
+    variationLoopVarIndex = (variationLoopVarIndex + 1) % variationLoopVarList.length;
+    GoToMove(variationLoopPly, variationLoopVarList[variationLoopVarIndex]);
+  } else {
+    variationLoopVarList = childrenVars(CurrentPly, CurrentVar);
+    if (variationLoopVarList.length > 1) {
+      variationLoopVarIndex = 0;
+      variationLoopPly = CurrentPly + 1;
+      MoveForward(1, variationLoopVarList[variationLoopVarIndex]);
+    } else {
+      MoveForward(1);
+    }
+  }
+}
+
+function stopVariationLoop() {
+  if (variationLoopTimeout) {
+    clearTimeout(variationLoopTimeout);
+    variationLoopTimeout = null;
+  }
+}
+
 function AutoplayNextGame() {
   if (fatalErrorNumSinceReset === 0) {
     if (numberOfGames > 0) {
@@ -2738,8 +2780,22 @@ function closeVar() {
   }
 }
 
+function childrenVars(thisPly, thisVar) {
+  if (typeof(thisVar) == "undefined") { thisVar = CurrentVar; }
+  if (typeof(thisPly) == "undefined") { thisPly = CurrentPly; }
+  children = new Array();
+  if (MovesVar[thisVar] && MovesVar[thisVar][thisPly]) {
+    for (var ii = thisVar; ii < numberOfVars; ii++) {
+      if ((ii === thisVar) || realParentVar(ii) === thisVar && StartPlyVar[ii] === thisPly) {
+        children.push(ii);
+      }
+    }
+  }
+  return children;
+}
+
 function realParentVar(childVar) {
-  for (ii = PredecessorsVars[childVar].length - 1; ii > 0; ii--) {
+  for (var ii = PredecessorsVars[childVar].length - 1; ii > 0; ii--) {
     if (StartPlyVar[PredecessorsVars[childVar][ii]] !== StartPlyVar[PredecessorsVars[childVar][ii-1]]) {
       return PredecessorsVars[childVar][ii-1];
     }

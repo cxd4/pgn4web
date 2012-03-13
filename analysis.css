@@ -62,6 +62,11 @@ div, span {
   height: 15px;
 }
 
+.gameNextMove {
+  font-size: 14px;
+  line-height: 1.4em;
+}
+
 .headerLine {
   overflow: hidden;
   width: 376px;
