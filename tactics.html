@@ -37,7 +37,8 @@
    SetInitialGame("random"); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are accepted; other string values assumed as PGN search string
    SetShortcutKeysEnabled(false);
 
-clearShortcutSquares("ABCDEFGH", "1234567");
+clearShortcutSquares("BCDEFGH", "1234567");
+clearShortcutSquares("A", "123456");
 boardShortcut("H8", "hint", hint);
 
 function hint() {
