@@ -544,11 +544,11 @@ boardShortcut("A2", "stop autoplay", function(){ SetAutoPlay(false); });
 // B2
 boardShortcut("B2", "toggle autoplay", function(){ SwitchAutoPlay(); });
 // C2
-boardShortcut("C2", "autoplay 1 second", function(){ SetAutoplayDelayAndStart( 1*1000); });
+boardShortcut("C2", "autoplay 1 second", function(){ SetAutoplayDelayAndStart(1*1000); });
 // D2
-boardShortcut("D2", "autoplay 2 seconds", function(){ SetAutoplayDelayAndStart( 2*1000); });
+boardShortcut("D2", "autoplay 2 seconds", function(){ SetAutoplayDelayAndStart(2*1000); });
 // E2
-boardShortcut("E2", "autoplay 3 seconds", function(){ SetAutoplayDelayAndStart( 3*1000); });
+boardShortcut("E2", "autoplay 5 seconds", function(){ SetAutoplayDelayAndStart(5*1000); });
 // F2
 boardShortcut("F2", "autoplay custom delay", setCustomAutoplayDelay);
 // G2
