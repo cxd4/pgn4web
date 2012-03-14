@@ -3733,7 +3733,7 @@ function SetAutoPlay(vv) {
 var minAutoplayDelay = 500;
 var maxAutoplayDelay = 300000;
 function setCustomAutoplayDelay() {
-  if ((newDelaySec = prompt("Enter custom autoplay delay, in seconds, between " + (minAutoplayDelay/1000) + " and " + (maxAutoplayDelay/1000) + ":", Math.floor(Delay / 1000))) && (! isNaN(newDelaySec = parseInt(newDelaySec, 10)))) {
+  if ((newDelaySec = prompt("Enter custom autoplay delay, in seconds, between " + (minAutoplayDelay/1000) + " and " + (maxAutoplayDelay/1000) + ":", Math.floor(Delay / 100) / 10)) && (! isNaN(newDelaySec = parseInt(newDelaySec, 10)))) {
     SetAutoplayDelayAndStart(newDelaySec * 1000);
   }
 }
