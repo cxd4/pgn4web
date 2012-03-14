@@ -432,7 +432,7 @@ function boardShortcut(square, title, functionPointer) {
   if ((row < 0) || (row > 7)) { return; }
   boardTitle[col][row] = title;
   if (functionPointer) { boardOnClick[col][row] = functionPointer; }
-  if (theObject = document.getElementById('link_tcol' + col + 'trow' + row)) {
+  if (theObject = document.getElementById('img_tcol' + col + 'trow' + row)) {
     if (IsRotated) { square = String.fromCharCode(72-col,49+row); }
     if (boardTitle[col][row] !== '') { squareTitle = square + ': ' + boardTitle[col][row]; }
     else { squareTitle = square; }
@@ -3329,7 +3329,6 @@ function PrintHTML() {
       for (jj = 0; jj < 8; ++jj) {
         squareId = 'tcol' + jj + 'trow' + ii;
         imageId = 'img_' + squareId;
-        linkId = 'link_' + squareId;
         text += (ii+jj)%2 === 0 ?
           '<TD CLASS="whiteSquare" ID="' + squareId + '" BGCOLOR="#FFFFFF"' :
           '<TD CLASS="blackSquare" ID="' + squareId + '" BGCOLOR="#D3D3D3"';
@@ -3337,12 +3336,10 @@ function PrintHTML() {
         squareCoord = IsRotated ? String.fromCharCode(72-jj,49+ii) : String.fromCharCode(jj+65,56-ii);
         squareTitle = squareCoord;
         if (boardTitle[jj][ii] !== '') { squareTitle += ': ' + boardTitle[jj][ii]; }
-        text += '<A HREF="javascript:void(0);" ONCLICK="boardOnClick[' + jj + '][' + ii + '](this, event);" ' +
-          'ID="' + linkId + '" TITLE="' + squareTitle + '" ' +
-          'STYLE="text-decoration: none; outline: none;" ' +
-          'ONFOCUS="this.blur()">' +
-          '<IMG CLASS="pieceImage" ID="' + imageId + '" ' +
-          ' SRC="'+ ClearImg.src +'" BORDER=0></A></TD>';
+        text += '<IMG SRC="'+ ClearImg.src + 'STYLE="border-style: none; outline: none;" ' +
+          'ONCLICK="boardOnClick[' + jj + '][' + ii + '](this, event);" ' +
+          'ID="' + imageId + '" TITLE="' + squareTitle + '" ' + 'ONFOCUS="this.blur()" />' +
+          '</TD>';
       }
       text += '</TR>';
     }
