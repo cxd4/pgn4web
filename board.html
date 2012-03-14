@@ -751,7 +751,7 @@ newStyleSheet = '<style type="text/css"> \n';
 
 if ((movesDisplay == "figurine") || (movesDisplay == "nosymbols") || (movesDisplay == "puzzle")) {
   newStyleSheet += 'body, .header, .comment { font-family: \'pgn4web Liberation Sans\', sans-serif; } \n';
-  newStyleSheet += '.move, .variation, .lastMove { font-family: \'pgn4web ChessSansPiratf\', \'pgn4web Liberation Sans\', sans-serif; } \n';
+  newStyleSheet += '.move, .variation, .commentMove, .lastMove { font-family: \'pgn4web ChessSansPiratf\', \'pgn4web Liberation Sans\', sans-serif; } \n';
 }
 
 newStyleSheet += 'body { background: ' + backgroundColor + '; padding: ' + framePadding + '; } \n';
@@ -849,7 +849,7 @@ if (highlightMode == 'border') {
 
   if (!fontVariationsSize.match(/[^0-9]/)) { fontCommentsSize += 'px'; }
   if (fontVariationsColor !== 'comments') {
-    newStyleSheet += 'a.variation { ' +
+    newStyleSheet += '.variation, a.variation { ' +
                      ' color: ' + fontVariationsColor + '; ' +
                      '} \n';
   }

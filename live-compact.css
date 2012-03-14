@@ -123,9 +123,14 @@ a {
 }
 
 .move,
+.variation,
+.commentMove {
+  font-family: 'pgn4web ChessSansPiratf', 'pgn4web Liberation Sans', sans-serif;
+}
+
+.move,
 .variation {
   text-decoration: none;
-  font-family: 'pgn4web ChessSansPiratf', 'pgn4web Liberation Sans', sans-serif;
 }
 
 .helplinkNosize {

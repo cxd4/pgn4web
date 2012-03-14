@@ -618,8 +618,13 @@ function print_chessboard() {
 }
 
 .move,
-.variation {
+.variation,
+.commentMove {
   font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
+}
+
+.move,
+.variation {
   text-decoration: none;
 }
 

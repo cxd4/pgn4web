@@ -131,7 +131,8 @@ div, span {
 }
 
 .move,
-.variation {
+.variation,
+.commentMove {
   font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
 }
 

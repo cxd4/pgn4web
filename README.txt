@@ -189,14 +189,14 @@ or into your CSS file:
   @import url("fonts/pgn4web-font-LiberationSans.css");
   @import url("fonts/pgn4web-font-ChessSansPiratf.css");
 
-Then set the font-family for the .move and .variation classes to the chess font
-of your choice and the rest of the page to the Liberation Sans font. For example
-in your CSS file:
+Then set the font-family for the .move, .variation and .commentMove classes to
+the chess font of your choice and the rest of the page to the Liberation Sans
+font. For example in your CSS file:
 
   body {
     font-family: 'pgn4web Liberation Sans', sans-serif;
   }
-  .move, .variation {
+  .move, .variation, .commentMove {
     font-family: 'pgn4web ChessSansPiratf', 'pgn4web Liberation Sans', sans-serif;
   }
 
