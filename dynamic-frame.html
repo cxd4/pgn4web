@@ -599,7 +599,7 @@ function myOnLoad() {
 <div class="variableSpacer">&nbsp;</div>
 <div>&nbsp;<span style="font-weight: bold;" id="GameResult" title="result"></span><span style="font-weight: bold;">&nbsp;</span><span id="DebugInfo"></span></div>
 <div class="variableSpacer">&nbsp;</div>
-<div>&nbsp;<a id="GamePrevMoves" href="javascript:void(0);" onclick="MoveBackward(1); this.blur();" title="previous moves"></a><a style="font-weight: bold;" id="GameCurrMove" href="javascript:void(0);" onclick="SetHighlight(!highlightOption); this.blur();" title="current move as shown on chessboard"></a><a id="GameNextMoves" href="javascript:void(0);" onclick="MoveForward(1); this.blur();" title="next moves"></a><span style="font-weight: bold;">&nbsp;</span></div>
+<div>&nbsp;<a id="GamePrevMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly - 1); this.blur();" title="previous moves"></a><a style="font-weight: bold;" id="GameCurrMove" href="javascript:void(0);" onclick="SetHighlight(!highlightOption); this.blur();" title="current move as shown on chessboard"></a><a id="GameNextMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly + 1); this.blur();" title="next moves"></a><span style="font-weight: bold;">&nbsp;</span></div>
 <div class="variableSpacer">&nbsp;</div>
 <center><div class="gameButtons" id="GameButtons"></div></center>
 <div class="liveStatusLine">&nbsp;<a id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();" title="live broadcast status"></a>&nbsp;<span id="GameLiveStatusDemo" title="this is a broadcast simulation"></span></div>

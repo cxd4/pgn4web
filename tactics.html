@@ -116,12 +116,12 @@ function customFunctionOnPgnGameLoad() {
 <table cellspacing=0 cellpadding=0 border=0>
 <tr>
 <td width=80px valign=top>
-<input type=button value="move back" title="click here to move back one ply when looking at the solution" class="newButton" onClick="javascript: MoveBackward(1); if (StartPly == CurrentPly) {document.getElementById('task').style.visibility = 'visible';}" onFocus="this.blur()">
+<input type=button value="move back" title="click here to move back one ply when looking at the solution" class="newButton" onClick="javascript: GoToMove(CurrentPly - 1); if (StartPly == CurrentPly) {document.getElementById('task').style.visibility = 'visible';}" onFocus="this.blur()">
 </td>
 <td width=4px>
 </td>
 <td width=80px valign=top>
-<input type=button value="show solution" title="click here to show the solution and step through the main line" class="newButton" onClick="javascript:MoveForward(1); document.getElementById('solution').style.visibility = 'visible';document.getElementById('task').style.visibility = 'hidden';" onFocus="this.blur()">
+<input type=button value="show solution" title="click here to show the solution and step through the main line" class="newButton" onClick="javascript:GoToMove(CurrentPly + 1); document.getElementById('solution').style.visibility = 'visible';document.getElementById('task').style.visibility = 'hidden';" onFocus="this.blur()">
 </td>
 <td width=4px>
 </td>

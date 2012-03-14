@@ -1133,7 +1133,7 @@ function customFunctionOnPgnGameLoad() {
     }
     if (theObject = document.getElementById("GamePuzzleTask")) {
       theObject.innerHTML = "<A CLASS='move moveOn'" +
-        "HREF='javascript:void(0);' " + "ONCLICK='MoveForward(1);'>" +
+        "HREF='javascript:void(0);' " + "ONCLICK='GoToMove(CurrentPly + 1);'>" +
         Math.floor((CurrentPly / 2) + 1) +
         (CurrentPly % 2 ? "..." : ".") + " ?</A>";
       theObject.title = (CurrentPly % 2 ? "Black" : "White") +

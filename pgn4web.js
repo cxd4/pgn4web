@@ -222,8 +222,8 @@ function handlekey(e) {
 
     case 37: // left-arrow
     case 74: // j
-      if (e.shiftKey) { MoveBackward(CurrentPly - StartPlyVar[CurrentVar]); }
-      else { MoveBackward(1); }
+      if (e.shiftKey) { GoToPly(StartPlyVar[CurrentVar]); }
+      else { GoToMove(CurrentPly - 1); }
       return stopKeyProp(e);
 
     case 38: // up-arrow
@@ -234,8 +234,8 @@ function handlekey(e) {
 
     case 39: // right-arrow
     case 75: // k
-      if (e.shiftKey) { if (!goToNextVariationSibling()) { MoveForward(1); } }
-      else { MoveForward(1); }
+      if (e.shiftKey) { if (!goToNextVariationSibling()) { GoToMove(CurrentPly + 1); } }
+      else { GoToMove(CurrentPly + 1); }
       return stopKeyProp(e);
 
     case 40: // down-arrow
@@ -268,7 +268,7 @@ function handlekey(e) {
       return stopKeyProp(e);
 
     case 65: // a
-      MoveForward(1);
+      GoToMove(CurrentPly + 1);
       SetAutoPlay(true);
       return stopKeyProp(e);
 
@@ -562,9 +562,9 @@ boardShortcut("A1", "go to game start", function(){ GoToMove(StartPlyVar[0], 0);
 // C1
 // see setB1C1F1G1boardShortcuts()
 // D1
-boardShortcut("D1", "move backward", function(){ MoveBackward(1); });
+boardShortcut("D1", "move backward", function(){ GoToMove(CurrentPly - 1); });
 // E1
-boardShortcut("E1", "move forward", function(){ MoveForward(1); });
+boardShortcut("E1", "move forward", function(){ GoToMove(CurrentPly + 1); });
 // F1
 // see setB1C1F1G1boardShortcuts()
 // G1
@@ -582,20 +582,20 @@ function setB1C1F1G1boardShortcuts() {
     boardShortcut("G1", "go to next comment or variation", function(){ MoveToNextComment(); });
   } else {
     // B1
-    boardShortcut("B1", "move 10 half-moves backward", function(){ MoveBackward(10); });
+    boardShortcut("B1", "move 10 half-moves backward", function(){ GoToMove(CurrentPly - 10); });
     // G1
-    boardShortcut("G1", "move 10 half-moves forward", function(){ MoveForward(10); });
+    boardShortcut("G1", "move 10 half-moves forward", function(){ GoToMove(CurrentPly + 10); });
   }
   if (commentsIntoMoveText && GameHasVariations) {
     // C1
-    boardShortcut("C1", "go to parent variation", function(){ MoveBackward(CurrentPly - StartPlyVar[CurrentVar]); });
+    boardShortcut("C1", "go to parent variation", function(){ GoToMove(StartPlyVar[CurrentVar]); });
     // F1
-    boardShortcut("F1", "cycle through alternative variations, if any, otherwise move forward", function(){ if (!goToNextVariationSibling()) { MoveForward(1); } });
+    boardShortcut("F1", "cycle through alternative variations, if any, otherwise move forward", function(){ if (!goToNextVariationSibling()) { GoToMove(CurrentPly + 1); } });
   } else {
     // C1
-    boardShortcut("C1", "move 6 half-moves backward", function(){ MoveBackward(6); });
+    boardShortcut("C1", "move 6 half-moves backward", function(){ GoToMove(CurrentPly - 6); });
     // F1
-    boardShortcut("F1", "move 6 half-moves forward", function(){ MoveForward(6); });
+    boardShortcut("F1", "move 6 half-moves forward", function(){ GoToMove(CurrentPly + 6); });
   }
 }
 
@@ -3377,7 +3377,7 @@ function PrintHTML() {
       '<INPUT ID="backButton" TYPE="BUTTON" VALUE="&lt;" STYLE="';
     if (buttonSize > 0) { text += 'width: ' + buttonSize + 'px;'; }
     text += '"; CLASS="buttonControl" TITLE="move backward" ' +
-      ' ID="btnMoveBackward1" onClick="MoveBackward(1);" ONFOCUS="this.blur();">' +
+      ' ID="btnMoveBackward1" onClick="GoToMove(CurrentPly - 1);" ONFOCUS="this.blur();">' +
       '</TD>' +
       '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
       '</TD><TD>';
@@ -3394,7 +3394,7 @@ function PrintHTML() {
       '<INPUT ID="forwardButton" TYPE="BUTTON" VALUE="&gt;" STYLE="';
     if (buttonSize > 0) { text += 'width: ' + buttonSize + 'px;'; }
     text += '"; CLASS="buttonControl" TITLE="move forward" ' +
-      ' ID="btnMoveForward1" onClick="MoveForward(1);" ONFOCUS="this.blur();">' +
+      ' ID="btnMoveForward1" onClick="GoToMove(CurrentPly + 1);" ONFOCUS="this.blur();">' +
       '</TD>' +
       '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
       '</TD><TD>' +

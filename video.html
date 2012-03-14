@@ -476,7 +476,7 @@ function getVideotime() {
       writeSetupOutput("\n" + newGameHeader(currentGame, storedVideotime) + "\n\n");
     }
   } else {
-    MoveForward(1);
+    GoToMove(CurrentPly + 1);
     moreText = "";
     moreText += Math.ceil(CurrentPly/2) + ".";
     if (!(CurrentPly % 2)) { moreText += ".."; }
