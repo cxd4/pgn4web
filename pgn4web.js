@@ -3336,7 +3336,8 @@ function PrintHTML() {
         squareCoord = IsRotated ? String.fromCharCode(72-jj,49+ii) : String.fromCharCode(jj+65,56-ii);
         squareTitle = squareCoord;
         if (boardTitle[jj][ii] !== '') { squareTitle += ': ' + boardTitle[jj][ii]; }
-        text += '<IMG SRC="'+ ClearImg.src + 'STYLE="border-style: none; outline: none;" ' +
+        text += '<IMG SRC="'+ ClearImg.src + '" ' +
+          'CLASS="pieceImage" STYLE="border-style: none; outline: none;" ' +
           'ONCLICK="boardOnClick[' + jj + '][' + ii + '](this, event);" ' +
           'ID="' + imageId + '" TITLE="' + squareTitle + '" ' + 'ONFOCUS="this.blur()" />' +
           '</TD>';
