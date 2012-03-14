@@ -356,25 +356,18 @@ of Google Chrome. Don't use with any other browser.
       // if (PlyNumber > 0) { customPgnHeaderTag('Result', 'ResultAtGametextEnd'); }
       // else { if (theObject = document.getElementById('ResultAtGametextEnd')) { theObject.innerHTML = ""; } }
 
-      commentsPresent = false;
-      for(ii=StartPly; ii<=StartPly+PlyNumberVar[0]; ii++) {
-         if (strippedMoveComment(ii, 0)) {
-            commentsPresent = true;
-            break;
-         }
-      }
       if (theObject = document.getElementById('lastMoveAndComment')) {
          if ((PlyNumber === 0) && (gameFEN[currentGame])) {
             lastDisplayStyle = "block";
          } else if (commentsIntoMoveText && ((PlyNumber > 0) || (gameFEN[currentGame]))) {
-            lastDisplayStyle = commentsPresent ? "block" : "none";
+            lastDisplayStyle = GameHasComments ? "block" : "none";
          } else {
             lastDisplayStyle = "none";
          }
          theObject.style.display = lastDisplayStyle;
       }
       if (theObject = document.getElementById("toggleCommentsLink")) {
-         if (commentsPresent) {
+         if (GameHasComments) {
              theObject.innerHTML = commentsIntoMoveText ? "&times;" : "+";
          } else {
              theObject.innerHTML = "";

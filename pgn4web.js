@@ -558,19 +558,47 @@ boardShortcut("H2", "autoplay 15 seconds", function(){ SetAutoplayDelayAndStart(
 // A1
 boardShortcut("A1", "go to game start", function(){ GoToMove(StartPlyVar[0], 0); });
 // B1
-boardShortcut("B1", "go to previous comment or variation", function(){ MoveToPrevComment(); });
+// see setB1C1F1G1boardShortcuts()
 // C1
-boardShortcut("C1", "move 6 half-moves backward", function(){ MoveBackward(6); });
+// see setB1C1F1G1boardShortcuts()
 // D1
 boardShortcut("D1", "move backward", function(){ MoveBackward(1); });
 // E1
 boardShortcut("E1", "move forward", function(){ MoveForward(1); });
 // F1
-boardShortcut("F1", "move 6 half-moves forward", function(){ MoveForward(6); });
+// see setB1C1F1G1boardShortcuts()
 // G1
-boardShortcut("G1", "go to next comment or variation", function(){ MoveToNextComment(); });
+// see setB1C1F1G1boardShortcuts()
 // H1
 boardShortcut("H1", "go to game end", function(){ GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); });
+
+setB1C1F1G1boardShortcuts();
+
+function setB1C1F1G1boardShortcuts() {
+  if (commentsIntoMoveText && GameHasComments) {
+    // B1
+    boardShortcut("B1", "go to previous comment or variation", function(){ MoveToPrevComment(); });
+    // G1
+    boardShortcut("G1", "go to next comment or variation", function(){ MoveToNextComment(); });
+  } else {
+    // B1
+    boardShortcut("B1", "move 10 half-moves backward", function(){ MoveBackward(10); });
+    // G1
+    boardShortcut("G1", "move 10 half-moves forward", function(){ MoveForward(10); });
+  }
+  if (commentsIntoMoveText && GameHasVariations) {
+    // C1
+    boardShortcut("C1", "go to parent variation", function(){ MoveBackward(CurrentPly - StartPlyVar[CurrentVar]); });
+    // F1
+    boardShortcut("F1", "cycle through alternative variations, if any, otherwise move forward", function(){ if (!goToNextVariationSibling()) { MoveForward(1); } });
+  } else {
+    // C1
+    boardShortcut("C1", "move 6 half-moves backward", function(){ MoveBackward(6); });
+    // F1
+    boardShortcut("F1", "move 6 half-moves forward", function(){ MoveForward(6); });
+  }
+}
+
 
 
 var deciles = new Array(11);
@@ -2692,6 +2720,7 @@ var lastVarWithNoMoves;
 var numberOfVars;
 var MovesVar;
 var MoveCommentsVar;
+var GameHasComments;
 var StartPlyVar;
 var PlyNumberVar;
 var CurrentVarStack;
@@ -2701,6 +2730,8 @@ var PredecessorsVars;
 function initVar () {
   MovesVar = new Array();
   MoveCommentsVar = new Array();
+  GameHasComments = false;
+  GameHasVariations = false;
   StartPlyVar = new Array();
   PlyNumberVar = new Array();
   CurrentVar = -1;
@@ -2736,6 +2767,8 @@ function startVar() {
 function closeVar() {
   if (StartPly + PlyNumber ===  StartPlyVar[CurrentVar]) {
     myAlert("warning: empty variation " + CurrentVar + " in game " + (currentGame+1), false);
+  } else {
+    GameHasVariations = true;
   }
   lastVarWithNoMoves.pop();
   PlyNumberVar[CurrentVar] = StartPly + PlyNumber - StartPlyVar[CurrentVar];
@@ -2793,7 +2826,7 @@ function goToNextVariationSibling() {
 
 function ParsePGNGameString(gameString) {
 
-  var ssRep, ss = gameString;
+  var ssRep, ss = gameString, ssComm;
   ss = ss.replace(pgn4webVariationRegExpGlobal, "[%_pgn4web_variation_ $1]");
   // replace empty variations with comments
   while ((ssRep = ss.replace(/\((([\?!+#\s]|\$\d+|{[^}]*})*)\)/g, ' $1 ')) !== ss) { ss = ssRep; }
@@ -2824,7 +2857,7 @@ function ParsePGNGameString(gameString) {
           if (commentEnd == ss.length) { break; }
         }
         if (MoveCommentsVar[CurrentVar][StartPly+PlyNumber]) { MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' '; }
-        MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ss.substring(commentStart, commentEnd);
+        MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += translateNAGs(ss.substring(commentStart, commentEnd).replace(/(^\s*|\s*$)/, ''));
         start = commentEnd - 1;
         break;
 
@@ -2846,7 +2879,9 @@ function ParsePGNGameString(gameString) {
         commentEnd = ss.indexOf('}',start+1);
         if (commentEnd > 0){
           if (MoveCommentsVar[CurrentVar][StartPly+PlyNumber]) { MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' '; }
-          MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ss.substring(commentStart, commentEnd);
+          ssComm = translateNAGs(ss.substring(commentStart, commentEnd).replace(/(^\s*|\s*$)/, ''));
+          MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ssComm;
+          GameHasComments = GameHasComments || ssComm.replace(basicNAGs, '') !== '';
           start = commentEnd;
         } else {
           myAlert('error: missing end comment char } while parsing game ' + (currentGame+1), true);
@@ -2860,9 +2895,6 @@ function ParsePGNGameString(gameString) {
         commentStart = start+1;
         commentEnd = ss.indexOf('\n',start+1);
         if (commentEnd < 0) { commentEnd = ss.length; }
-        // dont store % lines as comments
-        // if (MoveCommentsVar[CurrentVar][StartPly+PlyNumber]) { MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' '; }
-        // MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ss.substring(commentStart, commentEnd);
         start = commentEnd;
         break;
 
@@ -2871,7 +2903,9 @@ function ParsePGNGameString(gameString) {
         commentEnd = ss.indexOf('\n',start+1);
         if (commentEnd < 0) { commentEnd = ss.length; }
         if (MoveCommentsVar[CurrentVar][StartPly+PlyNumber]) { MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' '; }
-        MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ss.substring(commentStart, commentEnd);
+        ssComm = translateNAGs(ss.substring(commentStart, commentEnd).replace(/(^\s*|\s*$)/, ''));
+        MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ssComm;
+        GameHasComments = GameHasComments || ssComm.replace(basicNAGs, '') !== '';
         start = commentEnd;
         break;
 
@@ -2919,18 +2953,13 @@ function ParsePGNGameString(gameString) {
         break;
     }
   }
-  for (ii=StartPly; ii<=StartPly+PlyNumber; ii++) {
-    if (MoveCommentsVar[CurrentVar][ii]) {
-      MoveCommentsVar[CurrentVar][ii] = MoveCommentsVar[CurrentVar][ii].replace(/\s+/g, ' ');
-      MoveCommentsVar[CurrentVar][ii] = translateNAGs(MoveCommentsVar[CurrentVar][ii]);
-      MoveCommentsVar[CurrentVar][ii] = MoveCommentsVar[CurrentVar][ii].replace(/\s+$/g, '');
-    } else {
-      MoveCommentsVar[CurrentVar][ii] = '';
-    }
-  }
 
-  StartPlyVar[CurrentVar] = StartPly;
-  PlyNumberVar[CurrentVar] = PlyNumber;
+  if (CurrentVar !== 0) { myAlert("error: ParsePGNGameString ends with current var = " + CurrentVar, true); }
+
+  StartPlyVar[0] = StartPly;
+  PlyNumberVar[0] = PlyNumber;
+
+  GameHasComments = GameHasComments || GameHasVariations;
 
   lastSynchCurrentVar = -1;
 }
@@ -3490,6 +3519,8 @@ function PrintHTML() {
     text = '<SPAN ID="ShowPgnText">' + variationTextFromId(0); + '</SPAN>';
     theObject.innerHTML = text;
   }
+
+  setB1C1F1G1boardShortcuts(); // depend on presence of comments
 
   // game searchbox
 

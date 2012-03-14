@@ -128,9 +128,6 @@
   boardShortcut("G2", "replay 3 previous half-moves", function() { replayPreviousMoves(3); });
   boardShortcut("H2", "replay the previous half-move", function() { replayPreviousMoves(1); });
 
-  boardShortcut("B1", "move 10 half-moves backward", function() { MoveBackward(10); });
-  boardShortcut("G1", "move 10 half-moves forward", function() { MoveForward(10); });
-
   function addTagToTitle(tagLabel, tagValue, object) {
     if (!tagValue || tagValue[1] == "?" || !object) { return; }
     object.title += (object.title ? "\n " : " ") + tagLabel + tagValue + "  ";
