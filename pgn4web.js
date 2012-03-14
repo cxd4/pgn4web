@@ -599,8 +599,6 @@ function setB1C1F1G1boardShortcuts() {
   }
 }
 
-
-
 var deciles = new Array(11);
 function calculateDeciles() {
   for (ii=0; ii<deciles.length; ii++) {
@@ -2881,7 +2879,7 @@ function ParsePGNGameString(gameString) {
           if (MoveCommentsVar[CurrentVar][StartPly+PlyNumber]) { MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' '; }
           ssComm = translateNAGs(ss.substring(commentStart, commentEnd).replace(/(^\s*|\s*$)/, ''));
           MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ssComm;
-          GameHasComments = GameHasComments || ssComm.replace(basicNAGs, '') !== '';
+          GameHasComments = GameHasComments || ssComm.replace(/\[%[^\]]*\]\s*/g,'').replace(basicNAGs, '').replace(/^\s+$/,'') !== '';
           start = commentEnd;
         } else {
           myAlert('error: missing end comment char } while parsing game ' + (currentGame+1), true);
@@ -2905,7 +2903,7 @@ function ParsePGNGameString(gameString) {
         if (MoveCommentsVar[CurrentVar][StartPly+PlyNumber]) { MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' '; }
         ssComm = translateNAGs(ss.substring(commentStart, commentEnd).replace(/(^\s*|\s*$)/, ''));
         MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ssComm;
-        GameHasComments = GameHasComments || ssComm.replace(basicNAGs, '') !== '';
+        GameHasComments = GameHasComments || ssComm.replace(/\[%[^\]]*\]\s*/g,'').replace(basicNAGs, '').replace(/^\s+$/,'') !== '';
         start = commentEnd;
         break;
 
