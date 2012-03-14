@@ -552,9 +552,9 @@ boardShortcut("E2", "autoplay 5 seconds", function(){ SetAutoplayDelayAndStart(5
 // F2
 boardShortcut("F2", "autoplay custom delay", setCustomAutoplayDelay);
 // G2
-boardShortcut("G2", "replay up to 6 previous half-moves and forward", function() { replayPreviousMoves(6); });
+boardShortcut("G2", "replay up to 6 previous half-moves, then autoplay forward", function() { replayPreviousMoves(6); });
 // H2
-boardShortcut("H2", "replay the previous half-move and forward", function() { replayPreviousMoves(1); });
+boardShortcut("H2", "replay the previous half-move, then autoplay forward", function() { replayPreviousMoves(1); });
 // A1
 boardShortcut("A1", "go to game start", function(){ GoToMove(StartPlyVar[0], 0); });
 // B1
