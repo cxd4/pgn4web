@@ -207,6 +207,7 @@ function handlekey(e) {
     case 36: // home
     case 92: // super
     case 93: // menu
+    case 188: // comma
       return true;
 
     case 27: // escape
@@ -251,6 +252,10 @@ function handlekey(e) {
     case 34: // page-down
     case 73: // i
       MoveToNextComment(e.shiftKey);
+      return stopKeyProp(e);
+
+    case 190: // dot
+      goToNextVariationSibling();
       return stopKeyProp(e);
 
     case 83: // s
@@ -2771,26 +2776,19 @@ function realParentVar(childVar) {
       return PredecessorsVars[childVar][ii-1];
     }
   }
-  return -1;
+  return PredecessorsVars[childVar][ii];
 }
 
 function goToNextVariationSibling() {
   if (CurrentPly === StartPly) { return false; }
-  parentCurrentVar = realParentVar(CurrentVar);
-  for (var thisVar = (CurrentVar + 1) % numberOfVars; thisVar !== CurrentVar; thisVar = (thisVar + 1) % numberOfVars) {
-    if (StartPlyVar[CurrentVar] === CurrentPly -1 && PlyNumberVar[CurrentVar] > 0 && thisVar === parentCurrentVar) {
-      GoToMove(CurrentPly, thisVar);
-      return true;
-    }
-    if (StartPlyVar[thisVar] === CurrentPly - 1) {
-      parentThisVar = realParentVar(thisVar);
-      if ((parentThisVar === CurrentVar || parentThisVar === parentCurrentVar) && PlyNumberVar[thisVar]) {
-        GoToMove(CurrentPly, thisVar);
-        return true;
-      }
-    }
+  siblingVarList = childrenVars(CurrentPly - 1, HistVar[CurrentPly - 1]);
+  if (siblingVarList.length < 2) { return false; }
+  for (var ii = 0; ii < siblingVarList.length; ii++) {
+    if (siblingVarList[ii] === CurrentVar) { break; }
   }
-  return false;
+  if (siblingVarList[ii] !== CurrentVar) { return false; }
+  GoToMove(CurrentPly, siblingVarList[(ii + 1) % siblingVarList.length]);
+  return true;
 }
 
 function ParsePGNGameString(gameString) {
