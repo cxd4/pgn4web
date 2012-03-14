@@ -502,7 +502,7 @@ boardShortcut("D5", "search previous win result", function(t,e){ searchPgnGame('
 // E5
 boardShortcut("E5", "search next win result", function(t,e){ searchPgnGame('\\[\\s*Result\\s*"(1-0|0-1)"\\s*\\]', false); });
 // F5
-boardShortcut("F5", "", function(t,e){ myAlert("PAOLO testing shift detection: " + e.shiftKey, false); });
+boardShortcut("F5", "", function(t,e){});
 // G5
 boardShortcut("G5", "", function(t,e){});
 // H5
