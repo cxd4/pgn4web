@@ -550,7 +550,7 @@ boardShortcut("D2", "autoplay 2 seconds", function(){ SetAutoplayDelayAndStart( 
 // E2
 boardShortcut("E2", "autoplay 3 seconds", function(){ SetAutoplayDelayAndStart( 3*1000); });
 // F2
-boardShortcut("F2", "autoplay 5 seconds", function(){ SetAutoplayDelayAndStart( 5*1000); });
+boardShortcut("F2", "autoplay custom delay", setCustomAutoplayDelay);
 // G2
 boardShortcut("G2", "replay 6 previous half-moves", function() { replayPreviousMoves(6); });
 // H2
@@ -3726,9 +3726,18 @@ function SetAutoPlay(vv) {
   }
 }
 
+
+var minAutoplayDelay = 500;
+var maxAutoplayDelay = 300000;
+function setCustomAutoplayDelay() {
+  if ((newDelaySec = prompt("Enter custom autoplay delay, in seconds, between " + (minAutoplayDelay/1000) + " and " + (maxAutoplayDelay/1000) + ":", Math.floor(Delay / 1000))) && (! isNaN(newDelaySec = parseInt(newDelaySec, 10)))) {
+    SetAutoplayDelayAndStart(newDelaySec * 1000);
+  }
+}
+
 function SetAutoplayDelay(vv) {
   if (isNaN(vv = parseInt(vv, 10))) { return; }
-  Delay = Math.max(vv, 500);
+  Delay = Math.min(Math.max(vv, minAutoplayDelay), maxAutoplayDelay);
 }
 
 function SetAutoplayDelayAndStart(vv) {

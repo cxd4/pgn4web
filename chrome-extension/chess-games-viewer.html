@@ -160,6 +160,7 @@ of Google Chrome. Don't use with any other browser.
          "interact with the chessboard using keyboard shortcuts keys; click square F8 for a comprehensive list",
          "click square B5 to search games in large PGN files: click square E8 for help",
          "click square F5 for the chess puzzler of the day",
+         "click square F2 to probe the endgame tablebase",
          "click square G2 to annotate the game from the current position",
          "click square H2 to toggle the analysis engine",
          "when in live broadcast mode, click square H5 to switch between the single large board view and the multiple small boards view"
@@ -957,27 +958,19 @@ of Google Chrome. Don't use with any other browser.
 
 
    annotateInProgress = false;
-   minAnnotationDelay = 1;
-   maxAnnotationDelay = 300;
-   annotationDelayDefault = 15;
+   minAnnotationDelay = minAutoplayDelay;
+   maxAnnotationDelay = maxAutoplayDelay;
+   annotationDelayDefault = 15000;
    function annotateGame() {
-      if ((checkEngineUnderstandsGameAndWarn()) && (annotationDelay = prompt("Automatic game annotation from the current position, please do not interact with the chessboard until the analysis has reached the last available move.\n\nEnter engine's time per move, in seconds, between " + minAnnotationDelay + " and " + maxAnnotationDelay + ":", annotationDelayDefault))) {
+      if ((checkEngineUnderstandsGameAndWarn()) && (annotationDelay = prompt("Automatic game annotation from the current position, please do not interact with the chessboard until the analysis has reached the last available move.\n\nEnter engine's time per move, in seconds, between " + (minAnnotationDelay/1000) + " and " + (maxAnnotationDelay/1000) + ":", annotationDelayDefault))) {
          if (isNaN(annotationDelay = parseInt(annotationDelay, 10))) { annotationDelay = annotationDelayDefault; }
+         else { annotationDelay = annotationDelay * 1000; }
          annotationDelay = Math.min(maxAnnotationDelay, Math.max(minAnnotationDelay, annotationDelay));
          SetAutoPlay(false);
          if (!analysisStarted) { toggleAnalysis(); }
-         SetAutoplayDelay(annotationDelay * 1000);
+         SetAutoplayDelay(annotationDelay);
          SetAutoPlay(true);
          annotateInProgress = true;
-      }
-   }
-
-   minAutoplayDelay = minAnnotationDelay;
-   maxAutoplayDelay = maxAnnotationDelay;
-   function setCustomAutoplayDelay() {
-      if ((newDelaySec = prompt("Enter custom autoplay delay, in seconds, between " + minAutoplayDelay + " and " + maxAutoplayDelay + ":", Math.floor(Delay / 1000))) && (! isNaN(newDelaySec = parseInt(newDelaySec, 10)))) {
-         newDelaySec = Math.min(maxAutoplayDelay, Math.max(minAutoplayDelay, newDelaySec));
-         SetAutoplayDelayAndStart(newDelaySec * 1000);
       }
    }
 
@@ -1047,12 +1040,12 @@ of Google Chrome. Don't use with any other browser.
    boardShortcut("F5", "show the chess puzzler of the day", showPuzzler);
    // G5
    boardShortcut("G5", "adjust last move and current comment text area, if present", toggleFitResetLastMoveAndCommentArea);
-   // C2
-   boardShortcut("C2", "autoplay custom delay", setCustomAutoplayDelay);
    // E2
-   boardShortcut("E2", "probe endgame tablebase", function(){ toggleProbeTablebase(); });
+   boardShortcut("E2", "autoplay custom delay", setCustomAutoplayDelay);
    // F2
-   boardShortcut("F2", "annotate game", annotateGame);
+   boardShortcut("F2", "probe endgame tablebase", function(){ toggleProbeTablebase(); });
+   // G2
+   boardShortcut("G2", "annotate game", annotateGame);
    // H2
    boardShortcut("H2", "toggle analysis engine", userToggleAnalysis);
 
