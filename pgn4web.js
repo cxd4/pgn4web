@@ -552,9 +552,9 @@ boardShortcut("E2", "autoplay 3 seconds", function(){ SetAutoplayDelayAndStart( 
 // F2
 boardShortcut("F2", "autoplay custom delay", setCustomAutoplayDelay);
 // G2
-boardShortcut("G2", "replay 6 previous half-moves", function() { replayPreviousMoves(6); });
+boardShortcut("G2", "replay up to 6 previous half-moves and forward", function() { replayPreviousMoves(6); });
 // H2
-boardShortcut("H2", "replay the previous half-move", function() { replayPreviousMoves(1); });
+boardShortcut("H2", "replay the previous half-move and forward", function() { replayPreviousMoves(1); });
 // A1
 boardShortcut("A1", "go to game start", function(){ GoToMove(StartPlyVar[0], 0); });
 // B1
@@ -608,7 +608,9 @@ function calculateDeciles() {
 
 function replayPreviousMoves(numPlies) {
   targetPly = numPlies ? CurrentPly - numPlies : StartPly;
-  if (targetPly < StartPly) { targetPly = StartPly; }
+  if (targetPly < StartPlyVar[CurrentVar]) {
+    targetPly = StartPlyVar[CurrentVar] + (CurrentVar === 0 ? 0 : 1);
+  }
   if (targetPly !== CurrentPly) { GoToMove(targetPly); }
   SetAutoPlay(true);
 }
@@ -1244,6 +1246,7 @@ function ClearMove(move) {
 }
 
 function GoToMove(thisPly, thisVar) {
+  SetAutoPlay(false);
   if (typeof(thisVar) == "undefined") { thisVar = CurrentVar; }
   else {
     if (thisVar < 0) { thisVar = numberOfVars + thisVar; }
