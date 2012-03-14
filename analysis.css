@@ -12,6 +12,7 @@ html,
 body {
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 html {
@@ -42,11 +43,14 @@ div, span {
   overflow: hidden;
 }
 
+.topSpacer {
+  height: 30px;
+}
+
 .gametextresultDiv {
   padding-left: 30px;
   padding-right: 30px;
   margin-left: 421px;
-  margin-top: 30px;
   margin-bottom: 30px;
   overflow-y: scroll;
   overflow-x: hidden;
