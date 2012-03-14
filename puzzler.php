@@ -374,7 +374,7 @@ function setPuzzlerHelpShortcutSquares(cols, rows) {
   puzzlerHelp += "click OK to learn how to add the chess puzzler to your website, blog or iGoogle page";
   if ((typeof cols != "string") || (typeof rows != "string")) { return; }
   for (c=0; c<cols.length; c++) { for (r=0; r<rows.length; r++) {
-      boardShortcut(cols.charAt(c).toUpperCase()+rows.charAt(r), "chess puzzler help", function(){ if (confirm(puzzlerHelp)) { window.open("http://code.google.com/p/pgn4web/wiki/Example_Puzzler", "_blank"); } });
+      boardShortcut(cols.charAt(c).toUpperCase()+rows.charAt(r), "chess puzzler help", function(t,e){ if (confirm(puzzlerHelp)) { window.open("http://code.google.com/p/pgn4web/wiki/Example_Puzzler", "_blank"); } });
   } }
 }
 

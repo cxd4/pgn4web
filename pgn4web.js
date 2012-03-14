@@ -222,7 +222,7 @@ function handlekey(e) {
 
     case 37: // left-arrow
     case 74: // j
-      if (e.shiftKey) { GoToPly(StartPlyVar[CurrentVar]); }
+      if (e.shiftKey) { GoToMove(StartPlyVar[CurrentVar]); }
       else { GoToMove(CurrentPly - 1); }
       return stopKeyProp(e);
 
@@ -419,7 +419,7 @@ clearShortcutSquares("ABCDEFGH", "12345678");
 function clearShortcutSquares(cols, rows) {
   if ((typeof cols != "string") || (typeof rows != "string")) { return; }
   for (c=0; c<cols.length; c++) { for (r=0; r<rows.length; r++) {
-      boardShortcut(cols.charAt(c).toUpperCase()+rows.charAt(r), "", function(){});
+      boardShortcut(cols.charAt(c).toUpperCase()+rows.charAt(r), "", function(t,e){});
   } }
 }
 
@@ -444,158 +444,158 @@ function boardShortcut(square, title, functionPointer) {
 
 debugShortcutSquare = "A8";
 // A8
-boardShortcut("A8", "pgn4web v" + pgn4web_version + " debug info", function(){ displayDebugInfo(); });
+boardShortcut("A8", "pgn4web v" + pgn4web_version + " debug info", function(t,e){ displayDebugInfo(); });
 // B8
-boardShortcut("B8", "show this position FEN string", function(){ displayFenData(); });
+boardShortcut("B8", "show this position FEN string", function(t,e){ displayFenData(); });
 // C8
-boardShortcut("C8", "show this game PGN source data", function(){ displayPgnData(false); });
+boardShortcut("C8", "show this game PGN source data", function(t,e){ displayPgnData(false); });
 // D8
-boardShortcut("D8", "show full PGN source data", function(){ displayPgnData(true); });
+boardShortcut("D8", "show full PGN source data", function(t,e){ displayPgnData(true); });
 // E8
-boardShortcut("E8", "search help", function(){ displayHelp("search_tool"); });
+boardShortcut("E8", "search help", function(t,e){ displayHelp("search_tool"); });
 // F8
-boardShortcut("F8", "shortcut keys help", function(){ displayHelp("shortcut_keys"); });
+boardShortcut("F8", "shortcut keys help", function(t,e){ displayHelp("shortcut_keys"); });
 // G8
-boardShortcut("G8", "shortcut squares help", function(){ displayHelp("shortcut_squares"); });
+boardShortcut("G8", "shortcut squares help", function(t,e){ displayHelp("shortcut_squares"); });
 // H8
-boardShortcut("H8", "pgn4web help", function(){ displayHelp(); });
+boardShortcut("H8", "pgn4web help", function(t,e){ displayHelp(); });
 // A7
-boardShortcut("A7", "pgn4web website", function(){ window.open(pgn4web_project_url); });
+boardShortcut("A7", "pgn4web website", function(t,e){ window.open(pgn4web_project_url); });
 // B7
-boardShortcut("B7", "toggle show comments in game text", function(){ SetCommentsIntoMoveText(!commentsIntoMoveText); var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar); });
+boardShortcut("B7", "toggle show comments in game text", function(t,e){ SetCommentsIntoMoveText(!commentsIntoMoveText); var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar); });
 // C7
-boardShortcut("C7", "toggle show comments on separate lines in game text", function(){ SetCommentsOnSeparateLines(!commentsOnSeparateLines); var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar); });
+boardShortcut("C7", "toggle show comments on separate lines in game text", function(t,e){ SetCommentsOnSeparateLines(!commentsOnSeparateLines); var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar); });
 // D7
-boardShortcut("D7", "toggle highlight last move", function(){ SetHighlight(!highlightOption); });
+boardShortcut("D7", "toggle highlight last move", function(t,e){ SetHighlight(!highlightOption); });
 // E7
-boardShortcut("E7", "flip board", function(){ FlipBoard(); });
+boardShortcut("E7", "flip board", function(t,e){ FlipBoard(); });
 // F7
-boardShortcut("F7", "show white on bottom", function(){ if (IsRotated) { FlipBoard(); } });
+boardShortcut("F7", "show white on bottom", function(t,e){ if (IsRotated) { FlipBoard(); } });
 // G7
-boardShortcut("G7", "toggle autoplay next game", function(){ SetAutoplayNextGame(!autoplayNextGame); });
+boardShortcut("G7", "toggle autoplay next game", function(t,e){ SetAutoplayNextGame(!autoplayNextGame); });
 // H7
-boardShortcut("H7", "toggle enabling shortcut keys", function(){ interactivelyToggleShortcutKeys(); });
+boardShortcut("H7", "toggle enabling shortcut keys", function(t,e){ interactivelyToggleShortcutKeys(); });
 // A6
-boardShortcut("A6", "pause live broadcast automatic refresh", function(){ pauseLiveBroadcast(); });
+boardShortcut("A6", "pause live broadcast automatic refresh", function(t,e){ pauseLiveBroadcast(); });
 // B6
-boardShortcut("B6", "restart live broadcast automatic refresh", function(){ restartLiveBroadcast(); });
+boardShortcut("B6", "restart live broadcast automatic refresh", function(t,e){ restartLiveBroadcast(); });
 // C6
-boardShortcut("C6", "search previous finished game", function(){ searchPgnGame('\\[\\s*Result\\s*"(?!\\*"\\s*\\])', true); });
+boardShortcut("C6", "search previous finished game", function(t,e){ searchPgnGame('\\[\\s*Result\\s*"(?!\\*"\\s*\\])', true); });
 // D6
-boardShortcut("D6", "search previous unfinished game", function(){ searchPgnGame('\\[\\s*Result\\s*"\\*"\\s*\\]', true); });
+boardShortcut("D6", "search previous unfinished game", function(t,e){ searchPgnGame('\\[\\s*Result\\s*"\\*"\\s*\\]', true); });
 // E6
-boardShortcut("E6", "search next unfinished game", function(){  searchPgnGame('\\[\\s*Result\\s*"\\*"\\s*\\]', false); });
+boardShortcut("E6", "search next unfinished game", function(t,e){  searchPgnGame('\\[\\s*Result\\s*"\\*"\\s*\\]', false); });
 // F6
-boardShortcut("F6", "search next finished game", function(){ searchPgnGame('\\[\\s*Result\\s*"(?!\\*"\\s*\\])', false); });
+boardShortcut("F6", "search next finished game", function(t,e){ searchPgnGame('\\[\\s*Result\\s*"(?!\\*"\\s*\\])', false); });
 // G6
-boardShortcut("G6", "toggle live broadcast stepping", function(){ LiveBroadcastSteppingMode = !LiveBroadcastSteppingMode; });
+boardShortcut("G6", "toggle live broadcast stepping", function(t,e){ LiveBroadcastSteppingMode = !LiveBroadcastSteppingMode; });
 // H6
-boardShortcut("H6", "force games refresh during live broadcast", function(){ refreshPgnSource(); });
+boardShortcut("H6", "force games refresh during live broadcast", function(t,e){ refreshPgnSource(); });
 // A5
-boardShortcut("A5", "repeat last search backward", function(){ searchPgnGame(lastSearchPgnExpression, true); });
+boardShortcut("A5", "repeat last search backward", function(t,e){ searchPgnGame(lastSearchPgnExpression, true); });
 // B5
-boardShortcut("B5", "search prompt", function(){ searchPgnGamePrompt(); });
+boardShortcut("B5", "search prompt", function(t,e){ searchPgnGamePrompt(); });
 // C5
-boardShortcut("C5", "repeat last search", function(){ searchPgnGame(lastSearchPgnExpression); });
+boardShortcut("C5", "repeat last search", function(t,e){ searchPgnGame(lastSearchPgnExpression); });
 // D5
-boardShortcut("D5", "search previous win result", function(){ searchPgnGame('\\[\\s*Result\\s*"(1-0|0-1)"\\s*\\]', true); });
+boardShortcut("D5", "search previous win result", function(t,e){ searchPgnGame('\\[\\s*Result\\s*"(1-0|0-1)"\\s*\\]', true); });
 // E5
-boardShortcut("E5", "search next win result", function(){ searchPgnGame('\\[\\s*Result\\s*"(1-0|0-1)"\\s*\\]', false); });
+boardShortcut("E5", "search next win result", function(t,e){ searchPgnGame('\\[\\s*Result\\s*"(1-0|0-1)"\\s*\\]', false); });
 // F5
-boardShortcut("F5", "", function(){});
+boardShortcut("F5", "", function(t,e){ myAlert("PAOLO testing shift detection: " + e.shiftKey, false); });
 // G5
-boardShortcut("G5", "", function(){});
+boardShortcut("G5", "", function(t,e){});
 // H5
-boardShortcut("H5", "", function(){});
+boardShortcut("H5", "", function(t,e){});
 // A4
-boardShortcut("A4", "search previous event", function(){ searchPgnGame('\\[\\s*Event\\s*"(?!' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])', true); });
+boardShortcut("A4", "search previous event", function(t,e){ searchPgnGame('\\[\\s*Event\\s*"(?!' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])', true); });
 // B4
-boardShortcut("B4", "search previous round of same event", function(){ searchPgnGame('\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])|\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])', true); });
+boardShortcut("B4", "search previous round of same event", function(t,e){ searchPgnGame('\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])|\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])', true); });
 // C4
-boardShortcut("C4", "search previous game of same black player", function(){ searchPgnGame('\\[\\s*Black\\s*"' + fixRegExp(gameBlack[currentGame]) + '"\\s*\\]', true); });
+boardShortcut("C4", "search previous game of same black player", function(t,e){ searchPgnGame('\\[\\s*Black\\s*"' + fixRegExp(gameBlack[currentGame]) + '"\\s*\\]', true); });
 // D4
-boardShortcut("D4", "search previous game of same white player", function(){ searchPgnGame('\\[\\s*White\\s*"' + fixRegExp(gameWhite[currentGame]) + '"\\s*\\]', true); });
+boardShortcut("D4", "search previous game of same white player", function(t,e){ searchPgnGame('\\[\\s*White\\s*"' + fixRegExp(gameWhite[currentGame]) + '"\\s*\\]', true); });
 // E4
-boardShortcut("E4", "search next game of same white player", function(){ searchPgnGame('\\[\\s*White\\s*"' + fixRegExp(gameWhite[currentGame]) + '"\\s*\\]', false); });
+boardShortcut("E4", "search next game of same white player", function(t,e){ searchPgnGame('\\[\\s*White\\s*"' + fixRegExp(gameWhite[currentGame]) + '"\\s*\\]', false); });
 // F4
-boardShortcut("F4", "search next game of same black player", function(){  searchPgnGame('\\[\\s*Black\\s*"' + fixRegExp(gameBlack[currentGame]) + '"\\s*\\]', false); });
+boardShortcut("F4", "search next game of same black player", function(t,e){  searchPgnGame('\\[\\s*Black\\s*"' + fixRegExp(gameBlack[currentGame]) + '"\\s*\\]', false); });
 // G4
-boardShortcut("G4", "search next round of same event", function(){ searchPgnGame('\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])|\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])', false); });
+boardShortcut("G4", "search next round of same event", function(t,e){ searchPgnGame('\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])|\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])', false); });
 // H4
-boardShortcut("H4", "search next event", function(){ searchPgnGame('\\[\\s*Event\\s*"(?!' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])', false); });
+boardShortcut("H4", "search next event", function(t,e){ searchPgnGame('\\[\\s*Event\\s*"(?!' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])', false); });
 // A3
-boardShortcut("A3", "load first game", function(){ if (numberOfGames > 1) { Init(0); } });
+boardShortcut("A3", "load first game", function(t,e){ if (numberOfGames > 1) { Init(0); } });
 // B3
-boardShortcut("B3", "jump to previous games decile", function(){ if (currentGame > 0) { calculateDeciles(); for(ii=(deciles.length-2); ii>=0; ii--) { if (currentGame > deciles[ii]) { Init(deciles[ii]); break; } } } });
+boardShortcut("B3", "jump to previous games decile", function(t,e){ if (currentGame > 0) { calculateDeciles(); for(ii=(deciles.length-2); ii>=0; ii--) { if (currentGame > deciles[ii]) { Init(deciles[ii]); break; } } } });
 // C3
-boardShortcut("C3", "load previous game", function(){ Init(currentGame - 1); });
+boardShortcut("C3", "load previous game", function(t,e){ Init(currentGame - 1); });
 // D3
-boardShortcut("D3", "load random game", function(){ if (numberOfGames > 1) { Init(Math.floor(Math.random()*numberOfGames)); } });
+boardShortcut("D3", "load random game", function(t,e){ if (numberOfGames > 1) { Init(Math.floor(Math.random()*numberOfGames)); } });
 // E3
-boardShortcut("E3", "load random game at random position", function(){ Init(Math.floor(Math.random()*numberOfGames)); GoToMove(StartPlyVar[0] + Math.floor(Math.random()*(StartPlyVar[0] + PlyNumberVar[0] + 1)), 0); });
+boardShortcut("E3", "load random game at random position", function(t,e){ Init(Math.floor(Math.random()*numberOfGames)); GoToMove(StartPlyVar[0] + Math.floor(Math.random()*(StartPlyVar[0] + PlyNumberVar[0] + 1)), 0); });
 // F3
-boardShortcut("F3", "load next game", function(){ Init(currentGame + 1); });
+boardShortcut("F3", "load next game", function(t,e){ Init(currentGame + 1); });
 // G3
-boardShortcut("G3", "jump to next games decile", function(){ if (currentGame < numberOfGames - 1) { calculateDeciles(); for(ii=1; ii<deciles.length; ii++) { if (currentGame < deciles[ii]) { Init(deciles[ii]); break; } } } });
+boardShortcut("G3", "jump to next games decile", function(t,e){ if (currentGame < numberOfGames - 1) { calculateDeciles(); for(ii=1; ii<deciles.length; ii++) { if (currentGame < deciles[ii]) { Init(deciles[ii]); break; } } } });
 // H3
-boardShortcut("H3", "load last game", function(){ if (numberOfGames > 1) { Init(numberOfGames - 1); } });
+boardShortcut("H3", "load last game", function(t,e){ if (numberOfGames > 1) { Init(numberOfGames - 1); } });
 // A2
-boardShortcut("A2", "stop autoplay", function(){ SetAutoPlay(false); });
+boardShortcut("A2", "stop autoplay", function(t,e){ SetAutoPlay(false); });
 // B2
-boardShortcut("B2", "toggle autoplay", function(){ SwitchAutoPlay(); });
+boardShortcut("B2", "toggle autoplay", function(t,e){ SwitchAutoPlay(); });
 // C2
-boardShortcut("C2", "autoplay 1 second", function(){ SetAutoplayDelayAndStart(1*1000); });
+boardShortcut("C2", "autoplay 1 second", function(t,e){ SetAutoplayDelayAndStart(1*1000); });
 // D2
-boardShortcut("D2", "autoplay 2 seconds", function(){ SetAutoplayDelayAndStart(2*1000); });
+boardShortcut("D2", "autoplay 2 seconds", function(t,e){ SetAutoplayDelayAndStart(2*1000); });
 // E2
-boardShortcut("E2", "autoplay 5 seconds", function(){ SetAutoplayDelayAndStart(5*1000); });
+boardShortcut("E2", "autoplay 5 seconds", function(t,e){ SetAutoplayDelayAndStart(5*1000); });
 // F2
-boardShortcut("F2", "autoplay custom delay", setCustomAutoplayDelay);
+boardShortcut("F2", "autoplay custom delay", function(t,e){ setCustomAutoplayDelay(); });
 // G2
-boardShortcut("G2", "replay up to 6 previous half-moves, then autoplay forward", function() { replayPreviousMoves(6); });
+boardShortcut("G2", "replay up to 6 previous half-moves, then autoplay forward", function(t,e){ replayPreviousMoves(6); });
 // H2
-boardShortcut("H2", "replay the previous half-move, then autoplay forward", function() { replayPreviousMoves(1); });
+boardShortcut("H2", "replay the previous half-move, then autoplay forward", function(t,e){ replayPreviousMoves(1); });
 // A1
-boardShortcut("A1", "go to game start", function(){ GoToMove(StartPlyVar[0], 0); });
+boardShortcut("A1", "go to game start", function(t,e){ GoToMove(StartPlyVar[0], 0); });
 // B1
 // see setB1C1F1G1boardShortcuts()
 // C1
 // see setB1C1F1G1boardShortcuts()
 // D1
-boardShortcut("D1", "move backward", function(){ GoToMove(CurrentPly - 1); });
+boardShortcut("D1", "move backward", function(t,e){ GoToMove(CurrentPly - 1); });
 // E1
-boardShortcut("E1", "move forward", function(){ GoToMove(CurrentPly + 1); });
+boardShortcut("E1", "move forward", function(t,e){ GoToMove(CurrentPly + 1); });
 // F1
 // see setB1C1F1G1boardShortcuts()
 // G1
 // see setB1C1F1G1boardShortcuts()
 // H1
-boardShortcut("H1", "go to game end", function(){ GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); });
+boardShortcut("H1", "go to game end", function(t,e){ GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); });
 
 setB1C1F1G1boardShortcuts();
 
 function setB1C1F1G1boardShortcuts() {
   if (commentsIntoMoveText && GameHasComments) {
     // B1
-    boardShortcut("B1", "go to previous comment or variation", function(){ MoveToPrevComment(); });
+    boardShortcut("B1", "go to previous comment or variation", function(t,e){ MoveToPrevComment(); });
     // G1
-    boardShortcut("G1", "go to next comment or variation", function(){ MoveToNextComment(); });
+    boardShortcut("G1", "go to next comment or variation", function(t,e){ MoveToNextComment(); });
   } else {
     // B1
-    boardShortcut("B1", "move 10 half-moves backward", function(){ GoToMove(CurrentPly - 10); });
+    boardShortcut("B1", "move 10 half-moves backward", function(t,e){ GoToMove(CurrentPly - 10); });
     // G1
-    boardShortcut("G1", "move 10 half-moves forward", function(){ GoToMove(CurrentPly + 10); });
+    boardShortcut("G1", "move 10 half-moves forward", function(t,e){ GoToMove(CurrentPly + 10); });
   }
   if (commentsIntoMoveText && GameHasVariations) {
     // C1
-    boardShortcut("C1", "go to parent variation", function(){ GoToMove(StartPlyVar[CurrentVar]); });
+    boardShortcut("C1", "go to parent variation", function(t,e){ GoToMove(StartPlyVar[CurrentVar]); });
     // F1
-    boardShortcut("F1", "cycle through alternative variations, if any, otherwise move forward", function(){ if (!goToNextVariationSibling()) { GoToMove(CurrentPly + 1); } });
+    boardShortcut("F1", "cycle through alternative variations, if any, otherwise move forward", function(t,e){ if (!goToNextVariationSibling()) { GoToMove(CurrentPly + 1); } });
   } else {
     // C1
-    boardShortcut("C1", "move 6 half-moves backward", function(){ GoToMove(CurrentPly - 6); });
+    boardShortcut("C1", "move 6 half-moves backward", function(t,e){ GoToMove(CurrentPly - 6); });
     // F1
-    boardShortcut("F1", "move 6 half-moves forward", function(){ GoToMove(CurrentPly + 6); });
+    boardShortcut("F1", "move 6 half-moves forward", function(t,e){ GoToMove(CurrentPly + 6); });
   }
 }
 
@@ -3337,7 +3337,7 @@ function PrintHTML() {
         squareCoord = IsRotated ? String.fromCharCode(72-jj,49+ii) : String.fromCharCode(jj+65,56-ii);
         squareTitle = squareCoord;
         if (boardTitle[jj][ii] !== '') { squareTitle += ': ' + boardTitle[jj][ii]; }
-        text += '<A HREF="javascript:void(0);" ONCLICK="boardOnClick[' + jj + '][' + ii + ']();" ' +
+        text += '<A HREF="javascript:void(0);" ONCLICK="boardOnClick[' + jj + '][' + ii + '](this, event);" ' +
           'ID="' + linkId + '" TITLE="' + squareTitle + '" ' +
           'STYLE="text-decoration: none; outline: none;" ' +
           'ONFOCUS="this.blur()">' +
@@ -3370,14 +3370,14 @@ function PrintHTML() {
       '<INPUT ID="startButton" TYPE="BUTTON" VALUE="&lt;&lt;" STYLE="';
     if (buttonSize > 0) { text += 'width: ' + buttonSize + 'px;'; }
     text += '"; CLASS="buttonControl" TITLE="go to game start" ' +
-      ' ID="btnGoToStart" onClick="GoToMove(StartPly);" ONFOCUS="this.blur();">' +
+      ' ID="btnGoToStart" onClick="clickedBbtn(this,event);" ONFOCUS="this.blur();">' +
       '</TD>' +
       '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
       '</TD><TD>' +
       '<INPUT ID="backButton" TYPE="BUTTON" VALUE="&lt;" STYLE="';
     if (buttonSize > 0) { text += 'width: ' + buttonSize + 'px;'; }
     text += '"; CLASS="buttonControl" TITLE="move backward" ' +
-      ' ID="btnMoveBackward1" onClick="GoToMove(CurrentPly - 1);" ONFOCUS="this.blur();">' +
+      ' ID="btnMoveBackward1" onClick="clickedBbtn(this,event);" ONFOCUS="this.blur();">' +
       '</TD>' +
       '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
       '</TD><TD>';
@@ -3387,21 +3387,21 @@ function PrintHTML() {
     text += isAutoPlayOn ?
       '"; CLASS="buttonControlStop" TITLE="toggle autoplay (stop)" ' :
       '"; CLASS="buttonControlPlay" TITLE="toggle autoplay (start)" ';
-    text += ' ID="btnPlay" NAME="AutoPlay" onClick="SwitchAutoPlay();" ONFOCUS="this.blur();">' +
+    text += ' ID="btnPlay" NAME="AutoPlay" onClick="clickedBbtn(this,event);" ONFOCUS="this.blur();">' +
       '</TD>' +
       '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
       '</TD><TD>' +
       '<INPUT ID="forwardButton" TYPE="BUTTON" VALUE="&gt;" STYLE="';
     if (buttonSize > 0) { text += 'width: ' + buttonSize + 'px;'; }
     text += '"; CLASS="buttonControl" TITLE="move forward" ' +
-      ' ID="btnMoveForward1" onClick="GoToMove(CurrentPly + 1);" ONFOCUS="this.blur();">' +
+      ' ID="btnMoveForward1" onClick="clickedBbtn(this,event);" ONFOCUS="this.blur();">' +
       '</TD>' +
       '<TD CLASS="buttonControlSpace" WIDTH="' + spaceSize + '">' +
       '</TD><TD>' +
       '<INPUT ID="endButton" TYPE="BUTTON" VALUE="&gt;&gt;" STYLE="';
     if (buttonSize > 0) { text += 'width: ' + buttonSize + 'px;'; }
     text += '"; CLASS="buttonControl" TITLE="go to game end" ' +
-      ' ID="btnGoToEnd" onClick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0);" ONFOCUS="this.blur();">' +
+      ' ID="btnGoToEnd" onClick="clickedBbtn(this,event);" ONFOCUS="this.blur();">' +
       '</TD></TR></TABLE></FORM>';
 
     theObject.innerHTML = text;
@@ -3553,6 +3553,33 @@ function PrintHTML() {
       theObject = document.getElementById('searchPgnExpression');
       if (theObject) { theObject.value = lastSearchPgnExpression; }
     }
+  }
+}
+
+function clickedBbtn(t,e) {
+  switch (t.id) {
+    case "startButton":
+      if (e.shiftKey) { GoToMove(StartPlyVar[CurrentVar] + 1); }
+      else { GoToMove(StartPlyVar[0], 0); }
+      break;
+    case "backButton":
+      if (e.shiftKey) { GoToMove(StartPlyVar[CurrentVar]); }
+      else { GoToMove(CurrentPly - 1); }
+      break;
+    case "autoplayButton":
+      if (e.shiftKey) { goToNextVariationSibling(); }
+      else { SwitchAutoPlay(); }
+      break;
+    case "forwardButton":
+      if (e.shiftKey) { if (!goToNextVariationSibling()) { GoToMove(CurrentPly + 1); } }
+      else { GoToMove(CurrentPly + 1); }
+      break;
+    case "endButton":
+      if (e.shiftKey) { GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]); }
+      else { GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); }
+      break;
+    default:
+      break;
   }
 }
 

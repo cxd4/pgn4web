@@ -65,8 +65,8 @@ function loadPrevGames() {
    if (fn > 0) { location.href = "paolo-chess-games.html?fn=" + (fn - 1); }
 }
 
-   if (fn < maxFn) { boardShortcut("G5", "load next set of Paolo's games", loadNextGames); }
-   if (fn > 0) { boardShortcut("F5", "load previous set of Paolo's games", loadPrevGames); }
+   if (fn < maxFn) { boardShortcut("G5", "load next set of Paolo's games", function(t,e){ loadNextGames(); }); }
+   if (fn > 0) { boardShortcut("F5", "load previous set of Paolo's games", function(t,e){ loadPrevGames(); }); }
 
 </script>
 

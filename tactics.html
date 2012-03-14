@@ -39,7 +39,7 @@
 
 clearShortcutSquares("BCDEFGH", "1234567");
 clearShortcutSquares("A", "123456");
-boardShortcut("H8", "hint", hint);
+boardShortcut("H8", "hint", function(t,e){ hint(); });
 
 function hint() {
   alert("hint: the solution's main line is " + PlyNumber + " ply long");

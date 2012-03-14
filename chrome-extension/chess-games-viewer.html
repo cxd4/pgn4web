@@ -415,9 +415,9 @@ of Google Chrome. Don't use with any other browser.
 
       // H5
       if ((typeof(chrome) != "undefined") && (chrome.extension) && (pgnUrl) && (LiveBroadcastDelay > 0)) {
-         boardShortcut("H5", "zoom out to the multiple small boards view", switchBoardView);
+         boardShortcut("H5", "zoom out to the multiple small boards view", function(t,e){ switchBoardView(); });
       } else {
-         boardShortcut("H5", "", function() { alert("warning: zoom out to the multiple small boards view is only available in live refresh mode"); } );
+         boardShortcut("H5", "", function(t,e){ alert("warning: zoom out to the multiple small boards view is only available in live refresh mode"); } );
       }
 
       if (pgnData.indexOf(puzzlerUrl) === 0) {
@@ -1029,25 +1029,25 @@ of Google Chrome. Don't use with any other browser.
 
 
    // A7
-   if (backgroundPage && (typeof(backgroundPage.showAboutPage)) != "undefined") { boardShortcut("A7", "chess games viewer extension help", function(){ setTimeout("backgroundPage.showAboutPage();", 99); }); }
+   if (backgroundPage && (typeof(backgroundPage.showAboutPage)) != "undefined") { boardShortcut("A7", "chess games viewer extension help", function(t,e){ setTimeout("backgroundPage.showAboutPage();", 99); }); }
    // B7
-   boardShortcut("B7", "toggle show comments in game text and save setting", function(){ SetCommentsIntoMoveText(!commentsIntoMoveText); oldPly = CurrentPly; Init(); GoToMove(oldPly); setCommentsIntoMoveTextToLocalStorage(); });
+   boardShortcut("B7", "toggle show comments in game text and save setting", function(t,e){ SetCommentsIntoMoveText(!commentsIntoMoveText); oldPly = CurrentPly; Init(); GoToMove(oldPly); setCommentsIntoMoveTextToLocalStorage(); });
    // C7
-   boardShortcut("C7", "toggle show comments on separate lines in game text and save setting", function(){ SetCommentsOnSeparateLines(!commentsOnSeparateLines); oldPly = CurrentPly; Init(); GoToMove(oldPly); setCommentsOnSeparateLinesToLocalStorage(); });
+   boardShortcut("C7", "toggle show comments on separate lines in game text and save setting", function(t,e){ SetCommentsOnSeparateLines(!commentsOnSeparateLines); oldPly = CurrentPly; Init(); GoToMove(oldPly); setCommentsOnSeparateLinesToLocalStorage(); });
    // D7
-   boardShortcut("D7", "toggle highlight last move and save setting", function(){ SetHighlight(!highlightOption); setHighlightOptionToLocalStorage(); });
+   boardShortcut("D7", "toggle highlight last move and save setting", function(t,e){ SetHighlight(!highlightOption); setHighlightOptionToLocalStorage(); });
    // F5
-   boardShortcut("F5", "show the chess puzzler of the day", showPuzzler);
+   boardShortcut("F5", "show the chess puzzler of the day", function(t,e){ showPuzzler(); });
    // G5
-   boardShortcut("G5", "adjust last move and current comment text area, if present", toggleFitResetLastMoveAndCommentArea);
+   boardShortcut("G5", "adjust last move and current comment text area, if present", function(t,e){ toggleFitResetLastMoveAndCommentArea(); });
    // E2
-   boardShortcut("E2", "autoplay custom delay", setCustomAutoplayDelay);
+   boardShortcut("E2", "autoplay custom delay", function(t,e){ setCustomAutoplayDelay(); );
    // F2
-   boardShortcut("F2", "probe endgame tablebase", function(){ toggleProbeTablebase(); });
+   boardShortcut("F2", "probe endgame tablebase", function(t,e){ toggleProbeTablebase(); });
    // G2
-   boardShortcut("G2", "annotate game", annotateGame);
+   boardShortcut("G2", "annotate game", function(t,e){ annotateGame(); });
    // H2
-   boardShortcut("H2", "toggle analysis engine", userToggleAnalysis);
+   boardShortcut("H2", "toggle analysis engine", function(t,e){ userToggleAnalysis(); });
 
 
    function openPgnFiles() {

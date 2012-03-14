@@ -103,15 +103,15 @@
       for (cscs in pcscsfcf) { clearShortcutSquares(pcscsfcf[cscs][0], pcscsfcf[cscs][1]); }
     }
     if (parent && parent.displayPgnData) {
-      boardShortcut("D8", "show full PGN source data", function(){ parent.displayPgnData(true); });
+      boardShortcut("D8", "show full PGN source data", function(t,e){ parent.displayPgnData(true); });
     }
     if (parent && parent.switchBoardView && (typeof(chrome) != "undefined") && (chrome.extension)) {
-      boardShortcut("H5", "zoom into the single large board view", function(){ parent.switchBoardView("\\[White\\s+\"" + fixRegExp(gameWhite[currentGame]) + "\"\\].*\\[Black\\s+\"" + fixRegExp(gameBlack[currentGame]) + "\"\\]"); });
+      boardShortcut("H5", "zoom into the single large board view", function(t,e){ parent.switchBoardView("\\[White\\s+\"" + fixRegExp(gameWhite[currentGame]) + "\"\\].*\\[Black\\s+\"" + fixRegExp(gameBlack[currentGame]) + "\"\\]"); });
     }
   } catch(e) { myAlert("warning: failed accessing frame's parent for shortcut squares to clear", false); }
 
   if ((typeof(chrome) != "undefined") && (typeof(chrome.extension) != "undefined") && (typeof(chrome.extension.getBackgroundPage) != "undefined") && (typeof(chrome.extension.getBackgroundPage().showAboutPage) != "undefined")) {
-    boardShortcut("A7", "chess games viewer extension help", function(){ setTimeout("chrome.extension.getBackgroundPage().showAboutPage();", 99); });
+    boardShortcut("A7", "chess games viewer extension help", function(t,e){ setTimeout("chrome.extension.getBackgroundPage().showAboutPage();", 99); });
   }
 
   function addTagToTitle(tagLabel, tagValue, object) {
@@ -168,9 +168,9 @@
     try {
       if (parent && parent.pgn4webHideChildFrameGame) {
         if (parent.pgn4webHideChildFrameGame(gameEvent[currentGame], gameSite[currentGame], gameDate[currentGame], gameRound[currentGame], gameWhite[currentGame], gameBlack[currentGame], true)) {
-          boardShortcut("A6", "hide this game", hideThisGame);
+          boardShortcut("A6", "hide this game", function(t,e){ hideThisGame(); });
         } else {
-          boardShortcut("A6", "hiding option not available for this game", function(){} );
+          boardShortcut("A6", "hiding option not available for this game", function(t,e){} );
         }
       }
     } catch(e) { myAlert("warning: failed accessing frame's parent for hiding game option", false); }

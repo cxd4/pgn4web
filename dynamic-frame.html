@@ -86,7 +86,7 @@ if (window.location.search.match(thisRegExp) !== null) {
 // undocumented feature
 thisRegExp = /(&|\?)(debug|d)(&|$)/i;
 if (debug = (window.location.search.match(thisRegExp) !== null)) {
-  boardShortcut("A7", "dynamic frame debug info", function() { alert(dynamicFrameDebugString); });
+  boardShortcut("A7", "dynamic frame debug info", function(t,e){ alert(dynamicFrameDebugString); });
 }
 dynamicFrameDebugString = "dynamic frame debug info:\n\nnone";
 
@@ -542,14 +542,14 @@ function showFullscreenChessboard(newWin) {
 
 clearShortcutSquares("BCEF", "7");
 
-boardShortcut("C7", "toggle side to move flag", function() { toggleColorFlag(); });
+boardShortcut("C7", "toggle side to move flag", function(t,e){ toggleColorFlag(); });
 
 if (window.parent !== window) {
-  boardShortcut("H5", "show fullscreen chessboard", function() { showFullscreenChessboard(false); });
+  boardShortcut("H5", "show fullscreen chessboard", function(t,e){ showFullscreenChessboard(false); });
 }
 
 function updateBareShortcut() {
-  boardShortcut("G5", bare ? "unhide game info\n\n" + gameTooltipInfo() : "maximize chessboard and hide game info", toggleBareChessboard);
+  boardShortcut("G5", bare ? "unhide game info\n\n" + gameTooltipInfo() : "maximize chessboard and hide game info", function(t,e){ toggleBareChessboard(); });
 }
 
 function gameTooltipInfo() {
