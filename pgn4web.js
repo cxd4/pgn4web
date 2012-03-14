@@ -202,6 +202,8 @@ function handlekey(e) {
     case 18: // alt
     case 32: // space
     case 35: // end
+    case 45: // insert
+    case 46: // delete
     case 36: // home
     case 92: // super
     case 93: // menu
@@ -217,7 +219,6 @@ function handlekey(e) {
       else { displayDebugInfo(); }
       return stopKeyProp(e);
 
-    case 46: // delete
     case 37: // left-arrow
     case 74: // j
       if (e.shiftKey) { MoveBackward(CurrentPly - StartPlyVar[CurrentVar]); }
@@ -232,7 +233,7 @@ function handlekey(e) {
 
     case 39: // right-arrow
     case 75: // k
-      if (e.shiftKey) { goToNextVariationSibling(); }
+      if (e.shiftKey) { if (!goToNextVariationSibling()) { MoveForward(1); } }
       else { MoveForward(1); }
       return stopKeyProp(e);
 
@@ -250,11 +251,6 @@ function handlekey(e) {
     case 34: // page-down
     case 73: // i
       MoveToNextComment(e.shiftKey);
-      return stopKeyProp(e);
-
-    case 45: // insert
-      if (e.shiftKey) { MoveForward(1); }
-      else { nextVariationLoop(); }
       return stopKeyProp(e);
 
     case 83: // s
@@ -2646,31 +2642,6 @@ function synchMoves() {
   lastSynchCurrentVar = CurrentVar;
 }
 
-var variationLoopPly = -1;
-var variationLoopVarList;
-var variationLoopVarIndex;
-function nextVariationLoop() {
-  if (CurrentPly === variationLoopPly && CurrentVar === variationLoopVarList[variationLoopVarIndex]) {
-    variationLoopVarIndex = (variationLoopVarIndex + 1) % variationLoopVarList.length;
-    GoToMove(variationLoopPly, variationLoopVarList[variationLoopVarIndex]);
-  } else {
-    variationLoopVarList = childrenVars(CurrentPly, CurrentVar);
-    if (variationLoopVarList.length > 1) {
-      variationLoopVarIndex = 0;
-      variationLoopPly = CurrentPly + 1;
-      MoveForward(1, variationLoopVarList[variationLoopVarIndex]);
-    } else {
-      MoveForward(1);
-    }
-  }
-}
-
-function stopVariationLoop() {
-  if (variationLoopTimeout) {
-    clearTimeout(variationLoopTimeout);
-    variationLoopTimeout = null;
-  }
-}
 
 function AutoplayNextGame() {
   if (fatalErrorNumSinceReset === 0) {
@@ -2804,21 +2775,22 @@ function realParentVar(childVar) {
 }
 
 function goToNextVariationSibling() {
-  if (CurrentPly === StartPly) { return; }
+  if (CurrentPly === StartPly) { return false; }
   parentCurrentVar = realParentVar(CurrentVar);
   for (var thisVar = (CurrentVar + 1) % numberOfVars; thisVar !== CurrentVar; thisVar = (thisVar + 1) % numberOfVars) {
     if (StartPlyVar[CurrentVar] === CurrentPly -1 && PlyNumberVar[CurrentVar] > 0 && thisVar === parentCurrentVar) {
       GoToMove(CurrentPly, thisVar);
-      break;
+      return true;
     }
     if (StartPlyVar[thisVar] === CurrentPly - 1) {
       parentThisVar = realParentVar(thisVar);
       if ((parentThisVar === CurrentVar || parentThisVar === parentCurrentVar) && PlyNumberVar[thisVar]) {
         GoToMove(CurrentPly, thisVar);
-        break;
+        return true;
       }
     }
   }
+  return false;
 }
 
 function ParsePGNGameString(gameString) {
