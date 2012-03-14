@@ -96,21 +96,20 @@ body {
 }
 
 .move {
-  color: black;
+  color: #441111;
 }
 
-.comment,
-.variation {
-  color: gray;
+.comment {
+  color: #114411;
 }
 
-a.variation {
-  color: gray;
+.variation, a.variation {
+  color: #111144;
 }
 
 .moveOn,
 .variationOn,
 a.variationOn {
-  color: red;
+  text-decoration: underline;;
 }
 
