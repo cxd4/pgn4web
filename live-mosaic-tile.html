@@ -114,20 +114,6 @@
     boardShortcut("A7", "chess games viewer extension help", function(){ setTimeout("chrome.extension.getBackgroundPage().showAboutPage();", 99); });
   }
 
-  function replayPreviousMoves(numPlies) {
-    targetPly = numPlies ? CurrentPly - numPlies : StartPly;
-    if (targetPly < StartPly) { targetPly = StartPly; }
-    if (targetPly !== CurrentPly) { GoToMove(targetPly); }
-    SetAutoPlay(true);
-  }
-
-  boardShortcut("C2", "replay all previous moves", function() { replayPreviousMoves(0); });
-  boardShortcut("D2", "replay 20 previous half-moves", function() { replayPreviousMoves(20); });
-  boardShortcut("E2", "replay 10 previous half-moves", function() { replayPreviousMoves(10); });
-  boardShortcut("F2", "replay 6 previous half-moves", function() { replayPreviousMoves(6); });
-  boardShortcut("G2", "replay 3 previous half-moves", function() { replayPreviousMoves(3); });
-  boardShortcut("H2", "replay the previous half-move", function() { replayPreviousMoves(1); });
-
   function addTagToTitle(tagLabel, tagValue, object) {
     if (!tagValue || tagValue[1] == "?" || !object) { return; }
     object.title += (object.title ? "\n " : " ") + tagLabel + tagValue + "  ";

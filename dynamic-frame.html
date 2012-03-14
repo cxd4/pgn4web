@@ -552,20 +552,6 @@ function updateBareShortcut() {
   boardShortcut("G5", bare ? "unhide game info\n\n" + gameTooltipInfo() : "maximize chessboard and hide game info", toggleBareChessboard);
 }
 
-function replayPreviousMoves(numPlies) {
-  targetPly = numPlies ? CurrentPly - numPlies : StartPly;
-  if (targetPly < StartPly) { targetPly = StartPly; }
-  if (targetPly !== CurrentPly) { GoToMove(targetPly); }
-  SetAutoPlay(true);
-}
-
-if (LiveBroadcastDelay) {
-  boardShortcut("E2", "replay 10 previous half-moves", function() { replayPreviousMoves(10); });
-  boardShortcut("F2", "replay 6 previous half-moves", function() { replayPreviousMoves(6); });
-  boardShortcut("G2", "replay 3 previous half-moves", function() { replayPreviousMoves(3); });
-  boardShortcut("H2", "replay the previous half-move", function() { replayPreviousMoves(1); });
-}
-
 function gameTooltipInfo() {
   str = " game " + (currentGame+1) + " of " + numberOfGames + "  ";
   if (LiveBroadcastDelay > 0) { str += "\n " + LiveBroadcastStatusString.replace("&nbsp;", " ") + "  "; }

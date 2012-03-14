@@ -552,9 +552,9 @@ boardShortcut("E2", "autoplay 3 seconds", function(){ SetAutoplayDelayAndStart( 
 // F2
 boardShortcut("F2", "autoplay 5 seconds", function(){ SetAutoplayDelayAndStart( 5*1000); });
 // G2
-boardShortcut("G2", "cycle through alternative variations", function(){ goToNextVariationSibling(); });
+boardShortcut("G2", "replay 6 previous half-moves", function() { replayPreviousMoves(6); });
 // H2
-boardShortcut("H2", "autoplay 15 seconds", function(){ SetAutoplayDelayAndStart(15*1000); });
+boardShortcut("H2", "replay the previous half-move", function() { replayPreviousMoves(1); });
 // A1
 boardShortcut("A1", "go to game start", function(){ GoToMove(StartPlyVar[0], 0); });
 // B1
@@ -604,6 +604,13 @@ function calculateDeciles() {
   for (ii=0; ii<deciles.length; ii++) {
     deciles[ii] = Math.round((numberOfGames - 1) * ii / (deciles.length - 1));
   }
+}
+
+function replayPreviousMoves(numPlies) {
+  targetPly = numPlies ? CurrentPly - numPlies : StartPly;
+  if (targetPly < StartPly) { targetPly = StartPly; }
+  if (targetPly !== CurrentPly) { GoToMove(targetPly); }
+  SetAutoPlay(true);
 }
 
 function detectJavascriptLocation() {

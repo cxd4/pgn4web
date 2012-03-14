@@ -397,20 +397,6 @@ a.variation {
     }
   }
 
-  function replayPreviousMoves(numPlies) {
-    targetPly = numPlies ? CurrentPly - numPlies : StartPly;
-    if (targetPly < StartPly) { targetPly = StartPly; }
-    if (targetPly !== CurrentPly) { GoToMove(targetPly); }
-    SetAutoPlay(true);
-  }
-
-  if (LiveBroadcastDelay) {
-    boardShortcut("E2", "replay 10 previous half-moves", function() { replayPreviousMoves(10); });
-    boardShortcut("F2", "replay 6 previous half-moves", function() { replayPreviousMoves(6); });
-    boardShortcut("G2", "replay 3 previous half-moves", function() { replayPreviousMoves(3); });
-    boardShortcut("H2", "replay the previous half-move", function() { replayPreviousMoves(1); });
-  }
-
   var gameId;
   var gameWhiteTeam;
   var gameBlackTeam;
