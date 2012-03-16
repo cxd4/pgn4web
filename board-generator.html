@@ -1341,6 +1341,7 @@ function validate_useTextarea() {
   }
   if ((!document.board.useTextarea.checked) && (document.board.fontVariationsColorHex.value != "comments")) {
     alert("warning: when use text area is disabled, font variations color defaults to 'comments'");
+    document.board.fontVariationsColorHex.color.fromString("FFFFFF");
     document.board.fontVariationsColorHex.value = "comments";
   }
 }
@@ -2095,22 +2096,22 @@ uses the parent's background color</span>
 <input class="checkbox" type="checkbox" id="useTextarea" name="checkbox" onChange="validate_useTextarea(); update_controls();">
 <span class="labeltext">use HTML textarea</span>
 <span class="helptext">normally
-<a class="helplink" href="" onClick="javascript:document.board.useTextarea.checked = false; return false;">disabled</a>
-unless the board widget is on the same server with a local <i>base URL</i></span>
+<a class="helplink" href="" onClick="javascript:document.board.useTextarea.checked = false; return false;">disabled</a>;
+use only for deployment on a page from the same domain as the <i>board URL</i></span>
 <p></p>
 
 <input class="checkbox" type="checkbox" id="encodePgn" name="checkbox">
 <span class="labeltext">encode PGN text</span>
 <span class="helptext">normally
 <a class="helplink" href="" onClick="javascript:document.board.encodePgn.checked = true; return false;">enabled</a>
-(ignored when <i>use HTML textarea</i> is enabled)</span>
+</span>
 <p></p>
 
 <input class="input" type="text" id="boardUrl" name="boardUrl" value="" size="12">
 <span class="labeltext">board URL</span>
 <span class="helptext">normally as
 <a class="helplink" href="" onClick="javascript:document.board.boardUrl.value = boardUrl_default; return false;">default</a>
-unless <i>use HTML textarea</i> is enabled or the board widget is from a different server</span>
+unless <i>use HTML textarea</i> is enabled or for deployment on a page from a different domain</span>
 <p></p>
 
 </span>
