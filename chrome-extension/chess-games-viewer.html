@@ -308,11 +308,8 @@ of Google Chrome. Don't use with any other browser.
       }
       fixHeaderTag('GameWhiteClock');
       fixHeaderTag('GameBlackClock');
-      if (theObject = document.getElementById('GameLastMove')) {
-         if (CurrentPly == StartPly) {
-            theObject.innerHTML = ((CurrentPly%2) ? "black" : "white") + " to move";
-         }
-      }
+
+      updateLastMove();
 
       if ((annotateInProgress) && (CurrentPly === StartPly + PlyNumber)) {
          annotateInProgress = false;
@@ -320,6 +317,12 @@ of Google Chrome. Don't use with any other browser.
       }
 
       showProbeTablebaseResults();
+   }
+
+   function updateLastMove() {
+      if ((CurrentPly == StartPly) && (theObject = document.getElementById('GameLastMove'))) {
+         theObject.innerHTML = (Math.floor(CurrentPly/2) + 1) + ((CurrentPly%2) ? "..." : ".");
+      }
    }
 
    var PlyNumberMax;
@@ -374,6 +377,8 @@ of Google Chrome. Don't use with any other browser.
             theObject.innerHTML = "";
          }
       }
+
+      updateLastMove();
 
       PlyNumberMax = 0;
       for (ii = 0; ii < numberOfVars; ii++) {
