@@ -576,25 +576,17 @@ setB1C1F1G1boardShortcuts();
 
 function setB1C1F1G1boardShortcuts() {
   if (commentsIntoMoveText && GameHasComments) {
-    // B1
     boardShortcut("B1", "go to previous comment or variation", function(t,e){ MoveToPrevComment(); });
-    // G1
     boardShortcut("G1", "go to next comment or variation", function(t,e){ MoveToNextComment(); });
   } else {
-    // B1
     boardShortcut("B1", "move 10 half-moves backward", function(t,e){ GoToMove(CurrentPly - 10); });
-    // G1
     boardShortcut("G1", "move 10 half-moves forward", function(t,e){ GoToMove(CurrentPly + 10); });
   }
   if (commentsIntoMoveText && GameHasVariations) {
-    // C1
     boardShortcut("C1", "go to parent variation", function(t,e){ GoToMove(StartPlyVar[CurrentVar]); });
-    // F1
     boardShortcut("F1", "cycle through alternative variations, if any, otherwise move forward", function(t,e){ if (!goToNextVariationSibling()) { GoToMove(CurrentPly + 1); } });
   } else {
-    // C1
     boardShortcut("C1", "move 6 half-moves backward", function(t,e){ GoToMove(CurrentPly - 6); });
-    // F1
     boardShortcut("F1", "move 6 half-moves forward", function(t,e){ GoToMove(CurrentPly + 6); });
   }
 }
@@ -3242,11 +3234,11 @@ var clickedSquareInterval = null;
 function clickedSquare(ii, jj) {
   if (clickedSquareInterval) { return; } // dont trigger twice
   squareId = 'tcol' + jj + 'trow' + ii;
-  theObject = document.getElementById(squareId);
-  originalClass = theObject.className;
-  newClass = (ii+jj)%2 === 0 ? "blackSquare" : "whiteSquare";
-  theObject.className = newClass;
-  clickedSquareInterval = setTimeout("reset_after_click(" + ii + "," + jj + ",'" + originalClass + "','" + newClass + "')", 66);
+  if (theObject = document.getElementById(squareId)) {
+    var originalClass = theObject.className;
+    theObject.className = (ii+jj)%2 === 0 ? "blackSquare" : "whiteSquare";
+    clickedSquareInterval = setTimeout("reset_after_click(" + ii + "," + jj + ",'" + originalClass + "','" + theObject.className + "')", 66);
+  }
 }
 
 function reset_after_click (ii, jj, originalClass, newClass) {
