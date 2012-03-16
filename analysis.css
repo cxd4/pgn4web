@@ -39,7 +39,7 @@ div, span {
   position: absolute;
   top: 0;
   left: 0;
-  padding: 30px;
+  margin: 30px;
   overflow: hidden;
 }
 
