@@ -262,10 +262,12 @@ commentsDisplay_default = "inline";
 fontHeaderColorHex_default = "000000";
 fontMovesColorHex_default = "000000";
 fontCommentsColorHex_default = "808080";
+fontVariationsColorHex_default = "comments";
 highlightMoveColorHex_default = "DAF4D7";
 fontHeaderSize_default = "16";
 fontMovesSize_default = "16";
 fontCommentsSize_default = "moves";
+fontVariationsSize_default = "comments";
 backgroundColorHex_default = "FFFFFF";
 previewBackgroundColorHex_default = "DDDDDD";
 boardUrl_default = pgn4web_board_url;
@@ -302,13 +304,13 @@ function gup( name ){
 }
 
 newStyleSheet = '<style type="text/css"> \n';
-newStyleSheet += '.extendedOption { display: ';
 if ((gup("extendedOptions") == "true") || (gup("extendedOptions") == "t")) {
-  newStyleSheet += 'inline';
+  newStyleSheet += '.extendedOption { display: inline; } \n';
+  newStyleSheet += '.noExtendedOption { display: none; } \n';
 } else {
-  newStyleSheet += 'none';
+  newStyleSheet += '.extendedOption { display: none; } \n';
+  newStyleSheet += '.noExtendedOption { display: inline; } \n';
 }
-newStyleSheet += '; } \n';
 newStyleSheet += '</style> \n';
 document.write(newStyleSheet);
 
@@ -589,6 +591,25 @@ function set_defaults() {
   document.board.fontCommentsColorHex.color.fromString(fontCommentsColorHex_value);
   validate_color(document.board.fontCommentsColorHex, 'comments font color', fontCommentsColorHex_default);
 
+  if ((fontVariationsColorHex_value = gup("fontVariationsColorHex")) === "") {
+    fontVariationsColorSex = gup("fontVariationsColorSex");
+    if ((fontVariationsColorSex == "comments") || (fontVariationsColorSex == "c")) {
+      fontVariationsColorHex_value = "comments";
+    } else {
+      if ((fontVariationsColorHex_value = sex2hex(fontVariationsColorSex, 'font variations color')) === "") {
+        fontVariationsColorHex_value = fontVariationsColorHex_default;
+      }
+    }
+  }
+  if (fontVariationsColorHex_value == "c") {
+    fontVariationsColorHex_value = "comments";
+  }
+  if (fontVariationsColorHex_value == "comments") {
+    document.board.fontVariationsColorHex.value = fontVariationsColorHex_value;
+  } else {
+    document.board.fontVariationsColorHex.color.fromString(fontVariationsColorHex_value);
+  }
+
   if ((highlightMoveColorHex_value = gup("highlightMoveColorHex")) === "") {
     highlightMoveColorSex = gup("highlightMoveColorSex");
     if ((highlightMoveColorSex == "background") || (highlightMoveColorSex == "b")) {
@@ -619,6 +640,11 @@ function set_defaults() {
   if (fontCommentsSize_value == "m") { fontCommentsSize_value = "moves"; }
   document.board.fontCommentsSize.value = fontCommentsSize_value;
   validate_fontCommentsSize();
+
+  if ((fontVariationsSize_value = percentFixFromUrl( gup("fontVariationsSize") )) === "") { fontVariationsSize_value = fontVariationsSize_default; }
+  if (fontVariationsSize_value == "c") { fontVariationsSize_value = "comments"; }
+  document.board.fontVariationsSize.value = fontVariationsSize_value;
+  validate_fontVariationsSize();
 
   if ((backgroundColorHex_value = gup("backgroundColorHex")) === "") {
     backgroundColorSex = gup("backgroundColorSex");
@@ -695,6 +721,7 @@ function set_defaults() {
 
   if ((useTextarea_value = gup("useTextarea")) === "") { useTextarea_value = useTextarea_default; }
   document.board.useTextarea.checked = ((useTextarea_value == "t") || (useTextarea_value == "true"));
+  validate_useTextarea();
 
   generate_html_code();
   update_controls();
@@ -710,20 +737,25 @@ function update_controls() {
 }
 
 function update_disabled_controls() {
+
   document.board.highlightColorHex.disabled = (document.board.highlightMode.value == 'none');
-  document.board.controlBackgroundColorHex.disabled = (document.board.buttonsDisplay.value != 'custom');
-  document.board.controlTextColorHex.disabled = ((document.board.buttonsDisplay.value != 'custom') ||
-                                                 (document.board.controlBackgroundColorHex.value == 'default'));
-  document.board.textMargin.disabled = ((document.board.movesDisplay.value == 'hidden') &&
-                                        (document.board.headerDisplay.value == 'hidden'));
+
+  document.board.controlBackgroundColorHex.disabled = document.board.controlTextColorHex.disabled = (document.board.buttonsDisplay.value != 'custom');
+
+  document.board.textMargin.disabled = ((document.board.movesDisplay.value == 'hidden') && (document.board.headerDisplay.value == 'hidden'));
+
+  document.board.fontHeaderSize.disabled = document.board.fontHeaderColorHex.disabled = (document.board.headerDisplay.value == 'hidden');
+
+  document.board.fontMovesSize.disabled = document.board.fontMovesColorHex.disabled = document.board.highlightMoveColorHex.disabled = (document.board.movesDisplay.value == 'hidden');
+
   document.board.commentsDisplay.disabled = (document.board.movesDisplay.value == 'hidden');
-  document.board.fontHeaderColorHex.disabled = (document.board.headerDisplay.value == 'hidden');
-  document.board.fontMovesColorHex.disabled = (document.board.movesDisplay.value == 'hidden');
-  document.board.fontCommentsColorHex.disabled = (document.board.movesDisplay.value == 'hidden');
-  document.board.highlightMoveColorHex.disabled = (document.board.movesDisplay.value == 'hidden');
-  document.board.fontHeaderSize.disabled = (document.board.headerDisplay.value == 'hidden');
-  document.board.fontMovesSize.disabled = (document.board.movesDisplay.value == 'hidden');
-  document.board.fontCommentsSize.disabled = (document.board.movesDisplay.value == 'hidden');
+
+  document.board.fontCommentsSize.disabled = document.board.fontCommentsColorHex.disabled = ((document.board.movesDisplay.value == 'hidden') || (document.board.commentsDisplay.value == 'hidden'));
+
+  document.board.fontVariationsSize.disabled = document.board.fontVariationsColorHex.disabled = ((document.board.movesDisplay.value == 'hidden') || (document.board.commentsDisplay.value == 'hidden') ||(!document.board.useTextarea.checked));
+
+  document.board.encodePgn.disabled = document.board.useTextarea.checked;
+
 }
 
 function update_suggested_iframe_dimensions() {
@@ -887,11 +919,15 @@ function calculate_html_code() {
 
   if (document.board.movesDisplay.value != "hidden") {
 
-    fontMovesColorHex_value =  document.board.fontMovesColorHex.value;
+    fontMovesColorHex_value = document.board.fontMovesColorHex.value;
     iframeUrl += "&fmcs=" + hex2sex(fontMovesColorHex_value);
-    fontCommentsColorHex_value =  document.board.fontCommentsColorHex.value;
+    fontCommentsColorHex_value = document.board.fontCommentsColorHex.value;
     iframeUrl += "&fccs=" + hex2sex(fontCommentsColorHex_value);
-    highlightMoveColorHex_value =  document.board.highlightMoveColorHex.value;
+    fontVariationsColorHex_value = document.board.fontVariationsColorHex.value;
+    if (fontVariationsColorHex_value != "comments") {
+      iframeUrl += "&fvcs=" + hex2sex(fontVariationsColorHex_value);
+    }
+    highlightMoveColorHex_value = document.board.highlightMoveColorHex.value;
     if (highlightMoveColorHex_value == "background" ) { iframeUrl += "&hmcs=b"; }
     else { iframeUrl += "&hmcs=" + hex2sex(highlightMoveColorHex_value); }
 
@@ -900,6 +936,10 @@ function calculate_html_code() {
     fontCommentsSize_value = document.board.fontCommentsSize.value;
     if (fontCommentsSize_value == "moves") { iframeUrl += "&fcs=m"; }
     else { iframeUrl += "&fcs=" + percentFixForUrl( fontCommentsSize_value ); }
+    fontVariationsSize_value = document.board.fontVariationsSize.value;
+    if (fontVariationsSize_value != "comments") {
+      iframeUrl += "&fvs=" + percentFixForUrl( fontVariationsSize_value );
+    }
 
     commentsDisplay_value = document.board.commentsDisplay.value;
     iframeUrl += "&cd=" + commentsDisplay_value.charAt(0);
@@ -1122,6 +1162,20 @@ function validate_boardShadowColorHex() {
   }
 }
 
+function validate_fontVariationsColorHex() {
+  object = document.getElementById('fontVariationsColorHex');
+  if (object.value == 'comments') { return true; }
+  if (object.value.match(/^[0-9A-Fa-f]{6}$/)) {
+    return true;
+  } else {
+    alert('error: the font variations color must be \'comments\' or a six digits hexadecimal color code, like FF0000');
+    if (fontVariationsColorHex_default == 'comments') {
+      object.value = fontVariationsColorHex_default;
+    } else { object.color.fromString(fontVariationsColorHex_default); }
+    return false;
+  }
+}
+
 function validate_backgroundColorHex() {
   object = document.getElementById('backgroundColorHex');
   if (object.value == 'transparent') { return true; }
@@ -1187,6 +1241,19 @@ function validate_fontCommentsSize() {
   if (!(vv = object.value.match(/^([0-9]+)(%$|p$|pct$|px$|$)/))) {
     alert('error: the comments font size must be \'moves\' or a non integer number or (deprecated) a percentage');
     object.value = fontCommentsSize_default;
+    return false;
+  } else {
+    if (vv[2] == "px") { object.value = vv[1]; }
+    return true;
+  }
+}
+
+function validate_fontVariationsSize() {
+  object = document.getElementById('fontVariationsSize');
+  if (object.value == "comments") { return true; }
+  if (!(vv = object.value.match(/^([0-9]+)(%$|p$|pct$|px$|$)/))) {
+    alert('error: the variations font size must be \'comments\' or a non integer number or (deprecated) a percentage');
+    object.value = fontVariationsSize_default;
     return false;
   } else {
     if (vv[2] == "px") { object.value = vv[1]; }
@@ -1265,6 +1332,17 @@ function validate_ss_ps_hm() {
     }
   }
   return retval;
+}
+
+function validate_useTextarea() {
+  if ((!document.board.useTextarea.checked) && (document.board.fontVariationsSize.value != "comments")) {
+    alert("warning: when use text area is disabled, font variations size defaults to 'comments'");
+    document.board.fontVariationsSize.value = "comments";
+  }
+  if ((!document.board.useTextarea.checked) && (document.board.fontVariationsColorHex.value != "comments")) {
+    alert("warning: when use text area is disabled, font variations color defaults to 'comments'");
+    document.board.fontVariationsColorHex.value = "comments";
+  }
 }
 
 function checkInitialHalfmove() {
@@ -1917,7 +1995,7 @@ copies the background color</span>
 <p></p>
 <br>
 
-<select class="dropdown" id="commentsDisplay" name="dropdown">
+<select class="dropdown" id="commentsDisplay" name="dropdown" onChange="update_controls()">
 <option value="inline" selected="selected">inline</option>
 <option value="newline">newline</option>
 <option value="hidden">hidden</option>
@@ -1933,14 +2011,33 @@ inbetween game moves, or on a
 <p></p>
 
 <input class="input" type="text" id="fontCommentsSize" name="input" value="" size="12" onChange="validate_fontCommentsSize();">
-<span class="labeltext">comments and variations font size</span>
+<span class="labeltext">comments <span class="noExtendedOption">and variations </span>font size</span>
 <span class="helptext">a number;
 <a class="helplink" href="" onClick="javascript:document.board.fontCommentsSize.value = 'moves'; return false;">moves</a>
 copies the moves font size</span>
 <p></p>
 
 <input class="color {adjust:false} input" type="text" id="fontCommentsColorHex" name="input" value="" size="12" onChange="validate_color(this, 'comments font color', fontCommentsColorHex_default)">
-<span class="labeltext">comments and variations font color</span>
+<span class="labeltext">comments <span class="noExtendedOption">and variations </span>font color</span>
+
+<!-- hiding variations font size and color -->
+<span class="extendedOption">
+
+<p></p>
+<input class="input" type="text" id="fontVariationsSize" name="input" value="" size="12" onChange="validate_fontVariationsSize();">
+<span class="labeltext">variations font size</span>
+<span class="helptext">a number;
+<a class="helplink" href="" onClick="javascript:document.board.fontVariationsSize.value = 'comments'; return false;">comments</a>
+copies the comments font size</span>
+
+<p></p>
+<input class="color {adjust:false} input" type="text" id="fontVariationsColorHex" name="input" value="" size="12" onChange="validate_color(this, 'variations font color', fontVariationsColorHex_default)">
+<span class="labeltext">variations font color</span>
+<span class="helptext">a number;
+<a class="helplink" href="" onClick="javascript:document.board.fontVariationsColorHex.color.fromString('FFFFFF'); document.board.fontVariationsColorHex.value = 'comments'; return false;">comments</a>
+copies the comments font color</span>
+
+</span>
 
 <div style="height: 3em">&nbsp;</div>
 <script type="text/javascript">print_menu("page_options", 3, "web page options");</script>
@@ -1995,7 +2092,7 @@ uses the parent's background color</span>
 <script type="text/javascript">print_menu("url_options", 3, "URL options");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<input class="checkbox" type="checkbox" id="useTextarea" name="checkbox">
+<input class="checkbox" type="checkbox" id="useTextarea" name="checkbox" onChange="validate_useTextarea(); update_controls();">
 <span class="labeltext">use HTML textarea</span>
 <span class="helptext">normally
 <a class="helplink" href="" onClick="javascript:document.board.useTextarea.checked = false; return false;">disabled</a>
@@ -2006,7 +2103,7 @@ unless the board widget is on the same server with a local <i>base URL</i></span
 <span class="labeltext">encode PGN text</span>
 <span class="helptext">normally
 <a class="helplink" href="" onClick="javascript:document.board.encodePgn.checked = true; return false;">enabled</a>
-unless <i>use HTML textarea</i> is enabled</span>
+(ignored when <i>use HTML textarea</i> is enabled)</span>
 <p></p>
 
 <input class="input" type="text" id="boardUrl" name="boardUrl" value="" size="12">
