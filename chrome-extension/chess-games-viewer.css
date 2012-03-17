@@ -287,7 +287,6 @@ a.variation {
 }
 
 .lastMove {
-  padding-right: 0.2em;
 }
 
 .lastVariations {
@@ -299,6 +298,19 @@ a.variation {
 }
 
 .nextMove {
+}
+
+.nextButton {
+  display: inline-block;
+  width: 1em;
+  color: black;
+  opacity: 0.25;
+  text-decoration: none;
+  text-align: right;
+}
+
+.nextButton:hover {
+  opacity: 1;
 }
 
 .nextVariations {
