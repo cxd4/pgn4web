@@ -1241,11 +1241,9 @@ function GoToMove(thisPly, thisVar) {
   SetAutoPlay(false);
   if (typeof(thisVar) == "undefined") { thisVar = CurrentVar; }
   else {
-    if (thisVar < 0) { thisVar = numberOfVars + thisVar; }
     if (thisVar < 0) { thisVar = 0; }
     else if (thisVar >= numberOfVars) { thisVar = numberOfVars - 1; }
   }
-  if (thisPly < 0) { thisPly = StartPlyVar[thisVar] + PlyNumberVar[thisVar] + 1 + thisPly; }
   if (thisPly < 0) {
     thisPly = 0;
   } else if (thisPly >= StartPlyVar[thisVar] + PlyNumberVar[thisVar]) {
@@ -2023,24 +2021,30 @@ function setCurrentGameFromInitialGame() {
 }
 
 function GoToInitialHalfmove() {
+  var iv, ih;
+  if (initialVariation < 0) { iv = Math.max(numberOfVars + initialVariations, 0); }
+  else { iv = Math.min(initialVariation, numberOfVars - 1); }
+
   switch (initialHalfmove) {
     case "start":
-      GoToMove(0, initialVariation);
+      GoToMove(0, iv);
       break;
     case "end":
-      GoToMove(StartPlyVar[initialVariation] + PlyNumberVar[initialVariation], initialVariation);
+      GoToMove(StartPlyVar[iv] + PlyNumberVar[iv], iv);
       break;
     case "random":
-      GoToMove(StartPlyVar[initialVariation] + Math.floor(Math.random()*(StartPlyVar[initialVariation] + PlyNumberVar[initialVariation])), initialVariation);
+      GoToMove(StartPlyVar[iv] + Math.floor(Math.random()*(StartPlyVar[iv] + PlyNumberVar[iv])), iv);
       break;
     case "comment":
     case "variation":
-      GoToMove(0, initialVariation);
+      GoToMove(0, iv);
       MoveToNextComment(initialHalfmove == "variation");
       break;
     default:
       if (isNaN(initialHalfmove = parseInt(initialHalfmove, 10))) { initialHalfmove = 0; }
-      GoToMove(initialHalfmove, initialVariation);
+      if (initialHalfmove < 0) { ih = Math.max(StartPlyVar[iv] + PlyNumberVar[iv] + 1 + initialHalfmove, 0); }
+      else { ih = Math.min(initialHalfmove, StartPlyVar[iv] + PlyNumberVar[iv]); }
+      GoToMove(ih, iv);
       break;
   }
 }
