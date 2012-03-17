@@ -1401,43 +1401,56 @@ function HighlightLastMove() {
   }
 
   // show next move
-  var theShowMoveTextObject = document.getElementById("GameNextMove");
-  if (theShowMoveTextObject !== null) {
+  var theShowMoveTextObject;
+  if (theShowMoveTextObject = document.getElementById("GameNextMove")) {
     if (CurrentVar === 0 && showThisMove + 1 >= StartPly + PlyNumber) {
-      text = gameResult[currentGame];
+      text = '<SPAN CLASS="move notranslate">' + gameResult[currentGame] + '</SPAN>';
     } else if (typeof(Moves[showThisMove+1]) == "undefined") {
       text = "";
     } else {
-      text = "";
+      text = printMoveText(showThisMove+1, CurrentVar, (CurrentVar !== 0), true, false);
+    }
+    theShowMoveTextObject.innerHTML = text;
+  }
+
+  // show next variations
+  if (theShowMoveTextObject = document.getElementById("GameNextVariations")) {
+    text = '';
+    if (commentsIntoMoveText) {
       var childVars = childrenVars(showThisMove+1, CurrentVar);
       for (ii = 0; ii < childVars.length; ii++) {
-        text += '<SPAN CLASS="' + (childVars[ii] === CurrentVar ? 'move' : 'variation') + ' notranslate">' +
-                (childVars[ii] === CurrentVar ? '' : (CurrentVar === 0 ? ' [' : ' (')) +
-                (Math.floor((showThisMove+1)/2) + 1) +
-                ((showThisMove+1) % 2 === 0 ? '. ' : '... ') +
-                '</SPAN>';
-        text += '<A CLASS="' + (childVars[ii] === CurrentVar ? 'move' : 'variation') + ' notranslate" ' +
-                'HREF="javascript:void(0);" ONCLICK="GoToMove(' + (showThisMove+2) + ', ' + childVars[ii] +');">' +
-                MovesVar[childVars[ii]][showThisMove+1];
-        if (commentsIntoMoveText) { text += basicNAGsMoveComment(showThisMove+2, childVars[ii]); }
-        text += '</A>';
-        text += (childVars[ii] === CurrentVar ? '' : '<SPAN CLASS="variation notranslate">' + ((CurrentVar === 0 ? ']' : ')')) + '</SPAN>');
+        if (childVars[ii] !== CurrentVar) {
+          text += ' ' + printMoveText(showThisMove+1, childVars[ii], (childVars[ii] !== 0), true, false);
+        }
       }
     }
     theShowMoveTextObject.innerHTML = text;
-    theShowMoveTextObject.style.whiteSpace = 'nowrap';
   }
 
   // show last move
-  theShowMoveTextObject = document.getElementById("GameLastMove");
-  if (theShowMoveTextObject !== null) {
+  if (theShowMoveTextObject = document.getElementById("GameLastMove")) {
     if ((showThisMove >= StartPly) && Moves[showThisMove]) {
-      text = (Math.floor(showThisMove/2) + 1) +
-       (showThisMove % 2 === 0 ? '. ' : '... ') + Moves[showThisMove];
-      if (commentsIntoMoveText) { text += basicNAGsMoveComment(showThisMove+1); }
+      text = printMoveText(showThisMove, CurrentVar, (CurrentVar !== 0), true, false);
+    } else if (showThisMove === StartPly - 1) {
+      text = '<SPAN CLASS="' + (CurrentVar > 0 ? 'variation' : 'move') + ' notranslate">' +
+        (Math.floor((showThisMove+1)/2) + 1) + (((showThisMove+1) % 2) ? "..." : ".") +
+        '</SPAN>';
     } else { text = ''; }
     theShowMoveTextObject.innerHTML = text;
-    theShowMoveTextObject.style.whiteSpace = 'nowrap';
+  }
+
+  // show last variations
+  if (theShowMoveTextObject = document.getElementById("GameLastVariations")) {
+    text = '';
+    if (commentsIntoMoveText) {
+      var siblingVars = childrenVars(showThisMove, HistVar[showThisMove]);
+      for (ii = 0; ii < siblingVars.length; ii++) {
+        if (siblingVars[ii] !== CurrentVar) {
+          text += ' ' + printMoveText(showThisMove, siblingVars[ii], (siblingVars[ii] !== 0), true, false);
+        }
+      }
+    }
+    theShowMoveTextObject.innerHTML = text;
   }
 
   if (showThisMove >= (StartPlyVar[CurrentVar]-1)) {
@@ -3626,31 +3639,50 @@ function variationTextFromId(varId) {
     }
     if (printedComment || printedVariation) { text += '<SPAN CLASS="variation"> </SPAN>'; }
     printedVariation = true;
-    text += '<SPAN STYLE="white-space: nowrap;">';
-    moveCount = Math.floor(ii/2)+1;
-    if (ii%2 === 0){
-      text += '<SPAN CLASS="' + (variationTextDepth > 0 ? 'variation' : 'move') + ' notranslate">' + moveCount + '.&nbsp;</SPAN>';
-    } else {
-      if ((printedComment) || (ii == StartPlyVar[varId])) {
-        text += '<SPAN CLASS="' + (variationTextDepth > 0 ? 'variation' : 'move') + ' notranslate">' + moveCount + '...&nbsp;</SPAN>';
-      }
-    }
-    var jj = ii+1;
-    text += '<A HREF="javascript:void(0);" ONCLICK="GoToMove(' + jj + ', ' + varId + ')" ' +
-      'CLASS="' + (variationTextDepth > 0 ? 'variation' : 'move') + ' notranslate"' +
-      'ID="Var' + varId + 'Mv' + jj + '" ONFOCUS="this.blur()">' + MovesVar[varId][ii];
-    if (commentsIntoMoveText) { text += basicNAGsMoveComment(jj, varId); }
-    text += '</A></SPAN>';
+
+    text += printMoveText(ii, varId, (variationTextDepth > 0), ((printedComment) || (ii == StartPlyVar[varId])), true);
   }
   if (commentsIntoMoveText && (thisComment = strippedMoveComment(StartPlyVar[varId] + PlyNumberVar[varId], varId, true))) {
     if (commentsOnSeparateLines && variationTextDepth === 0) {
       text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
     }
-    text += (printedVariation ? '<SPAN CLASS="notranslate"> </SPAN>' : '') + '<SPAN CLASS="comment">' + thisComment + '</SPAN>';
+    text += (printedVariation ? '<SPAN CLASS="comment notranslate"> </SPAN>' : '') + '<SPAN CLASS="comment">' + thisComment + '</SPAN>';
     printedComment = true;
   }
   text += variationTextDepth-- ? ('<SPAN CLASS="variation">' + (variationTextDepth ? ')' : ']') + '</SPAN>') : '';
   printedVariation = true;
+  return text;
+}
+
+function printMoveText(thisPly, thisVar, isVar, hasLeadingNum, hasId) {
+  if (typeof(thisVar) == "undefined") { thisVar = CurrentVar; }
+  if (typeof(thisPly) == "undefined") { thisPly = CurrentPly; }
+  text = '';
+
+  if (thisVar >= numberOfVars ||
+      thisPly < StartPlyVar[thisVar] ||
+      thisPly > StartPlyVar[thisVar] + PlyNumberVar[thisVar]) {
+    return text;
+  }
+
+  var moveCount = Math.floor(thisPly/2)+1;
+  if (thisPly%2 === 0){
+    text += '<SPAN CLASS="' + (isVar ? 'variation' : 'move') +
+      ' notranslate">' + moveCount + '.&nbsp;</SPAN>';
+  } else {
+    if (hasLeadingNum) {
+      text += '<SPAN CLASS="' + (isVar ? 'variation' : 'move') +
+        ' notranslate">' + moveCount + '...&nbsp;</SPAN>';
+    }
+  }
+  var jj = thisPly+1;
+  text += '<A HREF="javascript:void(0);" ONCLICK="GoToMove(' + jj + ', ' + thisVar + ')" ' +
+    'CLASS="' + (isVar ? 'variation' : 'move') + ' notranslate"' +
+    (hasId ? ('ID="Var' + thisVar + 'Mv' + jj) : '') +
+    '" ONFOCUS="this.blur()">' + MovesVar[thisVar][thisPly];
+  if (commentsIntoMoveText) { text += basicNAGsMoveComment(jj, thisVar); }
+  text += '</A>';
+
   return text;
 }
 

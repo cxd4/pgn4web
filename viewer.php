@@ -762,8 +762,8 @@ $pgnText
       <tr><td class="label">opening</td><td class="normalItem"><span id="GameOpening"></span>&nbsp;</td></tr>
       <tr><td class="label">variation</td><td class="normalItem"><span id="GameVariation"></span>&nbsp;</td></tr>
       <tr><td colspan=2 class="rowSpace"></td></tr>
-      <tr><td class="label">last</td><td class="normalItem move"><span class="move" id="GameLastMove"></span>&nbsp;</td></tr>
-      <tr><td class="label">next</td><td class="normalItem move"><span class="move" id="GameNextMove"></span>&nbsp;</td></tr>
+      <tr><td class="label">last</td><td class="normalItem move"><span id="GameLastMove"></span>&nbsp; &nbsp;<span id="GameLastVariations"></span></td></tr>
+      <tr><td class="label">next</td><td class="normalItem move"><span id="GameNextMove"></span>&nbsp; &nbsp;<span id="GameNextVariations"></span></td></tr>
       <tr><td colspan=2 class="rowSpace"></td></tr>
       <tr><td class="label">annotator</td><td class="normalItem"><span id="GameAnnotator"></span>&nbsp;</td></tr>
       </table>

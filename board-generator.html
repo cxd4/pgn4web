@@ -518,10 +518,12 @@ function set_defaults() {
   if (headerDisplay_value == "h") { headerDisplay_value = "hidden"; }
   if (headerDisplay_value == "j") { headerDisplay_value = "justified"; }
   if (headerDisplay_value == "l") { headerDisplay_value = "live"; }
+  if (headerDisplay_value == "v") { headerDisplay_value = "variations"; }
   document.board.headerDisplay.value = headerDisplay_value;
   if (!((headerDisplay_value == "centered") || (headerDisplay_value == "hidden") ||
-        (headerDisplay_value == "justified") || (headerDisplay_value == "live")) ) {
-    alert("error: header display must be either 'centered', 'hidden', 'justified', 'live' or their initials");
+        (headerDisplay_value == "justified") || (headerDisplay_value == "live") ||
+        (headerDisplay_value == "variations")) ) {
+    alert("error: header display must be either 'centered', 'hidden', 'justified', 'live', 'variations' or their initials");
     document.board.headerDisplay.value = headerDisplay_value = headerDisplay_default;
   }
 
@@ -1505,9 +1507,9 @@ function template_selected() {
 }
 
 function oneClickPuzzleSetup() {
-  if (confirm("the one click optimized puzzle setup will set\n \nmoves display to 'puzzle'\nheader display to 'live'\nbuttons display to 'none'\nautoplay mode to 'none'\n \nproceed?")) {
+  if (confirm("the one click optimized puzzle setup will set\n \nmoves display to 'puzzle'\nheader display to 'variations'\nbuttons display to 'none'\nautoplay mode to 'none'\n \nproceed?")) {
     document.board.movesDisplay.value = movesDisplay_value = "puzzle";
-    document.board.headerDisplay.value = headerDisplay_value = "live";
+    document.board.headerDisplay.value = headerDisplay_value = "variations";
     document.board.buttonsDisplay.value = buttonsDisplay_value = "hidden";
     document.board.autoplayMode.value = autoplayMode_value = "none";
   }
@@ -1955,6 +1957,7 @@ buttons</span>
 <option value="justified" selected="selected">justified</option>
 <option value="hidden">hidden</option>
 <option value="live">live</option>
+<option value="live">variations</option>
 </select>
 <span class="labeltext"><b>how to show game header</b></span>
 <p></p>

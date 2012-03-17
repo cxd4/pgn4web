@@ -60,14 +60,13 @@ body {
   line-height: 1.4em;
 }
 
-.headerLive {
+.headerLive, .headerVariations {
   font-weight: normal;
   overflow-y: hidden;
 }
 
 .move,
-.variation,
-.lastMove {
+.variation {
   line-height: 1.4em;
   text-decoration: none;
 }
@@ -91,7 +90,7 @@ body {
 
 <!--[if lt IE 9]>
 <style type="text/css">
-.move, .moveOn, .lastMove { position: relative; /* fixes IE offsetTop issue */ }
+.move, .moveOn { position: relative; /* fixes IE offsetTop issue */ }
 </style>
 <![endif]-->
 
@@ -583,7 +582,8 @@ if (headerDisplay == "c") { headerDisplay = "centered"; }
 if (headerDisplay == "h") { headerDisplay = "hidden"; }
 if (headerDisplay == "j") { headerDisplay = "justified"; }
 if (headerDisplay == "l") { headerDisplay = "live"; }
-if ((headerDisplay != "centered") && (headerDisplay != "live") && (headerDisplay != "hidden")) { headerDisplay = "justified"; }
+if (headerDisplay == "v") { headerDisplay = "variations"; }
+if ((headerDisplay != "centered") && (headerDisplay != "live") && (headerDisplay != "variations") && (headerDisplay != "hidden")) { headerDisplay = "justified"; }
 
 // movesDisplay is set at the beginning of the script
 
@@ -709,7 +709,7 @@ if (gup("help") !== "") {
   document.write(" - controlBackgroundColorHex = control buttons background color hex code, like FF0000 (default reverts to standard buttons)\n");
   document.write(" - controlTextColorHex = control buttons text color hex code, like FF0000 (default 000000)\n");
   document.write("\n");
-  document.write(" - headerDisplay = justified | centered | hidden | live (default hidden)\n");
+  document.write(" - headerDisplay = justified | centered | hidden | live | variations (default hidden)\n");
   document.write(" - movesDisplay = figurine | text | puzzle | hidden (default hidden)\n");
   document.write(" - textHeight = set height of the textual section, header and/or moves text, might be ingored if frameHeight is set (default 100%)\n");
   document.write(" - textWidth = set width of the textual section, header and/or moves text, might be ignored if frameWidth is set (default 100%)\n");
@@ -751,7 +751,7 @@ newStyleSheet = '<style type="text/css"> \n';
 
 if ((movesDisplay == "figurine") || (movesDisplay == "nosymbols") || (movesDisplay == "puzzle")) {
   newStyleSheet += 'body, .header, .comment { font-family: \'pgn4web Liberation Sans\', sans-serif; } \n';
-  newStyleSheet += '.move, .variation, .commentMove, .lastMove { font-family: \'pgn4web ChessSansPiratf\', \'pgn4web Liberation Sans\', sans-serif; } \n';
+  newStyleSheet += '.move, .variation, .commentMove { font-family: \'pgn4web ChessSansPiratf\', \'pgn4web Liberation Sans\', sans-serif; } \n';
 }
 
 newStyleSheet += 'body { background: ' + backgroundColor + '; padding: ' + framePadding + '; } \n';
@@ -942,6 +942,36 @@ function display_header_moves() {
                  "; scrollbar-base-color: " + backgroundColor + ";'>");
   }
 
+  if (headerDisplay == "variations") {
+
+    document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
+    document.write("<td align=left>");
+    document.write("<div class='header headerVariations' style='white-space: nowrap; margin-left: "  + textMargin +
+                   "; margin-right: 3%;' id=GameWhite></div>");
+    document.write("</td><td align=right>");
+    document.write("<div class='header headerVariations' style='white-space: nowrap; margin-right: " + textMargin +
+                   "; margin-left: 3%;'><span id='GameLastMove'></span><span class='move'> </span><span style='padding-left:1ex;' id='GameLastVariations'></span></div>");
+    document.write("</td></tr></table>");
+
+    document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
+    document.write("<td align=left>");
+    document.write("<div class='header headerVariations' style='white-space: nowrap; margin-left: "  + textMargin +
+                   "; margin-right: 3%;' id=GameBlack></div>");
+    document.write("</td><td align=right>");
+    document.write("<div class='header headerVariations' style='white-space: nowrap; margin-right: " + textMargin +
+                   "; margin-left: 3%;'><span id='GameNextMove'></span><span class='move'> </span><span style='padding-left:1ex;' id='GameNextVariations'></span></div>");
+    document.write("</td></tr></table>");
+
+    document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
+    document.write("<td align=left>");
+    document.write("<div class='header headerVariations' style='white-space: nowrap; margin-left: "  + textMargin +
+                   "; margin-right: 3%;' id=GameResult></div>");
+    document.write("</td><td align=right>");
+    document.write("<div class='header headerVariations' style='white-space: nowrap; margin-right: " + textMargin +
+                   "; margin-left: 3%;'></div>");
+    document.write("</td></tr></table>");
+  }
+
   if (headerDisplay == "live") {
 
     document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
@@ -950,7 +980,7 @@ function display_header_moves() {
                    "; margin-right: 3%;' id=GameWhite></div>");
     document.write("</td><td align=right>");
     document.write("<div class='header headerLive' style='white-space: nowrap; margin-right: " + textMargin +
-                   "; margin-left: 3%;'  id=GameWhiteClock></div>");
+                   "; margin-left: 3%;' id=GameWhiteClock></div>");
     document.write("</td></tr></table>");
 
     document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
@@ -958,7 +988,6 @@ function display_header_moves() {
     document.write("<div class='header headerLive' style='white-space: nowrap; margin-left: "  + textMargin +
                    "; margin-right: 3%;' id=GameBlack></div>");
     document.write("</td><td align=right>");
-
     document.write("<div class='header headerLive' style='white-space: nowrap; margin-right: " + textMargin +
                    "; margin-left: 3%;'  id=GameBlackClock></div>");
     document.write("</td></tr></table>");
@@ -969,7 +998,7 @@ function display_header_moves() {
                    "; margin-right: 3%;' id=GameResult></div>");
     document.write("</td><td align=right>");
     document.write("<div class='header headerLive' style='white-space: nowrap; margin-right: " + textMargin +
-                   "; margin-left: 3%;'><span class='lastMove'>&nbsp;<span class='NAGs'>&nbsp;</span><span id=GameLastMove></span></span></div>");
+                   "; margin-left: 3%;'><span class='move'>&nbsp;</span><span id=GameLastMove></span></div>");
     document.write("</td></tr></table>");
   }
 
@@ -989,7 +1018,6 @@ function display_header_moves() {
     document.write("<div class='header' style='white-space: nowrap; margin-left: "  + textMargin +
                    "; margin-right: 3%;' id=GameBlack></div>");
     document.write("</td><td align=right>");
-
     document.write("<div class='header' style='white-space: nowrap; margin-right: " + textMargin +
                    "; margin-left: 3%;'  id=GameSite></div>");
     document.write("</td></tr></table>");
@@ -1118,7 +1146,7 @@ function customFunctionOnPgnTextLoad() {
   }
 }
 
-var objectHiddenPuzzler = ["GameResult", "GameLastMove", "GameNextMove", "GameLastComment"];
+var objectHiddenPuzzler = ["GameResult", "GameLastMove", "GameLastVariations", "GameNextMove", "GameNextVariations", "GameLastComment"];
 
 function customFunctionOnPgnGameLoad() {
 

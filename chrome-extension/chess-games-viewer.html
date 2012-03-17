@@ -309,20 +309,12 @@ of Google Chrome. Don't use with any other browser.
       fixHeaderTag('GameWhiteClock');
       fixHeaderTag('GameBlackClock');
 
-      updateLastMove();
-
       if ((annotateInProgress) && (CurrentPly === StartPly + PlyNumber)) {
          annotateInProgress = false;
          SetAutoplayDelay(2000);
       }
 
       showProbeTablebaseResults();
-   }
-
-   function updateLastMove() {
-      if ((CurrentPly == StartPly) && (theObject = document.getElementById('GameLastMove'))) {
-         theObject.innerHTML = (Math.floor(CurrentPly/2) + 1) + ((CurrentPly%2) ? "..." : ".");
-      }
    }
 
    var PlyNumberMax;
@@ -377,8 +369,6 @@ of Google Chrome. Don't use with any other browser.
             theObject.innerHTML = "";
          }
       }
-
-      updateLastMove();
 
       PlyNumberMax = 0;
       for (ii = 0; ii < numberOfVars; ii++) {
@@ -701,7 +691,7 @@ of Google Chrome. Don't use with any other browser.
 <div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleTablebaseLink" id="toggleTablebaseLink" href="javascript:void(0);" onclick="toggleProbeTablebase();" title="probe endgame tablebase"></a><a class="toggleAnalysisLink" id="toggleAnalysisLink" href="javascript:void(0);" onclick="userToggleAnalysis();" title="toggle analysis engine">+</a></div>
 <div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="SetCommentsIntoMoveText(!commentsIntoMoveText); oldPly = CurrentPly; Init(); GoToMove(oldPly);" title="toggle show comments in game text for this page; click square B7 instead to save setting"></a></div>
 
-<div class="lastMoveAndComment" id="lastMoveAndComment"><a href="javascript:MoveToNextComment();" class="lastMove notranslate" title="last move" id="GameLastMove"></a><span class="lastComment" title="current position comment" id="GameLastComment"></span></div>
+<div class="lastMoveAndComment" id="lastMoveAndComment"><span title="last move" id="GameLastMove"></span><span class="lastComment" title="current position comment" id="GameLastComment"></span></div>
 
 <div id="moveText" class="moveText"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
 

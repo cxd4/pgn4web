@@ -134,7 +134,9 @@ to any <div> or <span> containers with the following IDs:
   <div id="GameSelector"></div>
   <div id="GameSearch"></div>
   <div id="GameLastMove"></div>
+  <div id="GameLastVariations"></div>
   <div id="GameNextMove"></div>
+  <div id="GameNextVariations"></div>
   <div id="GameSideToMove"></div>
   <div id="GameLastComment"></div>
   <div id="GameBoard"></div>
