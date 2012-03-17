@@ -531,7 +531,7 @@ of Google Chrome. Don't use with any other browser.
 
    function customShortcutKey_Shift_2() { cycleHash(); }
 
-   function customShortcutKey_Shift_3() { cycleLastMoveAndCommentArea(); }
+   function customShortcutKey_Shift_3() { cycleLastCommentArea(); }
 
    function customShortcutKey_Shift_4() { toggleProbeTablebase(); }
 
@@ -551,21 +551,21 @@ of Google Chrome. Don't use with any other browser.
 
    function emPixels(em) { return em * document.getElementById("boardTable").offsetHeight / 24.5; }
 
-   var cycleLMACA = 0;
-   function cycleLastMoveAndCommentArea() {
-      if ((theObject = document.getElementById("lastMoveAndComment")) && (theObject.style.display == "block")) {
-         switch (cycleLMACA++ % 3) {
+   var cycleLCA = 0;
+   function cycleLastCommentArea() {
+      if (theObject = document.getElementById("GameLastComment")) {
+         switch (cycleLCA++ % 3) {
             case 0:
-               if (theObject.scrollHeight === theObject.clientHeight) { cycleLastMoveAndCommentArea(); }
-               else { fitLastMoveAndCommentArea(); }
+               if (theObject.scrollHeight === theObject.clientHeight) { cycleLastCommentArea(); }
+               else { fitLastCommentArea(); }
                break;
             case 1:
-               if (theObject.offsetHeight == emPixels(21)) { cycleLastMoveAndCommentArea(); }
-               else { maximizeLastMoveAndCommentArea(); }
+               if (theObject.offsetHeight == emPixels(21)) { cycleLastCommentArea(); }
+               else { maximizeLastCommentArea(); }
                break;
             case 2:
-               if (theObject.offsetHeight == emPixels(4.2)) { cycleLastMoveAndCommentArea(); }
-               else { resetLastMoveAndCommentArea(); }
+               if (theObject.offsetHeight == emPixels(4.2)) { cycleLastCommentArea(); }
+               else { resetLastCommentArea(); }
                break;
             default:
                break;
@@ -573,28 +573,28 @@ of Google Chrome. Don't use with any other browser.
       }
    }
 
-   function toggleFitResetLastMoveAndCommentArea() {
-      if ((theObject = document.getElementById("lastMoveAndComment")) && (theObject.style.display == "block")) {
-         if ((theObject.scrollHeight === theObject.clientHeight) || (theObject.offsetHeight == emPixels(21))) { resetLastMoveAndCommentArea(); }
-         else { fitLastMoveAndCommentArea(); }
+   function toggleFitResetLastCommentArea() {
+      if (theObject = document.getElementById("GameLastComment")) {
+         if ((theObject.scrollHeight === theObject.clientHeight) || (theObject.offsetHeight == emPixels(21))) { resetLastCommentArea(); }
+         else { fitLastCommentArea(); }
       }
    }
 
-   function resetLastMoveAndCommentArea() {
-      if ((theObject = document.getElementById("lastMoveAndComment")) && (theObject.style.display == "block")) {
+   function resetLastCommentArea() {
+      if (theObject = document.getElementById("GameLastComment")) {
          theObject.style.height = "";
       }
    }
 
-   function fitLastMoveAndCommentArea() {
-      if ((theObject = document.getElementById("lastMoveAndComment")) && (theObject.style.display == "block")) {
+   function fitLastCommentArea() {
+      if (theObject = document.getElementById("GameLastComment")) {
          theObject.style.height = "";
          theObject.style.height = theObject.scrollHeight;
       }
    }
 
-   function maximizeLastMoveAndCommentArea() {
-      if ((theObject = document.getElementById("lastMoveAndComment")) && (theObject.style.display == "block")) {
+   function maximizeLastCommentArea() {
+      if (theObject = document.getElementById("GameLastComment")) {
          theObject.style.height = "21em";
       }
    }
@@ -623,10 +623,6 @@ of Google Chrome. Don't use with any other browser.
    };
 
 </script>
-
-<!-- system message bar
-<div style="width:100%; text-align:center; background-color:#F0F0F0;"><a style="display:block; white-space:nowrap; padding:0.33em; font-weight:bold; color:gray;" href="javascript:void(0);" target="_blank">message</a></div>
--->
 
 <div class="topMenu">
 <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr valign="middle"><td>
@@ -691,7 +687,18 @@ of Google Chrome. Don't use with any other browser.
 <div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleTablebaseLink" id="toggleTablebaseLink" href="javascript:void(0);" onclick="toggleProbeTablebase();" title="probe endgame tablebase"></a><a class="toggleAnalysisLink" id="toggleAnalysisLink" href="javascript:void(0);" onclick="userToggleAnalysis();" title="toggle analysis engine">+</a></div>
 <div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="SetCommentsIntoMoveText(!commentsIntoMoveText); oldPly = CurrentPly; Init(); GoToMove(oldPly);" title="toggle show comments in game text for this page; click square B7 instead to save setting"></a></div>
 
-<div class="lastMoveAndComment" id="lastMoveAndComment"><span title="last move" id="GameLastMove"></span><span class="lastComment" title="current position comment" id="GameLastComment"></span></div>
+<div class="lastMoveAndComment" id="lastMoveAndComment">
+<div class="lastMoveAndVariations">
+<span class="lastMove" id="GameLastMove" title="last move"></span>
+<span class="lastVariations" id="GameLastVariations" title="last move alternatives"></span>&nbsp;
+</div>
+<div class="nextMoveAndVariations">
+<span class="nextVariations" id="GameNextVariations" title="next move alternatives"></span>&nbsp;
+<span class="nextMove" id="GameNextMove" title="next move"></span>
+</div>
+<div>&nbsp;</div>
+<div class="lastComment" title="current position comment" id="GameLastComment"></div>
+</div>
 
 <div id="moveText" class="moveText"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
 
@@ -1034,7 +1041,7 @@ of Google Chrome. Don't use with any other browser.
    // F5
    boardShortcut("F5", "show the chess puzzler of the day", function(t,e){ showPuzzler(); });
    // G5
-   boardShortcut("G5", "adjust last move and current comment text area, if present", function(t,e){ toggleFitResetLastMoveAndCommentArea(); });
+   boardShortcut("G5", "adjust last move and current comment text area, if present", function(t,e){ toggleFitResetLastCommentArea(); });
    // E2
    boardShortcut("E2", "autoplay custom delay", function(t,e){ setCustomAutoplayDelay(); });
    // F2

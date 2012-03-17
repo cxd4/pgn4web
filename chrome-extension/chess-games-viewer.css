@@ -161,7 +161,7 @@ a.variation {
 }
 
 .topMenu {
-  min-height: 4em;
+  min-height: 4.5em;
   padding-top: 1em;
   padding-left: 0.5em;
   padding-right: 0.5em;
@@ -211,7 +211,7 @@ a.variation {
 }
 
 .mainContainer {
-  padding-top: 1em;
+  padding-top: 0.5em;
   padding-bottom: 1em;
   padding-left: 3em;
   padding-right: 3em;
@@ -282,28 +282,47 @@ a.variation {
   margin-right: 0.7em;
 }
 
-.lastMoveAndComment {
-  clear: both;
-  resize: vertical;
-  height: 4.2em;
-  min-height: 1.4em;
-  max-height: 21em;
-  line-height: 1.4em;
-  overflow-y: auto;
-  padding-right: 1em;
-  margin-bottom: 2.5em;
-  text-align: justify;
-  display: none;
+.lastMoveAndVariations {
+  float: left;
 }
 
 .lastMove {
-  font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
-  margin-right: 2em;
-  text-decoration: none;
-  color: black;
+  padding-right: 0.2em;
+}
+
+.lastVariations {
+  padding-left: 1em;
+}
+
+.nextMoveAndVariations {
+  float: right;
+}
+
+.nextMove {
+}
+
+.nextVariations {
+  padding-right: 1em;
+}
+
+.lastMoveAndComment {
+  clear: both;
+  line-height: 1.4em;
+  display: none;
 }
 
 .lastComment {
+  clear: both;
+  resize: vertical;
+  overflow-y: auto;
+  height: 4.2em;
+  min-height: 1.4em;
+  max-height: 21em;
+  padding-right: 1em;
+  padding-left: 1em;
+  margin-top: 0.5em;
+  margin-bottom: 2em;
+  text-align: justify;
 }
 
 .analysisMove {
