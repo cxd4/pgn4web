@@ -1327,7 +1327,7 @@ function clockFromHeader(whiteToMove) {
 }
 
 function HighlightLastMove() {
-  var anchorName;
+  var anchorName, text;
 
   // remove highlighting from old anchor
   if (oldAnchorName){
@@ -1341,9 +1341,13 @@ function HighlightLastMove() {
   if (showThisMove > StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]) { showThisMove = StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]; }
 
   if (theShowCommentTextObject = document.getElementById("GameLastComment")) {
+    if (commentsIntoMoveText) { 
     variationTextDepth = CurrentVar === 0 ? 0 : 1;
-    theShowCommentTextObject.innerHTML = '<SPAN CLASS="comment">' +
-      strippedMoveComment(showThisMove+1, CurrentVar, true).replace(/\sID="[^"]*"/g, '') + '</SPAN>';
+    text = '<SPAN CLASS="comment">' +
+      strippedMoveComment(showThisMove+1, CurrentVar, true).replace(/\sID="[^"]*"/g, '') +
+      '</SPAN>';
+    } else { text = ''; }
+    theShowCommentTextObject.innerHTML = text;
   }
 
   // show side to move
