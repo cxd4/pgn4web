@@ -303,13 +303,14 @@ a.variation {
 .nextButton {
   display: inline-block;
   width: 1em;
-  color: black;
+  color: #808080;
   opacity: 0.25;
   text-decoration: none;
   text-align: right;
 }
 
 .nextButton:hover {
+  color: #000000;
   opacity: 1;
 }
 
