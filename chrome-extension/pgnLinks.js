@@ -18,13 +18,17 @@ function notifyPgnHrefLinks() {
   function validatePgnUrl(pgnUrl) {
     return (pgnUrl && pgnLinkRegExp.test(pgnUrl));
   }
+  var pgnDataUriRegExp = /^\s*data:application\/x-chess-pgn([^,]*),([0-9A-Za-z+\/=]+)\s*$/;
+  function validatePgnDataUri(pgnDataUri) {
+    return (pgnDataUri && pgnDataUriRegExp.test(pgnDataUri));
+  }
 
   var pgn4web_pgnHrefLinks = new Array();
 
   var pgn4web_cursorDef = "url(" + chrome.extension.getURL("cursor-small.png") + ") 1 6, auto";
 
   for(l in document.links) {
-    if (validatePgnUrl(document.links[l].href)) {
+    if (validatePgnUrl(document.links[l].href) || validatePgnDataUri(document.links[l].href)) {
       document.links[l].addEventListener("mouseover", function(){this.style.cursor = pgn4web_cursorDef;}, false);
       if (pgn4web_pgnHrefLinks.indexOf(document.links[l].href) == -1) {
         pgn4web_pgnHrefLinks.push(document.links[l].href);

@@ -18,6 +18,8 @@ of Google Chrome. Don't use with any other browser.
 
 <meta charset="utf-8">
 
+<!-- base64 decoding -->
+<script src="js-base64/base64.js" type="text/javascript"></script>
 <!-- engine analysis module -->
 <script src="engine-glue.js" type="text/javascript"></script>
 <!-- tablebase assessment module -->
@@ -96,6 +98,10 @@ function pgnviewLinkOnClick(info, tab) {
   pgnLinkOnClick(info, tab, false);
 }
 
+function pgnviewDataUriOnClick(info, tab) {
+  openPgnDataUri(info.linkUrl);
+}
+
 function pgnliveLinkOnClick(info, tab) {
   pgnLinkOnClick(info, tab, true, false);
 }
@@ -164,6 +170,28 @@ function removePgnTextOnRemoved(tabId) {
 
 chrome.tabs.onRemoved.addListener(removePgnTextOnRemoved);
 
+var pgnDataUriRegExp = /^\s*data:application\/x-chess-pgn([^,]*),([0-9A-Za-z+\/=]+)\s*$/;
+function openPgnDataUri(pgnDataUri) {
+  var pgnDataUriMatch;
+  if (pgnDataUriMatch = pgnDataUri.match(pgnDataUriRegExp)) {
+    if (pgnDataUriMatch[1] && pgnDataUriMatch[1].match(/;base64/)) {
+      pgnText[pgnTextIndex] = Base64.decode(pgnDataUriMatch[2]);
+    } else {
+      pgnText[pgnTextIndex] = decodeURI(pgnDataUriMatch[2]);
+    }
+    url = "chess-games-viewer.html?pgnBackground=" + pgnTextIndex++;
+    chrome.tabs.create({url: url});
+  } else {
+    alert("error: invalid PGN data URI");
+  }
+}
+
+function openDataPgnUriIndex(tabId, dataPgnUriIndex) {
+  if (pgnHrefLinks && pgnHrefLinks[tabId] && pgnHrefLinks[tabId][dataPgnUriIndex]) {
+    openPgnDataUri(pgnHrefLinks[tabId][dataPgnUriIndex]);
+  }
+}
+
 function showAboutPage(section, tabIdForReuse) {
   if ((typeof(section) == "undefined") || !section) { section = "help"; }
   extviewForReuse = null;
@@ -225,8 +253,12 @@ chrome.contextMenus.create({"type": "separator", "contexts": ["page", "selection
 pgnUrlPatterns = ["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", "*://*/*.PGN?*", "*://*/*.Pgn?*", chrome.extension.getURL("*.pgn"), chrome.extension.getURL("*.pgn?*")];
 zipUrlPatterns = ["*://*/*.zip", "*://*/*.ZIP", "*://*/*.Zip", "*://*/*.zip?*", "*://*/*.ZIP?*", "*://*/*.Zip?*", chrome.extension.getURL("*.zip")];
 pgnZipUrlPatterns = pgnUrlPatterns.concat(zipUrlPatterns);
+pgnDataUriPatterns = ["data:application/x-chess-pgn*"];
+pgnAllUrlPatterns = pgnZipUrlPatterns.concat(pgnDataUriPatterns);
 
 chrome.contextMenus.create({"title": "View chess games link on a single board", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnviewLinkOnClick});
+
+chrome.contextMenus.create({"title": "View chess games link on a single board", "contexts": ["link"], targetUrlPatterns: pgnDataUriPatterns, "onclick": pgnviewDataUriOnClick});
 
 chrome.contextMenus.create({"title": "View chess games link on a single board with live refresh", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnliveLinkOnClick});
 
@@ -234,11 +266,11 @@ chrome.contextMenus.create({"title": "View chess games link on multiple boards w
 
 chrome.contextMenus.create({"title": "Inspect ZIP archive link for PGN chess games", "contexts": ["link"],  targetUrlPatterns: zipUrlPatterns, "onclick": pgnviewLinkOnClick});
 
-chrome.contextMenus.create({"type": "separator", "contexts": ["link"], targetUrlPatterns: pgnZipUrlPatterns});
+chrome.contextMenus.create({"type": "separator", "contexts": ["link"], targetUrlPatterns: pgnAllUrlPatterns});
 
 // "link", "page" and "selection" help menus
 
-chrome.contextMenus.create({"title": "Help about the chess games viewer", "contexts": ["link", "page", "selection"], targetUrlPatterns: pgnZipUrlPatterns, "onclick": helpAboutChessGamesViewer});
+chrome.contextMenus.create({"title": "Help about the chess games viewer", "contexts": ["link", "page", "selection"], targetUrlPatterns: pgnAllUrlPatterns, "onclick": helpAboutChessGamesViewer});
 
 // end of context menus entries
 
@@ -360,5 +392,9 @@ try {
 </script>
 
 </head>
+
+<body>
+
+</body>
 
 </html>
