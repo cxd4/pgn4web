@@ -18,7 +18,7 @@ function notifyPgnHrefLinks() {
   function validatePgnUrl(pgnUrl) {
     return (pgnUrl && pgnLinkRegExp.test(pgnUrl));
   }
-  var pgnDataUriRegExp = /^\s*data:application\/x-chess-pgn([^,]*),([0-9A-Za-z+\/=%]+)\s*$/;
+  var pgnDataUriRegExp = /^\s*data:application\/(da|x)-chess-pgn([^,]*),(.*)\s*$/;
   function validatePgnDataUri(pgnDataUri) {
     return (pgnDataUri && pgnDataUriRegExp.test(pgnDataUri));
   }

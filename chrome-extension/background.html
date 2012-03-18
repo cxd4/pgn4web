@@ -170,20 +170,28 @@ function removePgnTextOnRemoved(tabId) {
 
 chrome.tabs.onRemoved.addListener(removePgnTextOnRemoved);
 
-var pgnDataUriRegExp = /^\s*data:application\/x-chess-pgn([^,]*),([0-9A-Za-z+\/=%]+)\s*$/;
+var pgnDataUriRegExp = /^\s*data:application\/(da|x)-chess-pgn([^,]*),(.*)\s*$/;
+var pgnDataUriB64RegExp = /^\s*data:application\/(da|x)-chess-pgn([^,]*),([0-9a-zA-Z+\/=]*)\s*$/;
 function openPgnDataUri(pgnDataUri) {
   var pgnDataUriMatch;
   if (pgnDataUriMatch = pgnDataUri.match(pgnDataUriRegExp)) {
-    if (pgnDataUriMatch[1] && pgnDataUriMatch[1].match(/;base64/)) {
-      pgnText[pgnTextIndex] = Base64.decode(pgnDataUriMatch[2]);
+    if (pgnDataUriMatch[2] && pgnDataUriMatch[2].match(/;base64/)) {
+      if (pgnDataUri.match(pgnDataUriB64RegExp)) {
+        pgnText[pgnTextIndex] = Base64.decode(pgnDataUriMatch[3]);
+      } else {
+        alert("error: invalid PGN data base64 URI");
+        return false;
+      }
     } else {
-      pgnText[pgnTextIndex] = decodeURIComponent(pgnDataUriMatch[2]);
+      pgnText[pgnTextIndex] = decodeURIComponent(pgnDataUriMatch[3]);
     }
     url = "chess-games-viewer.html?pgnBackground=" + pgnTextIndex++;
     chrome.tabs.create({url: url});
   } else {
     alert("error: invalid PGN data URI");
+    return false;
   }
+  return true;
 }
 
 function openDataPgnUriIndex(tabId, dataPgnUriIndex) {
@@ -253,7 +261,7 @@ chrome.contextMenus.create({"type": "separator", "contexts": ["page", "selection
 pgnUrlPatterns = ["*://*/*.pgn", "*://*/*.PGN", "*://*/*.Pgn", "*://*/*.pgn?*", "*://*/*.PGN?*", "*://*/*.Pgn?*", chrome.extension.getURL("*.pgn"), chrome.extension.getURL("*.pgn?*")];
 zipUrlPatterns = ["*://*/*.zip", "*://*/*.ZIP", "*://*/*.Zip", "*://*/*.zip?*", "*://*/*.ZIP?*", "*://*/*.Zip?*", chrome.extension.getURL("*.zip")];
 pgnZipUrlPatterns = pgnUrlPatterns.concat(zipUrlPatterns);
-pgnDataUriPatterns = ["data:application/x-chess-pgn*"];
+pgnDataUriPatterns = ["data:application/da-chess-pgn*", "data:application/x-chess-pgn*"];
 pgnAllUrlPatterns = pgnZipUrlPatterns.concat(pgnDataUriPatterns);
 
 chrome.contextMenus.create({"title": "View chess games link on a single board", "contexts": ["link"], targetUrlPatterns: pgnUrlPatterns, "onclick": pgnviewLinkOnClick});
