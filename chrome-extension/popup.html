@@ -224,10 +224,10 @@ function showPgnLinksForTab(tab) {
     if (pgnLinks[l].indexOf("data:") === 0) {
       pgnDataUrlIndex++;
       pgnLinkListInnerHTML += '<div class="pgnItem">' +
-        '<a title="view on a single board games from inline pgn data #' + pgnDataUrlIndex + '" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick="chrome.extension.getBackgroundPage().openDataPgnUriIndex(' + tab.id + ',' + l + ');"><img src="download.png" class="linkImage"></a>' +
+        '<a title="view on a single board games from\ninline pgn data #' + pgnDataUrlIndex + '" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick="chrome.extension.getBackgroundPage().openDataPgnUriIndex(' + tab.id + ',' + l + ');"><img src="download.png" class="linkImage"></a>' +
         '<span title="live refresh view disabled for inline pgn data" class="pgnListLink pgnListLinkDisabled"><img src="refresh.png" class="linkImage"></span>' +
         '<span title="live refresh view disabled for inline pgn data" class="pgnListLink pgnListLinkDisabled"><img src="refresh-mosaic.png" class="linkImage"></span>' +
-        '<a title="save as local file games from inline pgn data #' + pgnDataUrlIndex + '" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'pgnDataUriDownload(' + l + ', ' + tab.id + ', "pgnDataDownload"); self.close();\'><img src="file.png" class="linkImage"></a>' +
+        '<a title="save as local file games from\ninline pgn data #' + pgnDataUrlIndex + '" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'pgnDataUriDownload(' + l + ', ' + tab.id + ', "pgnDataDownload"); self.close();\'><img src="file.png" class="linkImage"></a>' +
         '<a id="pgnLinkUrl_' + l + '" title="chess games link #' + (parseInt(ll, 10) + 1) + '\ninline pgn data #' + pgnDataUrlIndex + '" class="pgnFileName" href="javascript:void(0);" onclick="toggleFullPgnUrl(' + l + ');">inline pgn data #' + pgnDataUrlIndex + '</a>' +
         '</div>';
     } else {
@@ -266,7 +266,13 @@ function toggleFullPgnUrl(l) {
       link.innerHTML = (toggledFullUrlNum === l) ? pgnLinksDisplay[l] : pgnLinks[l];
     }
     toggledFullUrlNum = (toggledFullUrlNum === l) ? null : l;
-    if ((previousToggledFullUrlNum !== l) && (previousToggledFullUrlNum !== null) && (previousToggledFullUrlLink = document.getElementById("pgnLinkUrl_" + previousToggledFullUrlNum))) { previousToggledFullUrlLink.innerHTML = pgnLinksDisplay[previousToggledFullUrlNum]; }
+    if ((previousToggledFullUrlNum !== l) && (previousToggledFullUrlNum !== null)) {
+      if (pgnLinks[previousToggledFullUrlNum].indexOf("data:") !== 0) {
+        if (previousToggledFullUrlLink = document.getElementById("pgnLinkUrl_" + previousToggledFullUrlNum)) {
+          previousToggledFullUrlLink.innerHTML = pgnLinksDisplay[previousToggledFullUrlNum];
+        }
+      }
+    }
   }
 }
 
