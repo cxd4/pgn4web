@@ -170,14 +170,14 @@ function removePgnTextOnRemoved(tabId) {
 
 chrome.tabs.onRemoved.addListener(removePgnTextOnRemoved);
 
-var pgnDataUriRegExp = /^\s*data:application\/x-chess-pgn([^,]*),([0-9A-Za-z+\/=]+)\s*$/;
+var pgnDataUriRegExp = /^\s*data:application\/x-chess-pgn([^,]*),([0-9A-Za-z+\/=%]+)\s*$/;
 function openPgnDataUri(pgnDataUri) {
   var pgnDataUriMatch;
   if (pgnDataUriMatch = pgnDataUri.match(pgnDataUriRegExp)) {
     if (pgnDataUriMatch[1] && pgnDataUriMatch[1].match(/;base64/)) {
       pgnText[pgnTextIndex] = Base64.decode(pgnDataUriMatch[2]);
     } else {
-      pgnText[pgnTextIndex] = decodeURI(pgnDataUriMatch[2]);
+      pgnText[pgnTextIndex] = decodeURIComponent(pgnDataUriMatch[2]);
     }
     url = "chess-games-viewer.html?pgnBackground=" + pgnTextIndex++;
     chrome.tabs.create({url: url});
