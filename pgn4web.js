@@ -3594,7 +3594,7 @@ function clickedBbtn(t,e) {
   }
 }
 
-var basicNAGs = /^[\?!+#\s]+/;
+var basicNAGs = /^[\?!+#\s]+(\s|$)/;
 function strippedMoveComment(plyNum, varId, addHtmlTags) {
   if (typeof(addHtmlTags) == "undefined") { addHtmlTags = false; }
   if (typeof(varId) == "undefined") { varId = CurrentVar; }

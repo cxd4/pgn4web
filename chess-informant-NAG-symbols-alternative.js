@@ -14,7 +14,7 @@ if ((typeof(blockChessInformantNAGSymbols) != "boolean") || (!blockChessInforman
   Nl = '<span class="NAGl">';
   Ne = '</span>';
 
-  basicNAGs = /^([\?!+#\s]|<span class="NAGs">[^<]*<.span>)+/;
+  basicNAGs = /^([\?!+#\s]|<span class="NAGs">[^<]*<.span>)+(\s|$)/;
 
   NAG[0] = '';
   NAG[1] = '!';  // 'good move';

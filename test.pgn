@@ -117,7 +117,7 @@ against } 3. -- Nxe4) 3... Bc5 *
 1. e4 e6 { [White "Another White player"] [Black "Another Black player"] }
 d4 d5 *
 
-[Event"Testing very odd game"][Round "8"]a4(b4)a6{comment}a5*[Event"Testing another very odd game"][Round "9"]h4(g4)h6{comment}h5*
+[Event"Testing very odd game"][Round "8"]a4(b4$6)a6!?{comment}a5*[Event"Testing another very odd game"][Round "9"]h4(g4)h6{comment}h5*
 
 [ Event  "Testing malformed header (extra spaces and extra line)"]
 
