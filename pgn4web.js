@@ -2931,7 +2931,7 @@ function ParsePGNGameString(gameString) {
         break;
 
       case '(':
-        MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += '[%pgn4web_variation ' + numberOfVars + ']';
+        MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' [%pgn4web_variation ' + numberOfVars + '] ';
         startVar();
         break;
 
