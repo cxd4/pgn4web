@@ -540,23 +540,23 @@ boardShortcut("G3", "jump to next games decile", function(t,e){ if (currentGame 
 // H3
 boardShortcut("H3", "load last game", function(t,e){ if (numberOfGames > 1) { Init(numberOfGames - 1); } });
 // A2
-boardShortcut("A2", "stop autoplay", function(t,e){ SetAutoPlay(false); });
+boardShortcut("A2", "stop autoplay", function(t,e){ SetAutoPlay(e.shiftKey); });
 // B2
 boardShortcut("B2", "toggle autoplay", function(t,e){ SwitchAutoPlay(); });
 // C2
-boardShortcut("C2", "autoplay 1 second", function(t,e){ SetAutoplayDelayAndStart(1*1000); });
+boardShortcut("C2", "autoplay 1 second", function(t,e){ SetAutoplayDelayAndStart((e.shiftKey ? 10 : 1)*1000); });
 // D2
-boardShortcut("D2", "autoplay 2 seconds", function(t,e){ SetAutoplayDelayAndStart(2*1000); });
+boardShortcut("D2", "autoplay 2 seconds", function(t,e){ SetAutoplayDelayAndStart((e.shiftKey ? 20 : 2)*1000); });
 // E2
-boardShortcut("E2", "autoplay 5 seconds", function(t,e){ SetAutoplayDelayAndStart(5*1000); });
+boardShortcut("E2", "autoplay 5 seconds", function(t,e){ SetAutoplayDelayAndStart((e.shiftKey ? 50 : 5)*1000); });
 // F2
 boardShortcut("F2", "autoplay custom delay", function(t,e){ setCustomAutoplayDelay(); });
 // G2
-boardShortcut("G2", "replay up to 6 previous half-moves, then autoplay forward", function(t,e){ replayPreviousMoves(6); });
+boardShortcut("G2", "replay up to 6 previous half-moves, then autoplay forward", function(t,e){ replayPreviousMoves(e.shiftKey ? 10 : 6); });
 // H2
-boardShortcut("H2", "replay the previous half-move, then autoplay forward", function(t,e){ replayPreviousMoves(1); });
+boardShortcut("H2", "replay the previous half-move, then autoplay forward", function(t,e){ replayPreviousMoves(e.shiftKey ? 3 : 1); });
 // A1
-boardShortcut("A1", "go to game start", function(t,e){ GoToMove(StartPlyVar[0], 0); });
+boardShortcut("A1", "go to game start", function(t,e){ if (e.shiftKey) { GoToMove(StartPlyVar[CurrentVar] + 1); } else { GoToMove(StartPlyVar[0], 0); } });
 // B1
 // see setB1C1F1G1boardShortcuts()
 // C1
@@ -570,21 +570,21 @@ boardShortcut("E1", "move forward", function(t,e){ GoToMove(CurrentPly + 1); });
 // G1
 // see setB1C1F1G1boardShortcuts()
 // H1
-boardShortcut("H1", "go to game end", function(t,e){ GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); });
+boardShortcut("H1", "go to game end", function(t,e){ if (e.shiftKey) { GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]); } else { GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); } });
 
 setB1C1F1G1boardShortcuts();
 
 function setB1C1F1G1boardShortcuts() {
   if (commentsIntoMoveText && GameHasComments) {
-    boardShortcut("B1", "go to previous comment or variation", function(t,e){ MoveToPrevComment(); });
-    boardShortcut("G1", "go to next comment or variation", function(t,e){ MoveToNextComment(); });
+    boardShortcut("B1", "go to previous comment or variation", function(t,e){ if (e.shiftKey) { GoToMove(CurrentPly - 10); } else { MoveToPrevComment(); } });
+    boardShortcut("G1", "go to next comment or variation", function(t,e){ if (e.shiftKey) { GoToMove(CurrentPly + 10); } else { MoveToNextComment(); } });
   } else {
     boardShortcut("B1", "move 10 half-moves backward", function(t,e){ GoToMove(CurrentPly - 10); });
     boardShortcut("G1", "move 10 half-moves forward", function(t,e){ GoToMove(CurrentPly + 10); });
   }
   if (commentsIntoMoveText && GameHasVariations) {
-    boardShortcut("C1", "go to parent variation", function(t,e){ GoToMove(StartPlyVar[CurrentVar]); });
-    boardShortcut("F1", "cycle through alternative variations, if any, otherwise move forward", function(t,e){ if (!goToNextVariationSibling()) { GoToMove(CurrentPly + 1); } });
+    boardShortcut("C1", "go to parent variation", function(t,e){ if (e.shiftKey) { GoToMove(CurrentPly - 6); } else { GoToMove(StartPlyVar[CurrentVar]); } });
+    boardShortcut("F1", "cycle through alternative variations, if any, otherwise move forward", function(t,e){ if (e.shiftKey) { GoToMove(CurrentPly + 6); } else { if (!goToNextVariationSibling()) { GoToMove(CurrentPly + 1); } } });
   } else {
     boardShortcut("C1", "move 6 half-moves backward", function(t,e){ GoToMove(CurrentPly - 6); });
     boardShortcut("F1", "move 6 half-moves forward", function(t,e){ GoToMove(CurrentPly + 6); });
@@ -1341,7 +1341,7 @@ function HighlightLastMove() {
   if (showThisMove > StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]) { showThisMove = StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]; }
 
   if (theShowCommentTextObject = document.getElementById("GameLastComment")) {
-    if (commentsIntoMoveText) { 
+    if (commentsIntoMoveText) {
     variationTextDepth = CurrentVar === 0 ? 0 : 1;
     text = '<SPAN CLASS="comment">' +
       strippedMoveComment(showThisMove+1, CurrentVar, true).replace(/\sID="[^"]*"/g, '') +
