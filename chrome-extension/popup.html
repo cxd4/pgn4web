@@ -267,9 +267,8 @@ function showPgnLinksForTab(tab) {
 }
 
 function pgnDataUriView(linkIndex, tabId) {
-  var downloadName = downloadDataUriName(chrome.extension.getBackgroundPage().pgnHrefLinks[tabId][linkIndex]);
-  if (! chrome.extension.getBackgroundPage().openDataPgnUriIndex(' + tabId + ',' + linkIndex + ')) {
-    chrome.extension.sendRequest({pgn4webPopupError: "error: failed viewing " + downloadName + " PGN data URI"}, function(res){});
+  if (! chrome.extension.getBackgroundPage().openDataPgnUriIndex(tabId, linkIndex)) {
+    chrome.extension.sendRequest({pgn4webPopupError: "error: failed viewing PGN data URI"}, function(res){});
   }
 }
 
@@ -283,7 +282,7 @@ function pgnDataUriDownload(linkIndex, tabId) {
       theObject.href = uri;
       theObject.download = downloadName;
       try { theObject.click(); }
-      catch (e) { chrome.extension.sendRequest({pgn4webPopupError: "error: failed downloading " + downloadName + " PGN data URI"}, function(res){}); }
+      catch (e) { chrome.extension.sendRequest({pgn4webPopupError: "error: failed downloading PGN data URI"}, function(res){}); }
       theObject.href = theObject.download = "";
     }
   }
