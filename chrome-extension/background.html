@@ -179,7 +179,7 @@ function openPgnDataUri(pgnDataUri) {
     if (pgnDataUriMatch[2] && pgnDataUriMatch[2].match(/;base64/)) {
       if (pgnDataUri.match(pgnDataUriB64RegExp)) {
         try { pgnText[pgnTextIndex] = Base64.decode(pgnDataUriMatch[3]); }
-        catch (e) { alert("error: failed decoding PGN data from base64 data URI"); return false; }
+        catch (e) { alert("error: failed decoding PGN data base64 URI"); return false; }
       } else {
         alert("error: invalid PGN data base64 URI");
         return false;
