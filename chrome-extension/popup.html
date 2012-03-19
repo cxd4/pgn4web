@@ -247,7 +247,7 @@ function showPgnLinksForTab(tab) {
         '<a title="view on a single board games from\n' + pgnLinksDisplay[l] + '" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick="chrome.extension.getBackgroundPage().openDataPgnUriIndex(' + tab.id + ',' + l + ');"><img src="download.png" class="linkImage"></a>' +
         '<span title="live refresh view disabled for inline pgn data" class="pgnListLink pgnListLinkDisabled"><img src="refresh.png" class="linkImage"></span>' +
         '<span title="live refresh view disabled for inline pgn data" class="pgnListLink pgnListLinkDisabled"><img src="refresh-mosaic.png" class="linkImage"></span>' +
-        '<a title="save as local file games from\n' + pgnLinksDisplay[l] + '" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'pgnDataUriDownload(' + l + ', ' + tab.id + ', "pgnDataDownload"); \'><img src="file.png" class="linkImage"></a>' +
+        '<a title="save as local file games from\n' + pgnLinksDisplay[l] + '" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'pgnDataUriDownload(' + l + ', ' + tab.id + ', "pgnDataDownload"); self.close();\'><img src="file.png" class="linkImage"></a>' +
         '<a id="pgnLinkUrl_' + l + '" title="chess games link #' + (parseInt(ll, 10) + 1) + '\n' + pgnLinksDisplay[l] + '" class="pgnFileName" href="javascript:void(0);" onclick="toggleFullPgnUrl(' + l + ');">' + pgnLinksDisplay[l] + '</a>' +
         '</div>';
     } else {
