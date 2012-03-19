@@ -306,7 +306,7 @@ function mergePgnLinksAndShowIcon(tabId) {
   chrome.pageAction.show(tabId);
 }
 
-function pgnHrefLinksRequest(request, sender, sendResponse) {
+function requestHandler(request, sender, sendResponse) {
   if (typeof(request.pgnHrefLinks) != "undefined") {
     if (pgnHrefLinks[sender.tab.id]) {
       for(l in request.pgnHrefLinks) {
@@ -321,9 +321,13 @@ function pgnHrefLinksRequest(request, sender, sendResponse) {
     mergePgnLinksAndShowIcon(sender.tab.id);
     sendResponse({});
   }
+  if (typeof(request.pgn4webPopupError) != "undefined") {
+    alert(request.pgn4webPopupError);
+    sendResponse({});
+  }
 }
 
-chrome.extension.onRequest.addListener(pgnHrefLinksRequest);
+chrome.extension.onRequest.addListener(requestHandler);
 
 function removePgnLinksOnRemoved(tabId) {
   if (pgnHrefLinks[tabId]) { delete pgnHrefLinks[tabId]; }
