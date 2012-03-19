@@ -32,7 +32,7 @@ function notifyPgnHrefLinks() {
     if (validatePgnUrl(document.links[l].href) || validatePgnDataUri(document.links[l].href)) {
       document.links[l].addEventListener("mouseover", function(){this.style.cursor = pgn4web_cursorDef;}, false);
       if (pgn4web_pgnHrefLinks.indexOf(document.links[l].href) == -1) {
-        appendDownloadName = (validatePgnDataUri(document.links[l].href) && document.links[l].download) ? ",download=" + document.links[l].download : "";
+        appendDownloadName = (validatePgnDataUri(document.links[l].href) && document.links[l].download) ? ",pgn4web_download=" + document.links[l].download : "";
         pgn4web_pgnHrefLinks.push(document.links[l].href + appendDownloadName);
       }
     }
