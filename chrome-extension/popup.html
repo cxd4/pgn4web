@@ -244,10 +244,10 @@ function showPgnLinksForTab(tab) {
     l = pgnLinksId[ll];
     if (pgnLinks[l].indexOf("data:") === 0) {
       pgnLinkListInnerHTML += '<div class="pgnItem">' +
-        '<a title="view on a single board games from\n' + pgnLinksDisplay[l] + '" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick="chrome.extension.getBackgroundPage().openDataPgnUriIndex(' + tab.id + ',' + l + ');"><img src="download.png" class="linkImage"></a>' +
+        '<a title="view on a single board games from\n' + pgnLinksDisplay[l] + '" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick="pgnDataUriView(' + l + ', ' +  tab.id + '); self.close();"><img src="download.png" class="linkImage"></a>' +
         '<span title="live refresh view disabled for inline pgn data" class="pgnListLink pgnListLinkDisabled"><img src="refresh.png" class="linkImage"></span>' +
         '<span title="live refresh view disabled for inline pgn data" class="pgnListLink pgnListLinkDisabled"><img src="refresh-mosaic.png" class="linkImage"></span>' +
-        '<a title="save as local file games from\n' + pgnLinksDisplay[l] + '" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'pgnDataUriDownload(' + l + ', ' + tab.id + ', "pgnDataDownload"); self.close();\'><img src="file.png" class="linkImage"></a>' +
+        '<a title="save as local file games from\n' + pgnLinksDisplay[l] + '" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick="pgnDataUriDownload(' + l + ', ' + tab.id + '); self.close();"><img src="file.png" class="linkImage"></a>' +
         '<a id="pgnLinkUrl_' + l + '" title="chess games link #' + (parseInt(ll, 10) + 1) + '\n' + pgnLinksDisplay[l] + '" class="pgnFileName" href="javascript:void(0);" onclick="toggleFullPgnUrl(' + l + ');">' + pgnLinksDisplay[l] + '</a>' +
         '</div>';
     } else {
@@ -266,6 +266,13 @@ function showPgnLinksForTab(tab) {
 
 }
 
+function pgnDataUriView(linkIndex, tabId) {
+  var downloadName = downloadDataUriName(chrome.extension.getBackgroundPage().pgnHrefLinks[tabId][linkIndex]);
+  if (! chrome.extension.getBackgroundPage().openDataPgnUriIndex(' + tabId + ',' + linkIndex + ')) {
+    chrome.extension.sendRequest({pgn4webPopupError: "error: failed viewing " + downloadName + " PGN data URI"}, function(res){});
+  }
+}
+
 function pgnDataUriDownload(linkIndex, tabId) {
   var uri, downloadName;
   if (theObject = document.getElementById("pgnDataDownload")) {
@@ -276,7 +283,7 @@ function pgnDataUriDownload(linkIndex, tabId) {
       theObject.href = uri;
       theObject.download = downloadName;
       try { theObject.click(); }
-      catch (e) { alert("error: failed downloading " + downloadName + " PGN data from data URI"); }
+      catch (e) { chrome.extension.sendRequest({pgn4webPopupError: "error: failed downloading " + downloadName + " PGN data URI"}, function(res){}); }
       theObject.href = theObject.download = "";
     }
   }
