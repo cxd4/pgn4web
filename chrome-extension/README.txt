@@ -23,14 +23,17 @@ BSD license. See garbochess/README.txt for more info.
 Homepage: http://forwardcoding.com/projects/ajaxchess/chess.html
 Repository: https://github.com/glinscott/Garbochess-JS/
 
+the endgame tablebase assessments are from the Lokasoft tablebase
+webservice http://www.lokasoft.nl/tbweb.htm
+
 the download.png, edit.png, file.png, files.png, help.png and refresh.png PNG
 icons are licensed by Interactivemania http://www.interactivemania.com under a
 Creative Commons Attribution-No Derivative Works 3.0 license
 http://creativecommons.org/licenses/by-nd/3.0/
 the refresh-mosaic.png PNG icon is derived from refresh.png
 
-the endgame tablebase assessments are from the Lokasoft tablebase
-webservice http://www.lokasoft.nl/tbweb.htm
+the js-base64 library https://github.com/dankogai/js-base64 is licensed by Dan
+Kogai under the MIT license http://www.opensource.org/licenses/mit-license.php
 
 
 Beta and development versions:
@@ -73,6 +76,7 @@ stored (the engine analysis data is about 1MB for 4000 entries); settings
 synch might not be supported for self-hosted extensions.
 http://crbug.com/47327
 
+
 Bugs:
 
 background.html and manifest.json match pattern definition:
@@ -105,6 +109,7 @@ Verify the hardcoded popup height by inpsecting the popup from a page with a
 large number of PGN links such as http://pgnmentor.com/files.html, clearing
 document.getElementById("pgnLinkList").style.maxHeight and reading the
 popup outerHeight value.
+
 
 Other:
 
