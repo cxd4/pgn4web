@@ -99,7 +99,7 @@ function pgnviewLinkOnClick(info, tab) {
 }
 
 function pgnviewDataUriOnClick(info, tab) {
-  openPgnDataUri(info.linkUrl);
+  if (! openPgnDataUri(info.linkUrl)) { alert("error: failed viewing PGN data URI");}
 }
 
 function pgnliveLinkOnClick(info, tab) {
@@ -179,27 +179,21 @@ function openPgnDataUri(pgnDataUri) {
     if (pgnDataUriMatch[2] && pgnDataUriMatch[2].match(/;base64/)) {
       if (pgnDataUri.match(pgnDataUriB64RegExp)) {
         try { pgnText[pgnTextIndex] = Base64.decode(pgnDataUriMatch[3]); }
-        catch (e) { alert("error: failed decoding PGN data base64 URI"); return false; }
-      } else {
-        alert("error: invalid PGN data base64 URI");
-        return false;
-      }
+        catch (e) { return false; }
+      } else { return false; }
     } else {
       pgnText[pgnTextIndex] = decodeURIComponent(pgnDataUriMatch[3]);
     }
     url = "chess-games-viewer.html?pgnBackground=" + pgnTextIndex++;
     chrome.tabs.create({url: url});
-  } else {
-    alert("error: invalid PGN data URI");
-    return false;
-  }
+  } else { return false; }
   return true;
 }
 
 function openDataPgnUriIndex(tabId, dataPgnUriIndex) {
   if (pgnHrefLinks && pgnHrefLinks[tabId] && pgnHrefLinks[tabId][dataPgnUriIndex]) {
-    openPgnDataUri(pgnHrefLinks[tabId][dataPgnUriIndex]);
-  }
+    return openPgnDataUri(pgnHrefLinks[tabId][dataPgnUriIndex]);
+  } else { return false; }
 }
 
 function showAboutPage(section, tabIdForReuse) {
