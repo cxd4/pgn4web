@@ -144,7 +144,7 @@ function cleanDataUriName(uri) {
 
 function downloadDataUriName(uri) {
   var downloadNameMatch = uri.match(/,pgn4web_download=(.+)\s*$/);
-  return downloadNameMatch ? downloadNameMatch[1] : "games_" + printHex(crc32(uri)) + ".pgn"; // .substr(0,4);
+  return downloadNameMatch ? downloadNameMatch[1] : "games-" + printHex(crc32(uri)) + ".pgn"; // .substr(0,4);
 }
 
 var pgnDataUrlIndex = 0;
