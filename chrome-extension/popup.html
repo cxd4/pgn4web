@@ -275,7 +275,8 @@ function pgnDataUriDownload(linkIndex, tabId) {
     if (uri) {
       theObject.href = uri;
       theObject.download = downloadName;
-      theObject.click();
+      try { theObject.click(); }
+      catch (e) { alert("error: failed downloading PGN data from base64 URI"); }
       theObject.href = theObject.download = "";
     }
   }
