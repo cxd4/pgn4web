@@ -65,6 +65,10 @@ body {
   margin-right: 0.6em;
 }
 
+.pgnListLink:active {
+  opacity: 0.1;
+}
+
 .pgnListLinkDisabled {
   opacity: 0.1;
 }
@@ -253,8 +257,8 @@ function showPgnLinksForTab(tab) {
         '<a title="view on a single board with live refresh games from\n' + pgnLinks[l] + '" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'chrome.tabs.create({url: "chess-games-viewer.html?pgnData=' + escape(pgnLinks[l]) + '&refreshMinutes=1.0' + Math.floor(Math.random()*10) + '"}); self.close();\'><img src="refresh.png" class="linkImage"></a>' +
         '<a title="view on multiple boards with live refresh games from\n' + pgnLinks[l] + '" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick=\'chrome.tabs.create({url: "live-mosaic-viewer.html?pgnData=' + escape(pgnLinks[l]) + '&refreshMinutes=1.0' + Math.floor(Math.random()*10) + '&headlessPage=true"}); self.close();\'><img src="refresh-mosaic.png" class="linkImage"></a>';
     }
-    pgnLinkListInnerHTML += '<a title="save as local file games from\n' + pgnLinks[l] + '" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick="pgnDownload(' + l + '); setTimeout(\'self.close();\', 139);"><img src="file.png" class="linkImage"></a>' +
-      '<a id="pgnLinkUrl_' + l + '" title="chess games link #' + (parseInt(ll, 10) + 1) + '\n' + pgnLinks[l] + '" class="pgnFileName" href="javascript:void(0);" onclick="toggleFullPgnUrl(' + l + ');">' + pgnLinksDisplay[l] + '</a>' +
+    pgnLinkListInnerHTML += '<a title="save as local file games from\n' + (pgnLinks[l].indexOf("data:") === 0 ? pgnLinksDisplay[l] : pgnLinks[l]) + '" class="pgnListLink" href="javascript:void(0);" onmouseover=\'this.style.cursor="' + cursorDef + '";\' onclick="pgnDownload(' + l + '); setTimeout(\'self.close();\', 199);"><img src="file.png" class="linkImage"></a>' +
+      '<a id="pgnLinkUrl_' + l + '" title="chess games link #' + (parseInt(ll, 10) + 1) + '\n' + (pgnLinks[l].indexOf("data:") === 0 ? pgnLinksDisplay[l] : pgnLinks[l]) + '" class="pgnFileName" href="javascript:void(0);" onclick="toggleFullPgnUrl(' + l + ');">' + pgnLinksDisplay[l] + '</a>' +
       '</div>';
   }
 
@@ -270,29 +274,30 @@ function pgnDataUriView(linkIndex, tabId) {
 }
 
 function pgnDownload(linkIndex) {
-  var uri, downloadName;
-  if (theObject = document.getElementById("pgnDownload")) {
-    uri = pgnLinks[linkIndex];
-    if (uri.indexOf("data:") === 0) {
-      downloadName = downloadDataUriName(uri);
-      uri = cleanDataUriName(uri);
-    }
-    if (uri) {
-      theObject.href = uri;
-      if (downloadName) { theObject.download = downloadName; }
-      try {
-        if (theObject.click) { theObject.click(); }
-        else { // bug: in chrome before v19 the above call fails
-          var evt = document.createEvent("MouseEvents");
-          evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-          theObject.dispatchEvent(evt);
-        }
-      } catch (e) { 
-        chrome.extension.sendRequest({pgn4webPopupError: "error: failed downloading PGN data URI"}, function(res){}); 
-      }
-      theObject.href = theObject.download = "";
-    }
+  var uri, uriIsData, downloadName;
+
+  if (!pgnLinks || !pgnLinks[linkIndex]) { return false; }
+  uri = pgnLinks[linkIndex];
+  uriIsData = (uri.indexOf("data:") === 0);
+
+  if (!(theObject = document.getElementById(uriIsData ? "pgnDataDownload" : "pgnLinkDownload"))) { return false; }
+
+  if (uriIsData) {
+    downloadName = downloadDataUriName(uri);
+    uri = cleanDataUriName(uri);
   }
+  if (uri) {
+    theObject.href = uri;
+    if (uriIsData) { theObject.download = downloadName; }
+    var evt = document.createEvent("MouseEvents");
+    evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+    theObject.dispatchEvent(evt);
+    // warning: no feedback about failed downloads with incorrect data URIs
+    //
+    // bug: when a download fails because of an incorrect data URI
+    // the next downloads of non data URIs will fail until the page is reloaded
+  }
+  return true;
 }
 
 var toggledFullUrlNum = null;
@@ -311,7 +316,8 @@ function toggleFullPgnUrl(l) {
 
 </script>
 
-<a download="" href="" target="_blank" id="pgnDownload" style="display:none;"></a>
+<a id="pgnLinkDownload" href="" download style="display:none;"></a>
+<a id="pgnDataDownload" href="" download="games-00000000.pgn" style="display:none;"></a>
 
 </body>
 
