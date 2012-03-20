@@ -198,6 +198,13 @@ function downloadPgn(tabId, uri, downloadName) {
   if (!(theObject = document.getElementById(downloadName ? "pgnDataDownload" : "pgnLinkDownload"))) { return false; }
 
   if (uri) {
+    if (pgnDataUriMatch = uri.match(pgnDataUriRegExp)) {
+      if (pgnDataUriMatch[2] && pgnDataUriMatch[2].match(/;base64/)) {
+        if (! uri.match(pgnDataUriB64RegExp)) {
+          return false;
+        }
+      }
+    }
     theObject.href = uri;
     if (downloadName) { theObject.download = downloadName; }
     var evt = document.createEvent("MouseEvents");
@@ -205,7 +212,6 @@ function downloadPgn(tabId, uri, downloadName) {
     theObject.dispatchEvent(evt);
   }
 
-  // bug: no feedback about failed downloads with incorrect data URIs
   return true;
 }
 
