@@ -32,9 +32,6 @@ Creative Commons Attribution-No Derivative Works 3.0 license
 http://creativecommons.org/licenses/by-nd/3.0/
 the refresh-mosaic.png PNG icon is derived from refresh.png
 
-the js-base64 library https://github.com/dankogai/js-base64 is licensed by Dan
-Kogai under the MIT license http://www.opensource.org/licenses/mit-license.php
-
 
 Beta and development versions:
 
