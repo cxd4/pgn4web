@@ -169,14 +169,15 @@ function removePgnTextOnRemoved(tabId) {
 chrome.tabs.onRemoved.addListener(removePgnTextOnRemoved);
 
 var pgnDataUriRegExp = /^\s*data:application\/(da|x)-chess-pgn([^,]*),(.*)\s*$/;
-var pgnDataUriB64RegExp = /^\s*data:application\/(da|x)-chess-pgn([^,]*),([0-9a-zA-Z+\/=]*)\s*$/;
+var pgnDataUriB64RegExp = /^\s*data:application\/(da|x)-chess-pgn([^,]*),([0-9a-zA-Z+\/]*=*)\s*$/;
 function openPgnDataUri(pgnDataUri) {
   var pgnDataUriMatch;
   pgnDataUri = pgnDataUri.replace(/,pgn4web_download=.*$/, "");
   if (! (pgnDataUriMatch = pgnDataUri.match(pgnDataUriRegExp))) { return false; }
   if (pgnDataUriMatch[2] && pgnDataUriMatch[2].match(/;base64/)) {
     if (! pgnDataUri.match(pgnDataUriB64RegExp)) { return false; }
-    pgnText[pgnTextIndex] = atob(pgnDataUriMatch[3]);
+    try { pgnText[pgnTextIndex] = atob(pgnDataUriMatch[3]); }
+    catch (e) { return false; }
     if (pgnText[pgnTextIndex].match(/[^\x21-\x7E\s\t\n\r]/)) {
       delete pgnText[pgnTextIndex];
       return false;
@@ -202,9 +203,9 @@ function downloadPgn(tabId, uri, downloadName) {
 
   if (pgnDataUriMatch = uri.match(pgnDataUriRegExp)) {
     if (pgnDataUriMatch[2] && pgnDataUriMatch[2].match(/;base64/)) {
-      if ((!uri.match(pgnDataUriB64RegExp)) || (atob(pgnDataUriMatch[3]).match(/[^\x21-\x7E\s\t\n\r]/))) {
-        return false;
-      }
+      if (!uri.match(pgnDataUriB64RegExp)) { return false; }
+      try { if (atob(pgnDataUriMatch[3]).match(/[^\x21-\x7E\s\t\n\r]/)) { return false; } }
+      catch (e) { return false; }
     }
   }
   theObject.href = uri;
