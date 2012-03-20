@@ -298,6 +298,7 @@ var pgnWebRequests = new Array();
 var processedUrls = new Array();
 
 function mergePgnLinksAndShowIcon(tabId) {
+  if (tabId < 0) { return; }
   if (! pgnHrefLinks[tabId]) { return; }
   if (! pgnWebRequests[tabId]) { return; }
   pgnHrefLinks[tabId] = pgnHrefLinks[tabId].sort();
@@ -389,7 +390,7 @@ function removeLocalPgnFilesOnRemoved(tabId) {
 chrome.tabs.onRemoved.addListener(removeLocalPgnFilesOnRemoved);
 
 function checkWebRequestForPgnFiles(requestDetails) {
-  if (requestDetails.tabId === null) { return; }
+  if (requestDetails.tabId === null || requestDetails.tabId < 0) { return; }
   if (!validatePgnUrl(requestDetails.url)) { return; }
 
   if (pgnWebRequests[requestDetails.tabId]) {
