@@ -173,18 +173,19 @@ var pgnDataUriB64RegExp = /^\s*data:application\/(da|x)-chess-pgn([^,]*),([0-9a-
 function openPgnDataUri(pgnDataUri) {
   var pgnDataUriMatch;
   pgnDataUri = pgnDataUri.replace(/,pgn4web_download=.*$/, "");
-  if (pgnDataUriMatch = pgnDataUri.match(pgnDataUriRegExp)) {
-    if (pgnDataUriMatch[2] && pgnDataUriMatch[2].match(/;base64/)) {
-      if (pgnDataUri.match(pgnDataUriB64RegExp)) {
-        try { pgnText[pgnTextIndex] = atob(pgnDataUriMatch[3]); }
-        catch (e) { return false; }
-      } else { return false; }
-    } else {
-      pgnText[pgnTextIndex] = decodeURIComponent(pgnDataUriMatch[3]);
+  if (! (pgnDataUriMatch = pgnDataUri.match(pgnDataUriRegExp))) { return false; }
+  if (pgnDataUriMatch[2] && pgnDataUriMatch[2].match(/;base64/)) {
+    if (! pgnDataUri.match(pgnDataUriB64RegExp)) { return false; }
+    pgnText[pgnTextIndex] = atob(pgnDataUriMatch[3]);
+    if (pgnText[pgnTextIndex].match(/[^\x21-\x7E\s\t\n\r]/)) {
+      delete pgnText[pgnTextIndex];
+      return false;
     }
-    url = "chess-games-viewer.html?pgnBackground=" + pgnTextIndex++;
-    chrome.tabs.create({url: url});
-  } else { return false; }
+  } else {
+    pgnText[pgnTextIndex] = decodeURIComponent(pgnDataUriMatch[3]);
+  }
+  url = "chess-games-viewer.html?pgnBackground=" + pgnTextIndex++;
+  chrome.tabs.create({url: url});
   return true;
 }
 
@@ -197,20 +198,20 @@ function openDataPgnUriIndex(tabId, dataPgnUriIndex) {
 function downloadPgn(tabId, uri, downloadName) {
   if (!(theObject = document.getElementById(downloadName ? "pgnDataDownload" : "pgnLinkDownload"))) { return false; }
 
-  if (uri) {
-    if (pgnDataUriMatch = uri.match(pgnDataUriRegExp)) {
-      if (pgnDataUriMatch[2] && pgnDataUriMatch[2].match(/;base64/)) {
-        if (! uri.match(pgnDataUriB64RegExp)) {
-          return false;
-        }
+  if (!uri) { return false; }
+
+  if (pgnDataUriMatch = uri.match(pgnDataUriRegExp)) {
+    if (pgnDataUriMatch[2] && pgnDataUriMatch[2].match(/;base64/)) {
+      if ((!uri.match(pgnDataUriB64RegExp)) || (atob(pgnDataUriMatch[3]).match(/[^\x21-\x7E\s\t\n\r]/))) {
+        return false;
       }
     }
-    theObject.href = uri;
-    if (downloadName) { theObject.download = downloadName; }
-    var evt = document.createEvent("MouseEvents");
-    evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-    theObject.dispatchEvent(evt);
   }
+  theObject.href = uri;
+  if (downloadName) { theObject.download = downloadName; }
+  var evt = document.createEvent("MouseEvents");
+  evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+  theObject.dispatchEvent(evt);
 
   return true;
 }

@@ -281,7 +281,7 @@ function pgnDownload(linkIndex, tabId) {
     uri = cleanDataUriName(uri);
   }
   if (! chrome.extension.getBackgroundPage().downloadPgn(tabId, uri, downloadName)) {
-    chrome.extension.sendRequest({pgn4webPopupError: "error: failed viewing PGN data URI"}, function(res){});
+    chrome.extension.sendRequest({pgn4webPopupError: "error: failed downloading PGN data URI"}, function(res){});
   }
 }
 
