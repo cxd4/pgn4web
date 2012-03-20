@@ -110,10 +110,9 @@ large number of PGN links such as http://pgnmentor.com/files.html, clearing
 document.getElementById("pgnLinkList").style.maxHeight and reading the
 popup outerHeight value.
 
-popup.html: failed downloads
-when a download fails because of an incorrect data URI the next downloads of
-non data URIs will fail until the page is reloaded; also there is no feedback
-to the user about failed downloads with incorrect data URIs.
+popup.html: no feedback for failed downloads
+also there is no feedback to the javascript code (and to the user) when
+downloads fails (such as with incorrect data URIs).
 not submitted to http://crbug.com
 
 
