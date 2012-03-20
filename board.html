@@ -1230,7 +1230,9 @@ function customFunctionOnPgnGameLoad() {
   }
 
   if (theObject = document.getElementById("headerMovesSpacer")) {
-    if ( ((gameWhite[currentGame] != undefined) && (gameWhite[currentGame] !== ""))   ||
+    if ( (headerDisplay == "live")                                                    ||
+         (headerDisplay == "variations")                                              ||
+         ((gameWhite[currentGame] != undefined) && (gameWhite[currentGame] !== ""))   ||
          ((gameBlack[currentGame] != undefined) && (gameBlack[currentGame] !== ""))   ||
          ((gameResult[currentGame] != undefined) && (gameResult[currentGame] !== "")) ||
          ((gameEvent[currentGame] != undefined) && (gameEvent[currentGame] !== ""))   ||
