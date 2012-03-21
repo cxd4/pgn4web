@@ -31,8 +31,7 @@ function probeTablebaseLokasoft(fenString, probeTablebaseCallback) {
       probeTablebaseXMLHTTPRequest.onreadystatechange = function() {
          if (probeTablebaseXMLHTTPRequest.readyState == 4) {
             if (probeTablebaseXMLHTTPRequest.status == 200) {
-               if (matches = probeTablebaseXMLHTTPRequest.responseText.match(/<SOAP-ENV:Body><m:ProbePositionResponse xmlns:m="http:\/\/lokasoft.org\/message\/"><Result>([0-9M-]*)<\/Result><\/m:ProbePositionResponse>/)) {
-                  assessment = matches[1];
+               if (assessment = probeTablebaseXMLHTTPRequest.responseXML.documentElement.getElementsByTagName("Result")[0].firstChild.nodeValue) {
                   if (assessment === "0") { probeTablebaseCallback("<b>game is a draw</b>", fenString); }
                   else if (matches = assessment.match(/^(M|-M)(\d+)$/)) {
                      blackToMove = (fenString.indexOf(" b ") != -1);

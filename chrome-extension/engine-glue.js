@@ -197,7 +197,9 @@ chrome.extension.onRequest.addListener(analysisRequestHandler);
 
 function stopAnalysisOnUpdated(tabId) {
    chrome.tabs.get(tabId, function (tab) {
-      if (tab.url.indexOf(chrome.extension.getURL("chess-games-viewer.html")) == -1) { setAnalysisStatus("stop", tab.id, ""); }
+      if (tab && tab.url && (tab.url.indexOf(chrome.extension.getURL("chess-games-viewer.html")) == -1)) {
+        setAnalysisStatus("stop", tab.id, "");
+      }
    });
 }
 
