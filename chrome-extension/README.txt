@@ -73,6 +73,16 @@ stored (the engine analysis data is about 1MB for 4000 entries); settings
 synch might not be supported for self-hosted extensions.
 http://crbug.com/47327
 
+background.html
+replace the file download code for the popup page with the downloads API,
+currently experimental; make sure it works with data URIs.
+http://crbug.com/12133
+
+background.html
+show an help prompt after new installs, using the extension API, currently
+experimental.
+no crbug yet
+
 
 Bugs:
 

@@ -208,6 +208,10 @@ function downloadPgn(tabId, uri, downloadName) {
       catch (e) { return false; }
     }
   }
+
+  // consider replacing the download code below with the downloads API,
+  // curretntly experimental; make sure it works with data URIs.
+  // http://crbug.com/12133
   theObject.href = uri;
   if (downloadName) { theObject.download = downloadName; }
   var evt = document.createEvent("MouseEvents");
@@ -417,6 +421,17 @@ function checkWebRequestForPgnFiles(requestDetails) {
 // see README.txt note about http://crbug.com/60101
 try {
   chrome.webRequest.onBeforeRequest.addListener(checkWebRequestForPgnFiles, {"types": ["object", "xmlhttprequest", "other"], "urls": pgnUrlPatterns});
+} catch (e) {}
+
+function newInstall() {
+  if ( confirm("The chess games viewer extension has been installed.\n\nClick OK for instructions and usage examples; the help page is also available later at the chrome extensions page, from the chess games viewer extension options link.")) { showAboutPage(); }
+}
+
+// shows an help prompt after new installs
+// see README note (no crbug yet)
+try {
+  chrome.experimental.extension.onInstalled.addListener(newInstall);
+  console.log("using the experimental extension API");
 } catch (e) {}
 
 </script>
