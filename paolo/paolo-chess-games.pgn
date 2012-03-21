@@ -1,3 +1,19 @@
+[Event "London League 2011/2012"]
+[Site "London ENG"]
+[Date "2012.03.21"]
+[Round "?"]
+[White "Hermes, Geoff"]
+[Black "Casaschi, Paolo"]
+[Result "0-1"]
+[ECO "C02"]
+[Opening "French"]
+[Variation "advance variation"]
+
+1. e4 c5 2. c3 e6 3. d4 d5 4. e5 Qb6 5. a3 Bd7 6. b4 cxd4 7. cxd4 { D }
+7... a5 8. bxa5 Rxa5 9. Bd2 { D } 9... Qxd4 10. Bxa5 Qxa1 11. Bc7 Na6 12.
+Bxa6 bxa6 13. Qb3 Bb5 14. Nf3 { D } 14... Bxa3 15. Qxa3 Qxb1+ 16. Kd2 Qxh1
+17. Qd6 Bd7 18. Ba5 Ne7 19. Nd4 Qa1 0-1
+
 [Event "Middlesex League 2011/2012"]
 [Site "London ENG"]
 [Date "2012.03.20"]
