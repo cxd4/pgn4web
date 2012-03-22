@@ -95,7 +95,7 @@ is outside the variation } d5 c4 *
 [Result "*"]
 
 1. d4 () d5 ( ) 2. c4 ({ variations without moves should become comments })
-(2. Nf3) 2... dxc4 ( ( { accepting the gambit } ) ) 3. e4 *
+(2. Nf3) 2... dxc4 ( ( { accepting the gambit } ) ) 3. e4 (3. Nf3 1/2-1/2) e5 *
 
 [Event "Testing null moves"]
 [Site "Another site"]
