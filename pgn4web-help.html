@@ -35,7 +35,7 @@ a:hover {
 }
 
 a.heading, a.headingSelected {
-  margin: 20px;
+  margin: 30px;
   line-height: 1.5em;
   font-weight: bold;
   font-size: 125%;
@@ -59,9 +59,10 @@ a.headingSelected:hover {
 
 .informantCell {
   font-size: 19px;
-  padding-left: 90px;
+  padding-left: 80px;
   padding-right: 50px;
-  padding-bottom: 10px;
+  padding-top: 10px;
+  padding-bottom: 2px;
 }
 
 </style>
@@ -162,6 +163,7 @@ The user can interact with the pgn4web chessboard using the keyboard (<a href="h
 
 document.write("<table style='padding:0;' border='0'>");
 print_help_row("&nbsp;", "");
+print_help_row("&nbsp;", "");
 print_help_row("", "<b>moving through a game</b>");
 print_help_row("h , l", "game start, end (also arrow up, down keys)");
 print_help_row("shift-h , shift-l", "variation start, end (also shift arrow up, down keys)");
@@ -225,6 +227,7 @@ The user can interact with the pgn4web chessboard clicking chessboard squares:
 <script type="text/javascript">
 if (opener && (typeof(opener.boardTitle) != "undefined")) {
   document.write("<table style='padding:0;' border='0'>");
+  print_help_row("&nbsp;", "");
   for (r=7; r>=0; r--) {
     rowDisplayed = false;
     for (c=0; c<=7; c++) {
@@ -274,17 +277,17 @@ document.write("</table>");
 <div id="informant_symbols_section" class="section">
 
 pgn4web supports chess annotations symbols as defined by <a href="http://www.chessinformant.rs" targte="_blank">the Chess Informant publishing company</a>:
-<p></p>
-<br/>
+
 <script type="text/javascript">var NAG = new Array();</script>
 <script src="chess-informant-NAG-symbols.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 function print_NAG_row(nag, text) {
-  document.write("<tr><td class='informantCell' title='$" + nag + "'>" + NAG[nag] + "</td><td>" + text + "</td></tr>");
+  document.write("<tr valign='bottom'><td class='informantCell' title='$" + nag + "'>" + NAG[nag] + "</td><td>" + text + "</td></tr>");
 }
 
-document.write("<table>");
+document.write("<table style='padding:0;' border='0'>");
+document.write("<tr valign='bottom'><td class='informantCell'>&nbsp;</td><td></td></tr>");
 print_NAG_row(14, "white stands slightly better");
 print_NAG_row(15, "black stands slightly better");
 print_NAG_row(16, "white has the upper hand");
@@ -300,6 +303,7 @@ print_NAG_row(40, "with attack");
 print_NAG_row(36, "with initiative");
 print_NAG_row(130, "with counter-play");
 print_NAG_row(22, "zugzwang");
+document.write("<tr valign='bottom'><td class='informantCell'>#</td><td>mate</td></tr>");
 print_NAG_row(1, "a very good move");
 print_NAG_row(3, "an excellent move");
 print_NAG_row(2, "a mistake");
@@ -327,9 +331,11 @@ print_NAG_row(163, "pawn majority");
 print_NAG_row(136, "time");
 print_NAG_row(146, "a novelty");
 print_NAG_row(145, "editorial comment");
+document.write("<tr valign='bottom'><td class='informantCell'>R</td><td>various moves</td></tr>");
 print_NAG_row(254, "with");
 print_NAG_row(255, "without");
 print_NAG_row(190, "etc");
+document.write("<tr valign='bottom'><td class='informantCell'>-</td><td>see</td></tr>");
 document.write("</table>");
 
 </script>
