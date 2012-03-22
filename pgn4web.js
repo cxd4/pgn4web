@@ -255,7 +255,8 @@ function handlekey(e) {
       return stopKeyProp(e);
 
     case 190: // dot
-      goToNextVariationSibling();
+      if (e.shiftKey) { goToFirstChild(); }
+      else { goToNextVariationSibling(); }
       return stopKeyProp(e);
 
     case 83: // s
@@ -2814,11 +2815,9 @@ function childrenVars(thisPly, thisVar) {
   if (typeof(thisVar) == "undefined") { thisVar = CurrentVar; }
   if (typeof(thisPly) == "undefined") { thisPly = CurrentPly; }
   children = new Array();
-  if (MovesVar[thisVar] && MovesVar[thisVar][thisPly]) {
-    for (var ii = thisVar; ii < numberOfVars; ii++) {
-      if ((ii === thisVar) || realParentVar(ii) === thisVar && StartPlyVar[ii] === thisPly) {
-        children.push(ii);
-      }
+  for (var ii = thisVar; ii < numberOfVars; ii++) {
+    if ((ii === thisVar && StartPlyVar[ii] + PlyNumberVar[ii] > thisPly) || (realParentVar(ii) === thisVar && StartPlyVar[ii] === thisPly)) {
+      children.push(ii);
     }
   }
   return children;
@@ -2842,6 +2841,18 @@ function goToNextVariationSibling() {
   }
   if (siblingVarList[ii] !== CurrentVar) { return false; }
   GoToMove(CurrentPly, siblingVarList[(ii + 1) % siblingVarList.length]);
+  return true;
+}
+
+function goToFirstChild() {
+  childrenVarList = childrenVars(CurrentPly, CurrentVar);
+  if (childrenVarList.length < 1) { return false; }
+  if (childrenVarList[0] === CurrentVar) {
+    if (childrenVarList.length < 2) { return false; }
+    GoToMove(CurrentPly + 1, childrenVarList[1]);
+  } else {
+    GoToMove(CurrentPly + 1, childrenVarList[0]);
+  }
   return true;
 }
 
