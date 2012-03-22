@@ -2762,10 +2762,10 @@ function initVar () {
   PlyNumber = 1;
   PlyNumberStack = new Array();
   PredecessorsVars = new Array();
-  startVar();
+  startVar(false);
 }
 
-function startVar() {
+function startVar(isContinuation) {
   if (CurrentVar >= 0) {
     CurrentVarStack.push(CurrentVar);
     PlyNumberStack.push(PlyNumber);
@@ -2778,7 +2778,7 @@ function startVar() {
   if (lastVarWithNoMoves[lastVarWithNoMoves.length - 1]) {
     myAlert("warning: malformed PGN data in game " + (currentGame+1) + ": variant " + CurrentVar + " starting before parent", true);
   } else {
-    PlyNumber -= 1;
+    if (!isContinuation) { PlyNumber -= 1; }
   }
   lastVarWithNoMoves.push(true);
   MoveCommentsVar[CurrentVar][StartPly + PlyNumber] = "";
@@ -2931,8 +2931,9 @@ function ParsePGNGameString(gameString) {
         break;
 
       case '(':
+        if (isContinuation = (ss.charAt(start+1) == '*')) { start += 1; }
         MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' [%pgn4web_variation ' + numberOfVars + '] ';
-        startVar();
+        startVar(isContinuation);
         break;
 
       case ')':
