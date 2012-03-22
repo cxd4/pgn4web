@@ -2944,9 +2944,14 @@ function ParsePGNGameString(gameString) {
         searchThis = new Array('1-0', '0-1', '1/2-1/2', '*');
         for (ii=0; ii<searchThis.length; ii++) {
           if (ss.indexOf(searchThis[ii],start)==start) {
-            start += searchThis[ii].length;
-            MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ss.substring(start, ss.length).replace(/^\s*\{(.*)\}\s*$/, '$1');
-            start = ss.length;
+            if (CurrentVar === 0) {
+               start += searchThis[ii].length;
+               end = ss.length;
+            } else {
+               if ((end = ss.indexOf(')', start + searchThis[ii].length)) < 0) { end = ss.length; }
+            }
+            MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ss.substring(start, end).replace(/^\s*\{(.*)\}\s*$/, '$1');
+            start = end;
             break;
           }
         }
