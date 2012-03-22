@@ -54,7 +54,7 @@ if ((typeof(blockChessInformantNAGSymbols) != "boolean") || (!blockChessInforman
   NAG[146] = 'N'; // 'novelty';
   NAG[147] = NAG[244] = Nl + '&#94;' + Ne; // 'weak point';
   NAG[148] = NAG[245] = Nl + '&#207;' + Ne; // 'endgame';
-  NAG[149] = NAG[239] = Nl + '&#732;' + Ne; // 'file';
+  NAG[149] = NAG[239] = Nl + '&nbsp;&nbsp;&#732;&nbsp;' + Ne; // 'file';
   NAG[150] = NAG[240] = Nl + '&#92;' + Ne; // 'diagonal';
   NAG[151] = NAG[152] = NAG[246] = Nl + '&#210;' + Ne; // 'bishop pair';
   NAG[153] = NAG[247] = Nl + '&#211;' + Ne; // 'opposite bishops';
