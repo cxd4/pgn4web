@@ -207,6 +207,7 @@ print_help_row("shift-z", "pgn4web website");
 print_help_row("esc", "pgn4web help");
 print_help_row("shift-esc", "toggle enabling shortcut keys");
 print_help_row("&nbsp;", "");
+print_help_row("&nbsp;", "");
 document.write("</table>");
 
 if (opener && (typeof(opener.shortcutKeysEnabled) != "undefined")) {
@@ -239,6 +240,7 @@ if (opener && (typeof(opener.boardTitle) != "undefined")) {
     }
     if (rowDisplayed) { print_help_row("&nbsp;", ""); }
   }
+  print_help_row("&nbsp;", "");
   document.write("</table>");
   document.write("Squares labeled assuming " + colorAtTheBottom + " on bottom.");
 } else {
