@@ -2948,7 +2948,7 @@ function ParsePGNGameString(gameString) {
                start += searchThis[ii].length;
                end = ss.length;
             } else {
-               if ((end = ss.indexOf(')', start + searchThis[ii].length)) < 0) { end = ss.length; }
+               end = start + searchThis[ii].length;
             }
             MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ss.substring(start, end).replace(/^\s*\{(.*)\}\s*$/, '$1');
             start = end;
