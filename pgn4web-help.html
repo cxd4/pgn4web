@@ -277,56 +277,58 @@ document.write("</table>");
 <script type="text/javascript">var NAG = new Array();</script>
 <script src="chess-informant-NAG-symbols.js" type="text/javascript"></script>
 <script type="text/javascript">
-var text = "<table>";
-text += "<tr><td class='informantCell'>" + NAG[14] + "</td><td>white stands slightly better</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[15] + "</td><td>black stands slightly better</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[16] + "</td><td>white has the upper hand</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[17] + "</td><td>black has the upper hand</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[18] + "</td><td>white has a decisive advantage</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[19] + "</td><td>black has a decisive advantage</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[11] + "</td><td>even</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[13] + "</td><td>unclear</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[44] + "</td><td>with compensation for the material</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[30] + "</td><td>development advantage</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[24] + "</td><td>greater board room</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[40] + "</td><td>with attack</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[36] + "</td><td>with initiative</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[130] + "</td><td>with counter-play</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[22] + "</td><td>zugzwang</td></tr>";
-text += "<tr><td class='informantCell'>#</td><td>mate</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[1] + "</td><td>a very good move</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[3] + "</td><td>an excellent move</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[2] + "</td><td>a mistake</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[4] + "</td><td>a blunder</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[5] + "</td><td>a move deserving attention</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[6] + "</td><td>a dubious move</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[140] + "</td><td>with the idea</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[7] + "</td><td>only move</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[142] + "</td><td>better is</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[149] + "</td><td>file</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[150] + "</td><td>diagonal</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[48] + "</td><td>center</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[242] + "</td><td>king's side</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[243] + "</td><td>queen's side</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[147] + "</td><td>weak point</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[148] + "</td><td>ending</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[151] + "</td><td>pair of bishops</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[153] + "</td><td>bishops of opposite colors</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[154] + "</td><td>bishops of the same color</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[155] + "</td><td>united pawns</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[157] + "</td><td>separated pawns</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[159] + "</td><td>double pawns</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[161] + "</td><td>passed pawn</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[163] + "</td><td>pawn majority</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[136] + "</td><td>time</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[146] + "</td><td>a novelty</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[145] + "</td><td>editorial comment</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[254] + "</td><td>with</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[255] + "</td><td>without</td></tr>";
-text += "<tr><td class='informantCell'>" + NAG[190] + "</td><td>etc</td></tr>";
-text += "</table>";
+function print_NAG_row(nag, text) {
+  document.write("<tr><td class='informantCell'>" + NAG[nag] + "</td><td>" + text + "</td></tr>");
+}
 
-document.write(text);
+document.write("<table>");
+print_NAG_row(14, "white stands slightly better");
+print_NAG_row(15, "black stands slightly better");
+print_NAG_row(16, "white has the upper hand");
+print_NAG_row(17, "black has the upper hand");
+print_NAG_row(18, "white has a decisive advantage");
+print_NAG_row(19, "black has a decisive advantage");
+print_NAG_row(11, "even");
+print_NAG_row(13, "unclear");
+print_NAG_row(44, "with compensation for the material");
+print_NAG_row(30, "development advantage");
+print_NAG_row(24, "greater board room");
+print_NAG_row(40, "with attack");
+print_NAG_row(36, "with initiative");
+print_NAG_row(130, "with counter-play");
+print_NAG_row(22, "zugzwang");
+print_NAG_row(1, "a very good move");
+print_NAG_row(3, "an excellent move");
+print_NAG_row(2, "a mistake");
+print_NAG_row(4, "a blunder");
+print_NAG_row(5, "a move deserving attention");
+print_NAG_row(6, "a dubious move");
+print_NAG_row(140, "with the idea");
+print_NAG_row(7, "only move");
+print_NAG_row(142, "better is");
+print_NAG_row(149, "file");
+print_NAG_row(150, "diagonal");
+print_NAG_row(48, "center");
+print_NAG_row(242, "king's side");
+print_NAG_row(243, "queen's side");
+print_NAG_row(147, "weak point");
+print_NAG_row(148, "ending");
+print_NAG_row(151, "pair of bishops");
+print_NAG_row(153, "bishops of opposite colors");
+print_NAG_row(154, "bishops of the same color");
+print_NAG_row(155, "united pawns");
+print_NAG_row(157, "separated pawns");
+print_NAG_row(159, "double pawns");
+print_NAG_row(161, "passed pawn");
+print_NAG_row(163, "pawn majority");
+print_NAG_row(136, "time");
+print_NAG_row(146, "a novelty");
+print_NAG_row(145, "editorial comment");
+print_NAG_row(254, "with");
+print_NAG_row(255, "without");
+print_NAG_row(190, "etc");
+document.write("</table>");
+
 </script>
 </center>
 
