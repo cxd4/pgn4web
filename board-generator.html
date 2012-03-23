@@ -748,13 +748,13 @@ function update_disabled_controls() {
 
   document.board.fontHeaderSize.disabled = document.board.fontHeaderColorHex.disabled = (document.board.headerDisplay.value == 'hidden');
 
-  document.board.fontMovesSize.disabled = document.board.fontMovesColorHex.disabled = document.board.highlightMoveColorHex.disabled = (document.board.movesDisplay.value == 'hidden');
+  document.board.fontMovesSize.disabled = document.board.fontMovesColorHex.disabled = document.board.highlightMoveColorHex.disabled = ((document.board.movesDisplay.value == 'hidden') && (document.board.headerDisplay.value != 'live') && (document.board.headerDisplay.value != 'variations'));
 
-  document.board.commentsDisplay.disabled = (document.board.movesDisplay.value == 'hidden');
+  document.board.commentsDisplay.disabled = ((document.board.movesDisplay.value == 'hidden') && (document.board.headerDisplay.value != 'live') && (document.board.headerDisplay.value != 'variations'));
 
-  document.board.fontCommentsSize.disabled = document.board.fontCommentsColorHex.disabled = ((document.board.movesDisplay.value == 'hidden') || (document.board.commentsDisplay.value == 'hidden'));
+  document.board.fontCommentsSize.disabled = document.board.fontCommentsColorHex.disabled = (((document.board.movesDisplay.value == 'hidden') || (document.board.commentsDisplay.value == 'hidden')) && (document.board.headerDisplay.value != 'live') && (document.board.headerDisplay.value != 'variations'));
 
-  document.board.fontVariationsSize.disabled = document.board.fontVariationsColorHex.disabled = ((document.board.movesDisplay.value == 'hidden') || (document.board.commentsDisplay.value == 'hidden') ||(!document.board.useTextarea.checked));
+  document.board.fontVariationsSize.disabled = document.board.fontVariationsColorHex.disabled = (((document.board.movesDisplay.value == 'hidden') && (document.board.headerDisplay.value != 'live') && (document.board.headerDisplay.value != 'variations')) || (document.board.commentsDisplay.value == 'hidden') || (!document.board.useTextarea.checked));
 
   document.board.encodePgn.disabled = document.board.useTextarea.checked;
 
@@ -919,7 +919,7 @@ function calculate_html_code() {
 
   }
 
-  if (document.board.movesDisplay.value != "hidden") {
+  if ((document.board.movesDisplay.value != "hidden") || (document.board.headerDisplay.value == "live") || (document.board.headerDisplay.value == "variations")) {
 
     fontMovesColorHex_value = document.board.fontMovesColorHex.value;
     iframeUrl += "&fmcs=" + hex2sex(fontMovesColorHex_value);

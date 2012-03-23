@@ -937,6 +937,7 @@ var PieceCode = new Array(); // IE needs an array to work with [index]
 for (i=0; i<6; i++) { PieceCode[i] = FenPieceName.charAt(i); }
 var FenStringStart = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 var columnsLetters = "ABCDEFGH";
+var InitialHalfMoveClock = 0;
 
 startingSquareSize = -1;
 startingImageSize = -1;
