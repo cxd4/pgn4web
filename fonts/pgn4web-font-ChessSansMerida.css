@@ -16,6 +16,6 @@
 @font-face {
   font-family: 'pgn4web ChessSansMerida';
   src: url('ChessSansMerida.eot');
-  src: local('ChessSansMerida Regular'), local('ChessSansMerida'), url('ChessSansMerida.woff') format('woff'), url('ChessSansMerida.ttf') format('truetype'), url('ChessSansMerida.svg#ChessSansMerida') format('svg');
+  src: url('ChessSansMerida.woff') format('woff'), url('ChessSansMerida.ttf') format('truetype'), url('ChessSansMerida.svg#ChessSansMerida') format('svg');
 }
 

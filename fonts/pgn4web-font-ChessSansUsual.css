@@ -16,6 +16,6 @@
 @font-face {
   font-family: 'pgn4web ChessSansUsual';
   src: url('ChessSansUsual.eot');
-  src: local('ChessSansUsual Regular'), local('ChessSansUsual'), url('ChessSansUsual.woff') format('woff'), url('ChessSansUsual.ttf') format('truetype'), url('ChessSansUsual.svg#ChessSansUsual') format('svg');
+  src: url('ChessSansUsual.woff') format('woff'), url('ChessSansUsual.ttf') format('truetype'), url('ChessSansUsual.svg#ChessSansUsual') format('svg');
 }
 

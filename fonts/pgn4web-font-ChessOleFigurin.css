@@ -16,6 +16,6 @@
 @font-face {
   font-family: 'pgn4web ChessOleFigurin';
   src: url('ChessOleFigurin.eot');
-  src: local('ChessOleFigurin'), local('ChessOleFigurin Medium'), local('ChessOleFigurinMedium'), url('ChessOleFigurin.woff') format('woff'), url('ChessOleFigurin.ttf') format('truetype'), url('ChessOleFigurin.svg#ChessOle!FigurinMedium') format('svg');
+  src: url('ChessOleFigurin.woff') format('woff'), url('ChessOleFigurin.ttf') format('truetype'), url('ChessOleFigurin.svg#ChessOle!FigurinMedium') format('svg');
 }
 
