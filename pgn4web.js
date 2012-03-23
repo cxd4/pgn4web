@@ -3101,7 +3101,7 @@ function translateNAGs(comment) {
     for (var ii = 0; ii < matches.length; ii++) {
       nag = matches[ii].substr(1);
       if (NAG[nag] !== undefined) {
-        comment = comment.replace(new RegExp("\\$+" + nag + "\\b"), NAG[nag]);
+        comment = comment.replace(new RegExp("\\$+" + nag + "(?![0-9])"), NAG[nag]);
       }
     }
   }
