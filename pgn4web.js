@@ -228,8 +228,13 @@ function handlekey(e) {
 
     case 38: // up-arrow
     case 72: // h
-      if (e.shiftKey) { GoToMove(StartPlyVar[CurrentVar] + 1); }
-      else { GoToMove(StartPlyVar[0], 0); }
+      if (e.shiftKey) {
+        if (CurrentPly <= StartPlyVar[CurrentVar] + 1) {
+          GoToMove(StartPlyVar[CurrentVar]);
+        } else {
+           GoToMove(StartPlyVar[CurrentVar] + 1);
+        }
+      } else { GoToMove(StartPlyVar[0], 0); }
       return stopKeyProp(e);
 
     case 39: // right-arrow
@@ -240,8 +245,13 @@ function handlekey(e) {
 
     case 40: // down-arrow
     case 76: // l
-      if (e.shiftKey) { GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]); }
-      else { GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); }
+      if (e.shiftKey) {
+         if (CurrentPly === StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]) {
+           goToFirstChild();
+         } else {
+           GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]);
+         }
+      } else { GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); }
       return stopKeyProp(e);
 
     case 33: // page-up
@@ -557,7 +567,7 @@ boardShortcut("G2", "replay up to 6 previous half-moves, then autoplay forward",
 // H2
 boardShortcut("H2", "replay the previous half-move, then autoplay forward", function(t,e){ replayPreviousMoves(e.shiftKey ? 3 : 1); });
 // A1
-boardShortcut("A1", "go to game start", function(t,e){ if (e.shiftKey) { GoToMove(StartPlyVar[CurrentVar] + 1); } else { GoToMove(StartPlyVar[0], 0); } });
+boardShortcut("A1", "go to game start", function(t,e){ if (e.shiftKey) { if (CurrentPly <= StartPlyVar[CurrentVar] + 1) { GoToMove(StartPlyVar[CurrentVar]); } else { GoToMove(StartPlyVar[CurrentVar] + 1); } } else { GoToMove(StartPlyVar[0], 0); } });
 // B1
 // see setB1C1F1G1boardShortcuts()
 // C1
@@ -571,7 +581,7 @@ boardShortcut("E1", "move forward", function(t,e){ GoToMove(CurrentPly + 1); });
 // G1
 // see setB1C1F1G1boardShortcuts()
 // H1
-boardShortcut("H1", "go to game end", function(t,e){ if (e.shiftKey) { GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]); } else { GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); } });
+boardShortcut("H1", "go to game end", function(t,e){ if (e.shiftKey) { if (CurrentPly === StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]) { goToFirstChild(); } else { GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]); } } else { GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); } });
 
 setB1C1F1G1boardShortcuts();
 
@@ -2776,10 +2786,12 @@ function startVar(isContinuation) {
   PredecessorsVars[CurrentVar].push(CurrentVar);
   MovesVar[CurrentVar] = new Array();
   MoveCommentsVar[CurrentVar] = new Array();
-  if (lastVarWithNoMoves[lastVarWithNoMoves.length - 1]) {
-    myAlert("warning: malformed PGN data in game " + (currentGame+1) + ": variant " + CurrentVar + " starting before parent", true);
-  } else {
-    if (!isContinuation) { PlyNumber -= 1; }
+  if (!isContinuation) {
+    if (lastVarWithNoMoves[lastVarWithNoMoves.length - 1]) {
+      myAlert("warning: malformed PGN data in game " + (currentGame+1) + ": variant " + CurrentVar + " starting before parent", true);
+    } else {
+      PlyNumber -= 1;
+    }
   }
   lastVarWithNoMoves.push(true);
   MoveCommentsVar[CurrentVar][StartPly + PlyNumber] = "";
