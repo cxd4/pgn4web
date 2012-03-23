@@ -115,9 +115,11 @@ against } 3. -- Nxe4) 3... Bc5 *
 [White "Another White player"]
 [Black "Another Black player"]
 [Result "*"]
+[SetUp "1"]
+[FEN "rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq d6 0 2"]
 
-1. e4 e5 (* $140 2. f4 d5 { this is a continuation }) 2. Nf3 Nf6
-(* 3. Nc3 Nc6 { another continuation }) (2... Nc6 3. Bc4 {this is a
+2. c4 dxc4 (* $140 3. e4 e5 { this is a continuation }) 3. Nf3 Nf6
+(* 4. e3 Bg4 { another continuation }) (3... b5 3. a4 {this is a
 variation}) *
 
 [Event "Testing header patterns in comments"]
