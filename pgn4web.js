@@ -202,8 +202,6 @@ function handlekey(e) {
     case 18: // alt
     case 32: // space
     case 35: // end
-    case 45: // insert
-    case 46: // delete
     case 36: // home
     case 92: // super
     case 93: // menu
@@ -258,6 +256,14 @@ function handlekey(e) {
     case 85: // u
       if (e.shiftKey) { undoStackRedo(); }
       else { undoStackUndo(); }
+      return stopKeyProp(e);
+
+    case 45: // insert
+      undoStackRedo();
+      return stopKeyProp(e);
+
+    case 46: // delete
+      undoStackUndo();
       return stopKeyProp(e);
 
     case 83: // s
