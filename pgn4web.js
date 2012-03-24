@@ -241,18 +241,23 @@ function handlekey(e) {
       return stopKeyProp(e);
 
     case 33: // page-up
-    case 85: // u
+    case 73: // i
       MoveToPrevComment(e.shiftKey);
       return stopKeyProp(e);
 
     case 34: // page-down
-    case 73: // i
+    case 79: // o
       MoveToNextComment(e.shiftKey);
       return stopKeyProp(e);
 
     case 190: // dot
       if (e.shiftKey) { goToFirstChild(); }
       else { goToNextVariationSibling(); }
+      return stopKeyProp(e);
+
+    case 85: // u
+      if (e.shiftKey) { undoStackRedo(); }
+      else { undoStackUndo(); }
       return stopKeyProp(e);
 
     case 83: // s
@@ -383,16 +388,9 @@ function handlekey(e) {
       if (numberOfGames > 1) { Init(numberOfGames - 1); }
       return stopKeyProp(e);
 
-    case 79: // o
-      SetCommentsOnSeparateLines(!commentsOnSeparateLines);
-      oldPly = CurrentPly;
-      oldVar = CurrentVar;
-      Init();
-      GoToMove(oldPly, oldVar);
-      return stopKeyProp(e);
-
     case 80: // p
-      SetCommentsIntoMoveText(!commentsIntoMoveText);
+      if (e.shiftKey) { SetCommentsOnSeparateLines(!commentsOnSeparateLines); }
+      else { SetCommentsIntoMoveText(!commentsIntoMoveText); }
       oldPly = CurrentPly;
       oldVar = CurrentVar;
       Init();
@@ -459,15 +457,15 @@ boardShortcut("H8", "pgn4web help", function(t,e){ displayHelp(); });
 // A7
 boardShortcut("A7", "pgn4web website", function(t,e){ window.open(pgn4web_project_url); });
 // B7
-boardShortcut("B7", "toggle show comments in game text", function(t,e){ SetCommentsIntoMoveText(!commentsIntoMoveText); var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar); });
+boardShortcut("B7", "undo last move", function(t,e){ undoStackUndo(); });
 // C7
-boardShortcut("C7", "toggle show comments on separate lines in game text", function(t,e){ SetCommentsOnSeparateLines(!commentsOnSeparateLines); var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar); });
+boardShortcut("C7", "redo last move", function(t,e){ undoStackRedo(); });
 // D7
 boardShortcut("D7", "toggle highlight last move", function(t,e){ SetHighlight(!highlightOption); });
 // E7
-boardShortcut("E7", "flip board", function(t,e){ FlipBoard(); });
+boardShortcut("E7", "flip board", function(t,e){ if (!e.shiftKey || IsRotated) { FlipBoard(); } });
 // F7
-boardShortcut("F7", "show white on bottom", function(t,e){ if (IsRotated) { FlipBoard(); } });
+boardShortcut("F7", "toggle show comments in game text", function(t,e){ if (e.shiftKey) { SetCommentsOnSeparateLines(!commentsOnSeparateLines); } else { SetCommentsIntoMoveText(!commentsIntoMoveText); } var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar); });
 // G7
 boardShortcut("G7", "toggle autoplay next game", function(t,e){ SetAutoplayNextGame(!autoplayNextGame); });
 // H7
