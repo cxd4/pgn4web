@@ -275,6 +275,11 @@ function handlekey(e) {
       else { searchPgnGame(lastSearchPgnExpression); }
       return stopKeyProp(e);
 
+    case 68: // d
+      if (e.shiftKey) { displayFenData(); }
+      else { displayPgnData(false); }
+      return stopKeyProp(e);
+
     case 65: // a
       GoToMove(CurrentPly + 1);
       SetAutoPlay(true);
@@ -356,15 +361,11 @@ function handlekey(e) {
       return stopKeyProp(e);
 
     case 70: // f
-      FlipBoard();
+      if (!e.shiftKey || IsRotated) { FlipBoard(); }
       return stopKeyProp(e);
 
     case 71: // g
       SetHighlight(!highlightOption);
-      return stopKeyProp(e);
-
-    case 68: // d
-      if (IsRotated) { FlipBoard(); }
       return stopKeyProp(e);
 
     case 88: // x
