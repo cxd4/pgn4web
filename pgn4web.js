@@ -222,36 +222,22 @@ function handlekey(e) {
 
     case 37: // left-arrow
     case 74: // j
-      if (e.shiftKey) { GoToMove(StartPlyVar[CurrentVar]); }
-      else { GoToMove(CurrentPly - 1); }
+      backButton(e);
       return stopKeyProp(e);
 
     case 38: // up-arrow
     case 72: // h
-      if (e.shiftKey) {
-        if (CurrentPly <= StartPlyVar[CurrentVar] + 1) {
-          GoToMove(StartPlyVar[CurrentVar]);
-        } else {
-           GoToMove(StartPlyVar[CurrentVar] + 1);
-        }
-      } else { GoToMove(StartPlyVar[0], 0); }
+      startButton(e);
       return stopKeyProp(e);
 
     case 39: // right-arrow
     case 75: // k
-      if (e.shiftKey) { if (!goToNextVariationSibling()) { GoToMove(CurrentPly + 1); } }
-      else { GoToMove(CurrentPly + 1); }
+      forwardButton(e);
       return stopKeyProp(e);
 
     case 40: // down-arrow
     case 76: // l
-      if (e.shiftKey) {
-         if (CurrentPly === StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]) {
-           goToFirstChild();
-         } else {
-           GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]);
-         }
-      } else { GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); }
+      endButton(e);
       return stopKeyProp(e);
 
     case 33: // page-up
@@ -567,7 +553,7 @@ boardShortcut("G2", "replay up to 6 previous half-moves, then autoplay forward",
 // H2
 boardShortcut("H2", "replay the previous half-move, then autoplay forward", function(t,e){ replayPreviousMoves(e.shiftKey ? 3 : 1); });
 // A1
-boardShortcut("A1", "go to game start", function(t,e){ if (e.shiftKey) { if (CurrentPly <= StartPlyVar[CurrentVar] + 1) { GoToMove(StartPlyVar[CurrentVar]); } else { GoToMove(StartPlyVar[CurrentVar] + 1); } } else { GoToMove(StartPlyVar[0], 0); } });
+boardShortcut("A1", "go to game start", function(t,e){ startButton(e); });
 // B1
 // see setB1C1F1G1boardShortcuts()
 // C1
@@ -581,7 +567,7 @@ boardShortcut("E1", "move forward", function(t,e){ GoToMove(CurrentPly + 1); });
 // G1
 // see setB1C1F1G1boardShortcuts()
 // H1
-boardShortcut("H1", "go to game end", function(t,e){ if (e.shiftKey) { if (CurrentPly === StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]) { goToFirstChild(); } else { GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]); } } else { GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); } });
+boardShortcut("H1", "go to game end", function(t,e){ endButton(e); });
 
 setB1C1F1G1boardShortcuts();
 
@@ -3597,27 +3583,53 @@ function PrintHTML() {
   }
 }
 
+function startButton(e) {
+  if (e.shiftKey) {
+    if (CurrentPly <= StartPlyVar[CurrentVar] + 1) {
+      GoToMove(StartPlyVar[CurrentVar]);
+    } else {
+      GoToMove(StartPlyVar[CurrentVar] + 1);
+    }
+  } else { GoToMove(StartPlyVar[0], 0); }
+}
+
+function backButton(e) {
+  if (e.shiftKey) { GoToMove(StartPlyVar[CurrentVar]); }
+  else { GoToMove(CurrentPly - 1); }
+}
+
+function forwardButton(e) {
+  if (e.shiftKey) { if (!goToNextVariationSibling()) { GoToMove(CurrentPly + 1); } }
+  else { GoToMove(CurrentPly + 1); }
+}
+
+function endButton(e) {
+  if (e.shiftKey) {
+    if (CurrentPly === StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]) {
+      goToFirstChild();
+    } else {
+      GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]);
+    }
+  } else { GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); }
+}
+
 function clickedBbtn(t,e) {
   switch (t.id) {
     case "startButton":
-      if (e.shiftKey) { GoToMove(StartPlyVar[CurrentVar] + 1); }
-      else { GoToMove(StartPlyVar[0], 0); }
+      startButton(e);
       break;
     case "backButton":
-      if (e.shiftKey) { GoToMove(StartPlyVar[CurrentVar]); }
-      else { GoToMove(CurrentPly - 1); }
+      backButton(e);
       break;
     case "autoplayButton":
       if (e.shiftKey) { goToNextVariationSibling(); }
       else { SwitchAutoPlay(); }
       break;
     case "forwardButton":
-      if (e.shiftKey) { if (!goToNextVariationSibling()) { GoToMove(CurrentPly + 1); } }
-      else { GoToMove(CurrentPly + 1); }
+      forwardButton(e);
       break;
     case "endButton":
-      if (e.shiftKey) { GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]); }
-      else { GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); }
+      endButton(e);
       break;
     default:
       break;
