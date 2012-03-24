@@ -1327,6 +1327,8 @@ function clockFromHeader(whiteToMove) {
 function HighlightLastMove() {
   var anchorName, text;
 
+  undoStackStore();
+
   // remove highlighting from old anchor
   if (oldAnchorName){
     if (theObject = document.getElementById(oldAnchorName)) {
@@ -1513,6 +1515,55 @@ function highlightSquare(col, row, on) {
   else { theObject.className = (trow+tcol)%2 === 0 ? "whiteSquare" : "blackSquare"; }
   return true;
 }
+
+var undoStackMax = 1000;
+var undoStackGame = new Array(undoStackMax);
+var undoStackVar = new Array(undoStackMax);
+var undoStackPly = new Array(undoStackMax);
+var undoStackStart = 0;
+var undoStackCurrent = 0;
+var undoStackEnd = 0;
+var undoRedoInProgress = false;
+
+function undoStackStore() {
+  if (undoRedoInProgress) { return false; }
+  if (false) { // when to reset ?
+    undoStackStart = undoStackCurrent = undoStackEnd = 0;
+  }
+  if ((undoStackStart === undoStackCurrent) ||
+      (currentGame !== undoStackGame[undoStackCurrent]) ||
+      (CurrentVar !== undoStackVar[undoStackCurrent]) ||
+      (CurrentPly !== undoStackPly[undoStackCurrent])) {
+    undoStackCurrent = (undoStackCurrent + 1) % undoStackMax;
+    undoStackGame[undoStackCurrent] = currentGame;
+    undoStackVar[undoStackCurrent] = CurrentVar;
+    undoStackPly[undoStackCurrent] = CurrentPly;
+    undoStackEnd = undoStackCurrent;
+    if (undoStackStart === undoStackCurrent) { undoStackStart = (undoStackStart + 1) % undoStackMax; }
+  }
+  return true;
+}
+
+function undoStackUndo() {
+  if ((undoStackCurrent - 1 + undoStackMax) % undoStackMax === undoStackStart) { return false; }
+  undoRedoInProgress = true;
+  undoStackCurrent = (undoStackCurrent - 1 + undoStackMax) % undoStackMax;
+  if (undoStackGame[undoStackCurrent] !== currentGame) { Init(undoStackGame[undoStackCurrent]); }
+  GoToMove(undoStackPly[undoStackCurrent], undoStackVar[undoStackCurrent]);
+  undoRedoInProgress = false;
+  return true;
+}
+
+function undoStackRedo() {
+  if (undoStackCurrent === undoStackEnd) { return false; }
+  undoRedoInProgress = true;
+  undoStackCurrent = (undoStackCurrent + 1) % undoStackMax;
+  if (undoStackGame[undoStackCurrent] !== currentGame) { Init(undoStackGame[undoStackCurrent]); }
+  GoToMove(undoStackPly[undoStackCurrent], undoStackVar[undoStackCurrent]);
+  undoRedoInProgress = false;
+  return true;
+}
+
 
 // keep this aligned with the one in chrome-extension/background.html
 function fixCommonPgnMistakes(text) {
