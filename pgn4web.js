@@ -454,7 +454,7 @@ boardShortcut("H8", "pgn4web help", function(t,e){ displayHelp(); });
 // A7
 boardShortcut("A7", "pgn4web website", function(t,e){ window.open(pgn4web_project_url); });
 // B7
-boardShortcut("B7", "undo last move", function(t,e){ undoStackUndo(); });
+boardShortcut("B7", "undo last chessboard position update", function(t,e){ undoStackUndo(); });
 // C7
 boardShortcut("C7", "redo last undo", function(t,e){ undoStackRedo(); });
 // D7
