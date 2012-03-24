@@ -55,6 +55,7 @@ Nxd6 { [%clk 00:48:12] } 7. Bd3 { [%clk 00:47:13] } 7... Nc6 { [%clk
 Kxf8 9. Bh6+ $18 *
 
 [Event "Testing non standard initial position with Black to move and more variations"]
+[Round "3"]
 [Result "0-1"]
 [SetUp "1"]
 [FEN "rq4k1/6pp/p1p2r2/7R/4n3/1P2QP2/1P3P1P/RN4K1 b - - 0 1"]
@@ -63,58 +64,33 @@ Kxf8 9. Bh6+ $18 *
 Qxf4 Nxf2#) (3. Qxe4 Qc1+) (3. Nc3 Qxe3 4. fxe3 Nf2#) 3... Qg4 0-1
 
 [Event "Testing advanced variations: nesting and siblings"]
-[Site "Another site"]
-[Date "2345.67.89"]
-[Round "3"]
-[White "Another White player"]
-[Black "Another Black player"]
-[Result "*"]
+[Round "4"]
 
 1. d4 (1. c4 (1. b4 (1. a4 a5) 1... b5) 1... c5) (1. e4 (1. f4 (1. g4 (1. h4
 h5) 1... g5) 1... f5) 1... e5) 1... d5 (1... c5 (1... b5 (1... a5))) (1... e5
 (1... f5 (1... g5 2. g3) 2. f3) 2. e3) e3 (f3 f6) (g3 g6) (h3 h6) e6 *
 
 [Event "Testing advanced variations: comments before/after variations"]
-[Site "Another site"]
-[Date "2345.67.89"]
-[Round "4"]
-[White "Another White player"]
-[Black "Another Black player"]
-[Result "*"]
+[Round "5"]
 
 1. d4 { this comment is right after White's first move } ( { this also, but
 already inside a variation } e4 { this is after the variation } ) { this is
 is outside the variation } d5 c4 *
 
 [Event "Testing advanced variations: empty variations"]
-[Site "Another site"]
-[Date "2345.67.89"]
-[Round "5"]
-[White "Another White player"]
-[Black "Another Black player"]
-[Result "*"]
+[Round "6"]
 
 1. d4 () d5 ( ) 2. c4 ({ variations without moves should become comments })
 (2. Nf3) 2... dxc4 ( ( { accepting the gambit } ) ) 3. e4 (3. Nf3 1/2-1/2) e5 *
 
 [Event "Testing null moves"]
-[Site "Another site"]
-[Date "2345.67.89"]
-[Round "6"]
-[White "Another White player"]
-[Black "Another Black player"]
-[Result "*"]
+[Round "7"]
 
 1. e4 e5 2. Bc4 ($140 2. Bc4 -- 3. Qf3 -- 4. Qxf7#) Nf6 3. d3 ({ defending
 against } 3. -- Nxe4) 3... Bc5 *
 
 [Event "Testing continuations"]
-[Site "Another site"]
-[Date "2345.67.89"]
-[Round "6"]
-[White "Another White player"]
-[Black "Another Black player"]
-[Result "*"]
+[Round "8"]
 [SetUp "1"]
 [FEN "rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq d6 0 2"]
 
@@ -123,18 +99,15 @@ against } 3. -- Nxe4) 3... Bc5 *
 variation}) *
 
 [Event "Testing header patterns in comments"]
-[Site "Another site"]
-[Date "2345.67.89"]
-[Round "7"]
-[Result "*"]
+[Round "9"]
 
 1. e4 e6 { [White "Another White player"] [Black "Another Black player"] }
 d4 d5 *
 
-[Event"Testing very odd game"][Round "8"]a4(b4$6)a6!?{comment}a5*[Event"Testing another very odd game"][Round "9"]h4(g4)h6{comment}h5*
+[Event"Testing very odd game"][Round "10"]a4(b4$6)a6!?{comment}a5*[Event"Testing another very odd game"][Round "11"]h4(g4)h6{comment}h5*
 
 [ Event  "Testing malformed header (extra spaces and extra line)"]
 
-[ Round"9"]
+[ Round"12"]
 
 e4 e6 *
