@@ -362,10 +362,7 @@ function handlekey(e) {
       return stopKeyProp(e);
 
     case 88: // x
-      if (numberOfGames > 1) {
-        Init(Math.floor(Math.random()*numberOfGames));
-        GoToMove(StartPly + Math.floor(Math.random()*(StartPly + PlyNumber + 1)));
-      }
+      randomGameRandomPly();
       return stopKeyProp(e);
 
     case 67: // c
@@ -459,7 +456,7 @@ boardShortcut("A7", "pgn4web website", function(t,e){ window.open(pgn4web_projec
 // B7
 boardShortcut("B7", "undo last move", function(t,e){ undoStackUndo(); });
 // C7
-boardShortcut("C7", "redo last move", function(t,e){ undoStackRedo(); });
+boardShortcut("C7", "redo last undo", function(t,e){ undoStackRedo(); });
 // D7
 boardShortcut("D7", "toggle highlight last move", function(t,e){ SetHighlight(!highlightOption); });
 // E7
@@ -527,7 +524,7 @@ boardShortcut("C3", "load previous game", function(t,e){ Init(currentGame - 1); 
 // D3
 boardShortcut("D3", "load random game", function(t,e){ if (numberOfGames > 1) { Init(Math.floor(Math.random()*numberOfGames)); } });
 // E3
-boardShortcut("E3", "load random game at random position", function(t,e){ Init(Math.floor(Math.random()*numberOfGames)); GoToMove(StartPlyVar[0] + Math.floor(Math.random()*(StartPlyVar[0] + PlyNumberVar[0] + 1)), 0); });
+boardShortcut("E3", "load random game at random position", function(t,e){ randomGameRandomPly(); });
 // F3
 boardShortcut("F3", "load next game", function(t,e){ Init(currentGame + 1); });
 // G3
@@ -1309,6 +1306,17 @@ function SetInitialGame(number_or_string) {
   initialGame = typeof(number_or_string) == "undefined" ? 1 : number_or_string;
 }
 
+function randomGameRandomPly() {
+  if (numberOfGames > 1) {
+    var oldInitialHalfmove = initialHalfmove;
+    var oldAlwaysInitialHalfmove = alwaysInitialHalfmove;
+    SetInitialHalfmove("random", true);
+    Init(Math.floor(Math.random()*numberOfGames));
+    SetInitialHalfmove(oldInitialHalfmove, oldAlwaysInitialHalfmove);
+  }
+}
+
+
 // clock detection: check DGT sequence [%clk 01:02]
 
 function clockFromComment(plyNum) {
@@ -1523,11 +1531,15 @@ var undoStackCurrent = 0;
 var undoStackEnd = 0;
 var undoRedoInProgress = false;
 
+function undoStackReset() {
+  undoStackGame = new Array(undoStackMax);
+  undoStackVar = new Array(undoStackMax);
+  undoStackPly = new Array(undoStackMax);
+  undoStackStart = undoStackCurrent = undoStackEnd = 0;
+}
+
 function undoStackStore() {
   if (undoRedoInProgress) { return false; }
-  if (false) { // when to reset ?
-    undoStackStart = undoStackCurrent = undoStackEnd = 0;
-  }
   if ((undoStackStart === undoStackCurrent) ||
       (currentGame !== undoStackGame[undoStackCurrent]) ||
       (CurrentVar !== undoStackVar[undoStackCurrent]) ||
@@ -1775,6 +1787,7 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
         }
       }
 
+      undoStackReset();
       Init();
 
       if (LiveBroadcastDelay > 0) {
@@ -1809,12 +1822,14 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
     default:
       if (LiveBroadcastDelay === 0) {
         pgnGameFromPgnText(alertPgnHeader);
+        undoStackReset();
         Init();
         customFunctionOnPgnTextLoad();
       } else { // live broadcast: wait for live show start
         if (! LiveBroadcastStarted) {
           pgnGameFromPgnText(LiveBroadcastPlaceholderPgn);
           firstStart = true;
+          undoStackReset();
           Init();
           checkLiveBroadcastStatus();
           customFunctionOnPgnTextLoad();
@@ -1984,6 +1999,7 @@ function refreshPgnSource() {
     loadPgnFromTextarea("pgnText");
   } else {
     pgnGameFromPgnText(alertPgnHeader);
+    undoStackReset();
     Init();
     customFunctionOnPgnTextLoad();
     myAlert('error: missing PGN URL location and pgnText object in the HTML file', true);
@@ -2037,6 +2053,7 @@ function createBoard(){
     loadPgnFromTextarea("pgnText");
   } else {
     pgnGameFromPgnText(alertPgnHeader);
+    undoStackReset();
     Init();
     customFunctionOnPgnTextLoad();
     myAlert('error: missing PGN URL location or pgnText in the HTML file', true);

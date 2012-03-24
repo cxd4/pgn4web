@@ -686,7 +686,7 @@ of Google Chrome. Don't use with any other browser.
 </div>
 
 <div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleTablebaseLink" id="toggleTablebaseLink" href="javascript:void(0);" onclick="toggleProbeTablebase();" title="probe endgame tablebase"></a><a class="toggleAnalysisLink" id="toggleAnalysisLink" href="javascript:void(0);" onclick="userToggleAnalysis();" title="toggle analysis engine">+</a></div>
-<div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="SetCommentsIntoMoveText(!commentsIntoMoveText); oldPly = CurrentPly; Init(); GoToMove(oldPly);" title="toggle show comments in game text for this page; click square B7 instead to save setting"></a></div>
+<div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="SetCommentsIntoMoveText(!commentsIntoMoveText); oldPly = CurrentPly; Init(); GoToMove(oldPly);" title="toggle show comments in game text for this page; click square F7 instead to save setting"></a></div>
 
 <div class="lastMoveAndComment" id="lastMoveAndComment">
 <div class="lastMoveAndVariations">
@@ -1033,12 +1033,10 @@ of Google Chrome. Don't use with any other browser.
 
    // A7
    if (backgroundPage && (typeof(backgroundPage.showAboutPage)) != "undefined") { boardShortcut("A7", "chess games viewer extension help", function(t,e){ setTimeout("backgroundPage.showAboutPage();", 99); }); }
-   // B7
-   boardShortcut("B7", "toggle show comments in game text and save setting", function(t,e){ SetCommentsIntoMoveText(!commentsIntoMoveText); oldPly = CurrentPly; Init(); GoToMove(oldPly); setCommentsIntoMoveTextToLocalStorage(); });
-   // C7
-   boardShortcut("C7", "toggle show comments on separate lines in game text and save setting", function(t,e){ SetCommentsOnSeparateLines(!commentsOnSeparateLines); oldPly = CurrentPly; Init(); GoToMove(oldPly); setCommentsOnSeparateLinesToLocalStorage(); });
    // D7
    boardShortcut("D7", "toggle highlight last move and save setting", function(t,e){ SetHighlight(!highlightOption); setHighlightOptionToLocalStorage(); });
+   // F7
+   boardShortcut("F7", "toggle show comments in game text and save setting", function(t,e){ if (e.shiftKey) { SetCommentsOnSeparateLines(!commentsOnSeparateLines); } else { SetCommentsIntoMoveText(!commentsIntoMoveText); } oldPly = CurrentPly; Init(); GoToMove(oldPly); if (e.shiftKey) { setCommentsOnSeparateLinesToLocalStorage(); } else { setCommentsIntoMoveTextToLocalStorage(); } });
    // F5
    boardShortcut("F5", "show the chess puzzler of the day", function(t,e){ showPuzzler(); });
    // G5

@@ -540,9 +540,9 @@ function showFullscreenChessboard(newWin) {
   }
 }
 
-clearShortcutSquares("BCEF", "7");
+clearShortcutSquares("E", "7");
 
-boardShortcut("C7", "toggle side to move flag", function(t,e){ toggleColorFlag(); });
+boardShortcut("F7", "toggle side to move flag", function(t,e){ toggleColorFlag(); });
 
 if (window.parent !== window) {
   boardShortcut("H5", "show fullscreen chessboard", function(t,e){ showFullscreenChessboard(false); });
