@@ -135,12 +135,14 @@ available.
 http://crbug.com/60758
 
 popup.html, manifest.json: avoid using deprecated chrome.tabs.getSelected
-chrome.tabs.getSelected is deprecated as of chrome 16, at the moment backward
-compatibility is maintained until minimum_chrome_version is set to 18.0 or
-above
+chrome.tabs.getSelected is deprecated as of chrome 16; initially the extension
+preserves backward compatibility, once Google Chrome stable version 18 is
+released, consider removing "try" statements and set minimum_chrome_version to
+18.
 
-manifest.json: monitor any requirement for adding "manifest_version" and
-"content_security_policy" fields
+manifest.json: monitor requirement for setting "manifest_version" to 2 and for
+setting related "content_security_policy" fields; currenly "manifest_version"
+is set to 1.
 http://crbug.com/105796
 http://crbug.com/107538
 http://code.google.com/p/pgn4web/issues/detail?id=111
