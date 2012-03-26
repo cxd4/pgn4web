@@ -203,6 +203,8 @@ function handlekey(e) {
     case 32: // space
     case 35: // end
     case 36: // home
+    case 33: // page-up
+    case 34: // page-down
     case 92: // super
     case 93: // menu
     case 188: // comma
@@ -238,12 +240,10 @@ function handlekey(e) {
       endButton(e);
       return stopKeyProp(e);
 
-    case 33: // page-up
     case 73: // i
       MoveToPrevComment(e.shiftKey);
       return stopKeyProp(e);
 
-    case 34: // page-down
     case 79: // o
       MoveToNextComment(e.shiftKey);
       return stopKeyProp(e);
