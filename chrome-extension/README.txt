@@ -73,15 +73,18 @@ stored (the engine analysis data is about 1MB for 4000 entries); settings
 synch might not be supported for self-hosted extensions.
 http://crbug.com/47327
 
-background.html
-replace the file download code for the popup page with the downloads API,
+background.html: replace file download code with the downloads API
+replace the file download code for popup.html witht he download API,
 currently experimental; make sure it works with data URIs.
 http://crbug.com/12133
 
-background.html
-show an help prompt after new installs, using the extension API, currently
-experimental.
+background.html: help prompt after new install
+use the extension API, currently experimental.
 no crbug yet
+
+tablebase-gue.js: support larger set of tablebase
+replace the lokasoft tablebase with http://chess.jaet.org/endings/ once
+the DTM metric is available.
 
 
 Bugs:
