@@ -88,7 +88,15 @@
   }
 
   function customFunctionOnPgnGameLoad() {
-    customPgnHeaderTag('Result', 'ResultAtGametextEnd');
+    document.getElementById('GameNum').innerHTML = (currentGame + 1) + '.';
+    customPgnHeaderTag('WhiteElo', 'GameWhiteElo');
+    customPgnHeaderTag('BlackElo', 'GameBlackElo');
+    customPgnHeaderTag('ECO', 'GameECO');
+    customPgnHeaderTag('Annotator', 'GameAnnotator');
+    if (document.getElementById('GameWhite').innerHTML && document.getElementById('GameWhiteElo').innerHTML) { document.getElementById('GameWhiteElo').style.marginLeft = '1ex'; }
+    if (document.getElementById('GameBlack').innerHTML && document.getElementById('GameBlackElo').innerHTML) { document.getElementById('GameBlackElo').style.marginLeft = '1ex'; }
+    if (document.getElementById('GameSite').innerHTML && document.getElementById('GameEvent').innerHTML) { document.getElementById('GameEvent').style.marginLeft = '1ex'; }
+    if ((document.getElementById('GameSite').innerHTML || document.getElementById('GameEvent').innerHTML) && document.getElementById('GameDate').innerHTML) { document.getElementById('GameDate').style.marginLeft = '1ex'; }
   }
 
   function myOnResize() {
@@ -119,22 +127,30 @@
 
 <div class="boardheaderDiv" id="boardHeader">
 
-<div id="GameBoard"></div>
-<div class="shortRowSpace">&nbsp;</div>
 <div class="gameLastMove">
 <span id="GameLastMove" title="last move"></span>&nbsp;&nbsp;<span id="GameLastVariations" title="last move alternatives"></span>
 </div>
-<div class="tallRowSpace" style="clear:both;">&nbsp;</div>
-
-<div class="headerLine"><a id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();" title="white player"></a>&nbsp;</div>
-<div class="headerLine"><a id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();" title="black player"></a>&nbsp;</div>
 <div class="shortRowSpace">&nbsp;</div>
-<div class="headerLine"><span id="GameResult" title="result"></span>&nbsp;</div>
-
+<div id="GameBoard"></div>
+<div class="shortRowSpace">&nbsp;</div>
+<div class="shortRowSpace">&nbsp;</div>
+<table cellspacing=0 cellpadding=0 border=0><tr>
+<td><div class="headerLine gameNum" id="GameNum" title="game number">1.</div></td>
+<td><div class="headerLine gameECO" id="GameECO" title="game ECO"></div></td>
+</tr></table>
+<div class="shortRowSpace">&nbsp;</div>
+<div class="headerLine" title="white player"><a id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();"></a><span id="GameWhiteElo"></span></div>
+<div class="headerLine" title="black player"><a id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();"></a><span id="GameBlackElo"></span></div>
+<div class="shortRowSpace">&nbsp;</div>
+<div class="headerLine gameSiteEventDate" title="event details"><span id="GameSite"></span><span id="GameEvent"></span><span id="GameDate"></span></div>
 </div>
 
 <div class="topSpacer">&nbsp;</div>
-<div class="gametextresultDiv" id="GameTextResult"><span id="GameText"></span>&nbsp;<span id="ResultAtGametextEnd"></span></div>
+<div class="gametextresultDiv" id="GameTextResult">
+<div id="GameText"></div>
+<div class="gameAnnotator" id="GameAnnotator"></div>
+<div id="GameResult"></div>
+</div>
 
 </body>
 
