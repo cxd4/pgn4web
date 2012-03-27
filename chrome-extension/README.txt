@@ -82,10 +82,6 @@ background.html: help prompt after new install
 use the extension API, currently experimental.
 no crbug yet
 
-tablebase-gue.js: support larger set of tablebase
-replace the lokasoft tablebase with http://chess.jaet.org/endings/ once
-the DTM metric is available.
-
 
 Bugs:
 
