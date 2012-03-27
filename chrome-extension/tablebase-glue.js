@@ -18,7 +18,7 @@ function tablebaseSupportsFenLokasoft(fenString) {
 var probeTablebaseXMLHTTPRequest = null;
 function probeTablebaseLokasoft(fenString, probeTablebaseCallback) {
    if (!tablebaseSupportsFenLokasoft(fenString)) {
-      probeTablebaseCallback("position assessment not available", fenString);
+      probeTablebaseCallback("<span class='egtbEval'>&middot;</span>", fenString);
       return;
    }
 
@@ -32,19 +32,14 @@ function probeTablebaseLokasoft(fenString, probeTablebaseCallback) {
          if (probeTablebaseXMLHTTPRequest.readyState == 4) {
             if (probeTablebaseXMLHTTPRequest.status == 200) {
                if (assessment = probeTablebaseXMLHTTPRequest.responseXML.documentElement.getElementsByTagName("Result")[0].firstChild.nodeValue) {
-                  if (assessment === "0") { probeTablebaseCallback("<b>game is a draw</b>", fenString); }
+                  if (assessment === "0") { probeTablebaseCallback("<span class='egtbEval'>$11</span>", fenString); }
                   else if (matches = assessment.match(/^(M|-M)(\d+)$/)) {
-                     blackToMove = (fenString.indexOf(" b ") != -1);
-                     winningColor = ((matches[1] == "M") && !(blackToMove)) || (!(matches[1] == "M") && (blackToMove)) ? "White" : "Black";
-                     if (matches[2] === "0") {
-                        probeTablebaseCallback("<b>" + winningColor + " won</b>", fenString);
-                     } else {
-                        howManyMoves = matches[2] + (matches[2] == "1" ? " move" : " moves");
-                        probeTablebaseCallback("<b>" + winningColor + " wins in " + howManyMoves + "</b>", fenString);
-                     }
-                  } else { probeTablebaseCallback("error", fenString); }
-               } else { probeTablebaseCallback("error", fenString); }
-            } else { probeTablebaseCallback("error", fenString); }
+                     whiteToMove = (fenString.indexOf(" b ") == -1);
+                     whiteWinning = ((matches[1] == "M") && (whiteToMove)) || (!(matches[1] == "M") && !(whiteToMove));
+                     probeTablebaseCallback("<span class='egtbEval'>" + (whiteWinning ? "$18" : "$19") + "</span>" + (matches[2] === "0" ? "" : matches[2]), fenString);
+                  } else { probeTablebaseCallback("<span class='egtbEval'>&middot;</span>", fenString); }
+               } else { probeTablebaseCallback("<span class='egtbEval'>&middot;</span>", fenString); }
+            } else { probeTablebaseCallback("<span class='egtbEval'>&middot;</span>", fenString); }
             probeTablebaseXMLHTTPRequest = null;
          }
       };
@@ -52,6 +47,6 @@ function probeTablebaseLokasoft(fenString, probeTablebaseCallback) {
       probeTablebaseXMLHTTPRequest.send(request);
    } catch (e) {
       probeTablebaseXMLHTTPRequest = null;
-      probeTablebaseCallback("error", fenString);
+      probeTablebaseCallback("<span class='egtbEval'>&middot;&middot;</span>", fenString);
    }
 }

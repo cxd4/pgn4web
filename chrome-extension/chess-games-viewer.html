@@ -488,7 +488,7 @@ of Google Chrome. Don't use with any other browser.
             if (secondObject = document.getElementById("GameAnalysisEval")) { secondObject.style.visibility = "hidden"; }
             if (secondObject = document.getElementById("GameAnalysisPv")) { secondObject.style.visibility = "hidden"; }
             theObject.className = "innerHeaderItem notranslate";
-            theObject.innerHTML = "egtb: " + res;
+            theObject.innerHTML = translateNAGs("$148" + res);
             if (secondObject = document.getElementById("toggleTablebaseLink")) {
                secondObject.innerHTML = "&times;";
                secondObject.style.visibility = "";
