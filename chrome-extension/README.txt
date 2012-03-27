@@ -23,8 +23,8 @@ BSD license. See garbochess/README.txt for more info.
 Homepage: http://forwardcoding.com/projects/ajaxchess/chess.html
 Repository: https://github.com/glinscott/Garbochess-JS/
 
-the endgame tablebase assessments are from the Lokasoft tablebase
-webservice http://www.lokasoft.nl/tbweb.htm
+the endgame tablebase assessments are from John Tamplin's webservice
+http://chess.jaet.org/endings/
 
 the download.png, edit.png, file.png, files.png, help.png and refresh.png PNG
 icons are licensed by Interactivemania http://www.interactivemania.com under a

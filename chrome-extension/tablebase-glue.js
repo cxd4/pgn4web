@@ -5,19 +5,19 @@
  *  for credits, license and more details
  */
 
-function tablebaseSupportsFen(fenString) { return tablebaseSupportsFenLokasoft(fenString); }
+function tablebaseSupportsFen(fenString) { return tablebaseSupportsFenJaet(fenString); }
 
-function probeTablebase(fenString, probeTablebaseCallback) { probeTablebaseLokasoft(fenString, probeTablebaseCallback); }
+function probeTablebase(fenString, probeTablebaseCallback) { probeTablebaseJaet(fenString, probeTablebaseCallback); }
 
-var maxMenInTablebase = maxMenInTablebaseLokasoft = 5;
-var minMenInTablebaseLokasoft = 3;
-function tablebaseSupportsFenLokasoft(fenString) {
-   return (((l = fenString.replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length) >= minMenInTablebaseLokasoft) && (l <= maxMenInTablebaseLokasoft));
+var maxMenInTablebase = maxMenInTablebaseJaet = 6;
+var minMenInTablebaseJaet = 3;
+function tablebaseSupportsFenJaet(fenString) {
+   return (((l = fenString.replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length) >= minMenInTablebaseJaet) && (l <= maxMenInTablebaseJaet));
 }
 
 var probeTablebaseXMLHTTPRequest = null;
-function probeTablebaseLokasoft(fenString, probeTablebaseCallback) {
-   if (!tablebaseSupportsFenLokasoft(fenString)) {
+function probeTablebaseJaet(fenString, probeTablebaseCallback) {
+   if (!tablebaseSupportsFenJaet(fenString)) {
       probeTablebaseCallback("<span class='egtbEval'>&middot;</span>", fenString);
       return;
    }
@@ -25,28 +25,65 @@ function probeTablebaseLokasoft(fenString, probeTablebaseCallback) {
    try {
       if ((probeTablebaseXMLHTTPRequest !== null) && (typeof(probeTablebaseXMLHTTPRequest.abort) != "undefined")) { probeTablebaseXMLHTTPRequest.abort(); }
       probeTablebaseXMLHTTPRequest = new XMLHttpRequest();
-      probeTablebaseXMLHTTPRequest.open("POST", "http://www.lokasoft.nl/tbweb/tbapi.asp", true);
-      probeTablebaseXMLHTTPRequest.setRequestHeader("Content-Type", "text/xml; charset=utf-8");
-      probeTablebaseXMLHTTPRequest.setRequestHeader("SOAPAction", "http://lokasoft.org/action/TB2ComObj.ProbePosition");
+      probeTablebaseXMLHTTPRequest.open("GET", "http://www.logicalchess.com/cgi-bin/dtx-hayes?fen=" + fenString.replace(/\s/g, "+"), true);
       probeTablebaseXMLHTTPRequest.onreadystatechange = function() {
          if (probeTablebaseXMLHTTPRequest.readyState == 4) {
             if (probeTablebaseXMLHTTPRequest.status == 200) {
-               if (assessment = probeTablebaseXMLHTTPRequest.responseXML.documentElement.getElementsByTagName("Result")[0].firstChild.nodeValue) {
-                  if (assessment === "0") { probeTablebaseCallback("<span class='egtbEval'>$11</span>", fenString); }
-                  else if (matches = assessment.match(/^(M|-M)(\d+)$/)) {
-                     whiteToMove = (fenString.indexOf(" b ") == -1);
-                     whiteWinning = ((matches[1] == "M") && (whiteToMove)) || (!(matches[1] == "M") && !(whiteToMove));
-                     probeTablebaseCallback("<span class='egtbEval'>" + (whiteWinning ? "$18" : "$19") + "</span>" + (matches[2] === "0" ? "" : matches[2]), fenString);
-                  } else { probeTablebaseCallback("<span class='egtbEval'>&middot;</span>", fenString); }
-               } else { probeTablebaseCallback("<span class='egtbEval'>&middot;</span>", fenString); }
-            } else { probeTablebaseCallback("<span class='egtbEval'>&middot;</span>", fenString); }
+               var whiteToMove = (fenString.indexOf(" b ") == -1);
+               var stmMetricsResult = ["stmDtmResult", "stmDtcResult", "stmDtzResult", "stmDtz50Result"];
+               for (ii = 0; ii < stmMetricsResult.length; ii++) {
+                  stmResult = probeTablebaseXMLHTTPRequest.responseXML.documentElement.getElementsByTagName(stmMetricsResult[ii]);
+                  if (stmResult[0]) {
+                     stmRes = stmResult[0].firstChild.nodeValue;
+                     if ((stmRes == "W") || (stmRes == "D") || (stmRes == "L")) { break; }
+                  }
+               }
+               if (stmRes == "W") {
+                  probeTablebaseCallback("<span class='egtbEval'>" + (whiteToMove ? "$18" : "$19") + "</span>" + tablebaseJaetMatchingMoves(stmRes), fenString);
+               } else if (stmRes == "D") {
+                  probeTablebaseCallback("<span class='egtbEval'>$11</span>" + tablebaseJaetMatchingMoves(stmRes), fenString);
+               } else if (stmRes == "L") {
+                  probeTablebaseCallback("<span class='egtbEval'>" + (whiteToMove ? "$19" : "$18") + "</span>", fenString);
+               } else {
+                  probeTablebaseCallback("<span class='egtbEval'>&middot;</span>", fenString);
+               }
+            }
+         else { probeTablebaseCallback("<span class='egtbEval'>&middot;&middot;</span>", fenString); }
             probeTablebaseXMLHTTPRequest = null;
          }
       };
-      request = '<SOAP-ENV:Envelope xmlns:ns3="http://www.w3.org/2001/XMLSchema" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns0="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns1="http://lokasoft.org/message/" xmlns:ns2="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"><SOAP-ENV:Header/><ns2:Body><ns1:ProbePosition><fen xsi:type="ns3:string">' + fenString + '</fen></ns1:ProbePosition></ns2:Body></SOAP-ENV:Envelope>';
-      probeTablebaseXMLHTTPRequest.send(request);
+      probeTablebaseXMLHTTPRequest.send(null);
    } catch (e) {
       probeTablebaseXMLHTTPRequest = null;
       probeTablebaseCallback("<span class='egtbEval'>&middot;&middot;</span>", fenString);
    }
 }
+
+function tablebaseJaetMatchingMoves(stmRes) {
+   var resArray = new Array();
+   var tablebaseMoves = probeTablebaseXMLHTTPRequest.responseXML.documentElement.getElementsByTagName("move");
+   var moveMetricsResult = ["moveDtmResult", "moveDtcResult", "moveDtzResult", "moveDtz50Result"];
+mainLoop:
+   for (ii = 0; ii < tablebaseMoves.length; ii++) {
+      for (jj = 0; jj < moveMetricsResult.length; jj++) {
+         moveResult = tablebaseMoves[ii].getElementsByTagName(moveMetricsResult[jj]);
+         if (moveResult[0] && (moveResult[0].firstChild.nodeValue === stmRes)) {
+            moveSan = tablebaseMoves[ii].getElementsByTagName("moveSan");
+            if (moveSan[0]) {
+               resArray.push(moveSan[0].firstChild.nodeValue);
+               continue mainLoop;
+            }
+         }
+      }
+   }
+   var res = "";
+   if (tablebaseMoves.length > resArray.length) {
+     for (ii = 0; ii < resArray.length; ii++) {
+       if (ii === 0) { res += "$254 "; }
+       else if (ii > 0 && ii < resArray.length) { res += ", "; }
+       res += "<span class='move'>" + resArray[ii].replace(/\+/, "") + "</span>";
+     }
+   }
+   return res;
+}
+
