@@ -10,7 +10,7 @@ if [ -e ../../"$pgn4webChromeExtFilename" ]; then
   exit 1
 fi
 
-zip -9r ../../"$pgn4webChromeExtFilename" * -x *.svn/* -x zip-chrome-extension.sh -x updateInfo.xml
+zip -9r ../../"$pgn4webChromeExtFilename" * -x *.svn/* -x *.sh -x updateInfo.xml
 
 cd ..
 zip -9 chess-informant-sample.zip chess-informant-sample.pgn

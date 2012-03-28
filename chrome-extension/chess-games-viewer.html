@@ -488,7 +488,7 @@ of Google Chrome. Don't use with any other browser.
             if (secondObject = document.getElementById("GameAnalysisEval")) { secondObject.style.visibility = "hidden"; }
             if (secondObject = document.getElementById("GameAnalysisPv")) { secondObject.style.visibility = "hidden"; }
             theObject.className = "innerHeaderItem notranslate";
-            theObject.innerHTML = translateNAGs("$148" + res);
+            theObject.innerHTML = translateNAGs("<span class='egtbHead'>$148</span>" + res);
             if (secondObject = document.getElementById("toggleTablebaseLink")) {
                secondObject.innerHTML = "&times;";
                secondObject.style.visibility = "";
@@ -877,11 +877,22 @@ of Google Chrome. Don't use with any other browser.
       }
 
       if (theObject = document.getElementById("GameAnalysisEval")) {
-         theObject.innerHTML = (typeof(annEval) != "undefined") ? annEval : "";
+         theObject.innerHTML = (annEval || annEval === 0) ? annEvalNag(annEval) : "";
       }
       if (theObject = document.getElementById("GameAnalysisPv")) {
-         theObject.innerHTML = (typeof(annEval) != "undefined") ? annPv : "";
+         theObject.innerHTML = annPv ? (NAG[140] + " " + annPv) : "";
       }
+   }
+
+   function annEvalNag(ev) {
+     if (ev === null) { return ""; }
+     if (ev < -3.33) { return NAG[19]; } // -+
+     if (ev >  3.33) { return NAG[18]; } // +-
+     if (ev < -1.33) { return NAG[17]; } // -/+
+     if (ev >  1.33) { return NAG[16]; } // +/-
+     if (ev < -0.33) { return NAG[15]; } // =/+
+     if (ev >  0.33) { return NAG[14]; } // +/=
+     return NAG[11];                     // =
    }
 
    function clearAnalysisHeader() {

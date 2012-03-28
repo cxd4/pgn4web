@@ -345,7 +345,6 @@ a.variation {
 .analysisEval {
   display: inline-block;
   min-width: 3em;
-  font-weight: bold;
 }
 
 .analysisPv {
@@ -356,8 +355,15 @@ a.variation {
   font-family: 'pgn4web Liberation Sans', sans-serif;
 }
 
+.egtbHead {
+  display: inline-block;
+  min-width: 3em;
+}
+
 .egtbEval {
-  margin-left: 1.5em;
-  margin-right: 1.5em;
+  display: inline-block;
+  min-width: 3em;
+  margin-left: 1.25em;
+  margin-right: 1.25em;
 }
 
