@@ -125,7 +125,7 @@ function storeAnalysis(FEN, ev, pv, nodes) {
    return additionNeeded;
 }
 
-function getAnalysisIndexFromFEN(FEN) { return egStored_FEN.lastIndexOf(FEN.replace(/\s+\d+\s+\d+\s*$/, "")); }
+function getAnalysisIndexFromFEN(FEN) { return FEN ? egStored_FEN.lastIndexOf(FEN.replace(/\s+\d+\s+\d+\s*$/, "")) : -1; }
 
 function getAnalysisEvFromIndex(index) { return egStored_ev[index]; }
 
