@@ -885,13 +885,13 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function annEvalNag(ev) {
-     if (ev === null) { return ""; }
-     if (ev < -3.33) { return NAG[19]; } // -+
-     if (ev >  3.33) { return NAG[18]; } // +-
-     if (ev < -1.33) { return NAG[17]; } // -/+
-     if (ev >  1.33) { return NAG[16]; } // +/-
-     if (ev < -0.33) { return NAG[15]; } // =/+
-     if (ev >  0.33) { return NAG[14]; } // +/=
+     if ((ev === null) || (ev === "")) { return ""; }
+     if (ev < -3.95) { return NAG[19]; } // -+
+     if (ev >  3.95) { return NAG[18]; } // +-
+     if (ev < -1.35) { return NAG[17]; } // -/+
+     if (ev >  1.35) { return NAG[16]; } // +/-
+     if (ev < -0.35) { return NAG[15]; } // =/+
+     if (ev >  0.35) { return NAG[14]; } // +/=
      return NAG[11];                     // =
    }
 
