@@ -89,10 +89,12 @@ mainLoop:
 }
 
 function resArraySort(a, b) {
+
   aIsMate = (a.indexOf("#") != -1);
   bIsMate = (b.indexOf("#") != -1);
   if (aIsMate && !bIsMate) { return -1; }
   if (!aIsMate && bIsMate) { return  1; }
+
   switch (a.charAt(0)) {
     case "K": aPiece = 6; break
     case "Q": aPiece = 5; break
@@ -111,6 +113,12 @@ function resArraySort(a, b) {
   }
   if (aPiece > bPiece) { return -1; }
   if (aPiece < bPiece) { return  1; }
-  return (a.substr(aPiece == 1 ? 0 : 1) > b.substr(bPiece == 1 ? 0 : 1));
+
+  aSquare = a.match(/[a-h][1-8]/);
+  bSquare = b.match(/[a-h][1-8]/);
+  if (aSquare < bSquare) { return -1; }
+  if (aSquare > bSquare) { return  1; }
+  return 0;
+
 }
 
