@@ -767,6 +767,7 @@ of Google Chrome. Don't use with any other browser.
 
    var annotationBarWidth;
    function updateAnnotationGraph() {
+      var index;
       if (!analysisStarted) { clearAnnotationGraph(); }
       else if (theObject = document.getElementById("GameAnnotationGraph")) {
          annEval = new Array();
@@ -868,8 +869,8 @@ of Google Chrome. Don't use with any other browser.
 
       annEval = (lastMousemoveAnnPly == -1) ? "&middot;" : "";
       annPv = "";
-      if (backgroundPage && (typeof(fenPositions[currentGame]) != "undefined") && (typeof(fenPositions[currentGame][annPly]) != "undefined")) {
-         index = backgroundPage.getAnalysisIndexFromFEN(fenPositions[currentGame][annPly]);
+      if (backgroundPage && (typeof(fenPositions[currentGame]) != "undefined") && (typeof(fenPositions[currentGame][CurrentPly]) != "undefined")) {
+         var index = backgroundPage.getAnalysisIndexFromFEN(fenPositions[currentGame][CurrentPly]);
          if (index != -1) {
             annEval = backgroundPage.getAnalysisEvFromIndex(index);
             annPv = backgroundPage.getAnalysisPvFromIndex(index);
@@ -944,7 +945,7 @@ of Google Chrome. Don't use with any other browser.
    function showExtraAnalysisInfo() {
       if ((backgroundPage) && (theObject = document.getElementById("GameAnalysisPv"))) {
          freezeAnalysisHeader = true;
-         index = backgroundPage.getAnalysisIndexFromFEN(fenPositions[currentGame][CurrentPly]);
+         var index = backgroundPage.getAnalysisIndexFromFEN(fenPositions[currentGame][CurrentPly]);
          theObject.innerHTML = "<span class='analysisExtraInfo'>" + (index != -1 ? "eval " + backgroundPage.getAnalysisEvFromIndex(index) + "<span class='move'>p</span>": "&middot;") + "<span style='margin-left:2em;'>nps up to " + num2string(backgroundPage.getAnalysisMaxNodesPerSecond()) + "</span></span>";
          if (theObject = document.getElementById("GameAnalysisEval")) { theObject.style.color = "transparent"; }
       }
