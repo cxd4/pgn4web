@@ -174,7 +174,7 @@ function InitializeBackgroundEngine() {
                    nodes = parseInt(matches[3], 10);
                    nodesPerSecond = parseInt(matches[4], 10);
                    egStored_maxNodesPerSecond = Math.max(egStored_maxNodesPerSecond, nodesPerSecond);
-                   pv = matches[5].replace(/(\+|#|checkmate|stalemate)/g, "");
+                   pv = matches[5].replace(/\s*(\+|stalemate)/g, "").replace(/\s*checkmate/, "#");
                    if (storeAnalysis(g_FEN, ev, pv, nodes)) {
                       chrome.tabs.sendRequest(g_tabId, {analysisNotification: "newData"}, function(res){});
                    }
