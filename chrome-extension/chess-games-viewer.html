@@ -879,8 +879,8 @@ of Google Chrome. Don't use with any other browser.
       if (theObject = document.getElementById("GameAnalysisEval")) {
          theObject.innerHTML = (annEval || annEval === 0) ? annEvalNag(annEval) : "";
       }
-      if (theObject = document.getElementById("GameAnalysisPv")) {
-         theObject.innerHTML = annPv ? (NAG[140] + " " + annPv) : "";
+      if ((theObject = document.getElementById("GameAnalysisPv")) && annPv) {
+         theObject.innerHTML = (annPv != "#") ? (NAG[140] + " " + annPv) : annPv;
       }
    }
 
