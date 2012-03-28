@@ -885,7 +885,7 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function annEvalNag(ev) {
-     if ((ev === null) || (ev === "")) { return ""; }
+     if ((ev === null) || (ev === "") || (isNaN(ev = parseFloat(ev)))) { return ""; }
      if (ev < -3.95) { return NAG[19]; } // -+
      if (ev >  3.95) { return NAG[18]; } // +-
      if (ev < -1.35) { return NAG[17]; } // -/+
@@ -944,7 +944,7 @@ of Google Chrome. Don't use with any other browser.
    function showExtraAnalysisInfo() {
       if ((backgroundPage) && (theObject = document.getElementById("GameAnalysisPv"))) {
          freezeAnalysisHeader = true;
-         index = backgroundPage.getAnalysisIndexFromFEN(fenPositions[currentGame][annPly]);
+         index = backgroundPage.getAnalysisIndexFromFEN(fenPositions[currentGame][CurrentPly]);
          theObject.innerHTML = "<span class='analysisExtraInfo'>" + (index != -1 ? "eval " + backgroundPage.getAnalysisEvFromIndex(index) + "<span class='move'>p</span>": "&middot;") + "<span style='margin-left:2em;'>nps up to " + num2string(backgroundPage.getAnalysisMaxNodesPerSecond()) + "</span></span>";
          if (theObject = document.getElementById("GameAnalysisEval")) { theObject.style.color = "transparent"; }
       }
