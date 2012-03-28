@@ -78,6 +78,7 @@ mainLoop:
    }
    var res = "";
    if (tablebaseMoves.length > resArray.length) {
+     resArray.sort(resArraySort);
      for (ii = 0; ii < resArray.length; ii++) {
        if (ii === 0) { res += "$254 "; }
        else if (ii > 0 && ii < resArray.length) { res += ", "; }
@@ -85,5 +86,31 @@ mainLoop:
      }
    }
    return res;
+}
+
+function resArraySort(a, b) {
+  aIsMate = (a.indexOf("#") != -1);
+  bIsMate = (b.indexOf("#") != -1);
+  if (aIsMate && !bIsMate) { return -1; }
+  if (!aIsMate && bIsMate) { return  1; }
+  switch (a.charAt(0)) {
+    case "K": aPiece = 6; break
+    case "Q": aPiece = 5; break
+    case "R": aPiece = 4; break
+    case "B": aPiece = 3; break
+    case "N": aPiece = 2; break
+    default: aPiece = 1; break
+  }
+  switch (b.charAt(0)) {
+    case "K": bPiece = 6; break
+    case "Q": bPiece = 5; break
+    case "R": bPiece = 4; break
+    case "B": bPiece = 3; break
+    case "N": bPiece = 2; break
+    default: bPiece = 1; break
+  }
+  if (aPiece > bPiece) { return -1; }
+  if (aPiece < bPiece) { return  1; }
+  return (a.substr(aPiece == 1 ? 0 : 1) > b.substr(bPiece == 1 ? 0 : 1));
 }
 
