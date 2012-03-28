@@ -869,8 +869,8 @@ of Google Chrome. Don't use with any other browser.
 
       annEval = (lastMousemoveAnnPly == -1) ? "&middot;" : "";
       annPv = "";
-      if (backgroundPage && (typeof(fenPositions[currentGame]) != "undefined") && (typeof(fenPositions[currentGame][CurrentPly]) != "undefined")) {
-         var index = backgroundPage.getAnalysisIndexFromFEN(fenPositions[currentGame][CurrentPly]);
+      if (backgroundPage && (typeof(fenPositions[currentGame]) != "undefined") && (typeof(fenPositions[currentGame][annPly]) != "undefined")) {
+         var index = backgroundPage.getAnalysisIndexFromFEN(fenPositions[currentGame][annPly]);
          if (index != -1) {
             annEval = backgroundPage.getAnalysisEvFromIndex(index);
             annPv = backgroundPage.getAnalysisPvFromIndex(index);
@@ -880,8 +880,8 @@ of Google Chrome. Don't use with any other browser.
       if (theObject = document.getElementById("GameAnalysisEval")) {
          theObject.innerHTML = (annEval || annEval === 0) ? annEvalNag(annEval) : "";
       }
-      if ((theObject = document.getElementById("GameAnalysisPv")) && annPv) {
-         theObject.innerHTML = (annPv != "#") ? (NAG[140] + " " + annPv) : annPv;
+      if (theObject = document.getElementById("GameAnalysisPv")) {
+         theObject.innerHTML = (annPv ? ((annPv != "#") ? (NAG[140] + " " + annPv) : annPv) : "");
       }
    }
 
