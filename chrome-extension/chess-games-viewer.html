@@ -944,12 +944,8 @@ of Google Chrome. Don't use with any other browser.
    function showExtraAnalysisInfo() {
       if ((backgroundPage) && (theObject = document.getElementById("GameAnalysisPv"))) {
          freezeAnalysisHeader = true;
-         if (event.shiftKey) {
-            storedPositions = backgroundPage.getStoredPositions();
-            theObject.innerHTML = "<span class='analysisExtraInfo'>analysis engine's data at " + num2string(storedPositions) + " " + (storedPositions == 1 ? "entry" : "entries") + "</span>";
-         }  else {
-            theObject.innerHTML = "<span class='analysisExtraInfo'>analysis up to " + num2string(backgroundPage.getAnalysisMaxNodesPerSecond()) + " nodes per second</span>";
-         }
+         index = backgroundPage.getAnalysisIndexFromFEN(fenPositions[currentGame][annPly]);
+         theObject.innerHTML = "<span class='analysisExtraInfo'>" + (index != -1 ? "eval " + backgroundPage.getAnalysisEvFromIndex(index) + "<span class='move'>p</span>": "&middot;") + "<span style='margin-left:2em;'>nps up to " + num2string(backgroundPage.getAnalysisMaxNodesPerSecond()) + "</span></span>";
          if (theObject = document.getElementById("GameAnalysisEval")) { theObject.style.color = "transparent"; }
       }
    }
