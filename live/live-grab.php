@@ -34,9 +34,13 @@ if (!$enableScript) {
   exit();
 }
 
-if ($_SERVER["HTTP_REFERER"] && $_SERVER["SERVER_NAME"] && (!preg_match('#^(http|https)://' . $_SERVER["SERVER_NAME"] . '#i', $_SERVER["HTTP_REFERER"]))) {
-  print("<div style='color: black; font-family: sans-serif;'>referrer error: <a style='color: black; text-decoration: none;' href='" . $_SERVER["PHP_SELF"] . "'>click here to reset</a></div>");
-  exit();
+if ($_SERVER["HTTP_REFERER"] && $_SERVER["SERVER_NAME"]) {
+  $correctedServerName = preg_replace('#www.#', '', $_SERVER["SERVER_NAME"]);
+  $correctedReferrer = preg_replace('#(http|https)://www\.#', '$1://', $_SERVER["HTTP_REFERER"]);
+  if (!preg_match('#^(http|https)://' . $correctedServerName . '#i', $correctedReferrer)) {
+    print("<div style='color: black; font-family: sans-serif;'>referrer error: <a style='color: black; text-decoration: none;' href='" . $_SERVER["PHP_SELF"] . "'>click here to reset</a></div>");
+    exit();
+  }
 }
 
 function curPageURL() {
@@ -300,7 +304,13 @@ if ($secretHash == $storedSecretHash) {
                          "\n" . "timestamp=" . $newLastPgnUrlModification;
             } else {
               umask(0000);
-              if (! copy($pgnUrl, $localPgnTmpFile)) {
+              $pgnUrlOpts = array("http" => array("follow_location" => TRUE, "max_redirects" => 20));
+              $pgnUrlHandle = fopen($pgnUrl, "rb", false, stream_context_create($pgnUrlOpts));
+              $localPgnTmpFileHandle = fopen($localPgnTmpFile, "wb");
+              $copiedBytes = stream_copy_to_stream($pgnUrlHandle, $localPgnTmpFileHandle);
+              fclose($pgnUrlHandle);
+              fclose($localPgnTmpFileHandle);
+              if ($copiedBytes == 0) {
                 $message = $message . "\n" . "error=failed copying updated " . $pgnUrl . " to " . $localPgnTmpFile;
               } else {
                 if ($newLastPgnUrlModification != "") {
