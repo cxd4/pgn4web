@@ -971,14 +971,17 @@ of Google Chrome. Don't use with any other browser.
    annotateInProgress = false;
    minAnnotationDelay = minAutoplayDelay;
    maxAnnotationDelay = maxAutoplayDelay;
-   annotationDelayDefault = 15000;
+   annotationDelayDefault = 15;
    function annotateGame() {
       if ((checkEngineUnderstandsGameAndWarn()) && (annotationDelay = prompt("Automatic game annotation from the current position, please do not interact with the chessboard until the analysis has reached the last available move.\n\nEnter engine's time per move, in seconds, between " + (minAnnotationDelay/1000) + " and " + (maxAnnotationDelay/1000) + ":", annotationDelayDefault))) {
          if (isNaN(annotationDelay = parseInt(annotationDelay, 10))) { annotationDelay = annotationDelayDefault; }
          else { annotationDelay = annotationDelay * 1000; }
          annotationDelay = Math.min(maxAnnotationDelay, Math.max(minAnnotationDelay, annotationDelay));
          SetAutoPlay(false);
-         if (!analysisStarted) { toggleAnalysis(); }
+         if (!analysisStarted) {
+           scanGameForFen();
+           toggleAnalysis();
+         }
          SetAutoplayDelay(annotationDelay);
          SetAutoPlay(true);
          annotateInProgress = true;
