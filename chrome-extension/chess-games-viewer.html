@@ -946,7 +946,7 @@ of Google Chrome. Don't use with any other browser.
       if ((backgroundPage) && (theObject = document.getElementById("GameAnalysisPv"))) {
          freezeAnalysisHeader = true;
          var index = backgroundPage.getAnalysisIndexFromFEN(fenPositions[currentGame][CurrentPly]);
-         theObject.innerHTML = "<span class='analysisExtraInfo'>" + (index != -1 ? "eval " + backgroundPage.getAnalysisEvFromIndex(index) + "<span class='move'>p</span>": "&middot;") + "<span style='margin-left:2em;'>up to " + num2string(backgroundPage.getAnalysisMaxNodesPerSecond()) + " nps</span></span>";
+         theObject.innerHTML = "<span class='analysisExtraInfo'>" + (index != -1 ? "eval " + backgroundPage.getAnalysisEvFromIndex(index) + "<span class='move'>p</span>": "&middot;") + "<span style='margin-left:2em;'>nps &le; " + num2string(backgroundPage.getAnalysisMaxNodesPerSecond()) + "</span></span>";
          if (theObject = document.getElementById("GameAnalysisEval")) { theObject.style.color = "transparent"; }
       }
    }
