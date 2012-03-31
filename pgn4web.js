@@ -1389,7 +1389,7 @@ function HighlightLastMove() {
         clockFromComment(showThisMove+1) : initialLastMoverClock;
       if (!clockString && (CurrentPly === StartPly+PlyNumber)) {
         // support for time info in the last comment as { White Time: 0h:12min Black Time: 1h:23min }
-        clockRegExp = new RegExp((whiteToMove ? "Black" : "White") + " Time:\\s*(\\S+)", "i");
+        clockRegExp = new RegExp((whiteToMove ? "Black" : "White") + "\\s+Time:\\s*(\\S+)", "i");
         if (clockMatch = strippedMoveComment(StartPly+PlyNumber).match(clockRegExp)) {
           clockString = clockMatch[1];
         }
@@ -1406,7 +1406,7 @@ function HighlightLastMove() {
         clockFromComment(showThisMove) : initialBeforeLastMoverClock;
       if (!clockString && (CurrentPly === StartPly+PlyNumber)) {
         // support for time info in the last comment as { White Time: 0h:12min Black Time: 1h:23min }
-        clockRegExp = new RegExp((whiteToMove ? "White" : "Black") + " Time:\\s*(\\S+)", "i");
+        clockRegExp = new RegExp((whiteToMove ? "White" : "Black") + "\\s+Time:\\s*(\\S+)", "i");
         if (clockMatch = strippedMoveComment(StartPly+PlyNumber).match(clockRegExp)) {
           clockString = clockMatch[1];
         }
