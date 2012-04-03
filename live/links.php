@@ -11,7 +11,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 $base = get_param("baseUrl", "bu", "http://twiclive.com/silverlive.htm");
 
-$filter = get_param("filter", "f", "live.*\.pgn$");
+$filter = get_param("linkFilter", "lf", "live.*\.pgn$");
 
 $html = file_get_contents($base);
 
@@ -39,7 +39,7 @@ print "<link rel='shortcut icon' href='../pawn.ico' />" . "\n";
 print "<style tyle='text/css'> body { font-family: sans-serif; padding: 2em; line-height: 1.5em; } a { color: black; text-decoration: none; } </style>" . "\n";
 
 print "baseUrl: <b><a href='" . $base . "' target='_blank'>" . $base . "</a></b><br />" . "\n";
-print "filter: <b>" . $filter . "</b><br />" . "\n";
+print "linkFilter: <b>" . $filter . "</b><br />" . "\n";
 
 print "<ol>" . "\n";
 for ($i = 0; $i < count($urls); $i++) {
