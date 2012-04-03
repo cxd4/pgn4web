@@ -46,6 +46,7 @@ for ($i = 0; $i < count($urls); $i++) {
     print("<li><a href='" . $urls[$i] . "'>" . $urls[$i] . "</a>" . "</li>" . "\n");
 }
 print "</ol>" . "\n";
+print "<a href='live-grab.php'>grab</a>" . "\n";
 
 function get_param($param, $shortParam, $default) {
     $out = stripslashes(rawurldecode($_REQUEST[$param]));
