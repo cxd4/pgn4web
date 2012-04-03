@@ -38,8 +38,8 @@ print "<title>links</title>" . "\n";
 print "<link rel='shortcut icon' href='../pawn.ico' />" . "\n";
 print "<style tyle='text/css'> body { font-family: sans-serif; padding: 2em; line-height: 1.5em; } a { color: black; text-decoration: none; } </style>" . "\n";
 
-print "<b>baseUrl = " . $base . "</b><br />" . "\n";
-print "<b>filter = " . $filter . "</b><br />" . "\n";
+print "baseUrl: <b><a href='" . $base . "' target='_blank'>" . $base . "</a></b><br />" . "\n";
+print "filter: <b>" . $filter . "</b><br />" . "\n";
 
 print "<ol>" . "\n";
 for ($i = 0; $i < count($urls); $i++) {
