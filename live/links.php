@@ -9,14 +9,16 @@
 
 error_reporting(E_ERROR | E_PARSE);
 
-$targetUrl = get_param("targetUrl", "tu", "http://twiclive.com/silverlive.htm");
-$linkFilter = get_param("linkFilter", "lf", "live.*\.pgn$");
+$targetUrl = get_param("targetUrl", "tu", "");
+$linkFilter = get_param("linkFilter", "lf", ".+\.pgn$");
 $urls = array();
 get_links($targetUrl, 5);
 print_links();
 
 function get_links($targetUrl, $depth) {
     global $urls, $linkFilter;
+
+    if (! $targetUrl) { return; }
 
     $html = file_get_contents($targetUrl);
     $dom = new DOMDocument();
