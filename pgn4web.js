@@ -2561,18 +2561,21 @@ function LoadGameHeaders(){
     gameInitialWhiteClock[ii] = gameInitialBlackClock[ii] = "";
     gameVariant[ii] = "";
     while ((parse = pgnHeaderTagRegExpGlobal.exec(ss)) !== null) {
-      if      (parse[1] == 'Event')      { gameEvent[ii]  = parse[2]; }
-      else if (parse[1] == 'Site')       { gameSite[ii]   = parse[2]; }
-      else if (parse[1] == 'Round')      { gameRound[ii]  = parse[2]; }
-      else if (parse[1] == 'Date')       { gameDate[ii]   = parse[2]; }
-      else if (parse[1] == 'White')      { gameWhite[ii]  = parse[2]; }
-      else if (parse[1] == 'Black')      { gameBlack[ii]  = parse[2]; }
-      else if (parse[1] == 'Result')     { gameResult[ii] = parse[2]; }
-      else if (parse[1] == 'SetUp')      { gameSetUp[ii]  = parse[2]; }
-      else if (parse[1] == 'FEN')        { gameFEN[ii]    = parse[2]; }
-      else if (parse[1] == 'WhiteClock') { gameInitialWhiteClock[ii] = parse[2]; }
-      else if (parse[1] == 'BlackClock') { gameInitialBlackClock[ii] = parse[2]; }
-      else if (parse[1] == 'Variant')    { gameVariant[ii] = parse[2]; }
+      switch (parse[1]) {
+        case 'Event': gameEvent[ii] = parse[2]; break;
+        case 'Site': gameSite[ii] = parse[2]; break;
+        case 'Round': gameRound[ii] = parse[2]; break;
+        case 'Date': gameDate[ii] = parse[2]; break;
+        case 'White': gameWhite[ii] = parse[2]; break;
+        case 'Black': gameBlack[ii] = parse[2]; break;
+        case 'Result': gameResult[ii] = parse[2]; break;
+        case 'SetUp': gameSetUp[ii] = parse[2]; break;
+        case 'FEN': gameFEN[ii] = parse[2]; break;
+        case 'WhiteClock': gameInitialWhiteClock[ii] = parse[2]; break;
+        case 'BlackClock': gameInitialBlackClock[ii] = parse[2]; break;
+        case 'Variant': gameVariant[ii] = parse[2]; break;
+        default: break;
+      }
     }
   }
   if ((LiveBroadcastDemo) && (numberOfGames > 0)) {
