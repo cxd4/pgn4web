@@ -2167,6 +2167,9 @@ function Init(nextGame){
   firstStart = false;
 }
 
+function myAlertFEN(FenString, text) {
+  myAlert("error: invalid FEN in game " + (currentGame+1) + ": " + text + "\n" + FenString, true);
+}
 
 function InitFEN(startingFEN) {
   FenString = startingFEN !== undefined ? startingFEN : FenStringStart;
@@ -2222,7 +2225,7 @@ function InitFEN(startingFEN) {
     while (cc != " ") {
       if (cc == "/") {
         if (ii != 8) {
-          myAlert("error: invalid FEN ("+ll+") in game "+(currentGame+1)+"\n"+FenString, true);
+          myAlertFEN(FenString, "char " + ll);
           InitFEN();
           return;
         }
@@ -2230,21 +2233,21 @@ function InitFEN(startingFEN) {
         jj--;
       }
       if (ii == 8) {
-        myAlert("error: invalid FEN ("+ll+") in game "+(currentGame+1)+"\n"+FenString, true);
+        myAlertFEN(FenString, "char " + ll);
         InitFEN();
         return;
       }
       if (!isNaN(cc)) {
         ii += parseInt(cc,10);
         if ((ii < 0) || (ii > 8)) {
-          myAlert("error: invalid FEN ("+ll+") in game "+(currentGame+1)+"\n"+FenString, true);
+          myAlertFEN(FenString, "char " + ll);
           InitFEN();
           return;
         }
       }
       if (cc.charCodeAt(0) == FenPieceName.toUpperCase().charCodeAt(0)) {
         if (PieceType[0][0] != -1) {
-          myAlert("error: invalid FEN ("+ll+") in game "+(currentGame+1)+"\n"+FenString, true);
+          myAlertFEN(FenString, "char " + ll);
           InitFEN();
           return;
         }
@@ -2255,7 +2258,7 @@ function InitFEN(startingFEN) {
       }
       if (cc.charCodeAt(0) == FenPieceName.toLowerCase().charCodeAt(0)) {
         if (PieceType[1][0] != -1) {
-          myAlert("error: invalid FEN ("+ll+") in game "+(currentGame+1)+"\n"+FenString, true);
+          myAlertFEN(FenString, "char " + ll);
           InitFEN();
           return;
         }
@@ -2267,7 +2270,7 @@ function InitFEN(startingFEN) {
       for (kk = 1; kk < 6; kk++) {
         if (cc.charCodeAt(0) == FenPieceName.toUpperCase().charCodeAt(kk)) {
           if (nn == 16) {
-            myAlert("error: invalid FEN ("+ll+") in game "+(currentGame+1)+"\n"+FenString, true);
+            myAlertFEN(FenString, "char " + ll);
             InitFEN();
             return;
           }
@@ -2279,7 +2282,7 @@ function InitFEN(startingFEN) {
         }
         if (cc.charCodeAt(0) == FenPieceName.toLowerCase().charCodeAt(kk)) {
           if (mm==16) {
-            myAlert("error: invalid FEN ("+ll+") in game "+(currentGame+1)+"\n"+FenString, true);
+            myAlertFEN(FenString, "char " + ll);
             InitFEN();
             return;
           }
@@ -2293,12 +2296,12 @@ function InitFEN(startingFEN) {
       cc = ll < FenString.length ? FenString.charAt(ll++) : " ";
     }
     if ((ii != 8) || (jj !== 0)) {
-      myAlert("error: invalid FEN ("+ll+") in game "+(currentGame+1)+"\n"+FenString, true);
+      myAlertFEN(FenString, "char " + ll);
       InitFEN();
       return;
     }
     if ((PieceType[0][0] == -1) || (PieceType[1][0] == -1)) {
-      myAlert("error: invalid FEN missing King in game "+(currentGame+1)+"\n"+FenString, true);
+      myAlertFEN(FenString, "missing King");
       InitFEN();
       return;
     }
@@ -2329,7 +2332,7 @@ function InitFEN(startingFEN) {
         MoveColor = 1;
       }
     } else {
-      myAlert("error: invalid FEN ("+ll+") invalid active color in game "+(currentGame+1)+"\n"+FenString, true);
+      myAlertFEN(FenString, "invalid active color");
       return;
     }
 
@@ -2346,7 +2349,7 @@ function InitFEN(startingFEN) {
 
     ll++;
     if (ll >= FenString.length) {
-      myAlert("error: invalid FEN ("+ll+") missing castling availability in game "+(currentGame+1)+"\n"+FenString, true);
+      myAlertFEN(FenString, "missing castling availability");
       return;
     }
     CastlingLong = [-1, -1];
@@ -2354,38 +2357,38 @@ function InitFEN(startingFEN) {
     cc = FenString.charAt(ll++);
     while (cc!=" ") {
       if (cc.charCodeAt(0) == FenPieceName.toUpperCase().charCodeAt(0)) {
-        for (CastlingShort[0] = 7; CastlingShort[0] >= 0; CastlingShort[0]--) {
+        for (CastlingShort[0] = 7; CastlingShort[0] > PieceCol[0][0]; CastlingShort[0]--) {
           if (Board[CastlingShort[0]][0] == 3) { break; }
         }
-        if (CastlingShort[0] < 0) {
-          myAlert("error: invalid FEN ("+ll+") missing Rook at castling column " + cc, true);
+        if (CastlingShort[0] <= PieceCol[0][0]) {
+          myAlertFEN(FenString, "missing castling Rook " + cc);
           CastlingShort[0] = -1;
         }
       }
       if (cc.charCodeAt(0) == FenPieceName.toUpperCase().charCodeAt(1)) {
-        for (CastlingLong[0] = 0; CastlingLong[0] <= 7; CastlingLong[0]++) {
+        for (CastlingLong[0] = 0; CastlingLong[0] < PieceCol[0][0]; CastlingLong[0]++) {
           if (Board[CastlingLong[0]][0] == 3) { break; }
         }
-        if (CastlingLong[0] > 7) {
-          myAlert("error: invalid FEN ("+ll+") missing Rook at castling column " + cc, true);
+        if (CastlingLong[0] >= PieceCol[0][0]) {
+          myAlertFEN(FenString, "missing castling Rook " + cc);
           CastlingLong[0] = -1;
         }
       }
       if (cc.charCodeAt(0) == FenPieceName.toLowerCase().charCodeAt(0)) {
-        for (CastlingShort[1] = 7; CastlingShort[1] >= 0; CastlingShort[1]--) {
+        for (CastlingShort[1] = 7; CastlingShort[1] > PieceCol[1][0]; CastlingShort[1]--) {
           if (Board[CastlingShort[1]][7] == -3) { break; }
         }
-        if (CastlingShort[1] < 0) {
-          myAlert("error: invalid FEN ("+ll+") missing Rook at castling column " + cc, true);
+        if (CastlingShort[1] <= PieceCol[1][0]) {
+          myAlertFEN(FenString, "missing castling Rook " + cc);
           CastlingShort[1] = -1;
         }
       }
       if (cc.charCodeAt(0) == FenPieceName.toLowerCase().charCodeAt(1)) {
-        for (CastlingLong[1] = 0; CastlingLong[1] <= 7; CastlingLong[1]++) {
+        for (CastlingLong[1] = 0; CastlingLong[1] < PieceCol[1][0]; CastlingLong[1]++) {
           if (Board[CastlingLong[1]][7] == -3) { break; }
         }
-        if (CastlingLong[1] > 7) {
-          myAlert("error: invalid FEN ("+ll+") missing Rook at castling column " + cc, true);
+        if (CastlingLong[1] >= PieceCol[1][0]) {
+          myAlertFEN(FenString, "missing castling Rook " + cc);
           CastlingLong[1] = -1;
         }
       }
@@ -2400,14 +2403,14 @@ function InitFEN(startingFEN) {
           if (castlingRookCol > PieceCol[color][0]) { CastlingShort[color] = castlingRookCol; }
           if (castlingRookCol < PieceCol[color][0]) { CastlingLong[color] = castlingRookCol; }
         } else {
-          myAlert("error: invalid FEN ("+ll+") missing Rook at castling column " + cc, true);
+          myAlertFEN(FenString, "missing castling Rook " + cc);
         }
       }
       cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
     }
 
     if (ll >= FenString.length) {
-      myAlert("error: invalid FEN ("+ll+") missing en passant target square in game "+(currentGame+1)+"\n"+FenString, true);
+      myAlertFEN(FenString, "missing en passant square");
       return;
     }
     cc = FenString.charAt(ll++);
@@ -2419,21 +2422,21 @@ function InitFEN(startingFEN) {
       cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
     }
     if (ll >= FenString.length) {
-      myAlert("error: invalid FEN ("+ll+") missing halfmove clock in game "+(currentGame+1)+"\n"+FenString, true);
+      myAlertFEN(FenString, "missing halfmove clock");
       return;
     }
     InitialHalfMoveClock = 0;
     cc = FenString.charAt(ll++);
     while (cc != " ") {
       if (isNaN(cc)) {
-        myAlert("error: invalid FEN ("+ll+") invalid halfmove clock in game "+(currentGame+1)+"\n"+FenString, true);
+        myAlertFEN(FenString, "invalid halfmove clock");
         return;
       }
       InitialHalfMoveClock=InitialHalfMoveClock*10+parseInt(cc,10);
       cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
     }
     if (ll >= FenString.length) {
-      myAlert("error: invalid FEN ("+ll+") missing fullmove number in game "+(currentGame+1)+"\n"+FenString, true);
+      myAlertFEN(FenString, "missing fullmove number");
       return;
     }
 
@@ -2441,14 +2444,14 @@ function InitFEN(startingFEN) {
     cc = FenString.charAt(ll++);
     while (cc != " ") {
       if (isNaN(cc)) {
-        myAlert("error: invalid FEN ("+ll+") invalid fullmove number in game "+(currentGame+1)+"\n"+FenString, true);
+        myAlertFEN(FenString, "invalid fullmove number");
         return;
       }
       InitialFullMoveNumber=InitialFullMoveNumber*10+parseInt(cc,10);
       cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
     }
     if (InitialFullMoveNumber === 0) {
-      myAlert("warning: invalid FEN ("+ll+") invalid 0 fullmove number corrected to 1 in game "+(currentGame+1)+"\n"+FenString, true);
+      myAlertFEN(FenString, "invalid fullmove 0 set to 1");
       InitialFullMoveNumber = 1;
     }
     StartPly += 2*(InitialFullMoveNumber-1);
