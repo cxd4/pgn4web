@@ -11,14 +11,19 @@ error_reporting(E_ERROR | E_PARSE);
 
 $targetUrl = get_param("targetUrl", "tu", "");
 $linkFilter = get_param("linkFilter", "lf", ".+\.pgn$");
+$frameDepth = get_param("frameDepth", "fd", 0);
+if ((! is_numeric($frameDepth)) || ($frameDepth < 0) || ($frameDepth > 5)) { $frameDepth = 0; }
+$actualFrameDepth = 0;
 $urls = array();
-get_links($targetUrl, 5);
+get_links($targetUrl, $frameDepth);
 print_links();
 
 function get_links($targetUrl, $depth) {
-    global $urls, $linkFilter;
+    global $urls, $linkFilter, $frameDepth, $actualFrameDepth;
 
     if (! $targetUrl) { return; }
+
+    if ($frameDepth - $depth > $actualFrameDepth) { $actualFrameDepth = $frameDepth - $depth; }
 
     $html = file_get_contents($targetUrl);
     $dom = new DOMDocument();
@@ -37,14 +42,14 @@ function get_links($targetUrl, $depth) {
         $frames = $xpath->evaluate("/html/body//iframe");
         for ($i = 0; $i < $frames->length; $i++) {
             $frame = $frames->item($i);
-            $url = $frame->getAttribute('src');
-            get_links(make_absolute($url, $base), $depth -1);
+            $url = make_absolute($frame->getAttribute('src'), $base);
+            if ($url != $targetUrl) { get_links($url, $depth -1); }
         }
         $frames = $xpath->evaluate("/html/body//frame");
         for ($i = 0; $i < $frames->length; $i++) {
             $frame = $frames->item($i);
-            $url = $frame->getAttribute('src');
-            get_links(make_absolute($url, $base), $depth -1);
+            $url = make_absolute($frame->getAttribute('src'), $base);
+            if ($url != $targetUrl) { get_links($url, $depth -1); }
         }
     }
 
@@ -60,7 +65,7 @@ function get_links($targetUrl, $depth) {
 }
 
 function print_links() {
-    global $urls, $targetUrl, $linkFilter;
+    global $urls, $targetUrl, $linkFilter, $frameDepth, $actualFrameDepth;
 
     $urls = array_unique($urls);
     sort($urls);
@@ -69,15 +74,25 @@ function print_links() {
     print "<link rel='shortcut icon' href='../pawn.ico' />" . "\n";
     print "<style tyle='text/css'> body { font-family: sans-serif; padding: 2em; line-height: 1.5em; } a { color: black; text-decoration: none; } </style>" . "\n";
 
-    print "targetUrl: <b><a href='" . $targetUrl . "' target='_blank'>" . $targetUrl . "</a></b><br />" . "\n";
-    print "linkFilter: <b>" . $linkFilter . "</b><br />" . "\n";
+    print "targetUrl: &nbsp; &nbsp; <b><a href='" . $targetUrl . "' target='_blank'>" . $targetUrl . "</a></b><br />" . "\n";
+    print "linkFilter: &nbsp; &nbsp; <b>" . $linkFilter . "</b><br />" . "\n";
+    if ($frameDepth > 0) { print "frameDepth: &nbsp; &nbsp; <b>" . $frameDepth . "</b> &nbsp; &nbsp; <span style='opacity: 0.2;'>" . $actualFrameDepth . "</span><br />" . "\n"; }
 
-    print "<ol>" . "\n";
-    for ($i = 0; $i < count($urls); $i++) {
-        print("<li><a href='" . $urls[$i] . "'>" . $urls[$i] . "</a>" . "</li>" . "\n");
+    if (count($urls) > 0) {
+        print "<div>&nbsp;</div><ol>" . "\n";
+        for ($i = 0; $i < count($urls); $i++) {
+            print("<li><a href='" . $urls[$i] . "'>" . $urls[$i] . "</a>" . "</li>" . "\n");
+        }
+        print "</ol><div>&nbsp;</div>" . "\n";
+    } else {
+        print("<div>&nbsp;</div><ul><li><i>no links found</i></li></ul><div>&nbsp;</div>" . "\n");
     }
-    print "</ol>" . "\n";
-    print "<a href='live-grab.php' target='_blank'>grab</a>" . "\n";
+
+    print "bookmarks:";
+    print " &nbsp; &nbsp; <a href='" . $_SERVER['PHP SELF'] . "?tu=http://www.chess.co.uk/twic/'>twic</a>";
+    print " &nbsp; &nbsp; <a href='" . $_SERVER['PHP SELF'] . "?tu=http://twiclive.com/silverlive.htm&lf=live.*\.pgn$'>twic live</a>";
+    print " &nbsp; &nbsp; <a href='live-grab.php' target='_blank'>grab</a>";
+    print "\n";
 }
 
 function get_param($param, $shortParam, $default) {
