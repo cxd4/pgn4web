@@ -213,184 +213,184 @@ function handlekey(e) {
     case 27: // escape
       if (e.shiftKey) { interactivelyToggleShortcutKeys(); }
       else { displayHelp(); }
-      return stopKeyProp(e);
+      break;
 
     case 90: // z
       if (e.shiftKey) { window.open(pgn4web_project_url); }
       else { displayDebugInfo(); }
-      return stopKeyProp(e);
+      break;
 
     case 37: // left-arrow
     case 74: // j
       backButton(e);
-      return stopKeyProp(e);
+      break;
 
     case 38: // up-arrow
     case 72: // h
       startButton(e);
-      return stopKeyProp(e);
+      break;
 
     case 39: // right-arrow
     case 75: // k
       forwardButton(e);
-      return stopKeyProp(e);
+      break;
 
     case 40: // down-arrow
     case 76: // l
       endButton(e);
-      return stopKeyProp(e);
+      break;
 
     case 73: // i
       MoveToPrevComment(e.shiftKey);
-      return stopKeyProp(e);
+      break;
 
     case 79: // o
       MoveToNextComment(e.shiftKey);
-      return stopKeyProp(e);
+      break;
 
     case 190: // dot
       if (e.shiftKey) { goToFirstChild(); }
       else { goToNextVariationSibling(); }
-      return stopKeyProp(e);
+      break;
 
     case 85: // u
       if (e.shiftKey) { undoStackRedo(); }
       else { undoStackUndo(); }
-      return stopKeyProp(e);
+      break;
 
     case 45: // insert
       undoStackRedo();
-      return stopKeyProp(e);
+      break;
 
     case 46: // delete
       undoStackUndo();
-      return stopKeyProp(e);
+      break;
 
     case 83: // s
       searchPgnGamePrompt();
-      return stopKeyProp(e);
+      break;
 
     case 13: // enter
       if (e.shiftKey) { searchPgnGame(lastSearchPgnExpression, true); }
       else { searchPgnGame(lastSearchPgnExpression); }
-      return stopKeyProp(e);
+      break;
 
     case 68: // d
       if (e.shiftKey) { displayFenData(); }
       else { displayPgnData(false); }
-      return stopKeyProp(e);
+      break;
 
     case 65: // a
       GoToMove(CurrentPly + 1);
       SetAutoPlay(true);
-      return stopKeyProp(e);
+      break;
 
     case 48: // 0
       if (e.shiftKey) { customShortcutKey_Shift_0(); }
       else { SetAutoPlay(false); }
-      return stopKeyProp(e);
+      break;
 
     case 49: // 1
       if (e.shiftKey) { customShortcutKey_Shift_1(); }
       else { SetAutoplayDelayAndStart( 1*1000); }
-      return stopKeyProp(e);
+      break;
 
     case 50: // 2
       if (e.shiftKey) { customShortcutKey_Shift_2(); }
       else { SetAutoplayDelayAndStart( 2*1000); }
-      return stopKeyProp(e);
+      break;
 
     case 51: // 3
       if (e.shiftKey) { customShortcutKey_Shift_3(); }
       else { SetAutoplayDelayAndStart( 3*1000); }
-      return stopKeyProp(e);
+      break;
 
     case 52: // 4
       if (e.shiftKey) { customShortcutKey_Shift_4(); }
       else { SetAutoplayDelayAndStart( 4*1000); }
-      return stopKeyProp(e);
+      break;
 
     case 53: // 5
       if (e.shiftKey) { customShortcutKey_Shift_5(); }
       else { SetAutoplayDelayAndStart( 5*1000); }
-      return stopKeyProp(e);
+      break;
 
     case 54: // 6
       if (e.shiftKey) { customShortcutKey_Shift_6(); }
       else { SetAutoplayDelayAndStart( 6*1000); }
-      return stopKeyProp(e);
+      break;
 
     case 55: // 7
       if (e.shiftKey) { customShortcutKey_Shift_7(); }
       else { SetAutoplayDelayAndStart( 7*1000); }
-      return stopKeyProp(e);
+      break;
 
     case 56: // 8
       if (e.shiftKey) { customShortcutKey_Shift_8(); }
       else { SetAutoplayDelayAndStart( 8*1000); }
-      return stopKeyProp(e);
+      break;
 
     case 57: // 9
       if (e.shiftKey) { customShortcutKey_Shift_9(); }
       else { SetAutoplayDelayAndStart( 9*1000); }
-      return stopKeyProp(e);
+      break;
 
     case 81: // q
       SetAutoplayDelayAndStart(10*1000);
-      return stopKeyProp(e);
+      break;
 
     case 87: // w
       SetAutoplayDelayAndStart(20*1000);
-      return stopKeyProp(e);
+      break;
 
     case 69: // e
       SetAutoplayDelayAndStart(30*1000);
-      return stopKeyProp(e);
+      break;
 
     case 82: // r
       pauseLiveBroadcast();
-      return stopKeyProp(e);
+      break;
 
     case 84: // t
       if (e.shiftKey) { LiveBroadcastSteppingMode = !LiveBroadcastSteppingMode; }
       else { refreshPgnSource(); }
-      return stopKeyProp(e);
+      break;
 
     case 89: // y
       resumeLiveBroadcast();
-      return stopKeyProp(e);
+      break;
 
     case 70: // f
       if (!e.shiftKey || IsRotated) { FlipBoard(); }
-      return stopKeyProp(e);
+      break;
 
     case 71: // g
       SetHighlight(!highlightOption);
-      return stopKeyProp(e);
+      break;
 
     case 88: // x
       randomGameRandomPly();
-      return stopKeyProp(e);
+      break;
 
     case 67: // c
       if (numberOfGames > 1) { Init(Math.floor(Math.random()*numberOfGames)); }
-      return stopKeyProp(e);
+      break;
 
     case 86: // v
       if (numberOfGames > 1) { Init(0); }
-      return stopKeyProp(e);
+      break;
 
     case 66: // b
       Init(currentGame - 1);
-      return stopKeyProp(e);
+      break;
 
     case 78: // n
       Init(currentGame + 1);
-      return stopKeyProp(e);
+      break;
 
     case 77: // m
       if (numberOfGames > 1) { Init(numberOfGames - 1); }
-      return stopKeyProp(e);
+      break;
 
     case 80: // p
       if (e.shiftKey) { SetCommentsOnSeparateLines(!commentsOnSeparateLines); }
@@ -399,12 +399,12 @@ function handlekey(e) {
       oldVar = CurrentVar;
       Init();
       GoToMove(oldPly, oldVar);
-      return stopKeyProp(e);
+      break;
 
     default:
       return true;
   }
-  return true;
+  return stopKeyProp(e);
 }
 
 boardOnClick = new Array(8);

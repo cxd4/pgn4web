@@ -12,6 +12,7 @@ body {
 }
 
 body {
+  padding: 5px;
   font-family: sans-serif;
   color: black;
   background: white;
