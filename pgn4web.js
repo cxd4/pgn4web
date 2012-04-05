@@ -3036,7 +3036,7 @@ function ParsePGNGameString(gameString) {
           start += 4;
           break;
         }
-        // dont add "break;" 
+        // dont add "break;"
 
       default:
 
