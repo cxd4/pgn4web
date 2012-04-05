@@ -1608,9 +1608,6 @@ function pgnGameFromPgnText(pgnText) {
 
   pgnText = fixCommonPgnMistakes(pgnText);
 
-  // replace <> with standard nullmove --
-  pgnText = pgnText.replace(/<>/g, "--");
-
   // replace < and > with html entities: avoid html injection from PGN data
   pgnText = pgnText.replace(/</g, "&lt;");
   pgnText = pgnText.replace(/>/g, "&gt;");
@@ -3060,8 +3057,14 @@ function ParsePGNGameString(gameString) {
             { start++; }
         }
 
-        if ((end = start + ss.substr(start).search(/[\s${;!?()]/)) < start) { end = ss.length; }
-        move = ss.substring(start,end);
+        if (ss.substr(start, 8) == "&lt;&gt;") { // nullmove "<>" became "&lt;&gt;"
+          move = "--";
+          end = start + 8;
+        } else {
+          if ((end = start + ss.substr(start).search(/[\s${;!?()&]/)) < start) { end = ss.length; }
+          move = ss.substring(start,end);
+        }
+
         MovesVar[CurrentVar][StartPly+PlyNumber] = ClearMove(move);
         lastVarWithNoMoves[lastVarWithNoMoves.length - 1] = false;
         if (ss.charAt(end) == ' ') { start = end; }
