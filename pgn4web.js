@@ -3030,6 +3030,14 @@ function ParsePGNGameString(gameString) {
         closeVar();
         break;
 
+      case '&': // nullmove "<>" became "&lt;&gt;"
+        if (ss.substr(start, 8) == "&lt;&gt;") {
+          ss = ss.slice(0, start) + "     -- " + ss.slice(start + 8);
+          start += 4;
+          break;
+        }
+        // dont add "break;" 
+
       default:
 
         searchThis = new Array('1-0', '0-1', '1/2-1/2', '*');
@@ -3057,14 +3065,8 @@ function ParsePGNGameString(gameString) {
             { start++; }
         }
 
-        if (ss.substr(start, 8) == "&lt;&gt;") { // nullmove "<>" became "&lt;&gt;"
-          end = start + 8;
-          move = "--";
-        } else {
-          if ((end = start + ss.substr(start).search(/[\s${;!?()&]/)) < start) { end = ss.length; }
-          move = ss.substring(start,end);
-        }
-
+        if ((end = start + ss.substr(start).search(/[\s${;!?()]/)) < start) { end = ss.length; }
+        move = ss.substring(start,end);
         MovesVar[CurrentVar][StartPly+PlyNumber] = ClearMove(move);
         lastVarWithNoMoves[lastVarWithNoMoves.length - 1] = false;
         if (ss.charAt(end) == ' ') { start = end; }
