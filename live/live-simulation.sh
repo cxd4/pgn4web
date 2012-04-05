@@ -287,8 +287,10 @@ echo Generating PGN file $pgn_file simulating live game broadcast
 
 echo > $pgn_file_tmp
 echo -e $game1_header_live >> $pgn_file_tmp
+echo "*" >> $pgn_file_tmp
 echo >> $pgn_file_tmp
 echo -e $game2_header_live >> $pgn_file_tmp
+echo "*" >> $pgn_file_tmp
 mv $pgn_file_tmp $pgn_file
 sleep $delay
 
