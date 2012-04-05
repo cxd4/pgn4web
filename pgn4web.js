@@ -2196,6 +2196,9 @@ function InitFEN(startingFEN) {
   CastlingShort = [7, 7];
   InitialHalfMoveClock = 0;
 
+  HistVar[StartPly] = 0;
+  HistNull[StartPly] = 0;
+
   if (FenString == FenStringStart) {
     for (color = 0; color < 2; ++color) {
       //                         K  Q  N     B     R     p
@@ -2210,7 +2213,6 @@ function InitFEN(startingFEN) {
         Board[col][row] = (1-2*color)*PieceType[color][ii];
       }
     }
-    HistVar[StartPly] = 0;
   } else {
     var cc, kk, ll, nn, mm;
     for (ii = 0; ii < 2; ii++) {
@@ -2307,34 +2309,17 @@ function InitFEN(startingFEN) {
       return;
     }
     if (ll == FenString.length) {
-      FenString += " w ";
-      assumedCastleRights = ""; // castling rights will be guessed assuming Kings and Rooks original starting positions as in normal chess rules
-      if ((PieceRow[0][0] === 0) && (PieceCol[0][0] === 4)) {
-        for (ii = 0; ii < PieceType[0].length; ii++) {
-          if ((PieceType[0][ii] === 3) && (PieceRow[0][ii] === 0) && (PieceCol[0][ii] === 7)) { assumedCastleRights += FenPieceName.charAt(0).toUpperCase(); }
-          if ((PieceType[0][ii] === 3) && (PieceRow[0][ii] === 0) && (PieceCol[0][ii] === 0)) { assumedCastleRights += FenPieceName.charAt(1).toUpperCase(); }
-        }
-      }
-      if ((PieceRow[1][0] === 7) && (PieceCol[1][0] === 4)) {
-        for (ii = 0; ii < PieceType[1].length; ii++) {
-          if ((PieceType[1][ii] === 3) && (PieceRow[1][ii] === 7) && (PieceCol[1][ii] === 7)) { assumedCastleRights += FenPieceName.charAt(0).toLowerCase(); }
-          if ((PieceType[1][ii] === 3) && (PieceRow[1][ii] === 7) && (PieceCol[1][ii] === 0)) { assumedCastleRights += FenPieceName.charAt(1).toLowerCase(); }
-        }
-      }
-      FenString += assumedCastleRights ? assumedCastleRights : "-";
-      FenString += " - 0 1";
-      ll++;
+      FenString += "w " + assumedCastleRights() + " - 0 1";
     }
     cc = FenString.charAt(ll++);
     if ((cc == "w") || (cc == "b")) {
       if (cc == "b") {
-        StartMove=1;
+        StartMove = 1;
         StartPly += 1;
         MoveColor = 1;
       }
     } else {
       myAlertFEN(FenString, "invalid active color");
-      return;
     }
 
     // set board
@@ -2351,7 +2336,8 @@ function InitFEN(startingFEN) {
     ll++;
     if (ll >= FenString.length) {
       myAlertFEN(FenString, "missing castling availability");
-      return;
+      FenString += " " + assumedCastleRights() + " - 0 1";
+      ll++;
     }
     CastlingLong = [-1, -1];
     CastlingShort = [-1, -1];
@@ -2412,7 +2398,8 @@ function InitFEN(startingFEN) {
 
     if (ll >= FenString.length) {
       myAlertFEN(FenString, "missing en passant square");
-      return;
+      FenString += " - 0 1";
+      ll++;
     }
     cc = FenString.charAt(ll++);
     while (cc != " ") {
@@ -2424,21 +2411,23 @@ function InitFEN(startingFEN) {
     }
     if (ll >= FenString.length) {
       myAlertFEN(FenString, "missing halfmove clock");
-      return;
+      FenString += " 0 1";
+      ll++;
     }
     InitialHalfMoveClock = 0;
     cc = FenString.charAt(ll++);
     while (cc != " ") {
       if (isNaN(cc)) {
         myAlertFEN(FenString, "invalid halfmove clock");
-        return;
+        break;
       }
       InitialHalfMoveClock=InitialHalfMoveClock*10+parseInt(cc,10);
       cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
     }
     if (ll >= FenString.length) {
       myAlertFEN(FenString, "missing fullmove number");
-      return;
+      FenString += " 1";
+      ll++;
     }
 
     InitialFullMoveNumber = 0;
@@ -2446,7 +2435,8 @@ function InitFEN(startingFEN) {
     while (cc != " ") {
       if (isNaN(cc)) {
         myAlertFEN(FenString, "invalid fullmove number");
-        return;
+        InitialFullMoveNumber = 1;
+        break;
       }
       InitialFullMoveNumber=InitialFullMoveNumber*10+parseInt(cc,10);
       cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
@@ -2463,6 +2453,33 @@ function InitFEN(startingFEN) {
     HistVar[StartPly] = 0;
   }
 }
+
+// castling rights assuming Kings and Rooks starting positions as in normal chess
+function assumedCastleRights() {
+  var assumedRights = "";
+  if ((PieceRow[0][0] === 0) && (PieceCol[0][0] === 4)) {
+    for (ii = 0; ii < PieceType[0].length; ii++) {
+      if ((PieceType[0][ii] === 3) && (PieceRow[0][ii] === 0) && (PieceCol[0][ii] === 7)) {
+        assumedRights += FenPieceName.charAt(0).toUpperCase();
+      }
+      if ((PieceType[0][ii] === 3) && (PieceRow[0][ii] === 0) && (PieceCol[0][ii] === 0)) {
+        assumedRights += FenPieceName.charAt(1).toUpperCase();
+      }
+    }
+  }
+  if ((PieceRow[1][0] === 7) && (PieceCol[1][0] === 4)) {
+    for (ii = 0; ii < PieceType[1].length; ii++) {
+      if ((PieceType[1][ii] === 3) && (PieceRow[1][ii] === 7) && (PieceCol[1][ii] === 7)) {
+        assumedRights += FenPieceName.charAt(0).toLowerCase();
+      }
+      if ((PieceType[1][ii] === 3) && (PieceRow[1][ii] === 7) && (PieceCol[1][ii] === 0)) {
+        assumedRights += FenPieceName.charAt(1).toLowerCase();
+      }
+    }
+  }
+  return assumedRights ? assumedRights : "-";
+}
+
 
 function SetImageType(extension) {
   imageType = extension;
