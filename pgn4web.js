@@ -737,8 +737,8 @@ function CurrentFEN() {
   currentFEN += " " + (CastlingFEN ? CastlingFEN : "-");
 
   // en-passant square
-  if (HistEnPassant[CurrentPly-1]) {
-    currentFEN += " " + String.fromCharCode(HistEnPassantCol[CurrentPly-1] + 97);
+  if (HistEnPassant[CurrentPly]) {
+    currentFEN += " " + String.fromCharCode(HistEnPassantCol[CurrentPly] + 97);
     currentFEN += CurrentPly%2 === 0 ? "6" : "3";
   } else { currentFEN += " -"; }
 
@@ -1026,7 +1026,7 @@ function CheckLegality(what, plyCount) {
     if (Board[mvToCol][mvToRow] !== 0) { return false; }
   }
   if ((mvCapture) && (Color(Board[mvToCol][mvToRow]) != 1-MoveColor)) {
-    if ((mvPiece != 6) || (!HistEnPassant[plyCount-1]) || (HistEnPassantCol[plyCount-1] != mvToCol) ||
+    if ((mvPiece != 6) || (!HistEnPassant[plyCount]) || (HistEnPassantCol[plyCount] != mvToCol) ||
       (mvToRow != 5-3*MoveColor)) { return false; }
   }
   if (mvIsPromotion) {
@@ -2447,8 +2447,8 @@ function InitFEN(startingFEN) {
     }
     StartPly += 2*(InitialFullMoveNumber-1);
 
-    HistEnPassant[StartPly-1] = newEnPassant;
-    HistEnPassantCol[StartPly-1] = newEnPassantCol;
+    HistEnPassant[StartPly] = newEnPassant;
+    HistEnPassantCol[StartPly] = newEnPassantCol;
     HistNull[StartPly] = 0;
     HistVar[StartPly] = 0;
   }
@@ -3304,8 +3304,8 @@ function ParseMove(move, plyCount) {
   // "square to" occupied: capture (note en-passant case)
   if (Board[mvToCol][mvToRow] !== 0) { mvCapture = 1; }
   else {
-    if ((mvPiece == 6) && (HistEnPassant[plyCount-1]) &&
-        (mvToCol == HistEnPassantCol[plyCount-1]) &&
+    if ((mvPiece == 6) && (HistEnPassant[plyCount]) &&
+        (mvToCol == HistEnPassantCol[plyCount]) &&
         (mvToRow == 5-3*MoveColor)) {
       mvCapture = 1;
     }
@@ -3336,7 +3336,7 @@ function ParseMove(move, plyCount) {
         mvCaptured = PieceType[1-MoveColor][mvCapturedId];
       } else { --mvCapturedId; }
     }
-    if ((mvPiece == 6) && (mvCapturedId < 1) && (HistEnPassant[plyCount-1])) {
+    if ((mvPiece == 6) && (mvCapturedId < 1) && (HistEnPassant[plyCount])) {
       mvCapturedId = 15;
       while((mvCapturedId >= 0) && (mvCaptured < 0)){
         if ((PieceType[1-MoveColor][mvCapturedId] == 6) &&
@@ -3352,12 +3352,12 @@ function ParseMove(move, plyCount) {
   if (! CheckLegality(PieceCode[mvPiece-1], plyCount)) { return false; }
 
   // pawn moved => check if en-passant possible
-  HistEnPassant[plyCount]    = false;
-  HistEnPassantCol[plyCount] = -1;
+  HistEnPassant[plyCount+1] = false;
+  HistEnPassantCol[plyCount+1] = -1;
   if (mvPiece == 6) {
      if (Math.abs(HistRow[0][plyCount]-mvToRow) == 2) {
-       HistEnPassant[plyCount]    = true;
-       HistEnPassantCol[plyCount] = mvToCol;
+       HistEnPassant[plyCount+1] = true;
+       HistEnPassantCol[plyCount+1] = mvToCol;
      }
   }
   return true;
