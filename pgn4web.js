@@ -1246,9 +1246,8 @@ function GoToMove(thisPly, thisVar) {
     if (thisVar < 0) { thisVar = 0; }
     else if (thisVar >= numberOfVars) { thisVar = numberOfVars - 1; }
   }
-  if (thisPly < 0) {
-    thisPly = 0;
-  } else if (thisPly >= StartPlyVar[thisVar] + PlyNumberVar[thisVar]) {
+  if (thisPly < 0) { thisPly = 0; }
+  else if (thisPly >= StartPlyVar[thisVar] + PlyNumberVar[thisVar]) {
     thisPly = StartPlyVar[thisVar] + PlyNumberVar[thisVar];
   }
 
