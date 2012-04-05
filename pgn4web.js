@@ -3058,8 +3058,8 @@ function ParsePGNGameString(gameString) {
         }
 
         if (ss.substr(start, 8) == "&lt;&gt;") { // nullmove "<>" became "&lt;&gt;"
-          move = "--";
           end = start + 8;
+          move = "--";
         } else {
           if ((end = start + ss.substr(start).search(/[\s${;!?()&]/)) < start) { end = ss.length; }
           move = ss.substring(start,end);
