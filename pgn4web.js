@@ -1608,6 +1608,9 @@ function pgnGameFromPgnText(pgnText) {
 
   pgnText = fixCommonPgnMistakes(pgnText);
 
+  // replace <> with standard nullmove --
+  pgnText = pgnText.replace(/<>/g, "--");
+
   // replace < and > with html entities: avoid html injection from PGN data
   pgnText = pgnText.replace(/</g, "&lt;");
   pgnText = pgnText.replace(/>/g, "&gt;");
@@ -3071,7 +3074,10 @@ function ParsePGNGameString(gameString) {
     }
   }
 
-  if (CurrentVar !== 0) { myAlert("error: ParsePGNGameString ends with current var = " + CurrentVar, true); }
+  if (CurrentVar !== 0) {
+    myAlert("error: ParsePGNGameString ends with current var = " + CurrentVar, true);
+    while (CurrentVar > 0) { closeVar(); }
+  }
 
   StartPlyVar[0] = StartPly;
   PlyNumberVar[0] = PlyNumber;
