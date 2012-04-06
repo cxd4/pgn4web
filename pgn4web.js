@@ -1002,7 +1002,7 @@ function CheckLegality(what, plyCount) {
   } else if (what == 'O-O-O') {
     if (!CheckLegalityOOO()) { return false; }
     for (thisCol = PieceCol[MoveColor][0]; thisCol > 1; thisCol--) {
-      if (IsCheck(start, MoveColor*7, MoveColor)) { return false; }
+      if (IsCheck(thisCol, MoveColor*7, MoveColor)) { return false; }
     }
     StoreMove(plyCount);
     return true;
