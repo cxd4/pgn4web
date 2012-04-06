@@ -128,6 +128,7 @@ selectmenu.onchange = function() {
         frames['inlineframe'].location.href = "collection.html?pgnFile=" + chosenoption.value + "&title=" + escape(chosenoption.innerHTML) + searchPgnString;
     }
     this.selectedIndex = 0;
+    this.blur();
 };
 
 </script>
