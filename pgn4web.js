@@ -1191,8 +1191,8 @@ function CheckClearWay(thisPiece) {
   return true;
 }
 
-function ClearMove(move) {
-  move = move.replace(/[^a-hKQRBN0-8#=Oo-]*/g, ''); // patch here adding '+' after '0-8' to pass through check signs
+function CleanMove(move) {
+  move = move.replace(/[^a-zA-Z0-9#=-]*/g, ''); // patch here adding '+' after '0-8' to pass through check signs
   if (move.match(/^[Oo0]/)) { move = move.replace(/[o0]/g, 'O').replace(/O(?=O)/g, 'O-'); }
   return move;
 }
@@ -3042,7 +3042,7 @@ function ParsePGNGameString(gameString) {
 
         if ((end = start + ss.substr(start).search(/[\s${;!?()]/)) < start) { end = ss.length; }
         move = ss.substring(start,end);
-        MovesVar[CurrentVar][StartPly+PlyNumber] = ClearMove(move);
+        MovesVar[CurrentVar][StartPly+PlyNumber] = CleanMove(move);
         lastVarWithNoMoves[lastVarWithNoMoves.length - 1] = false;
         if (ss.charAt(end) == ' ') { start = end; }
         else { start = end - 1; }
