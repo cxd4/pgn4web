@@ -1192,7 +1192,7 @@ function CheckClearWay(thisPiece) {
 }
 
 function ClearMove(move) {
-  move = move.replace(/[^a-hKQRBN0-8#=Oo-]*/g, ''); // add + to pass through check signs
+  move = move.replace(/[^a-hKQRBN0-8#=Oo-]*/g, ''); // patch here adding '+' after '0-8' to pass through check signs
   move = move.replace(/[Oo0]-?[Oo0]-?[Oo0]/, 'O-O-O');
   move = move.replace(/[Oo0]-?[Oo0]/, 'O-O');
   return move;
