@@ -7,6 +7,7 @@
 
 function testAllMoves() {
   var ii = 0;
+  var start = (new Date()).getTime();
   resetAlert();
   for (var gg = 0; gg < numberOfGames; gg++) {
     Init(gg);
@@ -17,10 +18,12 @@ function testAllMoves() {
       }
     }
   }
+  console.log("t=" + ((new Date()).getTime() - start) + " a=" + alertNumSinceReset);
   return alertNumSinceReset;
 }
 
 function testRandomMoves(nn, pv, pg) {
+  var start = (new Date()).getTime();
   resetAlert();
   if (typeof(nn) == "undefined") { nn = numberOfGames * 100; }
   if (typeof(pv) == "undefined") { pv = 0.5; }
@@ -40,6 +43,7 @@ function testRandomMoves(nn, pv, pg) {
     GoToMove(hh, vv);
     if ((ii % 100) === 0) { console.log("i=" + ii + "/" + nn + " a=" + alertNumSinceReset); }
   }
+  console.log("t=" + ((new Date()).getTime() - start) + " a=" + alertNumSinceReset);
   return alertNumSinceReset;
 }
 
