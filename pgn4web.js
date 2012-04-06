@@ -3203,7 +3203,7 @@ function ParseMove(move, plyCount) {
   // final square did not make sense: maybe a castle?
   if ((mvToCol < 0) || (mvToCol > 7) || (mvToRow < 0) || (mvToRow > 7)) {
     // long castling first: looking for o-o will get o-o-o too
-    if (move.match('^[Oo0]-?[Oo0]-?[Oo0]')) {
+    if (move.indexOf('O-O-O') === 0) {
       mvIsCastling = 1;
       mvPiece = 1;
       mvPieceId = 0;
@@ -3213,7 +3213,7 @@ function ParseMove(move, plyCount) {
       mvFromRow = 7*MoveColor;
       mvToRow = 7*MoveColor;
       return CheckLegality('O-O-O', plyCount);
-    } else if (move.match('^[Oo0]-?[Oo0]')) {
+    } else if (move.indexOf('O-O') === 0) {
       mvIsCastling = 1;
       mvPiece = 1;
       mvPieceId = 0;
