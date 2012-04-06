@@ -994,14 +994,14 @@ function CheckLegality(what, plyCount) {
   // castling move?
   if (what == 'O-O') {
     if (!CheckLegalityOO()) { return false; }
-    for (thisCol = PieceCol[MoveColor][0]; thisCol < 6; thisCol++) {
+    for (thisCol = PieceCol[MoveColor][0]; thisCol < 7; thisCol++) {
       if (IsCheck(thisCol, MoveColor*7, MoveColor)) { return false; }
     }
     StoreMove(plyCount);
     return true;
   } else if (what == 'O-O-O') {
     if (!CheckLegalityOOO()) { return false; }
-    for (thisCol = PieceCol[MoveColor][0]; thisCol > 2; thisCol--) {
+    for (thisCol = PieceCol[MoveColor][0]; thisCol > 1; thisCol--) {
       if (IsCheck(start, MoveColor*7, MoveColor)) { return false; }
     }
     StoreMove(plyCount);
