@@ -75,7 +75,7 @@ Rg3 Qh1+ 31. Ke2 $18) 26. h6 (26. Nxf7 $2 Ne4) (26. Qxc3 $2 Qxc3 27. bxc3
 Nxd5 $17) 26... g6 27. h5 (27. Nxf7 Ne4 28. Nd6 Nd2+ $19) 27... Nxh5 28.
 Nxf7 Nf4 29. Nd6 { $140 Rg6 $18 }) 24. Qc2+ Kh8 (24... Kg8 25. Nxe5 Rxe5
 26. h6 g6 27. Rxg6+ $18) 25. Ng5 Qc7 (25... Bxc3 26. Nxf7+ Kg8 27. Rxg7+
-Kxg7 28. Qg6# { # }) 26. Nce4 $18) 22. Rxb1 (22. exf6 $2 Bd3+ 23. Kg2 Nxf6
+Kxg7 28. Qg6#) 26. Nce4 $18) 22. Rxb1 (22. exf6 $2 Bd3+ 23. Kg2 Nxf6
 24. Qf3 Re5 $13) 22... Bxe5 (22... Nxe5 $2 23. Nde4 $18) 23. Qg4 Nb6 (23...
 Bxc3 $2 24. bxc3 Qxc3 25. Rg3 Qe5 26. Nf3 Qf6 27. Qxd7 $18) 24. Nde4 (24.
 Nf3 $2 Bxc3 (24... Bf6 25. Ne4 Rxe4 26. Qxe4 Qxd5 27. Qxd5 Nxd5 28. Bd6 $18
@@ -110,7 +110,7 @@ $18) 30. Rc1 Qxa2 31. Ne7+ Rxe7 32. Qc8+ Kh7 33. Qxc5 Re6 34. Qxc4 $11) (
 31... Kh7 32. Nxg6) 32. Qd5 (32. Rg4 Nc5 { $140 Nd3 }) (32. Re1 Nc5) 32...
 Bf6 33. Rd2 $13) (30... Re6 31. h7+ Kh8 32. h5 Nc5 33. Qd8+ Kxh7 34. Ne7
 Rxe7 (34... Nd3 35. Qg8+ Kh6 36. Nf5+ gxf5 37. Qf8+ $18) 35. hxg6+ Kh6 36.
-gxf7 Rxf7 37. Qh4# { # }) (30... Nc7 31. h5 $16) 31. Nxa7 (31. Rd2 Qb1+ 32.
+gxf7 Rxf7 37. Qh4#) (30... Nc7 31. h5 $16) 31. Nxa7 (31. Rd2 Qb1+ 32.
 Kg2 Qe4+ 33. f3 Qf4 $17) (31. h7 Nc5 32. Qd6+ Kg7 $17) 31... c3 32. Nb5 Nc5
 33. Qd5 Ne4 $19) 30... Nc5 31. hxg6 fxg6 32. Nd6 (32. Qxg6+ $2 Qxg6 33.
 Rxg6+ Kh7 34. Rg5 Kxh6 35. f4 Nd3) 32... Bxd6 (32... Rd8 33. h7+ $18 Kxh7
@@ -459,7 +459,7 @@ Rd8 $19) 29... bxc5 30. Re5 (30. Ba6 $2 c4 31. Qd6 Ne4 $19) (30. Qd6 Ne4
 31... Rd8 32. Qg5 (32. Rg5 { ($140 c4 Ljubojevic, Lj) } 32... Kg7 (32... h6
 $2 33. Rg4 $16) 33. Ng3 (33. c4 Nf6 34. Qxd8 (34. Rxg6+ hxg6 35. Qxd8 Qe4
 $19) 34... Qxg5 35. Ng3 h5 36. Qc7 (36. Qxa5 $2 h4 37. Qc7 hxg3 38. Qxb7
-Qc1# { # }) 36... h4 37. Qxb7 hxg3 38. fxg3 Qxg3 39. Bc6 Nh5 { $140 Nf4 $17
+Qc1#) 36... h4 37. Qxb7 hxg3 38. fxg3 Qxg3 39. Bc6 Nh5 { $140 Nf4 $17
 }) 33... f5 { ($140 Kf6 Karpov, An) } 34. c4 Kf6 (34... h6 $5) 35. Rh5 (35.
 Qxa5 Ra8 $19) (35. cxd5 Qxg5 (35... Rxd5 36. Rh5 $13) 36. Qc3+ e5 37. Qxa5
 Kf7 $17) 35... gxh5 36. Qh6+ Ke5 37. Qg7+ Qf6 38. Qxb7 Qe7 { $140 39...Nb4,
