@@ -3046,7 +3046,7 @@ function ParsePGNGameString(gameString) {
         lastVarWithNoMoves[lastVarWithNoMoves.length - 1] = false;
         if (ss.charAt(end) == ' ') { start = end; }
         else { start = end - 1; }
-        if (MovesVar[CurrentVar][StartPly+PlyNumber] !== '') { // to cope with misformed PGN data
+        if (! MovesVar[CurrentVar][StartPly+PlyNumber].match(/^[\s+#]*$/)) { // to cope with malsformed PGN data
           PlyNumber++;
           MoveCommentsVar[CurrentVar][StartPly+PlyNumber] = '';
         }
