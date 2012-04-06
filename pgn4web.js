@@ -984,10 +984,7 @@ var gameSelectorChResult = 0;
 var gameSelectorChDate = 10;
 
 function CheckLegality(what, plyCount) {
-  var retVal;
-  var start;
-  var end;
-  var isCheck;
+  var retVal, thisCol;
 
   if (what == '--') {
     StoreMove(plyCount);
@@ -997,23 +994,15 @@ function CheckLegality(what, plyCount) {
   // castling move?
   if (what == 'O-O') {
     if (!CheckLegalityOO()) { return false; }
-    start = PieceCol[MoveColor][0];
-    end   = 6;
-    while (start < end) {
-      isCheck = IsCheck(start, MoveColor*7, MoveColor);
-      if (isCheck) { return false; }
-      ++start;
+    for (thisCol = PieceCol[MoveColor][0]; thisCol < 6; thisCol++) {
+      if (IsCheck(thisCol, MoveColor*7, MoveColor)) { return false; }
     }
     StoreMove(plyCount);
     return true;
   } else if (what == 'O-O-O') {
     if (!CheckLegalityOOO()) { return false; }
-    start = PieceCol[MoveColor][0];
-    end   = 2;
-    while (start > end) {
-      isCheck = IsCheck(start, MoveColor*7, MoveColor);
-      if (isCheck) { return false; }
-      --start;
+    for (thisCol = PieceCol[MoveColor][0]; thisCol > 2; thisCol--) {
+      if (IsCheck(start, MoveColor*7, MoveColor)) { return false; }
     }
     StoreMove(plyCount);
     return true;
@@ -1030,9 +1019,9 @@ function CheckLegality(what, plyCount) {
       (mvToRow != 5-3*MoveColor)) { return false; }
   }
   if (mvIsPromotion) {
-    if (mvPiece     != 6) { return false; }
+    if (mvPiece != 6) { return false; }
     if (mvPieceOnTo >= 6) { return false; }
-    if (mvToRow     != 7*(1-MoveColor)) { return false; }
+    if (mvToRow != 7*(1-MoveColor)) { return false; }
   }
 
   // piece move => loop over same type pieces: which could move there?
@@ -1049,8 +1038,7 @@ function CheckLegality(what, plyCount) {
         mvPieceId = pieceId;
         // board updated: king check?
         StoreMove(plyCount);
-        isCheck = IsCheck(PieceCol[MoveColor][0], PieceRow[MoveColor][0], MoveColor);
-        if (!isCheck) { return true; }
+        if (! IsCheck(PieceCol[MoveColor][0], PieceRow[MoveColor][0], MoveColor)) { return true; }
         else { UndoMove(plyCount); }
       }
     }
@@ -1069,44 +1057,31 @@ function CheckLegalityKing(thisKing) {
 function CheckLegalityQueen(thisQueen) {
   if ((mvFromCol >= 0) && (mvFromCol != PieceCol[MoveColor][thisQueen])) { return false; }
   if ((mvFromRow >= 0) && (mvFromRow != PieceRow[MoveColor][thisQueen])) { return false; }
-  if (((PieceCol[MoveColor][thisQueen]-mvToCol) *
-    (PieceRow[MoveColor][thisQueen]-mvToRow) !== 0) &&
-    (Math.abs(PieceCol[MoveColor][thisQueen]-mvToCol) !=
-    Math.abs(PieceRow[MoveColor][thisQueen]-mvToRow)))
-  { return false; }
-  var clearWay = CheckClearWay(thisQueen);
-  if (!clearWay) { return false; }
+  if (((PieceCol[MoveColor][thisQueen]-mvToCol) * (PieceRow[MoveColor][thisQueen]-mvToRow) !== 0) && (Math.abs(PieceCol[MoveColor][thisQueen]-mvToCol) != Math.abs(PieceRow[MoveColor][thisQueen]-mvToRow))) { return false; }
+  if (! CheckClearWay(thisQueen)) { return false; }
   return true;
 }
 
 function CheckLegalityRook(thisRook) {
   if ((mvFromCol >= 0) && (mvFromCol != PieceCol[MoveColor][thisRook])) { return false; }
   if ((mvFromRow >= 0) && (mvFromRow != PieceRow[MoveColor][thisRook])) { return false; }
-  if ((PieceCol[MoveColor][thisRook]-mvToCol) *
-    (PieceRow[MoveColor][thisRook]-mvToRow) !== 0)
-  { return false; }
-  var clearWay = CheckClearWay(thisRook);
-  if (!clearWay) { return false; }
+  if ((PieceCol[MoveColor][thisRook]-mvToCol) * (PieceRow[MoveColor][thisRook]-mvToRow) !== 0) { return false; }
+  if (! CheckClearWay(thisRook)) { return false; }
   return true;
 }
 
 function CheckLegalityBishop(thisBishop) {
   if ((mvFromCol >= 0) && (mvFromCol != PieceCol[MoveColor][thisBishop])) { return false; }
   if ((mvFromRow >= 0) && (mvFromRow != PieceRow[MoveColor][thisBishop])) { return false; }
-  if (Math.abs(PieceCol[MoveColor][thisBishop]-mvToCol) !=
-    Math.abs(PieceRow[MoveColor][thisBishop]-mvToRow))
-  { return false; }
-  var clearWay = CheckClearWay(thisBishop);
-  if (!clearWay) { return false; }
+  if (Math.abs(PieceCol[MoveColor][thisBishop]-mvToCol) != Math.abs(PieceRow[MoveColor][thisBishop]-mvToRow)) { return false; }
+  if (! CheckClearWay(thisBishop)) { return false; }
   return true;
 }
 
 function CheckLegalityKnight(thisKnight) {
   if ((mvFromCol >= 0) && (mvFromCol != PieceCol[MoveColor][thisKnight])) { return false; }
   if ((mvFromRow >= 0) && (mvFromRow != PieceRow[MoveColor][thisKnight])) { return false; }
-  if (Math.abs(PieceCol[MoveColor][thisKnight]-mvToCol) *
-    Math.abs(PieceRow[MoveColor][thisKnight]-mvToRow) != 2)
-  { return false; }
+  if (Math.abs(PieceCol[MoveColor][thisKnight]-mvToCol) * Math.abs(PieceRow[MoveColor][thisKnight]-mvToRow) != 2) { return false; }
   return true;
 }
 
@@ -1132,8 +1107,7 @@ function RookForOOCastling(color) {
   if (PieceMoveCounter[color][0] > 0) { return null; }
 
   legal = false;
-  thisRook = 0;
-  while (thisRook < 16) {
+  for (thisRook = 0; thisRook < 16; thisRook++) {
     if ((PieceCol[color][thisRook] == CastlingShort[color]) &&
       (PieceCol[color][thisRook] > PieceCol[color][0]) &&
       (PieceRow[color][thisRook] == color*7) &&
@@ -1141,7 +1115,6 @@ function RookForOOCastling(color) {
       legal = true;
       break;
     }
-    ++thisRook;
   }
   if (!legal) { return null; }
   if (PieceMoveCounter[color][thisRook] > 0) { return null; }
@@ -1172,8 +1145,7 @@ function RookForOOOCastling(color) {
   if (PieceMoveCounter[color][0] > 0) { return null; }
 
   legal = false;
-  thisRook = 0;
-  while (thisRook < 16) {
+  for (thisRook = 0; thisRook < 16; thisRook++) {
     if ((PieceCol[color][thisRook] == CastlingLong[color]) &&
       (PieceCol[color][thisRook] < PieceCol[color][0]) &&
       (PieceRow[color][thisRook] == color*7) &&
@@ -1181,7 +1153,6 @@ function RookForOOOCastling(color) {
       legal = true;
       break;
     }
-    ++thisRook;
   }
   if (!legal) { return null; }
   if (PieceMoveCounter[color][thisRook] > 0) { return null; }
@@ -1221,22 +1192,10 @@ function CheckClearWay(thisPiece) {
 }
 
 function ClearMove(move) {
-  var ss = move.length;
-  var cc = -1;
-  var ii = 0;
-  var mm = "";
-  while(ii < ss){
-    cc = move.charCodeAt(ii);
-    if ((cc == 45) || ((cc >= 48) && (cc <= 57)) || (cc == 61) || (cc == 35) ||
-        // (cc == 43) || // patch this to pass through '+' signs
-        ((cc >= 65) && (cc <= 90)) || ((cc >=97) && (cc <= 122))) {
-      mm += move.charAt(ii);
-    }
-    ++ii;
-  }
-  if (mm.match('^[Oo0]-?[Oo0]-?[Oo0]$')) { return 'O-O-O'; }
-  if (mm.match('^[Oo0]-?[Oo0]$')) { return 'O-O'; }
-  return mm;
+  move = move.replace(/[^a-hKQRBN0-8#=Oo-]*/g, ''); // add + to pass through check signs
+  move = move.replace(/[Oo0]-?[Oo0]-?[Oo0]/, 'O-O-O');
+  move = move.replace(/[Oo0]-?[Oo0]/, 'O-O');
+  return move;
 }
 
 function GoToMove(thisPly, thisVar) {
@@ -3204,7 +3163,6 @@ function translateNAGs(comment) {
 }
 
 function ParseMove(move, plyCount) {
-//  move = move.replace(/[\+#]/g, ""); // patch this to pass through '+' and '#' signs
   var ii, ll;
   var remainder;
   var toRowMarker = -1;
@@ -3232,45 +3190,40 @@ function ParseMove(move, plyCount) {
     return true;
   }
 
-  // get destination column/row remembering what's left e.g. Rdxc3 exf8=Q+
-  ii = 1;
-  while(ii < move.length) {
+  // get destination column/row remembering what's left e.g. Rdxc3 exf8=Q#
+  for (ii = move.length-1; ii > 0; ii--) {
     if (!isNaN(move.charAt(ii))) {
       mvToCol = move.charCodeAt(ii-1) - 97;
-      mvToRow = move.charAt(ii)       -  1;
+      mvToRow = move.charAt(ii) - 1;
       remainder = move.substring(0, ii-1);
       toRowMarker = ii;
+      break;
     }
-    ++ii;
   }
 
   // final square did not make sense: maybe a castle?
   if ((mvToCol < 0) || (mvToCol > 7) || (mvToRow < 0) || (mvToRow > 7)) {
-    if ((move.indexOf('O') >= 0) || (move.indexOf('o') >= 0) || (move.indexOf('0') >= 0)) {
-      // long castling first: looking for o-o will get o-o-o too
-      if (move.match('^[Oo0]-?[Oo0]-?[Oo0]$') !== null) {
-        mvIsCastling = 1;
-        mvPiece = 1;
-        mvPieceId = 0;
-        mvPieceOnTo = 1;
-        mvFromCol = 4;
-        mvToCol = 2;
-        mvFromRow = 7*MoveColor;
-        mvToRow = 7*MoveColor;
-        return CheckLegality('O-O-O', plyCount);
-      }
-      if (move.match('^[Oo0]-?[Oo0]$') !== null) {
-        mvIsCastling = 1;
-        mvPiece = 1;
-        mvPieceId = 0;
-        mvPieceOnTo = 1;
-        mvFromCol = 4;
-        mvToCol = 6;
-        mvFromRow = 7*MoveColor;
-        mvToRow = 7*MoveColor;
-        return CheckLegality('O-O', plyCount);
-      }
-      return false;
+    // long castling first: looking for o-o will get o-o-o too
+    if (move.match('^[Oo0]-?[Oo0]-?[Oo0]')) {
+      mvIsCastling = 1;
+      mvPiece = 1;
+      mvPieceId = 0;
+      mvPieceOnTo = 1;
+      mvFromCol = 4;
+      mvToCol = 2;
+      mvFromRow = 7*MoveColor;
+      mvToRow = 7*MoveColor;
+      return CheckLegality('O-O-O', plyCount);
+    } else if (move.match('^[Oo0]-?[Oo0]')) {
+      mvIsCastling = 1;
+      mvPiece = 1;
+      mvPieceId = 0;
+      mvPieceOnTo = 1;
+      mvFromCol = 4;
+      mvToCol = 6;
+      mvFromRow = 7*MoveColor;
+      mvToRow = 7*MoveColor;
+      return CheckLegality('O-O', plyCount);
     } else { return false; }
   }
 
