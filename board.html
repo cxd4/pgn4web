@@ -1145,16 +1145,22 @@ function customFunctionOnPgnTextLoad() {
     }
   }
 
+  if (firstCurrentGame == -1) { firstCurrentGame = currentGame; }
+
   if (gup("showHeightWidth") !== "") {
     myAlert("info: board width=" + boardWidth + " height=" + boardHeight, false);
   }
 }
 
+var firstCurrentGame = -1;
 var objectHiddenPuzzler = ["GameResult", "GameLastMove", "GameLastVariations", "GameNextMove", "GameNextVariations", "GameLastComment"];
 
 function customFunctionOnPgnGameLoad() {
 
   if (movesDisplay == "puzzle") {
+    if (currentGame === firstCurrentGame) { GoToInitialHalfmove(); }
+    if (firstCurrentGame == -1) { firstCurrentGame = currentGame; }
+
     for (var ii = 0; ii < objectHiddenPuzzler.length; ii++) {
       if (theObject = document.getElementById(objectHiddenPuzzler[ii])) {
         theObject.style.visibility = "hidden";
@@ -1292,7 +1298,7 @@ function customFunctionOnMove() {
 enableAutoScrollToCurrentMove("headerMoves");
 
 // F5
-if (movesDisplay == "puzzle") { boardShortcut("F5", "reset puzzle", function(t,e){ firstStart = true; Init(currentGame); }); }
+if (movesDisplay == "puzzle") { boardShortcut("F5", "reset puzzle", function(t,e){ Init(currentGame); }); }
 // G5
 boardShortcut("G5", "toggle auto-scroll moves text to current move", function(t,e){ toggleAutoScrollToCurrentMove('headerMoves'); });
 // H5
@@ -1320,10 +1326,7 @@ function customShortcutKey_Shift_2() {
 }
 
 function customShortcutKey_Shift_5() {
-  if (movesDisplay == "puzzle") {
-    firstStart = true;
-    Init(currentGame);
-  }
+  if (movesDisplay == "puzzle") { Init(currentGame); }
 }
 
 </script>
