@@ -1292,7 +1292,7 @@ function customFunctionOnMove() {
 enableAutoScrollToCurrentMove("headerMoves");
 
 // F5
-if (movesDisplay == "puzzle") { boardShortcut("F5", "reset puzzle", function(t,e){ Init(currentGame); }); }
+if (movesDisplay == "puzzle") { boardShortcut("F5", "reset puzzle", function(t,e){ firstStart = true; Init(currentGame); }); }
 // G5
 boardShortcut("G5", "toggle auto-scroll moves text to current move", function(t,e){ toggleAutoScrollToCurrentMove('headerMoves'); });
 // H5
@@ -1320,7 +1320,10 @@ function customShortcutKey_Shift_2() {
 }
 
 function customShortcutKey_Shift_5() {
-  if (movesDisplay == "puzzle") { Init(currentGame); }
+  if (movesDisplay == "puzzle") {
+     firstStart = true;
+    Init(currentGame);
+  }
 }
 
 </script>
