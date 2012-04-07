@@ -3281,22 +3281,23 @@ function ParseMove(move, plyCount) {
 
   // which piece was captured: if nothing found must be en-passant
   if (mvCapture) {
-    mvCapturedId = 15;
-    while((mvCapturedId >= 0) && (mvCaptured < 0)) {
+    for (mvCapturedId = 15; mvCapturedId >= 0; mvCapturedId--) {
       if ((PieceType[1-MoveColor][mvCapturedId] >  0) &&
           (PieceCol[1-MoveColor][mvCapturedId] == mvToCol) &&
           (PieceRow[1-MoveColor][mvCapturedId] == mvToRow)) {
         mvCaptured = PieceType[1-MoveColor][mvCapturedId];
-      } else { --mvCapturedId; }
+        if (mvCaptured == 1) { return false; }
+        break;
+      }
     }
     if ((mvPiece == 6) && (mvCapturedId < 1) && (HistEnPassant[plyCount])) {
-      mvCapturedId = 15;
-      while((mvCapturedId >= 0) && (mvCaptured < 0)){
+      for (mvCapturedId = 15; mvCapturedId >= 0; mvCapturedId--) {
         if ((PieceType[1-MoveColor][mvCapturedId] == 6) &&
             (PieceCol[1-MoveColor][mvCapturedId] == mvToCol) &&
             (PieceRow[1-MoveColor][mvCapturedId] == 4-MoveColor)) {
           mvCaptured = PieceType[1-MoveColor][mvCapturedId];
-        } else { --mvCapturedId; }
+          break;
+        }
       }
     }
   }
