@@ -2871,7 +2871,7 @@ function childrenVars(thisPly, thisVar) {
   if (typeof(thisPly) == "undefined") { thisPly = CurrentPly; }
   children = new Array();
   for (var ii = thisVar; ii < numberOfVars; ii++) {
-    if ((ii === thisVar && StartPlyVar[ii] + PlyNumberVar[ii] > thisPly) || (realParentVar(ii) === thisVar && StartPlyVar[ii] === thisPly)) {
+    if ((ii === thisVar && StartPlyVar[ii] + PlyNumberVar[ii] > thisPly) || (realParentVar(ii) === thisVar && StartPlyVar[ii] === thisPly && PlyNumberVar[ii] > 0)) {
       children.push(ii);
     }
   }
