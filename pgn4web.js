@@ -3025,7 +3025,8 @@ function ParsePGNGameString(gameString) {
             } else {
                end = start + searchThis[ii].length;
             }
-            MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' ' + ss.substring(start, end).replace(/^\s*\{(.*)\}\s*$/, '$1');
+            if (MoveCommentsVar[CurrentVar][StartPly+PlyNumber]) { MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' '; }
+            MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ss.substring(start, end).replace(/^\s*\{(.*)\}\s*$/, '$1');
             start = end;
             break;
           }
