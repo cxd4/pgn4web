@@ -358,10 +358,11 @@ function myOnResize() {
     variableSpacerFontSize = Math.floor(variableSpacerLineHeight * 0.8);
     myInsertRule(sheet, ".variableSpacer", "line-height: " + variableSpacerLineHeight + "px; font-size: " + variableSpacerFontSize + "px;");
   }
-  myInsertRule(sheet, ".gameList", "display: none; overflow: hidden; font-family: monospace; line-height: " + lineHeight + "px;");
+  myInsertRule(sheet, ".gameList", "display: none; overflow: hidden; font-family: monospace; font-size: " + Math.floor(0.9 * fontSize) + "px; line-height: " + Math.floor(0.9 * lineHeight) + "px;");
   var gameListHeaderPadding = Math.floor(lineHeight/2);
   myInsertRule(sheet, ".gameListHeader", "overflow: hidden; width: " + ww + "px; padding-top: " + gameListHeaderPadding + "px; padding-bottom: " + gameListHeaderPadding + "px;");
-  myInsertRule(sheet, ".gameListBody", "height: " + (wh - lineHeight - 2 * gameListHeaderPadding) + "px; width: " + ww + "px; overflow: auto; scrollbar-base-color: #" + backgroundColorHex + ";");
+  gameListBodyHeight = wh - lineHeight - 2 * gameListHeaderPadding;
+  myInsertRule(sheet, ".gameListBody", "height: " + gameListBodyHeight + "px; width: " + ww + "px; overflow: auto; scrollbar-base-color: #" + backgroundColorHex + ";");
 
   for (ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
 
@@ -403,21 +404,22 @@ function customFunctionOnCheckLiveBroadcastStatus() {
 }
 
 var gameListCurrentGame = -1;
+var gameListBodyHeight = -1;
 function fillGameList(force) {
   if (!force && currentGame === gameListCurrentGame) { return; }
   gameListCurrentGame = currentGame;
   if (theObject = document.getElementById("GameList")) {
-    var text = "<div class='gameListHeader'>";
+    var text = "<div class='gameListHeader' id='GameListHeader'>";
     for (var ii = 0; ii < 2 + Math.log(numberOfGames)/Math.LN10; ii++) { text += "&nbsp;"; }
-    text += "<a href='javascript:void(0);' onclick='void(0);' title=''><b>&nbsp;&lt;&lt;&nbsp;</b></a>&nbsp;";
-    text += "<a href='javascript:void(0);' onclick='void(0);' title=''><b>&nbsp;&lt;&nbsp;</b></a>&nbsp;";
+    text += "<a href='javascript:void(0);' onclick='if (theObject = document.getElementById(\"GameListBody\")) { theObject.scrollTop = 0; } this.blur();' title='scroll to top page'><b>&nbsp;&lt;&lt;&nbsp;</b></a>&nbsp;";
+    text += "<a href='javascript:void(0);' onclick='if (theObject = document.getElementById(\"GameListBody\")) { theObject.scrollTop -= gameListBodyHeight; } this.blur();' title='scroll to previous page'><b>&nbsp;&lt;&nbsp;</b></a>&nbsp;";
     text += "<a href='javascript:void(0);' onclick='selectGameList(-1);' title='back to chessboard'><b>&nbsp;&middot;&middot;&middot;&nbsp;</b></a>&nbsp;";
-    text += "<a href='javascript:void(0);' onclick='void(0);' title=''><b>&nbsp;&gt;&nbsp;</b></a>&nbsp;";
-    text += "<a href='javascript:void(0);' onclick='void(0);' title=''><b>&nbsp;&gt;&gt;&nbsp;</b></a>&nbsp;";
+    text += "<a href='javascript:void(0);' onclick='if (theObject = document.getElementById(\"GameListBody\")) { theObject.scrollTop += gameListBodyHeight; } this.blur();' title='scroll to next page'><b>&nbsp;&gt;&nbsp;</b></a>&nbsp;";
+    text += "<a href='javascript:void(0);' onclick='if (theObject = document.getElementById(\"GameListBody\")) { theObject.scrollTop = theObject.scrollHeight; } this.blur();' title='scroll to bottom page'><b>&nbsp;&gt;&gt;&nbsp;</b></a>&nbsp;";
     text += "</div>";
     var extractGamesRegExp = /<OPTION CLASS="optionSelectControl" value=(\d+)>([^<]+)/g;
     var thisBold;
-    text += "<div class='gameListBody'>";
+    text += "<div class='gameListBody' id='GameListBody'>";
     var firstGame = true;
     while (matches = extractGamesRegExp.exec(textSelectOptions)) {
       if (firstGame) { firstGame = false; } else { text += "<br/>"; }
@@ -456,7 +458,7 @@ function customFunctionOnPgnTextLoad() {
   if (theObject = document.getElementById("ShowGameListLink")) {
     theObject.title = "select from " + numberOfGames + " games";
     var text = "", ii;
-    for (ii = 0; ii < 3 + Math.log(numberOfGames)/Math.LN2; ii++) { text += "&middot;" }
+    for (ii = 0; ii < 3 + Math.log(numberOfGames)/Math.LN2; ii++) { text += "&middot;"; }
     theObject.innerHTML = text;
   }
   if (theObject = document.getElementById("ShowGameList")) {
