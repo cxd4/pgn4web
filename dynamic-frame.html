@@ -25,7 +25,7 @@
 
 <script type="text/javascript">
 SetHighlightOption(true);
-SetGameSelectorOptions("&middot;&middot;&middot;", false, 0, 0, 0, 15, 15, 3, 0); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
+SetGameSelectorOptions("&middot;&middot;&middot;", true, 0, 0, 0, 15, 15, 3, 0); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
 SetAutoplayDelay(2000); // milliseconds
 SetAutostartAutoplay(false);
 SetAutoplayNextGame(false);
@@ -308,9 +308,9 @@ function myOnResize() {
     squareSize = horizontalLayout ? squareSize_H : squareSize_V;
   }
   if (horizontalLayout) {
-    lineHeight = Math.floor(squareSize * 8 / 16);
+    lineHeight = Math.floor(squareSize * 8 / 16.5);
   } else {
-    lineHeight = Math.floor(Math.min((wh - squareSize * 8) / (7 * 2), squareSize * 8 / 16));
+    lineHeight = Math.floor(Math.min((wh - squareSize * 8) / (11 + 6/2), squareSize * 8 / 16.5));
   }
   fontSize = Math.floor(lineHeight * fontSizeRatio);
   if (fontSize > lineHeight) { fontSize = lineHeight; }
@@ -318,7 +318,7 @@ function myOnResize() {
   bareSquareSize = squareSize - 2 * squareBorderWidth;
   pieceSize = Math.floor(squareSize * pieceSizeRatio);
   if (pieceSize > bareSquareSize) { pieceSize = Math.floor(bareSquareSize); }
-  headerContainerWidth = selectWidth = horizontalLayout ? ww - 9 * squareSize : ww;
+  headerContainerWidth = horizontalLayout ? ww - 9 * squareSize : ww;
 
   sheet = document.styleSheets[0];
   oldRules = myRulesLength(sheet);
@@ -341,9 +341,6 @@ function myOnResize() {
   myInsertRule(sheet, ".highlightWhiteSquare", "width:" + bareSquareSize + "px; height:" + bareSquareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + lightColorHex + "; border-color: #" + (highlightColorHex ? highlightColorHex : lightColorHex) + ";");
   myInsertRule(sheet, ".highlightBlackSquare", "width:" + bareSquareSize + "px; height:" + bareSquareSize  + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + darkColorHex + "; border-color:  #" + (highlightColorHex ? highlightColorHex : darkColorHex) + ";");
   myInsertRule(sheet, ".headerContainer", "width: " + headerContainerWidth + "px; white-space: nowrap; overflow: hidden;" + (horizontalLayout ? " float: right; text-align: left;" : " text-align: center;"));
-  myInsertRule(sheet, ".gameSelector", (horizontalLayout ? "float: right; width: " + selectWidth + "px; height: " + (3 * lineHeight / 2) + "px;" : "position: absolute; bottom: 0; z-index: 1; height: " + lineHeight + "px;") + " overflow: hidden;");
-  myInsertRule(sheet, ".selectControl", "margin: 0; padding: 0; width: " + selectWidth + "px !important; height: " + lineHeight + "px; font-size: " + fontSize + "px; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; border-style: solid; border-width: 1px; border-color: #" + backgroundColorHex + ";");
-  myInsertRule(sheet, ".optionSelectControl", "background-color: #" + backgroundColorHex + ";");
   if (LiveBroadcastDelay > 0) {
     myInsertRule(sheet, ".gameButtons", "display: none;");
   } else {
@@ -356,14 +353,15 @@ function myOnResize() {
     myInsertRule(sheet, ".buttonControlSpace", "margin: 0; padding: 0; width: " + (lineHeight / 4) + "px !important;");
   }
   myInsertRule(sheet, ".colorFlag", "height: 0.8ex; width: 0.8ex; border-width: 1px; border-color: #" + fontColorHex + "; border-style: solid; margin-bottom: 0.2ex;");
-  firstVariableSpacerLineHeight = Math.floor(horizontalLayout ? lineHeight / 2 : 3 * lineHeight / 2);
-  firstVariableSpacerFontSize = Math.floor(firstVariableSpacerLineHeight * 0.8);
-  myInsertRule(sheet, ".firstVariableSpacer", "line-height: " + firstVariableSpacerLineHeight + "px; font-size: " + firstVariableSpacerFontSize + "px;");
   if (!horizontalLayout) {
-    variableSpacerLineHeight = Math.floor(Math.min((wh - squareSize * 8 - lineHeight * 11.5) / 5, lineHeight / 2));
+    variableSpacerLineHeight = Math.floor(Math.min((wh - squareSize * 8 - lineHeight * 11) / 6, lineHeight / 2));
     variableSpacerFontSize = Math.floor(variableSpacerLineHeight * 0.8);
     myInsertRule(sheet, ".variableSpacer", "line-height: " + variableSpacerLineHeight + "px; font-size: " + variableSpacerFontSize + "px;");
   }
+  myInsertRule(sheet, ".gameList", "display: none; overflow: hidden; font-family: monospace; line-height: " + lineHeight + "px;");
+  var gameListHeaderPadding = Math.floor(lineHeight/2);
+  myInsertRule(sheet, ".gameListHeader", "overflow: hidden; width: " + ww + "px; padding-top: " + gameListHeaderPadding + "px; padding-bottom: " + gameListHeaderPadding + "px;");
+  myInsertRule(sheet, ".gameListBody", "height: " + (wh - lineHeight - 2 * gameListHeaderPadding) + "px; width: " + ww + "px; overflow: auto; scrollbar-base-color: #" + backgroundColorHex + ";");
 
   for (ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
 
@@ -372,8 +370,7 @@ function myOnResize() {
     theObject.style.width = (squareSize * 8) + "px";
   }
 
-  if (theObject = document.getElementById("GameSelector")) { theObject.style.display = bare ? "none" : ""; }
-  if (theObject = document.getElementById("HeaderContainer")) { theObject.style.display = bare ? "none" : ""; }
+  if (theObject = document.getElementById("HeaderContainer")) { theObject.style.display = bare ? document.getElementById("GameBoard").style.display : ""; }
 
   fixColorFlag();
 
@@ -405,11 +402,70 @@ function customFunctionOnCheckLiveBroadcastStatus() {
   }
 }
 
+var gameListCurrentGame = -1;
+function fillGameList(force) {
+  if (!force && currentGame === gameListCurrentGame) { return; }
+  gameListCurrentGame = currentGame;
+  if (theObject = document.getElementById("GameList")) {
+    var text = "<div class='gameListHeader'>";
+    for (var ii = 0; ii < 2 + Math.log(numberOfGames)/Math.LN10; ii++) { text += "&nbsp;"; }
+    text += "<a href='javascript:void(0);' onclick='void(0);' title=''><b>&nbsp;&lt;&lt;&nbsp;</b></a>&nbsp;";
+    text += "<a href='javascript:void(0);' onclick='void(0);' title=''><b>&nbsp;&lt;&nbsp;</b></a>&nbsp;";
+    text += "<a href='javascript:void(0);' onclick='selectGameList(-1);' title='back to chessboard'><b>&nbsp;&middot;&middot;&middot;&nbsp;</b></a>&nbsp;";
+    text += "<a href='javascript:void(0);' onclick='void(0);' title=''><b>&nbsp;&gt;&nbsp;</b></a>&nbsp;";
+    text += "<a href='javascript:void(0);' onclick='void(0);' title=''><b>&nbsp;&gt;&gt;&nbsp;</b></a>&nbsp;";
+    text += "</div>";
+    var extractGamesRegExp = /<OPTION CLASS="optionSelectControl" value=(\d+)>([^<]+)/g;
+    var thisBold;
+    text += "<div class='gameListBody'>";
+    var firstGame = true;
+    while (matches = extractGamesRegExp.exec(textSelectOptions)) {
+      if (firstGame) { firstGame = false; } else { text += "<br/>"; }
+      thisBold = (parseInt(matches[1], 10) === currentGame);
+      text += "<a href='javascript:void(0);' onclick='selectGameList(" + matches[1] + ");' title='" + matches[2].replace(/&nbsp;/g, " ") + "'>" + (thisBold ? "<b>" : "") + matches[2] + (thisBold ? "</b>" : "") + "</a>";
+    }
+    text += "</div>";
+    theObject.innerHTML = text;
+  }
+}
+
+function showGameList() {
+  if (numberOfGames < 2) { return; }
+  disableShortcutKeysAndStoreStatus();
+  fillGameList(false);
+  if (theObject = document.getElementById("HeaderContainer")) { theObject.style.display = "none"; }
+  if (theObject = document.getElementById("GameBoard")) { theObject.style.display = "none"; }
+  if (theObject = document.getElementById("GameList")) { theObject.style.display = "block"; }
+}
+
+function selectGameList(gameNum) {
+  if (gameNum != -1) { Init(gameNum); }
+  if (theObject = document.getElementById("GameList")) { theObject.style.display = ""; }
+  if (theObject = document.getElementById("GameBoard")) { theObject.style.display = ""; }
+  if (theObject = document.getElementById("HeaderContainer")) { theObject.style.display = ""; }
+  restoreShortcutKeysStatus();
+}
+
 function customFunctionOnPgnTextLoad() {
   if (LiveBroadcastDelay) {
     if (LiveBroadcastStarted && !LiveBroadcastEnded) {
       document.title = "chess live broadcast" + (demoFlag ? " demo" : "");
     } else { document.title = LiveBroadcastStatusString; }
+  }
+  fillGameList(true);
+  if (theObject = document.getElementById("ShowGameListLink")) {
+    theObject.title = "select from " + numberOfGames + " games";
+    var text = "", ii;
+    for (ii = 0; ii < 3 + Math.log(numberOfGames)/Math.LN2; ii++) { text += "&middot;" }
+    theObject.innerHTML = text;
+  }
+  if (theObject = document.getElementById("ShowGameList")) {
+    theObject.style.visibility = numberOfGames > 1 ? "visible" : "hidden";
+  }
+  if (numberOfGames > 1) {
+    boardShortcut("F5", "show games list", function(t,e){ showGameList(); });
+  } else {
+    boardShortcut("F5", "", function(t,e){});
   }
 }
 
@@ -525,6 +581,10 @@ function customShortcutKey_Shift_5() {
   showFullscreenChessboard(true);
 }
 
+function customShortcutKey_Shift_0() {
+  showGameList();
+}
+
 function toggleBareChessboard() {
   bare = !bare;
   myOnResize();
@@ -583,7 +643,9 @@ function myOnLoad() {
 </textarea></form>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
-<div class="gameSelector" id="GameSelector"></div>
+<div style="display:none;" id="GameSelector"></div>
+
+<div class="gameList" id="GameList"></div>
 
 <div id="GameBoard"></div>
 
@@ -603,6 +665,8 @@ function myOnLoad() {
 <div class="variableSpacer">&nbsp;</div>
 <center><div class="gameButtons" id="GameButtons"></div></center>
 <div class="liveStatusLine">&nbsp;<a id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();" title="live broadcast status"></a>&nbsp;<span id="GameLiveStatusDemo" title="this is a broadcast simulation"></span></div>
+<div class="variableSpacer">&nbsp;</div>
+<div style="visibility: hidden;" id="ShowGameList">&nbsp;<a id="ShowGameListLink" href="javascript:void(0);" onclick="showGameList();"></a>&nbsp;</div>
 </div>
 
 <script type="text/javascript">
