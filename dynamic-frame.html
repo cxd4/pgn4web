@@ -358,10 +358,12 @@ function myOnResize() {
     variableSpacerFontSize = Math.floor(variableSpacerLineHeight * 0.8);
     myInsertRule(sheet, ".variableSpacer", "line-height: " + variableSpacerLineHeight + "px; font-size: " + variableSpacerFontSize + "px;");
   }
-  myInsertRule(sheet, ".gameList", "display: none; overflow: hidden; font-family: monospace; font-size: " + Math.floor(0.9 * fontSize) + "px; line-height: " + Math.floor(0.9 * lineHeight) + "px;");
-  var gameListHeaderPadding = Math.floor(lineHeight/2);
+  var gameListFontSize =  Math.floor(Math.min(ww / 30, wh / 24));
+  var gameListLineHeight =  Math.floor(1.4 * gameListFontSize);
+  var gameListHeaderPadding = Math.floor(gameListLineHeight / 2);
+  gameListBodyHeight = wh - gameListLineHeight - 2 * gameListHeaderPadding;
+  myInsertRule(sheet, ".gameList", "display: none; overflow: hidden; font-family: monospace; font-size: " + gameListFontSize + "px; line-height: " + gameListLineHeight + "px;");
   myInsertRule(sheet, ".gameListHeader", "overflow: hidden; width: " + ww + "px; padding-top: " + gameListHeaderPadding + "px; padding-bottom: " + gameListHeaderPadding + "px;");
-  gameListBodyHeight = wh - lineHeight - 2 * gameListHeaderPadding;
   myInsertRule(sheet, ".gameListBody", "height: " + gameListBodyHeight + "px; width: " + ww + "px; overflow: auto; scrollbar-base-color: #" + backgroundColorHex + ";");
 
   for (ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
@@ -371,7 +373,7 @@ function myOnResize() {
     theObject.style.width = (squareSize * 8) + "px";
   }
 
-  if (theObject = document.getElementById("HeaderContainer")) { theObject.style.display = bare ? document.getElementById("GameBoard").style.display : ""; }
+  if (theObject = document.getElementById("HeaderContainer")) { theObject.style.display = bare ? "none" : document.getElementById("GameBoard").style.display; }
 
   fixColorFlag();
 
@@ -431,11 +433,15 @@ function fillGameList(force) {
   }
 }
 
+var oldHeaderContainerDisplay;
 function showGameList() {
   if (numberOfGames < 2) { return; }
   disableShortcutKeysAndStoreStatus();
   fillGameList(false);
-  if (theObject = document.getElementById("HeaderContainer")) { theObject.style.display = "none"; }
+  if (theObject = document.getElementById("HeaderContainer")) {
+    oldHeaderContainerDisplay = theObject.style.display;
+    theObject.style.display = "none";
+  }
   if (theObject = document.getElementById("GameBoard")) { theObject.style.display = "none"; }
   if (theObject = document.getElementById("GameList")) { theObject.style.display = "block"; }
 }
@@ -444,7 +450,7 @@ function selectGameList(gameNum) {
   if (gameNum != -1) { Init(gameNum); }
   if (theObject = document.getElementById("GameList")) { theObject.style.display = ""; }
   if (theObject = document.getElementById("GameBoard")) { theObject.style.display = ""; }
-  if (theObject = document.getElementById("HeaderContainer")) { theObject.style.display = ""; }
+  if (theObject = document.getElementById("HeaderContainer")) { theObject.style.display = oldHeaderContainerDisplay; }
   restoreShortcutKeysStatus();
 }
 
