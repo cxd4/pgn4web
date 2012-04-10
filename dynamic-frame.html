@@ -359,7 +359,7 @@ function myOnResize() {
     myInsertRule(sheet, ".variableSpacer", "line-height: " + variableSpacerLineHeight + "px; font-size: " + variableSpacerFontSize + "px;");
   }
   var gameListFontSize =  Math.floor(Math.min(ww / 30, wh / 24));
-  var gameListLineHeight =  Math.floor(1.4 * gameListFontSize);
+  gameListLineHeight =  Math.floor(1.4 * gameListFontSize);
   var gameListHeaderPadding = Math.floor(gameListLineHeight / 2);
   gameListBodyHeight = wh - gameListLineHeight - 2 * gameListHeaderPadding;
   myInsertRule(sheet, ".gameList", "display: none; overflow: hidden; font-family: monospace; font-size: " + gameListFontSize + "px; line-height: " + gameListLineHeight + "px;");
@@ -407,6 +407,7 @@ function customFunctionOnCheckLiveBroadcastStatus() {
 
 var gameListCurrentGame = -1;
 var gameListBodyHeight = -1;
+var gameListLineHeight = -1;
 function fillGameList(force) {
   if (!force && currentGame === gameListCurrentGame) { return; }
   gameListCurrentGame = currentGame;
@@ -414,9 +415,9 @@ function fillGameList(force) {
     var text = "<div class='gameListHeader' id='GameListHeader'>";
     for (var ii = 0; ii < 2 + Math.log(numberOfGames)/Math.LN10; ii++) { text += "&nbsp;"; }
     text += "<a href='javascript:void(0);' onclick='if (theObject = document.getElementById(\"GameListBody\")) { theObject.scrollTop = 0; } this.blur();' title='scroll to top page'><b>&nbsp;&lt;&lt;&nbsp;</b></a>&nbsp;";
-    text += "<a href='javascript:void(0);' onclick='if (theObject = document.getElementById(\"GameListBody\")) { theObject.scrollTop -= gameListBodyHeight; } this.blur();' title='scroll to previous page'><b>&nbsp;&lt;&nbsp;</b></a>&nbsp;";
+    text += "<a href='javascript:void(0);' onclick='if (theObject = document.getElementById(\"GameListBody\")) { theObject.scrollTop -= (gameListBodyHeight - gameListLineHeight); } this.blur();' title='scroll to previous page'><b>&nbsp;&lt;&nbsp;</b></a>&nbsp;";
     text += "<a href='javascript:void(0);' onclick='selectGameList(-1);' title='back to chessboard'><b>&nbsp;&middot;&middot;&middot;&nbsp;</b></a>&nbsp;";
-    text += "<a href='javascript:void(0);' onclick='if (theObject = document.getElementById(\"GameListBody\")) { theObject.scrollTop += gameListBodyHeight; } this.blur();' title='scroll to next page'><b>&nbsp;&gt;&nbsp;</b></a>&nbsp;";
+    text += "<a href='javascript:void(0);' onclick='if (theObject = document.getElementById(\"GameListBody\")) { theObject.scrollTop += (gameListBodyHeight - gameListLineHeight); } this.blur();' title='scroll to next page'><b>&nbsp;&gt;&nbsp;</b></a>&nbsp;";
     text += "<a href='javascript:void(0);' onclick='if (theObject = document.getElementById(\"GameListBody\")) { theObject.scrollTop = theObject.scrollHeight; } this.blur();' title='scroll to bottom page'><b>&nbsp;&gt;&gt;&nbsp;</b></a>&nbsp;";
     text += "</div>";
     var extractGamesRegExp = /<OPTION CLASS="optionSelectControl" value=(\d+)>([^<]+)/g;
