@@ -409,28 +409,32 @@ var gameListCurrentGame = -1;
 var gameListBodyHeight = -1;
 var gameListLineHeight = -1;
 function fillGameList(force) {
-  if (!force && currentGame === gameListCurrentGame) { return; }
-  gameListCurrentGame = currentGame;
-  if (theObject = document.getElementById("GameList")) {
-    var text = "<div class='gameListHeader' id='GameListHeader'>";
-    for (var ii = 0; ii < 2 + Math.log(numberOfGames)/Math.LN10; ii++) { text += "&nbsp;"; }
-    text += "<a href='javascript:void(0);' onclick='if (theObject = document.getElementById(\"GameListBody\")) { theObject.scrollTop = 0; } this.blur();' title='scroll to top page'><b>&nbsp;&lt;&lt;&nbsp;</b></a>&nbsp;";
-    text += "<a href='javascript:void(0);' onclick='if (theObject = document.getElementById(\"GameListBody\")) { theObject.scrollTop -= (gameListBodyHeight - gameListLineHeight); } this.blur();' title='scroll to previous page'><b>&nbsp;&lt;&nbsp;</b></a>&nbsp;";
-    text += "<a href='javascript:void(0);' onclick='selectGameList(-1);' title='back to chessboard'><b>&nbsp;&middot;&middot;&middot;&nbsp;</b></a>&nbsp;";
-    text += "<a href='javascript:void(0);' onclick='if (theObject = document.getElementById(\"GameListBody\")) { theObject.scrollTop += (gameListBodyHeight - gameListLineHeight); } this.blur();' title='scroll to next page'><b>&nbsp;&gt;&nbsp;</b></a>&nbsp;";
-    text += "<a href='javascript:void(0);' onclick='if (theObject = document.getElementById(\"GameListBody\")) { theObject.scrollTop = theObject.scrollHeight; } this.blur();' title='scroll to bottom page'><b>&nbsp;&gt;&gt;&nbsp;</b></a>&nbsp;";
-    text += "</div>";
-    var extractGamesRegExp = /<OPTION CLASS="optionSelectControl" value=(\d+)>([^<]+)/g;
-    var thisBold;
-    text += "<div class='gameListBody' id='GameListBody'>";
-    var firstGame = true;
-    while (matches = extractGamesRegExp.exec(textSelectOptions)) {
-      if (firstGame) { firstGame = false; } else { text += "<br/>"; }
-      thisBold = (parseInt(matches[1], 10) === currentGame);
-      text += "<a href='javascript:void(0);' onclick='selectGameList(" + matches[1] + ");' title='" + matches[2].replace(/&nbsp;/g, " ") + "'>" + (thisBold ? "<b>" : "") + matches[2] + (thisBold ? "</b>" : "") + "</a>";
+  if (force || currentGame !== gameListCurrentGame) {
+    gameListCurrentGame = currentGame;
+    if (theObject = document.getElementById("GameList")) {
+      var text = "<div class='gameListHeader' id='GameListHeader'>";
+      for (var ii = 0; ii < 2 + Math.log(numberOfGames)/Math.LN10; ii++) { text += "&nbsp;"; }
+      text += "<a href='javascript:void(0);' onclick='if (theObject = document.getElementById(\"GameListBody\")) { theObject.scrollTop = 0; } this.blur();' title='scroll to top page'><b>&nbsp;&lt;&lt;&nbsp;</b></a>&nbsp;";
+      text += "<a href='javascript:void(0);' onclick='if (theObject = document.getElementById(\"GameListBody\")) { theObject.scrollTop -= (gameListBodyHeight - gameListLineHeight); } this.blur();' title='scroll to previous page'><b>&nbsp;&lt;&nbsp;</b></a>&nbsp;";
+      text += "<a href='javascript:void(0);' onclick='selectGameList(-1);' title='back to chessboard'><b>&nbsp;&middot;&middot;&middot;&nbsp;</b></a>&nbsp;";
+      text += "<a href='javascript:void(0);' onclick='if (theObject = document.getElementById(\"GameListBody\")) { theObject.scrollTop += (gameListBodyHeight - gameListLineHeight); } this.blur();' title='scroll to next page'><b>&nbsp;&gt;&nbsp;</b></a>&nbsp;";
+      text += "<a href='javascript:void(0);' onclick='if (theObject = document.getElementById(\"GameListBody\")) { theObject.scrollTop = theObject.scrollHeight; } this.blur();' title='scroll to bottom page'><b>&nbsp;&gt;&gt;&nbsp;</b></a>&nbsp;";
+      text += "</div>";
+      var extractGamesRegExp = /<OPTION CLASS="optionSelectControl" value=(\d+)>([^<]+)/g;
+      var thisBold;
+      text += "<div class='gameListBody' id='GameListBody'>";
+      var firstGame = true;
+      while (matches = extractGamesRegExp.exec(textSelectOptions)) {
+        if (firstGame) { firstGame = false; } else { text += "<br/>"; }
+        thisBold = (parseInt(matches[1], 10) === currentGame);
+        text += "<a href='javascript:void(0);' onclick='selectGameList(" + matches[1] + ");' title='" + matches[2].replace(/&nbsp;/g, " ") + "'>" + (thisBold ? "<b>" : "") + matches[2] + (thisBold ? "</b>" : "") + "</a>";
+      }
+      text += "</div>";
+      theObject.innerHTML = text;
     }
-    text += "</div>";
-    theObject.innerHTML = text;
+  }
+  if ((theObject = document.getElementById("GameListBody")) && (currentGame > 0)) {
+    setTimeout("document.getElementById('GameListBody').scrollTop = (currentGame -  1) * gameListLineHeight;", 111);
   }
 }
 
