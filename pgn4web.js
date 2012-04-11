@@ -619,7 +619,7 @@ function replayPreviousMoves(numPlies) {
 }
 
 function detectJavascriptLocation() {
-  jspath = "";
+  var jspath = "";
   var e = document.getElementsByTagName("script");
   for(var i=0; i<e.length; i++) {
     if ((e[i].src) && (e[i].src.match(/(pgn4web|pgn4web-compacted)\.js/))) {
@@ -634,7 +634,7 @@ function detectHelpLocation() {
 }
 
 function detectBaseLocation() {
-  base = "";
+  var base = "";
   var e = document.getElementsByTagName("base");
   for(var i=0; i<e.length; i++) {
     if (e[i].href) { base = e[i].href; }
@@ -645,12 +645,14 @@ function detectBaseLocation() {
 
 debugWin = null;
 function displayDebugInfo() {
+  var base = detectBaseLocation();
+  var jsurl = detectJavascriptLocation();
   stopAlertPrompt();
   debugInfo = 'pgn4web: version=' + pgn4web_version + ' homepage=' + pgn4web_project_url + '\n\n' +
     'HTMLURL: length=' + location.href.length + ' url=' +
     (location.href.length < 100 ? location.href : (location.href.substring(0,99) + '...')) + '\n' +
-    'BASEURL: url=' + detectBaseLocation() + '\n' +
-    'JSURL: url=' + detectJavascriptLocation() + '\n\n' +
+    (base ? 'BASEURL: url=' + base + '\n' : '') +
+    (jsurl != 'pgn4web.js' ? 'JSURL: url=' + jsurl + '\n' : '') + '\n' +
     'PGNURL: url=' + pgnUrl;
   if (theObject = document.getElementById("pgnText")) {
     debugInfo += '\n' + 'PGNTEXT: length=' + (theObject.tagName.toLowerCase() == "textarea" ? theObject.value.length : "?");
