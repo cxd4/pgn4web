@@ -2933,7 +2933,7 @@ function ParsePGNGameString(gameString) {
 
   var ssRep, ss = gameString, ssComm;
   ss = ss.replace(pgn4webVariationRegExpGlobal, "[%_pgn4web_variation_ $1]");
-  // replace empty variations with comments
+  // empty variations to comments
   while ((ssRep = ss.replace(/\((([\?!+#\s]|\$\d+|{[^}]*})*)\)/g, ' $1 ')) !== ss) { ss = ssRep; }
   ss = ss.replace(/^\s/, '');
   ss = ss.replace(/\s$/, '');
@@ -3298,7 +3298,7 @@ function ParseMove(move, plyCount) {
     if ((mvToRow == 7 * (1-MoveColor)) ? !mvIsPromotion : mvIsPromotion) { return false; }
   }
 
-  // which piece was captured: if nothing found must be en-passant
+  // which captured piece: if nothing found must be en-passant
   if (mvCapture) {
     for (mvCapturedId = 15; mvCapturedId >= 0; mvCapturedId--) {
       if ((PieceType[1-MoveColor][mvCapturedId] >  0) &&
@@ -3324,7 +3324,7 @@ function ParseMove(move, plyCount) {
   // check move legality
   if (! CheckLegality(PieceCode[mvPiece-1], plyCount)) { return false; }
 
-  // pawn moved => check if en-passant possible
+  // pawn moved: check en-passant possibility
   HistEnPassant[plyCount+1] = false;
   HistEnPassantCol[plyCount+1] = -1;
   if (mvPiece == 6) {
@@ -3429,7 +3429,7 @@ function PrintHTML() {
   var text;
   var theObject;
 
-  // 8x8 table chessboard
+  // chessboard
 
   if (theObject = document.getElementById("GameBoard")) {
     text = '<TABLE CLASS="boardTable" ID="boardTable" CELLSPACING=0 CELLPADDING=0';
@@ -3863,16 +3863,12 @@ function FlipBoard() {
 }
 
 function RefreshBoard() {
-
-  // display all empty squares
   var col, row, square;
   for (col = 0; col < 8;++col) {
     for (row = 0; row < 8; ++row) {
       if (Board[col][row] === 0) { SetImage(col, row, ClearImg.src); }
     }
   }
-
-  // display pieces
   var color, ii;
   for (color = 0; color < 2; ++color) {
     for (ii = 0; ii < 16; ++ii) {
@@ -3885,9 +3881,9 @@ function RefreshBoard() {
 
 function SetAutoPlay(vv) {
   isAutoPlayOn = vv;
-  // clear timeout
+
   if (AutoPlayInterval) { clearTimeout(AutoPlayInterval); AutoPlayInterval = null; }
-  // timeout on: move forward and change button label
+
   if (isAutoPlayOn){
     if (document.GameButtonsForm) {
       if (document.GameButtonsForm.AutoPlay) {
@@ -3933,8 +3929,8 @@ function SetAutoplayDelayAndStart(vv) {
 }
 
 function SetLiveBroadcast(delay, alertFlag, demoFlag, stepFlag) {
-  LiveBroadcastDelay = delay; // delay = 0 => no live broadcast
-  LiveBroadcastAlert = (alertFlag === true); // display myAlerts during live broadcast?
+  LiveBroadcastDelay = delay; // zero delay: no live broadcast
+  LiveBroadcastAlert = (alertFlag === true);
   LiveBroadcastDemo = (demoFlag === true);
   LiveBroadcastSteppingMode = (stepFlag === true);
 }
@@ -3992,14 +3988,14 @@ function StoreMove(thisPly) {
   // update "square from" and captured square (not necessarily "square to" e.g. en-passant)
   Board[PieceCol[MoveColor][mvPieceId]][PieceRow[MoveColor][mvPieceId]] = 0;
 
-  // mark the captured piece
+  // mark captured piece
   if (mvCapturedId >= 0) {
      PieceType[1-MoveColor][mvCapturedId] = -1;
      PieceMoveCounter[1-MoveColor][mvCapturedId]++;
      Board[PieceCol[1-MoveColor][mvCapturedId]][PieceRow[1-MoveColor][mvCapturedId]] = 0;
   }
 
-  // update piece arrays: a promotion would change piece type
+  // update piece arrays: promotion changes piece type
   PieceType[MoveColor][mvPieceId] = mvPieceOnTo;
   PieceMoveCounter[MoveColor][mvPieceId]++;
   PieceCol[MoveColor][mvPieceId] = mvToCol;
@@ -4023,7 +4019,7 @@ function UndoMove(thisPly) {
 
   if (HistNull[thisPly]) { return; }
 
-  // bring moved piece back
+  // moved piece back
   Board[mvToCol][mvToRow] = 0;
   Board[HistCol[0][thisPly]][HistRow[0][thisPly]] =
     HistType[0][thisPly]*(1-2*MoveColor);
@@ -4033,7 +4029,7 @@ function UndoMove(thisPly) {
   PieceType[MoveColor][mvPieceId] = HistType[0][thisPly];
   PieceMoveCounter[MoveColor][mvPieceId]--;
 
-  // capture/castle: bring captured/rook back
+  // capture/castle: captured/rook back
   if (mvCapturedId >= 0) {
      PieceType[1-MoveColor][mvCapturedId] = mvCapturedId;
      PieceCol[1-MoveColor][mvCapturedId] = HistCol[1][thisPly];
