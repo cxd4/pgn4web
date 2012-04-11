@@ -5,8 +5,7 @@
 #  for credits, license and more details
 #
 
-PGN4WEB: javascript chess games viewer for websites, blogs and live games
-broadcasts.
+PGN4WEB: javascript chess games viewer for websites, blogs and live broadcasts.
 
 ABOUT
 
