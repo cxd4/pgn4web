@@ -129,8 +129,9 @@ function alertPromptTick(restart) {
     clearTimeout(alertPromptInterval);
     alertPromptInterval = null;
   }
-  theObject = document.getElementById('tcol0trow0');
-  if(theObject) {
+  var debugColRow = colRowFromSquare(debugShortcutSquare);
+  if (!debugColRow) { return; }
+  if(theObject = document.getElementById('tcol' + debugColRow.col + 'trow' + debugColRow.row)) {
     if (alertPromptOn) {
       if ((highlightOption) &&
         ((lastColFromHighlighted === 0 && lastRowFromHighlighted === 7) ||
@@ -415,6 +416,15 @@ for (col=0; col<8; col++) {
 }
 clearShortcutSquares("ABCDEFGH", "12345678");
 
+function colRowFromSquare(square) {
+  if (square.charCodeAt === null) { return -1; }
+  var col = square.charCodeAt(0) - 65; // 65="A"
+  if ((col < 0) || (col > 7)) { return null; }
+  var row = 56 - square.charCodeAt(1); // 56="8"
+  if ((row < 0) || (row > 7)) { return null; }
+  return { "col": col, "row": row };
+}
+
 function clearShortcutSquares(cols, rows) {
   if ((typeof cols != "string") || (typeof rows != "string")) { return; }
   for (c=0; c<cols.length; c++) { for (r=0; r<rows.length; r++) {
@@ -423,21 +433,15 @@ function clearShortcutSquares(cols, rows) {
 }
 
 function boardIsDefault(square) {
-  if (square.charCodeAt === null) { return false; }
-  var col = square.charCodeAt(0) - 65; // 65="A"
-  if ((col < 0) || (col > 7)) { return false; }
-  var row = 56 - square.charCodeAt(1); // 56="8"
-  if ((row < 0) || (row > 7)) { return false; }
-  return boardDefault[col][row];
+  var colRow = colRowFromSquare(square);
+  if (!colRow) { return false; }
+  return boardDefault[colRow.col][colRow.row];
 }
 
 function boardShortcut(square, title, functionPointer, defaultSetting) {
-  var theObject;
-  if (square.charCodeAt === null) { return; }
-  var col = square.charCodeAt(0) - 65; // 65="A"
-  if ((col < 0) || (col > 7)) { return; }
-  var row = 56 - square.charCodeAt(1); // 56="8"
-  if ((row < 0) || (row > 7)) { return; }
+  var theObject, colRow = colRowFromSquare(square);
+  if (!colRow) { return; }
+  else { var col = colRow.col; var row = colRow.row; }
   boardTitle[col][row] = title;
   if (functionPointer) { boardOnClick[col][row] = functionPointer; }
   boardDefault[col][row] = defaultSetting ? true : false;
