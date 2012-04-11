@@ -638,7 +638,7 @@ function detectBaseLocation() {
   var base = "";
   var e = document.getElementsByTagName("base");
   for(var i=0; i<e.length; i++) {
-    if (e[i].href) { base = e[i].href; }
+    if (e[i].href) { base = e[i].href; break; }
   }
   return base;
 }
