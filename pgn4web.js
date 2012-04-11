@@ -652,10 +652,13 @@ function displayDebugInfo() {
     'HTMLURL: length=' + location.href.length + ' url=' +
     (location.href.length < 100 ? location.href : (location.href.substring(0,99) + '...')) + '\n' +
     (base ? 'BASEURL: url=' + base + '\n' : '') +
-    (jsurl != 'pgn4web.js' ? 'JSURL: url=' + jsurl + '\n' : '') + '\n' +
-    'PGNURL: url=' + pgnUrl;
-  if (theObject = document.getElementById("pgnText")) {
-    debugInfo += '\n' + 'PGNTEXT: length=' + (theObject.tagName.toLowerCase() == "textarea" ? theObject.value.length : "?");
+    (jsurl != 'pgn4web.js' ? 'JSURL: url=' + jsurl + '\n' : '');
+  if (pgnUrl) {
+    debugInfo += 'PGNURL: url=' + pgnUrl;
+  } else {
+    if (theObject = document.getElementById("pgnText")) {
+      debugInfo += 'PGNTEXT: length=' + (theObject.tagName.toLowerCase() == "textarea" ? theObject.value.length : "?");
+    }
   }
   debugInfo += '\n\n' +
     'GAME: current=' + (currentGame+1) + ' number=' + numberOfGames + '\n' +
