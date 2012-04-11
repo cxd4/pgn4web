@@ -5,13 +5,12 @@
  *  for credits, license and more details
  */
 
-var pgn4web_version = '2.49+';
+var pgn4web_version = "2.49+";
 
-var pgn4web_project_url = 'http://pgn4web.casaschi.net';
-var pgn4web_project_author = 'Paolo Casaschi';
-// pgn4web_project_email could be preassigned in pgn4web-server-config.js
-var pgn4web_project_email;
-if (pgn4web_project_email === undefined) { pgn4web_project_email = 'pgn4web@casaschi.net'; }
+var pgn4web_project_url = "http://pgn4web.casaschi.net";
+var pgn4web_project_author = "Paolo Casaschi";
+var pgn4web_project_email; // preassigned in pgn4web-server-config.js
+if (typeof(pgn4web_project_email) == "undefined") { pgn4web_project_email = "pgn4web@casaschi.net"; }
 
 var helpWin=null;
 function displayHelp(section) {
@@ -447,8 +446,7 @@ function boardShortcut(square, title, functionPointer, defaultSetting) {
   boardDefault[col][row] = defaultSetting ? true : false;
   if (theObject = document.getElementById('img_tcol' + col + 'trow' + row)) {
     if (IsRotated) { square = String.fromCharCode(72-col,49+row); }
-    if (boardTitle[col][row] !== '') { squareTitle = square + ': ' + boardTitle[col][row]; }
-    else { squareTitle = square; }
+    squareTitle = square + (boardTitle[col][row] ? ': ' + boardTitle[col][row] : '');
     theObject.title = squareTitle;
   }
 }
@@ -622,7 +620,7 @@ function replayPreviousMoves(numPlies) {
 
 function detectJavascriptLocation() {
   jspath = "";
-  var e = document.getElementsByTagName('script');
+  var e = document.getElementsByTagName("script");
   for(var i=0; i<e.length; i++) {
     if ((e[i].src) && (e[i].src.match(/(pgn4web|pgn4web-compacted)\.js/))) {
       jspath = e[i].src;
@@ -637,7 +635,7 @@ function detectHelpLocation() {
 
 function detectBaseLocation() {
   base = "";
-  var e = document.getElementsByTagName('base');
+  var e = document.getElementsByTagName("base");
   for(var i=0; i<e.length; i++) {
     if (e[i].href) { base = e[i].href; }
   }
@@ -653,24 +651,21 @@ function displayDebugInfo() {
     (location.href.length < 100 ? location.href : (location.href.substring(0,99) + '...')) + '\n' +
     'BASEURL: url=' + detectBaseLocation() + '\n' +
     'JSURL: url=' + detectJavascriptLocation() + '\n\n' +
-    'PGNURL: url=' + pgnUrl + '\n' +
-    'PGNTEXT: length=';
-  if (document.getElementById("pgnText") !== null) {
-    debugInfo += document.getElementById("pgnText").tagName.toLowerCase() == "textarea" ?
-      document.getElementById("pgnText").value.length :
-      document.getElementById("pgnText").innerHTML.length +
-      ' container=' + document.getElementById("pgnText").tagName.toLowerCase();
-    // pgn4web up to 1.77 used <span> for pgnText
+    'PGNURL: url=' + pgnUrl;
+  if (theObject = document.getElementById("pgnText")) {
+    debugInfo += '\n' + 'PGNTEXT: length=' + (theObject.tagName.toLowerCase() == "textarea" ? theObject.value.length : "?");
   }
   debugInfo += '\n\n' +
     'GAME: current=' + (currentGame+1) + ' number=' + numberOfGames + '\n' +
     'VARIATION: current=' + CurrentVar + ' number=' + (numberOfVars-1) + '\n' +
     'PLY: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber + '\n' +
-    'AUTOPLAY: ' + (isAutoPlayOn ? 'delay=' + Delay + 'ms' + ' autoplaynext=' + autoplayNextGame : 'off') +
-    '\n\n' +
-    'LIVEBROADCAST: ' + (LiveBroadcastDelay > 0 ? 'ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + ' started=' + LiveBroadcastStarted + ' ended=' + LiveBroadcastEnded + ' paused=' + LiveBroadcastPaused + ' demo=' + LiveBroadcastDemo + ' alert=' + LiveBroadcastAlert + ' stepping=' + LiveBroadcastSteppingMode + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime() : 'off') +
-    '\n\n' +
-    'ALERTLOG: fatalnew=' + fatalErrorNumSinceReset + ' new=' + alertNumSinceReset +
+    'AUTOPLAY: status=' + (isAutoPlayOn ? 'on' : 'off') + ' delay=' + Delay + 'ms' + ' next=' + autoplayNextGame +
+    '\n\n';
+  if (LiveBroadcastDelay > 0) {
+    debugInfo += 'LIVEBROADCAST: status=' + liveStatusDebug() + ' ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime() +
+    '\n\n';
+  }
+  debugInfo += 'ALERTLOG: fatalnew=' + fatalErrorNumSinceReset + ' new=' + alertNumSinceReset +
     ' shown=' + Math.min(alertNum, alertLog.length) + ' total=' + alertNum + '\n--';
   if (alertNum > 0) {
     for (ii = 0; ii<alertLog.length; ii++) {
@@ -694,6 +689,14 @@ function displayDebugInfo() {
   }
   alertNumSinceReset = fatalErrorNumSinceReset = 0;
 }
+
+function liveStatusDebug() {
+  if (LiveBroadcastEnded) { return "ended"; }
+  if (LiveBroadcastPaused) { return "paused"; }
+  if (LiveBroadcastStarted) { return "started"; }
+  return "waiting";
+}
+
 
 pgnWin = null;
 function displayPgnData(allGames) {
