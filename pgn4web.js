@@ -23,7 +23,7 @@ function displayHelp(section) {
 
 
 // custom functions for given events
-// to be redefined in the HTML AFTER loading pgn4web.js
+// to be redefined AFTER loading pgn4web.js
 
 function customFunctionOnPgnTextLoad() {}
 function customFunctionOnPgnGameLoad() {}
@@ -154,7 +154,7 @@ function stopKeyProp(e) {
   return false;
 }
 
-// for onFocus and onBlur actions on textboxes, allowing text typing
+// for onFocus and onBlur textbox events, allowing text typing
 var shortcutKeysWereEnabled = false;
 function disableShortcutKeysAndStoreStatus() {
   if ((shortcutKeysWereEnabled = shortcutKeysEnabled) === true) {
@@ -454,6 +454,7 @@ function boardShortcut(square, title, functionPointer, defaultSetting) {
 // PLEASE NOTE: 'boardShortcut' ALWAYS ASSUMES 'square' WITH WHITE ON BOTTOM
 
 debugShortcutSquare = "A8";
+
 // A8
 boardShortcut("A8", "pgn4web v" + pgn4web_version + " debug info", function(t,e){ displayDebugInfo(); }, true);
 // B8
@@ -2011,7 +2012,7 @@ function loadPgnFromTextarea(textareaId) {
       if (tmpText.indexOf('"') < 0) { tmpText = tmpText.replace(/(&quot;)/g, '"'); }
     }
 
-    // no html header => add emptyPgnHeader
+    // no header: add emptyPgnHeader
     if (pgnHeaderTagRegExp.test(tmpText) === false) { tmpText = emptyPgnHeader + tmpText; }
 
     if ( pgnGameFromPgnText(tmpText) ) {
