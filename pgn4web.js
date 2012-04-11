@@ -22,7 +22,7 @@ function displayHelp(section) {
 }
 
 
-// custom functions executed at the given moments
+// custom functions for given events
 // to be redefined in the HTML AFTER loading pgn4web.js
 
 function customFunctionOnPgnTextLoad() {}
@@ -1025,9 +1025,8 @@ function CheckLegality(what, plyCount) {
     return true;
   }
 
-  // not a capture => square must be empty
-  // capture => "square to" occupied by opposite color piece (except en-passant)
-  // "square to" moved piece different from piece => pawn promotion
+  // capture: "square to" occupied by opposite color piece (except en-passant)
+  // promotion: "square to" moved piece different from piece
   if (!mvCapture) {
     if (Board[mvToCol][mvToRow] !== 0) { return false; }
   }
@@ -1041,7 +1040,7 @@ function CheckLegality(what, plyCount) {
     if (mvToRow != 7*(1-MoveColor)) { return false; }
   }
 
-  // piece move => loop over same type pieces: which could move there?
+  // piece move: loop over same type pieces, which could move there?
   var pieceId;
   for (pieceId = 0; pieceId < 16; ++pieceId) {
      if (PieceType[MoveColor][pieceId] == mvPiece) {
@@ -1497,7 +1496,6 @@ function highlightMove(colFrom, rowFrom, colTo, rowTo) {
 function highlightSquare(col, row, on) {
   if ((col === undefined) || (row === undefined)) { return false; }
   if (! SquareOnBoard(col, row)) { return false; }
-  // locates coordinates on HTML table
   if (IsRotated) { trow = row; tcol = 7 - col; }
   else { trow = 7 - row; tcol = col; }
   if (!(theObject = document.getElementById('tcol' + tcol + 'trow' + trow))) { return false; }
@@ -1559,7 +1557,7 @@ function undoStackRedo() {
 }
 
 
-// keep this aligned with the one in chrome-extension/background.html
+// keep aligned with chrome-extension/background.html
 function fixCommonPgnMistakes(text) {
   text = text.replace(/[\u00A0\u180E\u2000-\u200A\u202F\u205F\u3000]/g," "); // some "space" to plain space
   text = text.replace(/\u00BD/g,"1/2"); // "half fraction" to "1/2"
@@ -1584,11 +1582,11 @@ function pgnGameFromPgnText(pgnText) {
 
   pgnText = fixCommonPgnMistakes(pgnText);
 
-  // replace < and > with html entities: avoid html injection from PGN data
+  // replace < and > with html entities to avoid html injection
   pgnText = pgnText.replace(/</g, "&lt;");
   pgnText = pgnText.replace(/>/g, "&gt;");
 
-  // PGN standard: lines starting with % must be ignored
+  // PGN standard: ignore lines starting with %
   pgnText = pgnText.replace(/(^|\n)%.*(\n|$)/g, "\n");
 
   numberOfGames = 0;
@@ -1679,7 +1677,7 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
         loadPgnFromPgnUrlResult = LOAD_PGN_FAIL;
       }
 
-// dirty hack for some old Opera versions failure with reporting 304 status
+// dirty hack for Opera's failure reporting 304 status
     } else if (window.opera && (! this_http_request.responseText) && (this_http_request.status === 0)) {
       this_http_request.abort();
       loadPgnFromPgnUrlResult = LOAD_PGN_UNMODIFIED;
@@ -1965,10 +1963,10 @@ function refreshPgnSource() {
     addedPly = 0;
     for(ii=0;ii<numberOfGames;ii++) {
       rnd = Math.random();
-      if      (rnd <= 0.05) { newPly = 3; } //  5% add 3 ply
-      else if (rnd <= 0.20) { newPly = 2; } // 15% add 2 ply
-      else if (rnd <= 0.60) { newPly = 1; } // 40% add 1 ply
-      else                  { newPly = 0; } // 40% add 0 ply
+      if      (rnd <= 0.05) { newPly = 3; } //  5%
+      else if (rnd <= 0.20) { newPly = 2; } // 15%
+      else if (rnd <= 0.60) { newPly = 1; } // 40%
+      else                  { newPly = 0; } // 40%
       if (gameDemoMaxPly[ii] <= gameDemoLength[ii]) {
         gameDemoMaxPly[ii] += newPly;
         addedPly += newPly;
@@ -2151,7 +2149,6 @@ function myAlertFEN(FenString, text) {
 function InitFEN(startingFEN) {
   FenString = startingFEN !== undefined ? startingFEN : FenStringStart;
 
-  // board reset
   var ii, jj;
   for (ii = 0; ii < 8; ++ii) {
     for (jj = 0; jj < 8; ++jj) {
@@ -2159,8 +2156,7 @@ function InitFEN(startingFEN) {
     }
   }
 
-  // initial position
-  var color, pawn;
+  var color;
   StartPly  = 0;
   MoveCount = StartPly;
   MoveColor = StartPly % 2;
@@ -2176,7 +2172,7 @@ function InitFEN(startingFEN) {
   HistNull[StartPly] = 0;
 
   if (FenString == FenStringStart) {
-    for (color = 0; color < 2; ++color) {
+    for (color = 0; color < 2; color++) {
       //                         K  Q  N     B     R     p
       PieceType[color]        = [1, 2, 5, 5, 4, 4, 3, 3, 6, 6, 6, 6, 6, 6, 6, 6];
       PieceCol[color]         = [4, 3, 1, 6, 2, 5, 0, 7, 0, 1, 2, 3, 4, 5, 6, 7];
@@ -2491,7 +2487,7 @@ function IsCheck(col, row, color) {
   if ((Math.abs(PieceCol[1-color][0]-col) <= 1) &&
       (Math.abs(PieceRow[1-color][0]-row) <= 1)) { return true; }
 
-  // knight giving check?
+  // knight?
   for (ii = -2; ii <= 2; ii += 4) {
     for(jj = -1; jj <= 1; jj += 2) {
       if (SquareOnBoard(col+ii, row+jj)) {
@@ -2503,14 +2499,14 @@ function IsCheck(col, row, color) {
     }
   }
 
-  // pawn giving check?
+  // pawn?
   for (ii = -1; ii <= 1; ii += 2) {
     if (SquareOnBoard(col+ii, row-sign)) {
       if (Board[col+ii][row-sign] == sign*6) { return true; }
     }
   }
 
-  // queens, rooks and bishops?
+  // queens, rooks, bishops?
   for (ii = -1; ii <= 1; ++ii) {
     for (jj = -1; jj <= 1; ++jj) {
       if ((ii !== 0) || (jj !== 0)) {
@@ -2597,7 +2593,7 @@ function MoveBackward(diff, scanOnly) {
   var goToPly    = goFromPly  - diff;
   if (goToPly < StartPly) { goToPly = StartPly-1; }
 
-  // reconstruct old position ply by ply
+  // reconstruct old position
   for(var thisPly = goFromPly; thisPly > goToPly; --thisPly) {
     CurrentPly--;
     MoveColor = 1-MoveColor;
