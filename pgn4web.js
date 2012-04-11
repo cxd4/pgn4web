@@ -14,7 +14,7 @@ if (typeof(pgn4web_project_email) == "undefined") { pgn4web_project_email = "pgn
 
 var helpWin=null;
 function displayHelp(section) {
-  section = typeof(section) == "undefined" ? "" : "?" + section;
+  section = !section ? "" : "?" + section;
   if (helpWin && !helpWin.closed) { helpWin.close(); }
   helpWin = window.open(detectHelpLocation() + section, "pgn4web_help",
     "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
@@ -463,13 +463,13 @@ boardShortcut("C8", "show this game PGN source data", function(t,e){ displayPgnD
 // D8
 boardShortcut("D8", "show full PGN source data", function(t,e){ displayPgnData(true); }, true);
 // E8
-boardShortcut("E8", "search help", function(t,e){ displayHelp("search_tool"); }, true);
+boardShortcut("E8", "search help", function(t,e){ displayHelp(e.shiftKey ? "informant_symbols" : "search_tool"); }, true);
 // F8
 boardShortcut("F8", "shortcut keys help", function(t,e){ displayHelp("shortcut_keys"); }, true);
 // G8
 boardShortcut("G8", "shortcut squares help", function(t,e){ displayHelp("shortcut_squares"); }, true);
 // H8
-boardShortcut("H8", "pgn4web help", function(t,e){ displayHelp(); }, true);
+boardShortcut("H8", "pgn4web help", function(t,e){ displayHelp(e.shiftKey ? "credits_and_license" : ""); }, true);
 // A7
 boardShortcut("A7", "pgn4web website", function(t,e){ window.open(pgn4web_project_url); }, true);
 // B7
