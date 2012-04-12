@@ -39,7 +39,7 @@ function customPgnHeaderTag(customTagString, htmlElementIdString, gameNum) {
   if ((pgnHeader[gameNum]) && (tagValues = pgnHeader[gameNum].match('\\[\\s*' + customTagString + '\\s*\"([^\"]+)\"\\s*\\]'))) {
     tagValue = tagValues[1];
   } else { tagValue = ""; }
-  if ((htmlElementIdString) && (theObject = document.getElementById(htmlElementIdString)) && (typeof(theObject.innerHTML) !== "undefined")) {
+  if ((htmlElementIdString) && (theObject = document.getElementById(htmlElementIdString)) && (typeof(theObject.innerHTML) == "string")) {
     theObject.innerHTML = tagValue;
   }
   return tagValue;
@@ -54,7 +54,7 @@ function customPgnCommentTag(customTagString, htmlElementIdString, plyNum, varId
   if ((MoveCommentsVar[varId][plyNum]) && (tagValues = MoveCommentsVar[varId][plyNum].match('\\[%' + customTagString + '\\s*([^\\]]+)\\s*\\]'))) {
     tagValue = tagValues[1];
   } else { tagValue = ""; }
-  if ((htmlElementIdString) && (theObject = document.getElementById(htmlElementIdString)) && (typeof(theObject.innerHTML) !== "undefined")) {
+  if ((htmlElementIdString) && (theObject = document.getElementById(htmlElementIdString)) && (typeof(theObject.innerHTML) == "string")) {
     theObject.innerHTML = tagValue;
   }
   return tagValue;
@@ -1396,7 +1396,7 @@ function HighlightLastMove() {
     }
     beforeLastMoverClockObject.innerHTML = clockString;
   }
-  
+
   if (lastMoverClockObject && beforeLastMoverClockObject) {
     if (lastMoverClockObject.innerHTML && !beforeLastMoverClockObject.innerHTML) {
       beforeLastMoverClockObject.innerHTML = "-";
