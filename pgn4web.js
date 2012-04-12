@@ -1279,7 +1279,7 @@ function SetAutoplayNextGame(onOff) {
 }
 
 function SetInitialHalfmove(number_or_string, always) {
-  if (always === true) { alwaysInitialHalfmove = true; }
+  alwaysInitialHalfmove = (always === true);
   if (number_or_string === undefined) { initialHalfmove = 0; return; }
   initialHalfmove = number_or_string;
   if ((typeof number_or_string == "string") &&
