@@ -146,12 +146,6 @@
   var old_gameKey = "";
   var old_PlyNumber = -1;
   function customFunctionOnPgnGameLoad() {
-    wObject = document.getElementById("GameWhite");
-    bObject = document.getElementById("GameBlack");
-    if (wObject && bObject) {
-      if ((!wObject.innerHTML.match(/\S/)) && (bObject.innerHTML.match(/\S/))) { wObject.innerHTML = "-"; }
-      if ((!bObject.innerHTML.match(/\S/)) && (wObject.innerHTML.match(/\S/))) { bObject.innerHTML = "-"; }
-    }
     if (theObject = document.getElementById("bottomContainer")) {
       theObject.title = numberOfGames > 1 ? " game " + (currentGame+1) + " of " + numberOfGames + "  " : "";
       addTagToTitle("event:", gameEvent[currentGame], theObject);
@@ -182,12 +176,6 @@
   }
 
   function customFunctionOnMove() {
-    wObject = document.getElementById("GameWhiteClock");
-    bObject = document.getElementById("GameBlackClock");
-    if (wObject && bObject) {
-      if ((!wObject.innerHTML.match(/\S/)) && (bObject.innerHTML.match(/\S/))) { wObject.innerHTML = "-"; }
-      if ((!bObject.innerHTML.match(/\S/)) && (wObject.innerHTML.match(/\S/))) { bObject.innerHTML = "-"; }
-    }
     if (theObject = document.getElementById("GameMoreMoves")) {
       theObject.innerHTML = (CurrentPly == StartPly + PlyNumber) ? "" : ">";
     }
