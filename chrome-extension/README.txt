@@ -50,6 +50,8 @@ Implemented as of Google Chrome 17.0.958.0.
 Initially the extension preserves backward compatibility, once Google Chrome
 stable version 17 is released, consider removing "try" statements and set
 minimum_chrome_version to 17.
+Monitor the webRequest API for changes, improving the URL selection (see
+Declarative WebRequest API).
 
 background.html, manifest.json: registerContentHandler
 register the extension as content handler for application/x-chess-pgn
@@ -79,7 +81,7 @@ currently experimental; make sure it works with data URIs.
 http://crbug.com/12133
 
 background.html: help prompt after new install
-use the extension API, currently experimental.
+use the runtime API, currently experimental.
 no crbug yet
 
 
