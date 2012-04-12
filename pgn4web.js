@@ -2132,13 +2132,12 @@ function Init(nextGame){
     setTimeout("autoScrollToCurrentMoveIfEnabled();", Math.min(666, 0.9 * Delay));
   } else {
     synchMoves();
+    RefreshBoard();
+    HighlightLastMove();
     autoScrollToCurrentMoveIfEnabled();
     // customFunctionOnMove here for consistency: null move starting new game
     customFunctionOnMove();
   }
-
-  RefreshBoard();
-  HighlightLastMove();
 
   if ((firstStart) && (autostartAutoplay)) { SetAutoPlay(true); }
 
