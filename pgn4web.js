@@ -3481,7 +3481,7 @@ function PrintHTML() {
     spaceSize = 3;
     buttonSize = (tableSize - spaceSize*(numberOfButtons - 1)) / numberOfButtons;
     text = '<FORM NAME="GameButtonsForm" STYLE="display:inline;">' +
-      '<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>' +
+      '<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">' +
       '<TR><TD>' +
       '<INPUT ID="startButton" TYPE="BUTTON" VALUE="&lt;&lt;" STYLE="';
     if (buttonSize > 0) { text += 'width: ' + buttonSize + 'px;'; }
