@@ -1066,7 +1066,7 @@ function generate_html_code() {
 
   html_code_string = "";
   if (document.getElementById('useTextarea').checked) {
-    html_code_string += "<textarea id=" + pgnId + " style='display: none;'>\n\n" + pgnText_value + "\n\n</textarea>\n\n";
+    html_code_string += "<textarea id='" + pgnId + "' style='display: none;'>\n\n" + pgnText_value + "\n\n</textarea>\n\n";
   }
   html_code_string += "<iframe height='" + outerFrameHeight + "' width='" + outerFrameWidth + "' frameborder='0' scrolling='no' marginheight='0' marginwidth='0'";
   if (document.getElementById('backgroundColorHex').value == 'transparent') {
