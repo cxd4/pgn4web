@@ -748,15 +748,15 @@ function update_disabled_controls() {
 
   document.board.fontHeaderSize.disabled = document.board.fontHeaderColorHex.disabled = (document.board.headerDisplay.value == 'hidden');
 
-  document.board.fontMovesSize.disabled = document.board.fontMovesColorHex.disabled = document.board.highlightMoveColorHex.disabled = ((document.board.movesDisplay.value == 'hidden') && (document.board.headerDisplay.value != 'live') && (document.board.headerDisplay.value != 'variations'));
+  document.board.fontMovesSize.disabled = document.board.fontMovesColorHex.disabled = document.board.highlightMoveColorHex.disabled = document.getElementById('highlightMoveColor_background').disabled = ((document.board.movesDisplay.value == 'hidden') && (document.board.headerDisplay.value != 'live') && (document.board.headerDisplay.value != 'variations'));
 
-  document.board.commentsDisplay.disabled = ((document.board.movesDisplay.value == 'hidden') && (document.board.headerDisplay.value != 'live') && (document.board.headerDisplay.value != 'variations'));
+  document.board.commentsDisplay.disabled = document.getElementById('commentsDisplay_inline').disabled = document.getElementById('commentsDisplay_newline').disabled = document.getElementById('commentsDisplay_hidden').disabled = ((document.board.movesDisplay.value == 'hidden') && (document.board.headerDisplay.value != 'live') && (document.board.headerDisplay.value != 'variations'));
 
-  document.board.fontCommentsSize.disabled = document.board.fontCommentsColorHex.disabled = (((document.board.movesDisplay.value == 'hidden') || (document.board.commentsDisplay.value == 'hidden')) && (document.board.headerDisplay.value != 'live') && (document.board.headerDisplay.value != 'variations'));
+  document.board.fontCommentsSize.disabled = document.getElementById('fontCommentsSize_moves').disabled = document.board.fontCommentsColorHex.disabled = (((document.board.movesDisplay.value == 'hidden') || (document.board.commentsDisplay.value == 'hidden')) && (document.board.headerDisplay.value != 'live') && (document.board.headerDisplay.value != 'variations'));
 
-  document.board.fontVariationsSize.disabled = document.board.fontVariationsColorHex.disabled = (((document.board.movesDisplay.value == 'hidden') && (document.board.headerDisplay.value != 'live') && (document.board.headerDisplay.value != 'variations')) || (document.board.commentsDisplay.value == 'hidden') || (!document.board.useTextarea.checked));
+  document.board.fontVariationsSize.disabled = document.getElementById('fontVariationsSize_comments').disabled = document.board.fontVariationsColorHex.disabled = document.getElementById('fontVariationsColor_comments').disabled = (((document.board.movesDisplay.value == 'hidden') && (document.board.headerDisplay.value != 'live') && (document.board.headerDisplay.value != 'variations')) || (document.board.commentsDisplay.value == 'hidden') || (!document.board.useTextarea.checked));
 
-  document.board.encodePgn.disabled = document.board.useTextarea.checked;
+  document.board.encodePgn.disabled = document.getElementById('encodePgn_enabled').disabled = document.board.useTextarea.checked;
 
 }
 
@@ -790,8 +790,8 @@ function update_suggested_iframe_dimensions() {
   if (document.board.horizontalLayout.value == "t") {
     suggested_frameHeight = "board";
     suggested_frameWidth = "page";
-    document.getElementById('frameHeight_helpText').innerHTML = "a number or <a class='helplink' href='' onClick='javascript:document.board.frameHeight.value = \"board\"; return false;'>board</a>; min " + min_frameHeight + "; when <a class='helplink' href='' onClick='javascript:document.board.frameHeight.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameHeight;
-    document.getElementById('frameWidth_helpText').innerHTML = "a number or <a class='helplink' href='' onClick='javascript:document.board.frameWidth.value = \"page\"; return false;'>page</a>; min " + min_frameWidth + "; when <a class='helplink' href='' onClick='javascript:document.board.frameWidth.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
+    document.getElementById('frameHeight_helpText').innerHTML = "a number or <a id='frameHeight_board' class='helplink' href='' onClick='if (!this.disabled) { document.board.frameHeight.value = \"board\"; update_controls(); } return false;'>board</a>; min " + min_frameHeight + "; when <a id='frameHeight_blank' class='helplink' href='' onClick='if (!this.disabled) { document.board.frameHeight.value = \"\"; update_controls(); } return false;'>blank</a>, assigned to " + suggested_frameHeight;
+    document.getElementById('frameWidth_helpText').innerHTML = "a number or <a id='frameWidth_page' class='helplink' href='' onClick='if (!this.disabled) { document.board.frameWidth.value = \"page\"; update_controls(); } return false;'>page</a>; min " + min_frameWidth + "; when <a id='frameWidth_blank' class='helplink' href='' onClick='if (!this.disabled) { document.board.frameWidth.value = \"\"; update_controls(); } return false;'>blank</a>, assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
   } else {
     suggested_frameWidth = boardWidth;
     suggested_frameHeight = estimated_boardHeight;
@@ -806,8 +806,8 @@ function update_suggested_iframe_dimensions() {
     }
     suggested_frameWidth += 2 * parseInt(document.board.framePadding.value, 10);
     suggested_frameHeight += 2 * parseInt(document.board.framePadding.value, 10);
-    document.getElementById('frameHeight_helpText').innerHTML = "a number; min " + min_frameHeight + "; when <a class='helplink' href='' onClick='javascript:document.board.frameHeight.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameHeight;
-    document.getElementById('frameWidth_helpText').innerHTML = "a number or <a class='helplink' href='' onClick='javascript:document.board.frameWidth.value = \"board\"; return false;'>board</a> or <a class='helplink' href='' onClick='javascript:document.board.frameWidth.value = \"page\"; return false;'>page</a>; min " + min_frameWidth + "; when <a class='helplink' href='' onClick='javascript:document.board.frameWidth.value = \"\"; return false;'>blank</a>, assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
+    document.getElementById('frameHeight_helpText').innerHTML = "a number; min " + min_frameHeight + "; when <a id='frameHeight_blank' class='helplink' href='' onClick='if (!this.disabled) { document.board.frameHeight.value = \"\"; update_controls(); } return false;'>blank</a>, assigned to " + suggested_frameHeight;
+    document.getElementById('frameWidth_helpText').innerHTML = "a number or <a id='frameWidth_board' class='helplink' href='' onClick='if (!this.disabled) { document.board.frameWidth.value = \"board\"; update_controls(); } return false;'>board</a> or <a id='frameWidth_page' class='helplink' href='' onClick='if (!this.disabled) { document.board.frameWidth.value = \"page\"; update_controls(); } return false;'>page</a>; min " + min_frameWidth + "; when <a id='frameWidth_blank' class='helplink' href='' onClick='if (!this.disabled) { document.board.frameWidth.value = \"\"; update_controls(); } return false;'>blank</a>, assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
   }
 
   if (theObject = document.getElementById('frameWidth')) {
@@ -1756,11 +1756,11 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 </select>
 <span class="labeltext">autoplay games</span>
 <span class="helptext">autoplay first
-<a class="helplink" href="" onClick="javascript:document.board.autoplayMode.value = 'game'; return false;">game</a>
+<a id="autopplayMode_game" class="helplink" href="" onClick="if (!this.disabled) { document.board.autoplayMode.value = 'game'; } return false;">game</a>
 once, or
-<a class="helplink" href="" onClick="javascript:document.board.autoplayMode.value = 'loop'; return false;">loop</a>
+<a id="autopplayMode_loop" class="helplink" href="" onClick="if (!this.disabled) { document.board.autoplayMode.value = 'loop'; } return false;">loop</a>
 continiously, or autoplay
-<a class="helplink" href="" onClick="javascript:document.board.autoplayMode.value = 'none'; return false;">none</a>
+<a id="autopplayMode_none" class="helplink" href="" onClick="if (!this.disabled) { document.board.autoplayMode.value = 'none'; } return false;">none</a>
 </span>
 <p></p>
 
@@ -1787,7 +1787,7 @@ continiously, or autoplay
 <input class="input" type="text" id="initialVariation" name="input" value="" size="12" onChange="validate_number(this, 'initial variation', initialVariation_default);">
 <span class="labeltext">initial variation</span>
 <span class="helptext">a number; applies only at the first game load; when
-<a class="helplink" href="" onClick="javascript:document.board.initialVariation.value = ''; return false;">blank</a>,
+<a id="initialVariation_blank" class="helplink" href="" onClick="if (!this.disabled) { document.board.initialVariation.value = ''; } return false;">blank</a>,
 defaults to the main variation</span>
 <p></p>
 
@@ -1808,7 +1808,7 @@ defaults to the main variation</span>
 <input  class="input" type="text" id="initialHalfmoveNumber" name="input" value="" size="12" onChange="javascript:setInitialHalfmove();">
 <span class="labeltext">initial halfmove number</span>
 <span class="helptext">actual halfmove number when the setting above is
-<a class="helplink" href="" onClick="javascript:document.board.initialHalfmoveSelect.value = 'number'; setInitialHalfmove(); return false;">custom number</a>
+<a id="initialHalfmove_customNumber" class="helplink" href="" onClick="if (!this.disabled) { document.board.initialHalfmoveSelect.value = 'number'; setInitialHalfmove(); } return false;">custom number</a>
 </span>
 
 <div style="height: 3em">&nbsp;</div>
@@ -1866,7 +1866,7 @@ defaults to the main variation</span>
 </select>
 <span class="labeltext">piece size</span>
 <span class="helptext">
-<a class="helplink" href="" onClick="javascript:document.board.pieceSize.value = 'default'; return false;">default</a>
+<a id="pieceSize_default" class="helplink" href="" onClick="if (!this.disabled) { document.board.pieceSize.value = 'default'; } return false;">default</a>
 selects piece size based on square size</span>
 <p></p>
 
@@ -1879,7 +1879,7 @@ selects piece size based on square size</span>
 </select>
 <span class="labeltext">piece font</span>
 <span class="helptext">
-<a class="helplink" href="" onClick="javascript:document.board.pieceFont.value = 'default'; return false;">default</a>
+<a id="pieceFont_default" class="helplink" href="" onClick="if (!this.disabled) { document.board.pieceFont.value = 'default'; } return false;">default</a>
 selects piece font based on piece size</span>
 <p></p>
 <br>
@@ -1899,9 +1899,9 @@ selects piece font based on piece size</span>
 <input class="color {adjust:false} input" type="text" id="boardShadowColorHex" name="input" value="" size="12" onChange="validate_boardShadowColorHex()">
 <span class="labeltext">board shadow color</span>
 <span class="helptext">a color;
-<a class="helplink" href="" onClick="javascript:document.board.boardShadowColorHex.color.fromString('FFFFFF'); document.board.boardShadowColorHex.value = 'transparent'; return false;">transparent</a>
+<a id="boardShadowColor_transparent" class="helplink" href="" onClick="if (!this.disabled) { document.board.boardShadowColorHex.color.fromString('FFFFFF'); document.board.boardShadowColorHex.value = 'transparent'; } return false;">transparent</a>
 disables the shadow,
-<a class="helplink" href="" onClick="javascript:document.board.boardShadowColorHex.color.fromString('FFFFFF'); document.board.boardShadowColorHex.value = 'border'; return false;">border</a>
+<a id="boardShadowColor_border" class="helplink" href="" onClick="if (!this.disabled) { document.board.boardShadowColorHex.color.fromString('FFFFFF'); document.board.boardShadowColorHex.value = 'border'; } return false;">border</a>
 copies the board border color
 </span>
 <p></p>
@@ -1926,11 +1926,11 @@ copies the board border color
 </select>
 <span class="labeltext">how to show control buttons</span>
 <span class="helptext">browser's
-<a class="helplink" href="" onClick="javascript:document.board.buttonsDisplay.value = 'standard'; update_controls(); return false;">standard</a>
+<a id="buttonsDisplay_standard" class="helplink" href="" onClick="if (!this.disabled) { document.board.buttonsDisplay.value = 'standard'; update_controls(); } return false;">standard</a>
 buttons, or
-<a class="helplink" href="" onClick="javascript:document.board.buttonsDisplay.value = 'custom'; update_controls(); return false;">custom</a>
+<a id="buttonsDisplay_custom" class="helplink" href="" onClick="if (!this.disabled) { document.board.buttonsDisplay.value = 'custom'; update_controls(); } return false;">custom</a>
 colors below, or
-<a class="helplink" href="" onClick="javascript:document.board.buttonsDisplay.value = 'hidden'; update_controls(); return false;">hidden</a>
+<a id="buttonsDisplay_hidden" class="helplink" href="" onClick="if (!this.disabled) { document.board.buttonsDisplay.value = 'hidden'; update_controls(); } return false;">hidden</a>
 buttons</span>
 <p></p>
 
@@ -1978,7 +1978,7 @@ buttons</span>
 <option value="hidden">hidden</option>
 </select>
 <span class="labeltext"><b>how to show game moves</b></span>
-<span class="helptext">select a game moves display option or use <a class="helplink" href="" onClick="oneClickPuzzleSetup(); return false;">the one click optimized puzzle setup</a></span>
+<span class="helptext">select a game moves display option or use <a id="movesDisplay_oneClickOptimizedPuzzleSetup" class="helplink" href="" onClick="if (!this.disabled) { oneClickPuzzleSetup(); update_controls(); } return false;">the one click optimized puzzle setup</a></span>
 <p></p>
 
 <input class="input" type="text" id="fontMovesSize" name="input" value="" size="12" onChange="validate_number_percentage(this, 'moves font size', fontMovesSize_default);">
@@ -1993,7 +1993,7 @@ buttons</span>
 <input class="color {adjust:false} input" type="text" id="highlightMoveColorHex" name="input" value="" size="12" onChange="validate_highlightMoveColorHex()">
 <span class="labeltext">highlight move color</span>
 <span class="helptext">a color;
-<a class="helplink" href="" onClick="javascript:document.board.highlightMoveColorHex.color.fromString('FFFFFF'); document.board.highlightMoveColorHex.value = 'background'; return false;">background</a>
+<a id="highlightMoveColor_background" class="helplink" href="" onClick="if (!this.disabled) { document.board.highlightMoveColorHex.color.fromString('FFFFFF'); document.board.highlightMoveColorHex.value = 'background'; } return false;">background</a>
 copies the background color</span>
 <p></p>
 <br>
@@ -2005,18 +2005,18 @@ copies the background color</span>
 </select>
 <span class="labeltext">how to show move comments and variations</span>
 <span class="helptext">
-<a class="helplink" href="" onClick="javascript:document.board.commentsDisplay.value = 'inline'; return false;">inline</a>
+<a id="commentsDisplay_inline" class="helplink" href="" onClick="if (!this.disabled) { document.board.commentsDisplay.value = 'inline'; update_controls(); } return false;">inline</a>
 inbetween game moves, or on a
-<a class="helplink" href="" onClick="javascript:document.board.commentsDisplay.value = 'newline'; return false;">newline</a>
+<a id="commentsDisplay_newline" class="helplink" href="" onClick="if (!this.disabled) { document.board.commentsDisplay.value = 'newline'; update_controls(); } return false;">newline</a>
 , or
-<a class="helplink" href="" onClick="javascript:document.board.commentsDisplay.value = 'hidden'; return false;">hidden</a>
+<a id="commentsDisplay_hidden" class="helplink" href="" onClick="if (!this.disabled) { document.board.commentsDisplay.value = 'hidden'; update_controls(); } return false;">hidden</a>
 </span>
 <p></p>
 
 <input class="input" type="text" id="fontCommentsSize" name="input" value="" size="12" onChange="validate_fontCommentsSize();">
 <span class="labeltext">comments <span class="noExtendedOption">and variations </span>font size</span>
 <span class="helptext">a number;
-<a class="helplink" href="" onClick="javascript:document.board.fontCommentsSize.value = 'moves'; return false;">moves</a>
+<a id="fontCommentsSize_moves" class="helplink" href="" onClick="if (!this.disabled) { document.board.fontCommentsSize.value = 'moves'; } return false;">moves</a>
 copies the moves font size</span>
 <p></p>
 
@@ -2030,14 +2030,14 @@ copies the moves font size</span>
 <input class="input" type="text" id="fontVariationsSize" name="input" value="" size="12" onChange="validate_fontVariationsSize();">
 <span class="labeltext">variations font size</span>
 <span class="helptext">a number;
-<a class="helplink" href="" onClick="javascript:document.board.fontVariationsSize.value = 'comments'; return false;">comments</a>
+<a id="fontVariationsSize_comments" class="helplink" href="" onClick="if (!this.disabled) { document.board.fontVariationsSize.value = 'comments'; } return false;">comments</a>
 copies the comments font size</span>
 
 <p></p>
 <input class="color {adjust:false} input" type="text" id="fontVariationsColorHex" name="input" value="" size="12" onChange="validate_color(this, 'variations font color', fontVariationsColorHex_default)">
 <span class="labeltext">variations font color</span>
 <span class="helptext">a number;
-<a class="helplink" href="" onClick="javascript:document.board.fontVariationsColorHex.color.fromString('FFFFFF'); document.board.fontVariationsColorHex.value = 'comments'; return false;">comments</a>
+<a id="fontVariationsColor_comments" class="helplink" href="" onClick="if (!this.disabled) { document.board.fontVariationsColorHex.color.fromString('FFFFFF'); document.board.fontVariationsColorHex.value = 'comments'; } return false;">comments</a>
 copies the comments font color</span>
 
 </span>
@@ -2073,7 +2073,7 @@ copies the comments font color</span>
 <input class="color {adjust:false} input" type="text" id="backgroundColorHex" name="input" value="" size="12" onChange="validate_backgroundColorHex()">
 <span class="labeltext">background color</span>
 <span class="helptext">a color;
-<a class="helplink" href="" onClick="javascript:document.board.backgroundColorHex.color.fromString('FFFFFF'); document.board.backgroundColorHex.value = 'transparent'; return false;">transparent</a>
+<a id="backgroundColor_transparent" class="helplink" href="" onClick="if (!this.disabled) { document.board.backgroundColorHex.color.fromString('FFFFFF'); document.board.backgroundColorHex.value = 'transparent'; } return false;">transparent</a>
 uses the parent's background color</span>
 <p></p>
 
@@ -2098,21 +2098,21 @@ uses the parent's background color</span>
 <input class="checkbox" type="checkbox" id="useTextarea" name="checkbox" onChange="validate_useTextarea(); update_controls();">
 <span class="labeltext">use HTML textarea</span>
 <span class="helptext">normally
-<a class="helplink" href="" onClick="javascript:document.board.useTextarea.checked = false; return false;">disabled</a>;
+<a id="useTextarea_disabled" class="helplink" href="" onClick="if (!this.disabled) { document.board.useTextarea.checked = false; update_controls(); } return false;">disabled</a>;
 use only for deployment on a page from the same domain as the <i>board URL</i></span>
 <p></p>
 
 <input class="checkbox" type="checkbox" id="encodePgn" name="checkbox">
 <span class="labeltext">encode PGN text</span>
 <span class="helptext">normally
-<a class="helplink" href="" onClick="javascript:document.board.encodePgn.checked = true; return false;">enabled</a>
+<a id="encodePgn_enabled" class="helplink" href="" onClick="if (!this.disabled) { document.board.encodePgn.checked = true; } return false;">enabled</a>
 </span>
 <p></p>
 
 <input class="input" type="text" id="boardUrl" name="boardUrl" value="" size="12">
 <span class="labeltext">board URL</span>
 <span class="helptext">normally as
-<a class="helplink" href="" onClick="javascript:document.board.boardUrl.value = boardUrl_default; return false;">default</a>
+<a id="boardUrl_default" class="helplink" href="" onClick="if (!this.disabled) { document.board.boardUrl.value = boardUrl_default; } return false;">default</a>
 unless <i>use HTML textarea</i> is enabled or for deployment on a page from a different domain</span>
 <p></p>
 
