@@ -168,10 +168,25 @@ The chess games viewer extension saves between sessions the settings listed belo
 <div id="help" class="h2content">
 
 <div class="h3content">
-The chess games viewer extension for Google Chrome is an interactive chessboard showing chess games from links to PGN URLs, from local PGN files and from PGN text, using <span title="Google Chrome's context menus appear when right-clicking a page, a link or selected text">context menus</span> and <span title="page actions icons appear at the right end of the Google Chrome's address bar; clicking a page action icon a popup page is shown">page actions</span>.
+The chess games viewer extension for Google Chrome is an interactive chessboard showing chess games from links to PGN URLs, from local PGN files and from PGN text, using <span title="page actions icons appear at the right end of the Google Chrome's address bar; clicking a page action icon a popup page is shown">page actions</span> and <span title="Google Chrome's context menus appear when right-clicking a page, a link or selected text">context menus</span>.
 </div>
 <div class="h3content">
 PGN (Portable Games Notation) files are commonly used by chess websites and by chess software to store and share chess games information. For example, <a href="http://www.chess.co.uk/twic/" target="_blank">The Week In Chess</a> site is an excellent source of chess news, with games collections and live broadcast of current events.
+</div>
+
+<div class="extraSpacer"></div>
+<h3><span title="page actions icons appear at the right end of the Google Chrome's address bar; clicking a page action icon a popup page is shown">page action</span> for links to PGN chess games URLs</h3>
+<div class="h3content">
+The chess games viewer extension looks for links to PGN chess games URLs in visited pages; if found, a black pawn <span title="page actions icons appear at the right end of the Google Chrome's address bar; clicking a page action icon a popup page is shown">page action</span> icon<span class="inlineIconWrap"> <img src="alpha-16.png" class="inlineIcon" /> </span>appears at the right end of the address bar, clicking that icon a popup page allows for opening the links in the chess games viewer.
+</div>
+<div class="practice h3content">Practice:
+the black pawn icon<span class="inlineIconWrap"> <img src="alpha-16.png" class="inlineIcon" /> </span>should have appeared at the right end of the address bar of this page; click that icon to display the popup page and then click the command icons for each link:
+<div class="list"><img src="download.png" class="listIcon" />for viewing the games on a single board</div>
+<div class="list"><img src="refresh.png" class="listIcon" />for viewing the games on a single board with live refresh</div>
+<div class="list"><img src="refresh-mosaic.png" class="listIcon" />for viewing the games on multiple boards with live refresh</div>
+<div class="list"><img src="file.png" class="listIcon" />for saving the games as a local file</div>
+<p></p>
+In the popup of this page, <i>"demoLiveGames.pgn"</i> simulates a live chess broadcast when opened with <a href="#liveRefreshMode">live refresh</a>; instead, <i>"demoGames.pgn"</i> is a static chess games file with no games in progress and the chess games viewer will report the live broadcast as already ended when opening it with live refresh.
 </div>
 
 <div class="extraSpacer"></div>
@@ -186,6 +201,7 @@ When hovering on links to PGN chess games URLs, the mouse cursor shows this poin
 right-click <a href="demoGames.pgn">this link to a PGN file</a> (notice the mouse cursor pointer when hovening on the link) and select the chess games viewer menu item <i>"view chess games link on a single board"</i>.
 </div>
 
+<a name="liveRefreshMode">
 <div class="extraSpacer"></div>
 <h3>live refresh mode</h3>
 <div class="h3content">
@@ -273,21 +289,6 @@ r1bqkb1r/1p3ppp/p1n1pn2/3p4/2P1P3/N1N5/PP3PPP/R1BQKB1R w KQkq - 0 9
 8/5pk1/7p/8/1p4P1/1P1R2P1/3N1qBP/3Nr2K w - - 1 41
 </pre>
 </span>
-</div>
-
-<div class="extraSpacer"></div>
-<h3><span title="page actions icons appear at the right end of the Google Chrome's address bar; clicking a page action icon a popup page is shown">page action</span> for links to PGN chess games URLs</h3>
-<div class="h3content">
-A <span title="page actions icons appear at the right end of the Google Chrome's address bar; clicking a page action icon a popup page is shown">page action</span> looks for links to PGN chess games URLs in the current page; if found, a black pawn <span title="page actions icons appear at the right end of the Google Chrome's address bar; clicking a page action icon a popup page is shown">page action</span> icon<span class="inlineIconWrap"> <img src="alpha-16.png" class="inlineIcon" /> </span>appears at the right end of the address bar, clicking that icon a popup page allows for opening the links in the chess games viewer.
-</div>
-<div class="practice h3content">Practice:
-the black pawn icon<span class="inlineIconWrap"> <img src="alpha-16.png" class="inlineIcon" /> </span>should have appeared at the right end of the address bar of this page; click that icon to display the popup page and then click the command icons for each link:
-<div class="list"><img src="download.png" class="listIcon" />for viewing the games on a single board</div>
-<div class="list"><img src="refresh.png" class="listIcon" />for viewing the games on a single board with live refresh</div>
-<div class="list"><img src="refresh-mosaic.png" class="listIcon" />for viewing the games on multiple boards with live refresh</div>
-<div class="list"><img src="file.png" class="listIcon" />for saving the games as a local file</div>
-<p></p>
-In the popup of this page, <i>"demoLiveGames.pgn"</i> simulates a live chess broadcast when opened with live refresh; instead, <i>"demoGames.pgn"</i> is a static chess games file with no games in progress and the chess games viewer will report the live broadcast as already ended when opening it with live refresh.
 </div>
 
 <div class="extraSpacer"></div>
