@@ -1640,7 +1640,7 @@ function pgnGameFromHttpRequest(httpResponseData) {
   if (pgnUrl && pgnUrl.match(/\.zip(\?|#|$)/i)) {
     var unzippedPgnText = "";
     try {
-      // requires loading js-unzip/js-unzip.js and js-unzip/js-inflate.js
+      // requires js-unzip/js-unzip.js and js-unzip/js-inflate.js
       var unzipper = new JSUnzip(httpResponseData);
       if (unzipper.isZipFile()) {
         unzipper.readEntries();
@@ -1691,11 +1691,11 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
         loadPgnFromPgnUrlResult = LOAD_PGN_FAIL;
       }
 
-// dirty hack for Opera's failure reporting 304 status
+// patch Opera's failure reporting 304 status
     } else if (window.opera && (! this_http_request.responseText) && (this_http_request.status === 0)) {
       this_http_request.abort();
       loadPgnFromPgnUrlResult = LOAD_PGN_UNMODIFIED;
-// end of dirty hack
+// end of patch
 
     } else if (! this_http_request.responseText) {
       myAlert('error: no data received from PGN URL\n' + pgnUrl, true);
@@ -1868,12 +1868,12 @@ function loadPgnFromPgnUrl(pgnUrl){
   http_request.onreadystatechange = function () { updatePgnFromHttpRequest(http_request, http_request_id); };
 
   try {
-    // anti-caching #1: add random parameter, only to plain URLs
+    // anti-caching #1: random parameter, only to plain URLs
     if ((LiveBroadcastDelay > 0) && (pgnUrl.indexOf("?") == -1) && (pgnUrl.indexOf("#") == -1)) {
       urlRandomizer = "?noCache=" + (0x1000000000 + Math.floor((Math.random() * 0xF000000000))).toString(16).toUpperCase();
     } else { urlRandomizer = ""; }
     http_request.open("GET", pgnUrl + urlRandomizer);
-    // anti-caching #2: add header option
+    // anti-caching #2: header option
     if (LiveBroadcastDelay > 0) {
       http_request.setRequestHeader( "If-Modified-Since", LiveBroadcastLastModifiedHeader );
     }
