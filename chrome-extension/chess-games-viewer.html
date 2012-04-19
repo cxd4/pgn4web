@@ -147,13 +147,11 @@ of Google Chrome. Don't use with any other browser.
          '[FEN "r2q1rk1/pp2bpp1/4p2p/2pPB2P/2P3n1/3Q2N1/PP3PP1/2KR3R w - - 1 17"] 17. Bxg7',
          '[FEN "r2q1k1r/p3bpp1/2p4p/2Bp4/4B1PP/4Q3/PPP5/2K1R3 w - - 1 22"] 22. Bh7 ',
          '[FEN "2k2b1r/pb1r1p2/5P2/1qnp4/Npp3Q1/4B1P1/1P3PBP/R4RK1 w - - 4 21"] 21. Qg7',
-         '[FEN "r1bqkb1r/1p3ppp/p1nppn2/8/2P1P3/N1N5/PP3PPP/R1BQKB1R b KQkq - 1 8"] 8... d5'
-      );
+         '[FEN "r1bqkb1r/1p3ppp/p1nppn2/8/2P1P3/N1N5/PP3PPP/R1BQKB1R b KQkq - 1 8"] 8... d5' );
       hints = new Array(
-         "select the commands at the top right of the page to enter PGN text, to load local PGN files or to view a remote PGN URL, optionally with live refresh on a single board or on multiple boards",
+         "use commands at the page top right to enter PGN text, to load local PGN files or to view a remote PGN URL, optionally with live refresh on a single board or on multiple boards",
          "drag and drop local PGN files or zipped PGN files on the single large chessboard page for viewing",
          "interact with the chessboard clicking chessboard squares; hovering the mouse on each square displays an help summary",
-         "in case of errors, the top left chessboard square will flash; click the flashing square for detailed error info",
          "click square A8 for help on the chessboard user interface",
          "click square B8 for the FEN string of the current position",
          "click square C8 for the PGN data of the current game and click square D8 for the PGN data of all games",
@@ -164,8 +162,8 @@ of Google Chrome. Don't use with any other browser.
          "click square F2 to probe the endgame tablebase",
          "click square G2 to annotate the game from the current position",
          "click square H2 to toggle the analysis engine",
-         "when in live broadcast mode, click square H5 to switch between the single large board view and the multiple small boards view"
-      );
+         "when in live broadcast mode, click square H5 to switch between the single large board view and the multiple small boards view",
+         "in case of errors, the top left chessboard square will flash; click the flashing square for detailed error info" );
       if (theObject = document.getElementById("pgnText")) {
          showTKfenEveryN = 20;
          showHintEveryN = showTKfenEveryN - 1;
