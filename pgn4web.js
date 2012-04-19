@@ -994,7 +994,7 @@ var alertPgnHeader = '[Event ""]\n[Site ""]\n[Date ""]\n[Round ""]\n[White ""]\n
 var pgn4webVariationRegExp       = /\[%pgn4web_variation (\d+)\]/;
 var pgn4webVariationRegExpGlobal = /\[%pgn4web_variation (\d+)\]/g;
 
-var gameSelectorHead = ' ...';
+var gameSelectorHead = ' &middot;&middot;&middot;';
 var gameSelectorMono = true;
 var gameSelectorNum = false;
 var gameSelectorNumLenght = 0;
