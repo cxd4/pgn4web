@@ -678,7 +678,7 @@ of Google Chrome. Don't use with any other browser.
 </div>
 
 <div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleTablebaseLink" id="toggleTablebaseLink" href="javascript:void(0);" onclick="toggleProbeTablebase();" title="probe endgame tablebase"></a><a class="toggleAnalysisLink" id="toggleAnalysisLink" href="javascript:void(0);" onclick="userToggleAnalysis();" title="toggle analysis engine">+</a></div>
-<div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="SetCommentsIntoMoveText(!commentsIntoMoveText); oldPly = CurrentPly; Init(); GoToMove(oldPly);" title="toggle show comments in game text for this page; click square F7 instead to save setting"></a></div>
+<div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="SetCommentsIntoMoveText(!commentsIntoMoveText); var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar);" title="toggle show comments in game text for this page; click square F7 instead to save setting"></a></div>
 
 <div class="lastMoveAndComment" id="lastMoveAndComment">
 <div class="lastMoveAndVariations">
