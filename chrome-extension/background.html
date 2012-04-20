@@ -97,7 +97,7 @@ function pgnviewLinkOnClick(info, tab) {
 }
 
 function pgnviewDataUriOnClick(info, tab) {
-  if (! openPgnDataUri(info.linkUrl)) { alert("error: failed viewing PGN data URI");}
+  if (!openPgnDataUri(info.linkUrl)) { alert("error: failed viewing PGN data URI");}
 }
 
 function pgnliveLinkOnClick(info, tab) {
@@ -173,9 +173,9 @@ var pgnDataUriB64RegExp = /^\s*data:application\/(da|x)-chess-pgn([^,]*),([0-9a-
 function openPgnDataUri(pgnDataUri) {
   var pgnDataUriMatch;
   pgnDataUri = pgnDataUri.replace(/,pgn4web_download=.*$/, "");
-  if (! (pgnDataUriMatch = pgnDataUri.match(pgnDataUriRegExp))) { return false; }
+  if (!(pgnDataUriMatch = pgnDataUri.match(pgnDataUriRegExp))) { return false; }
   if (pgnDataUriMatch[2] && pgnDataUriMatch[2].match(/;base64/)) {
-    if (! pgnDataUri.match(pgnDataUriB64RegExp)) { return false; }
+    if (!pgnDataUri.match(pgnDataUriB64RegExp)) { return false; }
     try { pgnText[pgnTextIndex] = decodeURIComponent(escape(atob(pgnDataUriMatch[3]))); }
     catch (e) { return false; }
   } else {
@@ -200,7 +200,7 @@ function downloadPgn(tabId, uri, downloadName) {
   if (pgnDataUriMatch = uri.match(pgnDataUriRegExp)) {
     if (pgnDataUriMatch[2] && pgnDataUriMatch[2].match(/;base64/)) {
       if (!uri.match(pgnDataUriB64RegExp)) { return false; }
-      try { atob(pgnDataUriMatch[3]); }
+      try { decodeURIComponent(escape(atob(pgnDataUriMatch[3]))); }
       catch (e) { return false; }
     }
   }
@@ -305,8 +305,8 @@ var processedUrls = new Array();
 
 function mergePgnLinksAndShowIcon(tabId) {
   if (tabId < 0) { return; }
-  if (! pgnHrefLinks[tabId]) { return; }
-  if (! pgnWebRequests[tabId]) { return; }
+  if (!pgnHrefLinks[tabId]) { return; }
+  if (!pgnWebRequests[tabId]) { return; }
   pgnHrefLinks[tabId] = pgnHrefLinks[tabId].sort();
   for (r in pgnWebRequests[tabId]) {
     for (l in pgnHrefLinks[tabId]) {
