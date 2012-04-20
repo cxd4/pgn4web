@@ -50,6 +50,7 @@ Features:
   (such as phpBB, simplemachines and vbulletin) and hosting services (such
   as google sites)
 - integrated with HTML5 video and YouTube video
+- supports Chess960 (a.k.a. Fischer random chess) games
 
 Limitations:
 - only one chessboard for html file (use frames if you need to display
