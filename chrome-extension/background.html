@@ -176,12 +176,12 @@ function openPgnDataUri(pgnDataUri) {
   if (! (pgnDataUriMatch = pgnDataUri.match(pgnDataUriRegExp))) { return false; }
   if (pgnDataUriMatch[2] && pgnDataUriMatch[2].match(/;base64/)) {
     if (! pgnDataUri.match(pgnDataUriB64RegExp)) { return false; }
-    try { pgnText[pgnTextIndex] = atob(pgnDataUriMatch[3]); }
+    try { pgnText[pgnTextIndex] = decodeURIComponent(escape(atob(pgnDataUriMatch[3]))); }
     catch (e) { return false; }
   } else {
     pgnText[pgnTextIndex] = decodeURIComponent(pgnDataUriMatch[3]);
   }
-  pgnText[pgnTextIndex] = pgnText[pgnTextIndex].replace(/[^\x21-\x7E\s\t\n\r]/g, "*");
+  // pgnText[pgnTextIndex] = pgnText[pgnTextIndex].replace(/[^\x21-\x7E\s\t\n\r]/g, "*");
   url = "chess-games-viewer.html?pgnBackground=" + pgnTextIndex++;
   chrome.tabs.create({url: url});
   return true;
