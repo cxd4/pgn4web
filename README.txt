@@ -30,17 +30,18 @@ Project homepage: http://pgn4web.casaschi.net (including downloads and wiki)
 Contact email: pgn4web@casaschi.net
 
 Features:
-- display chess games form a PGN file on a dynamic chessboard on your
-  webpage or blog
-- full support for browsing game variations and reviewing comments
-- shortcut keys for navigating through the game, for selecting the
-  game from the file and much more; also uses chessboard squares as
-  input buttons (hit escape for help)
-- fully customizable display. Each item (board, button bar, game
-  selection menu, PGN header info, game text, game comment and more)
-  can be displayed (or hidden) at pleasure in your html file
-- support different chess bitmaps (even custom bitmaps) and different
-  chessboard sizes
+- display chess games form PGN files on websites and blogs
+- supports live broadcasts of chess games
+- interactive browsing of game variations and comments
+- shortcut keys for navigating through the game, for selecting games and much
+  more; also uses chessboard squares as input buttons
+- fully customizable display: each item (board, button bar, game selection
+  menu, PGN header info, game text, game comment and more) can be displayed
+  (or hidden) at pleasure in your html file
+- support different bitmaps for chess pieces (even custom bitmaps) and
+  different chessboard sizes
+- uses figurine fonts for chess moves and chess informant style symbols for
+  comments and annotations
 - provides a very simple board generator web tool helping you adding chess
   games to your website or blog without any html/javascript coding (see
   http://pgn4web-board-generator.casaschi.net
@@ -49,7 +50,6 @@ Features:
   (such as phpBB, simplemachines and vbulletin) and hosting services (such
   as google sites)
 - integrated with HTML5 video and YouTube video
-- allows for live broadcast of games
 
 Limitations:
 - only one chessboard for html file (use frames if you need to display
