@@ -279,9 +279,13 @@ of Google Chrome. Don't use with any other browser.
       }
    }
 
-   function customPgnHeaderTagWithFix(tag, elementId) {
+   function customPgnHeaderTagWithFix(tag, elementId, fixForDisplay) {
+      var theObject;
       customPgnHeaderTag(tag, elementId);
       fixHeaderTag(elementId);
+      if (fixForDisplay && (theObject = document.getElementById(elementId)) && theObject.innerHTML) {
+         theObject.innerHTML = fixCommentForDisplay(theObject.innerHTML);
+      }
    }
 
    var previousCurrentVar = -1;
@@ -339,9 +343,9 @@ of Google Chrome. Don't use with any other browser.
       customPgnHeaderTagWithFix('WhiteElo', 'GameWhiteElo');
       customPgnHeaderTagWithFix('BlackElo', 'GameBlackElo');
       customPgnHeaderTagWithFix('ECO', 'GameECO');
-      customPgnHeaderTagWithFix('Opening', 'GameOpening');
-      customPgnHeaderTagWithFix('Variation', 'GameVariation');
-      customPgnHeaderTagWithFix('SubVariation', 'GameSubVariation');
+      customPgnHeaderTagWithFix('Opening', 'GameOpening', true);
+      customPgnHeaderTagWithFix('Variation', 'GameVariation', true);
+      customPgnHeaderTagWithFix('SubVariation', 'GameSubVariation', true);
       fixHeaderTag('GameResult');
       customPgnHeaderTagWithFix('Termination', 'GameTermination');
       // if (PlyNumber > 0) { customPgnHeaderTag('Result', 'ResultAtGametextEnd'); }
@@ -665,7 +669,7 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem"><a class="innerHeaderItem" id="GameEvent" href="javascript:void(0);" onclick="searchTagDifferent('Event', this.innerHTML);"></a><a class="innerHeaderItem" id="GameSection" href="javascript:void(0);" onclick="searchTagDifferent('Section', this.innerHTML);"></a><a class="innerHeaderItem" id="GameStage" href="javascript:void(0);" onclick="searchTagDifferent('Stage', this.innerHTML);"></a><b>&nbsp;</b></div>
 <div class="headerItem"><a class="innerHeaderItem" id="GameRound" href="javascript:void(0);" onclick="searchTagDifferent('Round', this.innerHTML.replace('round ', ''));"></a><a class="innerHeaderItem" id="GameBoardNum" href="javascript:void(0);" onclick="searchTagDifferent('Board', this.innerHTML);"></a><a class="innerHeaderItem" id="GameTimeControl"  href="javascript:void(0);" onclick="searchTagDifferent('TimeControl', this.innerHTML);"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><a class="innerHeaderItem" id="GameECO" href="javascript:void(0);" onclick="searchTag('ECO', this.innerHTML);"></a><a class="innerHeaderItem" id="GameOpening" href="javascript:void(0);" onclick="searchTag('Opening', this.innerHTML);"></a><a class="innerHeaderItem" id="GameVariation" href="javascript:void(0);" onclick="searchTag('Variation', this.innerHTML);"></a><a class="innerHeaderItem" id="GameSubVariation" href="javascript:void(0);" onclick="searchTag('SubVariation', this.innerHTML);"></a><b>&nbsp;</b></div>
+<div class="headerItem"><a class="innerHeaderItem" id="GameECO" href="javascript:void(0);" onclick="searchTag('ECO', this.innerHTML);"></a><a class="innerHeaderItem" id="GameOpening" href="javascript:void(0);" onclick="searchTag('Opening', customPgnHeaderTag('Opening'));"></a><a class="innerHeaderItem" id="GameVariation" href="javascript:void(0);" onclick="searchTag('Variation', customPgnHeaderTag('Variation'));"></a><a class="innerHeaderItem" id="GameSubVariation" href="javascript:void(0);" onclick="searchTag('SubVariation', customPgnHeaderTag('SubVariation'));"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameWhiteClock"></span><b>&nbsp;</b></div>
 <div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId'));" class="innerHeaderItem" id="GameWhite"></a></b><span class="innerHeaderItem" id="GameWhiteTitle"></span><span class="innerHeaderItem" id="GameWhiteElo"></span><a class="innerHeaderItem" id="GameWhiteTeam" href="javascript:void(0);" onclick="searchTeam(this.innerHTML);"></a><b>&nbsp;</b></div>
