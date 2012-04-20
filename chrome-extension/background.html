@@ -181,7 +181,7 @@ function openPgnDataUri(pgnDataUri) {
   } else {
     pgnText[pgnTextIndex] = decodeURIComponent(pgnDataUriMatch[3]);
   }
-  pgnText[pgnTextIndex] = pgnText[pgnTextIndex].replace(/[^\x21-\x7E\s\t\n\r]/g, "*");
+  // pgnText[pgnTextIndex] = pgnText[pgnTextIndex].replace(/[^\x21-\x7E\s\t\n\r]/g, "*");
   url = "chess-games-viewer.html?pgnBackground=" + pgnTextIndex++;
   chrome.tabs.create({url: url});
   return true;
@@ -201,7 +201,7 @@ function downloadPgn(tabId, uri, downloadName) {
   if (pgnDataUriMatch = uri.match(pgnDataUriRegExp)) {
     if (pgnDataUriMatch[2] && pgnDataUriMatch[2].match(/;base64/)) {
       if (!uri.match(pgnDataUriB64RegExp)) { return false; }
-      try { if (atob(pgnDataUriMatch[3]).match(/[^\x21-\x7E\s\t\n\r]/)) { return false; } }
+      try { atob(pgnDataUriMatch[3]); }
       catch (e) { return false; }
     }
   }
