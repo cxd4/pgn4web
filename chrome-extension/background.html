@@ -181,7 +181,6 @@ function openPgnDataUri(pgnDataUri) {
   } else {
     pgnText[pgnTextIndex] = decodeURIComponent(pgnDataUriMatch[3]);
   }
-  // pgnText[pgnTextIndex] = pgnText[pgnTextIndex].replace(/[^\x21-\x7E\s\t\n\r]/g, "*");
   url = "chess-games-viewer.html?pgnBackground=" + pgnTextIndex++;
   chrome.tabs.create({url: url});
   return true;
