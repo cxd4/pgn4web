@@ -644,13 +644,6 @@ function newBoards(newMaxBoards) {
   updateMenu();
 }
 
-function underlineByTicker(text, ticker) {
-  position = ticker % text.length;
-  return (text.substring(0, position) +
-    "<u>" +text.substring(position, position + 1) + "</u>" +
-    text.substring(position + 1));
-}
-
 function switchBoardView(search) {
   if ((typeof(chrome) != "undefined") && (chrome.extension) && (pgnUrl) && (LiveBroadcastDelay > 0)) {
     url = "chess-games-viewer.html?pgnData=" + escape(pgnUrl) + "&refreshMinutes=" + escape(refreshMinutes);

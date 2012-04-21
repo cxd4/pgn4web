@@ -49,13 +49,6 @@
   SetShortcutKeysEnabled(true);
   SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, false);
 
-  function underlineByTicker(text, ticker) {
-    position = ticker % text.length;
-    return (text.substring(0, position) +
-      "<u>" +text.substring(position, position + 1) + "</u>" +
-      text.substring(position + 1));
-  }
-
   function customFunctionOnPgnTextLoad() {
     if (resultObject = document.getElementById("results")) {
       resultString = "";
