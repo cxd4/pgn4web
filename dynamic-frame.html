@@ -459,10 +459,21 @@ function selectGameList(gameNum) {
   restoreShortcutKeysStatus();
 }
 
+var liveBroadcastUpdateTicker = 1;
+var previousPlyNumber = -1;
 function customFunctionOnPgnTextLoad() {
-  if (LiveBroadcastDelay) {
-    document.title = "chess live broadcast" + (demoFlag ? " demo" : "");
+  var noGamesLoaded = (numberOfGames == 1) && (PlyNumber === 0) && (StartPly === 0) && (!gameWhite[0]) && (!gameBlack[0]) && (!gameResult[0]) && (!gameFEN[0]);
+  if (LiveBroadcastDelay > 0) {
+    if (previousPlyNumber !== PlyNumber) {
+      previousPlyNumber = PlyNumber;
+      liveBroadcastUpdateTicker++;
+    }
+    document.title = liveBroadcastUpdateTicker + "." + LiveBroadcastStatusString.replace(/^(\d*)\D*(\d*)$/, "$1.$2") + " live broadcast" + (demoFlag ? " demo" : "");
+  } else {
+    if (noGamesLoaded) { document.title = alertNum ? "PGN data error" : "chess games viewer"; }
+    else { document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s"); }
   }
+
   fillGameList(true);
   if (theObject = document.getElementById("ShowGameListLink")) {
     theObject.title = "select from " + numberOfGames + " games";
