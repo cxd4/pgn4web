@@ -79,19 +79,8 @@
 
   SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, false);
 
-  function underlineByTicker(text, ticker) {
-    position = ticker % text.length;
-    return (text.substring(0, position) +
-      "<u>" +text.substring(position, position + 1) + "</u>" +
-      text.substring(position + 1));
-  }
-
   function customFunctionOnCheckLiveBroadcastStatus() {
-    if (theObject = document.getElementById("ticker")) {
-      if (LiveBroadcastTicker > 1) {
-        theObject.innerHTML = underlineByTicker(demoFlag ? "demo" : "help", LiveBroadcastTicker-2);
-      } else { theObject.innerHTML = demoFlag ? "demo" : "help"; }
-    }
+    if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = theObject.title; }
   }
 
   function customFunctionOnPgnTextLoad() {
@@ -372,10 +361,9 @@ function user_help() {
 </table>
 </center>
 
-<!--
-<script type="text/javascript">document.write(document.getElementById("outerTable").offsetWidth +
- "x" + document.getElementById("outerTable").offsetHeight);</script>
--->
+<script type="text/javascript">
+  if (demoFlag && (theObject = document.getElementById("ticker"))) { theObject.innerHTML = "demo"; }
+</script>
 
 </body>
 

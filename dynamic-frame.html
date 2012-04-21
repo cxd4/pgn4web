@@ -461,9 +461,7 @@ function selectGameList(gameNum) {
 
 function customFunctionOnPgnTextLoad() {
   if (LiveBroadcastDelay) {
-    if (LiveBroadcastStarted && !LiveBroadcastEnded) {
-      document.title = "chess live broadcast" + (demoFlag ? " demo" : "");
-    } else { document.title = LiveBroadcastStatusString; }
+    document.title = "chess live broadcast" + (demoFlag ? " demo" : "");
   }
   fillGameList(true);
   if (theObject = document.getElementById("ShowGameListLink")) {
@@ -627,7 +625,7 @@ function updateBareShortcut() {
 
 function gameTooltipInfo() {
   str = " game " + (currentGame+1) + " of " + numberOfGames + "  ";
-  if (LiveBroadcastDelay > 0) { str += "\n " + LiveBroadcastStatusString.replace("&nbsp;", " ") + "  "; }
+  if (LiveBroadcastDelay > 0) { str += LiveBroadcastStatusString.replace(/^(\d*).*$/, "($1 live) "); }
   if (meaningfulHeader(gameEvent[currentGame])) { str+= "\n event: " + gameEvent[currentGame] + "  "; }
   if (meaningfulHeader(gameSite[currentGame])) { str+= "\n site: " + gameSite[currentGame] + "  "; }
   if (meaningfulHeader(gameDate[currentGame])) { str+= "\n date: " + gameDate[currentGame] + "  "; }
@@ -677,7 +675,7 @@ function myOnLoad() {
 <div>&nbsp;<a id="GamePrevMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly - 1); this.blur();" title="previous moves"></a><a style="font-weight: bold;" id="GameCurrMove" href="javascript:void(0);" onclick="SetHighlight(!highlightOption); this.blur();" title="current move as shown on chessboard"></a><a id="GameNextMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly + 1); this.blur();" title="next moves"></a><span style="font-weight: bold;">&nbsp;</span></div>
 <div class="variableSpacer">&nbsp;</div>
 <center><div class="gameButtons" id="GameButtons"></div></center>
-<div class="liveStatusLine">&nbsp;<a id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();" title="live broadcast status"></a>&nbsp;<span id="GameLiveStatusDemo" title="this is a broadcast simulation"></span></div>
+<div class="liveStatusLine">&nbsp;<a id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();"></a>&nbsp;<span id="GameLiveStatusDemo" title="this is a broadcast simulation"></span></div>
 <div class="variableSpacer">&nbsp;</div>
 <div style="visibility: hidden;" id="ShowGameList">&nbsp;<a id="ShowGameListLink" href="javascript:void(0);" onclick="showGameList();"></a>&nbsp;</div>
 </div>

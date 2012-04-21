@@ -119,14 +119,13 @@ a {
   visibility: hidden;
 }
 
-.gameLiveStatusTicker {
+.gameLiveStatus {
   font-size: 16px; /* = body.fontSize */
   position: fixed;
   top: 0;
   right: 0;
-  text-align: center;
-  width: 1em;
-  color: gray;
+  text-align: right;
+  color: lightgray;
   text-decoration: none;
 }
 
@@ -383,12 +382,7 @@ a.variation {
   SetShortcutKeysEnabled(showBoard);
   SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, true);
 
-  liveStatusTickerArray = new Array(".", "&nbsp;", ".", ":");
   function customFunctionOnCheckLiveBroadcastStatus() {
-    if (theObject = document.getElementById("GameLiveStatusTicker")) {
-      theObject.innerHTML = liveStatusTickerArray[LiveBroadcastTicker % liveStatusTickerArray.length];
-      theObject.title = LiveBroadcastStatusString.replace("&nbsp;", " ");
-    }
     for (gg in gameId) {
       if (theObject = document.getElementById("newMoves_" + gameId[gg])) {
         theObject.className = "noNewMoves";
@@ -684,7 +678,7 @@ function gup( name ){
 
 <body>
 
-<a class="gameLiveStatusTicker" id="GameLiveStatusTicker" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();">&nbsp;</a>
+<a class="gameLiveStatus" id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();">&nbsp;</a>
 
 <div class="gameBoardContainer" id="GameBoardContainer">
 <div class="header"><a class="gameWhite" id="GameWhite" title="white player" href="javascript:void(0);" onclick="openFidePlayerUrl(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();"></a><span class="gameWhiteClock" id="GameWhiteClock" title="white clock"></span><span class="gameBlackClock" id="GameBlackClock" title="black clock"></span><a class="gameBlack" id="GameBlack" title="black player" href="javascript:void(0);" onclick="openFidePlayerUrl(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();"></a></div>

@@ -398,9 +398,7 @@ of Google Chrome. Don't use with any other browser.
             previousPlyNumber = PlyNumber;
             liveBroadcastUpdateTicker++;
          }
-         if (LiveBroadcastStarted && !LiveBroadcastEnded) {
-            document.title = liveBroadcastUpdateTicker + LiveBroadcastStatusString.replace("live games: ", ".").replace(" &nbsp; finished: ", ".") + " live broadcast" + (demoFlag ? " demo" : "");
-         } else { document.title = LiveBroadcastStatusString; }
+         document.title = liveBroadcastUpdateTicker + "." + LiveBroadcastStatusString.replace(/^(\d*)\D*(\d*)$/, "$1.$2") + " live broadcast" + (demoFlag ? " demo" : "");
       } else {
          if (noGamesLoaded) { document.title = alertNum ? "PGN data error" : "chess games viewer"; }
          else { document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s"); }
@@ -428,14 +426,6 @@ of Google Chrome. Don't use with any other browser.
    function underlineByTicker(text, ticker) {
       position = ticker % text.length;
       return (text.substring(0, position) + "<u>" +text.substring(position, position + 1) + "</u>" + text.substring(position + 1));
-   }
-
-   function customFunctionOnCheckLiveBroadcastStatus() {
-      if (theObject = document.getElementById("GameLiveStatus")) {
-         if (LiveBroadcastTicker > 1) {
-            theObject.innerHTML =  theObject.innerHTML.replace(/live/, underlineByTicker("live", LiveBroadcastTicker-2));
-         }
-      }
    }
 
    function searchPlayer(name, FideId) {
@@ -678,7 +668,7 @@ of Google Chrome. Don't use with any other browser.
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPgnGame(lastSearchPgnExpression, !event.shiftKey);" class="innerHeaderItem" id="GameResult"></a></b><span class="innerHeaderItem" id="GameTermination"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><a class="innerHeaderItem" id="GameLiveStatus" title="live broadcast status" href="javascript:void(0);" onclick="refreshPgnSource();"></a><span class="innerHeaderItem" id="GameLiveStatusDemo" title="this is a simulation of the live broadcast functionality"></span><b>&nbsp;</b></div>
+<div class="headerItem"><a class="innerHeaderItem" id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource();"></a><span class="innerHeaderItem" id="GameLiveStatusDemo" title="this is a simulation of the live broadcast functionality"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItemNoMargin notranslate" id="GameTablebaseProbe" onmouseout="showProbeTablebaseResults();" title="endgame tablebase assessment"></span><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="showExtraAnalysisInfo();" onmouseout="hideExtraAnalysisInfo();" class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="position's evaluation from the analysis engine"></a><a href="javascript:void(0);" onclick="goToMissingAnalysis();" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv" title="principal variation from the analysis engine"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer" id="GameAnnotationMeasure"><b>&nbsp;</b></div>

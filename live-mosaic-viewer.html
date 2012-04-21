@@ -250,7 +250,7 @@ function printHeader() {
 }
 
 function printMenu() {
-  document.write("<div id='rightMenu' class='menuLine' style='text-align:right; float:right;'></div><div id='leftMenu' class='menuLine' style='text-align:left; float:left;'><span id='GameLiveStatusDemo' title='this is a simulation of the live broadcast functionality'></span><a id='GameLiveStatus' href='javascript:void(0);' style='display:none;' onclick='clickGameLiveStatus(); this.blur();' title='live broadcast status'></a></div><div id='infoMessage' class='menuLine infoMessage'>chess games viewer: loading PGN data, please wait...</div>");
+  document.write("<div id='rightMenu' class='menuLine' style='text-align:right; float:right;'></div><div id='leftMenu' class='menuLine' style='text-align:left; float:left;'><span id='GameLiveStatusDemo' title='this is a simulation of the live broadcast functionality'></span><a id='GameLiveStatus' href='javascript:void(0);' style='display:none;' onclick='clickGameLiveStatus(); this.blur();'></a></div><div id='infoMessage' class='menuLine infoMessage'>chess games viewer: loading PGN data, please wait...</div>");
 }
 
 timeOfLastReplayPreviousMoves = 0;
@@ -534,17 +534,14 @@ function customFunctionOnPgnTextLoad() {
   }
 
   if (theObject = document.getElementById("GameLiveStatus")) {
-    theObject.title = "live broadcast status";
     if (alertNumSinceReset) {
-      theObject.title += ": " + alertNumSinceReset + " new alert" + (alertNumSinceReset > 1 ? "s" : "");
+      theObject.title += " - " + alertNumSinceReset + " new alert" + (alertNumSinceReset > 1 ? "s" : "");
     }
     if (firstLoadPgnText) { theObject.style.display = "inline"; }
   }
 
   if (newMovesInShownGames) { liveBroadcastUpdateTicker++; }
-  if (LiveBroadcastStarted && !LiveBroadcastEnded) {
-    document.title = liveBroadcastUpdateTicker + LiveBroadcastStatusString.replace("live games: ", ".").replace(" &nbsp; finished: ", ".") + " live broadcast" + (demoFlag ? " demo" : "");
-  } else { document.title = LiveBroadcastStatusString; }
+  document.title = liveBroadcastUpdateTicker + "." + LiveBroadcastStatusString.replace(/^(\d*)\D*(\d*)$/, "$1.$2") + " live broadcast" + (demoFlag ? " demo" : "");
 
   if (theObject = document.getElementById("GameLiveStatusDemo")) { theObject.innerHTML = LiveBroadcastDemo ? "demo &nbsp; " : ""; }
 
@@ -652,14 +649,6 @@ function underlineByTicker(text, ticker) {
   return (text.substring(0, position) +
     "<u>" +text.substring(position, position + 1) + "</u>" +
     text.substring(position + 1));
-}
-
-function customFunctionOnCheckLiveBroadcastStatus() {
-  if (theObject = document.getElementById("GameLiveStatus")) {
-    if (LiveBroadcastTicker > 1) {
-      theObject.innerHTML =  theObject.innerHTML.replace(/live/, underlineByTicker("live", LiveBroadcastTicker-2));
-    }
-  }
 }
 
 function switchBoardView(search) {

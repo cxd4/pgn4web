@@ -56,14 +56,6 @@
       text.substring(position + 1));
   }
 
-  function customFunctionOnCheckLiveBroadcastStatus() {
-    if (theObject = document.getElementById("GameLiveStatus")) {
-      if (LiveBroadcastTicker > 1) {
-        theObject.innerHTML =  theObject.innerHTML.replace(/live/, underlineByTicker("live", LiveBroadcastTicker-2));
-      }
-    }
-  }
-
   function customFunctionOnPgnTextLoad() {
     if (resultObject = document.getElementById("results")) {
       resultString = "";
@@ -124,7 +116,7 @@ function gup( name ){
 
 <pre id="results" style="font-size:16px;"></pre>
 
-<a id="GameLiveStatus" style="text-decoration:none; color:black;" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();" title="click here to force a live games refresh"></a>
+<a id="GameLiveStatus" style="text-decoration:none; color:black;" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();"></a>
 
 </body>
 

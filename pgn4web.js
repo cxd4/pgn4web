@@ -876,6 +876,7 @@ var LiveBroadcastStarted = false;
 var LiveBroadcastEnded = false;
 var LiveBroadcastPaused = false;
 var LiveBroadcastTicker = 0;
+var LiveBroadcastGamesRunning = 0;
 var LiveBroadcastStatusString = "";
 var LiveBroadcastLastModified = new Date(0); // default to epoch start
 var LiveBroadcastLastModifiedHeader = LiveBroadcastLastModified.toUTCString();
@@ -1918,40 +1919,37 @@ function restartLiveBroadcast() {
 }
 
 function checkLiveBroadcastStatus() {
+  var liveBroadcastStatusTitle;
 
-  if (LiveBroadcastDelay === 0) {
-    LiveBroadcastEnded = false;
-    LiveBroadcastStatusString = "";
-    return;
-  }
+  if (LiveBroadcastDelay === 0) { return; }
 
   // broadcast started yet?
   // check for fake LiveBroadcastPlaceholderPgn game when no PGN file is found
-  if ((LiveBroadcastStarted === false) || ((pgnHeader === undefined) ||
-    ((numberOfGames == 1) && (gameEvent[0] == LiveBroadcastPlaceholderEvent)))) {
+  if (LiveBroadcastStarted === false || typeof(pgnHeader) == "undefined" || (numberOfGames == 1 && gameEvent[0] == LiveBroadcastPlaceholderEvent)) {
     LiveBroadcastEnded = false;
-    LiveBroadcastStatusString = "live broadcast yet to start";
+    LiveBroadcastGamesRunning = 0;
+    LiveBroadcastStatusString = "0 " + (LiveBroadcastTicker % 2 ? "&otimes;" : "&oplus;") + " 0";
+    liveBroadcastStatusTitle = "live broadcast yet to start";
   } else {
     // broadcast started with good PGN
-    liveGamesRunning = 0;
+    var running = 0;
     for (ii=0; ii<numberOfGames; ii++) {
-      if (gameResult[ii].indexOf('*') >= 0) { liveGamesRunning++; }
+      if (gameResult[ii].indexOf('*') >= 0) { running++; }
     }
-    LiveBroadcastEnded = (liveGamesRunning === 0);
-
-    LiveBroadcastStatusString = LiveBroadcastEnded ? "live broadcast ended" :
-      "live games: " + liveGamesRunning + " &nbsp; finished: " + (numberOfGames - liveGamesRunning);
+    LiveBroadcastEnded = (running === 0);
+    LiveBroadcastGamesRunning = running;
+    LiveBroadcastStatusString = running + " " + (LiveBroadcastTicker % 2 ? "&otimes;" : "&oplus;") + " " + numberOfGames;
+    liveBroadcastStatusTitle = LiveBroadcastEnded ? "live broadcast ended" : running + " live game" + (running > 1 ? "s" : "") + " out of " + numberOfGames;
   }
 
-  if (theObject = document.getElementById("GameLiveStatus"))
-  { theObject.innerHTML = LiveBroadcastStatusString; }
+  if (theObject = document.getElementById("GameLiveStatus")) {
+    theObject.innerHTML = LiveBroadcastStatusString;
+    theObject.title = liveBroadcastStatusTitle;
+  }
 
-  if (theObject = document.getElementById("GameLiveLastRefreshed"))
-  { theObject.innerHTML = LiveBroadcastLastRefreshedLocal; }
-  if (theObject = document.getElementById("GameLiveLastReceived"))
-  { theObject.innerHTML = LiveBroadcastLastReceivedLocal; }
-  if (theObject = document.getElementById("GameLiveLastModifiedServer"))
-  { theObject.innerHTML = LiveBroadcastLastModified_ServerTime(); }
+  if (theObject = document.getElementById("GameLiveLastRefreshed")) { theObject.innerHTML = LiveBroadcastLastRefreshedLocal; }
+  if (theObject = document.getElementById("GameLiveLastReceived")) { theObject.innerHTML = LiveBroadcastLastReceivedLocal; }
+  if (theObject = document.getElementById("GameLiveLastModifiedServer")) { theObject.innerHTML = LiveBroadcastLastModified_ServerTime(); }
 
   customFunctionOnCheckLiveBroadcastStatus();
 }
