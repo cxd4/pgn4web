@@ -318,7 +318,7 @@ function myOnResize() {
   bareSquareSize = squareSize - 2 * squareBorderWidth;
   pieceSize = Math.floor(squareSize * pieceSizeRatio);
   if (pieceSize > bareSquareSize) { pieceSize = Math.floor(bareSquareSize); }
-  headerContainerWidth = horizontalLayout ? ww - 9 * squareSize : ww;
+  headerContainerWidth = horizontalLayout ? ww - 9 * squareSize + Math.floor(lineHeight / 2) : ww;
 
   sheet = document.styleSheets[0];
   oldRules = myRulesLength(sheet);
@@ -352,7 +352,8 @@ function myOnResize() {
     myInsertRule(sheet, ".buttonControlStop", buttonCss);
     myInsertRule(sheet, ".buttonControlSpace", "margin: 0; padding: 0; width: " + (lineHeight / 4) + "px !important;");
   }
-  myInsertRule(sheet, ".colorFlag", "height: 0.8ex; width: 0.8ex; border-width: 1px; border-color: #" + fontColorHex + "; border-style: solid; margin-bottom: 0.2ex;");
+  myInsertRule(sheet, ".colorFlag", "height: 0.8ex; width: 0.8ex; border-width: 1px; border-color: #" + fontColorHex + "; border-style: solid; margin-bottom: 0.2ex; margin-left: " + Math.floor(5 * lineHeight / 9) + "px; margin-right:" + Math.floor(5 * lineHeight / 9) + "px;");
+  myInsertRule(sheet, ".leftRightSpacing", "margin-left: " + Math.floor(lineHeight / 2) + "px; margin-right: " + Math.floor(lineHeight / 2) + "px;");
   if (!horizontalLayout) {
     variableSpacerLineHeight = Math.floor(Math.min((wh - squareSize * 8 - lineHeight * 11) / 6, lineHeight / 2));
     variableSpacerFontSize = Math.floor(variableSpacerLineHeight * 0.8);
@@ -483,38 +484,26 @@ function meaningfulHeader(tagValue) {
 
 function fixHeaderItem(tag, objectId, label) {
   if (theObject = document.getElementById(objectId)) {
-    if (meaningfulHeader(tagValue = customPgnHeaderTag(tag, objectId))) {
+    var tagValue = tag ? customPgnHeaderTag(tag, objectId) : theObject.innerHTML;
+    if (meaningfulHeader(tagValue)) {
       theObject.title = label + ": " + tagValue;
-      theObject.style.paddingLeft = "1em";
+      theObject.className = "leftRightSpacing";
     } else {
       theObject.title = label;
-      theObject.style.paddingLeft = "";
+      theObject.className = "";
     }
   }
 }
 
 function customFunctionOnPgnGameLoad() {
   myOnResize();
-  if (theObject = document.getElementById("GameSite")) {
-    theObject.title = "site" + (meaningfulHeader(gameSite[currentGame]) ? ": " + gameSite[currentGame] : "");
-  }
-  if (theObject = document.getElementById("GameDate")) {
-    theObject.title = "date" + (meaningfulHeader(gameDate[currentGame]) ? ": " + gameDate[currentGame] : "");
-    theObject.style.paddingLeft = meaningfulHeader(gameDate[currentGame]) ? "1em" : "";
-  }
-  if (theObject = document.getElementById("GameEvent")) {
-    theObject.title = "event" + (meaningfulHeader(gameEvent[currentGame]) ? ": " + gameEvent[currentGame] : "");
-  }
-  if (theObject = document.getElementById("GameRound")) {
-    theObject.title = "round" + (meaningfulHeader(gameRound[currentGame]) ? ": " + gameRound[currentGame] : "");
-    theObject.style.paddingLeft = meaningfulHeader(gameRound[currentGame]) ? "1em" : "";
-  }
-  if (theObject = document.getElementById("GameWhite")) {
-    theObject.title = "white player" + (meaningfulHeader(gameWhite[currentGame]) ? ": " + gameWhite[currentGame] : "");
-  }
-  if (theObject = document.getElementById("GameBlack")) {
-    theObject.title = "black player" + (meaningfulHeader(gameBlack[currentGame]) ? ": " + gameBlack[currentGame] : "");
-  }
+  fixHeaderItem(null, "GameEvent", "event");
+  fixHeaderItem(null, "GameSite", "site");
+  fixHeaderItem(null, "GameDate", "date");
+  fixHeaderItem(null, "GameRound", "round");
+  fixHeaderItem(null, "GameWhite", "white player");
+  fixHeaderItem(null, "GameBlack", "black player");
+  fixHeaderItem(null, "GameResult", "result");
   fixHeaderItem("Section", "GameSection", "section");
   fixHeaderItem("Stage", "GameStage", "stage");
   fixHeaderItem("WhiteTitle", "GameWhiteTitle", "white title");
@@ -547,6 +536,8 @@ function customFunctionOnMove() {
   }
   if (thisPly < StartPly + PlyNumber) { theObject.innerHTML += "..."; }
 
+  fixHeaderItem(null, "GameWhiteClock", "white clock");
+  fixHeaderItem(null, "GameBlackClock", "black clock");
   fixColorFlag();
 }
 
@@ -558,27 +549,19 @@ function fixColorFlag() {
     if (theObject = document.getElementById("whiteColorFlag")) {
       theObject.style.display = "inline";
       theObject.style.visibility = CurrentPly % 2 ? "hidden" : "visible";
-      theObject.style.marginLeft = whiteFlagPadding ? "0.1em" : "";
-      theObject.style.marginRight = whiteFlagPadding ? "1em" : "";
     }
     if (theObject = document.getElementById("whiteColorFlagFiller")) {
       theObject.style.display = whiteFlagPadding ? "inline" : "none";
       theObject.style.visibility = "hidden";
-      theObject.style.marginRight = "0.1em";
-      theObject.style.marginLeft = "1em";
     }
     blackFlagPadding = (horizontalLayout || ((clockObject = document.getElementById("GameBlackClock")) && (clockObject.innerHTML)));
     if (theObject = document.getElementById("blackColorFlag")) {
       theObject.style.display = "inline";
       theObject.style.visibility = CurrentPly % 2 ? "visible" : "hidden";
-      theObject.style.marginLeft = blackFlagPadding ? "0.1em" : "";
-      theObject.style.marginRight = blackFlagPadding ? "1em" : "";
     }
     if (theObject = document.getElementById("blackColorFlagFiller")) {
       theObject.style.display = blackFlagPadding ? "inline" : "none";
       theObject.style.visibility = "hidden";
-      theObject.style.marginRight = "0.1em";
-      theObject.style.marginLeft = "1em";
     }
   }
 }
@@ -687,12 +670,12 @@ function myOnLoad() {
 <div class="variableSpacer">&nbsp;</div>
 <div>&nbsp;<span style="font-weight: bold;" id="GameResult" title="result"></span><span style="font-weight: bold;">&nbsp;</span><span id="DebugInfo"></span></div>
 <div class="variableSpacer">&nbsp;</div>
-<div>&nbsp;<a id="GamePrevMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly - 1); this.blur();" title="previous moves"></a><a style="font-weight: bold;" id="GameCurrMove" href="javascript:void(0);" onclick="SetHighlight(!highlightOption); this.blur();" title="current move as shown on chessboard"></a><a id="GameNextMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly + 1); this.blur();" title="next moves"></a><span style="font-weight: bold;">&nbsp;</span></div>
+<div class="leftRightSpacing">&nbsp;<a id="GamePrevMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly - 1); this.blur();" title="previous moves"></a><a style="font-weight: bold;" id="GameCurrMove" href="javascript:void(0);" onclick="SetHighlight(!highlightOption); this.blur();" title="current move as shown on chessboard"></a><a id="GameNextMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly + 1); this.blur();" title="next moves"></a><span style="font-weight: bold;">&nbsp;</span></div>
 <div class="variableSpacer">&nbsp;</div>
-<center><div class="gameButtons" id="GameButtons"></div></center>
-<div class="liveStatusLine">&nbsp;<a id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();"></a>&nbsp;<span id="GameLiveStatusDemo" title="this is a broadcast simulation"></span></div>
+<center><div class="leftRightSpacing gameButtons" id="GameButtons"></div></center>
+<div class="leftRightSpacing liveStatusLine">&nbsp;<a id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();"></a>&nbsp;<span id="GameLiveStatusDemo" title="this is a broadcast simulation"></span></div>
 <div class="variableSpacer">&nbsp;</div>
-<div style="visibility: hidden;" id="ShowGameList">&nbsp;<a id="ShowGameListLink" href="javascript:void(0);" onclick="showGameList();"></a>&nbsp;</div>
+<div class="leftRightSpacing" style="visibility: hidden;" id="ShowGameList">&nbsp;<a id="ShowGameListLink" href="javascript:void(0);" onclick="showGameList();"></a>&nbsp;</div>
 </div>
 
 <script type="text/javascript">
