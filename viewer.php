@@ -138,7 +138,7 @@ function get_pgn() {
     }
   } else {
     $pgnStatus = "failed uploading PGN games: ";
-    switch($_FILES['pgnFile']['error']) {
+    switch ($_FILES['pgnFile']['error']) {
       case UPLOAD_ERR_INI_SIZE:
       case UPLOAD_ERR_FORM_SIZE:
         $pgnStatus = $pgnStatus . "file size exceeds " . $fileUploadLimitText . " form limit or " . $fileUploadLimitIniText . " server limit";
@@ -414,7 +414,7 @@ END;
     theObject = document.getElementById("urlFormSelect");
     if (theObject === null) { return; }
 
-    switch(theObject.value) {
+    switch (theObject.value) {
       case "twic":
         givenTwicNumber = 765;
         epochTimeOfGivenTwic = 1246921199; // Mon July 6th, 23:59:59 GMT
