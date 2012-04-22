@@ -59,7 +59,7 @@ body {
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 142px !important;
-  font-size: 12px;
+  font-size: 14px;
   color: white;
   background-color: black;
   border-color: #222222;
@@ -93,7 +93,7 @@ body {
 .variation,
 .comment, {
   color: black;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: normal;
   text-decoration: none;
 }
@@ -121,7 +121,7 @@ a.variation {
 .headerItem {
   width: 142px;
   white-space: nowrap;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold;
   font-family: monospace;
   text-align: center;

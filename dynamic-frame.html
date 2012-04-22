@@ -318,7 +318,7 @@ function myOnResize() {
   bareSquareSize = squareSize - 2 * squareBorderWidth;
   pieceSize = Math.floor(squareSize * pieceSizeRatio);
   if (pieceSize > bareSquareSize) { pieceSize = Math.floor(bareSquareSize); }
-  headerContainerWidth = horizontalLayout ? ww - 9 * squareSize + Math.floor(lineHeight / 2) : ww;
+  headerContainerWidth = horizontalLayout ? ww - 9 * squareSize + Math.floor(3 * lineHeight / 4) : ww;
 
   sheet = document.styleSheets[0];
   oldRules = myRulesLength(sheet);

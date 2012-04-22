@@ -104,10 +104,10 @@ function customFunctionOnPgnGameLoad() {
 }
 
 function customFunctionOnMove() {
-   document.getElementById("GameResult").style.visibility =
-       (gameFEN[currentGame] && (CurrentPly == StartPly) && (PlyNumber > 0)) ? "hidden" : "visible";
-   document.getElementById("GameSideToMoveString").style.visibility =
-       (gameFEN[currentGame] && (CurrentPly == StartPly)) ? "visible" : "hidden";
+   document.getElementById("GameResult").style.display =
+       (gameFEN[currentGame] && (CurrentPly == StartPly) && (PlyNumber > 0)) ? "none" : "block";
+   document.getElementById("GameSideToMoveString").style.display =
+       (gameFEN[currentGame] && (CurrentPly == StartPly)) ? "block" : "none";
 }
 
 </script>
@@ -132,7 +132,6 @@ function customFunctionOnMove() {
 <div style="padding-left: 10px;">
 <div class="headerItem" id="GameSelector">&nbsp;</div>
 <div class="headerItem">&nbsp;</div>
-<div class="headerItem">&nbsp;</div>
 <div class="headerItem" id="GameDate">&nbsp;</div>
 <div class="headerItem" id="GameSite">&nbsp;</div>
 <div class="headerItem" id="GameEvent">&nbsp;</div>
@@ -144,7 +143,7 @@ function customFunctionOnMove() {
 <div class="headerItem" id="GameBlackClock">&nbsp;</div>
 <div class="headerItem">&nbsp;</div>
 <div class="headerItem" id="GameResult">&nbsp;</div>
-<div class="headerItem" style="visibility: hidden;" id="GameSideToMoveString"><span id="GameSideToMove"></span> to move</div>
+<div class="headerItem" style="display: none;" id="GameSideToMoveString"><span id="GameSideToMove"></span> to move</div>
 <div class="headerItem">&nbsp;</div>
 <div class="headerItem" id="GameLiveStatus">&nbsp;</div>
 </div>
