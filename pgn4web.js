@@ -3814,10 +3814,10 @@ function printMoveText(thisPly, thisVar, isVar, hasLeadingNum, hasId) {
     }
   }
   var jj = thisPly+1;
-  text += '<A HREF="javascript:void(0);" ONCLICK="GoToMove(' + jj + ', ' + thisVar + ')" ' +
-    'CLASS="' + (isVar ? 'variation' : 'move') + ' notranslate"' +
-    (hasId ? ('ID="Var' + thisVar + 'Mv' + jj) : '') +
-    '" ONFOCUS="this.blur()">' + MovesVar[thisVar][thisPly];
+  text += '<A HREF="javascript:void(0);" ONCLICK="GoToMove(' + jj + ', ' + thisVar + ');" ' +
+    'CLASS="' + (isVar ? 'variation' : 'move') + ' notranslate" ' +
+    (hasId ? ('ID="Var' + thisVar + 'Mv' + jj + '" ') : '') +
+    'ONFOCUS="this.blur();">' + MovesVar[thisVar][thisPly];
   if (commentsIntoMoveText) { text += basicNAGsMoveComment(jj, thisVar); }
   text += '</A>';
 
