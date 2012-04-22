@@ -1043,7 +1043,7 @@ function generate_html_code() {
 
   calculate_html_code();
 
-  switch (frameWidth_value) {
+  switch(frameWidth_value) {
     case "board":
       outerFrameWidth = min_frameWidth;
       break;
@@ -1055,7 +1055,7 @@ function generate_html_code() {
       break;
   }
 
-  switch (frameHeight_value) {
+  switch(frameHeight_value) {
     case "board":
       outerFrameHeight = min_frameHeight;
       break;
@@ -1350,7 +1350,7 @@ function validate_useTextarea() {
 
 function checkInitialHalfmove() {
   initialHalfmove_value = document.board.initialHalfmove.value;
-  switch (initialHalfmove_value) {
+  switch(initialHalfmove_value) {
     case "":
     case "start":
     case "end":

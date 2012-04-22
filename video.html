@@ -172,7 +172,7 @@ var horizontalLayout = ((gup("horizontalLayout") != "false") && (gup("hl") != "f
 
 <script type="text/javascript">
 
-if (! horizontalLayout) { document.write('<tr><td height="20"></td></tr>'); }
+if (!horizontalLayout) { document.write('<tr><td height="20"></td></tr>'); }
 
 </script>
 
@@ -333,7 +333,7 @@ if (pgnFile) {
   paramError += "error: pgnData or youtubeVideoid URL parameter required as PGN data source\n\n";
 }
 
-if (paramError && (! videoHelp)) {
+if (paramError && (!videoHelp)) {
   if (confirm("pgn4web video.html\n\n" + paramError + "click OK for more help")) {
     window.location.search += (window.location.search ? "&" : "?") + "help=true";
   }

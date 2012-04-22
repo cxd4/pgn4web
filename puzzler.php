@@ -51,7 +51,7 @@ function get_pgnText($pgnUrl) {
   if (strpos($pgnUrl, ":") || (strpos($pgnUrl, "%3A"))) { return "[Event \"error: invalid pgnData parameter\"]\n"; }
   $fileLimitBytes = 10000000; // 10Mb
   $pgnText = file_get_contents($pgnUrl, NULL, NULL, 0, $fileLimitBytes + 1);
-  if (! $pgnText) { return "[Event \"error: failed to get pgnData content\"]\n"; }
+  if (!$pgnText) { return "[Event \"error: failed to get pgnData content\"]\n"; }
   return $pgnText;
 }
 
@@ -131,7 +131,7 @@ if ($pieceFont == "m") { $pieceFont = "merida"; }
 if ($pieceFont == "u") { $pieceFont = "uscf"; }
 if (($pieceFont == "random") || ($pieceFont == "r")) {
   $randomPiece = rand(0, 2);
-  switch ($randomPiece) {
+  switch($randomPiece) {
     case 1: $pieceFont = "alpha"; break;
     case 2: $pieceFont = "merida"; break;
     default: $pieceFont = "uscf"; break;
@@ -140,7 +140,7 @@ if (($pieceFont == "random") || ($pieceFont == "r")) {
 if (($pieceFont == "hash") || ($pieceFont == "h")) {
 //  $hashPiece = strlen($pgnGame) % 3;
   $hashPiece = $gameNum % 3;
-  switch ($hashPiece) {
+  switch($hashPiece) {
     case 1: $pieceFont = "alpha"; break;
     case 2: $pieceFont = "merida"; break;
     default: $pieceFont = "uscf"; break;
@@ -406,7 +406,7 @@ function customFunctionOnMove() {
   }
 
   if (CurrentPly == StartPly+PlyNumber) {
-    switch (res = gameResult[currentGame]) {
+    switch(res = gameResult[currentGame]) {
       case "1-0": outcome = "white wins"; break;
       case "0-1": outcome = "black wins"; break;
       case "1/2-1/2": outcome = "draw"; break;

@@ -253,7 +253,7 @@ if (pieceFont == "u") { pieceFont = "uscf"; }
 if (pieceFont == "s") { pieceFont = "svgchess"; } // undocumented option
 if ((pieceFont == "random") || (pieceFont == "r")) {
   randomPiece = Math.floor(Math.random() * 3);
-  switch (randomPiece) {
+  switch(randomPiece) {
     case 1: pieceFont = "merida"; break;
     case 2: pieceFont = "uscf"; break;
     default: pieceFont = "alpha"; break;
@@ -375,7 +375,7 @@ if (autoplayMode == "g") { autoplayMode = "game"; }
 if (autoplayMode == "l") { autoplayMode = "loop"; }
 if (autoplayMode == "n") { autoplayMode = "none"; }
 
-switch (autoplayMode) {
+switch(autoplayMode) {
   case "loop":
     SetAutostartAutoplay(true);
     SetAutoplayNextGame(true);
@@ -487,7 +487,7 @@ if (commentsDisplay == "h") { commentsDisplay = "hidden"; }
 if (commentsDisplay == "i") { commentsDisplay = "inline"; }
 if (commentsDisplay == "n") { commentsDisplay = "newline"; }
 
-switch (commentsDisplay) {
+switch(commentsDisplay) {
   case "hidden":
     SetCommentsIntoMoveText(false);
     SetCommentsOnSeparateLines(false);
@@ -593,7 +593,7 @@ if ((textMargin = gup("textMargin")) === "") { textMargin = 0; }
 else { textMargin = parseInt(textMargin, 10); }
 
 frameHeight = gup("frameHeight");
-switch (frameHeight) {
+switch(frameHeight) {
   case "b":
   case "board":
     frameHeight = "";
@@ -618,7 +618,7 @@ switch (frameHeight) {
 }
 
 frameWidth = gup("frameWidth");
-switch (frameWidth) {
+switch(frameWidth) {
   case "b":
   case "board":
     frameWidth = "";

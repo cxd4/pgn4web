@@ -20,7 +20,7 @@
 <script type="text/javascript">
 var NAG_text = new Array();
 for(ii = 0; ii < NAG.length; ii++) {
-  if (! NAG[ii]) { continue; }
+  if (!NAG[ii]) { continue; }
   NAG_text[ii] = NAG[ii];
 }
 </script>
@@ -40,7 +40,7 @@ if (location.search == "?alternative") { document.write('<script src="chess-info
 document.write("<table cellpadding='5'>");
 ix = Math.max(NAG.length, NAG_text.length);
 for (ii = 0; ii < ix; ii++) {
-  if ((! NAG[ii]) && (! NAG_text[ii])) { continue; }
+  if ((!NAG[ii]) && (!NAG_text[ii])) { continue; }
   document.write("<tr><td>$" + ii + "</td><td>" + (NAG[ii] ? NAG[ii] : "") + "</td><td>" + (NAG_text[ii] ? NAG_text[ii] : "") + "</td></tr>");
 }
 document.write("</table>");

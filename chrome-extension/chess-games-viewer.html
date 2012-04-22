@@ -453,7 +453,7 @@ of Google Chrome. Don't use with any other browser.
 
 
    function cycleHash() {
-      switch (location.hash) {
+      switch(location.hash) {
          case "#board": goToHash("bottom"); break;
          case "#bottom": goToHash(""); break;
          default: goToHash("board"); break;
@@ -542,7 +542,7 @@ of Google Chrome. Don't use with any other browser.
    var cycleLCA = 0;
    function cycleLastCommentArea() {
       if (theObject = document.getElementById("GameLastComment")) {
-         switch (cycleLCA++ % 3) {
+         switch(cycleLCA++ % 3) {
             case 0:
                if (theObject.scrollHeight === theObject.clientHeight) { cycleLastCommentArea(); }
                else { fitLastCommentArea(); }
@@ -729,7 +729,7 @@ of Google Chrome. Don't use with any other browser.
 
    function analysisOutputHandler(request, sender, sendResponse) {
       if (typeof(request.analysisNotification) != "undefined") {
-         switch (request.analysisNotification) {
+         switch(request.analysisNotification) {
             case "newData":
                updateAnnotationGraph();
                updateAnalysisHeader();
@@ -1173,7 +1173,7 @@ of Google Chrome. Don't use with any other browser.
                            unzipper.readEntries();
                            for (u in unzipper.entries) {
                               if (unzipper.entries[u].fileName.match(/\.pgn$/i)) {
-                                 switch (unzipper.entries[u].compressionMethod) {
+                                 switch(unzipper.entries[u].compressionMethod) {
                                     case 0:
                                        unzippedPgnText += "\n" + unzipper.entries[u].data + "\n";
                                        break;
@@ -1199,20 +1199,20 @@ of Google Chrome. Don't use with any other browser.
                   } else {
                      errorFiles.push(theFileName);
                   }
-                  if (! --pgnFilesLeft) { useNewPgnTextFromFiles(newPgnText, validFiles, invalidFiles, errorFiles); }
+                  if (!--pgnFilesLeft) { useNewPgnTextFromFiles(newPgnText, validFiles, invalidFiles, errorFiles); }
                };
             })(files[f].name);
             reader.onerror = (function(theFileName) {
                return function(e) {
                   errorFiles.push(theFileName);
-                  if (! --pgnFilesLeft) { useNewPgnTextFromFiles(newPgnText, validFiles, invalidFiles, errorFiles); }
+                  if (!--pgnFilesLeft) { useNewPgnTextFromFiles(newPgnText, validFiles, invalidFiles, errorFiles); }
                };
             })(files[f].name);
             if (files[f].name.match(/\.(zip)$/i)) { reader.readAsBinaryString(files[f]); }
             else { reader.readAsText(files[f]); }
          } else {
             invalidFiles.push(files[f].name);
-            if (! --pgnFilesLeft) { useNewPgnTextFromFiles(newPgnText, validFiles, invalidFiles, errorFiles); }
+            if (!--pgnFilesLeft) { useNewPgnTextFromFiles(newPgnText, validFiles, invalidFiles, errorFiles); }
          }
       }
    }

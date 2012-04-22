@@ -66,8 +66,7 @@ window.onload = start_pgn4web;
 document.onkeydown = handlekey;
 
 function start_pgn4web() {
-  // keep startup logs at first run
-  // reset alert log when reloading start_pgn4web
+  // keep startup logs at first run, reset when reloading start_pgn4web
   if (alertFirstResetLoadingPgn) { alertFirstResetLoadingPgn = false; }
   else { resetAlert(); }
   InitImages();
@@ -142,7 +141,7 @@ function alertPromptTick(restart) {
     alertPromptOn = !alertPromptOn;
     if (alertPromptOn) { alertPromptDelay = 500; }
     else { alertPromptDelay = 3000; }
-  } else { alertPromptDelay = 1500; } // for alerts before the baord is drawn
+  } else { alertPromptDelay = 1500; } // alerts before the baord is drawn
   if (restart) { alertPromptInterval = setTimeout("alertPromptTick(true);", alertPromptDelay); }
 }
 
@@ -161,7 +160,6 @@ function disableShortcutKeysAndStoreStatus() {
     SetShortcutKeysEnabled(false);
   }
 }
-
 function restoreShortcutKeysStatus() {
   if (shortcutKeysWereEnabled === true) { SetShortcutKeysEnabled(true); }
   shortcutKeysWereEnabled = false;
@@ -1061,7 +1059,7 @@ function CheckLegality(what, plyCount) {
         mvPieceId = pieceId;
         // board updated: king check?
         StoreMove(plyCount);
-        if (! IsCheck(PieceCol[MoveColor][0], PieceRow[MoveColor][0], MoveColor)) { return true; }
+        if (!IsCheck(PieceCol[MoveColor][0], PieceRow[MoveColor][0], MoveColor)) { return true; }
         else { UndoMove(plyCount); }
       }
     }
@@ -1081,7 +1079,7 @@ function CheckLegalityQueen(thisQueen) {
   if ((mvFromCol >= 0) && (mvFromCol != PieceCol[MoveColor][thisQueen])) { return false; }
   if ((mvFromRow >= 0) && (mvFromRow != PieceRow[MoveColor][thisQueen])) { return false; }
   if (((PieceCol[MoveColor][thisQueen]-mvToCol) * (PieceRow[MoveColor][thisQueen]-mvToRow) !== 0) && (Math.abs(PieceCol[MoveColor][thisQueen]-mvToCol) != Math.abs(PieceRow[MoveColor][thisQueen]-mvToRow))) { return false; }
-  if (! CheckClearWay(thisQueen)) { return false; }
+  if (!CheckClearWay(thisQueen)) { return false; }
   return true;
 }
 
@@ -1089,7 +1087,7 @@ function CheckLegalityRook(thisRook) {
   if ((mvFromCol >= 0) && (mvFromCol != PieceCol[MoveColor][thisRook])) { return false; }
   if ((mvFromRow >= 0) && (mvFromRow != PieceRow[MoveColor][thisRook])) { return false; }
   if ((PieceCol[MoveColor][thisRook]-mvToCol) * (PieceRow[MoveColor][thisRook]-mvToRow) !== 0) { return false; }
-  if (! CheckClearWay(thisRook)) { return false; }
+  if (!CheckClearWay(thisRook)) { return false; }
   return true;
 }
 
@@ -1097,7 +1095,7 @@ function CheckLegalityBishop(thisBishop) {
   if ((mvFromCol >= 0) && (mvFromCol != PieceCol[MoveColor][thisBishop])) { return false; }
   if ((mvFromRow >= 0) && (mvFromRow != PieceRow[MoveColor][thisBishop])) { return false; }
   if (Math.abs(PieceCol[MoveColor][thisBishop]-mvToCol) != Math.abs(PieceRow[MoveColor][thisBishop]-mvToRow)) { return false; }
-  if (! CheckClearWay(thisBishop)) { return false; }
+  if (!CheckClearWay(thisBishop)) { return false; }
   return true;
 }
 
@@ -1510,7 +1508,7 @@ function highlightMove(colFrom, rowFrom, colTo, rowTo) {
 
 function highlightSquare(col, row, on) {
   if ((col === undefined) || (row === undefined)) { return false; }
-  if (! SquareOnBoard(col, row)) { return false; }
+  if (!SquareOnBoard(col, row)) { return false; }
   if (IsRotated) { trow = row; tcol = 7 - col; }
   else { trow = 7 - row; tcol = col; }
   if (!(theObject = document.getElementById('tcol' + tcol + 'trow' + trow))) { return false; }
@@ -1647,7 +1645,7 @@ function pgnGameFromHttpRequest(httpResponseData) {
         unzipper.readEntries();
         for (u in unzipper.entries) {
           if (unzipper.entries[u].fileName.match(/\.pgn$/i)) {
-            switch (unzipper.entries[u].compressionMethod) {
+            switch(unzipper.entries[u].compressionMethod) {
               case 0:
                 unzippedPgnText += "\n" + unzipper.entries[u].data + "\n";
                 break;
@@ -1693,15 +1691,15 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
       }
 
 // patch Opera's failure reporting 304 status
-    } else if (window.opera && (! this_http_request.responseText) && (this_http_request.status === 0)) {
+    } else if (window.opera && (!this_http_request.responseText) && (this_http_request.status === 0)) {
       this_http_request.abort();
       loadPgnFromPgnUrlResult = LOAD_PGN_UNMODIFIED;
 // end of patch
 
-    } else if (! this_http_request.responseText) {
+    } else if (!this_http_request.responseText) {
       myAlert('error: no data received from PGN URL\n' + pgnUrl, true);
       loadPgnFromPgnUrlResult = LOAD_PGN_FAIL;
-    } else if (! pgnGameFromHttpRequest(this_http_request.responseText)) {
+    } else if (!pgnGameFromHttpRequest(this_http_request.responseText)) {
       myAlert('error: no games found at PGN URL\n' + pgnUrl, true);
       loadPgnFromPgnUrlResult = LOAD_PGN_FAIL;
     } else {
@@ -1733,13 +1731,13 @@ var LOAD_PGN_OK = 1;
 var LOAD_PGN_UNMODIFIED = 2;
 function loadPgnCheckingLiveStatus(loadPgnResult) {
 
-  switch ( loadPgnResult ) {
+  switch(loadPgnResult) {
 
     case LOAD_PGN_OK:
       if (LiveBroadcastDelay > 0) {
         firstStart = true;
         oldParseLastMoveError = ParseLastMoveError;
-        if (! LiveBroadcastStarted) {
+        if (!LiveBroadcastStarted) {
           LiveBroadcastStarted = true;
         } else {
           oldGameWhite = gameWhite[currentGame];
@@ -1823,7 +1821,7 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
         Init();
         customFunctionOnPgnTextLoad();
       } else { // live broadcast: wait for live show start
-        if (! LiveBroadcastStarted) {
+        if (!LiveBroadcastStarted) {
           pgnGameFromPgnText(LiveBroadcastPlaceholderPgn);
           firstStart = true;
           undoStackReset();
@@ -2055,7 +2053,7 @@ function createBoard(){
 }
 
 function setCurrentGameFromInitialGame() {
-  switch (initialGame) {
+  switch(initialGame) {
     case "first":
       currentGame = 0;
       break;
@@ -2087,7 +2085,7 @@ function GoToInitialHalfmove() {
   if (initialVariation < 0) { iv = Math.max(numberOfVars + initialVariations, 0); }
   else { iv = Math.min(initialVariation, numberOfVars - 1); }
 
-  switch (initialHalfmove) {
+  switch(initialHalfmove) {
     case "start":
       GoToMove(0, iv);
       break;
@@ -2114,7 +2112,7 @@ function GoToInitialHalfmove() {
 function Init(nextGame){
 
   if (nextGame !== undefined) {
-    if ((! isNaN(nextGame)) && (nextGame >= 0) && (nextGame < numberOfGames)) {
+    if ((!isNaN(nextGame)) && (nextGame >= 0) && (nextGame < numberOfGames)) {
       currentGame = parseInt(nextGame,10);
     } else { return; }
   }
@@ -2565,7 +2563,7 @@ function LoadGameHeaders(){
     gameInitialWhiteClock[ii] = gameInitialBlackClock[ii] = "";
     gameVariant[ii] = "";
     while (parse = pgnHeaderTagRegExpGlobal.exec(ss)) {
-      switch (parse[1]) {
+      switch(parse[1]) {
         case 'Event': gameEvent[ii] = parse[2]; break;
         case 'Site': gameSite[ii] = parse[2]; break;
         case 'Round': gameRound[ii] = parse[2]; break;
@@ -2950,7 +2948,7 @@ function ParsePGNGameString(gameString) {
 
   for (start=0; start<ss.length; start++) {
 
-    switch (ss.charAt(start)) {
+    switch(ss.charAt(start)) {
 
       case ' ':
       case '\b':
@@ -3072,7 +3070,7 @@ function ParsePGNGameString(gameString) {
         lastVarWithNoMoves[lastVarWithNoMoves.length - 1] = false;
         if (ss.charAt(end) == ' ') { start = end; }
         else { start = end - 1; }
-        if (! MovesVar[CurrentVar][StartPly+PlyNumber].match(/^[\s+#]*$/)) { // to cope with malsformed PGN data
+        if (!MovesVar[CurrentVar][StartPly+PlyNumber].match(/^[\s+#]*$/)) { // to cope with malsformed PGN data
           PlyNumber++;
           MoveCommentsVar[CurrentVar][StartPly+PlyNumber] = '';
         }
@@ -3328,7 +3326,7 @@ function ParseMove(move, plyCount) {
   }
 
   // check move legality
-  if (! CheckLegality(PieceCode[mvPiece-1], plyCount)) { return false; }
+  if (!CheckLegality(PieceCode[mvPiece-1], plyCount)) { return false; }
 
   // pawn moved: check en-passant possibility
   HistEnPassant[plyCount+1] = false;
@@ -3404,7 +3402,7 @@ function searchPgnGame(searchExpression, backward) {
   lastSearchPgnExpression = searchExpression;
   if (theObject = document.getElementById('searchPgnExpression'))
   { theObject.value = searchExpression; }
-  if ((searchExpression === "") || (! searchExpression)) { return; }
+  if ((searchExpression === "") || (!searchExpression)) { return; }
   if (numberOfGames < 2) { return; }
   checkGame = gameNumberSearchPgn(searchExpression, backward, false);
   if ((checkGame !== false) && (checkGame != currentGame)) { Init(checkGame); }
@@ -3701,7 +3699,7 @@ function endButton(e) {
 }
 
 function clickedBbtn(t,e) {
-  switch (t.id) {
+  switch(t.id) {
     case "startButton":
       startButton(e);
       break;
@@ -3918,7 +3916,7 @@ function SetAutoPlay(vv) {
 var minAutoplayDelay = 500;
 var maxAutoplayDelay = 300000;
 function setCustomAutoplayDelay() {
-  if ((newDelaySec = prompt("Enter custom autoplay delay, in seconds, between " + (minAutoplayDelay/1000) + " and " + (maxAutoplayDelay/1000) + ":", Math.floor(Delay / 100) / 10)) && (! isNaN(newDelaySec = parseInt(newDelaySec, 10)))) {
+  if ((newDelaySec = prompt("Enter custom autoplay delay, in seconds, between " + (minAutoplayDelay/1000) + " and " + (maxAutoplayDelay/1000) + ":", Math.floor(Delay / 100) / 10)) && (!isNaN(newDelaySec = parseInt(newDelaySec, 10)))) {
     SetAutoplayDelayAndStart(newDelaySec * 1000);
   }
 }

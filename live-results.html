@@ -122,8 +122,11 @@ a {
 .gameLiveStatus {
   font-size: 16px; /* = body.fontSize */
   position: fixed;
-  bottom: 4px;
-  right: 4px;
+  bottom: 0;
+  right: 0;
+  display: inline-block;
+  margin: 5px; /* = player.paddingLeft */
+  margin-top: 16px; /* = body.fontSize */
   text-align: right;
   color: lightgray;
   text-decoration: none;
@@ -136,6 +139,7 @@ a {
   width: 326px;
   background: white;
   padding: 10px; /* = body.padding - gameBoardContainer.top */
+  margin-bottom: 16px; /* = body.fontSize */
 }
 
 .whiteSquare,
@@ -528,7 +532,7 @@ a.variation {
           firstTeam = gameWhiteTeam[gameId[ii]];
           secondTeam = gameBlackTeam[gameId[ii]];
         }
-        switch (gameResult[gameId[ii]]) {
+        switch(gameResult[gameId[ii]]) {
           case "1-0":
             if (firstTeam == gameWhiteTeam[gameId[ii]]) { firstTeamScore += 1; }
             else if (secondTeam == gameWhiteTeam[gameId[ii]]) { secondTeamScore += 1; }
