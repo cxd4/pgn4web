@@ -106,7 +106,7 @@ if (pgn4web_bitly_apiKey === undefined) { pgn4web_bitly_apiKey = ""; }
 
 var shorturlWin = null;
 function shorten_pgn4web_url() {
-  if(!document.board.useTextarea.checked) {
+  if (!document.board.useTextarea.checked) {
     //
     // pick the short URL service: bitly is used if login/key pair
     // is defined in pgn4web-server-config.js, tinyurl otherwise
@@ -133,8 +133,8 @@ function shorten_url_with_bitly(bitly_login, bitly_apiKey) {
     xhr.open("POST", bitly_post_request);
     xhr.setRequestHeader("Content-type", "text/plain");
     xhr.onreadystatechange = function() {
-      if(xhr.readyState == 4) {
-        if(xhr.status==200) {
+      if (xhr.readyState == 4) {
+        if (xhr.status==200) {
           if (xhr.responseText.match(/^http/)) {
             bitly_link = xhr.responseText;
           }
@@ -277,18 +277,18 @@ useTextarea_default = "f";
 // max length of the iframeUrl, if this is exceeded a warning is issued
 iframeUrl_max = 2000;
 
-function gup( name ){
+function gup(name) {
 
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
   var regexS = "[\\?&]"+name+"=([^&#]*)";
   regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   var regex = new RegExp( regexS, "i" );
   var results = regex.exec( window.location.href );
-  if( results !== null ) { return decodeURIComponent(results[1]); }
+  if (results !== null) { return decodeURIComponent(results[1]); }
 
   // allows for short version of the URL parameters, for instance sC matches squareColor
   compact_name = name.charAt(0);
-  for(i=1; i<name.length; i++){
+  for (i=1; i<name.length; i++) {
     if (name.charAt(i).match(/[A-Z]/)) { compact_name = compact_name + name.charAt(i).toLowerCase(); }
   }
   name = compact_name;
@@ -298,7 +298,7 @@ function gup( name ){
   regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   regex = new RegExp( regexS, "i" );
   results = regex.exec( window.location.href );
-  if( results !== null ) { return decodeURIComponent(results[1]); }
+  if (results !== null) { return decodeURIComponent(results[1]); }
 
   return "";
 }
@@ -811,7 +811,7 @@ function update_suggested_iframe_dimensions() {
   }
 
   if (theObject = document.getElementById('frameWidth')) {
-    if (theObject.value !== ""){
+    if (theObject.value !== "") {
       if (!theObject.value.match('/^[^0-9]$/')) {
         if (theObject.value < min_frameWidth) {
           alert('error: iFrame width too small');
@@ -1285,7 +1285,7 @@ function validate_frameWidth() {
 function validate_frameHeight() {
   object = document.getElementById('frameHeight');
   if (object.value === '') { return true; }
-  if ((object.value == 'board') && (document.getElementById('horizontalLayout').value == "t")){ return true; }
+  if ((object.value == 'board') && (document.getElementById('horizontalLayout').value == "t")) { return true; }
   if (!(vv = object.value.match(/^([0-9]+)(px$|$)/))) {
     if (document.getElementById('horizontalLayout').value == "t") {
       alert('error: in the horizontal layout the iFrame height must be a non negative integer or \'board\'');
@@ -1430,9 +1430,9 @@ function load_templates() {
 
   theObject = document.getElementById('templatesList');
 
-  for(cc=0; cc<color_template.length; cc++) {
-    for(ss=0; ss<size_template.length; ss++) {
-      for(ll=0; ll<layout_template.length; ll++) {
+  for (cc=0; cc<color_template.length; cc++) {
+    for (ss=0; ss<size_template.length; ss++) {
+      for (ll=0; ll<layout_template.length; ll++) {
         template_text = "";
         template_text += color_template[cc][0] + " ";
         template_text += size_template[ss][0] + " ";

@@ -197,7 +197,7 @@ function get_pgn() {
     }
   }
 
-  if($isPgn) {
+  if ($isPgn) {
     if ($pgnUrl) { $pgnFileString = "<a href='" . $pgnUrl . "'>pgn URL</a>"; }
     else { $pgnFileString = "pgn file"; }
     $pgnText = file_get_contents($pgnSource, NULL, NULL, 0, $fileUploadLimitBytes + 1);
@@ -212,7 +212,7 @@ function get_pgn() {
     return TRUE;
   }
 
-  if($pgnSource) {
+  if ($pgnSource) {
     if ($zipSupported) {
       $pgnStatus = "only PGN and ZIP (zipped pgn) files are supported";
     } else {

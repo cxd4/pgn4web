@@ -1260,11 +1260,11 @@ function DecodePGN(bytes, encodedNodes) {
   e=b=a=0;
   o="";
 
-  function B() { if(a===0) { b=encodingCharSet.indexOf(bytes.charAt(e++)); a=6; } return ((b>>--a)&0x01); }
+  function B() { if (a===0) { b=encodingCharSet.indexOf(bytes.charAt(e++)); a=6; } return ((b>>--a)&0x01); }
 
   while(originalLength>0) { i=0;
     while(l[i]<0) {
-      if(B()) { i=-l[i]; }
+      if (B()) { i=-l[i]; }
       else { i++; }
     }
     o+=String.fromCharCode(l[i]);
@@ -1406,7 +1406,7 @@ function testPGNencode() {
     test_encodedNodes = test_encodedNodes.slice(2,test_encodedNodes.length);
   }
   o = "";
-  for(i=0; i<l.length; i++) {
+  for (i=0; i<l.length; i++) {
     o += "l[" + i + "]";
     if (i < 10) { o += "  "; }
     else { if (i < 100) { o += " "; } }

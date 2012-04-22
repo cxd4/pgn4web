@@ -28,7 +28,7 @@ function notifyPgnHrefLinks() {
   var pgn4web_cursorDef = "url(" + chrome.extension.getURL("cursor-small.png") + ") 1 6, auto";
 
   var appendDownloadName;
-  for(l in document.links) {
+  for (l in document.links) {
     if (validatePgnUrl(document.links[l].href) || validatePgnDataUri(document.links[l].href)) {
       document.links[l].addEventListener("mouseover", function(){this.style.cursor = pgn4web_cursorDef;}, false);
       if (pgn4web_pgnHrefLinks.indexOf(document.links[l].href) == -1) {

@@ -244,7 +244,7 @@ function showPgnLinksForTab(tab) {
     pgnLinks.length + (pgnLinks.length == 1 ? ' link' : ' links') + ' on this page</span>';
 
   var pgnLinkListInnerHTML = "";
-  for(ll in pgnLinks) {
+  for (ll in pgnLinks) {
     l = pgnLinksId[ll];
     if (pgnLinks[l].indexOf("data:") === 0) {
       pgnLinkListInnerHTML += '<div class="pgnItem">' +

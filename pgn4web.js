@@ -129,7 +129,7 @@ function alertPromptTick(restart) {
   }
   var debugColRow = colRowFromSquare(debugShortcutSquare);
   if (!debugColRow) { return; }
-  if(theObject = document.getElementById('tcol' + debugColRow.col + 'trow' + debugColRow.row)) {
+  if (theObject = document.getElementById('tcol' + debugColRow.col + 'trow' + debugColRow.row)) {
     if (alertPromptOn) {
       if ((highlightOption) &&
         ((lastColFromHighlighted === 0 && lastRowFromHighlighted === 7) ||
@@ -1113,7 +1113,7 @@ function CheckLegalityPawn(thisPawn) {
   if (mvCapture) {
     if (PieceRow[MoveColor][thisPawn]-mvToRow != 2*MoveColor-1) { return false; }
   } else {
-    if (PieceRow[MoveColor][thisPawn]-mvToRow == 4*MoveColor-2){
+    if (PieceRow[MoveColor][thisPawn]-mvToRow == 4*MoveColor-2) {
       if (PieceRow[MoveColor][thisPawn] != 1+5*MoveColor) { return false; }
       if (Board[mvToCol][mvToRow+2*MoveColor-1] !== 0) { return false; }
     } else {
@@ -1324,7 +1324,7 @@ function HighlightLastMove() {
   undoStackStore();
 
   // remove highlighting from old anchor
-  if (oldAnchorName){
+  if (oldAnchorName) {
     if (theObject = document.getElementById(oldAnchorName)) {
       theObject.className = ( oldAnchorName.match(/Var0Mv/) ? 'move' : 'variation') + ' notranslate';
     }
@@ -1838,7 +1838,7 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
 }
 
 var http_request_last_id = 0;
-function loadPgnFromPgnUrl(pgnUrl){
+function loadPgnFromPgnUrl(pgnUrl) {
 
   LiveBroadcastLastRefreshedLocal = (new Date()).toLocaleString();
 
@@ -2031,7 +2031,7 @@ function loadPgnFromTextarea(textareaId) {
   loadPgnCheckingLiveStatus(loadPgnFromTextareaResult);
 }
 
-function createBoard(){
+function createBoard() {
 
   if (theObject = document.getElementById("GameBoard")) {
     theObject.innerHTML = '<DIV STYLE="font-size: small; font-family: sans-serif; ' +
@@ -2109,7 +2109,7 @@ function GoToInitialHalfmove() {
   }
 }
 
-function Init(nextGame){
+function Init(nextGame) {
 
   if (nextGame !== undefined) {
     if ((!isNaN(nextGame)) && (nextGame >= 0) && (nextGame < numberOfGames)) {
@@ -2525,7 +2525,7 @@ function IsCheck(col, row, color) {
 
         while (SquareOnBoard(checkCol, checkRow) && (thisPiece === 0)) {
           thisPiece = Board[checkCol][checkRow];
-          if (thisPiece === 0){
+          if (thisPiece === 0) {
             checkCol += ii;
             checkRow += jj;
           } else {
@@ -2545,7 +2545,7 @@ function fixRegExp(exp) {
   return exp.replace(/([\[\]\(\)\{\}\.\*\+\^\$\|\?\\])/g, "\\$1");
 }
 
-function LoadGameHeaders(){
+function LoadGameHeaders() {
   var ii;
   var parse;
 
@@ -2657,7 +2657,7 @@ function MoveBackward(diff, scanOnly) {
   // autoplay: restart timeout
   if (AutoPlayInterval) { clearTimeout(AutoPlayInterval); AutoPlayInterval = null; }
   if (isAutoPlayOn) {
-    if(goToPly >= StartPlyVar[CurrentVar]) { AutoPlayInterval=setTimeout("MoveBackward(1)", Delay); }
+    if (goToPly >= StartPlyVar[CurrentVar]) { AutoPlayInterval=setTimeout("MoveBackward(1)", Delay); }
     else { SetAutoPlay(false); }
   }
 
@@ -2986,7 +2986,7 @@ function ParsePGNGameString(gameString) {
       case '{':
         commentStart = start+1;
         commentEnd = ss.indexOf('}',start+1);
-        if (commentEnd > 0){
+        if (commentEnd > 0) {
           if (MoveCommentsVar[CurrentVar][StartPly+PlyNumber]) { MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' '; }
           ssComm = translateNAGs(ss.substring(commentStart, commentEnd).replace(/(^\s*|\s*$)/, ''));
           MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ssComm;
@@ -3057,7 +3057,7 @@ function ParsePGNGameString(gameString) {
 
         moveCount = Math.floor((StartPly+PlyNumber)/2)+1;
         searchThis = moveCount.toString()+'.';
-        if(ss.indexOf(searchThis,start)==start) {
+        if (ss.indexOf(searchThis,start)==start) {
           start += searchThis.length;
           while ((ss.charAt(start) == '.') || (ss.charAt(start) == ' ') ||
                  (ss.charAt(start) == '\n') || (ss.charAt(start) == '\r'))
@@ -3528,13 +3528,13 @@ function PrintHTML() {
       while (theObject.firstChild) { theObject.removeChild(theObject.firstChild); }
       textSelectOptions = '';
     } else {
-      if(textSelectOptions === '') {
+      if (textSelectOptions === '') {
         if (gameSelectorNum) { gameSelectorNumLenght = Math.floor(Math.log(numberOfGames)/Math.log(10)) + 1; }
         text = '<FORM NAME="GameSel" STYLE="display:inline;"> ' +
           '<SELECT ID="GameSelSelect" NAME="GameSelSelect" STYLE="';
         if (tableSize > 0) { text += 'width: ' + tableSize + 'px; '; }
         text += 'font-family: monospace;" CLASS="selectControl" TITLE="select a game" ' +
-          'ONCHANGE="this.blur(); if(this.value >= 0) { Init(this.value); this.value = -1; }" ' +
+          'ONCHANGE="this.blur(); if (this.value >= 0) { Init(this.value); this.value = -1; }" ' +
           'ONFOCUS="disableShortcutKeysAndStoreStatus();" ONBLUR="restoreShortcutKeysStatus();" ' +
           '> ' +
           '<OPTION CLASS="optionSelectControl" value=-1>';
@@ -3548,7 +3548,7 @@ function PrintHTML() {
         // replace spaces with &nbsp;
         text += gameSelectorHeadDisplay.replace(/ /g, '&nbsp;');
 
-        for (ii=0; ii<numberOfGames; ii++){
+        for (ii=0; ii<numberOfGames; ii++) {
           textSelectOptions += '<OPTION CLASS="optionSelectControl" value=' + ii + '>';
           textSO = '';
           if (gameSelectorNum) {
@@ -3804,7 +3804,7 @@ function printMoveText(thisPly, thisVar, isVar, hasLeadingNum, hasId) {
   }
 
   var moveCount = Math.floor(thisPly/2)+1;
-  if (thisPly%2 === 0){
+  if (thisPly%2 === 0) {
     text += '<SPAN CLASS="' + (isVar ? 'variation' : 'move') +
       ' notranslate">' + moveCount + '.&nbsp;</SPAN>';
   } else {
@@ -3888,7 +3888,7 @@ function SetAutoPlay(vv) {
 
   if (AutoPlayInterval) { clearTimeout(AutoPlayInterval); AutoPlayInterval = null; }
 
-  if (isAutoPlayOn){
+  if (isAutoPlayOn) {
     if (document.GameButtonsForm) {
       if (document.GameButtonsForm.AutoPlay) {
         document.GameButtonsForm.AutoPlay.value = "=";
@@ -3963,7 +3963,7 @@ function StoreMove(thisPly) {
 
   HistVar[thisPly+1] = CurrentVar;
 
-  if(HistNull[thisPly] = mvIsNull) { return; }
+  if (HistNull[thisPly] = mvIsNull) { return; }
 
   // "square from" history
   HistPieceId[0][thisPly] = mvPieceId;

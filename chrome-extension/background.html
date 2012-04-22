@@ -325,7 +325,7 @@ function mergePgnLinksAndShowIcon(tabId) {
 function requestHandler(request, sender, sendResponse) {
   if (typeof(request.pgnHrefLinks) != "undefined") {
     if (pgnHrefLinks[sender.tab.id]) {
-      for(l in request.pgnHrefLinks) {
+      for (l in request.pgnHrefLinks) {
         if (pgnHrefLinks[sender.tab.id].indexOf(request.pgnHrefLinks[l]) == -1) {
           pgnHrefLinks[sender.tab.id].push(request.pgnHrefLinks[l]);
         }

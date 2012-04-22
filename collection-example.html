@@ -118,7 +118,7 @@ var oldChosenoptionValue = "";
 var selectmenu=document.getElementById("selectmenu");
 selectmenu.onchange = function() {
     var chosenoption = this.options[this.selectedIndex];
-    if ((chosenoption.value !== "") && (chosenoption.value != oldChosenoptionValue)){
+    if ((chosenoption.value !== "") && (chosenoption.value != oldChosenoptionValue)) {
         oldChosenoptionValue = chosenoption.value;
         if (theObject = frames['inlineframe'].document.getElementById('searchPgnExpression')) {
             searchPgnString = '&search=' + escape(theObject.value);

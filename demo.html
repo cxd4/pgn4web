@@ -35,13 +35,13 @@ a.linkselected:link, a.linkselected:visited, a.linkselected:hover, a.linkselecte
 <link rel="shortcut icon" href="pawn.ico" />
 
 <script type="text/javascript">
-function gup( name ){
+function gup(name) {
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
   var regexS = "[\\?&]"+name+"=([^&#]*)";
   regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   var regex = new RegExp( regexS, "i" );
   var results = regex.exec( window.location.href );
-  if( results === null ) { return ""; }
+  if (results === null) { return ""; }
   else { return decodeURIComponent(results[1]); }
 }
 
@@ -146,7 +146,7 @@ function openPgn4webTest(url) {
 <script type="text/javascript">
 
 selected_object = null;
-function select_frame(new_frame){
+function select_frame(new_frame) {
 
   new_object = document.getElementById(new_frame);
   if (new_object !== null) {

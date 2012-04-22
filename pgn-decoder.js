@@ -558,11 +558,11 @@ function DecodePGN(bytes) {
   e=b=a=0;
   o="";
 
-  function B() { if(a===0) { b=encodingCharSet.indexOf(bytes.charAt(e++)); a=6; } return ((b>>--a)&0x01); }
+  function B() { if (a===0) { b=encodingCharSet.indexOf(bytes.charAt(e++)); a=6; } return ((b>>--a)&0x01); }
 
   while(originalLength>0) { i=0;
     while(l[i]<0) {
-      if(B()) { i=-l[i]; }
+      if (B()) { i=-l[i]; }
       else { i++; }
     }
     o+=String.fromCharCode(l[i]);

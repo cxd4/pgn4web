@@ -45,13 +45,13 @@ function hint() {
   alert("hint: the solution's main line is " + PlyNumber + " ply long");
 }
 
-function gup( name ){
+function gup(name) {
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
   var regexS = "[\\?&]"+name+"=([^&#]*)";  
   regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   var regex = new RegExp( regexS, "i" );
   var results = regex.exec( window.location.href );
-  if( results === null ) { return ""; }
+  if (results === null) { return ""; }
   else { return decodeURIComponent(results[1]); }
 }
 
