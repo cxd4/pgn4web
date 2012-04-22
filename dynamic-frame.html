@@ -495,16 +495,34 @@ function fixHeaderItem(tag, objectId, label) {
 
 function customFunctionOnPgnGameLoad() {
   myOnResize();
-  if (theObject = document.getElementById("GameSite")) { theObject.title = "site" + (meaningfulHeader(gameSite[currentGame]) ? ": " + gameSite[currentGame] : ""); }
-  if (theObject = document.getElementById("GameEvent")) { theObject.title = "event" + (meaningfulHeader(gameEvent[currentGame]) ? ": " + gameEvent[currentGame] : ""); }
-  if (theObject = document.getElementById("GameWhite")) { theObject.title = "white player" + (meaningfulHeader(gameWhite[currentGame]) ? ": " + gameWhite[currentGame] : ""); }
-  if (theObject = document.getElementById("GameBlack")) { theObject.title = "black player" + (meaningfulHeader(gameBlack[currentGame]) ? ": " + gameBlack[currentGame] : ""); }
+  if (theObject = document.getElementById("GameSite")) {
+    theObject.title = "site" + (meaningfulHeader(gameSite[currentGame]) ? ": " + gameSite[currentGame] : "");
+  }
+  if (theObject = document.getElementById("GameDate")) {
+    theObject.title = "date" + (meaningfulHeader(gameDate[currentGame]) ? ": " + gameDate[currentGame] : "");
+    theObject.style.paddingLeft = meaningfulHeader(gameDate[currentGame]) ? "1em" : "";
+  }
+  if (theObject = document.getElementById("GameEvent")) {
+    theObject.title = "event" + (meaningfulHeader(gameEvent[currentGame]) ? ": " + gameEvent[currentGame] : "");
+  }
+  if (theObject = document.getElementById("GameRound")) {
+    theObject.title = "round" + (meaningfulHeader(gameRound[currentGame]) ? ": " + gameRound[currentGame] : "");
+    theObject.style.paddingLeft = meaningfulHeader(gameRound[currentGame]) ? "1em" : "";
+  }
+  if (theObject = document.getElementById("GameWhite")) {
+    theObject.title = "white player" + (meaningfulHeader(gameWhite[currentGame]) ? ": " + gameWhite[currentGame] : "");
+  }
+  if (theObject = document.getElementById("GameBlack")) {
+    theObject.title = "black player" + (meaningfulHeader(gameBlack[currentGame]) ? ": " + gameBlack[currentGame] : "");
+  }
   fixHeaderItem("Section", "GameSection", "section");
   fixHeaderItem("Stage", "GameStage", "stage");
   fixHeaderItem("WhiteTitle", "GameWhiteTitle", "white title");
   fixHeaderItem("WhiteElo", "GameWhiteElo", "white elo");
+  fixHeaderItem("WhiteTeam", "GameWhiteTeam", "white team");
   fixHeaderItem("BlackTitle", "GameBlackTitle", "black title");
   fixHeaderItem("BlackElo", "GameBlackElo", "black elo");
+  fixHeaderItem("BlackTeam", "GameBlackTeam", "black team");
   updateBareShortcut();
 }
 
@@ -659,12 +677,12 @@ function myOnLoad() {
 
 <div class="headerContainer" id="HeaderContainer">
 <div class="firstVariableSpacer">&nbsp;</div>
-<div>&nbsp;<span id="GameSite" title="site"></span>&nbsp;</div>
-<div>&nbsp;<span id="GameEvent" title="event"></span><span id="GameSection" title="section"></span><span id="GameStage" title="stage"></span>&nbsp;</div>
+<div>&nbsp;<span id="GameSite" title="site"></span><span id="GameDate" title="date"></span>&nbsp;</div>
+<div>&nbsp;<span id="GameEvent" title="event"></span><span id="GameSection" title="section"></span><span id="GameStage" title="stage"></span><span id="GameRound" title="round"></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
 <div>&nbsp;<span style="display:inline-block;" title="white to move"><img class="colorFlag" style="background:white;display:none;" id="whiteColorFlag" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" /></span><a id="GameWhiteClock" href="javascript:void(0);" onclick="toggleColorFlag(); this.blur();" title="white clock"></a><span style="display:inline-block;"><img class="colorFlag" style="background:white; display:none;" id="whiteColorFlagFiller" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" /></span>&nbsp;</div>
-<div>&nbsp;<a style="font-weight: bold;" id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();" title="white player"></a><span id="GameWhiteTitle" title="white title"></span><span id="GameWhiteElo" title="white elo"></span><span style="font-weight: bold;">&nbsp;</span></div>
-<div>&nbsp;<a style="font-weight: bold;" id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();" title="black player"></a><span id="GameBlackTitle" title="black title"></span><span id="GameBlackElo" title="black elo"></span><span style="font-weight: bold;">&nbsp;</span></div>
+<div>&nbsp;<a style="font-weight: bold;" id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();" title="white player"></a><span id="GameWhiteTitle" title="white title"></span><span id="GameWhiteElo" title="white elo"></span><span id="GameWhiteTeam" title="white team"></span><span style="font-weight: bold;">&nbsp;</span></div>
+<div>&nbsp;<a style="font-weight: bold;" id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();" title="black player"></a><span id="GameBlackTitle" title="black title"></span><span id="GameBlackElo" title="black elo"></span><span id="GameBlackTeam" title="black team"></span><span style="font-weight: bold;">&nbsp;</span></div>
 <div>&nbsp;<span style="display:inline-block;" title="black to move"><img class="colorFlag" style="background:black; display:none;" id="blackColorFlag" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" /></span><a id="GameBlackClock" href="javascript:void(0);" onclick="toggleColorFlag(); this.blur();" title="black clock"></a><span style="display:inline-block;"><img class="colorFlag" style="background:black; display:none;" id="blackColorFlagFiller" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" /></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
 <div>&nbsp;<span style="font-weight: bold;" id="GameResult" title="result"></span><span style="font-weight: bold;">&nbsp;</span><span id="DebugInfo"></span></div>
