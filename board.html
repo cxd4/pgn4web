@@ -267,9 +267,14 @@ if ((pieceFont == "default") || (pieceFont == "d")) {
   }
 }
 
-SetImagePath("" + pieceFont + "/" + pieceSize);
+// undocumented option
+if ((pieceFontRoot = gup("pieceFontRoot")) !== "") {
+  if (pieceFontRoot.charAt(pieceFontRoot.length - 1) != "/") { pieceFontRoot += "/"; }
+}
+
+SetImagePath("" + pieceFontRoot + pieceFont + "/" + pieceSize);
 if (pieceFont == "svgchess") {
-  SetImagePath("" + pieceFont);
+  SetImagePath("" + pieceFontRoot + pieceFont);
   SetImageType("svg");
 }
 
