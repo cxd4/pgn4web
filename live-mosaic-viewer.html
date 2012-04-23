@@ -258,7 +258,6 @@ function clickGameLiveStatus() {
   thisTime = (new Date()).getTime();
   if (thisTime - timeOfLastReplayPreviousMoves < 333) {
     displayDebugInfo();
-    timeOfLastReplayPreviousMoves = 0;
   } else {
     timeOfLastReplayPreviousMoves = thisTime;
     replayPreviousMoves();
