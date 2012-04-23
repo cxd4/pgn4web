@@ -1916,8 +1916,10 @@ function restartLiveBroadcast() {
   refreshPgnSource();
 }
 
+var liveBroadcastTickerFlag = new Array("&rsaquo;&lsaquo;", "&lsaquo;&rsaquo;");
 function checkLiveBroadcastStatus() {
   var liveBroadcastStatusTitle;
+  var tick = liveBroadcastTickerFlag[LiveBroadcastTicker % liveBroadcastTickerFlag.length];
 
   if (LiveBroadcastDelay === 0) { return; }
 
@@ -1926,7 +1928,7 @@ function checkLiveBroadcastStatus() {
   if (LiveBroadcastStarted === false || typeof(pgnHeader) == "undefined" || (numberOfGames == 1 && gameEvent[0] == LiveBroadcastPlaceholderEvent)) {
     LiveBroadcastEnded = false;
     LiveBroadcastGamesRunning = 0;
-    LiveBroadcastStatusString = "0 " + (LiveBroadcastTicker % 2 ? "&otimes;" : "&oplus;") + " 0";
+    LiveBroadcastStatusString = "0 " + tick + " 0";
     liveBroadcastStatusTitle = "live broadcast yet to start";
   } else {
     // broadcast started with good PGN
@@ -1936,7 +1938,7 @@ function checkLiveBroadcastStatus() {
     }
     LiveBroadcastEnded = (running === 0);
     LiveBroadcastGamesRunning = running;
-    LiveBroadcastStatusString = running + " " + (LiveBroadcastTicker % 2 ? "&otimes;" : "&oplus;") + " " + numberOfGames;
+    LiveBroadcastStatusString = running + " " + tick + " " + numberOfGames;
     liveBroadcastStatusTitle = LiveBroadcastEnded ? "live broadcast ended" : running + " live game" + (running > 1 ? "s" : "") + " out of " + numberOfGames;
   }
 
