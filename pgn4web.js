@@ -3189,7 +3189,7 @@ function translateNAGs(comment) {
 
 function ParseMove(move, plyCount) {
   var ii, ll;
-  var remainder;
+  var rem;
   var toRowMarker = -1;
 
   castleRook = -1;
@@ -3220,7 +3220,7 @@ function ParseMove(move, plyCount) {
     if (!isNaN(move.charAt(ii))) {
       mvToCol = move.charCodeAt(ii-1) - 97;
       mvToRow = move.charAt(ii) - 1;
-      remainder = move.substring(0, ii-1);
+      rem = move.substring(0, ii-1);
       toRowMarker = ii;
       break;
     }
@@ -3252,17 +3252,17 @@ function ParseMove(move, plyCount) {
     } else { return false; }
   }
 
-  remainder = remainder.replace(/-/g, '');
+  rem = rem.replace(/-/g, '');
   // get piece and origin square: mark captures ('x' is there)
-  ll = remainder.length;
+  ll = rem.length;
   if (ll > 4) { return false; }
   mvPiece = -1; // make sure mvPiece is properly assigned later
   if (ll === 0) { mvPiece = 6; }
   else {
-    for (ii = 1; ii < 6; ++ii) { if (remainder.charAt(0) == PieceCode[ii-1]) { mvPiece = ii; } }
-    if (mvPiece == -1) { if (columnsLetters.toLowerCase().indexOf(remainder.charAt(0)) >= 0) { mvPiece = 6; } }
+    for (ii = 1; ii < 6; ++ii) { if (rem.charAt(0) == PieceCode[ii-1]) { mvPiece = ii; } }
+    if (mvPiece == -1) { if (columnsLetters.toLowerCase().indexOf(rem.charAt(0)) >= 0) { mvPiece = 6; } }
     if (mvPiece == -1) { return false; }
-    if (remainder.charAt(ll-1) == 'x') { mvCapture = 1; }
+    if (rem.charAt(ll-1) == 'x') { mvCapture = 1; }
     if (isNaN(move.charAt(ll-1-mvCapture))) {
       mvFromCol = move.charCodeAt(ll-1-mvCapture) - 97;
       if ((mvFromCol < 0) || (mvFromCol > 7)) { mvFromCol = -1; }
@@ -3360,16 +3360,16 @@ function clickedSquare(ii, jj) {
   if (clickedSquareInterval) { return; } // dont trigger twice
   squareId = 'tcol' + jj + 'trow' + ii;
   if (theObject = document.getElementById(squareId)) {
-    var originalClass = theObject.className;
+    var oldClass = theObject.className;
     theObject.className = (ii+jj)%2 === 0 ? "blackSquare" : "whiteSquare";
-    clickedSquareInterval = setTimeout("reset_after_click(" + ii + "," + jj + ",'" + originalClass + "','" + theObject.className + "')", 66);
+    clickedSquareInterval = setTimeout("reset_after_click(" + ii + "," + jj + ",'" + oldClass + "','" + theObject.className + "')", 66);
   }
 }
 
-function reset_after_click (ii, jj, originalClass, newClass) {
+function reset_after_click (ii, jj, oldClass, newClass) {
   if (theObject = document.getElementById('tcol' + jj + 'trow' + ii)) {
     // square class changed again by pgn4web already: dont touch it anymore e.g. autoplay
-    if (theObject.className == newClass) { theObject.className = originalClass; }
+    if (theObject.className == newClass) { theObject.className = oldClass; }
     clickedSquareInterval = null;
   }
 }
