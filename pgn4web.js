@@ -1213,7 +1213,7 @@ function CheckClearWay(thisPiece) {
 }
 
 function CleanMove(move) {
-  move = move.replace(/[^a-zA-Z0-9#=-]*/g, ''); // patch here adding '+' after '0-8' to pass through check signs
+  move = move.replace(/[^a-zA-Z0-9#=]*/g, ''); // patch here adding '+' after '0-8' to pass through check signs
   if (move.match(/^[Oo0]/)) { move = move.replace(/[o0]/g, 'O').replace(/O(?=O)/g, 'O-'); }
   move = move.replace(/ep/i, '');
   return move;
