@@ -104,10 +104,9 @@ function customFunctionOnPgnGameLoad() {
 }
 
 function customFunctionOnMove() {
-   document.getElementById("GameResult").style.display =
-       (gameFEN[currentGame] && (CurrentPly == StartPly) && (PlyNumber > 0)) ? "none" : "block";
-   document.getElementById("GameSideToMoveString").style.display =
-       (gameFEN[currentGame] && (CurrentPly == StartPly)) ? "block" : "none";
+   document.getElementById("GameResult").style.visibility =
+      (gameFEN[currentGame] && (CurrentPly == StartPly) && (PlyNumber > 0)) ? "hidden" : "";
+   document.getElementById("GameSideToMoveImage").className = CurrentPly % 2 ? "blackSideToMoveImg" : "whiteSideToMoveImg";
 }
 
 </script>
@@ -122,7 +121,6 @@ function customFunctionOnMove() {
 </textarea></form>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
-
 <table width="480" height="333" cellspacing="0" cellpadding="0" border="0">
 
 <tr><td width="328" valign="top">
@@ -132,28 +130,26 @@ function customFunctionOnMove() {
 </td><td width="152" valign="top">
 
 <div style="padding-left: 10px;">
-<div class="headerItem" id="GameSelector">&nbsp;</div>
+<div class="headerItem"><span id="GameSelector">&nbsp;</span></div>
 <div class="headerItem">&nbsp;</div>
-<div class="headerItem" id="GameDate">&nbsp;</div>
-<div class="headerItem" id="GameSite">&nbsp;</div>
-<div class="headerItem" id="GameEvent">&nbsp;</div>
-<div class="headerItem" id="GameRound">&nbsp;</div>
+<div class="headerItem">&nbsp;<span id="GameDate"></span></div>
+<div class="headerItem">&nbsp;<span id="GameSite"></span></div>
+<div class="headerItem">&nbsp;<span id="GameEvent"></span></div>
+<div class="headerItem">&nbsp;<span id="GameRound"></span></div>
 <div class="headerItem">&nbsp;</div>
-<div class="headerItem" id="GameWhiteClock">&nbsp;</div>
-<div class="headerItem" id="GameWhite">&nbsp;</div>
-<div class="headerItem" id="GameBlack">&nbsp;</div>
-<div class="headerItem" id="GameBlackClock">&nbsp;</div>
+<div class="headerItem">&nbsp;<span id="GameWhiteClock"></span></div>
+<div class="headerItem">&nbsp;<span id="GameWhite"></span></div>
+<div class="headerItem">&nbsp;<span id="GameBlack"></span></div>
+<div class="headerItem">&nbsp;<span id="GameBlackClock"></span></div>
 <div class="headerItem">&nbsp;</div>
-<div class="headerItem" id="GameResult">&nbsp;</div>
-<div class="headerItem" style="display: none;" id="GameSideToMoveString"><span id="GameSideToMove"></span> to move</div>
+<div class="headerItem"><img id="GameSideToMoveImage" src="clear.png" />&nbsp;&nbsp;<span id="GameResult"></span></div>
 <div class="headerItem">&nbsp;</div>
-<div class="headerItem" id="GameLiveStatus">&nbsp;</div>
+<div class="headerItem" id="GameLiveStatus"></div>
 </div>
 
 </td></tr>
 
 </table>
-
 
 </body>
 
