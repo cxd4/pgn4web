@@ -810,23 +810,23 @@ function update_suggested_iframe_dimensions() {
     document.getElementById('frameWidth_helpText').innerHTML = "a number or <a id='frameWidth_board' class='helplink' href='' onClick='if (!this.disabled) { document.board.frameWidth.value = \"board\"; update_controls(); } return false;'>board</a> or <a id='frameWidth_page' class='helplink' href='' onClick='if (!this.disabled) { document.board.frameWidth.value = \"page\"; update_controls(); } return false;'>page</a>; min " + min_frameWidth + "; when <a id='frameWidth_blank' class='helplink' href='' onClick='if (!this.disabled) { document.board.frameWidth.value = \"\"; update_controls(); } return false;'>blank</a>, assigned to " + suggested_frameWidth + "; board width is " + boardWidth;
   }
 
-  if (theObject = document.getElementById('frameWidth')) {
-    if (theObject.value !== "") {
-      if (!theObject.value.match('/^[^0-9]$/')) {
-        if (theObject.value < min_frameWidth) {
+  if (theObj = document.getElementById('frameWidth')) {
+    if (theObj.value !== "") {
+      if (!theObj.value.match('/^[^0-9]$/')) {
+        if (theObj.value < min_frameWidth) {
           alert('error: iFrame width too small');
-          theObject.value = "";
+          theObj.value = "";
         }
       } else { alert('error: invalid iFrame width value'); }
     }
   }
 
-  if (theObject = document.getElementById('frameHeight')) {
-    if (theObject.value !== "") {
-      if (!theObject.value.match('/^[^0-9]$/')) {
-        if (theObject.value < min_frameHeight) {
+  if (theObj = document.getElementById('frameHeight')) {
+    if (theObj.value !== "") {
+      if (!theObj.value.match('/^[^0-9]$/')) {
+        if (theObj.value < min_frameHeight) {
           alert('error: iFrame height too small');
-          theObject.value = "";
+          theObj.value = "";
         }
       } else { alert('error: invalid iFrame height value'); }
     }
@@ -1428,7 +1428,7 @@ layout_template[1] = new Array("horizontal", "&hl=t&hd=j&md=f&cd=i");
 
 function load_templates() {
 
-  theObject = document.getElementById('templatesList');
+  theObj = document.getElementById('templatesList');
 
   for (cc=0; cc<color_template.length; cc++) {
     for (ss=0; ss<size_template.length; ss++) {
@@ -1448,7 +1448,7 @@ function load_templates() {
         if (color_template[cc][0].match("(gray|wood)")) {
           template_value = template_value.replace(/hm=(s|b)/,"hm=n");
         }
-        add_option(theObject, template_text, template_value);
+        add_option(theObj, template_text, template_value);
       }
     }
   }
@@ -2125,16 +2125,16 @@ unless <i>use HTML textarea</i> is enabled or for deployment on a page from a di
 <script type="text/javascript">
 
 inputWidth = document.getElementById('squareSize').offsetWidth;
-theObject = document.getElementsByName('dropdown');
-for (ii = 0; ii < theObject.length; ii++) {
-  theObject[ii].style.width = inputWidth;
+theObj = document.getElementsByName('dropdown');
+for (ii = 0; ii < theObj.length; ii++) {
+  theObj[ii].style.width = inputWidth;
 }
 
 checkboxWidth = document.getElementById('hiddenCheckbox').offsetWidth;
 // the last number added to marginLeft should be equal to the value of the .checkbox style at the top
-theObject = document.getElementsByName('checkbox');
-for (ii = 0; ii < theObject.length; ii++) {
-  theObject[ii].style.marginLeft +=  inputWidth - checkboxWidth + 22;
+theObj = document.getElementsByName('checkbox');
+for (ii = 0; ii < theObj.length; ii++) {
+  theObj[ii].style.marginLeft +=  inputWidth - checkboxWidth + 22;
 }
 
 </script>

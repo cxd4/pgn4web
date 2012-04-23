@@ -283,10 +283,10 @@ function myDeleteRule(sheet, index) {
 function toggleColorFlag() {
   showColorFlag = !showColorFlag;
   if (!showColorFlag) {
-    if (theObject = document.getElementById("whiteColorFlag")) { theObject.style.display = "none"; }
-    if (theObject = document.getElementById("whiteColorFlagFiller")) { theObject.style.display = "none"; }
-    if (theObject = document.getElementById("blackColorFlag")) { theObject.style.display = "none"; }
-    if (theObject = document.getElementById("blackColorFlagFiller")) { theObject.style.display = "none"; }
+    if (theObj = document.getElementById("whiteColorFlag")) { theObj.style.display = "none"; }
+    if (theObj = document.getElementById("whiteColorFlagFiller")) { theObj.style.display = "none"; }
+    if (theObj = document.getElementById("blackColorFlag")) { theObj.style.display = "none"; }
+    if (theObj = document.getElementById("blackColorFlagFiller")) { theObj.style.display = "none"; }
   }
   myOnResize();
 }
@@ -369,20 +369,20 @@ function myOnResize() {
 
   for (ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
 
-  if (theObject = document.getElementById("boardTable")) {
-    theObject.style.height = (squareSize * 8) + "px";
-    theObject.style.width = (squareSize * 8) + "px";
+  if (theObj = document.getElementById("boardTable")) {
+    theObj.style.height = (squareSize * 8) + "px";
+    theObj.style.width = (squareSize * 8) + "px";
   }
 
-  if (theObject = document.getElementById("HeaderContainer")) { theObject.style.display = bare ? "none" : document.getElementById("GameBoard").style.display; }
+  if (theObj = document.getElementById("HeaderContainer")) { theObj.style.display = bare ? "none" : document.getElementById("GameBoard").style.display; }
 
   fixColorFlag();
 
-  if (debug && (theObject = document.getElementById("DebugInfo"))) {
+  if (debug && (theObj = document.getElementById("DebugInfo"))) {
     dynamicFrameDebugString = "fw=" + ww + ", fh=" + wh + ", fs=" + fontSize + ", ss=" + Math.round(squareSize*100)/100 + ", sb=" + squareBorderWidth + ", ps=" + pieceSize + ", pbs=" + pieceBaseSize;
-    theObject.innerHTML = "&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='alert(dynamicFrameDebugString); this.blur();'>" + dynamicFrameDebugString + "</a>";
+    theObj.innerHTML = "&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='alert(dynamicFrameDebugString); this.blur();'>" + dynamicFrameDebugString + "</a>";
     dynamicFrameDebugString = "dynamic-frame debug info:\n\n" + dynamicFrameDebugString.replace(/, /g, "\n");
-    theObject.title = dynamicFrameDebugString;
+    theObj.title = dynamicFrameDebugString;
   }
 
   return pieceSize;
@@ -398,14 +398,14 @@ var gameListLineHeight = -1;
 function fillGameList(force) {
   if (force || currentGame !== gameListCurrentGame) {
     gameListCurrentGame = currentGame;
-    if (theObject = document.getElementById("GameList")) {
+    if (theObj = document.getElementById("GameList")) {
       var text = "<div class='gameListHeader' id='GameListHeader'>";
       for (var ii = 0; ii < 2 + Math.log(numberOfGames)/Math.LN10; ii++) { text += "&nbsp;"; }
-      text += "<a href='javascript:void(0);' onclick='if (theObject = document.getElementById(\"GameListBody\")) { theObject.scrollTop = 0; } this.blur();' title='scroll to top page'><b>&nbsp;&lt;&lt;&nbsp;</b></a>&nbsp;";
-      text += "<a href='javascript:void(0);' onclick='if (theObject = document.getElementById(\"GameListBody\")) { theObject.scrollTop -= (gameListBodyHeight - gameListLineHeight); } this.blur();' title='scroll to previous page'><b>&nbsp;&lt;&nbsp;</b></a>&nbsp;";
+      text += "<a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = 0; } this.blur();' title='scroll to top page'><b>&nbsp;&lt;&lt;&nbsp;</b></a>&nbsp;";
+      text += "<a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop -= (gameListBodyHeight - gameListLineHeight); } this.blur();' title='scroll to previous page'><b>&nbsp;&lt;&nbsp;</b></a>&nbsp;";
       text += "<a href='javascript:void(0);' onclick='selectGameList(-1);' title='back to chessboard'><b>&nbsp;&middot;&middot;&middot;&nbsp;</b></a>&nbsp;";
-      text += "<a href='javascript:void(0);' onclick='if (theObject = document.getElementById(\"GameListBody\")) { theObject.scrollTop += (gameListBodyHeight - gameListLineHeight); } this.blur();' title='scroll to next page'><b>&nbsp;&gt;&nbsp;</b></a>&nbsp;";
-      text += "<a href='javascript:void(0);' onclick='if (theObject = document.getElementById(\"GameListBody\")) { theObject.scrollTop = theObject.scrollHeight; } this.blur();' title='scroll to bottom page'><b>&nbsp;&gt;&gt;&nbsp;</b></a>&nbsp;";
+      text += "<a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop += (gameListBodyHeight - gameListLineHeight); } this.blur();' title='scroll to next page'><b>&nbsp;&gt;&nbsp;</b></a>&nbsp;";
+      text += "<a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = theObj.scrollHeight; } this.blur();' title='scroll to bottom page'><b>&nbsp;&gt;&gt;&nbsp;</b></a>&nbsp;";
       text += "</div>";
       var extractGamesRegExp = /<OPTION CLASS="optionSelectControl" value=(\d+)>([^<]+)/g;
       var thisBold;
@@ -417,10 +417,10 @@ function fillGameList(force) {
         text += "<a href='javascript:void(0);' onclick='selectGameList(" + matches[1] + ");' title='" + matches[2].replace(/&nbsp;/g, " ") + "'>" + (thisBold ? "<b>" : "") + matches[2] + (thisBold ? "</b>" : "") + "</a>";
       }
       text += "</div>";
-      theObject.innerHTML = text;
+      theObj.innerHTML = text;
     }
   }
-  if ((theObject = document.getElementById("GameListBody")) && (currentGame > 0)) {
+  if ((theObj = document.getElementById("GameListBody")) && (currentGame > 0)) {
     setTimeout("document.getElementById('GameListBody').scrollTop = (currentGame -  1) * gameListLineHeight;", 111);
   }
 }
@@ -430,19 +430,19 @@ function showGameList() {
   if (numberOfGames < 2) { return; }
   disableShortcutKeysAndStoreStatus();
   fillGameList(false);
-  if (theObject = document.getElementById("HeaderContainer")) {
-    oldHeaderContainerDisplay = theObject.style.display;
-    theObject.style.display = "none";
+  if (theObj = document.getElementById("HeaderContainer")) {
+    oldHeaderContainerDisplay = theObj.style.display;
+    theObj.style.display = "none";
   }
-  if (theObject = document.getElementById("GameBoard")) { theObject.style.display = "none"; }
-  if (theObject = document.getElementById("GameList")) { theObject.style.display = "block"; }
+  if (theObj = document.getElementById("GameBoard")) { theObj.style.display = "none"; }
+  if (theObj = document.getElementById("GameList")) { theObj.style.display = "block"; }
 }
 
 function selectGameList(gameNum) {
   if (gameNum != -1) { Init(gameNum); }
-  if (theObject = document.getElementById("GameList")) { theObject.style.display = ""; }
-  if (theObject = document.getElementById("GameBoard")) { theObject.style.display = ""; }
-  if (theObject = document.getElementById("HeaderContainer")) { theObject.style.display = oldHeaderContainerDisplay; }
+  if (theObj = document.getElementById("GameList")) { theObj.style.display = ""; }
+  if (theObj = document.getElementById("GameBoard")) { theObj.style.display = ""; }
+  if (theObj = document.getElementById("HeaderContainer")) { theObj.style.display = oldHeaderContainerDisplay; }
   restoreShortcutKeysStatus();
 }
 
@@ -462,14 +462,14 @@ function customFunctionOnPgnTextLoad() {
   }
 
   fillGameList(true);
-  if (theObject = document.getElementById("ShowGameListLink")) {
-    theObject.title = "select from " + numberOfGames + " games";
+  if (theObj = document.getElementById("ShowGameListLink")) {
+    theObj.title = "select from " + numberOfGames + " games";
     var text = "", ii;
     for (ii = 0; ii < 3 + Math.log(numberOfGames)/Math.LN2; ii++) { text += "&middot;"; }
-    theObject.innerHTML = text;
+    theObj.innerHTML = text;
   }
-  if (theObject = document.getElementById("ShowGameList")) {
-    theObject.style.visibility = numberOfGames > 1 ? "visible" : "hidden";
+  if (theObj = document.getElementById("ShowGameList")) {
+    theObj.style.visibility = numberOfGames > 1 ? "visible" : "hidden";
   }
   if (numberOfGames > 1) {
     boardShortcut("F5", "show games list", function(t,e){ showGameList(); });
@@ -483,14 +483,14 @@ function meaningfulHeader(tagValue) {
 }
 
 function fixHeaderItem(tag, objectId, label) {
-  if (theObject = document.getElementById(objectId)) {
-    var tagValue = tag ? customPgnHeaderTag(tag, objectId) : theObject.innerHTML;
+  if (theObj = document.getElementById(objectId)) {
+    var tagValue = tag ? customPgnHeaderTag(tag, objectId) : theObj.innerHTML;
     if (meaningfulHeader(tagValue)) {
-      theObject.title = label + ": " + tagValue;
-      theObject.className = "leftRightSpacing";
+      theObj.title = label + ": " + tagValue;
+      theObj.className = "leftRightSpacing";
     } else {
-      theObject.title = label;
-      theObject.className = "";
+      theObj.title = label;
+      theObj.className = "";
     }
   }
 }
@@ -521,20 +521,20 @@ function customFunctionOnMove() {
   document.getElementById("GamePrevMoves").innerHTML = "";
   document.getElementById("GameCurrMove").innerHTML = "";
   document.getElementById("GameNextMoves").innerHTML = "";
-  theObject = document.getElementById("GamePrevMoves");
+  theObj = document.getElementById("GamePrevMoves");
   thisPly = Math.max(CurrentPly - extraMoves - 1, StartPly);
-  if (thisPly > StartPly) { theObject.innerHTML += "... "; }
+  if (thisPly > StartPly) { theObj.innerHTML += "... "; }
   for (; thisPly < Math.min(CurrentPly + extraMoves, StartPly + PlyNumber); thisPly++) {
     if (thisPly == CurrentPly) {
-      theObject = document.getElementById("GameNextMoves");
+      theObj = document.getElementById("GameNextMoves");
     }
-    if (thisPly % 2 === 0) { theObject.innerHTML += Math.floor(1 + thisPly / 2) + ". "; }
+    if (thisPly % 2 === 0) { theObj.innerHTML += Math.floor(1 + thisPly / 2) + ". "; }
     if (thisPly == CurrentPly - 1) {
-      theObject = document.getElementById("GameCurrMove");
+      theObj = document.getElementById("GameCurrMove");
     }
-    theObject.innerHTML += Moves[thisPly] + " ";
+    theObj.innerHTML += Moves[thisPly] + " ";
   }
-  if (thisPly < StartPly + PlyNumber) { theObject.innerHTML += "..."; }
+  if (thisPly < StartPly + PlyNumber) { theObj.innerHTML += "..."; }
 
   fixHeaderItem(null, "GameWhiteClock", "white clock");
   fixHeaderItem(null, "GameBlackClock", "black clock");
@@ -546,22 +546,22 @@ function fixColorFlag() {
 
   if (showColorFlag) {
     whiteFlagPadding = (horizontalLayout || ((clockObject = document.getElementById("GameWhiteClock")) && (clockObject.innerHTML)));
-    if (theObject = document.getElementById("whiteColorFlag")) {
-      theObject.style.display = "inline";
-      theObject.style.visibility = CurrentPly % 2 ? "hidden" : "visible";
+    if (theObj = document.getElementById("whiteColorFlag")) {
+      theObj.style.display = "inline";
+      theObj.style.visibility = CurrentPly % 2 ? "hidden" : "visible";
     }
-    if (theObject = document.getElementById("whiteColorFlagFiller")) {
-      theObject.style.display = whiteFlagPadding ? "inline" : "none";
-      theObject.style.visibility = "hidden";
+    if (theObj = document.getElementById("whiteColorFlagFiller")) {
+      theObj.style.display = whiteFlagPadding ? "inline" : "none";
+      theObj.style.visibility = "hidden";
     }
     blackFlagPadding = (horizontalLayout || ((clockObject = document.getElementById("GameBlackClock")) && (clockObject.innerHTML)));
-    if (theObject = document.getElementById("blackColorFlag")) {
-      theObject.style.display = "inline";
-      theObject.style.visibility = CurrentPly % 2 ? "visible" : "hidden";
+    if (theObj = document.getElementById("blackColorFlag")) {
+      theObj.style.display = "inline";
+      theObj.style.visibility = CurrentPly % 2 ? "visible" : "hidden";
     }
-    if (theObject = document.getElementById("blackColorFlagFiller")) {
-      theObject.style.display = blackFlagPadding ? "inline" : "none";
-      theObject.style.visibility = "hidden";
+    if (theObj = document.getElementById("blackColorFlagFiller")) {
+      theObj.style.display = blackFlagPadding ? "inline" : "none";
+      theObj.style.visibility = "hidden";
     }
   }
 }
@@ -680,8 +680,8 @@ function myOnLoad() {
 
 <script type="text/javascript">
 
-if ((LiveBroadcastDelay) && (theObject = document.getElementById("GameLiveStatusDemo"))) {
-  theObject.innerHTML = LiveBroadcastDemo ? "&nbsp;&nbsp;demo" : "";
+if ((LiveBroadcastDelay) && (theObj = document.getElementById("GameLiveStatusDemo"))) {
+  theObj.innerHTML = LiveBroadcastDemo ? "&nbsp;&nbsp;demo" : "";
 }
 
 </script>

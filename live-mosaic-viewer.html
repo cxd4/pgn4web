@@ -277,10 +277,10 @@ nextBoardId = 1000;
 boardId = new Array();
 
 function updateBoardFrames(newMaxBoards) {
-  if (theObject = document.getElementById("boardFrames")) {
-    theObject.innerHTML = "";
+  if (theObj = document.getElementById("boardFrames")) {
+    theObj.innerHTML = "";
     for (board = 0; board < newMaxBoards; board++) {
-      theObject.innerHTML += "<iframe src='live-mosaic-tile.html?ut=t&rm=" + refreshMinutes + "' class='hiddenFrame' id='board" + nextBoardId + "' name='board" + nextBoardId + "' width='256' height='306' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>";
+      theObj.innerHTML += "<iframe src='live-mosaic-tile.html?ut=t&rm=" + refreshMinutes + "' class='hiddenFrame' id='board" + nextBoardId + "' name='board" + nextBoardId + "' width='256' height='306' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>";
       boardId[board] = nextBoardId++;
     }
   }
@@ -532,17 +532,17 @@ function customFunctionOnPgnTextLoad() {
     }
   }
 
-  if (theObject = document.getElementById("GameLiveStatus")) {
+  if (theObj = document.getElementById("GameLiveStatus")) {
     if (alertNumSinceReset) {
-      theObject.title += " - " + alertNumSinceReset + " new alert" + (alertNumSinceReset > 1 ? "s" : "");
+      theObj.title += " - " + alertNumSinceReset + " new alert" + (alertNumSinceReset > 1 ? "s" : "");
     }
-    if (firstLoadPgnText) { theObject.style.display = "inline"; }
+    if (firstLoadPgnText) { theObj.style.display = "inline"; }
   }
 
   if (newMovesInShownGames) { liveBroadcastUpdateTicker++; }
   document.title = liveBroadcastUpdateTicker + "." + LiveBroadcastStatusString.replace(/^(\d*)\D*(\d*)$/, "$1.$2") + " live broadcast" + (demoFlag ? " demo" : "");
 
-  if (theObject = document.getElementById("GameLiveStatusDemo")) { theObject.innerHTML = LiveBroadcastDemo ? "demo &nbsp; " : ""; }
+  if (theObj = document.getElementById("GameLiveStatusDemo")) { theObj.innerHTML = LiveBroadcastDemo ? "demo &nbsp; " : ""; }
 
   updateMenu();
 

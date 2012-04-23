@@ -72,9 +72,9 @@ of Google Chrome. Don't use with any other browser.
             backgroundPage.removePgnTextOnRemoved(tab.id);
          }
          backgroundPage.pgnTextIndexFromTabId[tab.id] = pgnBackground;
-         theObject = document.getElementById("pgnText");
-         if ((theObject) && (theObject.value) && (theObject.value != backgroundPage.pgnText[pgnBackground]))
-         { backgroundPage.pgnText[pgnBackground] = theObject.value; }
+         theObj = document.getElementById("pgnText");
+         if ((theObj) && (theObj.value) && (theObj.value != backgroundPage.pgnText[pgnBackground]))
+         { backgroundPage.pgnText[pgnBackground] = theObj.value; }
       }
    }
 
@@ -83,9 +83,9 @@ of Google Chrome. Don't use with any other browser.
       thisRegExp = /(&|\?)(pgnBackground|pb)=([^&]*)(&|$)/i;
       if (window.location.search.match(thisRegExp) !== null) {
          if ((pgnBackground = unescape(window.location.search.match(thisRegExp)[3])) !== "") {
-            theObject = document.getElementById("pgnText");
+            theObj = document.getElementById("pgnText");
             theBackgroundPgnText = backgroundPage.pgnText[pgnBackground];
-            if ((theObject) && (theBackgroundPgnText) && (theBackgroundPgnText !== undefined)) { theObject.value = theBackgroundPgnText; }
+            if ((theObj) && (theBackgroundPgnText) && (theBackgroundPgnText !== undefined)) { theObj.value = theBackgroundPgnText; }
             chrome.tabs.getCurrent(setPgnTextIndexFromTabId);
          }
       }
@@ -164,15 +164,15 @@ of Google Chrome. Don't use with any other browser.
          "click square H2 to toggle the analysis engine",
          "when in live broadcast mode, click square H5 to switch between the single large board view and the multiple small boards view",
          "in case of errors, the top left chessboard square will flash; click the flashing square for detailed error info" );
-      if (theObject = document.getElementById("pgnText")) {
+      if (theObj = document.getElementById("pgnText")) {
          showTKfenEveryN = 20;
          showHintEveryN = showTKfenEveryN - 1;
          if ((randomPick = Math.floor(showTKfenEveryN * tkFEN.length * Math.random())) < tkFEN.length) {
-            theObject.innerHTML = '[Site "amazing moves collection"] [Event "#' + (randomPick+1) + '"] ' + tkFEN[randomPick];
+            theObj.innerHTML = '[Site "amazing moves collection"] [Event "#' + (randomPick+1) + '"] ' + tkFEN[randomPick];
             SetInitialVariation(0);
             SetInitialHalfmove("end", true);
          } else if ((randomPick = Math.floor(showHintEveryN * hints.length * Math.random())) < hints.length) {
-            theObject.innerHTML = "{chess games viewer tip: " + hints[randomPick] + "}";
+            theObj.innerHTML = "{chess games viewer tip: " + hints[randomPick] + "}";
          }
       }
    }
@@ -272,19 +272,19 @@ of Google Chrome. Don't use with any other browser.
    function fixHeaderTag(elementId) {
       var headerId = ["GameEvent", "GameSite", "GameDate", "GameRound", "GameWhite", "GameBlack", "GameResult", "GameSection", "GameStage", "GameBoardNum", "Timecontrol", "GameWhiteTeam", "GameBlackTeam", "GameWhiteTitle", "GameBlackTitle", "GameWhiteElo", "GameBlackElo", "GameECO", "GameOpening", "GameVariation", "GameSubVariation", "GameTermination", "GameWhiteClock", "GameBlackClock", "GameTimeControl"];
       var headerLabel = ["event", "site", "date", "round", "white player", "black player", "result", "section", "stage", "board", "time control", "white team", "black team", "white title", "black title", "white elo", "black elo", "eco", "opening", "variation", "subvariation", "termination", "white clock", "black clock", "time control"];
-      theObject = document.getElementById(elementId);
-      if (theObject) {
-        theObject.className = (theObject.innerHTML === "") ? "innerHeaderItemNoMargin" : "innerHeaderItem";
-        theObject.title = (headerId.indexOf(elementId) < 0 ? elementId : headerLabel[headerId.indexOf(elementId)] ) + ": " + theObject.innerHTML;
+      theObj = document.getElementById(elementId);
+      if (theObj) {
+        theObj.className = (theObj.innerHTML === "") ? "innerHeaderItemNoMargin" : "innerHeaderItem";
+        theObj.title = (headerId.indexOf(elementId) < 0 ? elementId : headerLabel[headerId.indexOf(elementId)] ) + ": " + theObj.innerHTML;
       }
    }
 
    function customPgnHeaderTagWithFix(tag, elementId, fixForDisplay) {
-      var theObject;
+      var theObj;
       customPgnHeaderTag(tag, elementId);
       fixHeaderTag(elementId);
-      if (fixForDisplay && (theObject = document.getElementById(elementId)) && theObject.innerHTML) {
-         theObject.innerHTML = fixCommentForDisplay(theObject.innerHTML);
+      if (fixForDisplay && (theObj = document.getElementById(elementId)) && theObj.innerHTML) {
+         theObj.innerHTML = fixCommentForDisplay(theObj.innerHTML);
       }
    }
 
@@ -322,15 +322,15 @@ of Google Chrome. Don't use with any other browser.
       customPgnHeaderTagWithFix('Section', 'GameSection');
       customPgnHeaderTagWithFix('Stage', 'GameStage');
       fixHeaderTag('GameRound');
-      if (theObject = document.getElementById("GameRound")) {
-         if (theObject.innerHTML) {
-            theObject.innerHTML = "round " + theObject.innerHTML;
+      if (theObj = document.getElementById("GameRound")) {
+         if (theObj.innerHTML) {
+            theObj.innerHTML = "round " + theObj.innerHTML;
          }
       }
       customPgnHeaderTagWithFix('Board', 'GameBoardNum');
-      if (theObject = document.getElementById("GameBoardNum")) {
-         if (theObject.innerHTML) {
-            theObject.innerHTML = "board " + theObject.innerHTML;
+      if (theObj = document.getElementById("GameBoardNum")) {
+         if (theObj.innerHTML) {
+            theObj.innerHTML = "board " + theObj.innerHTML;
          }
       }
       customPgnHeaderTagWithFix('TimeControl', 'GameTimeControl');
@@ -349,9 +349,9 @@ of Google Chrome. Don't use with any other browser.
       fixHeaderTag('GameResult');
       customPgnHeaderTagWithFix('Termination', 'GameTermination');
       // if (PlyNumber > 0) { customPgnHeaderTag('Result', 'ResultAtGametextEnd'); }
-      // else { if (theObject = document.getElementById('ResultAtGametextEnd')) { theObject.innerHTML = ""; } }
+      // else { if (theObj = document.getElementById('ResultAtGametextEnd')) { theObj.innerHTML = ""; } }
 
-      if (theObject = document.getElementById('lastMoveAndComment')) {
+      if (theObj = document.getElementById('lastMoveAndComment')) {
          if ((PlyNumber === 0) && (gameFEN[currentGame])) {
             lastDisplayStyle = "block";
          } else if (commentsIntoMoveText && ((PlyNumber > 0) || (gameFEN[currentGame]))) {
@@ -359,13 +359,13 @@ of Google Chrome. Don't use with any other browser.
          } else {
             lastDisplayStyle = "none";
          }
-         theObject.style.display = lastDisplayStyle;
+         theObj.style.display = lastDisplayStyle;
       }
-      if (theObject = document.getElementById("toggleCommentsLink")) {
+      if (theObj = document.getElementById("toggleCommentsLink")) {
          if (GameHasComments) {
-            theObject.innerHTML = commentsIntoMoveText ? "&times;" : "+";
+            theObj.innerHTML = commentsIntoMoveText ? "&times;" : "+";
          } else {
-            theObject.innerHTML = "";
+            theObj.innerHTML = "";
          }
       }
 
@@ -382,8 +382,8 @@ of Google Chrome. Don't use with any other browser.
          if (engineUnderstandsGame(currentGame)) { scanGameForFen(); }
          else { stopAnalysis(true); }
       }
-      if (theObject = document.getElementById("toggleAnalysisLink")) {
-         theObject.style.visibility = engineUnderstandsGame(currentGame) ? "" : "hidden";
+      if (theObj = document.getElementById("toggleAnalysisLink")) {
+         theObj.style.visibility = engineUnderstandsGame(currentGame) ? "" : "hidden";
       }
       previousCurrentVar = CurrentVar;
    }
@@ -403,7 +403,7 @@ of Google Chrome. Don't use with any other browser.
          if (noGamesLoaded) { document.title = alertNum ? "PGN data error" : "chess games viewer"; }
          else { document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s"); }
       }
-      if (theObject = document.getElementById("GameLiveStatusDemo")) { theObject.innerHTML = (LiveBroadcastDelay > 0) && LiveBroadcastDemo ? "demo" : ""; }
+      if (theObj = document.getElementById("GameLiveStatusDemo")) { theObj.innerHTML = (LiveBroadcastDelay > 0) && LiveBroadcastDemo ? "demo" : ""; }
 
       // H5
       if ((typeof(chrome) != "undefined") && (chrome.extension) && (pgnUrl) && (LiveBroadcastDelay > 0)) {
@@ -414,11 +414,11 @@ of Google Chrome. Don't use with any other browser.
 
       if (pgnData.indexOf(puzzlerUrl) === 0) {
          if (analysisStarted) { stopAnalysis(true); }
-         if (theObject = document.getElementById("GameText")) { theObject.style.visibility = "hidden"; }
-         if (theObject = document.getElementById("GameLastComment")) { theObject.style.visibility = "hidden"; }
+         if (theObj = document.getElementById("GameText")) { theObj.style.visibility = "hidden"; }
+         if (theObj = document.getElementById("GameLastComment")) { theObj.style.visibility = "hidden"; }
          alert((pgnData == puzzlerUrl ? "chess puzzler of the day: " : "chess puzzler: ") + (CurrentPly%2 === 0 ? "White" : "Black") + " to move\n\nclick OK to view the solution");
-         if (theObject = document.getElementById("GameText")) { theObject.style.visibility = ""; }
-         if (theObject = document.getElementById("GameLastComment")) { theObject.style.visibility = ""; }
+         if (theObj = document.getElementById("GameText")) { theObj.style.visibility = ""; }
+         if (theObj = document.getElementById("GameLastComment")) { theObj.style.visibility = ""; }
          MoveForward(1);
       }
    }
@@ -468,14 +468,14 @@ of Google Chrome. Don't use with any other browser.
 
 
    function showProbeTablebaseResults(res, fenString) {
-      if (theObject = document.getElementById("GameTablebaseProbe")) {
+      if (theObj = document.getElementById("GameTablebaseProbe")) {
          if (typeof(res) != "undefined") {
             if ((typeof(fenString) != "undefined") && (fenString !== CurrentFEN())) { res = "error"; }
             if (secondObject = document.getElementById("GameAnalysisMove")) { secondObject.style.visibility = "hidden"; }
             if (secondObject = document.getElementById("GameAnalysisEval")) { secondObject.style.visibility = "hidden"; }
             if (secondObject = document.getElementById("GameAnalysisPv")) { secondObject.style.visibility = "hidden"; }
-            theObject.className = "innerHeaderItem notranslate";
-            theObject.innerHTML = translateNAGs("<span class='egtbHead'>$148</span>" + res);
+            theObj.className = "innerHeaderItem notranslate";
+            theObj.innerHTML = translateNAGs("<span class='egtbHead'>$148</span>" + res);
             if (secondObject = document.getElementById("toggleTablebaseLink")) {
                secondObject.innerHTML = "&times;";
                secondObject.style.visibility = "";
@@ -484,8 +484,8 @@ of Google Chrome. Don't use with any other browser.
             if (secondObject = document.getElementById("GameAnalysisMove")) { secondObject.style.visibility = ""; }
             if (secondObject = document.getElementById("GameAnalysisEval")) { secondObject.style.visibility = ""; }
             if (secondObject = document.getElementById("GameAnalysisPv")) { secondObject.style.visibility = ""; }
-            theObject.className = "innerHeaderItemNoMargin notranslate";
-            theObject.innerHTML = "";
+            theObj.className = "innerHeaderItemNoMargin notranslate";
+            theObj.innerHTML = "";
             if (secondObject = document.getElementById("toggleTablebaseLink")) {
                secondObject.innerHTML = "+";
                secondObject.style.visibility = (tablebaseUnderstandsGame(currentGame) && backgroundPage && backgroundPage.tablebaseSupportsFen(CurrentFEN())) ? "" : "hidden";
@@ -495,8 +495,8 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function toggleProbeTablebase() {
-      if (theObject = document.getElementById("GameTablebaseProbe")) {
-         if (theObject.innerHTML) { showProbeTablebaseResults(); }
+      if (theObj = document.getElementById("GameTablebaseProbe")) {
+         if (theObj.innerHTML) { showProbeTablebaseResults(); }
          else if (checkTablebaseUnderstandsGameAndWarn()) {
             showProbeTablebaseResults("");
             backgroundPage.probeTablebase(CurrentFEN(), showProbeTablebaseResults);
@@ -541,18 +541,18 @@ of Google Chrome. Don't use with any other browser.
 
    var cycleLCA = 0;
    function cycleLastCommentArea() {
-      if (theObject = document.getElementById("GameLastComment")) {
+      if (theObj = document.getElementById("GameLastComment")) {
          switch (cycleLCA++ % 3) {
             case 0:
-               if (theObject.scrollHeight === theObject.clientHeight) { cycleLastCommentArea(); }
+               if (theObj.scrollHeight === theObj.clientHeight) { cycleLastCommentArea(); }
                else { fitLastCommentArea(); }
                break;
             case 1:
-               if (theObject.offsetHeight == emPixels(21)) { cycleLastCommentArea(); }
+               if (theObj.offsetHeight == emPixels(21)) { cycleLastCommentArea(); }
                else { maximizeLastCommentArea(); }
                break;
             case 2:
-               if (theObject.offsetHeight == emPixels(4.2)) { cycleLastCommentArea(); }
+               if (theObj.offsetHeight == emPixels(4.2)) { cycleLastCommentArea(); }
                else { resetLastCommentArea(); }
                break;
             default:
@@ -562,28 +562,28 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function toggleFitResetLastCommentArea() {
-      if (theObject = document.getElementById("GameLastComment")) {
-         if ((theObject.scrollHeight === theObject.clientHeight) || (theObject.offsetHeight == emPixels(21))) { resetLastCommentArea(); }
+      if (theObj = document.getElementById("GameLastComment")) {
+         if ((theObj.scrollHeight === theObj.clientHeight) || (theObj.offsetHeight == emPixels(21))) { resetLastCommentArea(); }
          else { fitLastCommentArea(); }
       }
    }
 
    function resetLastCommentArea() {
-      if (theObject = document.getElementById("GameLastComment")) {
-         theObject.style.height = "";
+      if (theObj = document.getElementById("GameLastComment")) {
+         theObj.style.height = "";
       }
    }
 
    function fitLastCommentArea() {
-      if (theObject = document.getElementById("GameLastComment")) {
-         theObject.style.height = "";
-         theObject.style.height = theObject.scrollHeight;
+      if (theObj = document.getElementById("GameLastComment")) {
+         theObj.style.height = "";
+         theObj.style.height = theObj.scrollHeight;
       }
    }
 
    function maximizeLastCommentArea() {
-      if (theObject = document.getElementById("GameLastComment")) {
-         theObject.style.height = "21em";
+      if (theObj = document.getElementById("GameLastComment")) {
+         theObj.style.height = "21em";
       }
    }
 
@@ -705,7 +705,7 @@ of Google Chrome. Don't use with any other browser.
    function restartAnalysis() {
       chrome.extension.sendRequest({analysisCommand: 'analysis', FEN: CurrentFEN()}, function(res){});
       analysisStarted = true;
-      if (theObject = document.getElementById("toggleAnalysisLink")) { theObject.innerHTML = "&times;"; }
+      if (theObj = document.getElementById("toggleAnalysisLink")) { theObj.innerHTML = "&times;"; }
       updateAnnotationGraph();
       updateAnalysisHeader();
       showProbeTablebaseResults();
@@ -714,7 +714,7 @@ of Google Chrome. Don't use with any other browser.
    function stopAnalysis(notifyBackgroundPage) {
       if (notifyBackgroundPage) { chrome.extension.sendRequest({analysisCommand: 'stop', FEN: ""}, function(res){}); }
       analysisStarted = false;
-      if (theObject = document.getElementById("toggleAnalysisLink")) { theObject.innerHTML = "+"; }
+      if (theObj = document.getElementById("toggleAnalysisLink")) { theObj.innerHTML = "+"; }
       clearAnnotationGraph();
       clearAnalysisHeader();
       showProbeTablebaseResults();
@@ -756,7 +756,7 @@ of Google Chrome. Don't use with any other browser.
    function updateAnnotationGraph() {
       var index;
       if (!analysisStarted) { clearAnnotationGraph(); }
-      else if (theObject = document.getElementById("GameAnnotationGraph")) {
+      else if (theObj = document.getElementById("GameAnnotationGraph")) {
          annEval = new Array();
          for (annPly = StartPly; annPly <= StartPly+PlyNumber; annPly++) {
             annEval[annPly] = annPly === CurrentPly ? 0 : null;
@@ -767,8 +767,8 @@ of Google Chrome. Don't use with any other browser.
             if (annEval[annPly] !== null) { annEval[annPly] = annEval[annPly] < 0 ? -1 + Math.pow(2, annEval[annPly]) : 1 - Math.pow(2, -annEval[annPly]); }
          }
 
-         theObject.width = canvasWidth = graphCanvasWidth();
-         theObject.height = canvasHeight = graphCanvasHeight();
+         theObj.width = canvasWidth = graphCanvasWidth();
+         theObj.height = canvasHeight = graphCanvasHeight();
 
          annotationPlyBlock = 20;
          annotationBarWidth = canvasWidth / (Math.ceil((PlyNumberMax + 2) / annotationPlyBlock) * annotationPlyBlock);
@@ -778,7 +778,7 @@ of Google Chrome. Don't use with any other browser.
          lineBottom = lineTop + lineHeight;
          maxBarHeight = lineTop + barOverlap;
 
-         context = theObject.getContext("2d");
+         context = theObj.getContext("2d");
          context.beginPath();
          thisBarTopLeftX = 0;
          thisBarHeight = lineHeight;
@@ -819,11 +819,11 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function clearAnnotationGraph() {
-      if (theObject = document.getElementById("GameAnnotationGraph")) {
-         context = theObject.getContext("2d");
-         theObject.width = graphCanvasWidth();
-         theObject.height = graphCanvasHeight();
-         context.clearRect(0, 0, theObject.width, theObject.height);
+      if (theObj = document.getElementById("GameAnnotationGraph")) {
+         context = theObj.getContext("2d");
+         theObj.width = graphCanvasWidth();
+         theObj.height = graphCanvasHeight();
+         context.clearRect(0, 0, theObj.width, theObj.height);
       }
    }
 
@@ -835,7 +835,7 @@ of Google Chrome. Don't use with any other browser.
    }
    function graphCanvasHeight() {
       if (theMeasureObject = document.getElementById("GameAnnotationMeasure")) {
-         return (theObject.height = 7 * theMeasureObject.offsetHeight);
+         return (theObj.height = 7 * theMeasureObject.offsetHeight);
       } else { return 100; }
    }
 
@@ -845,13 +845,13 @@ of Google Chrome. Don't use with any other browser.
 
       annPly = (lastMousemoveAnnPly == -1) ? CurrentPly : lastMousemoveAnnPly;
 
-      if (theObject = document.getElementById("GameAnalysisMove")) {
+      if (theObj = document.getElementById("GameAnalysisMove")) {
          if ((annPly > StartPly) && (annPly <= StartPly + PlyNumber)) {
             annMove = (Math.floor(annPly / 2) + (annPly % 2)) + (annPly % 2 ? ". " : "... ") + Moves[annPly - 1];
          } else {
             annMove = "&middot;";
          }
-         theObject.innerHTML = annMove;
+         theObj.innerHTML = annMove;
       }
 
       annEval = (lastMousemoveAnnPly == -1) ? "&middot;" : "";
@@ -864,11 +864,11 @@ of Google Chrome. Don't use with any other browser.
          }
       }
 
-      if (theObject = document.getElementById("GameAnalysisEval")) {
-         theObject.innerHTML = (annEval || annEval === 0) ? annEvalNag(annEval) : "";
+      if (theObj = document.getElementById("GameAnalysisEval")) {
+         theObj.innerHTML = (annEval || annEval === 0) ? annEvalNag(annEval) : "";
       }
-      if (theObject = document.getElementById("GameAnalysisPv")) {
-         theObject.innerHTML = (annPv ? ((annPv != "#") ? (NAG[140] + " " + annPv) : annPv) : "");
+      if (theObj = document.getElementById("GameAnalysisPv")) {
+         theObj.innerHTML = (annPv ? ((annPv != "#") ? (NAG[140] + " " + annPv) : annPv) : "");
       }
    }
 
@@ -885,9 +885,9 @@ of Google Chrome. Don't use with any other browser.
 
    function clearAnalysisHeader() {
       if (freezeAnalysisHeader) { return; }
-      if (theObject = document.getElementById("GameAnalysisMove")) { theObject.innerHTML = ""; }
-      if (theObject = document.getElementById("GameAnalysisEval")) { theObject.innerHTML = ""; }
-      if (theObject = document.getElementById("GameAnalysisPv")) { theObject.innerHTML = ""; }
+      if (theObj = document.getElementById("GameAnalysisMove")) { theObj.innerHTML = ""; }
+      if (theObj = document.getElementById("GameAnalysisEval")) { theObj.innerHTML = ""; }
+      if (theObj = document.getElementById("GameAnalysisPv")) { theObj.innerHTML = ""; }
    }
 
 
@@ -899,8 +899,8 @@ of Google Chrome. Don't use with any other browser.
    }
 
    function annotationGraphMouseout() {
-      if (theObject = document.getElementById("GameAnalysisMove")) { theObject.style.display = ""; }
-      if (theObject = document.getElementById("GameAnalysisEval")) { theObject.style.fontWeight = ""; }
+      if (theObj = document.getElementById("GameAnalysisMove")) { theObj.style.display = ""; }
+      if (theObj = document.getElementById("GameAnalysisEval")) { theObj.style.fontWeight = ""; }
       lastMousemoveAnnPly = -1;
       lastMousemoveAnnGame = -1;
       if (analysisStarted) { updateAnalysisHeader(); }
@@ -912,8 +912,8 @@ of Google Chrome. Don't use with any other browser.
          lastMousemoveAnnPly = newMousemoveAnnPly <= StartPly + PlyNumber ? newMousemoveAnnPly : -1;
          lastMousemoveAnnGame = currentGame;
          onGraph = ((lastMousemoveAnnPly >= StartPly) && (lastMousemoveAnnPly <= StartPly + PlyNumber));
-         if (theObject = document.getElementById("GameAnalysisMove")) { theObject.style.display = onGraph ? "inline-block" : ""; }
-         if (theObject = document.getElementById("GameAnalysisEval")) { theObject.style.fontWeight = onGraph ? "normal" : ""; }
+         if (theObj = document.getElementById("GameAnalysisMove")) { theObj.style.display = onGraph ? "inline-block" : ""; }
+         if (theObj = document.getElementById("GameAnalysisEval")) { theObj.style.fontWeight = onGraph ? "normal" : ""; }
          if (analysisStarted) { updateAnalysisHeader(); }
       }
    }
@@ -930,18 +930,18 @@ of Google Chrome. Don't use with any other browser.
 
    var freezeAnalysisHeader = false;
    function showExtraAnalysisInfo() {
-      if ((backgroundPage) && (theObject = document.getElementById("GameAnalysisPv"))) {
+      if ((backgroundPage) && (theObj = document.getElementById("GameAnalysisPv"))) {
          freezeAnalysisHeader = true;
          var index = backgroundPage.getAnalysisIndexFromFEN(fenPositions[currentGame][CurrentPly]);
-         theObject.innerHTML = "<span class='analysisExtraInfo'>" + (index != -1 ? "eval " + backgroundPage.getAnalysisEvFromIndex(index) + "<span class='move'>p</span>": "&middot;") + "<span style='margin-left:2em;'>nps &le; " + num2string(backgroundPage.getAnalysisMaxNodesPerSecond()) + "</span></span>";
-         if (theObject = document.getElementById("GameAnalysisEval")) { theObject.style.color = "transparent"; }
+         theObj.innerHTML = "<span class='analysisExtraInfo'>" + (index != -1 ? "eval " + backgroundPage.getAnalysisEvFromIndex(index) + "<span class='move'>p</span>": "&middot;") + "<span style='margin-left:2em;'>nps &le; " + num2string(backgroundPage.getAnalysisMaxNodesPerSecond()) + "</span></span>";
+         if (theObj = document.getElementById("GameAnalysisEval")) { theObj.style.color = "transparent"; }
       }
    }
 
    function hideExtraAnalysisInfo() {
       if (freezeAnalysisHeader) {
          freezeAnalysisHeader = false;
-         if (theObject = document.getElementById("GameAnalysisEval")) { theObject.style.color = ""; }
+         if (theObj = document.getElementById("GameAnalysisEval")) { theObj.style.color = ""; }
          updateAnalysisHeader();
       }
    }
@@ -1050,7 +1050,7 @@ of Google Chrome. Don't use with any other browser.
 
 
    function openPgnFiles() {
-      if (theObject = document.getElementById("localPgnFiles")) { theObject.click(); }
+      if (theObj = document.getElementById("localPgnFiles")) { theObj.click(); }
    }
 
    function fetchNewMosaicPgnUrl() {
@@ -1103,9 +1103,9 @@ of Google Chrome. Don't use with any other browser.
       SetInitialVariation(0);
       SetInitialHalfmove(refreshMinutes ? "end" : "start", true);
       firstStart = true;
-      if (theObject = document.getElementById("pgnText")) { theObject.value = ""; }
-      if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = ""; }
-      if (theObject = document.getElementById("localPgnFiles")) { theObject.value = ""; }
+      if (theObj = document.getElementById("pgnText")) { theObj.value = ""; }
+      if (theObj = document.getElementById("GameLiveStatus")) { theObj.innerHTML = ""; }
+      if (theObj = document.getElementById("localPgnFiles")) { theObj.value = ""; }
       LiveBroadcastStarted = false;
       LiveBroadcastEnded = false;
       LiveBroadcastPaused = false;
@@ -1127,7 +1127,7 @@ of Google Chrome. Don't use with any other browser.
 
       readLocalPgnFiles(files);
 
-      if (theObject = document.getElementById("localPgnFiles")) { theObject.value = ""; }
+      if (theObj = document.getElementById("localPgnFiles")) { theObj.value = ""; }
    }
 
    function handleDragOver(evt) {
@@ -1135,13 +1135,13 @@ of Google Chrome. Don't use with any other browser.
       evt.preventDefault();
    }
 
-   if (theObject = document.getElementById("localPgnFiles")) {
-      theObject.addEventListener("change", handleFileSelect, false);
+   if (theObj = document.getElementById("localPgnFiles")) {
+      theObj.addEventListener("change", handleFileSelect, false);
    }
 
-   if (theObject = document.getElementById("html")) {
-      theObject.addEventListener("dragover", handleDragOver, false);
-      theObject.addEventListener("drop", handleFileSelect, false);
+   if (theObj = document.getElementById("html")) {
+      theObj.addEventListener("dragover", handleDragOver, false);
+      theObj.addEventListener("drop", handleFileSelect, false);
    }
 
 
@@ -1239,9 +1239,9 @@ of Google Chrome. Don't use with any other browser.
       SetInitialVariation(0);
       SetInitialHalfmove(0, true);
       firstStart = true;
-      if (theObject = document.getElementById("pgnText")) { theObject.value = newPgnText; }
-      if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = ""; }
-      if (theObject = document.getElementById("localPgnFiles")) { theObject.value = ""; }
+      if (theObj = document.getElementById("pgnText")) { theObj.value = newPgnText; }
+      if (theObj = document.getElementById("GameLiveStatus")) { theObj.innerHTML = ""; }
+      if (theObj = document.getElementById("localPgnFiles")) { theObj.value = ""; }
       resetFenPositions(-1);
       start_pgn4web();
    }

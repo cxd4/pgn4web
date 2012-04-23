@@ -146,17 +146,17 @@
   var old_gameKey = "";
   var old_PlyNumber = -1;
   function customFunctionOnPgnGameLoad() {
-    if (theObject = document.getElementById("bottomContainer")) {
-      theObject.title = numberOfGames > 1 ? " game " + (currentGame+1) + " of " + numberOfGames + "  " : "";
-      addTagToTitle("event:", gameEvent[currentGame], theObject);
-      addTagToTitle("site:", gameSite[currentGame], theObject);
-      addTagToTitle("date:", gameDate[currentGame], theObject);
-      addTagToTitle("round:", gameRound[currentGame], theObject);
-      addTagToTitle("white:", gameWhite[currentGame], theObject);
-      addTagToTitle("black:", gameBlack[currentGame], theObject);
-      addTagToTitle("result:", gameResult[currentGame], theObject);
-      addTagToTitle("termination:", customPgnHeaderTag("Termination"), theObject);
-      addTagToTitle("timecontrol:", customPgnHeaderTag("TimeControl"), theObject);
+    if (theObj = document.getElementById("bottomContainer")) {
+      theObj.title = numberOfGames > 1 ? " game " + (currentGame+1) + " of " + numberOfGames + "  " : "";
+      addTagToTitle("event:", gameEvent[currentGame], theObj);
+      addTagToTitle("site:", gameSite[currentGame], theObj);
+      addTagToTitle("date:", gameDate[currentGame], theObj);
+      addTagToTitle("round:", gameRound[currentGame], theObj);
+      addTagToTitle("white:", gameWhite[currentGame], theObj);
+      addTagToTitle("black:", gameBlack[currentGame], theObj);
+      addTagToTitle("result:", gameResult[currentGame], theObj);
+      addTagToTitle("termination:", customPgnHeaderTag("Termination"), theObj);
+      addTagToTitle("timecontrol:", customPgnHeaderTag("TimeControl"), theObj);
     }
 
     try {
@@ -181,8 +181,8 @@
       clearTimeout(newMovesFlagTimeout);
       newMovesFlagTimeout = null;
     }
-    if (theObject = document.getElementById("GameNewMoves")) {
-      theObject.innerHTML = onOff ? "^" : "";
+    if (theObj = document.getElementById("GameNewMoves")) {
+      theObj.innerHTML = onOff ? "^" : "";
     }
     if (onOff) { newMovesFlagTimeout = setTimeout("newMovesFlag(false);", refreshMinutes * 60000 + 2000); }
   }

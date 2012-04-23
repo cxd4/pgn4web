@@ -719,11 +719,11 @@ set_remainingTime();
 
 <script src="../pgn4web-server-config.js" type="text/javascript"></script>
 <script type="text/javascript">
-  if (theObject = document.getElementById("mainLiveGrabLink")) {
+  if (theObj = document.getElementById("mainLiveGrabLink")) {
     if (pgn4web_live_pointer_url.match("^((/|http(s|)://).*)")) { // different domain or absolute path
-      theObject.href = pgn4web_live_pointer_url + "/live/live-grab.php";
+      theObj.href = pgn4web_live_pointer_url + "/live/live-grab.php";
     } else { // same domain AND relative path
-      theObject.href = pgn4web_live_pointer_url + "/../live/live-grab.php";
+      theObj.href = pgn4web_live_pointer_url + "/../live/live-grab.php";
     }
   }
 </script>

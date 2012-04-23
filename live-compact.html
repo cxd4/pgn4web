@@ -80,7 +80,7 @@
   SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, false);
 
   function customFunctionOnCheckLiveBroadcastStatus() {
-    if (theObject = document.getElementById("GameLiveStatus")) { theObject.innerHTML = theObject.title; }
+    if (theObj = document.getElementById("GameLiveStatus")) { theObj.innerHTML = theObj.title; }
   }
 
   function customFunctionOnPgnTextLoad() {
@@ -110,19 +110,19 @@
   function customFunctionOnPgnGameLoad() {
     objectsToTitle = ["GameEvent", "GameSite", "GameDate", "GameWhite", "GameBlack"];
     for (ii in objectsToTitle) {
-      if (theObject = document.getElementById(objectsToTitle[ii])) { theObject.title = theObject.innerHTML; }
+      if (theObj = document.getElementById(objectsToTitle[ii])) { theObj.title = theObj.innerHTML; }
     }
     if (timeControl = customPgnHeaderTag("TimeControl")) {
-      if (theObject = document.getElementById("GameWhiteClock")) { theObject.title = "timecontrol: " + timeControl; }
-      if (theObject = document.getElementById("GameBlackClock")) { theObject.title = "timecontrol: " + timeControl; }
+      if (theObj = document.getElementById("GameWhiteClock")) { theObj.title = "timecontrol: " + timeControl; }
+      if (theObj = document.getElementById("GameBlackClock")) { theObj.title = "timecontrol: " + timeControl; }
     } else {
-      if (theObject = document.getElementById("GameWhiteClock")) { theObject.title = ""; }
-      if (theObject = document.getElementById("GameBlackClock")) { theObject.title = ""; }
+      if (theObj = document.getElementById("GameWhiteClock")) { theObj.title = ""; }
+      if (theObj = document.getElementById("GameBlackClock")) { theObj.title = ""; }
     }
     if (gameTermination = customPgnHeaderTag("Termination")) {
-      if (theObject = document.getElementById("GameResult")) { theObject.title = "termination: " + gameTermination; }
+      if (theObj = document.getElementById("GameResult")) { theObj.title = "termination: " + gameTermination; }
     } else {
-      if (theObject = document.getElementById("GameResult")) { theObject.title = ""; }
+      if (theObj = document.getElementById("GameResult")) { theObj.title = ""; }
     }
     if ((gameRound[currentGame] !==  undefined) &&
       (gameRound[currentGame] !== "") &&
@@ -143,9 +143,9 @@
       document.getElementById("GameResult").className = "headerNosize";
       document.getElementById("GameResult").innerHTML = "";
     }
-    theObject = document.getElementById("GameText");
-    if ((theObject) && (theObject.scrollHeight !== undefined) && (theObject.scrollTop !== undefined) && ((!LiveBroadcastFoundOldGame) || (LiveBroadcastOldCurrentPlyLast && (LiveBroadcastOldCurrentPly < StartPly+PlyNumber)))) {
-      theObject.scrollTop = theObject.scrollHeight;
+    theObj = document.getElementById("GameText");
+    if ((theObj) && (theObj.scrollHeight !== undefined) && (theObj.scrollTop !== undefined) && ((!LiveBroadcastFoundOldGame) || (LiveBroadcastOldCurrentPlyLast && (LiveBroadcastOldCurrentPly < StartPly+PlyNumber)))) {
+      theObj.scrollTop = theObj.scrollHeight;
     }
   }
 
@@ -362,10 +362,9 @@ function user_help() {
 </center>
 
 <script type="text/javascript">
-  if (demoFlag && (theObject = document.getElementById("helplink"))) { theObject.innerHTML = "demo"; }
+  if (demoFlag && (theObj = document.getElementById("helplink"))) { theObj.innerHTML = "demo"; }
 </script>
 
 </body>
 
 </html>
-

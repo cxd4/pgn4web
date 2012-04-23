@@ -388,8 +388,8 @@ a.variation {
 
   function customFunctionOnCheckLiveBroadcastStatus() {
     for (gg in gameId) {
-      if (theObject = document.getElementById("newMoves_" + gameId[gg])) {
-        theObject.className = "noNewMoves";
+      if (theObj = document.getElementById("newMoves_" + gameId[gg])) {
+        theObj.className = "noNewMoves";
       }
     }
   }
@@ -493,7 +493,7 @@ a.variation {
     firstRow = true;
     lastEventRound = "";
     lastMatch = 0;
-    if (theObject = document.getElementById("results")) {
+    if (theObj = document.getElementById("results")) {
       resultTable = "";
       for (gg in gameId) {
         fixedRound = gameRound[gameId[gg]].replace(/\..*$/, ""); // only use the first number of rounds like 1.2.3
@@ -514,7 +514,7 @@ a.variation {
         resultTable += "<div class='game' id='gameRow_" + gameId[gg] + "' onclick='selectGame(" + gameId[gg] + ");' style='" + ((showBoard && (gameId[gg] === oldSelectedGame)) ? "font-weight:bold;" : "") + (firstRow ? "margin-top:0;" : "") + "'><span class='player'><span class='firstPlayer" + ((firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam) ? " firstTeamPlayer" : "") + ((secondTeam && gameWhiteTeam[gameId[gg]] === secondTeam) ? " secondTeamPlayer" : "") + "' title='" + whitePlayer.replace(/&nbsp;/, " ") + "'>" + whitePlayer + "</span></span><span class='player'><span class='secondPlayer" + ((firstTeam && gameWhiteTeam[gameId[gg]] === firstTeam) ? " firstTeamPlayer" : "") + ((secondTeam && gameBlackTeam[gameId[gg]] === secondTeam) ? " secondTeamPlayer" : "") + "' title='" + blackPlayer.replace(/&nbsp;/, " ") + "'>" + blackPlayer + "</span></span><span class='result' title='" + gameResult[gameId[gg]] + "'>" + gameResult[gameId[gg]] + "</span><span id='newMoves_" + gameId[gg] + "' class='" + (gameNewMoves[gg] ? "newMoves" : "noNewMoves") + "' title='new moves received'>*</span></div>";
         if (firstRow) { firstRow = false; }
       }
-      theObject.innerHTML = resultTable;
+      theObj.innerHTML = resultTable;
     }
   }
 
@@ -562,13 +562,13 @@ a.variation {
 
   function highlightGame(gameNum) {
     if (!showBoard) { return; }
-    if (theObject = document.getElementById("gameRow_" + oldSelectedGame)) {
+    if (theObj = document.getElementById("gameRow_" + oldSelectedGame)) {
       if (oldSelectedGame !== gameNum) {
-        theObject.style.fontWeight = "";
+        theObj.style.fontWeight = "";
       }
     }
-    if (theObject = document.getElementById("gameRow_" + gameNum)) {
-       theObject.style.fontWeight = "bold";
+    if (theObj = document.getElementById("gameRow_" + gameNum)) {
+       theObj.style.fontWeight = "bold";
     }
     oldSelectedGame = gameNum;
   }
@@ -576,11 +576,11 @@ a.variation {
   function customFunctionOnPgnGameLoad() {
     highlightGame(currentGame);
 
-    if (theObject = document.getElementById("GameWhite")) {
-      theObject.title = "white player:   " + gameWhite[currentGame] + (showPlayersInfo ? ((whiteTitle = customPgnHeaderTag("WhiteTitle")) ? "   " + whiteTitle : "") + ((whiteElo = customPgnHeaderTag("WhiteElo")) ? "   " + whiteElo : "") : "");
+    if (theObj = document.getElementById("GameWhite")) {
+      theObj.title = "white player:   " + gameWhite[currentGame] + (showPlayersInfo ? ((whiteTitle = customPgnHeaderTag("WhiteTitle")) ? "   " + whiteTitle : "") + ((whiteElo = customPgnHeaderTag("WhiteElo")) ? "   " + whiteElo : "") : "");
     }
-    if (theObject = document.getElementById("GameBlack")) {
-      theObject.title = "black player:   " + gameBlack[currentGame] + (showPlayersInfo ? ((blackTitle = customPgnHeaderTag("BlackTitle")) ? "   " + blackTitle : "") + ((blackElo = customPgnHeaderTag("BlackElo")) ? "   " + blackElo : "") : "");
+    if (theObj = document.getElementById("GameBlack")) {
+      theObj.title = "black player:   " + gameBlack[currentGame] + (showPlayersInfo ? ((blackTitle = customPgnHeaderTag("BlackTitle")) ? "   " + blackTitle : "") + ((blackElo = customPgnHeaderTag("BlackElo")) ? "   " + blackElo : "") : "");
     }
   }
 
@@ -590,23 +590,23 @@ a.variation {
     document.getElementById("GamePrevMoves").innerHTML = "";
     document.getElementById("GameCurrMove").innerHTML = "";
     document.getElementById("GameNextMoves").innerHTML = "";
-    theObject = document.getElementById("GamePrevMoves");
+    theObj = document.getElementById("GamePrevMoves");
     thisPly = Math.max(CurrentPly - extraMoves - 1, StartPly);
-    if (thisPly > StartPly) { theObject.innerHTML += "... "; }
+    if (thisPly > StartPly) { theObj.innerHTML += "... "; }
     for (; thisPly < Math.min(CurrentPly + extraMoves, StartPly + PlyNumber); thisPly++) {
       if (thisPly == CurrentPly) {
-        theObject = document.getElementById("GameNextMoves");
+        theObj = document.getElementById("GameNextMoves");
       }
-      if (thisPly % 2 === 0) { theObject.innerHTML += Math.floor(1 + thisPly / 2) + ". "; }
+      if (thisPly % 2 === 0) { theObj.innerHTML += Math.floor(1 + thisPly / 2) + ". "; }
       if (thisPly == CurrentPly - 1) {
-        theObject = document.getElementById("GameCurrMove");
+        theObj = document.getElementById("GameCurrMove");
       }
-      theObject.innerHTML += Moves[thisPly] + " ";
+      theObj.innerHTML += Moves[thisPly] + " ";
     }
-    if (thisPly < StartPly + PlyNumber) { theObject.innerHTML += "..."; }
+    if (thisPly < StartPly + PlyNumber) { theObj.innerHTML += "..."; }
 
-    if (theObject = document.getElementById("SideToMove")) {
-      theObject.style.backgroundColor = CurrentPly % 2 ? "black" : "white";
+    if (theObj = document.getElementById("SideToMove")) {
+      theObj.style.backgroundColor = CurrentPly % 2 ? "black" : "white";
     }
   }
 
@@ -640,8 +640,8 @@ a.variation {
 
   function toggleShowBoard() {
     showBoard = !showBoard;
-    if (theObject = document.getElementById("GameBoardContainer")) {
-      theObject.style.display = showBoard ? "" : "none";
+    if (theObj = document.getElementById("GameBoardContainer")) {
+      theObj.style.display = showBoard ? "" : "none";
     }
     if (showBoard) { Init(currentGame); }
     printGames();
@@ -694,8 +694,8 @@ function gup(name) {
 
 <script type="text/javascript">
 
-  if (theObject = document.getElementById("GameBoardContainer")) {
-    theObject.style.display = showBoard ? "" : "none";
+  if (theObj = document.getElementById("GameBoardContainer")) {
+    theObj.style.display = showBoard ? "" : "none";
   }
 
 </script>

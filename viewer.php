@@ -323,17 +323,17 @@ function print_form() {
   }
 
   function checkPgnUrl() {
-    theObject = document.getElementById("urlFormText");
-    if (theObject === null) { return false; }
-    if (!checkPgnExtension(theObject.value)) { return false; }
-    else { return (theObject.value !== ""); }
+    theObj = document.getElementById("urlFormText");
+    if (theObj === null) { return false; }
+    if (!checkPgnExtension(theObj.value)) { return false; }
+    else { return (theObj.value !== ""); }
   }
 
   function checkPgnFile() {
-    theObject = document.getElementById("uploadFormFile");
-    if (theObject === null) { return false; }
-    if (!checkPgnExtension(theObject.value)) { return false; }
-    else { return (theObject.value !== ""); }
+    theObj = document.getElementById("uploadFormFile");
+    if (theObj === null) { return false; }
+    if (!checkPgnExtension(theObj.value)) { return false; }
+    else { return (theObj.value !== ""); }
   }
 
 END;
@@ -382,21 +382,21 @@ END;
   }
 
   function loadPgnFromForm() {
-    theObjectPgnFormText = document.getElementById('pgnFormText');
-    if (theObjectPgnFormText === null) { return; }
-    if (theObjectPgnFormText.value === "") { return; }
+    theObjPgnFormText = document.getElementById('pgnFormText');
+    if (theObjPgnFormText === null) { return; }
+    if (theObjPgnFormText.value === "") { return; }
 
-    theObjectPgnText = document.getElementById('pgnText');
-    if (theObjectPgnText === null) { return; }
+    theObjPgnText = document.getElementById('pgnText');
+    if (theObjPgnText === null) { return; }
 
-    theObjectPgnText.value = theObjectPgnFormText.value;
+    theObjPgnText.value = theObjPgnFormText.value;
 
-    theObjectPgnText.value = theObjectPgnText.value.replace(/\\[/g,'\\n\\n[');
-    theObjectPgnText.value = theObjectPgnText.value.replace(/\\]/g,']\\n\\n');
-    theObjectPgnText.value = theObjectPgnText.value.replace(/([012\\*])(\\s*)(\\[)/g,'\$1\\n\\n\$3');
-    theObjectPgnText.value = theObjectPgnText.value.replace(/\\]\\s*\\[/g,']\\n[');
-    theObjectPgnText.value = theObjectPgnText.value.replace(/^\\s*\\[/g,'[');
-    theObjectPgnText.value = theObjectPgnText.value.replace(/\\n[\\s*\\n]+/g,'\\n\\n');
+    theObjPgnText.value = theObjPgnText.value.replace(/\\[/g,'\\n\\n[');
+    theObjPgnText.value = theObjPgnText.value.replace(/\\]/g,']\\n\\n');
+    theObjPgnText.value = theObjPgnText.value.replace(/([012\\*])(\\s*)(\\[)/g,'\$1\\n\\n\$3');
+    theObjPgnText.value = theObjPgnText.value.replace(/\\]\\s*\\[/g,']\\n[');
+    theObjPgnText.value = theObjPgnText.value.replace(/^\\s*\\[/g,'[');
+    theObjPgnText.value = theObjPgnText.value.replace(/\\n[\\s*\\n]+/g,'\\n\\n');
 
     document.getElementById('pgnStatus').innerHTML = "PGN games from textbox input";
     document.getElementById('uploadFormFile').value = "";
@@ -411,10 +411,10 @@ END;
   }
 
   function urlFormSelectChange() {
-    theObject = document.getElementById("urlFormSelect");
-    if (theObject === null) { return; }
+    theObj = document.getElementById("urlFormSelect");
+    if (theObj === null) { return; }
 
-    switch (theObject.value) {
+    switch (theObj.value) {
       case "twic":
         givenTwicNumber = 765;
         epochTimeOfGivenTwic = 1246921199; // Mon July 6th, 23:59:59 GMT
@@ -422,7 +422,7 @@ END;
         epochTimeNow = nowDate.getTime() / 1000;
         twicNum = givenTwicNumber + Math.floor((epochTimeNow - epochTimeOfGivenTwic) / (60 * 60 * 24 * 7));
         setPgnUrl("http://www.chess.co.uk/twic/zips/twic" + twicNum + "g.zip");
-        theObject.value = "header";
+        theObj.value = "header";
       break;
 
       case "nic":
@@ -434,12 +434,12 @@ END;
         nicYear = givenNicYear + Math.floor((epochTimeNow - epochTimeOfGivenNic) / (60 * 60 * 24 * 365.25));
         nicIssue = 1 + Math.floor((epochTimeNow - (epochTimeOfGivenNic + (nicYear - givenNicYear) * (60 * 60 * 24 * 365.25))) / (60 * 60 * 24 * 365.25 / 8));
         setPgnUrl("http://www.newinchess.com/Magazine/GameFiles/mag_" + nicYear + "_" + nicIssue + "_pgn.zip");
-        theObject.value = "header";
+        theObj.value = "header";
       break;
 
       default:
         setPgnUrl("");
-        theObject.value = "header";
+        theObj.value = "header";
       break;
     }
   }
@@ -689,11 +689,11 @@ a.variation {
   SetShortcutKeysEnabled(true);
 
   function customFunctionOnPgnTextLoad() {
-    if (theObject = document.getElementById('numGm')) { theObject.innerHTML = numberOfGames; }
+    if (theObj = document.getElementById('numGm')) { theObj.innerHTML = numberOfGames; }
   }
   function customFunctionOnPgnGameLoad() {
-    if (theObject = document.getElementById('currGm')) { theObject.innerHTML = currentGame+1; }
-    if (theObject = document.getElementById('numPly')) { theObject.innerHTML = PlyNumber; }
+    if (theObj = document.getElementById('currGm')) { theObj.innerHTML = currentGame+1; }
+    if (theObj = document.getElementById('numPly')) { theObj.innerHTML = PlyNumber; }
     customPgnHeaderTag('ECO', 'GameECO');
     customPgnHeaderTag('Opening', 'GameOpening');
     customPgnHeaderTag('Variation', 'GameVariation');
@@ -701,7 +701,7 @@ a.variation {
     customPgnHeaderTag('Result', 'ResultAtGametextEnd');
   }
   function customFunctionOnMove() {
-    if (theObject = document.getElementById('currPly')) { theObject.innerHTML = CurrentPly; }
+    if (theObj = document.getElementById('currPly')) { theObj.innerHTML = CurrentPly; }
   }
   function customShortcutKey_Shift_1() {
     if (typeof(openFidePlayerUrl) == "function") {

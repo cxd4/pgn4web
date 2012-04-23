@@ -39,8 +39,8 @@ function customPgnHeaderTag(customTagString, htmlElementIdString, gameNum) {
   if ((pgnHeader[gameNum]) && (tagValues = pgnHeader[gameNum].match('\\[\\s*' + customTagString + '\\s*\"([^\"]+)\"\\s*\\]'))) {
     tagValue = tagValues[1];
   } else { tagValue = ""; }
-  if ((htmlElementIdString) && (theObject = document.getElementById(htmlElementIdString)) && (typeof(theObject.innerHTML) == "string")) {
-    theObject.innerHTML = tagValue;
+  if ((htmlElementIdString) && (theObj = document.getElementById(htmlElementIdString)) && (typeof(theObj.innerHTML) == "string")) {
+    theObj.innerHTML = tagValue;
   }
   return tagValue;
 }
@@ -54,8 +54,8 @@ function customPgnCommentTag(customTagString, htmlElementIdString, plyNum, varId
   if ((MoveCommentsVar[varId][plyNum]) && (tagValues = MoveCommentsVar[varId][plyNum].match('\\[%' + customTagString + '\\s*([^\\]]+)\\s*\\]'))) {
     tagValue = tagValues[1];
   } else { tagValue = ""; }
-  if ((htmlElementIdString) && (theObject = document.getElementById(htmlElementIdString)) && (typeof(theObject.innerHTML) == "string")) {
-    theObject.innerHTML = tagValue;
+  if ((htmlElementIdString) && (theObj = document.getElementById(htmlElementIdString)) && (typeof(theObj.innerHTML) == "string")) {
+    theObj.innerHTML = tagValue;
   }
   return tagValue;
 }
@@ -129,14 +129,14 @@ function alertPromptTick(restart) {
   }
   var debugColRow = colRowFromSquare(debugShortcutSquare);
   if (!debugColRow) { return; }
-  if (theObject = document.getElementById('tcol' + debugColRow.col + 'trow' + debugColRow.row)) {
+  if (theObj = document.getElementById('tcol' + debugColRow.col + 'trow' + debugColRow.row)) {
     if (alertPromptOn) {
       if ((highlightOption) &&
         ((lastColFromHighlighted === 0 && lastRowFromHighlighted === 7) ||
         (lastColToHighlighted === 0 && lastRowToHighlighted === 7))) {
-          theObject.className = 'highlightWhiteSquare';
-        } else { theObject.className = 'whiteSquare'; }
-    } else { theObject.className = 'blackSquare'; }
+          theObj.className = 'highlightWhiteSquare';
+        } else { theObj.className = 'whiteSquare'; }
+    } else { theObj.className = 'blackSquare'; }
 
     alertPromptOn = !alertPromptOn;
     if (alertPromptOn) { alertPromptDelay = 500; }
@@ -436,16 +436,16 @@ function boardIsDefault(square) {
 }
 
 function boardShortcut(square, title, functionPointer, defaultSetting) {
-  var theObject, colRow = colRowFromSquare(square);
+  var theObj, colRow = colRowFromSquare(square);
   if (!colRow) { return; }
   else { var col = colRow.col; var row = colRow.row; }
   boardTitle[col][row] = title;
   if (functionPointer) { boardOnClick[col][row] = functionPointer; }
   boardDefault[col][row] = defaultSetting ? true : false;
-  if (theObject = document.getElementById('img_tcol' + col + 'trow' + row)) {
+  if (theObj = document.getElementById('img_tcol' + col + 'trow' + row)) {
     if (IsRotated) { square = String.fromCharCode(72-col,49+row); }
     squareTitle = square + (boardTitle[col][row] ? ': ' + boardTitle[col][row] : '');
-    theObject.title = squareTitle;
+    theObj.title = squareTitle;
   }
 }
 
@@ -655,8 +655,8 @@ function displayDebugInfo() {
   if (pgnUrl) {
     debugInfo += 'PGNURL: url=' + pgnUrl;
   } else {
-    if (theObject = document.getElementById("pgnText")) {
-      debugInfo += 'PGNTEXT: length=' + (theObject.tagName.toLowerCase() == "textarea" ? theObject.value.length : "?");
+    if (theObj = document.getElementById("pgnText")) {
+      debugInfo += 'PGNTEXT: length=' + (theObj.tagName.toLowerCase() == "textarea" ? theObj.value.length : "?");
     }
   }
   debugInfo += '\n\n' +
@@ -1325,8 +1325,8 @@ function HighlightLastMove() {
 
   // remove highlighting from old anchor
   if (oldAnchorName) {
-    if (theObject = document.getElementById(oldAnchorName)) {
-      theObject.className = ( oldAnchorName.match(/Var0Mv/) ? 'move' : 'variation') + ' notranslate';
+    if (theObj = document.getElementById(oldAnchorName)) {
+      theObj.className = ( oldAnchorName.match(/Var0Mv/) ? 'move' : 'variation') + ' notranslate';
     }
   }
 
@@ -1348,8 +1348,8 @@ function HighlightLastMove() {
   whiteToMove = ((showThisMove+1)%2 === 0);
   text = whiteToMove ? 'white' : 'black';
 
-  if (theObject = document.getElementById("GameSideToMove"))
-  { theObject.innerHTML = text; }
+  if (theObj = document.getElementById("GameSideToMove"))
+  { theObj.innerHTML = text; }
 
   // show clock if any
   lastMoverClockObject = document.getElementById(whiteToMove ?
@@ -1459,8 +1459,8 @@ function HighlightLastMove() {
 
   if (showThisMove >= (StartPlyVar[CurrentVar]-1)) {
     anchorName = 'Var' + CurrentVar + 'Mv' + (showThisMove + 1);
-    if (theObject = document.getElementById(anchorName)) {
-      theObject.className = (CurrentVar ? 'variation variationOn' : 'move moveOn') + ' notranslate';
+    if (theObj = document.getElementById(anchorName)) {
+      theObj.className = (CurrentVar ? 'variation variationOn' : 'move moveOn') + ' notranslate';
     }
     oldAnchorName = anchorName;
 
@@ -1511,9 +1511,9 @@ function highlightSquare(col, row, on) {
   if (!SquareOnBoard(col, row)) { return false; }
   if (IsRotated) { trow = row; tcol = 7 - col; }
   else { trow = 7 - row; tcol = col; }
-  if (!(theObject = document.getElementById('tcol' + tcol + 'trow' + trow))) { return false; }
-  if (on) { theObject.className = (trow+tcol)%2 === 0 ? "highlightWhiteSquare" : "highlightBlackSquare"; }
-  else { theObject.className = (trow+tcol)%2 === 0 ? "whiteSquare" : "blackSquare"; }
+  if (!(theObj = document.getElementById('tcol' + tcol + 'trow' + trow))) { return false; }
+  if (on) { theObj.className = (trow+tcol)%2 === 0 ? "highlightWhiteSquare" : "highlightBlackSquare"; }
+  else { theObj.className = (trow+tcol)%2 === 0 ? "whiteSquare" : "blackSquare"; }
   return true;
 }
 
@@ -1942,14 +1942,14 @@ function checkLiveBroadcastStatus() {
     liveBroadcastStatusTitle = LiveBroadcastEnded ? "live broadcast ended" : running + " live game" + (running > 1 ? "s" : "") + " out of " + numberOfGames;
   }
 
-  if (theObject = document.getElementById("GameLiveStatus")) {
-    theObject.innerHTML = LiveBroadcastStatusString;
-    theObject.title = liveBroadcastStatusTitle;
+  if (theObj = document.getElementById("GameLiveStatus")) {
+    theObj.innerHTML = LiveBroadcastStatusString;
+    theObj.title = liveBroadcastStatusTitle;
   }
 
-  if (theObject = document.getElementById("GameLiveLastRefreshed")) { theObject.innerHTML = LiveBroadcastLastRefreshedLocal; }
-  if (theObject = document.getElementById("GameLiveLastReceived")) { theObject.innerHTML = LiveBroadcastLastReceivedLocal; }
-  if (theObject = document.getElementById("GameLiveLastModifiedServer")) { theObject.innerHTML = LiveBroadcastLastModified_ServerTime(); }
+  if (theObj = document.getElementById("GameLiveLastRefreshed")) { theObj.innerHTML = LiveBroadcastLastRefreshedLocal; }
+  if (theObj = document.getElementById("GameLiveLastReceived")) { theObj.innerHTML = LiveBroadcastLastReceivedLocal; }
+  if (theObj = document.getElementById("GameLiveLastModifiedServer")) { theObj.innerHTML = LiveBroadcastLastModified_ServerTime(); }
 
   customFunctionOnCheckLiveBroadcastStatus();
 }
@@ -2004,7 +2004,7 @@ function loadPgnFromTextarea(textareaId) {
 
   LiveBroadcastLastRefreshedLocal = (new Date()).toLocaleString();
 
-  if (!(theObject = document.getElementById(textareaId))) {
+  if (!(theObj = document.getElementById(textareaId))) {
     myAlert('error: missing ' + textareaId + ' textarea object in the HTML file', true);
     loadPgnFromTextareaResult = LOAD_PGN_FAIL;
   } else {
@@ -2035,8 +2035,8 @@ function loadPgnFromTextarea(textareaId) {
 
 function createBoard() {
 
-  if (theObject = document.getElementById("GameBoard")) {
-    theObject.innerHTML = '<DIV STYLE="font-size: small; font-family: sans-serif; ' +
+  if (theObj = document.getElementById("GameBoard")) {
+    theObj.innerHTML = '<DIV STYLE="font-size: small; font-family: sans-serif; ' +
       'padding: 10px; text-align: center;">' +
       '...loading PGN data<br />please wait...</DIV>';
   }
@@ -3359,17 +3359,17 @@ var clickedSquareInterval = null;
 function clickedSquare(ii, jj) {
   if (clickedSquareInterval) { return; } // dont trigger twice
   squareId = 'tcol' + jj + 'trow' + ii;
-  if (theObject = document.getElementById(squareId)) {
-    var oldClass = theObject.className;
-    theObject.className = (ii+jj)%2 === 0 ? "blackSquare" : "whiteSquare";
-    clickedSquareInterval = setTimeout("reset_after_click(" + ii + "," + jj + ",'" + oldClass + "','" + theObject.className + "')", 66);
+  if (theObj = document.getElementById(squareId)) {
+    var oldClass = theObj.className;
+    theObj.className = (ii+jj)%2 === 0 ? "blackSquare" : "whiteSquare";
+    clickedSquareInterval = setTimeout("reset_after_click(" + ii + "," + jj + ",'" + oldClass + "','" + theObj.className + "')", 66);
   }
 }
 
 function reset_after_click (ii, jj, oldClass, newClass) {
-  if (theObject = document.getElementById('tcol' + jj + 'trow' + ii)) {
+  if (theObj = document.getElementById('tcol' + jj + 'trow' + ii)) {
     // square class changed again by pgn4web already: dont touch it anymore e.g. autoplay
-    if (theObject.className == newClass) { theObject.className = oldClass; }
+    if (theObj.className == newClass) { theObj.className = oldClass; }
     clickedSquareInterval = null;
   }
 }
@@ -3403,8 +3403,8 @@ function gameNumberSearchPgn(searchExpression, backward, includeCurrent) {
 
 function searchPgnGame(searchExpression, backward) {
   lastSearchPgnExpression = searchExpression;
-  if (theObject = document.getElementById('searchPgnExpression'))
-  { theObject.value = searchExpression; }
+  if (theObj = document.getElementById('searchPgnExpression'))
+  { theObj.value = searchExpression; }
   if ((searchExpression === "") || (!searchExpression)) { return; }
   if (numberOfGames < 2) { return; }
   checkGame = gameNumberSearchPgn(searchExpression, backward, false);
@@ -3421,7 +3421,7 @@ function searchPgnGamePrompt() {
 }
 
 function searchPgnGameForm() {
-  if (theObject = document.getElementById('searchPgnExpression'))
+  if (theObj = document.getElementById('searchPgnExpression'))
   { searchPgnGame(document.getElementById('searchPgnExpression').value); }
 }
 
@@ -3434,11 +3434,11 @@ var tableSize = 0;
 function PrintHTML() {
   var ii, jj;
   var text;
-  var theObject;
+  var theObj;
 
   // chessboard
 
-  if (theObject = document.getElementById("GameBoard")) {
+  if (theObj = document.getElementById("GameBoard")) {
     text = '<TABLE CLASS="boardTable" ID="boardTable" CELLSPACING=0 CELLPADDING=0';
     text += (tableSize > 0) ? ' STYLE="width: ' + tableSize + 'px; height: ' + tableSize + 'px;">' : '>';
     for (ii = 0; ii < 8; ++ii) {
@@ -3463,19 +3463,19 @@ function PrintHTML() {
     }
     text += '</TABLE>';
 
-    theObject.innerHTML = text;
+    theObj.innerHTML = text;
   }
 
-  if (theObject = document.getElementById("boardTable")) {
-    tableSize = theObject.offsetWidth;
+  if (theObj = document.getElementById("boardTable")) {
+    tableSize = theObj.offsetWidth;
     if (tableSize > 0) { // coping with browser always returning 0 to offsetWidth
-      theObject.style.height = tableSize + "px";
+      theObj.style.height = tableSize + "px";
     }
   }
 
   // control buttons
 
-  if (theObject = document.getElementById("GameButtons")) {
+  if (theObj = document.getElementById("GameButtons")) {
     numberOfButtons = 5;
     spaceSize = 3;
     buttonSize = (tableSize - spaceSize*(numberOfButtons - 1)) / numberOfButtons;
@@ -3519,16 +3519,16 @@ function PrintHTML() {
       ' ID="btnGoToEnd" onClick="clickedBbtn(this,event);" ONFOCUS="this.blur();">' +
       '</TD></TR></TABLE></FORM>';
 
-    theObject.innerHTML = text;
+    theObj.innerHTML = text;
   }
 
   // game selector
 
-  if (theObject = document.getElementById("GameSelector")) {
+  if (theObj = document.getElementById("GameSelector")) {
     if (firstStart) { textSelectOptions=''; }
     if (numberOfGames < 2) {
-      // theObject.innerHTML = ''; // replaced with code below to cope with IE bug
-      while (theObject.firstChild) { theObject.removeChild(theObject.firstChild); }
+      // theObj.innerHTML = ''; // replaced with code below to cope with IE bug
+      while (theObj.firstChild) { theObj.removeChild(theObj.firstChild); }
       textSelectOptions = '';
     } else {
       if (textSelectOptions === '') {
@@ -3591,66 +3591,66 @@ function PrintHTML() {
           textSelectOptions += textSO.replace(/ /g, '&nbsp;');
         }
         text += textSelectOptions + '</SELECT></FORM>';
-        theObject.innerHTML = text;
+        theObj.innerHTML = text;
       }
     }
   }
 
   // game event
 
-  if (theObject = document.getElementById("GameEvent"))
-  { theObject.innerHTML = gameEvent[currentGame]; }
+  if (theObj = document.getElementById("GameEvent"))
+  { theObj.innerHTML = gameEvent[currentGame]; }
 
   // game round
 
-  if (theObject = document.getElementById("GameRound"))
-  { theObject.innerHTML = gameRound[currentGame]; }
+  if (theObj = document.getElementById("GameRound"))
+  { theObj.innerHTML = gameRound[currentGame]; }
 
   // game site
 
-  if (theObject = document.getElementById("GameSite"))
-  { theObject.innerHTML = gameSite[currentGame]; }
+  if (theObj = document.getElementById("GameSite"))
+  { theObj.innerHTML = gameSite[currentGame]; }
 
   // game date
 
-  if (theObject = document.getElementById("GameDate")) {
-    theObject.innerHTML = gameDate[currentGame];
-    theObject.style.whiteSpace = "nowrap";
+  if (theObj = document.getElementById("GameDate")) {
+    theObj.innerHTML = gameDate[currentGame];
+    theObj.style.whiteSpace = "nowrap";
   }
 
   // game white
 
-  if (theObject = document.getElementById("GameWhite"))
-  { theObject.innerHTML = gameWhite[currentGame]; }
+  if (theObj = document.getElementById("GameWhite"))
+  { theObj.innerHTML = gameWhite[currentGame]; }
 
   // game black
 
-  if (theObject = document.getElementById("GameBlack"))
-  { theObject.innerHTML = gameBlack[currentGame]; }
+  if (theObj = document.getElementById("GameBlack"))
+  { theObj.innerHTML = gameBlack[currentGame]; }
 
   // game result
 
-  if (theObject = document.getElementById("GameResult")) {
-    theObject.innerHTML = gameResult[currentGame];
-    theObject.style.whiteSpace = "nowrap";
+  if (theObj = document.getElementById("GameResult")) {
+    theObj.innerHTML = gameResult[currentGame];
+    theObj.style.whiteSpace = "nowrap";
   }
 
   // game text
 
-  if (theObject = document.getElementById("GameText")) {
+  if (theObj = document.getElementById("GameText")) {
     variationTextDepth = -1;
     text = '<SPAN ID="ShowPgnText">' + variationTextFromId(0); + '</SPAN>';
-    theObject.innerHTML = text;
+    theObj.innerHTML = text;
   }
 
   setB1C1F1G1boardShortcuts(); // depend on presence of comments
 
   // game searchbox
 
-  if ((theObject = document.getElementById("GameSearch")) && firstStart) {
+  if ((theObj = document.getElementById("GameSearch")) && firstStart) {
     if (numberOfGames < 2) {
-      // theObject.innerHTML = ''; // replaced with code below to cope with IE bug
-      while (theObject.firstChild) { theObject.removeChild(theObject.firstChild); }
+      // theObj.innerHTML = ''; // replaced with code below to cope with IE bug
+      while (theObj.firstChild) { theObj.removeChild(theObj.firstChild); }
     } else {
       text = '<FORM ID="searchPgnForm" STYLE="display: inline;" ' +
         'ACTION="javascript:searchPgnGameForm();">';
@@ -3664,9 +3664,9 @@ function PrintHTML() {
       if (tableSize > 0) { text += 'width: ' + (3*tableSize/4) + 'px; '; }
       text += '" ONFOCUS="disableShortcutKeysAndStoreStatus();" ONBLUR="restoreShortcutKeysStatus();">';
       text += '</FORM>';
-      theObject.innerHTML = text;
-      theObject = document.getElementById('searchPgnExpression');
-      if (theObject) { theObject.value = lastSearchPgnExpression; }
+      theObj.innerHTML = text;
+      theObj = document.getElementById('searchPgnExpression');
+      if (theObj) { theObj.value = lastSearchPgnExpression; }
     }
   }
 }
@@ -3945,8 +3945,8 @@ function SetLiveBroadcast(delay, alertFlag, demoFlag, stepFlag) {
 function SetImage(col, row, image) {
   if (IsRotated) { trow = row; tcol = 7 - col; }
   else { trow = 7 - row; tcol = col; }
-  if (theObject = document.getElementById('img_' + 'tcol' + tcol + 'trow' + trow)) {
-    if (theObject.src != image) { theObject.src = image; }
+  if (theObj = document.getElementById('img_' + 'tcol' + tcol + 'trow' + trow)) {
+    if (theObj.src != image) { theObj.src = image; }
   }
 }
 

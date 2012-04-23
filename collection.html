@@ -74,12 +74,12 @@
    SetShortcutKeysEnabled(true);
 
    function customFunctionOnPgnTextLoad() {
-     if (theObject = document.getElementById('numGm')) { theObject.innerHTML = numberOfGames; }
+     if (theObj = document.getElementById('numGm')) { theObj.innerHTML = numberOfGames; }
      searchPgnGame(pgnSearchTarget);
    }
 
    function customFunctionOnPgnGameLoad() {
-     if (theObject = document.getElementById('currGm')) { theObject.innerHTML = currentGame+1; }
+     if (theObj = document.getElementById('currGm')) { theObj.innerHTML = currentGame+1; }
    }
 
    function customShortcutKey_Shift_1() {

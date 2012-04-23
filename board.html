@@ -1080,33 +1080,33 @@ function customFunctionOnPgnTextLoad() {
   paddingControlHeight = Math.floor(squareSize / 2.5);
   if ((paddingControlWidth = squareSize - textMargin) < 0) { paddingControlWidth = 0; }
 
-  if (theObject = document.getElementById("GameButtons"))
-  { theObject.style.paddingTop = paddingControlHeight; }
+  if (theObj = document.getElementById("GameButtons"))
+  { theObj.style.paddingTop = paddingControlHeight; }
 
-  if (theObject = document.getElementById("GameSelector")) {
+  if (theObj = document.getElementById("GameSelector")) {
     if ((buttonsDisplay != "hidden") && (numberOfGames > 1)) {
-      theObject.style.paddingBottom = paddingControlHeight;
-      theObject.style.display = "block";
+      theObj.style.paddingBottom = paddingControlHeight;
+      theObj.style.display = "block";
     } else {
-      theObject.style.paddingBottom = "0px";
-      theObject.style.display = "inline";
+      theObj.style.paddingBottom = "0px";
+      theObj.style.display = "inline";
     }
   }
 
-  if (theObject = document.getElementById("headerMovesPadding")) {
-    if (horizontalLayout === true) { theObject.width = paddingControlWidth + 'px'; }
-    else { theObject.style.minHeight = paddingControlHeight; }
+  if (theObj = document.getElementById("headerMovesPadding")) {
+    if (horizontalLayout === true) { theObj.width = paddingControlWidth + 'px'; }
+    else { theObj.style.minHeight = paddingControlHeight; }
   }
 
   boardHeight = document.getElementById("boardTable").offsetHeight;
   document.getElementById("boardTable").style.width = boardHeight;
   boardWidth = document.getElementById("boardTable").offsetWidth;
 
-  if (theObject = document.getElementById("GameButtons")) {
+  if (theObj = document.getElementById("GameButtons")) {
     if (buttonsDisplay != "hidden") { boardHeight += document.getElementById("GameButtons").offsetHeight; }
   }
 
-  if (theObject = document.getElementById("GameSelector")) {
+  if (theObj = document.getElementById("GameSelector")) {
     if ((buttonsDisplay != "hidden") && (numberOfGames > 1)) { boardHeight += document.getElementById("GameSelector").offsetHeight; }
   }
 
@@ -1117,17 +1117,17 @@ function customFunctionOnPgnTextLoad() {
   if (fixFrameWidthToBoard) { frameWidth = boardWidth + 2 * framePadding; }
   if (fixFrameHeightToBoard) { frameHeight = boardHeight + 2 * framePadding; }
 
-  if (theObject = document.getElementById("headerMoves")) {
+  if (theObj = document.getElementById("headerMoves")) {
     if (horizontalLayout === true) {
-      if (frameWidth === "") { theObject.style.width = textWidth; }
+      if (frameWidth === "") { theObj.style.width = textWidth; }
       else { document.getElementById("outerFrame").style.width = frameWidth - 2 * framePadding; }
-      theObject.style.height = frameHeight === "" ? textHeight : frameHeight - 2 * framePadding;
+      theObj.style.height = frameHeight === "" ? textHeight : frameHeight - 2 * framePadding;
     } else {
-      theObject.style.width = frameWidth === "" ? textWidth : frameWidth - 2 * framePadding;
-      if (frameHeight === "") { theObject.style.height = textHeight; }
+      theObj.style.width = frameWidth === "" ? textWidth : frameWidth - 2 * framePadding;
+      if (frameHeight === "") { theObj.style.height = textHeight; }
       else {
        boardHeadermovesPaddingHeight = document.getElementById("boardHeadermovesPadding") ? document.getElementById("boardHeadermovesPadding").offsetHeight : 0;
-       theObject.style.height = frameHeight - boardHeight - 2 * framePadding - boardHeadermovesPaddingHeight;
+       theObj.style.height = frameHeight - boardHeight - 2 * framePadding - boardHeadermovesPaddingHeight;
       }
     }
   }
@@ -1161,69 +1161,69 @@ function customFunctionOnPgnGameLoad() {
     if (firstCurrentGame == -1) { firstCurrentGame = currentGame; }
 
     for (var ii = 0; ii < objectHiddenPuzzler.length; ii++) {
-      if (theObject = document.getElementById(objectHiddenPuzzler[ii])) {
-        theObject.style.visibility = "hidden";
+      if (theObj = document.getElementById(objectHiddenPuzzler[ii])) {
+        theObj.style.visibility = "hidden";
       }
     }
-    if (theObject = document.getElementById("GameText")) {
-        theObject.style.display = "none";
+    if (theObj = document.getElementById("GameText")) {
+        theObj.style.display = "none";
     }
-    if (theObject = document.getElementById("GamePuzzleTask")) {
-      theObject.innerHTML = "<A CLASS='move moveOn'" +
+    if (theObj = document.getElementById("GamePuzzleTask")) {
+      theObj.innerHTML = "<A CLASS='move moveOn'" +
         "HREF='javascript:void(0);' " + "ONCLICK='GoToMove(CurrentPly + 1);'>" +
         Math.floor((CurrentPly / 2) + 1) +
         (CurrentPly % 2 ? "..." : ".") + " ?</A>";
-      theObject.title = (CurrentPly % 2 ? "Black" : "White") +
+      theObj.title = (CurrentPly % 2 ? "Black" : "White") +
         " to move: find the best move... click the ? for the solution";
-      theObject.style.display = "block";
+      theObj.style.display = "block";
     }
   }
 
-  if (theObject = document.getElementById("roundDetails")) {
+  if (theObj = document.getElementById("roundDetails")) {
     if ((gameRound[currentGame] !=  undefined) &&
         (gameRound[currentGame] !== "") &&
         (gameRound[currentGame] !== "*") &&
         (gameRound[currentGame] !=  "?")) {
-      theObject.innerHTML = "&nbsp;(" + gameRound[currentGame] + ")";
+      theObj.innerHTML = "&nbsp;(" + gameRound[currentGame] + ")";
     } else {
-      theObject.innerHTML = "";
+      theObj.innerHTML = "";
     }
   }
 
-  if (theObject = document.getElementById("siteDateSpacer")) {
+  if (theObj = document.getElementById("siteDateSpacer")) {
     if ((gameSite[currentGame] != undefined) &&
         (gameSite[currentGame] !== "") &&
         (gameDate[currentGame] != undefined) &&
         (gameDate[currentGame] !== "")) {
-      theObject.innerHTML = "&nbsp; &nbsp;";
+      theObj.innerHTML = "&nbsp; &nbsp;";
     } else {
-      theObject.innerHTML = "";
+      theObj.innerHTML = "";
     }
   }
 
-  if (theObject = document.getElementById("whiteBlackSpacer")) {
+  if (theObj = document.getElementById("whiteBlackSpacer")) {
     if ((gameWhite[currentGame] != undefined) &&
         (gameWhite[currentGame] !== "") &&
         (gameBlack[currentGame] != undefined) &&
         (gameBlack[currentGame] !== "")) {
-      theObject.innerHTML = "&nbsp;-&nbsp;";
+      theObj.innerHTML = "&nbsp;-&nbsp;";
     } else {
-      theObject.innerHTML = "";
+      theObj.innerHTML = "";
     }
   }
 
-  if (theObject = document.getElementById("blackResultSpacer")) {
+  if (theObj = document.getElementById("blackResultSpacer")) {
     if ((gameBlack[currentGame] != undefined) &&
         (gameBlack[currentGame] !== "") &&
         (gameResult[currentGame] != undefined) &&
         (gameResult[currentGame] !== "")) {
-      theObject.innerHTML = "&nbsp; &nbsp;";
+      theObj.innerHTML = "&nbsp; &nbsp;";
     } else {
-      theObject.innerHTML = "";
+      theObj.innerHTML = "";
     }
   }
 
-  if (theObject = document.getElementById("playersDetails")) {
+  if (theObj = document.getElementById("playersDetails")) {
     if ( ( ((gameWhite[currentGame] != undefined) && (gameWhite[currentGame] !== ""))   ||
            ((gameBlack[currentGame] != undefined) && (gameBlack[currentGame] !== ""))   ||
            ((gameResult[currentGame] != undefined) && (gameResult[currentGame] !== "")) )  &&
@@ -1232,13 +1232,13 @@ function customFunctionOnPgnGameLoad() {
             (gameRound[currentGame] != "?") && (gameRound[currentGame] != "*"))        ||
            ((gameSite[currentGame] != undefined) && (gameSite[currentGame] !== ""))     ||
            ((gameDate[currentGame] != undefined) && (gameDate[currentGame] !== "")) ) ) {
-      theObject.style.paddingBottom = "0.33em";
+      theObj.style.paddingBottom = "0.33em";
     } else {
-      theObject.style.paddingBottom = "";
+      theObj.style.paddingBottom = "";
     }
   }
 
-  if (theObject = document.getElementById("headerMovesSpacer")) {
+  if (theObj = document.getElementById("headerMovesSpacer")) {
     if ( (headerDisplay == "live")                                                    ||
          (headerDisplay == "variations")                                              ||
          ((gameWhite[currentGame] != undefined) && (gameWhite[currentGame] !== ""))   ||
@@ -1249,20 +1249,20 @@ function customFunctionOnPgnGameLoad() {
           (gameRound[currentGame] != "?") && (gameRound[currentGame] != "*"))         ||
          ((gameSite[currentGame] != undefined) && (gameSite[currentGame] !== ""))     ||
          ((gameDate[currentGame] != undefined) && (gameDate[currentGame] !== "")) ) {
-      theObject.style.display = "inline";
+      theObj.style.display = "inline";
     } else {
-      theObject.style.display = "none";
+      theObj.style.display = "none";
     }
   }
 
 // uncomment this to show the result at the end of the moves text
 //
-//   if (theObject = document.getElementById("GameText")) {
+//   if (theObj = document.getElementById("GameText")) {
 //     if ( (gameResult[currentGame] == "1-0")     ||
 //          (gameResult[currentGame] == "0-1")     ||
 //          (gameResult[currentGame] == "1/2-1/2") ||
 //          (gameResult[currentGame] == "*") ) {
-//       theObject.innerHTML += '<span class="move"> ' + gameResult[currentGame] + '</span>';
+//       theObj.innerHTML += '<span class="move"> ' + gameResult[currentGame] + '</span>';
 //     }
 //   }
 
@@ -1271,24 +1271,24 @@ function customFunctionOnPgnGameLoad() {
 function customFunctionOnMove() {
 
   if (movesDisplay == "puzzle") {
-    if (theObject = document.getElementById("GamePuzzleTask")) {
-      theObject.style.display = "none";
-      theObject.innerHTML = "";
+    if (theObj = document.getElementById("GamePuzzleTask")) {
+      theObj.style.display = "none";
+      theObj.innerHTML = "";
     }
     for (var ii = 0; ii < objectHiddenPuzzler.length; ii++) {
-      if (theObject = document.getElementById(objectHiddenPuzzler[ii])) {
-        theObject.style.visibility = "";
+      if (theObj = document.getElementById(objectHiddenPuzzler[ii])) {
+        theObj.style.visibility = "";
       }
     }
-    if (theObject = document.getElementById("GameText")) {
-      theObject.style.display = "";
+    if (theObj = document.getElementById("GameText")) {
+      theObj.style.display = "";
     }
   }
-  if (theObject = document.getElementById("GameLastVariations")) {
-    theObject.style.paddingLeft = theObject.innerHTML ? "1ex" : "";
+  if (theObj = document.getElementById("GameLastVariations")) {
+    theObj.style.paddingLeft = theObj.innerHTML ? "1ex" : "";
   }
-  if (theObject = document.getElementById("GameNextVariations")) {
-    theObject.style.paddingLeft = theObject.innerHTML ? "1ex" : "";
+  if (theObj = document.getElementById("GameNextVariations")) {
+    theObj.style.paddingLeft = theObj.innerHTML ? "1ex" : "";
   }
 
 }

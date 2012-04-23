@@ -193,7 +193,7 @@ function openDataPgnUriIndex(tabId, dataPgnUriIndex) {
 }
 
 function downloadPgn(tabId, uri, downloadName) {
-  if (!(theObject = document.getElementById(downloadName ? "pgnDataDownload" : "pgnLinkDownload"))) { return false; }
+  if (!(theObj = document.getElementById(downloadName ? "pgnDataDownload" : "pgnLinkDownload"))) { return false; }
 
   if (!uri) { return false; }
 
@@ -208,11 +208,11 @@ function downloadPgn(tabId, uri, downloadName) {
   // consider replacing the download code below with the downloads API,
   // curretntly experimental; make sure it works with data URIs.
   // http://crbug.com/12133
-  theObject.href = uri;
-  if (downloadName) { theObject.download = downloadName; }
+  theObj.href = uri;
+  if (downloadName) { theObj.download = downloadName; }
   var evt = document.createEvent("MouseEvents");
   evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-  theObject.dispatchEvent(evt);
+  theObj.dispatchEvent(evt);
 
   return true;
 }
