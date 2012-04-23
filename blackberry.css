@@ -128,6 +128,10 @@ a.variation {
   text-align: center;
 }
 
+.gameSelectorContainer {
+  height: 45px;
+}
+
 .whiteSideToMoveImg, .blackSideToMoveImg {
   width: 0.6em;
   height: 0.6em;
