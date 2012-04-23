@@ -1916,7 +1916,7 @@ function restartLiveBroadcast() {
   refreshPgnSource();
 }
 
-var liveBroadcastTickerFlag = new Array("&rsaquo;&lsaquo;", "&lsaquo;&rsaquo;");
+var liveBroadcastTickerFlag = new Array("><", "<>");
 function checkLiveBroadcastStatus() {
   var liveBroadcastStatusTitle;
   var tick = "&nbsp;" + liveBroadcastTickerFlag[LiveBroadcastTicker % liveBroadcastTickerFlag.length] + "&nbsp;";
