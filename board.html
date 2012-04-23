@@ -62,7 +62,7 @@ body {
 
 .headerLive, .headerVariations {
   font-weight: normal;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .move,
@@ -998,7 +998,7 @@ function display_header_moves() {
     document.write("<table width=100% cellpadding=0 cellspacing=0 border=0><tr>");
     document.write("<td align=left>");
     document.write("<div class='header headerLive' style='white-space: nowrap; margin-left: "  + textMargin +
-                   "; margin-right: 3%;' id=GameNextMove></div>");
+                   "; margin-right: 3%;'><span id=GameNextMove></span><span class='move'>&nbsp;</span></div>");
     document.write("</td><td align=right>");
     document.write("<div class='header headerLive' style='white-space: nowrap; margin-right: " + textMargin +
                    "; margin-left: 3%;'>&nbsp;<span id=GameLiveStatus></span></div>");
