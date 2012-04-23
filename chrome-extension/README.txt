@@ -43,15 +43,13 @@ manifest.json might be required for testing.
 Enhancements:
 
 background.html, manifest.json, chess-games-viewer.html,
-live-mosaic-viewer.html: webRequest API
-http://crbug.com/60101
-Verify on http://chesstempo.com/pgn-viewer.html and http://www.bennedik.de/Silverboard.html
-Implemented as of Google Chrome 17.0.958.0.
-Initially the extension preserves backward compatibility, once Google Chrome
-stable version 17 is released, consider removing "try" statements and set
-minimum_chrome_version to 17.
-Monitor the webRequest API for changes, improving the URL selection (see
-Declarative WebRequest API).
+live-mosaic-viewer.html: remove backward compatible webRequest related code;
+see references to http://crbug.com/60101; when removing backward compatible
+code, set minimum_chrome_version to 17 or later.
+
+Declarative WebRequest API: monitor webRequest API for improvements in the URL
+filtering options.
+http://code.google.com/chrome/extensions/trunk/experimental.webRequest.html
 
 background.html, manifest.json: registerContentHandler
 register the extension as content handler for application/x-chess-pgn
@@ -59,8 +57,7 @@ this should allow opening the chess games viewer by doubleclicking items in
 the chrome downloads page; needs assessing impact on the plain download of
 a PGN file: check what happens when clicking a link on the page or the
 download icon of the popup.
-http://crbug.com/86115 (and other, search for registerContentHandler)
-Likely requires increasing minimum_chrome_version.
+http://crbug.com/86115 (and others, search for registerContentHandler)
 
 manifest.json: match mime-types in content scripts
 enhance PGN/ZIP URL detection/validation by matching by mime-type when
@@ -137,9 +134,8 @@ http://crbug.com/60758
 
 popup.html, manifest.json: avoid using deprecated chrome.tabs.getSelected
 chrome.tabs.getSelected is deprecated as of chrome 16; initially the extension
-preserves backward compatibility, once Google Chrome stable version 18 is
-released, consider removing "try" statements and set minimum_chrome_version to
-18.
+preserves backward compatibility, eventually consider removing "try" statements
+and set minimum_chrome_version to 18 or later.
 
 manifest.json: monitor requirement for setting "manifest_version" to 2 and for
 setting related "content_security_policy" fields; currenly "manifest_version"
