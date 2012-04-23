@@ -618,14 +618,13 @@ function replayPreviousMoves(numPlies) {
 }
 
 function detectJavascriptLocation() {
-  var jspath = "";
   var e = document.getElementsByTagName("script");
   for (var i=0; i<e.length; i++) {
     if ((e[i].src) && (e[i].src.match(/(pgn4web|pgn4web-compacted)\.js/))) {
-      jspath = e[i].src;
+      return e[i].src;
     }
   }
-  return jspath;
+  return "";
 }
 
 function detectHelpLocation() {
@@ -633,12 +632,11 @@ function detectHelpLocation() {
 }
 
 function detectBaseLocation() {
-  var base = "";
   var e = document.getElementsByTagName("base");
   for (var i=0; i<e.length; i++) {
-    if (e[i].href) { base = e[i].href; break; }
+    if (e[i].href) { return e[i].href; }
   }
-  return base;
+  return "";
 }
 
 
@@ -747,9 +745,8 @@ function CurrentFEN() {
   // active color
   currentFEN += CurrentPly%2 === 0 ? " w" : " b";
 
-  // castling availability
-  // always in the KQkq form, producing the wrong FEN
-  // for Chess960 positions with an inner castling rook
+  // castling availability, always in the KQkq form
+  // (wrong FEN for for Chess960 positions with an inner castling rook)
   CastlingFEN = "";
   if (RookForOOCastling(0) !== null) { CastlingFEN += FenPieceName.charAt(0).toUpperCase(); }
   if (RookForOOOCastling(0) !== null) { CastlingFEN += FenPieceName.charAt(1).toUpperCase(); }
@@ -945,7 +942,7 @@ HistNull = new Array();
 HistNull[0] = 0;
 
 var FenPieceName = "KQRBNP";
-var PieceCode = new Array(); // IE needs an array to work with [index]
+var PieceCode = new Array(); // IE needs array for [index]
 for (i=0; i<6; i++) { PieceCode[i] = FenPieceName.charAt(i); }
 var FenStringStart = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 var columnsLetters = "ABCDEFGH";
@@ -1045,10 +1042,10 @@ function CheckLegality(what, plyCount) {
     if (mvToRow != 7*(1-MoveColor)) { return false; }
   }
 
-  // piece move: loop over same type pieces, which could move there?
+  // piece move: which same type piece could move there?
   var pieceId;
   for (pieceId = 0; pieceId < 16; ++pieceId) {
-     if (PieceType[MoveColor][pieceId] == mvPiece) {
+    if (PieceType[MoveColor][pieceId] == mvPiece) {
       if (mvPiece == 1) { retVal = CheckLegalityKing(pieceId); }
       else if (mvPiece == 2) { retVal = CheckLegalityQueen(pieceId); }
       else if (mvPiece == 3) { retVal = CheckLegalityRook(pieceId); }
@@ -1305,7 +1302,7 @@ function randomGameRandomPly() {
 }
 
 
-// clock detection: check DGT sequence [%clk 01:02]
+// clock detection: DGT format [%clk 01:02]
 
 function clockFromComment(plyNum) {
   return customPgnCommentTag("clk", null, plyNum);
@@ -1570,7 +1567,7 @@ function undoStackRedo() {
 }
 
 
-// keep aligned with chrome-extension/background.html
+// align to chrome-extension/background.html
 function fixCommonPgnMistakes(text) {
   text = text.replace(/[\u00A0\u180E\u2000-\u200A\u202F\u205F\u3000]/g," "); // some "space" to plain space
   text = text.replace(/\u00BD/g,"1/2"); // "half fraction" to "1/2"
@@ -1595,7 +1592,7 @@ function pgnGameFromPgnText(pgnText) {
 
   pgnText = fixCommonPgnMistakes(pgnText);
 
-  // replace < and > with html entities to avoid html injection
+  // avoid html injection
   pgnText = pgnText.replace(/</g, "&lt;");
   pgnText = pgnText.replace(/>/g, "&gt;");
 
@@ -1867,12 +1864,12 @@ function loadPgnFromPgnUrl(pgnUrl) {
   http_request.onreadystatechange = function () { updatePgnFromHttpRequest(http_request, http_request_id); };
 
   try {
-    // anti-caching #1: random parameter, only to plain URLs
+    // anti-caching #1
     if ((LiveBroadcastDelay > 0) && (pgnUrl.indexOf("?") == -1) && (pgnUrl.indexOf("#") == -1)) {
       urlRandomizer = "?noCache=" + (0x1000000000 + Math.floor((Math.random() * 0xF000000000))).toString(16).toUpperCase();
     } else { urlRandomizer = ""; }
     http_request.open("GET", pgnUrl + urlRandomizer);
-    // anti-caching #2: header option
+    // anti-caching #2
     if (LiveBroadcastDelay > 0) {
       http_request.setRequestHeader( "If-Modified-Since", LiveBroadcastLastModifiedHeader );
     }
@@ -1924,22 +1921,22 @@ function checkLiveBroadcastStatus() {
   if (LiveBroadcastDelay === 0) { return; }
 
   // broadcast started yet?
-  // check for fake LiveBroadcastPlaceholderPgn game when no PGN file is found
   if (LiveBroadcastStarted === false || typeof(pgnHeader) == "undefined" || (numberOfGames == 1 && gameEvent[0] == LiveBroadcastPlaceholderEvent)) {
+    // no
     LiveBroadcastEnded = false;
     LiveBroadcastGamesRunning = 0;
     LiveBroadcastStatusString = "0 " + tick + " 0";
     liveBroadcastStatusTitle = "live broadcast yet to start";
   } else {
-    // broadcast started with good PGN
-    var running = 0;
+    // yes
+    var lbgr = 0;
     for (ii=0; ii<numberOfGames; ii++) {
-      if (gameResult[ii].indexOf('*') >= 0) { running++; }
+      if (gameResult[ii].indexOf('*') >= 0) { lbgr++; }
     }
-    LiveBroadcastEnded = (running === 0);
-    LiveBroadcastGamesRunning = running;
-    LiveBroadcastStatusString = running + " " + tick + " " + numberOfGames;
-    liveBroadcastStatusTitle = LiveBroadcastEnded ? "live broadcast ended" : running + " live game" + (running > 1 ? "s" : "") + " out of " + numberOfGames;
+    LiveBroadcastEnded = (lbgr === 0);
+    LiveBroadcastGamesRunning = lbgr;
+    LiveBroadcastStatusString = lbgr + " " + tick + " " + numberOfGames;
+    liveBroadcastStatusTitle = LiveBroadcastEnded ? "live broadcast ended" : lbgr + " live game" + (lbgr > 1 ? "s" : "") + " out of " + numberOfGames;
   }
 
   if (theObj = document.getElementById("GameLiveStatus")) {
@@ -3211,7 +3208,7 @@ function ParseMove(move, plyCount) {
 
   if (move.indexOf('--') === 0) {
     mvIsNull = 1;
-    CheckLegality(move, plyCount);
+    CheckLegality('--', plyCount);
     return true;
   }
 
