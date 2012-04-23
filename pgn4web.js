@@ -3209,7 +3209,7 @@ function ParseMove(move, plyCount) {
 
   if (typeof(move) == "undefined") { return false; }
 
-  if (move == "--") {
+  if (move.indexOf('--') === 0) {
     mvIsNull = 1;
     CheckLegality(move, plyCount);
     return true;
@@ -3252,6 +3252,7 @@ function ParseMove(move, plyCount) {
     } else { return false; }
   }
 
+  remainder = remainder.replace(/-/g, '');
   // get piece and origin square: mark captures ('x' is there)
   ll = remainder.length;
   if (ll > 4) { return false; }
