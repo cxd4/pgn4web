@@ -1919,7 +1919,7 @@ function restartLiveBroadcast() {
 var liveBroadcastTickerFlag = new Array("&rsaquo;&lsaquo;", "&lsaquo;&rsaquo;");
 function checkLiveBroadcastStatus() {
   var liveBroadcastStatusTitle;
-  var tick = liveBroadcastTickerFlag[LiveBroadcastTicker % liveBroadcastTickerFlag.length];
+  var tick = "&nbsp;" + liveBroadcastTickerFlag[LiveBroadcastTicker % liveBroadcastTickerFlag.length] + "&nbsp;";
 
   if (LiveBroadcastDelay === 0) { return; }
 
