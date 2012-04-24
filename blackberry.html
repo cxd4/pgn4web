@@ -104,9 +104,9 @@ function customFunctionOnPgnGameLoad() {
 }
 
 function customFunctionOnMove() {
-   document.getElementById("GameResult").style.visibility =
-      (gameFEN[currentGame] && (CurrentPly == StartPly) && (PlyNumber > 0)) ? "hidden" : "";
-   document.getElementById("GameSideToMoveImage").className = CurrentPly % 2 ? "blackSideToMoveImg" : "whiteSideToMoveImg";
+   showAsPuzzle = gameFEN[currentGame] && (CurrentPly === StartPly);
+   document.getElementById("GameResult").style.display = showAsPuzzle ? "none" : "";
+   document.getElementById("GameLastMove").style.display = showAsPuzzle ? "" : "none";
 }
 
 </script>
@@ -142,9 +142,9 @@ function customFunctionOnMove() {
 <div class="headerItem">&nbsp;<span id="GameBlack"></span></div>
 <div class="headerItem">&nbsp;<span id="GameBlackClock"></span></div>
 <div class="headerItem">&nbsp;</div>
-<div class="headerItem"><img id="GameSideToMoveImage" src="clear.png" />&nbsp;&nbsp;<span id="GameResult"></span></div>
+<div class="headerItem">&nbsp;<span style="display:none;" id="GameLastMove"></span><span id="GameResult"></span></div>
 <div class="headerItem">&nbsp;</div>
-<div class="headerItem" id="GameLiveStatus"></div>
+<div class="headerItem">&nbsp;<span id="GameLiveStatus"></span></div>
 </div>
 
 </td></tr>

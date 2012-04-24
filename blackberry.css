@@ -132,18 +132,3 @@ a.variation {
   height: 45px;
 }
 
-.whiteSideToMoveImg, .blackSideToMoveImg {
-  width: 0.6em;
-  height: 0.6em;
-  border-style: solid;
-  border-width: 0.1em;
-  border-color: white;
-}
-
-.whiteSideToMoveImg {
-  background-color: white;
-}
-
-.blackSideToMoveImg {
-  background-color: black;
-}
