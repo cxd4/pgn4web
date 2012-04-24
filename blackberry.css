@@ -121,6 +121,7 @@ a.variation {
 
 .headerItem {
   width: 142px;
+  overflow: hidden;
   white-space: nowrap;
   font-weight: bold;
   font-family: monospace;
