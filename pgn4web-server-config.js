@@ -58,10 +58,10 @@ pgn4web_live_pointer_url = '.';
 //
 
 //
-// the URL for the game viewer tool, default = 'demo.html?frame=inputform'
+// the URL for the game viewer tool, default = 'demo.html?frame=pgn_form'
 // used by: home.html
 //
-pgn4web_viewer_url = 'demo.html?frame=inputform';
+pgn4web_viewer_url = 'demo.html?frame=pgn_form';
 // pgn4web_viewer_url = 'viewer.php';
 //
 
