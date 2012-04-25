@@ -35,7 +35,7 @@
 </textarea></form>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
-<table width="100%" cellpadding="10" cellspacing="0" border="0">
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
 
 <tr>
 
@@ -45,6 +45,7 @@
 
 <td width="5678" align="left" valign="top" style="background-color:#E8E8E8;">
 
+<div class="pgnheader">&nbsp;</div>
 <div class="pgnheader"><span id="GameDate"></span>&nbsp;</div>
 <div class="pgnheader"><span id="GameSite"></span>&nbsp;</div>
 <div class="pgnheader"><span id="GameEvent"></span>&nbsp;</div>
@@ -65,20 +66,22 @@
 <td style="background-color:#E8E8E8;">
 <div id="GameButtons"></div>
 </td>
-<td style="padding-left:40px; background-color:#E8E8E8;">
+<td style="padding-left:30px; background-color:#E8E8E8;">
 <div id="GameSelector"></div>
 </td>
 </tr>
 
 <tr><td colspan="2" width="100%" align="center" style="background-color:#E8E8E8;">
 <!--
-padding-left = (8 * square-width) + (2 * table-cellpadding) + (pgnheader-padding) =
-         322 = (8 * 34)           + (2 * 10)                + (30)
+padding-left = (8 * square-width) + (pgnheader-padding) =
+         302 = (8 * 34)           + (30)
 -->
-<div style="text-align:left; padding-left:322px; padding-bottom:5px;">
+<div style="text-align:left; padding-left:302px; padding-bottom:5px;">
 <a class="pgnSubmit" href="javascript:loadPgnData();" onclick="this.blur();" title="submit PGN data; a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages">click here to show chess games</a>
 </div>
 </td></tr>
+
+<tr><td colspan="2" width="100%" height="10" align="center"></td></tr>
 
 <tr><td colspan="2" width="100%" align="center">
 <textarea id="pgnForm" style="padding:10px; border-style:none; width:100%; overflow:auto; background-color:#E8E8E8; scrollbar-base-color:#E8E8E8; resize:vertical;" rows="12" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="enter PGN data; a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages"></textarea>
