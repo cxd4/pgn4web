@@ -46,40 +46,31 @@
 <td width="5678" align="left" valign="top" style="background-color:#E8E8E8;">
 
 <div class="pgnheader">&nbsp;</div>
-<div class="pgnheader"><span id="GameDate"></span>&nbsp;</div>
-<div class="pgnheader"><span id="GameSite"></span>&nbsp;</div>
-<div class="pgnheader"><span id="GameEvent"></span>&nbsp;</div>
-<div class="pgnheader"><span id="GameRound"></span>&nbsp;</div>
+<div class="pgnheader"><span id="GameDate" title="date"></span>&nbsp;</div>
+<div class="pgnheader"><span id="GameSite" title="siet"></span>&nbsp;</div>
+<div class="pgnheader"><span id="GameEvent" title="event"></span>&nbsp;</div>
+<div class="pgnheader"><span id="GameRound" title="round"></span>&nbsp;</div>
 <div class="pgnheader">&nbsp;</div>
-<div class="pgnheader"><span id="GameWhite"></span>&nbsp;</div>
-<div class="pgnheader"><span id="GameBlack"></span>&nbsp;</div>
-<div class="pgnheader"><span id="GameResult"></span>&nbsp;</div>
+<div class="pgnheader"><span id="GameWhite" title="white player"></span>&nbsp;</div>
+<div class="pgnheader"><span id="GameBlack" title="black player"></span>&nbsp;</div>
+<div class="pgnheader"><span id="GameResult" title="result"></span>&nbsp;</div>
 <div class="pgnheader">&nbsp;</div>
-<div class="pgnheader"><span id="GameLastMove"></span>&nbsp;&nbsp;<span id="GameLastVariations"></span></div>
-<div class="pgnheader"><span id="GameNextMove"></span>&nbsp;&nbsp;<span id="GameNextVariations"></span></div>
+<div class="pgnheader"><span id="GameLastMove" title="last move"></span>&nbsp;&nbsp;<span id="GameLastVariations" title="last move alternatives"></span></div>
+<div class="pgnheader"><span id="GameNextMove" title="next move"></span>&nbsp;&nbsp;<span id="GameNextVariations" title="next move alternatives"></span></div>
+<div class="pgnheader" style="text-align:right; padding-right:10px;"><a class="pgnSubmit" href="javascript:loadPgnData();" onclick="this.blur();" title="submit PGN data; a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages">click here to show chess games</a></div>
 
 </td>
 
 </tr>
 
-<tr>
+<tr height="34">
 <td style="background-color:#E8E8E8;">
 <div id="GameButtons"></div>
 </td>
-<td style="padding-left:30px; background-color:#E8E8E8;">
+<td valign="bottom" style="padding-left:30px; background-color:#E8E8E8;">
 <div id="GameSelector"></div>
 </td>
 </tr>
-
-<tr><td colspan="2" width="100%" align="center" style="background-color:#E8E8E8;">
-<!--
-padding-left = (8 * square-width) + (pgnheader-padding) =
-         302 = (8 * 34)           + (30)
--->
-<div style="text-align:left; padding-left:302px; padding-bottom:5px;">
-<a class="pgnSubmit" href="javascript:loadPgnData();" onclick="this.blur();" title="submit PGN data; a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages">click here to show chess games</a>
-</div>
-</td></tr>
 
 <tr><td colspan="2" width="100%" height="10" align="center"></td></tr>
 

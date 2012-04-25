@@ -15,8 +15,21 @@ body {
   padding: 10px;
   font-family: sans-serif;
   font-size: 14px;
-  color: black;
+  color: #909090;
   background: transparent;
+}
+
+a {
+  color: #909090;
+  text-decoration: none;
+}
+
+input, select {
+  color: #909090;
+}
+
+textarea, option {
+  color: #606060;
 }
 
 .boardTable {
@@ -66,7 +79,6 @@ body {
 .buttonControlStop,
 .buttonControl {
 /* a "width" attribute here must use the !important flag to override default settings */
-  color: #A8A8A8;
   font-weight: bold;
   font-size: 14px;
   height: 21px;
@@ -108,30 +120,23 @@ body {
 }
 
 .move {
-  color: black;
 }
 
 a.move {
-  text-decoration: none;
 }
 
 .comment,
 .variation {
-  color: gray;
 }
 
 a.variation {
-  color: gray;
-  text-decoration: none;
 }
 
 .moveOn,
 .variationOn {
-  background: #C2C9D1;
 }
 
 .pgnheader {
-  color: #A8A8A8; 
   padding-left: 30px;
   line-height: 21px;
   font-size: 14px; 
