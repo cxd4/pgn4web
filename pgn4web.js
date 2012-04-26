@@ -2154,7 +2154,8 @@ function myAlertFEN(FenString, text) {
 }
 
 function InitFEN(startingFEN) {
-  FenString = startingFEN !== undefined ? startingFEN : FenStringStart;
+  if (typeof(startingFEN) != "string") { FenString = FenStringStart; }
+  else { FenString = startingFEN.replace(/(^\s*|\s*$)/g, "").replace(/\s+/g, " "); }
 
   var ii, jj;
   for (ii = 0; ii < 8; ++ii) {
