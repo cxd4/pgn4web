@@ -264,6 +264,7 @@ body {
   line-height: 1.4em;
   padding: 20px;
   $bodyFontSize
+  overflow-x: hidden;
 }
 
 div, span, table, tr, td {
