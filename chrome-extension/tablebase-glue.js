@@ -31,6 +31,7 @@ function probeTablebaseJaet(fenString, probeTablebaseCallback) {
             if (probeTablebaseXMLHTTPRequest.status == 200) {
                var whiteToMove = (fenString.indexOf(" b ") == -1);
                var stmMetricsResult = ["stmDtmResult", "stmDtcResult", "stmDtzResult", "stmDtz50Result"];
+               var stmRes = "";
                for (ii = 0; ii < stmMetricsResult.length; ii++) {
                   stmResult = probeTablebaseXMLHTTPRequest.responseXML.documentElement.getElementsByTagName(stmMetricsResult[ii]);
                   if (stmResult[0]) {
