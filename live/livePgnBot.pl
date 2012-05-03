@@ -15,6 +15,18 @@ use Net::Telnet;
 
 
 #
+# command line parameters
+#
+
+our $FICS_USER = $ARGV[0] || "";
+our $FICS_PASSWORD = $ARGV[1] || "";
+
+our $FICS_MASTER = $ARGV[2] || "";
+
+die "\n$0  FICS_USER  FICS_PASSWORD  FICS_MASTER_USER\n\n" if ($FICS_USER eq "" | $FICS_MASTER eq "");
+
+
+#
 # configuration
 #
 
@@ -22,18 +34,11 @@ use Net::Telnet;
 our $FICS_HOST = "freechess.org";
 our $FICS_PORT = 5000;
 
-# enter bot username and password
-our $FICS_USER = "";
-our $FICS_PASSWORD = "";
-
-# enter username of the bot's master
-our $FICS_MASTER = "";
-
 sub finger {
   my ($username) = (@_);
 
   return (
-    "I'm an unattended bot operated by $FICS_MASTER.",
+    "Unattended bot operated by $FICS_MASTER",
   );
 }
 
@@ -49,9 +54,6 @@ our $LINE_WAIT_TIMEOUT = 180;
 #
 
 
-die "Error: please edit \$FICS_USER vartiable" if ($FICS_USER eq "");
-die "Error: please edit \$FICS_MASTER vartiable" if ($FICS_MASTER eq "");
-
 our $VERBOSE = 0;
 
 our $telnet;
@@ -60,7 +62,7 @@ our $last_cmd_time = 0;
 
 sub cmd_run {
   my ($cmd) = @_;
-  print STDERR "Running FICS command: $cmd\n" if $VERBOSE;
+  print STDERR "info: running ics command: $cmd\n" if $VERBOSE;
   my $output = $telnet->cmd($cmd);
   $last_cmd_time = time();
 }
@@ -142,7 +144,7 @@ sub find_gameIndex {
 sub save_game {
 
   if ($newGame_num < 0) {
-    print STDERR "Error: game not ready when saving\n";
+    print STDERR "error: game not ready when saving\n";
     return;
   }
 
@@ -166,7 +168,7 @@ sub save_game {
     unshift(@games_round, $newGame_round);
   } else {
     if (($games_white[$thisGameIndex] ne $newGame_white) || ($games_black[$thisGameIndex] ne $newGame_black) || ($games_whiteElo[$thisGameIndex] ne $newGame_whiteElo) || ($games_blackElo[$thisGameIndex] ne $newGame_blackElo) || ($games_initialtime[$thisGameIndex] ne $newGame_initialtime) || ($games_increment[$thisGameIndex] ne $newGame_increment)) {
-      print STDERR "Error: game $newGame_num mismatch when saving\n";
+      print STDERR "error: game $newGame_num mismatch when saving\n";
     } else {
       $games_movesText[$thisGameIndex] = $newGame_movesText;
       if ($games_result[$thisGameIndex] eq "*") {
@@ -182,7 +184,7 @@ sub save_result {
 
   my $thisGameIndex = find_gameIndex($thisGameNum);
   if ($thisGameIndex < 0) {
-    print STDERR "Error: missing game $thisGameNum when saving result\n";
+    print STDERR "error: missing game $thisGameNum when saving result\n";
   } else {
     $games_result[$thisGameIndex] = $thisResult;
   }
@@ -199,7 +201,7 @@ sub remove_game {
     $thisGameIndex = find_gameIndex($thisGameNum);
   }
   if ($thisGameIndex < 0) {
-    print STDERR "Error: missing game $thisGameNum when removing\n";
+    print STDERR "error: missing game $thisGameNum when removing\n";
   } else {
     @games_num = @games_num[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
     @games_white = @games_white[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
@@ -230,7 +232,7 @@ sub process_line {
     if ($1 eq $FICS_MASTER) {
       process_master_command($3, $4);
     } else {
-      print STDERR "Ignoring tell from user $1\n" if $VERBOSE;
+      print STDERR "info: ignoring tell from user $1\n" if $VERBOSE;
     }
   } elsif ($line =~ /^<12> (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+)/) {
     # in order to avoid keeping a game state, each time a board update is
@@ -241,14 +243,12 @@ sub process_line {
     cmd_run("moves $16");
   } elsif ($line =~ /^{Game (\d+) [^}]*} (\S+)/) {
     save_result($1, $2);
-  } elsif ($line =~ /\[\d+\] removed from your channel list\.$/) {
-  } elsif ($line =~ /\(told $FICS_MASTER\)/) {
   } elsif ($newGame_num < 0) {
     if ($line =~ /^Movelist for game (\d+):/) {
       reset_newGame();
       $newGame_num = $1;
     } else {
-      print STDERR "Ignored line: $line\n" if $VERBOSE;
+      print STDERR "info: ignored line: $line\n" if $VERBOSE;
     }
   } else {
     if ($line =~ /^(\w+)\s+\((\S+)\)\s+vs\.\s+(\w+)\s+\((\S+)\).*/) {
@@ -261,7 +261,7 @@ sub process_line {
       $newGame_initialtime = $2 * 60;
       $newGame_increment = $3;
       if (!($gameType =~ /(standard|blitz|lightning)/)) {
-        print STDERR "Ignored game type: $gameType\n" if $VERBOSE;
+        print STDERR "warning: ignored game type: $gameType\n" if $VERBOSE;
         reset_newGame();
       }
     } elsif ($line =~ /^\s*\d+\.[\s]*([^(\s]+)\s*\(([^)]+)\)[\s]+([^(\s]+)\s*\(([^)]+)\)/) {
@@ -278,7 +278,7 @@ sub process_line {
     } elsif ($line =~ /^Move\s+/) {
     } elsif ($line =~ /^[\s-]*$/) {
     } else {
-      print STDERR "Ignored line: $line\n" if $VERBOSE;
+      print STDERR "info: ignored line: $line\n" if $VERBOSE;
     }
   }
 }
@@ -326,7 +326,7 @@ sub time2sec {
   } elsif ($t =~ /^\d+$/) {
     return $1;
   } else {
-    print STDERR "Error time2sec($t);\n" if $VERBOSE;
+    print STDERR "error: time2sec($t)\n" if $VERBOSE;
     return 0;
   }
 }
@@ -344,7 +344,7 @@ sub sec2time {
   } elsif ($t =~ /^-/) {
     return "0:00:00";
   } else {
-    print STDERR "Error sec2time($t);\n" if $VERBOSE;
+    print STDERR "error: sec2time($t)\n" if $VERBOSE;
     return 0;
   }
 }
@@ -398,10 +398,10 @@ sub process_master_command {
         if (find_gameIndex($theseGames[$i]) == -1) {
           cmd_run("observe $theseGames[$i]");
         } else {
-          cmd_run("tell $FICS_MASTER game $theseGames[$i] already observed");
+          cmd_run("tell $FICS_MASTER error: game $theseGames[$i] already observed");
         }
       } else {
-        cmd_run("tell $FICS_MASTER Invalid game $theseGames[$i]");
+        cmd_run("tell $FICS_MASTER error: invalid game $theseGames[$i]");
       }
     }
     cmd_run("tell $FICS_MASTER OK add");
@@ -415,10 +415,10 @@ sub process_master_command {
     for (my $i=0; $i<=$#theseGames; $i++) {
       if ($theseGames[$i] =~ /\d+/) {
         if (remove_game($theseGames[$i]) < 0) {
-          cmd_run("tell $FICS_MASTER Game $theseGames[$i] not found");
+          cmd_run("tell $FICS_MASTER error: game $theseGames[$i] not found");
         }
       } else {
-        cmd_run("tell $FICS_MASTER Invalid game $theseGames[$i]");
+        cmd_run("tell $FICS_MASTER error: invalid game $theseGames[$i]");
       }
     }
     cmd_run("tell $FICS_MASTER OK delete");
@@ -438,7 +438,7 @@ sub process_master_command {
     }
     cmd_run("tell $FICS_MASTER follow=$followMode");
   } elsif ($command eq "help") {
-    cmd_run("tell $FICS_MASTER commands: add, date, delete, event, file, follow, help, ics, list, max, reset, round, site, status, verbose.");
+    cmd_run("tell $FICS_MASTER available commands: add, date, delete, event, file, follow, help, ics, list, max, reset, round, site, status, verbose.");
   } elsif ($command eq "ics") {
     cmd_run($parameters);
     cmd_run("tell $FICS_MASTER OK ics");
@@ -470,7 +470,7 @@ sub process_master_command {
   } elsif ($command eq "status") {
     cmd_run("tell $FICS_MASTER games=" . gameList() . " maxGamesNum=$maxGamesNum file=$PGN_FILE follow=$followMode verbose=$VERBOSE event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round");
   } elsif ($command eq "test") {
-    print STDERR "Executing test command\n" if $VERBOSE;
+    print STDERR "info: executing test command\n" if $VERBOSE;
     cmd_run("tell $FICS_MASTER OK test");
   } elsif ($command eq "verbose") {
     if ($parameters =~ /^\d+$/) {
@@ -478,8 +478,8 @@ sub process_master_command {
     }
     cmd_run("tell $FICS_MASTER verbose=$VERBOSE");
   } else {
-    print STDERR "Unknown master command: $command $parameters\n" if $VERBOSE;
-    cmd_run("tell $FICS_MASTER Unknown command: $command $parameters");
+    print STDERR "warning: unknown master command: $command $parameters\n" if $VERBOSE;
+    cmd_run("tell $FICS_MASTER error: unknown command: $command $parameters");
   }
 }
 
@@ -517,13 +517,13 @@ sub setup {
     Port => $FICS_PORT,
   );
 
-  print STDERR "Connected to FICS\n" if $VERBOSE;
+  print STDERR "info: connected to FICS\n" if $VERBOSE;
 
   if ($FICS_PASSWORD) {
 
     $telnet->login(Name => $FICS_USER, Password => $FICS_PASSWORD);
     $username = $FICS_USER;
-    print STDERR "Successfully logged as user $FICS_USER\n";
+    print STDERR "info: successfully logged as user $FICS_USER\n";
 
   } else {
 
@@ -545,7 +545,7 @@ sub setup {
       if ($line =~ /("[^"]*" is a registered name|\S+ is already logged in)/) {
         die "Can not login as $FICS_USER: $1\n";
       }
-      print STDERR "Ignored line: $line\n" if $VERBOSE;
+      print STDERR "info: ignored line: $line\n" if $VERBOSE;
     }
 
     my($pre, $match) = $telnet->waitfor(
@@ -559,7 +559,7 @@ sub setup {
       die "Can not login as $FICS_USER: $match\n";
     }
 
-    print STDERR "Successfully logged as guest $username\n";
+    print STDERR "info: successfully logged as guest $username\n";
   }
 
   $telnet->prompt("/^/");
@@ -581,8 +581,8 @@ sub setup {
   cmd_run("- channel 4");
   cmd_run("- channel 53");
 
-  cmd_run("tell $FICS_MASTER Ready");
-  print STDERR "Finished initialization\n" if $VERBOSE;
+  cmd_run("tell $FICS_MASTER ready");
+  print STDERR "info: finished initialization\n" if $VERBOSE;
 }
 
 sub shut_down {
@@ -611,11 +611,12 @@ sub main_loop {
 }
 
 eval {
+  print STDERR "\n$0\n\n";
   setup();
   main_loop();
   shut_down();
 };
 if ($@) {
-  print STDERR "Failed: $@\n";
+  print STDERR "error: failed: $@\n";
   exit(1);
 }
