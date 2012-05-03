@@ -408,6 +408,7 @@ sub process_master_command {
   } elsif ($command eq "date") {
     if ($parameters) {
       $newGame_date = $parameters;
+      if ($newGame_date eq "\"\"") { $newGame_date = ""; }
     }
     cmd_run("tell $FICS_MASTER date=$newGame_date");
   } elsif ($command eq "delete") {
@@ -425,6 +426,7 @@ sub process_master_command {
   } elsif ($command eq "event") {
     if ($parameters) {
       $newGame_event = $parameters;
+      if ($newGame_event eq "\"\"") { $newGame_event = ""; }
     }
     cmd_run("tell $FICS_MASTER event=$newGame_event");
   } elsif ($command eq "file") {
@@ -460,11 +462,13 @@ sub process_master_command {
   } elsif ($command eq "round") {
     if ($parameters) {
       $newGame_round = $parameters;
+      if ($newGame_round eq "\"\"") { $newGame_round = ""; }
     }
     cmd_run("tell $FICS_MASTER round=$newGame_round");
   } elsif ($command eq "site") {
     if ($parameters) {
       $newGame_site = $parameters;
+      if ($newGame_site eq "\"\"") { $newGame_site = ""; }
     }
     cmd_run("tell $FICS_MASTER site=$newGame_site");
   } elsif ($command eq "status") {
