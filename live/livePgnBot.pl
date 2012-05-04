@@ -258,7 +258,9 @@ sub process_line {
       $newGame_initialtime = $2 * 60;
       $newGame_increment = $3;
       if (!($gameType =~ /(standard|blitz|lightning)/)) {
-        print STDERR "warning: ignored game type: $gameType\n" if $VERBOSE;
+        print STDERR "warning: unsupported game $newGame_num: $gameType\n" if $VERBOSE;
+        cmd_run("unobserve $newGame_num");
+        cmd_run("tell $OPERATOR_HANDLE warning: unsupported game $newGame_num: $gameType");
         reset_newGame();
       }
     } elsif ($line =~ /^\s*\d+\.[\s]*([^(\s]+)\s*\(([^)]+)\)[\s]+([^(\s]+)\s*\(([^)]+)\)/) {
