@@ -24,7 +24,7 @@ our $BOT_PASSWORD = $ARGV[1] || "";
 our $OPERATOR_HANDLE = $ARGV[2] || "";
 
 if ($BOT_HANDLE eq "" | $OPERATOR_HANDLE eq "") {
-  die "\n$0 BOT_HANDLE BOT_PASSWORD OPERATOR_HANDLE\n\nBOT_HANDLE = handle for the bot account\nBOT_PASSWORD = password for the both account, use \"\" for guest login\nOPERATOR_HANDLE = handle for the bot operator to send commands\n\nmore help available sending from the operator account \"tell BOT_HANDLE help\"\n\n" 
+  die "\n$0 BOT_HANDLE BOT_PASSWORD OPERATOR_HANDLE\n\nBOT_HANDLE = handle for the bot account\nBOT_PASSWORD = password for the both account, use \"\" for guest login\nOPERATOR_HANDLE = handle for the bot operator to send commands\n\nmore help available sending from the operator account \"tell BOT_HANDLE help\"\n\n"; 
 }
 
 
@@ -362,7 +362,7 @@ sub sec2time {
 
 sub refresh_pgn {
   my ($i, $thisResult, $thisWhite, $thisBlack);
- 
+
   $pgn = "";
   for ($i=0; $i<$maxGamesNum; $i++) {
     if ($games_num[$i]) {
@@ -516,7 +516,7 @@ sub process_master_command {
     cmd_run("tell $OPERATOR_HANDLE OK test");
   } elsif ($command eq "verbose") {
     if ($parameters =~ /^(0|1|)$/) {
-      if ($parameters ne "") { 
+      if ($parameters ne "") {
         $VERBOSE = $parameters;
       }
       cmd_run("tell $OPERATOR_HANDLE verbose=$VERBOSE");
