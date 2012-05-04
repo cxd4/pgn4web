@@ -31,7 +31,7 @@ sub finger {
   my ($username) = (@_);
 
   return (
-    "unattended bot operated by $OPERATOR_HANDLE",
+    "unattended live PGN bot operated by $OPERATOR_HANDLE",
   );
 }
 
@@ -395,24 +395,24 @@ sub add_master_command {
   push (@master_commands_helptext, $helptext);
 }
 
-add_master_command ("clock", "clock 0|1 (enables saving clock informantion in the PGN data)");
-add_master_command ("date", "date 2012.11.10 (sets the PGN header tag date)");
-add_master_command ("event", "event World Championship (sets the PGN header tag event)");
-add_master_command ("file", "file live.pgn (set the filename for saving PGN data)");
+add_master_command ("clock", "clock 0|1 (to enable saving clock informantion in the PGN data)");
+add_master_command ("date", "date 2012.11.10 (to set the PGN header tag date)");
+add_master_command ("event", "event World Championship (to set the PGN header tag event)");
+add_master_command ("file", "file live.pgn (to set the filename for saving PGN data)");
 add_master_command ("follow", "follow handle|/s|/b|/l (see freechess.org follow command)");
-add_master_command ("forget", "forget 12 34 56 (eliminate games from PGN data)");
-add_master_command ("help", "help command (show commands help)");
-add_master_command ("ics", "ics server_command (runs a command on freechess.org)");
-add_master_command ("list", "list (show lists of observed games)");
-add_master_command ("logout", "logout 0|1 (logout from freechess.org returning the given exit value)");
-add_master_command ("max", "max 64 (sets the maximum number of games for the PGN data)");
-add_master_command ("observe", "observe 12 34 56 (observe games)");
-add_master_command ("reset", "reset (resets observed/followed games list and setting)");
-add_master_command ("round", "round 9 (sets the PGN header tag round)");
-add_master_command ("site", "site Moscow RUS (sets the PGN header tag site)");
-add_master_command ("status", "status (shows status summary info)");
-add_master_command ("temp", "temp (saves temporary PGN data)");
-add_master_command ("verbose", "verbose 0|1 (sets verbosity of the bot log terminal)");
+add_master_command ("forget", "forget 12 34 56 (to eliminate past games from PGN data)");
+add_master_command ("help", "help command (to show commands help)");
+add_master_command ("ics", "ics server_command (to run a custom command on freechess.org)");
+add_master_command ("list", "list (to show lists of observed games)");
+add_master_command ("logout", "logout 0|1 (to logout from freechess.org, returning the given exit value)");
+add_master_command ("max", "max 64 (to set the maximum number of games for the PGN data)");
+add_master_command ("observe", "observe 12 34 56 (to observe games)");
+add_master_command ("reset", "reset (to reset observed/followed games list and setting)");
+add_master_command ("round", "round 9 (to set the PGN header tag round)");
+add_master_command ("site", "site Moscow RUS (to set the PGN header tag site)");
+add_master_command ("status", "status (to show status summary info)");
+add_master_command ("temp", "temp (to save temporary PGN data)");
+add_master_command ("verbose", "verbose 0|1 (to set verbosity of the bot log terminal)");
 
 sub detect_command {
   my ($command) = @_;
