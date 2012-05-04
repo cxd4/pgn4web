@@ -544,7 +544,7 @@ sub process_master_command {
       if ($parameters eq "") {
         $parameters = 0;
       }
-      cmd_run("tell $OPERATOR_HANDLE OK quit");
+      cmd_run("tell $OPERATOR_HANDLE OK logout");
       cmd_run("quit");
       print STDERR "info: logout with exit value $parameters\n";
       exit $parameters;
