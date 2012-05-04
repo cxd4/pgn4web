@@ -411,6 +411,7 @@ add_master_command ("reset", "reset (resets observed/followed games list and set
 add_master_command ("round", "round 9 (sets the PGN header tag round)");
 add_master_command ("site", "site Moscow RUS (sets the PGN header tag site)");
 add_master_command ("status", "status (shows status summary info)");
+add_master_command ("temp", "temp (saves temporary PGN data)");
 add_master_command ("verbose", "verbose 0|1 (sets verbosity of the bot log terminal)");
 
 sub detect_command {
@@ -468,17 +469,25 @@ sub process_master_command {
       cmd_run("tell $OPERATOR_HANDLE error: invalid clock parameter");
     }
   } elsif ($command eq "date") {
-    if ($parameters) {
-      $newGame_date = $parameters;
-      if ($newGame_date eq "\"\"") { $newGame_date = ""; }
+    if ($parameters =~ /^([^\[\]"]+|""|)$/) {
+      if ($parameters ne "") {
+        $newGame_date = $parameters;
+        if ($newGame_date eq "\"\"") { $newGame_date = ""; }
+      }
+      cmd_run("tell $OPERATOR_HANDLE date=$newGame_date");
+    } else {
+      cmd_run("tell $OPERATOR_HANDLE error: invalid date parameter");
     }
-    cmd_run("tell $OPERATOR_HANDLE date=$newGame_date");
   } elsif ($command eq "event") {
-    if ($parameters) {
-      $newGame_event = $parameters;
-      if ($newGame_event eq "\"\"") { $newGame_event = ""; }
+    if ($parameters =~ /^([^\[\]"]+|""|)$/) {
+      if ($parameters ne "") {
+        $newGame_event = $parameters;
+        if ($newGame_event eq "\"\"") { $newGame_event = ""; }
+      }
+      cmd_run("tell $OPERATOR_HANDLE event=$newGame_event");
+    } else {
+      cmd_run("tell $OPERATOR_HANDLE error: invalid event parameter");
     }
-    cmd_run("tell $OPERATOR_HANDLE event=$newGame_event");
   } elsif ($command eq "file") {
     if ($parameters =~ /^[\w\d\/\\.+=_-]*$/) { # for portability only a subset of filename chars is allowed
       if ($parameters ne "") {
@@ -574,22 +583,33 @@ sub process_master_command {
     reset_games();
     cmd_run("tell $OPERATOR_HANDLE OK reset");
   } elsif ($command eq "round") {
-    if ($parameters) {
-      $newGame_round = $parameters;
-      if ($newGame_round eq "\"\"") { $newGame_round = ""; }
+    if ($parameters =~ /^([^\[\]"]+|""|)$/) {
+      if ($parameters ne "") {
+        $newGame_round = $parameters;
+        if ($newGame_round eq "\"\"") { $newGame_round = ""; }
+      }
+      cmd_run("tell $OPERATOR_HANDLE round=$newGame_round");
+    } else {
+      cmd_run("tell $OPERATOR_HANDLE error: invalid round parameter");
     }
-    cmd_run("tell $OPERATOR_HANDLE round=$newGame_round");
   } elsif ($command eq "site") {
-    if ($parameters) {
-      $newGame_site = $parameters;
-      if ($newGame_site eq "\"\"") { $newGame_site = ""; }
+    if ($parameters =~ /^([^\[\]"]+|""|)$/) {
+      if ($parameters ne "") {
+        $newGame_site = $parameters;
+        if ($newGame_site eq "\"\"") { $newGame_site = ""; }
+      }
+      cmd_run("tell $OPERATOR_HANDLE site=$newGame_site");
+    } else {
+      cmd_run("tell $OPERATOR_HANDLE error: invalid site parameter");
     }
-    cmd_run("tell $OPERATOR_HANDLE site=$newGame_site");
   } elsif ($command eq "status") {
     cmd_run("tell $OPERATOR_HANDLE games=" . gameList() . " maxGamesNum=$maxGamesNum file=$PGN_FILE follow=$followMode verbose=$VERBOSE event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round clock=$newGame_clock");
-  } elsif ($command eq "test") {
-    print STDERR "info: executing test command\n" if $VERBOSE;
-    cmd_run("tell $OPERATOR_HANDLE OK test");
+  } elsif ($command eq "temp") {
+    open(thisFile, ">$PGN_FILE");
+    print thisFile "[Event \"$newGame_event\"]\n" . "[Site \"$newGame_site\"]\n" . "[Date \"$newGame_date\"]\n" . "[Round \"$newGame_round\"]\n" . "[White \"?\"]\n" . "[Black \"?\"]\n" . "[Result \"*\"]\n\n*\n\n";
+    close(thisFile);
+    print STDERR "info: saved temporary PGN data\n" if $VERBOSE;
+    cmd_run("tell $OPERATOR_HANDLE OK temp");
   } elsif ($command eq "verbose") {
     if ($parameters =~ /^(0|1|)$/) {
       if ($parameters ne "") {
