@@ -14,9 +14,8 @@ use strict;
 use Net::Telnet;
 
 
-#
-# command line parameters
-#
+our $FICS_HOST = "freechess.org";
+our $FICS_PORT = 5000;
 
 our $BOT_HANDLE = $ARGV[0] || "";
 our $BOT_PASSWORD = $ARGV[1] || "";
@@ -28,35 +27,22 @@ if ($BOT_HANDLE eq "" | $OPERATOR_HANDLE eq "") {
 }
 
 
-#
-# configuration
-#
-
-
-our $FICS_HOST = "freechess.org";
-our $FICS_PORT = 5000;
-
 sub finger {
   my ($username) = (@_);
 
   return (
-    "Unattended bot operated by $OPERATOR_HANDLE",
+    "unattended bot operated by $OPERATOR_HANDLE",
   );
 }
 
 our $PGN_FILE = "live.pgn";
 
+our $VERBOSE = 0;
+
 our $PROTECT_LOGOUT_FREQ = 45 * 60;
 our $OPEN_TIMEOUT = 30;
 our $LINE_WAIT_TIMEOUT = 180;
 
-
-#
-# configuration end
-#
-
-
-our $VERBOSE = 0;
 
 our $telnet;
 our $username;
