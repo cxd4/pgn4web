@@ -24,7 +24,7 @@ our $BOT_PASSWORD = $ARGV[1] || "";
 our $OPERATOR_HANDLE = $ARGV[2] || "";
 
 if ($BOT_HANDLE eq "" | $OPERATOR_HANDLE eq "") {
-  die "\n$0 BOT_HANDLE BOT_PASSWORD OPERATOR_HANDLE\n\nBOT_HANDLE = handle for the bot account\nBOT_PASSWORD = password for the both account, use \"\" for guest login\nOPERATOR_HANDLE = handle for the bot operator to send commands\n\nmore help available sending from the operator account \"tell BOT_HANDLE help\"\n\n"; 
+  die "\n$0 BOT_HANDLE BOT_PASSWORD OPERATOR_HANDLE\n\nBOT_HANDLE = handle for the bot account\nBOT_PASSWORD = password for the both account, use \"\" for guest login\nOPERATOR_HANDLE = handle for the bot operator to send commands\n\nmore help available sending from the operator account \"tell BOT_HANDLE help\"\n\n";
 }
 
 
@@ -400,10 +400,77 @@ sub refresh_pgn {
   close(thisFile);
 }
 
+our @master_commands = ();
+our @master_commands_helptext = ();
+
+sub add_master_command {
+  my ($command, $helptext) = @_;
+  push (@master_commands, $command);
+  push (@master_commands_helptext, $helptext);
+}
+
+add_master_command ("clock", "clock 0|1 (enables saving clock informantion in the PGN data)");
+add_master_command ("date", "date 2012.11.10 (sets the PGN header tag date)");
+add_master_command ("event", "event World Championship (sets the PGN header tag event)");
+add_master_command ("file", "file live.pgn (set the filename for saving PGN data)");
+add_master_command ("follow", "follow handle|/s|/b|/l (see freechess.org follow command)");
+add_master_command ("forget", "forget 12 34 56 (eliminate games from PGN data)");
+add_master_command ("help", "help command (show commands help)");
+add_master_command ("ics", "ics server_command (runs a command on freechess.org)");
+add_master_command ("list", "list (show lists of observed games)");
+add_master_command ("max", "max 64 (sets the maximum number of games for the PGN data)");
+add_master_command ("observe", "observe 12 34 56 (observe games)");
+add_master_command ("reset", "reset (resets observed/followed games list and setting)");
+add_master_command ("round", "round 9 (sets the PGN header tag round)");
+add_master_command ("site", "site Moscow RUS (sets the PGN header tag site)");
+add_master_command ("status", "status (shows status summary info)");
+add_master_command ("verbose", "verbose 0|1 (sets verbosity of the bot log terminal)");
+
+sub detect_command {
+  my ($command) = @_;
+  my $guessedCommand = "";
+  for (my $i=0; $i<=$#master_commands; $i++) {
+    if ($master_commands[$i] eq $command) {
+      return $command;
+    }
+    if ($master_commands[$i] =~ /^$command/) {
+      if ($guessedCommand ne "") {
+        return "ambiguous command: $command";
+      } else {
+        $guessedCommand = $master_commands[$i]
+      }
+    }
+  }
+  if ($guessedCommand ne "") {
+    return $guessedCommand;
+  } else {
+    return $command;
+  }
+}
+
+sub detect_command_helptext {
+  my ($command) = @_;
+  my $detectedCommand = detect_command($command);
+  if ($detectedCommand =~ /^ambiguous command: /) {
+    return $detectedCommand;
+  }
+  for (my $i=0; $i<=$#master_commands; $i++) {
+    if ($master_commands[$i] eq $detectedCommand) {
+      return $master_commands_helptext[$i];
+    }
+  }
+  return "invalid command";
+}
+
 sub process_master_command {
   my ($command, $parameters) = @_;
 
+  $command = detect_command($command);
+
   if ($command eq "") {
+  } elsif ($command =~ /^ambiguous command: /) {
+    print STDERR "warning: $command\n" if $VERBOSE;
+    cmd_run("tell $OPERATOR_HANDLE error: $command");
   } elsif ($command eq "clock") {
     if ($parameters =~ /^(0|1|)$/) {
       if ($parameters =~ /^(0|1)$/) {
@@ -460,7 +527,17 @@ sub process_master_command {
     }
     cmd_run("tell $OPERATOR_HANDLE OK forget");
   } elsif ($command eq "help") {
-    cmd_run("tell $OPERATOR_HANDLE available commands: clock, date, event, file, follow, forget, help, ics, list, max, observe, reset, round, site, status, verbose.");
+    if ($parameters =~ /\S/) {
+      my $par;
+      my @pars = split(" ", $parameters);
+      foreach $par (@pars) {
+        if ($par =~ /\S/) {
+          cmd_run("tell $OPERATOR_HANDLE " . detect_command_helptext(detect_command($par)));
+        }
+      }
+    } else {
+      cmd_run("tell $OPERATOR_HANDLE available commands: " . join(", ", @master_commands));
+    }
   } elsif ($command eq "ics") {
     cmd_run($parameters);
     cmd_run("tell $OPERATOR_HANDLE OK ics");
