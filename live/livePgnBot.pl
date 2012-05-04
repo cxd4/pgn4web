@@ -18,12 +18,14 @@ use Net::Telnet;
 # command line parameters
 #
 
-our $FICS_USER = $ARGV[0] || "";
-our $FICS_PASSWORD = $ARGV[1] || "";
+our $BOT_HANDLE = $ARGV[0] || "";
+our $BOT_PASSWORD = $ARGV[1] || "";
 
-our $FICS_MASTER = $ARGV[2] || "";
+our $OPERATOR_HANDLE = $ARGV[2] || "";
 
-die "\n$0  FICS_USER  FICS_PASSWORD  FICS_MASTER_USER\n\n" if ($FICS_USER eq "" | $FICS_MASTER eq "");
+if ($BOT_HANDLE eq "" | $OPERATOR_HANDLE eq "") {
+  die "\n$0 BOT_HANDLE BOT_PASSWORD OPERATOR_HANDLE\n\nBOT_HANDLE = handle for the bot account\nBOT_PASSWORD = password for the both account, use \"\" for guest login\nOPERATOR_HANDLE = handle for the bot operator to send commands\n\nmore help available sending from the operator account \"tell BOT_HANDLE help\"\n\n" 
+}
 
 
 #
@@ -38,7 +40,7 @@ sub finger {
   my ($username) = (@_);
 
   return (
-    "Unattended bot operated by $FICS_MASTER",
+    "Unattended bot operated by $OPERATOR_HANDLE",
   );
 }
 
@@ -84,6 +86,7 @@ our @games_event = ();
 our @games_site = ();
 our @games_date = ();
 our @games_round = ();
+our @games_clock = ();
 
 our $newGame_num = -1;
 our $newGame_white;
@@ -100,6 +103,7 @@ our $newGame_event = "?";
 our $newGame_site = "?";
 our $newGame_date = "????.??.??";
 our $newGame_round = "?";
+our $newGame_clock = 1;
 
 our $followMode = 0;
 
@@ -120,10 +124,12 @@ sub reset_games {
   @games_site = ();
   @games_date = ();
   @games_round = ();
+  @games_clock = ();
   $newGame_event = "?";
   $newGame_site = "?";
   $newGame_date = "????.??.??";
   $newGame_round = "?";
+  $newGame_clock = 1;
   $followMode = 0;
 
   refresh_pgn();
@@ -166,10 +172,14 @@ sub save_game {
     unshift(@games_site, $newGame_site);
     unshift(@games_date, $newGame_date);
     unshift(@games_round, $newGame_round);
+    unshift(@games_clock, $newGame_clock);
   } else {
     if (($games_white[$thisGameIndex] ne $newGame_white) || ($games_black[$thisGameIndex] ne $newGame_black) || ($games_whiteElo[$thisGameIndex] ne $newGame_whiteElo) || ($games_blackElo[$thisGameIndex] ne $newGame_blackElo) || ($games_initialtime[$thisGameIndex] ne $newGame_initialtime) || ($games_increment[$thisGameIndex] ne $newGame_increment)) {
       print STDERR "error: game $newGame_num mismatch when saving\n";
     } else {
+      if ($games_clock[$thisGameIndex] == 0) {
+        $newGame_movesText =~ s/ {[^}]*}//g;
+      }
       $games_movesText[$thisGameIndex] = $newGame_movesText;
       if ($games_result[$thisGameIndex] eq "*") {
         $games_result[$thisGameIndex] = $newGame_result;
@@ -216,6 +226,7 @@ sub remove_game {
     @games_site = @games_site[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
     @games_date = @games_date[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
     @games_round = @games_round[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
+    @games_clock = @games_clock[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
     refresh_pgn();
   }
   return $thisGameIndex;
@@ -229,7 +240,7 @@ sub process_line {
   return unless $line;
 
   if ($line =~ /^([^\s()]+)(\(\S+\))* tells you: (\S+)\s*(.*)$/) {
-    if ($1 eq $FICS_MASTER) {
+    if ($1 eq $OPERATOR_HANDLE) {
       process_master_command($3, $4);
     } else {
       print STDERR "info: ignoring tell from user $1\n" if $VERBOSE;
@@ -351,7 +362,7 @@ sub sec2time {
 
 sub refresh_pgn {
   my ($i, $thisResult, $thisWhite, $thisBlack);
-
+ 
   $pgn = "";
   for ($i=0; $i<$maxGamesNum; $i++) {
     if ($games_num[$i]) {
@@ -373,8 +384,10 @@ sub refresh_pgn {
       $pgn .= "[White \"" . $thisWhite . "\"]\n";
       $pgn .= "[Black \"" . $thisBlack . "\"]\n";
       $pgn .= "[Result \"" . $thisResult . "\"]\n";
-      $pgn .= "[WhiteClock \"" . sec2time($games_initialtime[$i])  . "\"]\n";
-      $pgn .= "[BlackClock \"" . sec2time($games_initialtime[$i])  . "\"]\n";
+      if ($games_clock[$i] == 1) {
+        $pgn .= "[WhiteClock \"" . sec2time($games_initialtime[$i])  . "\"]\n";
+        $pgn .= "[BlackClock \"" . sec2time($games_initialtime[$i])  . "\"]\n";
+      }
       $pgn .= "[WhiteElo \"" . $games_whiteElo[$i]  . "\"]\n";
       $pgn .= "[BlackElo \"" . $games_blackElo[$i]  . "\"]\n";
       $pgn .= $games_movesText[$i];
@@ -391,99 +404,127 @@ sub process_master_command {
   my ($command, $parameters) = @_;
 
   if ($command eq "") {
-  } elsif ($command eq "add") {
+  } elsif ($command eq "clock") {
+    if ($parameters =~ /^(0|1|)$/) {
+      if ($parameters =~ /^(0|1)$/) {
+        $newGame_clock = $parameters;
+      }
+      cmd_run("tell $OPERATOR_HANDLE clock=$newGame_clock");
+    } else {
+      cmd_run("tell $OPERATOR_HANDLE error: invalid clock parameter");
+    }
+  } elsif ($command eq "date") {
+    if ($parameters) {
+      $newGame_date = $parameters;
+      if ($newGame_date eq "\"\"") { $newGame_date = ""; }
+    }
+    cmd_run("tell $OPERATOR_HANDLE date=$newGame_date");
+  } elsif ($command eq "event") {
+    if ($parameters) {
+      $newGame_event = $parameters;
+      if ($newGame_event eq "\"\"") { $newGame_event = ""; }
+    }
+    cmd_run("tell $OPERATOR_HANDLE event=$newGame_event");
+  } elsif ($command eq "file") {
+    if ($parameters =~ /^[\w\d\/\\.+=_-]*$/) { # for portability only a subset of filename chars is allowed
+      if ($parameters ne "") {
+        $PGN_FILE = $parameters;
+      }
+      cmd_run("tell $OPERATOR_HANDLE file=$PGN_FILE");
+    } else {
+      cmd_run("tell $OPERATOR_HANDLE error: invalid file parameter");
+    }
+  } elsif ($command eq "follow") {
+    if ($parameters =~ /^([a-zA-Z]+$|\/s|\/b|\/l)/) {
+      $followMode = 1;
+      cmd_run("follow $parameters");
+    } elsif ($parameters eq "") {
+      $followMode = 0;
+      cmd_run("follow");
+    } elsif ($parameters =~ /^(0|1)$/) {
+      $followMode = $1;
+    } elsif ($parameters ne "?") {
+      cmd_run("tell $OPERATOR_HANDLE error: invalid follow parameter");
+    }
+    cmd_run("tell $OPERATOR_HANDLE follow=$followMode");
+  } elsif ($command eq "forget") {
+    my @theseGames = split(" ", $parameters);
+    for (my $i=0; $i<=$#theseGames; $i++) {
+      if ($theseGames[$i] =~ /\d+/) {
+        if (remove_game($theseGames[$i]) < 0) {
+          cmd_run("tell $OPERATOR_HANDLE error: game $theseGames[$i] not found");
+        }
+      } else {
+        cmd_run("tell $OPERATOR_HANDLE error: invalid game $theseGames[$i]");
+      }
+    }
+    cmd_run("tell $OPERATOR_HANDLE OK forget");
+  } elsif ($command eq "help") {
+    cmd_run("tell $OPERATOR_HANDLE available commands: clock, date, event, file, follow, forget, help, ics, list, max, observe, reset, round, site, status, verbose.");
+  } elsif ($command eq "ics") {
+    cmd_run($parameters);
+    cmd_run("tell $OPERATOR_HANDLE OK ics");
+  } elsif ($command eq "list") {
+    cmd_run("tell $OPERATOR_HANDLE games=" . gameList());
+  } elsif ($command eq "max") {
+    if ($parameters =~ /^\d*$/) {
+      if ($parameters ne "") {
+        if ($parameters < $maxGamesNum) {
+          for (my $i=$parameters; $i<$maxGamesNum; $i++) {
+            if ($games_num[$i]) { remove_game($games_num[$i]); }
+          }
+        }
+        $maxGamesNum = $parameters;
+      }
+      cmd_run("tell $OPERATOR_HANDLE maxGamesNum=$maxGamesNum");
+    } else {
+      cmd_run("tell $OPERATOR_HANDLE error: invalid max parameter");
+    }
+  } elsif ($command eq "observe") {
     my @theseGames = split(" ", $parameters);
     for (my $i=0; $i<=$#theseGames; $i++) {
       if ($theseGames[$i] =~ /\d+/) {
         if (find_gameIndex($theseGames[$i]) == -1) {
           cmd_run("observe $theseGames[$i]");
         } else {
-          cmd_run("tell $FICS_MASTER error: game $theseGames[$i] already observed");
+          cmd_run("tell $OPERATOR_HANDLE error: game $theseGames[$i] already observed");
         }
       } else {
-        cmd_run("tell $FICS_MASTER error: invalid game $theseGames[$i]");
+        cmd_run("tell $OPERATOR_HANDLE error: invalid game $theseGames[$i]");
       }
     }
-    cmd_run("tell $FICS_MASTER OK add");
-  } elsif ($command eq "date") {
-    if ($parameters) {
-      $newGame_date = $parameters;
-      if ($newGame_date eq "\"\"") { $newGame_date = ""; }
-    }
-    cmd_run("tell $FICS_MASTER date=$newGame_date");
-  } elsif ($command eq "delete") {
-    my @theseGames = split(" ", $parameters);
-    for (my $i=0; $i<=$#theseGames; $i++) {
-      if ($theseGames[$i] =~ /\d+/) {
-        if (remove_game($theseGames[$i]) < 0) {
-          cmd_run("tell $FICS_MASTER error: game $theseGames[$i] not found");
-        }
-      } else {
-        cmd_run("tell $FICS_MASTER error: invalid game $theseGames[$i]");
-      }
-    }
-    cmd_run("tell $FICS_MASTER OK delete");
-  } elsif ($command eq "event") {
-    if ($parameters) {
-      $newGame_event = $parameters;
-      if ($newGame_event eq "\"\"") { $newGame_event = ""; }
-    }
-    cmd_run("tell $FICS_MASTER event=$newGame_event");
-  } elsif ($command eq "file") {
-    if ($parameters =~ /^[\w\d\/\\.+=_-]$/) { # for portability only a subset of filename chars is allowed
-      $PGN_FILE = $parameters;
-    }
-    cmd_run("tell $FICS_MASTER file=$PGN_FILE");
-  } elsif ($command eq "follow") {
-    if ($parameters =~ /^(0|1)$/) {
-      $followMode = $parameters;
-    }
-    cmd_run("tell $FICS_MASTER follow=$followMode");
-  } elsif ($command eq "help") {
-    cmd_run("tell $FICS_MASTER available commands: add, date, delete, event, file, follow, help, ics, list, max, reset, round, site, status, verbose.");
-  } elsif ($command eq "ics") {
-    cmd_run($parameters);
-    cmd_run("tell $FICS_MASTER OK ics");
-  } elsif ($command eq "list") {
-    cmd_run("tell $FICS_MASTER games=" . gameList());
-  } elsif ($command eq "max") {
-    if ($parameters =~ /^\d+$/) {
-      if ($parameters < $maxGamesNum) {
-        for (my $i=$parameters; $i<$maxGamesNum; $i++) {
-          if ($games_num[$i]) { remove_game($games_num[$i]); }
-        }
-      }
-      $maxGamesNum = $parameters;
-    }
-    cmd_run("tell $FICS_MASTER maxGamesNum=$maxGamesNum");
+    cmd_run("tell $OPERATOR_HANDLE OK observe");
   } elsif ($command eq "reset") {
     reset_games();
-    cmd_run("tell $FICS_MASTER OK reset");
+    cmd_run("tell $OPERATOR_HANDLE OK reset");
   } elsif ($command eq "round") {
     if ($parameters) {
       $newGame_round = $parameters;
       if ($newGame_round eq "\"\"") { $newGame_round = ""; }
     }
-    cmd_run("tell $FICS_MASTER round=$newGame_round");
+    cmd_run("tell $OPERATOR_HANDLE round=$newGame_round");
   } elsif ($command eq "site") {
     if ($parameters) {
       $newGame_site = $parameters;
       if ($newGame_site eq "\"\"") { $newGame_site = ""; }
     }
-    cmd_run("tell $FICS_MASTER site=$newGame_site");
+    cmd_run("tell $OPERATOR_HANDLE site=$newGame_site");
   } elsif ($command eq "status") {
-    cmd_run("tell $FICS_MASTER games=" . gameList() . " maxGamesNum=$maxGamesNum file=$PGN_FILE follow=$followMode verbose=$VERBOSE event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round");
+    cmd_run("tell $OPERATOR_HANDLE games=" . gameList() . " maxGamesNum=$maxGamesNum file=$PGN_FILE follow=$followMode verbose=$VERBOSE event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round clock=$newGame_clock");
   } elsif ($command eq "test") {
     print STDERR "info: executing test command\n" if $VERBOSE;
-    cmd_run("tell $FICS_MASTER OK test");
+    cmd_run("tell $OPERATOR_HANDLE OK test");
   } elsif ($command eq "verbose") {
-    if ($parameters =~ /^\d+$/) {
-      $VERBOSE = $parameters;
+    if ($parameters =~ /^(0|1|)$/) {
+      if ($parameters ne "") { 
+        $VERBOSE = $parameters;
+      }
+      cmd_run("tell $OPERATOR_HANDLE verbose=$VERBOSE");
     }
-    cmd_run("tell $FICS_MASTER verbose=$VERBOSE");
+    cmd_run("tell $OPERATOR_HANDLE error: invalid verbose parameter");
   } else {
-    print STDERR "warning: unknown master command: $command $parameters\n" if $VERBOSE;
-    cmd_run("tell $FICS_MASTER error: unknown command: $command $parameters");
+    print STDERR "warning: invalid command: $command $parameters\n" if $VERBOSE;
+    cmd_run("tell $OPERATOR_HANDLE error: invalid command: $command $parameters");
   }
 }
 
@@ -521,13 +562,13 @@ sub setup {
     Port => $FICS_PORT,
   );
 
-  print STDERR "info: connected to FICS\n" if $VERBOSE;
+  print STDERR "info: connected to $FICS_HOST\n" if $VERBOSE;
 
-  if ($FICS_PASSWORD) {
+  if ($BOT_PASSWORD) {
 
-    $telnet->login(Name => $FICS_USER, Password => $FICS_PASSWORD);
-    $username = $FICS_USER;
-    print STDERR "info: successfully logged as user $FICS_USER\n";
+    $telnet->login(Name => $BOT_HANDLE, Password => $BOT_PASSWORD);
+    $username = $BOT_HANDLE;
+    print STDERR "info: successfully logged as user $BOT_HANDLE\n";
 
   } else {
 
@@ -537,7 +578,7 @@ sub setup {
       Timeout => $OPEN_TIMEOUT,
     );
 
-    $telnet->print($FICS_USER);
+    $telnet->print($BOT_HANDLE);
 
     while (1) {
       my $line = $telnet->getline(Timeout => $LINE_WAIT_TIMEOUT);
@@ -547,7 +588,7 @@ sub setup {
         last;
       }
       if ($line =~ /("[^"]*" is a registered name|\S+ is already logged in)/) {
-        die "Can not login as $FICS_USER: $1\n";
+        die "Can not login as $BOT_HANDLE: $1\n";
       }
       print STDERR "info: ignored line: $line\n" if $VERBOSE;
     }
@@ -560,7 +601,7 @@ sub setup {
     if ($match =~ /Starting FICS session as ([a-zA-Z0-9]+)/ ) {
       $username = $1;
     } else {
-      die "Can not login as $FICS_USER: $match\n";
+      die "Can not login as $BOT_HANDLE: $match\n";
     }
 
     print STDERR "info: successfully logged as guest $username\n";
@@ -585,7 +626,7 @@ sub setup {
   cmd_run("- channel 4");
   cmd_run("- channel 53");
 
-  cmd_run("tell $FICS_MASTER ready");
+  cmd_run("tell $OPERATOR_HANDLE ready");
   print STDERR "info: finished initialization\n" if $VERBOSE;
 }
 
@@ -604,7 +645,7 @@ sub main_loop {
 
   while (1) {
     my $line = $telnet->getline(Timeout => $LINE_WAIT_TIMEOUT);
-    if ($line !~ /^$/) {
+    if (($line) && ($line !~ /^$/)) {
       $line =~ s/[\r\n]*$//;
       $line =~ s/^[\r\n]*//;
       process_line($line);
