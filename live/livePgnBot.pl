@@ -5,7 +5,7 @@
 #  see README file and http://pgn4web.casaschi.net
 #  for credits, license and more details
 
-# livePgnBot script saving PGN date from live games on frechess.org
+# livePgnBot script saving PGN data from live games on frechess.org
 # code based on Marcin Kasperski's tutorial availabale at
 # http://blog.mekk.waw.pl/series/how_to_write_fics_bot/
 
@@ -24,7 +24,7 @@ our $BOT_PASSWORD = $ARGV[1] || "";
 our $OPERATOR_HANDLE = $ARGV[2] || "";
 
 if ($BOT_HANDLE eq "" | $OPERATOR_HANDLE eq "") {
-  die "\n$0 BOT_HANDLE BOT_PASSWORD OPERATOR_HANDLE\n\nBOT_HANDLE = handle for the bot account\nBOT_PASSWORD = password for the both account, use \"\" for guest login\nOPERATOR_HANDLE = handle for the bot operator to send commands\n\nmore help available sending from the operator account \"tell BOT_HANDLE help\"\n\n";
+  die "\n$0 BOT_HANDLE BOT_PASSWORD OPERATOR_HANDLE\n\nBOT_HANDLE = handle for the bot account\nBOT_PASSWORD = password for the both account, use \"\" for a guest account\nOPERATOR_HANDLE = handle for the bot operator to send commands\n\nbot saving PGN data from live games on frechess.org\nmore help available from the operator account with \"tell BOT_HANDLE help\"\n\n";
 }
 
 
