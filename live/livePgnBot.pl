@@ -614,7 +614,7 @@ sub process_master_command {
         }
         $maxGamesNum = $parameters;
       }
-      cmd_run("tell $OPERATOR_HANDLE maxGamesNum=$maxGamesNum");
+      cmd_run("tell $OPERATOR_HANDLE max=$maxGamesNum");
     } else {
       cmd_run("tell $OPERATOR_HANDLE error: invalid max parameter");
     }
@@ -649,7 +649,7 @@ sub process_master_command {
       cmd_run("tell $OPERATOR_HANDLE error: invalid site parameter");
     }
   } elsif ($command eq "status") {
-    cmd_run("tell $OPERATOR_HANDLE games=" . gameList() . " maxGamesNum=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode verbose=$VERBOSE event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round clock=$newGame_clock");
+    cmd_run("tell $OPERATOR_HANDLE games=" . gameList() . " max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode verbose=$VERBOSE event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round clock=$newGame_clock");
   } elsif ($command eq "temp") {
     open(thisFile, ">$PGN_FILE");
     print thisFile "[Event \"$newGame_event\"]\n" . "[Site \"$newGame_site\"]\n" . "[Date \"$newGame_date\"]\n" . "[Round \"$newGame_round\"]\n" . "[White \"?\"]\n" . "[Black \"?\"]\n" . "[Result \"*\"]\n\n*\n\n";
