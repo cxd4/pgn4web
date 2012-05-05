@@ -152,19 +152,19 @@ sub save_game {
     if ($#games_num >= $maxGamesNum) {
       remove_game(-1);
     }
-    unshift(@games_num, $newGame_num);
-    unshift(@games_white, $newGame_white);
-    unshift(@games_black, $newGame_black);
-    unshift(@games_whiteElo, $newGame_whiteElo);
-    unshift(@games_blackElo, $newGame_blackElo);
-    unshift(@games_initialtime, $newGame_initialtime);
-    unshift(@games_increment, $newGame_increment);
-    unshift(@games_movesText, $newGame_movesText);
-    unshift(@games_result, $newGame_result);
-    unshift(@games_event, $newGame_event);
-    unshift(@games_site, $newGame_site);
-    unshift(@games_date, $newGame_date);
-    unshift(@games_round, $newGame_round);
+    myAdd(\@games_num, $newGame_num);
+    myAdd(\@games_white, $newGame_white);
+    myAdd(\@games_black, $newGame_black);
+    myAdd(\@games_whiteElo, $newGame_whiteElo);
+    myAdd(\@games_blackElo, $newGame_blackElo);
+    myAdd(\@games_initialtime, $newGame_initialtime);
+    myAdd(\@games_increment, $newGame_increment);
+    myAdd(\@games_movesText, $newGame_movesText);
+    myAdd(\@games_result, $newGame_result);
+    myAdd(\@games_event, $newGame_event);
+    myAdd(\@games_site, $newGame_site);
+    myAdd(\@games_date, $newGame_date);
+    myAdd(\@games_round, $newGame_round);
   } else {
     if (($games_white[$thisGameIndex] ne $newGame_white) || ($games_black[$thisGameIndex] ne $newGame_black) || ($games_whiteElo[$thisGameIndex] ne $newGame_whiteElo) || ($games_blackElo[$thisGameIndex] ne $newGame_blackElo) || ($games_initialtime[$thisGameIndex] ne $newGame_initialtime) || ($games_increment[$thisGameIndex] ne $newGame_increment)) {
       print STDERR "error: game $newGame_num mismatch when saving\n";
@@ -176,6 +176,15 @@ sub save_game {
     }
   }
   refresh_pgn();
+}
+
+sub myAdd {
+  my ($arrRef, $val) = @_;
+  if ($followMode == 1) {
+    unshift(@{$arrRef}, $val);
+  } else {
+    push(@{$arrRef}, $val);
+  }
 }
 
 sub save_result {
@@ -197,20 +206,23 @@ sub remove_game {
   my $thisGameIndex;
 
   if ($thisGameNum < 0) {
-    $thisGameIndex = $maxGamesNum - 1;
+    if ($followMode == 1) {
+      $thisGameIndex = $maxGamesNum - 1;
+    } else {
+      $thisGameIndex = 0;
+    }
     if ($games_num[$thisGameIndex] ne "") {
       $thisGameNum = $games_num[$thisGameIndex];
     } else {
-      print STDERR "warning: last game for removing missing\n";
+      print STDERR "warning: missing game when removing\n";
       return -1;
     }
   } else {
     $thisGameIndex = find_gameIndex($thisGameNum);
-  }
-
-  if ($thisGameIndex < 0) {
-    print STDERR "error: missing game $thisGameNum when removing\n";
-    return -1;
+    if ($thisGameIndex < 0) {
+      print STDERR "error: missing game $thisGameNum when removing\n";
+      return -1;
+    }
   }
 
   if (($games_result[$thisGameIndex] eq "*") || ($relayMode == 1)) {
