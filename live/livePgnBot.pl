@@ -92,6 +92,7 @@ our $newGame_round = "?";
 our $newGame_clock = 1;
 
 our $followMode = 0;
+our $relayMode = 0;
 
 sub reset_games {
   cmd_run("follow");
@@ -117,6 +118,7 @@ sub reset_games {
   $newGame_round = "?";
   $newGame_clock = 1;
   $followMode = 0;
+  $relayMode = 0;
 
   refresh_pgn();
 }
@@ -176,15 +178,17 @@ sub save_game {
 }
 
 sub save_result {
-  my ($thisGameNum, $thisResult) = @_;
+  my ($thisGameNum, $thisResult, $logMissing) = @_;
 
   my $thisGameIndex = find_gameIndex($thisGameNum);
   if ($thisGameIndex < 0) {
-    print STDERR "error: missing game $thisGameNum when saving result\n";
+    if ($logMissing == 1) {
+      print STDERR "error: missing game $thisGameNum when saving result\n";
+    }
   } else {
     $games_result[$thisGameIndex] = $thisResult;
+    refresh_pgn();
   }
-  refresh_pgn();
 }
 
 sub remove_game {
@@ -239,7 +243,9 @@ sub process_line {
     # very fast games, not an issue for broadcasts of live events;
     cmd_run("moves $16");
   } elsif ($line =~ /^{Game (\d+) [^}]*} (\S+)/) {
-    save_result($1, $2);
+    save_result($1, $2, 1); # from observed game
+  } elsif ($line =~ /^:(\d+)\s+\S+\s+\S+\s+(1-0|0-1|1\/2-1\/2)/) {
+    save_result($1, $2, 0); # from relay list
   } elsif ($newGame_num < 0) {
     if ($line =~ /^Movelist for game (\d+):/) {
       reset_newGame();
@@ -349,7 +355,7 @@ sub sec2time {
 }
 
 sub refresh_pgn {
-  my ($i, $thisResult, $thisWhite, $thisBlack);
+  my ($i, $thisResult, $thisWhite, $thisBlack, $thisWhiteTitle, $thisBlackTitle);
 
   $pgn = "";
   for ($i=0; $i<$maxGamesNum; $i++) {
@@ -359,25 +365,43 @@ sub refresh_pgn {
       } else {
         $thisResult = $games_result[$i];
       }
-      $thisWhite = $games_white[$i];
-      $thisBlack = $games_black[$i];
+      if (($relayMode == 1) && ($games_white[$i] =~ /^(GM|IM|FM|WGM|WIM|WFM)([A-Z].*)$/)) {
+        $thisWhiteTitle = $1;
+        $thisWhite = $2;
+      } else {
+        $thisWhiteTitle = "";
+        $thisWhite = $games_white[$i];
+      }
+      if (($relayMode == 1) && ($games_black[$i] =~ /^(GM|IM|FM|WGM|WIM|WFM)([A-Z].*)$/)) {
+        $thisBlackTitle = $1;
+        $thisBlack = $2;
+      } else {
+        $thisBlackTitle = "";
+        $thisBlack = $games_black[$i];
+      }
       if ($thisResult eq "*") {
         $thisWhite .= " ";
         $thisBlack .= " ";
       }
-      $pgn .= "[Event \"" . $games_event[$i]  . "\"]\n";
-      $pgn .= "[Site \"" . $games_site[$i]  . "\"]\n";
-      $pgn .= "[Date \"" . $games_date[$i]  . "\"]\n";
-      $pgn .= "[Round \"" . $games_round[$i]  . "\"]\n";
+      $pgn .= "[Event \"" . $games_event[$i] . "\"]\n";
+      $pgn .= "[Site \"" . $games_site[$i] . "\"]\n";
+      $pgn .= "[Date \"" . $games_date[$i] . "\"]\n";
+      $pgn .= "[Round \"" . $games_round[$i] . "\"]\n";
       $pgn .= "[White \"" . $thisWhite . "\"]\n";
       $pgn .= "[Black \"" . $thisBlack . "\"]\n";
       $pgn .= "[Result \"" . $thisResult . "\"]\n";
       if ($games_clock[$i] == 1) {
-        $pgn .= "[WhiteClock \"" . sec2time($games_initialtime[$i])  . "\"]\n";
-        $pgn .= "[BlackClock \"" . sec2time($games_initialtime[$i])  . "\"]\n";
+        $pgn .= "[WhiteClock \"" . sec2time($games_initialtime[$i]) . "\"]\n";
+        $pgn .= "[BlackClock \"" . sec2time($games_initialtime[$i]) . "\"]\n";
       }
-      $pgn .= "[WhiteElo \"" . $games_whiteElo[$i]  . "\"]\n";
-      $pgn .= "[BlackElo \"" . $games_blackElo[$i]  . "\"]\n";
+      $pgn .= "[WhiteElo \"" . $games_whiteElo[$i] . "\"]\n";
+      $pgn .= "[BlackElo \"" . $games_blackElo[$i] . "\"]\n";
+      if ($thisWhiteTitle ne "") {
+        $pgn .= "[WhiteTitle \"" . $thisWhiteTitle . "\"]\n";
+      }
+      if ($thisBlackTitle ne "") {
+        $pgn .= "[BlackTitle \"" . $thisBlackTitle . "\"]\n";
+      }
       $pgn .= $games_movesText[$i];
       $pgn .= "\n$games_result[$i]\n\n";
     }
@@ -402,13 +426,14 @@ add_master_command ("date", "date 2012.11.10 (to set the PGN header tag date)");
 add_master_command ("event", "event World Championship (to set the PGN header tag event)");
 add_master_command ("file", "file live.pgn (to set the filename for saving PGN data)");
 add_master_command ("follow", "follow handle|/s|/b|/l (see freechess.org follow command)");
-add_master_command ("forget", "forget 12 34 56 (to eliminate past games from PGN data)");
+add_master_command ("forget", "forget 12 34 56 .. (to eliminate past games from PGN data)");
 add_master_command ("help", "help command (to show commands help)");
 add_master_command ("ics", "ics server_command (to run a custom command on freechess.org)");
 add_master_command ("list", "list (to show lists of observed games)");
 add_master_command ("logout", "logout 0|1 (to logout from freechess.org, returning the given exit value)");
 add_master_command ("max", "max 64 (to set the maximum number of games for the PGN data)");
-add_master_command ("observe", "observe 12 34 56 (to observe games)");
+add_master_command ("observe", "observe 12 34 56 .. (to observe games)");
+add_master_command ("relay", "relay 12 34 56 .. (to observe games from an event relay)");
 add_master_command ("reset", "reset (to reset observed/followed games list and setting)");
 add_master_command ("round", "round 9 (to set the PGN header tag round)");
 add_master_command ("site", "site Moscow RUS (to set the PGN header tag site)");
@@ -499,15 +524,41 @@ sub process_master_command {
     } else {
       cmd_run("tell $OPERATOR_HANDLE error: invalid file parameter");
     }
+  } elsif ($command eq "relay") {
+    if ($parameters =~ /^([\d\s]+)$/) {
+      if ($parameters == 0) {
+        $relayMode = 0;
+      } else {
+        if ($followMode == 0) {
+          $relayMode = 1;
+          observe($parameters);
+        } else {
+          cmd_run("tell $OPERATOR_HANDLE error: reset follow before activating relay");
+        }
+      }
+    } elsif ($parameters eq "") {
+      $relayMode = 0;
+    } elsif ($parameters ne "?") {
+      cmd_run("tell $OPERATOR_HANDLE error: invalid relay parameter");
+    }
+    cmd_run("tell $OPERATOR_HANDLE relay=$relayMode");
   } elsif ($command eq "follow") {
     if ($parameters =~ /^([a-zA-Z]+$|\/s|\/b|\/l)/) {
-      $followMode = 1;
-      cmd_run("follow $parameters");
+      if ($relayMode == 0) {
+        $followMode = 1;
+        cmd_run("follow $parameters");
+      } else {
+        cmd_run("tell $OPERATOR_HANDLE error: reset relay before activating follow");
+      }
     } elsif ($parameters eq "") {
       $followMode = 0;
       cmd_run("follow");
     } elsif ($parameters =~ /^(0|1)$/) {
-      $followMode = $1;
+      if (($parameters == 0) || ($relayMode == 0)) {
+        $followMode = $parameters;
+      } else {
+        cmd_run("tell $OPERATOR_HANDLE error: reset relay before activating follow");
+      }
     } elsif ($parameters ne "?") {
       cmd_run("tell $OPERATOR_HANDLE error: invalid follow parameter");
     }
@@ -568,19 +619,12 @@ sub process_master_command {
       cmd_run("tell $OPERATOR_HANDLE error: invalid max parameter");
     }
   } elsif ($command eq "observe") {
-    my @theseGames = split(" ", $parameters);
-    for (my $i=0; $i<=$#theseGames; $i++) {
-      if ($theseGames[$i] =~ /\d+/) {
-        if (find_gameIndex($theseGames[$i]) == -1) {
-          cmd_run("observe $theseGames[$i]");
-        } else {
-          cmd_run("tell $OPERATOR_HANDLE error: game $theseGames[$i] already observed");
-        }
-      } else {
-        cmd_run("tell $OPERATOR_HANDLE error: invalid game $theseGames[$i]");
-      }
+    if ($parameters ne "") {
+      observe($parameters);
+      cmd_run("tell $OPERATOR_HANDLE OK observe");
+    } else {
+      cmd_run("tell $OPERATOR_HANDLE " . detect_command_helptext("observe"));
     }
-    cmd_run("tell $OPERATOR_HANDLE OK observe");
   } elsif ($command eq "reset") {
     reset_games();
     cmd_run("tell $OPERATOR_HANDLE OK reset");
@@ -605,7 +649,7 @@ sub process_master_command {
       cmd_run("tell $OPERATOR_HANDLE error: invalid site parameter");
     }
   } elsif ($command eq "status") {
-    cmd_run("tell $OPERATOR_HANDLE games=" . gameList() . " maxGamesNum=$maxGamesNum file=$PGN_FILE follow=$followMode verbose=$VERBOSE event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round clock=$newGame_clock");
+    cmd_run("tell $OPERATOR_HANDLE games=" . gameList() . " maxGamesNum=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode verbose=$VERBOSE event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round clock=$newGame_clock");
   } elsif ($command eq "temp") {
     open(thisFile, ">$PGN_FILE");
     print thisFile "[Event \"$newGame_event\"]\n" . "[Site \"$newGame_site\"]\n" . "[Date \"$newGame_date\"]\n" . "[Round \"$newGame_round\"]\n" . "[White \"?\"]\n" . "[Black \"?\"]\n" . "[Result \"*\"]\n\n*\n\n";
@@ -623,6 +667,22 @@ sub process_master_command {
   } else {
     print STDERR "warning: invalid command: $command $parameters\n" if $VERBOSE;
     cmd_run("tell $OPERATOR_HANDLE error: invalid command: $command $parameters");
+  }
+}
+
+sub observe {
+  my ($gameList) = @_;
+  my @theseGames = split(" ", $gameList);
+  for (my $i=0; $i<=$#theseGames; $i++) {
+    if ($theseGames[$i] =~ /\d+/) {
+      if (find_gameIndex($theseGames[$i]) == -1) {
+        cmd_run("observe $theseGames[$i]");
+      } else {
+        cmd_run("tell $OPERATOR_HANDLE warning: game $theseGames[$i] already observed");
+      }
+    } else {
+      cmd_run("tell $OPERATOR_HANDLE error: invalid game $theseGames[$i]");
+    }
   }
 }
 
