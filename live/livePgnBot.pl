@@ -205,6 +205,9 @@ sub remove_game {
   if ($thisGameIndex < 0) {
     print STDERR "error: missing game $thisGameNum when removing\n";
   } else {
+    if (($games_result[$thisGameIndex] eq "*") || ($relayMode == 1)) {
+      cmd_run("unobserve $thisGameNum");
+    }
     @games_num = @games_num[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
     @games_white = @games_white[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
     @games_black = @games_black[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
