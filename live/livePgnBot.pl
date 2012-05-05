@@ -40,13 +40,16 @@ our $PGN_FILE = "live.pgn";
 our $VERBOSE = 0;
 
 our $PROTECT_LOGOUT_FREQ = 45 * 60;
+our $CHECK_RELAY_FREQ = 3 * 60;
 our $OPEN_TIMEOUT = 30;
-our $LINE_WAIT_TIMEOUT = 180;
+our $LINE_WAIT_TIMEOUT = 60;
+# $LINE_WAIT_TIMEOUT must be smaller than half of $PROTECT_LOGOUT_FREQ and $CHECK_RELAY_FREQ
 
 
 our $telnet;
 our $username;
 our $last_cmd_time = 0;
+our $last_check_relay_time = 0;
 
 sub cmd_run {
   my ($cmd) = @_;
@@ -93,6 +96,8 @@ our $newGame_clock = 1;
 
 our $followMode = 0;
 our $relayMode = 0;
+our $autorelayMode = 0;
+our @autorelayGamesRunning = ();
 
 sub reset_games {
   cmd_run("follow");
@@ -119,6 +124,8 @@ sub reset_games {
   $newGame_clock = 1;
   $followMode = 0;
   $relayMode = 0;
+  $autorelayMode = 0;
+  @autorelayGamesRunning = ();
 
   refresh_pgn();
 }
@@ -244,8 +251,21 @@ sub process_line {
     cmd_run("moves $16");
   } elsif ($line =~ /^{Game (\d+) [^}]*} (\S+)/) {
     save_result($1, $2, 1); # from observed game
-  } elsif ($line =~ /^:(\d+)\s+\S+\s+\S+\s+(1-0|0-1|1\/2-1\/2)/) {
-    save_result($1, $2, 0); # from relay list
+  } elsif ($line =~ /^:(\d+)\s+\S+\s+\S+\s+(\S+)/) {
+    my $thisGameIndex = $1;
+    my $thisGameResult = $2;
+    if ($autorelayMode == 1) {
+      push(@autorelayGamesRunning, $thisGameIndex);
+    }
+    if (find_gameIndex($thisGameIndex) != -1) {
+      if ($thisGameResult ne "*") {
+        save_result($thisGameIndex, $thisGameResult, 0); # from relay list
+      }
+    } else {
+      if ($autorelayMode == 1) {
+        cmd_run("observe $thisGameIndex");
+      }
+    }
   } elsif ($newGame_num < 0) {
     if ($line =~ /^Movelist for game (\d+):/) {
       reset_newGame();
@@ -379,7 +399,7 @@ sub refresh_pgn {
         $thisBlackTitle = "";
         $thisBlack = $games_black[$i];
       }
-      if ($thisResult eq "*") {
+      if (($followMode == 1) && ($thisResult eq "*")) {
         $thisWhite .= " ";
         $thisBlack .= " ";
       }
@@ -421,19 +441,20 @@ sub add_master_command {
   push (@master_commands_helptext, $helptext);
 }
 
+add_master_command ("autorelay", "autorelay 0|1 (to automatically observe all relayed games)");
 add_master_command ("clock", "clock 0|1 (to enable saving clock informantion in the PGN data)");
 add_master_command ("date", "date 2012.11.10 (to set the PGN header tag date)");
 add_master_command ("event", "event World Championship (to set the PGN header tag event)");
 add_master_command ("file", "file live.pgn (to set the filename for saving PGN data)");
 add_master_command ("follow", "follow handle|/s|/b|/l (see freechess.org follow command)");
-add_master_command ("forget", "forget 12 34 56 .. (to eliminate past games from PGN data)");
+add_master_command ("forget", "forget 12 34 56 .. (to eliminate given past games from PGN data)");
 add_master_command ("help", "help command (to show commands help)");
 add_master_command ("ics", "ics server_command (to run a custom command on freechess.org)");
 add_master_command ("list", "list (to show lists of observed games)");
 add_master_command ("logout", "logout 0|1 (to logout from freechess.org, returning the given exit value)");
 add_master_command ("max", "max 64 (to set the maximum number of games for the PGN data)");
-add_master_command ("observe", "observe 12 34 56 .. (to observe games)");
-add_master_command ("relay", "relay 12 34 56 .. (to observe games from an event relay)");
+add_master_command ("observe", "observe 12 34 56 .. (to observe given games)");
+add_master_command ("relay", "relay 12 34 56 .. (to observe given games from an event relay)");
 add_master_command ("reset", "reset (to reset observed/followed games list and setting)");
 add_master_command ("round", "round 9 (to set the PGN header tag round)");
 add_master_command ("site", "site Moscow RUS (to set the PGN header tag site)");
@@ -486,6 +507,28 @@ sub process_master_command {
   } elsif ($command =~ /^ambiguous command: /) {
     print STDERR "warning: $command\n" if $VERBOSE;
     cmd_run("tell $OPERATOR_HANDLE error: $command");
+  } elsif ($command eq "autorelay") {
+    if ($parameters =~ /^(0|1)$/) {
+      if ($parameters == 0) {
+        $autorelayMode = 0;
+        @autorelayGamesRunning = ();
+      } else {
+        if ($followMode == 0) {
+          $autorelayMode = 1;
+          $relayMode = 1;
+          $newGame_clock = 0;
+          cmd_run("xtell relay listgames");
+        } else {
+          cmd_run("tell $OPERATOR_HANDLE error: reset follow before activating autorelay");
+        }
+      }
+    } elsif ($parameters eq "") {
+      $autorelayMode = 0;
+      @autorelayGamesRunning = ();
+    } elsif ($parameters ne "?") {
+      cmd_run("tell $OPERATOR_HANDLE error: invalid autorelay parameter");
+    }
+    cmd_run("tell $OPERATOR_HANDLE autorelay=$autorelayMode");
   } elsif ($command eq "clock") {
     if ($parameters =~ /^(0|1|)$/) {
       if ($parameters =~ /^(0|1)$/) {
@@ -524,28 +567,11 @@ sub process_master_command {
     } else {
       cmd_run("tell $OPERATOR_HANDLE error: invalid file parameter");
     }
-  } elsif ($command eq "relay") {
-    if ($parameters =~ /^([\d\s]+)$/) {
-      if ($parameters == 0) {
-        $relayMode = 0;
-      } else {
-        if ($followMode == 0) {
-          $relayMode = 1;
-          observe($parameters);
-        } else {
-          cmd_run("tell $OPERATOR_HANDLE error: reset follow before activating relay");
-        }
-      }
-    } elsif ($parameters eq "") {
-      $relayMode = 0;
-    } elsif ($parameters ne "?") {
-      cmd_run("tell $OPERATOR_HANDLE error: invalid relay parameter");
-    }
-    cmd_run("tell $OPERATOR_HANDLE relay=$relayMode");
   } elsif ($command eq "follow") {
     if ($parameters =~ /^([a-zA-Z]+$|\/s|\/b|\/l)/) {
       if ($relayMode == 0) {
         $followMode = 1;
+        $newGame_clock = 1;
         cmd_run("follow $parameters");
       } else {
         cmd_run("tell $OPERATOR_HANDLE error: reset relay before activating follow");
@@ -556,6 +582,9 @@ sub process_master_command {
     } elsif ($parameters =~ /^(0|1)$/) {
       if (($parameters == 0) || ($relayMode == 0)) {
         $followMode = $parameters;
+        if ($followMode == 1) {
+          $newGame_clock = 1;
+        }
       } else {
         cmd_run("tell $OPERATOR_HANDLE error: reset relay before activating follow");
       }
@@ -625,6 +654,29 @@ sub process_master_command {
     } else {
       cmd_run("tell $OPERATOR_HANDLE " . detect_command_helptext("observe"));
     }
+  } elsif ($command eq "relay") {
+    if ($parameters =~ /^([\d\s]+)$/) {
+      if ($parameters == 0) {
+        $relayMode = 0;
+        $autorelayMode = 0;
+        @autorelayGamesRunning = ();
+      } else {
+        if ($followMode == 0) {
+          $relayMode = 1;
+          $newGame_clock = 0;
+          observe($parameters);
+        } else {
+          cmd_run("tell $OPERATOR_HANDLE error: reset follow before activating relay");
+        }
+      }
+    } elsif ($parameters eq "") {
+      $relayMode = 0;
+      $autorelayMode = 0;
+      @autorelayGamesRunning = ();
+    } elsif ($parameters ne "?") {
+      cmd_run("tell $OPERATOR_HANDLE error: invalid relay parameter");
+    }
+    cmd_run("tell $OPERATOR_HANDLE relay=$relayMode");
   } elsif ($command eq "reset") {
     reset_games();
     cmd_run("tell $OPERATOR_HANDLE OK reset");
@@ -649,7 +701,7 @@ sub process_master_command {
       cmd_run("tell $OPERATOR_HANDLE error: invalid site parameter");
     }
   } elsif ($command eq "status") {
-    cmd_run("tell $OPERATOR_HANDLE games=" . gameList() . " max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode verbose=$VERBOSE event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round clock=$newGame_clock");
+    cmd_run("tell $OPERATOR_HANDLE games=" . gameList() . " max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode verbose=$VERBOSE event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round clock=$newGame_clock");
   } elsif ($command eq "temp") {
     open(thisFile, ">$PGN_FILE");
     print thisFile "[Event \"$newGame_event\"]\n" . "[Site \"$newGame_site\"]\n" . "[Date \"$newGame_date\"]\n" . "[Round \"$newGame_round\"]\n" . "[White \"?\"]\n" . "[Black \"?\"]\n" . "[Result \"*\"]\n\n*\n\n";
@@ -662,8 +714,9 @@ sub process_master_command {
         $VERBOSE = $parameters;
       }
       cmd_run("tell $OPERATOR_HANDLE verbose=$VERBOSE");
+    } else {
+      cmd_run("tell $OPERATOR_HANDLE error: invalid verbose parameter");
     }
-    cmd_run("tell $OPERATOR_HANDLE error: invalid verbose parameter");
   } else {
     print STDERR "warning: invalid command: $command $parameters\n" if $VERBOSE;
     cmd_run("tell $OPERATOR_HANDLE error: invalid command: $command $parameters");
@@ -699,6 +752,26 @@ sub gameList {
     }
   }
   return $outputStr;
+}
+
+sub check_releay_results {
+  if (($relayMode == 1) && (time - $last_check_relay_time > $CHECK_RELAY_FREQ)) {
+    cmd_run("xtell relay listgames");
+    $last_check_relay_time = time();
+    if ($autorelayMode == 1) {
+      my $gameRunning;
+      my $gameNum;
+      NEXTGAME: for $gameNum (@games_num) {
+        for $gameRunning (@autorelayGamesRunning) {
+          if ($gameRunning == $gameNum) {
+            next NEXTGAME;
+          }
+        }
+        remove_game($gameNum);
+      }
+      @autorelayGamesRunning = ();
+    }
+  }
 }
 
 sub ensure_alive {
@@ -810,6 +883,7 @@ sub main_loop {
     }
 
     ensure_alive();
+    check_releay_results();
   }
 }
 
