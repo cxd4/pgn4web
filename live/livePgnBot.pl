@@ -198,32 +198,39 @@ sub remove_game {
 
   if ($thisGameNum < 0) {
     $thisGameIndex = $maxGamesNum - 1;
-    $thisGameNum = $games_num[$thisGameIndex];
+    if ($games_num[$thisGameIndex] ne "") {
+      $thisGameNum = $games_num[$thisGameIndex];
+    } else {
+      print STDERR "warning: last game for removing missing\n";
+      return -1;
+    }
   } else {
     $thisGameIndex = find_gameIndex($thisGameNum);
   }
+
   if ($thisGameIndex < 0) {
     print STDERR "error: missing game $thisGameNum when removing\n";
-  } else {
-    if (($games_result[$thisGameIndex] eq "*") || ($relayMode == 1)) {
-      cmd_run("unobserve $thisGameNum");
-    }
-    @games_num = @games_num[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-    @games_white = @games_white[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-    @games_black = @games_black[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-    @games_whiteElo = @games_whiteElo[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-    @games_blackElo = @games_blackElo[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-    @games_initialtime = @games_initialtime[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-    @games_increment = @games_increment[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-    @games_movesText = @games_movesText[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-    @games_result = @games_result[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-    @games_event = @games_event[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-    @games_site = @games_site[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-    @games_date = @games_date[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-    @games_round = @games_round[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-    delete $timeLeft[$thisGameNum];
-    refresh_pgn();
+    return -1;
   }
+
+  if (($games_result[$thisGameIndex] eq "*") || ($relayMode == 1)) {
+    cmd_run("unobserve $thisGameNum");
+  }
+  @games_num = @games_num[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
+  @games_white = @games_white[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
+  @games_black = @games_black[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
+  @games_whiteElo = @games_whiteElo[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
+  @games_blackElo = @games_blackElo[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
+  @games_initialtime = @games_initialtime[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
+  @games_increment = @games_increment[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
+  @games_movesText = @games_movesText[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
+  @games_result = @games_result[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
+  @games_event = @games_event[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
+  @games_site = @games_site[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
+  @games_date = @games_date[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
+  @games_round = @games_round[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
+  delete $timeLeft[$thisGameNum];
+  refresh_pgn();
   return $thisGameIndex;
 }
 
