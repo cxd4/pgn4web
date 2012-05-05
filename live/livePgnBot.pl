@@ -820,16 +820,20 @@ sub setup {
   }
 
   cmd_run("iset nowrap 1");
+  cmd_run("set bell 0");
+  cmd_run("set highlight 0");
+  cmd_run("set tzone GMT");
+  cmd_run("set ptime 1");
+  cmd_run("set style 12");
+  cmd_run("set seek 0");
   cmd_run("set shout 0");
   cmd_run("set cshout 0");
+  cmd_run("set kibitz 0");
+  cmd_run("set chanoff 1");
   cmd_run("set open 0");
-  cmd_run("set seek 0");
   cmd_run("set gin 0");
   cmd_run("set pin 0");
   cmd_run("set mailmess 0");
-  cmd_run("set style 12");
-  cmd_run("- channel 4");
-  cmd_run("- channel 53");
 
   cmd_run("tell $OPERATOR_HANDLE ready");
   print STDERR "info: finished initialization\n" if $VERBOSE;
