@@ -282,7 +282,7 @@ sub process_line {
     my $thisWC = $24; # WhiteClock
     my $thisBC = $25; # BlackClock
     my $thisGI = find_gameIndex($thisGN);
-    if (($thisGI < 0) || (($thisW == $games_white[$thisGI]) && ($thisB == $games_black[$thisGI]))) {
+    if (($thisGI < 0) || (($thisW eq $games_white[$thisGI]) && ($thisB eq $games_black[$thisGI]))) {
       $GAMES_timeLeft[$thisGN] = "{ White Time: " . sec2time($thisWC) . " Black Time: " . sec2time($thisBC) . " }";
       cmd_run("moves $thisGN");
     } else {
