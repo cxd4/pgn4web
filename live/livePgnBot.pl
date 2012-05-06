@@ -68,8 +68,6 @@ our @games_white = ();
 our @games_black = ();
 our @games_whiteElo = ();
 our @games_blackElo = ();
-our @games_initialtime = ();
-our @games_increment = ();
 our @games_movesText = ();
 our @games_result = ();
 our @games_event = ();
@@ -77,7 +75,7 @@ our @games_site = ();
 our @games_date = ();
 our @games_round = ();
 
-our @timeLeft = ();
+our @GAMES_timeLeft = ();
 
 our $newGame_num = -1;
 our $newGame_white;
@@ -85,8 +83,6 @@ our $newGame_black;
 our $newGame_whiteElo;
 our $newGame_blackElo;
 our @newGame_moves;
-our $newGame_initialtime;
-our $newGame_increment;
 our $newGame_movesText;
 our $newGame_result;
 our $newGame_event = "?";
@@ -99,6 +95,9 @@ our $relayMode = 0;
 our $autorelayMode = 0;
 our @autorelayGamesRunning = ();
 
+our $autorelayEvent;
+our $autorelayRound;
+
 sub reset_games {
   cmd_run("follow");
   cmd_run("unobserve");
@@ -108,15 +107,13 @@ sub reset_games {
   @games_black = ();
   @games_whiteElo = ();
   @games_blackElo = ();
-  @games_initialtime = ();
-  @games_increment = ();
   @games_movesText = ();
   @games_result = ();
   @games_event = ();
   @games_site = ();
   @games_date = ();
   @games_round = ();
-  @timeLeft = ();
+  @GAMES_timeLeft = ();
   $newGame_event = "?";
   $newGame_site = "?";
   $newGame_date = "????.??.??";
@@ -158,8 +155,6 @@ sub save_game {
     myAdd(\@games_black, $newGame_black);
     myAdd(\@games_whiteElo, $newGame_whiteElo);
     myAdd(\@games_blackElo, $newGame_blackElo);
-    myAdd(\@games_initialtime, $newGame_initialtime);
-    myAdd(\@games_increment, $newGame_increment);
     myAdd(\@games_movesText, $newGame_movesText);
     myAdd(\@games_result, $newGame_result);
     myAdd(\@games_event, $newGame_event);
@@ -167,7 +162,7 @@ sub save_game {
     myAdd(\@games_date, $newGame_date);
     myAdd(\@games_round, $newGame_round);
   } else {
-    if (($games_white[$thisGameIndex] ne $newGame_white) || ($games_black[$thisGameIndex] ne $newGame_black) || ($games_whiteElo[$thisGameIndex] ne $newGame_whiteElo) || ($games_blackElo[$thisGameIndex] ne $newGame_blackElo) || ($games_initialtime[$thisGameIndex] ne $newGame_initialtime) || ($games_increment[$thisGameIndex] ne $newGame_increment)) {
+    if (($games_white[$thisGameIndex] ne $newGame_white) || ($games_black[$thisGameIndex] ne $newGame_black) || ($games_whiteElo[$thisGameIndex] ne $newGame_whiteElo) || ($games_blackElo[$thisGameIndex] ne $newGame_blackElo)) {
       print STDERR "error: game $newGame_num mismatch when saving\n";
     } else {
       $games_movesText[$thisGameIndex] = $newGame_movesText;
@@ -235,15 +230,13 @@ sub remove_game {
   @games_black = @games_black[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
   @games_whiteElo = @games_whiteElo[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
   @games_blackElo = @games_blackElo[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
-  @games_initialtime = @games_initialtime[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
-  @games_increment = @games_increment[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
   @games_movesText = @games_movesText[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
   @games_result = @games_result[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
   @games_event = @games_event[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
   @games_site = @games_site[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
   @games_date = @games_date[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
   @games_round = @games_round[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
-  delete $timeLeft[$thisGameNum];
+  delete $GAMES_timeLeft[$thisGameNum];
   refresh_pgn();
   return $thisGameIndex;
 }
@@ -281,10 +274,19 @@ sub process_line {
     # result in missing the last move(s) of games that end immediately after
     # a board update and do not return a movelist anymore; only an issue for
     # very fast games, not an issue for broadcasts of live events;
-    $timeLeft[$16] = "{ White Time: " . sec2time($24) . " Black Time: " . sec2time($25) . " }";
+    $GAMES_timeLeft[$16] = "{ White Time: " . sec2time($24) . " Black Time: " . sec2time($25) . " }";
     cmd_run("moves $16");
   } elsif ($line =~ /^{Game (\d+) [^}]*} (\S+)/) {
     save_result($1, $2, 1); # from observed game
+  } elsif ($line =~ /^:There .* in the (.*)/) {
+    my $autorelayEvent = $1;
+    my $autorelayRound = "";
+    if ($autorelayEvent =~ /(.*)\s+Round\s+(\d+)/) {
+      $autorelayRound = $2;
+      $autorelayEvent = $1;
+      $autorelayEvent =~ s/[\s-]+$//g;
+    }
+    print STDERR "info: autorelay event=$autorelayEvent round=$autorelayRound\n" if $VERBOSE;
   } elsif ($line =~ /^:(\d+)\s+\S+\s+\S+\s+(\S+)/) {
     my $thisGameIndex = $1;
     my $thisGameResult = $2;
@@ -313,12 +315,11 @@ sub process_line {
       $newGame_whiteElo = $2;
       $newGame_black = $3;
       $newGame_blackElo = $4;
-    } elsif ($line =~ /(.*) initial time: (\d+) minutes.*increment: (\d+)/) {
+    } elsif ($line =~ /(.*) initial time: \d+ minutes.*increment: \d+/) {
       our $gameType = $1;
-      $newGame_initialtime = $2 * 60;
-      $newGame_increment = $3;
       if (!($gameType =~ /(standard|blitz|lightning)/)) {
         print STDERR "warning: unsupported game $newGame_num: $gameType\n" if $VERBOSE;
+        delete $GAMES_timeLeft[$newGame_num];
         cmd_run("unobserve $newGame_num");
         tell_operator("warning: unsupported game $newGame_num: $gameType");
         reset_newGame();
@@ -367,8 +368,6 @@ sub reset_newGame() {
   $newGame_whiteElo = "";
   $newGame_blackElo = "";
   @newGame_moves = ();
-  $newGame_initialtime = "";
-  $newGame_increment = "";
   $newGame_result = "";
 }
 
@@ -450,7 +449,7 @@ sub refresh_pgn {
         $pgn .= "[BlackTitle \"" . $thisBlackTitle . "\"]\n";
       }
       $pgn .= $games_movesText[$i];
-      $pgn .= "\n$timeLeft[$games_num[$i]]";
+      $pgn .= "\n$GAMES_timeLeft[$games_num[$i]]";
       $pgn .= " $games_result[$i]\n\n";
     }
   }
