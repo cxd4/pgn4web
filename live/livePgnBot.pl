@@ -215,13 +215,13 @@ sub remove_game {
     if ($games_num[$thisGameIndex] ne "") {
       $thisGameNum = $games_num[$thisGameIndex];
     } else {
-      print STDERR "warning: missing game when removing\n";
+      print STDERR "warning: missing game for removing\n";
       return -1;
     }
   } else {
     $thisGameIndex = find_gameIndex($thisGameNum);
     if ($thisGameIndex < 0) {
-      print STDERR "error: missing game $thisGameNum when removing\n";
+      print STDERR "error: missing game $thisGameNum for removing\n";
       return -1;
     }
   }
@@ -229,22 +229,37 @@ sub remove_game {
   if (($games_result[$thisGameIndex] eq "*") || ($relayMode == 1)) {
     cmd_run("unobserve $thisGameNum");
   }
-  @games_num = @games_num[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-  @games_white = @games_white[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-  @games_black = @games_black[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-  @games_whiteElo = @games_whiteElo[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-  @games_blackElo = @games_blackElo[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-  @games_initialtime = @games_initialtime[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-  @games_increment = @games_increment[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-  @games_movesText = @games_movesText[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-  @games_result = @games_result[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-  @games_event = @games_event[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-  @games_site = @games_site[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-  @games_date = @games_date[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
-  @games_round = @games_round[0..($thisGameIndex-1), ($thisGameIndex+1)..$maxGamesNum];
+  my $thisMax = $#games_num;
+  @games_num = @games_num[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
+  @games_white = @games_white[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
+  @games_black = @games_black[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
+  @games_whiteElo = @games_whiteElo[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
+  @games_blackElo = @games_blackElo[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
+  @games_initialtime = @games_initialtime[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
+  @games_increment = @games_increment[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
+  @games_movesText = @games_movesText[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
+  @games_result = @games_result[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
+  @games_event = @games_event[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
+  @games_site = @games_site[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
+  @games_date = @games_date[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
+  @games_round = @games_round[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
   delete $timeLeft[$thisGameNum];
   refresh_pgn();
   return $thisGameIndex;
+}
+
+sub tell_operator {
+  my ($msg) = @_;
+  my @msgParts = $msg =~ /(.{1,195})/g;
+  for (my $i=0; $i<=$#msgParts; $i++) {
+    if ($i > 0) {
+      $msgParts[$i] = ".." . $msgParts[$i];
+    }
+    if (($#msgParts > 0) && ($i < $#msgParts)) {
+      $msgParts[$i] = $msgParts[$i] . "..";
+    }
+    cmd_run("tell $OPERATOR_HANDLE " . $msgParts[$i]);
+  }
 }
 
 sub process_line {
@@ -305,7 +320,7 @@ sub process_line {
       if (!($gameType =~ /(standard|blitz|lightning)/)) {
         print STDERR "warning: unsupported game $newGame_num: $gameType\n" if $VERBOSE;
         cmd_run("unobserve $newGame_num");
-        cmd_run("tell $OPERATOR_HANDLE warning: unsupported game $newGame_num: $gameType");
+        tell_operator("warning: unsupported game $newGame_num: $gameType");
         reset_newGame();
       }
     } elsif ($line =~ /^\s*\d+\.[\s]*([^(\s]+)\s*\([^)]+\)[\s]+([^(\s]+)\s*\([^)]+\)/) {
@@ -529,7 +544,7 @@ sub process_master_command {
   if ($command eq "") {
   } elsif ($command =~ /^ambiguous command: /) {
     print STDERR "warning: $command\n" if $VERBOSE;
-    cmd_run("tell $OPERATOR_HANDLE error: $command");
+    tell_operator("error: $command");
   } elsif ($command eq "autorelay") {
     if ($parameters =~ /^(0|1)$/) {
       if ($parameters == 0) {
@@ -541,22 +556,22 @@ sub process_master_command {
           $relayMode = 1;
           cmd_run("xtell relay listgames");
         } else {
-          cmd_run("tell $OPERATOR_HANDLE error: reset follow before activating autorelay");
+          tell_operator("error: reset follow before activating autorelay");
         }
       }
-    } elsif ($parameters ne "?") {
-      cmd_run("tell $OPERATOR_HANDLE error: invalid autorelay parameter");
+    } elsif ($parameters !~ /^(?|)$/) {
+      tell_operator("error: invalid autorelay parameter");
     }
-    cmd_run("tell $OPERATOR_HANDLE autorelay=$autorelayMode");
+    tell_operator("autorelay=$autorelayMode");
   } elsif ($command eq "date") {
     if ($parameters =~ /^([^\[\]"]+|""|)$/) {
       if ($parameters ne "") {
         $newGame_date = $parameters;
         if ($newGame_date eq "\"\"") { $newGame_date = ""; }
       }
-      cmd_run("tell $OPERATOR_HANDLE date=$newGame_date");
+      tell_operator("date=$newGame_date");
     } else {
-      cmd_run("tell $OPERATOR_HANDLE error: invalid date parameter");
+      tell_operator("error: invalid date parameter");
     }
   } elsif ($command eq "event") {
     if ($parameters =~ /^([^\[\]"]+|""|)$/) {
@@ -564,18 +579,18 @@ sub process_master_command {
         $newGame_event = $parameters;
         if ($newGame_event eq "\"\"") { $newGame_event = ""; }
       }
-      cmd_run("tell $OPERATOR_HANDLE event=$newGame_event");
+      tell_operator("event=$newGame_event");
     } else {
-      cmd_run("tell $OPERATOR_HANDLE error: invalid event parameter");
+      tell_operator("error: invalid event parameter");
     }
   } elsif ($command eq "file") {
     if ($parameters =~ /^[\w\d\/\\.+=_-]*$/) { # for portability only a subset of filename chars is allowed
       if ($parameters ne "") {
         $PGN_FILE = $parameters;
       }
-      cmd_run("tell $OPERATOR_HANDLE file=$PGN_FILE");
+      tell_operator("file=$PGN_FILE");
     } else {
-      cmd_run("tell $OPERATOR_HANDLE error: invalid file parameter");
+      tell_operator("error: invalid file parameter");
     }
   } elsif ($command eq "follow") {
     if ($parameters =~ /^([a-zA-Z]+$|\/s|\/b|\/l)/) {
@@ -583,7 +598,7 @@ sub process_master_command {
         $followMode = 1;
         cmd_run("follow $parameters");
       } else {
-        cmd_run("tell $OPERATOR_HANDLE error: reset relay before activating follow");
+        tell_operator("error: reset relay before activating follow");
       }
     } elsif ($parameters eq "") {
       $followMode = 0;
@@ -592,75 +607,81 @@ sub process_master_command {
       if (($parameters == 0) || ($relayMode == 0)) {
         $followMode = $parameters;
       } else {
-        cmd_run("tell $OPERATOR_HANDLE error: reset relay before activating follow");
+        tell_operator("error: reset relay before activating follow");
       }
     } elsif ($parameters ne "?") {
-      cmd_run("tell $OPERATOR_HANDLE error: invalid follow parameter");
+      tell_operator("error: invalid follow parameter");
     }
-    cmd_run("tell $OPERATOR_HANDLE follow=$followMode");
+    tell_operator("follow=$followMode");
   } elsif ($command eq "forget") {
     my @theseGames = split(" ", $parameters);
     for (my $i=0; $i<=$#theseGames; $i++) {
       if ($theseGames[$i] =~ /\d+/) {
         if (remove_game($theseGames[$i]) < 0) {
-          cmd_run("tell $OPERATOR_HANDLE error: game $theseGames[$i] not found");
+          tell_operator("error: game $theseGames[$i] not found");
         }
       } else {
-        cmd_run("tell $OPERATOR_HANDLE error: invalid game $theseGames[$i]");
+        tell_operator("error: invalid game $theseGames[$i]");
       }
     }
-    cmd_run("tell $OPERATOR_HANDLE OK forget");
+    tell_operator("OK forget");
   } elsif ($command eq "help") {
     if ($parameters =~ /\S/) {
       my $par;
       my @pars = split(" ", $parameters);
       foreach $par (@pars) {
         if ($par =~ /\S/) {
-          cmd_run("tell $OPERATOR_HANDLE " . detect_command_helptext(detect_command($par)));
+          tell_operator(detect_command_helptext(detect_command($par)));
         }
       }
     } else {
-      cmd_run("tell $OPERATOR_HANDLE available commands: " . join(", ", @master_commands));
+      tell_operator("available commands: " . join(", ", @master_commands));
     }
   } elsif ($command eq "ics") {
-    cmd_run($parameters);
-    cmd_run("tell $OPERATOR_HANDLE OK ics");
+    if ($parameters !~ /^(?|)$/) {
+      cmd_run($parameters);
+      tell_operator("OK ics");
+    } else {
+      tell_operator(detect_command_helptext($command));
+    }
   } elsif ($command eq "list") {
-    cmd_run("tell $OPERATOR_HANDLE games=" . gameList());
+    tell_operator(($#games_num + 1) . "/$maxGamesNum games=" . gameList());
   } elsif ($command eq "logout") {
     if ($parameters =~ /^(0|1)$/) {
       if ($parameters eq "") {
         $parameters = 0;
       }
-      cmd_run("tell $OPERATOR_HANDLE OK logout");
+      tell_operator("OK logout");
       cmd_run("quit");
       print STDERR "info: logout with exit value $parameters\n";
       exit($parameters);
     } elsif ($parameters =~ /^(?|)$/) {
-      cmd_run("tell $OPERATOR_HANDLE " . detect_command_helptext($command));
+      tell_operator(detect_command_helptext($command));
     } else {
-      cmd_run("tell $OPERATOR_HANDLE error: invalid logout parameter");
+      tell_operator("error: invalid logout parameter");
     }
   } elsif ($command eq "max") {
     if ($parameters =~ /^([1-9]\d*|)$/) {
       if ($parameters ne "") {
         if ($parameters < $maxGamesNum) {
           for (my $i=$parameters; $i<$maxGamesNum; $i++) {
-            if ($games_num[$i]) { remove_game($games_num[$i]); }
+            if ($games_num[$i]) {
+              remove_game($games_num[$i]);
+            }
           }
         }
         $maxGamesNum = $parameters;
       }
-      cmd_run("tell $OPERATOR_HANDLE max=$maxGamesNum");
+      tell_operator("max=$maxGamesNum");
     } else {
-      cmd_run("tell $OPERATOR_HANDLE error: invalid max parameter");
+      tell_operator("error: invalid max parameter");
     }
   } elsif ($command eq "observe") {
     if ($parameters ne "") {
       observe($parameters);
-      cmd_run("tell $OPERATOR_HANDLE OK observe");
+      tell_operator("OK observe");
     } else {
-      cmd_run("tell $OPERATOR_HANDLE " . detect_command_helptext("observe"));
+      tell_operator(detect_command_helptext($command));
     }
   } elsif ($command eq "relay") {
     if ($parameters =~ /^([\d\s]+)$/) {
@@ -673,7 +694,7 @@ sub process_master_command {
           $relayMode = 1;
           observe($parameters);
         } else {
-          cmd_run("tell $OPERATOR_HANDLE error: reset follow before activating relay");
+          tell_operator("error: reset follow before activating relay");
         }
       }
     } elsif ($parameters eq "") {
@@ -681,21 +702,21 @@ sub process_master_command {
       $autorelayMode = 0;
       @autorelayGamesRunning = ();
     } elsif ($parameters ne "?") {
-      cmd_run("tell $OPERATOR_HANDLE error: invalid relay parameter");
+      tell_operator("error: invalid relay parameter");
     }
-    cmd_run("tell $OPERATOR_HANDLE relay=$relayMode");
+    tell_operator("relay=$relayMode");
   } elsif ($command eq "reset") {
     reset_games();
-    cmd_run("tell $OPERATOR_HANDLE OK reset");
+    tell_operator("OK reset");
   } elsif ($command eq "round") {
     if ($parameters =~ /^([^\[\]"]+|""|)$/) {
       if ($parameters ne "") {
         $newGame_round = $parameters;
         if ($newGame_round eq "\"\"") { $newGame_round = ""; }
       }
-      cmd_run("tell $OPERATOR_HANDLE round=$newGame_round");
+      tell_operator("round=$newGame_round");
     } else {
-      cmd_run("tell $OPERATOR_HANDLE error: invalid round parameter");
+      tell_operator("error: invalid round parameter");
     }
   } elsif ($command eq "site") {
     if ($parameters =~ /^([^\[\]"]+|""|)$/) {
@@ -703,30 +724,30 @@ sub process_master_command {
         $newGame_site = $parameters;
         if ($newGame_site eq "\"\"") { $newGame_site = ""; }
       }
-      cmd_run("tell $OPERATOR_HANDLE site=$newGame_site");
+      tell_operator("site=$newGame_site");
     } else {
-      cmd_run("tell $OPERATOR_HANDLE error: invalid site parameter");
+      tell_operator("error: invalid site parameter");
     }
   } elsif ($command eq "status") {
-    cmd_run("tell $OPERATOR_HANDLE games=" . gameList() . " max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode verbose=$VERBOSE event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round");
+    tell_operator(($#games_num + 1) . "/$maxGamesNum games=" . gameList() . " max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode verbose=$VERBOSE event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round");
   } elsif ($command eq "temp") {
     open(thisFile, ">$PGN_FILE");
     print thisFile temp_pgn();
     close(thisFile);
     print STDERR "info: saved temporary PGN data\n" if $VERBOSE;
-    cmd_run("tell $OPERATOR_HANDLE OK temp");
+    tell_operator("OK temp");
   } elsif ($command eq "verbose") {
     if ($parameters =~ /^(0|1|)$/) {
       if ($parameters ne "") {
         $VERBOSE = $parameters;
       }
-      cmd_run("tell $OPERATOR_HANDLE verbose=$VERBOSE");
+      tell_operator("verbose=$VERBOSE");
     } else {
-      cmd_run("tell $OPERATOR_HANDLE error: invalid verbose parameter");
+      tell_operator("error: invalid verbose parameter");
     }
   } else {
     print STDERR "warning: invalid command: $command $parameters\n" if $VERBOSE;
-    cmd_run("tell $OPERATOR_HANDLE error: invalid command: $command $parameters");
+    tell_operator("error: invalid command: $command $parameters");
   }
 }
 
@@ -738,10 +759,10 @@ sub observe {
       if (find_gameIndex($theseGames[$i]) == -1) {
         cmd_run("observe $theseGames[$i]");
       } else {
-        cmd_run("tell $OPERATOR_HANDLE warning: game $theseGames[$i] already observed");
+        tell_operator("warning: game $theseGames[$i] already observed");
       }
     } else {
-      cmd_run("tell $OPERATOR_HANDLE error: invalid game $theseGames[$i]");
+      tell_operator("error: invalid game $theseGames[$i]");
     }
   }
 }
@@ -868,7 +889,7 @@ sub setup {
   cmd_run("set pin 0");
   cmd_run("set mailmess 0");
 
-  cmd_run("tell $OPERATOR_HANDLE ready");
+  tell_operator("ready");
   print STDERR "info: finished initialization\n" if $VERBOSE;
 }
 
