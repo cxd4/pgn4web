@@ -59,6 +59,7 @@ sub cmd_run {
 }
 
 our $pgn = "";
+our $lastPgn = "";
 
 our $maxGamesNumDefault = 64;
 our $maxGamesNum = $maxGamesNumDefault;
@@ -439,9 +440,20 @@ sub refresh_pgn {
     }
   }
 
-  open(thisFile, ">$PGN_FILE");
-  print thisFile $pgn;
-  close(thisFile);
+  if ($pgn eq "") {
+    $pgn = temp_pgn();
+  }
+
+  if ($pgn ne $lastPgn) {
+    open(thisFile, ">$PGN_FILE");
+    print thisFile $pgn;
+    close(thisFile);
+    $lastPgn = $pgn;
+  }
+}
+
+sub temp_pgn {
+  return "[Event \"$newGame_event\"]\n" . "[Site \"$newGame_site\"]\n" . "[Date \"$newGame_date\"]\n" . "[Round \"$newGame_round\"]\n" . "[White \"?\"]\n" . "[Black \"?\"]\n" . "[Result \"*\"]\n\n*\n\n";
 }
 
 our @master_commands = ();
@@ -532,9 +544,6 @@ sub process_master_command {
           cmd_run("tell $OPERATOR_HANDLE error: reset follow before activating autorelay");
         }
       }
-    } elsif ($parameters eq "") {
-      $autorelayMode = 0;
-      @autorelayGamesRunning = ();
     } elsif ($parameters ne "?") {
       cmd_run("tell $OPERATOR_HANDLE error: invalid autorelay parameter");
     }
@@ -619,19 +628,21 @@ sub process_master_command {
   } elsif ($command eq "list") {
     cmd_run("tell $OPERATOR_HANDLE games=" . gameList());
   } elsif ($command eq "logout") {
-    if ($parameters =~ /^(0|1|)$/) {
+    if ($parameters =~ /^(0|1)$/) {
       if ($parameters eq "") {
         $parameters = 0;
       }
       cmd_run("tell $OPERATOR_HANDLE OK logout");
       cmd_run("quit");
       print STDERR "info: logout with exit value $parameters\n";
-      exit $parameters;
+      exit($parameters);
+    } elsif ($parameters =~ /^(?|)$/) {
+      cmd_run("tell $OPERATOR_HANDLE " . detect_command_helptext($command));
     } else {
       cmd_run("tell $OPERATOR_HANDLE error: invalid logout parameter");
     }
   } elsif ($command eq "max") {
-    if ($parameters =~ /^\d*$/) {
+    if ($parameters =~ /^([1-9]\d*|)$/) {
       if ($parameters ne "") {
         if ($parameters < $maxGamesNum) {
           for (my $i=$parameters; $i<$maxGamesNum; $i++) {
@@ -700,7 +711,7 @@ sub process_master_command {
     cmd_run("tell $OPERATOR_HANDLE games=" . gameList() . " max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode verbose=$VERBOSE event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round");
   } elsif ($command eq "temp") {
     open(thisFile, ">$PGN_FILE");
-    print thisFile "[Event \"$newGame_event\"]\n" . "[Site \"$newGame_site\"]\n" . "[Date \"$newGame_date\"]\n" . "[Round \"$newGame_round\"]\n" . "[White \"?\"]\n" . "[Black \"?\"]\n" . "[Result \"*\"]\n\n*\n\n";
+    print thisFile temp_pgn();
     close(thisFile);
     print STDERR "info: saved temporary PGN data\n" if $VERBOSE;
     cmd_run("tell $OPERATOR_HANDLE OK temp");
@@ -892,6 +903,7 @@ eval {
   setup();
   main_loop();
   shut_down();
+  exit(1);
 };
 if ($@) {
   print STDERR "error: failed: $@\n";
