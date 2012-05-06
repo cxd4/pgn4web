@@ -519,7 +519,7 @@ add_master_command ("logout", "logout 0|1 (to logout from freechess.org, returni
 add_master_command ("max", "max 64 (to set the maximum number of games for the PGN data)");
 add_master_command ("observe", "observe 12 34 56 .. (to observe given games)");
 add_master_command ("relay", "relay 12 34 56 .. (to observe given games from an event relay)");
-add_master_command ("reset", "reset (to reset observed/followed games list and setting)");
+add_master_command ("reset", "reset 1 (to reset observed/followed games list and setting)");
 add_master_command ("round", "round 9 (to set the PGN header tag round)");
 add_master_command ("site", "site Moscow RUS (to set the PGN header tag site)");
 add_master_command ("status", "status (to show status summary info)");
@@ -640,17 +640,21 @@ sub process_master_command {
     }
     tell_operator("follow=$followMode");
   } elsif ($command eq "forget") {
-    my @theseGames = split(" ", $parameters);
-    for (my $i=0; $i<=$#theseGames; $i++) {
-      if ($theseGames[$i] =~ /\d+/) {
-        if (remove_game($theseGames[$i]) < 0) {
-          tell_operator("error: game $theseGames[$i] not found");
+    if ($parameters ne "") {
+      my @theseGames = split(" ", $parameters);
+      for (my $i=0; $i<=$#theseGames; $i++) {
+        if ($theseGames[$i] =~ /\d+/) {
+          if (remove_game($theseGames[$i]) < 0) {
+            tell_operator("error: game $theseGames[$i] not found");
+          }
+        } else {
+          tell_operator("error: invalid game $theseGames[$i]");
         }
-      } else {
-        tell_operator("error: invalid game $theseGames[$i]");
       }
+      tell_operator("OK forget");
+    } else {
+      tell_operator(detect_command_helptext($command));
     }
-    tell_operator("OK forget");
   } elsif ($command eq "help") {
     if ($parameters =~ /\S/) {
       my $par;
@@ -674,10 +678,7 @@ sub process_master_command {
     tell_operator(($#games_num + 1) . "/$maxGamesNum games=" . gameList());
   } elsif ($command eq "logout") {
     if ($parameters =~ /^(0|1)$/) {
-      if ($parameters eq "") {
-        $parameters = 0;
-      }
-      tell_operator("OK logout");
+      tell_operator("OK logout($parameters)");
       cmd_run("quit");
       print STDERR "info: logout with exit value $parameters\n";
       exit($parameters);
@@ -732,8 +733,14 @@ sub process_master_command {
     }
     tell_operator("relay=$relayMode");
   } elsif ($command eq "reset") {
-    reset_games();
-    tell_operator("OK reset");
+    if ($parameters eq "1") {
+      reset_games();
+      tell_operator("OK reset");
+    } elsif ($parameters eq "") {
+      tell_operator(detect_command_helptext($command));
+    } else {
+      tell_operator("error: invalid reset parameter");
+    }
   } elsif ($command eq "round") {
     if ($parameters =~ /^([^\[\]"]+|""|)$/) {
       if ($parameters ne "") {
