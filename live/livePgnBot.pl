@@ -429,6 +429,10 @@ sub refresh_pgn {
         $thisBlackTitle = "";
         $thisBlack = $games_black[$i];
       }
+      if ($relayMode == 1) {
+        $thisWhite =~ s/(?<=.)([A-Z])/ $1/g;
+        $thisBlack =~ s/(?<=.)([A-Z])/ $1/g;
+      }
       if (($followMode == 1) && ($thisResult eq "*")) {
         $thisWhite .= " ";
         $thisBlack .= " ";
