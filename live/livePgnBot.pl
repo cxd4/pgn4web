@@ -320,7 +320,12 @@ sub process_line {
       }
     } else {
       if ($autorelayMode == 1) {
-        cmd_run("observe $thisGameNum");
+        if ($#games_num + 1 < $maxGamesNum) {
+          cmd_run("observe $thisGameNum");
+        } else {
+          print STDERR "warning: more relayed games than max=$maxGamesNum\n" if $VERBOSE;
+          tell_operator("warning: more relayed games than max=$maxGamesNum");
+        }
       }
     }
   } elsif ($newGame_num < 0) {
