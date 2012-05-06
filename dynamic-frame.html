@@ -478,14 +478,10 @@ function customFunctionOnPgnTextLoad() {
   }
 }
 
-function meaningfulHeader(tagValue) {
-  return ((typeof(tagValue) == "string") && (tagValue.match(/[^\s?.-]/)));
-}
-
 function fixHeaderItem(tag, objectId, label) {
   if (theObj = document.getElementById(objectId)) {
     var tagValue = tag ? customPgnHeaderTag(tag, objectId) : theObj.innerHTML;
-    if (meaningfulHeader(tagValue)) {
+    if (tagValue) {
       theObj.title = label + ": " + tagValue;
       theObj.className = "leftRightSpacing";
     } else {
@@ -619,6 +615,10 @@ if (window.parent !== window) {
 
 function updateBareShortcut() {
   boardShortcut("G5", bare ? "unhide game info\n\n" + gameTooltipInfo() : "maximize chessboard and hide game info", function(t,e){ toggleBareChessboard(); });
+}
+
+function meaningfulHeader(tagValue) {
+  return ((typeof(tagValue) == "string") && (tagValue.match(/[^\s?.-]/)));
 }
 
 function gameTooltipInfo() {
