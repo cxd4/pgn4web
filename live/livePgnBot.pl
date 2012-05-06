@@ -75,6 +75,7 @@ our @GAMES_event = ();
 our @GAMES_site = ();
 our @GAMES_date = ();
 our @GAMES_round = ();
+our @GAMES_eco = ();
 our @GAMES_timeLeft = ();
 
 our $newGame_num = -1;
@@ -113,6 +114,7 @@ sub reset_games {
   @GAMES_site = ();
   @GAMES_date = ();
   @GAMES_round = ();
+  @GAMES_eco = ();
   @GAMES_timeLeft = ();
   $newGame_event = "";
   $newGame_site = "";
@@ -162,6 +164,7 @@ sub save_game {
       $GAMES_site[$newGame_num] = $newGame_site;
       $GAMES_date[$newGame_num] = $newGame_date;
       $GAMES_round[$newGame_num] = $newGame_round;
+      $GAMES_eco[$newGame_num] = "";
     }
   } else {
     if (($games_white[$thisGameIndex] ne $newGame_white) || ($games_black[$thisGameIndex] ne $newGame_black) || ($games_whiteElo[$thisGameIndex] ne $newGame_whiteElo) || ($games_blackElo[$thisGameIndex] ne $newGame_blackElo)) {
@@ -238,6 +241,7 @@ sub remove_game {
   delete $GAMES_site[$thisGameNum];
   delete $GAMES_date[$thisGameNum];
   delete $GAMES_round[$thisGameNum];
+  delete $GAMES_eco[$thisGameNum];
   delete $GAMES_timeLeft[$thisGameNum];
   refresh_pgn();
   return $thisGameIndex;
@@ -298,15 +302,17 @@ sub process_line {
       $autorelayEvent = $1;
       $autorelayEvent =~ s/[\s-]+$//g;
     }
-  } elsif ($line =~ /^:(\d+)\s+\S+\s+\S+\s+(\S+)/) {
+  } elsif ($line =~ /^:(\d+)\s+\S+\s+\S+\s+(\S+)\s+(\S+)/) {
     my $thisGameNum = $1;
     my $thisGameResult = $2;
+    my $thisGameEco = $3;
     if ($autorelayMode == 1) {
       push(@autorelayGamesRunning, $thisGameNum);
       $GAMES_event[$thisGameNum] = $autorelayEvent;
       $GAMES_site[$thisGameNum] = "";
       $GAMES_date[$thisGameNum] = "";
       $GAMES_round[$thisGameNum] = $autorelayRound;
+      $GAMES_eco[$thisGameNum] = $thisGameEco;
     }
     if (find_gameIndex($thisGameNum) != -1) {
       if ($thisGameResult ne "*") {
@@ -339,6 +345,7 @@ sub process_line {
         delete $GAMES_site[$newGame_num];
         delete $GAMES_date[$newGame_num];
         delete $GAMES_round[$newGame_num];
+        delete $GAMES_eco[$newGame_num];
         cmd_run("unobserve $newGame_num");
         tell_operator("warning: unsupported game $newGame_num: $gameType");
         reset_newGame();
@@ -474,6 +481,9 @@ sub refresh_pgn {
       }
       if ($thisBlackTitle ne "") {
         $pgn .= "[BlackTitle \"" . $thisBlackTitle . "\"]\n";
+      }
+      if ($GAMES_eco[$games_num[$i]] ne "") {
+        $pgn .= "[ECO \"" . $GAMES_eco[$games_num[$i]] . "\"]\n";
       }
       $pgn .= $games_movesText[$i];
       $pgn .= "\n$GAMES_timeLeft[$games_num[$i]]";
