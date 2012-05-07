@@ -61,7 +61,7 @@ sub cmd_run {
 our $pgn = "";
 our $lastPgn = "";
 
-our $maxGamesNumDefault = 64;
+our $maxGamesNumDefault = 32; # frechess.org limit
 our $maxGamesNum = $maxGamesNumDefault;
 our @games_num = ();
 our @games_white = ();
@@ -536,7 +536,7 @@ add_master_command ("help", "help command (to show commands help)");
 add_master_command ("ics", "ics server_command (to run a custom command on freechess.org)");
 add_master_command ("list", "list (to show lists of observed games)");
 add_master_command ("logout", "logout 0|1 (to logout from freechess.org, returning the given exit value)");
-add_master_command ("max", "max 64 (to set the maximum number of games for the PGN data)");
+add_master_command ("max", "max 32 (to set the maximum number of games for the PGN data)");
 add_master_command ("observe", "observe 12 34 56 .. (to observe given games)");
 add_master_command ("relay", "relay 12 34 56 .. (to observe given games from an event relay)");
 add_master_command ("reset", "reset 1 (to reset observed/followed games list and setting)");
@@ -715,6 +715,10 @@ sub process_master_command {
   } elsif ($command eq "max") {
     if ($parameters =~ /^([1-9]\d*|)$/) {
       if ($parameters ne "") {
+        if ($parameters > $maxGamesNumDefault) {
+          print STDERR "warning: max number of games set above frechess.org observe limit of $maxGamesNumDefault\n";
+          tell_operator("warning: max number of games set above frechess.org observe limit of $maxGamesNumDefault");
+        }
         if ($parameters < $maxGamesNum) {
           for (my $i=$parameters; $i<$maxGamesNum; $i++) {
             if ($games_num[$i]) {
