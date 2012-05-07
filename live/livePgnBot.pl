@@ -92,6 +92,7 @@ our $newGame_date = "";
 our $newGame_round = "";
 
 our $followMode = 0;
+our $followLast = "";
 our $relayMode = 0;
 our $autorelayMode = 0;
 our @autorelayGamesRunning = ();
@@ -121,6 +122,7 @@ sub reset_games {
   $newGame_date = "";
   $newGame_round = "";
   $followMode = 0;
+  $followLast = "";
   $relayMode = 0;
   $autorelayMode = 0;
   @autorelayGamesRunning = ();
@@ -638,22 +640,27 @@ sub process_master_command {
       if ($relayMode == 0) {
         $followMode = 1;
         cmd_run("follow $parameters");
+        $followLast = $parameters;
       } else {
         tell_operator("error: reset relay before activating follow");
       }
     } elsif ($parameters eq "") {
       $followMode = 0;
+      $followLast = "";
       cmd_run("follow");
     } elsif ($parameters =~ /^(0|1)$/) {
       if (($parameters == 0) || ($relayMode == 0)) {
         $followMode = $parameters;
+        if ($parameters == 0) {
+          $followLast = "";
+        }
       } else {
         tell_operator("error: reset relay before activating follow");
       }
     } elsif ($parameters ne "?") {
       tell_operator("error: invalid follow parameter");
     }
-    tell_operator("follow=$followMode");
+    tell_operator("follow=$followMode last=$followLast");
   } elsif ($command eq "forget") {
     if ($parameters ne "") {
       my @theseGames = split(" ", $parameters);
