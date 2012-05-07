@@ -494,7 +494,10 @@ sub refresh_pgn {
       }
       $pgn .= $games_movesText[$i];
       $pgn .= "\n$GAMES_timeLeft[$games_num[$i]]";
-      $pgn .= " $games_result[$i]\n\n";
+      if ($games_result[$i] =~ /^[012\/\*-]+$/) {
+        $pgn .= " $games_result[$i]";
+      }
+      $pgn .= "\n\n";
     }
   }
 
