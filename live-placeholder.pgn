@@ -2,8 +2,8 @@
 % it allows to announce the next broadcast on live.html
 % if the Result tag is set to "*" live.html will automatically refresh games
 
-[White "next event"]
-[Black "date and time"]
+[Event "next event"]
+[Date "date and time"]
 % [Result "*"]
 
 {[%pgn4web click square H6 to check for the live broadcast start]}

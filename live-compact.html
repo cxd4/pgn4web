@@ -80,7 +80,9 @@
   SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, false);
 
   function customFunctionOnCheckLiveBroadcastStatus() {
-    if (theObj = document.getElementById("GameLiveStatus")) { theObj.innerHTML = theObj.title; }
+    if (theObj = document.getElementById("GameLiveStatus")) {
+      theObj.innerHTML = ((numberOfGames === 1) && (PlyNumber === 0) && (!gameFEN[currentGame])) && (!gameWhite[currentGame]) && (!gameBlack[currentGame])? "" : theObj.title;
+    }
   }
 
   function customFunctionOnPgnTextLoad() {
