@@ -97,7 +97,7 @@ our $followMode = 0;
 our $followLast = "";
 our $relayMode = 0;
 our $autorelayMode = 0;
-our @autorelayGamesRunning = ();
+our @GAMES_autorelayRunning = ();
 
 our $autorelayEvent;
 our $autorelayRound;
@@ -127,7 +127,7 @@ sub reset_games {
   $followLast = "";
   $relayMode = 0;
   $autorelayMode = 0;
-  @autorelayGamesRunning = ();
+  @GAMES_autorelayRunning = ();
 
   refresh_pgn();
 }
@@ -311,21 +311,12 @@ sub process_line {
     my $thisGameResult = $2;
     my $thisGameEco = $3;
     if ($autorelayMode == 1) {
-      my $pushThis = 1;
-      for (my $i=0; $i<=$#autorelayGamesRunning; $i++) {
-        if ($thisGameNum == $autorelayGamesRunning[$i]) {
-          $pushThis = 0;
-          $i = $#autorelayGamesRunning + 1;
-        }
-      }
-      if ($pushThis == 1) {
-        push(@autorelayGamesRunning, $thisGameNum);
-      }
       $GAMES_event[$thisGameNum] = $autorelayEvent;
       $GAMES_site[$thisGameNum] = "";
       $GAMES_date[$thisGameNum] = "";
       $GAMES_round[$thisGameNum] = $autorelayRound;
       $GAMES_eco[$thisGameNum] = $thisGameEco;
+      $GAMES_autorelayRunning[$thisGameNum] = 1;
     }
     if (find_gameIndex($thisGameNum) != -1) {
       if ($thisGameResult ne "*") {
@@ -611,7 +602,7 @@ sub process_master_command {
     if ($parameters =~ /^(0|1)$/) {
       if ($parameters == 0) {
         $autorelayMode = 0;
-        @autorelayGamesRunning = ();
+        @GAMES_autorelayRunning = ();
       } else {
         if ($followMode == 0) {
           $autorelayMode = 1;
@@ -760,7 +751,7 @@ sub process_master_command {
       if ($parameters == 0) {
         $relayMode = 0;
         $autorelayMode = 0;
-        @autorelayGamesRunning = ();
+        @GAMES_autorelayRunning = ();
       } else {
         if ($followMode == 0) {
           $relayMode = 1;
@@ -772,7 +763,7 @@ sub process_master_command {
     } elsif ($parameters eq "") {
       $relayMode = 0;
       $autorelayMode = 0;
-      @autorelayGamesRunning = ();
+      @GAMES_autorelayRunning = ();
     } elsif ($parameters ne "?") {
       tell_operator("error: invalid relay parameter");
     }
@@ -867,17 +858,12 @@ sub check_releay_results {
     cmd_run("xtell relay listgames");
     $last_check_relay_time = time();
     if ($autorelayMode == 1) {
-      my $gameRunning;
-      my $gameNum;
-      NEXTGAME: for $gameNum (@games_num) {
-        for $gameRunning (@autorelayGamesRunning) {
-          if ($gameRunning == $gameNum) {
-            next NEXTGAME;
-          }
+      for my $thisGameNum (@games_num) {
+        if (!$GAMES_autorelayRunning[$thisGameNum]) {
+          remove_game($thisGameNum);
         }
-        remove_game($gameNum);
       }
-      @autorelayGamesRunning = ();
+      @GAMES_autorelayRunning = ();
     }
   }
 }
