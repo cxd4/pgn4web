@@ -578,9 +578,11 @@ a.variation {
 
     if (theObj = document.getElementById("GameWhite")) {
       theObj.title = "white player:   " + gameWhite[currentGame] + (showPlayersInfo ? ((whiteTitle = customPgnHeaderTag("WhiteTitle")) ? "   " + whiteTitle : "") + ((whiteElo = customPgnHeaderTag("WhiteElo")) ? "   " + whiteElo : "") : "");
+      if (theObj.innerHTML === "") { theObj.innerHTML = "&nbsp;"; }
     }
     if (theObj = document.getElementById("GameBlack")) {
       theObj.title = "black player:   " + gameBlack[currentGame] + (showPlayersInfo ? ((blackTitle = customPgnHeaderTag("BlackTitle")) ? "   " + blackTitle : "") + ((blackElo = customPgnHeaderTag("BlackElo")) ? "   " + blackElo : "") : "");
+      if (theObj.innerHTML === "") { theObj.innerHTML = "&nbsp;"; }
     }
   }
 
