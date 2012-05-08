@@ -312,8 +312,8 @@ sub process_line {
     my $thisGameEco = $3;
     if ($autorelayMode == 1) {
       $GAMES_event[$thisGameNum] = $autorelayEvent;
-      $GAMES_site[$thisGameNum] = "";
-      $GAMES_date[$thisGameNum] = "";
+      $GAMES_site[$thisGameNum] = $newGame_site;
+      $GAMES_date[$thisGameNum] = $newGame_date;
       $GAMES_round[$thisGameNum] = $autorelayRound;
       $GAMES_eco[$thisGameNum] = $thisGameEco;
       $GAMES_autorelayRunning[$thisGameNum] = 1;
