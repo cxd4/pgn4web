@@ -400,7 +400,7 @@ function fillGameList(force) {
     gameListCurrentGame = currentGame;
     if (theObj = document.getElementById("GameList")) {
       var text = "<div class='gameListHeader' id='GameListHeader'>";
-      text += "&nbsp;<b><a href='javascript:void(0);' onclick='refreshPgnSource();' title='" + numberOfGames + " games'>" + numberOfGames + "</a></b>&nbsp;";
+      text += "&nbsp;<b><a href='javascript:void(0);' onclick='refreshPgnSource(); this.blur();' title='" + numberOfGames + " games'>" + numberOfGames + "</a></b>&nbsp;";
       text += "<a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = 0; } this.blur();' title='scroll to top page'><b>&nbsp;&lt;&lt;&nbsp;</b></a>&nbsp;";
       text += "<a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop -= (gameListBodyHeight - gameListLineHeight); } this.blur();' title='scroll to previous page'><b>&nbsp;&lt;&nbsp;</b></a>&nbsp;";
       text += "<a href='javascript:void(0);' onclick='selectGameList(-1);' title='back to chessboard'><b>&nbsp;&middot;&middot;&middot;&nbsp;</b></a>&nbsp;";
