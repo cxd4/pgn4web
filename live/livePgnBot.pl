@@ -22,8 +22,10 @@ our $BOT_PASSWORD = $ARGV[1] || "";
 
 our $OPERATOR_HANDLE = $ARGV[2] || "";
 
+our @STARTUP_COMMANDS = split(/;/, $ARGV[3] || "");
+
 if ($BOT_HANDLE eq "" | $OPERATOR_HANDLE eq "") {
-  die "\n$0 BOT_HANDLE BOT_PASSWORD OPERATOR_HANDLE\n\nBOT_HANDLE = handle for the bot account\nBOT_PASSWORD = password for the both account, use \"\" for a guest account\nOPERATOR_HANDLE = handle for the bot operator to send commands\n\nbot saving PGN data from live games on frechess.org\nmore help available from the operator account with \"tell BOT_HANDLE help\"\n\n";
+  die "\n$0 BOT_HANDLE BOT_PASSWORD OPERATOR_HANDLE [STARTUP_COMMANDS]\n\nBOT_HANDLE = handle for the bot account\nBOT_PASSWORD = password for the both account, use \"\" for a guest account\nOPERATOR_HANDLE = handle for the bot operator to send commands\nSTARTUP_COMMANDS = startup commands list, separated by semicolon\n\nbot saving PGN data from live games on frechess.org\nmore help available from the operator account with \"tell BOT_HANDLE help\"\n\n";
 }
 
 
@@ -542,6 +544,7 @@ add_master_command ("relay", "relay 12 34 56 .. (to observe given games from an 
 add_master_command ("reset", "reset 1 (to reset observed/followed games list and setting)");
 add_master_command ("round", "round 9 (to set the PGN header tag round)");
 add_master_command ("site", "site Moscow RUS (to set the PGN header tag site)");
+add_master_command ("startup", "startup (to show startup commands list)");
 add_master_command ("status", "status (to show status summary info)");
 add_master_command ("temp", "temp (to save temporary PGN data)");
 add_master_command ("verbose", "verbose 0|1 (to set verbosity of the bot log terminal)");
@@ -790,6 +793,8 @@ sub process_master_command {
     } else {
       tell_operator("error: invalid site parameter");
     }
+  } elsif ($command eq "startup") {
+    tell_operator("startup=" . ($ARGV[3] || ""));
   } elsif ($command eq "status") {
     tell_operator(($#games_num + 1) . "/$maxGamesNum games=" . gameList() . " max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode verbose=$VERBOSE event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round");
   } elsif ($command eq "temp") {
@@ -950,9 +955,19 @@ sub setup {
   cmd_run("set gin 0");
   cmd_run("set pin 0");
   cmd_run("set mailmess 0");
-
-  tell_operator("ready");
   print STDERR "info: finished initialization\n" if $VERBOSE;
+
+  if ($#STARTUP_COMMANDS >= 0) {
+    for (my $i=0; $i<=$#STARTUP_COMMANDS; $i++) {
+      if ($STARTUP_COMMANDS[$i] =~ /\s*(\S+)\s*(.*)$/) {
+        process_master_command($1, $2);
+      }
+    }
+    print STDERR "info: finished startup commands\n" if $VERBOSE;
+  } else {
+    print STDERR "info: no startup commands\n" if $VERBOSE;
+  }
+  tell_operator("ready");
 }
 
 sub shut_down {
