@@ -311,7 +311,16 @@ sub process_line {
     my $thisGameResult = $2;
     my $thisGameEco = $3;
     if ($autorelayMode == 1) {
-      push(@autorelayGamesRunning, $thisGameNum);
+      my $pushThis = 1;
+      for (my $i=0; $i<=$#autorelayGamesRunning; $i++) {
+        if ($thisGameNum == $autorelayGamesRunning[$i]) {
+          $pushThis = 0;
+          $i = $#autorelayGamesRunning + 1;
+        }
+      }
+      if ($pushThis == 1) {
+        push(@autorelayGamesRunning, $thisGameNum);
+      }
       $GAMES_event[$thisGameNum] = $autorelayEvent;
       $GAMES_site[$thisGameNum] = "";
       $GAMES_date[$thisGameNum] = "";
@@ -333,7 +342,7 @@ sub process_line {
       }
     }
   } elsif ($line =~ /^..ANNOUNCEMENT.. from relay: FICS is relaying/) {
-    if ($#games_num < 0) {
+    if (($autorelayMode == 1) && ($#games_num < 0)) {
       cmd_run("xtell relay listgames");
     }
   } elsif ($newGame_num < 0) {
