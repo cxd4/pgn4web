@@ -332,6 +332,10 @@ sub process_line {
         }
       }
     }
+  } elsif ($line =~ /^..ANNOUNCEMENT.. from relay: FICS is relaying/) {
+    if ($#games_num < 0) {
+      cmd_run("xtell relay listgames");
+    }
   } elsif ($newGame_num < 0) {
     if ($line =~ /^Movelist for game (\d+):/) {
       reset_newGame();
