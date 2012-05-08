@@ -514,7 +514,7 @@ sub refresh_pgn {
 }
 
 sub temp_pgn {
-  return "[Event \"$newGame_event\"]\n" . "[Site \"$newGame_site\"]\n" . "[Date \"$newGame_date\"]\n" . "[Round \"$newGame_round\"]\n" . "[White \"?\"]\n" . "[Black \"?\"]\n" . "[Result \"*\"]\n\n*\n\n";
+  return "[Event \"$newGame_event\"]\n" . "[Site \"$newGame_site\"]\n" . "[Date \"$newGame_date\"]\n" . "[Round \"$newGame_round\"]\n" . "[White \"\"]\n" . "[Black \"\"]\n" . "[Result \"*\"]\n\n*\n\n";
 }
 
 our @master_commands = ();
