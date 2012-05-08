@@ -541,7 +541,7 @@ add_master_command ("forget", "forget 12 34 56 .. (to eliminate given past games
 add_master_command ("help", "help command (to show commands help)");
 add_master_command ("ics", "ics server_command (to run a custom command on freechess.org)");
 add_master_command ("list", "list (to show lists of observed games)");
-add_master_command ("logout", "logout 0|1 (to logout from freechess.org, returning the given exit value)");
+add_master_command ("logout", "logout 1 (to logout from freechess.org, returning the given exit value)");
 add_master_command ("max", "max 30 (to set the maximum number of games for the PGN data)");
 add_master_command ("observe", "observe 12 34 56 .. (to observe given games)");
 add_master_command ("relay", "relay 12 34 56 .. (to observe given games from an event relay)");
@@ -709,7 +709,7 @@ sub process_master_command {
   } elsif ($command eq "list") {
     tell_operator(($#games_num + 1) . "/$maxGamesNum games=" . gameList());
   } elsif ($command eq "logout") {
-    if ($parameters =~ /^(0|1)$/) {
+    if ($parameters =~ /^\d+$/) {
       tell_operator("OK logout($parameters)");
       cmd_run("quit");
       print STDERR "info: logout with exit value $parameters\n";
