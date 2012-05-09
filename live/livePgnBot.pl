@@ -946,6 +946,7 @@ sub setup {
   cmd_run("set shout 0");
   cmd_run("set cshout 0");
   cmd_run("set kibitz 0");
+  cmd_run("set kiblevel 9000");
   cmd_run("set chanoff 1");
   cmd_run("set open 0");
   cmd_run("set gin 0");
