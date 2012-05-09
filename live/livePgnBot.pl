@@ -24,18 +24,15 @@ our $OPERATOR_HANDLE = $ARGV[2] || "";
 
 our @STARTUP_COMMANDS = split(/;/, $ARGV[3] || "");
 
+our @FINGER_NOTES = split(/;/, $ARGV[4] || "");
+if ($#FINGER_NOTES >= 9) {
+  print STDERR "warning: only first 9 lines of custom finger notes will be used\n";
+}
+
 if ($BOT_HANDLE eq "" | $OPERATOR_HANDLE eq "") {
-  die "\n$0 BOT_HANDLE BOT_PASSWORD OPERATOR_HANDLE [STARTUP_COMMANDS]\n\nBOT_HANDLE = handle for the bot account\nBOT_PASSWORD = password for the both account, use \"\" for a guest account\nOPERATOR_HANDLE = handle for the bot operator to send commands\nSTARTUP_COMMANDS = startup commands list, separated by semicolon\n\nbot saving PGN data from live games on frechess.org\nmore help available from the operator account with \"tell BOT_HANDLE help\"\n\n";
+  die "\n$0 HANDLE PASSWORD OPERATOR [STARTUP] [FINGER]\n\nHANDLE = handle for the bot account\nPASSWORD = password for the both account, use \"\" for a guest account\nOPERATOR = handle for the bot operator to send commands\nSTARTUP = startup commands list, separated by semicolon\nFINGER = finger notes, lines separated by semicolon\n\nbot saving PGN data from live games on frechess.org\nmore help available from the operator account with \"tell BOT_HANDLE help\"\n\n";
 }
 
-
-sub finger {
-  my ($username) = (@_);
-
-  return (
-    "unattended live PGN bot operated by $OPERATOR_HANDLE",
-  );
-}
 
 our $PGN_FILE = "live.pgn";
 
@@ -934,9 +931,9 @@ sub setup {
 
   $telnet->prompt("/^/");
 
-  my @finger = finger($username);
+  unshift(@FINGER_NOTES, "unattended livePgnBot operated by $OPERATOR_HANDLE");
   for (my $i=1; $i<=10; $i++) {
-    cmd_run("set $i " .  ($finger[$i-1] || ""));
+    cmd_run("set $i " . ($FINGER_NOTES[$i-1] || ""));
   }
 
   cmd_run("iset nowrap 1");
