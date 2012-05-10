@@ -969,12 +969,7 @@ sub setup {
   $telnet->prompt("/^/");
 
   cmd_run("iset nowrap 1");
-  cmd_run("set 1 unattended livePgnBot operated by $OPERATOR_HANDLE");
   cmd_run("set bell 0");
-  cmd_run("set highlight 0");
-  cmd_run("set tzone GMT");
-  cmd_run("set ptime 1");
-  cmd_run("set style 12");
   cmd_run("set seek 0");
   cmd_run("set shout 0");
   cmd_run("set cshout 0");
@@ -982,9 +977,7 @@ sub setup {
   cmd_run("set kiblevel 9000");
   cmd_run("set chanoff 1");
   cmd_run("set open 0");
-  cmd_run("set gin 0");
-  cmd_run("set pin 0");
-  cmd_run("set mailmess 0");
+  cmd_run("set style 12");
   print STDERR "info: finished initialization\n" if $VERBOSE;
 
   my @startupCommands = read_startupCommands();
