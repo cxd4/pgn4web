@@ -607,7 +607,7 @@ sub process_master_command {
           $relayMode = 1;
           cmd_run("xtell relay listgames");
         } else {
-          tell_operator("error: reset follow before activating autorelay");
+          tell_operator("error: disable follow before activating autorelay");
         }
       }
     } elsif ($parameters !~ /^(?|)$/) {
@@ -650,7 +650,7 @@ sub process_master_command {
         cmd_run("follow $parameters");
         $followLast = $parameters;
       } else {
-        tell_operator("error: reset relay before activating follow");
+        tell_operator("error: disable relay before activating follow");
       }
     } elsif ($parameters =~ /^(0|1)$/) {
       if (($parameters == 0) || ($relayMode == 0)) {
@@ -660,7 +660,7 @@ sub process_master_command {
           cmd_run("follow");
         }
       } else {
-        tell_operator("error: reset relay before activating follow");
+        tell_operator("error: disable relay before activating follow");
       }
     } elsif ($parameters ne "") {
       tell_operator("error: invalid follow parameter");
@@ -752,7 +752,7 @@ sub process_master_command {
           $relayMode = 1;
           observe($parameters);
         } else {
-          tell_operator("error: reset follow before activating relay");
+          tell_operator("error: disable follow before activating relay");
         }
       }
     } elsif ($parameters ne "") {
