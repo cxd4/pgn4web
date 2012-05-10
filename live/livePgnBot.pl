@@ -877,7 +877,6 @@ sub write_startupCommands {
   if (open(CMDFILE, ">" . $STARTUP_FILE)) {
     foreach my $cmd (@commandList) {
       $cmd =~ s/^\s*//;
-print STDERR "PAOLO " . $cmd . "\n";
       print CMDFILE $cmd . "\n";
     }
     close(CMDFILE);
