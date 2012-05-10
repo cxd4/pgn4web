@@ -12,6 +12,7 @@
 
 use strict;
 use Net::Telnet;
+use File::Copy;
 
 
 our $FICS_HOST = "freechess.org";
@@ -244,7 +245,11 @@ sub remove_game {
   return $thisGameIndex;
 }
 
+our $tellOperator = 0;
 sub tell_operator {
+  if ($tellOperator == 0) {
+    return;
+  }
   my ($msg) = @_;
   my @msgParts = $msg =~ /(.{1,195})/g;
   for (my $i=0; $i<=$#msgParts; $i++) {
@@ -862,6 +867,13 @@ sub read_startupCommands {
 
 sub write_startupCommands {
   my @commandList = @_;
+
+  if (!copy("$STARTUP_FILE", "$STARTUP_FILE" . ".bak")) {
+    print STDERR "error: startup commands file $STARTUP_FILE NOT written (failed backup)\n";
+    tell_operator("error: startup commands file $STARTUP_FILE NOT written (failed backup)");
+    return;
+  }
+
   if (open(CMDFILE, ">" . $STARTUP_FILE)) {
     foreach my $cmd (@commandList) {
       $cmd =~ s/^\s*//;
@@ -988,6 +1000,7 @@ sub setup {
   }
   print STDERR "info: finished startup commands\n" if $VERBOSE;
 
+  $tellOperator = 1;
   tell_operator("ready");
 }
 
