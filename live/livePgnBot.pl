@@ -22,15 +22,11 @@ our $BOT_PASSWORD = $ARGV[1] || "";
 
 our $OPERATOR_HANDLE = $ARGV[2] || "";
 
-our @STARTUP_COMMANDS = split(/;/, $ARGV[3] || "");
-
-our @FINGER_NOTES = split(/;/, $ARGV[4] || "");
-if ($#FINGER_NOTES >= 9) {
-  print STDERR "warning: only first 9 lines of custom finger notes will be used\n";
-}
+our $STARTUP_FILE_DEFAULT = "livePgnBot.ini";
+our $STARTUP_FILE = $ARGV[3] || $STARTUP_FILE_DEFAULT;
 
 if ($BOT_HANDLE eq "" | $OPERATOR_HANDLE eq "") {
-  die "\n$0 HANDLE PASSWORD OPERATOR [STARTUP] [FINGER]\n\nHANDLE = handle for the bot account\nPASSWORD = password for the both account, use \"\" for a guest account\nOPERATOR = handle for the bot operator to send commands\nSTARTUP = startup commands list, separated by semicolon\nFINGER = finger notes, lines separated by semicolon\n\nbot saving PGN data from live games on frechess.org\nmore help available from the operator account with \"tell BOT_HANDLE help\"\n\n";
+  die "\n$0 BOT_HANDLE BOT_PASSWORD OPERATOR_HANDLE [STARTUP_FILE]\n\nBOT_HANDLE = handle for the bot account\nBOT_PASSWORD = password for the both account, use \"\" for a guest account\nOPERATOR_HANDLE = handle for the bot operator to send commands\nSTARTUP_FILE = filename for reading startup commands (default $STARTUP_FILE_DEFAULT)\n\nbot saving PGN data from live games on frechess.org\nmore help available from the operator account with \"tell BOT_HANDLE help\"\n\n";
 }
 
 
@@ -545,7 +541,7 @@ add_master_command ("relay", "relay 12 34 56 .. (to observe given games from an 
 add_master_command ("reset", "reset 1 (to reset observed/followed games list and setting)");
 add_master_command ("round", "round 9 (to set the PGN header tag round)");
 add_master_command ("site", "site Moscow RUS (to set the PGN header tag site)");
-add_master_command ("startup", "startup (to show startup commands list)");
+add_master_command ("startup", "startup verbose 1; autorelay 1; (to read/write startup commands file)");
 add_master_command ("status", "status (to show status summary info)");
 add_master_command ("temp", "temp (to save temporary PGN data)");
 add_master_command ("verbose", "verbose 0|1 (to set verbosity of the bot log terminal)");
@@ -795,7 +791,12 @@ sub process_master_command {
       tell_operator("error: invalid site parameter");
     }
   } elsif ($command eq "startup") {
-    tell_operator("startup=" . ($ARGV[3] || ""));
+    if ($parameters) {
+      write_startupCommands(split(";", $parameters));
+    }
+    my $startupString = join("; ", read_startupCommands());
+    $startupString =~ s/[\n\r]+//g;
+    tell_operator("startup($STARTUP_FILE)=$startupString");
   } elsif ($command eq "status") {
     tell_operator(($#games_num + 1) . "/$maxGamesNum games=" . gameList() . " max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode verbose=$VERBOSE event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round");
   } elsif ($command eq "temp") {
@@ -848,6 +849,31 @@ sub gameList {
     }
   }
   return $outputStr;
+}
+
+sub read_startupCommands {
+  my @commandList = ();
+  if (open(CMDFILE, "<" . $STARTUP_FILE)) {
+    @commandList = <CMDFILE>;
+    close(CMDFILE);
+  }
+  return @commandList;
+}
+
+sub write_startupCommands {
+  my @commandList = @_;
+  if (open(CMDFILE, ">" . $STARTUP_FILE)) {
+    foreach my $cmd (@commandList) {
+      $cmd =~ s/^\s*//;
+print STDERR "PAOLO " . $cmd . "\n";
+      print CMDFILE $cmd . "\n";
+    }
+    close(CMDFILE);
+    print STDERR "info: startup commands file $STARTUP_FILE written\n";
+  } else {
+    print STDERR "error: failed writing startup commands file $STARTUP_FILE\n";
+    tell_operator("error: failed writing startup commands file $STARTUP_FILE");
+  }
 }
 
 sub check_releay_results {
@@ -931,12 +957,8 @@ sub setup {
 
   $telnet->prompt("/^/");
 
-  unshift(@FINGER_NOTES, "unattended livePgnBot operated by $OPERATOR_HANDLE");
-  for (my $i=1; $i<=10; $i++) {
-    cmd_run("set $i " . ($FINGER_NOTES[$i-1] || ""));
-  }
-
   cmd_run("iset nowrap 1");
+  cmd_run("set 1 unattended livePgnBot operated by $OPERATOR_HANDLE");
   cmd_run("set bell 0");
   cmd_run("set highlight 0");
   cmd_run("set tzone GMT");
@@ -954,16 +976,18 @@ sub setup {
   cmd_run("set mailmess 0");
   print STDERR "info: finished initialization\n" if $VERBOSE;
 
-  if ($#STARTUP_COMMANDS >= 0) {
-    for (my $i=0; $i<=$#STARTUP_COMMANDS; $i++) {
-      if ($STARTUP_COMMANDS[$i] =~ /\s*(\S+)\s*(.*)$/) {
-        process_master_command($1, $2);
-      }
+  my @startupCommands = read_startupCommands();
+  foreach my $cmd (@startupCommands) {
+    if ($cmd =~ /^\s*#/) {
+      # skip comments
+    } elsif ($cmd =~ /^\s*(\S+)\s*(.*)$/) {
+      process_master_command($1, $2);
+    } elsif ($cmd) {
+      print STDERR "error: invalid startup command $cmd\n" if $VERBOSE;
     }
-    print STDERR "info: finished startup commands\n" if $VERBOSE;
-  } else {
-    print STDERR "info: no startup commands\n" if $VERBOSE;
   }
+  print STDERR "info: finished startup commands\n" if $VERBOSE;
+
   tell_operator("ready");
 }
 
