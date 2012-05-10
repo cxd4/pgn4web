@@ -530,26 +530,26 @@ sub add_master_command {
   push (@master_commands_helptext, $helptext);
 }
 
-add_master_command ("autorelay", "autorelay 0|1 (to automatically observe all relayed games)");
-add_master_command ("date", "date 2012.11.10 (to set the PGN header tag date)");
-add_master_command ("event", "event World Championship (to set the PGN header tag event)");
-add_master_command ("file", "file live.pgn (to set the filename for saving PGN data)");
-add_master_command ("follow", "follow handle|/s|/b|/l (see freechess.org follow command)");
-add_master_command ("forget", "forget 12 34 56 .. (to eliminate given past games from PGN data)");
-add_master_command ("help", "help command (to show commands help)");
-add_master_command ("ics", "ics server_command (to run a custom command on freechess.org)");
-add_master_command ("list", "list (to show lists of observed games)");
-add_master_command ("logout", "logout 1 (to logout from freechess.org, returning the given exit value)");
-add_master_command ("max", "max 30 (to set the maximum number of games for the PGN data)");
-add_master_command ("observe", "observe 12 34 56 .. (to observe given games)");
-add_master_command ("relay", "relay 12 34 56 .. (to observe given games from an event relay)");
-add_master_command ("reset", "reset 1 (to reset observed/followed games list and setting)");
-add_master_command ("round", "round 9 (to set the PGN header tag round)");
-add_master_command ("site", "site Moscow RUS (to set the PGN header tag site)");
-add_master_command ("startup", "startup verbose 1; autorelay 1; (to read/write startup commands file)");
-add_master_command ("status", "status (to show status summary info)");
+add_master_command ("autorelay", "autorelay [0|1] (to automatically observe all relayed games)");
+add_master_command ("date", "date [????.??.???|\"\"] (to get/set the PGN header tag date)");
+add_master_command ("event", "event [string|\"\"] (to get/set the PGN header tag event)");
+add_master_command ("file", "file [filename.pgn] (to get/set the filename for saving PGN data)");
+add_master_command ("follow", "follow [0|handle|/s|/b|/l] (to follow the freechess user with given handle, /s for the best standard game, /b for the best blitz game, /l for the best lightning game, 0 to disable follow mode)");
+add_master_command ("forget", "forget [game number list, such as: 12 34 56 ..] (to eliminate given past games from PGN data)");
+add_master_command ("help", "help [command] (to get commands help)");
+add_master_command ("ics", "ics [server command] (to run a custom command on freechess.org)");
+add_master_command ("list", "list (to get lists of observed games)");
+add_master_command ("logout", "logout [number] (to logout from freechess.org, returning the given exit value)");
+add_master_command ("max", "max [number] (to get/set the maximum number of games for the PGN data)");
+add_master_command ("observe", "observe [game number list, such as: 12 34 56 ..] (to observe given games)");
+add_master_command ("relay", "relay [0|game number list, such as: 12 34 56 ..] (to observe given games from an event relay, 0 to disable relay mode)");
+add_master_command ("reset", "reset [1] (to reset observed/followed games list and setting)");
+add_master_command ("round", "round [string|\"\"] (to get/set the PGN header tag round)");
+add_master_command ("site", "site [string|\"\"] (to get/set the PGN header tag site)");
+add_master_command ("startup", "startup [command list, separated by semicolon] (to get/set startup commands file)");
+add_master_command ("status", "status (to get status info)");
 add_master_command ("temp", "temp (to save temporary PGN data)");
-add_master_command ("verbose", "verbose 0|1 (to set verbosity of the bot log terminal)");
+add_master_command ("verbose", "verbose [0|1] (to get/set verbosity of the bot log terminal)");
 
 sub detect_command {
   my ($command) = @_;
@@ -652,20 +652,17 @@ sub process_master_command {
       } else {
         tell_operator("error: reset relay before activating follow");
       }
-    } elsif ($parameters eq "") {
-      $followMode = 0;
-      $followLast = "";
-      cmd_run("follow");
     } elsif ($parameters =~ /^(0|1)$/) {
       if (($parameters == 0) || ($relayMode == 0)) {
         $followMode = $parameters;
         if ($parameters == 0) {
           $followLast = "";
+          cmd_run("follow");
         }
       } else {
         tell_operator("error: reset relay before activating follow");
       }
-    } elsif ($parameters ne "?") {
+    } elsif ($parameters ne "") {
       tell_operator("error: invalid follow parameter");
     }
     tell_operator("follow=$followMode last=$followLast");
@@ -758,11 +755,7 @@ sub process_master_command {
           tell_operator("error: reset follow before activating relay");
         }
       }
-    } elsif ($parameters eq "") {
-      $relayMode = 0;
-      $autorelayMode = 0;
-      @GAMES_autorelayRunning = ();
-    } elsif ($parameters ne "?") {
+    } elsif ($parameters ne "") {
       tell_operator("error: invalid relay parameter");
     }
     tell_operator("relay=$relayMode");
