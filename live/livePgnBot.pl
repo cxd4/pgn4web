@@ -714,7 +714,7 @@ sub process_master_command {
     }
   } elsif ($command eq "history") {
     my $secTime = time() - $starupTime;
-    tell_operator(sprintf("history uptime=%s games=%d (g/d=%.2f) pgn=%d (p/h=%.2f) cmd=%d (c/m=%.2f) lines=%d (l/s=%.2f)", sec2time($secTime), $gamesStartCount, $gamesStartCount / (24 * 60 * 60 * $secTime), $pgnWriteCount, $pgnWriteCount / (60 * 60 * $secTime), $cmdRunCount, $cmdRunCount / (60 * $secTime), $lineCount, $lineCount / $secTime));
+    tell_operator(sprintf("history uptime=%s games=%d (g/d=%.2f) pgn=%d (p/h=%.2f) cmd=%d (c/m=%.2f) lines=%d (l/s=%.2f)", sec2time($secTime), $gamesStartCount, $gamesStartCount / ($secTime / (24 * 60 * 60)), $pgnWriteCount, $pgnWriteCount / ($secTime / (60 * 60)), $cmdRunCount, $cmdRunCount / ($secTime / 60), $lineCount, $lineCount / $secTime));
   } elsif ($command eq "ics") {
     if ($parameters !~ /^(?|)$/) {
       cmd_run($parameters);
