@@ -44,6 +44,11 @@ our $LINE_WAIT_TIMEOUT = 60;
 
 our $telnet;
 our $username;
+
+our $starupTime = time();
+our $gamesStartCount = 0;
+our $pgnWriteCount = 0;
+
 our $last_cmd_time = 0;
 our $last_check_relay_time = 0;
 
@@ -164,6 +169,7 @@ sub save_game {
       $GAMES_round[$newGame_num] = $newGame_round;
       $GAMES_eco[$newGame_num] = "";
     }
+    $gamesStartCount++;
   } else {
     if (($games_white[$thisGameIndex] ne $newGame_white) || ($games_black[$thisGameIndex] ne $newGame_black) || ($games_whiteElo[$thisGameIndex] ne $newGame_whiteElo) || ($games_blackElo[$thisGameIndex] ne $newGame_blackElo)) {
       print STDERR "error: game $newGame_num mismatch when saving\n";
@@ -425,14 +431,20 @@ sub time2sec {
 
 sub sec2time {
   my ($t) = @_;
-  my ($sec, $min, $hr);
+  my ($sec, $min, $hr, $day);
 
   if ($t =~ /^\d+$/) {
     $sec = $t % 60;
     $t = ($t - $sec) / 60;
     $min = $t % 60;
-    $hr = ($t - $min) / 60;
-    return sprintf("%d:%02d:%02d", $hr, $min, $sec);
+    $t = ($t - $min) / 60;
+    if ($t < 24) {
+      return sprintf("%d:%02d:%02d", $hr, $min, $sec);
+    } else {
+      $hr = $t % 24;
+      $day = ($t - $hr) / 60;
+      return sprintf("%d:%02d:%02d:%02d", $day, $hr, $min, $sec);
+    }
   } elsif ($t =~ /^-/) {
     return "0:00:00";
   } else {
@@ -513,6 +525,7 @@ sub refresh_pgn {
     open(thisFile, ">$PGN_FILE");
     print thisFile $pgn;
     close(thisFile);
+    $pgnWriteCount++;
     $lastPgn = $pgn;
   }
 }
@@ -537,6 +550,7 @@ add_master_command ("file", "file [filename.pgn] (to get/set the filename for sa
 add_master_command ("follow", "follow [0|handle|/s|/b|/l] (to follow the freechess user with given handle, /s for the best standard game, /b for the best blitz game, /l for the best lightning game, 0 to disable follow mode)");
 add_master_command ("forget", "forget [game number list, such as: 12 34 56 ..] (to eliminate given past games from PGN data)");
 add_master_command ("help", "help [command] (to get commands help)");
+add_master_command ("history", "history (to get history info)");
 add_master_command ("ics", "ics [server command] (to run a custom command on freechess.org)");
 add_master_command ("list", "list (to get lists of observed games)");
 add_master_command ("logout", "logout [number] (to logout from freechess.org, returning the given exit value)");
@@ -694,6 +708,8 @@ sub process_master_command {
     } else {
       tell_operator("available commands: " . join(", ", @master_commands));
     }
+  } elsif ($command eq "history") {
+    tell_operator("history uptime=" . sec2time(time() - $starupTime) . " games=$gamesStartCount pgn=$pgnWriteCount");
   } elsif ($command eq "ics") {
     if ($parameters !~ /^(?|)$/) {
       cmd_run($parameters);
