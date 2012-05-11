@@ -442,11 +442,11 @@ sub sec2time {
     $t = ($t - $sec) / 60;
     $min = $t % 60;
     $t = ($t - $min) / 60;
+    $hr = $t % 24;
     if ($t < 24) {
       return sprintf("%d:%02d:%02d", $hr, $min, $sec);
     } else {
-      $hr = $t % 24;
-      $day = ($t - $hr) / 60;
+      $day = ($t - $hr) / 24;
       return sprintf("%d:%02d:%02d:%02d", $day, $hr, $min, $sec);
     }
   } elsif ($t =~ /^-/) {
