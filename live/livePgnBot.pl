@@ -713,7 +713,8 @@ sub process_master_command {
       tell_operator("available commands: " . join(", ", @master_commands));
     }
   } elsif ($command eq "history") {
-    tell_operator("history uptime=" . sec2time(time() - $starupTime) . " games=$gamesStartCount pgn=$pgnWriteCount cmd=$cmdRunCount lines=$lineCount");
+    my $secTime = time() - $starupTime;
+    tell_operator(sprintf("history uptime=%s games=%d (g/d=%.2f) pgn=%d (p/h=%.2f) cmd=%d (c/m=%.2f) lines=%d (l/s=%.2f)", sec2time($secTime), $gamesStartCount, $gamesStartCount / (24 * 60 * 60 * $secTime), $pgnWriteCount, $pgnWriteCount / (60 * 60 * $secTime), $cmdRunCount, $cmdRunCount / (60 * $secTime), $lineCount, $lineCount / $secTime));
   } elsif ($command eq "ics") {
     if ($parameters !~ /^(?|)$/) {
       cmd_run($parameters);
