@@ -48,6 +48,8 @@ our $username;
 our $starupTime = time();
 our $gamesStartCount = 0;
 our $pgnWriteCount = 0;
+our $cmdRunCount = 0;
+our $lineCount = 0;
 
 our $last_cmd_time = 0;
 our $last_check_relay_time = 0;
@@ -57,6 +59,7 @@ sub cmd_run {
   print STDERR "info: running ics command: $cmd\n" if $VERBOSE;
   my $output = $telnet->cmd($cmd);
   $last_cmd_time = time();
+  $cmdRunCount++;
 }
 
 our $pgn = "";
@@ -381,6 +384,7 @@ sub process_line {
       print STDERR "info: ignored line: $line\n" if $VERBOSE;
     }
   }
+  $lineCount++;
 }
 
 sub process_newGame() {
@@ -709,7 +713,7 @@ sub process_master_command {
       tell_operator("available commands: " . join(", ", @master_commands));
     }
   } elsif ($command eq "history") {
-    tell_operator("history uptime=" . sec2time(time() - $starupTime) . " games=$gamesStartCount pgn=$pgnWriteCount");
+    tell_operator("history uptime=" . sec2time(time() - $starupTime) . " games=$gamesStartCount pgn=$pgnWriteCount cmd=$cmdRunCount lines=$lineCount");
   } elsif ($command eq "ics") {
     if ($parameters !~ /^(?|)$/) {
       cmd_run($parameters);
