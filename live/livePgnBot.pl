@@ -299,8 +299,8 @@ sub process_line {
   } elsif ($line =~ /^:There .* in the (.*)/) {
     $autorelayEvent = $1;
     $autorelayRound = "";
-    if ($autorelayEvent =~ /(.*)\s+Round\s+(\d+)/) {
-      $autorelayRound = $2;
+    if ($autorelayEvent =~ /(.*)\s+(Round|Game)\s+(\d+)/) {
+      $autorelayRound = $3;
       $autorelayEvent = $1;
       $autorelayEvent =~ s/[\s-]+$//g;
     }
