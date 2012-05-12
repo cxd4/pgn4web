@@ -725,7 +725,7 @@ sub process_master_command {
       tell_operator(detect_command_helptext($command));
     }
   } elsif ($command eq "list") {
-    tell_operator(($#games_num + 1) . "/$maxGamesNum games=" . gameList());
+    tell_operator("games(" . ($#games_num + 1) . "/$maxGamesNum)=" . gameList());
   } elsif ($command eq "logout") {
     if ($parameters =~ /^\d+$/) {
       tell_operator("OK logout($parameters)");
@@ -819,7 +819,7 @@ sub process_master_command {
     $startupString =~ s/[\n\r]+//g;
     tell_operator("startup($STARTUP_FILE)=$startupString");
   } elsif ($command eq "status") {
-    tell_operator(($#games_num + 1) . "/$maxGamesNum games=" . gameList() . " max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode verbose=$VERBOSE event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round");
+    tell_operator("games(" . ($#games_num + 1) . "/$maxGamesNum)=" . gameList() . " max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode verbose=$VERBOSE event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round");
   } elsif ($command eq "temp") {
     open(thisFile, ">$PGN_FILE");
     print thisFile temp_pgn();
@@ -842,8 +842,8 @@ sub process_master_command {
 }
 
 sub observe {
-  my ($gameList) = @_;
-  my @theseGames = split(" ", $gameList);
+  my ($gamesList) = @_;
+  my @theseGames = split(" ", $gamesList);
   for (my $i=0; $i<=$#theseGames; $i++) {
     if ($theseGames[$i] =~ /\d+/) {
       if (find_gameIndex($theseGames[$i]) == -1) {
@@ -861,7 +861,7 @@ sub gameList {
   my $outputStr = "";
   for (my $i=0; $i<$maxGamesNum; $i++) {
     if ($games_num[$i]) {
-      if ($outputStr ne "") { $outputStr .= ","; }
+      if ($outputStr ne "") { $outputStr .= " "; }
       $outputStr .= $games_num[$i];
       if ($games_result[$i] eq "1-0") { $outputStr .= "+"; }
       elsif ($games_result[$i] eq "1/2-1/2") { $outputStr .= "="; }
