@@ -464,7 +464,7 @@ sub refresh_pgn {
 
   $pgn = "";
   for ($i=0; $i<$maxGamesNum; $i++) {
-    if ($games_num[$i]) {
+    if (($games_num[$i]) && ($GAMES_timeLeft[$games_num[$i]])) {
       if (($followMode == 1) && ($i == 0)) {
         $thisResult = "*";
       } else {
