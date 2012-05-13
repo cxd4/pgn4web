@@ -138,7 +138,7 @@ sub find_gameIndex {
   my ($thisGameNum) = @_;
 
   for (my $i=0; $i<$maxGamesNum; $i++) {
-    if (($games_num[$i]) && ($games_num[$i] eq $thisGameNum)) {
+    if (($games_num[$i]) && ($games_num[$i] == $thisGameNum)) {
       return $i;
     }
   }
@@ -155,7 +155,7 @@ sub save_game {
 
   my $thisGameIndex = find_gameIndex($newGame_num);
   if ($thisGameIndex < 0) {
-    if ($#games_num >= $maxGamesNum) {
+    if ($#games_num + 1 >= $maxGamesNum) {
       remove_game(-1);
     }
     myAdd(\@games_num, $newGame_num);
