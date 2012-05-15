@@ -103,6 +103,8 @@ our @GAMES_autorelayRunning = ();
 
 our $autorelayEvent;
 our $autorelayRound;
+our $ignoreEvent = "";
+our $ignorePlayer = "";
 
 sub reset_games {
   cmd_run("follow");
@@ -130,6 +132,8 @@ sub reset_games {
   $relayMode = 0;
   $autorelayMode = 0;
   @GAMES_autorelayRunning = ();
+  $ignoreEvent = "";
+  $ignorePlayer = "";
 
   refresh_pgn();
 }
@@ -313,29 +317,35 @@ sub process_line {
       $autorelayEvent = $1;
       $autorelayEvent =~ s/[\s-]+$//g;
     }
-  } elsif ($line =~ /^:(\d+)\s+\S+\s+\S+\s+(\S+)\s+(\S+)/) {
+  } elsif ($line =~ /^:(\d+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)/) {
     my $thisGameNum = $1;
-    my $thisGameResult = $2;
-    my $thisGameEco = $3;
-    if ($autorelayMode == 1) {
-      $GAMES_event[$thisGameNum] = $autorelayEvent;
-      $GAMES_site[$thisGameNum] = $newGame_site;
-      $GAMES_date[$thisGameNum] = $newGame_date;
-      $GAMES_round[$thisGameNum] = $autorelayRound;
-      $GAMES_eco[$thisGameNum] = $thisGameEco;
-      $GAMES_autorelayRunning[$thisGameNum] = 1;
-    }
-    if (find_gameIndex($thisGameNum) != -1) {
-      if ($thisGameResult ne "*") {
-        save_result($thisGameNum, $thisGameResult, 0); # from relay list
-      }
+    my $thisGameWhite = $2;
+    my $thisGameBlack = $3;
+    my $thisGameResult = $4;
+    my $thisGameEco = $5;
+    if ((($ignoreEvent ne "") && ($autorelayEvent =~ /$ignoreEvent/)) || (($ignorePlayer ne "") && (($thisGameWhite =~ /$ignorePlayer/) || ($thisGameBlack =~ /$ignorePlayer/)))) {
+      print STDERR "info: ignored game $thisGameNum $autorelayEvent $thisGameWhite $thisGameBlack\n" if $VERBOSE;
     } else {
       if ($autorelayMode == 1) {
-        if ($#games_num + 1 < $maxGamesNum) {
-          cmd_run("observe $thisGameNum");
-        } else {
-          print STDERR "warning: more relayed games than max=$maxGamesNum\n" if $VERBOSE;
-          tell_operator("warning: more relayed games than max=$maxGamesNum");
+        $GAMES_event[$thisGameNum] = $autorelayEvent;
+        $GAMES_site[$thisGameNum] = $newGame_site;
+        $GAMES_date[$thisGameNum] = $newGame_date;
+        $GAMES_round[$thisGameNum] = $autorelayRound;
+        $GAMES_eco[$thisGameNum] = $thisGameEco;
+        $GAMES_autorelayRunning[$thisGameNum] = 1;
+      }
+      if (find_gameIndex($thisGameNum) != -1) {
+        if ($thisGameResult ne "*") {
+          save_result($thisGameNum, $thisGameResult, 0); # from relay list
+        }
+      } else {
+        if ($autorelayMode == 1) {
+          if ($#games_num + 1 < $maxGamesNum) {
+            cmd_run("observe $thisGameNum");
+          } else {
+            print STDERR "warning: more relayed games than max=$maxGamesNum\n" if $VERBOSE;
+            tell_operator("warning: more relayed games than max=$maxGamesNum");
+          }
         }
       }
     }
@@ -550,6 +560,7 @@ sub add_master_command {
 }
 
 add_master_command ("autorelay", "autorelay [0|1] (to automatically observe all relayed games)");
+add_master_command ("config", "config (to get config info)");
 add_master_command ("date", "date [????.??.???|\"\"] (to get/set the PGN header tag date)");
 add_master_command ("event", "event [string|\"\"] (to get/set the PGN header tag event)");
 add_master_command ("file", "file [filename.pgn] (to get/set the filename for saving PGN data)");
@@ -558,6 +569,8 @@ add_master_command ("forget", "forget [game number list, such as: 12 34 56 ..] (
 add_master_command ("help", "help [command] (to get commands help)");
 add_master_command ("history", "history (to get history info)");
 add_master_command ("ics", "ics [server command] (to run a custom command on freechess.org)");
+add_master_command ("ignoreevent", "ignoreevent [string|\"\"] (to get/set the regular expression to ignore events during autorelay)");
+add_master_command ("ignoreplayer", "ignoreplayer [string|\"\"] (to get/set the regular expression to ignore players during autorelay)");
 add_master_command ("list", "list (to get lists of observed games)");
 add_master_command ("logout", "logout [number] (to logout from freechess.org, returning the given exit value)");
 add_master_command ("max", "max [number] (to get/set the maximum number of games for the PGN data)");
@@ -567,7 +580,6 @@ add_master_command ("reset", "reset [1] (to reset observed/followed games list a
 add_master_command ("round", "round [string|\"\"] (to get/set the PGN header tag round)");
 add_master_command ("site", "site [string|\"\"] (to get/set the PGN header tag site)");
 add_master_command ("startup", "startup [command list, separated by semicolon] (to get/set startup commands file)");
-add_master_command ("status", "status (to get status info)");
 add_master_command ("temp", "temp (to save temporary PGN data)");
 add_master_command ("verbose", "verbose [0|1] (to get/set verbosity of the bot log terminal)");
 
@@ -634,6 +646,8 @@ sub process_master_command {
       tell_operator("error: invalid autorelay parameter");
     }
     tell_operator("autorelay=$autorelayMode");
+  } elsif ($command eq "config") {
+    tell_operator("config: max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode ignoreplayer=$ignorePlayer ignoreevent=$ignoreEvent event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round verbose=$VERBOSE");
   } elsif ($command eq "date") {
     if ($parameters =~ /^([^\[\]"]+|""|)$/) {
       if ($parameters ne "") {
@@ -716,13 +730,45 @@ sub process_master_command {
     }
   } elsif ($command eq "history") {
     my $secTime = time() - $starupTime;
-    tell_operator(sprintf("history uptime=%s games=%d (g/d=%.2f) pgn=%d (p/h=%.2f) cmd=%d (c/m=%.2f) lines=%d (l/s=%.2f)", sec2time($secTime), $gamesStartCount, $gamesStartCount / ($secTime / (24 * 60 * 60)), $pgnWriteCount, $pgnWriteCount / ($secTime / (60 * 60)), $cmdRunCount, $cmdRunCount / ($secTime / 60), $lineCount, $lineCount / $secTime));
+    tell_operator(sprintf("history: uptime=%s games=%d (g/d=%.2f) pgn=%d (p/h=%.2f) cmd=%d (c/m=%.2f) lines=%d (l/s=%.2f)", sec2time($secTime), $gamesStartCount, $gamesStartCount / ($secTime / (24 * 60 * 60)), $pgnWriteCount, $pgnWriteCount / ($secTime / (60 * 60)), $cmdRunCount, $cmdRunCount / ($secTime / 60), $lineCount, $lineCount / $secTime));
   } elsif ($command eq "ics") {
     if ($parameters !~ /^(?|)$/) {
       cmd_run($parameters);
       tell_operator("OK ics");
     } else {
       tell_operator(detect_command_helptext($command));
+    }
+  } elsif ($command eq "ignoreevent") {
+    if ($parameters =~ /^([^\[\]"]+|""|)$/) {
+      if ($parameters ne "") {
+        eval {
+          "test" =~ /$parameters/;
+          $ignoreEvent = $parameters;
+          if ($ignoreEvent eq "\"\"") { $ignoreEvent = ""; }
+          1;
+        } or do {
+          tell_operator("error: invalid regular expression $parameters");
+        };
+      }
+      tell_operator("ignoreevent=$ignoreEvent");
+    } else {
+      tell_operator("error: invalid ignoreevent parameter");
+    }
+  } elsif ($command eq "ignoreplayer") {
+    if ($parameters =~ /^([^\[\]"]+|""|)$/) {
+      if ($parameters ne "") {
+        eval {
+          "test" =~ /$parameters/;
+          $ignorePlayer = $parameters;
+          if ($ignorePlayer eq "\"\"") { $ignorePlayer = ""; }
+          1;
+        } or do {
+          tell_operator("error: invalid regular expression $parameters");
+        };
+      }
+      tell_operator("ignoreplayer=$ignorePlayer");
+    } else {
+      tell_operator("error: invalid ignoreplayer parameter");
     }
   } elsif ($command eq "list") {
     tell_operator("games(" . ($#games_num + 1) . "/$maxGamesNum)=" . gameList());
@@ -818,8 +864,6 @@ sub process_master_command {
     my $startupString = join("; ", read_startupCommands());
     $startupString =~ s/[\n\r]+//g;
     tell_operator("startup($STARTUP_FILE)=$startupString");
-  } elsif ($command eq "status") {
-    tell_operator("games(" . ($#games_num + 1) . "/$maxGamesNum)=" . gameList() . " max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode verbose=$VERBOSE event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round");
   } elsif ($command eq "temp") {
     open(thisFile, ">$PGN_FILE");
     print thisFile temp_pgn();
