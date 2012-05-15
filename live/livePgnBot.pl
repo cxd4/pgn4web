@@ -571,7 +571,7 @@ add_master_command ("history", "history (to get history info)");
 add_master_command ("ics", "ics [server command] (to run a custom command on freechess.org)");
 add_master_command ("ignoreevent", "ignoreevent [string|\"\"] (to get/set the regular expression to ignore events during autorelay)");
 add_master_command ("ignoreplayer", "ignoreplayer [string|\"\"] (to get/set the regular expression to ignore players during autorelay)");
-add_master_command ("list", "list (to get lists of observed games)");
+add_master_command ("games", "games (to get list of observed games)");
 add_master_command ("logout", "logout [number] (to logout from freechess.org, returning the given exit value)");
 add_master_command ("max", "max [number] (to get/set the maximum number of games for the PGN data)");
 add_master_command ("observe", "observe [game number list, such as: 12 34 56 ..] (to observe given games)");
@@ -716,6 +716,8 @@ sub process_master_command {
     } else {
       tell_operator(detect_command_helptext($command));
     }
+  } elsif ($command eq "games") {
+    tell_operator("games(" . ($#games_num + 1) . "/$maxGamesNum)=" . gameList());
   } elsif ($command eq "help") {
     if ($parameters =~ /\S/) {
       my $par;
@@ -770,8 +772,6 @@ sub process_master_command {
     } else {
       tell_operator("error: invalid ignoreplayer parameter");
     }
-  } elsif ($command eq "list") {
-    tell_operator("games(" . ($#games_num + 1) . "/$maxGamesNum)=" . gameList());
   } elsif ($command eq "logout") {
     if ($parameters =~ /^\d+$/) {
       tell_operator("OK logout($parameters)");
