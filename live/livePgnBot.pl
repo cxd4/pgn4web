@@ -1044,8 +1044,8 @@ sub setup {
   foreach my $cmd (@startupCommands) {
     if ($cmd =~ /^\s*#/) {
       # skip comments
-    } elsif ($cmd =~ /^\s*(\S+)\s*(.*)$/) {
-      process_master_command($1, $2);
+    } elsif ($cmd =~ /^\s*([a-z]+)\s*(=|)\s*(.*)$/) {
+      process_master_command($1, $3);
     } elsif ($cmd) {
       print STDERR "error: invalid startup command $cmd\n" if $VERBOSE;
     }
