@@ -637,6 +637,7 @@ sub process_master_command {
         if ($followMode == 0) {
           $autorelayMode = 1;
           $relayMode = 1;
+          $last_check_relay_time = 0;
           cmd_run("xtell relay listgames");
         } else {
           tell_operator("error: disable follow before activating autorelay");
@@ -747,6 +748,7 @@ sub process_master_command {
           "test" =~ /$parameters/;
           $ignoreEvent = $parameters;
           if ($ignoreEvent eq "\"\"") { $ignoreEvent = ""; }
+          $last_check_relay_time = 0;
           1;
         } or do {
           tell_operator("error: invalid regular expression $parameters");
@@ -763,6 +765,7 @@ sub process_master_command {
           "test" =~ /$parameters/;
           $ignorePlayer = $parameters;
           if ($ignorePlayer eq "\"\"") { $ignorePlayer = ""; }
+          $last_check_relay_time = 0;
           1;
         } or do {
           tell_operator("error: invalid regular expression $parameters");
