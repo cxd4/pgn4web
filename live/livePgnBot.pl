@@ -566,12 +566,12 @@ add_master_command ("event", "event [string|\"\"] (to get/set the PGN header tag
 add_master_command ("file", "file [filename.pgn] (to get/set the filename for saving PGN data)");
 add_master_command ("follow", "follow [0|handle|/s|/b|/l] (to follow the freechess user with given handle, /s for the best standard game, /b for the best blitz game, /l for the best lightning game, 0 to disable follow mode)");
 add_master_command ("forget", "forget [game number list, such as: 12 34 56 ..] (to eliminate given past games from PGN data)");
+add_master_command ("games", "games (to get list of observed games)");
 add_master_command ("help", "help [command] (to get commands help)");
 add_master_command ("history", "history (to get history info)");
 add_master_command ("ics", "ics [server command] (to run a custom command on freechess.org)");
 add_master_command ("ignoreevent", "ignoreevent [string|\"\"] (to get/set the regular expression to ignore events during autorelay)");
 add_master_command ("ignoreplayer", "ignoreplayer [string|\"\"] (to get/set the regular expression to ignore players during autorelay)");
-add_master_command ("games", "games (to get list of observed games)");
 add_master_command ("logout", "logout [number] (to logout from freechess.org, returning the given exit value)");
 add_master_command ("max", "max [number] (to get/set the maximum number of games for the PGN data)");
 add_master_command ("observe", "observe [game number list, such as: 12 34 56 ..] (to observe given games)");
