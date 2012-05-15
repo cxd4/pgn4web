@@ -728,7 +728,7 @@ sub process_master_command {
         }
       }
     } else {
-      tell_operator("available commands: " . join(", ", @master_commands));
+      tell_operator("commands: " . join(", ", @master_commands));
     }
   } elsif ($command eq "history") {
     my $secTime = time() - $starupTime;
