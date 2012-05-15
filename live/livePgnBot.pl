@@ -283,7 +283,7 @@ sub process_line {
   $line =~ s/^[\r\n ]+//;
   return unless $line;
 
-  if ($line =~ /^([^\s()]+)(\(\S+\))* tells you: (\S+)\s*(.*)$/) {
+  if ($line =~ /^([^\s()]+)(\(\S+\))* tells you: \s*(\S+)\s*(.*)$/) {
     if ($1 eq $OPERATOR_HANDLE) {
       process_master_command($3, $4);
     } else {
@@ -1044,8 +1044,8 @@ sub setup {
   foreach my $cmd (@startupCommands) {
     if ($cmd =~ /^\s*#/) {
       # skip comments
-    } elsif ($cmd =~ /^\s*([a-z]+)\s*(=|)\s*(.*)$/) {
-      process_master_command($1, $3);
+    } elsif ($cmd =~ /^\s*(\S+)\s*(.*)$/) {
+      process_master_command($1, $2);
     } elsif ($cmd) {
       print STDERR "error: invalid startup command $cmd\n" if $VERBOSE;
     }
