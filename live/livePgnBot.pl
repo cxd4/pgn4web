@@ -142,7 +142,7 @@ sub find_gameIndex {
   my ($thisGameNum) = @_;
 
   for (my $i=0; $i<$maxGamesNum; $i++) {
-    if (($games_num[$i]) && ($games_num[$i] == $thisGameNum)) {
+    if ((defined $games_num[$i]) && ($games_num[$i] == $thisGameNum)) {
       return $i;
     }
   }
@@ -223,7 +223,7 @@ sub remove_game {
     } else {
       $thisGameIndex = 0;
     }
-    if ($games_num[$thisGameIndex] ne "") {
+    if ((defined $games_num[$thisGameIndex]) && ($games_num[$thisGameIndex] ne "")) {
       $thisGameNum = $games_num[$thisGameIndex];
     } else {
       print STDERR "warning: missing game for removing\n";
@@ -474,7 +474,7 @@ sub refresh_pgn {
 
   $pgn = "";
   for ($i=0; $i<$maxGamesNum; $i++) {
-    if (($games_num[$i]) && ($GAMES_timeLeft[$games_num[$i]])) {
+    if ((defined $games_num[$i]) && (defined $GAMES_event[$games_num[$i]]) && (defined $GAMES_site[$games_num[$i]]) && (defined $GAMES_date[$games_num[$i]]) && (defined $GAMES_round[$games_num[$i]]) && (defined $GAMES_eco[$games_num[$i]]) && (defined $GAMES_timeLeft[$games_num[$i]])) {
       if (($followMode == 1) && ($i == 0)) {
         $thisResult = "*";
       } else {
@@ -521,7 +521,7 @@ sub refresh_pgn {
       if ($thisBlackTitle ne "") {
         $pgn .= "[BlackTitle \"" . $thisBlackTitle . "\"]\n";
       }
-      if ($GAMES_eco[$games_num[$i]] ne "") {
+      if ((defined $GAMES_eco[$games_num[$i]]) && ($GAMES_eco[$games_num[$i]] ne "")) {
         $pgn .= "[ECO \"" . $GAMES_eco[$games_num[$i]] . "\"]\n";
       }
       $pgn .= $games_movesText[$i];
@@ -904,7 +904,7 @@ sub observe {
 sub gameList {
   my $outputStr = "";
   for (my $i=0; $i<$maxGamesNum; $i++) {
-    if ($games_num[$i]) {
+    if (defined $games_num[$i]) {
       if ($outputStr ne "") { $outputStr .= " "; }
       $outputStr .= $games_num[$i];
       if ($games_result[$i] eq "1-0") { $outputStr .= "+"; }
@@ -953,7 +953,7 @@ sub check_releay_results {
     $last_check_relay_time = time();
     if ($autorelayMode == 1) {
       for my $thisGameNum (@games_num) {
-        if (!$GAMES_autorelayRunning[$thisGameNum]) {
+        if (! defined $GAMES_autorelayRunning[$thisGameNum]) {
           remove_game($thisGameNum);
         }
       }
