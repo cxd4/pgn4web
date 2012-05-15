@@ -323,7 +323,7 @@ sub process_line {
     my $thisGameBlack = $3;
     my $thisGameResult = $4;
     my $thisGameEco = $5;
-    if ((($ignoreEvent ne "") && ($autorelayEvent =~ /$ignoreEvent/)) || (($ignorePlayer ne "") && (($thisGameWhite =~ /$ignorePlayer/) || ($thisGameBlack =~ /$ignorePlayer/)))) {
+    if ((($ignoreEvent ne "") && ($autorelayEvent =~ /$ignoreEvent/i)) || (($ignorePlayer ne "") && (($thisGameWhite =~ /$ignorePlayer/i) || ($thisGameBlack =~ /$ignorePlayer/i)))) {
       print STDERR "info: ignored game $thisGameNum $autorelayEvent $thisGameWhite $thisGameBlack\n" if $VERBOSE;
     } else {
       if ($autorelayMode == 1) {
