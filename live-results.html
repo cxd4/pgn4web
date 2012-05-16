@@ -485,6 +485,9 @@ a.variation {
     res = myCompare(gameBoard[aa], gameBoard[zz]);
     if (res !== 0) { return res; }
 
+    if (aa > zz) { return 1; }
+    if (aa < zz) { return -1; }
+
     return 0;
 
   }
