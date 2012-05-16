@@ -956,7 +956,7 @@ sub write_startupCommands {
   }
 }
 
-sub check_releay_results {
+sub check_relay_results {
   if (($relayMode == 1) && (time - $last_check_relay_time > $CHECK_RELAY_FREQ)) {
     cmd_run("xtell relay listgames");
     $last_check_relay_time = time();
@@ -1087,7 +1087,7 @@ sub main_loop {
     }
 
     ensure_alive();
-    check_releay_results();
+    check_relay_results();
   }
 }
 
