@@ -562,6 +562,7 @@ sub add_master_command {
 add_master_command ("autorelay", "autorelay [0|1] (to automatically observe all relayed games)");
 add_master_command ("config", "config (to get config info)");
 add_master_command ("date", "date [????.??.???|\"\"] (to get/set the PGN header tag date)");
+add_master_command ("empty", "empty [1] (to save empty PGN data as placeholder file)");
 add_master_command ("event", "event [string|\"\"] (to get/set the PGN header tag event)");
 add_master_command ("file", "file [filename.pgn] (to get/set the filename for saving PGN data)");
 add_master_command ("follow", "follow [0|handle|/s|/b|/l] (to follow the freechess user with given handle, /s for the best standard game, /b for the best blitz game, /l for the best lightning game, 0 to disable follow mode)");
@@ -580,7 +581,6 @@ add_master_command ("reset", "reset [1] (to reset observed/followed games list a
 add_master_command ("round", "round [string|\"\"] (to get/set the PGN header tag round)");
 add_master_command ("site", "site [string|\"\"] (to get/set the PGN header tag site)");
 add_master_command ("startup", "startup [command list, separated by semicolon] (to get/set startup commands file)");
-add_master_command ("temp", "temp (to save temporary PGN data)");
 add_master_command ("verbose", "verbose [0|1] (to get/set verbosity of the bot log terminal)");
 
 sub detect_command {
@@ -644,7 +644,7 @@ sub process_master_command {
         }
       }
     } elsif ($parameters !~ /^(?|)$/) {
-      tell_operator("error: invalid autorelay parameter");
+      tell_operator("error: invalid $command parameter");
     }
     tell_operator("autorelay=$autorelayMode");
   } elsif ($command eq "config") {
@@ -657,7 +657,19 @@ sub process_master_command {
       }
       tell_operator("date=$newGame_date");
     } else {
-      tell_operator("error: invalid date parameter");
+      tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "empty") {
+    if ($parameters eq "1") {
+      open(thisFile, ">$PGN_FILE");
+      print thisFile temp_pgn();
+      close(thisFile);
+      print STDERR "info: saved empty PGN data as placeholder file\n" if $VERBOSE;
+      tell_operator("OK $command");
+    } elsif ($parameters eq "") {
+      tell_operator(detect_command_helptext($command));
+    } else {
+      tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "event") {
     if ($parameters =~ /^([^\[\]"]+|""|)$/) {
@@ -667,7 +679,7 @@ sub process_master_command {
       }
       tell_operator("event=$newGame_event");
     } else {
-      tell_operator("error: invalid event parameter");
+      tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "file") {
     if ($parameters =~ /^[\w\d\/\\.+=_-]*$/) { # for portability only a subset of filename chars is allowed
@@ -676,7 +688,7 @@ sub process_master_command {
       }
       tell_operator("file=$PGN_FILE");
     } else {
-      tell_operator("error: invalid file parameter");
+      tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "follow") {
     if ($parameters =~ /^([a-zA-Z]+$|\/s|\/b|\/l)/) {
@@ -698,7 +710,7 @@ sub process_master_command {
         tell_operator("error: disable relay before activating follow");
       }
     } elsif ($parameters ne "") {
-      tell_operator("error: invalid follow parameter");
+      tell_operator("error: invalid $command parameter");
     }
     tell_operator("follow=$followMode last=$followLast");
   } elsif ($command eq "forget") {
@@ -713,7 +725,7 @@ sub process_master_command {
           tell_operator("error: invalid game $theseGames[$i]");
         }
       }
-      tell_operator("OK forget");
+      tell_operator("OK $command");
     } else {
       tell_operator(detect_command_helptext($command));
     }
@@ -737,7 +749,7 @@ sub process_master_command {
   } elsif ($command eq "ics") {
     if ($parameters !~ /^(?|)$/) {
       cmd_run($parameters);
-      tell_operator("OK ics");
+      tell_operator("OK $command");
     } else {
       tell_operator(detect_command_helptext($command));
     }
@@ -756,7 +768,7 @@ sub process_master_command {
       }
       tell_operator("ignoreevent=$ignoreEvent");
     } else {
-      tell_operator("error: invalid ignoreevent parameter");
+      tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "ignoreplayer") {
     if ($parameters =~ /^([^\[\]"]+|""|)$/) {
@@ -773,18 +785,18 @@ sub process_master_command {
       }
       tell_operator("ignoreplayer=$ignorePlayer");
     } else {
-      tell_operator("error: invalid ignoreplayer parameter");
+      tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "logout") {
     if ($parameters =~ /^\d+$/) {
-      tell_operator("OK logout($parameters)");
+      tell_operator("OK $command($parameters)");
       cmd_run("quit");
       print STDERR "info: logout with exit value $parameters\n";
       exit($parameters);
     } elsif ($parameters =~ /^(?|)$/) {
       tell_operator(detect_command_helptext($command));
     } else {
-      tell_operator("error: invalid logout parameter");
+      tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "max") {
     if ($parameters =~ /^([1-9]\d*|)$/) {
@@ -804,12 +816,12 @@ sub process_master_command {
       }
       tell_operator("max=$maxGamesNum");
     } else {
-      tell_operator("error: invalid max parameter");
+      tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "observe") {
     if ($parameters ne "") {
       observe($parameters);
-      tell_operator("OK observe");
+      tell_operator("OK $command");
     } else {
       tell_operator(detect_command_helptext($command));
     }
@@ -828,17 +840,17 @@ sub process_master_command {
         }
       }
     } elsif ($parameters ne "") {
-      tell_operator("error: invalid relay parameter");
+      tell_operator("error: invalid $command parameter");
     }
     tell_operator("relay=$relayMode");
   } elsif ($command eq "reset") {
     if ($parameters eq "1") {
       reset_games();
-      tell_operator("OK reset");
+      tell_operator("OK $command");
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
     } else {
-      tell_operator("error: invalid reset parameter");
+      tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "round") {
     if ($parameters =~ /^([^\[\]"]+|""|)$/) {
@@ -848,7 +860,7 @@ sub process_master_command {
       }
       tell_operator("round=$newGame_round");
     } else {
-      tell_operator("error: invalid round parameter");
+      tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "site") {
     if ($parameters =~ /^([^\[\]"]+|""|)$/) {
@@ -858,7 +870,7 @@ sub process_master_command {
       }
       tell_operator("site=$newGame_site");
     } else {
-      tell_operator("error: invalid site parameter");
+      tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "startup") {
     if ($parameters) {
@@ -867,12 +879,6 @@ sub process_master_command {
     my $startupString = join("; ", read_startupCommands());
     $startupString =~ s/[\n\r]+//g;
     tell_operator("startup($STARTUP_FILE)=$startupString");
-  } elsif ($command eq "temp") {
-    open(thisFile, ">$PGN_FILE");
-    print thisFile temp_pgn();
-    close(thisFile);
-    print STDERR "info: saved temporary PGN data\n" if $VERBOSE;
-    tell_operator("OK temp");
   } elsif ($command eq "verbose") {
     if ($parameters =~ /^(0|1|)$/) {
       if ($parameters ne "") {
@@ -880,7 +886,7 @@ sub process_master_command {
       }
       tell_operator("verbose=$VERBOSE");
     } else {
-      tell_operator("error: invalid verbose parameter");
+      tell_operator("error: invalid $command parameter");
     }
   } else {
     print STDERR "warning: invalid command: $command $parameters\n" if $VERBOSE;
