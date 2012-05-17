@@ -1072,7 +1072,7 @@ sub setup {
       # skip comments
     } elsif ($cmd =~ /^\s*(\S+)\s*(.*)$/) {
       process_master_command($1, $2);
-    } elsif ($cmd) {
+    } elsif ($cmd !~ /^\s*$/) {
       log_terminal("error: invalid startup command $cmd");
     }
   }
