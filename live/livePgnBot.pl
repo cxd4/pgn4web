@@ -669,7 +669,7 @@ sub process_master_command {
     }
     tell_operator("autorelay=$autorelayMode");
   } elsif ($command eq "config") {
-    tell_operator("config: max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode ignoreplayer=$ignorePlayer ignoreevent=$ignoreEvent event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round verbose=$VERBOSE");
+    tell_operator_and_log_terminal_if_verbose("config: max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode ignoreplayer=$ignorePlayer ignoreevent=$ignoreEvent event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round verbose=$VERBOSE");
   } elsif ($command eq "date") {
     if ($parameters =~ /^([^\[\]"]+|""|)$/) {
       if ($parameters ne "") {
@@ -751,7 +751,7 @@ sub process_master_command {
       tell_operator(detect_command_helptext($command));
     }
   } elsif ($command eq "games") {
-    tell_operator("games(" . ($#games_num + 1) . "/$maxGamesNum)=" . gameList());
+    tell_operator_and_log_terminal_if_verbose("games(" . ($#games_num + 1) . "/$maxGamesNum)=" . gameList());
   } elsif ($command eq "help") {
     if ($parameters =~ /\S/) {
       my $par;
@@ -766,7 +766,7 @@ sub process_master_command {
     }
   } elsif ($command eq "history") {
     my $secTime = time() - $starupTime;
-    tell_operator(sprintf("history: uptime=%s games=%d (g/d=%.2f) pgn=%d (p/h=%.2f) cmd=%d (c/m=%.2f) lines=%d (l/s=%.2f)", sec2time($secTime), $gamesStartCount, $gamesStartCount / ($secTime / (24 * 60 * 60)), $pgnWriteCount, $pgnWriteCount / ($secTime / (60 * 60)), $cmdRunCount, $cmdRunCount / ($secTime / 60), $lineCount, $lineCount / $secTime));
+    tell_operator_and_log_terminal_if_verbose(sprintf("history: uptime=%s games=%d (g/d=%.2f) pgn=%d (p/h=%.2f) cmd=%d (c/m=%.2f) lines=%d (l/s=%.2f)", sec2time($secTime), $gamesStartCount, $gamesStartCount / ($secTime / (24 * 60 * 60)), $pgnWriteCount, $pgnWriteCount / ($secTime / (60 * 60)), $cmdRunCount, $cmdRunCount / ($secTime / 60), $lineCount, $lineCount / $secTime));
   } elsif ($command eq "ics") {
     if ($parameters !~ /^(?|)$/) {
       cmd_run($parameters);
@@ -904,7 +904,7 @@ sub process_master_command {
       if ($parameters ne "") {
         $VERBOSE = $parameters;
       }
-      tell_operator("verbose=$VERBOSE");
+      tell_operator_and_log_terminal("verbose=$VERBOSE");
     } else {
       tell_operator("error: invalid $command parameter");
     }
