@@ -13,7 +13,7 @@
 use strict;
 use Net::Telnet;
 use File::Copy;
-
+use POSIX qw(strftime);
 
 our $FICS_HOST = "freechess.org";
 our $FICS_PORT = 5000;
@@ -56,7 +56,7 @@ our $last_check_relay_time = 0;
 
 sub cmd_run {
   my ($cmd) = @_;
-  print STDERR "info: running ics command: $cmd\n" if $VERBOSE;
+  log_terminal_if_verbose("info: running ics command: $cmd");
   my $output = $telnet->cmd($cmd);
   $last_cmd_time = time();
   $cmdRunCount++;
@@ -153,7 +153,7 @@ sub find_gameIndex {
 sub save_game {
 
   if ($newGame_num < 0) {
-    print STDERR "error: game not ready when saving\n";
+    log_terminal("error: game not ready when saving");
     return;
   }
 
@@ -179,7 +179,7 @@ sub save_game {
     $gamesStartCount++;
   } else {
     if (($games_white[$thisGameIndex] ne $newGame_white) || ($games_black[$thisGameIndex] ne $newGame_black) || ($games_whiteElo[$thisGameIndex] ne $newGame_whiteElo) || ($games_blackElo[$thisGameIndex] ne $newGame_blackElo)) {
-      print STDERR "error: game $newGame_num mismatch when saving\n";
+      log_terminal("error: game $newGame_num mismatch when saving");
     } else {
       $games_movesText[$thisGameIndex] = $newGame_movesText;
       if ($games_result[$thisGameIndex] eq "*") {
@@ -205,7 +205,7 @@ sub save_result {
   my $thisGameIndex = find_gameIndex($thisGameNum);
   if ($thisGameIndex < 0) {
     if ($logMissing == 1) {
-      print STDERR "error: missing game $thisGameNum when saving result\n";
+      log_terminal("error: missing game $thisGameNum when saving result");
     }
   } else {
     $games_result[$thisGameIndex] = $thisResult;
@@ -226,13 +226,13 @@ sub remove_game {
     if ((defined $games_num[$thisGameIndex]) && ($games_num[$thisGameIndex] ne "")) {
       $thisGameNum = $games_num[$thisGameIndex];
     } else {
-      print STDERR "warning: missing game for removing\n";
+      log_terminal("warning: missing game for removing");
       return -1;
     }
   } else {
     $thisGameIndex = find_gameIndex($thisGameNum);
     if ($thisGameIndex < 0) {
-      print STDERR "error: missing game $thisGameNum for removing\n";
+      log_terminal("error: missing game $thisGameNum for removing");
       return -1;
     }
   }
@@ -256,6 +256,29 @@ sub remove_game {
   delete $GAMES_timeLeft[$thisGameNum];
   refresh_pgn();
   return $thisGameIndex;
+}
+
+sub log_terminal {
+  my ($msg) = @_;
+  my $now = strftime("%Y-%m-%d %H:%M:%S", gmtime());
+  print STDERR $now . " " . $msg . "\n";
+}
+
+sub log_terminal_if_verbose {
+  my ($msg) = @_;
+  log_terminal($msg) if $VERBOSE;
+}
+
+sub tell_operator_and_log_terminal {
+  my ($msg) = @_;
+  log_terminal($msg);
+  tell_operator($msg);
+}
+
+sub tell_operator_and_log_terminal_if_verbose {
+  my ($msg) = @_;
+  log_terminal($msg) if $VERBOSE;
+  tell_operator($msg);
 }
 
 our $tellOperator = 0;
@@ -287,7 +310,7 @@ sub process_line {
     if ($1 eq $OPERATOR_HANDLE) {
       process_master_command($3, $4);
     } else {
-      print STDERR "info: ignoring tell from user $1\n" if $VERBOSE;
+      log_terminal_if_verbose("info: ignoring tell from user $1");
     }
   } elsif ($line =~ /^<12> (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+)/) {
     # in order to avoid keeping a game state, each time a board update is
@@ -305,7 +328,7 @@ sub process_line {
       $GAMES_timeLeft[$thisGN] = "{ White Time: " . sec2time($thisWC) . " Black Time: " . sec2time($thisBC) . " }";
       cmd_run("moves $thisGN");
     } else {
-      print STDERR "error: game $thisGN mismatch when receiving\n";
+      log_terminal("error: game $thisGN mismatch when receiving");
     }
   } elsif ($line =~ /^{Game (\d+) [^}]*} (\S+)/) {
     save_result($1, $2, 1); # from observed game
@@ -324,7 +347,7 @@ sub process_line {
     my $thisGameResult = $4;
     my $thisGameEco = $5;
     if ((($ignoreEvent ne "") && ($autorelayEvent =~ /$ignoreEvent/i)) || (($ignorePlayer ne "") && (($thisGameWhite =~ /$ignorePlayer/i) || ($thisGameBlack =~ /$ignorePlayer/i)))) {
-      print STDERR "info: ignored game $thisGameNum $autorelayEvent $thisGameWhite $thisGameBlack\n" if $VERBOSE;
+      log_terminal_if_verbose("info: ignored game $thisGameNum $autorelayEvent $thisGameWhite $thisGameBlack");
     } else {
       if ($autorelayMode == 1) {
         $GAMES_event[$thisGameNum] = $autorelayEvent;
@@ -343,8 +366,7 @@ sub process_line {
           if ($#games_num + 1 < $maxGamesNum) {
             cmd_run("observe $thisGameNum");
           } else {
-            print STDERR "warning: more relayed games than max=$maxGamesNum\n" if $VERBOSE;
-            tell_operator("warning: more relayed games than max=$maxGamesNum");
+            tell_operator_and_log_terminal_if_verbose("warning: more relayed games than max=$maxGamesNum");
           }
         }
       }
@@ -357,8 +379,8 @@ sub process_line {
     if ($line =~ /^Movelist for game (\d+):/) {
       reset_newGame();
       $newGame_num = $1;
-    } else {
-      print STDERR "info: ignored line: $line\n" if $VERBOSE;
+    } elsif ($line !~ /^\s*fics%\s*$/) {
+      log_terminal_if_verbose("info: ignored line: $line");
     }
   } else {
     if ($line =~ /^(\w+)\s+\((\S+)\)\s+vs\.\s+(\w+)\s+\((\S+)\).*/) {
@@ -369,7 +391,7 @@ sub process_line {
     } elsif ($line =~ /(.*) initial time: \d+ minutes.*increment: \d+/) {
       our $gameType = $1;
       if (!($gameType =~ /(standard|blitz|lightning)/)) {
-        print STDERR "warning: unsupported game $newGame_num: $gameType\n" if $VERBOSE;
+        log_terminal_if_verbose("warning: unsupported game $newGame_num: $gameType");
         delete $GAMES_timeLeft[$newGame_num];
         delete $GAMES_event[$newGame_num];
         delete $GAMES_site[$newGame_num];
@@ -390,8 +412,8 @@ sub process_line {
       process_newGame();
     } elsif ($line =~ /^Move\s+/) {
     } elsif ($line =~ /^[\s-]*$/) {
-    } else {
-      print STDERR "info: ignored line: $line\n" if $VERBOSE;
+    } elsif ($line !~ /^\s*fics%\s*$/) {
+      log_terminal_if_verbose("info: ignored line: $line");
     }
   }
   $lineCount++;
@@ -440,7 +462,7 @@ sub time2sec {
   } elsif ($t =~ /^\d+$/) {
     return $1;
   } else {
-    print STDERR "error: time2sec($t)\n" if $VERBOSE;
+    log_terminal_if_verbose("error: time2sec($t)");
     return 0;
   }
 }
@@ -464,7 +486,7 @@ sub sec2time {
   } elsif ($t =~ /^-/) {
     return "0:00:00";
   } else {
-    print STDERR "error: sec2time($t)\n" if $VERBOSE;
+    log_terminal_if_verbose("error: sec2time($t)");
     return 0;
   }
 }
@@ -626,8 +648,7 @@ sub process_master_command {
 
   if ($command eq "") {
   } elsif ($command =~ /^ambiguous command: /) {
-    print STDERR "warning: $command\n" if $VERBOSE;
-    tell_operator("error: $command");
+    tell_operator_and_log_terminal_if_verbose("error: $command");
   } elsif ($command eq "autorelay") {
     if ($parameters =~ /^(0|1)$/) {
       if ($parameters == 0) {
@@ -664,7 +685,7 @@ sub process_master_command {
       open(thisFile, ">$PGN_FILE");
       print thisFile temp_pgn();
       close(thisFile);
-      print STDERR "info: saved empty PGN data as placeholder file\n" if $VERBOSE;
+      log_terminal_if_verbose("info: saved empty PGN data as placeholder file");
       tell_operator("OK $command");
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
@@ -791,7 +812,7 @@ sub process_master_command {
     if ($parameters =~ /^\d+$/) {
       tell_operator("OK $command($parameters)");
       cmd_run("quit");
-      print STDERR "info: logout with exit value $parameters\n";
+      log_terminal("info: logout with exit value $parameters");
       exit($parameters);
     } elsif ($parameters =~ /^(?|)$/) {
       tell_operator(detect_command_helptext($command));
@@ -802,8 +823,7 @@ sub process_master_command {
     if ($parameters =~ /^([1-9]\d*|)$/) {
       if ($parameters ne "") {
         if ($parameters > $maxGamesNumDefault) {
-          print STDERR "warning: max number of games set above frechess.org observe limit of $maxGamesNumDefault\n";
-          tell_operator("warning: max number of games set above frechess.org observe limit of $maxGamesNumDefault");
+          tell_operator_and_log_terminal("warning: max number of games set above frechess.org observe limit of $maxGamesNumDefault");
         }
         if ($parameters < $maxGamesNum) {
           for (my $i=$parameters; $i<$maxGamesNum; $i++) {
@@ -889,8 +909,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } else {
-    print STDERR "warning: invalid command: $command $parameters\n" if $VERBOSE;
-    tell_operator("error: invalid command: $command $parameters");
+    tell_operator_and_log_terminal_if_verbose("error: invalid command: $command $parameters");
   }
 }
 
@@ -938,8 +957,7 @@ sub write_startupCommands {
   my @commandList = @_;
 
   if (!copy("$STARTUP_FILE", "$STARTUP_FILE" . ".bak")) {
-    print STDERR "error: startup commands file $STARTUP_FILE NOT written (failed backup)\n";
-    tell_operator("error: startup commands file $STARTUP_FILE NOT written (failed backup)");
+    tell_operator_and_log_terminal("error: startup commands file $STARTUP_FILE NOT written (failed backup)");
     return;
   }
 
@@ -949,10 +967,9 @@ sub write_startupCommands {
       print CMDFILE $cmd . "\n";
     }
     close(CMDFILE);
-    print STDERR "info: startup commands file $STARTUP_FILE written\n";
+    log_terminal("info: startup commands file $STARTUP_FILE written");
   } else {
-    print STDERR "error: failed writing startup commands file $STARTUP_FILE\n";
-    tell_operator("error: failed writing startup commands file $STARTUP_FILE");
+    tell_operator_and_log_terminal("error: failed writing startup commands file $STARTUP_FILE");
   }
 }
 
@@ -990,13 +1007,13 @@ sub setup {
     Port => $FICS_PORT,
   );
 
-  print STDERR "info: connected to $FICS_HOST\n" if $VERBOSE;
+  log_terminal_if_verbose("info: connected to $FICS_HOST");
 
   if ($BOT_PASSWORD) {
 
     $telnet->login(Name => $BOT_HANDLE, Password => $BOT_PASSWORD);
     $username = $BOT_HANDLE;
-    print STDERR "info: successfully logged as user $BOT_HANDLE\n";
+    log_terminal("info: successfully logged as user $BOT_HANDLE");
 
   } else {
 
@@ -1018,7 +1035,7 @@ sub setup {
       if ($line =~ /("[^"]*" is a registered name|\S+ is already logged in)/) {
         die "Can not login as $BOT_HANDLE: $1\n";
       }
-      print STDERR "info: ignored line: $line\n" if $VERBOSE;
+      log_terminal_if_verbose("info: ignored line: $line\n");
     }
 
     my($pre, $match) = $telnet->waitfor(
@@ -1032,7 +1049,7 @@ sub setup {
       die "Can not login as $BOT_HANDLE: $match\n";
     }
 
-    print STDERR "info: successfully logged as guest $username\n";
+    log_terminal("info: successfully logged as guest $username");
   }
 
   $telnet->prompt("/^/");
@@ -1047,7 +1064,7 @@ sub setup {
   cmd_run("set chanoff 1");
   cmd_run("set open 0");
   cmd_run("set style 12");
-  print STDERR "info: finished initialization\n" if $VERBOSE;
+  log_terminal_if_verbose("info: finished initialization");
 
   my @startupCommands = read_startupCommands();
   foreach my $cmd (@startupCommands) {
@@ -1056,10 +1073,10 @@ sub setup {
     } elsif ($cmd =~ /^\s*(\S+)\s*(.*)$/) {
       process_master_command($1, $2);
     } elsif ($cmd) {
-      print STDERR "error: invalid startup command $cmd\n" if $VERBOSE;
+      log_terminal("error: invalid startup command $cmd");
     }
   }
-  print STDERR "info: finished startup commands\n" if $VERBOSE;
+  log_terminal_if_verbose("info: finished startup commands");
 
   $tellOperator = 1;
   tell_operator("ready");
