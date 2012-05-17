@@ -271,13 +271,7 @@ sub log_terminal_if_verbose {
 
 sub tell_operator_and_log_terminal {
   my ($msg) = @_;
-  log_terminal($msg);
-  tell_operator($msg);
-}
-
-sub tell_operator_and_log_terminal_if_verbose {
-  my ($msg) = @_;
-  log_terminal($msg) if $VERBOSE;
+  log_terminal($msg) unless $VERBOSE;
   tell_operator($msg);
 }
 
@@ -366,7 +360,7 @@ sub process_line {
           if ($#games_num + 1 < $maxGamesNum) {
             cmd_run("observe $thisGameNum");
           } else {
-            tell_operator_and_log_terminal_if_verbose("warning: more relayed games than max=$maxGamesNum");
+            tell_operator("warning: more relayed games than max=$maxGamesNum");
           }
         }
       }
@@ -379,7 +373,7 @@ sub process_line {
     if ($line =~ /^Movelist for game (\d+):/) {
       reset_newGame();
       $newGame_num = $1;
-    } elsif ($line !~ /^\s*fics%\s*$/) {
+    } elsif ($line !~ /^\s*(\d\d.\d\d_|)fics%\s*$/) {
       log_terminal_if_verbose("info: ignored line: $line");
     }
   } else {
@@ -412,7 +406,7 @@ sub process_line {
       process_newGame();
     } elsif ($line =~ /^Move\s+/) {
     } elsif ($line =~ /^[\s-]*$/) {
-    } elsif ($line !~ /^\s*fics%\s*$/) {
+    } elsif ($line !~ /^\s*(\d\d.\d\d_|)fics%\s*$/) {
       log_terminal_if_verbose("info: ignored line: $line");
     }
   }
@@ -648,7 +642,7 @@ sub process_master_command {
 
   if ($command eq "") {
   } elsif ($command =~ /^ambiguous command: /) {
-    tell_operator_and_log_terminal_if_verbose("error: $command");
+    tell_operator("error: $command");
   } elsif ($command eq "autorelay") {
     if ($parameters =~ /^(0|1)$/) {
       if ($parameters == 0) {
@@ -669,7 +663,7 @@ sub process_master_command {
     }
     tell_operator("autorelay=$autorelayMode");
   } elsif ($command eq "config") {
-    tell_operator_and_log_terminal_if_verbose("config: max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode ignoreplayer=$ignorePlayer ignoreevent=$ignoreEvent event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round verbose=$VERBOSE");
+    tell_operator("config: max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode ignoreplayer=$ignorePlayer ignoreevent=$ignoreEvent event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round verbose=$VERBOSE");
   } elsif ($command eq "date") {
     if ($parameters =~ /^([^\[\]"]+|""|)$/) {
       if ($parameters ne "") {
@@ -751,7 +745,7 @@ sub process_master_command {
       tell_operator(detect_command_helptext($command));
     }
   } elsif ($command eq "games") {
-    tell_operator_and_log_terminal_if_verbose("games(" . ($#games_num + 1) . "/$maxGamesNum)=" . gameList());
+    tell_operator("games(" . ($#games_num + 1) . "/$maxGamesNum)=" . gameList());
   } elsif ($command eq "help") {
     if ($parameters =~ /\S/) {
       my $par;
@@ -766,7 +760,7 @@ sub process_master_command {
     }
   } elsif ($command eq "history") {
     my $secTime = time() - $starupTime;
-    tell_operator_and_log_terminal_if_verbose(sprintf("history: uptime=%s games=%d (g/d=%.2f) pgn=%d (p/h=%.2f) cmd=%d (c/m=%.2f) lines=%d (l/s=%.2f)", sec2time($secTime), $gamesStartCount, $gamesStartCount / ($secTime / (24 * 60 * 60)), $pgnWriteCount, $pgnWriteCount / ($secTime / (60 * 60)), $cmdRunCount, $cmdRunCount / ($secTime / 60), $lineCount, $lineCount / $secTime));
+    tell_operator(sprintf("history: uptime=%s games=%d (g/d=%.2f) pgn=%d (p/h=%.2f) cmd=%d (c/m=%.2f) lines=%d (l/s=%.2f)", sec2time($secTime), $gamesStartCount, $gamesStartCount / ($secTime / (24 * 60 * 60)), $pgnWriteCount, $pgnWriteCount / ($secTime / (60 * 60)), $cmdRunCount, $cmdRunCount / ($secTime / 60), $lineCount, $lineCount / $secTime));
   } elsif ($command eq "ics") {
     if ($parameters !~ /^(?|)$/) {
       cmd_run($parameters);
@@ -909,7 +903,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } else {
-    tell_operator_and_log_terminal_if_verbose("error: invalid command: $command $parameters");
+    tell_operator("error: invalid command: $command $parameters");
   }
 }
 
