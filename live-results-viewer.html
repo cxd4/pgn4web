@@ -160,7 +160,7 @@ h1.pageHeader {
   position: fixed;
   right: 30px; /* defined as gameBoardContainer.right */
   top: 30px; /* = gameBoardContainer.right */
-  width: 326px;
+  width: 324px;
   background: white;
   padding: 10px; /* defined as gameBoardContainer.padding = body.padding - gameBoardContainer.right */
   padding-top: 20px; /* = 2 * gameBoardContainer.padding */
@@ -171,24 +171,25 @@ h1.pageHeader {
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 38px; /* defined as whiteSquare.width */
-  height: 38px; /* = whiteSquare.width */
+  width: 38px; /* defined as whiteSquare.bareWidth */
+  height: 38px; /* = whiteSquare.bareWidth */
   border-style: solid;
-  border-width: 1px;
+  border-width: 1px; /* defined as whiteSquare.borderWidth */
+  /* whiteSquare.width = whiteSquare.bareWidth + 2 * whiteSquare.borderWidth */
 }
 
 .boardTable {
   border-style: solid;
   border-color: #818780;
-  border-width: 3px; /* defined as boardTable.borderWidth */
+  border-width: 2px; /* defined as boardTable.borderWidth */
   box-shadow: 0px 0px 20px #B0B8AE;
-  width: 326px; /* = 8 * whiteSquare.width + 2 * boardTable.borderWidth */
-  height: 326px; /* = 8 * whiteSquare.width + 2 * boardTable.borderWidth */
+  width: 324px; /* = 8 * whiteSquare.width + 2 * boardTable.borderWidth */
+  height: 324px; /* = 8 * whiteSquare.width + 2 * boardTable.borderWidth */
   background-color: #FFFFFF;
 }
 
 .pieceImage {
-  width: 32px; /* defined as pieceImage.width < whiteSquare.width */
+  width: 32px; /* defined as pieceImage.width < whiteSquare.bareWidth */
   height: 32px; /* = pieceImage.width */
 }
 
