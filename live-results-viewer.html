@@ -379,7 +379,7 @@ a.variation {
     }
   }
 
-  if ((iniGame = gup("initialGame")) === "") {iniGame = "\\[\\s*Result\\s*\"\\*\"\\s*\\]"; }
+  if ((iniGame = gup("initialGame")) === "") {iniGame = 1; }
   if (!(isNaN(parseInt(iniGame, 10)))) {
     iniGame = parseInt(iniGame, 10);
     delayIniGame = (iniGame > 0);
@@ -412,7 +412,7 @@ a.variation {
       " - pgnData = " + pgnFile + "; PGN file to load (default " + pgnFile_default + ")" + "\n" +
       " - refreshMinutes = " + refreshMinutes + "; refresh interval in minutes, decimals allowed (default 1)" + "\n" +
       " - refreshDemo = " + demoFlag + "; sets live demo mode (default false)" + "\n" +
-      " - initialGame = " + iniGame + "; initial game to load, a number or first, last, random or a search string (default search for unfinished game)" + "\n" +
+      " - initialGame = " + iniGame + "; initial game to load, a number or first, last, random or a search string (default 1)" + "\n" +
       " - showBoard = " + showBoard + "; shows the chessboard (default false)" + "\n" +
       " - showEvent = " + showEvent + "; shows event information (default true)" + "\n" +
       " - showTeams = " + showTeams + "; shows teams information (default true)" + "\n" +
