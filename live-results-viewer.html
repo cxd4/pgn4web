@@ -171,17 +171,20 @@ h1.pageHeader {
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 40px; /* defined as whiteSquare.width */
-  height: 40px; /* = whiteSquare.width */
+  width: 38px; /* defined as whiteSquare.width */
+  height: 38px; /* = whiteSquare.width */
+  border-style: solid;
+  border-width: 1px;
 }
 
 .boardTable {
-  border-style: double;
-  border-color: black;
+  border-style: solid;
+  border-color: #663300;
   border-width: 3px; /* defined as boardTable.borderWidth */
-  box-shadow: 0px 0px 15px #AAAAAA;
+  box-shadow: 0px 0px 15px #996633;
   width: 326px; /* = 8 * whiteSquare.width + 2 * boardTable.borderWidth */
   height: 326px; /* = 8 * whiteSquare.width + 2 * boardTable.borderWidth */
+  background-color: #FFCC99;
 }
 
 .pieceImage {
@@ -189,17 +192,21 @@ h1.pageHeader {
   height: 32px; /* = pieceImage.width */
 }
 
-.whiteSquare {
-  background: #EFF4EC;
+.whiteSquare,
+.highlightWhiteSquare {
+  background: #FFCC99;
+  border-color: #FFCC99;
 }
 
-.blackSquare {
-  background: #C6CEC3;
+.blackSquare,
+.highlightBlackSquare {
+  background: #CC9966;
+  border-color: #CC9966;
 }
 
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  background: #DAF4D7;
+  border-color: #663300;
 }
 
 .selectControl {
