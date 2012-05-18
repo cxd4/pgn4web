@@ -260,8 +260,7 @@ sub remove_game {
 
 sub log_terminal {
   my ($msg) = @_;
-  my $now = strftime("%Y-%m-%d %H:%M:%S", gmtime());
-  print STDERR $now . " " . $msg . "\n";
+  print STDERR strftime("%Y-%m-%d %H:%M:%S UTC", gmtime()) . " " . $msg . "\n";
 }
 
 sub log_terminal_if_verbose {
@@ -704,7 +703,7 @@ sub process_master_command {
       my @fileInfo = stat($PGN_FILE);
       my $fileInfoText = "file=$PGN_FILE";
       if (defined $fileInfo[9]) {
-        $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S", gmtime($fileInfo[9]));
+        $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S UTC", gmtime($fileInfo[9]));
       }
       if (defined $fileInfo[7]) {
         $fileInfoText .= " size=$fileInfo[7]";
@@ -771,7 +770,7 @@ sub process_master_command {
     }
   } elsif ($command eq "history") {
     my $secTime = time() - $starupTime;
-    tell_operator(sprintf("history: uptime=%s games=%d (g/d=%.2f) pgn=%d (p/h=%.2f) cmd=%d (c/m=%.2f) lines=%d (l/s=%.2f)", sec2time($secTime), $gamesStartCount, $gamesStartCount / ($secTime / (24 * 60 * 60)), $pgnWriteCount, $pgnWriteCount / ($secTime / (60 * 60)), $cmdRunCount, $cmdRunCount / ($secTime / 60), $lineCount, $lineCount / $secTime));
+    tell_operator(sprintf("history: uptime=%s games=%d (g/d=%.2f) pgn=%d (p/h=%.2f) cmd=%d (c/m=%.2f) lines=%d (l/s=%.2f) %s", sec2time($secTime), $gamesStartCount, $gamesStartCount / ($secTime / (24 * 60 * 60)), $pgnWriteCount, $pgnWriteCount / ($secTime / (60 * 60)), $cmdRunCount, $cmdRunCount / ($secTime / 60), $lineCount, $lineCount / $secTime, strftime("now=%Y-%m-%d %H:%M:%S UTC", gmtime($starupTime + $secTime))));
   } elsif ($command eq "ics") {
     if ($parameters !~ /^(?|)$/) {
       cmd_run($parameters);
