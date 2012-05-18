@@ -371,8 +371,11 @@ a.variation {
   showPlayersInfo = true;
   if ((gup("showPlayersInfo") == "false") || (gup("showPlayersInfo") == "f")) { showPlayersInfo = false; }
 
-  autoswitchNewgames = false;
-  if ((gup("autoswitchNewgames") == "true") || (gup("autoswitchNewgames") == "t")) { autoswitchNewgames = true; }
+  autoHighlightNewmoves = true;
+  if ((gup("autoHighlightNewmoves") == "false") || (gup("autoHighlightNewmoves") == "f")) { autoHighlightNewmoves = false; }
+
+  autoSwitchNewgames = false;
+  if ((gup("autoSwitchNewgames") == "true") || (gup("autoSwitchNewgames") == "t")) { autoSwitchNewgames = true; }
 
   headlessPage = false;
   if ((gup("headlessPage") == "true") || (gup("headlessPage") == "t")) { headlessPage = true; }
@@ -387,9 +390,10 @@ a.variation {
       " - showBoard = " + showBoard + "; shows the chessboard (default false)" + "\n" +
       " - showEvent = " + showEvent + "; shows event information (default true)" + "\n" +
       " - showTeams = " + showTeams + "; shows teams information (default true)" + "\n" +
-      " - autoswitchNewgames = " + autoswitchNewgames + "; automatically switches to games with new moves (default false)" + "\n" +
+      " - autoHighlightNewmoves = " + autoHighlightNewmoves + "; automatically highlights new moves (default true)" + "\n" +
+      " - autoSwitchNewgames = " + autoSwitchNewgames + "; automatically switches to games with new moves (default false)" + "\n" +
       " - showPlayersInfo = " + showPlayersInfo + "; shows title/elo players information (default true)" + "\n" +
-      " - headlessPage = " + headlessPage + "; displays a page without heading (default false)" + "\n\n" +
+      " - headlessPage = " + headlessPage + "; displays a page without heading (default false)" + "\n" +
       " - help = true; prints this help (default false)" + "\n\n" +
       "</pre>");
   }
@@ -458,13 +462,15 @@ a.variation {
     gameId.sort(sortGameId);
 
     printGames();
-    SetHighlight((typeof(gameNewMoves) != "undefined") && (typeof(gameNewMoves[currentGame]) != "undefined") && (gameNewMoves[currentGame]));
+    if (autoHighlightNewmoves) {
+      SetHighlight((typeof(gameNewMoves) != "undefined") && (typeof(gameNewMoves[currentGame]) != "undefined") && (gameNewMoves[currentGame]));
+    }
 
     if ((LiveBroadcastTicker < 2) && delayIniGame) {
       Init(typeof(gameId[iniGame - 1]) != "undefined" ? gameId[iniGame - 1] : "0");
     }
 
-    if (autoswitchNewgames && ((typeof(gameNewMoves) == "undefined") || (!gameNewMoves[currentGame]))) { searchGameWithNewMoves(false); }
+    if (autoSwitchNewgames && ((typeof(gameNewMoves) == "undefined") || (!gameNewMoves[currentGame]))) { searchGameWithNewMoves(false); }
   }
 
   function myCompare(AA, ZZ) {
@@ -616,7 +622,9 @@ a.variation {
       if (theObj.innerHTML === "") { theObj.innerHTML = "&nbsp;"; }
     }
 
-    SetHighlight((typeof(gameNewMoves) != "undefined") && (typeof(gameNewMoves[currentGame]) != "undefined") && (gameNewMoves[currentGame]));
+    if (autoHighlightNewmoves) {
+      SetHighlight((typeof(gameNewMoves) != "undefined") && (typeof(gameNewMoves[currentGame]) != "undefined") && (gameNewMoves[currentGame]));
+    }
   }
 
   function customFunctionOnMove() {
@@ -663,25 +671,28 @@ a.variation {
     if (thisIndex !== thisGameIndex) { Init(gameId[thisIndex]); }
   }
 
+  function customDebugInfo() {
+    return "autoHighlightNewmoves=" + autoHighlightNewmoves + " autoSwitchNewgames=" + autoSwitchNewgames;
+  }
+
   function customShortcutKey_Shift_1() { refreshPgnSource(); }
   function customShortcutKey_Shift_2() { searchGameWithNewMoves(true); }
   function customShortcutKey_Shift_3() { searchGameWithNewMoves(false); }
-  function customShortcutKey_Shift_4() { autoswitchNewgames = !autoswitchNewgames; }
-  function customShortcutKey_Shift_5() { myAlert("autoswitch to games with new moves is " + autoswitchNewgames, false); }
+  function customShortcutKey_Shift_4() { autoHighlightNewmoves = !autoHighlightNewmoves; }
+  function customShortcutKey_Shift_5() { autoSwitchNewgames = !autoSwitchNewgames; }
   function customShortcutKey_Shift_6() { toggleShowBoard(); }
   function customShortcutKey_Shift_7() { toggleShowPlayersInfo(); }
   function customShortcutKey_Shift_8() { toggleShowTeams(); }
   function customShortcutKey_Shift_9() { toggleShowEvent(); }
 
-  clearShortcutSquares("BC", "7");
-
   boardShortcut("F5", "toggle event information", function(t,e){ toggleShowEvent(); });
   boardShortcut("G5", "toggle teams information", function(t,e){ toggleShowTeams(); });
   boardShortcut("H5", "toggle title/elo players information", function(t,e){ toggleShowPlayersInfo(); });
 
-  boardShortcut("E7", "search previous game with new moves", function(t,e){ searchGameWithNewMoves(true); });
-  boardShortcut("F7", "search next game with new moves", function(t,e){ searchGameWithNewMoves(false); });
-  boardShortcut("G7", "toggle autoswitch to games with new moves", function(t,e){ if (e.shiftKey) { myAlert("autoswitch to games with new moves is " + autoswitchNewgames, false); } else { autoswitchNewgames = !autoswitchNewgames; } });
+  boardShortcut("B7", "search previous game with new moves", function(t,e){ searchGameWithNewMoves(true); });
+  boardShortcut("C7", "search next game with new moves", function(t,e){ searchGameWithNewMoves(false); });
+  boardShortcut("F7", "toggle autohighlight new moves", function(t,e){ autoHighlightNewmoves = !autoHighlightNewmoves && !e.shiftKey; });
+  boardShortcut("G7", "toggle autoswitch to games with new moves", function(t,e){ autoSwitchNewgames = !autoSwitchNewgames && !e.shiftKey; });
 
   function toggleShowEvent() {
     showEvent = !showEvent;

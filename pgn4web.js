@@ -667,6 +667,9 @@ function displayDebugInfo() {
     debugInfo += 'LIVEBROADCAST: status=' + liveStatusDebug() + ' ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime() +
     '\n\n';
   }
+  if (thisCustomDebugInfo = customDebugInfo()) {
+    debugInfo += "CUSTOM: " + customDebugInfo() + "\n\n";
+  }
   debugInfo += 'ALERTLOG: fatalnew=' + fatalErrorNumSinceReset + ' new=' + alertNumSinceReset +
     ' shown=' + Math.min(alertNum, alertLog.length) + ' total=' + alertNum + '\n--';
   if (alertNum > 0) {
@@ -699,6 +702,7 @@ function liveStatusDebug() {
   return "waiting";
 }
 
+function customDebugInfo() { return ""; }
 
 pgnWin = null;
 function displayPgnData(allGames) {
