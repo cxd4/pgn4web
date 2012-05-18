@@ -645,7 +645,7 @@ function displayDebugInfo() {
   var base = detectBaseLocation();
   var jsurl = detectJavascriptLocation();
   stopAlertPrompt();
-  debugInfo = 'pgn4web: version=' + pgn4web_version + ' homepage=' + pgn4web_project_url + '\n\n' +
+  var debugInfo = 'pgn4web: version=' + pgn4web_version + ' homepage=' + pgn4web_project_url + '\n\n' +
     'HTMLURL: length=' + location.href.length + ' url=' +
     (location.href.length < 100 ? location.href : (location.href.substring(0,99) + '...')) + '\n' +
     (base ? 'BASEURL: url=' + base + '\n' : '') +
@@ -667,9 +667,8 @@ function displayDebugInfo() {
     debugInfo += 'LIVEBROADCAST: status=' + liveStatusDebug() + ' ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime() +
     '\n\n';
   }
-  if (thisCustomDebugInfo = customDebugInfo()) {
-    debugInfo += "CUSTOM: " + customDebugInfo() + "\n\n";
-  }
+  var thisInfo = customDebugInfo();
+  if (thisInfo) { debugInfo += "CUSTOM: " + thisInfo + "\n\n"; }
   debugInfo += 'ALERTLOG: fatalnew=' + fatalErrorNumSinceReset + ' new=' + alertNumSinceReset +
     ' shown=' + Math.min(alertNum, alertLog.length) + ' total=' + alertNum + '\n--';
   if (alertNum > 0) {
