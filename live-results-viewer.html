@@ -41,6 +41,7 @@ h1.pageHeader {
   margin-top: 0;
   margin-bottom: 0;
   padding-bottom: 10px; /* = 1/4 * body.padding */
+  white-space: nowrap;
 }
 
 .gamesAnchor {
@@ -155,11 +156,12 @@ h1.pageHeader {
 
 .gameBoardContainer {
   position: fixed;
-  top: 30px; /* defined as gameBoardContainer.top */
-  right: 30px; /* = gameBoardContainer.top */
+  right: 30px; /* defined as gameBoardContainer.right */
+  top: 30px; /* = gameBoardContainer.right */
   width: 326px;
   background: white;
-  padding: 10px; /* = body.padding - gameBoardContainer.top */
+  padding: 10px; /* defined as gameBoardContainer.padding = body.padding - gameBoardContainer.right */
+  padding-top: 20px; /* = 2 * gameBoardContainer.padding */
   margin-bottom: 16px; /* = body.fontSize */
 }
 
