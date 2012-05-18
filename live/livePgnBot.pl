@@ -701,7 +701,18 @@ sub process_master_command {
       if ($parameters ne "") {
         $PGN_FILE = $parameters;
       }
-      tell_operator("file=$PGN_FILE");
+      my @fileInfo = stat($PGN_FILE);
+      my $fileInfoText = "file=$PGN_FILE";
+      if (defined $fileInfo[9]) {
+        $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S", gmtime($fileInfo[9]));
+      }
+      if (defined $fileInfo[7]) {
+        $fileInfoText .= " size=$fileInfo[7]";
+      }
+      if (defined $fileInfo[2]) {
+        $fileInfoText .= sprintf(" permissions=%04o", $fileInfo[2] & 07777);
+      }
+      tell_operator($fileInfoText);
     } else {
       tell_operator("error: invalid $command parameter");
     }
