@@ -639,7 +639,28 @@ a.variation {
     }
   }
 
+  function searchGameWithNewMoves(backward) {
+    if (typeof(gameId) == "undefined") { return; }
+    if (typeof(gameNewMoves) == "undefined") { return; }
+
+    var thisGameIndex;
+    for (thisGameIndex = 0; thisGameIndex < gameId.length; thisGameIndex++) {
+      if (gameId[thisGameIndex] == currentGame) { break; }
+    }
+    if (thisGameIndex === gameId.length) { return; }
+
+    var thisIndex;
+    var indexIncrement = backward ? -1 : 1;
+    for (thisIndex = (thisGameIndex + indexIncrement + gameId.length) % gameId.length; thisIndex !== thisGameIndex; thisIndex = (thisIndex + indexIncrement + gameId.length) % gameId.length) {
+      if (gameNewMoves[gameId[thisIndex]]) { break; }
+    }
+console.log("PAOLO " + currentGame + " " + thisGameIndex + " " + thisIndex + " " + gameNewMoves[gameId[thisIndex]]);
+    if (thisIndex !== thisGameIndex) { Init(gameId[thisIndex]); }
+  }
+
   function customShortcutKey_Shift_1() { refreshPgnSource(); }
+  function customShortcutKey_Shift_2() { searchGameWithNewMoves(true); }
+  function customShortcutKey_Shift_3() { searchGameWithNewMoves(false); }
   function customShortcutKey_Shift_5() { toggleShowBoard(); }
   function customShortcutKey_Shift_7() { toggleShowPlayersInfo(); }
   function customShortcutKey_Shift_8() { toggleShowTeams(); }
@@ -650,6 +671,9 @@ a.variation {
   boardShortcut("F5", "toggle event information", function(t,e){ toggleShowEvent(); });
   boardShortcut("G5", "toggle teams information", function(t,e){ toggleShowTeams(); });
   boardShortcut("H5", "toggle title/elo players information", function(t,e){ toggleShowPlayersInfo(); });
+
+  boardShortcut("D7", "search previous game with new moves", function(t,e){ searchGameWithNewMoves(true); });
+  boardShortcut("E7", "search next game with new moves", function(t,e){ searchGameWithNewMoves(false); });
 
   function toggleShowEvent() {
     showEvent = !showEvent;
