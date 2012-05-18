@@ -673,14 +673,14 @@ a.variation {
   function customShortcutKey_Shift_8() { toggleShowTeams(); }
   function customShortcutKey_Shift_9() { toggleShowEvent(); }
 
-  clearShortcutSquares("BCF", "7");
+  clearShortcutSquares("BC", "7");
 
   boardShortcut("F5", "toggle event information", function(t,e){ toggleShowEvent(); });
   boardShortcut("G5", "toggle teams information", function(t,e){ toggleShowTeams(); });
   boardShortcut("H5", "toggle title/elo players information", function(t,e){ toggleShowPlayersInfo(); });
 
-  boardShortcut("D7", "search previous game with new moves", function(t,e){ searchGameWithNewMoves(true); });
-  boardShortcut("E7", "search next game with new moves", function(t,e){ searchGameWithNewMoves(false); });
+  boardShortcut("E7", "search previous game with new moves", function(t,e){ searchGameWithNewMoves(true); });
+  boardShortcut("F7", "search next game with new moves", function(t,e){ searchGameWithNewMoves(false); });
   boardShortcut("G7", "toggle autoswitch to games with new moves", function(t,e){ if (e.shiftKey) { myAlert("autoswitch to games with new moves is " + autoswitchNewgames, false); } else { autoswitchNewgames = !autoswitchNewgames; } });
 
   function toggleShowEvent() {
@@ -748,7 +748,7 @@ function gup(name) {
 <div class="gameBoardContainer" id="GameBoardContainer">
 <div class="header"><a class="gameWhite" id="GameWhite" title="white player" href="javascript:void(0);" onclick="openFidePlayerUrl(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();"></a><span class="gameWhiteClock" id="GameWhiteClock" title="white clock"></span><span class="gameBlackClock" id="GameBlackClock" title="black clock"></span><a class="gameBlack" id="GameBlack" title="black player" href="javascript:void(0);" onclick="openFidePlayerUrl(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();"></a></div>
 <div id="GameBoard"></div>
-<div class="footer"><span class="gameSideToMove"><img class="sideToMove" id="SideToMove" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" title="side to move"/>&nbsp;</span><span class="gameText">&nbsp;<a id="GamePrevMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly - 1); this.blur();" title="previous moves"></a><span style="font-weight: bold;" id="GameCurrMove" title="current move as shown on chessboard"></span><a id="GameNextMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly + 1); this.blur();" title="next moves"></a><span style="font-weight: bold;">&nbsp;</span></span><a class="gameResult" id="GameResult" href="javascript:void(0);" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); this.blur();" title="go to game end"></a></div>
+<div class="footer"><span class="gameSideToMove"><img class="sideToMove" id="SideToMove" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" title="side to move"/>&nbsp;</span><span class="gameText">&nbsp;<a id="GamePrevMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly - 1); this.blur();" title="previous moves"></a><a href="javascript:void(0);" onclick="SetHighlight(!highlightOption); this.blur();" style="font-weight: bold;" id="GameCurrMove" title="current move as shown on chessboard"></a><a id="GameNextMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly + 1); this.blur();" title="next moves"></a><span style="font-weight: bold;">&nbsp;</span></span><a class="gameResult" id="GameResult" href="javascript:void(0);" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); this.blur();" title="go to game end"></a></div>
 </div>
 
 <a name="games" class="gamesAnchor" id="gamesAnchor"></a>
