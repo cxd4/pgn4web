@@ -654,7 +654,6 @@ a.variation {
     for (thisIndex = (thisGameIndex + indexIncrement + gameId.length) % gameId.length; thisIndex !== thisGameIndex; thisIndex = (thisIndex + indexIncrement + gameId.length) % gameId.length) {
       if (gameNewMoves[gameId[thisIndex]]) { break; }
     }
-console.log("PAOLO " + currentGame + " " + thisGameIndex + " " + thisIndex + " " + gameNewMoves[gameId[thisIndex]]);
     if (thisIndex !== thisGameIndex) { Init(gameId[thisIndex]); }
   }
 
