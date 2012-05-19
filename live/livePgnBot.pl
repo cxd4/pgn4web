@@ -485,8 +485,9 @@ sub sec2time {
 }
 
 sub refresh_pgn {
-  my ($i, $thisResult, $thisWhite, $thisBlack, $thisWhiteTitle, $thisBlackTitle);
+  my ($i, $thisResult, $gameRunning, $thisWhite, $thisBlack, $thisWhiteTitle, $thisBlackTitle);
 
+  $gameRunning = 0;
   $pgn = "";
   for ($i=0; $i<$maxGamesNum; $i++) {
     if ((defined $games_num[$i]) && (defined $GAMES_event[$games_num[$i]]) && (defined $GAMES_site[$games_num[$i]]) && (defined $GAMES_date[$games_num[$i]]) && (defined $GAMES_round[$games_num[$i]]) && (defined $GAMES_eco[$games_num[$i]]) && (defined $GAMES_timeLeft[$games_num[$i]])) {
@@ -494,6 +495,9 @@ sub refresh_pgn {
         $thisResult = "*";
       } else {
         $thisResult = $games_result[$i];
+      }
+      if ($thisResult eq "*") {
+        $gameRunning = 1;
       }
       if (($relayMode == 1) && ($games_white[$i] =~ /^(GM|IM|FM|WGM|WIM|WFM)([A-Z].*)$/)) {
         $thisWhiteTitle = $1;
@@ -513,13 +517,13 @@ sub refresh_pgn {
         $thisWhite =~ s/(?<=.)([A-Z])/ $1/g;
         $thisBlack =~ s/(?<=.)([A-Z])/ $1/g;
       }
-      if (($followMode == 1) && ($thisResult eq "*")) {
-        $thisWhite .= " ";
-        $thisBlack .= " ";
-      }
       $pgn .= "[Event \"" . $GAMES_event[$games_num[$i]] . "\"]\n";
       $pgn .= "[Site \"" . $GAMES_site[$games_num[$i]] . "\"]\n";
-      $pgn .= "[Date \"" . $GAMES_date[$games_num[$i]] . "\"]\n";
+      $pgn .= "[Date \"" . $GAMES_date[$games_num[$i]];
+      if (($followMode == 1) && ($thisResult eq "*")) {
+        $pgn .= " ";
+      }
+      $pgn .= "\"]\n";
       $pgn .= "[Round \"" . $GAMES_round[$games_num[$i]] . "\"]\n";
       $pgn .= "[White \"" . $thisWhite . "\"]\n";
       $pgn .= "[Black \"" . $thisBlack . "\"]\n";
@@ -548,8 +552,8 @@ sub refresh_pgn {
     }
   }
 
-  if ($pgn eq "") {
-    $pgn = temp_pgn();
+  if (($pgn eq "") || (($autorelayMode == 1) && ($gameRunning == 0))) {
+    $pgn .= temp_pgn();
   }
 
   if ($pgn ne $lastPgn) {
