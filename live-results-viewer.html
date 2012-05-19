@@ -143,21 +143,12 @@ h1.pageHeader {
   visibility: hidden;
 }
 
-.gameLiveStatus {
-  font-size: 11px; /* = header.fontSize */
-  position: fixed;
-  bottom: 0;
-  right: 0;
+.gameLiveStatus2 {
   display: inline-block;
-  margin: 5px; /* = player.paddingLeft */
-  margin-top: 33px; /* = 3 * header.fontSize */
-  text-align: right;
-  color: lightgray;
-  text-decoration: none;
-}
-
-.gameLiveStatus:hover {
-  color: black;
+  margin-top: 48px; /* = 3 * body.fontSize */
+  padding-left: 5px; /* = player.paddingLeft */
+  font-size: 14px; /* defined as game.fontSize */
+  color: gray;
 }
 
 .gameBoardContainer {
@@ -286,9 +277,23 @@ a.variation {
   margin-top: 22px; /* 2 * header.fontSize */
 }
 
-.gameWhite, .gameWhiteClock, .gameBlackClock, .gameBlack {
+.gameEvent, .gameLiveStatus, .gameWhite, .gameWhiteClock, .gameBlackClock, .gameBlack {
   display: inline-block;
   overflow: hidden;
+}
+
+.gameEvent {
+  width: 220px; /* 5.5 * whiteSquare.width */
+  margin-right: 20px; /* 1/2 * whiteSquare.width */
+  text-align: left;
+  color: gray;
+}
+
+.gameLiveStatus {
+  width: 80px; /* = 2 * whiteSquare.width */
+  text-align: right;
+  text-decoration: none;
+  color: gray;
 }
 
 .gameWhite, .gameBlack {
@@ -444,6 +449,10 @@ a.variation {
   SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, true);
 
   function customFunctionOnCheckLiveBroadcastStatus() {
+    if ((theObjFrom = document.getElementById("GameLiveStatus")) && (theObjTo = document.getElementById("GameLiveStatus2"))) {
+      theObjTo.innerHTML = theObjFrom.innerHTML;
+      theObjTo.title = theObjFrom.title;
+    }
     for (gg in gameId) {
       if (theObj = document.getElementById("newMoves_" + gameId[gg])) {
         theObj.className = "noNewMoves";
@@ -745,6 +754,9 @@ a.variation {
     if (theObj = document.getElementById("GameBoardContainer")) {
       theObj.style.display = showBoard ? "" : "none";
     }
+    if (theObj = document.getElementById("GameLiveStatus2")) {
+      theObj.style.display = showBoard ? "none" : "";
+    }
     if (showBoard) { Init(currentGame); }
     printGames();
   }
@@ -787,6 +799,7 @@ function gup(name) {
 <h1 class="pageHeader" id="pageHeader">pgn4web <a class="pageHeader" href="#games">live chess broadcast</a></h1>
 
 <div class="gameBoardContainer" id="GameBoardContainer">
+<div class="header"><span class="gameEvent" id="GameEvent">&nbsp;</span><a class="gameLiveStatus" id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();">&nbsp;</a></div>
 <div class="header"><a class="gameWhite" id="GameWhite" title="white player" href="javascript:void(0);" onclick="openFidePlayerUrl(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();"></a><span class="gameWhiteClock" id="GameWhiteClock" title="white clock"></span><span class="gameBlackClock" id="GameBlackClock" title="black clock"></span><a class="gameBlack" id="GameBlack" title="black player" href="javascript:void(0);" onclick="openFidePlayerUrl(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();"></a></div>
 <div id="GameBoard"></div>
 <div class="footer"><span class="gameSideToMove"><img class="sideToMove" id="SideToMove" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" title="side to move"/>&nbsp;</span><span class="gameText">&nbsp;<a id="GamePrevMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly - 1); this.blur();" title="previous moves"></a><a href="javascript:void(0);" onclick="SetHighlight(!highlightOption); this.blur();" style="font-weight: bold;" id="GameCurrMove" title="current move as shown on chessboard"></a><a id="GameNextMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly + 1); this.blur();" title="next moves"></a><span style="font-weight: bold;">&nbsp;</span></span><a class="gameResult" id="GameResult" href="javascript:void(0);" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); this.blur();" title="go to game end"></a></div>
@@ -795,13 +808,15 @@ function gup(name) {
 <a name="games" class="gamesAnchor" id="gamesAnchor"></a>
 
 <div id="results"></div>
-
-<a class="gameLiveStatus" id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();">&nbsp;</a>
+<a class="gameLiveStatus2" id="GameLiveStatus2" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();"></a>
 
 <script type="text/javascript">
 
   if (theObj = document.getElementById("GameBoardContainer")) {
     theObj.style.display = showBoard ? "" : "none";
+  }
+  if (theObj = document.getElementById("GameLiveStatus2")) {
+      theObj.style.display = showBoard ? "none" : "";
   }
   if (theObj = document.getElementById("pageHeader")) {
     theObj.style.display = headlessPage ? "none" : "";
