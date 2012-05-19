@@ -661,6 +661,10 @@ a.variation {
       if (theObj.innerHTML === "") { theObj.innerHTML = "&nbsp;"; }
     }
 
+    if (theObj = document.getElementById("GameEvent")) {
+      theObj.title = "event: " + gameEvent[currentGame] + (gameRound[currentGame] ? "   round: " + gameRound[currentGame] : "") + (gameDate[currentGame] ? "   date: " + gameDate[currentGame] : "") + (gameSite[currentGame] ? "   site: " + gameSite[currentGame] : "");
+    }
+
     if (autoHighlightNewmoves) {
       SetHighlight((typeof(gameNewMoves) != "undefined") && (typeof(gameNewMoves[currentGame]) != "undefined") && (gameNewMoves[currentGame]));
     }
