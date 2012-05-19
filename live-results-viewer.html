@@ -467,7 +467,7 @@ a.variation {
   var gameBlackTeam;
   var gameMatch;
   var gameBoard;
-  var newGameLengthFromCrc;
+  var newGameLengthFromCrc = new Array();
   var gameLengthFromCrc = new Array();
   var gameNewMoves;
   function customFunctionOnPgnTextLoad() {
@@ -481,7 +481,6 @@ a.variation {
     gameBlackElo = new Array();
     gameMatch = new Array();
     gameBoard = new Array();
-    newGameLengthFromCrc = new Array();
     gameNewMoves = new Array();
     for (gg = 0; gg < numberOfGames; gg++) {
       gameId[gg] = gg;
@@ -493,11 +492,11 @@ a.variation {
       gameBlackElo[gg] = customPgnHeaderTag("BlackElo", null, gg);
       gameMatch[gg] = crc32(gameWhiteTeam[gg]) + crc32(gameBlackTeam[gg]);
       gameBoard[gg] = customPgnHeaderTag("Board", null, gg);
-      thisCrc = (crc32(pgnHeader[gg]) % 65535) + 65535;
+      thisCrc = (typeof(pgnHeader[gg]) == "string") ? (crc32(pgnHeader[gg].replace(/(^\s*|\s*$)/g, "")) % 65535) + 65535 : 0;
       newGameLengthFromCrc[thisCrc] = LiveBroadcastDemo ? gameDemoMaxPly[gg] : pgnGame[gg].length;
       gameNewMoves[gg] = ((newGameLengthFromCrc[thisCrc] !== gameLengthFromCrc[thisCrc]) && (!LiveBroadcastEnded));
     }
-    gameLengthFromCrc = newGameLengthFromCrc.splice(0);
+    gameLengthFromCrc = newGameLengthFromCrc.splice(0, newGameLengthFromCrc.length);
     gameId.sort(sortGameId);
 
     printGames();
