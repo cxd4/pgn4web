@@ -517,13 +517,13 @@ sub refresh_pgn {
         $thisWhite =~ s/(?<=.)([A-Z])/ $1/g;
         $thisBlack =~ s/(?<=.)([A-Z])/ $1/g;
       }
+      if (($followMode == 1) && ($thisResult eq "*")) {
+        $thisWhite .= " ";
+        $thisBlack .= " ";
+      }
       $pgn .= "[Event \"" . $GAMES_event[$games_num[$i]] . "\"]\n";
       $pgn .= "[Site \"" . $GAMES_site[$games_num[$i]] . "\"]\n";
-      $pgn .= "[Date \"" . $GAMES_date[$games_num[$i]];
-      if (($followMode == 1) && ($thisResult eq "*")) {
-        $pgn .= " ";
-      }
-      $pgn .= "\"]\n";
+      $pgn .= "[Date \"" . $GAMES_date[$games_num[$i]] . "\"]\n";
       $pgn .= "[Round \"" . $GAMES_round[$games_num[$i]] . "\"]\n";
       $pgn .= "[White \"" . $thisWhite . "\"]\n";
       $pgn .= "[Black \"" . $thisBlack . "\"]\n";
