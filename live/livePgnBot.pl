@@ -103,8 +103,8 @@ our @GAMES_autorelayRunning = ();
 
 our $autorelayEvent;
 our $autorelayRound;
-our $ignoreEvent = "";
-our $ignorePlayer = "";
+our $ignoreFilter = "";
+our $prioritizeFilter = "";
 
 sub reset_games {
   cmd_run("follow");
@@ -132,8 +132,8 @@ sub reset_games {
   $relayMode = 0;
   $autorelayMode = 0;
   @GAMES_autorelayRunning = ();
-  $ignoreEvent = "";
-  $ignorePlayer = "";
+  $ignoreFilter = "";
+  $prioritizeFilter = "";
 
   refresh_pgn();
 }
@@ -339,7 +339,7 @@ sub process_line {
     my $thisGameBlack = $3;
     my $thisGameResult = $4;
     my $thisGameEco = $5;
-    if (($autorelayMode == 1) && ((($ignoreEvent ne "") && ($autorelayEvent =~ /$ignoreEvent/i)) || (($ignorePlayer ne "") && (($thisGameWhite =~ /$ignorePlayer/i) || ($thisGameBlack =~ /$ignorePlayer/i))))) {
+    if (($autorelayMode == 1) && ($ignoreFilter ne "") && (($autorelayEvent =~ /$ignoreFilter/i) || ($thisGameWhite =~ /$ignoreFilter/i) || ($thisGameBlack =~ /$ignoreFilter/i))) {
       log_terminal_if_verbose("info: ignored game $thisGameNum $autorelayEvent $thisGameWhite $thisGameBlack");
     } else {
       if ($autorelayMode == 1) {
@@ -358,6 +358,10 @@ sub process_line {
         if ($autorelayMode == 1) {
           if ($#games_num + 1 < $maxGamesNum) {
             cmd_run("observe $thisGameNum");
+          } elsif (($prioritizeFilter ne "") && (($autorelayEvent =~ /$prioritizeFilter/i) || ($thisGameWhite =~ /$prioritizeFilter/i) || ($thisGameBlack =~ /$prioritizeFilter/i))) {
+            remove_game(-1);
+            cmd_run("observe $thisGameNum");
+            tell_operator("info: prioritized game $thisGameNum $autorelayEvent $thisGameWhite $thisGameBlack");
           } else {
             tell_operator("warning: more relayed games than max=$maxGamesNum");
           }
@@ -590,11 +594,11 @@ add_master_command ("games", "games (to get list of observed games)");
 add_master_command ("help", "help [command] (to get commands help)");
 add_master_command ("history", "history (to get history info)");
 add_master_command ("ics", "ics [server command] (to run a custom command on freechess.org)");
-add_master_command ("ignoreevent", "ignoreevent [string|\"\"] (to get/set the regular expression to ignore events during autorelay)");
-add_master_command ("ignoreplayer", "ignoreplayer [string|\"\"] (to get/set the regular expression to ignore players during autorelay)");
+add_master_command ("ignore", "ignore [string|\"\"] (to get/set the regular expression to ignore events/players during autorelay; has precedence over prioritize)");
 add_master_command ("logout", "logout [number] (to logout from freechess.org, returning the given exit value)");
 add_master_command ("max", "max [number] (to get/set the maximum number of games for the PGN data)");
 add_master_command ("observe", "observe [game number list, such as: 12 34 56 ..] (to observe given games)");
+add_master_command ("prioritize", "prioritize [string|\"\"] (to get/set the regular expression to prioritize events/players during autorelay; might be overruled by ignore)");
 add_master_command ("relay", "relay [0|game number list, such as: 12 34 56 ..] (to observe given games from an event relay, 0 to disable relay mode)");
 add_master_command ("reset", "reset [1] (to reset observed/followed games list and setting)");
 add_master_command ("round", "round [string|\"\"] (to get/set the PGN header tag round)");
@@ -666,7 +670,7 @@ sub process_master_command {
     }
     tell_operator("autorelay=$autorelayMode");
   } elsif ($command eq "config") {
-    tell_operator("config: max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode ignoreplayer=$ignorePlayer ignoreevent=$ignoreEvent event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round verbose=$VERBOSE");
+    tell_operator("config: max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter prioritize=$prioritizeFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round verbose=$VERBOSE");
   } elsif ($command eq "date") {
     if ($parameters =~ /^([^\[\]"]+|""|)$/) {
       if ($parameters ne "") {
@@ -782,37 +786,20 @@ sub process_master_command {
     } else {
       tell_operator(detect_command_helptext($command));
     }
-  } elsif ($command eq "ignoreevent") {
+  } elsif ($command eq "ignore") {
     if ($parameters =~ /^([^\[\]"]+|""|)$/) {
       if ($parameters ne "") {
         eval {
           "test" =~ /$parameters/;
-          $ignoreEvent = $parameters;
-          if ($ignoreEvent eq "\"\"") { $ignoreEvent = ""; }
+          $ignoreFilter = $parameters;
+          if ($ignoreFilter eq "\"\"") { $ignoreFilter = ""; }
           $last_check_relay_time = 0;
           1;
         } or do {
           tell_operator("error: invalid regular expression $parameters");
         };
       }
-      tell_operator("ignoreevent=$ignoreEvent");
-    } else {
-      tell_operator("error: invalid $command parameter");
-    }
-  } elsif ($command eq "ignoreplayer") {
-    if ($parameters =~ /^([^\[\]"]+|""|)$/) {
-      if ($parameters ne "") {
-        eval {
-          "test" =~ /$parameters/;
-          $ignorePlayer = $parameters;
-          if ($ignorePlayer eq "\"\"") { $ignorePlayer = ""; }
-          $last_check_relay_time = 0;
-          1;
-        } or do {
-          tell_operator("error: invalid regular expression $parameters");
-        };
-      }
-      tell_operator("ignoreplayer=$ignorePlayer");
+      tell_operator("ignore=$ignoreFilter");
     } else {
       tell_operator("error: invalid $command parameter");
     }
@@ -852,6 +839,23 @@ sub process_master_command {
       tell_operator("OK $command");
     } else {
       tell_operator(detect_command_helptext($command));
+    }
+  } elsif ($command eq "prioritize") {
+    if ($parameters =~ /^([^\[\]"]+|""|)$/) {
+      if ($parameters ne "") {
+        eval {
+          "test" =~ /$parameters/;
+          $prioritizeFilter = $parameters;
+          if ($prioritizeFilter eq "\"\"") { $prioritizeFilter = ""; }
+          $last_check_relay_time = 0;
+          1;
+        } or do {
+          tell_operator("error: invalid regular expression $parameters");
+        };
+      }
+      tell_operator("prioritize=$prioritizeFilter");
+    } else {
+      tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "relay") {
     if ($parameters =~ /^([\d\s]+)$/) {
