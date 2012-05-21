@@ -497,12 +497,12 @@ sub save_pgnGame {
   my ($i, $saveMode) = @_;
   my ($thisPgn, $thisPrioritized, $thisResult, $thisWhite, $thisBlack, $thisWhiteTitle, $thisBlackTitle);
 
+  $thisPgn = "";
   if ((defined $games_num[$i]) && (defined $GAMES_event[$games_num[$i]]) && (defined $GAMES_site[$games_num[$i]]) && (defined $GAMES_date[$games_num[$i]]) && (defined $GAMES_round[$games_num[$i]]) && (defined $GAMES_eco[$games_num[$i]]) && (defined $GAMES_timeLeft[$games_num[$i]])) {
 
    $thisPrioritized = (($autorelayMode == 1) && ($prioritizeFilter ne "") && (($GAMES_event[$games_num[$i]] =~ /$prioritizeFilter/i) || ($games_white[$i] =~ /$prioritizeFilter/i) || ($games_black[$i] =~ /$prioritizeFilter/i)));
 
    if (($saveMode == $saveMode_all) || (($saveMode == $saveMode_onlyPrioritized) && ($thisPrioritized)) || (($saveMode == $saveMode_notPrioritized) && (!$thisPrioritized))) {
-      $thisPgn = "";
       if (($followMode == 1) && ($i == 0)) {
         $thisResult = "*";
       } else {
