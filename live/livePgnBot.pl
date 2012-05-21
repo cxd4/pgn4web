@@ -500,9 +500,13 @@ sub save_pgnGame {
   $thisPgn = "";
   if ((defined $games_num[$i]) && (defined $GAMES_event[$games_num[$i]]) && (defined $GAMES_site[$games_num[$i]]) && (defined $GAMES_date[$games_num[$i]]) && (defined $GAMES_round[$games_num[$i]]) && (defined $GAMES_eco[$games_num[$i]]) && (defined $GAMES_timeLeft[$games_num[$i]])) {
 
-   $thisPrioritized = (($autorelayMode == 1) && ($prioritizeFilter ne "") && (($GAMES_event[$games_num[$i]] =~ /$prioritizeFilter/i) || ($games_white[$i] =~ /$prioritizeFilter/i) || ($games_black[$i] =~ /$prioritizeFilter/i)));
+    if (($autorelayMode == 1) && ($prioritizeFilter ne "") && (($GAMES_event[$games_num[$i]] =~ /$prioritizeFilter/i) || ($games_white[$i] =~ /$prioritizeFilter/i) || ($games_black[$i] =~ /$prioritizeFilter/i))) {
+      $thisPrioritized = 1;
+    } else {
+      $thisPrioritized = 0;
+    }
 
-   if (($saveMode == $saveMode_all) || (($saveMode == $saveMode_onlyPrioritized) && ($thisPrioritized)) || (($saveMode == $saveMode_notPrioritized) && (!$thisPrioritized))) {
+    if (($saveMode == $saveMode_all) || (($saveMode == $saveMode_onlyPrioritized) && ($thisPrioritized == 1)) || (($saveMode == $saveMode_notPrioritized) && ($thisPrioritized == 0))) {
       if (($followMode == 1) && ($i == 0)) {
         $thisResult = "*";
       } else {
