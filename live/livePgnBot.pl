@@ -62,7 +62,6 @@ sub cmd_run {
   $cmdRunCount++;
 }
 
-our $pgn = "";
 our $lastPgn = "";
 
 our $maxGamesNumDefault = 30; # frechess.org limit
@@ -488,13 +487,22 @@ sub sec2time {
   }
 }
 
-sub refresh_pgn {
-  my ($i, $thisResult, $gameRunning, $thisWhite, $thisBlack, $thisWhiteTitle, $thisBlackTitle);
+our $gameRunning;
 
-  $gameRunning = 0;
-  $pgn = "";
-  for ($i=0; $i<$maxGamesNum; $i++) {
-    if ((defined $games_num[$i]) && (defined $GAMES_event[$games_num[$i]]) && (defined $GAMES_site[$games_num[$i]]) && (defined $GAMES_date[$games_num[$i]]) && (defined $GAMES_round[$games_num[$i]]) && (defined $GAMES_eco[$games_num[$i]]) && (defined $GAMES_timeLeft[$games_num[$i]])) {
+our $saveMode_all = 0;
+our $saveMode_onlyPrioritized = 1;
+our $saveMode_notPrioritized = 2;
+
+sub save_pgnGame {
+  my ($i, $saveMode) = @_;
+  my ($thisPgn, $thisPrioritized, $thisResult, $thisWhite, $thisBlack, $thisWhiteTitle, $thisBlackTitle);
+
+  if ((defined $games_num[$i]) && (defined $GAMES_event[$games_num[$i]]) && (defined $GAMES_site[$games_num[$i]]) && (defined $GAMES_date[$games_num[$i]]) && (defined $GAMES_round[$games_num[$i]]) && (defined $GAMES_eco[$games_num[$i]]) && (defined $GAMES_timeLeft[$games_num[$i]])) {
+
+   $thisPrioritized = (($autorelayMode == 1) && ($prioritizeFilter ne "") && (($GAMES_event[$games_num[$i]] =~ /$prioritizeFilter/i) || ($games_white[$i] =~ /$prioritizeFilter/i) || ($games_black[$i] =~ /$prioritizeFilter/i)));
+
+   if (($saveMode == $saveMode_all) || (($saveMode == $saveMode_onlyPrioritized) && ($thisPrioritized)) || (($saveMode == $saveMode_notPrioritized) && (!$thisPrioritized))) {
+      $thisPgn = "";
       if (($followMode == 1) && ($i == 0)) {
         $thisResult = "*";
       } else {
@@ -525,35 +533,49 @@ sub refresh_pgn {
         $thisWhite .= " ";
         $thisBlack .= " ";
       }
-      $pgn .= "[Event \"" . $GAMES_event[$games_num[$i]] . "\"]\n";
-      $pgn .= "[Site \"" . $GAMES_site[$games_num[$i]] . "\"]\n";
-      $pgn .= "[Date \"" . $GAMES_date[$games_num[$i]] . "\"]\n";
-      $pgn .= "[Round \"" . $GAMES_round[$games_num[$i]] . "\"]\n";
-      $pgn .= "[White \"" . $thisWhite . "\"]\n";
-      $pgn .= "[Black \"" . $thisBlack . "\"]\n";
-      $pgn .= "[Result \"" . $thisResult . "\"]\n";
+      $thisPgn .= "[Event \"" . $GAMES_event[$games_num[$i]] . "\"]\n";
+      $thisPgn .= "[Site \"" . $GAMES_site[$games_num[$i]] . "\"]\n";
+      $thisPgn .= "[Date \"" . $GAMES_date[$games_num[$i]] . "\"]\n";
+      $thisPgn .= "[Round \"" . $GAMES_round[$games_num[$i]] . "\"]\n";
+      $thisPgn .= "[White \"" . $thisWhite . "\"]\n";
+      $thisPgn .= "[Black \"" . $thisBlack . "\"]\n";
+      $thisPgn .= "[Result \"" . $thisResult . "\"]\n";
       if ($games_whiteElo[$i] =~ /^\d+$/) {
-        $pgn .= "[WhiteElo \"" . $games_whiteElo[$i] . "\"]\n";
+        $thisPgn .= "[WhiteElo \"" . $games_whiteElo[$i] . "\"]\n";
       }
       if ($games_blackElo[$i] =~ /^\d+$/) {
-        $pgn .= "[BlackElo \"" . $games_blackElo[$i] . "\"]\n";
+        $thisPgn .= "[BlackElo \"" . $games_blackElo[$i] . "\"]\n";
       }
       if ($thisWhiteTitle ne "") {
-        $pgn .= "[WhiteTitle \"" . $thisWhiteTitle . "\"]\n";
+        $thisPgn .= "[WhiteTitle \"" . $thisWhiteTitle . "\"]\n";
       }
       if ($thisBlackTitle ne "") {
-        $pgn .= "[BlackTitle \"" . $thisBlackTitle . "\"]\n";
+        $thisPgn .= "[BlackTitle \"" . $thisBlackTitle . "\"]\n";
       }
       if ((defined $GAMES_eco[$games_num[$i]]) && ($GAMES_eco[$games_num[$i]] ne "")) {
-        $pgn .= "[ECO \"" . $GAMES_eco[$games_num[$i]] . "\"]\n";
+        $thisPgn .= "[ECO \"" . $GAMES_eco[$games_num[$i]] . "\"]\n";
       }
-      $pgn .= $games_movesText[$i];
-      $pgn .= "\n$GAMES_timeLeft[$games_num[$i]]";
+      $thisPgn .= $games_movesText[$i];
+      $thisPgn .= "\n$GAMES_timeLeft[$games_num[$i]]";
       if ($games_result[$i] =~ /^[012\/\*-]+$/) {
-        $pgn .= " $games_result[$i]";
+        $thisPgn .= " $games_result[$i]";
       }
-      $pgn .= "\n\n";
+      $thisPgn .= "\n\n";
     }
+  }
+
+  return $thisPgn;
+}
+
+sub refresh_pgn {
+  my $pgn = "";
+  $gameRunning = 0;
+
+  for (my $i=0; $i<$maxGamesNum; $i++) {
+    $pgn .= save_pgnGame($i, $saveMode_onlyPrioritized);
+  }
+  for (my $i=0; $i<$maxGamesNum; $i++) {
+    $pgn .= save_pgnGame($i, $saveMode_notPrioritized);
   }
 
   if (($pgn eq "") || (($autorelayMode == 1) && ($gameRunning == 0))) {
@@ -683,8 +705,9 @@ sub process_master_command {
     }
   } elsif ($command eq "empty") {
     if ($parameters eq "1") {
+      $lastPgn = temp_pgn();
       open(thisFile, ">$PGN_FILE");
-      print thisFile temp_pgn();
+      print thisFile $lastPgn;
       close(thisFile);
       log_terminal_if_verbose("info: saved empty PGN data as placeholder file");
       tell_operator("OK $command");
