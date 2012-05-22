@@ -1148,13 +1148,14 @@ sub main_loop {
 }
 
 eval {
-  print STDERR "\n$0\n\n";
+  print STDERR "\n";
+  log_terminal("info: starting $0\n");
   setup();
   main_loop();
   shut_down();
   exit(1);
 };
 if ($@) {
-  print STDERR "error: failed: $@\n";
+  log_terminal("error: failed: $@");
   exit(1);
 }
