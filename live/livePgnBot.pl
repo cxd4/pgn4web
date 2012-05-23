@@ -378,7 +378,7 @@ sub process_line {
     if ($line =~ /^Movelist for game (\d+):/) {
       reset_newGame();
       $newGame_num = $1;
-    } elsif ($line !~ /^\s*(\d\d.\d\d_|)fics%\s*$/) {
+    } elsif ($line !~ /^\s*((\d\d.\d\d_|)fics%|:)\s*$/) {
       log_terminal_if_verbose("info: ignored line: $line");
     }
   } else {
@@ -411,7 +411,7 @@ sub process_line {
       process_newGame();
     } elsif ($line =~ /^Move\s+/) {
     } elsif ($line =~ /^[\s-]*$/) {
-    } elsif ($line !~ /^\s*(\d\d.\d\d_|)fics%\s*$/) {
+    } elsif ($line !~ /^\s*((\d\d.\d\d_|)fics%|:)\s*$/) {
       log_terminal_if_verbose("info: ignored line: $line");
     }
   }
