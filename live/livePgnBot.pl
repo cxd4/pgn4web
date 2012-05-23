@@ -370,7 +370,7 @@ sub process_line {
         }
       }
     }
-  } elsif ($line =~ /^..ANNOUNCEMENT.. from relay: FICS is relaying/) {
+  } elsif ($line =~ /^[\s*]*ANNOUNCEMENT[\s*]*from relay: FICS is relaying/) {
     if (($autorelayMode == 1) && ($#games_num < 0)) {
       xtell_relay_listgames();
     }
