@@ -66,6 +66,8 @@ our $lastPgn = "";
 
 our $maxGamesNumDefault = 30; # frechess.org limit
 our $maxGamesNum = $maxGamesNumDefault;
+our $moreGamesThanMax;
+
 our @games_num = ();
 our @games_white = ();
 our @games_black = ();
@@ -361,7 +363,8 @@ sub process_line {
             remove_game(-1);
             cmd_run("observe $thisGameNum");
             tell_operator("info: prioritized game $thisGameNum $autorelayEvent $thisGameWhite $thisGameBlack");
-          } else {
+          } elsif ($moreGamesThanMax == 0) {
+            $moreGamesThanMax = 1;
             tell_operator("warning: more relayed games than max=$maxGamesNum");
           }
         }
@@ -369,7 +372,7 @@ sub process_line {
     }
   } elsif ($line =~ /^..ANNOUNCEMENT.. from relay: FICS is relaying/) {
     if (($autorelayMode == 1) && ($#games_num < 0)) {
-      cmd_run("xtell relay listgames");
+      xtell_relay_listgames();
     }
   } elsif ($newGame_num < 0) {
     if ($line =~ /^Movelist for game (\d+):/) {
@@ -686,7 +689,7 @@ sub process_master_command {
           $autorelayMode = 1;
           $relayMode = 1;
           $last_check_relay_time = 0;
-          cmd_run("xtell relay listgames");
+          xtell_relay_listgames();
         } else {
           tell_operator("error: disable follow before activating autorelay");
         }
@@ -1012,9 +1015,14 @@ sub write_startupCommands {
   }
 }
 
+sub xtell_relay_listgames {
+  $moreGamesThanMax = 0;
+  cmd_run("xtell relay listgames");
+}
+
 sub check_relay_results {
   if (($relayMode == 1) && (time - $last_check_relay_time > $CHECK_RELAY_FREQ)) {
-    cmd_run("xtell relay listgames");
+    xtell_relay_listgames();
     $last_check_relay_time = time();
     if ($autorelayMode == 1) {
       for my $thisGameNum (@games_num) {
