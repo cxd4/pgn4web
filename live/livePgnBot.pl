@@ -40,6 +40,7 @@ our $CHECK_RELAY_FREQ = 3 * 60;
 our $OPEN_TIMEOUT = 30;
 our $LINE_WAIT_TIMEOUT = 60;
 # $LINE_WAIT_TIMEOUT must be smaller than half of $PROTECT_LOGOUT_FREQ and $CHECK_RELAY_FREQ
+our $HEARTBEAT_FREQ = 8 * 60 * 60;
 
 
 our $telnet;
@@ -1021,7 +1022,7 @@ sub xtell_relay_listgames {
 }
 
 sub check_relay_results {
-  if (($relayMode == 1) && (time - $last_check_relay_time > $CHECK_RELAY_FREQ)) {
+  if (($relayMode == 1) && (time() - $last_check_relay_time > $CHECK_RELAY_FREQ)) {
     xtell_relay_listgames();
     $last_check_relay_time = time();
     if ($autorelayMode == 1) {
@@ -1036,8 +1037,16 @@ sub check_relay_results {
 }
 
 sub ensure_alive {
-  if (time - $last_cmd_time > $PROTECT_LOGOUT_FREQ) {
+  if (time() - $last_cmd_time > $PROTECT_LOGOUT_FREQ) {
     cmd_run("date");
+  }
+}
+
+our $last_heartbeat_time = time();
+sub heartbeat {
+  if (time() - $last_heartbeat_time > $HEARTBEAT_FREQ) {
+    tell_operator_and_log_terminal("livePgnBot running");
+    $last_heartbeat_time = time();
   }
 }
 
@@ -1152,6 +1161,7 @@ sub main_loop {
 
     ensure_alive();
     check_relay_results();
+    heartbeat();
   }
 }
 
