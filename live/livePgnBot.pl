@@ -624,7 +624,7 @@ add_master_command ("games", "games (to get list of observed games)");
 add_master_command ("help", "help [command] (to get commands help)");
 add_master_command ("history", "history (to get history info)");
 add_master_command ("ics", "ics [server command] (to run a custom command on freechess.org)");
-add_master_command ("ignore", "ignore [string|\"\"] (to get/set the regular expression to ignore events/players during autorelay; has precedence over prioritize)");
+add_master_command ("ignore", "ignore [string|\"\"] (to get/set the regular expression to ignore events/players during autorelay; has precedence over prioritize; use ^(?:(?!string).)+\$ for negative lookup)");
 add_master_command ("logout", "logout [number] (to logout from freechess.org, returning the given exit value)");
 add_master_command ("max", "max [number] (to get/set the maximum number of games for the PGN data)");
 add_master_command ("observe", "observe [game number list, such as: 12 34 56 ..] (to observe given games)");
@@ -1045,7 +1045,7 @@ sub ensure_alive {
 our $last_heartbeat_time = time();
 sub heartbeat {
   if (time() - $last_heartbeat_time > $HEARTBEAT_FREQ) {
-    tell_operator_and_log_terminal("livePgnBot running");
+    tell_operator_and_log_terminal("info: livePgnBot running");
     $last_heartbeat_time = time();
   }
 }

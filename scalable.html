@@ -44,6 +44,7 @@ body {
 
 <script type="text/javascript">
 
+var squareSize;
 function myOnResize() {
   boardObject = document.getElementById("GameBoard");
   squareSize = Math.floor(Math.min(window.innerWidth, window.innerHeight) / 9);
@@ -83,6 +84,9 @@ SetAutoplayNextGame(true);
 SetShortcutKeysEnabled(false);
 
 function customFunctionOnPgnGameLoad() { myOnResize(); }
+
+function customDebugInfo() { return "squareSize=" + squareSize; }
+
 </script>
 
 </head>
