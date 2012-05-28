@@ -54,6 +54,7 @@ our $lineCount = 0;
 
 our $last_cmd_time = 0;
 our $last_check_relay_time = 0;
+our $last_heartbeat_time = time();
 
 sub cmd_run {
   my ($cmd) = @_;
@@ -621,6 +622,7 @@ add_master_command ("file", "file [filename.pgn] (to get/set the filename for sa
 add_master_command ("follow", "follow [0|handle|/s|/b|/l] (to follow the freechess user with given handle, /s for the best standard game, /b for the best blitz game, /l for the best lightning game, 0 to disable follow mode)");
 add_master_command ("forget", "forget [game number list, such as: 12 34 56 ..] (to eliminate given past games from PGN data)");
 add_master_command ("games", "games (to get list of observed games)");
+add_master_command ("heartbeat", "heartbeat [1] (to force a heartbeat log message)");
 add_master_command ("help", "help [command] (to get commands help)");
 add_master_command ("history", "history (to get history info)");
 add_master_command ("ics", "ics [server command] (to run a custom command on freechess.org)");
@@ -795,6 +797,15 @@ sub process_master_command {
     }
   } elsif ($command eq "games") {
     tell_operator("games(" . ($#games_num + 1) . "/$maxGamesNum)=" . gameList());
+  } elsif ($command eq "heartbeat") {
+    if ($parameters eq "1") {
+      $last_heartbeat_time = 0;
+      tell_operator("OK $command");
+    } elsif ($parameters eq "") {
+      tell_operator(detect_command_helptext($command));
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
   } elsif ($command eq "help") {
     if ($parameters =~ /\S/) {
       my $par;
@@ -1042,10 +1053,9 @@ sub ensure_alive {
   }
 }
 
-our $last_heartbeat_time = time();
 sub heartbeat {
   if (time() - $last_heartbeat_time > $HEARTBEAT_FREQ) {
-    tell_operator_and_log_terminal("info: livePgnBot running");
+    tell_operator_and_log_terminal(sprintf("heartbeat: uptime=%s games=%d pgn=%d cmd=%d lines=%d", sec2time(time() - $starupTime), $gamesStartCount, $pgnWriteCount, $cmdRunCount, $lineCount));
     $last_heartbeat_time = time();
   }
 }
