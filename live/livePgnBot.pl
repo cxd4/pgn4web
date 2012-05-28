@@ -1055,7 +1055,7 @@ sub ensure_alive {
 
 sub heartbeat {
   if (time() - $last_heartbeat_time > $HEARTBEAT_FREQ) {
-    tell_operator_and_log_terminal(sprintf("heartbeat: uptime=%s games=%d pgn=%d cmd=%d lines=%d", sec2time(time() - $starupTime), $gamesStartCount, $pgnWriteCount, $cmdRunCount, $lineCount));
+    tell_operator_and_log_terminal(sprintf("heartbeat: uptime=%s games=%d/%d/%d pgn=%d cmd=%d lines=%d", sec2time(time() - $starupTime), ($#games_num + 1), $maxGamesNum, $gamesStartCount, $pgnWriteCount, $cmdRunCount, $lineCount));
     $last_heartbeat_time = time();
   }
 }
