@@ -40,7 +40,7 @@ our $CHECK_RELAY_FREQ = 3 * 60;
 our $OPEN_TIMEOUT = 30;
 our $LINE_WAIT_TIMEOUT = 60;
 # $LINE_WAIT_TIMEOUT must be smaller than half of $PROTECT_LOGOUT_FREQ and $CHECK_RELAY_FREQ
-our $HEARTBEAT_FREQ = 8 * 60 * 60;
+our $HEARTBEAT_FREQ = 8 * 3600;
 
 
 our $telnet;
@@ -54,7 +54,7 @@ our $lineCount = 0;
 
 our $last_cmd_time = 0;
 our $last_check_relay_time = 0;
-our $last_heartbeat_time = time();
+our $heartbeat_hour = 0;
 
 sub cmd_run {
   my ($cmd) = @_;
@@ -63,6 +63,7 @@ sub cmd_run {
   $last_cmd_time = time();
   $cmdRunCount++;
 }
+
 
 our $lastPgn = "";
 
@@ -261,6 +262,7 @@ sub remove_game {
   return $thisGameIndex;
 }
 
+
 sub log_terminal {
   my ($msg) = @_;
   print STDERR strftime("%Y-%m-%d %H:%M:%S UTC", gmtime()) . " " . $msg . "\n";
@@ -294,6 +296,7 @@ sub tell_operator {
     cmd_run("tell $OPERATOR_HANDLE " . $msgParts[$i]);
   }
 }
+
 
 sub process_line {
   my ($line) = @_;
@@ -492,6 +495,7 @@ sub sec2time {
   }
 }
 
+
 our $gameRunning;
 
 our $saveMode_all = 0;
@@ -604,6 +608,7 @@ sub temp_pgn {
   return "[Event \"$newGame_event\"]\n" . "[Site \"$newGame_site\"]\n" . "[Date \"$newGame_date\"]\n" . "[Round \"$newGame_round\"]\n" . "[White \"\"]\n" . "[Black \"\"]\n" . "[Result \"*\"]\n\n*\n\n";
 }
 
+
 our @master_commands = ();
 our @master_commands_helptext = ();
 
@@ -622,7 +627,7 @@ add_master_command ("file", "file [filename.pgn] (to get/set the filename for sa
 add_master_command ("follow", "follow [0|handle|/s|/b|/l] (to follow the freechess user with given handle, /s for the best standard game, /b for the best blitz game, /l for the best lightning game, 0 to disable follow mode)");
 add_master_command ("forget", "forget [game number list, such as: 12 34 56 ..] (to eliminate given past games from PGN data)");
 add_master_command ("games", "games (to get list of observed games)");
-add_master_command ("heartbeat", "heartbeat [1] (to force a heartbeat log message)");
+add_master_command ("heartbeat", "heartbeat [0-" . int(($HEARTBEAT_FREQ - 1) / 3600) . "] (to get/set the hour for heartbeat log messages)");
 add_master_command ("help", "help [command] (to get commands help)");
 add_master_command ("history", "history (to get history info)");
 add_master_command ("ics", "ics [server command] (to run a custom command on freechess.org)");
@@ -702,7 +707,7 @@ sub process_master_command {
     }
     tell_operator("autorelay=$autorelayMode");
   } elsif ($command eq "config") {
-    tell_operator("config: max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter prioritize=$prioritizeFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round verbose=$VERBOSE");
+    tell_operator("config: max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter prioritize=$prioritizeFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_hour verbose=$VERBOSE");
   } elsif ($command eq "date") {
     if ($parameters =~ /^([^\[\]"]+|""|)$/) {
       if ($parameters ne "") {
@@ -798,8 +803,9 @@ sub process_master_command {
   } elsif ($command eq "games") {
     tell_operator("games(" . ($#games_num + 1) . "/$maxGamesNum)=" . gameList());
   } elsif ($command eq "heartbeat") {
-    if ($parameters eq "1") {
-      $last_heartbeat_time = 0;
+    if (($parameters =~ /^\d+$/) && ($parameters <= int(($HEARTBEAT_FREQ - 1) / 3600))) {
+      $heartbeat_hour = $parameters;
+      update_heartbeat_time();
       tell_operator("OK $command");
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
@@ -820,7 +826,7 @@ sub process_master_command {
     }
   } elsif ($command eq "history") {
     my $secTime = time() - $starupTime;
-    tell_operator(sprintf("history: uptime=%s games=%d (g/d=%.2f) pgn=%d (p/h=%.2f) cmd=%d (c/m=%.2f) lines=%d (l/s=%.2f) %s", sec2time($secTime), $gamesStartCount, $gamesStartCount / ($secTime / (24 * 60 * 60)), $pgnWriteCount, $pgnWriteCount / ($secTime / (60 * 60)), $cmdRunCount, $cmdRunCount / ($secTime / 60), $lineCount, $lineCount / $secTime, strftime("now=%Y-%m-%d %H:%M:%S UTC", gmtime($starupTime + $secTime))));
+    tell_operator(sprintf("history: uptime=%s games=%d (g/d=%.2f) pgn=%d (p/h=%.2f) cmd=%d (c/m=%.2f) lines=%d (l/s=%.2f) %s", sec2time($secTime), $gamesStartCount, $gamesStartCount / ($secTime / (24 * 3600)), $pgnWriteCount, $pgnWriteCount / ($secTime / 3600), $cmdRunCount, $cmdRunCount / ($secTime / 60), $lineCount, $lineCount / $secTime, strftime("now=%Y-%m-%d %H:%M:%S UTC", gmtime($starupTime + $secTime))));
   } elsif ($command eq "ics") {
     if ($parameters !~ /^(?|)$/) {
       cmd_run($parameters);
@@ -1027,6 +1033,7 @@ sub write_startupCommands {
   }
 }
 
+
 sub xtell_relay_listgames {
   $moreGamesThanMax = 0;
   cmd_run("xtell relay listgames");
@@ -1047,18 +1054,32 @@ sub check_relay_results {
   }
 }
 
+
 sub ensure_alive {
   if (time() - $last_cmd_time > $PROTECT_LOGOUT_FREQ) {
     cmd_run("date");
   }
 }
 
+
+our $next_heartbeat_time;
+update_heartbeat_time();
+
 sub heartbeat {
-  if (time() - $last_heartbeat_time > $HEARTBEAT_FREQ) {
+  if (time() > $next_heartbeat_time) {
     tell_operator_and_log_terminal(sprintf("heartbeat: uptime=%s games=%d/%d/%d pgn=%d cmd=%d lines=%d", sec2time(time() - $starupTime), ($#games_num + 1), $maxGamesNum, $gamesStartCount, $pgnWriteCount, $cmdRunCount, $lineCount));
-    $last_heartbeat_time = time();
+    update_heartbeat_time();
   }
 }
+
+sub update_heartbeat_time {
+  my $thisTime = time();
+  $next_heartbeat_time = $thisTime - ($thisTime % $HEARTBEAT_FREQ) + ($heartbeat_hour * 3600);
+  if ($next_heartbeat_time < $thisTime) {
+    $next_heartbeat_time += $HEARTBEAT_FREQ;
+  }
+}
+
 
 sub setup {
 
@@ -1187,3 +1208,4 @@ if ($@) {
   log_terminal("error: failed: $@");
   exit(1);
 }
+
