@@ -10,6 +10,7 @@
 # http://blog.mekk.waw.pl/series/how_to_write_fics_bot/
 
 
+$| = 1;
 use strict;
 use Net::Telnet;
 use File::Copy;
@@ -265,7 +266,7 @@ sub remove_game {
 
 sub log_terminal {
   my ($msg) = @_;
-  print STDERR strftime("%Y-%m-%d %H:%M:%S UTC", gmtime()) . " " . $msg . "\n";
+  print(strftime("%Y-%m-%d %H:%M:%S UTC", gmtime()) . " " . $msg . "\n");
 }
 
 sub log_terminal_if_verbose {
@@ -1197,7 +1198,7 @@ sub main_loop {
 }
 
 eval {
-  print STDERR "\n";
+  print("\n");
   log_terminal("info: starting $0\n");
   setup();
   main_loop();
