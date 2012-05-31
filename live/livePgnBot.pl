@@ -891,7 +891,7 @@ sub process_master_command {
     }
   } elsif ($command eq "history") {
     my $secTime = time() - $starupTime;
-    tell_operator(sprintf("history: uptime=%s games=%d (g/d=%.2f) pgn=%d (p/h=%.2f) cmd=%d (c/m=%.2f) lines=%d (l/s=%.2f) %s", sec2time($secTime), $gamesStartCount, $gamesStartCount / ($secTime / (24 * 3600)), $pgnWriteCount, $pgnWriteCount / ($secTime / 3600), $cmdRunCount, $cmdRunCount / ($secTime / 60), $lineCount, $lineCount / $secTime, strftime("now=%Y-%m-%d %H:%M:%S UTC", gmtime($starupTime + $secTime))));
+    tell_operator(sprintf("history: uptime=%s games=%d (g/d=%.2f) pgn=%d (p/h=%.2f) cmd=%d (c/m=%.2f) lines=%d (l/s=%.2f) %s", sec2time($secTime), $gamesStartCount, $gamesStartCount / ($secTime / (24 * 3600)), $pgnWriteCount, $pgnWriteCount / ($secTime / 3600), $cmdRunCount, $cmdRunCount / ($secTime / 60), $lineCount, $lineCount / $secTime, strftime("now=%Y-%m-%d %H:%M:%S UTC", gmtime($starupTime + $secTime + $serverClockOffset))));
   } elsif ($command eq "ics") {
     if ($parameters !~ /^(?|)$/) {
       cmd_run($parameters);
