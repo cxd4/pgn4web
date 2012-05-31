@@ -49,6 +49,7 @@ our $telnet;
 our $username;
 
 our $starupTime = time();
+our $roundsStartCount = 0;
 our $gamesStartCount = 0;
 our $pgnWriteCount = 0;
 our $cmdRunCount = 0;
@@ -112,7 +113,7 @@ our $autorelayRound;
 our $ignoreFilter = "";
 our $prioritizeFilter = "";
 
-our @oldTournaments = ();
+our @oldRounds = ();
 
 sub reset_games {
   cmd_run("follow");
@@ -143,7 +144,7 @@ sub reset_games {
   $ignoreFilter = "";
   $prioritizeFilter = "";
 
-  @oldTournaments = ();
+  @oldRounds = ();
 
   refresh_pgn();
 }
@@ -617,7 +618,7 @@ sub refresh_pgn {
   }
 
   if ($autorelayMode == 1) {
-    log_tournaments();
+    log_rounds();
   }
 }
 
@@ -625,51 +626,53 @@ sub temp_pgn {
   return "[Event \"$newGame_event\"]\n" . "[Site \"$newGame_site\"]\n" . "[Date \"$newGame_date\"]\n" . "[Round \"$newGame_round\"]\n" . "[White \"\"]\n" . "[Black \"\"]\n" . "[Result \"*\"]\n\n*\n\n";
 }
 
-sub log_tournaments {
-  my @newTournaments = ();
-  my ($i, $j, $thisTournament);
+sub log_rounds {
+  my @newRounds = ();
+  my ($i, $j, $thisRound);
   my @skipOld = ();
   my @skipNew = ();
 
   for ($i=0; $i<$maxGamesNum; $i++) {
     if ((defined $games_num[$i]) && (defined $GAMES_event[$games_num[$i]])) {
-      $thisTournament = $GAMES_event[$games_num[$i]];
+      $thisRound = $GAMES_event[$games_num[$i]];
       if (defined $GAMES_round[$games_num[$i]]) {
-        $thisTournament .= " - Round " . $GAMES_round[$games_num[$i]];
+        $thisRound .= " - Round " . $GAMES_round[$games_num[$i]];
       }
-      for ($j=0; $j<=$#newTournaments; $j++) {
-        if ($newTournaments[$j] eq $thisTournament) {
-          $j = $#newTournaments + 2;
+      for ($j=0; $j<=$#newRounds; $j++) {
+        if ($newRounds[$j] eq $thisRound) {
+          $j = $#newRounds + 2;
         }
       }
-      if ($j == $#newTournaments + 1) {
-        push(@newTournaments, $thisTournament);
+      if ($j == $#newRounds + 1) {
+        push(@newRounds, $thisRound);
       }
     }
   }
 
-  for ($i=0; $i<=$#oldTournaments; $i++) {
-    for ($j=0; $j<=$#newTournaments; $j++) {
-      if ($oldTournaments[$i] eq $newTournaments[$j]) {
+  for ($i=0; $i<=$#oldRounds; $i++) {
+    for ($j=0; $j<=$#newRounds; $j++) {
+      if ($oldRounds[$i] eq $newRounds[$j]) {
         $skipOld[$i] = 0;
         $skipNew[$j] = 0;
+        last;
       }
     }
   }
 
-  for ($i=0; $i<=$#oldTournaments; $i++) {
+  for ($i=0; $i<=$#oldRounds; $i++) {
     if (! defined $skipOld[$i]) {
-      log_terminal("info: ended: " . $oldTournaments[$i]);
+      log_terminal("info: ended: " . $oldRounds[$i]);
     }
   }
 
-  for ($j=0; $j<=$#newTournaments; $j++) {
+  for ($j=0; $j<=$#newRounds; $j++) {
     if (! defined $skipNew[$j]) {
-      log_terminal("info: start: " . $newTournaments[$j]);
+      log_terminal("info: start: " . $newRounds[$j]);
+      $roundsStartCount++;
     }
   }
 
-  @oldTournaments = @newTournaments;
+  @oldRounds = @newRounds;
 }
 
 
@@ -891,7 +894,7 @@ sub process_master_command {
     }
   } elsif ($command eq "history") {
     my $secTime = time() - $starupTime;
-    tell_operator(sprintf("history: uptime=%s games=%d (g/d=%.2f) pgn=%d (p/h=%.2f) cmd=%d (c/m=%.2f) lines=%d (l/s=%.2f) %s", sec2time($secTime), $gamesStartCount, $gamesStartCount / ($secTime / (24 * 3600)), $pgnWriteCount, $pgnWriteCount / ($secTime / 3600), $cmdRunCount, $cmdRunCount / ($secTime / 60), $lineCount, $lineCount / $secTime, strftime("now=%Y-%m-%d %H:%M:%S UTC", gmtime($starupTime + $secTime + $serverClockOffset))));
+    tell_operator(sprintf("history: uptime=%s rounds=%d (r/d=%.2f) games=%d (g/d=%.2f) pgn=%d (p/h=%.2f) cmd=%d (c/m=%.2f) lines=%d (l/s=%.2f) %s", sec2time($secTime), $roundsStartCount, $roundsStartCount / ($secTime / (24 * 3600)), $gamesStartCount, $gamesStartCount / ($secTime / (24 * 3600)), $pgnWriteCount, $pgnWriteCount / ($secTime / 3600), $cmdRunCount, $cmdRunCount / ($secTime / 60), $lineCount, $lineCount / $secTime, strftime("now=%Y-%m-%d %H:%M:%S UTC", gmtime($starupTime + $secTime + $serverClockOffset))));
   } elsif ($command eq "ics") {
     if ($parameters !~ /^(?|)$/) {
       cmd_run($parameters);
@@ -1147,7 +1150,7 @@ update_heartbeat_time();
 
 sub heartbeat {
   if (time() > $next_heartbeat_time) {
-    tell_operator_and_log_terminal(sprintf("info: heartbeat: uptime=%s games=%d/%d/%d pgn=%d cmd=%d lines=%d", sec2time(time() - $starupTime), ($#games_num + 1), $maxGamesNum, $gamesStartCount, $pgnWriteCount, $cmdRunCount, $lineCount));
+    tell_operator_and_log_terminal(sprintf("info: heartbeat: uptime=%s rounds=%d games=%d/%d/%d pgn=%d cmd=%d lines=%d", sec2time(time() - $starupTime), $roundsStartCount, ($#games_num + 1), $maxGamesNum, $gamesStartCount, $pgnWriteCount, $cmdRunCount, $lineCount));
     update_heartbeat_time();
   }
 }
