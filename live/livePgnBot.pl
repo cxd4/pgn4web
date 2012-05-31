@@ -112,6 +112,8 @@ our $autorelayRound;
 our $ignoreFilter = "";
 our $prioritizeFilter = "";
 
+our @oldTournaments = ();
+
 sub reset_games {
   cmd_run("follow");
   cmd_run("unobserve");
@@ -140,6 +142,8 @@ sub reset_games {
   @GAMES_autorelayRunning = ();
   $ignoreFilter = "";
   $prioritizeFilter = "";
+
+  @oldTournaments = ();
 
   refresh_pgn();
 }
@@ -621,12 +625,11 @@ sub temp_pgn {
   return "[Event \"$newGame_event\"]\n" . "[Site \"$newGame_site\"]\n" . "[Date \"$newGame_date\"]\n" . "[Round \"$newGame_round\"]\n" . "[White \"\"]\n" . "[Black \"\"]\n" . "[Result \"*\"]\n\n*\n\n";
 }
 
-our @oldTournaments = ();
 sub log_tournaments {
   my @newTournaments = ();
   my ($i, $j, $thisTournament);
-  my @notifyOld = ();
-  my @notifyNew = ();
+  my @skipOld = ();
+  my @skipNew = ();
 
   for ($i=0; $i<$maxGamesNum; $i++) {
     if ((defined $games_num[$i]) && (defined $GAMES_event[$games_num[$i]])) {
@@ -636,10 +639,10 @@ sub log_tournaments {
       }
       for ($j=0; $j<=$#newTournaments; $j++) {
         if ($newTournaments[$j] eq $thisTournament) {
-          $j = $#newTournaments + 1;
+          $j = $#newTournaments + 2;
         }
       }
-      if ($j > $#newTournaments) {
+      if ($j == $#newTournaments + 1) {
         push(@newTournaments, $thisTournament);
       }
     }
@@ -648,21 +651,21 @@ sub log_tournaments {
   for ($i=0; $i<=$#oldTournaments; $i++) {
     for ($j=0; $j<=$#newTournaments; $j++) {
       if ($oldTournaments[$i] eq $newTournaments[$j]) {
-        $notifyOld[$i] = 0;
-        $notifyNew[$j] = 0;
+        $skipOld[$i] = 0;
+        $skipNew[$j] = 0;
       }
     }
   }
 
   for ($i=0; $i<=$#oldTournaments; $i++) {
-    if (! defined $notifyOld[$i]) {
+    if (! defined $skipOld[$i]) {
       log_terminal("info: ended: " . $oldTournaments[$i]);
     }
   }
 
   for ($j=0; $j<=$#newTournaments; $j++) {
-    if (! defined $notifyNew[$j]) {
-      log_terminal("info: start: " . $newTournaments[$i]);
+    if (! defined $skipNew[$j]) {
+      log_terminal("info: start: " . $newTournaments[$j]);
     }
   }
 
