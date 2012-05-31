@@ -28,13 +28,14 @@ our $STARTUP_FILE_DEFAULT = "livePgnBot.ini";
 our $STARTUP_FILE = $ARGV[3] || $STARTUP_FILE_DEFAULT;
 
 if ($BOT_HANDLE eq "" | $OPERATOR_HANDLE eq "") {
-  die "\n$0 BOT_HANDLE BOT_PASSWORD OPERATOR_HANDLE [STARTUP_FILE]\n\nBOT_HANDLE = handle for the bot account\nBOT_PASSWORD = password for the both account, use \"\" for a guest account\nOPERATOR_HANDLE = handle for the bot operator to send commands\nSTARTUP_FILE = filename for reading startup commands (default $STARTUP_FILE_DEFAULT)\n\nbot saving PGN data from live games on frechess.org\nmore help available from the operator account with \"tell BOT_HANDLE help\"\n\n";
+  print "\n$0 BOT_HANDLE BOT_PASSWORD OPERATOR_HANDLE [STARTUP_FILE]\n\nBOT_HANDLE = handle for the bot account\nBOT_PASSWORD = password for the both account, use \"\" for a guest account\nOPERATOR_HANDLE = handle for the bot operator to send commands\nSTARTUP_FILE = filename for reading startup commands (default $STARTUP_FILE_DEFAULT)\n\nbot saving PGN data from live games on frechess.org\nmore help available from the operator account with \"tell BOT_HANDLE help\"\n\n";
+  exit 0;
 }
 
 
 our $PGN_FILE = "live.pgn";
 
-our $VERBOSE = 0;
+our $verbosity = 3;
 
 our $PROTECT_LOGOUT_FREQ = 45 * 60;
 our $CHECK_RELAY_FREQ = 3 * 60;
@@ -59,7 +60,7 @@ our $heartbeat_hour = 0;
 
 sub cmd_run {
   my ($cmd) = @_;
-  log_terminal_if_verbose("info: running ics command: $cmd");
+  log_terminal("debug: running ics command: $cmd");
   my $output = $telnet->cmd($cmd);
   $last_cmd_time = time();
   $cmdRunCount++;
@@ -263,20 +264,27 @@ sub remove_game {
   return $thisGameIndex;
 }
 
-
+our $serverClockOffset = 0;
 sub log_terminal {
   my ($msg) = @_;
-  print(strftime("%Y-%m-%d %H:%M:%S UTC", gmtime()) . " " . $msg . "\n");
-}
-
-sub log_terminal_if_verbose {
-  my ($msg) = @_;
-  log_terminal($msg) if $VERBOSE;
+  my $thisVerbosity = 0;
+  if ($msg =~ /^debug:/) {
+    $thisVerbosity = 4;
+  } elsif ($msg =~ /^info:/) {
+    $thisVerbosity = 3;
+  } elsif ($msg =~ /^warning:/) {
+    $thisVerbosity = 2;
+  } elsif ($msg =~ /^error:/) {
+    $thisVerbosity = 1;
+  }
+  if ($thisVerbosity <= $verbosity) {
+    print(strftime("%Y-%m-%d %H:%M:%S UTC", gmtime(time() + $serverClockOffset)) . " " . $msg . "\n");
+  }
 }
 
 sub tell_operator_and_log_terminal {
   my ($msg) = @_;
-  log_terminal($msg) unless $VERBOSE;
+  log_terminal($msg);
   tell_operator($msg);
 }
 
@@ -310,7 +318,7 @@ sub process_line {
     if ($1 eq $OPERATOR_HANDLE) {
       process_master_command($3, $4);
     } else {
-      log_terminal_if_verbose("info: ignoring tell from user $1");
+      log_terminal("debug: ignoring tell from user $1");
     }
   } elsif ($line =~ /^<12> (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+)/) {
     # in order to avoid keeping a game state, each time a board update is
@@ -347,7 +355,7 @@ sub process_line {
     my $thisGameResult = $4;
     my $thisGameEco = $5;
     if (($autorelayMode == 1) && ($ignoreFilter ne "") && (($autorelayEvent =~ /$ignoreFilter/i) || ($thisGameWhite =~ /$ignoreFilter/i) || ($thisGameBlack =~ /$ignoreFilter/i))) {
-      log_terminal_if_verbose("info: ignored game $thisGameNum $autorelayEvent $thisGameWhite $thisGameBlack");
+      log_terminal("debug: ignored game $thisGameNum $autorelayEvent $thisGameWhite $thisGameBlack");
     } else {
       if ($autorelayMode == 1) {
         $GAMES_event[$thisGameNum] = $autorelayEvent;
@@ -368,10 +376,10 @@ sub process_line {
           } elsif (($prioritizeFilter ne "") && (($autorelayEvent =~ /$prioritizeFilter/i) || ($thisGameWhite =~ /$prioritizeFilter/i) || ($thisGameBlack =~ /$prioritizeFilter/i))) {
             remove_game(-1);
             cmd_run("observe $thisGameNum");
-            tell_operator("info: prioritized game $thisGameNum $autorelayEvent $thisGameWhite $thisGameBlack");
+            tell_operator_and_log_terminal("debug: prioritized game $thisGameNum $autorelayEvent $thisGameWhite $thisGameBlack");
           } elsif ($moreGamesThanMax == 0) {
             $moreGamesThanMax = 1;
-            tell_operator("warning: more relayed games than max=$maxGamesNum");
+            tell_operator_and_log_terminal("debug: more relayed games than max=$maxGamesNum");
           }
         }
       }
@@ -385,7 +393,7 @@ sub process_line {
       reset_newGame();
       $newGame_num = $1;
     } elsif ($line !~ /^\s*((\d\d.\d\d_|)fics%|:)\s*$/) {
-      log_terminal_if_verbose("info: ignored line: $line");
+      log_terminal("debug: ignored line: $line");
     }
   } else {
     if ($line =~ /^(\w+)\s+\((\S+)\)\s+vs\.\s+(\w+)\s+\((\S+)\).*/) {
@@ -396,7 +404,7 @@ sub process_line {
     } elsif ($line =~ /(.*) initial time: \d+ minutes.*increment: \d+/) {
       our $gameType = $1;
       if (!($gameType =~ /(standard|blitz|lightning)/)) {
-        log_terminal_if_verbose("warning: unsupported game $newGame_num: $gameType");
+        log_terminal("warning: unsupported game $newGame_num: $gameType");
         delete $GAMES_timeLeft[$newGame_num];
         delete $GAMES_event[$newGame_num];
         delete $GAMES_site[$newGame_num];
@@ -404,7 +412,7 @@ sub process_line {
         delete $GAMES_round[$newGame_num];
         delete $GAMES_eco[$newGame_num];
         cmd_run("unobserve $newGame_num");
-        tell_operator("warning: unsupported game $newGame_num: $gameType");
+        tell_operator_and_log_terminal("debug: unsupported game $newGame_num: $gameType");
         reset_newGame();
       }
     } elsif ($line =~ /^\s*\d+\.[\s]*([^(\s]+)\s*\([^)]+\)[\s]+([^(\s]+)\s*\([^)]+\)/) {
@@ -418,7 +426,7 @@ sub process_line {
     } elsif ($line =~ /^Move\s+/) {
     } elsif ($line =~ /^[\s-]*$/) {
     } elsif ($line !~ /^\s*((\d\d.\d\d_|)fics%|:)\s*$/) {
-      log_terminal_if_verbose("info: ignored line: $line");
+      log_terminal("debug: ignored line: $line");
     }
   }
   $lineCount++;
@@ -467,7 +475,7 @@ sub time2sec {
   } elsif ($t =~ /^\d+$/) {
     return $1;
   } else {
-    log_terminal_if_verbose("error: time2sec($t)");
+    log_terminal("error: time2sec($t)");
     return 0;
   }
 }
@@ -491,7 +499,7 @@ sub sec2time {
   } elsif ($t =~ /^-/) {
     return "0:00:00";
   } else {
-    log_terminal_if_verbose("error: sec2time($t)");
+    log_terminal("error: sec2time($t)");
     return 0;
   }
 }
@@ -603,10 +611,62 @@ sub refresh_pgn {
     $pgnWriteCount++;
     $lastPgn = $pgn;
   }
+
+  if ($autorelayMode == 1) {
+    log_tournaments();
+  }
 }
 
 sub temp_pgn {
   return "[Event \"$newGame_event\"]\n" . "[Site \"$newGame_site\"]\n" . "[Date \"$newGame_date\"]\n" . "[Round \"$newGame_round\"]\n" . "[White \"\"]\n" . "[Black \"\"]\n" . "[Result \"*\"]\n\n*\n\n";
+}
+
+our @oldTournaments = ();
+sub log_tournaments {
+  my @newTournaments = ();
+  my ($i, $j, $thisTournament);
+  my @notifyOld = ();
+  my @notifyNew = ();
+
+  for ($i=0; $i<$maxGamesNum; $i++) {
+    if ((defined $games_num[$i]) && (defined $GAMES_event[$games_num[$i]])) {
+      $thisTournament = $GAMES_event[$games_num[$i]];
+      if (defined $GAMES_round[$games_num[$i]]) {
+        $thisTournament .= " - Round " . $GAMES_round[$games_num[$i]];
+      }
+      for ($j=0; $j<=$#newTournaments; $j++) {
+        if ($newTournaments[$j] eq $thisTournament) {
+          $j = $#newTournaments + 1;
+        }
+      }
+      if ($j > $#newTournaments) {
+        push(@newTournaments, $thisTournament);
+      }
+    }
+  }
+
+  for ($i=0; $i<=$#oldTournaments; $i++) {
+    for ($j=0; $j<=$#newTournaments; $j++) {
+      if ($oldTournaments[$i] eq $newTournaments[$j]) {
+        $notifyOld[$i] = 0;
+        $notifyNew[$j] = 0;
+      }
+    }
+  }
+
+  for ($i=0; $i<=$#oldTournaments; $i++) {
+    if (! defined $notifyOld[$i]) {
+      log_terminal("info: ended: " . $oldTournaments[$i]);
+    }
+  }
+
+  for ($j=0; $j<=$#newTournaments; $j++) {
+    if (! defined $notifyNew[$j]) {
+      log_terminal("info: start: " . $newTournaments[$i]);
+    }
+  }
+
+  @oldTournaments = @newTournaments;
 }
 
 
@@ -640,9 +700,10 @@ add_master_command ("prioritize", "prioritize [string|\"\"] (to get/set the regu
 add_master_command ("relay", "relay [0|game number list, such as: 12 34 56 ..] (to observe given games from an event relay, 0 to disable relay mode)");
 add_master_command ("reset", "reset [1] (to reset observed/followed games list and setting)");
 add_master_command ("round", "round [string|\"\"] (to get/set the PGN header tag round)");
+add_master_command ("serverclock", "serverclock [[+|-]seconds] (to get/set server clock offset to correct server UTC clock)");
 add_master_command ("site", "site [string|\"\"] (to get/set the PGN header tag site)");
 add_master_command ("startup", "startup [command list, separated by semicolon] (to get/set startup commands file)");
-add_master_command ("verbose", "verbose [0|1] (to get/set verbosity of the bot log terminal)");
+add_master_command ("verbosity", "verbosity [0|1|2|3|4] (to get/set log verbosity: 0=none, 1=error, 2=warning, 3=info, 4=debug)");
 
 sub detect_command {
   my ($command) = @_;
@@ -708,7 +769,7 @@ sub process_master_command {
     }
     tell_operator("autorelay=$autorelayMode");
   } elsif ($command eq "config") {
-    tell_operator("config: max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter prioritize=$prioritizeFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_hour verbose=$VERBOSE");
+    tell_operator("config: max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter prioritize=$prioritizeFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_hour serverclock=$serverClockOffset verbosity=$verbosity");
   } elsif ($command eq "date") {
     if ($parameters =~ /^([^\[\]"]+|""|)$/) {
       if ($parameters ne "") {
@@ -725,7 +786,7 @@ sub process_master_command {
       open(thisFile, ">$PGN_FILE");
       print thisFile $lastPgn;
       close(thisFile);
-      log_terminal_if_verbose("info: saved empty PGN data as placeholder file");
+      log_terminal("info: saved empty PGN data as placeholder file");
       tell_operator("OK $command");
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
@@ -943,6 +1004,15 @@ sub process_master_command {
     } else {
       tell_operator("error: invalid $command parameter");
     }
+  } elsif ($command eq "serverclock") {
+    if ($parameters =~ /^(\+|-|)\d*$/) {
+      if ($parameters ne "") {
+        $serverClockOffset = $parameters;
+      }
+      tell_operator_and_log_terminal("serverclock=$serverClockOffset");
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
   } elsif ($command eq "site") {
     if ($parameters =~ /^([^\[\]"]+|""|)$/) {
       if ($parameters ne "") {
@@ -960,12 +1030,12 @@ sub process_master_command {
     my $startupString = join("; ", read_startupCommands());
     $startupString =~ s/[\n\r]+//g;
     tell_operator("startup($STARTUP_FILE)=$startupString");
-  } elsif ($command eq "verbose") {
-    if ($parameters =~ /^(0|1|)$/) {
+  } elsif ($command eq "verbosity") {
+    if ($parameters =~ /^(0|1|2|3|4|)$/) {
       if ($parameters ne "") {
-        $VERBOSE = $parameters;
+        $verbosity = $parameters;
       }
-      tell_operator_and_log_terminal("verbose=$VERBOSE");
+      tell_operator_and_log_terminal("verbosity=$verbosity");
     } else {
       tell_operator("error: invalid $command parameter");
     }
@@ -982,7 +1052,7 @@ sub observe {
       if (find_gameIndex($theseGames[$i]) == -1) {
         cmd_run("observe $theseGames[$i]");
       } else {
-        tell_operator("warning: game $theseGames[$i] already observed");
+        tell_operator_and_log_terminal("debug: game $theseGames[$i] already observed");
       }
     } else {
       tell_operator("error: invalid game $theseGames[$i]");
@@ -1074,7 +1144,7 @@ update_heartbeat_time();
 
 sub heartbeat {
   if (time() > $next_heartbeat_time) {
-    tell_operator_and_log_terminal(sprintf("heartbeat: uptime=%s games=%d/%d/%d pgn=%d cmd=%d lines=%d", sec2time(time() - $starupTime), ($#games_num + 1), $maxGamesNum, $gamesStartCount, $pgnWriteCount, $cmdRunCount, $lineCount));
+    tell_operator_and_log_terminal(sprintf("info: heartbeat: uptime=%s games=%d/%d/%d pgn=%d cmd=%d lines=%d", sec2time(time() - $starupTime), ($#games_num + 1), $maxGamesNum, $gamesStartCount, $pgnWriteCount, $cmdRunCount, $lineCount));
     update_heartbeat_time();
   }
 }
@@ -1093,15 +1163,20 @@ sub setup {
   $telnet = new Net::Telnet(
     Timeout => $OPEN_TIMEOUT,
     Binmode => 1,
-    Errmode => "die",
   );
+
+  $telnet->errmode(sub {
+    my $msg = shift;
+    log_terminal("error: " . $msg);
+    exit 1;
+  });
 
   $telnet->open(
     Host => $FICS_HOST,
     Port => $FICS_PORT,
   );
 
-  log_terminal_if_verbose("info: connected to $FICS_HOST");
+  log_terminal("debug: connected to $FICS_HOST");
 
   if ($BOT_PASSWORD) {
 
@@ -1127,9 +1202,10 @@ sub setup {
         last;
       }
       if ($line =~ /("[^"]*" is a registered name|\S+ is already logged in)/) {
-        die "Can not login as $BOT_HANDLE: $1\n";
+        log_terminal("error: can not login as $BOT_HANDLE: $1");
+        exit 1;
       }
-      log_terminal_if_verbose("info: ignored line: $line\n");
+      log_terminal("debug: ignored line: $line\n");
     }
 
     my($pre, $match) = $telnet->waitfor(
@@ -1140,7 +1216,8 @@ sub setup {
     if ($match =~ /Starting FICS session as ([a-zA-Z0-9]+)/ ) {
       $username = $1;
     } else {
-      die "Can not login as $BOT_HANDLE: $match\n";
+      log_terminal("error: can not login as $BOT_HANDLE: $match");
+      exit 1;
     }
 
     log_terminal("info: successfully logged as guest $username");
@@ -1158,7 +1235,7 @@ sub setup {
   cmd_run("set chanoff 1");
   cmd_run("set open 0");
   cmd_run("set style 12");
-  log_terminal_if_verbose("info: finished initialization");
+  log_terminal("debug: initialization done");
 
   my @startupCommands = read_startupCommands();
   foreach my $cmd (@startupCommands) {
@@ -1170,10 +1247,10 @@ sub setup {
       log_terminal("error: invalid startup command $cmd");
     }
   }
-  log_terminal_if_verbose("info: finished startup commands");
+  log_terminal("debug: startup commands done");
 
   $tellOperator = 1;
-  tell_operator("ready");
+  tell_operator("info: ready");
 }
 
 sub shut_down {
@@ -1186,7 +1263,8 @@ sub main_loop {
   $telnet->errmode(sub {
     return if $telnet->timed_out;
     my $msg = shift;
-    die $msg;
+    log_terminal("error: " . $msg);
+    exit 1;
   });
 
   while (1) {
