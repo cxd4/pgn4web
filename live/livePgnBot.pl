@@ -1041,14 +1041,20 @@ sub xtell_relay_listgames {
 }
 
 sub check_relay_results {
+  my $thisGameNum;
+  my @gameNumForRemoval = ();
+
   if (($relayMode == 1) && (time() - $last_check_relay_time > $CHECK_RELAY_FREQ)) {
     xtell_relay_listgames();
     $last_check_relay_time = time();
     if ($autorelayMode == 1) {
-      for my $thisGameNum (@games_num) {
+      for $thisGameNum (@games_num) {
         if (! defined $GAMES_autorelayRunning[$thisGameNum]) {
-          remove_game($thisGameNum);
+          push(@gameNumForRemoval, $thisGameNum);
         }
+      }
+      for $thisGameNum (@gameNumForRemoval) {
+        remove_game($thisGameNum);
       }
       @GAMES_autorelayRunning = ();
     }
