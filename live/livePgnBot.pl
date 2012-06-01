@@ -269,7 +269,7 @@ sub remove_game {
   return $thisGameIndex;
 }
 
-our $serverClockOffset = 0;
+our $timeOffset = 0;
 sub log_terminal {
   my ($msg) = @_;
   my $thisVerbosity = 0;
@@ -283,7 +283,7 @@ sub log_terminal {
     $thisVerbosity = 1;
   }
   if ($thisVerbosity <= $verbosity) {
-    print(strftime("%Y-%m-%d %H:%M:%S UTC", gmtime(time() + $serverClockOffset)) . " " . $msg . "\n");
+    print(strftime("%Y-%m-%d %H:%M:%S UTC", gmtime(time() + $timeOffset)) . " " . $msg . "\n");
   }
 }
 
@@ -706,9 +706,9 @@ add_master_command ("prioritize", "prioritize [string|\"\"] (to get/set the regu
 add_master_command ("relay", "relay [0|game number list, such as: 12 34 56 ..] (to observe given games from an event relay, 0 to disable relay mode)");
 add_master_command ("reset", "reset [1] (to reset observed/followed games list and setting)");
 add_master_command ("round", "round [string|\"\"] (to get/set the PGN header tag round)");
-add_master_command ("serverclock", "serverclock [[+|-]seconds] (to get/set server clock offset to correct server UTC clock)");
 add_master_command ("site", "site [string|\"\"] (to get/set the PGN header tag site)");
 add_master_command ("startup", "startup [command list, separated by semicolon] (to get/set startup commands file)");
+add_master_command ("timeoffset", "timeoffset [[+|-]seconds] (to get/set the offset correcting the UTC time value)");
 add_master_command ("verbosity", "verbosity [0|1|2|3|4] (to get/set log verbosity: 0=none, 1=error, 2=warning, 3=info, 4=debug)");
 
 sub detect_command {
@@ -775,7 +775,7 @@ sub process_master_command {
     }
     tell_operator("autorelay=$autorelayMode");
   } elsif ($command eq "config") {
-    tell_operator("config: max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter prioritize=$prioritizeFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_hour serverclock=$serverClockOffset verbosity=$verbosity");
+    tell_operator("config: max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter prioritize=$prioritizeFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_hour timeoffset=$timeOffset verbosity=$verbosity");
   } elsif ($command eq "date") {
     if ($parameters =~ /^([^\[\]"]+|""|)$/) {
       if ($parameters ne "") {
@@ -871,7 +871,7 @@ sub process_master_command {
   } elsif ($command eq "games") {
     tell_operator("games(" . ($#games_num + 1) . "/$maxGamesNum)=" . gameList());
   } elsif ($command eq "heartbeat") {
-    if (($parameters =~ /^\d+$/) && ($parameters <= int(($HEARTBEAT_FREQ - 1) / 3600))) {
+    if (($parameters =~ /^\d+(\.\d*|)$/) && ($parameters < $HEARTBEAT_FREQ / 3600)) {
       $heartbeat_hour = $parameters;
       update_heartbeat_time();
       tell_operator("OK $command");
@@ -894,7 +894,7 @@ sub process_master_command {
     }
   } elsif ($command eq "history") {
     my $secTime = time() - $starupTime;
-    tell_operator(sprintf("history: uptime=%s rounds=%d (r/d=%.2f) games=%d (g/d=%.2f) pgn=%d (p/h=%.2f) cmd=%d (c/m=%.2f) lines=%d (l/s=%.2f) %s", sec2time($secTime), $roundsStartCount, $roundsStartCount / ($secTime / (24 * 3600)), $gamesStartCount, $gamesStartCount / ($secTime / (24 * 3600)), $pgnWriteCount, $pgnWriteCount / ($secTime / 3600), $cmdRunCount, $cmdRunCount / ($secTime / 60), $lineCount, $lineCount / $secTime, strftime("now=%Y-%m-%d %H:%M:%S UTC", gmtime($starupTime + $secTime + $serverClockOffset))));
+    tell_operator(sprintf("history: uptime=%s rounds=%d (r/d=%.2f) games=%d (g/d=%.2f) pgn=%d (p/h=%.2f) cmd=%d (c/m=%.2f) lines=%d (l/s=%.2f) %s", sec2time($secTime), $roundsStartCount, $roundsStartCount / ($secTime / (24 * 3600)), $gamesStartCount, $gamesStartCount / ($secTime / (24 * 3600)), $pgnWriteCount, $pgnWriteCount / ($secTime / 3600), $cmdRunCount, $cmdRunCount / ($secTime / 60), $lineCount, $lineCount / $secTime, strftime("now=%Y-%m-%d %H:%M:%S UTC", gmtime($starupTime + $secTime + $timeOffset))));
   } elsif ($command eq "ics") {
     if ($parameters !~ /^(?|)$/) {
       cmd_run($parameters);
@@ -1010,12 +1010,13 @@ sub process_master_command {
     } else {
       tell_operator("error: invalid $command parameter");
     }
-  } elsif ($command eq "serverclock") {
+  } elsif ($command eq "timeoffset") {
     if ($parameters =~ /^(\+|-|)\d*$/) {
       if ($parameters ne "") {
-        $serverClockOffset = $parameters;
+        $timeOffset = $parameters;
+        update_heartbeat_time();
       }
-      tell_operator_and_log_terminal("serverclock=$serverClockOffset");
+      tell_operator_and_log_terminal("timeoffset=$timeOffset");
     } else {
       tell_operator("error: invalid $command parameter");
     }
@@ -1149,14 +1150,14 @@ our $next_heartbeat_time;
 update_heartbeat_time();
 
 sub heartbeat {
-  if (time() > $next_heartbeat_time) {
+  if (time() + $timeOffset > $next_heartbeat_time) {
     tell_operator_and_log_terminal(sprintf("info: heartbeat: uptime=%s rounds=%d games=%d/%d/%d pgn=%d cmd=%d lines=%d", sec2time(time() - $starupTime), $roundsStartCount, ($#games_num + 1), $maxGamesNum, $gamesStartCount, $pgnWriteCount, $cmdRunCount, $lineCount));
     update_heartbeat_time();
   }
 }
 
 sub update_heartbeat_time {
-  my $thisTime = time();
+  my $thisTime = time() + $timeOffset;
   $next_heartbeat_time = $thisTime - ($thisTime % $HEARTBEAT_FREQ) + ($heartbeat_hour * 3600);
   if ($next_heartbeat_time < $thisTime) {
     $next_heartbeat_time += $HEARTBEAT_FREQ;
