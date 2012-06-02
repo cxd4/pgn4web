@@ -661,13 +661,13 @@ sub log_rounds {
 
   for ($i=0; $i<=$#oldRounds; $i++) {
     if (! defined $skipOld[$i]) {
-      log_terminal("info: ended: " . $oldRounds[$i]);
+      log_terminal("info: end: " . $oldRounds[$i]);
     }
   }
 
   for ($j=0; $j<=$#newRounds; $j++) {
     if (! defined $skipNew[$j]) {
-      log_terminal("info: start: " . $newRounds[$j]);
+      log_terminal("info: new: " . $newRounds[$j]);
       $roundsStartCount++;
     }
   }
