@@ -149,9 +149,9 @@ sub reset_games {
   refresh_pgn();
 }
 
-sub gameForFilter {
-  my ($event, $white, $black) = @_;
-  return "|e=" . $event . "|w=" . $white . "|b=" . $black . "|";
+sub headerForFilter {
+  my ($event, $round, $white, $black) = @_;
+  return "[Event \"$event\"][Round \"$round\"][White \"$white\"][Black \"$black\"]";
 }
 
 sub find_gameIndex {
@@ -364,7 +364,7 @@ sub process_line {
     my $thisGameBlack = $3;
     my $thisGameResult = $4;
     my $thisGameEco = $5;
-    if (($autorelayMode == 1) && ($ignoreFilter ne "") && (gameForFilter($autorelayEvent, $thisGameWhite, $thisGameBlack) =~ /$ignoreFilter/i)) {
+    if (($autorelayMode == 1) && ($ignoreFilter ne "") && (headerForFilter($autorelayEvent, $autorelayRound, $thisGameWhite, $thisGameBlack) =~ /$ignoreFilter/i)) {
       log_terminal("debug: ignored game $thisGameNum $autorelayEvent $thisGameWhite $thisGameBlack");
     } else {
       if ($autorelayMode == 1) {
@@ -383,7 +383,7 @@ sub process_line {
         if ($autorelayMode == 1) {
           if ($#games_num + 1 < $maxGamesNum) {
             cmd_run("observe $thisGameNum");
-          } elsif (($prioritizeFilter ne "") && (gameForFilter($autorelayEvent, $thisGameWhite, $thisGameBlack) =~ /$prioritizeFilter/i)) {
+          } elsif (($prioritizeFilter ne "") && (headerForFilter($autorelayEvent, $autorelayRound, $thisGameWhite, $thisGameBlack) =~ /$prioritizeFilter/i)) {
             remove_game(-1);
             cmd_run("observe $thisGameNum");
             tell_operator_and_log_terminal("debug: prioritized game $thisGameNum $autorelayEvent $thisGameWhite $thisGameBlack");
@@ -528,7 +528,7 @@ sub save_pgnGame {
   $thisPgn = "";
   if ((defined $games_num[$i]) && (defined $GAMES_event[$games_num[$i]]) && (defined $GAMES_site[$games_num[$i]]) && (defined $GAMES_date[$games_num[$i]]) && (defined $GAMES_round[$games_num[$i]]) && (defined $GAMES_eco[$games_num[$i]]) && (defined $GAMES_timeLeft[$games_num[$i]])) {
 
-    if (($autorelayMode == 1) && ($prioritizeFilter ne "") && (gameForFilter($GAMES_event[$games_num[$i]], $games_white[$i], $games_black[$i] =~ /$prioritizeFilter/i))) {
+    if (($autorelayMode == 1) && ($prioritizeFilter ne "") && (headerForFilter($GAMES_event[$games_num[$i]], $GAMES_round[$games_num[$i]], $games_white[$i], $games_black[$i] =~ /$prioritizeFilter/i))) {
       $thisPrioritized = 1;
     } else {
       $thisPrioritized = 0;
@@ -640,7 +640,7 @@ sub log_rounds {
   for ($i=0; $i<$maxGamesNum; $i++) {
     if ((defined $games_num[$i]) && (defined $GAMES_event[$games_num[$i]])) {
       $thisRound = $GAMES_event[$games_num[$i]];
-      if (defined $GAMES_round[$games_num[$i]]) {
+      if ((defined $GAMES_round[$games_num[$i]]) && ($GAMES_round[$games_num[$i]] ne "")) {
         $thisRound .= " - Round " . $GAMES_round[$games_num[$i]];
       }
       for ($j=0; $j<=$#newRounds; $j++) {
@@ -703,11 +703,11 @@ add_master_command ("heartbeat", "heartbeat [0-" . int(($HEARTBEAT_FREQ - 1) / 3
 add_master_command ("help", "help [command] (to get commands help)");
 add_master_command ("history", "history (to get history info)");
 add_master_command ("ics", "ics [server command] (to run a custom command on freechess.org)");
-add_master_command ("ignore", "ignore [string|\"\"] (to get/set the regular expression to ignore events/players during autorelay; has precedence over prioritize; use ^(?:(?!string).)+\$ for negative lookup)");
+add_master_command ("ignore", "ignore [regexp|\"\"] (to get/set the regular expression to ignore events/players from the PGN header during autorelay; has precedence over prioritize; use ^(?:(?!regexp).)+\$ for negative lookup)");
 add_master_command ("logout", "logout [number] (to logout from freechess.org, returning the given exit value)");
 add_master_command ("max", "max [number] (to get/set the maximum number of games for the PGN data)");
 add_master_command ("observe", "observe [game number list, such as: 12 34 56 ..] (to observe given games)");
-add_master_command ("prioritize", "prioritize [string|\"\"] (to get/set the regular expression to prioritize events/players during autorelay; might be overruled by ignore)");
+add_master_command ("prioritize", "prioritize [regexp|\"\"] (to get/set the regular expression to prioritize events/players from the PGN header during autorelay; might be overruled by ignore)");
 add_master_command ("relay", "relay [0|game number list, such as: 12 34 56 ..] (to observe given games from an event relay, 0 to disable relay mode)");
 add_master_command ("reset", "reset [1] (to reset observed/followed games list and setting)");
 add_master_command ("round", "round [string|\"\"] (to get/set the PGN header tag round)");
