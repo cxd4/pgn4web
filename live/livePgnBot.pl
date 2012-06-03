@@ -149,6 +149,11 @@ sub reset_games {
   refresh_pgn();
 }
 
+sub gameForFilter {
+  my ($event, $white, $black) = @_;
+  return "|e=" . $event . "|w=" . $white . "|b=" . $black . "|";
+}
+
 sub find_gameIndex {
   my ($thisGameNum) = @_;
 
@@ -359,7 +364,7 @@ sub process_line {
     my $thisGameBlack = $3;
     my $thisGameResult = $4;
     my $thisGameEco = $5;
-    if (($autorelayMode == 1) && ($ignoreFilter ne "") && (($autorelayEvent =~ /$ignoreFilter/i) || ($thisGameWhite =~ /$ignoreFilter/i) || ($thisGameBlack =~ /$ignoreFilter/i))) {
+    if (($autorelayMode == 1) && ($ignoreFilter ne "") && (gameForFilter($autorelayEvent, $thisGameWhite, $thisGameBlack) =~ /$ignoreFilter/i)) {
       log_terminal("debug: ignored game $thisGameNum $autorelayEvent $thisGameWhite $thisGameBlack");
     } else {
       if ($autorelayMode == 1) {
@@ -378,7 +383,7 @@ sub process_line {
         if ($autorelayMode == 1) {
           if ($#games_num + 1 < $maxGamesNum) {
             cmd_run("observe $thisGameNum");
-          } elsif (($prioritizeFilter ne "") && (($autorelayEvent =~ /$prioritizeFilter/i) || ($thisGameWhite =~ /$prioritizeFilter/i) || ($thisGameBlack =~ /$prioritizeFilter/i))) {
+          } elsif (($prioritizeFilter ne "") && (gameForFilter($autorelayEvent, $thisGameWhite, $thisGameBlack) =~ /$prioritizeFilter/i)) {
             remove_game(-1);
             cmd_run("observe $thisGameNum");
             tell_operator_and_log_terminal("debug: prioritized game $thisGameNum $autorelayEvent $thisGameWhite $thisGameBlack");
@@ -523,7 +528,7 @@ sub save_pgnGame {
   $thisPgn = "";
   if ((defined $games_num[$i]) && (defined $GAMES_event[$games_num[$i]]) && (defined $GAMES_site[$games_num[$i]]) && (defined $GAMES_date[$games_num[$i]]) && (defined $GAMES_round[$games_num[$i]]) && (defined $GAMES_eco[$games_num[$i]]) && (defined $GAMES_timeLeft[$games_num[$i]])) {
 
-    if (($autorelayMode == 1) && ($prioritizeFilter ne "") && (($GAMES_event[$games_num[$i]] =~ /$prioritizeFilter/i) || ($games_white[$i] =~ /$prioritizeFilter/i) || ($games_black[$i] =~ /$prioritizeFilter/i))) {
+    if (($autorelayMode == 1) && ($prioritizeFilter ne "") && (gameForFilter($GAMES_event[$games_num[$i]], $games_white[$i], $games_black[$i] =~ /$prioritizeFilter/i))) {
       $thisPrioritized = 1;
     } else {
       $thisPrioritized = 0;
