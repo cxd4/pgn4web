@@ -113,7 +113,7 @@ our $autorelayRound;
 our $ignoreFilter = "";
 our $prioritizeFilter = "";
 
-our @oldRounds = ();
+our @currentRounds = ();
 
 sub reset_games {
   cmd_run("follow");
@@ -144,7 +144,7 @@ sub reset_games {
   $ignoreFilter = "";
   $prioritizeFilter = "";
 
-  @oldRounds = ();
+  @currentRounds = ();
 
   refresh_pgn();
 }
@@ -629,7 +629,7 @@ sub temp_pgn {
 sub log_rounds {
   my @newRounds = ();
   my ($i, $j, $thisRound);
-  my @skipOld = ();
+  my @skipCurrent = ();
   my @skipNew = ();
 
   for ($i=0; $i<$maxGamesNum; $i++) {
@@ -649,19 +649,19 @@ sub log_rounds {
     }
   }
 
-  for ($i=0; $i<=$#oldRounds; $i++) {
+  for ($i=0; $i<=$#currentRounds; $i++) {
     for ($j=0; $j<=$#newRounds; $j++) {
-      if ($oldRounds[$i] eq $newRounds[$j]) {
-        $skipOld[$i] = 0;
+      if ($currentRounds[$i] eq $newRounds[$j]) {
+        $skipCurrent[$i] = 0;
         $skipNew[$j] = 0;
         last;
       }
     }
   }
 
-  for ($i=0; $i<=$#oldRounds; $i++) {
-    if (! defined $skipOld[$i]) {
-      log_terminal("info: end: " . $oldRounds[$i]);
+  for ($i=0; $i<=$#currentRounds; $i++) {
+    if (! defined $skipCurrent[$i]) {
+      log_terminal("info: end: " . $currentRounds[$i]);
     }
   }
 
@@ -672,7 +672,7 @@ sub log_rounds {
     }
   }
 
-  @oldRounds = @newRounds;
+  @currentRounds = @newRounds;
 }
 
 
@@ -871,9 +871,9 @@ sub process_master_command {
   } elsif ($command eq "games") {
     my $roundsList = "";
     if ($autorelayMode == 1) {
-      $roundsList = " rounds(" . ($#oldRounds + 1) . ")=";
-      if ($#oldRounds > -1) {
-        $roundsList .= "\"" . join("\", \"", @oldRounds) . "\"";
+      $roundsList = " rounds(" . ($#currentRounds + 1) . ")=";
+      if ($#currentRounds > -1) {
+        $roundsList .= "\"" . join("\", \"", @currentRounds) . "\"";
       }
     }
     tell_operator("games(" . ($#games_num + 1) . "/$maxGamesNum)=" . gameList() . $roundsList);
