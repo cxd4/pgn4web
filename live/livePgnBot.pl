@@ -869,7 +869,14 @@ sub process_master_command {
       tell_operator(detect_command_helptext($command));
     }
   } elsif ($command eq "games") {
-    tell_operator("games(" . ($#games_num + 1) . "/$maxGamesNum)=" . gameList());
+    my $roundsList = "";
+    if ($autorelayMode == 1) {
+      $roundsList = " rounds(" . ($#oldRounds + 1) . ")=";
+      if ($#oldRounds > -1) {
+        $roundsList .= "\"" . join("\", \"", @oldRounds) . "\"";
+      }
+    }
+    tell_operator("games(" . ($#games_num + 1) . "/$maxGamesNum)=" . gameList() . $roundsList);
   } elsif ($command eq "heartbeat") {
     if (($parameters =~ /^\d+(\.\d*|)$/) && ($parameters < $HEARTBEAT_FREQ / 3600)) {
       $heartbeat_hour = $parameters;
