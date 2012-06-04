@@ -402,7 +402,7 @@ sub process_line {
     if ($line =~ /^Movelist for game (\d+):/) {
       reset_newGame();
       $newGame_num = $1;
-    } elsif ($line !~ /^\s*((\d\d.\d\d_|)fics%|:)\s*$/) {
+    } elsif ($line !~ /^\s*((\d\d.\d\d_)?fics%|:)\s*$/) {
       log_terminal("debug: ignored line: $line");
     }
   } else {
@@ -435,7 +435,7 @@ sub process_line {
       process_newGame();
     } elsif ($line =~ /^Move\s+/) {
     } elsif ($line =~ /^[\s-]*$/) {
-    } elsif ($line !~ /^\s*((\d\d.\d\d_|)fics%|:)\s*$/) {
+    } elsif ($line !~ /^\s*((\d\d.\d\d_)?fics%|:)\s*$/) {
       log_terminal("debug: ignored line: $line");
     }
   }
@@ -775,14 +775,14 @@ sub process_master_command {
           tell_operator("error: disable follow before activating autorelay");
         }
       }
-    } elsif ($parameters !~ /^(?|)$/) {
+    } elsif ($parameters !~ /^\??$/) {
       tell_operator("error: invalid $command parameter");
     }
     tell_operator("autorelay=$autorelayMode");
   } elsif ($command eq "config") {
     tell_operator("config: max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter prioritize=$prioritizeFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_hour timeoffset=$timeOffset verbosity=$verbosity");
   } elsif ($command eq "date") {
-    if ($parameters =~ /^([^\[\]"]+|""|)$/) {
+    if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
         $newGame_date = $parameters;
         if ($newGame_date eq "\"\"") { $newGame_date = ""; }
@@ -805,7 +805,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "event") {
-    if ($parameters =~ /^([^\[\]"]+|""|)$/) {
+    if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
         $newGame_event = $parameters;
         if ($newGame_event eq "\"\"") { $newGame_event = ""; }
@@ -883,7 +883,7 @@ sub process_master_command {
     }
     tell_operator("games(" . ($#games_num + 1) . "/$maxGamesNum)=" . gameList() . $roundsList);
   } elsif ($command eq "heartbeat") {
-    if (($parameters =~ /^\d+(\.\d*|)$/) && ($parameters < $HEARTBEAT_FREQ / 3600)) {
+    if (($parameters =~ /^\d+(\.\d*)?$/) && ($parameters < $HEARTBEAT_FREQ / 3600)) {
       $heartbeat_hour = $parameters;
       update_heartbeat_time();
       tell_operator("OK $command");
@@ -908,14 +908,14 @@ sub process_master_command {
     my $secTime = time() - $starupTime;
     tell_operator(sprintf("history: uptime=%s rounds=%d (r/d=%.2f) games=%d (g/d=%.2f) pgn=%d (p/h=%.2f) cmd=%d (c/m=%.2f) lines=%d (l/s=%.2f) %s", sec2time($secTime), $roundsStartCount, $roundsStartCount / ($secTime / (24 * 3600)), $gamesStartCount, $gamesStartCount / ($secTime / (24 * 3600)), $pgnWriteCount, $pgnWriteCount / ($secTime / 3600), $cmdRunCount, $cmdRunCount / ($secTime / 60), $lineCount, $lineCount / $secTime, strftime("now=%Y-%m-%d %H:%M:%S UTC", gmtime($starupTime + $secTime + $timeOffset))));
   } elsif ($command eq "ics") {
-    if ($parameters !~ /^(?|)$/) {
+    if ($parameters !~ /^\??$/) {
       cmd_run($parameters);
       tell_operator("OK $command");
     } else {
       tell_operator(detect_command_helptext($command));
     }
   } elsif ($command eq "ignore") {
-    if ($parameters =~ /^([^\[\]"]+|""|)$/) {
+    if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
         eval {
           "test" =~ /$parameters/;
@@ -937,13 +937,13 @@ sub process_master_command {
       cmd_run("quit");
       log_terminal("info: logout with exit value $parameters");
       exit($parameters);
-    } elsif ($parameters =~ /^(?|)$/) {
+    } elsif ($parameters =~ /^\??$/) {
       tell_operator(detect_command_helptext($command));
     } else {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "max") {
-    if ($parameters =~ /^([1-9]\d*|)$/) {
+    if ($parameters =~ /^([1-9]\d*)?$/) {
       if ($parameters ne "") {
         if ($parameters > $maxGamesNumDefault) {
           tell_operator_and_log_terminal("warning: max number of games set above frechess.org observe limit of $maxGamesNumDefault");
@@ -969,7 +969,7 @@ sub process_master_command {
       tell_operator(detect_command_helptext($command));
     }
   } elsif ($command eq "prioritize") {
-    if ($parameters =~ /^([^\[\]"]+|""|)$/) {
+    if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
         eval {
           "test" =~ /$parameters/;
@@ -1013,7 +1013,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "round") {
-    if ($parameters =~ /^([^\[\]"]+|""|)$/) {
+    if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
         $newGame_round = $parameters;
         if ($newGame_round eq "\"\"") { $newGame_round = ""; }
@@ -1023,7 +1023,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "timeoffset") {
-    if ($parameters =~ /^(\+|-|)\d*$/) {
+    if ($parameters =~ /^([+-]?\d+)?$/) {
       if ($parameters ne "") {
         $timeOffset = $parameters;
         update_heartbeat_time();
@@ -1033,7 +1033,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "site") {
-    if ($parameters =~ /^([^\[\]"]+|""|)$/) {
+    if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
         $newGame_site = $parameters;
         if ($newGame_site eq "\"\"") { $newGame_site = ""; }
@@ -1050,7 +1050,7 @@ sub process_master_command {
     $startupString =~ s/[\n\r]+//g;
     tell_operator("startup($STARTUP_FILE)=$startupString");
   } elsif ($command eq "verbosity") {
-    if ($parameters =~ /^(0|1|2|3|4|)$/) {
+    if ($parameters =~ /^[0-4]?$/) {
       if ($parameters ne "") {
         $verbosity = $parameters;
       }
