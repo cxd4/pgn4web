@@ -68,7 +68,7 @@
   if (isNaN(maxBoards) || (maxBoards < 1)) { maxBoards = maxBoards_default; }
 
   var displayGame = displayGame_default;
-  thisRegExp = /(&|\?)(displayGame|dg)=((\+|-|)[\d]*)(&|$)/i;
+  thisRegExp = /(&|\?)(displayGame|dg)=([+-]?[\d]+)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
     displayGame = unescape(window.location.search.match(thisRegExp)[3]);
   }
