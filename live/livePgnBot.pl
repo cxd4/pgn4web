@@ -42,7 +42,6 @@ our $CHECK_RELAY_FREQ = 3 * 60;
 our $OPEN_TIMEOUT = 30;
 our $LINE_WAIT_TIMEOUT = 60;
 # $LINE_WAIT_TIMEOUT must be smaller than half of $PROTECT_LOGOUT_FREQ and $CHECK_RELAY_FREQ
-our $HEARTBEAT_FREQ = 8 * 3600;
 
 
 our $telnet;
@@ -57,7 +56,8 @@ our $lineCount = 0;
 
 our $last_cmd_time = 0;
 our $last_check_relay_time = 0;
-our $heartbeat_hour = 0;
+our $heartbeat_freq_hour = 8;
+our $heartbeat_offset_hour = 5;
 
 sub cmd_run {
   my ($cmd) = @_;
@@ -699,7 +699,7 @@ add_master_command ("file", "file [filename.pgn] (to get/set the filename for sa
 add_master_command ("follow", "follow [0|handle|/s|/b|/l] (to follow the freechess user with given handle, /s for the best standard game, /b for the best blitz game, /l for the best lightning game, 0 to disable follow mode)");
 add_master_command ("forget", "forget [game number list, such as: 12 34 56 ..] (to eliminate given past games from PGN data)");
 add_master_command ("games", "games (to get list of observed games)");
-add_master_command ("heartbeat", "heartbeat [0-" . int(($HEARTBEAT_FREQ - 1) / 3600) . "] (to get/set the hour for heartbeat log messages)");
+add_master_command ("heartbeat", "heartbeat [frequency offset] (to get/set the timing of heartbeat log messages, in UTC hours)");
 add_master_command ("help", "help [command] (to get commands help)");
 add_master_command ("history", "history (to get history info)");
 add_master_command ("ics", "ics [server command] (to run a custom command on freechess.org)");
@@ -780,7 +780,7 @@ sub process_master_command {
     }
     tell_operator("autorelay=$autorelayMode");
   } elsif ($command eq "config") {
-    tell_operator("config: max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter prioritize=$prioritizeFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_hour timeoffset=$timeOffset verbosity=$verbosity");
+    tell_operator("config: max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter prioritize=$prioritizeFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
   } elsif ($command eq "date") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
@@ -883,14 +883,15 @@ sub process_master_command {
     }
     tell_operator("games(" . ($#games_num + 1) . "/$maxGamesNum)=" . gameList() . $roundsList);
   } elsif ($command eq "heartbeat") {
-    if (($parameters =~ /^\d+(\.\d*)?$/) && ($parameters < $HEARTBEAT_FREQ / 3600)) {
-      $heartbeat_hour = $parameters;
+    if (($parameters =~ /^(\d+(\.\d*)?)\s+(\d+(\.\d*)?)$/) && ($1 > 0) && ($3 < $1)) {
+      $heartbeat_freq_hour = $1;
+      $heartbeat_offset_hour = $3;
       update_heartbeat_time();
       tell_operator("OK $command");
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
     } else {
-      tell_operator("error: invalid $command parameter");
+      tell_operator("error: invalid $command parameters");
     }
   } elsif ($command eq "help") {
     if ($parameters =~ /\S/) {
@@ -1170,9 +1171,9 @@ sub heartbeat {
 
 sub update_heartbeat_time {
   my $thisTime = time() + $timeOffset;
-  $next_heartbeat_time = $thisTime - ($thisTime % $HEARTBEAT_FREQ) + ($heartbeat_hour * 3600);
+  $next_heartbeat_time = $thisTime - ($thisTime % ($heartbeat_freq_hour * 3600)) + ($heartbeat_offset_hour * 3600);
   if ($next_heartbeat_time < $thisTime) {
-    $next_heartbeat_time += $HEARTBEAT_FREQ;
+    $next_heartbeat_time += ($heartbeat_freq_hour * 3600);
   }
 }
 
