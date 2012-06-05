@@ -386,7 +386,7 @@ sub process_line {
           } elsif (($prioritizeFilter ne "") && (headerForFilter($autorelayEvent, $autorelayRound, $thisGameWhite, $thisGameBlack) =~ /$prioritizeFilter/i)) {
             remove_game(-1);
             cmd_run("observe $thisGameNum");
-            tell_operator_and_log_terminal("debug: prioritized game $thisGameNum $autorelayEvent $thisGameWhite $thisGameBlack");
+            tell_operator_and_log_terminal("debug: prioritized game " . headerForFilter($autorelayEvent, $autorelayRound, $thisGameWhite, $thisGameBlack));
           } elsif ($moreGamesThanMax == 0) {
             $moreGamesThanMax = 1;
             tell_operator_and_log_terminal("debug: more relayed games than max=$maxGamesNum");
@@ -528,7 +528,7 @@ sub save_pgnGame {
   $thisPgn = "";
   if ((defined $games_num[$i]) && (defined $GAMES_event[$games_num[$i]]) && (defined $GAMES_site[$games_num[$i]]) && (defined $GAMES_date[$games_num[$i]]) && (defined $GAMES_round[$games_num[$i]]) && (defined $GAMES_eco[$games_num[$i]]) && (defined $GAMES_timeLeft[$games_num[$i]])) {
 
-    if (($autorelayMode == 1) && ($prioritizeFilter ne "") && (headerForFilter($GAMES_event[$games_num[$i]], $GAMES_round[$games_num[$i]], $games_white[$i], $games_black[$i] =~ /$prioritizeFilter/i))) {
+    if (($autorelayMode == 1) && ($prioritizeFilter ne "") && (headerForFilter($GAMES_event[$games_num[$i]], $GAMES_round[$games_num[$i]], $games_white[$i], $games_black[$i]) =~ /$prioritizeFilter/i)) {
       $thisPrioritized = 1;
     } else {
       $thisPrioritized = 0;
