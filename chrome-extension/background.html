@@ -426,8 +426,7 @@ function newInstall() {
 // shows an help prompt after new installs
 // see README note (no crbug yet)
 try {
-  chrome.experimental.runtime.onInstalled.addListener(newInstall);
-  console.log("using the experimental runtime.onInstalled API");
+  chrome.runtime.onInstalled.addListener(newInstall);
 } catch (e) {}
 
 </script>
