@@ -78,7 +78,7 @@ currently experimental; make sure it works with data URIs.
 http://crbug.com/12133
 
 background.html: help prompt after new install
-use the runtime API, currently experimental.
+use the runtime API.
 no crbug yet
 
 
