@@ -384,7 +384,7 @@ sub process_line {
         if ($autorelayMode == 1) {
           if ($#games_num + 1 >= $maxGamesNum) {
             if ($moreGamesThanMax == 0) {
-              tell_operator_and_log_terminal("debug: more relayed games than max=$maxGamesNum");
+              log_terminal("debug: more relayed games than max=$maxGamesNum");
               $moreGamesThanMax = 1;
             }
           }
@@ -392,7 +392,7 @@ sub process_line {
             cmd_run("observe $thisGameNum");
           } elsif (($prioritizeFilter ne "") && (headerForFilter($autorelayEvent, $autorelayRound, $thisGameWhite, $thisGameBlack) =~ /$prioritizeFilter/i)) {
             if ($prioritizedGames == 0) {
-              tell_operator_and_log_terminal("debug: prioritized game " . headerForFilter($autorelayEvent, $autorelayRound, $thisGameWhite, $thisGameBlack));
+              log_terminal("debug: prioritized game " . headerForFilter($autorelayEvent, $autorelayRound, $thisGameWhite, $thisGameBlack));
               $prioritizedGames = 1;
             }
             remove_game(-1);
