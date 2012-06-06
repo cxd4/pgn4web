@@ -73,6 +73,7 @@ our $lastPgn = "";
 our $maxGamesNumDefault = 30; # frechess.org limit
 our $maxGamesNum = $maxGamesNumDefault;
 our $moreGamesThanMax;
+our $prioritizedGames;
 
 our @games_num = ();
 our @games_white = ();
@@ -381,15 +382,21 @@ sub process_line {
         }
       } else {
         if ($autorelayMode == 1) {
-          if ($#games_num + 1 < $maxGamesNum) {
+          if ($#games_num + 1 >= $maxGamesNum) {
+            if ($moreGamesThanMax == 0) {
+              tell_operator_and_log_terminal("debug: more relayed games than max=$maxGamesNum");
+              $moreGamesThanMax = 1;
+            }
+          }
+          if ($moreGamesThanMax == 0) {
             cmd_run("observe $thisGameNum");
           } elsif (($prioritizeFilter ne "") && (headerForFilter($autorelayEvent, $autorelayRound, $thisGameWhite, $thisGameBlack) =~ /$prioritizeFilter/i)) {
+            if ($prioritizedGames == 0) {
+              tell_operator_and_log_terminal("debug: prioritized game " . headerForFilter($autorelayEvent, $autorelayRound, $thisGameWhite, $thisGameBlack));
+              $prioritizedGames = 1;
+            }
             remove_game(-1);
             cmd_run("observe $thisGameNum");
-            tell_operator_and_log_terminal("debug: prioritized game " . headerForFilter($autorelayEvent, $autorelayRound, $thisGameWhite, $thisGameBlack));
-          } elsif ($moreGamesThanMax == 0) {
-            $moreGamesThanMax = 1;
-            tell_operator_and_log_terminal("debug: more relayed games than max=$maxGamesNum");
           }
         }
       }
@@ -1127,6 +1134,7 @@ sub write_startupCommands {
 
 sub xtell_relay_listgames {
   $moreGamesThanMax = 0;
+  $prioritizedGames = 0;
   cmd_run("xtell relay listgames");
 }
 
