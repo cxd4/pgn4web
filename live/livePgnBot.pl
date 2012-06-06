@@ -401,6 +401,8 @@ sub process_line {
         }
       }
     }
+  } elsif ($line =~ /^:Type "tell relay next" for more\.$/) {
+    cmd_run("xtell relay next");
   } elsif ($line =~ /^[\s*]*ANNOUNCEMENT[\s*]*from relay: FICS is relaying/) {
     if (($autorelayMode == 1) && ($#games_num < 0)) {
       xtell_relay_listgames();
