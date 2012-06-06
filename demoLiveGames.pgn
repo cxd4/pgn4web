@@ -11,8 +11,12 @@
 [WhiteClock "0:15.10"]
 [BlackClock "0:15.10"]
 [Clock "B/0:15.29"]
+[WhiteElo "2586"]
+[BlackElo "2722"]
 [WhiteFideId "4500016"]
 [BlackFideId "2209390"]
+[WhiteTitle "GM"]
+[BlackTitle "GM"]
 
 1. c4 { [%clk 0:15.16] } 1... e5 { [%clk 0:15.18] } 2. g3 { [%clk 0:15.11]
 } 2... Nf6 { [%clk 0:15.24] } 3. Bg2 { [%clk 0:15.19] } 3... d5 { [%clk
@@ -35,8 +39,12 @@ Nc6 { [%clk 0:15.54] } 7. d3 { [%clk 0:14.19] } 7... Be7 { [%clk 0:15.59] }
 [WhiteClock "0:15.10"]
 [BlackClock "0:15.10"]
 [Clock "B/0:00.04"]
+[WhiteElo "2267"]
+[BlackElo "2428"]
 [WhiteFideId "4501764"]
 [BlackFideId "4143256"]
+[WhiteTitle "FM"]
+[BlackTitle "IM"]
 
 1. d4 { [%clk 0:15.17] } 1... Nf6 { [%clk 0:15.19] } 2. c4 { [%clk 0:15.26]
 } 2... c5 { [%clk 0:15.27] } 3. d5 { [%clk 0:15.33] } 3... e5 { [%clk
@@ -75,8 +83,11 @@ Qb5 { [%clk 0:00.21] } 25. Qxb5 { [%clk 0:05.19] } 25... Nxb5 { [%clk
 [WhiteClock "0:15.10"]
 [BlackClock "0:15.10"]
 [Clock "W/0:00.18"]
+[WhiteElo "2274"]
+[BlackElo "2487"]
 [WhiteFideId "4500814"]
 [BlackFideId "4501950"]
+[BlackTitle "IM"]
 
 1. d4 { [%clk 0:15.19] } 1... Nf6 { [%clk 0:15.09] } 2. Nf3 { [%clk
 0:15.28] } 2... c5 { [%clk 0:15.26] } 3. e3 { [%clk 0:15.18] } 3... e6 {
@@ -128,8 +139,12 @@ Qxg5 { [%clk 0:00.31] } 43... Nxg5 { [%clk 0:02.23] } 44. Nd1 { [%clk
 [WhiteClock "0:15.08"]
 [BlackClock "0:15.10"]
 [Clock "W/0:00.55"]
+[WhiteElo "2546"]
+[BlackElo "2531"]
 [WhiteFideId "11600136"]
 [BlackFideId "4116194"]
+[WhiteTitle "GM"]
+[BlackTitle "GM"]
 
 1. c4 { [%clk 0:15.15] } 1... Nf6 { [%clk 0:15.17] } 2. Nc3 { [%clk
 0:15.22] } 2... d5 { [%clk 0:15.26] } 3. cxd5 { [%clk 0:15.29] } 3... Nxd5
