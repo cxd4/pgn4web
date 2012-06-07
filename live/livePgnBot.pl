@@ -552,14 +552,14 @@ sub save_pgnGame {
       if ($thisResult eq "*") {
         $gameRunning = 1;
       }
-      if (($relayMode == 1) && ($games_white[$i] =~ /^(GM|IM|FM|WGM|WIM|WFM)([A-Z].*)$/)) {
+      if (($relayMode == 1) && ($games_white[$i] =~ /^(W?[GIFC]M)([A-Z].*)$/)) {
         $thisWhiteTitle = $1;
         $thisWhite = $2;
       } else {
         $thisWhiteTitle = "";
         $thisWhite = $games_white[$i];
       }
-      if (($relayMode == 1) && ($games_black[$i] =~ /^(GM|IM|FM|WGM|WIM|WFM)([A-Z].*)$/)) {
+      if (($relayMode == 1) && ($games_black[$i] =~ /^(W?[GIFC]M)([A-Z].*)$/)) {
         $thisBlackTitle = $1;
         $thisBlack = $2;
       } else {
