@@ -365,8 +365,17 @@ sub process_line {
     my $thisGameBlack = $3;
     my $thisGameResult = $4;
     my $thisGameEco = $5;
-    if (($autorelayMode == 1) && ($ignoreFilter ne "") && (headerForFilter($autorelayEvent, $autorelayRound, $thisGameWhite, $thisGameBlack) =~ /$ignoreFilter/i)) {
-      log_terminal("debug: ignored game $thisGameNum $autorelayEvent $thisGameWhite $thisGameBlack");
+    my $thisHeaderForFilter = headerForFilter($autorelayEvent, $autorelayRound, $thisGameWhite, $thisGameBlack);
+    if (($autorelayMode == 1) && ($ignoreFilter ne "") && ($thisHeaderForFilter =~ /$ignoreFilter/i)) {
+      if (find_gameIndex($thisGameNum) != -1) {
+        if (remove_game($thisGameNum) != -1) {
+          $moreGamesThanMax = 0;
+          $prioritizedGames = 0;
+        }
+        log_terminal("debug: removed ignored game $thisGameNum $thisHeaderForFilter");
+      } else {
+        log_terminal("debug: ignored game $thisGameNum $thisHeaderForFilter");
+      }
     } else {
       if ($autorelayMode == 1) {
         $GAMES_event[$thisGameNum] = $autorelayEvent;
@@ -390,9 +399,9 @@ sub process_line {
           }
           if ($moreGamesThanMax == 0) {
             cmd_run("observe $thisGameNum");
-          } elsif (($prioritizeFilter ne "") && (headerForFilter($autorelayEvent, $autorelayRound, $thisGameWhite, $thisGameBlack) =~ /$prioritizeFilter/i)) {
+          } elsif (($prioritizeFilter ne "") && ($thisHeaderForFilter =~ /$prioritizeFilter/i)) {
             if ($prioritizedGames == 0) {
-              log_terminal("debug: prioritized game " . headerForFilter($autorelayEvent, $autorelayRound, $thisGameWhite, $thisGameBlack));
+              log_terminal("debug: prioritized game $thisHeaderForFilter");
               $prioritizedGames = 1;
             }
             remove_game(-1);
