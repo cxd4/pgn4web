@@ -196,7 +196,7 @@ sub save_game {
     $gamesStartCount++;
   } else {
     if (($games_white[$thisGameIndex] ne $newGame_white) || ($games_black[$thisGameIndex] ne $newGame_black) || ($games_whiteElo[$thisGameIndex] ne $newGame_whiteElo) || ($games_blackElo[$thisGameIndex] ne $newGame_blackElo)) {
-      log_terminal("error: game $newGame_num mismatch when saving");
+      log_terminal("debug: game $newGame_num mismatch when saving");
     } else {
       $games_movesText[$thisGameIndex] = $newGame_movesText;
       if ($games_result[$thisGameIndex] eq "*") {
@@ -347,7 +347,7 @@ sub process_line {
       $GAMES_timeLeft[$thisGN] = "{ White Time: " . sec2time($thisWC) . " Black Time: " . sec2time($thisBC) . " }";
       cmd_run("moves $thisGN");
     } else {
-      log_terminal("error: game $thisGN mismatch when receiving");
+      log_terminal("debug: game $thisGN mismatch when receiving");
     }
   } elsif ($line =~ /^{Game (\d+) [^}]*} (\S+)/) {
     save_result($1, $2, 1); # from observed game
@@ -1126,7 +1126,7 @@ sub write_startupCommands {
   my @commandList = @_;
 
   if (!copy("$STARTUP_FILE", "$STARTUP_FILE" . ".bak")) {
-    tell_operator_and_log_terminal("error: startup commands file $STARTUP_FILE NOT written (failed backup)");
+    tell_operator_and_log_terminal("error: failed backup, startup commands file $STARTUP_FILE not updated");
     return;
   }
 
@@ -1138,7 +1138,7 @@ sub write_startupCommands {
     close(CMDFILE);
     log_terminal("info: startup commands file $STARTUP_FILE written");
   } else {
-    tell_operator_and_log_terminal("error: failed writing startup commands file $STARTUP_FILE");
+    tell_operator_and_log_terminal("error: failed updating startup commands file $STARTUP_FILE");
   }
 }
 
