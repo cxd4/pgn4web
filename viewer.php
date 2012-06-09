@@ -697,7 +697,9 @@ a.variation {
     if (theObj = document.getElementById('numPly')) { theObj.innerHTML = PlyNumber; }
     customPgnHeaderTag('ECO', 'GameECO');
     customPgnHeaderTag('Opening', 'GameOpening');
+    if (theObj = document.getElementById('GameOpening')) { theObj.innerHTML = fixCommentForDisplay(theObj.innerHTML); }
     customPgnHeaderTag('Variation', 'GameVariation');
+    if (theObj = document.getElementById('GameVariation')) { theObj.innerHTML = fixCommentForDisplay(theObj.innerHTML); }
     customPgnHeaderTag('Annotator', 'GameAnnotator');
     customPgnHeaderTag('Result', 'ResultAtGametextEnd');
   }
