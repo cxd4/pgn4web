@@ -732,7 +732,7 @@ add_master_command ("round", "round [string|\"\"] (to get/set the PGN header tag
 add_master_command ("site", "site [string|\"\"] (to get/set the PGN header tag site)");
 add_master_command ("startup", "startup [command list, separated by semicolon] (to get/set startup commands file)");
 add_master_command ("timeoffset", "timeoffset [[+|-]seconds] (to get/set the offset correcting the UTC time value)");
-add_master_command ("verbosity", "verbosity [0|1|2|3|4] (to get/set log verbosity: 0=none, 1=error, 2=warning, 3=info, 4=debug)");
+add_master_command ("verbosity", "verbosity [0-4] (to get/set log verbosity: 0=none, 1=error, 2=warning, 3=info, 4=debug)");
 
 sub detect_command {
   my ($command) = @_;
@@ -1047,7 +1047,7 @@ sub process_master_command {
         $timeOffset = $parameters;
         update_heartbeat_time();
       }
-      tell_operator_and_log_terminal("timeoffset=$timeOffset");
+      tell_operator_and_log_terminal("metainfo: timeoffset=$timeOffset");
     } else {
       tell_operator("error: invalid $command parameter");
     }
@@ -1073,7 +1073,7 @@ sub process_master_command {
       if ($parameters ne "") {
         $verbosity = $parameters;
       }
-      tell_operator_and_log_terminal("verbosity=$verbosity");
+      tell_operator_and_log_terminal("metainfo: verbosity=$verbosity");
     } else {
       tell_operator("error: invalid $command parameter");
     }
