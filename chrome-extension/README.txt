@@ -77,10 +77,6 @@ replace the file download code for popup.html witht he download API,
 currently experimental; make sure it works with data URIs.
 http://crbug.com/12133
 
-background.html: help prompt after new install
-use the runtime API.
-no crbug yet
-
 
 Bugs:
 
