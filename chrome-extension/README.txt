@@ -33,13 +33,6 @@ http://creativecommons.org/licenses/by-nd/3.0/
 the refresh-mosaic.png PNG icon is derived from refresh.png
 
 
-Beta and development versions:
-
-check for testing_* variables used for testing new functionality in beta,
-development and canary versions of Google Chrome; updates of some settings of
-manifest.json might be required for testing.
-
-
 Enhancements:
 
 background.html, manifest.json, chess-games-viewer.html,
