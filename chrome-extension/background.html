@@ -382,8 +382,6 @@ function loadLocalPgnFiles(id, details) {
   }
 }
 
-chrome.fileBrowserHandler.onExecute.addListener(loadLocalPgnFiles);
-
 function removeLocalPgnFilesOnRemoved(tabId) {
   if ((localPgnFilesIndexFromTabId[tabId] !== null) && (localPgnFilesIndexFromTabId[tabId] !== undefined)) {
     if ((localPgnFiles[localPgnFilesIndexFromTabId[tabId]] !== null) && (localPgnFiles[localPgnFilesIndexFromTabId[tabId]] !== undefined)) {
@@ -393,7 +391,11 @@ function removeLocalPgnFilesOnRemoved(tabId) {
   }
 }
 
-chrome.tabs.onRemoved.addListener(removeLocalPgnFilesOnRemoved);
+// chrome.fileBrowserHandler.* might fail on platforms other than Chrome OS
+try {
+  chrome.fileBrowserHandler.onExecute.addListener(loadLocalPgnFiles);
+  chrome.tabs.onRemoved.addListener(removeLocalPgnFilesOnRemoved);
+} catch (e) {}
 
 function checkWebRequestForPgnFiles(requestDetails) {
   if (requestDetails.tabId === null || requestDetails.tabId < 0) { return; }
@@ -419,15 +421,6 @@ try {
   chrome.webRequest.onBeforeRequest.addListener(checkWebRequestForPgnFiles, {"types": ["object", "xmlhttprequest", "other"], "urls": pgnUrlPatterns});
 } catch (e) {}
 
-function newInstall() {
-  if ( confirm("The chess games viewer extension has been installed.\n\nClick OK for instructions and usage examples; the help page is also available later at the chrome extensions page, from the chess games viewer extension options link.")) { showAboutPage(); }
-}
-
-// shows an help prompt after new installs
-// see README note (no crbug yet)
-try {
-  chrome.runtime.onInstalled.addListener(newInstall);
-} catch (e) {}
 
 </script>
 
