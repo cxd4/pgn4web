@@ -227,6 +227,7 @@ sub save_result {
       log_terminal("error: missing game $thisGameNum when saving result");
     }
   } else {
+    log_terminal("debug: game $thisGameNum result: $thisResult");
     $games_result[$thisGameIndex] = $thisResult;
     refresh_pgn();
   }
