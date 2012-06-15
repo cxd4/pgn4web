@@ -201,6 +201,7 @@ sub save_game {
       log_terminal("debug: game $newGame_num mismatch when saving");
     } else {
       $games_movesText[$thisGameIndex] = $newGame_movesText;
+      $games_plyNum[$thisGameIndex] = $#newGame_moves + 1;
       if ($games_result[$thisGameIndex] eq "*") {
         $games_result[$thisGameIndex] = $newGame_result;
       }
@@ -467,7 +468,7 @@ sub process_line {
       $newGame_blackElo = $4;
     } elsif ($line =~ /(.*) initial time: \d+ minutes.*increment: \d+/) {
       our $gameType = $1;
-      if (!($gameType =~ /(standard|blitz|lightning)/)) {
+      if (!($gameType =~ /(standard|blitz|lightning|^Unrated untimed match,$)/)) {
         log_terminal("warning: unsupported game $newGame_num: $gameType");
         delete $GAMES_timeLeft[$newGame_num];
         delete $GAMES_event[$newGame_num];
