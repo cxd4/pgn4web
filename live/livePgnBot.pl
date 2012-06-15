@@ -1,4 +1,3 @@
-#! /usr/bin/perl -w
 
 #  pgn4web javascript chessboard
 #  copyright (C) 2009, 2012 Paolo Casaschi
@@ -81,6 +80,7 @@ our @games_black = ();
 our @games_whiteElo = ();
 our @games_blackElo = ();
 our @games_movesText = ();
+our @games_plyNum = ();
 our @games_result = ();
 
 our @GAMES_event = ();
@@ -126,6 +126,7 @@ sub reset_games {
   @games_whiteElo = ();
   @games_blackElo = ();
   @games_movesText = ();
+  @games_plyNum = ();
   @games_result = ();
   @GAMES_event = ();
   @GAMES_site = ();
@@ -185,6 +186,7 @@ sub save_game {
     myAdd(\@games_whiteElo, $newGame_whiteElo);
     myAdd(\@games_blackElo, $newGame_blackElo);
     myAdd(\@games_movesText, $newGame_movesText);
+    myAdd(\@games_plyNum, $#newGame_moves + 1);
     myAdd(\@games_result, $newGame_result);
     if ($autorelayMode == 0) {
       $GAMES_event[$newGame_num] = $newGame_event;
@@ -264,6 +266,7 @@ sub remove_game {
   @games_whiteElo = @games_whiteElo[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
   @games_blackElo = @games_blackElo[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
   @games_movesText = @games_movesText[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
+  @games_plyNum = @games_plyNum[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
   @games_result = @games_result[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
   delete $GAMES_event[$thisGameNum];
   delete $GAMES_site[$thisGameNum];
@@ -332,20 +335,48 @@ sub process_line {
       log_terminal("debug: ignoring tell from user $1");
     }
   } elsif ($line =~ /^<12> (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+)/) {
-    # in order to avoid keeping a game state, each time a board update is
-    # received the whole game score is refreshed from the server; this might
-    # result in missing the last move(s) of games that end immediately after
-    # a board update and do not return a movelist anymore; only an issue for
-    # very fast games, not an issue for broadcasts of live events;
+    my $thisNC = $9; # Next move Color
     my $thisGN = $16; # GameNum
     my $thisW = $17; # White
     my $thisB = $18; # Black
     my $thisWC = $24; # WhiteClock
     my $thisBC = $25; # BlackClock
+    my $thisNN = $26; # Next move Number
+    my $thisPM = $29; # PreviousMove
     my $thisGI = find_gameIndex($thisGN);
     if (($thisGI < 0) || (($thisW eq $games_white[$thisGI]) && ($thisB eq $games_black[$thisGI]))) {
       $GAMES_timeLeft[$thisGN] = "{ White Time: " . sec2time($thisWC) . " Black Time: " . sec2time($thisBC) . " }";
-      cmd_run("moves $thisGN");
+      my $thisPlyNum;
+      if ($thisNC eq "B") {
+        $thisPlyNum = (2 * $thisNN) - 1;
+      } else {
+        $thisPlyNum = 2 * ($thisNN - 1);
+      }
+      if (($thisGI >= 0) && ($thisPlyNum > 0) && (defined $games_plyNum[$thisGI]) && (($games_plyNum[$thisGI] == $thisPlyNum) || ($games_plyNum[$thisGI] == $thisPlyNum - 1))) {
+        # for known games, if up to a new ply is added, just stores the new move and clock info from the style 12 string
+        log_terminal("debug: update for game $thisGN ($thisPM)");
+        if ($games_plyNum[$thisGI] == $thisPlyNum - 1) {
+          if ($thisPM eq "none") {
+            log_terminal("debug: unexpected last move as none for game $thisGN");
+          } else {
+            if ($thisNC eq "B") {
+              if ($thisNN % 5 == 1) {
+                $games_movesText[$thisGI] .= "\n";
+              } else {
+                $games_movesText[$thisGI] .= " ";
+              }
+              $games_movesText[$thisGI] .= "$thisNN.";
+            }
+            $games_movesText[$thisGI] .= " $thisPM";
+          }
+          $games_plyNum[$thisGI] = $thisPlyNum;
+        }
+        refresh_pgn();
+      } else {
+        # for new games, or if more than one ply is added, or if a ply is removed then the whole move list is fetched from the server
+        log_terminal("debug: fetching all moves for game $thisGN");
+        cmd_run("moves $thisGN");
+      }
     } else {
       log_terminal("debug: game $thisGN mismatch when receiving");
     }
