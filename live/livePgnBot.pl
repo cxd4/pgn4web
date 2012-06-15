@@ -282,7 +282,9 @@ our $timeOffset = 0;
 sub log_terminal {
   my ($msg) = @_;
   my $thisVerbosity = 0;
-  if ($msg =~ /^debug:/) {
+  if ($msg =~ /^fyi:/) {
+    $thisVerbosity = 5;
+  } elsif ($msg =~ /^debug:/) {
     $thisVerbosity = 4;
   } elsif ($msg =~ /^info:/) {
     $thisVerbosity = 3;
@@ -332,7 +334,7 @@ sub process_line {
     if ($1 eq $OPERATOR_HANDLE) {
       process_master_command($3, $4);
     } else {
-      log_terminal("debug: ignoring tell from user $1");
+      log_terminal("fyi: ignoring tell from user $1");
     }
   } elsif ($line =~ /^<12> (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+)/) {
     my $thisNC = $9; # Next move Color
@@ -354,11 +356,9 @@ sub process_line {
       }
       if (($thisGI >= 0) && ($thisPlyNum > 0) && (defined $games_plyNum[$thisGI]) && (($games_plyNum[$thisGI] == $thisPlyNum) || ($games_plyNum[$thisGI] == $thisPlyNum - 1))) {
         # for known games, if up to a new ply is added, just stores the new move and clock info from the style 12 string
-        log_terminal("debug: update for game $thisGN ($thisPM)");
         if ($games_plyNum[$thisGI] == $thisPlyNum - 1) {
-          if ($thisPM eq "none") {
-            log_terminal("debug: unexpected last move as none for game $thisGN");
-          } else {
+          log_terminal("debug: update for game $thisGN ($thisPM)");
+          if ($thisPM ne "none") {
             if ($thisNC eq "B") {
               if ($thisNN % 5 == 1) {
                 $games_movesText[$thisGI] .= "\n";
@@ -370,6 +370,8 @@ sub process_line {
             $games_movesText[$thisGI] .= " $thisPM";
           }
           $games_plyNum[$thisGI] = $thisPlyNum;
+        } else {
+          log_terminal("debug: update for game $thisGN");
         }
         refresh_pgn();
       } else {
@@ -452,7 +454,7 @@ sub process_line {
       reset_newGame();
       $newGame_num = $1;
     } elsif ($line !~ /^\s*((\d\d.\d\d_)?fics%|:)\s*$/) {
-      log_terminal("debug: ignored line: $line");
+      log_terminal("fyi: ignored line: $line");
     }
   } else {
     if ($line =~ /^(\w+)\s+\((\S+)\)\s+vs\.\s+(\w+)\s+\((\S+)\).*/) {
@@ -485,7 +487,7 @@ sub process_line {
     } elsif ($line =~ /^Move\s+/) {
     } elsif ($line =~ /^[\s-]*$/) {
     } elsif ($line !~ /^\s*((\d\d.\d\d_)?fics%|:)\s*$/) {
-      log_terminal("debug: ignored line: $line");
+      log_terminal("fyi: ignored line: $line");
     }
   }
   $lineCount++;
@@ -763,7 +765,7 @@ add_master_command ("round", "round [string|\"\"] (to get/set the PGN header tag
 add_master_command ("site", "site [string|\"\"] (to get/set the PGN header tag site)");
 add_master_command ("startup", "startup [command list, separated by semicolon] (to get/set startup commands file)");
 add_master_command ("timeoffset", "timeoffset [[+|-]seconds] (to get/set the offset correcting the UTC time value)");
-add_master_command ("verbosity", "verbosity [0-4] (to get/set log verbosity: 0=none, 1=error, 2=warning, 3=info, 4=debug)");
+add_master_command ("verbosity", "verbosity [0-5] (to get/set log verbosity: 0=none, 1=error, 2=warning, 3=info, 4=debug, 5=fyi)");
 
 sub detect_command {
   my ($command) = @_;
@@ -1100,7 +1102,7 @@ sub process_master_command {
     $startupString =~ s/[\n\r]+//g;
     tell_operator("startup($STARTUP_FILE)=$startupString");
   } elsif ($command eq "verbosity") {
-    if ($parameters =~ /^[0-4]?$/) {
+    if ($parameters =~ /^[0-5]?$/) {
       if ($parameters ne "") {
         $verbosity = $parameters;
       }
@@ -1275,7 +1277,7 @@ sub setup {
         log_terminal("error: can not login as $BOT_HANDLE: $1");
         exit 1;
       }
-      log_terminal("debug: ignored line: $line\n");
+      log_terminal("fyi: ignored line: $line\n");
     }
 
     my($pre, $match) = $telnet->waitfor(
