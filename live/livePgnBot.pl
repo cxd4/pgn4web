@@ -357,8 +357,8 @@ sub process_line {
       if (($thisGI >= 0) && ($thisPlyNum > 0) && (defined $games_plyNum[$thisGI]) && (($games_plyNum[$thisGI] == $thisPlyNum) || ($games_plyNum[$thisGI] == $thisPlyNum - 1))) {
         # for known games, if up to a new ply is added, just stores the new move and clock info from the style 12 string
         if ($games_plyNum[$thisGI] == $thisPlyNum - 1) {
-          log_terminal("debug: update for game $thisGN: $thisPM");
           if ($thisPM ne "none") {
+            log_terminal("debug: update for game $thisGN: $thisPM");
             if ($thisNC eq "B") {
               if ($thisNN % 5 == 1) {
                 $games_movesText[$thisGI] .= "\n";
@@ -368,8 +368,10 @@ sub process_line {
               $games_movesText[$thisGI] .= "$thisNN.";
             }
             $games_movesText[$thisGI] .= " $thisPM";
+            $games_plyNum[$thisGI] = $thisPlyNum;
+          } else {
+            log_terminal("debug: unexpected $thisPM move for gane $thisGN");
           }
-          $games_plyNum[$thisGI] = $thisPlyNum;
         } else {
           log_terminal("debug: update for game $thisGN");
         }
