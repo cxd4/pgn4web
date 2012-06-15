@@ -357,7 +357,7 @@ sub process_line {
       if (($thisGI >= 0) && ($thisPlyNum > 0) && (defined $games_plyNum[$thisGI]) && (($games_plyNum[$thisGI] == $thisPlyNum) || ($games_plyNum[$thisGI] == $thisPlyNum - 1))) {
         # for known games, if up to a new ply is added, just stores the new move and clock info from the style 12 string
         if ($games_plyNum[$thisGI] == $thisPlyNum - 1) {
-          log_terminal("debug: update for game $thisGN ($thisPM)");
+          log_terminal("debug: update for game $thisGN: $thisPM");
           if ($thisPM ne "none") {
             if ($thisNC eq "B") {
               if ($thisNN % 5 == 1) {
@@ -755,10 +755,11 @@ add_master_command ("help", "help [command] (to get commands help)");
 add_master_command ("history", "history (to get history info)");
 add_master_command ("ics", "ics [server command] (to run a custom command on freechess.org)");
 add_master_command ("ignore", "ignore [regexp|\"\"] (to get/set the regular expression to ignore events/players from the PGN header during autorelay; has precedence over prioritize; use ^(?:(?!regexp).)+\$ for negative lookup)");
-add_master_command ("logout", "logout [number] (to logout from freechess.org, returning the given exit value)");
+add_master_command ("log", "log [string] (to print a string on the log terminal)");
 add_master_command ("max", "max [number] (to get/set the maximum number of games for the PGN data)");
 add_master_command ("observe", "observe [game number list, such as: 12 34 56 ..] (to observe given games)");
 add_master_command ("prioritize", "prioritize [regexp|\"\"] (to get/set the regular expression to prioritize events/players from the PGN header during autorelay; might be overruled by ignore)");
+add_master_command ("quit", "quit [number] (to quit from freechess.org, returning the given exit value)");
 add_master_command ("relay", "relay [0|game number list, such as: 12 34 56 ..] (to observe given games from an event relay, 0 to disable relay mode)");
 add_master_command ("reset", "reset [1] (to reset observed/followed games list and setting)");
 add_master_command ("round", "round [string|\"\"] (to get/set the PGN header tag round)");
@@ -983,16 +984,11 @@ sub process_master_command {
     } else {
       tell_operator("error: invalid $command parameter");
     }
-  } elsif ($command eq "logout") {
-    if ($parameters =~ /^\d+$/) {
-      tell_operator("OK $command($parameters)");
-      cmd_run("quit");
-      log_terminal("info: logout with exit value $parameters");
-      exit($parameters);
-    } elsif ($parameters =~ /^\??$/) {
-      tell_operator(detect_command_helptext($command));
+  } elsif ($command eq "log") {
+    if ($parameters ne "") {
+      log_terminal($parameters);
     } else {
-      tell_operator("error: invalid $command parameter");
+      tell_operator(detect_command_helptext($command));
     }
   } elsif ($command eq "max") {
     if ($parameters =~ /^([1-9]\d*)?$/) {
@@ -1034,6 +1030,17 @@ sub process_master_command {
         };
       }
       tell_operator("prioritize=$prioritizeFilter");
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "quit") {
+    if ($parameters =~ /^\d+$/) {
+      tell_operator("OK $command($parameters)");
+      cmd_run("quit");
+      log_terminal("info: quit with exit value $parameters");
+      exit($parameters);
+    } elsif ($parameters =~ /^\??$/) {
+      tell_operator(detect_command_helptext($command));
     } else {
       tell_operator("error: invalid $command parameter");
     }
