@@ -227,7 +227,7 @@ sub save_result {
     if ($logMissing == 1) {
       log_terminal("error: missing game $thisGameNum when saving result");
     }
-  } else {
+  } elsif ((! defined $games_result[$thisGameIndex]) || ($thisResult ne $games_result[$thisGameIndex])) {
     log_terminal("debug: game $thisGameNum result: $thisResult");
     $games_result[$thisGameIndex] = $thisResult;
     refresh_pgn();
