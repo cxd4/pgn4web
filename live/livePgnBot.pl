@@ -197,7 +197,7 @@ sub save_game {
       $GAMES_eco[$newGame_num] = "";
     }
     $gamesStartCount++;
-    log_terminal("debug: game new $newGame_num: $newGame_white - $newGame_black");
+    log_terminal("debug: game new $newGame_num: " . headerForFilter($GAMES_event[$newGame_num], $GAMES_round[$newGame_num], $newGame_white, $newGame_black));
   } else {
     if (($games_white[$thisGameIndex] ne $newGame_white) || ($games_black[$thisGameIndex] ne $newGame_black) || ($games_whiteElo[$thisGameIndex] ne $newGame_whiteElo) || ($games_blackElo[$thisGameIndex] ne $newGame_blackElo)) {
       log_terminal("debug: game $newGame_num mismatch when saving");
