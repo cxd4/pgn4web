@@ -34,7 +34,7 @@ if ($BOT_HANDLE eq "" | $OPERATOR_HANDLE eq "") {
 
 our $PGN_FILE = "live.pgn";
 
-our $verbosity = 3;
+our $verbosity = 4; # info
 
 our $PROTECT_LOGOUT_FREQ = 45 * 60;
 our $CHECK_RELAY_FREQ = 3 * 60;
@@ -282,18 +282,21 @@ sub remove_game {
 
 our $timeOffset = 0;
 sub log_terminal {
+  if ($verbosity == 0) {
+    return;
+  }
   my ($msg) = @_;
-  my $thisVerbosity = 0;
+  my $thisVerbosity = 1; # defaulting to alert
   if ($msg =~ /^fyi:/) {
-    $thisVerbosity = 5;
+    $thisVerbosity = 6;
   } elsif ($msg =~ /^debug:/) {
-    $thisVerbosity = 4;
+    $thisVerbosity = 5;
   } elsif ($msg =~ /^info:/) {
-    $thisVerbosity = 3;
+    $thisVerbosity = 4;
   } elsif ($msg =~ /^warning:/) {
-    $thisVerbosity = 2;
+    $thisVerbosity = 3;
   } elsif ($msg =~ /^error:/) {
-    $thisVerbosity = 1;
+    $thisVerbosity = 2;
   }
   if ($thisVerbosity <= $verbosity) {
     print(strftime("%Y-%m-%d %H:%M:%S UTC", gmtime(time() + $timeOffset)) . " " . $msg . "\n");
@@ -770,7 +773,7 @@ add_master_command ("round", "round [string|\"\"] (to get/set the PGN header tag
 add_master_command ("site", "site [string|\"\"] (to get/set the PGN header tag site)");
 add_master_command ("startup", "startup [command list, separated by semicolon] (to get/set startup commands file)");
 add_master_command ("timeoffset", "timeoffset [[+|-]seconds] (to get/set the offset correcting the UTC time value)");
-add_master_command ("verbosity", "verbosity [0-5] (to get/set log verbosity: 0=none, 1=error, 2=warning, 3=info, 4=debug, 5=fyi)");
+add_master_command ("verbosity", "verbosity [0-6] (to get/set log verbosity: 0=none, 1=alert, 2=error, 3=warning, 4=info, 5=debug, 6=fyi)");
 
 sub detect_command {
   my ($command) = @_;
@@ -1091,7 +1094,7 @@ sub process_master_command {
         $timeOffset = $parameters;
         update_heartbeat_time();
       }
-      tell_operator_and_log_terminal("metainfo: timeoffset=$timeOffset");
+      tell_operator_and_log_terminal("alert: timeoffset=$timeOffset");
     } else {
       tell_operator("error: invalid $command parameter");
     }
@@ -1113,11 +1116,11 @@ sub process_master_command {
     $startupString =~ s/[\n\r]+//g;
     tell_operator("startup($STARTUP_FILE)=$startupString");
   } elsif ($command eq "verbosity") {
-    if ($parameters =~ /^[0-5]?$/) {
+    if ($parameters =~ /^[0-6]?$/) {
       if ($parameters ne "") {
         $verbosity = $parameters;
       }
-      tell_operator_and_log_terminal("metainfo: verbosity=$verbosity");
+      tell_operator_and_log_terminal("alert: verbosity=$verbosity");
     } else {
       tell_operator("error: invalid $command parameter");
     }
