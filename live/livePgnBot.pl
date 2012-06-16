@@ -148,6 +148,7 @@ sub reset_games {
 
   @currentRounds = ();
 
+  log_terminal("debug: event/game end all");
   refresh_pgn();
 }
 
@@ -196,6 +197,7 @@ sub save_game {
       $GAMES_eco[$newGame_num] = "";
     }
     $gamesStartCount++;
+    log_terminal("debug: game new $newGame_num: $newGame_white - $newGame_black");
   } else {
     if (($games_white[$thisGameIndex] ne $newGame_white) || ($games_black[$thisGameIndex] ne $newGame_black) || ($games_whiteElo[$thisGameIndex] ne $newGame_whiteElo) || ($games_blackElo[$thisGameIndex] ne $newGame_blackElo)) {
       log_terminal("debug: game $newGame_num mismatch when saving");
@@ -276,6 +278,7 @@ sub remove_game {
   delete $GAMES_round[$thisGameNum];
   delete $GAMES_eco[$thisGameNum];
   delete $GAMES_timeLeft[$thisGameNum];
+  log_terminal("debug: game end $thisGameNum");
   refresh_pgn();
   return $thisGameIndex;
 }
@@ -724,13 +727,13 @@ sub log_rounds {
 
   for ($i=0; $i<=$#currentRounds; $i++) {
     if (! defined $skipCurrent[$i]) {
-      log_terminal("info: end: " . $currentRounds[$i]);
+      log_terminal("info: event end: " . $currentRounds[$i]);
     }
   }
 
   for ($j=0; $j<=$#newRounds; $j++) {
     if (! defined $skipNew[$j]) {
-      log_terminal("info: new: " . $newRounds[$j]);
+      log_terminal("info: event new: " . $newRounds[$j]);
       $roundsStartCount++;
     }
   }
