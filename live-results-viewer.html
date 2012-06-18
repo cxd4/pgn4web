@@ -549,10 +549,13 @@ a.variation {
     res = myCompare(gameEvent[aa], gameEvent[zz]);
     if (res !== 0) { return res; }
 
-    res = myCompareRound(gameRound[aa], gameRound[zz]);
+    res = myCompareRound(fixRound(gameRound[aa]), fixRound(gameRound[zz]));
     if (res !== 0) { return res; }
 
     res = myCompare(gameMatch[aa], gameMatch[zz]);
+    if (res !== 0) { return res; }
+
+    res = myCompareRound(gameRound[aa], gameRound[zz]);
     if (res !== 0) { return res; }
 
     res = myCompare(gameBoard[aa], gameBoard[zz]);
@@ -565,6 +568,10 @@ a.variation {
 
   }
 
+  function fixRound(thisRound) {
+    return thisRound.replace(/\..*$/, ""); // only use the first number of rounds like 1.2.3
+  }
+
   function printGames() {
     firstRow = true;
     lastEventRound = "";
@@ -573,7 +580,7 @@ a.variation {
       resultTable = "";
       for (gg in gameId) {
         ggId = gameId[gg];
-        fixedRound = gameRound[ggId].replace(/\..*$/, ""); // only use the first number of rounds like 1.2.3
+        fixedRound = fixRound(gameRound[ggId]);
         currentEventRound = gameEvent[ggId] + fixedRound;
         if (showEvent && currentEventRound && (currentEventRound !== lastEventRound)) {
           resultTable += "<div class='eventRound'" + (firstRow ? " style='margin-top:0;'" : "") + "><span class='event' title='" + gameEvent[ggId] + "'>" + gameEvent[ggId] + "</span><span class='round' title='" + "round " + fixedRound + "'>" + (fixedRound !== "" ? "round " + fixedRound : "") + "</span></div>";
@@ -604,7 +611,7 @@ a.variation {
     firstTeamScore = 0;
     secondTeamScore = 0;
     for (ii in gameId) {
-      if ((gameEvent[gameId[ii]] === eventStr) && (gameRound[gameId[ii]] === roundStr) && (gameMatch[gameId[ii]] === matchId)) {
+      if ((gameEvent[gameId[ii]] === eventStr) && (fixRound(gameRound[gameId[ii]]) === fixRound(roundStr)) && (gameMatch[gameId[ii]] === matchId)) {
         if (!firstTeam || !secondTeam) {
           firstTeam = gameWhiteTeam[gameId[ii]];
           secondTeam = gameBlackTeam[gameId[ii]];
