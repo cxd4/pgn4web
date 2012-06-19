@@ -74,6 +74,9 @@ our $maxGamesNum = $maxGamesNumDefault;
 our $moreGamesThanMax;
 our $prioritizedGames;
 
+our $relayOnline = 1;
+our $relay_status_change_time = $starupTime;
+
 our @games_num = ();
 our @games_white = ();
 our @games_black = ();
@@ -326,7 +329,7 @@ sub tell_operator {
     if (($#msgParts > 0) && ($i < $#msgParts)) {
       $msgParts[$i] = $msgParts[$i] . "..";
     }
-    cmd_run("tell $OPERATOR_HANDLE " . $msgParts[$i]);
+    cmd_run("xtell $OPERATOR_HANDLE! " . $msgParts[$i]);
   }
 }
 
@@ -402,6 +405,7 @@ sub process_line {
       $autorelayEvent = $1;
       $autorelayEvent =~ s/[\s-]+$//g;
     }
+    declareRelayOnline();
   } elsif ($line =~ /^:(\d+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)/) {
     my $thisGameNum = $1;
     my $thisGameWhite = $2;
@@ -454,7 +458,11 @@ sub process_line {
       }
     }
   } elsif ($line =~ /^:Type "tell relay next" for more\.$/) {
-    cmd_run("xtell relay next");
+    cmd_run("xtell relay! next");
+  } elsif ($line =~ /^((\d\d.\d\d_)?fics% )relay is not logged in\.$/) {
+    declareRelayOffline();
+  } elsif ($line =~ /^PAOLO regexp detecting relay reply with no games being relayed OLOAP$/) {
+    declareRelayOnline();
   } elsif ($line =~ /^[\s*]*ANNOUNCEMENT[\s*]*from relay: FICS is relaying/) {
     if (($autorelayMode == 1) && ($#games_num < 0)) {
       xtell_relay_listgames();
@@ -841,6 +849,9 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
     tell_operator("autorelay=$autorelayMode");
+    if (($autorelayMode == 1) && ($relayOnline == 0)) {
+      tell_operator("warning: ics relay offline for " . sec2time(time() - $relay_status_change_time));
+    }
   } elsif ($command eq "config") {
     tell_operator("config: max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter prioritize=$prioritizeFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
   } elsif ($command eq "date") {
@@ -1070,8 +1081,12 @@ sub process_master_command {
       }
     } elsif ($parameters ne "") {
       tell_operator("error: invalid $command parameter");
+    } else {
+      tell_operator("relay=$relayMode");
     }
-    tell_operator("relay=$relayMode");
+    if (($relayMode == 1) && ($relayOnline == 0)) {
+      tell_operator("warning: ics relay offline for " . sec2time(time() - $relay_status_change_time));
+    }
   } elsif ($command eq "reset") {
     if ($parameters eq "1") {
       reset_games();
@@ -1193,10 +1208,26 @@ sub write_startupCommands {
 }
 
 
+sub declareRelayOffline() {
+  if ($relayOnline == 1) {
+    $relayOnline = 0;
+    $relay_status_change_time = time();
+    tell_operator_and_log_terminal("warning: ics relay offline");
+  }
+}
+
+sub declareRelayOnline() {
+  if ($relayOnline == 0) {
+    $relayOnline = 1;
+    $relay_status_change_time = time();
+    tell_operator_and_log_terminal("warning: ics relay back online");
+  }
+}
+
 sub xtell_relay_listgames {
   $moreGamesThanMax = 0;
   $prioritizedGames = 0;
-  cmd_run("xtell relay listgames");
+  cmd_run("xtell relay! listgames");
 }
 
 sub check_relay_results {
