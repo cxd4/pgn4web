@@ -458,7 +458,7 @@ sub process_line {
     }
   } elsif ($line =~ /^:Type "tell relay next" for more\.$/) {
     cmd_run("xtell relay! next");
-  } elsif ($line =~ /^((\d\d.\d\d_)?fics% )relay is not logged in\.$/) {
+  } elsif ($line =~ /^((\d\d.\d\d_)?fics%)?\s*relay is not logged in\.$/) {
     declareRelayOffline();
   } elsif ($line =~ /^PAOLO regexp detecting relay reply with no games being relayed OLOAP$/) {
     declareRelayOnline();
@@ -470,7 +470,7 @@ sub process_line {
     if ($line =~ /^Movelist for game (\d+):/) {
       reset_newGame();
       $newGame_num = $1;
-    } elsif ($line !~ /^\s*((\d\d.\d\d_)?fics%|:)\s*$/) {
+    } elsif ($line !~ /^\s*((\d\d.\d\d_)?fics%|:)?\s*$/) {
       log_terminal("fyi: ignored line: $line");
     }
   } else {
