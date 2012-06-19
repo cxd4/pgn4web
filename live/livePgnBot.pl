@@ -75,7 +75,6 @@ our $moreGamesThanMax;
 our $prioritizedGames;
 
 our $relayOnline = 1;
-our $relay_status_change_time = $starupTime;
 
 our @games_num = ();
 our @games_white = ();
@@ -850,7 +849,7 @@ sub process_master_command {
     }
     tell_operator("autorelay=$autorelayMode");
     if (($autorelayMode == 1) && ($relayOnline == 0)) {
-      tell_operator("warning: ics relay offline for " . sec2time(time() - $relay_status_change_time));
+      tell_operator("warning: ics relay offline");
     }
   } elsif ($command eq "config") {
     tell_operator("config: max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter prioritize=$prioritizeFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
@@ -1085,7 +1084,7 @@ sub process_master_command {
       tell_operator("relay=$relayMode");
     }
     if (($relayMode == 1) && ($relayOnline == 0)) {
-      tell_operator("warning: ics relay offline for " . sec2time(time() - $relay_status_change_time));
+      tell_operator("warning: ics relay offline");
     }
   } elsif ($command eq "reset") {
     if ($parameters eq "1") {
@@ -1211,7 +1210,6 @@ sub write_startupCommands {
 sub declareRelayOffline() {
   if ($relayOnline == 1) {
     $relayOnline = 0;
-    $relay_status_change_time = time();
     tell_operator_and_log_terminal("warning: ics relay offline");
   }
 }
@@ -1219,7 +1217,6 @@ sub declareRelayOffline() {
 sub declareRelayOnline() {
   if ($relayOnline == 0) {
     $relayOnline = 1;
-    $relay_status_change_time = time();
     tell_operator_and_log_terminal("warning: ics relay back online");
   }
 }
