@@ -458,10 +458,10 @@ sub process_line {
     }
   } elsif ($line =~ /^:Type "tell relay next" for more\.$/) {
     cmd_run("xtell relay! next");
-  } elsif ($line =~ /^((\d\d.\d\d_)?fics%)?\s*relay is not logged in\.$/) {
-    declareRelayOffline();
   } elsif ($line =~ /^PAOLO regexp detecting relay reply with no games being relayed OLOAP$/) {
     declareRelayOnline();
+  } elsif ($line =~ /^((\d\d.\d\d_)?fics%)?\s*relay is not logged in\.$/) {
+    declareRelayOffline();
   } elsif ($line =~ /^[\s*]*ANNOUNCEMENT[\s*]*from relay: FICS is relaying/) {
     if (($autorelayMode == 1) && ($#games_num < 0)) {
       xtell_relay_listgames();
