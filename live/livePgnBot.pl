@@ -458,7 +458,7 @@ sub process_line {
     }
   } elsif ($line =~ /^:Type "tell relay next" for more\.$/) {
     cmd_run("xtell relay! next");
-  } elsif ($line =~ /^PAOLO regexp detecting relay reply with no games being relayed OLOAP$/) {
+  } elsif ($line =~ /^:There are no games in progress\.$/) {
     declareRelayOnline();
   } elsif ($line =~ /^((\d\d.\d\d_)?fics%)?\s*relay is not logged in\.$/) {
     declareRelayOffline();
