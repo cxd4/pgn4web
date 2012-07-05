@@ -193,8 +193,6 @@ function openDataPgnUriIndex(tabId, dataPgnUriIndex) {
 }
 
 function downloadPgn(tabId, uri, downloadName) {
-  if (!(theObj = document.getElementById(downloadName ? "pgnDataDownload" : "pgnLinkDownload"))) { return false; }
-
   if (!uri) { return false; }
 
   if (pgnDataUriMatch = uri.match(pgnDataUriRegExp)) {
@@ -205,14 +203,21 @@ function downloadPgn(tabId, uri, downloadName) {
     }
   }
 
-  // consider replacing the download code below with the downloads API,
-  // curretntly experimental; make sure it works with data URIs.
+  // using the downloads API, make sure it works with data URIs
   // http://crbug.com/12133
-  theObj.href = uri;
-  if (downloadName) { theObj.download = downloadName; }
-  var evt = document.createEvent("MouseEvents");
-  evt.initMouseEvent("click", true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
-  theObj.dispatchEvent(evt);
+  try {
+    console.log("using the download API");
+    theObj = {url: uri};
+    if (downloadName) { theObj.filename = downloadName; }
+    chrome.downloads.download(theObj);
+  } catch (e) {
+    if (!(theObj = document.getElementById(downloadName ? "pgnDataDownload" : "pgnLinkDownload"))) { return false; }
+    theObj.href = uri;
+    if (downloadName) { theObj.download = downloadName; }
+    var evt = document.createEvent("MouseEvents");
+    evt.initMouseEvent("click", true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+    theObj.dispatchEvent(evt);
+  }
 
   return true;
 }
@@ -427,10 +432,12 @@ try {
 </head>
 
 <body>
-
+<!--
+  remove body when using the downloads API
+  http://crbug.com/12133
+-->
 <a id="pgnLinkDownload" href="" download style="display:none;"></a>
 <a id="pgnDataDownload" href="" download="games-00000000.pgn" style="display:none;"></a>
-
 </body>
 
 </html>

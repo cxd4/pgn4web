@@ -65,9 +65,8 @@ stored (the engine analysis data is about 1MB for 4000 entries); settings
 synch might not be supported for self-hosted extensions.
 http://crbug.com/47327
 
-background.html: replace file download code with the downloads API
-replace the file download code for popup.html witht he download API,
-currently experimental; make sure it works with data URIs.
+background.html: replace file download code with the downloads API;
+make sure it works with data URIs; set minimum_chrome_version to 22 or later
 http://crbug.com/12133
 
 
