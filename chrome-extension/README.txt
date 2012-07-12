@@ -120,6 +120,13 @@ Also consider adding filename to the context menu string once the feature is
 available.
 http://crbug.com/60758
 
+chess-games-viewer.html, engine-glue.js, pgnLinks.js, popup.html: avoid using
+deprecated chrome.extension.sendRequest and chrome.tabs.sendRequest; those are
+deprecated as of chrome 20; consider preserving backward compatibility with
+"try" statements until minimum_chrome_version is set to 20 or later.
+see http://code.google.com/chrome/extensions/extension.html and
+http://code.google.com/chrome/extensions/tabs.html
+
 popup.html, manifest.json: avoid using deprecated chrome.tabs.getSelected
 chrome.tabs.getSelected is deprecated as of chrome 16; initially the extension
 preserves backward compatibility, eventually consider removing "try" statements

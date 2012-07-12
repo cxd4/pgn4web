@@ -206,7 +206,6 @@ function downloadPgn(tabId, uri, downloadName) {
   // using the downloads API, make sure it works with data URIs
   // http://crbug.com/12133
   try {
-    console.log("using the download API");
     theObj = {url: uri};
     if (downloadName) { theObj.filename = downloadName; }
     chrome.downloads.download(theObj);
