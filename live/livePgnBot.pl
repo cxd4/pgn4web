@@ -591,77 +591,70 @@ our $saveMode_notPrioritized = 2;
 
 sub save_pgnGame {
   my ($i, $saveMode) = @_;
-  my ($thisPgn, $thisPrioritized, $thisResult, $thisWhite, $thisBlack, $thisWhiteTitle, $thisBlackTitle);
+  my ($thisPgn, $thisResult, $thisWhite, $thisBlack, $thisWhiteTitle, $thisBlackTitle);
 
   $thisPgn = "";
   if ((defined $games_num[$i]) && (defined $GAMES_event[$games_num[$i]]) && (defined $GAMES_site[$games_num[$i]]) && (defined $GAMES_date[$games_num[$i]]) && (defined $GAMES_round[$games_num[$i]]) && (defined $GAMES_eco[$games_num[$i]]) && (defined $GAMES_timeLeft[$games_num[$i]])) {
 
-    if (($autorelayMode == 1) && ($prioritizeFilter ne "") && (headerForFilter($GAMES_event[$games_num[$i]], $GAMES_round[$games_num[$i]], $games_white[$i], $games_black[$i]) =~ /$prioritizeFilter/i)) {
-      $thisPrioritized = 1;
+    if (($followMode == 1) && ($i == 0)) {
+      $thisResult = "*";
     } else {
-      $thisPrioritized = 0;
+      $thisResult = $games_result[$i];
     }
+    if ($thisResult eq "*") {
+      $gameRunning = 1;
+    }
+    if (($relayMode == 1) && ($games_white[$i] =~ /^(W?[GIFC]M)([A-Z].*)$/)) {
+      $thisWhiteTitle = $1;
+      $thisWhite = $2;
+    } else {
+      $thisWhiteTitle = "";
+      $thisWhite = $games_white[$i];
+    }
+    if (($relayMode == 1) && ($games_black[$i] =~ /^(W?[GIFC]M)([A-Z].*)$/)) {
+      $thisBlackTitle = $1;
+      $thisBlack = $2;
+    } else {
+      $thisBlackTitle = "";
+      $thisBlack = $games_black[$i];
+    }
+    if ($relayMode == 1) {
+      $thisWhite =~ s/(?<=.)([A-Z])/ $1/g;
+      $thisBlack =~ s/(?<=.)([A-Z])/ $1/g;
+    }
+    if (($followMode == 1) && ($thisResult eq "*")) {
+      $thisWhite .= " ";
+      $thisBlack .= " ";
+    }
+    $thisPgn .= "[Event \"" . $GAMES_event[$games_num[$i]] . "\"]\n";
+    $thisPgn .= "[Site \"" . $GAMES_site[$games_num[$i]] . "\"]\n";
+    $thisPgn .= "[Date \"" . $GAMES_date[$games_num[$i]] . "\"]\n";
+    $thisPgn .= "[Round \"" . $GAMES_round[$games_num[$i]] . "\"]\n";
+    $thisPgn .= "[White \"" . $thisWhite . "\"]\n";
+    $thisPgn .= "[Black \"" . $thisBlack . "\"]\n";
+    $thisPgn .= "[Result \"" . $thisResult . "\"]\n";
+    if ($games_whiteElo[$i] =~ /^\d+$/) {
+      $thisPgn .= "[WhiteElo \"" . $games_whiteElo[$i] . "\"]\n";
+    }
+    if ($games_blackElo[$i] =~ /^\d+$/) {
+      $thisPgn .= "[BlackElo \"" . $games_blackElo[$i] . "\"]\n";
+    }
+    if ($thisWhiteTitle ne "") {
+      $thisPgn .= "[WhiteTitle \"" . $thisWhiteTitle . "\"]\n";
+    }
+    if ($thisBlackTitle ne "") {
+      $thisPgn .= "[BlackTitle \"" . $thisBlackTitle . "\"]\n";
+    }
+    if ((defined $GAMES_eco[$games_num[$i]]) && ($GAMES_eco[$games_num[$i]] ne "")) {
+      $thisPgn .= "[ECO \"" . $GAMES_eco[$games_num[$i]] . "\"]\n";
+    }
+    $thisPgn .= $games_movesText[$i];
+    $thisPgn .= "\n$GAMES_timeLeft[$games_num[$i]]";
+    if ($games_result[$i] =~ /^[012\/\*-]+$/) {
+      $thisPgn .= " $games_result[$i]";
+    }
+    $thisPgn .= "\n\n";
 
-    if (($saveMode == $saveMode_all) || (($saveMode == $saveMode_onlyPrioritized) && ($thisPrioritized == 1)) || (($saveMode == $saveMode_notPrioritized) && ($thisPrioritized == 0))) {
-      if (($followMode == 1) && ($i == 0)) {
-        $thisResult = "*";
-      } else {
-        $thisResult = $games_result[$i];
-      }
-      if ($thisResult eq "*") {
-        $gameRunning = 1;
-      }
-      if (($relayMode == 1) && ($games_white[$i] =~ /^(W?[GIFC]M)([A-Z].*)$/)) {
-        $thisWhiteTitle = $1;
-        $thisWhite = $2;
-      } else {
-        $thisWhiteTitle = "";
-        $thisWhite = $games_white[$i];
-      }
-      if (($relayMode == 1) && ($games_black[$i] =~ /^(W?[GIFC]M)([A-Z].*)$/)) {
-        $thisBlackTitle = $1;
-        $thisBlack = $2;
-      } else {
-        $thisBlackTitle = "";
-        $thisBlack = $games_black[$i];
-      }
-      if ($relayMode == 1) {
-        $thisWhite =~ s/(?<=.)([A-Z])/ $1/g;
-        $thisBlack =~ s/(?<=.)([A-Z])/ $1/g;
-      }
-      if (($followMode == 1) && ($thisResult eq "*")) {
-        $thisWhite .= " ";
-        $thisBlack .= " ";
-      }
-      $thisPgn .= "[Event \"" . $GAMES_event[$games_num[$i]] . "\"]\n";
-      $thisPgn .= "[Site \"" . $GAMES_site[$games_num[$i]] . "\"]\n";
-      $thisPgn .= "[Date \"" . $GAMES_date[$games_num[$i]] . "\"]\n";
-      $thisPgn .= "[Round \"" . $GAMES_round[$games_num[$i]] . "\"]\n";
-      $thisPgn .= "[White \"" . $thisWhite . "\"]\n";
-      $thisPgn .= "[Black \"" . $thisBlack . "\"]\n";
-      $thisPgn .= "[Result \"" . $thisResult . "\"]\n";
-      if ($games_whiteElo[$i] =~ /^\d+$/) {
-        $thisPgn .= "[WhiteElo \"" . $games_whiteElo[$i] . "\"]\n";
-      }
-      if ($games_blackElo[$i] =~ /^\d+$/) {
-        $thisPgn .= "[BlackElo \"" . $games_blackElo[$i] . "\"]\n";
-      }
-      if ($thisWhiteTitle ne "") {
-        $thisPgn .= "[WhiteTitle \"" . $thisWhiteTitle . "\"]\n";
-      }
-      if ($thisBlackTitle ne "") {
-        $thisPgn .= "[BlackTitle \"" . $thisBlackTitle . "\"]\n";
-      }
-      if ((defined $GAMES_eco[$games_num[$i]]) && ($GAMES_eco[$games_num[$i]] ne "")) {
-        $thisPgn .= "[ECO \"" . $GAMES_eco[$games_num[$i]] . "\"]\n";
-      }
-      $thisPgn .= $games_movesText[$i];
-      $thisPgn .= "\n$GAMES_timeLeft[$games_num[$i]]";
-      if ($games_result[$i] =~ /^[012\/\*-]+$/) {
-        $thisPgn .= " $games_result[$i]";
-      }
-      $thisPgn .= "\n\n";
-    }
   }
 
   return $thisPgn;
@@ -671,11 +664,20 @@ sub refresh_pgn {
   my $pgn = "";
   $gameRunning = 0;
 
+  my @ordered = sort {
+    if (($autorelayMode == 1) && ($prioritizeFilter ne "")) {
+      my $aPrioritized = (headerForFilter($GAMES_event[$games_num[$a]], $GAMES_round[$games_num[$a]], $games_white[$a], $games_black[$a]) =~ /$prioritizeFilter/i);
+      my $bPrioritized = (headerForFilter($GAMES_event[$games_num[$b]], $GAMES_round[$games_num[$b]], $games_white[$b], $games_black[$b]) =~ /$prioritizeFilter/i);
+      if ($aPrioritized && !$bPrioritized) { return -1; }
+      if (!$aPrioritized && $bPrioritized) { return 1; }
+    }
+    if (lc($GAMES_event[$games_num[$a]]) gt lc($GAMES_event[$games_num[$b]])) { return 1; }
+    if (lc($GAMES_event[$games_num[$a]]) lt lc($GAMES_event[$games_num[$b]])) { return -1; }
+    return $a <=> $b;
+  } (0 .. ($maxGamesNum - 1));
+
   for (my $i=0; $i<$maxGamesNum; $i++) {
-    $pgn .= save_pgnGame($i, $saveMode_onlyPrioritized);
-  }
-  for (my $i=0; $i<$maxGamesNum; $i++) {
-    $pgn .= save_pgnGame($i, $saveMode_notPrioritized);
+    $pgn .= save_pgnGame($ordered[$i]);
   }
 
   if (($pgn eq "") || (($autorelayMode == 1) && ($gameRunning == 0))) {
