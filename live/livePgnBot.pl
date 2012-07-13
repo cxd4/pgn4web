@@ -952,7 +952,7 @@ sub process_master_command {
     if ($autorelayMode == 1) {
       $roundsList = " rounds(" . ($#currentRounds + 1) . ")=";
       if ($#currentRounds > -1) {
-        $roundsList .= "\"" . join("\", \"", @currentRounds) . "\"";
+        $roundsList .= "\"" . join("\", \"", (sort { lc($a) cmp lc($b) } @currentRounds)) . "\"";
       }
     }
     tell_operator("games(" . ($#games_num + 1) . "/$maxGamesNum)=" . gameList() . $roundsList);
