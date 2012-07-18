@@ -1263,7 +1263,7 @@ update_heartbeat_time();
 
 sub heartbeat {
   if (time() + $timeOffset > $next_heartbeat_time) {
-    tell_operator_and_log_terminal(sprintf("info: heartbeat: uptime=%s rounds=%d games=%d/%d/%d pgn=%d cmd=%d lines=%d", sec2time(time() - $starupTime), $roundsStartCount, ($#games_num + 1), $maxGamesNum, $gamesStartCount, $pgnWriteCount, $cmdRunCount, $lineCount));
+    tell_operator_and_log_terminal(sprintf("info: heartbeat: uptime=%s rounds=%d/%d games=%d/%d/%d pgn=%d cmd=%d lines=%d", sec2time(time() - $starupTime), ($#currentRounds + 1), $roundsStartCount, ($#games_num + 1), $maxGamesNum, $gamesStartCount, $pgnWriteCount, $cmdRunCount, $lineCount));
     update_heartbeat_time();
   }
 }
