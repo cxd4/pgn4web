@@ -39,5 +39,5 @@
    },
    "permissions": [ "contextMenus", "downloads", "fileBrowserHandler", "tabs", "webRequest", "*://*/*" ],
    "update_url": "http://pgn4web.googlecode.com/svn/trunk/chrome-extension/updateInfo.xml",
-   "version": "2.2.5"
+   "version": "2.2.6"
 }
