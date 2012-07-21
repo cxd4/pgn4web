@@ -33,6 +33,7 @@ if ($BOT_HANDLE eq "" | $OPERATOR_HANDLE eq "") {
 
 
 our $PGN_FILE = "live.pgn";
+our $PGN_ARCHIVE = "";
 
 our $verbosity = 4; # info
 
@@ -73,6 +74,7 @@ our $maxGamesNumDefault = 30; # frechess.org limit
 our $maxGamesNum = $maxGamesNumDefault;
 our $moreGamesThanMax;
 our $prioritizedGames;
+our $reportedNotFoundNonPrioritizedGame = 0;
 
 our $relayOnline = 1;
 
@@ -119,6 +121,11 @@ our $prioritizeFilter = "";
 our @currentRounds = ();
 
 sub reset_games {
+  if ($PGN_ARCHIVE ne "") {
+    for (my $i=0; $i<=$#games_num; $i++) {
+      archive_pgnGame($i);
+    }
+  }
   cmd_run("follow");
   cmd_run("unobserve");
   $maxGamesNum = $maxGamesNumDefault;
@@ -147,6 +154,7 @@ sub reset_games {
   @GAMES_autorelayRunning = ();
   $ignoreFilter = "";
   $prioritizeFilter = "";
+  $reportedNotFoundNonPrioritizedGame = 0;
 
   @currentRounds = ();
 
@@ -181,7 +189,9 @@ sub save_game {
   my $thisGameIndex = find_gameIndex($newGame_num);
   if ($thisGameIndex < 0) {
     if ($#games_num + 1 >= $maxGamesNum) {
-      remove_game(-1);
+      if (remove_game(-1) < 0) {
+        return;
+      }
     }
     myAdd(\@games_num, $newGame_num);
     myAdd(\@games_white, $newGame_white);
@@ -247,6 +257,22 @@ sub remove_game {
       $thisGameIndex = $maxGamesNum - 1;
     } else {
       $thisGameIndex = 0;
+      my $foundNonPrioritizedGame = 0;
+      for (my $i=0; ($i<$maxGamesNum) && ($foundNonPrioritizedGame==0); $i++) {
+        if ((defined $games_num[$i]) && ($games_num[$i] ne "") && (headerForFilter($GAMES_event[$games_num[$i]], $GAMES_round[$games_num[$i]], $games_white[$i], $games_black[$i]) !~ /$prioritizeFilter/i)) {
+          $thisGameIndex = $i;
+          $foundNonPrioritizedGame = 1;
+        }
+      }
+      if ($foundNonPrioritizedGame == 0) {
+        if ($reportedNotFoundNonPrioritizedGame == 0) {
+          log_terminal("warning: too many prioritized games");
+          $reportedNotFoundNonPrioritizedGame = 1;
+        }
+        return -1;
+      } else {
+        $reportedNotFoundNonPrioritizedGame = 0;
+      }
     }
     if ((defined $games_num[$thisGameIndex]) && ($games_num[$thisGameIndex] ne "")) {
       $thisGameNum = $games_num[$thisGameIndex];
@@ -262,9 +288,14 @@ sub remove_game {
     }
   }
 
+  if ($PGN_ARCHIVE ne "") {
+    archive_pgnGame($thisGameIndex);
+  }
+
   if (($games_result[$thisGameIndex] eq "*") || ($relayMode == 1)) {
     cmd_run("unobserve $thisGameNum");
   }
+
   my $thisMax = $#games_num;
   @games_num = @games_num[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
   @games_white = @games_white[0..($thisGameIndex-1), ($thisGameIndex+1)..$thisMax];
@@ -450,11 +481,16 @@ sub process_line {
               log_terminal("debug: prioritized game $thisHeaderForFilter");
               $prioritizedGames = 1;
             }
-            remove_game(-1);
-            cmd_run("observe $thisGameNum");
+            if (remove_game(-1) != -1) {
+              cmd_run("observe $thisGameNum");
+            }
           }
         }
       }
+    }
+  } elsif ($line =~ /^Game \d+: Game clock paused\.$/) {
+    if ($relayMode == 1) {
+      $last_check_relay_time = 0;
     }
   } elsif ($line =~ /^:Type "tell relay next" for more\.$/) {
     cmd_run("xtell relay! next");
@@ -464,7 +500,7 @@ sub process_line {
     declareRelayOffline();
   } elsif ($line =~ /^[\s*]*ANNOUNCEMENT[\s*]*from relay: FICS is relaying/) {
     if (($autorelayMode == 1) && ($#games_num < 0)) {
-      xtell_relay_listgames();
+      $last_check_relay_time = 0;
     }
   } elsif ($newGame_num < 0) {
     if ($line =~ /^Movelist for game (\d+):/) {
@@ -585,12 +621,8 @@ sub sec2time {
 
 our $gameRunning;
 
-our $saveMode_all = 0;
-our $saveMode_onlyPrioritized = 1;
-our $saveMode_notPrioritized = 2;
-
 sub save_pgnGame {
-  my ($i, $saveMode) = @_;
+  my ($i) = @_;
   my ($thisPgn, $thisResult, $thisWhite, $thisBlack, $thisWhiteTitle, $thisBlackTitle);
 
   $thisPgn = "";
@@ -701,6 +733,16 @@ sub temp_pgn {
   return "[Event \"$newGame_event\"]\n" . "[Site \"$newGame_site\"]\n" . "[Date \"$newGame_date\"]\n" . "[Round \"$newGame_round\"]\n" . "[White \"\"]\n" . "[Black \"\"]\n" . "[Result \"*\"]\n\n*\n\n";
 }
 
+sub archive_pgnGame {
+  my ($i) = @_;
+
+  if ($PGN_ARCHIVE ne "") {
+    open(thisFile, ">>$PGN_ARCHIVE");
+    print thisFile save_pgnGame($i);
+    close(thisFile);
+  }
+}
+
 sub log_rounds {
   my @newRounds = ();
   my ($i, $j, $thisRound);
@@ -760,12 +802,13 @@ sub add_master_command {
   push (@master_commands_helptext, $helptext);
 }
 
+add_master_command ("archive", "archive [filename.pgn] (to get/set the filename for archiving PGN data)");
 add_master_command ("autorelay", "autorelay [0|1] (to automatically observe all relayed games)");
 add_master_command ("config", "config (to get config info)");
 add_master_command ("date", "date [????.??.???|\"\"] (to get/set the PGN header tag date)");
 add_master_command ("empty", "empty [1] (to save empty PGN data as placeholder file)");
 add_master_command ("event", "event [string|\"\"] (to get/set the PGN header tag event)");
-add_master_command ("file", "file [filename.pgn] (to get/set the filename for saving PGN data)");
+add_master_command ("file", "file [filename.pgn] (to get/set the filename for live PGN data)");
 add_master_command ("follow", "follow [0|handle|/s|/b|/l] (to follow the user with given handle, /s for the best standard game, /b for the best blitz game, /l for the best lightning game, 0 to disable follow mode)");
 add_master_command ("forget", "forget [game number list, such as: 12 34 56 ..] (to eliminate given past games from PGN data)");
 add_master_command ("games", "games (to get list of observed games)");
@@ -831,6 +874,29 @@ sub process_master_command {
   if ($command eq "") {
   } elsif ($command =~ /^ambiguous command: /) {
     tell_operator("error: $command");
+  } elsif ($command eq "archive") {
+    if ($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) { # for portability only a subset of filename chars is allowed
+      if ($parameters ne "") {
+        $PGN_ARCHIVE = $parameters;
+        if ($PGN_ARCHIVE eq "\"\"") { $PGN_ARCHIVE = ""; }
+      }
+      my $fileInfoText = "file=$PGN_ARCHIVE";
+      if ($PGN_ARCHIVE ne "") {
+        my @fileInfo = stat($PGN_ARCHIVE);
+        if (defined $fileInfo[9]) {
+          $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S UTC", gmtime($fileInfo[9]));
+        }
+        if (defined $fileInfo[7]) {
+          $fileInfoText .= " size=$fileInfo[7]";
+        }
+        if (defined $fileInfo[2]) {
+          $fileInfoText .= sprintf(" permissions=%04o", $fileInfo[2] & 07777);
+        }
+      }
+      tell_operator($fileInfoText);
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
   } elsif ($command eq "autorelay") {
     if ($parameters =~ /^(0|1)$/) {
       if ($parameters == 0) {
@@ -841,7 +907,6 @@ sub process_master_command {
           $autorelayMode = 1;
           $relayMode = 1;
           $last_check_relay_time = 0;
-          xtell_relay_listgames();
         } else {
           tell_operator("error: disable follow before activating autorelay");
         }
@@ -893,8 +958,8 @@ sub process_master_command {
       if ($parameters ne "") {
         $PGN_FILE = $parameters;
       }
-      my @fileInfo = stat($PGN_FILE);
       my $fileInfoText = "file=$PGN_FILE";
+      my @fileInfo = stat($PGN_FILE);
       if (defined $fileInfo[9]) {
         $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S UTC", gmtime($fileInfo[9]));
       }
@@ -997,6 +1062,8 @@ sub process_master_command {
           $ignoreFilter = $parameters;
           if ($ignoreFilter eq "\"\"") { $ignoreFilter = ""; }
           $last_check_relay_time = 0;
+          $reportedNotFoundNonPrioritizedGame;
+          log_terminal("info: ignore=$ignoreFilter");
           1;
         } or do {
           tell_operator("error: invalid regular expression $parameters");
@@ -1046,6 +1113,8 @@ sub process_master_command {
           $prioritizeFilter = $parameters;
           if ($prioritizeFilter eq "\"\"") { $prioritizeFilter = ""; }
           $last_check_relay_time = 0;
+          $reportedNotFoundNonPrioritizedGame = 0;
+          log_terminal("info: prioritize=$prioritizeFilter");
           1;
         } or do {
           tell_operator("error: invalid regular expression $parameters");
