@@ -737,9 +737,12 @@ sub archive_pgnGame {
   my ($i) = @_;
 
   if ($PGN_ARCHIVE ne "") {
-    open(thisFile, ">>$PGN_ARCHIVE");
-    print thisFile save_pgnGame($i);
-    close(thisFile);
+    my $pgn = save_pgnGame($i);
+    if ($pgn ne "") {
+      open(thisFile, ">>$PGN_ARCHIVE");
+      print thisFile $pgn;
+      close(thisFile);
+    }
   }
 }
 
