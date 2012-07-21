@@ -781,7 +781,7 @@ sub log_rounds {
 
   for ($i=0; $i<=$#currentRounds; $i++) {
     if (! defined $skipCurrent[$i]) {
-      log_terminal("info: event end: " . $currentRounds[$i]);
+      log_terminal("info: event out: " . $currentRounds[$i]);
     }
   }
 
