@@ -158,7 +158,7 @@ sub reset_games {
 
   @currentRounds = ();
 
-  log_terminal("debug: event/game end all");
+  log_terminal("debug: event/game all out");
   refresh_pgn();
 }
 
@@ -311,7 +311,7 @@ sub remove_game {
   delete $GAMES_round[$thisGameNum];
   delete $GAMES_eco[$thisGameNum];
   delete $GAMES_timeLeft[$thisGameNum];
-  log_terminal("debug: game end $thisGameNum");
+  log_terminal("debug: game out $thisGameNum");
   refresh_pgn();
   return $thisGameIndex;
 }
