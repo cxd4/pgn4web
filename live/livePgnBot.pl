@@ -39,6 +39,7 @@ our $verbosity = 4; # info
 
 our $PROTECT_LOGOUT_FREQ = 45 * 60;
 our $CHECK_RELAY_FREQ = 3 * 60;
+our $CHECK_RELAY_MIN_LAG = 20;
 our $OPEN_TIMEOUT = 30;
 our $LINE_WAIT_TIMEOUT = 60;
 # $LINE_WAIT_TIMEOUT must be smaller than half of $PROTECT_LOGOUT_FREQ and $CHECK_RELAY_FREQ
@@ -56,6 +57,7 @@ our $lineCount = 0;
 
 our $last_cmd_time = 0;
 our $last_check_relay_time = 0;
+our $next_check_relay_time = 0;
 our $heartbeat_freq_hour = 8;
 our $heartbeat_offset_hour = 5;
 
@@ -490,7 +492,7 @@ sub process_line {
     }
   } elsif ($line =~ /^Game \d+: Game clock paused\.$/) {
     if ($relayMode == 1) {
-      $last_check_relay_time = 0;
+      reset_next_check_relay_time();
     }
   } elsif ($line =~ /^:Type "tell relay next" for more\.$/) {
     cmd_run("xtell relay! next");
@@ -500,7 +502,7 @@ sub process_line {
     declareRelayOffline();
   } elsif ($line =~ /^[\s*]*ANNOUNCEMENT[\s*]*from relay: FICS is relaying/) {
     if (($autorelayMode == 1) && ($#games_num < 0)) {
-      $last_check_relay_time = 0;
+      reset_next_check_relay_time();
     }
   } elsif ($newGame_num < 0) {
     if ($line =~ /^Movelist for game (\d+):/) {
@@ -909,7 +911,7 @@ sub process_master_command {
         if ($followMode == 0) {
           $autorelayMode = 1;
           $relayMode = 1;
-          $last_check_relay_time = 0;
+          reset_next_check_relay_time();
         } else {
           tell_operator("error: disable follow before activating autorelay");
         }
@@ -1064,7 +1066,7 @@ sub process_master_command {
           "test" =~ /$parameters/;
           $ignoreFilter = $parameters;
           if ($ignoreFilter eq "\"\"") { $ignoreFilter = ""; }
-          $last_check_relay_time = 0;
+          reset_next_check_relay_time();
           $reportedNotFoundNonPrioritizedGame;
           log_terminal("info: ignore=$ignoreFilter");
           1;
@@ -1115,7 +1117,7 @@ sub process_master_command {
           "test" =~ /$parameters/;
           $prioritizeFilter = $parameters;
           if ($prioritizeFilter eq "\"\"") { $prioritizeFilter = ""; }
-          $last_check_relay_time = 0;
+          reset_next_check_relay_time();
           $reportedNotFoundNonPrioritizedGame = 0;
           log_terminal("info: prioritize=$prioritizeFilter");
           1;
@@ -1305,9 +1307,10 @@ sub check_relay_results {
   my $thisGameNum;
   my @gameNumForRemoval = ();
 
-  if (($relayMode == 1) && (time() - $last_check_relay_time > $CHECK_RELAY_FREQ)) {
+  if (($relayMode == 1) && (time() - $next_check_relay_time > 0)) {
     xtell_relay_listgames();
     $last_check_relay_time = time();
+    $next_check_relay_time = $last_check_relay_time + $CHECK_RELAY_FREQ;
     if ($autorelayMode == 1) {
       for $thisGameNum (@games_num) {
         if (! defined $GAMES_autorelayRunning[$thisGameNum]) {
@@ -1322,6 +1325,12 @@ sub check_relay_results {
   }
 }
 
+sub reset_next_check_relay_time {
+  $next_check_relay_time = time();
+  if ($next_check_relay_time - $last_check_relay_time < $CHECK_RELAY_MIN_LAG) {
+    $next_check_relay_time = $last_check_relay_time + $CHECK_RELAY_MIN_LAG;
+  }
+}
 
 sub ensure_alive {
   if (time() - $last_cmd_time > $PROTECT_LOGOUT_FREQ) {
