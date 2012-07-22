@@ -492,7 +492,7 @@ sub process_line {
     }
   } elsif ($line =~ /^Game \d+: Game clock paused\.$/) {
     if ($relayMode == 1) {
-      reset_next_check_relay_time();
+      force_next_check_relay_time();
     }
   } elsif ($line =~ /^:Type "tell relay next" for more\.$/) {
     cmd_run("xtell relay! next");
@@ -502,7 +502,7 @@ sub process_line {
     declareRelayOffline();
   } elsif ($line =~ /^[\s*]*ANNOUNCEMENT[\s*]*from relay: FICS is relaying/) {
     if (($autorelayMode == 1) && ($#games_num < 0)) {
-      reset_next_check_relay_time();
+      force_next_check_relay_time();
     }
   } elsif ($newGame_num < 0) {
     if ($line =~ /^Movelist for game (\d+):/) {
@@ -911,7 +911,7 @@ sub process_master_command {
         if ($followMode == 0) {
           $autorelayMode = 1;
           $relayMode = 1;
-          reset_next_check_relay_time();
+          force_next_check_relay_time();
         } else {
           tell_operator("error: disable follow before activating autorelay");
         }
@@ -1066,8 +1066,10 @@ sub process_master_command {
           "test" =~ /$parameters/;
           $ignoreFilter = $parameters;
           if ($ignoreFilter eq "\"\"") { $ignoreFilter = ""; }
-          reset_next_check_relay_time();
-          $reportedNotFoundNonPrioritizedGame;
+          if ($relayMode == 1) {
+            force_next_check_relay_time();
+          }
+          $reportedNotFoundNonPrioritizedGame = 0;
           log_terminal("info: ignore=$ignoreFilter");
           1;
         } or do {
@@ -1117,7 +1119,9 @@ sub process_master_command {
           "test" =~ /$parameters/;
           $prioritizeFilter = $parameters;
           if ($prioritizeFilter eq "\"\"") { $prioritizeFilter = ""; }
-          reset_next_check_relay_time();
+          if ($relayMode == 1) {
+            force_next_check_relay_time();
+          }
           $reportedNotFoundNonPrioritizedGame = 0;
           log_terminal("info: prioritize=$prioritizeFilter");
           1;
@@ -1325,7 +1329,7 @@ sub check_relay_results {
   }
 }
 
-sub reset_next_check_relay_time {
+sub force_next_check_relay_time {
   $next_check_relay_time = time();
   if ($next_check_relay_time - $last_check_relay_time < $CHECK_RELAY_MIN_LAG) {
     $next_check_relay_time = $last_check_relay_time + $CHECK_RELAY_MIN_LAG;
