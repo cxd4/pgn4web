@@ -466,9 +466,8 @@ sub process_line {
         $GAMES_round[$thisGameNum] = $autorelayRound;
         $GAMES_eco[$thisGameNum] = $thisGameEco;
         $GAMES_autorelayRunning[$thisGameNum] = 1;
-        if (($autoPrioritize ne "") && ($thisHeaderForFilter =~ /$autoPrioritize/)) {
-          my $autorelayEventFilter = $autorelayEvent;
-          $autorelayEventFilter =~ s/[^\w\s-]/"."/g;
+        if (($autoPrioritize ne "") && ($thisHeaderForFilter =~ /$autoPrioritize/i)) {
+          (my $autorelayEventFilter = $autorelayEvent) =~ s/[^\w\s-]/./g;
           if ($autoPrioritizeFilter !~ /(\||^)$autorelayEventFilter(\||$)/) {
             if ($autoPrioritizeFilter eq "") {
               $autoPrioritizeFilter = $autorelayEventFilter;
