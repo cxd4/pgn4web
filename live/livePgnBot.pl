@@ -930,7 +930,11 @@ sub process_master_command {
             force_next_check_relay_time();
           }
           $reportedNotFoundNonPrioritizedGame = 0;
-          log_terminal("info: autoprioritize=$autoPrioritize prioritize=$prioritizeFilter");
+          if ($autoPrioritize ne "") {
+            log_terminal("info: autoprioritize=$autoPrioritize");
+          } else {
+            log_terminal("info: autoprioritize=$autoPrioritize prioritize=$prioritizeFilter");
+          }
           1;
         } or do {
           tell_operator("error: invalid regular expression $parameters");
