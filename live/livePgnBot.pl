@@ -58,6 +58,7 @@ our $lineCount = 0;
 our $last_cmd_time = 0;
 our $last_check_relay_time = 0;
 our $next_check_relay_time = 0;
+our $short_relay_period = 0;
 our $heartbeat_freq_hour = 8;
 our $heartbeat_offset_hour = 5;
 
@@ -119,6 +120,8 @@ our $autorelayEvent;
 our $autorelayRound;
 our $ignoreFilter = "";
 our $prioritizeFilter = "";
+our $autoPrioritize = "";
+our $autoPrioritizeFilter = "";
 
 our @currentRounds = ();
 
@@ -463,6 +466,17 @@ sub process_line {
         $GAMES_round[$thisGameNum] = $autorelayRound;
         $GAMES_eco[$thisGameNum] = $thisGameEco;
         $GAMES_autorelayRunning[$thisGameNum] = 1;
+        if (($autoPrioritize ne "") && ($thisHeaderForFilter =~ /$autoPrioritize/)) {
+          my $autorelayEventFilter = $autorelayEvent;
+          $autorelayEventFilter =~ s/[^\w\s-]/"."/g;
+          if ($autoPrioritizeFilter !~ /(\||^)$autorelayEventFilter(\||$)/) {
+            if ($autoPrioritizeFilter eq "") {
+              $autoPrioritizeFilter = $autorelayEventFilter;
+            } else {
+              $autoPrioritizeFilter .= "|" . $autorelayEventFilter;
+            }
+          }
+        }
       }
       if (find_gameIndex($thisGameNum) != -1) {
         if ($thisGameResult ne "*") {
@@ -808,6 +822,7 @@ sub add_master_command {
 }
 
 add_master_command ("archive", "archive [filename.pgn] (to get/set the filename for archiving PGN data)");
+add_master_command ("autoprioritize", "autoprioritize [regexp|\"\"] (to get/set the regular expression to prioritize entire events during autorelay; has precedence over prioritize)");
 add_master_command ("autorelay", "autorelay [0|1] (to automatically observe all relayed games)");
 add_master_command ("config", "config (to get config info)");
 add_master_command ("date", "date [????.??.???|\"\"] (to get/set the PGN header tag date)");
@@ -882,8 +897,8 @@ sub process_master_command {
   } elsif ($command eq "archive") {
     if ($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) { # for portability only a subset of filename chars is allowed
       if ($parameters ne "") {
+        if ($parameters eq "\"\"") { $parameters = ""; }
         $PGN_ARCHIVE = $parameters;
-        if ($PGN_ARCHIVE eq "\"\"") { $PGN_ARCHIVE = ""; }
       }
       my $fileInfoText = "file=$PGN_ARCHIVE";
       if ($PGN_ARCHIVE ne "") {
@@ -899,6 +914,30 @@ sub process_master_command {
         }
       }
       tell_operator($fileInfoText);
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "autoprioritize") {
+    if ($parameters =~ /^([^\[\]"]+|"")?$/) {
+      if ($parameters ne "") {
+        eval {
+          "test" =~ /$parameters/;
+          if ($parameters eq "\"\"") { $parameters = ""; }
+          if ($parameters ne $autoPrioritize) {
+            $short_relay_period = 1;
+          }
+          $autoPrioritize = $parameters;
+          if ($relayMode == 1) {
+            force_next_check_relay_time();
+          }
+          $reportedNotFoundNonPrioritizedGame = 0;
+          log_terminal("info: autoprioritize=$autoPrioritize prioritize=$prioritizeFilter");
+          1;
+        } or do {
+          tell_operator("error: invalid regular expression $parameters");
+        };
+      }
+      tell_operator("autoprioritize=$autoPrioritize prioritize=$prioritizeFilter");
     } else {
       tell_operator("error: invalid $command parameter");
     }
@@ -924,12 +963,12 @@ sub process_master_command {
       tell_operator("warning: ics relay offline");
     }
   } elsif ($command eq "config") {
-    tell_operator("config: max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter prioritize=$prioritizeFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
+    tell_operator("config: max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter autoprioritize=$autoPrioritize prioritize=$prioritizeFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
   } elsif ($command eq "date") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
+        if ($parameters eq "\"\"") { $parameters = ""; }
         $newGame_date = $parameters;
-        if ($newGame_date eq "\"\"") { $newGame_date = ""; }
       }
       tell_operator("date=$newGame_date");
     } else {
@@ -951,8 +990,8 @@ sub process_master_command {
   } elsif ($command eq "event") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
+        if ($parameters eq "\"\"") { $parameters = ""; }
         $newGame_event = $parameters;
-        if ($newGame_event eq "\"\"") { $newGame_event = ""; }
       }
       tell_operator("event=$newGame_event");
     } else {
@@ -1064,8 +1103,8 @@ sub process_master_command {
       if ($parameters ne "") {
         eval {
           "test" =~ /$parameters/;
+          if ($parameters eq "\"\"") { $parameters = ""; }
           $ignoreFilter = $parameters;
-          if ($ignoreFilter eq "\"\"") { $ignoreFilter = ""; }
           if ($relayMode == 1) {
             force_next_check_relay_time();
           }
@@ -1117,8 +1156,8 @@ sub process_master_command {
       if ($parameters ne "") {
         eval {
           "test" =~ /$parameters/;
+          if ($parameters eq "\"\"") { $parameters = ""; }
           $prioritizeFilter = $parameters;
-          if ($prioritizeFilter eq "\"\"") { $prioritizeFilter = ""; }
           if ($relayMode == 1) {
             force_next_check_relay_time();
           }
@@ -1178,8 +1217,8 @@ sub process_master_command {
   } elsif ($command eq "round") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
+        if ($parameters eq "\"\"") { $parameters = ""; }
         $newGame_round = $parameters;
-        if ($newGame_round eq "\"\"") { $newGame_round = ""; }
       }
       tell_operator("round=$newGame_round");
     } else {
@@ -1198,8 +1237,8 @@ sub process_master_command {
   } elsif ($command eq "site") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
+        if ($parameters eq "\"\"") { $parameters = ""; }
         $newGame_site = $parameters;
-        if ($newGame_site eq "\"\"") { $newGame_site = ""; }
       }
       tell_operator("site=$newGame_site");
     } else {
@@ -1304,6 +1343,13 @@ sub declareRelayOnline() {
 sub xtell_relay_listgames {
   $moreGamesThanMax = 0;
   $prioritizedGames = 0;
+  if ($autoPrioritize ne "") {
+    if ($prioritizeFilter ne $autoPrioritizeFilter) {
+      $prioritizeFilter = $autoPrioritizeFilter;
+      log_terminal("info: prioritize=$prioritizeFilter");
+    }
+  }
+  $autoPrioritizeFilter = "";
   cmd_run("xtell relay! listgames");
 }
 
@@ -1314,7 +1360,12 @@ sub check_relay_results {
   if (($relayMode == 1) && (time() - $next_check_relay_time > 0)) {
     xtell_relay_listgames();
     $last_check_relay_time = time();
-    $next_check_relay_time = $last_check_relay_time + $CHECK_RELAY_FREQ;
+    if ($short_relay_period == 1) {
+      $next_check_relay_time = $last_check_relay_time + $CHECK_RELAY_MIN_LAG;
+      $short_relay_period = 0;
+    } else {
+      $next_check_relay_time = $last_check_relay_time + $CHECK_RELAY_FREQ;
+    }
     if ($autorelayMode == 1) {
       for $thisGameNum (@games_num) {
         if (! defined $GAMES_autorelayRunning[$thisGameNum]) {
