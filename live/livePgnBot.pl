@@ -159,6 +159,8 @@ sub reset_games {
   @GAMES_autorelayRunning = ();
   $ignoreFilter = "";
   $prioritizeFilter = "";
+  $autoPrioritize = "";
+  $autoPrioritizeFilter = "";
   $reportedNotFoundNonPrioritizedGame = 0;
 
   @currentRounds = ();
