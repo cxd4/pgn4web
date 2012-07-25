@@ -464,7 +464,7 @@ sub process_line {
         }
         log_terminal("debug: removed $skipReason game $thisGameNum $thisHeaderForFilter");
       } else {
-        log_terminal("debug: $skipReason game $thisGameNum $thisHeaderForFilter");
+        log_terminal("debug: skipped $skipReason game $thisGameNum $thisHeaderForFilter");
       }
     } else {
       if ($autorelayMode == 1) {
