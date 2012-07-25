@@ -776,11 +776,11 @@ sub log_rounds {
         $thisRound .= " - Round " . $GAMES_round[$games_num[$i]];
       }
       for ($j=0; $j<=$#newRounds; $j++) {
-        if ($newRounds[$j] eq $thisRound) {
+        if ((defined $newRounds[$j]) && ($newRounds[$j] eq $thisRound)) {
           $j = $#newRounds + 2;
         }
       }
-      if ($j == $#newRounds + 1) {
+      if ($j == ($#newRounds + 1)) {
         push(@newRounds, $thisRound);
       }
     }
@@ -788,7 +788,7 @@ sub log_rounds {
 
   for ($i=0; $i<=$#currentRounds; $i++) {
     for ($j=0; $j<=$#newRounds; $j++) {
-      if ($currentRounds[$i] eq $newRounds[$j]) {
+      if ((defined $currentRounds[$i]) && (defined  $newRounds[$j]) && ($currentRounds[$i] eq $newRounds[$j])) {
         $skipCurrent[$i] = 0;
         $skipNew[$j] = 0;
         last;
@@ -797,13 +797,13 @@ sub log_rounds {
   }
 
   for ($i=0; $i<=$#currentRounds; $i++) {
-    if (! defined $skipCurrent[$i]) {
+    if ((defined $currentRounds[$i]) && (! defined $skipCurrent[$i])) {
       log_terminal("info: event out: " . $currentRounds[$i]);
     }
   }
 
   for ($j=0; $j<=$#newRounds; $j++) {
-    if (! defined $skipNew[$j]) {
+    if ((defined $newRounds[$j]) && (! defined $skipNew[$j])) {
       log_terminal("info: event new: " . $newRounds[$j]);
       $roundsStartCount++;
     }
