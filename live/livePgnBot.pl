@@ -450,15 +450,21 @@ sub process_line {
     my $thisGameResult = $4;
     my $thisGameEco = $5;
     my $thisHeaderForFilter = headerForFilter($autorelayEvent, $autorelayRound, $thisGameWhite, $thisGameBlack);
-    if (($autorelayMode == 1) && ($ignoreFilter ne "") && ($thisHeaderForFilter =~ /$ignoreFilter/i)) {
+    if (($autorelayMode == 1) && ((($ignoreFilter ne "") && ($thisHeaderForFilter =~ /$ignoreFilter/i)) || ($thisGameResult eq "abort"))) {
+      my $skipReason;
+      if ($thisGameResult eq "abort") {
+        $skipReason = "aborted";
+      } else {
+        $skipReason = "ignored";
+      }
       if (find_gameIndex($thisGameNum) != -1) {
         if (remove_game($thisGameNum) != -1) {
           $moreGamesThanMax = 0;
           $prioritizedGames = 0;
         }
-        log_terminal("debug: removed ignored game $thisGameNum $thisHeaderForFilter");
+        log_terminal("debug: removed $skipReason game $thisGameNum $thisHeaderForFilter");
       } else {
-        log_terminal("debug: ignored game $thisGameNum $thisHeaderForFilter");
+        log_terminal("debug: $skipReason game $thisGameNum $thisHeaderForFilter");
       }
     } else {
       if ($autorelayMode == 1) {
