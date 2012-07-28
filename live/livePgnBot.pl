@@ -418,7 +418,7 @@ sub process_line {
             $games_movesText[$thisGI] .= " $thisPM";
             $games_plyNum[$thisGI] = $thisPlyNum;
           } else {
-            log_terminal("debug: unexpected $thisPM move for gane $thisGN");
+            log_terminal("debug: unexpected $thisPM move for game $thisGN");
           }
         } else {
           log_terminal("debug: update for game $thisGN");
