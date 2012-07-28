@@ -772,8 +772,6 @@ sub archive_pgnGame {
 sub log_rounds {
   my @newRounds = ();
   my ($i, $j, $thisRound);
-  my @skipCurrent = ();
-  my @skipNew = ();
 
   for ($i=0; $i<$maxGamesNum; $i++) {
     if ((defined $games_num[$i]) && (defined $GAMES_event[$games_num[$i]])) {
@@ -792,25 +790,15 @@ sub log_rounds {
     }
   }
 
-  for ($i=0; $i<=$#currentRounds; $i++) {
-    for ($j=0; $j<=$#newRounds; $j++) {
-      if ((defined $currentRounds[$i]) && (defined  $newRounds[$j]) && ($currentRounds[$i] eq $newRounds[$j])) {
-        $skipCurrent[$i] = 0;
-        $skipNew[$j] = 0;
-        last;
-      }
+  foreach (@currentRounds) {
+    if (!($_ ~~ @newRounds)) {
+      log_terminal("info: event out: $_");
     }
   }
 
-  for ($i=0; $i<=$#currentRounds; $i++) {
-    if ((defined $currentRounds[$i]) && (! defined $skipCurrent[$i])) {
-      log_terminal("info: event out: " . $currentRounds[$i]);
-    }
-  }
-
-  for ($j=0; $j<=$#newRounds; $j++) {
-    if ((defined $newRounds[$j]) && (! defined $skipNew[$j])) {
-      log_terminal("info: event new: " . $newRounds[$j]);
+  foreach (@newRounds) {
+    if (!($_ ~~ @currentRounds)) {
+      log_terminal("info: event new: $_");
       $roundsStartCount++;
     }
   }
