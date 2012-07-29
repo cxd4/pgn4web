@@ -771,7 +771,7 @@ sub archive_pgnGame {
 
 sub log_rounds {
   my @newRounds = ();
-  my ($i, $j, $thisRound);
+  my ($i, $thisRound);
 
   for ($i=0; $i<$maxGamesNum; $i++) {
     if ((defined $games_num[$i]) && (defined $GAMES_event[$games_num[$i]])) {
@@ -779,25 +779,20 @@ sub log_rounds {
       if ((defined $GAMES_round[$games_num[$i]]) && ($GAMES_round[$games_num[$i]] ne "")) {
         $thisRound .= " - Round " . $GAMES_round[$games_num[$i]];
       }
-      for ($j=0; $j<=$#newRounds; $j++) {
-        if ((defined $newRounds[$j]) && ($newRounds[$j] eq $thisRound)) {
-          $j = $#newRounds + 2;
-        }
-      }
-      if ($j == ($#newRounds + 1)) {
+      unless ($thisRound ~~ @newRounds) {
         push(@newRounds, $thisRound);
       }
     }
   }
 
   foreach (@currentRounds) {
-    if (!($_ ~~ @newRounds)) {
+    unless ($_ ~~ @newRounds) {
       log_terminal("info: event out: $_");
     }
   }
 
   foreach (@newRounds) {
-    if (!($_ ~~ @currentRounds)) {
+    unless ($_ ~~ @currentRounds) {
       log_terminal("info: event new: $_");
       $roundsStartCount++;
     }
