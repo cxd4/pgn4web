@@ -26,7 +26,7 @@ our $OPERATOR_HANDLE = $ARGV[2] || "";
 our $STARTUP_FILE_DEFAULT = "livePgnBot.ini";
 our $STARTUP_FILE = $ARGV[3] || $STARTUP_FILE_DEFAULT;
 
-if ($BOT_HANDLE eq "" | $OPERATOR_HANDLE eq "") {
+if ($BOT_HANDLE eq "" || $OPERATOR_HANDLE eq "") {
   print "\n$0 BOT_HANDLE BOT_PASSWORD OPERATOR_HANDLE [STARTUP_FILE]\n\nBOT_HANDLE = handle for the bot account\nBOT_PASSWORD = password for the both account, use \"\" for a guest account\nOPERATOR_HANDLE = handle for the bot operator to send commands\nSTARTUP_FILE = filename for reading startup commands (default $STARTUP_FILE_DEFAULT)\n\nbot saving PGN data from live games on frechess.org\nmore help available from the operator account with \"tell BOT_HANDLE help\"\n\n";
   exit 0;
 }
