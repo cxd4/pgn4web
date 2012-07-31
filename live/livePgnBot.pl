@@ -127,8 +127,8 @@ our @currentRounds = ();
 
 sub reset_games {
   if ($PGN_ARCHIVE ne "") {
-    for (my $i=0; $i<=$#games_num; $i++) {
-      archive_pgnGame($i);
+    for my $thisGameNum (@games_num) {
+      archive_pgnGame($thisGameNum);
     }
   }
   cmd_run("follow");
@@ -177,7 +177,7 @@ sub headerForFilter {
 sub find_gameIndex {
   my ($thisGameNum) = @_;
 
-  for (my $i=0; $i<$maxGamesNum; $i++) {
+  for (my $i=0; $i<=$#games_num; $i++) {
     if ((defined $games_num[$i]) && ($games_num[$i] == $thisGameNum)) {
       return $i;
     }
@@ -265,7 +265,7 @@ sub remove_game {
     } else {
       $thisGameIndex = 0;
       my $foundNonPrioritizedGame = 0;
-      for (my $i=0; ($i<$maxGamesNum) && ($foundNonPrioritizedGame==0); $i++) {
+      for (my $i=0; ($i<=$#games_num) && ($foundNonPrioritizedGame==0); $i++) {
         if ((defined $games_num[$i]) && ($games_num[$i] ne "") && (headerForFilter($GAMES_event[$games_num[$i]], $GAMES_round[$games_num[$i]], $games_white[$i], $games_black[$i]) !~ /$prioritizeFilter/i)) {
           $thisGameIndex = $i;
           $foundNonPrioritizedGame = 1;
@@ -773,11 +773,11 @@ sub log_rounds {
   my @newRounds = ();
   my ($i, $thisRound);
 
-  for ($i=0; $i<$maxGamesNum; $i++) {
-    if ((defined $games_num[$i]) && (defined $GAMES_event[$games_num[$i]])) {
-      $thisRound = $GAMES_event[$games_num[$i]];
-      if ((defined $GAMES_round[$games_num[$i]]) && ($GAMES_round[$games_num[$i]] ne "")) {
-        $thisRound .= " - Round " . $GAMES_round[$games_num[$i]];
+  foreach (@games_num) {
+    if (defined $GAMES_event[$_]) {
+      $thisRound = $GAMES_event[$_];
+      if ((defined $GAMES_round[$_]) && ($GAMES_round[$_] ne "")) {
+        $thisRound .= " - Round " . $GAMES_round[$_];
       }
       unless ($thisRound ~~ @newRounds) {
         push(@newRounds, $thisRound);
@@ -843,15 +843,15 @@ add_master_command ("verbosity", "verbosity [0-6] (to get/set log verbosity: 0=n
 sub detect_command {
   my ($command) = @_;
   my $guessedCommand = "";
-  for (my $i=0; $i<=$#master_commands; $i++) {
-    if ($master_commands[$i] eq $command) {
-      return $command;
+  foreach (@master_commands) {
+    if ($_ eq $command) {
+      return $_;
     }
-    if ($master_commands[$i] =~ /^$command/) {
+    if ($_ =~ /^$command/) {
       if ($guessedCommand ne "") {
         return "ambiguous command: $command";
       } else {
-        $guessedCommand = $master_commands[$i]
+        $guessedCommand = $_;
       }
     }
   }
@@ -1037,13 +1037,13 @@ sub process_master_command {
   } elsif ($command eq "forget") {
     if ($parameters ne "") {
       my @theseGames = split(" ", $parameters);
-      for (my $i=0; $i<=$#theseGames; $i++) {
-        if ($theseGames[$i] =~ /\d+/) {
-          if (remove_game($theseGames[$i]) < 0) {
-            tell_operator("error: game $theseGames[$i] not found");
+      foreach (@theseGames) {
+        if ($_ =~ /\d+/) {
+          if (remove_game($_) < 0) {
+            tell_operator("error: game $_ not found");
           }
         } else {
-          tell_operator("error: invalid game $theseGames[$i]");
+          tell_operator("error: invalid game $_");
         }
       }
       tell_operator("OK $command");
@@ -1262,22 +1262,22 @@ sub process_master_command {
 sub observe {
   my ($gamesList) = @_;
   my @theseGames = split(" ", $gamesList);
-  for (my $i=0; $i<=$#theseGames; $i++) {
-    if ($theseGames[$i] =~ /\d+/) {
-      if (find_gameIndex($theseGames[$i]) == -1) {
-        cmd_run("observe $theseGames[$i]");
+  foreach (@theseGames) {
+    if ($_ =~ /\d+/) {
+      if (find_gameIndex($_) == -1) {
+        cmd_run("observe $_");
       } else {
-        tell_operator_and_log_terminal("debug: game $theseGames[$i] already observed");
+        tell_operator_and_log_terminal("debug: game $_ already observed");
       }
     } else {
-      tell_operator("error: invalid game $theseGames[$i]");
+      tell_operator("error: invalid game $_");
     }
   }
 }
 
 sub gameList {
   my $outputStr = "";
-  for (my $i=0; $i<$maxGamesNum; $i++) {
+  for (my $i=0; $i<=$#games_num; $i++) {
     if (defined $games_num[$i]) {
       if ($outputStr ne "") { $outputStr .= " "; }
       $outputStr .= $games_num[$i];
@@ -1348,9 +1348,6 @@ sub xtell_relay_listgames {
 }
 
 sub check_relay_results {
-  my $thisGameNum;
-  my @gameNumForRemoval = ();
-
   if (($relayMode == 1) && (time() - $next_check_relay_time > 0)) {
     xtell_relay_listgames();
     $last_check_relay_time = time();
@@ -1361,6 +1358,8 @@ sub check_relay_results {
       $next_check_relay_time = $last_check_relay_time + $CHECK_RELAY_FREQ;
     }
     if ($autorelayMode == 1) {
+      my @gameNumForRemoval = ();
+      my $thisGameNum;
       for $thisGameNum (@games_num) {
         if (! defined $GAMES_autorelayRunning[$thisGameNum]) {
           push(@gameNumForRemoval, $thisGameNum);
