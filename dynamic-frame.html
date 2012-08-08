@@ -374,7 +374,7 @@ function myOnResize() {
 
   if (theObj = document.getElementById("HeaderContainer")) { theObj.style.display = bare ? "none" : document.getElementById("GameBoard").style.display; }
 
-  fixColorFlag();
+  if (!firstStart) { fixColorFlag(); }
 
   dynamicFrameDebugString = "fw=" + ww + ", fh=" + wh + ", fs=" + fontSize + ", ss=" + Math.round(squareSize*100)/100 + ", sb=" + squareBorderWidth + ", ps=" + pieceSize + ", pbs=" + pieceBaseSize;
 
