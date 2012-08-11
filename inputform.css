@@ -26,6 +26,8 @@ a {
 
 input, select {
   color: #909090;
+  border-radius: 0px;
+  -webkit-appearance: none;
 }
 
 textarea, option {
