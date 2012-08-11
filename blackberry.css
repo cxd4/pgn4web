@@ -59,12 +59,14 @@ body {
 
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
+  -webkit-appearance: none;
   width: 142px !important;
   font-family: monospace;
   font-size: 14px;
   color: white;
   background-color: black;
-  border-color: #222222;
+  border-color: #000000;
+  border-radius: 0px;
 }
 
 .optionSelectControl {
