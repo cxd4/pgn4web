@@ -645,9 +645,9 @@ function displayDebugInfo() {
   var base = detectBaseLocation();
   var jsurl = detectJavascriptLocation();
   stopAlertPrompt();
+  var htmlurlInfo = ' url=' + (location.href.length < 100 ? location.href : (location.href.substring(0,99) + '...'));
   var debugInfo = 'pgn4web: version=' + pgn4web_version + ' homepage=' + pgn4web_project_url + '\n\n' +
-    'HTMLURL: length=' + location.href.length + ' url=' +
-    (location.href.length < 100 ? location.href : (location.href.substring(0,99) + '...')) + '\n' +
+    'HTMLURL: length=' + location.href.length + htmlurlInfo + '\n' +
     (base ? 'BASEURL: url=' + base + '\n' : '') +
     (jsurl != 'pgn4web.js' ? 'JSURL: url=' + jsurl + '\n' : '');
   if (pgnUrl) {
@@ -679,14 +679,13 @@ function displayDebugInfo() {
   }
   if (confirm(debugInfo + '\n\nclick OK to show this debug info in a browser window for cut and paste')) {
     if (debugWin && !debugWin.closed) { debugWin.close(); }
-    debugWin = window.open("", "debug_data",
-      "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
+    debugWin = window.open("", "debug_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
     if (debugWin) {
       text = "<html><head><title>pgn4web debug info</title>" +
         "<link rel='shortcut icon' href='pawn.ico' /></head>" +
         "<body>\n<pre>\n" + debugInfo + "\n</pre>\n</body></html>";
       debugWin.document.open("text/html", "replace");
-      debugWin.document.write(text);
+      debugWin.document.write(text.replace(htmlurlInfo, ' url=' + location.href + ' '));
       debugWin.document.close();
       if (window.focus) { debugWin.focus(); }
     }
@@ -707,8 +706,7 @@ pgnWin = null;
 function displayPgnData(allGames) {
   if (typeof(allGames) == "undefined") { allGames = true; }
   if (pgnWin && !pgnWin.closed) { pgnWin.close(); }
-  pgnWin = window.open("", "pgn_data",
-    "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
+  pgnWin = window.open("", "pgn_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if (pgnWin) {
     text = "<html><head><title>pgn4web PGN source</title>" +
       "<link rel='shortcut icon' href='pawn.ico' /></head><body>\n<pre>\n";
@@ -807,8 +805,7 @@ function displayFenData() {
     }
   }
 
-  fenWin = window.open("", "fen_data",
-    "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
+  fenWin = window.open("", "fen_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if (fenWin) {
     text = "<html>" +
       "<head><title>pgn4web FEN string</title><link rel='shortcut icon' href='pawn.ico' /></head>" +
