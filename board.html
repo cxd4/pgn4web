@@ -873,11 +873,12 @@ if (highlightMode == 'border') {
 
   if ((controlBackgroundColor != 'default') && (controlBackgroundColor != '#default')) {
     controlFontSize = Math.floor(squareSize / 2.5);
+    controlBorderRadius = Math.ceil(squareSize / 24);
     newStyleSheet += '.buttonControl, .buttonControlPlay, .buttonControlStop { ' +
                      '-webkit-appearance: none; ' +
                      'border-style: solid; ' +
                      'border-width: 0px; ' +
-                     'border-radius: 0px; ' +
+                     'border-radius: ' + controlBorderRadius + 'px; ' +
                      'border-color: ' + backgroundColor + '; ' +
                      'background-color: ' + controlBackgroundColor + '; ' +
                      'color: ' + controlTextColor + '; ' +
@@ -891,7 +892,7 @@ if (highlightMode == 'border') {
                      'padding: 3px; ' +
                      'border-style: solid; ' +
                      'border-width: 1px; ' +
-                     'border-radius: 0px; ' +
+                     'border-radius: ' + controlBorderRadius + 'px; ' +
                      'border-color: ' + backgroundColor + '; ' +
                      'background-color: ' + controlBackgroundColor + '; ' +
                      'color: ' + controlTextColor + '; ' +
