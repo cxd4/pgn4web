@@ -83,10 +83,15 @@ textarea, option {
 /* a "width" attribute here must use the !important flag to override default settings */
   font-weight: bold;
   font-size: 14px;
-  height: 21px;
+  height: 26px;
   border-style: none;
   background-color: #E8E8E8;
   padding: 5px;
+}
+
+.selectContainer {
+  width: 100%;
+  height: 26px;
 }
 
 .pgnSubmit {
@@ -138,8 +143,19 @@ a.variation {
 .variationOn {
 }
 
+.boardbuttons {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.headerselector {
+  margin-left: 282px;
+  padding-left: 20px;
+  background-color: #E8E8E8;
+}
+
 .pgnheader {
-  padding-left: 30px;
   line-height: 21px;
   font-size: 14px; 
   font-weight: bold;
