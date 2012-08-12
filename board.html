@@ -423,7 +423,7 @@ if ((init_Halfmove = gup("initialHalfmove")) === "") {
   if (init_Halfmove == "e") { init_Halfmove = "end"; }
   if (init_Halfmove == "r") { init_Halfmove = "random"; }
   if (init_Halfmove == "c") { init_Halfmove = "comment"; }
-  if (init_Halfmove == "v") { init_Halfmove = "variatiion"; }
+  if (init_Halfmove == "v") { init_Halfmove = "variation"; }
   if ((init_Halfmove == "start")  || (init_Halfmove == "end") ||
       (init_Halfmove == "random") || (init_Halfmove == "comment") ||
       (init_Halfmove == "variation")) {
@@ -696,7 +696,7 @@ if (gup("help") !== "") {
   document.write(" - initialVariation = a number (default 0)\n");
   document.write(" - initialHalfmove = start | end | random | comment | variation | a number (default start)\n");
   document.write("\n");
-  document.write(" - autoplayMode = game (autoplay first game once) | loop (loops through games continiously) | none (default game)\n");
+  document.write(" - autoplayMode = game (autoplay first game once) | loop (loops through games continuously) | none (default game)\n");
   document.write(" - delay = autoplay delay in ms (default 1000)\n");
   document.write("\n");
   document.write(" - squareSize = size of square (default 28)\n");
@@ -715,7 +715,7 @@ if (gup("help") !== "") {
   document.write("\n");
   document.write(" - headerDisplay = justified | centered | hidden | live | variations (default hidden)\n");
   document.write(" - movesDisplay = figurine | text | puzzle | hidden (default hidden)\n");
-  document.write(" - textHeight = set height of the textual section, header and/or moves text, might be ingored if frameHeight is set (default 100%)\n");
+  document.write(" - textHeight = set height of the textual section, header and/or moves text, might be ignored if frameHeight is set (default 100%)\n");
   document.write(" - textWidth = set width of the textual section, header and/or moves text, might be ignored if frameWidth is set (default 100%)\n");
   document.write(" - textMargin = set left/right margin width of the  textual section, header and/or moves text (default 0)\n");
   document.write(" - commentsDisplay = hidden | inline (same line as moves) | newline (new lines) (default inline)\n");
@@ -723,7 +723,7 @@ if (gup("help") !== "") {
   document.write(" - fontMovesColorHex = moves color hex code, like FF0000 (default 000000)\n");
   document.write(" - fontCommentsColorHex = comments color hex code, like FF0000 (default 808080)\n");
   document.write(" - fontVariationsColorHex = variations color hex code, like FF0000; if set as 'comments' fontCommentsColorHex is copied (default comments)\n");
-  document.write(" - highlightMoveColorHex = background color hex code to highlight current move, like FF0000, 'background' for no highligh (default DAF4D7)\n");
+  document.write(" - highlightMoveColorHex = background color hex code to highlight current move, like FF0000, 'background' for no highlight (default DAF4D7)\n");
   document.write(" - fontHeaderSize = header font size (default 16)\n");
   document.write(" - fontMovesSize = moves font size (default 16)\n");
   document.write(" - fontCommentsSize = comments font size; if set as 'moves' fontMovesSize is copied (default moves)\n");
