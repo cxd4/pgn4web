@@ -21,7 +21,7 @@
       "default_title": "Inspect for chess games",
       "file_filters": [ "filesystem:*.zip", "filesystem:*.Zip", "filesystem:*.ZIP" ]
    } ],
-   "homepage_url": "http://pgn4web.casaschi.net",
+   "homepage_url": "http://code.google.com/p/pgn4web/wiki/BrowserExtension_GoogleChrome",
    "icons": {
       "128": "alpha/128/bp.png",
       "16": "alpha-16.png",
