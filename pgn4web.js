@@ -645,47 +645,49 @@ function displayDebugInfo() {
   var base = detectBaseLocation();
   var jsurl = detectJavascriptLocation();
   stopAlertPrompt();
-  var htmlurlInfo = ' url=' + (location.href.length < 100 ? location.href : (location.href.substring(0,99) + '...'));
-  var debugInfo = 'pgn4web: version=' + pgn4web_version + ' homepage=' + pgn4web_project_url + '\n\n' +
-    'HTMLURL: length=' + location.href.length + htmlurlInfo + '\n' +
+  var dbg1 = 'pgn4web: version=' + pgn4web_version + ' homepage=' + pgn4web_project_url + '\n\n' +
+    'HTMLURL: length=' + location.href.length + ' url=';
+  var dbg2 = location.href.length < 100 ? location.href : (location.href.substring(0,99) + '...');
+  var dbg3 = ' \n' +
     (base ? 'BASEURL: url=' + base + '\n' : '') +
     (jsurl != 'pgn4web.js' ? 'JSURL: url=' + jsurl + '\n' : '');
   if (pgnUrl) {
-    debugInfo += 'PGNURL: url=' + pgnUrl;
+    dbg3 += 'PGNURL: url=' + pgnUrl;
   } else {
     if (theObj = document.getElementById("pgnText")) {
-      debugInfo += 'PGNTEXT: length=' + (theObj.tagName.toLowerCase() == "textarea" ? theObj.value.length : "?");
+      dbg3 += 'PGNTEXT: length=' + (theObj.tagName.toLowerCase() == "textarea" ? theObj.value.length : "?");
     }
   }
-  debugInfo += '\n\n' +
+  dbg3 += '\n\n' +
     'GAME: current=' + (currentGame+1) + ' number=' + numberOfGames + '\n' +
     'VARIATION: current=' + CurrentVar + ' number=' + (numberOfVars-1) + '\n' +
     'PLY: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber + '\n' +
     'AUTOPLAY: status=' + (isAutoPlayOn ? 'on' : 'off') + ' delay=' + Delay + 'ms' + ' next=' + autoplayNextGame +
     '\n\n';
   if (LiveBroadcastDelay > 0) {
-    debugInfo += 'LIVEBROADCAST: status=' + liveStatusDebug() + ' ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime() +
+    dbg3 += 'LIVEBROADCAST: status=' + liveStatusDebug() + ' ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime() +
     '\n\n';
   }
   var thisInfo = customDebugInfo();
-  if (thisInfo) { debugInfo += "CUSTOM: " + thisInfo + "\n\n"; }
-  debugInfo += 'ALERTLOG: fatalnew=' + fatalErrorNumSinceReset + ' new=' + alertNumSinceReset +
+  if (thisInfo) { dbg3 += "CUSTOM: " + thisInfo + "\n\n"; }
+  dbg3 += 'ALERTLOG: fatalnew=' + fatalErrorNumSinceReset + ' new=' + alertNumSinceReset +
     ' shown=' + Math.min(alertNum, alertLog.length) + ' total=' + alertNum + '\n--';
   if (alertNum > 0) {
     for (ii = 0; ii<alertLog.length; ii++) {
       if (alertLog[(alertNum - 1 - ii) % alertLog.length] === undefined) { break; }
-      else { debugInfo += "\n" + alertLog[(alertNum - 1 - ii) % alertLog.length] + "\n--"; }
+      else { dbg3 += "\n" + alertLog[(alertNum - 1 - ii) % alertLog.length] + "\n--"; }
     }
   }
-  if (confirm(debugInfo + '\n\nclick OK to show this debug info in a browser window for cut and paste')) {
+  if (confirm(dbg1 + dbg2 + dbg3 + '\n\nclick OK to show this debug info in a browser window for cut and paste')) {
     if (debugWin && !debugWin.closed) { debugWin.close(); }
     debugWin = window.open("", "debug_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
     if (debugWin) {
       text = "<html><head><title>pgn4web debug info</title>" +
         "<link rel='shortcut icon' href='pawn.ico' /></head>" +
-        "<body>\n<pre>\n" + debugInfo + "\n</pre>\n</body></html>";
+        "<body>\n<pre>\n" + dbg1 + location.href + dbg3 +
+        "\n</pre>\n</body></html>";
       debugWin.document.open("text/html", "replace");
-      debugWin.document.write(text.replace(htmlurlInfo, ' url=' + location.href + ' '));
+      debugWin.document.write(text);
       debugWin.document.close();
       if (window.focus) { debugWin.focus(); }
     }
