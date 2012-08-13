@@ -648,7 +648,7 @@ function displayDebugInfo() {
   var dbg1 = 'pgn4web: version=' + pgn4web_version + ' homepage=' + pgn4web_project_url + '\n\n' +
     'HTMLURL: length=' + location.href.length + ' url=';
   var dbg2 = location.href.length < 100 ? location.href : (location.href.substring(0,99) + '...');
-  var dbg3 = ' \n' +
+  var dbg3 = '\n' +
     (base ? 'BASEURL: url=' + base + '\n' : '') +
     (jsurl != 'pgn4web.js' ? 'JSURL: url=' + jsurl + '\n' : '');
   if (pgnUrl) {
@@ -684,7 +684,7 @@ function displayDebugInfo() {
     if (debugWin) {
       text = "<html><head><title>pgn4web debug info</title>" +
         "<link rel='shortcut icon' href='pawn.ico' /></head>" +
-        "<body>\n<pre>\n" + dbg1 + location.href + dbg3 +
+        "<body>\n<pre>\n" + dbg1 + location.href + " " + dbg3 +
         "\n</pre>\n</body></html>";
       debugWin.document.open("text/html", "replace");
       debugWin.document.write(text);
