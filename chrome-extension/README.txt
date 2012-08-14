@@ -51,6 +51,7 @@ the chrome downloads page; needs assessing impact on the plain download of
 a PGN file: check what happens when clicking a link on the page or the
 download icon of the popup.
 http://crbug.com/86115 (and others, search for registerContentHandler)
+Possibly this should rather be done using web intents.
 
 manifest.json: match mime-types in content scripts
 enhance PGN/ZIP URL detection/validation by matching by mime-type when
