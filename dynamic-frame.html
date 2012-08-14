@@ -614,7 +614,7 @@ clearShortcutSquares("E", "7");
 boardShortcut("F7", "toggle side to move flag", function(t,e){ toggleColorFlag(); });
 
 if (window.parent !== window) {
-  boardShortcut("H5", "show fullscreen chessboard", function(t,e){ showFullscreenChessboard(false); });
+  boardShortcut("H5", "show fullscreen chessboard", function(t,e){ showFullscreenChessboard(e.shiftKey); });
 }
 
 function updateBareShortcut() {
