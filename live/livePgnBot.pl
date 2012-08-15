@@ -1171,8 +1171,8 @@ sub process_master_command {
   } elsif ($command eq "quit") {
     if ($parameters =~ /^\d+$/) {
       tell_operator("OK $command($parameters)");
-      cmd_run("quit");
       log_terminal("info: quit with exit value $parameters");
+      cmd_run("quit");
       exit($parameters);
     } elsif ($parameters =~ /^\??$/) {
       tell_operator(detect_command_helptext($command));
