@@ -49,6 +49,9 @@ else if ($gameNum > $numGames) { $gameNum = $numGames; }
 $gameNum -= 1;
 
 
+if ($expiresDate) {
+  header("Expires: " . $expiresDate);
+}
 print $games[0][$gameNum];
 
 ?>
