@@ -1169,30 +1169,35 @@ of Google Chrome. Don't use with any other browser.
                         validFiles.push(theFileName);
                      } else if (theFileName.match(/\.(zip)$/i)) {
                         var unzippedPgnText = "";
-                        var unzipper = new JSUnzip(e.target.result);
-                        if (unzipper.isZipFile()) {
-                           unzipper.readEntries();
-                           for (u in unzipper.entries) {
-                              if (unzipper.entries[u].fileName.match(/\.pgn$/i)) {
-                                 switch (unzipper.entries[u].compressionMethod) {
-                                    case 0:
-                                       unzippedPgnText += "\n" + unzipper.entries[u].data + "\n";
-                                       break;
-                                    case 8:
-                                       unzippedPgnText += "\n" + JSInflate.inflate(unzipper.entries[u].data) + "\n";
-                                       break;
-                                    default:
-                                       // unsupported compression method
-                                       break;
+                        var unzippingError = false;
+                        try {
+                           var unzipper = new JSUnzip(e.target.result);
+                           if (unzipper.isZipFile()) {
+                              unzipper.readEntries();
+                              for (u in unzipper.entries) {
+                                 if (unzipper.entries[u].fileName.match(/\.pgn$/i)) {
+                                    switch (unzipper.entries[u].compressionMethod) {
+                                       case 0:
+                                          unzippedPgnText += "\n" + unzipper.entries[u].data + "\n";
+                                          break;
+                                       case 8:
+                                          unzippedPgnText += "\n" + JSInflate.inflate(unzipper.entries[u].data) + "\n";
+                                          break;
+                                       default:
+                                          // unsupported compression method
+                                          break;
+                                    }
                                  }
                               }
                            }
-                        }
+                        } catch (e) { unzippingError = true; }
                         if (unzippedPgnText) {
                            newPgnText += unzippedPgnText + "\n\n\n";
-                           validFiles.push(theFileName);
-                        } else {
+                        }
+                        if (unzippingError) {
                            errorFiles.push(theFileName);
+                        } else {
+                           validFiles.push(theFileName);
                         }
                      } else {
                         errorFiles.push(theFileName);
