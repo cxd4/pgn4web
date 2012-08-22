@@ -49,7 +49,7 @@ a:hover, a:active
 </td>
 </tr><tr>
 <td colspan="2" height="100%" style="padding: 40px;">
-<table cellpadding="0" cellspacing="0" width="100%" height="100%" style="background-color: #EDE8D5; box-shadow: 0px 0px 20px #663300; border-color: #EDE8D5; border-style: solid; border-width: 40px; border-radius: 10px;" onclick="toggleLiveMode();"><tbody><tr valign="middle"><td align="center">
+<table id="framecontainer" cellpadding="0" cellspacing="0" width="100%" height="100%" style="background-color: #EDE8D5; box-shadow: 0px 0px 20px #663300; border-color: #EDE8D5; border-style: solid; border-width: 40px; border-radius: 10px;" onclick="toggleLiveMode();"><tbody><tr valign="middle"><td align="center">
 <iframe id="liveframe" src="about:blank" height="360" width="480" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">your browser does not support the required iframe functionality</iframe>
 </td></tr></tbody></table>
 </td>
@@ -57,41 +57,56 @@ a:hover, a:active
 
 <script type="text/javascript">
 
-var iniGame='\\[\\s*Result\\s*"\\*"\\s*\\]';
-
 var liveMode = "compact";
 thisRegExp = /(&|\?)(mode|m)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   liveMode = unescape(window.location.search.match(thisRegExp)[3]);
 }
+if ((liveMode == "random") || (liveMode == "r")) {
+  r = Math.random();
+  if (r < 0.33) { liveMode = "board"; }
+  else if (r < 0.66) { liveMode = "dynamic"; }
+  else { liveMode = "compact"; }
+}
+if (liveMode == "b") { liveMode = "board"; }
+if (liveMode == "c") { liveMode = "compact"; }
 if (liveMode == "d") { liveMode = "dynamic"; }
-if ((liveMode != "compact") && (liveMode != "dynamic")) {
+if ((liveMode != "board") && (liveMode != "compact") && (liveMode != "dynamic")) {
   liveMode = "compact";
 }
 
 setLiveMode(liveMode);
 
 function setLiveMode(lm) {
+  var iniGame='\\[\\s*Result\\s*"\\*"\\s*\\]';
 
-  liveMode = lm;
-  if (liveMode == "dynamic") {
-    if (theObject = document.getElementById("liveframe")) {
-      theObject.src = pgn4web_live_pointer_url + '/dynamic-frame.html?l=t&ct=pink&hch=t&scf=t&pf=m&ig=' + iniGame;
-      theObject.height = "100%";
-      theObject.width = "100%";
-    }
-  } else {
-    if (theObject = document.getElementById("liveframe")) {
-      theObject.src = pgn4web_live_pointer_url + '/live-compact.html?ig=' + iniGame;
-      theObject.height = "360";
-      theObject.width = "480";
+  if ((theFrameObject = document.getElementById("liveframe")) && (theContainerObject = document.getElementById("framecontainer"))) {
+    liveMode = lm;
+    if (liveMode == "dynamic") {
+      theFrameObject.src = pgn4web_live_pointer_url + '/dynamic-frame.html?l=t&ct=pink&hch=t&scf=t&pf=m&ig=' + iniGame;
+      theFrameObject.height = "100%";
+      theFrameObject.width = "100%";
+      theContainerObject.style.borderRightWidth = "40px";
+    } else if (liveMode == "board") {
+      theFrameObject.src = pgn4web_live_pointer_url + '/board.html?am=n&d=1000&ih=e&ss=41&ps=34&pf=u&lcs=Wtyk&dcs=OXJO&bbcs=OXJO&hm=b&hcs=ZbNv&bd=s&cbcs=Wtyk&ctcs=$$$$&hd=l&md=f&tm=17&fhcs=nkYj&fhs=14&fmcs=nkYj&fccs=nkYj&hmcs=ZbNv&fms=14&fcs=m&cd=h&bcs=Wtyk&fp=10&hl=t&fh=b&fw=779&rm=1&pd=live/live.pgn&ig=' + iniGame;
+      theFrameObject.height = "445";
+      theFrameObject.width = "779";
+      theContainerObject.style.borderRightWidth = "23px";
+    } else {
+      theFrameObject.src = pgn4web_live_pointer_url + '/live-compact.html?ig=' + iniGame;
+      theFrameObject.height = "360";
+      theFrameObject.width = "480";
+      theContainerObject.style.borderRightWidth = "40px";
     }
   }
-
 }
 
 function toggleLiveMode() {
-  setLiveMode(liveMode == 'compact' ? 'dynamic' : 'compact');
+  if (liveMode == 'compact') { liveMode = 'dynamic'; }
+  else if (liveMode == 'dynamic') { liveMode = 'board'; }
+  else if (liveMode == 'board') { liveMode = 'compact'; }
+  else { liveMode = 'compact'; }
+  setLiveMode(liveMode);
 }
 
 </script>
