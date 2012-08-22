@@ -76,7 +76,7 @@ function setLiveMode(lm) {
   liveMode = lm;
   if (liveMode == "dynamic") {
     if (theObject = document.getElementById("liveframe")) {
-      theObject.src = pgn4web_live_pointer_url + '/dynamic-frame.html?live=true&colorTheme=pink&showColorFlag=true&ig=' + iniGame;
+      theObject.src = pgn4web_live_pointer_url + '/dynamic-frame.html?l=t&ct=pink&hch=t&scf=t&pf=m&ig=' + iniGame;
       theObject.height = "100%";
       theObject.width = "100%";
     }
