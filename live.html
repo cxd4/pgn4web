@@ -75,25 +75,32 @@ if ((liveMode != "board") && (liveMode != "compact") && (liveMode != "dynamic"))
   liveMode = "compact";
 }
 
+var pgnData = "";
+thisRegExp = /(&|\?)(pgnData|pd)=([^&]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+  pgnData = unescape(window.location.search.match(thisRegExp)[3]);
+}
+
 setLiveMode(liveMode);
 
 function setLiveMode(lm) {
   var iniGame='\\[\\s*Result\\s*"\\*"\\s*\\]';
+  var extraUrl = "ig=" + iniGame + (pgnData ? "&pd=" + pgnData : "");
 
   if ((theFrameObject = document.getElementById("liveframe")) && (theContainerObject = document.getElementById("framecontainer"))) {
     liveMode = lm;
     if (liveMode == "dynamic") {
-      theFrameObject.src = pgn4web_live_pointer_url + '/dynamic-frame.html?l=t&ct=pink&hch=t&scf=t&pf=m&ig=' + iniGame;
+      theFrameObject.src = pgn4web_live_pointer_url + '/dynamic-frame.html?l=t&ct=pink&hch=t&scf=t&pf=m' + extraUrl;
       theFrameObject.height = "100%";
       theFrameObject.width = "100%";
       theContainerObject.style.borderRightWidth = "40px";
     } else if (liveMode == "board") {
-      theFrameObject.src = pgn4web_live_pointer_url + '/board.html?am=n&d=1000&ih=e&ss=41&ps=34&pf=u&lcs=Wtyk&dcs=OXJO&bbcs=OXJO&hm=b&hcs=ZbNv&bd=s&cbcs=Wtyk&ctcs=$$$$&hd=l&md=f&tm=17&fhcs=nkYj&fhs=14&fmcs=nkYj&fccs=nkYj&hmcs=ZbNv&fms=14&fcs=m&cd=h&bcs=Wtyk&fp=10&hl=t&fh=b&fw=779&rm=1&pd=live/live.pgn&ig=' + iniGame;
+      theFrameObject.src = pgn4web_live_pointer_url + '/board.html?am=n&d=1000&ih=e&ss=41&ps=34&pf=u&lcs=Wtyk&dcs=OXJO&bbcs=OXJO&hm=b&hcs=ZbNv&bd=s&cbcs=Wtyk&ctcs=$$$$&hd=l&md=f&tm=17&fhcs=nkYj&fhs=14&fmcs=nkYj&fccs=nkYj&hmcs=ZbNv&fms=14&fcs=m&cd=h&bcs=Wtyk&fp=10&hl=t&fh=b&fw=779&rm=1&pd=live/live.pgn' + extraUrl;
       theFrameObject.height = "445";
       theFrameObject.width = "779";
       theContainerObject.style.borderRightWidth = "23px";
     } else {
-      theFrameObject.src = pgn4web_live_pointer_url + '/live-compact.html?ig=' + iniGame;
+      theFrameObject.src = pgn4web_live_pointer_url + '/live-compact.html?' + extraUrl;
       theFrameObject.height = "360";
       theFrameObject.width = "480";
       theContainerObject.style.borderRightWidth = "40px";
