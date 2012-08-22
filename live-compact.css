@@ -66,6 +66,7 @@ a {
 /* a "width" attribute here must use the !important flag to override default settings */
   -webkit-appearance: none;
   width: 450px !important;
+  height: 23px;
   color: #615F54;
   font-size: 13px;
   padding: 2px;
