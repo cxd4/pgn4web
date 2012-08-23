@@ -90,12 +90,12 @@ function setLiveMode(lm) {
   if ((theFrameObject = document.getElementById("liveframe")) && (theContainerObject = document.getElementById("framecontainer"))) {
     liveMode = lm;
     if (liveMode == "dynamic") {
-      theFrameObject.src = pgn4web_live_pointer_url + '/dynamic-frame.html?l=t&ct=pink&hch=t&scf=t&pf=m' + extraParams;
+      theFrameObject.src = pgn4web_live_pointer_url + '/dynamic-frame.html?l=t&ct=pink&hch=t&scf=t&pf=m&' + extraParams;
       theFrameObject.height = "100%";
       theFrameObject.width = "100%";
       theContainerObject.style.borderRightWidth = "40px";
     } else if (liveMode == "widget") {
-      theFrameObject.src = pgn4web_live_pointer_url + '/board.html?am=n&d=1000&ih=e&ss=41&ps=34&pf=u&lcs=Wtyk&dcs=OXJO&bbcs=OXJO&hm=b&hcs=ZbNv&bd=c&cbcs=UJ2e&ctcs=nkYj&hd=l&md=f&tm=17&fhcs=nkYj&fhs=14&fmcs=nkYj&fccs=nkYj&hmcs=ZbNv&fms=14&fcs=m&cd=h&bcs=Wtyk&fp=10&hl=t&fh=b&fw=779&rm=1&pd=live/live.pgn' + extraParams;
+      theFrameObject.src = pgn4web_live_pointer_url + '/board.html?am=n&d=1000&ih=e&ss=41&ps=34&pf=u&lcs=Wtyk&dcs=OXJO&bbcs=OXJO&hm=b&hcs=ZbNv&bd=c&cbcs=UJ2e&ctcs=nkYj&hd=l&md=f&tm=17&fhcs=nkYj&fhs=14&fmcs=nkYj&fccs=nkYj&hmcs=ZbNv&fms=14&fcs=m&cd=h&bcs=Wtyk&fp=10&hl=t&fh=b&fw=779&rm=1&pd=live/live.pgn&' + extraParams;
       theFrameObject.height = "445";
       theFrameObject.width = "779";
       theContainerObject.style.borderRightWidth = "23px";
