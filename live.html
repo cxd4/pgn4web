@@ -24,7 +24,7 @@ if (pgn4web_live_pointer_url === undefined) { pgn4web_live_pointer_url = "."; }
 <style type="text/css">
 
 body
-{ color: #BBBBBB; background: white; font-family: sans-serif; font-size: small; padding: 20px; overflow-x: hidden; overflow-y: auto; }
+{ color: #BBBBBB; background: white; font-family: sans-serif; font-size: small; padding: 20px; margin: 0; }
 
 a:link, a:visited, a:hover, a:active
 { color: #BBBBBB; text-decoration: none; }
@@ -40,7 +40,7 @@ a:hover, a:active
 
 <body>
 
-<table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%"><tbody><tr>
+<table border="0" cellpadding="0" cellspacing="0" width="99.9%" height="99.9%"><tbody><tr>
 <td align="left" valign="middle">
 <h1 style="color: red;"><a style="color: red;" href=.>pgn4web</a> <a style="color: red;" href="javascript:void(0);" onclick="toggleLiveMode(); this.blur();" title="try a different live view">chess live broadcast</a></h1>
 </td>
@@ -64,14 +64,14 @@ if (window.location.search.match(thisRegExp) !== null) {
 }
 if ((liveMode == "random") || (liveMode == "r")) {
   r = Math.random();
-  if (r < 0.33) { liveMode = "board"; }
+  if (r < 0.33) { liveMode = "widget"; }
   else if (r < 0.66) { liveMode = "dynamic"; }
   else { liveMode = "compact"; }
 }
-if (liveMode == "b") { liveMode = "board"; }
 if (liveMode == "c") { liveMode = "compact"; }
 if (liveMode == "d") { liveMode = "dynamic"; }
-if ((liveMode != "board") && (liveMode != "compact") && (liveMode != "dynamic")) {
+if (liveMode == "w") { liveMode = "widget"; }
+if ((liveMode != "compact") && (liveMode != "dynamic") && (liveMode != "widget")) {
   liveMode = "compact";
 }
 
@@ -85,22 +85,22 @@ setLiveMode(liveMode);
 
 function setLiveMode(lm) {
   var iniGame='\\[\\s*Result\\s*"\\*"\\s*\\]';
-  var extraUrl = "ig=" + iniGame + (pgnData ? "&pd=" + pgnData : "");
+  var extraParams = "ig=" + iniGame + (pgnData ? "&pd=" + pgnData : "");
 
   if ((theFrameObject = document.getElementById("liveframe")) && (theContainerObject = document.getElementById("framecontainer"))) {
     liveMode = lm;
     if (liveMode == "dynamic") {
-      theFrameObject.src = pgn4web_live_pointer_url + '/dynamic-frame.html?l=t&ct=pink&hch=t&scf=t&pf=m' + extraUrl;
+      theFrameObject.src = pgn4web_live_pointer_url + '/dynamic-frame.html?l=t&ct=pink&hch=t&scf=t&pf=m' + extraParams;
       theFrameObject.height = "100%";
       theFrameObject.width = "100%";
       theContainerObject.style.borderRightWidth = "40px";
-    } else if (liveMode == "board") {
-      theFrameObject.src = pgn4web_live_pointer_url + '/board.html?am=n&d=1000&ih=e&ss=41&ps=34&pf=u&lcs=Wtyk&dcs=OXJO&bbcs=OXJO&hm=b&hcs=ZbNv&bd=s&cbcs=Wtyk&ctcs=$$$$&hd=l&md=f&tm=17&fhcs=nkYj&fhs=14&fmcs=nkYj&fccs=nkYj&hmcs=ZbNv&fms=14&fcs=m&cd=h&bcs=Wtyk&fp=10&hl=t&fh=b&fw=779&rm=1&pd=live/live.pgn' + extraUrl;
+    } else if (liveMode == "widget") {
+      theFrameObject.src = pgn4web_live_pointer_url + '/board.html?am=n&d=1000&ih=e&ss=41&ps=34&pf=u&lcs=Wtyk&dcs=OXJO&bbcs=OXJO&hm=b&hcs=ZbNv&bd=c&cbcs=UJ2e&ctcs=nkYj&hd=l&md=f&tm=17&fhcs=nkYj&fhs=14&fmcs=nkYj&fccs=nkYj&hmcs=ZbNv&fms=14&fcs=m&cd=h&bcs=Wtyk&fp=10&hl=t&fh=b&fw=779&rm=1&pd=live/live.pgn' + extraParams;
       theFrameObject.height = "445";
       theFrameObject.width = "779";
       theContainerObject.style.borderRightWidth = "23px";
     } else {
-      theFrameObject.src = pgn4web_live_pointer_url + '/live-compact.html?' + extraUrl;
+      theFrameObject.src = pgn4web_live_pointer_url + '/live-compact.html?' + extraParams;
       theFrameObject.height = "360";
       theFrameObject.width = "480";
       theContainerObject.style.borderRightWidth = "40px";
@@ -110,8 +110,8 @@ function setLiveMode(lm) {
 
 function toggleLiveMode() {
   if (liveMode == 'compact') { liveMode = 'dynamic'; }
-  else if (liveMode == 'dynamic') { liveMode = 'board'; }
-  else if (liveMode == 'board') { liveMode = 'compact'; }
+  else if (liveMode == 'dynamic') { liveMode = 'widget'; }
+  else if (liveMode == 'widget') { liveMode = 'compact'; }
   else { liveMode = 'compact'; }
   setLiveMode(liveMode);
 }
