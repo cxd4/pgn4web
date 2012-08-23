@@ -27,6 +27,10 @@ body {
   background: -o-linear-gradient(#FFFFFF, #F0F8FF); /* opera 11.10+ */
 }
 
+a {
+  color: black;
+}
+
 p {
   padding: 0.25em;
 }
@@ -48,33 +52,34 @@ What about the layout below to replace a well known live chess broadcast client 
 </p>
 
 <p>
+</p>
+<p>
 <center>
 <div style='width: 652px; height: 372px; border: solid black 1px;'>
 <iframe id='gameframe' style='width: 640px; height: 360px; border: solid black 1px; margin: 5px;' src='about:blank' frameborder='0' width='640' height='360'></iframe>
 </div>
 </center>
 </p>
-
 <p>
-End user hints for the client user interface:
+</p>
+
+<h3>end user hints for the client user interface</h3>
 <ul>
 <li>use the arrow keys to move throughout the game</li>
 <li>click on the dots at the bottom or click on square F5 for the list of available games</li>
 <li>click on square H5 for a fullscreen view, then use the browser's back button to return to this page</li>
 <li>click on square H8 for further help</li>
 </ul>
-</p>
 
-<p>
-Webmaster hints to setup a live games broadcast:
+<h3>webmaster hints to setup a live games broadcast</h3>
 <ul>
 <li>copy the pgn4web files on the server, for instance in the pgn4web subfolder</li>
 <li>reuse the same tools that generate the chess moves for the flash based client processing the inputs from the electronic boards</li>
 <li>configure those tools to save games as a PGN file pgn4web/live/live.pgn, including clock information if available</li>
-<li>replace the flash object in the live web pages with an inline frame using a src url similar to the example of this page</li>
+<li>replace the flash object in the live web pages with an inline frame using a src url similar to the example of this page and the desired height/width properties</li>
 <li>done</li>
+<li>more info about configuration options <a href="http://code.google.com/p/pgn4web/wiki/DynamicFrame_summary">at the pgn4web wiki</a></li>
 </ul>
-</p>
 
 <script src="pgn4web-server-config.js" type="text/javascript"></script>
 <script  type="text/javascript">
@@ -84,7 +89,7 @@ var pgn4web_live_pointer_url;
 if (pgn4web_live_pointer_url === undefined) { pgn4web_live_pointer_url = "."; }
 
 if (theObject = document.getElementById('gameframe')) {
-  theObject.src = pgn4web_live_pointer_url + '/dynamic-frame.html?ct=blue&hch=t&pf=merida&psr=0.85&pbs=38&scf=t&l=t&' + window.location.search;
+  theObject.src = pgn4web_live_pointer_url + '/dynamic-frame.html?ct=blue&hch=t&pf=merida&scf=t&l=t&' + window.location.search.replace(/^\?/, '');
 }
 
 </script>
