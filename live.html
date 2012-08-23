@@ -42,7 +42,7 @@ a:hover, a:active
 
 <table border="0" cellpadding="0" cellspacing="0" width="99.9%" height="99.9%"><tbody><tr>
 <td align="left" valign="middle">
-<h1 style="color: red;"><a style="color: red;" href=.>pgn4web</a> <a style="color: red;" href="javascript:void(0);" onclick="toggleLiveMode(); this.blur();" title="try a different live view">chess live broadcast</a></h1>
+<h1 style="color: red;"><a style="color: red;" href=.>pgn4web</a> chess live broadcast</h1>
 </td>
 <td align="right" valign="middle">
 <a href=.><img src=pawns.png border=0></a>
@@ -89,7 +89,12 @@ function setLiveMode(lm) {
 
   if ((theFrameObject = document.getElementById("liveframe")) && (theContainerObject = document.getElementById("framecontainer"))) {
     liveMode = lm;
-    if (liveMode == "dynamic") {
+    if (liveMode == "compact") {
+      theFrameObject.src = pgn4web_live_pointer_url + '/live-compact.html?' + extraParams;
+      theFrameObject.height = "360";
+      theFrameObject.width = "480";
+      theContainerObject.style.borderRightWidth = "40px";
+    } else if (liveMode == "dynamic") {
       theFrameObject.src = pgn4web_live_pointer_url + '/dynamic-frame.html?l=t&ct=pink&hch=t&scf=t&pf=m&' + extraParams;
       theFrameObject.height = "100%";
       theFrameObject.width = "100%";
@@ -100,11 +105,9 @@ function setLiveMode(lm) {
       theFrameObject.width = "779";
       theContainerObject.style.borderRightWidth = "23px";
     } else {
-      theFrameObject.src = pgn4web_live_pointer_url + '/live-compact.html?' + extraParams;
-      theFrameObject.height = "360";
-      theFrameObject.width = "480";
-      theContainerObject.style.borderRightWidth = "40px";
+      return;
     }
+    theContainerObject.title = "\"" + liveMode + "\" live view, click here for a different view";
   }
 }
 
