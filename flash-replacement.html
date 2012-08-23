@@ -1,0 +1,94 @@
+<html>
+
+<!--
+  pgn4web javascript chessboard
+  copyright (C) 2009, 2012 Paolo Casaschi
+  see README file and http://pgn4web.casaschi.net
+  for credits, license and more details
+-->
+
+<head>
+
+<title>flash replacement</title>
+
+<link rel="shortcut icon" href="pawn.ico" />
+
+<style type="text/css">
+
+body {
+  margin: 0;
+  padding: 1.75em;
+  font-family: sans-serif;
+  color: black;
+  background: white;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#F0F8FF'); /* IE */
+  background: -webkit-linear-gradient(#FFFFFF, #F0F8FF); /* chrome 10+ */
+  background: -moz-linear-gradient(top,  #FFFFFF,  #F0F8FF); /* firefox 3.6+ */
+  background: -o-linear-gradient(#FFFFFF, #F0F8FF); /* opera 11.10+ */
+}
+
+p {
+  padding: 0.25em;
+}
+
+ul {
+  type: square;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>pgn4web live broadcast: flash replacement</h1>
+
+<p>
+What about the layout below to replace a well known live chess broadcast client based on the adobe flash technology and therefore not supported by mobile devices such as the iphone and the ipad? This page shows equivalent functionality based on HTML5 (javascript + css) that shows properly on mobile devices as well.
+</p>
+
+<p>
+<center>
+<div style='width: 652px; height: 372px; border: solid black 1px;'>
+<iframe id='gameframe' style='width: 640px; height: 360px; border: solid black 1px; margin: 5px;' src='about:blank' frameborder='0' width='640' height='360'></iframe>
+</div>
+</center>
+</p>
+
+<p>
+End user hints for the client user interface:
+<ul>
+<li>use the arrow keys to move throughout the game</li>
+<li>click on the dots at the bottom or click on square F5 for the list of available games</li>
+<li>click on square H5 for a fullscreen view, then use the browser's back button to return to this page</li>
+<li>click on square H8 for further help</li>
+</ul>
+</p>
+
+<p>
+Webmaster hints to setup a live games broadcast:
+<ul>
+<li>copy the pgn4web files on the server, for instance in the pgn4web subfolder</li>
+<li>reuse the same tools that generate the chess moves for the flash based client processing the inputs from the electronic boards</li>
+<li>configure those tools to save games as a PGN file pgn4web/live/live.pgn, including clock information if available</li>
+<li>replace the flash object in the live web pages with an inline frame using a src url similar to the example of this page</li>
+<li>done</li>
+</ul>
+</p>
+
+<script src="pgn4web-server-config.js" type="text/javascript"></script>
+<script  type="text/javascript">
+// this should have been defined in pgn4web-server-config.js
+// setting default value here just in case
+var pgn4web_live_pointer_url;
+if (pgn4web_live_pointer_url === undefined) { pgn4web_live_pointer_url = "."; }
+
+if (theObject = document.getElementById('gameframe')) {
+  theObject.src = pgn4web_live_pointer_url + '/dynamic-frame.html?ct=blue&hch=t&pf=merida&psr=0.85&pbs=38&scf=t&l=t&' + window.location.search;
+}
+
+</script>
+
+</body>
+
+</html>
