@@ -23,7 +23,7 @@ function displayHelp(section) {
 
 
 // custom functions for given events
-// to be redefined AFTER loading pgn4web.js
+// to be redefined AFTER pgn4web.js
 
 function customFunctionOnPgnTextLoad() {}
 function customFunctionOnPgnGameLoad() {}
@@ -31,7 +31,7 @@ function customFunctionOnMove() {}
 function customFunctionOnAlert(msg) {}
 function customFunctionOnCheckLiveBroadcastStatus() {}
 
-//custom header tags APIs for customFunctionOnPgnGameLoad()
+// custom header tags APIs for customFunctionOnPgnGameLoad()
 
 function customPgnHeaderTag(customTagString, htmlElementIdString, gameNum) {
   customTagString = customTagString.replace(/\W+/g, "");
@@ -100,7 +100,7 @@ function myAlert(msg, fatalError) {
   alertNumSinceReset++;
   if (fatalError) { fatalErrorNumSinceReset++; }
   alertLast = (alertLast + 1) % alertLog.length;
-  alertLog[alertLast] = msg  + "\n" + (new Date()).toLocaleString();
+  alertLog[alertLast] = msg + "\n" + (new Date()).toLocaleString();
   if (boardIsDefault(debugShortcutSquare)) { boardShortcut(debugShortcutSquare, "pgn4web v" + pgn4web_version + " debug info, " + alertNum + " alert" + (alertNum > 1 ? "s" : ""), null, true); }
   if (((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) && (boardIsDefault(debugShortcutSquare))) {
     startAlertPrompt();
@@ -153,7 +153,7 @@ function stopKeyProp(e) {
   return false;
 }
 
-// for onFocus and onBlur textbox events, allowing text typing
+// for onFocus/onBlur textbox events, allowing text typing
 var shortcutKeysWereEnabled = false;
 function disableShortcutKeysAndStoreStatus() {
   if ((shortcutKeysWereEnabled = shortcutKeysEnabled) === true) {
@@ -494,7 +494,7 @@ boardShortcut("C6", "search previous finished game", function(t,e){ searchPgnGam
 // D6
 boardShortcut("D6", "search previous unfinished game", function(t,e){ searchPgnGame('\\[\\s*Result\\s*"\\*"\\s*\\]', true); });
 // E6
-boardShortcut("E6", "search next unfinished game", function(t,e){  searchPgnGame('\\[\\s*Result\\s*"\\*"\\s*\\]', false); }, true);
+boardShortcut("E6", "search next unfinished game", function(t,e){ searchPgnGame('\\[\\s*Result\\s*"\\*"\\s*\\]', false); }, true);
 // F6
 boardShortcut("F6", "search next finished game", function(t,e){ searchPgnGame('\\[\\s*Result\\s*"(?!\\*"\\s*\\])', false); }, true);
 // G6
@@ -528,7 +528,7 @@ boardShortcut("D4", "search previous game of same white player", function(t,e){ 
 // E4
 boardShortcut("E4", "search next game of same white player", function(t,e){ searchPgnGame('\\[\\s*White\\s*"' + fixRegExp(gameWhite[currentGame]) + '"\\s*\\]', false); }, true);
 // F4
-boardShortcut("F4", "search next game of same black player", function(t,e){  searchPgnGame('\\[\\s*Black\\s*"' + fixRegExp(gameBlack[currentGame]) + '"\\s*\\]', false); }, true);
+boardShortcut("F4", "search next game of same black player", function(t,e){ searchPgnGame('\\[\\s*Black\\s*"' + fixRegExp(gameBlack[currentGame]) + '"\\s*\\]', false); }, true);
 // G4
 boardShortcut("G4", "search next round of same event", function(t,e){ searchPgnGame('\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])|\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])', false); }, true);
 // H4
@@ -660,12 +660,13 @@ function displayDebugInfo() {
   }
   dbg3 += '\n\n' +
     'GAME: current=' + (currentGame+1) + ' number=' + numberOfGames + '\n' +
+    'COMMENTS: mode=' + (GameHasComments ? (commentsIntoMoveText ? (commentsOnSeparateLines ? 'newline' : 'inline') : 'hidden') : 'none') + '\n' +
     'VARIATION: current=' + CurrentVar + ' number=' + (numberOfVars-1) + '\n' +
     'PLY: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber + '\n' +
     'AUTOPLAY: status=' + (isAutoPlayOn ? 'on' : 'off') + ' delay=' + Delay + 'ms' + ' next=' + autoplayNextGame +
     '\n\n';
   if (LiveBroadcastDelay > 0) {
-    dbg3 += 'LIVEBROADCAST: status=' + liveStatusDebug() + ' ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime() +
+    dbg3 += 'LIVEBROADCAST: status=' + liveStatusDebug() + ' delay=' + LiveBroadcastDelay + 'm' + ' stepping=' + LiveBroadcastSteppingMode + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime() +
     '\n\n';
   }
   var thisInfo = customDebugInfo();
@@ -888,9 +889,9 @@ var LiveBroadcastSteppingMode = false;
 var ParseLastMoveError = false;
 
 var castleRook = -1;
-var mvCapture =  0;
-var mvIsCastling =  0;
-var mvIsPromotion =  0;
+var mvCapture = 0;
+var mvIsCastling = 0;
+var mvIsPromotion = 0;
 var mvFromCol = -1;
 var mvFromRow = -1;
 var mvToCol = -1;
@@ -968,7 +969,7 @@ var commentsOnSeparateLines = false;
 
 var pgnUrl = '';
 
-CastlingLong  = new Array(2);
+CastlingLong = new Array(2);
 CastlingShort = new Array(2);
 Moves = new Array();
 MoveComments = new Array();
@@ -1329,7 +1330,7 @@ function HighlightLastMove() {
     }
   }
 
-  // find halfmove to be highlighted, negative for starting position (nothing to highlight)
+  // halfmove to be highlighted, negative for starting position (nothing to highlight)
   var showThisMove = CurrentPly - 1;
   if (showThisMove > StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]) { showThisMove = StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]; }
 
@@ -1343,14 +1344,14 @@ function HighlightLastMove() {
     theShowCommentTextObject.innerHTML = text;
   }
 
-  // show side to move
+  // side to move
   whiteToMove = ((showThisMove+1)%2 === 0);
   text = whiteToMove ? 'white' : 'black';
 
   if (theObj = document.getElementById("GameSideToMove"))
   { theObj.innerHTML = text; }
 
-  // show clock if any
+  // clock
   lastMoverClockObject = document.getElementById(whiteToMove ?
     "GameBlackClock" : "GameWhiteClock");
   initialLastMoverClock = whiteToMove ?
@@ -1403,7 +1404,7 @@ function HighlightLastMove() {
     }
   }
 
-  // show next move
+  // next move
   var theShowMoveTextObject;
   if (theShowMoveTextObject = document.getElementById("GameNextMove")) {
     if (CurrentVar === 0 && showThisMove + 1 >= StartPly + PlyNumber) {
@@ -1416,7 +1417,7 @@ function HighlightLastMove() {
     theShowMoveTextObject.innerHTML = text;
   }
 
-  // show next variations
+  // next variations
   if (theShowMoveTextObject = document.getElementById("GameNextVariations")) {
     text = '';
     if (commentsIntoMoveText) {
@@ -1430,7 +1431,7 @@ function HighlightLastMove() {
     theShowMoveTextObject.innerHTML = text;
   }
 
-  // show last move
+  // last move
   if (theShowMoveTextObject = document.getElementById("GameLastMove")) {
     if ((showThisMove >= StartPly) && Moves[showThisMove]) {
       text = printMoveText(showThisMove, CurrentVar, (CurrentVar !== 0), true, false);
@@ -1442,7 +1443,7 @@ function HighlightLastMove() {
     theShowMoveTextObject.innerHTML = text;
   }
 
-  // show last variations
+  // last variations
   if (theShowMoveTextObject = document.getElementById("GameLastVariations")) {
     text = '';
     if (commentsIntoMoveText) {
@@ -2520,8 +2521,8 @@ function IsCheck(col, row, color) {
   for (ii = -1; ii <= 1; ++ii) {
     for (jj = -1; jj <= 1; ++jj) {
       if ((ii !== 0) || (jj !== 0)) {
-        var checkCol  = col+ii;
-        var checkRow  = row+jj;
+        var checkCol = col+ii;
+        var checkRow = row+jj;
         var thisPiece = 0;
 
         while (SquareOnBoard(checkCol, checkRow) && (thisPiece === 0)) {
@@ -2584,9 +2585,9 @@ function LoadGameHeaders() {
   if ((LiveBroadcastDemo) && (numberOfGames > 0)) {
     for (ii = 0; ii < numberOfGames; ++ii) {
       if ((gameDemoLength[ii] === undefined) || (gameDemoLength[ii] === 0)) {
-         InitFEN(gameFEN[ii]);
-         ParsePGNGameString(pgnGame[ii]);
-         gameDemoLength[ii] = PlyNumber;
+        InitFEN(gameFEN[ii]);
+        ParsePGNGameString(pgnGame[ii]);
+        gameDemoLength[ii] = PlyNumber;
       }
       if (gameDemoMaxPly[ii] === undefined) { gameDemoMaxPly[ii] = 0; }
       if (gameDemoMaxPly[ii] <= gameDemoLength[ii]) { gameResult[ii] = '*'; }
@@ -2865,7 +2866,7 @@ function startVar(isContinuation) {
 }
 
 function closeVar() {
-  if (StartPly + PlyNumber ===  StartPlyVar[CurrentVar]) {
+  if (StartPly + PlyNumber === StartPlyVar[CurrentVar]) {
     myAlert("warning: empty variation " + CurrentVar + " in game " + (currentGame+1), false);
   } else {
     GameHasVariations = true;
@@ -3043,10 +3044,10 @@ function ParsePGNGameString(gameString) {
         for (ii=0; ii<searchThis.length; ii++) {
           if (ss.indexOf(searchThis[ii],start)==start) {
             if (CurrentVar === 0) {
-               start += searchThis[ii].length;
-               end = ss.length;
+              start += searchThis[ii].length;
+              end = ss.length;
             } else {
-               end = start + searchThis[ii].length;
+              end = start + searchThis[ii].length;
             }
             if (MoveCommentsVar[CurrentVar][StartPly+PlyNumber]) { MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' '; }
             MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ss.substring(start, end).replace(/^\s*\{(.*)\}\s*$/, '$1');
@@ -3095,8 +3096,8 @@ function ParsePGNGameString(gameString) {
 
 var NAG = new Array();
 NAG[0] = '';
-NAG[1] = '!';  // 'good move';
-NAG[2] = '?';  // 'bad move';
+NAG[1] = '!'; // 'good move';
+NAG[2] = '?'; // 'bad move';
 NAG[3] = '!!'; // 'very good move';
 NAG[4] = '??'; // 'very bad move';
 NAG[5] = '!?'; // 'speculative move';
@@ -3192,9 +3193,9 @@ function ParseMove(move, plyCount) {
   var toRowMarker = -1;
 
   castleRook = -1;
-  mvIsCastling =  0;
-  mvIsPromotion =  0;
-  mvCapture =  0;
+  mvIsCastling = 0;
+  mvIsPromotion = 0;
+  mvCapture = 0;
   mvFromCol = -1;
   mvFromRow = -1;
   mvToCol = -1;
@@ -3307,7 +3308,7 @@ function ParseMove(move, plyCount) {
   // which captured piece: if nothing found must be en-passant
   if (mvCapture) {
     for (mvCapturedId = 15; mvCapturedId >= 0; mvCapturedId--) {
-      if ((PieceType[1-MoveColor][mvCapturedId] >  0) &&
+      if ((PieceType[1-MoveColor][mvCapturedId] > 0) &&
           (PieceCol[1-MoveColor][mvCapturedId] == mvToCol) &&
           (PieceRow[1-MoveColor][mvCapturedId] == mvToRow)) {
         mvCaptured = PieceType[1-MoveColor][mvCapturedId];
@@ -3547,7 +3548,6 @@ function PrintHTML() {
         } else {
           gameSelectorHeadDisplay = gameSelectorHead;
         }
-        // replace spaces with &nbsp;
         text += gameSelectorHeadDisplay.replace(/ /g, '&nbsp;');
 
         for (ii=0; ii<numberOfGames; ii++) {
@@ -3586,7 +3586,6 @@ function PrintHTML() {
             textSO += ' ' + gameDate[ii].substring(0, gameSelectorChDate) +
               blanks.substr(0, gameSelectorChDate - gameDate[ii].length) + ' ';
           }
-          // replace spaces with &nbsp;
           textSelectOptions += textSO.replace(/ /g, '&nbsp;');
         }
         text += textSelectOptions + '</SELECT></FORM>';
@@ -3996,9 +3995,9 @@ function StoreMove(thisPly) {
 
   // mark captured piece
   if (mvCapturedId >= 0) {
-     PieceType[1-MoveColor][mvCapturedId] = -1;
-     PieceMoveCounter[1-MoveColor][mvCapturedId]++;
-     Board[PieceCol[1-MoveColor][mvCapturedId]][PieceRow[1-MoveColor][mvCapturedId]] = 0;
+    PieceType[1-MoveColor][mvCapturedId] = -1;
+    PieceMoveCounter[1-MoveColor][mvCapturedId]++;
+    Board[PieceCol[1-MoveColor][mvCapturedId]][PieceRow[1-MoveColor][mvCapturedId]] = 0;
   }
 
   // update piece arrays: promotion changes piece type
@@ -4037,14 +4036,14 @@ function UndoMove(thisPly) {
 
   // capture/castle: captured/rook back
   if (mvCapturedId >= 0) {
-     PieceType[1-MoveColor][mvCapturedId] = mvCapturedId;
-     PieceCol[1-MoveColor][mvCapturedId] = HistCol[1][thisPly];
-     PieceRow[1-MoveColor][mvCapturedId] = HistRow[1][thisPly];
-     PieceCol[1-MoveColor][mvCapturedId] = HistCol[1][thisPly];
+    PieceType[1-MoveColor][mvCapturedId] = mvCapturedId;
+    PieceCol[1-MoveColor][mvCapturedId] = HistCol[1][thisPly];
+    PieceRow[1-MoveColor][mvCapturedId] = HistRow[1][thisPly];
+    PieceCol[1-MoveColor][mvCapturedId] = HistCol[1][thisPly];
   } else if (mvIsCastling) {
-     PieceCol[MoveColor][castleRook] = HistCol[1][thisPly];
-     PieceRow[MoveColor][castleRook] = HistRow[1][thisPly];
-     PieceMoveCounter[MoveColor][castleRook]--;
+    PieceCol[MoveColor][castleRook] = HistCol[1][thisPly];
+    PieceRow[MoveColor][castleRook] = HistRow[1][thisPly];
+    PieceMoveCounter[MoveColor][castleRook]--;
   }
 }
 
