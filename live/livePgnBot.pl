@@ -1476,6 +1476,11 @@ sub setup {
   $telnet->prompt("/^/");
 
   cmd_run("iset nowrap 1");
+  cmd_run("iset defprompt 1");
+  cmd_run("iset startpos 1");
+  cmd_run("set width 240");
+  cmd_run("set height 240");
+  cmd_run("set echo 0");
   cmd_run("set bell 0");
   cmd_run("set seek 0");
   cmd_run("set shout 0");
@@ -1485,6 +1490,7 @@ sub setup {
   cmd_run("set chanoff 1");
   cmd_run("set open 0");
   cmd_run("set style 12");
+  cmd_run("set tolerance 5");
   log_terminal("debug: initialization done");
 
   my @startupCommands = read_startupCommands();
