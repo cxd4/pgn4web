@@ -453,134 +453,135 @@ function boardShortcut(square, title, functionPointer, defaultSetting) {
 
 debugShortcutSquare = "A8";
 
-// A8
+
 boardShortcut("A8", "pgn4web v" + pgn4web_version + " debug info", function(t,e){ displayDebugInfo(); }, true);
-// B8
+
 boardShortcut("B8", "show this position FEN string", function(t,e){ displayFenData(); }, true);
-// C8
+
 boardShortcut("C8", "show this game PGN source data", function(t,e){ displayPgnData(false); }, true);
-// D8
+
 boardShortcut("D8", "show full PGN source data", function(t,e){ displayPgnData(true); }, true);
-// E8
+
 boardShortcut("E8", "search help", function(t,e){ displayHelp(e.shiftKey ? "informant_symbols" : "search_tool"); }, true);
-// F8
+
 boardShortcut("F8", "shortcut keys help", function(t,e){ displayHelp("shortcut_keys"); }, true);
-// G8
+
 boardShortcut("G8", "shortcut squares help", function(t,e){ displayHelp("shortcut_squares"); }, true);
-// H8
+
 boardShortcut("H8", "pgn4web help", function(t,e){ displayHelp(e.shiftKey ? "credits_and_license" : ""); }, true);
-// A7
+
 boardShortcut("A7", "pgn4web website", function(t,e){ window.open(pgn4web_project_url); }, true);
-// B7
+
 boardShortcut("B7", "undo last chessboard position update", function(t,e){ undoStackUndo(); }, true);
-// C7
+
 boardShortcut("C7", "redo last undo", function(t,e){ undoStackRedo(); }, true);
-// D7
+
 boardShortcut("D7", "toggle highlight last move", function(t,e){ SetHighlight(!highlightOption); }, true);
-// E7
+
 boardShortcut("E7", "flip board", function(t,e){ if (!e.shiftKey || IsRotated) { FlipBoard(); } }, true);
-// F7
+
 boardShortcut("F7", "toggle show comments in game text", function(t,e){ if (e.shiftKey) { SetCommentsOnSeparateLines(!commentsOnSeparateLines); } else { SetCommentsIntoMoveText(!commentsIntoMoveText); } var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar); }, true);
-// G7
+
 boardShortcut("G7", "toggle autoplay next game", function(t,e){ SetAutoplayNextGame(!autoplayNextGame); }, true);
-// H7
+
 boardShortcut("H7", "toggle enabling shortcut keys", function(t,e){ interactivelyToggleShortcutKeys(); }, true);
-// A6
+
 boardShortcut("A6", "pause live broadcast automatic refresh", function(t,e){ pauseLiveBroadcast(); }, true);
-// B6
+
 boardShortcut("B6", "restart live broadcast automatic refresh", function(t,e){ restartLiveBroadcast(); }, true);
-// C6
+
 boardShortcut("C6", "search previous finished game", function(t,e){ searchPgnGame('\\[\\s*Result\\s*"(?!\\*"\\s*\\])', true); });
-// D6
+
 boardShortcut("D6", "search previous unfinished game", function(t,e){ searchPgnGame('\\[\\s*Result\\s*"\\*"\\s*\\]', true); });
-// E6
+
 boardShortcut("E6", "search next unfinished game", function(t,e){ searchPgnGame('\\[\\s*Result\\s*"\\*"\\s*\\]', false); }, true);
-// F6
+
 boardShortcut("F6", "search next finished game", function(t,e){ searchPgnGame('\\[\\s*Result\\s*"(?!\\*"\\s*\\])', false); }, true);
-// G6
-boardShortcut("G6", "", function(t,e){}, true);
-// H6
+
+boardShortcut("G6", "", function(t,e){}, true); // available
+
 boardShortcut("H6", "force games refresh during live broadcast", function(t,e){ refreshPgnSource(); }, true);
-// A5
+
 boardShortcut("A5", "repeat last search backward", function(t,e){ searchPgnGame(lastSearchPgnExpression, true); }, true);
-// B5
+
 boardShortcut("B5", "search prompt", function(t,e){ searchPgnGamePrompt(); }, true);
-// C5
+
 boardShortcut("C5", "repeat last search", function(t,e){ searchPgnGame(lastSearchPgnExpression); }, true);
-// D5
+
 boardShortcut("D5", "search previous win result", function(t,e){ searchPgnGame('\\[\\s*Result\\s*"(1-0|0-1)"\\s*\\]', true); }, true);
-// E5
+
 boardShortcut("E5", "search next win result", function(t,e){ searchPgnGame('\\[\\s*Result\\s*"(1-0|0-1)"\\s*\\]', false); }, true);
-// F5
-boardShortcut("F5", "", function(t,e){}, true);
-// G5
-boardShortcut("G5", "", function(t,e){}, true);
-// H5
-boardShortcut("H5", "", function(t,e){}, true);
-// A4
+
+boardShortcut("F5", "", function(t,e){}, true); // available
+
+boardShortcut("G5", "", function(t,e){}, true); // available
+
+boardShortcut("H5", "", function(t,e){}, true); // available
+
 boardShortcut("A4", "search previous event", function(t,e){ searchPgnGame('\\[\\s*Event\\s*"(?!' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])', true); }, true);
-// B4
+
 boardShortcut("B4", "search previous round of same event", function(t,e){ searchPgnGame('\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])|\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])', true); }, true);
-// C4
+
 boardShortcut("C4", "search previous game of same black player", function(t,e){ searchPgnGame('\\[\\s*Black\\s*"' + fixRegExp(gameBlack[currentGame]) + '"\\s*\\]', true); }, true);
-// D4
+
 boardShortcut("D4", "search previous game of same white player", function(t,e){ searchPgnGame('\\[\\s*White\\s*"' + fixRegExp(gameWhite[currentGame]) + '"\\s*\\]', true); }, true);
-// E4
+
 boardShortcut("E4", "search next game of same white player", function(t,e){ searchPgnGame('\\[\\s*White\\s*"' + fixRegExp(gameWhite[currentGame]) + '"\\s*\\]', false); }, true);
-// F4
+
 boardShortcut("F4", "search next game of same black player", function(t,e){ searchPgnGame('\\[\\s*Black\\s*"' + fixRegExp(gameBlack[currentGame]) + '"\\s*\\]', false); }, true);
-// G4
+
 boardShortcut("G4", "search next round of same event", function(t,e){ searchPgnGame('\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])|\\[\\s*Event\\s*"' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\].*\\[\\s*Round\\s*"(?!' + fixRegExp(gameRound[currentGame]) + '"\\s*\\])', false); }, true);
-// H4
+
 boardShortcut("H4", "search next event", function(t,e){ searchPgnGame('\\[\\s*Event\\s*"(?!' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])', false); }, true);
-// A3
+
 boardShortcut("A3", "load first game", function(t,e){ if (numberOfGames > 1) { Init(0); } }, true);
-// B3
+
 boardShortcut("B3", "jump to previous games decile", function(t,e){ if (currentGame > 0) { calculateDeciles(); for (ii=(deciles.length-2); ii>=0; ii--) { if (currentGame > deciles[ii]) { Init(deciles[ii]); break; } } } }, true);
-// C3
+
 boardShortcut("C3", "load previous game", function(t,e){ Init(currentGame - 1); }, true);
-// D3
+
 boardShortcut("D3", "load random game", function(t,e){ if (numberOfGames > 1) { Init(Math.floor(Math.random()*numberOfGames)); } }, true);
-// E3
+
 boardShortcut("E3", "load random game at random position", function(t,e){ randomGameRandomPly(); }, true);
-// F3
+
 boardShortcut("F3", "load next game", function(t,e){ Init(currentGame + 1); }, true);
-// G3
+
 boardShortcut("G3", "jump to next games decile", function(t,e){ if (currentGame < numberOfGames - 1) { calculateDeciles(); for (ii=1; ii<deciles.length; ii++) { if (currentGame < deciles[ii]) { Init(deciles[ii]); break; } } } }, true);
-// H3
+
 boardShortcut("H3", "load last game", function(t,e){ if (numberOfGames > 1) { Init(numberOfGames - 1); } }, true);
-// A2
+
 boardShortcut("A2", "stop autoplay", function(t,e){ SetAutoPlay(e.shiftKey); }, true);
-// B2
+
 boardShortcut("B2", "toggle autoplay", function(t,e){ SwitchAutoPlay(); }, true);
-// C2
+
 boardShortcut("C2", "autoplay 1 second", function(t,e){ SetAutoplayDelayAndStart((e.shiftKey ? 10 : 1)*1000); }, true);
-// D2
+
 boardShortcut("D2", "autoplay 2 seconds", function(t,e){ SetAutoplayDelayAndStart((e.shiftKey ? 20 : 2)*1000); }, true);
-// E2
+
 boardShortcut("E2", "autoplay 5 seconds", function(t,e){ SetAutoplayDelayAndStart((e.shiftKey ? 50 : 5)*1000); }, true);
-// F2
+
 boardShortcut("F2", "autoplay custom delay", function(t,e){ setCustomAutoplayDelay(); }, true);
-// G2
+
 boardShortcut("G2", "replay up to 6 previous half-moves, then autoplay forward", function(t,e){ replayPreviousMoves(e.shiftKey ? 10 : 6); }, true);
-// H2
+
 boardShortcut("H2", "replay the previous half-move, then autoplay forward", function(t,e){ replayPreviousMoves(e.shiftKey ? 3 : 1); }, true);
-// A1
+
 boardShortcut("A1", "go to game start", function(t,e){ startButton(e); }, true);
-// B1 see setB1C1F1G1boardShortcuts()
-boardShortcut("B1", "", function(t,e){}, true);
-// C1 see setB1C1F1G1boardShortcuts()
-boardShortcut("C1", "", function(t,e){}, true);
-// D1
+
+boardShortcut("B1", "", function(t,e){}, true); // see setB1C1F1G1boardShortcuts()
+
+boardShortcut("C1", "", function(t,e){}, true); // see setB1C1F1G1boardShortcuts()
+
 boardShortcut("D1", "move backward", function(t,e){ GoToMove(CurrentPly - 1); }, true);
-// E1
+
 boardShortcut("E1", "move forward", function(t,e){ GoToMove(CurrentPly + 1); }, true);
-// F1 see setB1C1F1G1boardShortcuts()
-boardShortcut("F1", "", function(t,e){}, true);
-// G1 see setB1C1F1G1boardShortcuts()
-boardShortcut("G1", "", function(t,e){}, true);
-// H1
+
+boardShortcut("F1", "", function(t,e){}, true); // see setB1C1F1G1boardShortcuts()
+
+boardShortcut("G1", "", function(t,e){}, true); // see setB1C1F1G1boardShortcuts()
+
 boardShortcut("H1", "go to game end", function(t,e){ endButton(e); }, true);
+
 
 setB1C1F1G1boardShortcuts();
 
