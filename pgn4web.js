@@ -500,7 +500,7 @@ boardShortcut("F6", "search next finished game", function(t,e){ searchPgnGame('\
 // G6
 boardShortcut("G6", "", function(t,e){}, true);
 // H6
-boardShortcut("H6", "force games refresh during live broadcast", function(t,e){ refreshPgnSource(); }, true);
+boardShortcut("H6", "force games refresh during live broadcast", function(t,e){ if (e.shiftKey) { LiveBroadcastLastReceivedLocal_Reset(); LiveBroadcastLastModified_Reset(); LiveBroadcastStarted = false; } refreshPgnSource(); }, true);
 // A5
 boardShortcut("A5", "repeat last search backward", function(t,e){ searchPgnGame(lastSearchPgnExpression, true); }, true);
 // B5
