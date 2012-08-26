@@ -498,7 +498,7 @@ boardShortcut("E6", "search next unfinished game", function(t,e){ searchPgnGame(
 // F6
 boardShortcut("F6", "search next finished game", function(t,e){ searchPgnGame('\\[\\s*Result\\s*"(?!\\*"\\s*\\])', false); }, true);
 // G6
-boardShortcut("G6", "toggle live broadcast stepping", function(t,e){ LiveBroadcastSteppingMode = !LiveBroadcastSteppingMode; }, true);
+boardShortcut("G6", "", function(t,e){}, true);
 // H6
 boardShortcut("H6", "force games refresh during live broadcast", function(t,e){ refreshPgnSource(); }, true);
 // A5
@@ -660,13 +660,12 @@ function displayDebugInfo() {
   }
   dbg3 += '\n\n' +
     'GAME: current=' + (currentGame+1) + ' number=' + numberOfGames + '\n' +
-    'COMMENTS: mode=' + (GameHasComments ? (commentsIntoMoveText ? (commentsOnSeparateLines ? 'newline' : 'inline') : 'hidden') : 'none') + '\n' +
     'VARIATION: current=' + CurrentVar + ' number=' + (numberOfVars-1) + '\n' +
     'PLY: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber + '\n' +
     'AUTOPLAY: status=' + (isAutoPlayOn ? 'on' : 'off') + ' delay=' + Delay + 'ms' + ' next=' + autoplayNextGame +
     '\n\n';
   if (LiveBroadcastDelay > 0) {
-    dbg3 += 'LIVEBROADCAST: status=' + liveStatusDebug() + ' delay=' + LiveBroadcastDelay + 'm' + ' stepping=' + LiveBroadcastSteppingMode + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime() +
+    dbg3 += 'LIVEBROADCAST: status=' + liveStatusDebug() + ' ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime() +
     '\n\n';
   }
   var thisInfo = customDebugInfo();
