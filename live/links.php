@@ -89,8 +89,7 @@ function print_links() {
     }
 
     print "bookmarks:";
-    print " &nbsp; &nbsp; <a href='" . $_SERVER['PHP SELF'] . "?tu=http://www.theweekinchess.com'>twic</a>";
-    print " &nbsp; &nbsp; <a href='" . $_SERVER['PHP SELF'] . "?tu=http://twiclive.com/silverlive.htm&lf=live.*\.pgn$'>twic live</a>";
+    // print " &nbsp; &nbsp; <a href='" . $_SERVER['PHP SELF'] . "?tu=http://example.com/page.html&lf=live.*\.pgn$'>live games</a>";
     print " &nbsp; &nbsp; <a href='live-grab.php' target='_blank'>grab</a>";
     print "\n";
 }
