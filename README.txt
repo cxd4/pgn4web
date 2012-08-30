@@ -470,10 +470,10 @@ Informant publishing company (http://www.chessinformant.rs). The chess ole
 figurin font is from the ChessOLE project (http://www.chessole.de, David Frank).
 
 Some of the PGN files for the examples are coming from "The Week in Chess" at
-http://www.chesscenter.com/twic/twic.html (files wch08ak.pgn and twic765.pgn),
-from the scid project at http://scid.sourceforge.net (file tactics.pgn), and
-from the Chess Informant publishing company at http://www.chessinformant.rs
-(file chess-informant-sample.pgn).
+http://www.theweekinchess.com (files wch08ak.pgn and twic765.pgn), from the
+scid project at http://scid.sourceforge.net (file tactics.pgn), and from the
+Chess Informant publishing company at http://www.chessinformant.rs (file
+chess-informant-sample.pgn).
 
 The jscolor javascript code is  maintained by Honza Odvarko
 (http://odvarko.cz/) and released under the GNU Lesser General Public License

@@ -422,7 +422,7 @@ END;
         nowDate = new Date();
         epochTimeNow = nowDate.getTime() / 1000;
         twicNum = givenTwicNumber + Math.floor((epochTimeNow - epochTimeOfGivenTwic) / (60 * 60 * 24 * 7));
-        setPgnUrl("http://www.chess.co.uk/twic/zips/twic" + twicNum + "g.zip");
+        setPgnUrl("http://www.theweekinchess.com/zips/twic" + twicNum + "g.zip");
         theObj.value = "header";
       break;
 
@@ -489,7 +489,7 @@ function restoreShortcutKeysStatus() {}
       </form>
     </td>
     <td align="right" valign="top">
-        <select id="urlFormSelect" class="formControl" title="preset the URL saving the time for downloading locally and then uploading the latest PGN from The Week In Chess or New In Chess; please note the URL of the latest issue of the online chess magazines is estimated and might occasionally need manual adjustment; please show your support to the online chess magazines visiting the TWIC website http://www.chess.co.uk/twic/twic.html and the NIC website http://www.newinchess.com" onChange="urlFormSelectChange();">
+        <select id="urlFormSelect" class="formControl" title="preset the URL saving the time for downloading locally and then uploading the latest PGN from The Week In Chess or New In Chess; please note the URL of the latest issue of the online chess magazines is estimated and might occasionally need manual adjustment; please show your support to the online chess magazines visiting the TWIC website http://www.theweekinchess.com and the NIC website http://www.newinchess.com" onChange="urlFormSelectChange();">
           <option value="header">preset URL</option>
           <option value="twic">latest TWIC</option>
           <option value="nic">latest NIC</option>
