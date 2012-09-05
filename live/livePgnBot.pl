@@ -890,7 +890,7 @@ sub process_master_command {
         if ($parameters eq "\"\"") { $parameters = ""; }
         $PGN_ARCHIVE = $parameters;
       }
-      my $fileInfoText = "file=$PGN_ARCHIVE";
+      my $fileInfoText = "archive=$PGN_ARCHIVE";
       if ($PGN_ARCHIVE ne "") {
         my @fileInfo = stat($PGN_ARCHIVE);
         if (defined $fileInfo[9]) {
@@ -957,7 +957,7 @@ sub process_master_command {
       tell_operator("warning: ics relay offline");
     }
   } elsif ($command eq "config") {
-    tell_operator("config: max=$maxGamesNum file=$PGN_FILE follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter autoprioritize=$autoPrioritize prioritize=$prioritizeFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
+    tell_operator("config: max=$maxGamesNum file=$PGN_FILE archive=$PGN_ARCHIVE follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter autoprioritize=$autoPrioritize prioritize=$prioritizeFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
   } elsif ($command eq "date") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
