@@ -434,9 +434,10 @@ END;
 END;
 
   foreach($presetURLsArray as $value) {
-    print("\n" . '      case "' . $value['label'] . '":' . "\n" . '        ' . $value['javascriptCode'] . "\n" . '      break;' . "\n");
+    print("\n" . '      case "' . $value['label'] . '":' . "\n" . '        targetPgnUrl = (function(){ ' . $value['javascriptCode'] . '})();' . "\n" . '      break;' . "\n");
   }
 
+  $formVariableColspan = $presetURLsArray ? 2: 1;
   print <<<END
 
       default:
@@ -466,14 +467,14 @@ function restoreShortcutKeysStatus() {}
 
 </script>
 
-<table width="100%" cellspacing=0 cellpadding=3 border=0><tbody>
+<table width="100%" cellspacing="0" cellpadding="3" border="0"><tbody>
 
   <tr>
     <td align="left" valign="top">
       <form id="uploadForm" action="$thisScript" enctype="multipart/form-data" method="POST" style="display: inline;">
         <input id="uploadFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) file" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="return checkPgnFile();">
     </td>
-    <td colspan=2 width="100%" align="left" valign="top">
+    <td colspan="$formVariableColspan" width="100%" align="left" valign="top">
         <input type="hidden" name="MAX_FILE_SIZE" value="$fileUploadLimitBytes">
         <input id="uploadFormFile" name="pgnFile" type="file" class="formControl" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText">
       </form>
@@ -489,20 +490,17 @@ function restoreShortcutKeysStatus() {}
         <input id="urlFormText" name="pgnUrl" type="text" class="formControl" value="" style="width:100%" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText">
       </form>
     </td>
-    <td align="right" valign="top">
-        <select id="urlFormSelect" class="formControl" title="preset the download URL from the available options, if any" onChange="urlFormSelectChange();">
-          <option value="header">preset URL</option>
 END;
 
-  foreach($presetURLsArray as $value) {
-    print("\n" . '          <option value="' . $value['label'] . '">' . $value['label'] . '</option>');
+  if ($presetURLsArray) {
+    print('    <td align="right" valign="top">' . "\n" . '        <select id="urlFormSelect" class="formControl" title="select the download URL from the preset options, please support the sites that provide the PGN downloads" onChange="urlFormSelectChange();">' . "\n" . '          <option value="header">preset URL</option>' . "\n");
+    foreach($presetURLsArray as $value) {
+      print('          <option value="' . $value['label'] . '">' . $value['label'] . '</option>' . "\n");
+    }
+    print('          <option value="clear">clear URL</option>' . "\n" . '        </select>' . "\n" . '    </td>' . "\n");
   }
 
   print <<<END
-
-          <option value="clear">clear URL</option>
-        </select>
-    </td>
   </tr>
 
   <tr>
@@ -510,7 +508,7 @@ END;
       <form id="textForm" style="display: inline;">
         <input id="pgnFormButton" type="button" class="formControl" value="show games from PGN textbox" style="width:100%;" onClick="loadPgnFromForm();">
     </td>
-    <td colspan=2 rowspan=2 width="100%" align="right" valign="top">
+    <td colspan="$formVariableColspan" rowspan="2" width="100%" align="right" valign="top">
         <textarea id="pgnFormText" class="formControl" name="pgnTextbox" rows=4 style="width:100%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" onChange="checkPgnFormTextSize();">$pgnTextbox</textarea>
       </form>
     </td>
@@ -538,9 +536,9 @@ function print_chessboard() {
 
   print <<<END
 
-<table width=100% cellpadding=0 cellspacing=0 border=0><tr><td valign=top align=left>
+<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td valign="top" align="left">
 <a name="view"></a><div id="pgnStatus" style="font-weight: bold; margin-top: 3em; margin-bottom: 3em;">$pgnStatus</div>
-</td><td valign=top align=right>
+</td><td valign="top" align="right">
 <div style="padding-top: 1em;">
 &nbsp;&nbsp;&nbsp;<a href="#moves" style="color: gray; font-size: 66%;">moves</a>&nbsp;&nbsp;&nbsp;<a href="#view" style="color: gray; font-size: 66%;">board</a>&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray; font-size: 66%;">form</a>
 </div>
@@ -734,10 +732,10 @@ $pgnText
 </textarea></form>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
-<table width=100% cellspacing=0 cellpadding=0 border=0>
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
 
-  <tr valign=bottom>
-    <td align="center" colspan=2>
+  <tr valign="bottom">
+    <td align="center" colspan="2">
 
       <div id="GameSelector"></div>
 
@@ -748,33 +746,33 @@ $pgnText
     </td>
   </tr>
 
-  <tr valign=top>
-    <td valign=top align=center width=50%>
+  <tr valign="top">
+    <td valign="top" align="center" width="50%">
       <span id="GameBoard"></span>
       <p></p>
       <div id="GameButtons"></div>
     </td>
-    <td valign=top align=left width=50%>
+    <td valign="top" align="left" width="50%">
 
-      <table valign=bottom>
+      <table valign="bottom">
       <tr><td class="label">date</td><td class="normalItem"><span id="GameDate"></span>&nbsp;</td></tr>
       <tr><td class="label">site</td><td class="normalItem"><span id="GameSite"></span>&nbsp;</td></tr>
-      <tr><td colspan=2 class="rowSpace"></td></tr>
+      <tr><td colspan="2" class="rowSpace"></td></tr>
       <tr><td class="label">event</td><td class="normalItem"><span id="GameEvent"></span>&nbsp;</td></tr>
       <tr><td class="label">round</td><td class="normalItem"><span id="GameRound"></span>&nbsp;</td></tr>
-      <tr><td colspan=2 class="rowSpace"></td></tr>
+      <tr><td colspan="2" class="rowSpace"></td></tr>
       <tr><td class="label">white</td><td class="boldItem"><span id="GameWhite"></span>&nbsp;</td></tr>
       <tr><td class="label">black</td><td class="boldItem"><span id="GameBlack"></span>&nbsp;</td></tr>
-      <tr><td colspan=2 class="rowSpace"></td></tr>
+      <tr><td colspan="2" class="rowSpace"></td></tr>
       <tr><td class="label">result</td><td class="boldItem"><span id="GameResult"></span>&nbsp;</td></tr>
-      <tr><td colspan=2 class="rowSpace"></td></tr>
+      <tr><td colspan="2" class="rowSpace"></td></tr>
       <tr><td class="label">eco</td><td class="normalItem"><span id="GameECO"></span>&nbsp;</td></tr>
       <tr><td class="label">opening</td><td class="normalItem"><span id="GameOpening"></span>&nbsp;</td></tr>
       <tr><td class="label">variation</td><td class="normalItem"><span id="GameVariation"></span>&nbsp;</td></tr>
-      <tr><td colspan=2 class="rowSpace"></td></tr>
+      <tr><td colspan="2" class="rowSpace"></td></tr>
       <tr><td class="label">last</td><td class="normalItem move"><span id="GameLastMove"></span>&nbsp; &nbsp;<span id="GameLastVariations"></span></td></tr>
       <tr><td class="label">next</td><td class="normalItem move"><span id="GameNextMove"></span>&nbsp; &nbsp;<span id="GameNextVariations"></span></td></tr>
-      <tr><td colspan=2 class="rowSpace"></td></tr>
+      <tr><td colspan="2" class="rowSpace"></td></tr>
       <tr><td class="label">annotator</td><td class="normalItem"><span id="GameAnnotator"></span>&nbsp;</td></tr>
       </table>
 
@@ -782,13 +780,13 @@ $pgnText
   </tr>
 </table>
 
-<table width=100% cellpadding=0 cellspacing=0 border=0><tr><td valign=bottom align=right>
+<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td valign="bottom" align="right">
 &nbsp;&nbsp;&nbsp;<a name="moves" href="#moves" style="color: gray; font-size: 66%;">moves</a>&nbsp;&nbsp;&nbsp;<a href="#view" style="color: gray; font-size: 66%;">board</a>&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray; font-size: 66%;">form</a>
 </tr></table>
 
-<table width=100% cellspacing=0 cellpadding=0 border=0>
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
   <tr>
-    <td colspan=2>
+    <td colspan="2">
       <div style="padding-top: 2em; padding-bottom: 1em; text-align: justify;"><span id="GameText"></span>&nbsp;<span class="move" id="ResultAtGametextEnd"></span></div>
     </td>
   </tr>
@@ -811,11 +809,11 @@ function print_footer() {
   print <<<END
 
 <div>&nbsp;</div>
-<table width=100% cellpadding=0 cellspacing=0 border=0><tr><td valign=bottom align=left>
+<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td valign=bottom align=left>
 <div style="color: gray; margin-top: 1em; margin-bottom: 1em;">$pgnDebugMessage</div>
-</td><td valign=bottom align=right>
+</td><td valign=bottom align="right">
 &nbsp;&nbsp;&nbsp;<a href="#moves" style="color: gray; font-size: 66%;">moves</a>&nbsp;&nbsp;&nbsp;<a href="#view" style="color: gray; font-size: 66%;">board</a>&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray; font-size: 66%;">form</a>
-</tr></table>
+</td></tr></table>
 
 <script type="text/javascript">
 

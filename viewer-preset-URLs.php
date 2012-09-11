@@ -9,10 +9,10 @@
 
 /*
  *  add preset URLs for the viewer.php form using the following template
- *  the javascript code string should ultimately assing the targetPgnUrl variable
+ *  the javascript code string should be the body of a function returning the preset PGN URL string
  *
  *  addPresetURL($label, $javascriptCode);
- *  addPresetURL('games of the month', 'nowDate = new Date(); nowMonth = nowDate.getMonth(); if (nowMonth < 10) { nowMonth = "0" + nowMonth; } targetPgnUrl = "http://example.com/folder/goty" + nowDate.getFullYear() + nowMonth + ".pgn";');
+ *  addPresetURL('games of the month', 'var nowDate = new Date(); var nowMonth = nowDate.getMonth() + 1; if (nowMonth < 10) { nowMonth = "0" + nowMonth; } return "http://example.com/folder/goty" + nowDate.getFullYear() + nowMonth + ".pgn";');
  *
  */
 
