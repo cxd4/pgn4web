@@ -26,11 +26,23 @@ $debugHelpText = "a flashing chessboard signals errors in the PGN data, click on
 
 if (!($goToView = get_pgn())) { $pgnText = $krabbeStartPosition = get_krabbe_position(); }
 
+
+$presetURLsArray = array();
+function addPresetURL($label, $javascriptCode) {
+  global $presetURLsArray;
+  array_push($presetURLsArray, array('label' => $label, 'javascriptCode' => $javascriptCode));
+}
+
+// modify the viewer-preset-URLs.php file to add preset URLs for the viewer's form
+include 'viewer-preset-URLs.php';
+
+
 print_header();
 print_form();
 check_tmpDir();
 print_chessboard();
 print_footer();
+
 
 function get_krabbe_position() {
 
@@ -310,6 +322,7 @@ function print_form() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $zipSupported;
+  global $presetURLsArray;
 
   $thisScript = $_SERVER['SCRIPT_NAME'];
 
@@ -406,7 +419,7 @@ END;
     firstStart = true;
     start_pgn4web();
     if (window.location.hash == "view") { window.location.reload(); }
-    else {window.location.hash = "view"; }
+    else { window.location.hash = "view"; }
 
     return;
   }
@@ -415,34 +428,22 @@ END;
     theObj = document.getElementById("urlFormSelect");
     if (theObj === null) { return; }
 
+    targetPgnUrl = "";
     switch (theObj.value) {
-      case "twic":
-        givenTwicNumber = 765;
-        epochTimeOfGivenTwic = 1246921199; // Mon July 6th, 23:59:59 GMT
-        nowDate = new Date();
-        epochTimeNow = nowDate.getTime() / 1000;
-        twicNum = givenTwicNumber + Math.floor((epochTimeNow - epochTimeOfGivenTwic) / (60 * 60 * 24 * 7));
-        setPgnUrl("http://www.theweekinchess.com/zips/twic" + twicNum + "g.zip");
-        theObj.value = "header";
-      break;
 
-      case "nic":
-        givenNicYear = 2009;
-        givenNicIssue = 1;
-        epochTimeOfGivenNic = 1232585999; // Jan 21st, 23:59:59 GMT
-        nowDate = new Date();
-        epochTimeNow = nowDate.getTime() / 1000;
-        nicYear = givenNicYear + Math.floor((epochTimeNow - epochTimeOfGivenNic) / (60 * 60 * 24 * 365.25));
-        nicIssue = 1 + Math.floor((epochTimeNow - (epochTimeOfGivenNic + (nicYear - givenNicYear) * (60 * 60 * 24 * 365.25))) / (60 * 60 * 24 * 365.25 / 8));
-        setPgnUrl("http://www.newinchess.com/Magazine/GameFiles/mag_" + nicYear + "_" + nicIssue + "_pgn.zip");
-        theObj.value = "header";
-      break;
+END;
+
+  foreach($presetURLsArray as $value) {
+    print("\n" . '      case "' . $value['label'] . '":' . "\n" . '        ' . $value['javascriptCode'] . "\n" . '      break;' . "\n\n");
+  }
+
+  print <<<END
 
       default:
-        setPgnUrl("");
-        theObj.value = "header";
       break;
     }
+    setPgnUrl(targetPgnUrl);
+    theObj.value = "header";
   }
 
 function reset_viewer() {
@@ -489,10 +490,16 @@ function restoreShortcutKeysStatus() {}
       </form>
     </td>
     <td align="right" valign="top">
-        <select id="urlFormSelect" class="formControl" title="preset the URL saving the time for downloading locally and then uploading the latest PGN from The Week In Chess or New In Chess; please note the URL of the latest issue of the online chess magazines is estimated and might occasionally need manual adjustment; please show your support to the online chess magazines visiting the TWIC website http://www.theweekinchess.com and the NIC website http://www.newinchess.com" onChange="urlFormSelectChange();">
+        <select id="urlFormSelect" class="formControl" title="preset the download URL from the available options, if any" onChange="urlFormSelectChange();">
           <option value="header">preset URL</option>
-          <option value="twic">latest TWIC</option>
-          <option value="nic">latest NIC</option>
+END;
+
+  foreach($presetURLsArray as $value) {
+    print("\n" . '          <option value="' . $value['label'] . '">' . $value['label'] . '</option>');
+  }
+
+  print <<<END
+
           <option value="clear">clear URL</option>
         </select>
     </td>
