@@ -493,7 +493,7 @@ function restoreShortcutKeysStatus() {}
 END;
 
   if ($presetURLsArray) {
-    print('    <td align="right" valign="top">' . "\n" . '        <select id="urlFormSelect" class="formControl" title="select the download URL from the preset options, please support the sites that provide the PGN downloads" onChange="urlFormSelectChange();">' . "\n" . '          <option value="header">preset URL</option>' . "\n");
+    print('    <td align="right" valign="top">' . "\n" . '        <select id="urlFormSelect" class="formControl" title="select the download URL from the preset options; please support the sites providing the PGN downloads" onChange="urlFormSelectChange();">' . "\n" . '          <option value="header">preset URL</option>' . "\n");
     foreach($presetURLsArray as $value) {
       print('          <option value="' . $value['label'] . '">' . $value['label'] . '</option>' . "\n");
     }
