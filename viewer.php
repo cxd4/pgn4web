@@ -434,7 +434,7 @@ END;
 END;
 
   foreach($presetURLsArray as $value) {
-    print("\n" . '      case "' . $value['label'] . '":' . "\n" . '        ' . $value['javascriptCode'] . "\n" . '      break;' . "\n\n");
+    print("\n" . '      case "' . $value['label'] . '":' . "\n" . '        ' . $value['javascriptCode'] . "\n" . '      break;' . "\n");
   }
 
   print <<<END
