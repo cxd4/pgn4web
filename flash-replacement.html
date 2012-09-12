@@ -55,7 +55,7 @@ What about the layout below to replace a well known live chess broadcast client 
 </p>
 <p>
 <center>
-<iframe id='gameframe' style='width: 640px; height: 360px; border: solid black 1px; padding: 5px;' src='about:blank' frameborder='0' width='640' height='360'></iframe>
+<iframe id='gameframe' style='width: 640px; height: 360px; border: solid black 1px; padding: 5px;' src='./dynamic-frame.html?ct=blue&hch=t&pf=merida&scf=t&l=t' frameborder='0' width='640' height='360'></iframe>
 </center>
 </p>
 <p>
@@ -79,17 +79,18 @@ What about the layout below to replace a well known live chess broadcast client 
 <li>more info about configuration options <a href="http://code.google.com/p/pgn4web/wiki/DynamicFrame_summary">at the pgn4web wiki</a></li>
 </ul>
 
+// the following two scripts are normally not required in user pages embedding
+// dynamic-frame.html and should be left out unless otherwise instructed
 <script src="pgn4web-server-config.js" type="text/javascript"></script>
-<script  type="text/javascript">
-// this should have been defined in pgn4web-server-config.js
-// setting default value here just in case
+<script type="text/javascript">
 var pgn4web_live_pointer_url;
 if (pgn4web_live_pointer_url === undefined) { pgn4web_live_pointer_url = "."; }
 
-if (theObject = document.getElementById('gameframe')) {
-  theObject.src = pgn4web_live_pointer_url + '/dynamic-frame.html?ct=blue&hch=t&pf=merida&scf=t&l=t&' + window.location.search.replace(/^\?/, '');
+if (pgn4web_live_pointer_url != "." || window.location.search.match(/\?.+$/)) {
+  if (theObject = document.getElementById('gameframe')) {
+    theObject.src = pgn4web_live_pointer_url + '/dynamic-frame.html?' + window.location.search.replace(/^\?(.+)$/, '$1&') + 'ct=blue&hch=t&pf=merida&scf=t&l=t';
+  }
 }
-
 </script>
 
 </body>
