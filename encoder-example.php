@@ -9,9 +9,13 @@
 
 include "pgn-encoder.php";
 
-$pgnText = $_REQUEST["pgnText"];
-if (!$pgnText) { $pgnText = $_REQUEST["pgnTextbox"]; }
-if (!$pgnText) { $pgnText = $_REQUEST["pt"]; }
+function get_param($param, $shortParam, $default) {
+  if (isset($_REQUEST[$param]) && stripslashes(rawurldecode($_REQUEST[$param]))) { return stripslashes(rawurldecode($_REQUEST[$param])); }
+  if (isset($_REQUEST[$shortParam]) && stripslashes(rawurldecode($_REQUEST[$shortParam]))) { return stripslashes(rawurldecode($_REQUEST[$shortParam])); }
+  return $default;
+}
+
+$pgnText = get_param("pgnText", "pt", "");
 
 if ($pgnText) {
   $pgnTextbox = $pgnText = str_replace("\\\"", "\"", $pgnText);

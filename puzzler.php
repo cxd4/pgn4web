@@ -37,10 +37,8 @@ END;
 $debugInfo = "\n";
 
 function get_param($param, $shortParam, $default) {
-  $out = $_REQUEST[$param];
-  if ($out != "") { return $out; }
-  $out = $_REQUEST[$shortParam];
-  if ($out != "") { return $out; }
+  if (isset($_REQUEST[$param]) && stripslashes(rawurldecode($_REQUEST[$param]))) { return stripslashes(rawurldecode($_REQUEST[$param])); }
+  if (isset($_REQUEST[$shortParam]) && stripslashes(rawurldecode($_REQUEST[$shortParam]))) { return stripslashes(rawurldecode($_REQUEST[$shortParam])); }
   return $default;
 }
 

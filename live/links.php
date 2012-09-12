@@ -95,11 +95,9 @@ function print_links() {
 }
 
 function get_param($param, $shortParam, $default) {
-    $out = stripslashes(rawurldecode($_REQUEST[$param]));
-    if ($out != "") { return $out; }
-    $out = stripslashes(rawurldecode($_REQUEST[$shortParam]));
-    if ($out != "") { return $out; }
-    return $default;
+  if (isset($_REQUEST[$param]) && stripslashes(rawurldecode($_REQUEST[$param]))) { return stripslashes(rawurldecode($_REQUEST[$param])); }
+  if (isset($_REQUEST[$shortParam]) && stripslashes(rawurldecode($_REQUEST[$shortParam]))) { return stripslashes(rawurldecode($_REQUEST[$shortParam])); }
+  return $default;
 }
 
 function make_absolute($url, $base) {

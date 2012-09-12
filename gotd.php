@@ -11,15 +11,13 @@ error_reporting(E_ERROR | E_PARSE);
 
 
 function get_param($param, $shortParam, $default) {
-  $out = $_REQUEST[$param];
-  if ($out != "") { return $out; }
-  $out = $_REQUEST[$shortParam];
-  if ($out != "") { return $out; }
+  if (isset($_REQUEST[$param]) && stripslashes(rawurldecode($_REQUEST[$param]))) { return stripslashes(rawurldecode($_REQUEST[$param])); }
+  if (isset($_REQUEST[$shortParam]) && stripslashes(rawurldecode($_REQUEST[$shortParam]))) { return stripslashes(rawurldecode($_REQUEST[$shortParam])); }
   return $default;
 }
 
-
 $pgnData = get_param("pgnData", "pd", "gotd.pgn");
+
 
 function get_pgnText($pgnUrl) {
   if (strpos($pgnUrl, ":") || (strpos($pgnUrl, "%3A"))) { return "[Event \"error: invalid pgnData=$pgnUrl\"]\n"; }

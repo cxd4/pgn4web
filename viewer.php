@@ -72,19 +72,22 @@ function get_krabbe_position() {
   return $krabbePositions[rand(0, count($krabbePositions)-1)];
 }
 
+function get_param($param, $shortParam, $default) {
+  if (isset($_REQUEST[$param]) && stripslashes(rawurldecode($_REQUEST[$param]))) { return stripslashes(rawurldecode($_REQUEST[$param])); }
+  if (isset($_REQUEST[$shortParam]) && stripslashes(rawurldecode($_REQUEST[$shortParam]))) { return stripslashes(rawurldecode($_REQUEST[$shortParam])); }
+  return $default;
+}
+
 function get_pgn() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $zipSupported;
 
-  $pgnDebugInfo = $pgnDebugInfo . $_REQUEST["debug"];
+  $pgnDebugInfo = $pgnDebugInfo . get_param("debug", "d", "");
 
-  $pgnText = $_REQUEST["pgnText"];
-  if (!$pgnText) { $pgnText = $_REQUEST["pgnTextbox"]; }
-  if (!$pgnText) { $pgnText = $_REQUEST["pt"]; }
+  $pgnText = get_param("pgnText", "pt", "");
 
-  $pgnUrl = $_REQUEST["pgnUrl"];
-  if (!$pgnUrl) { $pgnUrl = $_REQUEST["pu"]; }
+  $pgnUrl = get_param("pgnUrl", "pu", "");
 
   if ($pgnText) {
     $pgnStatus = "PGN games from textbox input";
