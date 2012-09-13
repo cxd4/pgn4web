@@ -55,7 +55,11 @@ What about the layout below to replace a well known live chess broadcast client 
 </p>
 <p>
 <center>
-<iframe id='gameframe' style='width: 640px; height: 360px; border: solid black 1px; padding: 5px;' src='./dynamic-frame.html?ct=blue&hch=t&pf=merida&scf=t&l=t' frameborder='0' width='640' height='360'></iframe>
+<iframe id='gameframe' frameborder='0' scrolling='no'
+ style='width: 640px; height: 360px; border: solid black 1px; padding: 5px; margin: 0; background: transparent;'
+ src='./dynamic-frame.html?ct=blue&hch=t&pf=merida&scf=t&l=t'
+>your web browser and/or your host do not support iframes as required to display the chessboard
+</iframe>
 </center>
 </p>
 <p>
@@ -74,13 +78,13 @@ What about the layout below to replace a well known live chess broadcast client 
 <li>copy the pgn4web files on the server, for instance in the pgn4web subfolder</li>
 <li>reuse the same tools that generate the chess moves for the flash based client processing the inputs from the electronic boards</li>
 <li>configure those tools to save games as a PGN file pgn4web/live/live.pgn, including clock information if available</li>
-<li>replace the flash object in the live web pages with an inline frame using a src url similar to the example of this page and the desired height/width properties</li>
+<li>replace the flash object in the live web pages with an inline frame using a src url similar to the example of this page, setting the height/width appropriate to your page and adding any desired iframe css style property</li>
 <li>done</li>
 <li>more info about configuration options <a href="http://code.google.com/p/pgn4web/wiki/DynamicFrame_summary">at the pgn4web wiki</a></li>
 </ul>
 
 <!--
-  the following two scripts are normally not required in user pages embedding
+  the following scripts are normally not required in user pages embedding
   dynamic-frame.html and should be left out unless otherwise instructed
 -->
 <script src="pgn4web-server-config.js" type="text/javascript"></script>
