@@ -39,6 +39,13 @@ ul {
   type: square;
 }
 
+.exampleLink {
+  background: #E6EDF3;
+  padding-left: 0.25em;
+  padding-right: 0.25em;
+  white-space: pre;
+}
+
 </style>
 
 </head>
@@ -75,10 +82,11 @@ What about the layout below to replace a well known live chess broadcast client 
 
 <h3>webmaster hints to setup a live games broadcast</h3>
 <ul>
-<li>copy the pgn4web files on the server, for instance in the pgn4web subfolder</li>
+<li>copy the pgn4web files on the server, for instance in the folder accessible as <span class='exampleLink'>http://example.com/somewhere/pgn4web/</span></li>
 <li>reuse the same tools that generate the chess moves for the flash based client processing the inputs from the electronic boards</li>
-<li>configure those tools to save games as a PGN file pgn4web/live/live.pgn, including clock information if available</li>
-<li>replace the flash object in the live web pages with an inline frame using a src url similar to the example of this page, setting the height/width appropriate to your page and adding any desired iframe css style property</li>
+<li>configure those tools to save games as a PGN file accessible as <span class='exampleLink'>http://example.com/somewhere/pgn4web/live/live.pgn</span>, including clock information if available</li>
+<li>replace the flash object in the live web pages with an inline frame using a src url similar to the example of this page, such as <span class='exampleLink'>http://example.com/somewhere/pgn4web/dynamic-frame.html?<span id='urlparameters'></span></span></li>
+<li>set the inline frame height/width as appropriate to each live web page on the server and add any desired iframe css style property</li>
 <li>done</li>
 <li>more info about configuration options <a href="http://code.google.com/p/pgn4web/wiki/DynamicFrame_summary">at the pgn4web wiki</a></li>
 </ul>
@@ -91,10 +99,16 @@ What about the layout below to replace a well known live chess broadcast client 
 <script type="text/javascript">
 var pgn4web_live_pointer_url;
 if (pgn4web_live_pointer_url === undefined) { pgn4web_live_pointer_url = "."; }
-
-if (pgn4web_live_pointer_url != "." || window.location.search.match(/\?.+$/)) {
-  if (theObject = document.getElementById('gameframe')) {
-    theObject.src = pgn4web_live_pointer_url + '/dynamic-frame.html?' + window.location.search.replace(/^\?(.+)$/, '$1&') + 'ct=blue&hch=t&pf=merida&scf=t&l=t';
+if (theIframeObject = document.getElementById('gameframe')) {
+  var matches = theIframeObject.src.match(/\?(.*)(#|$)/);
+  var iframeParameters = matches ? matches[1] : "";
+  if (pgn4web_live_pointer_url != "." || window.location.search.match(/\?.+$/)) {
+    theIframeObject.src = pgn4web_live_pointer_url + '/dynamic-frame.html?' + window.location.search.replace(/^\?(.+)$/, '$1&') + iframeParameters;
+    matches = theIframeObject.src.match(/\?(.*)(#|$)/);
+    iframeParameters = matches ? matches[1] : "";
+  }
+  if (theSpanObject = document.getElementById('urlparameters')) {
+    theSpanObject.innerHTML = iframeParameters;
   }
 }
 </script>
