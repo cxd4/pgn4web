@@ -56,7 +56,7 @@ END;
 if ($handle = fopen($logFile, "rb")) {
   $contents = fread($handle, filesize($logFile));
   fclose($handle);
-  print(preg_replace("/(http:\/\/\S+)/", '<a class="link" href="$1" target="_blank">$1</a>', $contents));
+  print(preg_replace("/(https?:\/\/\S+)/", '<a class="link" href="$1" target="_blank">$1</a>', $contents));
   print('<a name="bottom" href="#top" onclick="this.blur();">---- -- --</a>');
 } else {
   print("$logFile not found");
