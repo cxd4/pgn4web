@@ -1432,7 +1432,7 @@ sub setup {
 
     $telnet->login(Name => $BOT_HANDLE, Password => $BOT_PASSWORD);
     $username = $BOT_HANDLE;
-    log_terminal("info: successfully logged as user $BOT_HANDLE");
+    log_terminal("info: logged in as user $BOT_HANDLE");
 
   } else {
 
@@ -1452,7 +1452,7 @@ sub setup {
         last;
       }
       if ($line =~ /("[^"]*" is a registered name|\S+ is already logged in)/) {
-        log_terminal("error: can not login as $BOT_HANDLE: $1");
+        log_terminal("error: failed login as $BOT_HANDLE: $1");
         exit 1;
       }
       log_terminal("fyi: ignored line: $line\n");
@@ -1466,11 +1466,11 @@ sub setup {
     if ($match =~ /Starting FICS session as ([a-zA-Z0-9]+)/ ) {
       $username = $1;
     } else {
-      log_terminal("error: can not login as $BOT_HANDLE: $match");
+      log_terminal("error: failed login as $BOT_HANDLE: $match");
       exit 1;
     }
 
-    log_terminal("info: successfully logged as guest $username");
+    log_terminal("info: logged in as guest $username");
   }
 
   $telnet->prompt("/^/");
