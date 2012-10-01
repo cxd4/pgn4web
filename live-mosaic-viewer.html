@@ -46,18 +46,7 @@
     }
   }
 
-  if (pgnData) {
-    SetPgnUrl(pgnData); // if set, this has precedence over the inline PGN in the HTML file
-
-    // force the page action on the chessboard page, for backward compatibility with chrome before version 17
-    // see README.txt note about http://crbug.com/60101
-    try {
-      if ((typeof(chrome.webRequest) == "undefined") && (backgroundPage = chrome.extension.getBackgroundPage())) {
-        chrome.tabs.getCurrent( function(tab) { backgroundPage.checkWebRequestForPgnFiles({ "tabId": tab.id, url: pgnData }); });
-      }
-    } catch (e) {}
-
-  }
+  SetPgnUrl(pgnData); // if set, this has precedence over the inline PGN in the HTML file
 
   var maxBoards = getMaxBoardFromLocalStorage();
   thisRegExp = /(&|\?)(maxBoards|mb)=([\d]*)(&|$)/i;
@@ -97,13 +86,6 @@
     if (refreshMinutes <= 0) { refreshMinutes = refreshMinutes_default; }
   }
 
-  // special mode for the about.html page of the chess games viewer extension for google chrome
-  if ((typeof(chrome) != "undefined") && (typeof(chrome.extension) != "undefined") && (typeof(chrome.extension.getURL) != "undefined") && (pgnData == chrome.extension.getURL("demoLiveGames.pgn")) && (refreshMinutes)) {
-    refreshMinutes = 0.1;
-    alertFlag = demoFlag = true;
-    if ((!gameDemoMaxPly) || (gameDemoMaxPly.length === 0)) { gameDemoMaxPly = new Array(1, 2, 3, 4); }
-  }
-
   SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, stepFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false)
 
   function getMaxBoardFromLocalStorage() {
@@ -123,19 +105,6 @@
   if (window.location.search.match(thisRegExp) !== null) {
     headlessPageValue = unescape(window.location.search.match(thisRegExp)[3]);
     if ((headlessPageValue == "true") || (headlessPageValue == "t")) { headlessPage = true; }
-  }
-
-  var rememberedFilteredGames = null;
-  // undocumented URL parameter: use only within the chrome extension
-  thisRegExp = /(&|\?)(rememberHidden|rh)=([^&]*)(&|$)/i;
-  if (window.location.search.match(thisRegExp) !== null) {
-    try {
-      rememberedFilteredGames = JSON.parse(unescape(window.location.search.match(thisRegExp)[3]));
-      if (rememberedFilteredGames[rememberedFilteredGames.length - 1] === pgnData) {
-        rememberedFilteredGames.splice(rememberedFilteredGames.length - 1, 1);
-      } else { rememberedFilteredGames = null; }
-    }
-    catch(e) { rememberedFilteredGames = null; }
   }
 
   SetImagePath("alpha/24"); // just to avoid console errors
@@ -488,21 +457,6 @@ var previousPgnGameLength = new Array();
 
 function customFunctionOnPgnTextLoad() {
 
-  if (rememberedFilteredGames) {
-    filteredGames = rememberedFilteredGames;
-    rememberedFilteredGames = null;
-    if (displayGame > 0) {
-      displayGameNum = displayGame > numberOfGames ? numberOfGames - 1 : displayGame - 1;
-    } else if (displayGame < 0) {
-      displayGameNum = displayGame < -numberOfGames ? numberOfGames + 1 : displayGame;
-    } else {
-      displayGameNum = 0;
-    }
-    if ((g = filteredGames.indexOf(gameKey(gameEvent[displayGameNum], gameSite[displayGameNum], gameDate[displayGameNum], gameRound[displayGameNum], gameWhite[displayGameNum], gameBlack[displayGameNum]))) != -1 ) {
-      filteredGames.splice(g,1);
-    }
-  }
-
   if (firstLoadPgnText) { firstGame = firstFromDisplayGame(displayGame); }
 
   unfilteredGames = new Array();
@@ -641,23 +595,6 @@ function previousPage() {
 function newBoards(newMaxBoards) {
   updateBoardFrames(newMaxBoards);
   updateMenu();
-}
-
-function switchBoardView(search) {
-  if ((typeof(chrome) != "undefined") && (chrome.extension) && (pgnUrl) && (LiveBroadcastDelay > 0)) {
-    url = "chess-games-viewer.html?pgnData=" + escape(pgnUrl) + "&refreshMinutes=" + escape(refreshMinutes);
-    if (demoFlag) { url += "&refreshDemo=true&demoPly=" + gameDemoMaxPly.join(); }
-    if ((search !== null) && ((searchGame = gameNumberSearchPgn(search, false, true)) !== false)) {
-      url += "&search=" + escape(searchGame + 1);
-    }
-    if (filteredGames.length) {
-       try { rememberHiddenValue = escape(JSON.stringify(filteredGames.concat(pgnData))); }
-       catch(e) { rememberHiddenValue = null; }
-       rememberHiddenValueMaxLength = 59876; // keep total URL shorter than 64k
-       if (rememberHiddenValue && (rememberHiddenValue.length < rememberHiddenValueMaxLength)) { url += "&rememberHidden=" + rememberHiddenValue; }
-    }
-    location.href = url;
-  }
 }
 
 function cycleHash() {

@@ -1570,7 +1570,6 @@ function undoStackRedo() {
 }
 
 
-// align to chrome-extension/background.html
 function fixCommonPgnMistakes(text) {
   text = text.replace(/[\u00A0\u180E\u2000-\u200A\u202F\u205F\u3000]/g," "); // some "space" to plain space
   text = text.replace(/\u00BD/g,"1/2"); // "half fraction" to "1/2"
