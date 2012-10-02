@@ -84,30 +84,41 @@ a {
   overflow: hidden;
 }
 
+.gameEval {
+  padding-left: 14px;
+  padding-right: 3px;
+  font-size: 14px;
+  background: #F4F4F4;
+  position: absolute;
+  right: 28px;
+}
+
 .gameAnalysis {
+  height: 18px;
+  width: 230px;
+  overflow: hidden;
+  white-space: nowrap;
   margin-top: 28px;
   color: black;
   font-family: sans-serif;
   font-size: 12px;
   font-weight: bold;
+  text-align: left;
 }
 
-.gameToMove {
+.gameFlagAndMoves {
+}
+
+.gameFlagToMove {
   margin-left: 3px;
+  margin-right: 14px;
   height: 5px;
   width: 5px;
   border-color: black;
 }
 
 .gameMoves {
-  width: 154px;
-  overflow: hidden;
   white-space: nowrap;
-}
-
-.gameEval {
-  margin-right: 3px;
-  font-size: 14px;
 }
 
 </style>
@@ -117,10 +128,12 @@ a {
 <script type="text/javascript">
    SetImagePath ("alpha/24");
    SetImageType("png");
-   SetShortcutKeysEnabled(false);
+   SetShortcutKeysEnabled(true);
 
    clearShortcutSquares("A", "23456");
    clearShortcutSquares("BCDEFGH", "2345678");
+   boardShortcut("A1", "go to the analyzed position", function(t,e){ startButton(e); }, true);
+   boardShortcut("H1", "go to the principal variation end", function(t,e){ endButton(e); }, true);
 </script>
 
 </head>
@@ -138,14 +151,13 @@ a {
 <center>
 <div class="container">
 <div id="GameBoard"></div>
-<table class="gameAnalysis" width="230" height="18" cellpadding="0" cellspacing="0" border="0"><tr>
-<td width="31" align="left" valign="bottom">
-<img class="gameToMove" id="GameToMove" src="alpha/24/clear.png" border="1" />&nbsp;
-</td><td width="154" align="left" valign="bottom">
-<div class="gameMoves" id="GameMoves"><span class="gamePv" id="GamePv"></span><span id="GameText"></span></div>
-</td><td width="45" align="right" valign="bottom">
-&nbsp;<span class="gameEval" id="GameEval"></span>
-</td></tr></table>
+<div class="gameAnalysis">
+<div class="gameEval" id="GameEval"></div>
+<div class="gameFlagAndMoves">
+<a href="javascript:void(0);" onclick="GoToMove(StartPlyVar[0], 0); this.blur();"><img class="gameFlagToMove" id="GameFlagToMove" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" border="1" /></a>
+<span class="gameMoves" id="GameMoves"><span class="gamePv" id="GamePv"></span><span id="GameText"></span></span>
+</div>
+</div>
 </center>
 
 <script type="text/javascript">
@@ -191,12 +203,12 @@ function InitializeBackgroundEngine() {
                       if (fenString.indexOf(" b ") !== -1) { ev = -ev; }
                    }
                    document.getElementById("GameEval").innerHTML = ev2NAG(ev);
-                   document.getElementById("GameEval").title = (ev > 0 ? "+" : "") + ev + (ev == Math.floor(ev) ? ".0" : "");
+                   document.getElementById("GameEval").title = "position evaluation: " + (ev > 0 ? "+" : "") + ev + (ev == Math.floor(ev) ? ".0" : "");
                    nodes = parseInt(matches[3], 10);
                    nodesPerSecond = parseInt(matches[4], 10);
                    pv = matches[5].replace(/\s*(\+|stalemate)/g, "").replace(/\s*checkmate/, "#");
                    document.getElementById("GamePv").innerHTML = pv;
-                   document.getElementById("GameMoves").title = pv;
+                   document.getElementById("GameMoves").title = "principal variation:" + pv;
                 }
              }
           };
@@ -240,7 +252,7 @@ if (InitializeBackgroundEngine()) {
 
 
 function customFunctionOnMove() {
-   if (theObject = document.getElementById("GameToMove")) {
+   if (theObject = document.getElementById("GameFlagToMove")) {
       theObject.style.backgroundColor = CurrentPly % 2 ? "black" : "white";
       theObject.title = (CurrentPly % 2 ? "black" : "white") + " to move";
    }
