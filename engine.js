@@ -6,7 +6,7 @@
  */
 
 function showEngineAnalysisPopup() {
-   var engineWin = window.open("engine.html?fs=" + CurrentFEN(), "engine_analysis", "height=336,width=286,resizable=no,scrollbars=no,toolbar=no,location=no,menubar=no,status=no");
+   var engineWin = window.open("engine.html?fs=" + CurrentFEN(), "engine_analysis", "height=334,width=286,resizable=no,scrollbars=no,toolbar=no,location=no,menubar=no,status=no");
    if (window.focus && engineWin) { engineWin.focus(); }
 }
 

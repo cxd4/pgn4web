@@ -19,6 +19,7 @@ body {
   margin: 0;
   padding: 28px;
   background: #F4F4F4;
+  overflow: hidden;
 }
 
 a {
@@ -93,9 +94,8 @@ a {
 
 .gameToMove {
   margin-left: 3px;
-  margin-bottom: 3px;
-  height: 6px;
-  width: 6px;
+  height: 5px;
+  width: 5px;
   border-color: black;
 }
 
@@ -107,7 +107,6 @@ a {
 
 .gameEval {
   margin-right: 3px;
-  margin-bottom: 3px;
   font-size: 14px;
 }
 
@@ -138,13 +137,13 @@ a {
 <center>
 <div class="container">
 <div id="GameBoard"></div>
-<table class="gameAnalysis" width="230" cellpadding="0" cellspacing="0" border="0"><tr>
+<table class="gameAnalysis" width="230" height="18" cellpadding="0" cellspacing="0" border="0"><tr>
 <td width="31" align="left" valign="bottom">
-<img class="gameToMove" id="GameToMove" src="alpha/24/clear.png" border="1" />
+<img class="gameToMove" id="GameToMove" src="alpha/24/clear.png" border="1" />&nbsp;
 </td><td width="154" align="left" valign="bottom">
 <div class="gameMoves" id="GameMoves"><span class="gamePv" id="GamePv"></span><span id="GameText"></span></div>
 </td><td width="45" align="right" valign="bottom">
-<div class="gameEval" id="GameEval"></div>
+&nbsp;<span class="gameEval" id="GameEval"></span>
 </td></tr></table>
 </center>
 
