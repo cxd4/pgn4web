@@ -101,12 +101,14 @@ a {
 
 .gameAnalysis {
   height: 18px;
-  width: 230px;
-  overflow: hidden;
   white-space: nowrap;
   text-align: left;
   padding-top: 28px;
   padding-bottom: 10px;
+}
+
+.gameAnalysisHidden {
+  visibility: hidden;
 }
 
 .gameFlagAndMoves {
@@ -154,7 +156,7 @@ a {
 <center>
 <div class="container">
 <div id="GameBoard"></div>
-<div "visibility:hidden;" class="gameAnalysis" id="GameAnalysis">
+<div class="gameAnalysis gameAnalysisHidden" id="GameAnalysis">
 <div class="gameEval" id="GameEval">&middot;</div>
 <div class="gameFlagAndMoves">
 <a href="javascript:void(0);" onclick="GoToMove(StartPlyVar[0], 0); this.blur();"><img class="gameFlagToMove" id="GameFlagToMove" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" border="1" /></a>
@@ -255,8 +257,10 @@ if (InitializeBackgroundEngine()) {
 }
 
 
-if (theObject = document.getElementById("GameAnalysis")) {
-   theObject.style.visibility = "";
+function customFunctionOnPgnTextLoad() {
+   if (theObject = document.getElementById("GameAnalysis")) {
+      theObject.className = "gameAnalysis";
+   }
 }
 
 function customFunctionOnMove() {
