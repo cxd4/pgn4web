@@ -18,6 +18,7 @@
 body {
   margin: 0;
   padding: 28px;
+  padding-bottom: 18px;
   color: black;
   background: #F4F4F4;
   font-family: sans-serif;
@@ -86,12 +87,13 @@ a {
 .container {
   width: 230px;
   overflow: hidden;
-  position: absolute;
+  position: relative;
 }
 
 .gameEval {
   padding-left: 14px;
   padding-right: 3px;
+  padding-bottom: 10px;
   background: #F4F4F4;
   position: absolute;
   right: 0;
@@ -102,7 +104,9 @@ a {
   width: 230px;
   overflow: hidden;
   white-space: nowrap;
-  margin-top: 28px;
+  text-align: left;
+  padding-top: 28px;
+  padding-bottom: 10px;
 }
 
 .gameFlagAndMoves {
@@ -147,16 +151,17 @@ a {
 </textarea></form>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
-
+<center>
 <div class="container">
 <div id="GameBoard"></div>
-<div class="gameAnalysis">
-<div class="gameEval" id="GameEval"></div>
+<div "visibility:hidden;" class="gameAnalysis" id="GameAnalysis">
+<div class="gameEval" id="GameEval">&middot;</div>
 <div class="gameFlagAndMoves">
 <a href="javascript:void(0);" onclick="GoToMove(StartPlyVar[0], 0); this.blur();"><img class="gameFlagToMove" id="GameFlagToMove" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" border="1" /></a>
 <span class="gameMoves" id="GameMoves"><span class="gamePv" id="GamePv"></span><span id="GameText"></span></span>
 </div>
 </div>
+</center>
 
 <script type="text/javascript">
 
@@ -249,6 +254,10 @@ if (InitializeBackgroundEngine()) {
    setAnalysisTimeout(analysisTime);
 }
 
+
+if (theObject = document.getElementById("GameAnalysis")) {
+   theObject.style.visibility = "";
+}
 
 function customFunctionOnMove() {
    if (theObject = document.getElementById("GameFlagToMove")) {
