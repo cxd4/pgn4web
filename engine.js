@@ -16,7 +16,9 @@ function showEngineAnalysisPopup(engineUrlOptions) {
    }
 }
 
+var pgn4web_engineUrlOptions = "";
+
 if (window.Worker) {
-   boardShortcut("E8", "engine analysis popup", function(t,e){ if (e.shiftKey) { displayHelp("informant_symbols"); } else { showEngineAnalysisPopup(); } }, true);
+   boardShortcut("E8", "engine analysis popup", function(t,e){ if (e.shiftKey) { displayHelp("informant_symbols"); } else { showEngineAnalysisPopup(pgn4web_engineUrlOptions); } }, true);
 }
 
