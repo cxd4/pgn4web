@@ -7,7 +7,7 @@
 
 function showEngineAnalysisPopup() {
    if (gameIsNormalChess(currentGame)) {
-      var engineWin = window.open("engine.html?fs=" + CurrentFEN(), "engine_analysis", "height=334,width=286,resizable=no,scrollbars=no,toolbar=no,location=no,menubar=no,status=no");
+      var engineWin = window.open("engine.html?fs=" + CurrentFEN(), "pgn4web_engine_analysis", "height=334,width=286,resizable=no,scrollbars=no,toolbar=no,location=no,menubar=no,status=no");
       if (window.focus && engineWin) { engineWin.focus(); }
    } else {
       alert("game analysis error: the garbochess engine only supports normal chess; the " + gameVariant[currentGame] + " variant is not supported");

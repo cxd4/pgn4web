@@ -681,7 +681,7 @@ function displayDebugInfo() {
   }
   if (confirm(dbg1 + dbg2 + dbg3 + '\n\nclick OK to show this debug info in a browser window for cut and paste')) {
     if (debugWin && !debugWin.closed) { debugWin.close(); }
-    debugWin = window.open("", "debug_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
+    debugWin = window.open("", "pgn4web_debug_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
     if (debugWin) {
       text = "<html><head><title>pgn4web debug info</title>" +
         "<link rel='shortcut icon' href='pawn.ico' /></head>" +
@@ -709,7 +709,7 @@ pgnWin = null;
 function displayPgnData(allGames) {
   if (typeof(allGames) == "undefined") { allGames = true; }
   if (pgnWin && !pgnWin.closed) { pgnWin.close(); }
-  pgnWin = window.open("", "pgn_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
+  pgnWin = window.open("", "pgn4web_pgn_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if (pgnWin) {
     text = "<html><head><title>pgn4web PGN source</title>" +
       "<link rel='shortcut icon' href='pawn.ico' /></head><body>\n<pre>\n";
@@ -808,7 +808,7 @@ function displayFenData() {
     }
   }
 
-  fenWin = window.open("", "fen_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
+  fenWin = window.open("", "pgn4web_fen_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if (fenWin) {
     text = "<html>" +
       "<head><title>pgn4web FEN string</title><link rel='shortcut icon' href='pawn.ico' /></head>" +
