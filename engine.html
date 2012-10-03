@@ -252,16 +252,23 @@ function setAnalysisTimeout(seconds) {
    setTimeout(StopBackgroundEngine, seconds * 1000);
 }
 
-if (InitializeBackgroundEngine()) {
-   g_backgroundEngine.postMessage("position " + fenString);
-   g_backgroundEngine.postMessage("analyze");
-   setAnalysisTimeout(analysisSeconds);
+function StartEngineAnalysis() {
+   if (InitializeBackgroundEngine()) {
+      g_backgroundEngine.postMessage("position " + CurrentFEN());
+      g_backgroundEngine.postMessage("analyze");
+      setAnalysisTimeout(analysisSeconds);
+   }
 }
 
 
+var beginningOfTime = true;
 function customFunctionOnPgnTextLoad() {
    if (theObject = document.getElementById("GameAnalysis")) {
       theObject.className = "gameAnalysis";
+   }
+   if (beginningOfTime) {
+      StartEngineAnalysis();
+      beginningOfTime = false;
    }
 }
 
