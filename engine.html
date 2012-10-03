@@ -174,16 +174,18 @@ if (window.location.search.match(thisRegExp) !== null) {
 }
 document.getElementById("pgnText").innerHTML = '[Setup "1"]\n[FEN "' + fenString + '"]\n';
 
-var minAnalysisTime = 1;
-var maxAnalysisTime = 300;
-var analysisTime = 10;
-thisRegExp = /(&|\?)(analysisTime|at)=([^&]*)(&|$)/i;
+var minAnalysisSeconds = 1;
+var maxAnalysisSeconds = 300;
+var analysisSeconds = 10;
+thisRegExp = /(&|\?)(analysisSeconds|as)=([1-9][0-9]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
-   analysisTimeCandidate = unescape(window.location.search.match(thisRegExp)[3]);
-   if (!isNaN(analysisTimeCandidate) && (analysisTimeCandidate >= minAnalysisTime) && (analysisTimeCandidate <= maxAnalysisTime)) {
-      analysisTime = analysisTimeCandidate;
-   }
+   analysisSeconds = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
+   if (analysisSeconds < minAnalysisSeconds) { analysisSeconds = minAnalysisSeconds; }
+   if (analysisSeconds > maxAnalysisSeconds) { analysisSeconds = maxAnalysisSeconds; }
 }
+
+
+var engineWorker = "garbochess/garbochess.js";
 
 var g_backgroundEngineValid = true;
 var g_backgroundEngine;
@@ -195,7 +197,7 @@ function InitializeBackgroundEngine() {
    if (!g_backgroundEngine) {
       g_backgroundEngineValid = true;
       try {
-          g_backgroundEngine = new Worker("garbochess/garbochess.js");
+          g_backgroundEngine = new Worker(engineWorker);
           g_backgroundEngine.onmessage = function (e) {
              if (e.data.match("^pv") == "pv") {
                 if (matches = e.data.substr(3, e.data.length - 3).match(/Ply:(\d+) Score:(-*\d+) Nodes:(\d+) NPS:(\d+) (.*)/)) {
@@ -246,14 +248,14 @@ function StopBackgroundEngine() {
    start_pgn4web();
 }
 
-function setAnalysisTimeout(analysisSeconds) {
-   setTimeout(StopBackgroundEngine, analysisSeconds * 1000);
+function setAnalysisTimeout(seconds) {
+   setTimeout(StopBackgroundEngine, seconds * 1000);
 }
 
 if (InitializeBackgroundEngine()) {
    g_backgroundEngine.postMessage("position " + fenString);
    g_backgroundEngine.postMessage("analyze");
-   setAnalysisTimeout(analysisTime);
+   setAnalysisTimeout(analysisSeconds);
 }
 
 
@@ -271,7 +273,7 @@ function customFunctionOnMove() {
 }
 
 function customDebugInfo() {
-   return "nps=" + num2string(g_nodesPerSecond);
+   return "engine=" + engineWorker + " analysisSeconds=" + analysisSeconds + " nodesPerSecond=" + num2string(g_nodesPerSecond);
 }
 
 function num2string(num) {
