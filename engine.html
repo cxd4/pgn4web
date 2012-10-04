@@ -91,7 +91,7 @@ a {
 }
 
 .gameCustomButtons {
-  margin-top: 5px;
+  margin-top: 8px;
   height: 16px;
   width: 100%;
   color: #DDDDDD;
@@ -109,10 +109,10 @@ a {
 
 .gameAnalysis {
   height: 22px;
+  padding-top: 6px;
   padding-bottom: 6px;
   white-space: nowrap;
   text-align: left;
-  padding-top: 3px;
 }
 
 .gameAnalysisHidden {
@@ -161,11 +161,11 @@ a {
 <div class="container">
 <div id="GameBoard"></div>
 <table id="GameCustomButtons" class="gameCustomButtons" cellspacing="0" cellpadding="0" border="0"><tr valign="middle">
-<td width="20%" align="center" onclick="GoToMove(StartPlyVar[0], 0);" title="go to start">&lt;&lt;</td>
-<td width="20%" align="center" onclick="GoToMove(CurrentPly - 1);" title="move backward">&lt;</td>
-<td width="20%" align="center" id="GameAnalysisFlag">&middot;</td>
-<td width="20%" align="center" onclick="GoToMove(CurrentPly + 1);" title="move forward">&gt;</td>
-<td width="20%" align="center" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0);" title="go to end">&gt;&gt;</td>
+<td id="btnStart" width="25%" align="center" onclick="GoToMove(StartPlyVar[0], 0);" onmouseover="if (CurrentPly > StartPly) { this.style.color = 'black'; }" onmouseout="this.style.color = '';" title="go to start">&lt;&lt;</td>
+<td id="btnBack" width="20%" align="center" onclick="GoToMove(CurrentPly - 1);" onmouseover="if (CurrentPly > StartPly) { this.style.color = 'black'; }" onmouseout="this.style.color = '';" title="move backward">&lt;</td>
+<td width="10%" align="center" id="GameAnalysisFlag"></td>
+<td id="btnForw" width="20%" align="center" onclick="GoToMove(CurrentPly + 1);" onmouseover="if (CurrentPly < StartPly + PlyNumber) { this.style.color = 'black'; }" onmouseout="this.style.color = '';" title="move forward">&gt;</td>
+<td id="btnEnd" width="25%" align="center" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0);" onmouseover="if (CurrentPly < StartPly + PlyNumber) { this.style.color = 'black'; }" onmouseout="this.style.color = '';" title="go to end">&gt;&gt;</td>
 </tr></table>
 <div class="gameAnalysis gameAnalysisHidden" id="GameAnalysis">
 <div class="gameEval" id="GameEval">&middot;</div>
@@ -228,7 +228,7 @@ function InitializeBackgroundEngine() {
                    document.getElementById("GameMoves").innerHTML = pv;
                    document.getElementById("GameMoves").title = "principal variation:" + pv + "; click to follow";
                    document.getElementById("GameMoves").setAttribute("onClick", "addPly(this.innerHTML.replace(/^\\s*(\\S+).*$/, '$1'));");
-                   document.getElementById("GameAnalysisFlag").innerHTML = "&times;";
+                   document.getElementById("GameAnalysisFlag").innerHTML = "&middot;";
                 }
              }
           };
@@ -256,7 +256,7 @@ function StopBackgroundEngine() {
    if (g_backgroundEngine) {
      g_backgroundEngine.terminate();
      g_backgroundEngine = null;
-     document.getElementById("GameAnalysisFlag").innerHTML = "&middot;";
+     document.getElementById("GameAnalysisFlag").innerHTML = "";
    }
 }
 
@@ -288,7 +288,26 @@ function customFunctionOnMove() {
       theObject.style.backgroundColor = CurrentPly % 2 ? "black" : "white";
       theObject.title = (CurrentPly % 2 ? "black" : "white") + " to move";
    }
+
    StartEngineAnalysis();
+
+   if (clickFromCol !== "") {
+      highlightSquare("abcdefgh".indexOf(clickFromCol), "12345678".indexOf(clickFromRow), false);
+   }
+   clickFromCol = "";
+   clickFromRow = "";
+   clickFromPiece = "";
+   lastPromotionMove = lastPromotionPlaceholder;
+   lastPromotionPlaceholder = "";
+
+   if (CurrentPly <= StartPly) {
+      document.getElementById("btnStart").style.color = "";
+      document.getElementById("btnBack").style.color = "";
+   }
+   if (CurrentPly >= StartPly + PlyNumber) {
+      document.getElementById("btnForw").style.color = "";
+      document.getElementById("btnEnd").style.color = "";
+   }
 }
 
 function customDebugInfo() {
@@ -308,11 +327,12 @@ var overwrittenPly;
 var overwrittenPlyNumber;
 function addPly(thisPly) {
    if (!thisPly) { return; }
-   if (thisPly === Moves[CurrentPly]) { return; }
-   overwrittenPly = Moves[CurrentPly];
-   Moves[CurrentPly] = MovesVar[0][CurrentPly] = thisPly;
-   overwrittenPlyNumber = PlyNumber;
-   PlyNumber = PlyNumberVar[0] = CurrentPly + 1 - StartPly;
+   if (thisPly !== Moves[CurrentPly]) {
+      overwrittenPly = Moves[CurrentPly];
+      Moves[CurrentPly] = MovesVar[0][CurrentPly] = thisPly;
+      overwrittenPlyNumber = PlyNumber;
+      PlyNumber = PlyNumberVar[0] = CurrentPly + 1 - StartPly;
+   }
    MoveForward(1);
 }
 
@@ -332,29 +352,37 @@ for (cc=0; cc<8; cc++) { for (rr=0; rr<8; rr++) {
 var clickFromCol = "";
 var clickFromRow = "";
 var clickFromPiece = "";
-var clickFromId = "";
+var lastPromotionMove = "";
+var lastPromotionPlaceholder = "";
 function detectClick(t,e) {
    if (! (matches = t.id.match(/img_tcol([0-7])trow([0-7])/))) { return; }
    thisCol = IsRotated ? 7 - matches[1] : matches[1];
+   thisColChar = "abcdefgh".charAt(thisCol);
    thisRow = IsRotated ? matches[2] : 7 - matches[2];
-   if (clickFromCol !== "") {
-      highlightSquare("abcdefgh".indexOf(clickFromCol), "12345678".indexOf(clickFromRow), false);
-      clickToCol = "abcdefgh".charAt(thisCol);
-      clickToRow = "12345678".charAt(thisRow);
+   thisRowChar = "12345678".charAt(thisRow);
+   if ((lastPromotionMove !== "") && (lastPromotionMove.charAt(2) == thisColChar) && (lastPromotionMove.charAt(3) == thisRowChar)) {
+      thisMove = lastPromotionMove.substr(0,4) + "RBNQ".charAt("QRBN".indexOf(lastPromotionMove.charAt(4)));
+      Moves[CurrentPly - 1] = MovesVar[0][CurrentPly - 1] = thisMove;
+      MoveBackward(1);
+      MoveForward(1);
+      lastPromotionMove = thisMove;
+   } else if (clickFromCol !== "") {
+      setTimeout('highlightSquare("abcdefgh".indexOf("' + clickFromCol + '"), "12345678".indexOf("' + clickFromRow + '"), false);', 77);
+      clickToCol = thisColChar;
+      clickToRow = thisRowChar;
       if ((clickFromCol !== clickToCol) || (clickFromRow !== clickToRow)) {
          var thisMove = clickFromPiece + clickFromCol + clickFromRow + clickToCol + clickToRow;
          if (thisMove == "Ke1g1") { thisMove = "O-O"; }
          if (thisMove == "Ke1c1") { thisMove = "O-O-O"; }
          if (thisMove == "Ke8g8") { thisMove = "O-O"; }
          if (thisMove == "Ke8c8") { thisMove = "O-O-O"; }
-         if ("KQRBN".indexOf(thisMove.charAt(0)) == -1) {
-            if (thisMove.charAt(3) == (CurrentPly % 2 ? "1" : "8")) {
-               thisMove += "Q";
-            }
+         if (("KQRBN".indexOf(thisMove.charAt(0)) == -1) && (thisMove.charAt(3) == (CurrentPly % 2 ? "1" : "8"))) {
+            thisMove += "Q";
+            lastPromotionPlaceholder = thisMove;
          }
          addPly(thisMove);
       }
-      clickFromCol = clickFromRow = "";
+      clickFromCol = clickFromRow = clickFromPiece = "";
    } else {
       cc = CurrentPly % 2;
       for (ii=0; ii<16; ii++) {
@@ -362,9 +390,9 @@ function detectClick(t,e) {
             if (PieceType[cc][ii] != -1) {
                clickFromPiece = " KQRBNP".charAt(PieceType[cc][ii]);
                if (clickFromPiece == "P") { clickFromPiece = ""; }
-               clickFromCol = "abcdefgh".charAt(thisCol);
-               clickFromRow = "12345678".charAt(thisRow);
-               highlightSquare(thisCol, thisRow, true);
+               clickFromCol = thisColChar;
+               clickFromRow = thisRowChar;
+               setTimeout('highlightSquare(' + thisCol + ', ' + thisRow + ', true);', 77);
             }
          }
       }
