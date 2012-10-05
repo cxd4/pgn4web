@@ -162,6 +162,7 @@ h1.pageHeader {
 .gameAnalysisContainer {
   display: none;
   width: 286px; /* same as engine.html width */
+  opacity: 0.8;
 }
 
 .gameAnalysisButtons {
@@ -769,9 +770,10 @@ a.variation {
   function customShortcutKey_Shift_4() { autoHighlightNewmoves = !autoHighlightNewmoves; }
   function customShortcutKey_Shift_5() { autoSwitchNewgames = !autoSwitchNewgames; }
   function customShortcutKey_Shift_6() { toggleShowBoard(); }
-  function customShortcutKey_Shift_7() { toggleShowPlayersInfo(); }
-  function customShortcutKey_Shift_8() { toggleShowTeams(); }
-  function customShortcutKey_Shift_9() { toggleShowEvent(); }
+  function customShortcutKey_Shift_7() { toggleShowTeams(); }
+  function customShortcutKey_Shift_8() { toggleShowEvent(); }
+  function customShortcutKey_Shift_9() { if (analysisBoardOn) { hideAnalysisBoard(); } else { showAnalysisBoard(); } if (window.focus) { window.focus(); } }
+  function customShortcutKey_Shift_0() { showAnalysisBoard(); if (window.focus) { window.focus(); } }
 
   boardShortcut("F5", "toggle event information", function(t,e){ toggleShowEvent(); });
   boardShortcut("G5", "toggle teams information", function(t,e){ toggleShowTeams(); });
@@ -800,7 +802,7 @@ a.variation {
 
   function toggleShowBoard() {
     showBoard = !showBoard;
-    if (theObj = document.getElementById("GameBoardContainer")) {
+    if (theObj = document.getElementById("GameFloatingContainer")) {
       theObj.style.display = showBoard ? "" : "none";
     }
     if (theObj = document.getElementById("GameLiveStatus2")) {
@@ -839,6 +841,7 @@ function gup(name) {
   return "";
 }
 
+var analysisBoardOn = false;
 function hideAnalysisBoard() {
   if (theObject = document.getElementById('GameAnalysisFrame')) {
     theObject.src = "about:blank";
@@ -846,13 +849,16 @@ function hideAnalysisBoard() {
   if (theObject = document.getElementById('GameAnalysisContainer')) {
     theObject.style.display = "none";
   }
+  analysisBoardOn = false;
 }
 
 function showAnalysisBoard() {
+  if (!showBoard) { return; }
   showEngineAnalysisBoard();
   if (theObject = document.getElementById('GameAnalysisContainer')) {
     theObject.style.display = "inline-block";
   }
+  analysisBoardOn = true;
 }
 
 if (window.Worker) {
@@ -869,7 +875,7 @@ if (window.Worker) {
 
 <div class="gameFloatingContainer" id="GameFloatingContainer">
 <div class="gameAnalysisContainer" id="GameAnalysisContainer">
-<div class="gameAnalysisButtons" id="GameAnalysisButtons"><a class="gamePaddedAnalysisButton" href="javascript:void(0);" onclick="showEngineAnalysisPopup();" title="update engine analysis board">v</a><a class="gamePaddedAnalysisButton" href="javascript:void(0);" onclick="hideAnalysisBoard();" title="hide engine analysis board">x</a></div>
+<div class="gameAnalysisButtons" id="GameAnalysisButtons"><a class="gamePaddedAnalysisButton" href="javascript:void(0);" onclick="showAnalysisBoard();" title="update engine analysis board">v</a><a class="gamePaddedAnalysisButton" href="javascript:void(0);" onclick="hideAnalysisBoard();" title="hide engine analysis board">x</a></div>
 <iframe class="gameAnalysisFrame" id="GameAnalysisFrame" name="pgn4web_inline_engine" src="about:blank" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">your web browser and/or your host do not support iframes as required</iframe>
 </div><div class="gameBoardContainer" id="GameBoardContainer">
 <div class="header"><span class="gameEvent" id="GameEvent">&nbsp;</span><a class="gameLiveStatus" id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();">&nbsp;</a></div>
