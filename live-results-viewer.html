@@ -772,8 +772,8 @@ a.variation {
   function customShortcutKey_Shift_6() { toggleShowBoard(); }
   function customShortcutKey_Shift_7() { toggleShowTeams(); }
   function customShortcutKey_Shift_8() { toggleShowEvent(); }
-  function customShortcutKey_Shift_9() { if (analysisBoardOn) { hideAnalysisBoard(); } else { showAnalysisBoard(); } if (window.focus) { window.focus(); } }
-  function customShortcutKey_Shift_0() { showAnalysisBoard(); if (window.focus) { window.focus(); } }
+  function customShortcutKey_Shift_9() { if (analysisBoardOn) { hideAnalysisBoard(); } else { showAnalysisBoard(); } }
+  function customShortcutKey_Shift_0() { showAnalysisBoard(); }
 
   boardShortcut("F5", "toggle event information", function(t,e){ toggleShowEvent(); });
   boardShortcut("G5", "toggle teams information", function(t,e){ toggleShowTeams(); });

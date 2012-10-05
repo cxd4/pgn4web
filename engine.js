@@ -17,7 +17,7 @@ function showEngineAnalysisBoard(urlParameters, target, options) {
          if (typeof(target) == "undefined") { target = pgn4web_engineWindowTarget; }
          if (typeof(options) == "undefined") { options = pgn4web_engineWindowOptions; }
          engineWin = window.open("engine.html?fs=" + CurrentFEN() + (urlParameters ? "&" + urlParameters : ""), target, options);
-         if (window.focus && engineWin) { engineWin.focus(); }
+         if ((engineWin) && (engineWin.top === engineWin.self) && (window.focus)) { engineWin.focus(); }
       } else {
          alert("game analysis error: the garbochess engine only supports normal chess; the " + gameVariant[currentGame] + " variant is not supported");
       }
