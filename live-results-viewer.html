@@ -156,6 +156,7 @@ h1.pageHeader {
   right: 30px; /* defined as gameFloatingContainer.right */
   top: 30px; /* = gameFloatingContainer.right */
   white-space: nowrap;
+  background-color: white;
 }
 
 .gameAnalysisContainer {
@@ -167,7 +168,6 @@ h1.pageHeader {
   width: 255px; /* same as engine.html width - this padding right */
   padding-top: 28px; /* same as engine.html padding */
   padding-right: 31px; /* same as engine.html square size + board margin */
-  background-color: white;
   text-align: right;
   font-size: 11px; /* = header.fontSize */
   font-weight: bold;
@@ -188,7 +188,6 @@ h1.pageHeader {
 .gameBoardContainer {
   display: inline-block;
   width: 324px;
-  background: white;
   padding: 10px; /* defined as gameBoardContainer.padding = body.padding - gameFloatingContainer.right */
   padding-top: 20px; /* = 2 * gameBoardContainer.padding */
   padding-left: 30px; /* = gameBoardContainer.padding + 1/2 * whiteSquare.width */
@@ -850,14 +849,14 @@ function hideAnalysisBoard() {
 }
 
 function showAnalysisBoard() {
-  showEngineAnalysisPopup();
+  showEngineAnalysisBoard();
   if (theObject = document.getElementById('GameAnalysisContainer')) {
     theObject.style.display = "inline-block";
   }
 }
 
 if (window.Worker) {
-   boardShortcut("E8", "engine analysis popup", function(t,e){ if (e.shiftKey) { displayHelp("informant_symbols"); } else { showAnalysisBoard(); } }, true);
+   boardShortcut("E8", "show engine analysis board", function(t,e){ if (e.shiftKey) { displayHelp("informant_symbols"); } else { showAnalysisBoard(); } }, true);
 }
 
 </script>
@@ -870,7 +869,7 @@ if (window.Worker) {
 
 <div class="gameFloatingContainer" id="GameFloatingContainer">
 <div class="gameAnalysisContainer" id="GameAnalysisContainer">
-<div class="gameAnalysisButtons" id="GameAnalysisButtons"><a class="gamePaddedAnalysisButton" href="javascript:void(0);" onclick="showEngineAnalysisPopup();" title="synch analysis board">v</a><a class="gamePaddedAnalysisButton" href="javascript:void(0);" onclick="hideAnalysisBoard();" title="close analysis board">x</a></div>
+<div class="gameAnalysisButtons" id="GameAnalysisButtons"><a class="gamePaddedAnalysisButton" href="javascript:void(0);" onclick="showEngineAnalysisPopup();" title="update engine analysis board">v</a><a class="gamePaddedAnalysisButton" href="javascript:void(0);" onclick="hideAnalysisBoard();" title="hide engine analysis board">x</a></div>
 <iframe class="gameAnalysisFrame" id="GameAnalysisFrame" name="pgn4web_inline_engine" src="about:blank" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">your web browser and/or your host do not support iframes as required</iframe>
 </div><div class="gameBoardContainer" id="GameBoardContainer">
 <div class="header"><span class="gameEvent" id="GameEvent">&nbsp;</span><a class="gameLiveStatus" id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();">&nbsp;</a></div>
