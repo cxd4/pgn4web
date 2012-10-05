@@ -19,7 +19,7 @@ body {
   margin: 0;
   padding: 28px;
   padding-bottom: 20px;
-  color: black;
+  color: #000000;
   background: #F4F4F4;
   font-family: sans-serif;
   font-size: 19px;
@@ -28,7 +28,7 @@ body {
 }
 
 a {
-  color: black;
+  color: #000000;
   text-decoration: none;
 }
 
@@ -127,7 +127,7 @@ a {
   margin-bottom: 1px;
   height: 5px;
   width: 5px;
-  border-color: black;
+  border-color: #000000;
 }
 
 .gameMoves {
@@ -161,11 +161,11 @@ a {
 <div class="container">
 <div id="GameBoard"></div>
 <table id="GameCustomButtons" class="gameCustomButtons" cellspacing="0" cellpadding="0" border="0"><tr valign="middle">
-<td id="btnStart" width="25%" align="center" onclick="GoToMove(StartPlyVar[0], 0);" onmouseover="if (CurrentPly > StartPly) { this.style.color = 'black'; }" onmouseout="this.style.color = '';" title="go to start">&lt;&lt;</td>
-<td id="btnBack" width="20%" align="center" onclick="GoToMove(CurrentPly - 1);" onmouseover="if (CurrentPly > StartPly) { this.style.color = 'black'; }" onmouseout="this.style.color = '';" title="move backward">&lt;</td>
+<td id="btnStart" width="25%" align="center" onclick="GoToMove(StartPlyVar[0], 0);" onmouseover="if (CurrentPly > StartPly) { this.style.color = '#000000'; }" onmouseout="this.style.color = '';" title="go to start">&lt;&lt;</td>
+<td id="btnBack" width="20%" align="center" onclick="GoToMove(CurrentPly - 1);" onmouseover="if (CurrentPly > StartPly) { this.style.color = '#000000'; }" onmouseout="this.style.color = '';" title="move backward">&lt;</td>
 <td width="10%" align="center" id="GameAnalysisFlag"></td>
-<td id="btnForw" width="20%" align="center" onclick="GoToMove(CurrentPly + 1);" onmouseover="if (CurrentPly < StartPly + PlyNumber) { this.style.color = 'black'; }" onmouseout="this.style.color = '';" title="move forward">&gt;</td>
-<td id="btnEnd" width="25%" align="center" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0);" onmouseover="if (CurrentPly < StartPly + PlyNumber) { this.style.color = 'black'; }" onmouseout="this.style.color = '';" title="go to end">&gt;&gt;</td>
+<td id="btnForw" width="20%" align="center" onclick="GoToMove(CurrentPly + 1);" onmouseover="if (CurrentPly < StartPly + PlyNumber) { this.style.color = '#000000'; }" onmouseout="this.style.color = '';" title="move forward">&gt;</td>
+<td id="btnEnd" width="25%" align="center" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0);" onmouseover="if (CurrentPly < StartPly + PlyNumber) { this.style.color = '#000000'; }" onmouseout="this.style.color = '';" title="go to end">&gt;&gt;</td>
 </tr></table>
 <div class="gameAnalysis gameAnalysisHidden" id="GameAnalysis">
 <div class="gameEval" id="GameEval">&middot;</div>
@@ -192,6 +192,16 @@ if (window.location.search.match(thisRegExp) !== null) {
    analysisSeconds = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
    if (analysisSeconds < minAnalysisSeconds) { analysisSeconds = minAnalysisSeconds; }
    if (analysisSeconds > maxAnalysisSeconds) { analysisSeconds = maxAnalysisSeconds; }
+}
+
+var disableInputs;
+thisRegExp = /(&|\?)(disableInputs|di)=([^&]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+   disableInputs = unescape(window.location.search.match(thisRegExp)[3]);
+}
+disableInputs = ((disableInputs == "true") || (disableInputs == "t"));
+if (disableInputs) {
+   document.getElementById("GameCustomButtons").style.visibility = "hidden";
 }
 
 
@@ -221,13 +231,15 @@ function InitializeBackgroundEngine() {
                       if (fenString.indexOf(" b ") !== -1) { ev = -ev; }
                    }
                    document.getElementById("GameEval").innerHTML = ev2NAG(ev);
-                   document.getElementById("GameEval").title = "position evaluation: " + (ev > 0 ? "+" : "") + ev + (ev == Math.floor(ev) ? ".0" : "");
+                   document.getElementById("GameEval").title = (ev > 0 ? "+" : "") + ev + (ev == Math.floor(ev) ? ".0" : "");
                    nodes = parseInt(matches[3], 10);
                    g_nodesPerSecond = parseInt(matches[4], 10);
                    pv = matches[5].replace(/\s*(\+|stalemate)/g, "").replace(/\s*checkmate/, "#");
                    document.getElementById("GameMoves").innerHTML = pv;
-                   document.getElementById("GameMoves").title = "principal variation:" + pv + "; click to follow";
-                   document.getElementById("GameMoves").setAttribute("onClick", "addPly(this.innerHTML.replace(/^\\s*(\\S+).*$/, '$1'));");
+                   document.getElementById("GameMoves").title = pv;
+                   if (!disableInputs) {
+                      document.getElementById("GameMoves").setAttribute("onClick", "addPly(this.innerHTML.replace(/^\\s*(\\S+).*$/, '$1'));");
+                   }
                    document.getElementById("GameAnalysisFlag").innerHTML = "&middot;";
                 }
              }
