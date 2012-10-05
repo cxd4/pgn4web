@@ -151,13 +151,44 @@ h1.pageHeader {
   color: gray;
 }
 
-.gameBoardContainer {
+.gameFloatingContainer {
   position: fixed;
-  right: 30px; /* defined as gameBoardContainer.right */
-  top: 30px; /* = gameBoardContainer.right */
+  right: 30px; /* defined as gameFloatingContainer.right */
+  top: 30px; /* = gameFloatingContainer.right */
+}
+
+.gameAnalysisContainer {
+  display: none;
+  width: 286px; /* same as engine.html width */
+}
+
+.gameAnalysisButtons {
+  width: 255px; /* same as engine.html width - this padding right */
+  padding-top: 28px; /* same as engine.html padding */
+  padding-right: 31px; /* same as engine.html square size + board margin */
+  background-color: white;
+  text-align: right;
+  font-size: 11px; /* = header.fontSize */
+  font-weight: bold;
+}
+
+.gamePaddedAnalysisButton {
+  display: inline-block;
+  width: 28px; /* same as engine.html square size and border */
+  text-align: center;
+  color: #BBBBBB; /* same as engine.html control text color hex */
+}
+
+.gameAnalysisFrame {
+  width: 286; /* same as engine.html width */
+  height: 336; /* same as engine.html height */
+}
+
+.gameBoardContainer {
+  display: inline-block;
   width: 324px;
   background: white;
-  padding: 10px; /* defined as gameBoardContainer.padding = body.padding - gameBoardContainer.right */
+  padding: 10px; /* defined as gameBoardContainer.padding = body.padding - gameFloatingContainer.right */
   padding-top: 20px; /* = 2 * gameBoardContainer.padding */
   padding-left: 30px; /* = gameBoardContainer.padding + 1/2 * whiteSquare.width */
   margin-bottom: 16px; /* = body.fontSize */
@@ -349,7 +380,7 @@ a.variation {
 
 <!--[if IE]>
 <style type="text/css">
-.gameBoardContainer {
+.gameFloatingContainer {
   position: absolute;
 }
 </style>
@@ -363,6 +394,9 @@ a.variation {
 <script src="crc32.js" type="text/javascript"></script>
 
 <script type="text/javascript">
+
+  pgn4web_engineWindowUrlParameters = "lch=FFFFFF&dch=E4E4E4";
+  pgn4web_engineWindowTarget = "pgn4web_inline_engine";
 
   pgnFile_default = detectBaseLocation() ?
     location.protocol + "//" + location.hostname + location.pathname.replace(/\/[^\/]*$/, "/live/live.pgn") :
@@ -805,6 +839,26 @@ function gup(name) {
   return "";
 }
 
+function hideAnalysisBoard() {
+  if (theObject = document.getElementById('GameAnalysisFrame')) {
+    theObject.src = "about:blank";
+  }
+  if (theObject = document.getElementById('GameAnalysisContainer')) {
+    theObject.style.display = "none";
+  }
+}
+
+function showAnalysisBoard() {
+  showEngineAnalysisPopup();
+  if (theObject = document.getElementById('GameAnalysisContainer')) {
+    theObject.style.display = "inline-block";
+  }
+}
+
+if (window.Worker) {
+   boardShortcut("E8", "engine analysis popup", function(t,e){ if (e.shiftKey) { displayHelp("informant_symbols"); } else { showAnalysisBoard(); } }, true);
+}
+
 </script>
 
 </head>
@@ -813,11 +867,16 @@ function gup(name) {
 
 <h1 class="pageHeader" id="pageHeader">pgn4web <a class="pageHeader" href="#games">live chess broadcast</a></h1>
 
-<div class="gameBoardContainer" id="GameBoardContainer">
+<div class="gameFloatingContainer" id="GameFloatingContainer">
+<div class="gameAnalysisContainer" id="GameAnalysisContainer">
+<div class="gameAnalysisButtons" id="GameAnalysisButtons"><a class="gamePaddedAnalysisButton" href="javascript:void(0);" onclick="showEngineAnalysisPopup();" title="synch analysis board">v</a><a class="gamePaddedAnalysisButton" href="javascript:void(0);" onclick="hideAnalysisBoard();" title="close analysis board">x</a></div>
+<iframe class="gameAnalysisFrame" id="GameAnalysisFrame" name="pgn4web_inline_engine" src="about:blank" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">your web browser and/or your host do not support iframes as required</iframe>
+</div><div class="gameBoardContainer" id="GameBoardContainer">
 <div class="header"><span class="gameEvent" id="GameEvent">&nbsp;</span><a class="gameLiveStatus" id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();">&nbsp;</a></div>
 <div class="header"><a class="gameWhite" id="GameWhite" title="white player" href="javascript:void(0);" onclick="openFidePlayerUrl(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();"></a><span class="gameWhiteClock" id="GameWhiteClock" title="white clock"></span><span class="gameBlackClock" id="GameBlackClock" title="black clock"></span><a class="gameBlack" id="GameBlack" title="black player" href="javascript:void(0);" onclick="openFidePlayerUrl(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();"></a></div>
 <div id="GameBoard"></div>
 <div class="footer"><span class="gameSideToMove"><img class="sideToMove" id="SideToMove" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" title="side to move"/>&nbsp;</span><span class="gameText">&nbsp;<a id="GamePrevMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly - 1); this.blur();" title="previous moves"></a><a href="javascript:void(0);" onclick="SetHighlight(!highlightOption); this.blur();" style="font-weight: bold;" id="GameCurrMove" title="current move as shown on chessboard"></a><a id="GameNextMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly + 1); this.blur();" title="next moves"></a><span style="font-weight: bold;">&nbsp;</span></span><a class="gameResult" id="GameResult" href="javascript:void(0);" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); this.blur();" title="go to game end"></a></div>
+</div>
 </div>
 
 <a name="games" class="gamesAnchor" id="gamesAnchor"></a>
