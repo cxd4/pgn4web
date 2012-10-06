@@ -13,6 +13,21 @@ var pgn4web_engineWindowWidth = 30 * 10;
 var engineWin;
 function showEngineAnalysisBoard(urlParameters, target, ww, hh) {
    if (window.Worker) {
+      try {
+         if (engineWin && engineWin.replaceFEN) {
+            engineWin.replaceFEN(CurrentFEN());
+         } else {
+            openEngineWin(urlParameters, target, ww, hh);
+         }
+      } catch(e) {
+         openEngineWin(urlParameters, target, ww, hh);
+      }
+      if ((engineWin) && (engineWin.top === engineWin.self) && (window.focus)) { engineWin.focus(); }
+   }
+}
+
+function openEngineWin(urlParameters, target, ww, hh) {
+   if (window.Worker) {
       if ((typeof(gameVariant[currentGame]) == "undefined") || (gameVariant[currentGame].match(/^(chess|normal|standard|)$/i) !== null)) {
          if (typeof(urlParameters) == "undefined") { urlParameters = pgn4web_engineWindowUrlParameters; }
          if (typeof(target) == "undefined") { target = pgn4web_engineWindowTarget; }
@@ -22,7 +37,6 @@ function showEngineAnalysisBoard(urlParameters, target, ww, hh) {
          if (hh !== "") { options = "height=" + hh + "," + options; }
          if (ww !== "") { options = "width=" + ww + "," + options; }
          engineWin = window.open("engine.html?fs=" + CurrentFEN() + (urlParameters ? "&" + urlParameters : ""), target, options);
-         if ((engineWin) && (engineWin.top === engineWin.self) && (window.focus)) { engineWin.focus(); }
       } else {
          alert("game analysis error: the garbochess engine only supports normal chess; the " + gameVariant[currentGame] + " variant is not supported");
       }

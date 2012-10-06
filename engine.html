@@ -482,6 +482,12 @@ function detectClick(t,e) {
    }
 }
 
+function replaceFEN(FEN) {
+   document.getElementById("pgnText").innerHTML = '[Setup "1"]\n[FEN "' + FEN + '"]\n';
+   firstStart = true;
+   start_pgn4web();
+}
+
 </script>
 
 </body>
