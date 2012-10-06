@@ -17,96 +17,31 @@
 
 body {
   margin: 0;
-  padding: 28px;
-  padding-bottom: 20px;
-  /* color: #000000; */
-  /* background: #F4F4F4; */
   font-family: sans-serif;
-  font-size: 19px;
   overflow: hidden;
 }
 
 a {
-  /* color: #000000; */
   text-decoration: none;
 }
 
-.boardTable {
-  border-style: solid;
-  /* border-color: #DDDDDD; */
-  border-width: 3px;
-  /* background: #F4F4F4; */
-  width: 230px;
-  height: 230px;
-}
-
-.pieceImage {
-  width: 24px;
-  height: 24px;
-}
-
-.whiteSquare,
-.blackSquare,
-.highlightWhiteSquare,
-.highlightBlackSquare {
-  width: 26px;
-  height: 26px;
-  border-style: solid;
-  border-width: 1px;
-}
-
-.whiteSquare,
-.highlightWhiteSquare {
-  /* border-color: #F4F4F4; */
-  /* background: #F4F4F4; */
-}
-
-.blackSquare,
-.highlightBlackSquare {
-  /* border-color: #DDDDDD; */
-  /* background: #DDDDDD; */
-}
-
-.highlightWhiteSquare,
-.highlightBlackSquare {
-  border-style: inset;
-}
-
-.move,
-.variation,
-.comment {
-}
-
-.moveOn,
-.variationOn {
-}
-
 .container {
-  width: 230px;
   overflow: hidden;
   position: relative;
 }
 
 .gameCustomButtons {
-  margin-top: 8px;
-  height: 16px;
   width: 100%;
-  /* color: #BBBBBB; */
-  font-size: 12px;
 }
 
 .gameEval {
-  padding-left: 18px;
-  padding-bottom: 6px;
-  /* background: #F4F4F4; */
   position: absolute;
   right: 0;
+  bottom: 0;
+  z-index: 3;
 }
 
 .gameAnalysis {
-  height: 22px;
-  padding-top: 6px;
-  padding-bottom: 6px;
   white-space: nowrap;
   text-align: left;
 }
@@ -116,19 +51,17 @@ a {
 }
 
 .gameFlagAndMoves {
+  position: absolute;
+  bottom: 0;
+  z-index: 2;
 }
 
 .gameFlagToMove {
-  margin-right: 18px;
-  margin-bottom: 1px;
-  height: 5px;
-  width: 5px;
   border-color: black;
 }
 
 .gameMoves {
   white-space: nowrap;
-  font-size: 12px;
 }
 
 </style>
@@ -145,19 +78,6 @@ a {
 SetHighlightOption(false);
 SetShortcutKeysEnabled(false);
 
-
-var pieceFont = "alpha";
-thisRegExp = /(&|\?)(pieceFont|pf)=([^&]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   pieceFont = unescape(window.location.search.match(thisRegExp)[3]);
-   if (pieceFont == "a") { pieceFont = "alpha"; }
-   if (pieceFont == "m") { pieceFont = "merida"; }
-   if (pieceFont == "u") { pieceFont = "uscf"; }
-   if ((pieceFont != "alpha") && (pieceFont != "merida") && (pieceFont != "uscf")) { pieceFont = "alpha"; }
-}
-SetImagePath(pieceFont + "/24");
-SetImageType("png");
-
 var lightColorHex = "#F4F4F4";
 thisRegExp = /(&|\?)(lightColorHex|lch)=([0-9A-F]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
@@ -167,6 +87,11 @@ var darkColorHex = "#DDDDDD";
 thisRegExp = /(&|\?)(darkColorHex|dch)=([0-9A-F]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
    darkColorHex = "#" + unescape(window.location.search.match(thisRegExp)[3]);
+}
+var highlightColorHex = "#BBBBBB";
+thisRegExp = /(&|\?)(highlightColorHex|hch)=([0-9A-F]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+   highlightColorHex = "#" + unescape(window.location.search.match(thisRegExp)[3]);
 }
 var fontMovesColorHex = "#000000";
 thisRegExp = /(&|\?)(fontMovesColorHex|fmch)=([0-9A-F]*)(&|$)/i;
@@ -178,6 +103,88 @@ thisRegExp = /(&|\?)(controlTextColorHex|ctch)=([0-9A-F]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
    controlTextColorHex = "#" + unescape(window.location.search.match(thisRegExp)[3]);
 }
+var backgroundColorHex = lightColorHex;
+thisRegExp = /(&|\?)(backgroundColorHex|bch)=([0-9A-F]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+   backgroundColorHex = "#" + unescape(window.location.search.match(thisRegExp)[3]);
+}
+
+var squareSize = 30;
+thisRegExp = /(&|\?)(squareSize|ss)=([1-9][0-9]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+   squareSize = unescape(window.location.search.match(thisRegExp)[3]);
+   if (squareSize < 20) { squareSize = 20; }
+}
+var framePadding = squareSize;
+thisRegExp = /(&|\?)(framePadding|fp)=([0-9]+)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+   framePadding = unescape(window.location.search.match(thisRegExp)[3]);
+}
+
+var pieceSizeOptions = new Array(20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 52, 56, 60, 64, 72, 80, 88, 96, 112, 128, 144, 300);
+function defaultPieceSize(squareSize) {
+  targetPieceSize = Math.floor(0.8 * squareSize);
+  for (ii=(pieceSizeOptions.length-1); ii>=0; ii--) {
+    if (pieceSizeOptions[ii] <= targetPieceSize) { return pieceSizeOptions[ii]; }
+  }
+  return pieceSizeOptions[0];
+}
+var pieceSize = defaultPieceSize(squareSize);
+thisRegExp = /(&|\?)(pieceSize|ps)=([1-9][0-9]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+   pieceSize = unescape(window.location.search.match(thisRegExp)[3]);
+}
+var pieceFont = "alpha";
+thisRegExp = /(&|\?)(pieceFont|pf)=([^&]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+   pieceFont = unescape(window.location.search.match(thisRegExp)[3]);
+   if (pieceFont == "a") { pieceFont = "alpha"; }
+   if (pieceFont == "m") { pieceFont = "merida"; }
+   if (pieceFont == "u") { pieceFont = "uscf"; }
+   if ((pieceFont != "alpha") && (pieceFont != "merida") && (pieceFont != "uscf")) { pieceFont = "alpha"; }
+}
+SetImagePath(pieceFont + "/" + pieceSize);
+SetImageType("png");
+
+var fontMovesSize = Math.ceil(squareSize * 11 / 30);
+thisRegExp = /(&|\?)(fontMovesSize|fms)=([1-9][0-9]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+   fontMovesSize = unescape(window.location.search.match(thisRegExp)[3]);
+}
+var fontCommentsSize = Math.ceil(squareSize * 19 / 30);
+thisRegExp = /(&|\?)(fontCommentsSize|fcs)=([1-9][0-9]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+   fontCommentsSize = unescape(window.location.search.match(thisRegExp)[3]);
+}
+
+thisRegExp = /(&|\?)(help|h)=(t|true)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+   document.write("<PRE>");
+   document.write("URL parameters\n");
+   document.write("\n");
+   document.write(" - fenString = FEN position to analyze\n");
+   document.write(" - analysisSeconds = analysis timeout in seconds (default 13)\n");
+   document.write(" - disableInputs = true | false (default false)\n");
+   document.write("\n");
+   document.write(" - squareSize = size of square (default 30)\n");
+   document.write(" - pieceSize = size of pieces | default (default selects piece size based on square size)\n");
+   document.write(" - pieceFont = alpha | merida | uscf (default alpha)\n");
+   document.write("\n");
+   document.write(" - lightColorHex = light square color hex code, like FF0000 (default F4F4F4)\n");
+   document.write(" - darkColorHex = dark square color hex code, like FF0000 (default DDDDDD)\n");
+   document.write(" - highlightColorHex = highlight color hex code, like FF0000 (default BBBBBB)\n");
+   document.write(" - backgroundColorHex = page background color hex code, like FF0000 (default as lightColorHex)\n");
+   document.write(" - controlTextColorHex = control buttons text color hex code, like FF0000 (default BBBBBB)\n");
+   document.write(" - fontMovesColorHex = moves color hex code, like FF0000 (default 000000)\n");
+   document.write("\n");
+   document.write(" - fontMovesSize = moves font size (default selects moves font size based on square size)\n");
+   document.write(" - fontCommentsSize = analysis comments font size (default selects comments font size based on square size)\n");
+   document.write("\n");
+   document.write(" - framePadding = padding within the frame (default as squareSize)\n");
+   document.write("\n");
+   document.write("</PRE>");
+}
+
 
 function myRulesLength(sheet) {
   if (sheet.cssRules) { return sheet.cssRules.length; }
@@ -191,15 +198,20 @@ function myInsertRule(sheet, selector, declaration) {
 }
 
 sheet = document.styleSheets[0];
-myInsertRule(sheet, "body", "color: " + fontMovesColorHex + "; background: " + lightColorHex + ";");
+myInsertRule(sheet, "body", "color: " + fontMovesColorHex + "; background: " + backgroundColorHex + "; padding: " + framePadding + "px;");
 myInsertRule(sheet, "a", "color: " + fontMovesColorHex + ";");
-myInsertRule(sheet, ".boardTable", "border-color: " + darkColorHex + "; background: " + lightColorHex + ";");
-myInsertRule(sheet, ".whiteSquare", "border-color: " + lightColorHex + "; background: " + lightColorHex + ";");
-myInsertRule(sheet, ".highlightWhiteSquare", "border-color: " + lightColorHex + "; background: " + lightColorHex + ";");
-myInsertRule(sheet, ".blackSquare", "border-color: " + darkColorHex + "; background: " + darkColorHex + ";");
-myInsertRule(sheet, ".highlightBlackSquare", "border-color: " + darkColorHex + "; background: " + darkColorHex + ";");
-myInsertRule(sheet, ".gameCustomButtons", "color: " + controlTextColorHex + ";");
-myInsertRule(sheet, ".gameEval", "background: " + lightColorHex + ";");
+myInsertRule(sheet, ".boardTable", "width: " + (squareSize * 8) + "px; height: " + (squareSize * 8) + "px; background: " + lightColorHex + ";");
+myInsertRule(sheet, ".pieceImage", "width: " + pieceSize + "px; height: " + pieceSize + "px;");
+myInsertRule(sheet, ".whiteSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + lightColorHex + ";");
+myInsertRule(sheet, ".highlightWhiteSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + highlightColorHex + ";");
+myInsertRule(sheet, ".blackSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + darkColorHex + ";");
+myInsertRule(sheet, ".highlightBlackSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + highlightColorHex + ";");
+myInsertRule(sheet, ".container", "width: " + (squareSize * 8) + "px;");
+myInsertRule(sheet, ".gameCustomButtons", "height: " + squareSize  + "px; padding-bottom: " + Math.floor(squareSize / 6) + "px; color: " + controlTextColorHex + "; font-size: " + fontMovesSize + "px;");
+myInsertRule(sheet, ".gameAnalysis", "height: " + squareSize + "px;");
+myInsertRule(sheet, ".gameFlagToMove", "height: " + Math.floor(fontMovesSize / 2) + "px; width: " + Math.floor(fontMovesSize / 2) + "px; margin-right: " + squareSize + "px;");
+myInsertRule(sheet, ".gameMoves", "font-size: " + fontMovesSize + "px;");
+myInsertRule(sheet, ".gameEval", "padding-left: " + squareSize + "px; padding-bottom: " + Math.floor(fontCommentsSize / 6) + "px; background: " + backgroundColorHex + "; font-size: " + fontCommentsSize + "px;");
 
 // more URL parameters after the body definition
 
@@ -214,12 +226,12 @@ myInsertRule(sheet, ".gameEval", "background: " + lightColorHex + ";");
 <center>
 <div class="container">
 <div id="GameBoard"></div>
-<table id="GameCustomButtons" class="gameCustomButtons" cellspacing="0" cellpadding="0" border="0"><tr valign="middle">
-<td id="btnStart" width="25%" align="center" onclick="GoToMove(StartPlyVar[0], 0);" onmouseover="if (CurrentPly > StartPly) { this.style.color = fontMovesColorHex; }" onmouseout="this.style.color = '';" title="go to start">&lt;&lt;</td>
-<td id="btnBack" width="20%" align="center" onclick="GoToMove(CurrentPly - 1);" onmouseover="if (CurrentPly > StartPly) { this.style.color = fontMovesColorHex; }" onmouseout="this.style.color = '';" title="move backward">&lt;</td>
-<td width="10%" align="center" id="GameAnalysisFlag"></td>
-<td id="btnForw" width="20%" align="center" onclick="GoToMove(CurrentPly + 1);" onmouseover="if (CurrentPly < StartPly + PlyNumber) { this.style.color = fontMovesColorHex; }" onmouseout="this.style.color = '';" title="move forward">&gt;</td>
-<td id="btnEnd" width="25%" align="center" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0);" onmouseover="if (CurrentPly < StartPly + PlyNumber) { this.style.color = fontMovesColorHex; }" onmouseout="this.style.color = '';" title="go to end">&gt;&gt;</td>
+<table id="GameCustomButtons" class="gameCustomButtons" cellspacing="0" cellpadding="0" border="0"><tr valign="bottom">
+<td id="btnStart" width="25%" align="center" onclick="GoToMove(StartPlyVar[0], 0);" title="go to start">&lt;&lt;</td>
+<td id="btnBack" width="20%" align="center" onclick="GoToMove(CurrentPly - 1);" title="move backward">&lt;</td>
+<td width="10%" align="center" class="gameAnalysisFlag" id="GameAnalysisFlag">&nbsp;</td>
+<td id="btnForw" width="20%" align="center" onclick="GoToMove(CurrentPly + 1);" title="move forward">&gt;</td>
+<td id="btnEnd" width="25%" align="center" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0);" title="go to end">&gt;&gt;</td>
 </tr></table>
 <div class="gameAnalysis gameAnalysisHidden" id="GameAnalysis">
 <div class="gameEval" id="GameEval">&middot;</div>
@@ -297,6 +309,7 @@ function InitializeBackgroundEngine() {
                       document.getElementById("GameMoves").setAttribute("onClick", "addPly(this.innerHTML.replace(/^\\s*(\\S+).*$/, '$1'));");
                    }
                    document.getElementById("GameAnalysisFlag").innerHTML = "&middot;";
+                   document.getElementById("GameAnalysisFlag").title = "analysis engine running";
                 }
              }
           };
@@ -324,7 +337,8 @@ function StopBackgroundEngine() {
    if (g_backgroundEngine) {
      g_backgroundEngine.terminate();
      g_backgroundEngine = null;
-     document.getElementById("GameAnalysisFlag").innerHTML = "";
+     document.getElementById("GameAnalysisFlag").innerHTML = "&nbsp;";
+     document.getElementById("GameAnalysisFlag").title = "";
    }
 }
 

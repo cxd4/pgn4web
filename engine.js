@@ -7,15 +7,20 @@
 
 var pgn4web_engineWindowUrlParameters = "";
 var pgn4web_engineWindowTarget = "pgn4web_engine_analysis";
-var pgn4web_engineWindowOptions = "height=336,width=286,resizable=no,scrollbars=no,toolbar=no,location=no,menubar=no,status=no";
+var pgn4web_engineWindowHeight = 30 * 12;
+var pgn4web_engineWindowWidth = 30 * 10;
 
 var engineWin;
-function showEngineAnalysisBoard(urlParameters, target, options) {
+function showEngineAnalysisBoard(urlParameters, target, ww, hh) {
    if (window.Worker) {
       if ((typeof(gameVariant[currentGame]) == "undefined") || (gameVariant[currentGame].match(/^(chess|normal|standard|)$/i) !== null)) {
          if (typeof(urlParameters) == "undefined") { urlParameters = pgn4web_engineWindowUrlParameters; }
          if (typeof(target) == "undefined") { target = pgn4web_engineWindowTarget; }
-         if (typeof(options) == "undefined") { options = pgn4web_engineWindowOptions; }
+         if (typeof(ww) == "undefined") { ww = pgn4web_engineWindowWidth; }
+         if (typeof(hh) == "undefined") { hh = pgn4web_engineWindowHeight; }
+         var options = "resizable=no,scrollbars=no,toolbar=no,location=no,menubar=no,status=no";
+         if (hh !== "") { options = "height=" + hh + "," + options; }
+         if (ww !== "") { options = "width=" + ww + "," + options; }
          engineWin = window.open("engine.html?fs=" + CurrentFEN() + (urlParameters ? "&" + urlParameters : ""), target, options);
          if ((engineWin) && (engineWin.top === engineWin.self) && (window.focus)) { engineWin.focus(); }
       } else {

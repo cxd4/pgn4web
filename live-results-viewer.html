@@ -161,28 +161,30 @@ h1.pageHeader {
 
 .gameAnalysisContainer {
   display: none;
-  width: 286px; /* same as engine.html width */
+  width: 224px; /* same as engine.html width */
+  padding-left: 40px;
+  padding-right: 10px;
   opacity: 0.8;
 }
 
 .gameAnalysisButtons {
-  width: 255px; /* same as engine.html width - this padding right */
-  padding-top: 28px; /* same as engine.html padding */
-  padding-right: 31px; /* same as engine.html square size + board margin */
+  width: 224px; /* same as engine.html width */
+  height: 28px; /* same as engine.html square size */
   text-align: right;
   font-size: 11px; /* = header.fontSize */
 }
 
 .gamePaddedAnalysisButton {
   display: inline-block;
-  width: 28px; /* same as engine.html square size and border */
-  text-align: center;
-  color: #BBBBBB; /* same as engine.html control text color hex */
+  width: 28px; /* same as engine.html square size */
+  text-align: right;
+  color: #888888; /* same as engine.html control text color hex */
 }
 
 .gameAnalysisFrame {
-  width: 286; /* same as engine.html width */
-  height: 336; /* same as engine.html height */
+  width: 224px; /* same as engine.html width */
+  height: 280px; /* same as engine.html height */
+  margin-bottom: 50px;
 }
 
 .gameBoardContainer {
@@ -395,7 +397,7 @@ a.variation {
 
 <script type="text/javascript">
 
-  pgn4web_engineWindowUrlParameters = "lch=FFFFFF&dch=E4E4E4";
+  pgn4web_engineWindowUrlParameters = "lch=FFFFFF&dch=E4E4E4&hch=C6CEC3&ctch=888888&ss=28&ps=24&fms=11&fcs=19&fp=0";
   pgn4web_engineWindowTarget = "pgn4web_inline_engine";
 
   pgnFile_default = detectBaseLocation() ?
