@@ -717,6 +717,8 @@ a.variation {
     }
   }
 
+  var autoUpdateAnalysis = false;
+
   function customFunctionOnMove() {
     extraMoves = 2;
 
@@ -741,6 +743,10 @@ a.variation {
     if (theObj = document.getElementById("SideToMove")) {
       theObj.style.backgroundColor = CurrentPly % 2 ? "black" : "white";
     }
+
+    if (showBoard && showAnalysis && autoUpdateAnalysis) {
+      showAnalysisBoard();
+    }
   }
 
   function searchGameWithNewMoves(backward) {
@@ -762,7 +768,7 @@ a.variation {
   }
 
   function customDebugInfo() {
-    return "autoHighlightNewmoves=" + autoHighlightNewmoves + " autoSwitchNewgames=" + autoSwitchNewgames + " showBoard=" + showBoard + " showPlayersInfo=" + showPlayersInfo + " showTeams=" + showTeams + " showEvent=" + showEvent;
+    return "autoHighlightNewmoves=" + autoHighlightNewmoves + " autoSwitchNewgames=" + autoSwitchNewgames + " showBoard=" + showBoard + " showPlayersInfo=" + showPlayersInfo + " showTeams=" + showTeams + " showEvent=" + showEvent + " showAnalysis=" + showAnalysis + " autoUpdateAnalysis=" + autoUpdateAnalysis;
   }
 
   function customShortcutKey_Shift_1() { refreshPgnSource(); }
@@ -772,8 +778,8 @@ a.variation {
   function customShortcutKey_Shift_5() { autoSwitchNewgames = !autoSwitchNewgames; }
   function customShortcutKey_Shift_6() { toggleShowBoard(); }
   function customShortcutKey_Shift_7() { toggleShowTeams(); }
-  function customShortcutKey_Shift_8() { toggleShowEvent(); }
-  function customShortcutKey_Shift_9() { if (analysisBoardOn) { hideAnalysisBoard(); } else { showAnalysisBoard(); } }
+  function customShortcutKey_Shift_8() { autoUpdateAnalysis = !autoUpdateAnalysis; }
+  function customShortcutKey_Shift_9() { if (showAnalysis) { hideAnalysisBoard(); } else { showAnalysisBoard(); } }
   function customShortcutKey_Shift_0() { showAnalysisBoard(); }
 
   boardShortcut("F5", "toggle event information", function(t,e){ toggleShowEvent(); });
@@ -842,7 +848,7 @@ function gup(name) {
   return "";
 }
 
-var analysisBoardOn = false;
+var showAnalysis = false;
 function hideAnalysisBoard() {
   if (theObject = document.getElementById('GameAnalysisFrame')) {
     theObject.src = "about:blank";
@@ -850,7 +856,7 @@ function hideAnalysisBoard() {
   if (theObject = document.getElementById('GameAnalysisContainer')) {
     theObject.style.display = "none";
   }
-  analysisBoardOn = false;
+  showAnalysis = false;
 }
 
 function showAnalysisBoard() {
@@ -859,7 +865,7 @@ function showAnalysisBoard() {
     if (theObject = document.getElementById('GameAnalysisContainer')) {
       theObject.style.display = "inline-block";
     }
-    analysisBoardOn = true;
+    showAnalysis = true;
   }
 }
 

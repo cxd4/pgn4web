@@ -315,10 +315,10 @@ function InitializeBackgroundEngine() {
                       if (fenString.indexOf(" b ") !== -1) { ev = -ev; }
                    }
                    document.getElementById("GameEval").innerHTML = ev2NAG(ev);
-                   document.getElementById("GameEval").title = (ev > 0 ? "+" : "") + ev + (ev == Math.floor(ev) ? ".0" : "");
+                   document.getElementById("GameEval").title = (ev > 0 ? " +" : " ") + ev + (ev == Math.floor(ev) ? ".0 " : " ");
                    nodes = parseInt(matches[3], 10);
                    g_nodesPerSecond = parseInt(matches[4], 10);
-                   pv = matches[5].replace(/\s*\+/g, "").replace(/\s*stalemate/, "=").replace(/\s*checkmate/, "#");
+                   pv = matches[5].replace(/(^\s+|\s*\+|\s+$)/g, "").replace(/\s*stalemate/, "=").replace(/\s*checkmate/, "#");
                    document.getElementById("GameMoves").innerHTML = pv;
                    document.getElementById("GameMoves").title = pv;
                    if (!disableInputs) {
@@ -495,6 +495,7 @@ function detectClick(t,e) {
             }
          }
       }
+      lastPromotionMove = "";
    }
 }
 
