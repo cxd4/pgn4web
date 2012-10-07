@@ -75,49 +75,60 @@ a {
 
 <script type="text/javascript">
 
+var extendedLocationSearch = window.location.search;
+try {
+   if (window.opener.pgn4web_engineWindowUrlParameters) {
+      if (window.location.search) {
+         extendedLocationSearch += "&" + window.opener.pgn4web_engineWindowUrlParameters;
+      } else {
+         extendedLocationSearch += "?" + window.opener.pgn4web_engineWindowUrlParameters;
+      }
+   }
+} catch(e) {}
+
 SetHighlightOption(false);
 SetShortcutKeysEnabled(false);
 
 var lightColorHex = "#F4F4F4";
 thisRegExp = /(&|\?)(lightColorHex|lch)=([0-9A-F]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   lightColorHex = "#" + unescape(window.location.search.match(thisRegExp)[3]);
+if (extendedLocationSearch.match(thisRegExp) !== null) {
+   lightColorHex = "#" + unescape(extendedLocationSearch.match(thisRegExp)[3]);
 }
 var darkColorHex = "#DDDDDD";
 thisRegExp = /(&|\?)(darkColorHex|dch)=([0-9A-F]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   darkColorHex = "#" + unescape(window.location.search.match(thisRegExp)[3]);
+if (extendedLocationSearch.match(thisRegExp) !== null) {
+   darkColorHex = "#" + unescape(extendedLocationSearch.match(thisRegExp)[3]);
 }
 var highlightColorHex = "#BBBBBB";
 thisRegExp = /(&|\?)(highlightColorHex|hch)=([0-9A-F]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   highlightColorHex = "#" + unescape(window.location.search.match(thisRegExp)[3]);
+if (extendedLocationSearch.match(thisRegExp) !== null) {
+   highlightColorHex = "#" + unescape(extendedLocationSearch.match(thisRegExp)[3]);
 }
 var fontMovesColorHex = "#000000";
 thisRegExp = /(&|\?)(fontMovesColorHex|fmch)=([0-9A-F]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   fontMovesColorHex = "#" + unescape(window.location.search.match(thisRegExp)[3]);
+if (extendedLocationSearch.match(thisRegExp) !== null) {
+   fontMovesColorHex = "#" + unescape(extendedLocationSearch.match(thisRegExp)[3]);
 }
 var controlTextColorHex = "#BBBBBB";
 thisRegExp = /(&|\?)(controlTextColorHex|ctch)=([0-9A-F]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   controlTextColorHex = "#" + unescape(window.location.search.match(thisRegExp)[3]);
+if (extendedLocationSearch.match(thisRegExp) !== null) {
+   controlTextColorHex = "#" + unescape(extendedLocationSearch.match(thisRegExp)[3]);
 }
 var backgroundColorHex = lightColorHex;
 thisRegExp = /(&|\?)(backgroundColorHex|bch)=([0-9A-F]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   backgroundColorHex = "#" + unescape(window.location.search.match(thisRegExp)[3]);
+if (extendedLocationSearch.match(thisRegExp) !== null) {
+   backgroundColorHex = "#" + unescape(extendedLocationSearch.match(thisRegExp)[3]);
 }
 
 var framePadding = "auto";
 thisRegExp = /(&|\?)(framePadding|fp)=([0-9]+)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   framePadding = unescape(window.location.search.match(thisRegExp)[3]);
+if (extendedLocationSearch.match(thisRegExp) !== null) {
+   framePadding = unescape(extendedLocationSearch.match(thisRegExp)[3]);
 }
 var squareSize = "auto";
 thisRegExp = /(&|\?)(squareSize|ss)=([1-9][0-9]*|a|auto)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   squareSize = unescape(window.location.search.match(thisRegExp)[3]);
+if (extendedLocationSearch.match(thisRegExp) !== null) {
+   squareSize = unescape(extendedLocationSearch.match(thisRegExp)[3]);
 }
 if ((squareSize == "auto") || (squareSize == "a")) {
    if (window.innerWidth && window.innerHeight) { ww = window.innerWidth; wh = window.innerHeight; }
@@ -147,13 +158,13 @@ function defaultPieceSize(squareSize) {
 }
 var pieceSize = defaultPieceSize(squareSize);
 thisRegExp = /(&|\?)(pieceSize|ps)=([1-9][0-9]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   pieceSize = unescape(window.location.search.match(thisRegExp)[3]);
+if (extendedLocationSearch.match(thisRegExp) !== null) {
+   pieceSize = unescape(extendedLocationSearch.match(thisRegExp)[3]);
 }
 var pieceFont = "alpha";
 thisRegExp = /(&|\?)(pieceFont|pf)=([^&]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   pieceFont = unescape(window.location.search.match(thisRegExp)[3]);
+if (extendedLocationSearch.match(thisRegExp) !== null) {
+   pieceFont = unescape(extendedLocationSearch.match(thisRegExp)[3]);
    if (pieceFont == "a") { pieceFont = "alpha"; }
    if (pieceFont == "m") { pieceFont = "merida"; }
    if (pieceFont == "u") { pieceFont = "uscf"; }
@@ -164,17 +175,17 @@ SetImageType("png");
 
 var fontMovesSize = Math.ceil(squareSize * 11 / 30);
 thisRegExp = /(&|\?)(fontMovesSize|fms)=([1-9][0-9]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   fontMovesSize = unescape(window.location.search.match(thisRegExp)[3]);
+if (extendedLocationSearch.match(thisRegExp) !== null) {
+   fontMovesSize = unescape(extendedLocationSearch.match(thisRegExp)[3]);
 }
 var fontCommentsSize = Math.ceil(squareSize * 19 / 30);
 thisRegExp = /(&|\?)(fontCommentsSize|fcs)=([1-9][0-9]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   fontCommentsSize = unescape(window.location.search.match(thisRegExp)[3]);
+if (extendedLocationSearch.match(thisRegExp) !== null) {
+   fontCommentsSize = unescape(extendedLocationSearch.match(thisRegExp)[3]);
 }
 
 thisRegExp = /(&|\?)(help|h)=(t|true)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
+if (extendedLocationSearch.match(thisRegExp) !== null) {
    document.write("<PRE>");
    document.write("URL parameters\n");
    document.write("\n");
@@ -259,10 +270,13 @@ myInsertRule(sheet, ".gameEval", "padding-left: " + squareSize + "px; padding-bo
 
 <script type="text/javascript">
 
-var pgnFile = FenStringStart;
+var fenString;
 thisRegExp = /(&|\?)(fenString|fs)=([^&]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   fenString = unescape(window.location.search.match(thisRegExp)[3]);
+if (extendedLocationSearch.match(thisRegExp) !== null) {
+   fenString = unescape(extendedLocationSearch.match(thisRegExp)[3]);
+} else {
+   try { fenString = window.opener.FEN4engine; }
+   catch(e) { fenString = FenStringStart; }
 }
 document.getElementById("pgnText").innerHTML = '[Setup "1"]\n[FEN "' + fenString + '"]\n';
 
@@ -270,16 +284,16 @@ var minAnalysisSeconds = 3;
 var maxAnalysisSeconds = 313;
 var analysisSeconds = 13;
 thisRegExp = /(&|\?)(analysisSeconds|as)=([1-9][0-9]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   analysisSeconds = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
+if (extendedLocationSearch.match(thisRegExp) !== null) {
+   analysisSeconds = parseInt(unescape(extendedLocationSearch.match(thisRegExp)[3]), 10);
    if (analysisSeconds < minAnalysisSeconds) { analysisSeconds = minAnalysisSeconds; }
    if (analysisSeconds > maxAnalysisSeconds) { analysisSeconds = maxAnalysisSeconds; }
 }
 
 var disableInputs;
 thisRegExp = /(&|\?)(disableInputs|di)=([^&]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   disableInputs = unescape(window.location.search.match(thisRegExp)[3]);
+if (extendedLocationSearch.match(thisRegExp) !== null) {
+   disableInputs = unescape(extendedLocationSearch.match(thisRegExp)[3]);
 }
 disableInputs = ((disableInputs == "true") || (disableInputs == "t"));
 if (disableInputs) {

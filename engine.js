@@ -14,19 +14,15 @@ var pgn4web_engineWindowWidth = 30 * 10;
 
 
 var engineWin;
-function showEngineAnalysisBoard(urlParameters, target, ww, hh) {
+function showEngineAnalysisBoard() {
    var retVal = false;
    if (window.Worker) {
       if ((typeof(gameVariant[currentGame]) == "undefined") || (gameVariant[currentGame].match(/^(chess|normal|standard|)$/i) !== null)) {
-         try {
-            if ((typeof(engineWin) != "undefined") && (engineWin.closed === false) && (window.self === engineWin.opener)) {
-               engineWin.replaceFEN(CurrentFEN());
-               retVal = true;
-            } else {
-               retVal = openEngineWin(urlParameters, target, ww, hh);
-            }
-         } catch(e) {
-           retVal = openEngineWin(urlParameters, target, ww, hh);
+         if ((typeof(engineWin) != "undefined") && (engineWin.closed === false) && (window.self === engineWin.opener) && (typeof(engineWin.replaceFEN) != "undefined")) {
+            engineWin.replaceFEN(CurrentFEN());
+            retVal = true;
+         } else {
+            retVal = openEngineWin();
          }
          if ((typeof(engineWin) != "undefined") && (engineWin.top === engineWin.self) && (window.focus)) { engineWin.focus(); }
       } else {
@@ -38,17 +34,15 @@ function showEngineAnalysisBoard(urlParameters, target, ww, hh) {
    return retVal;
 }
 
-function openEngineWin(urlParameters, target, ww, hh) {
+var FEN4engine;
+function openEngineWin() {
    if (window.Worker) {
       if ((typeof(gameVariant[currentGame]) == "undefined") || (gameVariant[currentGame].match(/^(chess|normal|standard|)$/i) !== null)) {
-         if (typeof(urlParameters) == "undefined") { urlParameters = pgn4web_engineWindowUrlParameters; }
-         if (typeof(target) == "undefined") { target = pgn4web_engineWindowTarget; }
-         if (typeof(ww) == "undefined") { ww = pgn4web_engineWindowWidth; }
-         if (typeof(hh) == "undefined") { hh = pgn4web_engineWindowHeight; }
+         FEN4engine = CurrentFEN();
          var options = "resizable=no,scrollbars=no,toolbar=no,location=no,menubar=no,status=no";
-         if (hh !== "") { options = "height=" + hh + "," + options; }
-         if (ww !== "") { options = "width=" + ww + "," + options; }
-         engineWin = window.open("engine.html?fs=" + CurrentFEN() + (urlParameters ? "&" + urlParameters : ""), target, options);
+         if (pgn4web_engineWindowHeight !== "") { options = "height=" + pgn4web_engineWindowHeight + "," + options; }
+         if (pgn4web_engineWindowWidth !== "") { options = "width=" + pgn4web_engineWindowWidth + "," + options; }
+         engineWin = window.open("engine.html", pgn4web_engineWindowTarget, options);
          return true;
       } else {
          myAlert("pgn4web engine analysis warning: the engine supports only normal chess; the " + gameVariant[currentGame] + " variant is not supported", true);
