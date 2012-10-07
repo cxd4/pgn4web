@@ -18,7 +18,7 @@ function showEngineAnalysisBoard(urlParameters, target, ww, hh) {
    if (window.Worker) {
       if ((typeof(gameVariant[currentGame]) == "undefined") || (gameVariant[currentGame].match(/^(chess|normal|standard|)$/i) !== null)) {
          try {
-            if (engineWin && engineWin.replaceFEN) {
+            if (engineWin && !engineWin.closed && engineWin.replaceFEN) {
                engineWin.replaceFEN(CurrentFEN());
                retVal = true;
             } else {
