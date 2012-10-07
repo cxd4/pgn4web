@@ -499,6 +499,13 @@ function detectClick(t,e) {
    }
 }
 
+
+var pgn4web_callerId = 0;
+thisRegExp = /(&|\?)(callerId|ci)=([1-9][0-9]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+   callerId = unescape(window.location.search.match(thisRegExp)[3]);
+}
+
 function replaceFEN(FEN) {
    document.getElementById("pgnText").innerHTML = '[Setup "1"]\n[FEN "' + FEN + '"]\n';
    firstStart = true;
