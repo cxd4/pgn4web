@@ -160,15 +160,18 @@ h1.pageHeader {
 }
 
 .gameAnalysisContainer {
-  display: none;
-  width: 224px; /* same as engine.html width */
-  padding-left: 40px;
-  padding-right: 10px;
+  display: inline-block;
+  overflow: hidden;
+  width: 1px;
+  transition: width 1s linear;
+  -moz-transition: width 1s linear;
+  -webkit-transition: width 1s linear;
+  -o-transition: width 1s linear;
   opacity: 0.8;
 }
 
 .gameAnalysisButtons {
-  width: 224px; /* same as engine.html width */
+  width: 274px; /* same as engine.html width + gameAnalysisFrame.paddingLeft + gamePaddedAnalysisButton.paddingRight */
   height: 28px; /* same as engine.html square size */
   text-align: right;
   font-size: 11px; /* = header.fontSize */
@@ -176,7 +179,8 @@ h1.pageHeader {
 
 .gamePaddedAnalysisButton {
   display: inline-block;
-  width: 28px; /* same as engine.html square size */
+  padding-right: 10px;
+  width: 18px; /* same as engine.html square size less this padding right */
   text-align: right;
   color: #888888; /* same as engine.html control text color hex */
 }
@@ -184,6 +188,8 @@ h1.pageHeader {
 .gameAnalysisFrame {
   width: 224px; /* same as engine.html width */
   height: 280px; /* same as engine.html height */
+  padding-left: 40px;
+  padding-right: 10px;
   margin-bottom: 50px;
 }
 
@@ -850,11 +856,11 @@ function gup(name) {
 
 var showAnalysis = false;
 function hideAnalysisBoard() {
-  if (theObject = document.getElementById('GameAnalysisFrame')) {
-    theObject.src = "about:blank";
-  }
   if (theObject = document.getElementById('GameAnalysisContainer')) {
-    theObject.style.display = "none";
+    theObject.style.width = "1px";
+  }
+  if (theObject = document.getElementById('GameAnalysisFrame')) {
+    setTimeout("document.getElementById('GameAnalysisFrame').src = 'about:blank';", 1100);
   }
   showAnalysis = false;
 }
@@ -863,7 +869,7 @@ function showAnalysisBoard() {
   if (!showBoard) { return; }
   if (showEngineAnalysisBoard() === true) {
     if (theObject = document.getElementById('GameAnalysisContainer')) {
-      theObject.style.display = "inline-block";
+      theObject.style.width = "274px";
     }
     showAnalysis = true;
   }
@@ -883,7 +889,7 @@ if (window.Worker) {
 
 <div class="gameFloatingContainer" id="GameFloatingContainer">
 <div class="gameAnalysisContainer" id="GameAnalysisContainer">
-<div class="gameAnalysisButtons" id="GameAnalysisButtons"><a class="gamePaddedAnalysisButton" href="javascript:void(0);" onclick="showAnalysisBoard();" title="update engine analysis board">v</a><a class="gamePaddedAnalysisButton" href="javascript:void(0);" onclick="hideAnalysisBoard();" title="hide engine analysis board">x</a></div>
+<div class="gameAnalysisButtons" id="GameAnalysisButtons"><a class="gamePaddedAnalysisButton" href="javascript:void(0);" onclick="showAnalysisBoard(); this.blur();" title="update engine analysis board">v</a><a class="gamePaddedAnalysisButton" href="javascript:void(0);" onclick="hideAnalysisBoard(); this.blur();" title="hide engine analysis board">x</a></div>
 <iframe class="gameAnalysisFrame" id="GameAnalysisFrame" name="pgn4web_inline_engine" src="about:blank" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">your web browser and/or your host do not support iframes as required</iframe>
 </div><div class="gameBoardContainer" id="GameBoardContainer">
 <div class="header"><span class="gameEvent" id="GameEvent">&nbsp;</span><a class="gameLiveStatus" id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();">&nbsp;</a></div>
