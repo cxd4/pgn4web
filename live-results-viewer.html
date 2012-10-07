@@ -194,7 +194,6 @@ h1.pageHeader {
 }
 
 .gameBoardContainer {
-  display: inline-block;
   width: 324px;
   padding: 10px; /* defined as gameBoardContainer.padding = body.padding - gameFloatingContainer.right */
   padding-top: 20px; /* = 2 * gameBoardContainer.padding */
@@ -908,7 +907,7 @@ if (window.Worker) {
 
 <script type="text/javascript">
 
-  if (theObj = document.getElementById("GameBoardContainer")) {
+  if (theObj = document.getElementById("GameFloatingContainer")) {
     theObj.style.display = showBoard ? "" : "none";
   }
   if (theObj = document.getElementById("GameLiveStatus2")) {
