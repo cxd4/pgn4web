@@ -855,11 +855,12 @@ function hideAnalysisBoard() {
 
 function showAnalysisBoard() {
   if (!showBoard) { return; }
-  showEngineAnalysisBoard();
-  if (theObject = document.getElementById('GameAnalysisContainer')) {
-    theObject.style.display = "inline-block";
+  if (showEngineAnalysisBoard() === true) {
+    if (theObject = document.getElementById('GameAnalysisContainer')) {
+      theObject.style.display = "inline-block";
+    }
+    analysisBoardOn = true;
   }
-  analysisBoardOn = true;
 }
 
 if (window.Worker) {

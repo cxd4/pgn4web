@@ -10,20 +10,29 @@ var pgn4web_engineWindowTarget = "pgn4web_engine_analysis";
 var pgn4web_engineWindowHeight = 30 * 12;
 var pgn4web_engineWindowWidth = 30 * 10;
 
+// note: all pages on the same site will use the same engine analysis popup; if the engine analysis is embedded as iframe within a page (see the live-results-viewer.html example) the pgn4web_engineWindowTarget variable should be customized in order to avoid conflicts
+
 var engineWin;
 function showEngineAnalysisBoard(urlParameters, target, ww, hh) {
+   var retVal = false;
    if (window.Worker) {
-      try {
-         if (engineWin && engineWin.replaceFEN) {
-            engineWin.replaceFEN(CurrentFEN());
-         } else {
-            openEngineWin(urlParameters, target, ww, hh);
+      if ((typeof(gameVariant[currentGame]) == "undefined") || (gameVariant[currentGame].match(/^(chess|normal|standard|)$/i) !== null)) {
+         try {
+            if (engineWin && engineWin.replaceFEN) {
+               engineWin.replaceFEN(CurrentFEN());
+               retVal = true;
+            } else {
+               retVal = openEngineWin(urlParameters, target, ww, hh);
+            }
+         } catch(e) {
+           retVal = openEngineWin(urlParameters, target, ww, hh);
          }
-      } catch(e) {
-         openEngineWin(urlParameters, target, ww, hh);
+         if ((engineWin) && (engineWin.top === engineWin.self) && (window.focus)) { engineWin.focus(); }
+      } else {
+         myAlert("pgn4web engine analysis warning: the engine supports only normal chess; the " + gameVariant[currentGame] + " variant is not supported", true);
       }
-      if ((engineWin) && (engineWin.top === engineWin.self) && (window.focus)) { engineWin.focus(); }
    }
+   return retVal;
 }
 
 function openEngineWin(urlParameters, target, ww, hh) {
@@ -37,9 +46,13 @@ function openEngineWin(urlParameters, target, ww, hh) {
          if (hh !== "") { options = "height=" + hh + "," + options; }
          if (ww !== "") { options = "width=" + ww + "," + options; }
          engineWin = window.open("engine.html?fs=" + CurrentFEN() + (urlParameters ? "&" + urlParameters : ""), target, options);
+         return true;
       } else {
-         alert("game analysis error: the garbochess engine only supports normal chess; the " + gameVariant[currentGame] + " variant is not supported");
+         myAlert("pgn4web engine analysis warning: the engine supports only normal chess; the " + gameVariant[currentGame] + " variant is not supported", true);
+         return false;
       }
+   } else {
+      return false;
    }
 }
 
