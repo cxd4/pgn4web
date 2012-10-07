@@ -13,15 +13,13 @@ var pgn4web_engineWindowWidth = 30 * 10;
 // note: all pages on the same site will use the same engine analysis popup; if the engine analysis is embedded as iframe within a page (see the live-results-viewer.html example) the pgn4web_engineWindowTarget variable should be customized in order to avoid conflicts
 
 
-var pgn4web_callerId = Math.floor(1234567 * Math.random() + 1);
-
 var engineWin;
 function showEngineAnalysisBoard(urlParameters, target, ww, hh) {
    var retVal = false;
    if (window.Worker) {
       if ((typeof(gameVariant[currentGame]) == "undefined") || (gameVariant[currentGame].match(/^(chess|normal|standard|)$/i) !== null)) {
          try {
-            if (engineWin && !engineWin.closed && engineWin.callerId && (pgn4web_callerId == engineWin.callerId)) {
+            if ((engineWin) && (!engineWin.closed) && (window == engineWin.opener)) {
                engineWin.replaceFEN(CurrentFEN());
                retVal = true;
             } else {
@@ -44,7 +42,6 @@ function openEngineWin(urlParameters, target, ww, hh) {
    if (window.Worker) {
       if ((typeof(gameVariant[currentGame]) == "undefined") || (gameVariant[currentGame].match(/^(chess|normal|standard|)$/i) !== null)) {
          if (typeof(urlParameters) == "undefined") { urlParameters = pgn4web_engineWindowUrlParameters; }
-         urlParameters += (urlParameters ? "&" : "") + "ci=" + pgn4web_callerId;
          if (typeof(target) == "undefined") { target = pgn4web_engineWindowTarget; }
          if (typeof(ww) == "undefined") { ww = pgn4web_engineWindowWidth; }
          if (typeof(hh) == "undefined") { hh = pgn4web_engineWindowHeight; }
