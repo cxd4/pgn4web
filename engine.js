@@ -19,7 +19,8 @@ function showEngineAnalysisBoard() {
    if (window.Worker) {
       if ((typeof(gameVariant[currentGame]) == "undefined") || (gameVariant[currentGame].match(/^(chess|normal|standard|)$/i) !== null)) {
          if ((typeof(engineWin) != "undefined") && (engineWin.closed === false) && (window.self === engineWin.opener) && (typeof(engineWin.replaceFEN) != "undefined")) {
-            engineWin.replaceFEN(CurrentFEN());
+            FEN4engine = CurrentFEN();
+            engineWin.replaceFEN(FEN4engine);
             retVal = true;
          } else {
             retVal = openEngineWin();
