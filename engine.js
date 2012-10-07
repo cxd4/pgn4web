@@ -19,7 +19,7 @@ function showEngineAnalysisBoard(urlParameters, target, ww, hh) {
    if (window.Worker) {
       if ((typeof(gameVariant[currentGame]) == "undefined") || (gameVariant[currentGame].match(/^(chess|normal|standard|)$/i) !== null)) {
          try {
-            if ((engineWin) && (!engineWin.closed) && (window == engineWin.opener)) {
+            if ((typeof(engineWin) != "undefined") && (engineWin.closed === false) && (window.self === engineWin.opener)) {
                engineWin.replaceFEN(CurrentFEN());
                retVal = true;
             } else {
@@ -28,7 +28,7 @@ function showEngineAnalysisBoard(urlParameters, target, ww, hh) {
          } catch(e) {
            retVal = openEngineWin(urlParameters, target, ww, hh);
          }
-         if ((engineWin) && (engineWin.top === engineWin.self) && (window.focus)) { engineWin.focus(); }
+         if ((typeof(engineWin) != "undefined") && (engineWin.top === engineWin.self) && (window.focus)) { engineWin.focus(); }
       } else {
          myAlert("pgn4web engine analysis warning: the engine supports only normal chess; the " + gameVariant[currentGame] + " variant is not supported", true);
       }
