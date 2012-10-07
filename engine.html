@@ -79,7 +79,7 @@ var extendedLocationSearch = window.location.search;
 try {
    if (window.opener.pgn4web_engineWindowUrlParameters) {
       if (window.location.search) {
-         extendedLocationSearch += "&" + window.opener.pgn4web_engineWindowUrlParameters;
+         extendedLocationSearch = extendedLocationSearch.replace(/^\?/, "?" + window.opener.pgn4web_engineWindowUrlParameters + "&");
       } else {
          extendedLocationSearch += "?" + window.opener.pgn4web_engineWindowUrlParameters;
       }
