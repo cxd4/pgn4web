@@ -57,6 +57,6 @@ function openEngineWin(urlParameters, target, ww, hh) {
 }
 
 if (window.Worker) {
-   boardShortcut("E8", "show engine analysis board", function(t,e){ if (e.shiftKey) { displayHelp("informant_symbols"); } else { showEngineAnalysisBoard(); } }, true);
+   boardShortcut("E8", "show/update engine analysis board", function(t,e){ if (e.shiftKey) { displayHelp("informant_symbols"); } else { showEngineAnalysisBoard(); } }, true);
 }
 
