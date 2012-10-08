@@ -36,6 +36,10 @@ a {
   width: 100%;
 }
 
+.gameAnalysisFlag {
+  font-weight: bold;
+}
+
 .gameEval {
   position: absolute;
   right: 0;
@@ -85,14 +89,14 @@ a {
 <div class="container">
 <div id="GameBoard"></div>
 <table id="GameCustomButtons" class="gameCustomButtons" cellspacing="0" cellpadding="0" border="0"><tr valign="bottom">
-<td id="btnStart" width="25%" align="center" onclick="GoToMove(StartPlyVar[0], 0);" title="go to start">&lt;&lt;</td>
-<td id="btnBack" width="20%" align="center" onclick="GoToMove(CurrentPly - 1);" title="move backward">&lt;</td>
-<td width="10%" align="center" class="gameAnalysisFlag" id="GameAnalysisFlag">&nbsp;</td>
-<td id="btnForw" width="20%" align="center" onclick="GoToMove(CurrentPly + 1);" title="move forward">&gt;</td>
-<td id="btnEnd" width="25%" align="center" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0);" title="go to end">&gt;&gt;</td>
+<td width="25%" align="center" onclick="GoToMove(StartPlyVar[0], 0);" title="go to start">&lt;&lt;</td>
+<td width="20%" align="center" onclick="GoToMove(CurrentPly - 1);" title="move backward">&lt;</td>
+<td width="10%" align="center" id="GameAnalysisFlag" class="gameAnalysisFlag" onclick="StopBackgroundEngine();">&nbsp;</td>
+<td width="20%" align="center" onclick="GoToMove(CurrentPly + 1);" title="move forward">&gt;</td>
+<td width="25%" align="center" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0);" title="go to end">&gt;&gt;</td>
 </tr></table>
 <div class="gameAnalysis gameAnalysisHidden" id="GameAnalysis">
-<div class="gameEval" id="GameEval">&middot;</div>
+<div class="gameEval" id="GameEval">&nbsp;</div>
 <div class="gameFlagAndMoves">
 <img class="gameFlagToMove" id="GameFlagToMove" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" border="1" /><span class="gameMoves" id="GameMoves"></span>&nbsp;
 </div>
@@ -338,6 +342,7 @@ function ev2NAG(ev) {
 }
 
 function StopBackgroundEngine() {
+   if (analysisTimeout) { clearTimeout(analysisTimeout); }
    if (g_backgroundEngine) {
      g_backgroundEngine.terminate();
      g_backgroundEngine = null;
@@ -390,15 +395,6 @@ function customFunctionOnMove() {
    clickFromPiece = "";
    lastPromotionMove = lastPromotionPlaceholder;
    lastPromotionPlaceholder = "";
-
-   if (CurrentPly <= StartPly) {
-      document.getElementById("btnStart").style.color = "";
-      document.getElementById("btnBack").style.color = "";
-   }
-   if (CurrentPly >= StartPly + PlyNumber) {
-      document.getElementById("btnForw").style.color = "";
-      document.getElementById("btnEnd").style.color = "";
-   }
 }
 
 function customDebugInfo() {

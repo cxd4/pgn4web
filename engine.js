@@ -17,7 +17,10 @@ function showEngineAnalysisBoard() {
    var engineWin;
    if (window.Worker) {
       if ((typeof(gameVariant[currentGame]) == "undefined") || (gameVariant[currentGame].match(/^(chess|normal|standard|)$/i) !== null)) {
-         engineWin = openEngineWin();
+         var options = "resizable=no,scrollbars=no,toolbar=no,location=no,menubar=no,status=no";
+         if (pgn4web_engineWindowHeight) { options = "height=" + pgn4web_engineWindowHeight + "," + options; }
+         if (pgn4web_engineWindowWidth) { options = "width=" + pgn4web_engineWindowWidth + "," + options; }
+         engineWin = window.open("engine.html?fs=" + CurrentFEN() + (pgn4web_engineWindowUrlParameters ? "&" : "") + pgn4web_engineWindowUrlParameters, pgn4web_engineWindowTarget, options);
          if ((typeof(engineWin) != "undefined") && (engineWin.top === engineWin.self) && (window.focus)) { engineWin.focus(); }
       } else {
          myAlert("pgn4web engine analysis warning: the engine supports only normal chess; the " + gameVariant[currentGame] + " variant is not supported", true);
@@ -26,24 +29,6 @@ function showEngineAnalysisBoard() {
       myAlert("pgn4web engine analysis warning: missing web worker functionality from the web browser", true);
    }
    return engineWin ? true : false;
-}
-
-function openEngineWin() {
-   if (window.Worker) {
-      if ((typeof(gameVariant[currentGame]) == "undefined") || (gameVariant[currentGame].match(/^(chess|normal|standard|)$/i) !== null)) {
-         var options = "resizable=no,scrollbars=no,toolbar=no,location=no,menubar=no,status=no";
-         if (pgn4web_engineWindowHeight) { options = "height=" + pgn4web_engineWindowHeight + "," + options; }
-         if (pgn4web_engineWindowWidth) { options = "width=" + pgn4web_engineWindowWidth + "," + options; }
-         engineWin = window.open("engine.html?fs=" + CurrentFEN() + (pgn4web_engineWindowUrlParameters ? "&" : "") + pgn4web_engineWindowUrlParameters, pgn4web_engineWindowTarget, options);
-         return engineWin;
-      } else {
-         myAlert("pgn4web engine analysis warning: the engine supports only normal chess; the " + gameVariant[currentGame] + " variant is not supported", true);
-         return false;
-      }
-   } else {
-      myAlert("pgn4web engine analysis warning: missing web worker functionality from the web browser", true);
-      return false;
-   }
 }
 
 if (window.Worker) {
