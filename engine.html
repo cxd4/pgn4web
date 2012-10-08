@@ -73,177 +73,6 @@ a {
 
 <body>
 
-<script type="text/javascript">
-
-var extendedLocationSearch = window.location.search;
-try {
-   if (window.opener.pgn4web_engineWindowUrlParameters) {
-      if (window.location.search) {
-         extendedLocationSearch = extendedLocationSearch.replace(/^\?/, "?" + window.opener.pgn4web_engineWindowUrlParameters + "&");
-      } else {
-         extendedLocationSearch += "?" + window.opener.pgn4web_engineWindowUrlParameters;
-      }
-   }
-} catch(e) {}
-
-SetHighlightOption(false);
-SetShortcutKeysEnabled(false);
-
-var lightColorHex = "#F4F4F4";
-thisRegExp = /(&|\?)(lightColorHex|lch)=([0-9A-F]*)(&|$)/i;
-if (extendedLocationSearch.match(thisRegExp) !== null) {
-   lightColorHex = "#" + unescape(extendedLocationSearch.match(thisRegExp)[3]);
-}
-var darkColorHex = "#DDDDDD";
-thisRegExp = /(&|\?)(darkColorHex|dch)=([0-9A-F]*)(&|$)/i;
-if (extendedLocationSearch.match(thisRegExp) !== null) {
-   darkColorHex = "#" + unescape(extendedLocationSearch.match(thisRegExp)[3]);
-}
-var highlightColorHex = "#BBBBBB";
-thisRegExp = /(&|\?)(highlightColorHex|hch)=([0-9A-F]*)(&|$)/i;
-if (extendedLocationSearch.match(thisRegExp) !== null) {
-   highlightColorHex = "#" + unescape(extendedLocationSearch.match(thisRegExp)[3]);
-}
-var fontMovesColorHex = "#000000";
-thisRegExp = /(&|\?)(fontMovesColorHex|fmch)=([0-9A-F]*)(&|$)/i;
-if (extendedLocationSearch.match(thisRegExp) !== null) {
-   fontMovesColorHex = "#" + unescape(extendedLocationSearch.match(thisRegExp)[3]);
-}
-var controlTextColorHex = "#BBBBBB";
-thisRegExp = /(&|\?)(controlTextColorHex|ctch)=([0-9A-F]*)(&|$)/i;
-if (extendedLocationSearch.match(thisRegExp) !== null) {
-   controlTextColorHex = "#" + unescape(extendedLocationSearch.match(thisRegExp)[3]);
-}
-var backgroundColorHex = lightColorHex;
-thisRegExp = /(&|\?)(backgroundColorHex|bch)=([0-9A-F]*)(&|$)/i;
-if (extendedLocationSearch.match(thisRegExp) !== null) {
-   backgroundColorHex = "#" + unescape(extendedLocationSearch.match(thisRegExp)[3]);
-}
-
-var framePadding = "auto";
-thisRegExp = /(&|\?)(framePadding|fp)=([0-9]+)(&|$)/i;
-if (extendedLocationSearch.match(thisRegExp) !== null) {
-   framePadding = unescape(extendedLocationSearch.match(thisRegExp)[3]);
-}
-var squareSize = "auto";
-thisRegExp = /(&|\?)(squareSize|ss)=([1-9][0-9]*|a|auto)(&|$)/i;
-if (extendedLocationSearch.match(thisRegExp) !== null) {
-   squareSize = unescape(extendedLocationSearch.match(thisRegExp)[3]);
-}
-if ((squareSize == "auto") || (squareSize == "a")) {
-   if (window.innerWidth && window.innerHeight) { ww = window.innerWidth; wh = window.innerHeight; }
-   else if (document.documentElement && document.documentElement.clientWidth) { ww = document.documentElement.clientWidth; wh = document.documentElement.clientHeight; }
-   else if (document.body && document.body.clientWidth) { ww = document.body.clientWidth; wh = document.body.clientHeight; }
-   else { ww = wh = 0; }
-   if (ww && wh) {
-      if (framePadding == "auto") {
-         squareSize = Math.floor(Math.min(ww / 10, wh / 12));
-      } else {
-         squareSize = Math.floor(Math.min((ww - 2 * framePadding) / 8, (wh - 2 * framePadding) / 10));
-      }
-   } else {
-      squareSize = 30;
-   }
-}
-if (squareSize < 20) { squareSize = 20; }
-if (framePadding == "auto") { framePadding = squareSize; }
-
-var pieceSizeOptions = new Array(20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 52, 56, 60, 64, 72, 80, 88, 96, 112, 128, 144, 300);
-function defaultPieceSize(squareSize) {
-  targetPieceSize = Math.floor(0.8 * squareSize);
-  for (ii=(pieceSizeOptions.length-1); ii>=0; ii--) {
-    if (pieceSizeOptions[ii] <= targetPieceSize) { return pieceSizeOptions[ii]; }
-  }
-  return pieceSizeOptions[0];
-}
-var pieceSize = defaultPieceSize(squareSize);
-thisRegExp = /(&|\?)(pieceSize|ps)=([1-9][0-9]*)(&|$)/i;
-if (extendedLocationSearch.match(thisRegExp) !== null) {
-   pieceSize = unescape(extendedLocationSearch.match(thisRegExp)[3]);
-}
-var pieceFont = "alpha";
-thisRegExp = /(&|\?)(pieceFont|pf)=([^&]*)(&|$)/i;
-if (extendedLocationSearch.match(thisRegExp) !== null) {
-   pieceFont = unescape(extendedLocationSearch.match(thisRegExp)[3]);
-   if (pieceFont == "a") { pieceFont = "alpha"; }
-   if (pieceFont == "m") { pieceFont = "merida"; }
-   if (pieceFont == "u") { pieceFont = "uscf"; }
-   if ((pieceFont != "alpha") && (pieceFont != "merida") && (pieceFont != "uscf")) { pieceFont = "alpha"; }
-}
-SetImagePath(pieceFont + "/" + pieceSize);
-SetImageType("png");
-
-var fontMovesSize = Math.ceil(squareSize * 11 / 30);
-thisRegExp = /(&|\?)(fontMovesSize|fms)=([1-9][0-9]*)(&|$)/i;
-if (extendedLocationSearch.match(thisRegExp) !== null) {
-   fontMovesSize = unescape(extendedLocationSearch.match(thisRegExp)[3]);
-}
-var fontCommentsSize = Math.ceil(squareSize * 19 / 30);
-thisRegExp = /(&|\?)(fontCommentsSize|fcs)=([1-9][0-9]*)(&|$)/i;
-if (extendedLocationSearch.match(thisRegExp) !== null) {
-   fontCommentsSize = unescape(extendedLocationSearch.match(thisRegExp)[3]);
-}
-
-thisRegExp = /(&|\?)(help|h)=(t|true)(&|$)/i;
-if (extendedLocationSearch.match(thisRegExp) !== null) {
-   document.write("<PRE>");
-   document.write("URL parameters\n");
-   document.write("\n");
-   document.write(" - fenString = FEN position to analyze\n");
-   document.write(" - analysisSeconds = analysis timeout in seconds (default 13)\n");
-   document.write(" - disableInputs = true | false (default false)\n");
-   document.write("\n");
-   document.write(" - squareSize = size of square (default selects square size to fit the available space)\n");
-   document.write(" - pieceSize = size of pieces | default (default selects piece size based on square size)\n");
-   document.write(" - pieceFont = alpha | merida | uscf (default alpha)\n");
-   document.write("\n");
-   document.write(" - lightColorHex = light square color hex code, like FF0000 (default F4F4F4)\n");
-   document.write(" - darkColorHex = dark square color hex code, like FF0000 (default DDDDDD)\n");
-   document.write(" - highlightColorHex = highlight color hex code, like FF0000 (default BBBBBB)\n");
-   document.write(" - backgroundColorHex = page background color hex code, like FF0000 (default as lightColorHex)\n");
-   document.write(" - controlTextColorHex = control buttons text color hex code, like FF0000 (default BBBBBB)\n");
-   document.write(" - fontMovesColorHex = moves color hex code, like FF0000 (default 000000)\n");
-   document.write("\n");
-   document.write(" - fontMovesSize = moves font size (default selects moves font size based on square size)\n");
-   document.write(" - fontCommentsSize = analysis comments font size (default selects comments font size based on square size)\n");
-   document.write("\n");
-   document.write(" - framePadding = padding within the frame (default as squareSize)\n");
-   document.write("\n");
-   document.write("</PRE>");
-}
-
-
-function myRulesLength(sheet) {
-  if (sheet.cssRules) { return sheet.cssRules.length; }
-  if (sheet.rules) { return sheet.rules.length; }
-  return null;
-}
-
-function myInsertRule(sheet, selector, declaration) {
-  if (sheet.insertRule) { sheet.insertRule(selector + "{ " + declaration + " }", myRulesLength(sheet)); }
-  else if (sheet.addRule) { sheet.addRule(selector, declaration); }
-}
-
-sheet = document.styleSheets[0];
-myInsertRule(sheet, "body", "color: " + fontMovesColorHex + "; background: " + backgroundColorHex + "; padding: " + framePadding + "px;");
-myInsertRule(sheet, "a", "color: " + fontMovesColorHex + ";");
-myInsertRule(sheet, ".boardTable", "width: " + (squareSize * 8) + "px; height: " + (squareSize * 8) + "px; background: " + lightColorHex + ";");
-myInsertRule(sheet, ".pieceImage", "width: " + pieceSize + "px; height: " + pieceSize + "px;");
-myInsertRule(sheet, ".whiteSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + lightColorHex + ";");
-myInsertRule(sheet, ".highlightWhiteSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + highlightColorHex + ";");
-myInsertRule(sheet, ".blackSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + darkColorHex + ";");
-myInsertRule(sheet, ".highlightBlackSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + highlightColorHex + ";");
-myInsertRule(sheet, ".container", "width: " + (squareSize * 8) + "px;");
-myInsertRule(sheet, ".gameCustomButtons", "height: " + squareSize  + "px; padding-bottom: " + Math.floor(squareSize / 6) + "px; color: " + controlTextColorHex + "; font-size: " + fontMovesSize + "px;");
-myInsertRule(sheet, ".gameAnalysis", "height: " + squareSize + "px;");
-myInsertRule(sheet, ".gameFlagToMove", "height: " + Math.floor(fontMovesSize / 2) + "px; width: " + Math.floor(fontMovesSize / 2) + "px; margin-right: " + squareSize + "px;");
-myInsertRule(sheet, ".gameMoves", "font-size: " + fontMovesSize + "px;");
-myInsertRule(sheet, ".gameEval", "padding-left: " + squareSize + "px; padding-bottom: " + Math.floor(fontCommentsSize / 6) + "px; background: " + backgroundColorHex + "; font-size: " + fontCommentsSize + "px;");
-
-// more URL parameters after the body definition
-
-</script>
-
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
 <form style="display: none;"><textarea style="display: none;" id="pgnText">
 
@@ -271,36 +100,211 @@ myInsertRule(sheet, ".gameEval", "padding-left: " + squareSize + "px; padding-bo
 <script type="text/javascript">
 
 var fenString;
-thisRegExp = /(&|\?)(fenString|fs)=([^&]*)(&|$)/i;
-if (extendedLocationSearch.match(thisRegExp) !== null) {
-   fenString = unescape(extendedLocationSearch.match(thisRegExp)[3]);
-} else {
-   try { fenString = window.opener.FEN4engine; }
-   catch(e) { fenString = FenStringStart; }
-}
-document.getElementById("pgnText").innerHTML = '[Setup "1"]\n[FEN "' + fenString + '"]\n';
-
-var minAnalysisSeconds = 3;
-var maxAnalysisSeconds = 313;
-var analysisSeconds = 13;
-thisRegExp = /(&|\?)(analysisSeconds|as)=([1-9][0-9]*)(&|$)/i;
-if (extendedLocationSearch.match(thisRegExp) !== null) {
-   analysisSeconds = parseInt(unescape(extendedLocationSearch.match(thisRegExp)[3]), 10);
-   if (analysisSeconds < minAnalysisSeconds) { analysisSeconds = minAnalysisSeconds; }
-   if (analysisSeconds > maxAnalysisSeconds) { analysisSeconds = maxAnalysisSeconds; }
-}
-
+var analysisSeconds;
 var disableInputs;
-thisRegExp = /(&|\?)(disableInputs|di)=([^&]*)(&|$)/i;
-if (extendedLocationSearch.match(thisRegExp) !== null) {
-   disableInputs = unescape(extendedLocationSearch.match(thisRegExp)[3]);
-}
-disableInputs = ((disableInputs == "true") || (disableInputs == "t"));
-if (disableInputs) {
-   document.getElementById("GameCustomButtons").style.visibility = "hidden";
-}
 
-// end of URL parameters
+window.onload = myOnLoad;
+
+function myOnLoad() {
+
+   var extendedLocationSearch = window.location.search;
+   try {
+      if (window.opener.pgn4web_engineWindowUrlParameters) {
+         if (window.location.search) {
+            extendedLocationSearch = extendedLocationSearch.replace(/^\?/, "?" + window.opener.pgn4web_engineWindowUrlParameters + "&");
+         } else {
+            extendedLocationSearch += "?" + window.opener.pgn4web_engineWindowUrlParameters;
+         }
+      }
+   } catch(e) {}
+
+   thisRegExp = /(&|\?)(fenString|fs)=([^&]*)(&|$)/i;
+   if (extendedLocationSearch.match(thisRegExp) !== null) {
+      fenString = unescape(extendedLocationSearch.match(thisRegExp)[3]);
+   } else {
+      try { fenString = window.opener.FEN4engine; }
+      catch(e) { fenString = FenStringStart; }
+   }
+   document.getElementById("pgnText").innerHTML = '[Setup "1"]\n[FEN "' + fenString + '"]\n';
+
+   var minAnalysisSeconds = 3;
+   var maxAnalysisSeconds = 313;
+   thisRegExp = /(&|\?)(analysisSeconds|as)=([1-9][0-9]*)(&|$)/i;
+   if (extendedLocationSearch.match(thisRegExp) !== null) {
+      analysisSeconds = parseInt(unescape(extendedLocationSearch.match(thisRegExp)[3]), 10);
+      if (analysisSeconds < minAnalysisSeconds) { analysisSeconds = minAnalysisSeconds; }
+      if (analysisSeconds > maxAnalysisSeconds) { analysisSeconds = maxAnalysisSeconds; }
+   } else {
+      analysisSeconds = 13;
+   }
+
+   thisRegExp = /(&|\?)(disableInputs|di)=([^&]*)(&|$)/i;
+   if (extendedLocationSearch.match(thisRegExp) !== null) {
+      disableInputs = unescape(extendedLocationSearch.match(thisRegExp)[3]);
+   }
+   disableInputs = ((disableInputs == "true") || (disableInputs == "t"));
+   if (disableInputs) {
+      document.getElementById("GameCustomButtons").style.visibility = "hidden";
+   }
+
+
+   var lightColorHex = "#F4F4F4";
+   thisRegExp = /(&|\?)(lightColorHex|lch)=([0-9A-F]*)(&|$)/i;
+   if (extendedLocationSearch.match(thisRegExp) !== null) {
+      lightColorHex = "#" + unescape(extendedLocationSearch.match(thisRegExp)[3]);
+   }
+   var darkColorHex = "#DDDDDD";
+   thisRegExp = /(&|\?)(darkColorHex|dch)=([0-9A-F]*)(&|$)/i;
+   if (extendedLocationSearch.match(thisRegExp) !== null) {
+      darkColorHex = "#" + unescape(extendedLocationSearch.match(thisRegExp)[3]);
+   }
+   var highlightColorHex = "#BBBBBB";
+   thisRegExp = /(&|\?)(highlightColorHex|hch)=([0-9A-F]*)(&|$)/i;
+   if (extendedLocationSearch.match(thisRegExp) !== null) {
+      highlightColorHex = "#" + unescape(extendedLocationSearch.match(thisRegExp)[3]);
+   }
+   var fontMovesColorHex = "#000000";
+   thisRegExp = /(&|\?)(fontMovesColorHex|fmch)=([0-9A-F]*)(&|$)/i;
+   if (extendedLocationSearch.match(thisRegExp) !== null) {
+      fontMovesColorHex = "#" + unescape(extendedLocationSearch.match(thisRegExp)[3]);
+   }
+   var controlTextColorHex = "#BBBBBB";
+   thisRegExp = /(&|\?)(controlTextColorHex|ctch)=([0-9A-F]*)(&|$)/i;
+   if (extendedLocationSearch.match(thisRegExp) !== null) {
+      controlTextColorHex = "#" + unescape(extendedLocationSearch.match(thisRegExp)[3]);
+   }
+   var backgroundColorHex = lightColorHex;
+   thisRegExp = /(&|\?)(backgroundColorHex|bch)=([0-9A-F]*)(&|$)/i;
+   if (extendedLocationSearch.match(thisRegExp) !== null) {
+      backgroundColorHex = "#" + unescape(extendedLocationSearch.match(thisRegExp)[3]);
+   }
+
+   var framePadding = "auto";
+   thisRegExp = /(&|\?)(framePadding|fp)=([0-9]+)(&|$)/i;
+   if (extendedLocationSearch.match(thisRegExp) !== null) {
+      framePadding = unescape(extendedLocationSearch.match(thisRegExp)[3]);
+   }
+   var squareSize = "auto";
+   thisRegExp = /(&|\?)(squareSize|ss)=([1-9][0-9]*|a|auto)(&|$)/i;
+   if (extendedLocationSearch.match(thisRegExp) !== null) {
+      squareSize = unescape(extendedLocationSearch.match(thisRegExp)[3]);
+   }
+   if ((squareSize == "auto") || (squareSize == "a")) {
+      if (window.innerWidth && window.innerHeight) { ww = window.innerWidth; wh = window.innerHeight; }
+      else if (document.documentElement && document.documentElement.clientWidth) { ww = document.documentElement.clientWidth; wh = document.documentElement.clientHeight; }
+      else if (document.body && document.body.clientWidth) { ww = document.body.clientWidth; wh = document.body.clientHeight; }
+      else { ww = wh = 0; }
+      if (ww && wh) {
+         if (framePadding == "auto") {
+            squareSize = Math.floor(Math.min(ww / 10, wh / 12));
+         } else {
+            squareSize = Math.floor(Math.min((ww - 2 * framePadding) / 8, (wh - 2 * framePadding) / 10));
+         }
+      } else {
+         squareSize = 30;
+      }
+   }
+   if (squareSize < 20) { squareSize = 20; }
+   if (framePadding == "auto") { framePadding = squareSize; }
+
+   var pieceSizeOptions = new Array(20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 52, 56, 60, 64, 72, 80, 88, 96, 112, 128, 144, 300);
+   function defaultPieceSize(squareSize) {
+      targetPieceSize = Math.floor(0.8 * squareSize);
+      for (ii=(pieceSizeOptions.length-1); ii>=0; ii--) {
+         if (pieceSizeOptions[ii] <= targetPieceSize) { return pieceSizeOptions[ii]; }
+      }
+      return pieceSizeOptions[0];
+   }
+   var pieceSize = defaultPieceSize(squareSize);
+   thisRegExp = /(&|\?)(pieceSize|ps)=([1-9][0-9]*)(&|$)/i;
+   if (extendedLocationSearch.match(thisRegExp) !== null) {
+      pieceSize = unescape(extendedLocationSearch.match(thisRegExp)[3]);
+   }
+   var pieceFont = "alpha";
+   thisRegExp = /(&|\?)(pieceFont|pf)=([^&]*)(&|$)/i;
+   if (extendedLocationSearch.match(thisRegExp) !== null) {
+      pieceFont = unescape(extendedLocationSearch.match(thisRegExp)[3]);
+      if (pieceFont == "a") { pieceFont = "alpha"; }
+      if (pieceFont == "m") { pieceFont = "merida"; }
+      if (pieceFont == "u") { pieceFont = "uscf"; }
+      if ((pieceFont != "alpha") && (pieceFont != "merida") && (pieceFont != "uscf")) { pieceFont = "alpha"; }
+   }
+   SetImagePath(pieceFont + "/" + pieceSize);
+   SetImageType("png");
+   SetHighlightOption(false);
+   SetShortcutKeysEnabled(false);
+
+
+   var fontMovesSize = Math.ceil(squareSize * 11 / 30);
+   thisRegExp = /(&|\?)(fontMovesSize|fms)=([1-9][0-9]*)(&|$)/i;
+   if (extendedLocationSearch.match(thisRegExp) !== null) {
+      fontMovesSize = unescape(extendedLocationSearch.match(thisRegExp)[3]);
+   }
+   var fontCommentsSize = Math.ceil(squareSize * 19 / 30);
+   thisRegExp = /(&|\?)(fontCommentsSize|fcs)=([1-9][0-9]*)(&|$)/i;
+   if (extendedLocationSearch.match(thisRegExp) !== null) {
+      fontCommentsSize = unescape(extendedLocationSearch.match(thisRegExp)[3]);
+   }
+
+   thisRegExp = /(&|\?)(help|h)=(t|true)(&|$)/i;
+   if (extendedLocationSearch.match(thisRegExp) !== null) {
+      document.write("<PRE>");
+      document.write("URL parameters\n");
+      document.write("\n");
+      document.write(" - fenString = FEN position to analyze\n");
+      document.write(" - analysisSeconds = analysis timeout in seconds (default 13)\n");
+      document.write(" - disableInputs = true | false (default false)\n");
+      document.write("\n");
+      document.write(" - squareSize = size of square (default selects square size to fit the available space)\n");
+      document.write(" - pieceSize = size of pieces | default (default selects piece size based on square size)\n");
+      document.write(" - pieceFont = alpha | merida | uscf (default alpha)\n");
+      document.write("\n");
+      document.write(" - lightColorHex = light square color hex code, like FF0000 (default F4F4F4)\n");
+      document.write(" - darkColorHex = dark square color hex code, like FF0000 (default DDDDDD)\n");
+      document.write(" - highlightColorHex = highlight color hex code, like FF0000 (default BBBBBB)\n");
+      document.write(" - backgroundColorHex = page background color hex code, like FF0000 (default as lightColorHex)\n");
+      document.write(" - controlTextColorHex = control buttons text color hex code, like FF0000 (default BBBBBB)\n");
+      document.write(" - fontMovesColorHex = moves color hex code, like FF0000 (default 000000)\n");
+      document.write("\n");
+      document.write(" - fontMovesSize = moves font size (default selects moves font size based on square size)\n");
+      document.write(" - fontCommentsSize = analysis comments font size (default selects comments font size based on square size)\n");
+      document.write("\n");
+      document.write(" - framePadding = padding within the frame (default as squareSize)\n");
+      document.write("\n");
+      document.write("</PRE>");
+   }
+
+
+   function myRulesLength(sheet) {
+      if (sheet.cssRules) { return sheet.cssRules.length; }
+      if (sheet.rules) { return sheet.rules.length; }
+      return null;
+   }
+
+   function myInsertRule(sheet, selector, declaration) {
+      if (sheet.insertRule) { sheet.insertRule(selector + "{ " + declaration + " }", myRulesLength(sheet)); }
+      else if (sheet.addRule) { sheet.addRule(selector, declaration); }
+   }
+
+   sheet = document.styleSheets[0];
+   myInsertRule(sheet, "body", "color: " + fontMovesColorHex + "; background: " + backgroundColorHex + "; padding: " + framePadding + "px;");
+   myInsertRule(sheet, "a", "color: " + fontMovesColorHex + ";");
+   myInsertRule(sheet, ".boardTable", "width: " + (squareSize * 8) + "px; height: " + (squareSize * 8) + "px; background: " + lightColorHex + ";");
+   myInsertRule(sheet, ".pieceImage", "width: " + pieceSize + "px; height: " + pieceSize + "px;");
+   myInsertRule(sheet, ".whiteSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + lightColorHex + ";");
+   myInsertRule(sheet, ".highlightWhiteSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + highlightColorHex + ";");
+   myInsertRule(sheet, ".blackSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + darkColorHex + ";");
+   myInsertRule(sheet, ".highlightBlackSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + highlightColorHex + ";");
+   myInsertRule(sheet, ".container", "width: " + (squareSize * 8) + "px;");
+   myInsertRule(sheet, ".gameCustomButtons", "height: " + squareSize  + "px; padding-bottom: " + Math.floor(squareSize / 6) + "px; color: " + controlTextColorHex + "; font-size: " + fontMovesSize + "px;");
+   myInsertRule(sheet, ".gameAnalysis", "height: " + squareSize + "px;");
+   myInsertRule(sheet, ".gameFlagToMove", "height: " + Math.floor(fontMovesSize / 2) + "px; width: " + Math.floor(fontMovesSize / 2) + "px; margin-right: " + squareSize + "px;");
+   myInsertRule(sheet, ".gameMoves", "font-size: " + fontMovesSize + "px;");
+   myInsertRule(sheet, ".gameEval", "padding-left: " + squareSize + "px; padding-bottom: " + Math.floor(fontCommentsSize / 6) + "px; background: " + backgroundColorHex + "; font-size: " + fontCommentsSize + "px;");
+
+   start_pgn4web();
+
+} // myOnLoad end
 
 
 var engineWorker = "garbochess/garbochess.js";

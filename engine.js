@@ -5,8 +5,8 @@
  *  for credits, license and more details
  */
 
-var pgn4web_engineWindowUrlParameters = "";
 var pgn4web_engineWindowTarget = "pgn4web_engine_analysis";
+var pgn4web_engineWindowUrlParameters = "ss=30";
 var pgn4web_engineWindowHeight = 30 * 12;
 var pgn4web_engineWindowWidth = 30 * 10;
 
