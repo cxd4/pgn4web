@@ -102,6 +102,7 @@ a {
 var fenString;
 var analysisSeconds;
 var disableInputs;
+var loadIdle;
 
 window.onload = myOnLoad;
 
@@ -146,6 +147,12 @@ function myOnLoad() {
    if (disableInputs) {
       document.getElementById("GameCustomButtons").style.visibility = "hidden";
    }
+
+   thisRegExp = /(&|\?)(loadIdle|li)=([^&]*)(&|$)/i;
+   if (extendedLocationSearch.match(thisRegExp) !== null) {
+      loadIdle = unescape(extendedLocationSearch.match(thisRegExp)[3]);
+   }
+   loadIdle = ((loadIdle == "true") || (loadIdle == "t"));
 
 
    var lightColorHex = "#F4F4F4";
@@ -254,6 +261,7 @@ function myOnLoad() {
       document.write(" - fenString = FEN position to analyze\n");
       document.write(" - analysisSeconds = analysis timeout in seconds (default 13)\n");
       document.write(" - disableInputs = true | false (default false)\n");
+      document.write(" - loadIdle = true | false (default false)\n");
       document.write("\n");
       document.write(" - squareSize = size of square (default selects square size to fit the available space)\n");
       document.write(" - pieceSize = size of pieces | default (default selects piece size based on square size)\n");
@@ -406,7 +414,11 @@ function customFunctionOnMove() {
       theObject.title = (CurrentPly % 2 ? "black" : "white") + " to move";
    }
 
-   StartEngineAnalysis();
+   if (loadIdle) {
+      loadIdle = false;
+   } else {
+      StartEngineAnalysis();
+   }
 
    if (clickFromCol !== "") {
       highlightSquare("abcdefgh".indexOf(clickFromCol), "12345678".indexOf(clickFromRow), false);
