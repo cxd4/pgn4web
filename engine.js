@@ -18,9 +18,9 @@ function showEngineAnalysisBoard() {
    var retVal = false;
    if (window.Worker) {
       if ((typeof(gameVariant[currentGame]) == "undefined") || (gameVariant[currentGame].match(/^(chess|normal|standard|)$/i) !== null)) {
-         if ((typeof(engineWin) != "undefined") && (engineWin.closed === false) && (window.self === engineWin.opener) && (typeof(engineWin.replaceFEN) != "undefined")) {
-            FEN4engine = CurrentFEN();
-            engineWin.replaceFEN(FEN4engine);
+         if ((typeof(engineWin) != "undefined") && (engineWin.closed === false) && (window.self === (engineWin.opener ? engineWin.opener : engineWin.parent)) && (typeof(engineWin.replaceFEN) != "undefined")) {
+            pgn4web_FEN4engine = CurrentFEN();
+            engineWin.replaceFEN(pgn4web_FEN4engine);
             retVal = true;
          } else {
             retVal = openEngineWin();
@@ -35,11 +35,11 @@ function showEngineAnalysisBoard() {
    return retVal;
 }
 
-var FEN4engine;
+var pgn4web_FEN4engine;
 function openEngineWin() {
    if (window.Worker) {
       if ((typeof(gameVariant[currentGame]) == "undefined") || (gameVariant[currentGame].match(/^(chess|normal|standard|)$/i) !== null)) {
-         FEN4engine = CurrentFEN();
+         pgn4web_FEN4engine = CurrentFEN();
          var options = "resizable=no,scrollbars=no,toolbar=no,location=no,menubar=no,status=no";
          if (pgn4web_engineWindowHeight !== "") { options = "height=" + pgn4web_engineWindowHeight + "," + options; }
          if (pgn4web_engineWindowWidth !== "") { options = "width=" + pgn4web_engineWindowWidth + "," + options; }

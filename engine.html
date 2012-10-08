@@ -110,11 +110,12 @@ function myOnLoad() {
 
    var extendedLocationSearch = window.location.search;
    try {
-      if (window.opener.pgn4web_engineWindowUrlParameters) {
+      winPredecessor = window.opener ? window.opener : window.parent;
+      if (winPredecessor.pgn4web_engineWindowUrlParameters) {
          if (window.location.search) {
-            extendedLocationSearch = extendedLocationSearch.replace(/^\?/, "?" + window.opener.pgn4web_engineWindowUrlParameters + "&");
+            extendedLocationSearch = extendedLocationSearch.replace(/^\?/, "?" + winPredecessor.pgn4web_engineWindowUrlParameters + "&");
          } else {
-            extendedLocationSearch += "?" + window.opener.pgn4web_engineWindowUrlParameters;
+            extendedLocationSearch += "?" + winPredecessor.pgn4web_engineWindowUrlParameters;
          }
       }
    } catch(e) {}
@@ -123,7 +124,7 @@ function myOnLoad() {
    if (extendedLocationSearch.match(thisRegExp) !== null) {
       fenString = unescape(extendedLocationSearch.match(thisRegExp)[3]);
    } else {
-      try { fenString = window.opener.FEN4engine; }
+      try { fenString = winPredecessor.pgn4web_FEN4engine; }
       catch(e) { fenString = FenStringStart; }
    }
    document.getElementById("pgnText").innerHTML = '[Setup "1"]\n[FEN "' + fenString + '"]\n';
