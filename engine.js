@@ -35,10 +35,11 @@ function openEngineWin() {
          if (pgn4web_engineWindowHeight !== "") { options = "height=" + pgn4web_engineWindowHeight + "," + options; }
          if (pgn4web_engineWindowWidth !== "") { options = "width=" + pgn4web_engineWindowWidth + "," + options; }
 
-         // patch for chrome bug http://crbug.com/154559 with engine.html failing autodetecting window.open dimensions
+         // patch for chrome http://crbug.com/154559 with engine.html failing autodetecting window.open dimensions
          if ((!pgn4web_engineWindowUrlParameters.match(/(&|^)(squareSize|ss)=([1-9][0-9]*)(&|$)/i)) && (window.navigator.userAgent.match(/(Chrome)/))) {
             pgn4web_engineWindowUrlParameters = "ss=30" + (pgn4web_engineWindowUrlParameters ? "&" : "") + pgn4web_engineWindowUrlParameters;
          }
+         // end of patch
 
          engineWin = window.open("engine.html?fs=" + CurrentFEN() + (pgn4web_engineWindowUrlParameters ? "&" : "") + pgn4web_engineWindowUrlParameters, pgn4web_engineWindowTarget, options);
          return engineWin;
