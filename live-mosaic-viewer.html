@@ -90,13 +90,13 @@
 
   function getMaxBoardFromLocalStorage() {
     try { mb = localStorage.getItem("pgn4web_chess_live_mosaic_viewer_maxBoards"); }
-    catch (e) { return maxBoards_default; }
+    catch(e) { return maxBoards_default; }
     return mb;
   }
 
   function setMaxBoardToLocalStorage() {
     try { localStorage.setItem("pgn4web_chess_live_mosaic_viewer_maxBoards", maxBoards); }
-    catch (e) { return false; }
+    catch(e) { return false; }
     return true;
   }
 

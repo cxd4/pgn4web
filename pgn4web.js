@@ -1849,9 +1849,9 @@ function loadPgnFromPgnUrl(pgnUrl) {
     }
   } else if (window.ActiveXObject) { // IE
     try { http_request = new ActiveXObject("Msxml2.XMLHTTP"); }
-    catch (e) {
+    catch(e) {
       try { http_request = new ActiveXObject("Microsoft.XMLHTTP"); }
-      catch (e) {
+      catch(e) {
         myAlert('error: XMLHttpRequest unavailable for PGN URL\n' + pgnUrl, true);
         return false;
       }

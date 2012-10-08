@@ -78,12 +78,12 @@ if (window.location.search.match(thisRegExp) !== null) {
 try {
   document.getElementById("width").min = minBoardSize;
   document.getElementById("height").min = minBoardSize;
-} catch (e) {}
+} catch(e) {}
 
 function atLoad() {
   if (frameHeight || frameWidth) {
-    if (frameWidth && !frameHeight) { try { frameHeight = Math.floor(frameWidth * 9 / 16); } catch (e) {} }
-    if (frameHeight && !frameWidth) { try { frameWidth = Math.ceil(frameHeight / 9 * 16); } catch (e) {} }
+    if (frameWidth && !frameHeight) { try { frameHeight = Math.floor(frameWidth * 9 / 16); } catch(e) {} }
+    if (frameHeight && !frameWidth) { try { frameWidth = Math.ceil(frameHeight / 9 * 16); } catch(e) {} }
     change_w(frameWidth);
     change_h(frameHeight);
   } else { preselect(16, 9); }

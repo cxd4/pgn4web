@@ -402,7 +402,7 @@ a.variation {
 
 <script type="text/javascript">
 
-  pgn4web_engineWindowUrlParameters = "lch=FFFFFF&dch=E4E4E4&hch=C6CEC3&ctch=888888&ss=28&ps=24&fms=11&fcs=19&fp=0";
+  pgn4web_engineWindowUrlParameters = "lch=FFFFFF&dch=E4E4E4&hch=C6CEC3&ctch=888888&ss=28&ps=24&fms=11&fcs=19&fp=0&li=t";
   pgn4web_engineWindowTarget = "pgn4web_inline_engine";
 
   pgnFile_default = detectBaseLocation() ?
@@ -858,9 +858,9 @@ function hideAnalysisBoard() {
   if (theObject = document.getElementById('GameAnalysisContainer')) {
     theObject.style.width = "1px";
   }
-  if (theObject = document.getElementById('GameAnalysisFrame')) {
-    setTimeout("document.getElementById('GameAnalysisFrame').src = 'about:blank';", 1100);
-  }
+  try {
+    if (engineWin && engineWin.StopBackgroundEngine) { engineWin.StopBackgroundEngine(); }
+  } catch(e) {}
   showAnalysis = false;
 }
 
@@ -919,6 +919,8 @@ if (window.Worker) {
   if (theObj = document.getElementById("gamesAnchor")) {
     theObj.style.display = headlessPage ? "none" : "";
   }
+
+  showEngineAnalysisBoard();
 
 </script>
 
