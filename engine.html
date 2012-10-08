@@ -167,33 +167,18 @@ if (window.location.search.match(thisRegExp) !== null) {
    backgroundColorHex = "#" + unescape(window.location.search.match(thisRegExp)[3]);
 }
 
-var framePadding = "auto";
+var squareSize = "30";
+thisRegExp = /(&|\?)(squareSize|ss)=([1-9][0-9]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+   squareSize = unescape(window.location.search.match(thisRegExp)[3]);
+}
+if (squareSize < 20) { squareSize = 20; }
+
+var framePadding = squareSize;
 thisRegExp = /(&|\?)(framePadding|fp)=([0-9]+)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
    framePadding = unescape(window.location.search.match(thisRegExp)[3]);
 }
-var squareSize = "auto";
-thisRegExp = /(&|\?)(squareSize|ss)=([1-9][0-9]*|a|auto)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   squareSize = unescape(window.location.search.match(thisRegExp)[3]);
-}
-if ((squareSize == "auto") || (squareSize == "a")) {
-   if (window.innerWidth && window.innerHeight) { ww = window.innerWidth; wh = window.innerHeight; }
-   else if (document.documentElement && document.documentElement.clientWidth) { ww = document.documentElement.clientWidth; wh = document.documentElement.clientHeight; }
-   else if (document.body && document.body.clientWidth) { ww = document.body.clientWidth; wh = document.body.clientHeight; }
-   else { ww = wh = 0; }
-   if (ww && wh) {
-      if (framePadding == "auto") {
-         squareSize = Math.floor(Math.min(ww / 10, wh / 12));
-      } else {
-         squareSize = Math.floor(Math.min((ww - 2 * framePadding) / 8, (wh - 2 * framePadding) / 10));
-      }
-   } else {
-      squareSize = 30;
-   }
-}
-if (squareSize < 20) { squareSize = 20; }
-if (framePadding == "auto") { framePadding = squareSize; }
 
 var pieceSizeOptions = new Array(20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 52, 56, 60, 64, 72, 80, 88, 96, 112, 128, 144, 300);
 function defaultPieceSize(squareSize) {
@@ -244,7 +229,7 @@ if (window.location.search.match(thisRegExp) !== null) {
    document.write(" - disableInputs = true | false (default false)\n");
    document.write(" - loadIdle = true | false (default false)\n");
    document.write("\n");
-   document.write(" - squareSize = size of square (default selects square size to fit the available space)\n");
+   document.write(" - squareSize = size of square (default 30)\n");
    document.write(" - pieceSize = size of pieces | default (default selects piece size based on square size)\n");
    document.write(" - pieceFont = alpha | merida | uscf (default alpha)\n");
    document.write("\n");
