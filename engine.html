@@ -9,7 +9,7 @@
 
 <head>
 
-<title>pgn4web engine analysis</title>
+<title>pgn4web analysis board</title>
 
 <link rel="shortcut icon" href="pawn.ico" />
 
@@ -324,7 +324,7 @@ function InitializeBackgroundEngine() {
       } catch(e) {
         g_backgroundEngineValid = false;
         document.getElementById("GameMoves").innerHTML = "engine analysis unavailable";
-        document.getElementById("GameMoves").title = "engine analysis not supported by this web browser";
+        document.getElementById("GameMoves").title = "chess engine for computer analysis not supported by the web browser";
       }
    }
    return g_backgroundEngineValid;
