@@ -863,15 +863,16 @@ function hideAnalysisBoard() {
     theObject.style.width = "1px";
   }
   try {
-    if (engineWin && engineWin.StopBackgroundEngine) { engineWin.StopBackgroundEngine(); }
+    if (thisEngineWin && thisEngineWin.StopBackgroundEngine) { thisEngineWin.StopBackgroundEngine(); }
   } catch(e) {}
   showAnalysis = false;
 }
 
 var disableEngine;
+var thisEngineWin;
 function showAnalysisBoard(de) {
   if (!showBoard) { return; }
-  if (showEngineAnalysisBoard(de) === true) {
+  if (thisEngineWin = showEngineAnalysisBoard(de)) {
     disableEngine = de;
     if (theObject = document.getElementById('GameAnalysisContainer')) {
       theObject.style.width = "274px";

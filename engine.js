@@ -23,10 +23,11 @@ function showEngineAnalysisBoard(engineDisabled) {
       if (pgn4web_engineWindowWidth) { options = "width=" + pgn4web_engineWindowWidth + "," + options; }
       var engineWin = window.open("engine.html?" + parameters, pgn4web_engineWindowTarget, options);
       if ((typeof(engineWin) != "undefined") && (engineWin.top === engineWin.self) && (window.focus)) { engineWin.focus(); }
+      return engineWin;
    } else {
       myAlert("warning: the pgn4web analysis board supports only normal chess; the " + gameVariant[currentGame] + " variant is not supported", true);
    }
-   return engineWin ? true : false;
+   return null;
 }
 
 boardShortcut("E8", "show/update analysis board", function(t,e){ showEngineAnalysisBoard(e.shiftKey); }, true);
