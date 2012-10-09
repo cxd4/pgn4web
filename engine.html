@@ -105,9 +105,6 @@ if (window.location.search.match(thisRegExp) !== null) {
       disableEngine = "never";
    }
 }
-if ((disableEngine == "always") && (theObject = document.getElementById("GameMoves"))) {
-   theObject.innerHTML = "<span onclick='disableEngine = \"never\"; StartEngineAnalysis();'>engine analysis disabled</span>";
-}
 
 var disableInputs;
 thisRegExp = /(&|\?)(disableInputs|di)=([^&]*)(&|$)/i;
@@ -302,6 +299,10 @@ if (theObject = document.getElementById("pgnText")) {
    theObject.innerHTML = '[Setup "1"]\n[FEN "' + fenString + '"]\n';
 }
 
+if ((disableEngine == "always") && (theObject = document.getElementById("GameMoves"))) {
+   theObject.innerHTML = "<span onclick='disableEngine = \"never\"; StartEngineAnalysis();'>engine analysis disabled</span>";
+}
+
 
 var engineWorker = "garbochess/garbochess.js";
 
@@ -406,6 +407,13 @@ function customFunctionOnPgnTextLoad() {
    }
    if ((!disableInputs) && (theObject = document.getElementById("GameCustomButtons"))) {
       theObject.className = "gameCustomButtons";
+   }
+
+   // undocumented parameter for internal use after pgn4web has started
+
+   thisRegExp = /(&|\?)(engineSignature|es)=([1-9][0-9]*)(&|$)/i;
+   if (window.location.search.match(thisRegExp) !== null) {
+      engineSignature = unescape(window.location.search.match(thisRegExp)[3]);
    }
 }
 
@@ -520,6 +528,23 @@ function detectClick(t,e) {
       }
       lastPromotionMove = "";
    }
+}
+
+
+var engineSignature;
+
+function updateFEN(newFEN) {
+   if (newFEN != CurrentFEN()) {
+      if (theObject = document.getElementById("pgnText")) {
+         theObject.innerHTML = '[Setup "1"]\n[FEN "' + newFEN + '"]\n';
+      }
+      firstStart = true;
+      start_pgn4web();
+   }
+}
+
+function sameEngineDisabled(engineDisabled) {
+   return (((engineDisabled) && (disableEngine == "always")) || ((!engineDisabled) && (disableEngine != "always")));
 }
 
 </script>
