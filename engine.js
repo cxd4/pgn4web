@@ -14,7 +14,6 @@ var pgn4web_engineWindowWidth = 30 * 10;
 
 
 function showEngineAnalysisBoard(engineDisabled) {
-   var engineWin;
    if ((typeof(gameVariant[currentGame]) == "undefined") || (gameVariant[currentGame].match(/^(chess|normal|standard|)$/i) !== null)) {
       var parameters = "fs=" + encodeURIComponent(CurrentFEN());
       if (engineDisabled) { parameters += "&de=a"; }
@@ -22,7 +21,7 @@ function showEngineAnalysisBoard(engineDisabled) {
       var options = "resizable=no,scrollbars=no,toolbar=no,location=no,menubar=no,status=no";
       if (pgn4web_engineWindowHeight) { options = "height=" + pgn4web_engineWindowHeight + "," + options; }
       if (pgn4web_engineWindowWidth) { options = "width=" + pgn4web_engineWindowWidth + "," + options; }
-      engineWin = window.open("engine.html?" + parameters, pgn4web_engineWindowTarget, options);
+      var engineWin = window.open("engine.html?" + parameters, pgn4web_engineWindowTarget, options);
       if ((typeof(engineWin) != "undefined") && (engineWin.top === engineWin.self) && (window.focus)) { engineWin.focus(); }
    } else {
       myAlert("warning: the pgn4web analysis board supports only normal chess; the " + gameVariant[currentGame] + " variant is not supported", true);

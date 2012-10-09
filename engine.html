@@ -418,7 +418,7 @@ function customFunctionOnMove() {
 }
 
 function customDebugInfo() {
-   return "engine=" + engineWorker + " analysisSeconds=" + analysisSeconds + " nodesPerSecond=" + num2string(g_nodesPerSecond);
+   return window.Worker ? "engine=" + engineWorker + " analysisSeconds=" + analysisSeconds + " nodesPerSecond=" + num2string(g_nodesPerSecond) : "engine=unavailable";
 }
 
 function num2string(num) {

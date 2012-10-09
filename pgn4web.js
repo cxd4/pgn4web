@@ -146,7 +146,7 @@ function alertPromptTick(restart) {
 }
 
 
-function stopKeyProp(e) {
+function stopEvProp(e) {
   e.cancelBubble = true;
   if (e.stopPropagation) { e.stopPropagation(); }
   if (e.preventDefault) { e.preventDefault(); }
@@ -400,7 +400,7 @@ function handlekey(e) {
     default:
       return true;
   }
-  return stopKeyProp(e);
+  return stopEvProp(e);
 }
 
 boardOnClick = new Array(8);
