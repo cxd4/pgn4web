@@ -460,6 +460,13 @@ a.variation {
   autoSwitchNewgames = false;
   if ((gup("autoSwitchNewgames") == "true") || (gup("autoSwitchNewgames") == "t")) { autoSwitchNewgames = true; }
 
+  var showAnalysis = false; // does not fit the design to allow this as URL parameter
+
+  var disableEngine = false; // does not fit the design to allow this as URL parameter
+
+  var autoUpdateAnalysis = false;
+  if ((gup("autoUpdateAnalysis") == "true") || (gup("autoUpdateAnalysis") == "t")) { autoUpdateAnalysis = true; }
+
   headlessPage = false;
   if ((gup("headlessPage") == "true") || (gup("headlessPage") == "t")) { headlessPage = true; }
 
@@ -475,6 +482,7 @@ a.variation {
       " - showTeams = " + showTeams + "; shows teams information (default true)" + "\n" +
       " - autoHighlightNewmoves = " + autoHighlightNewmoves + "; automatically highlights new moves (default true)" + "\n" +
       " - autoSwitchNewgames = " + autoSwitchNewgames + "; automatically switches to games with new moves (default false)" + "\n" +
+      " - autoUpdateAnalysis = " + autoUpdateAnalysis + "; automatically updates analysis board from main board (default false)" + "\n" +
       " - showPlayersInfo = " + showPlayersInfo + "; shows title/elo players information (default true)" + "\n" +
       " - headlessPage = " + headlessPage + "; displays a page without heading (default false)" + "\n" +
       " - help = true; prints this help (default false)" + "\n\n" +
@@ -725,8 +733,6 @@ a.variation {
     }
   }
 
-  var autoUpdateAnalysis = false;
-
   function customFunctionOnMove() {
     extraMoves = 2;
 
@@ -799,6 +805,8 @@ a.variation {
   boardShortcut("F7", "toggle autohighlight new moves", function(t,e){ autoHighlightNewmoves = !autoHighlightNewmoves && !e.shiftKey; });
   boardShortcut("G7", "toggle autoswitch to games with new moves", function(t,e){ autoSwitchNewgames = !autoSwitchNewgames && !e.shiftKey; });
 
+  boardShortcut("F8", "toggle autoupdate analysis board", function(t,e){ autoUpdateAnalysis = !autoUpdateAnalysis && !e.shiftKey; });
+
   function toggleShowEvent() {
     showEvent = !showEvent;
     printGames();
@@ -856,7 +864,6 @@ function gup(name) {
   return "";
 }
 
-var showAnalysis = false;
 function hideAnalysisBoard() {
   if (theObject = document.getElementById('GameAnalysisContainer')) {
     theObject.style.width = "40px"; // = gameAnalysisContainer.width.closed
@@ -867,7 +874,6 @@ function hideAnalysisBoard() {
   showAnalysis = false;
 }
 
-var disableEngine;
 var thisEngineWin;
 function showAnalysisBoard(de) {
   if (!showBoard) { return; }
@@ -924,7 +930,7 @@ boardShortcut("E8", "show/update analysis board", function(t,e){ showAnalysisBoa
     theObj.style.display = headlessPage ? "none" : "";
   }
 
-  showEngineAnalysisBoard();
+  showEngineAnalysisBoard(); // prepare analysis frame with an idle board
   pgn4web_engineWindowUrlParameters = pgn4web_engineWindowUrlParameters.replace(/&de=s$/, "");
 
 </script>
