@@ -192,7 +192,6 @@ h1.pageHeader {
   width: 224px; /* defined as gameAnalysisFrame.width = engine.html width */
   height: 280px; /* = engine.html height */
   margin-left: 40px; /* defined as gameAnalysisFrame.marginLeft = body.padding */
-  margin-right: 30px; /* defined as gameAnalysisFrame.marginRight = body.padding - gameBoardContainer.padding */
 }
 
 .gameBoardContainer {
@@ -875,7 +874,7 @@ function showAnalysisBoard(de) {
   if (thisEngineWin = showEngineAnalysisBoard(de)) {
     disableEngine = de;
     if (theObject = document.getElementById('GameAnalysisContainer')) {
-      theObject.style.width = "314px"; // defined as gameAnalysisContainer.width.open = gameAnalysisFrame.width + gameAnalysisFrame.marginLeft + gameAnalysisFrame.marginRight
+      theObject.style.width = "304px"; // defined as gameAnalysisContainer.width.open = gameAnalysisFrame.width + gameAnalysisFrame.marginLeft + body.padding
     }
     showAnalysis = true;
   }
