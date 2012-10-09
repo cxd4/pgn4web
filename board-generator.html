@@ -220,7 +220,7 @@ function shorturl_link_clean() {
 
 </script>
 
-<script  type="text/javascript">
+<script type="text/javascript">
 // this should have been defined in pgn4web-server-config.js
 // setting default value here just in case
 var pgn4web_board_url;
@@ -912,7 +912,7 @@ function calculate_html_code() {
 
   if (document.board.headerDisplay.value != "hidden") {
 
-    fontHeaderColorHex_value =  document.board.fontHeaderColorHex.value;
+    fontHeaderColorHex_value = document.board.fontHeaderColorHex.value;
     iframeUrl += "&fhcs=" + hex2sex(fontHeaderColorHex_value);
 
     fontHeaderSize_value = document.board.fontHeaderSize.value;
@@ -1516,7 +1516,7 @@ function oneClickPuzzleSetup() {
   }
 }
 
-var  sexEncodingCharSet = "$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
+var sexEncodingCharSet = "$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
 
 function sex2hex(sex, name) {
   if (sex === "") { return ""; }
@@ -1806,7 +1806,7 @@ defaults to the main variation</span>
 <span class="helptext"><i>start, end, random and comment</i> settings apply at every game load, <i>custom number</i> only at the first load</span>
 <p></p>
 
-<input  class="input" type="text" id="initialHalfmoveNumber" name="input" value="" size="12" onChange="javascript:setInitialHalfmove();">
+<input class="input" type="text" id="initialHalfmoveNumber" name="input" value="" size="12" onChange="javascript:setInitialHalfmove();">
 <span class="labeltext">initial halfmove number</span>
 <span class="helptext">actual halfmove number when the setting above is
 <a id="initialHalfmove_customNumber" class="helplink" href="" onClick="if (!this.disabled) { document.board.initialHalfmoveSelect.value = 'number'; setInitialHalfmove(); } return false;">custom number</a>
@@ -2135,7 +2135,7 @@ checkboxWidth = document.getElementById('hiddenCheckbox').offsetWidth;
 // the last number added to marginLeft should be equal to the value of the .checkbox style at the top
 theObj = document.getElementsByName('checkbox');
 for (ii = 0; ii < theObj.length; ii++) {
-  theObj[ii].style.marginLeft +=  inputWidth - checkboxWidth + 22;
+  theObj[ii].style.marginLeft += inputWidth - checkboxWidth + 22;
 }
 
 </script>

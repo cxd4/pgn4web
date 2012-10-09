@@ -223,7 +223,7 @@ if (($pgnFull == "true") || ($pgnFull == "t")) {
   $rawGame = $pgnGame;
 }
 
-// end of  undocumented features
+// end of undocumented features
 
 
 $outerFrameWidth = $frameWidth + 2 * $frameBorderWidth + 2 * $framePadding;

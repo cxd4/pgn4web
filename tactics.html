@@ -49,7 +49,7 @@ function hint() {
 
 function gup(name) {
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-  var regexS = "[\\?&]"+name+"=([^&#]*)";  
+  var regexS = "[\\?&]"+name+"=([^&#]*)";
   regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
   var regex = new RegExp( regexS, "i" );
   var results = regex.exec( window.location.href );
@@ -65,7 +65,7 @@ function customFunctionOnPgnGameLoad() {
   }
 }
 
-</script>  
+</script>
 
 </head>
 

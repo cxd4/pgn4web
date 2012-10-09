@@ -119,7 +119,7 @@ tmpLocalPgnFile=$localPgnFile.tmp
 logFile=$localPgnFile.log
 if [ -e "$logFile" ] || [ -h "$logFile" ]
 then
-   print_error  "logFile $logFile exists"
+   print_error "logFile $logFile exists"
    print_error "delete the file or choose another localPgnFile name and restart"
    exit
 fi

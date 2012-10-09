@@ -313,7 +313,7 @@ The following functions, if defined in the HTML file after loading pgn4web.js,
 allow for execution of custom commands at given points:
 - customFunctionOnPgnTextLoad(): when loading a new PGN file
 - customFunctionOnPgnGameLoad(): when loading a new game
-- customFunctionOnMove(): when a  move is made
+- customFunctionOnMove(): when a move is made
 - customFunctionOnAlert(message_string): when an error alert is raised
 - customFunctionOnCheckLiveBroadcastStatus(): when a live broadcast is checked
 Please note the order these functions are executed; for example, when loading
@@ -476,7 +476,7 @@ http://scid.sourceforge.net (file tactics.pgn), and from the Chess Informant
 publishing company at http://www.chessinformant.rs (file
 chess-informant-sample.pgn).
 
-The jscolor javascript code is  maintained by Honza Odvarko
+The jscolor javascript code is maintained by Honza Odvarko
 (http://odvarko.cz/) and released under the GNU Lesser General Public License
 (http://www.gnu.org/copyleft/lesser.html)
 See http://jscolor.com/
@@ -505,7 +505,7 @@ the Free Software Foundation; either version 2 of the License, or
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along

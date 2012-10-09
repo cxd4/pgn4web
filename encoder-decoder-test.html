@@ -367,10 +367,10 @@ function EncodePGN(ov) {
     }
   }
 
-  // We have constructed the nodes.  Now rewrite the list into a single array.
+  // We have constructed the nodes. Now rewrite the list into a single array.
   // The value of an array element will be positive if it is the character
-  // code we want.  Otherwise, it branches.  The left branch will be the next
-  // array element.  The value of the array will be (offset * -1), which is
+  // code we want. Otherwise, it branches. The left branch will be the next
+  // array element. The value of the array will be (offset * -1), which is
   // the right branch.
   var FinalNodes = Array(NextParent);
   var DepthIndex = Array(256);
@@ -414,7 +414,7 @@ function EncodePGN(ov) {
     }
   }
 
-  // We have the tree.  Associate codes with the letters.
+  // We have the tree. Associate codes with the letters.
   var CodeIndex = new Array(256);
   DepthIndex[0] = 0;
   CodeIndex[0] = "";
