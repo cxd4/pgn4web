@@ -462,11 +462,11 @@ boardShortcut("C8", "show this game PGN source data", function(t,e){ displayPgnD
 
 boardShortcut("D8", "show full PGN source data", function(t,e){ displayPgnData(true); }, true);
 
-boardShortcut("E8", "search help", function(t,e){ displayHelp(e.shiftKey ? "informant_symbols" : "search_tool"); }, true);
+boardShortcut("E8", "search help", function(t,e){ displayHelp("search_tool"); }, true);
 
 boardShortcut("F8", "shortcut keys help", function(t,e){ displayHelp("shortcut_keys"); }, true);
 
-boardShortcut("G8", "shortcut squares help", function(t,e){ displayHelp("shortcut_squares"); }, true);
+boardShortcut("G8", "shortcut squares help", function(t,e){ displayHelp(e.shiftKey ? "informant_symbols" : "shortcut_squares"); }, true);
 
 boardShortcut("H8", "pgn4web help", function(t,e){ displayHelp(e.shiftKey ? "credits_and_license" : ""); }, true);
 

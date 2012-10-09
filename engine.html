@@ -96,7 +96,7 @@ a {
 <td width="25%" align="center" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0);" title="go to end">&gt;&gt;</td>
 </tr></table>
 <div class="gameAnalysis gameAnalysisHidden" id="GameAnalysis">
-<div class="gameEval" id="GameEval">&nbsp;</div>
+<div class="gameEval" id="GameEval" onclick="displayHelp('informant_symbols');">&nbsp;</div>
 <div class="gameFlagAndMoves">
 <img class="gameFlagToMove" id="GameFlagToMove" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" border="1" /><span class="gameMoves" id="GameMoves"></span>&nbsp;
 </div>
@@ -110,7 +110,9 @@ thisRegExp = /(&|\?)(fenString|fs)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
    fenString = unescape(window.location.search.match(thisRegExp)[3]);
 }
-document.getElementById("pgnText").innerHTML = '[Setup "1"]\n[FEN "' + fenString + '"]\n';
+if (theObject = document.getElementById("pgnText")) {
+   theObject.innerHTML = '[Setup "1"]\n[FEN "' + fenString + '"]\n';
+}
 
 var analysisSeconds = 13;
 var minAnalysisSeconds = 3;
@@ -122,22 +124,30 @@ var maxAnalysisSeconds = 313;
       if (analysisSeconds > maxAnalysisSeconds) { analysisSeconds = maxAnalysisSeconds; }
    }
 
+var disableEngine = "never";
+thisRegExp = /(&|\?)(disableEngine|de)=([^&]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+   disableEngine = unescape(window.location.search.match(thisRegExp)[3]);
+   if (disableEngine == "a") { disableEngine = "always"; }
+   if (disableEngine == "n") { disableEngine = "never"; }
+   if (disableEngine == "s") { disableEngine = "start"; }
+   if ((disableEngine != "always") && (disableEngine != "never") && (disableEngine != "start")) {
+      disableEngine = "never";
+   }
+}
+if (theObject = document.getElementById("GameMoves")) {
+   theObject.innerHTML = "<span onclick='disableEngine = \"never\"; StartEngineAnalysis();'>engine analysis disabled</span>";
+}
+
 var disableInputs;
 thisRegExp = /(&|\?)(disableInputs|di)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
    disableInputs = unescape(window.location.search.match(thisRegExp)[3]);
 }
 disableInputs = ((disableInputs == "true") || (disableInputs == "t"));
-if (disableInputs) {
-   document.getElementById("GameCustomButtons").style.visibility = "hidden";
+if ((disableInputs) && (theObject = document.getElementById("GameCustomButtons"))) {
+   theObject.style.visibility = "hidden";
 }
-
-var loadIdle;
-thisRegExp = /(&|\?)(loadIdle|li)=([^&]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   loadIdle = unescape(window.location.search.match(thisRegExp)[3]);
-}
-loadIdle = ((loadIdle == "true") || (loadIdle == "t"));
 
 
 var lightColorHex = "#F4F4F4";
@@ -230,8 +240,8 @@ if (window.location.search.match(thisRegExp) !== null) {
    document.write("\n");
    document.write(" - fenString = FEN position to analyze\n");
    document.write(" - analysisSeconds = analysis timeout in seconds (default 13)\n");
+   document.write(" - disableEngine = always | never | start (default never)\n");
    document.write(" - disableInputs = true | false (default false)\n");
-   document.write(" - loadIdle = true | false (default false)\n");
    document.write("\n");
    document.write(" - squareSize = size of square (default 30)\n");
    document.write(" - pieceSize = size of pieces | default (default selects piece size based on square size)\n");
@@ -306,25 +316,33 @@ function InitializeBackgroundEngine() {
                       if (ev < -maxEv) { ev = -maxEv; } else if (ev > maxEv) { ev = maxEv; }
                       if (fenString.indexOf(" b ") !== -1) { ev = -ev; }
                    }
-                   document.getElementById("GameEval").innerHTML = ev2NAG(ev);
-                   document.getElementById("GameEval").title = (ev > 0 ? " +" : " ") + ev + (ev == Math.floor(ev) ? ".0 " : " ");
+                   if (theObject = document.getElementById("GameEval")) {
+                      theObject.innerHTML = ev2NAG(ev);
+                      theObject.title = (ev > 0 ? " +" : " ") + ev + (ev == Math.floor(ev) ? ".0 " : " ");
+                   }
                    nodes = parseInt(matches[3], 10);
                    g_nodesPerSecond = parseInt(matches[4], 10);
                    pv = matches[5].replace(/(^\s+|\s*\+|\s+$)/g, "").replace(/\s*stalemate/, "=").replace(/\s*checkmate/, "#");
-                   document.getElementById("GameMoves").innerHTML = pv;
-                   document.getElementById("GameMoves").title = pv;
-                   if (!disableInputs) {
-                      document.getElementById("GameMoves").setAttribute("onClick", "addPly(this.innerHTML.replace(/^\\s*(\\S+).*$/, '$1'));");
+                   if (theObject = document.getElementById("GameMoves")) {
+                      theObject.innerHTML = pv;
+                      theObject.title = pv;
+                      if (!disableInputs) {
+                         theObject.setAttribute("onClick", "addPly(this.innerHTML.replace(/^\\s*(\\S+).*$/, '$1'));");
+                      }
                    }
-                   document.getElementById("GameAnalysisFlag").innerHTML = "&middot;";
-                   document.getElementById("GameAnalysisFlag").title = "analysis engine running";
+                   if (theObject = document.getElementById("GameAnalysisFlag")) {
+                      theObject.innerHTML = "&middot;";
+                      theObject.title = "analysis engine running";
+                   }
                 }
              }
           };
       } catch(e) {
-        g_backgroundEngineValid = false;
-        document.getElementById("GameMoves").innerHTML = "engine analysis unavailable";
-        document.getElementById("GameMoves").title = "chess engine for computer analysis not supported by the web browser";
+         g_backgroundEngineValid = false;
+         if (theObject = document.getElementById("GameMoves")) {
+            theObject.innerHTML = "engine analysis unavailable";
+            theObject.title = "chess engine for computer analysis not supported by the web browser";
+         }
       }
    }
    return g_backgroundEngineValid;
@@ -344,10 +362,12 @@ function ev2NAG(ev) {
 function StopBackgroundEngine() {
    if (analysisTimeout) { clearTimeout(analysisTimeout); }
    if (g_backgroundEngine) {
-     g_backgroundEngine.terminate();
-     g_backgroundEngine = null;
-     document.getElementById("GameAnalysisFlag").innerHTML = "&nbsp;";
-     document.getElementById("GameAnalysisFlag").title = "";
+      g_backgroundEngine.terminate();
+      g_backgroundEngine = null;
+      if (theObject = document.getElementById("GameAnalysisFlag")) {
+         theObject.innerHTML = "&nbsp;";
+         theObject.title = "";
+      }
    }
 }
 
@@ -381,8 +401,8 @@ function customFunctionOnMove() {
       theObject.title = (CurrentPly % 2 ? "black" : "white") + " to move";
    }
 
-   if (loadIdle) {
-      loadIdle = false;
+   if (disableEngine != "never") {
+      if (disableEngine == "start") { disableEngine = "never"; }
    } else {
       StartEngineAnalysis();
    }

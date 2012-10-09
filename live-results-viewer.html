@@ -404,7 +404,7 @@ a.variation {
 
 <script type="text/javascript">
 
-  pgn4web_engineWindowUrlParameters = "lch=FFFFFF&dch=E4E4E4&hch=C6CEC3&ctch=888888&ss=28&ps=24&fms=11&fcs=19&fp=0&li=t";
+  pgn4web_engineWindowUrlParameters = "lch=FFFFFF&dch=E4E4E4&hch=C6CEC3&ctch=888888&ss=28&ps=24&fms=11&fcs=19&fp=0&de=s";
   pgn4web_engineWindowTarget = "pgn4web_inline_engine";
   pgn4web_engineWindowHeight = "";
   pgn4web_engineWindowWidth = "";
@@ -443,8 +443,8 @@ a.variation {
     delayIniGame = (iniGame > 0);
   } else { delayIniGame = false; }
 
-  showBoard = false;
-  if ((gup("showBoard") == "true") || (gup("showBoard") == "t")) { showBoard = true; }
+  showBoard = true;
+  if ((gup("showBoard") == "false") || (gup("showBoard") == "f")) { showBoard = false; }
 
   showEvent = true;
   if ((gup("showEvent") == "false") || (gup("showEvent") == "f")) { showEvent = false; }
@@ -471,7 +471,7 @@ a.variation {
       " - refreshMinutes = " + refreshMinutes + "; refresh interval in minutes, decimals allowed (default 1)" + "\n" +
       " - refreshDemo = " + demoFlag + "; sets live demo mode (default false)" + "\n" +
       " - initialGame = " + iniGame + "; initial game to load, a number or first, last, random or a search string (default 1)" + "\n" +
-      " - showBoard = " + showBoard + "; shows the chessboard (default false)" + "\n" +
+      " - showBoard = " + showBoard + "; shows the chessboard (default true)" + "\n" +
       " - showEvent = " + showEvent + "; shows event information (default true)" + "\n" +
       " - showTeams = " + showTeams + "; shows teams information (default true)" + "\n" +
       " - autoHighlightNewmoves = " + autoHighlightNewmoves + "; automatically highlights new moves (default true)" + "\n" +
@@ -754,7 +754,7 @@ a.variation {
     }
 
     if (showBoard && showAnalysis && autoUpdateAnalysis) {
-      showAnalysisBoard();
+      showAnalysisBoard(disableEngine);
     }
   }
 
@@ -786,10 +786,10 @@ a.variation {
   function customShortcutKey_Shift_4() { autoHighlightNewmoves = !autoHighlightNewmoves; }
   function customShortcutKey_Shift_5() { autoSwitchNewgames = !autoSwitchNewgames; }
   function customShortcutKey_Shift_6() { toggleShowBoard(); }
-  function customShortcutKey_Shift_7() { toggleShowTeams(); }
-  function customShortcutKey_Shift_8() { autoUpdateAnalysis = !autoUpdateAnalysis; }
-  function customShortcutKey_Shift_9() { if (showAnalysis) { hideAnalysisBoard(); } else { showAnalysisBoard(); } }
-  function customShortcutKey_Shift_0() { showAnalysisBoard(); }
+  function customShortcutKey_Shift_7() { autoUpdateAnalysis = !autoUpdateAnalysis; }
+  function customShortcutKey_Shift_8() { showAnalysisBoard(true); }
+  function customShortcutKey_Shift_9() { showAnalysisBoard(false); }
+  function customShortcutKey_Shift_0() { if (showAnalysis) { hideAnalysisBoard(); } else { showAnalysisBoard(disableEngine); } }
 
   boardShortcut("F5", "toggle event information", function(t,e){ toggleShowEvent(); });
   boardShortcut("G5", "toggle teams information", function(t,e){ toggleShowTeams(); });
@@ -868,9 +868,11 @@ function hideAnalysisBoard() {
   showAnalysis = false;
 }
 
-function showAnalysisBoard() {
+var disableEngine;
+function showAnalysisBoard(de) {
   if (!showBoard) { return; }
-  if (showEngineAnalysisBoard() === true) {
+  if (showEngineAnalysisBoard(de) === true) {
+    disableEngine = de;
     if (theObject = document.getElementById('GameAnalysisContainer')) {
       theObject.style.width = "274px";
     }
@@ -878,7 +880,7 @@ function showAnalysisBoard() {
   }
 }
 
-boardShortcut("E8", "show/update analysis board", function(t,e){ if (e.shiftKey) { displayHelp("informant_symbols"); } else { showAnalysisBoard(); } }, true);
+boardShortcut("E8", "show/update analysis board", function(t,e){ showAnalysisBoard(e.shiftKey); }, true);
 
 </script>
 
@@ -890,7 +892,7 @@ boardShortcut("E8", "show/update analysis board", function(t,e){ if (e.shiftKey)
 
 <table class="gameFloatingContainer" id="GameFloatingContainer" cellspacing="0" cellpadding="0" border="0"><tr valign="top"><td align="leftt">
 <div class="gameAnalysisContainer" id="GameAnalysisContainer">
-<div class="gameAnalysisButtons" id="GameAnalysisButtons" title="analysis board: try moves clicking from/to squares"><span class="gamePaddedAnalysisButtonsFiller">&nbsp;</span><a class="gamePaddedAnalysisButton" href="javascript:void(0);" onclick="showAnalysisBoard(); this.blur();" title="update analysis board">v</a><a class="gamePaddedAnalysisButton" href="javascript:void(0);" onclick="hideAnalysisBoard(); this.blur();" title="hide analysis board">x</a></div>
+<div class="gameAnalysisButtons" id="GameAnalysisButtons" title="analysis board: try moves clicking from/to squares"><span class="gamePaddedAnalysisButtonsFiller">&nbsp;</span><a class="gamePaddedAnalysisButton" href="javascript:void(0);" onclick="showAnalysisBoard(disableEngine); this.blur();" title="update analysis board">v</a><a class="gamePaddedAnalysisButton" href="javascript:void(0);" onclick="hideAnalysisBoard(); this.blur();" title="hide analysis board">x</a></div>
 <iframe class="gameAnalysisFrame" id="GameAnalysisFrame" name="pgn4web_inline_engine" src="about:blank" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">your web browser and/or your host do not support iframes as required</iframe>
 </div>
 </td><td align="left">
@@ -923,7 +925,7 @@ boardShortcut("E8", "show/update analysis board", function(t,e){ if (e.shiftKey)
   }
 
   showEngineAnalysisBoard();
-  pgn4web_engineWindowUrlParameters = pgn4web_engineWindowUrlParameters.replace("&li=t", "");
+  pgn4web_engineWindowUrlParameters = pgn4web_engineWindowUrlParameters.replace(/&de=s$/, "");
 
 </script>
 
