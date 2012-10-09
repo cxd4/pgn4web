@@ -36,6 +36,10 @@ a {
   width: 100%;
 }
 
+.gameCustomButtonsHidden {
+  visibility: hidden;
+}
+
 .gameAnalysisFlag {
   font-weight: bold;
 }
@@ -72,46 +76,12 @@ a {
 
 </style>
 
-<script src="pgn4web.js" type="text/javascript"></script>
-<script src="chess-informant-NAG-symbols.js" type="text/javascript"></script>
-
-</head>
-
-<body>
-
-<!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
-<form style="display: none;"><textarea style="display: none;" id="pgnText">
-
-</textarea></form>
-<!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
-
-<center>
-<div class="container">
-<div id="GameBoard"></div>
-<table id="GameCustomButtons" class="gameCustomButtons" cellspacing="0" cellpadding="0" border="0"><tr valign="bottom">
-<td width="25%" align="center" onclick="GoToMove(StartPlyVar[0], 0);" title="go to start">&lt;&lt;</td>
-<td width="20%" align="center" onclick="GoToMove(CurrentPly - 1);" title="move backward">&lt;</td>
-<td width="10%" align="center" id="GameAnalysisFlag" class="gameAnalysisFlag" onclick="StopBackgroundEngine();">&nbsp;</td>
-<td width="20%" align="center" onclick="GoToMove(CurrentPly + 1);" title="move forward">&gt;</td>
-<td width="25%" align="center" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0);" title="go to end">&gt;&gt;</td>
-</tr></table>
-<div class="gameAnalysis gameAnalysisHidden" id="GameAnalysis">
-<div class="gameEval" id="GameEval" onclick="displayHelp('informant_symbols');">&nbsp;</div>
-<div class="gameFlagAndMoves">
-<img class="gameFlagToMove" id="GameFlagToMove" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" border="1" /><span class="gameMoves" id="GameMoves"></span>&nbsp;
-</div>
-</div>
-</center>
-
 <script type="text/javascript">
 
-var fenString = FenStringStart;
+var fenString;
 thisRegExp = /(&|\?)(fenString|fs)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
    fenString = unescape(window.location.search.match(thisRegExp)[3]);
-}
-if (theObject = document.getElementById("pgnText")) {
-   theObject.innerHTML = '[Setup "1"]\n[FEN "' + fenString + '"]\n';
 }
 
 var analysisSeconds = 13;
@@ -135,7 +105,7 @@ if (window.location.search.match(thisRegExp) !== null) {
       disableEngine = "never";
    }
 }
-if (theObject = document.getElementById("GameMoves")) {
+if ((disableEngine == "always") && (theObject = document.getElementById("GameMoves"))) {
    theObject.innerHTML = "<span onclick='disableEngine = \"never\"; StartEngineAnalysis();'>engine analysis disabled</span>";
 }
 
@@ -145,9 +115,6 @@ if (window.location.search.match(thisRegExp) !== null) {
    disableInputs = unescape(window.location.search.match(thisRegExp)[3]);
 }
 disableInputs = ((disableInputs == "true") || (disableInputs == "t"));
-if ((disableInputs) && (theObject = document.getElementById("GameCustomButtons"))) {
-   theObject.style.visibility = "hidden";
-}
 
 
 var lightColorHex = "#F4F4F4";
@@ -216,10 +183,6 @@ if (window.location.search.match(thisRegExp) !== null) {
    if (pieceFont == "u") { pieceFont = "uscf"; }
    if ((pieceFont != "alpha") && (pieceFont != "merida") && (pieceFont != "uscf")) { pieceFont = "alpha"; }
 }
-SetImagePath(pieceFont + "/" + pieceSize);
-SetImageType("png");
-SetHighlightOption(false);
-SetShortcutKeysEnabled(false);
 
 
 var fontMovesSize = Math.ceil(squareSize * 11 / 30);
@@ -274,21 +237,70 @@ function myInsertRule(sheet, selector, declaration) {
    else if (sheet.addRule) { sheet.addRule(selector, declaration); }
 }
 
-sheet = document.styleSheets[0];
-myInsertRule(sheet, "body", "color: " + fontMovesColorHex + "; background: " + backgroundColorHex + "; padding: " + framePadding + "px;");
-myInsertRule(sheet, "a", "color: " + fontMovesColorHex + ";");
-myInsertRule(sheet, ".boardTable", "width: " + (squareSize * 8) + "px; height: " + (squareSize * 8) + "px; background: " + lightColorHex + ";");
-myInsertRule(sheet, ".pieceImage", "width: " + pieceSize + "px; height: " + pieceSize + "px;");
-myInsertRule(sheet, ".whiteSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + lightColorHex + ";");
-myInsertRule(sheet, ".highlightWhiteSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + highlightColorHex + ";");
-myInsertRule(sheet, ".blackSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + darkColorHex + ";");
-myInsertRule(sheet, ".highlightBlackSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + highlightColorHex + ";");
-myInsertRule(sheet, ".container", "width: " + (squareSize * 8) + "px;");
-myInsertRule(sheet, ".gameCustomButtons", "height: " + squareSize + "px; padding-bottom: " + Math.floor(squareSize / 6) + "px; color: " + controlTextColorHex + "; font-size: " + fontMovesSize + "px;");
-myInsertRule(sheet, ".gameAnalysis", "height: " + squareSize + "px;");
-myInsertRule(sheet, ".gameFlagToMove", "height: " + Math.floor(fontMovesSize / 2) + "px; width: " + Math.floor(fontMovesSize / 2) + "px; margin-right: " + squareSize + "px;");
-myInsertRule(sheet, ".gameMoves", "font-size: " + fontMovesSize + "px;");
-myInsertRule(sheet, ".gameEval", "padding-left: " + squareSize + "px; padding-bottom: " + Math.floor(fontCommentsSize / 6) + "px; background: " + backgroundColorHex + "; font-size: " + fontCommentsSize + "px;");
+var mySheet = document.styleSheets[0];
+myInsertRule(mySheet, "body", "color: " + fontMovesColorHex + "; background: " + backgroundColorHex + "; padding: " + framePadding + "px;");
+myInsertRule(mySheet, "a", "color: " + fontMovesColorHex + ";");
+myInsertRule(mySheet, ".boardTable", "width: " + (squareSize * 8) + "px; height: " + (squareSize * 8) + "px; background: " + lightColorHex + ";");
+myInsertRule(mySheet, ".pieceImage", "width: " + pieceSize + "px; height: " + pieceSize + "px;");
+myInsertRule(mySheet, ".whiteSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + lightColorHex + ";");
+myInsertRule(mySheet, ".highlightWhiteSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + highlightColorHex + ";");
+myInsertRule(mySheet, ".blackSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + darkColorHex + ";");
+myInsertRule(mySheet, ".highlightBlackSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + highlightColorHex + ";");
+myInsertRule(mySheet, ".container", "width: " + (squareSize * 8) + "px;");
+myInsertRule(mySheet, ".gameCustomButtons", "height: " + squareSize + "px; padding-bottom: " + Math.floor(squareSize / 6) + "px; color: " + controlTextColorHex + "; font-size: " + fontMovesSize + "px;");
+myInsertRule(mySheet, ".gameAnalysis", "height: " + squareSize + "px;");
+myInsertRule(mySheet, ".gameFlagToMove", "height: " + Math.floor(fontMovesSize / 2) + "px; width: " + Math.floor(fontMovesSize / 2) + "px; margin-right: " + squareSize + "px;");
+myInsertRule(mySheet, ".gameMoves", "font-size: " + fontMovesSize + "px;");
+myInsertRule(mySheet, ".gameEval", "padding-left: " + squareSize + "px; padding-bottom: " + Math.floor(fontCommentsSize / 6) + "px; background: " + backgroundColorHex + "; font-size: " + fontCommentsSize + "px;");
+
+</script>
+
+<script src="pgn4web.js" type="text/javascript"></script>
+<script src="chess-informant-NAG-symbols.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+SetImagePath(pieceFont + "/" + pieceSize);
+SetImageType("png");
+SetHighlightOption(false);
+SetShortcutKeysEnabled(false);
+
+</script>
+
+</head>
+
+<body>
+
+<!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
+<form style="display: none;"><textarea style="display: none;" id="pgnText">
+
+</textarea></form>
+<!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
+
+<center>
+<div class="container">
+<div id="GameBoard"></div>
+<table id="GameCustomButtons" class="gameCustomButtons gameCustomButtonsHidden" cellspacing="0" cellpadding="0" border="0"><tr valign="bottom">
+<td width="25%" align="center" onclick="GoToMove(StartPlyVar[0], 0);" title="go to start">&lt;&lt;</td>
+<td width="20%" align="center" onclick="GoToMove(CurrentPly - 1);" title="move backward">&lt;</td>
+<td width="10%" align="center" id="GameAnalysisFlag" class="gameAnalysisFlag" onclick="StopBackgroundEngine();">&nbsp;</td>
+<td width="20%" align="center" onclick="GoToMove(CurrentPly + 1);" title="move forward">&gt;</td>
+<td width="25%" align="center" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0);" title="go to end">&gt;&gt;</td>
+</tr></table>
+<div class="gameAnalysis gameAnalysisHidden" id="GameAnalysis">
+<div class="gameEval" id="GameEval" onclick="displayHelp('informant_symbols');">&nbsp;</div>
+<div class="gameFlagAndMoves">
+<img class="gameFlagToMove" id="GameFlagToMove" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" border="1" /><span class="gameMoves" id="GameMoves"></span>&nbsp;
+</div>
+</div>
+</center>
+
+<script type="text/javascript">
+
+if (typeof(fenString) == "undefined") { fenString = FenStringStart; }
+if (theObject = document.getElementById("pgnText")) {
+   theObject.innerHTML = '[Setup "1"]\n[FEN "' + fenString + '"]\n';
+}
 
 
 var engineWorker = "garbochess/garbochess.js";
@@ -391,6 +403,9 @@ function StartEngineAnalysis() {
 function customFunctionOnPgnTextLoad() {
    if (theObject = document.getElementById("GameAnalysis")) {
       theObject.className = "gameAnalysis";
+   }
+   if ((!disableInputs) && (theObject = document.getElementById("GameCustomButtons"))) {
+      theObject.className = "gameCustomButtons";
    }
 }
 
