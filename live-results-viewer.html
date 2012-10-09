@@ -791,7 +791,7 @@ a.variation {
   function customShortcutKey_Shift_4() { autoHighlightNewmoves = !autoHighlightNewmoves; }
   function customShortcutKey_Shift_5() { autoSwitchNewgames = !autoSwitchNewgames; }
   function customShortcutKey_Shift_6() { toggleShowBoard(); }
-  function customShortcutKey_Shift_7() { autoUpdateAnalysis = !autoUpdateAnalysis; }
+  function customShortcutKey_Shift_7() { autoUpdateAnalysis = !autoUpdateAnalysis; if (showAnalysis && autoUpdateAnalysis) { showAnalysisBoard(disableEngine); } }
   function customShortcutKey_Shift_8() { showAnalysisBoard(true); }
   function customShortcutKey_Shift_9() { showAnalysisBoard(false); }
   function customShortcutKey_Shift_0() { if (showAnalysis) { hideAnalysisBoard(); } else { showAnalysisBoard(disableEngine); } }
@@ -805,7 +805,7 @@ a.variation {
   boardShortcut("F7", "toggle autohighlight new moves", function(t,e){ autoHighlightNewmoves = !autoHighlightNewmoves && !e.shiftKey; });
   boardShortcut("G7", "toggle autoswitch to games with new moves", function(t,e){ autoSwitchNewgames = !autoSwitchNewgames && !e.shiftKey; });
 
-  boardShortcut("F8", "toggle autoupdate analysis board", function(t,e){ autoUpdateAnalysis = !autoUpdateAnalysis && !e.shiftKey; });
+  boardShortcut("F8", "toggle autoupdate analysis board", function(t,e){ autoUpdateAnalysis = !autoUpdateAnalysis && !e.shiftKey; if (showAnalysis && autoUpdateAnalysis) { showAnalysisBoard(disableEngine); } });
 
   function toggleShowEvent() {
     showEvent = !showEvent;
