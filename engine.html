@@ -148,14 +148,14 @@ if (window.location.search.match(thisRegExp) !== null) {
 var squareSize = "30";
 thisRegExp = /(&|\?)(squareSize|ss)=([1-9][0-9]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
-   squareSize = unescape(window.location.search.match(thisRegExp)[3]);
+   squareSize = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
 }
 if (squareSize < 20) { squareSize = 20; }
 
 var framePadding = squareSize;
 thisRegExp = /(&|\?)(framePadding|fp)=([0-9]+)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
-   framePadding = unescape(window.location.search.match(thisRegExp)[3]);
+   framePadding = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
 }
 
 var pieceSizeOptions = new Array(20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 52, 56, 60, 64, 72, 80, 88, 96, 112, 128, 144, 300);
@@ -169,7 +169,7 @@ function defaultPieceSize(squareSize) {
 var pieceSize = defaultPieceSize(squareSize);
 thisRegExp = /(&|\?)(pieceSize|ps)=([1-9][0-9]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
-   pieceSize = unescape(window.location.search.match(thisRegExp)[3]);
+   pieceSize = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
 }
 var pieceFont = "alpha";
 thisRegExp = /(&|\?)(pieceFont|pf)=([^&]*)(&|$)/i;
@@ -185,12 +185,12 @@ if (window.location.search.match(thisRegExp) !== null) {
 var fontMovesSize = Math.ceil(squareSize * 11 / 30);
 thisRegExp = /(&|\?)(fontMovesSize|fms)=([1-9][0-9]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
-   fontMovesSize = unescape(window.location.search.match(thisRegExp)[3]);
+   fontMovesSize = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
 }
 var fontCommentsSize = Math.ceil(squareSize * 19 / 30);
 thisRegExp = /(&|\?)(fontCommentsSize|fcs)=([1-9][0-9]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
-   fontCommentsSize = unescape(window.location.search.match(thisRegExp)[3]);
+   fontCommentsSize = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
 }
 
 thisRegExp = /(&|\?)(help|h)=(t|true)(&|$)/i;
@@ -413,7 +413,7 @@ function customFunctionOnPgnTextLoad() {
 
    thisRegExp = /(&|\?)(engineSignature|es)=([1-9][0-9]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
-      engineSignature = unescape(window.location.search.match(thisRegExp)[3]);
+      engineSignature = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
    }
 }
 

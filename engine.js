@@ -18,9 +18,14 @@ var pgn4web_engineWinSignature = Math.ceil(987654321 * Math.random());
 var engineWin;
 function showEngineAnalysisBoard(engineDisabled) {
    if ((typeof(gameVariant[currentGame]) == "undefined") || (gameVariant[currentGame].match(/^(chess|normal|standard|)$/i) !== null)) {
-      if ((typeof(engineWin) != "undefined") && (typeof(engineWin.engineSignature) != "undefined") && (pgn4web_engineWinSignature == engineWin.engineSignature) && (engineWin.sameEngineDisabled(engineDisabled))) {
-         engineWin.updateFEN(CurrentFEN());
-      } else {
+      var doneAccessingDOM = false;
+      try {
+         if ((typeof(engineWin) != "undefined") && (!engineWin.closed) && (typeof(engineWin.engineSignature) != "undefined") && (pgn4web_engineWinSignature === engineWin.engineSignature) && (engineWin.sameEngineDisabled(engineDisabled))) {
+            engineWin.updateFEN(CurrentFEN());
+            doneAccessingDOM = true;
+         }
+      } catch(e) {}
+      if (!doneAccessingDOM) {
          var parameters = "fs=" + encodeURIComponent(CurrentFEN()) + "&es=" + pgn4web_engineWinSignature;
          if (engineDisabled) { parameters += "&de=a"; }
          if (pgn4web_engineWindowUrlParameters) { parameters += "&" + pgn4web_engineWindowUrlParameters; }
