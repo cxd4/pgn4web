@@ -407,7 +407,7 @@ a.variation {
 
 <script type="text/javascript">
 
-  pgn4web_engineWindowUrlParameters = "lch=FFFFFF&dch=E4E4E4&hch=C6CEC3&ctch=888888&ss=28&ps=24&fms=11&fcs=19&fp=0&de=s";
+  pgn4web_engineWindowUrlParameters = "lch=FFFFFF&dch=E4E4E4&hch=BBC2B7&ctch=888888&ss=28&ps=24&fms=11&fcs=19&fp=0&de=s";
   pgn4web_engineWindowTarget = "pgn4web_inline_engine";
   pgn4web_engineWindowHeight = "";
   pgn4web_engineWindowWidth = "";
@@ -530,6 +530,7 @@ a.variation {
   var newGameLengthFromCrc = new Array();
   var gameLengthFromCrc = new Array();
   var gameNewMoves;
+  var firstCustomFunctionOnPgnTextLoad = true;
   function customFunctionOnPgnTextLoad() {
     gameId = new Array();
 
@@ -570,8 +571,13 @@ a.variation {
 
     if (autoSwitchNewgames && ((typeof(gameNewMoves) == "undefined") || (!gameNewMoves[currentGame]))) { searchGameWithNewMoves(false); }
 
-    if ((theObject = document.getElementById("SideToMove")) && (theObject.className != "sideToMove")) {
-      theObject.className = "sideToMove";
+    if (firstCustomFunctionOnPgnTextLoad) {
+      firstCustomFunctionOnPgnTextLoad = false;
+      if (theObject = document.getElementById("SideToMove")) {
+        theObject.className = "sideToMove";
+      }
+      showEngineAnalysisBoard(disableEngine); // prepare analysis frame with an idle board
+      pgn4web_engineWindowUrlParameters = pgn4web_engineWindowUrlParameters.replace(/&de=s$/, "");
     }
   }
 
@@ -938,9 +944,6 @@ boardShortcut("E8", "show/update analysis board", function(t,e){ showAnalysisBoa
   if (theObj = document.getElementById("gamesAnchor")) {
     theObj.style.display = headlessPage ? "none" : "";
   }
-
-  showEngineAnalysisBoard(); // prepare analysis frame with an idle board
-  pgn4web_engineWindowUrlParameters = pgn4web_engineWindowUrlParameters.replace(/&de=s$/, "");
 
 </script>
 

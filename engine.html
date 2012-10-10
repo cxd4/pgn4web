@@ -534,13 +534,11 @@ function detectClick(t,e) {
 var engineSignature;
 
 function updateFEN(newFEN) {
-   if (newFEN != CurrentFEN()) {
-      if (theObject = document.getElementById("pgnText")) {
-         theObject.innerHTML = '[Setup "1"]\n[FEN "' + newFEN + '"]\n';
-      }
-      firstStart = true;
-      start_pgn4web();
+   if (theObject = document.getElementById("pgnText")) {
+      theObject.innerHTML = '[Setup "1"]\n[FEN "' + newFEN + '"]\n';
    }
+   firstStart = true;
+   start_pgn4web();
 }
 
 function sameEngineDisabled(engineDisabled) {
