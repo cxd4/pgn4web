@@ -34,7 +34,7 @@ function showEngineAnalysisBoard(engineDisabled) {
          if (pgn4web_engineWindowWidth) { options = "width=" + pgn4web_engineWindowWidth + "," + options; }
          engineWin = window.open("engine.html?" + parameters, pgn4web_engineWindowTarget, options);
       }
-      if ((typeof(engineWin) != "undefined") && (engineWin.top === engineWin.self) && (window.focus)) { engineWin.focus(); }
+      if ((typeof(engineWin) != "undefined") && (!engineWin.closed) && (engineWin.top === engineWin.self) && (window.focus)) { engineWin.focus(); }
       return engineWin;
    } else {
       myAlert("warning: the pgn4web analysis board supports only normal chess; the " + gameVariant[currentGame] + " variant is not supported", true);
@@ -42,5 +42,6 @@ function showEngineAnalysisBoard(engineDisabled) {
    return null;
 }
 
-boardShortcut("E8", "show/update analysis board", function(t,e){ showEngineAnalysisBoard(e.shiftKey); }, true);
+boardShortcut("E8", "show/update analysis board", function(t,e){ showEngineAnalysisBoard(e.shiftKey); });
+boardShortcut("F8", "close analysis board", function(t,e){ if ((typeof(engineWin) != "undefined") && (!engineWin.closed)) { try { if ((typeof(engineWin.engineSignature) != "undefined") && (pgn4web_engineWinSignature === engineWin.engineSignature) && (engineWin.top === engineWin.self)) { if (e.shiftKey) { if (engineWin.focus) { engineWin.focus(); } } else { if (engineWin.close) { engineWin.close(); } } } } catch(e) {} } });
 

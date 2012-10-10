@@ -384,6 +384,10 @@ a.variation {
   margin-bottom: 1px;
 }
 
+.sideToMoveHidden {
+  visibility: hidden;
+}
+
 </style>
 
 <!--[if IE]>
@@ -565,6 +569,10 @@ a.variation {
     }
 
     if (autoSwitchNewgames && ((typeof(gameNewMoves) == "undefined") || (!gameNewMoves[currentGame]))) { searchGameWithNewMoves(false); }
+
+    if ((theObject = document.getElementById("SideToMove")) && (theObject.className != "sideToMove")) {
+      theObject.className == "sideToMove";
+    }
   }
 
   function myCompare(AA, ZZ) {
@@ -805,7 +813,8 @@ a.variation {
   boardShortcut("F7", "toggle autohighlight new moves", function(t,e){ autoHighlightNewmoves = !autoHighlightNewmoves && !e.shiftKey; });
   boardShortcut("G7", "toggle autoswitch to games with new moves", function(t,e){ autoSwitchNewgames = !autoSwitchNewgames && !e.shiftKey; });
 
-  boardShortcut("F8", "toggle autoupdate analysis board", function(t,e){ autoUpdateAnalysis = !autoUpdateAnalysis && !e.shiftKey; if (showAnalysis && autoUpdateAnalysis) { showAnalysisBoard(disableEngine); } });
+  boardShortcut("F8", "hide analysis board", function(t,e){ hideAnalysisBoard(); });
+  boardShortcut("G8", "toggle autoupdate analysis board", function(t,e){ autoUpdateAnalysis = !autoUpdateAnalysis && !e.shiftKey; if (showAnalysis && autoUpdateAnalysis) { showAnalysisBoard(disableEngine); } });
 
   function toggleShowEvent() {
     showEvent = !showEvent;
@@ -906,7 +915,7 @@ boardShortcut("E8", "show/update analysis board", function(t,e){ showAnalysisBoa
 <div class="header"><span class="gameEvent" id="GameEvent">&nbsp;</span><a class="gameLiveStatus" id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();">&nbsp;</a></div>
 <div class="header"><a class="gameWhite" id="GameWhite" title="white player" href="javascript:void(0);" onclick="openFidePlayerUrl(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();"></a><span class="gameWhiteClock" id="GameWhiteClock" title="white clock"></span><span class="gameBlackClock" id="GameBlackClock" title="black clock"></span><a class="gameBlack" id="GameBlack" title="black player" href="javascript:void(0);" onclick="openFidePlayerUrl(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();"></a></div>
 <div id="GameBoard"></div>
-<div class="footer"><span class="gameSideToMove"><img class="sideToMove" id="SideToMove" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" title="side to move"/>&nbsp;</span><span class="gameText">&nbsp;<a id="GamePrevMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly - 1); this.blur();" title="previous moves"></a><a href="javascript:void(0);" onclick="SetHighlight(!highlightOption); this.blur();" style="font-weight: bold;" id="GameCurrMove" title="current move as shown on chessboard"></a><a id="GameNextMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly + 1); this.blur();" title="next moves"></a><span style="font-weight: bold;">&nbsp;</span></span><a class="gameResult" id="GameResult" href="javascript:void(0);" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); this.blur();" title="go to game end"></a></div>
+<div class="footer"><span class="gameSideToMove"><img class="sideToMove sideToMoveHidden" id="SideToMove" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" title="side to move"/>&nbsp;</span><span class="gameText">&nbsp;<a id="GamePrevMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly - 1); this.blur();" title="previous moves"></a><a href="javascript:void(0);" onclick="SetHighlight(!highlightOption); this.blur();" style="font-weight: bold;" id="GameCurrMove" title="current move as shown on chessboard"></a><a id="GameNextMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly + 1); this.blur();" title="next moves"></a><span style="font-weight: bold;">&nbsp;</span></span><a class="gameResult" id="GameResult" href="javascript:void(0);" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); this.blur();" title="go to game end"></a></div>
 </div>
 </td></tr></table>
 
