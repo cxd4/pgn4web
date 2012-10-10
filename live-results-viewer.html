@@ -571,7 +571,7 @@ a.variation {
     if (autoSwitchNewgames && ((typeof(gameNewMoves) == "undefined") || (!gameNewMoves[currentGame]))) { searchGameWithNewMoves(false); }
 
     if ((theObject = document.getElementById("SideToMove")) && (theObject.className != "sideToMove")) {
-      theObject.className == "sideToMove";
+      theObject.className = "sideToMove";
     }
   }
 
