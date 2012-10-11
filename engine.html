@@ -274,15 +274,17 @@ SetShortcutKeysEnabled(false);
 <div class="container">
 <div id="GameBoard"></div>
 <table id="GameCustomButtons" class="gameCustomButtons gameCustomButtonsHidden" cellspacing="0" cellpadding="0" border="0"><tr valign="bottom">
-<td width="16%" align="center" onclick="GoToMove(StartPlyVar[0], 0);" title="go to start">&lt;&lt;</td>
 <td width="5%"></td>
-<td width="16%" align="center" onclick="GoToMove(CurrentPly - 1);" title="move backward">&lt;</td>
+<td width="14%" align="center" onclick="GoToMove(StartPlyVar[0], 0);" title="go to start">&lt;&lt;</td>
 <td width="5%"></td>
-<td width="16%" align="center" id="GameAnalysisFlag" class="gameAnalysisFlag">&nbsp;</td>
+<td width="14%" align="center" onclick="GoToMove(CurrentPly - 1);" title="move backward">&lt;</td>
 <td width="5%"></td>
-<td width="16%" align="center" onclick="GoToMove(CurrentPly + 1);" title="move forward">&gt;</td>
+<td width="14%" align="center" id="GameAnalysisFlag" class="gameAnalysisFlag">&nbsp;</td>
 <td width="5%"></td>
-<td width="16%" align="center" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0);" title="go to end">&gt;&gt;</td>
+<td width="14%" align="center" onclick="GoToMove(CurrentPly + 1);" title="move forward">&gt;</td>
+<td width="5%"></td>
+<td width="14%" align="center" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0);" title="go to end">&gt;&gt;</td>
+<td width="5%"></td>
 </tr></table>
 <div class="gameAnalysis gameAnalysisHidden" id="GameAnalysis">
 <div class="gameEval" id="GameEval">&nbsp;</div>
@@ -346,11 +348,7 @@ function InitializeBackgroundEngine() {
                          theObject.setAttribute("onClick", "addPly(this.innerHTML.replace(/^\\s*(\\S+).*$/, '$1'));");
                       }
                    }
-                   if (theObject = document.getElementById("GameAnalysisFlag")) {
-                      theObject.innerHTML = "=";
-                      theObject.title = "pause analysis engine";
-                      theObject.onclick = StopBackgroundEngine;
-                   }
+                   updateGameAnalysisFlag();
                 }
              }
           };
@@ -382,17 +380,7 @@ function StopBackgroundEngine() {
    if (g_backgroundEngine) {
       g_backgroundEngine.terminate();
       g_backgroundEngine = null;
-      if (theObject = document.getElementById("GameAnalysisFlag")) {
-         if ((typeof(window.opener) != "undefined") && (window.opener) && (!window.opener.closed) && (typeof(window.opener.pgn4web_engineWinSignature) != "undefined") && (window.opener.pgn4web_engineWinSignature === engineSignature)) {
-            theObject.innerHTML = "&and;";
-            theObject.title = "update analysis board";
-            theObject.onclick = function() { try { window.opener.showEngineAnalysisBoard(); } catch(e) {} };
-         } else {
-            theObject.innerHTML = "&nbsp;";
-            theObject.title = "";
-            theObject.onclick = null;
-         }
-      }
+      updateGameAnalysisFlag();
    }
 }
 
@@ -412,6 +400,25 @@ function StartEngineAnalysis() {
    }
 }
 
+function updateGameAnalysisFlag() {
+   if (theObject = document.getElementById("GameAnalysisFlag")) {
+      if (g_backgroundEngine ) {
+         theObject.innerHTML = "=";
+         theObject.title = "pause analysis engine";
+         theObject.onclick = StopBackgroundEngine;
+      } else {
+         if ((typeof(window.opener) != "undefined") && (window.opener !== null) && (!window.opener.closed) && (typeof(window.opener.pgn4web_engineWinSignature) != "undefined") && (window.opener.pgn4web_engineWinSignature === engineSignature)) {
+            theObject.innerHTML = "&and;";
+            theObject.title = "update analysis board";
+            theObject.onclick = function() { try { window.opener.showEngineAnalysisBoard(); } catch(e) {} };
+         } else {
+            theObject.innerHTML = "&nbsp;";
+            theObject.title = "";
+            theObject.onclick = null;
+         }
+      }
+   }
+}
 
 function customFunctionOnPgnTextLoad() {
    if (theObject = document.getElementById("GameAnalysis")) {
@@ -427,6 +434,7 @@ function customFunctionOnPgnTextLoad() {
    if (window.location.search.match(thisRegExp) !== null) {
       engineSignature = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
    }
+   updateGameAnalysisFlag();
 }
 
 function customFunctionOnMove() {
@@ -497,6 +505,7 @@ var clickFromPiece = "";
 var lastPromotionMove = "";
 var lastPromotionPlaceholder = "";
 function detectClick(t,e) {
+   if (disableInputs) { return; }
    if (! (matches = t.id.match(/img_tcol([0-7])trow([0-7])/))) { return; }
    thisCol = IsRotated ? 7 - matches[1] : matches[1];
    thisColChar = "abcdefgh".charAt(thisCol);
