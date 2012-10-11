@@ -356,7 +356,7 @@ function InitializeBackgroundEngine() {
       } catch(e) {
          g_backgroundEngineValid = false;
          if (theObject = document.getElementById("GameEval")) {
-            theObject.innerHTML = translateNAGs("$255") + "&nbsp;&nbsp;&nbsp;" + translateNAGs("$147");
+            theObject.innerHTML = translateNAGs("$147") + "&nbsp;&nbsp;&nbsp;" + translateNAGs("$255");
             theObject.title = "engine analysis unavailable";
             theObject.onclick = null;
          }
