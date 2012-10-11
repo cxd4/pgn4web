@@ -410,7 +410,7 @@ function updateGameAnalysisFlag() {
          if ((typeof(window.opener) != "undefined") && (window.opener !== null) && (!window.opener.closed) && (typeof(window.opener.pgn4web_engineWinSignature) != "undefined") && (window.opener.pgn4web_engineWinSignature === engineSignature)) {
             theObject.innerHTML = "&and;";
             theObject.title = "update analysis board";
-            theObject.onclick = function() { try { window.opener.showEngineAnalysisBoard(); } catch(e) {} };
+            theObject.onclick = function() { try { window.opener.showEngineAnalysisBoard(); } catch(e) { updateGameAnalysisFlag(); } };
          } else {
             theObject.innerHTML = "&nbsp;";
             theObject.title = "";
