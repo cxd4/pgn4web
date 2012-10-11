@@ -576,24 +576,28 @@ function customShortcutKey_Shift_2() {
 }
 
 function customShortcutKey_Shift_3() {
-  toggleBareChessboard();
+  showGameList();
 }
 
 function customShortcutKey_Shift_4() {
-  showFullscreenChessboard(false);
+  toggleBareChessboard();
 }
 
 function customShortcutKey_Shift_5() {
+  showFullscreenChessboard(false);
+}
+
+function customShortcutKey_Shift_6() {
   showFullscreenChessboard(true);
 }
 
-function customShortcutKey_Shift_9() {
+function customShortcutKey_Shift_7() {
   toggleColorFlag();
 }
 
-function customShortcutKey_Shift_0() {
-  showGameList();
-}
+// customShortcutKey_Shift_8 defined by engine.js
+// customShortcutKey_Shift_9 defined by engine.js
+// customShortcutKey_Shift_0 defined by engine.js
 
 function toggleBareChessboard() {
   bare = !bare;

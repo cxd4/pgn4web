@@ -722,6 +722,10 @@ a.variation {
   // customShortcutKey_Shift_1 defined by fide-lookup.js
   // customShortcutKey_Shift_2 defined by fide-lookup.js
 
+  // customShortcutKey_Shift_8 defined by engine.js
+  // customShortcutKey_Shift_9 defined by engine.js
+  // customShortcutKey_Shift_0 defined by engine.js
+
 </script>
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->

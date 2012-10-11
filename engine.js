@@ -65,3 +65,7 @@ function showEngineAnalysisBoard(engineDisabled) {
 boardShortcut("E8", "open/update analysis board", function(t,e){ showEngineAnalysisBoard(e.shiftKey); });
 boardShortcut("F8", "close/stop analysis board", function(t,e){ if ((typeof(engineWin) != "undefined") && (!engineWin.closed)) { try { if ((typeof(engineWin.engineSignature) != "undefined") && (pgn4web_engineWinSignature === engineWin.engineSignature)) { if (e.shiftKey) { if ((engineWin.top === engineWin.self) && (engineWin.focus)) { engineWin.focus(); } } else { engineWin.StopBackgroundEngine(); if ((engineWin.top === engineWin.self) && (engineWin.close)) { engineWin.close(); } } } } catch(e) {} } });
 
+function customShortcutKey_Shift_8() { showEngineAnalysisBoard(true); }
+function customShortcutKey_Shift_9() { showEngineAnalysisBoard(false); }
+function customShortcutKey_Shift_0() { showEngineAnalysisBoard(); }
+

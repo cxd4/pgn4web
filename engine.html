@@ -40,10 +40,6 @@ a {
   visibility: hidden;
 }
 
-.gameAnalysisFlag {
-  font-weight: bold;
-}
-
 .gameEval {
   position: absolute;
   right: 0;
@@ -280,7 +276,7 @@ SetShortcutKeysEnabled(false);
 <table id="GameCustomButtons" class="gameCustomButtons gameCustomButtonsHidden" cellspacing="0" cellpadding="0" border="0"><tr valign="bottom">
 <td width="25%" align="center" onclick="GoToMove(StartPlyVar[0], 0);" title="go to start">&lt;&lt;</td>
 <td width="20%" align="center" onclick="GoToMove(CurrentPly - 1);" title="move backward">&lt;</td>
-<td width="10%" align="center" id="GameAnalysisFlag" class="gameAnalysisFlag" onclick="StopBackgroundEngine();">&nbsp;</td>
+<td width="10%" align="center" id="GameAnalysisFlag" class="gameAnalysisFlag">&nbsp;</td>
 <td width="20%" align="center" onclick="GoToMove(CurrentPly + 1);" title="move forward">&gt;</td>
 <td width="25%" align="center" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0);" title="go to end">&gt;&gt;</td>
 </tr></table>
@@ -347,8 +343,9 @@ function InitializeBackgroundEngine() {
                       }
                    }
                    if (theObject = document.getElementById("GameAnalysisFlag")) {
-                      theObject.innerHTML = "&middot;";
+                      theObject.innerHTML = "&times;";
                       theObject.title = "analysis engine running";
+                      theObject.onclick = StopBackgroundEngine;
                    }
                 }
              }
@@ -382,8 +379,15 @@ function StopBackgroundEngine() {
       g_backgroundEngine.terminate();
       g_backgroundEngine = null;
       if (theObject = document.getElementById("GameAnalysisFlag")) {
-         theObject.innerHTML = "&nbsp;";
-         theObject.title = "";
+         if ((typeof(window.parent) != "undefined") && (typeof(window.parent.showAnalysisBoard) == "function")) {
+            theObject.innerHTML = "&and;";
+            theObject.title = "update analysis board";
+            theObject.onclick = function() { try { window.parent.showAnalysisBoard(); } catch(e) {} };
+         } else {
+            theObject.innerHTML = "&nbsp;";
+            theObject.title = "";
+            theObject.onclick = null;
+         }
       }
    }
 }

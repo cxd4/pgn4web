@@ -171,21 +171,10 @@ h1.pageHeader {
 }
 
 .gameAnalysisButtons {
-  width: 294px; /* defined as gameAnalysisButtons.width = gameAnalysisFrame.width + gameAnalysisFrame.marginLeft + gameAnalysisFrame.marginRight */
-  height: 28px; /* = engine.html squareSize */
-  font-size: 11px; /* = header.fontSize */
-}
-
-.gamePaddedAnalysisButton {
-  display: inline-block;
-  width: 28px; /* defined as gamePaddedAnalysisButton.width = engine.html squareSize */
-  text-align: center;
-  color: #888888; /* = engine.html controlTextColorHex */
-}
-
-.gamePaddedAnalysisButtonsFiller {
-  display: inline-block;
-  width: 218px; /* = gameAnalysisButtons.width - 2 * gamePaddedAnalysisButton.width - 20 */
+  height: 14px; /* = engine.html squareSize / 2 */
+  width: 224px; /* = gameAnalysisFrame.width */
+  margin-left: 40px; /* = body.padding */
+  margin-bottom: 14px; /* = engine.html squareSize / 2 */
 }
 
 .gameAnalysisFrame {
@@ -806,6 +795,8 @@ a.variation {
   function customShortcutKey_Shift_5() { autoSwitchNewgames = !autoSwitchNewgames; }
   function customShortcutKey_Shift_6() { toggleShowBoard(); }
   function customShortcutKey_Shift_7() { autoUpdateAnalysis = !autoUpdateAnalysis; if (showAnalysis && autoUpdateAnalysis) { showAnalysisBoard(disableEngine); } }
+
+  // overwriting engine.js definitions of customShortcutKey_Shift_8 9 0
   function customShortcutKey_Shift_8() { showAnalysisBoard(true); }
   function customShortcutKey_Shift_9() { showAnalysisBoard(false); }
   function customShortcutKey_Shift_0() { if (showAnalysis) { hideAnalysisBoard(); } else { showAnalysisBoard(disableEngine); } }
@@ -913,7 +904,7 @@ boardShortcut("E8", "open/update analysis board", function(t,e){ showAnalysisBoa
 
 <table class="gameFloatingContainer" id="GameFloatingContainer" cellspacing="0" cellpadding="0" border="0"><tr valign="top"><td align="leftt">
 <div class="gameAnalysisContainer" id="GameAnalysisContainer">
-<div class="gameAnalysisButtons" id="GameAnalysisButtons" title="analysis board: try moves clicking from/to squares"><span class="gamePaddedAnalysisButtonsFiller">&nbsp;</span><a class="gamePaddedAnalysisButton" href="javascript:void(0);" onclick="showAnalysisBoard(disableEngine); this.blur();" title="update analysis board">v</a><a class="gamePaddedAnalysisButton" href="javascript:void(0);" onclick="hideAnalysisBoard(); this.blur();" title="hide analysis board">x</a></div>
+<div class="gameAnalysisButtons" id="GameAnalysisButtons" title="analysis board: try moves clicking from/to squares" onclick="hideAnalysisBoard();"></div>
 <iframe class="gameAnalysisFrame" id="GameAnalysisFrame" name="pgn4web_inline_engine" src="about:blank" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">your web browser and/or your host do not support iframes as required</iframe>
 </div>
 </td><td align="left">
