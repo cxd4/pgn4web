@@ -345,7 +345,7 @@ function InitializeBackgroundEngine() {
                       theObject.innerHTML = pv;
                       theObject.title = pv;
                       if (!disableInputs) {
-                         theObject.setAttribute("onClick", "addPly(this.innerHTML.replace(/^\\s*(\\S+).*$/, '$1'));");
+                         theObject.onclick = function() { addPly(this.innerHTML.replace(/^\\s*(\\S+).*$/, '$1')); };
                       }
                    }
                    updateGameAnalysisFlag();
