@@ -274,11 +274,15 @@ SetShortcutKeysEnabled(false);
 <div class="container">
 <div id="GameBoard"></div>
 <table id="GameCustomButtons" class="gameCustomButtons gameCustomButtonsHidden" cellspacing="0" cellpadding="0" border="0"><tr valign="bottom">
-<td width="25%" align="center" onclick="GoToMove(StartPlyVar[0], 0);" title="go to start">&lt;&lt;</td>
-<td width="20%" align="center" onclick="GoToMove(CurrentPly - 1);" title="move backward">&lt;</td>
-<td width="10%" align="center" id="GameAnalysisFlag" class="gameAnalysisFlag">&nbsp;</td>
-<td width="20%" align="center" onclick="GoToMove(CurrentPly + 1);" title="move forward">&gt;</td>
-<td width="25%" align="center" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0);" title="go to end">&gt;&gt;</td>
+<td width="16%" align="center" onclick="GoToMove(StartPlyVar[0], 0);" title="go to start">&lt;&lt;</td>
+<td width="5%"></td>
+<td width="16%" align="center" onclick="GoToMove(CurrentPly - 1);" title="move backward">&lt;</td>
+<td width="5%"></td>
+<td width="16%" align="center" id="GameAnalysisFlag" class="gameAnalysisFlag">&nbsp;</td>
+<td width="5%"></td>
+<td width="16%" align="center" onclick="GoToMove(CurrentPly + 1);" title="move forward">&gt;</td>
+<td width="5%"></td>
+<td width="16%" align="center" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0);" title="go to end">&gt;&gt;</td>
 </tr></table>
 <div class="gameAnalysis gameAnalysisHidden" id="GameAnalysis">
 <div class="gameEval" id="GameEval">&nbsp;</div>
@@ -343,8 +347,8 @@ function InitializeBackgroundEngine() {
                       }
                    }
                    if (theObject = document.getElementById("GameAnalysisFlag")) {
-                      theObject.innerHTML = "&times;";
-                      theObject.title = "analysis engine running";
+                      theObject.innerHTML = "=";
+                      theObject.title = "pause analysis engine";
                       theObject.onclick = StopBackgroundEngine;
                    }
                 }
@@ -379,10 +383,10 @@ function StopBackgroundEngine() {
       g_backgroundEngine.terminate();
       g_backgroundEngine = null;
       if (theObject = document.getElementById("GameAnalysisFlag")) {
-         if ((typeof(window.parent) != "undefined") && (typeof(window.parent.showAnalysisBoard) == "function")) {
+         if ((typeof(window.opener) != "undefined") && (window.opener) && (!window.opener.closed) && (typeof(window.opener.pgn4web_engineWinSignature) != "undefined") && (window.opener.pgn4web_engineWinSignature === engineSignature)) {
             theObject.innerHTML = "&and;";
             theObject.title = "update analysis board";
-            theObject.onclick = function() { try { window.parent.showAnalysisBoard(); } catch(e) {} };
+            theObject.onclick = function() { try { window.opener.showEngineAnalysisBoard(); } catch(e) {} };
          } else {
             theObject.innerHTML = "&nbsp;";
             theObject.title = "";
