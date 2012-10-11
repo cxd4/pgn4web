@@ -81,17 +81,13 @@ function print_links() {
     if (count($urls) > 0) {
         print "<div>&nbsp;</div><ol>" . "\n";
         for ($i = 0; $i < count($urls); $i++) {
-            print("<li><a href='" . $urls[$i] . "'>" . $urls[$i] . "</a>" . "</li>" . "\n");
+            print("<li>&nbsp;&nbsp;<a href='" . $urls[$i] . "'><b>D</b></a>&nbsp;&nbsp;&nbsp;<a href=../viewer.php?pu=" . rawurlencode($urls[$i]) . " target='pgn4web_link_viewer'><b>V</b>&nbsp;&nbsp;&nbsp;" . $urls[$i] . "</a>" . "</li>" . "\n");
         }
         print "</ol><div>&nbsp;</div>" . "\n";
     } else {
         print("<div>&nbsp;</div><ul><li><i>no links found</i></li></ul><div>&nbsp;</div>" . "\n");
     }
 
-    print "bookmarks:";
-    // print " &nbsp; &nbsp; <a href='" . $_SERVER['PHP SELF'] . "?tu=http://example.com/page.html&lf=live.*\.pgn$'>live games</a>";
-    print " &nbsp; &nbsp; <a href='live-grab.php' target='_blank'>grab</a>";
-    print "\n";
 }
 
 function get_param($param, $shortParam, $default) {
