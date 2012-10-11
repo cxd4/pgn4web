@@ -799,8 +799,8 @@ a.variation {
     return "showEvent=" + showEvent + " showTeams=" + showTeams + " showPlayersInfo=" + showPlayersInfo + " showBoard=" + showBoard + " autoHighlightNewmoves=" + autoHighlightNewmoves + " autoSwitchNewgames=" + autoSwitchNewgames + " showAnalysis=" + showAnalysis + " autoUpdateAnalysis=" + autoUpdateAnalysis + " disableEngine=" + disableEngine;
   }
 
-  function customShortcutKey_Shift_1() { refreshPgnSource(); }
-  function customShortcutKey_Shift_2() { searchGameWithNewMoves(true); }
+  function customShortcutKey_Shift_1() { refreshPgnSource(); } // overrides fide-lookup.js
+  function customShortcutKey_Shift_2() { searchGameWithNewMoves(true); } // overrides fide-lookup.js
   function customShortcutKey_Shift_3() { searchGameWithNewMoves(false); }
   function customShortcutKey_Shift_4() { autoHighlightNewmoves = !autoHighlightNewmoves; }
   function customShortcutKey_Shift_5() { autoSwitchNewgames = !autoSwitchNewgames; }

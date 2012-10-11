@@ -702,6 +702,7 @@ a.variation {
   function customFunctionOnPgnTextLoad() {
     if (theObj = document.getElementById('numGm')) { theObj.innerHTML = numberOfGames; }
   }
+
   function customFunctionOnPgnGameLoad() {
     if (theObj = document.getElementById('currGm')) { theObj.innerHTML = currentGame+1; }
     if (theObj = document.getElementById('numPly')) { theObj.innerHTML = PlyNumber; }
@@ -713,19 +714,13 @@ a.variation {
     customPgnHeaderTag('Annotator', 'GameAnnotator');
     customPgnHeaderTag('Result', 'ResultAtGametextEnd');
   }
+
   function customFunctionOnMove() {
     if (theObj = document.getElementById('currPly')) { theObj.innerHTML = CurrentPly; }
   }
-  function customShortcutKey_Shift_1() {
-    if (typeof(openFidePlayerUrl) == "function") {
-      openFidePlayerUrl(gameWhite[currentGame], customPgnHeaderTag('WhiteFideId'));
-    }
-  }
-  function customShortcutKey_Shift_2() {
-    if (typeof(openFidePlayerUrl) == "function") {
-      openFidePlayerUrl(gameBlack[currentGame], customPgnHeaderTag('BlackFideId'));
-    }
-  }
+
+  // customShortcutKey_Shift_1 defined by fide-lookup.js
+  // customShortcutKey_Shift_2 defined by fide-lookup.js
 
 </script>
 

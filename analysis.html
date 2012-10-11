@@ -74,17 +74,8 @@
   SetAutoplayNextGame(false);
   SetShortcutKeysEnabled(true);
 
-  function customShortcutKey_Shift_1() {
-    if (typeof(openFidePlayerUrl) == "function") {
-      openFidePlayerUrl(gameWhite[currentGame], customPgnHeaderTag('WhiteFideId'));
-    }
-  }
-
-  function customShortcutKey_Shift_2() {
-    if (typeof(openFidePlayerUrl) == "function") {
-      openFidePlayerUrl(gameBlack[currentGame], customPgnHeaderTag('BlackFideId'));
-    }
-  }
+  // customShortcutKey_Shift_1 defined by fide-lookup.js
+  // customShortcutKey_Shift_2 defined by fide-lookup.js
 
   function customFunctionOnPgnTextLoad() {
     myOnResize();

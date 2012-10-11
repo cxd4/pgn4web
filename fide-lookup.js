@@ -15,3 +15,11 @@ function openFidePlayerUrl(name, FideId) {
   else if (name) { window.open("http://ratings.fide.com/seek.phtml?idcode=&name=" + name + "&offset=0"); }
 }
 
+function customShortcutKey_Shift_1() {
+  openFidePlayerUrl(gameWhite[currentGame], customPgnHeaderTag('WhiteFideId'));
+}
+
+function customShortcutKey_Shift_2() {
+  openFidePlayerUrl(gameBlack[currentGame], customPgnHeaderTag('BlackFideId'));
+}
+
