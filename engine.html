@@ -285,9 +285,9 @@ SetShortcutKeysEnabled(false);
 <td width="25%" align="center" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0);" title="go to end">&gt;&gt;</td>
 </tr></table>
 <div class="gameAnalysis gameAnalysisHidden" id="GameAnalysis">
-<div class="gameEval" id="GameEval" onclick="displayHelp('informant_symbols');">&nbsp;</div>
+<div class="gameEval" id="GameEval">&nbsp;</div>
 <div class="gameFlagAndMoves">
-<img class="gameFlagToMove" id="GameFlagToMove" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" border="1" /><span class="gameMoves" id="GameMoves"></span>&nbsp;
+<img class="gameFlagToMove" id="GameFlagToMove" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" border="1" /><span class="gameMoves" id="GameMoves">&nbsp;</span>&nbsp;
 </div>
 </div>
 </center>
@@ -299,8 +299,10 @@ if (theObject = document.getElementById("pgnText")) {
    theObject.innerHTML = '[Setup "1"]\n[FEN "' + fenString + '"]\n';
 }
 
-if ((disableEngine == "always") && (theObject = document.getElementById("GameMoves"))) {
-   theObject.innerHTML = "<span onclick='disableEngine = \"never\"; StartEngineAnalysis();'>engine analysis disabled</span>";
+if ((disableEngine == "always") && (theObject = document.getElementById("GameEval"))) {
+   theObject.innerHTML = translateNAGs("$147");
+   theObject.title = "engine analysis disabled";
+   theObject.onclick = function() { disableEngine = 'never'; StartEngineAnalysis(); };
 }
 
 
@@ -332,6 +334,7 @@ function InitializeBackgroundEngine() {
                    if (theObject = document.getElementById("GameEval")) {
                       theObject.innerHTML = ev2NAG(ev);
                       theObject.title = (ev > 0 ? " +" : " ") + ev + (ev == Math.floor(ev) ? ".0 " : " ");
+                      theObject.onclick = function() { displayHelp('informant_symbols'); };
                    }
                    nodes = parseInt(matches[3], 10);
                    g_nodesPerSecond = parseInt(matches[4], 10);
@@ -352,9 +355,10 @@ function InitializeBackgroundEngine() {
           };
       } catch(e) {
          g_backgroundEngineValid = false;
-         if (theObject = document.getElementById("GameMoves")) {
-            theObject.innerHTML = "engine analysis unavailable";
-            theObject.title = "chess engine for computer analysis not supported by the web browser";
+         if (theObject = document.getElementById("GameEval")) {
+            theObject.innerHTML = translateNAGs("$255") + "&nbsp;&nbsp;&nbsp;" + translateNAGs("$147");
+            theObject.title = "engine analysis unavailable";
+            theObject.onclick = null;
          }
       }
    }
