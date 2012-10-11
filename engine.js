@@ -10,7 +10,27 @@ var pgn4web_engineWindowUrlParameters = "";
 var pgn4web_engineWindowHeight = 30 * 12; // window height/width corresponding to default squareSize = 30
 var pgn4web_engineWindowWidth = 30 * 10;
 
-// note: all pages on the same site will use the same analysis board popup; if the analysis board is embedded as iframe within a page (see the live-results-viewer.html example) the pgn4web_engineWindowTarget variable should be customized in order to prevent conflicts
+// notes:
+// - all pages on the same site will use the same analysis board popup; if the analysis board is embedded as iframe within a page (see the live-results-viewer.html example) the pgn4web_engineWindowTarget variable should be customized in order to prevent conflicts
+// - if pgn4web_engineWindowUrlParameters is customized using the corresponding URL parameter of the main page, the value must be encoded with encodeURIComponent()
+
+
+thisRegExp = /(&|\?)(engineWindowTarget|ewt)=([^&]+)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+   pgn4web_engineWindowTarget = unescape(window.location.search.match(thisRegExp)[3]);
+}
+thisRegExp = /(&|\?)(engineWindowUrlParameters|ewup)=([^&]+)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+   pgn4web_engineWindowUrlParameters = unescape(window.location.search.match(thisRegExp)[3]);
+}
+thisRegExp = /(&|\?)(engineWindowHeight|ewh)=([1-9][0-9]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+   pgn4web_engineWindowHeight = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
+}
+thisRegExp = /(&|\?)(engineWindowWidth|eww)=([1-9][0-9]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+   pgn4web_engineWindowWidth = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
+}
 
 
 var pgn4web_engineWinSignature = Math.ceil(987654321 * Math.random());
@@ -42,6 +62,6 @@ function showEngineAnalysisBoard(engineDisabled) {
    return null;
 }
 
-boardShortcut("E8", "show/update analysis board", function(t,e){ showEngineAnalysisBoard(e.shiftKey); });
-boardShortcut("F8", "close analysis board", function(t,e){ if ((typeof(engineWin) != "undefined") && (!engineWin.closed)) { try { if ((typeof(engineWin.engineSignature) != "undefined") && (pgn4web_engineWinSignature === engineWin.engineSignature) && (engineWin.top === engineWin.self)) { if (e.shiftKey) { if (engineWin.focus) { engineWin.focus(); } } else { if (engineWin.close) { engineWin.close(); } } } } catch(e) {} } });
+boardShortcut("E8", "open/update analysis board", function(t,e){ showEngineAnalysisBoard(e.shiftKey); });
+boardShortcut("F8", "close/stop analysis board", function(t,e){ if ((typeof(engineWin) != "undefined") && (!engineWin.closed)) { try { if ((typeof(engineWin.engineSignature) != "undefined") && (pgn4web_engineWinSignature === engineWin.engineSignature)) { if (e.shiftKey) { if ((engineWin.top === engineWin.self) && (engineWin.focus)) { engineWin.focus(); } } else { engineWin.StopBackgroundEngine(); if ((engineWin.top === engineWin.self) && (engineWin.close)) { engineWin.close(); } } } } catch(e) {} } });
 

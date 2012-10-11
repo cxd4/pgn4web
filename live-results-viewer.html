@@ -407,7 +407,7 @@ a.variation {
 
 <script type="text/javascript">
 
-  pgn4web_engineWindowUrlParameters = "lch=FFFFFF&dch=E4E4E4&hch=BBC2B7&ctch=888888&ss=28&ps=24&fms=11&fcs=19&fp=0&de=s";
+  pgn4web_engineWindowUrlParameters = "lch=FFFFFF&dch=E4E4E4&hch=BCDEB4&ctch=888888&ss=28&ps=24&fms=11&fcs=19&fp=0&de=s";
   pgn4web_engineWindowTarget = "pgn4web_inline_engine";
   pgn4web_engineWindowHeight = "";
   pgn4web_engineWindowWidth = "";
@@ -819,7 +819,7 @@ a.variation {
   boardShortcut("F7", "toggle autohighlight new moves", function(t,e){ autoHighlightNewmoves = !autoHighlightNewmoves && !e.shiftKey; });
   boardShortcut("G7", "toggle autoswitch to games with new moves", function(t,e){ autoSwitchNewgames = !autoSwitchNewgames && !e.shiftKey; });
 
-  boardShortcut("F8", "hide analysis board", function(t,e){ hideAnalysisBoard(); });
+  boardShortcut("F8", "close analysis board", function(t,e){ hideAnalysisBoard(); });
   boardShortcut("G8", "toggle autoupdate analysis board", function(t,e){ autoUpdateAnalysis = !autoUpdateAnalysis && !e.shiftKey; if (showAnalysis && autoUpdateAnalysis) { showAnalysisBoard(disableEngine); } });
 
   function toggleShowEvent() {
@@ -901,7 +901,7 @@ function showAnalysisBoard(de) {
   }
 }
 
-boardShortcut("E8", "show/update analysis board", function(t,e){ showAnalysisBoard(e.shiftKey); }, true);
+boardShortcut("E8", "open/update analysis board", function(t,e){ showAnalysisBoard(e.shiftKey); }, true);
 
 </script>
 

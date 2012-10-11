@@ -542,7 +542,7 @@ function updateFEN(newFEN) {
 }
 
 function sameEngineDisabled(engineDisabled) {
-   return (((engineDisabled) && (disableEngine == "always")) || ((!engineDisabled) && (disableEngine != "always")));
+   return ((typeof(engineDisabled) == "undefined") || ((engineDisabled) && (disableEngine == "always")) || ((!engineDisabled) && (disableEngine != "always")));
 }
 
 </script>

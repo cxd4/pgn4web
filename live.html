@@ -50,7 +50,10 @@ a:hover, a:active
 </tr><tr>
 <td colspan="2" height="100%" style="padding: 40px;">
 <table id="framecontainer" cellpadding="0" cellspacing="0" width="100%" height="100%" style="background-color: #EDE8D5; box-shadow: 0px 0px 20px #663300; border-color: #EDE8D5; border-style: solid; border-width: 40px; border-radius: 10px;" onclick="toggleLiveMode();"><tbody><tr valign="middle"><td align="center">
+<div style="white-space: nowrap;">
+<iframe id="analysisframe" name="analysisframe" src="about:blank" height="0" width="0" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">your browser does not support the required iframe functionality</iframe>
 <iframe id="liveframe" src="about:blank" height="360" width="480" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">your browser does not support the required iframe functionality</iframe>
+</div>
 </td></tr></tbody></table>
 </td>
 </tr></tbody></table>
@@ -64,14 +67,16 @@ if (window.location.search.match(thisRegExp) !== null) {
 }
 if ((liveMode == "random") || (liveMode == "r")) {
   r = Math.random();
-  if (r < 0.33) { liveMode = "widget"; }
-  else if (r < 0.66) { liveMode = "dynamic"; }
-  else { liveMode = "compact"; }
+  if (r < 0.25) { liveMode = "widget"; }
+  else if (r < 0.50) { liveMode = "dynamic"; }
+  else if (r < 0.75) { liveMode = "compact"; }
+  else { liveMode = "analysis"; }
 }
+if (liveMode == "a") { liveMode = "analysis"; }
 if (liveMode == "c") { liveMode = "compact"; }
 if (liveMode == "d") { liveMode = "dynamic"; }
 if (liveMode == "w") { liveMode = "widget"; }
-if ((liveMode != "compact") && (liveMode != "dynamic") && (liveMode != "widget")) {
+if ((liveMode != "analysis") && (liveMode != "compact") && (liveMode != "dynamic") && (liveMode != "widget")) {
   liveMode = "compact";
 }
 
@@ -87,22 +92,43 @@ function setLiveMode(lm) {
   var iniGame='\\[\\s*Result\\s*"\\*"\\s*\\]';
   var extraParams = "ig=" + iniGame + (pgnData ? "&pd=" + pgnData : "");
 
-  if ((theFrameObject = document.getElementById("liveframe")) && (theContainerObject = document.getElementById("framecontainer"))) {
+  if ((theFrameObject = document.getElementById("liveframe")) && (theAnalysisObject = document.getElementById("analysisframe")) && (theContainerObject = document.getElementById("framecontainer"))) {
     liveMode = lm;
-    if (liveMode == "compact") {
-      theFrameObject.src = pgn4web_live_pointer_url + '/live-compact.html?' + extraParams;
+    if (liveMode == "analysis") {
+      theFrameObject.src = pgn4web_live_pointer_url + "/dynamic-frame.html?l=t&ct=pink&scf=t&pf=u&ewt=analysisframe&ewh=360&eww=240&ewup=lch%3DEDE8D5%26dch%3DCFCBB3%26hch%3DF8CCA0%26fmch%3D403E37%26ctch%3D9C9886%26bch%3DEDE8D5%26ss%3D24%26fp%3D0%26pf%3Du%26fms%3D11%26fcs%3D19&" + extraParams;
+      theFrameObject.height = "360";
+      theFrameObject.width = "640";
+      theAnalysisObject.src = pgn4web_live_pointer_url + "/engine.html?de=s&lch=EDE8D5&dch=CFCBB3&hch=F8CCA0&fmch=403E37&ctch=9C9886&bch=EDE8D5&ss=24&fp=0&pf=u&fms=11&fcs=19";
+      theAnalysisObject.height = "315";
+      theAnalysisObject.width = "192";
+      theAnalysisObject.style.marginRight = "69px";
+      theContainerObject.style.borderRightWidth = "40px";
+    } else if (liveMode == "compact") {
+      theFrameObject.src = pgn4web_live_pointer_url + "/live-compact.html?" + extraParams;
       theFrameObject.height = "360";
       theFrameObject.width = "480";
+      theAnalysisObject.src = "about:blank";
+      theAnalysisObject.height = "0";
+      theAnalysisObject.width = "0";
+      theAnalysisObject.style.marginRight = "0";
       theContainerObject.style.borderRightWidth = "40px";
     } else if (liveMode == "dynamic") {
-      theFrameObject.src = pgn4web_live_pointer_url + '/dynamic-frame.html?l=t&ct=pink&hch=t&scf=t&pf=m&' + extraParams;
+      theFrameObject.src = pgn4web_live_pointer_url + "/dynamic-frame.html?l=t&ct=pink&hch=t&scf=t&pf=m&" + extraParams;
       theFrameObject.height = "100%";
       theFrameObject.width = "100%";
+      theAnalysisObject.src = "about:blank";
+      theAnalysisObject.height = "0";
+      theAnalysisObject.width = "0";
+      theAnalysisObject.style.marginRight = "0";
       theContainerObject.style.borderRightWidth = "40px";
     } else if (liveMode == "widget") {
-      theFrameObject.src = pgn4web_live_pointer_url + '/board.html?am=n&d=1000&ih=e&ss=41&ps=34&pf=u&lcs=Wtyk&dcs=OXJO&bbcs=OXJO&hm=b&hcs=ZbNv&bd=c&cbcs=UJ2e&ctcs=nkYj&hd=l&md=f&tm=17&fhcs=nkYj&fhs=14&fmcs=nkYj&fccs=nkYj&hmcs=ZbNv&fms=14&fcs=m&cd=h&bcs=Wtyk&fp=10&hl=t&fh=b&fw=779&rm=1&pd=live/live.pgn&' + extraParams;
+      theFrameObject.src = pgn4web_live_pointer_url + "/board.html?am=n&d=1000&ih=e&ss=41&ps=34&pf=u&lcs=Wtyk&dcs=OXJO&bbcs=OXJO&hm=b&hcs=ZbNv&bd=c&cbcs=UJ2e&ctcs=nkYj&hd=l&md=f&tm=17&fhcs=nkYj&fhs=14&fmcs=nkYj&fccs=nkYj&hmcs=ZbNv&fms=14&fcs=m&cd=h&bcs=Wtyk&fp=10&hl=t&fh=b&fw=779&rm=1&pd=live/live.pgn&" + extraParams;
       theFrameObject.height = "445";
       theFrameObject.width = "779";
+      theAnalysisObject.src = "about:blank";
+      theAnalysisObject.height = "0";
+      theAnalysisObject.width = "0";
+      theAnalysisObject.style.marginRight = "0";
       theContainerObject.style.borderRightWidth = "23px";
     } else {
       return;
@@ -112,10 +138,11 @@ function setLiveMode(lm) {
 }
 
 function toggleLiveMode() {
-  if (liveMode == 'compact') { liveMode = 'dynamic'; }
+  if (liveMode == 'analysis') { liveMode = 'compact'; }
+  else if (liveMode == 'compact') { liveMode = 'dynamic'; }
   else if (liveMode == 'dynamic') { liveMode = 'widget'; }
-  else if (liveMode == 'widget') { liveMode = 'compact'; }
-  else { liveMode = 'compact'; }
+  else if (liveMode == 'widget') { liveMode = 'analysis'; }
+  else { liveMode = 'analysis'; }
   setLiveMode(liveMode);
 }
 

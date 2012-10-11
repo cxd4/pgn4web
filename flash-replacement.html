@@ -55,10 +55,12 @@ ul {
 <h1>pgn4web live broadcast: flash replacement</h1>
 
 <p>
-What about the layout below to replace a well known live chess broadcast client based on the adobe flash technology and therefore not supported by mobile devices such as android phones and tablets, the iphone and the ipad? This page shows equivalent functionality based on HTML5 (javascript + css) that shows properly on mobile devices as well.
+What about replacing with a broadly supported technology a well known live chess broadcast client based on the adobe flash technology and therefore not supported by mobile devices such as android phones and tablets, the iphone and the ipad? This page shows equivalent functionality based on HTML5 (javascript + css) that works on mobile devices as well.
 </p>
 
+<h3 name="basic">basic example</h3>
 <p>
+This replicates the flash based client layout and functionality:
 </p>
 <p>
 <center>
@@ -81,6 +83,32 @@ What about the layout below to replace a well known live chess broadcast client 
 <p>
 </p>
 
+<h3 name="advanced">advanced example</h3>
+<p>
+This shows additional functionality of the pgn4web viewer, including customized colors, customized chess pieces and user/engine analysis board. Please note some web browsers don't support the chess engine for computer analysis; click the E8 square of the main board to copy the postion to the analysis board; try moves and variations clicking the from/to squared on the analysis board.
+</p>
+<p>
+<center>
+
+<table style="border: 40px solid #FFCE9E; border-radius: 10px; background: #FFCE9E; box-shadow: 0 0 20px #FFCE9E;" cellspacing="0" cellpadding="0" border="0"><tr><td valign="middle">
+<iframe id='analysisframeAdvanced' name='analysisframeAdvanced' frameborder='0' scrolling='no'
+ style='width: 208px; height: 260px; margin-right: 40px; opacity: 0.9;'
+ src='./engine.html?de=s&lch=FFCE9E&dch=E3B688&hch=D18B47&fmch=000000&ctch=000000&bch=FFCE9E&ss=26&fp=0&pf=u&fms=11&fcs=16'
+>your web browser and/or your host do not support iframes as required to display the chessboard
+</iframe>
+</td><td valign="middle">
+<iframe id='gameframeAdvanced' frameborder='0' scrolling='no'
+ style='width: 580px; height: 320px;'
+ src='./dynamic-frame.html?ct=brown&hch=t&pf=u&scf=t&l=t&ewt=analysisframeAdvanced&eww=216&ewh=260&ewup=lch%3DFFCE9E%26dch%3DE3B688%26hch%3DD18B47%26fmch%3D000000%26ctch%3D000000%26bch%3DFFCE9E%26ss%3D26%26fp%3D0%26pf%3Du%26fms%3D11%26fcs%3D16'
+>your web browser and/or your host do not support iframes as required to display the chessboard
+</iframe>
+</td></tr></table>
+
+</center>
+</p>
+<p>
+</p>
+
 <h3>end user hints for the client user interface</h3>
 <ul>
 <li>use the arrow keys to move throughout the game</li>
@@ -90,6 +118,9 @@ What about the layout below to replace a well known live chess broadcast client 
 </ul>
 
 <h3>webmaster hints to setup a live games broadcast</h3>
+<p>
+The following instructions refer to the basic example; the advanced example including the user/engine analysis board is more complex to setup, please contact the pgn4web project for more detailed instructions.
+</p>
 <ul>
 <li>copy the pgn4web files on the server, for instance in the folder accessible as <span class='exampleLink'>http://example.com/somewhere/pgn4web/</span></li>
 <li>reuse the same tools that generate the chess moves for the flash based client processing the inputs from the electronic boards</li>
@@ -109,8 +140,8 @@ What about the layout below to replace a well known live chess broadcast client 
 var pgn4web_live_pointer_url;
 if (pgn4web_live_pointer_url === undefined) { pgn4web_live_pointer_url = "."; }
 if (theIframeObject = document.getElementById('gameframe')) {
-  var matches = theIframeObject.src.match(/\?(.*)(#|$)/);
-  var iframeParameters = matches ? matches[1] : "";
+  matches = theIframeObject.src.match(/\?(.*)(#|$)/);
+  iframeParameters = matches ? matches[1] : "";
   if (pgn4web_live_pointer_url != "." || window.location.search.match(/\?.+$/)) {
     theIframeObject.src = pgn4web_live_pointer_url + '/dynamic-frame.html?' + window.location.search.replace(/^\?(.+)$/, '$1&') + iframeParameters;
     matches = theIframeObject.src.match(/\?(.*)(#|$)/);
@@ -118,6 +149,15 @@ if (theIframeObject = document.getElementById('gameframe')) {
   }
   if (theSpanObject = document.getElementById('urlparameters')) {
     theSpanObject.innerHTML = iframeParameters;
+  }
+}
+if (theIframeObject = document.getElementById('gameframeAdvanced')) {
+  matches = theIframeObject.src.match(/\?(.*)(#|$)/);
+  iframeParameters = matches ? matches[1] : "";
+  if (pgn4web_live_pointer_url != "." || window.location.search.match(/\?.+$/)) {
+    theIframeObject.src = pgn4web_live_pointer_url + '/dynamic-frame.html?' + window.location.search.replace(/^\?(.+)$/, '$1&') + iframeParameters;
+    matches = theIframeObject.src.match(/\?(.*)(#|$)/);
+    iframeParameters = matches ? matches[1] : "";
   }
 }
 </script>
