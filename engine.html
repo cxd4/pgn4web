@@ -403,12 +403,12 @@ function StartEngineAnalysis() {
 function updateGameAnalysisFlag() {
    if (theObject = document.getElementById("GameAnalysisFlag")) {
       if (g_backgroundEngine ) {
-         theObject.innerHTML = "&minus;";
+         theObject.innerHTML = "=";
          theObject.title = "pause analysis engine";
          theObject.onclick = StopBackgroundEngine;
       } else {
          if ((typeof(window.opener) != "undefined") && (window.opener !== null) && (!window.opener.closed) && (typeof(window.opener.pgn4web_engineWinSignature) != "undefined") && (window.opener.pgn4web_engineWinSignature === engineSignature)) {
-            theObject.innerHTML = "&and;";
+            theObject.innerHTML = "+";
             theObject.title = "update analysis board";
             theObject.onclick = function() { try { window.opener.showEngineAnalysisBoard(); } catch(e) { updateGameAnalysisFlag(); } };
          } else {
