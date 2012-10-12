@@ -241,6 +241,8 @@ myInsertRule(mySheet, ".blackSquare", "width: " + squareSize + "px; height: " + 
 myInsertRule(mySheet, ".highlightBlackSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + highlightColorHex + ";");
 myInsertRule(mySheet, ".container", "width: " + (squareSize * 8) + "px;");
 myInsertRule(mySheet, ".gameCustomButtons", "height: " + squareSize + "px; padding-bottom: " + Math.floor(squareSize / 6) + "px; color: " + controlTextColorHex + "; font-size: " + fontMovesSize + "px;");
+myInsertRule(mySheet, ".gameButtonCell", "width: " + squareSize + "px;");
+myInsertRule(mySheet, ".gameButtonSpacer", "width: " + Math.floor(squareSize / 2) + "px;");
 myInsertRule(mySheet, ".gameAnalysis", "height: " + squareSize + "px;");
 myInsertRule(mySheet, ".gameFlagToMove", "height: " + Math.floor(fontMovesSize / 2) + "px; width: " + Math.floor(fontMovesSize / 2) + "px; margin-right: " + squareSize + "px;");
 myInsertRule(mySheet, ".gameMoves", "font-size: " + fontMovesSize + "px;");
@@ -274,17 +276,17 @@ SetShortcutKeysEnabled(false);
 <div class="container">
 <div id="GameBoard"></div>
 <table id="GameCustomButtons" class="gameCustomButtons gameCustomButtonsHidden" cellspacing="0" cellpadding="0" border="0"><tr valign="bottom">
-<td width="5%"></td>
-<td width="14%" align="center" onclick="GoToMove(StartPlyVar[0], 0);" title="go to start">&lt;&lt;</td>
-<td width="5%"></td>
-<td width="14%" align="center" onclick="GoToMove(CurrentPly - 1);" title="move backward">&lt;</td>
-<td width="5%"></td>
-<td width="14%" align="center" id="GameAnalysisFlag" class="gameAnalysisFlag">&nbsp;</td>
-<td width="5%"></td>
-<td width="14%" align="center" onclick="GoToMove(CurrentPly + 1);" title="move forward">&gt;</td>
-<td width="5%"></td>
-<td width="14%" align="center" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0);" title="go to end">&gt;&gt;</td>
-<td width="5%"></td>
+<td class="gameButtonSpacer"></td>
+<td class="gameButtonCell" align="center" onclick="GoToMove(StartPlyVar[0], 0);" title="go to start">&lt;&lt;</td>
+<td class="gameButtonSpacer"></td>
+<td class="gameButtonCell" align="center" onclick="GoToMove(CurrentPly - 1);" title="move backward">&lt;</td>
+<td class="gameButtonSpacer"></td>
+<td class="gameButtonCell" align="center" id="GameAnalysisFlag" class="gameAnalysisFlag">&nbsp;</td>
+<td class="gameButtonSpacer"></td>
+<td class="gameButtonCell" align="center" onclick="GoToMove(CurrentPly + 1);" title="move forward">&gt;</td>
+<td class="gameButtonSpacer"></td>
+<td class="gameButtonCell" align="center" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0);" title="go to end">&gt;&gt;</td>
+<td class="gameButtonSpacer"></td>
 </tr></table>
 <div class="gameAnalysis gameAnalysisHidden" id="GameAnalysis">
 <div class="gameEval" id="GameEval">&nbsp;</div>
