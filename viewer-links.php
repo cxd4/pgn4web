@@ -71,7 +71,7 @@ function print_links() {
     sort($urls);
 
     print "<title>links</title>" . "\n";
-    print "<link rel='shortcut icon' href='../pawn.ico' />" . "\n";
+    print "<link rel='shortcut icon' href='pawn.ico' />" . "\n";
     print "<style tyle='text/css'> body { font-family: sans-serif; padding: 2em; line-height: 1.5em; } a { color: black; text-decoration: none; } </style>" . "\n";
 
     print "targetUrl: &nbsp; &nbsp; <b><a href='" . $targetUrl . "' target='_blank'>" . $targetUrl . "</a></b><br />" . "\n";
@@ -81,7 +81,7 @@ function print_links() {
     if (count($urls) > 0) {
         print "<div>&nbsp;</div><ol>" . "\n";
         for ($i = 0; $i < count($urls); $i++) {
-            print("<li>&nbsp;&nbsp;<a href='" . $urls[$i] . "'><b>D</b></a>&nbsp;&nbsp;&nbsp;<a href=../viewer.php?pu=" . rawurlencode($urls[$i]) . " target='pgn4web_link_viewer'><b>V</b>&nbsp;&nbsp;&nbsp;" . $urls[$i] . "</a>" . "</li>" . "\n");
+            print("<li>&nbsp;&nbsp;<a href='" . $urls[$i] . "'><b>D</b></a>&nbsp;&nbsp;&nbsp;<a href=viewer.php?pu=" . rawurlencode($urls[$i]) . " target='pgn4web_link_viewer'><b>V</b>&nbsp;&nbsp;&nbsp;" . $urls[$i] . "</a>" . "</li>" . "\n");
         }
         print "</ol><div>&nbsp;</div>" . "\n";
     } else {
