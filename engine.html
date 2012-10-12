@@ -403,7 +403,7 @@ function StartEngineAnalysis() {
 function updateGameAnalysisFlag() {
    if (theObject = document.getElementById("GameAnalysisFlag")) {
       if (g_backgroundEngine ) {
-         theObject.innerHTML = "=";
+         theObject.innerHTML = "&minus;";
          theObject.title = "pause analysis engine";
          theObject.onclick = StopBackgroundEngine;
       } else {
