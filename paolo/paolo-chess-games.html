@@ -17,9 +17,14 @@
 
 <script src="../pgn4web.js" type="text/javascript"></script>
 
+<script src="../engine.js" type="text/javascript"></script>
+
 <script src="../fide-lookup.js" type="text/javascript"></script>
 
 <script type="text/javascript">
+
+   pgn4web_engineWindowUrlParameters = "lch=eff4ec&dch=c6cec3&hch=daf4d7&bch=f8f8f8&pf=a";
+   pgn4web_engineWindowLocation = "../engine.html";
 
    maxFn = 1; // max PGN file number "n" available as paolo-chess-games-n.pgn, update each time the PGN file is split
 
@@ -40,17 +45,8 @@
    SetInitialHalfmove("comment",true);
    SetShortcutKeysEnabled(true);
 
-function customShortcutKey_Shift_1() {
-   if (typeof(openFidePlayerUrl) == "function") {
-      openFidePlayerUrl(gameWhite[currentGame], customPgnHeaderTag('WhiteFideId'));
-   }
-}
-
-function customShortcutKey_Shift_2() {
-   if (typeof(openFidePlayerUrl) == "function") {
-      openFidePlayerUrl(gameBlack[currentGame], customPgnHeaderTag('BlackFideId'));
-   }
-}
+   // customShortcutKey_Shift_1 defined by fide-lookup.js
+   // customShortcutKey_Shift_2 defined by fide-lookup.js
 
 function customShortcutKey_Shift_3() {
    if (!gameWhite[currentGame].match(/casaschi/i)) { customShortcutKey_Shift_1(); }

@@ -9,6 +9,7 @@ var pgn4web_engineWindowTarget = "pgn4web_engine_analysis";
 var pgn4web_engineWindowUrlParameters = "";
 var pgn4web_engineWindowHeight = 30 * 12; // window height/width corresponding to default squareSize = 30
 var pgn4web_engineWindowWidth = 30 * 10;
+var pgn4web_engineWindowLocation = "engine.html";
 
 // notes:
 // - all pages on the same site will use the same analysis board popup; if the analysis board is embedded as iframe within a page (see the live-results-viewer.html example) the pgn4web_engineWindowTarget variable should be customized in order to prevent conflicts
@@ -52,7 +53,7 @@ function showEngineAnalysisBoard(engineDisabled) {
          var options = "resizable=no,scrollbars=no,toolbar=no,location=no,menubar=no,status=no";
          if (pgn4web_engineWindowHeight) { options = "height=" + pgn4web_engineWindowHeight + "," + options; }
          if (pgn4web_engineWindowWidth) { options = "width=" + pgn4web_engineWindowWidth + "," + options; }
-         engineWin = window.open("engine.html?" + parameters, pgn4web_engineWindowTarget, options);
+         engineWin = window.open(pgn4web_engineWindowLocation + "?" + parameters, pgn4web_engineWindowTarget, options);
       }
       if ((typeof(engineWin) != "undefined") && (!engineWin.closed) && (engineWin.top === engineWin.self) && (window.focus)) { engineWin.focus(); }
       return engineWin;
