@@ -314,7 +314,7 @@ var engineWorker = "garbochess/garbochess.js";
 
 var g_backgroundEngineValid = true;
 var g_backgroundEngine;
-var g_nodesPerSecond = 0;
+var g_topNodesPerSecond = 0;
 
 function InitializeBackgroundEngine() {
    if (!g_backgroundEngineValid) { return false; }
@@ -341,7 +341,8 @@ function InitializeBackgroundEngine() {
                       theObject.onclick = function() { displayHelp('informant_symbols'); };
                    }
                    nodes = parseInt(matches[3], 10);
-                   g_nodesPerSecond = parseInt(matches[4], 10);
+                   nodesPerSecond = parseInt(matches[4], 10);
+                   g_topNodesPerSecond = Math.max(nodesPerSecond, g_topNodesPerSecond);
                    pv = matches[5].replace(/(^\s+|\s*\+|\s+$)/g, "").replace(/\s*stalemate/, "=").replace(/\s*checkmate/, "#");
                    if (theObject = document.getElementById("GameMoves")) {
                       theObject.innerHTML = pv;
@@ -465,7 +466,7 @@ function customFunctionOnMove() {
 function customDebugInfo() {
    if (disableEngine == "always") { return "engine=disabled"; }
    if (!window.Worker) { return "engine=unavailable"; }
-   return ("engine=" + engineWorker + " analysisSeconds=" + analysisSeconds + " nodesPerSecond=" + num2string(g_nodesPerSecond));
+   return ("engine=" + engineWorker + " analysisSeconds=" + analysisSeconds + " topNodesPerSecond=" + num2string(g_topNodesPerSecond));
 }
 
 function num2string(num) {
