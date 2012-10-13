@@ -463,7 +463,9 @@ function customFunctionOnMove() {
 }
 
 function customDebugInfo() {
-   return window.Worker ? "engine=" + engineWorker + " analysisSeconds=" + analysisSeconds + " nodesPerSecond=" + num2string(g_nodesPerSecond) : "engine=unavailable";
+   if (disableEngine == "always") { return "engine=disabled"; }
+   if (!window.Worker) { return "engine=unavailable"; }
+   return ("engine=" + engineWorker + " analysisSeconds=" + analysisSeconds + " nodesPerSecond=" + num2string(g_nodesPerSecond));
 }
 
 function num2string(num) {

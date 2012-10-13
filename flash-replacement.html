@@ -48,7 +48,14 @@ ul {
 
 <body>
 
-<h1>pgn4web live broadcast: flash replacement</h1>
+<table border="0" cellpadding="0" cellspacing="0" width="99.9%"><tbody><tr>
+<td align="left" valign="middle">
+<h1><a style="text-decoration: none;" href=.>pgn4web</a> live broadcast: flash replacement</h1>
+</td>
+<td align="right" valign="middle">
+<a href=.><img src=pawns.png border=0></a>
+</td>
+</tr></tbody></table>
 
 <p>
 What about replacing with a broadly supported technology a well known live chess broadcast client based on the adobe flash technology and therefore not supported by mobile devices such as android phones and tablets, the iphone and the ipad? This page shows equivalent functionality based on HTML5 (javascript + css) that works on mobile devices as well.
@@ -107,6 +114,17 @@ This shows additional functionality of the pgn4web viewer, including customized 
 <p>
 </p>
 
+<h3>more examples</h3>
+<p>
+Please find below links to few more live chess broadcast examples showing the multiple options available from pgn4web:
+<ul>
+<li><a id="liveCompact" href="./live-compact.html" target="_blank">live compact view</a></li>
+<li><a id="liveFullscreen" href="./dynamic-frame.html?l=t&scf=t" target="_blank">live fullscreen view</a></li>
+<li><a id="liveMosaic" href="./live-mosaic-viewer.html" target="_blank">live mosaic view</a></li>
+<li><a id="liveResults" href="./live-results-viewer.html" target="_blank">live results view</a></li>
+</ul>
+</p>
+
 <h3>end user hints for the client user interface</h3>
 <ul>
 <li>use the arrow keys to move throughout the game</li>
@@ -139,39 +157,65 @@ The following instructions refer to the basic example; the advanced example incl
 var pgn4web_live_pointer_url;
 if (pgn4web_live_pointer_url === undefined) { pgn4web_live_pointer_url = "."; }
 if (theIframeObject = document.getElementById('gameframe')) {
-  matches = theIframeObject.src.match(/\?(.*)(#|$)/);
-  iframeParameters = matches ? matches[1] : "";
-  if (pgn4web_live_pointer_url != "." || window.location.search.match(/\?.+$/)) {
-    theIframeObject.src = pgn4web_live_pointer_url + '/dynamic-frame.html?' + window.location.search.replace(/^\?(.+)$/, '$1&') + iframeParameters;
-    matches = theIframeObject.src.match(/\?(.*)(#|$)/);
-    iframeParameters = matches ? matches[1] : "";
-  }
+  theIframeObject.src = fixUrlAllParameters(theIframeObject.src);
   if (theSpanObject = document.getElementById('urlparameters')) {
-    theSpanObject.innerHTML = iframeParameters;
+    theSpanObject.innerHTML = extractParametersAfterRemoving(theIframeObject.src);
   }
 }
 if (theIframeObject = document.getElementById('gameframeAdvanced')) {
-  if (pgn4web_live_pointer_url != "." || window.location.search.match(/\?.+$/)) {
-    matches = theIframeObject.src.match(/\?(.*)(#|$)/);
-    iframeParameters = matches ? matches[1] : "";
-    matches = window.location.search.match(/(\?|&)((pd|pgnData)=[^&]*)(&|$)/);
-    iframeParameters += matches ? "&" + matches[2] : "";
-    matches = window.location.search.match(/(\?|&)((l|live)=[^&]*)(&|$)/);
-    iframeParameters += matches ? "&" + matches[2] : "";
-    matches = window.location.search.match(/(\?|&)((rm|refreshMinutes)=[^&]*)(&|$)/);
-    iframeParameters += matches ? "&" + matches[2] : "";
-    matches = window.location.search.match(/(\?|&)((rd|refreshDemo)=[^&]*)(&|$)/);
-    iframeParameters += matches ? "&" + matches[2] : "";
-    theIframeObject.src = pgn4web_live_pointer_url + '/dynamic-frame.html?' + iframeParameters;
-  }
+  theIframeObject.src = fixUrlOnlyParameters(theIframeObject.src);
 }
 if (theIframeObject = document.getElementById('analysisframeAdvanced')) {
-  if (pgn4web_live_pointer_url != "." || window.location.search.match(/\?.+$/)) {
-    matches = theIframeObject.src.match(/\?(.*)(#|$)/);
-    iframeParameters = matches ? matches[1] : "";
-    theIframeObject.src = pgn4web_live_pointer_url + '/engine.html?' + iframeParameters;
-  }
+  theIframeObject.src = fixUrlNoParameters(theIframeObject.src);
 }
+if (theLinkObject = document.getElementById('liveCompact')) {
+  theLinkObject.href = fixUrlOnlyParameters(theLinkObject.href);
+}
+if (theLinkObject = document.getElementById('liveFullscreen')) {
+  theLinkObject.href = fixUrlOnlyParameters(theLinkObject.href);
+}
+if (theLinkObject = document.getElementById('liveMosaic')) {
+  theLinkObject.href = fixUrlOnlyParameters(theLinkObject.href);
+}
+if (theLinkObject = document.getElementById('liveResults')) {
+  theLinkObject.href = fixUrlOnlyParameters(theLinkObject.href);
+}
+
+function fixUrlAllParameters(url) {
+  if (pgn4web_live_pointer_url == "." && !window.location.search.match(/\?.+$/)) { return url; }
+  var matches = url.match(/\?(.*)(#|$)/);
+  var parameters = matches ? matches[1] : "";
+  matches = url.match(/.*(\/[^\/\?]*)/);
+  return pgn4web_live_pointer_url + matches[1] + "?" + window.location.search.replace(/^\?(.+)$/, '$1&') + parameters;
+}
+
+function extractParametersAfterRemoving(url) {
+  var parameters = url.replace(/(^[^\?]+|#.*$)/g, "");
+  return parameters.replace(/(^|\?|&)(pd|pgnData|rm|refreshMinutes|rd|refreshDemo)=[^&]*/g, "").replace(/^[\?^]+/, "");
+}
+
+function fixUrlOnlyParameters(url) {
+  if (pgn4web_live_pointer_url == "." && !window.location.search.match(/\?.+$/)) { return url; }
+  var matches = url.match(/\?(.*)(#|$)/);
+  var parameters = matches ? matches[1] : "";
+  matches = window.location.search.match(/(\?|&)((pd|pgnData)=[^&]*)(&|$)/);
+  parameters = (matches ? matches[2] + "&" : "") + parameters;
+  matches = window.location.search.match(/(\?|&)((l|live)=[^&]*)(&|$)/);
+  parameters = (matches ? matches[2] + "&" : "") + parameters;
+  matches = window.location.search.match(/(\?|&)((rm|refreshMinutes)=[^&]*)(&|$)/);
+  parameters = (matches ? matches[2] + "&" : "") + parameters;
+  matches = window.location.search.match(/(\?|&)((rd|refreshDemo)=[^&]*)(&|$)/);
+  parameters = (matches ? matches[2] + "&" : "") + parameters;
+  matches = url.match(/.*(\/[^\/\?]*)/);
+  return pgn4web_live_pointer_url + matches[1] + "?" + parameters;
+}
+
+function fixUrlNoParameters(url) {
+  if (pgn4web_live_pointer_url == ".") { return url; }
+  matches = url.match(/.*(\/[^\/]*)/);
+  return pgn4web_live_pointer_url + matches[1];
+}
+
 </script>
 
 </body>

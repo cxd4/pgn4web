@@ -669,7 +669,10 @@ function displayDebugInfo() {
     dbg3 += 'LIVEBROADCAST: status=' + liveStatusDebug() + ' ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime() +
     '\n\n';
   }
-  var thisInfo = customDebugInfo();
+  var thisInfo;
+  if (typeof(engineWinCheck) == "function") { thisInfo = engineWinCheck() ? "board=connected " + engineWin.customDebugInfo() : "board=disconnected"; }
+  if (thisInfo) { dbg3 += "ANALYSIS: " + thisInfo + "\n\n"; }
+  thisInfo = customDebugInfo();
   if (thisInfo) { dbg3 += "CUSTOM: " + thisInfo + "\n\n"; }
   dbg3 += 'ALERTLOG: fatalnew=' + fatalErrorNumSinceReset + ' new=' + alertNumSinceReset +
     ' shown=' + Math.min(alertNum, alertLog.length) + ' total=' + alertNum + '\n--';
