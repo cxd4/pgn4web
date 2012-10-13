@@ -89,7 +89,8 @@ function get_pgn() {
 
   $pgnText = get_param("pgnText", "pt", "");
 
-  $pgnUrl = get_param("pgnUrl", "pu", "");
+  $pgnUrl = get_param("pgnData", "pd", "");
+  if ($pgnUrl == "") { $pgnUrl = get_param("pgnUrl", "pu", ""); }
 
   if ($pgnText) {
     $pgnStatus = "PGN games from textbox input";

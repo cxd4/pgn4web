@@ -12,6 +12,7 @@ error_reporting(E_ERROR | E_PARSE);
 $targetUrl = get_param("targetUrl", "tu", "");
 $linkFilter = get_param("linkFilter", "lf", ".+\.pgn$");
 $frameDepth = get_param("frameDepth", "fd", 0);
+$viewerUrl = get_param("viewerUrl", "vu", "viewer.php?pd=");
 if ((! is_numeric($frameDepth)) || ($frameDepth < 0) || ($frameDepth > 5)) { $frameDepth = 0; }
 $actualFrameDepth = 0;
 $urls = array();
@@ -65,7 +66,7 @@ function get_links($targetUrl, $depth) {
 }
 
 function print_links() {
-    global $urls, $targetUrl, $linkFilter, $frameDepth, $actualFrameDepth;
+    global $urls, $targetUrl, $linkFilter, $frameDepth, $viewerUrl, $actualFrameDepth;
 
     $urls = array_unique($urls);
     sort($urls);
@@ -81,7 +82,7 @@ function print_links() {
     if (count($urls) > 0) {
         print "<div>&nbsp;</div><ol>" . "\n";
         for ($i = 0; $i < count($urls); $i++) {
-            print("<li>&nbsp;&nbsp;<a href='" . $urls[$i] . "'><b>D</b></a>&nbsp;&nbsp;&nbsp;<a href=viewer.php?pu=" . rawurlencode($urls[$i]) . " target='pgn4web_link_viewer'><b>V</b>&nbsp;&nbsp;&nbsp;" . $urls[$i] . "</a>" . "</li>" . "\n");
+            print("<li>&nbsp;&nbsp;<a href='" . $urls[$i] . "'><b>D</b></a>&nbsp;&nbsp;&nbsp;<a href='" . $viewerUrl . rawurlencode($urls[$i]) . "' target='pgn4web_link_viewer'><b>V</b>&nbsp;&nbsp;&nbsp;" . $urls[$i] . "</a>" . "</li>" . "\n");
         }
         print "</ol><div>&nbsp;</div>" . "\n";
     } else {
