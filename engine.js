@@ -32,7 +32,7 @@ if (window.location.search.match(thisRegExp) !== null) {
    pgn4web_engineWindowWidth = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
 }
 
-var pgn4web_engineWinSignature = Math.ceil(987654321 * Math.random());
+var pgn4web_engineWinSignature = Math.ceil(1073741822 * Math.random()); // from 1 to (2^30 -1) = 1073741823
 
 function detectEngineLocation() {
   return detectJavascriptLocation().replace(/(pgn4web|pgn4web-compacted)\.js/, "engine.html");
