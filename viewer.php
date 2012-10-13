@@ -37,6 +37,8 @@ function addPresetURL($label, $javascriptCode) {
 include 'viewer-preset-URLs.php';
 
 
+$headlessPage = strtolower(get_param("headlessPage", "hp", ""));
+
 print_header();
 print_form();
 check_tmpDir();
@@ -261,6 +263,14 @@ function check_tmpDir() {
 
 function print_header() {
 
+  global $headlessPage;
+
+  if (($headlessPage == "true") || ($headlessPage == "t")) {
+     $headClass = "display: none;";
+  } else {
+     $headClass = "";
+  }
+
   print <<<END
 <html>
 
@@ -300,13 +310,17 @@ a:hover {
   margin: 0;
 }
 
+.headClass {
+  $headClass
+}
+
 </style>
 
 </head>
 
 <body>
 
-<table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
+<table class="headClass" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
 <td align="left" valign="middle">
 <h1 name="top" style="font-family: sans-serif; color: red;"><a style="color: red;" href=.>pgn4web</a> games viewer</h1>
 </td>
@@ -315,7 +329,7 @@ a:hover {
 </td>
 </tr></tbody></table>
 
-<div style="height: 1em;">&nbsp;</div>
+<div style="height: 1em;" class="headClass">&nbsp;</div>
 
 END;
 }
@@ -325,9 +339,10 @@ function print_form() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $zipSupported;
-  global $presetURLsArray;
+  global $headlessPage, $presetURLsArray;
 
   $thisScript = $_SERVER['SCRIPT_NAME'];
+  if (($headlessPage == "true") || ($headlessPage == "t")) { $thisScript .= "?hp=t"; }
 
   print <<<END
 
