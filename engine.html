@@ -90,17 +90,12 @@ var maxAnalysisSeconds = 313;
       if (analysisSeconds > maxAnalysisSeconds) { analysisSeconds = maxAnalysisSeconds; }
    }
 
-var disableEngine = "never";
+var disableEngine;
 thisRegExp = /(&|\?)(disableEngine|de)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
    disableEngine = unescape(window.location.search.match(thisRegExp)[3]);
-   if (disableEngine == "a") { disableEngine = "always"; }
-   if (disableEngine == "n") { disableEngine = "never"; }
-   if (disableEngine == "s") { disableEngine = "start"; }
-   if ((disableEngine != "always") && (disableEngine != "never") && (disableEngine != "start")) {
-      disableEngine = "never";
-   }
 }
+disableEngine = ((disableEngine == "true") || (disableEngine == "t"));
 
 var disableInputs;
 thisRegExp = /(&|\?)(disableInputs|di)=([^&]*)(&|$)/i;
@@ -203,7 +198,7 @@ if (window.location.search.match(thisRegExp) !== null) {
    document.write("\n");
    document.write(" - fenString = FEN position to analyze\n");
    document.write(" - analysisSeconds = analysis timeout in seconds (default 13)\n");
-   document.write(" - disableEngine = always | never | start (default never)\n");
+   document.write(" - disableEngine = true | false (default false)\n");
    document.write(" - disableInputs = true | false (default false)\n");
    document.write(" - autoUpdate = true | false (default false)\n");
    document.write("\n");
@@ -248,7 +243,7 @@ myInsertRule(mySheet, ".highlightWhiteSquare", "width: " + squareSize + "px; hei
 myInsertRule(mySheet, ".blackSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + darkColorHex + ";");
 myInsertRule(mySheet, ".highlightBlackSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + highlightColorHex + ";");
 myInsertRule(mySheet, ".container", "width: " + (squareSize * 8) + "px;");
-myInsertRule(mySheet, ".gameCustomButtons", "height: " + squareSize + "px; padding-bottom: " + Math.floor(squareSize / 6) + "px; color: " + controlTextColorHex + "; font-size: " + fontMovesSize + "px;");
+myInsertRule(mySheet, ".gameCustomButtons", "height: " + squareSize + "px; padding-bottom: " + Math.floor(squareSize / 6) + "px; color: " + controlTextColorHex + "; font-size: " + fontMovesSize + "px; margin-left: " + Math.floor((2 * squareSize - 5 * Math.floor(squareSize * 0.4)) / 2) + "px;");
 myInsertRule(mySheet, ".gameButtonCell", "width: " + squareSize + "px;");
 myInsertRule(mySheet, ".gameButtonSpacer", "width: " + Math.floor(squareSize * 0.4) + "px;");
 myInsertRule(mySheet, ".gameAnalysis", "height: " + squareSize + "px;");
@@ -311,12 +306,8 @@ if (theObject = document.getElementById("pgnText")) {
    theObject.innerHTML = '[Setup "1"]\n[FEN "' + fenString + '"]\n';
 }
 
-if (disableEngine == "always") {
-   if (theObject = document.getElementById("GameEval")) {
-      theObject.innerHTML = translateNAGs("$147");
-      theObject.title = "engine analysis disabled";
-   }
-}
+setDisableEngine(disableEngine);
+
 
 function clickedGameMoves(t,e) {
    var candidateMove = t.innerHTML.replace(/^\s*(\S+).*$/, "$1");
@@ -326,29 +317,17 @@ function clickedGameMoves(t,e) {
 function clickedGameEval(t,e) {
    if (!window.Worker) { return; }
    if (e.shiftKey) {
-      if (disableEngine == "never") { displayHelp("informant_symbols"); }
+      if (!disableEngine) { displayHelp("informant_symbols"); }
       return;
    }
-   if (disableEngine == "always") {
-      disableEngine = "never";
-      StartEngineAnalysis();
-   } else if (disableEngine == "never") {
-      disableEngine = "always";
-      StopBackgroundEngine();
-      t.innerHTML = translateNAGs("$147");
-      t.title = "engine analysis disabled";
-      if (theObject = document.getElementById("GameMoves")) {
-         theObject.innerHTML = "";
-         theObject.title = "";
-      }
-   }
+   setDisableEngine(!disableEngine);
 }
 
 function clickedGameAutoUpdateFlag(t,e) {
    if (openerCheck()) {
       autoUpdate = !autoUpdate;
       if (autoUpdate && !g_backgroundEngine) {
-         window.opener.showEngineAnalysisBoard(disableEngine == "always");
+         window.opener.showEngineAnalysisBoard(disableEngine);
       }
    }
    updateGameAutoUpdateFlag();
@@ -359,7 +338,7 @@ function clickedGameAnalysisFlag(t,e) {
       StopBackgroundEngine();
    } else {
       if (openerCheck()) {
-         window.opener.showEngineAnalysisBoard(disableEngine == "always");
+         window.opener.showEngineAnalysisBoard(disableEngine);
       }
    }
 }
@@ -406,7 +385,7 @@ function InitializeBackgroundEngine() {
           return true;
       } catch(e) {
          if (theObject = document.getElementById("GameEval")) {
-            theObject.innerHTML = translateNAGs("$147") + "&nbsp;&nbsp;&nbsp;" + translateNAGs("$255");
+            theObject.innerHTML = translateNAGs("$255") + "<span class='NAGs'>&nbsp;&nbsp;&nbsp;</span>" + translateNAGs("$147");
             theObject.title = "engine analysis unavailable";
          }
          if (theObject = document.getElementById("GameMoves")) {
@@ -518,9 +497,7 @@ function customFunctionOnMove() {
       theObject.title = (CurrentPly % 2 ? "black" : "white") + " to move";
    }
 
-   if (disableEngine != "never") {
-      if (disableEngine == "start") { disableEngine = "never"; }
-   } else {
+   if (!disableEngine) {
       StartEngineAnalysis();
    }
 
@@ -538,9 +515,11 @@ function customFunctionOnMove() {
 }
 
 function customDebugInfo() {
-   if (disableEngine == "always") { return "engine=disabled"; }
-   if (!window.Worker) { return "engine=unavailable"; }
-   return ("engine=" + engineWorker + " analysisSeconds=" + analysisSeconds + " topNodesPerSecond=" + num2string(g_topNodesPerSecond));
+   var dbg = "autoUpdate=" + autoUpdate;
+   if (disableEngine) { dbg += " engine=disabled"; }
+   else if (!window.Worker) { dbg += " engine=unavailable"; }
+   else { dbg += " engine=" + engineWorker + " analysisSeconds=" + analysisSeconds + " topNodesPerSecond=" + num2string(g_topNodesPerSecond); }
+   return dbg;
 }
 
 function num2string(num) {
@@ -641,8 +620,24 @@ function updateFEN(newFEN) {
    start_pgn4web();
 }
 
+function setDisableEngine(de) {
+   if (disableEngine = de) {
+      StopBackgroundEngine();
+      if (theObject = document.getElementById("GameEval")) {
+         theObject.innerHTML = translateNAGs("$147");
+         theObject.title = "engine analysis disabled";
+      }
+      if (theObject = document.getElementById("GameMoves")) {
+         theObject.innerHTML = "";
+         theObject.title = "";
+      }
+   } else {
+      StartEngineAnalysis();
+   }
+}
+
 function sameEngineDisabled(engineDisabled) {
-   return ((typeof(engineDisabled) == "undefined") || ((engineDisabled) && (disableEngine == "always")) || ((!engineDisabled) && (disableEngine != "always")));
+   return ((typeof(engineDisabled) == "undefined") || (engineDisabled && disableEngine) || (!engineDisabled && !disableEngine));
 }
 
 </script>

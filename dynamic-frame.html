@@ -82,13 +82,18 @@ if (window.location.search.match(thisRegExp) !== null) {
 //    " - fontSizeRatio = font size ratio, from " + sizeRatio_min + " to " + sizeRatio_max + " (default " + fontSizeRatio_default + ")" + "\n" +
 //    " - pieceSizeRatio = piece size ratio, from " + sizeRatio_min + " to " + sizeRatio_max + " (default " + pieceSizeRatio_default + ")" + "\n" +
     " - bare = if set true shows chessboard only (default false)" + "\n" +
+//    " - engineWinPrepareIdle = if set true preloads the analysis board with an empty board; use only for embedded analysis boards
 //    " - debug" + "\n" +
     " - help" + "\n" +
     "</pre>");
 }
 
 // undocumented feature
-thisRegExp = /(&|\?)(debug|d)(&|$)/i;
+thisRegExp = /(&|\?)(engineWinPrepareIdle|ewpi)=(true|t)(&|$)/i;
+engineWinPrepareIdle = (window.location.search.match(thisRegExp) !== null);
+
+// undocumented feature
+thisRegExp = /(&|\?)(debug|d)=(true|t)(&|$)/i;
 debug = (window.location.search.match(thisRegExp) !== null);
 dynamicFrameDebugString = "";
 
@@ -476,6 +481,10 @@ function customFunctionOnPgnTextLoad() {
     boardShortcut("F5", "show games list", function(t,e){ showGameList(); });
   } else {
     boardShortcut("F5", "", function(t,e){});
+  }
+  if (engineWinPrepareIdle) {
+    showEngineAnalysisBoard(true);
+    engineWinPrepareIdle = false;
   }
 }
 

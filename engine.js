@@ -46,14 +46,17 @@ function showEngineAnalysisBoard(engineDisabled) {
    if ((typeof(gameVariant[currentGame]) == "undefined") || (gameVariant[currentGame].match(/^(chess|normal|standard|)$/i) !== null)) {
       var doneAccessingDOM = false;
       try {
-         if ((engineWinCheck()) && (engineWin.sameEngineDisabled(engineDisabled))) {
+         if (engineWinCheck()) {
+            if (typeof(engineDisabled) != "undefined") {
+               engineWin.setDisableEngine(engineDisabled);
+            }
             engineWin.updateFEN(engineWinLastFen = CurrentFEN());
             doneAccessingDOM = true;
          }
       } catch(e) {}
       if (!doneAccessingDOM) {
          var parameters = "fs=" + encodeURIComponent(engineWinLastFen = CurrentFEN()) + "&es=" + pgn4web_engineWinSignature;
-         if (engineDisabled) { parameters += "&de=a"; }
+         if (engineDisabled) { parameters += "&de=t"; }
          if (pgn4web_engineWindowUrlParameters) { parameters += "&" + pgn4web_engineWindowUrlParameters; }
          var options = "resizable=no,scrollbars=no,toolbar=no,location=no,menubar=no,status=no";
          if (pgn4web_engineWindowHeight) { options = "height=" + pgn4web_engineWindowHeight + "," + options; }
