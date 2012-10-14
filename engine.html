@@ -362,6 +362,11 @@ function InitializeBackgroundEngine() {
             theObject.title = "engine analysis unavailable";
             theObject.onclick = null;
          }
+         if (theObject = document.getElementById("GameMoves")) {
+            theObject.innerHTML = "&nbsp;";
+            theObject.title = "";
+            theObject.onclick = null;
+         }
       }
    }
    return g_backgroundEngineValid;
