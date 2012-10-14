@@ -109,6 +109,13 @@ if (window.location.search.match(thisRegExp) !== null) {
 }
 disableInputs = ((disableInputs == "true") || (disableInputs == "t"));
 
+var autoUpdate;
+thisRegExp = /(&|\?)(autoUpdate|au)=([^&]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+   autoUpdate = unescape(window.location.search.match(thisRegExp)[3]);
+}
+autoUpdate = ((autoUpdate == "true") || (autoUpdate == "t"));
+
 
 var lightColorHex = "#F4F4F4";
 thisRegExp = /(&|\?)(lightColorHex|lch)=([0-9A-F]*)(&|$)/i;
@@ -198,6 +205,7 @@ if (window.location.search.match(thisRegExp) !== null) {
    document.write(" - analysisSeconds = analysis timeout in seconds (default 13)\n");
    document.write(" - disableEngine = always | never | start (default never)\n");
    document.write(" - disableInputs = true | false (default false)\n");
+   document.write(" - autoUpdate = true | false (default false)\n");
    document.write("\n");
    document.write(" - squareSize = size of square (default 30)\n");
    document.write(" - pieceSize = size of pieces | default (default selects piece size based on square size)\n");
@@ -242,7 +250,7 @@ myInsertRule(mySheet, ".highlightBlackSquare", "width: " + squareSize + "px; hei
 myInsertRule(mySheet, ".container", "width: " + (squareSize * 8) + "px;");
 myInsertRule(mySheet, ".gameCustomButtons", "height: " + squareSize + "px; padding-bottom: " + Math.floor(squareSize / 6) + "px; color: " + controlTextColorHex + "; font-size: " + fontMovesSize + "px;");
 myInsertRule(mySheet, ".gameButtonCell", "width: " + squareSize + "px;");
-myInsertRule(mySheet, ".gameButtonSpacer", "width: " + Math.floor(squareSize / 2) + "px;");
+myInsertRule(mySheet, ".gameButtonSpacer", "width: " + Math.floor(squareSize * 0.4) + "px;");
 myInsertRule(mySheet, ".gameAnalysis", "height: " + squareSize + "px;");
 myInsertRule(mySheet, ".gameFlagToMove", "height: " + Math.floor(fontMovesSize / 2) + "px; width: " + Math.floor(fontMovesSize / 2) + "px; margin-right: " + squareSize + "px;");
 myInsertRule(mySheet, ".gameMoves", "font-size: " + fontMovesSize + "px;");
@@ -276,22 +284,22 @@ SetShortcutKeysEnabled(false);
 <div class="container">
 <div id="GameBoard"></div>
 <table id="GameCustomButtons" class="gameCustomButtons gameCustomButtonsHidden" cellspacing="0" cellpadding="0" border="0"><tr valign="bottom">
+<td id="GameAnalysisFlag" class="gameButtonCell" align="center" onclick="clickedGameAnalysisFlag(this, event);">&nbsp;</td>
 <td class="gameButtonSpacer"></td>
 <td class="gameButtonCell" align="center" onclick="GoToMove(StartPlyVar[0], 0);" title="go to start">&lt;&lt;</td>
 <td class="gameButtonSpacer"></td>
 <td class="gameButtonCell" align="center" onclick="GoToMove(CurrentPly - 1);" title="move backward">&lt;</td>
 <td class="gameButtonSpacer"></td>
-<td class="gameButtonCell" align="center" id="GameAnalysisFlag" class="gameAnalysisFlag">&nbsp;</td>
-<td class="gameButtonSpacer"></td>
 <td class="gameButtonCell" align="center" onclick="GoToMove(CurrentPly + 1);" title="move forward">&gt;</td>
 <td class="gameButtonSpacer"></td>
 <td class="gameButtonCell" align="center" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0);" title="go to end">&gt;&gt;</td>
 <td class="gameButtonSpacer"></td>
+<td id="GameAutoUpdateFlag" class="gameButtonCell" align="center" onclick="clickedGameAutoUpdateFlag(this, event);">&nbsp;</td>
 </tr></table>
 <div class="gameAnalysis gameAnalysisHidden" id="GameAnalysis">
-<div class="gameEval" id="GameEval">&nbsp;</div>
+<div class="gameEval" id="GameEval" onclick="clickedGameEval(this, event);">&nbsp;</div>
 <div class="gameFlagAndMoves">
-<img class="gameFlagToMove" id="GameFlagToMove" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" border="1" /><span class="gameMoves" id="GameMoves">&nbsp;</span>&nbsp;
+<img class="gameFlagToMove" id="GameFlagToMove" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" border="1" /><span class="gameMoves" id="GameMoves" onclick="clickedGameMoves(this, event);">&nbsp;</span>&nbsp;
 </div>
 </div>
 </center>
@@ -303,24 +311,68 @@ if (theObject = document.getElementById("pgnText")) {
    theObject.innerHTML = '[Setup "1"]\n[FEN "' + fenString + '"]\n';
 }
 
-if ((disableEngine == "always") && (theObject = document.getElementById("GameEval"))) {
-   theObject.innerHTML = translateNAGs("$147");
-   theObject.title = "engine analysis disabled";
-   theObject.onclick = function() { disableEngine = 'never'; StartEngineAnalysis(); };
+if (disableEngine == "always") {
+   if (theObject = document.getElementById("GameEval")) {
+      theObject.innerHTML = translateNAGs("$147");
+      theObject.title = "engine analysis disabled";
+   }
+}
+
+function clickedGameMoves(t,e) {
+   var candidateMove = t.innerHTML.replace(/^\s*(\S+).*$/, "$1");
+   if (candidateMove) { addPly(candidateMove); }
+}
+
+function clickedGameEval(t,e) {
+   if (!window.Worker) { return; }
+   if (e.shiftKey) {
+      if (disableEngine == "never") { displayHelp("informant_symbols"); }
+      return;
+   }
+   if (disableEngine == "always") {
+      disableEngine = "never";
+      StartEngineAnalysis();
+   } else if (disableEngine == "never") {
+      disableEngine = "always";
+      StopBackgroundEngine();
+      t.innerHTML = translateNAGs("$147");
+      t.title = "engine analysis disabled";
+      if (theObject = document.getElementById("GameMoves")) {
+         theObject.innerHTML = "";
+         theObject.title = "";
+      }
+   }
+}
+
+function clickedGameAutoUpdateFlag(t,e) {
+   if (openerCheck()) {
+      autoUpdate = !autoUpdate;
+      if (autoUpdate && !g_backgroundEngine) {
+         window.opener.showEngineAnalysisBoard(disableEngine == "always");
+      }
+   }
+   updateGameAutoUpdateFlag();
+}
+
+function clickedGameAnalysisFlag(t,e) {
+   if (g_backgroundEngine) {
+      StopBackgroundEngine();
+   } else {
+      if (openerCheck()) {
+         window.opener.showEngineAnalysisBoard(disableEngine == "always");
+      }
+   }
 }
 
 
 var engineWorker = "garbochess/garbochess.js";
 
-var g_backgroundEngineValid = true;
 var g_backgroundEngine;
 var g_topNodesPerSecond = 0;
 
 function InitializeBackgroundEngine() {
-   if (!g_backgroundEngineValid) { return false; }
 
    if (!g_backgroundEngine) {
-      g_backgroundEngineValid = true;
       try {
           g_backgroundEngine = new Worker(engineWorker);
           g_backgroundEngine.onmessage = function (e) {
@@ -338,7 +390,6 @@ function InitializeBackgroundEngine() {
                    if (theObject = document.getElementById("GameEval")) {
                       theObject.innerHTML = ev2NAG(ev);
                       theObject.title = (ev > 0 ? " +" : " ") + ev + (ev == Math.floor(ev) ? ".0 " : " ");
-                      theObject.onclick = function() { displayHelp('informant_symbols'); };
                    }
                    nodes = parseInt(matches[3], 10);
                    nodesPerSecond = parseInt(matches[4], 10);
@@ -347,29 +398,24 @@ function InitializeBackgroundEngine() {
                    if (theObject = document.getElementById("GameMoves")) {
                       theObject.innerHTML = pv;
                       theObject.title = pv;
-                      if (!disableInputs) {
-                         theObject.setAttribute("onClick", "addPly(this.innerHTML.replace(/^\\s*(\\S+).*$/, '$1'));");
-                      }
                    }
                    updateGameAnalysisFlag();
                 }
              }
           };
+          return true;
       } catch(e) {
-         g_backgroundEngineValid = false;
          if (theObject = document.getElementById("GameEval")) {
             theObject.innerHTML = translateNAGs("$147") + "&nbsp;&nbsp;&nbsp;" + translateNAGs("$255");
             theObject.title = "engine analysis unavailable";
-            theObject.onclick = null;
          }
          if (theObject = document.getElementById("GameMoves")) {
             theObject.innerHTML = "&nbsp;";
             theObject.title = "";
-            theObject.onclick = null;
          }
+         return false;
       }
    }
-   return g_backgroundEngineValid;
 }
 
 function ev2NAG(ev) {
@@ -408,25 +454,44 @@ function StartEngineAnalysis() {
    }
 }
 
+function openerCheck(skipSignature) {
+   return ((typeof(window.opener) != "undefined") && (window.opener !== null) && (!window.opener.closed) && (typeof(window.opener.pgn4web_engineWinSignature) != "undefined") && ((window.opener.pgn4web_engineWinSignature === engineSignature) || (skipSignature)));
+}
+
 function updateGameAnalysisFlag() {
    if (theObject = document.getElementById("GameAnalysisFlag")) {
       if (g_backgroundEngine ) {
          theObject.innerHTML = "=";
          theObject.title = "pause analysis engine";
-         theObject.onclick = StopBackgroundEngine;
       } else {
-         if ((typeof(window.opener) != "undefined") && (window.opener !== null) && (!window.opener.closed) && (typeof(window.opener.pgn4web_engineWinSignature) != "undefined") && (window.opener.pgn4web_engineWinSignature === engineSignature)) {
+         if ((openerCheck()) && (CurrentFEN() != window.opener.CurrentFEN())) {
             theObject.innerHTML = "+";
             theObject.title = "update analysis board";
-            theObject.onclick = function() { try { window.opener.showEngineAnalysisBoard(); } catch(e) { updateGameAnalysisFlag(); } };
          } else {
             theObject.innerHTML = "&nbsp;";
             theObject.title = "";
-            theObject.onclick = null;
          }
       }
    }
 }
+
+function updateGameAutoUpdateFlag() {
+   if (theObject = document.getElementById("GameAutoUpdateFlag")) {
+      if (openerCheck()) {
+         if (autoUpdate) {
+            theObject.innerHTML = "=";
+            theObject.title = "pause auto updating analysis board";
+         } else {
+            theObject.innerHTML = "+";
+            theObject.title = "start auto updating analysis board";
+         }
+      } else {
+         theObject.innerHTML = "&nbsp;";
+         theObject.title = "";
+      }
+   }
+}
+
 
 function customFunctionOnPgnTextLoad() {
    if (theObject = document.getElementById("GameAnalysis")) {
@@ -443,6 +508,7 @@ function customFunctionOnPgnTextLoad() {
       engineSignature = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
    }
    updateGameAnalysisFlag();
+   updateGameAutoUpdateFlag();
 }
 
 function customFunctionOnMove() {
@@ -466,6 +532,9 @@ function customFunctionOnMove() {
    clickFromPiece = "";
    lastPromotionMove = lastPromotionPlaceholder;
    lastPromotionPlaceholder = "";
+
+   updateGameAnalysisFlag();
+   updateGameAutoUpdateFlag();
 }
 
 function customDebugInfo() {

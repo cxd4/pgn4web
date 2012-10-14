@@ -39,17 +39,20 @@ function detectEngineLocation() {
 }
 
 var engineWin;
+
+var engineWinLastFen = "";
+
 function showEngineAnalysisBoard(engineDisabled) {
    if ((typeof(gameVariant[currentGame]) == "undefined") || (gameVariant[currentGame].match(/^(chess|normal|standard|)$/i) !== null)) {
       var doneAccessingDOM = false;
       try {
          if ((engineWinCheck()) && (engineWin.sameEngineDisabled(engineDisabled))) {
-            engineWin.updateFEN(CurrentFEN());
+            engineWin.updateFEN(engineWinLastFen = CurrentFEN());
             doneAccessingDOM = true;
          }
       } catch(e) {}
       if (!doneAccessingDOM) {
-         var parameters = "fs=" + encodeURIComponent(CurrentFEN()) + "&es=" + pgn4web_engineWinSignature;
+         var parameters = "fs=" + encodeURIComponent(engineWinLastFen = CurrentFEN()) + "&es=" + pgn4web_engineWinSignature;
          if (engineDisabled) { parameters += "&de=a"; }
          if (pgn4web_engineWindowUrlParameters) { parameters += "&" + pgn4web_engineWindowUrlParameters; }
          var options = "resizable=no,scrollbars=no,toolbar=no,location=no,menubar=no,status=no";
@@ -66,7 +69,18 @@ function showEngineAnalysisBoard(engineDisabled) {
 }
 
 function engineWinCheck(skipSignature) {
-   return ((typeof(engineWin) != "undefined") && (!engineWin.closed) && (((typeof(engineWin.engineSignature) != "undefined") && (pgn4web_engineWinSignature === engineWin.engineSignature)) || (skipSignature)));
+   return ((typeof(engineWin) != "undefined") && (!engineWin.closed) && (typeof(engineWin.engineSignature) != "undefined") && ((pgn4web_engineWinSignature === engineWin.engineSignature) || (skipSignature)));
+}
+
+function engineWinOnMove() {
+   if (engineWinCheck()) {
+      if ((engineWin.autoUpdate === true) && (CurrentFEN() != engineWinLastFen) && (engineWin.CurrentFEN() == engineWinLastFen)) {
+         showEngineAnalysisBoard();
+      }
+      engineWin.updateGameAnalysisFlag();
+   } else {
+      engineWinLastFen = "";
+   }
 }
 
 boardShortcut("E8", "open/update analysis board", function(t,e){ showEngineAnalysisBoard(e.shiftKey); });

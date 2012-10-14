@@ -794,7 +794,6 @@ a.variation {
   function customShortcutKey_Shift_4() { autoHighlightNewmoves = !autoHighlightNewmoves; }
   function customShortcutKey_Shift_5() { autoSwitchNewgames = !autoSwitchNewgames; }
   function customShortcutKey_Shift_6() { toggleShowBoard(); }
-  function customShortcutKey_Shift_7() { autoUpdateAnalysis = !autoUpdateAnalysis; if (showAnalysis && autoUpdateAnalysis) { showAnalysisBoard(disableEngine); } }
 
   // overwriting engine.js definitions of customShortcutKey_Shift_8 9 0
   function customShortcutKey_Shift_8() { showAnalysisBoard(true); }
@@ -811,7 +810,7 @@ a.variation {
   boardShortcut("G7", "toggle autoswitch to games with new moves", function(t,e){ autoSwitchNewgames = !autoSwitchNewgames && !e.shiftKey; });
 
   boardShortcut("F8", "close analysis board", function(t,e){ hideAnalysisBoard(); });
-  boardShortcut("G8", "toggle autoupdate analysis board", function(t,e){ autoUpdateAnalysis = !autoUpdateAnalysis && !e.shiftKey; if (showAnalysis && autoUpdateAnalysis) { showAnalysisBoard(disableEngine); } });
+
 
   function toggleShowEvent() {
     showEvent = !showEvent;
@@ -874,9 +873,10 @@ function hideAnalysisBoard() {
   if (theObject = document.getElementById('GameAnalysisContainer')) {
     theObject.style.width = "40px"; // = gameAnalysisContainer.width.closed
   }
-  try {
-    if (thisEngineWin && thisEngineWin.StopBackgroundEngine) { thisEngineWin.StopBackgroundEngine(); }
-  } catch(e) {}
+  if (typeof(thisEngineWin) != "undefined") {
+    if (typeof(thisEngineWin.StopBackgroundEngine) == "function") { thisEngineWin.StopBackgroundEngine(); }
+    if (typeof(thisEngineWin.autoUpdate) != "undefined") { thisEngineWin.autoUpdate = false; }
+  }
   showAnalysis = false;
 }
 

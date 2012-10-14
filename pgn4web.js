@@ -2144,6 +2144,7 @@ function Init(nextGame) {
     autoScrollToCurrentMoveIfEnabled();
     // customFunctionOnMove here for consistency: null move starting new game
     customFunctionOnMove();
+    if (typeof(engineWinOnMove) == "function") { engineWinOnMove(); }
   }
 
   if ((firstStart) && (autostartAutoplay)) { SetAutoPlay(true); }
@@ -2666,6 +2667,7 @@ function MoveBackward(diff, scanOnly) {
   }
 
   customFunctionOnMove();
+  if (typeof(engineWinOnMove) == "function") { engineWinOnMove(); }
 }
 
 function MoveForward(diff, targetVar, scanOnly) {
@@ -2744,6 +2746,7 @@ function MoveForward(diff, targetVar, scanOnly) {
   }
 
   customFunctionOnMove();
+  if (typeof(engineWinOnMove) == "function") { engineWinOnMove(); }
 }
 
 lastSynchCurrentVar = -1;
