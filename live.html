@@ -109,7 +109,7 @@ function setLiveMode(lm) {
       theFrameObject.src = pgn4web_live_pointer_url + "/dynamic-frame.html?l=t&ct=pink&scf=t&pf=u&ewt=analysisframe&ewh=360&eww=240&ewup=lch%3DEDE8D5%26dch%3DCFCBB3%26hch%3DF8CCA0%26fmch%3D302F29%26ctch%3D9C9886%26bch%3DEDE8D5%26ss%3D24%26fp%3D0%26pf%3Du%26fms%3D11%26fcs%3D19&ewpi=t&" + extraParams;
       theFrameObject.height = "100%";
       theFrameObject.width = "100%";
-      // theAnalysisObject.src set by the &ewpi=t parameter of dynamic-frame.html
+      theAnalysisObject.src = pgn4web_live_pointer_url + "/blank.html";
       theAnalysisObject.height = "240";
       theAnalysisObject.width = "192";
       theAnalysisObject.style.marginRight = "80px";
