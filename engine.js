@@ -88,7 +88,7 @@ function engineWinOnMove() {
 }
 
 boardShortcut("E8", "open/update analysis board", function(t,e){ showEngineAnalysisBoard(e.shiftKey); });
-boardShortcut("F8", "close/stop analysis board", function(t,e){ if (engineWinCheck()) { if (e.shiftKey) { if ((engineWin.top === engineWin.self) && (engineWin.focus)) { engineWin.focus(); } } else { engineWin.StopBackgroundEngine(); if ((engineWin.top === engineWin.self) && (engineWin.close)) { engineWin.close(); } } } });
+boardShortcut("F8", "close/pause analysis board", function(t,e){ if (engineWinCheck()) { if (e.shiftKey) { if ((engineWin.top === engineWin.self) && (engineWin.focus)) { engineWin.focus(); } } else { engineWin.StopBackgroundEngine(); if ((engineWin.top === engineWin.self) && (engineWin.close)) { engineWin.close(); } } } });
 
 function customShortcutKey_Shift_8() { showEngineAnalysisBoard(true); }
 function customShortcutKey_Shift_9() { showEngineAnalysisBoard(false); }
