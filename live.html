@@ -54,7 +54,7 @@ a:hover, a:active
 <table id="framecontainer" cellpadding="0" cellspacing="0" width="100%" height="100%" style="background-color: #EDE8D5; box-shadow: 0px 0px 20px #663300; border-color: #EDE8D5; border-style: solid; border-width: 40px; border-radius: 10px;" onclick="toggleLiveMode();"><tbody><tr valign="middle"><td align="center">
 <table cellpadding="0" cellspacing="0" width="100%" height="100%" onclick="stopEvProp(event);"><tbody><tr valign="middle">
 <td align="left" valign="top">
-<iframe style="opacity: 0.9;" id="analysisframe" name="analysisframe" src="about:blank" height="0" width="0" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">your browser does not support the required iframe functionality</iframe>
+<iframe style="opacity: 0.9;" id="analysisframe" name="analysisframeForLiveDotHtml" src="about:blank" height="0" width="0" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">your browser does not support the required iframe functionality</iframe>
 </td><td width="100%" align="center">
 <iframe id="liveframe" src="about:blank" height="360" width="480" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">your browser does not support the required iframe functionality</iframe>
 </td></tr></tbody></table>
@@ -106,7 +106,7 @@ function setLiveMode(lm) {
   if ((theFrameObject = document.getElementById("liveframe")) && (theAnalysisObject = document.getElementById("analysisframe")) && (theContainerObject = document.getElementById("framecontainer"))) {
     liveMode = lm;
     if (liveMode == "analysis") {
-      theFrameObject.src = pgn4web_live_pointer_url + "/dynamic-frame.html?l=t&ct=pink&scf=t&pf=u&ewt=analysisframe&ewh=240&eww=192&ewup=lch%3DEDE8D5%26dch%3DCFCBB3%26hch%3DF8CCA0%26fmch%3D302F29%26ctch%3D9C9886%26bch%3DEDE8D5%26ss%3D24%26fp%3D0%26pf%3Du%26fms%3D11%26fcs%3D19&ewpi=t&" + extraParams;
+      theFrameObject.src = pgn4web_live_pointer_url + "/dynamic-frame.html?l=t&ct=pink&scf=t&pf=u&ewt=analysisframeForLiveDotHtml&ewh=240&eww=192&ewup=lch%3DEDE8D5%26dch%3DCFCBB3%26hch%3DF8CCA0%26fmch%3D302F29%26ctch%3D9C9886%26bch%3DEDE8D5%26ss%3D24%26fp%3D0%26pf%3Du%26fms%3D11%26fcs%3D19&ewpi=t&" + extraParams;
       theFrameObject.height = "100%";
       theFrameObject.width = "100%";
       theAnalysisObject.src = pgn4web_live_pointer_url + "/blank.html";
