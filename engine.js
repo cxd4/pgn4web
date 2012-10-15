@@ -68,6 +68,11 @@ function showEngineAnalysisBoard(engineDisabled, startFen) {
     if (pgn4web_engineWindowHeight) { options = "height=" + pgn4web_engineWindowHeight + "," + options; }
     if (pgn4web_engineWindowWidth) { options = "width=" + pgn4web_engineWindowWidth + "," + options; }
     engineWin = window.open(detectEngineLocation() + "?" + parameters, pgn4web_engineWindowTarget, options);
+
+    // patch for IE and opera issue with setting window.opener
+    try { if ((typeof(engineWin) == 'object') && (engineWin !== null) && ((!engineWin.opener) || (engineWin.opener !== window))) { engineWin.opener = window; } } catch(e) {}
+    // end of patch
+
   }
   if ((engineWinCheck(true)) && (engineWin.top === engineWin.self) && (window.focus)) { engineWin.focus(); }
     return engineWin;
@@ -78,7 +83,7 @@ function showEngineAnalysisBoard(engineDisabled, startFen) {
 }
 
 function engineWinCheck(skipSignature) {
-   return ((!pgn4web_engineWindowDisableAnalysisBoard) && (typeof(engineWin) != "undefined") && (!engineWin.closed) && (typeof(engineWin.engineSignature) != "undefined") && ((pgn4web_engineWinSignature === engineWin.engineSignature) || (skipSignature)));
+   return ((!pgn4web_engineWindowDisableAnalysisBoard) && (typeof(engineWin) == "object") && (engineWin !== null) && (!engineWin.closed) && (typeof(engineWin.engineSignature) != "undefined") && ((pgn4web_engineWinSignature === engineWin.engineSignature) || (skipSignature)));
 }
 
 function engineWinOnMove() {
