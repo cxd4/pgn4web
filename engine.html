@@ -530,15 +530,17 @@ function num2string(num) {
 }
 
 
-var overwrittenPly;
+var overwrittenPly = "";
 var overwrittenPlyNumber;
 function addPly(thisPly) {
    if (!thisPly) { return; }
-   if (thisPly !== Moves[CurrentPly]) {
+   if ((PlyNumber < CurrentPly + 1 - StartPly) || (thisPly !== Moves[CurrentPly])) {
       overwrittenPly = Moves[CurrentPly];
       Moves[CurrentPly] = MovesVar[0][CurrentPly] = thisPly;
       overwrittenPlyNumber = PlyNumber;
       PlyNumber = PlyNumberVar[0] = CurrentPly + 1 - StartPly;
+   } else {
+      overwrittenPly = "";
    }
    MoveForward(1);
 }
@@ -546,7 +548,7 @@ function addPly(thisPly) {
 function customFunctionOnAlert(msg) {
    if (msg.indexOf("error: invalid ply") !== 0) { return; }
    stopAlertPrompt();
-   if (!overwrittenPly) { return; }
+   if (overwrittenPly === "") { return; }
    Moves[CurrentPly] = MovesVar[0][CurrentPly] = overwrittenPly;
    PlyNumber = PlyNumberVar[0] = overwrittenPlyNumber;
    overwrittenPly = "";
