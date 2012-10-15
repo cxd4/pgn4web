@@ -69,10 +69,7 @@ function showEngineAnalysisBoard(engineDisabled, startFen) {
     if (pgn4web_engineWindowWidth) { options = "width=" + pgn4web_engineWindowWidth + "," + options; }
     engineWin = window.open(detectEngineLocation() + "?" + parameters, pgn4web_engineWindowTarget, options);
 
-    // patch for IE and opera issue with setting window.opener
-    try { if ((typeof(engineWin) == 'object') && (engineWin !== null) && ((!engineWin.opener) || (engineWin.opener !== window))) { engineWin.opener = window; } } catch(e) {}
-    // end of patch
-
+    // note bug with IE and Opera failing to set window.opener at this point, resulting in no autoUpdate possible and no update from the engine window possible
   }
   if ((engineWinCheck(true)) && (engineWin.top === engineWin.self) && (window.focus)) { engineWin.focus(); }
     return engineWin;
