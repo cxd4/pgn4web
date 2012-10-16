@@ -681,6 +681,10 @@ function startAutoPlay() {
    }
    autoPlay = true;
    updateGameFlagToMove();
+   if (autoUpdate) {
+      autoUpdate = false;
+      updateGameAutoUpdateFlag();
+   }
    if (disableEngine) { setDisableEngine(false); }
    else { StartEngineAnalysis(); }
 }
