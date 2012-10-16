@@ -520,7 +520,7 @@ function updateGameAutoUpdateFlag() {
 function updateGameFlagToMove() {
    if (theObject = document.getElementById("GameFlagToMove")) {
       theObject.style.backgroundColor = CurrentPly % 2 ? "black" : "white";
-      theObject.title = (CurrentPly % 2 ? "black" : "white") + " to move" + (autoPlay ? ": auto play" : "");
+      theObject.title = (CurrentPly % 2 ? "black" : "white") + " to move" + (autoPlay ? ": autoplay" : "");
    }
 }
 
