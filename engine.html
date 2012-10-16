@@ -81,15 +81,17 @@ if (window.location.search.match(thisRegExp) !== null) {
 }
 // action on fenString postponed after definying pgnText in the html body
 
-var analysisSeconds = 13;
+var defaultAnalysisSeconds = 13;
+var analysisSeconds = defaultAnalysisSeconds;
 var minAnalysisSeconds = 3;
 var maxAnalysisSeconds = 313;
-   thisRegExp = /(&|\?)(analysisSeconds|as)=([1-9][0-9]*)(&|$)/i;
-   if (window.location.search.match(thisRegExp) !== null) {
-      analysisSeconds = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
-      if (analysisSeconds < minAnalysisSeconds) { analysisSeconds = minAnalysisSeconds; }
-      if (analysisSeconds > maxAnalysisSeconds) { analysisSeconds = maxAnalysisSeconds; }
-   }
+thisRegExp = /(&|\?)(analysisSeconds|as)=([1-9][0-9]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+   analysisSeconds = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
+   if (analysisSeconds < minAnalysisSeconds) { analysisSeconds = minAnalysisSeconds; }
+   if (analysisSeconds > maxAnalysisSeconds) { analysisSeconds = maxAnalysisSeconds; }
+   defaultAnalysisSeconds = analysisSeconds;
+}
 
 var disableEngine;
 thisRegExp = /(&|\?)(disableEngine|de)=([^&]*)(&|$)/i;
@@ -293,13 +295,13 @@ SetShortcutKeysEnabled(false);
 <table id="GameCustomButtons" class="gameCustomButtons gameCustomButtonsHidden" cellspacing="0" cellpadding="0" border="0"><tr valign="bottom">
 <td id="GameAnalysisFlag" class="gameButtonCell" align="center" onclick="clickedGameAnalysisFlag(this, event);">&nbsp;</td>
 <td class="gameButtonSpacer"></td>
-<td class="gameButtonCell" align="center" onclick="GoToMove(StartPlyVar[0], 0);" title="go to start">&lt;&lt;</td>
+<td class="gameButtonCell" align="center" onclick="if (event.shiftKey) { analysisSeconds = analysisSeconds <= defaultAnalysisSeconds ? minAnalysisSeconds : defaultAnalysisSeconds; } else { GoToMove(StartPlyVar[0], 0); }" title="go to start">&lt;&lt;</td>
 <td class="gameButtonSpacer"></td>
-<td class="gameButtonCell" align="center" onclick="GoToMove(CurrentPly - 1);" title="move backward">&lt;</td>
+<td class="gameButtonCell" align="center" onclick="if (event.shiftKey) { analysisSeconds = Math.max(Math.floor(analysisSeconds / 1.15), minAnalysisSeconds); } else { GoToMove(CurrentPly - 1); }" title="move backward">&lt;</td>
 <td class="gameButtonSpacer"></td>
-<td class="gameButtonCell" align="center" onclick="GoToMove(CurrentPly + 1);" title="move forward">&gt;</td>
+<td class="gameButtonCell" align="center" onclick="if (event.shiftKey) { analysisSeconds = Math.min(Math.ceil(analysisSeconds * 1.15), maxAnalysisSeconds); } else { GoToMove(CurrentPly + 1); }" title="move forward">&gt;</td>
 <td class="gameButtonSpacer"></td>
-<td class="gameButtonCell" align="center" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0);" title="go to end">&gt;&gt;</td>
+<td class="gameButtonCell" align="center" onclick="if (event.shiftKey) { analysisSeconds = analysisSeconds >= defaultAnalysisSeconds ? maxAnalysisSeconds : defaultAnalysisSeconds; } else { GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); }" title="go to end">&gt;&gt;</td>
 <td class="gameButtonSpacer"></td>
 <td id="GameAutoUpdateFlag" class="gameButtonCell" align="center" onclick="clickedGameAutoUpdateFlag(this, event);">&nbsp;</td>
 </tr></table>
@@ -466,6 +468,7 @@ function StartEngineAnalysis() {
       setAnalysisTimeout(analysisSeconds);
    }
 }
+
 
 function openerCheck(skipSignature) {
    return ((typeof(window.opener) == "object") && (window.opener !== null) && (!window.opener.closed) && (typeof(window.opener.pgn4web_engineWinSignature) != "undefined") && ((window.opener.pgn4web_engineWinSignature === engineSignature) || (skipSignature)));
