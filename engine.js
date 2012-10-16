@@ -95,6 +95,7 @@ function engineWinOnMove() {
 }
 
 if (!pgn4web_engineWindowDisableAnalysisBoard) {
+  boardShortcut("A8", "pgn4web v" + pgn4web_version + " debug info", function(t,e){ if (e.shiftKey) { if (engineWinCheck()) { engineWin.displayDebugInfo(); } } else { displayDebugInfo(); } }, true);
   boardShortcut("E8", "open/update analysis board", function(t,e){ showEngineAnalysisBoard(e.shiftKey); });
   boardShortcut("F8", "close/pause analysis board", function(t,e){ if (engineWinCheck()) { if (e.shiftKey) { if ((engineWin.top === engineWin.self) && (engineWin.focus)) { engineWin.focus(); } } else { engineWin.StopBackgroundEngine(); if ((engineWin.top === engineWin.self) && (engineWin.close)) { engineWin.close(); } } } });
 
