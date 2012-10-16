@@ -675,7 +675,7 @@ function detectGameEnd(pv, FEN) {
 }
 
 function startAutoPlay() {
-   if (!window.Worker) { return; }
+   if ((disableEngine) || (!window.Worker)) { return; }
    if (theObject = document.getElementById("GameCustomButtons")) {
       theObject.className = "gameCustomButtons  gameCustomButtonsHidden";
    }
@@ -685,8 +685,7 @@ function startAutoPlay() {
       autoUpdate = false;
       updateGameAutoUpdateFlag();
    }
-   if (disableEngine) { setDisableEngine(false); }
-   else { StartEngineAnalysis(); }
+   if (!g_backgroundEngine) { StartEngineAnalysis(); }
 }
 
 function stopAutoPlay() {
