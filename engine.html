@@ -625,6 +625,7 @@ function detectClick(t,e) {
             thisMove += "Q";
             lastPromotionPlaceholder = thisMove;
          }
+         if (autoPlay) { stopAutoPlay(); }
          addPly(thisMove);
       }
       clickFromCol = clickFromRow = clickFromPiece = "";
@@ -675,6 +676,7 @@ function stopAutoPlay() {
 var engineSignature = -1;
 
 function updateFEN(newFEN) {
+   if (autoPlay) { stopAutoPlay(); }
    if (theObject = document.getElementById("pgnText")) {
       theObject.innerHTML = '[Setup "1"]\n[FEN "' + newFEN + '"]\n';
    }
