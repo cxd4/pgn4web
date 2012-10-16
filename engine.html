@@ -560,7 +560,7 @@ function customDebugInfo() {
    var dbg = "autoUpdate=" + autoUpdate;
    if (disableEngine) { dbg += " engine=disabled"; }
    else if (!window.Worker) { dbg += " engine=unavailable"; }
-   else { dbg += " engine=" + engineWorker + " analysisSeconds=" + analysisSeconds + " topNodesPerSecond=" + num2string(g_topNodesPerSecond); }
+   else { dbg += " engine=" + (g_backgroundEngine ? "pondering" : "idle") + " analysisSeconds=" + analysisSeconds + " topNodesPerSecond=" + num2string(g_topNodesPerSecond); }
    return dbg;
 }
 
