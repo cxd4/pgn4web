@@ -56,14 +56,11 @@ a {
   visibility: hidden;
 }
 
-.gameAnalysisAutoPlay {
-  opacity: 0.6;
-}
-
 .gameFlagAndMoves {
   position: absolute;
   bottom: 0;
   z-index: 2;
+  white-space: nowrap;
 }
 
 .gameFlagToMove {
@@ -314,7 +311,7 @@ SetShortcutKeysEnabled(false);
 <div class="gameAnalysis gameAnalysisHidden" id="GameAnalysis">
 <div class="gameEval" id="GameEval" onclick="clickedGameEval(this, event);">&nbsp;</div>
 <div class="gameFlagAndMoves">
-<img id="GameFlagToMove" class="gameFlagToMove" onclick="clickedGameFlagToMove(this, event);" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" border="1" /><span id="GameMoves" class="gameMoves" onclick="clickedGameMoves(this, event);">&nbsp;</span>&nbsp;
+<img id="GameFlagToMove" class="gameFlagToMove" onclick="clickedGameFlagToMove(this, event);" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" border="1" /><span id="GameMovesIntro" class="gameMoves"></span><span id="GameMoves" class="gameMoves" onclick="clickedGameMoves(this, event);">&nbsp;</span>&nbsp;
 </div>
 </div>
 </center>
@@ -683,8 +680,8 @@ function startAutoPlay() {
    if (theObject = document.getElementById("GameCustomButtons")) {
       theObject.className = "gameCustomButtons gameCustomButtonsHidden";
    }
-   if (theObject = document.getElementById("GameAnalysis")) {
-      theObject.className = "gameAnalysis gameAnalysisAutoPlay";
+   if (theObject = document.getElementById("GameMovesIntro")) {
+      theObject.innerHTML = "...&nbsp;";
    }
    autoPlay = true;
    updateGameFlagToMove();
@@ -697,8 +694,8 @@ function startAutoPlay() {
 
 function stopAutoPlay() {
    autoPlay = false;
-   if (theObject = document.getElementById("GameAnalysis")) {
-      theObject.className = "gameAnalysis";
+   if (theObject = document.getElementById("GameMovesIntro")) {
+      theObject.innerHTML = "";
    }
    StopBackgroundEngine();
    updateGameFlagToMove();
