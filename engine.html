@@ -508,6 +508,14 @@ function updateGameAutoUpdateFlag() {
    }
 }
 
+function updateGameFlagToMove() {
+   if (theObject = document.getElementById("GameFlagToMove")) {
+      theObject.style.backgroundColor = CurrentPly % 2 ? "black" : "white";
+      // theObject.style.borderColor = CurrentPly % 2 ? "white" : "black";
+      theObject.title = (CurrentPly % 2 ? "black" : "white") + " to move" + (autoPlay ? ": auto play" : "");
+   }
+}
+
 
 function customFunctionOnPgnTextLoad() {
    if (theObject = document.getElementById("GameAnalysis")) {
@@ -528,11 +536,8 @@ function customFunctionOnPgnTextLoad() {
 }
 
 function customFunctionOnMove() {
-   if (theObject = document.getElementById("GameFlagToMove")) {
-      theObject.style.backgroundColor = CurrentPly % 2 ? "black" : "white";
-      // theObject.style.borderColor = CurrentPly % 2 ? "white" : "black";
-      theObject.title = (CurrentPly % 2 ? "black" : "white") + " to move";
-   }
+
+   updateGameFlagToMove();
 
    if (!disableEngine) {
       StartEngineAnalysis();
@@ -664,12 +669,15 @@ function startAutoPlay() {
       theObject.className = "gameCustomButtons  gameCustomButtonsHidden";
    }
    autoPlay = true;
-   StartEngineAnalysis();
+   updateGameFlagToMove();
+   if (disableEngine) { setDisableEngine(false); }
+   else { StartEngineAnalysis(); }
 }
 
 function stopAutoPlay() {
    autoPlay = false;
    StopBackgroundEngine();
+   updateGameFlagToMove();
    if ((!disableInputs) && (!autoPlay) && (theObject = document.getElementById("GameCustomButtons"))) {
       theObject.className = "gameCustomButtons";
    }
