@@ -206,6 +206,7 @@ if (window.location.search.match(thisRegExp) !== null) {
    document.write(" - disableInputs = true | false (default false)\n");
    document.write(" - autoUpdate = true | false (default false)\n");
    // document.write(" - autoPlay = true | false (default false)\n");
+   // document.write(" - engineSignature = positive number (default -1)\n");
    document.write("\n");
    document.write(" - squareSize = size of square (default 30)\n");
    document.write(" - pieceSize = size of pieces | default (default selects piece size based on square size)\n");
@@ -375,13 +376,14 @@ var engineWorker = "garbochess/garbochess.js";
 var g_backgroundEngine;
 var g_topNodesPerSecond = 0;
 var g_pv = "";
+var g_initError;
 
 function InitializeBackgroundEngine() {
 
    if (!g_backgroundEngine) {
       try {
           g_backgroundEngine = new Worker(engineWorker);
-          g_backgroundEngine.onmessage = function (e) {
+          g_backgroundEngine.addEventListener("message", function (e) {
              if ((e.data.match("^pv") == "pv") && (fenString == CurrentFEN())) {
                 if (matches = e.data.substr(3, e.data.length - 3).match(/Ply:(\d+) Score:(-*\d+) Nodes:(\d+) NPS:(\d+) (.*)/)) {
                    ply = parseInt(matches[1], 10);
@@ -409,7 +411,8 @@ function InitializeBackgroundEngine() {
                    if (detectGameEnd(g_pv, "")) { StopBackgroundEngine(); }
                 }
              }
-          };
+          });
+          g_initError = false;
           return true;
       } catch(e) {
          if (theObject = document.getElementById("GameEval")) {
@@ -420,7 +423,10 @@ function InitializeBackgroundEngine() {
             theObject.innerHTML = "&nbsp;";
             theObject.title = "";
          }
-         myAlert("warning: engine exception " + e);
+         if (!g_initError) {
+            g_initError = true;
+            myAlert("warning: engine exception " + e);
+         }
          return false;
       }
    }
@@ -518,22 +524,26 @@ function updateGameFlagToMove() {
 }
 
 
+var firstCustomFunctionOnPgnTextLoad = true;
 function customFunctionOnPgnTextLoad() {
-   if (theObject = document.getElementById("GameAnalysis")) {
-      theObject.className = "gameAnalysis";
-   }
-   if ((!disableInputs) && (!autoPlay) && (theObject = document.getElementById("GameCustomButtons"))) {
-      theObject.className = "gameCustomButtons";
-   }
+   if (firstCustomFunctionOnPgnTextLoad) {
+      firstCustomFunctionOnPgnTextLoad = false;
+      setDisableEngine(disableEngine);
+      if (theObject = document.getElementById("GameAnalysis")) {
+         theObject.className = "gameAnalysis";
+      }
+      if ((!disableInputs) && (!autoPlay) && (theObject = document.getElementById("GameCustomButtons"))) {
+         theObject.className = "gameCustomButtons";
+      }
 
-   // undocumented parameter for internal use after pgn4web has started
-
-   thisRegExp = /(&|\?)(engineSignature|es)=([1-9][0-9]*)(&|$)/i;
-   if (window.location.search.match(thisRegExp) !== null) {
-      engineSignature = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
+      // undocumented parameter for internal use after pgn4web has started
+      thisRegExp = /(&|\?)(engineSignature|es)=([1-9][0-9]*)(&|$)/i;
+      if (window.location.search.match(thisRegExp) !== null) {
+         engineSignature = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
+      }
+      updateGameAnalysisFlag();
+      updateGameAutoUpdateFlag();
    }
-   updateGameAnalysisFlag();
-   updateGameAutoUpdateFlag();
 }
 
 function customFunctionOnMove() {
@@ -716,9 +726,6 @@ function setDisableEngine(de) {
 function sameEngineDisabled(engineDisabled) {
    return ((typeof(engineDisabled) == "undefined") || (engineDisabled && disableEngine) || (!engineDisabled && !disableEngine));
 }
-
-
-setDisableEngine(disableEngine);
 
 
 </script>
