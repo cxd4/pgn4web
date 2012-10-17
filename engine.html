@@ -545,8 +545,21 @@ function clear_cache_from_localStorage() {
    cache_needs_sync++;
 }
 
+function cacheDebugInfo() {
+   var dbg = "";
+   if (localStorage_supported) {
+      dbg += " cache=";
+      try {
+         dbg += num2string(localStorage["pgn4web_chess_engine_cache_pointer"].length + localStorage["pgn4web_chess_engine_cache_fen"].length + localStorage["pgn4web_chess_engine_cache_ev"].length + localStorage["pgn4web_chess_engine_cache_pv"].length + localStorage["pgn4web_chess_engine_cache_nodes"].length);
+      } catch(e) {
+         dbg += "0";
+      }
+   }
+   return dbg;
+}
+
 var cache_pointer = -1;
-var cache_max = 6000; // = 50 games of 60 moves = approx 1MB of local storage
+var cache_max = 6000; // = 50 games of 60 moves = less than 1MB of local storage
 var cache_fen = new Array();
 var cache_ev = new Array();
 var cache_pv = new Array();
@@ -734,7 +747,7 @@ function customDebugInfo() {
    var dbg = "autoUpdate=" + autoUpdate;
    if (disableEngine) { dbg += " engine=disabled"; }
    else if (!window.Worker) { dbg += " engine=unavailable"; }
-   else { dbg += " engine=" + (g_backgroundEngine ? (autoPlay ? "autoplay" : "pondering") : "idle") + " analysisSeconds=" + analysisSeconds + " topNodesPerSecond=" + num2string(g_topNodesPerSecond); }
+   else { dbg += " engine=" + (g_backgroundEngine ? (autoPlay ? "autoplay" : "pondering") : "idle") + " analysisSeconds=" + analysisSeconds + " topNodesPerSecond=" + num2string(g_topNodesPerSecond) + cacheDebugInfo(); }
    return dbg;
 }
 
