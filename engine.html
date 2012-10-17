@@ -208,7 +208,7 @@ if (window.location.search.match(thisRegExp) !== null) {
    document.write(" - disableInputs = true | false (default false)\n");
    document.write(" - autoUpdate = true | false (default false)\n");
    // document.write(" - autoPlay = true | false (default false)\n");
-   // document.write(" - disableLocalStorage = true | false (default false)\n");
+   // document.write(" - enableLocalStorage = true | false (default false)\n");
    // document.write(" - engineSignature = positive number (default -1)\n");
    document.write("\n");
    document.write(" - squareSize = size of square (default 30)\n");
@@ -240,12 +240,12 @@ if (window.location.search.match(thisRegExp) !== null) {
 autoPlay = ((autoPlay == "true") || (autoPlay == "t"));
 
 // undocumented feature
-var disableLocalStorage;
-thisRegExp = /(&|\?)(disableLocalStorage|dls)=([^&]*)(&|$)/i;
+var enableLocalStorage;
+thisRegExp = /(&|\?)(enableLocalStorage|els)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
-   disableLocalStorage = unescape(window.location.search.match(thisRegExp)[3]);
+   enableLocalStorage = unescape(window.location.search.match(thisRegExp)[3]);
 }
-disableLocalStorage = ((disableLocalStorage == "true") || (disableLocalStorage == "t"));
+enableLocalStorage = ((enableLocalStorage == "true") || (enableLocalStorage == "t"));
 
 
 function myRulesLength(sheet) {
@@ -502,7 +502,7 @@ function ev2NAG(ev) {
 
 
 var localStorage_supported;
-try { localStorage_supported = ((!disableLocalStorage) && ("localStorage" in window) && (window["localStorage"] !== null)); }
+try { localStorage_supported = ((enableLocalStorage) && ("localStorage" in window) && (window["localStorage"] !== null)); }
 catch (e) { localStorage_supported = false; }
 
 function load_cache_from_localStorage() {
