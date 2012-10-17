@@ -340,7 +340,7 @@ function clickedGameEval(t,e) {
 function clickedGameAutoUpdateFlag(t,e) {
    if (openerCheck()) {
       autoUpdate = !autoUpdate;
-      if (autoUpdate && !g_backgroundEngine) {
+      if ((autoUpdate) && ((CurrentFEN() !== window.opener.CurrentFEN()) || (!g_backgroundEngine && !disableEngine))) {
          window.opener.showEngineAnalysisBoard(disableEngine);
       }
    }
