@@ -328,7 +328,7 @@ function clickedButtonStart(t,e) {
    if (e.shiftKey) {
       analysisSeconds = analysisSeconds <= defaultAnalysisSeconds ? minAnalysisSeconds : defaultAnalysisSeconds;
    } else {
-      GoToMove(StartPlyVar[0], 0);
+      if (CurrentPly > StartPlyVar[0]) { GoToMove(StartPlyVar[0], 0); }
    }
 }
 
@@ -385,6 +385,8 @@ function clickedGameAnalysisFlag(t,e) {
    } else {
       if (openerCheck()) {
          window.opener.showEngineAnalysisBoard(disableEngine);
+      } else {
+         StartEngineAnalysis();
       }
    }
 }
@@ -524,9 +526,12 @@ function updateGameAnalysisFlag() {
          if ((openerCheck()) && (CurrentFEN() != window.opener.CurrentFEN())) {
             theObject.innerHTML = "+";
             theObject.title = "update analysis board";
-         } else {
+         } else if (disableEngine) {
             theObject.innerHTML = "&nbsp;";
             theObject.title = "";
+         } else {
+            theObject.innerHTML = "&middot;";
+            theObject.title = "restart analysis engine";
          }
       }
    }
@@ -754,6 +759,7 @@ function setDisableEngine(de) {
          theObject.innerHTML = "";
          theObject.title = "";
       }
+      updateGameAnalysisFlag();
    } else {
       StartEngineAnalysis();
    }
