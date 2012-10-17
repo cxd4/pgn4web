@@ -208,6 +208,7 @@ if (window.location.search.match(thisRegExp) !== null) {
    document.write(" - disableInputs = true | false (default false)\n");
    document.write(" - autoUpdate = true | false (default false)\n");
    // document.write(" - autoPlay = true | false (default false)\n");
+   // document.write(" - disableLocalStorage = true | false (default false)\n");
    // document.write(" - engineSignature = positive number (default -1)\n");
    document.write("\n");
    document.write(" - squareSize = size of square (default 30)\n");
@@ -237,6 +238,14 @@ if (window.location.search.match(thisRegExp) !== null) {
    autoPlay = unescape(window.location.search.match(thisRegExp)[3]);
 }
 autoPlay = ((autoPlay == "true") || (autoPlay == "t"));
+
+// undocumented feature
+var disableLocalStorage;
+thisRegExp = /(&|\?)(disableLocalStorage|dls)=([^&]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+   disableLocalStorage = unescape(window.location.search.match(thisRegExp)[3]);
+}
+disableLocalStorage = ((disableLocalStorage == "true") || (disableLocalStorage == "t"));
 
 
 function myRulesLength(sheet) {
@@ -357,8 +366,12 @@ function clickedButtonEnd(t,e) {
 }
 
 function clickedGameMoves(t,e) {
-   var candidateMove = t.innerHTML.replace(/^\s*(\S+).*$/, "$1");
-   if (candidateMove) { addPly(candidateMove); }
+   if (e.shiftKey) {
+      save_cache_to_localStorage();
+   } else {
+      var candidateMove = t.innerHTML.replace(/^\s*(\S+).*$/, "$1");
+      if (candidateMove) { addPly(candidateMove); }
+   }
 }
 
 function clickedGameEval(t,e) {
@@ -380,13 +393,18 @@ function clickedGameAutoUpdateFlag(t,e) {
 }
 
 function clickedGameAnalysisFlag(t,e) {
-   if (g_backgroundEngine) {
-      StopBackgroundEngine();
+   if (e.shiftKey) {
+      cache_clear();
+      clear_cache_from_localStorage();
    } else {
-      if (openerCheck()) {
-         window.opener.showEngineAnalysisBoard(disableEngine);
+      if (g_backgroundEngine) {
+         StopBackgroundEngine();
       } else {
-         StartEngineAnalysis();
+         if (openerCheck()) {
+            window.opener.showEngineAnalysisBoard(disableEngine);
+         } else {
+            StartEngineAnalysis();
+         }
       }
    }
 }
@@ -411,7 +429,9 @@ var engineWorker = "garbochess/garbochess.js";
 
 var g_backgroundEngine;
 var g_topNodesPerSecond = 0;
+var g_ev = "";
 var g_pv = "";
+var g_nodes = "";
 var g_initError;
 
 function InitializeBackgroundEngine() {
@@ -423,22 +443,23 @@ function InitializeBackgroundEngine() {
              if ((e.data.match("^pv") == "pv") && (fenString == CurrentFEN())) {
                 if (matches = e.data.substr(3, e.data.length - 3).match(/Ply:(\d+) Score:(-*\d+) Nodes:(\d+) NPS:(\d+) (.*)/)) {
                    ply = parseInt(matches[1], 10);
-                   if (isNaN(ev = parseInt(matches[2], 10))) {
-                      ev = "";
+                   if (isNaN(g_ev = parseInt(matches[2], 10))) {
+                      g_ev = "";
                    } else {
                       maxEv = 99.9;
-                      ev = Math.round(ev / 100) / 10;
-                      if (ev < -maxEv) { ev = -maxEv; } else if (ev > maxEv) { ev = maxEv; }
-                      if (fenString.indexOf(" b ") !== -1) { ev = -ev; }
+                      g_ev = Math.round(g_ev / 100) / 10;
+                      if (g_ev < -maxEv) { g_ev = -maxEv; } else if (g_ev > maxEv) { g_ev = maxEv; }
+                      if (fenString.indexOf(" b ") !== -1) { g_ev = -g_ev; }
                    }
-                   if (theObject = document.getElementById("GameEval")) {
-                      theObject.innerHTML = ev2NAG(ev);
-                      theObject.title = (ev > 0 ? " +" : " ") + ev + (ev == Math.floor(ev) ? ".0 " : " ");
-                   }
-                   nodes = parseInt(matches[3], 10);
+                   g_nodes = parseInt(matches[3], 10);
                    nodesPerSecond = parseInt(matches[4], 10);
                    g_topNodesPerSecond = Math.max(nodesPerSecond, g_topNodesPerSecond);
                    g_pv = matches[5].replace(/(^\s+|\s*\+|\s+$)/g, "").replace(/\s*stalemate/, "=").replace(/\s*checkmate/, "#");
+                   validateSearchWithCache();
+                   if (theObject = document.getElementById("GameEval")) {
+                      theObject.innerHTML = ev2NAG(g_ev);
+                      theObject.title = (g_ev > 0 ? " +" : " ") + g_ev + (g_ev == Math.floor(g_ev) ? ".0 " : " ");
+                   }
                    if (theObject = document.getElementById("GameMoves")) {
                       theObject.innerHTML = g_pv;
                       theObject.title = g_pv;
@@ -479,6 +500,110 @@ function ev2NAG(ev) {
    return NAG[11];                     // =
 }
 
+
+var localStorage_supported;
+try { localStorage_supported = ((!disableLocalStorage) && ("localStorage" in window) && (window["localStorage"] !== null)); }
+catch (e) { localStorage_supported = false; }
+
+function load_cache_from_localStorage() {
+   if (!localStorage_supported) { return; }
+   if (cache_pointer = localStorage["pgn4web_chess_engine_cache_pointer"]) { cache_pointer = parseInt(cache_pointer, 10) % cache_max; }
+   else { cache_pointer = -1; }
+   if (cache_fen = localStorage["pgn4web_chess_engine_cache_fen"]) { cache_fen = cache_fen.split(","); }
+   else { cache_fen = new Array(); }
+   if (cache_ev = localStorage["pgn4web_chess_engine_cache_ev"]) { cache_ev = cache_ev.split(","); }
+   else { cache_ev = new Array(); }
+   if (cache_pv = localStorage["pgn4web_chess_engine_cache_pv"]) { cache_pv = cache_pv.split(","); }
+   else { cache_pv = new Array(); }
+   if (cache_nodes = localStorage["pgn4web_chess_engine_cache_nodes"]) { cache_nodes = cache_nodes.split(","); }
+   else { cache_nodes = new Array(); }
+   cache_needs_sync = 0;
+   if ((cache_fen.length !== cache_ev.length) || (cache_fen.length !== cache_pv.length) || (cache_fen.length !== cache_nodes.length)) {
+      clear_cache_from_localStorage();
+      cache_clear();
+   }
+}
+
+function save_cache_to_localStorage() {
+   if (!localStorage_supported) { return; }
+   if (!cache_needs_sync) { return; }
+   localStorage["pgn4web_chess_engine_cache_pointer"] = cache_pointer;
+   localStorage["pgn4web_chess_engine_cache_fen"] = cache_fen.toString();
+   localStorage["pgn4web_chess_engine_cache_ev"] = cache_ev.toString();
+   localStorage["pgn4web_chess_engine_cache_pv"] = cache_pv.toString();
+   localStorage["pgn4web_chess_engine_cache_nodes"] = cache_nodes.toString();
+   cache_needs_sync = 0;
+}
+
+function clear_cache_from_localStorage() {
+   if (!localStorage_supported) { return; }
+   localStorage.removeItem("pgn4web_chess_engine_cache_pointer");
+   localStorage.removeItem("pgn4web_chess_engine_cache_fen");
+   localStorage.removeItem("pgn4web_chess_engine_cache_ev");
+   localStorage.removeItem("pgn4web_chess_engine_cache_pv");
+   localStorage.removeItem("pgn4web_chess_engine_cache_nodes");
+   cache_needs_sync++;
+}
+
+var cache_pointer = -1;
+var cache_max = 6000; // = 50 games of 60 moves = approx 1MB of local storage
+var cache_fen = new Array();
+var cache_ev = new Array();
+var cache_pv = new Array();
+var cache_nodes = new Array();
+
+var cache_needs_sync = 0;
+
+load_cache_from_localStorage();
+
+function validateSearchWithCache() {
+   var retVal = false;
+   var id = cache_fen.indexOf(fenString);
+   if (id == -1) {
+      cache_last = cache_pointer = (cache_pointer + 1) % cache_max;
+      cache_fen[cache_pointer] = fenString;
+      cache_ev[cache_pointer] = g_ev;
+      cache_pv[cache_pointer] = g_pv;
+      cache_nodes[cache_pointer] = g_nodes;
+      cache_needs_sync++;
+      retVal = true;
+   } else {
+      if (g_nodes > cache_nodes[id]) {
+         cache_ev[id] = g_ev;
+         cache_pv[id] = g_pv;
+         cache_nodes[id] = g_nodes;
+         cache_needs_sync++;
+         retVal = true;
+      } else {
+         g_ev = parseInt(cache_ev[id], 10);
+         g_pv = cache_pv[id];
+         g_nodes = parseInt(cache_nodes[id], 10);
+      }
+   }
+   if (cache_needs_sync > cache_max / 10) { save_cache_to_localStorage(); }
+   return retVal;
+}
+
+var cache_last = 0;
+function cache_fen_indexOf() {
+   if (fenString === cache_fen[cache_last]) { return cache_last; }
+   if (typeof(cache_fen.indexOf) == "function") { return (cache_last = cache_fen.indexOf(fenString)); }
+   var l = cache_fen.length;
+   for (var n = 0; n < l; n++) {
+      if (fenString === cache_fen[n]) { return (cache_last = n); }
+   }
+   return -1;
+}
+
+function cache_clear() {
+   cache_pointer = -1;
+   cache_fen = new Array();
+   cache_ev = new Array();
+   cache_pv = new Array();
+   cache_nodes = new Array();
+}
+
+
 function StopBackgroundEngine() {
    if (analysisTimeout) { clearTimeout(analysisTimeout); }
    if (g_backgroundEngine) {
@@ -499,7 +624,7 @@ function StopBackgroundEngine() {
 var analysisTimeout;
 function setAnalysisTimeout(seconds) {
    if (analysisTimeout) { clearTimeout(analysisTimeout); }
-   analysisTimeout = setTimeout("analysisTimeout = null; StopBackgroundEngine();", seconds * 1000);
+   analysisTimeout = setTimeout("analysisTimeout = null; save_cache_to_localStorage(); StopBackgroundEngine();", seconds * 1000);
 }
 
 function StartEngineAnalysis() {
