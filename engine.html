@@ -298,13 +298,13 @@ SetShortcutKeysEnabled(false);
 <table id="GameCustomButtons" class="gameCustomButtons gameCustomButtonsHidden" cellspacing="0" cellpadding="0" border="0"><tr valign="bottom">
 <td id="GameAnalysisFlag" class="gameButtonCell" align="center" onclick="clickedGameAnalysisFlag(this, event);">&nbsp;</td>
 <td class="gameButtonSpacer"></td>
-<td class="gameButtonCell" align="center" onclick="if (event.shiftKey) { analysisSeconds = analysisSeconds <= defaultAnalysisSeconds ? minAnalysisSeconds : defaultAnalysisSeconds; } else { GoToMove(StartPlyVar[0], 0); }" title="go to start">&lt;&lt;</td>
+<td class="gameButtonCell" align="center" onclick="clickedButtonStart(this, event);" title="go to start">&lt;&lt;</td>
 <td class="gameButtonSpacer"></td>
-<td class="gameButtonCell" align="center" onclick="if (event.shiftKey) { analysisSeconds = Math.max(Math.floor(analysisSeconds / 1.15), minAnalysisSeconds); } else { GoToMove(CurrentPly - 1); }" title="move backward">&lt;</td>
+<td class="gameButtonCell" align="center" onclick="clickedButtonBackward(this, event);" title="move backward">&lt;</td>
 <td class="gameButtonSpacer"></td>
-<td class="gameButtonCell" align="center" onclick="if (event.shiftKey) { analysisSeconds = Math.min(Math.ceil(analysisSeconds * 1.15), maxAnalysisSeconds); } else { GoToMove(CurrentPly + 1); }" title="move forward">&gt;</td>
+<td class="gameButtonCell" align="center" onclick="clickedButtonForward(this, event);" title="move forward">&gt;</td>
 <td class="gameButtonSpacer"></td>
-<td class="gameButtonCell" align="center" onclick="if (event.shiftKey) { analysisSeconds = analysisSeconds >= defaultAnalysisSeconds ? maxAnalysisSeconds : defaultAnalysisSeconds; } else { GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); }" title="go to end">&gt;&gt;</td>
+<td class="gameButtonCell" align="center" onclick="clickedButtonEnd(this, event);" title="go to end">&gt;&gt;</td>
 <td class="gameButtonSpacer"></td>
 <td id="GameAutoUpdateFlag" class="gameButtonCell" align="center" onclick="clickedGameAutoUpdateFlag(this, event);">&nbsp;</td>
 </tr></table>
@@ -323,6 +323,38 @@ if (theObject = document.getElementById("pgnText")) {
    theObject.innerHTML = '[Setup "1"]\n[FEN "' + fenString + '"]\n';
 }
 
+
+function clickedButtonStart(t,e) {
+   if (e.shiftKey) {
+      analysisSeconds = analysisSeconds <= defaultAnalysisSeconds ? minAnalysisSeconds : defaultAnalysisSeconds;
+   } else {
+      GoToMove(StartPlyVar[0], 0);
+   }
+}
+
+function clickedButtonBackward(t,e) {
+   if (e.shiftKey) {
+      analysisSeconds = Math.max(Math.floor(analysisSeconds / 1.15), minAnalysisSeconds);
+   } else {
+     if (CurrentPly > StartPlyVar[0]) { GoToMove(CurrentPly - 1); }
+   }
+}
+
+function clickedButtonForward(t,e) {
+   if (e.shiftKey) {
+      analysisSeconds = Math.min(Math.ceil(analysisSeconds * 1.15), maxAnalysisSeconds);
+   } else {
+      if (CurrentPly < StartPlyVar[0] + PlyNumberVar[0]) { GoToMove(CurrentPly + 1); }
+   }
+}
+
+function clickedButtonEnd(t,e) {
+   if (e.shiftKey) {
+      analysisSeconds = analysisSeconds >= defaultAnalysisSeconds ? maxAnalysisSeconds : defaultAnalysisSeconds;
+   } else {
+      if (CurrentPly < StartPlyVar[0] + PlyNumberVar[0]) { GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); }
+   }
+}
 
 function clickedGameMoves(t,e) {
    var candidateMove = t.innerHTML.replace(/^\s*(\S+).*$/, "$1");
