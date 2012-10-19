@@ -25,13 +25,17 @@
 
    pgn4web_engineWindowUrlParameters = "lch=eff4ec&dch=c6cec3&hch=daf4d7&bch=f8f8f8&pf=a&els=t";
 
-   maxFn = 1; // max PGN file number "n" available as paolo-chess-games-n.pgn, update each time the PGN file is split
+   fnOptions = "1";
 
-   gamesUrl = "paolo-chess-games";
-   if (fns = location.search.match(/fn=\d+/)) { fn = parseInt(fns[0].substr(3), 10); } else { fn = 0; }
-   if ((fn > 0) && (fn <= maxFn)) { gamesUrl += "-" + fn; }
-   gamesUrl += ".pgn";
-   SetPgnUrl(gamesUrl);
+   thisRegExp = /(&|\?)(fn)=([^&]*)(&|$)/i;
+   if (window.location.search.match(thisRegExp) !== null) {
+      fn = unescape(window.location.search.match(thisRegExp)[3]);
+      fnIndex = fn ? fnOptions.indexOf(fn) : -1;
+   } else {
+      fnIndex = -1;
+   }
+
+   SetPgnUrl("paolo-chess-games" + (fnIndex != -1 ? "-" + fnOptions.charAt(fnIndex) : "") + ".pgn");
    SetImagePath("../alpha/32");
    SetImageType("png");
    SetHighlightOption(true);
@@ -52,16 +56,27 @@ function customShortcutKey_Shift_3() {
    if (!gameBlack[currentGame].match(/casaschi/i)) { customShortcutKey_Shift_2(); }
 }
 
+function customShortcutKey_Shift_5() {
+   if (fnIndex != -1) { loadPrevGames(); }
+}
+
+function customShortcutKey_Shift_6() {
+   if ((fnIndex == -1) || (fnIndex > 0)) { loadNextGames(); }
+}
+
 function loadNextGames() {
-   if (fn < maxFn) { location.href = "paolo-chess-games.html?fn=" + (fn + 1); }
+   if (fnIndex == -1) { location.href = "paolo-chess-games.html?fn=" + fnOptions.charAt(fnOptions.length - 1); }
+   else if (fnIndex > 0) { location.href = "paolo-chess-games.html?fn=" + fnOptions.charAt(fnIndex - 1); }
 }
 
 function loadPrevGames() {
-   if (fn > 0) { location.href = "paolo-chess-games.html?fn=" + (fn - 1); }
+   if (fnIndex == -1) { return; }
+   else if (fnIndex < fnOptions.length - 1) { location.href = "paolo-chess-games.html?fn=" + fnOptions.charAt(fnIndex + 1); }
+   else if (fnIndex === fnOptions.length - 1) { location.href = "paolo-chess-games.html"; }
 }
 
-   if (fn < maxFn) { boardShortcut("G5", "load next set of Paolo's games", function(t,e){ loadNextGames(); }); }
-   if (fn > 0) { boardShortcut("F5", "load previous set of Paolo's games", function(t,e){ loadPrevGames(); }); }
+   if ((fnIndex == -1) || (fnIndex > 0)) { boardShortcut("G5", "load next set of Paolo's games", function(t,e){ loadNextGames(); }); }
+   if (fnIndex != -1) { boardShortcut("F5", "load previous set of Paolo's games", function(t,e){ loadPrevGames(); }); }
 
 </script>
 
