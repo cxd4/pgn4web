@@ -25,7 +25,9 @@
 
    pgn4web_engineWindowUrlParameters = "lch=eff4ec&dch=c6cec3&hch=daf4d7&bch=f8f8f8&pf=a&els=t";
 
-   fnOptions = "1";
+   fnOptions = "dcba";
+   fnMin = -1;
+   fnMax = fnOptions.length - 1;
 
    thisRegExp = /(&|\?)(fn)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
@@ -57,26 +59,23 @@ function customShortcutKey_Shift_3() {
 }
 
 function customShortcutKey_Shift_5() {
-   if (fnIndex != -1) { loadPrevGames(); }
+   if (fnIndex > fnMin) { loadPrevGames(); }
 }
 
 function customShortcutKey_Shift_6() {
-   if ((fnIndex == -1) || (fnIndex > 0)) { loadNextGames(); }
-}
-
-function loadNextGames() {
-   if (fnIndex == -1) { location.href = "paolo-chess-games.html?fn=" + fnOptions.charAt(fnOptions.length - 1); }
-   else if (fnIndex > 0) { location.href = "paolo-chess-games.html?fn=" + fnOptions.charAt(fnIndex - 1); }
+   if (fnIndex < fnMax) { loadNextGames(); }
 }
 
 function loadPrevGames() {
-   if (fnIndex == -1) { return; }
-   else if (fnIndex < fnOptions.length - 1) { location.href = "paolo-chess-games.html?fn=" + fnOptions.charAt(fnIndex + 1); }
-   else if (fnIndex === fnOptions.length - 1) { location.href = "paolo-chess-games.html"; }
+   if (fnIndex > fnMin) { location.href = "paolo-chess-games.html" + (fnIndex === fnMin + 1 ? "" : "?fn=" + fnOptions.charAt(fnIndex - 1)); }
 }
 
-   if ((fnIndex == -1) || (fnIndex > 0)) { boardShortcut("G5", "load next set of Paolo's games", function(t,e){ loadNextGames(); }); }
-   if (fnIndex != -1) { boardShortcut("F5", "load previous set of Paolo's games", function(t,e){ loadPrevGames(); }); }
+function loadNextGames() {
+   if (fnIndex < fnMax) { location.href = "paolo-chess-games.html?fn=" + fnOptions.charAt(fnIndex + 1); }
+}
+
+   if (fnIndex > fnMin) { boardShortcut("F5", "load previous set of Paolo's games", function(t,e){ loadPrevGames(); }); }
+   if (fnIndex < fnMax) { boardShortcut("G5", "load next set of Paolo's games", function(t,e){ loadNextGames(); }); }
 
 </script>
 
