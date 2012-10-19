@@ -571,7 +571,7 @@ load_cache_from_localStorage();
 
 function validateSearchWithCache() {
    var retVal = false;
-   var id = cache_fen.indexOf(fenString);
+   var id = cache_fen_indexOf(fenString);
    if (id == -1) {
       cache_last = cache_pointer = (cache_pointer + 1) % cache_max;
       cache_fen[cache_pointer] = fenString;
