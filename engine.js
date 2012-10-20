@@ -46,9 +46,12 @@ var engineWin;
 
 var engineWinLastFen = "";
 
+var warnedAboutUnsupportedVariation = "";
+
 function showEngineAnalysisBoard(engineDisabled, startFen) {
   if (pgn4web_engineWindowDisableAnalysisBoard) { return null; }
-  if ((typeof(gameVariant[currentGame]) == "undefined") || (gameVariant[currentGame].match(/^(chess|normal|standard|)$/i) !== null)) {
+  if ((typeof(gameVariant[currentGame]) == "undefined") || (gameVariant[currentGame].match(/^(\s*|chess|normal|standard)$/i) !== null)) {
+    warnedAboutUnsupportedVariation = "";
     engineWinLastFen = startFen ? FenStringStart : CurrentFEN();
     var doneAccessingDOM = false;
     try {
@@ -61,19 +64,20 @@ function showEngineAnalysisBoard(engineDisabled, startFen) {
       }
     } catch(e) {}
     if (!doneAccessingDOM) {
-    var parameters = "fs=" + encodeURIComponent(engineWinLastFen) + "&es=" + pgn4web_engineWinSignature;
-    if (engineDisabled) { parameters += "&de=t"; }
-    if (pgn4web_engineWindowUrlParameters) { parameters += "&" + pgn4web_engineWindowUrlParameters; }
-    var options = "resizable=no,scrollbars=no,toolbar=no,location=no,menubar=no,status=no";
-    if (pgn4web_engineWindowHeight) { options = "height=" + pgn4web_engineWindowHeight + "," + options; }
-    if (pgn4web_engineWindowWidth) { options = "width=" + pgn4web_engineWindowWidth + "," + options; }
-    engineWin = window.open(detectEngineLocation() + "?" + parameters, pgn4web_engineWindowTarget, options);
+      var parameters = "fs=" + encodeURIComponent(engineWinLastFen) + "&es=" + pgn4web_engineWinSignature;
+      if (engineDisabled) { parameters += "&de=t"; }
+      if (pgn4web_engineWindowUrlParameters) { parameters += "&" + pgn4web_engineWindowUrlParameters; }
+      var options = "resizable=no,scrollbars=no,toolbar=no,location=no,menubar=no,status=no";
+      if (pgn4web_engineWindowHeight) { options = "height=" + pgn4web_engineWindowHeight + "," + options; }
+      if (pgn4web_engineWindowWidth) { options = "width=" + pgn4web_engineWindowWidth + "," + options; }
+      engineWin = window.open(detectEngineLocation() + "?" + parameters, pgn4web_engineWindowTarget, options);
 
-    // note bug with IE and Opera failing to set window.opener at this point, resulting in no autoUpdate possible and no update from the engine window possible
-  }
-  if ((engineWinCheck(true)) && (engineWin.top === engineWin.self) && (window.focus)) { engineWin.focus(); }
+      // note bug with IE and Opera failing to set window.opener at this point, resulting in no autoUpdate possible and no update from the engine window possible
+    }
+    if ((engineWinCheck(true)) && (engineWin.top === engineWin.self) && (window.focus)) { engineWin.focus(); }
     return engineWin;
-  } else {
+  } else if (warnedAboutUnsupportedVariation != gameVariant[currentGame]) {
+    warnedAboutUnsupportedVariation = gameVariant[currentGame];
     myAlert("warning: the pgn4web analysis board supports only normal chess; the " + gameVariant[currentGame] + " variant is not supported", true);
   }
   return null;
