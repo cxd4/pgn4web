@@ -212,9 +212,14 @@ if ($framePadding != 0) {
 
 $rawGame = "";
 
+$fenString = get_param("fenString", "fs", "");
+if (($fenString == "true") || ($fenString == "t")) {
+  if (preg_match('/\[\s*FEN\s*"([^"]*)"\s*\]/', $pgnGame, $matches)) { $rawGame = $matches[1]; }
+}
+
 $pgnMini = get_param("pgnMini", "pm", "");
 if (($pgnMini == "true") || ($pgnMini == "t")) {
-  if (preg_match('/\[\s*FEN\s*"[^"]*"\s*\]/', $pgnGame, $matches)) { $rawGame = $rawGame . "[SetUp \"1\"]\n" . $matches[0] . "\n\n"; }
+  if (preg_match('/\[\s*FEN\s*"[^"]*"\s*\]/', $pgnGame, $matches)) { $rawGame = "[SetUp \"1\"]\n" . $matches[0] . "\n\n"; }
   $rawGame = $rawGame . preg_replace('/\[\s*\w+\s*"[^"]*"\s*\]\s*/', "", $pgnGame);
 }
 
