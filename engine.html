@@ -813,10 +813,10 @@ function detectClick(t,e) {
       if ((clickFromCol !== clickToCol) || (clickFromRow !== clickToRow)) {
          var thisMove = clickFromPiece + clickFromCol + clickFromRow + clickToCol + clickToRow;
          if (thisMove == "Ke1g1") { thisMove = "O-O"; }
-         if (thisMove == "Ke1c1") { thisMove = "O-O-O"; }
-         if (thisMove == "Ke8g8") { thisMove = "O-O"; }
-         if (thisMove == "Ke8c8") { thisMove = "O-O-O"; }
-         if (("KQRBN".indexOf(thisMove.charAt(0)) == -1) && (thisMove.charAt(3) == (CurrentPly % 2 ? "1" : "8"))) {
+         else if (thisMove == "Ke1c1") { thisMove = "O-O-O"; }
+         else if (thisMove == "Ke8g8") { thisMove = "O-O"; }
+         else if (thisMove == "Ke8c8") { thisMove = "O-O-O"; }
+         else if (("KQRBN".indexOf(thisMove.charAt(0)) == -1) && (thisMove.charAt(3) == (CurrentPly % 2 ? "1" : "8"))) {
             thisMove += "Q";
             lastPromotionPlaceholder = thisMove;
          }
