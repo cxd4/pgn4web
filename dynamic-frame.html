@@ -62,7 +62,7 @@ pieceSizeRatio_default = 0.8;
 sizeRatio_min = 0.3;
 sizeRatio_max = 1;
 
-thisRegExp = /(&|\?)(help|h)(&|$)/i;
+thisRegExp = /(&|\?)(help|h)=(true|t)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   document.write("<pre style='font-size: smaller;'>pgn4web dynamic-frame.html parameters" + "\n" +
     " - pgnData = file.pgn (no default)" + "\n" +
@@ -83,8 +83,8 @@ if (window.location.search.match(thisRegExp) !== null) {
 //    " - pieceSizeRatio = piece size ratio, from " + sizeRatio_min + " to " + sizeRatio_max + " (default " + pieceSizeRatio_default + ")" + "\n" +
     " - bare = if set true shows chessboard only (default false)" + "\n" +
 //    " - engineWinPrepareIdle = if set true preloads the analysis board with an empty board; use only for embedded analysis boards
-//    " - debug" + "\n" +
-    " - help" + "\n" +
+//    " - debug = true | false (default false)" + "\n" +
+    " - help = true" + "\n" +
     "</pre>");
 }
 

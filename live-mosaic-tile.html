@@ -67,7 +67,7 @@
     iniGame = unescape(window.location.search.match(thisRegExp)[3]);
   }
 
-  var thisRegExp = /(&|\?)(help|h)(&|$)/i;
+  var thisRegExp = /(&|\?)(help|h)=(true|t)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
     alert("pgn4web live-mosaic-tile.html parameters" + "\n" +
       " - useTextarea = " + useTextarea + "; if set true uses textarea as PGN input (default false = use pgnData)" + "\n" +
@@ -75,7 +75,7 @@
       " - refreshMinutes = " + refreshMinutes + "; refresh interval in minutes, decimals allowed (default " + refreshMinutes_default + ")" + "\n" +
       " - refreshDemo = " + demoFlag + "; sets live demo mode (default false)" + "\n" +
       " - initialGame = " + iniGame + "; initial game number or search string" + "\n" +
-      " - help = true; prints this help (default false)");
+      " - help = true");
   }
 
   if (!useTextarea) { SetPgnUrl(pgnFile); }

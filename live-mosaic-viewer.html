@@ -22,7 +22,7 @@
   var displayGame_default = 1;
   var refreshMinutes_default = 1;
 
-  var thisRegExp = /(&|\?)(help|h)(&|$)/i;
+  var thisRegExp = /(&|\?)(help|h)=(true|t)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
     alert("pgn4web live-mosaic-viewer.html parameters" + "\n\n" +
       " - pgnData = file.pgn" + "\n\n" +
@@ -31,7 +31,7 @@
       " - refreshMinutes = live broadcast delay (default " + refreshMinutes_default + ")" + "\n\n" +
       " - refreshDemo = if set true sets live demo mode (default false)" + "\n\n" +
       " - headlessPage = if set true displays a page without heading (default false)" + "\n\n" +
-      " - help");
+      " - help = true");
   }
 
   var pgnData = pgnData_default;

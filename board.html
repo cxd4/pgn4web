@@ -679,7 +679,7 @@ if (refreshMinutes > 0) {
 }
 
 
-if (gup("help") !== "") {
+if ((gup("help") == "true") || (gup("help") == "t")) {
   document.write("<PRE>");
   document.write("URL parameters\n");
   document.write("\n");
@@ -736,7 +736,7 @@ if (gup("help") !== "") {
   document.write(" - framePadding = padding within the frame (default 0)\n");
   document.write("\n");
   document.write(" - showHeightWidth = if set true, calculates optimal iframe dimensions (default false)\n");
-  document.write(" - help = if set true, shows help info (default false)\n");
+  document.write(" - help = true\n");
   document.write("\n");
   document.write("URL parameters can be shortened: for example squareSize => sq, autoplayMode => am, highlightMoveColorHex => hmch\n");
   document.write("Also supplied textual values can be shortened: true => t, false => f\n");

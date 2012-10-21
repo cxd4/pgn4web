@@ -22,13 +22,13 @@
 
 <script type="text/javascript">
 
-   thisRegExp = /(&|\?)(help|h)(&|$)/i;
+   thisRegExp = /(&|\?)(help|h)=(true|t)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
        alert("pgn4web collection.html parameters" + "\n" +
              " - pgnFile=filename.pgn" + "\n" +
              " - title=page title" + "\n" +
              " - search=search expression" + "\n" +
-             " - help");
+             " - help = true");
    }
    pgnFilename = "";
    thisRegExp = /(&|\?)(pgnFile|pf)=([^&]*)(&|$)/i;
