@@ -5,7 +5,7 @@
  *  for credits, license and more details
  */
 
-var pgn4web_version = '2.62+';
+var pgn4web_version = '2.63';
 
 var pgn4web_project_url = "http://pgn4web.casaschi.net";
 var pgn4web_project_author = "Paolo Casaschi";
