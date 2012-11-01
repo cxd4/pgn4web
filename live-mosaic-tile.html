@@ -206,7 +206,7 @@
   function customShortcutKey_Shift_8() { try { if (parent && parent.customShortcutKey_Shift_8) {parent.customShortcutKey_Shift_8(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
   function customShortcutKey_Shift_9() { try { if (parent && parent.customShortcutKey_Shift_9) {parent.customShortcutKey_Shift_9(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
 
-  window.onload = function() {
+  function pgn4web_onload(e) {
     start_pgn4web();
     readyToReceivePgn = true;
     try {
@@ -216,7 +216,7 @@
         else { myAlert("warning: failed detecting board id", false); }
       }
     } catch(e) { myAlert("warning: failed forcing board update from frame's parent", false); }
-  };
+  }
 
 </script>
 

@@ -517,7 +517,7 @@ function toggleVideoPlayPause() {
 var gotOnload = false;
 var gotYuotubeDetails = false;
 
-function new_onload() {
+function pgn4web_onload(e) {
   gotOnload = true;
   new_start_pgn4web();
 }
@@ -526,8 +526,6 @@ function new_start_pgn4web() {
   if (youtubeVideoid && !pgnFile && (!gotYuotubeDetails || !gotOnload)) { return; }
   start_pgn4web();
 }
-
-window.onload = new_onload;
 
 </script>
 

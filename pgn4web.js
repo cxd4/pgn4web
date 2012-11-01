@@ -61,9 +61,22 @@ function customPgnCommentTag(customTagString, htmlElementIdString, plyNum, varId
 }
 
 
-window.onload = start_pgn4web;
+function simpleAddEvent(obj, evt, cbk) {
+  if (obj.addEventListener) { obj.addEventListener(evt, cbk); }
+  else if (obj.attachEvent) { obj.attachEvent("on" + evt, cbk); } // IE
+}
 
-document.onkeydown = handlekey;
+simpleAddEvent(document, "keydown", handlekey);
+simpleAddEvent(window, "load", pgn4web_onload_event);
+
+
+function pgn4web_onload_event(e) {
+  pgn4web_onload(e);
+}
+
+function pgn4web_onload(e) {
+  start_pgn4web();
+}
 
 function start_pgn4web() {
   // keep startup logs at first run, reset when reloading start_pgn4web

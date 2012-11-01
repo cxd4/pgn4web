@@ -837,14 +837,12 @@ function print_footer() {
 
 <script type="text/javascript">
 
-function new_start_pgn4web() {
+function pgn4web_onload(e) {
   setPgnUrl("$pgnUrl");
   checkPgnFormTextSize();
   start_pgn4web();
   $hashStatement
 }
-
-window.onload = new_start_pgn4web;
 
 </script>
 
