@@ -14,16 +14,14 @@ if (typeof(pgn4web_project_email) == "undefined") { pgn4web_project_email = "pgn
 
 var helpWin=null;
 function displayHelp(section) {
-  section = !section ? "" : "?" + section;
   if (helpWin && !helpWin.closed) { helpWin.close(); }
-  helpWin = window.open(detectHelpLocation() + section, "pgn4web_help",
+  helpWin = window.open(detectHelpLocation() + (section ? "?" + section : ""), "pgn4web_help",
     "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if (helpWin && window.focus) { helpWin.focus(); }
 }
 
 
-// custom functions for given events
-// to be redefined AFTER pgn4web.js
+// custom functions for given events, to be redefined
 
 function customFunctionOnPgnTextLoad() {}
 function customFunctionOnPgnGameLoad() {}
@@ -31,7 +29,7 @@ function customFunctionOnMove() {}
 function customFunctionOnAlert(msg) {}
 function customFunctionOnCheckLiveBroadcastStatus() {}
 
-// custom header tags APIs for customFunctionOnPgnGameLoad()
+// custom header tags APIs for use in customFunctionOnPgnGameLoad
 
 function customPgnHeaderTag(customTagString, htmlElementIdString, gameNum) {
   customTagString = customTagString.replace(/\W+/g, "");
@@ -45,7 +43,7 @@ function customPgnHeaderTag(customTagString, htmlElementIdString, gameNum) {
   return tagValue;
 }
 
-// custom comment tags APIS for customFunctionOnMove()
+// custom comment tags API for use in customFunctionOnMove
 
 function customPgnCommentTag(customTagString, htmlElementIdString, plyNum, varId) {
   customTagString = customTagString.replace(/\W+/g, "");
@@ -79,7 +77,7 @@ function pgn4web_onload(e) {
 }
 
 function start_pgn4web() {
-  // keep startup logs at first run, reset when reloading start_pgn4web
+  // keep startup logs at the very first run, otherwise reset
   if (alertFirstResetLoadingPgn) { alertFirstResetLoadingPgn = false; }
   else { resetAlert(); }
   InitImages();
@@ -511,7 +509,7 @@ boardShortcut("E6", "search next unfinished game", function(t,e){ searchPgnGame(
 
 boardShortcut("F6", "search next finished game", function(t,e){ searchPgnGame('\\[\\s*Result\\s*"(?!\\*"\\s*\\])', false); }, true);
 
-boardShortcut("G6", "", function(t,e){}, true); // available
+boardShortcut("G6", "", function(t,e){}, true);
 
 boardShortcut("H6", "force games refresh during live broadcast", function(t,e){ refreshPgnSource(); }, true);
 
@@ -525,11 +523,11 @@ boardShortcut("D5", "search previous win result", function(t,e){ searchPgnGame('
 
 boardShortcut("E5", "search next win result", function(t,e){ searchPgnGame('\\[\\s*Result\\s*"(1-0|0-1)"\\s*\\]', false); }, true);
 
-boardShortcut("F5", "", function(t,e){}, true); // available
+boardShortcut("F5", "", function(t,e){}, true);
 
-boardShortcut("G5", "", function(t,e){}, true); // available
+boardShortcut("G5", "", function(t,e){}, true);
 
-boardShortcut("H5", "", function(t,e){}, true); // available
+boardShortcut("H5", "", function(t,e){}, true);
 
 boardShortcut("A4", "search previous event", function(t,e){ searchPgnGame('\\[\\s*Event\\s*"(?!' + fixRegExp(gameEvent[currentGame]) + '"\\s*\\])', true); }, true);
 
@@ -581,17 +579,17 @@ boardShortcut("H2", "replay the previous half-move, then autoplay forward", func
 
 boardShortcut("A1", "go to game start", function(t,e){ startButton(e); }, true);
 
-boardShortcut("B1", "", function(t,e){}, true); // see setB1C1F1G1boardShortcuts()
+boardShortcut("B1", "", function(t,e){}, true); // see setB1C1F1G1...
 
-boardShortcut("C1", "", function(t,e){}, true); // see setB1C1F1G1boardShortcuts()
+boardShortcut("C1", "", function(t,e){}, true); // see setB1C1F1G1...
 
 boardShortcut("D1", "move backward", function(t,e){ GoToMove(CurrentPly - 1); }, true);
 
 boardShortcut("E1", "move forward", function(t,e){ GoToMove(CurrentPly + 1); }, true);
 
-boardShortcut("F1", "", function(t,e){}, true); // see setB1C1F1G1boardShortcuts()
+boardShortcut("F1", "", function(t,e){}, true); // see setB1C1F1G1...
 
-boardShortcut("G1", "", function(t,e){}, true); // see setB1C1F1G1boardShortcuts()
+boardShortcut("G1", "", function(t,e){}, true); // see setB1C1F1G1...
 
 boardShortcut("H1", "go to game end", function(t,e){ endButton(e); }, true);
 
@@ -682,10 +680,10 @@ function displayDebugInfo() {
     dbg3 += 'LIVEBROADCAST: status=' + liveStatusDebug() + ' ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime() +
     '\n\n';
   }
-  var thisInfo;
-  if (typeof(engineWinCheck) == "function") { thisInfo = engineWinCheck() ? "board=connected " + engineWin.customDebugInfo() : "board=disconnected"; }
-  if (thisInfo) { dbg3 += "ANALYSIS: " + thisInfo + "\n\n"; }
-  thisInfo = customDebugInfo();
+  if (typeof(engineWinCheck) == "function") {
+    dbg3 += "ANALYSIS: " + (engineWinCheck() ? "board=connected " + engineWin.customDebugInfo() : "board=disconnected") + "\n\n";
+  }
+  var thisInfo = customDebugInfo();
   if (thisInfo) { dbg3 += "CUSTOM: " + thisInfo + "\n\n"; }
   dbg3 += 'ALERTLOG: fatalnew=' + fatalErrorNumSinceReset + ' new=' + alertNumSinceReset +
     ' shown=' + Math.min(alertNum, alertLog.length) + ' total=' + alertNum + '\n--';
@@ -762,11 +760,10 @@ function CurrentFEN() {
     if (row>0) { currentFEN += "/"; }
   }
 
-  // active color
-  currentFEN += CurrentPly%2 === 0 ? " w" : " b";
+  currentFEN += CurrentPly%2 ? " b" : " w";
 
-  // castling availability, always in the KQkq form
-  // (wrong FEN for for Chess960 positions with an inner castling rook)
+  // castling availability: always in the KQkq form
+  // note: wrong FEN for Chess960 positions with inner castling rook
   CastlingFEN = "";
   if (RookForOOCastling(0) !== null) { CastlingFEN += FenPieceName.charAt(0).toUpperCase(); }
   if (RookForOOOCastling(0) !== null) { CastlingFEN += FenPieceName.charAt(1).toUpperCase(); }
@@ -774,13 +771,11 @@ function CurrentFEN() {
   if (RookForOOOCastling(1) !== null) { CastlingFEN += FenPieceName.charAt(1).toLowerCase(); }
   currentFEN += " " + (CastlingFEN ? CastlingFEN : "-");
 
-  // en-passant square
   if (HistEnPassant[CurrentPly]) {
     currentFEN += " " + String.fromCharCode(HistEnPassantCol[CurrentPly] + 97);
-    currentFEN += CurrentPly%2 === 0 ? "6" : "3";
+    currentFEN += CurrentPly%2 ? "3" : "6";
   } else { currentFEN += " -"; }
 
-  // halfmove clock
   HalfMoveClock = InitialHalfMoveClock;
   for (thisPly = StartPly; thisPly < CurrentPly; thisPly++) {
     if ((HistType[0][thisPly] == 6) || (HistPieceId[1][thisPly] >= 16)) { HalfMoveClock = 0; }
@@ -788,7 +783,6 @@ function CurrentFEN() {
   }
   currentFEN += " " + HalfMoveClock;
 
-  // fullmove number
   currentFEN += " " + (Math.floor(CurrentPly/2)+1);
 
   return currentFEN;
@@ -837,7 +831,7 @@ function displayFenData() {
       "[Black \"" + (gameBlack[currentGame] ? gameBlack[currentGame] : "?") + "\"]\n" +
       "[Result \"" + (gameResult[currentGame] ? gameResult[currentGame] : "*") + "\"]\n";
     if (currentFEN != FenStringStart) {
-      text += "[SetUp \"1\"]\n" + "[FEN \"" + CurrentFEN() + "\"]\n";
+      text += "[SetUp \"1\"]\n" + "[FEN \"" + currentFEN + "\"]\n";
     }
     if (gameVariant[currentGame] !== "") { text += "[Variant \"" + gameVariant[currentGame] + "\"]\n"; }
     text += "\n" + currentMovesString + "\n</pre>\n</body></html>";
@@ -923,9 +917,9 @@ Board = new Array(8);
 for (i=0; i<8; ++i) { Board[i] = new Array(8); }
 
 // HistCol, HistRow: move history up to last replayed ply
-// HistCol[0], HistRow[0]: "square from" (0..7, 0..7 from square a1)
+// HistCol[0], HistRow[0]: "square from"; 0..7, 0..7 from A1
 // HistCol[1], HistRow[1]: castling/capture
-// HistCol[2], HistRow[2]: "square to" (0..7, 0..7 from square a1)
+// HistCol[2], HistRow[2]: "square to"; 0..7, 0..7 from A1
 
 HistCol = new Array(3);
 HistRow = new Array(3);
