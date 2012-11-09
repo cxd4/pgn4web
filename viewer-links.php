@@ -10,10 +10,19 @@
 error_reporting(E_ERROR | E_PARSE);
 
 $targetUrl = get_param("targetUrl", "tu", "");
-$linkFilter = get_param("linkFilter", "lf", ".+\.pgn$");
-$frameDepth = get_param("frameDepth", "fd", 0);
-$viewerUrl = get_param("viewerUrl", "vu", "viewer.php?pd=");
-if ((! is_numeric($frameDepth)) || ($frameDepth < 0) || ($frameDepth > 5)) { $frameDepth = 0; }
+$linkFilterDefault = ".+\.pgn$";
+$linkFilter = get_param("linkFilter", "lf", $linkFilterDefault);
+$frameDepthDefault = 0;
+$frameDepth = get_param("frameDepth", "fd", $frameDepthDefault);
+$viewerUrlDefault = "viewer.php?pd=";
+$viewerUrl = get_param("viewerUrl", "vu", $viewerUrlDefault);
+$showDownload = get_param("showDownload", "sd", "false");
+$showDownload = (($showDownload == "true") || ($showDownload == "t"));
+$headlessPage = get_param("headlessPage", "hp", "false");
+$headlessPage = (($headlessPage == "true") || ($headlessPage == "t"));
+$help = get_param("help", "h", "false");
+$help = (($help == "true") || ($help == "t"));
+if ((! is_numeric($frameDepth)) || ($frameDepth < 0) || ($frameDepth > 5)) { $frameDepth = $frameDepthDefault; }
 $actualFrameDepth = 0;
 $urls = array();
 get_links($targetUrl, $frameDepth);
@@ -66,7 +75,7 @@ function get_links($targetUrl, $depth) {
 }
 
 function print_links() {
-    global $urls, $targetUrl, $linkFilter, $frameDepth, $viewerUrl, $actualFrameDepth;
+    global $urls, $targetUrl, $linkFilter, $frameDepth, $viewerUrl, $showDownload, $headlessPage, $help, $actualFrameDepth;
 
     $urls = array_unique($urls);
     sort($urls);
@@ -75,14 +84,33 @@ function print_links() {
     print "<link rel='shortcut icon' href='pawn.ico' />" . "\n";
     print "<style tyle='text/css'> body { font-family: sans-serif; padding: 2em; line-height: 1.5em; } a { color: black; text-decoration: none; } </style>" . "\n";
 
-    print "targetUrl: &nbsp; &nbsp; <b><a href='" . $targetUrl . "' target='_blank'>" . $targetUrl . "</a></b><br />" . "\n";
-    print "linkFilter: &nbsp; &nbsp; <b>" . $linkFilter . "</b><br />" . "\n";
-    if ($frameDepth > 0) { print "frameDepth: &nbsp; &nbsp; <b>" . $frameDepth . "</b> &nbsp; &nbsp; <span style='opacity: 0.2;'>" . $actualFrameDepth . "</span><br />" . "\n"; }
+    if ($help) {
+        print("<pre>" . "\n");
+        print("targetUrl = target url to scan for links" . "\n");
+        print("linkFilter = filter for selecting links" . "\n");
+        print("frameDepth = maximum recursive depth to scan frames" . "\n");
+        print("viewerUrl = viewer url to open links" . "\n");
+        print("showDownload = true|false" . "\n");
+        print("headlessPage = true|false" . "\n");
+        print("help = true" . "\n");
+        print("\n");
+        print("</pre>" . "\n");
+    }
 
+    if (!$headlessPage) {
+        print "targetUrl: &nbsp; &nbsp; <b><a href='" . $targetUrl . "' target='_blank'>" . $targetUrl . "</a></b><br />" . "\n";
+        print "linkFilter: &nbsp; &nbsp; <b>" . $linkFilter . "</b><br />" . "\n";
+        if ($frameDepth > 0) { print "frameDepth: &nbsp; &nbsp; <b>" . $frameDepth . "</b> &nbsp; &nbsp; <span style='opacity: 0.2;'>" . $actualFrameDepth . "</span><br />" . "\n"; }
+    }
     if (count($urls) > 0) {
-        print "<div>&nbsp;</div><ol>" . "\n";
+        if (!$headlessPage) { print("<div>&nbsp;</div>" . "\n"); }
+        print("<ol>" . "\n");
         for ($i = 0; $i < count($urls); $i++) {
-            print("<li>&nbsp;&nbsp;<a href='" . $urls[$i] . "'><b>D</b></a>&nbsp;&nbsp;&nbsp;<a href='" . $viewerUrl . rawurlencode($urls[$i]) . "' target='pgn4web_link_viewer'><b>V</b>&nbsp;&nbsp;&nbsp;" . $urls[$i] . "</a>" . "</li>" . "\n");
+            print("<li>");
+            if ($showDownload) { print("&nbsp;&nbsp;<a href='" . $urls[$i] . "'><b>D</b></a>&nbsp;&nbsp;&nbsp;"); }
+            print("<a href='" . $viewerUrl . rawurlencode($urls[$i]) . "' target='pgn4web_link_viewer'>");
+            if ($showDownload) { print("<b>V</b>&nbsp;&nbsp;&nbsp;"); }
+            print($urls[$i] . "</a>" . "</li>" . "\n");
         }
         print "</ol><div>&nbsp;</div>" . "\n";
     } else {
