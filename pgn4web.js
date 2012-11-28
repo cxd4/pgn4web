@@ -1291,9 +1291,8 @@ function SetInitialHalfmove(number_or_string, always) {
   alwaysInitialHalfmove = (always === true);
   if (number_or_string === undefined) { initialHalfmove = 0; return; }
   initialHalfmove = number_or_string;
-  if ((typeof number_or_string == "string") &&
-    (number_or_string.match(/^(start|end|random|comment)$/))) { return; }
-  if ((initialHalfmove = parseInt(initialHalfmove,10)) == NaN) { initialHalfmove = 0; }
+  if ((typeof number_or_string == "string") && (number_or_string.match(/^(start|end|random|comment)$/))) { return; }
+  if (isNaN(initialHalfmove = parseInt(initialHalfmove,10))) { initialHalfmove = 0; }
 }
 
 function SetInitialVariation(number) {
@@ -2618,9 +2617,7 @@ function MoveBackward(diff, scanOnly) {
   for (var thisPly = goFromPly; thisPly > goToPly; --thisPly) {
     CurrentPly--;
     MoveColor = 1-MoveColor;
-
     CurrentVar = HistVar[thisPly];
-
     UndoMove(thisPly);
   }
 
