@@ -2621,39 +2621,7 @@ function MoveBackward(diff, scanOnly) {
 
     CurrentVar = HistVar[thisPly];
 
-    if (HistNull[thisPly]) { continue; }
-
-    // moved piece back to original square
-    var chgPiece = HistPieceId[0][thisPly];
-    Board[PieceCol[MoveColor][chgPiece]][PieceRow[MoveColor][chgPiece]] = 0;
-
-    Board[HistCol[0][thisPly]][HistRow[0][thisPly]] = HistType[0][thisPly] * (1-2*MoveColor);
-    PieceType[MoveColor][chgPiece] = HistType[0][thisPly];
-    PieceCol[MoveColor][chgPiece] = HistCol[0][thisPly];
-    PieceRow[MoveColor][chgPiece] = HistRow[0][thisPly];
-    PieceMoveCounter[MoveColor][chgPiece]--;
-
-    // castling: rook back to original square
-    chgPiece = HistPieceId[1][thisPly];
-    if ((chgPiece >= 0) && (chgPiece < 16)) {
-      Board[PieceCol[MoveColor][chgPiece]][PieceRow[MoveColor][chgPiece]] = 0;
-      Board[HistCol[1][thisPly]][HistRow[1][thisPly]] = HistType[1][thisPly] * (1-2*MoveColor);
-      PieceType[MoveColor][chgPiece] = HistType[1][thisPly];
-      PieceCol[MoveColor][chgPiece] = HistCol[1][thisPly];
-      PieceRow[MoveColor][chgPiece] = HistRow[1][thisPly];
-      PieceMoveCounter[MoveColor][chgPiece]--;
-    }
-
-    // capture: captured piece back to original square
-    chgPiece -= 16;
-    if ((chgPiece >= 0) && (chgPiece < 16)) {
-      Board[PieceCol[1-MoveColor][chgPiece]][PieceRow[1-MoveColor][chgPiece]] = 0;
-      Board[HistCol[1][thisPly]][HistRow[1][thisPly]] = HistType[1][thisPly] * (2*MoveColor-1);
-      PieceType[1-MoveColor][chgPiece] = HistType[1][thisPly];
-      PieceCol[1-MoveColor][chgPiece] = HistCol[1][thisPly];
-      PieceRow[1-MoveColor][chgPiece] = HistRow[1][thisPly];
-      PieceMoveCounter[1-MoveColor][chgPiece]--;
-    }
+    UndoMove(thisPly);
   }
 
   if (scanOnly) { return; }
@@ -3271,7 +3239,7 @@ function ParseMove(move, plyCount) {
   mvPiece = -1; // make sure mvPiece is properly assigned later
   if (ll === 0) { mvPiece = 6; }
   else {
-    for (ii = 1; ii < 6; ++ii) { if (rem.charAt(0) == PieceCode[ii-1]) { mvPiece = ii; } }
+    for (ii = 5; ii > 0; ii--) { if (rem.charAt(0) == PieceCode[ii-1]) { mvPiece = ii; break; } }
     if (mvPiece == -1) { if (columnsLetters.toLowerCase().indexOf(rem.charAt(0)) >= 0) { mvPiece = 6; } }
     if (mvPiece == -1) { return false; }
     if (rem.charAt(ll-1) == 'x') { mvCapture = 1; }
@@ -4036,26 +4004,36 @@ function UndoMove(thisPly) {
 
   if (HistNull[thisPly]) { return; }
 
-  // moved piece back
-  Board[mvToCol][mvToRow] = 0;
-  Board[HistCol[0][thisPly]][HistRow[0][thisPly]] =
-    HistType[0][thisPly]*(1-2*MoveColor);
+  // moved piece back to original square
+  var chgPiece = HistPieceId[0][thisPly];
+  Board[PieceCol[MoveColor][chgPiece]][PieceRow[MoveColor][chgPiece]] = 0;
 
-  PieceCol[MoveColor][mvPieceId] = HistCol[0][thisPly];
-  PieceRow[MoveColor][mvPieceId] = HistRow[0][thisPly];
-  PieceType[MoveColor][mvPieceId] = HistType[0][thisPly];
-  PieceMoveCounter[MoveColor][mvPieceId]--;
+  Board[HistCol[0][thisPly]][HistRow[0][thisPly]] = HistType[0][thisPly] * (1-2*MoveColor);
+  PieceType[MoveColor][chgPiece] = HistType[0][thisPly];
+  PieceCol[MoveColor][chgPiece] = HistCol[0][thisPly];
+  PieceRow[MoveColor][chgPiece] = HistRow[0][thisPly];
+  PieceMoveCounter[MoveColor][chgPiece]--;
 
-  // capture/castle: captured/rook back
-  if (mvCapturedId >= 0) {
-    PieceType[1-MoveColor][mvCapturedId] = mvCapturedId;
-    PieceCol[1-MoveColor][mvCapturedId] = HistCol[1][thisPly];
-    PieceRow[1-MoveColor][mvCapturedId] = HistRow[1][thisPly];
-    PieceCol[1-MoveColor][mvCapturedId] = HistCol[1][thisPly];
-  } else if (mvIsCastling) {
-    PieceCol[MoveColor][castleRook] = HistCol[1][thisPly];
-    PieceRow[MoveColor][castleRook] = HistRow[1][thisPly];
-    PieceMoveCounter[MoveColor][castleRook]--;
+  // castling: rook back to original square
+  chgPiece = HistPieceId[1][thisPly];
+  if ((chgPiece >= 0) && (chgPiece < 16)) {
+    Board[PieceCol[MoveColor][chgPiece]][PieceRow[MoveColor][chgPiece]] = 0;
+    Board[HistCol[1][thisPly]][HistRow[1][thisPly]] = HistType[1][thisPly] * (1-2*MoveColor);
+    PieceType[MoveColor][chgPiece] = HistType[1][thisPly];
+    PieceCol[MoveColor][chgPiece] = HistCol[1][thisPly];
+    PieceRow[MoveColor][chgPiece] = HistRow[1][thisPly];
+    PieceMoveCounter[MoveColor][chgPiece]--;
+  }
+
+  // capture: captured piece back to original square
+  chgPiece -= 16;
+  if ((chgPiece >= 0) && (chgPiece < 16)) {
+    Board[PieceCol[1-MoveColor][chgPiece]][PieceRow[1-MoveColor][chgPiece]] = 0;
+    Board[HistCol[1][thisPly]][HistRow[1][thisPly]] = HistType[1][thisPly] * (2*MoveColor-1);
+    PieceType[1-MoveColor][chgPiece] = HistType[1][thisPly];
+    PieceCol[1-MoveColor][chgPiece] = HistCol[1][thisPly];
+    PieceRow[1-MoveColor][chgPiece] = HistRow[1][thisPly];
+    PieceMoveCounter[1-MoveColor][chgPiece]--;
   }
 }
 
