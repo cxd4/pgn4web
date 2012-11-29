@@ -2021,7 +2021,7 @@ function loadPgnFromTextarea(textareaId) {
       tmpText = document.getElementById(textareaId).innerHTML;
       // fixes browser issue removing \n from innerHTML
       if (tmpText.indexOf('\n') < 0) { tmpText = tmpText.replace(/((\[[^\[\]]*\]\s*)+)/g, "\n$1\n"); }
-      // fixes browser issue replacing quotes with &quot; e.g. blackberry
+      // fixes browser issue replacing quotes with &quot;
       if (tmpText.indexOf('"') < 0) { tmpText = tmpText.replace(/(&quot;)/g, '"'); }
     }
 

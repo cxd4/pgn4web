@@ -530,7 +530,7 @@ if ((newPgnId = gup("pgnId")) !== "") {
       newPgnIdData = theParentObject.innerHTML;
       // fixes issue with some browser removing \n from innerHTML
       if (newPgnIdData.indexOf('\n') < 0) { newPgnIdData = newPgnIdData.replace(/((\[[^\[\]]*\]\s*)+)/g, "\n$1\n"); }
-      // fixes issue with some browser replacing quotes with &quot; such as the blackberry browser
+      // fixes issue with some browser replacing quotes with &quot;
       if (newPgnIdData.indexOf('"') < 0) { newPgnIdData = newPgnIdData.replace(/(&quot;)/g, '"'); }
     }
     document.getElementById('pgnText').value = newPgnIdData = cleanPgnInput(newPgnIdData);
