@@ -2965,16 +2965,15 @@ function ParsePGNGameString(gameString) {
       case '{':
         commentStart = start+1;
         commentEnd = ss.indexOf('}',start+1);
-        if (commentEnd > 0) {
-          if (MoveCommentsVar[CurrentVar][StartPly+PlyNumber]) { MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' '; }
-          ssComm = translateNAGs(ss.substring(commentStart, commentEnd).replace(/(^\s*|\s*$)/, ''));
-          MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ssComm;
-          GameHasComments = GameHasComments || ssComm.replace(/\[%[^\]]*\]\s*/g,'').replace(basicNAGs, '').replace(/^\s+$/,'') !== '';
-          start = commentEnd;
-        } else {
+        if (commentEnd < 0) {
           myAlert('error: missing end comment char } while parsing game ' + (currentGame+1), true);
-          return;
+          commentEnd = ss.length;
         }
+        if (MoveCommentsVar[CurrentVar][StartPly+PlyNumber]) { MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' '; }
+        ssComm = translateNAGs(ss.substring(commentStart, commentEnd).replace(/(^\s*|\s*$)/, ''));
+        MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ssComm;
+        GameHasComments = GameHasComments || ssComm.replace(/\[%[^\]]*\]\s*/g,'').replace(basicNAGs, '').replace(/^\s+$/,'') !== '';
+        start = commentEnd;
         break;
 
       case '%':
