@@ -2032,7 +2032,7 @@ function loadPgnFromTextarea(textareaId) {
       loadPgnFromTextareaResult = LOAD_PGN_OK;
       LiveBroadcastLastReceivedLocal = (new Date()).toLocaleString();
     } else {
-      myAlert('error: no games found in ' + textareaId + 'object in the HTML file');
+      myAlert('error: no games found in ' + textareaId + ' object in the HTML file');
       loadPgnFromTextareaResult = LOAD_PGN_FAIL;
     }
   }
@@ -2663,7 +2663,7 @@ function MoveForward(diff, targetVar, scanOnly) {
         if (PredecessorsVars[targetVar][ii] === CurrentVar) { break; }
       }
       if (ii === PredecessorsVars[targetVar].length) {
-        myAlert("error: unknown path to reach variation " + targetVar + " from " + CurrentVar + " in game " + (currentGame+1), true);
+        myAlert("error: unknown path to variation " + targetVar + " from " + CurrentVar + " in game " + (currentGame+1), true);
         return;
       } else {
         nextVarStartPly = StartPlyVar[PredecessorsVars[targetVar][ii + 1]];
@@ -2966,7 +2966,7 @@ function ParsePGNGameString(gameString) {
         commentStart = start+1;
         commentEnd = ss.indexOf('}',start+1);
         if (commentEnd < 0) {
-          myAlert('error: missing end comment char } while parsing game ' + (currentGame+1), true);
+          myAlert('error: missing end comment } in game ' + (currentGame+1), true);
           commentEnd = ss.length;
         }
         if (MoveCommentsVar[CurrentVar][StartPly+PlyNumber]) { MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' '; }
@@ -3057,7 +3057,7 @@ function ParsePGNGameString(gameString) {
   }
 
   if (CurrentVar !== 0) {
-    myAlert("error: ParsePGNGameString ends with current var = " + CurrentVar, true);
+    myAlert("error: ParsePGNGameString ends with CurrentVar " + CurrentVar + " in game " + (currentGame+1), true);
     while (CurrentVar > 0) { closeVar(); }
   }
 

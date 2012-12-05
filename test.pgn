@@ -111,3 +111,9 @@ d4 d5 *
 [ Round"12"]
 
 e4 e6 *
+
+[Event "Testing open comments and variations"]
+[Round "13"]
+
+1. e4 e6 2. d4 d5 3. Nc3 (3.Nd2 Nf6 { open comment
+
