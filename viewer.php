@@ -677,13 +677,9 @@ a.variation {
   text-align: right;
 }
 
-.normalItem {
+.headerItem {
   white-space: nowrap;
   line-height: 1.4em;
-}
-
-.boldItem {
-  font-weight: bold;
 }
 
 .rowSpace {
@@ -720,9 +716,10 @@ a.variation {
   }
 
   function customFunctionOnPgnGameLoad() {
-    if (theObj = document.getElementById('currGm')) { theObj.innerHTML = currentGame+1; }
-    if (theObj = document.getElementById('numPly')) { theObj.innerHTML = PlyNumber; }
-    customPgnHeaderTag('ECO', 'GameECO');
+    customPgnHeaderTag('WhiteElo', 'GameWhiteElo');
+    customPgnHeaderTag('WhiteTitle', 'GameWhiteTitle');
+    customPgnHeaderTag('BlackElo', 'GameBlackElo');
+    customPgnHeaderTag('BlackTitle', 'GameBlackTitle');
     customPgnHeaderTag('Opening', 'GameOpening');
     if (theObj = document.getElementById('GameOpening')) { theObj.innerHTML = fixCommentForDisplay(theObj.innerHTML); }
     customPgnHeaderTag('Variation', 'GameVariation');
@@ -775,25 +772,25 @@ $pgnText
     <td valign="top" align="left" width="50%">
 
       <table valign="bottom">
-      <tr><td class="label">date</td><td class="normalItem"><span id="GameDate"></span>&nbsp;</td></tr>
-      <tr><td class="label">site</td><td class="normalItem"><span id="GameSite"></span>&nbsp;</td></tr>
+      <tr><td class="label">date</td><td class="hederItem"><span id="GameDate"></span>&nbsp;</td></tr>
+      <tr><td class="label">site</td><td class="hederItem"><span id="GameSite"></span>&nbsp;</td></tr>
       <tr><td colspan="2" class="rowSpace"></td></tr>
-      <tr><td class="label">event</td><td class="normalItem"><span id="GameEvent"></span>&nbsp;</td></tr>
-      <tr><td class="label">round</td><td class="normalItem"><span id="GameRound"></span>&nbsp;</td></tr>
+      <tr><td class="label">event</td><td class="hederItem"><span id="GameEvent"></span>&nbsp;</td></tr>
+      <tr><td class="label">round</td><td class="hederItem"><span id="GameRound"></span>&nbsp;</td></tr>
       <tr><td colspan="2" class="rowSpace"></td></tr>
-      <tr><td class="label">white</td><td class="boldItem"><span id="GameWhite"></span>&nbsp;</td></tr>
-      <tr><td class="label">black</td><td class="boldItem"><span id="GameBlack"></span>&nbsp;</td></tr>
+      <tr><td class="label">white</td><td class="headerItem"><b><span id="GameWhite"></span></b>&nbsp;&nbsp;&nbsp;<span id="GameWhiteElo"></span>&nbsp;&nbsp;&nbsp;<span id="GameWhiteTitle"></span>&nbsp;</td></tr>
+      <tr><td class="label">black</td><td class="headerItem"><b><span id="GameBlack"></span></b>&nbsp;&nbsp;&nbsp;<span id="GameBlackElo"></span>&nbsp;&nbsp;&nbsp;<span id="GameBlackTitle"></span>&nbsp;</td></tr>
       <tr><td colspan="2" class="rowSpace"></td></tr>
-      <tr><td class="label">result</td><td class="boldItem"><span id="GameResult"></span>&nbsp;</td></tr>
+      <tr><td class="label">result</td><td class="headerItem"><b><span id="GameResult"></span></b>&nbsp;</td></tr>
       <tr><td colspan="2" class="rowSpace"></td></tr>
-      <tr><td class="label">eco</td><td class="normalItem"><span id="GameECO"></span>&nbsp;</td></tr>
-      <tr><td class="label">opening</td><td class="normalItem"><span id="GameOpening"></span>&nbsp;</td></tr>
-      <tr><td class="label">variation</td><td class="normalItem"><span id="GameVariation"></span>&nbsp;</td></tr>
+      <tr><td class="label">eco</td><td class="hederItem"><span id="GameECO"></span>&nbsp;</td></tr>
+      <tr><td class="label">opening</td><td class="hederItem"><span id="GameOpening"></span>&nbsp;</td></tr>
+      <tr><td class="label">variation</td><td class="hederItem"><span id="GameVariation"></span>&nbsp;</td></tr>
       <tr><td colspan="2" class="rowSpace"></td></tr>
-      <tr><td class="label">last</td><td class="normalItem move"><span id="GameLastMove"></span>&nbsp; &nbsp;<span id="GameLastVariations"></span></td></tr>
-      <tr><td class="label">next</td><td class="normalItem move"><span id="GameNextMove"></span>&nbsp; &nbsp;<span id="GameNextVariations"></span></td></tr>
+      <tr><td class="label">last</td><td class="hederItem move"><span id="GameLastMove"></span>&nbsp; &nbsp;<span id="GameLastVariations"></span></td></tr>
+      <tr><td class="label">next</td><td class="hederItem move"><span id="GameNextMove"></span>&nbsp; &nbsp;<span id="GameNextVariations"></span></td></tr>
       <tr><td colspan="2" class="rowSpace"></td></tr>
-      <tr><td class="label">annotator</td><td class="normalItem"><span id="GameAnnotator"></span>&nbsp;</td></tr>
+      <tr><td class="label">annotator</td><td class="hederItem"><span id="GameAnnotator"></span>&nbsp;</td></tr>
       </table>
 
     </td>
