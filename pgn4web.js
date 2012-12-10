@@ -2942,7 +2942,7 @@ function ParsePGNGameString(gameString) {
         commentEnd = commentStart + 1;
         while ('0123456789'.indexOf(ss.charAt(commentEnd)) >= 0) {
           commentEnd++;
-          if (commentEnd == ss.length) { break; }
+          if (commentEnd >= ss.length) { break; }
         }
         if (MoveCommentsVar[CurrentVar][StartPly+PlyNumber]) { MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' '; }
         MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += translateNAGs(ss.substring(commentStart, commentEnd).replace(/(^\s*|\s*$)/, ''));
@@ -2955,7 +2955,7 @@ function ParsePGNGameString(gameString) {
         commentEnd = commentStart + 1;
         while ('!?'.indexOf(ss.charAt(commentEnd)) >= 0) {
           commentEnd++;
-          if (commentEnd == ss.length) { break; }
+          if (commentEnd >= ss.length) { break; }
         }
         if (MoveCommentsVar[CurrentVar][StartPly+PlyNumber]) { MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' '; }
         MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ss.substring(commentStart, commentEnd);
