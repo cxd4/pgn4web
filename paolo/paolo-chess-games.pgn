@@ -2,11 +2,21 @@
 [Site "London Olympia ENG"]
 [Date "2012.12.09"]
 [Round "9"]
-[White "?"]
-[Black "?"]
+[White "Casaschi, Paolo"]
+[Black "Steil-Antoni, Fiona"]
 [Result "0-1"]
+[WhiteElo "2005"]
+[BlackElo "2169"]
+[ECO "C05"]
+[Opening "French"]
+[Variation "Tarrasch, closed variation"]
 
-1. e4 e6 0-1
+1. e4 e6 2. d4 d5 3. Nd2 Nf6 4. e5 Nfd7 5. f4 c5 6. c3 Nc6 7. Ndf3 Qb6 8.
+Ne2 Be7 9. a3 O-O 10. h4 a5 11. Qd3 Re8 12. g3 a4 13. Bh3 Nf8 14. O-O Na5
+15. f5 Nb3 16. Rb1 Bd7 { D } 17. fxe6 fxe6 18. Be3 Bb5 19. Qc2 cxd4 20.
+Nexd4 Bxf1 21. Rxf1 Nxd4 22. Nxd4 Bc5 23. Qf2 Bxd4 24. Qf7+ Kh8 25. Bxd4
+Qc6 26. Be3 Qd7 27. Qf2 Ng6 28. h5 Rf8 29. Qe1 Rxf1+ 30. Bxf1 Nxe5 { D }
+31. h6 Nf3+ 0-1
 
 [Event "London Chess Classic 2012"]
 [Site "London Olympia ENG"]
