@@ -493,13 +493,13 @@ boardShortcut("E7", "flip board", function(t,e){ if (!e.shiftKey || IsRotated) {
 
 boardShortcut("F7", "toggle show comments in game text", function(t,e){ if (e.shiftKey) { SetCommentsOnSeparateLines(!commentsOnSeparateLines); } else { SetCommentsIntoMoveText(!commentsIntoMoveText); } var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar); }, true);
 
-boardShortcut("G7", "toggle autoplay next game", function(t,e){ SetAutoplayNextGame(!autoplayNextGame); }, true);
+boardShortcut("G7", "", function(t,e){}, true); // see setG7A6B6H6...
 
 boardShortcut("H7", "toggle enabling shortcut keys", function(t,e){ interactivelyToggleShortcutKeys(); }, true);
 
-boardShortcut("A6", "pause live broadcast automatic refresh", function(t,e){ pauseLiveBroadcast(); }, true);
+boardShortcut("A6", "", function(t,e){}, true); // see setG7A6B6H6...
 
-boardShortcut("B6", "restart live broadcast automatic refresh", function(t,e){ restartLiveBroadcast(); }, true);
+boardShortcut("B6", "", function(t,e){}, true); // see setG7A6B6H6...
 
 boardShortcut("C6", "search previous finished game", function(t,e){ searchPgnGame('\\[\\s*Result\\s*"(?!\\*"\\s*\\])', true); });
 
@@ -511,7 +511,7 @@ boardShortcut("F6", "search next finished game", function(t,e){ searchPgnGame('\
 
 boardShortcut("G6", "", function(t,e){}, true);
 
-boardShortcut("H6", "force games refresh during live broadcast", function(t,e){ refreshPgnSource(); }, true);
+boardShortcut("H6", "", function(t,e){}, true); // see setG7A6B6H6...
 
 boardShortcut("A5", "repeat last search backward", function(t,e){ searchPgnGame(lastSearchPgnExpression, true); }, true);
 
@@ -594,6 +594,22 @@ boardShortcut("G1", "", function(t,e){}, true); // see setB1C1F1G1...
 boardShortcut("H1", "go to game end", function(t,e){ endButton(e); }, true);
 
 
+setG7A6B6H7boardShortcuts();
+
+function setG7A6B6H7boardShortcuts() {
+  if (LiveBroadcastDelay > 0) {
+    if (boardIsDefault("G7")) { boardShortcut("G7", "", function(t,e){}, true); }
+    if (boardIsDefault("A6")) { boardShortcut("A6", "pause live broadcast automatic games refresh", function(t,e){ pauseLiveBroadcast(); }, true); }
+    if (boardIsDefault("B6")) { boardShortcut("B6", "restart live broadcast automatic games refresh", function(t,e){ restartLiveBroadcast(); }, true); }
+    if (boardIsDefault("H6")) { boardShortcut("H6", "force live broadcast games refresh", function(t,e){ refreshPgnSource(); }, true); }
+  } else {
+    if (boardIsDefault("G7")) { boardShortcut("G7", "toggle autoplay next game", function(t,e){ SetAutoplayNextGame(!autoplayNextGame); }, true); }
+    if (boardIsDefault("A6")) { boardShortcut("A6", "", function(t,e){}, true); }
+    if (boardIsDefault("B6")) { boardShortcut("B6", "", function(t,e){}, true); }
+    if (boardIsDefault("H6")) { boardShortcut("H6", "", function(t,e){}, true); }
+  }
+}
+
 setB1C1F1G1boardShortcuts();
 
 function setB1C1F1G1boardShortcuts() {
@@ -612,6 +628,7 @@ function setB1C1F1G1boardShortcuts() {
     if (boardIsDefault("F1")) { boardShortcut("F1", "move 6 half-moves forward", function(t,e){ GoToMove(CurrentPly + 6); }, true); }
   }
 }
+
 
 var deciles = new Array(11);
 function calculateDeciles() {
@@ -3914,6 +3931,7 @@ function SetLiveBroadcast(delay, alertFlag, demoFlag, stepFlag) {
   LiveBroadcastAlert = (alertFlag === true);
   LiveBroadcastDemo = (demoFlag === true);
   LiveBroadcastSteppingMode = (stepFlag === true);
+  setG7A6B6H7boardShortcuts();
 }
 
 function SetImage(col, row, image) {
