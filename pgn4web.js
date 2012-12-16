@@ -60,7 +60,7 @@ function customPgnCommentTag(customTagString, htmlElementIdString, plyNum, varId
 
 
 function simpleAddEvent(obj, evt, cbk) {
-  if (obj.addEventListener) { obj.addEventListener(evt, cbk); }
+  if (obj.addEventListener) { obj.addEventListener(evt, cbk, false); }
   else if (obj.attachEvent) { obj.attachEvent("on" + evt, cbk); } // IE
 }
 

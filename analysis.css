@@ -5,6 +5,10 @@
  *  for credits, license and more details
  */
 
+/*
+ *  display optimized for a 664px high frame
+ */
+
 @import url("fonts/pgn4web-font-LiberationSans.css");
 @import url("fonts/pgn4web-font-ChessSansUsual.css");
 
@@ -56,11 +60,14 @@ div, span {
 
 .shortRowSpace {
   height: 15px;
+  line-height: 15px;
 }
 
 .gameLastMove {
   font-size: 14px;
-  line-height: 1.4em;
+  line-height: 20px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .gameAnnotator {
@@ -72,8 +79,9 @@ div, span {
   overflow: hidden;
   white-space: nowrap;
   width: 376px;
-  font-size: 22px;
   font-weight: bold;
+  font-size: 22px;
+  line-height: 30px;
   text-align: center;
 }
 
