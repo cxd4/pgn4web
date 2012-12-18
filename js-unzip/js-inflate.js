@@ -1,3 +1,8 @@
+// js-inflate.js code as of 2011-02-03
+// from the js-inflate repository https://github.com/augustl/js-inflate/
+// See js-inflate_README.textile and js-inflate_LICENSE.txt for more info.
+// Changes to the orginal code, if any, are marked with the "pgn4web" tag.
+
 (function (GLOBAL) {
     /*
      * Port of script by Masanao Izumo.

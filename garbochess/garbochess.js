@@ -1,4 +1,4 @@
-// garbochess.js code as of 2011-08-24
+// garbochess.js code as of 2012-12-08
 // from the garbochess repository https://github.com/glinscott/Garbochess-JS/
 // See README.txt for more info including full credits and license.
 // Changes to the orginal code, if any, are marked with the "pgn4web" tag.
@@ -360,13 +360,45 @@ function Mobility(color) {
     pieceIdx = (color | 3) << 4;
     from = g_pieceList[pieceIdx++];
     while (from != 0) {
-        to = from - 15; while (g_board[to] == 0) { to -= 15; mob++; } if (g_board[to] & enemy) mob++;
-        to = from - 17; while (g_board[to] == 0) { to -= 17; mob++; } if (g_board[to] & enemy) mob++;
-        to = from + 15; while (g_board[to] == 0) { to += 15; mob++; } if (g_board[to] & enemy) mob++;
-        to = from + 17; while (g_board[to] == 0) { to += 17; mob++; } if (g_board[to] & enemy) mob++;
+        to = from - 15; while (g_board[to] == 0) { to -= 15; mob++; }
+        if (g_board[to] & enemy) {
+          mob++;
+          if (!(g_board[to] & piecePawn)) {
+            to -= 15; while (g_board[to] == 0) to -= 15;
+            mob += mobUnit[g_board[to]] << 2;
+          }
+        }
+
+        to = from - 17; while (g_board[to] == 0) { to -= 17; mob++; }
+        if (g_board[to] & enemy) {
+          mob++;
+          if (!(g_board[to] & piecePawn)) {
+            to -= 17; while (g_board[to] == 0) to -= 17;
+            mob += mobUnit[g_board[to]] << 2; 
+          }
+        }
+
+        to = from + 15; while (g_board[to] == 0) { to += 15; mob++; }
+        if (g_board[to] & enemy) {
+          mob++;
+          if (!(g_board[to] & piecePawn)) {
+            to += 15; while (g_board[to] == 0) to += 15;
+            mob += mobUnit[g_board[to]] << 2; 
+          }
+        }
+
+        to = from + 17; while (g_board[to] == 0) { to += 17; mob++; }
+        if (g_board[to] & enemy) {
+          mob++;
+          if (!(g_board[to] & piecePawn)) {
+            to += 17; while (g_board[to] == 0) to += 17;
+            mob += mobUnit[g_board[to]] << 2;
+          }
+        }
+
         from = g_pieceList[pieceIdx++];
     }
-    result += 50 * mob;
+    result += 44 * mob;
 
     // Rook mobility
     mob = -4;
@@ -522,6 +554,8 @@ function QSearch(alpha, beta, ply) {
         }
     }
 
+    /* Disable checks...  Too slow currently
+
     if (ply == 0 && !wasInCheck) {
         moves = new Array();
         GenerateAllMoves(moves);
@@ -578,6 +612,7 @@ function QSearch(alpha, beta, ply) {
             }
         }
     }
+    */
 
     return realEval;
 }
@@ -1426,11 +1461,11 @@ function InitializeEval() {
         g_mobUnit[i][0] = 1;
         g_mobUnit[i][0x80] = 0;
         g_mobUnit[i][enemy | piecePawn] = 1;
-        g_mobUnit[i][enemy | pieceBishop] = 1;
-        g_mobUnit[i][enemy | pieceKnight] = 1;
-        g_mobUnit[i][enemy | pieceRook] = 1;
-        g_mobUnit[i][enemy | pieceQueen] = 1;
-        g_mobUnit[i][enemy | pieceKing] = 1;
+        g_mobUnit[i][enemy | pieceBishop] = 2;
+        g_mobUnit[i][enemy | pieceKnight] = 2;
+        g_mobUnit[i][enemy | pieceRook] = 4;
+        g_mobUnit[i][enemy | pieceQueen] = 6;
+        g_mobUnit[i][enemy | pieceKing] = 6;
         g_mobUnit[i][friend | piecePawn] = 0;
         g_mobUnit[i][friend | pieceBishop] = 0;
         g_mobUnit[i][friend | pieceKnight] = 0;

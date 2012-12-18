@@ -1,3 +1,9 @@
+// js-unzip.js code as of 2010-05-12
+// (note that the code from 2011-11-06 does NOT seem to work properly)
+// from the js-unzip repository https://github.com/augustl/js-unzip/
+// See js-unzip_README.textile and js-inflate_LICENSE.txt for more info.
+// Changes to the orginal code, if any, are marked with the "pgn4web" tag.
+
 (function (GLOBAL) {
     var JSUnzip = function (fileContents) {
         this.fileContents = new JSUnzip.BigEndianBinaryStream(fileContents);
