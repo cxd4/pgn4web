@@ -427,6 +427,8 @@ function clickedGameFlagToMove(t,e) {
 }
 
 
+var pgn4web_chess_engine_id = "garbochess_20121208"; // update this when updating the chess engine javascript
+
 var engineWorker = "garbochess/garbochess.js";
 
 var g_backgroundEngine;
@@ -509,6 +511,11 @@ catch (e) { localStorage_supported = false; }
 
 function load_cache_from_localStorage() {
    if (!localStorage_supported) { return; }
+   if (pgn4web_chess_engine_id != localStorage["pgn4web_chess_engine_id"]) {
+      clear_cache_from_localStorage();
+      localStorage["pgn4web_chess_engine_id"] = pgn4web_chess_engine_id;
+      return;
+   }
    if (cache_pointer = localStorage["pgn4web_chess_engine_cache_pointer"]) { cache_pointer = parseInt(cache_pointer, 10) % cache_max; }
    else { cache_pointer = -1; }
    if (cache_fen = localStorage["pgn4web_chess_engine_cache_fen"]) { cache_fen = cache_fen.split(","); }
