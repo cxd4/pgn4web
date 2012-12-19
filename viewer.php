@@ -697,7 +697,7 @@ a.variation {
 <script src="fide-lookup.js" type="text/javascript"></script>
 
 <script type="text/javascript">
-  pgn4web_engineWindowUrlParameters = "pf=$pieceType";
+  pgn4web_engineWindowUrlParameters = "pf=$pieceType&els=t";
   SetImagePath("$pieceType/$pieceSize");
   SetImageType("png");
   SetHighlightOption(false);
