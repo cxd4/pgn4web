@@ -415,14 +415,10 @@ function clickedGameFlagToMove(t,e) {
    if (e.shiftKey) {
       if (autoPlay) { stopAutoPlay(); }
       else { startAutoPlay(); }
-
-   // click side to move flag to switch turn: disabled because of engine bug with illegal FEN positions
-   //
-   // } else {
-   //    if (!autoPlay) {
-   //       updateFEN(CurrentFEN().replace(" " + (CurrentPly % 2 ? "b" : "w") + " ", " " + (CurrentPly % 2 ? "w" : "b") + " "));
-   //    }
-
+   } else {
+      if ((!autoPlay) && (!IsCheck(PieceCol[MoveColor][0], PieceRow[MoveColor][0], MoveColor))) {
+         updateFEN(CurrentFEN().replace(" " + (CurrentPly % 2 ? "b" : "w") + " ", " " + (CurrentPly % 2 ? "w" : "b") + " ").replace(/\s[a-h][36]\s/, " - "));
+      }
    }
 }
 
