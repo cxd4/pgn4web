@@ -101,9 +101,9 @@ function print_links() {
         print "targetUrl: &nbsp; &nbsp; <b><a href='" . $targetUrl . "' target='_blank'>" . $targetUrl . "</a></b><br />" . "\n";
         print "linkFilter: &nbsp; &nbsp; <b>" . $linkFilter . "</b><br />" . "\n";
         if ($frameDepth > 0) { print "frameDepth: &nbsp; &nbsp; <b>" . $frameDepth . "</b> &nbsp; &nbsp; <span style='opacity: 0.2;'>" . $actualFrameDepth . "</span><br />" . "\n"; }
+        print("<div>&nbsp;</div>" . "\n");
     }
     if (count($urls) > 0) {
-        if (!$headlessPage) { print("<div>&nbsp;</div>" . "\n"); }
         print("<ol>" . "\n");
         for ($i = 0; $i < count($urls); $i++) {
             print("<li>");
@@ -112,9 +112,9 @@ function print_links() {
             if ($showDownload) { print("<b>V</b>&nbsp;&nbsp;&nbsp;"); }
             print($urls[$i] . "</a>" . "</li>" . "\n");
         }
-        print "</ol><div>&nbsp;</div>" . "\n";
+        print "</ol>" . "\n";
     } else {
-        print("<div>&nbsp;</div><ul><li><i>no links found</i></li></ul><div>&nbsp;</div>" . "\n");
+        print("<ul><li><i>no links found</i></li></ul>" . "\n");
     }
 
 }
