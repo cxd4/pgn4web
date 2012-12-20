@@ -436,6 +436,7 @@ sub process_line {
     save_result($1, $2, 1); # from observed game
   } elsif ($line =~ /^:There .* in the (.*)/) {
     $autorelayEvent = $1;
+    $autorelayEvent =~ s/"/'/g;
     $autorelayRound = "";
     if ($autorelayEvent =~ /(.*)\s+(Round|Game)\s+(\d+)/) {
       $autorelayRound = $3;
@@ -1220,16 +1221,6 @@ sub process_master_command {
     } else {
       tell_operator("error: invalid $command parameter");
     }
-  } elsif ($command eq "timeoffset") {
-    if ($parameters =~ /^([+-]?\d+)?$/) {
-      if ($parameters ne "") {
-        $timeOffset = $parameters;
-        update_heartbeat_time();
-      }
-      tell_operator_and_log_terminal("alert: timeoffset=$timeOffset");
-    } else {
-      tell_operator("error: invalid $command parameter");
-    }
   } elsif ($command eq "site") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
@@ -1247,6 +1238,16 @@ sub process_master_command {
     my $startupString = join("; ", read_startupCommands());
     $startupString =~ s/[\n\r]+//g;
     tell_operator("startup($STARTUP_FILE)=$startupString");
+  } elsif ($command eq "timeoffset") {
+    if ($parameters =~ /^([+-]?\d+)?$/) {
+      if ($parameters ne "") {
+        $timeOffset = $parameters;
+        update_heartbeat_time();
+      }
+      tell_operator_and_log_terminal("alert: timeoffset=$timeOffset");
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
   } elsif ($command eq "verbosity") {
     if ($parameters =~ /^[0-6]?$/) {
       if ($parameters ne "") {
