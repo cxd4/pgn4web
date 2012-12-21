@@ -436,7 +436,7 @@ sub process_line {
     save_result($1, $2, 1); # from observed game
   } elsif ($line =~ /^:There .* in the (.*)/) {
     $autorelayEvent = $1;
-    $autorelayEvent =~ s/"/'/g;
+    $autorelayEvent =~ s/[\[\]"]/'/g;
     $autorelayRound = "";
     if ($autorelayEvent =~ /(.*)\s+(Round|Game)\s+(\d+)/) {
       $autorelayRound = $3;
