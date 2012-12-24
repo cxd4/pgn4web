@@ -9,9 +9,9 @@
 
 <head>
 
-<title>The Week In Chess #765</title>
+<title>The Week In Chess #944</title>
 
-<link href="twic765.css" type="text/css" rel="stylesheet" />
+<link href="twic944.css" type="text/css" rel="stylesheet" />
 
 <link rel="shortcut icon" href="pawn.ico" />
 
@@ -20,7 +20,7 @@
 <script src="fide-lookup.js" type="text/javascript"></script>
 
 <script type="text/javascript">
-   SetPgnUrl("twic765.pgn");
+   SetPgnUrl("twic944.pgn");
    SetImagePath("merida/36");
    SetImageType("png");
    SetHighlightOption(true);
@@ -30,21 +30,31 @@
    SetAutoplayDelay(1000); // milliseconds
    SetAutostartAutoplay(false);
    SetAutoplayNextGame(false);
-   SetInitialGame(0);
+   SetInitialGame(55);
    SetInitialVariation(0);
-   SetInitialHalfmove("random");
+   SetInitialHalfmove("end");
    SetShortcutKeysEnabled(true);
 
    function customFunctionOnPgnTextLoad() { document.getElementById('numGm').innerHTML = numberOfGames; }
 
    function customFunctionOnPgnGameLoad() {
      document.getElementById('currGm').innerHTML = currentGame+1;
+     customPgnHeaderTag('WhiteTitle', 'GameWhiteTitle');
+     customPgnHeaderTag('WhiteElo', 'GameWhiteElo');
+     customPgnHeaderTag('BlackTitle', 'GameBlackTitle');
+     customPgnHeaderTag('BlackElo', 'GameBlackElo');
      customPgnHeaderTag('ECO', 'GameECO');
+     customPgnHeaderTag('Opening', 'GameOpening');
+     customPgnHeaderTag('Variation', 'GameVariation');
      customPgnHeaderTag('Result', 'ResultAtGametextEnd');
    }
 
    // customShortcutKey_Shift_1 defined by fide-lookup.js
    // customShortcutKey_Shift_2 defined by fide-lookup.js
+
+   function searchPlayer(name, FideId) {
+     if (typeof(openFidePlayerUrl) == "function") { openFidePlayerUrl(name, FideId); }
+   }
 
 </script>
 
@@ -60,7 +70,7 @@
 
 <div style="font-weight: bold; font-size: 200%; text-align: center;">
 &nbsp;<br>
-The Week In Chess #765
+The Week In Chess #944
 </div>
 <p></p>
 
@@ -96,13 +106,13 @@ game:<span id=currGm>0</span>/<span id=numGm>0</span>
 <br>
 <span class="label">Round:</span> <span id="GameRound"></span>
 <p></p>
-<span class="label">White:</span> <span id="GameWhite"></span>
+<span class="label">White:</span> <a id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();"></a>&nbsp; &nbsp;<span id="GameWhiteElo"></span>&nbsp; &nbsp;<span id="GameWhiteTitle"></span>
 <br>
-<span class="label">Black:</span> <span id="GameBlack"></span>
+<span class="label">Black:</span> <a id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();"></a></span>&nbsp; &nbsp;<span id="GameBlackElo"></span>&nbsp; &nbsp;<span id="GameBlackTitle"></span>
 <p></p>
 <span class="label">Result:</span> <span id="GameResult"></span>
 <p></p>
-<span class="label">ECO:</span> <span id="GameECO"></span>
+<span class="label">Opening:</span> <span id="GameECO"></span>&nbsp; &nbsp;<span id="GameOpening"></span>&nbsp; &nbsp;<span id="GameVariation"></span>
 <!--
 <p></p>
 <span class="label">Side to move:</span> <span id="GameSideToMove"></span>

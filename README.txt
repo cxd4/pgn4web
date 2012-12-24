@@ -333,7 +333,7 @@ like { [%pgn4web info] } and automatically assign their value to the given HTML
 elements. The function returns the custom tag value and the `plyNumber` parameter,
 if unassigned, defaults to the current ply.
 
-See twic765.html or live.html for examples.
+See twic944.html or live.html for examples.
 
 The following functions, if defined in the HTML file after loading pgn4web.js,
 allow for execution of custom commands when shift + a number key is pressed:
@@ -470,8 +470,7 @@ Informant publishing company (http://www.chessinformant.rs). The chess ole
 figurin font is from the ChessOLE project (http://www.chessole.de, David Frank).
 
 Some of the PGN files for the examples are coming from "The Week in Chess" at
-http://www.theweekinchess.com (file twic765.pgn, originally from the older
-http://chess.co.uk/twic site), from the scid project at
+http://www.theweekinchess.com (file twic944.pgn), from the scid project at
 http://scid.sourceforge.net (file tactics.pgn, with minor modifications), and
 from the Chess Informant publishing company at http://www.chessinformant.rs
 (file chess-informant-sample.pgn).
