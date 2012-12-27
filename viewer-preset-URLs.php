@@ -12,7 +12,7 @@
  *  the javascript code string should be the body of a function returning the preset PGN URL string
  *
  *  addPresetURL($label, $javascriptCode);
- *  addPresetURL('games of the month', 'var nowDate = new Date(); var nowMonth = nowDate.getMonth() + 1; if (nowMonth < 10) { nowMonth = "0" + nowMonth; } return "http://example.com/folder/goty" + nowDate.getFullYear() + nowMonth + ".pgn";');
+ *  addPresetURL('games of the month', 'var nowDate = new Date(); var nowMonth = nowDate.getMonth() + 1; if (nowMonth < 10) { nowMonth = "0" + nowMonth; } return "http://example.com/folder/gotm" + nowDate.getFullYear() + nowMonth + ".pgn";');
  *
  */
 
