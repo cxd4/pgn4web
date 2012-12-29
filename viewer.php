@@ -49,26 +49,26 @@ print_footer();
 function get_krabbe_position() {
 
   $krabbePositions = array('',
-    '[Round "1"][FEN "rnq2rk1/1pn3bp/p2p2p1/2pPp1PP/P1P1Pp2/2N2N2/1P1B1P2/R2QK2R b KQ - 1 16"] 16... Nc6',
-    '[Round "2"][FEN "8/8/4kpp1/3p1b2/p6P/2B5/6P1/6K1 b - - 2 47"] 47... Bh3',
-    '[Round "3"][FEN "5rk1/pp4pp/4p3/2R3Q1/3n4/2q4r/P1P2PPP/5RK1 b - - 1 23"] 23. Qg3',
-    '[Round "4"][FEN "1r6/4k3/r2p2p1/2pR1p1p/2P1pP1P/pPK1P1P1/P7/1B6 b - - 0 48"] 48... Rxb3+',
-    '[Round "5"][FEN "2k2b1r/pb1r1p2/5P2/1qnp4/Npp3Q1/4B1P1/1P3PBP/R4RK1 w - - 4 21"] 21. Qg7',
-    '[Round "6"][FEN "r1bq1rk1/1p3ppp/p1pp2n1/3N3Q/B1PPR2b/8/PP3PPP/R1B3K1 w - - 0 14"] 14. Rxh4',
-    '[Round "7"][FEN "r4k1r/1b2bPR1/p4n2/3p4/4P2P/1q2B2B/PpP5/1K4R1 w - - 0 26"] 26. Bh6',
-    '[Round "8"][FEN "r1b2r1k/4qp1p/p2ppb1Q/4nP2/1p1NP3/2N5/PPP4P/2KR1BR1 w - - 4 18"] 18. Nc6',
-    '[Round "9"][FEN "8/5B2/6Kp/6pP/5b2/p7/1k3P2/8 b - - 3 69"] 69... Be3',
-    '[Round "10"][FEN "4r1k1/q6p/2p4P/2P2QP1/1p6/rb2P3/1B6/1K4RR w - - 1 38"] 38. Qxh7+',
-    '[Round "11"][FEN "6k1/3Q4/5p2/5P2/8/1KP5/PP4qp/2B5 w - - 0 99"] 99. Bg5',
-    '[Round "12"][FEN "k4b1r/p3pppp/B1p2n2/3rB1N1/7q/8/PPP2P2/R2Q1RK1 w - - 1 18"] 18. c4',
-    '[Round "13"][FEN "1nbk1b1r/r3pQpp/pq2P3/1p1P2B1/2p5/2P5/5PPP/R3KB1R b KQ - 0 15"] 15... Rd7',
-    '[Round "14"][FEN "5r2/7k/1pPP3P/8/4p3/3p4/P4R1P/7K b - - 0 48"] 48... e3',
-    '[Round "15"][FEN "rnb1kr2/pp1p1pQp/6q1/4PpB1/1P6/8/1PP2PPP/2KR3R w q - 2 15"] 15. e6',
-    '[Round "16"][FEN "7k/1p1P2pp/p7/3P4/1Q5P/5pPK/PP3r2/1q5B b - - 1 37"] 37... h5',
-    '[Round "17"][FEN "r2q1rk1/pp2bpp1/4p2p/2pPB2P/2P3n1/3Q2N1/PP3PP1/2KR3R w - - 1 17"] 17. Bxg7',
-    '[Round "18"][FEN "r2qk2r/1b3ppp/p2p1b2/2nNp3/1R2P3/2P5/1PN2PPP/3QKB1R w Kkq - 3 17"] 17. Rxb7',
-    '[Round "19"][FEN "r3kbnr/p1pp1qpp/b1n1P3/6N1/1p6/8/Pp3PPP/RNBQR1K1 b kq - 0 12"] 12... O-O-O',
-    '[Round "20"][FEN "r2qkb1r/pb1p1p1p/1pn2np1/2p1p3/2P1P3/2NP1NP1/PP3PBP/R1BQ1RK1 w kq - 0 9"] 9. Nxe5',
+    '[Event "#1"][FEN "rnq2rk1/1pn3bp/p2p2p1/2pPp1PP/P1P1Pp2/2N2N2/1P1B1P2/R2QK2R b KQ - 1 16"] 16... Nc6',
+    '[Event "#2"][FEN "8/8/4kpp1/3p1b2/p6P/2B5/6P1/6K1 b - - 2 47"] 47... Bh3',
+    '[Event "#3"][FEN "5rk1/pp4pp/4p3/2R3Q1/3n4/2q4r/P1P2PPP/5RK1 b - - 1 23"] 23. Qg3',
+    '[Event "#4"][FEN "1r6/4k3/r2p2p1/2pR1p1p/2P1pP1P/pPK1P1P1/P7/1B6 b - - 0 48"] 48... Rxb3+',
+    '[Event "#5"][FEN "2k2b1r/pb1r1p2/5P2/1qnp4/Npp3Q1/4B1P1/1P3PBP/R4RK1 w - - 4 21"] 21. Qg7',
+    '[Event "#6"][FEN "r1bq1rk1/1p3ppp/p1pp2n1/3N3Q/B1PPR2b/8/PP3PPP/R1B3K1 w - - 0 14"] 14. Rxh4',
+    '[Event "#7"][FEN "r4k1r/1b2bPR1/p4n2/3p4/4P2P/1q2B2B/PpP5/1K4R1 w - - 0 26"] 26. Bh6',
+    '[Event "#8"][FEN "r1b2r1k/4qp1p/p2ppb1Q/4nP2/1p1NP3/2N5/PPP4P/2KR1BR1 w - - 4 18"] 18. Nc6',
+    '[Event "#9"][FEN "8/5B2/6Kp/6pP/5b2/p7/1k3P2/8 b - - 3 69"] 69... Be3',
+    '[Event "#10"][FEN "4r1k1/q6p/2p4P/2P2QP1/1p6/rb2P3/1B6/1K4RR w - - 1 38"] 38. Qxh7+',
+    '[Event "#11"][FEN "6k1/3Q4/5p2/5P2/8/1KP5/PP4qp/2B5 w - - 0 99"] 99. Bg5',
+    '[Event "#12"][FEN "k4b1r/p3pppp/B1p2n2/3rB1N1/7q/8/PPP2P2/R2Q1RK1 w - - 1 18"] 18. c4',
+    '[Event "#13"][FEN "1nbk1b1r/r3pQpp/pq2P3/1p1P2B1/2p5/2P5/5PPP/R3KB1R b KQ - 0 15"] 15... Rd7',
+    '[Event "#14"][FEN "5r2/7k/1pPP3P/8/4p3/3p4/P4R1P/7K b - - 0 48"] 48... e3',
+    '[Event "#15"][FEN "rnb1kr2/pp1p1pQp/6q1/4PpB1/1P6/8/1PP2PPP/2KR3R w q - 2 15"] 15. e6',
+    '[Event "#16"][FEN "7k/1p1P2pp/p7/3P4/1Q5P/5pPK/PP3r2/1q5B b - - 1 37"] 37... h5',
+    '[Event "#17"][FEN "r2q1rk1/pp2bpp1/4p2p/2pPB2P/2P3n1/3Q2N1/PP3PP1/2KR3R w - - 1 17"] 17. Bxg7',
+    '[Event "#18"][FEN "r2qk2r/1b3ppp/p2p1b2/2nNp3/1R2P3/2P5/1PN2PPP/3QKB1R w Kkq - 3 17"] 17. Rxb7',
+    '[Event "#19"][FEN "r3kbnr/p1pp1qpp/b1n1P3/6N1/1p6/8/Pp3PPP/RNBQR1K1 b kq - 0 12"] 12... O-O-O',
+    '[Event "#20"][FEN "r2qkb1r/pb1p1p1p/1pn2np1/2p1p3/2P1P3/2NP1NP1/PP3PBP/R1BQ1RK1 w kq - 0 9"] 9. Nxe5',
     '');
 
   return $krabbePositions[rand(0, count($krabbePositions)-1)];
@@ -287,9 +287,9 @@ body {
   color: black;
   background: white;
   font-family: 'pgn4web Liberation Sans', sans-serif;
+  font-size: 16px;
   line-height: 1.4em;
   padding: 20px;
-  $bodyFontSize
   overflow-x: hidden;
 }
 
@@ -297,13 +297,9 @@ div, span, table, tr, td {
   font-family: 'pgn4web Liberation Sans', sans-serif; /* fixes IE9 body css issue */
 }
 
-a:link, a:visited, a:hover, a:active {
+a {
   color: black;
   text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
 }
 
 .formControl {
@@ -556,51 +552,55 @@ function print_chessboard() {
   print <<<END
 
 <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td valign="top" align="left">
-<a name="view">&nbsp;</a><div id="pgnStatus" style="font-weight: bold; margin-top: 2em; margin-bottom: 3em;">$pgnStatus</div>
+<a name="view">&nbsp;</a><div id="pgnStatus" style="font-weight: bold; margin-top: 2em; margin-bottom: 1em;">$pgnStatus</div>
 </td><td valign="top" align="right">
 <div style="padding-top: 1em;">
 &nbsp;&nbsp;&nbsp;<a href="#moves" style="color: gray; font-size: 66%;">moves</a>&nbsp;&nbsp;&nbsp;<a href="#view" style="color: gray; font-size: 66%;">board</a>&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray; font-size: 66%;">form</a>
 </div>
 </tr></table>
 
-<link href="fonts/pgn4web-font-LiberationSans.css" type="text/css" rel="stylesheet" />
-<link href="fonts/pgn4web-font-ChessSansUsual.css" type="text/css" rel="stylesheet" />
 <style type="text/css">
+
+@import url("fonts/pgn4web-font-LiberationSans.css");
+@import url("fonts/pgn4web-font-ChessSansUsual.css");
+
+.gameBoard, .boardTable {
+  width: 392px !important;
+  height: 392px !important;
+}
 
 .boardTable {
   border-style: solid;
   border-color: #663300;
-  border-width: 3;
-  box-shadow: 0px 0px 20px #663300;
-  width: 374px;
-  height: 374px;
+  border-width: 4px;
+  box-shadow: 0 0 20px #663300;
 }
 
 .pieceImage {
-  width: $pieceSizeCss;
-  height: $pieceSizeCss;
+  width: 36px;
+  height: 36px;
 }
 
 .whiteSquare,
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   border-style: solid;
   border-width: 2px;
 }
 
 .whiteSquare,
 .highlightWhiteSquare {
-  border-color: #ffcc99;
-  background: #ffcc99;
+  border-color: #FFCC99;
+  background: #FFCC99;
 }
 
 .blackSquare,
 .highlightBlackSquare {
-  border-color: #cc9966;
-  background: #cc9966;
+  border-color: #CC9966;
+  background: #CC9966;
 }
 
 .highlightWhiteSquare,
@@ -616,18 +616,31 @@ function print_chessboard() {
 .optionSelectControl {
 }
 
+.gameButtons {
+  width: 392px;
+  opacity: 0.25;
+}
+
+.gameButtons:hover {
+  opacity: 1;
+}
+
+.buttonControlPlay,
+.buttonControlStop,
 .buttonControl {
 /* a "width" attribute here must use the !important flag to override default settings */
+  width: 75.2px !important;
+  margin-top: 20px;
 }
 
 .buttonControlSpace {
 /* a "width" attribute here must use the !important flag to override default settings */
+  width: 4px !important;
 }
 
 .searchPgnButton {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 9.5% !important;
-  margin-right: 0.5%;
+  width: 10% !important;
 }
 
 .searchPgnExpression {
@@ -638,8 +651,8 @@ function print_chessboard() {
 .move,
 .variation,
 .comment {
-  font-weight: normal;
   line-height: 1.4em;
+  font-weight: normal;
 }
 
 .move,
@@ -654,160 +667,1127 @@ function print_chessboard() {
 }
 
 .move {
-  color: black !important;
+  color: black;
+}
+
+.moveText {
+  clear: both;
+  padding-top: 0.5em;
+  padding-bottom: 1em;
+  text-align: justify;
 }
 
 .comment,
 .variation {
-  color: gray !important;
+  color: #808080;
 }
 
 a.variation {
-  color: gray !important;
+  color: #808080;
 }
 
 .moveOn,
 .variationOn {
-  background: #ffcc99;
+  background-color: #FFCC99;
 }
 
-.label {
-  color: gray;
-  padding-right: 10;
-  text-align: right;
+.topMenu {
+  padding-top: 1em;
+  padding-bottom: 1em;
+  color: #808080;
+  opacity: 0.25;
+  text-align: center;
+}
+
+.topMenu:hover {
+  color: black;
+  opacity: 1;
+}
+
+.mainContainer {
+  padding-top: 0.5em;
+}
+
+.columnsContainer {
+  float: left;
+  width: 100%;
+}
+
+.boardColumn {
+  float: left;
+  width: 60%;
+}
+
+.headerColumn {
+  margin-left: 60%;
 }
 
 .headerItem {
+  width: 100%;
+  height: 1.4em;
   white-space: nowrap;
-  line-height: 1.4em;
+  overflow: hidden;
 }
 
-.rowSpace {
-  height: 8px;
+.innerHeaderItem,
+.innerHeaderItemNoMargin {
+  color: black;
+  text-decoration: none;
+}
+
+.innerHeaderItem, .gameAnnotationGraph {
+  margin-left: 1.25em;
+}
+
+.innerHeaderItemNoMargin {
+  margin-left: 0;
+}
+
+.headerSpacer {
+  height: 0.7em;
+}
+
+.toggleComments, .toggleAnalysis {
+  clear: both;
+  text-align: right;
+  width: 100%;
+  height: 1em;
+  margin-bottom: 0.25em;
+}
+
+.toggleComments:hover, .toggleAnalysis:hover {
+}
+
+.toggleCommentsLink, .toggleAnalysisLink {
+  color: #808080;
+  opacity: 0.25;
+}
+
+.toggleCommentsLink:hover, .toggleAnalysisLink:hover {
+  color: #000000;
+  opacity: 1;
+}
+
+.lastMoveAndVariations {
+  float: left;
+}
+
+.lastMove {
+}
+
+.lastVariations {
+  padding-left: 1em;
+}
+
+.nextMoveAndVariations {
+  float: right;
+}
+
+.nextMove {
+}
+
+.nextButton {
+  display: inline-block;
+  width: 1em;
+  color: #808080;
+  opacity: 0.25;
+  text-decoration: none;
+  text-align: right;
+}
+
+.nextButton:hover {
+  color: #000000;
+  opacity: 1;
+}
+
+.nextVariations {
+  padding-right: 1em;
+}
+
+.lastMoveAndComment {
+  clear: both;
+  line-height: 1.4em;
+  display: none;
+}
+
+.lastComment {
+  clear: both;
+  resize: vertical;
+  overflow-y: auto;
+  height: 4.2em;
+  min-height: 1.4em;
+  max-height: 21em;
+  padding-right: 1em;
+  margin-top: 0.5em;
+  margin-bottom: 2em;
+  text-align: justify;
+}
+
+.analysisMove {
+  display: none;
+  min-width: 6em;
+}
+
+.analysisEval {
+  display: inline-block;
+  min-width: 3em;
+}
+
+.analysisPv {
+  display: inline-block;
+}
+
+.analysisExtraInfo {
+  font-family: 'pgn4web Liberation Sans', sans-serif;
+}
+
+.NAGs {
+  font-size: 19px;
 }
 
 </style>
 
-<link rel="shortcut icon" href="pawn.ico" />
-
 <script src="pgn4web.js" type="text/javascript"></script>
-<script src="chess-informant-NAG-symbols.js" type="text/javascript"></script>
 <script src="engine.js" type="text/javascript"></script>
-
+<script src="chess-informant-NAG-symbols.js" type="text/javascript"></script>
 <script src="fide-lookup.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-  pgn4web_engineWindowUrlParameters = "pf=$pieceType&els=t";
-  SetImagePath("$pieceType/$pieceSize");
-  SetImageType("png");
-  SetHighlightOption(false);
-  SetCommentsIntoMoveText(true);
-  SetCommentsOnSeparateLines(true);
-  SetInitialGame(1);
-  SetInitialVariation(0);
-  SetInitialHalfmove(0);
-  SetGameSelectorOptions(" Event         Site          Rd  White            Black            Res  Date", true, 12, 12, 2, 15, 15, 3, 10);
-  SetAutostartAutoplay(false);
-  SetAutoplayDelay(2000);
-  SetShortcutKeysEnabled(true);
+</head>
 
-  function customFunctionOnPgnTextLoad() {
-    if (theObj = document.getElementById('numGm')) { theObj.innerHTML = numberOfGames; }
-  }
-
-  function customFunctionOnPgnGameLoad() {
-    customPgnHeaderTag('WhiteElo', 'GameWhiteElo');
-    customPgnHeaderTag('WhiteTitle', 'GameWhiteTitle');
-    customPgnHeaderTag('BlackElo', 'GameBlackElo');
-    customPgnHeaderTag('BlackTitle', 'GameBlackTitle');
-    customPgnHeaderTag('Opening', 'GameOpening');
-    if (theObj = document.getElementById('GameOpening')) { theObj.innerHTML = fixCommentForDisplay(theObj.innerHTML); }
-    customPgnHeaderTag('Variation', 'GameVariation');
-    if (theObj = document.getElementById('GameVariation')) { theObj.innerHTML = fixCommentForDisplay(theObj.innerHTML); }
-    customPgnHeaderTag('Annotator', 'GameAnnotator');
-    customPgnHeaderTag('Result', 'ResultAtGametextEnd');
-  }
-
-  function customFunctionOnMove() {
-    if (theObj = document.getElementById('currPly')) { theObj.innerHTML = CurrentPly; }
-  }
-
-  // customShortcutKey_Shift_1 defined by fide-lookup.js
-  // customShortcutKey_Shift_2 defined by fide-lookup.js
-
-  // customShortcutKey_Shift_8 defined by engine.js
-  // customShortcutKey_Shift_9 defined by engine.js
-  // customShortcutKey_Shift_0 defined by engine.js
-
-</script>
+<body onresize="if (typeof(updateAnnotationGraph) != 'undefined') { updateAnnotationGraph(); }">
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
-<form style="display: inline"><textarea style="display:none" id="pgnText">
+<form style="display: none;"><textarea style="display: none;" id="pgnText">
 
 $pgnText
 
 </textarea></form>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
-<table width="100%" cellspacing="0" cellpadding="0" border="0">
+<script type="text/javascript">
 
-  <tr valign="bottom">
-    <td align="center" colspan="2">
+   pgn4web_engineWindowUrlParameters = "pf=$pieceType";
 
-      <div id="GameSelector"></div>
+   var highlightOption_default = true;
+   var commentsOnSeparateLines_default = false;
+   var commentsIntoMoveText_default = true;
 
-      <div id="GameSearch"></div>
+   SetImagePath("$pieceType/36");
+   SetImageType("png");
+   SetHighlightOption(getHighlightOptionFromLocalStorage());
+   SetGameSelectorOptions("", true, 12, 12, 2, 15, 15, 3, 10);
+   SetCommentsIntoMoveText(getCommentsIntoMoveTextFromLocalStorage());
+   SetCommentsOnSeparateLines(getCommentsOnSeparateLinesFromLocalStorage());
+   SetAutostartAutoplay(false);
+   SetAutoplayNextGame(false);
+   SetAutoplayDelay(2000);
+   SetShortcutKeysEnabled(true);
 
-      <div style="padding-top: 2em;">&nbsp;</div>
+   function getHighlightOptionFromLocalStorage() {
+      try { ho = (localStorage.getItem("pgn4web_chess_viewer_highlightOption") != "false"); }
+      catch (e) { return highlightOption_default; }
+      return ho;
+   }
+   function setHighlightOptionToLocalStorage() {
+      try { localStorage.setItem("pgn4web_chess_viewer_highlightOption", highlightOption ? "true" : "false"); }
+      catch (e) { return false; }
+      return true;
+   }
 
-    </td>
-  </tr>
+   function getCommentsIntoMoveTextFromLocalStorage() {
+      try { cimt = !(localStorage.getItem("pgn4web_chess_viewer_commentsIntoMoveText") == "false"); }
+      catch (e) { return commentsIntoMoveText_default; }
+      return cimt;
+   }
+   function setCommentsIntoMoveTextToLocalStorage() {
+      try { localStorage.setItem("pgn4web_chess_viewer_commentsIntoMoveText", commentsIntoMoveText ? "true" : "false"); }
+      catch (e) { return false; }
+      return true;
+   }
 
-  <tr valign="top">
-    <td valign="top" align="center" width="50%">
-      <span id="GameBoard"></span>
-      <p></p>
-      <div id="GameButtons"></div>
-    </td>
-    <td valign="top" align="left" width="50%">
+   function getCommentsOnSeparateLinesFromLocalStorage() {
+      try { cosl = (localStorage.getItem("pgn4web_chess_viewer_commentsOnSeparateLines") == "true"); }
+      catch (e) { return commentsOnSeparateLines_default; }
+      return cosl;
+   }
+   function setCommentsOnSeparateLinesToLocalStorage() {
+      try { localStorage.setItem("pgn4web_chess_viewer_commentsOnSeparateLines", commentsOnSeparateLines ? "true" : "false"); }
+      catch (e) { return false; }
+      return true;
+   }
 
-      <table valign="bottom">
-      <tr><td class="label">date</td><td class="hederItem"><span id="GameDate"></span>&nbsp;</td></tr>
-      <tr><td class="label">site</td><td class="hederItem"><span id="GameSite"></span>&nbsp;</td></tr>
-      <tr><td colspan="2" class="rowSpace"></td></tr>
-      <tr><td class="label">event</td><td class="hederItem"><span id="GameEvent"></span>&nbsp;</td></tr>
-      <tr><td class="label">round</td><td class="hederItem"><span id="GameRound"></span>&nbsp;</td></tr>
-      <tr><td colspan="2" class="rowSpace"></td></tr>
-      <tr><td class="label">white</td><td class="headerItem"><b><span id="GameWhite"></span></b>&nbsp;&nbsp;&nbsp;<span id="GameWhiteElo"></span>&nbsp;&nbsp;&nbsp;<span id="GameWhiteTitle"></span>&nbsp;</td></tr>
-      <tr><td class="label">black</td><td class="headerItem"><b><span id="GameBlack"></span></b>&nbsp;&nbsp;&nbsp;<span id="GameBlackElo"></span>&nbsp;&nbsp;&nbsp;<span id="GameBlackTitle"></span>&nbsp;</td></tr>
-      <tr><td colspan="2" class="rowSpace"></td></tr>
-      <tr><td class="label">result</td><td class="headerItem"><b><span id="GameResult"></span></b>&nbsp;</td></tr>
-      <tr><td colspan="2" class="rowSpace"></td></tr>
-      <tr><td class="label">eco</td><td class="hederItem"><span id="GameECO"></span>&nbsp;</td></tr>
-      <tr><td class="label">opening</td><td class="hederItem"><span id="GameOpening"></span>&nbsp;</td></tr>
-      <tr><td class="label">variation</td><td class="hederItem"><span id="GameVariation"></span>&nbsp;</td></tr>
-      <tr><td colspan="2" class="rowSpace"></td></tr>
-      <tr><td class="label">last</td><td class="hederItem move"><span id="GameLastMove"></span>&nbsp; &nbsp;<span id="GameLastVariations"></span></td></tr>
-      <tr><td class="label">next</td><td class="hederItem move"><span id="GameNextMove"></span>&nbsp; &nbsp;<span id="GameNextVariations"></span></td></tr>
-      <tr><td colspan="2" class="rowSpace"></td></tr>
-      <tr><td class="label">annotator</td><td class="hederItem"><span id="GameAnnotator"></span>&nbsp;</td></tr>
-      </table>
+   function searchTag(tag, key) {
+      searchPgnGame('\\\\[\\\\s*' + tag + '\\\\s*"' + fixRegExp(key) + '"\\\\s*\\\\]', event.shiftKey);
+   }
+   function searchTagDifferent(tag, key) {
+      searchPgnGame('\\\\[\\\\s*' + tag + '\\\\s*"(?!' + fixRegExp(key) + '"\\\\s*\\\\])', event.shiftKey);
+   }
 
-    </td>
-  </tr>
-</table>
+   function fixHeaderTag(elementId) {
+      var headerId = ["GameEvent", "GameSite", "GameDate", "GameRound", "GameWhite", "GameBlack", "GameResult", "GameSection", "GameStage", "GameBoardNum", "Timecontrol", "GameWhiteTeam", "GameBlackTeam", "GameWhiteTitle", "GameBlackTitle", "GameWhiteElo", "GameBlackElo", "GameECO", "GameOpening", "GameVariation", "GameSubVariation", "GameTermination", "GameWhiteClock", "GameBlackClock", "GameTimeControl"];
+      var headerLabel = ["event", "site", "date", "round", "white player", "black player", "result", "section", "stage", "board", "time control", "white team", "black team", "white title", "black title", "white elo", "black elo", "eco", "opening", "variation", "subvariation", "termination", "white clock", "black clock", "time control"];
+      theObj = document.getElementById(elementId);
+      if (theObj) {
+        theObj.className = (theObj.innerHTML === "") ? "innerHeaderItemNoMargin" : "innerHeaderItem";
+        for (ii = 0; ii < headerId.length; ii++) {
+            if (headerId[ii] === elementId) { break; }
+        }
+        theObj.title = (ii < headerId.length ? headerLabel[ii] : elementId) + ": " + theObj.innerHTML;
+      }
+   }
+
+   function customPgnHeaderTagWithFix(tag, elementId, fixForDisplay) {
+      var theObj;
+      customPgnHeaderTag(tag, elementId);
+      fixHeaderTag(elementId);
+      if (fixForDisplay && (theObj = document.getElementById(elementId)) && theObj.innerHTML) {
+         theObj.innerHTML = fixCommentForDisplay(theObj.innerHTML);
+      }
+   }
+
+   var annotationSupported = (window.Worker && navigator.appName !== 'Microsoft Internet Explorer');
+
+   var previousCurrentVar = -1;
+   function customFunctionOnMove() {
+
+      if (analysisStarted) {
+         if (engineUnderstandsGame(currentGame)) {
+            if (previousCurrentVar !== CurrentVar) { scanGameForFen(); }
+            restartAnalysis();
+         }
+         else { stopAnalysis(); }
+      } else {
+         clearAnalysisHeader();
+         clearAnnotationGraph();
+      }
+      previousCurrentVar = CurrentVar;
+
+      fixHeaderTag('GameWhiteClock');
+      fixHeaderTag('GameBlackClock');
+
+      if ((annotateInProgress) && (CurrentPly === StartPly + PlyNumber)) {
+         annotateInProgress = false;
+         SetAutoplayDelay(2000);
+      }
+   }
+
+   var PlyNumberMax;
+   function customFunctionOnPgnGameLoad() {
+      fixHeaderTag('GameDate');
+      fixHeaderTag('GameSite');
+      fixHeaderTag('GameEvent');
+      customPgnHeaderTagWithFix('Section', 'GameSection');
+      customPgnHeaderTagWithFix('Stage', 'GameStage');
+      fixHeaderTag('GameRound');
+      if (theObj = document.getElementById("GameRound")) {
+         if (theObj.innerHTML) {
+            theObj.innerHTML = "round " + theObj.innerHTML;
+         }
+      }
+      customPgnHeaderTagWithFix('Board', 'GameBoardNum');
+      if (theObj = document.getElementById("GameBoardNum")) {
+         if (theObj.innerHTML) {
+            theObj.innerHTML = "board " + theObj.innerHTML;
+         }
+      }
+      customPgnHeaderTagWithFix('TimeControl', 'GameTimeControl');
+      fixHeaderTag('GameWhite');
+      fixHeaderTag('GameBlack');
+      customPgnHeaderTagWithFix('WhiteTeam', 'GameWhiteTeam');
+      customPgnHeaderTagWithFix('BlackTeam', 'GameBlackTeam');
+      customPgnHeaderTagWithFix('WhiteTitle', 'GameWhiteTitle');
+      customPgnHeaderTagWithFix('BlackTitle', 'GameBlackTitle');
+      customPgnHeaderTagWithFix('WhiteElo', 'GameWhiteElo');
+      customPgnHeaderTagWithFix('BlackElo', 'GameBlackElo');
+      customPgnHeaderTagWithFix('ECO', 'GameECO');
+      customPgnHeaderTagWithFix('Opening', 'GameOpening', true);
+      customPgnHeaderTagWithFix('Variation', 'GameVariation', true);
+      customPgnHeaderTagWithFix('SubVariation', 'GameSubVariation', true);
+      fixHeaderTag('GameResult');
+      customPgnHeaderTagWithFix('Termination', 'GameTermination');
+      if (PlyNumber > 0) { customPgnHeaderTag('Result', 'ResultAtGametextEnd'); }
+      else { if (theObj = document.getElementById('ResultAtGametextEnd')) { theObj.innerHTML = ""; } }
+
+      if (theObj = document.getElementById('lastMoveAndComment')) {
+         if ((PlyNumber === 0) && (gameFEN[currentGame])) {
+            lastDisplayStyle = "block";
+         } else if (commentsIntoMoveText && ((PlyNumber > 0) || (gameFEN[currentGame]))) {
+            lastDisplayStyle = GameHasComments ? "block" : "none";
+         } else {
+            lastDisplayStyle = "none";
+         }
+         theObj.style.display = lastDisplayStyle;
+      }
+      if (theObj = document.getElementById("toggleCommentsLink")) {
+         if (GameHasComments) {
+            theObj.innerHTML = commentsIntoMoveText ? "&times;" : "+";
+         } else {
+            theObj.innerHTML = "";
+         }
+      }
+
+      PlyNumberMax = 0;
+      for (ii = 0; ii < numberOfVars; ii++) {
+         PlyNumberMax = Math.max(PlyNumberMax, StartPlyVar[ii] + PlyNumberVar[ii] - StartPly);
+      }
+
+      if (analysisStarted) {
+         if (engineUnderstandsGame(currentGame)) { scanGameForFen(); }
+         else { stopAnalysis(); }
+      }
+      if (theObj = document.getElementById("toggleAnalysisLink")) {
+         theObj.style.visibility = (annotationSupported && engineUnderstandsGame(currentGame)) ? "visible" : "hidden";
+      }
+   }
+
+   function customFunctionOnPgnTextLoad() {
+   }
+
+   function searchPlayer(name, FideId) {
+      if (name) {
+         if (event.shiftKey) {
+            if (typeof(openFidePlayerUrl) == "function") { openFidePlayerUrl(name, FideId); }
+         } else {
+            searchPgnGame('\\\\[\\\\s*(White|Black)\\\\s*"' + fixRegExp(name) + '"\\\\s*\\\\]', false);
+         }
+      }
+   }
+
+   function searchTeam(name) {
+      searchPgnGame('\\\\[\\\\s*(White|Black)Team\\\\s*"' + fixRegExp(name) + '"\\\\s*\\\\]', false);
+   }
+
+   function cycleHash() {
+      switch (location.hash) {
+         case "#top": goToHash("view"); break;
+         case "#view": goToHash("moves"); break;
+         case "#moves": goToHash("bottom"); break; // PAOLO make sure all hash are there
+         case "#bottom": goToHash("top"); break;
+         default: goToHash("view"); break;
+      }
+   }
+
+   function goToHash(hash) {
+      if (hash) { location.hash = ""; }
+      else { location.hash = "board"; }
+      location.hash = hash;
+   }
+
+
+   function customShortcutKey_Shift_3() { cycleHash(); }
+
+   function customShortcutKey_Shift_4() { cycleLastCommentArea(); }
+
+   function customShortcutKey_Shift_5() { if (annotationSupported) { userToggleAnalysis(); } }
+   function customShortcutKey_Shift_6() { if (annotationSupported) { goToMissingAnalysis(true); } }
+
+   function gameIsNormalChess(gameNum) {
+      return ((typeof(gameVariant[gameNum]) == "undefined") || (gameVariant[gameNum].match(/^(chess|normal|standard|)$/i) !== null));
+   }
+
+
+   function emPixels(em) { return em * document.getElementById("emMeasure").offsetHeight; }
+
+   var cycleLCA = 0;
+   function cycleLastCommentArea() {
+      if (theObj = document.getElementById("GameLastComment")) {
+         switch (cycleLCA++ % 3) {
+            case 0:
+               if (theObj.scrollHeight === theObj.clientHeight) { cycleLastCommentArea(); }
+               else { fitLastCommentArea(); }
+               break;
+            case 1:
+               if (theObj.offsetHeight == emPixels(21)) { cycleLastCommentArea(); }
+               else { maximizeLastCommentArea(); }
+               break;
+            case 2:
+               if (theObj.offsetHeight == emPixels(4.2)) { cycleLastCommentArea(); }
+               else { resetLastCommentArea(); }
+               break;
+            default:
+               break;
+         }
+      }
+   }
+
+   function toggleFitResetLastCommentArea() {
+      if (theObj = document.getElementById("GameLastComment")) {
+         if ((theObj.scrollHeight === theObj.clientHeight) || (theObj.offsetHeight == emPixels(21))) { resetLastCommentArea(); }
+         else { fitLastCommentArea(); }
+      }
+   }
+
+   function resetLastCommentArea() {
+      if (theObj = document.getElementById("GameLastComment")) {
+         theObj.style.height = "";
+      }
+   }
+
+   function fitLastCommentArea() {
+      if (theObj = document.getElementById("GameLastComment")) {
+         theObj.style.height = "";
+         theObj.style.height = theObj.scrollHeight;
+      }
+   }
+
+   function maximizeLastCommentArea() {
+      if (theObj = document.getElementById("GameLastComment")) {
+         theObj.style.height = "21em";
+      }
+   }
+
+</script>
+
+<div class="topMenu">
+<div id="GameSelector" class="gameSelector"></div>
+<div id="GameSearch" class="gameSearch"></div>
+<div id="emMeasure" style="height: 1em;">&nbsp;</div>
+</div>
+
+<div class="mainContainer">
+
+<div class="columnsContainer">
+
+<div class="boardColumn">
+<center>
+<div id="GameBoard" class="gameBoard"></div>
+<div id="GameButtons" class="gameButtons"></div>
+</center>
+</div>
+
+<div class="headerColumn">
+<div class="headerItem"><a class="innerHeaderItem" id="GameDate" href="javascript:void(0);" onclick="searchTagDifferent('Date', this.innerHTML); this.blur();"></a><b>&nbsp;</b></div>
+<div class="headerItem"><a class="innerHeaderItem" id="GameSite" href="javascript:void(0);" onclick="searchTagDifferent('Site', this.innerHTML); this.blur();"></a><b>&nbsp;</b></div>
+<div class="headerItem headerSpacer"><b>&nbsp;</b></div>
+<div class="headerItem"><a class="innerHeaderItem" id="GameEvent" href="javascript:void(0);" onclick="searchTagDifferent('Event', this.innerHTML); this.blur();"></a><a class="innerHeaderItem" id="GameSection" href="javascript:void(0);" onclick="searchTagDifferent('Section', this.innerHTML); this.blur();"></a><a class="innerHeaderItem" id="GameStage" href="javascript:void(0);" onclick="searchTagDifferent('Stage', this.innerHTML); this.blur();"></a><b>&nbsp;</b></div>
+<div class="headerItem"><a class="innerHeaderItem" id="GameRound" href="javascript:void(0);" onclick="searchTagDifferent('Round', this.innerHTML.replace('round ', '')); this.blur();"></a><a class="innerHeaderItem" id="GameBoardNum" href="javascript:void(0);" onclick="searchTagDifferent('Board', this.innerHTML); this.blur();"></a><a class="innerHeaderItem" id="GameTimeControl"  href="javascript:void(0);" onclick="searchTagDifferent('TimeControl', this.innerHTML); this.blur();"></a><b>&nbsp;</b></div>
+<div class="headerItem headerSpacer"><b>&nbsp;</b></div>
+<div class="headerItem"><a class="innerHeaderItem" id="GameECO" href="javascript:void(0);" onclick="searchTag('ECO', this.innerHTML); this.blur();"></a><a class="innerHeaderItem" id="GameOpening" href="javascript:void(0);" onclick="searchTag('Opening', customPgnHeaderTag('Opening')); this.blur();"></a><a class="innerHeaderItem" id="GameVariation" href="javascript:void(0);" onclick="searchTag('Variation', customPgnHeaderTag('Variation')); this.blur();"></a><a class="innerHeaderItem" id="GameSubVariation" href="javascript:void(0);" onclick="searchTag('SubVariation', customPgnHeaderTag('SubVariation')); this.blur();"></a><b>&nbsp;</b></div>
+<div class="headerItem headerSpacer"><b>&nbsp;</b></div>
+<div class="headerItem"><span class="innerHeaderItem" id="GameWhiteClock"></span><b>&nbsp;</b></div>
+<div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();" class="innerHeaderItem" id="GameWhite"></a></b><span class="innerHeaderItem" id="GameWhiteTitle"></span><span class="innerHeaderItem" id="GameWhiteElo"></span><a class="innerHeaderItem" id="GameWhiteTeam" href="javascript:void(0);" onclick="searchTeam(this.innerHTML); this.blur();"></a><b>&nbsp;</b></div>
+<div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();" class="innerHeaderItem" id="GameBlack"></a></b><span class="innerHeaderItem" id="GameBlackTitle"></span><span class="innerHeaderItem" id="GameBlackElo"></span><a class="innerHeaderItem" id="GameBlackTeam" href="javascript:void(0);" onclick="searchTeam(this.innerHTML); this.blur();"></a><b>&nbsp;</b></div>
+<div class="headerItem"><span class="innerHeaderItem" id="GameBlackClock"></span><b>&nbsp;</b></div>
+<div class="headerItem headerSpacer"><b>&nbsp;</b></div>
+<div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPgnGame(lastSearchPgnExpression, !event.shiftKey); this.blur();" class="innerHeaderItem" id="GameResult"></a></b><span class="innerHeaderItem" id="GameTermination"></span><b>&nbsp;</b></div>
+<div class="headerItem headerSpacer"><b>&nbsp;</b></div>
+<div class="headerItem headerSpacer"><b>&nbsp;</b></div>
+<div class="headerItem headerSpacer"><b>&nbsp;</b></div>
+<div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="showExtraAnalysisInfo(); this.blur();" onmouseout="hideExtraAnalysisInfo();" class="innerHeaderItem analysisEval" id="GameAnalysisEval"></a><a href="javascript:void(0);" onclick="goToMissingAnalysis(); this.blur();" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv"></a><b>&nbsp;</b></div>
+<div class="headerItem headerSpacer" id="GameAnnotationMeasure"><b>&nbsp;</b></div>
+<canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick(); this.blur();" onmousemove="annotationGraphMousemove();" onmouseover="annotationGraphMouseover();" onmouseout="annotationGraphMouseout();" title="annotation graph from the analysis engine"></canvas>
+</div>
+
+</div>
+
+<div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleAnalysisLink" style="visibility: hidden;" id="toggleAnalysisLink" href="javascript:void(0);" onclick="userToggleAnalysis(); this.blur();" title="toggle analysis engine">+</a></div>
+<div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="SetCommentsIntoMoveText(!commentsIntoMoveText); var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar); this.blur();" title="toggle show comments in game text for this page; click square F7 instead to save setting"></a></div>
+
+<div class="lastMoveAndComment" id="lastMoveAndComment">
+<div class="lastMoveAndVariations">
+<span class="lastMove" id="GameLastMove" title="last move"></span>
+<span class="lastVariations" id="GameLastVariations" title="last move alternatives"></span>&nbsp;
+</div>
+<div class="nextMoveAndVariations">
+<span class="nextVariations" id="GameNextVariations" title="next move alternatives"></span>&nbsp;
+<span class="nextMove" id="GameNextMove" title="next move"></span><a class="nextButton" href="javascript:void(0);" onclick="GoToMove(event.shiftKey ? StartPlyVar[CurrentVar] : CurrentPly - 1); this.blur();" title="move backward">&lt;</a>
+</div>
+<div>&nbsp;</div>
+<div class="lastComment" title="current position comment" id="GameLastComment"></div>
+</div>
+</div>
 
 <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td valign="bottom" align="right">
 &nbsp;&nbsp;&nbsp;<a name="moves" href="#moves" style="color: gray; font-size: 66%;">moves</a>&nbsp;&nbsp;&nbsp;<a href="#view" style="color: gray; font-size: 66%;">board</a>&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray; font-size: 66%;">form</a>
 </tr></table>
 
-<table width="100%" cellspacing="0" cellpadding="0" border="0">
-  <tr>
-    <td colspan="2">
-      <div style="padding-top: 2em; padding-bottom: 1em; text-align: justify;"><span id="GameText"></span>&nbsp;<span class="move" id="ResultAtGametextEnd"></span></div>
-    </td>
-  </tr>
-</table>
+<div class="mainContainer">
+<div id="moveText" class="moveText"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
+</div>
+
+
+<script type="text/javascript">
+
+   var analysisStarted = false;
+   function toggleAnalysis() {
+      if (analysisStarted) { stopAnalysis(); }
+      else { restartAnalysis(); }
+   }
+
+   function restartAnalysis() {
+      StartEngineAnalysis();
+      analysisStarted = true;
+      if (theObj = document.getElementById("toggleAnalysisLink")) { theObj.innerHTML = "&times;"; }
+      updateAnnotationGraph();
+      updateAnalysisHeader();
+   }
+
+   function stopAnalysis() {
+      StopBackgroundEngine();
+      analysisStarted = false;
+      if (theObj = document.getElementById("toggleAnalysisLink")) { theObj.innerHTML = "+"; }
+      clearAnnotationGraph();
+      clearAnalysisHeader();
+   }
+
+   var fenPositions;
+   resetFenPositions(-1);
+
+   function resetFenPositions(annGame) {
+      if (annGame == -1) { fenPositions = new Array(); }
+      else { fenPositions[annGame] = new Array(); }
+   }
+
+   var annotationBarWidth;
+   function updateAnnotationGraph() {
+      if (!annotationSupported) { return; }
+      var index;
+      if (!analysisStarted) { clearAnnotationGraph(); }
+      else if (theObj = document.getElementById("GameAnnotationGraph")) {
+         annEval = new Array();
+         for (annPly = StartPly; annPly <= StartPly+PlyNumber; annPly++) {
+            annEval[annPly] = annPly === CurrentPly ? 0 : null;
+            if ((typeof(fenPositions[currentGame]) != "undefined") && (typeof(fenPositions[currentGame][annPly]) != "undefined")) {
+               index = getAnalysisIndexFromFEN(fenPositions[currentGame][annPly]);
+               if (index != -1) { annEval[annPly] = cache_ev[index]; }
+            }
+            if (annEval[annPly] !== null) { annEval[annPly] = annEval[annPly] < 0 ? -1 + Math.pow(2, annEval[annPly]) : 1 - Math.pow(2, -annEval[annPly]); }
+         }
+
+         theObj.width = canvasWidth = graphCanvasWidth();
+         theObj.height = canvasHeight = graphCanvasHeight();
+
+         annotationPlyBlock = 20;
+         annotationBarWidth = canvasWidth / (Math.ceil((PlyNumberMax + 2) / annotationPlyBlock) * annotationPlyBlock);
+         barOverlap = Math.ceil(annotationBarWidth / 20);
+         lineHeight = Math.ceil(canvasHeight / 100);
+         lineTop = Math.floor((canvasHeight - lineHeight) / 2);
+         lineBottom = lineTop + lineHeight;
+         maxBarHeight = lineTop + barOverlap;
+
+         context = theObj.getContext("2d");
+         context.beginPath();
+         thisBarTopLeftX = 0;
+         thisBarHeight = lineHeight;
+         thisBarTopLeftY = lineTop;
+         context.rect(thisBarTopLeftX, thisBarTopLeftY, (PlyNumber + 1) * annotationBarWidth + barOverlap, thisBarHeight);
+         context.fillStyle = "#D9D9D9";
+         context.fill();
+         context.fillStyle = "#666666";
+         highlightTopLeftX = highlightTopLeftY = highlightBarHeight = null;
+         for (annPly = StartPly; annPly <= StartPly + PlyNumber; annPly++) {
+            if ((annEval[annPly] !== null) || (annPly === CurrentPly)) {
+               thisBarTopLeftX = (annPly - StartPly) * annotationBarWidth;
+               if (annEval[annPly] >= 0) {
+                  thisBarHeight = Math.max(  annEval[annPly] * maxBarHeight, lineHeight);
+                  thisBarTopLeftY = lineBottom - thisBarHeight;
+               } else {
+                  thisBarHeight = Math.max(- annEval[annPly] * maxBarHeight, lineHeight);
+                  thisBarTopLeftY = lineTop;
+               }
+               if (annPly !== CurrentPly) {
+                  context.beginPath();
+                  context.rect(thisBarTopLeftX, thisBarTopLeftY, annotationBarWidth + barOverlap, thisBarHeight);
+                  context.fill();
+               } else {
+                  highlightTopLeftX = thisBarTopLeftX;
+                  highlightTopLeftY = thisBarTopLeftY;
+                  highlightBarHeight = thisBarHeight;
+               }
+            }
+         }
+         if (highlightBarHeight !== null) {
+            context.beginPath();
+            context.rect(highlightTopLeftX, highlightTopLeftY, annotationBarWidth + barOverlap, highlightBarHeight);
+            context.fillStyle = "#FF6633";
+            context.fill();
+         }
+      }
+   }
+
+   function clearAnnotationGraph() {
+      if (!annotationSupported) { return; }
+      if (theObj = document.getElementById("GameAnnotationGraph")) {
+         context = theObj.getContext("2d");
+         theObj.width = graphCanvasWidth();
+         theObj.height = graphCanvasHeight();
+         context.clearRect(0, 0, theObj.width, theObj.height);
+      }
+   }
+
+   // set canvas size, check calculations if headerItem and headerSpacer are changed in chess-games-viewer.css
+   function graphCanvasWidth() {
+      if (theMeasureObject = document.getElementById("GameAnnotationMeasure")) {
+         return (theMeasureObject.offsetWidth - theMeasureObject.offsetHeight * 1.25 / 0.7);
+      } else { return 300; }
+   }
+   function graphCanvasHeight() {
+      if (theMeasureObject = document.getElementById("GameAnnotationMeasure")) {
+         return (theObj.height = 8 * theMeasureObject.offsetHeight);
+      } else { return 100; }
+   }
+
+   function updateAnalysisHeader() {
+      if (freezeAnalysisHeader) { return; }
+      if (!analysisStarted) { clearAnalysisHeader(); return; }
+
+      annPly = (lastMousemoveAnnPly == -1) ? CurrentPly : lastMousemoveAnnPly;
+
+      if (theObj = document.getElementById("GameAnalysisMove")) {
+         if ((annPly > StartPly) && (annPly <= StartPly + PlyNumber)) {
+            annMove = (Math.floor(annPly / 2) + (annPly % 2)) + (annPly % 2 ? ". " : "... ") + Moves[annPly - 1];
+         } else {
+            annMove = "&middot;";
+         }
+         theObj.innerHTML = annMove;
+      }
+
+      annEval = (lastMousemoveAnnPly == -1) ? "&middot;" : "";
+      annPv = "";
+      if ((typeof(fenPositions[currentGame]) != "undefined") && (typeof(fenPositions[currentGame][annPly]) != "undefined")) {
+         var index = getAnalysisIndexFromFEN(fenPositions[currentGame][annPly]);
+         if (index != -1) {
+            annEval = cache_ev[index];
+            annPv = cache_pv[index];
+         }
+      }
+
+      if (theObj = document.getElementById("GameAnalysisEval")) {
+         theObj.innerHTML = (annEval || annEval === 0) ? annEvalNag(annEval) : "";
+         theObj.title = (annEval || annEval === 0) ? "engine's evaluation: " + (annEval > 0 ? "+" : "") + annEval : "";
+      }
+      if (theObj = document.getElementById("GameAnalysisPv")) {
+         theObj.innerHTML = annPv ? annPv : "";
+         theObj.title = annPv ? "engine's principal variation: " + annPv : "";
+      }
+   }
+
+   function annEvalNag(ev) {
+     if ((ev === null) || (ev === "") || (isNaN(ev = parseFloat(ev)))) { return ""; }
+     if (ev < -3.95) { return NAG[19]; } // -+
+     if (ev >  3.95) { return NAG[18]; } // +-
+     if (ev < -1.35) { return NAG[17]; } // -/+
+     if (ev >  1.35) { return NAG[16]; } // +/-
+     if (ev < -0.35) { return NAG[15]; } // =/+
+     if (ev >  0.35) { return NAG[14]; } // +/=
+     return NAG[11];                     // =
+   }
+
+   function clearAnalysisHeader() {
+      if (freezeAnalysisHeader) { return; }
+      if (theObj = document.getElementById("GameAnalysisMove")) { theObj.innerHTML = ""; }
+      if (theObj = document.getElementById("GameAnalysisEval")) { theObj.innerHTML = ""; }
+      if (theObj = document.getElementById("GameAnalysisPv")) { theObj.innerHTML = ""; }
+   }
+
+
+   lastMousemoveAnnPly = -1;
+   lastMousemoveAnnGame = -1;
+
+   function annotationGraphMouseover() {
+   }
+
+   function annotationGraphMouseout() {
+      if (theObj = document.getElementById("GameAnalysisMove")) { theObj.style.display = ""; }
+      if (theObj = document.getElementById("GameAnalysisEval")) { theObj.style.fontWeight = ""; }
+      lastMousemoveAnnPly = -1;
+      lastMousemoveAnnGame = -1;
+      if (analysisStarted) { updateAnalysisHeader(); }
+   }
+
+   function annotationGraphMousemove() {
+      newMousemoveAnnPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
+      if ((newMousemoveAnnPly !== lastMousemoveAnnPly) || (currentGame !== lastMousemoveAnnGame)) {
+         lastMousemoveAnnPly = newMousemoveAnnPly <= StartPly + PlyNumber ? newMousemoveAnnPly : -1;
+         lastMousemoveAnnGame = currentGame;
+         onGraph = ((lastMousemoveAnnPly >= StartPly) && (lastMousemoveAnnPly <= StartPly + PlyNumber));
+         if (theObj = document.getElementById("GameAnalysisMove")) { theObj.style.display = onGraph ? "inline-block" : ""; }
+         if (theObj = document.getElementById("GameAnalysisEval")) { theObj.style.fontWeight = onGraph ? "normal" : ""; }
+         if (analysisStarted) { updateAnalysisHeader(); }
+      }
+   }
+
+   function annotationGraphClick() {
+      if ((analysisStarted) && (typeof(annotationBarWidth) != "undefined")) {
+         annPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
+         if ((annPly >= StartPly) && (annPly <= StartPly + PlyNumber)) {
+            if (event.shiftKey) { save_cache_to_localStorage(); }
+            else { GoToMove(annPly); }
+         }
+      }
+   }
+
+   var freezeAnalysisHeader = false;
+   function showExtraAnalysisInfo() {
+      if (theObj = document.getElementById("GameAnalysisPv")) {
+         freezeAnalysisHeader = true;
+         var index = getAnalysisIndexFromFEN(fenPositions[currentGame][CurrentPly]);
+         theObj.innerHTML = "<span class='analysisExtraInfo'>" + (index != -1 ? "eval " + cache_ev[index] + "<span class='move'>p</span>": "&middot;") + "<span style='margin-left:2em;'>nps &le; " + num2string(g_topNodesPerSecond) + "</span></span>";
+         if (theObj = document.getElementById("GameAnalysisEval")) { theObj.style.color = "transparent"; }
+      }
+   }
+
+   function hideExtraAnalysisInfo() {
+      if (freezeAnalysisHeader) {
+         freezeAnalysisHeader = false;
+         if (theObj = document.getElementById("GameAnalysisEval")) { theObj.style.color = ""; }
+         updateAnalysisHeader();
+      }
+   }
+
+   function num2string(num) {
+      if (num >= Math.pow(10, 9)) { num = Math.floor(num / Math.pow(10, 9)) + "G"; }
+      else if (num >= Math.pow(10, 6)) { num = Math.floor(num / Math.pow(10, 6)) + "M"; }
+      else if (num >= Math.pow(10, 3)) { num = Math.floor(num / Math.pow(10, 3)) + "K"; }
+      else { num = num + ""; }
+      return num;
+   }
+
+
+   annotateInProgress = false;
+   minAnnotationDelay = minAutoplayDelay;
+   maxAnnotationDelay = maxAutoplayDelay;
+   annotationDelayDefault = 15;
+   function annotateGame() {
+      if ((checkEngineUnderstandsGameAndWarn()) && (annotationDelay = prompt("Automatic game annotation from the current position, please do not interact with the chessboard until the analysis has reached the last available move.\\n\\nEnter engine's time per move, in seconds, between " + (minAnnotationDelay/1000) + " and " + (maxAnnotationDelay/1000) + ":", annotationDelayDefault))) {
+         if (isNaN(annotationDelay = parseInt(annotationDelay, 10))) { annotationDelay = annotationDelayDefault; }
+         else { annotationDelay = annotationDelay * 1000; }
+         annotationDelay = Math.min(maxAnnotationDelay, Math.max(minAnnotationDelay, annotationDelay));
+         SetAutoPlay(false);
+         if (!analysisStarted) {
+           scanGameForFen();
+           toggleAnalysis();
+         }
+         SetAutoplayDelay(annotationDelay);
+         SetAutoPlay(true);
+         annotateInProgress = true;
+      }
+   }
+
+   function engineUnderstandsGame(gameNum) {
+      return gameIsNormalChess(gameNum);
+   }
+
+   function checkEngineUnderstandsGameAndWarn() {
+      retVal = engineUnderstandsGame(currentGame);
+      if (!retVal) { alert("warning: analysis engine not available for chess variants"); }
+      return retVal;
+   }
+
+   function userToggleAnalysis() {
+      if (checkEngineUnderstandsGameAndWarn()) {
+         if (!analysisStarted) { scanGameForFen(); }
+         toggleAnalysis();
+      }
+   }
+
+   function scanGameForFen() {
+      savedCurrentPly = CurrentPly;
+      savedCurrentVar = CurrentVar;
+      if (wasAutoPlayOn = isAutoPlayOn) { SetAutoPlay(false); }
+      MoveForward(StartPly + PlyNumber - savedCurrentPly, CurrentVar, true);
+      resetFenPositions(currentGame);
+      while (true) {
+         fenPositions[currentGame][CurrentPly] = CurrentFEN();
+         if (CurrentPly === StartPly) { break; }
+         MoveBackward(1, true);
+      }
+      MoveForward(savedCurrentPly - StartPly, savedCurrentVar, true);
+      updateAnnotationGraph();
+      updateAnalysisHeader();
+      if (wasAutoPlayOn) { SetAutoPlay(true); }
+   }
+
+   function goToMissingAnalysis(forward) {
+      if (!analysisStarted) { return; }
+      if ((typeof(fenPositions[currentGame]) == "undefined") || (typeof(fenPositions[currentGame][CurrentPly]) == "undefined")) { return; }
+      if (getAnalysisIndexFromFEN(fenPositions[currentGame][CurrentPly]) == -1) { return; }
+
+      if (typeof(forward) == "undefined") {
+         forward = ((typeof(event) != "undefined") && (typeof(event.shiftKey) != "undefined")) ? !event.shiftKey : true;
+      }
+      if (wasAutoPlayOn = isAutoPlayOn) { SetAutoPlay(false); }
+      for (var thisPly = CurrentPly + (forward ? 1 : -1); ; thisPly = thisPly + (forward ? 1 : -1)) {
+         if (forward) { if (thisPly > StartPly + PlyNumber) { thisPly = StartPly; } }
+         else { if (thisPly < StartPly) { thisPly = StartPly + PlyNumber; } }
+         if (thisPly === CurrentPly) { break; }
+         if ((typeof(fenPositions[currentGame]) == "undefined") || (typeof(fenPositions[currentGame][thisPly]) == "undefined")) { break; }
+         if (getAnalysisIndexFromFEN(fenPositions[currentGame][thisPly]) == -1) { GoToMove(thisPly); break; }
+      }
+      if (wasAutoPlayOn) { SetAutoPlay(true); }
+   }
+
+
+   // D7
+   boardShortcut("D7", "toggle highlight last move and save setting", function(t,e){ SetHighlight(!highlightOption); setHighlightOptionToLocalStorage(); });
+   // F7
+   boardShortcut("F7", "toggle show comments in game text and save setting", function(t,e){ if (e.shiftKey) { SetCommentsOnSeparateLines(!commentsOnSeparateLines); } else { SetCommentsIntoMoveText(!commentsIntoMoveText); } oldPly = CurrentPly; Init(); GoToMove(oldPly); if (e.shiftKey) { setCommentsOnSeparateLinesToLocalStorage(); } else { setCommentsIntoMoveTextToLocalStorage(); } });
+   // F5
+   boardShortcut("F5", "adjust last move and current comment text area, if present", function(t,e){ toggleFitResetLastCommentArea(); });
+
+   if (annotationSupported) {
+      // G5
+      boardShortcut("G5", "annotate game", function(t,e){ annotateGame(); });
+      // H5
+      boardShortcut("H5", "toggle analysis engine", function(t,e){ userToggleAnalysis(); });
+   }
+
+   var cache_last = 0;
+   function getAnalysisIndexFromFEN(fenString) {
+      if (fenString === cache_fen[cache_last]) { return cache_last; }
+      if (typeof(cache_fen.indexOf) == "function") { return (cache_last = cache_fen.indexOf(fenString)); }
+      var l = cache_fen.length;
+      for (var n = 0; n < l; n++) {
+         if (fenString === cache_fen[n]) { return (cache_last = n); }
+      }
+      return -1;
+   }
+
+   var pgn4web_chess_engine_id = "garbochess-pgn4web-" + pgn4web_version;
+
+   var engineWorker = "garbochess/garbochess.js";
+
+   var g_backgroundEngine;
+   var g_topNodesPerSecond = 0;
+   var g_ev = "";
+   var g_pv = "";
+   var g_nodes = "";
+   var g_initError;
+   var g_lastFenError = "";
+
+   function InitializeBackgroundEngine() {
+
+      if (!g_backgroundEngine) {
+         try {
+            g_backgroundEngine = new Worker(engineWorker);
+            g_backgroundEngine.addEventListener("message", function (e) {
+               if ((e.data.match("^pv")) && (fenString == CurrentFEN())) {
+                  if (matches = e.data.substr(3, e.data.length - 3).match(/Ply:(\d+) Score:(-*\d+) Nodes:(\d+) NPS:(\d+) (.*)/)) {
+                     ply = parseInt(matches[1], 10);
+                     if (isNaN(g_ev = parseInt(matches[2], 10))) {
+                        g_ev = "";
+                     } else {
+                        maxEv = 99.9;
+                        g_ev = Math.round(g_ev / 100) / 10;
+                        if (g_ev < -maxEv) { g_ev = -maxEv; } else if (g_ev > maxEv) { g_ev = maxEv; }
+                        if (fenString.indexOf(" b ") !== -1) { g_ev = -g_ev; }
+                     }
+                     g_nodes = parseInt(matches[3], 10);
+                     nodesPerSecond = parseInt(matches[4], 10);
+                     g_topNodesPerSecond = Math.max(nodesPerSecond, g_topNodesPerSecond);
+                     g_pv = matches[5].replace(/(^\s+|\s*\+|\s+$)/g, "").replace(/\s*stalemate/, "=").replace(/\s*checkmate/, "#");
+                     if (validateSearchWithCache()) {
+                        updateAnnotationGraph();
+                        updateAnalysisHeader();
+                     }
+                     if (theObject = document.getElementById("GameEval")) {
+                        theObject.innerHTML = ev2NAG(g_ev);
+                        theObject.title = (g_ev > 0 ? " +" : " ") + g_ev + (g_ev == Math.floor(g_ev) ? ".0 " : " ");
+                     }
+                     if (theObject = document.getElementById("GameMoves")) {
+                        theObject.innerHTML = g_pv;
+                        theObject.title = g_pv;
+                     }
+                     if (detectGameEnd(g_pv, "")) { StopBackgroundEngine(); }
+                  }
+               } else if (e.data.match("^message Invalid FEN")) {
+                  if (theObject = document.getElementById("GameEval")) {
+                     theObject.innerHTML = NAG[2];
+                     theObject.title = "?";
+                  }
+                  if (theObject = document.getElementById("GameMoves")) {
+                     theObject.innerHTML = "invalid position";
+                     theObject.title = e.data.replace(/^message /, "");
+                  }
+                  if (fenString != g_lastFenError) {
+                     g_lastFenError = fenString;
+                     myAlert("error (engine): " + e.data.replace(/^message /, "") + "\\n" + fenString, false);
+                  }
+               }
+            });
+            g_initError = false;
+            return true;
+         } catch(e) {
+            if (theObject = document.getElementById("GameEval")) {
+               theObject.innerHTML = translateNAGs("$255") + "<span class='NAGs'>&nbsp;&nbsp;&nbsp;</span>" + translateNAGs("$147");
+               theObject.title = "engine analysis unavailable";
+            }
+            if (theObject = document.getElementById("GameMoves")) {
+               theObject.innerHTML = "&nbsp;";
+               theObject.title = "";
+            }
+            if (!g_initError) {
+               g_initError = true;
+               myAlert("warning: engine exception " + e);
+            }
+            return false;
+         }
+      }
+   }
+
+   var localStorage_supported;
+   try { localStorage_supported = (("localStorage" in window) && (window["localStorage"] !== null)); }
+   catch (e) { localStorage_supported = false; }
+
+   function load_cache_from_localStorage() {
+      if (!localStorage_supported) { return; }
+      if (pgn4web_chess_engine_id != localStorage["pgn4web_chess_viewer_engine_id"]) {
+         clear_cache_from_localStorage();
+         localStorage["pgn4web_chess_viewer_engine_id"] = pgn4web_chess_engine_id;
+         return;
+      }
+      if (cache_pointer = localStorage["pgn4web_chess_viewer_engine_cache_pointer"]) { cache_pointer = parseInt(cache_pointer, 10) % cache_max; }
+      else { cache_pointer = -1; }
+      if (cache_fen = localStorage["pgn4web_chess_viewer_engine_cache_fen"]) { cache_fen = cache_fen.split(","); }
+      else { cache_fen = new Array(); }
+      if (cache_ev = localStorage["pgn4web_chess_viewer_engine_cache_ev"]) { cache_ev = cache_ev.split(","); }
+      else { cache_ev = new Array(); }
+      if (cache_pv = localStorage["pgn4web_chess_viewer_engine_cache_pv"]) { cache_pv = cache_pv.split(","); }
+      else { cache_pv = new Array(); }
+      if (cache_nodes = localStorage["pgn4web_chess_viewer_engine_cache_nodes"]) { cache_nodes = cache_nodes.split(","); }
+      else { cache_nodes = new Array(); }
+      cache_needs_sync = 0;
+      if ((cache_fen.length !== cache_ev.length) || (cache_fen.length !== cache_pv.length) || (cache_fen.length !== cache_nodes.length)) {
+         clear_cache_from_localStorage();
+         cache_clear();
+      }
+   }
+
+   function save_cache_to_localStorage() {
+      if (!localStorage_supported) { return; }
+      if (!cache_needs_sync) { return; }
+      localStorage["pgn4web_chess_viewer_engine_cache_pointer"] = cache_pointer;
+      localStorage["pgn4web_chess_viewer_engine_cache_fen"] = cache_fen.toString();
+      localStorage["pgn4web_chess_viewer_engine_cache_ev"] = cache_ev.toString();
+      localStorage["pgn4web_chess_viewer_engine_cache_pv"] = cache_pv.toString();
+      localStorage["pgn4web_chess_viewer_engine_cache_nodes"] = cache_nodes.toString();
+      cache_needs_sync = 0;
+   }
+
+   function clear_cache_from_localStorage() {
+      if (!localStorage_supported) { return; }
+      localStorage.removeItem("pgn4web_chess_viewer_engine_cache_pointer");
+      localStorage.removeItem("pgn4web_chess_viewer_engine_cache_fen");
+      localStorage.removeItem("pgn4web_chess_viewer_engine_cache_ev");
+      localStorage.removeItem("pgn4web_chess_viewer_engine_cache_pv");
+      localStorage.removeItem("pgn4web_chess_viewer_engine_cache_nodes");
+      cache_needs_sync++;
+   }
+
+   function cacheDebugInfo() {
+      var dbg = "";
+      if (localStorage_supported) {
+         dbg += " cache=";
+         try {
+            dbg += num2string(localStorage["pgn4web_chess_viewer_engine_cache_pointer"].length + localStorage["pgn4web_chess_viewer_engine_cache_fen"].length + localStorage["pgn4web_chess_viewer_engine_cache_ev"].length + localStorage["pgn4web_chess_viewer_engine_cache_pv"].length + localStorage["pgn4web_chess_viewer_engine_cache_nodes"].length);
+         } catch(e) {
+            dbg += "0";
+         }
+      }
+      return dbg;
+   }
+
+   var cache_pointer = -1;
+   var cache_max = 8000; // ~ 64 games of 60 moves ~ 1MB of local storage
+   var cache_fen = new Array();
+   var cache_ev = new Array();
+   var cache_pv = new Array();
+   var cache_nodes = new Array();
+
+   var cache_needs_sync = 0;
+
+   load_cache_from_localStorage();
+
+   function validateSearchWithCache() {
+      var retVal = false;
+      var minNodesForAnnotation = 12345;
+      if (g_nodes < minNodesForAnnotation) { return retVal; }
+      var id = cache_fen_indexOf(fenString);
+      if (id == -1) {
+         cache_last = cache_pointer = (cache_pointer + 1) % cache_max;
+         cache_fen[cache_pointer] = fenString;
+         cache_ev[cache_pointer] = g_ev;
+         cache_pv[cache_pointer] = g_pv;
+         cache_nodes[cache_pointer] = g_nodes;
+         cache_needs_sync++;
+         retVal = true;
+      } else {
+         if (g_nodes > cache_nodes[id]) {
+            cache_ev[id] = g_ev;
+            cache_pv[id] = g_pv;
+            cache_nodes[id] = g_nodes;
+            cache_needs_sync++;
+            retVal = true;
+         } else {
+            g_ev = parseInt(cache_ev[id], 10);
+            g_pv = cache_pv[id];
+            g_nodes = parseInt(cache_nodes[id], 10);
+         }
+      }
+      if (cache_needs_sync > 3) { save_cache_to_localStorage(); }
+      return retVal;
+   }
+
+   var cache_last = 0;
+   function cache_fen_indexOf() {
+      if (fenString === cache_fen[cache_last]) { return cache_last; }
+      if (typeof(cache_fen.indexOf) == "function") { return (cache_last = cache_fen.indexOf(fenString)); }
+      var l = cache_fen.length;
+      for (var n = 0; n < l; n++) {
+         if (fenString === cache_fen[n]) { return (cache_last = n); }
+      }
+      return -1;
+   }
+
+   function cache_clear() {
+      cache_pointer = -1;
+      cache_fen = new Array();
+      cache_ev = new Array();
+      cache_pv = new Array();
+      cache_nodes = new Array();
+   }
+
+
+   function StopBackgroundEngine() {
+      if (analysisTimeout) { clearTimeout(analysisTimeout); }
+      if (g_backgroundEngine) {
+         g_backgroundEngine.terminate();
+         g_backgroundEngine = null;
+      }
+   }
+
+   var analysisTimeout;
+   function setAnalysisTimeout(seconds) {
+      if (analysisTimeout) { clearTimeout(analysisTimeout); }
+      analysisTimeout = setTimeout("analysisTimeout = null; save_cache_to_localStorage(); StopBackgroundEngine();", seconds * 1000);
+   }
+
+   function StartEngineAnalysis() {
+      StopBackgroundEngine();
+      if (InitializeBackgroundEngine()) {
+         fenString = CurrentFEN();
+         g_backgroundEngine.postMessage("position " + fenString);
+         g_backgroundEngine.postMessage("analyze");
+         setAnalysisTimeout(analysisSeconds);
+      }
+   }
+
+   var analysisSeconds = 300;
+
+   function detectGameEnd(pv, FEN) {
+      if ((pv !== "") && (pv.match(/^[#=]/))) { return true; }
+      if (matches = FEN.match(/\s*\S+\s+\S+\s+\S+\s+\S+\s+(\d+)\s+\S+\s*/)) {
+         if (parseInt(matches[1], 10) > 100) { return true; }
+      }
+      return false;
+   }
+
+</script>
+
+</body>
+
+</html>
+
 
 END;
 }
@@ -825,7 +1805,7 @@ function print_footer() {
 
   print <<<END
 
-<div>&nbsp;</div>
+<div><a name="bottom">&nbsp;</a></div>
 <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td valign=bottom align=left>
 <div style="color: gray; margin-top: 1em; margin-bottom: 1em;">$pgnDebugMessage</div>
 </td><td valign=bottom align="right">
