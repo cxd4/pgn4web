@@ -550,10 +550,6 @@ function print_chessboard() {
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $krabbeStartPosition, $goToView, $zipSupported;
 
-  $pieceSize = 38;
-  $pieceType = "merida";
-  $pieceSizeCss = $pieceSize . "px";
-
   print <<<END
 
 <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td valign="top" align="left">
@@ -845,18 +841,21 @@ $pgnText
 
 <script type="text/javascript">
 
-   pgn4web_engineWindowUrlParameters = "pf=$pieceType";
+   pgn4web_engineWindowUrlParameters = "pf=m";
 
    var highlightOption_default = true;
    var commentsOnSeparateLines_default = false;
    var commentsIntoMoveText_default = true;
 
-   SetImagePath("$pieceType/36");
+   SetImagePath("merida/36");
    SetImageType("png");
    SetHighlightOption(getHighlightOptionFromLocalStorage());
-   SetGameSelectorOptions("", true, 12, 12, 2, 15, 15, 3, 10);
    SetCommentsIntoMoveText(getCommentsIntoMoveTextFromLocalStorage());
    SetCommentsOnSeparateLines(getCommentsOnSeparateLinesFromLocalStorage());
+   SetInitialGame(1);
+   SetInitialVariation(0);
+   SetInitialHalfmove(0);
+   SetGameSelectorOptions(null, true, 12, 12, 2, 15, 15, 3, 10);
    SetAutostartAutoplay(false);
    SetAutoplayNextGame(false);
    SetAutoplayDelay(2000);
