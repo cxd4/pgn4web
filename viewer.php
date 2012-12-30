@@ -279,6 +279,8 @@ function print_header() {
 
 <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
 
+<meta name="viewport" content="width=800">
+
 <title>pgn4web games viewer</title>
 
 <style type="text/css">
