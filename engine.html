@@ -617,7 +617,7 @@ function validateSearchWithCache() {
 }
 
 var cache_last = 0;
-function cache_fen_indexOf() {
+function cache_fen_indexOf(fenString) {
    if (fenString === cache_fen[cache_last]) { return cache_last; }
    if (typeof(cache_fen.indexOf) == "function") { return (cache_last = cache_fen.indexOf(fenString)); }
    var l = cache_fen.length;

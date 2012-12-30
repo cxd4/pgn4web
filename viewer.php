@@ -1248,7 +1248,7 @@ $pgnText
          for (annPly = StartPly; annPly <= StartPly+PlyNumber; annPly++) {
             annEval[annPly] = annPly === CurrentPly ? 0 : null;
             if ((typeof(fenPositions[currentGame]) != "undefined") && (typeof(fenPositions[currentGame][annPly]) != "undefined")) {
-               index = getAnalysisIndexFromFEN(fenPositions[currentGame][annPly]);
+               index = cache_fen_indexOf(fenPositions[currentGame][annPly]);
                if (index != -1) { annEval[annPly] = cache_ev[index]; }
             }
             if (annEval[annPly] !== null) { annEval[annPly] = annEval[annPly] < 0 ? -1 + Math.pow(2, annEval[annPly]) : 1 - Math.pow(2, -annEval[annPly]); }
@@ -1345,7 +1345,7 @@ $pgnText
       annEval = (lastMousemoveAnnPly == -1) ? "&middot;" : "";
       annPv = "";
       if ((typeof(fenPositions[currentGame]) != "undefined") && (typeof(fenPositions[currentGame][annPly]) != "undefined")) {
-         var index = getAnalysisIndexFromFEN(fenPositions[currentGame][annPly]);
+         var index = cache_fen_indexOf(fenPositions[currentGame][annPly]);
          if (index != -1) {
             annEval = cache_ev[index];
             annPv = cache_pv[index];
@@ -1421,7 +1421,7 @@ $pgnText
    function showExtraAnalysisInfo() {
       if (theObj = document.getElementById("GameAnalysisPv")) {
          freezeAnalysisHeader = true;
-         var index = getAnalysisIndexFromFEN(fenPositions[currentGame][CurrentPly]);
+         var index = cache_fen_indexOf(fenPositions[currentGame][CurrentPly]);
          theObj.innerHTML = "<span class='analysisExtraInfo'>" + (index != -1 ? "eval " + cache_ev[index] + "<span class='move'>p</span>": "&middot;") + "<span style='margin-left:2em;'>nps &le; " + num2string(g_topNodesPerSecond) + "</span></span>";
          if (theObj = document.getElementById("GameAnalysisEval")) { theObj.style.color = "transparent"; }
       }
@@ -1501,7 +1501,7 @@ $pgnText
    function goToMissingAnalysis(forward) {
       if (!analysisStarted) { return; }
       if ((typeof(fenPositions[currentGame]) == "undefined") || (typeof(fenPositions[currentGame][CurrentPly]) == "undefined")) { return; }
-      if (getAnalysisIndexFromFEN(fenPositions[currentGame][CurrentPly]) == -1) { return; }
+      if (cache_fen_indexOf(fenPositions[currentGame][CurrentPly]) == -1) { return; }
 
       if (typeof(forward) == "undefined") {
          forward = ((typeof(event) != "undefined") && (typeof(event.shiftKey) != "undefined")) ? !event.shiftKey : true;
@@ -1512,7 +1512,7 @@ $pgnText
          else { if (thisPly < StartPly) { thisPly = StartPly + PlyNumber; } }
          if (thisPly === CurrentPly) { break; }
          if ((typeof(fenPositions[currentGame]) == "undefined") || (typeof(fenPositions[currentGame][thisPly]) == "undefined")) { break; }
-         if (getAnalysisIndexFromFEN(fenPositions[currentGame][thisPly]) == -1) { GoToMove(thisPly); break; }
+         if (cache_fen_indexOf(fenPositions[currentGame][thisPly]) == -1) { GoToMove(thisPly); break; }
       }
       if (wasAutoPlayOn) { SetAutoPlay(true); }
    }
@@ -1532,16 +1532,6 @@ $pgnText
       boardShortcut("H5", "toggle analysis engine", function(t,e){ userToggleAnalysis(); });
    }
 
-   var cache_last = 0;
-   function getAnalysisIndexFromFEN(fenString) {
-      if (fenString === cache_fen[cache_last]) { return cache_last; }
-      if (typeof(cache_fen.indexOf) == "function") { return (cache_last = cache_fen.indexOf(fenString)); }
-      var l = cache_fen.length;
-      for (var n = 0; n < l; n++) {
-         if (fenString === cache_fen[n]) { return (cache_last = n); }
-      }
-      return -1;
-   }
 
    var pgn4web_chess_engine_id = "garbochess-pgn4web-" + pgn4web_version;
 
@@ -1729,7 +1719,7 @@ $pgnText
    }
 
    var cache_last = 0;
-   function cache_fen_indexOf() {
+   function cache_fen_indexOf(fenString) {
       if (fenString === cache_fen[cache_last]) { return cache_last; }
       if (typeof(cache_fen.indexOf) == "function") { return (cache_last = cache_fen.indexOf(fenString)); }
       var l = cache_fen.length;
