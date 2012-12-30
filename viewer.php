@@ -770,17 +770,17 @@ a.variation {
 .nextMove {
 }
 
-.nextButton {
+.nextVariations {
+  padding-right: 1em;
+}
+
+.backButton {
   display: inline-block;
   width: 1em;
   padding-left: 1em;
   color: #808080;
   text-decoration: none;
   text-align: right;
-}
-
-.nextVariations {
-  padding-right: 1em;
 }
 
 .lastMoveAndComment {
@@ -895,10 +895,10 @@ $pgnText
       return true;
    }
 
-   function searchTag(tag, key) {
+   function searchTag(tag, key, event) {
       searchPgnGame('\\\\[\\\\s*' + tag + '\\\\s*"' + fixRegExp(key) + '"\\\\s*\\\\]', event.shiftKey);
    }
-   function searchTagDifferent(tag, key) {
+   function searchTagDifferent(tag, key, event) {
       searchPgnGame('\\\\[\\\\s*' + tag + '\\\\s*"(?!' + fixRegExp(key) + '"\\\\s*\\\\])', event.shiftKey);
    }
 
@@ -943,8 +943,7 @@ $pgnText
       fixHeaderTag('GameBlackClock');
 
       if ((annotateInProgress) && (CurrentPly === StartPly + PlyNumber)) {
-         annotateInProgress = false;
-         SetAutoplayDelay(2000);
+         stopAnnotateGame();
       }
    }
 
@@ -1020,7 +1019,7 @@ $pgnText
    function customFunctionOnPgnTextLoad() {
    }
 
-   function searchPlayer(name, FideId) {
+   function searchPlayer(name, FideId, event) {
       if (name) {
          if (event.shiftKey) {
             if (typeof(openFidePlayerUrl) == "function") { openFidePlayerUrl(name, FideId); }
@@ -1087,13 +1086,6 @@ $pgnText
       }
    }
 
-   function toggleFitResetLastCommentArea() {
-      if (theObj = document.getElementById("GameLastComment")) {
-         if ((theObj.scrollHeight === theObj.clientHeight) || (theObj.offsetHeight == emPixels(21))) { resetLastCommentArea(); }
-         else { fitLastCommentArea(); }
-      }
-   }
-
    function resetLastCommentArea() {
       if (theObj = document.getElementById("GameLastComment")) {
          theObj.style.height = "";
@@ -1133,24 +1125,24 @@ $pgnText
 </div>
 
 <div class="headerColumn">
-<div class="headerItem"><a class="innerHeaderItem" id="GameDate" href="javascript:void(0);" onclick="searchTagDifferent('Date', this.innerHTML); this.blur();"></a><b>&nbsp;</b></div>
-<div class="headerItem"><a class="innerHeaderItem" id="GameSite" href="javascript:void(0);" onclick="searchTagDifferent('Site', this.innerHTML); this.blur();"></a><b>&nbsp;</b></div>
+<div class="headerItem"><a class="innerHeaderItem" id="GameDate" href="javascript:void(0);" onclick="searchTagDifferent('Date', this.innerHTML, event); this.blur();"></a><b>&nbsp;</b></div>
+<div class="headerItem"><a class="innerHeaderItem" id="GameSite" href="javascript:void(0);" onclick="searchTagDifferent('Site', this.innerHTML, event); this.blur();"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><a class="innerHeaderItem" id="GameEvent" href="javascript:void(0);" onclick="searchTagDifferent('Event', this.innerHTML); this.blur();"></a><a class="innerHeaderItem" id="GameSection" href="javascript:void(0);" onclick="searchTagDifferent('Section', this.innerHTML); this.blur();"></a><a class="innerHeaderItem" id="GameStage" href="javascript:void(0);" onclick="searchTagDifferent('Stage', this.innerHTML); this.blur();"></a><b>&nbsp;</b></div>
-<div class="headerItem"><a class="innerHeaderItem" id="GameRound" href="javascript:void(0);" onclick="searchTagDifferent('Round', this.innerHTML.replace('round ', '')); this.blur();"></a><a class="innerHeaderItem" id="GameBoardNum" href="javascript:void(0);" onclick="searchTagDifferent('Board', this.innerHTML); this.blur();"></a><a class="innerHeaderItem" id="GameTimeControl"  href="javascript:void(0);" onclick="searchTagDifferent('TimeControl', this.innerHTML); this.blur();"></a><b>&nbsp;</b></div>
+<div class="headerItem"><a class="innerHeaderItem" id="GameEvent" href="javascript:void(0);" onclick="searchTagDifferent('Event', this.innerHTML, event); this.blur();"></a><a class="innerHeaderItem" id="GameSection" href="javascript:void(0);" onclick="searchTagDifferent('Section', this.innerHTML, event); this.blur();"></a><a class="innerHeaderItem" id="GameStage" href="javascript:void(0);" onclick="searchTagDifferent('Stage', this.innerHTML, event); this.blur();"></a><b>&nbsp;</b></div>
+<div class="headerItem"><a class="innerHeaderItem" id="GameRound" href="javascript:void(0);" onclick="searchTagDifferent('Round', this.innerHTML.replace('round ', ''), event); this.blur();"></a><a class="innerHeaderItem" id="GameBoardNum" href="javascript:void(0);" onclick="searchTagDifferent('Board', this.innerHTML, event); this.blur();"></a><a class="innerHeaderItem" id="GameTimeControl"  href="javascript:void(0);" onclick="searchTagDifferent('TimeControl', this.innerHTML, event); this.blur();"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><a class="innerHeaderItem" id="GameECO" href="javascript:void(0);" onclick="searchTag('ECO', this.innerHTML); this.blur();"></a><a class="innerHeaderItem" id="GameOpening" href="javascript:void(0);" onclick="searchTag('Opening', customPgnHeaderTag('Opening')); this.blur();"></a><a class="innerHeaderItem" id="GameVariation" href="javascript:void(0);" onclick="searchTag('Variation', customPgnHeaderTag('Variation')); this.blur();"></a><a class="innerHeaderItem" id="GameSubVariation" href="javascript:void(0);" onclick="searchTag('SubVariation', customPgnHeaderTag('SubVariation')); this.blur();"></a><b>&nbsp;</b></div>
+<div class="headerItem"><a class="innerHeaderItem" id="GameECO" href="javascript:void(0);" onclick="searchTag('ECO', this.innerHTML, event); this.blur();"></a><a class="innerHeaderItem" id="GameOpening" href="javascript:void(0);" onclick="searchTag('Opening', customPgnHeaderTag('Opening'), event); this.blur();"></a><a class="innerHeaderItem" id="GameVariation" href="javascript:void(0);" onclick="searchTag('Variation', customPgnHeaderTag('Variation'), event); this.blur();"></a><a class="innerHeaderItem" id="GameSubVariation" href="javascript:void(0);" onclick="searchTag('SubVariation', customPgnHeaderTag('SubVariation'), event); this.blur();"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameWhiteClock"></span><b>&nbsp;</b></div>
-<div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();" class="innerHeaderItem" id="GameWhite"></a></b><span class="innerHeaderItem" id="GameWhiteTitle"></span><span class="innerHeaderItem" id="GameWhiteElo"></span><a class="innerHeaderItem" id="GameWhiteTeam" href="javascript:void(0);" onclick="searchTeam(this.innerHTML); this.blur();"></a><b>&nbsp;</b></div>
-<div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();" class="innerHeaderItem" id="GameBlack"></a></b><span class="innerHeaderItem" id="GameBlackTitle"></span><span class="innerHeaderItem" id="GameBlackElo"></span><a class="innerHeaderItem" id="GameBlackTeam" href="javascript:void(0);" onclick="searchTeam(this.innerHTML); this.blur();"></a><b>&nbsp;</b></div>
+<div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId'), event); this.blur();" class="innerHeaderItem" id="GameWhite"></a></b><span class="innerHeaderItem" id="GameWhiteTitle"></span><span class="innerHeaderItem" id="GameWhiteElo"></span><a class="innerHeaderItem" id="GameWhiteTeam" href="javascript:void(0);" onclick="searchTeam(this.innerHTML); this.blur();"></a><b>&nbsp;</b></div>
+<div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId'), event); this.blur();" class="innerHeaderItem" id="GameBlack"></a></b><span class="innerHeaderItem" id="GameBlackTitle"></span><span class="innerHeaderItem" id="GameBlackElo"></span><a class="innerHeaderItem" id="GameBlackTeam" href="javascript:void(0);" onclick="searchTeam(this.innerHTML); this.blur();"></a><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameBlackClock"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPgnGame(lastSearchPgnExpression, !event.shiftKey); this.blur();" class="innerHeaderItem" id="GameResult"></a></b><span class="innerHeaderItem" id="GameTermination"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="showExtraAnalysisInfo(); this.blur();" onmouseout="hideExtraAnalysisInfo();" class="innerHeaderItem analysisEval" id="GameAnalysisEval"></a><a href="javascript:void(0);" onclick="goToMissingAnalysis(); this.blur();" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv"></a><b>&nbsp;</b></div>
+<div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="if (event.shiftKey) { displayHelp('informant_symbols'); } else { showExtraAnalysisInfo(); } this.blur();" onmouseout="hideExtraAnalysisInfo();" class="innerHeaderItem analysisEval" id="GameAnalysisEval"></a><a href="javascript:void(0);" onclick="goToMissingAnalysis(!event.shiftKey); this.blur();" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer" id="GameAnnotationMeasure"><b>&nbsp;</b></div>
 <canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick(); this.blur();" onmousemove="annotationGraphMousemove();" onmouseover="annotationGraphMouseover();" onmouseout="annotationGraphMouseout();" title="engine annotation graph"></canvas>
 </div>
@@ -1158,7 +1150,7 @@ $pgnText
 </div>
 
 <div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleAnalysisLink" style="visibility: hidden;" id="toggleAnalysisLink" href="javascript:void(0);" onclick="userToggleAnalysis(); this.blur();" title="toggle engine analysis">+</a></div>
-<div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="SetCommentsIntoMoveText(!commentsIntoMoveText); var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar); this.blur();" title="toggle show comments in game text for this page; click square F7 instead to save setting"></a></div>
+<div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="if (event.shiftKey && commentsIntoMoveText) { cycleLastCommentArea(); } else { SetCommentsIntoMoveText(!commentsIntoMoveText); var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar); } this.blur();" title="toggle show comments in game text for this page; click square F7 instead to save setting"></a></div>
 
 <div class="lastMoveAndComment" id="lastMoveAndComment">
 <div class="lastMoveAndVariations">
@@ -1167,7 +1159,7 @@ $pgnText
 </div>
 <div class="nextMoveAndVariations">
 <span class="nextVariations" id="GameNextVariations" title="next move alternatives"></span>&nbsp;
-<span class="nextMove" id="GameNextMove" title="next move"></span><a class="nextButton" href="javascript:void(0);" onclick="GoToMove(event.shiftKey ? StartPlyVar[CurrentVar] : CurrentPly - 1); this.blur();" title="move backward">&lt;</a>
+<span class="nextMove" id="GameNextMove" title="next move"></span><a class="backButton" href="javascript:void(0);" onclick="backButton(event)" title="move backward">&lt;</a>
 </div>
 <div>&nbsp;</div>
 <div class="lastComment" title="current position comment" id="GameLastComment"></div>
@@ -1443,6 +1435,13 @@ $pgnText
       }
    }
 
+   function stopAnnotateGame() {
+      if (annotateInProgress) {
+         annotateInProgress = false;
+         SetAutoplayDelay(2000);
+      }
+   }
+
    function engineUnderstandsGame(gameNum) {
       return gameIsNormalChess(gameNum);
    }
@@ -1502,13 +1501,13 @@ $pgnText
    // F7
    boardShortcut("F7", "toggle show comments in game text and save setting", function(t,e){ if (e.shiftKey) { SetCommentsOnSeparateLines(!commentsOnSeparateLines); } else { SetCommentsIntoMoveText(!commentsIntoMoveText); } oldPly = CurrentPly; Init(); GoToMove(oldPly); if (e.shiftKey) { setCommentsOnSeparateLinesToLocalStorage(); } else { setCommentsIntoMoveTextToLocalStorage(); } });
    // F5
-   boardShortcut("F5", "adjust last move and current comment text area, if present", function(t,e){ toggleFitResetLastCommentArea(); });
+   boardShortcut("F5", "adjust last move and current comment text area, if present", function(t,e){ if (e.shiftKey) { resetLastCommentArea(); } else { cycleLastCommentArea(); } });
 
    if (annotationSupported) {
       // G5
-      boardShortcut("G5", "annotate game", function(t,e){ annotateGame(); });
+      boardShortcut("G5", "annotate game", function(t,e){ if (e.shiftKey) { stopAnnotateGame(); } else { annotateGame(); } });
       // H5
-      boardShortcut("H5", "toggle engine analysis", function(t,e){ userToggleAnalysis(); });
+      boardShortcut("H5", "toggle engine analysis", function(t,e){ if (e.shiftKey) { if (confirm("clear annotation cache, all current and stored annotation data will be lost")) { clear_cache_from_localStorage(); cache_clear(); if (analysisStarted) { updateAnnotationGraph(); updateAnalysisHeader(); } } } else { userToggleAnalysis(); } });
    }
 
 
@@ -1755,7 +1754,7 @@ $pgnText
       var dbg = "";
       if (!annotationSupported) { dbg += " annotation=unavailable"; }
       else if (!analysisStarted) { dbg += " annotation=disabled"; }
-      else { dbg += " annotation=" + (g_backgroundEngine ? "pondering" : "idle") + " analysisSeconds=" + analysisSeconds + " topNodesPerSecond=" + num2string(g_topNodesPerSecond) + cacheDebugInfo(); }
+      else { dbg += " annotation=" + (g_backgroundEngine ? ( annotateInProgress ? "gameInProgress" : "pondering") : "idle") + " analysisSeconds=" + analysisSeconds + " topNodesPerSecond=" + num2string(g_topNodesPerSecond) + cacheDebugInfo(); }
       return dbg;
    }
 
