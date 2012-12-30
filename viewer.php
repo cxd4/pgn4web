@@ -1591,7 +1591,7 @@ $pgnText
                      myAlert("error (engine): " + e.data.replace(/^message /, "") + "\\n" + fenString, false);
                   }
                }
-            });
+            }, false);
             g_initError = false;
             return true;
          } catch(e) {
