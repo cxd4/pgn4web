@@ -735,12 +735,12 @@ a.variation {
   text-decoration: none;
 }
 
-.innerHeaderItem, .gameAnnotationGraph {
-  margin-left: 1.25em;
+.innerHeaderItem {
+  margin-right: 1.25em;
 }
 
 .innerHeaderItemNoMargin {
-  margin-left: 0;
+  margin-right: 0;
 }
 
 .headerSpacer {
@@ -1318,7 +1318,7 @@ $pgnText
    // set canvas size, check calculations if headerItem and headerSpacer are changed in chess-games-viewer.css
    function graphCanvasWidth() {
       if (theMeasureObject = document.getElementById("GameAnnotationMeasure")) {
-         return (theMeasureObject.offsetWidth - theMeasureObject.offsetHeight * 1.25 / 0.7);
+         return theMeasureObject.offsetWidth;
       } else { return 300; }
    }
    function graphCanvasHeight() {
