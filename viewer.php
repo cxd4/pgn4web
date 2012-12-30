@@ -552,7 +552,7 @@ function print_chessboard() {
 
   print <<<END
 
-<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td valign="top" align="left">
+<table width="100%" cellpadding="0" cellspacing="0" border="0"><tbody><tr><td valign="top" align="left">
 </td><td valign="top" align="right">
 <div style="padding-top: 1em;">
 &nbsp;&nbsp;&nbsp;<a href="#moves" style="color: gray; font-size: 66%;">moves</a>&nbsp;&nbsp;&nbsp;<a href="#view" style="color: gray; font-size: 66%;">board</a>&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray; font-size: 66%;">form</a>
@@ -561,7 +561,7 @@ function print_chessboard() {
 <a name="view">&nbsp;</a><div id="pgnStatus" style="font-weight: bold; margin-top: 1em; margin-bottom: 1em;">$pgnStatus</div>
 </td><td valign="bottom" align="right">
 <div style="margin-bottom: 1em;">&nbsp;<span id="GameNumInfo" style="color: gray; visibility: hidden;"><span id="GameNumCurrent" title="current game"></span> / <span id="GameNumTotal" title="number of games"></span></span></div>
-</td></tr></table>
+</td></tr></tbody></table>
 
 <style type="text/css">
 
@@ -984,6 +984,7 @@ $pgnText
 
       if (theObj = document.getElementById("GameNumCurrent")) {
          theObj.innerHTML = currentGame + 1;
+         theObj.title = "current game: " + (currentGame + 1);
       }
 
       if (theObj = document.getElementById('lastMoveAndComment')) {
@@ -1024,6 +1025,7 @@ $pgnText
       }
       if (theObj = document.getElementById("GameNumTotal")) {
          theObj.innerHTML = numberOfGames;
+         theObj.title = "number of games: " + numberOfGames;
       }
    }
 
@@ -1045,7 +1047,7 @@ $pgnText
       switch (location.hash) {
          case "#top": goToHash("view"); break;
          case "#view": goToHash("moves"); break;
-         case "#moves": goToHash("bottom"); break; // PAOLO make sure all hash are there
+         case "#moves": goToHash("bottom"); break;
          case "#bottom": goToHash("top"); break;
          default: goToHash("view"); break;
       }
@@ -1053,17 +1055,26 @@ $pgnText
 
    function goToHash(hash) {
       if (hash) { location.hash = ""; }
-      else { location.hash = "board"; }
+      else { location.hash = "view"; }
       location.hash = hash;
    }
 
 
-   function customShortcutKey_Shift_3() { cycleHash(); }
+   // customShortcutKey_Shift_1 defined by fide-lookup.js
+   // customShortcutKey_Shift_2 defined by fide-lookup.js
 
-   function customShortcutKey_Shift_4() { cycleLastCommentArea(); }
+   function customShortcutKey_Shift_3() { goToHash("view"); }
+   function customShortcutKey_Shift_4() { cycleHash(); }
 
-   function customShortcutKey_Shift_5() { if (annotationSupported) { userToggleAnalysis(); } }
-   function customShortcutKey_Shift_6() { if (annotationSupported) { goToMissingAnalysis(true); } }
+   function customShortcutKey_Shift_5() { cycleLastCommentArea(); }
+
+   function customShortcutKey_Shift_6() { if (annotationSupported) { userToggleAnalysis(); } }
+   function customShortcutKey_Shift_7() { if (annotationSupported) { goToMissingAnalysis(true); } }
+
+   // customShortcutKey_Shift_8 defined by engine.js
+   // customShortcutKey_Shift_9 defined by engine.js
+   // customShortcutKey_Shift_0 defined by engine.js
+
 
    function gameIsNormalChess(gameNum) {
       return ((typeof(gameVariant[gameNum]) == "undefined") || (gameVariant[gameNum].match(/^(chess|normal|standard|)$/i) !== null));
@@ -1174,9 +1185,9 @@ $pgnText
 </div>
 </div>
 
-<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td valign="bottom" align="right">
+<table width="100%" cellpadding="0" cellspacing="0" border="0"><tbody><tr><td valign="bottom" align="right">
 &nbsp;&nbsp;&nbsp;<a name="moves" href="#moves" style="color: gray; font-size: 66%;">moves</a>&nbsp;&nbsp;&nbsp;<a href="#view" style="color: gray; font-size: 66%;">board</a>&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray; font-size: 66%;">form</a>
-</tr></table>
+</td></tr></tbody></table>
 
 <div class="mainContainer">
 <div id="moveText" class="moveText"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
@@ -1768,10 +1779,6 @@ $pgnText
 
 </script>
 
-</body>
-
-</html>
-
 
 END;
 }
@@ -1790,11 +1797,11 @@ function print_footer() {
   print <<<END
 
 <div><a name="bottom">&nbsp;</a></div>
-<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td valign=bottom align=left>
+<table width="100%" cellpadding="0" cellspacing="0" border="0"><tbody><tr><td valign=bottom align=left>
 <div style="color: gray; margin-top: 1em; margin-bottom: 1em;">$pgnDebugMessage</div>
 </td><td valign=bottom align="right">
 &nbsp;&nbsp;&nbsp;<a href="#moves" style="color: gray; font-size: 66%;">moves</a>&nbsp;&nbsp;&nbsp;<a href="#view" style="color: gray; font-size: 66%;">board</a>&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray; font-size: 66%;">form</a>
-</td></tr></table>
+</td></tr></tbody></table>
 
 <script type="text/javascript">
 

@@ -388,10 +388,10 @@ setPuzzlerHelpShortcutSquares("BCFG", "1");
 function solutionSoFar() {
   sol = "";
   for (thisPly = StartPly; thisPly < CurrentPly; thisPly++) {
-    if (thisPly % 2 == 0) {
-      sol += ((thisPly / 2) + 1) + ". ";
-    } else if (thisPly == StartPly) {
+    if (thisPly % 2) {
       sol += ((thisPly + 1) / 2) + "... ";
+    } else if (thisPly == StartPly) {
+      sol += ((thisPly / 2) + 1) + ". ";
     }
     sol += Moves[thisPly] + " ";
   }
