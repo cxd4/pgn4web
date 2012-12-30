@@ -862,34 +862,34 @@ $pgnText
 
    function getHighlightOptionFromLocalStorage() {
       try { ho = (localStorage.getItem("pgn4web_chess_viewer_highlightOption") != "false"); }
-      catch (e) { return highlightOption_default; }
+      catch(e) { return highlightOption_default; }
       return ho;
    }
    function setHighlightOptionToLocalStorage() {
       try { localStorage.setItem("pgn4web_chess_viewer_highlightOption", highlightOption ? "true" : "false"); }
-      catch (e) { return false; }
+      catch(e) { return false; }
       return true;
    }
 
    function getCommentsIntoMoveTextFromLocalStorage() {
       try { cimt = !(localStorage.getItem("pgn4web_chess_viewer_commentsIntoMoveText") == "false"); }
-      catch (e) { return commentsIntoMoveText_default; }
+      catch(e) { return commentsIntoMoveText_default; }
       return cimt;
    }
    function setCommentsIntoMoveTextToLocalStorage() {
       try { localStorage.setItem("pgn4web_chess_viewer_commentsIntoMoveText", commentsIntoMoveText ? "true" : "false"); }
-      catch (e) { return false; }
+      catch(e) { return false; }
       return true;
    }
 
    function getCommentsOnSeparateLinesFromLocalStorage() {
       try { cosl = (localStorage.getItem("pgn4web_chess_viewer_commentsOnSeparateLines") == "true"); }
-      catch (e) { return commentsOnSeparateLines_default; }
+      catch(e) { return commentsOnSeparateLines_default; }
       return cosl;
    }
    function setCommentsOnSeparateLinesToLocalStorage() {
       try { localStorage.setItem("pgn4web_chess_viewer_commentsOnSeparateLines", commentsOnSeparateLines ? "true" : "false"); }
-      catch (e) { return false; }
+      catch(e) { return false; }
       return true;
    }
 
@@ -1196,7 +1196,10 @@ $pgnText
 
 <script type="text/javascript">
 
-   var annotationSupported = (window.Worker && document.getElementById("GameAnnotationGraph").getContext);
+   var annotationSupported = false;
+   try {
+      annotationSupported = ((typeof(window.Worker) == "function") && (typeof(document.getElementById("GameAnnotationGraph").getContext) == "function"));
+   } catch(e) { }
 
    var analysisStarted = false;
    function toggleAnalysis() {
@@ -1522,12 +1525,10 @@ $pgnText
    // F5
    boardShortcut("F5", "adjust last move and current comment text area, if present", function(t,e){ if (e.shiftKey) { resetLastCommentArea(); } else { cycleLastCommentArea(); } });
 
-   if (annotationSupported) {
-      // G5
-      boardShortcut("G5", "annotate game", function(t,e){ if (e.shiftKey) { stopAnnotateGame(); } else { annotateGame(); } });
-      // H5
-      boardShortcut("H5", "toggle engine analysis", function(t,e){ if (e.shiftKey) { if (confirm("clear annotation cache, all current and stored annotation data will be lost")) { clear_cache_from_localStorage(); cache_clear(); if (analysisStarted) { updateAnnotationGraph(); updateAnalysisHeader(); } } } else { userToggleAnalysis(); } });
-   }
+   // G5
+   boardShortcut("G5", "automated game annotation", function(t,e){ if (annotationSupported) { if (e.shiftKey) { stopAnnotateGame(); } else { annotateGame(); } } else { alert("error: engine annotation not supported by your browser"); } });
+   // H5
+   boardShortcut("H5", "start/stop annotation", function(t,e){ if (annotationSupported) { if (e.shiftKey) { if (confirm("clear annotation cache, all current and stored annotation data will be lost")) { clear_cache_from_localStorage(); cache_clear(); if (analysisStarted) { updateAnnotationGraph(); updateAnalysisHeader(); } } } else { userToggleAnalysis(); } } else { alert("error: engine annotation not supported by your browser"); } });
 
 
    var pgn4web_chess_engine_id = "garbochess-pgn4web-" + pgn4web_version;
@@ -1614,7 +1615,7 @@ $pgnText
 
    var localStorage_supported;
    try { localStorage_supported = (("localStorage" in window) && (window["localStorage"] !== null)); }
-   catch (e) { localStorage_supported = false; }
+   catch(e) { localStorage_supported = false; }
 
    function load_cache_from_localStorage() {
       if (!localStorage_supported) { return; }
