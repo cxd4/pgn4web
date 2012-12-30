@@ -1144,7 +1144,7 @@ $pgnText
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="if (event.shiftKey) { displayHelp('informant_symbols'); } else { showExtraAnalysisInfo(); } this.blur();" onmouseout="hideExtraAnalysisInfo();" class="innerHeaderItem analysisEval" id="GameAnalysisEval"></a><a href="javascript:void(0);" onclick="goToMissingAnalysis(!event.shiftKey); this.blur();" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer" id="GameAnnotationMeasure"><b>&nbsp;</b></div>
-<canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick(); this.blur();" onmousemove="annotationGraphMousemove();" onmouseover="annotationGraphMouseover();" onmouseout="annotationGraphMouseout();" title="engine annotation graph"></canvas>
+<canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick(event.shiftKey); this.blur();" onmousemove="annotationGraphMousemove();" onmouseover="annotationGraphMouseover();" onmouseout="annotationGraphMouseout();" title="engine annotation graph"></canvas>
 </div>
 
 </div>
@@ -1228,8 +1228,8 @@ $pgnText
          theObj.width = canvasWidth = graphCanvasWidth();
          theObj.height = canvasHeight = graphCanvasHeight();
 
-         annotationPlyBlock = 20;
-         annotationBarWidth = canvasWidth / (Math.ceil((PlyNumberMax + 2) / annotationPlyBlock) * annotationPlyBlock);
+         annotationPlyBlock = 40;
+         annotationBarWidth = canvasWidth / (Math.max(Math.ceil(PlyNumberMax / annotationPlyBlock) * annotationPlyBlock, 2 * annotationPlyBlock) + 2);
          barOverlap = Math.ceil(annotationBarWidth / 20);
          lineHeight = Math.ceil(canvasHeight / 100);
          lineTop = Math.floor((canvasHeight - lineHeight) / 2);
@@ -1378,11 +1378,11 @@ $pgnText
       }
    }
 
-   function annotationGraphClick() {
+   function annotationGraphClick(shiftKeyPressed) {
       if ((analysisStarted) && (typeof(annotationBarWidth) != "undefined")) {
          annPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
          if ((annPly >= StartPly) && (annPly <= StartPly + PlyNumber)) {
-            if (event.shiftKey) { save_cache_to_localStorage(); }
+            if (shiftKeyPressed) { save_cache_to_localStorage(); }
             else { GoToMove(annPly); }
          }
       }
