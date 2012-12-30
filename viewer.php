@@ -1175,12 +1175,12 @@ $pgnText
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="showExtraAnalysisInfo(); this.blur();" onmouseout="hideExtraAnalysisInfo();" class="innerHeaderItem analysisEval" id="GameAnalysisEval"></a><a href="javascript:void(0);" onclick="goToMissingAnalysis(); this.blur();" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer" id="GameAnnotationMeasure"><b>&nbsp;</b></div>
-<canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick(); this.blur();" onmousemove="annotationGraphMousemove();" onmouseover="annotationGraphMouseover();" onmouseout="annotationGraphMouseout();" title="annotation graph from the analysis engine"></canvas>
+<canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick(); this.blur();" onmousemove="annotationGraphMousemove();" onmouseover="annotationGraphMouseover();" onmouseout="annotationGraphMouseout();" title="engine annotation graph"></canvas>
 </div>
 
 </div>
 
-<div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleAnalysisLink" style="visibility: hidden;" id="toggleAnalysisLink" href="javascript:void(0);" onclick="userToggleAnalysis(); this.blur();" title="toggle analysis engine">+</a></div>
+<div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleAnalysisLink" style="visibility: hidden;" id="toggleAnalysisLink" href="javascript:void(0);" onclick="userToggleAnalysis(); this.blur();" title="toggle engine analysis">+</a></div>
 <div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="SetCommentsIntoMoveText(!commentsIntoMoveText); var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar); this.blur();" title="toggle show comments in game text for this page; click square F7 instead to save setting"></a></div>
 
 <div class="lastMoveAndComment" id="lastMoveAndComment">
@@ -1354,11 +1354,11 @@ $pgnText
 
       if (theObj = document.getElementById("GameAnalysisEval")) {
          theObj.innerHTML = (annEval || annEval === 0) ? annEvalNag(annEval) : "";
-         theObj.title = (annEval || annEval === 0) ? "engine's evaluation: " + (annEval > 0 ? "+" : "") + annEval : "";
+         theObj.title = (annEval || annEval === 0) ? "engine evaluation: " + (annEval > 0 ? "+" : "") + annEval : "";
       }
       if (theObj = document.getElementById("GameAnalysisPv")) {
          theObj.innerHTML = annPv ? annPv : "";
-         theObj.title = annPv ? "engine's principal variation: " + annPv : "";
+         theObj.title = annPv ? "engine principal variation: " + annPv : "";
       }
    }
 
@@ -1422,7 +1422,7 @@ $pgnText
       if (theObj = document.getElementById("GameAnalysisPv")) {
          freezeAnalysisHeader = true;
          var index = cache_fen_indexOf(fenPositions[currentGame][CurrentPly]);
-         theObj.innerHTML = "<span class='analysisExtraInfo'>" + (index != -1 ? "eval " + cache_ev[index] + "<span class='move'>p</span>": "&middot;") + "<span style='margin-left:2em;'>nps &le; " + num2string(g_topNodesPerSecond) + "</span></span>";
+         theObj.innerHTML = "<span class='analysisExtraInfo'>" + (index != -1 ? "eval " + (cache_ev[index] > 0 ? "+" : "") + cache_ev[index] + "<span class='move'>p</span>": "&middot;") + "<span style='margin-left:2em;'>nps &le; " + num2string(g_topNodesPerSecond) + "</span></span>";
          if (theObj = document.getElementById("GameAnalysisEval")) { theObj.style.color = "transparent"; }
       }
    }
@@ -1449,7 +1449,7 @@ $pgnText
    maxAnnotationDelay = maxAutoplayDelay;
    annotationDelayDefault = 15;
    function annotateGame() {
-      if ((checkEngineUnderstandsGameAndWarn()) && (annotationDelay = prompt("Automatic game annotation from the current position, please do not interact with the chessboard until the analysis has reached the last available move.\\n\\nEnter engine's time per move, in seconds, between " + (minAnnotationDelay/1000) + " and " + (maxAnnotationDelay/1000) + ":", annotationDelayDefault))) {
+      if ((checkEngineUnderstandsGameAndWarn()) && (annotationDelay = prompt("Automatic game annotation from the current position, please do not interact with the chessboard until the analysis has reached the last available move.\\n\\nEnter engine analysis time per move, in seconds, between " + (minAnnotationDelay/1000) + " and " + (maxAnnotationDelay/1000) + ":", annotationDelayDefault))) {
          if (isNaN(annotationDelay = parseInt(annotationDelay, 10))) { annotationDelay = annotationDelayDefault; }
          else { annotationDelay = annotationDelay * 1000; }
          annotationDelay = Math.min(maxAnnotationDelay, Math.max(minAnnotationDelay, annotationDelay));
@@ -1470,7 +1470,7 @@ $pgnText
 
    function checkEngineUnderstandsGameAndWarn() {
       retVal = engineUnderstandsGame(currentGame);
-      if (!retVal) { alert("warning: analysis engine not available for chess variants"); }
+      if (!retVal) { alert("warning: engine analysis not available for chess variants"); }
       return retVal;
    }
 
@@ -1529,7 +1529,7 @@ $pgnText
       // G5
       boardShortcut("G5", "annotate game", function(t,e){ annotateGame(); });
       // H5
-      boardShortcut("H5", "toggle analysis engine", function(t,e){ userToggleAnalysis(); });
+      boardShortcut("H5", "toggle engine analysis", function(t,e){ userToggleAnalysis(); });
    }
 
 

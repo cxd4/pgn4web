@@ -678,7 +678,7 @@ function updateGameAnalysisFlag() {
    if (theObject = document.getElementById("GameAnalysisFlag")) {
       if (g_backgroundEngine) {
          theObject.innerHTML = "=";
-         theObject.title = "pause analysis engine";
+         theObject.title = "pause engine analysis";
       } else {
          if ((openerCheck()) && (CurrentFEN() != window.opener.CurrentFEN())) {
             theObject.innerHTML = "+";
@@ -688,7 +688,7 @@ function updateGameAnalysisFlag() {
             theObject.title = "";
          } else {
             theObject.innerHTML = "&middot;";
-            theObject.title = "restart analysis engine";
+            theObject.title = "restart engine analysis";
          }
       }
    }
