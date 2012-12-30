@@ -318,7 +318,7 @@ a {
 
 </head>
 
-<body>
+<body onresize="if (typeof(updateAnnotationGraph) != 'undefined') { updateAnnotationGraph(); }">
 
 <table class="headClass" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
 <td align="left" valign="middle">
@@ -553,12 +553,15 @@ function print_chessboard() {
   print <<<END
 
 <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td valign="top" align="left">
-<a name="view">&nbsp;</a><div id="pgnStatus" style="font-weight: bold; margin-top: 2em; margin-bottom: 1em;">$pgnStatus</div>
 </td><td valign="top" align="right">
 <div style="padding-top: 1em;">
 &nbsp;&nbsp;&nbsp;<a href="#moves" style="color: gray; font-size: 66%;">moves</a>&nbsp;&nbsp;&nbsp;<a href="#view" style="color: gray; font-size: 66%;">board</a>&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray; font-size: 66%;">form</a>
 </div>
-</tr></table>
+</td></tr><tr><td valign="bottom" align="left">
+<a name="view">&nbsp;</a><div id="pgnStatus" style="font-weight: bold; margin-top: 1em; margin-bottom: 1em;">$pgnStatus</div>
+</td><td valign="bottom" align="right">
+<div style="margin-bottom: 1em;">&nbsp;<span id="GameNumInfo" style="color: gray; visibility: hidden;"><span id="GameNumCurrent" title="current game"></span> / <span id="GameNumTotal" title="number of games"></span></span></div>
+</td></tr></table>
 
 <style type="text/css">
 
@@ -827,10 +830,6 @@ a.variation {
 <script src="chess-informant-NAG-symbols.js" type="text/javascript"></script>
 <script src="fide-lookup.js" type="text/javascript"></script>
 
-</head>
-
-<body onresize="if (typeof(updateAnnotationGraph) != 'undefined') { updateAnnotationGraph(); }">
-
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
 <form style="display: none;"><textarea style="display: none;" id="pgnText">
 
@@ -983,6 +982,10 @@ $pgnText
       if (PlyNumber > 0) { customPgnHeaderTag('Result', 'ResultAtGametextEnd'); }
       else { if (theObj = document.getElementById('ResultAtGametextEnd')) { theObj.innerHTML = ""; } }
 
+      if (theObj = document.getElementById("GameNumCurrent")) {
+         theObj.innerHTML = currentGame + 1;
+      }
+
       if (theObj = document.getElementById('lastMoveAndComment')) {
          if ((PlyNumber === 0) && (gameFEN[currentGame])) {
             lastDisplayStyle = "block";
@@ -1016,6 +1019,12 @@ $pgnText
    }
 
    function customFunctionOnPgnTextLoad() {
+      if (theObj = document.getElementById("GameNumInfo")) {
+         theObj.style.visibility = numberOfGames > 1 ? "visible" : "hidden";
+      }
+      if (theObj = document.getElementById("GameNumTotal")) {
+         theObj.innerHTML = numberOfGames;
+      }
    }
 
    function searchPlayer(name, FideId, event) {
