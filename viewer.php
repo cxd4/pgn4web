@@ -291,6 +291,7 @@ body {
   line-height: 1.4em;
   padding: 20px;
   overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 div, span, table, tr, td {
@@ -1746,6 +1747,14 @@ $pgnText
          if (parseInt(matches[1], 10) > 100) { return true; }
       }
       return false;
+   }
+
+   function customDebugInfo() {
+      var dbg = "";
+      if (!annotationSupported) { dbg += " annotation=unavailable"; }
+      else if (!analysisStarted) { dbg += " annotation=disabled"; }
+      else { dbg += " annotation=" + (g_backgroundEngine ? "pondering" : "idle") + " analysisSeconds=" + analysisSeconds + " topNodesPerSecond=" + num2string(g_topNodesPerSecond) + cacheDebugInfo(); }
+      return dbg;
    }
 
 </script>
