@@ -692,11 +692,11 @@ a.variation {
 }
 
 .topMenu {
+  text-align: center;
   padding-top: 1em;
   padding-bottom: 1em;
   color: #808080;
   opacity: 0.25;
-  text-align: center;
 }
 
 .topMenu:hover {
