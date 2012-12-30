@@ -745,6 +745,10 @@ a.variation {
   margin-bottom: 0.25em;
 }
 
+.toggleCommentsLink, .toggleAnalysisLink {
+  color: #808080;
+}
+
 .lastMoveAndVariations {
   float: left;
 }
@@ -767,6 +771,7 @@ a.variation {
   display: inline-block;
   width: 1em;
   padding-left: 1em;
+  color: #808080;
   text-decoration: none;
   text-align: right;
 }
