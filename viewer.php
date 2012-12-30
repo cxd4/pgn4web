@@ -1526,9 +1526,9 @@ $pgnText
    boardShortcut("F5", "adjust last move and current comment text area, if present", function(t,e){ if (e.shiftKey) { resetLastCommentArea(); } else { cycleLastCommentArea(); } });
 
    // G5
-   boardShortcut("G5", "automated game annotation", function(t,e){ if (annotationSupported) { if (e.shiftKey) { stopAnnotateGame(); } else { annotateGame(); } } else { alert("error: engine annotation not supported by your browser"); } });
+   boardShortcut("G5", "automated game annotation", function(t,e){ if (annotationSupported) { if (e.shiftKey) { stopAnnotateGame(); } else { annotateGame(); } } else { alert("error: engine annotation not available"); } });
    // H5
-   boardShortcut("H5", "start/stop annotation", function(t,e){ if (annotationSupported) { if (e.shiftKey) { if (confirm("clear annotation cache, all current and stored annotation data will be lost")) { clear_cache_from_localStorage(); cache_clear(); if (analysisStarted) { updateAnnotationGraph(); updateAnalysisHeader(); } } } else { userToggleAnalysis(); } } else { alert("error: engine annotation not supported by your browser"); } });
+   boardShortcut("H5", "start/stop annotation", function(t,e){ if (annotationSupported) { if (e.shiftKey) { if (confirm("clear annotation cache, all current and stored annotation data will be lost")) { clear_cache_from_localStorage(); cache_clear(); if (analysisStarted) { updateAnnotationGraph(); updateAnalysisHeader(); } } } else { userToggleAnalysis(); } } else { alert("error: engine annotation not available"); } });
 
 
    var pgn4web_chess_engine_id = "garbochess-pgn4web-" + pgn4web_version;
