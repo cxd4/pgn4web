@@ -431,6 +431,7 @@ END;
     document.getElementById('uploadFormFile').value = "";
     document.getElementById('urlFormText').value = "";
 
+    if (analysisStarted) { stopAnalysis(); }
     firstStart = true;
     start_pgn4web();
     if (window.location.hash == "view") { window.location.reload(); }
@@ -470,6 +471,7 @@ function reset_viewer() {
    document.getElementById("pgnStatus").innerHTML = "please enter chess games in PGN format&nbsp; &nbsp;<span style='color: gray;'></span>";
    document.getElementById("pgnText").value = '$krabbeStartPosition';
 
+   if (analysisStarted) { stopAnalysis(); }
    firstStart = true;
    start_pgn4web();
    if (window.location.hash == "top") { window.location.reload(); }
@@ -618,11 +620,6 @@ function print_chessboard() {
 
 .gameButtons {
   width: 392px;
-  opacity: 0.25;
-}
-
-.gameButtons:hover {
-  opacity: 1;
 }
 
 .buttonControlPlay,
@@ -694,14 +691,7 @@ a.variation {
 .topMenu {
   text-align: center;
   padding-top: 1em;
-  padding-bottom: 1em;
-  color: #808080;
-  opacity: 0.25;
-}
-
-.topMenu:hover {
-  color: black;
-  opacity: 1;
+  padding-bottom: 1.5em;
 }
 
 .mainContainer {
@@ -755,19 +745,6 @@ a.variation {
   margin-bottom: 0.25em;
 }
 
-.toggleComments:hover, .toggleAnalysis:hover {
-}
-
-.toggleCommentsLink, .toggleAnalysisLink {
-  color: #808080;
-  opacity: 0.25;
-}
-
-.toggleCommentsLink:hover, .toggleAnalysisLink:hover {
-  color: #000000;
-  opacity: 1;
-}
-
 .lastMoveAndVariations {
   float: left;
 }
@@ -789,15 +766,9 @@ a.variation {
 .nextButton {
   display: inline-block;
   width: 1em;
-  color: #808080;
-  opacity: 0.25;
+  padding-left: 1em;
   text-decoration: none;
   text-align: right;
-}
-
-.nextButton:hover {
-  color: #000000;
-  opacity: 1;
 }
 
 .nextVariations {
@@ -819,7 +790,7 @@ a.variation {
   max-height: 21em;
   padding-right: 1em;
   margin-top: 0.5em;
-  margin-bottom: 2em;
+  margin-bottom: 1.5em;
   text-align: justify;
 }
 
@@ -944,8 +915,6 @@ $pgnText
          theObj.innerHTML = fixCommentForDisplay(theObj.innerHTML);
       }
    }
-
-   var annotationSupported = (window.Worker && navigator.appName !== 'Microsoft Internet Explorer');
 
    var previousCurrentVar = -1;
    function customFunctionOnMove() {
@@ -1207,6 +1176,8 @@ $pgnText
 
 
 <script type="text/javascript">
+
+   var annotationSupported = (window.Worker && document.getElementById("GameAnnotationGraph").getContext);
 
    var analysisStarted = false;
    function toggleAnalysis() {
@@ -1540,6 +1511,7 @@ $pgnText
    var g_backgroundEngine;
    var g_topNodesPerSecond = 0;
    var g_ev = "";
+   var g_maxEv = 99.9;
    var g_pv = "";
    var g_nodes = "";
    var g_initError;
@@ -1557,9 +1529,8 @@ $pgnText
                      if (isNaN(g_ev = parseInt(matches[2], 10))) {
                         g_ev = "";
                      } else {
-                        maxEv = 99.9;
                         g_ev = Math.round(g_ev / 100) / 10;
-                        if (g_ev < -maxEv) { g_ev = -maxEv; } else if (g_ev > maxEv) { g_ev = maxEv; }
+                        if (g_ev < -g_maxEv) { g_ev = -g_maxEv; } else if (g_ev > g_maxEv) { g_ev = g_maxEv; }
                         if (fenString.indexOf(" b ") !== -1) { g_ev = -g_ev; }
                      }
                      g_nodes = parseInt(matches[3], 10);
@@ -1691,7 +1662,7 @@ $pgnText
    function validateSearchWithCache() {
       var retVal = false;
       var minNodesForAnnotation = 12345;
-      if (g_nodes < minNodesForAnnotation) { return retVal; }
+      if ((g_nodes < minNodesForAnnotation) && (g_ev < g_maxEv) && (g_ev > -g_maxEv) && (g_ev !== 0)) { return retVal; }
       var id = cache_fen_indexOf(fenString);
       if (id == -1) {
          cache_last = cache_pointer = (cache_pointer + 1) % cache_max;
