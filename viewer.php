@@ -1196,10 +1196,10 @@ $pgnText
 
 <script type="text/javascript">
 
-   var annotationSupported = false;
+   var annotationSupported = !!window.Worker;
    try {
-      annotationSupported = ((typeof(window.Worker) == "function") && (typeof(document.getElementById("GameAnnotationGraph").getContext) == "function"));
-   } catch(e) { }
+      document.getElementById("GameAnnotationGraph").getContext("2d");
+   } catch(e) { annotationSupported = false; }
 
    var analysisStarted = false;
    function toggleAnalysis() {
