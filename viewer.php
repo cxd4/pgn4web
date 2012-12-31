@@ -24,7 +24,9 @@ if (!$zipSupported) { $pgnDebugInfo = $pgnDebugInfo . "ZIP support unavailable f
 
 $debugHelpText = "a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages";
 
-if (!($goToView = get_pgn())) { $pgnText = $startPosition = get_start_position(); }
+$startPosition = '[Event ""] [Site ""] [Date ""] [Round ""] [White ""] [Black ""] [Result ""] { please enter chess games in PGN format using the form at the top of the page }';
+
+if (!($goToView = get_pgn())) { $pgnText = $startPosition; }
 
 
 $presetURLsArray = array();
@@ -45,10 +47,6 @@ check_tmpDir();
 print_chessboard();
 print_footer();
 
-
-function get_start_position() {
-  return '[Event ""] [Site ""] [Date ""] [Round ""] [White ""] [Black ""] [Result ""] { please enter chess games in PGN format using the form at the top of the page }';
-}
 
 function get_param($param, $shortParam, $default) {
   if (isset($_REQUEST[$param]) && stripslashes(rawurldecode($_REQUEST[$param]))) { return stripslashes(rawurldecode($_REQUEST[$param])); }
