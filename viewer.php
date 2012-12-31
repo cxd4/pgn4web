@@ -1225,6 +1225,7 @@ $pgnText
       if (theObj = document.getElementById("toggleAnalysisLink")) { theObj.innerHTML = "+"; }
       clearAnnotationGraph();
       clearAnalysisHeader();
+      save_cache_to_localStorage();
    }
 
    var fenPositions;
@@ -1350,7 +1351,7 @@ $pgnText
       }
 
       if (theObj = document.getElementById("GameAnalysisEval")) {
-         theObj.innerHTML = (annEval || annEval === 0) ? annEvalNag(annEval) : "";
+         theObj.innerHTML = (annEval || annEval === 0) ? ev2NAG(annEval) : "";
          theObj.title = (annEval || annEval === 0) ? "engine evaluation: " + (annEval > 0 ? "+" : "") + annEval : "";
       }
       if (theObj = document.getElementById("GameAnalysisPv")) {
@@ -1359,7 +1360,7 @@ $pgnText
       }
    }
 
-   function annEvalNag(ev) {
+   function ev2NAG(ev) {
      if ((ev === null) || (ev === "") || (isNaN(ev = parseFloat(ev)))) { return ""; }
      if (ev < -3.95) { return NAG[19]; } // -+
      if (ev >  3.95) { return NAG[18]; } // +-
@@ -1572,42 +1573,20 @@ $pgnText
                         updateAnnotationGraph();
                         updateAnalysisHeader();
                      }
-                     if (theObject = document.getElementById("GameEval")) {
-                        theObject.innerHTML = ev2NAG(g_ev);
-                        theObject.title = (g_ev > 0 ? " +" : " ") + g_ev + (g_ev == Math.floor(g_ev) ? ".0 " : " ");
-                     }
-                     if (theObject = document.getElementById("GameMoves")) {
-                        theObject.innerHTML = g_pv;
-                        theObject.title = g_pv;
-                     }
                      if (detectGameEnd(g_pv, "")) { StopBackgroundEngine(); }
                   }
                } else if (e.data.match("^message Invalid FEN")) {
-                  if (theObject = document.getElementById("GameEval")) {
-                     theObject.innerHTML = NAG[2];
-                     theObject.title = "?";
-                  }
-                  if (theObject = document.getElementById("GameMoves")) {
-                     theObject.innerHTML = "invalid position";
-                     theObject.title = e.data.replace(/^message /, "");
-                  }
+                  stopAnalysis();
                   if (fenString != g_lastFenError) {
                      g_lastFenError = fenString;
-                     myAlert("error: engine: " + e.data.replace(/^message /, "") + "\\n" + fenString, false);
+                     myAlert("error: engine: " + e.data.replace(/^message /, "") + "\\n" + fenString);
                   }
                }
             }, false);
             g_initError = false;
             return true;
          } catch(e) {
-            if (theObject = document.getElementById("GameEval")) {
-               theObject.innerHTML = translateNAGs("$255") + "<span class='NAGs'>&nbsp;&nbsp;&nbsp;</span>" + translateNAGs("$147");
-               theObject.title = "engine analysis unavailable";
-            }
-            if (theObject = document.getElementById("GameMoves")) {
-               theObject.innerHTML = "&nbsp;";
-               theObject.title = "";
-            }
+            stopAnalysis();
             if (!g_initError) {
                g_initError = true;
                myAlert("error: engine exception " + e);
@@ -1781,6 +1760,10 @@ $pgnText
       else { dbg += " annotation=" + (g_backgroundEngine ? ( annotateInProgress ? "gameInProgress" : "pondering") : "idle") + " analysisSeconds=" + analysisSeconds + " topNodesPerSecond=" + num2string(g_topNodesPerSecond) + cacheDebugInfo(); }
       return dbg;
    }
+
+   window.onunload = function() {
+      if (analysisStarted) { stopAnalysis(); }
+   };
 
 </script>
 
