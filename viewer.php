@@ -1589,7 +1589,7 @@ $pgnText
                   }
                   if (fenString != g_lastFenError) {
                      g_lastFenError = fenString;
-                     myAlert("error (engine): " + e.data.replace(/^message /, "") + "\\n" + fenString, false);
+                     myAlert("error: engine: " + e.data.replace(/^message /, "") + "\\n" + fenString, false);
                   }
                }
             }, false);
@@ -1606,7 +1606,7 @@ $pgnText
             }
             if (!g_initError) {
                g_initError = true;
-               myAlert("warning: engine exception " + e);
+               myAlert("error: engine exception " + e);
             }
             return false;
          }
