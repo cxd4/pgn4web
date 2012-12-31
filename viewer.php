@@ -80,6 +80,10 @@ function get_param($param, $shortParam, $default) {
   return $default;
 }
 
+function http_response_header_isInvalid($response) {
+   return isset($response[0]) ? preg_match("/\b[45]\d\d\b/", $response[0]) : FALSE;
+}
+
 function get_pgn() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
@@ -107,7 +111,7 @@ function get_pgn() {
 
     return TRUE;
   } else if ($pgnUrl) {
-    $pgnStatus = "PGN games from URL: <a href='" . $pgnUrl . "'>" . $pgnUrl . "</a>";
+    $pgnStatus = "PGN games from <a href='" . $pgnUrl . "' title='" . $pgnUrl . "'>URL:</a> &nbsp; <a href='" . $pgnUrl . "' title='" . $pgnUrl . "'>" . preg_replace("/^.*\//", ".../", preg_replace("/[#?].*$/", "", $pgnUrl)) . "</a>";
     $isPgn = preg_match("/\.(pgn|txt)$/i",$pgnUrl);
     $isZip = preg_match("/\.zip$/i",$pgnUrl);
     if ($isZip) {
@@ -125,10 +129,10 @@ function get_pgn() {
         $copiedBytes = stream_copy_to_stream($pgnUrlHandle, $tempZipHandle, $fileUploadLimitBytes + 1, 0);
         fclose($pgnUrlHandle);
         fclose($tempZipHandle);
-        if (($copiedBytes > 0) && ($copiedBytes <= $fileUploadLimitBytes)) {
+        if ((($copiedBytes > 0) && ($copiedBytes <= $fileUploadLimitBytes)) && (!http_response_header_isInvalid($http_response_header))) {
           $pgnSource = $tempZipName;
         } else {
-          $pgnStatus = "failed to get " . $zipFileString . ": file not found, file size exceeds " . $fileUploadLimitText . " form limit, " . $fileUploadLimitIniText . " server limit or server error";
+          $pgnStatus = "failed to get " . $zipFileString . ": <span title='" . (http_response_header_isInvalid($http_response_header) ? $http_response_header[0] : "") . "'>file not found, file size exceeds " . $fileUploadLimitText . " form limit, " . $fileUploadLimitIniText . " server limit or server error</span>";
           if (($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
           return FALSE;
         }
@@ -141,7 +145,7 @@ function get_pgn() {
     return FALSE;
   } elseif ($_FILES['pgnFile']['error'] === UPLOAD_ERR_OK) {
     $pgnFileName = $_FILES['pgnFile']['name'];
-    $pgnStatus = "PGN games from file: " . $pgnFileName;
+    $pgnStatus = "PGN games from file: &nbsp; " . $pgnFileName;
     $pgnFileSize = $_FILES['pgnFile']['size'];
     if ($pgnFileSize == 0) {
       $pgnStatus = "failed uploading PGN games: file not found, file empty or upload error";
@@ -219,9 +223,9 @@ function get_pgn() {
     if ($pgnUrl) { $pgnFileString = "<a href='" . $pgnUrl . "'>pgn URL</a>"; }
     else { $pgnFileString = "pgn file"; }
     $pgnText = file_get_contents($pgnSource, NULL, NULL, 0, $fileUploadLimitBytes + 1);
-    if (!$pgnText) {
-      $pgnStatus = "failed reading " . $pgnFileString . ": file not found or server error";
-      return FALSE;
+    if ((!$pgnText) || (($pgnUrl) && (http_response_header_isInvalid($http_response_header)))) {
+       $pgnStatus = "failed reading " . $pgnFileString . ": <span title='" . (($pgnUrl) && (http_response_header_isInvalid($http_response_header)) ? $http_response_header[0] : "") . "'>file not found or server error</span>";
+       return FALSE;
     }
     if ((strlen($pgnText) == 0) || (strlen($pgnText) > $fileUploadLimitBytes)) {
       $pgnStatus = "failed reading " . $pgnFileString . ": file size exceeds " . $fileUploadLimitText . " form limit, " . $fileUploadLimitIniText . " server limit or server error";
