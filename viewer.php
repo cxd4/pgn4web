@@ -1315,7 +1315,6 @@ function print_chessboard_two() {
       }
    }
 
-   // set canvas size, check calculations if headerItem and headerSpacer are changed in chess-games-viewer.css
    function graphCanvasWidth() {
       if (theMeasureObject = document.getElementById("GameAnnotationMeasure")) {
          return theMeasureObject.offsetWidth;
