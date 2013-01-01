@@ -9,6 +9,16 @@
 
 error_reporting(E_ERROR | E_PARSE);
 
+/*
+ *  URL parameters:
+ *
+ *  headlessPage = true | false (default false)
+ *  hideForm = true | false (default false)
+ *  pgnData (or pgnUrl) = (default null)
+ *  pgnText = (default null)
+ *
+ */
+
 $pgnDebugInfo = "";
 
 $tmpDir = "viewer";
@@ -863,10 +873,10 @@ $pgnText
    function getHighlightOptionFromLocalStorage() {
       try { ho = (localStorage.getItem("pgn4web_chess_viewer_highlightOption") != "false"); }
       catch(e) { return highlightOption_default; }
-      return ho;
+      return ho === null ? highlightOption_default : ho;
    }
-   function setHighlightOptionToLocalStorage() {
-      try { localStorage.setItem("pgn4web_chess_viewer_highlightOption", highlightOption ? "true" : "false"); }
+   function setHighlightOptionToLocalStorage(ho) {
+      try { localStorage.setItem("pgn4web_chess_viewer_highlightOption", ho ? "true" : "false"); }
       catch(e) { return false; }
       return true;
    }
@@ -874,10 +884,10 @@ $pgnText
    function getCommentsIntoMoveTextFromLocalStorage() {
       try { cimt = !(localStorage.getItem("pgn4web_chess_viewer_commentsIntoMoveText") == "false"); }
       catch(e) { return commentsIntoMoveText_default; }
-      return cimt;
+      return cimt === null ? commentsIntoMoveText_default : cimt;
    }
-   function setCommentsIntoMoveTextToLocalStorage() {
-      try { localStorage.setItem("pgn4web_chess_viewer_commentsIntoMoveText", commentsIntoMoveText ? "true" : "false"); }
+   function setCommentsIntoMoveTextToLocalStorage(cimt) {
+      try { localStorage.setItem("pgn4web_chess_viewer_commentsIntoMoveText", cimt ? "true" : "false"); }
       catch(e) { return false; }
       return true;
    }
@@ -885,10 +895,10 @@ $pgnText
    function getCommentsOnSeparateLinesFromLocalStorage() {
       try { cosl = (localStorage.getItem("pgn4web_chess_viewer_commentsOnSeparateLines") == "true"); }
       catch(e) { return commentsOnSeparateLines_default; }
-      return cosl;
+      return cosl === null ? commentsOnSeparateLines_default : cosl;
    }
-   function setCommentsOnSeparateLinesToLocalStorage() {
-      try { localStorage.setItem("pgn4web_chess_viewer_commentsOnSeparateLines", commentsOnSeparateLines ? "true" : "false"); }
+   function setCommentsOnSeparateLinesToLocalStorage(cosl) {
+      try { localStorage.setItem("pgn4web_chess_viewer_commentsOnSeparateLines", cosl ? "true" : "false"); }
       catch(e) { return false; }
       return true;
    }
@@ -1446,12 +1456,25 @@ function print_chessboard_two() {
    annotateInProgress = false;
    minAnnotationDelay = minAutoplayDelay;
    maxAnnotationDelay = maxAutoplayDelay;
-   annotationDelayDefault = 15;
+   annotationDelay_default = 15;
+
+   function getAnnotationDelayFromLocalStorage() {
+      try { ad = localStorage.getItem("pgn4web_chess_viewer_annotationDelay"); }
+      catch(e) { return annotationDelay_default; }
+      return ad === null ? annotationDelay_default : ad;
+   }
+   function setAnnotationDelayToLocalStorage(ad) {
+      try { localStorage.setItem("pgn4web_chess_viewer_annotationDelay", ad); }
+      catch(e) { return false; }
+      return true;
+   }
+
    function annotateGame() {
-      if ((checkEngineUnderstandsGameAndWarn()) && (annotationDelay = prompt("Automatic game annotation from the current position, please do not interact with the chessboard until the analysis has reached the last available move.\\n\\nEnter engine analysis time per move, in seconds, between " + (minAnnotationDelay/1000) + " and " + (maxAnnotationDelay/1000) + ":", annotationDelayDefault))) {
-         if (isNaN(annotationDelay = parseInt(annotationDelay, 10))) { annotationDelay = annotationDelayDefault; }
-         else { annotationDelay = annotationDelay * 1000; }
+      if ((checkEngineUnderstandsGameAndWarn()) && (annotationDelay = prompt("Automatic game annotation from the current position, please do not interact with the chessboard until the analysis has reached the last available move.\\n\\nEnter engine analysis time per move, in seconds, between " + (minAnnotationDelay/1000) + " and " + (maxAnnotationDelay/1000) + ":", getAnnotationDelayFromLocalStorage()))) {
+         if (isNaN(annotationDelay = parseFloat(annotationDelay))) { annotationDelay = getAnnotationDelayFromLocalStorage(); }
+         annotationDelay = annotationDelay * 1000;
          annotationDelay = Math.min(maxAnnotationDelay, Math.max(minAnnotationDelay, annotationDelay));
+         setAnnotationDelayToLocalStorage(annotationDelay/1000);
          SetAutoPlay(false);
          if (!analysisStarted) {
            scanGameForFen();
@@ -1525,9 +1548,9 @@ function print_chessboard_two() {
 
 
    // D7
-   boardShortcut("D7", "toggle highlight last move and save setting", function(t,e){ SetHighlight(!highlightOption); setHighlightOptionToLocalStorage(); });
+   boardShortcut("D7", "toggle highlight last move and save setting", function(t,e){ SetHighlight(!highlightOption); setHighlightOptionToLocalStorage(highlightOption); });
    // F7
-   boardShortcut("F7", "toggle show comments in game text and save setting", function(t,e){ if (e.shiftKey) { SetCommentsOnSeparateLines(!commentsOnSeparateLines); } else { SetCommentsIntoMoveText(!commentsIntoMoveText); } oldPly = CurrentPly; Init(); GoToMove(oldPly); if (e.shiftKey) { setCommentsOnSeparateLinesToLocalStorage(); } else { setCommentsIntoMoveTextToLocalStorage(); } });
+   boardShortcut("F7", "toggle show comments in game text and save setting", function(t,e){ if (e.shiftKey) { SetCommentsOnSeparateLines(!commentsOnSeparateLines); } else { SetCommentsIntoMoveText(!commentsIntoMoveText); } oldPly = CurrentPly; Init(); GoToMove(oldPly); if (e.shiftKey) { setCommentsOnSeparateLinesToLocalStorage(commentsOnSeparateLines); } else { setCommentsIntoMoveTextToLocalStorage(commentsIntoMoveText); } });
    // F5
    boardShortcut("F5", "adjust last move and current comment text area, if present", function(t,e){ if (e.shiftKey) { resetLastCommentArea(); } else { cycleLastCommentArea(); } });
 
