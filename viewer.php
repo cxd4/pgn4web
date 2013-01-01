@@ -26,7 +26,15 @@ $debugHelpText = "a flashing chessboard signals errors in the PGN data, click on
 
 $startPosition = '[Event ""] [Site ""] [Date ""] [Round ""] [White ""] [Black ""] [Result ""] { please enter chess games in PGN format using the form at the top of the page }';
 
-if (!($goToView = get_pgn())) { $pgnText = $startPosition; }
+$headlessPage = strtolower(get_param("headlessPage", "hp", ""));
+
+$hideForm = strtolower(get_param("hideForm", "hf", ""));
+$hideFormCss = ($hideForm == "true") || ($hideForm == "t") ? "display: none;" : "";
+
+if (!($goToView = get_pgn())) {
+  $pgnText = $startPosition;
+  $hideFormCss = "";
+}
 
 
 $presetURLsArray = array();
@@ -39,13 +47,16 @@ function addPresetURL($label, $javascriptCode) {
 include 'viewer-preset-URLs.php';
 
 
-$headlessPage = strtolower(get_param("headlessPage", "hp", ""));
-
 print_header();
 print_form();
 check_tmpDir();
-print_chessboard();
+print_menu("board");
+print_chessboard_one();
+print_menu("moves");
+print_chessboard_two();
 print_footer();
+print_menu("bottom");
+print_html_close();
 
 
 function get_param($param, $shortParam, $default) {
@@ -240,6 +251,23 @@ function check_tmpDir() {
   }
 }
 
+function print_menu($item) {
+
+  print <<<END
+
+<div style="width: 100%; text-align: right; padding-bottom: 0.3em; padding-top: 0.2em;">
+<span style="font-size: 66%;">
+<a name="$item">&nbsp;</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#bottom" style="color: gray;">bottom</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#moves" style="color: gray;">moves</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#board" style="color: gray;">board</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray;">top</a>
+</span>
+</div>
+
+END;
+}
+
 function print_header() {
 
   global $headlessPage;
@@ -300,7 +328,7 @@ a {
 
 <table class="headClass" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
 <td align="left" valign="middle">
-<h1 name="top" style="font-family: sans-serif; color: red;"><a style="color: red;" href=.>pgn4web</a> games viewer</h1>
+<h1 style="font-family: sans-serif; color: red;"><a style="color: red;" href=.>pgn4web</a> games viewer</h1>
 </td>
 <td align="right" valign="middle">
 <a href=.><img src=pawns.png border=0></a>
@@ -317,7 +345,7 @@ function print_form() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $startPosition, $goToView, $zipSupported;
-  global $headlessPage, $presetURLsArray;
+  global $headlessPage, $hideFormCss, $presetURLsArray;
 
   $thisScript = $_SERVER['SCRIPT_NAME'];
   if (($headlessPage == "true") || ($headlessPage == "t")) { $thisScript .= "?hp=t"; }
@@ -415,8 +443,8 @@ END;
     if (analysisStarted) { stopAnalysis(); }
     firstStart = true;
     start_pgn4web();
-    if (window.location.hash == "view") { window.location.reload(); }
-    else { window.location.hash = "view"; }
+    if (window.location.hash == "board") { window.location.reload(); }
+    else { window.location.hash = "board"; }
 
     return;
   }
@@ -465,7 +493,7 @@ function restoreShortcutKeysStatus() {}
 
 </script>
 
-<table width="100%" cellspacing="0" cellpadding="3" border="0"><tbody>
+<table style="margin-bottom: 1.5em; $hideFormCss" width="100%" cellspacing="0" cellpadding="3" border="0"><tbody>
 
   <tr>
     <td align="left" valign="top">
@@ -523,20 +551,16 @@ END;
 END;
 }
 
-function print_chessboard() {
+function print_chessboard_one() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $startPosition, $goToView, $zipSupported;
+  global $hideFormCss;
 
   print <<<END
 
-<table width="100%" cellpadding="0" cellspacing="0" border="0"><tbody><tr><td valign="top" align="left">
-</td><td valign="top" align="right">
-<div style="padding-top: 1em;">
-&nbsp;&nbsp;&nbsp;<a href="#moves" style="color: gray; font-size: 66%;">moves</a>&nbsp;&nbsp;&nbsp;<a href="#view" style="color: gray; font-size: 66%;">board</a>&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray; font-size: 66%;">form</a>
-</div>
-</td></tr><tr><td valign="bottom" align="left">
-<a name="view">&nbsp;</a><div id="pgnStatus" style="font-weight: bold; margin-top: 1em; margin-bottom: 1em;">$pgnStatus</div>
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="$hideFormCss"><tbody><tr><td valign="bottom" align="left">
+<div style="font-weight: bold; margin-top: 1em; margin-bottom: 1em;"><span id="pgnStatus">$pgnStatus</span>&nbsp;</div>
 </td><td valign="bottom" align="right">
 <div style="margin-bottom: 1em;">&nbsp;<span id="GameNumInfo" style="color: gray; visibility: hidden;"><span id="GameNumCurrent" title="current game"></span> / <span id="GameNumTotal" title="number of games"></span></span></div>
 </td></tr></tbody></table>
@@ -668,7 +692,7 @@ a.variation {
   background-color: #FFCC99;
 }
 
-.topMenu {
+.selectSearchContainer {
   text-align: center;
   padding-top: 1em;
   padding-bottom: 1.5em;
@@ -1023,17 +1047,17 @@ $pgnText
 
    function cycleHash() {
       switch (location.hash) {
-         case "#top": goToHash("view"); break;
-         case "#view": goToHash("moves"); break;
+         case "#top": goToHash("board"); break;
+         case "#board": goToHash("moves"); break;
          case "#moves": goToHash("bottom"); break;
          case "#bottom": goToHash("top"); break;
-         default: goToHash("view"); break;
+         default: goToHash("board"); break;
       }
    }
 
    function goToHash(hash) {
       if (hash) { location.hash = ""; }
-      else { location.hash = "view"; }
+      else { location.hash = "board"; }
       location.hash = hash;
    }
 
@@ -1041,7 +1065,7 @@ $pgnText
    // customShortcutKey_Shift_1 defined by fide-lookup.js
    // customShortcutKey_Shift_2 defined by fide-lookup.js
 
-   function customShortcutKey_Shift_3() { goToHash("view"); }
+   function customShortcutKey_Shift_3() { goToHash("board"); }
    function customShortcutKey_Shift_4() { cycleHash(); }
 
    function customShortcutKey_Shift_5() { cycleLastCommentArea(); }
@@ -1104,7 +1128,7 @@ $pgnText
 
 </script>
 
-<div class="topMenu">
+<div class="selectSearchContainer">
 <div id="GameSelector" class="gameSelector"></div>
 <div id="GameSearch" class="gameSearch"></div>
 <div id="emMeasure" style="height: 1em;">&nbsp;</div>
@@ -1163,9 +1187,15 @@ $pgnText
 </div>
 </div>
 
-<table width="100%" cellpadding="0" cellspacing="0" border="0"><tbody><tr><td valign="bottom" align="right">
-&nbsp;&nbsp;&nbsp;<a name="moves" href="#moves" style="color: gray; font-size: 66%;">moves</a>&nbsp;&nbsp;&nbsp;<a href="#view" style="color: gray; font-size: 66%;">board</a>&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray; font-size: 66%;">form</a>
-</td></tr></tbody></table>
+END;
+}
+
+function print_chessboard_two() {
+
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
+  global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $startPosition, $goToView, $zipSupported;
+
+  print <<<END
 
 <div class="mainContainer">
 <div id="moveText" class="moveText"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
@@ -1750,7 +1780,7 @@ function print_footer() {
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $startPosition, $goToView, $zipSupported;
 
-  if ($goToView) { $hashStatement = "window.location.hash = 'view';"; }
+  if ($goToView) { $hashStatement = "window.location.hash = 'board';"; }
   else { $hashStatement = ""; }
 
   if (($pgnDebugInfo) != "") { $pgnDebugMessage = "message for sysadmin: " . $pgnDebugInfo; }
@@ -1758,12 +1788,7 @@ function print_footer() {
 
   print <<<END
 
-<div><a name="bottom">&nbsp;</a></div>
-<table width="100%" cellpadding="0" cellspacing="0" border="0"><tbody><tr><td valign=bottom align=left>
 <div style="color: gray; margin-top: 1em; margin-bottom: 1em;">$pgnDebugMessage</div>
-</td><td valign=bottom align="right">
-&nbsp;&nbsp;&nbsp;<a href="#moves" style="color: gray; font-size: 66%;">moves</a>&nbsp;&nbsp;&nbsp;<a href="#view" style="color: gray; font-size: 66%;">board</a>&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray; font-size: 66%;">form</a>
-</td></tr></tbody></table>
 
 <script type="text/javascript">
 
@@ -1775,6 +1800,13 @@ function pgn4web_onload(e) {
 }
 
 </script>
+
+END;
+}
+
+function print_html_close() {
+
+  print <<<END
 
 </body>
 
