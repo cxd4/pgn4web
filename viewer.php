@@ -255,14 +255,12 @@ function print_menu($item) {
 
   print <<<END
 
-<div style="width: 100%; text-align: right; padding-bottom: 0.3em; padding-top: 0.2em;">
-<span style="font-size: 66%;">
-<a name="$item">&nbsp;</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#bottom" style="color: gray;">bottom</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#moves" style="color: gray;">moves</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#board" style="color: gray;">board</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray;">top</a>
-</span>
+<div style="height: 0.2em; overflow: hidden;"><a name="$item">&nbsp;</a></div>
+<div style="width: 100%; text-align: right; font-size: 66%; padding-bottom: 0.5em;">
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#bottom" style="color: gray;" onclick="this.blur();">bottom</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#moves" style="color: gray;" onclick="this.blur();">moves</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#board" style="color: gray;" onclick="this.blur();">board</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray;" onclick="this.blur();">top</a>
 </div>
 
 END;
@@ -273,7 +271,7 @@ function print_header() {
   global $headlessPage;
 
   if (($headlessPage == "true") || ($headlessPage == "t")) {
-     $headClass = "display: none;";
+     $headClass = "  display: none;";
   } else {
      $headClass = "";
   }
@@ -317,7 +315,7 @@ a {
 }
 
 .headClass {
-  $headClass
+$headClass
 }
 
 </style>
