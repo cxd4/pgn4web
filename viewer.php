@@ -1372,7 +1372,7 @@ function print_chessboard_two() {
 
       if (theObj = document.getElementById("GameAnalysisEval")) {
          theObj.innerHTML = (annEval || annEval === 0) ? ev2NAG(annEval) : "";
-         theObj.title = (annEval || annEval === 0) ? "engine evaluation: " + (annEval > 0 ? "+" : "") + annEval : "";
+         theObj.title = (annEval || annEval === 0) ? "engine evaluation: " + (annEval > 0 ? "+" : "") + annEval + (annEval == Math.floor(annEval) ? ".0 " : " ") : "";
       }
       if (theObj = document.getElementById("GameAnalysisPv")) {
          theObj.innerHTML = annPv ? annPv : "";
@@ -1440,7 +1440,7 @@ function print_chessboard_two() {
       if (theObj = document.getElementById("GameAnalysisPv")) {
          freezeAnalysisHeader = true;
          var index = cache_fen_indexOf(fenPositions[currentGame][CurrentPly]);
-         theObj.innerHTML = "<span class='analysisExtraInfo'>" + (index != -1 ? "eval " + (cache_ev[index] > 0 ? "+" : "") + cache_ev[index] + "<span class='move'>p</span>": "&middot;") + "<span style='margin-left:2em;'>nps &le; " + num2string(g_topNodesPerSecond) + "</span></span>";
+         theObj.innerHTML = "<span class='analysisExtraInfo'>" + (index != -1 ? "eval " + (cache_ev[index] > 0 ? "+" : "") + cache_ev[index] + (cache_ev[index] == Math.floor(cache_ev[index]) ? ".0 " : " ") + "<span class='move'>p</span>": "&middot;") + "<span style='margin-left:2em;'>nps &le; " + num2string(g_topNodesPerSecond) + "</span></span>";
          if (theObj = document.getElementById("GameAnalysisEval")) { theObj.style.color = "transparent"; }
       }
    }
