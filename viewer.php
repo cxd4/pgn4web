@@ -1031,7 +1031,7 @@ $pgnText
       gameLoadStatus = "$pgnStatus";
       if (gameLoadStatus) {  myAlert(gameLoadStatus, gameLoadStatus.match(/^error:/), !gameLoadStatus.match(/^error:/)); }
       if (theObj = document.getElementById("GameNumInfo")) {
-         theObj.style.display = numberOfGames > 1 ? "block" : "none";
+         theObj.style.visibility = numberOfGames > 1 ? "visible" : "hidden";
       }
       if (theObj = document.getElementById("GameNumTotal")) {
          theObj.innerHTML = numberOfGames;
@@ -1145,7 +1145,7 @@ $pgnText
 <td width="100%" align="left" valign="top">
 <div id="GameSearch" class="gameSearch"></div>
 </td><td align="right" valign="bottom">
-<div id="GameNumInfo" style="width: 15ex; color: gray;"><span id="GameNumCurrent" title="current game"></span>&nbsp;/&nbsp;<span id="GameNumTotal" title="number of games"></span></div>
+<div id="GameNumInfo" style="width: 15ex; color: gray; visibility: hidden;"><span id="GameNumCurrent" title="current game"></span>&nbsp;/&nbsp;<span id="GameNumTotal" title="number of games"></span></div>
 </td>
 </tr></tbody></table>
 <div id="emMeasure" style="height: 1em;">&nbsp;</div>
