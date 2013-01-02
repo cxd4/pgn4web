@@ -448,6 +448,7 @@ END;
     if (analysisStarted) { stopAnalysis(); }
     firstStart = true;
     start_pgn4web();
+    resetAlert();
     myAlert("info: games from textbox input", false, true);
     if (window.location.hash == "board") { window.location.reload(); }
     else { window.location.hash = "board"; }
@@ -479,17 +480,18 @@ END;
   }
 
 function reset_viewer() {
-   document.getElementById("uploadFormFile").value = "";
-   document.getElementById("urlFormText").value = "";
-   document.getElementById("pgnFormText").value = "";
-   checkPgnFormTextSize();
-   document.getElementById("pgnText").value = '$startPosition';
+  document.getElementById("uploadFormFile").value = "";
+  document.getElementById("urlFormText").value = "";
+  document.getElementById("pgnFormText").value = "";
+  checkPgnFormTextSize();
+  document.getElementById("pgnText").value = '$startPosition';
 
-   if (analysisStarted) { stopAnalysis(); }
-   firstStart = true;
-   start_pgn4web();
-   if (window.location.hash == "top") { window.location.reload(); }
-   else {window.location.hash = "top"; }
+  if (analysisStarted) { stopAnalysis(); }
+  firstStart = true;
+  start_pgn4web();
+  resetAlert();
+  if (window.location.hash == "top") { window.location.reload(); }
+  else {window.location.hash = "top"; }
 }
 
 // fake functions to avoid warnings before pgn4web.js is loaded
