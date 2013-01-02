@@ -426,6 +426,7 @@ END;
   }
 
   function loadPgnFromForm() {
+
     theObjPgnFormText = document.getElementById('pgnFormText');
     if (theObjPgnFormText === null) { return; }
     if (theObjPgnFormText.value === "") { return; }
@@ -450,9 +451,8 @@ END;
     start_pgn4web();
     resetAlert();
     myAlert("info: games from textbox input", false, true);
-    if (window.location.hash == "board") { window.location.reload(); }
-    else { window.location.hash = "board"; }
 
+    goToHash("board");
     return;
   }
 
@@ -480,6 +480,7 @@ END;
   }
 
 function reset_viewer() {
+
   document.getElementById("uploadFormFile").value = "";
   document.getElementById("urlFormText").value = "";
   document.getElementById("pgnFormText").value = "";
@@ -490,8 +491,8 @@ function reset_viewer() {
   firstStart = true;
   start_pgn4web();
   resetAlert();
-  if (window.location.hash == "top") { window.location.reload(); }
-  else {window.location.hash = "top"; }
+
+  goToHash("top");
 }
 
 // fake functions to avoid warnings before pgn4web.js is loaded
@@ -1064,8 +1065,8 @@ $pgnText
 
    function goToHash(hash) {
       if (hash) { location.hash = ""; }
-      else { location.hash = "board"; }
-      location.hash = hash;
+      else { location.hash = "#board"; }
+      location.hash = "#" + hash;
    }
 
 
@@ -1808,7 +1809,7 @@ function print_footer() {
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $startPosition, $goToView, $zipSupported;
 
-  if ($goToView) { $hashStatement = "window.location.hash = 'board';"; }
+  if ($goToView) { $hashStatement = "goToHash('board');"; }
   else { $hashStatement = ""; }
 
   if (($pgnDebugInfo) != "") { $pgnDebugMessage = "message for sysadmin: " . $pgnDebugInfo; }
