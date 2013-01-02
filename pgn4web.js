@@ -106,14 +106,14 @@ function resetAlert() {
   }
 }
 
-function myAlert(msg, fatalError) {
+function myAlert(msg, fatalError, doNotPrompt) {
   alertNum++;
   alertNumSinceReset++;
   if (fatalError) { fatalErrorNumSinceReset++; }
   alertLast = (alertLast + 1) % alertLog.length;
   alertLog[alertLast] = msg + "\n" + (new Date()).toLocaleString();
   if (boardIsDefault(debugShortcutSquare)) { boardShortcut(debugShortcutSquare, "pgn4web v" + pgn4web_version + " debug info, " + alertNum + " alert" + (alertNum > 1 ? "s" : ""), null, true); }
-  if (((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) && (boardIsDefault(debugShortcutSquare))) {
+  if ((!doNotPrompt) && ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) && (boardIsDefault(debugShortcutSquare))) {
     startAlertPrompt();
   }
   customFunctionOnAlert(msg);

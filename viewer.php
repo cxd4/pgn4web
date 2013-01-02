@@ -34,16 +34,15 @@ if (!$zipSupported) { $pgnDebugInfo = $pgnDebugInfo . "ZIP support unavailable f
 
 $debugHelpText = "a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages";
 
-$startPosition = '[Event ""] [Site ""] [Date ""] [Round ""] [White ""] [Black ""] [Result ""] { please enter chess games in PGN format using the form at the top of the page }';
-
 $headlessPage = strtolower(get_param("headlessPage", "hp", ""));
 
 $hideForm = strtolower(get_param("hideForm", "hf", ""));
 $hideFormCss = ($hideForm == "true") || ($hideForm == "t") ? "display: none;" : "";
 
+$startPosition = '[Event ""] [Site ""] [Date ""] [Round ""] [White ""] [Black ""] [Result ""] ' . ((($hideForm == "true") || ($hideForm == "t")) ? '' : ' { please enter chess games in PGN format using the form at the top of the page }');
+
 if (!($goToView = get_pgn())) {
-  $pgnText = $startPosition;
-  $hideFormCss = "";
+  $pgnText = preg_match("/^error:/", $pgnStatus) ? '[Event ""] [Site ""] [Date ""] [Round ""] [White ""] [Black ""] [Result ""] { error loading PGN data, click square A8 for more details }' : $startPosition;
 }
 
 
@@ -92,7 +91,7 @@ function get_pgn() {
   if ($pgnUrl == "") { $pgnUrl = get_param("pgnUrl", "pu", ""); }
 
   if ($pgnText) {
-    $pgnStatus = "PGN games from textbox input";
+    $pgnStatus = "info: games from textbox input";
     $pgnTextbox = $pgnText = str_replace("\\\"", "\"", $pgnText);
 
     $pgnText = preg_replace("/\[/", "\n\n[", $pgnText);
@@ -106,15 +105,14 @@ function get_pgn() {
 
     return TRUE;
   } else if ($pgnUrl) {
-    $pgnStatus = "PGN games from <a href='" . $pgnUrl . "' title='" . $pgnUrl . "'>URL:</a> &nbsp; <a href='" . $pgnUrl . "' title='" . $pgnUrl . "'>" . preg_replace("/^.*\//", ".../", preg_replace("/[#?].*$/", "", $pgnUrl)) . "</a>";
+    $pgnStatus = "info: games from $pgnUrl";
     $isPgn = preg_match("/\.(pgn|txt)$/i",$pgnUrl);
     $isZip = preg_match("/\.zip$/i",$pgnUrl);
     if ($isZip) {
       if (!$zipSupported) {
-        $pgnStatus = "unable to open zipfile&nbsp; &nbsp;<span style='color: gray;'>please <a style='color: gray;' href='" . $pgnUrl. "'>download zipfile locally</a> and submit extracted PGN</span>";
+        $pgnStatus = "error: zipfile support unavailable, unable to open $pgnUrl";
         return FALSE;
       } else {
-        $zipFileString = "<a href='" . $pgnUrl . "'>zip URL</a>";
         $tempZipName = tempnam($tmpDir, "pgn4webViewer_");
         // $pgnUrlOpts tries forcing following location redirects
         // depending on server configuration, the script might still fail if the ZIP URL is redirected
@@ -127,7 +125,7 @@ function get_pgn() {
         if ((($copiedBytes > 0) && ($copiedBytes <= $fileUploadLimitBytes)) && (!http_response_header_isInvalid($http_response_header))) {
           $pgnSource = $tempZipName;
         } else {
-          $pgnStatus = "failed to get " . $zipFileString . ": <span title='" . (http_response_header_isInvalid($http_response_header) ? $http_response_header[0] : "") . "'>file not found, file size exceeds " . $fileUploadLimitText . " form limit, " . $fileUploadLimitIniText . " server limit or server error</span>";
+          $pgnStatus = "error: failed to get $pgnUrl: " . (http_response_header_isInvalid($http_response_header) ? "server error: $http_response_header[0]" : "file not found, file size exceeds $fileUploadLimitText form limit, $fileUploadLimitIniText server limit or server error");
           if (($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
           return FALSE;
         }
@@ -136,17 +134,17 @@ function get_pgn() {
       $pgnSource = $pgnUrl;
     }
   } elseif (count($_FILES) == 0) {
-    $pgnStatus = "please enter chess games in PGN format&nbsp; &nbsp;<span style='color: gray;'></span>";
+    $pgnStatus = "info: no games supplied";
     return FALSE;
   } elseif ($_FILES['pgnFile']['error'] === UPLOAD_ERR_OK) {
     $pgnFileName = $_FILES['pgnFile']['name'];
-    $pgnStatus = "PGN games from file: &nbsp; " . $pgnFileName;
+    $pgnStatus = "info: games from file $pgnFileName";
     $pgnFileSize = $_FILES['pgnFile']['size'];
     if ($pgnFileSize == 0) {
-      $pgnStatus = "failed uploading PGN games: file not found, file empty or upload error";
+      $pgnStatus = "info: failed uploading games: file not found, file empty or upload error";
       return FALSE;
     } elseif ($pgnFileSize > $fileUploadLimitBytes) {
-      $pgnStatus = "failed uploading PGN games: file size exceeds " . $fileUploadLimitText . " limit";
+      $pgnStatus = "error: failed uploading games: file size exceeds $fileUploadLimitText limit";
       return FALSE;
     } else {
       $isPgn = preg_match("/\.(pgn|txt)$/i",$pgnFileName);
@@ -154,11 +152,11 @@ function get_pgn() {
       $pgnSource = $_FILES['pgnFile']['tmp_name'];
     }
   } else {
-    $pgnStatus = "failed uploading PGN games: ";
+    $pgnStatus = "error: failed uploading games: ";
     switch ($_FILES['pgnFile']['error']) {
       case UPLOAD_ERR_INI_SIZE:
       case UPLOAD_ERR_FORM_SIZE:
-        $pgnStatus = $pgnStatus . "file size exceeds " . $fileUploadLimitText . " form limit or " . $fileUploadLimitIniText . " server limit";
+        $pgnStatus = $pgnStatus . "file size exceeds $fileUploadLimitText form limit or $fileUploadLimitIniText server limit";
         break;
       case UPLOAD_ERR_PARTIAL:
       case UPLOAD_ERR_NO_FILE:
@@ -178,7 +176,7 @@ function get_pgn() {
 
   if ($isZip) {
     if ($zipSupported) {
-      if ($pgnUrl) { $zipFileString = "<a href='" . $pgnUrl . "'>zip URL</a>"; }
+      if ($pgnUrl) { $zipFileString = $pgnUrl; }
       else { $zipFileString = "zip file"; }
       $pgnZip = zip_open($pgnSource);
       if (is_resource($pgnZip)) {
@@ -189,7 +187,7 @@ function get_pgn() {
             }
             zip_entry_close($zipEntry);
           } else {
-            $pgnStatus = "failed reading " . $zipFileString . " content";
+            $pgnStatus = "error: failed reading $zipFileString content";
             zip_close($pgnZip);
             if (($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
             return FALSE;
@@ -198,32 +196,32 @@ function get_pgn() {
         zip_close($pgnZip);
         if (($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
         if (!$pgnText) {
-          $pgnStatus = "PGN games not found in " . $zipFileString;
+          $pgnStatus = "error: games not found in $zipFileString";
          return FALSE;
         } else {
           return TRUE;
         }
       } else {
         if (($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
-        $pgnStatus = "failed opening " . $zipFileString;
+        $pgnStatus = "error: failed opening $zipFileString";
         return FALSE;
       }
     } else {
-      $pgnStatus = "ZIP support unavailable from this server&nbsp; &nbsp;<span style='color: gray;'>only PGN files are supported</span>";
+      $pgnStatus = "error: ZIP support unavailable from this server, only PGN files are supported";
       return FALSE;
     }
   }
 
   if ($isPgn) {
-    if ($pgnUrl) { $pgnFileString = "<a href='" . $pgnUrl . "'>pgn URL</a>"; }
+    if ($pgnUrl) { $pgnFileString = $pgnUrl; }
     else { $pgnFileString = "pgn file"; }
     $pgnText = file_get_contents($pgnSource, NULL, NULL, 0, $fileUploadLimitBytes + 1);
     if ((!$pgnText) || (($pgnUrl) && (http_response_header_isInvalid($http_response_header)))) {
-       $pgnStatus = "failed reading " . $pgnFileString . ": <span title='" . (($pgnUrl) && (http_response_header_isInvalid($http_response_header)) ? $http_response_header[0] : "") . "'>file not found or server error</span>";
+       $pgnStatus = "error: failed reading $pgnFileString: " . (http_response_header_isInvalid($http_response_header) ? "server error: $http_response_header[0]" : "file not found or server error");
        return FALSE;
     }
     if ((strlen($pgnText) == 0) || (strlen($pgnText) > $fileUploadLimitBytes)) {
-      $pgnStatus = "failed reading " . $pgnFileString . ": file size exceeds " . $fileUploadLimitText . " form limit, " . $fileUploadLimitIniText . " server limit or server error";
+      $pgnStatus = "error: failed reading $pgnFileString: file size exceeds $fileUploadLimitText form limit, $fileUploadLimitIniText server limit or server error";
       return FALSE;
     }
     return TRUE;
@@ -231,9 +229,9 @@ function get_pgn() {
 
   if ($pgnSource) {
     if ($zipSupported) {
-      $pgnStatus = "only PGN and ZIP (zipped pgn) files are supported";
+      $pgnStatus = "error: only PGN and ZIP (zipped pgn) files are supported";
     } else {
-      $pgnStatus = "only PGN files are supported&nbsp; &nbsp;<span style='color: gray;'>ZIP support unavailable from this server</span>";
+      $pgnStatus = "error: only PGN files are supported, ZIP support unavailable from this server";
     }
     return FALSE;
   }
@@ -444,13 +442,13 @@ END;
     theObjPgnText.value = theObjPgnText.value.replace(/^\\s*\\[/g,'[');
     theObjPgnText.value = theObjPgnText.value.replace(/\\n[\\s*\\n]+/g,'\\n\\n');
 
-    document.getElementById('pgnStatus').innerHTML = "PGN games from textbox input";
     document.getElementById('uploadFormFile').value = "";
     document.getElementById('urlFormText').value = "";
 
     if (analysisStarted) { stopAnalysis(); }
     firstStart = true;
     start_pgn4web();
+    myAlert("info: games from textbox input", false, true);
     if (window.location.hash == "board") { window.location.reload(); }
     else { window.location.hash = "board"; }
 
@@ -485,7 +483,6 @@ function reset_viewer() {
    document.getElementById("urlFormText").value = "";
    document.getElementById("pgnFormText").value = "";
    checkPgnFormTextSize();
-   document.getElementById("pgnStatus").innerHTML = "please enter chess games in PGN format&nbsp; &nbsp;<span style='color: gray;'></span>";
    document.getElementById("pgnText").value = '$startPosition';
 
    if (analysisStarted) { stopAnalysis(); }
@@ -567,12 +564,6 @@ function print_chessboard_one() {
 
   print <<<END
 
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="$hideFormCss"><tbody><tr><td valign="bottom" align="left">
-<div style="font-weight: bold; margin-top: 1em; margin-bottom: 1em;"><span id="pgnStatus">$pgnStatus</span>&nbsp;</div>
-</td><td valign="bottom" align="right">
-<div style="margin-bottom: 1em;">&nbsp;<span id="GameNumInfo" style="color: gray; visibility: hidden;"><span id="GameNumCurrent" title="current game"></span> / <span id="GameNumTotal" title="number of games"></span></span></div>
-</td></tr></tbody></table>
-
 <style type="text/css">
 
 @import url("fonts/pgn4web-font-LiberationSans.css");
@@ -624,7 +615,8 @@ function print_chessboard_one() {
 
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 99% !important;
+  width: 100% !important;
+  margin-top: 1em;
 }
 
 .optionSelectControl {
@@ -654,7 +646,7 @@ function print_chessboard_one() {
 
 .searchPgnExpression {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 89% !important;
+  width: 90% !important;
 }
 
 .move,
@@ -702,8 +694,11 @@ a.variation {
 
 .selectSearchContainer {
   text-align: center;
-  padding-top: 1em;
   padding-bottom: 1.5em;
+}
+
+.gameSearch {
+  white-space: nowrap;
 }
 
 .mainContainer {
@@ -1030,8 +1025,10 @@ $pgnText
    }
 
    function customFunctionOnPgnTextLoad() {
+      gameLoadStatus = "$pgnStatus";
+      if (gameLoadStatus) {  myAlert(gameLoadStatus, gameLoadStatus.match(/^error:/), !gameLoadStatus.match(/^error:/)); }
       if (theObj = document.getElementById("GameNumInfo")) {
-         theObj.style.visibility = numberOfGames > 1 ? "visible" : "hidden";
+         theObj.style.display = numberOfGames > 1 ? "block" : "none";
       }
       if (theObj = document.getElementById("GameNumTotal")) {
          theObj.innerHTML = numberOfGames;
@@ -1137,8 +1134,17 @@ $pgnText
 </script>
 
 <div class="selectSearchContainer">
+<table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
+<td colspan="2" align="left" valign="bottom">
 <div id="GameSelector" class="gameSelector"></div>
+</td>
+</tr><tr>
+<td width="100%" align="left" valign="top">
 <div id="GameSearch" class="gameSearch"></div>
+</td><td align="right" valign="bottom">
+<div id="GameNumInfo" style="width: 15ex; color: gray;"><span id="GameNumCurrent" title="current game"></span>&nbsp;/&nbsp;<span id="GameNumTotal" title="number of games"></span></div>
+</td>
+</tr></tbody></table>
 <div id="emMeasure" style="height: 1em;">&nbsp;</div>
 </div>
 
