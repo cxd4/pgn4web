@@ -1057,6 +1057,7 @@ $pgnText
       switch (location.hash) {
          case "#top": goToHash("board"); break;
          case "#board": goToHash("moves"); break;
+         case "#zoom": goToHash("moves"); break;
          case "#moves": goToHash("bottom"); break;
          case "#bottom": goToHash("top"); break;
          default: goToHash("board"); break;
@@ -1069,11 +1070,12 @@ $pgnText
       location.hash = "#" + hash;
    }
 
+   boardZoomTimeout = null;
 
    // customShortcutKey_Shift_1 defined by fide-lookup.js
    // customShortcutKey_Shift_2 defined by fide-lookup.js
 
-   function customShortcutKey_Shift_3() { goToHash("board"); }
+   function customShortcutKey_Shift_3() { if (boardZoomTimeout) { goToHash("zoom"); } else { boardZoomTimeout = setTimeout("boardZoomTimeout = null;", 333); goToHash("board"); } }
    function customShortcutKey_Shift_4() { cycleHash(); }
 
    function customShortcutKey_Shift_5() { cycleLastCommentArea(); }
@@ -1148,7 +1150,7 @@ $pgnText
 <div id="GameNumInfo" style="width: 15ex; color: gray; display: none;"><span id="GameNumCurrent" title="current game"></span>&nbsp;/&nbsp;<span id="GameNumTotal" title="number of games"></span></div>
 </td>
 </tr></tbody></table>
-<div id="emMeasure" style="height: 1em;">&nbsp;</div>
+<div id="emMeasure" style="height: 1em;"><a name="zoom" href="#zoom" style="display: inline-block; width: 392px;">&nbsp;</a></div>
 </div>
 
 <div class="mainContainer">

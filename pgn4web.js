@@ -274,7 +274,8 @@ function handlekey(e) {
       break;
 
     case 83: // s
-      searchPgnGamePrompt();
+      if (e.shiftKey) { searchPgnGame(""); }
+      else { searchPgnGamePrompt(); }
       break;
 
     case 13: // enter
@@ -515,7 +516,7 @@ boardShortcut("H6", "", function(t,e){}, true); // see setG7A6B6H6...
 
 boardShortcut("A5", "repeat last search backward", function(t,e){ searchPgnGame(lastSearchPgnExpression, true); }, true);
 
-boardShortcut("B5", "search prompt", function(t,e){ searchPgnGamePrompt(); }, true);
+boardShortcut("B5", "search prompt", function(t,e){ if (e.shiftKey) { searchPgnGame(""); } else { searchPgnGamePrompt(); } }, true);
 
 boardShortcut("C5", "repeat last search", function(t,e){ searchPgnGame(lastSearchPgnExpression); }, true);
 
@@ -3395,11 +3396,11 @@ function gameNumberSearchPgn(searchExpression, backward, includeCurrent) {
 }
 
 function searchPgnGame(searchExpression, backward) {
+  if (typeof(searchExpression) == "undefined") { searchExpression = ""; }
   lastSearchPgnExpression = searchExpression;
   if (theObj = document.getElementById('searchPgnExpression'))
   { theObj.value = searchExpression; }
-  if ((searchExpression === "") || (!searchExpression)) { return; }
-  if (numberOfGames < 2) { return; }
+  if ((searchExpression === "") || (numberOfGames < 2)) { return; }
   checkGame = gameNumberSearchPgn(searchExpression, backward, false);
   if ((checkGame !== false) && (checkGame != currentGame)) { Init(checkGame); }
 }
