@@ -1982,8 +1982,7 @@ function checkLiveBroadcastStatus() {
 function restartLiveBroadcastTimeout() {
   if (LiveBroadcastDelay === 0) { return; }
   if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); LiveBroadcastInterval = null; }
-  needRestart = (!LiveBroadcastEnded);
-  if ((needRestart === true) && (!LiveBroadcastPaused)) {
+  if ((!LiveBroadcastEnded) && (!LiveBroadcastPaused)) {
     LiveBroadcastInterval = setTimeout("refreshPgnSource()", LiveBroadcastDelay * 60000);
   }
   LiveBroadcastTicker++;
