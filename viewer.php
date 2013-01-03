@@ -1150,7 +1150,7 @@ $pgnText
 <div id="GameNumInfo" style="width: 15ex; color: gray; display: none;"><span id="GameNumCurrent" title="current game"></span>&nbsp;/&nbsp;<span id="GameNumTotal" title="number of games"></span></div>
 </td>
 </tr></tbody></table>
-<div id="emMeasure" style="height: 1em;"><a name="zoom" href="#zoom" style="display: inline-block; width: 392px;">&nbsp;</a></div>
+<div id="emMeasure" style="height: 1em;"><a name="zoom" href="#zoom" onclick="this.blur();" style="display: inline-block; width: 392px;">&nbsp;</a></div>
 </div>
 
 <div class="mainContainer">
@@ -1199,7 +1199,7 @@ $pgnText
 </div>
 <div class="nextMoveAndVariations">
 <span class="nextVariations" id="GameNextVariations" title="next move alternatives"></span>&nbsp;
-<span class="nextMove" id="GameNextMove" title="next move"></span><a class="backButton" href="javascript:void(0);" onclick="backButton(event)" title="move backward">&lt;</a>
+<span class="nextMove" id="GameNextMove" title="next move"></span><a class="backButton" href="javascript:void(0);" onclick="backButton(event); this.blur();" title="move backward">&lt;</a>
 </div>
 <div>&nbsp;</div>
 <div class="lastComment" title="current position comment" id="GameLastComment"></div>
