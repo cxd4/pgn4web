@@ -1252,10 +1252,12 @@ function print_chessboard_two() {
    }
 
    var fenPositions;
+   var fenPositionsEval;
    resetFenPositions();
 
    function resetFenPositions() {
       fenPositions = new Array();
+      fenPositionsEval = new Array();
    }
 
    var annotationBarWidth;
@@ -1264,15 +1266,6 @@ function print_chessboard_two() {
       var index;
       if (!analysisStarted) { clearAnnotationGraph(); }
       else if (theObj = document.getElementById("GameAnnotationGraph")) {
-         annEval = new Array();
-         for (annPly = StartPly; annPly <= StartPly+PlyNumber; annPly++) {
-            annEval[annPly] = annPly === CurrentPly ? 0 : null;
-            if (typeof(fenPositions[annPly]) != "undefined") {
-               index = cache_fen_lastIndexOf(fenPositions[annPly]);
-               if (index != -1) { annEval[annPly] = cache_ev[index]; }
-            }
-            if (annEval[annPly] !== null) { annEval[annPly] = annEval[annPly] < 0 ? -1 + Math.pow(2, annEval[annPly]) : 1 - Math.pow(2, -annEval[annPly]); }
-         }
 
          theObj.width = canvasWidth = graphCanvasWidth();
          theObj.height = canvasHeight = graphCanvasHeight();
@@ -1296,13 +1289,13 @@ function print_chessboard_two() {
          context.fillStyle = "#666666";
          highlightTopLeftX = highlightTopLeftY = highlightBarHeight = null;
          for (annPly = StartPly; annPly <= StartPly + PlyNumber; annPly++) {
-            if ((annEval[annPly] !== null) || (annPly === CurrentPly)) {
+            if ((typeof(fenPositionsEval[annPly]) !== "undefined") || (annPly === CurrentPly)) {
                thisBarTopLeftX = (annPly - StartPly) * annotationBarWidth;
-               if (annEval[annPly] >= 0) {
-                  thisBarHeight = Math.max(  annEval[annPly] * maxBarHeight, lineHeight);
+               if (fenPositionsEval[annPly] >= 0) {
+                  thisBarHeight = Math.max(  fenPositionsEval[annPly] * maxBarHeight, lineHeight);
                   thisBarTopLeftY = lineBottom - thisBarHeight;
                } else {
-                  thisBarHeight = Math.max(- annEval[annPly] * maxBarHeight, lineHeight);
+                  thisBarHeight = Math.max(- fenPositionsEval[annPly] * maxBarHeight, lineHeight);
                   thisBarTopLeftY = lineTop;
                }
                if (annPly !== CurrentPly) {
@@ -1528,6 +1521,9 @@ function print_chessboard_two() {
       resetFenPositions();
       while (true) {
          fenPositions[CurrentPly] = CurrentFEN();
+         if ((index = cache_fen_lastIndexOf(fenPositions[CurrentPly])) != -1) {
+            fenPositionsEval[CurrentPly] = cache_ev[index] < 0 ? -1 + Math.pow(2, cache_ev[index]) : 1 - Math.pow(2, -cache_ev[index]);
+         }
          if (CurrentPly === StartPly) { break; }
          MoveBackward(1, true);
       }
@@ -1604,6 +1600,7 @@ function print_chessboard_two() {
                      g_topNodesPerSecond = Math.max(nodesPerSecond, g_topNodesPerSecond);
                      g_pv = matches[5].replace(/(^\s+|\s*\+|\s+$)/g, "").replace(/\s*stalemate/, "=").replace(/\s*checkmate/, "#");
                      if (validateSearchWithCache()) {
+                        fenPositionsEval[CurrentPly] = g_ev;
                         updateAnnotationGraph();
                         updateAnalysisHeader();
                      }
