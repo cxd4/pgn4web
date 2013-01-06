@@ -1289,7 +1289,10 @@ function print_chessboard_two() {
          context.fillStyle = "#666666";
          highlightTopLeftX = highlightTopLeftY = highlightBarHeight = null;
          for (annPly = StartPly; annPly <= StartPly + PlyNumber; annPly++) {
-            if ((typeof(fenPositionsEval[annPly]) !== "undefined") || (annPly === CurrentPly)) {
+            if ((annPly === CurrentPly) && (typeof(fenPositionsEval[annPly]) == "undefined")) {
+               fenPositionsEval[annPly] = 0;
+            }
+            if (typeof(fenPositionsEval[annPly]) !== "undefined") {
                thisBarTopLeftX = (annPly - StartPly) * annotationBarWidth;
                if (fenPositionsEval[annPly] >= 0) {
                   thisBarHeight = Math.max(  fenPositionsEval[annPly] * maxBarHeight, lineHeight);
