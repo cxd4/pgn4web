@@ -621,8 +621,7 @@ function cache_fen_lastIndexOf(fenString) {
    fenString = fenString.replace(/\s+\d+\s+\d+\s*$/, "");
    if (fenString === cache_fen[cache_last]) { return cache_last; }
    if (typeof(cache_fen.lastIndexOf) == "function") { return (cache_last = cache_fen.lastIndexOf(fenString)); }
-   var l = cache_fen.length;
-   for (var n = l-1; n >= 0; n--) {
+   for (var n = cache_fen.length - 1; n >= 0; n--) {
       if (fenString === cache_fen[n]) { return (cache_last = n); }
    }
    return -1;

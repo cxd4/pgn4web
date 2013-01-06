@@ -1252,11 +1252,10 @@ function print_chessboard_two() {
    }
 
    var fenPositions;
-   resetFenPositions(-1);
+   resetFenPositions();
 
-   function resetFenPositions(annGame) {
-      if (annGame == -1) { fenPositions = new Array(); }
-      else { fenPositions[annGame] = new Array(); }
+   function resetFenPositions() {
+      fenPositions = new Array();
    }
 
    var annotationBarWidth;
@@ -1268,8 +1267,8 @@ function print_chessboard_two() {
          annEval = new Array();
          for (annPly = StartPly; annPly <= StartPly+PlyNumber; annPly++) {
             annEval[annPly] = annPly === CurrentPly ? 0 : null;
-            if ((typeof(fenPositions[currentGame]) != "undefined") && (typeof(fenPositions[currentGame][annPly]) != "undefined")) {
-               index = cache_fen_lastIndexOf(fenPositions[currentGame][annPly]);
+            if (typeof(fenPositions[annPly]) != "undefined") {
+               index = cache_fen_lastIndexOf(fenPositions[annPly]);
                if (index != -1) { annEval[annPly] = cache_ev[index]; }
             }
             if (annEval[annPly] !== null) { annEval[annPly] = annEval[annPly] < 0 ? -1 + Math.pow(2, annEval[annPly]) : 1 - Math.pow(2, -annEval[annPly]); }
@@ -1364,8 +1363,8 @@ function print_chessboard_two() {
 
       annEval = (lastMousemoveAnnPly == -1) ? "&middot;" : "";
       annPv = "";
-      if ((typeof(fenPositions[currentGame]) != "undefined") && (typeof(fenPositions[currentGame][annPly]) != "undefined")) {
-         var index = cache_fen_lastIndexOf(fenPositions[currentGame][annPly]);
+      if (typeof(fenPositions[annPly]) != "undefined") {
+         var index = cache_fen_lastIndexOf(fenPositions[annPly]);
          if (index != -1) {
             annEval = cache_ev[index];
             annPv = cache_pv[index];
@@ -1441,7 +1440,7 @@ function print_chessboard_two() {
    function showExtraAnalysisInfo() {
       if (theObj = document.getElementById("GameAnalysisPv")) {
          freezeAnalysisHeader = true;
-         var index = cache_fen_lastIndexOf(fenPositions[currentGame][CurrentPly]);
+         var index = cache_fen_lastIndexOf(fenPositions[CurrentPly]);
          theObj.innerHTML = "<span class='analysisExtraInfo'>" + (index != -1 ? "eval " + (cache_ev[index] > 0 ? "+" : "") + cache_ev[index] + (cache_ev[index] == Math.floor(cache_ev[index]) ? ".0 " : " ") + "<span class='move'>p</span>": "&middot;") + "<span style='margin-left:2em;'>nps &le; " + num2string(g_topNodesPerSecond) + "</span></span>";
          if (theObj = document.getElementById("GameAnalysisEval")) { theObj.style.color = "transparent"; }
       }
@@ -1526,9 +1525,9 @@ function print_chessboard_two() {
       savedCurrentVar = CurrentVar;
       if (wasAutoPlayOn = isAutoPlayOn) { SetAutoPlay(false); }
       MoveForward(StartPly + PlyNumber - savedCurrentPly, CurrentVar, true);
-      resetFenPositions(currentGame);
+      resetFenPositions();
       while (true) {
-         fenPositions[currentGame][CurrentPly] = CurrentFEN();
+         fenPositions[CurrentPly] = CurrentFEN();
          if (CurrentPly === StartPly) { break; }
          MoveBackward(1, true);
       }
@@ -1540,8 +1539,8 @@ function print_chessboard_two() {
 
    function goToMissingAnalysis(forward) {
       if (!analysisStarted) { return; }
-      if ((typeof(fenPositions[currentGame]) == "undefined") || (typeof(fenPositions[currentGame][CurrentPly]) == "undefined")) { return; }
-      if (cache_fen_lastIndexOf(fenPositions[currentGame][CurrentPly]) == -1) { return; }
+      if (typeof(fenPositions[CurrentPly]) == "undefined") { return; }
+      if (cache_fen_lastIndexOf(fenPositions[CurrentPly]) == -1) { return; }
 
       if (typeof(forward) == "undefined") {
          forward = ((typeof(event) != "undefined") && (typeof(event.shiftKey) != "undefined")) ? !event.shiftKey : true;
@@ -1551,8 +1550,8 @@ function print_chessboard_two() {
          if (forward) { if (thisPly > StartPly + PlyNumber) { thisPly = StartPly; } }
          else { if (thisPly < StartPly) { thisPly = StartPly + PlyNumber; } }
          if (thisPly === CurrentPly) { break; }
-         if ((typeof(fenPositions[currentGame]) == "undefined") || (typeof(fenPositions[currentGame][thisPly]) == "undefined")) { break; }
-         if (cache_fen_lastIndexOf(fenPositions[currentGame][thisPly]) == -1) { GoToMove(thisPly); break; }
+         if (typeof(fenPositions[thisPly]) == "undefined") { break; }
+         if (cache_fen_lastIndexOf(fenPositions[thisPly]) == -1) { GoToMove(thisPly); break; }
       }
       if (wasAutoPlayOn) { SetAutoPlay(true); }
    }
@@ -1739,8 +1738,7 @@ function print_chessboard_two() {
       fenString = fenString.replace(/\s+\d+\s+\d+\s*$/, "");
       if (fenString === cache_fen[cache_last]) { return cache_last; }
       if (typeof(cache_fen.lastIndexOf) == "function") { return (cache_last = cache_fen.lastIndexOf(fenString)); }
-      var l = cache_fen.length;
-      for (var n = l-1; n >= 0; n--) {
+      for (var n = cache_fen.length - 1; n >= 0; n--) {
          if (fenString === cache_fen[n]) { return (cache_last = n); }
       }
       return -1;
