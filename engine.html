@@ -590,10 +590,10 @@ load_cache_from_localStorage();
 
 function validateSearchWithCache() {
    var retVal = false;
-   var id = cache_fen_indexOf(fenString);
+   var id = cache_fen_lastIndexOf(fenString);
    if (id == -1) {
       cache_last = cache_pointer = (cache_pointer + 1) % cache_max;
-      cache_fen[cache_pointer] = fenString;
+      cache_fen[cache_pointer] = fenString.replace(/\s+\d+\s+\d+\s*$/, "");
       cache_ev[cache_pointer] = g_ev;
       cache_pv[cache_pointer] = g_pv;
       cache_nodes[cache_pointer] = g_nodes;
@@ -617,11 +617,12 @@ function validateSearchWithCache() {
 }
 
 var cache_last = 0;
-function cache_fen_indexOf(fenString) {
+function cache_fen_lastIndexOf(fenString) {
+   fenString = fenString.replace(/\s+\d+\s+\d+\s*$/, "");
    if (fenString === cache_fen[cache_last]) { return cache_last; }
-   if (typeof(cache_fen.indexOf) == "function") { return (cache_last = cache_fen.indexOf(fenString)); }
+   if (typeof(cache_fen.lastIndexOf) == "function") { return (cache_last = cache_fen.lastIndexOf(fenString)); }
    var l = cache_fen.length;
-   for (var n = 0; n < l; n++) {
+   for (var n = l-1; n >= 0; n--) {
       if (fenString === cache_fen[n]) { return (cache_last = n); }
    }
    return -1;

@@ -1269,7 +1269,7 @@ function print_chessboard_two() {
          for (annPly = StartPly; annPly <= StartPly+PlyNumber; annPly++) {
             annEval[annPly] = annPly === CurrentPly ? 0 : null;
             if ((typeof(fenPositions[currentGame]) != "undefined") && (typeof(fenPositions[currentGame][annPly]) != "undefined")) {
-               index = cache_fen_indexOf(fenPositions[currentGame][annPly]);
+               index = cache_fen_lastIndexOf(fenPositions[currentGame][annPly]);
                if (index != -1) { annEval[annPly] = cache_ev[index]; }
             }
             if (annEval[annPly] !== null) { annEval[annPly] = annEval[annPly] < 0 ? -1 + Math.pow(2, annEval[annPly]) : 1 - Math.pow(2, -annEval[annPly]); }
@@ -1365,7 +1365,7 @@ function print_chessboard_two() {
       annEval = (lastMousemoveAnnPly == -1) ? "&middot;" : "";
       annPv = "";
       if ((typeof(fenPositions[currentGame]) != "undefined") && (typeof(fenPositions[currentGame][annPly]) != "undefined")) {
-         var index = cache_fen_indexOf(fenPositions[currentGame][annPly]);
+         var index = cache_fen_lastIndexOf(fenPositions[currentGame][annPly]);
          if (index != -1) {
             annEval = cache_ev[index];
             annPv = cache_pv[index];
@@ -1441,7 +1441,7 @@ function print_chessboard_two() {
    function showExtraAnalysisInfo() {
       if (theObj = document.getElementById("GameAnalysisPv")) {
          freezeAnalysisHeader = true;
-         var index = cache_fen_indexOf(fenPositions[currentGame][CurrentPly]);
+         var index = cache_fen_lastIndexOf(fenPositions[currentGame][CurrentPly]);
          theObj.innerHTML = "<span class='analysisExtraInfo'>" + (index != -1 ? "eval " + (cache_ev[index] > 0 ? "+" : "") + cache_ev[index] + (cache_ev[index] == Math.floor(cache_ev[index]) ? ".0 " : " ") + "<span class='move'>p</span>": "&middot;") + "<span style='margin-left:2em;'>nps &le; " + num2string(g_topNodesPerSecond) + "</span></span>";
          if (theObj = document.getElementById("GameAnalysisEval")) { theObj.style.color = "transparent"; }
       }
@@ -1541,7 +1541,7 @@ function print_chessboard_two() {
    function goToMissingAnalysis(forward) {
       if (!analysisStarted) { return; }
       if ((typeof(fenPositions[currentGame]) == "undefined") || (typeof(fenPositions[currentGame][CurrentPly]) == "undefined")) { return; }
-      if (cache_fen_indexOf(fenPositions[currentGame][CurrentPly]) == -1) { return; }
+      if (cache_fen_lastIndexOf(fenPositions[currentGame][CurrentPly]) == -1) { return; }
 
       if (typeof(forward) == "undefined") {
          forward = ((typeof(event) != "undefined") && (typeof(event.shiftKey) != "undefined")) ? !event.shiftKey : true;
@@ -1552,7 +1552,7 @@ function print_chessboard_two() {
          else { if (thisPly < StartPly) { thisPly = StartPly + PlyNumber; } }
          if (thisPly === CurrentPly) { break; }
          if ((typeof(fenPositions[currentGame]) == "undefined") || (typeof(fenPositions[currentGame][thisPly]) == "undefined")) { break; }
-         if (cache_fen_indexOf(fenPositions[currentGame][thisPly]) == -1) { GoToMove(thisPly); break; }
+         if (cache_fen_lastIndexOf(fenPositions[currentGame][thisPly]) == -1) { GoToMove(thisPly); break; }
       }
       if (wasAutoPlayOn) { SetAutoPlay(true); }
    }
@@ -1708,10 +1708,10 @@ function print_chessboard_two() {
       var retVal = false;
       var minNodesForAnnotation = 12345;
       if ((g_nodes < minNodesForAnnotation) && (g_ev < g_maxEv) && (g_ev > -g_maxEv) && (g_ev !== 0)) { return retVal; }
-      var id = cache_fen_indexOf(fenString);
+      var id = cache_fen_lastIndexOf(fenString);
       if (id == -1) {
          cache_last = cache_pointer = (cache_pointer + 1) % cache_max;
-         cache_fen[cache_pointer] = fenString;
+         cache_fen[cache_pointer] = fenString.replace(/\s+\d+\s+\d+\s*$/, "");
          cache_ev[cache_pointer] = g_ev;
          cache_pv[cache_pointer] = g_pv;
          cache_nodes[cache_pointer] = g_nodes;
@@ -1735,11 +1735,12 @@ function print_chessboard_two() {
    }
 
    var cache_last = 0;
-   function cache_fen_indexOf(fenString) {
+   function cache_fen_lastIndexOf(fenString) {
+      fenString = fenString.replace(/\s+\d+\s+\d+\s*$/, "");
       if (fenString === cache_fen[cache_last]) { return cache_last; }
-      if (typeof(cache_fen.indexOf) == "function") { return (cache_last = cache_fen.indexOf(fenString)); }
+      if (typeof(cache_fen.lastIndexOf) == "function") { return (cache_last = cache_fen.lastIndexOf(fenString)); }
       var l = cache_fen.length;
-      for (var n = 0; n < l; n++) {
+      for (var n = l-1; n >= 0; n--) {
          if (fenString === cache_fen[n]) { return (cache_last = n); }
       }
       return -1;
