@@ -1349,6 +1349,8 @@ function print_chessboard_two() {
       if (theObj = document.getElementById("GameAnalysisMove")) {
          if ((annPly > StartPly) && (annPly <= StartPly + PlyNumber)) {
             annMove = (Math.floor(annPly / 2) + (annPly % 2)) + (annPly % 2 ? ". " : "... ") + Moves[annPly - 1];
+            if (isBlunder(annPly, blunderThreshold)) { annMove += translateNAGs("$4"); }
+            else if (isBlunder(annPly, mistakeThreshold)) { annMove += translateNAGs("$2"); }
          } else {
             annMove = "&middot;";
          }
@@ -1375,15 +1377,20 @@ function print_chessboard_two() {
       }
    }
 
+
+   var moderateDefiniteThreshold = 1.85;
+   var slightModerateThreshold = 0.85;
+   var equalSlightThreshold = 0.25;
+
    function ev2NAG(ev) {
-     if ((ev === null) || (ev === "") || (isNaN(ev = parseFloat(ev)))) { return ""; }
-     if (ev < -1.85) { return NAG[19]; } // -+
-     if (ev >  1.85) { return NAG[18]; } // +-
-     if (ev < -0.85) { return NAG[17]; } // -/+
-     if (ev >  0.85) { return NAG[16]; } // +/-
-     if (ev < -0.25) { return NAG[15]; } // =/+
-     if (ev >  0.25) { return NAG[14]; } // +/=
-     return NAG[11];                     // =
+      if ((ev === null) || (ev === "") || (isNaN(ev = parseFloat(ev)))) { return ""; }
+      if (ev < -moderateDefiniteThreshold) { return NAG[19]; } // -+
+      if (ev >  moderateDefiniteThreshold) { return NAG[18]; } // +-
+      if (ev < -slightModerateThreshold)   { return NAG[17]; } // -/+
+      if (ev >  slightModerateThreshold)   { return NAG[16]; } // +/-
+      if (ev < -equalSlightThreshold)      { return NAG[15]; } // =/+
+      if (ev >  equalSlightThreshold)      { return NAG[14]; } // +/=
+      return NAG[11];                                          // =
    }
 
    function clearAnalysisHeader() {
@@ -1434,8 +1441,24 @@ function print_chessboard_two() {
    function showExtraAnalysisInfo() {
       if (theObj = document.getElementById("GameAnalysisPv")) {
          freezeAnalysisHeader = true;
-         var index = cache_fen_lastIndexOf(fenPositions[CurrentPly]);
-         theObj.innerHTML = "<span class='analysisExtraInfo'>" + (index != -1 ? "eval " + (cache_ev[index] > 0 ? "+" : "") + cache_ev[index] + (cache_ev[index] == Math.floor(cache_ev[index]) ? ".0 " : " ") + "<span class='move'>p</span>": "&middot;") + "<span style='margin-left:2em;'>nps &le; " + num2string(g_topNodesPerSecond) + "</span></span>";
+         var thisEval = typeof(fenPositionsEval[CurrentPly]) !== "undefined" ? fenPositionsEval[CurrentPly] : null;
+         var thisHTML = "<span class='analysisExtraInfo'>";
+         if (thisEval === null) {
+            thisHTML += "&middot;";
+         } else {
+            thisHTML += "<span class='move' style='margin-right:2em;'>";
+            if (CurrentPly === StartPly) {
+            thisHTML += "&middot;";
+            } else {
+               thisHTML += ((Math.floor(CurrentPly / 2) + (CurrentPly % 2)) + (CurrentPly % 2 ? ". " : "... ") + Moves[CurrentPly - 1]);
+               thisHTML += (isBlunder(CurrentPly, blunderThreshold) ? translateNAGs("$4") : (isBlunder(CurrentPly, mistakeThreshold) ? translateNAGs("$2") : ""));
+            }
+            thisHTML += "</span>";
+            thisHTML += "eval " + (thisEval > 0 ? "+" : "") + thisEval + (thisEval == Math.floor(thisEval) ? ".0 " : "") + "<span class='move'>p</span>";
+         }
+         thisHTML += "<span style='margin-left:2em;'>nps &le; " + num2string(g_topNodesPerSecond) + "</span>";
+         thisHTML += "</span>";
+         theObj.innerHTML = thisHTML;
          if (theObj = document.getElementById("GameAnalysisEval")) { theObj.style.color = "transparent"; }
       }
    }
@@ -1537,7 +1560,7 @@ function print_chessboard_two() {
    function goToMissingAnalysis(forward) {
       if (!analysisStarted) { return; }
       if (typeof(fenPositions[CurrentPly]) == "undefined") { return; }
-      if (cache_fen_lastIndexOf(fenPositions[CurrentPly]) == -1) { return; }
+      if (typeof(fenPositionsEval[CurrentPly]) == "undefined") { return; }
 
       if (typeof(forward) == "undefined") {
          forward = ((typeof(event) != "undefined") && (typeof(event.shiftKey) != "undefined")) ? !event.shiftKey : true;
@@ -1548,9 +1571,32 @@ function print_chessboard_two() {
          else { if (thisPly < StartPly) { thisPly = StartPly + PlyNumber; } }
          if (thisPly === CurrentPly) { break; }
          if (typeof(fenPositions[thisPly]) == "undefined") { break; }
-         if (cache_fen_lastIndexOf(fenPositions[thisPly]) == -1) { GoToMove(thisPly); break; }
+         if (typeof(fenPositionsEval[thisPly])) { GoToMove(thisPly); break; }
       }
       if (wasAutoPlayOn) { SetAutoPlay(true); }
+   }
+
+
+   var blunderThreshold = 1.15;
+   var mistakeThreshold = 0.55;
+   function isBlunder(thisPly, threshold) {
+      return (((typeof(fenPositionsEval[thisPly]) !== "undefined") && (typeof(fenPositionsEval[thisPly - 1]) !== "undefined")) && (((thisPly % 2 ? -1 : 1) * (fenPositionsEval[thisPly] - fenPositionsEval[thisPly - 1])) > threshold));
+   }
+
+   function blunderCheck(threshold, backwards) {
+      thisPly = StartPly + ((CurrentPly - StartPly + (backwards ? -1 : 1) + (PlyNumber + 1)) % (PlyNumber + 1));
+      while (thisPly !== CurrentPly) {
+         if (isBlunder(thisPly, threshold)) {
+            GoToMove(thisPly);
+            break;
+         }
+         thisPly = StartPly + ((thisPly - StartPly + (backwards ? -1 : 1) + (PlyNumber + 1)) % (PlyNumber + 1));
+      }
+   }
+
+   function annotationSupportedCheckAndWarnUser() {
+      if (!annotationSupported) { alert("warning: engine annotation not available"); }
+      return annotationSupported;
    }
 
 
@@ -1561,10 +1607,19 @@ function print_chessboard_two() {
    // F5
    boardShortcut("F5", "adjust last move and current comment text area, if present", function(t,e){ if (e.shiftKey) { resetLastCommentArea(); } else { cycleLastCommentArea(); } });
 
+   // A6
+   boardShortcut("A6", "go to previous annotated blunder", function(t,e){ if (annotationSupportedCheckAndWarnUser()) { if (e.shiftKey) { GoToMove(CurrentPly - 1); } else { if (!analysisStarted) { userToggleAnalysis(); } blunderCheck(blunderThreshold, false); } } });
+   // B6
+   boardShortcut("B6", "go to previous annotated mistake", function(t,e){ if (annotationSupportedCheckAndWarnUser()) { if (e.shiftKey) { GoToMove(CurrentPly - 1); } else { if (!analysisStarted) { userToggleAnalysis(); } blunderCheck(mistakeThreshold, true); } } });
+   // G6
+   boardShortcut("G6", "go to next annotated mistake", function(t,e){ if (annotationSupportedCheckAndWarnUser()) { if (e.shiftKey) { GoToMove(CurrentPly - 1); } else { if (!analysisStarted) { userToggleAnalysis(); } blunderCheck(mistakeThreshold, false); } } });
+   // H6
+   boardShortcut("H6", "go to next annotated blunder", function(t,e){ if (annotationSupportedCheckAndWarnUser()) { if (e.shiftKey) { GoToMove(CurrentPly - 1); } else { if (!analysisStarted) { userToggleAnalysis(); } blunderCheck(blunderThreshold, false); } } });
+
    // G5
-   boardShortcut("G5", "automated game annotation", function(t,e){ if (annotationSupported) { if (e.shiftKey) { stopAnnotateGame(); } else { annotateGame(); } } else { alert("warning: engine annotation not available"); } });
+   boardShortcut("G5", "automated game annotation", function(t,e){ if (annotationSupportedCheckAndWarnUser()) { if (e.shiftKey) { stopAnnotateGame(); } else { annotateGame(); } } });
    // H5
-   boardShortcut("H5", "start/stop annotation", function(t,e){ if (annotationSupported) { if (e.shiftKey) { if (confirm("clear annotation cache, all current and stored annotation data will be lost")) { clear_cache_from_localStorage(); cache_clear(); if (analysisStarted) { updateAnnotationGraph(); updateAnalysisHeader(); } } } else { userToggleAnalysis(); } } else { alert("warning: engine annotation not available"); } });
+   boardShortcut("H5", "start/stop annotation", function(t,e){ if (annotationSupportedCheckAndWarnUser()) { if (e.shiftKey) { if (confirm("clear annotation cache, all current and stored annotation data will be lost")) { clear_cache_from_localStorage(); cache_clear(); if (analysisStarted) { updateAnnotationGraph(); updateAnalysisHeader(); } } } else { userToggleAnalysis(); } } });
 
 
    var pgn4web_chess_engine_id = "garbochess-pgn4web-" + pgn4web_version;

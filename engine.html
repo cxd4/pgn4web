@@ -503,15 +503,20 @@ function InitializeBackgroundEngine() {
    }
 }
 
+
+var moderateDefiniteThreshold = 1.85;
+var slightModerateThreshold = 0.85;
+var equalSlightThreshold = 0.25;
+
 function ev2NAG(ev) {
    if ((ev === null) || (ev === "") || (isNaN(ev = parseFloat(ev)))) { return ""; }
-   if (ev < -1.85) { return NAG[19]; } // -+
-   if (ev >  1.85) { return NAG[18]; } // +-
-   if (ev < -0.85) { return NAG[17]; } // -/+
-   if (ev >  0.85) { return NAG[16]; } // +/-
-   if (ev < -0.25) { return NAG[15]; } // =/+
-   if (ev >  0.25) { return NAG[14]; } // +/=
-   return NAG[11];                     // =
+   if (ev < -moderateDefiniteThreshold) { return NAG[19]; } // -+
+   if (ev >  moderateDefiniteThreshold) { return NAG[18]; } // +-
+   if (ev < -slightModerateThreshold)   { return NAG[17]; } // -/+
+   if (ev >  slightModerateThreshold)   { return NAG[16]; } // +/-
+   if (ev < -equalSlightThreshold)      { return NAG[15]; } // =/+
+   if (ev >  equalSlightThreshold)      { return NAG[14]; } // +/=
+   return NAG[11];                                          // =
 }
 
 
