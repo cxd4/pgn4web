@@ -426,6 +426,12 @@ END;
     document.getElementById("pgnFormText").title = document.getElementById("pgnFormButton").title;
   }
 
+  function checkSelectHeight() {
+    if ((theObj = document.getElementById("urlFormSelect")) && (theOther = document.getElementById("urlFormText")) && (theOther.offsetHeight)) {
+      theObj.style.height = theOther.offsetHeight + "px";
+    }
+  }
+
   function loadPgnFromForm() {
 
     theObjPgnFormText = document.getElementById('pgnFormText');
@@ -1031,6 +1037,9 @@ $pgnText
    function customFunctionOnPgnTextLoad() {
       gameLoadStatus = "$pgnStatus";
       if (gameLoadStatus) {  myAlert(gameLoadStatus, gameLoadStatus.match(/^error:/), !gameLoadStatus.match(/^error:/)); }
+      if ((theObj = document.getElementById("GameSelSelect")) && (theOther = document.getElementById("urlFormText")) && (theOther.offsetHeight)) {
+         theObj.style.height = theOther.offsetHeight + "px";
+      }
       if (theObj = document.getElementById("GameNumInfo")) {
          theObj.style.display = numberOfGames > 1 ? "block" : "none";
       }
@@ -1127,7 +1136,7 @@ $pgnText
    function fitLastCommentArea() {
       if (theObj = document.getElementById("GameLastComment")) {
          theObj.style.height = "";
-         theObj.style.height = theObj.scrollHeight;
+         theObj.style.height = theObj.scrollHeight + "px";
       }
    }
 
@@ -1878,6 +1887,7 @@ function print_footer() {
 
 function pgn4web_onload(e) {
   setPgnUrl("$pgnUrl");
+  checkSelectHeight();
   checkPgnFormTextSize();
   start_pgn4web();
   $hashStatement
