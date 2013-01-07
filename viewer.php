@@ -426,11 +426,6 @@ END;
     document.getElementById("pgnFormText").title = document.getElementById("pgnFormButton").title;
   }
 
-  function checkSelectHeight() {
-    if ((theObj = document.getElementById("urlFormSelect")) && (theOther = document.getElementById("urlFormText")) && (theOther.offsetHeight)) {
-      theObj.style.height = theOther.offsetHeight + "px";
-    }
-  }
 
   function loadPgnFromForm() {
 
@@ -511,11 +506,11 @@ function restoreShortcutKeysStatus() {}
 <table style="margin-bottom: 1.5em; $hideFormCss" width="100%" cellspacing="0" cellpadding="3" border="0"><tbody>
 
   <tr>
-    <td align="left" valign="top">
+    <td align="left" valign="middle">
       <form id="uploadForm" action="$thisScript" enctype="multipart/form-data" method="POST" style="display: inline;">
         <input id="uploadFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) file" style="width:100%;" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="this.blur(); return checkPgnFile();">
     </td>
-    <td colspan="$formVariableColspan" width="100%" align="left" valign="top">
+    <td colspan="$formVariableColspan" width="100%" align="left" valign="middle">
         <input type="hidden" name="MAX_FILE_SIZE" value="$fileUploadLimitBytes">
         <input id="uploadFormFile" name="pgnFile" type="file" class="formControl" style="width:100%;" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="this.blur();">
       </form>
@@ -523,18 +518,18 @@ function restoreShortcutKeysStatus() {}
   </tr>
 
   <tr>
-    <td align="left" valign="top">
+    <td align="left" valign="middle">
       <form id="urlForm" action="$thisScript" method="POST" style="display: inline;">
         <input id="urlFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) URL" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="this.blur(); return checkPgnUrl();">
     </td>
-    <td width="100%" align="left" valign="top">
+    <td width="100%" align="left" valign="middle">
         <input id="urlFormText" name="pgnUrl" type="text" class="formControl" value="" style="width:100%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText">
       </form>
     </td>
 END;
 
   if ($presetURLsArray) {
-    print('    <td align="right" valign="top">' . "\n" . '        <select id="urlFormSelect" class="formControl" title="select the download URL from the preset options; please support the sites providing the PGN downloads" onChange="this.blur(); urlFormSelectChange();">' . "\n" . '          <option value="header">preset URL</option>' . "\n");
+    print('    <td align="right" valign="middle">' . "\n" . '        <select id="urlFormSelect" class="formControl" title="select the download URL from the preset options; please support the sites providing the PGN downloads" onChange="this.blur(); urlFormSelectChange();">' . "\n" . '          <option value="header">preset URL</option>' . "\n");
     foreach($presetURLsArray as $value) {
       print('          <option value="' . $value['label'] . '">' . $value['label'] . '</option>' . "\n");
     }
@@ -549,7 +544,7 @@ END;
       <form id="textForm" style="display: inline;">
         <input id="pgnFormButton" type="button" class="formControl" value="show games from PGN textbox" style="width:100%;" onClick="this.blur(); loadPgnFromForm();">
     </td>
-    <td colspan="$formVariableColspan" rowspan="2" width="100%" align="right" valign="top">
+    <td colspan="$formVariableColspan" rowspan="2" width="100%" align="right" valign="middle">
         <textarea id="pgnFormText" class="formControl" name="pgnTextbox" rows=4 style="width:100%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" onChange="checkPgnFormTextSize();">$pgnTextbox</textarea>
       </form>
     </td>
@@ -1037,9 +1032,6 @@ $pgnText
    function customFunctionOnPgnTextLoad() {
       gameLoadStatus = "$pgnStatus";
       if (gameLoadStatus) {  myAlert(gameLoadStatus, gameLoadStatus.match(/^error:/), !gameLoadStatus.match(/^error:/)); }
-      if ((theObj = document.getElementById("GameSelSelect")) && (theOther = document.getElementById("urlFormText")) && (theOther.offsetHeight)) {
-         theObj.style.height = theOther.offsetHeight + "px";
-      }
       if (theObj = document.getElementById("GameNumInfo")) {
          theObj.style.display = numberOfGames > 1 ? "block" : "none";
       }
@@ -1464,9 +1456,8 @@ function print_chessboard_two() {
                thisHTML += (isBlunder(CurrentPly, blunderThreshold) ? translateNAGs("$4") : (isBlunder(CurrentPly, mistakeThreshold) ? translateNAGs("$2") : ""));
             }
             thisHTML += "</span>";
-            thisHTML += "eval " + (thisEval > 0 ? "+" : "") + thisEval + (thisEval == Math.floor(thisEval) ? ".0 " : "") + "<span class='move'>p</span>";
+            thisHTML += (thisEval > 0 ? "+" : "") + thisEval + (thisEval == Math.floor(thisEval) ? ".0 " : "") + "<span class='move'>p</span>";
          }
-         thisHTML += "<span style='margin-left:2em;'>nps &le; " + num2string(g_topNodesPerSecond) + "</span>";
          thisHTML += "</span>";
          theObj.innerHTML = thisHTML;
          if (theObj = document.getElementById("GameAnalysisEval")) { theObj.style.color = "transparent"; }
@@ -1851,10 +1842,10 @@ function print_chessboard_two() {
    }
 
    function customDebugInfo() {
-      var dbg = "";
-      if (!annotationSupported) { dbg += " annotation=unavailable"; }
-      else if (!analysisStarted) { dbg += " annotation=disabled"; }
-      else { dbg += " annotation=" + (g_backgroundEngine ? ( annotateInProgress ? "gameInProgress" : "pondering") : "idle") + " analysisSeconds=" + analysisSeconds + " topNodesPerSecond=" + num2string(g_topNodesPerSecond) + cacheDebugInfo(); }
+      var dbg = "annotation=";
+      if (!annotationSupported) { dbg += "unavailable"; }
+      else if (!analysisStarted) { dbg += "disabled"; }
+      else { dbg += (g_backgroundEngine ? ( annotateInProgress ? "gameInProgress" : "pondering") : "idle") + " analysisSeconds=" + analysisSeconds + " topNodesPerSecond=" + num2string(g_topNodesPerSecond) + cacheDebugInfo(); }
       return dbg;
    }
 
@@ -1887,7 +1878,6 @@ function print_footer() {
 
 function pgn4web_onload(e) {
   setPgnUrl("$pgnUrl");
-  checkSelectHeight();
   checkPgnFormTextSize();
   start_pgn4web();
   $hashStatement

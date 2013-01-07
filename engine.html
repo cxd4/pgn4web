@@ -769,9 +769,10 @@ function customFunctionOnMove() {
 
 function customDebugInfo() {
    var dbg = "autoUpdate=" + autoUpdate;
-   if (disableEngine) { dbg += " engine=disabled"; }
-   else if (!window.Worker) { dbg += " engine=unavailable"; }
-   else { dbg += " engine=" + (g_backgroundEngine ? (autoPlay ? "autoplay" : "pondering") : "idle") + " analysisSeconds=" + analysisSeconds + " topNodesPerSecond=" + num2string(g_topNodesPerSecond) + cacheDebugInfo(); }
+   dbg += " engine=";
+   if (disableEngine) { dbg += "disabled"; }
+   else if (!window.Worker) { dbg += "unavailable"; }
+   else { dbg += (g_backgroundEngine ? (autoPlay ? "autoplay" : "pondering") : "idle") + " analysisSeconds=" + analysisSeconds + " topNodesPerSecond=" + num2string(g_topNodesPerSecond) + cacheDebugInfo(); }
    return dbg;
 }
 
