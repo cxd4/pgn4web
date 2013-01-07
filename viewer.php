@@ -310,6 +310,7 @@ body {
 
 div, span, table, tr, td {
   font-family: 'pgn4web Liberation Sans', sans-serif; /* fixes IE9 body css issue */
+  font-size: 16px; /* fixes Opera table css issue */
 }
 
 a {
@@ -1147,7 +1148,7 @@ $pgnText
 <td width="100%" align="left" valign="top">
 <div id="GameSearch" class="gameSearch"></div>
 </td><td align="right" valign="bottom">
-<div id="GameNumInfo" style="width: 15ex; color: gray; display: none;"><span id="GameNumCurrent" title="current game"></span>&nbsp;/&nbsp;<span id="GameNumTotal" title="number of games"></span></div>
+<div id="GameNumInfo" style="width: 15ex; margin-right: 0.5ex; color: gray; display: none;"><span id="GameNumCurrent" title="current game"></span>&nbsp;/&nbsp;<span id="GameNumTotal" title="number of games"></span></div>
 </td>
 </tr></tbody></table>
 <div id="emMeasure" style="height: 1em;"><a name="zoom" href="#zoom" onclick="this.blur();" style="display: inline-block; width: 392px;">&nbsp;</a></div>
@@ -1182,9 +1183,9 @@ $pgnText
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="if (event.shiftKey) { displayHelp('informant_symbols'); } else { showExtraAnalysisInfo(); } this.blur();" onmouseout="hideExtraAnalysisInfo();" class="innerHeaderItem analysisEval" id="GameAnalysisEval"></a><a href="javascript:void(0);" onclick="goToMissingAnalysis(!event.shiftKey); this.blur();" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv"></a><b>&nbsp;</b></div>
+<div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="if (event.shiftKey) { displayHelp('informant_symbols'); } else { showExtraAnalysisInfo(); } this.blur();" onmouseout="hideExtraAnalysisInfo(event);" class="innerHeaderItem analysisEval" id="GameAnalysisEval"></a><a href="javascript:void(0);" onclick="goToMissingAnalysis(!event.shiftKey); this.blur();" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer" id="GameAnnotationMeasure"><b>&nbsp;</b></div>
-<canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick(event.shiftKey); this.blur();" onmousemove="annotationGraphMousemove();" onmouseover="annotationGraphMouseover();" onmouseout="annotationGraphMouseout();" title="engine annotation graph"></canvas>
+<canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick(event); this.blur();" onmousemove="annotationGraphMousemove(event);" onmouseover="annotationGraphMouseover(event);" onmouseout="annotationGraphMouseout(event);" title="engine annotation graph"></canvas>
 </div>
 
 </div>
@@ -1404,10 +1405,10 @@ function print_chessboard_two() {
    lastMousemoveAnnPly = -1;
    lastMousemoveAnnGame = -1;
 
-   function annotationGraphMouseover() {
+   function annotationGraphMouseover(e) {
    }
 
-   function annotationGraphMouseout() {
+   function annotationGraphMouseout(e) {
       if (theObj = document.getElementById("GameAnalysisMove")) { theObj.style.display = ""; }
       if (theObj = document.getElementById("GameAnalysisEval")) { theObj.style.fontWeight = ""; }
       lastMousemoveAnnPly = -1;
@@ -1415,8 +1416,8 @@ function print_chessboard_two() {
       if (analysisStarted) { updateAnalysisHeader(); }
    }
 
-   function annotationGraphMousemove() {
-      newMousemoveAnnPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
+   function annotationGraphMousemove(e) {
+      newMousemoveAnnPly = StartPly + Math.floor((e.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
       if ((newMousemoveAnnPly !== lastMousemoveAnnPly) || (currentGame !== lastMousemoveAnnGame)) {
          lastMousemoveAnnPly = newMousemoveAnnPly <= StartPly + PlyNumber ? newMousemoveAnnPly : -1;
          lastMousemoveAnnGame = currentGame;
@@ -1427,11 +1428,11 @@ function print_chessboard_two() {
       }
    }
 
-   function annotationGraphClick(shiftKeyPressed) {
+   function annotationGraphClick(e) {
       if ((analysisStarted) && (typeof(annotationBarWidth) != "undefined")) {
-         annPly = StartPly + Math.floor((window.event.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
+         annPly = StartPly + Math.floor((e.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
          if ((annPly >= StartPly) && (annPly <= StartPly + PlyNumber)) {
-            if (shiftKeyPressed) { save_cache_to_localStorage(); }
+            if (e.shiftKey) { save_cache_to_localStorage(); }
             else { GoToMove(annPly); }
          }
       }
@@ -1463,7 +1464,7 @@ function print_chessboard_two() {
       }
    }
 
-   function hideExtraAnalysisInfo() {
+   function hideExtraAnalysisInfo(e) {
       if (freezeAnalysisHeader) {
          freezeAnalysisHeader = false;
          if (theObj = document.getElementById("GameAnalysisEval")) { theObj.style.color = ""; }
