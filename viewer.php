@@ -513,11 +513,11 @@ function restoreShortcutKeysStatus() {}
   <tr>
     <td align="left" valign="top">
       <form id="uploadForm" action="$thisScript" enctype="multipart/form-data" method="POST" style="display: inline;">
-        <input id="uploadFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) file" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="this.blur(); return checkPgnFile();">
+        <input id="uploadFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) file" style="width:100%;" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="this.blur(); return checkPgnFile();">
     </td>
     <td colspan="$formVariableColspan" width="100%" align="left" valign="top">
         <input type="hidden" name="MAX_FILE_SIZE" value="$fileUploadLimitBytes">
-        <input id="uploadFormFile" name="pgnFile" type="file" class="formControl" style="width:100%" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="this.blur();">
+        <input id="uploadFormFile" name="pgnFile" type="file" class="formControl" style="width:100%;" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="this.blur();">
       </form>
     </td>
   </tr>
@@ -528,7 +528,7 @@ function restoreShortcutKeysStatus() {}
         <input id="urlFormSubmitButton" type="submit" class="formControl" value="show games from PGN (or zipped PGN) URL" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="this.blur(); return checkPgnUrl();">
     </td>
     <td width="100%" align="left" valign="top">
-        <input id="urlFormText" name="pgnUrl" type="text" class="formControl" value="" style="width:100%" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText">
+        <input id="urlFormText" name="pgnUrl" type="text" class="formControl" value="" style="width:100%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText">
       </form>
     </td>
 END;
