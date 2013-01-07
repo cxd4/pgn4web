@@ -1,4 +1,4 @@
-// js-unzip.js code as of 2010-05-12
+// js-unzip.js code as of 2010-05-12, with further patch from 2013-01-07
 // (note that the code from 2011-11-06 does NOT seem to work properly)
 // from the js-unzip repository https://github.com/augustl/js-unzip/
 // See js-unzip_README.textile and js-inflate_LICENSE.txt for more info.
@@ -49,10 +49,6 @@
             throw "File is using UTF8. Not supported.";
         }
 
-        if (this.isUsingBit3TrailingDataDescriptor()) {
-            throw "File is using bit 3 trailing data descriptor. Not supported.";
-        }
-
         this.crc32              = binaryStream.getNextBytesAsNumber(4);
         this.compressedSize     = binaryStream.getNextBytesAsNumber(4);
         this.uncompressedSize   = binaryStream.getNextBytesAsNumber(4);
@@ -67,6 +63,15 @@
         this.fileName  = binaryStream.getNextBytesAsString(this.fileNameLength);
         this.extra     = binaryStream.getNextBytesAsString(this.extraFieldLength);
         this.data      = binaryStream.getNextBytesAsString(this.compressedSize);
+
+        // pgn4web: merged patch from 2013-01-07, see https://github.com/augustl/js-unzip/pull/6
+        if (this.isUsingBit3TrailingDataDescriptor()) {
+            if (typeof(console) !== "undefined") {
+                console.log( "File is using bit 3 trailing data descriptor. Not supported.");
+            }
+            binaryStream.getNextBytesAsNumber(16);  //Skip the descriptor and move to beginning of next ZipEntry
+        }
+
     }
 
     JSUnzip.ZipEntry.prototype = {
@@ -104,7 +109,7 @@
         // why, and do that here if neccesary. So far, I've never gotten a
         // char code higher than 255.
         getByteAt: function (index) {
-            return this.stream.charCodeAt(index) & 0xff; // pgn4web patch for data from XMLHttpRequests
+            return this.stream.charCodeAt(index) & 0xff; // pgn4web: patch for data from XMLHttpRequests
             // return this.stream.charCodeAt(index);
         },
 
