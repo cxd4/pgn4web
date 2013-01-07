@@ -1289,16 +1289,14 @@ function print_chessboard_two() {
          context.fillStyle = "#666666";
          highlightTopLeftX = highlightTopLeftY = highlightBarHeight = null;
          for (annPly = StartPly; annPly <= StartPly + PlyNumber; annPly++) {
-            if ((annPly === CurrentPly) && (typeof(fenPositionsEval[annPly]) == "undefined")) {
-               fenPositionsEval[annPly] = 0;
-            }
-            if (typeof(fenPositionsEval[annPly]) !== "undefined") {
+            annGraphEval = typeof(fenPositionsEval[annPly]) != "undefined" ? fenPositionsEval[annPly] : (annPly === CurrentPly ? 0 : null);
+            if (annGraphEval !== null) {
                thisBarTopLeftX = (annPly - StartPly) * annotationBarWidth;
-               if (fenPositionsEval[annPly] >= 0) {
-                  thisBarHeight = Math.max(  fenPositionsEval[annPly] * maxBarHeight, lineHeight);
+               if (annGraphEval >= 0) {
+                  thisBarHeight = Math.max((1 - Math.pow(2, -annGraphEval)) * maxBarHeight, lineHeight);
                   thisBarTopLeftY = lineBottom - thisBarHeight;
                } else {
-                  thisBarHeight = Math.max(- fenPositionsEval[annPly] * maxBarHeight, lineHeight);
+                  thisBarHeight = Math.max((1 - Math.pow(2,  annGraphEval)) * maxBarHeight, lineHeight);
                   thisBarTopLeftY = lineTop;
                }
                if (annPly !== CurrentPly) {
@@ -1525,7 +1523,7 @@ function print_chessboard_two() {
       while (true) {
          fenPositions[CurrentPly] = CurrentFEN();
          if ((index = cache_fen_lastIndexOf(fenPositions[CurrentPly])) != -1) {
-            fenPositionsEval[CurrentPly] = cache_ev[index] < 0 ? -1 + Math.pow(2, cache_ev[index]) : 1 - Math.pow(2, -cache_ev[index]);
+            fenPositionsEval[CurrentPly] = cache_ev[index];
          }
          if (CurrentPly === StartPly) { break; }
          MoveBackward(1, true);
