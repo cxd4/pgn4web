@@ -1255,11 +1255,13 @@ function print_chessboard_two() {
 
    var fenPositions;
    var fenPositionsEval;
+   var fenPositionsNodes;
    resetFenPositions();
 
    function resetFenPositions() {
       fenPositions = new Array();
       fenPositionsEval = new Array();
+      fenPositionsNodes = new Array();
    }
 
    var annotationBarWidth;
@@ -1444,6 +1446,7 @@ function print_chessboard_two() {
       if (theObj = document.getElementById("GameAnalysisPv")) {
          freezeAnalysisHeader = true;
          var thisEval = typeof(fenPositionsEval[CurrentPly]) !== "undefined" ? fenPositionsEval[CurrentPly] : null;
+         var thisNodes = typeof(fenPositionsNodes[CurrentPly]) !== "undefined" ? fenPositionsNodes[CurrentPly] : 0;
          var thisHTML = "<span class='analysisExtraInfo'>";
          if (thisEval === null) {
             thisHTML += "&middot;";
@@ -1457,6 +1460,7 @@ function print_chessboard_two() {
             }
             thisHTML += "</span>";
             thisHTML += (thisEval > 0 ? "+" : "") + thisEval + (thisEval == Math.floor(thisEval) ? ".0 " : "") + "<span class='move'>p</span>";
+            thisHTML += "<span style='margin-left:2em'>" + num2string(thisNodes) + " nodes</span>";
          }
          thisHTML += "</span>";
          theObj.innerHTML = thisHTML;
@@ -1473,11 +1477,13 @@ function print_chessboard_two() {
    }
 
    function num2string(num) {
-      if (num >= Math.pow(10, 9)) { num = Math.floor(num / Math.pow(10, 9)) + "G"; }
-      else if (num >= Math.pow(10, 6)) { num = Math.floor(num / Math.pow(10, 6)) + "M"; }
-      else if (num >= Math.pow(10, 3)) { num = Math.floor(num / Math.pow(10, 3)) + "K"; }
-      else { num = num + ""; }
-      return num;
+      if (num >= Math.pow(10, 12)) { num = Math.round(num / Math.pow(10, 11)) / 10;  unit = "T"; }
+      else if (num >= Math.pow(10, 9)) { num = Math.round(num / Math.pow(10, 8)) / 10;  unit = "G"; }
+      else if (num >= Math.pow(10, 6)) { num = Math.round(num / Math.pow(10, 5)) / 10; unit = "M"; }
+      else if (num >= Math.pow(10, 3)) { num = Math.round(num / Math.pow(10, 2)) / 10; unit = "K"; }
+      else { unit = ""; }
+      if ((unit !== "") && (num === Math.floor(num))) { num += ".0"; }
+      return num + unit;
    }
 
 
@@ -1548,6 +1554,7 @@ function print_chessboard_two() {
          fenPositions[CurrentPly] = CurrentFEN();
          if ((index = cache_fen_lastIndexOf(fenPositions[CurrentPly])) != -1) {
             fenPositionsEval[CurrentPly] = cache_ev[index];
+            fenPositionsNodes[CurrentPly] = cache_nodes[index];
          }
          if (CurrentPly === StartPly) { break; }
          MoveBackward(1, true);
@@ -1572,7 +1579,7 @@ function print_chessboard_two() {
          else { if (thisPly < StartPly) { thisPly = StartPly + PlyNumber; } }
          if (thisPly === CurrentPly) { break; }
          if (typeof(fenPositions[thisPly]) == "undefined") { break; }
-         if (typeof(fenPositionsEval[thisPly])) { GoToMove(thisPly); break; }
+         if (typeof(fenPositionsEval[thisPly]) !== "undefined") { GoToMove(thisPly); break; }
       }
       if (wasAutoPlayOn) { SetAutoPlay(true); }
    }
@@ -1658,6 +1665,7 @@ function print_chessboard_two() {
                      g_pv = matches[5].replace(/(^\s+|\s*\+|\s+$)/g, "").replace(/\s*stalemate/, "=").replace(/\s*checkmate/, "#");
                      if (validateSearchWithCache()) {
                         fenPositionsEval[CurrentPly] = g_ev;
+                        fenPositionsNodes[CurrentPly] = g_nodes;
                         updateAnnotationGraph();
                         updateAnalysisHeader();
                      }

@@ -777,11 +777,13 @@ function customDebugInfo() {
 }
 
 function num2string(num) {
-   if (num >= Math.pow(10, 9)) { num = Math.floor(num / Math.pow(10, 9)) + "G"; }
-   else if (num >= Math.pow(10, 6)) { num = Math.floor(num / Math.pow(10, 6)) + "M"; }
-   else if (num >= Math.pow(10, 3)) { num = Math.floor(num / Math.pow(10, 3)) + "K"; }
-   else { num = num + ""; }
-   return num;
+   if (num >= Math.pow(10, 12)) { num = Math.round(num / Math.pow(10, 11)) / 10;  unit = "T"; }
+   else if (num >= Math.pow(10, 9)) { num = Math.round(num / Math.pow(10, 8)) / 10;  unit = "G"; }
+   else if (num >= Math.pow(10, 6)) { num = Math.round(num / Math.pow(10, 5)) / 10; unit = "M"; }
+   else if (num >= Math.pow(10, 3)) { num = Math.round(num / Math.pow(10, 2)) / 10; unit = "K"; }
+   else { unit = ""; }
+   if ((unit !== "") && (num === Math.floor(num))) { num += ".0"; }
+   return num + unit;
 }
 
 
