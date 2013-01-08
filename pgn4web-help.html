@@ -251,7 +251,7 @@ if (opener && (typeof(opener.boardTitle) != "undefined")) {
     rowDisplayed = false;
     for (c=0; c<=7; c++) {
       if (opener.boardTitle[c][r] !== "") {
-        print_help_row(colLetters.charAt(c) + rowNumbers.charAt(7-r), opener.boardTitle[c][r]);
+        print_help_row(colLetters.charAt(c) + rowNumbers.charAt(7-r), opener.boardTitle[c][r].replace(/^(pgn4web .* debug info), \d+ alerts?/, "$1"));
         rowDisplayed = true;
       }
     }

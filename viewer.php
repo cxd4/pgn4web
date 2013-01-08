@@ -1579,7 +1579,7 @@ function print_chessboard_two() {
          else { if (thisPly < StartPly) { thisPly = StartPly + PlyNumber; } }
          if (thisPly === CurrentPly) { break; }
          if (typeof(fenPositions[thisPly]) == "undefined") { break; }
-         if (typeof(fenPositionsEval[thisPly]) !== "undefined") { GoToMove(thisPly); break; }
+         if (typeof(fenPositionsEval[thisPly]) == "undefined") { GoToMove(thisPly); break; }
       }
       if (wasAutoPlayOn) { SetAutoPlay(true); }
    }
