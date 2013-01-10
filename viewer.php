@@ -1585,10 +1585,16 @@ function print_chessboard_two() {
    }
 
 
-   var blunderThreshold = 1.15;
    var mistakeThreshold = 0.55;
+   var blunderThreshold = 1.15;
+   var ignoreThreshold = 4.95;
+
    function isBlunder(thisPly, threshold) {
-      return (((typeof(fenPositionsEval[thisPly]) !== "undefined") && (typeof(fenPositionsEval[thisPly - 1]) !== "undefined")) && (((thisPly % 2 ? -1 : 1) * (fenPositionsEval[thisPly] - fenPositionsEval[thisPly - 1])) > threshold));
+      if (typeof(fenPositionsEval[thisPly]) == "undefined") { return false; }
+      if (typeof(fenPositionsEval[thisPly - 1]) == "undefined") { return false; }
+      if ((fenPositionsEval[thisPly] > ignoreThreshold) && (fenPositionsEval[thisPly - 1] > ignoreThreshold)) { return false; }
+      if ((fenPositionsEval[thisPly] < -ignoreThreshold) && (fenPositionsEval[thisPly - 1] < -ignoreThreshold)) { return false; }
+      return (((thisPly % 2 ? -1 : 1) * (fenPositionsEval[thisPly] - fenPositionsEval[thisPly - 1])) > threshold);
    }
 
    function blunderCheck(threshold, backwards) {
