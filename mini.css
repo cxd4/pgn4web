@@ -83,6 +83,12 @@ body {
   text-decoration: none;
 }
 
+a.move,
+a.variation,
+.commentMove {
+  white-space: nowrap;
+}
+
 .move {
   color: black;
 }

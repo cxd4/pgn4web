@@ -131,6 +131,12 @@ a {
   font-family: 'pgn4web ChessSansPiratf', 'pgn4web Liberation Sans', sans-serif;
 }
 
+a.move,
+a.variation,
+.commentMove {
+  white-space: nowrap;
+}
+
 .move,
 .variation {
   text-decoration: none;

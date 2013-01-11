@@ -95,6 +95,12 @@ a {
   color: gray;
 }
 
+a.move,
+a.variation,
+.commentMove {
+  white-space: nowrap;
+}
+
 a.variation {
   color: gray;
 }

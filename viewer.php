@@ -667,6 +667,12 @@ function print_chessboard_one() {
   font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
 }
 
+a.move,
+a.variation,
+.commentMove {
+  white-space: nowrap;
+}
+
 .move,
 .variation {
   text-decoration: none;

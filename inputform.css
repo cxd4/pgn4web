@@ -121,6 +121,12 @@ textarea, option {
   font-size: 14px;
 }
 
+a.move,
+a.variation,
+.commentMove {
+  white-space: nowrap;
+}
+
 .move {
 }
 
