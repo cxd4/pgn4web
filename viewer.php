@@ -636,7 +636,13 @@ function print_chessboard_one() {
 .buttonControl {
 /* a "width" attribute here must use the !important flag to override default settings */
   width: 75.2px !important;
+  font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
+  font-size: 1em;
+  border: none;
+  background: transparent;
+  color: #808080;
   margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 .buttonControlSpace {
@@ -684,8 +690,6 @@ a.variation,
 
 .moveText {
   clear: both;
-  padding-top: 0.5em;
-  padding-bottom: 1em;
   text-align: justify;
 }
 
@@ -705,11 +709,15 @@ a.variation {
 
 .selectSearchContainer {
   text-align: center;
-  padding-bottom: 1.5em;
 }
 
 .gameSearch {
   white-space: nowrap;
+}
+
+.emMeasure {
+  height: 1em; /* required */
+  margin: 1em;
 }
 
 .mainContainer {
@@ -752,15 +760,16 @@ a.variation {
 }
 
 .headerSpacer {
-  height: 0.7em;
+  height: 0.66em;
+}
+
+.gameAnnotationContainer {
+  height: 6em;
+  width: 100%;
 }
 
 .toggleComments, .toggleAnalysis {
-  clear: both;
   text-align: right;
-  width: 100%;
-  height: 1em;
-  margin-bottom: 0.25em;
 }
 
 .toggleCommentsLink, .toggleAnalysisLink {
@@ -812,8 +821,7 @@ a.variation {
   min-height: 1.4em;
   max-height: 21em;
   padding-right: 1em;
-  margin-top: 0.5em;
-  margin-bottom: 1.5em;
+  margin-bottom: 1em;
   text-align: justify;
 }
 
@@ -1017,7 +1025,7 @@ $pgnText
          if (GameHasComments) {
             theObj.innerHTML = commentsIntoMoveText ? "&times;" : "+";
          } else {
-            theObj.innerHTML = "";
+            theObj.innerHTML = "&nbsp;";
          }
       }
 
@@ -1158,7 +1166,7 @@ $pgnText
 <div id="GameNumInfo" style="width: 15ex; margin-right: 0.5ex; color: gray; display: none;"><span id="GameNumCurrent" title="current game"></span>&nbsp;/&nbsp;<span id="GameNumTotal" title="number of games"></span></div>
 </td>
 </tr></tbody></table>
-<div id="emMeasure" style="height: 1em;"><a name="zoom" href="#zoom" onclick="this.blur();" style="display: inline-block; width: 392px;">&nbsp;</a></div>
+<div id="emMeasure" class="emMeasure"><a name="zoom" href="#zoom" onclick="this.blur();" style="width:392px; display:inline-block;">&nbsp;</a></div>
 </div>
 
 <div class="mainContainer">
@@ -1191,14 +1199,16 @@ $pgnText
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="if (event.shiftKey) { displayHelp('informant_symbols'); } else { showExtraAnalysisInfo(); } this.blur();" onmouseout="hideExtraAnalysisInfo(event);" class="innerHeaderItem analysisEval" id="GameAnalysisEval"></a><a href="javascript:void(0);" onclick="goToMissingAnalysis(!event.shiftKey); this.blur();" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv"></a><b>&nbsp;</b></div>
-<div class="headerItem headerSpacer" id="GameAnnotationMeasure"><b>&nbsp;</b></div>
+<div class="headerItem headerSpacer"><b>&nbsp;</b></div>
+<div class="gameAnnotationContainer" id="GameAnnotationContainer">
 <canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick(event); this.blur();" onmousemove="annotationGraphMousemove(event);" onmouseover="annotationGraphMouseover(event);" onmouseout="annotationGraphMouseout(event);" title="engine annotation graph"></canvas>
 </div>
-
-</div>
-
+<div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleAnalysisLink" style="visibility: hidden;" id="toggleAnalysisLink" href="javascript:void(0);" onclick="userToggleAnalysis(); this.blur();" title="toggle engine analysis">+</a></div>
 <div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="if (event.shiftKey && commentsIntoMoveText) { cycleLastCommentArea(); } else { SetCommentsIntoMoveText(!commentsIntoMoveText); var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar); } this.blur();" title="toggle show comments in game text for this page; click square F7 instead to save setting"></a></div>
+</div>
+
+</div>
 
 <div class="lastMoveAndComment" id="lastMoveAndComment">
 <div class="lastMoveAndVariations">
@@ -1340,13 +1350,13 @@ function print_chessboard_two() {
    }
 
    function graphCanvasWidth() {
-      if (theMeasureObject = document.getElementById("GameAnnotationMeasure")) {
+      if (theMeasureObject = document.getElementById("GameAnnotationContainer")) {
          return theMeasureObject.offsetWidth;
       } else { return 300; }
    }
    function graphCanvasHeight() {
-      if (theMeasureObject = document.getElementById("GameAnnotationMeasure")) {
-         return (theObj.height = 8 * theMeasureObject.offsetHeight);
+      if (theMeasureObject = document.getElementById("gameAnnotationContainer")) {
+         return (theObj.height = theMeasureObject.offsetHeight);
       } else { return 100; }
    }
 
