@@ -1225,7 +1225,7 @@ function print_chessboard_two() {
   print <<<END
 
 <div class="mainContainer">
-<div id="moveText" class="moveText"><span id="GameText"></span> <span class="move" id="ResultAtGametextEnd"></span></div>
+<div id="moveText" class="moveText"><span id="GameText"></span> <span class="move" style="white-space: nowrap;" id="ResultAtGametextEnd"></span></div>
 </div>
 
 
