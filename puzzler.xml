@@ -23,7 +23,7 @@
     <EnumValue value="0" display_value="auto resize"/>
     <EnumValue value="20" display_value="tiny"/>
     <EnumValue value="24" display_value="small"/>
-    <EnumValue value="30" display_value=" medium"/>
+    <EnumValue value="30" display_value="medium"/>
     <EnumValue value="40" display_value="large"/>
     <EnumValue value="60" display_value="big"/>
     <EnumValue value="80" display_value="huge"/>
