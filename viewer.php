@@ -1202,7 +1202,7 @@ $pgnText
 <div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="if (event.shiftKey) { displayHelp('informant_symbols'); } else { showExtraAnalysisInfo(); } this.blur();" onmouseout="hideExtraAnalysisInfo(event);" class="innerHeaderItem analysisEval" id="GameAnalysisEval"></a><a href="javascript:void(0);" onclick="goToMissingAnalysis(!event.shiftKey); this.blur();" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="gameAnnotationContainer" id="GameAnnotationContainer">
-<canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick(event); this.blur();" onmousemove="annotationGraphMousemove(event);" onmouseover="annotationGraphMouseover(event);" onmouseout="annotationGraphMouseout(event);" title="engine annotation graph"></canvas>
+<canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick(event); this.blur();" onmousemove="annotationGraphMousemove(event);" onmouseover="annotationGraphMouseover(event);" onmouseout="annotationGraphMouseout(event);"></canvas>
 </div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleAnalysisLink" style="visibility: hidden;" id="toggleAnalysisLink" href="javascript:void(0);" onclick="userToggleAnalysis(); this.blur();" title="toggle engine analysis">+</a></div>
@@ -1356,8 +1356,8 @@ function print_chessboard_two() {
       } else { return 300; }
    }
    function graphCanvasHeight() {
-      if (theMeasureObject = document.getElementById("gameAnnotationContainer")) {
-         return (theObj.height = theMeasureObject.offsetHeight);
+      if (theMeasureObject = document.getElementById("GameAnnotationContainer")) {
+         return theMeasureObject.offsetHeight;
       } else { return 100; }
    }
 
