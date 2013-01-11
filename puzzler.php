@@ -2,7 +2,7 @@
 
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009-2012 Paolo Casaschi
+ *  copyright (C) 2009-2013 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
@@ -369,21 +369,20 @@ body {
 SetImagePath("$pieceFont/$pieceSize");
 SetShortcutKeysEnabled(false);
 
-function setPuzzlerHelpShortcutSquares(cols, rows) {
-  var puzzlerHelp = "chess puzzler" + "\\n\\n";
+function displayPuzzlerHelp() {
+  var puzzlerHelp = "pgn4web chess puzzler" + "\\n\\n";
   puzzlerHelp += "- the white or black small square below the chessboard's left side indicates the side to move" + "\\n\\n";
   puzzlerHelp += "- show the puzzler's solution step by step on the chessboard by clicking the > button below the chessboard's right side" + "\\n\\n";
   puzzlerHelp += "- step backwards one move by clicking the < button below the chessboard's left side" + "\\n\\n";
-  puzzlerHelp += "click OK to learn how to add the chess puzzler to your website, blog or iGoogle page";
-  if ((typeof cols != "string") || (typeof rows != "string")) { return; }
-  for (c=0; c<cols.length; c++) { for (r=0; r<rows.length; r++) {
-      boardShortcut(cols.charAt(c).toUpperCase()+rows.charAt(r), "chess puzzler help", function(t,e){ if (confirm(puzzlerHelp)) { window.open("http://code.google.com/p/pgn4web/wiki/Example_Puzzler", "_blank"); } });
-  } }
+  puzzlerHelp += "click OK for more information, including how to add the chess puzzler to a website or blog";
+  if (confirm(puzzlerHelp)) { window.open("http://code.google.com/p/pgn4web/wiki/Example_Puzzler", "_blank"); }
 }
 
-setPuzzlerHelpShortcutSquares("BCDEFGH", "7");
-setPuzzlerHelpShortcutSquares("ABCDEFGH", "23456");
-setPuzzlerHelpShortcutSquares("BCFG", "1");
+boardShortcut("F8", "chess puzzler help", function(t,e){ displayPuzzlerHelp(); });
+clearShortcutSquares("E", "8");
+clearShortcutSquares("BCDEFGH", "7");
+clearShortcutSquares("ABCDEFGH", "23456");
+clearShortcutSquares("BCFG", "1");
 
 function solutionSoFar() {
   sol = "";
@@ -444,29 +443,6 @@ function customFunctionOnMove() {
 <form style="display: none;"><textarea style="display: none;" id="pgnText">
 
 $pgnGame
-
-{
-
-pgn4web chess puzzler
-
-you can add the chess puzzler to your site with the following HTML code:
-
-<iframe height='$outerFrameHeight' width='$outerFrameWidth' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='$thisPage'>
-iframe support required to display the chess puzzler
-</iframe>
-
-the following URL parameters allow customization of the chess puzzler:
-- pgnData=... selects the PGN file containing the puzzler, default: tactics.pgn
-- gameNum=... sets the game number for the puzzler to be shown, default: blank, showing the puzzler of the day updated at 00:00 GMT
-- squareSize=... sets the chessboard square size, default 30
-- lightColorHex=... sets the light squares color, in hexadecimal format, default: EFF4EC
-- darkColorHex=... sets the dark squares color, in hexadecimal format, default: C6CEC3
-- pieceFont=... sets the piece font type, either alpha, merida, uscf, random, hash or default, default: default
-- controlBackgroundColorHex=... sets the buttons background color, in hexadecimal format, default: EFF4EC
-- controlTextColorHex=... sets the buttons text color, in hexadecimal format, default: 888888
-- frameBorderColorHex=... sets the frame border color, in hexadecimal format, or none, default: A4A4A4
-
-}
 
 </textarea></form>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->

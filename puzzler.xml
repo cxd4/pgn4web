@@ -9,8 +9,8 @@
     description="chess puzzler of the day from the pgn4web project at http://pgn4web.casaschi.net"
     author="Paolo Casaschi"
     author_email="pgn4web@casaschi.net"
-    screenshot="http://pgn4web.googlecode.com/svn/wiki/screenshots/screenshot-igooglegadget.png"
-    thumbnail="http://pgn4web.googlecode.com/svn/wiki/screenshots/thumbnail-igooglegadget.png"
+    screenshot="http://pgn4web.googlecode.com/svn/wiki/screenshots/screenshot-googlegadget.png"
+    thumbnail="http://pgn4web.googlecode.com/svn/wiki/screenshots/thumbnail-googlegadget.png"
     height="270"
     width="240">
     <Require feature="dynamic-height"/>
@@ -69,7 +69,7 @@
 
         /*
          *  pgn4web javascript chessboard
-         *  copyright (C) 2009-2012 Paolo Casaschi
+         *  copyright (C) 2009-2013 Paolo Casaschi
          *  see README file and http://pgn4web.casaschi.net
          *  for credits, license and more details
          */
