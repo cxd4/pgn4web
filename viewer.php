@@ -487,11 +487,21 @@ END;
     theObj.value = "header";
   }
 
+var textFormMinHeight = "";
+function getTextFormMinHeight() {
+  if ((theObj = document.getElementById("pgnFormText")) &&  (theObj.offsetHeight)) {
+    return (theObj.offsetHeight + "px");
+  } else {
+    return "5em";
+  }
+}
+
 function reset_viewer() {
 
   document.getElementById("uploadFormFile").value = "";
   document.getElementById("urlFormText").value = "";
   document.getElementById("pgnFormText").value = "";
+  document.getElementById("pgnFormText").style.height = textFormMinHeight;
   checkPgnFormTextSize();
   document.getElementById("pgnText").value = '$startPosition';
 
@@ -551,7 +561,7 @@ END;
         <input id="pgnFormButton" type="button" class="formControl" value=" view games from textbox " style="width:100%;" onClick="this.blur(); loadPgnFromForm();">
     </td>
     <td colspan="$formVariableColspan" rowspan="2" width="100%" align="right" valign="middle">
-        <textarea id="pgnFormText" class="formControl textboxAppearance" name="pgnTextbox" rows=4 style="width:100%; min-height:5em; resize:vertical;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" onChange="checkPgnFormTextSize();">$pgnTextbox</textarea>
+        <textarea id="pgnFormText" class="formControl textboxAppearance" name="pgnTextbox" rows=4 style="width:100%; resize:vertical;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" onChange="checkPgnFormTextSize();">$pgnTextbox</textarea>
       </form>
     </td>
   </tr>
@@ -563,6 +573,16 @@ END;
   </tr>
 
 </tbody></table>
+
+<script type="text/javascript">
+
+textFormMinHeight = getTextFormMinHeight();
+if (theObj = document.getElementById("pgnFormText")) {
+  theObj.style.height = textFormMinHeight;
+  theObj.style.minHeight = textFormMinHeight;
+}
+
+</script>
 
 END;
 }
