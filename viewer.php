@@ -37,7 +37,7 @@ $debugHelpText = "a flashing chessboard signals errors in the PGN data, click on
 $headlessPage = strtolower(get_param("headlessPage", "hp", ""));
 
 $hideForm = strtolower(get_param("hideForm", "hf", ""));
-$hideFormCss = ($hideForm == "true") || ($hideForm == "t") ? "display: none;" : "";
+$hideFormCss = ($hideForm == "true") || ($hideForm == "t") ? "display:none;" : "";
 
 $startPosition = '[Event ""] [Site ""] [Date ""] [Round ""] [White ""] [Black ""] [Result ""] ' . ((($hideForm == "true") || ($hideForm == "t")) ? '' : ' { please enter chess games in PGN format using the form at the top of the page }');
 
@@ -263,12 +263,12 @@ function print_menu($item) {
 
   print <<<END
 
-<div style="height: 0.2em; overflow: hidden;"><a name="$item">&nbsp;</a></div>
-<div style="width: 100%; text-align: right; font-size: 66%; padding-bottom: 0.5em;">
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#bottom" style="color: gray;" onclick="this.blur();">bottom</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#moves" style="color: gray;" onclick="this.blur();">moves</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#board" style="color: gray;" onclick="this.blur();">board</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top" style="color: gray;" onclick="this.blur();">top</a>
+<div style="height:0.2em; overflow:hidden;"><a name="$item">&nbsp;</a></div>
+<div style="width:100%; text-align:right; font-size:66%; padding-bottom:0.5em;">
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#bottom" style="color: #B0B0B0;" onclick="this.blur();">bottom</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#moves" style="color: #B0B0B0;" onclick="this.blur();">moves</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#board" style="color: #B0B0B0;" onclick="this.blur();">board</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top" style="color: #B0B0B0;" onclick="this.blur();">top</a>
 </div>
 
 END;
@@ -279,7 +279,7 @@ function print_header() {
   global $headlessPage;
 
   if (($headlessPage == "true") || ($headlessPage == "t")) {
-     $headClass = "  display: none;";
+     $headClass = "  display:none;";
   } else {
      $headClass = "";
   }
@@ -341,14 +341,14 @@ $headClass
 
 <table class="headClass" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
 <td align="left" valign="middle">
-<h1 style="font-family: sans-serif; color: red;"><a style="color: red;" href=.>pgn4web</a> games viewer</h1>
+<h1 style="font-family:sans-serif; color:red;"><a style="color:red;" href=.>pgn4web</a> games viewer</h1>
 </td>
 <td align="right" valign="middle">
 <a href=.><img src=pawns.png border=0></a>
 </td>
 </tr></tbody></table>
 
-<div style="height: 1em;" class="headClass">&nbsp;</div>
+<div style="height:1em;" class="headClass">&nbsp;</div>
 
 END;
 }
@@ -505,10 +505,19 @@ function reset_viewer() {
   checkPgnFormTextSize();
   document.getElementById("pgnText").value = '$startPosition';
 
-  if (analysisStarted) { stopAnalysis(); }
-  firstStart = true;
-  start_pgn4web();
-  resetAlert();
+  if (typeof(start_pgn4web) == "function") {
+    if (analysisStarted) { stopAnalysis(); }
+    firstStart = true;
+    SetHighlightOption(getHighlightOptionFromLocalStorage());
+    SetCommentsIntoMoveText(getCommentsIntoMoveTextFromLocalStorage());
+    SetCommentsOnSeparateLines(getCommentsOnSeparateLinesFromLocalStorage());
+    SetAutoplayNextGame(false);
+    SetAutoplayDelay(2000);
+    if (IsRotated) { FlipBoard(); }
+    start_pgn4web();
+    resetAlert();
+    resetLastCommentArea();
+  }
 
   goToHash("top");
 }
@@ -519,11 +528,11 @@ function restoreShortcutKeysStatus() {}
 
 </script>
 
-<table style="margin-bottom: 1.5em; $hideFormCss" width="100%" cellspacing="0" cellpadding="3" border="0"><tbody>
+<table style="margin-bottom:1.5em; $hideFormCss" width="100%" cellspacing="0" cellpadding="3" border="0"><tbody>
 
   <tr>
     <td align="left" valign="middle">
-      <form id="uploadForm" action="$thisScript" enctype="multipart/form-data" method="POST" style="display: inline;">
+      <form id="uploadForm" action="$thisScript" enctype="multipart/form-data" method="POST" style="display:inline;">
         <input id="uploadFormSubmitButton" type="submit" class="formControl" value=" view games from local file " style="width:100%;" title="view games from local file: PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="this.blur(); return checkPgnFile();">
     </td>
     <td colspan="$formVariableColspan" width="100%" align="left" valign="middle">
@@ -535,7 +544,7 @@ function restoreShortcutKeysStatus() {}
 
   <tr>
     <td align="left" valign="middle">
-      <form id="urlForm" action="$thisScript" method="POST" style="display: inline;">
+      <form id="urlForm" action="$thisScript" method="POST" style="display:inline;">
         <input id="urlFormSubmitButton" type="submit" class="formControl" value=" view games from remote URL " title="view games from remote URL: PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="this.blur(); return checkPgnUrl();">
     </td>
     <td width="100%" align="left" valign="middle">
@@ -557,7 +566,7 @@ END;
 
   <tr>
     <td align="left" valign="top">
-      <form id="textForm" style="display: inline;">
+      <form id="textForm" style="display:inline;">
         <input id="pgnFormButton" type="button" class="formControl" value=" view games from textbox " style="width:100%;" onClick="this.blur(); loadPgnFromForm();">
     </td>
     <td colspan="$formVariableColspan" rowspan="2" width="100%" align="right" valign="middle">
@@ -664,9 +673,9 @@ function print_chessboard_one() {
   width: 75.2px !important;
   font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
   font-size: 1em;
+  color: #B0B0B0;
   border: none;
   background: transparent;
-  color: #808080;
   margin-top: 20px;
   margin-bottom: 10px;
 }
@@ -748,6 +757,7 @@ a.variation {
 
 .mainContainer {
   padding-top: 0.5em;
+  padding-bottom: 1em;
 }
 
 .columnsContainer {
@@ -799,7 +809,7 @@ a.variation {
 }
 
 .toggleCommentsLink, .toggleAnalysisLink {
-  color: #808080;
+  color: #B0B0B0;
 }
 
 .lastMoveAndVariations {
@@ -828,9 +838,9 @@ a.variation {
   display: inline-block;
   width: 1em;
   padding-left: 1em;
-  color: #808080;
   text-decoration: none;
   text-align: right;
+  color: #B0B0B0;
 }
 
 .lastMoveAndComment {
@@ -1189,7 +1199,7 @@ $pgnText
 <td width="100%" align="left" valign="top">
 <div id="GameSearch" class="gameSearch"></div>
 </td><td align="right" valign="bottom">
-<div id="GameNumInfo" style="width: 15ex; margin-right: 0.5ex; color: gray; display: none;"><span id="GameNumCurrent" title="current game"></span>&nbsp;/&nbsp;<span id="GameNumTotal" title="number of games"></span></div>
+<div id="GameNumInfo" style="width:15ex; margin-right:0.5ex; display:none; color: #808080;"><span id="GameNumCurrent" title="current game"></span>&nbsp;/&nbsp;<span id="GameNumTotal" title="number of games"></span></div>
 </td>
 </tr></tbody></table>
 <div id="emMeasure" class="emMeasure"><a href="#zoom" onclick="this.blur();" style="width:392px; display:inline-block;">&nbsp;</a></div>
@@ -1231,7 +1241,7 @@ $pgnText
 <canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick(event); this.blur();" onmousemove="annotationGraphMousemove(event);" onmouseover="annotationGraphMouseover(event);" onmouseout="annotationGraphMouseout(event);"></canvas>
 </div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleAnalysisLink" style="visibility: hidden;" id="toggleAnalysisLink" href="javascript:void(0);" onclick="userToggleAnalysis(); this.blur();" title="toggle engine analysis">+</a></div>
+<div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleAnalysisLink" style="visibility:hidden;" id="toggleAnalysisLink" href="javascript:void(0);" onclick="userToggleAnalysis(); this.blur();" title="toggle engine analysis">+</a></div>
 <div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="if (event.shiftKey && commentsIntoMoveText) { cycleLastCommentArea(); } else { SetCommentsIntoMoveText(!commentsIntoMoveText); var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar); } this.blur();" title="toggle show comments in game text for this page; click square F7 instead to save setting"></a></div>
 </div>
 
@@ -1262,7 +1272,7 @@ function print_chessboard_two() {
   print <<<END
 
 <div class="mainContainer">
-<div id="moveText" class="moveText"><span id="GameText"></span> <span class="move" style="white-space: nowrap;" id="ResultAtGametextEnd"></span></div>
+<div id="moveText" class="moveText"><span id="GameText"></span> <span class="move" style="white-space:nowrap;" id="ResultAtGametextEnd"></span></div>
 </div>
 
 
@@ -1924,12 +1934,10 @@ function print_footer() {
   if ($goToView) { $hashStatement = "goToHash('board');"; }
   else { $hashStatement = ""; }
 
-  if (($pgnDebugInfo) != "") { $pgnDebugMessage = "message for sysadmin: " . $pgnDebugInfo; }
+  if (($pgnDebugInfo) != "") { $pgnDebugMessage = "warning: system: " . $pgnDebugInfo; }
   else {$pgnDebugMessage = ""; }
 
   print <<<END
-
-<div style="color: gray; margin-top: 1em; margin-bottom: 1em;">$pgnDebugMessage</div>
 
 <script type="text/javascript">
 
@@ -1937,6 +1945,7 @@ function pgn4web_onload(e) {
   setPgnUrl("$pgnUrl");
   checkPgnFormTextSize();
   start_pgn4web();
+  if ("$pgnDebugMessage".length > 0) { myAlert("$pgnDebugMessage", false, true); }
   $hashStatement
 }
 
