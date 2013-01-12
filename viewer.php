@@ -323,6 +323,12 @@ a {
   margin: 0;
 }
 
+.textboxAppearance {
+  appearance: field;
+  -moz-appearance: textfield-multiline;
+  -webkit-appearance: textfield;
+}
+
 .headClass {
 $headClass
 }
@@ -545,7 +551,7 @@ END;
         <input id="pgnFormButton" type="button" class="formControl" value=" view games from textbox " style="width:100%;" onClick="this.blur(); loadPgnFromForm();">
     </td>
     <td colspan="$formVariableColspan" rowspan="2" width="100%" align="right" valign="middle">
-        <textarea id="pgnFormText" class="formControl" name="pgnTextbox" rows=4 style="width:100%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" onChange="checkPgnFormTextSize();">$pgnTextbox</textarea>
+        <textarea id="pgnFormText" class="formControl textboxAppearance" name="pgnTextbox" rows=4 style="width:100%; min-height:5em; resize:vertical;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" onChange="checkPgnFormTextSize();">$pgnTextbox</textarea>
       </form>
     </td>
   </tr>
