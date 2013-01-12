@@ -1351,14 +1351,14 @@ function print_chessboard_two() {
    }
 
    function graphCanvasWidth() {
-      if (theMeasureObject = document.getElementById("GameAnnotationContainer")) {
-         return theMeasureObject.offsetWidth;
-      } else { return 300; }
+      var theObj = document.getElementById("GameAnnotationContainer");
+      if (theObj) { return theObj.offsetWidth; }
+      else { return 320; }
    }
    function graphCanvasHeight() {
-      if (theMeasureObject = document.getElementById("GameAnnotationContainer")) {
-         return theMeasureObject.offsetHeight;
-      } else { return 100; }
+      var theObj = document.getElementById("GameAnnotationContainer");
+      if (theObj) { return theObj.offsetHeight; }
+      else { return 96; }
    }
 
    function updateAnalysisHeader() {
