@@ -1723,10 +1723,12 @@ function print_chessboard_two() {
                      g_topNodesPerSecond = Math.max(nodesPerSecond, g_topNodesPerSecond);
                      g_pv = matches[5].replace(/(^\s+|\s*\+|\s+$)/g, "").replace(/\s*stalemate/, "=").replace(/\s*checkmate/, "#");
                      if (validateSearchWithCache()) {
-                        fenPositionsEval[CurrentPly] = g_ev;
-                        fenPositionsNodes[CurrentPly] = g_nodes;
-                        updateAnnotationGraph();
-                        updateAnalysisHeader();
+                        if ((typeof(fenPositionsNodes[CurrentPly]) == "undefined") || (g_nodes > fenPositionsNodes[CurrentPly])) {
+                           fenPositionsEval[CurrentPly] = g_ev;
+                           fenPositionsNodes[CurrentPly] = g_nodes;
+                           updateAnnotationGraph();
+                           updateAnalysisHeader();
+                        }
                      }
                      if (detectGameEnd(g_pv, "")) { StopBackgroundEngine(); }
                   }
@@ -1825,9 +1827,8 @@ function print_chessboard_two() {
    load_cache_from_localStorage();
 
    function validateSearchWithCache() {
-      var retVal = false;
       var minNodesForAnnotation = 12345;
-      if ((g_nodes < minNodesForAnnotation) && (g_ev < g_maxEv) && (g_ev > -g_maxEv) && (g_ev !== 0)) { return retVal; }
+      if ((g_nodes < minNodesForAnnotation) && (g_ev < g_maxEv) && (g_ev > -g_maxEv) && (g_ev !== 0)) { return false; }
       var id = cache_fen_lastIndexOf(fenString);
       if (id == -1) {
          cache_last = cache_pointer = (cache_pointer + 1) % cache_max;
@@ -1836,14 +1837,12 @@ function print_chessboard_two() {
          cache_pv[cache_pointer] = g_pv;
          cache_nodes[cache_pointer] = g_nodes;
          cache_needs_sync++;
-         retVal = true;
       } else {
          if (g_nodes > cache_nodes[id]) {
             cache_ev[id] = g_ev;
             cache_pv[id] = g_pv;
             cache_nodes[id] = g_nodes;
             cache_needs_sync++;
-            retVal = true;
          } else {
             g_ev = parseInt(cache_ev[id], 10);
             g_pv = cache_pv[id];
@@ -1851,7 +1850,7 @@ function print_chessboard_two() {
          }
       }
       if (cache_needs_sync > 3) { save_cache_to_localStorage(); }
-      return retVal;
+      return true;
    }
 
    var cache_last = 0;
@@ -1891,7 +1890,11 @@ function print_chessboard_two() {
    function StartEngineAnalysis() {
       StopBackgroundEngine();
       if (InitializeBackgroundEngine()) {
-         fenString = CurrentFEN();
+         fenString = fenPositions[CurrentPly];
+         if ((index = cache_fen_lastIndexOf(fenPositions[CurrentPly])) != -1) {
+            fenPositionsEval[CurrentPly] = cache_ev[index];
+            fenPositionsNodes[CurrentPly] = cache_nodes[index];
+         }
          g_backgroundEngine.postMessage("position " + fenString);
          g_backgroundEngine.postMessage("analyze");
          setAnalysisTimeout(analysisSeconds);

@@ -594,7 +594,6 @@ var cache_needs_sync = 0;
 load_cache_from_localStorage();
 
 function validateSearchWithCache() {
-   var retVal = false;
    var id = cache_fen_lastIndexOf(fenString);
    if (id == -1) {
       cache_last = cache_pointer = (cache_pointer + 1) % cache_max;
@@ -603,14 +602,12 @@ function validateSearchWithCache() {
       cache_pv[cache_pointer] = g_pv;
       cache_nodes[cache_pointer] = g_nodes;
       cache_needs_sync++;
-      retVal = true;
    } else {
       if (g_nodes > cache_nodes[id]) {
          cache_ev[id] = g_ev;
          cache_pv[id] = g_pv;
          cache_nodes[id] = g_nodes;
          cache_needs_sync++;
-         retVal = true;
       } else {
          g_ev = parseInt(cache_ev[id], 10);
          g_pv = cache_pv[id];
@@ -618,7 +615,7 @@ function validateSearchWithCache() {
       }
    }
    if (cache_needs_sync > cache_max / 10) { save_cache_to_localStorage(); }
-   return retVal;
+   return true;
 }
 
 var cache_last = 0;
