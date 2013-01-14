@@ -1308,12 +1308,14 @@ function print_chessboard_two() {
 
    var fenPositions;
    var fenPositionsEval;
+   var fenPositionsPv;
    var fenPositionsNodes;
    resetFenPositions();
 
    function resetFenPositions() {
       fenPositions = new Array();
       fenPositionsEval = new Array();
+      fenPositionsPv = new Array();
       fenPositionsNodes = new Array();
    }
 
@@ -1417,11 +1419,8 @@ function print_chessboard_two() {
       annEval = (lastMousemoveAnnPly == -1) ? "&middot;" : "";
       annPv = "";
       if (typeof(fenPositions[annPly]) != "undefined") {
-         var index = cache_fen_lastIndexOf(fenPositions[annPly]);
-         if (index != -1) {
-            annEval = cache_ev[index];
-            annPv = cache_pv[index];
-         }
+         annEval = fenPositionsEval[annPly];
+         annPv = fenPositionsPv[annPly];
       }
 
       if (theObj = document.getElementById("GameAnalysisEval")) {
@@ -1607,6 +1606,7 @@ function print_chessboard_two() {
          fenPositions[CurrentPly] = CurrentFEN();
          if ((index = cache_fen_lastIndexOf(fenPositions[CurrentPly])) != -1) {
             fenPositionsEval[CurrentPly] = cache_ev[index];
+            fenPositionsPv[CurrentPly] = cache_pv[index];
             fenPositionsNodes[CurrentPly] = cache_nodes[index];
          }
          if (CurrentPly === StartPly) { break; }
@@ -1722,9 +1722,11 @@ function print_chessboard_two() {
                      nodesPerSecond = parseInt(matches[4], 10);
                      g_topNodesPerSecond = Math.max(nodesPerSecond, g_topNodesPerSecond);
                      g_pv = matches[5].replace(/(^\s+|\s*\+|\s+$)/g, "").replace(/\s*stalemate/, "=").replace(/\s*checkmate/, "#");
-                     if (validateSearchWithCache()) {
+                     if (searchMeaningful()) {
+                        validateSearchWithCache();
                         if ((typeof(fenPositionsNodes[CurrentPly]) == "undefined") || (g_nodes > fenPositionsNodes[CurrentPly])) {
                            fenPositionsEval[CurrentPly] = g_ev;
+                           fenPositionsPv[CurrentPly] = g_pv;
                            fenPositionsNodes[CurrentPly] = g_nodes;
                            updateAnnotationGraph();
                            updateAnalysisHeader();
@@ -1764,16 +1766,23 @@ function print_chessboard_two() {
          localStorage["pgn4web_chess_viewer_engine_id"] = pgn4web_chess_engine_id;
          return;
       }
-      if (cache_pointer = localStorage["pgn4web_chess_viewer_engine_cache_pointer"]) { cache_pointer = parseInt(cache_pointer, 10) % cache_max; }
-      else { cache_pointer = -1; }
-      if (cache_fen = localStorage["pgn4web_chess_viewer_engine_cache_fen"]) { cache_fen = cache_fen.split(","); }
-      else { cache_fen = new Array(); }
-      if (cache_ev = localStorage["pgn4web_chess_viewer_engine_cache_ev"]) { cache_ev = cache_ev.split(","); }
-      else { cache_ev = new Array(); }
-      if (cache_pv = localStorage["pgn4web_chess_viewer_engine_cache_pv"]) { cache_pv = cache_pv.split(","); }
-      else { cache_pv = new Array(); }
-      if (cache_nodes = localStorage["pgn4web_chess_viewer_engine_cache_nodes"]) { cache_nodes = cache_nodes.split(","); }
-      else { cache_nodes = new Array(); }
+      if (cache_pointer = localStorage["pgn4web_chess_viewer_engine_cache_pointer"]) {
+          cache_pointer = parseInt(cache_pointer, 10) % cache_max;
+      } else { cache_pointer = -1; }
+      if (cache_fen = localStorage["pgn4web_chess_viewer_engine_cache_fen"]) {
+          cache_fen = cache_fen.split(",");
+      } else { cache_fen = new Array(); }
+      if (cache_ev = localStorage["pgn4web_chess_viewer_engine_cache_ev"]) {
+          cache_ev = cache_ev.split(",");
+          if (typeof(cache_ev.map == "function")) { cache_ev = cache_ev.map(parseFloat); }
+      } else { cache_ev = new Array(); }
+      if (cache_pv = localStorage["pgn4web_chess_viewer_engine_cache_pv"]) {
+          cache_pv = cache_pv.split(",");
+      } else { cache_pv = new Array(); }
+      if (cache_nodes = localStorage["pgn4web_chess_viewer_engine_cache_nodes"]) {
+          cache_nodes = cache_nodes.split(",");
+          if (typeof(cache_nodes.map == "function")) { cache_nodes = cache_nodes.map(parseFloat); }
+      } else { cache_nodes = new Array(); }
       cache_needs_sync = 0;
       if ((cache_fen.length !== cache_ev.length) || (cache_fen.length !== cache_pv.length) || (cache_fen.length !== cache_nodes.length)) {
          clear_cache_from_localStorage();
@@ -1826,9 +1835,12 @@ function print_chessboard_two() {
 
    load_cache_from_localStorage();
 
-   function validateSearchWithCache() {
+   function searchMeaningful() {
       var minNodesForAnnotation = 12345;
-      if ((g_nodes < minNodesForAnnotation) && (g_ev < g_maxEv) && (g_ev > -g_maxEv) && (g_ev !== 0)) { return false; }
+      return ((g_nodes > minNodesForAnnotation) || (g_ev === g_maxEv) || (g_ev === -g_maxEv) && (g_ev === 0));
+   }
+
+   function validateSearchWithCache() {
       var id = cache_fen_lastIndexOf(fenString);
       if (id == -1) {
          cache_last = cache_pointer = (cache_pointer + 1) % cache_max;
@@ -1844,13 +1856,12 @@ function print_chessboard_two() {
             cache_nodes[id] = g_nodes;
             cache_needs_sync++;
          } else {
-            g_ev = parseInt(cache_ev[id], 10);
+            g_ev = parseFloat(cache_ev[id]);
             g_pv = cache_pv[id];
             g_nodes = parseInt(cache_nodes[id], 10);
          }
       }
       if (cache_needs_sync > 3) { save_cache_to_localStorage(); }
-      return true;
    }
 
    var cache_last = 0;
@@ -1890,11 +1901,7 @@ function print_chessboard_two() {
    function StartEngineAnalysis() {
       StopBackgroundEngine();
       if (InitializeBackgroundEngine()) {
-         fenString = fenPositions[CurrentPly];
-         if ((index = cache_fen_lastIndexOf(fenPositions[CurrentPly])) != -1) {
-            fenPositionsEval[CurrentPly] = cache_ev[index];
-            fenPositionsNodes[CurrentPly] = cache_nodes[index];
-         }
+         fenString = CurrentFEN();
          g_backgroundEngine.postMessage("position " + fenString);
          g_backgroundEngine.postMessage("analyze");
          setAnalysisTimeout(analysisSeconds);
