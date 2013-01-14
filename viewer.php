@@ -913,7 +913,7 @@ $pgnText
    SetCommentsOnSeparateLines(getCommentsOnSeparateLinesFromLocalStorage());
    SetInitialGame(1);
    SetInitialVariation(0);
-   SetInitialHalfmove(0);
+   SetInitialHalfmove(initialHalfmove_default = "start", true);
    SetGameSelectorOptions(null, true, 12, 12, 2, 15, 15, 3, 10);
    SetAutostartAutoplay(false);
    SetAutoplayNextGame(false);
@@ -1122,13 +1122,14 @@ $pgnText
       location.hash = "#" + hash;
    }
 
-   boardZoomTimeout = null;
+   shortcutKeyTimeout = null;
 
    // customShortcutKey_Shift_1 defined by fide-lookup.js
    // customShortcutKey_Shift_2 defined by fide-lookup.js
 
-   function customShortcutKey_Shift_3() { if (boardZoomTimeout) { goToHash("zoom"); } else { boardZoomTimeout = setTimeout("boardZoomTimeout = null;", 333); goToHash("board"); } }
-   function customShortcutKey_Shift_4() { cycleHash(); }
+   function customShortcutKey_Shift_3() { if (shortcutKeyTimeout) { SetInitialHalfmove(initialHalfmove_default, true); } else { shortcutKeyTimeout = setTimeout("shortcutKeyTimeout = null;", 333); SetInitialHalfmove(initialHalfmove == "end" ? "start" : "end", true); } }
+
+   function customShortcutKey_Shift_4() { if (shortcutKeyTimeout) { goToHash("zoom"); } else { shortcutKeyTimeout = setTimeout("shortcutKeyTimeout = null;", 333); cycleHash(); } }
 
    function customShortcutKey_Shift_5() { cycleLastCommentArea(); }
 
@@ -1231,7 +1232,7 @@ $pgnText
 <div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId'), event); this.blur();" class="innerHeaderItem" id="GameBlack"></a></b><span class="innerHeaderItem" id="GameBlackTitle"></span><span class="innerHeaderItem" id="GameBlackElo"></span><a class="innerHeaderItem" id="GameBlackTeam" href="javascript:void(0);" onclick="searchTeam(this.innerHTML); this.blur();"></a><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameBlackClock"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPgnGame(lastSearchPgnExpression, !event.shiftKey); this.blur();" class="innerHeaderItem" id="GameResult"></a></b><span class="innerHeaderItem" id="GameTermination"></span><b>&nbsp;</b></div>
+<div class="headerItem"><b><a href="javascript:void(0);" onclick="SetInitialHalfmove(event.shiftKey ? initialHalfmove_default : (initialHalfmove == 'end' ? 'start' : 'end'), true); this.blur();" class="innerHeaderItem" id="GameResult"></a></b><span class="innerHeaderItem" id="GameTermination"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
@@ -1919,7 +1920,8 @@ function print_chessboard_two() {
    }
 
    function customDebugInfo() {
-      var dbg = "annotation=";
+      var dbg = "initialHalfmove=" + initialHalfmove;
+      dbg += " annotation=";
       if (!annotationSupported) { dbg += "unavailable"; }
       else if (!analysisStarted) { dbg += "disabled"; }
       else { dbg += (g_backgroundEngine ? ( annotateInProgress ? "gameInProgress" : "pondering") : "idle") + " analysisSeconds=" + analysisSeconds + " topNodesPerSecond=" + num2string(g_topNodesPerSecond) + cacheDebugInfo(); }
