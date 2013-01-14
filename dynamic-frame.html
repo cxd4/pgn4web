@@ -390,6 +390,11 @@ function myOnResize() {
   return pieceSize;
 }
 
+// redefine FlipBoard() to include myOnResize()
+window['defaultFlipBoard'] = window['FlipBoard'];
+window['FlipBoard'] = function() { defaultFlipBoard(); myOnResize(); };
+
+
 function customFunctionOnCheckLiveBroadcastStatus() {
   updateBareShortcut();
 }

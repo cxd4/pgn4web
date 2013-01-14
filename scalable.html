@@ -90,6 +90,10 @@ function customFunctionOnPgnGameLoad() { myOnResize(); }
 
 function customDebugInfo() { return "squareSize=" + squareSize; }
 
+// redefine FlipBoard() to include myOnResize()
+window['defaultFlipBoard'] = window['FlipBoard'];
+window['FlipBoard'] = function() { defaultFlipBoard(); myOnResize(); };
+
 </script>
 
 </head>
