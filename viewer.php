@@ -1767,21 +1767,21 @@ function print_chessboard_two() {
          return;
       }
       if (cache_pointer = localStorage["pgn4web_chess_viewer_engine_cache_pointer"]) {
-          cache_pointer = parseInt(cache_pointer, 10) % cache_max;
+         cache_pointer = parseInt(cache_pointer, 10) % cache_max;
       } else { cache_pointer = -1; }
       if (cache_fen = localStorage["pgn4web_chess_viewer_engine_cache_fen"]) {
-          cache_fen = cache_fen.split(",");
+         cache_fen = cache_fen.split(",");
       } else { cache_fen = new Array(); }
       if (cache_ev = localStorage["pgn4web_chess_viewer_engine_cache_ev"]) {
-          cache_ev = cache_ev.split(",");
-          if (typeof(cache_ev.map == "function")) { cache_ev = cache_ev.map(parseFloat); }
+         cache_ev = cache_ev.split(",");
+         if (typeof(cache_ev.map == "function")) { cache_ev = cache_ev.map(parseFloat); }
       } else { cache_ev = new Array(); }
       if (cache_pv = localStorage["pgn4web_chess_viewer_engine_cache_pv"]) {
-          cache_pv = cache_pv.split(",");
+         cache_pv = cache_pv.split(",");
       } else { cache_pv = new Array(); }
       if (cache_nodes = localStorage["pgn4web_chess_viewer_engine_cache_nodes"]) {
-          cache_nodes = cache_nodes.split(",");
-          if (typeof(cache_nodes.map == "function")) { cache_nodes = cache_nodes.map(parseFloat); }
+         cache_nodes = cache_nodes.split(",");
+         if (typeof(cache_nodes.map == "function")) { cache_nodes = cache_nodes.map(parseFloat); }
       } else { cache_nodes = new Array(); }
       cache_needs_sync = 0;
       if ((cache_fen.length !== cache_ev.length) || (cache_fen.length !== cache_pv.length) || (cache_fen.length !== cache_nodes.length)) {
