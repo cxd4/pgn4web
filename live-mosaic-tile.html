@@ -2,7 +2,7 @@
 
 <!--
   pgn4web javascript chessboard
-  copyright (C) 2009-2012 Paolo Casaschi
+  copyright (C) 2009-2013 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 -->
@@ -158,7 +158,7 @@
         if (parent.pgn4webHideChildFrameGame(gameEvent[currentGame], gameSite[currentGame], gameDate[currentGame], gameRound[currentGame], gameWhite[currentGame], gameBlack[currentGame], true)) {
           boardShortcut("A6", "hide this game", function(t,e){ hideThisGame(); });
         } else {
-          boardShortcut("A6", "hiding option not available for this game", function(t,e){} );
+          boardShortcut("A6", "hiding option unavailable for this game", function(t,e){} );
         }
       }
     } catch(e) { myAlert("warning: failed accessing frame's parent for hiding game option", false); }

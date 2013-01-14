@@ -1585,7 +1585,7 @@ function print_chessboard_two() {
 
    function checkEngineUnderstandsGameAndWarn() {
       retVal = engineUnderstandsGame(currentGame);
-      if (!retVal) { alert("warning: engine analysis not available for chess variants"); }
+      if (!retVal) { myAlert("warning: engine analysis unavailable for the " + gameVariant[currentGame] + " variant", true); }
       return retVal;
    }
 
@@ -1662,7 +1662,7 @@ function print_chessboard_two() {
    }
 
    function annotationSupportedCheckAndWarnUser() {
-      if (!annotationSupported) { alert("warning: engine annotation not available"); }
+      if (!annotationSupported) { myAlert("warning: engine annotation unavailable", true); }
       return annotationSupported;
    }
 
