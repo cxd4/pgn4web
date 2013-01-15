@@ -1513,7 +1513,7 @@ function print_chessboard_two() {
             }
             thisHTML += "</span>";
             thisHTML += (thisEval > 0 ? "+" : "") + thisEval + (thisEval == Math.floor(thisEval) ? ".0 " : "") + "<span class='move'>p</span>";
-            thisHTML += "<span style='margin-left:2em'>" + num2string(thisNodes) + " nodes</span>";
+            thisHTML += "<span style='margin-left:2em'>" + num2string(thisNodes) + " node" + (thisNodes == 1 ? "" : "s") + "</span>";
          }
          thisHTML += "</span>";
          theObj.innerHTML = thisHTML;
@@ -1838,7 +1838,7 @@ function print_chessboard_two() {
 
    function searchMeaningful() {
       var minNodesForAnnotation = 12345;
-      return ((g_nodes > minNodesForAnnotation) || (g_ev === g_maxEv) || (g_ev === -g_maxEv) && (g_ev === 0));
+      return ((g_nodes > minNodesForAnnotation) || (g_ev === g_maxEv) || (g_ev === -g_maxEv) || (g_ev === 0));
    }
 
    function validateSearchWithCache() {
