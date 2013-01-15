@@ -1073,6 +1073,7 @@ $pgnText
       if (analysisStarted) {
          if (engineUnderstandsGame(currentGame)) { scanGameForFen(); }
          else { stopAnalysis(); }
+         hideExtraAnalysisInfo();
       }
       if (theObj = document.getElementById("toggleAnalysisLink")) {
          theObj.style.visibility = (annotationSupported && engineUnderstandsGame(currentGame)) ? "visible" : "hidden";
