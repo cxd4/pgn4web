@@ -470,9 +470,9 @@ boardShortcut("A8", "pgn4web v" + pgn4web_version + " debug info", function(t,e)
 
 boardShortcut("B8", "show this position FEN string", function(t,e){ displayFenData(); }, true);
 
-boardShortcut("C8", "show this game PGN source data", function(t,e){ if (e.shiftKey) { savePgnData(false); } else { displayPgnData(false); } }, true);
+boardShortcut("C8", "show this game PGN source data", function(t,e){ displayPgnData(false); }, true);
 
-boardShortcut("D8", "show full PGN source data", function(t,e){ if (e.shiftKey) { savePgnData(true); } else { displayPgnData(true); } }, true);
+boardShortcut("D8", "show full PGN source data", function(t,e){ displayPgnData(true); }, true);
 
 boardShortcut("E8", "search help", function(t,e){ displayHelp("search_tool"); }, true);
 
@@ -753,26 +753,6 @@ function displayPgnData(allGames) {
     pgnWin.document.close();
     if (window.focus) { pgnWin.focus(); }
   }
-}
-
-function savePgnData(allGames) {
-  if (!window.btoa) { displayPgnData(allGames); return; }
-
-  if (typeof(allGames) == "undefined") { allGames = true; }
-
-  var text = "";
-  if (allGames) { for (ii = 0; ii < numberOfGames; ++ii) { text += fullPgnGame(ii) + "\n\n"; } }
-  else { text += fullPgnGame(currentGame); }
-
-  var dwlObj = document.createElement("a");
-  dwlObj.style = "display:none;";
-  document.body.appendChild(dwlObj);
-  dwlObj.download = "game" + (allGames ? "s" : "") + ".pgn";
-  dwlObj.href = "data:application/x-chess-pgn;charset=utf-8;base64," + window.btoa(text);
-  var evt = document.createEvent("MouseEvents");
-  evt.initMouseEvent("click", false, false, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
-  dwlObj.dispatchEvent(evt);
-  document.body.removeChild(dwlObj);
 }
 
 function CurrentFEN() {
