@@ -21,7 +21,7 @@ function displayHelp(section) {
 }
 
 
-// custom functions for given events, to be redefined
+// empty event APIs to be redefined
 
 function customFunctionOnPgnTextLoad() {}
 function customFunctionOnPgnGameLoad() {}
@@ -470,9 +470,9 @@ boardShortcut("A8", "pgn4web v" + pgn4web_version + " debug info", function(t,e)
 
 boardShortcut("B8", "show this position FEN string", function(t,e){ displayFenData(); }, true);
 
-boardShortcut("C8", "show this game PGN source data", function(t,e){ displayPgnData(false); }, true);
+boardShortcut("C8", "show this game PGN source data", function(t,e){ if (e.shiftKey) { savePgnData(false); } else { displayPgnData(false); } }, true);
 
-boardShortcut("D8", "show full PGN source data", function(t,e){ displayPgnData(true); }, true);
+boardShortcut("D8", "show full PGN source data", function(t,e){ if (e.shiftKey) { savePgnData(true); } else { displayPgnData(true); } }, true);
 
 boardShortcut("E8", "search help", function(t,e){ displayHelp("search_tool"); }, true);
 
@@ -753,6 +753,26 @@ function displayPgnData(allGames) {
     pgnWin.document.close();
     if (window.focus) { pgnWin.focus(); }
   }
+}
+
+function savePgnData(allGames) {
+  if (!window.btoa) { myAlert("warning: savePgnData unavailable"); return; }
+
+  if (typeof(allGames) == "undefined") { allGames = true; }
+
+  var text = "";
+  if (allGames) { for (ii = 0; ii < numberOfGames; ++ii) { text += fullPgnGame(ii) + "\n\n"; } }
+  else { text += fullPgnGame(currentGame); }
+
+  var dwlObj = document.createElement("a");
+  dwlObj.style = "display:none;";
+  document.body.appendChild(dwlObj);
+  dwlObj.download = "game" + (allGames ? "s" : "") + ".pgn";
+  dwlObj.href = "data:application/x-chess-pgn;charset=utf-8;base64," + window.btoa(text);
+  var evt = document.createEvent("MouseEvents");
+  evt.initMouseEvent("click", false, false, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+  dwlObj.dispatchEvent(evt);
+  document.body.removeChild(dwlObj);
 }
 
 function CurrentFEN() {
@@ -1041,7 +1061,7 @@ function CheckLegality(what, plyCount) {
     return true;
   }
 
-  // castling move?
+  // castling
   if (what == 'O-O') {
     if (!CheckLegalityOO()) { return false; }
     for (thisCol = PieceCol[MoveColor][0]; thisCol < 7; thisCol++) {
@@ -1332,7 +1352,7 @@ function randomGameRandomPly() {
 }
 
 
-// clock detection: DGT format [%clk 01:02]
+// clock detection as [%clk 01:02]
 
 function clockFromComment(plyNum) {
   return customPgnCommentTag("clk", null, plyNum);
@@ -1357,7 +1377,7 @@ function HighlightLastMove() {
     }
   }
 
-  // halfmove to be highlighted, negative for starting position (nothing to highlight)
+  // halfmove to be highlighted, negative for starting position
   var showThisMove = CurrentPly - 1;
   if (showThisMove > StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]) { showThisMove = StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]; }
 
@@ -1413,7 +1433,7 @@ function HighlightLastMove() {
       clockString = showThisMove > StartPly ?
         clockFromComment(showThisMove) : initialBeforeLastMoverClock;
       if (!clockString && (CurrentPly === StartPly+PlyNumber)) {
-        // support for time info in the last comment as { White Time: 0h:12min Black Time: 1h:23min }
+        // see comment above
         clockRegExp = new RegExp((whiteToMove ? "White" : "Black") + "\\s+Time:\\s*(\\S+)", "i");
         if (clockMatch = strippedMoveComment(StartPly+PlyNumber).match(clockRegExp)) {
           clockString = clockMatch[1];
@@ -1598,12 +1618,12 @@ function undoStackRedo() {
 
 
 function fixCommonPgnMistakes(text) {
-  text = text.replace(/[\u00A0\u180E\u2000-\u200A\u202F\u205F\u3000]/g," "); // some "space" to plain space
+  text = text.replace(/[\u00A0\u180E\u2000-\u200A\u202F\u205F\u3000]/g," "); // some spaces to plain space
   text = text.replace(/\u00BD/g,"1/2"); // "half fraction" to "1/2"
   text = text.replace(/[\u2010-\u2015]/g,"-"); // "hyphens" to "-"
   text = text.replace(/\u2024/g,"."); // "one dot leader" to "."
   text = text.replace(/[\u2025-\u2026]/g,"..."); // "two dot leader" and "ellipsis" to "..."
-  text = text.replace(/\\"/g,"'"); // fix parsing headers like: [Opening "King\"s Indian Attack"]
+  text = text.replace(/\\"/g,"'"); // fix [Opening "Queen\"s Gambit"]
   return text;
 }
 
@@ -1869,7 +1889,7 @@ function loadPgnFromPgnUrl(pgnUrl) {
   LiveBroadcastLastRefreshedLocal = (new Date()).toLocaleString();
 
   var http_request = false;
-  if (window.XMLHttpRequest) { // not IE
+  if (window.XMLHttpRequest) {
     http_request = new XMLHttpRequest();
     if (http_request.overrideMimeType) {
       http_request.overrideMimeType('text/plain; charset=x-user-defined');
@@ -3984,7 +4004,7 @@ function StoreMove(thisPly) {
     HistPieceId[1][thisPly] = -1;
   }
 
-  // update "square from" and captured square (not necessarily "square to" e.g. en-passant)
+  // update "square from" and captured square (not "square to" for en-passant)
   Board[PieceCol[MoveColor][mvPieceId]][PieceRow[MoveColor][mvPieceId]] = 0;
 
   // mark captured piece
