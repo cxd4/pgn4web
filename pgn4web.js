@@ -756,7 +756,7 @@ function displayPgnData(allGames) {
 }
 
 function savePgnData(allGames) {
-  if (!window.btoa) { myAlert("warning: savePgnData unavailable"); return; }
+  if (!window.btoa) { displayPgnData(allGames); return; }
 
   if (typeof(allGames) == "undefined") { allGames = true; }
 
