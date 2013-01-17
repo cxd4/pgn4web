@@ -524,27 +524,29 @@ var localStorage_supported;
 try { localStorage_supported = ((enableLocalStorage) && ("localStorage" in window) && (window["localStorage"] !== null)); }
 catch (e) { localStorage_supported = false; }
 
+var cache_local_storage_prefix = "pgn4web_chess_engine_cache_"; // default "pgn4web_chess_engine_cache_"
+
 function load_cache_from_localStorage() {
    if (!localStorage_supported) { return; }
-   if (pgn4web_chess_engine_id != localStorage["pgn4web_chess_engine_id"]) {
+   if (pgn4web_chess_engine_id != localStorage[cache_local_storage_prefix + "id"]) {
       clear_cache_from_localStorage();
-      localStorage["pgn4web_chess_engine_id"] = pgn4web_chess_engine_id;
+      localStorage[cache_local_storage_prefix + "id"] = pgn4web_chess_engine_id;
       return;
    }
-   if (cache_pointer = localStorage["pgn4web_chess_engine_cache_pointer"]) {
+   if (cache_pointer = localStorage[cache_local_storage_prefix + "pointer"]) {
       cache_pointer = parseInt(cache_pointer, 10) % cache_max;
    } else { cache_pointer = -1; }
-   if (cache_fen = localStorage["pgn4web_chess_engine_cache_fen"]) {
+   if (cache_fen = localStorage[cache_local_storage_prefix + "fen"]) {
       cache_fen = cache_fen.split(",");
    } else { cache_fen = new Array(); }
-   if (cache_ev = localStorage["pgn4web_chess_engine_cache_ev"]) {
+   if (cache_ev = localStorage[cache_local_storage_prefix + "ev"]) {
       cache_ev = cache_ev.split(",").map(parseFloat);
       if (typeof(cache_ev.map == "function")) { cache_nodes = cache_ev.map(parseFloat); }
    } else { cache_ev = new Array(); }
-   if (cache_pv = localStorage["pgn4web_chess_engine_cache_pv"]) {
+   if (cache_pv = localStorage[cache_local_storage_prefix + "pv"]) {
       cache_pv = cache_pv.split(",");
    } else { cache_pv = new Array(); }
-   if (cache_nodes = localStorage["pgn4web_chess_engine_cache_nodes"]) {
+   if (cache_nodes = localStorage[cache_local_storage_prefix + "nodes"]) {
       cache_nodes = cache_nodes.split(",");
       if (typeof(cache_nodes.map == "function")) { cache_nodes = cache_nodes.map(parseFloat); }
    } else { cache_nodes = new Array(); }
@@ -558,21 +560,21 @@ function load_cache_from_localStorage() {
 function save_cache_to_localStorage() {
    if (!localStorage_supported) { return; }
    if (!cache_needs_sync) { return; }
-   localStorage["pgn4web_chess_engine_cache_pointer"] = cache_pointer;
-   localStorage["pgn4web_chess_engine_cache_fen"] = cache_fen.toString();
-   localStorage["pgn4web_chess_engine_cache_ev"] = cache_ev.toString();
-   localStorage["pgn4web_chess_engine_cache_pv"] = cache_pv.toString();
-   localStorage["pgn4web_chess_engine_cache_nodes"] = cache_nodes.toString();
+   localStorage[cache_local_storage_prefix + "pointer"] = cache_pointer;
+   localStorage[cache_local_storage_prefix + "fen"] = cache_fen.toString();
+   localStorage[cache_local_storage_prefix + "ev"] = cache_ev.toString();
+   localStorage[cache_local_storage_prefix + "pv"] = cache_pv.toString();
+   localStorage[cache_local_storage_prefix + "nodes"] = cache_nodes.toString();
    cache_needs_sync = 0;
 }
 
 function clear_cache_from_localStorage() {
    if (!localStorage_supported) { return; }
-   localStorage.removeItem("pgn4web_chess_engine_cache_pointer");
-   localStorage.removeItem("pgn4web_chess_engine_cache_fen");
-   localStorage.removeItem("pgn4web_chess_engine_cache_ev");
-   localStorage.removeItem("pgn4web_chess_engine_cache_pv");
-   localStorage.removeItem("pgn4web_chess_engine_cache_nodes");
+   localStorage.removeItem(cache_local_storage_prefix + "pointer");
+   localStorage.removeItem(cache_local_storage_prefix + "fen");
+   localStorage.removeItem(cache_local_storage_prefix + "ev");
+   localStorage.removeItem(cache_local_storage_prefix + "pv");
+   localStorage.removeItem(cache_local_storage_prefix + "nodes");
    cache_needs_sync++;
 }
 
@@ -581,7 +583,7 @@ function cacheDebugInfo() {
    if (localStorage_supported) {
       dbg += " cache=";
       try {
-         dbg += num2string(localStorage["pgn4web_chess_engine_cache_pointer"].length + localStorage["pgn4web_chess_engine_cache_fen"].length + localStorage["pgn4web_chess_engine_cache_ev"].length + localStorage["pgn4web_chess_engine_cache_pv"].length + localStorage["pgn4web_chess_engine_cache_nodes"].length);
+         dbg += num2string(localStorage[cache_local_storage_prefix + "pointer"].length + localStorage[cache_local_storage_prefix + "fen"].length + localStorage[cache_local_storage_prefix + "ev"].length + localStorage[cache_local_storage_prefix + "pv"].length + localStorage[cache_local_storage_prefix + "nodes"].length);
       } catch(e) {
          dbg += "0";
       }
