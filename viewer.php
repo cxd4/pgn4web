@@ -508,11 +508,7 @@ function reset_viewer() {
   if (typeof(start_pgn4web) == "function") {
     if (analysisStarted) { stopAnalysis(); }
     firstStart = true;
-    SetHighlightOption(getHighlightOptionFromLocalStorage());
-    SetCommentsIntoMoveText(getCommentsIntoMoveTextFromLocalStorage());
-    SetCommentsOnSeparateLines(getCommentsOnSeparateLinesFromLocalStorage());
     SetAutoplayNextGame(false);
-    SetAutoplayDelay(2000);
     if (IsRotated) { FlipBoard(); }
     start_pgn4web();
     resetAlert();
@@ -805,11 +801,17 @@ a.variation {
 }
 
 .toggleComments, .toggleAnalysis {
+  white-space: nowrap;
   text-align: right;
 }
 
 .toggleCommentsLink, .toggleAnalysisLink {
   color: #B0B0B0;
+}
+
+.gameAnnotationWarning {
+  float: left;
+  margin-right: 1em;
 }
 
 .lastMoveAndVariations {
@@ -917,7 +919,7 @@ $pgnText
    SetGameSelectorOptions(null, true, 12, 12, 2, 15, 15, 3, 10);
    SetAutostartAutoplay(false);
    SetAutoplayNextGame(false);
-   SetAutoplayDelay(2000);
+   SetAutoplayDelay(getDelayFromLocalStorage());
    SetShortcutKeysEnabled(true);
 
    function getHighlightOptionFromLocalStorage() {
@@ -949,6 +951,17 @@ $pgnText
    }
    function setCommentsOnSeparateLinesToLocalStorage(cosl) {
       try { localStorage.setItem("pgn4web_chess_viewer_commentsOnSeparateLines", cosl ? "true" : "false"); }
+      catch(e) { return false; }
+      return true;
+   }
+   var Delay_default = 2000;
+   function getDelayFromLocalStorage() {
+      try { d = parseInt(localStorage.getItem("pgn4web_chess_viewer_Delay"), 10); }
+      catch(e) { return Delay_default; }
+      return ((d === null) || (isNaN(d))) ? Delay_default : d;
+   }
+   function setDelayToLocalStorage(d) {
+      try { localStorage.setItem("pgn4web_chess_viewer_Delay", d); }
       catch(e) { return false; }
       return true;
    }
@@ -1000,8 +1013,11 @@ $pgnText
       fixHeaderTag('GameWhiteClock');
       fixHeaderTag('GameBlackClock');
 
-      if ((annotateInProgress) && (CurrentPly === StartPly + PlyNumber)) {
-         stopAnnotateGame();
+      if (theObj = document.getElementById("GameAnnotationWarning")) {
+         if ((!annotateInProgress) && (theObj.innerHTML.indexOf("progress") == -1)) {
+            theObj.innerHTML = "";
+            theObj.title = "";
+         }
       }
    }
 
@@ -1078,6 +1094,8 @@ $pgnText
       if (theObj = document.getElementById("toggleAnalysisLink")) {
          theObj.style.visibility = (annotationSupported && engineUnderstandsGame(currentGame)) ? "visible" : "hidden";
       }
+
+      stopAnnotateGame(false);
    }
 
    function customFunctionOnPgnTextLoad() {
@@ -1243,7 +1261,7 @@ $pgnText
 <canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick(event); this.blur();" onmousemove="annotationGraphMousemove(event);" onmouseover="annotationGraphMouseover(event);" onmouseout="annotationGraphMouseout(event);"></canvas>
 </div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleAnalysisLink" style="visibility:hidden;" id="toggleAnalysisLink" href="javascript:void(0);" onclick="userToggleAnalysis(); this.blur();" title="toggle engine analysis">+</a></div>
+<div class="toggleAnalysis" id="toggleAnalysis"><a href="javascript:void(0);" onclick="if (annotateInProgress) { stopAnnotateGame(false); } else { this.innerHTML = ''; } this.blur();" class="gameAnnotationWarning" id="GameAnnotationWarning"></a><a class="toggleAnalysisLink" style="visibility:hidden;" id="toggleAnalysisLink" href="javascript:void(0);" onclick="if (event.shiftKey) { annotateGame(true); } else { userToggleAnalysis(); } this.blur();" title="toggle engine analysis">+</a></div>
 <div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="if (event.shiftKey && commentsIntoMoveText) { cycleLastCommentArea(); } else { SetCommentsIntoMoveText(!commentsIntoMoveText); var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar); } this.blur();" title="toggle show comments in game text for this page; click square F7 instead to save setting"></a></div>
 </div>
 
@@ -1300,6 +1318,7 @@ function print_chessboard_two() {
    }
 
    function stopAnalysis() {
+      stopAnnotateGame(false);
       StopBackgroundEngine();
       analysisStarted = false;
       if (theObj = document.getElementById("toggleAnalysisLink")) { theObj.innerHTML = "+"; }
@@ -1541,15 +1560,15 @@ function print_chessboard_two() {
    }
 
 
-   annotateInProgress = false;
+   annotateInProgress = null;
    minAnnotationDelay = minAutoplayDelay;
    maxAnnotationDelay = maxAutoplayDelay;
    annotationDelay_default = 15;
 
    function getAnnotationDelayFromLocalStorage() {
-      try { ad = localStorage.getItem("pgn4web_chess_viewer_annotationDelay"); }
+      try { ad = parseInt(localStorage.getItem("pgn4web_chess_viewer_annotationDelay"), 10); }
       catch(e) { return annotationDelay_default; }
-      return ad === null ? annotationDelay_default : ad;
+      return ((ad === null) || (isNaN(ad))) ? annotationDelay_default : ad;
    }
    function setAnnotationDelayToLocalStorage(ad) {
       try { localStorage.setItem("pgn4web_chess_viewer_annotationDelay", ad); }
@@ -1557,8 +1576,9 @@ function print_chessboard_two() {
       return true;
    }
 
-   function annotateGame() {
-      if ((checkEngineUnderstandsGameAndWarn()) && (annotationDelay = prompt("Automatic game annotation from the current position, please do not interact with the chessboard until the analysis has reached the last available move.\\n\\nEnter engine analysis time per move, in seconds, between " + (minAnnotationDelay/1000) + " and " + (maxAnnotationDelay/1000) + ":", getAnnotationDelayFromLocalStorage()))) {
+
+   function annotateGame(useDefaultDelay) {
+      if ((checkEngineUnderstandsGameAndWarn()) && (annotationDelay = useDefaultDelay ? getAnnotationDelayFromLocalStorage() : prompt("Automated game" + (annotateGameMulti ? "s" : "") + " annotation from the current position to the complete game; please do not interact with the chessboard until the annotation has completed.\\n\\nEnter engine analysis time per move, in seconds, between " + (minAnnotationDelay/1000) + " and " + (maxAnnotationDelay/1000) + ":", getAnnotationDelayFromLocalStorage()))) {
          if (isNaN(annotationDelay = parseFloat(annotationDelay))) { annotationDelay = getAnnotationDelayFromLocalStorage(); }
          annotationDelay = annotationDelay * 1000;
          annotationDelay = Math.min(maxAnnotationDelay, Math.max(minAnnotationDelay, annotationDelay));
@@ -1568,16 +1588,40 @@ function print_chessboard_two() {
            scanGameForFen();
            toggleAnalysis();
          }
-         SetAutoplayDelay(annotationDelay);
-         SetAutoPlay(true);
-         annotateInProgress = true;
+         if (annotateInProgress) {
+            clearTimeout(annotateInProgress);
+            annotateInProgress = null;
+         }
+         if (theObj = document.getElementById("GameAnnotationWarning")) {
+            theObj.innerHTML = "automated game" + (annotateGameMulti ? "s" : "") + " annotation in progress";
+            theObj.title = "automated game" + (annotateGameMulti ? "s" : "") + " annotation: please do not interact with the chessboard until the annotation has completed";
+         }
+         annotateGameStep(CurrentPly, CurrentVar, annotationDelay);
       }
    }
 
-   function stopAnnotateGame() {
+   var annotateGameMulti = false;
+   function annotateGameStep(thisPly, thisVar, thisDelay) {
+      GoToMove(thisPly, thisVar);
+      if (thisPly < StartPlyVar[thisVar] + PlyNumberVar[thisVar]) {
+         annotateInProgress = setTimeout("annotateGameStep(" + (thisPly + 1) + ", " + thisVar + ", " + thisDelay + ");", thisDelay);
+      } else if (thisVar + 1 < numberOfVars) {
+         annotateInProgress = setTimeout("annotateGameStep(" + (StartPlyVar[thisVar + 1] + (thisVar ? 1 : 0)) + ", " + (thisVar + 1) + ", " + thisDelay + ");", thisDelay);
+      } else if ((annotateGameMulti) && (currentGame + 1 < numberOfGames)) {
+         annotateInProgress = setTimeout("Init(" + (currentGame + 1) + "); GoToMove(StartPly, 0); annotateGame(true);");
+      } else {
+         annotateInProgress = setTimeout("stopAnnotateGame(true);", thisDelay);
+      }
+   }
+
+   function stopAnnotateGame(annotationCompleted) {
+      if (theObj = document.getElementById("GameAnnotationWarning")) {
+         theObj.innerHTML = ((annotateInProgress) && (annotationCompleted)) ? "automated game" + (annotateGameMulti ? "s" : "") + " annotation completed" : "";
+         theObj.title = "";
+      }
       if (annotateInProgress) {
-         annotateInProgress = false;
-         SetAutoplayDelay(2000);
+         clearTimeout(annotateInProgress);
+         annotateInProgress = null;
       }
    }
 
@@ -1669,10 +1713,6 @@ function print_chessboard_two() {
    }
 
 
-   // D7
-   boardShortcut("D7", "toggle highlight last move and save setting", function(t,e){ SetHighlight(!highlightOption); setHighlightOptionToLocalStorage(highlightOption); });
-   // F7
-   boardShortcut("F7", "toggle show comments in game text and save setting", function(t,e){ if (e.shiftKey) { SetCommentsOnSeparateLines(!commentsOnSeparateLines); } else { SetCommentsIntoMoveText(!commentsIntoMoveText); } oldPly = CurrentPly; Init(); GoToMove(oldPly); if (e.shiftKey) { setCommentsOnSeparateLinesToLocalStorage(commentsOnSeparateLines); } else { setCommentsIntoMoveTextToLocalStorage(commentsIntoMoveText); } });
    // F5
    boardShortcut("F5", "adjust last move and current comment text area, if present", function(t,e){ if (e.shiftKey) { resetLastCommentArea(); } else { cycleLastCommentArea(); } });
 
@@ -1686,7 +1726,7 @@ function print_chessboard_two() {
    boardShortcut("H6", "go to next annotated blunder", function(t,e){ if (annotationSupportedCheckAndWarnUser()) { if (e.shiftKey) { GoToMove(CurrentPly - 1); } else { if (!analysisStarted) { userToggleAnalysis(); } blunderCheck(blunderThreshold, false); } } });
 
    // G5
-   boardShortcut("G5", "automated game annotation", function(t,e){ if (annotationSupportedCheckAndWarnUser()) { if (e.shiftKey) { stopAnnotateGame(); } else { annotateGame(); } } });
+   boardShortcut("G5", "start/stop automated game annotation", function(t,e){ if (annotationSupportedCheckAndWarnUser()) { annotateGameMulti = e.shiftKey; if (annotateInProgress) { stopAnnotateGame(false); } else { annotateGame(false); } } });
    // H5
    boardShortcut("H5", "start/stop annotation", function(t,e){ if (annotationSupportedCheckAndWarnUser()) { if (e.shiftKey) { if (confirm("clear annotation cache, all current and stored annotation data will be lost")) { clear_cache_from_localStorage(); cache_clear(); if (analysisStarted) { updateAnnotationGraph(); updateAnalysisHeader(); } } } else { userToggleAnalysis(); } } });
 
@@ -1927,11 +1967,15 @@ function print_chessboard_two() {
       dbg += " annotation=";
       if (!annotationSupported) { dbg += "unavailable"; }
       else if (!analysisStarted) { dbg += "disabled"; }
-      else { dbg += (g_backgroundEngine ? ( annotateInProgress ? "gameInProgress" : "pondering") : "idle") + " analysisSeconds=" + analysisSeconds + " topNodesPerSecond=" + num2string(g_topNodesPerSecond) + cacheDebugInfo(); }
+      else { dbg += (g_backgroundEngine ? ( annotateInProgress ? ("automatedGame" + (annotateGameMulti ? "s" : "")) : "pondering") : "idle") + " annotationSeconds=" + getAnnotationDelayFromLocalStorage() + " analysisSeconds=" + analysisSeconds + " topNodesPerSecond=" + num2string(g_topNodesPerSecond) + cacheDebugInfo(); }
       return dbg;
    }
 
    window.onunload = function() {
+      setDelayToLocalStorage(Delay);
+      setHighlightOptionToLocalStorage(highlightOption);
+      setCommentsIntoMoveTextToLocalStorage(commentsIntoMoveText);
+      setCommentsOnSeparateLinesToLocalStorage(commentsOnSeparateLines);
       if (analysisStarted) { stopAnalysis(); }
    };
 
