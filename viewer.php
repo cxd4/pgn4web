@@ -805,13 +805,19 @@ a.variation {
   text-align: right;
 }
 
-.toggleCommentsLink, .toggleAnalysisLink {
+.toggleCommentsLink, .toggleAnalysisLink, .backButton {
+  display: inline-block;
+  width: 1em;
+  padding-left: 1em;
+  text-decoration: none;
+  text-align: right;
   color: #B0B0B0;
 }
 
-.gameAnnotationWarning {
+.gameAnnotationMessage {
   float: left;
-  margin-right: 1em;
+  font-size: 66%;
+  color: #B0B0B0;
 }
 
 .lastMoveAndVariations {
@@ -837,12 +843,6 @@ a.variation {
 }
 
 .backButton {
-  display: inline-block;
-  width: 1em;
-  padding-left: 1em;
-  text-decoration: none;
-  text-align: right;
-  color: #B0B0B0;
 }
 
 .lastMoveAndComment {
@@ -1013,7 +1013,7 @@ $pgnText
       fixHeaderTag('GameWhiteClock');
       fixHeaderTag('GameBlackClock');
 
-      if (theObj = document.getElementById("GameAnnotationWarning")) {
+      if (theObj = document.getElementById("GameAnnotationMessage")) {
          if ((!annotateInProgress) && (theObj.innerHTML.indexOf("progress") == -1)) {
             theObj.innerHTML = "";
             theObj.title = "";
@@ -1261,7 +1261,7 @@ $pgnText
 <canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick(event); this.blur();" onmousemove="annotationGraphMousemove(event);" onmouseover="annotationGraphMouseover(event);" onmouseout="annotationGraphMouseout(event);"></canvas>
 </div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="toggleAnalysis" id="toggleAnalysis"><a href="javascript:void(0);" onclick="if (annotateInProgress) { stopAnnotateGame(false); } else { this.innerHTML = ''; } this.blur();" class="gameAnnotationWarning" id="GameAnnotationWarning"></a><a class="toggleAnalysisLink" style="visibility:hidden;" id="toggleAnalysisLink" href="javascript:void(0);" onclick="if (event.shiftKey) { annotateGame(true); } else { userToggleAnalysis(); } this.blur();" title="toggle engine analysis">+</a></div>
+<div class="toggleAnalysis" id="toggleAnalysis"><a href="javascript:void(0);" onclick="if (annotateInProgress) { stopAnnotateGame(false); } else { this.innerHTML = ''; } this.blur();" class="gameAnnotationMessage" id="GameAnnotationMessage"></a><a class="toggleAnalysisLink" style="visibility:hidden;" id="toggleAnalysisLink" href="javascript:void(0);" onclick="if (event.shiftKey) { annotateGame(false); } else { userToggleAnalysis(); } this.blur();" title="toggle engine analysis">+</a></div>
 <div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="if (event.shiftKey && commentsIntoMoveText) { cycleLastCommentArea(); } else { SetCommentsIntoMoveText(!commentsIntoMoveText); var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar); } this.blur();" title="toggle show comments in game text for this page; click square F7 instead to save setting"></a></div>
 </div>
 
@@ -1561,28 +1561,27 @@ function print_chessboard_two() {
 
 
    annotateInProgress = null;
-   minAnnotationDelay = minAutoplayDelay;
-   maxAnnotationDelay = maxAutoplayDelay;
-   annotationDelay_default = 15;
+   minAnnotationSeconds = Math.max(1, Math.floor(minAutoplayDelay/1000));
+   maxAnnotationSeconds = Math.max(100, Math.floor(maxAutoplayDelay/1000));
+   annotationSeconds_default = 15;
 
-   function getAnnotationDelayFromLocalStorage() {
-      try { ad = parseInt(localStorage.getItem("pgn4web_chess_viewer_annotationDelay"), 10); }
-      catch(e) { return annotationDelay_default; }
-      return ((ad === null) || (isNaN(ad))) ? annotationDelay_default : ad;
+   function getAnnotationSecondsFromLocalStorage() {
+      try { as = parseFloat(localStorage.getItem("pgn4web_chess_viewer_annotationSeconds")); }
+      catch(e) { return annotationSeconds_default; }
+      return ((as === null) || (isNaN(as))) ? annotationSeconds_default : as;
    }
-   function setAnnotationDelayToLocalStorage(ad) {
-      try { localStorage.setItem("pgn4web_chess_viewer_annotationDelay", ad); }
+   function setAnnotationSecondsToLocalStorage(as) {
+      try { localStorage.setItem("pgn4web_chess_viewer_annotationSeconds", as); }
       catch(e) { return false; }
       return true;
    }
 
 
-   function annotateGame(useDefaultDelay) {
-      if ((checkEngineUnderstandsGameAndWarn()) && (annotationDelay = useDefaultDelay ? getAnnotationDelayFromLocalStorage() : prompt("Automated game" + (annotateGameMulti ? "s" : "") + " annotation from the current position to the complete game; please do not interact with the chessboard until the annotation has completed.\\n\\nEnter engine analysis time per move, in seconds, between " + (minAnnotationDelay/1000) + " and " + (maxAnnotationDelay/1000) + ":", getAnnotationDelayFromLocalStorage()))) {
-         if (isNaN(annotationDelay = parseFloat(annotationDelay))) { annotationDelay = getAnnotationDelayFromLocalStorage(); }
-         annotationDelay = annotationDelay * 1000;
-         annotationDelay = Math.min(maxAnnotationDelay, Math.max(minAnnotationDelay, annotationDelay));
-         setAnnotationDelayToLocalStorage(annotationDelay/1000);
+   function annotateGame(promptUser) {
+      if ((checkEngineUnderstandsGameAndWarn()) && (annotationSeconds = promptUser ? prompt("Automated game" + (annotateGameMulti ? "s" : "") + " annotation from the current position; please do not interact with the chessboard until the annotation has completed.\\n\\nEnter engine annotation time per move, in seconds, between " + minAnnotationSeconds + " and " + maxAnnotationSeconds + ":", getAnnotationSecondsFromLocalStorage()) : getAnnotationSecondsFromLocalStorage())) {
+         if (isNaN(annotationSeconds = parseFloat(annotationSeconds))) { annotationSeconds = getAnnotationSecondsFromLocalStorage(); }
+         annotationSeconds = Math.min(maxAnnotationSeconds, Math.max(minAnnotationSeconds, annotationSeconds));
+         setAnnotationSecondsToLocalStorage(annotationSeconds);
          SetAutoPlay(false);
          if (!analysisStarted) {
            scanGameForFen();
@@ -1592,11 +1591,11 @@ function print_chessboard_two() {
             clearTimeout(annotateInProgress);
             annotateInProgress = null;
          }
-         if (theObj = document.getElementById("GameAnnotationWarning")) {
+         if (theObj = document.getElementById("GameAnnotationMessage")) {
             theObj.innerHTML = "automated game" + (annotateGameMulti ? "s" : "") + " annotation in progress";
-            theObj.title = "automated game" + (annotateGameMulti ? "s" : "") + " annotation: please do not interact with the chessboard until the annotation has completed";
+            theObj.title = theObj.innerHTML + " at " + annotationSeconds + " second" + (annotationSeconds == 1 ? "" : "s") + " per move; please do not interact with the chessboard until the annotation has completed";
          }
-         annotateGameStep(CurrentPly, CurrentVar, annotationDelay);
+         annotateGameStep(CurrentPly, CurrentVar, annotationSeconds * 1000);
       }
    }
 
@@ -1608,14 +1607,14 @@ function print_chessboard_two() {
       } else if (thisVar + 1 < numberOfVars) {
          annotateInProgress = setTimeout("annotateGameStep(" + (StartPlyVar[thisVar + 1] + (thisVar ? 1 : 0)) + ", " + (thisVar + 1) + ", " + thisDelay + ");", thisDelay);
       } else if ((annotateGameMulti) && (currentGame + 1 < numberOfGames)) {
-         annotateInProgress = setTimeout("Init(" + (currentGame + 1) + "); GoToMove(StartPly, 0); annotateGame(true);");
+         annotateInProgress = setTimeout("Init(" + (currentGame + 1) + "); GoToMove(StartPly, 0); annotateGame(false);");
       } else {
          annotateInProgress = setTimeout("stopAnnotateGame(true);", thisDelay);
       }
    }
 
    function stopAnnotateGame(annotationCompleted) {
-      if (theObj = document.getElementById("GameAnnotationWarning")) {
+      if (theObj = document.getElementById("GameAnnotationMessage")) {
          theObj.innerHTML = ((annotateInProgress) && (annotationCompleted)) ? "automated game" + (annotateGameMulti ? "s" : "") + " annotation completed" : "";
          theObj.title = "";
       }
@@ -1726,7 +1725,7 @@ function print_chessboard_two() {
    boardShortcut("H6", "go to next annotated blunder", function(t,e){ if (annotationSupportedCheckAndWarnUser()) { if (e.shiftKey) { GoToMove(CurrentPly - 1); } else { if (!analysisStarted) { userToggleAnalysis(); } blunderCheck(blunderThreshold, false); } } });
 
    // G5
-   boardShortcut("G5", "start/stop automated game annotation", function(t,e){ if (annotationSupportedCheckAndWarnUser()) { annotateGameMulti = e.shiftKey; if (annotateInProgress) { stopAnnotateGame(false); } else { annotateGame(false); } } });
+   boardShortcut("G5", "start/stop automated game annotation", function(t,e){ if (annotationSupportedCheckAndWarnUser()) { annotateGameMulti = e.shiftKey; if (annotateInProgress) { stopAnnotateGame(false); } else { annotateGame(true); } } });
    // H5
    boardShortcut("H5", "start/stop annotation", function(t,e){ if (annotationSupportedCheckAndWarnUser()) { if (e.shiftKey) { if (confirm("clear annotation cache, all current and stored annotation data will be lost")) { clear_cache_from_localStorage(); cache_clear(); if (analysisStarted) { updateAnnotationGraph(); updateAnalysisHeader(); } } } else { userToggleAnalysis(); } } });
 
@@ -1967,7 +1966,7 @@ function print_chessboard_two() {
       dbg += " annotation=";
       if (!annotationSupported) { dbg += "unavailable"; }
       else if (!analysisStarted) { dbg += "disabled"; }
-      else { dbg += (g_backgroundEngine ? ( annotateInProgress ? ("automatedGame" + (annotateGameMulti ? "s" : "")) : "pondering") : "idle") + " annotationSeconds=" + getAnnotationDelayFromLocalStorage() + " analysisSeconds=" + analysisSeconds + " topNodesPerSecond=" + num2string(g_topNodesPerSecond) + cacheDebugInfo(); }
+      else { dbg += (g_backgroundEngine ? ( annotateInProgress ? ("automatedGame" + (annotateGameMulti ? "s" : "") + " annotationSeconds=" + getAnnotationSecondsFromLocalStorage()) : "pondering") : "idle") + " analysisSeconds=" + analysisSeconds + " topNodesPerSecond=" + num2string(g_topNodesPerSecond) + cacheDebugInfo(); }
       return dbg;
    }
 
