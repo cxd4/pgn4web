@@ -106,8 +106,8 @@ function get_pgn() {
     return TRUE;
   } else if ($pgnUrl) {
     $pgnStatus = "info: games from $pgnUrl";
-    $isPgn = preg_match("/\.(pgn|txt)$/i",$pgnUrl);
-    $isZip = preg_match("/\.zip$/i",$pgnUrl);
+    $isPgn = preg_match("/\.(pgn|txt)$/i", preg_replace("/[?#].*$/", "", $pgnUrl));
+    $isZip = preg_match("/\.zip$/i", preg_replace("/[?#].*$/", "", $pgnUrl));
     if ($isZip) {
       if (!$zipSupported) {
         $pgnStatus = "error: zipfile support unavailable, unable to open $pgnUrl";
@@ -392,7 +392,7 @@ END;
   if ($zipSupported) { print <<<END
 
   function checkPgnExtension(uri) {
-    if (uri.match(/\\.(zip|pgn|txt)\$/i)) {
+    if (uri.replace(/[?#].*$/, "").match(/\\.(zip|pgn|txt)\$/i)) {
       return true;
     } else if (uri !== "") {
       alert("only PGN and ZIP (zipped pgn) files are supported");
