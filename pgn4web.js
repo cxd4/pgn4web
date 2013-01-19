@@ -189,7 +189,7 @@ function customShortcutKey_Shift_9() {}
 
 var shortcutKeysEnabled = false;
 function handlekey(e) {
-  var keycode, oldPly, oldVar;
+  var keycode, oldPly, oldVar, colRow;
 
   if (!e) { e = window.event; }
 
@@ -202,16 +202,15 @@ function handlekey(e) {
 
   switch (keycode) {
 
-    case  8: // backspace
     case  9: // tab
     case 16: // shift
     case 17: // ctrl
     case 18: // alt
     case 32: // space
-    case 35: // end
-    case 36: // home
     case 33: // page-up
     case 34: // page-down
+    case 35: // end
+    case 36: // home
     case 92: // super
     case 93: // menu
     case 188: // comma
@@ -220,6 +219,10 @@ function handlekey(e) {
     case 27: // escape
       if (e.shiftKey) { interactivelyToggleShortcutKeys(); }
       else { displayHelp(); }
+      break;
+
+    case  8: // backspace
+      if (colRow = colRowFromSquare(prompt("Enter shortcut square coordinates to click:").toUpperCase())) { boardOnClick[colRow.col][colRow.row](null, e); }
       break;
 
     case 90: // z
