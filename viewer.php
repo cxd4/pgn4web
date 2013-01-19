@@ -816,6 +816,7 @@ a.variation {
 
 .gameAnnotationMessage {
   display: inline-block;
+  white-space: nowrap;
   color: #B0B0B0;
   margin-top: 25px;
   margin-bottom: 10px;
@@ -1599,7 +1600,7 @@ function print_chessboard_two() {
          }
          if (theObj = document.getElementById("GameAnnotationMessage")) {
             theObj.innerHTML = "automated game" + (annotateGameMulti ? "s" : "") + " annotation in progress";
-            theObj.title = theObj.innerHTML + " at " + annotationSeconds + " second" + (annotationSeconds == 1 ? "" : "s") + " per move; please do not interact with the chessboard until the annotation has completed";
+            theObj.title = theObj.innerHTML + " at " + annotationSeconds + " second" + (annotationSeconds == 1 ? "" : "s") + " per move; please do not interact with the chessboard until the annotation has completed; click here to stop the automated annotation";
             theObj.style.display = "";
             if (theObj = document.getElementById("GameButtons")) {
                theObj.style.display = "none";
