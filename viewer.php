@@ -672,7 +672,7 @@ function print_chessboard_one() {
   color: #B0B0B0;
   border: none;
   background: transparent;
-  margin-top: 20px;
+  margin-top: 25px;
   margin-bottom: 10px;
 }
 
@@ -815,9 +815,10 @@ a.variation {
 }
 
 .gameAnnotationMessage {
-  float: left;
-  font-size: 66%;
+  display: inline-block;
   color: #B0B0B0;
+  margin-top: 25px;
+  margin-bottom: 10px;
 }
 
 .lastMoveAndVariations {
@@ -1015,8 +1016,12 @@ $pgnText
 
       if (theObj = document.getElementById("GameAnnotationMessage")) {
          if ((!annotateInProgress) && (theObj.innerHTML.indexOf("progress") == -1)) {
+            theObj.style.display = "none";
             theObj.innerHTML = "";
             theObj.title = "";
+            if (theObj = document.getElementById("GameButtons")) {
+               theObj.style.display = "";
+            }
          }
       }
    }
@@ -1234,6 +1239,7 @@ $pgnText
 <center>
 <div id="GameBoard" class="gameBoard"></div>
 <div id="GameButtons" class="gameButtons"></div>
+<a href="javascript:void(0);" onclick="stopAnnotateGame(false); this.blur();" class="gameAnnotationMessage" style="display:none;" id="GameAnnotationMessage"></a>
 </center>
 </div>
 
@@ -1261,7 +1267,7 @@ $pgnText
 <canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick(event); this.blur();" onmousemove="annotationGraphMousemove(event);" onmouseover="annotationGraphMouseover(event);" onmouseout="annotationGraphMouseout(event);"></canvas>
 </div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="toggleAnalysis" id="toggleAnalysis"><a href="javascript:void(0);" onclick="if (annotateInProgress) { stopAnnotateGame(false); } else { this.innerHTML = ''; } this.blur();" class="gameAnnotationMessage" id="GameAnnotationMessage"></a><a class="toggleAnalysisLink" style="visibility:hidden;" id="toggleAnalysisLink" href="javascript:void(0);" onclick="if (event.shiftKey) { annotateGame(false); } else { userToggleAnalysis(); } this.blur();" title="toggle engine analysis">+</a></div>
+<div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleAnalysisLink" style="visibility:hidden;" id="toggleAnalysisLink" href="javascript:void(0);" onclick="if (event.shiftKey) { annotateGame(false); } else { userToggleAnalysis(); } this.blur();" title="toggle engine analysis">+</a></div>
 <div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="if (event.shiftKey && commentsIntoMoveText) { cycleLastCommentArea(); } else { SetCommentsIntoMoveText(!commentsIntoMoveText); var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar); } this.blur();" title="toggle show comments in game text for this page; click square F7 instead to save setting"></a></div>
 </div>
 
@@ -1594,6 +1600,10 @@ function print_chessboard_two() {
          if (theObj = document.getElementById("GameAnnotationMessage")) {
             theObj.innerHTML = "automated game" + (annotateGameMulti ? "s" : "") + " annotation in progress";
             theObj.title = theObj.innerHTML + " at " + annotationSeconds + " second" + (annotationSeconds == 1 ? "" : "s") + " per move; please do not interact with the chessboard until the annotation has completed";
+            theObj.style.display = "";
+            if (theObj = document.getElementById("GameButtons")) {
+               theObj.style.display = "none";
+            }
          }
          annotateGameStep(CurrentPly, CurrentVar, annotationSeconds * 1000);
       }
@@ -1615,8 +1625,12 @@ function print_chessboard_two() {
 
    function stopAnnotateGame(annotationCompleted) {
       if (theObj = document.getElementById("GameAnnotationMessage")) {
+         theObj.style.display = ((annotateInProgress) && (annotationCompleted)) ? "" : "none";
          theObj.innerHTML = ((annotateInProgress) && (annotationCompleted)) ? "automated game" + (annotateGameMulti ? "s" : "") + " annotation completed" : "";
          theObj.title = "";
+         if (theObj = document.getElementById("GameButtons")) {
+            theObj.style.display = ((annotateInProgress) && (annotationCompleted)) ? "none" : "";
+         }
       }
       if (annotateInProgress) {
          clearTimeout(annotateInProgress);
