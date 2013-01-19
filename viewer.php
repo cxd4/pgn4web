@@ -748,7 +748,7 @@ a.variation {
 
 .emMeasure {
   height: 1em; /* required */
-  margin-top: 1em;
+  padding-top: 1em;
 }
 
 .mainContainer {
@@ -1222,7 +1222,7 @@ $pgnText
 <div id="GameNumInfo" style="width:15ex; margin-right:0.5ex; display:none; color: #808080;"><span id="GameNumCurrent" title="current game"></span>&nbsp;/&nbsp;<span id="GameNumTotal" title="number of games"></span></div>
 </td>
 </tr></tbody></table>
-<div id="emMeasure" class="emMeasure"><a href="#zoom" onclick="this.blur();" style="width:392px; display:inline-block;">&nbsp;</a></div>
+<div id="emMeasure" class="emMeasure"><a href="#zoom" onclick="this.blur();" id="zoom" class="NAGs" style="width:392px; font-size:14px; display:inline-block;">&nbsp;</a></div>
 <div><a name="zoom">&nbsp;</a></div>
 </div>
 
