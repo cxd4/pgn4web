@@ -3864,17 +3864,16 @@ function FlipBoard() {
 }
 
 function RefreshBoard() {
-  var col, row, square;
-  for (col = 0; col < 8;++col) {
-    for (row = 0; row < 8; ++row) {
-      if (Board[col][row] === 0) { SetImage(col, row, ClearImg.src); }
+  var ii, jj;
+  for (jj = 0; jj < 8; ++jj) {
+    for (ii = 0; ii < 8; ++ii) {
+      if (Board[jj][ii] === 0) { SetImage(jj, ii, ClearImg.src); }
     }
   }
-  var color, ii;
-  for (color = 0; color < 2; ++color) {
+  for (jj = 0; jj < 2; ++jj) {
     for (ii = 0; ii < 16; ++ii) {
-      if (PieceType[color][ii] > 0) {
-        SetImage(PieceCol[color][ii], PieceRow[color][ii], PiecePicture[color][PieceType[color][ii]].src);
+      if (PieceType[jj][ii] > 0) {
+        SetImage(PieceCol[jj][ii], PieceRow[jj][ii], PiecePicture[jj][PieceType[jj][ii]].src);
       }
     }
   }
