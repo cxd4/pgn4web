@@ -1665,7 +1665,7 @@ function pgnGameFromPgnText(pgnText) {
 
 function pgnGameFromHttpRequest(httpResponseData) {
 
-  if (pgnUrl && pgnUrl.match(/\.zip(\?|#|$)/i)) {
+  if (pgnUrl && pgnUrl.replace(/[?#].*/, "").match(/\.zip$/i)) {
     var unzippedPgnText = "";
     try {
       // requires js-unzip/js-unzip.js and js-unzip/js-inflate.js
