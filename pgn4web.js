@@ -348,7 +348,7 @@ function handlekey(e) {
 
     case 57: // 9
       if (e.shiftKey) { customShortcutKey_Shift_9(); }
-      else { SetAutoplayDelayAndStart( 9*1000); }
+      else { setCustomAutoplayDelay(); }
       break;
 
     case 81: // q
