@@ -346,6 +346,12 @@ $headClass
 
 </style>
 
+
+<!-- start of google analytics code -->
+
+<!-- end of google analytics code -->
+
+
 </head>
 
 <body onresize="if (typeof(updateAnnotationGraph) != 'undefined') { updateAnnotationGraph(); }">
