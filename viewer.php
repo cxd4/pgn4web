@@ -39,11 +39,7 @@ $headlessPage = strtolower(get_param("headlessPage", "hp", ""));
 $hideForm = strtolower(get_param("hideForm", "hf", ""));
 $hideFormCss = ($hideForm == "true") || ($hideForm == "t") ? "display:none;" : "";
 
-$startPosition = '[Event ""] [Site ""] [Date ""] [Round ""] [White ""] [Black ""] [Result ""] ' . ((($hideForm == "true") || ($hideForm == "t")) ? '' : ' { please enter chess games in PGN format using the form at the top of the page }');
-
-if (!($goToView = get_pgn())) {
-  $pgnText = preg_match("/^error:/", $pgnStatus) ? '[Event ""] [Site ""] [Date ""] [Round ""] [White ""] [Black ""] [Result ""] { error loading PGN data, click square A8 for more details }' : $startPosition;
-}
+$startPosition = '[Event ""] [Site ""] [Date ""] [Round ""] [White ""] [Black ""] [Result ""] ' . ((($hideForm == "true") || ($hideForm == "t")) ? '' : '{ please enter chess games in PGN format using the form at the top of the page }');
 
 
 $presetURLsArray = array();
@@ -56,17 +52,32 @@ function addPresetURL($label, $javascriptCode) {
 include 'viewer-preset-URLs.php';
 
 
-print_header();
-print_form();
-check_tmpDir();
-print_menu("board");
-print_chessboard_one();
-print_menu("moves");
-print_chessboard_two();
-print_footer();
-print_menu("bottom");
-print_html_close();
+$pgnOnly = get_param("pgnOnly", "po", "");
+if (($pgnOnly == "true") || ($pgnOnly == "t")) {
 
+  if (!get_pgn()) {
+    $pgnText = "[Event \"\"]\n[Site \"\"]\n[Date \"\"]\n[Round \"\"]\n[White \"\"]\n[Black \"\"]\n[Result \"\"]\n" . (preg_match("/^error:/", $pgnStatus) ? "\n{ $pgnStatus }" : "\n{ }");
+  }
+  print $pgnText;
+
+} else {
+
+  if (!($goToView = get_pgn())) {
+    $pgnText = preg_match("/^error:/", $pgnStatus) ? '[Event ""] [Site ""] [Date ""] [Round ""] [White ""] [Black ""] [Result ""] { error loading PGN data, click square A8 for more details }' : $startPosition;
+  }
+
+  print_header();
+  print_form();
+  check_tmpDir();
+  print_menu("board");
+  print_chessboard_one();
+  print_menu("moves");
+  print_chessboard_two();
+  print_footer();
+  print_menu("bottom");
+  print_html_close();
+
+}
 
 function get_param($param, $shortParam, $default) {
   if (isset($_REQUEST[$param]) && stripslashes(rawurldecode($_REQUEST[$param]))) { return stripslashes(rawurldecode($_REQUEST[$param])); }

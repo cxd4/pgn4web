@@ -217,15 +217,15 @@ if (($fenString == "true") || ($fenString == "t")) {
   if (preg_match('/\[\s*FEN\s*"([^"]*)"\s*\]/', $pgnGame, $matches)) { $rawGame = $matches[1]; }
 }
 
-$pgnMini = get_param("pgnMini", "pm", "");
-if (($pgnMini == "true") || ($pgnMini == "t")) {
-  if (preg_match('/\[\s*FEN\s*"[^"]*"\s*\]/', $pgnGame, $matches)) { $rawGame = "[SetUp \"1\"]\n" . $matches[0] . "\n\n"; }
-  $rawGame = $rawGame . preg_replace('/\[\s*\w+\s*"[^"]*"\s*\]\s*/', "", $pgnGame);
+$pgnOnly = get_param("pgnOnly", "po", "");
+if (($pgnOnly == "true") || ($pgnOnly == "t")) {
+  $rawGame = $pgnGame;
 }
 
-$pgnFull = get_param("pgnFull", "pf", "");
-if (($pgnFull == "true") || ($pgnFull == "t")) {
-  $rawGame = $pgnGame;
+$pgnOnlyMini = get_param("pgnOnlyMini", "pom", "");
+if (($pgnOnlyMini == "true") || ($pgnOnlyMini == "t")) {
+  if (preg_match('/\[\s*FEN\s*"[^"]*"\s*\]/', $pgnGame, $matches)) { $rawGame = "[SetUp \"1\"]\n" . $matches[0] . "\n\n"; }
+  $rawGame = $rawGame . preg_replace('/\[\s*\w+\s*"[^"]*"\s*\]\s*/', "", $pgnGame);
 }
 
 // end of undocumented features
