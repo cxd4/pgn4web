@@ -202,6 +202,7 @@ function handlekey(e) {
 
   switch (keycode) {
 
+    case  8: // backspace
     case  9: // tab
     case 16: // shift
     case 17: // ctrl
@@ -221,8 +222,8 @@ function handlekey(e) {
       else { displayHelp(); }
       break;
 
-    case  8: // backspace
-      if (colRow = colRowFromSquare(prompt("Enter shortcut square coordinates to click:").toUpperCase())) { boardOnClick[colRow.col][colRow.row](null, e); }
+    case 189: // dash
+      if ((colRow = prompt("Enter shortcut square coordinates to click:", "")) && (colRow = colRowFromSquare(colRow.toUpperCase()))) { boardOnClick[colRow.col][colRow.row](null, e); }
       break;
 
     case 90: // z
@@ -289,6 +290,10 @@ function handlekey(e) {
     case 68: // d
       if (e.shiftKey) { displayFenData(); }
       else { displayPgnData(false); }
+      break;
+
+    case 187: // equal
+      SwitchAutoPlay();
       break;
 
     case 65: // a
@@ -3949,11 +3954,8 @@ function SetImagePath(path) {
 }
 
 function SwitchAutoPlay() {
-  if (isAutoPlayOn) { SetAutoPlay(false); }
-  else {
-    MoveForward(1);
-    SetAutoPlay(true);
-  }
+  if (!isAutoPlayOn) { MoveForward(1); }
+  SetAutoPlay(!isAutoPlayOn);
 }
 
 function StoreMove(thisPly) {
