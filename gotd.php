@@ -46,10 +46,10 @@ else if ($gameNum < 1) { $gameNum = 1; }
 else if ($gameNum > $numGames) { $gameNum = $numGames; }
 $gameNum -= 1;
 
-header('Content-type: application/x-chess-pgn');
-header('Content-Disposition: inline; filename="game.pgn"');
+header("content-type: application/x-chess-pgn");
+header("content-disposition: inline; filename=game.pgn");
 if ($expiresDate) {
-  header("Expires: " . $expiresDate);
+  header("expires: " . $expiresDate);
 }
 print $games[0][$gameNum];
 

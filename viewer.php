@@ -58,8 +58,8 @@ if (($pgnOnly == "true") || ($pgnOnly == "t")) {
   if (!get_pgn()) {
     $pgnText = "[Event \"\"]\n[Site \"\"]\n[Date \"\"]\n[Round \"\"]\n[White \"\"]\n[Black \"\"]\n[Result \"\"]\n" . (preg_match("/^error:/", $pgnStatus) ? "\n{ $pgnStatus }" : "\n{ }");
   }
-  header('Content-type: application/x-chess-pgn');
-  header('Content-Disposition: inline; filename="games.pgn"');
+  header("content-type: application/x-chess-pgn");
+  header("content-disposition: inline; filename=games.pgn");
   print $pgnText;
 
 } else {

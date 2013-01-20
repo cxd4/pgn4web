@@ -251,13 +251,13 @@ $thisPage = curPageURL();
 
 $expiresMeta = "";
 if ($expiresDate) {
-  header("Expires: " . $expiresDate);
-  $expiresMeta = "<meta http-equiv=\"Expires\" content=\"" . $expiresDate . "\">";
+  header("expires: " . $expiresDate);
+  $expiresMeta = "<meta http-equiv=\"expires\" content=\"" . $expiresDate . "\">";
 }
 
 if ($rawGame) {
-  header('Content-type: application/x-chess-pgn');
-  header('Content-Disposition: inline; filename="puzzler.pgn"');
+  header("content-type: application/x-chess-pgn");
+  header("content-disposition: inline; filename=puzzler.pgn");
   print $rawGame;
   exit;
 }
