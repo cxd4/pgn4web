@@ -256,6 +256,8 @@ if ($expiresDate) {
 }
 
 if ($rawGame) {
+  header('Content-type: application/x-chess-pgn');
+  header('Content-Disposition: inline; filename="puzzler.pgn"');
   print $rawGame;
   exit;
 }
