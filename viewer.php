@@ -1028,7 +1028,7 @@ $pgnText
       fixHeaderTag('GameWhiteClock');
       fixHeaderTag('GameBlackClock');
 
-      if ((annotateInProgress) && (!analysisStarted)) { stopAnnotation(false); }
+      if ((annotateInProgress) && (!analysisStarted)) { stopAnnotateGame(false); }
       else if (theObj = document.getElementById("GameAnnotationMessage")) {
          if ((!annotateInProgress) && (theObj.innerHTML.indexOf("completed") > -1)) {
             theObj.style.display = "none";
