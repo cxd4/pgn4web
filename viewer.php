@@ -1028,8 +1028,9 @@ $pgnText
       fixHeaderTag('GameWhiteClock');
       fixHeaderTag('GameBlackClock');
 
-      if (theObj = document.getElementById("GameAnnotationMessage")) {
-         if ((!annotateInProgress) && (theObj.innerHTML.indexOf("progress") == -1)) {
+      if ((annotateInProgress) && (!analysisStarted)) { stopAnnotation(false); }
+      else if (theObj = document.getElementById("GameAnnotationMessage")) {
+         if ((!annotateInProgress) && (theObj.innerHTML.indexOf("completed") > -1)) {
             theObj.style.display = "none";
             theObj.innerHTML = "";
             theObj.title = "";
@@ -1330,8 +1331,7 @@ function print_chessboard_two() {
    }
 
    function restartAnalysis() {
-      StartEngineAnalysis();
-      analysisStarted = true;
+      analysisStarted = StartEngineAnalysis();
       if (theObj = document.getElementById("toggleAnalysisLink")) { theObj.innerHTML = "&times;"; }
       updateAnnotationGraph();
       updateAnalysisHeader();
@@ -1625,15 +1625,20 @@ function print_chessboard_two() {
 
    var annotateGameMulti = false;
    function annotateGameStep(thisPly, thisVar, thisDelay) {
-      GoToMove(thisPly, thisVar);
-      if (thisPly < StartPlyVar[thisVar] + PlyNumberVar[thisVar]) {
-         annotateInProgress = setTimeout("annotateGameStep(" + (thisPly + 1) + ", " + thisVar + ", " + thisDelay + ");", thisDelay);
-      } else if (thisVar + 1 < numberOfVars) {
-         annotateInProgress = setTimeout("annotateGameStep(" + (StartPlyVar[thisVar + 1] + (thisVar ? 1 : 0)) + ", " + (thisVar + 1) + ", " + thisDelay + ");", thisDelay);
-      } else if ((annotateGameMulti) && (currentGame + 1 < numberOfGames)) {
-         annotateInProgress = setTimeout("Init(" + (currentGame + 1) + "); GoToMove(StartPly, 0); annotateGame(false);");
+      if (analysisStarted) {
+         GoToMove(thisPly, thisVar);
+         if (thisPly < StartPlyVar[thisVar] + PlyNumberVar[thisVar]) {
+            annotateInProgress = setTimeout("annotateGameStep(" + (thisPly + 1) + ", " + thisVar + ", " + thisDelay + ");", thisDelay);
+         } else if (thisVar + 1 < numberOfVars) {
+            annotateInProgress = setTimeout("annotateGameStep(" + (StartPlyVar[thisVar + 1] + (thisVar ? 1 : 0)) + ", " + (thisVar + 1) + ", " + thisDelay + ");", thisDelay);
+         } else if ((annotateGameMulti) && (currentGame + 1 < numberOfGames)) {
+            annotateInProgress = setTimeout("Init(" + (currentGame + 1) + "); GoToMove(StartPly, 0); annotateGame(false);");
+         } else {
+            annotateInProgress = setTimeout("stopAnnotateGame(true);", thisDelay);
+         }
       } else {
-         annotateInProgress = setTimeout("stopAnnotateGame(true);", thisDelay);
+         stopAnnotateGame(false);
+         return;
       }
    }
 
@@ -1976,6 +1981,10 @@ function print_chessboard_two() {
          g_backgroundEngine.postMessage("position " + fenString);
          g_backgroundEngine.postMessage("analyze");
          setAnalysisTimeout(analysisSeconds);
+         return true;
+      } else {
+         stopAnnotateGame(false);
+         return false;
       }
    }
 
