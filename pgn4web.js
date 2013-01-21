@@ -3210,6 +3210,9 @@ function ParseMove(move, plyCount) {
 
   if (typeof(move) == "undefined") { return false; }
 
+  HistEnPassant[plyCount+1] = false;
+  HistEnPassantCol[plyCount+1] = -1;
+
   if (move.indexOf('--') === 0) {
     mvIsNull = 1;
     CheckLegality('--', plyCount);
@@ -3333,8 +3336,6 @@ function ParseMove(move, plyCount) {
   if (!CheckLegality(PieceCode[mvPiece-1], plyCount)) { return false; }
 
   // pawn moved: check en-passant possibility
-  HistEnPassant[plyCount+1] = false;
-  HistEnPassantCol[plyCount+1] = -1;
   if (mvPiece == 6) {
      if (Math.abs(HistRow[0][plyCount]-mvToRow) == 2) {
        HistEnPassant[plyCount+1] = true;
