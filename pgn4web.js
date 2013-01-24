@@ -189,7 +189,7 @@ function customShortcutKey_Shift_9() {}
 
 var shortcutKeysEnabled = false;
 function handlekey(e) {
-  var keycode, oldPly, oldVar, colRow;
+  var keycode, oldPly, oldVar, colRow, colRowList;
 
   if (!e) { e = window.event; }
 
@@ -223,7 +223,13 @@ function handlekey(e) {
       break;
 
     case 189: // dash
-      if ((colRow = prompt("Enter shortcut square coordinates to click:", "")) && (colRow = colRowFromSquare(colRow.toUpperCase()))) { boardOnClick[colRow.col][colRow.row](null, e); }
+      if (colRowList = prompt("Enter shortcut square coordinates to click:", "")) {
+        colRowList = colRowList.toUpperCase().replace(/[^A-Z0-9]/g,"");
+        while (colRow = colRowFromSquare(colRowList)) {
+          boardOnClick[colRow.col][colRow.row]({"id": "img_tcol" + colRow.col + "trow" + colRow.row}, e);
+          colRowList = colRowList.substr(2);
+        }
+      }
       break;
 
     case 90: // z

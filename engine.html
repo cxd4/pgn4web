@@ -68,6 +68,11 @@ a {
   border-width: 1px;
 }
 
+.gameShowFen {
+  display: inline-block;
+  overflow: hidden;
+}
+
 .gameMoves {
   white-space: nowrap;
 }
@@ -275,7 +280,8 @@ myInsertRule(mySheet, ".gameCustomButtons", "height: " + squareSize + "px; paddi
 myInsertRule(mySheet, ".gameButtonCell", "width: " + squareSize + "px;");
 myInsertRule(mySheet, ".gameButtonSpacer", "width: " + Math.floor(squareSize * 0.4) + "px;");
 myInsertRule(mySheet, ".gameAnalysis", "height: " + squareSize + "px;");
-myInsertRule(mySheet, ".gameFlagToMove", "height: " + Math.floor(fontMovesSize / 2) + "px; width: " + Math.floor(fontMovesSize / 2) + "px; margin-right: " + squareSize + "px; border-color: " + fontMovesColorHex + ";");
+myInsertRule(mySheet, ".gameFlagToMove", "height: " + Math.floor(fontMovesSize / 2) + "px; width: " + Math.floor(fontMovesSize / 2) + "px; border-color: " + fontMovesColorHex + ";");
+myInsertRule(mySheet, ".gameShowFen", "width: " + (squareSize - 2 * Math.floor(squareSize / 3)) + "px; margin-left:" + Math.floor(squareSize / 3) + "; margin-right:" + Math.floor(squareSize / 3) + ";");
 myInsertRule(mySheet, ".gameMoves", "font-size: " + fontMovesSize + "px;");
 myInsertRule(mySheet, ".gameEval", "padding-left: " + squareSize + "px; padding-bottom: " + Math.floor(fontCommentsSize / 6) + "px; background: " + backgroundColorHex + "; font-size: " + fontCommentsSize + "px;");
 
@@ -322,7 +328,7 @@ SetShortcutKeysEnabled(false);
 <div class="gameAnalysis gameAnalysisHidden" id="GameAnalysis">
 <div class="gameEval" id="GameEval" onclick="clickedGameEval(this, event);">&nbsp;</div>
 <div class="gameFlagAndMoves">
-<img id="GameFlagToMove" class="gameFlagToMove" onclick="clickedGameFlagToMove(this, event);" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" border="1" /><span id="GameMoves" class="gameMoves" onclick="clickedGameMoves(this, event);">&nbsp;</span>&nbsp;
+<img class="gameFlagToMove" id="GameFlagToMove" onclick="clickedGameFlagToMove(this, event);" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" border="1" /><span class="gameShowFen" onclick="clickedGameShowFen(this, event);">&nbsp;</span><span id="GameMoves" class="gameMoves" onclick="clickedGameMoves(this, event);">&nbsp;</span>&nbsp;
 </div>
 </div>
 </center>
@@ -417,8 +423,19 @@ function clickedGameFlagToMove(t,e) {
       else { startAutoPlay(); }
    } else {
       if ((!autoPlay) && (!IsCheck(PieceCol[MoveColor][0], PieceRow[MoveColor][0], MoveColor))) {
-         updateFEN(CurrentFEN().replace(" " + (CurrentPly % 2 ? "b" : "w") + " ", " " + (CurrentPly % 2 ? "w" : "b") + " ").replace(/\s[a-h][36]\s/, " - "));
+         if ((CurrentPly > StartPly) && (Moves[CurrentPly - 1] == "--")) { MoveBackward(1); }
+         else { addPly("--"); }
       }
+   }
+}
+
+function clickedGameShowFen(t, e) {
+   if (e.shiftKey) { displayFenData(); }
+   else if (PlyNumber > 0) {
+      var oldCurrentPly = CurrentPly;
+      MoveBackward(CurrentPly - StartPly, true);
+      displayFenData(true);
+      MoveForward(oldCurrentPly - CurrentPly);
    }
 }
 
@@ -833,7 +850,7 @@ function detectClick(t,e) {
    thisRow = IsRotated ? matches[2] : 7 - matches[2];
    thisRowChar = "12345678".charAt(thisRow);
    if ((lastPromotionMove !== "") && (lastPromotionMove.charAt(2) == thisColChar) && (lastPromotionMove.charAt(3) == thisRowChar)) {
-      thisMove = lastPromotionMove.substr(0,4) + "RBNQ".charAt("QRBN".indexOf(lastPromotionMove.charAt(4)));
+      thisMove = lastPromotionMove.substr(0,5) + "RBNQ".charAt("QRBN".indexOf(lastPromotionMove.charAt(5)));
       Moves[CurrentPly - 1] = MovesVar[0][CurrentPly - 1] = thisMove;
       MoveBackward(1);
       MoveForward(1);
@@ -849,7 +866,7 @@ function detectClick(t,e) {
          else if (thisMove == "Ke8g8") { thisMove = "O-O"; }
          else if (thisMove == "Ke8c8") { thisMove = "O-O-O"; }
          else if (("KQRBN".indexOf(thisMove.charAt(0)) == -1) && (thisMove.charAt(3) == (CurrentPly % 2 ? "1" : "8"))) {
-            thisMove += "Q";
+            thisMove += "=Q";
             lastPromotionPlaceholder = thisMove;
          }
          if (autoPlay) { stopAutoPlay(); }
