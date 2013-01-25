@@ -840,7 +840,8 @@ var clickFromRow = "";
 var clickFromPiece = "";
 function detectClick(t,e) {
    if (disableInputs) { return; }
-   if (! (matches = t.id.match(/img_tcol([0-7])trow([0-7])/))) { return; }
+   var matches = t.id.match(/img_tcol([0-7])trow([0-7])/);
+   if (!matches) { return; }
    thisCol = IsRotated ? 7 - matches[1] : matches[1];
    thisColChar = "abcdefgh".charAt(thisCol);
    thisRow = IsRotated ? matches[2] : 7 - matches[2];
