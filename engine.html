@@ -782,8 +782,6 @@ function customFunctionOnMove() {
    clickFromCol = "";
    clickFromRow = "";
    clickFromPiece = "";
-   lastPromotionMove = lastPromotionPlaceholder;
-   lastPromotionPlaceholder = "";
 
    updateGameAnalysisFlag();
    updateGameAutoUpdateFlag();
@@ -840,8 +838,6 @@ for (cc=0; cc<8; cc++) { for (rr=0; rr<8; rr++) {
 var clickFromCol = "";
 var clickFromRow = "";
 var clickFromPiece = "";
-var lastPromotionMove = "";
-var lastPromotionPlaceholder = "";
 function detectClick(t,e) {
    if (disableInputs) { return; }
    if (! (matches = t.id.match(/img_tcol([0-7])trow([0-7])/))) { return; }
@@ -849,13 +845,7 @@ function detectClick(t,e) {
    thisColChar = "abcdefgh".charAt(thisCol);
    thisRow = IsRotated ? matches[2] : 7 - matches[2];
    thisRowChar = "12345678".charAt(thisRow);
-   if ((lastPromotionMove !== "") && (lastPromotionMove.charAt(2) == thisColChar) && (lastPromotionMove.charAt(3) == thisRowChar)) {
-      thisMove = lastPromotionMove.substr(0,5) + "RBNQ".charAt("QRBN".indexOf(lastPromotionMove.charAt(5)));
-      Moves[CurrentPly - 1] = MovesVar[0][CurrentPly - 1] = thisMove;
-      MoveBackward(1);
-      MoveForward(1);
-      lastPromotionMove = thisMove;
-   } else if (clickFromCol !== "") {
+   if (clickFromCol !== "") {
       setTimeout('highlightSquare("abcdefgh".indexOf("' + clickFromCol + '"), "12345678".indexOf("' + clickFromRow + '"), false);', 77);
       clickToCol = thisColChar;
       clickToRow = thisRowChar;
@@ -867,12 +857,16 @@ function detectClick(t,e) {
          else if (thisMove == "Ke8c8") { thisMove = "O-O-O"; }
          else if (("KQRBN".indexOf(thisMove.charAt(0)) == -1) && (thisMove.charAt(3) == (CurrentPly % 2 ? "1" : "8"))) {
             thisMove += "=Q";
-            lastPromotionPlaceholder = thisMove;
          }
          if (autoPlay) { stopAutoPlay(); }
          addPly(thisMove);
       }
       clickFromCol = clickFromRow = clickFromPiece = "";
+   } else if ((CurrentPly > StartPly) && (matches = Moves[CurrentPly - 1].match(new RegExp("^(.*" + thisColChar + thisRowChar + "=)([QRBN])", "")))) {
+      thisMove = matches[1] + "RBNQ".charAt("QRBN".indexOf(matches[2]));
+      Moves[CurrentPly - 1] = MovesVar[0][CurrentPly - 1] = thisMove;
+      MoveBackward(1);
+      MoveForward(1);
    } else {
       cc = CurrentPly % 2;
       for (ii=0; ii<16; ii++) {
@@ -886,7 +880,6 @@ function detectClick(t,e) {
             }
          }
       }
-      lastPromotionMove = "";
    }
 }
 
