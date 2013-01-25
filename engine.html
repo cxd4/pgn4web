@@ -863,10 +863,8 @@ function detectClick(t,e) {
       }
       clickFromCol = clickFromRow = clickFromPiece = "";
    } else if ((CurrentPly > StartPly) && (matches = Moves[CurrentPly - 1].match(new RegExp("^(.*" + thisColChar + thisRowChar + "=)([QRBN])", "")))) {
-      thisMove = matches[1] + "RBNQ".charAt("QRBN".indexOf(matches[2]));
-      Moves[CurrentPly - 1] = MovesVar[0][CurrentPly - 1] = thisMove;
       MoveBackward(1);
-      MoveForward(1);
+      addPly(matches[1] + "RBNQ".charAt("QRBN".indexOf(matches[2])));
    } else {
       cc = CurrentPly % 2;
       for (ii=0; ii<16; ii++) {
