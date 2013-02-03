@@ -10,12 +10,14 @@
 error_reporting(E_ERROR | E_PARSE);
 
 $targetUrl = get_param("targetUrl", "tu", "");
-$linkFilterDefault = ".+\.pgn$";
+$linkFilterDefault = ".+.pgn$";
 $linkFilter = get_param("linkFilter", "lf", $linkFilterDefault);
 $frameDepthDefault = 0;
 $frameDepth = get_param("frameDepth", "fd", $frameDepthDefault);
 $viewerUrlDefault = "viewer.php?pd=";
 $viewerUrl = get_param("viewerUrl", "vu", $viewerUrlDefault);
+$doubleEncodeLink = get_param("doubleEncodeLink", "del", "false");
+$doubleEncodeLink = (($doubleEncodeLink == "true") || ($doubleEncodeLink == "t"));
 $showDownload = get_param("showDownload", "sd", "false");
 $showDownload = (($showDownload == "true") || ($showDownload == "t"));
 $headlessPage = get_param("headlessPage", "hp", "false");
@@ -75,7 +77,7 @@ function get_links($targetUrl, $depth) {
 }
 
 function print_links() {
-    global $urls, $targetUrl, $linkFilter, $frameDepth, $viewerUrl, $showDownload, $headlessPage, $help, $actualFrameDepth;
+    global $urls, $targetUrl, $linkFilter, $frameDepth, $viewerUrl, $doubleEncodeLink, $showDownload, $headlessPage, $help, $actualFrameDepth;
 
     $urls = array_unique($urls);
     sort($urls);
@@ -90,6 +92,7 @@ function print_links() {
         print("linkFilter = filter for selecting links" . "\n");
         print("frameDepth = maximum recursive depth to scan frames" . "\n");
         print("viewerUrl = viewer url to open links" . "\n");
+        print("doubleEncodeLink = true|false" . "\n");
         print("showDownload = true|false" . "\n");
         print("headlessPage = true|false" . "\n");
         print("help = true" . "\n");
@@ -108,7 +111,7 @@ function print_links() {
         for ($i = 0; $i < count($urls); $i++) {
             print("<li>");
             if ($showDownload) { print("&nbsp;&nbsp;<a href='" . $urls[$i] . "'><b>D</b></a>&nbsp;&nbsp;&nbsp;"); }
-            print("<a href='" . $viewerUrl . rawurlencode($urls[$i]) . "' target='pgn4web_link_viewer'>");
+            print("<a href='" . $viewerUrl . ($doubleEncodeLink ? rawurlencode(rawurlencode($urls[$i])) : rawurlencode($urls[$i])) . "' target='pgn4web_link_viewer'>");
             if ($showDownload) { print("<b>V</b>&nbsp;&nbsp;&nbsp;"); }
             print($urls[$i] . "</a>" . "</li>" . "\n");
         }
@@ -120,8 +123,8 @@ function print_links() {
 }
 
 function get_param($param, $shortParam, $default) {
-  if (isset($_REQUEST[$param]) && stripslashes(rawurldecode($_REQUEST[$param]))) { return stripslashes(rawurldecode($_REQUEST[$param])); }
-  if (isset($_REQUEST[$shortParam]) && stripslashes(rawurldecode($_REQUEST[$shortParam]))) { return stripslashes(rawurldecode($_REQUEST[$shortParam])); }
+  if (isset($_REQUEST[$param])) { return $_REQUEST[$param]; }
+  if (isset($_REQUEST[$shortParam])) { return $_REQUEST[$shortParam]; }
   return $default;
 }
 

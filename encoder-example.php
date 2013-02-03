@@ -10,8 +10,8 @@
 include "pgn-encoder.php";
 
 function get_param($param, $shortParam, $default) {
-  if (isset($_REQUEST[$param]) && stripslashes(rawurldecode($_REQUEST[$param]))) { return stripslashes(rawurldecode($_REQUEST[$param])); }
-  if (isset($_REQUEST[$shortParam]) && stripslashes(rawurldecode($_REQUEST[$shortParam]))) { return stripslashes(rawurldecode($_REQUEST[$shortParam])); }
+  if (isset($_REQUEST[$param])) { return $_REQUEST[$param]; }
+  if (isset($_REQUEST[$shortParam])) { return $_REQUEST[$shortParam]; }
   return $default;
 }
 
