@@ -486,7 +486,7 @@ boardShortcut("B8", "show this position FEN string", function(t,e){ displayFenDa
 
 boardShortcut("C8", "show this game PGN source data", function(t,e){ displayPgnData(false); }, true);
 
-boardShortcut("D8", "show full PGN source data", function(t,e){ displayPgnData(true); }, true);
+boardShortcut("D8", "show full PGN source data", function(t,e){ if (e.shiftKey && pgnUrl) { location.href = pgnUrl; } else { displayPgnData(true); } }, true);
 
 boardShortcut("E8", "search help", function(t,e){ displayHelp("search_tool"); }, true);
 
