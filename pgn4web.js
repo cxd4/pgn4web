@@ -1636,8 +1636,7 @@ function pgnGameFromPgnText(pgnText) {
   pgnText = fixCommonPgnMistakes(pgnText);
 
   // avoid html injection
-  pgnText = pgnText.replace(/</g, "&lt;");
-  pgnText = pgnText.replace(/>/g, "&gt;");
+  pgnText = pgnText.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
   // PGN standard: ignore lines starting with %
   pgnText = pgnText.replace(/(^|\n)%.*(\n|$)/g, "\n");
