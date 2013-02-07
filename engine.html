@@ -842,11 +842,12 @@ function detectClick(t,e) {
    if (disableInputs) { return; }
    var matches = t.id.match(/img_tcol([0-7])trow([0-7])/);
    if (!matches) { return; }
-   thisCol = IsRotated ? 7 - matches[1] : matches[1];
-   thisColChar = "abcdefgh".charAt(thisCol);
-   thisRow = IsRotated ? matches[2] : 7 - matches[2];
-   thisRowChar = "12345678".charAt(thisRow);
+   var thisCol = IsRotated ? 7 - matches[1] : matches[1];
+   var thisColChar = "abcdefgh".charAt(thisCol);
+   var thisRow = IsRotated ? matches[2] : 7 - matches[2];
+   var thisRowChar = "12345678".charAt(thisRow);
    if (clickFromCol !== "") {
+      var thisCurrentPly = CurrentPly;
       setTimeout('highlightSquare("abcdefgh".indexOf("' + clickFromCol + '"), "12345678".indexOf("' + clickFromRow + '"), false);', 77);
       clickToCol = thisColChar;
       clickToRow = thisRowChar;
@@ -863,6 +864,9 @@ function detectClick(t,e) {
          addPly(thisMove);
       }
       clickFromCol = clickFromRow = clickFromPiece = "";
+      if (CurrentPly === thisCurrentPly) {
+         detectClick({id: "img_tcol" + matches[1] + "trow" + matches[2]}, null);
+      }
    } else if ((CurrentPly > StartPly) && (matches = Moves[CurrentPly - 1].match(new RegExp("^(.*" + thisColChar + thisRowChar + "=)([QRBN])", "")))) {
       MoveBackward(1);
       addPly(matches[1] + "RBNQ".charAt("QRBN".indexOf(matches[2])));
@@ -881,7 +885,6 @@ function detectClick(t,e) {
       }
    }
 }
-
 
 function detectGameEnd(pv, FEN) {
    if ((pv !== "") && (pv.match(/^[#=]/))) { return true; }
