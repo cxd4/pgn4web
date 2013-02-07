@@ -849,8 +849,8 @@ function detectClick(t,e) {
    if (clickFromCol !== "") {
       var thisCurrentPly = CurrentPly;
       setTimeout('highlightSquare("abcdefgh".indexOf("' + clickFromCol + '"), "12345678".indexOf("' + clickFromRow + '"), false);', 77);
-      clickToCol = thisColChar;
-      clickToRow = thisRowChar;
+      var clickToCol = thisColChar;
+      var clickToRow = thisRowChar;
       if ((clickFromCol !== clickToCol) || (clickFromRow !== clickToRow)) {
          var thisMove = clickFromPiece + clickFromCol + clickFromRow + clickToCol + clickToRow;
          if (thisMove == "Ke1g1") { thisMove = "O-O"; }
