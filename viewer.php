@@ -58,14 +58,16 @@ $pgnOnly = get_param("pgnOnly", "po", "");
 if (($pgnOnly == "true") || ($pgnOnly == "t")) {
 
   if (!get_pgn()) {
-    $pgnText = "[Event \"\"]\n[Site \"\"]\n[Date \"\"]\n[Round \"\"]\n[White \"\"]\n[Black \"\"]\n[Result \"\"]\n" . (preg_match("/^error:/", $pgnStatus) ? "\n{ $pgnStatus }" : "\n{ }");
+    // $pgnText = "[Event \"\"]\n[Site \"\"]\n[Date \"\"]\n[Round \"\"]\n[White \"\"]\n[Black \"\"]\n[Result \"\"]\n" . (preg_match("/^error:/", $pgnStatus) ? "\n{ $pgnStatus }" : "\n{ }");
+    // header("HTTP/1.1 409 Conflict");
+    header("HTTP/1.1 204 No Content");
   }
   header("content-type: application/x-chess-pgn");
   header("content-disposition: inline; filename=games.pgn");
   if ($http_response_header_last_modified) {
     header($http_response_header_last_modified);
   }
-  print $pgnText;
+  if ($pgnText) { print $pgnText; }
 
 } else {
 
@@ -236,8 +238,8 @@ function get_pgn() {
     else { $pgnFileString = "pgn file"; }
     $pgnText = file_get_contents($pgnSource, NULL, NULL, 0, $fileUploadLimitBytes + 1);
     if ((!$pgnText) || (($pgnUrl) && (http_response_header_isInvalid($http_response_header)))) {
-       $pgnStatus = "error: failed reading $pgnFileString: " . (http_response_header_isInvalid($http_response_header) ? "server error: $http_response_header[0]" : "file not found or server error");
-       return FALSE;
+      $pgnStatus = "error: failed reading $pgnFileString: " . (http_response_header_isInvalid($http_response_header) ? "server error: $http_response_header[0]" : "file not found or server error");
+      return FALSE;
     }
     if ((strlen($pgnText) == 0) || (strlen($pgnText) > $fileUploadLimitBytes)) {
       $pgnStatus = "error: failed reading $pgnFileString: file size exceeds $fileUploadLimitText form limit, $fileUploadLimitIniText server limit or server error";
