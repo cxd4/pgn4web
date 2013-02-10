@@ -57,11 +57,7 @@ include 'viewer-preset-URLs.php';
 $pgnOnly = get_param("pgnOnly", "po", "");
 if (($pgnOnly == "true") || ($pgnOnly == "t")) {
 
-  if (!get_pgn()) {
-    // $pgnText = "[Event \"\"]\n[Site \"\"]\n[Date \"\"]\n[Round \"\"]\n[White \"\"]\n[Black \"\"]\n[Result \"\"]\n" . (preg_match("/^error:/", $pgnStatus) ? "\n{ $pgnStatus }" : "\n{ }");
-    // header("HTTP/1.1 409 Conflict");
-    header("HTTP/1.1 204 No Content");
-  }
+  if (!get_pgn()) { header("HTTP/1.1 204 No Content"); }
   header("content-type: application/x-chess-pgn");
   header("content-disposition: inline; filename=games.pgn");
   if ($http_response_header_last_modified) {
