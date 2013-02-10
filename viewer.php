@@ -32,6 +32,8 @@ if ($fileUploadLimitIniText === "") { $fileUploadLimitIniText = "unknown"; }
 $zipSupported = function_exists('zip_open');
 if (!$zipSupported) { $pgnDebugInfo = $pgnDebugInfo . "ZIP support unavailable from server, missing php ZIP library<br/>"; }
 
+$http_response_header_last_modified = NULL;
+
 $debugHelpText = "a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages";
 
 $headlessPage = strtolower(get_param("headlessPage", "hp", ""));
@@ -60,6 +62,9 @@ if (($pgnOnly == "true") || ($pgnOnly == "t")) {
   }
   header("content-type: application/x-chess-pgn");
   header("content-disposition: inline; filename=games.pgn");
+  if ($http_response_header_last_modified) {
+    header($http_response_header_last_modified);
+  }
   print $pgnText;
 
 } else {
@@ -95,6 +100,7 @@ function get_pgn() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $startPosition, $goToView, $zipSupported;
+  global $http_response_header_last_modified;
 
   $pgnDebugInfo = $pgnDebugInfo . get_param("debug", "d", "");
 
@@ -236,6 +242,9 @@ function get_pgn() {
     if ((strlen($pgnText) == 0) || (strlen($pgnText) > $fileUploadLimitBytes)) {
       $pgnStatus = "error: failed reading $pgnFileString: file size exceeds $fileUploadLimitText form limit, $fileUploadLimitIniText server limit or server error";
       return FALSE;
+    }
+    if (($http_response_header) && ($http_response_header[3]) && (preg_match("/^Last-Modified:/i", $http_response_header[3]))) {
+      $http_response_header_last_modified = $http_response_header[3];
     }
     return TRUE;
   }
