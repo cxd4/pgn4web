@@ -1743,12 +1743,10 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
       loadPgnFromPgnUrlResult = LOAD_PGN_FAIL;
     } else {
       if (LiveBroadcastDelay > 0) {
-        LiveBroadcastLastModifiedHeader = this_http_request.getResponseHeader("Last-Modified");
-        if (LiveBroadcastLastModifiedHeader) {
+        LiveBroadcastLastReceivedLocal = (new Date()).toLocaleString();
+        if (LiveBroadcastLastModifiedHeader = this_http_request.getResponseHeader("Last-Modified")) {
           LiveBroadcastLastModified = new Date(LiveBroadcastLastModifiedHeader);
-          LiveBroadcastLastReceivedLocal = (new Date()).toLocaleString();
-        }
-        else { LiveBroadcastLastModified_Reset(); }
+        } else { LiveBroadcastLastModified_Reset(); }
       }
       loadPgnFromPgnUrlResult = LOAD_PGN_OK;
     }
