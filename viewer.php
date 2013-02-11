@@ -93,7 +93,7 @@ function get_param($param, $shortParam, $default) {
 function http_parse_headers($headerFields) {
 
   global $http_response_header_status, $http_response_header_last_modified;
-  
+
   $retVal = array();
   foreach ($headerFields as $field) {
     if (preg_match('/([^:]+): (.+)/m', $field, $match)) {
