@@ -32,7 +32,8 @@ if ($fileUploadLimitIniText === "") { $fileUploadLimitIniText = "unknown"; }
 $zipSupported = function_exists('zip_open');
 if (!$zipSupported) { $pgnDebugInfo = $pgnDebugInfo . "ZIP support unavailable from server, missing php ZIP library<br/>"; }
 
-$http_response_header_last_modified = NULL;
+$http_response_header_status = "";
+$http_response_header_last_modified = "";
 
 $debugHelpText = "a flashing chessboard signals errors in the PGN data, click on the top left chessboard square for debug messages";
 
@@ -60,9 +61,7 @@ if (($pgnOnly == "true") || ($pgnOnly == "t")) {
   if (!get_pgn()) { header("HTTP/1.1 204 No Content"); }
   header("content-type: application/x-chess-pgn");
   header("content-disposition: inline; filename=games.pgn");
-  if ($http_response_header_last_modified) {
-    header($http_response_header_last_modified);
-  }
+  if ($http_response_header_last_modified) { header($http_response_header_last_modified); }
   if ($pgnText) { print $pgnText; }
 
 } else {
@@ -70,7 +69,6 @@ if (($pgnOnly == "true") || ($pgnOnly == "t")) {
   if (!($goToView = get_pgn())) {
     $pgnText = preg_match("/^error:/", $pgnStatus) ? '[Event ""] [Site ""] [Date ""] [Round ""] [White ""] [Black ""] [Result ""] { error loading PGN data, click square A8 for more details }' : $startPosition;
   }
-
   print_header();
   print_form();
   check_tmpDir();
@@ -84,21 +82,50 @@ if (($pgnOnly == "true") || ($pgnOnly == "t")) {
 
 }
 
+
 function get_param($param, $shortParam, $default) {
   if (isset($_REQUEST[$param])) { return $_REQUEST[$param]; }
   if (isset($_REQUEST[$shortParam])) { return $_REQUEST[$shortParam]; }
   return $default;
 }
 
-function http_response_header_isInvalid($response) {
-   return isset($response[0]) ? preg_match("/\b[45]\d\d\b/", $response[0]) : FALSE;
+
+function http_parse_headers($headerFields) {
+
+  global $http_response_header_status, $http_response_header_last_modified;
+  
+  $retVal = array();
+  foreach ($headerFields as $field) {
+    if (preg_match('/([^:]+): (.+)/m', $field, $match)) {
+      $match[1] = preg_replace('/(?<=^|[\x09\x20\x2D])./e', 'strtoupper("\0")', strtolower(trim($match[1])));
+      if (isset($retVal[$match[1]])) {
+        $retVal[$match[1]] = array($retVal[$match[1]], $match[2]);
+      } else {
+        $retVal[$match[1]] = trim($match[2]);
+      }
+    } else if (preg_match('/^\S+\s+\d+\s/m', $field)) {
+      $retVal["status"] = $field;
+    }
+  }
+
+  if (isset($retVal["status"])) { $http_response_header_status = $retVal["status"]; }
+  if (isset($retVal["Last-Modified"])) { $http_response_header_last_modified = "Last-Modified: " . $retVal["Last-Modified"]; }
+
+  return $retVal;
 }
+
+
+function http_response_header_isInvalid() {
+   global $http_response_header_status;
+   return $http_response_header_status ? preg_match("/^\S+\s+[45]\d\d\s/", $http_response_header_status) : FALSE;
+}
+
 
 function get_pgn() {
 
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $startPosition, $goToView, $zipSupported;
-  global $http_response_header_last_modified;
+  global $http_response_header_status, $http_response_header_last_modified;
 
   $pgnDebugInfo = $pgnDebugInfo . get_param("debug", "d", "");
 
@@ -139,10 +166,11 @@ function get_pgn() {
         $copiedBytes = stream_copy_to_stream($pgnUrlHandle, $tempZipHandle, $fileUploadLimitBytes + 1, 0);
         fclose($pgnUrlHandle);
         fclose($tempZipHandle);
-        if ((($copiedBytes > 0) && ($copiedBytes <= $fileUploadLimitBytes)) && (!http_response_header_isInvalid($http_response_header))) {
+        http_parse_headers($http_response_header);
+        if ((($copiedBytes > 0) && ($copiedBytes <= $fileUploadLimitBytes)) && (!http_response_header_isInvalid())) {
           $pgnSource = $tempZipName;
         } else {
-          $pgnStatus = "error: failed to get $pgnUrl: " . (http_response_header_isInvalid($http_response_header) ? "server error: $http_response_header[0]" : "file not found, file size exceeds $fileUploadLimitText form limit, $fileUploadLimitIniText server limit or server error");
+          $pgnStatus = "error: failed to get $pgnUrl: " . (http_response_header_isInvalid() ? "server error: $http_response_header_status" : "file not found, file size exceeds $fileUploadLimitText form limit, $fileUploadLimitIniText server limit or server error");
           if (($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
           return FALSE;
         }
@@ -233,16 +261,14 @@ function get_pgn() {
     if ($pgnUrl) { $pgnFileString = $pgnUrl; }
     else { $pgnFileString = "pgn file"; }
     $pgnText = file_get_contents($pgnSource, NULL, NULL, 0, $fileUploadLimitBytes + 1);
-    if ((!$pgnText) || (($pgnUrl) && (http_response_header_isInvalid($http_response_header)))) {
-      $pgnStatus = "error: failed reading $pgnFileString: " . (http_response_header_isInvalid($http_response_header) ? "server error: $http_response_header[0]" : "file not found or server error");
+    http_parse_headers($http_response_header);
+    if ((!$pgnText) || (($pgnUrl) && (http_response_header_isInvalid()))) {
+      $pgnStatus = "error: failed reading $pgnFileString: " . (http_response_header_isInvalid() ? "server error: $http_response_header_status" : "file not found or server error");
       return FALSE;
     }
     if ((strlen($pgnText) == 0) || (strlen($pgnText) > $fileUploadLimitBytes)) {
       $pgnStatus = "error: failed reading $pgnFileString: file size exceeds $fileUploadLimitText form limit, $fileUploadLimitIniText server limit or server error";
       return FALSE;
-    }
-    if (($http_response_header) && ($http_response_header[3]) && (preg_match("/^Last-Modified:/i", $http_response_header[3]))) {
-      $http_response_header_last_modified = $http_response_header[3];
     }
     return TRUE;
   }
