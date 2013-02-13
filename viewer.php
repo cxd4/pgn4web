@@ -788,10 +788,6 @@ a.variation {
   text-align: center;
 }
 
-.gameSearch {
-  white-space: nowrap;
-}
-
 .emMeasure {
   height: 1em; /* required */
   padding-top: 1em;
@@ -1270,7 +1266,7 @@ $pgnText
 </td>
 </tr><tr>
 <td width="100%" align="left" valign="top">
-<div id="GameSearch" class="gameSearch"></div>
+<div id="GameSearch" style="white-space:nowrap;"></div>
 </td><td align="right" valign="bottom">
 <div id="GameNumInfo" style="width:15ex; margin-right:0.5ex; display:none; color: #808080; font-size: 66%;"><span id="GameNumCurrent" style="font-size: 100%;" title="current game"></span>&nbsp;/&nbsp;<span id="GameNumTotal" style="font-size: 100%;" title="number of games"></span></div>
 </td>
