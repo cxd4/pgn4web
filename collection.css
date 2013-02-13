@@ -32,18 +32,6 @@ div, span, table, tr, td {
   padding: 20px;
 }
 
-.gameNumInfo {
-  width: 15ex;
-  margin-right:0.5ex;
-  color: gray;
-  font-size: 66%;
-  display:none;
-}
-
-.gameNumInfoItem {
-  font-size: 100%;
-}
-
 .gametextContainerCell {
   padding-left: 20px;
 }
@@ -122,7 +110,7 @@ div, span, table, tr, td {
 
 .searchPgnExpression {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 89% !important;
+  width: 90% !important;
 }
 
 .move,
