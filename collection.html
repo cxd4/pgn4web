@@ -74,12 +74,21 @@
    SetShortcutKeysEnabled(true);
 
    function customFunctionOnPgnTextLoad() {
-     if (theObj = document.getElementById('numGm')) { theObj.innerHTML = numberOfGames; }
+     if (theObj = document.getElementById("GameNumInfo")) {
+         theObj.style.display = numberOfGames > 1 ? "block" : "none";
+      }
+      if (theObj = document.getElementById("GameNumTotal")) {
+         theObj.innerHTML = numberOfGames;
+         theObj.title = "number of games: " + numberOfGames;
+      }
      searchPgnGame(pgnSearchTarget);
    }
 
    function customFunctionOnPgnGameLoad() {
-     if (theObj = document.getElementById('currGm')) { theObj.innerHTML = currentGame+1; }
+      if (theObj = document.getElementById("GameNumCurrent")) {
+         theObj.innerHTML = currentGame + 1;
+         theObj.title = "current game: " + (currentGame + 1);
+      }
    }
 
    // customShortcutKey_Shift_1 defined by fide-lookup.js
@@ -100,7 +109,7 @@
 <table class="containerTable">
 
 <tr valign=bottom>
-<td class="containerCell" colspan=2>
+<td class="containerCell" colspan="2">
 <div style="font-size: 200%; font-weight: bold; text-align: center;">
 <script type="text/javascript">
 document.write(pgnTitle);
@@ -111,9 +120,13 @@ document.write(pgnTitle);
 </tr>
 
 <tr valign=bottom>
-<td class="containerCell" colspan=2>
+<td class="containerCell" colspan="2">
 <div id="GameSelector"></div>
-<div id="GameSearch"></div>
+<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td width="100%">
+<div id="GameSearch" style="white-space:nowrap;"></div>
+</td><td align="right" valign="bottom">
+<div id="GameNumInfo" style="width:15ex; margin-right:0.5ex; display:none; color: #808080; font-size: 66%;"><span id="GameNumCurrent" style="font-size: 100%;" title="current game"></span>&nbsp;/&nbsp;<span id="GameNumTotal" style="font-size: 100%;" title="number of games"></span></div>
+</td></tr></table>
 </td>
 
 </tr>
@@ -146,7 +159,6 @@ document.write(pgnTitle);
 <tr><td class="label">side</td><td><span id="GameSideToMove"></span>&nbsp;</td></tr>
 -->
 <tr><td colspan=2 class="rowSpace"></td></tr>
-<tr><td class="label">game</td><td><span id=currGm>0</span>&nbsp;(<span id=numGm>0</span>)</td></tr>
 <tr><td class="label">archive</td>
 <td>
 <script type="text/javascript">

@@ -110,7 +110,7 @@ div, span, table, tr, td {
 
 .searchPgnExpression {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 90% !important;
+  width: 89% !important;
 }
 
 .move,
