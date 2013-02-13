@@ -32,6 +32,18 @@ div, span, table, tr, td {
   padding: 20px;
 }
 
+.gameNumInfo {
+  width: 15ex;
+  margin-right:0.5ex;
+  color: gray;
+  font-size: 66%;
+  display:none;
+}
+
+.gameNumInfoItem {
+  font-size: 100%;
+}
+
 .gametextContainerCell {
   padding-left: 20px;
 }
