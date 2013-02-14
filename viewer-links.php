@@ -18,8 +18,6 @@ $viewerUrlDefault = "viewer.php?pd=";
 $viewerUrl = get_param("viewerUrl", "vu", $viewerUrlDefault);
 $doubleEncodeLink = get_param("doubleEncodeLink", "del", "false");
 $doubleEncodeLink = (($doubleEncodeLink == "true") || ($doubleEncodeLink == "t"));
-$showDownload = get_param("showDownload", "sd", "false");
-$showDownload = (($showDownload == "true") || ($showDownload == "t"));
 $headlessPage = get_param("headlessPage", "hp", "false");
 $headlessPage = (($headlessPage == "true") || ($headlessPage == "t"));
 $help = get_param("help", "h", "false");
@@ -77,14 +75,19 @@ function get_links($targetUrl, $depth) {
 }
 
 function print_links() {
-    global $urls, $targetUrl, $linkFilter, $frameDepth, $viewerUrl, $doubleEncodeLink, $showDownload, $headlessPage, $help, $actualFrameDepth;
+    global $urls, $targetUrl, $linkFilter, $frameDepth, $viewerUrl, $doubleEncodeLink, $headlessPage, $help, $actualFrameDepth;
+
+    $labelColor = "lightgray";
 
     $urls = array_unique($urls);
     sort($urls);
 
-    print "<title>links</title>" . "\n";
+    if (($numUrls = count($urls)) == 1) { print "<title>1 link</title>" . "\n"; }
+    else { print "<title>$numUrls links</title>" . "\n"; }
+
     print "<link rel='shortcut icon' href='pawn.ico' />" . "\n";
-    print "<style tyle='text/css'> body { font-family: sans-serif; padding: 2em; line-height: 1.5em; } a { color: black; text-decoration: none; } </style>" . "\n";
+    print "<style tyle='text/css'> body { font-family: sans-serif; padding: 2em; line-height: 1.5em; } a { color: black; text-decoration: none; } ol { color: $labelColor; } </style>" . "\n";
+    print "<script type='text/javascript'> var viewerWin; </script>" . "\n";
 
     if ($help) {
         print("<pre>" . "\n");
@@ -93,7 +96,6 @@ function print_links() {
         print("frameDepth = maximum recursive depth to scan frames" . "\n");
         print("viewerUrl = viewer url to open links" . "\n");
         print("doubleEncodeLink = true|false" . "\n");
-        print("showDownload = true|false" . "\n");
         print("headlessPage = true|false" . "\n");
         print("help = true" . "\n");
         print("\n");
@@ -101,23 +103,21 @@ function print_links() {
     }
 
     if (!$headlessPage) {
-        print "targetUrl: &nbsp; &nbsp; <b><a href='" . $targetUrl . "' target='_blank'>" . $targetUrl . "</a></b><br />" . "\n";
-        print "linkFilter: &nbsp; &nbsp; <b>" . $linkFilter . "</b><br />" . "\n";
+        print "<span style='color:$labelColor'>targetUrl</span> &nbsp; &nbsp; <a href='" . $targetUrl . "' target='_blank'>" . $targetUrl . "</a><br />" . "\n";
+        print "<span style='color:$labelColor'>linkFilter</span> &nbsp; &nbsp; " . $linkFilter . "<br />" . "\n";
         if ($frameDepth > 0) { print "frameDepth: &nbsp; &nbsp; <b>" . $frameDepth . "</b> &nbsp; &nbsp; <span style='opacity: 0.2;'>" . $actualFrameDepth . "</span><br />" . "\n"; }
         print("<div>&nbsp;</div>" . "\n");
     }
-    if (count($urls) > 0) {
+    if ($numUrls > 0) {
         print("<ol>" . "\n");
         for ($i = 0; $i < count($urls); $i++) {
             print("<li>");
-            if ($showDownload) { print("&nbsp;&nbsp;<a href='" . $urls[$i] . "'><b>D</b></a>&nbsp;&nbsp;&nbsp;"); }
-            print("<a href='" . $viewerUrl . ($doubleEncodeLink ? rawurlencode(rawurlencode($urls[$i])) : rawurlencode($urls[$i])) . "' target='pgn4web_link_viewer'>");
-            if ($showDownload) { print("<b>V</b>&nbsp;&nbsp;&nbsp;"); }
+            print("<a href='javascript:void(0);' onclick='if (event.shiftKey) { location.href = \"$urls[$i]\"; } else { if (viewerWin && !viewerWin.closed) { viewerWin.close(); } viewerWin = window.open(\"" . ($viewerUrl . ($doubleEncodeLink ? rawurlencode(rawurlencode($urls[$i])) : rawurlencode($urls[$i]))) . "\", \"pgn4web_link_viewer\"); viewerWin.focus(); } this.blur(); return false;'>");
             print($urls[$i] . "</a>" . "</li>" . "\n");
         }
         print "</ol>" . "\n";
     } else {
-        print("<ul><li><i>no links found</i></li></ul>" . "\n");
+        print("<i>no links found</i>" . "\n");
     }
 
 }
