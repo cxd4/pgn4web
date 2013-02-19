@@ -3430,8 +3430,9 @@ function searchPgnGameForm() {
   { searchPgnGame(document.getElementById('searchPgnExpression').value); }
 }
 
+var chessMovesRegExp = new RegExp("\\b((\\d+(\\.{1,3}|\\s)\\s*)?((([KQRBN][a-h1-8]?)|[a-h])?x?[a-h][1-8](=[QRNB])?|O-O-O|O-O)\\b[!?+#]*)", "g");
 function fixCommentForDisplay(comment) {
-  return comment.replace(new RegExp("\\b((\\d+(\\.{1,3}|\\s)\\s*)?((([KQRBN][a-h1-8]?)|[a-h])?x?[a-h][1-8](=[QRNB])?|O-O-O|O-O)\\b[!?+#]*)", "g"), '<SPAN CLASS="commentMove">$1</SPAN>');
+  return comment.replace(chessMovesRegExp, '<SPAN CLASS="commentMove">$1</SPAN>');
 }
 
 var tableSize = 0;
