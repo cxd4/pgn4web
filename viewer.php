@@ -1656,15 +1656,15 @@ function print_chessboard_two() {
    function annotateGameStep(thisPly, thisVar, thisDelay) {
       if (analysisStarted) {
          GoToMove(thisPly, thisVar);
+         var thisCmd = "stopAnnotateGame(true);";
          if (thisPly < StartPlyVar[thisVar] + PlyNumberVar[thisVar]) {
-            annotateInProgress = setTimeout("annotateGameStep(" + (thisPly + 1) + ", " + thisVar + ", " + thisDelay + ");", thisDelay);
+            thisCmd = "annotateGameStep(" + (thisPly + 1) + ", " + thisVar + ", " + thisDelay + ");";
          } else if (thisVar + 1 < numberOfVars) {
-            annotateInProgress = setTimeout("annotateGameStep(" + (StartPlyVar[thisVar + 1] + (thisVar ? 1 : 0)) + ", " + (thisVar + 1) + ", " + thisDelay + ");", thisDelay);
+            thisCmd = "annotateGameStep(" + (StartPlyVar[thisVar + 1] + 1) + ", " + (thisVar + 1) + ", " + thisDelay + ");";
          } else if ((annotateGameMulti) && (currentGame + 1 < numberOfGames)) {
-            annotateInProgress = setTimeout("Init(" + (currentGame + 1) + "); GoToMove(StartPly, 0); annotateGame(false);");
-         } else {
-            annotateInProgress = setTimeout("stopAnnotateGame(true);", thisDelay);
+            thisCmd = "Init(" + (currentGame + 1) + "); GoToMove(StartPly, 0); annotateGame(false);";
          }
+         annotateInProgress = setTimeout(thisCmd, thisDelay);
       } else {
          stopAnnotateGame(false);
          return;
