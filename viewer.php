@@ -1584,7 +1584,7 @@ function print_chessboard_two() {
             }
             thisHTML += "</span>";
             thisHTML += (thisEval > 0 ? "+" : "") + thisEval + (thisEval == Math.floor(thisEval) ? ".0 " : "") + "<span class='move'>p</span>";
-            thisHTML += "<span style='padding-left:2em;'>&perp; " + thisDepth + "</style>";
+            thisHTML += "<span style='padding-left:2em;'>&ge; " + thisDepth + "</style>";
          }
          thisHTML += "</span>";
          theObj.innerHTML = thisHTML;
