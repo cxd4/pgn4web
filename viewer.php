@@ -1138,7 +1138,6 @@ $pgnText
       if (analysisStarted) {
          if (engineUnderstandsGame(currentGame)) { scanGameForFen(); }
          else { stopAnalysis(); }
-         hideExtraAnalysisInfo();
       }
       if (theObj = document.getElementById("toggleAnalysisLink")) {
          theObj.style.visibility = (annotationSupported && engineUnderstandsGame(currentGame)) ? "visible" : "hidden";
@@ -1305,7 +1304,7 @@ $pgnText
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="if (event.shiftKey) { displayHelp('informant_symbols'); } else { showExtraAnalysisInfo(); } this.blur();" onmouseout="hideExtraAnalysisInfo(event);" class="innerHeaderItem analysisEval" id="GameAnalysisEval"></a><a href="javascript:void(0);" onclick="goToMissingAnalysis(!event.shiftKey); this.blur();" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv"></a><b>&nbsp;</b></div>
+<div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="if (event.shiftKey) { displayHelp('informant_symbols'); } else { goToMissingAnalysis(!event.shiftKey); } this.blur();" class="innerHeaderItem analysisEval" id="GameAnalysisEval"></a><a href="javascript:void(0);" onclick="goToMissingAnalysis(!event.shiftKey); this.blur();" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="gameAnnotationContainer" id="GameAnnotationContainer">
 <canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick(event); this.blur();" onmousemove="annotationGraphMousemove(event);" onmouseover="annotationGraphMouseover(event);" onmouseout="annotationGraphMouseout(event);"></canvas>
@@ -1470,7 +1469,6 @@ function print_chessboard_two() {
    }
 
    function updateAnalysisHeader() {
-      if (freezeAnalysisHeader) { return; }
       if (!analysisStarted) { clearAnalysisHeader(); return; }
 
       annPly = (lastMousemoveAnnPly == -1) ? CurrentPly : lastMousemoveAnnPly;
@@ -1497,7 +1495,7 @@ function print_chessboard_two() {
 
       if (theObj = document.getElementById("GameAnalysisEval")) {
          theObj.innerHTML = (annEval || annEval === 0) ? ev2NAG(annEval) : "";
-         theObj.title = (annEval || annEval === 0) ? "engine evaluation: " + (annEval > 0 ? "+" : "") + annEval + (annEval == Math.floor(annEval) ? ".0" : "") + (annDepth ? "  depth: " + annDepth : "") : "";
+         theObj.title = (annEval || annEval === 0) ? "engine evaluation: " + (annEval > 0 ? "+" : "") + annEval + (annEval == Math.floor(annEval) ? ".0" : "") + " " + (isBlunder(CurrentPly, blunderThreshold) ? translateNAGs("$4") + " " : (isBlunder(CurrentPly, mistakeThreshold) ? translateNAGs("$2") + " " : "")) + (annDepth ? " depth: " + annDepth : "") : "";
       }
       if (theObj = document.getElementById("GameAnalysisPv")) {
          theObj.innerHTML = annPv ? annPv : "";
@@ -1522,7 +1520,6 @@ function print_chessboard_two() {
    }
 
    function clearAnalysisHeader() {
-      if (freezeAnalysisHeader) { return; }
       if (theObj = document.getElementById("GameAnalysisMove")) { theObj.innerHTML = ""; }
       if (theObj = document.getElementById("GameAnalysisEval")) { theObj.innerHTML = ""; }
       if (theObj = document.getElementById("GameAnalysisPv")) { theObj.innerHTML = ""; }
@@ -1562,41 +1559,6 @@ function print_chessboard_two() {
             if (e.shiftKey) { save_cache_to_localStorage(); }
             else { GoToMove(annPly); }
          }
-      }
-   }
-
-   var freezeAnalysisHeader = false;
-   function showExtraAnalysisInfo() {
-      if (theObj = document.getElementById("GameAnalysisPv")) {
-         freezeAnalysisHeader = true;
-         var thisEval = typeof(fenPositionsEval[CurrentPly]) !== "undefined" ? fenPositionsEval[CurrentPly] : null;
-         var thisDepth = typeof(fenPositionsDepth[CurrentPly]) !== "undefined" ? fenPositionsDepth[CurrentPly] : 0;
-         var thisHTML = "<span class='analysisExtraInfo'>";
-         if (thisEval === null) {
-            thisHTML += "&middot;";
-         } else {
-            thisHTML += "<span class='move' style='margin-right:2em;'>";
-            if (CurrentPly === StartPly) {
-            thisHTML += "&middot;";
-            } else {
-               thisHTML += ((Math.floor(CurrentPly / 2) + (CurrentPly % 2)) + (CurrentPly % 2 ? ". " : "... ") + Moves[CurrentPly - 1]);
-               thisHTML += (isBlunder(CurrentPly, blunderThreshold) ? translateNAGs("$4") : (isBlunder(CurrentPly, mistakeThreshold) ? translateNAGs("$2") : ""));
-            }
-            thisHTML += "</span>";
-            thisHTML += (thisEval > 0 ? "+" : "") + thisEval + (thisEval == Math.floor(thisEval) ? ".0 " : "") + "<span class='move'>p</span>";
-            thisHTML += "<span style='padding-left:2em;'>&ge; " + thisDepth + "</style>";
-         }
-         thisHTML += "</span>";
-         theObj.innerHTML = thisHTML;
-         if (theObj = document.getElementById("GameAnalysisEval")) { theObj.style.color = "transparent"; }
-      }
-   }
-
-   function hideExtraAnalysisInfo(e) {
-      if (freezeAnalysisHeader) {
-         freezeAnalysisHeader = false;
-         if (theObj = document.getElementById("GameAnalysisEval")) { theObj.style.color = ""; }
-         updateAnalysisHeader();
       }
    }
 
