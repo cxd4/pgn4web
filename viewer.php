@@ -1379,14 +1379,14 @@ function print_chessboard_two() {
    var fenPositions;
    var fenPositionsEval;
    var fenPositionsPv;
-   var fenPositionsNodes;
+   var fenPositionsDepth;
    resetFenPositions();
 
    function resetFenPositions() {
       fenPositions = new Array();
       fenPositionsEval = new Array();
       fenPositionsPv = new Array();
-      fenPositionsNodes = new Array();
+      fenPositionsDepth = new Array();
    }
 
    var annotationBarWidth;
@@ -1488,14 +1488,16 @@ function print_chessboard_two() {
 
       annEval = (lastMousemoveAnnPly == -1) ? "&middot;" : "";
       annPv = "";
+      annDepth = "";
       if (typeof(fenPositions[annPly]) != "undefined") {
          annEval = fenPositionsEval[annPly];
          annPv = fenPositionsPv[annPly];
+         annDepth = fenPositionsDepth[annPly];
       }
 
       if (theObj = document.getElementById("GameAnalysisEval")) {
          theObj.innerHTML = (annEval || annEval === 0) ? ev2NAG(annEval) : "";
-         theObj.title = (annEval || annEval === 0) ? "engine evaluation: " + (annEval > 0 ? "+" : "") + annEval + (annEval == Math.floor(annEval) ? ".0 " : " ") : "";
+         theObj.title = (annEval || annEval === 0) ? "engine evaluation: " + (annEval > 0 ? "+" : "") + annEval + (annEval == Math.floor(annEval) ? ".0" : "") + (annDepth ? "  depth: " + annDepth : "") : "";
       }
       if (theObj = document.getElementById("GameAnalysisPv")) {
          theObj.innerHTML = annPv ? annPv : "";
@@ -1568,7 +1570,7 @@ function print_chessboard_two() {
       if (theObj = document.getElementById("GameAnalysisPv")) {
          freezeAnalysisHeader = true;
          var thisEval = typeof(fenPositionsEval[CurrentPly]) !== "undefined" ? fenPositionsEval[CurrentPly] : null;
-         var thisNodes = typeof(fenPositionsNodes[CurrentPly]) !== "undefined" ? fenPositionsNodes[CurrentPly] : 0;
+         var thisDepth = typeof(fenPositionsDepth[CurrentPly]) !== "undefined" ? fenPositionsDepth[CurrentPly] : 0;
          var thisHTML = "<span class='analysisExtraInfo'>";
          if (thisEval === null) {
             thisHTML += "&middot;";
@@ -1582,7 +1584,7 @@ function print_chessboard_two() {
             }
             thisHTML += "</span>";
             thisHTML += (thisEval > 0 ? "+" : "") + thisEval + (thisEval == Math.floor(thisEval) ? ".0 " : "") + "<span class='move'>p</span>";
-            thisHTML += "<span style='margin-left:2em'>" + num2string(thisNodes) + " node" + (thisNodes == 1 ? "" : "s") + "</span>";
+            thisHTML += "<span style='padding-left:2em;'>&perp; " + thisDepth + "</style>";
          }
          thisHTML += "</span>";
          theObj.innerHTML = thisHTML;
@@ -1714,7 +1716,7 @@ function print_chessboard_two() {
          if ((index = cache_fen_lastIndexOf(fenPositions[CurrentPly])) != -1) {
             fenPositionsEval[CurrentPly] = cache_ev[index];
             fenPositionsPv[CurrentPly] = cache_pv[index];
-            fenPositionsNodes[CurrentPly] = cache_nodes[index];
+            fenPositionsDepth[CurrentPly] = cache_depth[index];
          }
          if (CurrentPly === StartPly) { break; }
          MoveBackward(1, true);
@@ -1801,6 +1803,7 @@ function print_chessboard_two() {
    var g_ev = "";
    var g_maxEv = 99.9;
    var g_pv = "";
+   var g_depth = "";
    var g_nodes = "";
    var g_initError;
    var g_lastFenError = "";
@@ -1813,7 +1816,7 @@ function print_chessboard_two() {
             g_backgroundEngine.addEventListener("message", function (e) {
                if ((e.data.match("^pv")) && (fenString == CurrentFEN())) {
                   if (matches = e.data.substr(3, e.data.length - 3).match(/Ply:(\d+) Score:(-*\d+) Nodes:(\d+) NPS:(\d+) (.*)/)) {
-                     ply = parseInt(matches[1], 10);
+                     g_depth = parseInt(matches[1], 10);
                      if (isNaN(g_ev = parseInt(matches[2], 10))) {
                         g_ev = "";
                      } else {
@@ -1827,10 +1830,10 @@ function print_chessboard_two() {
                      g_pv = matches[5].replace(/(^\s+|\s*\+|\s+$)/g, "").replace(/\s*stalemate/, "=").replace(/\s*checkmate/, "#");
                      if (searchMeaningful()) {
                         validateSearchWithCache();
-                        if ((typeof(fenPositionsNodes[CurrentPly]) == "undefined") || (g_nodes > fenPositionsNodes[CurrentPly])) {
+                        if ((typeof(fenPositionsDepth[CurrentPly]) == "undefined") || (g_depth > fenPositionsDepth[CurrentPly])) {
                            fenPositionsEval[CurrentPly] = g_ev;
                            fenPositionsPv[CurrentPly] = g_pv;
-                           fenPositionsNodes[CurrentPly] = g_nodes;
+                           fenPositionsDepth[CurrentPly] = g_depth;
                            updateAnnotationGraph();
                            updateAnalysisHeader();
                         }
@@ -1884,12 +1887,12 @@ function print_chessboard_two() {
       if (cache_pv = localStorage[cache_local_storage_prefix + "pv"]) {
          cache_pv = cache_pv.split(",");
       } else { cache_pv = new Array(); }
-      if (cache_nodes = localStorage[cache_local_storage_prefix + "nodes"]) {
-         cache_nodes = cache_nodes.split(",");
-         if (typeof(cache_nodes.map == "function")) { cache_nodes = cache_nodes.map(parseFloat); }
-      } else { cache_nodes = new Array(); }
+      if (cache_depth = localStorage[cache_local_storage_prefix + "depth"]) {
+         cache_depth = cache_depth.split(",");
+         if (typeof(cache_depth.map == "function")) { cache_depth = cache_depth.map(parseFloat); }
+      } else { cache_depth = new Array(); }
       cache_needs_sync = 0;
-      if ((cache_fen.length !== cache_ev.length) || (cache_fen.length !== cache_pv.length) || (cache_fen.length !== cache_nodes.length)) {
+      if ((cache_fen.length !== cache_ev.length) || (cache_fen.length !== cache_pv.length) || (cache_fen.length !== cache_depth.length)) {
          clear_cache_from_localStorage();
          cache_clear();
       }
@@ -1902,7 +1905,7 @@ function print_chessboard_two() {
       localStorage[cache_local_storage_prefix + "fen"] = cache_fen.toString();
       localStorage[cache_local_storage_prefix + "ev"] = cache_ev.toString();
       localStorage[cache_local_storage_prefix + "pv"] = cache_pv.toString();
-      localStorage[cache_local_storage_prefix + "nodes"] = cache_nodes.toString();
+      localStorage[cache_local_storage_prefix + "depth"] = cache_depth.toString();
       cache_needs_sync = 0;
    }
 
@@ -1912,7 +1915,8 @@ function print_chessboard_two() {
       localStorage.removeItem(cache_local_storage_prefix + "fen");
       localStorage.removeItem(cache_local_storage_prefix + "ev");
       localStorage.removeItem(cache_local_storage_prefix + "pv");
-      localStorage.removeItem(cache_local_storage_prefix + "nodes");
+      localStorage.removeItem(cache_local_storage_prefix + "depth");
+      localStorage.removeItem(cache_local_storage_prefix + "nodes"); // backward compatibility
       cache_needs_sync++;
    }
 
@@ -1921,7 +1925,7 @@ function print_chessboard_two() {
       if (localStorage_supported) {
          dbg += " cache=";
          try {
-            dbg += num2string(localStorage[cache_local_storage_prefix + "pointer"].length + localStorage[cache_local_storage_prefix + "fen"].length + localStorage[cache_local_storage_prefix + "ev"].length + localStorage[cache_local_storage_prefix + "pv"].length + localStorage[cache_local_storage_prefix + "nodes"].length);
+            dbg += num2string(localStorage[cache_local_storage_prefix + "pointer"].length + localStorage[cache_local_storage_prefix + "fen"].length + localStorage[cache_local_storage_prefix + "ev"].length + localStorage[cache_local_storage_prefix + "pv"].length + localStorage[cache_local_storage_prefix + "depth"].length);
          } catch(e) {
             dbg += "0";
          }
@@ -1934,7 +1938,7 @@ function print_chessboard_two() {
    var cache_fen = new Array();
    var cache_ev = new Array();
    var cache_pv = new Array();
-   var cache_nodes = new Array();
+   var cache_depth = new Array();
 
    var cache_needs_sync = 0;
 
@@ -1952,18 +1956,18 @@ function print_chessboard_two() {
          cache_fen[cache_pointer] = fenString.replace(/\s+\d+\s+\d+\s*$/, "");
          cache_ev[cache_pointer] = g_ev;
          cache_pv[cache_pointer] = g_pv;
-         cache_nodes[cache_pointer] = g_nodes;
+         cache_depth[cache_pointer] = g_depth;
          cache_needs_sync++;
       } else {
-         if (g_nodes > cache_nodes[id]) {
+         if (g_depth > cache_depth[id]) {
             cache_ev[id] = g_ev;
             cache_pv[id] = g_pv;
-            cache_nodes[id] = g_nodes;
+            cache_depth[id] = g_depth;
             cache_needs_sync++;
          } else {
             g_ev = parseFloat(cache_ev[id]);
             g_pv = cache_pv[id];
-            g_nodes = parseInt(cache_nodes[id], 10);
+            g_depth = parseInt(cache_depth[id], 10);
          }
       }
       if (cache_needs_sync > 3) { save_cache_to_localStorage(); }
@@ -1985,7 +1989,7 @@ function print_chessboard_two() {
       cache_fen = new Array();
       cache_ev = new Array();
       cache_pv = new Array();
-      cache_nodes = new Array();
+      cache_depth = new Array();
    }
 
 
