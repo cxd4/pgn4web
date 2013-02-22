@@ -1141,6 +1141,9 @@ $pgnText
       if (theObj = document.getElementById("toggleAnalysisLink")) {
          theObj.style.visibility = (annotationSupported && engineUnderstandsGame(currentGame)) ? "visible" : "hidden";
       }
+      if (theObj = document.getElementById("GameAnalysisEval")) {
+         theObj.style.visibility = (annotationSupported && engineUnderstandsGame(currentGame)) ? "visible" : "hidden";
+      }
 
       stopAnnotateGame(false);
    }
@@ -1303,13 +1306,13 @@ $pgnText
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><a href="javascript:void(0);" onclick="if (event.shiftKey) { displayHelp('informant_symbols'); } else { userToggleAnalysis(); } this.blur();" class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="start engine annotation">&middot;</a><a href="javascript:void(0);" onclick="if (event.shiftKey) { MoveBackward(1); } else { goToMissingAnalysis(false); } this.blur();" class="innerHeaderItem move analysisMove notranslate" id="GameAnalysisMove" title="annotated move"></a><a href="javascript:void(0);" onclick="if (event.shiftKey) { MoveForward(1); } else { goToMissingAnalysis(true); } this.blur();" class="innerHeaderItemNoMargin move analysisPv notranslate" id="GameAnalysisPv"></a><b>&nbsp;</b></div>
+<div class="headerItem"><a href="javascript:void(0);" onclick="if (event.shiftKey) { displayHelp('informant_symbols'); } else { userToggleAnalysis(); } this.blur();" class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="start annotation">&middot;</a><a href="javascript:void(0);" onclick="if (event.shiftKey) { MoveBackward(1); } else { goToMissingAnalysis(false); } this.blur();" class="innerHeaderItem move analysisMove notranslate" id="GameAnalysisMove" title="annotated move"></a><a href="javascript:void(0);" onclick="if (event.shiftKey) { MoveForward(1); } else { goToMissingAnalysis(true); } this.blur();" class="innerHeaderItemNoMargin move analysisPv notranslate" id="GameAnalysisPv"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="gameAnnotationContainer" id="GameAnnotationContainer">
 <canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick(event); this.blur();" onmousemove="annotationGraphMousemove(event);" onmouseover="annotationGraphMouseover(event);" onmouseout="annotationGraphMouseout(event);"></canvas>
 </div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleAnalysisLink" style="visibility:hidden;" id="toggleAnalysisLink" href="javascript:void(0);" onclick="if (event.shiftKey) { annotateGame(false); } else { userToggleAnalysis(); } this.blur();" title="toggle engine annotation">+</a></div>
+<div class="toggleAnalysis" id="toggleAnalysis"><a class="toggleAnalysisLink" style="visibility:hidden;" id="toggleAnalysisLink" href="javascript:void(0);" onclick="if (event.shiftKey) { annotateGame(false); } else { userToggleAnalysis(); } this.blur();" title="toggle annotation">+</a></div>
 <div class="toggleComments" id="toggleComments"><a class="toggleCommentsLink" id="toggleCommentsLink" href="javascript:void(0);" onClick="if (event.shiftKey && commentsIntoMoveText) { cycleLastCommentArea(); } else { SetCommentsIntoMoveText(!commentsIntoMoveText); var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar); } this.blur();" title="toggle show comments in game text for this page; click square F7 instead to save setting"></a></div>
 </div>
 
@@ -1516,7 +1519,7 @@ function print_chessboard_two() {
 
    function clearAnalysisHeader() {
       if (theObj = document.getElementById("GameAnalysisMove")) { theObj.innerHTML = ""; }
-      if (theObj = document.getElementById("GameAnalysisEval")) { theObj.innerHTML = "&middot"; theObj.title = "start engine annotation"; }
+      if (theObj = document.getElementById("GameAnalysisEval")) { theObj.innerHTML = "&middot"; theObj.title = "start annotation"; }
       if (theObj = document.getElementById("GameAnalysisPv")) { theObj.innerHTML = ""; }
    }
 
@@ -1581,7 +1584,7 @@ function print_chessboard_two() {
 
 
    function annotateGame(promptUser) {
-      if ((checkEngineUnderstandsGameAndWarn()) && (annotationSeconds = promptUser ? prompt("Automated game" + (annotateGameMulti ? "s" : "") + " annotation from the current position; please do not interact with the chessboard until the annotation has completed.\\n\\nEnter engine annotation time per move, in seconds, between " + minAnnotationSeconds + " and " + maxAnnotationSeconds + ":", getAnnotationSecondsFromLocalStorage()) : getAnnotationSecondsFromLocalStorage())) {
+      if ((checkEngineUnderstandsGameAndWarn()) && (annotationSeconds = promptUser ? prompt("Automated game" + (annotateGameMulti ? "s" : "") + " annotation from the current position; please do not interact with the chessboard until the annotation has completed.\\n\\nEnter annotation time per move, in seconds, between " + minAnnotationSeconds + " and " + maxAnnotationSeconds + ":", getAnnotationSecondsFromLocalStorage()) : getAnnotationSecondsFromLocalStorage())) {
          if (isNaN(annotationSeconds = parseFloat(annotationSeconds))) { annotationSeconds = getAnnotationSecondsFromLocalStorage(); }
          annotationSeconds = Math.min(maxAnnotationSeconds, Math.max(minAnnotationSeconds, annotationSeconds));
          setAnnotationSecondsToLocalStorage(annotationSeconds);
@@ -1646,7 +1649,7 @@ function print_chessboard_two() {
 
    function checkEngineUnderstandsGameAndWarn() {
       retVal = engineUnderstandsGame(currentGame);
-      if (!retVal) { myAlert("warning: engine analysis unavailable for the " + gameVariant[currentGame] + " variant", true); }
+      if (!retVal) { myAlert("warning: engine annotation unavailable for the " + gameVariant[currentGame] + " variant", true); }
       return retVal;
    }
 
