@@ -907,26 +907,17 @@ a.variation {
   text-align: justify;
 }
 
-.analysisMove {
-  display: none;
-  min-width: 6em;
-}
-
 .analysisEval {
   display: inline-block;
   min-width: 3em;
 }
 
-.analysisPv {
+.analysisMove {
   display: inline-block;
 }
 
-.analysisExtraInfo {
-  font-family: 'pgn4web Liberation Sans', sans-serif;
-}
-
-.NAGs {
-  font-size: 19px;
+.analysisPv {
+  display: inline-block;
 }
 
 </style>
@@ -935,6 +926,15 @@ a.variation {
 <script src="engine.js" type="text/javascript"></script>
 <script src="chess-informant-NAG-symbols.js" type="text/javascript"></script>
 <script src="fide-lookup.js" type="text/javascript"></script>
+
+<style type="text/css">
+
+.NAGs {
+  font-size: 19px;
+  line-height: 0.9em;
+}
+
+</style>
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
 <form style="display: none;"><textarea style="display: none;" id="pgnText">
@@ -1304,7 +1304,7 @@ $pgnText
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><span class="innerHeaderItem analysisMove move notranslate" id="GameAnalysisMove"></span><a href="javascript:void(0);" onclick="if (event.shiftKey) { displayHelp('informant_symbols'); } else { goToMissingAnalysis(!event.shiftKey); } this.blur();" class="innerHeaderItem analysisEval" id="GameAnalysisEval"></a><a href="javascript:void(0);" onclick="goToMissingAnalysis(!event.shiftKey); this.blur();" class="innerHeaderItem move analysisPv notranslate" id="GameAnalysisPv"></a><b>&nbsp;</b></div>
+<div class="headerItem"><a href="javascript:void(0);" onclick="if (event.shiftKey) { displayHelp('informant_symbols'); } else { goToMissingAnalysis(!event.shiftKey); } this.blur();" class="innerHeaderItem analysisEval" id="GameAnalysisEval"></a><a href="javascript:void(0);" onclick="goToMissingAnalysis(!event.shiftKey); this.blur();"><span class="innerHeaderItemNoMargin move analysisMove notranslate" id="GameAnalysisMove" title="analysed move"></span><span class="innerHeaderItemNoMargin move analysisPv notranslate" id="GameAnalysisPv"></span></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="gameAnnotationContainer" id="GameAnnotationContainer">
 <canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick(event); this.blur();" onmousemove="annotationGraphMousemove(event);" onmouseover="annotationGraphMouseover(event);" onmouseout="annotationGraphMouseout(event);"></canvas>
@@ -1473,18 +1473,18 @@ function print_chessboard_two() {
 
       annPly = (lastMousemoveAnnPly == -1) ? CurrentPly : lastMousemoveAnnPly;
 
+      annMove = "";
       if (theObj = document.getElementById("GameAnalysisMove")) {
          if ((annPly > StartPly) && (annPly <= StartPly + PlyNumber)) {
             annMove = (Math.floor(annPly / 2) + (annPly % 2)) + (annPly % 2 ? ". " : "... ") + Moves[annPly - 1];
             if (isBlunder(annPly, blunderThreshold)) { annMove += translateNAGs("$4"); }
             else if (isBlunder(annPly, mistakeThreshold)) { annMove += translateNAGs("$2"); }
-         } else {
-            annMove = "&middot;";
+            annMove += "&nbsp;";
          }
          theObj.innerHTML = annMove;
       }
 
-      annEval = (lastMousemoveAnnPly == -1) ? "&middot;" : "";
+      annEval = "";
       annPv = "";
       annDepth = "";
       if (typeof(fenPositions[annPly]) != "undefined") {
@@ -1495,7 +1495,7 @@ function print_chessboard_two() {
 
       if (theObj = document.getElementById("GameAnalysisEval")) {
          theObj.innerHTML = (annEval || annEval === 0) ? ev2NAG(annEval) : "";
-         theObj.title = (annEval || annEval === 0) ? "engine evaluation: " + (annEval > 0 ? "+" : "") + annEval + (annEval == Math.floor(annEval) ? ".0" : "") + " " + (isBlunder(CurrentPly, blunderThreshold) ? translateNAGs("$4") + " " : (isBlunder(CurrentPly, mistakeThreshold) ? translateNAGs("$2") + " " : "")) + (annDepth ? " depth: " + annDepth : "") : "";
+         theObj.title = (annEval || annEval === 0) ? "engine evaluation: " + (annEval > 0 ? "+" : "") + annEval + (annEval == Math.floor(annEval) ? ".0" : "") + (annDepth ? "  depth: " + annDepth : "") : "";
       }
       if (theObj = document.getElementById("GameAnalysisPv")) {
          theObj.innerHTML = annPv ? annPv : "";
@@ -1533,8 +1533,6 @@ function print_chessboard_two() {
    }
 
    function annotationGraphMouseout(e) {
-      if (theObj = document.getElementById("GameAnalysisMove")) { theObj.style.display = ""; }
-      if (theObj = document.getElementById("GameAnalysisEval")) { theObj.style.fontWeight = ""; }
       lastMousemoveAnnPly = -1;
       lastMousemoveAnnGame = -1;
       if (analysisStarted) { updateAnalysisHeader(); }
@@ -1545,9 +1543,6 @@ function print_chessboard_two() {
       if ((newMousemoveAnnPly !== lastMousemoveAnnPly) || (currentGame !== lastMousemoveAnnGame)) {
          lastMousemoveAnnPly = newMousemoveAnnPly <= StartPly + PlyNumber ? newMousemoveAnnPly : -1;
          lastMousemoveAnnGame = currentGame;
-         onGraph = ((lastMousemoveAnnPly >= StartPly) && (lastMousemoveAnnPly <= StartPly + PlyNumber));
-         if (theObj = document.getElementById("GameAnalysisMove")) { theObj.style.display = onGraph ? "inline-block" : ""; }
-         if (theObj = document.getElementById("GameAnalysisEval")) { theObj.style.fontWeight = onGraph ? "normal" : ""; }
          if (analysisStarted) { updateAnalysisHeader(); }
       }
    }
