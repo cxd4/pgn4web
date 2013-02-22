@@ -913,12 +913,10 @@ a.variation {
 }
 
 .analysisMove {
-  display: inline-block;
-  padding-right: 1em;
 }
 
 .analysisPv {
-  display: inline-block;
+  margin-left: 0.5em;
 }
 
 </style>
@@ -1305,7 +1303,7 @@ $pgnText
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><a href="javascript:void(0);" onclick="if (event.shiftKey) { displayHelp('informant_symbols'); } else { userToggleAnalysis(); } this.blur();" class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="start engine annotation">&middot;</a><a href="javascript:void(0);" onclick="if (event.shiftKey) { MoveBackward(1); } else { goToMissingAnalysis(false); } this.blur();" class="innerHeaderItemNoMargin move analysisMove notranslate" id="GameAnalysisMove" title="annotated move"></a><a href="javascript:void(0);" onclick="if (event.shiftKey) { MoveForward(1); } else { goToMissingAnalysis(true); } this.blur();" class="innerHeaderItemNoMargin move analysisPv notranslate" id="GameAnalysisPv"></a><b>&nbsp;</b></div>
+<div class="headerItem"><a href="javascript:void(0);" onclick="if (event.shiftKey) { displayHelp('informant_symbols'); } else { userToggleAnalysis(); } this.blur();" class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="start engine annotation">&middot;</a><a href="javascript:void(0);" onclick="if (event.shiftKey) { MoveBackward(1); } else { goToMissingAnalysis(false); } this.blur();" class="innerHeaderItem move analysisMove notranslate" id="GameAnalysisMove" title="annotated move"></a><a href="javascript:void(0);" onclick="if (event.shiftKey) { MoveForward(1); } else { goToMissingAnalysis(true); } this.blur();" class="innerHeaderItemNoMargin move analysisPv notranslate" id="GameAnalysisPv"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="gameAnnotationContainer" id="GameAnnotationContainer">
 <canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick(event); this.blur();" onmousemove="annotationGraphMousemove(event);" onmouseover="annotationGraphMouseover(event);" onmouseout="annotationGraphMouseout(event);"></canvas>
