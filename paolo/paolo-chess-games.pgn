@@ -5,12 +5,14 @@
 [White "Casaschi, Paolo"]
 [Black "Nitz, T???"]
 [Result "1/2-1/2"]
+[ECO "C55"]
+[Opening "Two knights defence (Modern bishop's opening)"]
 
-1. e2e4 e7e5 2. Ng1f3 Nb8c6 3. Bf1c4 Ng8f6 4. d2d3 Bf8e7 5. O-O O-O 6. Rf1e1
-d7d6 7. h2h3 Nc6a5 8. Bc4b3 Na5b3 9. a2b3 Rf8e8 10. Nb1c3 c7c6 11. d3d4 Qd8c7
-12. Bc1e3 b7b6 13. Nf3h2 Bc8b7 14. Nh2g4 Nf6g4 15. Qd1g4 Be7f6 16. Re1d1 Qc7e7
-17. Rd1d2 e5d4 18. Be3d4 Bf6d4 19. Rd2d4 c6c5 20. Rd4d2 Bb7e4 {D} 21. Nc3e4 Qe7e4
-22. Qg4e4 Re8e4 23. Rd2d6 Re4e8 24. Rd6d7 Kg8f8 25. Kg1f1 1/2-1/2
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6 4. d3 Be7 5. O-O O-O 6. Re1 d6 7. h3 Na5 8.
+Bb3 Nxb3 9. axb3 Re8 10. Nc3 c6 11. d4 Qc7 12. Be3 b6 13. Nh2 Bb7 14. Ng4
+Nxg4 15. Qxg4 Bf6 16. Red1 Qe7 17. Rd2 exd4 18. Bxd4 Bxd4 19. Rxd4 c5 20.
+Rd2 Bxe4 { D } 21. Nxe4 Qxe4 22. Qxe4 Rxe4 23. Rxd6 Ree8 24. Rd7 Kf8 25.
+Kf1 1/2-1/2
 
 [Event "Middlesex League 2012/2013"]
 [Site "London ENG"]
