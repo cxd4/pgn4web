@@ -1262,9 +1262,9 @@ $pgnText
 
       displayHelp('informant_symbols');
 
-      <!-- start of tablebase glue code -->
+<!-- start of tablebase glue code -->
 
-      <!-- start of tablebase glue code -->
+<!-- end of tablebase glue code -->
 
    }
 
