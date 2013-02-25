@@ -386,19 +386,9 @@ function clickedGameEval(t,e) {
    if (e.shiftKey) {
       if (!disableEngine) {
 
-//       displayHelp("informant_symbols");
+         displayHelp("informant_symbols");
 
 <!-- start of tablebase glue code -->
-
-// remember to clean nearby code if necessary
-
-var maxMenInTablebaseJaet = 7;
-var minMenInTablebaseJaet = 3;
-if (((menPosition = CurrentFEN().replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length) >= minMenInTablebaseJaet) && (menPosition <= maxMenInTablebaseJaet)) {
-   window.open("http://chess.jaet.org/cgi-bin/dtx?fen=" + CurrentFEN().replace(/\s/g, "+") + "&.submit=+Lookup+FEN+", "pgn4web_tablebases");
-} else {
-   myAlert("warning: endgame tablebase only supports positions with " + minMenInTablebaseJaet + " to " + maxMenInTablebaseJaet + " men");
-}
 
 <!-- end of tablebase glue code -->
 
