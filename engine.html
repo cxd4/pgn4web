@@ -384,10 +384,18 @@ function clickedGameMoves(t,e) {
 
 function clickedGameEval(t,e) {
    if (e.shiftKey) {
-      if (!disableEngine) { displayHelp("informant_symbols"); }
-      return;
+      if (!disableEngine) {
+
+         displayHelp("informant_symbols");
+
+         <!-- start of tablebase glue code -->
+
+         <!-- start of tablebase glue code -->
+
+      }
+   } else {
+      setDisableEngine(!disableEngine);
    }
-   setDisableEngine(!disableEngine);
 }
 
 function clickedGameAutoUpdateFlag(t,e) {
