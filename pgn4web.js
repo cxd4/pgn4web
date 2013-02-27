@@ -770,9 +770,9 @@ function displayPgnData(allGames) {
 }
 
 function CurrentFEN() {
-  currentFEN = "";
+  var currentFEN = "";
 
-  emptyCounterFen = 0;
+  var emptyCounterFen = 0;
   for (row=7; row>=0; row--) {
     for (col=0; col<=7; col++) {
       if (Board[col][row] === 0) { emptyCounterFen++; }
@@ -824,16 +824,14 @@ fenWin = null;
 function displayFenData() {
   if (fenWin && !fenWin.closed) { fenWin.close(); }
 
-  currentFEN = CurrentFEN();
+  var currentFEN = CurrentFEN();
 
-  currentMovesString = "";
-  lastLineStart = 0;
-  for (var thisPly = CurrentPly; thisPly <= StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]; thisPly++) {
-    addToMovesString = "";
-    if (thisPly == StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]) {
-      if (CurrentVar === 0 && gameResult[currentGame] && gameResult[currentGame] != "*") {
-        addToMovesString = gameResult[currentGame];
-      }
+  var currentMovesString = "";
+  var lastLineStart = 0;
+  for (var thisPly = CurrentPly; thisPly <= StartPly + PlyNumber; thisPly++) {
+    var addToMovesString = "";
+    if (thisPly == StartPly + PlyNumber) {
+      addToMovesString = (CurrentVar === 0 && gameResult[currentGame]) ? gameResult[currentGame] : "*";
     } else {
       if (thisPly%2 === 0) { addToMovesString = (Math.floor(thisPly/2)+1) + ". "; }
       else if (thisPly == CurrentPly) {
@@ -852,16 +850,16 @@ function displayFenData() {
 
   fenWin = window.open("", "pgn4web_fen_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if (fenWin) {
-    text = "<html>" +
+    var text = "<html>" +
       "<head><title>pgn4web FEN string</title><link rel='shortcut icon' href='pawn.ico' /></head>" +
       "<body>\n<b><pre>\n\n" + currentFEN + "\n\n</pre></b>\n<hr>\n<pre>\n\n" +
-      "[Event \"" + (gameEvent[currentGame] ? gameEvent[currentGame] : "?") + "\"]\n" +
-      "[Site \"" + (gameSite[currentGame] ? gameSite[currentGame] : "?") + "\"]\n" +
-      "[Date \"" + (gameDate[currentGame] ? gameDate[currentGame] : "????.??.??") + "\"]\n" +
-      "[Round \"" + (gameRound[currentGame] ? gameRound[currentGame] : "?") + "\"]\n" +
-      "[White \"" + (gameWhite[currentGame] ? gameWhite[currentGame] : "?") + "\"]\n" +
-      "[Black \"" + (gameBlack[currentGame] ? gameBlack[currentGame] : "?") + "\"]\n" +
-      "[Result \"" + (gameResult[currentGame] ? gameResult[currentGame] : "*") + "\"]\n";
+      "[Event \"" + ((CurrentVar === 0 && gameEvent[currentGame]) ? gameEvent[currentGame] : "?") + "\"]\n" +
+      "[Site \"" + ((CurrentVar === 0 && gameSite[currentGame]) ? gameSite[currentGame] : "?") + "\"]\n" +
+      "[Date \"" + ((CurrentVar === 0 && gameDate[currentGame]) ? gameDate[currentGame] : "????.??.??") + "\"]\n" +
+      "[Round \"" + ((CurrentVar === 0 && gameRound[currentGame]) ? gameRound[currentGame] : "?") + "\"]\n" +
+      "[White \"" + ((CurrentVar === 0 && gameWhite[currentGame]) ? gameWhite[currentGame] : "?") + "\"]\n" +
+      "[Black \"" + ((CurrentVar === 0 && gameBlack[currentGame]) ? gameBlack[currentGame] : "?") + "\"]\n" +
+      "[Result \"" + ((CurrentVar === 0 && gameResult[currentGame]) ? gameResult[currentGame] : "*") + "\"]\n";
     if (currentFEN != FenStringStart) {
       text += "[SetUp \"1\"]\n" + "[FEN \"" + currentFEN + "\"]\n";
     }
@@ -1027,10 +1025,9 @@ var IsRotated = false;
 var pgnHeaderTagRegExp       = /\[\s*(\w+)\s*"([^"]*)"\s*\]/;
 var pgnHeaderTagRegExpGlobal = /\[\s*(\w+)\s*"([^"]*)"\s*\]/g;
 var pgnHeaderBlockRegExp     = /\s*(\[\s*\w+\s*"[^"]*"\s*\]\s*)+/;
-var dummyPgnHeader = '[x""]';
-var emptyPgnHeader = '[Event ""]\n[Site ""]\n[Date ""]\n[Round ""]\n[White ""]\n[Black ""]\n[Result ""]\n\n';
-var templatePgnHeader = '[Event "?"]\n[Site "?"]\n[Date "?"]\n[Round "?"]\n[White "?"]\n[Black "?"]\n[Result "?"]\n';
-var alertPgnHeader = '[Event ""]\n[Site ""]\n[Date ""]\n[Round ""]\n[White ""]\n[Black ""]\n[Result ""]\n\n{error: click on the top left chessboard square for debug info}';
+
+var emptyPgnHeader = '[Event ""]\n[Site ""]\n[Date ""]\n[Round ""]\n[White ""]\n[Black ""]\n[Result ""]\n';
+var alertPgn = emptyPgnHeader + "\n{error: click on the top left chessboard square for debug info}";
 
 var pgn4webVariationRegExp       = /\[%pgn4web_variation (\d+)\]/;
 var pgn4webVariationRegExpGlobal = /\[%pgn4web_variation (\d+)\]/g;
@@ -1699,7 +1696,7 @@ function pgnGameFromHttpRequest(httpResponseData) {
         }
         if (!unzippedPgnText) { myAlert("error: no PGN games found in ZIP archive at URL\n" + pgnUrl, true); }
       } else { myAlert("error: invalid ZIP archive at URL\n" + pgnUrl, true); }
-      if (!unzippedPgnText) { unzippedPgnText = alertPgnHeader; }
+      if (!unzippedPgnText) { unzippedPgnText = alertPgn; }
     } catch(e) {
       myAlert("error: missing unzip library or unzip error for ZIP archive at URL\n" + pgnUrl, true);
       unzippedPgnText = httpResponseData; // passing through the data for backward compatibility
@@ -1853,7 +1850,7 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
     case LOAD_PGN_FAIL:
     default:
       if (LiveBroadcastDelay === 0) {
-        pgnGameFromPgnText(alertPgnHeader);
+        pgnGameFromPgnText(alertPgn);
         undoStackReset();
         Init();
         customFunctionOnPgnTextLoad();
@@ -2027,7 +2024,7 @@ function refreshPgnSource() {
   } else if ( document.getElementById("pgnText") ) {
     loadPgnFromTextarea("pgnText");
   } else {
-    pgnGameFromPgnText(alertPgnHeader);
+    pgnGameFromPgnText(alertPgn);
     undoStackReset();
     Init();
     customFunctionOnPgnTextLoad();
@@ -2054,7 +2051,7 @@ function loadPgnFromTextarea(textareaId) {
     }
 
     // no header: add emptyPgnHeader
-    if (pgnHeaderTagRegExp.test(tmpText) === false) { tmpText = emptyPgnHeader + tmpText; }
+    if (pgnHeaderTagRegExp.test(tmpText) === false) { tmpText = emptyPgnHeader + "\n" + tmpText; }
 
     if ( pgnGameFromPgnText(tmpText) ) {
       loadPgnFromTextareaResult = LOAD_PGN_OK;
@@ -2081,7 +2078,7 @@ function createBoard() {
   } else if ( document.getElementById("pgnText") ) {
     loadPgnFromTextarea("pgnText");
   } else {
-    pgnGameFromPgnText(alertPgnHeader);
+    pgnGameFromPgnText(alertPgn);
     undoStackReset();
     Init();
     customFunctionOnPgnTextLoad();

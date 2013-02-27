@@ -233,13 +233,14 @@ if (pgn4web_board_url == undefined) { pgn4web_board_url = location.protocol + "/
 // if you customize the board-generator.html file for your site
 // you probably want to customize the default values
 
-pgnText_default = templatePgnHeader + '\n';
+pgnText_default = emptyPgnHeader + '\n';
 encodePgn_default = "t";
 autoplayMode_default = "game";
 delay_default = 3000;
 initialGame_default = "first";
 initialVariation_default = "";
-initialHalfmove_default = initialHalfmoveSelect_default = "start"; initialHalfmoveNumber_default = "0";
+initialHalfmove_default = initialHalfmoveSelect_default = "start";
+initialHalfmoveNumber_default = "0";
 pieceFont_default = "default";
 pieceSize_default = "default";
 squareSize_default = 40;
