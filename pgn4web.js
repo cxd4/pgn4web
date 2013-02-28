@@ -450,7 +450,7 @@ function colRowFromSquare(square) {
 
 function clearShortcutSquares(cols, rows) {
   if ((typeof cols != "string") || (typeof rows != "string")) { return; }
-  for (c=0; c<cols.length; c++) { for (r=0; r<rows.length; r++) {
+  for (var c=0; c<cols.length; c++) { for (var r=0; r<rows.length; r++) {
       boardShortcut(cols.charAt(c).toUpperCase()+rows.charAt(r), "", function(t,e){});
   } }
 }
@@ -647,13 +647,13 @@ function setB1C1F1G1boardShortcuts() {
 
 var deciles = new Array(11);
 function calculateDeciles() {
-  for (ii=0; ii<deciles.length; ii++) {
+  for (var ii=0; ii<deciles.length; ii++) {
     deciles[ii] = Math.round((numberOfGames - 1) * ii / (deciles.length - 1));
   }
 }
 
 function replayPreviousMoves(numPlies) {
-  targetPly = numPlies ? CurrentPly - numPlies : StartPly;
+  var targetPly = numPlies ? CurrentPly - numPlies : StartPly;
   if (targetPly < StartPlyVar[CurrentVar]) {
     targetPly = StartPlyVar[CurrentVar] + (CurrentVar === 0 ? 0 : 1);
   }
@@ -720,7 +720,7 @@ function displayDebugInfo() {
   dbg3 += 'ALERTLOG: fatalnew=' + fatalErrorNumSinceReset + ' new=' + alertNumSinceReset +
     ' shown=' + Math.min(alertNum, alertLog.length) + ' total=' + alertNum + '\n--';
   if (alertNum > 0) {
-    for (ii = 0; ii<alertLog.length; ii++) {
+    for (var ii = 0; ii<alertLog.length; ii++) {
       if (alertLog[(alertNum - 1 - ii) % alertLog.length] === undefined) { break; }
       else { dbg3 += "\n" + alertLog[(alertNum - 1 - ii) % alertLog.length] + "\n--"; }
     }
@@ -757,9 +757,9 @@ function displayPgnData(allGames) {
   if (pgnWin && !pgnWin.closed) { pgnWin.close(); }
   pgnWin = window.open("", "pgn4web_pgn_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if (pgnWin) {
-    text = "<html><head><title>pgn4web PGN source</title>" +
+    var text = "<html><head><title>pgn4web PGN source</title>" +
       "<link rel='shortcut icon' href='pawn.ico' /></head><body>\n<pre>\n";
-    if (allGames) { for (ii = 0; ii < numberOfGames; ++ii) { text += fullPgnGame(ii) + "\n\n"; } }
+    if (allGames) { for (var ii = 0; ii < numberOfGames; ++ii) { text += fullPgnGame(ii) + "\n\n"; } }
     else { text += fullPgnGame(currentGame); }
     text += "\n</pre>\n</body></html>";
     pgnWin.document.open("text/html", "replace");
@@ -773,8 +773,8 @@ function CurrentFEN() {
   var currentFEN = "";
 
   var emptyCounterFen = 0;
-  for (row=7; row>=0; row--) {
-    for (col=0; col<=7; col++) {
+  for (var row=7; row>=0; row--) {
+    for (var col=0; col<=7; col++) {
       if (Board[col][row] === 0) { emptyCounterFen++; }
       else {
         if (emptyCounterFen > 0) {
@@ -808,8 +808,8 @@ function CurrentFEN() {
     currentFEN += CurrentPly%2 ? "3" : "6";
   } else { currentFEN += " -"; }
 
-  HalfMoveClock = InitialHalfMoveClock;
-  for (thisPly = StartPly; thisPly < CurrentPly; thisPly++) {
+  var HalfMoveClock = InitialHalfMoveClock;
+  for (var thisPly = StartPly; thisPly < CurrentPly; thisPly++) {
     if ((HistType[0][thisPly] == 6) || (HistPieceId[1][thisPly] >= 16)) { HalfMoveClock = 0; }
     else { HalfMoveClock++; }
   }
@@ -1085,8 +1085,7 @@ function CheckLegality(what, plyCount) {
   }
 
   // piece move: which same type piece could move there?
-  var pieceId;
-  for (pieceId = 0; pieceId < 16; ++pieceId) {
+  for (var pieceId = 0; pieceId < 16; ++pieceId) {
     if (PieceType[MoveColor][pieceId] == mvPiece) {
       if (mvPiece == 1) { retVal = CheckLegalityKing(pieceId); }
       else if (mvPiece == 2) { retVal = CheckLegalityQueen(pieceId); }
@@ -1166,8 +1165,8 @@ function RookForOOCastling(color) {
   if (CastlingShort[color] < 0) { return null; }
   if (PieceMoveCounter[color][0] > 0) { return null; }
 
-  legal = false;
-  for (thisRook = 0; thisRook < 16; thisRook++) {
+  var legal = false;
+  for (var thisRook = 0; thisRook < 16; thisRook++) {
     if ((PieceCol[color][thisRook] == CastlingShort[color]) &&
       (PieceCol[color][thisRook] > PieceCol[color][0]) &&
       (PieceRow[color][thisRook] == color*7) &&
@@ -1184,7 +1183,8 @@ function RookForOOCastling(color) {
 
 function CheckLegalityOO() {
 
-  if ((thisRook = RookForOOCastling(MoveColor)) === null) { return false; }
+  var thisRook = RookForOOCastling(MoveColor);
+  if (thisRook === null) { return false; }
 
   // check no piece between king and rook
   // clear king/rook squares for Chess960
@@ -1204,8 +1204,8 @@ function RookForOOOCastling(color) {
   if (CastlingLong[color] < 0) { return null; }
   if (PieceMoveCounter[color][0] > 0) { return null; }
 
-  legal = false;
-  for (thisRook = 0; thisRook < 16; thisRook++) {
+  var legal = false;
+  for (var thisRook = 0; thisRook < 16; thisRook++) {
     if ((PieceCol[color][thisRook] == CastlingLong[color]) &&
       (PieceCol[color][thisRook] < PieceCol[color][0]) &&
       (PieceRow[color][thisRook] == color*7) &&
@@ -1222,7 +1222,8 @@ function RookForOOOCastling(color) {
 
 function CheckLegalityOOO() {
 
-  if ((thisRook = RookForOOOCastling(MoveColor)) === null) { return false; }
+  var thisRook = RookForOOOCastling(MoveColor);
+  if (thisRook === null) { return false; }
 
   // check no piece between king and rook
   // clear king/rook squares for Chess960
@@ -1275,7 +1276,7 @@ function GoToMove(thisPly, thisVar) {
     if (diff > 0) { MoveForward(diff); }
     else { MoveBackward(-diff); }
   } else {
-    backStart = StartPly;
+    var backStart = StartPly;
 loopCommonPredecessor:
     for (var ii = PredecessorsVars[CurrentVar].length - 1; ii >= 0; ii--) {
       for (var jj = PredecessorsVars[thisVar].length - 1; jj >= 0; jj--) {
@@ -1350,14 +1351,14 @@ function clockFromComment(plyNum) {
 }
 
 function clockFromHeader(whiteToMove) {
-  clockHeaderString = customPgnHeaderTag("Clock") + "";
-  if (tagValues = clockHeaderString.match("^" + (whiteToMove ? "W" : "B") + "/(.*)$")) {
-    return tagValues[1];
-  } else { return null; }
+  var clockHeaderString = customPgnHeaderTag("Clock") + "";
+  var tagValues = clockHeaderString.match("^" + (whiteToMove ? "W" : "B") + "/(.*)$");
+  if (tagValues) { return tagValues[1]; }
+  else { return null; }
 }
 
 function HighlightLastMove() {
-  var anchorName, text;
+  var theObj, anchorName, text, ii;
 
   undoStackStore();
 
@@ -1383,7 +1384,7 @@ function HighlightLastMove() {
   }
 
   // side to move
-  whiteToMove = ((showThisMove+1)%2 === 0);
+  var whiteToMove = ((showThisMove+1)%2 === 0);
   text = whiteToMove ? 'white' : 'black';
 
   if (theObj = document.getElementById("GameSideToMove"))
@@ -1679,7 +1680,7 @@ function pgnGameFromHttpRequest(httpResponseData) {
       var unzipper = new JSUnzip(httpResponseData);
       if (unzipper.isZipFile()) {
         unzipper.readEntries();
-        for (u in unzipper.entries) {
+        for (var u in unzipper.entries) {
           if (unzipper.entries[u].fileName.match(/\.pgn$/i)) {
             switch (unzipper.entries[u].compressionMethod) {
               case 0:
@@ -1792,7 +1793,7 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
 
           LoadGameHeaders();
           LiveBroadcastFoundOldGame = false;
-          for (ii=0; ii<numberOfGames; ii++) {
+          for (var ii=0; ii<numberOfGames; ii++) {
             LiveBroadcastFoundOldGame =
               (gameWhite[ii]==oldGameWhite) && (gameBlack[ii]==oldGameBlack) &&
               (gameEvent[ii]==oldGameEvent) && (gameRound[ii]==oldGameRound) &&
@@ -2005,8 +2006,8 @@ function refreshPgnSource() {
   if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); LiveBroadcastInterval = null; }
   if (LiveBroadcastDemo) {
     addedPly = 0;
-    for (ii=0;ii<numberOfGames;ii++) {
-      rnd = Math.random();
+    for (var ii=0;ii<numberOfGames;ii++) {
+      var rnd = Math.random();
       if      (rnd <= 0.05) { newPly = 3; } //  5%
       else if (rnd <= 0.20) { newPly = 2; } // 15%
       else if (rnd <= 0.60) { newPly = 1; } // 40%
@@ -2191,17 +2192,17 @@ function myAlertFEN(FenString, text) {
 }
 
 function InitFEN(startingFEN) {
+  var ii, jj, cc, color;
+
   if (typeof(startingFEN) != "string") { FenString = FenStringStart; }
   else { FenString = startingFEN.replace(/\\/g, "/").replace(/[^a-zA-Z0-9\s\/-]/g, " ").replace(/(^\s*|\s*$)/g, "").replace(/\s+/g, " "); }
 
-  var ii, jj;
   for (ii = 0; ii < 8; ++ii) {
     for (jj = 0; jj < 8; ++jj) {
       Board[ii][jj] = 0;
     }
   }
 
-  var color;
   StartPly  = 0;
   MoveCount = StartPly;
   MoveColor = StartPly % 2;
@@ -2218,7 +2219,7 @@ function InitFEN(startingFEN) {
 
   if (FenString == FenStringStart) {
     for (color = 0; color < 2; color++) {
-      //                         K  Q  N     B     R     p
+      //                      K  Q  N     B     R     p
       PieceType[color]        = [1, 2, 5, 5, 4, 4, 3, 3, 6, 6, 6, 6, 6, 6, 6, 6];
       PieceCol[color]         = [4, 3, 1, 6, 2, 5, 0, 7, 0, 1, 2, 3, 4, 5, 6, 7];
       PieceMoveCounter[color] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -2231,7 +2232,7 @@ function InitFEN(startingFEN) {
       }
     }
   } else {
-    var cc, kk, ll, nn, mm;
+    var kk, ll, nn, mm;
     for (ii = 0; ii < 2; ii++) {
       for (jj = 0; jj < 16; jj++) {
         PieceType[ii][jj] = -1;
@@ -2473,6 +2474,7 @@ function InitFEN(startingFEN) {
 
 // castling rights assuming Kings and Rooks starting positions as in normal chess
 function assumedCastleRights() {
+  var ii;
   var assumedRights = "";
   if ((PieceRow[0][0] === 0) && (PieceCol[0][0] === 4)) {
     for (ii = 0; ii < PieceType[0].length; ii++) {
@@ -2514,7 +2516,7 @@ function InitImages() {
 
   ColorName = new Array ("w", "b");
   PiecePrefix = new Array ("k", "q", "r", "b", "n", "p");
-  for (color = 0; color < 2; ++color) {
+  for (var color = 0; color < 2; ++color) {
     for (piece = 1; piece < 7; piece++) {
       PiecePicture[color][piece] = new Image();
       PiecePicture[color][piece].src = ImagePath + ColorName[color] + PiecePrefix[piece-1] + '.' + imageType;
@@ -2791,13 +2793,13 @@ function AutoplayNextGame() {
 }
 
 function MoveToNextComment(varOnly) {
-  for (ii=CurrentPly+1; ii<=StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]; ii++) {
+  for (var ii=CurrentPly+1; ii<=StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]; ii++) {
     if (MoveComments[ii].match(pgn4webVariationRegExp) || (!varOnly && strippedMoveComment(ii))) { GoToMove(ii); break; }
   }
 }
 
 function MoveToPrevComment(varOnly) {
-  for (ii=(CurrentPly-1); ii>=StartPly; ii--) {
+  for (var ii=(CurrentPly-1); ii>=StartPly; ii--) {
     if ((ii > 0 || CurrentVar > 0) && ii === StartPlyVar[HistVar[ii+1]]) { GoToMove(ii+1, HistVar[ii]); break; }
     if (MoveComments[ii].match(pgn4webVariationRegExp) || (!varOnly && strippedMoveComment(ii))) { GoToMove(ii); break; }
   }
@@ -2950,7 +2952,7 @@ function ParsePGNGameString(gameString) {
 
   PlyNumber = 0;
 
-  for (start=0; start<ss.length; start++) {
+  for (var start=0; start<ss.length; start++) {
 
     switch (ss.charAt(start)) {
 
@@ -3840,7 +3842,7 @@ var autoScrollToCurrentMove_objectId = "";
 function autoScrollToCurrentMoveIfEnabled() { autoScrollToCurrentMove(autoScrollToCurrentMove_objectId); }
 
 function objectOffsetVeryTop(object) {
-  for (offset = object.offsetTop; object = object.offsetParent; /* */) { offset += object.offsetTop + object.clientTop; }
+  for (var offset = object.offsetTop; object = object.offsetParent; /* */) { offset += object.offsetTop + object.clientTop; }
   return offset;
 }
 
@@ -3870,9 +3872,8 @@ function FlipBoard() {
 }
 
 function RefreshBoard() {
-  var ii, jj;
-  for (jj = 0; jj < 8; ++jj) {
-    for (ii = 0; ii < 8; ++ii) {
+  for (var jj = 0; jj < 8; ++jj) {
+    for (var ii = 0; ii < 8; ++ii) {
       if (Board[jj][ii] === 0) { SetImage(jj, ii, ClearImg.src); }
     }
   }
