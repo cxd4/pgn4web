@@ -70,7 +70,7 @@ if (($pgnOnly == "true") || ($pgnOnly == "t")) {
   $pgnUrl = get_param("pgnData", "pd", "");
   if ($pgnUrl == "") { $pgnUrl = get_param("pgnUrl", "pu", ""); }
   $pgnLink = $_SERVER['SCRIPT_NAME'] . urlencode("?po=t&pd=" . $pgnUrl);
-  print("<a style='font-familty:sans-serif; text-decoration:none; color:black;' href='" . $pgnLink . "'>" . $pgnLink . "</a>");
+  print("<div style='font-family:sans-serif; padding:1em;'><a style='text-decoration:none; color:black;' href='" . $pgnLink . "'>" . $pgnLink . "</a></div>");
 
 } else {
 
