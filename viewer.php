@@ -56,6 +56,7 @@ include 'viewer-preset-URLs.php';
 
 
 $pgnOnly = get_param("pgnOnly", "po", "");
+$generateParameter = get_param("generateParameter", "gp", "");
 if (($pgnOnly == "true") || ($pgnOnly == "t")) {
 
   if (!get_pgn()) { header("HTTP/1.1 204 No Content"); }
@@ -63,6 +64,13 @@ if (($pgnOnly == "true") || ($pgnOnly == "t")) {
   header("content-disposition: inline; filename=games.pgn");
   if ($http_response_header_last_modified) { header($http_response_header_last_modified); }
   if ($pgnText) { print $pgnText; }
+
+} elseif (($generateParameter == "true") || ($generateParameter == "t")) {
+
+  $pgnUrl = get_param("pgnData", "pd", "");
+  if ($pgnUrl == "") { $pgnUrl = get_param("pgnUrl", "pu", ""); }
+  $pgnLink = $_SERVER['SCRIPT_NAME'] . urlencode("?po=t&pd=" . $pgnUrl);
+  print("<a style='font-familty:sans-serif; text-decoration:none; color:black;' href='" . $pgnLink . "'>" . $pgnLink . "</a>");
 
 } else {
 
