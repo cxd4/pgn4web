@@ -3662,7 +3662,8 @@ function PrintHTML() {
         'TYPE="submit" VALUE="?">' +
         '<INPUT ID="searchPgnExpression" CLASS="searchPgnExpression" ' +
         'TITLE="find games matching the search string (regular expression)" ' +
-        'TYPE="input" VALUE="" STYLE="display: inline; ';
+        'TYPE="input" VALUE="" STYLE="display: inline; box-sizing: border-box; ' +
+        '-moz-box-sizing: border-box; -webkit-box-sizing: border-box;'; // remove when non-prefixed option supported by firefox and safari
       if (tableSize > 0) { text += 'width: ' + (3*tableSize/4) + 'px; '; }
       text += '" ONFOCUS="disableShortcutKeysAndStoreStatus();" ONBLUR="restoreShortcutKeysStatus();">';
       text += '</FORM>';

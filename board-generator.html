@@ -2134,14 +2134,14 @@ unless <i>use HTML textarea</i> is enabled or for deployment on a page from a di
 inputWidth = document.getElementById('squareSize').offsetWidth;
 theObj = document.getElementsByName('dropdown');
 for (ii = 0; ii < theObj.length; ii++) {
-  theObj[ii].style.width = inputWidth;
+  theObj[ii].style.width = inputWidth + 'px';
 }
 
 checkboxWidth = document.getElementById('hiddenCheckbox').offsetWidth;
 // the last number added to marginLeft should be equal to the value of the .checkbox style at the top
 theObj = document.getElementsByName('checkbox');
 for (ii = 0; ii < theObj.length; ii++) {
-  theObj[ii].style.marginLeft += inputWidth - checkboxWidth + 22;
+  theObj[ii].style.marginLeft += (inputWidth - checkboxWidth + 22) + 'px';
 }
 
 </script>
