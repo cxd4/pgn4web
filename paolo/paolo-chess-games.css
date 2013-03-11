@@ -11,10 +11,11 @@
 html,
 body {
   margin: 0px;
-  padding: 10px;
+  padding: 0px;
 }
 
 body {
+  padding: 10px;
   font-family: 'pgn4web Liberation Sans', sans-serif;
   color: black;
   background: white;

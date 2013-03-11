@@ -281,6 +281,10 @@ end of debug info -->
 html,
 body {
   margin: 0px;
+  padding: 0px;
+}
+
+body {
   padding: $framePaddingCss;
   background: $backgroundColorHexCss;
 }
