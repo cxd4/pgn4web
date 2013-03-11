@@ -14,8 +14,8 @@
 
 html,
 body {
-  margin: 0;
-  padding: 0;
+  margin: 0px;
+  padding: 0px;
   overflow: hidden;
 }
 
@@ -37,8 +37,8 @@ div, span {
 
 .boardheaderDiv {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 0px;
+  left: 0px;
   padding: 30px;
   overflow: hidden;
 }

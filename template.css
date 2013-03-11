@@ -10,8 +10,8 @@
 
 html,
 body {
-  margin: 0;
-  padding: 10;
+  margin: 0px;
+  padding: 10px;
 }
 
 body {
@@ -33,18 +33,18 @@ div, span, table, tr, td {
 }
 
 .pieceImage {
-  width: 40;
-  height: 40;
+  width: 40px;
+  height: 40px;
 }
 
 .whiteSquare,
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 42;
-  height: 42;
+  width: 42px;
+  height: 42px;
   border-style: solid;
-  border-width: 1;
+  border-width: 1px;
 }
 
 .whiteSquare,

@@ -374,7 +374,7 @@ a {
 
 .formControl {
   font-size: smaller;
-  margin: 0;
+  margin: 0px;
 }
 
 .textboxAppearance {
@@ -668,7 +668,7 @@ function print_chessboard_one() {
   border-style: solid;
   border-color: #663300;
   border-width: 4px;
-  box-shadow: 0 0 20px #663300;
+  box-shadow: 0px 0px 20px #663300;
 }
 
 .pieceImage {
@@ -838,7 +838,7 @@ a.variation {
 }
 
 .innerHeaderItemNoMargin {
-  margin-right: 0;
+  margin-right: 0px;
 }
 
 .headerSpacer {

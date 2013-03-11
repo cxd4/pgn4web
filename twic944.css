@@ -10,8 +10,8 @@
 
 html,
 body {
-  margin: 0;
-  padding: 0;
+  margin: 0px;
+  padding: 0px;
 }
 
 body {
@@ -34,22 +34,22 @@ a {
   height: 366px;
   border-style: double;
   border-color: black;
-  border-width: 3;
+  border-width: 3px;
 }
 
 .pieceImage {
-  width: 36;
-  height: 36;
+  width: 36px;
+  height: 36px;
 }
 
 .whiteSquare,
 .blackSquare,
 .highlightWhiteSquare,
 .highlightBlackSquare {
-  width: 41;
-  height: 41;
+  width: 41px;
+  height: 41px;
   border-style: solid;
-  border-width: 2;
+  border-width: 2px;
 }
 
 .whiteSquare,

@@ -162,7 +162,7 @@ The user can interact with the pgn4web chessboard using the keyboard (<a href="h
 
 <script type="text/javascript">
 
-document.write("<table style='padding:0;' border='0'>");
+document.write("<table style='padding:0px;' border='0'>");
 print_help_row("&nbsp;", "");
 print_help_row("&nbsp;", "");
 print_help_row("", "<b>moving through a game</b>");
@@ -245,7 +245,7 @@ The user can interact with the pgn4web chessboard clicking chessboard squares:
 
 <script type="text/javascript">
 if (opener && (typeof(opener.boardTitle) != "undefined")) {
-  document.write("<table style='padding:0;' border='0'>");
+  document.write("<table style='padding:0px;' border='0'>");
   print_help_row("&nbsp;", "");
   for (r=7; r>=0; r--) {
     rowDisplayed = false;
@@ -278,7 +278,7 @@ document.write('Access the search tool either directly with the search form (if 
 For full details about the search tool (implemented as regular expression match of the text of the PGN game), please refer to <a href="http://code.google.com/p/pgn4web/wiki/SearchTool" target="_blank">the pgn4web wiki</a>; please find below a sample list of useful search patterns:
 <p></p>
 <script type="text/javascript">
-document.write("<table style='padding:0;' border='0'>");
+document.write("<table style='padding:0px;' border='0'>");
 print_help_row("something", "search for text <i>something</i> anywhere in the PGN game");
 print_help_row("White\\s*\"Somebody", "search for player <i>Somebody</i> as White");
 print_help_row("\(White|Black\)\\s*\"Somebody", "search for player <i>Somebody</i> as either White or Black");
@@ -306,7 +306,7 @@ function print_NAG_row(nag, text) {
   document.write("<tr valign='bottom'><td class='informantCell' title='$" + nag + "'>" + NAG[nag] + "</td><td>" + text + "</td></tr>");
 }
 
-document.write("<table style='padding:0;' border='0'>");
+document.write("<table style='padding:0px;' border='0'>");
 document.write("<tr valign='bottom'><td class='informantCell'>&nbsp;</td><td></td></tr>");
 print_NAG_row(14, "white stands slightly better");
 print_NAG_row(15, "black stands slightly better");

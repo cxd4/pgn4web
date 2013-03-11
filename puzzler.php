@@ -280,7 +280,7 @@ end of debug info -->
 
 html,
 body {
-  margin: 0;
+  margin: 0px;
   padding: $framePaddingCss;
   background: $backgroundColorHexCss;
 }
@@ -296,7 +296,7 @@ body {
 .boardTable {
   width: $boardSizeCss;
   height: $boardSizeCss;
-  border-width: 0;
+  border-width: 0px;
 }
 
 .pieceImage {
