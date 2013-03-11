@@ -1101,11 +1101,11 @@ function customFunctionOnPgnTextLoad() {
   if ((paddingControlWidth = squareSize - textMargin) < 0) { paddingControlWidth = 0; }
 
   if (theObj = document.getElementById("GameButtons"))
-  { theObj.style.paddingTop = paddingControlHeight; }
+  { theObj.style.paddingTop = paddingControlHeight + "px"; }
 
   if (theObj = document.getElementById("GameSelector")) {
     if ((buttonsDisplay != "hidden") && (numberOfGames > 1)) {
-      theObj.style.paddingBottom = paddingControlHeight;
+      theObj.style.paddingBottom = paddingControlHeight + "px";
       theObj.style.display = "block";
     } else {
       theObj.style.paddingBottom = "0px";
@@ -1114,7 +1114,7 @@ function customFunctionOnPgnTextLoad() {
   }
 
   if (theObj = document.getElementById("headerMovesPadding")) {
-    if (horizontalLayout === true) { theObj.width = paddingControlWidth + 'px'; }
+    if (horizontalLayout === true) { theObj.width = paddingControlWidth + "px"; }
     else { theObj.style.minHeight = paddingControlHeight; }
   }
 
@@ -1130,7 +1130,7 @@ function customFunctionOnPgnTextLoad() {
   }
 
   if (horizontalLayout === true) {
-    document.getElementById("extendedBoard").width = boardWidth;
+    document.getElementById("extendedBoard").width = boardWidth + "px";
   }
 
   if (fixFrameWidthToBoard) { frameWidth = boardWidth + 2 * framePadding; }
@@ -1138,15 +1138,15 @@ function customFunctionOnPgnTextLoad() {
 
   if (theObj = document.getElementById("headerMoves")) {
     if (horizontalLayout === true) {
-      if (frameWidth === "") { theObj.style.width = textWidth; }
-      else { document.getElementById("outerFrame").style.width = frameWidth - 2 * framePadding; }
-      theObj.style.height = frameHeight === "" ? textHeight : frameHeight - 2 * framePadding;
+      if (frameWidth === "") { theObj.style.width = textWidth + "px"; }
+      else { document.getElementById("outerFrame").style.width = frameWidth - 2 * framePadding + "px"; }
+      theObj.style.height = (frameHeight === "" ? textHeight : frameHeight - 2 * framePadding) + "px";
     } else {
-      theObj.style.width = frameWidth === "" ? textWidth : frameWidth - 2 * framePadding;
-      if (frameHeight === "") { theObj.style.height = textHeight; }
+      theObj.style.width = (frameWidth === "" ? textWidth : frameWidth - 2 * framePadding) + "px";
+      if (frameHeight === "") { theObj.style.height = textHeight + "px"; }
       else {
        boardHeadermovesPaddingHeight = document.getElementById("boardHeadermovesPadding") ? document.getElementById("boardHeadermovesPadding").offsetHeight : 0;
-       theObj.style.height = frameHeight - boardHeight - 2 * framePadding - boardHeadermovesPaddingHeight;
+       theObj.style.height = (frameHeight - boardHeight - 2 * framePadding - boardHeadermovesPaddingHeight) + "px";
       }
     }
   }
