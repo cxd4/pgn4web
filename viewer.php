@@ -394,7 +394,7 @@ $headClass
 
 </head>
 
-<body onresize="if (typeof(updateAnnotationGraph) != 'undefined') { updateAnnotationGraph(); }">
+<body onResize="if (typeof(updateAnnotationGraph) != 'undefined') { updateAnnotationGraph(); }">
 
 <table class="headClass" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
 <td align="left" valign="middle">

@@ -98,7 +98,7 @@ window['FlipBoard'] = function() { defaultFlipBoard(); myOnResize(); };
 
 </head>
 
-<body onLoad="checkSVGSupport(); myOnResize(); start_pgn4web();" onResize="myOnResize();">
+<body onResize="myOnResize();">
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
 <form style="display: none;"><textarea style="display: none;" id="pgnText">
@@ -135,6 +135,12 @@ function checkSVGSupport() {
   img.onerror = function() { throw("SVG browser support required for the IMG HTML tag"); };
   img.onload = function() { };
   img.setAttribute("src","data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNzUiIGhlaWdodD0iMjc1Ij48L3N2Zz4%3D");
+}
+
+function pgn4web_onload(e) {
+  checkSVGSupport();
+  myOnResize();
+  start_pgn4web();
 }
 
 </script>

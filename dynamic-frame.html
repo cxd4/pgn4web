@@ -680,7 +680,7 @@ function gameTooltipInfo() {
   return str;
 }
 
-function myOnLoad() {
+function pgn4web_onload(e) {
   calculatedPieceSize = myOnResize();
   start_pgn4web();
   if (calculatedPieceSize === false) { myOnResize(); }
@@ -690,7 +690,7 @@ function myOnLoad() {
 
 </head>
 
-<body onLoad="myOnLoad();" onResize="myOnResize();">
+<body onResize="myOnResize();">
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
 <form style="display: none;"><textarea style="display: none;" id="pgnText">
