@@ -401,7 +401,7 @@ $headClass
 <h1 style="font-family:sans-serif; color:red;"><a style="color:red;" href=.>pgn4web</a> games viewer</h1>
 </td>
 <td align="right" valign="middle">
-<a href=.><img src=pawns.png border=0></a>
+<a href=.><img style="vertical-align:middle;" src=pawns.png border=0></a>
 </td>
 </tr></tbody></table>
 
@@ -607,7 +607,7 @@ function restoreShortcutKeysStatus() {}
 END;
 
   if ($presetURLsArray) {
-    print('    <td align="right" valign="middle">' . "\n" . '        <select id="urlFormSelect" class="formControl" style="font-family:monospace;" title="view games from remote URL: select the download URL from the preset options; please support the sites providing the PGN games downloads" onChange="this.blur(); urlFormSelectChange();">' . "\n" . '          <option value="header"> </option>' . "\n");
+    print('    <td align="right" valign="middle">' . "\n" . '        <select id="urlFormSelect" class="formControl" style="font-family:monospace; display:block; vertical-align:middle;" title="view games from remote URL: select the download URL from the preset options; please support the sites providing the PGN games downloads" onChange="this.blur(); urlFormSelectChange();">' . "\n" . '          <option value="header"> </option>' . "\n");
     foreach($presetURLsArray as $value) {
       print('          <option value="' . $value['label'] . '">' . $value['label'] . '</option>' . "\n");
     }
