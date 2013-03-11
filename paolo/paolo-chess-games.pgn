@@ -1,5 +1,27 @@
 [Event "London League 2012/2013"]
 [Site "London ENG"]
+[Date "2013.03.11"]
+[Round "?"]
+[White "Mah, Karl"]
+[Black "Casaschi, Paolo"]
+[Result "1-0"]
+[ECO "A07"]
+[Opening "Reti"]
+[Variation "King's Indian attack (Barcza system)"]
+
+1. Nf3 d5 2. g3 Nf6 3. Bg2 e6 4. O-O Be7 5. b3 O-O 6. c4 c5 7. Bb2 Nc6 8.
+e3 dxc4 9. bxc4 Qd3 10. Qb3 Rd8 11. Rc1 Rb8 12. Ne1 Qd7 13. Na3 { D } 13...
+b6 14. Rd1 Bb7 15. d4 cxd4 16. exd4 Na5 17. Qd3 Bxg2 18. Nxg2 Rbc8 19. Ne3
+Nc6 20. Nac2 Qc7 21. Rac1 Rd7 22. Qe2 Qb7 23. Na1 Qa6 24. Bc3 Na5 25. Bxa5
+Qxa5 26. Nb3 Qa6 27. Rc2 Bb4 28. Qf3 Qb7 29. Kg2 { D } 29... a5 30. Qxb7
+Rxb7 31. Kf3 Rd7 32. Nc1 Rcd8 33. Ne2 Rc7 34. Rb1 Rc6 35. Rb3 Nd7 36. a3
+Be7 37. Nc3 Bg5 38. Ne4 Be7 39. Nc3 Bf6 40. Nb5 g6 41. Kg2 Nb8 42. Rd2 Kf8
+{ D } 43. d5 Rcc8 44. Rd1 { D } 44... Be7 45. d6 Bf6 46. Na7 Rc5 47. Rxb6
+Be5 48. f4 Bc3 49. Rdb1 Nd7 50. Rb7 Bd4 51. Nc2 Rxc4 52. Nxd4 Rxd4 53. Nc6
+Rc8 54. Nxd4 1-0
+
+[Event "London League 2012/2013"]
+[Site "London ENG"]
 [Date "2013-02-25"]
 [Round "?"]
 [White "Casaschi, Paolo"]
