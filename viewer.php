@@ -383,7 +383,7 @@ a {
 
 .textboxAppearance {
   appearance: field;
-  -moz-appearance: textfield-multiline;
+  -moz-appearance: textfield;
   -webkit-appearance: textfield;
 }
 
