@@ -376,6 +376,14 @@ a {
 .formControl {
   font-size: smaller;
   margin: 0px;
+}
+
+.verticalMiddle {
+  display: block;
+  vertical-align: middle;
+}
+
+.borderBox {
   box-sizing: border-box;
   -moz-box-sizing: border-box; // remove when non-prefixed option supported by firefox
   -webkit-box-sizing: border-box; // remove when non-prefixed option supported by safari
@@ -591,7 +599,7 @@ function restoreShortcutKeysStatus() {}
     </td>
     <td colspan="$formVariableColspan" width="100%" align="left" valign="middle">
         <input type="hidden" name="MAX_FILE_SIZE" value="$fileUploadLimitBytes">
-        <input id="uploadFormFile" name="pgnFile" type="file" class="formControl" style="width:100%;" title="view games from local file: PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="this.blur();">
+        <input id="uploadFormFile" name="pgnFile" type="file" class="formControl borderBox" style="width:100%;" title="view games from local file: PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="this.blur();">
       </form>
     </td>
   </tr>
@@ -602,13 +610,13 @@ function restoreShortcutKeysStatus() {}
         <input id="urlFormSubmitButton" type="submit" class="formControl" value=" view games from remote URL " title="view games from remote URL: PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="this.blur(); return checkPgnUrl();">
     </td>
     <td width="100%" align="left" valign="middle">
-        <input id="urlFormText" name="pgnUrl" type="text" class="formControl" value="" style="width:100%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="view games from remote URL: PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText">
+        <input id="urlFormText" name="pgnUrl" type="text" class="formControl verticalMiddle borderBox" value="" style="width:100%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="view games from remote URL: PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText">
       </form>
     </td>
 END;
 
   if ($presetURLsArray) {
-    print('    <td align="right" valign="middle">' . "\n" . '        <select id="urlFormSelect" class="formControl" style="font-family:monospace; display:block; vertical-align:middle;" title="view games from remote URL: select the download URL from the preset options; please support the sites providing the PGN games downloads" onChange="this.blur(); urlFormSelectChange();">' . "\n" . '          <option value="header"> </option>' . "\n");
+    print('    <td align="right" valign="middle">' . "\n" . '        <select id="urlFormSelect" class="formControl verticalMiddle" style="font-family:monospace; display:block; vertical-align:middle;" title="view games from remote URL: select the download URL from the preset options; please support the sites providing the PGN games downloads" onChange="this.blur(); urlFormSelectChange();">' . "\n" . '          <option value="header"> </option>' . "\n");
     foreach($presetURLsArray as $value) {
       print('          <option value="' . $value['label'] . '">' . $value['label'] . '</option>' . "\n");
     }
@@ -624,7 +632,7 @@ END;
         <input id="pgnFormButton" type="button" class="formControl" value=" view games from textbox " style="width:100%;" onClick="this.blur(); loadPgnFromForm();">
     </td>
     <td colspan="$formVariableColspan" rowspan="2" width="100%" align="right" valign="middle">
-        <textarea id="pgnFormText" class="formControl textboxAppearance" name="pgnTextbox" rows=4 style="width:100%; resize:vertical;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" onChange="checkPgnFormTextSize();">$pgnTextbox</textarea>
+        <textarea id="pgnFormText" class="formControl verticalMiddle borderBox textboxAppearance" name="pgnTextbox" rows=4 style="width:100%; resize:vertical;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" onChange="checkPgnFormTextSize();">$pgnTextbox</textarea>
       </form>
     </td>
   </tr>
