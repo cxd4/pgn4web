@@ -21,6 +21,7 @@ if ($referrerHost) {
       $thisPage = curPageURL();
       $thisPage .= ((strstr($thisPage, "?") ? "&" : "?") . "selfReferred=true");
       print <<<END
+<!DOCTYPE HTML>
 <html>
 <head>
 </head>
@@ -263,6 +264,7 @@ if ($rawGame) {
 }
 
 print <<<END
+<!DOCTYPE HTML>
 <html>
 
 <head>

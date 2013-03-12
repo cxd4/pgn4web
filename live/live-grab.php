@@ -2,7 +2,7 @@
 
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009-2012 Paolo Casaschi
+ *  copyright (C) 2009-2013 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
@@ -147,7 +147,7 @@ $lastPgnUrlModification = validate_lastPgnUrlModification($_POST["lastPgnUrlModi
 $pgnText = validate_pgnText(stripslashes($_POST["pgnText"]));
 
 ?>
-
+<!DOCTYPE HTML>
 <html>
 
 <head>

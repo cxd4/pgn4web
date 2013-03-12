@@ -82,12 +82,16 @@ function print_links() {
     $urls = array_unique($urls);
     sort($urls);
 
+    print("<!DOCTYPE HTML>" . "\n" . "<html>" . "\n" . "<head>" . "\n");
+
     if (($numUrls = count($urls)) == 1) { print "<title>1 link</title>" . "\n"; }
     else { print "<title>$numUrls links</title>" . "\n"; }
 
     print "<link rel='shortcut icon' href='pawn.ico' />" . "\n";
     print "<style tyle='text/css'> body { font-family: sans-serif; padding: 2em; line-height: 1.5em; } a { color: black; text-decoration: none; } ol { color: $labelColor; } </style>" . "\n";
     print "<script type='text/javascript'> var viewerWin; </script>" . "\n";
+
+    print("</head>" . "\n" . "<body>" . "\n");
 
     if ($help) {
         print("<pre>" . "\n");
@@ -120,6 +124,7 @@ function print_links() {
         print("<i>no links found</i>" . "\n");
     }
 
+    print("</body>" . "\n" . "</html>");
 }
 
 function get_param($param, $shortParam, $default) {

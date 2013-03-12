@@ -339,6 +339,7 @@ function print_header() {
   }
 
   print <<<END
+<!DOCTYPE HTML>
 <html>
 
 <head>
