@@ -72,7 +72,7 @@ a {
 
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 98% !important;
+  width: 100% !important;
 }
 
 .optionSelectControl {
@@ -95,7 +95,7 @@ a {
 
 .searchPgnExpression {
 /* a "width" attribute here must use the !important flag to override default settings */
-  width: 88% !important;
+  width: 90% !important;
 }
 
 .move,
