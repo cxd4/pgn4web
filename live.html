@@ -154,7 +154,12 @@ function setLiveMode(lm) {
 
 function resizeFrameHeight(frObj) {
   if ((frObj) && ((liveMode == "analysis") || (liveMode == "dynamic"))) {
-    frObj.height = (window.innerHeight - document.getElementById("headRow").offsetHeight - 205) + "px";
+    if (window.innerHeight) { wh = window.innerHeight; }
+    else if (document.documentElement && document.documentElement.clientHeight) { wh = document.documentElement.clientHeight; }
+    else if (document.body && document.body.clientHeight) { wh = document.body.clientHeight; }
+    else { wh = 0; }
+
+    frObj.height = Math.max(240, wh - document.getElementById("headRow").offsetHeight - 205) + "px";
   }
 }
 
