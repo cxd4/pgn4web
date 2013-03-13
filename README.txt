@@ -80,7 +80,7 @@ chessboard square.
 
 HOW TO USE pgn4we.js
 
-add a SCRIPT instance at the top of your HTML file:
+To enable pgn4web, add a SCRIPT instance at the top of your HTML file:
 
   <script src="pgn4web.js" type="text/javascript"></script>
 
@@ -166,6 +166,9 @@ See http://pgn4web.casaschi.net/demo/ usage example, including a live broadcast
 demo.
 See http://pgn4web-blog.casaschi for a usage example within a blog using the
 iframe html tag.
+
+The pgn4web scripts and pages are optimized for the HTML5 doctype declaration:
+<!DOCTYPE HTML>
 
 
 CHESS FIGURINE DISPLAY OF MOVES
