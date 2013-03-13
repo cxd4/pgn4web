@@ -592,55 +592,55 @@ function restoreShortcutKeysStatus() {}
 
 <table style="margin-bottom:1.5em; $hideFormCss" width="100%" cellspacing="0" cellpadding="3" border="0"><tbody>
 
+  <form id="uploadForm" action="$thisScript" enctype="multipart/form-data" method="POST" style="display:inline;">
   <tr>
     <td align="left" valign="middle">
-      <form id="uploadForm" action="$thisScript" enctype="multipart/form-data" method="POST" style="display:inline;">
-        <input id="uploadFormSubmitButton" type="submit" class="formControl" value=" view games from local file " style="width:100%;" title="view games from local file: PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="this.blur(); return checkPgnFile();">
+      <input id="uploadFormSubmitButton" type="submit" class="formControl" value=" view games from local file " style="width:100%;" title="view games from local file: PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="this.blur(); return checkPgnFile();">
     </td>
     <td colspan="$formVariableColspan" width="100%" align="left" valign="middle">
-        <input type="hidden" name="MAX_FILE_SIZE" value="$fileUploadLimitBytes">
-        <input id="uploadFormFile" name="pgnFile" type="file" class="formControl borderBox" style="width:100%;" title="view games from local file: PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="this.blur();">
-      </form>
+      <input type="hidden" name="MAX_FILE_SIZE" value="$fileUploadLimitBytes">
+      <input id="uploadFormFile" name="pgnFile" type="file" class="formControl borderBox" style="width:100%;" title="view games from local file: PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="this.blur();">
     </td>
   </tr>
+  </form>
 
+  <form id="urlForm" action="$thisScript" method="POST" style="display:inline;">
   <tr>
     <td align="left" valign="middle">
-      <form id="urlForm" action="$thisScript" method="POST" style="display:inline;">
-        <input id="urlFormSubmitButton" type="submit" class="formControl" value=" view games from remote URL " title="view games from remote URL: PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="this.blur(); return checkPgnUrl();">
+      <input id="urlFormSubmitButton" type="submit" class="formControl" value=" view games from remote URL " title="view games from remote URL: PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="this.blur(); return checkPgnUrl();">
     </td>
     <td width="100%" align="left" valign="middle">
-        <input id="urlFormText" name="pgnUrl" type="text" class="formControl verticalMiddle borderBox" value="" style="width:100%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="view games from remote URL: PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText">
-      </form>
+      <input id="urlFormText" name="pgnUrl" type="text" class="formControl verticalMiddle borderBox" value="" style="width:100%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="view games from remote URL: PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText">
     </td>
 END;
 
   if ($presetURLsArray) {
-    print('    <td align="right" valign="middle">' . "\n" . '        <select id="urlFormSelect" class="formControl verticalMiddle" style="font-family:monospace; display:block; vertical-align:middle;" title="view games from remote URL: select the download URL from the preset options; please support the sites providing the PGN games downloads" onChange="this.blur(); urlFormSelectChange();">' . "\n" . '          <option value="header"> </option>' . "\n");
+    print('  <td align="right" valign="middle">' . "\n" . '      <select id="urlFormSelect" class="formControl verticalMiddle" style="font-family:monospace; display:block; vertical-align:middle;" title="view games from remote URL: select the download URL from the preset options; please support the sites providing the PGN games downloads" onChange="this.blur(); urlFormSelectChange();">' . "\n" . '        <option value="header"> </option>' . "\n");
     foreach($presetURLsArray as $value) {
-      print('          <option value="' . $value['label'] . '">' . $value['label'] . '</option>' . "\n");
+      print('        <option value="' . $value['label'] . '">' . $value['label'] . '</option>' . "\n");
     }
-    print('          <option value="clear">clear URL</option>' . "\n" . '        </select>' . "\n" . '    </td>' . "\n");
+    print('        <option value="clear">clear URL</option>' . "\n" . '      </select>' . "\n" . '    </td>' . "\n");
   }
 
   print <<<END
   </tr>
+  </form>
 
+  <form id="textForm" style="display:inline;">
   <tr>
     <td align="left" valign="top">
-      <form id="textForm" style="display:inline;">
-        <input id="pgnFormButton" type="button" class="formControl" value=" view games from textbox " style="width:100%;" onClick="this.blur(); loadPgnFromForm();">
+      <input id="pgnFormButton" type="button" class="formControl" value=" view games from textbox " style="width:100%;" onClick="this.blur(); loadPgnFromForm();">
     </td>
     <td colspan="$formVariableColspan" rowspan="2" width="100%" align="right" valign="middle">
-        <textarea id="pgnFormText" class="formControl verticalMiddle borderBox textboxAppearance" name="pgnTextbox" rows=4 style="width:100%; resize:vertical;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" onChange="checkPgnFormTextSize();">$pgnTextbox</textarea>
-      </form>
+      <textarea id="pgnFormText" class="formControl verticalMiddle borderBox textboxAppearance" name="pgnTextbox" rows=4 style="width:100%; resize:vertical;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" onChange="checkPgnFormTextSize();">$pgnTextbox</textarea>
     </td>
   </tr>
+  </form>
 
   <tr>
-  <td align="left" valign="bottom">
-    <input id="clearButton" type="button" class="formControl" value=" reset viewer " onClick="this.blur(); if (confirm('reset viewer: current PGN games and inputs will be lost')) { reset_viewer(); }" title="reset viewer: current PGN games and inputs will be lost">
-  </td>
+    <td align="left" valign="bottom">
+      <input id="clearButton" type="button" class="formControl" value=" reset viewer " onClick="this.blur(); if (confirm('reset viewer: current PGN games and inputs will be lost')) { reset_viewer(); }" title="reset viewer: current PGN games and inputs will be lost">
+    </td>
   </tr>
 
 </tbody></table>
