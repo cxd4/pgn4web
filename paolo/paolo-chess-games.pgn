@@ -1,3 +1,20 @@
+[Event "Middlesex League 2012/2013"]
+[Site "London ENG"]
+[Date "2013.03.13"]
+[Round "?"]
+[White "Farkas, Daniel"]
+[Black "Casaschi, Paolo"]
+[Result "1/2-1/2"]
+[ECO "C07"]
+[Opening "French"]
+[Variation "Tarrasch, open variation"]
+
+1. e4 e6 2. d4 d5 3. Nd2 c5 4. Ngf3 Nc6 5. c3 Be7 6. Bd3 cxd4 7. cxd4 dxe4
+8. Nxe4 Nf6 9. Ng3 Bb4+ 10. Bd2 Bxd2+ 11. Qxd2 Qa5 12. Qxa5 Nxa5 13. Ne4 {
+D } 13... Nc6 14. O-O Nxe4 15. Bxe4 Bd7 16. a3 O-O 17. b4 Rfc8 18. Rfc1
+Rab8 19. d5 exd5 20. Bxd5 Nd8 21. Ne5 Be6 22. Bf3 Kf8 23. h4 Rxc1+ 24. Rxc1
+Rc8 25. Rxc8 Bxc8 1/2-1/2
+
 [Event "London League 2012/2013"]
 [Site "London ENG"]
 [Date "2013.03.11"]
