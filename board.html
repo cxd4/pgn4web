@@ -599,7 +599,10 @@ if ((headerDisplay != "centered") && (headerDisplay != "live") && (headerDisplay
 // movesDisplay is set at the beginning of the script
 
 if ((textHeight = percentFixFromUrl(gup("textHeight"))) === "") { textHeight = "100%"; }
+if (!textHeight.match(/[^0-9]/)) { textHeight += "px"; }
+
 if ((textWidth = percentFixFromUrl(gup("textWidth"))) === "") { textWidth = "100%"; }
+if (!textWidth.match(/[^0-9]/)) { textWidth += "px"; }
 
 if ((textMargin = gup("textMargin")) === "") { textMargin = 0; }
 else { textMargin = parseInt(textMargin, 10); }
@@ -957,9 +960,9 @@ function display_header_moves() {
     }
   }
   if ((headerDisplay != "hidden") || (movesDisplay != "hidden")) {
-  document.write("<div id='headerMoves' style='overflow:auto; overflow-x:hidden;" +
-                 " height: " + textHeight + "; width: " + textWidth +
-                 "; scrollbar-base-color: " + backgroundColor + ";'>");
+    document.write("<div id='headerMoves' style='overflow:auto; overflow-x:hidden;" +
+                   " height: " + textHeight + "; width: " + textWidth +
+                   "; scrollbar-base-color: " + backgroundColor + ";'>");
   }
 
   if (headerDisplay == "variations") {
@@ -1139,12 +1142,12 @@ function customFunctionOnPgnTextLoad() {
 
   if (theObj = document.getElementById("headerMoves")) {
     if (horizontalLayout === true) {
-      if (frameWidth === "") { theObj.style.width = textWidth + "px"; }
+      if (frameWidth === "") { theObj.style.width = textWidth; }
       else { document.getElementById("outerFrame").style.width = frameWidth - 2 * framePadding + "px"; }
-      theObj.style.height = (frameHeight === "" ? textHeight : frameHeight - 2 * framePadding) + "px";
+      theObj.style.height = (frameHeight === "" ? textHeight : (frameHeight - 2 * framePadding) + "px");
     } else {
-      theObj.style.width = (frameWidth === "" ? textWidth : frameWidth - 2 * framePadding) + "px";
-      if (frameHeight === "") { theObj.style.height = textHeight + "px"; }
+      theObj.style.width = (frameWidth === "" ? textWidth : (frameWidth - 2 * framePadding) + "px");
+      if (frameHeight === "") { theObj.style.height = textHeight; }
       else {
        boardHeadermovesPaddingHeight = document.getElementById("boardHeadermovesPadding") ? document.getElementById("boardHeadermovesPadding").offsetHeight : 0;
        theObj.style.height = (frameHeight - boardHeight - 2 * framePadding - boardHeadermovesPaddingHeight) + "px";
