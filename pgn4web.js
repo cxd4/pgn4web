@@ -571,7 +571,7 @@ boardShortcut("H4", "search next event", function(t,e){ searchPgnGame('\\[\\s*Ev
 
 boardShortcut("A3", "load first game", function(t,e){ if (numberOfGames > 1) { Init(0); } }, true);
 
-boardShortcut("B3", "jump to previous games decile", function(t,e){ if (currentGame > 0) { calculateDeciles(); for (ii=(deciles.length-2); ii>=0; ii--) { if (currentGame > deciles[ii]) { Init(deciles[ii]); break; } } } }, true);
+boardShortcut("B3", "jump to previous games decile", function(t,e){ if (currentGame > 0) { calculateDeciles(); for (var ii=(deciles.length-2); ii>=0; ii--) { if (currentGame > deciles[ii]) { Init(deciles[ii]); break; } } } }, true);
 
 boardShortcut("C3", "load previous game", function(t,e){ Init(currentGame - 1); }, true);
 
@@ -581,7 +581,7 @@ boardShortcut("E3", "load random game at random position", function(t,e){ random
 
 boardShortcut("F3", "load next game", function(t,e){ Init(currentGame + 1); }, true);
 
-boardShortcut("G3", "jump to next games decile", function(t,e){ if (currentGame < numberOfGames - 1) { calculateDeciles(); for (ii=1; ii<deciles.length; ii++) { if (currentGame < deciles[ii]) { Init(deciles[ii]); break; } } } }, true);
+boardShortcut("G3", "jump to next games decile", function(t,e){ if (currentGame < numberOfGames - 1) { calculateDeciles(); for (var ii=1; ii<deciles.length; ii++) { if (currentGame < deciles[ii]) { Init(deciles[ii]); break; } } } }, true);
 
 boardShortcut("H3", "load last game", function(t,e){ if (numberOfGames > 1) { Init(numberOfGames - 1); } }, true);
 
@@ -2924,7 +2924,7 @@ function realParentVar(childVar) {
 
 function goToNextVariationSibling() {
   if (CurrentPly === StartPly) { return false; }
-  siblingVarList = childrenVars(CurrentPly - 1, HistVar[CurrentPly - 1]);
+  var siblingVarList = childrenVars(CurrentPly - 1, HistVar[CurrentPly - 1]);
   if (siblingVarList.length < 2) { return false; }
   for (var ii = 0; ii < siblingVarList.length; ii++) {
     if (siblingVarList[ii] === CurrentVar) { break; }
@@ -3418,10 +3418,10 @@ function gameNumberSearchPgn(searchExpression, backward, includeCurrent) {
 function searchPgnGame(searchExpression, backward) {
   if (typeof(searchExpression) == "undefined") { searchExpression = ""; }
   lastSearchPgnExpression = searchExpression;
-  if (theObj = document.getElementById('searchPgnExpression'))
-  { theObj.value = searchExpression; }
+  var theObj = document.getElementById('searchPgnExpression');
+  if (theObj) { theObj.value = searchExpression; }
   if ((searchExpression === "") || (numberOfGames < 2)) { return; }
-  checkGame = gameNumberSearchPgn(searchExpression, backward, false);
+  var checkGame = gameNumberSearchPgn(searchExpression, backward, false);
   if ((checkGame !== false) && (checkGame != currentGame)) { Init(checkGame); }
 }
 
@@ -3430,7 +3430,7 @@ function searchPgnGamePrompt() {
     alert("info: search prompt disabled with less than 2 games");
     return;
   }
-  searchExpression = prompt("Please enter search pattern for PGN games:", lastSearchPgnExpression);
+  var searchExpression = prompt("Please enter search pattern for PGN games:", lastSearchPgnExpression);
   if (searchExpression) { searchPgnGame(searchExpression); }
 }
 
@@ -3874,7 +3874,7 @@ function autoScrollToCurrentMove(objectId) {
 
 
 function FlipBoard() {
-  tmpHighlightOption = highlightOption;
+  var tmpHighlightOption = highlightOption;
   if (tmpHighlightOption) { SetHighlight(false); }
   IsRotated = !IsRotated;
   PrintHTML();
@@ -3930,7 +3930,8 @@ function SetAutoPlay(vv) {
 var minAutoplayDelay = 500;
 var maxAutoplayDelay = 300000;
 function setCustomAutoplayDelay() {
-  if ((newDelaySec = prompt("Enter custom autoplay delay, in seconds, between " + (minAutoplayDelay/1000) + " and " + (maxAutoplayDelay/1000) + ":", Math.floor(Delay / 100) / 10)) && (!isNaN(newDelaySec = parseInt(newDelaySec, 10)))) {
+  var newDelaySec = prompt("Enter custom autoplay delay, in seconds, between " + (minAutoplayDelay/1000) + " and " + (maxAutoplayDelay/1000) + ":", Math.floor(Delay / 100) / 10);
+  if (!isNaN(newDelaySec = parseInt(newDelaySec, 10))) {
     SetAutoplayDelayAndStart(newDelaySec * 1000);
   }
 }
