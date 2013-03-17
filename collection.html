@@ -23,6 +23,10 @@
 
 <script type="text/javascript">
 
+   "use strict";
+
+   var thisRegExp;
+
    thisRegExp = /(&|\?)(help|h)=(true|t)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
        alert("pgn4web collection.html parameters" + "\n" +
@@ -31,7 +35,7 @@
              " - search=search expression" + "\n" +
              " - help = true");
    }
-   pgnFilename = "";
+   var pgnFilename = "";
    thisRegExp = /(&|\?)(pgnFile|pf)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
        pgnFilename = unescape(window.location.search.match(thisRegExp)[3]);
@@ -42,9 +46,8 @@
            pgnFilename = unescape(window.location.search.match(thisRegExp)[3]);
        }
    }
-   if (pgnFilename === "") {
-       pgnTitle = "no PGN file loaded";
-   } else {
+   var pgnTitle = "no PGN file loaded";
+   if (pgnFilename !== "") {
        SetPgnUrl(pgnFilename); // if set, this has precedence over the inline PGN in the HTML file
        pgnTitle = pgnFilename;
    }
@@ -54,6 +57,7 @@
    }
    document.title = "chess games: " + pgnTitle;
    thisRegExp = /(&|\?)(search|s)=([^&]*)(&|$)/i;
+   var pgnSearchTarget;
    if (window.location.search.match(thisRegExp) !== null) {
        pgnSearchTarget = unescape(window.location.search.match(thisRegExp)[3]);
    } else {
@@ -75,12 +79,14 @@
    SetShortcutKeysEnabled(true);
 
    function customFunctionOnPgnTextLoad() {
-     if (theObj = document.getElementById('numGm')) { theObj.innerHTML = numberOfGames; }
+     var theObj = document.getElementById('numGm');
+     if (theObj) { theObj.innerHTML = numberOfGames; }
      searchPgnGame(pgnSearchTarget);
    }
 
    function customFunctionOnPgnGameLoad() {
-     if (theObj = document.getElementById('currGm')) { theObj.innerHTML = currentGame+1; }
+     var theObj = document.getElementById('currGm');
+     if (theObj) { theObj.innerHTML = currentGame+1; }
    }
 
    // customShortcutKey_Shift_1 defined by fide-lookup.js

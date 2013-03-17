@@ -108,17 +108,16 @@ your web browser and/or your host do not support iframes as required to display 
 
 <script type="text/javascript">
 
+"use strict";
+
 var oldChosenoptionValue = "";
 var selectmenu=document.getElementById("selectmenu");
 selectmenu.onchange = function() {
     var chosenoption = this.options[this.selectedIndex];
     if ((chosenoption.value !== "") && (chosenoption.value != oldChosenoptionValue)) {
         oldChosenoptionValue = chosenoption.value;
-        if (theObj = frames['inlineframe'].document.getElementById('searchPgnExpression')) {
-            searchPgnString = '&search=' + escape(theObj.value);
-        } else {
-            searchPgnString = '';
-        }
+        var theObj = frames['inlineframe'].document.getElementById('searchPgnExpression');
+        var searchPgnString = theObj ? '&search=' + escape(theObj.value) : '';
         frames['inlineframe'].location.href = "collection.html?pgnFile=" + chosenoption.value + "&title=" + escape(chosenoption.innerHTML) + searchPgnString;
     }
     this.selectedIndex = 0;
