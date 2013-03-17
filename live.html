@@ -16,6 +16,9 @@
 
 <script src="pgn4web-server-config.js" type="text/javascript"></script>
 <script type="text/javascript">
+
+"use strict";
+
 // this should have been defined in pgn4web-server-config.js
 // setting default value here just in case
 var pgn4web_live_pointer_url;
@@ -65,10 +68,14 @@ a:hover, a:active
 
 <script type="text/javascript">
 
+"use strict";
+
+var thisRegExp, theObj;
+
 thisRegExp = /(&|\?)(hp|headlessPage)=(t|true)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
-  if (theObject = document.getElementById("headRow")) {
-    theObject.style.display = "none";
+  if (theObj = document.getElementById("headRow")) {
+    theObj.style.display = "none";
   }
 }
 
@@ -78,7 +85,7 @@ if (window.location.search.match(thisRegExp) !== null) {
   liveMode = unescape(window.location.search.match(thisRegExp)[3]);
 }
 if ((liveMode == "random") || (liveMode == "r")) {
-  r = Math.random();
+  var r = Math.random();
   if (r < 0.25) { liveMode = "widget"; }
   else if (r < 0.50) { liveMode = "dynamic"; }
   else if (r < 0.75) { liveMode = "compact"; }
@@ -104,7 +111,10 @@ function setLiveMode(lm) {
   var iniGame='\\[\\s*Result\\s*"\\*"\\s*\\]';
   var extraParams = "ig=" + iniGame + (pgnData ? "&pd=" + pgnData : "");
 
-  if ((theFrameObject = document.getElementById("liveframe")) && (theAnalysisObject = document.getElementById("analysisframe")) && (theContainerObject = document.getElementById("framecontainer"))) {
+  var theFrameObject = document.getElementById("liveframe");
+  var theAnalysisObject = document.getElementById("analysisframe");
+  var theContainerObject = document.getElementById("framecontainer");
+  if (theFrameObject && theAnalysisObject && theContainerObject) {
     liveMode = lm;
     if (liveMode == "analysis") {
       theFrameObject.src = pgn4web_live_pointer_url + "/dynamic-frame.html?l=t&ct=pink&scf=t&pf=u&ewt=analysisframeForLiveDotHtml&ewh=240&eww=192&ewup=lch%3DEDE8D5%26dch%3DCFCBB3%26hch%3DF8CCA0%26fmch%3D302F29%26ctch%3D9C9886%26bch%3DEDE8D5%26ss%3D24%26fp%3D0%26pf%3Du%26fms%3D11%26fcs%3D19&ewpi=t&" + extraParams;
@@ -153,6 +163,7 @@ function setLiveMode(lm) {
 }
 
 function resizeFrameHeight(frObj) {
+  var wh;
   if ((frObj) && ((liveMode == "analysis") || (liveMode == "dynamic"))) {
     if (window.innerHeight) { wh = window.innerHeight; }
     else if (document.documentElement && document.documentElement.clientHeight) { wh = document.documentElement.clientHeight; }
