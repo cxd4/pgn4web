@@ -374,6 +374,8 @@ body {
 
 <script type="text/javascript">
 
+"use strict";
+
 SetImagePath("$pieceFont/$pieceSize");
 SetShortcutKeysEnabled(false);
 
@@ -393,8 +395,8 @@ clearShortcutSquares("ABCDEFGH", "23456");
 clearShortcutSquares("BCFG", "1");
 
 function solutionSoFar() {
-  sol = "";
-  for (thisPly = StartPly; thisPly < CurrentPly; thisPly++) {
+  var sol = "";
+  for (var thisPly = StartPly; thisPly < CurrentPly; thisPly++) {
     if (thisPly % 2) {
       sol += ((thisPly + 1) / 2) + "... ";
     } else if (thisPly == StartPly) {
@@ -406,6 +408,7 @@ function solutionSoFar() {
 }
 
 function customFunctionOnMove() {
+  var res, outcome;
 
   if (CurrentPly == StartPly) {
     document.getElementById("leftButtonLink").innerHTML = "<table class='sidetomoveBox' style='background-color:" + (CurrentPly % 2 ? "black" : "white" ) + ";' cellspacing='0' cellpadding='0'><tr><td></td></tr></table>";
