@@ -429,10 +429,10 @@ function handlekey(e) {
   return stopEvProp(e);
 }
 
-boardOnClick = new Array(8);
-boardTitle = new Array(8);
-boardDefault = new Array(8);
-for (col=0; col<8; col++) {
+var boardOnClick = new Array(8);
+var boardTitle = new Array(8);
+var boardDefault = new Array(8);
+for (var col=0; col<8; col++) {
   boardOnClick[col] = new Array(8);
   boardTitle[col] = new Array(8);
   boardDefault[col] = new Array(8);
@@ -477,7 +477,7 @@ function boardShortcut(square, title, functionPointer, defaultSetting) {
 
 // PLEASE NOTE: 'boardShortcut' ALWAYS ASSUMES 'square' WITH WHITE ON BOTTOM
 
-debugShortcutSquare = "A8";
+var debugShortcutSquare = "A8";
 
 
 boardShortcut("A8", "pgn4web v" + pgn4web_version + " debug info", function(t,e){ displayDebugInfo(); }, true);
@@ -684,7 +684,7 @@ function detectBaseLocation() {
 }
 
 
-debugWin = null;
+var debugWin = null;
 function displayDebugInfo() {
   var base = detectBaseLocation();
   var jsurl = detectJavascriptLocation();
@@ -751,7 +751,7 @@ function liveStatusDebug() {
 
 function customDebugInfo() { return ""; }
 
-pgnWin = null;
+var pgnWin = null;
 function displayPgnData(allGames) {
   if (typeof(allGames) == "undefined") { allGames = true; }
   if (pgnWin && !pgnWin.closed) { pgnWin.close(); }
@@ -820,7 +820,7 @@ function CurrentFEN() {
   return currentFEN;
 }
 
-fenWin = null;
+var fenWin = null;
 function displayFenData() {
   if (fenWin && !fenWin.closed) { fenWin.close(); }
 
@@ -943,24 +943,24 @@ var mvCaptured = -1;
 var mvCapturedId = -1;
 var mvIsNull = 0;
 
-Board = new Array(8);
-for (i=0; i<8; ++i) { Board[i] = new Array(8); }
+var Board = new Array(8);
+for (var i=0; i<8; ++i) { Board[i] = new Array(8); }
 
 // HistCol, HistRow: move history up to last replayed ply
 // HistCol[0], HistRow[0]: "square from"; 0..7, 0..7 from A1
 // HistCol[1], HistRow[1]: castling/capture
 // HistCol[2], HistRow[2]: "square to"; 0..7, 0..7 from A1
 
-HistCol = new Array(3);
-HistRow = new Array(3);
-HistPieceId = new Array(2);
-HistType = new Array(2);
-HistVar = new Array();
+var HistCol = new Array(3);
+var HistRow = new Array(3);
+var HistPieceId = new Array(2);
+var HistType = new Array(2);
+var HistVar = new Array();
 
-PieceCol = new Array(2);
-PieceRow = new Array(2);
-PieceType = new Array(2);
-PieceMoveCounter = new Array(2);
+var PieceCol = new Array(2);
+var PieceRow = new Array(2);
+var PieceType = new Array(2);
+var PieceMoveCounter = new Array(2);
 
 for (i=0; i<2; ++i) {
   PieceCol[i] = new Array(16);
@@ -976,12 +976,12 @@ for (i=0; i<3; ++i) {
   HistRow[i] = new Array();
 }
 
-HistEnPassant = new Array();
+var HistEnPassant = new Array();
 HistEnPassant[0] = false;
-HistEnPassantCol = new Array();
+var HistEnPassantCol = new Array();
 HistEnPassantCol[0] = -1;
 
-HistNull = new Array();
+var HistNull = new Array();
 HistNull[0] = 0;
 
 var FenPieceName = "KQRBNP";
@@ -994,7 +994,7 @@ var InitialHalfMoveClock = 0;
 startingSquareSize = -1;
 startingImageSize = -1;
 
-PiecePicture = new Array(2);
+var PiecePicture = new Array(2);
 for (i=0; i<2; ++i) { PiecePicture[i] = new Array(6); }
 
 var ImagePath = '';
@@ -2206,7 +2206,6 @@ function InitFEN(startingFEN) {
   StartPly  = 0;
   MoveCount = StartPly;
   MoveColor = StartPly % 2;
-  StartMove = 0;
 
   var newEnPassant = false;
   var newEnPassantCol;
@@ -2332,7 +2331,6 @@ function InitFEN(startingFEN) {
     cc = FenString.charAt(ll++);
     if ((cc == "w") || (cc == "b")) {
       if (cc == "b") {
-        StartMove = 1;
         StartPly += 1;
         MoveColor = 1;
       }
