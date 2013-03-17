@@ -5,7 +5,7 @@
  *  for credits, license and more details
  */
 
-// "use strict"
+// "use strict";
 
 var pgn4web_version = '2.70+';
 
@@ -805,7 +805,7 @@ function CurrentFEN() {
 
   // castling availability: always in the KQkq form
   // note: wrong FEN for Chess960 positions with inner castling rook
-  CastlingFEN = "";
+  var CastlingFEN = "";
   if (RookForOOCastling(0) !== null) { CastlingFEN += FenPieceName.charAt(0).toUpperCase(); }
   if (RookForOOOCastling(0) !== null) { CastlingFEN += FenPieceName.charAt(1).toUpperCase(); }
   if (RookForOOCastling(1) !== null) { CastlingFEN += FenPieceName.charAt(0).toLowerCase(); }
@@ -1368,7 +1368,7 @@ function clockFromHeader(whiteToMove) {
 }
 
 function HighlightLastMove() {
-  var theObj, anchorName, text, ii, clockString;
+  var theObj, anchorName, text, ii, clockString, clockRegExp, clockMatch;
 
   undoStackStore();
 
@@ -2048,6 +2048,7 @@ function refreshPgnSource() {
 }
 
 function loadPgnFromTextarea(textareaId) {
+  var loadPgnFromTextareaResult,tmpText, theObj;
 
   LiveBroadcastLastRefreshedLocal = (new Date()).toLocaleString();
 
@@ -2207,7 +2208,7 @@ function myAlertFEN(FenString, text) {
 }
 
 function InitFEN(startingFEN) {
-  var ii, jj, cc, color;
+  var ii, jj, cc, color, castlingRookCol, InitialFullMoveNumber;
 
   var FenString = typeof(startingFEN) != "string" ? FenStringStart :
     startingFEN.replace(/\\/g, "/").replace(/[^a-zA-Z0-9\s\/-]/g, " ").replace(/(^\s*|\s*$)/g, "").replace(/\s+/g, " ");
@@ -2682,7 +2683,7 @@ function MoveBackward(diff, scanOnly) {
 }
 
 function MoveForward(diff, targetVar, scanOnly) {
-  var nextVar, nextVarStartPly, move;
+  var nextVar, nextVarStartPly, move, text;
   var oldVar = -1;
 
   if (typeof(targetVar) == "undefined") { targetVar = CurrentVar; }
@@ -3852,15 +3853,20 @@ function objectOffsetVeryTop(object) {
 }
 
 function autoScrollToCurrentMove(objectId) {
-  if (objectId && (theContainerObject = document.getElementById(objectId))) {
+  if (!objectId) { return; }
+  var theContainerObject = document.getElementById(objectId);
+  if (theContainerObject) {
     if (CurrentPly == StartPly) { theContainerObject.scrollTop = 0; }
-    else if (theMoveObject = document.getElementById('Var' + CurrentVar + 'Mv' + CurrentPly)) {
-      theContainerObjectOffsetVeryTop = objectOffsetVeryTop(theContainerObject);
-      theMoveObjectOffsetVeryTop = objectOffsetVeryTop(theMoveObject);
-      if ((theMoveObjectOffsetVeryTop + theMoveObject.offsetHeight >
-           theContainerObjectOffsetVeryTop + theContainerObject.scrollTop + theContainerObject.clientHeight) ||
-          (theMoveObjectOffsetVeryTop < theContainerObjectOffsetVeryTop + theContainerObject.scrollTop)) {
-        theContainerObject.scrollTop = theMoveObjectOffsetVeryTop - theContainerObjectOffsetVeryTop;
+    else {
+      var theMoveObject = document.getElementById('Var' + CurrentVar + 'Mv' + CurrentPly);
+      if (theMoveObject) {
+        var theContainerObjectOffsetVeryTop = objectOffsetVeryTop(theContainerObject);
+        var theMoveObjectOffsetVeryTop = objectOffsetVeryTop(theMoveObject);
+        if ((theMoveObjectOffsetVeryTop + theMoveObject.offsetHeight >
+             theContainerObjectOffsetVeryTop + theContainerObject.scrollTop + theContainerObject.clientHeight) ||
+            (theMoveObjectOffsetVeryTop < theContainerObjectOffsetVeryTop + theContainerObject.scrollTop)) {
+          theContainerObject.scrollTop = theMoveObjectOffsetVeryTop - theContainerObjectOffsetVeryTop;
+        }
       }
     }
   }
