@@ -142,7 +142,10 @@ function alertPromptTick(restart) {
   }
   var debugColRow = colRowFromSquare(debugShortcutSquare);
   if (!debugColRow) { return; }
-  if (theObj = document.getElementById('tcol' + debugColRow.col + 'trow' + debugColRow.row)) {
+
+  var alertPromptDelay;
+  var theObj = document.getElementById('tcol' + debugColRow.col + 'trow' + debugColRow.row);
+  if (theObj) {
     if (alertPromptOn) {
       if ((highlightOption) &&
         ((lastColFromHighlighted === 0 && lastRowFromHighlighted === 7) ||
@@ -1623,7 +1626,7 @@ function fixCommonPgnMistakes(text) {
 }
 
 function fullPgnGame(gameNum) {
-  res = pgnHeader[gameNum] ? pgnHeader[gameNum].replace(/^[^[]*/g, "") : "";
+  var res = pgnHeader[gameNum] ? pgnHeader[gameNum].replace(/^[^[]*/g, "") : "";
   res = res.replace(/\[\s*(\w+)\s*"([^"]*)"\s*\][^[]*/g, '[$1 "$2"]\n');
   res += "\n";
   res += pgnGame[gameNum] ? pgnGame[gameNum].replace(/(^[\s]*|[\s]*$)/g, "") : "";
@@ -1714,6 +1717,7 @@ function pgnGameFromHttpRequest(httpResponseData) {
 
 var http_request_last_processed_id = 0;
 function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
+  var loadPgnFromPgnUrlResult;
 
   if (this_http_request.readyState != 4) { return; }
 
@@ -1905,10 +1909,11 @@ function loadPgnFromPgnUrl(pgnUrl) {
   http_request.onreadystatechange = function () { updatePgnFromHttpRequest(http_request, http_request_id); };
 
   try {
+    var urlRandomizer = "";
     // anti-caching #1
     if ((LiveBroadcastDelay > 0) && (pgnUrl.indexOf("?") == -1) && (pgnUrl.indexOf("#") == -1)) {
       urlRandomizer = "?noCache=" + (0x1000000000 + Math.floor((Math.random() * 0xF000000000))).toString(16).toUpperCase();
-    } else { urlRandomizer = ""; }
+    }
     http_request.open("GET", pgnUrl + urlRandomizer);
     // anti-caching #2
     if (LiveBroadcastDelay > 0) {
@@ -2198,8 +2203,8 @@ function myAlertFEN(FenString, text) {
 function InitFEN(startingFEN) {
   var ii, jj, cc, color;
 
-  if (typeof(startingFEN) != "string") { FenString = FenStringStart; }
-  else { FenString = startingFEN.replace(/\\/g, "/").replace(/[^a-zA-Z0-9\s\/-]/g, " ").replace(/(^\s*|\s*$)/g, "").replace(/\s+/g, " "); }
+  var FenString = typeof(startingFEN) != "string" ? FenStringStart :
+    startingFEN.replace(/\\/g, "/").replace(/[^a-zA-Z0-9\s\/-]/g, " ").replace(/(^\s*|\s*$)/g, "").replace(/\s+/g, " ");
 
   for (ii = 0; ii < 8; ++ii) {
     for (jj = 0; jj < 8; ++jj) {
@@ -2825,6 +2830,7 @@ var numberOfVars;
 var MovesVar;
 var MoveCommentsVar;
 var GameHasComments;
+var GameHasVariations;
 var StartPlyVar;
 var PlyNumberVar;
 var CurrentVarStack;
@@ -2941,6 +2947,7 @@ function goToFirstChild() {
 }
 
 function ParsePGNGameString(gameString) {
+  var ii, start, end, move, moveCount, searchThis, commentStart, commentEnd, isContinuation;
 
   var ssRep, ss = gameString, ssComm;
   ss = ss.replace(pgn4webVariationRegExpGlobal, "[%_pgn4web_variation_ $1]");
@@ -2953,7 +2960,7 @@ function ParsePGNGameString(gameString) {
 
   PlyNumber = 0;
 
-  for (var start=0; start<ss.length; start++) {
+  for (start=0; start<ss.length; start++) {
 
     switch (ss.charAt(start)) {
 
@@ -3180,9 +3187,10 @@ NAG[138] = 'White has severe time control pressure'; // NAG[139] = '(+)';
 for (i=14; i<139; i+=2) { NAG[i+1] = NAG[i].replace("White", "Black"); }
 
 function translateNAGs(comment) {
-  if (matches = comment.match(/\$+[0-9]+/g)) {
+  var matches = comment.match(/\$+[0-9]+/g);
+  if (matches) {
     for (var ii = 0; ii < matches.length; ii++) {
-      nag = matches[ii].substr(1);
+      var nag = matches[ii].substr(1);
       if (NAG[nag] !== undefined) {
         comment = comment.replace(new RegExp("\\$+" + nag + "(?!\\d)"), NAG[nag]);
       }
@@ -3386,15 +3394,15 @@ function gameNumberSearchPgn(searchExpression, backward, includeCurrent) {
   lastSearchPgnExpression = searchExpression;
   if (searchExpression === "") { return false; }
   // replace newline with spaces so that we can use regexp "." on whole game
-  newlinesRegExp = new RegExp("[\n\r]", "gm");
-  searchExpressionRegExp = new RegExp(searchExpression, "im");
+  var newlinesRegExp = new RegExp("[\n\r]", "gm");
+  var searchExpressionRegExp = new RegExp(searchExpression, "im");
   // at start currentGame might still be -1
-  currentGameSearch = (currentGame < 0) || (currentGame >= numberOfGames) ? 0 : currentGame;
-  searchThis = fullPgnGame(currentGameSearch);
+  var currentGameSearch = (currentGame < 0) || (currentGame >= numberOfGames) ? 0 : currentGame;
+  var searchThis = fullPgnGame(currentGameSearch);
   if (includeCurrent && searchThis.replace(newlinesRegExp, " ").match(searchExpressionRegExp)) {
     return currentGameSearch;
   }
-  delta = backward ? -1 : +1;
+  var delta = backward ? -1 : +1;
   for (checkGame = (currentGameSearch + delta + numberOfGames) % numberOfGames;
        checkGame != currentGameSearch;
        checkGame = (checkGame + delta + numberOfGames) % numberOfGames) {
@@ -3436,10 +3444,9 @@ function fixCommentForDisplay(comment) {
 }
 
 var tableSize = 0;
+var textSelectOptions = '';
 function PrintHTML() {
-  var ii, jj;
-  var text;
-  var theObj;
+  var ii, jj, text, theObj, squareId, imageId, squareCoord, squareTitle, textSO;
 
   // chessboard
 
@@ -3481,9 +3488,9 @@ function PrintHTML() {
   // control buttons
 
   if (theObj = document.getElementById("GameButtons")) {
-    numberOfButtons = 5;
-    spaceSize = 3;
-    buttonSize = (tableSize - spaceSize*(numberOfButtons - 1)) / numberOfButtons;
+    var numberOfButtons = 5;
+    var spaceSize = 3;
+    var buttonSize = (tableSize - spaceSize*(numberOfButtons - 1)) / numberOfButtons;
     text = '<FORM NAME="GameButtonsForm" STYLE="display:inline;">' +
       '<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">' +
       '<TR><TD>' +
@@ -3547,12 +3554,8 @@ function PrintHTML() {
           '> ' +
           '<OPTION CLASS="optionSelectControl" value=-1>';
 
-        blanks = ''; for (ii=0; ii<32; ii++) { blanks += ' '; }
-        if (gameSelectorNum) {
-          gameSelectorHeadDisplay = blanks.substring(0, gameSelectorNumLenght) + '  ' + gameSelectorHead;
-        } else {
-          gameSelectorHeadDisplay = gameSelectorHead;
-        }
+        var blanks = ''; for (ii=0; ii<32; ii++) { blanks += ' '; }
+        var gameSelectorHeadDisplay = (gameSelectorNum ? blanks.substring(0, gameSelectorNumLenght) + '  ' : '') + gameSelectorHead;
         text += gameSelectorHeadDisplay.replace(/ /g, '&nbsp;');
 
         for (ii=0; ii<numberOfGames; ii++) {
