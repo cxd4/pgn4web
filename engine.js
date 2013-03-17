@@ -5,9 +5,20 @@
  *  for credits, license and more details
  */
 
+if (typeof(pgn4web_engineWindowDisableAnalysisBoard) == "undefined") { var pgn4web_engineWindowDisableAnalysisBoard = false; }
+
+if (!pgn4web_engineWindowDisableAnalysisBoard) {
+  boardShortcut("A8", "pgn4web v" + pgn4web_version + " debug info", function(t,e){ if (e.shiftKey) { if (engineWinCheck()) { engineWin.displayDebugInfo(); } } else { displayDebugInfo(); } }, true);
+  boardShortcut("E8", "open/update analysis board", function(t,e){ showEngineAnalysisBoard(e.shiftKey); });
+  boardShortcut("F8", "close/pause analysis board", function(t,e){ if (engineWinCheck()) { if (e.shiftKey) { if ((engineWin.top === engineWin.self) && (engineWin.focus)) { engineWin.focus(); } } else { engineWin.StopBackgroundEngine(); if ((engineWin.top === engineWin.self) && (engineWin.close)) { engineWin.close(); } } } });
+
+  function customShortcutKey_Shift_8() { showEngineAnalysisBoard(true); }
+  function customShortcutKey_Shift_9() { showEngineAnalysisBoard(false); }
+  function customShortcutKey_Shift_0() { showEngineAnalysisBoard(); }
+}
+
 "use strict";
 
-if (typeof(pgn4web_engineWindowDisableAnalysisBoard) == "undefined") { var pgn4web_engineWindowDisableAnalysisBoard = false; }
 var pgn4web_engineWindowTarget = "pgn4webEngineAnalysisBoard";
 var pgn4web_engineWindowUrlParameters = "";
 var pgn4web_engineWindowHeight = 30 * 12; // window height/width corresponding to default squareSize = 30
@@ -98,15 +109,5 @@ function engineWinOnMove() {
    } else {
       engineWinLastFen = "";
    }
-}
-
-if (!pgn4web_engineWindowDisableAnalysisBoard) {
-  boardShortcut("A8", "pgn4web v" + pgn4web_version + " debug info", function(t,e){ if (e.shiftKey) { if (engineWinCheck()) { engineWin.displayDebugInfo(); } } else { displayDebugInfo(); } }, true);
-  boardShortcut("E8", "open/update analysis board", function(t,e){ showEngineAnalysisBoard(e.shiftKey); });
-  boardShortcut("F8", "close/pause analysis board", function(t,e){ if (engineWinCheck()) { if (e.shiftKey) { if ((engineWin.top === engineWin.self) && (engineWin.focus)) { engineWin.focus(); } } else { engineWin.StopBackgroundEngine(); if ((engineWin.top === engineWin.self) && (engineWin.close)) { engineWin.close(); } } } });
-
-  function customShortcutKey_Shift_8() { showEngineAnalysisBoard(true); }
-  function customShortcutKey_Shift_9() { showEngineAnalysisBoard(false); }
-  function customShortcutKey_Shift_0() { showEngineAnalysisBoard(); }
 }
 
