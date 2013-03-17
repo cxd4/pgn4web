@@ -62,15 +62,18 @@ input {
 
 <script type="text/javascript">
 
-minBoardSize = 200;
+"use strict";
 
-frameWidth = "";
+var thisRegExp;
+var minBoardSize = 200;
+
+var frameWidth = "";
 thisRegExp = /(&|\?)(frameWidth|fw)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   frameWidth = unescape(window.location.search.match(thisRegExp)[3]);
 }
 
-frameHeight = "";
+var frameHeight = "";
 thisRegExp = /(&|\?)(frameHeight|fh)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   frameHeight = unescape(window.location.search.match(thisRegExp)[3]);
@@ -91,12 +94,13 @@ function atLoad() {
   frameRefresh();
 }
 
-frameUrlSearch = location.search.replace(/(&|\?)(frameWidth|fw|frameHeight|fh)=([^&]*)/ig, "$1").replace(/(&|\?)&+/ig, "$1");
+var frameUrlSearch = location.search.replace(/(&|\?)(frameWidth|fw|frameHeight|fh)=([^&]*)/ig, "$1").replace(/(&|\?)&+/ig, "$1");
 function frameRefresh() {
   document.getElementById("frame").src = "dynamic-frame.html" + frameUrlSearch;
 }
 
 function preselect(w, h) {
+  var ww, wh, aw, ah, fw, fh;
   if (window.innerWidth && window.innerHeight) { ww = window.innerWidth; wh = window.innerHeight; }
   else if (document.documentElement && document.documentElement.clientWidth) { ww = document.documentElement.clientWidth; wh = document.documentElement.clientHeight; }
   else if (document.body && document.body.clientWidth) { ww = document.body.clientWidth; wh = document.body.clientHeight; }
@@ -136,8 +140,8 @@ function modify(dw, dh) {
 }
 
 function swap_wh() {
-  fw = document.getElementById("height").value;
-  fh = document.getElementById("width").value;
+  var fw = document.getElementById("height").value;
+  var fh = document.getElementById("width").value;
   change_w(fw);
   change_h(fh);
 }

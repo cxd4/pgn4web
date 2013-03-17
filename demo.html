@@ -36,6 +36,9 @@ a.linkselected:link, a.linkselected:visited, a.linkselected:hover, a.linkselecte
 <link rel="shortcut icon" href="pawn.ico" />
 
 <script type="text/javascript">
+
+"use strict";
+
 function gup(name) {
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
   var regexS = "[\\?&]"+name+"=([^&#]*)";
@@ -145,24 +148,26 @@ function openPgn4webTest(url) {
 
 <script type="text/javascript">
 
-selected_object = null;
+"use strict";
+
+var selected_object = null;
 function select_frame(new_frame) {
 
-  new_object = document.getElementById(new_frame);
+  var new_object = document.getElementById(new_frame);
   if (new_object !== null) {
 
     if (selected_object !== null) {
       if (new_object == selected_object) { return false; }
-      selected_object.className="linklist";
+      selected_object.className = "linklist";
     }
     selected_object = new_object;
     frames['pgnframe'].location.href = selected_object.href;
 
-    new_frame_width = "100%";
-    new_frame_height = "1000px";
-    new_frame_border = "";
-    new_frame_borderRadius = "";
-    new_frame_boxShadow = "";
+    var new_frame_width = "100%";
+    var new_frame_height = "1000px";
+    var new_frame_border = "";
+    var new_frame_borderRadius = "";
+    var new_frame_boxShadow = "";
 
     switch (new_frame) {
       case "huebner":
@@ -240,7 +245,7 @@ function random_frame() {
   return random_selection[Math.floor(random_selection.length * Math.random())];
 }
 
-initial_frame = gup("frame");
+var initial_frame = gup("frame");
 if (initial_frame === "") { initial_frame = "random"; }
 if (initial_frame == "random") { initial_frame = random_frame(); }
 select_frame(initial_frame);
