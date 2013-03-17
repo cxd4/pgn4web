@@ -155,7 +155,14 @@ The following instructions refer to the basic example; the advanced example incl
 -->
 <script src="pgn4web-server-config.js" type="text/javascript"></script>
 <script type="text/javascript">
+
+"use strict";
+
 var pgn4web_live_pointer_url;
+var theIframeObject;
+var theSpanObject;
+var theLinkObject;
+
 if (pgn4web_live_pointer_url === undefined) { pgn4web_live_pointer_url = "."; }
 if (theIframeObject = document.getElementById('gameframe')) {
   theIframeObject.src = fixUrlAllParameters(theIframeObject.src);
@@ -213,7 +220,7 @@ function fixUrlOnlyParameters(url) {
 
 function fixUrlNoParameters(url) {
   if (pgn4web_live_pointer_url == ".") { return url; }
-  matches = url.match(/.*(\/[^\/]*)/);
+  var matches = url.match(/.*(\/[^\/]*)/);
   return pgn4web_live_pointer_url + matches[1];
 }
 
