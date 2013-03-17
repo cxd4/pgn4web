@@ -35,10 +35,13 @@
 
 <script src="pgn4web.js" type="text/javascript"></script>
 <script type="text/javascript">
-   SetPgnUrl("tactics.pgn");
-   SetImagePath("uscf/24");
-   SetInitialGame("random"); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are accepted; other string values assumed as PGN search string
-   SetShortcutKeysEnabled(false);
+
+"use strict";
+
+SetPgnUrl("tactics.pgn");
+SetImagePath("uscf/24");
+SetInitialGame("random"); // number of game to be shown at load, from 1 (default); values (keep the quotes) of "first", "last", "random" are accepted; other string values assumed as PGN search string
+SetShortcutKeysEnabled(false);
 
 clearShortcutSquares("BCDEFGH", "1234567");
 clearShortcutSquares("A", "123456");
@@ -58,12 +61,12 @@ function gup(name) {
   else { return decodeURIComponent(results[1]); }
 }
 
-if ((assignedInitialGame = gup('n')) !== '') { SetInitialGame(assignedInitialGame); }
+var assignedInitialGame = gup('n');
+if (assignedInitialGame) { SetInitialGame(assignedInitialGame); }
 
 function customFunctionOnPgnGameLoad() {
-  if (theObj = document.getElementById('GameNumber')) {
-    theObj.innerHTML = (currentGame+1);
-  }
+  var theObj = document.getElementById('GameNumber');
+  if (theObj) { theObj.innerHTML = (currentGame+1); }
 }
 
 </script>
