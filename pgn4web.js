@@ -5,6 +5,8 @@
  *  for credits, license and more details
  */
 
+// "use strict"
+
 var pgn4web_version = '2.70+';
 
 var pgn4web_project_url = "http://pgn4web.casaschi.net";
@@ -991,11 +993,12 @@ var FenStringStart = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 var columnsLetters = "ABCDEFGH";
 var InitialHalfMoveClock = 0;
 
-startingSquareSize = -1;
-startingImageSize = -1;
+var startingSquareSize = -1;
+var startingImageSize = -1;
 
 var PiecePicture = new Array(2);
 for (i=0; i<2; ++i) { PiecePicture[i] = new Array(6); }
+var ClearImg = new Image();
 
 var ImagePath = '';
 var ImagePathOld = null;
@@ -1009,10 +1012,10 @@ var commentsOnSeparateLines = false;
 
 var pgnUrl = '';
 
-CastlingLong = new Array(2);
-CastlingShort = new Array(2);
-Moves = new Array();
-MoveComments = new Array();
+var CastlingLong = new Array(2);
+var CastlingShort = new Array(2);
+var Moves = new Array();
+var MoveComments = new Array();
 
 var MoveColor;
 var MoveCount;
@@ -2068,7 +2071,8 @@ function loadPgnFromTextarea(textareaId) {
 
 function createBoard() {
 
-  if (theObj = document.getElementById("GameBoard")) {
+  var theObj = document.getElementById("GameBoard");
+  if (theObj) {
     theObj.innerHTML = '<DIV STYLE="font-size: small; font-family: sans-serif; ' +
       'padding: 10px; text-align: center;">' +
       '...loading PGN data<br />please wait...</DIV>';
@@ -2509,13 +2513,12 @@ function InitImages() {
     ImagePath += '/';
   }
 
-  ClearImg = new Image();
   ClearImg.src = ImagePath+'clear.'+imageType;
 
-  ColorName = new Array ("w", "b");
-  PiecePrefix = new Array ("k", "q", "r", "b", "n", "p");
+  var ColorName = new Array ("w", "b");
+  var PiecePrefix = new Array ("k", "q", "r", "b", "n", "p");
   for (var color = 0; color < 2; ++color) {
-    for (piece = 1; piece < 7; piece++) {
+    for (var piece = 1; piece < 7; piece++) {
       PiecePicture[color][piece] = new Image();
       PiecePicture[color][piece].src = ImagePath + ColorName[color] + PiecePrefix[piece-1] + '.' + imageType;
     }
@@ -2746,7 +2749,7 @@ function MoveForward(diff, targetVar, scanOnly) {
   if (typeof(engineWinOnMove) == "function") { engineWinOnMove(); }
 }
 
-lastSynchCurrentVar = -1;
+var lastSynchCurrentVar = -1;
 function synchMoves() {
   if (CurrentVar === lastSynchCurrentVar) { return; }
   Moves = new Array();
@@ -3174,7 +3177,7 @@ NAG[134] = 'White has decisive counterplay'; // NAG[135] = '<=>';
 NAG[136] = 'White has moderate time control pressure'; // NAG[137] = '(+)';
 NAG[138] = 'White has severe time control pressure'; // NAG[139] = '(+)';
 
-for (ii = 14; ii < 139; ii += 2) { NAG[ii+1] = NAG[ii].replace("White", "Black"); }
+for (i=14; i<139; i+=2) { NAG[i+1] = NAG[i].replace("White", "Black"); }
 
 function translateNAGs(comment) {
   if (matches = comment.match(/\$+[0-9]+/g)) {
