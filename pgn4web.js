@@ -1805,7 +1805,7 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
           if (isAutoPlayOn) { SetAutoPlay(false); }
 
           LoadGameHeaders();
-          var LiveBroadcastFoundOldGame = false;
+          LiveBroadcastFoundOldGame = false;
           for (var ii=0; ii<numberOfGames; ii++) {
             LiveBroadcastFoundOldGame =
               (gameWhite[ii]==oldGameWhite) && (gameBlack[ii]==oldGameBlack) &&

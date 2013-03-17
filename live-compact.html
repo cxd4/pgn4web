@@ -28,25 +28,30 @@
 
 <script type="text/javascript">
 
+  "use strict";
+
+  var demoFlag, alertFlag;
   if ((gup("demo") == "true") || (gup("demo") == "t") ||
       (gup("refreshDemo") == "true") || (gup("refreshDemo") == "t")) {
     demoFlag = true; alertFlag = true;
   } else { demoFlag = false; alertFlag = false; }
 
-  pgnFile_default = detectBaseLocation() ?
+  var pgnFile_default = detectBaseLocation() ?
     location.protocol + "//" + location.hostname + location.pathname.replace(/\/[^\/]*$/, "/live/live.pgn") :
     "live/live.pgn";
   // accepts pgnData as alias for pgnFile for consistency with board.html
+  var pgnFile;
   if ((pgnFile = gup("pgnData")) === "") {
     if ((pgnFile = gup("pgnFile")) === "") {
       pgnFile = pgnFile_default;
     }
   }
 
+  var refreshMinutes;
   if ((refreshMinutes = gup("refreshMinutes")) === "") {
     refreshMinutes = 1;
   } else {
-    testMinutes = refreshMinutes + "";
+    var testMinutes = refreshMinutes + "";
     if ((testMinutes.match(/[^0-9\.]/)) || (refreshMinutes === 0)) {
       if (alertFlag) {
         alert("ERROR: refreshMinutes parameter must be a positive number.\n" +
@@ -56,6 +61,7 @@
     }
   }
 
+  var iniGame;
   if ((iniGame = gup("initialGame")) === "") {iniGame = 1; }
 
   if ((gup("showComments") == "true") || (gup("showComments") == "t")) { SetCommentsIntoMoveText(true); }
@@ -81,7 +87,8 @@
   SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, false);
 
   function customFunctionOnCheckLiveBroadcastStatus() {
-    if (theObj = document.getElementById("GameLiveStatus")) {
+    var theObj = document.getElementById("GameLiveStatus");
+    if (theObj) {
       theObj.innerHTML = ((numberOfGames === 1) && (PlyNumber === 0) && (!gameFEN[currentGame])) && (!gameWhite[currentGame]) && (!gameBlack[currentGame])? "" : theObj.title;
     }
   }
@@ -97,7 +104,7 @@
 
     // cope with occasional failures to load the live PGN data
     if ((LiveBroadcastDelay !== 0) && (LiveBroadcastTicker > 0) && (!LiveBroadcastFoundOldGame)) {
-      thisCurrentGame = currentGame;
+      var thisCurrentGame = currentGame;
       SetInitialGame(iniGame);
       SetInitialVariation(0);
       setCurrentGameFromInitialGame();
@@ -111,7 +118,8 @@
   }
 
   function customFunctionOnPgnGameLoad() {
-    objectsToTitle = ["GameEvent", "GameSite", "GameDate", "GameWhite", "GameBlack"];
+    var ii, theObj, timeControl, gameTermination;
+    var objectsToTitle = ["GameEvent", "GameSite", "GameDate", "GameWhite", "GameBlack"];
     for (ii in objectsToTitle) {
       if (theObj = document.getElementById(objectsToTitle[ii])) { theObj.title = theObj.innerHTML; }
     }
@@ -180,8 +188,8 @@ function gup(name) {
   if (results !== null) { return decodeURIComponent(results[1]); }
 
   // allows for short version of the URL parameters, for instance sC matches squareColor
-  compact_name = name.charAt(0);
-    for (i=1; i<name.length; i++) {
+  var compact_name = name.charAt(0);
+    for (var i=1; i<name.length; i++) {
       if (name.charAt(i).match(/[A-Z]/)) { compact_name = compact_name + name.charAt(i).toLowerCase(); }
     }
   name = compact_name;
@@ -210,10 +218,10 @@ function developer_help() {
 
 function user_help() {
 
-  plural = refreshMinutes != 1 ? "s" : "";
-  demoString = demoFlag ? "demo mode enabled" + "\n" : "";
+  var plural = refreshMinutes != 1 ? "s" : "";
+  var demoString = demoFlag ? "demo mode enabled" + "\n" : "";
 
-  helpText = "Chess games live broadcast using pgn4web v" + pgn4web_version + "\n" +
+  var helpText = "Chess games live broadcast using pgn4web v" + pgn4web_version + "\n" +
     "\n" +
     "Games are automatically updated every " +
     refreshMinutes + " minute" + plural + " from the remote file " +
@@ -356,7 +364,9 @@ function user_help() {
 </center>
 
 <script type="text/javascript">
-  if (demoFlag && (theObj = document.getElementById("helplink"))) { theObj.innerHTML = "demo"; }
+  "use strict";
+  var theObj = document.getElementById("helplink");
+  if (demoFlag && theObj) { theObj.innerHTML = "demo"; }
 </script>
 
 </body>
