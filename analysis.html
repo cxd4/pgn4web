@@ -26,6 +26,10 @@
 
 <script type="text/javascript">
 
+  "use strict";
+
+  var thisRegExp;
+
   thisRegExp = /(&|\?)(help|h)=(true|t)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
     alert("pgn4web analysis.html parameters" + "\n" +
@@ -36,7 +40,7 @@
           " - help = true");
   }
 
-  pgnFilename = "";
+  var pgnFilename = "";
   thisRegExp = /(&|\?)(pgnFile|pf)=([^&]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
     pgnFilename = unescape(window.location.search.match(thisRegExp)[3]);
@@ -99,6 +103,7 @@
   }
 
   function myOnResize() {
+    var ww, wh, theObj;
     if (window.innerWidth && window.innerHeight) { ww = window.innerWidth; wh = window.innerHeight; }
     else if (document.documentElement && document.documentElement.clientWidth) { ww = document.documentElement.clientWidth; wh = document.documentElement.clientHeight; }
     else if (document.body && document.body.clientWidth) { ww = document.body.clientWidth; wh = document.body.clientHeight; }
