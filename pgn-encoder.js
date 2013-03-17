@@ -1,6 +1,6 @@
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009-2012 Paolo Casaschi
+ *  copyright (C) 2009-2013 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  *
@@ -13,6 +13,8 @@
 //   $ = dollar char (delimiter for length info)
 //   xxx = encoded text (using LetterCodes below)
 //   0 = zero char (version marker)
+
+"use strict";
 
 var encodingCharSet_dec;
 var encodingCharSet_enc;
@@ -31,7 +33,7 @@ if (((encodingCharSet_dec != undefined) && (encodingCharSet_enc != encodingCharS
 function EncodePGN(ov) {
 
   function BitsToBytes(i) {
-    o = 0;
+    var o = 0;
     if (i.charAt(0) == '1') { o += 32; }
     if (i.charAt(1) == '1') { o += 16; }
     if (i.charAt(2) == '1') { o +=  8; }
@@ -301,8 +303,8 @@ function EncodePGN(ov) {
 
   // Build resulting data stream
   // The bits string could get very large
-  bits = "";
-  bytes = ov.length + "$";
+  var bits = "";
+  var bytes = ov.length + "$";
   for (i = 0; i < ov.length; i ++) {
     // converts ASCII chars above 255 to a star (code 42) avoiding decoding failure
     if (ov.charCodeAt(i) > 255) { bits += LetterCodes[42]; }

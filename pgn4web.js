@@ -5,7 +5,7 @@
  *  for credits, license and more details
  */
 
-// "use strict";
+"use strict";
 
 var pgn4web_version = '2.70+';
 

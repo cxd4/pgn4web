@@ -5,6 +5,8 @@
  *  for credits, license and more details
  */
 
+"use strict";
+
 if (typeof(pgn4web_engineWindowDisableAnalysisBoard) == "undefined") { var pgn4web_engineWindowDisableAnalysisBoard = false; }
 var pgn4web_engineWindowTarget = "pgn4webEngineAnalysisBoard";
 var pgn4web_engineWindowUrlParameters = "";

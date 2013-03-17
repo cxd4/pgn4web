@@ -1,20 +1,24 @@
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009-2012 Paolo Casaschi
+ *  copyright (C) 2009-2013 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
 
+"use strict";
+
 if ((typeof(blockChessInformantNAGSymbols) != "boolean") || (!blockChessInformantNAGSymbols)) {
+
+  if (typeof(ii) == "undefined") { var ii; }
 
   document.write('<link href="fonts/pgn4web-font-ChessInformantReader.css" type="text/css" rel="stylesheet" />');
   document.write('<style type="text/css">.NAGs, .NAGl { font-family: "pgn4web ChessInformantReader"; line-height: 1em; }</style>');
 
-  Ns = '<span class="NAGs">';
-  Nl = '<span class="NAGl">';
-  Ne = '</span>';
+  var Ns = '<span class="NAGs">';
+  var Nl = '<span class="NAGl">';
+  var Ne = '</span>';
 
-  basicNAGs = /^([\?!+#\s]|<span class="NAGs">[^<]*<.span>)+(\s|$)/;
+  var basicNAGs = /^([\?!+#\s]|<span class="NAGs">[^<]*<.span>)+(\s|$)/;
 
   NAG[0] = '';
   NAG[1] = '!';  // 'good move';

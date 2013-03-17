@@ -1,6 +1,6 @@
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009-2012 Paolo Casaschi
+ *  copyright (C) 2009-2013 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  *
@@ -13,6 +13,8 @@
 //   $ = dollar char (delimiter for length info)
 //   xxx = encoded text (using LetterCodes below)
 //   0 = zero char (version marker)
+
+"use strict";
 
 var encodingCharSet_dec;
 var encodingCharSet_enc;
@@ -35,14 +37,12 @@ function DecodePGN(bytes) {
                   bytes.charAt(bytes.length - 1) + " d:" + encodingCharSet.charAt(encodingVersion) + ")";
     if (typeof myAlert == "function") { myAlert(errorString); }
     else { alert(errorString); }
-  } else {
-    bytes.length--;
   }
 
-  originalLength = parseInt(bytes.match(/^[0-9]*/), 10);
+  var originalLength = parseInt(bytes.match(/^[0-9]*/), 10);
   bytes = bytes.replace(/^[0-9]*\$/,"");
 
-  l = new Array();
+  var l = new Array();
   l[0] = -146;
   l[1] = -111;
   l[2] = -66;
@@ -555,8 +555,7 @@ function DecodePGN(bytes) {
   l[509] = 202;
   l[510] = 203;
 
-  e=b=a=0;
-  o="";
+  var a=0, b=0, e=0, i, o="";
 
   function B() { if (a===0) { b=encodingCharSet.indexOf(bytes.charAt(e++)); a=6; } return ((b>>--a)&0x01); }
 
