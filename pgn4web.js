@@ -34,13 +34,17 @@ function customFunctionOnCheckLiveBroadcastStatus() {}
 // custom header tags APIs for use in customFunctionOnPgnGameLoad
 
 function customPgnHeaderTag(customTagString, htmlElementIdString, gameNum) {
+  var tagValues, tagValue;
   customTagString = customTagString.replace(/\W+/g, "");
   if (gameNum === undefined) { gameNum = currentGame; }
   if ((pgnHeader[gameNum]) && (tagValues = pgnHeader[gameNum].match('\\[\\s*' + customTagString + '\\s*\"([^\"]+)\"\\s*\\]'))) {
     tagValue = tagValues[1];
   } else { tagValue = ""; }
-  if ((htmlElementIdString) && (theObj = document.getElementById(htmlElementIdString)) && (typeof(theObj.innerHTML) == "string")) {
-    theObj.innerHTML = tagValue;
+  if (htmlElementIdString) {
+    var theObj = document.getElementById(htmlElementIdString);
+    if ((theObj) && (typeof(theObj.innerHTML) == "string")) {
+      theObj.innerHTML = tagValue;
+    }
   }
   return tagValue;
 }
@@ -48,6 +52,7 @@ function customPgnHeaderTag(customTagString, htmlElementIdString, gameNum) {
 // custom comment tags API for use in customFunctionOnMove
 
 function customPgnCommentTag(customTagString, htmlElementIdString, plyNum, varId) {
+  var tagValues, tagValue;
   customTagString = customTagString.replace(/\W+/g, "");
   if (typeof(varId) == "undefined") { varId = 0; }
   if (typeof(plyNum) == "undefined") { plyNum = CurrentPly; }
@@ -475,8 +480,7 @@ function boardShortcut(square, title, functionPointer, defaultSetting) {
   boardDefault[col][row] = defaultSetting ? true : false;
   if (theObj = document.getElementById('img_tcol' + col + 'trow' + row)) {
     if (IsRotated) { square = String.fromCharCode(72-col,49+row); }
-    squareTitle = square + (boardTitle[col][row] ? ': ' + boardTitle[col][row] : '');
-    theObj.title = squareTitle;
+    theObj.title = square + (boardTitle[col][row] ? ': ' + boardTitle[col][row] : '');
   }
 }
 
@@ -1364,7 +1368,7 @@ function clockFromHeader(whiteToMove) {
 }
 
 function HighlightLastMove() {
-  var theObj, anchorName, text, ii;
+  var theObj, anchorName, text, ii, clockString;
 
   undoStackStore();
 
@@ -1379,14 +1383,14 @@ function HighlightLastMove() {
   var showThisMove = CurrentPly - 1;
   if (showThisMove > StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]) { showThisMove = StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]; }
 
-  if (theShowCommentTextObject = document.getElementById("GameLastComment")) {
+  if (theObj = document.getElementById("GameLastComment")) {
     if (commentsIntoMoveText) {
     variationTextDepth = CurrentVar === 0 ? 0 : 1;
     text = '<SPAN CLASS="comment">' +
       strippedMoveComment(showThisMove+1, CurrentVar, true).replace(/\sID="[^"]*"/g, '') +
       '</SPAN>';
     } else { text = ''; }
-    theShowCommentTextObject.innerHTML = text;
+    theObj.innerHTML = text;
   }
 
   // side to move
@@ -1397,13 +1401,13 @@ function HighlightLastMove() {
   { theObj.innerHTML = text; }
 
   // clock
-  lastMoverClockObject = document.getElementById(whiteToMove ?
+  var lastMoverClockObject = document.getElementById(whiteToMove ?
     "GameBlackClock" : "GameWhiteClock");
-  initialLastMoverClock = whiteToMove ?
+  var initialLastMoverClock = whiteToMove ?
     gameInitialBlackClock[currentGame] : gameInitialWhiteClock[currentGame];
-  beforeLastMoverClockObject = document.getElementById(whiteToMove ?
+  var beforeLastMoverClockObject = document.getElementById(whiteToMove ?
     "GameWhiteClock" : "GameBlackClock");
-  initialBeforeLastMoverClock = whiteToMove ?
+  var initialBeforeLastMoverClock = whiteToMove ?
     gameInitialWhiteClock[currentGame] : gameInitialBlackClock[currentGame];
 
   if (lastMoverClockObject) {
@@ -1510,6 +1514,7 @@ function HighlightLastMove() {
     oldAnchorName = anchorName;
 
     if (highlightOption) {
+      var highlightColFrom, highlightRowFrom, highlightColTo, highlightRowTo;
       if ((showThisMove < StartPly) || HistNull[showThisMove]) {
         highlightColFrom = highlightRowFrom = -1;
         highlightColTo   = highlightRowTo   = -1;
@@ -1554,9 +1559,10 @@ function highlightMove(colFrom, rowFrom, colTo, rowTo) {
 function highlightSquare(col, row, on) {
   if ((col === undefined) || (row === undefined)) { return false; }
   if (!SquareOnBoard(col, row)) { return false; }
-  if (IsRotated) { trow = row; tcol = 7 - col; }
-  else { trow = 7 - row; tcol = col; }
-  if (!(theObj = document.getElementById('tcol' + tcol + 'trow' + trow))) { return false; }
+  var trow = IsRotated ? row : 7 - row;
+  var tcol = IsRotated ? 7 - col : col;
+  var theObj = document.getElementById('tcol' + tcol + 'trow' + trow);
+  if (!theObj) { return false; }
   if (on) { theObj.className = (trow+tcol)%2 === 0 ? "highlightWhiteSquare" : "highlightBlackSquare"; }
   else { theObj.className = (trow+tcol)%2 === 0 ? "whiteSquare" : "blackSquare"; }
   return true;
@@ -1778,16 +1784,16 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
     case LOAD_PGN_OK:
       if (LiveBroadcastDelay > 0) {
         firstStart = true;
-        oldParseLastMoveError = ParseLastMoveError;
+        var oldParseLastMoveError = ParseLastMoveError;
         if (!LiveBroadcastStarted) {
           LiveBroadcastStarted = true;
         } else {
-          oldGameWhite = gameWhite[currentGame];
-          oldGameBlack = gameBlack[currentGame];
-          oldGameEvent = gameEvent[currentGame];
-          oldGameRound = gameRound[currentGame];
-          oldGameSite  = gameSite[currentGame];
-          oldGameDate  = gameDate[currentGame];
+          var oldGameWhite = gameWhite[currentGame];
+          var oldGameBlack = gameBlack[currentGame];
+          var oldGameEvent = gameEvent[currentGame];
+          var oldGameRound = gameRound[currentGame];
+          var oldGameSite  = gameSite[currentGame];
+          var oldGameDate  = gameDate[currentGame];
 
           initialGame = currentGame + 1;
 
@@ -1795,11 +1801,11 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
           LiveBroadcastOldCurrentPly = CurrentPly;
           LiveBroadcastOldCurrentPlyLast = (CurrentVar === 0 && CurrentPly === StartPlyVar[0] + PlyNumberVar[0]);
 
-          oldAutoplay = isAutoPlayOn;
+          var oldAutoplay = isAutoPlayOn;
           if (isAutoPlayOn) { SetAutoPlay(false); }
 
           LoadGameHeaders();
-          LiveBroadcastFoundOldGame = false;
+          var LiveBroadcastFoundOldGame = false;
           for (var ii=0; ii<numberOfGames; ii++) {
             LiveBroadcastFoundOldGame =
               (gameWhite[ii]==oldGameWhite) && (gameBlack[ii]==oldGameBlack) &&
@@ -1810,8 +1816,8 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
           if (LiveBroadcastFoundOldGame) { initialGame = ii + 1; }
 
           if (LiveBroadcastFoundOldGame) {
-            oldInitialVariation = initialVariation;
-            oldInitialHalfmove = initialHalfmove;
+            var oldInitialVariation = initialVariation;
+            var oldInitialHalfmove = initialHalfmove;
             initialVariation = CurrentVar;
             if (LiveBroadcastSteppingMode) {
               initialHalfmove = (LiveBroadcastOldCurrentPlyLast || oldParseLastMoveError) ?
@@ -1960,7 +1966,7 @@ function restartLiveBroadcast() {
 }
 
 function checkLiveBroadcastStatus() {
-  var liveBroadcastStatusTitle;
+  var liveBroadcastStatusTitle, theObj, ii;
   var tick = "&nbsp;" + (LiveBroadcastTicker % 2 ? "<>" : "><") + "&nbsp;";
 
   if (LiveBroadcastDelay === 0) { return; }
@@ -2013,7 +2019,7 @@ function refreshPgnSource() {
   if (LiveBroadcastDelay === 0) { return; }
   if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); LiveBroadcastInterval = null; }
   if (LiveBroadcastDemo) {
-    addedPly = 0;
+    var newPly, addedPly = 0;
     for (var ii=0;ii<numberOfGames;ii++) {
       var rnd = Math.random();
       if      (rnd <= 0.05) { newPly = 3; } //  5%
@@ -2676,13 +2682,13 @@ function MoveBackward(diff, scanOnly) {
 }
 
 function MoveForward(diff, targetVar, scanOnly) {
-
+  var nextVar, nextVarStartPly, move;
   var oldVar = -1;
 
   if (typeof(targetVar) == "undefined") { targetVar = CurrentVar; }
 
   // CurrentPly counts from 1, starting position 0
-  goToPly = CurrentPly + parseInt(diff,10);
+  var goToPly = CurrentPly + parseInt(diff,10);
 
   if (goToPly > StartPlyVar[targetVar] + PlyNumberVar[targetVar]) {
     goToPly = StartPlyVar[targetVar] + PlyNumberVar[targetVar];
@@ -2756,6 +2762,7 @@ function MoveForward(diff, targetVar, scanOnly) {
 
 var lastSynchCurrentVar = -1;
 function synchMoves() {
+  var start, end;
   if (CurrentVar === lastSynchCurrentVar) { return; }
   Moves = new Array();
   MoveComments = new Array();
@@ -2768,18 +2775,10 @@ function synchMoves() {
     }
     for (var jj = start; jj < end; jj++) {
       Moves[jj] = MovesVar[PredecessorsVars[CurrentVar][ii]][jj];
-      if (theComment = MoveCommentsVar[PredecessorsVars[CurrentVar][ii]][jj]) {
-        MoveComments[jj] = theComment;
-      } else {
-        MoveComments[jj] = "";
-      }
+      MoveComments[jj] = MoveCommentsVar[PredecessorsVars[CurrentVar][ii]][jj] || "";
     }
   }
-  if (theComment = MoveCommentsVar[PredecessorsVars[CurrentVar][ii-1]][jj]) {
-    MoveComments[jj] = theComment;
-  } else {
-    MoveComments[jj] = "";
-  }
+  MoveComments[jj] = MoveCommentsVar[PredecessorsVars[CurrentVar][ii-1]][jj] || "";
   PlyNumber = StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar] - StartPly;
   lastSynchCurrentVar = CurrentVar;
 }
@@ -2904,7 +2903,7 @@ function closeVar() {
 function childrenVars(thisPly, thisVar) {
   if (typeof(thisVar) == "undefined") { thisVar = CurrentVar; }
   if (typeof(thisPly) == "undefined") { thisPly = CurrentPly; }
-  children = new Array();
+  var children = new Array();
   for (var ii = thisVar; ii < numberOfVars; ii++) {
     if ((ii === thisVar && StartPlyVar[ii] + PlyNumberVar[ii] > thisPly) || (realParentVar(ii) === thisVar && StartPlyVar[ii] === thisPly && PlyNumberVar[ii] > 0)) {
       children.push(ii);
@@ -3371,8 +3370,9 @@ function SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, ch
 var clickedSquareInterval = null;
 function clickedSquare(ii, jj) {
   if (clickedSquareInterval) { return; } // dont trigger twice
-  squareId = 'tcol' + jj + 'trow' + ii;
-  if (theObj = document.getElementById(squareId)) {
+  var squareId = 'tcol' + jj + 'trow' + ii;
+  var theObj = document.getElementById(squareId);
+  if (theObj) {
     var oldClass = theObj.className;
     theObj.className = (ii+jj)%2 === 0 ? "blackSquare" : "whiteSquare";
     clickedSquareInterval = setTimeout("reset_after_click(" + ii + "," + jj + ",'" + oldClass + "','" + theObj.className + "')", 66);
@@ -3380,7 +3380,8 @@ function clickedSquare(ii, jj) {
 }
 
 function reset_after_click (ii, jj, oldClass, newClass) {
-  if (theObj = document.getElementById('tcol' + jj + 'trow' + ii)) {
+  var theObj = document.getElementById('tcol' + jj + 'trow' + ii);
+  if (theObj) {
     // square class changed again by pgn4web already: dont touch it anymore e.g. autoplay
     if (theObj.className == newClass) { theObj.className = oldClass; }
     clickedSquareInterval = null;
@@ -3390,7 +3391,6 @@ function reset_after_click (ii, jj, oldClass, newClass) {
 
 var lastSearchPgnExpression = "";
 function gameNumberSearchPgn(searchExpression, backward, includeCurrent) {
-  var searchThis;
   lastSearchPgnExpression = searchExpression;
   if (searchExpression === "") { return false; }
   // replace newline with spaces so that we can use regexp "." on whole game
@@ -3403,7 +3403,7 @@ function gameNumberSearchPgn(searchExpression, backward, includeCurrent) {
     return currentGameSearch;
   }
   var delta = backward ? -1 : +1;
-  for (checkGame = (currentGameSearch + delta + numberOfGames) % numberOfGames;
+  for (var checkGame = (currentGameSearch + delta + numberOfGames) % numberOfGames;
        checkGame != currentGameSearch;
        checkGame = (checkGame + delta + numberOfGames) % numberOfGames) {
     searchThis = fullPgnGame(checkGame);
@@ -3446,7 +3446,7 @@ function fixCommentForDisplay(comment) {
 var tableSize = 0;
 var textSelectOptions = '';
 function PrintHTML() {
-  var ii, jj, text, theObj, squareId, imageId, squareCoord, squareTitle, textSO;
+  var ii, jj, text, theObj, squareId, imageId, squareCoord, squareTitle, numText, textSO;
 
   // chessboard
 
@@ -3742,7 +3742,7 @@ function strippedMoveComment(plyNum, varId, addHtmlTags) {
 function basicNAGsMoveComment(plyNum, varId) {
   if (typeof(varId) == "undefined") { varId = CurrentVar; }
   if (!MoveCommentsVar[varId][plyNum]) { return ""; }
-  thisBasicNAGs = MoveCommentsVar[varId][plyNum].replace(/\[%[^\]]*\]\s*/g,'').match(basicNAGs, '');
+  var thisBasicNAGs = MoveCommentsVar[varId][plyNum].replace(/\[%[^\]]*\]\s*/g,'').match(basicNAGs, '');
   return thisBasicNAGs ? thisBasicNAGs[0].replace(/\s+(?!class=)/gi,'') : '';
 }
 
@@ -3760,7 +3760,7 @@ function variationTextFromTag(variationTag, addHtmlTags) {
   return text;
 }
 
-var variationTextDepth;
+var variationTextDepth, printedComment, printedVariation;
 function variationTextFromId(varId) {
   var punctChars = ",.;:!?", thisComment;
 
@@ -3805,7 +3805,7 @@ function variationTextFromId(varId) {
 function printMoveText(thisPly, thisVar, isVar, hasLeadingNum, hasId) {
   if (typeof(thisVar) == "undefined") { thisVar = CurrentVar; }
   if (typeof(thisPly) == "undefined") { thisPly = CurrentPly; }
-  text = '';
+  var text = '';
 
   if (thisVar >= numberOfVars ||
       thisPly < StartPlyVar[thisVar] ||
@@ -3949,11 +3949,10 @@ function SetLiveBroadcast(delay, alertFlag, demoFlag, stepFlag) {
 }
 
 function SetImage(col, row, image) {
-  if (IsRotated) { trow = row; tcol = 7 - col; }
-  else { trow = 7 - row; tcol = col; }
-  if (theObj = document.getElementById('img_' + 'tcol' + tcol + 'trow' + trow)) {
-    if (theObj.src != image) { theObj.src = image; }
-  }
+  var trow = IsRotated ? row : 7 - row;
+  var tcol = IsRotated ? 7 - col : col;
+  var theObj = document.getElementById('img_' + 'tcol' + tcol + 'trow' + trow);
+  if ((theObj) && (theObj.src != image)) { theObj.src = image; }
 }
 
 function SetImagePath(path) {
