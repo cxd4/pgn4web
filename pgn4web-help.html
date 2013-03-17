@@ -77,11 +77,13 @@ a.headingSelected:hover {
 
 <script type="text/javascript">
 
-sections = ["user_interface", "shortcut_keys", "shortcut_squares", "search_tool", "informant_symbols", "credits_and_license"];
+"use strict";
+
+var sections = ["user_interface", "shortcut_keys", "shortcut_squares", "search_tool", "informant_symbols", "credits_and_license"];
 
 function showSection(section) {
-  section2show = sections[0];
-  for (s in sections) {
+  var section2show = sections[0], theObj;
+  for (var s in sections) {
     if (theObj = document.getElementById(sections[s] + "_section")) { theObj.style.display = ""; }
     if (theObj = document.getElementById(sections[s] + "_heading")) { theObj.className = "heading"; }
     if (sections[s] === section) { section2show = section; }
@@ -95,35 +97,23 @@ function print_help_row (one, two) {
   document.write("<tr><td style='text-align:left; vertical-align:top; padding-left:40px; white-space:nowrap;'>" + one + "</td><td style='text-align:left; vertical-align:top; padding-left:20px'>" + two + "</td></tr>");
 }
 
+var displayVersion = '';
 if (opener && (typeof(opener.pgn4web_version) != "undefined")) {
   displayVersion = 'v' + opener.pgn4web_version;
-} else {
-  displayVersion = '';
 }
 
+var isRotated = false;
 if (opener && (typeof(opener.IsRotated) != "undefined")) {
   isRotated = opener.IsRotated;
-} else {
-  isRotated = false;
 }
 
-if (isRotated) {
-  colorAtTheBottom = "Black";
-  shortcutSquareKeyEnable = "A2";
-  shortcutSquareSearchPopup = "G4";
-  shortcutSquareSearchRepeat = "F4";
-  shortcutSquareSearchRepeatBackward = "H4";
-  rowNumbers = "87654321";
-  colLetters = "HGFEDCBA";
-} else {
-  colorAtTheBottom = "White";
-  shortcutSquareKeyEnable = "H7";
-  shortcutSquareSearchPopup = "B5";
-  shortcutSquareSearchRepeat = "C5";
-  shortcutSquareSearchRepeatBackward = "A5";
-  rowNumbers = "12345678";
-  colLetters = "ABCDEFGH";
-}
+var colorAtTheBottom = isRotated ? "Black" : "White";
+var shortcutSquareKeyEnable = isRotated ? "A2" : "H7";
+var shortcutSquareSearchPopup = isRotated ? "G4" : "B5";
+var shortcutSquareSearchRepeat = isRotated ? "F4" : "C5";
+var shortcutSquareSearchRepeatBackward = isRotated ? "H4" : "A5";
+var rowNumbers = isRotated ? "87654321" : "12345678";
+var colLetters = isRotated ? "HGFEDCBA" : "ABCDEFGH";
 
 </script>
 
@@ -138,7 +128,9 @@ if (isRotated) {
 
 <script type="text/javascript">
 
-for (s in sections) {
+"use strict";
+
+for (var s in sections) {
   document.write("<a id='" + sections[s] + "_heading' class='heading' href='javascript:void(0);' onclick='showSection(\"" + sections[s] + "\"); this.blur();'>" + sections[s].replace(/_/g, "&nbsp;") + "</a> ");
 }
 
@@ -162,6 +154,8 @@ Errors alert messages are logged, such as failures to load PGN games, incorrect 
 The user can interact with the pgn4web chessboard using the keyboard (<a href="http://code.google.com/p/pgn4web/wiki/ShortcutKeysSquares" target="_blank">see the pgn4web wiki for some examples</a>):
 
 <script type="text/javascript">
+
+"use strict";
 
 document.write("<table style='padding:0px;' border='0'>");
 print_help_row("&nbsp;", "");
@@ -245,12 +239,16 @@ The user can interact with the pgn4web chessboard clicking chessboard squares:
 <p></p>
 
 <script type="text/javascript">
+
+"use strict";
+
 if (opener && (typeof(opener.boardTitle) != "undefined")) {
   document.write("<table style='padding:0px;' border='0'>");
   print_help_row("&nbsp;", "");
-  for (r=7; r>=0; r--) {
+  var rowDisplayed;
+  for (var r=7; r>=0; r--) {
     rowDisplayed = false;
-    for (c=0; c<=7; c++) {
+    for (var c=0; c<=7; c++) {
       if (opener.boardTitle[c][r] !== "") {
         print_help_row(colLetters.charAt(c) + rowNumbers.charAt(7-r), opener.boardTitle[c][r].replace(/^(pgn4web .* debug info), \d+ alerts?/, "$1"));
         rowDisplayed = true;
@@ -272,6 +270,7 @@ if (opener && (typeof(opener.boardTitle) != "undefined")) {
 <div id="search_tool_section" class="section">
 
 <script type="text/javascript">
+"use strict";
 document.write('Access the search tool either directly with the search form (if available on the web page) or via the popup search box invoked with the ' + shortcutSquareSearchPopup + ' shortcut square (assuming ' + colorAtTheBottom + ' on bottom) and/or the \'s\' shortcut key. The ' + shortcutSquareSearchRepeat + ' shortcut square (assuming ' + colorAtTheBottom + ' on bottom) and/or the \'enter\' shortcut key repeat the last search. The ' + shortcutSquareSearchRepeatBackward + ' shortcut square (assuming ' + colorAtTheBottom + ' on bottom) and/or the \'shift-enter\' shortcut key repeat the last search backward.');
 </script>
 
@@ -279,6 +278,7 @@ document.write('Access the search tool either directly with the search form (if 
 For full details about the search tool (implemented as regular expression match of the text of the PGN game), please refer to <a href="http://code.google.com/p/pgn4web/wiki/SearchTool" target="_blank">the pgn4web wiki</a>; please find below a sample list of useful search patterns:
 <p></p>
 <script type="text/javascript">
+"use strict";
 document.write("<table style='padding:0px;' border='0'>");
 print_help_row("something", "search for text <i>something</i> anywhere in the PGN game");
 print_help_row("White\\s*\"Somebody", "search for player <i>Somebody</i> as White");
@@ -302,6 +302,8 @@ pgn4web supports chess annotations symbols as defined by <a href="http://www.che
 <script type="text/javascript">var NAG = new Array();</script>
 <script src="chess-informant-NAG-symbols.js" type="text/javascript"></script>
 <script type="text/javascript">
+
+"use strict";
 
 function print_NAG_row(nag, text) {
   document.write("<tr valign='bottom'><td class='informantCell' title='$" + nag + "'>" + NAG[nag] + "</td><td>" + text + "</td></tr>");
@@ -394,9 +396,8 @@ Remaining pgn4web code is copyright (C) 2009-2013 <a href="mailto:pgn4web@casasc
 
 
 <script type="text/javascript">
-
+"use strict";
 showSection(location.search.substr(1));
-
 </script>
 
 </body>
