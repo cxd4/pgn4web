@@ -3,7 +3,7 @@
 
 <!--
   pgn4web javascript chessboard
-  copyright (C) 2009-2012 Paolo Casaschi
+  copyright (C) 2009-2013 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 -->
@@ -24,18 +24,21 @@
 
 <script type="text/javascript">
 
-   pgn4web_engineWindowUrlParameters = "lch=eff4ec&dch=c6cec3&hch=daf4d7&ctch=aaaaaa&pf=a";
+   "use strict";
 
-   fnOptions = "dcba";
-   fnMin = -1;
-   fnMax = fnOptions.length - 1;
+   var thisRegExp;
 
+   var pgn4web_engineWindowUrlParameters = "lch=eff4ec&dch=c6cec3&hch=daf4d7&ctch=aaaaaa&pf=a";
+
+   var fnOptions = "dcba";
+   var fnMin = -1;
+   var fnMax = fnOptions.length - 1;
+
+   var fnIndex = -1;
    thisRegExp = /(&|\?)(fn)=([^&]*)(&|$)/i;
    if (window.location.search.match(thisRegExp) !== null) {
-      fn = unescape(window.location.search.match(thisRegExp)[3]);
+      var fn = unescape(window.location.search.match(thisRegExp)[3]);
       fnIndex = fn ? fnOptions.indexOf(fn) : -1;
-   } else {
-      fnIndex = -1;
    }
 
    SetPgnUrl("paolo-chess-games" + (fnIndex != -1 ? "-" + fnOptions.charAt(fnIndex) : "") + ".pgn");
