@@ -18,7 +18,10 @@
 
 <script type="text/javascript">
 
-  pgnFile_default = detectBaseLocation() ?
+  "use strict";
+
+  var pgnFile;
+  var pgnFile_default = detectBaseLocation() ?
     location.protocol + "//" + location.hostname + location.pathname.replace(/\/[^\/]*$/, "/live/live.pgn") :
     "live/live.pgn";
   // accepts pgnData as alias for pgnFile for consistency with board.html
@@ -28,15 +31,18 @@
     }
   }
 
+  var demoFlag = false;
+  var alertFlag = false;
   if ((gup("demo") == "true") || (gup("demo") == "t") ||
       (gup("refreshDemo") == "true") || (gup("refreshDemo") == "t")) {
     demoFlag = true; alertFlag = true;
-  } else { demoFlag = false; alertFlag = false; }
+  }
 
+  var refreshMinutes;
   if ((refreshMinutes = gup("refreshMinutes")) === "") {
     refreshMinutes = 1;
   } else {
-    testMinutes = refreshMinutes + "";
+    var testMinutes = refreshMinutes + "";
     if ((testMinutes.match(/[^0-9\.]/)) || (refreshMinutes === 0)) {
       if (alertFlag) {
          alert("ERROR: refreshMinutes parameter must be a positive number.\n" +
@@ -51,13 +57,14 @@
   SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, false);
 
   function customFunctionOnPgnTextLoad() {
-    if (resultObject = document.getElementById("results")) {
-      resultString = "";
+    var resultObject = document.getElementById("results");
+    if (resultObject) {
+      var resultString = "";
       resultString += fillWithBlanks("white", 15) + "   ";
       resultString += fillWithBlanks("black", 15) + "   ";
       resultString += fillWithBlanks("result", 7) + "   ";
       resultString += "\n \n";
-      for (gg = 0; gg < numberOfGames; gg++) {
+      for (var gg = 0; gg < numberOfGames; gg++) {
         resultString += fillWithBlanks(gameWhite[gg], 15) + "   ";
         resultString += fillWithBlanks(gameBlack[gg], 15) + "   ";
         resultString += fillWithBlanks(gameResult[gg], 7) + "   ";
@@ -67,7 +74,7 @@
     }
   }
 
-  blanks = "                                                                             ";
+  var blanks = "                                                                             ";
   function fillWithBlanks(str, num) {
     if (str.length >= num) { return str.substr(0, num); }
     else { return str + blanks.substr(0, num - str.length); }
@@ -84,10 +91,10 @@ function gup(name) {
   if (results !== null) { return decodeURIComponent(results[1]); }
 
   // allows for short version of the URL parameters, for instance sC matches squareColor
-  compact_name = name.charAt(0);
-    for (i=1; i<name.length; i++) {
-      if (name.charAt(i).match(/[A-Z]/)) { compact_name = compact_name + name.charAt(i).toLowerCase(); }
-    }
+  var compact_name = name.charAt(0);
+  for (var i=1; i<name.length; i++) {
+    if (name.charAt(i).match(/[A-Z]/)) { compact_name = compact_name + name.charAt(i).toLowerCase(); }
+  }
   name = compact_name;
 
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
