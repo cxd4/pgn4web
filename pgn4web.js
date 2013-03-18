@@ -14,7 +14,7 @@ var pgn4web_project_author = "Paolo Casaschi";
 var pgn4web_project_email; // preassigned in pgn4web-server-config.js
 if (typeof(pgn4web_project_email) == "undefined") { pgn4web_project_email = "pgn4web@casaschi.net"; }
 
-var helpWin=null;
+var helpWin;
 function displayHelp(section) {
   if (helpWin && !helpWin.closed) { helpWin.close(); }
   helpWin = window.open(detectHelpLocation() + (section ? "?" + section : ""), "pgn4web_help",
@@ -34,17 +34,13 @@ function customFunctionOnCheckLiveBroadcastStatus() {}
 // custom header tags APIs for use in customFunctionOnPgnGameLoad
 
 function customPgnHeaderTag(customTagString, htmlElementIdString, gameNum) {
-  var tagValues, tagValue;
+  var tagValues, tagValue = "";
   customTagString = customTagString.replace(/\W+/g, "");
   if (gameNum === undefined) { gameNum = currentGame; }
-  if ((pgnHeader[gameNum]) && (tagValues = pgnHeader[gameNum].match('\\[\\s*' + customTagString + '\\s*\"([^\"]+)\"\\s*\\]'))) {
-    tagValue = tagValues[1];
-  } else { tagValue = ""; }
+  if ((pgnHeader[gameNum]) && (tagValues = pgnHeader[gameNum].match('\\[\\s*' + customTagString + '\\s*\"([^\"]+)\"\\s*\\]'))) { tagValue = tagValues[1]; }
   if (htmlElementIdString) {
     var theObj = document.getElementById(htmlElementIdString);
-    if ((theObj) && (typeof(theObj.innerHTML) == "string")) {
-      theObj.innerHTML = tagValue;
-    }
+    if ((theObj) && (typeof(theObj.innerHTML) == "string")) { theObj.innerHTML = tagValue; }
   }
   return tagValue;
 }
@@ -52,16 +48,12 @@ function customPgnHeaderTag(customTagString, htmlElementIdString, gameNum) {
 // custom comment tags API for use in customFunctionOnMove
 
 function customPgnCommentTag(customTagString, htmlElementIdString, plyNum, varId) {
-  var tagValues, tagValue, theObj;
+  var tagValues, tagValue = "", theObj;
   customTagString = customTagString.replace(/\W+/g, "");
   if (typeof(varId) == "undefined") { varId = 0; }
   if (typeof(plyNum) == "undefined") { plyNum = CurrentPly; }
-  if ((MoveCommentsVar[varId][plyNum]) && (tagValues = MoveCommentsVar[varId][plyNum].match('\\[%' + customTagString + '\\s+((?:,?(?:"[^"]*"|[^,\\]]*))*)\\s*\\]'))) {
-    tagValue = tagValues[1].replace(/\s+$/, "");
-  } else { tagValue = ""; }
-  if ((htmlElementIdString) && (theObj = document.getElementById(htmlElementIdString)) && (typeof(theObj.innerHTML) == "string")) {
-    theObj.innerHTML = tagValue;
-  }
+  if ((MoveCommentsVar[varId][plyNum]) && (tagValues = MoveCommentsVar[varId][plyNum].match('\\[%' + customTagString + '\\s+((?:,?(?:"[^"]*"|[^,\\]]*))*)\\s*\\]'))) { tagValue = tagValues[1].replace(/\s+$/, ""); }
+  if ((htmlElementIdString) && (theObj = document.getElementById(htmlElementIdString)) && (typeof(theObj.innerHTML) == "string")) { theObj.innerHTML = tagValue; }
   return tagValue;
 }
 
@@ -120,9 +112,7 @@ function myAlert(msg, fatalError, doNotPrompt) {
   alertLast = (alertLast + 1) % alertLog.length;
   alertLog[alertLast] = msg + "\n" + (new Date()).toLocaleString();
   if (boardIsDefault(debugShortcutSquare)) { boardShortcut(debugShortcutSquare, "pgn4web v" + pgn4web_version + " debug info, " + alertNum + " alert" + (alertNum > 1 ? "s" : ""), null, true); }
-  if ((!doNotPrompt) && ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) && (boardIsDefault(debugShortcutSquare))) {
-    startAlertPrompt();
-  }
+  if ((!doNotPrompt) && ((LiveBroadcastDelay === 0) || (LiveBroadcastAlert === true)) && (boardIsDefault(debugShortcutSquare))) { startAlertPrompt(); }
   customFunctionOnAlert(msg);
 }
 
@@ -148,13 +138,13 @@ function alertPromptTick(restart) {
   var debugColRow = colRowFromSquare(debugShortcutSquare);
   if (!debugColRow) { return; }
 
-  var alertPromptDelay;
+  var alertPromptDelay = 1500; // for alerts before the baord is printed
   var theObj = document.getElementById('tcol' + debugColRow.col + 'trow' + debugColRow.row);
   if (theObj) {
     if (alertPromptOn) {
       if ((highlightOption) &&
-        ((lastColFromHighlighted === 0 && lastRowFromHighlighted === 7) ||
-        (lastColToHighlighted === 0 && lastRowToHighlighted === 7))) {
+        ((colFromHighlighted === 0 && rowFromHighlighted === 7) ||
+        (colToHighlighted === 0 && rowToHighlighted === 7))) {
           theObj.className = 'highlightWhiteSquare';
         } else { theObj.className = 'whiteSquare'; }
     } else { theObj.className = 'blackSquare'; }
@@ -162,7 +152,7 @@ function alertPromptTick(restart) {
     alertPromptOn = !alertPromptOn;
     if (alertPromptOn) { alertPromptDelay = 500; }
     else { alertPromptDelay = 3000; }
-  } else { alertPromptDelay = 1500; } // alerts before the baord is drawn
+  }
   if (restart) { alertPromptInterval = setTimeout("alertPromptTick(true);", alertPromptDelay); }
 }
 
@@ -461,7 +451,7 @@ function colRowFromSquare(square) {
 function clearShortcutSquares(cols, rows) {
   if ((typeof(cols) != "string") || (typeof(rows) != "string")) { return; }
   for (var c=0; c<cols.length; c++) { for (var r=0; r<rows.length; r++) {
-      boardShortcut(cols.charAt(c).toUpperCase()+rows.charAt(r), "", function(t,e){});
+    boardShortcut(cols.charAt(c).toUpperCase()+rows.charAt(r), "", function(t,e){});
   } }
 }
 
@@ -693,7 +683,7 @@ function detectBaseLocation() {
 }
 
 
-var debugWin = null;
+var debugWin;
 function displayDebugInfo() {
   var theObj;
   var base = detectBaseLocation();
@@ -761,7 +751,7 @@ function liveStatusDebug() {
 
 function customDebugInfo() { return ""; }
 
-var pgnWin = null;
+var pgnWin;
 function displayPgnData(allGames) {
   if (typeof(allGames) == "undefined") { allGames = true; }
   if (pgnWin && !pgnWin.closed) { pgnWin.close(); }
@@ -811,7 +801,7 @@ function CurrentFEN() {
   if (RookForOOOCastling(0) !== null) { CastlingFEN += FenPieceName.charAt(1).toUpperCase(); }
   if (RookForOOCastling(1) !== null) { CastlingFEN += FenPieceName.charAt(0).toLowerCase(); }
   if (RookForOOOCastling(1) !== null) { CastlingFEN += FenPieceName.charAt(1).toLowerCase(); }
-  currentFEN += " " + (CastlingFEN ? CastlingFEN : "-");
+  currentFEN += " " + (CastlingFEN || "-");
 
   if (HistEnPassant[CurrentPly]) {
     currentFEN += " " + String.fromCharCode(HistEnPassantCol[CurrentPly] + 97);
@@ -830,31 +820,29 @@ function CurrentFEN() {
   return currentFEN;
 }
 
-var fenWin = null;
+var fenWin;
 function displayFenData() {
   if (fenWin && !fenWin.closed) { fenWin.close(); }
 
   var currentFEN = CurrentFEN();
 
-  var currentMovesString = "";
-  var lastLineStart = 0;
+  var movesStr = "";
+  var lineStart = 0;
   for (var thisPly = CurrentPly; thisPly <= StartPly + PlyNumber; thisPly++) {
-    var addToMovesString = "";
+    var addStr = "";
     if (thisPly == StartPly + PlyNumber) {
-      addToMovesString = (CurrentVar === 0 && gameResult[currentGame]) ? gameResult[currentGame] : "*";
+      addStr = (CurrentVar ? "*" : gameResult[currentGame] || "*");
     } else {
-      if (thisPly%2 === 0) { addToMovesString = (Math.floor(thisPly/2)+1) + ". "; }
-      else if (thisPly == CurrentPly) {
-        addToMovesString = (Math.floor(thisPly/2)+1) + "... ";
-      }
-      addToMovesString += Moves[thisPly];
+      if (thisPly%2 === 0) { addStr = (Math.floor(thisPly/2)+1) + ". "; }
+      else if (thisPly == CurrentPly) { addStr = (Math.floor(thisPly/2)+1) + "... "; }
+      addStr += Moves[thisPly];
     }
-    if (currentMovesString.length + addToMovesString.length + 1 > lastLineStart + 80) {
-      lastLineStart = currentMovesString.length;
-      currentMovesString += "\n" + addToMovesString;
+    if (movesStr.length + addStr.length + 1 > lineStart + 80) {
+      lineStart = movesStr.length;
+      movesStr += "\n" + addStr;
     } else {
-      if (currentMovesString.length > 0) { currentMovesString += " "; }
-      currentMovesString += addToMovesString;
+      if (movesStr.length > 0) { movesStr += " "; }
+      movesStr += addStr;
     }
   }
 
@@ -863,18 +851,18 @@ function displayFenData() {
     var text = "<html>" +
       "<head><title>pgn4web FEN string</title><link rel='shortcut icon' href='pawn.ico' /></head>" +
       "<body>\n<b><pre>\n\n" + currentFEN + "\n\n</pre></b>\n<hr>\n<pre>\n\n" +
-      "[Event \"" + ((CurrentVar === 0 && gameEvent[currentGame]) ? gameEvent[currentGame] : "?") + "\"]\n" +
-      "[Site \"" + ((CurrentVar === 0 && gameSite[currentGame]) ? gameSite[currentGame] : "?") + "\"]\n" +
-      "[Date \"" + ((CurrentVar === 0 && gameDate[currentGame]) ? gameDate[currentGame] : "????.??.??") + "\"]\n" +
-      "[Round \"" + ((CurrentVar === 0 && gameRound[currentGame]) ? gameRound[currentGame] : "?") + "\"]\n" +
-      "[White \"" + ((CurrentVar === 0 && gameWhite[currentGame]) ? gameWhite[currentGame] : "?") + "\"]\n" +
-      "[Black \"" + ((CurrentVar === 0 && gameBlack[currentGame]) ? gameBlack[currentGame] : "?") + "\"]\n" +
-      "[Result \"" + ((CurrentVar === 0 && gameResult[currentGame]) ? gameResult[currentGame] : "*") + "\"]\n";
+      "[Event \"" + (CurrentVar ? "?" : gameEvent[currentGame] || "?") + "\"]\n" +
+      "[Site \"" + (CurrentVar ? "?" : gameSite[currentGame] || "?") + "\"]\n" +
+      "[Date \"" + (CurrentVar ? "????.??.??" : gameDate[currentGame] || "????.??.??") + "\"]\n" +
+      "[Round \"" + (CurrentVar ? "?" : gameRound[currentGame] || "?") + "\"]\n" +
+      "[White \"" + (CurrentVar ? "?" : gameWhite[currentGame] || "?") + "\"]\n" +
+      "[Black \"" + (CurrentVar ? "?" : gameBlack[currentGame] || "?") + "\"]\n" +
+      "[Result \"" + (CurrentVar ? "*" : gameResult[currentGame] || "*") + "\"]\n";
     if (currentFEN != FenStringStart) {
       text += "[SetUp \"1\"]\n" + "[FEN \"" + currentFEN + "\"]\n";
     }
     if (gameVariant[currentGame] !== "") { text += "[Variant \"" + gameVariant[currentGame] + "\"]\n"; }
-    text += "\n" + currentMovesString + "\n</pre>\n</body></html>";
+    text += "\n" + movesStr + "\n</pre>\n</body></html>";
     fenWin.document.open("text/html", "replace");
     fenWin.document.write(text);
     fenWin.document.close();
@@ -886,7 +874,7 @@ function displayFenData() {
 var pgnHeader = new Array();
 var pgnGame = new Array();
 var numberOfGames = -1;
-var currentGame   = -1;
+var currentGame = -1;
 
 var firstStart = true;
 
@@ -995,18 +983,13 @@ var HistNull = new Array();
 HistNull[0] = 0;
 
 var FenPieceName = "KQRBNP";
-var PieceCode = new Array(); // IE needs array for [index]
-for (i=0; i<6; i++) { PieceCode[i] = FenPieceName.charAt(i); }
+var PieceCode = FenPieceName.split(""); // IE needs array for [index]
 var FenStringStart = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 var columnsLetters = "ABCDEFGH";
 var InitialHalfMoveClock = 0;
 
-var startingSquareSize = -1;
-var startingImageSize = -1;
-
-var PiecePicture = new Array(2);
-for (i=0; i<2; ++i) { PiecePicture[i] = new Array(6); }
-var ClearImg = new Image();
+var PieceImg = new Array(new Array(6), new Array(6));
+var ClearImg;
 
 var ImagePath = '';
 var ImagePathOld = null;
@@ -1455,8 +1438,7 @@ function HighlightLastMove() {
   }
 
   // next move
-  var theShowMoveTextObject;
-  if (theShowMoveTextObject = document.getElementById("GameNextMove")) {
+  if (theObj = document.getElementById("GameNextMove")) {
     if (CurrentVar === 0 && showThisMove + 1 >= StartPly + PlyNumber) {
       text = '<SPAN CLASS="move notranslate">' + gameResult[currentGame] + '</SPAN>';
     } else if (typeof(Moves[showThisMove+1]) == "undefined") {
@@ -1464,11 +1446,11 @@ function HighlightLastMove() {
     } else {
       text = printMoveText(showThisMove+1, CurrentVar, (CurrentVar !== 0), true, false);
     }
-    theShowMoveTextObject.innerHTML = text;
+    theObj.innerHTML = text;
   }
 
   // next variations
-  if (theShowMoveTextObject = document.getElementById("GameNextVariations")) {
+  if (theObj = document.getElementById("GameNextVariations")) {
     text = '';
     if (commentsIntoMoveText) {
       var childVars = childrenVars(showThisMove+1, CurrentVar);
@@ -1478,11 +1460,11 @@ function HighlightLastMove() {
         }
       }
     }
-    theShowMoveTextObject.innerHTML = text;
+    theObj.innerHTML = text;
   }
 
   // last move
-  if (theShowMoveTextObject = document.getElementById("GameLastMove")) {
+  if (theObj = document.getElementById("GameLastMove")) {
     if ((showThisMove >= StartPly) && Moves[showThisMove]) {
       text = printMoveText(showThisMove, CurrentVar, (CurrentVar !== 0), true, false);
     } else if (showThisMove === StartPly - 1) {
@@ -1490,11 +1472,11 @@ function HighlightLastMove() {
         (Math.floor((showThisMove+1)/2) + 1) + (((showThisMove+1) % 2) ? "..." : ".") +
         '</SPAN>';
     } else { text = ''; }
-    theShowMoveTextObject.innerHTML = text;
+    theObj.innerHTML = text;
   }
 
   // last variations
-  if (theShowMoveTextObject = document.getElementById("GameLastVariations")) {
+  if (theObj = document.getElementById("GameLastVariations")) {
     text = '';
     if (commentsIntoMoveText) {
       var siblingVars = childrenVars(showThisMove, HistVar[showThisMove]);
@@ -1504,7 +1486,7 @@ function HighlightLastMove() {
         }
       }
     }
-    theShowMoveTextObject.innerHTML = text;
+    theObj.innerHTML = text;
   }
 
   if (showThisMove >= (StartPlyVar[CurrentVar]-1)) {
@@ -1540,21 +1522,21 @@ function SetHighlight(on) {
   else { highlightMove(-1, -1, -1, -1); }
 }
 
-var lastColFromHighlighted = -1;
-var lastRowFromHighlighted = -1;
-var lastColToHighlighted = -1;
-var lastRowToHighlighted = -1;
+var colFromHighlighted = -1;
+var rowFromHighlighted = -1;
+var colToHighlighted = -1;
+var rowToHighlighted = -1;
 function highlightMove(colFrom, rowFrom, colTo, rowTo) {
-  highlightSquare(lastColFromHighlighted, lastRowFromHighlighted, false);
-  highlightSquare(lastColToHighlighted, lastRowToHighlighted, false);
+  highlightSquare(colFromHighlighted, rowFromHighlighted, false);
+  highlightSquare(colToHighlighted, rowToHighlighted, false);
   if ( highlightSquare(colFrom, rowFrom, true) ) {
-    lastColFromHighlighted = colFrom;
-    lastRowFromHighlighted = rowFrom;
-  } else { lastColFromHighlighted = lastRowFromHighlighted = -1; }
+    colFromHighlighted = colFrom;
+    rowFromHighlighted = rowFrom;
+  } else { colFromHighlighted = rowFromHighlighted = -1; }
   if ( highlightSquare(colTo, rowTo, true) ) {
-    lastColToHighlighted = colTo;
-    lastRowToHighlighted = rowTo;
-  } else { lastColToHighlighted = lastRowToHighlighted = -1; }
+    colToHighlighted = colTo;
+    rowToHighlighted = rowTo;
+  } else { colToHighlighted = rowToHighlighted = -1; }
 }
 
 function highlightSquare(col, row, on) {
@@ -1789,12 +1771,12 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
         if (!LiveBroadcastStarted) {
           LiveBroadcastStarted = true;
         } else {
-          var oldGameWhite = gameWhite[currentGame];
-          var oldGameBlack = gameBlack[currentGame];
-          var oldGameEvent = gameEvent[currentGame];
-          var oldGameRound = gameRound[currentGame];
-          var oldGameSite  = gameSite[currentGame];
-          var oldGameDate  = gameDate[currentGame];
+          var oldWhite = gameWhite[currentGame];
+          var oldBlack = gameBlack[currentGame];
+          var oldEvent = gameEvent[currentGame];
+          var oldRound = gameRound[currentGame];
+          var oldSite  = gameSite[currentGame];
+          var oldDate  = gameDate[currentGame];
 
           initialGame = currentGame + 1;
 
@@ -1809,9 +1791,9 @@ function loadPgnCheckingLiveStatus(loadPgnResult) {
           LiveBroadcastFoundOldGame = false;
           for (var ii=0; ii<numberOfGames; ii++) {
             LiveBroadcastFoundOldGame =
-              (gameWhite[ii]==oldGameWhite) && (gameBlack[ii]==oldGameBlack) &&
-              (gameEvent[ii]==oldGameEvent) && (gameRound[ii]==oldGameRound) &&
-              (gameSite[ii] ==oldGameSite ) && (gameDate[ii] ==oldGameDate );
+              (gameWhite[ii]==oldWhite) && (gameBlack[ii]==oldBlack) &&
+              (gameEvent[ii]==oldEvent) && (gameRound[ii]==oldRound) &&
+              (gameSite[ii] ==oldSite ) && (gameDate[ii] ==oldDate );
             if (LiveBroadcastFoundOldGame) { break; }
           }
           if (LiveBroadcastFoundOldGame) { initialGame = ii + 1; }
@@ -2511,7 +2493,7 @@ function assumedCastleRights() {
       }
     }
   }
-  return assumedRights ? assumedRights : "-";
+  return assumedRights || "-";
 }
 
 
@@ -2526,14 +2508,15 @@ function InitImages() {
     ImagePath += '/';
   }
 
+  ClearImg = new Image();
   ClearImg.src = ImagePath+'clear.'+imageType;
 
   var ColorName = new Array ("w", "b");
   var PiecePrefix = new Array ("k", "q", "r", "b", "n", "p");
   for (var color = 0; color < 2; ++color) {
     for (var piece = 1; piece < 7; piece++) {
-      PiecePicture[color][piece] = new Image();
-      PiecePicture[color][piece].src = ImagePath + ColorName[color] + PiecePrefix[piece-1] + '.' + imageType;
+      PieceImg[color][piece] = new Image();
+      PieceImg[color][piece].src = ImagePath + ColorName[color] + PiecePrefix[piece-1] + '.' + imageType;
     }
   }
   ImagePathOld = ImagePath;
@@ -3892,7 +3875,7 @@ function RefreshBoard() {
   for (jj = 0; jj < 2; ++jj) {
     for (ii = 0; ii < 16; ++ii) {
       if (PieceType[jj][ii] > 0) {
-        SetImage(PieceCol[jj][ii], PieceRow[jj][ii], PiecePicture[jj][PieceType[jj][ii]].src);
+        SetImage(PieceCol[jj][ii], PieceRow[jj][ii], PieceImg[jj][PieceType[jj][ii]].src);
       }
     }
   }
