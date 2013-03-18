@@ -104,6 +104,8 @@ a:hover {
 
 <script type="text/javascript">
 
+"use strict";
+
 // this should have been defined in pgn4web-server-config.js
 // setting default value here just in case
 var pgn4web_bitly_login;
@@ -185,7 +187,7 @@ function shorten_url_with_bitly(bitly_login, bitly_apiKey) {
 function shorten_url_with_tinyurl() {
   document.getElementById("shorturl_link_separator").innerHTML = "<b>:</b> ";
 
-  thisShortUrlCrc32 = printHex(crc32(iframeUrl));
+  var thisShortUrlCrc32 = printHex(crc32(iframeUrl));
   document.getElementById('tinyurl_form_shorturl_url').value = iframeUrl;
   document.getElementById('tinyurl_form_shorturl_alias').value = "pgn4web-" + thisShortUrlCrc32;
   document.getElementById('shorturl_link').title = "pgn4web board short url #" + thisShortUrlCrc32;
@@ -227,6 +229,9 @@ function shorturl_link_clean() {
 </script>
 
 <script type="text/javascript">
+
+"use strict";
+
 // this should have been defined in pgn4web-server-config.js
 // setting default value here just in case
 var pgn4web_board_url;
@@ -235,55 +240,115 @@ if (pgn4web_board_url == undefined) { pgn4web_board_url = location.protocol + "/
 
 <script type="text/javascript">
 
+"use strict";
+
 // CUSTOMIZATION INSTRUCTIONS
 // if you customize the board-generator.html file for your site
 // you probably want to customize the default values
 
-pgnText_default = emptyPgnHeader + '\n';
-encodePgn_default = "t";
-autoplayMode_default = "game";
-delay_default = 3000;
-initialGame_default = "first";
-initialVariation_default = "";
-initialHalfmove_default = initialHalfmoveSelect_default = "start";
-initialHalfmoveNumber_default = "0";
-pieceFont_default = "default";
-pieceSize_default = "default";
-squareSize_default = 40;
-lightColorHex_default = "EFF4EC";
-darkColorHex_default = "C6CEC3";
-boardBorderColorHex_default = "000000";
-boardShadowColorHex_default = "transparent";
-highlightMode_default = "square";
-highlightColorHex_default = "DAF4D7";
-buttonsDisplay_default = "hidden";
-controlBackgroundColorHex_default = "EFF4EC";
-controlTextColorHex_default = "000000";
-textMargin_default = 0;
-headerDisplay_default = "justified";
-movesDisplay_default = "figurine";
-horizontalLayout_default = "f";
-frameHeight_default = "";
-frameWidth_default = "";
-framePadding_default = 0;
-commentsDisplay_default = "inline";
-fontHeaderColorHex_default = "000000";
-fontMovesColorHex_default = "000000";
-fontCommentsColorHex_default = "808080";
-fontVariationsColorHex_default = "comments";
-highlightMoveColorHex_default = "DAF4D7";
-fontHeaderSize_default = "16";
-fontMovesSize_default = "16";
-fontCommentsSize_default = "moves";
-fontVariationsSize_default = "comments";
-backgroundColorHex_default = "FFFFFF";
-previewBackgroundColorHex_default = "DDDDDD";
-boardUrl_default = pgn4web_board_url;
-useTextarea_default = "f";
+var pgnText_default = emptyPgnHeader + '\n';
+var encodePgn_default = "t";
+var autoplayMode_default = "game";
+var delay_default = 3000;
+var initialGame_default = "first";
+var initialVariation_default = "";
+var initialHalfmove_default = "start";
+var initialHalfmoveSelect_default = initialHalfmove_default;
+var initialHalfmoveNumber_default = "0";
+var pieceFont_default = "default";
+var pieceSize_default = "default";
+var squareSize_default = 40;
+var lightColorHex_default = "EFF4EC";
+var darkColorHex_default = "C6CEC3";
+var boardBorderColorHex_default = "000000";
+var boardShadowColorHex_default = "transparent";
+var highlightMode_default = "square";
+var highlightColorHex_default = "DAF4D7";
+var buttonsDisplay_default = "hidden";
+var controlBackgroundColorHex_default = "EFF4EC";
+var controlTextColorHex_default = "000000";
+var textMargin_default = 0;
+var headerDisplay_default = "justified";
+var movesDisplay_default = "figurine";
+var horizontalLayout_default = "f";
+var frameHeight_default = "";
+var frameWidth_default = "";
+var framePadding_default = 0;
+var commentsDisplay_default = "inline";
+var fontHeaderColorHex_default = "000000";
+var fontMovesColorHex_default = "000000";
+var fontCommentsColorHex_default = "808080";
+var fontVariationsColorHex_default = "comments";
+var highlightMoveColorHex_default = "DAF4D7";
+var fontHeaderSize_default = "16";
+var fontMovesSize_default = "16";
+var fontCommentsSize_default = "moves";
+var fontVariationsSize_default = "comments";
+var backgroundColorHex_default = "FFFFFF";
+var previewBackgroundColorHex_default = "DDDDDD";
+var boardUrl_default = pgn4web_board_url;
+var useTextarea_default = "f";
 
+// end of default values
+
+var pgnText_value;
+var encodePgn_value;
+var autoplayMode_value;
+var delay_value;
+var initialGame_value;
+var initialVariation_value;
+var initialHalfmove_value;
+var initialHalfmoveSelect_value;
+var initialHalfmoveNumber_value;
+var pieceFont_value;
+var pieceSize_value;
+var squareSize_value;
+var lightColorHex_value;
+var darkColorHex_value;
+var boardBorderColorHex_value;
+var boardShadowColorHex_value;
+var highlightMode_value;
+var highlightColorHex_value;
+var buttonsDisplay_value;
+var controlBackgroundColorHex_value;
+var controlTextColorHex_value;
+var textMargin_value;
+var headerDisplay_value;
+var movesDisplay_value;
+var horizontalLayout_value;
+var frameHeight_value;
+var frameWidth_value;
+var framePadding_value;
+var commentsDisplay_value;
+var fontHeaderColorHex_value;
+var fontMovesColorHex_value;
+var fontCommentsColorHex_value;
+var fontVariationsColorHex_value;
+var highlightMoveColorHex_value;
+var fontHeaderSize_value;
+var fontMovesSize_value;
+var fontCommentsSize_value;
+var fontVariationsSize_value;
+var backgroundColorHex_value;
+var previewBackgroundColorHex_value;
+var boardUrl_value;
+var useTextarea_value;
+
+var pgnTextEncoded;
+var previousPgnTextToEncode;
+
+var iframeUrl;
 
 // max length of the iframeUrl, if this is exceeded a warning is issued
-iframeUrl_max = 2000;
+var iframeUrl_max = 2000;
+
+var suggested_frameHeight;
+var suggested_frameWidth;
+var min_frameHeight;
+var min_frameWidth;
+
+var pgnId;
+
 
 function gup(name) {
 
@@ -295,8 +360,8 @@ function gup(name) {
   if (results !== null) { return decodeURIComponent(results[1]); }
 
   // allows for short version of the URL parameters, for instance sC matches squareColor
-  compact_name = name.charAt(0);
-  for (i=1; i<name.length; i++) {
+  var compact_name = name.charAt(0);
+  for (var i=1; i<name.length; i++) {
     if (name.charAt(i).match(/[A-Z]/)) { compact_name = compact_name + name.charAt(i).toLowerCase(); }
   }
   name = compact_name;
@@ -311,7 +376,7 @@ function gup(name) {
   return "";
 }
 
-newStyleSheet = '<style type="text/css"> \n';
+var newStyleSheet = '<style type="text/css"> \n';
 if ((gup("extendedOptions") == "true") || (gup("extendedOptions") == "t")) {
   newStyleSheet += '.extendedOption { display: inline; } \n';
   newStyleSheet += '.noExtendedOption { display: none; } \n';
@@ -348,7 +413,7 @@ function set_defaults() {
   if ((encodePgn_value = gup("encodePgn")) === "") { encodePgn_value = encodePgn_default; }
   document.board.encodePgn.checked = (encodePgn_value == "t");
 
-  oldAutoplayMode_value = "";
+  var oldAutoplayMode_value = "";
   //kept for backward compatibility
   if ((gup("loop") == "true") || (gup("loop") == "t")) { oldAutoplayMode_value = "loop"; }
   //kept for backward compatibility
@@ -468,7 +533,7 @@ function set_defaults() {
   document.board.highlightColorHex.color.fromString(highlightColorHex_value);
   validate_color(document.board.highlightColorHex, 'highlight squares color', highlightColorHex_default);
 
-  oldButtonsDisplay_value = "";
+  var oldButtonsDisplay_value = "";
   //kept for backward compatibility
   if (gup("showButtons") == "t") { oldButtonsDisplay_value = "custom"; }
   //kept for backward compatibility
@@ -488,7 +553,7 @@ function set_defaults() {
   }
 
   if ((controlBackgroundColorHex_value = gup("controlBackgroundColorHex")) === "") {
-    controlBackgroundColorSex = gup("controlBackgroundColorSex");
+    var controlBackgroundColorSex = gup("controlBackgroundColorSex");
     if ((controlBackgroundColorHex_value = sex2hex(controlBackgroundColorSex, 'control buttons background color')) === "") {
       controlBackgroundColorHex_value = controlBackgroundColorHex_default;
     }
@@ -513,7 +578,7 @@ function set_defaults() {
   document.getElementById('textMargin').value = textMargin_value;
   validate_number(document.getElementById('textMargin'), 'text margin', textMargin_default);
 
-  oldHeaderDisplay_value = "";
+  var oldHeaderDisplay_value = "";
   //kept for backward compatibility
   if (gup("showHeader") == "t") { oldHeaderDisplay_value = "justified"; }
   //kept for backward compatibility
@@ -535,7 +600,7 @@ function set_defaults() {
     document.board.headerDisplay.value = headerDisplay_value = headerDisplay_default;
   }
 
-  oldMovesDisplay_value = "";
+  var oldMovesDisplay_value = "";
   //kept for backward compatibility
   if (gup("showMoves") === "t") { oldMovesDisplay_value = "figurine"; }
   //kept for backward compatibility
@@ -558,7 +623,7 @@ function set_defaults() {
     document.board.movesDisplay.value = movesDisplay_value = movesDisplay_default;
   }
 
-  oldCommentsDisplay_value = "";
+  var oldCommentsDisplay_value = "";
   //kept for backward compatibility
   if (gup("showCommentsOnSeparateLines") === "t") { oldCommentsDisplay_value = "newline"; }
   //kept for backward compatibility
@@ -602,7 +667,7 @@ function set_defaults() {
   validate_color(document.board.fontCommentsColorHex, 'comments font color', fontCommentsColorHex_default);
 
   if ((fontVariationsColorHex_value = gup("fontVariationsColorHex")) === "") {
-    fontVariationsColorSex = gup("fontVariationsColorSex");
+    var fontVariationsColorSex = gup("fontVariationsColorSex");
     if ((fontVariationsColorSex == "comments") || (fontVariationsColorSex == "c")) {
       fontVariationsColorHex_value = "comments";
     } else {
@@ -621,7 +686,7 @@ function set_defaults() {
   }
 
   if ((highlightMoveColorHex_value = gup("highlightMoveColorHex")) === "") {
-    highlightMoveColorSex = gup("highlightMoveColorSex");
+    var highlightMoveColorSex = gup("highlightMoveColorSex");
     if ((highlightMoveColorSex == "background") || (highlightMoveColorSex == "b")) {
       highlightMoveColorHex_value = "background";
     } else {
@@ -657,7 +722,7 @@ function set_defaults() {
   validate_fontVariationsSize();
 
   if ((backgroundColorHex_value = gup("backgroundColorHex")) === "") {
-    backgroundColorSex = gup("backgroundColorSex");
+    var backgroundColorSex = gup("backgroundColorSex");
     if ((backgroundColorSex == "transparent") || (backgroundColorSex == "t")) {
       backgroundColorHex_value = "transparent";
     } else {
@@ -677,7 +742,7 @@ function set_defaults() {
   }
 
   if ((boardShadowColorHex_value = gup("boardShadowColorHex")) === "") {
-    boardShadowColorSex = gup("boardShadowColorSex");
+    var boardShadowColorSex = gup("boardShadowColorSex");
     if ((boardShadowColorSex == "transparent") || (boardShadowColorSex == "t")) {
       boardShadowColorHex_value = "transparent";
     } else if ((boardShadowColorSex == "border") || (boardShadowColorSex == "b")) {
@@ -770,11 +835,11 @@ function update_disabled_controls() {
 
 function update_suggested_iframe_dimensions() {
 
-  boardWidth = 8 * document.board.squareSize.value + 6;
-  estimated_boardHeight = boardWidth;
+  var boardWidth = 8 * document.board.squareSize.value + 6;
+  var estimated_boardHeight = boardWidth;
 
-  multiGamesRegexp = /\s*\[\s*\w+\s*"[^"]*"\s*\]\s*[^\s\[\]]+[\s\S]*\[\s*\w+\s*"[^"]*"\s*\]\s*/m;
-  selectDropdownShown = multiGamesRegexp.test(pgnTextFixFromInput(document.getElementById('pgnText').value));
+  var multiGamesRegexp = /\s*\[\s*\w+\s*"[^"]*"\s*\]\s*[^\s\[\]]+[\s\S]*\[\s*\w+\s*"[^"]*"\s*\]\s*/m;
+  var selectDropdownShown = multiGamesRegexp.test(pgnTextFixFromInput(document.getElementById('pgnText').value));
 
   if (document.board.buttonsDisplay.value != 'hidden') {
     if (document.board.buttonsDisplay.value == "standard") {
@@ -1044,6 +1109,7 @@ function percentFixFromUrl( text ) {
 }
 
 function generate_html_code() {
+  var outerFrameWidth, outerFrameHeight;
 
   // cleans the short url stuff
   shorturl_link_clean();
@@ -1072,7 +1138,7 @@ function generate_html_code() {
       break;
   }
 
-  html_code_string = "";
+  var html_code_string = "";
   if (document.getElementById('useTextarea').checked) {
     html_code_string += "<textarea id='" + pgnId + "' style='display: none;'>\n\n" + pgnText_value + "\n\n</textarea>\n\n";
   }
@@ -1085,7 +1151,7 @@ function generate_html_code() {
   document.getElementById('html_code').value = html_code_string;
 
   boardUrl_value = document.board.boardUrl.value;
-  thisBookmarkUrl = iframeUrl;
+  var thisBookmarkUrl = iframeUrl;
   thisBookmarkUrl = thisBookmarkUrl.replace(boardUrl_value, pgn4web_generator_url);
   thisBookmarkUrl = thisBookmarkUrl.replace(/&(pe|pt)=.*(&|$)/,"");
 
@@ -1109,13 +1175,13 @@ function generate_html_code() {
   }
 
   document.getElementById('thisConfigBookmark').href = thisBookmarkUrl;
-  thisBookmarkCrc32 = printHex(crc32(thisBookmarkUrl));
+  var thisBookmarkCrc32 = printHex(crc32(thisBookmarkUrl));
   document.getElementById('thisConfigBookmark').title = "right-click, copy and save pgn4web board generator custom template link #" + thisBookmarkCrc32;
   document.getElementById('bookmarkCrc32').innerHTML = "#" + thisBookmarkCrc32;
 
   document.getElementById('preview').innerHTML = "<table border='0' bgcolor='#" + previewBackgroundColorHex_value + "' width='100%' cellpadding='25'><tr><td align='center' valign='middle'> " + html_code_string + "</td></tr></table>";
 
-  html_code_status_string = "<table width='100%' cellspacing='0' cellpadding='0'><tr><td align='left' valign='top'>";
+  var html_code_status_string = "<table width='100%' cellspacing='0' cellpadding='0'><tr><td align='left' valign='top'>";
   if (iframeUrl.length <= iframeUrl_max) {
     html_code_status_string += "<span class='helptext'>HTML code ready to cut and paste in your web page or blog</span>";
   } else {
@@ -1200,83 +1266,93 @@ function validate_backgroundColorHex() {
 }
 
 function validate_number(object, name, def) {
-  if (!(vv = object.value.match(/^([0-9]+)(px$|$)/))) {
+  var vv = object.value.match(/^([0-9]+)(px$|$)/);
+  if (vv) {
+    object.value = vv[1];
+    return true;
+  } else {
     alert('error: the ' + name + ' must be a non negative integer');
     object.value = def;
     return false;
-  } else {
-    object.value = vv[1];
-    return true;
   }
 }
 
 function validate_number_blank(object, name, def) {
   if (object.value === "") { return true; }
-  if (!(vv = object.value.match(/^([0-9]+)(px$|$)/))) {
+  var vv = object.value.match(/^([0-9]+)(px$|$)/);
+  if (vv) {
+    object.value = vv[1];
+    return true;
+  } else {
     alert('error: the ' + name + ' must be blank or a non negative integer');
     object.value = def;
     return false;
-  } else {
-    object.value = vv[1];
-    return true;
   }
 }
 
 function validate_number_percentage(object, name, def) {
-  if (!(vv = object.value.match(/^([0-9]+)(%$|p$|pct$|px$|$)/))) {
+  var vv = object.value.match(/^([0-9]+)(%$|p$|pct$|px$|$)/);
+  if (vv) {
+    if (vv[2] == "px") { object.value = vv[1]; }
+    return true;
+  } else {
     alert('error: the ' + name + ' must be a non negative integer or percentage');
     object.value = def;
     return false;
-  } else {
-    if (vv[2] == "px") { object.value = vv[1]; }
-    return true;
   }
 }
 
 function validate_number_percentage_blank(object, name, def) {
   if (object.value === "") { return true; }
-  if (!(vv = object.value.match(/^([0-9]+)(%$|p$|pct$|px$|$)/))) {
+  var vv = object.value.match(/^([0-9]+)(%$|p$|pct$|px$|$)/);
+  if (vv) {
+    if (vv[2] == "px") { object.value = vv[1]; }
+    return true;
+  } else {
     alert('error: the ' + name + ' must be blank or a non negative integer or percentage');
     object.value = def;
     return false;
-  } else {
-    if (vv[2] == "px") { object.value = vv[1]; }
-    return true;
   }
 }
 
 function validate_fontCommentsSize() {
-  object = document.getElementById('fontCommentsSize');
+  var object = document.getElementById('fontCommentsSize');
   if (object.value == "moves") { return true; }
-  if (!(vv = object.value.match(/^([0-9]+)(%$|p$|pct$|px$|$)/))) {
+  var vv = object.value.match(/^([0-9]+)(%$|p$|pct$|px$|$)/);
+  if (vv) {
+    if (vv[2] == "px") { object.value = vv[1]; }
+    return true;
+  } else {
     alert('error: the comments font size must be \'moves\' or a non integer number or (deprecated) a percentage');
     object.value = fontCommentsSize_default;
     return false;
-  } else {
-    if (vv[2] == "px") { object.value = vv[1]; }
-    return true;
   }
 }
 
 function validate_fontVariationsSize() {
-  object = document.getElementById('fontVariationsSize');
+  var object = document.getElementById('fontVariationsSize');
   if (object.value == "comments") { return true; }
-  if (!(vv = object.value.match(/^([0-9]+)(%$|p$|pct$|px$|$)/))) {
+  var vv = object.value.match(/^([0-9]+)(%$|p$|pct$|px$|$)/);
+  if (vv) {
+    if (vv[2] == "px") { object.value = vv[1]; }
+    return true;
+  } else {
     alert('error: the variations font size must be \'comments\' or a non integer number or (deprecated) a percentage');
     object.value = fontVariationsSize_default;
     return false;
-  } else {
-    if (vv[2] == "px") { object.value = vv[1]; }
-    return true;
   }
 }
 
 function validate_frameWidth() {
-  object = document.getElementById('frameWidth');
+  var object = document.getElementById('frameWidth');
   if (object.value === '') { return true; }
   if ((object.value == 'board') && (document.getElementById('horizontalLayout').value == "f")) { return true; }
   if (object.value == 'page') { return true; }
-  if (!(vv = object.value.match(/^([0-9]+)(px$|$)/))) {
+  var vv = object.value.match(/^([0-9]+)(px$|$)/);
+  if (vv) {
+    object.value = vv[1];
+    return true;
+  } else {
     if (document.getElementById('horizontalLayout').value == "t") {
       alert('error: in the horizontal layout the iFrame width must be a non negative integer or \'page\'');
     } else {
@@ -1284,17 +1360,18 @@ function validate_frameWidth() {
     }
     object.value = "";
     return false;
-  } else {
-    object.value = vv[1];
-    return true;
   }
 }
 
 function validate_frameHeight() {
-  object = document.getElementById('frameHeight');
+  var object = document.getElementById('frameHeight');
   if (object.value === '') { return true; }
   if ((object.value == 'board') && (document.getElementById('horizontalLayout').value == "t")) { return true; }
-  if (!(vv = object.value.match(/^([0-9]+)(px$|$)/))) {
+  var vv = object.value.match(/^([0-9]+)(px$|$)/);
+  if (vv) {
+    object.value = vv[1];
+    return true;
+  } else {
     if (document.getElementById('horizontalLayout').value == "t") {
       alert('error: in the horizontal layout the iFrame height must be a non negative integer or \'board\'');
     } else {
@@ -1302,19 +1379,12 @@ function validate_frameHeight() {
     }
     object.value = "";
     return false;
-  } else {
-    object.value = vv[1];
-    return true;
   }
 }
 
 function validate_ss_ps_hm() {
-  retval = true;
-  if (document.getElementById('highlightMode').value == 'border') {
-    minSquareSize = 22;
-  } else {
-    minSquareSize = 20;
-  }
+  var retVal = true, maxPieceSize;
+  var minSquareSize = (document.getElementById('highlightMode').value == 'border') ? 22 : 20;
   if (document.getElementById('squareSize').value < minSquareSize) {
     alert('error: square size must be at least ' + minSquareSize +
           ', resetting to ' + minSquareSize +
@@ -1322,7 +1392,7 @@ function validate_ss_ps_hm() {
           ' pieceSize=' + document.getElementById('pieceSize').value +
           ' highlightMode=' + document.getElementById('highlightMode').value + ')');
     document.getElementById('squareSize').value = minSquareSize;
-    retval = false;
+    retVal = false;
   }
   if (document.getElementById('pieceSize').value != "default") {
     if (document.getElementById('highlightMode').value == "border") {
@@ -1338,10 +1408,10 @@ function validate_ss_ps_hm() {
             ' pieceSize=' + document.getElementById('pieceSize').value +
             ' highlightMode=' + document.getElementById('highlightMode').value + ')');
       document.getElementById('pieceSize').value = "default";
-      retval = false;
+      retVal = false;
     }
   }
-  return retval;
+  return retVal;
 }
 
 function validate_useTextarea() {
@@ -1357,6 +1427,7 @@ function validate_useTextarea() {
 }
 
 function checkInitialHalfmove() {
+  var retVal = false;
   initialHalfmove_value = document.board.initialHalfmove.value;
   switch (initialHalfmove_value) {
     case "":
@@ -1379,7 +1450,6 @@ function checkInitialHalfmove() {
         document.board.initialHalfmove.value = initialHalfmove_value = initialHalfmove_default;
         document.board.initialHalfmoveSelect.value = initialHalfmoveSelect_default;
         document.board.initialHalfmoveNumber.value = initialHalfmoveNumber_default;
-        retVal = false;
       }
       break;
   }
@@ -1412,10 +1482,10 @@ function add_option(selectObject, newText, newValue) {
 }
 
 // template patterns
-common_template = "?am=l&d=3000&fh=&fw=";
+var common_template = "?am=l&d=3000&fh=&fw=";
 
 // color template array (description, general settings, highlight square color, highlight border color);
-color_template = new Array();
+var color_template = new Array();
 color_template[0] = new Array("blue ", "&lcs=VdyD&dcs=LHCg&bbcs=LHCg&bd=c&cbcs=PYGy&ctcs=l4It&fhcs=$$$$&fmcs=$$$$&fccs=v71$&hmcs=M___&bcs=VdyD", "&hcs=QtmS", "&hcs=s8pI");
 color_template[1] = new Array("brown", "&lcs=XItn&dcs=NpQK&bbcs=NpQK&bd=c&cbcs=__iz&ctcs=NpQK&fhcs=k03b&fmcs=k03b&fccs=DRYC&hmcs=__X$&bcs=____", "&hcs=MWVi", "&hcs=__X$");
 color_template[2] = new Array("gray ", "&lcs=YeiP&dcs=Qcij&bbcs=D91v&bscs=Lb2$&bd=s&cbcs=YeiP&ctcs=$$$$&fhcs=$$$$&fmcs=$$$$&fccs=v71$&hmcs=Qcij&bcs=____", "&hcs=Udiz", "&hcs=s6gP");
@@ -1424,31 +1494,31 @@ color_template[4] = new Array("pink ", "&lcs=Wtyk&dcs=OXJO&bbcs=OXJO&bd=c&cbcs=U
 color_template[5] = new Array("wood ", "&lcs=_XNo&dcs=O8AB&bbcs=O8AB&bscs=b&bd=s&cbcs=YeiP&ctcs=$$$$&fhcs=$$$$&fmcs=$$$$&fccs=v71$&hmcs=_XNo&bcs=____", "&hcs=r4fT", "&hcs=r4fT");
 
 // size template array
-size_template = new Array();
+var size_template = new Array();
 size_template[0] = new Array("small ", "&ss=26&ps=d&pf=d&hm=s&tm=13&fhs=14&fms=14&fcs=m&fp=13");
 size_template[1] = new Array("medium", "&ss=36&ps=d&pf=d&hm=s&tm=18&fhs=16&fms=16&fcs=m&fp=18");
 size_template[2] = new Array("large ", "&ss=50&ps=d&pf=d&hm=b&tm=25&fhs=19&fms=19&fcs=m&fp=25");
 
 // layout template array
-layout_template = new Array();
+var layout_template = new Array();
 layout_template[0] = new Array("vertical  ", "&hl=f&hd=c&md=f&cd=i");
 layout_template[1] = new Array("horizontal", "&hl=t&hd=j&md=f&cd=i");
 
 function load_templates() {
 
-  theObj = document.getElementById('templatesList');
+  var theObj = document.getElementById('templatesList');
 
-  for (cc=0; cc<color_template.length; cc++) {
-    for (ss=0; ss<size_template.length; ss++) {
-      for (ll=0; ll<layout_template.length; ll++) {
-        template_text = "";
+  for (var cc=0; cc<color_template.length; cc++) {
+    for (var ss=0; ss<size_template.length; ss++) {
+      for (var ll=0; ll<layout_template.length; ll++) {
+        var template_text = "";
         template_text += color_template[cc][0] + " ";
         template_text += size_template[ss][0] + " ";
         template_text += layout_template[ll][0] + " ";
         template_text += "template";
         // replace spaces with &nbsp; (ascii code 160)
         template_text = template_text.replace(/ /g,String.fromCharCode(160));
-        template_value = common_template;
+        var template_value = common_template;
         template_value += layout_template[ll][1];
         template_value += size_template[ss][1];
         template_value += color_template[cc][1];
@@ -1465,7 +1535,7 @@ function load_templates() {
 function template_selected() {
   if (document.getElementById('templatesList').value == "heading") { return; }
 
-  selectedIndex = document.getElementById('templatesList').value == "random" ?
+  var selectedIndex = document.getElementById('templatesList').value == "random" ?
                   3 + Math.floor((document.getElementById('templatesList').length - 3) * Math.random()) :
                   document.getElementById('templatesList').selectedIndex;
 
@@ -1473,7 +1543,7 @@ function template_selected() {
               "\n\n" + document.getElementById('templatesList').options[selectedIndex].text +
               "\n\nAll your settings besides the PGN text might be lost!")) {
 
-    newLocationSearch = document.getElementById('templatesList').options[selectedIndex].value;
+   var newLocationSearch = document.getElementById('templatesList').options[selectedIndex].value;
 
     if (( document.getElementById('useTextarea').checked && (useTextarea_default != "t")) ||
         (!document.getElementById('useTextarea').checked && (useTextarea_default != "f")) ) {
@@ -1545,7 +1615,7 @@ function sex2hex(sex, name) {
 
 function hex2sex(hex) {
   var sex = "";
-  dec = parseInt(hex,16);
+  var dec = parseInt(hex,16);
   while (dec>0) {
     sex = sexEncodingCharSet.charAt(dec % 64) + sex;
     dec >>= 6;
@@ -1578,8 +1648,7 @@ function bug_report() {
 }
 
 function print_menu( item, level, title ) {
-
-  menu = '<div style="height:1em;"><a name=' + item + '>&nbsp;</a></div>';
+  var menu = '<div style="height:1em;"><a name=' + item + '>&nbsp;</a></div>';
   menu += '<table width=100% cellspacing=0 cellpadding=0><tr><td td valign=middle align=left>';
   menu += '<h' + level + '>' + title + '</h' + level + '>';
   menu += '</td><td valign=top align=right>';
@@ -1604,7 +1673,7 @@ function print_menu( item, level, title ) {
   document.write(menu);
 }
 
-firstLoad = true;
+var firstLoad = true;
 window.onload = new_onLoad;
 
 </script>
