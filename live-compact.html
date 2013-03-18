@@ -189,9 +189,9 @@ function gup(name) {
 
   // allows for short version of the URL parameters, for instance sC matches squareColor
   var compact_name = name.charAt(0);
-    for (var i=1; i<name.length; i++) {
-      if (name.charAt(i).match(/[A-Z]/)) { compact_name = compact_name + name.charAt(i).toLowerCase(); }
-    }
+  for (var i=1; i<name.length; i++) {
+    if (name.charAt(i).match(/[A-Z]/)) { compact_name = compact_name + name.charAt(i).toLowerCase(); }
+  }
   name = compact_name;
 
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
