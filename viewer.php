@@ -250,9 +250,7 @@ function get_pgn() {
         if (($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
         if (!$pgnText) {
           $pgnStatus = "error: games not found in $zipFileString";
-         return FALSE;
-        } else {
-          return TRUE;
+          return FALSE;
         }
       } else {
         if (($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
@@ -263,9 +261,7 @@ function get_pgn() {
       $pgnStatus = "error: ZIP support unavailable from this server, only PGN files are supported";
       return FALSE;
     }
-  }
-
-  if ($isPgn) {
+  } elseif ($isPgn) {
     if ($pgnUrl) { $pgnFileString = $pgnUrl; }
     else { $pgnFileString = "pgn file"; }
     $pgnText = file_get_contents($pgnSource, NULL, NULL, 0, $fileUploadLimitBytes + 1);
@@ -278,10 +274,7 @@ function get_pgn() {
       $pgnStatus = "error: failed reading $pgnFileString: file size exceeds $fileUploadLimitText form limit, $fileUploadLimitIniText server limit or server error";
       return FALSE;
     }
-    return TRUE;
-  }
-
-  if ($pgnSource) {
+  } elseif ($pgnSource) {
     if ($zipSupported) {
       $pgnStatus = "error: only PGN and ZIP (zipped pgn) files are supported";
     } else {
@@ -289,6 +282,8 @@ function get_pgn() {
     }
     return FALSE;
   }
+
+  $pgnText = str_replace(array("<", ">"), array("&lt;", "&gt;"), $pgnText);
 
   return TRUE;
 }
@@ -433,6 +428,8 @@ function print_form() {
 
 <script type="text/javascript">
 
+  "use strict";
+
   function setPgnUrl(newPgnUrl) {
     if (!newPgnUrl) { newPgnUrl = ""; }
     document.getElementById("urlFormText").value = newPgnUrl;
@@ -440,15 +437,15 @@ function print_form() {
   }
 
   function checkPgnUrl() {
-    theObj = document.getElementById("urlFormText");
-    if (theObj === null) { return false; }
+    var theObj = document.getElementById("urlFormText");
+    if (!theObj) { return false; }
     if (!checkPgnExtension(theObj.value)) { return false; }
     else { return (theObj.value !== ""); }
   }
 
   function checkPgnFile() {
-    theObj = document.getElementById("uploadFormFile");
-    if (theObj === null) { return false; }
+    var theObj = document.getElementById("uploadFormFile");
+    if (!theObj) { return false; }
     if (!checkPgnExtension(theObj.value)) { return false; }
     else { return (theObj.value !== ""); }
   }
@@ -501,12 +498,12 @@ END;
 
   function loadPgnFromForm() {
 
-    theObjPgnFormText = document.getElementById('pgnFormText');
-    if (theObjPgnFormText === null) { return; }
+    var theObjPgnFormText = document.getElementById('pgnFormText');
+    if (!theObjPgnFormText) { return; }
     if (theObjPgnFormText.value === "") { return; }
 
-    theObjPgnText = document.getElementById('pgnText');
-    if (theObjPgnText === null) { return; }
+    var theObjPgnText = document.getElementById('pgnText');
+    if (!theObjPgnText) { return; }
 
     theObjPgnText.value = theObjPgnFormText.value;
 
@@ -531,10 +528,10 @@ END;
   }
 
   function urlFormSelectChange() {
-    theObj = document.getElementById("urlFormSelect");
-    if (theObj === null) { return; }
+    var theObj = document.getElementById("urlFormSelect");
+    if (!theObj) { return; }
 
-    targetPgnUrl = "";
+    var targetPgnUrl = "";
     switch (theObj.value) {
 
 END;
@@ -555,6 +552,7 @@ END;
 
 var textFormMinHeight = "";
 function getTextFormMinHeight() {
+  var theObj;
   if ((theObj = document.getElementById("pgnFormText")) &&  (theObj.offsetHeight)) {
     return (theObj.offsetHeight + "px");
   } else {
@@ -647,8 +645,11 @@ END;
 
 <script type="text/javascript">
 
-textFormMinHeight = getTextFormMinHeight();
-if (theObj = document.getElementById("pgnFormText")) {
+"use strict";
+
+var textFormMinHeight = getTextFormMinHeight();
+var theObj = document.getElementById("pgnFormText");
+if (theObj) {
   theObj.style.height = textFormMinHeight;
   theObj.style.minHeight = textFormMinHeight;
 }
@@ -965,11 +966,14 @@ $pgnText
 
 <script type="text/javascript">
 
-   pgn4web_engineWindowUrlParameters = "pf=m";
+   "use strict";
+
+   var pgn4web_engineWindowUrlParameters = "pf=m";
 
    var highlightOption_default = true;
    var commentsOnSeparateLines_default = false;
    var commentsIntoMoveText_default = true;
+   var initialHalfmove_default = "start";
 
    SetImagePath("merida/36");
    SetImageType("png");
@@ -978,7 +982,7 @@ $pgnText
    SetCommentsOnSeparateLines(getCommentsOnSeparateLinesFromLocalStorage());
    SetInitialGame(1);
    SetInitialVariation(0);
-   SetInitialHalfmove(initialHalfmove_default = "start", true);
+   SetInitialHalfmove(initialHalfmove_default, true);
    SetGameSelectorOptions(null, true, 12, 12, 2, 15, 15, 3, 10);
    SetAutostartAutoplay(false);
    SetAutoplayNextGame(false);
@@ -986,6 +990,7 @@ $pgnText
    SetShortcutKeysEnabled(true);
 
    function getHighlightOptionFromLocalStorage() {
+      var ho;
       try { ho = (localStorage.getItem("pgn4web_chess_viewer_highlightOption") != "false"); }
       catch(e) { return highlightOption_default; }
       return ho === null ? highlightOption_default : ho;
@@ -997,6 +1002,7 @@ $pgnText
    }
 
    function getCommentsIntoMoveTextFromLocalStorage() {
+      var cimt;
       try { cimt = !(localStorage.getItem("pgn4web_chess_viewer_commentsIntoMoveText") == "false"); }
       catch(e) { return commentsIntoMoveText_default; }
       return cimt === null ? commentsIntoMoveText_default : cimt;
@@ -1008,6 +1014,7 @@ $pgnText
    }
 
    function getCommentsOnSeparateLinesFromLocalStorage() {
+      var cosl;
       try { cosl = (localStorage.getItem("pgn4web_chess_viewer_commentsOnSeparateLines") == "true"); }
       catch(e) { return commentsOnSeparateLines_default; }
       return cosl === null ? commentsOnSeparateLines_default : cosl;
@@ -1019,6 +1026,7 @@ $pgnText
    }
    var Delay_default = 2000;
    function getDelayFromLocalStorage() {
+      var d;
       try { d = parseInt(localStorage.getItem("pgn4web_chess_viewer_Delay"), 10); }
       catch(e) { return Delay_default; }
       return ((d === null) || (isNaN(d))) ? Delay_default : d;
@@ -1039,10 +1047,10 @@ $pgnText
    function fixHeaderTag(elementId) {
       var headerId = ["GameEvent", "GameSite", "GameDate", "GameRound", "GameWhite", "GameBlack", "GameResult", "GameSection", "GameStage", "GameBoardNum", "Timecontrol", "GameWhiteTeam", "GameBlackTeam", "GameWhiteTitle", "GameBlackTitle", "GameWhiteElo", "GameBlackElo", "GameECO", "GameOpening", "GameVariation", "GameSubVariation", "GameTermination", "GameWhiteClock", "GameBlackClock", "GameTimeControl"];
       var headerLabel = ["event", "site", "date", "round", "white player", "black player", "result", "section", "stage", "board", "time control", "white team", "black team", "white title", "black title", "white elo", "black elo", "eco", "opening", "variation", "subvariation", "termination", "white clock", "black clock", "time control"];
-      theObj = document.getElementById(elementId);
+      var theObj = document.getElementById(elementId);
       if (theObj) {
         theObj.className = (theObj.innerHTML === "") ? "innerHeaderItemNoMargin" : "innerHeaderItem";
-        for (ii = 0; ii < headerId.length; ii++) {
+        for (var ii = 0; ii < headerId.length; ii++) {
             if (headerId[ii] === elementId) { break; }
         }
         theObj.title = (ii < headerId.length ? headerLabel[ii] : elementId) + ": " + theObj.innerHTML;
@@ -1091,6 +1099,7 @@ $pgnText
 
    var PlyNumberMax;
    function customFunctionOnPgnGameLoad() {
+      var theObj;
       fixHeaderTag('GameDate');
       fixHeaderTag('GameSite');
       fixHeaderTag('GameEvent');
@@ -1132,6 +1141,7 @@ $pgnText
       }
 
       if (theObj = document.getElementById('lastMoveAndComment')) {
+         var lastDisplayStyle;
          if ((PlyNumber === 0) && (gameFEN[currentGame])) {
             lastDisplayStyle = "block";
          } else if (commentsIntoMoveText && ((PlyNumber > 0) || (gameFEN[currentGame]))) {
@@ -1169,7 +1179,8 @@ $pgnText
    }
 
    function customFunctionOnPgnTextLoad() {
-      gameLoadStatus = "$pgnStatus";
+      var theObj;
+      var gameLoadStatus = "$pgnStatus";
       if (gameLoadStatus) {  myAlert(gameLoadStatus, gameLoadStatus.match(/^error:/), !gameLoadStatus.match(/^error:/)); }
       if (theObj = document.getElementById("GameNumInfo")) {
          theObj.style.display = numberOfGames > 1 ? "block" : "none";
@@ -1211,7 +1222,7 @@ $pgnText
       location.hash = "#" + hash;
    }
 
-   shortcutKeyTimeout = null;
+   var shortcutKeyTimeout = null;
 
    // customShortcutKey_Shift_1 defined by fide-lookup.js
    // customShortcutKey_Shift_2 defined by fide-lookup.js
@@ -1239,7 +1250,8 @@ $pgnText
 
    var cycleLCA = 0;
    function cycleLastCommentArea() {
-      if (theObj = document.getElementById("GameLastComment")) {
+      var theObj = document.getElementById("GameLastComment");
+      if (theObj) {
          switch (cycleLCA++ % 3) {
             case 0:
                if (theObj.scrollHeight === theObj.clientHeight) { cycleLastCommentArea(); }
@@ -1260,22 +1272,21 @@ $pgnText
    }
 
    function resetLastCommentArea() {
-      if (theObj = document.getElementById("GameLastComment")) {
-         theObj.style.height = "";
-      }
+      var theObj = document.getElementById("GameLastComment");
+      if (theObj) { theObj.style.height = ""; }
    }
 
    function fitLastCommentArea() {
-      if (theObj = document.getElementById("GameLastComment")) {
+      var theObj = document.getElementById("GameLastComment");
+      if (theObj) {
          theObj.style.height = "";
          theObj.style.height = theObj.scrollHeight + "px";
       }
    }
 
    function maximizeLastCommentArea() {
-      if (theObj = document.getElementById("GameLastComment")) {
-         theObj.style.height = "21em";
-      }
+      var theObj = document.getElementById("GameLastComment");
+      if (theObj) { theObj.style.height = "21em"; }
    }
 
    function clickedGameAnalysisEval() {
@@ -1379,6 +1390,10 @@ function print_chessboard_two() {
 
 <script type="text/javascript">
 
+   "use strict";
+
+   var theObj;
+
    var annotationSupported = !!window.Worker;
    try {
       document.getElementById("GameAnnotationGraph").getContext("2d");
@@ -1401,9 +1416,8 @@ function print_chessboard_two() {
       stopAnnotateGame(false);
       StopBackgroundEngine();
       analysisStarted = false;
-      if (theObj = document.getElementById("toggleAnalysisLink")) {
-         theObj.innerHTML = "+";
-      }
+      var theObj = document.getElementById("toggleAnalysisLink");
+      if (theObj) { theObj.innerHTML = "+"; }
       clearAnnotationGraph();
       clearAnalysisHeader();
       save_cache_to_localStorage();
@@ -1425,33 +1439,37 @@ function print_chessboard_two() {
    var annotationBarWidth;
    function updateAnnotationGraph() {
       if (!annotationSupported) { return; }
-      var index;
+      var index, theObj;
       if (!analysisStarted) { clearAnnotationGraph(); }
       else if (theObj = document.getElementById("GameAnnotationGraph")) {
 
-         theObj.width = canvasWidth = graphCanvasWidth();
-         theObj.height = canvasHeight = graphCanvasHeight();
+         var canvasWidth = graphCanvasWidth();
+         theObj.width = canvasWidth;
+         var canvasHeight = graphCanvasHeight();
+         theObj.height = canvasHeight;
 
-         annotationPlyBlock = 40;
+         var annotationPlyBlock = 40;
          annotationBarWidth = canvasWidth / (Math.max(Math.ceil(PlyNumberMax / annotationPlyBlock) * annotationPlyBlock, 2 * annotationPlyBlock) + 2);
-         barOverlap = Math.ceil(annotationBarWidth / 20);
-         lineHeight = Math.ceil(canvasHeight / 100);
-         lineTop = Math.floor((canvasHeight - lineHeight) / 2);
-         lineBottom = lineTop + lineHeight;
-         maxBarHeight = lineTop + barOverlap;
+         var barOverlap = Math.ceil(annotationBarWidth / 20);
+         var lineHeight = Math.ceil(canvasHeight / 100);
+         var lineTop = Math.floor((canvasHeight - lineHeight) / 2);
+         var lineBottom = lineTop + lineHeight;
+         var maxBarHeight = lineTop + barOverlap;
 
-         context = theObj.getContext("2d");
+         var context = theObj.getContext("2d");
          context.beginPath();
-         thisBarTopLeftX = 0;
-         thisBarHeight = lineHeight;
-         thisBarTopLeftY = lineTop;
+         var thisBarTopLeftX = 0;
+         var thisBarHeight = lineHeight;
+         var thisBarTopLeftY = lineTop;
          context.rect(thisBarTopLeftX, thisBarTopLeftY, (PlyNumber + 1) * annotationBarWidth + barOverlap, thisBarHeight);
          context.fillStyle = "#D9D9D9";
          context.fill();
          context.fillStyle = "#666666";
-         highlightTopLeftX = highlightTopLeftY = highlightBarHeight = null;
-         for (annPly = StartPly; annPly <= StartPly + PlyNumber; annPly++) {
-            annGraphEval = typeof(fenPositionsEval[annPly]) != "undefined" ? fenPositionsEval[annPly] : (annPly === CurrentPly ? 0 : null);
+         var highlightTopLeftX = null;
+         var highlightTopLeftY = null;
+         var highlightBarHeight = null;
+         for (var annPly = StartPly; annPly <= StartPly + PlyNumber; annPly++) {
+            var annGraphEval = typeof(fenPositionsEval[annPly]) != "undefined" ? fenPositionsEval[annPly] : (annPly === CurrentPly ? 0 : null);
             if (annGraphEval !== null) {
                thisBarTopLeftX = (annPly - StartPly) * annotationBarWidth;
                if (annGraphEval >= 0) {
@@ -1483,8 +1501,9 @@ function print_chessboard_two() {
 
    function clearAnnotationGraph() {
       if (!annotationSupported) { return; }
-      if (theObj = document.getElementById("GameAnnotationGraph")) {
-         context = theObj.getContext("2d");
+      var theObj = document.getElementById("GameAnnotationGraph");
+      if (theObj) {
+         var context = theObj.getContext("2d");
          theObj.width = graphCanvasWidth();
          theObj.height = graphCanvasHeight();
          context.clearRect(0, 0, theObj.width, theObj.height);
@@ -1505,21 +1524,22 @@ function print_chessboard_two() {
    function updateAnalysisHeader() {
       if (!analysisStarted) { clearAnalysisHeader(); return; }
 
-      annPly = (lastMousemoveAnnPly == -1) ? CurrentPly : lastMousemoveAnnPly;
-
+      var theObj;
+      var annPly = (lastMousemoveAnnPly == -1) ? CurrentPly : lastMousemoveAnnPly;
+      var annMove = "&middot;";
       if (theObj = document.getElementById("GameAnalysisMove")) {
          if ((annPly > StartPly) && (annPly <= StartPly + PlyNumber)) {
             annMove = (Math.floor(annPly / 2) + (annPly % 2)) + (annPly % 2 ? ". " : "... ") + Moves[annPly - 1];
             if (isBlunder(annPly, blunderThreshold)) { annMove += translateNAGs("$4"); }
             else if (isBlunder(annPly, mistakeThreshold)) { annMove += translateNAGs("$2"); }
             annMove += "&nbsp;";
-         } else { annMove = "&middot;"; }
+         }
          theObj.innerHTML = annMove;
       }
 
-      annEval = fenPositionsEval[annPly];
-      annPv = fenPositionsPv[annPly];
-      annDepth = fenPositionsDepth[annPly];
+      var annEval = fenPositionsEval[annPly];
+      var annPv = fenPositionsPv[annPly];
+      var annDepth = fenPositionsDepth[annPly];
 
       if (theObj = document.getElementById("GameAnalysisEval")) {
          theObj.innerHTML = (annEval || annEval === 0) ? ev2NAG(annEval) : "";
@@ -1548,14 +1568,15 @@ function print_chessboard_two() {
    }
 
    function clearAnalysisHeader() {
+      var theObj;
       if (theObj = document.getElementById("GameAnalysisMove")) { theObj.innerHTML = ""; }
       if (theObj = document.getElementById("GameAnalysisEval")) { theObj.innerHTML = "&middot"; theObj.title = "start annotation"; }
       if (theObj = document.getElementById("GameAnalysisPv")) { theObj.innerHTML = ""; }
    }
 
 
-   lastMousemoveAnnPly = -1;
-   lastMousemoveAnnGame = -1;
+   var lastMousemoveAnnPly = -1;
+   var lastMousemoveAnnGame = -1;
 
    function annotationGraphMouseover(e) {
    }
@@ -1567,7 +1588,7 @@ function print_chessboard_two() {
    }
 
    function annotationGraphMousemove(e) {
-      newMousemoveAnnPly = StartPly + Math.floor((e.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
+      var newMousemoveAnnPly = StartPly + Math.floor((e.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
       if ((newMousemoveAnnPly !== lastMousemoveAnnPly) || (currentGame !== lastMousemoveAnnGame)) {
          lastMousemoveAnnPly = newMousemoveAnnPly <= StartPly + PlyNumber ? newMousemoveAnnPly : -1;
          lastMousemoveAnnGame = currentGame;
@@ -1577,7 +1598,7 @@ function print_chessboard_two() {
 
    function annotationGraphClick(e) {
       if ((analysisStarted) && (typeof(annotationBarWidth) != "undefined")) {
-         annPly = StartPly + Math.floor((e.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
+         var annPly = StartPly + Math.floor((e.pageX - document.getElementById("GameAnnotationGraph").offsetLeft) / annotationBarWidth);
          if ((annPly >= StartPly) && (annPly <= StartPly + PlyNumber)) {
             if (e.shiftKey) { save_cache_to_localStorage(); }
             else { GoToMove(annPly); }
@@ -1596,12 +1617,14 @@ function print_chessboard_two() {
    }
 
 
-   annotateInProgress = null;
-   minAnnotationSeconds = Math.max(1, Math.floor(minAutoplayDelay/1000));
-   maxAnnotationSeconds = Math.max(100, Math.floor(maxAutoplayDelay/1000));
-   annotationSeconds_default = 15;
+   var annotateInProgress = null;
+   var minAnnotationSeconds = Math.max(1, Math.floor(minAutoplayDelay/1000));
+   var maxAnnotationSeconds = Math.max(100, Math.floor(maxAutoplayDelay/1000));
+   var annotationSeconds_default = 15;
+   var annotationSeconds = annotationSeconds_default;
 
    function getAnnotationSecondsFromLocalStorage() {
+      var as;
       try { as = parseFloat(localStorage.getItem("pgn4web_chess_viewer_annotationSeconds")); }
       catch(e) { return annotationSeconds_default; }
       return ((as === null) || (isNaN(as))) ? annotationSeconds_default : as;
@@ -1627,7 +1650,8 @@ function print_chessboard_two() {
             clearTimeout(annotateInProgress);
             annotateInProgress = null;
          }
-         if (theObj = document.getElementById("GameAnnotationMessage")) {
+         var theObj = document.getElementById("GameAnnotationMessage");
+         if (theObj) {
             theObj.innerHTML = "automated game" + (annotateGameMulti ? "s" : "") + " annotation in progress";
             theObj.title = theObj.innerHTML + " at " + annotationSeconds + " second" + (annotationSeconds == 1 ? "" : "s") + " per move; please do not interact with the chessboard until the annotation has completed; click here to stop the automated annotation";
             theObj.style.display = "";
@@ -1659,7 +1683,8 @@ function print_chessboard_two() {
    }
 
    function stopAnnotateGame(annotationCompleted) {
-      if (theObj = document.getElementById("GameAnnotationMessage")) {
+      var theObj = document.getElementById("GameAnnotationMessage");
+      if (theObj) {
          theObj.style.display = ((annotateInProgress) && (annotationCompleted)) ? "" : "none";
          theObj.innerHTML = ((annotateInProgress) && (annotationCompleted)) ? "automated game" + (annotateGameMulti ? "s" : "") + " annotation completed" : "";
          theObj.title = "";
@@ -1678,7 +1703,7 @@ function print_chessboard_two() {
    }
 
    function checkEngineUnderstandsGameAndWarn() {
-      retVal = engineUnderstandsGame(currentGame);
+      var retVal = engineUnderstandsGame(currentGame);
       if (!retVal) { myAlert("warning: engine annotation unavailable for the " + gameVariant[currentGame] + " variant", true); }
       return retVal;
    }
@@ -1691,9 +1716,11 @@ function print_chessboard_two() {
    }
 
    function scanGameForFen() {
-      savedCurrentPly = CurrentPly;
-      savedCurrentVar = CurrentVar;
-      if (wasAutoPlayOn = isAutoPlayOn) { SetAutoPlay(false); }
+      var index;
+      var savedCurrentPly = CurrentPly;
+      var savedCurrentVar = CurrentVar;
+      var wasAutoPlayOn = isAutoPlayOn;
+      if (wasAutoPlayOn) { SetAutoPlay(false); }
       MoveForward(StartPly + PlyNumber - savedCurrentPly, CurrentVar, true);
       resetFenPositions();
       while (true) {
@@ -1720,7 +1747,8 @@ function print_chessboard_two() {
       if (typeof(forward) == "undefined") {
          forward = ((typeof(event) != "undefined") && (typeof(event.shiftKey) != "undefined")) ? !event.shiftKey : true;
       }
-      if (wasAutoPlayOn = isAutoPlayOn) { SetAutoPlay(false); }
+      var wasAutoPlayOn = isAutoPlayOn;
+      if (wasAutoPlayOn) { SetAutoPlay(false); }
       for (var thisPly = CurrentPly + (forward ? 1 : -1); ; thisPly = thisPly + (forward ? 1 : -1)) {
          if (forward) { if (thisPly > StartPly + PlyNumber) { thisPly = StartPly; } }
          else { if (thisPly < StartPly) { thisPly = StartPly + PlyNumber; } }
@@ -1745,7 +1773,7 @@ function print_chessboard_two() {
    }
 
    function blunderCheck(threshold, backwards) {
-      thisPly = StartPly + ((CurrentPly - StartPly + (backwards ? -1 : 1) + (PlyNumber + 1)) % (PlyNumber + 1));
+      var thisPly = StartPly + ((CurrentPly - StartPly + (backwards ? -1 : 1) + (PlyNumber + 1)) % (PlyNumber + 1));
       while (thisPly !== CurrentPly) {
          if (isBlunder(thisPly, threshold)) {
             GoToMove(thisPly);
@@ -1800,7 +1828,8 @@ function print_chessboard_two() {
             g_backgroundEngine = new Worker(engineWorker);
             g_backgroundEngine.addEventListener("message", function (e) {
                if ((e.data.match("^pv")) && (fenString == CurrentFEN())) {
-                  if (matches = e.data.substr(3, e.data.length - 3).match(/Ply:(\d+) Score:(-*\d+) Nodes:(\d+) NPS:(\d+) (.*)/)) {
+                  var matches = e.data.substr(3, e.data.length - 3).match(/Ply:(\d+) Score:(-*\d+) Nodes:(\d+) NPS:(\d+) (.*)/);
+                  if (matches) {
                      g_depth = parseInt(matches[1], 10);
                      if (isNaN(g_ev = parseInt(matches[2], 10))) {
                         g_ev = "";
@@ -1810,7 +1839,7 @@ function print_chessboard_two() {
                         if (fenString.indexOf(" b ") !== -1) { g_ev = -g_ev; }
                      }
                      g_nodes = parseInt(matches[3], 10);
-                     nodesPerSecond = parseInt(matches[4], 10);
+                     var nodesPerSecond = parseInt(matches[4], 10);
                      g_topNodesPerSecond = Math.max(nodesPerSecond, g_topNodesPerSecond);
                      g_pv = matches[5].replace(/(^\s+|\s*\+|\s+$)/g, "").replace(/\s*stalemate/, "=").replace(/\s*checkmate/, "#");
                      if (searchMeaningful()) {
@@ -1992,6 +2021,7 @@ function print_chessboard_two() {
       analysisTimeout = setTimeout("analysisTimeout = null; save_cache_to_localStorage(); StopBackgroundEngine();", seconds * 1000);
    }
 
+   var fenString;
    function StartEngineAnalysis() {
       StopBackgroundEngine();
       if (InitializeBackgroundEngine()) {
@@ -2010,9 +2040,8 @@ function print_chessboard_two() {
 
    function detectGameEnd(pv, FEN) {
       if ((pv !== "") && (pv.match(/^[#=]/))) { return true; }
-      if (matches = FEN.match(/\s*\S+\s+\S+\s+\S+\s+\S+\s+(\d+)\s+\S+\s*/)) {
-         if (parseInt(matches[1], 10) > 100) { return true; }
-      }
+      var matches = FEN.match(/\s*\S+\s+\S+\s+\S+\s+\S+\s+(\d+)\s+\S+\s*/);
+      if ((matches) && (parseInt(matches[1], 10) > 100)) { return true; }
       return false;
    }
 
@@ -2053,6 +2082,8 @@ function print_footer() {
   print <<<END
 
 <script type="text/javascript">
+
+"use strict";
 
 function pgn4web_onload(e) {
   setPgnUrl("$pgnUrl");

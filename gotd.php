@@ -23,6 +23,7 @@ function get_pgnText($pgnUrl) {
   $fileLimitBytes = 10000000; // 10Mb
   $pgnText = file_get_contents($pgnUrl, NULL, NULL, 0, $fileLimitBytes + 1);
   if (!$pgnText) { return "[Event \"error: failed to get pgnData=$pgnUrl\"]\n"; }
+  $pgnText = str_replace(array("<", ">"), array("&lt;", "&gt;"), $pgnText);
   return $pgnText;
 }
 
