@@ -52,7 +52,7 @@ function customPgnHeaderTag(customTagString, htmlElementIdString, gameNum) {
 // custom comment tags API for use in customFunctionOnMove
 
 function customPgnCommentTag(customTagString, htmlElementIdString, plyNum, varId) {
-  var tagValues, tagValue;
+  var tagValues, tagValue, theObj;
   customTagString = customTagString.replace(/\W+/g, "");
   if (typeof(varId) == "undefined") { varId = 0; }
   if (typeof(plyNum) == "undefined") { plyNum = CurrentPly; }
@@ -459,7 +459,7 @@ function colRowFromSquare(square) {
 }
 
 function clearShortcutSquares(cols, rows) {
-  if ((typeof cols != "string") || (typeof rows != "string")) { return; }
+  if ((typeof(cols) != "string") || (typeof(rows) != "string")) { return; }
   for (var c=0; c<cols.length; c++) { for (var r=0; r<rows.length; r++) {
       boardShortcut(cols.charAt(c).toUpperCase()+rows.charAt(r), "", function(t,e){});
   } }
@@ -695,6 +695,7 @@ function detectBaseLocation() {
 
 var debugWin = null;
 function displayDebugInfo() {
+  var theObj;
   var base = detectBaseLocation();
   var jsurl = detectJavascriptLocation();
   stopAlertPrompt();
