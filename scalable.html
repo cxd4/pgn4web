@@ -48,27 +48,30 @@ body {
 
 <script type="text/javascript">
 
+"use strict";
+
 var squareSize;
 function myOnResize() {
-  boardObject = document.getElementById("GameBoard");
-  squareSize = Math.floor(Math.min(window.innerWidth, window.innerHeight) / 9);
+  var boardObject = document.getElementById("GameBoard");
+  var squareSize = Math.floor(Math.min(window.innerWidth, window.innerHeight) / 9);
   if (squareSize > 0) {
-    pieceSize = Math.floor(squareSize * 0.9);
-    boardBorder = Math.ceil(squareSize / 20);
-    shadowBorder = Math.floor(squareSize / 2);
+    var pieceSize = Math.floor(squareSize * 0.9);
+    var boardBorder = Math.ceil(squareSize / 20);
+    var shadowBorder = Math.floor(squareSize / 2);
 
-    sheet = document.styleSheets[1];
-    oldRules = sheet.cssRules.lenght;
+    var sheet = document.styleSheets[1];
+    var oldRules = sheet.cssRules.lenght;
     sheet.insertRule(".boardTable { border-width: " + boardBorder + "px; border-radius: " + boardBorder + "px; box-shadow: 0px 0px " + shadowBorder + "px #734C27; } ", sheet.cssRules.length);
     sheet.insertRule(".pieceImage { width:" + pieceSize + "px; height:" + pieceSize + "px; } ", sheet.cssRules.length);
     sheet.insertRule(".whiteSquare, .blackSquare, .highlightWhiteSquare, .highlightBlackSquare { width:" + squareSize + "px; height:" + squareSize + "px; } ", sheet.cssRules.length);
-    for (ii = 0; ii < oldRules; ii++) { sheet.deleteRule(0); }
+    for (var ii = 0; ii < oldRules; ii++) { sheet.deleteRule(0); }
 
     boardObject.style.paddingTop = (window.innerHeight - 8 * squareSize - 2 * boardBorder) / 2 + "px";
     boardObject.style.paddingBottom = (window.innerHeight - 8 * squareSize - 2 * boardBorder) / 2 + "px";
     boardObject.style.paddingLeft = (window.innerWidth - 8 * squareSize - 2 * boardBorder) / 2 + "px";
     boardObject.style.paddingRight = (window.innerWidth - 8 * squareSize - 2 * boardBorder) / 2 + "px";
-    if (theObj = document.getElementById("boardTable")) {
+    var theObj = document.getElementById("boardTable");
+    if (theObj) {
       theObj.style.height = (squareSize * 8 + boardBorder * 2) + "px";
       theObj.style.width = (squareSize * 8 + boardBorder * 2) + "px";
     }
@@ -79,6 +82,9 @@ function myOnResize() {
 
 <script src="pgn4web.js" type="text/javascript"></script>
 <script type="text/javascript">
+
+"use strict";
+
 SetImagePath("svgchess");
 SetImageType("svg");
 SetHighlightOption(true);
@@ -125,6 +131,8 @@ Qc4+ 1-0
 <div id="GameBoard"></div>
 
 <script type="text/javascript">
+
+"use strict";
 
 window.onerror = function(msg, url, linenumber) {
   document.body.innerHTML = "<p style='font-family: sans-serif; text-align: center;'><br>this web browser<br>is not supported</p>";
