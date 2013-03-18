@@ -18,6 +18,8 @@
 
 <script type="text/javascript">
 
+  "use strict";
+
   var pgnData_default = "live/live.pgn";
   var maxBoards_default = 8;
   var displayGame_default = 1;
@@ -65,17 +67,19 @@
   displayGame = parseInt(displayGame, 10);
   if (displayGame === 0) { displayGame = 1; }
 
-  var alertFlag = demoFlag = false;
+  var alertFlag = false;
+  var demoFlag = false;
   thisRegExp = /(&|\?)(refreshDemo|rd)=([^&]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
-    refreshDemo = unescape(window.location.search.match(thisRegExp)[3]);
+    var refreshDemo = unescape(window.location.search.match(thisRegExp)[3]);
     if ((refreshDemo == "true") || (refreshDemo == "t")) { alertFlag = demoFlag = true; }
   }
 
   thisRegExp = /(&|\?)(demoPly|dp)=([^&]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
     gameDemoMaxPly = unescape(window.location.search.match(thisRegExp)[3]).split(",");
-    for (g in gameDemoMaxPly) { gameDemoMaxPly[g] = isNaN(p = parseInt(gameDemoMaxPly[g], 10)) ? 0 : p; }
+    var p;
+    for (var g in gameDemoMaxPly) { gameDemoMaxPly[g] = isNaN(p = parseInt(gameDemoMaxPly[g], 10)) ? 0 : p; }
   }
 
   var refreshMinutes = refreshMinutes_default;
@@ -87,9 +91,10 @@
     if (refreshMinutes <= 0) { refreshMinutes = refreshMinutes_default; }
   }
 
-  SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, stepFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false)
+  SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, stepFlag);
 
   function getMaxBoardFromLocalStorage() {
+    var mb;
     try { mb = localStorage.getItem("pgn4web_chess_live_mosaic_viewer_maxBoards"); }
     catch(e) { return maxBoards_default; }
     return mb === null ? maxBoards_default : mb;
@@ -104,7 +109,7 @@
   var headlessPage = false;
   thisRegExp = /(&|\?)(headlessPage|hp)=([^&]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
-    headlessPageValue = unescape(window.location.search.match(thisRegExp)[3]);
+    var headlessPageValue = unescape(window.location.search.match(thisRegExp)[3]);
     if ((headlessPageValue == "true") || (headlessPageValue == "t")) { headlessPage = true; }
   }
 
@@ -206,6 +211,8 @@ a:hover {
 
 <script type="text/javascript">
 
+"use strict";
+
 function fixCSSforHeadelessPage() {
   document.write("<style type='text/css'> body { color: #AAAAAA; } a { color: #AAAAAA; } a:hover { color: black; } .beforeBoards { margin-top: 10px; } </style>");
 }
@@ -218,9 +225,9 @@ function printMenu() {
   document.write("<div id='rightMenu' class='menuLine' style='text-align:right; float:right;'></div><div id='leftMenu' class='menuLine' style='text-align:left; float:left;'><span id='GameLiveStatusDemo' title='this is a simulation of the live broadcast functionality'></span><a id='GameLiveStatus' href='javascript:void(0);' style='display:none;' onclick='clickGameLiveStatus(); this.blur();'></a></div><div id='infoMessage' class='menuLine infoMessage'>chess games viewer: loading PGN data, please wait...</div>");
 }
 
-timeOfLastReplayPreviousMoves = 0;
+var timeOfLastReplayPreviousMoves = 0;
 function clickGameLiveStatus() {
-  thisTime = (new Date()).getTime();
+  var thisTime = (new Date()).getTime();
   if (thisTime - timeOfLastReplayPreviousMoves < 333) {
     displayDebugInfo();
   } else {
@@ -230,21 +237,22 @@ function clickGameLiveStatus() {
 }
 
 function replayPreviousMoves() {
-  showAll = LiveBroadcastEnded;
-  for (thisBoard in boardId) {
+  var showAll = LiveBroadcastEnded, wf, rpm;
+  for (var thisBoard in boardId) {
     if ((wf = window.frames["board" + boardId[thisBoard]]) && (rpm = wf.replayPreviousMoves)) {
       if (showAll || wf.newMovesFlagTimeout) { rpm(1); }
     }
   }
 }
 
-nextBoardId = 1000;
-boardId = new Array();
+var nextBoardId = 1000;
+var boardId = new Array();
 
 function updateBoardFrames(newMaxBoards) {
-  if (theObj = document.getElementById("boardFrames")) {
+  var theObj = document.getElementById("boardFrames");
+  if (theObj) {
     theObj.innerHTML = "";
-    for (board = 0; board < newMaxBoards; board++) {
+    for (var board = 0; board < newMaxBoards; board++) {
       theObj.innerHTML += "<iframe src='live-mosaic-tile.html?ut=t&rm=" + refreshMinutes + "' class='hiddenFrame' id='board" + nextBoardId + "' name='board" + nextBoardId + "' width='256' height='306' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>";
       boardId[board] = nextBoardId++;
     }
@@ -270,6 +278,8 @@ if (headlessPage) {
 
 <script type="text/javascript">
 
+"use strict";
+
 updateBoardFrames(maxBoards);
 
 if (!headlessPage) {
@@ -285,6 +295,7 @@ var numberOfGamesForDisplay = 0;
 var firstGame;
 var startGame;
 var firstBoardDisplayGame = 0;
+var gamesForHiding;
 
 function firstFromDisplayGame(dGame) {
   if (dGame > numberOfGames) { dGame = numberOfGames; }
@@ -292,8 +303,9 @@ function firstFromDisplayGame(dGame) {
 
   if (dGame > 0) { dGame--; } // positive displayGame starts from +1 as first game
 
-  dGameAdjustment = 0;
+  var dGameAdjustment = 0;
   if (filteredGames.length > 0) {
+    var g;
     if (dGame >= 0) {
       for (g = 0; g < dGame; g++) {
         if (checkForHiddenGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g])) {
@@ -313,7 +325,7 @@ function firstFromDisplayGame(dGame) {
 }
 
 function gameKey(event, site, date, round, white, black) {
-  key = "";
+  var key = "";
   key += "[" + (typeof(event) == "string" ? event : "") + "]";
   key += "[" + (typeof(site) == "string" ? site : "") + "]";
   key += "[" + (typeof(round) == "string" ? round : "") + "]";
@@ -323,38 +335,37 @@ function gameKey(event, site, date, round, white, black) {
 }
 
 function pgn4webHideChildFrameGame(event, site, date, round, white, black, test) {
+  var res = false;
   if (numberOfGamesForDisplay > 1) {
     res = hideGame(event, site, date, round, white, black, test);
     if (res && (test !== true)) {
       firstGame = firstFromDisplayGame(firstBoardDisplayGame);
       customFunctionOnPgnTextLoad();
     }
-  } else {
-    res = false;
   }
   return res;
 }
 
 function hideGame(event, site, date, round, white, black, test) {
-  key = gameKey(event, site, date, round, white, black);
-  meaningful = (key.match(/[A-Za-z0-9]/) !== null);
+  var key = gameKey(event, site, date, round, white, black);
+  var meaningful = (key.match(/[A-Za-z0-9]/) !== null);
   if (meaningful && (test !== true)) {
-    for (f in filteredGames) { if (key == filteredGames[f]) { return false; } }
+    for (var f in filteredGames) { if (key == filteredGames[f]) { return false; } }
     filteredGames.push(key);
   }
   return meaningful;
 }
 
 function checkForHiddenGame(event, site, date, round, white, black) {
-  key = gameKey(event, site, date, round, white, black);
-  for (f in filteredGames) {
+  var key = gameKey(event, site, date, round, white, black);
+  for (var f in filteredGames) {
     if (key == filteredGames[f]) { return true; }
   }
   return false;
 }
 
 function hideEndedGames() {
-  for (g = 0; g < numberOfGames; g++) {
+  for (var g = 0; g < numberOfGames; g++) {
     if ((typeof(gameResult[g]) == "undefined") || (gameResult[g].indexOf("*") == -1)) {
       hideGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g]);
     }
@@ -376,7 +387,7 @@ function pgnGameForBoard(gameNum) {
 
   Init(gameNum);
 
-  localPgnGame = "";
+  var localPgnGame = "";
   if (gameEvent[gameNum]) { localPgnGame += "[Event \"" + gameEvent[gameNum] + "\"]\n"; }
   if (gameSite[gameNum]) { localPgnGame += "[Site \"" + gameSite[gameNum] + "\"]\n"; }
   if (gameDate[gameNum]) { localPgnGame += "[Date \"" + gameDate[gameNum] + "\"]\n"; }
@@ -389,11 +400,12 @@ function pgnGameForBoard(gameNum) {
   if (gameVariant[gameNum]) { localPgnGame += "[Variant \"" + gameVariant[gameNum] + "\"]\n"; }
   if (gameInitialWhiteClock[gameNum]) { localPgnGame += "[WhiteClock \"" + gameInitialWhiteClock[gameNum] + "\"]\n"; }
   if (gameInitialBlackClock[gameNum]) { localPgnGame += "[BlackClock \"" + gameInitialBlackClock[gameNum] + "\"]\n"; }
-  if (thisTag = customPgnHeaderTag("TimeControl")) { localPgnGame += "[TimeControl \"" + thisTag + "\"]\n"; }
+  var thisTag = customPgnHeaderTag("TimeControl");
+  if (thisTag) { localPgnGame += "[TimeControl \"" + thisTag + "\"]\n"; }
   localPgnGame += "\n";
 
-  gameDemoPlyNumber = gameDemoMaxPly[gameNum] <= gameDemoLength[gameNum] ? gameDemoMaxPly[gameNum] : gameDemoLength[gameNum] + 1;
-  for (thisPly = StartPly; thisPly < StartPly + gameDemoPlyNumber; thisPly++) {
+  var gameDemoPlyNumber = gameDemoMaxPly[gameNum] <= gameDemoLength[gameNum] ? gameDemoMaxPly[gameNum] : gameDemoLength[gameNum] + 1;
+  for (var thisPly = StartPly; thisPly < StartPly + gameDemoPlyNumber; thisPly++) {
     if (thisPly % 2) {
       if (thisComment = MoveComments[thisPly].replace(/{/g, "")) {
         localPgnGame += "{" + thisComment + "} " + ((thisPly+1)/2) + "... ";
@@ -404,15 +416,17 @@ function pgnGameForBoard(gameNum) {
       localPgnGame += (thisPly/2+1) + ". " + Moves[thisPly] + " ";
     }
   }
-  if (thisComment = MoveComments[thisPly].replace(/{/g, "")) { localPgnGame += "{" + thisComment + "} "; }
+  var thisComment = MoveComments[thisPly].replace(/{/g, "");
+  if (thisComment) { localPgnGame += "{" + thisComment + "} "; }
   localPgnGame += " *";
 
   return localPgnGame;
 }
 
 function updateBoard(thisBoardId) {
-  gameNum = -1;
-  thisBoard = -1;
+  var gameNum = -1;
+  var thisBoard = -1;
+  var thisFrame, gameForBoard, thisPgnGame, thisFrameClass;
   for (thisBoard in boardId) { if (thisBoardId === boardId[thisBoard]) { break; } }
   thisBoard = parseInt(thisBoard, 10);
   if ((thisBoard < boardId.length) && (thisFrame = document.getElementById("board" + thisBoardId))) {
@@ -445,13 +459,14 @@ var liveBroadcastUpdateTicker = 0;
 var previousPgnGameLength = new Array();
 
 function customFunctionOnPgnTextLoad() {
+  var theObj;
 
   if (firstLoadPgnText) { firstGame = firstFromDisplayGame(displayGame); }
 
   unfilteredGames = new Array();
-  newMovesInShownGames = false;
+  var newMovesInShownGames = false;
   gamesForHiding = 0;
-  for (g = 0; g < numberOfGames; g++) {
+  for (var g = 0; g < numberOfGames; g++) {
     if (!checkForHiddenGame(gameEvent[g], gameSite[g], gameDate[g], gameRound[g], gameWhite[g], gameBlack[g])) {
       unfilteredGames.push(g);
       if ((typeof(gameResult[g]) == "undefined") || (gameResult[g].indexOf("*") == -1)) { gamesForHiding++; }
@@ -459,11 +474,12 @@ function customFunctionOnPgnTextLoad() {
   }
   numberOfGamesForDisplay = unfilteredGames.length;
 
-  for (board = 0; board < maxBoards; board++) {
+  for (var board = 0; board < maxBoards; board++) {
     if ((g = updateBoard(boardId[board])) != -1) {
       if (board === 0) { firstBoardDisplayGame = displayGame >=0 ? g + 1 : numberOfGames - g; }
-      found_g = false; for (f in unfilteredGames) { if (unfilteredGames[f] === g) { found_g = true; break; } }
+      var found_g = false; for (var f in unfilteredGames) { if (unfilteredGames[f] === g) { found_g = true; break; } }
       if (found_g) {
+        var currentPgnGameLength;
         if (LiveBroadcastDemo) {
           currentPgnGameLength = gameDemoMaxPly[g] > gameDemoLength[g] ? gameDemoLength[g] + 1 : gameDemoMaxPly[g];
         } else {
@@ -493,6 +509,7 @@ function customFunctionOnPgnTextLoad() {
 }
 
 function updateMenu() {
+  var theRightObject, theLeftObject, theInfoObject;
 
   if (theRightObject = document.getElementById("rightMenu")) {
     theRightObject.innerHTML = "";
@@ -528,9 +545,9 @@ function updateMenu() {
     if (numberOfGamesForDisplay < 1) {
       theInfoObject.innerHTML = "warning: all games hidden: <a href='javascript:void(0);' onclick='restoreHiddenGames();' onfocus='this.blur();'>unhide games</a> or <a href='javascript:void(0);' onclick='refreshPgnSource();' onfocus='this.blur();'>force live refresh</a>";
     } else {
-      theEvent = "";
-      theSite = "";
-      for (n = 0; n < numberOfGames; n++) {
+      var theEvent = "";
+      var theSite = "";
+      for (var n = 0; n < numberOfGames; n++) {
         if ((theEvent !== false) && (theEvent !== gameEvent[n])) {
           if (theEvent) { theEvent = false; }
           else { theEvent = gameEvent[n]; }
@@ -546,7 +563,7 @@ function updateMenu() {
       if (theSite) { theSite = theSite.replace(/\s/g, "&nbsp;").replace(/-/g, "&#8209;"); }
 
       if (theEvent || theSite) {
-        theInfoObjectText = "<span class='notranslate'>&nbsp;&nbsp;&nbsp;";
+        var theInfoObjectText = "<span class='notranslate'>&nbsp;&nbsp;&nbsp;";
         if (theEvent) { theInfoObjectText += theEvent; }
         if (theEvent && theSite) { theInfoObjectText += "&nbsp;&nbsp;&nbsp;"; }
         if (theSite) { theInfoObjectText += theSite; }

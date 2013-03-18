@@ -21,12 +21,16 @@
 
 <script type="text/javascript">
 
+  "use strict";
+
+  var thisRegExp;
+
   var readyToReceivePgn = false;
 
   var useTextarea = false;
   thisRegExp = /(&|\?)(useTextarea|ut)=([^&]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
-    useTextareaValue = unescape(window.location.search.match(thisRegExp)[3]);
+    var useTextareaValue = unescape(window.location.search.match(thisRegExp)[3]);
     if ((useTextareaValue == "true") || (useTextareaValue == "t")) { useTextarea = true; }
   }
 
@@ -44,10 +48,11 @@
     }
   }
 
-  var alertFlag = demoFlag = false;
+  var alertFlag = false;
+  var demoFlag = false;
   thisRegExp = /(&|\?)(refreshDemo|rd|demo|d)=([^&]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
-    refreshDemo = unescape(window.location.search.match(thisRegExp)[3]);
+    var refreshDemo = unescape(window.location.search.match(thisRegExp)[3]);
     if ((refreshDemo == "true") || (refreshDemo == "t")) { alertFlag = demoFlag = true; }
   }
 
@@ -68,7 +73,7 @@
     iniGame = unescape(window.location.search.match(thisRegExp)[3]);
   }
 
-  var thisRegExp = /(&|\?)(help|h)=(true|t)(&|$)/i;
+  thisRegExp = /(&|\?)(help|h)=(true|t)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
     alert("pgn4web live-mosaic-tile.html parameters" + "\n" +
       " - useTextarea = " + useTextarea + "; if set true uses textarea as PGN input (default false = use pgnData)" + "\n" +
@@ -101,6 +106,7 @@
   clearShortcutSquares("ABCDEFGH", "345");
 
   try {
+    var pcscsfcf, cscs;
     if (parent && (pcscsfcf = parent.pgn4webClearShortCutSquaresForChildFrames)) {
       for (cscs in pcscsfcf) { clearShortcutSquares(pcscsfcf[cscs][0], pcscsfcf[cscs][1]); }
     }
@@ -124,7 +130,7 @@
 
   function customFunctionOnPgnTextLoad() {
 
-    thisCurrentGame = currentGame;
+    var thisCurrentGame = currentGame;
 
     // force reloading iniGame each time
     SetInitialGame(iniGame);
@@ -141,7 +147,8 @@
   var old_gameKey = "";
   var old_PlyNumber = -1;
   function customFunctionOnPgnGameLoad() {
-    if (theObj = document.getElementById("bottomContainer")) {
+    var theObj = document.getElementById("bottomContainer");
+    if (theObj) {
       theObj.title = numberOfGames > 1 ? " game " + (currentGame+1) + " of " + numberOfGames + "  " : "";
       addTagToTitle("event:", gameEvent[currentGame], theObj);
       addTagToTitle("site:", gameSite[currentGame], theObj);
@@ -164,7 +171,7 @@
       }
     } catch(e) { myAlert("warning: failed accessing frame's parent for hiding game option", false); }
 
-    this_gameKey = gameKey(gameEvent[currentGame], gameSite[currentGame], gameDate[currentGame], gameRound[currentGame], gameWhite[currentGame], gameBlack[currentGame]);
+    var this_gameKey = gameKey(gameEvent[currentGame], gameSite[currentGame], gameDate[currentGame], gameRound[currentGame], gameWhite[currentGame], gameBlack[currentGame]);
     newMovesFlag((old_gameKey === this_gameKey) && (old_PlyNumber !== PlyNumber));
     old_gameKey = this_gameKey;
     old_PlyNumber = PlyNumber;
@@ -176,14 +183,13 @@
       clearTimeout(newMovesFlagTimeout);
       newMovesFlagTimeout = null;
     }
-    if (theObj = document.getElementById("GameNewMoves")) {
-      theObj.innerHTML = onOff ? "^" : "";
-    }
+    var theObj = document.getElementById("GameNewMoves");
+    if (theObj) { theObj.innerHTML = onOff ? "^" : ""; }
     if (onOff) { newMovesFlagTimeout = setTimeout("newMovesFlag(false);", refreshMinutes * 60000 + 2000); }
   }
 
   function gameKey(event, site, date, round, white, black) {
-    key = "";
+    var key = "";
     key += "[" + (typeof(event) == "string" ? event : "") + "]";
     key += "[" + (typeof(site) == "string" ? site : "") + "]";
     key += "[" + (typeof(round) == "string" ? round : "") + "]";
@@ -212,7 +218,7 @@
     readyToReceivePgn = true;
     try {
       if (parent && parent.updateBoard) {
-        boardId = parseInt(window.name.substr(5), 10);
+        var boardId = parseInt(window.name.substr(5), 10);
         if (!isNaN(boardId)) { parent.updateBoard(boardId); }
         else { myAlert("warning: failed detecting board id", false); }
       }
