@@ -29,6 +29,9 @@
 <script src="fide-lookup.js" type="text/javascript"></script>
 
 <script type="text/javascript">
+
+"use strict";
+
 SetHighlightOption(true);
 SetGameSelectorOptions("&middot;&middot;&middot;", true, 0, 0, 0, 15, 15, 3, 0); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
 SetAutoplayDelay(2000); // milliseconds
@@ -36,12 +39,12 @@ SetAutostartAutoplay(false);
 SetAutoplayNextGame(false);
 SetShortcutKeysEnabled(true);
 
-pgnData_default = "";
-refreshMinutes_default = 0;
-initialGame_default = "first";
-pieceBaseSize_default = 96;
-pieceFont_default = "uscf";
-theme = new Array();
+var pgnData_default = "";
+var refreshMinutes_default = 0;
+var initialGame_default = "first";
+var pieceBaseSize_default = 96;
+var pieceFont_default = "uscf";
+var theme = new Array();
 theme[0]  = new Array("black",  "FFFFFF", "000000", "999999", "777777", "000000");
 theme[1]  = new Array("blue",   "000000", "80B0E0", "E6EDF3", "A0BED8", "596978");
 theme[2]  = new Array("braun",  "221100", "FFCE9E", "FFCE9E", "D18B47", "663300");
@@ -53,15 +56,17 @@ theme[7]  = new Array("pink",   "615F54", "EDE8D5", "EDE8D5", "CFCBB3", "F8CCA0"
 theme[8]  = new Array("white",  "000000", "FFFFFF", "FFFFFF", "E4E4E4", "000000");
 theme[9]  = new Array("wood",   "663300", "FFFFFF", "FFCC99", "CC9966", "663300");
 theme[10] = new Array("yellow", "54110C", "F2D798", "F2D798", "C9AD6F", "54110C");
-colorTheme_indexDefault = 2;
-colorThemeOptions = "";
-for (ii = 0; ii < theme.length; ii++) { colorThemeOptions += "'" + theme[ii][0] + "' | "; }
+var colorTheme_indexDefault = 2;
+var colorThemeOptions = "";
+for (var ii = 0; ii < theme.length; ii++) { colorThemeOptions += "'" + theme[ii][0] + "' | "; }
 colorThemeOptions += "'random' ";
 
-fontSizeRatio_default = 0.8;
-pieceSizeRatio_default = 0.8;
-sizeRatio_min = 0.3;
-sizeRatio_max = 1;
+var fontSizeRatio_default = 0.8;
+var pieceSizeRatio_default = 0.8;
+var sizeRatio_min = 0.3;
+var sizeRatio_max = 1;
+
+var thisRegExp;
 
 thisRegExp = /(&|\?)(help|h)=(true|t)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
@@ -91,14 +96,14 @@ if (window.location.search.match(thisRegExp) !== null) {
 
 // undocumented feature
 thisRegExp = /(&|\?)(engineWinPrepareIdle|ewpi)=(true|t)(&|$)/i;
-engineWinPrepareIdle = (window.location.search.match(thisRegExp) !== null);
+var engineWinPrepareIdle = (window.location.search.match(thisRegExp) !== null);
 
 // undocumented feature
 thisRegExp = /(&|\?)(debug|d)=(true|t)(&|$)/i;
-debug = (window.location.search.match(thisRegExp) !== null);
-dynamicFrameDebugString = "";
+var debug = (window.location.search.match(thisRegExp) !== null);
+var dynamicFrameDebugString = "";
 
-liveString = "";
+var liveString = "";
 thisRegExp = /(&|\?)(live|l)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   liveString = unescape(window.location.search.match(thisRegExp)[3]);
@@ -107,15 +112,16 @@ if ((liveString == "true") || (liveString == "t")) {
   refreshMinutes_default = 1;
 }
 
-alertFlag = demoFlag = false;
+var alertFlag = false;
+var demoFlag = false;
 thisRegExp = /(&|\?)(refreshDemo|rd)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
-  refreshDemo = unescape(window.location.search.match(thisRegExp)[3]);
+  var refreshDemo = unescape(window.location.search.match(thisRegExp)[3]);
   if ((refreshDemo == "true") || (refreshDemo == "t")) { alertFlag = demoFlag = true; }
 }
 
-refreshMinutes = refreshMinutes_default;
-stepFlag = true;
+var refreshMinutes = refreshMinutes_default;
+var stepFlag = true;
 thisRegExp = /(&|\?)(refreshMinutes|rm)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   refreshMinutes = parseFloat(unescape(window.location.search.match(thisRegExp)[3]));
@@ -129,16 +135,16 @@ if (refreshMinutes) {
 
 SetInitialHalfmove(refreshMinutes ? "end" : "start", true);
 
-SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, stepFlag); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false)
+SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, stepFlag);
 
-pgnData = pgnData_default;
+var pgnData = pgnData_default;
 thisRegExp = /(&|\?)(pgnData|pd)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   pgnData = unescape(window.location.search.match(thisRegExp)[3]);
 }
-SetPgnUrl(pgnData); // if set, this has precedence over the inline PGN in the HTML file
+SetPgnUrl(pgnData);
 
-iniGame = initialGame_default;
+var iniGame = initialGame_default;
 thisRegExp = /(&|\?)(initialGame|ig)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   iniGame = unescape(window.location.search.match(thisRegExp)[3]);
@@ -146,13 +152,13 @@ if (window.location.search.match(thisRegExp) !== null) {
 SetInitialGame(iniGame);
 
 // undocumented feature
-allowedPieceBaseSize = new Array(20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 52, 56, 60, 64, 72, 80, 88, 96, 112, 128, 144, 300);
-pieceBaseSize = pieceBaseSize_default;
+var allowedPieceBaseSize = new Array(20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 52, 56, 60, 64, 72, 80, 88, 96, 112, 128, 144, 300);
+var pieceBaseSize = pieceBaseSize_default;
 thisRegExp = /(&|\?)(pieceBaseSize|pbs)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   pieceBaseSize = parseInt(pieceBaseSize_input = unescape(window.location.search.match(thisRegExp)[3]), 10);
-  validPieceBaseSize = false;
-  for (pieceBaseIndex in allowedPieceBaseSize) {
+  var validPieceBaseSize = false;
+  for (var pieceBaseIndex in allowedPieceBaseSize) {
     if (pieceBaseSize === allowedPieceBaseSize[pieceBaseIndex]) {
       validPieceBaseSize = true;
       break;
@@ -164,7 +170,7 @@ if (window.location.search.match(thisRegExp) !== null) {
   }
 }
 
-pieceFont = pieceFont_default;
+var pieceFont = pieceFont_default;
 thisRegExp = /(&|\?)(pieceFont|pf)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   pieceFont = unescape(window.location.search.match(thisRegExp)[3]);
@@ -174,8 +180,7 @@ if (pieceFont == "m") { pieceFont = "merida"; }
 if (pieceFont == "u") { pieceFont = "uscf"; }
 if (pieceFont == "s") { pieceFont = "svgchess"; }
 if ((pieceFont == "random") || (pieceFont == "r")) {
-  randomPiece = Math.floor(Math.random() * 3);
-  switch (randomPiece) {
+  switch (Math.floor(Math.random() * 3)) {
     case 1: pieceFont = "merida"; break;
     case 2: pieceFont = "uscf"; break;
     default: pieceFont = "alpha"; break;
@@ -190,46 +195,46 @@ if (pieceFont == "svgchess") {
   SetImageType("png");
 }
 
-colorTheme = theme[colorTheme_indexDefault][0];
+var colorTheme = theme[colorTheme_indexDefault][0];
 thisRegExp = /(&|\?)(colorTheme|ct)=([\w]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   colorTheme = unescape(window.location.search.match(thisRegExp)[3]);
 }
-colorTheme_index = colorTheme_indexDefault;
+var colorTheme_index = colorTheme_indexDefault;
 if (colorTheme == "random") { colorTheme_index = Math.floor(theme.length * Math.random()); }
 else { for (ii = 0; ii < theme.length; ii++) { if (theme[ii][0] === colorTheme) { colorTheme_index = ii; break; } } }
 
-fontColorHex_default = theme[colorTheme_index][1];
-backgroundColorHex_default = theme[colorTheme_index][2];
-lightColorHex_default = theme[colorTheme_index][3];
-darkColorHex_default = theme[colorTheme_index][4];
-highlightColorHex_default = theme[colorTheme_index][5];
+var fontColorHex_default = theme[colorTheme_index][1];
+var backgroundColorHex_default = theme[colorTheme_index][2];
+var lightColorHex_default = theme[colorTheme_index][3];
+var darkColorHex_default = theme[colorTheme_index][4];
+var highlightColorHex_default = theme[colorTheme_index][5];
 
-fontColorHex = fontColorHex_default;
+var fontColorHex = fontColorHex_default;
 thisRegExp = /(&|\?)(fontColorHex|fch)=([A-F0-9]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   fontColorHex = unescape(window.location.search.match(thisRegExp)[3]);
 }
 
-backgroundColorHex = backgroundColorHex_default;
+var backgroundColorHex = backgroundColorHex_default;
 thisRegExp = /(&|\?)(backgroundColorHex|bch)=([A-F0-9]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   backgroundColorHex = unescape(window.location.search.match(thisRegExp)[3]);
 }
 
-lightColorHex = lightColorHex_default;
+var lightColorHex = lightColorHex_default;
 thisRegExp = /(&|\?)(lightColorHex|lch)=([A-F0-9]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   lightColorHex = unescape(window.location.search.match(thisRegExp)[3]);
 }
 
-darkColorHex = darkColorHex_default;
+var darkColorHex = darkColorHex_default;
 thisRegExp = /(&|\?)(darkColorHex|dch)=([A-F0-9]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   darkColorHex = unescape(window.location.search.match(thisRegExp)[3]);
 }
 
-highlightColorHex = highlightColorHex_default;
+var highlightColorHex = highlightColorHex_default;
 thisRegExp = /(&|\?)(highlightColorHex|hch)=(t|transparent)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   highlightColorHex = "";
@@ -241,15 +246,15 @@ if (window.location.search.match(thisRegExp) !== null) {
   }
 }
 
-showColorFlagString = "false";
+var showColorFlagString = "false";
 thisRegExp = /(&|\?)(showColorFlag|scf)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   showColorFlagString = unescape(window.location.search.match(thisRegExp)[3]);
 }
-showColorFlag = ((showColorFlagString == "true") || (showColorFlagString == "t"));
+var showColorFlag = ((showColorFlagString == "true") || (showColorFlagString == "t"));
 
 // undocumented feature
-fontSizeRatio = fontSizeRatio_default;
+var fontSizeRatio = fontSizeRatio_default;
 thisRegExp = /(&|\?)(fontSizeRatio|fsr)=([0-9.]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   fontSizeRatio = parseFloat(unescape(window.location.search.match(thisRegExp)[3]));
@@ -257,19 +262,19 @@ if (window.location.search.match(thisRegExp) !== null) {
 }
 
 // undocumented feature
-pieceSizeRatio = pieceSizeRatio_default;
+var pieceSizeRatio = pieceSizeRatio_default;
 thisRegExp = /(&|\?)(pieceSizeRatio|psr)=([0-9.]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   pieceSizeRatio = parseFloat(unescape(window.location.search.match(thisRegExp)[3]));
   if (isNaN(pieceSizeRatio) || (pieceSizeRatio < sizeRatio_min) || (pieceSizeRatio > sizeRatio_max)) { pieceSizeRatio = pieceSizeRatio_default; }
 }
 
-bareString = "";
+var bareString = "";
 thisRegExp = /(&|\?)(bare|b)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   bareString = unescape(window.location.search.match(thisRegExp)[3]);
 }
-bare = ((bareString == "true") || (bareString == "t"));
+var bare = ((bareString == "true") || (bareString == "t"));
 
 
 function myRulesLength(sheet) {
@@ -289,6 +294,7 @@ function myDeleteRule(sheet, index) {
 }
 
 function toggleColorFlag() {
+  var theObj;
   showColorFlag = !showColorFlag;
   if (!showColorFlag) {
     if (theObj = document.getElementById("whiteColorFlag")) { theObj.style.display = "none"; }
@@ -301,35 +307,38 @@ function toggleColorFlag() {
 
 var horizontalLayout;
 function myOnResize() {
+  var ww, wh;
   if (window.innerWidth && window.innerHeight) { ww = window.innerWidth; wh = window.innerHeight; }
   else if (document.documentElement && document.documentElement.clientWidth) { ww = document.documentElement.clientWidth; wh = document.documentElement.clientHeight; }
   else if (document.body && document.body.clientWidth) { ww = document.body.clientWidth; wh = document.body.clientHeight; }
   else { return false; }
 
+  var squareSize;
   if (bare) {
     horizontalLayout = (ww >= wh);
     squareSize = Math.min(ww / 8, wh / 8);
   } else {
-    squareSize_H = Math.min(ww / (16 / 9), wh) / 8;
-    squareSize_V = Math.min(ww, wh / (16 / 9)) / 8;
+    var squareSize_H = Math.min(ww / (16 / 9), wh) / 8;
+    var squareSize_V = Math.min(ww, wh / (16 / 9)) / 8;
     horizontalLayout = (squareSize_H >= squareSize_V);
     squareSize = horizontalLayout ? squareSize_H : squareSize_V;
   }
+  var lineHeight;
   if (horizontalLayout) {
     lineHeight = Math.floor(squareSize * 8 / 16.5);
   } else {
     lineHeight = Math.floor(Math.min((wh - squareSize * 8) / (11 + 6/2), squareSize * 8 / 16.5));
   }
-  fontSize = Math.floor(lineHeight * fontSizeRatio);
+  var fontSize = Math.floor(lineHeight * fontSizeRatio);
   if (fontSize > lineHeight) { fontSize = lineHeight; }
-  squareBorderWidth = Math.min(Math.ceil(squareSize / 50), 3);
-  bareSquareSize = squareSize - 2 * squareBorderWidth;
-  pieceSize = Math.floor(squareSize * pieceSizeRatio);
+  var squareBorderWidth = Math.min(Math.ceil(squareSize / 50), 3);
+  var bareSquareSize = squareSize - 2 * squareBorderWidth;
+  var pieceSize = Math.floor(squareSize * pieceSizeRatio);
   if (pieceSize > bareSquareSize) { pieceSize = Math.floor(bareSquareSize); }
-  headerContainerWidth = horizontalLayout ? ww - 9 * squareSize + Math.floor(3 * lineHeight / 4) : ww;
+  var headerContainerWidth = horizontalLayout ? ww - 9 * squareSize + Math.floor(3 * lineHeight / 4) : ww;
 
-  sheet = document.styleSheets[0];
-  oldRules = myRulesLength(sheet);
+  var sheet = document.styleSheets[0];
+  var oldRules = myRulesLength(sheet);
 
   myInsertRule(sheet, "body", "padding: 0px; margin: 0px; white-space: nowrap; overflow: hidden; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;");
   myInsertRule(sheet, "a", "text-decoration: none; color: #" + fontColorHex + ";");
@@ -351,7 +360,7 @@ function myOnResize() {
   } else {
     myInsertRule(sheet, ".liveStatusLine", "display: none;");
     if (horizontalLayout) { myInsertRule(sheet, ".gameButtons", "width: " + (headerContainerWidth - lineHeight) + "px; " + "text-align: left;"); }
-    buttonCss = "margin: 0px; padding: 0px; width: " + (3 * lineHeight / 2) + "px !important; height: " + lineHeight + "px; color: #" + fontColorHex + "; border-style: none; -webkit-appearance: none; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;";
+    var buttonCss = "margin: 0px; padding: 0px; width: " + (3 * lineHeight / 2) + "px !important; height: " + lineHeight + "px; color: #" + fontColorHex + "; border-style: none; -webkit-appearance: none; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;";
     myInsertRule(sheet, ".buttonControl", buttonCss);
     myInsertRule(sheet, ".buttonControlPlay", buttonCss);
     myInsertRule(sheet, ".buttonControlStop", buttonCss);
@@ -360,8 +369,8 @@ function myOnResize() {
   myInsertRule(sheet, ".colorFlag", "height: 0.8ex; width: 0.8ex; border-width: 1px; border-color: #" + fontColorHex + "; border-style: solid; margin-bottom: 0.2ex; margin-left: " + Math.floor(5 * lineHeight / 9) + "px; margin-right:" + Math.floor(5 * lineHeight / 9) + "px;");
   myInsertRule(sheet, ".leftRightSpacing", "margin-left: " + Math.floor(lineHeight / 2) + "px; margin-right: " + Math.floor(lineHeight / 2) + "px;");
   if (!horizontalLayout) {
-    variableSpacerLineHeight = Math.floor(Math.min((wh - squareSize * 8 - lineHeight * 11) / 6, lineHeight / 2));
-    variableSpacerFontSize = Math.floor(variableSpacerLineHeight * 0.8);
+    var variableSpacerLineHeight = Math.floor(Math.min((wh - squareSize * 8 - lineHeight * 11) / 6, lineHeight / 2));
+    var variableSpacerFontSize = Math.floor(variableSpacerLineHeight * 0.8);
     myInsertRule(sheet, ".variableSpacer", "line-height: " + variableSpacerLineHeight + "px; font-size: " + variableSpacerFontSize + "px;");
   }
   var gameListFontSize =  Math.floor(Math.min(ww / 30, wh / 24));
@@ -372,7 +381,9 @@ function myOnResize() {
   myInsertRule(sheet, ".gameListHeader", "overflow: hidden; width: " + ww + "px; padding-top: " + gameListHeaderPadding + "px; padding-bottom: " + gameListHeaderPadding + "px;");
   myInsertRule(sheet, ".gameListBody", "height: " + gameListBodyHeight + "px; width: " + ww + "px; overflow: auto; scrollbar-base-color: #" + backgroundColorHex + ";");
 
-  for (ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
+  for (var ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
+
+  var theObj;
 
   if (theObj = document.getElementById("boardTable")) {
     theObj.style.height = (squareSize * 8) + "px";
@@ -426,6 +437,7 @@ function fillGameList(force) {
       var thisBold;
       text += "<div class='gameListBody' id='GameListBody'>";
       var firstGame = true;
+      var matches;
       while (matches = extractGamesRegExp.exec(textSelectOptions)) {
         if (firstGame) { firstGame = false; } else { text += "<br/>"; }
         thisBold = (parseInt(matches[1], 10) === currentGame);
@@ -531,13 +543,13 @@ function customFunctionOnPgnGameLoad() {
 }
 
 function customFunctionOnMove() {
-  extraMoves = 2;
+  var extraMoves = 2;
 
   document.getElementById("GamePrevMoves").innerHTML = "";
   document.getElementById("GameCurrMove").innerHTML = "";
   document.getElementById("GameNextMoves").innerHTML = "";
-  theObj = document.getElementById("GamePrevMoves");
-  thisPly = Math.max(CurrentPly - extraMoves - 1, StartPly);
+  var theObj = document.getElementById("GamePrevMoves");
+  var thisPly = Math.max(CurrentPly - extraMoves - 1, StartPly);
   if (thisPly > StartPly) { theObj.innerHTML += "... "; }
   for (; thisPly < Math.min(CurrentPly + extraMoves, StartPly + PlyNumber); thisPly++) {
     if (thisPly == CurrentPly) {
@@ -558,9 +570,10 @@ function customFunctionOnMove() {
 
 
 function fixColorFlag() {
+  var theObj, clockObject;
 
   if (showColorFlag) {
-    whiteFlagPadding = (horizontalLayout || ((clockObject = document.getElementById("GameWhiteClock")) && (clockObject.innerHTML)));
+    var whiteFlagPadding = (horizontalLayout || ((clockObject = document.getElementById("GameWhiteClock")) && (clockObject.innerHTML)));
     if (theObj = document.getElementById("whiteColorFlag")) {
       theObj.style.display = "inline";
       theObj.style.visibility = CurrentPly % 2 ? "hidden" : "visible";
@@ -569,7 +582,7 @@ function fixColorFlag() {
       theObj.style.display = whiteFlagPadding ? "inline" : "none";
       theObj.style.visibility = "hidden";
     }
-    blackFlagPadding = (horizontalLayout || ((clockObject = document.getElementById("GameBlackClock")) && (clockObject.innerHTML)));
+    var blackFlagPadding = (horizontalLayout || ((clockObject = document.getElementById("GameBlackClock")) && (clockObject.innerHTML)));
     if (theObj = document.getElementById("blackColorFlag")) {
       theObj.style.display = "inline";
       theObj.style.visibility = CurrentPly % 2 ? "visible" : "hidden";
@@ -601,7 +614,7 @@ function customShortcutKey_Shift_4() {
   toggleBareChessboard();
 }
 
-showFullscreenChessboardTimeout = null;
+var showFullscreenChessboardTimeout = null;
 function customShortcutKey_Shift_5() {
   if (showFullscreenChessboardTimeout) {
     clearTimeout(showFullscreenChessboardTimeout);
@@ -631,7 +644,7 @@ function toggleBareChessboard() {
 }
 
 function showFullscreenChessboard(newWin) {
-  win = window;
+  var win = window;
   if (newWin) { win.open(location.href.replace(/(pieceBaseSize|pbs)=[^&]*/gi, ""), "_blank"); }
   else {
     while (win.parent !== win) { win = win.parent; }
@@ -666,7 +679,7 @@ function meaningfulHeader(tagValue) {
 }
 
 function gameTooltipInfo() {
-  str = " game " + (currentGame+1) + " of " + numberOfGames + "  ";
+  var str = " game " + (currentGame+1) + " of " + numberOfGames + "  ";
   if (LiveBroadcastDelay > 0) { str += LiveBroadcastStatusString.replace(/^(\d*).*$/, "($1 live) "); }
   if (meaningfulHeader(gameEvent[currentGame])) { str+= "\n event: " + gameEvent[currentGame] + "  "; }
   if (meaningfulHeader(gameSite[currentGame])) { str+= "\n site: " + gameSite[currentGame] + "  "; }
@@ -679,7 +692,7 @@ function gameTooltipInfo() {
 }
 
 function pgn4web_onload(e) {
-  calculatedPieceSize = myOnResize();
+  var calculatedPieceSize = myOnResize();
   start_pgn4web();
   if (calculatedPieceSize === false) { myOnResize(); }
 }
@@ -724,8 +737,11 @@ function pgn4web_onload(e) {
 
 <script type="text/javascript">
 
-if ((LiveBroadcastDelay) && (theObj = document.getElementById("GameLiveStatusDemo"))) {
-  theObj.innerHTML = LiveBroadcastDemo ? "&nbsp;&nbsp;demo" : "";
+"use strict";
+
+if (LiveBroadcastDelay) {
+  var theObj = document.getElementById("GameLiveStatusDemo");
+  if (theObj) { theObj.innerHTML = LiveBroadcastDemo ? "&nbsp;&nbsp;demo" : ""; }
 }
 
 </script>
