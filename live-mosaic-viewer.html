@@ -129,21 +129,16 @@ body {
   overflow-y: auto;
 }
 
-a:link, a:visited, a:active {
+a {
   color: black;
   text-decoration: none;
 }
 
 a:hover {
   color: red;
-  text-decoration: none;
 }
 
-.header,
-.header:link,
-.header:visited,
-.header:hover,
-.header:active {
+.header {
   color: red;
   text-decoration: none;
 }
@@ -212,7 +207,7 @@ a:hover {
 <script type="text/javascript">
 
 function fixCSSforHeadelessPage() {
-  document.write("<style type='text/css'> body { color: #AAAAAA; } a:link, a:visited, a:active { color: #AAAAAA; } a:hover { color: black; } .beforeBoards { margin-top: 10px; } </style>");
+  document.write("<style type='text/css'> body { color: #AAAAAA; } a { color: #AAAAAA; } a:hover { color: black; } .beforeBoards { margin-top: 10px; } </style>");
 }
 
 function printHeader() {

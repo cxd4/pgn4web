@@ -332,10 +332,7 @@ function myOnResize() {
   oldRules = myRulesLength(sheet);
 
   myInsertRule(sheet, "body", "padding: 0px; margin: 0px; white-space: nowrap; overflow: hidden; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;");
-  myInsertRule(sheet, "a:link", "text-decoration: none; color: #" + fontColorHex + ";");
-  myInsertRule(sheet, "a:visited", "text-decoration: none; color: #" + fontColorHex + ";");
-  myInsertRule(sheet, "a:active", "text-decoration: none; color: #" + fontColorHex + ";");
-  myInsertRule(sheet, "a:hover", "text-decoration: none; color: #" + fontColorHex + ";");
+  myInsertRule(sheet, "a", "text-decoration: none; color: #" + fontColorHex + ";");
   if (bare) {
     if (horizontalLayout) { myInsertRule(sheet, ".boardTable", "margin-left: " + ((ww - 8 * squareSize) / 2) + "px;"); }
     else { myInsertRule(sheet, ".boardTable", "margin-top: " + ((wh - 8 * squareSize) / 2) + "px;"); }
