@@ -22,7 +22,7 @@
 var pgn4web_live_pointer_url;
 if (pgn4web_live_pointer_url === undefined) { pgn4web_live_pointer_url = "."; }
 
-newLocationSearch = (location.search ? location.search + "&" : "?") + "live=true";
+var newLocationSearch = (location.search ? location.search + "&" : "?") + "live=true";
 location.href = pgn4web_live_pointer_url + "/dynamic-frame.html" + newLocationSearch;
 
 </script>
