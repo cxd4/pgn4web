@@ -1706,7 +1706,7 @@ function pgnGameFromHttpRequest(httpResponseData) {
 
 var http_request_last_processed_id = 0;
 function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
-  var loadPgnFromPgnUrlResult;
+  var res = LOAD_PGN_FAIL;
 
   if (this_http_request.readyState != 4) { return; }
 
@@ -1717,24 +1717,21 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
 
     if (this_http_request.status == 304) {
       if (LiveBroadcastDelay > 0) {
-        loadPgnFromPgnUrlResult = LOAD_PGN_UNMODIFIED;
+        res = LOAD_PGN_UNMODIFIED;
       } else {
         myAlert('error: unmodified PGN URL when not in live mode');
-        loadPgnFromPgnUrlResult = LOAD_PGN_FAIL;
       }
 
 // patch Opera's failure reporting 304 status
     } else if (window.opera && (!this_http_request.responseText) && (this_http_request.status === 0)) {
       this_http_request.abort();
-      loadPgnFromPgnUrlResult = LOAD_PGN_UNMODIFIED;
+      res = LOAD_PGN_UNMODIFIED;
 // end of patch
 
     } else if (!this_http_request.responseText) {
       myAlert('error: no data received from PGN URL\n' + pgnUrl, true);
-      loadPgnFromPgnUrlResult = LOAD_PGN_FAIL;
     } else if (!pgnGameFromHttpRequest(this_http_request.responseText)) {
       myAlert('error: no games found at PGN URL\n' + pgnUrl, true);
-      loadPgnFromPgnUrlResult = LOAD_PGN_FAIL;
     } else {
       if (LiveBroadcastDelay > 0) {
         LiveBroadcastLastReceivedLocal = (new Date()).toLocaleString();
@@ -1742,27 +1739,26 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
           LiveBroadcastLastModified = new Date(LiveBroadcastLastModifiedHeader);
         } else { LiveBroadcastLastModified_Reset(); }
       }
-      loadPgnFromPgnUrlResult = LOAD_PGN_OK;
+      res = LOAD_PGN_OK;
     }
 
   } else {
     myAlert('error: failed reading PGN URL\n' + pgnUrl, true);
-    loadPgnFromPgnUrlResult = LOAD_PGN_FAIL;
   }
 
-  if (LiveBroadcastDemo && (loadPgnFromPgnUrlResult == LOAD_PGN_UNMODIFIED)) {
-    loadPgnFromPgnUrlResult = LOAD_PGN_OK;
+  if (LiveBroadcastDemo && (res == LOAD_PGN_UNMODIFIED)) {
+    res = LOAD_PGN_OK;
   }
 
-  loadPgnCheckingLiveStatus(loadPgnFromPgnUrlResult);
+  loadPgnCheckingLiveStatus(res);
 }
 
 var LOAD_PGN_FAIL = 0;
 var LOAD_PGN_OK = 1;
 var LOAD_PGN_UNMODIFIED = 2;
-function loadPgnCheckingLiveStatus(loadPgnResult) {
+function loadPgnCheckingLiveStatus(res) {
 
-  switch (loadPgnResult) {
+  switch (res) {
 
     case LOAD_PGN_OK:
       if (LiveBroadcastDelay > 0) {
@@ -2003,7 +1999,7 @@ function refreshPgnSource() {
   if (LiveBroadcastInterval) { clearTimeout(LiveBroadcastInterval); LiveBroadcastInterval = null; }
   if (LiveBroadcastDemo) {
     var newPly, addedPly = 0;
-    for (var ii=0;ii<numberOfGames;ii++) {
+    for (var ii=0; ii<numberOfGames; ii++) {
       var rnd = Math.random();
       if      (rnd <= 0.05) { newPly = 3; } //  5%
       else if (rnd <= 0.20) { newPly = 2; } // 15%
@@ -2031,37 +2027,35 @@ function refreshPgnSource() {
 }
 
 function loadPgnFromTextarea(textareaId) {
-  var loadPgnFromTextareaResult,tmpText, theObj;
+  var res = LOAD_PGN_FAIL, text, theObj;
 
   LiveBroadcastLastRefreshedLocal = (new Date()).toLocaleString();
 
   if (!(theObj = document.getElementById(textareaId))) {
     myAlert('error: missing ' + textareaId + ' textarea object in the HTML file', true);
-    loadPgnFromTextareaResult = LOAD_PGN_FAIL;
   } else {
     if (document.getElementById(textareaId).tagName.toLowerCase() == "textarea") {
-      tmpText = document.getElementById(textareaId).value;
+      text = document.getElementById(textareaId).value;
     } else { // compatibility with pgn4web up to 1.77: <span> used for pgnText
-      tmpText = document.getElementById(textareaId).innerHTML;
+      text = document.getElementById(textareaId).innerHTML;
       // fixes browser issue removing \n from innerHTML
-      if (tmpText.indexOf('\n') < 0) { tmpText = tmpText.replace(/((\[[^\[\]]*\]\s*)+)/g, "\n$1\n"); }
+      if (text.indexOf('\n') < 0) { text = text.replace(/((\[[^\[\]]*\]\s*)+)/g, "\n$1\n"); }
       // fixes browser issue replacing quotes with &quot;
-      if (tmpText.indexOf('"') < 0) { tmpText = tmpText.replace(/(&quot;)/g, '"'); }
+      if (text.indexOf('"') < 0) { text = text.replace(/(&quot;)/g, '"'); }
     }
 
     // no header: add emptyPgnHeader
-    if (pgnHeaderTagRegExp.test(tmpText) === false) { tmpText = emptyPgnHeader + "\n" + tmpText; }
+    if (pgnHeaderTagRegExp.test(text) === false) { text = emptyPgnHeader + "\n" + text; }
 
-    if ( pgnGameFromPgnText(tmpText) ) {
-      loadPgnFromTextareaResult = LOAD_PGN_OK;
+    if ( pgnGameFromPgnText(text) ) {
+      res = LOAD_PGN_OK;
       LiveBroadcastLastReceivedLocal = (new Date()).toLocaleString();
     } else {
       myAlert('error: no games found in ' + textareaId + ' object in the HTML file');
-      loadPgnFromTextareaResult = LOAD_PGN_FAIL;
     }
   }
 
-  loadPgnCheckingLiveStatus(loadPgnFromTextareaResult);
+  loadPgnCheckingLiveStatus(res);
 }
 
 function createBoard() {
@@ -2191,7 +2185,7 @@ function myAlertFEN(FenString, text) {
 }
 
 function InitFEN(startingFEN) {
-  var ii, jj, cc, color, castlingRookCol, InitialFullMoveNumber;
+  var ii, jj, cc, color, castlingRookCol, fullMoveNumber;
 
   var FenString = typeof(startingFEN) != "string" ? FenStringStart :
     startingFEN.replace(/\\/g, "/").replace(/[^a-zA-Z0-9\s\/-]/g, " ").replace(/(^\s*|\s*$)/g, "").replace(/\s+/g, " ");
@@ -2445,22 +2439,22 @@ function InitFEN(startingFEN) {
       ll++;
     }
 
-    InitialFullMoveNumber = 0;
+    fullMoveNumber = 0;
     cc = FenString.charAt(ll++);
     while (cc != " ") {
       if (isNaN(cc)) {
         myAlertFEN(FenString, "invalid fullmove number");
-        InitialFullMoveNumber = 1;
+        fullMoveNumber = 1;
         break;
       }
-      InitialFullMoveNumber=InitialFullMoveNumber*10+parseInt(cc,10);
+      fullMoveNumber = fullMoveNumber*10+parseInt(cc,10);
       cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
     }
-    if (InitialFullMoveNumber === 0) {
+    if (fullMoveNumber === 0) {
       myAlertFEN(FenString, "invalid fullmove 0 set to 1");
-      InitialFullMoveNumber = 1;
+      fullMoveNumber = 1;
     }
-    StartPly += 2*(InitialFullMoveNumber-1);
+    StartPly += 2*(fullMoveNumber-1);
 
     HistEnPassant[StartPly] = newEnPassant;
     HistEnPassantCol[StartPly] = newEnPassantCol;
@@ -2471,29 +2465,28 @@ function InitFEN(startingFEN) {
 
 // castling rights assuming Kings and Rooks starting positions as in normal chess
 function assumedCastleRights() {
-  var ii;
-  var assumedRights = "";
+  var ii, rights = "";
   if ((PieceRow[0][0] === 0) && (PieceCol[0][0] === 4)) {
     for (ii = 0; ii < PieceType[0].length; ii++) {
       if ((PieceType[0][ii] === 3) && (PieceRow[0][ii] === 0) && (PieceCol[0][ii] === 7)) {
-        assumedRights += FenPieceName.charAt(0).toUpperCase();
+        rights += FenPieceName.charAt(0).toUpperCase();
       }
       if ((PieceType[0][ii] === 3) && (PieceRow[0][ii] === 0) && (PieceCol[0][ii] === 0)) {
-        assumedRights += FenPieceName.charAt(1).toUpperCase();
+        rights += FenPieceName.charAt(1).toUpperCase();
       }
     }
   }
   if ((PieceRow[1][0] === 7) && (PieceCol[1][0] === 4)) {
     for (ii = 0; ii < PieceType[1].length; ii++) {
       if ((PieceType[1][ii] === 3) && (PieceRow[1][ii] === 7) && (PieceCol[1][ii] === 7)) {
-        assumedRights += FenPieceName.charAt(0).toLowerCase();
+        rights += FenPieceName.charAt(0).toLowerCase();
       }
       if ((PieceType[1][ii] === 3) && (PieceRow[1][ii] === 7) && (PieceCol[1][ii] === 0)) {
-        assumedRights += FenPieceName.charAt(1).toLowerCase();
+        rights += FenPieceName.charAt(1).toLowerCase();
       }
     }
   }
-  return assumedRights || "-";
+  return rights || "-";
 }
 
 
@@ -2513,10 +2506,10 @@ function InitImages() {
 
   var ColorName = new Array ("w", "b");
   var PiecePrefix = new Array ("k", "q", "r", "b", "n", "p");
-  for (var color = 0; color < 2; ++color) {
-    for (var piece = 1; piece < 7; piece++) {
-      PieceImg[color][piece] = new Image();
-      PieceImg[color][piece].src = ImagePath + ColorName[color] + PiecePrefix[piece-1] + '.' + imageType;
+  for (var c=0; c<2; ++c) {
+    for (var p=1; p<7; p++) {
+      PieceImg[c][p] = new Image();
+      PieceImg[c][p].src = ImagePath + ColorName[c] + PiecePrefix[p-1] + '.' + imageType;
     }
   }
   ImagePathOld = ImagePath;
@@ -3473,9 +3466,9 @@ function PrintHTML() {
   // control buttons
 
   if (theObj = document.getElementById("GameButtons")) {
-    var numberOfButtons = 5;
+    var numButtons = 5;
     var spaceSize = 3;
-    var buttonSize = (tableSize - spaceSize*(numberOfButtons - 1)) / numberOfButtons;
+    var buttonSize = (tableSize - spaceSize*(numButtons - 1)) / numButtons;
     text = '<FORM NAME="GameButtonsForm" STYLE="display:inline;">' +
       '<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">' +
       '<TR><TD>' +
@@ -3540,8 +3533,8 @@ function PrintHTML() {
           '<OPTION CLASS="optionSelectControl" value=-1>';
 
         var blanks = ''; for (ii=0; ii<32; ii++) { blanks += ' '; }
-        var gameSelectorHeadDisplay = (gameSelectorNum ? blanks.substring(0, gameSelectorNumLenght) + '  ' : '') + gameSelectorHead;
-        text += gameSelectorHeadDisplay.replace(/ /g, '&nbsp;');
+        var headDisplay = (gameSelectorNum ? blanks.substring(0, gameSelectorNumLenght) + '  ' : '') + gameSelectorHead;
+        text += headDisplay.replace(/ /g, '&nbsp;');
 
         for (ii=0; ii<numberOfGames; ii++) {
           textSelectOptions += '<OPTION CLASS="optionSelectControl" value=' + ii + '>';
@@ -3858,12 +3851,12 @@ function autoScrollToCurrentMove(objectId) {
 
 
 function FlipBoard() {
-  var tmpHighlightOption = highlightOption;
-  if (tmpHighlightOption) { SetHighlight(false); }
+  var oldHighlightOption = highlightOption;
+  if (oldHighlightOption) { SetHighlight(false); }
   IsRotated = !IsRotated;
   PrintHTML();
   RefreshBoard();
-  if (tmpHighlightOption) { SetHighlight(true); }
+  if (oldHighlightOption) { SetHighlight(true); }
 }
 
 function RefreshBoard() {
