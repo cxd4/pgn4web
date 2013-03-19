@@ -22,6 +22,7 @@ var encodingCharSet = encodingCharSet_dec = "$0123456789abcdefghijklmnopqrstuvwx
 var encodingVersion_dec;
 var encodingVersion_enc;
 var encodingVersion = encodingVersion_dec = 1;
+var errorString;
 
 if (((encodingCharSet_enc != undefined) && (encodingCharSet_enc != encodingCharSet_dec)) ||
     ((encodingVersion_enc != undefined) && (encodingVersion_enc != encodingVersion_dec))) {

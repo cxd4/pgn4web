@@ -135,11 +135,11 @@ function alertPromptTick(restart) {
     clearTimeout(alertPromptInterval);
     alertPromptInterval = null;
   }
-  var debugColRow = colRowFromSquare(debugShortcutSquare);
-  if (!debugColRow) { return; }
+  var colRow = colRowFromSquare(debugShortcutSquare);
+  if (!colRow) { return; }
 
   var alertPromptDelay = 1500; // for alerts before the baord is printed
-  var theObj = document.getElementById('tcol' + debugColRow.col + 'trow' + debugColRow.row);
+  var theObj = document.getElementById('tcol' + colRow.col + 'trow' + colRow.row);
   if (theObj) {
     if (alertPromptOn) {
       if ((highlightOption) &&
@@ -652,11 +652,11 @@ function calculateDeciles() {
 }
 
 function replayPreviousMoves(numPlies) {
-  var targetPly = numPlies ? CurrentPly - numPlies : StartPly;
-  if (targetPly < StartPlyVar[CurrentVar]) {
-    targetPly = StartPlyVar[CurrentVar] + (CurrentVar === 0 ? 0 : 1);
+  var thisPly = numPlies ? CurrentPly - numPlies : StartPly;
+  if (thisPly < StartPlyVar[CurrentVar]) {
+    thisPly = StartPlyVar[CurrentVar] + (CurrentVar === 0 ? 0 : 1);
   }
-  if (targetPly !== CurrentPly) { GoToMove(targetPly); }
+  if (thisPly !== CurrentPly) { GoToMove(thisPly); }
   SetAutoPlay(true);
 }
 
@@ -770,29 +770,29 @@ function displayPgnData(allGames) {
 }
 
 function CurrentFEN() {
-  var currentFEN = "";
+  var thisFEN = "";
 
-  var emptyCounterFen = 0;
+  var emptySquares = 0;
   for (var row=7; row>=0; row--) {
     for (var col=0; col<=7; col++) {
-      if (Board[col][row] === 0) { emptyCounterFen++; }
+      if (Board[col][row] === 0) { emptySquares++; }
       else {
-        if (emptyCounterFen > 0) {
-          currentFEN += "" + emptyCounterFen;
-          emptyCounterFen = 0;
+        if (emptySquares) {
+          thisFEN += emptySquares;
+          emptySquares = 0;
         }
-        if (Board[col][row] > 0) { currentFEN += FenPieceName.charAt(Board[col][row]-1).toUpperCase(); }
-        else if (Board[col][row] < 0) { currentFEN += FenPieceName.charAt(-Board[col][row]-1).toLowerCase(); }
+        if (Board[col][row] > 0) { thisFEN += FenPieceName.charAt(Board[col][row]-1).toUpperCase(); }
+        else if (Board[col][row] < 0) { thisFEN += FenPieceName.charAt(-Board[col][row]-1).toLowerCase(); }
       }
     }
-    if (emptyCounterFen > 0) {
-      currentFEN += "" + emptyCounterFen;
-      emptyCounterFen = 0;
+    if (emptySquares) {
+      thisFEN += emptySquares;
+      emptySquares = 0;
     }
-    if (row>0) { currentFEN += "/"; }
+    if (row>0) { thisFEN += "/"; }
   }
 
-  currentFEN += CurrentPly%2 ? " b" : " w";
+  thisFEN += CurrentPly%2 ? " b" : " w";
 
   // castling availability: always in the KQkq form
   // note: wrong FEN for Chess960 positions with inner castling rook
@@ -801,30 +801,30 @@ function CurrentFEN() {
   if (RookForOOOCastling(0) !== null) { CastlingFEN += FenPieceName.charAt(1).toUpperCase(); }
   if (RookForOOCastling(1) !== null) { CastlingFEN += FenPieceName.charAt(0).toLowerCase(); }
   if (RookForOOOCastling(1) !== null) { CastlingFEN += FenPieceName.charAt(1).toLowerCase(); }
-  currentFEN += " " + (CastlingFEN || "-");
+  thisFEN += " " + (CastlingFEN || "-");
 
   if (HistEnPassant[CurrentPly]) {
-    currentFEN += " " + String.fromCharCode(HistEnPassantCol[CurrentPly] + 97);
-    currentFEN += CurrentPly%2 ? "3" : "6";
-  } else { currentFEN += " -"; }
+    thisFEN += " " + String.fromCharCode(HistEnPassantCol[CurrentPly] + 97);
+    thisFEN += CurrentPly%2 ? "3" : "6";
+  } else { thisFEN += " -"; }
 
   var HalfMoveClock = InitialHalfMoveClock;
   for (var thisPly = StartPly; thisPly < CurrentPly; thisPly++) {
     if ((HistType[0][thisPly] == 6) || (HistPieceId[1][thisPly] >= 16)) { HalfMoveClock = 0; }
     else { HalfMoveClock++; }
   }
-  currentFEN += " " + HalfMoveClock;
+  thisFEN += " " + HalfMoveClock;
 
-  currentFEN += " " + (Math.floor(CurrentPly/2)+1);
+  thisFEN += " " + (Math.floor(CurrentPly/2)+1);
 
-  return currentFEN;
+  return thisFEN;
 }
 
 var fenWin;
 function displayFenData() {
   if (fenWin && !fenWin.closed) { fenWin.close(); }
 
-  var currentFEN = CurrentFEN();
+  var thisFEN = CurrentFEN();
 
   var movesStr = "";
   var lineStart = 0;
@@ -850,7 +850,7 @@ function displayFenData() {
   if (fenWin) {
     var text = "<html>" +
       "<head><title>pgn4web FEN string</title><link rel='shortcut icon' href='pawn.ico' /></head>" +
-      "<body>\n<b><pre>\n\n" + currentFEN + "\n\n</pre></b>\n<hr>\n<pre>\n\n" +
+      "<body>\n<b><pre>\n\n" + thisFEN + "\n\n</pre></b>\n<hr>\n<pre>\n\n" +
       "[Event \"" + (CurrentVar ? "?" : gameEvent[currentGame] || "?") + "\"]\n" +
       "[Site \"" + (CurrentVar ? "?" : gameSite[currentGame] || "?") + "\"]\n" +
       "[Date \"" + (CurrentVar ? "????.??.??" : gameDate[currentGame] || "????.??.??") + "\"]\n" +
@@ -858,8 +858,8 @@ function displayFenData() {
       "[White \"" + (CurrentVar ? "?" : gameWhite[currentGame] || "?") + "\"]\n" +
       "[Black \"" + (CurrentVar ? "?" : gameBlack[currentGame] || "?") + "\"]\n" +
       "[Result \"" + (CurrentVar ? "*" : gameResult[currentGame] || "*") + "\"]\n";
-    if (currentFEN != FenStringStart) {
-      text += "[SetUp \"1\"]\n" + "[FEN \"" + currentFEN + "\"]\n";
+    if (thisFEN != FenStringStart) {
+      text += "[SetUp \"1\"]\n" + "[FEN \"" + thisFEN + "\"]\n";
     }
     if (gameVariant[currentGame] !== "") { text += "[Variant \"" + gameVariant[currentGame] + "\"]\n"; }
     text += "\n" + movesStr + "\n</pre>\n</body></html>";
@@ -891,7 +891,7 @@ var gameInitialWhiteClock = new Array();
 var gameInitialBlackClock = new Array();
 var gameVariant = new Array();
 
-var oldAnchorName = "";
+var highlightedMoveId = "";
 
 var isAutoPlayOn = false;
 var AutoPlayInterval = null;
@@ -1345,21 +1345,21 @@ function clockFromComment(plyNum) {
 }
 
 function clockFromHeader(whiteToMove) {
-  var clockHeaderString = customPgnHeaderTag("Clock") + "";
-  var tagValues = clockHeaderString.match("^" + (whiteToMove ? "W" : "B") + "/(.*)$");
+  var clockString = customPgnHeaderTag("Clock") + "";
+  var tagValues = clockString.match("^" + (whiteToMove ? "W" : "B") + "/(.*)$");
   if (tagValues) { return tagValues[1]; }
   else { return null; }
 }
 
 function HighlightLastMove() {
-  var theObj, anchorName, text, ii, clockString, clockRegExp, clockMatch;
+  var theObj, moveId, text, ii, clockString, clockRegExp, clockMatch;
 
   undoStackStore();
 
-  // remove highlighting from old anchor
-  if (oldAnchorName) {
-    if (theObj = document.getElementById(oldAnchorName)) {
-      theObj.className = ( oldAnchorName.match(/Var0Mv/) ? 'move' : 'variation') + ' notranslate';
+  // remove old move highlighting
+  if (highlightedMoveId) {
+    if (theObj = document.getElementById(highlightedMoveId)) {
+      theObj.className = (highlightedMoveId.match(/Var0Mv/) ? 'move' : 'variation') + ' notranslate';
     }
   }
 
@@ -1490,24 +1490,24 @@ function HighlightLastMove() {
   }
 
   if (showThisMove >= (StartPlyVar[CurrentVar]-1)) {
-    anchorName = 'Var' + CurrentVar + 'Mv' + (showThisMove + 1);
-    if (theObj = document.getElementById(anchorName)) {
+    moveId = 'Var' + CurrentVar + 'Mv' + (showThisMove + 1);
+    if (theObj = document.getElementById(moveId)) {
       theObj.className = (CurrentVar ? 'variation variationOn' : 'move moveOn') + ' notranslate';
     }
-    oldAnchorName = anchorName;
+    highlightedMoveId = moveId;
 
     if (highlightOption) {
-      var highlightColFrom, highlightRowFrom, highlightColTo, highlightRowTo;
+      var colFrom, rowFrom, colTo, rowTo;
       if ((showThisMove < StartPly) || HistNull[showThisMove]) {
-        highlightColFrom = highlightRowFrom = -1;
-        highlightColTo   = highlightRowTo   = -1;
+        colFrom = rowFrom = -1;
+        colTo   = rowTo   = -1;
       } else {
-        highlightColFrom = HistCol[0][showThisMove] === undefined ? -1 : HistCol[0][showThisMove];
-        highlightRowFrom = HistRow[0][showThisMove] === undefined ? -1 : HistRow[0][showThisMove];
-        highlightColTo   = HistCol[2][showThisMove] === undefined ? -1 : HistCol[2][showThisMove];
-        highlightRowTo   = HistRow[2][showThisMove] === undefined ? -1 : HistRow[2][showThisMove];
+        colFrom = HistCol[0][showThisMove] === undefined ? -1 : HistCol[0][showThisMove];
+        rowFrom = HistRow[0][showThisMove] === undefined ? -1 : HistRow[0][showThisMove];
+        colTo   = HistCol[2][showThisMove] === undefined ? -1 : HistCol[2][showThisMove];
+        rowTo   = HistRow[2][showThisMove] === undefined ? -1 : HistRow[2][showThisMove];
       }
-      highlightMove(highlightColFrom, highlightRowFrom, highlightColTo, highlightRowTo);
+      highlightMove(colFrom, rowFrom, colTo, rowTo);
     }
   }
 }
@@ -1898,12 +1898,12 @@ function loadPgnFromPgnUrl(pgnUrl) {
   http_request.onreadystatechange = function () { updatePgnFromHttpRequest(http_request, http_request_id); };
 
   try {
-    var urlRandomizer = "";
+    var randomizer = "";
     // anti-caching #1
     if ((LiveBroadcastDelay > 0) && (pgnUrl.indexOf("?") == -1) && (pgnUrl.indexOf("#") == -1)) {
-      urlRandomizer = "?noCache=" + (0x1000000000 + Math.floor((Math.random() * 0xF000000000))).toString(16).toUpperCase();
+      randomizer = "?noCache=" + (0x1000000000 + Math.floor((Math.random() * 0xF000000000))).toString(16).toUpperCase();
     }
-    http_request.open("GET", pgnUrl + urlRandomizer);
+    http_request.open("GET", pgnUrl + randomizer);
     // anti-caching #2
     if (LiveBroadcastDelay > 0) {
       http_request.setRequestHeader( "If-Modified-Since", LiveBroadcastLastModifiedHeader );
@@ -1949,7 +1949,7 @@ function restartLiveBroadcast() {
 }
 
 function checkLiveBroadcastStatus() {
-  var liveBroadcastStatusTitle, theObj, ii;
+  var theTitle, theObj, ii;
   var tick = "&nbsp;" + (LiveBroadcastTicker % 2 ? "<>" : "><") + "&nbsp;";
 
   if (LiveBroadcastDelay === 0) { return; }
@@ -1960,7 +1960,7 @@ function checkLiveBroadcastStatus() {
     LiveBroadcastEnded = false;
     LiveBroadcastGamesRunning = 0;
     LiveBroadcastStatusString = "0 " + tick + " 0";
-    liveBroadcastStatusTitle = "live broadcast yet to start";
+    theTitle = "live broadcast yet to start";
   } else {
     // yes
     var lbgr = 0;
@@ -1970,12 +1970,12 @@ function checkLiveBroadcastStatus() {
     LiveBroadcastEnded = (lbgr === 0);
     LiveBroadcastGamesRunning = lbgr;
     LiveBroadcastStatusString = lbgr + " " + tick + " " + numberOfGames;
-    liveBroadcastStatusTitle = LiveBroadcastEnded ? "live broadcast ended" : lbgr + " live game" + (lbgr > 1 ? "s" : "") + " out of " + numberOfGames;
+    theTitle = LiveBroadcastEnded ? "live broadcast ended" : lbgr + " live game" + (lbgr > 1 ? "s" : "") + " out of " + numberOfGames;
   }
 
   if (theObj = document.getElementById("GameLiveStatus")) {
     theObj.innerHTML = LiveBroadcastStatusString;
-    theObj.title = liveBroadcastStatusTitle;
+    theObj.title = theTitle;
   }
 
   if (theObj = document.getElementById("GameLiveLastRefreshed")) { theObj.innerHTML = LiveBroadcastLastRefreshedLocal; }
