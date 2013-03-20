@@ -33,28 +33,28 @@ function customFunctionOnCheckLiveBroadcastStatus() {}
 
 // custom header tags APIs for use in customFunctionOnPgnGameLoad
 
-function customPgnHeaderTag(customTagString, htmlElementIdString, gameNum) {
-  var tagValues, tagValue = "";
-  customTagString = customTagString.replace(/\W+/g, "");
+function customPgnHeaderTag(customTag, htmlElementId, gameNum) {
+  var matches, tag = "";
+  customTag = customTag.replace(/\W+/g, "");
   if (gameNum === undefined) { gameNum = currentGame; }
-  if ((pgnHeader[gameNum]) && (tagValues = pgnHeader[gameNum].match('\\[\\s*' + customTagString + '\\s*\"([^\"]+)\"\\s*\\]'))) { tagValue = tagValues[1]; }
-  if (htmlElementIdString) {
-    var theObj = document.getElementById(htmlElementIdString);
-    if ((theObj) && (typeof(theObj.innerHTML) == "string")) { theObj.innerHTML = tagValue; }
+  if ((pgnHeader[gameNum]) && (matches = pgnHeader[gameNum].match('\\[\\s*' + customTag + '\\s*\"([^\"]+)\"\\s*\\]'))) { tag = matches[1]; }
+  if (htmlElementId) {
+    var theObj = document.getElementById(htmlElementId);
+    if ((theObj) && (typeof(theObj.innerHTML) == "string")) { theObj.innerHTML = tag; }
   }
-  return tagValue;
+  return tag;
 }
 
 // custom comment tags API for use in customFunctionOnMove
 
-function customPgnCommentTag(customTagString, htmlElementIdString, plyNum, varId) {
-  var tagValues, tagValue = "", theObj;
-  customTagString = customTagString.replace(/\W+/g, "");
+function customPgnCommentTag(customTag, htmlElementId, plyNum, varId) {
+  var matches, tag = "", theObj;
+  customTag = customTag.replace(/\W+/g, "");
   if (typeof(varId) == "undefined") { varId = 0; }
   if (typeof(plyNum) == "undefined") { plyNum = CurrentPly; }
-  if ((MoveCommentsVar[varId][plyNum]) && (tagValues = MoveCommentsVar[varId][plyNum].match('\\[%' + customTagString + '\\s+((?:,?(?:"[^"]*"|[^,\\]]*))*)\\s*\\]'))) { tagValue = tagValues[1].replace(/\s+$/, ""); }
-  if ((htmlElementIdString) && (theObj = document.getElementById(htmlElementIdString)) && (typeof(theObj.innerHTML) == "string")) { theObj.innerHTML = tagValue; }
-  return tagValue;
+  if ((MoveCommentsVar[varId][plyNum]) && (matches = MoveCommentsVar[varId][plyNum].match('\\[%' + customTag + '\\s+((?:,?(?:"[^"]*"|[^,\\]]*))*)\\s*\\]'))) { tag = matches[1].replace(/\s+$/, ""); }
+  if ((htmlElementId) && (theObj = document.getElementById(htmlElementId)) && (typeof(theObj.innerHTML) == "string")) { theObj.innerHTML = tag; }
+  return tag;
 }
 
 
@@ -851,13 +851,13 @@ function displayFenData() {
     var text = "<html>" +
       "<head><title>pgn4web FEN string</title><link rel='shortcut icon' href='pawn.ico' /></head>" +
       "<body>\n<b><pre>\n\n" + thisFEN + "\n\n</pre></b>\n<hr>\n<pre>\n\n" +
-      "[Event \"" + (CurrentVar ? "?" : gameEvent[currentGame] || "?") + "\"]\n" +
-      "[Site \"" + (CurrentVar ? "?" : gameSite[currentGame] || "?") + "\"]\n" +
-      "[Date \"" + (CurrentVar ? "????.??.??" : gameDate[currentGame] || "????.??.??") + "\"]\n" +
-      "[Round \"" + (CurrentVar ? "?" : gameRound[currentGame] || "?") + "\"]\n" +
-      "[White \"" + (CurrentVar ? "?" : gameWhite[currentGame] || "?") + "\"]\n" +
-      "[Black \"" + (CurrentVar ? "?" : gameBlack[currentGame] || "?") + "\"]\n" +
-      "[Result \"" + (CurrentVar ? "*" : gameResult[currentGame] || "*") + "\"]\n";
+      "[Event \""  + ((CurrentVar ? "" : gameEvent[currentGame])  || "?") + "\"]\n" +
+      "[Site \""   + ((CurrentVar ? "" : gameSite[currentGame])   || "?") + "\"]\n" +
+      "[Date \""   + ((CurrentVar ? "" : gameDate[currentGame])   || "????.??.??") + "\"]\n" +
+      "[Round \""  + ((CurrentVar ? "" : gameRound[currentGame])  || "?") + "\"]\n" +
+      "[White \""  + ((CurrentVar ? "" : gameWhite[currentGame])  || "?") + "\"]\n" +
+      "[Black \""  + ((CurrentVar ? "" : gameBlack[currentGame])  || "?") + "\"]\n" +
+      "[Result \"" + ((CurrentVar ? "" : gameResult[currentGame]) || "*") + "\"]\n";
     if (thisFEN != FenStringStart) {
       text += "[SetUp \"1\"]\n" + "[FEN \"" + thisFEN + "\"]\n";
     }
@@ -1346,8 +1346,8 @@ function clockFromComment(plyNum) {
 
 function clockFromHeader(whiteToMove) {
   var clockString = customPgnHeaderTag("Clock") + "";
-  var tagValues = clockString.match("^" + (whiteToMove ? "W" : "B") + "/(.*)$");
-  if (tagValues) { return tagValues[1]; }
+  var matches = clockString.match("^" + (whiteToMove ? "W" : "B") + "/(.*)$");
+  if (matches) { return matches[1]; }
   else { return null; }
 }
 
@@ -1385,16 +1385,16 @@ function HighlightLastMove() {
   { theObj.innerHTML = text; }
 
   // clock
-  var lastMoverClockObject = document.getElementById(whiteToMove ?
+  var lastMoverClockObj = document.getElementById(whiteToMove ?
     "GameBlackClock" : "GameWhiteClock");
   var initialLastMoverClock = whiteToMove ?
     gameInitialBlackClock[currentGame] : gameInitialWhiteClock[currentGame];
-  var beforeLastMoverClockObject = document.getElementById(whiteToMove ?
+  var beforeLastMoverClockObj = document.getElementById(whiteToMove ?
     "GameWhiteClock" : "GameBlackClock");
   var initialBeforeLastMoverClock = whiteToMove ?
     gameInitialWhiteClock[currentGame] : gameInitialBlackClock[currentGame];
 
-  if (lastMoverClockObject) {
+  if (lastMoverClockObj) {
     clockString = ((showThisMove+1 === StartPly+PlyNumber) &&
       ((!LiveBroadcastDemo) || (gameResult[currentGame] !== "*"))) ?
       clockFromHeader(!whiteToMove) : null;
@@ -1409,9 +1409,9 @@ function HighlightLastMove() {
         }
       }
     }
-    lastMoverClockObject.innerHTML = clockString;
+    lastMoverClockObj.innerHTML = clockString;
   }
-  if (beforeLastMoverClockObject) {
+  if (beforeLastMoverClockObj) {
     clockString = ((showThisMove+1 === StartPly+PlyNumber) &&
       ((!LiveBroadcastDemo) || (gameResult[currentGame] !== "*"))) ?
       clockFromHeader(whiteToMove) : null;
@@ -1426,14 +1426,14 @@ function HighlightLastMove() {
         }
       }
     }
-    beforeLastMoverClockObject.innerHTML = clockString;
+    beforeLastMoverClockObj.innerHTML = clockString;
   }
 
-  if (lastMoverClockObject && beforeLastMoverClockObject) {
-    if (lastMoverClockObject.innerHTML && !beforeLastMoverClockObject.innerHTML) {
-      beforeLastMoverClockObject.innerHTML = "-";
-    } else if (!lastMoverClockObject.innerHTML && beforeLastMoverClockObject.innerHTML) {
-      lastMoverClockObject.innerHTML = "-";
+  if (lastMoverClockObj && beforeLastMoverClockObj) {
+    if (lastMoverClockObj.innerHTML && !beforeLastMoverClockObj.innerHTML) {
+      beforeLastMoverClockObj.innerHTML = "-";
+    } else if (!lastMoverClockObj.innerHTML && beforeLastMoverClockObj.innerHTML) {
+      lastMoverClockObj.innerHTML = "-";
     }
   }
 
@@ -2924,7 +2924,7 @@ function goToFirstChild() {
 }
 
 function ParsePGNGameString(gameString) {
-  var ii, start, end, move, moveCount, searchThis, commentStart, commentEnd, isContinuation;
+  var ii, start, end, move, moveCount, needle, commentStart, commentEnd, isContinuation;
 
   var ssRep, ss = gameString, ssComm;
   ss = ss.replace(pgn4webVariationRegExpGlobal, "[%_pgn4web_variation_ $1]");
@@ -3028,14 +3028,14 @@ function ParsePGNGameString(gameString) {
 
       default:
 
-        searchThis = new Array('1-0', '0-1', '1/2-1/2', '*');
-        for (ii=0; ii<searchThis.length; ii++) {
-          if (ss.indexOf(searchThis[ii],start)==start) {
+        needle = new Array('1-0', '0-1', '1/2-1/2', '*');
+        for (ii=0; ii<needle.length; ii++) {
+          if (ss.indexOf(needle[ii],start)==start) {
             if (CurrentVar === 0) {
-              start += searchThis[ii].length;
+              start += needle[ii].length;
               end = ss.length;
             } else {
-              end = start + searchThis[ii].length;
+              end = start + needle[ii].length;
             }
             if (MoveCommentsVar[CurrentVar][StartPly+PlyNumber]) { MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' '; }
             MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ss.substring(start, end).replace(/^\s*\{(.*)\}\s*$/, '$1');
@@ -3046,12 +3046,10 @@ function ParsePGNGameString(gameString) {
         if (start == ss.length) { break; }
 
         moveCount = Math.floor((StartPly+PlyNumber)/2)+1;
-        searchThis = moveCount.toString()+'.';
-        if (ss.indexOf(searchThis,start)==start) {
-          start += searchThis.length;
-          while ((ss.charAt(start) == '.') || (ss.charAt(start) == ' ') ||
-                 (ss.charAt(start) == '\n') || (ss.charAt(start) == '\r'))
-            { start++; }
+        needle = moveCount.toString()+'.';
+        if (ss.indexOf(needle,start)==start) {
+          start += needle.length;
+          while (' .\n\r'.indexOf(ss.charAt(start)) != -1) { start++; }
         }
 
         if ((end = start + ss.substr(start).search(/[\s${;!?()]/)) < start) { end = ss.length; }
@@ -3273,14 +3271,12 @@ function ParseMove(move, plyCount) {
 
   mvPieceOnTo = mvPiece;
   // "square to" occupied: capture (note en-passant case)
-  if (Board[mvToCol][mvToRow] !== 0) { mvCapture = 1; }
-  else {
-    if ((mvPiece == 6) && (HistEnPassant[plyCount]) &&
-        (mvToCol == HistEnPassantCol[plyCount]) &&
-        (mvToRow == 5-3*MoveColor)) {
-      mvCapture = 1;
-    }
-  }
+  if ((Board[mvToCol][mvToRow] !== 0) ||
+      ((mvPiece == 6) &&
+       (HistEnPassant[plyCount]) &&
+       (mvToCol == HistEnPassantCol[plyCount]) &&
+       (mvToRow == 5-3*MoveColor)))
+  { mvCapture = 1; }
 
   if (mvPiece == 6) {
     // move contains '=' or char after destination row: might be a promotion
@@ -3334,15 +3330,15 @@ function ParseMove(move, plyCount) {
 }
 
 function SetGameSelectorOptions(head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate) {
-  if (head !== null) { gameSelectorHead = head; }
-  if (num !== null) { gameSelectorNum = num; }
-  if (chEvent !== null)  { gameSelectorChEvent  = chEvent  > 32 ? 32 : chEvent;  }
-  if (chSite !== null)   { gameSelectorChSite   = chSite   > 32 ? 32 : chSite;   }
-  if (chRound !== null)  { gameSelectorChRound  = chRound  > 32 ? 32 : chRound;  }
-  if (chWhite !== null)  { gameSelectorChWhite  = chWhite  > 32 ? 32 : chWhite;  }
-  if (chBlack !== null)  { gameSelectorChBlack  = chBlack  > 32 ? 32 : chBlack;  }
-  if (chResult !== null) { gameSelectorChResult = chResult > 32 ? 32 : chResult; }
-  if (chDate !== null)   { gameSelectorChDate   = chDate   > 32 ? 32 : chDate;   }
+  if (typeof(head) == "string") { gameSelectorHead = head; }
+  gameSelectorNum = (num === true);
+  gameSelectorChEvent  = Math.max(Math.min(chEvent , 32) || 0, 0) || 0;
+  gameSelectorChSite   = Math.max(Math.min(chSite  , 32) || 0, 0) || 0;
+  gameSelectorChRound  = Math.max(Math.min(chRound , 32) || 0, 0) || 0;
+  gameSelectorChWhite  = Math.max(Math.min(chWhite , 32) || 0, 0) || 0;
+  gameSelectorChBlack  = Math.max(Math.min(chBlack , 32) || 0, 0) || 0;
+  gameSelectorChResult = Math.max(Math.min(chResult, 32) || 0, 0) || 0;
+  gameSelectorChDate   = Math.max(Math.min(chDate  , 32) || 0, 0) || 0;
 }
 
 var clickedSquareInterval = null;
@@ -3375,18 +3371,18 @@ function gameNumberSearchPgn(searchExpression, backward, includeCurrent) {
   var newlinesRegExp = new RegExp("[\n\r]", "gm");
   var searchExpressionRegExp = new RegExp(searchExpression, "im");
   // at start currentGame might still be -1
-  var currentGameSearch = (currentGame < 0) || (currentGame >= numberOfGames) ? 0 : currentGame;
-  var searchThis = fullPgnGame(currentGameSearch);
-  if (includeCurrent && searchThis.replace(newlinesRegExp, " ").match(searchExpressionRegExp)) {
-    return currentGameSearch;
+  var thisCurrentGame = (currentGame < 0) || (currentGame >= numberOfGames) ? 0 : currentGame;
+  var needle = fullPgnGame(thisCurrentGame);
+  if (includeCurrent && needle.replace(newlinesRegExp, " ").match(searchExpressionRegExp)) {
+    return thisCurrentGame;
   }
   var delta = backward ? -1 : +1;
-  for (var checkGame = (currentGameSearch + delta + numberOfGames) % numberOfGames;
-       checkGame != currentGameSearch;
-       checkGame = (checkGame + delta + numberOfGames) % numberOfGames) {
-    searchThis = fullPgnGame(checkGame);
-    if (searchThis.replace(newlinesRegExp, " ").match(searchExpressionRegExp)) {
-      return checkGame;
+  for (var thisGame = (thisCurrentGame + delta + numberOfGames) % numberOfGames;
+       thisGame != thisCurrentGame;
+       thisGame = (thisGame + delta + numberOfGames) % numberOfGames) {
+    needle = fullPgnGame(thisGame);
+    if (needle.replace(newlinesRegExp, " ").match(searchExpressionRegExp)) {
+      return thisGame;
     }
   }
   return false;
@@ -3398,8 +3394,8 @@ function searchPgnGame(searchExpression, backward) {
   var theObj = document.getElementById('searchPgnExpression');
   if (theObj) { theObj.value = searchExpression; }
   if ((searchExpression === "") || (numberOfGames < 2)) { return; }
-  var checkGame = gameNumberSearchPgn(searchExpression, backward, false);
-  if ((checkGame !== false) && (checkGame != currentGame)) { Init(checkGame); }
+  var thisGame = gameNumberSearchPgn(searchExpression, backward, false);
+  if ((thisGame !== false) && (thisGame != currentGame)) { Init(thisGame); }
 }
 
 function searchPgnGamePrompt() {
@@ -3658,11 +3654,7 @@ function PrintHTML() {
 
 function startButton(e) {
   if (e.shiftKey) {
-    if (CurrentPly <= StartPlyVar[CurrentVar] + 1) {
-      GoToMove(StartPlyVar[CurrentVar]);
-    } else {
-      GoToMove(StartPlyVar[CurrentVar] + 1);
-    }
+    GoToMove(StartPlyVar[CurrentVar] + (CurrentPly <= StartPlyVar[CurrentVar] + 1 ? 0 : 1));
   } else { GoToMove(StartPlyVar[0], 0); }
 }
 
@@ -3678,11 +3670,8 @@ function forwardButton(e) {
 
 function endButton(e) {
   if (e.shiftKey) {
-    if (CurrentPly === StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]) {
-      goToFirstChild();
-    } else {
-      GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]);
-    }
+    if (CurrentPly === StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]) { goToFirstChild(); }
+    else { GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]); }
   } else { GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); }
 }
 
@@ -3814,35 +3803,35 @@ function printMoveText(thisPly, thisVar, isVar, hasLeadingNum, hasId) {
 
 
 // undocumented API to autoscroll gane text to show current move
-// enable with "enableAutoScrollToCurrentMove(objectId)", with objectId as the game text container
+// enable with "enableAutoScrollToCurrentMove(objId)", with objId as the game text container object id
 // add onresize="autoScrollToCurrentMoveIfEnabled" to the body tag for autoscrolling on page resize
 
-function enableAutoScrollToCurrentMove(objectId) { autoScrollToCurrentMove_objectId = objectId; }
-function disableAutoScrollToCurrentMove() { autoScrollToCurrentMove_objectId = ""; }
-function toggleAutoScrollToCurrentMove(objectId) { autoScrollToCurrentMove_objectId = autoScrollToCurrentMove_objectId ? "" : objectId; }
+function enableAutoScrollToCurrentMove(objId) { autoScrollToCurrentMove_objId = objId; }
+function disableAutoScrollToCurrentMove() { autoScrollToCurrentMove_objId = ""; }
+function toggleAutoScrollToCurrentMove(objId) { autoScrollToCurrentMove_objId = autoScrollToCurrentMove_objId ? "" : objId; }
 
-var autoScrollToCurrentMove_objectId = "";
-function autoScrollToCurrentMoveIfEnabled() { autoScrollToCurrentMove(autoScrollToCurrentMove_objectId); }
+var autoScrollToCurrentMove_objId = "";
+function autoScrollToCurrentMoveIfEnabled() { autoScrollToCurrentMove(autoScrollToCurrentMove_objId); }
 
-function objectOffsetVeryTop(object) {
-  for (var offset = object.offsetTop; object = object.offsetParent; /* */) { offset += object.offsetTop + object.clientTop; }
+function objOffsetVeryTop(obj) {
+  for (var offset = obj.offsetTop; obj = obj.offsetParent; /* */) { offset += obj.offsetTop + obj.clientTop; }
   return offset;
 }
 
-function autoScrollToCurrentMove(objectId) {
-  if (!objectId) { return; }
-  var theContainerObject = document.getElementById(objectId);
-  if (theContainerObject) {
-    if (CurrentPly == StartPly) { theContainerObject.scrollTop = 0; }
+function autoScrollToCurrentMove(objId) {
+  if (!objId) { return; }
+  var theContainerObj = document.getElementById(objId);
+  if (theContainerObj) {
+    if (CurrentPly == StartPly) { theContainerObj.scrollTop = 0; }
     else {
-      var theMoveObject = document.getElementById('Var' + CurrentVar + 'Mv' + CurrentPly);
-      if (theMoveObject) {
-        var theContainerObjectOffsetVeryTop = objectOffsetVeryTop(theContainerObject);
-        var theMoveObjectOffsetVeryTop = objectOffsetVeryTop(theMoveObject);
-        if ((theMoveObjectOffsetVeryTop + theMoveObject.offsetHeight >
-             theContainerObjectOffsetVeryTop + theContainerObject.scrollTop + theContainerObject.clientHeight) ||
-            (theMoveObjectOffsetVeryTop < theContainerObjectOffsetVeryTop + theContainerObject.scrollTop)) {
-          theContainerObject.scrollTop = theMoveObjectOffsetVeryTop - theContainerObjectOffsetVeryTop;
+      var theMoveObj = document.getElementById('Var' + CurrentVar + 'Mv' + CurrentPly);
+      if (theMoveObj) {
+        var theContainerObjOffsetVeryTop = objOffsetVeryTop(theContainerObj);
+        var theMoveObjOffsetVeryTop = objOffsetVeryTop(theMoveObj);
+        if ((theMoveObjOffsetVeryTop + theMoveObj.offsetHeight >
+             theContainerObjOffsetVeryTop + theContainerObj.scrollTop + theContainerObj.clientHeight) ||
+            (theMoveObjOffsetVeryTop < theContainerObjOffsetVeryTop + theContainerObj.scrollTop)) {
+          theContainerObj.scrollTop = theMoveObjOffsetVeryTop - theContainerObjOffsetVeryTop;
         }
       }
     }
