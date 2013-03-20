@@ -1453,10 +1453,10 @@ function HighlightLastMove() {
   if (theObj = document.getElementById("GameNextVariations")) {
     text = '';
     if (commentsIntoMoveText) {
-      var childVars = childrenVars(showThisMove+1, CurrentVar);
-      for (ii = 0; ii < childVars.length; ii++) {
-        if (childVars[ii] !== CurrentVar) {
-          text += ' ' + printMoveText(showThisMove+1, childVars[ii], (childVars[ii] !== 0), true, false);
+      var children = childrenVars(showThisMove+1, CurrentVar);
+      for (ii = 0; ii < children.length; ii++) {
+        if (children[ii] !== CurrentVar) {
+          text += ' ' + printMoveText(showThisMove+1, children[ii], (children[ii] !== 0), true, false);
         }
       }
     }
@@ -1479,10 +1479,10 @@ function HighlightLastMove() {
   if (theObj = document.getElementById("GameLastVariations")) {
     text = '';
     if (commentsIntoMoveText) {
-      var siblingVars = childrenVars(showThisMove, HistVar[showThisMove]);
-      for (ii = 0; ii < siblingVars.length; ii++) {
-        if (siblingVars[ii] !== CurrentVar) {
-          text += ' ' + printMoveText(showThisMove, siblingVars[ii], (siblingVars[ii] !== 0), true, false);
+      var siblings = childrenVars(showThisMove, HistVar[showThisMove]);
+      for (ii = 0; ii < siblings.length; ii++) {
+        if (siblings[ii] !== CurrentVar) {
+          text += ' ' + printMoveText(showThisMove, siblings[ii], (siblings[ii] !== 0), true, false);
         }
       }
     }
@@ -2901,24 +2901,24 @@ function realParentVar(childVar) {
 
 function goToNextVariationSibling() {
   if (CurrentPly === StartPly) { return false; }
-  var siblingVarList = childrenVars(CurrentPly - 1, HistVar[CurrentPly - 1]);
-  if (siblingVarList.length < 2) { return false; }
-  for (var ii = 0; ii < siblingVarList.length; ii++) {
-    if (siblingVarList[ii] === CurrentVar) { break; }
+  var siblings = childrenVars(CurrentPly - 1, HistVar[CurrentPly - 1]);
+  if (siblings.length < 2) { return false; }
+  for (var ii = 0; ii < siblings.length; ii++) {
+    if (siblings[ii] === CurrentVar) { break; }
   }
-  if (siblingVarList[ii] !== CurrentVar) { return false; }
-  GoToMove(CurrentPly, siblingVarList[(ii + 1) % siblingVarList.length]);
+  if (siblings[ii] !== CurrentVar) { return false; }
+  GoToMove(CurrentPly, siblings[(ii + 1) % siblings.length]);
   return true;
 }
 
 function goToFirstChild() {
-  childrenVarList = childrenVars(CurrentPly, CurrentVar);
-  if (childrenVarList.length < 1) { return false; }
-  if (childrenVarList[0] === CurrentVar) {
-    if (childrenVarList.length < 2) { return false; }
-    GoToMove(CurrentPly + 1, childrenVarList[1]);
+  var children = childrenVars(CurrentPly, CurrentVar);
+  if (children.length < 1) { return false; }
+  if (children[0] === CurrentVar) {
+    if (children.length < 2) { return false; }
+    GoToMove(CurrentPly + 1, children[1]);
   } else {
-    GoToMove(CurrentPly + 1, childrenVarList[0]);
+    GoToMove(CurrentPly + 1, children[0]);
   }
   return true;
 }
