@@ -7,14 +7,13 @@
  *  for credits, license and more details
  */
 
-// error_reporting(E_ALL | E_STRICT);
-error_reporting(E_ERROR | E_PARSE);
+error_reporting(E_ALL | E_STRICT);
 
 // add temporarily blocked sites here
 $blockedReferrers = array();
 
 
-$referrerHost = parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST);
+$referrerHost = isset($_SERVER['HTTP_REFERER']) ? parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST) : "";
 if ($referrerHost) {
   foreach ($blockedReferrers as $blockedReferrer) {
     if (strstr($referrerHost, $blockedReferrer)) {
@@ -238,13 +237,17 @@ $outerFrameHeight = $frameHeight + 2 * $frameBorderWidth + 2 * $framePadding;
 
 
 function curPageURL() {
-  $pageURL = 'http';
-  if ($_SERVER["HTTPS"] == "on") { $pageURL .= "s"; }
-  $pageURL .= "://";
-  if ($_SERVER["SERVER_PORT"] != "80") {
-  $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+  if ((isset($_SERVER["SERVER_NAME"])) && (isset($_SERVER["REQUEST_URI"]))) {
+    $pageURL = 'http';
+    if ((isset($_SERVER["HTTPS"])) && ($_SERVER["HTTPS"] == "on")) { $pageURL .= "s"; }
+    $pageURL .= "://";
+    if ((isset($_SERVER["SERVER_PORT"])) && ($_SERVER["SERVER_PORT"] != "80")) {
+      $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+    } else {
+      $pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+    }
   } else {
-    $pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+    $pageURL = "";
   }
   return $pageURL;
 }
