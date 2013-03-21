@@ -21,6 +21,7 @@ $pgnText = get_param("pgnText", "pt", "");
 
 if ($pgnText) {
   $pgnText = str_replace(array("<", ">"), array("&lt;", "&gt;"), $pgnText);
+  $pgnTextBox = $pgnText;
 
   $pgnText = str_replace("\\\"", "\"", $pgnText);
 
@@ -45,8 +46,21 @@ if ($pgnText) {
  {please enter your PGN games in the textbox and then click the button}
 
 END;
+
+  $pgnTextBox = $pgnText;
 }
+
+$pgnLength = strlen($pgnTextBox);
+
 $pgnEncoded = EncodePGN($pgnText);
+
+$pgnEncodedLength = strlen($pgnEncoded);
+
+$compressionRatio = round(100 * $pgnEncodedLength / $pgnLength) . "%";
+
+$frameUrl = "board.html?am=l&d=1000&ss=26&ps=d&pf=d&lcs=YeiP&dcs=Qcij&bbcs=D91v&hm=n&hcs=Udiz&bd=s&cbcs=YeiP&ctcs=\$\$\$\$&hd=j&md=f&tm=13&fhcs=\$\$\$\$&fhs=13&fmcs=\$\$\$\$&fccs=v71\$&hmcs=Qcij&fms=13&fcs=m&cd=i&bcs=____&fp=13&hl=t&fh=b&fw=p&pe=" . $pgnEncoded;
+
+$frameUrlLength = strlen($frameUrl);
 
 $thisScript = $_SERVER['SCRIPT_NAME'];
 
@@ -64,21 +78,23 @@ print <<<END
 
 </head>
 
-<body style="font-family: sans-serif;">
+<body style="font-family: sans-serif; margin:20px; padding:0px;">
 
 <h1>pgn4web PGN encoder/decoder php example</h1>
 
 <center>
 
-<iframe src="board.html?am=l&d=1000&ss=26&ps=d&pf=d&lcs=YeiP&dcs=Qcij&bbcs=D91v&hm=n&hcs=Udiz&bd=s&cbcs=YeiP&ctcs=\$\$\$\$&hd=j&md=f&tm=13&fhcs=\$\$\$\$&fhs=13&fmcs=\$\$\$\$&fccs=v71\$&hmcs=Qcij&fms=13&fcs=m&cd=i&bcs=____&fp=13&hl=t&fh=b&fw=p&pe=$pgnEncoded"
+<iframe src="$frameUrl"
  height="312" width="900" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
 your web browser and/or your host do not support iframes as required to display the chessboard
 </iframe>
 
 <form action="$thisScript" method="POST">
 <input type="submit" style="width:900px;" value="pgn4web PGN encoder/decoder php example">
-<textarea id="pgnText" name="pgnText" style="height:300px; width:900px;">$pgnText</textarea>
+<textarea id="pgnText" name="pgnText" style="height:300px; width:900px; margin:13px;">$pgnTextBox</textarea>
 </form>
+
+<div style="width:900px; text-align:left; font-size:66%;">PGN:$pgnLength &nbsp; &nbsp; encoded:$pgnEncodedLength &nbsp; &nbsp; ratio:$compressionRatio &nbsp; &nbsp; url:$frameUrlLength</div>
 
 </center>
 

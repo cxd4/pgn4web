@@ -9,8 +9,7 @@
 
 // Web script periodically fetching a PGN file for a pgn4web live broadcast.
 
-// error_reporting(E_ALL | E_STRICT);
-error_reporting(E_ERROR | E_PARSE);
+error_reporting(E_ALL | E_STRICT);
 
 // configuration section
 
@@ -33,7 +32,7 @@ if (!$enableScript) {
   exit();
 }
 
-if ($_SERVER["HTTP_REFERER"] && $_SERVER["SERVER_NAME"]) {
+if (isset($_SERVER["HTTP_REFERER"]) && isset($_SERVER["SERVER_NAME"])) {
   $correctedServerName = preg_replace('#www.#', '', $_SERVER["SERVER_NAME"]);
   $correctedReferrer = preg_replace('#(http|https)://www\.#', '$1://', $_SERVER["HTTP_REFERER"]);
   if (!preg_match('#^(http|https)://' . $correctedServerName . '#i', $correctedReferrer)) {
@@ -79,6 +78,7 @@ function validate_action($action) {
   switch ($action) {
     case "grab PGN URL overwrite":
     case "grab PGN URL":
+    case "stop grabbing PGN URL":
     case "save PGN text":
     case "delete local PGN file":
     case "submit password":
@@ -129,21 +129,21 @@ function obfuscate_secret($s, $n = 15) {
   return $s;
 }
 
-$secret = stripslashes($_POST["secret"]);
+$secret = isset($_POST["secret"]) ? stripslashes($_POST["secret"]) : "";
 $secretHash = hash("sha256", obfuscate_secret($secret));
 
-$localPgnFile = validate_localPgnFile($_REQUEST["localPgnFile"]);
+$localPgnFile = validate_localPgnFile(isset($_REQUEST["localPgnFile"]) ? $_REQUEST["localPgnFile"] : "");
 $localPgnTmpFile = $localPgnFile . ".tmp";
 $localPgnLogFile = $localPgnFile . ".log";
 
-$action = validate_action($_POST["action"]);
+$action = validate_action(isset($_POST["action"]) ? $_POST["action"] : "");
 
-$pgnUrl = validate_pgnUrl($_REQUEST["pgnUrl"]);
-$refreshSeconds = validate_refreshSeconds($_REQUEST["refreshSeconds"]);
-$refreshSteps = validate_refreshSteps($_REQUEST["refreshSteps"]);
-$lastPgnUrlModification = validate_lastPgnUrlModification($_POST["lastPgnUrlModification"]);
+$pgnUrl = validate_pgnUrl(isset($_REQUEST["pgnUrl"]) ? $_REQUEST["pgnUrl"] : "");
+$refreshSeconds = validate_refreshSeconds(isset($_REQUEST["refreshSeconds"]) ? $_REQUEST["refreshSeconds"] : "");
+$refreshSteps = validate_refreshSteps(isset($_REQUEST["refreshSteps"]) ? $_REQUEST["refreshSteps"] : "");
+$lastPgnUrlModification = validate_lastPgnUrlModification(isset($_POST["lastPgnUrlModification"]) ? $_POST["lastPgnUrlModification"] : "");
 
-$pgnText = validate_pgnText(stripslashes($_POST["pgnText"]));
+$pgnText = validate_pgnText(stripslashes(isset($_POST["pgnText"]) ? $_POST["pgnText"] : ""));
 
 ?>
 <!DOCTYPE HTML>
@@ -257,7 +257,10 @@ function checkFileExisting($localPgnFile, $localPgnTmpFile, $localPgnLogFile) {
 }
 
 function fileInformation($myFile) {
+  $errorlevel = error_reporting();
+  $errorlevel = error_reporting($errorlevel & ~E_WARNING);
   $ft = filetype($myFile);
+  $errorlevel = error_reporting($errorlevel | E_WARNING);
   if (!$ft) { return "name=" . $myFile . " error=not found or file error"; }
   else return "name=" . $myFile . " type=" . $ft .
               " size=" . filesize($myFile) .
@@ -287,68 +290,76 @@ if ($secretHash == $storedSecretHash) {
         if (--$refreshSteps < 0) {
           $message = $message . "\n" . "error=invalid refresh steps";
         } else {
-          $logOk = FALSE;
-          $newLastPgnUrlModification = "";
-          $pgnHeaders = get_headers($pgnUrl, 1);
-          if (! $pgnHeaders) {
-            $message = $message . "\n" . "error=failed getting PGN URL headers";
+          if (!$pgnUrl) {
+            $message = $message . "\n" . "error=empty PGN URL";
           } else {
-            if (! $pgnHeaders['Last-Modified']) {
-              $message = $message . "\n" . "warning=failed getting PGN URL last modified header";
+            $logOk = FALSE;
+            $newLastPgnUrlModification = "";
+            $pgnHeaders = get_headers($pgnUrl, 1);
+            if (! $pgnHeaders) {
+              $message = $message . "\n" . "error=failed getting PGN URL headers";
             } else {
-              $newLastPgnUrlModification = $pgnHeaders['Last-Modified'];
-            }
-            if ($newLastPgnUrlModification == $lastPgnUrlModification) {
-              $message = $message . "\n" . "info=no new PGN content read from URL" .
-                         "\n" . "timestamp=" . $newLastPgnUrlModification;
-            } else {
-              umask(0000);
-              $pgnUrlOpts = array("http" => array("follow_location" => TRUE, "max_redirects" => 20));
-              $pgnUrlHandle = fopen($pgnUrl, "rb", false, stream_context_create($pgnUrlOpts));
-              $localPgnTmpFileHandle = fopen($localPgnTmpFile, "wb");
-              $copiedBytes = stream_copy_to_stream($pgnUrlHandle, $localPgnTmpFileHandle);
-              fclose($pgnUrlHandle);
-              fclose($localPgnTmpFileHandle);
-              if ($copiedBytes == 0) {
-                $message = $message . "\n" . "error=failed copying updated " . $pgnUrl . " to " . $localPgnTmpFile;
+              if (! $pgnHeaders['Last-Modified']) {
+                $message = $message . "\n" . "warning=failed getting PGN URL last modified header";
               } else {
-                if ($newLastPgnUrlModification != "") {
-                  $timeNewLastPgnUrlModification = strtotime($newLastPgnUrlModification);
-                  if (! $timeNewLastPgnUrlModification) {
-                    $message = $message . "\n" . "warning=failed parsing time of last modification from server";
-                  } else {
-                    if (! touch($localPgnTmpFile, $timeNewLastPgnUrlModification)) {
-                      $message = $message . "\n" . "warning=failed setting modification date on " . $localPgnTmpFile;
+                $newLastPgnUrlModification = $pgnHeaders['Last-Modified'];
+              }
+              if ($newLastPgnUrlModification == $lastPgnUrlModification) {
+                $message = $message . "\n" . "info=no new PGN content read from URL" .
+                           "\n" . "timestamp=" . $newLastPgnUrlModification;
+              } else {
+                umask(0000);
+                $pgnUrlOpts = array("http" => array("follow_location" => TRUE, "max_redirects" => 20));
+                $pgnUrlHandle = fopen($pgnUrl, "rb", false, stream_context_create($pgnUrlOpts));
+                $localPgnTmpFileHandle = fopen($localPgnTmpFile, "wb");
+                $copiedBytes = stream_copy_to_stream($pgnUrlHandle, $localPgnTmpFileHandle);
+                fclose($pgnUrlHandle);
+                fclose($localPgnTmpFileHandle);
+                if ($copiedBytes == 0) {
+                  $message = $message . "\n" . "error=failed copying updated " . $pgnUrl . " to " . $localPgnTmpFile;
+                } else {
+                  if ($newLastPgnUrlModification != "") {
+                    $timeNewLastPgnUrlModification = strtotime($newLastPgnUrlModification);
+                    if (! $timeNewLastPgnUrlModification) {
+                      $message = $message . "\n" . "warning=failed parsing time of last modification from server";
+                    } else {
+                      if (! touch($localPgnTmpFile, $timeNewLastPgnUrlModification)) {
+                        $message = $message . "\n" . "warning=failed setting modification date on " . $localPgnTmpFile;
+                      }
                     }
                   }
-                }
-                if (! rename($localPgnTmpFile, $localPgnFile)) {
-                  $message = $message . "\n" . "error=failed renaming " . $localPgnTmpFile . " as " . $localPgnFile;
-                } else {
-                  $message = $message . "\n" . "info=updated " . $localPgnFile;
-                  if ($newLastPgnUrlModification != "") {
-                    $message = $message . "\n" . "oldTimestamp=" . $lastPgnUrlModification;
-                    $message = $message . "\n" . "newTimestamp=" . $newLastPgnUrlModification;
-                    $lastPgnUrlModification = $newLastPgnUrlModification;
+                  if (! rename($localPgnTmpFile, $localPgnFile)) {
+                    $message = $message . "\n" . "error=failed renaming " . $localPgnTmpFile . " as " . $localPgnFile;
+                  } else {
+                    $message = $message . "\n" . "info=updated " . $localPgnFile;
+                    if ($newLastPgnUrlModification != "") {
+                      $message = $message . "\n" . "oldTimestamp=" . $lastPgnUrlModification;
+                      $message = $message . "\n" . "newTimestamp=" . $newLastPgnUrlModification;
+                      $lastPgnUrlModification = $newLastPgnUrlModification;
+                    }
+                    $logOk = TRUE;
                   }
-                  $logOk = TRUE;
                 }
               }
             }
-          }
-          if ($logOk) { logToFile("step 1 of " . $refreshSteps . ", new PGN data found", $overwrite); }
-          else { logToFile("step 1 of " . $refreshSteps . ", no new data", $overwrite); }
-          if ($refreshSteps == 0) {
-            $message = $message . "\n" . "info=timer not restarted";
-          } else {
-            $message = $message . "\n" . "info=timer restarted";
-            print("<script type='text/javascript'>" .
-                  "if (grabTimeout) { clearTimeout(grabTimeout); } " .
-                  "grabTimeout = setTimeout('grabPgnUrl()'," . (1000 * $refreshSeconds) . "); " .
-                  "</script>");
+            if ($logOk) { logToFile("step 1 of " . $refreshSteps . ", new PGN data found", $overwrite); }
+            else { logToFile("step 1 of " . $refreshSteps . ", no new data", $overwrite); }
+            if ($refreshSteps == 0) {
+              $message = $message . "\n" . "info=timer not restarted";
+            } else {
+              $message = $message . "\n" . "info=timer restarted";
+              print("<script type='text/javascript'>" .
+                    "if (grabTimeout) { clearTimeout(grabTimeout); } " .
+                    "grabTimeout = setTimeout('grabPgnUrl()'," . (1000 * $refreshSeconds) . "); " .
+                    "</script>");
+            }
           }
         }
       }
+      break;
+
+    case "stop grabbing PGN URL":
+      $message = $message . "\n" . "action=" . $action;
       break;
 
     case "save PGN text":
@@ -372,7 +383,7 @@ if ($secretHash == $storedSecretHash) {
         }
       }
       $message = $message . "\n" . "pgnText=\n" . $pgnText . "\n";
-      $lastPgnUrlModification = validate_lastPgnUrlModification();
+      $lastPgnUrlModification = validate_lastPgnUrlModification("");
       break;
 
     case "delete local PGN file":
@@ -380,7 +391,7 @@ if ($secretHash == $storedSecretHash) {
       $message = $message . "\n" . deleteFile($localPgnFile);
       $message = $message . "\n" . deleteFile($localPgnTmpFile);
       $message = $message . "\n" . deleteFile($localPgnLogFile);
-      $lastPgnUrlModification = validate_lastPgnUrlModification();
+      $lastPgnUrlModification = validate_lastPgnUrlModification("");
       break;
 
     case "submit password":
