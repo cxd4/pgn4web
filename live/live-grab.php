@@ -9,6 +9,7 @@
 
 // Web script periodically fetching a PGN file for a pgn4web live broadcast.
 
+// error_reporting(E_ALL | E_STRICT);
 error_reporting(E_ERROR | E_PARSE);
 
 // configuration section
