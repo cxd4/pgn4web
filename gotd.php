@@ -7,7 +7,7 @@
  *  for credits, license and more details
  */
 
-error_reporting(E_ERROR | E_PARSE);
+error_reporting(E_ALL | E_STRICT);
 
 function get_param($param, $shortParam, $default) {
   if (isset($_REQUEST[$param])) { return $_REQUEST[$param]; }

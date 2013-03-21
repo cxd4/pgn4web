@@ -7,8 +7,8 @@
  *  for credits, license and more details
  */
 
+// error_reporting(E_ALL | E_STRICT);
 error_reporting(E_ERROR | E_PARSE);
-
 
 // add temporarily blocked sites here
 $blockedReferrers = array();

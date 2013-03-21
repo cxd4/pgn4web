@@ -11,8 +11,6 @@
 
 error_reporting(E_ERROR | E_PARSE);
 
-
-
 // configuration section
 
 // set this to true to enable the script, set to false by default

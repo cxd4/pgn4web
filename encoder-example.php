@@ -7,6 +7,8 @@
  *  for credits, license and more details
  */
 
+error_reporting(E_ALL | E_STRICT);
+
 include "pgn-encoder.php";
 
 function get_param($param, $shortParam, $default) {
@@ -18,7 +20,9 @@ function get_param($param, $shortParam, $default) {
 $pgnText = get_param("pgnText", "pt", "");
 
 if ($pgnText) {
-  $pgnTextbox = $pgnText = str_replace("\\\"", "\"", $pgnText);
+  $pgnText = str_replace(array("<", ">"), array("&lt;", "&gt;"), $pgnText);
+
+  $pgnText = str_replace("\\\"", "\"", $pgnText);
 
   $pgnText = preg_replace("/\[/", "\n\n[", $pgnText);
   $pgnText = preg_replace("/\]/", "]\n\n", $pgnText);
@@ -27,17 +31,18 @@ if ($pgnText) {
   $pgnText = preg_replace("/^\s*\[/", "[", $pgnText);
   $pgnText = preg_replace("/\n[\s*\n]+/", "\n\n", $pgnText);
 } else {
-  $pgnTextbox = $pgnText = <<<END
+  $pgnText = <<<END
 
-[White "?"]
-[Black "?"]
-[Result "?"]
-[Date "?"]
-[Event "?"]
-[Site "?"]
-[Round "?"]
 
-{please enter your PGN games in the textbox and then click the button}
+ [White ""]
+ [Black ""]
+ [Result ""]
+ [Date ""]
+ [Event ""]
+ [Site ""]
+ [Round ""]
+
+ {please enter your PGN games in the textbox and then click the button}
 
 END;
 }
@@ -72,7 +77,7 @@ your web browser and/or your host do not support iframes as required to display 
 
 <form action="$thisScript" method="POST">
 <input type="submit" style="width:900px;" value="pgn4web PGN encoder/decoder php example">
-<textarea id="pgnTextbox" name="pgnTextbox" style="height:300px; width:900px;">$pgnTextbox</textarea>
+<textarea id="pgnText" name="pgnText" style="height:300px; width:900px;">$pgnText</textarea>
 </form>
 
 </center>
