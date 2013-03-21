@@ -299,11 +299,11 @@ if ($secretHash == $storedSecretHash) {
           } else {
             $logOk = FALSE;
             $newLastPgnUrlModification = "";
-            $pgnHeaders = get_headers($pgnUrl, 1);
-            if (! $pgnHeaders) {
+            $pgnHeaders = @get_headers($pgnUrl, 1);
+            if (!$pgnHeaders) {
               $message = $message . "\n" . "error=failed getting PGN URL headers";
             } else {
-              if (! $pgnHeaders['Last-Modified']) {
+              if (!$pgnHeaders['Last-Modified']) {
                 $message = $message . "\n" . "warning=failed getting PGN URL last modified header";
               } else {
                 $newLastPgnUrlModification = $pgnHeaders['Last-Modified'];
@@ -324,15 +324,15 @@ if ($secretHash == $storedSecretHash) {
                 } else {
                   if ($newLastPgnUrlModification != "") {
                     $timeNewLastPgnUrlModification = strtotime($newLastPgnUrlModification);
-                    if (! $timeNewLastPgnUrlModification) {
+                    if (!$timeNewLastPgnUrlModification) {
                       $message = $message . "\n" . "warning=failed parsing time of last modification from server";
                     } else {
-                      if (! touch($localPgnTmpFile, $timeNewLastPgnUrlModification)) {
+                      if (!touch($localPgnTmpFile, $timeNewLastPgnUrlModification)) {
                         $message = $message . "\n" . "warning=failed setting modification date on " . $localPgnTmpFile;
                       }
                     }
                   }
-                  if (! rename($localPgnTmpFile, $localPgnFile)) {
+                  if (!rename($localPgnTmpFile, $localPgnFile)) {
                     $message = $message . "\n" . "error=failed renaming " . $localPgnTmpFile . " as " . $localPgnFile;
                   } else {
                     $message = $message . "\n" . "info=updated " . $localPgnFile;
@@ -374,13 +374,13 @@ if ($secretHash == $storedSecretHash) {
       } else {
         if ($pgnText == "") {
           $pgnTextToSave = $pgnText . "\n";
-        } elseif (! preg_match('/\[\s*(\w+)\s*"([^"]*)"\s*\]/', $pgnText)) {
+        } elseif (!preg_match('/\[\s*(\w+)\s*"([^"]*)"\s*\]/', $pgnText)) {
           $pgnTextToSave = "[x\"\"]\n" . $pgnText . "\n";
         } else {
           $pgnTextToSave = $pgnText . "\n";
         }
         umask(0000);
-        if (! file_put_contents($localPgnFile, $pgnTextToSave)) {
+        if (!file_put_contents($localPgnFile, $pgnTextToSave)) {
           $message = $message . "\n" . "error=failed updating file " . $localPgnFile;
         } else {
           $message = $message . "\n" . "info=file " . $localPgnFile . " updated";
