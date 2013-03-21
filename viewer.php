@@ -7,8 +7,7 @@
  *  for credits, license and more details
  */
 
-// error_reporting(E_ALL | E_STRICT);
-error_reporting(E_ERROR | E_PARSE);
+error_reporting(E_ALL | E_STRICT);
 
 /*
  *  URL parameters:
@@ -170,18 +169,23 @@ function get_pgn() {
         // $pgnUrlOpts tries forcing following location redirects
         // depending on server configuration, the script might still fail if the ZIP URL is redirected
         $pgnUrlOpts = array("http" => array("follow_location" => TRUE, "max_redirects" => 20));
-        $pgnUrlHandle = fopen($pgnUrl, "rb", false, stream_context_create($pgnUrlOpts));
-        $tempZipHandle = fopen($tempZipName, "wb");
-        $copiedBytes = stream_copy_to_stream($pgnUrlHandle, $tempZipHandle, $fileUploadLimitBytes + 1, 0);
-        fclose($pgnUrlHandle);
-        fclose($tempZipHandle);
-        http_parse_headers($http_response_header);
-        if ((($copiedBytes > 0) && ($copiedBytes <= $fileUploadLimitBytes)) && (!http_response_header_isInvalid())) {
-          $pgnSource = $tempZipName;
-        } else {
-          $pgnStatus = "error: failed to get $pgnUrl: " . (http_response_header_isInvalid() ? "server error: $http_response_header_status" : "file not found, file size exceeds $fileUploadLimitText form limit, $fileUploadLimitIniText server limit or server error");
-          if (($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
+        $pgnUrlHandle = @fopen($pgnUrl, "rb", false, stream_context_create($pgnUrlOpts));
+        if (!$pgnUrlHandle) {
+          $pgnStatus = "error: failed to get $pgnUrl: file not found or server error";
           return FALSE;
+        } else {
+          $tempZipHandle = fopen($tempZipName, "wb");
+          $copiedBytes = stream_copy_to_stream($pgnUrlHandle, $tempZipHandle, $fileUploadLimitBytes + 1, 0);
+          fclose($pgnUrlHandle);
+          fclose($tempZipHandle);
+          if (isset($http_response_header)) { http_parse_headers($http_response_header); }
+          if ((($copiedBytes > 0) && ($copiedBytes <= $fileUploadLimitBytes)) && (!http_response_header_isInvalid())) {
+            $pgnSource = $tempZipName;
+          } else {
+            $pgnStatus = "error: failed to get $pgnUrl: " . (http_response_header_isInvalid() ? "server error: $http_response_header_status" : "file not found, file size exceeds $fileUploadLimitText form limit, $fileUploadLimitIniText server limit or server error");
+            if (($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
+            return FALSE;
+          }
         }
       }
     } else {
@@ -243,18 +247,18 @@ function get_pgn() {
           } else {
             $pgnStatus = "error: failed reading $zipFileString content";
             zip_close($pgnZip);
-            if (($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
+            if ((isset($tempZipName)) && ($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
             return FALSE;
           }
         }
         zip_close($pgnZip);
-        if (($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
+        if ((isset($tempZipName)) && ($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
         if (!$pgnText) {
           $pgnStatus = "error: games not found in $zipFileString";
           return FALSE;
         }
       } else {
-        if (($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
+        if ((isset($tempZipName)) && ($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
         $pgnStatus = "error: failed opening $zipFileString";
         return FALSE;
       }
@@ -266,7 +270,7 @@ function get_pgn() {
     if ($pgnUrl) { $pgnFileString = $pgnUrl; }
     else { $pgnFileString = "pgn file"; }
     $pgnText = file_get_contents($pgnSource, NULL, NULL, 0, $fileUploadLimitBytes + 1);
-    http_parse_headers($http_response_header);
+    if (isset($http_response_header)) { http_parse_headers($http_response_header); }
     if ((!$pgnText) || (($pgnUrl) && (http_response_header_isInvalid()))) {
       $pgnStatus = "error: failed reading $pgnFileString: " . (http_response_header_isInvalid() ? "server error: $http_response_header_status" : "file not found or server error");
       return FALSE;
@@ -294,6 +298,7 @@ function check_tmpDir() {
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $startPosition, $goToView, $zipSupported;
 
+  $unexpectedFiles = "";
   $tmpDirHandle = opendir($tmpDir);
   while($entryName = readdir($tmpDirHandle)) {
     if (($entryName !== ".") && ($entryName !== "..") && ($entryName !== "index.html")) {
