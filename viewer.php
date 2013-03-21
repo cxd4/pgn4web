@@ -30,7 +30,7 @@ if ($fileUploadLimitIniText === "") { $fileUploadLimitIniText = "unknown"; }
 // it would be nice here to evaluate ini_get('allow_fopen_url') and flag the issue (possibly disabling portions of the input forms), but the return values of ini_get() for boolean values are totally unreliable, so we have to leave with the generic server error message when trying to load a remote URL while allow_fopen_url is disabled in php.ini
 
 $zipSupported = function_exists('zip_open');
-if (!$zipSupported) { $pgnDebugInfo = $pgnDebugInfo . "ZIP support unavailable from server, missing php ZIP library<br/>"; }
+if (!$zipSupported) { $pgnDebugInfo = $pgnDebugInfo . "\\n" . "ZIP support unavailable from server, missing php ZIP library"; }
 
 $http_response_header_status = "";
 $http_response_header_last_modified = "";
@@ -310,7 +310,7 @@ function check_tmpDir() {
   closedir($tmpDirHandle);
 
   if ($unexpectedFiles) {
-    $pgnDebugInfo = $pgnDebugInfo . "clean temporary directory " . $tmpDir . "(" . $unexpectedFiles . ")<br>";
+    $pgnDebugInfo = $pgnDebugInfo . "\\n" . "clean temporary directory " . $tmpDir . ":" . $unexpectedFiles;
   }
 }
 
