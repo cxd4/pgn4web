@@ -1,4 +1,12 @@
+# pgn4web javascript chessboard
+# copyright (C) 2009-2013 Paolo Casaschi
+# see README file and http://pgn4web.casaschi.net
+# for credits, license and more details
+
 # bash script to package the pgn4web release
+# run as "bash script.sh"
+
+set +o posix
 
 pgn4webVer=$(grep "var pgn4web_version = " pgn4web.js | awk -F "\'" '{print$2}')
 

@@ -1,9 +1,12 @@
-#!/bin/bash
+# pgn4web javascript chessboard
+# copyright (C) 2009-2013 Paolo Casaschi
+# see README file and http://pgn4web.casaschi.net
+# for credits, license and more details
 
-#  pgn4web javascript chessboard
-#  copyright (C) 2009-2012 Paolo Casaschi
-#  see README file and http://pgn4web.casaschi.net
-#  for credits, license and more details
+# bash script to check status of live-grab.sh processes
+# run as "bash script.sh"
+
+set +o posix
 
 if [ "$1" == "--help" ]
 then
@@ -36,7 +39,7 @@ then
    echo "ERROR: missing awk"
 fi
 
-pgn4web_scan=$(ps -U $USER -w -o pid,command | awk 'BEGIN {c=0} $3=="live-grab.sh" {printf("pgn4web_pid[%d]=\"%s\";pgn4web_log[%d]=\"%s\".log;",c,$1,c,$5); c++}')
+pgn4web_scan=$(ps -U $USER -w -o pid,command | sed -e 's/\--no-shell-check\>/ /g' | awk 'BEGIN {c=0} $3=="live-grab.sh" {printf("pgn4web_pid[%d]=\"%s\";pgn4web_log[%d]=\"%s\".log;",c,$1,c,$5); c++}')
 
 eval $pgn4web_scan
 

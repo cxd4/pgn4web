@@ -1,4 +1,12 @@
+# pgn4web javascript chessboard
+# copyright (C) 2009-2013 Paolo Casaschi
+# see README file and http://pgn4web.casaschi.net
+# for credits, license and more details
+
 # bash script to create a custom pgn4web package
+# run as "bash script.sh"
+
+set +o posix
 
 pgn4webBaseFiles="README.txt pgn4web.js pgn4web-help.html license-gpl-2.0.txt pawn.ico pawns.png index.html"
 

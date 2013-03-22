@@ -1,12 +1,13 @@
-#!/bin/bash
-
-#  pgn4web javascript chessboard
-#  copyright (C) 2009-2012 Paolo Casaschi
-#  see README file and http://pgn4web.casaschi.net
-#  for credits, license and more details
+# pgn4web javascript chessboard
+# copyright (C) 2009-2013 Paolo Casaschi
+# see README file and http://pgn4web.casaschi.net
+# for credits, license and more details
 
 # bash script to create a pgn file over time, same as a live broadcast
 # more realistic than simulating the live broadcast within pgn4web
+# run as "bash script.sh"
+
+set +o posix
 
 if [ "$1" == "--help" ]
 then

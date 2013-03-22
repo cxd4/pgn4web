@@ -1,9 +1,12 @@
-#!/bin/bash
+# pgn4web javascript chessboard
+# copyright (C) 2009-2013 Paolo Casaschi
+# see README file and http://pgn4web.casaschi.net
+# for credits, license and more details
 
-#  pgn4web javascript chessboard
-#  copyright (C) 2009-2012 Paolo Casaschi
-#  see README file and http://pgn4web.casaschi.net
-#  for credits, license and more details
+# bash script periodically fetching a PGN file for a pgn4web live broadcast
+# run as "bash script.sh"
+
+set +o posix
 
 localPgnFile_default=live.pgn
 refreshSeconds_default=49
