@@ -27,7 +27,7 @@ function printHex(n) {
   var hex = "0123456789ABCDEF";
   var s = "";
   var r = 0;
-  for (ii = 0; ii < 8; ii++) {
+  for (var i = 0; i < 8; i++) {
     r = n % 16;
     if (r < 0) { r += 16; }
     s = hex.charAt(r) + s;

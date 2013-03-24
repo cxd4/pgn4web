@@ -306,7 +306,7 @@ function EncodePGN(ov) {
   // The bits string could get very large
   var bits = "";
   var bytes = ov.length + "$";
-  for (i = 0; i < ov.length; i ++) {
+  for (var i = 0; i < ov.length; i ++) {
     // converts ASCII chars above 255 to a star (code 42) avoiding decoding failure
     if (ov.charCodeAt(i) > 255) { bits += LetterCodes[42]; }
     else { bits += LetterCodes[ov.charCodeAt(i)]; }
