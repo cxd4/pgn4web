@@ -353,13 +353,19 @@ function print_header() {
 
 <style type="text/css">
 
+html,
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
 body {
   color: black;
   background: white;
   font-family: 'pgn4web Liberation Sans', sans-serif;
   font-size: 16px;
   line-height: 1.4em;
-  padding: 20px;
+  padding: 1.75em;
   overflow-x: hidden;
   overflow-y: scroll;
 }

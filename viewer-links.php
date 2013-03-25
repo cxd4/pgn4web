@@ -88,7 +88,7 @@ function print_links() {
     else { print "<title>$numUrls links</title>" . "\n"; }
 
     print "<link rel='shortcut icon' href='pawn.ico' />" . "\n";
-    print "<style tyle='text/css'> body { font-family: sans-serif; padding: 2em; line-height: 1.5em; } a { color: black; text-decoration: none; } ol { color: $labelColor; } </style>" . "\n";
+    print "<style tyle='text/css'> body { font-family: sans-serif; padding: 1.75em; line-height: 1.5em; } a { color: black; text-decoration: none; } ol { color: $labelColor; } </style>" . "\n";
     print "<script type='text/javascript'> var viewerWin; </script>" . "\n";
 
     print("</head>" . "\n" . "<body>" . "\n");

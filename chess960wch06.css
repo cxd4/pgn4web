@@ -5,8 +5,14 @@
  *  for credits, license and more details
  */
 
+html,
 body {
-  padding: 5px;
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  padding: 10px;
   font-family: sans-serif;
   color: black;
   background: white;

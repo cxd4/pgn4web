@@ -27,8 +27,11 @@ if (pgn4web_live_pointer_url === undefined) { pgn4web_live_pointer_url = "."; }
 
 <style type="text/css">
 
+html, body
+{ margin: 0px; padding: 0px; }
+
 body
-{ color: #BBBBBB; background: white; font-family: sans-serif; font-size: small; padding: 20px; margin: 0px; }
+{ color: #BBBBBB; background: white; font-family: sans-serif; padding: 28px; }
 
 a
 { color: #BBBBBB; text-decoration: none; }
@@ -170,7 +173,7 @@ function resizeFrameHeight(frObj) {
     else if (document.body && document.body.clientHeight) { wh = document.body.clientHeight; }
     else { wh = 0; }
 
-    frObj.height = Math.max(240, wh - document.getElementById("headRow").offsetHeight - 204) + "px";
+    frObj.height = Math.max(240, wh - document.getElementById("headRow").offsetHeight - 220) + "px";
   }
 }
 

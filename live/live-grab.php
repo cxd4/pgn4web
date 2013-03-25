@@ -163,11 +163,17 @@ $pgnText = validate_pgnText(stripslashes(isset($_POST["pgnText"]) ? $_POST["pgnT
 
 <style type="text/css">
 
+html,
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
 body {
   color: black;
   background: white;
   font-family: sans-serif;
-  padding: 20px;
+  padding: 1.75em;
 }
 
 a:link, a:visited, a:hover, a:active {
