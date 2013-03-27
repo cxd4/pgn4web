@@ -394,15 +394,19 @@ Remaining pgn4web code is copyright (C) 2009-2013 <a href="mailto:pgn4web@casasc
 
 <table style="margin-top:40px;" width="100%" cellspacing="0" cellpadding="0"><tr>
 <td align="left" valign="bottom">
-<script type="text/javascript">document.write("<b>pgn4web " + displayVersion + "</b>");</script>
+<div id="versionFooter" style="padding-bottom:15px; font-weight:bold;"></div>
 </td><td align="right" valign="bottom">
-<a href="javascript:void(0);" onclick="document.body.scrollTop = 0; this.blur();"><img src="pawns.png" border="0"></a>
+<a href="javascript:void(0);" onclick="document.body.scrollTop = 0; this.blur();">
+<img src="pawns.png" border="0" style="vertical-align:baseline;">
+</a>
 </td></tr></table>
 
 
 <script type="text/javascript">
 "use strict";
 showSection(location.search.substr(1));
+var theObj = document.getElementById("versionFooter");
+if (theObj) { theObj.innerHTML = "pgn4web " + displayVersion; }
 </script>
 
 </body>
