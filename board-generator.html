@@ -1632,7 +1632,7 @@ var bugWin=null;
 function bug_report() {
   var email = pgn4web_project_email;
   var subject = "pgn4web board generator bug report";
-  var bug_info = "pgn4web board generator bug report\n\n-------- automatically generated debug info: start --------\n\nURL: " + window.location + "\n\nuser agent: " + window.navigator.userAgent+ "\n\npgn4web version: " + pgn4web_version + "\n\niFrame HTML code:\n\n" + html_code_string + "\n\nPGN input:\n\n" + document.getElementById('pgnText').value + "\n\n-------- automatically generated debug info: end   --------\n\nPlease add below a description of the bug and attach a screenshot if possible.\n\n\n";
+  var bug_info = "pgn4web board generator bug report\n\n-------- automatically generated debug info: start --------\n\ndate: " + (new Date()).toUTCString() + "\n\nURL: " + window.location + "\n\nuser agent: " + window.navigator.userAgent+ "\n\npgn4web version: " + pgn4web_version + "\n\niFrame HTML code:\n\n" + html_code_string + "\n\nPGN input:\n\n" + document.getElementById('pgnText').value + "\n\n-------- automatically generated debug info: end   --------\n\nPlease add below a description of the bug and attach a screenshot if possible.\n\n\n";
   var mailto_link = 'mailto:' + email + '?subject=' + subject + '&body=' + escape(bug_info);
 
   if (bugWin && !bugWin.closed) { bugWin.close(); }
