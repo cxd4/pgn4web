@@ -77,6 +77,9 @@ a:hover {
 
 .textbox {
   width: 100%;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box; /* remove when non-prefixed option supported by firefox */
+  -webkit-box-sizing: border-box; /* remove when non-prefixed option supported by safari */
 }
 
 .shortUrl {
@@ -1648,9 +1651,11 @@ function bug_report() {
 }
 
 function print_menu( item, level, title ) {
-  var menu = '<div style="height:1em;"><a name=' + item + '>&nbsp;</a></div>';
+  var menu = '<div style="height:1em;">';
+  if (item) { menu += '<a name=' + item + '>&nbsp;</a>'; }
+  menu += '</div>';
   menu += '<table width=100% cellspacing=0 cellpadding=0><tr><td td valign=middle align=left>';
-  menu += '<h' + level + '>' + title + '</h' + level + '>';
+  if (title) { menu += '<h' + level + '>' + title + '</h' + level + '>'; }
   menu += '</td><td valign=top align=right>';
   menu += '<div style="font-size: 70%;">';
   menu += '<a href=#top>instructions</a>';
@@ -2168,7 +2173,7 @@ uses the parent's background color</span>
 <!-- hiding URL options -->
 <span class="extendedOption">
 
-<div style="height: 3em">&nbsp;</div>
+<div style="height: 2em">&nbsp;</div>
 <script type="text/javascript">print_menu("url_options", 3, "URL options");</script>
 <div style="height: 1em">&nbsp;</div>
 
@@ -2197,7 +2202,10 @@ unless <i>use HTML textarea</i> is enabled or for deployment on a page from a di
 <!-- end hiding URL options -->
 
 <!-- hidden checkbox for calculating width -->
-<input class="checkbox" type="checkbox" id="hiddenCheckbox" name="checkbox" style="visibility: hidden;" />
+<input class="checkbox" type="checkbox" id="hiddenCheckbox" name="checkbox" style="height: 1px; visibility: hidden;" />
+
+<div style="height: 1em">&nbsp;</div>
+<script type="text/javascript">print_menu("", 2, "");</script>
 
 <script type="text/javascript">
 
