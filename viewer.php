@@ -364,7 +364,6 @@ body {
   background: white;
   font-family: 'pgn4web Liberation Sans', sans-serif;
   font-size: 16px;
-  line-height: 1.4em;
   padding: 1.75em;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -373,6 +372,7 @@ body {
 div, span, table, tr, td {
   font-family: 'pgn4web Liberation Sans', sans-serif; /* fixes IE9 body css issue */
   font-size: 16px; /* fixes Opera table css issue */
+  line-height: 1.4em;
 }
 
 a {
@@ -412,14 +412,12 @@ $headClass
 
 <body onResize="if (typeof(updateAnnotationGraph) != 'undefined') { updateAnnotationGraph(); }">
 
-<table class="headClass" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td>
-<h1 style="text-align:right;">
-<span style="float:left; color:red;">
-<h1 style="margin:0px; padding:0px;">pgn4web games viewer</h1>
-</span>
+<h1 class="headClass" style="text-align:right;">
+<a style="float:left; color:red;">
+pgn4web games viewer
+</a>
 <a href="." onfocus="this.blur();" style="width:49px; height:29px; background:url(pawns.png) -47px -15px; vertical-align:baseline; display:inline-block;"></a>
 </h1>
-</td></tr></tbody></table>
 
 <div style="height:1em;" class="headClass">&nbsp;</div>
 
