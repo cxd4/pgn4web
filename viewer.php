@@ -412,14 +412,14 @@ $headClass
 
 <body onResize="if (typeof(updateAnnotationGraph) != 'undefined') { updateAnnotationGraph(); }">
 
-<table class="headClass" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
-<td align="left" valign="middle">
-<h1 style="font-family:sans-serif; color:red;"><a style="color:red;" href=.>pgn4web</a> games viewer</h1>
-</td>
-<td align="right" valign="middle">
-<a href=.><img style="vertical-align:middle;" src=pawns.png border=0></a>
-</td>
-</tr></tbody></table>
+<table class="headClass" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td>
+<h1 style="text-align:right;">
+<span style="float:left; color:red;">
+<h1 style="margin:0px; padding:0px;">pgn4web games viewer</h1>
+</span>
+<a href="." onfocus="this.blur();" style="width:49px; height:29px; background:url(pawns.png) -47px -15px; vertical-align:baseline; display:inline-block;"></a>
+</h1>
+</td></tr></tbody></table>
 
 <div style="height:1em;" class="headClass">&nbsp;</div>
 

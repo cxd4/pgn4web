@@ -47,27 +47,22 @@ a:hover, a:active
 
 <body onResize="resizeFrameHeight(document.getElementById('liveframe'));">
 
-<table border="0" cellpadding="0" cellspacing="0" width="99.9%" height="99.9%"><tbody>
-<tr id="headRow">
-<td align="left" valign="middle">
-<h1 style="color: red;"><a style="color: red;" href=.>pgn4web</a> chess live broadcast</h1>
-</td>
-<td align="right" valign="middle">
-<a href=.><img style="vertical-align:middle;" src=pawns.png border=0></a>
-</td>
-</tr>
-<tr>
-<td colspan="2" style="padding: 40px;">
+<table border="0" cellpadding="0" cellspacing="0" width="99.9%" height="99.9%"><tbody><tr><td id="headRow">
+<h1 style="text-align:right;">
+<span style="float:left; color:red;">
+pgn4web chess live broadcast
+</span>
+<a href="." onfocus="this.blur();" style="width:49px; height:29px; background:url(pawns.png) -47px -15px; vertical-align:baseline; display:inline-block;"></a>
+</h1>
+</td></tr><tr><td style="padding: 40px;">
 <table id="framecontainer" cellpadding="0" cellspacing="0" width="100%" height="100%" style="background-color: #EDE8D5; box-shadow: 0px 0px 20px #663300; border-color: #EDE8D5; border-style: solid; border-width: 40px; border-radius: 10px;" onclick="toggleLiveMode();"><tbody><tr valign="middle"><td align="center">
-<table id="frameinnercontainer" cellpadding="0" cellspacing="0" width="100%" height="100%" onclick="stopEvProp(event);"><tbody><tr valign="middle">
-<td align="left" valign="top">
+<table id="frameinnercontainer" cellpadding="0" cellspacing="0" width="100%" height="100%" onclick="stopEvProp(event);"><tbody><tr valign="middle"><td align="left" valign="top">
 <iframe style="opacity: 0.9;" id="analysisframe" name="analysisframeForLiveDotHtml" src="about:blank" height="0" width="0" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">your browser does not support the required iframe functionality</iframe>
 </td><td width="100%" align="center">
 <iframe id="liveframe" src="about:blank" height="360" width="480" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">your browser does not support the required iframe functionality</iframe>
 </td></tr></tbody></table>
 </td></tr></tbody></table>
-</td>
-</tr></tbody></table>
+</td></tr></tbody></table>
 
 <script type="text/javascript">
 
