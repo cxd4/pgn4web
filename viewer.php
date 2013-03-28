@@ -412,7 +412,7 @@ $headClass
 
 <body onResize="if (typeof(updateAnnotationGraph) != 'undefined') { updateAnnotationGraph(); }">
 
-<h1 class="headClass" style="text-align:right;">
+<h1 class="headClass" style="margin-top:0px; padding-top:0px; text-align:right;">
 <a style="float:left; color:red;">
 pgn4web games viewer
 </a>

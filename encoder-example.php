@@ -80,7 +80,7 @@ print <<<END
 
 <body style="font-family: sans-serif; margin:20px; padding:0px;">
 
-<h1>pgn4web PGN encoder/decoder php example</h1>
+<h1 style="margin-top:0px; padding-top:0px;">pgn4web PGN encoder/decoder php example</h1>
 
 <center>
 

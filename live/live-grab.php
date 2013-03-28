@@ -242,7 +242,7 @@ a:link, a:visited, a:hover, a:active {
 
 <body>
 
-<h1 name="top">pgn4web live games grab</h1>
+<h1 name="top" style="margin-top:0px; padding-top:0px;">pgn4web live games grab</h1>
 
 <script type='text/javascript'>grabTimeout = null;</script>
 

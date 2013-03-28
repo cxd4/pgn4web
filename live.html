@@ -48,7 +48,7 @@ a:hover, a:active
 <body onResize="resizeFrameHeight(document.getElementById('liveframe'));">
 
 <table border="0" cellpadding="0" cellspacing="0" width="99.9%" height="99.9%"><tbody><tr><td id="headRow">
-<h1 style="text-align:right;">
+<h1 style="margin-top:0px; padding-top:0px; text-align:right;">
 <span style="float:left; color:red;">
 pgn4web chess live broadcast
 </span>
@@ -168,7 +168,7 @@ function resizeFrameHeight(frObj) {
     else if (document.body && document.body.clientHeight) { wh = document.body.clientHeight; }
     else { wh = 0; }
 
-    frObj.height = Math.max(240, wh - document.getElementById("headRow").offsetHeight - 220) + "px";
+    frObj.height = Math.max(240, wh - document.getElementById("headRow").offsetHeight - 222) + "px";
   }
 }
 
