@@ -747,6 +747,7 @@ function print_chessboard_one() {
   font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
   font-size: 1em;
   color: #B0B0B0;
+  -webkit-appearance: none;
   border: none;
   background: transparent;
   margin-top: 25px;
