@@ -377,7 +377,6 @@ body {
 <script src="pgn4web.js" type="text/javascript"></script>
 
 <script type="text/javascript">
-
 "use strict";
 
 SetImagePath("$pieceFont/$pieceSize");

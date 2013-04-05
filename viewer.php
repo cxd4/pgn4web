@@ -437,7 +437,6 @@ function print_form() {
   print <<<END
 
 <script type="text/javascript">
-
   "use strict";
 
   function setPgnUrl(newPgnUrl) {
@@ -654,7 +653,6 @@ END;
 </tbody></table>
 
 <script type="text/javascript">
-
 "use strict";
 
 var textFormMinHeight = getTextFormMinHeight();
@@ -976,7 +974,6 @@ $pgnText
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
 <script type="text/javascript">
-
    "use strict";
 
    var pgn4web_engineWindowUrlParameters = "pf=m";
@@ -1400,7 +1397,6 @@ function print_chessboard_two() {
 
 
 <script type="text/javascript">
-
    "use strict";
 
    var theObj;
@@ -2093,7 +2089,6 @@ function print_footer() {
   print <<<END
 
 <script type="text/javascript">
-
 "use strict";
 
 function pgn4web_onload(e) {

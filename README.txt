@@ -5,7 +5,9 @@
 #  for credits, license and more details
 #
 
+
 PGN4WEB: javascript chess games viewer for websites, blogs and live broadcasts.
+
 
 ABOUT
 
@@ -106,7 +108,7 @@ Example:
 
   <script type="text/javascript>
     "use strict";
-    
+
     SetPgnUrl("http://yoursite/yourpath/yourfile.pgn"); // if set, this has precedence over the inline PGN in the HTML file
     SetImagePath(""); // use "" path if images are in the same folder as this javascript file
     SetImageType("png");
@@ -450,8 +452,7 @@ Although a compression beyond 50% can be achieved, only the uncompressed
 version is distributed, but if you want to use a compressed version on your
 site, the pgn4web.js code should support it.
 
-As of pgn4web version 2.71, strict mode is used, see statement:
-"use strict";
+As of pgn4web version 2.71 strict mode is used, see statement: "use strict";
 
 
 CREDITS AND LICENSE
@@ -531,3 +532,4 @@ You are also encouraged to notify pgn4web@casaschi.net that you are using
 pgn4web.
 
 END
+
