@@ -431,10 +431,12 @@ moves) in the "(*" notation, such as in 1. e4 (* 1... d5 2. exd5) e5
 
 Please email me for review any PGN file that pgn4web fails parsing correctly.
 
+
 CHESS960 SUPPORT
 
 pgn4web supports Chess960 (a.k.a. Fischer random chess) and understands both
 the X-FEN and the Shredder-FEN extensions to the FEN notation.
+
 
 JAVASCRIPT CODING
 
@@ -450,6 +452,7 @@ site, the pgn4web.js code should support it.
 
 As of pgn4web version 2.71, strict mode is used, see statement:
 "use strict";
+
 
 CREDITS AND LICENSE
 
@@ -528,4 +531,3 @@ You are also encouraged to notify pgn4web@casaschi.net that you are using
 pgn4web.
 
 END
-
