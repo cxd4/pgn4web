@@ -466,7 +466,10 @@ attribution-share alike 3.0 unported license) by Eric De Mund.
 SVG images from http://commons.wikimedia.org/wiki/Category:SVG_chess_pieces
 by Colin M.L. Burnett; licensed under GFDL (www.gnu.org/copyleft/fdl.html),
 CC-BY-SA-3.0 (www.creativecommons.org/licenses/by-sa/3.0/) or
-GPL (www.gnu.org/licenses/gpl.html)], via Wikimedia Commons.
+GPL (www.gnu.org/licenses/gpl.html), via Wikimedia Commons. SVG images from
+http://openclipart.org/search/?query=chess+symbols+set by Igor Krizanovskij;
+dedicated to the Public Domain as openclipart.org content
+(http://creativecommons.org/publicdomain/zero/1.0/)
 
 The figurine fonts are derived from the Liberation Sans font (released under
 GNU General Public License, see https://fedorahosted.org/liberation-fonts/)

@@ -82,7 +82,22 @@ function myOnResize() {
 <script type="text/javascript">
 "use strict";
 
-SetImagePath("svgchess");
+var pieceFont = "random";
+var thisRegExp = /(&|\?)(pieceFont|pf)=([^&]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+  pieceFont = unescape(window.location.search.match(thisRegExp)[3]);
+}
+if (pieceFont == "i") { pieceFont = "igorsvg"; }
+if (pieceFont == "s") { pieceFont = "svgchess"; }
+if ((pieceFont != "igorsvg") && (pieceFont != "svgchess")) { pieceFont = "random"; }
+if ((pieceFont == "random") || (pieceFont == "r")) {
+  switch (Math.floor(Math.random() * 2)) {
+    case 1: pieceFont = "svgchess"; break;
+    default: pieceFont = "igorsvg"; break;
+  }
+}
+
+SetImagePath(pieceFont);
 SetImageType("svg");
 SetHighlightOption(true);
 SetAutoplayDelay(2000); // milliseconds

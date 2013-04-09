@@ -178,6 +178,7 @@ if (window.location.search.match(thisRegExp) !== null) {
 if (pieceFont == "a") { pieceFont = "alpha"; }
 if (pieceFont == "m") { pieceFont = "merida"; }
 if (pieceFont == "u") { pieceFont = "uscf"; }
+if (pieceFont == "i") { pieceFont = "igorsvg"; }
 if (pieceFont == "s") { pieceFont = "svgchess"; }
 if ((pieceFont == "random") || (pieceFont == "r")) {
   switch (Math.floor(Math.random() * 3)) {
@@ -186,8 +187,8 @@ if ((pieceFont == "random") || (pieceFont == "r")) {
     default: pieceFont = "alpha"; break;
   }
 }
-if ((pieceFont != "alpha") && (pieceFont != "merida") && (pieceFont != "uscf") && (pieceFont != "svgchess")) { pieceFont = pieceFont_default; }
-if (pieceFont == "svgchess") {
+if ((pieceFont != "alpha") && (pieceFont != "merida") && (pieceFont != "uscf") && (pieceFont != "igorsvg") && (pieceFont != "svgchess")) { pieceFont = pieceFont_default; }
+if ((pieceFont == "igorsvg") || (pieceFont == "svgchess")) {
   SetImagePath(pieceFont);
   SetImageType("svg");
 } else {
