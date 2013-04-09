@@ -89,9 +89,11 @@ if (window.location.search.match(thisRegExp) !== null) {
 }
 if (pieceFont == "i") { pieceFont = "igorsvg"; }
 if (pieceFont == "s") { pieceFont = "svgchess"; }
-if ((pieceFont != "igorsvg") && (pieceFont != "svgchess")) { pieceFont = "random"; }
+if (pieceFont == "t") { pieceFont = "tilesvg"; }
+if ((pieceFont != "igorsvg") && (pieceFont != "svgchess") && (pieceFont != "tilesvg")) { pieceFont = "random"; }
 if ((pieceFont == "random") || (pieceFont == "r")) {
-  switch (Math.floor(Math.random() * 2)) {
+  switch (Math.floor(Math.random() * 3)) {
+    case 2: pieceFont = "tilesvg"; break;
     case 1: pieceFont = "svgchess"; break;
     default: pieceFont = "igorsvg"; break;
   }

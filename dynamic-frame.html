@@ -180,6 +180,7 @@ if (pieceFont == "m") { pieceFont = "merida"; }
 if (pieceFont == "u") { pieceFont = "uscf"; }
 if (pieceFont == "i") { pieceFont = "igorsvg"; }
 if (pieceFont == "s") { pieceFont = "svgchess"; }
+if (pieceFont == "t") { pieceFont = "tilesvg"; }
 if ((pieceFont == "random") || (pieceFont == "r")) {
   switch (Math.floor(Math.random() * 3)) {
     case 1: pieceFont = "merida"; break;
@@ -187,8 +188,8 @@ if ((pieceFont == "random") || (pieceFont == "r")) {
     default: pieceFont = "alpha"; break;
   }
 }
-if ((pieceFont != "alpha") && (pieceFont != "merida") && (pieceFont != "uscf") && (pieceFont != "igorsvg") && (pieceFont != "svgchess")) { pieceFont = pieceFont_default; }
-if ((pieceFont == "igorsvg") || (pieceFont == "svgchess")) {
+if ((pieceFont != "alpha") && (pieceFont != "merida") && (pieceFont != "uscf") && (pieceFont != "igorsvg") && (pieceFont != "svgchess") && (pieceFont != "tilesvg")) { pieceFont = pieceFont_default; }
+if ((pieceFont == "igorsvg") || (pieceFont == "svgchess") || (pieceFont == "tilesvg")) {
   SetImagePath(pieceFont);
   SetImageType("svg");
 } else {
