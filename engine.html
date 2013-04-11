@@ -471,7 +471,7 @@ var g_ev = "";
 var g_pv = "";
 var g_depth = "";
 var g_nodes = "";
-var g_initError;
+var g_initErrors = 0;
 var g_lastFenError = "";
 
 function InitializeBackgroundEngine() {
@@ -525,7 +525,7 @@ function InitializeBackgroundEngine() {
                 }
              }
           }, false);
-          g_initError = false;
+          g_initErrors = 0;
           return true;
       } catch(e) {
          if (theObj = document.getElementById("GameEval")) {
@@ -536,10 +536,7 @@ function InitializeBackgroundEngine() {
             theObj.innerHTML = "&nbsp;";
             theObj.title = "";
          }
-         if (!g_initError) {
-            g_initError = true;
-            myAlert("error: engine exception " + e);
-         }
+         if (!g_initErrors++) { myAlert("error: engine exception " + e); }
          return false;
       }
    }

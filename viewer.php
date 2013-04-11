@@ -1825,7 +1825,7 @@ function print_chessboard_two() {
    var g_pv = "";
    var g_depth = "";
    var g_nodes = "";
-   var g_initError;
+   var g_initErrors = 0;
    var g_lastFenError = "";
 
    function InitializeBackgroundEngine() {
@@ -1869,14 +1869,11 @@ function print_chessboard_two() {
                   }
                }
             }, false);
-            g_initError = false;
+            g_initErrors = 0;
             return true;
          } catch(e) {
             stopAnalysis();
-            if (!g_initError) {
-               g_initError = true;
-               myAlert("error: engine exception " + e);
-            }
+            if (!g_initErrors++) { myAlert("error: engine exception " + e); }
             return false;
          }
       }
