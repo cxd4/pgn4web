@@ -92,11 +92,7 @@ if (pieceFont == "s") { pieceFont = "svgchess"; }
 if (pieceFont == "t") { pieceFont = "tilesvg"; }
 if ((pieceFont != "igorsvg") && (pieceFont != "svgchess") && (pieceFont != "tilesvg")) { pieceFont = "random"; }
 if ((pieceFont == "random") || (pieceFont == "r")) {
-  switch (Math.floor(Math.random() * 3)) {
-    case 2: pieceFont = "tilesvg"; break;
-    case 1: pieceFont = "svgchess"; break;
-    default: pieceFont = "igorsvg"; break;
-  }
+  pieceFont = ["igorsvg", "svgchess", "tilesvg"][Math.floor(3 * Math.random())];
 }
 
 SetImagePath(pieceFont);

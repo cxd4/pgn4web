@@ -2000,11 +2000,8 @@ function refreshPgnSource() {
   if (LiveBroadcastDemo) {
     var newPly, addedPly = 0;
     for (var ii=0; ii<numberOfGames; ii++) {
-      var rnd = Math.random();
-      if      (rnd <= 0.05) { newPly = 3; } //  5%
-      else if (rnd <= 0.20) { newPly = 2; } // 15%
-      else if (rnd <= 0.60) { newPly = 1; } // 40%
-      else                  { newPly = 0; } // 40%
+      //        5% 15%      40%
+      newPly = [3, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1][Math.floor(20 * Math.random())] || 0;
       if (gameDemoMaxPly[ii] <= gameDemoLength[ii]) {
         gameDemoMaxPly[ii] += newPly;
         addedPly += newPly;

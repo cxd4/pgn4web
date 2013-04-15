@@ -182,11 +182,7 @@ if (pieceFont == "i") { pieceFont = "igorsvg"; }
 if (pieceFont == "s") { pieceFont = "svgchess"; }
 if (pieceFont == "t") { pieceFont = "tilesvg"; }
 if ((pieceFont == "random") || (pieceFont == "r")) {
-  switch (Math.floor(Math.random() * 3)) {
-    case 1: pieceFont = "merida"; break;
-    case 2: pieceFont = "uscf"; break;
-    default: pieceFont = "alpha"; break;
-  }
+  pieceFont = ["alpha", "merida", "uscf"][Math.floor(3 * Math.random())];
 }
 if ((pieceFont != "alpha") && (pieceFont != "merida") && (pieceFont != "uscf") && (pieceFont != "igorsvg") && (pieceFont != "svgchess") && (pieceFont != "tilesvg")) { pieceFont = pieceFont_default; }
 if ((pieceFont == "igorsvg") || (pieceFont == "svgchess") || (pieceFont == "tilesvg")) {

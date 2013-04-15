@@ -81,11 +81,7 @@ if (window.location.search.match(thisRegExp) !== null) {
   liveMode = unescape(window.location.search.match(thisRegExp)[3]);
 }
 if ((liveMode == "random") || (liveMode == "r")) {
-  var r = Math.random();
-  if (r < 0.25) { liveMode = "widget"; }
-  else if (r < 0.50) { liveMode = "dynamic"; }
-  else if (r < 0.75) { liveMode = "compact"; }
-  else { liveMode = "analysis"; }
+  liveMode = ["analysis", "compact", "dynamic", "widget"][Math.floor(4 * Math.random())];
 }
 if (liveMode == "a") { liveMode = "analysis"; }
 if (liveMode == "c") { liveMode = "compact"; }
