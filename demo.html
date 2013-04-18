@@ -121,7 +121,7 @@ pgn4web demo site
 
 <a class="linklist" id="tallinn_live_dynamic" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="dynamic-frame.html?pgnData=demoLiveGames.pgn&refreshMinutes=0.25&refreshDemo=true&initialGame=vovk&showColorFlag=true&pieceFont=random&colorTheme=blue">tallinn live dynamic</a>
 
-<a class="linklist" id="tallinn_live_mosaic" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="live-mosaic-viewer.html?pgnData=demoLiveGames.pgn&refreshMinutes=0.25&refreshDemo=true&demoPly=0,1,2,3&barePadding=0px">tallinn live mosaic</a>
+<a class="linklist" id="tallinn_live_mosaic" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="live-mosaic-viewer.html?pgnData=demoLiveGames.pgn&refreshMinutes=0.25&refreshDemo=true&demoPly=0,1,2,3&barePadding=40px">tallinn live mosaic</a>
 
 <a class="linklist" id="tallinn_live_widget" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="board.html?am=n&d=1000&ig=vovk&ih=e&ss=36&ps=d&pf=d&lcs=Wtyk&dcs=OXJO&bbcs=OXJO&hm=b&hcs=C8B5&bd=c&cbcs=UJ2e&ctcs=nkYj&hd=l&md=h&tm=0&fhcs=nkYi&fhs=18&fmcs=nkYi&fccs=DoRa&hmcs=ZbNv&fms=18&fcs=m&cd=h&bcs=Wtyk&fp=18&hl=f&fh=515&fw=b&pd=demoLiveGames.pgn&rm=0.25&rd=t">tallinn live widget</a>
 
@@ -203,8 +203,9 @@ function select_frame(new_frame) {
         new_frame_borderRadius = "4px";
         break;
       case "tallinn_live_mosaic":
-        new_frame_width = "700px";
-        new_frame_height = "700px";
+        new_frame_width = "672px"; // ((256 + 40) * 2) + 40 * 2
+        new_frame_height = "747px"; // ((306 + 20) * 2 + 15) + 40 * 2
+        new_frame_boxShadow = "0px 0px 20px #CCCCCC";
         break;
       case "tallinn_live_widget":
         new_frame_height = "515px";
