@@ -508,6 +508,12 @@ function customFunctionOnPgnTextLoad() {
   if (firstLoadPgnText) { firstLoadPgnText = false; }
 }
 
+function customDebugInfo() {
+  var dbg = "maxBoards=" + maxBoards;
+  dbg += " filtered=" + filteredGames.length;
+  return dbg;
+}
+
 function updateMenu() {
   var theRightObject, theLeftObject, theInfoObject;
 
