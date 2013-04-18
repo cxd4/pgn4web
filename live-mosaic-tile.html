@@ -162,10 +162,12 @@
 
     try {
       if (parent && parent.pgn4webHideChildFrameGame) {
-        if (parent.pgn4webHideChildFrameGame(gameEvent[currentGame], gameSite[currentGame], gameDate[currentGame], gameRound[currentGame], gameWhite[currentGame], gameBlack[currentGame], true)) {
-          boardShortcut("A6", "hide this game", function(t,e){ hideThisGame(); });
-        } else {
-          boardShortcut("A6", "hiding option unavailable for this game", function(t,e){} );
+        if (parent.barePadding === "") {
+          if (parent.pgn4webHideChildFrameGame(gameEvent[currentGame], gameSite[currentGame], gameDate[currentGame], gameRound[currentGame], gameWhite[currentGame], gameBlack[currentGame], true)) {
+            boardShortcut("A6", "hide this game", function(t,e){ hideThisGame(); });
+          } else {
+            boardShortcut("A6", "hiding option unavailable for this game", function(t,e){} );
+          }
         }
       }
     } catch(e) { myAlert("warning: failed accessing frame's parent for hiding game option", false); }

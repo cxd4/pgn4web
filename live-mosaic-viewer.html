@@ -33,6 +33,7 @@
       " - refreshMinutes = live broadcast delay (default " + refreshMinutes_default + ")" + "\n\n" +
       " - refreshDemo = if set true sets live demo mode (default false)" + "\n\n" +
       " - headlessPage = if set true displays a page without heading (default false)" + "\n\n" +
+      // " - barePadding = if not null, displays a page with given padding and without header/footer (default null)" + "\n\n" +
       " - help = true");
   }
 
@@ -110,6 +111,13 @@
   if (window.location.search.match(thisRegExp) !== null) {
     var headlessPageValue = unescape(window.location.search.match(thisRegExp)[3]);
     if ((headlessPageValue == "true") || (headlessPageValue == "t")) { headlessPage = true; }
+  }
+
+  // undocumented feature
+  var barePadding = "";
+  thisRegExp = /(&|\?)(barePadding|bp)=([^&]*)(&|$)/i;
+  if (window.location.search.match(thisRegExp) !== null) {
+    barePadding = unescape(window.location.search.match(thisRegExp)[3]);
   }
 
   SetImagePath("alpha/24"); // just to avoid console errors
@@ -218,6 +226,10 @@ function fixCSSforHeadelessPage() {
   document.write("<style type='text/css'> body { color: #AAAAAA; } a { color: #AAAAAA; } a:hover { color: black; } .beforeBoards { margin-top: 10px; } </style>");
 }
 
+function fixCSSforBarePadding() {
+  document.write("<style type='text/css'> body { padding: " + barePadding + "; } .beforeBoards, .afterBoards { display: none; } </style>");
+}
+
 function printHeader() {
   document.write("<h1 style='margin-top:0px; padding-top:0px; text-align:right;'><span style='float:left; color:red;'>pgn4web chess live broadcast</span><a href='.' onfocus='this.blur();' style='width:49px; height:29px; background:url(pawns.png) -47px -15px; vertical-align:baseline; display:inline-block;'></a></h1>");
 }
@@ -262,9 +274,10 @@ function updateBoardFrames(newMaxBoards) {
   setMaxBoardToLocalStorage(maxBoards);
 }
 
-if (headlessPage) {
+if (headlessPage || (barePadding !== "")) {
   fixCSSforHeadelessPage();
-  printMenu();
+  if (barePadding !== "") { fixCSSforBarePadding(); }
+  else { printMenu(); }
 } else {
   printHeader();
 }
@@ -282,9 +295,7 @@ if (headlessPage) {
 
 updateBoardFrames(maxBoards);
 
-if (!headlessPage) {
-  printMenu();
-}
+if (!headlessPage && (barePadding === "")) { printMenu(); }
 
 
 var pgn4webClearShortCutSquaresForChildFrames = [ ["DH", "8"], ["H", "7"], ["ABH", "6"] ];
