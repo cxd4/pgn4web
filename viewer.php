@@ -1353,7 +1353,7 @@ $pgnText
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><a href="javascript:void(0);" onclick="if (event.shiftKey) { clickedGameAnalysisEval(); } else { userToggleAnalysis(); } this.blur(); return false;" class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="start annotation">&middot;</a><a href="javascript:void(0);" onclick="if (event.shiftKey) { MoveBackward(1); } else { goToMissingAnalysis(false); } this.blur();" class="innerHeaderItem move analysisMove notranslate" id="GameAnalysisMove" title="annotated move"></a><a href="javascript:void(0);" onclick="clickedGameTablebase();" class="innerHeaderItem tablebase" id="GameTablebase" title="probe endgame tablebase">&nbsp;</a><a href="javascript:void(0);" onclick="if (event.shiftKey) { MoveForward(1); } else { goToMissingAnalysis(true); } this.blur();" class="innerHeaderItemNoMargin move analysisPv notranslate" id="GameAnalysisPv"></a><b>&nbsp;</b></div>
+<div class="headerItem"><a href="javascript:void(0);" onclick="if (event.shiftKey) { clickedGameAnalysisEval(); } else { userToggleAnalysis(); } this.blur(); return false;" class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="start annotation">&middot;&nbsp;</a><a href="javascript:void(0);" onclick="if (event.shiftKey) { MoveBackward(1); } else { goToMissingAnalysis(false); } this.blur();" class="innerHeaderItem move analysisMove notranslate" id="GameAnalysisMove" title="annotated move"></a><a href="javascript:void(0);" onclick="clickedGameTablebase();" class="innerHeaderItem tablebase" id="GameTablebase" title="probe endgame tablebase">&nbsp;</a><a href="javascript:void(0);" onclick="if (event.shiftKey) { MoveForward(1); } else { goToMissingAnalysis(true); } this.blur();" class="innerHeaderItemNoMargin move analysisPv notranslate" id="GameAnalysisPv"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="gameAnnotationContainer" id="GameAnnotationContainer">
 <canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick(event); this.blur();" onmousemove="annotationGraphMousemove(event);" onmouseover="annotationGraphMouseover(event);" onmouseout="annotationGraphMouseout(event);"></canvas>
@@ -1561,7 +1561,7 @@ function print_chessboard_two() {
 
       var theObj;
       var annPly = (lastMousemoveAnnPly == -1) ? CurrentPly : lastMousemoveAnnPly;
-      var annMove = "&middot;";
+      var annMove = "&middot;&nbsp;";
       if (theObj = document.getElementById("GameAnalysisMove")) {
          if ((annPly > StartPly) && (annPly <= StartPly + PlyNumber)) {
             annMove = (Math.floor(annPly / 2) + (annPly % 2)) + (annPly % 2 ? ". " : "... ") + Moves[annPly - 1];
@@ -1607,7 +1607,7 @@ function print_chessboard_two() {
    function clearAnalysisHeader() {
       var theObj;
       if (theObj = document.getElementById("GameAnalysisMove")) { theObj.innerHTML = ""; }
-      if (theObj = document.getElementById("GameAnalysisEval")) { theObj.innerHTML = "&middot"; theObj.title = "start annotation"; }
+      if (theObj = document.getElementById("GameAnalysisEval")) { theObj.innerHTML = "&middot;&nbsp;"; theObj.title = "start annotation"; }
       if (theObj = document.getElementById("GameTablebase")) { theObj.style.display = "none"; }
       if (theObj = document.getElementById("GameAnalysisPv")) { theObj.innerHTML = ""; }
    }
