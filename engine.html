@@ -46,11 +46,20 @@ a {
   visibility: hidden;
 }
 
-.gameEval {
+.gameEvalAndTablebase {
   position: absolute;
   right: 0px;
   bottom: 0px;
   z-index: 3;
+}
+
+.gameEval {
+  display: inline-block;
+  text-align: right;
+}
+
+.gameTablebase {
+  display: none;
 }
 
 .gameAnalysis {
@@ -77,10 +86,6 @@ a {
 .gameShowFen {
   display: inline-block;
   overflow: hidden;
-}
-
-.gameTablebase {
-  display: none;
 }
 
 .gameMoves {
@@ -295,9 +300,8 @@ myInsertRule(mySheet, ".gameButtonSpacer", "width: " + Math.floor(squareSize * 0
 myInsertRule(mySheet, ".gameAnalysis", "height: " + squareSize + "px;");
 myInsertRule(mySheet, ".gameFlagToMove", "height: " + Math.floor(fontMovesSize / 2) + "px; width: " + Math.floor(fontMovesSize / 2) + "px; border-color: " + fontMovesColorHex + ";");
 myInsertRule(mySheet, ".gameShowFen", "width: " + (squareSize - 2 * Math.floor(squareSize / 3)) + "px; margin-left:" + Math.floor(squareSize / 3) + "px; margin-right:" + Math.floor(squareSize / 3) + "px;");
-myInsertRule(mySheet, ".gameTablebase", "padding-right: " + squareSize + "px; background: " + backgroundColorHex + "; font-size: " + fontCommentsSize + "px;");
 myInsertRule(mySheet, ".gameMoves", "font-size: " + fontMovesSize + "px;");
-myInsertRule(mySheet, ".gameEval", "padding-left: " + squareSize + "px; background: " + backgroundColorHex + "; font-size: " + fontCommentsSize + "px;");
+myInsertRule(mySheet, ".gameEvalAndTablebase", "padding-left: " + squareSize + "px; background: " + backgroundColorHex + "; font-size: " + fontCommentsSize + "px;");
 
 </script>
 
@@ -341,7 +345,7 @@ SetShortcutKeysEnabled(false);
 <td id="GameAutoUpdateFlag" class="gameButtonCell" align="center" onclick="clickedGameAutoUpdateFlag(this, event);">&nbsp;</td>
 </tr></table>
 <div class="gameAnalysis gameAnalysisHidden" id="GameAnalysis">
-<div class="gameEval"><span class="gameTablebase" id="GameTablebase" onclick="clickedGameTablebase(this, event);" title="probe endgame tablebase">&nbsp;</span><span id="GameEval" onclick="clickedGameEval(this, event);">&nbsp;</span></div>
+<div class="gameEvalAndTablebase"><span class="gameTablebase" id="GameTablebase" onclick="clickedGameTablebase(this, event);" title="probe endgame tablebase">&nbsp;</span><span class="gameEval" id="GameEval" onclick="clickedGameEval(this, event);">&nbsp;</span></div>
 </div>
 <div class="gameFlagAndMoves">
 <img class="gameFlagToMove" id="GameFlagToMove" onclick="clickedGameFlagToMove(this, event);" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" border="1" /><span class="gameShowFen" onclick="clickedGameShowFen(this, event);">&nbsp;</span><span id="GameMoves" class="gameMoves" onclick="clickedGameMoves(this, event);">&nbsp;</span>&nbsp;
@@ -437,6 +441,9 @@ function updateTablebaseFlag() {
   var theObj = document.getElementById("GameTablebase");
   if (theObj) {
     theObj.style.display = (menPosition >= minMenInTablebase) && (menPosition <= maxMenInTablebase) && (!disableEngine) ? "inline" : "none";
+  }
+  if (theObj = document.getElementById("GameEval")) {
+    theObj.style.width = (menPosition >= minMenInTablebase) && (menPosition <= maxMenInTablebase) && (!disableEngine) ? Math.floor(3 * fontCommentsSize) + "px" : "";
   }
 }
 
