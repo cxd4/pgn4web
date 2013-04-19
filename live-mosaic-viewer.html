@@ -119,6 +119,7 @@
   if (window.location.search.match(thisRegExp) !== null) {
     barePadding = unescape(window.location.search.match(thisRegExp)[3]);
   }
+  barePadding = barePadding.replace(/[^a-zA-Z0-9%\s]/g, "");
 
   SetImagePath("alpha/24"); // just to avoid console errors
 
