@@ -439,7 +439,7 @@ if (theObj) { theObj.innerHTML = translateNAGs("$148"); }
 function updateTablebaseFlag() {
   var menPosition = CurrentFEN().replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length;
   var theObj = document.getElementById("GameTablebase");
-  var showTablebase = (menPosition >= minMenInTablebase) && (menPosition <= maxMenInTablebase) && (g_backgroundEngine) && (!disableEngine);
+  var showTablebase = (menPosition >= minMenInTablebase) && (menPosition <= maxMenInTablebase) && (!g_initErrors) && (!disableEngine);
   if (theObj) {
     theObj.style.display = showTablebase ? "inline" : "none";
   }
@@ -574,8 +574,8 @@ function InitializeBackgroundEngine() {
             theObj.innerHTML = "&nbsp;";
             theObj.title = "";
          }
-         updateTablebaseFlag();
          if (!g_initErrors++) { myAlert("error: engine exception " + e); }
+         updateTablebaseFlag();
          return false;
       }
    }
