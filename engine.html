@@ -79,6 +79,10 @@ a {
   overflow: hidden;
 }
 
+.gameTablebase {
+  display: none;
+}
+
 .gameMoves {
   white-space: nowrap;
 }
@@ -291,6 +295,7 @@ myInsertRule(mySheet, ".gameButtonSpacer", "width: " + Math.floor(squareSize * 0
 myInsertRule(mySheet, ".gameAnalysis", "height: " + squareSize + "px;");
 myInsertRule(mySheet, ".gameFlagToMove", "height: " + Math.floor(fontMovesSize / 2) + "px; width: " + Math.floor(fontMovesSize / 2) + "px; border-color: " + fontMovesColorHex + ";");
 myInsertRule(mySheet, ".gameShowFen", "width: " + (squareSize - 2 * Math.floor(squareSize / 3)) + "px; margin-left:" + Math.floor(squareSize / 3) + "px; margin-right:" + Math.floor(squareSize / 3) + "px;");
+myInsertRule(mySheet, ".gameTablebase", "padding-right: " + squareSize + "px; background: " + backgroundColorHex + "; font-size: " + fontCommentsSize + "px;");
 myInsertRule(mySheet, ".gameMoves", "font-size: " + fontMovesSize + "px;");
 myInsertRule(mySheet, ".gameEval", "padding-left: " + squareSize + "px; background: " + backgroundColorHex + "; font-size: " + fontCommentsSize + "px;");
 
@@ -337,8 +342,9 @@ SetShortcutKeysEnabled(false);
 </tr></table>
 <div class="gameAnalysis gameAnalysisHidden" id="GameAnalysis">
 <div class="gameEval" id="GameEval" onclick="clickedGameEval(this, event);">&nbsp;</div>
+</div>
 <div class="gameFlagAndMoves">
-<img class="gameFlagToMove" id="GameFlagToMove" onclick="clickedGameFlagToMove(this, event);" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" border="1" /><span class="gameShowFen" onclick="clickedGameShowFen(this, event);">&nbsp;</span><span id="GameMoves" class="gameMoves" onclick="clickedGameMoves(this, event);">&nbsp;</span>&nbsp;
+<img class="gameFlagToMove" id="GameFlagToMove" onclick="clickedGameFlagToMove(this, event);" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" border="1" /><span class="gameShowFen" onclick="clickedGameShowFen(this, event);">&nbsp;</span><span class="gameTablebase" id="GameTablebase" onclick="clickedGameTablebase(this, event);" title="probe endgame tablebase">&nbsp;</span><span id="GameMoves" class="gameMoves" onclick="clickedGameMoves(this, event);">&nbsp;</span>&nbsp;
 </div>
 </div>
 </center>
@@ -398,18 +404,43 @@ function clickedGameMoves(t,e) {
 function clickedGameEval(t,e) {
    if (e.shiftKey) {
       if (!disableEngine) {
-
          displayHelp("informant_symbols");
-
-<!-- start of tablebase glue code -->
-
-<!-- end of tablebase glue code -->
-
       }
    } else {
       setDisableEngine(!disableEngine);
    }
 }
+
+var maxMenInTablebase = 0;
+var minMenInTablebase = 3;
+function probeTablebase() {}
+
+
+// start of tablebase glue code
+
+// end of tablebase glue code
+
+
+function clickedGameTablebase() {
+  var menPosition = CurrentFEN().replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length;
+  if ((menPosition >= minMenInTablebase) && (menPosition <= maxMenInTablebase)) {
+    probeTablebase();
+  } else {
+    myAlert("warning: endgame tablebase only supports positions with " + minMenInTablebase + " to " + maxMenInTablebase + " men");
+  }
+}
+theObj = document.getElementById("GameTablebase");
+if (theObj) { theObj.innerHTML = translateNAGs("$148"); }
+
+function updateTablebaseFlag(thisFen) {
+  if (typeof(thisFen) == "undefined") { thisFen = CurrentFEN(); }
+  var menPosition = thisFen.replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length;
+  var theObj = document.getElementById("GameTablebase");
+  if (theObj) {
+    theObj.style.display = (menPosition >= minMenInTablebase) && (menPosition <= maxMenInTablebase) && analysisStarted ? "inline" : "none";
+  }
+}
+
 
 function clickedGameAutoUpdateFlag(t,e) {
    if (openerCheck()) {
@@ -810,6 +841,7 @@ function customFunctionOnMove() {
    clickFromRow = "";
    clickFromPiece = "";
 
+   updateTablebaseFlag();
    updateGameAnalysisFlag();
    updateGameAutoUpdateFlag();
 }

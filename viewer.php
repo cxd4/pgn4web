@@ -945,6 +945,10 @@ a.variation {
 .analysisMove {
 }
 
+.tablebase {
+  display: none;
+}
+
 .analysisPv {
   margin-left: 0.5em;
 }
@@ -1298,13 +1302,7 @@ $pgnText
    }
 
    function clickedGameAnalysisEval() {
-
       displayHelp('informant_symbols');
-
-<!-- start of tablebase glue code -->
-
-<!-- end of tablebase glue code -->
-
    }
 
 </script>
@@ -1355,7 +1353,7 @@ $pgnText
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><a href="javascript:void(0);" onclick="if (event.shiftKey) { clickedGameAnalysisEval(); } else { userToggleAnalysis(); } this.blur(); return false;" class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="start annotation">&middot;</a><a href="javascript:void(0);" onclick="if (event.shiftKey) { MoveBackward(1); } else { goToMissingAnalysis(false); } this.blur();" class="innerHeaderItem move analysisMove notranslate" id="GameAnalysisMove" title="annotated move"></a><a href="javascript:void(0);" onclick="if (event.shiftKey) { MoveForward(1); } else { goToMissingAnalysis(true); } this.blur();" class="innerHeaderItemNoMargin move analysisPv notranslate" id="GameAnalysisPv"></a><b>&nbsp;</b></div>
+<div class="headerItem"><a href="javascript:void(0);" onclick="if (event.shiftKey) { clickedGameAnalysisEval(); } else { userToggleAnalysis(); } this.blur(); return false;" class="innerHeaderItem analysisEval" id="GameAnalysisEval" title="start annotation">&middot;</a><a href="javascript:void(0);" onclick="if (event.shiftKey) { MoveBackward(1); } else { goToMissingAnalysis(false); } this.blur();" class="innerHeaderItem move analysisMove notranslate" id="GameAnalysisMove" title="annotated move"></a><a href="javascript:void(0);" onclick="clickedGameTablebase();" class="innerHeaderItem tablebase" id="GameTablebase" title="probe endgame tablebase">&nbsp;</a><a href="javascript:void(0);" onclick="if (event.shiftKey) { MoveForward(1); } else { goToMissingAnalysis(true); } this.blur();" class="innerHeaderItemNoMargin move analysisPv notranslate" id="GameAnalysisPv"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="gameAnnotationContainer" id="GameAnnotationContainer">
 <canvas class="gameAnnotationGraph" id="GameAnnotationGraph" height="1" width="1" onclick="annotationGraphClick(event); this.blur();" onmousemove="annotationGraphMousemove(event);" onmouseover="annotationGraphMouseover(event);" onmouseout="annotationGraphMouseout(event);"></canvas>
@@ -1400,6 +1398,36 @@ function print_chessboard_two() {
    "use strict";
 
    var theObj;
+
+   var maxMenInTablebase = 0;
+   var minMenInTablebase = 3;
+   function probeTablebase() {}
+
+
+// start of tablebase glue code
+
+// end of tablebase glue code
+
+
+   function clickedGameTablebase() {
+      var menPosition = CurrentFEN().replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length;
+      if ((menPosition >= minMenInTablebase) && (menPosition <= maxMenInTablebase)) {
+         probeTablebase();
+      } else {
+         myAlert("warning: endgame tablebase only supports positions with " + minMenInTablebase + " to " + maxMenInTablebase + " men");
+      }
+   }
+   theObj = document.getElementById("GameTablebase");
+   if (theObj) { theObj.innerHTML = translateNAGs("$148"); }
+
+   function updateTablebaseFlag(thisFen) {
+      if (typeof(thisFen) == "undefined") { thisFen = CurrentFEN(); }
+      var menPosition = thisFen.replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length;
+      var theObj = document.getElementById("GameTablebase");
+      if (theObj) {
+         theObj.style.display = (menPosition >= minMenInTablebase) && (menPosition <= maxMenInTablebase) && analysisStarted ? "inline" : "none";
+      }
+   }
 
    var annotationSupported = !!window.Worker;
    try {
@@ -1556,6 +1584,8 @@ function print_chessboard_two() {
          theObj.innerHTML = annPv ? annPv : "";
          theObj.title = annPv ? "engine principal variation: " + annPv : "";
       }
+
+      updateTablebaseFlag(fenPositions[annPly]);
    }
 
 
@@ -1578,6 +1608,7 @@ function print_chessboard_two() {
       var theObj;
       if (theObj = document.getElementById("GameAnalysisMove")) { theObj.innerHTML = ""; }
       if (theObj = document.getElementById("GameAnalysisEval")) { theObj.innerHTML = "&middot"; theObj.title = "start annotation"; }
+      if (theObj = document.getElementById("GameTablebase")) { theObj.style.display = "none"; }
       if (theObj = document.getElementById("GameAnalysisPv")) { theObj.innerHTML = ""; }
    }
 
