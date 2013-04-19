@@ -439,11 +439,12 @@ if (theObj) { theObj.innerHTML = translateNAGs("$148"); }
 function updateTablebaseFlag() {
   var menPosition = CurrentFEN().replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length;
   var theObj = document.getElementById("GameTablebase");
+  var showTablebase = (menPosition >= minMenInTablebase) && (menPosition <= maxMenInTablebase) && (g_backgroundEngine) && (!disableEngine);
   if (theObj) {
-    theObj.style.display = (menPosition >= minMenInTablebase) && (menPosition <= maxMenInTablebase) && (!disableEngine) ? "inline" : "none";
+    theObj.style.display = showTablebase ? "inline" : "none";
   }
   if (theObj = document.getElementById("GameEval")) {
-    theObj.style.width = (menPosition >= minMenInTablebase) && (menPosition <= maxMenInTablebase) && (!disableEngine) ? Math.floor(3 * fontCommentsSize) + "px" : "";
+    theObj.style.width = showTablebase ? Math.floor(3 * fontCommentsSize) + "px" : "";
   }
 }
 
@@ -573,6 +574,7 @@ function InitializeBackgroundEngine() {
             theObj.innerHTML = "&nbsp;";
             theObj.title = "";
          }
+         updateTablebaseFlag();
          if (!g_initErrors++) { myAlert("error: engine exception " + e); }
          return false;
       }

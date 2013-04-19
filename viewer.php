@@ -1425,7 +1425,7 @@ function print_chessboard_two() {
       var menPosition = thisFen.replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length;
       var theObj = document.getElementById("GameTablebase");
       if (theObj) {
-         theObj.style.display = (menPosition >= minMenInTablebase) && (menPosition <= maxMenInTablebase) && analysisStarted ? "inline" : "none";
+         theObj.style.display = (menPosition >= minMenInTablebase) && (menPosition <= maxMenInTablebase) && (g_backgroundEngine) && (analysisStarted) ? "inline" : "none";
       }
    }
 
