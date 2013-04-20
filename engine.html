@@ -46,20 +46,16 @@ a {
   visibility: hidden;
 }
 
-.gameEvalAndTablebase {
+.gameEval {
   position: absolute;
   right: 0px;
   bottom: 0px;
   z-index: 3;
 }
 
-.gameEval {
-  display: inline-block;
-  text-align: right;
-}
-
 .gameTablebase {
   display: none;
+  padding-right: 1em;
 }
 
 .gameAnalysis {
@@ -301,7 +297,8 @@ myInsertRule(mySheet, ".gameAnalysis", "height: " + squareSize + "px;");
 myInsertRule(mySheet, ".gameFlagToMove", "height: " + Math.floor(fontMovesSize / 2) + "px; width: " + Math.floor(fontMovesSize / 2) + "px; border-color: " + fontMovesColorHex + ";");
 myInsertRule(mySheet, ".gameShowFen", "width: " + (squareSize - 2 * Math.floor(squareSize / 3)) + "px; margin-left:" + Math.floor(squareSize / 3) + "px; margin-right:" + Math.floor(squareSize / 3) + "px;");
 myInsertRule(mySheet, ".gameMoves", "font-size: " + fontMovesSize + "px;");
-myInsertRule(mySheet, ".gameEvalAndTablebase", "padding-left: " + squareSize + "px; background: " + backgroundColorHex + "; font-size: " + fontCommentsSize + "px;");
+myInsertRule(mySheet, ".gameTablebase", "font-size: " + fontMovesSize + "px;");
+myInsertRule(mySheet, ".gameEval", "padding-left: " + squareSize + "px; background: " + backgroundColorHex + "; font-size: " + fontCommentsSize + "px;");
 
 </script>
 
@@ -345,10 +342,10 @@ SetShortcutKeysEnabled(false);
 <td id="GameAutoUpdateFlag" class="gameButtonCell" align="center" onclick="clickedGameAutoUpdateFlag(this, event);">&nbsp;</td>
 </tr></table>
 <div class="gameAnalysis gameAnalysisHidden" id="GameAnalysis">
-<div class="gameEvalAndTablebase"><span class="gameTablebase" id="GameTablebase" onclick="clickedGameTablebase(this, event);" title="probe endgame tablebase">&nbsp;</span><span class="gameEval" id="GameEval" onclick="clickedGameEval(this, event);">&nbsp;</span></div>
+<div class="gameEval" id="GameEval" onclick="clickedGameEval(this, event);">&nbsp;</div>
 </div>
 <div class="gameFlagAndMoves">
-<img class="gameFlagToMove" id="GameFlagToMove" onclick="clickedGameFlagToMove(this, event);" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" border="1" /><span class="gameShowFen" onclick="clickedGameShowFen(this, event);">&nbsp;</span><span id="GameMoves" class="gameMoves" onclick="clickedGameMoves(this, event);">&nbsp;</span>&nbsp;
+<img class="gameFlagToMove" id="GameFlagToMove" onclick="clickedGameFlagToMove(this, event);" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" border="1" /><span class="gameShowFen" onclick="clickedGameShowFen(this, event);">&nbsp;</span><span class="gameTablebase" id="GameTablebase" onclick="clickedGameTablebase(this, event);" title="probe endgame tablebase">&perp;</span><span id="GameMoves" class="gameMoves" onclick="clickedGameMoves(this, event);">&nbsp;</span>&nbsp;
 </div>
 </div>
 </center>
@@ -433,8 +430,6 @@ function clickedGameTablebase() {
     myAlert("warning: endgame tablebase only supports positions with " + minMenInTablebase + " to " + maxMenInTablebase + " men");
   }
 }
-theObj = document.getElementById("GameTablebase");
-if (theObj) { theObj.innerHTML = translateNAGs("$148"); }
 
 function updateTablebaseFlag() {
   var menPosition = CurrentFEN().replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length;
@@ -442,9 +437,6 @@ function updateTablebaseFlag() {
   var showTablebase = (menPosition >= minMenInTablebase) && (menPosition <= maxMenInTablebase) && (!g_initErrors) && (!disableEngine);
   if (theObj) {
     theObj.style.display = showTablebase ? "inline" : "none";
-  }
-  if (theObj = document.getElementById("GameEval")) {
-    theObj.style.width = showTablebase ? Math.floor(2.75 * fontCommentsSize) + "px" : "";
   }
 }
 
