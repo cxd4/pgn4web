@@ -70,27 +70,35 @@ Qxf4 Nxf2#) (3. Qxe4 Qc1+) (3. Nc3 Qxe3 4. fxe3 Nf2#) 3... Qg4 0-1
 h5) 1... g5) 1... f5) 1... e5) 1... d5 (1... c5 (1... b5 (1... a5))) (1... e5
 (1... f5 (1... g5 2. g3) 2. f3) 2. e3) e3 (f3 f6) (g3 g6) (h3 h6) e6 *
 
-[Event "Testing advanced variations: comments before/after variations"]
+[Event "Testing non standard initial position with tablebase ending"]
 [Round "5"]
+[Result "1/2-1/2"]
+[SetUp "1"]
+[FEN "2k5/5p2/6Pp/7p/6P1/8/8/2K5 b - - 0 1"]
+
+1... fxg6 2. gxh5 Kb7 3. Kd2 gxh5 4. Ke3 h4 1/2-1/2
+
+[Event "Testing advanced variations: comments before/after variations"]
+[Round "6"]
 
 1. d4 { this comment is right after White's first move } ( { this also, but
 already inside a variation } e4 { this is after the variation } ) { this is
 is outside the variation } d5 c4 *
 
 [Event "Testing advanced variations: empty variations"]
-[Round "6"]
+[Round "7"]
 
 1. d4 () d5 ( ) 2. c4 ({ variations without moves should become comments })
 (2. Nf3) 2... dxc4 ( ( { accepting the gambit } ) ) 3. e4 (3. Nf3 1/2-1/2) e5 *
 
 [Event "Testing null moves"]
-[Round "7"]
+[Round "8"]
 
 1. e4 e5 2. Bc4 ($140 2. Bc4 -- 3. Qf3 -- 4. Qxf7#) Nf6 3. d3 ({ defending
 against } 3. -- Nxe4) 3... Bc5 *
 
 [Event "Testing continuations"]
-[Round "8"]
+[Round "9"]
 [SetUp "1"]
 [FEN "rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq d6 0 2"]
 
@@ -99,21 +107,21 @@ against } 3. -- Nxe4) 3... Bc5 *
 variation}) *
 
 [Event "Testing header patterns in comments"]
-[Round "9"]
+[Round "10"]
 
 1. e4 e6 { [White "Another White player"] [Black "Another Black player"] }
 d4 d5 *
 
-[Event"Testing very odd game"][Round "10"]a4(b4$6)a6!?{comment}a5*[Event"Testing another very odd game"][Round "11"]h4(g4)h6{comment}h5*
+[Event"Testing very odd game"][Round "11"]a4(b4$6)a6!?{comment}a5*[Event"Testing another very odd game"][Round "12"]h4(g4)h6{comment}h5*
 
 [ Event  "Testing malformed header (extra spaces and extra line)"]
 
-[ Round"12"]
+[ Round"13"]
 
 e4 e6 *
 
-[Event "Testing open comments and variations"]
-[Round "13"]
+[Event "Testing open comments and variations (this should generate an error)"]
+[Round "14"]
 
 1. e4 e6 2. d4 d5 3. Nc3 (3.Nd2 Nf6 { open comment
 
