@@ -1,5 +1,23 @@
 [Event "London League 2012/2013"]
 [Site "London ENG"]
+[Date "2013.04.22"]
+[Round "?"]
+[White "Casaschi, Paolo"]
+[Black "Maroroa, Sue"]
+[Result "1-0"]
+[ECO "E00"]
+[Opening "Catalan opening"]
+
+1. d4 Nf6 2. c4 e6 3. g3 Bb4+ 4. Bd2 Qe7 5. Bg2 Nc6 6. Nf3 Ne4 7. O-O Nxd2
+8. Nbxd2 Bxd2 9. Qxd2 O-O 10. Rfd1 d6 11. b4 e5 { D } 12. b5 Nxd4 13. Nxd4
+exd4 14. Qxd4 Re8 15. e3 Qe5 16. Rac1 Qxd4 17. Rxd4 Re5 18. c5 Be6 19. cxd6
+cxd6 20. Bxb7 Rd8 21. a4 Kf8 22. Rc7 Bf5 23. Bf3 Re7 24. Rc6 Red7 25. Kg2
+Ke7 26. g4 Be6 27. Kg3 Rb8 28. Be4 g6 29. h3 Rb6 30. Rc8 Rd8 31. Rxd8 Kxd8
+32. Bc6 Kc7 33. g5 Rb8 34. Bg2 Rd8 35. a5 Rb8 36. Rb4 Bd7 { D } 37. b6+
+axb6 38. a6 1-0
+
+[Event "London League 2012/2013"]
+[Site "London ENG"]
 [Date "2013.04.10"]
 [Round "?"]
 [White "Casaschi, Paolo"]
