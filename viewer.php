@@ -1847,7 +1847,7 @@ function print_chessboard_two() {
 
    var pgn4web_chess_engine_id = "garbochess-pgn4web-" + pgn4web_version;
 
-   var engineWorker = "garbochess/garbochess.js";
+   var engineWorker = "libs/garbochess/garbochess.js";
 
    var g_backgroundEngine;
    var g_topNodesPerSecond = 0;
