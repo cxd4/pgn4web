@@ -2470,7 +2470,7 @@ function InitImages() {
   }
 
   ClearImg = new Image();
-  ClearImg.src = ImagePath+'clear.'+imageType;
+  ClearImg.src = ImagePath + 'clear.' + imageType;
 
   var ColorName = new Array ("w", "b");
   var PiecePrefix = new Array ("k", "q", "r", "b", "n", "p");
