@@ -109,7 +109,7 @@ Example:
   <script type="text/javascript>
     "use strict";
 
-    SetPgnUrl("http://yoursite/yourpath/yourfile.pgn"); // if set, this has precedence over the inline PGN in the HTML file
+    SetPgnUrl("yourpath/yourfile.pgn"); // if set, this has precedence over the inline PGN in the HTML file
     SetImagePath("images");
     SetImageType("png");
     SetHighlightOption(true); // true or false
