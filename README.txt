@@ -110,7 +110,7 @@ Example:
     "use strict";
 
     SetPgnUrl("http://yoursite/yourpath/yourfile.pgn"); // if set, this has precedence over the inline PGN in the HTML file
-    SetImagePath(""); // use "" path if images are in the same folder as this javascript file
+    SetImagePath("images");
     SetImageType("png");
     SetHighlightOption(true); // true or false
     SetGameSelectorOptions(null, false, 0, 0, 0, 15, 15, 0, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);

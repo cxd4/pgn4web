@@ -991,7 +991,7 @@ var InitialHalfMoveClock = 0;
 var PieceImg = new Array(new Array(6), new Array(6));
 var ClearImg;
 
-var ImagePath = '';
+var ImagePath = 'images';
 var ImagePathOld = null;
 var imageType = 'png';
 var defaultImagesSize = 40;

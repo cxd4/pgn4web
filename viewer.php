@@ -987,7 +987,7 @@ $pgnText
    var commentsIntoMoveText_default = true;
    var initialHalfmove_default = "start";
 
-   SetImagePath("merida/36");
+   SetImagePath("images/merida/36");
    SetImageType("png");
    SetHighlightOption(getHighlightOptionFromLocalStorage());
    SetCommentsIntoMoveText(getCommentsIntoMoveTextFromLocalStorage());

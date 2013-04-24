@@ -379,7 +379,7 @@ body {
 <script type="text/javascript">
 "use strict";
 
-SetImagePath("$pieceFont/$pieceSize");
+SetImagePath("images/$pieceFont/$pieceSize");
 SetShortcutKeysEnabled(false);
 
 function displayPuzzlerHelp() {

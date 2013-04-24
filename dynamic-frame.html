@@ -186,10 +186,10 @@ if ((pieceFont == "random") || (pieceFont == "r")) {
 }
 if ((pieceFont != "alpha") && (pieceFont != "merida") && (pieceFont != "uscf") && (pieceFont != "igorsvg") && (pieceFont != "svgchess") && (pieceFont != "tilesvg")) { pieceFont = pieceFont_default; }
 if ((pieceFont == "igorsvg") || (pieceFont == "svgchess") || (pieceFont == "tilesvg")) {
-  SetImagePath(pieceFont);
+  SetImagePath("images/" + pieceFont);
   SetImageType("svg");
 } else {
-  SetImagePath(pieceFont + "/" + pieceBaseSize);
+  SetImagePath("images/" + pieceFont + "/" + pieceBaseSize);
   SetImageType("png");
 }
 

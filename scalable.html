@@ -95,7 +95,7 @@ if ((pieceFont == "random") || (pieceFont == "r")) {
   pieceFont = ["igorsvg", "svgchess", "tilesvg"][Math.floor(3 * Math.random())];
 }
 
-SetImagePath(pieceFont);
+SetImagePath("images/" + pieceFont);
 SetImageType("svg");
 SetHighlightOption(true);
 SetAutoplayDelay(2000); // milliseconds

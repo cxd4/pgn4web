@@ -287,9 +287,9 @@ if (pieceFontRoot !== "") {
   if (pieceFontRoot.charAt(pieceFontRoot.length - 1) != "/") { pieceFontRoot += "/"; }
 }
 
-SetImagePath("" + pieceFontRoot + pieceFont + "/" + pieceSize);
+SetImagePath("" + pieceFontRoot + "images/" + pieceFont + "/" + pieceSize);
 if ((pieceFont == "igorsvg") || (pieceFont == "svgchess") || (pieceFont == "tilesvg")) {
-  SetImagePath("" + pieceFontRoot + pieceFont);
+  SetImagePath("" + pieceFontRoot + "images/" + pieceFont);
   SetImageType("svg");
 }
 
