@@ -498,13 +498,6 @@ The SWFObject javascript library (http://code.google.com/p/swfobject/) is
 released under the MIT License
 (http://www.opensource.org/licenses/mit-license.php).
 
-The js-unzip.js library (https://github.com/augustl/js-unzip) is
-Copyright (c) 2010 August Lilleaas.
-The js-inflate.js library (https://github.com/augustl/js-inflate) is
-Copyright (c) 2010 August Lilleaas and Copyright (c) 1999 Masanao Izumo.
-Both are released under the MIT License
-(http://www.opensource.org/licenses/mit-license.php).
-
 
 The above items remains subject to their original licenses (if any).
 
