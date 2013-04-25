@@ -24,6 +24,10 @@ a {
   color: black;
 }
 
+ul {
+  margin-bottom: 0px;
+}
+
 .boardTable {
   border-color: #C4B9A0;
   border-width: 2px;
