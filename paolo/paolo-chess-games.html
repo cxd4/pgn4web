@@ -88,18 +88,16 @@ function showAnalysisBoard(de) {
    var theObj;
    thisEngineWin = showEngineAnalysisBoard(de);
    if (thisEngineWin) {
-      if (theObj = document.getElementById('GameAnalysisContainer')) {
-        theObj.style.width = "232px";
-        theObj.style.opacity = "0.8";
+      if (theObj = document.getElementById('GameAnalysisCell')) {
+        theObj.style.display = "";
       }
    }
 }
 
 function hideAnalysisBoard() {
    var theObj;
-   if (theObj = document.getElementById('GameAnalysisContainer')) {
-      theObj.style.width = "";
-      theObj.style.opacity = "";
+   if (theObj = document.getElementById('GameAnalysisCell')) {
+      theObj.style.display = "none";
    }
    if (typeof(thisEngineWin) != "undefined") {
       if (typeof(thisEngineWin.StopBackgroundEngine) == "function") { thisEngineWin.StopBackgroundEngine(); }
@@ -143,7 +141,7 @@ boardShortcut("F8", "close/pause analysis board", function(t,e){ if (!e.shiftKey
 <div style="margin-top: 30px;" id="GameButtons"></div>
 </td>
 
-<td align="leftt" valign="top" style="padding: 0px;">
+<td id="GameAnalysisCell" style="display: none;" align="leftt" valign="top" style="padding: 0px;">
 <div class="gameAnalysisContainer" id="GameAnalysisContainer">
 <iframe class="gameAnalysisFrame" id="GameAnalysisFrame" name="pgn4webAnalysisBoardForPaolo" src="../blank.html" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">your web browser and/or your host do not support iframes as required</iframe>
 </div>

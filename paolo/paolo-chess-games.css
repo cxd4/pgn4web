@@ -142,12 +142,12 @@ a.variation {
 
 .gameAnalysisContainer {
   overflow: hidden;
-  width: 0px;
+  width: 232px;
   transition: width 2s linear, opacity 1s linear;
   -moz-transition: width 2s linear, opacity 1s linear;
   -webkit-transition: width 2s linear, opacity 1s linear;
   -o-transition: width 1s linear, opacity 2s linear;
-  opacity: 0;
+  opacity: 0.8;
 }
 
 .gameAnalysisFrame {
