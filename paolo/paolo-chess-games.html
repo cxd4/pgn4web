@@ -27,7 +27,10 @@
 
    var thisRegExp;
 
-   var pgn4web_engineWindowUrlParameters = "lch=eff4ec&dch=c6cec3&hch=daf4d7&ctch=aaaaaa&pf=a";
+   var pgn4web_engineWindowUrlParameters = "lch=FFFFFF&dch=E4E4E4&hch=BCDEB4&ctch=888888&ss=28&ps=22&pf=a&fms=11&fcs=19&fp=0";
+   var pgn4web_engineWindowTarget = "pgn4webAnalysisBoardForPaolo";
+   var pgn4web_engineWindowHeight = "";
+   var pgn4web_engineWindowWidth = "";
 
    var fnOptions = "dcba";
    var fnMin = -1;
@@ -80,6 +83,33 @@ function loadNextGames() {
    if (fnIndex > fnMin) { boardShortcut("F5", "load previous set of Paolo's games", function(t,e){ loadPrevGames(); }); }
    if (fnIndex < fnMax) { boardShortcut("G5", "load next set of Paolo's games", function(t,e){ loadNextGames(); }); }
 
+var thisEngineWin;
+function showAnalysisBoard(de) {
+   var theObj;
+   thisEngineWin = showEngineAnalysisBoard(de);
+   if (thisEngineWin) {
+      if (theObj = document.getElementById('GameAnalysisContainer')) {
+        theObj.style.width = "264px";
+        theObj.style.opacity = "0.8";
+      }
+   }
+}
+
+function hideAnalysisBoard() {
+   var theObj;
+   if (theObj = document.getElementById('GameAnalysisContainer')) {
+      theObj.style.width = "";
+      theObj.style.opacity = "";
+   }
+   if (typeof(thisEngineWin) != "undefined") {
+      if (typeof(thisEngineWin.StopBackgroundEngine) == "function") { thisEngineWin.StopBackgroundEngine(); }
+      if (typeof(thisEngineWin.autoUpdate) != "undefined") { thisEngineWin.autoUpdate = false; }
+   }
+}
+
+boardShortcut("E8", "open/update analysis board", function(t,e){ showAnalysisBoard(e.shiftKey); }, true);
+boardShortcut("F8", "close/pause analysis board", function(t,e){ if (!e.shiftKey) { hideAnalysisBoard(); } });
+
 </script>
 
 </head>
@@ -100,7 +130,7 @@ function loadNextGames() {
 <div id="GameSelector"></div>
 </td>
 
-<td valign="top">
+<td valign="top" colspan="2">
 <a href="javascript:void(0);" onclick="MoveToPrevComment();" onfocus="this.blur()"><div id="GameDate" style="font-size: 120%; font-weight: bold; text-align: right;"></div></a>
 </td>
 
@@ -111,6 +141,13 @@ function loadNextGames() {
 <td align="center" valign="top">
 <div id="GameBoard"></div>
 <div style="margin-top: 30px;" id="GameButtons"></div>
+</td>
+
+<td align="leftt" valign="top" style="padding: 0px;">
+<div class="gameAnalysisContainer" id="GameAnalysisContainer">
+<iframe class="gameAnalysisFrame" id="GameAnalysisFrame" name="pgn4webAnalysisBoardForPaolo" src="../blank.html" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">your web browser and/or your host do not support iframes as required</iframe>
+</div>
+</div>
 </td>
 
 <td valign="top">
