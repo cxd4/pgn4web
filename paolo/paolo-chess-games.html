@@ -120,11 +120,9 @@ boardShortcut("F8", "close/pause analysis board", function(t,e){ if (!e.shiftKey
 </textarea></form>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
-<table cellpadding="15" cellspacing="0" border="0">
+<table cellpadding="15" cellspacing="0" border="0"><tr>
 
-<tr>
-
-<td align="center" valign="top">
+<td align="left" valign="top">
 <div id="GameSelector"></div>
 </td>
 
@@ -132,14 +130,22 @@ boardShortcut("F8", "close/pause analysis board", function(t,e){ if (!e.shiftKey
 <a href="javascript:void(0);" onclick="MoveToPrevComment();" onfocus="this.blur()"><div id="GameDate" style="font-size: 120%; font-weight: bold; text-align: right;"></div></a>
 </td>
 
-</tr>
+</tr><tr>
 
-<tr>
-
-<td align="center" valign="top">
+<td align="left" valign="top" rowspan="2">
 <div id="GameBoard"></div>
 <div style="margin-top: 30px;" id="GameButtons"></div>
 </td>
+
+<td valign="top" colspan="2">
+<div style="font-size: 150%; font-weight: bold; text-align: left;">
+<a href="javascript:void(0);" onclick="searchPgnGame(gameWhite[currentGame]);" onfocus="this.blur()"><span style="white-space: nowrap;" id="GameWhite"></span></a>
+<span style="white-space: nowrap;">&nbsp;&nbsp;-&nbsp;&nbsp;</span>
+<a href="javascript:void(0);" onclick="searchPgnGame(gameBlack[currentGame]);" onfocus="this.blur()"><span style="white-space: nowrap;" id="GameBlack"></span></a>
+</div>
+</td>
+
+</tr><tr>
 
 <td id="GameAnalysisCell" style="display: none;" align="left" valign="top" style="padding: 0px;">
 <div class="gameAnalysisContainer" id="GameAnalysisContainer">
@@ -149,21 +155,12 @@ boardShortcut("F8", "close/pause analysis board", function(t,e){ if (!e.shiftKey
 </td>
 
 <td valign="top">
-<div style="margin-left: 10px;">
-<div style="font-size: 150%; font-weight: bold; text-align: left; margin-bottom: 30px;">
-<a href="javascript:void(0);" onclick="searchPgnGame(gameWhite[currentGame]);" onfocus="this.blur()"><span style="white-space: nowrap;" id="GameWhite"></span></a>
-<span style="white-space: nowrap;">&nbsp;&nbsp;-&nbsp;&nbsp;</span>
-<a href="javascript:void(0);" onclick="searchPgnGame(gameBlack[currentGame]);" onfocus="this.blur()"><span style="white-space: nowrap;" id="GameBlack"></span></a>
-</div>
-<div style="text-align: justify" id="GameText"></div>
+<div style="text-align: justify;" id="GameText"></div>
 <a href="javascript:void(0);" onclick="MoveToNextComment();" onfocus="this.blur()"><div id="GameResult" style="font-size: 120%; font-weight: bold; text-align: right; margin-top: 30px;"></div></a>
 </div>
 </td>
 
-</tr>
-
-</table>
-
+</tr></table>
 
 </body>
 
