@@ -151,8 +151,8 @@ a.variation {
 }
 
 .gameAnalysisFrame {
-  width: 224px;
-  height: 280px;
+  width: 192px;
+  height: 240px;
   margin: 15px;
   margin-left: 25px;
   margin-top: 61px; /* = 44 + 2 + 15 */
