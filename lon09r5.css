@@ -17,6 +17,19 @@ body {
   background: white;
 }
 
+a.gamelist,
+a.gamelistselected {
+  color: black;
+  font-weight: bold;
+  font-size: 14px;
+  text-decoration: none;
+  outline: none;
+  white-space: pre;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+
 .boardTable {
   width: 388px;
   height: 388px;
