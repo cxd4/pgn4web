@@ -41,9 +41,13 @@ clearShortcutSquares("BCDEFGH", "34567");
 
 function selectGame(n) {
    document.getElementById("game" + currentGame).className = "gamelist";
-   document.getElementById("game" + n).className = "gamelistselected moveOn";
+   document.getElementById("game" + n).className = "gamelistselected";
    Init(n);
    SetAutoPlay(true);
+}
+
+function customFunctionOnPgnTextLoad() {
+   selectGame(Math.floor(4 * Math.random()));
 }
 
 </script>
@@ -66,26 +70,26 @@ function selectGame(n) {
       <div id="GameBoard"></div>
     </td>
     <td align="right" valign="top">
-      <div style="font-size: 18px; font-weight: bold; padding-bottom: 10px;">London Chess Classic 2009 round 5</div>
+      <div style="padding-bottom: 10px; font-size: 18px; font-weight: bold; letter-spacing: 3px; word-spacing: 3px; text-shadow: 1px 1px 3px #aaaaaa">London Chess Classic 2009<br>round 5</div>
     </td>
   </tr>
   <tr>
     <td align="left" valign="top">
       <div style="text-align:left;">
-        <a id="game1" href="javascript:selectGame(1);" onfocus="this.blur()" class="gamelistselected moveOn">&nbsp;David Howell&nbsp; - &nbsp;Vladimir Kramnik&nbsp; &nbsp;1/2-1/2&nbsp;</a>
-        <div style="height: 10px;"></div>
-        <a id="game2" href="javascript:selectGame(2);" onfocus="this.blur()" class="gamelist">&nbsp;Hikaru Nakamura&nbsp; - &nbsp;Luke McShane&nbsp; &nbsp;0-1&nbsp;</a>
-        <div style="height: 10px;"></div>
-        <a id="game3" href="javascript:selectGame(3);" onfocus="this.blur()" class="gamelist">&nbsp;Michael Adams&nbsp; - &nbsp;Nigel Short&nbsp; &nbsp;1/2-1/2&nbsp;</a>
-        <div style="height: 10px;"></div>
-        <a id="game0" href="javascript:selectGame(0);" onfocus="this.blur()" class="gamelist">&nbsp;Hua Ni&nbsp; - &nbsp;Magnus Carlsen&nbsp;&nbsp;0-1&nbsp;</a>
+        <a id="game1" href="javascript:selectGame(1);" onfocus="this.blur()" class="gamelist">&nbsp;David Howell&nbsp; - &nbsp;Vladimir Kramnik&nbsp; <div style="float: right;">&nbsp;1/2-1/2&nbsp;</div></a>
+        <div style="height: 12px;"></div>
+        <a id="game2" href="javascript:selectGame(2);" onfocus="this.blur()" class="gamelist">&nbsp;Hikaru Nakamura&nbsp; - &nbsp;Luke McShane&nbsp; <div style="float: right;">&nbsp;0-1&nbsp;</div></a>
+        <div style="height: 12px;"></div>
+        <a id="game3" href="javascript:selectGame(3);" onfocus="this.blur()" class="gamelist">&nbsp;Michael Adams&nbsp; - &nbsp;Nigel Short&nbsp; <div style="float: right;">&nbsp;1/2-1/2&nbsp;</div></a>
+        <div style="height: 12px;"></div>
+        <a id="game0" href="javascript:selectGame(0);" onfocus="this.blur()" class="gamelist">&nbsp;Hua Ni&nbsp; - &nbsp;Magnus Carlsen&nbsp; <div style="float: right;">&nbsp;0-1&nbsp;</div></a>
         <div style="height: 10px;"></div>
       </div>
     </td>
   </tr>
   <tr>
     <td rowspan="2" valign="top">
-      <div style="text-align:justify; font-size: 11px;">
+      <div style="text-align:justify; font-size: 14px;">
         <div style="height: 10px;"></div>
         <span id="GameText"></span> <span id="GameResult"></span>
         <div style="height: 10px;"></div>
