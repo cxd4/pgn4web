@@ -890,6 +890,20 @@ function gup(name) {
   return "";
 }
 
+var thisEngineWin;
+function showAnalysisBoard(de) {
+  var theObj;
+  if (!showBoard) { return; }
+  thisEngineWin = showEngineAnalysisBoard(de);
+  if (thisEngineWin) {
+    disableEngine = de;
+    if (theObj = document.getElementById('GameAnalysisContainer')) {
+      theObj.style.width = "304px"; // defined as gameAnalysisContainer.width.open = gameAnalysisFrame.width + gameAnalysisFrame.marginLeft + body.padding
+    }
+    showAnalysis = true;
+  }
+}
+
 function hideAnalysisBoard() {
   var theObj;
   if (theObj = document.getElementById('GameAnalysisContainer')) {
@@ -900,20 +914,6 @@ function hideAnalysisBoard() {
     if (typeof(thisEngineWin.autoUpdate) != "undefined") { thisEngineWin.autoUpdate = false; }
   }
   showAnalysis = false;
-}
-
-var thisEngineWin;
-function showAnalysisBoard(de) {
-  var theObj;
-  if (!showBoard) { return; }
-  var thisEngineWin = showEngineAnalysisBoard(de);
-  if (thisEngineWin) {
-    disableEngine = de;
-    if (theObj = document.getElementById('GameAnalysisContainer')) {
-      theObj.style.width = "304px"; // defined as gameAnalysisContainer.width.open = gameAnalysisFrame.width + gameAnalysisFrame.marginLeft + body.padding
-    }
-    showAnalysis = true;
-  }
 }
 
 boardShortcut("E8", "open/update analysis board", function(t,e){ showAnalysisBoard(e.shiftKey); }, true);
