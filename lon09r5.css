@@ -29,6 +29,9 @@ a.gamelistselected {
   white-space: pre;
   padding-top: 3px;
   padding-bottom: 3px;
+  padding-left: 0px;
+  padding-right: 0px;
+  margin-bottom: 12px;
   border-width: 1px;
   border-radius: 5px;
 }
