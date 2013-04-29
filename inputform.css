@@ -5,9 +5,9 @@
  *  for credits, license and more details
  */
 
-html, 
-body { 
-  margin: 0px; 
+html,
+body {
+  margin: 0px;
   padding: 0px;
 }
 
@@ -147,7 +147,7 @@ a.variation {
 .pgnheader {
   padding-left: 30px;
   line-height: 21px;
-  font-size: 14px; 
+  font-size: 14px;
   font-weight: bold;
   white-space: nowrap;
 }
