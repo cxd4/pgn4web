@@ -26,6 +26,7 @@ a.gamelistselected {
   text-decoration: none;
   padding: 13px;
   margin-bottom: 15px;
+  border-style: solid;
   border-width: 1px;
   border-color: #c3c3c3;
   border-radius: 10px;
@@ -34,13 +35,12 @@ a.gamelistselected {
 
 a.gamelist {
   color: #ffffff;
-  border-style: solid;
   box-shadow: 1px 1px 15px #aaaaaa;
 }
 
 a.gamelistselected {
   color: #666666;
-  border-style: inset;
+  box-shadow: 1px 1px 5px #cccccc;
 }
 
 .boardTable {
@@ -113,6 +113,13 @@ a.gamelistselected {
   background: #c3c3c3;
   border-radius: 10px;
   box-shadow: 1px 1px 15px #aaaaaa;
+}
+
+.buttonControlPlay:active,
+.buttonControlStop:active,
+.buttonControl:active {
+  color: #666666;
+  box-shadow: 1px 1px 5px #cccccc;
 }
 
 .optionSelectControl {
