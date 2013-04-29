@@ -3408,7 +3408,7 @@ function PrintHTML() {
         squareTitle = squareCoord;
         if (boardTitle[jj][ii] !== '') { squareTitle += ': ' + boardTitle[jj][ii]; }
         text += '<IMG SRC="'+ ClearImg.src + '" ' +
-          'CLASS="pieceImage" STYLE="vertical-align: middle; border-style: none; outline: none;" ' +
+          'CLASS="pieceImage" STYLE="vertical-align: middle; border: none; outline: none;" ' +
           'ONCLICK="boardOnClick[' + jj + '][' + ii + '](this, event);" ' +
           'ID="' + imageId + '" TITLE="' + squareTitle + '" ' + 'ONFOCUS="this.blur()" />' +
           '</TD>';
