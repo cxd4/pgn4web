@@ -808,12 +808,14 @@ a.variation {
     return "showEvent=" + showEvent + " showTeams=" + showTeams + " showPlayersInfo=" + showPlayersInfo + " showBoard=" + showBoard + " autoHighlightNewmoves=" + autoHighlightNewmoves + " autoSwitchNewgames=" + autoSwitchNewgames + " showAnalysis=" + showAnalysis;
   }
 
-  function customShortcutKey_Shift_1() { refreshPgnSource(); } // overrides fide-lookup.js
-  function customShortcutKey_Shift_2() { searchGameWithNewMoves(true); } // overrides fide-lookup.js
-  function customShortcutKey_Shift_3() { searchGameWithNewMoves(false); }
-  function customShortcutKey_Shift_4() { autoHighlightNewmoves = !autoHighlightNewmoves; }
-  function customShortcutKey_Shift_5() { autoSwitchNewgames = !autoSwitchNewgames; }
-  function customShortcutKey_Shift_6() { toggleShowBoard(); }
+  // customShortcutKey_Shift_1 defined by fide-lookup.js
+  // customShortcutKey_Shift_2 defined by fide-lookup.js
+
+  function customShortcutKey_Shift_3() { searchGameWithNewMoves(true); }
+  function customShortcutKey_Shift_4() { searchGameWithNewMoves(false); }
+  function customShortcutKey_Shift_5() { autoHighlightNewmoves = !autoHighlightNewmoves; }
+  function customShortcutKey_Shift_6() { autoSwitchNewgames = !autoSwitchNewgames; }
+  function customShortcutKey_Shift_7() { toggleShowBoard(); }
 
   // overwriting engine.js definitions of customShortcutKey_Shift_8 9 0
   function customShortcutKey_Shift_8() { showAnalysisBoard(true); }
