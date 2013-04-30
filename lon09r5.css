@@ -13,6 +13,7 @@ body {
 
 body {
   font-family: sans-serif;
+  font-size: 14px;
   color: black;
   background: white;
 }
@@ -21,7 +22,6 @@ a.gamelist,
 a.gamelistselected {
   display: inline-block;
   width: 100%;
-  font-size: 14px;
   font-weight: bold;
   text-decoration: none;
   background: #c3c3c3;
@@ -103,6 +103,7 @@ a.gamelistselected {
 .searchPgnButton,
 .searchPgnExpression {
 /* a "width" attribute here must use the !important flag to override default settings */
+  font-size: 14px;
   font-weight: bold;
   color: #ffffff;
   background: #c3c3c3;
