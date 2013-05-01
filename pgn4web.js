@@ -379,7 +379,7 @@ function handlekey(e) {
       break;
 
     case 89: // y
-      resumeLiveBroadcast();
+      restartLiveBroadcast();
       break;
 
     case 70: // f
