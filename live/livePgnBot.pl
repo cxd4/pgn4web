@@ -1,6 +1,6 @@
 
 #  pgn4web javascript chessboard
-#  copyright (C) 2009-2012 Paolo Casaschi
+#  copyright (C) 2009-2013 Paolo Casaschi
 #  see README file and http://pgn4web.casaschi.net
 #  for credits, license and more details
 
@@ -1067,7 +1067,7 @@ sub process_master_command {
       update_heartbeat_time();
       tell_operator("OK $command");
     } elsif ($parameters eq "") {
-      tell_operator(detect_command_helptext($command));
+      tell_operator("heartbeat: frequency=" . $heartbeat_freq_hour . " offset=" . $heartbeat_offset_hour);
     } else {
       tell_operator("error: invalid $command parameters");
     }
@@ -1087,7 +1087,12 @@ sub process_master_command {
     my $secTime = time() - $starupTime;
     my $hourTime = $secTime / 3600;
     my $dayTime = $hourTime / 24;
-    tell_operator(sprintf("history: uptime=%s rounds=%d (r/d=%d) games=%d (g/d=%d) pgn=%d (p/h=%d) cmd=%d (c/h=%d) lines=%d (l/h=%d) %s", sec2time($secTime), $roundsStartCount, $roundsStartCount / $dayTime, $gamesStartCount, $gamesStartCount / $dayTime, $pgnWriteCount, $pgnWriteCount / $hourTime, $cmdRunCount, $cmdRunCount / $hourTime, $lineCount, $lineCount / $hourTime, strftime("now=%Y-%m-%d %H:%M:%S UTC", gmtime($starupTime + $secTime + $timeOffset))));
+    my $thisInfo = sprintf("history: uptime=%s rounds=%d (r/d=%d) games=%d (g/d=%d)", sec2time($secTime), $roundsStartCount, $roundsStartCount / $dayTime, $gamesStartCount, $gamesStartCount / $dayTime);
+    if ($verbosity >= 5) {
+      $thisInfo = sprintf("%s pgn=%d (p/h=%d) cmd=%d (c/h=%d) lines=%d (l/h=%d) %s", $thisInfo, $pgnWriteCount, $pgnWriteCount / $hourTime, $cmdRunCount, $cmdRunCount / $hourTime, $lineCount, $lineCount / $hourTime);
+    }
+    $thisInfo = sprintf("%s %s", $thisInfo, strftime("now=%Y-%m-%d %H:%M:%S UTC", gmtime($starupTime + $secTime + $timeOffset)));
+    tell_operator($thisInfo);
   } elsif ($command eq "ics") {
     if ($parameters !~ /^\??$/) {
       cmd_run($parameters);
@@ -1395,7 +1400,11 @@ update_heartbeat_time();
 
 sub heartbeat {
   if (time() + $timeOffset > $next_heartbeat_time) {
-    tell_operator_and_log_terminal(sprintf("info: heartbeat: uptime=%s rounds=%d/%d games=%d/%d/%d pgn=%d cmd=%d lines=%d", sec2time(time() - $starupTime), ($#currentRounds + 1), $roundsStartCount, ($#games_num + 1), $maxGamesNum, $gamesStartCount, $pgnWriteCount, $cmdRunCount, $lineCount));
+    my $thisInfo = sprintf("info: heartbeat: uptime=%s rounds=%d/%d games=%d/%d/%d", sec2time(time() - $starupTime), ($#currentRounds + 1), $roundsStartCount, ($#games_num + 1), $maxGamesNum, $gamesStartCount);
+    if ($verbosity >= 5) {
+      $thisInfo = sprintf("%s pgn=%d cmd=%d lines=%d", $thisInfo, $pgnWriteCount, $cmdRunCount, $lineCount);
+    }
+    tell_operator_and_log_terminal($thisInfo);
     update_heartbeat_time();
   }
 }
