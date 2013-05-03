@@ -754,7 +754,9 @@ function StartEngineAnalysis() {
 
 
 function openerCheck(skipSignature) {
-   return ((typeof(window.opener) == "object") && (window.opener !== null) && (!window.opener.closed) && (typeof(window.opener.pgn4web_engineWinSignature) != "undefined") && ((window.opener.pgn4web_engineWinSignature === engineSignature) || (skipSignature)));
+   try { // cope with opera bug generating bogus security error
+      return ((typeof(window.opener) == "object") && (window.opener !== null) && (!window.opener.closed) && (typeof(window.opener.pgn4web_engineWinSignature) != "undefined") && ((window.opener.pgn4web_engineWinSignature === engineSignature) || (skipSignature)));
+   } catch(e) { return false; }
 }
 
 function updateGameAnalysisFlag() {
