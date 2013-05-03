@@ -10,7 +10,7 @@
 
 <head>
 
-<title>Tilburg 1998 round 2</title>
+<title>Tilburg Fontys 1998 - round 2</title>
 
 <link href="tilb98r2.css" type="text/css" rel="stylesheet" />
 
@@ -27,26 +27,25 @@
    SetCommentsIntoMoveText(false);
    SetAutoplayDelay(2500); // milliseconds
    SetAutostartAutoplay(true);
+   SetAutoplayNextGame(true);
    SetInitialGame(2);
-   SetInitialHalfmove(1,true);
-   SetShortcutKeysEnabled(false);
+   SetInitialHalfmove(1, true);
+   SetShortcutKeysEnabled(true);
 
-// Example below of customization of the shortcut squares, in this case
-// disabling switching games with the usual third/fourth/sixth/seventh row shortcut
-// squares (that would break the game highlighting feature of the page)
+// Example below of customization of the shortcut squares
 
-clearShortcutSquares("A", "3456");
-clearShortcutSquares("BCDEFGH", "34567");
+clearShortcutSquares("BG", "3");
+clearShortcutSquares("BCDEFGH", "4567");
+clearShortcutSquares("A", "456");
 
-function selectGame(n) {
-   document.getElementById("game" + currentGame).className = "gamelist";
-   document.getElementById("game" + n).className = "gamelistselected moveOn";
-   Init(n);
+var oldCurrentGame;
+function customFunctionOnPgnGameLoad() {
+   if (typeof(oldCurrentGame) != "undefined") {
+      document.getElementById("game" + oldCurrentGame).className = "gamelist";
+   }
+   oldCurrentGame = currentGame;
+   document.getElementById("game" + currentGame).className = "gamelistselected moveOn";
    SetAutoPlay(true);
-}
-
-function customFunctionOnPgnTextLoad() {
-   selectGame(Math.floor(6 * Math.random()));
 }
 
 </script>
@@ -69,14 +68,14 @@ function customFunctionOnPgnTextLoad() {
       <div id="GameBoard"></div>
     </td>
     <td align="left" valign="top">
-      <div style="text-align: right; font-size: 16px; font-weight: bold; margin-bottom: 20px;">Tilburg Fontys 1998 round 2</div>
+      <div style="text-align: right; font-size: 16px; font-weight: bold; margin-bottom: 20px;">Tilburg Fontys 1998 - round 2</div>
       <div style="width: 321px; text-align: left;">
-        <a id="game2" href="javascript:selectGame(2);" onfocus="this.blur()" class="gamelist">&nbsp;Joel Lautier &nbsp;-&nbsp; Loek Van Wely&nbsp; &nbsp;1/2-1/2&nbsp;</a>
-        <a id="game3" href="javascript:selectGame(3);" onfocus="this.blur()" class="gamelist">&nbsp;Mattew Sadler&nbsp; - &nbsp;Veselin Topalov&nbsp; &nbsp;1/2-1/2&nbsp;</a>
-        <a id="game5" href="javascript:selectGame(5);" onfocus="this.blur()" class="gamelist">&nbsp;Peter Svidler&nbsp; - &nbsp;Jeroen Piket&nbsp; &nbsp;1-0&nbsp;</a>
-        <a id="game4" href="javascript:selectGame(4);" onfocus="this.blur()" class="gamelist">&nbsp;Vadim Zvjaginsev&nbsp; - &nbsp;Peter Leko&nbsp; &nbsp;1/2-1/2&nbsp;</a>
-        <a id="game0" href="javascript:selectGame(0);" onfocus="this.blur()" class="gamelist">&nbsp;Viktor Korchnoi&nbsp; - &nbsp;Michael Adams&nbsp; &nbsp;0-1&nbsp;</a>
-        <a id="game1" href="javascript:selectGame(1);" onfocus="this.blur()" class="gamelist">&nbsp;Viswanathan Anand&nbsp; - &nbsp;Vladimir Kramnik&nbsp; &nbsp;1-0&nbsp;</a>
+        <a id="game0" href="javascript:Init(0);" onfocus="this.blur()" class="gamelist">&nbsp;Viktor Korchnoi&nbsp; - &nbsp;Michael Adams&nbsp; &nbsp;0-1&nbsp;</a>
+        <a id="game1" href="javascript:Init(1);" onfocus="this.blur()" class="gamelist">&nbsp;Viswanathan Anand&nbsp; - &nbsp;Vladimir Kramnik&nbsp; &nbsp;1-0&nbsp;</a>
+        <a id="game2" href="javascript:Init(2);" onfocus="this.blur()" class="gamelist">&nbsp;Joel Lautier &nbsp;-&nbsp; Loek Van Wely&nbsp; &nbsp;1/2-1/2&nbsp;</a>
+        <a id="game3" href="javascript:Init(3);" onfocus="this.blur()" class="gamelist">&nbsp;Mattew Sadler&nbsp; - &nbsp;Veselin Topalov&nbsp; &nbsp;1/2-1/2&nbsp;</a>
+        <a id="game4" href="javascript:Init(4);" onfocus="this.blur()" class="gamelist">&nbsp;Vadim Zvjaginsev&nbsp; - &nbsp;Peter Leko&nbsp; &nbsp;1/2-1/2&nbsp;</a>
+        <a id="game5" href="javascript:Init(5);" onfocus="this.blur()" class="gamelist">&nbsp;Peter Svidler&nbsp; - &nbsp;Jeroen Piket&nbsp; &nbsp;1-0&nbsp;</a>
     </td>
   </tr>
   <tr>
