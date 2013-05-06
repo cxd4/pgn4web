@@ -458,7 +458,7 @@ As of pgn4web version 2.71 strict mode is used, see statement: "use strict";
 CREDITS AND LICENSE
 
 javascript modifications of Paolo Casaschi (pgn4web@casaschi.net) on code
-from the http://ficsgames.com database, in turn likely based on code from the
+from the http://ficsgames.org database, in turn likely based on code from the
 LT PGN viewer at http://www.lutanho.net/pgn/pgnviewer.html
 
 PNG images from http://ixian.com/chess/jin-piece-sets (creative commons
