@@ -1,6 +1,27 @@
 [Event "London League 2012/2013"]
 [Site "London ENG"]
-[Date "2013.03.13"]
+[Date "2013.05.15"]
+[Round "?"]
+[White "Haldane, Robin"]
+[Black "Casaschi, Paolo"]
+[Result "1/2-1/2"]
+[ECO "C11"]
+[Opening "French"]
+[Variation "Steinitz variation"]
+
+1. e4 e6 2. d4 d5 3. Nc3 Nf6 4. e5 Nfd7 5. Qh5 a6 6. Nf3 c5 7. Bg5 Be7 8.
+O-O-O Nc6 9. dxc5 Nxc5 10. Be3 Qc7 11. h4 Bd7 12. Qg4 { D } 12... O-O-O 13.
+Qxg7 h5 14. Qg3 Qa5 15. Bg5 Bxg5+ 16. Nxg5 d4 17. Nce4 Nxe4 18. Nxe4 Kb8
+19. f4 Qxa2 20. Qa3 Qxa3 21. bxa3 { D } 21... Ne7 22. Rxd4 Nf5 23. Rd3 Bc6
+24. Ng5 Rdf8 25. Rhh3 Kc7 26. Rd2 Bd5 27. c4 Bc6 28. Bd3 Ng7 29. Be4 Ba4
+30. Bc2 Bd7 31. Rhd3 Bc6 32. Rd6 Kc8 33. Be4 Bxe4 34. Nxe4 Nf5 35. Rd7 Rhg8
+36. Nf6 Rg3 { D } 37. Nxh5 Rxa3 38. Kb2 Re3 39. R2d3 Rxd3 40. Rxd3 Nxh4 41.
+g4 Ng6 42. Kc3 Kc7 43. Rd4 Rd8 44. Rxd8 Kxd8 45. Kd4 Kd7 46. f5 exf5 47.
+gxf5 Ne7 48. Ke4 { draw several moves later after mutual zeitnot } 1/2-1/2
+
+[Event "London League 2012/2013"]
+[Site "London ENG"]
+[Date "2013.05.08"]
 [Round "?"]
 [White "Farkas, Daniel"]
 [Black "Casaschi, Paolo"]
