@@ -474,7 +474,7 @@ function boardShortcut(square, title, functionPointer, defaultSetting) {
   }
 }
 
-// PLEASE NOTE: 'boardShortcut' ALWAYS ASSUMES 'square' WITH WHITE ON BOTTOM
+// boardShortcut() always assumes 'square' defined as with white on bottom
 
 var debugShortcutSquare = "A8";
 
@@ -1668,8 +1668,7 @@ function pgnGameFromPgnText(pgnText) {
 
 function pgnGameFromHttpRequest(httpResponseData) {
 
-  // process here any special file types,
-  // for instance extracting games from zipfiles:
+  // process here any special file types, for instance zipfiles:
   //   if (pgnUrl && pgnUrl.replace(/[?#].*/, "").match(/\.zip$/i)) { return pgnGameFromPgnText(unzipPgnFiles(httpResponseData)); }
   // remember to fix function loadPgnFromPgnUrl() for binary data
 
@@ -1847,7 +1846,7 @@ function loadPgnFromPgnUrl(pgnUrl) {
     if (http_request.overrideMimeType) {
       http_request.overrideMimeType("text/plain");
 
-      // if function pgnGameFromHttpRequest() deals with binary files, use instead
+      // if pgnGameFromHttpRequest() deals with binary files, for those use:
       //   http_request.overrideMimeType("text/plain; charset=x-user-defined");
 
     }
