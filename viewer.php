@@ -269,7 +269,7 @@ function get_pgn() {
   } elseif ($isPgn) {
     if ($pgnUrl) { $pgnFileString = $pgnUrl; }
     else { $pgnFileString = "pgn file"; }
-    $pgnText = file_get_contents($pgnSource, NULL, NULL, 0, $fileUploadLimitBytes + 1);
+    $pgnText = @file_get_contents($pgnSource, NULL, NULL, 0, $fileUploadLimitBytes + 1);
     if (isset($http_response_header)) { http_parse_headers($http_response_header); }
     if ((!$pgnText) || (($pgnUrl) && (http_response_header_isInvalid()))) {
       $pgnStatus = "error: failed reading $pgnFileString: " . (http_response_header_isInvalid() ? "server error: $http_response_header_status" : "file not found or server error");
