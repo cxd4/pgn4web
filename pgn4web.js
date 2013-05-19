@@ -1670,7 +1670,8 @@ function pgnGameFromHttpRequest(httpResponseData) {
 
   // process here any special file types,
   // for instance extracting games from zipfiles:
-  // if (pgnUrl && pgnUrl.replace(/[?#].*/, "").match(/\.zip$/i)) { return pgnGameFromPgnText(unzipPgnFiles(httpResponseData)); }
+  //   if (pgnUrl && pgnUrl.replace(/[?#].*/, "").match(/\.zip$/i)) { return pgnGameFromPgnText(unzipPgnFiles(httpResponseData)); }
+  // remember to fix function loadPgnFromPgnUrl() for binary data
 
   return pgnGameFromPgnText(httpResponseData);
 }
@@ -1844,7 +1845,11 @@ function loadPgnFromPgnUrl(pgnUrl) {
   if (window.XMLHttpRequest) {
     http_request = new XMLHttpRequest();
     if (http_request.overrideMimeType) {
-      http_request.overrideMimeType('text/plain; charset=x-user-defined');
+      http_request.overrideMimeType('text/plain;');
+
+      // if function pgnGameFromHttpRequest() deals with binary files, use instead
+      //   http_request.overrideMimeType('text/plain; charset=x-user-defined');
+
     }
   } else if (window.ActiveXObject) { // IE
     try { http_request = new ActiveXObject("Msxml2.XMLHTTP"); }

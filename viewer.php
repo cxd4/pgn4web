@@ -67,6 +67,7 @@ if (($pgnOnly == "true") || ($pgnOnly == "t")) {
 
 } elseif (($generateParameter == "true") || ($generateParameter == "t")) {
 
+  header("content-type: text/html; charset=utf-8");
   $pgnUrl = get_param("pgnData", "pd", "");
   if ($pgnUrl == "") { $pgnUrl = get_param("pgnUrl", "pu", ""); }
   $pgnLink = $_SERVER['SCRIPT_NAME'] . urlencode("?po=t&pd=" . $pgnUrl);
@@ -74,6 +75,7 @@ if (($pgnOnly == "true") || ($pgnOnly == "t")) {
 
 } else {
 
+  header("content-type: text/html; charset=utf-8");
   if (!($goToView = get_pgn())) {
     $pgnText = preg_match("/^error:/", $pgnStatus) ? '[Event ""] [Site ""] [Date ""] [Round ""] [White ""] [Black ""] [Result ""] { error loading PGN data, click square A8 for more details }' : $startPosition;
   }

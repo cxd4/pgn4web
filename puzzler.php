@@ -267,6 +267,8 @@ if ($rawGame) {
   exit;
 }
 
+header("content-type: text/html; charset=utf-8");
+
 print <<<END
 <!DOCTYPE HTML>
 <html>
