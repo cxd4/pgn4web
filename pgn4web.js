@@ -1845,10 +1845,10 @@ function loadPgnFromPgnUrl(pgnUrl) {
   if (window.XMLHttpRequest) {
     http_request = new XMLHttpRequest();
     if (http_request.overrideMimeType) {
-      http_request.overrideMimeType('text/plain;');
+      http_request.overrideMimeType("text/plain");
 
       // if function pgnGameFromHttpRequest() deals with binary files, use instead
-      //   http_request.overrideMimeType('text/plain; charset=x-user-defined');
+      //   http_request.overrideMimeType("text/plain; charset=x-user-defined");
 
     }
   } else if (window.ActiveXObject) { // IE
