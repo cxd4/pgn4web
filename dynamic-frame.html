@@ -385,10 +385,11 @@ function myOnResize() {
   var gameListFontSize =  Math.floor(Math.min((ww - framePadding * 2) / 30, (wh - framePadding * 2) / 24));
   gameListLineHeight =  Math.floor(1.4 * gameListFontSize);
   var gameListHeaderPadding = Math.floor(gameListLineHeight / 2);
-  gameListBodyHeight = wh - 2 * framePadding - gameListLineHeight - 2 * gameListHeaderPadding;
+  gameListBodyHeight = gameListLineHeight * Math.floor((wh - 2 * framePadding - gameListLineHeight - 2 * gameListHeaderPadding) / gameListLineHeight);
   myInsertRule(sheet, ".gameList", "display: none; overflow: hidden; font-family: monospace; font-size: " + gameListFontSize + "px; line-height: " + gameListLineHeight + "px;");
   myInsertRule(sheet, ".gameListHeader", "overflow: hidden; width: " + (ww  - 2 * framePadding) + "px; padding-top: " + gameListHeaderPadding + "px; padding-bottom: " + gameListHeaderPadding + "px;");
   myInsertRule(sheet, ".gameListBody", "height: " + gameListBodyHeight + "px; width: " + (ww - 2 * framePadding) + "px; overflow: auto; scrollbar-base-color: #" + backgroundColorHex + ";");
+  myInsertRule(sheet, ".scrollLink", "visibility: " + (numberOfGames > gameListBodyHeight / gameListLineHeight + 0.2 ? "visible" : "hidden") + ";");
 
   for (var ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
 
@@ -436,11 +437,11 @@ function fillGameList(force) {
     if (theObj = document.getElementById("GameList")) {
       var text = "<div class='gameListHeader' id='GameListHeader'>";
       text += "&nbsp;<b><a href='javascript:void(0);' onclick='refreshPgnSource(); this.blur();' title='" + numberOfGames + " games'>" + numberOfGames + "</a></b>&nbsp;";
-      text += "<a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = 0; } this.blur();' title='scroll to top page'><b>&nbsp;&lt;&lt;&nbsp;</b></a>&nbsp;";
-      text += "<a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop -= (gameListBodyHeight - gameListLineHeight); } this.blur();' title='scroll to previous page'><b>&nbsp;&lt;&nbsp;</b></a>&nbsp;";
+      text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = 0; } this.blur();' title='scroll to first page'><b>&nbsp;&lt;&lt;&nbsp;</b></a>&nbsp;";
+      text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (Math.ceil(theObj.scrollTop / gameListLineHeight) - Math.floor(gameListBodyHeight / gameListLineHeight)); } this.blur();' title='scroll to previous page'><b>&nbsp;&lt;&nbsp;</b></a>&nbsp;";
       text += "<a href='javascript:void(0);' onclick='selectGameList(-1);' title='back to chessboard'><b>&nbsp;&middot;&middot;&middot;&nbsp;</b></a>&nbsp;";
-      text += "<a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop += (gameListBodyHeight - gameListLineHeight); } this.blur();' title='scroll to next page'><b>&nbsp;&gt;&nbsp;</b></a>&nbsp;";
-      text += "<a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = theObj.scrollHeight; } this.blur();' title='scroll to bottom page'><b>&nbsp;&gt;&gt;&nbsp;</b></a>&nbsp;";
+      text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (Math.ceil(theObj.scrollTop / gameListLineHeight) + Math.floor(gameListBodyHeight / gameListLineHeight)); } this.blur();' title='scroll to next page'><b>&nbsp;&gt;&nbsp;</b></a>&nbsp;";
+      text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = theObj.scrollHeight; } this.blur();' title='scroll to last page'><b>&nbsp;&gt;&gt;&nbsp;</b></a>&nbsp;";
       text += "</div>";
       var extractGamesRegExp = /<OPTION CLASS="optionSelectControl" value=(\d+)>([^<]+)/g;
       var thisBold;
