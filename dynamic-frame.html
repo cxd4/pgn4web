@@ -64,6 +64,7 @@ var fontSizeRatio_default = 0.8;
 var pieceSizeRatio_default = 0.8;
 var sizeRatio_min = 0.3;
 var sizeRatio_max = 1;
+var framePaddingRatio_default = 0;
 
 var thisRegExp;
 
@@ -86,6 +87,7 @@ if (window.location.search.match(thisRegExp) !== null) {
     " - showColorFlag = if set true shows a color flag for the side to move (default false)" + "\n" +
 //    " - fontSizeRatio = font size ratio, from " + sizeRatio_min + " to " + sizeRatio_max + " (default " + fontSizeRatio_default + ")" + "\n" +
 //    " - pieceSizeRatio = piece size ratio, from " + sizeRatio_min + " to " + sizeRatio_max + " (default " + pieceSizeRatio_default + ")" + "\n" +
+//    " - framePaddingRatio = frame padding as a square ratio (default " + framePaddingRatio_default + ")" + "\n" +
     " - bare = if set true shows chessboard only (default false)" + "\n" +
 //    " - engineWinPrepareIdle = if set true preloads the analysis board with an empty board; use only for embedded analysis boards
 //    " - debug = true | false (default false)" + "\n" +
@@ -267,6 +269,14 @@ if (window.location.search.match(thisRegExp) !== null) {
   if (isNaN(pieceSizeRatio) || (pieceSizeRatio < sizeRatio_min) || (pieceSizeRatio > sizeRatio_max)) { pieceSizeRatio = pieceSizeRatio_default; }
 }
 
+// undocumented feature
+var framePaddingRatio = framePaddingRatio_default;
+thisRegExp = /(&|\?)(framePaddingRatio|fpr)=([0-9.]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+  framePaddingRatio = parseFloat(unescape(window.location.search.match(thisRegExp)[3]));
+  if (isNaN(framePaddingRatio)) { framePaddingRatio = framePaddingRatio_default; }
+}
+
 var bareString = "";
 thisRegExp = /(&|\?)(bare|b)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
@@ -314,18 +324,19 @@ function myOnResize() {
   var squareSize;
   if (bare) {
     horizontalLayout = (ww >= wh);
-    squareSize = Math.min(ww / 8, wh / 8);
+    squareSize = Math.min(ww / (8 + 2 * framePaddingRatio), wh / (8 + 2 * framePaddingRatio));
   } else {
-    var squareSize_H = Math.min(ww / (16 / 9), wh) / 8;
-    var squareSize_V = Math.min(ww, wh / (16 / 9)) / 8;
+    var squareSize_H = Math.min(ww / (16 / 9), wh) / (8 + 2 * framePaddingRatio);
+    var squareSize_V = Math.min(ww, wh / (16 / 9)) / (8 + 2 * framePaddingRatio);
     horizontalLayout = (squareSize_H >= squareSize_V);
     squareSize = horizontalLayout ? squareSize_H : squareSize_V;
   }
+  var framePadding = framePaddingRatio * squareSize;
   var lineHeight;
   if (horizontalLayout) {
     lineHeight = Math.floor(squareSize * 8 / 16.5);
   } else {
-    lineHeight = Math.floor(Math.min((wh - squareSize * 8) / (11 + 6/2), squareSize * 8 / 16.5));
+    lineHeight = Math.floor(Math.min((wh - framePadding * 2 - squareSize * 8) / (11 + 6/2), squareSize * 8 / 16.5));
   }
   var fontSize = Math.floor(lineHeight * fontSizeRatio);
   if (fontSize > lineHeight) { fontSize = lineHeight; }
@@ -333,19 +344,19 @@ function myOnResize() {
   var bareSquareSize = squareSize - 2 * squareBorderWidth;
   var pieceSize = Math.floor(squareSize * pieceSizeRatio);
   if (pieceSize > bareSquareSize) { pieceSize = Math.floor(bareSquareSize); }
-  var headerContainerWidth = horizontalLayout ? ww - 9 * squareSize + Math.floor(3 * lineHeight / 4) : ww;
+  var headerContainerWidth = horizontalLayout ? ww - 2 * framePadding - 9 * squareSize + Math.floor(3 * lineHeight / 4) : ww - 2 * framePadding;
 
   var sheet = document.styleSheets[0];
   var oldRules = myRulesLength(sheet);
 
-  myInsertRule(sheet, "body", "padding: 0px; margin: 0px; white-space: nowrap; overflow: hidden; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;");
+  myInsertRule(sheet, "body", "padding: 0px; margin: " + framePadding + "px; white-space: nowrap; overflow: hidden; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;");
   myInsertRule(sheet, "a", "text-decoration: none; color: #" + fontColorHex + ";");
   if (bare) {
-    if (horizontalLayout) { myInsertRule(sheet, ".boardTable", "margin-left: " + ((ww - 8 * squareSize) / 2) + "px;"); }
-    else { myInsertRule(sheet, ".boardTable", "margin-top: " + ((wh - 8 * squareSize) / 2) + "px;"); }
+    if (horizontalLayout) { myInsertRule(sheet, ".boardTable", "margin-left: " + ((ww - 2 * framePadding - 8 * squareSize) / 2) + "px;"); }
+    else { myInsertRule(sheet, ".boardTable", "margin-top: " + ((wh - 2 * framePadding - 8 * squareSize) / 2) + "px;"); }
   } else {
     if (horizontalLayout) { myInsertRule(sheet, ".boardTable", "float: left;"); }
-    else { myInsertRule(sheet, ".boardTable", "margin-left: " + ((ww - 8 * squareSize) / 2) + "px;"); }
+    else { myInsertRule(sheet, ".boardTable", "margin-left: " + ((ww - 2 * framePadding - 8 * squareSize) / 2) + "px;"); }
   }
   myInsertRule(sheet, ".pieceImage", "width:" + pieceSize + "px; height:" + pieceSize + "px;");
   myInsertRule(sheet, ".whiteSquare", "width:" + bareSquareSize + "px; height:" + bareSquareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + lightColorHex + "; border-color: #" + lightColorHex + ";");
@@ -367,17 +378,17 @@ function myOnResize() {
   myInsertRule(sheet, ".colorFlag", "height: 0.8ex; width: 0.8ex; border-width: 1px; border-color: #" + fontColorHex + "; border-style: solid; margin-bottom: 0.2ex; margin-left: " + Math.floor(5 * lineHeight / 9) + "px; margin-right:" + Math.floor(5 * lineHeight / 9) + "px;");
   myInsertRule(sheet, ".leftRightSpacing", "margin-left: " + Math.floor(lineHeight / 2) + "px; margin-right: " + Math.floor(lineHeight / 2) + "px;");
   if (!horizontalLayout) {
-    var variableSpacerLineHeight = Math.floor(Math.min((wh - squareSize * 8 - lineHeight * 11) / 6, lineHeight / 2));
+    var variableSpacerLineHeight = Math.floor(Math.min((wh - framePadding * 2 - squareSize * 8 - lineHeight * 11) / 6, lineHeight / 2));
     var variableSpacerFontSize = Math.floor(variableSpacerLineHeight * 0.8);
     myInsertRule(sheet, ".variableSpacer", "line-height: " + variableSpacerLineHeight + "px; font-size: " + variableSpacerFontSize + "px;");
   }
-  var gameListFontSize =  Math.floor(Math.min(ww / 30, wh / 24));
+  var gameListFontSize =  Math.floor(Math.min((ww - framePadding * 2) / 30, (wh - framePadding * 2) / 24));
   gameListLineHeight =  Math.floor(1.4 * gameListFontSize);
   var gameListHeaderPadding = Math.floor(gameListLineHeight / 2);
-  gameListBodyHeight = wh - gameListLineHeight - 2 * gameListHeaderPadding;
+  gameListBodyHeight = wh - 2 * framePadding - gameListLineHeight - 2 * gameListHeaderPadding;
   myInsertRule(sheet, ".gameList", "display: none; overflow: hidden; font-family: monospace; font-size: " + gameListFontSize + "px; line-height: " + gameListLineHeight + "px;");
-  myInsertRule(sheet, ".gameListHeader", "overflow: hidden; width: " + ww + "px; padding-top: " + gameListHeaderPadding + "px; padding-bottom: " + gameListHeaderPadding + "px;");
-  myInsertRule(sheet, ".gameListBody", "height: " + gameListBodyHeight + "px; width: " + ww + "px; overflow: auto; scrollbar-base-color: #" + backgroundColorHex + ";");
+  myInsertRule(sheet, ".gameListHeader", "overflow: hidden; width: " + (ww  - 2 * framePadding) + "px; padding-top: " + gameListHeaderPadding + "px; padding-bottom: " + gameListHeaderPadding + "px;");
+  myInsertRule(sheet, ".gameListBody", "height: " + gameListBodyHeight + "px; width: " + (ww - 2 * framePadding) + "px; overflow: auto; scrollbar-base-color: #" + backgroundColorHex + ";");
 
   for (var ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
 
@@ -392,7 +403,7 @@ function myOnResize() {
 
   if (!firstStart) { fixColorFlag(); }
 
-  dynamicFrameDebugString = "fw=" + ww + " fh=" + wh + " fs=" + fontSize + " ss=" + Math.round(squareSize*100)/100 + " sb=" + squareBorderWidth + " ps=" + pieceSize + " pbs=" + pieceBaseSize;
+  dynamicFrameDebugString = "fw=" + ww + " fh=" + wh + " fp=" + Math.round(framePadding*100)/100 + " fs=" + fontSize + " ss=" + Math.round(squareSize*100)/100 + " sb=" + squareBorderWidth + " ps=" + pieceSize + " pbs=" + pieceBaseSize;
 
   return pieceSize;
 }
