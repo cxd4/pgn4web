@@ -729,12 +729,11 @@ function displayDebugInfo() {
     if (debugWin && !debugWin.closed) { debugWin.close(); }
     debugWin = window.open("", "pgn4web_debug_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
     if (debugWin) {
-      text = "<html><head><title>pgn4web debug info</title>" +
+      debugWin.document.open("text/html", "replace");
+      debugWin.document.write("<html><head><title>pgn4web debug info</title>" +
         "<link rel='shortcut icon' href='pawn.ico' /></head>" +
         "<body>\n<pre>\n" + dbg1 + location.href + " " + dbg3 +
-        "\n</pre>\n</body></html>";
-      debugWin.document.open("text/html", "replace");
-      debugWin.document.write(text);
+        "\n</pre>\n</body></html>");
       debugWin.document.close();
       if (window.focus) { debugWin.focus(); }
     }
