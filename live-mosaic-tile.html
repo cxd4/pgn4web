@@ -109,8 +109,8 @@
     if (parent && (pcscsfcf = parent.pgn4webClearShortCutSquaresForChildFrames)) {
       for (cscs in pcscsfcf) { clearShortcutSquares(pcscsfcf[cscs][0], pcscsfcf[cscs][1]); }
     }
-    if (parent && parent.displayPgnData) {
-      boardShortcut("D8", "show full PGN source data", function(t,e){ parent.displayPgnData(true); });
+    if (parent && parent.displayPgnData && parent.savePgnData) {
+      boardShortcut("D8", "show full PGN source data", function(t,e){ if (e.shiftKey) { parent.savePgnData(); } else { parent.displayPgnData(); } });
     }
   } catch(e) { myAlert("warning: failed accessing frame's parent for shortcut squares to clear", false); }
 

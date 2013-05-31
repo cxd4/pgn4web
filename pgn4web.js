@@ -295,7 +295,7 @@ function handlekey(e) {
 
     case 68: // d
       if (e.shiftKey) { displayFenData(); }
-      else { displayPgnData(false); }
+      else { displayPgnData(true); }
       break;
 
     case 187: // equal
@@ -483,9 +483,9 @@ boardShortcut("A8", "pgn4web v" + pgn4web_version + " debug info", function(t,e)
 
 boardShortcut("B8", "show this position FEN string", function(t,e){ displayFenData(); }, true);
 
-boardShortcut("C8", "show this game PGN source data", function(t,e){ displayPgnData(false); }, true);
+boardShortcut("C8", "show this game PGN source data", function(t,e){ if (e.shiftKey) { savePgnData(true); } else { displayPgnData(true); } }, true);
 
-boardShortcut("D8", "show full PGN source data", function(t,e){ if (e.shiftKey && pgnUrl) { location.href = pgnUrl; } else { displayPgnData(true); } }, true);
+boardShortcut("D8", "show full PGN source data", function(t,e){ if (e.shiftKey) { savePgnData(); } else { displayPgnData(); } }, true);
 
 boardShortcut("E8", "search help", function(t,e){ displayHelp("search_tool"); }, true);
 
@@ -751,20 +751,26 @@ function liveStatusDebug() {
 function customDebugInfo() { return ""; }
 
 var pgnWin;
-function displayPgnData(allGames) {
-  if (typeof(allGames) == "undefined") { allGames = true; }
+function displayPgnData(oneGameOnly) {
   if (pgnWin && !pgnWin.closed) { pgnWin.close(); }
   pgnWin = window.open("", "pgn4web_pgn_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if (pgnWin) {
     var text = "<html><head><title>pgn4web PGN source</title>" +
       "<link rel='shortcut icon' href='pawn.ico' /></head><body>\n<pre>\n";
-    if (allGames) { for (var ii = 0; ii < numberOfGames; ++ii) { text += fullPgnGame(ii) + "\n\n"; } }
-    else { text += fullPgnGame(currentGame); }
+    if (oneGameOnly) { text += fullPgnGame(currentGame) + "\n\n"; }
+    else { for (var ii = 0; ii < numberOfGames; ++ii) { text += fullPgnGame(ii) + "\n\n"; } }
     text += "\n</pre>\n</body></html>";
     pgnWin.document.open("text/html", "replace");
     pgnWin.document.write(text);
     pgnWin.document.close();
     if (window.focus) { pgnWin.focus(); }
+  }
+}
+
+function savePgnData(oneGameOnly) {
+  if (pgnUrl && !oneGameOnly) { location.href = pgnUrl; }
+  else {
+    displayPgnData(oneGameOnly); // fallback on displayPgnData for now
   }
 }
 
