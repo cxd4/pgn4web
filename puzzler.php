@@ -170,7 +170,7 @@ $buttonPadding = floor($squareSize / 10);
 
 $sidetomoveBorder = floor($buttonFontSize / 18) + 1;
 $sidetomoveBorderCss = $sidetomoveBorder . "px";
-$sidetomoveHeight = $buttonFontSize - 2 * $sidetomoveBorder;
+$sidetomoveHeight = floor(0.75 * $buttonFontSize - 2 * $sidetomoveBorder);
 $sidetomoveHeightCss = $sidetomoveHeight . "px";
 $sidetomoveWidth = $sidetomoveHeight;
 $sidetomoveWidthCss = $sidetomoveWidth . "px";
@@ -416,7 +416,7 @@ function customFunctionOnMove() {
   var res, outcome;
 
   if (CurrentPly == StartPly) {
-    document.getElementById("leftButtonLink").innerHTML = "<table class='sidetomoveBox' style='background-color:" + (CurrentPly % 2 ? "black" : "white" ) + ";' cellspacing='0' cellpadding='0'><tr><td></td></tr></table>";
+    document.getElementById("leftButtonLink").innerHTML = "<img class='sidetomoveBox' style='background-color:" + (CurrentPly % 2 ? "black" : "white" ) + ";' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC'>";
     document.getElementById("leftButton").title = ((CurrentPly % 2) ? "Black" : "White") + " to play: find the best move";
   } else {
     document.getElementById("leftButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&lt;&nbsp;&nbsp;&nbsp;&nbsp;";
