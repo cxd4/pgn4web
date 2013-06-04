@@ -402,10 +402,11 @@ clearShortcutSquares("BCFG", "1");
 function solutionSoFar() {
   var sol = "";
   for (var thisPly = StartPly; thisPly < CurrentPly; thisPly++) {
-    if (thisPly % 2) {
-      sol += ((thisPly + 1) / 2) + "... ";
-    } else if (thisPly == StartPly) {
-      sol += ((thisPly / 2) + 1) + ". ";
+    var moveCount = Math.floor(thisPly/2)+1;
+    if ((thisPly % 2 == 0) || (thisPly == StartPly)) {
+      sol += (Math.floor(thisPly/2)+1) + ".";
+      if (thisPly % 2) { sol += ".."; }
+      sol += " ";
     }
     sol += Moves[thisPly] + " ";
   }
