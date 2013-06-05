@@ -701,6 +701,22 @@ function gameTooltipInfo() {
   return str;
 }
 
+
+var lastOrientation;
+var lastOrientationTime = 0;
+var lastOrientationDelay = 2000;
+window.addEventListener("orientationchange", function() {
+  if (((new Date()).getTime() - lastOrientationTime < lastOrientationDelay) && (window.orientation - lastOrientation)) {
+    Init(currentGame + sign(window.orientation - lastOrientation));
+    fillGameList();
+    lastOrientationTime = 0;
+  } else {
+    lastOrientationTime = (new Date()).getTime();
+  }
+  lastOrientation = window.orientation;
+});
+
+
 function pgn4web_onload(e) {
   var calculatedPieceSize = myOnResize();
   start_pgn4web();
