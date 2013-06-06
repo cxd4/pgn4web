@@ -384,6 +384,8 @@ body {
 SetImagePath("images/$pieceFont/$pieceSize");
 SetShortcutKeysEnabled(false);
 
+SetTouchEventEnabled(false);
+
 function displayPuzzlerHelp() {
   var puzzlerHelp = "pgn4web chess puzzler" + "\\n\\n";
   puzzlerHelp += "- the white or black small square below the chessboard's left side indicates the side to move" + "\\n\\n";
