@@ -63,7 +63,7 @@ function simpleAddEvent(obj, evt, cbk) {
   else if (obj.attachEvent) { obj.attachEvent("on" + evt, cbk); } // IE
 }
 
-simpleAddEvent(document, "keydown", handlekey);
+simpleAddEvent(document, "keydown", pgn4web_handleKey);
 simpleAddEvent(window, "load", pgn4web_onload_event);
 
 
@@ -82,6 +82,7 @@ function start_pgn4web() {
   InitImages();
   createBoard();
   if (LiveBroadcastDelay > 0) { restartLiveBroadcastTimeout(); }
+  pgn4web_initTouchEvents();
 }
 
 var alertLog;
@@ -188,7 +189,7 @@ function customShortcutKey_Shift_8() {}
 function customShortcutKey_Shift_9() {}
 
 var shortcutKeysEnabled = false;
-function handlekey(e) {
+function pgn4web_handleKey(e) {
   var keycode, oldPly, oldVar, colRow, colRowList;
 
   if (!e) { e = window.event; }
@@ -4026,3 +4027,72 @@ function sign(nn) {
 function SquareOnBoard(col, row) {
   return col >= 0 && col <= 7 && row >= 0 && row <= 7;
 }
+
+
+var pgn4webOngoingTouches = new Array();
+function pgn4webOngoingTouchIndexById(needle) {
+  var id;
+  for (var ii = 0; ii < pgn4webOngoingTouches.length; ii++) {
+    id = pgn4webOngoingTouches[ii].identifier;
+    if (pgn4webOngoingTouches[ii].identifier === needle) { return ii; }
+  }
+  return -1;
+}
+
+function pgn4web_handleTouchStart(e) {
+  e.preventDefault();
+  for (var ii = 0; ii < e.changedTouches.length; ii++) {
+    pgn4webOngoingTouches.push({ identifier: e.changedTouches[ii].identifier, clientX: e.changedTouches[ii].clientX, clientY: e.changedTouches[ii].clientY });
+  }
+}
+
+function pgn4web_handleTouchEnd(e) {
+  e.preventDefault();
+  var jj, dX, dY, dM;
+  if (!(document.getElementById("GameBoard") && (dM = document.getElementById("GameBoard").offsetWidth / 16))) { dM = 20; }
+  for (var ii = 0; ii < e.changedTouches.length; ii++) {
+    if ((jj = pgn4webOngoingTouchIndexById(e.changedTouches[ii].identifier)) >= 0) {
+      dX = e.changedTouches[ii].clientX - pgn4webOngoingTouches[jj].clientX;
+      dY = e.changedTouches[ii].clientY - pgn4webOngoingTouches[jj].clientY;
+      if (Math.max(Math.abs(dX), Math.abs(dY)) > dM) {
+        if (Math.abs(dY) > Math.abs(dX)) {
+          Init(currentGame + sign(dY));
+        } else {
+          if (dX > 0) {
+            if (isAutoPlayOn) { GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]); }
+            else { SwitchAutoPlay(); }
+          } else {
+            if (isAutoPlayOn) { SwitchAutoPlay(); }
+            else { GoToMove(StartPlyVar[CurrentVar]); }
+          }
+        }
+      } else {
+        var newEvent = document.createEvent("MouseEvents");
+        newEvent.initMouseEvent("click", true, true, window, 0, e.changedTouches[ii].screenX, e.changedTouches[ii].screenY, e.changedTouches[ii].clientX, e.changedTouches[ii].clientY, e.ctrlKey, e.altKey, e.shirtKey, e.metaKey, 0, null);
+        e.changedTouches[ii].target.dispatchEvent(newEvent);
+      }
+      pgn4webOngoingTouches.splice(jj, 1);
+    }
+  }
+}
+
+function pgn4web_handleTouchCancel(e) {
+  e.preventDefault();
+  var jj;
+  for (var ii = 0; ii < e.changedTouches.length; ii++) {
+    if ((jj = pgn4webOngoingTouchIndexById(e.changedTouches[ii].identifier)) != -1) {
+      pgn4webOngoingTouches.splice(jj, 1);
+    }
+  }
+}
+
+function pgn4web_initTouchEvents() {
+  var theObj = document.getElementById("GameBoard");
+  if (theObj) {
+    simpleAddEvent(theObj, "touchstart", pgn4web_handleTouchStart);
+    simpleAddEvent(theObj, "touchend", pgn4web_handleTouchEnd);
+    simpleAddEvent(theObj, "touchleave", pgn4web_handleTouchEnd);
+    simpleAddEvent(theObj, "touchcancel", pgn4web_handleTouchCancel);
+  }
+}
+
