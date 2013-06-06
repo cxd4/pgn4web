@@ -4040,44 +4040,26 @@ function pgn4webOngoingTouchIndexById(needle) {
 }
 
 function pgn4web_handleTouchStart(e) {
-  e.preventDefault();
   for (var ii = 0; ii < e.changedTouches.length; ii++) {
     pgn4webOngoingTouches.push({ identifier: e.changedTouches[ii].identifier, clientX: e.changedTouches[ii].clientX, clientY: e.changedTouches[ii].clientY });
   }
 }
 
-function pgn4web_handleTouchEnd(e) {
+function pgn4web_handleTouchMove(e) {
   e.preventDefault();
-  var jj, dX, dY, dM;
-  if (!(document.getElementById("GameBoard") && (dM = document.getElementById("GameBoard").offsetWidth / 16))) { dM = 20; }
+}
+
+function pgn4web_handleTouchEnd(e) {
+  var jj;
   for (var ii = 0; ii < e.changedTouches.length; ii++) {
-    if ((jj = pgn4webOngoingTouchIndexById(e.changedTouches[ii].identifier)) >= 0) {
-      dX = e.changedTouches[ii].clientX - pgn4webOngoingTouches[jj].clientX;
-      dY = e.changedTouches[ii].clientY - pgn4webOngoingTouches[jj].clientY;
-      if (Math.max(Math.abs(dX), Math.abs(dY)) > dM) {
-        if (Math.abs(dY) > Math.abs(dX)) {
-          Init(currentGame + sign(dY));
-        } else {
-          if (dX > 0) {
-            if (isAutoPlayOn) { GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]); }
-            else { SwitchAutoPlay(); }
-          } else {
-            if (isAutoPlayOn) { SwitchAutoPlay(); }
-            else { GoToMove(StartPlyVar[CurrentVar]); }
-          }
-        }
-      } else {
-        var newEvent = document.createEvent("MouseEvents");
-        newEvent.initMouseEvent("click", true, true, window, 0, e.changedTouches[ii].screenX, e.changedTouches[ii].screenY, e.changedTouches[ii].clientX, e.changedTouches[ii].clientY, e.ctrlKey, e.altKey, e.shirtKey, e.metaKey, 0, null);
-        e.changedTouches[ii].target.dispatchEvent(newEvent);
-      }
+    if ((jj = pgn4webOngoingTouchIndexById(e.changedTouches[ii].identifier)) != -1) {
+      customFunctionOnTouch(e.changedTouches[ii].clientX - pgn4webOngoingTouches[jj].clientX, e.changedTouches[ii].clientY - pgn4webOngoingTouches[jj].clientY);
       pgn4webOngoingTouches.splice(jj, 1);
     }
   }
 }
 
 function pgn4web_handleTouchCancel(e) {
-  e.preventDefault();
   var jj;
   for (var ii = 0; ii < e.changedTouches.length; ii++) {
     if ((jj = pgn4webOngoingTouchIndexById(e.changedTouches[ii].identifier)) != -1) {
@@ -4088,11 +4070,35 @@ function pgn4web_handleTouchCancel(e) {
 
 function pgn4web_initTouchEvents() {
   var theObj = document.getElementById("GameBoard");
-  if (theObj) {
+  if (theObj && touchEventEnabled) {
     simpleAddEvent(theObj, "touchstart", pgn4web_handleTouchStart);
+    simpleAddEvent(theObj, "touchmove", pgn4web_handleTouchMove);
     simpleAddEvent(theObj, "touchend", pgn4web_handleTouchEnd);
     simpleAddEvent(theObj, "touchleave", pgn4web_handleTouchEnd);
     simpleAddEvent(theObj, "touchcancel", pgn4web_handleTouchCancel);
   }
+}
+
+function customFunctionOnTouch(deltaX, deltaY) {
+  var deltaMin;
+  if (!(document.getElementById("GameBoard") && (deltaMin = document.getElementById("GameBoard").offsetWidth / 16))) { deltaMin = 20; }
+  if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) > deltaMin) {
+    if (Math.abs(deltaY) > Math.abs(deltaX)) { // vertical up or down
+      Init(currentGame + sign(deltaY));
+    } else {
+      if (deltaX > 0) { // horizontal right
+        if (isAutoPlayOn) { GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]); }
+        else { SwitchAutoPlay(); }
+      } else { // horizontal left
+        if (isAutoPlayOn) { SwitchAutoPlay(); }
+        else { GoToMove(StartPlyVar[CurrentVar]); }
+      }
+    }
+  }
+}
+
+var touchEventEnabled = true;
+function SetTouchEventEnabled(onOff) {
+  touchEventEnabled = onOff;
 }
 
