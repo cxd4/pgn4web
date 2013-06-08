@@ -90,6 +90,13 @@ a {
 
 </style>
 
+<style type="text/css">
+
+/* for dynamically redefined variables */
+
+</style>
+
+
 <script type="text/javascript">
 "use strict";
 
@@ -174,23 +181,11 @@ if (window.location.search.match(thisRegExp) !== null) {
    framePadding = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
 }
 
-var squareSize = 30;
+var squareSize;
 thisRegExp = /(&|\?)(squareSize|ss)=([1-9][0-9]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
    squareSize = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
-} else {
-   var ww = 0, wh = 0;
-   if (window.innerWidth && window.innerHeight) { ww = window.innerWidth; wh = window.innerHeight; }
-   else if (document.documentElement && document.documentElement.clientWidth) { ww = document.documentElement.clientWidth; wh = document.documentElement.clientHeight; }
-   else if (document.body && document.body.clientWidth) { ww = document.body.clientWidth; wh = document.body.clientHeight; }
-   if (Math.min(ww, wh) > 0) {
-      if (typeof(framePadding) == "undefined") { squareSize = Math.floor(Math.min(ww / 10, wh / 12)); }
-      else { squareSize = Math.floor(Math.min((ww - 2 * framePadding) / 8, (wh - 2 * framePadding) / 10)); }
-   }
 }
-if (squareSize < 20) { squareSize = 20; }
-
-if (typeof(framePadding) == "undefined") { framePadding = squareSize; }
 
 var pieceSizeOptions = new Array(20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 52, 56, 60, 64, 72, 80, 88, 96, 112, 128, 144, 300);
 function defaultPieceSize(squareSize) {
@@ -200,7 +195,7 @@ function defaultPieceSize(squareSize) {
    }
    return pieceSizeOptions[0];
 }
-var pieceSize = defaultPieceSize(squareSize);
+var pieceSize;
 thisRegExp = /(&|\?)(pieceSize|ps)=([1-9][0-9]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
    pieceSize = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
@@ -216,12 +211,12 @@ if (window.location.search.match(thisRegExp) !== null) {
 }
 
 
-var fontMovesSize = Math.ceil(squareSize * 11 / 30);
+var fontMovesSize;
 thisRegExp = /(&|\?)(fontMovesSize|fms)=([1-9][0-9]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
    fontMovesSize = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
 }
-var fontCommentsSize = Math.ceil(squareSize * 19 / 30);
+var fontCommentsSize;
 thisRegExp = /(&|\?)(fontCommentsSize|fcs)=([1-9][0-9]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
    fontCommentsSize = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
@@ -291,25 +286,78 @@ function myInsertRule(sheet, selector, declaration) {
    else if (sheet.addRule) { sheet.addRule(selector, declaration); }
 }
 
+function myDeleteRule(sheet, index) {
+   if (sheet.deleteRule) { sheet.deleteRule(index); }
+   else if (sheet.removeRule) { sheet.removeRule(index); }
+}
+
 var mySheet = document.styleSheets[0];
-myInsertRule(mySheet, "body", "color: " + fontMovesColorHex + "; background: " + backgroundColorHex + "; padding: " + framePadding + "px;");
+myInsertRule(mySheet, "body", "color: " + fontMovesColorHex + "; background: " + backgroundColorHex + ";");
 myInsertRule(mySheet, "a", "color: " + fontMovesColorHex + ";");
-myInsertRule(mySheet, ".boardTable", "width: " + (squareSize * 8) + "px; height: " + (squareSize * 8) + "px; background: " + lightColorHex + ";");
-myInsertRule(mySheet, ".pieceImage", "width: " + pieceSize + "px; height: " + pieceSize + "px;");
-myInsertRule(mySheet, ".whiteSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + lightColorHex + ";");
-myInsertRule(mySheet, ".highlightWhiteSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + highlightColorHex + ";");
-myInsertRule(mySheet, ".blackSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + darkColorHex + ";");
-myInsertRule(mySheet, ".highlightBlackSquare", "width: " + squareSize + "px; height: " + squareSize + "px; background: " + highlightColorHex + ";");
-myInsertRule(mySheet, ".container", "width: " + (squareSize * 8) + "px;");
-myInsertRule(mySheet, ".gameCustomButtons", "height: " + squareSize + "px; padding-bottom: " + Math.floor(squareSize / 6) + "px; color: " + controlTextColorHex + "; font-size: " + fontMovesSize + "px; margin-left: " + Math.floor((2 * squareSize - 5 * Math.floor(squareSize * 0.4)) / 2) + "px;");
-myInsertRule(mySheet, ".gameButtonCell", "width: " + squareSize + "px;");
-myInsertRule(mySheet, ".gameButtonSpacer", "width: " + Math.floor(squareSize * 0.4) + "px;");
-myInsertRule(mySheet, ".gameAnalysis", "height: " + squareSize + "px;");
-myInsertRule(mySheet, ".gameFlagToMove", "height: " + Math.floor(fontMovesSize / 2) + "px; width: " + Math.floor(fontMovesSize / 2) + "px; border-color: " + fontMovesColorHex + ";");
-myInsertRule(mySheet, ".gameShowFen", "width: " + (squareSize - 2 * Math.floor(squareSize / 3)) + "px; margin-left:" + Math.floor(squareSize / 3) + "px; margin-right:" + Math.floor(squareSize / 3) + "px;");
-myInsertRule(mySheet, ".gameMoves", "font-size: " + fontMovesSize + "px;");
-myInsertRule(mySheet, ".gameTablebase", "font-size: " + fontMovesSize + "px;");
-myInsertRule(mySheet, ".gameEval", "padding-left: " + squareSize + "px; background: " + backgroundColorHex + "; font-size: " + fontCommentsSize + "px;");
+myInsertRule(mySheet, ".boardTable", "background: " + lightColorHex + ";");
+myInsertRule(mySheet, ".whiteSquare", "background: " + lightColorHex + ";");
+myInsertRule(mySheet, ".highlightWhiteSquare", "background: " + highlightColorHex + ";");
+myInsertRule(mySheet, ".blackSquare", "background: " + darkColorHex + ";");
+myInsertRule(mySheet, ".highlightBlackSquare", "background: " + highlightColorHex + ";");
+myInsertRule(mySheet, ".gameCustomButtons", "color: " + controlTextColorHex + ";");
+myInsertRule(mySheet, ".gameFlagToMove", "border-color: " + fontMovesColorHex + ";");
+myInsertRule(mySheet, ".gameEval", "background: " + backgroundColorHex + ";");
+
+var oldSquareSizeCss;
+function myOnOrientationchange() {
+   var sheet = document.styleSheets[1];
+   var oldRules = myRulesLength(sheet);
+
+   var squareSizeCss;
+   if (typeof(squareSize) != "undefined") { squareSizeCss = squareSize; }
+   else {
+      var ww = 0, wh = 0;
+      if (window.innerWidth && window.innerHeight) { ww = window.innerWidth; wh = window.innerHeight; }
+      else if (document.documentElement && document.documentElement.clientWidth) { ww = document.documentElement.clientWidth; wh = document.documentElement.clientHeight; }
+      else if (document.body && document.body.clientWidth) { ww = document.body.clientWidth; wh = document.body.clientHeight; }
+      if (Math.min(ww, wh) > 0) {
+         if (typeof(framePadding) == "undefined") { squareSizeCss = Math.floor(Math.min(ww / 10, wh / 12)); }
+         else { squareSizeCss = Math.floor(Math.min((ww - 2 * framePadding) / 8, (wh - 2 * framePadding) / 10)); }
+      } else {
+         squareSizeCss = 30;
+      }
+   }
+   if (squareSizeCss < 20) { squareSizeCss = 20; }
+
+   if (squareSizeCss === oldSquareSizeCss) { return; }
+
+   var framePaddingCss = typeof(framePadding) != "undefined" ? framePadding : squareSizeCss;
+   var pieceSizeCss = typeof(pieceSize) != "undefined" ? pieceSize : defaultPieceSize(squareSizeCss);
+   var fontMovesSizeCss = typeof(fontMovesSize) != "undefined" ? fontMovesSize : Math.ceil(squareSizeCss * 11 / 30);
+   var fontCommentsSizeCss = typeof(fontCommentsSize) != "undefined" ? fontCommentsSize : Math.ceil(squareSizeCss * 19 / 30);
+
+   myInsertRule(sheet, "body", "padding: " + framePaddingCss + "px;");
+   myInsertRule(sheet, ".boardTable", "width: " + (squareSizeCss * 8) + "px; height: " + (squareSizeCss * 8) + "px;");
+   myInsertRule(sheet, ".pieceImage", "width: " + pieceSizeCss + "px; height: " + pieceSizeCss + "px;");
+   myInsertRule(sheet, ".whiteSquare", "width: " + squareSizeCss + "px; height: " + squareSizeCss + "px;");
+   myInsertRule(sheet, ".highlightWhiteSquare", "width: " + squareSizeCss + "px; height: " + squareSizeCss + "px;");
+   myInsertRule(sheet, ".blackSquare", "width: " + squareSizeCss + "px; height: " + squareSizeCss + "px;");
+   myInsertRule(sheet, ".highlightBlackSquare", "width: " + squareSizeCss + "px; height: " + squareSizeCss + "px;");
+   myInsertRule(sheet, ".container", "width: " + (squareSizeCss * 8) + "px;");
+   myInsertRule(sheet, ".gameCustomButtons", "height: " + squareSizeCss + "px; padding-bottom: " + Math.floor(squareSizeCss / 6) + "px; font-size: " + fontMovesSizeCss + "px; margin-left: " + Math.floor((2 * squareSizeCss - 5 * Math.floor(squareSizeCss * 0.4)) / 2) + "px;");
+   myInsertRule(sheet, ".gameButtonCell", "width: " + squareSizeCss + "px;");
+   myInsertRule(sheet, ".gameButtonSpacer", "width: " + Math.floor(squareSizeCss * 0.4) + "px;");
+   myInsertRule(sheet, ".gameAnalysis", "height: " + squareSizeCss + "px;");
+   myInsertRule(sheet, ".gameFlagToMove", "height: " + Math.floor(fontMovesSizeCss / 2) + "px; width: " + Math.floor(fontMovesSizeCss / 2) + "px;");
+   myInsertRule(sheet, ".gameShowFen", "width: " + (squareSizeCss - 2 * Math.floor(squareSizeCss / 3)) + "px; margin-left:" + Math.floor(squareSizeCss / 3) + "px; margin-right:" + Math.floor(squareSizeCss / 3) + "px;");
+   myInsertRule(sheet, ".gameMoves", "font-size: " + fontMovesSizeCss + "px;");
+   myInsertRule(sheet, ".gameTablebase", "font-size: " + fontMovesSizeCss + "px;");
+   myInsertRule(sheet, ".gameEval", "padding-left: " + squareSizeCss + "px; font-size: " + fontCommentsSizeCss + "px;");
+
+   SetImagePath("images/" + pieceFont + "/" + pieceSizeCss);
+
+   for (var ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
+
+   var theObj;
+   if (theObj = document.getElementById("boardTable")) { theObj.style.height = (8 * squareSizeCss) + "px"; }
+
+   oldSquareSizeCss = squareSizeCss;
+}
 
 </script>
 
@@ -319,10 +367,13 @@ myInsertRule(mySheet, ".gameEval", "padding-left: " + squareSize + "px; backgrou
 <script type="text/javascript">
 "use strict";
 
-SetImagePath("images/" + pieceFont + "/" + pieceSize);
 SetImageType("png");
 SetHighlightOption(false);
 SetShortcutKeysEnabled(false);
+
+myOnOrientationchange();
+
+simpleAddEvent(window, "orientationchange", myOnOrientationchange);
 
 </script>
 

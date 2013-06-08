@@ -705,7 +705,7 @@ function gameTooltipInfo() {
 var lastOrientation;
 var lastOrientationTime = 0;
 var lastOrientationDelay = 2000;
-window.addEventListener("orientationchange", function() {
+simpleAddEvent(window, "orientationchange", function() {
   if (((new Date()).getTime() - lastOrientationTime < lastOrientationDelay) && (window.orientation - lastOrientation)) {
     Init(currentGame + sign(window.orientation - lastOrientation));
     fillGameList();
