@@ -168,18 +168,29 @@ if (window.location.search.match(thisRegExp) !== null) {
    backgroundColorHex = "#" + unescape(window.location.search.match(thisRegExp)[3]);
 }
 
-var squareSize = "30";
-thisRegExp = /(&|\?)(squareSize|ss)=([1-9][0-9]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   squareSize = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
-}
-if (squareSize < 20) { squareSize = 20; }
-
-var framePadding = squareSize;
+var framePadding;
 thisRegExp = /(&|\?)(framePadding|fp)=([0-9]+)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
    framePadding = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
 }
+
+var squareSize = 30;
+thisRegExp = /(&|\?)(squareSize|ss)=([1-9][0-9]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+   squareSize = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
+} else {
+   var ww = 0, wh = 0;
+   if (window.innerWidth && window.innerHeight) { ww = window.innerWidth; wh = window.innerHeight; }
+   else if (document.documentElement && document.documentElement.clientWidth) { ww = document.documentElement.clientWidth; wh = document.documentElement.clientHeight; }
+   else if (document.body && document.body.clientWidth) { ww = document.body.clientWidth; wh = document.body.clientHeight; }
+   if (Math.min(ww, wh) > 0) {
+      if (typeof(framePadding) == "undefined") { squareSize = Math.floor(Math.min(ww / 10, wh / 12)); }
+      else { squareSize = Math.floor(Math.min((ww - 2 * framePadding) / 8, (wh - 2 * framePadding) / 10)); }
+   }
+}
+if (squareSize < 20) { squareSize = 20; }
+
+if (typeof(framePadding) == "undefined") { framePadding = squareSize; }
 
 var pieceSizeOptions = new Array(20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 52, 56, 60, 64, 72, 80, 88, 96, 112, 128, 144, 300);
 function defaultPieceSize(squareSize) {
@@ -230,7 +241,7 @@ if (window.location.search.match(thisRegExp) !== null) {
    // document.write(" - enableLocalStorage = true | false (default false)\n");
    // document.write(" - engineSignature = positive number (default -1)\n");
    document.write("\n");
-   document.write(" - squareSize = size of square (default 30)\n");
+   document.write(" - squareSize = size of square (default selects square size based on window size)\n");
    document.write(" - pieceSize = size of pieces | default (default selects piece size based on square size)\n");
    document.write(" - pieceFont = alpha | merida | uscf (default alpha)\n");
    document.write("\n");
@@ -1019,6 +1030,18 @@ function sameEngineDisabled(engineDisabled) {
    return ((typeof(engineDisabled) == "undefined") || (engineDisabled && disableEngine) || (!engineDisabled && !disableEngine));
 }
 
+
+function customFunctionOnTouch(deltaX, deltaY) {
+  var deltaMin;
+  if (!(document.getElementById("GameBoard") && (deltaMin = document.getElementById("GameBoard").offsetWidth / 16))) { deltaMin = 20; }
+  if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) > deltaMin) {
+    if (Math.abs(deltaY) > Math.abs(deltaX)) { // vertical up or down
+      GoToMove(StartPlyVar[CurrentVar] + (deltaY > 0 ? PlyNumberVar[CurrentVar] : 0));
+    } else { // horizontal left or right
+      GoToMove(CurrentPly + sign(deltaX));
+    }
+  }
+}
 
 </script>
 
