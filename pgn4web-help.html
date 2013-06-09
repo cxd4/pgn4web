@@ -80,7 +80,7 @@ a.headingSelected:hover {
 <script type="text/javascript">
 "use strict";
 
-var sections = ["user_interface", "shortcut_keys", "shortcut_squares", "search_tool", "informant_symbols", "credits_and_license"];
+var sections = ["user_interface", "shortcut_keys", "shortcut_squares", "touch_gestures", "search_tool", "informant_symbols", "credits_and_license"];
 
 function showSection(section) {
   var section2show = sections[0], theObj;
@@ -118,6 +118,30 @@ var shortcutSquareSearchRepeatBackward = isRotated ? "H4" : "A5";
 var rowNumbers = isRotated ? "87654321" : "12345678";
 var colLetters = isRotated ? "HGFEDCBA" : "ABCDEFGH";
 
+var touchGesturesSupported = !!('ontouchstart' in window) || !!('msmaxtouchpoints' in window.navigator);
+if (opener && (typeof(opener.touchEventEnabled) != "undefined")) {
+  touchGesturesSupported = touchGesturesSupported && opener.touchEventEnabled;
+}
+
+var touchGestures_helpIntro, touchGestures_helpActions, touchGestures_helpText;
+if (touchGesturesSupported) {
+  touchGestures_helpIntro = "The user can interact with the pgn4web chessboard using touch gestures across the chessboard:";
+  if (opener && (typeof(opener.touchGestures_helpActions) != "undefined")) {
+    touchGestures_helpActions = opener.touchGestures_helpActions;
+  } else {
+    touchGestures_helpActions = [ "top-down swipe", "bottom-up swipe", "left-right swipe", "right-left swipe" ];
+  }
+  if (opener && (typeof(opener.touchGestures_helpText) != "undefined")) {
+    touchGestures_helpText = opener.touchGestures_helpText;
+  } else {
+    touchGestures_helpText = [ "load next game", "load previous game", "start autoplay; if autoplay already active then go to game end", "stop autoplay; if autoplay not active then go to game start" ];
+  }
+} else {
+  touchGestures_helpIntro = "Touch gestures not available.<p></p>Touch gestures are typically used on touchscreen devices to interact with the chessboard using swipe gestures.";
+  touchGestures_helpActions = [];
+  touchGestures_helpText = [];
+}
+
 </script>
 
 <h1 style="margin-top:0px; padding-top:0px; text-align:right;">
@@ -142,7 +166,7 @@ for (var s in sections) {
 
 <div id="user_interface_section" class="section">
 
-The user can interact with the pgn4web chessboard <a href="javascript:void(0);" onclick="showSection('shortcut_keys');">using the keyboard</a> or <a href="javascript:void(0);" onclick="showSection('shortcut_squares');">clicking chessboard squares</a>; hovering the mouse on each square displays an help summary.
+The user can interact with the pgn4web chessboard <a href="javascript:void(0);" onclick="showSection('shortcut_keys');">using the keyboard</a>, <a href="javascript:void(0);" onclick="showSection('shortcut_squares');">clicking chessboard squares</a> or <a href="javascript:void(0);" onclick="showSection('touch_gestures');">using touch gestures</a>; hovering the mouse on each square displays an help summary.
 <p></p>
 A <a href="javascript:void(0);" onclick="showSection('search_tool')">search tool</a> allows searching within the PGN games.
 <p></p>
@@ -386,6 +410,22 @@ Some functionality of specific applications of pgn4web or specific demo pages de
 <p></p>
 Remaining pgn4web code is copyright (C) 2009-2013 <a href="mailto:pgn4web@casaschi.net">Paolo Casaschi</a> and licensed under the terms of <a href="license-gpl-2.0.txt" target="_blank">the GNU General Public License version 2</a> as published by <a href="http://www.fsf.org" target="_blank">the Free Software Foundation</a>; either <a href="license-gpl-2.0.txt" target="_blank">version 2 of the License</a>, or (at your option) any later version.
 <span id="versionInfo"></span>
+
+</div>
+
+
+<div id="touch_gestures_section" class="section">
+
+<script type="text/javascript">
+"use strict";
+document.write(touchGestures_helpIntro);
+document.write("<table style='padding:0px;' border='0'>");
+print_help_row("&nbsp;", "");
+for (var ii = 0; ii < touchGestures_helpActions.length; ii++) {
+  print_help_row(touchGestures_helpActions[ii], touchGestures_helpText[ii]);
+}
+document.write("</table>");
+</script>
 
 </div>
 

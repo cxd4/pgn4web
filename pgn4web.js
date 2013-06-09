@@ -60,7 +60,7 @@ function customPgnCommentTag(customTag, htmlElementId, plyNum, varId) {
 
 function simpleAddEvent(obj, evt, cbk) {
   if (obj.addEventListener) { obj.addEventListener(evt, cbk, false); }
-  else if (obj.attachEvent) { obj.attachEvent("on" + evt, cbk); } // IE
+  else if (obj.attachEvent) { obj.attachEvent("on" + evt, cbk); } // IE8-
 }
 
 simpleAddEvent(document, "keydown", pgn4web_handleKey);
