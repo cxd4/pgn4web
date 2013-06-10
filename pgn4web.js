@@ -4091,7 +4091,7 @@ function customFunctionOnTouch(deltaX, deltaY) {
         else { SwitchAutoPlay(); }
       } else { // horizontal left
         if (isAutoPlayOn) { SwitchAutoPlay(); }
-        else { GoToMove(StartPlyVar[CurrentVar]); }
+        else { GoToMove(StartPlyVar[CurrentVar] + (CurrentPly <= StartPlyVar[CurrentVar] + 1 ? 0 : 1)); }
       }
     }
   }
