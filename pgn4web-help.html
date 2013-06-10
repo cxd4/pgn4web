@@ -134,7 +134,7 @@ if (touchGesturesSupported) {
   if (opener && (typeof(opener.touchGestures_helpText) != "undefined")) {
     touchGestures_helpText = opener.touchGestures_helpText;
   } else {
-    touchGestures_helpText = [ "load next game", "load previous game", "start autoplay; if autoplay already active: go to variation end or to game end", "stop autoplay; if autoplay not active: go to variation start, then to previous variation, then to game start" ];
+    touchGestures_helpText = [ "load next game", "load previous game", "start autoplay; if autoplay already active: go to variation end or to game end", "stop autoplay; if autoplay not active: go to variation start, then to parent variation, then to game start" ];
   }
 } else {
   touchGestures_helpIntro = "Touch gestures not available.<p></p>Touch gestures are typically used on touchscreen devices to interact with the chessboard using swipe gestures.";
