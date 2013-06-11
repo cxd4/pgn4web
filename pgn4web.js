@@ -4079,6 +4079,7 @@ function pgn4web_initTouchEvents() {
   }
 }
 
+var waitForDoubleLeftTouchTimer = null;
 function customFunctionOnTouch(deltaX, deltaY) {
   if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 13) { return; }
   if (Math.abs(deltaY) > Math.abs(deltaX)) { // vertical up or down
@@ -4088,8 +4089,17 @@ function customFunctionOnTouch(deltaX, deltaY) {
       if (isAutoPlayOn) { GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]); }
       else { SwitchAutoPlay(); }
     } else { // horizontal left
-      if (isAutoPlayOn) { SwitchAutoPlay(); }
-      else { GoToMove(StartPlyVar[CurrentVar] + (((CurrentPly <= StartPlyVar[CurrentVar] + 1) || (CurrentVar === 0)) ? 0 : 1)); }
+      if (isAutoPlayOn && !waitForDoubleLeftTouchTimer) { SwitchAutoPlay(); }
+      else {
+        if (waitForDoubleLeftTouchTimer) {
+          clearTimeout(waitForDoubleLeftTouchTimer);
+          waitForDoubleLeftTouchTimer = null;
+        }
+        if ((LiveBroadcastDelay > 0) && (CurrentVar === 0) && (CurrentPly === StartPly + PlyNumber)) {
+          waitForDoubleLeftTouchTimer = setTimeout("waitForDoubleLeftTouchTimer = null;", 900);
+          replayPreviousMoves(6);
+        } else { GoToMove(StartPlyVar[CurrentVar] + (((CurrentPly <= StartPlyVar[CurrentVar] + 1) || (CurrentVar === 0)) ? 0 : 1)); }
+      }
     }
   }
 }
