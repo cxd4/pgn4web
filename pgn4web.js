@@ -4080,19 +4080,16 @@ function pgn4web_initTouchEvents() {
 }
 
 function customFunctionOnTouch(deltaX, deltaY) {
-  var deltaMin;
-  if (!(document.getElementById("GameBoard") && (deltaMin = document.getElementById("GameBoard").offsetWidth / 16))) { deltaMin = 20; }
-  if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) > deltaMin) {
-    if (Math.abs(deltaY) > Math.abs(deltaX)) { // vertical up or down
-      Init(currentGame + sign(deltaY));
-    } else {
-      if (deltaX > 0) { // horizontal right
-        if (isAutoPlayOn) { GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]); }
-        else { SwitchAutoPlay(); }
-      } else { // horizontal left
-        if (isAutoPlayOn) { SwitchAutoPlay(); }
-        else { GoToMove(StartPlyVar[CurrentVar] + (((CurrentPly <= StartPlyVar[CurrentVar] + 1) || (CurrentVar === 0)) ? 0 : 1)); }
-      }
+  if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 13) { return; }
+  if (Math.abs(deltaY) > Math.abs(deltaX)) { // vertical up or down
+    Init(currentGame + sign(deltaY));
+  } else {
+    if (deltaX > 0) { // horizontal right
+      if (isAutoPlayOn) { GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]); }
+      else { SwitchAutoPlay(); }
+    } else { // horizontal left
+      if (isAutoPlayOn) { SwitchAutoPlay(); }
+      else { GoToMove(StartPlyVar[CurrentVar] + (((CurrentPly <= StartPlyVar[CurrentVar] + 1) || (CurrentVar === 0)) ? 0 : 1)); }
     }
   }
 }

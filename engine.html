@@ -1083,14 +1083,11 @@ function sameEngineDisabled(engineDisabled) {
 
 
 function customFunctionOnTouch(deltaX, deltaY) {
-  var deltaMin;
-  if (!(document.getElementById("GameBoard") && (deltaMin = document.getElementById("GameBoard").offsetWidth / 16))) { deltaMin = 20; }
-  if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) > deltaMin) {
-    if (Math.abs(deltaY) > Math.abs(deltaX)) { // vertical up or down
-      GoToMove(StartPlyVar[CurrentVar] + (deltaY > 0 ? PlyNumberVar[CurrentVar] : 0));
-    } else { // horizontal left or right
-      GoToMove(CurrentPly + sign(deltaX));
-    }
+  if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 13) { return; }
+  if (Math.abs(deltaY) > Math.abs(deltaX)) { // vertical up or down
+    GoToMove(StartPlyVar[CurrentVar] + (deltaY > 0 ? PlyNumberVar[CurrentVar] : 0));
+  } else { // horizontal left or right
+    GoToMove(CurrentPly + sign(deltaX));
   }
 }
 
