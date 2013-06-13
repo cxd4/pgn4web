@@ -735,8 +735,8 @@ sub refresh_pgn {
     my $bElo = 0;
     if ($games_whiteElo[$b] =~ /^[0-9]+$/) { $bElo += $games_whiteElo[$b]; }
     if ($games_blackElo[$b] =~ /^[0-9]+$/) { $bElo += $games_blackElo[$b]; }
-    if ($aElo > $bElo) { return 1; }
-    if ($aElo < $bElo) { return -1; }
+    if ($aElo > $bElo) { return -1; }
+    if ($aElo < $bElo) { return 1; }
     return $a <=> $b;
   } (0 .. ($maxGamesNum - 1));
 
