@@ -1083,12 +1083,13 @@ function sameEngineDisabled(engineDisabled) {
 
 
 function customFunctionOnTouch(deltaX, deltaY) {
-  if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 13) { return; }
-  if (Math.abs(deltaY) > Math.abs(deltaX)) { // vertical up or down
-    GoToMove(StartPlyVar[CurrentVar] + (deltaY > 0 ? PlyNumberVar[CurrentVar] : 0));
-  } else { // horizontal left or right
-    GoToMove(CurrentPly + sign(deltaX));
-  }
+   if (disableInputs) { return; }
+   if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 13) { return; }
+   if (Math.abs(deltaY) > Math.abs(deltaX)) { // vertical up or down
+      GoToMove(StartPlyVar[CurrentVar] + (deltaY > 0 ? PlyNumberVar[CurrentVar] : 0));
+   } else { // horizontal left or right
+      GoToMove(CurrentPly + sign(deltaX));
+   }
 }
 
 var touchGestures_helpActions = [ "top-down swipe", "bottom-up swipe", "left-right swipe", "right-left swipe" ];
