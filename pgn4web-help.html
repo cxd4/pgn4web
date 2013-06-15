@@ -118,7 +118,7 @@ var shortcutSquareSearchRepeatBackward = isRotated ? "H4" : "A5";
 var rowNumbers = isRotated ? "87654321" : "12345678";
 var colLetters = isRotated ? "HGFEDCBA" : "ABCDEFGH";
 
-var touchGesturesSupported = !!('ontouchstart' in window) || !!('msmaxtouchpoints' in window.navigator);
+var touchGesturesSupported = !!('ontouchstart' in window);
 if (opener && (typeof(opener.touchEventEnabled) != "undefined")) {
   touchGesturesSupported = touchGesturesSupported && opener.touchEventEnabled;
 }
