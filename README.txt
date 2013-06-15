@@ -36,7 +36,8 @@ Features:
 - supports live broadcasts of chess games
 - interactive browsing of game variations and comments
 - shortcut keys for navigating through the game, for selecting games and much
-  more; also uses chessboard squares as input buttons
+  more; uses chessboard squares as input buttons; on supported touchscreen
+  devices uses touch gestures across the chessboard
 - fully customizable display: each item (board, button bar, game selection
   menu, PGN header info, game text, game comment and more) can be displayed
   (or hidden) at pleasure in your html file
