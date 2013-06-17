@@ -3328,6 +3328,7 @@ function clickedSquare(ii, jj) {
     var oldClass = theObj.className;
     theObj.className = (ii+jj)%2 === 0 ? "blackSquare" : "whiteSquare";
     clickedSquareInterval = setTimeout("reset_after_click(" + ii + "," + jj + ",'" + oldClass + "','" + theObj.className + "')", 66);
+    clearSelectedText();
   }
 }
 
@@ -4057,6 +4058,7 @@ function pgn4web_handleTouchEnd(e) {
       pgn4webOngoingTouches.splice(jj, 1);
     }
   }
+  clearSelectedText();
 }
 
 function pgn4web_handleTouchCancel(e) {
@@ -4066,6 +4068,7 @@ function pgn4web_handleTouchCancel(e) {
       pgn4webOngoingTouches.splice(jj, 1);
     }
   }
+  clearSelectedText();
 }
 
 function pgn4web_initTouchEvents() {
@@ -4107,5 +4110,12 @@ function customFunctionOnTouch(deltaX, deltaY) {
 var touchEventEnabled = true;
 function SetTouchEventEnabled(onOff) {
   touchEventEnabled = onOff;
+}
+
+function clearSelectedText() {
+  if (window.getSelection) {
+    if (window.getSelection().empty) { window.getSelection().empty(); }
+    else if (window.getSelection().removeAllRanges) { window.getSelection().removeAllRanges(); }
+  } else if (document.selection && document.selection.empty) { document.selection.empty(); }
 }
 
