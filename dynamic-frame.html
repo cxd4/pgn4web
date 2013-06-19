@@ -703,16 +703,15 @@ function gameTooltipInfo() {
 
 
 var lastOrientation;
-var lastOrientationTime = 0;
-var lastOrientationDelay = 2000;
+var lastOrientationTimeout = null;
 simpleAddEvent(window, "orientationchange", function() {
-  if (((new Date()).getTime() - lastOrientationTime < lastOrientationDelay) && (window.orientation - lastOrientation)) {
-    Init(currentGame + sign(window.orientation - lastOrientation));
-    fillGameList();
-    lastOrientationTime = 0;
-  } else {
-    lastOrientationTime = (new Date()).getTime();
+  if (window.orientation === lastOrientation) { return; }
+  var lastOrientationTimeoutString = "lastOrientationTimeout = null;";
+  if (lastOrientationTimeout) {
+    clearTimeout(lastOrientationTimeout);
+    lastOrientationTimeoutString += " refreshPgnSource();";
   }
+  lastOrientationTimeout = setTimeout(lastOrientationTimeoutString, 1800);
   lastOrientation = window.orientation;
 });
 
