@@ -8,7 +8,7 @@
 
 set +o posix
 
-pgn4webBaseFiles="README.txt pgn4web.js pgn4web-help.html license-gpl-2.0.txt pawn.ico pawns.png index.html"
+pgn4webBaseFiles="README.txt pgn4web.js pgn4web-help.html license-gpl-2.0.txt pawn.ico pawn.png pawns.png index.html"
 
 case "$1" in
 
