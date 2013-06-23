@@ -554,8 +554,8 @@ function customFunctionOnPgnTextLoad() {
         if (lastGameKey === gameKey(gameEvent[gg], gameSite[gg], gameDate[gg], gameRound[gg], gameWhite[gg], gameBlack[gg])) { break; }
       }
       if (gg < numberOfGames) {
-        Init(gg);
-        if (!isNaN(lastGamePly)) { GoToMove(lastGamePly, lastGameVar); }
+        if (gg !== currentGame) { Init(gg); }
+        if ((!isNaN(lastGamePly)) && ((lastGamePly !== CurrentPly) || (lastGameVar !== CurrentVar))) { GoToMove(lastGamePly, lastGameVar); }
         SetAutoPlay(lastGameAutoplay);
       }
     }
