@@ -447,9 +447,9 @@ function customFunctionOnMove() {
 </script>
 
 
-<!-- start of google analytics code -->
+<!-- DeploymentCheck: google analytics code -->
 
-<!-- end of google analytics code -->
+<!-- end DeploymentCheck -->
 
 
 </head>

@@ -1406,9 +1406,9 @@ function print_chessboard_two() {
    function probeTablebase() {}
 
 
-// start of tablebase glue code
+// DeploymentCheck: tablebase glue code
 
-// end of tablebase glue code
+// end DeploymentCheck
 
 
    function clickedGameTablebase() {
