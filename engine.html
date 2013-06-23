@@ -542,6 +542,8 @@ function clickedGameAutoUpdateFlag(t,e) {
       if ((autoUpdate) && ((CurrentFEN() !== window.opener.CurrentFEN()) || (!g_backgroundEngine && !disableEngine))) {
          window.opener.showEngineAnalysisBoard(disableEngine);
       }
+   } else if ((window.navigator.standalone) && (history.length > 1)) {
+      history.back();
    }
    updateGameAutoUpdateFlag();
 }
@@ -886,6 +888,9 @@ function updateGameAutoUpdateFlag() {
             theObj.innerHTML = "+";
             theObj.title = "start auto updating analysis board";
          }
+      } else if ((window.navigator.standalone) && (history.length > 1)) {
+         theObj.innerHTML = "&crarr;";
+         theObj.title = "close analysis board";
       } else {
          theObj.innerHTML = "&nbsp;";
          theObj.title = "";
@@ -1119,7 +1124,7 @@ function customFunctionOnTouch(deltaX, deltaY) {
    if (disableInputs) { return; }
    if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 13) { return; }
    if (Math.abs(deltaY) > Math.abs(deltaX)) { // vertical up or down
-      if ((window.navigator.standalone) && (deltaY > 0) && (history.length > 1)) { history.back(); }
+      if ((window.navigator.standalone) && (!openerCheck()) && (deltaY > 0) && (history.length > 1)) { history.back(); }
       GoToMove(StartPlyVar[CurrentVar] + (deltaY > 0 ? PlyNumberVar[CurrentVar] : 0));
    } else { // horizontal left or right
       GoToMove(CurrentPly + sign(deltaX));
