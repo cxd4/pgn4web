@@ -12,7 +12,28 @@
 
 <title>pgn4web analysis board</title>
 
+<!-- enable web app mode when launched as standalone app -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<script type="text/javascript">
+"use strict";
+if (window.navigator.standalone) {
+  window.open = function (winUrl, winTarget, winParam) {
+    if (winUrl) {
+      var a = document.createElement("a");
+      a.setAttribute("href", winUrl);
+      a.setAttribute("taget", winTarget ? winTarget : "_blank");
+      var e = document.createEvent("HTMLEvents");
+      e.initEvent("click", true, true);
+      a.dispatchEvent(e);
+    }
+    return null;
+  };
+}
+</script>
+
 <link rel="shortcut icon" href="pawn.ico" />
+<link rel="apple-touch-icon-precomposed" href="pawn.png" />
 
 <style type="text/css">
 
@@ -491,21 +512,21 @@ function probeTablebase() {}
 
 
 function clickedGameTablebase() {
-  var menPosition = CurrentFEN().replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length;
-  if ((menPosition >= minMenInTablebase) && (menPosition <= maxMenInTablebase)) {
-    probeTablebase();
-  } else {
-    myAlert("warning: endgame tablebase only supports positions with " + minMenInTablebase + " to " + maxMenInTablebase + " men");
-  }
+   var menPosition = CurrentFEN().replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length;
+   if ((menPosition >= minMenInTablebase) && (menPosition <= maxMenInTablebase)) {
+      probeTablebase();
+   } else {
+      myAlert("warning: endgame tablebase only supports positions with " + minMenInTablebase + " to " + maxMenInTablebase + " men");
+   }
 }
 
 function updateTablebaseFlag() {
-  var menPosition = CurrentFEN().replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length;
-  var theObj = document.getElementById("GameTablebase");
-  var showTablebase = (menPosition >= minMenInTablebase) && (menPosition <= maxMenInTablebase) && (!g_initErrors) && (!disableEngine);
-  if (theObj) {
-    theObj.style.display = showTablebase ? "inline" : "none";
-  }
+   var menPosition = CurrentFEN().replace(/\s.*$/, "").replace(/[0-9\/]/g, "").length;
+   var theObj = document.getElementById("GameTablebase");
+   var showTablebase = (menPosition >= minMenInTablebase) && (menPosition <= maxMenInTablebase) && (!g_initErrors) && (!disableEngine);
+   if (theObj) {
+     theObj.style.display = showTablebase ? "inline" : "none";
+   }
 }
 
 
@@ -1092,6 +1113,7 @@ function customFunctionOnTouch(deltaX, deltaY) {
    if (disableInputs) { return; }
    if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 13) { return; }
    if (Math.abs(deltaY) > Math.abs(deltaX)) { // vertical up or down
+      if ((window.navigator.standalone) && (deltaY > 0) && (history.length > 1)) { history.back(); }
       GoToMove(StartPlyVar[CurrentVar] + (deltaY > 0 ? PlyNumberVar[CurrentVar] : 0));
    } else { // horizontal left or right
       GoToMove(CurrentPly + sign(deltaX));
