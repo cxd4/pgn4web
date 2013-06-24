@@ -58,7 +58,7 @@ if (window.navigator.standalone) {
 "use strict";
 
 SetHighlightOption(true);
-SetGameSelectorOptions("&middot;&middot;&middot;", true, 25, 0, 0, 15, 15, 3, 0); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
+SetGameSelectorOptions("&middot;&middot;&middot;", true, 30, 0, 0, 15, 15, 3, 0); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
 SetAutoplayDelay(2000); // milliseconds
 SetAutostartAutoplay(false);
 SetAutoplayNextGame(false);
@@ -469,7 +469,7 @@ function fillGameList(force) {
       text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (Math.ceil(theObj.scrollTop / gameListLineHeight) + Math.floor(gameListBodyHeight / gameListLineHeight)); } this.blur();' title='scroll to next page'><b>&nbsp;&gt;&nbsp;</b></a>&nbsp;";
       text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = theObj.scrollHeight; } this.blur();' title='scroll to last page'><b>&nbsp;&gt;&gt;&nbsp;</b></a>&nbsp;";
       text += "</div>";
-      var extractGamesRegExp = /<OPTION CLASS="optionSelectControl" value=(\d+)>(\s*\d+)(\s+.{25})([^<]+)/g;
+      var extractGamesRegExp = /<OPTION CLASS="optionSelectControl" value=(\d+)>(\s*\d+)(\s+.{30})([^<]+)/g;
       var thisGameString;
       var thisBold;
       text += "<div class='gameListBody' id='GameListBody'>";
@@ -477,7 +477,7 @@ function fillGameList(force) {
       var matches;
       while (matches = extractGamesRegExp.exec(textSelectOptions.replace(/&nbsp;/g, " "))) {
         if (firstGame) { firstGame = false; } else { text += "<br/>"; }
-        thisGameString = matches[2] + matches[4] + matches[3];
+        thisGameString = matches[2] + matches[4] + "  " + matches[3];
         thisBold = (parseInt(matches[1], 10) === currentGame);
         text += "<a href='javascript:void(0);' onclick='selectGameList(" + matches[1] + ");' title='" + thisGameString.replace(/(^\s+|\s+$)/g, "").replace(/\s{3,}/g, "  ") + "'>" + (thisBold ? "<b>" : "") + thisGameString + (thisBold ? "</b>" : "") + "</a>";
       }
