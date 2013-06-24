@@ -478,7 +478,7 @@ function fillGameList(force) {
       while (matches = extractGamesRegExp.exec(textSelectOptions.replace(/&nbsp;/g, " "))) {
         if (firstGame) { firstGame = false; } else { text += "<br/>"; }
         thisGameText = matches[2] + matches[4] + "  " + matches[3];
-        thisGameTitle = matches[4].replace(/(^\s+|\s+$)/g, "").replace(/\s{4,}/g, "   ") + "\n" + matches[3].replace(/(^\s+|\s+$)/g, "");
+        thisGameTitle = matches[4].replace(/(^\s+|\s+$)/g, "").replace(/(\s{4,}|\b\s\s\b)/g, "   ") + "\n" + matches[3].replace(/(^\s+|\s+$)/g, "");
         thisBold = (parseInt(matches[1], 10) === currentGame);
         text += "<a href='javascript:void(0);' onclick='selectGameList(" + matches[1] + ");' title='" + thisGameTitle + "'>" + (thisBold ? "<b>" : "") + thisGameText + (thisBold ? "</b>" : "") + "</a>";
       }
