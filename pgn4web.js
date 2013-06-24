@@ -4085,9 +4085,9 @@ function pgn4web_initTouchEvents() {
 var waitForDoubleLeftTouchTimer = null;
 function customFunctionOnTouch(deltaX, deltaY) {
   if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 13) { return; }
-  if (Math.abs(deltaY) > Math.abs(deltaX)) { // vertical up or down
+  if (Math.abs(deltaY) > 1.5 * Math.abs(deltaX)) { // vertical up or down
     Init(currentGame + sign(deltaY));
-  } else {
+  } else if (Math.abs(deltaX) > 1.5 * Math.abs(deltaY)) {
     if (deltaX > 0) { // horizontal right
       if (isAutoPlayOn) { GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]); }
       else { SwitchAutoPlay(); }

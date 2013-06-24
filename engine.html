@@ -1102,10 +1102,10 @@ function sameEngineDisabled(engineDisabled) {
 function customFunctionOnTouch(deltaX, deltaY) {
    if (disableInputs) { return; }
    if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 13) { return; }
-   if (Math.abs(deltaY) > Math.abs(deltaX)) { // vertical up or down
+   if (Math.abs(deltaY) > 1.5 * Math.abs(deltaX)) { // vertical up or down
       if ((window.navigator.standalone) && (!openerCheck()) && (deltaY > 0) && (history.length > 1)) { history.back(); }
       GoToMove(StartPlyVar[CurrentVar] + (deltaY > 0 ? PlyNumberVar[CurrentVar] : 0));
-   } else { // horizontal left or right
+   } else if (Math.abs(deltaX) > 1.5 * Math.abs(deltaY)) { // horizontal left or right
       GoToMove(CurrentPly + sign(deltaX));
    }
 }
