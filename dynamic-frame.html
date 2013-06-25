@@ -846,6 +846,37 @@ if (LiveBroadcastDelay) {
   if (theObj) { theObj.innerHTML = LiveBroadcastDemo ? "&nbsp;&nbsp;demo" : ""; }
 }
 
+
+function pgn4web_handleTouchEnd_HeaderContainer(e) {
+  var jj, deltaX, deltaY;
+  for (var ii = 0; ii < e.changedTouches.length; ii++) {
+    if ((jj = pgn4webOngoingTouchIndexById(e.changedTouches[ii].identifier)) != -1) {
+      deltaX = e.changedTouches[ii].clientX - pgn4webOngoingTouches[jj].clientX;
+      deltaY = e.changedTouches[ii].clientY - pgn4webOngoingTouches[jj].clientY;
+      if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) >= 13) {
+        if (Math.abs(deltaY) > 1.5 * Math.abs(deltaX)) {
+          if (deltaY > 0) { // vertical down
+            showEngineAnalysisBoard();
+          } else { // vertical up
+            showGameList();
+          }
+        }
+      }
+      pgn4webOngoingTouches.splice(jj, 1);
+    }
+  }
+  clearSelectedText();
+}
+
+theObj = document.getElementById("HeaderContainer");
+if (theObj && touchEventEnabled) {
+  simpleAddEvent(theObj, "touchstart", pgn4web_handleTouchStart);
+  simpleAddEvent(theObj, "touchmove", pgn4web_handleTouchMove);
+  simpleAddEvent(theObj, "touchend", pgn4web_handleTouchEnd_HeaderContainer);
+  simpleAddEvent(theObj, "touchleave", pgn4web_handleTouchEnd_HeaderContainer);
+  simpleAddEvent(theObj, "touchcancel", pgn4web_handleTouchCancel);
+}
+
 </script>
 
 </body>
