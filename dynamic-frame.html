@@ -848,6 +848,7 @@ if (LiveBroadcastDelay) {
 
 
 function pgn4web_handleTouchEnd_HeaderContainer(e) {
+  if (!window.navigator.standalone) { return; }
   var jj, deltaX, deltaY;
   for (var ii = 0; ii < e.changedTouches.length; ii++) {
     if ((jj = pgn4webOngoingTouchIndexById(e.changedTouches[ii].identifier)) != -1) {
@@ -868,13 +869,14 @@ function pgn4web_handleTouchEnd_HeaderContainer(e) {
   clearSelectedText();
 }
 
-theObj = document.getElementById("HeaderContainer");
-if (theObj && touchEventEnabled) {
-  simpleAddEvent(theObj, "touchstart", pgn4web_handleTouchStart);
-  simpleAddEvent(theObj, "touchmove", pgn4web_handleTouchMove);
-  simpleAddEvent(theObj, "touchend", pgn4web_handleTouchEnd_HeaderContainer);
-  simpleAddEvent(theObj, "touchleave", pgn4web_handleTouchEnd_HeaderContainer);
-  simpleAddEvent(theObj, "touchcancel", pgn4web_handleTouchCancel);
+if (window.navigator.standalone) {
+  if ((theObj = document.getElementById("HeaderContainer")) && (touchEventEnabled)) {
+    simpleAddEvent(theObj, "touchstart", pgn4web_handleTouchStart);
+    simpleAddEvent(theObj, "touchmove", pgn4web_handleTouchMove);
+    simpleAddEvent(theObj, "touchend", pgn4web_handleTouchEnd_HeaderContainer);
+    simpleAddEvent(theObj, "touchleave", pgn4web_handleTouchEnd_HeaderContainer);
+    simpleAddEvent(theObj, "touchcancel", pgn4web_handleTouchCancel);
+  }
 }
 
 </script>
