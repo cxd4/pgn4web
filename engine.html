@@ -212,6 +212,14 @@ thisRegExp = /(&|\?)(pieceSize|ps)=([1-9][0-9]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
    pieceSize = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
 }
+
+// undocumented feature
+var fixedPieceImageSize;
+thisRegExp = /(&|\?)(fixedPieceImageSize|fpis)=([1-9][0-9]*)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+   fixedPieceImageSize = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
+}
+
 var pieceFont = "alpha";
 thisRegExp = /(&|\?)(pieceFont|pf)=([^&]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
@@ -221,7 +229,6 @@ if (window.location.search.match(thisRegExp) !== null) {
    if (pieceFont == "u") { pieceFont = "uscf"; }
    if ((pieceFont != "alpha") && (pieceFont != "merida") && (pieceFont != "uscf")) { pieceFont = "alpha"; }
 }
-
 
 var fontMovesSize;
 thisRegExp = /(&|\?)(fontMovesSize|fms)=([1-9][0-9]*)(&|$)/i;
@@ -250,6 +257,7 @@ if (window.location.search.match(thisRegExp) !== null) {
    document.write("\n");
    document.write(" - squareSize = size of square (default selects square size based on window size)\n");
    document.write(" - pieceSize = size of pieces | default (default selects piece size based on square size)\n");
+   // document.write(" - fixedPieceImageSize = size of piece images (default as size of pieces)\n");
    document.write(" - pieceFont = alpha | merida | uscf (default alpha)\n");
    document.write("\n");
    document.write(" - lightColorHex = light square color hex code, like FF0000 (default F4F4F4)\n");
@@ -361,7 +369,7 @@ function myOnOrientationchange() {
    myInsertRule(sheet, ".gameTablebase", "font-size: " + fontMovesSizeCss + "px;");
    myInsertRule(sheet, ".gameEval", "padding-left: " + squareSizeCss + "px; font-size: " + fontCommentsSizeCss + "px;");
 
-   SetImagePath("images/" + pieceFont + "/" + pieceSizeCss);
+   SetImagePath("images/" + pieceFont + "/" + (fixedPieceImageSize ? fixedPieceImageSize : pieceSizeCss));
 
    for (var ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
 
