@@ -408,6 +408,7 @@ function myOnResize() {
     var variableSpacerFontSize = Math.floor(variableSpacerLineHeight * 0.8);
     myInsertRule(sheet, ".variableSpacer", "line-height: " + variableSpacerLineHeight + "px; font-size: " + variableSpacerFontSize + "px;");
   }
+  myInsertRule(sheet, ".showGameListLink", "padding-right: " + squareSize + "px; padding-left: " + (horizontalLayout ? 0 : squareSize) + "px;");
   var gameListFontSize =  Math.floor(Math.min((ww - framePadding * 2) / 30, (wh - framePadding * 2) / 24));
   gameListLineHeight =  Math.floor(1.4 * gameListFontSize);
   var gameListPadding = Math.floor(gameListLineHeight / 2);
@@ -462,12 +463,12 @@ function fillGameList(force) {
     gameListCurrentGame = currentGame;
     if (theObj = document.getElementById("GameList")) {
       var text = "<div class='gameListHeader' id='GameListHeader'>";
-      text += "&nbsp;<b><a href='javascript:void(0);' onclick='refreshPgnSource(); this.blur();' title='" + numberOfGames + " games'>" + numberOfGames + "</a></b>&nbsp;";
-      text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = 0; } this.blur();' title='scroll to first page'><b>&nbsp;&lt;&lt;&nbsp;</b></a>&nbsp;";
-      text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (Math.ceil(theObj.scrollTop / gameListLineHeight) - Math.floor(gameListBodyHeight / gameListLineHeight)); } this.blur();' title='scroll to previous page'><b>&nbsp;&lt;&nbsp;</b></a>&nbsp;";
-      text += "<a href='javascript:void(0);' onclick='selectGameList(-1);' title='back to chessboard'><b>&nbsp;&middot;&middot;&middot;&nbsp;</b></a>&nbsp;";
-      text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (Math.ceil(theObj.scrollTop / gameListLineHeight) + Math.floor(gameListBodyHeight / gameListLineHeight)); } this.blur();' title='scroll to next page'><b>&nbsp;&gt;&nbsp;</b></a>&nbsp;";
-      text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = theObj.scrollHeight; } this.blur();' title='scroll to last page'><b>&nbsp;&gt;&gt;&nbsp;</b></a>&nbsp;";
+      text += "<b><a href='javascript:void(0);' onclick='refreshPgnSource(); this.blur();' title='" + numberOfGames + " games'>&nbsp;" + numberOfGames + "&nbsp;</a></b>&nbsp;&nbsp;";
+      text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = 0; } this.blur();' title='scroll to first page'><b>&nbsp;&nbsp;&lt;&lt;&nbsp;&nbsp;</b></a>&nbsp;&nbsp;";
+      text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (Math.ceil(theObj.scrollTop / gameListLineHeight) - Math.floor(gameListBodyHeight / gameListLineHeight)); } this.blur();' title='scroll to previous page'><b>&nbsp;&nbsp;&lt;&nbsp;&nbsp;</b></a>&nbsp;&nbsp;";
+      text += "<a href='javascript:void(0);' onclick='selectGameList(-1);' title='back to chessboard'><b>&nbsp;&nbsp;&middot;&middot;&middot;&nbsp;&nbsp;</b></a>&nbsp;&nbsp;";
+      text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (Math.ceil(theObj.scrollTop / gameListLineHeight) + Math.floor(gameListBodyHeight / gameListLineHeight)); } this.blur();' title='scroll to next page'><b>&nbsp;&nbsp;&gt;&nbsp;&nbsp;</b></a>&nbsp;&nbsp;";
+      text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = theObj.scrollHeight; } this.blur();' title='scroll to last page'><b>&nbsp;&nbsp;&gt;&gt;&nbsp;&nbsp;</b></a>&nbsp;&nbsp;";
       text += "</div>";
       var extractGamesRegExp = /<OPTION CLASS="optionSelectControl" value=(\d+)>(\s*\d+)(\s+.{30})([^<]+)/g;
       var thisGameText, thisGameTitle;
@@ -835,7 +836,7 @@ function pgn4web_onload(e) {
 <center><div class="leftRightSpacing gameButtons" id="GameButtons"></div></center>
 <div class="leftRightSpacing liveStatusLine">&nbsp;<a id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();"></a>&nbsp;<span id="GameLiveStatusDemo" title="this is a broadcast simulation"></span></div>
 <div class="variableSpacer">&nbsp;</div>
-<div class="leftRightSpacing" style="visibility: hidden;" id="ShowGameList">&nbsp;<a id="ShowGameListLink" href="javascript:void(0);" onclick="showGameList();"></a>&nbsp;</div>
+<div class="leftRightSpacing" style="visibility: hidden;" id="ShowGameList">&nbsp;<a class="showGameListLink" id="ShowGameListLink" href="javascript:void(0);" onclick="showGameList();"></a>&nbsp;</div>
 </div>
 
 <script type="text/javascript">
