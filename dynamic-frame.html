@@ -15,30 +15,7 @@
 <!-- use viewport settings when body.onresize adapts the chessboard to the available space -->
 <meta name="viewport" content="initial-scale=1, maximum-scale=1">
 
-<!-- DeploymentCheck: enable web app mode when launched as standalone app
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<!-- end DeploymentCheck -->
-<script type="text/javascript">
-"use strict";
-if (window.navigator.standalone) {
-  window.open = function (winUrl, winTarget, winParam) {
-    if (winUrl) {
-      if (winUrl.match(/(^|\/)engine\.html/)) {
-        location.href = winUrl;
-      } else {
-        var a = document.createElement("a");
-        a.setAttribute("href", winUrl);
-        a.setAttribute("taget", winTarget ? winTarget : "_blank");
-        var e = document.createEvent("HTMLEvents");
-        e.initEvent("click", true, true);
-        a.dispatchEvent(e);
-      }
-    }
-    return null;
-  };
-}
-</script>
+<!-- AppCheck: meta -->
 
 <link rel="shortcut icon" href="pawn.ico" />
 <link rel="apple-touch-icon-precomposed" href="pawn.png" />
@@ -548,23 +525,8 @@ function customFunctionOnPgnTextLoad() {
     engineWinPrepareIdle = false;
   }
 
-  if (window.navigator.standalone && !appInitialized) {
-    if (localStorage["lastGameKey"]) {
-      var lastGameKey = localStorage["lastGameKey"];
-      var lastGameVar = parseInt(localStorage["lastGameVar"], 10) || 0;
-      var lastGamePly = parseInt(localStorage["lastGamePly"], 10);
-      var lastGameAutoplay = localStorage["lastGameAutoplay"] === "true";
-      for (var gg = 0; gg < numberOfGames; gg++) {
-        if (lastGameKey === gameKey(gameEvent[gg], gameSite[gg], gameDate[gg], gameRound[gg], gameWhite[gg], gameBlack[gg])) { break; }
-      }
-      if (gg < numberOfGames) {
-        if (gg !== currentGame) { Init(gg); }
-        if ((!isNaN(lastGamePly)) && ((lastGamePly !== CurrentPly) || (lastGameVar !== CurrentVar))) { GoToMove(lastGamePly, lastGameVar); }
-        SetAutoPlay(lastGameAutoplay);
-      }
-    }
-    appInitialized = true;
-  }
+<!-- AppCheck: customFunctionOnPgnTextLoad -->
+
 }
 
 function fixHeaderItem(tag, objectId, label) {
@@ -599,7 +561,8 @@ function customFunctionOnPgnGameLoad() {
   fixHeaderItem("BlackTeam", "GameBlackTeam", "black team");
   updateBareShortcut();
 
-  if (window.navigator.standalone && appInitialized) { localStorage["lastGameKey"] = gameKey(gameEvent[currentGame], gameSite[currentGame], gameDate[currentGame], gameRound[currentGame], gameWhite[currentGame], gameBlack[currentGame]); }
+<!-- AppCheck: customFunctionOnPgnGameLoad -->
+
 }
 
 function customFunctionOnMove() {
@@ -627,11 +590,8 @@ function customFunctionOnMove() {
   fixHeaderItem(null, "GameBlackClock", "black clock");
   fixColorFlag();
 
-  if (window.navigator.standalone && appInitialized) {
-    localStorage["lastGameVar"] = CurrentVar;
-    localStorage["lastGamePly"] = CurrentPly;
-    localStorage["lastGameAutoplay"] = ((isAutoPlayOn) || (CurrentPly === StartPly + PlyNumber));
-  }
+<!-- AppCheck: customFunctionOnMove -->
+
 }
 
 
@@ -757,30 +717,6 @@ function gameTooltipInfo() {
   return str;
 }
 
-
-if (window.navigator.standalone) {
-  var appInitialized = false;
-
-  window['defaultSetAutoPlay'] = window['SetAutoPlay'];
-  window['SetAutoPlay'] = function(vv) {
-    defaultSetAutoPlay(vv);
-    if (appInitialized) {
-      localStorage["lastGameAutoplay"] = ((isAutoPlayOn) || (CurrentPly === StartPly + PlyNumber));
-    }
-  };
-}
-
-function gameKey(event, site, date, round, white, black) {
-  var key = "";
-  key += "[" + (typeof(event) == "string" ? event : "") + "]";
-  key += "[" + (typeof(site) == "string" ? site : "") + "]";
-  key += "[" + (typeof(round) == "string" ? round : "") + "]";
-  key += "[" + (typeof(white) == "string" ? white : "") + "]";
-  key += "[" + (typeof(black) == "string" ? black : "") + "]";
-  return key;
-}
-
-
 var lastOrientation;
 var lastOrientationTimeout = null;
 simpleAddEvent(window, "orientationchange", function() {
@@ -847,38 +783,7 @@ if (LiveBroadcastDelay) {
   if (theObj) { theObj.innerHTML = LiveBroadcastDemo ? "&nbsp;&nbsp;demo" : ""; }
 }
 
-
-function pgn4web_handleTouchEnd_HeaderContainer(e) {
-  if (!window.navigator.standalone) { return; }
-  var jj, deltaX, deltaY;
-  for (var ii = 0; ii < e.changedTouches.length; ii++) {
-    if ((jj = pgn4webOngoingTouchIndexById(e.changedTouches[ii].identifier)) != -1) {
-      deltaX = e.changedTouches[ii].clientX - pgn4webOngoingTouches[jj].clientX;
-      deltaY = e.changedTouches[ii].clientY - pgn4webOngoingTouches[jj].clientY;
-      if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) >= 13) {
-        if (Math.abs(deltaY) > 1.5 * Math.abs(deltaX)) {
-          if (deltaY > 0) { // vertical down
-            showEngineAnalysisBoard();
-          } else { // vertical up
-            showGameList();
-          }
-        }
-      }
-      pgn4webOngoingTouches.splice(jj, 1);
-    }
-  }
-  clearSelectedText();
-}
-
-if (window.navigator.standalone) {
-  if ((theObj = document.getElementById("HeaderContainer")) && (touchEventEnabled)) {
-    simpleAddEvent(theObj, "touchstart", pgn4web_handleTouchStart);
-    simpleAddEvent(theObj, "touchmove", pgn4web_handleTouchMove);
-    simpleAddEvent(theObj, "touchend", pgn4web_handleTouchEnd_HeaderContainer);
-    simpleAddEvent(theObj, "touchleave", pgn4web_handleTouchEnd_HeaderContainer);
-    simpleAddEvent(theObj, "touchcancel", pgn4web_handleTouchCancel);
-  }
-}
+<!-- AppCheck: footer -->
 
 </script>
 
