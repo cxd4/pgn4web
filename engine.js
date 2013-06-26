@@ -51,6 +51,7 @@ if (window.location.search.match(thisRegExp) !== null) {
 
 var pgn4web_engineWinSignature = Math.ceil(1073741822 * Math.random()); // from 1 to (2^30 -1) = 1073741823
 
+var engineWinParametersSeparator = "?";
 function detectEngineLocation() {
   return detectJavascriptLocation().replace(/(pgn4web|pgn4web-compacted)\.js/, "engine.html");
 }
@@ -83,7 +84,7 @@ function showEngineAnalysisBoard(engineDisabled, startFen) {
       var options = "resizable=no,scrollbars=no,toolbar=no,location=no,menubar=no,status=no";
       if (pgn4web_engineWindowHeight) { options = "height=" + pgn4web_engineWindowHeight + "," + options; }
       if (pgn4web_engineWindowWidth) { options = "width=" + pgn4web_engineWindowWidth + "," + options; }
-      engineWin = window.open(detectEngineLocation() + "?" + parameters, pgn4web_engineWindowTarget, options);
+      engineWin = window.open(detectEngineLocation() + engineWinParametersSeparator + parameters, pgn4web_engineWindowTarget, options);
 
       // note bug with IE and Opera failing to set window.opener at this point, resulting in no autoUpdate possible and no update from the engine window possible
     }

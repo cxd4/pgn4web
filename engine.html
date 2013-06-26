@@ -112,12 +112,14 @@ a {
 <script type="text/javascript">
 "use strict";
 
+var thisParamString = thisParamString || window.location.hash;
+
 var thisRegExp;
 
 var fenString;
 thisRegExp = /(&|\?)(fenString|fs)=([^&]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   fenString = unescape(window.location.search.match(thisRegExp)[3]);
+if (thisParamString.match(thisRegExp) !== null) {
+   fenString = unescape(thisParamString.match(thisRegExp)[3]);
 }
 // action on fenString postponed after definying pgnText in the html body
 
@@ -126,8 +128,8 @@ var analysisSeconds = defaultAnalysisSeconds;
 var minAnalysisSeconds = 3;
 var maxAnalysisSeconds = 313;
 thisRegExp = /(&|\?)(analysisSeconds|as)=([1-9][0-9]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   analysisSeconds = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
+if (thisParamString.match(thisRegExp) !== null) {
+   analysisSeconds = parseInt(unescape(thisParamString.match(thisRegExp)[3]), 10);
    if (analysisSeconds < minAnalysisSeconds) { analysisSeconds = minAnalysisSeconds; }
    if (analysisSeconds > maxAnalysisSeconds) { analysisSeconds = maxAnalysisSeconds; }
    defaultAnalysisSeconds = analysisSeconds;
@@ -135,68 +137,68 @@ if (window.location.search.match(thisRegExp) !== null) {
 
 var disableEngine;
 thisRegExp = /(&|\?)(disableEngine|de)=([^&]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   disableEngine = unescape(window.location.search.match(thisRegExp)[3]);
+if (thisParamString.match(thisRegExp) !== null) {
+   disableEngine = unescape(thisParamString.match(thisRegExp)[3]);
 }
 disableEngine = ((disableEngine == "true") || (disableEngine == "t"));
 // action on disableEngine postponed at the end of this file when all engine functions are ready
 
 var disableInputs;
 thisRegExp = /(&|\?)(disableInputs|di)=([^&]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   disableInputs = unescape(window.location.search.match(thisRegExp)[3]);
+if (thisParamString.match(thisRegExp) !== null) {
+   disableInputs = unescape(thisParamString.match(thisRegExp)[3]);
 }
 disableInputs = ((disableInputs == "true") || (disableInputs == "t"));
 
 var autoUpdate;
 thisRegExp = /(&|\?)(autoUpdate|au)=([^&]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   autoUpdate = unescape(window.location.search.match(thisRegExp)[3]);
+if (thisParamString.match(thisRegExp) !== null) {
+   autoUpdate = unescape(thisParamString.match(thisRegExp)[3]);
 }
 autoUpdate = ((autoUpdate == "true") || (autoUpdate == "t"));
 
 
 var lightColorHex = "#F4F4F4";
 thisRegExp = /(&|\?)(lightColorHex|lch)=([0-9A-F]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   lightColorHex = "#" + unescape(window.location.search.match(thisRegExp)[3]);
+if (thisParamString.match(thisRegExp) !== null) {
+   lightColorHex = "#" + unescape(thisParamString.match(thisRegExp)[3]);
 }
 var darkColorHex = "#DDDDDD";
 thisRegExp = /(&|\?)(darkColorHex|dch)=([0-9A-F]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   darkColorHex = "#" + unescape(window.location.search.match(thisRegExp)[3]);
+if (thisParamString.match(thisRegExp) !== null) {
+   darkColorHex = "#" + unescape(thisParamString.match(thisRegExp)[3]);
 }
 var highlightColorHex = "#BBBBBB";
 thisRegExp = /(&|\?)(highlightColorHex|hch)=([0-9A-F]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   highlightColorHex = "#" + unescape(window.location.search.match(thisRegExp)[3]);
+if (thisParamString.match(thisRegExp) !== null) {
+   highlightColorHex = "#" + unescape(thisParamString.match(thisRegExp)[3]);
 }
 var fontMovesColorHex = "#000000";
 thisRegExp = /(&|\?)(fontMovesColorHex|fmch)=([0-9A-F]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   fontMovesColorHex = "#" + unescape(window.location.search.match(thisRegExp)[3]);
+if (thisParamString.match(thisRegExp) !== null) {
+   fontMovesColorHex = "#" + unescape(thisParamString.match(thisRegExp)[3]);
 }
 var controlTextColorHex = "#BBBBBB";
 thisRegExp = /(&|\?)(controlTextColorHex|ctch)=([0-9A-F]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   controlTextColorHex = "#" + unescape(window.location.search.match(thisRegExp)[3]);
+if (thisParamString.match(thisRegExp) !== null) {
+   controlTextColorHex = "#" + unescape(thisParamString.match(thisRegExp)[3]);
 }
 var backgroundColorHex = lightColorHex;
 thisRegExp = /(&|\?)(backgroundColorHex|bch)=([0-9A-F]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   backgroundColorHex = "#" + unescape(window.location.search.match(thisRegExp)[3]);
+if (thisParamString.match(thisRegExp) !== null) {
+   backgroundColorHex = "#" + unescape(thisParamString.match(thisRegExp)[3]);
 }
 
 var framePadding;
 thisRegExp = /(&|\?)(framePadding|fp)=([0-9]+)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   framePadding = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
+if (thisParamString.match(thisRegExp) !== null) {
+   framePadding = parseInt(unescape(thisParamString.match(thisRegExp)[3]), 10);
 }
 
 var squareSize;
 thisRegExp = /(&|\?)(squareSize|ss)=([1-9][0-9]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   squareSize = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
+if (thisParamString.match(thisRegExp) !== null) {
+   squareSize = parseInt(unescape(thisParamString.match(thisRegExp)[3]), 10);
 }
 
 var pieceSizeOptions = new Array(20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 52, 56, 60, 64, 72, 80, 88, 96, 112, 128, 144, 300);
@@ -209,21 +211,21 @@ function defaultPieceSize(squareSize) {
 }
 var pieceSize;
 thisRegExp = /(&|\?)(pieceSize|ps)=([1-9][0-9]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   pieceSize = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
+if (thisParamString.match(thisRegExp) !== null) {
+   pieceSize = parseInt(unescape(thisParamString.match(thisRegExp)[3]), 10);
 }
 
 // undocumented feature
 var fixedPieceImageSize;
 thisRegExp = /(&|\?)(fixedPieceImageSize|fpis)=([1-9][0-9]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   fixedPieceImageSize = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
+if (thisParamString.match(thisRegExp) !== null) {
+   fixedPieceImageSize = parseInt(unescape(thisParamString.match(thisRegExp)[3]), 10);
 }
 
 var pieceFont = "alpha";
 thisRegExp = /(&|\?)(pieceFont|pf)=([^&]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   pieceFont = unescape(window.location.search.match(thisRegExp)[3]);
+if (thisParamString.match(thisRegExp) !== null) {
+   pieceFont = unescape(thisParamString.match(thisRegExp)[3]);
    if (pieceFont == "a") { pieceFont = "alpha"; }
    if (pieceFont == "m") { pieceFont = "merida"; }
    if (pieceFont == "u") { pieceFont = "uscf"; }
@@ -232,17 +234,17 @@ if (window.location.search.match(thisRegExp) !== null) {
 
 var fontMovesSize;
 thisRegExp = /(&|\?)(fontMovesSize|fms)=([1-9][0-9]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   fontMovesSize = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
+if (thisParamString.match(thisRegExp) !== null) {
+   fontMovesSize = parseInt(unescape(thisParamString.match(thisRegExp)[3]), 10);
 }
 var fontCommentsSize;
 thisRegExp = /(&|\?)(fontCommentsSize|fcs)=([1-9][0-9]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   fontCommentsSize = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
+if (thisParamString.match(thisRegExp) !== null) {
+   fontCommentsSize = parseInt(unescape(thisParamString.match(thisRegExp)[3]), 10);
 }
 
 thisRegExp = /(&|\?)(help|h)=(t|true)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
+if (thisParamString.match(thisRegExp) !== null) {
    document.write("<PRE>");
    document.write("URL parameters\n");
    document.write("\n");
@@ -281,16 +283,16 @@ if (window.location.search.match(thisRegExp) !== null) {
 // undocumented feature
 var autoPlay;
 thisRegExp = /(&|\?)(autoPlay|ap)=([^&]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   autoPlay = unescape(window.location.search.match(thisRegExp)[3]);
+if (thisParamString.match(thisRegExp) !== null) {
+   autoPlay = unescape(thisParamString.match(thisRegExp)[3]);
 }
 autoPlay = ((autoPlay == "true") || (autoPlay == "t"));
 
 // undocumented feature
 var enableLocalStorage;
 thisRegExp = /(&|\?)(enableLocalStorage|els)=([^&]*)(&|$)/i;
-if (window.location.search.match(thisRegExp) !== null) {
-   enableLocalStorage = unescape(window.location.search.match(thisRegExp)[3]);
+if (thisParamString.match(thisRegExp) !== null) {
+   enableLocalStorage = unescape(thisParamString.match(thisRegExp)[3]);
 }
 enableLocalStorage = ((enableLocalStorage == "true") || (enableLocalStorage == "t"));
 
@@ -909,8 +911,8 @@ function customFunctionOnPgnTextLoad() {
 
       // undocumented parameter for internal use after pgn4web has started
       thisRegExp = /(&|\?)(engineSignature|es)=([1-9][0-9]*)(&|$)/i;
-      if (window.location.search.match(thisRegExp) !== null) {
-         engineSignature = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
+      if (thisParamString.match(thisRegExp) !== null) {
+         engineSignature = parseInt(unescape(thisParamString.match(thisRegExp)[3]), 10);
       }
       updateGameAnalysisFlag();
       updateGameAutoUpdateFlag();

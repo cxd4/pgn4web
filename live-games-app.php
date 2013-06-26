@@ -104,6 +104,8 @@ window['SetAutoPlay'] = function(vv) {
   }
 };
 
+engineWinParametersSeparator = "#?";
+
 pgn4web_engineWindowUrlParameters = "fpis=96&pf=a&lch=FFCC99&dch=CC9966&bch=000000&hch=996633&fmch=FFEEDD&ctch=FFEEDD&fp=10";
 
 function gameKey(event, site, date, round, white, black) {
