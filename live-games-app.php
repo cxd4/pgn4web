@@ -195,6 +195,7 @@ if (theObj = document.getElementById("GameLiveStatusExtraInfoLeft")) {
 if (theObj = document.getElementById("GameLiveStatusExtraInfoRight")) {
   theObj.innerHTML = "&times;";
   theObj.title = "games from application cache";
+  theObj.style.visibility = "visible";
 }
 END;
 $html = str_replace("<!-- AppCheck: footer -->", $text, $html);
