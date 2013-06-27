@@ -120,7 +120,7 @@ window['defaultLoadPgnCheckingLiveStatus'] = window['loadPgnCheckingLiveStatus']
 window['loadPgnCheckingLiveStatus'] = function(res) {
   if (res === LOAD_PGN_OK) {
     var text = "";
-    for (var ii = 0; ii < numberOfGames; ++ii) { text += fullPgnGame(ii).replace(/\[\s*Site\s*"[^"]*"\s*\]/g, '[Site "offline cached games"]') + "\\n\\n"; }
+    for (var ii = 0; ii < numberOfGames; ++ii) { text += fullPgnGame(ii) + "\\n\\n"; }
     localStorage["lastGamesPgnText"] = text;
   }
   defaultLoadPgnCheckingLiveStatus(res);
@@ -128,16 +128,18 @@ window['loadPgnCheckingLiveStatus'] = function(res) {
 
 window['defaultLoadPgnFromPgnUrl'] = window['loadPgnFromPgnUrl'];
 window['loadPgnFromPgnUrl'] = function(pgnUrl) {
-  var initialPgnGames = localStorage["lastGamesPgnText"] || '[Event "waiting for the next live event"]\\n[Site ""]\\n[Date ""]\\n[Round ""]\\n[White ""]\\n[Black ""]\\n[Result "*"]\\n';
-  if (!pgnGameFromPgnText(initialPgnGames)) {
-    myAlert("error: invalid games cache");
-  } else {
-    firstStart = true;
-    undoStackReset();
-    Init();
-    LiveBroadcastStarted = true;
-    checkLiveBroadcastStatus();
-    customFunctionOnPgnTextLoad();
+  if (!appInitialized) {
+    var initialPgnGames = localStorage["lastGamesPgnText"] || '[Event "waiting for the next live event"]\\n[Site ""]\\n[Date ""]\\n[Round ""]\\n[White ""]\\n[Black ""]\\n[Result "*"]\\n';
+    if (!pgnGameFromPgnText(initialPgnGames)) {
+      myAlert("error: invalid games cache");
+    } else {
+      firstStart = true;
+      undoStackReset();
+      Init();
+      LiveBroadcastStarted = true;
+      checkLiveBroadcastStatus();
+      customFunctionOnPgnTextLoad();
+    }
   }
   defaultLoadPgnFromPgnUrl(pgnUrl);
 };
@@ -149,6 +151,7 @@ pgn4web_engineWindowUrlParameters = "fpis=96&pf=a&lch=FFCC99&dch=CC9966&bch=0000
 function gameKey(event, site, date, round, white, black) {
   var key = "";
   key += "[" + (typeof(event) == "string" ? event : "") + "]";
+  key += "[" + (typeof(site) == "string" ? site : "") + "]";
   key += "[" + (typeof(round) == "string" ? round : "") + "]";
   key += "[" + (typeof(white) == "string" ? white : "") + "]";
   key += "[" + (typeof(black) == "string" ? black : "") + "]";
