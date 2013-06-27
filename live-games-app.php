@@ -9,7 +9,9 @@
 
 error_reporting(E_ALL | E_STRICT);
 
+
 $html = @file_get_contents("dynamic-frame.html");
+
 
 if (!$html) {
   $html = <<<END
@@ -27,11 +29,14 @@ END;
   exit;
 }
 
+
 $text = '"?l=t&ct=wood&bch=000000&fch=FFEEDD&pf=a&scf=t"';
 $html = str_replace("window.location.search", $text, $html);
 
+
 $text = '<html manifest="live-games-app.appcache">';
 $html = str_replace("<html>", $text, $html);
+
 
 $text = <<<END
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -56,8 +61,10 @@ if (window.navigator.standalone) {
   };
 }
 </script>
+<link rel="apple-touch-startup-image" href="live-games-app-splash.png" />
 END;
 $html = str_replace("<!-- AppCheck: meta -->", $text, $html);
+
 
 $text = <<<END
   if (!appInitialized) {
@@ -78,14 +85,15 @@ $text = <<<END
     appInitialized = true;
   }
   document.title = "Live Games";
-
 END;
 $html = str_replace("<!-- AppCheck: customFunctionOnPgnTextLoad -->", $text, $html);
+
 
 $text = <<<END
   if (appInitialized) { localStorage["lastGameKey"] = gameKey(gameEvent[currentGame], gameSite[currentGame], gameDate[currentGame], gameRound[currentGame], gameWhite[currentGame], gameBlack[currentGame]); }
 END;
 $html = str_replace("<!-- AppCheck: customFunctionOnPgnGameLoad -->", $text, $html);
+
 
 $text = <<<END
   if (appInitialized) {
@@ -95,6 +103,7 @@ $text = <<<END
   }
 END;
 $html = str_replace("<!-- AppCheck: customFunctionOnMove -->", $text, $html);
+
 
 $text = <<<END
 var appInitialized = false;
@@ -107,6 +116,23 @@ window['SetAutoPlay'] = function(vv) {
   }
 };
 
+window['defaultLoadPgnCheckingLiveStatus'] = window['loadPgnCheckingLiveStatus'];
+window['loadPgnCheckingLiveStatus'] = function(res) {
+  if (res === LOAD_PGN_OK) {
+    var text = "";
+    for (var ii = 0; ii < numberOfGames; ++ii) { text += fullPgnGame(ii).replace(/\[\s*Site\s*"[^"]*"\s*\]/g, '[Site "offline cached games"]') + "\\n\\n"; }
+    localStorage["lastGamesPgnText"] = text;
+  } else if ((!appInitialized) && (res === LOAD_PGN_FAIL) && (localStorage["lastGamesPgnText"])) {
+    if (pgnGameFromHttpRequest(localStorage["lastGamesPgnText"])) {
+      myAlert("warning: games restored from cache");
+      res = LOAD_PGN_OK;
+    } else {
+      myAlert("error: invalid games cache");
+    }
+  }
+  defaultLoadPgnCheckingLiveStatus(res);
+}
+
 engineWinParametersSeparator = "#?";
 
 pgn4web_engineWindowUrlParameters = "fpis=96&pf=a&lch=FFCC99&dch=CC9966&bch=000000&hch=996633&fmch=FFEEDD&ctch=FFEEDD&fp=10";
@@ -114,7 +140,6 @@ pgn4web_engineWindowUrlParameters = "fpis=96&pf=a&lch=FFCC99&dch=CC9966&bch=0000
 function gameKey(event, site, date, round, white, black) {
   var key = "";
   key += "[" + (typeof(event) == "string" ? event : "") + "]";
-  key += "[" + (typeof(site) == "string" ? site : "") + "]";
   key += "[" + (typeof(round) == "string" ? round : "") + "]";
   key += "[" + (typeof(white) == "string" ? white : "") + "]";
   key += "[" + (typeof(black) == "string" ? black : "") + "]";
