@@ -131,7 +131,7 @@ window['loadPgnCheckingLiveStatus'] = function(res) {
     }
   }
   defaultLoadPgnCheckingLiveStatus(res);
-}
+};
 
 engineWinParametersSeparator = "#?";
 
