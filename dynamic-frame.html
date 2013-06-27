@@ -385,6 +385,7 @@ function myOnResize() {
     var variableSpacerFontSize = Math.floor(variableSpacerLineHeight * 0.8);
     myInsertRule(sheet, ".variableSpacer", "line-height: " + variableSpacerLineHeight + "px; font-size: " + variableSpacerFontSize + "px;");
   }
+  myInsertRule(sheet, ".gameLiveStatusExtraInfoLeft", horizontalLayout ? "display: none;" : "");
   myInsertRule(sheet, ".showGameListLink", "padding-right: " + squareSize + "px; padding-left: " + (horizontalLayout ? 0 : squareSize) + "px;");
   var gameListFontSize =  Math.floor(Math.min((ww - framePadding * 2) / 30, (wh - framePadding * 2) / 24));
   gameListLineHeight =  Math.floor(1.4 * gameListFontSize);
@@ -770,7 +771,7 @@ function pgn4web_onload(e) {
 <div class="leftRightSpacing">&nbsp;<a id="GamePrevMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly - 1); this.blur();" title="previous moves"></a><a style="font-weight: bold;" id="GameCurrMove" href="javascript:void(0);" onclick="SetHighlight(!highlightOption); this.blur();" title="current move as shown on chessboard"></a><a id="GameNextMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly + 1); this.blur();" title="next moves"></a><span style="font-weight: bold;">&nbsp;</span></div>
 <div class="variableSpacer">&nbsp;</div>
 <center><div class="leftRightSpacing gameButtons" id="GameButtons"></div></center>
-<div class="leftRightSpacing liveStatusLine">&nbsp;<a id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();"></a>&nbsp;<span id="GameLiveStatusDemo" title="this is a broadcast simulation"></span></div>
+<div>&nbsp;<span id="GameLiveStatusExtraInfoLeft" class="leftRightSpacing gameLiveStatusExtraInfoLeft" style="visibility: hidden;"></span><span class="leftRightSpacing liveStatusLine"><a id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();"></a>&nbsp;<span id="GameLiveStatusDemo" title="this is a broadcast simulation"></span></span><span id="GameLiveStatusExtraInfoRight" class="leftRightSpacing" style="visibility: hidden;"></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
 <div class="leftRightSpacing" style="visibility: hidden;" id="ShowGameList">&nbsp;<a class="showGameListLink" id="ShowGameListLink" href="javascript:void(0);" onclick="showGameList();"></a>&nbsp;</div>
 </div>

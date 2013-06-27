@@ -118,6 +118,8 @@ window['SetAutoPlay'] = function(vv) {
 
 window['defaultLoadPgnCheckingLiveStatus'] = window['loadPgnCheckingLiveStatus'];
 window['loadPgnCheckingLiveStatus'] = function(res) {
+  var theObj = document.getElementById("GameLiveStatusExtraInfoRight");
+  if (theObj) { theObj.style.visibility = (res === LOAD_PGN_FAIL ? "visible" : "hidden"); }
   if (res === LOAD_PGN_OK) {
     var text = "";
     for (var ii = 0; ii < numberOfGames; ++ii) { text += fullPgnGame(ii) + "\\n\\n"; }
@@ -185,6 +187,14 @@ if ((theObj = document.getElementById("HeaderContainer")) && (touchEventEnabled)
   simpleAddEvent(theObj, "touchend", pgn4web_handleTouchEnd_HeaderContainer);
   simpleAddEvent(theObj, "touchleave", pgn4web_handleTouchEnd_HeaderContainer);
   simpleAddEvent(theObj, "touchcancel", pgn4web_handleTouchCancel);
+}
+
+if (theObj = document.getElementById("GameLiveStatusExtraInfoLeft")) {
+  theObj.innerHTML = "&times;";
+}
+if (theObj = document.getElementById("GameLiveStatusExtraInfoRight")) {
+  theObj.innerHTML = "&times;";
+  theObj.title = "games from application cache";
 }
 END;
 $html = str_replace("<!-- AppCheck: footer -->", $text, $html);
