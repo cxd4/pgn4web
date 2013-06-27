@@ -122,15 +122,24 @@ window['loadPgnCheckingLiveStatus'] = function(res) {
     var text = "";
     for (var ii = 0; ii < numberOfGames; ++ii) { text += fullPgnGame(ii).replace(/\[\s*Site\s*"[^"]*"\s*\]/g, '[Site "offline cached games"]') + "\\n\\n"; }
     localStorage["lastGamesPgnText"] = text;
-  } else if ((!appInitialized) && (res === LOAD_PGN_FAIL) && (localStorage["lastGamesPgnText"])) {
-    if (pgnGameFromHttpRequest(localStorage["lastGamesPgnText"])) {
-      myAlert("warning: games restored from cache");
-      res = LOAD_PGN_OK;
-    } else {
-      myAlert("error: invalid games cache");
-    }
   }
   defaultLoadPgnCheckingLiveStatus(res);
+};
+
+window['defaultLoadPgnFromPgnUrl'] = window['loadPgnFromPgnUrl'];
+window['loadPgnFromPgnUrl'] = function(pgnUrl) {
+  var initialPgnGames = localStorage["lastGamesPgnText"] || '[Event "waiting for the next live event"]\\n[Site ""]\\n[Date ""]\\n[Round ""]\\n[White ""]\\n[Black ""]\\n[Result "*"]\\n';
+  if (!pgnGameFromPgnText(initialPgnGames)) {
+    myAlert("error: invalid games cache");
+  } else {
+    firstStart = true;
+    undoStackReset();
+    Init();
+    LiveBroadcastStarted = true;
+    checkLiveBroadcastStatus();
+    customFunctionOnPgnTextLoad();
+  }
+  defaultLoadPgnFromPgnUrl(pgnUrl);
 };
 
 engineWinParametersSeparator = "#?";
