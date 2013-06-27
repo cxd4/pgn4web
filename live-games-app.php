@@ -30,6 +30,9 @@ END;
 $text = '"?l=t&ct=wood&bch=000000&fch=FFEEDD&pf=a&scf=t"';
 $html = str_replace("window.location.search", $text, $html);
 
+$text = '<html manifest="live-games-app.appcache">';
+$html = str_replace("<html>", $text, $html);
+
 $text = <<<END
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">

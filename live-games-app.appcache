@@ -1,0 +1,37 @@
+CACHE MANIFEST
+# version 2.73.001
+
+chess-informant-NAG-symbols.js
+engine.html
+engine.js
+fide-lookup.js
+fonts/pgn4web-font-ChessInformantReader.css
+fonts/ChessInformantReader.eot
+fonts/ChessInformantReader.svg
+fonts/ChessInformantReader.ttf
+fonts/ChessInformantReader.woff
+images/alpha/96/bb.png
+images/alpha/96/bk.png
+images/alpha/96/bn.png
+images/alpha/96/bp.png
+images/alpha/96/bq.png
+images/alpha/96/br.png
+images/alpha/96/clear.png
+images/alpha/96/wb.png
+images/alpha/96/wk.png
+images/alpha/96/wn.png
+images/alpha/96/wp.png
+images/alpha/96/wq.png
+images/alpha/96/wr.png
+libs/garbochess/garbochess.js
+pawn.ico
+pawn.png
+pawns.png
+pgn4web.js
+
+
+NETWORK:
+*
+
+FALLBACK:
+
