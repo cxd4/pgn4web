@@ -1132,7 +1132,7 @@ var touchGestures_helpActions = [ "top-down swipe", "bottom-up swipe", "left-rig
 var touchGestures_helpText = [ "go to variation end", "go to variation start", "move forward", "move backward" ];
 
 
-if (appBehaviour) {
+if (appBehaviour && window.navigator.standalone) {
   window.open = function (winUrl, winTarget, winParam) {
     if (winUrl) {
       var a = document.createElement("a");

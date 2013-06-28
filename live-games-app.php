@@ -43,18 +43,21 @@ $text = <<<END
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <script type="text/javascript">
 "use strict";
+window['defaultOpen'] = window.open;
 window.open = function (winUrl, winTarget, winParam) {
-  if (winUrl) {
-    if (winUrl.match(/(^|\/)engine\.html/)) {
-      location.href = winUrl;
-    } else {
-      var a = document.createElement("a");
-      a.setAttribute("href", winUrl);
-      a.setAttribute("taget", winTarget ? winTarget : "_blank");
-      var e = document.createEvent("HTMLEvents");
-      e.initEvent("click", true, true);
-      a.dispatchEvent(e);
-    }
+  if ((winUrl) && (winUrl.match(/(^|\/)engine\.html/))) {
+     location.href = winUrl;
+     return null;
+  } else if (!window.navigator.standalone) {
+     return window.defaultOpen(winUrl, winTarget, winParam);
+  } else if (winUrl) {
+     var a = document.createElement("a");
+     a.setAttribute("href", winUrl);
+     a.setAttribute("taget", winTarget ? winTarget : "_blank");
+     var e = document.createEvent("HTMLEvents");
+     e.initEvent("click", true, true);
+     a.dispatchEvent(e);
+     return null;
   }
   return null;
 };
