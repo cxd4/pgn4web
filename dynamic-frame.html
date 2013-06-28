@@ -727,7 +727,8 @@ simpleAddEvent(window, "orientationchange", function() {
   var lastOrientationTimeoutString = "lastOrientationTimeout = null;";
   if (lastOrientationTimeout) {
     clearTimeout(lastOrientationTimeout);
-    if ((theObj = document.getElementById("GameList")) && (theObj.style.display)) { selectGameList(-1); }
+    var theObj = document.getElementById("GameList");
+    if ((theObj) && (theObj.style.display)) { selectGameList(-1); }
     lastOrientationTimeoutString += " refreshPgnSource();";
   }
   lastOrientationTimeout = setTimeout(lastOrientationTimeoutString, 1800);
