@@ -62,7 +62,6 @@ window.open = function (winUrl, winTarget, winParam) {
   return null;
 };
 </script>
-<link rel="apple-touch-startup-image" href="live-games-app-splash.png" />
 END;
 $html = str_replace("<!-- AppCheck: meta -->", $text, $html);
 

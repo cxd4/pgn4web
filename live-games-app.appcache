@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# version 2.73+0036
+# version 2.73+0037
 
 chess-informant-NAG-symbols.js
 engine.html
@@ -25,7 +25,6 @@ images/alpha/96/wp.png
 images/alpha/96/wq.png
 images/alpha/96/wr.png
 libs/garbochess/garbochess.js
-live-games-app-splash.png
 pawn.ico
 pawn.png
 pawns.png
