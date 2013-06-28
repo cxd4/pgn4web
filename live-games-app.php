@@ -43,23 +43,21 @@ $text = <<<END
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <script type="text/javascript">
 "use strict";
-if (window.navigator.standalone) {
-  window.open = function (winUrl, winTarget, winParam) {
-    if (winUrl) {
-      if (winUrl.match(/(^|\/)engine\.html/)) {
-        location.href = winUrl;
-      } else {
-        var a = document.createElement("a");
-        a.setAttribute("href", winUrl);
-        a.setAttribute("taget", winTarget ? winTarget : "_blank");
-        var e = document.createEvent("HTMLEvents");
-        e.initEvent("click", true, true);
-        a.dispatchEvent(e);
-      }
+window.open = function (winUrl, winTarget, winParam) {
+  if (winUrl) {
+    if (winUrl.match(/(^|\/)engine\.html/)) {
+      location.href = winUrl;
+    } else {
+      var a = document.createElement("a");
+      a.setAttribute("href", winUrl);
+      a.setAttribute("taget", winTarget ? winTarget : "_blank");
+      var e = document.createEvent("HTMLEvents");
+      e.initEvent("click", true, true);
+      a.dispatchEvent(e);
     }
-    return null;
-  };
-}
+  }
+  return null;
+};
 </script>
 <link rel="apple-touch-startup-image" href="live-games-app-splash.png" />
 END;
@@ -148,7 +146,9 @@ window['loadPgnFromPgnUrl'] = function(pgnUrl) {
 
 engineWinParametersSeparator = "#?";
 
-pgn4web_engineWindowUrlParameters = "fpis=96&pf=a&lch=FFCC99&dch=CC9966&bch=000000&hch=996633&fmch=FFEEDD&ctch=FFEEDD&fp=10";
+pgn4web_engineWindowUrlParameters = "fpis=96&pf=a&lch=FFCC99&dch=CC9966&bch=000000&hch=996633&fmch=FFEEDD&ctch=FFEEDD&fpr=0.5&els=t&ab=t";
+
+clearShortcutSquares("F", "8");
 
 function gameKey(event, site, date, round, white, black) {
   var key = "";

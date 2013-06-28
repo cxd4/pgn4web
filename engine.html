@@ -189,10 +189,10 @@ if (thisParamString.match(thisRegExp) !== null) {
    backgroundColorHex = "#" + unescape(thisParamString.match(thisRegExp)[3]);
 }
 
-var framePadding;
-thisRegExp = /(&|\?)(framePadding|fp)=([0-9]+)(&|$)/i;
+var framePaddingRatio = 1;
+thisRegExp = /(&|\?)(framePaddingRatio|fpr)=([0-9.]+)(&|$)/i;
 if (thisParamString.match(thisRegExp) !== null) {
-   framePadding = parseInt(unescape(thisParamString.match(thisRegExp)[3]), 10);
+   framePaddingRatio = parseFloat(unescape(thisParamString.match(thisRegExp)[3]));
 }
 
 var squareSize;
@@ -255,6 +255,7 @@ if (thisParamString.match(thisRegExp) !== null) {
    document.write(" - autoUpdate = true | false (default false)\n");
    // document.write(" - autoPlay = true | false (default false)\n");
    // document.write(" - enableLocalStorage = true | false (default false)\n");
+   // document.write(" - appBehaviour = true | false (deafault false)\n");
    // document.write(" - engineSignature = positive number (default -1)\n");
    document.write("\n");
    document.write(" - squareSize = size of square (default selects square size based on window size)\n");
@@ -272,7 +273,7 @@ if (thisParamString.match(thisRegExp) !== null) {
    document.write(" - fontMovesSize = moves font size (default selects moves font size based on square size)\n");
    document.write(" - fontCommentsSize = analysis comments font size (default selects comments font size based on square size)\n");
    document.write("\n");
-   document.write(" - framePadding = padding within the frame (default as squareSize)\n");
+   document.write(" - framePaddingRatio = frame padding as a square ratio (default 1)\n");
    document.write("\n");
    document.write(" - help = true\n");
    document.write("\n");
@@ -295,6 +296,14 @@ if (thisParamString.match(thisRegExp) !== null) {
    enableLocalStorage = unescape(thisParamString.match(thisRegExp)[3]);
 }
 enableLocalStorage = ((enableLocalStorage == "true") || (enableLocalStorage == "t"));
+
+// undocumented feature
+var appBehaviour;
+thisRegExp = /(&|\?)(appBehaviour |ab)=([^&]*)(&|$)/i;
+if (thisParamString.match(thisRegExp) !== null) {
+   appBehaviour = unescape(thisParamString.match(thisRegExp)[3]);
+}
+appBehaviour = ((appBehaviour == "true") || (appBehaviour == "t"));
 
 
 function myRulesLength(sheet) {
@@ -338,8 +347,7 @@ function myOnOrientationchange() {
       else if (document.documentElement && document.documentElement.clientWidth) { ww = document.documentElement.clientWidth; wh = document.documentElement.clientHeight; }
       else if (document.body && document.body.clientWidth) { ww = document.body.clientWidth; wh = document.body.clientHeight; }
       if (Math.min(ww, wh) > 0) {
-         if (typeof(framePadding) == "undefined") { squareSizeCss = Math.floor(Math.min(ww / 10, wh / 12)); }
-         else { squareSizeCss = Math.floor(Math.min((ww - 2 * framePadding) / 8, (wh - 2 * framePadding) / 10)); }
+         squareSizeCss = Math.floor(Math.min(ww / (8 + 2 * framePaddingRatio), wh / (10 + 2 * framePaddingRatio)));
       } else {
          squareSizeCss = 30;
       }
@@ -348,7 +356,7 @@ function myOnOrientationchange() {
 
    if (squareSizeCss === oldSquareSizeCss) { return; }
 
-   var framePaddingCss = typeof(framePadding) != "undefined" ? framePadding : squareSizeCss;
+   var framePaddingCss = framePaddingRatio * squareSizeCss;
    var pieceSizeCss = typeof(pieceSize) != "undefined" ? pieceSize : defaultPieceSize(squareSizeCss);
    var fontMovesSizeCss = typeof(fontMovesSize) != "undefined" ? fontMovesSize : Math.ceil(squareSizeCss * 11 / 30);
    var fontCommentsSizeCss = typeof(fontCommentsSize) != "undefined" ? fontCommentsSize : Math.ceil(squareSizeCss * 19 / 30);
@@ -531,7 +539,7 @@ function clickedGameAutoUpdateFlag(t,e) {
       if ((autoUpdate) && ((CurrentFEN() !== window.opener.CurrentFEN()) || (!g_backgroundEngine && !disableEngine))) {
          window.opener.showEngineAnalysisBoard(disableEngine);
       }
-   } else if ((window.navigator.standalone) && (history.length > 1)) {
+   } else if ((appBehaviour) && (history.length > 1)) {
       history.back();
    }
    updateGameAutoUpdateFlag();
@@ -877,7 +885,7 @@ function updateGameAutoUpdateFlag() {
             theObj.innerHTML = "+";
             theObj.title = "start auto updating analysis board";
          }
-      } else if ((window.navigator.standalone) && (history.length > 1)) {
+      } else if ((appBehaviour) && (history.length > 1)) {
          theObj.innerHTML = "&crarr;";
          theObj.title = "close analysis board";
       } else {
@@ -1113,7 +1121,7 @@ function customFunctionOnTouch(deltaX, deltaY) {
    if (disableInputs) { return; }
    if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 13) { return; }
    if (Math.abs(deltaY) > 1.5 * Math.abs(deltaX)) { // vertical up or down
-      if ((window.navigator.standalone) && (!openerCheck()) && (deltaY > 0) && (history.length > 1)) { history.back(); }
+      if ((!openerCheck()) && (appBehaviour) && (history.length > 1) && (deltaY > 0)) { history.back(); }
       GoToMove(StartPlyVar[CurrentVar] + (deltaY > 0 ? PlyNumberVar[CurrentVar] : 0));
    } else if (Math.abs(deltaX) > 1.5 * Math.abs(deltaY)) { // horizontal left or right
       GoToMove(CurrentPly + sign(deltaX));
@@ -1124,7 +1132,7 @@ var touchGestures_helpActions = [ "top-down swipe", "bottom-up swipe", "left-rig
 var touchGestures_helpText = [ "go to variation end", "go to variation start", "move forward", "move backward" ];
 
 
-if (window.navigator.standalone) {
+if (appBehaviour) {
   window.open = function (winUrl, winTarget, winParam) {
     if (winUrl) {
       var a = document.createElement("a");

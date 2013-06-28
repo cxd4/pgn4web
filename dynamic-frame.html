@@ -393,7 +393,7 @@ function myOnResize() {
   gameListBodyHeight = gameListLineHeight * Math.floor((wh - 2 * framePadding - gameListLineHeight - 2.5 * gameListPadding) / gameListLineHeight) + 1;
   myInsertRule(sheet, ".gameList", "display: none; overflow: hidden; font-family: monospace; white-space: pre; font-size: " + gameListFontSize + "px; line-height: " + gameListLineHeight + "px;");
   myInsertRule(sheet, ".gameListHeader", "overflow: hidden; width: " + (ww  - 2 * framePadding) + "px; padding-top: " + gameListPadding + "px; padding-bottom: " + gameListPadding + "px;");
-  myInsertRule(sheet, ".gameListBody", "height: " + gameListBodyHeight + "px; width: " + (ww - 2 * framePadding) + "px; overflow-x: hidden; overflow-y: auto; scrollbar-base-color: #" + backgroundColorHex + ";" + (window.navigator.standalone ? " -webkit-overflow-scrolling: touch;" : ""));
+  myInsertRule(sheet, ".gameListBody", "height: " + gameListBodyHeight + "px; width: " + (ww - 2 * framePadding) + "px; overflow-x: hidden; overflow-y: auto; scrollbar-base-color: #" + backgroundColorHex + "; -webkit-overflow-scrolling: touch;");
   myInsertRule(sheet, ".scrollLink", "visibility: " + (numberOfGames > gameListBodyHeight / gameListLineHeight + 0.2 ? "visible" : "hidden") + ";");
 
   for (var ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
@@ -771,7 +771,7 @@ function pgn4web_onload(e) {
 <div class="leftRightSpacing">&nbsp;<a id="GamePrevMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly - 1); this.blur();" title="previous moves"></a><a style="font-weight: bold;" id="GameCurrMove" href="javascript:void(0);" onclick="SetHighlight(!highlightOption); this.blur();" title="current move as shown on chessboard"></a><a id="GameNextMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly + 1); this.blur();" title="next moves"></a><span style="font-weight: bold;">&nbsp;</span></div>
 <div class="variableSpacer">&nbsp;</div>
 <center><div class="leftRightSpacing gameButtons" id="GameButtons"></div></center>
-<div>&nbsp;<span id="GameLiveStatusExtraInfoLeft" class="leftRightSpacing gameLiveStatusExtraInfoLeft" style="visibility: hidden;"></span><span class="leftRightSpacing liveStatusLine"><a id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();"></a>&nbsp;<span id="GameLiveStatusDemo" title="this is a broadcast simulation"></span></span><span id="GameLiveStatusExtraInfoRight" class="leftRightSpacing" style="visibility: hidden;"></span>&nbsp;</div>
+<div class="liveStatusLine">&nbsp;<span id="GameLiveStatusExtraInfoLeft" class="leftRightSpacing gameLiveStatusExtraInfoLeft" style="visibility: hidden;"></span><a id="GameLiveStatus" class="leftRightSpacing" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();"></a><span id="GameLiveStatusExtraInfoRight" class="leftRightSpacing" style="visibility: hidden;"></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
 <div class="leftRightSpacing" style="visibility: hidden;" id="ShowGameList">&nbsp;<a class="showGameListLink" id="ShowGameListLink" href="javascript:void(0);" onclick="showGameList();"></a>&nbsp;</div>
 </div>
@@ -779,9 +779,16 @@ function pgn4web_onload(e) {
 <script type="text/javascript">
 "use strict";
 
-if (LiveBroadcastDelay) {
-  var theObj = document.getElementById("GameLiveStatusDemo");
-  if (theObj) { theObj.innerHTML = LiveBroadcastDemo ? "&nbsp;&nbsp;demo" : ""; }
+if (LiveBroadcastDelay && LiveBroadcastDemo) {
+  var theObj = document.getElementById("GameLiveStatusExtraInfoRight");
+  if (theObj) {
+    theObj.innerHTML = "demo";
+    theObj.title = "this is a broadcast simulation";
+    theObj.style.visibility = "visible";
+  }
+  if (theObj = document.getElementById("GameLiveStatusExtraInfoLeft")) {
+    theObj.innerHTML = "demo";
+  }
 }
 
 <!-- AppCheck: footer -->
