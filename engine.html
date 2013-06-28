@@ -39,6 +39,7 @@ body {
   -ms-text-size-adjust: none;
   -o-text-size-adjust: none;
   text-size-adjust: none;
+  -webkit-touch-callout: none;
 }
 
 a {
@@ -361,7 +362,7 @@ function myOnOrientationchange() {
    var fontMovesSizeCss = typeof(fontMovesSize) != "undefined" ? fontMovesSize : Math.ceil(squareSizeCss * 11 / 30);
    var fontCommentsSizeCss = typeof(fontCommentsSize) != "undefined" ? fontCommentsSize : Math.ceil(squareSizeCss * 19 / 30);
 
-   myInsertRule(sheet, "body", "padding: " + framePaddingCss + "px;");
+   myInsertRule(sheet, "body", "padding: " + framePaddingCss + "px;" + ((appBehaviour && wh) ? " height: " + (wh - 2 * framePaddingCss) + "px;" : ""));
    myInsertRule(sheet, ".boardTable", "width: " + (squareSizeCss * 8) + "px; height: " + (squareSizeCss * 8) + "px;");
    myInsertRule(sheet, ".pieceImage", "width: " + pieceSizeCss + "px; height: " + pieceSizeCss + "px;");
    myInsertRule(sheet, ".whiteSquare", "width: " + squareSizeCss + "px; height: " + squareSizeCss + "px;");
@@ -1132,6 +1133,8 @@ var touchGestures_helpActions = [ "top-down swipe", "bottom-up swipe", "left-rig
 var touchGestures_helpText = [ "go to variation end", "go to variation start", "move forward", "move backward" ];
 
 
+
+
 if (appBehaviour && window.navigator.standalone) {
   window.open = function (winUrl, winTarget, winParam) {
     if (winUrl) {
@@ -1144,6 +1147,8 @@ if (appBehaviour && window.navigator.standalone) {
     }
     return null;
   };
+
+  document.body.addEventListener("touchmove", function(e) { e.preventDefault(); });
 }
 
 </script>

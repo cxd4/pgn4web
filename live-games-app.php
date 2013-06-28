@@ -192,6 +192,8 @@ if ((theObj = document.getElementById("HeaderContainer")) && (touchEventEnabled)
   simpleAddEvent(theObj, "touchcancel", pgn4web_handleTouchCancel);
 }
 
+document.body.addEventListener("touchmove", function(e) { e.preventDefault(); });
+
 if (theObj = document.getElementById("GameLiveStatusExtraInfoLeft")) {
   theObj.innerHTML = "&times;";
 }
