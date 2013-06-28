@@ -532,7 +532,8 @@ function customFunctionOnPgnTextLoad() {
 }
 
 function fixHeaderItem(tag, objectId, label) {
-  if (theObj = document.getElementById(objectId)) {
+  var theObj = document.getElementById(objectId);
+  if (theObj) {
     var tagValue = tag ? customPgnHeaderTag(tag, objectId) : theObj.innerHTML;
     if (tagValue) {
       theObj.title = label + ": " + tagValue;

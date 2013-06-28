@@ -119,11 +119,18 @@ window['SetAutoPlay'] = function(vv) {
 window['defaultLoadPgnCheckingLiveStatus'] = window['loadPgnCheckingLiveStatus'];
 window['loadPgnCheckingLiveStatus'] = function(res) {
   var theObj = document.getElementById("GameLiveStatusExtraInfoRight");
-  if (theObj) { theObj.style.visibility = (res === LOAD_PGN_FAIL ? "visible" : "hidden"); }
+  if (theObj) {
+    // 5h = 18000000ms
+    theObj.style.textTransform = ((!localStorage["lastGamesTime"]) || ((new Date()).getTime() - localStorage["lastGamesTime"]) > 18000000) ? "uppercase" : "";
+    theObj.style.visibility = (res === LOAD_PGN_FAIL ? "visible" : "hidden");
+    var otherObj = document.getElementById("GameLiveStatusExtraInfoLeft");
+    if (otherObj) { otherObj.style.textTransform = theObj.style.textTransform; }
+  }
   if (res === LOAD_PGN_OK) {
     var text = "";
     for (var ii = 0; ii < numberOfGames; ++ii) { text += fullPgnGame(ii) + "\\n\\n"; }
     localStorage["lastGamesPgnText"] = text;
+    localStorage["lastGamesTime"] = (new Date()).getTime();
   }
   defaultLoadPgnCheckingLiveStatus(res);
 };
@@ -194,10 +201,10 @@ if ((theObj = document.getElementById("HeaderContainer")) && (touchEventEnabled)
 document.body.addEventListener("touchmove", function(e) { e.preventDefault(); });
 
 if (theObj = document.getElementById("GameLiveStatusExtraInfoLeft")) {
-  theObj.innerHTML = "&times;";
+  theObj.innerHTML = "x";
 }
 if (theObj = document.getElementById("GameLiveStatusExtraInfoRight")) {
-  theObj.innerHTML = "&times;";
+  theObj.innerHTML = "x";
   theObj.title = "games from application cache";
   theObj.style.visibility = "visible";
 }
