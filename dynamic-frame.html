@@ -394,7 +394,7 @@ function myOnResize() {
   gameListBodyHeight = gameListLineHeight * Math.floor((wh - 2 * framePadding - gameListLineHeight - 2.5 * gameListPadding) / gameListLineHeight) + 1;
   myInsertRule(sheet, ".gameList", "display: none; overflow: hidden; font-family: monospace; white-space: pre; font-size: " + gameListFontSize + "px; line-height: " + gameListLineHeight + "px;");
   myInsertRule(sheet, ".gameListHeader", "overflow: hidden; width: " + (ww  - 2 * framePadding) + "px; padding-top: " + gameListPadding + "px; padding-bottom: " + gameListPadding + "px;");
-  myInsertRule(sheet, ".gameListBody", "height: " + gameListBodyHeight + "px; width: " + (ww - 2 * framePadding) + "px; overflow-x: hidden; overflow-y: auto; scrollbar-base-color: #" + backgroundColorHex + "; -webkit-overflow-scrolling: touch;");
+  myInsertRule(sheet, ".gameListBody", "height: " + gameListBodyHeight + "px; width: " + (ww - 2 * framePadding) + "px; overflow-x: hidden; overflow-y: auto; scrollbar-base-color: #" + backgroundColorHex + "; overflow-scrolling: touch; -webkit-overflow-scrolling: touch;");
   myInsertRule(sheet, ".scrollLink", "visibility: " + (numberOfGames > gameListBodyHeight / gameListLineHeight + 0.2 ? "visible" : "hidden") + ";");
 
   for (var ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
@@ -440,21 +440,24 @@ var gameListLineHeight = -1;
 function fillGameList(force) {
   if (force || currentGame !== gameListCurrentGame) {
     gameListCurrentGame = currentGame;
-    if (theObj = document.getElementById("GameList")) {
-      var text = "<div class='gameListHeader' id='GameListHeader'>";
+    var text;
+    if (theObj = document.getElementById("GameListHeader")) {
+      text = "";
       text += "<b><a href='javascript:void(0);' onclick='refreshPgnSource(); this.blur();' title='" + numberOfGames + " games'>&nbsp;" + numberOfGames + "&nbsp;</a></b>&nbsp;&nbsp;";
       text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = 0; } this.blur();' title='scroll to first page'><b>&nbsp;&nbsp;&lt;&lt;&nbsp;&nbsp;</b></a>&nbsp;&nbsp;";
       text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (Math.ceil(theObj.scrollTop / gameListLineHeight) - Math.floor(gameListBodyHeight / gameListLineHeight)); } this.blur();' title='scroll to previous page'><b>&nbsp;&nbsp;&lt;&nbsp;&nbsp;</b></a>&nbsp;&nbsp;";
       text += "<a href='javascript:void(0);' onclick='selectGameList(-1);' title='back to chessboard'><b>&nbsp;&nbsp;&middot;&middot;&middot;&nbsp;&nbsp;</b></a>&nbsp;&nbsp;";
       text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (Math.ceil(theObj.scrollTop / gameListLineHeight) + Math.floor(gameListBodyHeight / gameListLineHeight)); } this.blur();' title='scroll to next page'><b>&nbsp;&nbsp;&gt;&nbsp;&nbsp;</b></a>&nbsp;&nbsp;";
       text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = theObj.scrollHeight; } this.blur();' title='scroll to last page'><b>&nbsp;&nbsp;&gt;&gt;&nbsp;&nbsp;</b></a>&nbsp;&nbsp;";
-      text += "</div>";
+      theObj.innerHTML = text;
+    }
+    if (theObj = document.getElementById("GameListBody")) {
       var extractGamesRegExp = /<OPTION CLASS="optionSelectControl" value=(\d+)>(\s*\d+)(\s+.{30})([^<]+)/g;
       var thisGameText, thisGameTitle;
       var thisBold;
-      text += "<div class='gameListBody' id='GameListBody'>";
       var firstGame = true;
       var matches;
+      text = "";
       while (matches = extractGamesRegExp.exec(textSelectOptions.replace(/&nbsp;/g, " "))) {
         if (firstGame) { firstGame = false; } else { text += "<br/>"; }
         thisGameText = matches[2] + " " + matches[4] + "  " + matches[3];
@@ -462,7 +465,6 @@ function fillGameList(force) {
         thisBold = (parseInt(matches[1], 10) === currentGame);
         text += "<a href='javascript:void(0);' onclick='selectGameList(" + matches[1] + ");' title='" + thisGameTitle + "'>" + (thisBold ? "<b>" : "") + thisGameText + (thisBold ? "</b>" : "") + "</a>";
       }
-      text += "</div>";
       theObj.innerHTML = text;
     }
   }
@@ -756,7 +758,7 @@ function pgn4web_onload(e) {
 
 <div style="display:none;" id="GameSelector"></div>
 
-<div class="gameList" id="GameList"></div>
+<div class="gameList" id="GameList"><div class="gameListHeader" id="GameListHeader"></div><div class="gameListBody" id="GameListBody"></div></div>
 
 <div id="GameBoard"></div>
 
