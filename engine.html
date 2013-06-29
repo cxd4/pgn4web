@@ -339,12 +339,14 @@ var lastOrientation;
 var lastOrientationTimeout = null;
 var oldSquareSizeCss;
 function myOnOrientationchange() {
-   if (window.orientation === lastOrientation) { return; }
-   lastOrientation = window.orientation;
+   if (typeof(window.orientation) != "undefined") {
+      if (window.orientation === lastOrientation) { return; }
+      lastOrientation = window.orientation;
 
-   if ((appBehaviour) && (history.length > 1)) {
-     if (lastOrientationTimeout) { history.back(); }
-     else { lastOrientationTimeout = setTimeout("lastOrientationTimeout = null;", 1800); }
+      if ((appBehaviour) && (history.length > 1)) {
+         if (lastOrientationTimeout) { history.back(); }
+         else { lastOrientationTimeout = setTimeout("lastOrientationTimeout = null;", 1800); }
+      }
    }
 
    var sheet = document.styleSheets[1];
