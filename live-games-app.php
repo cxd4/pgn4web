@@ -200,7 +200,23 @@ if ((theObj = document.getElementById("HeaderContainer")) && (touchEventEnabled)
 
 simpleAddEvent(document.body, "touchmove", function(e) { e.preventDefault(); });
 theObj = document.getElementById("GameListBody");
-if (theObj) { simpleAddEvent(theObj, "touchmove", function(e) { e.stopPropagation(); }); }
+if (theObj) {
+  simpleAddEvent(theObj, "touchstart", function(e) {
+    this.allowUp = (this.scrollTop > 0);
+    this.allowDown = (this.scrollTop < this.scrollHeight - this.clientHeight);
+    this.prevTop = null;
+    this.prevBot = null;
+    this.lastY = e.pageY;
+  });
+  simpleAddEvent(theObj, "touchmove", function(e) {
+    var up = (e.pageY > this.lastY);
+    var down = (e.pageY < this.lastY);
+    var flat = (e.pageY === this.lastY);
+    this.lastY = e.pageY;
+    if ((up && this.allowUp) || (down && this.allowDown) || (flat)) { e.stopPropagation(); }
+    else { e.preventDefault(); }
+  });
+}
 
 if (theObj = document.getElementById("GameLiveStatusExtraInfoLeft")) {
   theObj.innerHTML = "x";
