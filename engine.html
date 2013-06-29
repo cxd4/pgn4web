@@ -61,7 +61,8 @@ a {
 
 .gameEval {
   position: absolute;
-  right: 0px;
+  right: -5px; /* this and the next fix some pv showing at the right of the eval */
+  padding-right: 5px;
   bottom: 0px;
   z-index: 3;
 }
@@ -256,7 +257,6 @@ if (thisParamString.match(thisRegExp) !== null) {
    document.write(" - autoUpdate = true | false (default false)\n");
    // document.write(" - autoPlay = true | false (default false)\n");
    // document.write(" - enableLocalStorage = true | false (default false)\n");
-   // document.write(" - appBehaviour = true | false (deafault false)\n");
    // document.write(" - engineSignature = positive number (default -1)\n");
    document.write("\n");
    document.write(" - squareSize = size of square (default selects square size based on window size)\n");
@@ -298,14 +298,6 @@ if (thisParamString.match(thisRegExp) !== null) {
 }
 enableLocalStorage = ((enableLocalStorage == "true") || (enableLocalStorage == "t"));
 
-// undocumented feature
-var appBehaviour;
-thisRegExp = /(&|\?)(appBehaviour |ab)=([^&]*)(&|$)/i;
-if (thisParamString.match(thisRegExp) !== null) {
-   appBehaviour = unescape(thisParamString.match(thisRegExp)[3]);
-}
-appBehaviour = ((appBehaviour == "true") || (appBehaviour == "t"));
-
 
 function myRulesLength(sheet) {
    if (sheet.cssRules) { return sheet.cssRules.length; }
@@ -335,19 +327,12 @@ myInsertRule(mySheet, ".gameCustomButtons", "color: " + controlTextColorHex + ";
 myInsertRule(mySheet, ".gameFlagToMove", "border-color: " + fontMovesColorHex + ";");
 myInsertRule(mySheet, ".gameEval", "background: " + backgroundColorHex + ";");
 
-var lastOrientation;
-var lastOrientationTimeout = null;
+<!-- AppCheck: before myOnOrientationchange -->
+
 var oldSquareSizeCss;
 function myOnOrientationchange() {
-   if (typeof(window.orientation) != "undefined") {
-      if (window.orientation === lastOrientation) { return; }
-      lastOrientation = window.orientation;
 
-      if ((appBehaviour) && (history.length > 1)) {
-         if (lastOrientationTimeout) { history.back(); }
-         else { lastOrientationTimeout = setTimeout("lastOrientationTimeout = null;", 1800); }
-      }
-   }
+<!-- AppCheck: myOnOrientationchange -->
 
    var sheet = document.styleSheets[1];
    var oldRules = myRulesLength(sheet);
@@ -374,7 +359,7 @@ function myOnOrientationchange() {
    var fontMovesSizeCss = typeof(fontMovesSize) != "undefined" ? fontMovesSize : Math.ceil(squareSizeCss * 11 / 30);
    var fontCommentsSizeCss = typeof(fontCommentsSize) != "undefined" ? fontCommentsSize : Math.ceil(squareSizeCss * 19 / 30);
 
-   myInsertRule(sheet, "body", "padding: " + framePaddingCss + "px;" + ((appBehaviour && wh) ? " height: " + (wh - 2 * framePaddingCss) + "px;" : ""));
+   myInsertRule(sheet, "body", "padding: " + framePaddingCss + "px;" + (wh ? " height: " + (wh - 2 * framePaddingCss) + "px;" : ""));
    myInsertRule(sheet, ".boardTable", "width: " + (squareSizeCss * 8) + "px; height: " + (squareSizeCss * 8) + "px;");
    myInsertRule(sheet, ".pieceImage", "width: " + pieceSizeCss + "px; height: " + pieceSizeCss + "px;");
    myInsertRule(sheet, ".whiteSquare", "width: " + squareSizeCss + "px; height: " + squareSizeCss + "px;");
@@ -552,8 +537,9 @@ function clickedGameAutoUpdateFlag(t,e) {
       if ((autoUpdate) && ((CurrentFEN() !== window.opener.CurrentFEN()) || (!g_backgroundEngine && !disableEngine))) {
          window.opener.showEngineAnalysisBoard(disableEngine);
       }
-   } else if ((appBehaviour) && (history.length > 1)) {
-      history.back();
+
+<!-- AppCheck: clickedGameAutoUpdateFlag -->
+
    }
    updateGameAutoUpdateFlag();
 }
@@ -898,9 +884,9 @@ function updateGameAutoUpdateFlag() {
             theObj.innerHTML = "+";
             theObj.title = "start auto updating analysis board";
          }
-      } else if ((appBehaviour) && (history.length > 1)) {
-         theObj.innerHTML = "&crarr;";
-         theObj.title = "close analysis board";
+
+<!-- AppCheck: updateGameAutoUpdateFlag -->
+
       } else {
          theObj.innerHTML = "&nbsp;";
          theObj.title = "";
@@ -1134,7 +1120,9 @@ function customFunctionOnTouch(deltaX, deltaY) {
    if (disableInputs) { return; }
    if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 13) { return; }
    if (Math.abs(deltaY) > 1.5 * Math.abs(deltaX)) { // vertical up or down
-      if ((!openerCheck()) && (appBehaviour) && (history.length > 1) && (deltaY > 0)) { history.back(); }
+
+<!-- AppCheck: customFunctionOnTouch -->
+
       GoToMove(StartPlyVar[CurrentVar] + (deltaY > 0 ? PlyNumberVar[CurrentVar] : 0));
    } else if (Math.abs(deltaX) > 1.5 * Math.abs(deltaY)) { // horizontal left or right
       GoToMove(CurrentPly + sign(deltaX));
@@ -1144,21 +1132,7 @@ function customFunctionOnTouch(deltaX, deltaY) {
 var touchGestures_helpActions = [ "top-down swipe", "bottom-up swipe", "left-right swipe", "right-left swipe" ];
 var touchGestures_helpText = [ "go to variation end", "go to variation start", "move forward", "move backward" ];
 
-if (appBehaviour && window.navigator.standalone) {
-  window.open = function (winUrl, winTarget, winParam) {
-    if (winUrl) {
-      var a = document.createElement("a");
-      a.setAttribute("href", winUrl);
-      a.setAttribute("taget", winTarget ? winTarget : "_blank");
-      var e = document.createEvent("HTMLEvents");
-      e.initEvent("click", true, true);
-      a.dispatchEvent(e);
-    }
-    return null;
-  };
-
-  simpleAddEvent(document.body, "touchmove", function(e) { e.preventDefault(); });
-}
+<!-- AppCheck: footer -->
 
 </script>
 

@@ -45,7 +45,7 @@ $text = <<<END
 "use strict";
 window['defaultOpen'] = window.open;
 window.open = function (winUrl, winTarget, winParam) {
-  if ((winUrl) && (winUrl.match(/(^|\/)engine\.html/))) {
+  if ((winUrl) && (winUrl.match(/(^|\/)live-games-app-engine\.php/))) {
      location.href = winUrl;
      return null;
   } else if (!window.navigator.standalone) {
@@ -153,9 +153,11 @@ window['loadPgnFromPgnUrl'] = function(pgnUrl) {
   defaultLoadPgnFromPgnUrl(pgnUrl);
 };
 
-engineWinParametersSeparator = "#?";
+function detectEngineLocation() {
+  return detectJavascriptLocation().replace(/(pgn4web|pgn4web-compacted)\\.js/, "live-games-app-engine.php");
+}
 
-pgn4web_engineWindowUrlParameters = "fpis=96&pf=a&lch=FFCC99&dch=CC9966&bch=000000&hch=996633&fmch=FFEEDD&ctch=FFEEDD&fpr=0.5&els=t&ab=t";
+engineWinParametersSeparator = "#?";
 
 clearShortcutSquares("F", "8");
 
@@ -229,6 +231,8 @@ if (theObj = document.getElementById("GameLiveStatusExtraInfoRight")) {
 END;
 $html = str_replace("<!-- AppCheck: footer -->", $text, $html);
 
+
 print $html;
+
 
 ?>

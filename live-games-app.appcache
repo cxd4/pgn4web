@@ -1,9 +1,8 @@
 CACHE MANIFEST
 
-# version 2.73+0084
+# version 2.73+0086
 
 chess-informant-NAG-symbols.js
-engine.html
 engine.js
 fide-lookup.js
 fonts/pgn4web-font-ChessInformantReader.css
@@ -25,6 +24,8 @@ images/alpha/96/wp.png
 images/alpha/96/wq.png
 images/alpha/96/wr.png
 libs/garbochess/garbochess.js
+# live-games-app.php
+live-games-app-engine.php
 pawn.ico
 pawn.png
 pawns.png
