@@ -198,10 +198,10 @@ if ((theObj = document.getElementById("HeaderContainer")) && (touchEventEnabled)
   simpleAddEvent(theObj, "touchcancel", pgn4web_handleTouchCancel);
 }
 
-document.body.addEventListener("touchmove", function(e) {
+simpleAddEvent(document.body, "touchmove", function(e) {
   var theObj = document.getElementById("GameList");
   if ((!theObj) || (!theObj.style.display)) { e.preventDefault(); }
-}, false);
+});
 
 if (theObj = document.getElementById("GameLiveStatusExtraInfoLeft")) {
   theObj.innerHTML = "x";

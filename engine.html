@@ -335,8 +335,18 @@ myInsertRule(mySheet, ".gameCustomButtons", "color: " + controlTextColorHex + ";
 myInsertRule(mySheet, ".gameFlagToMove", "border-color: " + fontMovesColorHex + ";");
 myInsertRule(mySheet, ".gameEval", "background: " + backgroundColorHex + ";");
 
+var lastOrientation;
+var lastOrientationTimeout = null;
 var oldSquareSizeCss;
 function myOnOrientationchange() {
+   if (window.orientation === lastOrientation) { return; }
+   lastOrientation = window.orientation;
+
+   if ((appBehaviour) && (history.length > 1)) {
+     if (lastOrientationTimeout) { history.back(); }
+     else { lastOrientationTimeout = setTimeout("lastOrientationTimeout = null;", 1800); }
+   }
+
    var sheet = document.styleSheets[1];
    var oldRules = myRulesLength(sheet);
 
@@ -1148,7 +1158,7 @@ if (appBehaviour && window.navigator.standalone) {
     return null;
   };
 
-  document.body.addEventListener("touchmove", function(e) { e.preventDefault(); }, false);
+  simpleAddEvent(document.body, "touchmove", function(e) { e.preventDefault(); });
 }
 
 </script>
