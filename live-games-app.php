@@ -201,7 +201,7 @@ if ((theObj = document.getElementById("HeaderContainer")) && (touchEventEnabled)
 document.body.addEventListener("touchmove", function(e) {
   var theObj = document.getElementById("GameList");
   if ((!theObj) || (!theObj.style.display)) { e.preventDefault(); }
-});
+}, false);
 
 if (theObj = document.getElementById("GameLiveStatusExtraInfoLeft")) {
   theObj.innerHTML = "x";
