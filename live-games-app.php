@@ -146,7 +146,7 @@ window['loadPgnCheckingLiveStatus'] = function(res) {
 window['defaultLoadPgnFromPgnUrl'] = window['loadPgnFromPgnUrl'];
 window['loadPgnFromPgnUrl'] = function(pgnUrl) {
   if (!appInitialized) {
-    var initialPgnGames = localStorage[lsId + "lastGamesPgnText"] || '[Event "live games app setup: please wait..."]\\n[Site ""]\\n[Date ""]\\n[Round ""]\\n[White ""]\\n[Black ""]\\n[Result "*"]\\n';
+    var initialPgnGames = localStorage[lsId + "lastGamesPgnText"] || '[Event "please wait..."]\\n[Site "live games app"]\\n[Date "startup"]\\n[Round ""]\\n[White ""]\\n[Black ""]\\n[Result "*"]\\n';
     if (!pgnGameFromPgnText(initialPgnGames)) {
       myAlert("error: invalid games cache");
     } else {
