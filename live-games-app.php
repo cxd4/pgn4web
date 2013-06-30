@@ -237,12 +237,10 @@ if (theObj = document.getElementById("GameLiveStatusExtraInfoRight")) {
   theObj.style.visibility = "visible";
 }
 
-/*
 simpleAddEvent(window.applicationCache, "updateready", function(e) {
   window.applicationCache.swapCache();
   window.location.reload();
 });
-*/
 END;
 $html = str_replace("<!-- AppCheck: footer -->", $text, $html);
 
