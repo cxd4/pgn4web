@@ -68,11 +68,11 @@ $html = str_replace("<!-- AppCheck: meta -->", $text, $html);
 
 $text = <<<END
   if (!appInitialized) {
-    if (localStorage["lastGameKey"]) {
-      var lastGameKey = localStorage["lastGameKey"];
-      var lastGameVar = parseInt(localStorage["lastGameVar"], 10) || 0;
-      var lastGamePly = parseInt(localStorage["lastGamePly"], 10);
-      var lastGameAutoplay = localStorage["lastGameAutoplay"] === "true";
+    if (localStorage[lsId + "lastGameKey"]) {
+      var lastGameKey = localStorage[lsId + "lastGameKey"];
+      var lastGameVar = parseInt(localStorage[lsId + "lastGameVar"], 10) || 0;
+      var lastGamePly = parseInt(localStorage[lsId + "lastGamePly"], 10);
+      var lastGameAutoplay = localStorage[lsId + "lastGameAutoplay"] === "true";
       for (var gg = 0; gg < numberOfGames; gg++) {
         if (lastGameKey === gameKey(gameEvent[gg], gameSite[gg], gameDate[gg], gameRound[gg], gameWhite[gg], gameBlack[gg])) { break; }
       }
@@ -90,16 +90,16 @@ $html = str_replace("<!-- AppCheck: customFunctionOnPgnTextLoad -->", $text, $ht
 
 
 $text = <<<END
-  if (appInitialized) { localStorage["lastGameKey"] = gameKey(gameEvent[currentGame], gameSite[currentGame], gameDate[currentGame], gameRound[currentGame], gameWhite[currentGame], gameBlack[currentGame]); }
+  if (appInitialized) { localStorage[lsId + "lastGameKey"] = gameKey(gameEvent[currentGame], gameSite[currentGame], gameDate[currentGame], gameRound[currentGame], gameWhite[currentGame], gameBlack[currentGame]); }
 END;
 $html = str_replace("<!-- AppCheck: customFunctionOnPgnGameLoad -->", $text, $html);
 
 
 $text = <<<END
   if (appInitialized) {
-    localStorage["lastGameVar"] = CurrentVar;
-    localStorage["lastGamePly"] = CurrentPly;
-    localStorage["lastGameAutoplay"] = ((isAutoPlayOn) || (CurrentPly === StartPly + PlyNumber));
+    localStorage[lsId + "lastGameVar"] = CurrentVar;
+    localStorage[lsId + "lastGamePly"] = CurrentPly;
+    localStorage[lsId + "lastGameAutoplay"] = ((isAutoPlayOn) || (CurrentPly === StartPly + PlyNumber));
   }
 END;
 $html = str_replace("<!-- AppCheck: customFunctionOnMove -->", $text, $html);
@@ -108,11 +108,19 @@ $html = str_replace("<!-- AppCheck: customFunctionOnMove -->", $text, $html);
 $text = <<<END
 var appInitialized = false;
 
+var lsId = "pgn4web_live_games_app_";
+
+var storageId = "1";
+if (localStorage[lsId + "storageId"] !== storageId) {
+  window.localStorage.clear();
+  localStorage[lsId + "storageId"] = storageId;
+}
+
 window['defaultSetAutoPlay'] = window['SetAutoPlay'];
 window['SetAutoPlay'] = function(vv) {
   defaultSetAutoPlay(vv);
   if (appInitialized) {
-    localStorage["lastGameAutoplay"] = ((isAutoPlayOn) || (CurrentPly === StartPly + PlyNumber));
+    localStorage[lsId + "lastGameAutoplay"] = ((isAutoPlayOn) || (CurrentPly === StartPly + PlyNumber));
   }
 };
 
@@ -121,7 +129,7 @@ window['loadPgnCheckingLiveStatus'] = function(res) {
   var theObj = document.getElementById("GameLiveStatusExtraInfoRight");
   if (theObj) {
     // 5h = 18000000ms
-    theObj.style.textTransform = ((!localStorage["lastGamesTime"]) || ((new Date()).getTime() - localStorage["lastGamesTime"]) > 18000000) ? "uppercase" : "";
+    theObj.style.textTransform = ((!localStorage[lsId + "lastGamesTime"]) || ((new Date()).getTime() - localStorage[lsId + "lastGamesTime"]) > 18000000) ? "uppercase" : "";
     theObj.style.visibility = (res === LOAD_PGN_FAIL ? "visible" : "hidden");
     var otherObj = document.getElementById("GameLiveStatusExtraInfoLeft");
     if (otherObj) { otherObj.style.textTransform = theObj.style.textTransform; }
@@ -129,8 +137,8 @@ window['loadPgnCheckingLiveStatus'] = function(res) {
   if (res === LOAD_PGN_OK) {
     var text = "";
     for (var ii = 0; ii < numberOfGames; ++ii) { text += fullPgnGame(ii) + "\\n\\n"; }
-    localStorage["lastGamesPgnText"] = text;
-    localStorage["lastGamesTime"] = (new Date()).getTime();
+    localStorage[lsId + "lastGamesPgnText"] = text;
+    localStorage[lsId + "lastGamesTime"] = (new Date()).getTime();
   }
   defaultLoadPgnCheckingLiveStatus(res);
 };
@@ -138,7 +146,7 @@ window['loadPgnCheckingLiveStatus'] = function(res) {
 window['defaultLoadPgnFromPgnUrl'] = window['loadPgnFromPgnUrl'];
 window['loadPgnFromPgnUrl'] = function(pgnUrl) {
   if (!appInitialized) {
-    var initialPgnGames = localStorage["lastGamesPgnText"] || '[Event "waiting for the next live event"]\\n[Site ""]\\n[Date ""]\\n[Round ""]\\n[White ""]\\n[Black ""]\\n[Result "*"]\\n';
+    var initialPgnGames = localStorage[lsId + "lastGamesPgnText"] || '[Event "waiting for the next live event"]\\n[Site ""]\\n[Date ""]\\n[Round ""]\\n[White ""]\\n[Black ""]\\n[Result "*"]\\n';
     if (!pgnGameFromPgnText(initialPgnGames)) {
       myAlert("error: invalid games cache");
     } else {
