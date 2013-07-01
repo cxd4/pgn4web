@@ -95,25 +95,29 @@ if (window.navigator.standalone) {
 
 function pgn4web_handleTouchEnd_body(e) {
   e.stopPropagation();
-  var jj, deltaX, deltaY;
+  var jj, deltaX, deltaY, theObj;
   for (var ii = 0; ii < e.changedTouches.length; ii++) {
     if ((jj = pgn4webOngoingTouchIndexById(e.changedTouches[ii].identifier)) != -1) {
       deltaX = e.changedTouches[ii].clientX - pgn4webOngoingTouches[jj].clientX;
       deltaY = e.changedTouches[ii].clientY - pgn4webOngoingTouches[jj].clientY;
       if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) >= 13) {
-/*jsl:ignore*/
         if (Math.abs(deltaY) > 1.5 * Math.abs(deltaX)) {
           if (deltaY > 0) { // vertical down
             if ((!openerCheck()) && (history.length > 1)) { history.back(); }
           } else { // vertical up
+            if (theObj = document.getElementById("GameFlagToMove")) {
+              clickedGameFlagToMove(theObj, { "shiftKey": false });
+            }
           }
         } else if (Math.abs(deltaX) > 1.5 * Math.abs(deltaY)) {
           if (deltaX > 0) { // horizontal right
+            if (theObj = document.getElementById("GameMoves")) {
+              clickedGameMoves(theObj, { "shiftKey": false });
+            }
           } else { // horizontal left
             if ((!openerCheck()) && (history.length > 1)) { history.back(); }
           }
         }
-/*jsl:end*/
       }
       pgn4webOngoingTouches.splice(jj, 1);
     }
