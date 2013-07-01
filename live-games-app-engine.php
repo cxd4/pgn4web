@@ -101,19 +101,19 @@ function pgn4web_handleTouchEnd_body(e) {
       deltaX = e.changedTouches[ii].clientX - pgn4webOngoingTouches[jj].clientX;
       deltaY = e.changedTouches[ii].clientY - pgn4webOngoingTouches[jj].clientY;
       if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) >= 13) {
+/*jsl:ignore*/
         if (Math.abs(deltaY) > 1.5 * Math.abs(deltaX)) {
           if (deltaY > 0) { // vertical down
             if ((!openerCheck()) && (history.length > 1)) { history.back(); }
           } else { // vertical up
-            deltaY--; // useless statement to avoid warning
           }
         } else if (Math.abs(deltaX) > 1.5 * Math.abs(deltaY)) {
           if (deltaX > 0) { // horizontal right
-            deltaX++; // useless statement to avoid warning
           } else { // horizontal left
             if ((!openerCheck()) && (history.length > 1)) { history.back(); }
           }
         }
+/*jsl:end*/
       }
       pgn4webOngoingTouches.splice(jj, 1);
     }
