@@ -192,6 +192,8 @@ function pgn4web_handleTouchEnd_HeaderContainer(e) {
           } else { // vertical up
             showGameList();
           }
+        } else if (Math.abs(deltaX) > 1.5 * Math.abs(deltaY)) { // horizontal left or right
+          GoToMove(CurrentPly + sign(deltaX));
         }
       }
       pgn4webOngoingTouches.splice(jj, 1);
