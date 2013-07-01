@@ -1122,9 +1122,6 @@ function customFunctionOnTouch(deltaX, deltaY) {
    if (disableInputs) { return; }
    if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 13) { return; }
    if (Math.abs(deltaY) > 1.5 * Math.abs(deltaX)) { // vertical up or down
-
-<!-- AppCheck: customFunctionOnTouch -->
-
       GoToMove(StartPlyVar[CurrentVar] + (deltaY > 0 ? PlyNumberVar[CurrentVar] : 0));
    } else if (Math.abs(deltaX) > 1.5 * Math.abs(deltaY)) { // horizontal left or right
       GoToMove(CurrentPly + sign(deltaX));

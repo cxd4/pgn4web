@@ -4041,16 +4041,19 @@ function pgn4webOngoingTouchIndexById(needle) {
 }
 
 function pgn4web_handleTouchStart(e) {
+  e.stopPropagation();
   for (var ii = 0; ii < e.changedTouches.length; ii++) {
     pgn4webOngoingTouches.push({ identifier: e.changedTouches[ii].identifier, clientX: e.changedTouches[ii].clientX, clientY: e.changedTouches[ii].clientY });
   }
 }
 
 function pgn4web_handleTouchMove(e) {
+  e.stopPropagation();
   e.preventDefault();
 }
 
 function pgn4web_handleTouchEnd(e) {
+  e.stopPropagation();
   var jj;
   for (var ii = 0; ii < e.changedTouches.length; ii++) {
     if ((jj = pgn4webOngoingTouchIndexById(e.changedTouches[ii].identifier)) != -1) {
@@ -4062,6 +4065,7 @@ function pgn4web_handleTouchEnd(e) {
 }
 
 function pgn4web_handleTouchCancel(e) {
+  e.stopPropagation();
   var jj;
   for (var ii = 0; ii < e.changedTouches.length; ii++) {
     if ((jj = pgn4webOngoingTouchIndexById(e.changedTouches[ii].identifier)) != -1) {

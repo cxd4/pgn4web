@@ -180,6 +180,7 @@ function gameKey(event, site, date, round, white, black) {
 }
 
 function pgn4web_handleTouchEnd_HeaderContainer(e) {
+  e.stopPropagation();
   var jj, deltaX, deltaY;
   for (var ii = 0; ii < e.changedTouches.length; ii++) {
     if ((jj = pgn4webOngoingTouchIndexById(e.changedTouches[ii].identifier)) != -1) {

@@ -77,12 +77,6 @@ $html = str_replace("<!-- AppCheck: updateGameAutoUpdateFlag -->", $text, $html)
 
 
 $text = <<<END
-      if ((!openerCheck()) && (history.length > 1) && (deltaY > 0)) { history.back(); }
-END;
-$html = str_replace("<!-- AppCheck: customFunctionOnTouch -->", $text, $html);
-
-
-$text = <<<END
 if (window.navigator.standalone) {
   window.open = function (winUrl, winTarget, winParam) {
     if (winUrl) {
@@ -98,6 +92,40 @@ if (window.navigator.standalone) {
 
   simpleAddEvent(document.body, "touchmove", function(e) { e.preventDefault(); });
 }
+
+function pgn4web_handleTouchEnd_body(e) {
+  e.stopPropagation();
+  var jj, deltaX, deltaY;
+  for (var ii = 0; ii < e.changedTouches.length; ii++) {
+    if ((jj = pgn4webOngoingTouchIndexById(e.changedTouches[ii].identifier)) != -1) {
+      deltaX = e.changedTouches[ii].clientX - pgn4webOngoingTouches[jj].clientX;
+      deltaY = e.changedTouches[ii].clientY - pgn4webOngoingTouches[jj].clientY;
+      if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) >= 13) {
+        if (Math.abs(deltaY) > 1.5 * Math.abs(deltaX)) {
+          if (deltaY > 0) { // vertical down
+            if ((!openerCheck()) && (history.length > 1)) { history.back(); }
+          } else { // vertical up
+            deltaY--; // useless statement to avoid warning
+          }
+        } else if (Math.abs(deltaX) > 1.5 * Math.abs(deltaY)) {
+          if (deltaX > 0) { // horizontal right
+            deltaX++; // useless statement to avoid warning
+          } else { // horizontal left
+            if ((!openerCheck()) && (history.length > 1)) { history.back(); }
+          }
+        }
+      }
+      pgn4webOngoingTouches.splice(jj, 1);
+    }
+  }
+  clearSelectedText();
+}
+
+simpleAddEvent(document.body, "touchstart", pgn4web_handleTouchStart);
+simpleAddEvent(document.body, "touchmove", pgn4web_handleTouchMove);
+simpleAddEvent(document.body, "touchend", pgn4web_handleTouchEnd_body);
+simpleAddEvent(document.body, "touchleave", pgn4web_handleTouchEnd_body);
+simpleAddEvent(document.body, "touchcancel", pgn4web_handleTouchCancel);
 END;
 $html = str_replace("<!-- AppCheck: footer -->", $text, $html);
 
