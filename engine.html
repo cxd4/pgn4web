@@ -929,10 +929,13 @@ function customFunctionOnPgnTextLoad() {
 }
 
 function customFunctionOnMove() {
+   var theObj;
 
    updateGameFlagToMove();
 
    if (!disableEngine) {
+      if (theObj = document.getElementById("GameMoves")) { theObj.innerHTML = theObj.title = ""; }
+      if (theObj = document.getElementById("GameEval")) { theObj.innerHTML = theObj.title = ""; }
       StartEngineAnalysis();
    }
 
