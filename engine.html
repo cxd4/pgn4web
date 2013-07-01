@@ -934,7 +934,7 @@ function customFunctionOnMove() {
    updateGameFlagToMove();
 
    if (!disableEngine) {
-      var id = cache_fen_lastIndexOf(fenString);
+      var id = cache_fen_lastIndexOf(CurrentFEN());
       if (theObj = document.getElementById("GameMoves")) {
          theObj.innerHTML = (id != -1) ? cache_pv[id] : "";
          theObj.title = "";
