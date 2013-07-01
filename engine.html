@@ -934,8 +934,15 @@ function customFunctionOnMove() {
    updateGameFlagToMove();
 
    if (!disableEngine) {
-      if (theObj = document.getElementById("GameMoves")) { theObj.innerHTML = theObj.title = ""; }
-      if (theObj = document.getElementById("GameEval")) { theObj.innerHTML = theObj.title = ""; }
+      var id = cache_fen_lastIndexOf(fenString);
+      if (theObj = document.getElementById("GameMoves")) {
+         theObj.innerHTML = (id != -1) ? cache_pv[id] : "";
+         theObj.title = "";
+      }
+      if (theObj = document.getElementById("GameEval")) {
+         theObj.innerHTML = (id != -1) ? ev2NAG(parseFloat(cache_ev[id])) : "";
+         theObj.title = "";
+      }
       StartEngineAnalysis();
    }
 
