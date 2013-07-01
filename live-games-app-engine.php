@@ -30,6 +30,12 @@ END;
 }
 
 
+$text = <<<END
+<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+END;
+$html = str_replace("<!-- AppCheck: meta -->", $text, $html);
+
+
 $text = "var thisParamString = (window.location.search || window.location.hash) + '&fpis=96&pf=a&lch=FFCC99&dch=CC9966&bch=000000&hch=996633&fmch=FFEEDD&ctch=FFEEDD&fpr=0.5&els=t';";
 $html = str_replace("var thisParamString = window.location.search || window.location.hash;", $text, $html);
 
