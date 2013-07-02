@@ -66,6 +66,10 @@ END;
 $html = str_replace("<!-- AppCheck: meta -->", $text, $html);
 
 
+$text = "gameListLineHeight =  Math.floor(2 * gameListFontSize);";
+$html = str_replace("gameListLineHeight =  Math.floor(1.4 * gameListFontSize);", $text, $html);
+
+
 $text = <<<END
   if (!appInitialized) {
     if (localStorage[lsId + "lastGameKey"]) {
