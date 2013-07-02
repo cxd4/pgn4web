@@ -1699,7 +1699,7 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
         myAlert('error: unmodified PGN URL when not in live mode');
       }
 
-// patch Opera's failure reporting 304 status
+// patch Opera's failure reporting 304 status (up to Opera v12)
     } else if (window.opera && (!this_http_request.responseText) && (this_http_request.status === 0)) {
       this_http_request.abort();
       res = LOAD_PGN_UNMODIFIED;
