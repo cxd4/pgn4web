@@ -66,7 +66,7 @@ END;
 $html = str_replace("<!-- AppCheck: meta -->", $text, $html);
 
 
-$text = "gameListLineHeight =  Math.floor(2 * gameListFontSize);";
+$text = "gameListLineHeight =  Math.floor(1.9 * gameListFontSize);";
 $html = str_replace("gameListLineHeight =  Math.floor(1.4 * gameListFontSize);", $text, $html);
 
 
