@@ -30,7 +30,7 @@ END;
 }
 
 
-$text = '"?l=t&ct=wood&bch=000000&fch=FFEEDD&pf=a&scf=t"';
+$text = '(window.location.hash + "&l=t&ct=wood&bch=000000&fch=FFEEDD&pf=a&scf=t")';
 $html = str_replace("window.location.search", $text, $html);
 
 
