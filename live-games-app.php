@@ -215,7 +215,7 @@ function pgn4web_handleTouchStart_scroll(e) {
   this.lastY = e.pageY;
 }
 
-function pgn4web_handleTouchMove(e) {
+function pgn4web_handleTouchMove_scroll(e) {
   var up = (e.pageY > this.lastY);
   var down = (e.pageY < this.lastY);
   var flat = (e.pageY === this.lastY);
@@ -237,7 +237,7 @@ if (touchEventEnabled) {
   theObj = document.getElementById("GameListBody");
   if (theObj) {
     simpleAddEvent(theObj, "touchstart", pgn4web_handleTouchStart_scroll);
-    simpleAddEvent(theObj, "touchmove", pgn4web_handleTouchMove);
+    simpleAddEvent(theObj, "touchmove", pgn4web_handleTouchMove_scroll);
   }
 }
 
