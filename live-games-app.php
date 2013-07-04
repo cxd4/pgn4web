@@ -207,6 +207,24 @@ function pgn4web_handleTouchEnd_HeaderContainer(e) {
   clearSelectedText();
 }
 
+function pgn4web_handleTouchEnd_Header(e) {
+  e.stopPropagation();
+  var jj, deltaX, deltaY;
+  for (var ii = 0; ii < e.changedTouches.length; ii++) {
+    if ((jj = pgn4webOngoingTouchIndexById(e.changedTouches[ii].identifier)) != -1) {
+      deltaX = e.changedTouches[ii].clientX - pgn4webOngoingTouches[jj].clientX;
+      deltaY = e.changedTouches[ii].clientY - pgn4webOngoingTouches[jj].clientY;
+      if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) >= 13) {
+        if (Math.abs(deltaX) > 1.5 * Math.abs(deltaY)) { // horizontal left or right
+          selectGameList(-1);
+        }
+      }
+      pgn4webOngoingTouches.splice(jj, 1);
+    }
+  }
+  clearSelectedText();
+}
+
 function pgn4web_handleTouchStart_scroll(e) {
   this.allowUp = (this.scrollTop > 0);
   this.allowDown = (this.scrollTop < this.scrollHeight - this.clientHeight);
@@ -233,9 +251,16 @@ if (touchEventEnabled) {
     simpleAddEvent(theObj, "touchcancel", pgn4web_handleTouchCancel);
   }
 
+  if (theObj = document.getElementById("GameListHeader")) {
+    simpleAddEvent(theObj, "touchstart", pgn4web_handleTouchStart);
+    simpleAddEvent(theObj, "touchmove", pgn4web_handleTouchMove);
+    simpleAddEvent(theObj, "touchend", pgn4web_handleTouchEnd_Header);
+    simpleAddEvent(theObj, "touchleave", pgn4web_handleTouchEnd_Header);
+    simpleAddEvent(theObj, "touchcancel", pgn4web_handleTouchCancel);
+  }
+
   simpleAddEvent(document.body, "touchmove", function(e) { e.preventDefault(); });
-  theObj = document.getElementById("GameListBody");
-  if (theObj) {
+  if (theObj = document.getElementById("GameListBody")) {
     simpleAddEvent(theObj, "touchstart", pgn4web_handleTouchStart_scroll);
     simpleAddEvent(theObj, "touchmove", pgn4web_handleTouchMove_scroll);
   }
