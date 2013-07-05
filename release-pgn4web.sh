@@ -26,7 +26,7 @@ fi
 ln -s "$(pwd)" ../"$pgn4webDirectory"
 
 cd ..
-zip -9r "$pgn4webFilename" "$pgn4webDirectory" -x *.svn/* -x "$pgn4webDirectory"/jsl.conf -x "$pgn4webDirectory"/paolo/\* -x "$pgn4webDirectory"/paolo/
+zip -9r "$pgn4webFilename" "$pgn4webDirectory" -x *.svn/* -x "$pgn4webDirectory"/jsl.conf -x "$pgn4webDirectory"/paolo/\* -x "$pgn4webDirectory"/paolo/ -x "$pgn4webDirectory"/live-games-app*
 
 rm $pgn4webDirectory
 
