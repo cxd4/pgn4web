@@ -403,7 +403,7 @@ function myOnResize() {
   gameListLineHeight =  Math.floor(1.4 * gameListFontSize);
   var gameListPadding = Math.floor(gameListLineHeight / 2);
   gameListBodyHeight = gameListLineHeight * Math.floor((wh - 2 * framePadding - gameListLineHeight - 2.5 * gameListPadding) / gameListLineHeight) + 1;
-  myInsertRule(sheet, ".gameList", "display: none; overflow: hidden; font-family: monospace; white-space: pre; font-size: " + gameListFontSize + "px; line-height: " + gameListLineHeight + "px;");
+  myInsertRule(sheet, ".gameList", "display: none; position: absolute; overflow: hidden; font-family: monospace; white-space: pre; font-size: " + gameListFontSize + "px; line-height: " + gameListLineHeight + "px;");
   myInsertRule(sheet, ".gameListHeader", "overflow: hidden; width: " + (ww  - 2 * framePadding) + "px; padding-top: " + gameListPadding + "px; padding-bottom: " + gameListPadding + "px;");
   myInsertRule(sheet, ".gameListBody", "height: " + gameListBodyHeight + "px; width: " + (ww - 2 * framePadding) + "px; overflow-x: hidden; overflow-y: auto; scrollbar-base-color: #" + backgroundColorHex + "; overflow-scrolling: touch; -webkit-overflow-scrolling: touch;");
   myInsertRule(sheet, ".scrollLink", "visibility: " + (numberOfGames > gameListBodyHeight / gameListLineHeight + 0.2 ? "visible" : "hidden") + ";");
