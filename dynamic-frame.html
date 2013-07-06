@@ -93,6 +93,7 @@ if (thisParamString.match(thisRegExp) !== null) {
 //    " - fontSizeRatio = font size ratio, from " + sizeRatio_min + " to " + sizeRatio_max + " (default " + fontSizeRatio_default + ")" + "\n" +
 //    " - pieceSizeRatio = piece size ratio, from " + sizeRatio_min + " to " + sizeRatio_max + " (default " + pieceSizeRatio_default + ")" + "\n" +
 //    " - framePaddingRatio = frame padding as a square ratio (default " + framePaddingRatio_default + ")" + "\n" +
+//    " - horizontalCentered = if set true centers the chessboard when in horizontal layout (default false)" + "\n" +
     " - bare = if set true shows chessboard only (default false)" + "\n" +
 //    " - engineWinPrepareIdle = if set true preloads the analysis board with an empty board; use only for embedded analysis boards
 //    " - debug = true | false (default false)" + "\n" +
@@ -282,6 +283,14 @@ if (thisParamString.match(thisRegExp) !== null) {
   if (isNaN(framePaddingRatio)) { framePaddingRatio = framePaddingRatio_default; }
 }
 
+// undocumented feature
+var horizontalCenteredString = "";
+thisRegExp = /(&|\?)(horizontalCentered|hc)=([^&]*)(&|$)/i;
+if (thisParamString.match(thisRegExp) !== null) {
+  horizontalCenteredString = unescape(thisParamString.match(thisRegExp)[3]);
+}
+var horizontalCentered = ((horizontalCenteredString == "true") || (horizontalCenteredString == "t"));
+
 var bareString = "";
 thisRegExp = /(&|\?)(bare|b)=([^&]*)(&|$)/i;
 if (thisParamString.match(thisRegExp) !== null) {
@@ -361,7 +370,7 @@ function myOnResize() {
     if (horizontalLayout) { myInsertRule(sheet, ".boardTable", "margin-left: " + ((ww - 2 * framePadding - 8 * squareSize) / 2) + "px;"); }
     else { myInsertRule(sheet, ".boardTable", "margin-top: " + ((wh - 2 * framePadding - 8 * squareSize) / 2) + "px;"); }
   } else {
-    if (horizontalLayout) { myInsertRule(sheet, ".boardTable", "float: left;"); }
+    if (horizontalLayout) { myInsertRule(sheet, ".boardTable", "float: left;" + (horizontalCentered ? " margin-top: " + ((wh - 2 * framePadding - 8 * squareSize) / 2) + "px;" : "")); }
     else { myInsertRule(sheet, ".boardTable", "margin-left: " + ((ww - 2 * framePadding - 8 * squareSize) / 2) + "px;"); }
   }
   myInsertRule(sheet, ".pieceImage", "width:" + pieceSize + "px; height:" + pieceSize + "px;");
@@ -369,7 +378,7 @@ function myOnResize() {
   myInsertRule(sheet, ".blackSquare", "width:" + bareSquareSize + "px; height:" + bareSquareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + darkColorHex + "; border-color:  #" + darkColorHex + ";");
   myInsertRule(sheet, ".highlightWhiteSquare", "width:" + bareSquareSize + "px; height:" + bareSquareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + lightColorHex + "; border-color: #" + (highlightColorHex ? highlightColorHex : lightColorHex) + ";");
   myInsertRule(sheet, ".highlightBlackSquare", "width:" + bareSquareSize + "px; height:" + bareSquareSize  + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + darkColorHex + "; border-color:  #" + (highlightColorHex ? highlightColorHex : darkColorHex) + ";");
-  myInsertRule(sheet, ".headerContainer", "width: " + headerContainerWidth + "px; white-space: nowrap; overflow: hidden;" + (horizontalLayout ? " float: right; text-align: left;" : " text-align: center;"));
+  myInsertRule(sheet, ".headerContainer", "width: " + headerContainerWidth + "px; white-space: nowrap; overflow: hidden;" + (horizontalLayout ? " float: right; text-align: left;" + (horizontalCentered ? " margin-top: " + ((wh - 2 * framePadding - 8 * squareSize) / 2) + "px;" : "") : " text-align: center;"));
   if (LiveBroadcastDelay > 0) {
     myInsertRule(sheet, ".gameButtons", "display: none;");
   } else {
