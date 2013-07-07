@@ -34,7 +34,7 @@ $text = '(window.location.hash + "&l=t&pf=a&ct=wood&bch=000000&fch=FFEEDD&hch=99
 $html = str_replace("window.location.search", $text, $html);
 
 
-$text = '<html manifest="' . preg_replace("/\.php$/", ".appcache", $_SERVER['PHP_SELF']) . '">';
+$text = '<html manifest="live-games-app.appcache">';
 $html = str_replace("<html>", $text, $html);
 
 

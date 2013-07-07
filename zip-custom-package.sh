@@ -16,6 +16,8 @@ case "$1" in
 
   "live-minimal" ) pgn4webPackageFileList="$pgn4webBaseFiles dynamic-frame.html live-compact.* live-fullscreen.html live-mosaic* live-results* blank.html chess-informant-NAG-symbols.js fide-lookup.js crc32.js live*.pgn demoLiveGames.pgn images/index.html images/alpha/index.html images/alpha/README.txt images/alpha/24/* images/alpha/26/* images/alpha/32/* images/alpha/96/* images/merida/index.html images/merida/README.txt images/merida/96/* images/uscf/index.html images/uscf/README.txt images/uscf/96/* fonts/index.html fonts/README.txt fonts/LiberationSans* fonts/pgn4web-font-LiberationSans.css fonts/ChessSansPiratf* fonts/pgn4web-font-ChessSansPiratf.css fonts/ChessInformantReader* fonts/pgn4web-font-ChessInformantReader.css engine.* libs/garbochess/* live/index.html live/live-grab* live/live-simulation.sh";;
 
+  "app" ) pgn4webPackageFileList="$pgn4webBaseFiles chess-informant-NAG-symbols.js dynamic-frame.html engine.html engine.js fide-lookup.js fonts/index.html fonts/pgn4web-font-ChessInformantReader.css fonts/ChessInformantReader.* images/index.html images/alpha/index.html images/alpha/96/* libs/index.html libs/garbochess/* live-games-app*";;
+
   * ) echo "bash `basename $0` [board-minimal | live-minimal]"; exit 0 ;;
 
 esac
