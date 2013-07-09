@@ -171,7 +171,7 @@ function detectEngineLocation() {
 
 engineWinParametersSeparator = "#?";
 
-clearShortcutSquares("F", "8");
+boardShortcut("F8", "live games web application wiki", function(t,e){ window.open("https://code.google.com/p/pgn4web/wiki/WebApp_LiveGames", "pgn4web_webAppWiki"); });
 
 function gameKey(event, site, date, round, white, black) {
   var key = "";
