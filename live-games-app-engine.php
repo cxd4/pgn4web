@@ -13,7 +13,7 @@ error_reporting(E_ALL | E_STRICT);
 $html = @file_get_contents("engine.html");
 
 
-if (!$html) {
+function errorExit($errorNum) {
   $html = <<<END
 <!DOCTYPE HTML>
 <html>
@@ -21,7 +21,7 @@ if (!$html) {
 <title>Live Games</title>
 </head>
 <body style="font-family: sans-serif;">
-Live Games app error
+Live Games app error: $errorNum
 </body>
 </html>
 END;
@@ -30,21 +30,34 @@ END;
 }
 
 
+$actionNum = 0;
+if (!$html) { errorExit($actionNum); }
+
+
 $text = <<<END
 <meta name="viewport" content="initial-scale=1, maximum-scale=1">
 END;
-$html = str_replace("<!-- AppCheck: meta -->", $text, $html);
+$oldText = "<!-- AppCheck: meta -->";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
 
 
 $text = "var thisParamString = (window.location.search || window.location.hash) + '&fpis=96&pf=a&lch=FFCC99&dch=CC9966&bch=000000&hch=996633&fmch=FFEEDD&ctch=FFEEDD&fpr=0.5&els=t';";
-$html = str_replace("var thisParamString = window.location.search || window.location.hash;", $text, $html);
+$oldText = "var thisParamString = window.location.search || window.location.hash;";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
 
 
 $text = <<<END
 var lastOrientation;
 var lastOrientationTimeout = null;
 END;
-$html = str_replace("<!-- AppCheck: before myOnOrientationchange -->", $text, $html);
+$oldText = "<!-- AppCheck: before myOnOrientationchange -->";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
 
 
 $text = <<<END
@@ -58,14 +71,20 @@ $text = <<<END
       }
    }
 END;
-$html = str_replace("<!-- AppCheck: myOnOrientationchange -->", $text, $html);
+$oldText = "<!-- AppCheck: myOnOrientationchange -->";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
 
 
 $text = <<<END
    } else if (history.length > 1) {
       history.back();
 END;
-$html = str_replace("<!-- AppCheck: clickedGameAutoUpdateFlag -->", $text, $html);
+$oldText = "<!-- AppCheck: clickedGameAutoUpdateFlag -->";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
 
 
 $text = <<<END
@@ -73,7 +92,10 @@ $text = <<<END
          theObj.innerHTML = "&crarr;";
          theObj.title = "close analysis board";
 END;
-$html = str_replace("<!-- AppCheck: updateGameAutoUpdateFlag -->", $text, $html);
+$oldText = "<!-- AppCheck: updateGameAutoUpdateFlag -->";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
 
 
 $text = <<<END
@@ -131,7 +153,10 @@ simpleAddEvent(document.body, "touchend", pgn4web_handleTouchEnd_body);
 simpleAddEvent(document.body, "touchleave", pgn4web_handleTouchEnd_body);
 simpleAddEvent(document.body, "touchcancel", pgn4web_handleTouchCancel);
 END;
-$html = str_replace("<!-- AppCheck: footer -->", $text, $html);
+$oldText = "<!-- AppCheck: footer -->";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
 
 
 print $html;

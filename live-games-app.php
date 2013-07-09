@@ -13,7 +13,7 @@ error_reporting(E_ALL | E_STRICT);
 $html = @file_get_contents("dynamic-frame.html");
 
 
-if (!$html) {
+function errorExit($errorNum) {
   $html = <<<END
 <!DOCTYPE HTML>
 <html>
@@ -21,7 +21,7 @@ if (!$html) {
 <title>Live Games</title>
 </head>
 <body style="font-family: sans-serif;">
-Live Games app error
+Live Games app error: $errorNum
 </body>
 </html>
 END;
@@ -30,12 +30,22 @@ END;
 }
 
 
+$actionNum = 0;
+if (!$html) { errorExit($actionNum); }
+
+
 $text = '(window.location.hash + "&l=t&pf=a&ct=wood&bch=000000&fch=FFEEDD&hch=996633&scf=t" + (window.navigator.standalone ? "&hc=t" : ""))';
-$html = str_replace("window.location.search", $text, $html);
+$oldText = "window.location.search";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
 
 
 $text = '<html manifest="live-games-app.appcache">';
-$html = str_replace("<html>", $text, $html);
+$oldText = "<html>";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
 
 
 $text = <<<END
@@ -63,11 +73,18 @@ window.open = function (winUrl, winTarget, winParam) {
 };
 </script>
 END;
-$html = str_replace("<!-- AppCheck: meta -->", $text, $html);
+$oldText = "<!-- AppCheck: meta -->";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
 
 
-$text = "gameListLineHeight =  Math.floor(1.9 * gameListFontSize);";
-$html = str_replace("gameListLineHeight =  Math.floor(1.4 * gameListFontSize);", $text, $html);
+
+$text = "gameListLineHeight = Math.floor(1.9 * gameListFontSize);";
+$oldText = "gameListLineHeight = Math.floor(1.4 * gameListFontSize);";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
 
 
 $text = <<<END
@@ -90,13 +107,19 @@ $text = <<<END
   }
   document.title = "Live Games";
 END;
-$html = str_replace("<!-- AppCheck: customFunctionOnPgnTextLoad -->", $text, $html);
+$oldText = "<!-- AppCheck: customFunctionOnPgnTextLoad -->";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
 
 
 $text = <<<END
   if (appInitialized) { localStorage[lsId + "lastGameKey"] = gameKey(gameEvent[currentGame], gameSite[currentGame], gameDate[currentGame], gameRound[currentGame], gameWhite[currentGame], gameBlack[currentGame]); }
 END;
-$html = str_replace("<!-- AppCheck: customFunctionOnPgnGameLoad -->", $text, $html);
+$oldText = "<!-- AppCheck: customFunctionOnPgnGameLoad -->";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
 
 
 $text = <<<END
@@ -106,7 +129,10 @@ $text = <<<END
     localStorage[lsId + "lastGameAutoplay"] = ((isAutoPlayOn) || (CurrentPly === StartPly + PlyNumber));
   }
 END;
-$html = str_replace("<!-- AppCheck: customFunctionOnMove -->", $text, $html);
+$oldText = "<!-- AppCheck: customFunctionOnMove -->";
+$actionNum++;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
 
 
 $text = <<<END
@@ -280,7 +306,10 @@ simpleAddEvent(window.applicationCache, "updateready", function(e) {
   window.location.reload();
 });
 END;
-$html = str_replace("<!-- AppCheck: footer -->", $text, $html);
+$oldText = "<!-- AppCheck: footer -->";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
 
 
 print $html;
