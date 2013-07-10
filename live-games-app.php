@@ -48,6 +48,20 @@ if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
 
 
+$text = "<title>Live Games</title>";
+$oldText = "<title>chess games</title>";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
+
+
+$text = "liveStatusTickerString";
+$oldText = "document.title";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
+
+
 $text = <<<END
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -137,6 +151,8 @@ $html = str_replace($oldText, $text, $html);
 
 $text = <<<END
 var appInitialized = false;
+
+var liveStatusTickerString = "";
 
 var lsId = "pgn4web_live_games_app_";
 

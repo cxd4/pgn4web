@@ -34,6 +34,13 @@ $actionNum = 0;
 if (!$html) { errorExit($actionNum); }
 
 
+$text = "var thisParamString = (window.location.search || window.location.hash) + '&fpis=96&pf=a&lch=FFCC99&dch=CC9966&bch=000000&hch=996633&fmch=FFEEDD&ctch=FFEEDD&fpr=0.5&els=t';";
+$oldText = "var thisParamString = window.location.search || window.location.hash;";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
+
+
 $text = <<<END
 <meta name="viewport" content="initial-scale=1, maximum-scale=1">
 END;
@@ -43,8 +50,8 @@ if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
 
 
-$text = "var thisParamString = (window.location.search || window.location.hash) + '&fpis=96&pf=a&lch=FFCC99&dch=CC9966&bch=000000&hch=996633&fmch=FFEEDD&ctch=FFEEDD&fpr=0.5&els=t';";
-$oldText = "var thisParamString = window.location.search || window.location.hash;";
+$text = "<title>Game Analysis</title>";
+$oldText = "<title>pgn4web analysis board</title>";
 $actionNum += 1;
 if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
