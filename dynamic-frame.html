@@ -426,10 +426,6 @@ function myOnResize() {
   return pieceSize;
 }
 
-// redefine FlipBoard() to include myOnResize()
-window['defaultFlipBoard'] = window['FlipBoard'];
-window['FlipBoard'] = function() { defaultFlipBoard(); myOnResize(); };
-
 
 function customFunctionOnCheckLiveBroadcastStatus() {
   updateBareShortcut();
@@ -701,6 +697,14 @@ function toggleInitialHalfmove(reset2default) {
 
 
 clearShortcutSquares("E", "7");
+
+// redefine FlipBoard() to include myOnResize(), required unless FlipBoard is disabled as below
+//
+// window['defaultFlipBoard'] = window['FlipBoard'];
+// window['FlipBoard'] = function() { defaultFlipBoard(); myOnResize(); };
+var warnedFlipBoard = false;
+function FlipBoard() { if (!warnedFlipBoard) { myAlert("warning: flip board functionality disabled", false, true); warnedFlipBoard = true; } }
+
 
 boardShortcut("F7", "toggle side to move flag", function(t,e){ toggleColorFlag(); });
 
