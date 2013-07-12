@@ -72,7 +72,6 @@ sub cmd_run {
 
 
 our $lastPgn = "";
-our $lastPgnNum = 0;
 
 our $maxGamesNumDefault = 30; # frechess.org limit
 our $maxGamesNum = $maxGamesNumDefault;
@@ -754,7 +753,7 @@ sub refresh_pgn {
     return $a <=> $b;
   } (0 .. ($maxGamesNum - 1));
 
-  $lastPgnNum = 0;
+  my $lastPgnNum = 0;
   my $newPgn;
   for (my $i=0; $i<$maxGamesNum; $i++) {
     $newPgn = save_pgnGame($ordered[$i]);
@@ -764,7 +763,6 @@ sub refresh_pgn {
 
   if (($pgn eq "") || (($autorelayMode == 1) && ($gameRunning == 0))) {
     $pgn .= temp_pgn();
-    $lastPgnNum++;
   }
 
   if ($pgn ne $lastPgn) {
@@ -773,7 +771,7 @@ sub refresh_pgn {
     close(thisFile);
     $pgnWriteCount++;
     $lastPgn = $pgn;
-    refresh_memory();
+    refresh_memory($lastPgnNum);
   }
 
   if ($autorelayMode == 1) {
@@ -799,6 +797,8 @@ sub archive_pgnGame {
 }
 
 sub refresh_memory() {
+  my ($lastPgnNum) = @_;
+
   if ($PGN_MEMORY ne "") {
     my $memoryPgn = $lastPgn;
     for (my $i=0; $i<$memoryMaxGamesNum - $lastPgnNum; $i++) {
