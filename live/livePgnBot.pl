@@ -839,9 +839,7 @@ sub memory_purge_round {
   $thisRound =~ s/[^\s\w\d]/./g;
   my $pattern = '\[Event "' . $thisEvent . '"\].*\[Round "' . $thisRound . '"\]';
   for (my $i=$#memory_games; $i>=0; $i--) {
-    if ($memory_games[$i] =~ /$pattern/) {
-      delete $memory_games[$i];
-    }
+    if ($memory_games[$i] =~ /$pattern/) { delete $memory_games[$i]; }
   }
 }
 
