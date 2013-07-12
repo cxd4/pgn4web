@@ -72,6 +72,7 @@ sub cmd_run {
 
 
 our $lastPgn = "";
+our $lastPgnNum = 0;
 
 our $maxGamesNumDefault = 30; # frechess.org limit
 our $maxGamesNum = $maxGamesNumDefault;
@@ -124,6 +125,10 @@ our $autoPrioritize = "";
 our $autoPrioritizeFilter = "";
 
 our @currentRounds = ();
+
+our $PGN_MEMORY = "";
+our $memoryMaxGamesNum = $maxGamesNumDefault;
+our @memory_games = ();
 
 sub reset_games {
   if ($PGN_ARCHIVE ne "") {
@@ -297,6 +302,12 @@ sub remove_game {
 
   if ($PGN_ARCHIVE ne "") {
     archive_pgnGame($thisGameIndex);
+  }
+
+  if ($PGN_MEMORY ne "") {
+    if (($games_result[$thisGameIndex] eq "1-0") || ($games_result[$thisGameIndex] eq "0-1") || ($games_result[$thisGameIndex] eq "1/2-1/2")) {
+      memory_add_pgnGame($thisGameIndex);
+    }
   }
 
   if (($games_result[$thisGameIndex] eq "*") || ($relayMode == 1)) {
@@ -740,12 +751,17 @@ sub refresh_pgn {
     return $a <=> $b;
   } (0 .. ($maxGamesNum - 1));
 
+  $lastPgnNum = 0;
+  my $newPgn;
   for (my $i=0; $i<$maxGamesNum; $i++) {
-    $pgn .= save_pgnGame($ordered[$i]);
+    $newPgn = save_pgnGame($ordered[$i]);
+    if ($newPgn ne "") { $lastPgnNum++; }
+    $pgn .= $newPgn;
   }
 
   if (($pgn eq "") || (($autorelayMode == 1) && ($gameRunning == 0))) {
     $pgn .= temp_pgn();
+    $lastPgnNum++;
   }
 
   if ($pgn ne $lastPgn) {
@@ -754,6 +770,7 @@ sub refresh_pgn {
     close(thisFile);
     $pgnWriteCount++;
     $lastPgn = $pgn;
+    refresh_memory();
   }
 
   if ($autorelayMode == 1) {
@@ -775,6 +792,30 @@ sub archive_pgnGame {
       print thisFile $pgn;
       close(thisFile);
     }
+  }
+}
+
+sub refresh_memory() {
+  if ($PGN_MEMORY ne "") {
+    my $memoryPgn = $lastPgn;
+    for (my $i=0; $i<$memoryMaxGamesNum - $lastPgnNum; $i++) {
+      if (exists $memory_games[$i]) { $memoryPgn .= $memory_games[$i]; }
+    }
+    if ($memoryPgn ne "") {
+      open(thisFile, ">$PGN_MEMORY");
+      print thisFile $memoryPgn;
+      close(thisFile);
+    }
+  }
+}
+
+sub memory_add_pgnGame() {
+  my ($i) = @_;
+
+  if ($PGN_MEMORY ne "") {
+    my $pgn = save_pgnGame($i);
+    if ($#memory_games >= $memoryMaxGamesNum) { pop(@memory_games); }
+    unshift(@memory_games, $pgn);
   }
 }
 
@@ -838,6 +879,8 @@ add_master_command ("ics", "ics [server command] (to run a custom command on the
 add_master_command ("ignore", "ignore [regexp|\"\"] (to get/set the regular expression to ignore events/players from the PGN header during autorelay; has precedence over prioritize; use ^(?:(?!regexp).)+\$ for negative lookup)");
 add_master_command ("log", "log [string] (to print a string on the log terminal)");
 add_master_command ("max", "max [number] (to get/set the maximum number of games for the PGN data)");
+add_master_command ("memory", "memoryfile [filename.pgn] (to get/set the filename for the PGN memory data)");
+add_master_command ("memorymax", "memorymax [number] (to get/set the maximum number of games for the PGN memory data)");
 add_master_command ("observe", "observe [game number list, such as: 12 34 56 ..] (to observe given games)");
 add_master_command ("prioritize", "prioritize [regexp|\"\"] (to get/set the regular expression to prioritize events/players from the PGN header during autorelay; might be overruled by ignore)");
 add_master_command ("quit", "quit [number] (to quit from the ics server, returning the given exit value)");
@@ -966,7 +1009,7 @@ sub process_master_command {
       tell_operator("warning: ics relay offline");
     }
   } elsif ($command eq "config") {
-    tell_operator("config: max=$maxGamesNum file=$PGN_FILE archive=$PGN_ARCHIVE follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter autoprioritize=$autoPrioritize prioritize=$prioritizeFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
+    tell_operator("config: max=$maxGamesNum file=$PGN_FILE archive=$PGN_ARCHIVE memory=$PGN_MEMORY memorymax=$memoryMaxGamesNum follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter autoprioritize=$autoPrioritize prioritize=$prioritizeFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
   } elsif ($command eq "date") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
@@ -1151,6 +1194,40 @@ sub process_master_command {
         $maxGamesNum = $parameters;
       }
       tell_operator("max=$maxGamesNum");
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "memory") {
+    if ($parameters =~ /^[\w\d\/\\.+=_-]*$/) { # for portability only a subset of filename chars is allowed
+      if ($parameters ne "") {
+        $PGN_MEMORY = $parameters;
+      }
+      my $fileInfoText = "memory=$PGN_MEMORY";
+      my @fileInfo = stat($PGN_MEMORY);
+      if (defined $fileInfo[9]) {
+        $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S UTC", gmtime($fileInfo[9]));
+      }
+      if (defined $fileInfo[7]) {
+        $fileInfoText .= " size=$fileInfo[7]";
+      }
+      if (defined $fileInfo[2]) {
+        $fileInfoText .= sprintf(" permissions=%04o", $fileInfo[2] & 07777);
+      }
+      tell_operator($fileInfoText);
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "memorymax") {
+    if ($parameters =~ /^([1-9]\d*)?$/) {
+      if ($parameters ne "") {
+        if ($parameters < $memoryMaxGamesNum) {
+          for (my $i=$parameters; $i<$memoryMaxGamesNum; $i++) {
+            if ($#memory_games > $parameters) { pop(@memory_games); }
+          }
+        }
+        $memoryMaxGamesNum = $parameters;
+      }
+      tell_operator("memorymax=$memoryMaxGamesNum");
     } else {
       tell_operator("error: invalid $command parameter");
     }
