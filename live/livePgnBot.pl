@@ -796,13 +796,17 @@ sub archive_pgnGame {
   }
 }
 
-sub refresh_memory() {
+sub refresh_memory {
   my ($lastPgnNum) = @_;
 
   if ($PGN_MEMORY ne "") {
     my $memoryPgn = $lastPgn;
-    for (my $i=0; $i<$memoryMaxGamesNum - $lastPgnNum; $i++) {
-      if (exists $memory_games[$i]) { $memoryPgn .= $memory_games[$i]; }
+    my $this_many_memory_games = $memoryMaxGamesNum - $lastPgnNum;
+    if ($this_many_memory_games > $#memory_games + 1) { $this_many_memory_games = $#memory_games + 1; }
+    if ($this_many_memory_games > 0) {
+      my @these_memory_games = @memory_games[0..($this_many_memory_games - 1)];
+      if ($autorelayMode == 1) { @these_memory_games = sort(@these_memory_games); }
+      $memoryPgn .= join("", @these_memory_games);
     }
     if ($memoryPgn ne "") {
       open(thisFile, ">$PGN_MEMORY");
@@ -812,13 +816,32 @@ sub refresh_memory() {
   }
 }
 
-sub memory_add_pgnGame() {
+sub memory_add_pgnGame {
   my ($i) = @_;
 
   if ($PGN_MEMORY ne "") {
     my $pgn = save_pgnGame($i);
     if ($#memory_games >= $memoryMaxGamesNum) { pop(@memory_games); }
     unshift(@memory_games, $pgn);
+  }
+}
+
+sub memory_purge_round {
+  my ($thisEvent) = @_;
+  $thisEvent =~ s/[\[\]"]/'/g;
+  my $thisRound = "";
+  if ($thisEvent =~ /(.*)\s+(Round|Game)\s+(\d+)/) {
+    $thisRound = $3;
+    $thisEvent = $1;
+    $thisEvent =~ s/[\s-]+$//g;
+  }
+  $thisEvent =~ s/[^\s\w\d]/./g;
+  $thisRound =~ s/[^\s\w\d]/./g;
+  my $pattern = '\[Event "' . $thisEvent . '"\].*\[Round "' . $thisRound . '"\]';
+  for (my $i=$#memory_games; $i>=0; $i--) {
+    if ($memory_games[$i] =~ /$pattern/) {
+      delete $memory_games[$i];
+    }
   }
 }
 
@@ -848,6 +871,7 @@ sub log_rounds {
     unless ($_ ~~ @currentRounds) {
       log_terminal("info: event new: $_");
       $roundsStartCount++;
+      memory_purge_round($_);
     }
   }
 
@@ -1029,6 +1053,7 @@ sub process_master_command {
       open(thisFile, ">$PGN_FILE");
       print thisFile $lastPgn;
       close(thisFile);
+      if ($PGN_MEMORY ne "") { refresh_memory(0); }
       log_terminal("info: saved empty PGN data as placeholder file");
       tell_operator("OK $command");
     } elsif ($parameters eq "") {
