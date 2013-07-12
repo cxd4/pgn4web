@@ -170,6 +170,9 @@ sub reset_games {
 
   @currentRounds = ();
 
+  $memoryMaxGamesNum = $maxGamesNumDefault;
+  @memory_games = ();
+
   log_terminal("debug: event/game all out");
   refresh_pgn();
 }
