@@ -864,8 +864,8 @@ sub memory_purge_round {
     my $logged = 0;
     for (my $i=$#memory_games; $i>=0; $i--) {
       if ($memory_games[$i] =~ /$pattern/) {
-        delete $memory_games[$i];
-        delete $memory_games_sortkey[$i];
+        @memory_games = @memory_games[0..($i-1), ($i+1)..$#memory_games];
+        @memory_games_sortkey = @memory_games_sortkey[0..($i-1), ($i+1)..$#memory_games_sortkey];
         if ($logged == 0) {
           log_terminal('debug: memory purged event: [Event "$thisEvent"][Round "$thisRound"]');
           $logged = 1;
@@ -888,8 +888,8 @@ sub memory_purge_game {
     my $pattern = '\[Event "' . $thisEvent . '"\].*\[Round "' . $thisRound . '"\].*\[White "' . $thisWhite . '"\].*\[Black "' . $thisBlack . '"\]';
     for (my $i=$#memory_games; $i>=0; $i--) {
       if ($memory_games[$i] =~ /$pattern/) {
-        delete $memory_games[$i];
-        delete $memory_games_sortkey[$i];
+        @memory_games = @memory_games[0..($i-1), ($i+1)..$#memory_games];
+        @memory_games_sortkey = @memory_games_sortkey[0..($i-1), ($i+1)..$#memory_games_sortkey];
         log_terminal('debug: memory purged game: [Event "$thisEvent"][Round "$thisRound"][White "$thisWhite"][Black "$thisBlack"]');
       }
     }
