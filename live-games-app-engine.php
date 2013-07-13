@@ -20,7 +20,7 @@ function errorExit($errorNum) {
 <head>
 <title>Live Games</title>
 </head>
-<body style="font-family: sans-serif;">
+<body style="color: white; background: black; font-family: sans-serif;">
 Live Games app error: $errorNum
 </body>
 </html>

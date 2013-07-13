@@ -20,7 +20,7 @@ function errorExit($errorNum) {
 <head>
 <title>Live Games</title>
 </head>
-<body style="font-family: sans-serif;">
+<body style="color: white; background: black; font-family: sans-serif;">
 Live Games app error: $errorNum
 </body>
 </html>
@@ -91,7 +91,6 @@ $oldText = "<!-- AppCheck: meta -->";
 $actionNum += 1;
 if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
-
 
 
 $text = "gameListLineHeight = Math.floor(1.9 * gameListFontSize);";
@@ -314,7 +313,6 @@ if (theObj = document.getElementById("GameLiveStatusExtraInfoLeft")) {
 if (theObj = document.getElementById("GameLiveStatusExtraInfoRight")) {
   theObj.innerHTML = "x";
   theObj.title = "games from application cache";
-  theObj.style.visibility = "visible";
 }
 
 simpleAddEvent(window.applicationCache, "updateready", function(e) {
