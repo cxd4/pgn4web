@@ -1166,7 +1166,7 @@ sub process_master_command {
     my $dayTime = $hourTime / 24;
     my $thisInfo = sprintf("history: uptime=%s rounds=%d (r/d=%d) games=%d (g/d=%d)", sec2time($secTime), $roundsStartCount, $roundsStartCount / $dayTime, $gamesStartCount, $gamesStartCount / $dayTime);
     if ($verbosity >= 5) {
-      $thisInfo = sprintf("%s pgn=%d (p/h=%d) cmd=%d (c/h=%d) lines=%d (l/h=%d) %s", $thisInfo, $pgnWriteCount, $pgnWriteCount / $hourTime, $cmdRunCount, $cmdRunCount / $hourTime, $lineCount, $lineCount / $hourTime);
+      $thisInfo = sprintf("%s pgn=%d (p/h=%d) cmd=%d (c/h=%d) lines=%d (l/h=%d)", $thisInfo, $pgnWriteCount, $pgnWriteCount / $hourTime, $cmdRunCount, $cmdRunCount / $hourTime, $lineCount, $lineCount / $hourTime);
     }
     $thisInfo = sprintf("%s %s", $thisInfo, strftime("now=%Y-%m-%d %H:%M:%S UTC", gmtime($starupTime + $secTime + $timeOffset)));
     tell_operator($thisInfo);
