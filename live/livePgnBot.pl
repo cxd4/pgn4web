@@ -1190,7 +1190,11 @@ sub process_master_command {
         $roundsList .= "\"" . join("\", \"", (sort { lc($a) cmp lc($b) } @currentRounds)) . "\"";
       }
     }
-    tell_operator("games(" . ($#games_num + 1) . "/$maxGamesNum)=" . gameList() . $roundsList);
+    my $memoryList = "";
+    if ($PGN_MEMORY ne "") {
+      $memoryList = " memory(" . ($#memory_games + 1) . "/$memoryMaxGamesNum)";
+    }
+    tell_operator("games(" . ($#games_num + 1) . "/$maxGamesNum)=" . gameList() . $roundsList . $memoryList);
   } elsif ($command eq "heartbeat") {
     if (($parameters =~ /^(\d+(\.\d*)?)\s+(\d+(\.\d*)?)$/) && ($1 > 0) && ($3 < $1)) {
       $heartbeat_freq_hour = $1;
