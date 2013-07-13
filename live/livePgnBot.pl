@@ -128,6 +128,7 @@ our @currentRounds = ();
 our $PGN_MEMORY = "";
 our $memoryMaxGamesNum = $maxGamesNumDefault;
 our @memory_games = ();
+our @memory_games_sortkey = ();
 
 sub reset_games {
   if ($PGN_ARCHIVE ne "") {
@@ -171,6 +172,7 @@ sub reset_games {
 
   $memoryMaxGamesNum = $maxGamesNumDefault;
   @memory_games = ();
+  @memory_games_sortkey = ();
 
   log_terminal("debug: event/game all out");
   refresh_pgn();
@@ -224,6 +226,7 @@ sub save_game {
     }
     $gamesStartCount++;
     log_terminal("debug: game new $newGame_num: " . headerForFilter($GAMES_event[$newGame_num], $GAMES_round[$newGame_num], $newGame_white, $newGame_black));
+    memory_purge_game($GAMES_event[$newGame_num], $GAMES_round[$newGame_num], $newGame_white, $newGame_black);
   } else {
     if (($games_white[$thisGameIndex] ne $newGame_white) || ($games_black[$thisGameIndex] ne $newGame_black) || ($games_whiteElo[$thisGameIndex] ne $newGame_whiteElo) || ($games_blackElo[$thisGameIndex] ne $newGame_blackElo)) {
       log_terminal("debug: game $newGame_num mismatch when saving");
@@ -792,6 +795,7 @@ sub archive_pgnGame {
       open(thisFile, ">>$PGN_ARCHIVE");
       print thisFile $pgn;
       close(thisFile);
+      log_terminal("debug: archive add game $games_num[$i]: " . headerForFilter($GAMES_event[$games_num[$i]], $GAMES_round[$games_num[$i]], $games_white[$i], $games_black[$i]));
     }
   }
 }
@@ -801,12 +805,20 @@ sub refresh_memory {
 
   if ($PGN_MEMORY ne "") {
     my $memoryPgn = $lastPgn;
-    my $this_many_memory_games = $memoryMaxGamesNum - $lastPgnNum;
-    if ($this_many_memory_games > $#memory_games + 1) { $this_many_memory_games = $#memory_games + 1; }
-    if ($this_many_memory_games > 0) {
-      my @these_memory_games = @memory_games[0..($this_many_memory_games - 1)];
-      if ($autorelayMode == 1) { @these_memory_games = sort(@these_memory_games); }
-      $memoryPgn .= join("", @these_memory_games);
+    my $memory_games_howmany = $memoryMaxGamesNum - $lastPgnNum;
+    if ($memory_games_howmany > $#memory_games + 1) { $memory_games_howmany = $#memory_games + 1; }
+    if ($memory_games_howmany > 0) {
+      my @selected_memory_games = (0 .. ($memory_games_howmany - 1));
+      if ($autorelayMode == 1) {
+        @selected_memory_games = sort {
+          if ($memory_games_sortkey[$a] gt $memory_games_sortkey[$b]) { return 1; }
+          if ($memory_games_sortkey[$a] lt $memory_games_sortkey[$b]) { return -1; }
+          return $a <=> $b;
+        } @selected_memory_games;
+      }
+      for (my $i=0; $i<=$#selected_memory_games; $i++) {
+        $memoryPgn .= $memory_games[$selected_memory_games[$i]];
+      }
     }
     if ($memoryPgn ne "") {
       open(thisFile, ">$PGN_MEMORY");
@@ -821,27 +833,69 @@ sub memory_add_pgnGame {
 
   if ($PGN_MEMORY ne "") {
     my $pgn = save_pgnGame($i);
-    if ($#memory_games >= $memoryMaxGamesNum) { pop(@memory_games); }
+    if ($#memory_games >= $memoryMaxGamesNum) {
+      pop(@memory_games);
+      pop(@memory_games_sortkey);
+    }
     unshift(@memory_games, $pgn);
+    my $newSortkey = $GAMES_event[$games_num[$i]];
+    if ($GAMES_round[$games_num[$i]] ne "") {
+      $newSortkey .= " - Round " . $GAMES_round[$games_num[$i]];
+    }
+    unshift(@memory_games_sortkey, lc($newSortkey));
+    log_terminal("debug: memory add game $games_num[$i]: " . headerForFilter($GAMES_event[$games_num[$i]], $GAMES_round[$games_num[$i]], $games_white[$i], $games_black[$i]));
   }
 }
 
 sub memory_purge_round {
   my ($thisEvent) = @_;
-  $thisEvent =~ s/[\[\]"]/'/g;
-  my $thisRound = "";
-  if ($thisEvent =~ /(.*)\s+(Round|Game)\s+(\d+)/) {
-    $thisRound = $3;
-    $thisEvent = $1;
-    $thisEvent =~ s/[\s-]+$//g;
-  }
-  $thisEvent =~ s/[^\s\w\d]/./g;
-  $thisRound =~ s/[^\s\w\d]/./g;
-  my $pattern = '\[Event "' . $thisEvent . '"\].*\[Round "' . $thisRound . '"\]';
-  for (my $i=$#memory_games; $i>=0; $i--) {
-    if ($memory_games[$i] =~ /$pattern/) { delete $memory_games[$i]; }
+
+  if ($PGN_MEMORY ne "") {
+    $thisEvent =~ s/[\[\]"]/'/g;
+    my $thisRound = "";
+    if ($thisEvent =~ /(.*)\s+(Round|Game)\s+(\d+)/) {
+      $thisRound = $3;
+      $thisEvent = $1;
+      $thisEvent =~ s/[\s-]+$//g;
+    }
+    $thisEvent =~ s/[^\s\w\d]/./g;
+    $thisRound =~ s/[^\s\w\d]/./g;
+    my $pattern = '\[Event "' . $thisEvent . '"\].*\[Round "' . $thisRound . '"\]';
+    my $logged = 0;
+    for (my $i=$#memory_games; $i>=0; $i--) {
+      if ($memory_games[$i] =~ /$pattern/) {
+        delete $memory_games[$i];
+        delete $memory_games_sortkey[$i];
+        if ($logged == 0) {
+          log_terminal('debug: memory purged event: [Event "$thisEvent"][Round "$thisRound"]');
+          $logged = 1;
+        }
+      }
+    }
   }
 }
+
+sub memory_purge_game {
+  my ($thisEvent, $thisRound, $thisWhite, $thisBlack) = @_;
+
+  if ($PGN_MEMORY ne "") {
+    if (($relayMode == 1) && ($thisWhite =~ /^(W?[GIFC]M)([A-Z].*)$/)) {
+      $thisWhite = $2;
+    }
+    if (($relayMode == 1) && ($thisBlack =~ /^(W?[GIFC]M)([A-Z].*)$/)) {
+      $thisBlack = $2;
+    }
+    my $pattern = '\[Event "' . $thisEvent . '"\].*\[Round "' . $thisRound . '"\].*\[White "' . $thisWhite . '"\].*\[Black "' . $thisBlack . '"\]';
+    for (my $i=$#memory_games; $i>=0; $i--) {
+      if ($memory_games[$i] =~ /$pattern/) {
+        delete $memory_games[$i];
+        delete $memory_games_sortkey[$i];
+        log_terminal('debug: memory purged game: [Event "$thisEvent"][Round "$thisRound"][White "$thisWhite"][Black "$thisBlack"]');
+      }
+    }
+  }
+}
+
 
 sub log_rounds {
   my @newRounds = ();
@@ -1224,8 +1278,13 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "memory") {
-    if ($parameters =~ /^[\w\d\/\\.+=_-]*$/) { # for portability only a subset of filename chars is allowed
+    if ($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) { # for portability only a subset of filename chars is allowed
       if ($parameters ne "") {
+        if ($parameters eq "\"\"") {
+           $parameters = "";
+           @memory_games = ();
+           @memory_games_sortkey = ();
+        }
         $PGN_MEMORY = $parameters;
       }
       my $fileInfoText = "memory=$PGN_MEMORY";
@@ -1248,7 +1307,10 @@ sub process_master_command {
       if ($parameters ne "") {
         if ($parameters < $memoryMaxGamesNum) {
           for (my $i=$parameters; $i<$memoryMaxGamesNum; $i++) {
-            if ($#memory_games > $parameters) { pop(@memory_games); }
+            if ($#memory_games > $parameters) {
+              pop(@memory_games);
+              pop(@memory_games_sortkey);
+            }
           }
         }
         $memoryMaxGamesNum = $parameters;
