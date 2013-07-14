@@ -250,7 +250,7 @@ function pgn4web_handleTouchEnd_HeaderContainer(e) {
 
 function pgn4web_handleTouchEnd_Header(e) {
   e.stopPropagation();
-  var jj, deltaX, deltaY;
+  var jj, deltaX, deltaY, theObj;
   for (var ii = 0; ii < e.changedTouches.length; ii++) {
     if ((jj = pgn4webOngoingTouchIndexById(e.changedTouches[ii].identifier)) != -1) {
       deltaX = e.changedTouches[ii].clientX - pgn4webOngoingTouches[jj].clientX;

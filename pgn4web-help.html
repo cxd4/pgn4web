@@ -134,7 +134,7 @@ if (touchGesturesSupported) {
   if (opener && (typeof(opener.touchGestures_helpText) != "undefined")) {
     touchGestures_helpText = opener.touchGestures_helpText;
   } else {
-    touchGestures_helpText = [ "load next game", "load previous game", "start autoplay; if autoplay already active: go to variation end or to game end", "stop autoplay; if autoplay not active: go to variation start, then to parent variation, then to game start; if at last move of live broadcast: replay up to 6 previous half-moves, then autoplay forward" ];
+    touchGestures_helpText = [ "load next game, cycling through", "load previous game, cyclig through", "start autoplay; if autoplay already active: go to variation end or to game end", "stop autoplay; if autoplay not active: go to variation start, then to parent variation, then to game start; if at last move of live broadcast: replay up to 6 previous half-moves, then autoplay forward" ];
   }
 } else {
   touchGestures_helpIntro = "Touch gestures not available.<p></p>When enabled on supported touchscreen devices, touch gestures can be used to interact with the chessboard using swipe gestures across the chessboard.";

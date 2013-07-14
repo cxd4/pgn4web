@@ -475,8 +475,8 @@ function fillGameList(force) {
       theObj.innerHTML = text;
     }
   }
-  if ((theObj = document.getElementById("GameListBody")) && (currentGame > 0)) {
-    setTimeout("document.getElementById('GameListBody').scrollTop = (currentGame -  1) * gameListLineHeight;", 111);
+  if (theObj = document.getElementById("GameListBody")) {
+    setTimeout("document.getElementById('GameListBody').scrollTop = (currentGame -  1) * gameListLineHeight; document.getElementById('GameListBody').scrollLeft = 0;", 111);
   }
 }
 
