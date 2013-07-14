@@ -4090,9 +4090,11 @@ var waitForDoubleLeftTouchTimer = null;
 function customFunctionOnTouch(deltaX, deltaY) {
   if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 13) { return; }
   if (Math.abs(deltaY) > 1.5 * Math.abs(deltaX)) { // vertical up or down
-    if ((currentGame === 0) && (deltaY < 0)) { Init(numberOfGames - 1); }
-    else if ((currentGame === numberOfGames - 1) && (deltaY > 0)) { Init(0); }
-    else { Init(currentGame + sign(deltaY)); }
+    if (numberOfGames > 1) {
+      if ((currentGame === 0) && (deltaY < 0)) { Init(numberOfGames - 1); }
+      else if ((currentGame === numberOfGames - 1) && (deltaY > 0)) { Init(0); }
+      else { Init(currentGame + sign(deltaY)); }
+    }
   } else if (Math.abs(deltaX) > 1.5 * Math.abs(deltaY)) {
     if (deltaX > 0) { // horizontal right
       if (isAutoPlayOn) { GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]); }
