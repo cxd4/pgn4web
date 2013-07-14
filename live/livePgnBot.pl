@@ -813,7 +813,7 @@ sub refresh_memory {
         @selected_memory_games = sort {
           if ($memory_games_sortkey[$a] gt $memory_games_sortkey[$b]) { return 1; }
           if ($memory_games_sortkey[$a] lt $memory_games_sortkey[$b]) { return -1; }
-          return $a <=> $b;
+          return $b <=> $a;
         } @selected_memory_games;
       }
       for (my $i=0; $i<=$#selected_memory_games; $i++) {
