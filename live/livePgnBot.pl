@@ -129,6 +129,7 @@ our $PGN_MEMORY = "";
 our $memoryMaxGamesNum = $maxGamesNumDefault;
 our @memory_games = ();
 our @memory_games_sortkey = ();
+our $memorySelectFilter = "";
 
 sub reset_games {
   if ($PGN_ARCHIVE ne "") {
@@ -173,6 +174,7 @@ sub reset_games {
   $memoryMaxGamesNum = $maxGamesNumDefault;
   @memory_games = ();
   @memory_games_sortkey = ();
+  $memorySelectFilter = "";
 
   log_terminal("debug: event/game all out");
   refresh_pgn();
@@ -833,17 +835,19 @@ sub memory_add_pgnGame {
 
   if ($PGN_MEMORY ne "") {
     my $pgn = save_pgnGame($i);
-    if ($#memory_games >= $memoryMaxGamesNum) {
-      pop(@memory_games);
-      pop(@memory_games_sortkey);
+    if (($memorySelectFilter eq "") || ($pgn =~ /$memorySelectFilter/i)) {
+      if ($#memory_games >= $memoryMaxGamesNum) {
+        pop(@memory_games);
+        pop(@memory_games_sortkey);
+      }
+      unshift(@memory_games, $pgn);
+      my $newSortkey = $GAMES_event[$games_num[$i]];
+      if ($GAMES_round[$games_num[$i]] ne "") {
+        $newSortkey .= " - Round " . $GAMES_round[$games_num[$i]];
+      }
+      unshift(@memory_games_sortkey, lc($newSortkey));
+      log_terminal("debug: memory add game $games_num[$i]: " . headerForFilter($GAMES_event[$games_num[$i]], $GAMES_round[$games_num[$i]], $games_white[$i], $games_black[$i]));
     }
-    unshift(@memory_games, $pgn);
-    my $newSortkey = $GAMES_event[$games_num[$i]];
-    if ($GAMES_round[$games_num[$i]] ne "") {
-      $newSortkey .= " - Round " . $GAMES_round[$games_num[$i]];
-    }
-    unshift(@memory_games_sortkey, lc($newSortkey));
-    log_terminal("debug: memory add game $games_num[$i]: " . headerForFilter($GAMES_event[$games_num[$i]], $GAMES_round[$games_num[$i]], $games_white[$i], $games_black[$i]));
   }
 }
 
@@ -960,6 +964,7 @@ add_master_command ("log", "log [string] (to print a string on the log terminal)
 add_master_command ("max", "max [number] (to get/set the maximum number of games for the PGN data)");
 add_master_command ("memory", "memoryfile [filename.pgn] (to get/set the filename for the PGN memory data)");
 add_master_command ("memorymax", "memorymax [number] (to get/set the maximum number of games for the PGN memory data)");
+add_master_command ("memoryselect", "memoryselect [regexp|\"\"] (to get/set the regular expression to select games for the PGN memory data)");
 add_master_command ("observe", "observe [game number list, such as: 12 34 56 ..] (to observe given games)");
 add_master_command ("prioritize", "prioritize [regexp|\"\"] (to get/set the regular expression to prioritize events/players from the PGN header during autorelay; might be overruled by ignore)");
 add_master_command ("quit", "quit [number] (to quit from the ics server, returning the given exit value)");
@@ -1088,7 +1093,7 @@ sub process_master_command {
       tell_operator("warning: ics relay offline");
     }
   } elsif ($command eq "config") {
-    tell_operator("config: max=$maxGamesNum file=$PGN_FILE archive=$PGN_ARCHIVE memory=$PGN_MEMORY memorymax=$memoryMaxGamesNum follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter autoprioritize=$autoPrioritize prioritize=$prioritizeFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
+    tell_operator("config: max=$maxGamesNum file=$PGN_FILE archive=$PGN_ARCHIVE memory=$PGN_MEMORY memorymax=$memoryMaxGamesNum follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter autoprioritize=$autoPrioritize prioritize=$prioritizeFilter memoryselect=$memorySelectFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
   } elsif ($command eq "date") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
@@ -1320,6 +1325,23 @@ sub process_master_command {
         $memoryMaxGamesNum = $parameters;
       }
       tell_operator("memorymax=$memoryMaxGamesNum");
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "memoryselect") {
+    if ($parameters =~ /^([^\[\]"]+|"")?$/) {
+      if ($parameters ne "") {
+        eval {
+          "test" =~ /$parameters/;
+          if ($parameters eq "\"\"") { $parameters = ""; }
+          $memorySelectFilter = $parameters;
+          log_terminal("info: memoryselect=$memorySelectFilter");
+          1;
+        } or do {
+          tell_operator("error: invalid regular expression $parameters");
+        };
+      }
+      tell_operator("memoryselect=$memorySelectFilter");
     } else {
       tell_operator("error: invalid $command parameter");
     }
