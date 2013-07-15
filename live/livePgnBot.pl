@@ -1027,6 +1027,7 @@ sub process_master_command {
         $PGN_ARCHIVE = $parameters;
       }
       my $fileInfoText = "archive=$PGN_ARCHIVE";
+      log_terminal("info: $fileInfoText");
       if ($PGN_ARCHIVE ne "") {
         my @fileInfo = stat($PGN_ARCHIVE);
         if (defined $fileInfo[9]) {
@@ -1134,6 +1135,7 @@ sub process_master_command {
         $PGN_FILE = $parameters;
       }
       my $fileInfoText = "file=$PGN_FILE";
+      log_terminal("info: $fileInfoText");
       my @fileInfo = stat($PGN_FILE);
       if (defined $fileInfo[9]) {
         $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S UTC", gmtime($fileInfo[9]));
@@ -1297,6 +1299,7 @@ sub process_master_command {
         $PGN_MEMORY = $parameters;
       }
       my $fileInfoText = "memory=$PGN_MEMORY";
+      log_terminal("info: $fileInfoText");
       my @fileInfo = stat($PGN_MEMORY);
       if (defined $fileInfo[9]) {
         $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S UTC", gmtime($fileInfo[9]));
@@ -1641,7 +1644,7 @@ sub setup {
 
     $telnet->login(Name => $BOT_HANDLE, Password => $BOT_PASSWORD);
     $username = $BOT_HANDLE;
-    log_terminal("info: logged in as user $BOT_HANDLE");
+    log_terminal("debug: logged in as user $BOT_HANDLE");
 
   } else {
 
@@ -1679,7 +1682,7 @@ sub setup {
       exit 1;
     }
 
-    log_terminal("info: logged in as guest $username");
+    log_terminal("debug: logged in as guest $username");
   }
 
   $telnet->prompt("/^/");
