@@ -766,7 +766,7 @@ sub refresh_pgn {
     $pgn .= $newPgn;
   }
 
-  if (($pgn eq "") || (($autorelayMode == 1) && ($gameRunning == 0))) {
+  if (($pgn eq "") || ($autorelayMode == 1)) { # consider || (($autorelayMode == 1) && ($gameRunning == 0))
     $pgn .= temp_pgn();
   }
 
