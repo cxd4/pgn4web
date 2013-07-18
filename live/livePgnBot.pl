@@ -771,12 +771,15 @@ sub refresh_pgn {
   }
 
   if ($pgn ne $lastPgn) {
-    open(my $thisFile, ">$PGN_FILE");
-    print $thisFile $pgn;
-    close($thisFile);
-    $pgnWriteCount++;
-    $lastPgn = $pgn;
-    refresh_memory($lastPgnNum);
+    if (open(my $thisFile, ">$PGN_FILE")) {
+      print $thisFile $pgn;
+      close($thisFile);
+      $pgnWriteCount++;
+      $lastPgn = $pgn;
+      refresh_memory($lastPgnNum);
+    } else {
+      log_terminal("error: failed writing $PGN_FILE");
+    }
   }
 
   if ($autorelayMode == 1) {
@@ -794,10 +797,13 @@ sub archive_pgnGame {
   if ($PGN_ARCHIVE ne "") {
     my $pgn = save_pgnGame($i);
     if ($pgn ne "") {
-      open(my $thisFile, ">>$PGN_ARCHIVE");
-      print $thisFile $pgn;
-      close($thisFile);
-      log_terminal("debug: archive add game $games_num[$i]: " . headerForFilter($GAMES_event[$games_num[$i]], $GAMES_round[$games_num[$i]], $games_white[$i], $games_black[$i]));
+      if (open(my $thisFile, ">>$PGN_ARCHIVE")) {
+        print $thisFile $pgn;
+        close($thisFile);
+        log_terminal("debug: archive add game $games_num[$i]: " . headerForFilter($GAMES_event[$games_num[$i]], $GAMES_round[$games_num[$i]], $games_white[$i], $games_black[$i]));
+      } else {
+        log_terminal("error: failed writing $PGN_ARCHIVE");
+      }
     }
   }
 }
@@ -823,9 +829,12 @@ sub refresh_memory {
       }
     }
     if ($memoryPgn ne "") {
-      open(my $thisFile, ">$PGN_MEMORY");
-      print $thisFile $memoryPgn;
-      close($thisFile);
+      if (open(my $thisFile, ">$PGN_MEMORY")) {
+        print $thisFile $memoryPgn;
+        close($thisFile);
+      } else {
+        log_terminal("error: failed writing $PGN_MEMORY");
+      }
     }
   }
 }
@@ -1159,9 +1168,12 @@ sub process_master_command {
   } elsif ($command eq "empty") {
     if ($parameters eq "1") {
       $lastPgn = temp_pgn();
-      open(my $thisFile, ">$PGN_FILE");
-      print $thisFile $lastPgn;
-      close($thisFile);
+      if (open(my $thisFile, ">$PGN_FILE")) {
+        print $thisFile $lastPgn;
+        close($thisFile);
+      } else {
+        log_terminal("error: failed writing $PGN_FILE");
+      }
       if ($PGN_MEMORY ne "") { refresh_memory(0); }
       log_terminal("info: saved empty PGN data as placeholder file");
       tell_operator("OK $command");
@@ -1560,6 +1572,8 @@ sub read_startupCommands {
   if (open(CMDFILE, "<" . $STARTUP_FILE)) {
     @commandList = <CMDFILE>;
     close(CMDFILE);
+  } else {
+    log_terminal("error: failed reading $STARTUP_FILE");
   }
   return @commandList;
 }
@@ -1580,7 +1594,7 @@ sub write_startupCommands {
     close(CMDFILE);
     log_terminal("info: startup commands file $STARTUP_FILE written");
   } else {
-    tell_operator_and_log_terminal("error: failed updating startup commands file $STARTUP_FILE");
+    tell_operator_and_log_terminal("error: failed writing $STARTUP_FILE");
   }
 }
 
