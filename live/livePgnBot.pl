@@ -905,41 +905,46 @@ sub memory_purge_game {
 }
 
 sub memory_load {
-  my $i;
-  my @candidate_memory_games = ();
-  @memory_games = ();
-  @memory_games_sortkey = ();
-  if (open(my $thisFile,  "<",  $PGN_MEMORY)) {
-    my @lines = <$thisFile>;
-    @candidate_memory_games = (join("", @lines) =~ /((?:\[\s*\w+\s*"[^"]*"\s*\]\s*)+[^[]+)/g);
-    foreach (@candidate_memory_games) {
-      if (($_ =~ /\[Result "(1-0|1\/2-1\/2|0-1)"\]/i) && (($memorySelectFilter eq "") || ($_ =~ /$memorySelectFilter/is))) {
-        unshift(@memory_games, $_);
+  if ($PGN_MEMORY eq "") {
+    tell_operator_and_log_terminal("error: memory load requires a valid memory file");
+  } else {
+    my $i;
+    my @candidate_memory_games = ();
+    @memory_games = ();
+    @memory_games_sortkey = ();
+    my $newPgn;
+    my $newSortkey;
+    if (open(my $thisFile,  "<",  $PGN_MEMORY)) {
+      my @lines = <$thisFile>;
+      @candidate_memory_games = (join("", @lines) =~ /((?:\[\s*\w+\s*"[^"]*"\s*\]\s*)+[^[]+)/g);
+      foreach (@candidate_memory_games) {
+        if (($_ =~ /\[Result "(1-0|1\/2-1\/2|0-1)"\]/i) && (($memorySelectFilter eq "") || ($_ =~ /$memorySelectFilter/is))) {
+          $newPgn = $_;
+          unshift(@memory_games, $newPgn);
+          $newSortkey = "";
+          if ($newPgn =~ /\[Event "([^"]*)"\]/i) { $newSortkey = $1; }
+          if ($newPgn =~ /\[Round "([^"]+)"\]/i) { $newSortkey .= " - Round " . $1; }
+          unshift(@memory_games_sortkey, $newSortkey);
+        }
       }
     }
-  }
-  my $newSortkey;
-  for ($i=0; $i<=$#memory_games; $i++) {
-    $newSortkey = "";
-    if ($memory_games[$i] =~ /\[Event "([^"]*)"\]/i) { $newSortkey = $1; }
-    if ($memory_games[$i] =~ /\[Round "([^"]+)"\]/i) { $newSortkey .= " - Round " . $1; }
-    $memory_games_sortkey[$i] = $newSortkey;
-  }
-  for (my $g=0; $g<=$#games_num; $g++) {
-    memory_purge_game($GAMES_event[$games_num[$g]], $GAMES_round[$games_num[$g]], $games_white[$g], $games_black[$g]);
-  }
-  for ($i=$#memory_games; $i>=$memoryMaxGamesNum; $i--) {
-    @memory_games = @memory_games[0..($i-1), ($i+1)..$#memory_games];
-  }
-  log_terminal("debug: memory load: " . ($#memory_games + 1));
-  if ($autorelayMode == 1) {
-    my @newSortkey = ();
-    foreach (reverse(@memory_games_sortkey)) {
-      unless (($_ ~~ @newSortkey) || ($_ ~~ @currentRounds)) {
-        log_terminal("info: event mem: $_");
-        push(@newSortkey, $_);
+    for (my $g=0; $g<=$#games_num; $g++) {
+      memory_purge_game($GAMES_event[$games_num[$g]], $GAMES_round[$games_num[$g]], $games_white[$g], $games_black[$g]);
+    }
+    if ($#memory_games > $memoryMaxGamesNum - 1) {
+      @memory_games = @memory_games[0..($memoryMaxGamesNum - 1)];
+      @memory_games_sortkey = @memory_games_sortkey[0..($memoryMaxGamesNum - 1)];
+    }
+    if ($autorelayMode == 1) {
+      my @newSortkey = ();
+      foreach (reverse(@memory_games_sortkey)) {
+        unless (($_ ~~ @newSortkey) || ($_ ~~ @currentRounds)) {
+          log_terminal("info: event mem: $_");
+          push(@newSortkey, $_);
+        }
       }
     }
+    log_terminal("debug: memory load: " . ($#memory_games + 1));
   }
 }
 
@@ -1370,12 +1375,8 @@ sub process_master_command {
     if ($parameters =~ /^([1-9]\d*)?$/) {
       if ($parameters ne "") {
         if ($parameters < $memoryMaxGamesNum) {
-          for (my $i=$parameters; $i<$memoryMaxGamesNum; $i++) {
-            if ($#memory_games > $parameters) {
-              pop(@memory_games);
-              pop(@memory_games_sortkey);
-            }
-          }
+          @memory_games = @memory_games[0..($parameters - 1)];
+          @memory_games_sortkey = @memory_games_sortkey[0..($parameters - 1)];
         }
         $memoryMaxGamesNum = $parameters;
       }
@@ -1655,6 +1656,9 @@ update_heartbeat_time();
 sub heartbeat {
   if (time() + $timeOffset > $next_heartbeat_time) {
     my $thisInfo = sprintf("info: heartbeat: uptime=%s rounds=%d/%d games=%d/%d/%d", sec2time(time() - $starupTime), ($#currentRounds + 1), $roundsStartCount, ($#games_num + 1), $maxGamesNum, $gamesStartCount);
+    if ($PGN_MEMORY ne "") {
+      $thisInfo = sprintf("%s memory=%d/%d", ($#memory_games + 1), $memoryMaxGamesNum);
+    }
     if ($verbosity >= 5) {
       $thisInfo = sprintf("%s pgn=%d cmd=%d lines=%d", $thisInfo, $pgnWriteCount, $cmdRunCount, $lineCount);
     }
