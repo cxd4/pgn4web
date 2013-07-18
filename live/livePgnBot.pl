@@ -1657,7 +1657,7 @@ sub heartbeat {
   if (time() + $timeOffset > $next_heartbeat_time) {
     my $thisInfo = sprintf("info: heartbeat: uptime=%s rounds=%d/%d games=%d/%d/%d", sec2time(time() - $starupTime), ($#currentRounds + 1), $roundsStartCount, ($#games_num + 1), $maxGamesNum, $gamesStartCount);
     if ($PGN_MEMORY ne "") {
-      $thisInfo = sprintf("%s memory=%d/%d", ($#memory_games + 1), $memoryMaxGamesNum);
+      $thisInfo = sprintf("%s memory=%d/%d", $thisInfo, ($#memory_games + 1), $memoryMaxGamesNum);
     }
     if ($verbosity >= 5) {
       $thisInfo = sprintf("%s pgn=%d cmd=%d lines=%d", $thisInfo, $pgnWriteCount, $cmdRunCount, $lineCount);
