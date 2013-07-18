@@ -843,7 +843,9 @@ sub memory_add_pgnGame {
       unshift(@memory_games, $pgn);
       my $newSortkey = $GAMES_event[$games_num[$i]];
       if ($GAMES_round[$games_num[$i]] ne "") {
-        $newSortkey .= " - Round " . $GAMES_round[$games_num[$i]];
+        $newSortkey .= " + Round ";
+        if (length($GAMES_round[$games_num[$i]]) == 1) { $newSortkey .= "0"; }
+        $newSortkey .= $GAMES_round[$games_num[$i]];
       }
       unshift(@memory_games_sortkey, $newSortkey);
       log_terminal("debug: memory add game $games_num[$i]: " . headerForFilter($GAMES_event[$games_num[$i]], $GAMES_round[$games_num[$i]], $games_white[$i], $games_black[$i]));
