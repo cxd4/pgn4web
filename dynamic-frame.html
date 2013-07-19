@@ -577,6 +577,8 @@ function customFunctionOnPgnGameLoad() {
   fixHeaderItem("ECO", "GameECO", "ECO");
   fixHeaderItem("ECO", "GameECOFiller", "ECO");
   updateBareShortcut();
+  var theObj = document.getElementById("GameResult");
+  if ((theObj) && (theObj.innerHTML == "*")) { theObj.innerHTML = "&lowast;"; }
 
 <!-- AppCheck: customFunctionOnPgnGameLoad -->
 
