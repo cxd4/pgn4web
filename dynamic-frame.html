@@ -419,7 +419,10 @@ function myOnResize() {
 
   if (theObj = document.getElementById("HeaderContainer")) { theObj.style.display = bare ? "none" : document.getElementById("GameBoard").style.display; }
 
-  if (!firstStart) { fixColorFlag(); }
+  if (!firstStart) {
+    fixColorFlag();
+    fixECO();
+  }
 
   dynamicFrameDebugString = "fw=" + ww + " fh=" + wh + " fp=" + Math.round(framePadding*100)/100 + " fs=" + fontSize + " ss=" + Math.round(squareSize*100)/100 + " sb=" + squareBorderWidth + " ps=" + pieceSize + " pbs=" + pieceBaseSize;
 
@@ -571,6 +574,8 @@ function customFunctionOnPgnGameLoad() {
   fixHeaderItem("BlackTitle", "GameBlackTitle", "black title");
   fixHeaderItem("BlackElo", "GameBlackElo", "black elo");
   fixHeaderItem("BlackTeam", "GameBlackTeam", "black team");
+  fixHeaderItem("ECO", "GameECO", "ECO");
+  fixHeaderItem("ECO", "GameECOFiller", "ECO");
   updateBareShortcut();
 
 <!-- AppCheck: customFunctionOnPgnGameLoad -->
@@ -601,6 +606,7 @@ function customFunctionOnMove() {
   fixHeaderItem(null, "GameWhiteClock", "white clock");
   fixHeaderItem(null, "GameBlackClock", "black clock");
   fixColorFlag();
+  fixECO();
 
 <!-- AppCheck: customFunctionOnMove -->
 
@@ -629,6 +635,13 @@ function fixColorFlag() {
       theObj.style.display = blackFlagPadding ? "inline" : "none";
       theObj.style.visibility = "hidden";
     }
+  }
+}
+
+function fixECO() {
+  var theObj = document.getElementById("GameECOFiller");
+  if (theObj) {
+    theObj.style.display = horizontalLayout ? "none" : "";
   }
 }
 
@@ -788,10 +801,10 @@ function pgn4web_onload(e) {
 <div class="variableSpacer">&nbsp;</div>
 <div>&nbsp;<span style="display:inline-block;" title="white to move"><img class="colorFlag" style="background:white; display:none;" id="whiteColorFlag" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" /></span><a id="GameWhiteClock" href="javascript:void(0);" onclick="toggleColorFlag(); this.blur();" title="white clock"></a><span style="display:inline-block;"><img class="colorFlag" style="background:white; display:none;" id="whiteColorFlagFiller" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" /></span>&nbsp;</div>
 <div>&nbsp;<a style="font-weight: bold;" id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();" title="white player"></a><span id="GameWhiteTitle" title="white title"></span><span id="GameWhiteElo" title="white elo"></span><span id="GameWhiteTeam" title="white team"></span><span style="font-weight: bold;">&nbsp;</span></div>
-<div>&nbsp;<a style="font-weight: bold;" id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();" title="black player"></a><span id="GameBlackTitle" title="black title"></span><span id="GameBlackElo" title="black elo"></span><span id="GameBlackTeam" title="black team"></span><span style="font-weight: bold;">&nbsp;</span></div>
+<div>&nbsp;<a style="font-weight:bold;" id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();" title="black player"></a><span id="GameBlackTitle" title="black title"></span><span id="GameBlackElo" title="black elo"></span><span id="GameBlackTeam" title="black team"></span><span style="font-weight: bold;">&nbsp;</span></div>
 <div>&nbsp;<span style="display:inline-block;" title="black to move"><img class="colorFlag" style="background:black; display:none;" id="blackColorFlag" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" /></span><a id="GameBlackClock" href="javascript:void(0);" onclick="toggleColorFlag(); this.blur();" title="black clock"></a><span style="display:inline-block;"><img class="colorFlag" style="background:black; display:none;" id="blackColorFlagFiller" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" /></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
-<div>&nbsp;<a style="font-weight: bold;" id="GameResult" href="javascript:void(0);" onclick="if (LiveBroadcastDelay === 0) { toggleInitialHalfmove(event.shiftKey); } else { refreshPgnSource(); } this.blur();" title="result"></a><span style="font-weight: bold;">&nbsp;</span></div>
+<div>&nbsp;<span style="visibility:hidden; padding-right:2.5em;" id="GameECOFiller" title="ECO"></span><a style="font-weight: bold;" id="GameResult" href="javascript:void(0);" onclick="if (LiveBroadcastDelay === 0) { toggleInitialHalfmove(event.shiftKey); } else { refreshPgnSource(); } this.blur();" title="result"></a><span style="padding-left:2.5em;" id="GameECO" title="ECO"></span><span style="font-weight: bold;">&nbsp;</span></div>
 <div class="variableSpacer">&nbsp;</div>
 <div class="leftRightSpacing">&nbsp;<a id="GamePrevMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly - 1); this.blur();" title="previous moves"></a><a style="font-weight: bold;" id="GameCurrMove" href="javascript:void(0);" onclick="SetHighlight(!highlightOption); this.blur();" title="current move as shown on chessboard"></a><a id="GameNextMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly + 1); this.blur();" title="next moves"></a><span style="font-weight: bold;">&nbsp;</span></div>
 <div class="variableSpacer">&nbsp;</div>
