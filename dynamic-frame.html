@@ -335,6 +335,17 @@ function toggleColorFlag() {
   myOnResize();
 }
 
+function toggleShowEco() {
+  if (showEco = !showEco) {
+    fixHeaderItem("ECO", "GameECO", "ECO");
+    fixHeaderItem("ECO", "GameECOFiller", "ECO");
+  } else {
+    var theObj;
+    if (theObj = document.getElementById("GameECO")) { theObj.innerHTML = theObj.title = ""; }
+    if (theObj = document.getElementById("GameECOFiller")) { theObj.innerHTML = theObj.title = ""; }
+  }
+}
+
 var horizontalLayout;
 function myOnResize() {
   var ww, wh;
@@ -690,7 +701,7 @@ function customShortcutKey_Shift_5() {
 }
 
 function customShortcutKey_Shift_6() {
-  if (LiveBroadcastDelay === 0) { toggleInitialHalfmove(false); }
+  if (LiveBroadcastDelay === 0) { toggleShowEco(); }
 }
 
 function customShortcutKey_Shift_7() {
@@ -722,12 +733,9 @@ function toggleInitialHalfmove(reset2default) {
 }
 
 
-clearShortcutSquares("E", "7");
+boardShortcut("E7", "toggle show ECO code", function(t,e){ toggleShowEco(); });
 
-// redefine FlipBoard() to include myOnResize(), required unless FlipBoard is disabled as below
-//
-// window['defaultFlipBoard'] = window['FlipBoard'];
-// window['FlipBoard'] = function() { defaultFlipBoard(); myOnResize(); };
+// disable FlipBoard functionality, otherwise remember to redefine FlipBoard() to include myOnResize()
 var warnedFlipBoard = false;
 function FlipBoard() { if (!warnedFlipBoard) { myAlert("warning: flip board functionality disabled", false, true); warnedFlipBoard = true; } }
 
@@ -817,7 +825,7 @@ function pgn4web_onload(e) {
 <div>&nbsp;<a style="font-weight:bold;" id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();" title="black player"></a><span id="GameBlackTitle" title="black title"></span><span id="GameBlackElo" title="black elo"></span><span id="GameBlackTeam" title="black team"></span><span style="font-weight: bold;">&nbsp;</span></div>
 <div>&nbsp;<span style="display:inline-block;" title="black to move"><img class="colorFlag" style="background:black; display:none;" id="blackColorFlag" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" /></span><a id="GameBlackClock" href="javascript:void(0);" onclick="toggleColorFlag(); this.blur();" title="black clock"></a><span style="display:inline-block;"><img class="colorFlag" style="background:black; display:none;" id="blackColorFlagFiller" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" /></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
-<div>&nbsp;<span style="visibility:hidden; padding-right:2.5em;" id="GameECOFiller"></span><a style="font-weight: bold;" id="GameResult" href="javascript:void(0);" onclick="if (LiveBroadcastDelay === 0) { toggleInitialHalfmove(event.shiftKey); } else { refreshPgnSource(); } this.blur();" title="result"></a><span style="padding-left:2.5em;" id="GameECO"></span><span style="font-weight: bold;">&nbsp;</span></div>
+<div>&nbsp;<span style="visibility:hidden; padding-right:2.5em;" id="GameECOFiller"></span><a style="font-weight: bold;" id="GameResult" href="javascript:void(0);" onclick="if (!showEco) { toggleShowEco(); setTimeout('toggleShowEco();', 1111); } this.blur();" title="result"></a><span style="padding-left:2.5em;" id="GameECO"></span><span style="font-weight: bold;">&nbsp;</span></div>
 <div class="variableSpacer">&nbsp;</div>
 <div class="leftRightSpacing">&nbsp;<a id="GamePrevMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly - 1); this.blur();" title="previous moves"></a><a style="font-weight: bold;" id="GameCurrMove" href="javascript:void(0);" onclick="SetHighlight(!highlightOption); this.blur();" title="current move as shown on chessboard"></a><a id="GameNextMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly + 1); this.blur();" title="next moves"></a><span style="font-weight: bold;">&nbsp;</span></div>
 <div class="variableSpacer">&nbsp;</div>
