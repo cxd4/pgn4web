@@ -523,7 +523,8 @@ function customFunctionOnPgnTextLoad() {
   if (theObj = document.getElementById("ShowGameListLink")) {
     theObj.title = "select from " + numberOfGames + " games";
     var text = "", ii;
-    for (ii = 0; ii < 3 + Math.log(numberOfGames)/Math.LN2; ii++) { text += "&middot;"; }
+    for (ii = 0; ii < 4 + Math.log(numberOfGames)/Math.LN2; ii++) { text += "&middot; "; }
+    text += "&middot;";
     theObj.innerHTML = text;
   }
   if (theObj = document.getElementById("ShowGameList")) {
