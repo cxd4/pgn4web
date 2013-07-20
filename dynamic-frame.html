@@ -35,7 +35,7 @@
 "use strict";
 
 SetHighlightOption(true);
-SetGameSelectorOptions("&middot;&middot;&middot;", true, 30, 0, 0, 15, 15, 3, 0); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
+SetGameSelectorOptions("&middot;&middot;&middot;", true, 30, 0, 8, 15, 15, 3, 0); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
 SetAutoplayDelay(2000); // milliseconds
 SetAutostartAutoplay(false);
 SetAutoplayNextGame(false);
@@ -481,17 +481,21 @@ function fillGameList(force) {
       theObj.innerHTML = text;
     }
     if (theObj = document.getElementById("GameListBody")) {
-      var extractGamesRegExp = /<OPTION CLASS="optionSelectControl" value=(\d+)>(\s*\d+)(\s+.{30})([^<]+)/g;
+      var extractGamesRegExp = /<OPTION CLASS="optionSelectControl" value=(\d+)>(\s*\d+)(\s+.{30})(.{10})([^<]+)/g;
       var thisGameText, thisGameTitle;
-      var thisBold;
+      var thisBold, thisNum, thisEvent, thisRound, thesePlayers;
       var firstGame = true;
       var matches;
       text = "";
       while (matches = extractGamesRegExp.exec(textSelectOptions.replace(/&nbsp;/g, " "))) {
+        thisNum = matches[2];
+        thisEvent = matches[3].replace(/\s+$/, "");
+        if (thisRound = matches[4].replace(/^\s+|\s+$/g, "")) { thisRound = " - " + thisRound; }
+        thesePlayers = matches[5];
         if (firstGame) { firstGame = false; } else { text += "<br/>"; }
-        thisBold = (parseInt(matches[1], 10) === currentGame);
-        thisGameText = matches[2] + (thisBold ? "." :  " ") + matches[4] + "  " + matches[3];
-        thisGameTitle = matches[4].replace(/(^\s+|\s+$)/g, "").replace(/(\s{4,}|\b\s\s\b)/g, "   ") + "\n" + matches[3].replace(/(^\s+|\s+$)/g, "");
+        thisBold = (parseInt(thisNum, 10) === currentGame);
+        thisGameText = thisNum + (thisBold ? "." :  " ") + thesePlayers + "  " + thisEvent + thisRound + "  ";
+        thisGameTitle = thesePlayers.replace(/(^\s+|\s+$)/g, "").replace(/(\s{4,}|\b\s\s\b)/g, "   ") + "\n" + thisEvent.replace(/(^\s+|\s+$)/g, "") + thisRound;
         text += "<a" + (thisBold ? " style='font-weight: bold;' " : " ") + "href='javascript:void(0);' onclick='selectGameList(" + matches[1] + ");' title='" + thisGameTitle + "'>" + thisGameText + "</a>";
       }
       theObj.innerHTML = text;
