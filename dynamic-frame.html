@@ -795,18 +795,11 @@ simpleAddEvent(window, "orientationchange", function() {
   lastOrientation = window.orientation;
 });
 
-
-function pgn4web_onload(e) {
-  var calculatedPieceSize = myOnResize();
-  start_pgn4web();
-  if (calculatedPieceSize === false) { myOnResize(); }
-}
-
 </script>
 
 </head>
 
-<body onResize="myOnResize();">
+<body onResize="myOnResize();" onLoad="myOnResize();">
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
 <form style="display: none;"><textarea style="display: none;" id="pgnText">
