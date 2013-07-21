@@ -183,6 +183,7 @@ window['loadPgnCheckingLiveStatus'] = function(res) {
     var text = "";
     for (var ii = 0; ii < numberOfGames; ++ii) { text += fullPgnGame(ii) + "\\n\\n"; }
     localStorage[lsId + "lastGamesPgnText"] = text;
+    localStorage[lsId + "lastGamesLastModifiedHeader"] = LiveBroadcastLastModifiedHeader;
     localStorage[lsId + "lastGamesTime"] = (new Date()).getTime();
   }
   defaultLoadPgnCheckingLiveStatus(res);
@@ -197,6 +198,10 @@ window['loadPgnFromPgnUrl'] = function(pgnUrl) {
     if (!pgnGameFromPgnText(initialPgnGames)) {
       myAlert("error: invalid games cache");
     } else {
+      if (typeof(localStorage[lsId + "lastGamesLastModifiedHeader"]) == "string") {
+        LiveBroadcastLastModifiedHeader = localStorage[lsId + "lastGamesLastModifiedHeader"];
+        LiveBroadcastLastModified = new Date(LiveBroadcastLastModifiedHeader);
+      }
       firstStart = true;
       undoStackReset();
       Init();
