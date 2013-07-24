@@ -93,8 +93,15 @@ if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
 
 
-$text = "gameListLineHeight = Math.floor(1.9 * gameListFontSize);";
-$oldText = "gameListLineHeight = Math.floor(1.4 * gameListFontSize);";
+$text = "";
+$oldText = "href='javascript:void(0);'";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
+
+
+$text = "";
+$oldText = 'href="javascript:void(0);"';
 $actionNum += 1;
 if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
@@ -229,7 +236,7 @@ function fixGameLiveStatusExtraInfo(res) {
   var newExtraText = "";
   if (LiveBroadcastDelay && LiveBroadcastDemo) { newExtraText += "<span title='this is a broadcast simulation'>demo</span>"; }
   if (lastGameLiveStatusExtraInfoRes === LOAD_PGN_FAIL) {
-    if (newExtraText) { newExtraText += "<span style='margin-left:1.4em;'"; }
+    if (newExtraText) { newExtraText += "<span style='margin-left:1.3em;'"; }
     else { newExtraText += "<span"; }
     newExtraText += " title='games from application cache'>";
     newExtraText += ((!localStorage[lsId + "lastGamesValidationTime"]) || ((new Date()).getTime() - localStorage[lsId + "lastGamesValidationTime"]) > 18000000) ? "X" : "&times;";
@@ -237,12 +244,12 @@ function fixGameLiveStatusExtraInfo(res) {
     // 5h = 18000000ms
   }
   if (LiveBroadcastDelay && (LiveBroadcastPaused || LiveBroadcastEnded)) {
-    if (newExtraText) { newExtraText += "<a style='margin-left:1.4em;'"; }
+    if (newExtraText) { newExtraText += "<a style='margin-left:1.3em;'"; }
     else { newExtraText += "<a"; }
     if (LiveBroadcastEnded) {
-      newExtraText += " href='javascript:void(0);' onclick='refreshPgnSource(); this.blur();' title='live broadcast ended: click here to force game refresh'>+&gt;</a>";
+      newExtraText += " onclick='refreshPgnSource(); this.blur();' title='live broadcast ended'>+&gt;</a>";
     } else {
-      newExtraText += " href='javascript:void(0);' onclick='restartLiveBroadcast(); this.blur();' title='live broadcast automatic games refresh paused: click here to resume'>=&gt;</a>";
+      newExtraText += " onclick='restartLiveBroadcast(); this.blur();' title='live broadcast automatic games refresh paused'>=&gt;</a>";
     }
   }
   var theObj = document.getElementById("GameLiveStatusExtraInfoRight");
