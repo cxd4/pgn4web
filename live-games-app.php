@@ -155,7 +155,7 @@ var liveStatusTickerString = "";
 
 var lsId = "pgn4web_live_games_app_";
 
-var storageId = "1";
+var storageId = "2";
 if (localStorage[lsId + "storageId"] !== storageId) {
   window.localStorage.clear();
   localStorage[lsId + "storageId"] = storageId;
@@ -169,28 +169,105 @@ window['SetAutoPlay'] = function(vv) {
   }
 };
 
-window['defaultLoadPgnCheckingLiveStatus'] = window['loadPgnCheckingLiveStatus'];
-window['loadPgnCheckingLiveStatus'] = function(res) {
+window['defaultSetAutoplayDelay'] = window['SetAutoplayDelay'];
+window['SetAutoplayDelay'] = function(vv) {
+  defaultSetAutoplayDelay(vv);
+  localStorage[lsId + "Delay"] = Delay;
+};
+if (typeof(localStorage[lsId + "Delay"]) == "string") {
+  var newDelay = parseInt(localStorage[lsId + "Delay"], 10);
+  if (!isNaN(newDelay)) { Delay = newDelay; }
+}
+
+window['defaultSetHighlightOption'] = window['SetHighlightOption'];
+window['SetHighlightOption'] = function(on) {
+  defaultSetHighlightOption(on);
+  localStorage[lsId + "highlightOption"] = highlightOption;
+};
+if (typeof(localStorage[lsId + "highlightOption"]) == "string") {
+  highlightOption = (localStorage[lsId + "highlightOption"] == "true");
+}
+
+window['defaultToggleShowEco'] = window['toggleShowEco'];
+window['toggleShowEco'] = function() {
+  defaultToggleShowEco();
+  localStorage[lsId + "showEco"] = showEco;
+};
+if (typeof(localStorage[lsId + "showEco"]) == "string") {
+  showEco = (localStorage[lsId + "showEco"] == "true");
+}
+
+window['defaultToggleColorFlag'] = window['toggleColorFlag'];
+window['toggleColorFlag'] = function() {
+  defaultToggleColorFlag();
+  localStorage[lsId + "showColorFlag"] = showColorFlag;
+};
+if (typeof(localStorage[lsId + "showColorFlag"]) == "string") {
+  showColorFlag = (localStorage[lsId + "showColorFlag"] == "true");
+}
+
+window['defaultPauseLiveBroadcast'] = window['pauseLiveBroadcast'];
+window['pauseLiveBroadcast'] =  function() {
+  defaultPauseLiveBroadcast();
+  localStorage[lsId + "LiveBroadcastPaused"] = LiveBroadcastPaused;
+  fixGameLiveStatusExtraInfo();
+};
+window['defaultRestartLiveBroadcast'] = window['restartLiveBroadcast'];
+window['restartLiveBroadcast'] =  function() {
+  defaultRestartLiveBroadcast();
+  localStorage[lsId + "LiveBroadcastPaused"] = LiveBroadcastPaused;
+};
+if (typeof(localStorage[lsId + "LiveBroadcastPaused"]) == "string") {
+  LiveBroadcastPaused = (localStorage[lsId + "LiveBroadcastPaused"] == "true");
+}
+
+var lastGameLiveStatusExtraInfoRes = LOAD_PGN_FAIL;
+function fixGameLiveStatusExtraInfo(res) {
+  if (typeof(res) != "undefined") {
+    lastGameLiveStatusExtraInfoRes = res;
+  }
+  var newExtraText = "";
+  if (LiveBroadcastDelay && LiveBroadcastDemo) { newExtraText += "<span title='this is a broadcast simulation'>demo</span>"; }
+  if (lastGameLiveStatusExtraInfoRes === LOAD_PGN_FAIL) {
+    if (newExtraText) { newExtraText += "<span style='margin-left:1.4em;'"; }
+    else { newExtraText += "<span"; }
+    newExtraText += " title='games from application cache'>";
+    newExtraText += ((!localStorage[lsId + "lastGamesValidationTime"]) || ((new Date()).getTime() - localStorage[lsId + "lastGamesValidationTime"]) > 18000000) ? "X" : "x";
+    newExtraText += "</span>";
+    // 5h = 18000000ms
+  }
+  if (LiveBroadcastDelay && LiveBroadcastPaused) {
+    if (newExtraText) { newExtraText += "<a style='margin-left:1.4em;'"; }
+    else { newExtraText += "<a"; }
+    newExtraText += " href='javascript:void(0);' onclick='restartLiveBroadcast(); this.blur();' title='live broadcast automatic games refresh paused: click here to resume'>p</a>";
+  }
   var theObj = document.getElementById("GameLiveStatusExtraInfoRight");
   if (theObj) {
-    // 5h = 18000000ms
-    theObj.style.textTransform = ((!localStorage[lsId + "lastGamesTime"]) || ((new Date()).getTime() - localStorage[lsId + "lastGamesTime"]) > 18000000) ? "uppercase" : "";
-    theObj.style.visibility = (res === LOAD_PGN_FAIL ? "visible" : "hidden");
+    theObj.style.visibility = newExtraText ? "visible" : "hidden";
     var otherObj = document.getElementById("GameLiveStatusExtraInfoLeft");
-    if (otherObj) { otherObj.style.textTransform = theObj.style.textTransform; }
+    if (otherObj) { otherObj.innerHTML = theObj.innerHTML = newExtraText; }
   }
+}
+
+window['defaultLoadPgnCheckingLiveStatus'] = window['loadPgnCheckingLiveStatus'];
+window['loadPgnCheckingLiveStatus'] = function(res) {
+  fixGameLiveStatusExtraInfo(res);
   if (res === LOAD_PGN_OK) {
     var text = "";
     for (var ii = 0; ii < numberOfGames; ++ii) { text += fullPgnGame(ii) + "\\n\\n"; }
     localStorage[lsId + "lastGamesPgnText"] = text;
     localStorage[lsId + "lastGamesLastModifiedHeader"] = LiveBroadcastLastModifiedHeader;
-    localStorage[lsId + "lastGamesTime"] = (new Date()).getTime();
+    localStorage[lsId + "lastGamesLastReceivedLocal"] = LiveBroadcastLastReceivedLocal;
+  }
+  if ((res === LOAD_PGN_OK) || (res === LOAD_PGN_UNMODIFIED)) {
+    localStorage[lsId + "lastGamesValidationTime"] = (new Date()).getTime();
   }
   defaultLoadPgnCheckingLiveStatus(res);
 };
 
 window['defaultLoadPgnFromPgnUrl'] = window['loadPgnFromPgnUrl'];
 window['loadPgnFromPgnUrl'] = function(pgnUrl) {
+  var rememberAppInitialized = appInitialized;
   if (!appInitialized) {
     var theObj = document.getElementById("GameLiveStatusExtraInfoRight");
     if (theObj) { theObj.style.visibility = "visible"; }
@@ -202,6 +279,9 @@ window['loadPgnFromPgnUrl'] = function(pgnUrl) {
         LiveBroadcastLastModifiedHeader = localStorage[lsId + "lastGamesLastModifiedHeader"];
         LiveBroadcastLastModified = new Date(LiveBroadcastLastModifiedHeader);
       }
+      if (typeof(localStorage[lsId + "lastGamesLastReceivedLocal"]) == "string") {
+        LiveBroadcastLastReceivedLocal = localStorage[lsId + "lastGamesLastReceivedLocal"];
+      }
       firstStart = true;
       undoStackReset();
       Init();
@@ -210,7 +290,8 @@ window['loadPgnFromPgnUrl'] = function(pgnUrl) {
       customFunctionOnPgnTextLoad();
     }
   }
-  defaultLoadPgnFromPgnUrl(pgnUrl);
+  if (rememberAppInitialized || !LiveBroadcastPaused) { defaultLoadPgnFromPgnUrl(pgnUrl); }
+  else { fixGameLiveStatusExtraInfo(); }
 };
 
 function detectEngineLocation() {
@@ -220,6 +301,8 @@ function detectEngineLocation() {
 engineWinParametersSeparator = "#?";
 
 boardShortcut("F8", "live games web application wiki", function(t,e){ window.open("https://code.google.com/p/pgn4web/wiki/WebApp_LiveGames", "pgn4web_webAppWiki"); });
+
+boardShortcut("H5", "reset live games web application", function(t,e){ if (confirm("Reset live games web application to default configuration?\\n\\nWarning: application settings customizations, games data and engine analysis data will be lost.")) { window.localStorage.clear(); window.location.reload(); } });
 
 function gameKey(event, site, date, round, white, black) {
   var key = "";
@@ -312,14 +395,6 @@ if (touchEventEnabled) {
     simpleAddEvent(theObj, "touchstart", pgn4web_handleTouchStart_scroll);
     simpleAddEvent(theObj, "touchmove", pgn4web_handleTouchMove_scroll);
   }
-}
-
-if (theObj = document.getElementById("GameLiveStatusExtraInfoLeft")) {
-  theObj.innerHTML = "x";
-}
-if (theObj = document.getElementById("GameLiveStatusExtraInfoRight")) {
-  theObj.innerHTML = "x";
-  theObj.title = "games from application cache";
 }
 
 simpleAddEvent(window.applicationCache, "updateready", function(e) {
