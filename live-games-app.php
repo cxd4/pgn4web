@@ -229,6 +229,12 @@ if (typeof(localStorage[lsId + "LiveBroadcastPaused"]) == "string") {
 }
 
 var lastGameLiveStatusExtraInfoRes = LOAD_PGN_FAIL;
+window['defaultCustomFunctionOnCheckLiveBroadcastStatus'] = window['customFunctionOnCheckLiveBroadcastStatus'];
+window['customFunctionOnCheckLiveBroadcastStatus'] = function() {
+  defaultCustomFunctionOnCheckLiveBroadcastStatus();
+  fixGameLiveStatusExtraInfo();
+};
+
 function fixGameLiveStatusExtraInfo(res) {
   if (typeof(res) != "undefined") {
     lastGameLiveStatusExtraInfoRes = res;
