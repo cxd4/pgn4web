@@ -245,7 +245,7 @@ function fixGameLiveStatusExtraInfo(res) {
     if (newExtraText) { newExtraText += "<span style='margin-left:1.3em;'"; }
     else { newExtraText += "<span"; }
     newExtraText += " title='games from application cache'>";
-    newExtraText += ((!localStorage[lsId + "lastGamesValidationTime"]) || ((new Date()).getTime() - localStorage[lsId + "lastGamesValidationTime"]) > 18000000) ? "X" : "&times;";
+    newExtraText += ((!localStorage[lsId + "lastGamesValidationTime"]) || ((new Date()).getTime() - localStorage[lsId + "lastGamesValidationTime"]) > 18000000) ? "X" : "x";
     newExtraText += "</span>";
     // 5h = 18000000ms
   }
@@ -253,9 +253,9 @@ function fixGameLiveStatusExtraInfo(res) {
     if (newExtraText) { newExtraText += "<a style='margin-left:1.3em;'"; }
     else { newExtraText += "<a"; }
     if (LiveBroadcastEnded) {
-      newExtraText += " onclick='refreshPgnSource(); this.blur();' title='live broadcast ended'>+&gt;</a>";
+      newExtraText += " onclick='refreshPgnSource(); this.blur();' title='live broadcast ended'>O</a>";
     } else {
-      newExtraText += " onclick='restartLiveBroadcast(); this.blur();' title='live broadcast automatic games refresh paused'>=&gt;</a>";
+      newExtraText += " onclick='restartLiveBroadcast(); this.blur();' title='live broadcast automatic games refresh paused'>o</a>";
     }
   }
   var theObj = document.getElementById("GameLiveStatusExtraInfoRight");
