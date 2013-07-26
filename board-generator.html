@@ -1073,7 +1073,9 @@ function calculate_html_code() {
 function pgnTextFixFromInput( text ) {
 
   text = fixCommonPgnMistakes(text);
-  if (!document.board.useTextarea.checked) {
+  if (document.board.useTextarea.checked) {
+    text = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  } else {
     text = text.replace(/[\u0100-\uFFFF]/g,"*"); // replace all chars with code greather than 255 with *
   }
   return text;
