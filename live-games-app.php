@@ -34,7 +34,7 @@ $actionNum = 0;
 if (!$html) { errorExit($actionNum); }
 
 
-$text = '(window.location.hash + "&l=t&pf=a&ct=wood&bch=000000&fch=FFEEDD&hch=996633&scf=t" + (window.navigator.standalone ? "&hc=t" : ""))';
+$text = '("?l=t&" + window.location.hash + "&pf=a&ct=wood&bch=000000&fch=FFEEDD&hch=996633&scf=t" + (window.navigator.standalone ? "&hc=t" : ""))';
 $oldText = "window.location.search";
 $actionNum += 1;
 if (!strstr($html, $oldText)) { errorExit($actionNum); }
@@ -169,10 +169,11 @@ var liveStatusTickerString = "";
 
 var lsId = "pgn4web_live_games_app_";
 
-var storageId = "2";
-if (localStorage[lsId + "storageId"] !== storageId) {
+var storageId = "3";
+if ((localStorage[lsId + "storageId"] !== storageId) || (localStorage[lsId + "locationHref"] !== window.location.href)) {
   window.localStorage.clear();
   localStorage[lsId + "storageId"] = storageId;
+  localStorage[lsId + "locationHref"] = window.location.href;
 }
 
 window['defaultSetAutoPlay'] = window['SetAutoPlay'];
@@ -332,6 +333,7 @@ function gameKey(event, site, date, round, white, black) {
   var key = "";
   key += "[" + (typeof(event) == "string" ? event : "") + "]";
   key += "[" + (typeof(site) == "string" ? site : "") + "]";
+  key += "[" + (typeof(date) == "string" ? date : "") + "]";
   key += "[" + (typeof(round) == "string" ? round : "") + "]";
   key += "[" + (typeof(white) == "string" ? white : "") + "]";
   key += "[" + (typeof(black) == "string" ? black : "") + "]";
