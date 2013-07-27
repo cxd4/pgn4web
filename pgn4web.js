@@ -1632,10 +1632,7 @@ function pgnGameFromPgnText(pgnText) {
 
   var headMatch, prevHead, newHead, startNew, afterNew, lastOpen, checkedGame, validHead;
 
-  pgnText = fixCommonPgnMistakes(pgnText);
-
-  // avoid html injection
-  pgnText = pgnText.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  pgnText = simpleHtmlentities(fixCommonPgnMistakes(pgnText));
 
   // PGN standard: ignore lines starting with %
   pgnText = pgnText.replace(/(^|\n)%.*(\n|$)/g, "\n");
@@ -4125,5 +4122,9 @@ function clearSelectedText() {
     if (window.getSelection().empty) { window.getSelection().empty(); }
     else if (window.getSelection().removeAllRanges) { window.getSelection().removeAllRanges(); }
   } else if (document.selection && document.selection.empty) { document.selection.empty(); }
+}
+
+function simpleHtmlentities(text) {
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 

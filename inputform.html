@@ -102,8 +102,6 @@ function customFunctionOnAlert(message_string) {
 // customShortcutKey_Shift_0 defined by engine.js
 
 function cleanPgnData(text) {
-  text = text.replace(/</g,'&lt;');
-  text = text.replace(/>/g,'&gt;');
   text = text.replace(/\[/g,'\n\n[');
   text = text.replace(/\]/g,']\n\n');
   text = text.replace(/([012\*])(\s*)(\[)/g,'$1\n\n$3');
@@ -115,7 +113,7 @@ function cleanPgnData(text) {
 
 function loadPgnData() {
   firstStart = true;
-  document.getElementById('pgnText').value = cleanPgnData(document.getElementById('pgnForm').value);
+  document.getElementById('pgnText').value = simpleHtmlentities(cleanPgnData(document.getElementById('pgnForm').value));
   start_pgn4web();
 }
 
@@ -133,7 +131,7 @@ function gup(name) {
 var newPgnText = gup("pgnText");
 if (newPgnText === "") { newPgnText = gup("pt"); }
 if (newPgnText !== "") {
-  newPgnText = cleanPgnData(newPgnText);
+  newPgnText = simpleHtmlentities(cleanPgnData(newPgnText));
   document.getElementById('pgnText').value = newPgnText;
   document.getElementById('pgnForm').value = newPgnText;
 }

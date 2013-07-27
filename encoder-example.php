@@ -20,7 +20,7 @@ function get_param($param, $shortParam, $default) {
 $pgnText = get_param("pgnText", "pt", "");
 
 if ($pgnText) {
-  $pgnText = str_replace(array("<", ">"), array("&lt;", "&gt;"), $pgnText);
+  $pgnText = str_replace(array("&", "<", ">"), array("&amp;", "&lt;", "&gt;"), $pgnText);
   $pgnTextBox = $pgnText;
 
   $pgnText = str_replace("\\\"", "\"", $pgnText);

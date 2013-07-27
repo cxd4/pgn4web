@@ -290,7 +290,7 @@ function get_pgn() {
     return FALSE;
   }
 
-  $pgnText = str_replace(array("<", ">"), array("&lt;", "&gt;"), $pgnText);
+  $pgnText = str_replace(array("&", "<", ">"), array("&amp;", "&lt;", "&gt;"), $pgnText);
 
   return TRUE;
 }
