@@ -213,7 +213,7 @@ Ke7 36. Bg8 Rd3+ 37. Kg2 h6 38. Bd5 Rxd5 39. exd5 Kd6 40. Kf3 Kxd5 41. Ke3
 g5 42. fxg5 fxg5 0-1
 
 [Event "London chess classic"]
-[Site "London Olympia ENG"]
+[Site "London ENG"]
 [Date "2012.12.09"]
 [Round "9"]
 [White "Casaschi, Paolo"]
@@ -224,6 +224,7 @@ g5 42. fxg5 fxg5 0-1
 [ECO "C05"]
 [Opening "French"]
 [Variation "Tarrasch, closed variation"]
+[Section "FIDE open"]
 
 1. e4 e6 2. d4 d5 3. Nd2 Nf6 4. e5 Nfd7 5. f4 c5 6. c3 Nc6 7. Ndf3 Qb6 8.
 Ne2 Be7 9. a3 O-O 10. h4 a5 11. Qd3 Re8 12. g3 a4 13. Bh3 Nf8 14. O-O Na5
@@ -233,7 +234,7 @@ Qc6 26. Be3 Qd7 27. Qf2 Ng6 28. h5 Rf8 29. Qe1 Rxf1+ 30. Bxf1 Nxe5 { D }
 31. h6 Nf3+ 0-1
 
 [Event "London chess classic"]
-[Site "London Olympia ENG"]
+[Site "London ENG"]
 [Date "2012.12.07"]
 [Round "7"]
 [White "Ilfeld, Etan"]
@@ -244,6 +245,7 @@ Qc6 26. Be3 Qd7 27. Qf2 Ng6 28. h5 Rf8 29. Qe1 Rxf1+ 30. Bxf1 Nxe5 { D }
 [ECO "C02"]
 [Opening "French"]
 [Variation "advance, Wade variation"]
+[Section "FIDE open"]
 
 1. e4 e6 2. d4 d5 3. e5 c5 4. c3 Qb6 5. Nf3 Bd7 6. Be2 Bb5 7. O-O Bxe2 8.
 Qxe2 Nc6 9. Be3 Nh6 10. dxc5 Bxc5 11. Bxh6 gxh6 12. b4 Bf8 13. b5 Na5 14.
@@ -257,7 +259,7 @@ Ke3 Qd3+ 42. Kf4 Qd2+ 43. Ke5 Qg5+ 44. Kd6 Qf6+ 45. Kc5 Qf2+ 46. Kc4 Qf1+
 Qf7+ 53. Kc8 Qf8+ 54. Kc7 Qf4+ 55. Kc6 Qf6+ 56. Kc5 Qf2+ 1/2-1/2
 
 [Event "London chess classic"]
-[Site "London Olympia ENG"]
+[Site "London ENG"]
 [Date "2012.12.06"]
 [Round "6"]
 [White "Casaschi, Paolo"]
@@ -268,6 +270,7 @@ Qf7+ 53. Kc8 Qf8+ 54. Kc7 Qf4+ 55. Kc6 Qf6+ 56. Kc5 Qf2+ 1/2-1/2
 [ECO "B07"]
 [Opening "Pirc"]
 [Variation "Ufimtsev-Pytel variation"]
+[Section "FIDE open"]
 
 1. e4 d6 2. d4 Nf6 3. Nc3 c6 4. Be2 Qa5 5. Bf3 e5 6. Ne2 Be7 7. O-O Be6 8.
 Be3 Na6 9. a3 h6 10. b4 Qc7 11. b5 Nb8 12. bxc6 bxc6 13. Nc1 Nbd7 14. Nd3
@@ -278,7 +281,7 @@ Nxd6 Nd4 26. Nxc8 Rxc8 27. Qd3 Qg4 { D } 28. f3 Qh5 29. Rf1 Rc3 30. Qd1 a5
 1/2-1/2
 
 [Event "London chess classic"]
-[Site "London Olympia ENG"]
+[Site "London ENG"]
 [Date "2012.12.04"]
 [Round "4"]
 [White "Anderton, Matthew N"]
@@ -289,6 +292,7 @@ Nxd6 Nd4 26. Nxc8 Rxc8 27. Qd3 Qg4 { D } 28. f3 Qh5 29. Rf1 Rc3 30. Qd1 a5
 [ECO "C12"]
 [Opening "French"]
 [Variation "MacCutcheon, Bernstein variation"]
+[Section "FIDE open"]
 
 1. e4 e6 2. d4 d5 3. Nc3 Nf6 4. Bg5 Bb4 5. e5 h6 6. Bh4 g5 7. Bg3 Ne4 8.
 Ne2 c5 9. a3 Nxc3 10. Nxc3 Bxc3+ 11. bxc3 Qa5 12. Qd2 Nc6 13. dxc5 Bd7 14.
@@ -301,7 +305,7 @@ Qg8+ Qc8 41. Qb3+ Ka7 42. Qd5 Qc1+ 43. Kh2 Qh6+ 44. Kg1 Qe3+ 45. Kh2 d3 46.
 Qd7+ Kb8 47. Qd8+ 1/2-1/2
 
 [Event "London chess classic"]
-[Site "London Olympia ENG"]
+[Site "London ENG"]
 [Date "2012.12.03"]
 [Round "3"]
 [White "Casaschi, Paolo"]
@@ -312,6 +316,7 @@ Qd7+ Kb8 47. Qd8+ 1/2-1/2
 [ECO "B47"]
 [Opening "Sicilian"]
 [Variation "Taimanov (Bastrikov) variation"]
+[Section "FIDE open"]
 
 1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nc6 5. Nc3 Qc7 6. Nb3 a6 7. Bd3 Nf6
 8. O-O Be7 9. Be3 O-O 10. f4 d6 11. a4 Na5 { D } 12. Nd2 Rd8 13. Qe2 d5 14.
@@ -319,7 +324,7 @@ exd5 Nxd5 15. Nxd5 exd5 { D } 16. Qf2 d4 17. Bxd4 Rxd4 18. Rae1 { D } 18...
 Bc5 19. Re8+ Bf8 20. Qxd4 Qc6 21. Qe4 Qb6+ 22. Kh1 Nc6 23. Qxh7# 1-0
 
 [Event "London chess classic"]
-[Site "London Olympia ENG"]
+[Site "London ENG"]
 [Date "2012.12.02"]
 [Round "2"]
 [White "Richardson, John R"]
@@ -329,6 +334,7 @@ Bc5 19. Re8+ Bf8 20. Qxd4 Qc6 21. Qe4 Qb6+ 22. Kh1 Nc6 23. Qxh7# 1-0
 [BlackElo "2005"]
 [ECO "A81"]
 [Opening "Dutch defence"]
+[Section "FIDE open"]
 
 1. d4 f5 2. g3 Nf6 3. Bg2 g6 4. Nf3 Bg7 5. O-O O-O 6. b3 d6 7. Bb2 Qe8 8.
 c4 Ne4 9. Nbd2 Nxd2 10. Qxd2 Nd7 11. e4 { D } 11... e5 12. exf5 Rxf5 13.
@@ -339,7 +345,7 @@ Rxf6 24. Re7 Rf7 25. Rxf7 Kxf7 26. b4 Ke6 27. Kf2 h6 28. Ke3 g5 29. Bf3 Kf6
 36. cxb6 axb6 37. a4 c5 38. bxc5 bxc5 39. a5 c4 40. a6 c3 41. Ke3 1-0
 
 [Event "London chess classic"]
-[Site "London Olympia ENG"]
+[Site "London ENG"]
 [Date "2012.12.01"]
 [Round "1"]
 [White "Casaschi, Paolo"]
@@ -350,6 +356,7 @@ Rxf6 24. Re7 Rf7 25. Rxf7 Kxf7 26. b4 Ke6 27. Kf2 h6 28. Ke3 g5 29. Bf3 Kf6
 [ECO "B10"]
 [Opening "Caro-Kann"]
 [Variation "Goldman (Spielmann) variation"]
+[Section "FIDE open"]
 
 1. e4 c6 2. Nc3 d5 3. Qf3 e6 4. d4 Nf6 5. e5 Nfd7 6. Bf4 c5 7. dxc5 Nc6 8.
 Qg3 Nxc5 9. O-O-O Bd7 10. Be3 Qa5 11. Kb1 a6 12. Nge2 g6 13. Nd4 Rc8 14. f4
