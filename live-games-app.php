@@ -18,10 +18,10 @@ function errorExit($errorNum) {
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Live Games</title>
+<title>web app error</title>
 </head>
 <body style="color: white; background: black; font-family: sans-serif;">
-Live Games app error: $errorNum
+web app error: $errorNum
 </body>
 </html>
 END;
@@ -132,7 +132,7 @@ $text = <<<END
     }
     appInitialized = true;
   }
-  document.title = "Live Games";
+  document.title = titleString;
 END;
 $oldText = "<!-- AppCheck: customFunctionOnPgnTextLoad -->";
 $actionNum += 1;
@@ -163,6 +163,12 @@ $html = str_replace($oldText, $text, $html);
 
 
 $text = <<<END
+var titleString = "Live Games";
+thisRegExp = /(&|\?)(title|t)=([^&]*)(&|$)/i;
+if (thisParamString.match(thisRegExp) !== null) {
+  titleString = unescape(thisParamString.match(thisRegExp)[3]);
+}
+
 var appInitialized = false;
 
 var liveStatusTickerString = "";

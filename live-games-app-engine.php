@@ -18,10 +18,10 @@ function errorExit($errorNum) {
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Live Games</title>
+<title>web app error</title>
 </head>
 <body style="color: white; background: black; font-family: sans-serif;">
-Live Games app error: $errorNum
+web app error: $errorNum
 </body>
 </html>
 END;
