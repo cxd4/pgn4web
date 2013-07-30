@@ -919,7 +919,6 @@ sub memory_load {
   if ($PGN_MEMORY eq "") {
     tell_operator_and_log_terminal("error: memory load requires a valid memory file");
   } else {
-    my $i;
     my @candidate_memory_games = ();
     @memory_games = ();
     @memory_games_sortkey = ();
@@ -934,7 +933,7 @@ sub memory_load {
           unshift(@memory_games, $newPgn);
           $newSortkey = "";
           if ($newPgn =~ /\[Event "([^"]*)"\]/i) { $newSortkey = $1; }
-          if ($newPgn =~ /\[Round "([^"]+)"\]/i) { $newSortkey .= " + Round " . $1; }
+          if ($newPgn =~ /\[Round "([^"]+)"\]/i) { $newSortkey .= " - Round " . $1; }
           unshift(@memory_games_sortkey, $newSortkey);
         }
       }
@@ -948,11 +947,12 @@ sub memory_load {
     }
     if ($autorelayMode == 1) {
       my @newSortkey = ();
-      foreach (reverse(@memory_games_sortkey)) {
-        unless (($_ ~~ @newSortkey) || ($_ ~~ @currentRounds)) {
-          log_terminal("info: event mem: $_");
-          push(@newSortkey, $_);
+      for (my $m=$#memory_games_sortkey; $m>=0; $m--) {
+        unless (($memory_games_sortkey[$m] ~~ @newSortkey) || ($memory_games_sortkey[$m] ~~ @currentRounds)) {
+          log_terminal("info: event mem: $memory_games_sortkey[$m]");
+          push(@newSortkey, $memory_games_sortkey[$m]);
         }
+        $memory_games_sortkey[$m] =~ s/ - Round / + Round /;
       }
     }
     log_terminal("debug: memory load: " . ($#memory_games + 1));
