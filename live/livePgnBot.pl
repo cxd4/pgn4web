@@ -934,7 +934,7 @@ sub memory_load {
           unshift(@memory_games, $newPgn);
           $newSortkey = "";
           if ($newPgn =~ /\[Event "([^"]*)"\]/i) { $newSortkey = $1; }
-          if ($newPgn =~ /\[Round "([^"]+)"\]/i) { $newSortkey .= " - Round " . $1; }
+          if ($newPgn =~ /\[Round "([^"]+)"\]/i) { $newSortkey .= " + Round " . $1; }
           unshift(@memory_games_sortkey, $newSortkey);
         }
       }
