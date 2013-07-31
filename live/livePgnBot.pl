@@ -1408,10 +1408,9 @@ sub process_master_command {
     }
   } elsif ($command eq "memorypurgegame") {
     if ($parameters =~ /^\s*"(.*?)"\s*"(.*?)"\s*"(.*?)"\s*"(.*?)"\s*$/) {
-      my $numPurged = memory_purge_game($1, $2, $3, $4);
-      if ($numPurged > 0) {
+      if (memory_purge_game($1, $2, $3, $4) > 0) {
         refresh_memory();
-        tell_operator("purged $numPurged memory game" . ($numPurged > 1 ? "s" : ""));
+        tell_operator("purged memory game");
       } else {
         tell_operator("no memory game found for purge");
       }
@@ -1424,10 +1423,9 @@ sub process_master_command {
     if ($parameters =~ /^\s*"(.*?)"\s*"(.*?)"\s*$/) {
       my $forPurge = $1;
       if ($2 ne "") { $forPurge .= " - Round $2"; }
-      my $numPurged = memory_purge_round($forPurge);
-      if ($numPurged > 0) {
+      if (memory_purge_round($forPurge) > 0) {
         refresh_memory();
-        tell_operator("purged $numPurged memory round" . ($numPurged > 1 ? "s" : ""));
+        tell_operator("purged memory round");
       } else {
         tell_operator("no memory round found for purge");
       }
