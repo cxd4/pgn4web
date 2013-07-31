@@ -481,7 +481,7 @@ function fillGameList(force) {
     }
     if (theObj = document.getElementById("GameListBody")) {
       var extractGamesRegExp = /<OPTION CLASS="optionSelectControl" value=(\d+)>(\s*\d+)(\s+.{30})(.{10})([^<]+)/g;
-      var thisGameText, thisGameTitle;
+      var thisGameText, thisGameTitle1, thisGameTitle2;
       var thisOption, thisNum, thisEvent, thisRound, thesePlayers, thisBold;
       var firstGame = true;
       var matches;
@@ -495,8 +495,17 @@ function fillGameList(force) {
         if (firstGame) { firstGame = false; } else { text += "<br/>"; }
         thisBold = ((parseInt(thisNum, 10) - 1) === currentGame);
         thisGameText = thisNum + (thisBold ? "." :  " ") + thesePlayers + "  " + thisEvent + thisRound + "  ";
-        thisGameTitle = thesePlayers.replace(/(^\s+|\s+$)/g, "").replace(/(\s{4,}|\b\s\s\b)/g, "   ") + "\n" + thisEvent.replace(/(^\s+|\s+$)/g, "") + thisRound;
-        text += "<a" + (thisBold ? " style='font-weight: bold;' " : " ") + "href='javascript:void(0);' onclick='selectGameList(" + thisOption + ");' title='" + thisGameTitle + "'>" + thisGameText + "</a>";
+        thisGameTitle1 = gameWhite[thisNum - 1] || "";
+        thisGameTitle1 += (thisGameTitle1 && gameBlack[thisNum - 1]) ? "    " : "";
+        thisGameTitle1 += gameBlack[thisNum - 1] || "";
+        thisGameTitle1 += (thisGameTitle1 && gameResult[thisNum - 1]) ? "    " : "";
+        thisGameTitle1 += gameResult[thisNum - 1] || "";
+        if (thisGameTitle1) { thisGameTitle1 = " " + thisGameTitle1 + " "; }
+        thisGameTitle2 =  gameEvent[thisNum - 1] || "";
+        thisGameTitle2 += (thisGameTitle2 && gameRound[thisNum - 1]) ? "  -  " : "";
+        thisGameTitle2 += gameRound[thisNum - 1] || "";
+        if (thisGameTitle2) { thisGameTitle2 = " " + thisGameTitle2 + " "; }
+        text += "<a" + (thisBold ? " style='font-weight: bold;' " : " ") + "href='javascript:void(0);' onclick='selectGameList(" + thisOption + ");' title='" + thisGameTitle1 + (thisGameTitle1 && thisGameTitle2 ? "\n" : "") + thisGameTitle2 + "'>" + thisGameText + "</a>";
       }
       theObj.innerHTML = text;
     }
