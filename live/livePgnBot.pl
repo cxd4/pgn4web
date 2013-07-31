@@ -1030,7 +1030,7 @@ add_master_command ("memory", "memoryfile [filename.pgn] (to get/set the filenam
 add_master_command ("memoryload", "memoryload [1] (to load PGN memroy data from memory file)");
 add_master_command ("memorymax", "memorymax [number] (to get/set the maximum number of games for the PGN memory data)");
 add_master_command ("memorypurgegame", "memorypurgegame [\"event\" \"round\" \"white\" \"black\"] (to purge a game from the PGN memory data)");
-add_master_command ("memorypurgeevent", "memorypurgeround [string] (to purge a round from the PGN memory data)");
+add_master_command ("memorypurgeround", "memorypurgeround [string] (to purge a round from the PGN memory data)");
 add_master_command ("memoryselect", "memoryselect [regexp|\"\"] (to get/set the regular expression to select games for the PGN memory data)");
 add_master_command ("observe", "observe [game number list, such as: 12 34 56 ..] (to observe given games)");
 add_master_command ("prioritize", "prioritize [regexp|\"\"] (to get/set the regular expression to prioritize events/players from the PGN header during autorelay; might be overruled by ignore)");
