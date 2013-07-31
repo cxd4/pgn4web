@@ -890,6 +890,7 @@ sub memory_purge_round {
       }
     }
   }
+  return $purgedRound;
 }
 
 sub memory_purge_game {
@@ -1030,7 +1031,7 @@ add_master_command ("memory", "memoryfile [filename.pgn] (to get/set the filenam
 add_master_command ("memoryload", "memoryload [1] (to load PGN memroy data from memory file)");
 add_master_command ("memorymax", "memorymax [number] (to get/set the maximum number of games for the PGN memory data)");
 add_master_command ("memorypurgegame", "memorypurgegame [\"event\" \"round\" \"white\" \"black\"] (to purge a game from the PGN memory data)");
-add_master_command ("memorypurgeround", "memorypurgeround [string] (to purge a round from the PGN memory data)");
+add_master_command ("memorypurgeround", "memorypurgeround [\"event\" \"round\"] (to purge a round from the PGN memory data)");
 add_master_command ("memoryselect", "memoryselect [regexp|\"\"] (to get/set the regular expression to select games for the PGN memory data)");
 add_master_command ("observe", "observe [game number list, such as: 12 34 56 ..] (to observe given games)");
 add_master_command ("prioritize", "prioritize [regexp|\"\"] (to get/set the regular expression to prioritize events/players from the PGN header during autorelay; might be overruled by ignore)");
@@ -1420,16 +1421,20 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "memorypurgeround") {
-    if ($parameters ne "") {
-      my $numPurged = memory_purge_round($parameters);
+    if ($parameters =~ /^\s*"(.*?)"\s*"(.*?)"\s*$/) {
+      my $forPurge = $1;
+      if ($2 ne "") { $forPurge .= " - Round $2"; }
+      my $numPurged = memory_purge_round($forPurge);
       if ($numPurged > 0) {
         refresh_memory();
         tell_operator("purged $numPurged memory round" . ($numPurged > 1 ? "s" : ""));
       } else {
         tell_operator("no memory round found for purge");
       }
-    } else {
+    } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
+    } else {
+      tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "memoryselect") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
