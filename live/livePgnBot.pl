@@ -892,6 +892,7 @@ sub memory_purge_round {
 
 sub memory_purge_game {
   my ($thisEvent, $thisRound, $thisWhite, $thisBlack) = @_;
+  my $purgedGame = 0;
 
   if ($PGN_MEMORY ne "") {
     if ($relayMode == 1) {
@@ -910,9 +911,11 @@ sub memory_purge_game {
         @memory_games = @memory_games[0..($i-1), ($i+1)..$#memory_games];
         @memory_games_sortkey = @memory_games_sortkey[0..($i-1), ($i+1)..$#memory_games_sortkey];
         log_terminal('debug: memory purged game: [Event "' . $thisEvent . '"][Round "' . $thisRound . '"][White "' . $thisWhite . '"][Black "' . $thisBlack . '"]');
+        $purgedGame++;
       }
     }
   }
+  return $purgedGame;
 }
 
 sub memory_load {
@@ -1024,6 +1027,7 @@ add_master_command ("max", "max [number] (to get/set the maximum number of games
 add_master_command ("memory", "memoryfile [filename.pgn] (to get/set the filename for the PGN memory data)");
 add_master_command ("memoryload", "memoryload [1] (to load PGN memroy data from memory file)");
 add_master_command ("memorymax", "memorymax [number] (to get/set the maximum number of games for the PGN memory data)");
+add_master_command ("memorypurge", "memorypurge [\"event\" \"round\" \"white\" \"black\"] (to purge a game from the PGN memory data)");
 add_master_command ("memoryselect", "memoryselect [regexp|\"\"] (to get/set the regular expression to select games for the PGN memory data)");
 add_master_command ("observe", "observe [game number list, such as: 12 34 56 ..] (to observe given games)");
 add_master_command ("prioritize", "prioritize [regexp|\"\"] (to get/set the regular expression to prioritize events/players from the PGN header during autorelay; might be overruled by ignore)");
@@ -1395,6 +1399,20 @@ sub process_master_command {
         $memoryMaxGamesNum = $parameters;
       }
       tell_operator("memorymax=$memoryMaxGamesNum");
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "memorypurge") {
+    if ($parameters =~ /^\s*"(.*?)"\s*"(.*?)"\s*"(.*?)"\s*"(.*?)"\s*$/) {
+      my $numPurged = memory_purge_game($1, $2, $3, $4);
+      if ($numPurged > 0) {
+        refresh_memory();
+        tell_operator("purged $numPurged memory game" . ($numPurged > 1 ? "s" : ""));
+      } else {
+        tell_operator("no memory game found for purge");
+      }
+    } elsif ($parameters eq "") {
+      tell_operator(detect_command_helptext($command));
     } else {
       tell_operator("error: invalid $command parameter");
     }
