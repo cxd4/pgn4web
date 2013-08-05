@@ -391,8 +391,6 @@ function pgn4web_handleTouchEnd_Header(e) {
 function pgn4web_handleTouchStart_scroll(e) {
   this.allowUp = (this.scrollTop > 0);
   this.allowDown = (this.scrollTop < this.scrollHeight - this.clientHeight);
-  this.prevTop = null;
-  this.prevBot = null;
   this.lastY = e.pageY;
 }
 
