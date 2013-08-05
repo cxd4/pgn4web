@@ -389,6 +389,8 @@ function pgn4web_handleTouchEnd_Header(e) {
 }
 
 function pgn4web_handleTouchStart_scroll(e) {
+  if (this.scrollTop === 0) { this.scrollTop += 1; }
+  if (this.scrollTop === this.scrollHeight - this.clientHeight) { this.scrollTop -= 1; }
   this.allowUp = (this.scrollTop > 0);
   this.allowDown = (this.scrollTop < this.scrollHeight - this.clientHeight);
   this.lastY = e.pageY;
