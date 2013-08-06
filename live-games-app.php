@@ -388,9 +388,22 @@ function pgn4web_handleTouchEnd_Header(e) {
   clearSelectedText();
 }
 
+var resetGameListBodyFillerTimeout = null;
+
 function pgn4web_handleTouchStart_scroll(e) {
-  if (this.scrollTop === 0) { this.scrollTop += 1; }
-  if (this.scrollTop === this.scrollHeight - this.clientHeight) { this.scrollTop -= 1; }
+  if (window.navigator.standalone) {
+    if (resetGameListBodyFillerTimeout) {
+      clearTimeout(resetGameListBodyFillerTimeout);
+      resetGameListBodyFillerTimeout = null;
+    }
+    var itemsObj = document.getElementById("GameListBodyItems");
+    var fillerObj = document.getElementById("GameListBodyFiller");
+    if ((itemsObj) && (fillerObj) && (this.offsetHeight > itemsObj.offsetHeight - 2)) {
+      fillerObj.style.height = (this.offsetHeight - itemsObj.offsetHeight + 2) + "px";
+    }
+    if (this.scrollTop === 0) { this.scrollTop += 1; }
+    if (this.scrollTop === this.scrollHeight - this.clientHeight) { this.scrollTop -= 1; }
+  }
   this.allowUp = (this.scrollTop > 0);
   this.allowDown = (this.scrollTop < this.scrollHeight - this.clientHeight);
   this.lastY = e.pageY;
@@ -403,6 +416,24 @@ function pgn4web_handleTouchMove_scroll(e) {
   this.lastY = e.pageY;
   if ((up && this.allowUp) || (down && this.allowDown) || (flat)) { e.stopPropagation(); }
   else { e.preventDefault(); }
+}
+
+function pgn4web_handleTouchEnd_scroll(e) {
+  if (window.navigator.standalone) {
+    if (resetGameListBodyFillerTimeout) {
+      clearTimeout(resetGameListBodyFillerTimeout);
+      resetGameListBodyFillerTimeout = null;
+    }
+    var fillerObj = document.getElementById("GameListBodyFiller");
+    if (fillerObj && fillerObj.style.height) {
+      resetGameListBodyFillerTimeout = setTimeout("resetGameListBodyFiller()", 1234);
+    }
+  }
+}
+
+function resetGameListBodyFiller() {
+  var fillerObj = document.getElementById("GameListBodyFiller");
+  if (fillerObj && fillerObj.style.height) { fillerObj.style.height = ""; }
 }
 
 if (touchEventEnabled) {
@@ -423,9 +454,13 @@ if (touchEventEnabled) {
   }
 
   simpleAddEvent(document.body, "touchmove", function(e) { e.preventDefault(); });
+
   if (theObj = document.getElementById("GameListBody")) {
     simpleAddEvent(theObj, "touchstart", pgn4web_handleTouchStart_scroll);
     simpleAddEvent(theObj, "touchmove", pgn4web_handleTouchMove_scroll);
+    simpleAddEvent(theObj, "touchend", pgn4web_handleTouchEnd_scroll);
+    simpleAddEvent(theObj, "touchleave", pgn4web_handleTouchEnd_scroll);
+    simpleAddEvent(theObj, "touchcancel", pgn4web_handleTouchEnd_scroll);
   }
 }
 

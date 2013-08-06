@@ -485,7 +485,7 @@ function fillGameList(force) {
       var thisOption, thisNum, thisEvent, thisRound, thesePlayers, thisBold;
       var firstGame = true;
       var matches;
-      text = "";
+      text = "<div id='GameListBodyItems'>";
       while (matches = extractGamesRegExp.exec(textSelectOptions.replace(/&nbsp;/g, " "))) {
         thisOption = matches[1];
         thisNum = matches[2];
@@ -507,6 +507,7 @@ function fillGameList(force) {
         if (thisGameTitle2) { thisGameTitle2 = " " + thisGameTitle2 + " "; }
         text += "<a" + (thisBold ? " style='font-weight: bold;' " : " ") + "href='javascript:void(0);' onclick='selectGameList(" + thisOption + ");' title='" + thisGameTitle1 + (thisGameTitle1 && thisGameTitle2 ? "\n" : "") + thisGameTitle2 + "'>" + thisGameText + "</a>";
       }
+      text += "</div><div id='GameListBodyFiller'></div>";
       theObj.innerHTML = text;
     }
   }
