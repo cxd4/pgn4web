@@ -425,6 +425,7 @@ function myOnResize() {
   myInsertRule(sheet, ".gameList", "display: none; position: absolute; overflow: hidden; font-family: monospace; white-space: pre; font-size: " + gameListFontSize + "px; line-height: " + gameListLineHeight + "px;");
   myInsertRule(sheet, ".gameListHeader", "overflow: hidden; width: " + (ww - 2 * framePadding) + "px; padding-top: " + gameListPadding + "px; padding-bottom: " + gameListPadding + "px;");
   myInsertRule(sheet, ".gameListBody", "height: " + gameListBodyHeight + "px; width: " + (ww - 2 * framePadding) + "px; overflow-x: hidden; overflow-y: auto; scrollbar-base-color: #" + backgroundColorHex + "; overflow-scrolling: touch; -webkit-overflow-scrolling: touch;");
+  myInsertRule(sheet, ".gameListBodyItems", "min-height: " + gameListBodyHeight + "px;");
   myInsertRule(sheet, ".scrollLink", "visibility: " + (numberOfGames > gameListBodyHeight / gameListLineHeight + 0.2 ? "visible" : "hidden") + ";");
 
   for (var ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
@@ -479,13 +480,13 @@ function fillGameList(force) {
       text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = theObj.scrollHeight; theObj.scrollLeft = 0; } this.blur();' title='scroll to last page'>   &gt;&gt;   </a>  ";
       theObj.innerHTML = text;
     }
-    if (theObj = document.getElementById("GameListBody")) {
+    if (theObj = document.getElementById("GameListBodyItems")) {
       var extractGamesRegExp = /<OPTION CLASS="optionSelectControl" value=(\d+)>(\s*\d+)(\s+.{30})(.{10})([^<]+)/g;
       var thisGameText, thisGameTitle1, thisGameTitle2;
       var thisOption, thisNum, thisEvent, thisRound, thesePlayers, thisBold;
       var firstGame = true;
       var matches;
-      text = "<div id='GameListBodyItems'>";
+      text = "";
       while (matches = extractGamesRegExp.exec(textSelectOptions.replace(/&nbsp;/g, " "))) {
         thisOption = matches[1];
         thisNum = matches[2];
@@ -507,7 +508,6 @@ function fillGameList(force) {
         if (thisGameTitle2) { thisGameTitle2 = " " + thisGameTitle2 + " "; }
         text += "<a" + (thisBold ? " style='font-weight: bold;' " : " ") + "href='javascript:void(0);' onclick='selectGameList(" + thisOption + ");' title='" + thisGameTitle1 + (thisGameTitle1 && thisGameTitle2 ? "\n" : "") + thisGameTitle2 + "'>" + thisGameText + "</a>";
       }
-      text += "</div><div id='GameListBodyFiller'></div>";
       theObj.innerHTML = text;
     }
   }
@@ -818,7 +818,7 @@ simpleAddEvent(window, "orientationchange", function() {
 
 <div style="display:none;" id="GameSelector"></div>
 
-<div class="gameList" id="GameList"><div class="gameListHeader" id="GameListHeader"></div><div class="gameListBody" id="GameListBody"></div></div>
+<div class="gameList" id="GameList"><div class="gameListHeader" id="GameListHeader"></div><div class="gameListBody" id="GameListBody"><div class="gameListBodyItems" id="GameListBodyItems"></div></div></div>
 
 <div id="GameBoard"></div>
 

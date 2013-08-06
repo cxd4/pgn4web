@@ -388,18 +388,17 @@ function pgn4web_handleTouchEnd_Header(e) {
   clearSelectedText();
 }
 
-var resetGameListBodyFillerTimeout = null;
+var resetGameListBodyItemsTimeout = null;
 
 function pgn4web_handleTouchStart_scroll(e) {
   if (window.navigator.standalone) {
-    if (resetGameListBodyFillerTimeout) {
-      clearTimeout(resetGameListBodyFillerTimeout);
-      resetGameListBodyFillerTimeout = null;
+    if (resetGameListBodyItemsTimeout) {
+      clearTimeout(resetGameListBodyItemsTimeout);
+      resetGameListBodyItemsTimeout = null;
     }
-    var itemsObj = document.getElementById("GameListBodyItems");
-    var fillerObj = document.getElementById("GameListBodyFiller");
-    if ((itemsObj) && (fillerObj) && (this.offsetHeight > itemsObj.offsetHeight - 2)) {
-      fillerObj.style.height = (this.offsetHeight - itemsObj.offsetHeight + 2) + "px";
+    var thisObj = document.getElementById("GameListBodyItems");
+    if ((thisObj) && (this.offsetHeight > thisObj.offsetHeight - 2)) {
+      thisObj.style.height = (this.offsetHeight + 2) + "px";
     }
     if (this.scrollTop === 0) { this.scrollTop += 1; }
     if (this.scrollTop === this.scrollHeight - this.clientHeight) { this.scrollTop -= 1; }
@@ -420,20 +419,20 @@ function pgn4web_handleTouchMove_scroll(e) {
 
 function pgn4web_handleTouchEnd_scroll(e) {
   if (window.navigator.standalone) {
-    if (resetGameListBodyFillerTimeout) {
-      clearTimeout(resetGameListBodyFillerTimeout);
-      resetGameListBodyFillerTimeout = null;
+    if (resetGameListBodyItemsTimeout) {
+      clearTimeout(resetGameListBodyItemsTimeout);
+      resetGameListBodyItemsTimeout = null;
     }
-    var fillerObj = document.getElementById("GameListBodyFiller");
-    if (fillerObj && fillerObj.style.height) {
-      resetGameListBodyFillerTimeout = setTimeout("resetGameListBodyFiller()", 1234);
+    var thisObj = document.getElementById("GameListBodyItems");
+    if (thisObj && thisObj.style.height) {
+      resetGameListBodyItemsTimeout = setTimeout("resetGameListBodyItems()", 1234);
     }
   }
 }
 
-function resetGameListBodyFiller() {
-  var fillerObj = document.getElementById("GameListBodyFiller");
-  if (fillerObj && fillerObj.style.height) { fillerObj.style.height = ""; }
+function resetGameListBodyItems() {
+  var thisObj = document.getElementById("GameListBodyItems");
+  if (thisObj && thisObj.style.height) { thisObj.style.height = ""; }
 }
 
 if (touchEventEnabled) {
