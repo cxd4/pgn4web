@@ -930,7 +930,6 @@ sub memory_load {
     @memory_games_sortkey = ();
     my $newPgn;
     my $newSortkey;
-    my $newSortkeyRound;
     if (open(my $thisFile,  "<",  $PGN_MEMORY)) {
       my @lines = <$thisFile>;
       @candidate_memory_games = (join("", @lines) =~ /((?:\[\s*\w+\s*"[^"]*"\s*\]\s*)+[^[]+)/g);
@@ -940,12 +939,7 @@ sub memory_load {
           unshift(@memory_games, $newPgn);
           $newSortkey = "";
           if ($newPgn =~ /\[Event "([^"]*)"\]/i) { $newSortkey = $1; }
-          if ($newPgn =~ /\[Round "([^"]+)"\]/i) {
-            $newSortkeyRound = $1;
-            $newSortkey .= " - Round ";
-            if (length($newSortkeyRound) == 1) { $newSortkey .= "0"; }
-            $newSortkey .= $newSortkeyRound;
-          }
+          if ($newPgn =~ /\[Round "([^"]+)"\]/i) { $newSortkey .= " - Round " . $1; }
           unshift(@memory_games_sortkey, $newSortkey);
         }
       }
@@ -965,6 +959,7 @@ sub memory_load {
           push(@newSortkey, $memory_games_sortkey[$m]);
         }
         $memory_games_sortkey[$m] =~ s/ - Round / + Round /;
+        if ($memory_games_sortkey[$m] =~ /^(.* Round )(\S)$/) { $memory_games_sortkey[$m] = $1 . "0" . $2; }
       }
     }
     log_terminal("debug: memory load: " . ($#memory_games + 1));
