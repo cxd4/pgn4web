@@ -464,6 +464,7 @@ function customDebugInfo() {
 }
 
 var gameListCurrentGame = -1;
+var gameListItemsLast = "none";
 var gameListBodyHeight = -1;
 var gameListLineHeight = -1;
 function fillGameList(force) {
@@ -499,7 +500,8 @@ function fillGameList(force) {
         text += "<a" + (thisBold ? " style='font-weight: bold;' " : " ") + "href='javascript:void(0);' onclick='selectGameList(" + thisOption + ");' title='" + thisGameTitle1 + (thisGameTitle1 && thisGameTitle2 ? "\n" : "") + thisGameTitle2 + "'>" + thisGameText + "</a>";
       }
       if (text === "") { text += "<a href='javascript:void(0);' onclick='selectGameList(-1);' title='back to chessboard'>      ---------------  ---------------  ---     </a>"; }
-      if (theObj.innerHTML !== text) {
+      if (text !== gameListItemsLast) {
+        gameListItemsLast = text;
         theObj.innerHTML = text;
         if (theObj = document.getElementById("GameListHeader")) {
           text = "";
