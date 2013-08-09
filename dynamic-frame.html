@@ -463,13 +463,15 @@ function customDebugInfo() {
   return dbg;
 }
 
-var gameListCurrentGame = -1;
-var gameListItemsLast = "none";
+var textSelectOptionsLast = "none";
+var currentGameLast = -1;
 var gameListBodyHeight = -1;
 var gameListLineHeight = -1;
 function fillGameList(force) {
-  if (force || currentGame !== gameListCurrentGame) {
-    gameListCurrentGame = currentGame;
+  if ((currentGame !== currentGameLast) || (textSelectOptions !== textSelectOptionsLast)) {
+    currentGameLast = currentGame;
+    textSelectOptionsLast = textSelectOptions;
+    force = true;
     var text;
     if (theObj = document.getElementById("GameListBodyItems")) {
       var extractGamesRegExp = /<OPTION CLASS="optionSelectControl" value=(\d+)>(\s*\d+)(\s+.{30})(.{10})([^<]+)/g;
@@ -500,24 +502,21 @@ function fillGameList(force) {
         text += "<a" + (thisBold ? " style='font-weight: bold;' " : " ") + "href='javascript:void(0);' onclick='selectGameList(" + thisOption + ");' title='" + thisGameTitle1 + (thisGameTitle1 && thisGameTitle2 ? "\n" : "") + thisGameTitle2 + "'>" + thisGameText + "</a>";
       }
       if (text === "") { text += "<a href='javascript:void(0);' onclick='selectGameList(-1);' title='back to chessboard'>      ---------------  ---------------  ---     </a>"; }
-      if (text !== gameListItemsLast) {
-        gameListItemsLast = text;
+      theObj.innerHTML = text;
+      if (theObj = document.getElementById("GameListHeader")) {
+        text = "";
+        text += "<a style='position: absolute; left: 0;' href='javascript:void(0);' onclick='selectGameList(-1);' title='back to chessboard'> " + numberOfGames.toString().replace(/\d$/, "").replace(/./g, " ") + "&crarr;     </a>";
+        text += "          ";
+        text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = 0; theObj.scrollLeft = 0; } this.blur();' title='scroll to first page'>   &lt;&lt;   </a>  ";
+        text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (Math.ceil(theObj.scrollTop / gameListLineHeight) - Math.floor(gameListBodyHeight / gameListLineHeight)); theObj.scrollLeft = 0; } this.blur();' title='scroll to previous page'>   &lt;   </a>  ";
+        text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (Math.ceil(theObj.scrollTop / gameListLineHeight) + Math.floor(gameListBodyHeight / gameListLineHeight)); theObj.scrollLeft = 0; } this.blur();' title='scroll to next page'>   &gt;   </a>  ";
+        text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = theObj.scrollHeight; theObj.scrollLeft = 0; } this.blur();' title='scroll to last page'>   &gt;&gt;   </a>  ";
         theObj.innerHTML = text;
-        if (theObj = document.getElementById("GameListHeader")) {
-          text = "";
-          text += "<a style='position: absolute; left: 0;' href='javascript:void(0);' onclick='selectGameList(-1);' title='back to chessboard'> " + numberOfGames.toString().replace(/\d$/, "").replace(/./g, " ") + "&crarr;     </a>";
-          text += "          ";
-          text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = 0; theObj.scrollLeft = 0; } this.blur();' title='scroll to first page'>   &lt;&lt;   </a>  ";
-          text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (Math.ceil(theObj.scrollTop / gameListLineHeight) - Math.floor(gameListBodyHeight / gameListLineHeight)); theObj.scrollLeft = 0; } this.blur();' title='scroll to previous page'>   &lt;   </a>  ";
-          text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (Math.ceil(theObj.scrollTop / gameListLineHeight) + Math.floor(gameListBodyHeight / gameListLineHeight)); theObj.scrollLeft = 0; } this.blur();' title='scroll to next page'>   &gt;   </a>  ";
-          text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = theObj.scrollHeight; theObj.scrollLeft = 0; } this.blur();' title='scroll to last page'>   &gt;&gt;   </a>  ";
-          theObj.innerHTML = text;
-        }
-        if (theObj = document.getElementById("GameListBody")) {
-          setTimeout("document.getElementById('GameListBody').scrollTop = (currentGame -  1) * gameListLineHeight; document.getElementById('GameListBody').scrollLeft = 0;", 111);
-        }
       }
     }
+  }
+  if (force && (theObj = document.getElementById("GameListBody"))) {
+    setTimeout("document.getElementById('GameListBody').scrollTop = (currentGame -  1) * gameListLineHeight; document.getElementById('GameListBody').scrollLeft = 0;", 111);
   }
 }
 
@@ -525,7 +524,7 @@ var oldHeaderContainerDisplay;
 function showGameList() {
   if (numberOfGames < 2) { return; }
   disableShortcutKeysAndStoreStatus();
-  fillGameList(false);
+  fillGameList(true);
   if (theObj = document.getElementById("HeaderContainer")) {
     oldHeaderContainerDisplay = theObj.style.display;
     theObj.style.display = "none";
@@ -557,7 +556,7 @@ function customFunctionOnPgnTextLoad() {
     else { document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s"); }
   }
 
-  fillGameList(true);
+  fillGameList(false);
   if (theObj = document.getElementById("ShowGameListLink")) {
     theObj.title = "select from " + numberOfGames + " games";
     var text = "", ii;
