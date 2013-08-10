@@ -523,6 +523,8 @@ function fillGameList(force) {
 var oldHeaderContainerDisplay;
 function showGameList() {
   if (numberOfGames < 2) { return; }
+  var theObj = document.getElementById("GameList");
+  if ((theObj) && (theObj.style.display == "block")) { return; }
   disableShortcutKeysAndStoreStatus();
   fillGameList(true);
   if (theObj = document.getElementById("HeaderContainer")) {
@@ -534,6 +536,8 @@ function showGameList() {
 }
 
 function selectGameList(gameNum) {
+  var theObj = document.getElementById("GameList");
+  if ((theObj) && (theObj.style.display === "")) { return; }
   if (gameNum != -1) { Init(gameNum); }
   if (theObj = document.getElementById("GameList")) { theObj.style.display = ""; }
   if (theObj = document.getElementById("GameBoard")) { theObj.style.display = ""; }
