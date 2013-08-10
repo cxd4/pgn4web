@@ -351,18 +351,21 @@ function pgn4web_handleTouchEnd_HeaderContainer(e) {
   var jj, deltaX, deltaY;
   for (var ii = 0; ii < e.changedTouches.length; ii++) {
     if ((jj = pgn4webOngoingTouchIndexById(e.changedTouches[ii].identifier)) != -1) {
-      deltaX = e.changedTouches[ii].clientX - pgn4webOngoingTouches[jj].clientX;
-      deltaY = e.changedTouches[ii].clientY - pgn4webOngoingTouches[jj].clientY;
-      if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) >= 13) {
-        if (Math.abs(deltaY) > 1.5 * Math.abs(deltaX)) {
-          if (deltaY > 0) { // vertical down
-            showEngineAnalysisBoard();
-          } else { // vertical up
-            showGameList();
+      if (pgn4webOngoingTouches.length == 1) {
+        deltaX = e.changedTouches[ii].clientX - pgn4webOngoingTouches[jj].clientX;
+        deltaY = e.changedTouches[ii].clientY - pgn4webOngoingTouches[jj].clientY;
+        if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) >= 13) {
+          if (Math.abs(deltaY) > 1.5 * Math.abs(deltaX)) {
+            if (deltaY > 0) { // vertical down
+              showEngineAnalysisBoard();
+            } else { // vertical up
+              showGameList();
+            }
+          } else if (Math.abs(deltaX) > 1.5 * Math.abs(deltaY)) { // horizontal left or right
+            GoToMove(CurrentPly + sign(deltaX));
           }
-        } else if (Math.abs(deltaX) > 1.5 * Math.abs(deltaY)) { // horizontal left or right
-          GoToMove(CurrentPly + sign(deltaX));
         }
+        pgn4webMaxTouches = 0;
       }
       pgn4webOngoingTouches.splice(jj, 1);
     }
@@ -375,12 +378,15 @@ function pgn4web_handleTouchEnd_Header(e) {
   var jj, deltaX, deltaY, theObj;
   for (var ii = 0; ii < e.changedTouches.length; ii++) {
     if ((jj = pgn4webOngoingTouchIndexById(e.changedTouches[ii].identifier)) != -1) {
-      deltaX = e.changedTouches[ii].clientX - pgn4webOngoingTouches[jj].clientX;
-      deltaY = e.changedTouches[ii].clientY - pgn4webOngoingTouches[jj].clientY;
-      if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) >= 13) {
-        if (Math.abs(deltaX) > 1.5 * Math.abs(deltaY)) { // horizontal left or right
-          selectGameList(-1);
+      if (pgn4webOngoingTouches.length == 1) {
+        deltaX = e.changedTouches[ii].clientX - pgn4webOngoingTouches[jj].clientX;
+        deltaY = e.changedTouches[ii].clientY - pgn4webOngoingTouches[jj].clientY;
+        if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) >= 13) {
+          if (Math.abs(deltaX) > 1.5 * Math.abs(deltaY)) { // horizontal left or right
+            selectGameList(-1);
+          }
         }
+        pgn4webMaxTouches = 0;
       }
       pgn4webOngoingTouches.splice(jj, 1);
     }

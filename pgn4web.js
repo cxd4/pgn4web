@@ -4026,7 +4026,7 @@ function SquareOnBoard(col, row) {
   return col >= 0 && col <= 7 && row >= 0 && row <= 7;
 }
 
-
+var pgn4webMaxTouches = 0;
 var pgn4webOngoingTouches = new Array();
 function pgn4webOngoingTouchIndexById(needle) {
   var id;
@@ -4040,6 +4040,7 @@ function pgn4webOngoingTouchIndexById(needle) {
 function pgn4web_handleTouchStart(e) {
   e.stopPropagation();
   for (var ii = 0; ii < e.changedTouches.length; ii++) {
+    pgn4webMaxTouches++;
     pgn4webOngoingTouches.push({ identifier: e.changedTouches[ii].identifier, clientX: e.changedTouches[ii].clientX, clientY: e.changedTouches[ii].clientY });
   }
 }
@@ -4054,7 +4055,10 @@ function pgn4web_handleTouchEnd(e) {
   var jj;
   for (var ii = 0; ii < e.changedTouches.length; ii++) {
     if ((jj = pgn4webOngoingTouchIndexById(e.changedTouches[ii].identifier)) != -1) {
-      customFunctionOnTouch(e.changedTouches[ii].clientX - pgn4webOngoingTouches[jj].clientX, e.changedTouches[ii].clientY - pgn4webOngoingTouches[jj].clientY);
+      if (pgn4webOngoingTouches.length == 1) {
+        customFunctionOnTouch(e.changedTouches[ii].clientX - pgn4webOngoingTouches[jj].clientX, e.changedTouches[ii].clientY - pgn4webOngoingTouches[jj].clientY);
+        pgn4webMaxTouches = 0;
+      }
       pgn4webOngoingTouches.splice(jj, 1);
     }
   }
@@ -4067,6 +4071,7 @@ function pgn4web_handleTouchCancel(e) {
   for (var ii = 0; ii < e.changedTouches.length; ii++) {
     if ((jj = pgn4webOngoingTouchIndexById(e.changedTouches[ii].identifier)) != -1) {
       pgn4webOngoingTouches.splice(jj, 1);
+      if (pgn4webOngoingTouches.length === 0) { pgn4webMaxTouches = 0; }
     }
   }
   clearSelectedText();
