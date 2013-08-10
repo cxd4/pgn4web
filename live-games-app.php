@@ -406,6 +406,9 @@ function pgn4web_handleTouchStart_scroll(e) {
     if ((thisObj) && (this.offsetHeight > thisObj.offsetHeight - 2)) {
       thisObj.style.height = (this.offsetHeight + 2) + "px";
     }
+    if ((thisObj) && (this.offsetWidth > thisObj.offsetWidth - 1)) {
+      thisObj.style.width = (this.offsetWidth + 1) + "px";
+    }
     if (this.scrollTop === 0) { this.scrollTop += 1; }
     if (this.scrollTop === this.scrollHeight - this.clientHeight) { this.scrollTop -= 1; }
   }
@@ -439,6 +442,7 @@ function pgn4web_handleTouchEnd_scroll(e) {
 function resetGameListBodyItems() {
   var thisObj = document.getElementById("GameListBodyItems");
   if (thisObj && thisObj.style.height) { thisObj.style.height = ""; }
+  if (thisObj && thisObj.style.width) { thisObj.style.height = ""; }
 }
 
 if (touchEventEnabled) {
