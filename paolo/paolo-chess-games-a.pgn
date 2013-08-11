@@ -217,6 +217,23 @@ Kg7 37. Kc1 Kg8 38. Kb2 Kg7 39. Kb1 1/2-1/2
 
 [Event "Club game"]
 [Site "Tortona ITA"]
+[Date "1982-10-30"]
+[Round "?"]
+[White "Petti, Antonio"]
+[Black "Casaschi, Paolo"]
+[Result "0-1"]
+[ECO "C08"]
+[Opening "French"]
+[Variation "Tarrasch, open, 4.ed ed"]
+
+1. e4 e6 2. d4 d5 3. Nd2 c5 4. exd5 exd5 5. Ngf3 a6 6. dxc5 Bxc5 7. Nb3 Ba7
+8. c3 Nc6 9. Be2 Nge7 10. O-O Ng6 11. Re1 O-O 12. Bf1 Bg4 13. h3 Be6 14.
+Be3 Bxe3 15. Rxe3 Rc8 16. Nc5 Qb6 { D } 17. Nb3 Rfd8 18. g3 Nge7 19. Bg2
+Nf5 20. Rd3 Nxg3 21. Kh2 Ne4 22. Re3 Nxf2 23. Qe2 Ne4 24. Nfd4 Qc7+ 25. Kg1
+Nxd4 26. Nxd4 Rd7 27. Bxe4 dxe4 28. Rxe4 Qg3+ 0-1
+
+[Event "Club game"]
+[Site "Tortona ITA"]
 [Date "1982.10.16"]
 [Round "?"]
 [White "Casaschi, Paolo"]
