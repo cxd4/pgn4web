@@ -456,7 +456,11 @@ sub process_line {
     $autorelayEvent = $1;
     $autorelayEvent =~ s/[\[\]"]/'/g;
     $autorelayRound = "";
-    if ($autorelayEvent =~ /(.*)\s+(Round|Game)\s+(\d+)/) {
+    if ($autorelayEvent =~ /(.*)\s+Round\s+(\d+)\s+Game\s+(\d+)/) {
+      $autorelayRound = "$2.$3";
+      $autorelayEvent = $1;
+      $autorelayEvent =~ s/[\s-]+$//g;
+    } elsif ($autorelayEvent =~ /(.*)\s+(Round|Game)\s+(\d+)/) {
       $autorelayRound = $3;
       $autorelayEvent = $1;
       $autorelayEvent =~ s/[\s-]+$//g;
