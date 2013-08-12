@@ -12,15 +12,19 @@ pgn4webBaseFiles="README.txt pgn4web.js pgn4web-help.html license-gpl-2.0.txt pa
 
 case "$1" in
 
+  "app" ) pgn4webPackageFileList="$pgn4webBaseFiles chess-informant-NAG-symbols.js dynamic-frame.html engine.html engine.js fide-lookup.js fonts/index.html fonts/pgn4web-font-ChessInformantReader.css fonts/ChessInformantReader.* images/index.html images/alpha/index.html images/alpha/96/* libs/index.html libs/garbochess/* live-games-app*";;
+
   "board-minimal" ) pgn4webPackageFileList="$pgn4webBaseFiles board.html chess-informant-NAG-symbols.js fide-lookup.js pgn-decoder.js images/index.html images/uscf/index.html images/uscf/README.txt images/uscf/20/* fonts/index.html fonts/README.txt fonts/LiberationSans* fonts/pgn4web-font-LiberationSans.css fonts/ChessSansPiratf* fonts/pgn4web-font-ChessSansPiratf.css fonts/ChessInformantReader* fonts/pgn4web-font-ChessInformantReader.css";;
 
-  "live-minimal" ) pgn4webPackageFileList="$pgn4webBaseFiles dynamic-frame.html live-compact.* live-fullscreen.html live-mosaic* live-results* blank.html chess-informant-NAG-symbols.js fide-lookup.js crc32.js live*.pgn demoLiveGames.pgn images/index.html images/alpha/index.html images/alpha/README.txt images/alpha/24/* images/alpha/26/* images/alpha/32/* images/alpha/96/* images/merida/index.html images/merida/README.txt images/merida/96/* images/uscf/index.html images/uscf/README.txt images/uscf/96/* fonts/index.html fonts/README.txt fonts/LiberationSans* fonts/pgn4web-font-LiberationSans.css fonts/ChessSansPiratf* fonts/pgn4web-font-ChessSansPiratf.css fonts/ChessInformantReader* fonts/pgn4web-font-ChessInformantReader.css engine.* libs/garbochess/* live/index.html live/live-simulation.sh";;
+  "library-full" ) pgn4webPackageFileList="$pgn4webBaseFiles chess-informant-NAG-symbols-alternative.js chess-informant-NAG-symbols.js engine.js fide-lookup.js fonts/* images/* libs/README.txt libs/garbochess/* libs/index.html live/index.html pgn4web-server-config.js";;
+
+  "library-minimal" ) pgn4webPackageFileList="$pgn4webBaseFiles images/index.html images/*.png live/index.html pgn4web-server-config.js";;
 
   "live-full" ) pgn4webPackageFileList="$pgn4webBaseFiles dynamic-frame.html live-compact.* live-fullscreen.html live-mosaic* live-results* blank.html chess-informant-NAG-symbols.js fide-lookup.js crc32.js live*.pgn demoLiveGames.pgn images/index.html images/alpha/index.html images/alpha/README.txt images/alpha/24/* images/alpha/26/* images/alpha/32/* images/alpha/96/* images/merida/index.html images/merida/README.txt images/merida/96/* images/uscf/index.html images/uscf/README.txt images/uscf/96/* fonts/index.html fonts/README.txt fonts/LiberationSans* fonts/pgn4web-font-LiberationSans.css fonts/ChessSansPiratf* fonts/pgn4web-font-ChessSansPiratf.css fonts/ChessInformantReader* fonts/pgn4web-font-ChessInformantReader.css engine.* libs/garbochess/* live/*";;
 
-  "app" ) pgn4webPackageFileList="$pgn4webBaseFiles chess-informant-NAG-symbols.js dynamic-frame.html engine.html engine.js fide-lookup.js fonts/index.html fonts/pgn4web-font-ChessInformantReader.css fonts/ChessInformantReader.* images/index.html images/alpha/index.html images/alpha/96/* libs/index.html libs/garbochess/* live-games-app*";;
+  "live-minimal" ) pgn4webPackageFileList="$pgn4webBaseFiles dynamic-frame.html live-compact.* live-fullscreen.html live-mosaic* live-results* blank.html chess-informant-NAG-symbols.js fide-lookup.js crc32.js live*.pgn demoLiveGames.pgn images/index.html images/alpha/index.html images/alpha/README.txt images/alpha/24/* images/alpha/26/* images/alpha/32/* images/alpha/96/* images/merida/index.html images/merida/README.txt images/merida/96/* images/uscf/index.html images/uscf/README.txt images/uscf/96/* fonts/index.html fonts/README.txt fonts/LiberationSans* fonts/pgn4web-font-LiberationSans.css fonts/ChessSansPiratf* fonts/pgn4web-font-ChessSansPiratf.css fonts/ChessInformantReader* fonts/pgn4web-font-ChessInformantReader.css engine.* libs/garbochess/* live/index.html live/live-simulation.sh";;
 
-  * ) echo "bash `basename $0` [board-minimal | live-minimal]"; exit 0 ;;
+  * ) echo "bash `basename $0` [board-minimal | library-full | library-minimal | live-minimal]"; exit 0 ;;
 
 esac
 
