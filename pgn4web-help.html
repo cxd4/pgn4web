@@ -101,7 +101,7 @@ function print_help_row (one, two) {
 function updateVersion() {
   if (opener && (typeof(opener.pgn4web_version) != "undefined")) {
     var theObj = document.getElementById("versionInfo");
-    if (theObj) { theObj.innerHTML = '<p></p>This is pgn4web v' + opener.pgn4web_version; }
+    if (theObj) { theObj.innerHTML = '<p></p>This is <a href="http://pgn4web.casaschi.net" target="_blank">pgn4web</a> v' + opener.pgn4web_version; }
   }
 }
 
@@ -171,12 +171,14 @@ The user can interact with the pgn4web chessboard <a href="javascript:void(0);" 
 A <a href="javascript:void(0);" onclick="showSection('search_tool')">search tool</a> allows searching within the PGN games.
 <p></p>
 Errors alert messages are logged, such as failures to load PGN games, incorrect PGN games or incorrect FEN strings. When an error is encountered, the top left chessboard square will flash to signal the exception. The error alert log can be reviewed clicking on the same top left chessboard square.
+<p></p>
+See <a href="http://code.google.com/p/pgn4web/wiki/Index?tm=6" target="_blank">the pgn4web wiki</a> for more information. Please note, the wiki information always refers to the latest version of pgn4web.
 </div>
 
 
 <div id="shortcut_keys_section" class="section">
 
-The user can interact with the pgn4web chessboard using the keyboard (<a href="http://code.google.com/p/pgn4web/wiki/EndUser_Interface" target="_blank">see the pgn4web wiki for some examples</a>):
+The user can interact with the pgn4web chessboard using the keyboard. See <a href="http://code.google.com/p/pgn4web/wiki/EndUser_Interface" target="_blank">the pgn4web wiki</a> for more information. Most commonly used shortcut keys:
 
 <script type="text/javascript">
 "use strict";
@@ -410,7 +412,6 @@ Some functionality of specific applications of pgn4web or specific demo pages de
 <p></p>
 Remaining pgn4web code is copyright (C) 2009-2013 <a href="mailto:pgn4web@casaschi.net">Paolo Casaschi</a> and licensed under the terms of <a href="license-gpl-2.0.txt" target="_blank">the GNU General Public License version 2</a> as published by <a href="http://www.fsf.org" target="_blank">the Free Software Foundation</a>; either <a href="license-gpl-2.0.txt" target="_blank">version 2 of the License</a>, or (at your option) any later version.
 <span id="versionInfo"></span>
-
 </div>
 
 
