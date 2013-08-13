@@ -29,7 +29,13 @@ function loadFile($fileName) {
   } else { return FALSE; }
 }
 
-$fileIndexNum = 97; # 97 = "a"
+function get_param($param, $shortParam, $default) {
+  if (isset($_REQUEST[$param])) { return $_REQUEST[$param]; }
+  if (isset($_REQUEST[$shortParam])) { return $_REQUEST[$shortParam]; }
+  return $default;
+}
+
+$fileIndexNum = ord(get_param("firstFile", "ff", "a"));
 while(loadFile($filePrefix . '-' . chr($fileIndexNum) . $fileSuffix)) { $fileIndexNum++; }
 loadFile($filePrefix . $fileSuffix);
 
