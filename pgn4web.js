@@ -63,7 +63,7 @@ function simpleAddEvent(obj, evt, cbk) {
   else if (obj.attachEvent) { obj.attachEvent("on" + evt, cbk); } // IE8-
 }
 
-simpleAddEvent(document, "keydown", pgn4web_handleKey);
+simpleAddEvent(document, "keydown", pgn4web_handleKey_event);
 simpleAddEvent(window, "load", pgn4web_onload_event);
 
 
@@ -187,6 +187,10 @@ function customShortcutKey_Shift_6() {}
 function customShortcutKey_Shift_7() {}
 function customShortcutKey_Shift_8() {}
 function customShortcutKey_Shift_9() {}
+
+function pgn4web_handleKey_event(e) {
+  pgn4web_handleKey(e);
+}
 
 var shortcutKeysEnabled = false;
 function pgn4web_handleKey(e) {
