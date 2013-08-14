@@ -445,7 +445,7 @@ for (var col=0; col<8; col++) {
 clearShortcutSquares("ABCDEFGH", "12345678");
 
 function colRowFromSquare(square) {
-  if (square.charCodeAt === null) { return -1; }
+  if ((typeof(square) != "string") || (!square)) { return null; }
   var col = square.charCodeAt(0) - 65; // 65="A"
   if ((col < 0) || (col > 7)) { return null; }
   var row = 56 - square.charCodeAt(1); // 56="8"
