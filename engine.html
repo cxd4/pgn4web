@@ -399,7 +399,7 @@ function myOnOrientationchange() {
 
 SetImageType("png");
 SetHighlightOption(false);
-SetShortcutKeysEnabled(false);
+SetShortcutKeysEnabled(true);
 
 myOnOrientationchange();
 
@@ -583,6 +583,64 @@ function clickedGameShowFen(t, e) {
       displayFenData(true);
       MoveForward(oldCurrentPly - CurrentPly);
    }
+}
+
+function pgn4web_handleKey(e) {
+  var keycode, colRow, colRowList;
+
+  if (!e) { e = window.event; }
+
+  keycode = e.keyCode;
+
+  if (e.altKey || e.ctrlKey || e.metaKey) { return true; }
+
+  if (!shortcutKeysEnabled) { return true; }
+
+  switch (keycode) {
+
+    case 189: // dash
+      if (colRowList = prompt("Enter shortcut square coordinates to click:", "")) {
+        colRowList = colRowList.toUpperCase().replace(/[^A-Z0-9]/g,"");
+        while (colRow = colRowFromSquare(colRowList)) {
+          boardOnClick[colRow.col][colRow.row]({"id": "img_tcol" + colRow.col + "trow" + colRow.row}, e);
+          colRowList = colRowList.substr(2);
+        }
+      }
+      break;
+
+    case 90: // z
+      if (e.shiftKey) { window.open(pgn4web_project_url); }
+      else { displayDebugInfo(); }
+      break;
+
+    case 37: // left-arrow
+    case 74: // j
+      backButton(e);
+      break;
+
+    case 38: // up-arrow
+    case 72: // h
+      startButton(e);
+      break;
+
+    case 39: // right-arrow
+    case 75: // k
+      forwardButton(e);
+      break;
+
+    case 40: // down-arrow
+    case 76: // l
+      endButton(e);
+      break;
+
+    case 70: // f
+      clickedGameFlagToMove(null, {shiftKey: false});
+      break;
+
+    default:
+      return true;
+  }
+  return stopEvProp(e);
 }
 
 
