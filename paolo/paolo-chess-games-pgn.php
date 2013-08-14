@@ -41,7 +41,7 @@ loadFile($filePrefix . $fileSuffix);
 
 if ($allGames == '') { $allGames = '% no games found for ' . $filePrefix . '-all' . $fileSuffix . "\n"; }
 
-if (isset($headers['If-Modified-Since']) && (strtotime($headers['If-Modified-Since']) == $lastModified) && $lastModifiedSet) {
+if (isset($headers['If-Modified-Since']) && $lastModifiedSet && (strtotime($headers['If-Modified-Since']) == $lastModified)) {
   header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $lastModified) . ' GMT', true, 304);
 } else {
   header('Content-Description: File Transfer');
