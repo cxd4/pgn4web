@@ -16,9 +16,9 @@ case "$1" in
 
   "board-minimal" ) pgn4webPackageFileList="$pgn4webBaseFiles board.html chess-informant-NAG-symbols.js fide-lookup.js pgn-decoder.js images/index.html images/uscf/index.html images/uscf/README.txt images/uscf/20/* fonts/index.html fonts/README.txt fonts/LiberationSans* fonts/pgn4web-font-LiberationSans.css fonts/ChessSansPiratf* fonts/pgn4web-font-ChessSansPiratf.css fonts/ChessInformantReader* fonts/pgn4web-font-ChessInformantReader.css";;
 
-  "library-full" ) pgn4webPackageFileList="$pgn4webBaseFiles chess-informant-NAG-symbols-alternative.js chess-informant-NAG-symbols.js engine.js fide-lookup.js fonts/* images/* libs/README.txt libs/garbochess/* libs/index.html live/index.html pgn4web-server-config.js";;
+  "library-full" ) pgn4webPackageFileList="$pgn4webBaseFiles chess-informant-NAG-symbols-alternative.js chess-informant-NAG-symbols.js engine.js fide-lookup.js fonts/* images/* libs/README.txt libs/garbochess/* libs/index.html live/index.html live/*.pgn pgn4web-server-config.js";;
 
-  "library-minimal" ) pgn4webPackageFileList="$pgn4webBaseFiles images/index.html images/*.png live/index.html pgn4web-server-config.js";;
+  "library-minimal" ) pgn4webPackageFileList="$pgn4webBaseFiles images/index.html images/*.png live/index.html live/*.pgn pgn4web-server-config.js";;
 
   "live-full" ) pgn4webPackageFileList="$pgn4webBaseFiles dynamic-frame.html live-compact.* live-fullscreen.html live-mosaic* live-results* blank.html chess-informant-NAG-symbols.js fide-lookup.js crc32.js live*.pgn demoLiveGames.pgn images/index.html images/alpha/index.html images/alpha/README.txt images/alpha/24/* images/alpha/26/* images/alpha/32/* images/alpha/96/* images/merida/index.html images/merida/README.txt images/merida/96/* images/uscf/index.html images/uscf/README.txt images/uscf/96/* fonts/index.html fonts/README.txt fonts/LiberationSans* fonts/pgn4web-font-LiberationSans.css fonts/ChessSansPiratf* fonts/pgn4web-font-ChessSansPiratf.css fonts/ChessInformantReader* fonts/pgn4web-font-ChessInformantReader.css engine.* libs/garbochess/* live/*";;
 
