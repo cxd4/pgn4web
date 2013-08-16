@@ -399,6 +399,7 @@ function myOnOrientationchange() {
 
 SetImageType("png");
 SetHighlightOption(false);
+SetAutoplayDelay(1000);
 SetShortcutKeysEnabled(true);
 
 myOnOrientationchange();
@@ -1190,14 +1191,22 @@ function customFunctionOnTouch(deltaX, deltaY) {
    if (disableInputs) { return; }
    if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 13) { return; }
    if (Math.abs(deltaY) > 1.5 * Math.abs(deltaX)) { // vertical up or down
-      GoToMove(StartPlyVar[CurrentVar] + (deltaY > 0 ? PlyNumberVar[CurrentVar] : 0));
-   } else if (Math.abs(deltaX) > 1.5 * Math.abs(deltaY)) { // horizontal left or right
-      GoToMove(CurrentPly + sign(deltaX));
+      GoToMove(CurrentPly + sign(deltaY));
+   } else if (Math.abs(deltaX) > 1.5 * Math.abs(deltaY)) {
+      if (deltaX > 0) { // horizontal right
+         if (isAutoPlayOn) { GoToMove(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]); }
+         else { SwitchAutoPlay(); }
+      } else { // horizontal left
+         if (isAutoPlayOn) { SwitchAutoPlay(); }
+         else {
+            GoToMove(StartPlyVar[CurrentVar] + (((CurrentPly <= StartPlyVar[CurrentVar] + 1) || (CurrentVar === 0)) ? 0 : 1));
+         }
+      }
    }
 }
 
 var touchGestures_helpActions = [ "top-down swipe", "bottom-up swipe", "left-right swipe", "right-left swipe" ];
-var touchGestures_helpText = [ "go to variation end", "go to variation start", "move forward", "move backward" ];
+var touchGestures_helpText = [ "move forward", "move backward", "start autoplay; if autoplay already active: go to game end", "stop autoplay; if autoplay not active: go to game start" ];
 
 <!-- AppCheck: footer -->
 
