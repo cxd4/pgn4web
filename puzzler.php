@@ -403,7 +403,7 @@ function solutionSoFar() {
   var sol = "";
   for (var thisPly = StartPly; thisPly < CurrentPly; thisPly++) {
     var moveCount = Math.floor(thisPly/2)+1;
-    if ((thisPly % 2 == 0) || (thisPly == StartPly)) {
+    if ((thisPly % 2 === 0) || (thisPly === StartPly)) {
       sol += (Math.floor(thisPly/2)+1) + ".";
       if (thisPly % 2) { sol += ".."; }
       sol += " ";
@@ -466,7 +466,7 @@ $pgnGame
 
 <center>
 <div class="container">
-<div style="display: inline" id="GameBoard"></div>
+<div id="GameBoard"></div>
 <table class="buttonTable" border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td id="leftButton" title="" class="buttonCell" onClick="javascript:GoToMove(CurrentPly - 1);" align="center" valign="middle">
