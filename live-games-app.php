@@ -93,11 +93,11 @@ if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
 
 
-$text = "";
-$oldText = "href='javascript:void(0);'";
-$actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
-$html = str_replace($oldText, $text, $html);
+// $text = "";
+// $oldText = "href='javascript:void(0);'";
+// $actionNum += 1;
+// if (!strstr($html, $oldText)) { errorExit($actionNum); }
+// $html = str_replace($oldText, $text, $html);
 
 
 $text = "";
