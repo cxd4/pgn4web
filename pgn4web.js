@@ -3775,6 +3775,7 @@ function printMoveText(thisPly, thisVar, isVar, hasLeadingNum, hasId) {
     'CLASS="' + (isVar ? 'variation' : 'move') + ' notranslate" ' +
     (hasId ? ('ID="Var' + thisVar + 'Mv' + jj + '" ') : '') +
     'ONFOCUS="this.blur();">' + MovesVar[thisVar][thisPly];
+    // for Chess Informant style printed notation use MovesVar[thisVar][thisPly].replace(/[x=]/g, "").replace(/O/g, "0");
   if (commentsIntoMoveText) { text += basicNAGsMoveComment(jj, thisVar); }
   text += '</A>';
 
