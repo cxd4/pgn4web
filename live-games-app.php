@@ -428,13 +428,10 @@ function pgn4web_handleTouchMove_scroll(e) {
 
 function pgn4web_handleTouchEnd_scroll(e) {
   if (window.navigator.standalone) {
-    if (resetGameListBodyItemsTimeout) {
-      clearTimeout(resetGameListBodyItemsTimeout);
-      resetGameListBodyItemsTimeout = null;
-    }
     var thisObj = document.getElementById("GameListBodyItems");
-    if (thisObj && thisObj.style.height) {
-      resetGameListBodyItemsTimeout = setTimeout("resetGameListBodyItems()", 1234);
+    if (thisObj && (thisObj.style.height || thisObj.style.width)) {
+      if (resetGameListBodyItemsTimeout) { clearTimeout(resetGameListBodyItemsTimeout); }
+      resetGameListBodyItemsTimeout = setTimeout("resetGameListBodyItems();", 1234);
     }
   }
 }
@@ -442,7 +439,7 @@ function pgn4web_handleTouchEnd_scroll(e) {
 function resetGameListBodyItems() {
   var thisObj = document.getElementById("GameListBodyItems");
   if (thisObj && thisObj.style.height) { thisObj.style.height = ""; }
-  if (thisObj && thisObj.style.width) { thisObj.style.height = ""; }
+  if (thisObj && thisObj.style.width) { thisObj.style.width = ""; }
 }
 
 if (touchEventEnabled) {
