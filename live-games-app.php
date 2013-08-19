@@ -114,6 +114,13 @@ if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
 
 
+$text = 'myInsertRule(sheet, ".gameListBodyItems", "min-height: " + (gameListBodyHeight + (window.navigator.standalone ? 2 : 0)) + "px; min-width: " + (ww - 2 * framePadding + (window.navigator.standalone ? 1 : 0)) + "px;");';
+$oldText = 'myInsertRule(sheet, ".gameListBodyItems", "min-height: " + gameListBodyHeight + "px; min-width: " + (ww - 2 * framePadding) + "px;");';
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
+
+
 $text = <<<END
   if (!appInitialized) {
     if (localStorage[lsId + "lastGameKey"]) {
@@ -394,21 +401,8 @@ function pgn4web_handleTouchEnd_Header(e) {
   clearSelectedText();
 }
 
-var resetGameListBodyItemsTimeout = null;
-
 function pgn4web_handleTouchStart_scroll(e) {
   if (window.navigator.standalone) {
-    if (resetGameListBodyItemsTimeout) {
-      clearTimeout(resetGameListBodyItemsTimeout);
-      resetGameListBodyItemsTimeout = null;
-    }
-    var thisObj = document.getElementById("GameListBodyItems");
-    if ((thisObj) && (this.offsetHeight > thisObj.offsetHeight - 2)) {
-      thisObj.style.height = (this.offsetHeight + 2) + "px";
-    }
-    if ((thisObj) && (this.offsetWidth > thisObj.offsetWidth - 1)) {
-      thisObj.style.width = (this.offsetWidth + 1) + "px";
-    }
     if (this.scrollTop === 0) { this.scrollTop += 1; }
     if (this.scrollTop === this.scrollHeight - this.clientHeight) { this.scrollTop -= 1; }
   }
@@ -424,22 +418,6 @@ function pgn4web_handleTouchMove_scroll(e) {
   this.lastY = e.pageY;
   if ((up && this.allowUp) || (down && this.allowDown) || (flat)) { e.stopPropagation(); }
   else { e.preventDefault(); }
-}
-
-function pgn4web_handleTouchEnd_scroll(e) {
-  if (window.navigator.standalone) {
-    var thisObj = document.getElementById("GameListBodyItems");
-    if (thisObj && (thisObj.style.height || thisObj.style.width)) {
-      if (resetGameListBodyItemsTimeout) { clearTimeout(resetGameListBodyItemsTimeout); }
-      resetGameListBodyItemsTimeout = setTimeout("resetGameListBodyItems();", 1234);
-    }
-  }
-}
-
-function resetGameListBodyItems() {
-  var thisObj = document.getElementById("GameListBodyItems");
-  if (thisObj && thisObj.style.height) { thisObj.style.height = ""; }
-  if (thisObj && thisObj.style.width) { thisObj.style.width = ""; }
 }
 
 if (touchEventEnabled) {
@@ -464,9 +442,6 @@ if (touchEventEnabled) {
   if (theObj = document.getElementById("GameListBody")) {
     simpleAddEvent(theObj, "touchstart", pgn4web_handleTouchStart_scroll);
     simpleAddEvent(theObj, "touchmove", pgn4web_handleTouchMove_scroll);
-    simpleAddEvent(theObj, "touchend", pgn4web_handleTouchEnd_scroll);
-    simpleAddEvent(theObj, "touchleave", pgn4web_handleTouchEnd_scroll);
-    simpleAddEvent(theObj, "touchcancel", pgn4web_handleTouchEnd_scroll);
   }
 }
 
