@@ -505,8 +505,7 @@ function fillGameList(force) {
       theObj.innerHTML = text;
       if (theObj = document.getElementById("GameListHeader")) {
         text = "";
-        text += "<span style='position: absolute; left: 0;'><a href='javascript:void(0);' onclick='selectGameList(-1);' title='back to chessboard'> " + numberOfGames.toString().replace(/\d$/, "").replace(/./g, " ") + "&crarr;     </a></span>";
-        text += "          ";
+        text += "<a href='javascript:void(0);' onclick='selectGameList(-1);' title='back to chessboard'> " + numberOfGames.toString().replace(/\d$/, "").replace(/./g, " ") + "&crarr;     </a>  ";
         text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = 0; theObj.scrollLeft = 0; } this.blur();' title='scroll to first page'>   &lt;&lt;   </a>  ";
         text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (Math.ceil(theObj.scrollTop / gameListLineHeight) - Math.floor(gameListBodyHeight / gameListLineHeight)); theObj.scrollLeft = 0; } this.blur();' title='scroll to previous page'>   &lt;   </a>  ";
         text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (Math.ceil(theObj.scrollTop / gameListLineHeight) + Math.floor(gameListBodyHeight / gameListLineHeight)); theObj.scrollLeft = 0; } this.blur();' title='scroll to next page'>   &gt;   </a>  ";
