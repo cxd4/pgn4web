@@ -1257,7 +1257,7 @@ function CheckClearWay(thisPiece) {
 }
 
 function CleanMove(move) {
-  move = move.replace(/[^a-zA-Z0-9#=-]*/g, ''); // patch here adding '+' before '#' to pass through check signs
+  move = move.replace(/[^a-zA-Z0-9+#=-]*/g, '');
   if (move.match(/^[Oo0]/)) { move = move.replace(/[o0]/g, 'O').replace(/O(?=O)/g, 'O-'); }
   move = move.replace(/ep/i, '');
   return move;
@@ -3774,8 +3774,7 @@ function printMoveText(thisPly, thisVar, isVar, hasLeadingNum, hasId) {
   text += '<A HREF="javascript:void(0);" ONCLICK="GoToMove(' + jj + ', ' + thisVar + ');" ' +
     'CLASS="' + (isVar ? 'variation' : 'move') + ' notranslate" ' +
     (hasId ? ('ID="Var' + thisVar + 'Mv' + jj + '" ') : '') +
-    'ONFOCUS="this.blur();">' + MovesVar[thisVar][thisPly];
-    // for Chess Informant style printed notation use MovesVar[thisVar][thisPly].replace(/[x=]/g, "").replace(/O/g, "0");
+    'ONFOCUS="this.blur();">' + MovesVar[thisVar][thisPly].replace(/[x=+]/g, ""); // Chess Informant style printed notation; patch here to restore x = + notation signs
   if (commentsIntoMoveText) { text += basicNAGsMoveComment(jj, thisVar); }
   text += '</A>';
 
