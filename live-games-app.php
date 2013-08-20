@@ -73,7 +73,7 @@ window.open = function (winUrl, winTarget, winParam) {
      location.href = winUrl;
      return null;
   } else if (!window.navigator.standalone) {
-     return window.defaultOpen(winUrl, winTarget, winParam);
+     return window.defaultOpen(winUrl, winTarget, winParam || "");
   } else if (winUrl) {
      var a = document.createElement("a");
      a.setAttribute("href", winUrl);
