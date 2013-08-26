@@ -468,6 +468,7 @@ var currentGameLast = -1;
 var gameListBodyHeight = -1;
 var gameListLineHeight = -1;
 function fillGameList(force) {
+  var theObj;
   if ((currentGame !== currentGameLast) || (textSelectOptions !== textSelectOptionsLast)) {
     currentGameLast = currentGame;
     textSelectOptionsLast = textSelectOptions;
