@@ -380,6 +380,8 @@ function myOnResize() {
   if (pieceSize > bareSquareSize) { pieceSize = Math.floor(bareSquareSize); }
   var headerContainerWidth = horizontalLayout ? ww - 2 * framePadding - 9 * squareSize + Math.floor(3 * lineHeight / 4) : ww - 2 * framePadding;
 
+  if (document.styleSheets.length === 0) { return false; }
+
   var sheet = document.styleSheets[0];
   var oldRules = myRulesLength(sheet);
 
@@ -660,10 +662,10 @@ function customFunctionOnMove() {
 
 
 function fixColorFlag() {
-  var theObj, clockObject;
+  var theObj;
 
   if (showColorFlag) {
-    var whiteFlagPadding = (horizontalLayout || ((clockObject = document.getElementById("GameWhiteClock")) && (clockObject.innerHTML)));
+    var whiteFlagPadding = (horizontalLayout || ((theObj = document.getElementById("GameWhiteClock")) && (theObj.innerHTML)));
     if (theObj = document.getElementById("whiteColorFlag")) {
       theObj.style.display = "inline";
       theObj.style.visibility = CurrentPly % 2 ? "hidden" : "visible";
@@ -672,7 +674,7 @@ function fixColorFlag() {
       theObj.style.display = whiteFlagPadding ? "inline" : "none";
       theObj.style.visibility = "hidden";
     }
-    var blackFlagPadding = (horizontalLayout || ((clockObject = document.getElementById("GameBlackClock")) && (clockObject.innerHTML)));
+    var blackFlagPadding = (horizontalLayout || ((theObj = document.getElementById("GameBlackClock")) && (theObj.innerHTML)));
     if (theObj = document.getElementById("blackColorFlag")) {
       theObj.style.display = "inline";
       theObj.style.visibility = CurrentPly % 2 ? "visible" : "hidden";
