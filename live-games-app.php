@@ -164,7 +164,14 @@ $text = <<<END
   }
 END;
 $oldText = "<!-- AppCheck: customFunctionOnMove -->";
-$actionNum++;
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
+
+
+$text = '<body onResize="myOnResize();" onLoad="setTimeout(\'myOnResize();\', 33);">'; # patch iphone landscape startup bug with placeholder game
+$oldText = '<body onResize="myOnResize();" onLoad="myOnResize();">';
+$actionNum += 1;
 if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
 
