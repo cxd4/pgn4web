@@ -477,7 +477,7 @@ function fillGameList(force) {
     force = true;
     var text;
     if (theObj = document.getElementById("GameListBodyItems")) {
-      var extractGamesRegExp = /<OPTION CLASS="optionSelectControl" value=(\d+)>(\s*\d+)(\s+.{30})(.{10})([^<]+)/g;
+      var extractGamesRegExp = /<OPTION CLASS="optionSelectControl" value=(\d+)>(\s*\d+)(\s{1,2}.{30})(.{10})([^<]+)/g;
       var thisGameText, thisGameTitle1, thisGameTitle2;
       var thisOption, thisNum, thisEvent, thisRound, thesePlayers, thisBold;
       var firstGame = true;
@@ -513,6 +513,7 @@ function fillGameList(force) {
         text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (Math.ceil(theObj.scrollTop / gameListLineHeight) - Math.floor(gameListBodyHeight / gameListLineHeight)); theObj.scrollLeft = 0; } this.blur();' title='scroll to previous page'>   &lt;   </a>  ";
         text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (Math.ceil(theObj.scrollTop / gameListLineHeight) + Math.floor(gameListBodyHeight / gameListLineHeight)); theObj.scrollLeft = 0; } this.blur();' title='scroll to next page'>   &gt;   </a>  ";
         text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = theObj.scrollHeight; theObj.scrollLeft = 0; } this.blur();' title='scroll to last page'>   &gt;&gt;   </a>  ";
+        text += "<a class='scrollLink' href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (currentGame ? currentGame - 1 : 0); theObj.scrollLeft = 0; } this.blur();' title='scroll to current game'>     &middot;   </a>  ";
         theObj.innerHTML = text;
       }
     }
