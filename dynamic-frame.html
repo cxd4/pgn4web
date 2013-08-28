@@ -488,7 +488,7 @@ function fillGameList(force) {
         thisNum = matches[2];
         thisEvent = matches[3].replace(/\s+$/, "");
         if (thisRound = matches[4].replace(/^\s+|\s+$/g, "")) { thisRound = " - " + thisRound; }
-        thesePlayers = matches[5];
+        thesePlayers = simpleHtmlentities(matches[5]);
         if (firstGame) { firstGame = false; } else { text += "<br/>"; }
         thisBold = ((parseInt(thisNum, 10) - 1) === currentGame);
         thisGameText = thisNum + (thisBold ? "." :  " ") + thesePlayers + "  " + thisEvent + thisRound + "  ";

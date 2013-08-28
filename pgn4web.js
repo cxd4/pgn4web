@@ -3550,7 +3550,7 @@ function PrintHTML() {
           }
           textSelectOptions += textSO.replace(/ /g, '&nbsp;');
         }
-        text += textSelectOptions + '</SELECT></FORM>';
+        text += textSelectOptions.replace(/&(amp|lt|gt);/g, '&amp;$1;') + '</SELECT></FORM>'; // see function simpleHtmlentities()
         theObj.innerHTML = text;
       }
     }
