@@ -31,7 +31,7 @@ function customFunctionOnMove() {}
 function customFunctionOnAlert(msg) {}
 function customFunctionOnCheckLiveBroadcastStatus() {}
 
-// custom header tags APIs for use in customFunctionOnPgnGameLoad
+// custom header tags APIs for customFunctionOnPgnGameLoad
 
 function customPgnHeaderTag(customTag, htmlElementId, gameNum) {
   var matches, tag = "";
@@ -45,7 +45,7 @@ function customPgnHeaderTag(customTag, htmlElementId, gameNum) {
   return tag;
 }
 
-// custom comment tags API for use in customFunctionOnMove
+// custom comment tags API for customFunctionOnMove
 
 function customPgnCommentTag(customTag, htmlElementId, plyNum, varId) {
   var matches, tag = "", theObj;
@@ -139,7 +139,7 @@ function alertPromptTick(restart) {
   var colRow = colRowFromSquare(debugShortcutSquare);
   if (!colRow) { return; }
 
-  var alertPromptDelay = 1500; // for alerts before the baord is printed
+  var alertPromptDelay = 1500; // for alerts before the board is printed
   var theObj = document.getElementById('tcol' + colRow.col + 'trow' + colRow.row);
   if (theObj) {
     if (alertPromptOn) {
