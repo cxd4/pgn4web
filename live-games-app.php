@@ -300,7 +300,7 @@ window['loadPgnCheckingLiveStatus'] = function(res) {
   if (res === LOAD_PGN_OK) {
     var text = "";
     for (var ii = 0; ii < numberOfGames; ++ii) { text += fullPgnGame(ii) + "\\n\\n"; }
-    localStorage[lsId + "lastGamesPgnText"] = text;
+    localStorage[lsId + "lastGamesPgnText"] = simpleHtmlentitiesDecode(text);
     localStorage[lsId + "lastGamesLastModifiedHeader"] = LiveBroadcastLastModifiedHeader;
     localStorage[lsId + "lastGamesLastReceivedLocal"] = LiveBroadcastLastReceivedLocal;
   }

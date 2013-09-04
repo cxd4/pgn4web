@@ -4137,3 +4137,7 @@ function simpleHtmlentities(text) {
   return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+function simpleHtmlentitiesDecode(text) {
+  return text.replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&amp;/g, "&");
+}
+
