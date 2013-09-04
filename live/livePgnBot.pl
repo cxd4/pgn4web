@@ -33,7 +33,9 @@ if ($BOT_HANDLE eq "" || $OPERATOR_HANDLE eq "") {
 
 
 our $PGN_FILE = "live.pgn";
+
 our $PGN_ARCHIVE = "";
+our $archiveSelectFilter = "";
 
 our $verbosity = 4; # info
 
@@ -170,6 +172,8 @@ sub reset_games {
   $reportedNotFoundNonPrioritizedGame = 0;
 
   @currentRounds = ();
+
+  $archiveSelectFilter = "";
 
   $memoryMaxGamesNum = $maxGamesNumDefault;
   @memory_games = ();
@@ -800,7 +804,7 @@ sub archive_pgnGame {
 
   if ($PGN_ARCHIVE ne "") {
     my $pgn = save_pgnGame($i);
-    if ($pgn ne "") {
+    if (($pgn ne "") && (($archiveSelectFilter eq "") || ($pgn =~ /$archiveSelectFilter/is))) {
       if (open(my $thisFile, ">>$PGN_ARCHIVE")) {
         print $thisFile $pgn;
         close($thisFile);
@@ -1015,6 +1019,7 @@ sub add_master_command {
 }
 
 add_master_command ("archive", "archive [filename.pgn] (to get/set the filename for archiving PGN data)");
+add_master_command ("archiveselect", "archiveselect [regexp|\"\"] (to get/set the regular expression to select games for archiving PGN data)");
 add_master_command ("autoprioritize", "autoprioritize [regexp|\"\"] (to get/set the regular expression to prioritize entire events during autorelay; has precedence over prioritize)");
 add_master_command ("autorelay", "autorelay [0|1] (to automatically observe all relayed games)");
 add_master_command ("config", "config (to get config info)");
@@ -1032,7 +1037,7 @@ add_master_command ("ics", "ics [server command] (to run a custom command on the
 add_master_command ("ignore", "ignore [regexp|\"\"] (to get/set the regular expression to ignore events/players from the PGN header during autorelay; has precedence over prioritize; use ^(?:(?!regexp).)+\$ for negative lookup)");
 add_master_command ("log", "log [string] (to print a string on the log terminal)");
 add_master_command ("max", "max [number] (to get/set the maximum number of games for the PGN data)");
-add_master_command ("memory", "memoryfile [filename.pgn] (to get/set the filename for the PGN memory data)");
+add_master_command ("memory", "memory [filename.pgn] (to get/set the filename for the PGN memory data)");
 add_master_command ("memoryload", "memoryload [1] (to load PGN memroy data from memory file)");
 add_master_command ("memorymax", "memorymax [number] (to get/set the maximum number of games for the PGN memory data)");
 add_master_command ("memorypurgegame", "memorypurgegame [\"event\" \"round\" \"white\" \"black\"] (to purge a game from the PGN memory data)");
@@ -1117,6 +1122,23 @@ sub process_master_command {
     } else {
       tell_operator("error: invalid $command parameter");
     }
+  } elsif ($command eq "archiveselect") {
+    if ($parameters =~ /^([^\[\]"]+|"")?$/) {
+      if ($parameters ne "") {
+        eval {
+          "test" =~ /$parameters/;
+          if ($parameters eq "\"\"") { $parameters = ""; }
+          $archiveSelectFilter = $parameters;
+          log_terminal("info: archiveselect=$archiveSelectFilter");
+          1;
+        } or do {
+          tell_operator("error: invalid regular expression $parameters");
+        };
+      }
+      tell_operator("archiveselect=$archiveSelectFilter");
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
   } elsif ($command eq "autoprioritize") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
@@ -1167,7 +1189,7 @@ sub process_master_command {
       tell_operator("warning: ics relay offline");
     }
   } elsif ($command eq "config") {
-    tell_operator("config: max=$maxGamesNum file=$PGN_FILE archive=$PGN_ARCHIVE memory=$PGN_MEMORY memorymax=$memoryMaxGamesNum follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter autoprioritize=$autoPrioritize prioritize=$prioritizeFilter memoryselect=$memorySelectFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
+    tell_operator("config: max=$maxGamesNum file=$PGN_FILE archive=$PGN_ARCHIVE memory=$PGN_MEMORY memorymax=$memoryMaxGamesNum follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter autoprioritize=$autoPrioritize prioritize=$prioritizeFilter archiveselect=$archiveSelectFilter memoryselect=$memorySelectFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
   } elsif ($command eq "date") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
