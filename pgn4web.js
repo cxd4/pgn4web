@@ -3025,7 +3025,7 @@ function ParsePGNGameString(gameString) {
         if (start == ss.length) { break; }
 
         moveCount = Math.floor((StartPly+PlyNumber)/2)+1;
-        needle = moveCount.toString()+'.';
+        needle = moveCount.toString();
         if (ss.indexOf(needle,start)==start) {
           start += needle.length;
           while (' .\n\r'.indexOf(ss.charAt(start)) != -1) { start++; }
