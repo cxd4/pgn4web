@@ -831,28 +831,30 @@ function CurrentFEN() {
 }
 
 var fenWin;
-function displayFenData() {
+function displayFenData(addGametext) {
   if (fenWin && !fenWin.closed) { fenWin.close(); }
 
   var thisFEN = CurrentFEN();
 
   var movesStr = "";
   var lineStart = 0;
-  for (var thisPly = CurrentPly; thisPly <= StartPly + PlyNumber; thisPly++) {
-    var addStr = "";
-    if (thisPly == StartPly + PlyNumber) {
-      addStr = (CurrentVar ? "*" : gameResult[currentGame] || "*");
-    } else {
-      if (thisPly%2 === 0) { addStr = (Math.floor(thisPly/2)+1) + ". "; }
-      else if (thisPly == CurrentPly) { addStr = (Math.floor(thisPly/2)+1) + "... "; }
-      addStr += Moves[thisPly];
-    }
-    if (movesStr.length + addStr.length + 1 > lineStart + 80) {
-      lineStart = movesStr.length;
-      movesStr += "\n" + addStr;
-    } else {
-      if (movesStr.length > 0) { movesStr += " "; }
-      movesStr += addStr;
+  if (addGametext) {
+    for (var thisPly = CurrentPly; thisPly <= StartPly + PlyNumber; thisPly++) {
+      var addStr = "";
+      if (thisPly == StartPly + PlyNumber) {
+        addStr = (CurrentVar ? "*" : gameResult[currentGame] || "*");
+      } else {
+        if (thisPly%2 === 0) { addStr = (Math.floor(thisPly/2)+1) + ". "; }
+        else if (thisPly == CurrentPly) { addStr = (Math.floor(thisPly/2)+1) + "... "; }
+        addStr += Moves[thisPly];
+      }
+      if (movesStr.length + addStr.length + 1 > lineStart + 80) {
+        lineStart = movesStr.length;
+        movesStr += "\n" + addStr;
+      } else {
+        if (movesStr.length > 0) { movesStr += " "; }
+        movesStr += addStr;
+      }
     }
   }
 
@@ -860,19 +862,22 @@ function displayFenData() {
   if (fenWin) {
     var text = "<html>" +
       "<head><title>pgn4web FEN string</title><link rel='shortcut icon' href='pawn.ico' /></head>" +
-      "<body>\n<b><pre>\n\n" + thisFEN + "\n\n</pre></b>\n<hr>\n<pre>\n\n" +
-      "[Event \""  + ((CurrentVar ? "" : gameEvent[currentGame])  || "?") + "\"]\n" +
+      "<body>\n<b><pre>\n\n" + thisFEN + "\n\n</pre></b>\n<hr>\n<pre>\n\n";
+    if (addGametext) {
+      text += "[Event \""  + ((CurrentVar ? "" : gameEvent[currentGame])  || "?") + "\"]\n" +
       "[Site \""   + ((CurrentVar ? "" : gameSite[currentGame])   || "?") + "\"]\n" +
       "[Date \""   + ((CurrentVar ? "" : gameDate[currentGame])   || "????.??.??") + "\"]\n" +
       "[Round \""  + ((CurrentVar ? "" : gameRound[currentGame])  || "?") + "\"]\n" +
       "[White \""  + ((CurrentVar ? "" : gameWhite[currentGame])  || "?") + "\"]\n" +
       "[Black \""  + ((CurrentVar ? "" : gameBlack[currentGame])  || "?") + "\"]\n" +
       "[Result \"" + ((CurrentVar ? "" : gameResult[currentGame]) || "*") + "\"]\n";
-    if (thisFEN != FenStringStart) {
+    }
+    if ((thisFEN != FenStringStart) || (!addGametext)) {
       text += "[SetUp \"1\"]\n" + "[FEN \"" + thisFEN + "\"]\n";
     }
     if (gameVariant[currentGame] !== "") { text += "[Variant \"" + gameVariant[currentGame] + "\"]\n"; }
-    text += "\n" + movesStr + "\n</pre>\n</body></html>";
+    if (addGametext) { text += "\n" + movesStr + "\n"; }
+    text += "</pre>\n</body></html>";
     fenWin.document.open("text/html", "replace");
     fenWin.document.write(text);
     fenWin.document.close();

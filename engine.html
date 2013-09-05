@@ -580,7 +580,7 @@ function clickedGameShowFen(t, e) {
    else if (PlyNumber > 0) {
       var oldCurrentPly = CurrentPly;
       MoveBackward(CurrentPly - StartPly, true);
-      displayFenData();
+      displayFenData(true);
       MoveForward(oldCurrentPly - CurrentPly);
    }
 }
