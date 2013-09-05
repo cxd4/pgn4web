@@ -1087,7 +1087,7 @@ function detectClick(t,e) {
          else if (thisMove == "Ke8g8") { thisMove = "O-O"; }
          else if (thisMove == "Ke8c8") { thisMove = "O-O-O"; }
          else if (("KQRBN".indexOf(thisMove.charAt(0)) == -1) && (thisMove.charAt(3) == (CurrentPly % 2 ? "1" : "8"))) {
-            thisMove += "=Q";
+            thisMove += "Q";
          }
          if (autoPlay) { stopAutoPlay(); }
          addPly(thisMove);
@@ -1096,7 +1096,7 @@ function detectClick(t,e) {
       if (CurrentPly === thisCurrentPly) {
          detectClick({id: "img_tcol" + matches[1] + "trow" + matches[2]}, null);
       }
-   } else if ((CurrentPly > StartPly) && (matches = Moves[CurrentPly - 1].match(new RegExp("^(.*" + thisColChar + thisRowChar + "=)([QRBN])", "")))) {
+   } else if ((CurrentPly > StartPly) && (matches = Moves[CurrentPly - 1].match(new RegExp("^(.*" + thisColChar + thisRowChar + ")([QRBN])$", "")))) {
       MoveBackward(1);
       addPly(matches[1] + "RBNQ".charAt("QRBN".indexOf(matches[2])));
    } else {
