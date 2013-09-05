@@ -3388,8 +3388,8 @@ function searchPgnGamePrompt() {
 }
 
 function searchPgnGameForm() {
-  if (theObj = document.getElementById('searchPgnExpression'))
-  { searchPgnGame(document.getElementById('searchPgnExpression').value); }
+  var theObj = document.getElementById('searchPgnExpression');
+  if (theObj) { searchPgnGame(document.getElementById('searchPgnExpression').value); }
 }
 
 var chessMovesRegExp = new RegExp("\\b((\\d+(\\.{1,3}|\\s)\\s*)?((([KQRBN][a-h1-8]?)|[a-h])?x?[a-h][1-8](=[QRNB])?|O-O-O|O-O)\\b[!?+#]*)", "g");
