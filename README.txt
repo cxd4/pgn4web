@@ -11,15 +11,10 @@ PGN4WEB: javascript chess games viewer for websites, blogs and live broadcasts.
 
 ABOUT
 
-pgn4web comes as software package you can to your website or blogsite, but also
-provides a very simple board generator web tool helping you adding chess
-games to your website or blog without any html/javascript coding from your
-side.
-
-It has been designed to make it easier adding chess games to your web
-pages and blogs, without the need of much knowledge of HTML or any
-other technicality. It also has been integrated with many popular web
-software platforms and services.
+pgn4web comes as software package you can add to your website or blogsite, but
+also provides a very simple board generator web tool helping you adding chess
+games to your website or blog without any html/javascript coding.
+pgn4web integrates with several popular web platforms and services.
 
 ***
 *** THIS README FILE IS A SUMMARY OF THE PGN4WEB DOCUMENTATION
