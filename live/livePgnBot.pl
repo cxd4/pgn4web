@@ -853,7 +853,7 @@ sub memory_add_pgnGame {
   if ($PGN_MEMORY ne "") {
     my $pgn = save_pgnGame($i);
     if (($memorySelectFilter eq "") || ($pgn =~ /$memorySelectFilter/is)) {
-      if ($#memory_games >= $memoryMaxGamesNum) {
+      if (($#memory_games + 1) >= $memoryMaxGamesNum) {
         pop(@memory_games);
         pop(@memory_games_sortkey);
       }
@@ -1423,7 +1423,7 @@ sub process_master_command {
   } elsif ($command eq "memorymax") {
     if ($parameters =~ /^([1-9]\d*)?$/) {
       if ($parameters ne "") {
-        if ($parameters < $memoryMaxGamesNum) {
+        if ($parameters < $#memory_games + 1) {
           @memory_games = @memory_games[0..($parameters - 1)];
           @memory_games_sortkey = @memory_games_sortkey[0..($parameters - 1)];
         }
