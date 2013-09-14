@@ -95,6 +95,15 @@
     if (document.getElementById('GameBlack').innerHTML && document.getElementById('GameBlackElo').innerHTML) { document.getElementById('GameBlackElo').style.marginLeft = '1ex'; }
     if (document.getElementById('GameSite').innerHTML && document.getElementById('GameEvent').innerHTML) { document.getElementById('GameEvent').style.marginLeft = '1ex'; }
     if ((document.getElementById('GameSite').innerHTML || document.getElementById('GameEvent').innerHTML) && document.getElementById('GameDate').innerHTML) { document.getElementById('GameDate').style.marginLeft = '1ex'; }
+
+    var newTitle = (currentGame + 1) + '.';
+    newTitle += '  ' + (gameWhite[currentGame] || '?');
+    newTitle += '  ' + (gameBlack[currentGame] || '?');
+    newTitle += '  ' + (gameResult[currentGame] || '?');
+    if (gameSite[currentGame]) { newTitle += '  ' + gameSite[currentGame]; }
+    if (gameEvent[currentGame]) { newTitle += '  ' + gameEvent[currentGame]; }
+    if (gameDate[currentGame]) { newTitle += '  ' + gameDate[currentGame]; }
+    document.title = newTitle;
   }
 
   function searchPlayer(name, FideId) {
