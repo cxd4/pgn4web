@@ -10,7 +10,7 @@
 
 <head>
 
-<title>chess games</title>
+<title>0.</title>
 
 <!-- use viewport settings when body.onresize adapts the chessboard to the available space -->
 <meta name="viewport" content="initial-scale=1, maximum-scale=1">
@@ -97,12 +97,12 @@
     if ((document.getElementById('GameSite').innerHTML || document.getElementById('GameEvent').innerHTML) && document.getElementById('GameDate').innerHTML) { document.getElementById('GameDate').style.marginLeft = '1ex'; }
 
     var newTitle = (currentGame + 1) + '.';
-    newTitle += '  ' + (gameWhite[currentGame] || '?');
-    newTitle += '  ' + (gameBlack[currentGame] || '?');
-    newTitle += '  ' + (gameResult[currentGame] || '?');
-    if (gameSite[currentGame]) { newTitle += '  ' + gameSite[currentGame]; }
-    if (gameEvent[currentGame]) { newTitle += '  ' + gameEvent[currentGame]; }
-    if (gameDate[currentGame]) { newTitle += '  ' + gameDate[currentGame]; }
+    newTitle += '\u00a0 ' + (gameWhite[currentGame] || '?');
+    newTitle += '\u00a0 ' + (gameBlack[currentGame] || '?');
+    newTitle += '\u00a0 ' + (gameResult[currentGame] || '?');
+    if (gameSite[currentGame]) { newTitle += '\u00a0 ' + gameSite[currentGame]; }
+    if (gameEvent[currentGame]) { newTitle += '\u00a0 ' + gameEvent[currentGame]; }
+    if (gameDate[currentGame]) { newTitle += '\u00a0 ' + gameDate[currentGame]; }
     document.title = newTitle;
   }
 
