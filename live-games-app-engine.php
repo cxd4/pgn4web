@@ -72,7 +72,7 @@ $text = <<<END
       if (window.orientation === lastOrientation) { return; }
       lastOrientation = window.orientation;
 
-      if (lastOrientationTimeout) { history.back(); }
+      if (lastOrientationTimeout) { window.history.back(); }
       else { lastOrientationTimeout = setTimeout("lastOrientationTimeout = null;", 1800); }
    }
 END;
@@ -84,7 +84,7 @@ $html = str_replace($oldText, $text, $html);
 
 $text = <<<END
    } else {
-      history.back();
+      window.history.back();
 END;
 $oldText = "<!-- AppCheck: clickedGameAutoUpdateFlag -->";
 $actionNum += 1;
@@ -131,7 +131,7 @@ function pgn4web_handleTouchEnd_body(e) {
         if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) >= 13) {
           if (Math.abs(deltaY) > 1.5 * Math.abs(deltaX)) {
             if (deltaY > 0) { // vertical down
-              if (!openerCheck()) { history.back(); }
+              if (!openerCheck()) { window.history.back(); }
             } else { // vertical up
               if (theObj = document.getElementById("GameFlagToMove")) {
                 clickedGameFlagToMove(theObj, { "shiftKey": false });
@@ -143,7 +143,7 @@ function pgn4web_handleTouchEnd_body(e) {
                 clickedGameMoves(theObj, { "shiftKey": false });
               }
             } else { // horizontal left
-              if (!openerCheck()) { history.back(); }
+              if (!openerCheck()) { window.history.back(); }
             }
           }
         }
