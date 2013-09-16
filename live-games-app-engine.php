@@ -72,10 +72,8 @@ $text = <<<END
       if (window.orientation === lastOrientation) { return; }
       lastOrientation = window.orientation;
 
-      if (history.length > 1) {
-         if (lastOrientationTimeout) { history.back(); }
-         else { lastOrientationTimeout = setTimeout("lastOrientationTimeout = null;", 1800); }
-      }
+      if (lastOrientationTimeout) { history.back(); }
+      else { lastOrientationTimeout = setTimeout("lastOrientationTimeout = null;", 1800); }
    }
 END;
 $oldText = "<!-- AppCheck: myOnOrientationchange -->";
@@ -85,7 +83,7 @@ $html = str_replace($oldText, $text, $html);
 
 
 $text = <<<END
-   } else if (history.length > 1) {
+   } else {
       history.back();
 END;
 $oldText = "<!-- AppCheck: clickedGameAutoUpdateFlag -->";
@@ -95,7 +93,7 @@ $html = str_replace($oldText, $text, $html);
 
 
 $text = <<<END
-      } else if (history.length > 1) {
+      } else if (true) {
          theObj.innerHTML = "&crarr;";
          theObj.title = "close analysis board";
 END;
@@ -133,7 +131,7 @@ function pgn4web_handleTouchEnd_body(e) {
         if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) >= 13) {
           if (Math.abs(deltaY) > 1.5 * Math.abs(deltaX)) {
             if (deltaY > 0) { // vertical down
-              if ((!openerCheck()) && (history.length > 1)) { history.back(); }
+              if (!openerCheck()) { history.back(); }
             } else { // vertical up
               if (theObj = document.getElementById("GameFlagToMove")) {
                 clickedGameFlagToMove(theObj, { "shiftKey": false });
@@ -145,7 +143,7 @@ function pgn4web_handleTouchEnd_body(e) {
                 clickedGameMoves(theObj, { "shiftKey": false });
               }
             } else { // horizontal left
-              if ((!openerCheck()) && (history.length > 1)) { history.back(); }
+              if (!openerCheck()) { history.back(); }
             }
           }
         }
