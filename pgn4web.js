@@ -3015,14 +3015,12 @@ function ParsePGNGameString(gameString) {
         needle = new Array('1-0', '0-1', '1/2-1/2', '*');
         for (ii=0; ii<needle.length; ii++) {
           if (ss.indexOf(needle[ii],start)==start) {
-            if (CurrentVar === 0) {
-              start += needle[ii].length;
-              end = ss.length;
-            } else {
+            if (CurrentVar === 0) { end = ss.length; }
+            else {
               end = start + needle[ii].length;
+              if (MoveCommentsVar[CurrentVar][StartPly+PlyNumber]) { MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' '; }
+              MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += needle[ii];
             }
-            if (MoveCommentsVar[CurrentVar][StartPly+PlyNumber]) { MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ' '; }
-            MoveCommentsVar[CurrentVar][StartPly+PlyNumber] += ss.substring(start, end).replace(/^\s*\{(.*)\}\s*$/, '$1');
             start = end;
             break;
           }
