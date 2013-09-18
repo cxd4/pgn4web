@@ -77,7 +77,7 @@ window.open = function (winUrl, winTarget, winParam) {
   } else if (winUrl) {
      var a = document.createElement("a");
      a.setAttribute("href", winUrl);
-     a.setAttribute("taget", winTarget ? winTarget : "_blank");
+     a.setAttribute("target", winTarget ? winTarget : "_blank");
      var e = document.createEvent("HTMLEvents");
      e.initEvent("click", true, true);
      a.dispatchEvent(e);
