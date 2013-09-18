@@ -72,7 +72,7 @@ $text = <<<END
       if (window.orientation === lastOrientation) { return; }
       lastOrientation = window.orientation;
 
-      if (lastOrientationTimeout) { window.history.back(); }
+      if (lastOrientationTimeout) { backToGames(); }
       else { lastOrientationTimeout = setTimeout("lastOrientationTimeout = null;", 1800); }
    }
 END;
@@ -84,7 +84,7 @@ $html = str_replace($oldText, $text, $html);
 
 $text = <<<END
    } else {
-      window.history.back();
+      backToGames();
 END;
 $oldText = "<!-- AppCheck: clickedGameAutoUpdateFlag -->";
 $actionNum += 1;
@@ -106,14 +106,15 @@ $html = str_replace($oldText, $text, $html);
 $text = <<<END
 if (window.navigator.standalone) {
   window.open = function (winUrl, winTarget, winParam) {
-    if (winUrl) {
-      var a = document.createElement("a");
-      a.setAttribute("href", winUrl);
-      a.setAttribute("target", winTarget ? winTarget : "_blank");
-      var e = document.createEvent("HTMLEvents");
-      e.initEvent("click", true, true);
-      a.dispatchEvent(e);
-    }
+    // patch for iOS 7
+    // if (winUrl) {
+    //   var a = document.createElement("a");
+    //   a.setAttribute("href", winUrl);
+    //   a.setAttribute("target", winTarget ? winTarget : "_blank");
+    //   var e = document.createEvent("HTMLEvents");
+    //   e.initEvent("click", true, true);
+    //   a.dispatchEvent(e);
+    // }
     return null;
   };
 
@@ -131,7 +132,7 @@ function pgn4web_handleTouchEnd_body(e) {
         if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) >= 13) {
           if (Math.abs(deltaY) > 1.5 * Math.abs(deltaX)) {
             if (deltaY > 0) { // vertical down
-              if (!openerCheck()) { window.history.back(); }
+              if (!openerCheck()) { backToGames(); }
             } else { // vertical up
               if (theObj = document.getElementById("GameFlagToMove")) {
                 clickedGameFlagToMove(theObj, { "shiftKey": false });
@@ -143,7 +144,7 @@ function pgn4web_handleTouchEnd_body(e) {
                 clickedGameMoves(theObj, { "shiftKey": false });
               }
             } else { // horizontal left
-              if (!openerCheck()) { window.history.back(); }
+              if (!openerCheck()) { backToGames(); }
             }
           }
         }
@@ -160,6 +161,17 @@ simpleAddEvent(document.body, "touchmove", pgn4web_handleTouchMove);
 simpleAddEvent(document.body, "touchend", pgn4web_handleTouchEnd_body);
 simpleAddEvent(document.body, "touchleave", pgn4web_handleTouchEnd_body);
 simpleAddEvent(document.body, "touchcancel", pgn4web_handleTouchCancel);
+
+function backToGames() {
+  if (window.navigator.standalone) {
+    if (localStorage["pgn4web_live_games_app_locationHref"]) {
+      window.location.href = localStorage["pgn4web_live_games_app_locationHref"];
+    }
+  } else {
+    window.history.back();
+  }
+}
+
 END;
 $oldText = "<!-- AppCheck: footer -->";
 $actionNum += 1;

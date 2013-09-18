@@ -75,12 +75,13 @@ window.open = function (winUrl, winTarget, winParam) {
   } else if (!window.navigator.standalone) {
      return window.defaultOpen(winUrl, winTarget, winParam || "");
   } else if (winUrl) {
-     var a = document.createElement("a");
-     a.setAttribute("href", winUrl);
-     a.setAttribute("target", winTarget ? winTarget : "_blank");
-     var e = document.createEvent("HTMLEvents");
-     e.initEvent("click", true, true);
-     a.dispatchEvent(e);
+     // patch for iOS 7
+     // var a = document.createElement("a");
+     // a.setAttribute("href", winUrl);
+     // a.setAttribute("target", winTarget ? winTarget : "_blank");
+     // var e = document.createEvent("HTMLEvents");
+     // e.initEvent("click", true, true);
+     // a.dispatchEvent(e);
      return null;
   }
   return null;
