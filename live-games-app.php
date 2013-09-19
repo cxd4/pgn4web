@@ -70,12 +70,12 @@ $text = <<<END
 window['defaultOpen'] = window.open;
 window.open = function (winUrl, winTarget, winParam) {
   if ((winUrl) && (winUrl.match(/(^|\/)live-games-app-engine\.php/))) {
-     location.href = winUrl;
+     window.location.href = winUrl;
      return null;
   } else if (!window.navigator.standalone) {
      return window.defaultOpen(winUrl, winTarget, winParam || "");
   } else if (winUrl) {
-     // patch for iOS 7
+     // patch for iOS7
      // var a = document.createElement("a");
      // a.setAttribute("href", winUrl);
      // a.setAttribute("target", winTarget ? winTarget : "_blank");

@@ -106,7 +106,7 @@ $html = str_replace($oldText, $text, $html);
 $text = <<<END
 if (window.navigator.standalone) {
   window.open = function (winUrl, winTarget, winParam) {
-    // patch for iOS 7
+    // patch for iOS7
     // if (winUrl) {
     //   var a = document.createElement("a");
     //   a.setAttribute("href", winUrl);
@@ -163,6 +163,7 @@ simpleAddEvent(document.body, "touchleave", pgn4web_handleTouchEnd_body);
 simpleAddEvent(document.body, "touchcancel", pgn4web_handleTouchCancel);
 
 function backToGames() {
+  // patch for iOS7
   if (window.navigator.standalone) {
     if (localStorage["pgn4web_live_games_app_locationHref"]) {
       window.location.href = localStorage["pgn4web_live_games_app_locationHref"];
