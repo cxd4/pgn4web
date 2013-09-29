@@ -1885,7 +1885,6 @@ sub main_loop {
 }
 
 eval {
-  print("\n");
   log_terminal("info: starting $0");
   setup();
   main_loop();
