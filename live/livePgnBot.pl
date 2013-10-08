@@ -1890,17 +1890,29 @@ sub handleTERM {
 }
 $SIG{TERM}=\&handleTERM;
 
+sub handleHUP {
+  log_terminal("alert: received HUP signal");
+  exit(0);
+}
+$SIG{HUP}=\&handleHUP;
+
 sub handleINT {
   log_terminal("alert: received INT signal");
   exit(1);
 }
 $SIG{INT}=\&handleINT;
 
-sub handleHUP {
-  log_terminal("alert: received HUP signal");
+sub handleUSR1 {
+  log_terminal("alert: received USR1 signal");
   exit(2);
 }
-$SIG{HUP}=\&handleHUP;
+$SIG{USR1}=\&handleUSR1;
+
+sub handleUSR2 {
+  log_terminal("alert: received USR2 signal");
+  exit(3);
+}
+$SIG{USR2}=\&handleUSR2;
 
 eval {
   log_terminal("info: starting $0");
