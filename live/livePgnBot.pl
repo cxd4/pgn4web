@@ -1884,6 +1884,24 @@ sub main_loop {
   }
 }
 
+sub handleTERM {
+  log_terminal("alert: received TERM signal");
+  exit(0);
+}
+$SIG{TERM}=\&handleTERM;
+
+sub handleINT {
+  log_terminal("alert: received INT signal");
+  exit(1);
+}
+$SIG{INT}=\&handleINT;
+
+sub handleHUP {
+  log_terminal("alert: received HUP signal");
+  exit(2);
+}
+$SIG{HUP}=\&handleHUP;
+
 eval {
   log_terminal("info: starting $0");
   setup();
