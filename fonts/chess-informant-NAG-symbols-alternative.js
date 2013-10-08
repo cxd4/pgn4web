@@ -11,10 +11,8 @@ if ((typeof(blockChessInformantNAGSymbols) != "boolean") || (!blockChessInforman
 
   if (typeof(ii) == "undefined") { var ii; }
 
-  // if the chess informant font is in a different path than the pgn4web default "fonts",
-  // please define the proper var FontPath = "other/fonts/path"; before loading this javascript file
-  if (typeof(FontPath) == "undefined") { var FontPath = "fonts"; }
-  if ((FontPath.length > 0) && (FontPath[FontPath.length-1] != '/')) { FontPath += '/'; }
+  var jsre = new RegExp("chess-informant-NAG-symbols-alternative\.js$", "");
+  var FontPath = detectJavascriptLocation(jsre).replace(jsre, "");
 
   document.write('<link href="' + FontPath + 'pgn4web-font-ChessOleFigurin.css" type="text/css" rel="stylesheet" />');
   document.write('<style type="text/css">.NAGs, .NAGl { font-family: "pgn4web ChessOleFigurin"; line-height: 1em; }</style>');

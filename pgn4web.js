@@ -665,10 +665,11 @@ function replayPreviousMoves(numPlies) {
   SetAutoPlay(true);
 }
 
-function detectJavascriptLocation() {
+function detectJavascriptLocation(jsre) {
+  if (typeof(jsre) == "undefined") { jsre = new RegExp("(pgn4web|pgn4web-compacted)\.js$", ""); }
   var e = document.getElementsByTagName("script");
   for (var i=0; i<e.length; i++) {
-    if ((e[i].src) && (e[i].src.match(/(pgn4web|pgn4web-compacted)\.js/))) {
+    if ((e[i].src) && (e[i].src.match(jsre))) {
       return e[i].src;
     }
   }

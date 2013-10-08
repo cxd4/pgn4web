@@ -215,7 +215,7 @@ is disabled by default; in order to enable it in your HTML page, please include
 the script below immediately after the main pgn4web script:
 
   <script src="pgn4web.js" type="text/javascript"></script>
-  <script src="chess-informant-NAG-symbols.js" type="text/javascript"></script>
+  <script src="fonts/chess-informant-NAG-symbols.js" type="text/javascript"></script>
 
 Please note, differently than when using the figurine fonts, if the user's web
 browser does not support web fonts, there's not elegant textual fallback.

@@ -10,7 +10,7 @@
  *  'pgn4web ChessInformantReader'
  *
  *  dont try using this font-family directly, instead add the chess informant symbols
- *  support by including chess-informant-NAG-symbols.js immediately after pgn4web.js
+ *  support by including fonts/chess-informant-NAG-symbols.js immediately after pgn4web.js
  */
 
 @font-face {

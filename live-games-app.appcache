@@ -1,10 +1,10 @@
 CACHE MANIFEST
 
-# version 2.77+0008
+# version 2.77+0009
 
-chess-informant-NAG-symbols.js
 engine.js
 fide-lookup.js
+fonts/chess-informant-NAG-symbols.js
 fonts/pgn4web-font-ChessInformantReader.css
 fonts/ChessInformantReader.eot
 fonts/ChessInformantReader.svg

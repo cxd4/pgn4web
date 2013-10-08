@@ -959,7 +959,7 @@ a.variation {
 
 <script src="pgn4web.js" type="text/javascript"></script>
 <script src="engine.js" type="text/javascript"></script>
-<script src="chess-informant-NAG-symbols.js" type="text/javascript"></script>
+<script src="fonts/chess-informant-NAG-symbols.js" type="text/javascript"></script>
 <script src="fide-lookup.js" type="text/javascript"></script>
 
 <style type="text/css">
