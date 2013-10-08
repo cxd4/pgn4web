@@ -11,6 +11,8 @@ if ((typeof(blockChessInformantNAGSymbols) != "boolean") || (!blockChessInforman
 
   if (typeof(ii) == "undefined") { var ii; }
 
+  // if the chess informant font is in a different path than the pgn4web default "fonts",
+  // please define the proper var FontPath = "other/fonts/path"; before loading this javascript file
   if (typeof(FontPath) == "undefined") { var FontPath = "fonts"; }
   if ((FontPath.length > 0) && (FontPath[FontPath.length-1] != '/')) { FontPath += '/'; }
 
