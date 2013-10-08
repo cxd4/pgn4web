@@ -1885,31 +1885,31 @@ sub main_loop {
 }
 
 sub handleTERM {
-  log_terminal("alert: received TERM signal");
+  log_terminal("warning: received TERM signal");
   exit(0);
 }
 $SIG{TERM}=\&handleTERM;
 
 sub handleHUP {
-  log_terminal("alert: received HUP signal");
+  log_terminal("warning: received HUP signal");
   exit(0);
 }
 $SIG{HUP}=\&handleHUP;
 
 sub handleINT {
-  log_terminal("alert: received INT signal");
+  log_terminal("warning: received INT signal");
   exit(1);
 }
 $SIG{INT}=\&handleINT;
 
 sub handleUSR1 {
-  log_terminal("alert: received USR1 signal");
+  log_terminal("warning: received USR1 signal");
   exit(2);
 }
 $SIG{USR1}=\&handleUSR1;
 
 sub handleUSR2 {
-  log_terminal("alert: received USR2 signal");
+  log_terminal("warning: received USR2 signal");
   exit(3);
 }
 $SIG{USR2}=\&handleUSR2;
