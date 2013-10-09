@@ -1,7 +1,14 @@
 CACHE MANIFEST
 
+# Live Games web application
 # version 2.78+0001
 
+# pgn4web javascript chessboard
+# copyright (C) 2009-2013 Paolo Casaschi
+# see README file and http://pgn4web.casaschi.net
+# for credits, license and more details
+
+README.txt
 engine.js
 fide-lookup.js
 fonts/chess-informant-NAG-symbols.js
