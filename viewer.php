@@ -1059,8 +1059,8 @@ $pgnText
    }
 
    function fixHeaderTag(elementId) {
-      var headerId = ["GameEvent", "GameSite", "GameDate", "GameRound", "GameWhite", "GameBlack", "GameResult", "GameSection", "GameStage", "GameBoardNum", "Timecontrol", "GameWhiteTeam", "GameBlackTeam", "GameWhiteTitle", "GameBlackTitle", "GameWhiteElo", "GameBlackElo", "GameECO", "GameOpening", "GameVariation", "GameSubVariation", "GameTermination", "GameWhiteClock", "GameBlackClock", "GameTimeControl"];
-      var headerLabel = ["event", "site", "date", "round", "white player", "black player", "result", "section", "stage", "board", "time control", "white team", "black team", "white title", "black title", "white elo", "black elo", "eco", "opening", "variation", "subvariation", "termination", "white clock", "black clock", "time control"];
+      var headerId = ["GameEvent", "GameSite", "GameDate", "GameRound", "GameWhite", "GameBlack", "GameResult", "GameMode", "GameSection", "GameStage", "GameBoardNum", "Timecontrol", "GameWhiteTeam", "GameBlackTeam", "GameWhiteTitle", "GameBlackTitle", "GameWhiteElo", "GameBlackElo", "GameECO", "GameOpening", "GameVariation", "GameSubVariation", "GameTermination", "GameAnnotator", "GameWhiteClock", "GameBlackClock", "GameTimeControl"];
+      var headerLabel = ["event", "site", "date", "round", "white player", "black player", "result", "mode", "section", "stage", "board", "time control", "white team", "black team", "white title", "black title", "white elo", "black elo", "eco", "opening", "variation", "subvariation", "termination", "annotator", "white clock", "black clock", "time control"];
       var theObj = document.getElementById(elementId);
       if (theObj) {
         theObj.className = (theObj.innerHTML === "") ? "innerHeaderItemNoMargin" : "innerHeaderItem";
@@ -1115,6 +1115,7 @@ $pgnText
    function customFunctionOnPgnGameLoad() {
       var theObj;
       fixHeaderTag('GameDate');
+      customPgnHeaderTagWithFix('Mode', 'GameMode');
       fixHeaderTag('GameSite');
       fixHeaderTag('GameEvent');
       customPgnHeaderTagWithFix('Section', 'GameSection');
@@ -1146,6 +1147,7 @@ $pgnText
       customPgnHeaderTagWithFix('SubVariation', 'GameSubVariation', true);
       fixHeaderTag('GameResult');
       customPgnHeaderTagWithFix('Termination', 'GameTermination');
+      customPgnHeaderTagWithFix('Annotator', 'GameAnnotator');
       if (PlyNumber > 0) { customPgnHeaderTag('Result', 'ResultAtGametextEnd'); }
       else { if (theObj = document.getElementById('ResultAtGametextEnd')) { theObj.innerHTML = ""; } }
 
@@ -1338,7 +1340,7 @@ $pgnText
 </div>
 
 <div class="headerColumn">
-<div class="headerItem"><a class="innerHeaderItem" id="GameDate" href="javascript:void(0);" onclick="searchTagDifferent('Date', this.innerHTML, event); this.blur();"></a><b>&nbsp;</b></div>
+<div class="headerItem"><a class="innerHeaderItem" id="GameDate" href="javascript:void(0);" onclick="searchTagDifferent('Date', this.innerHTML, event); this.blur();"></a><span class="innerHeaderItem" id="GameMode"></span><b>&nbsp;</b></div>
 <div class="headerItem"><a class="innerHeaderItem" id="GameSite" href="javascript:void(0);" onclick="searchTagDifferent('Site', this.innerHTML, event); this.blur();"></a><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem"><a class="innerHeaderItem" id="GameEvent" href="javascript:void(0);" onclick="searchTagDifferent('Event', this.innerHTML, event); this.blur();"></a><a class="innerHeaderItem" id="GameSection" href="javascript:void(0);" onclick="searchTagDifferent('Section', this.innerHTML, event); this.blur();"></a><a class="innerHeaderItem" id="GameStage" href="javascript:void(0);" onclick="searchTagDifferent('Stage', this.innerHTML, event); this.blur();"></a><b>&nbsp;</b></div>
@@ -1351,7 +1353,7 @@ $pgnText
 <div class="headerItem"><b><a href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId'), event); this.blur();" class="innerHeaderItem" id="GameBlack"></a></b><span class="innerHeaderItem" id="GameBlackTitle"></span><span class="innerHeaderItem" id="GameBlackElo"></span><a class="innerHeaderItem" id="GameBlackTeam" href="javascript:void(0);" onclick="searchTeam(this.innerHTML); this.blur();"></a><b>&nbsp;</b></div>
 <div class="headerItem"><span class="innerHeaderItem" id="GameBlackClock"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
-<div class="headerItem"><b><a href="javascript:void(0);" onclick="SetInitialHalfmove(event.shiftKey ? initialHalfmove_default : (initialHalfmove == 'end' ? 'start' : 'end'), true); GoToMove(initialHalfmove == 'end' ? StartPlyVar[0] + PlyNumberVar[0] : StartPlyVar[0], 0); this.blur();" class="innerHeaderItem" id="GameResult"></a></b><span class="innerHeaderItem" id="GameTermination"></span><b>&nbsp;</b></div>
+<div class="headerItem"><b><a href="javascript:void(0);" onclick="SetInitialHalfmove(event.shiftKey ? initialHalfmove_default : (initialHalfmove == 'end' ? 'start' : 'end'), true); GoToMove(initialHalfmove == 'end' ? StartPlyVar[0] + PlyNumberVar[0] : StartPlyVar[0], 0); this.blur();" class="innerHeaderItem" id="GameResult"></a></b><span class="innerHeaderItem" id="GameTermination"></span><span class="innerHeaderItem" id="GameAnnotator"></span><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
 <div class="headerItem headerSpacer"><b>&nbsp;</b></div>
