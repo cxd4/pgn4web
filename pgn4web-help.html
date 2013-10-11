@@ -344,7 +344,7 @@ function detectJavascriptLocation(jsre) {
 "use strict";
 
 function print_NAG_row(nag, text) {
-  document.write("<tr valign='bottom'><td class='informantCell' title='$" + nag + "'>" + NAG[nag] + "</td><td>" + text + "</td></tr>");
+  document.write("<tr valign='bottom'><td class='informantCell' title='$" + nag + "'>" + (NAG[nag] || "&middot;") + "</td><td>" + text + "</td></tr>");
 }
 
 document.write("<table style='padding:0px;' border='0'>");

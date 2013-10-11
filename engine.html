@@ -713,7 +713,7 @@ function InitializeBackgroundEngine() {
           return true;
       } catch(e) {
          if (theObj = document.getElementById("GameEval")) {
-            theObj.innerHTML = translateNAGs("$255") + "<span class='NAGs'>&nbsp;&nbsp;&nbsp;</span>" + translateNAGs("$147");
+            theObj.innerHTML = hasNAGs ? translateNAGs("$255") + "<span class='NAGs'>&nbsp;&nbsp;&nbsp;</span>" + translateNAGs("$147") : "X X";
             theObj.title = "engine analysis unavailable";
          }
          if (theObj = document.getElementById("GameMoves")) {
@@ -732,8 +732,10 @@ var moderateDefiniteThreshold = 1.85;
 var slightModerateThreshold = 0.85;
 var equalSlightThreshold = 0.25;
 
+var hasNAGs = (NAG[11].indexOf('<span class="NAGs">') > -1);
 function ev2NAG(ev) {
    if ((ev === null) || (ev === "") || (isNaN(ev = parseFloat(ev)))) { return ""; }
+   if (!hasNAGs) { return (ev > 0 ? "+" : "") + ev + (ev == Math.floor(ev) ? ".0" : ""); }
    if (ev < -moderateDefiniteThreshold) { return NAG[19]; } // -+
    if (ev >  moderateDefiniteThreshold) { return NAG[18]; } // +-
    if (ev < -slightModerateThreshold)   { return NAG[17]; } // -/+
@@ -1102,7 +1104,7 @@ function detectClick(t,e) {
       addPly(matches[1] + "RBNQ".charAt("QRBN".indexOf(matches[2])));
    } else {
       cc = CurrentPly % 2;
-      for (ii=0; ii<16; ii++) {
+      for (var ii=0; ii<16; ii++) {
          if ((PieceCol[cc][ii] == thisCol) && (PieceRow[cc][ii] == thisRow)) {
             if (PieceType[cc][ii] != -1) {
                clickFromPiece = " KQRBNP".charAt(PieceType[cc][ii]);
@@ -1169,7 +1171,7 @@ function setDisableEngine(de) {
       else { StopBackgroundEngine(); }
       var theObj;
       if (theObj = document.getElementById("GameEval")) {
-         theObj.innerHTML = translateNAGs("$147");
+         theObj.innerHTML = hasNAGs ? translateNAGs("$147") : "X";
          theObj.title = "engine analysis disabled";
       }
       if (theObj = document.getElementById("GameMoves")) {

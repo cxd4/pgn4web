@@ -1597,8 +1597,10 @@ function print_chessboard_two() {
    var slightModerateThreshold = 0.85;
    var equalSlightThreshold = 0.25;
 
+   var hasNAGs = (NAG[11].indexOf('<span class="NAGs">') > -1);
    function ev2NAG(ev) {
       if ((ev === null) || (ev === "") || (isNaN(ev = parseFloat(ev)))) { return ""; }
+      if (!hasNAGs) { return (ev > 0 ? "+" : "") + ev + (ev == Math.floor(ev) ? ".0" : ""); }
       if (ev < -moderateDefiniteThreshold) { return NAG[19]; } // -+
       if (ev >  moderateDefiniteThreshold) { return NAG[18]; } // +-
       if (ev < -slightModerateThreshold)   { return NAG[17]; } // -/+
