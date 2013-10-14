@@ -3062,7 +3062,7 @@ function ParsePGNGameString(gameString) {
   lastSynchCurrentVar = -1;
 }
 
-
+var NAGstyle = 'default';
 var NAG = new Array();
 NAG[0] = '';
 NAG[1] = '!'; // 'good move';

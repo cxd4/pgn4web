@@ -23,6 +23,8 @@ if ((typeof(blockChessInformantNAGSymbols) != "boolean") || (!blockChessInforman
 
   var basicNAGs = /^([\?!+#\s]|<span class="NAGs">[^<]*<.span>)+(\s|$)/;
 
+  NAGstyle = 'informantreader';
+
   NAG[0] = '';
   NAG[1] = '!';  // 'good move';
   NAG[2] = '?';  // 'bad move';
