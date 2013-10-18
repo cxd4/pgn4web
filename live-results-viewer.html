@@ -834,6 +834,7 @@ a.variation {
   boardShortcut("G7", "toggle autoswitch to games with new moves", function(t,e){ autoSwitchNewgames = !autoSwitchNewgames && !e.shiftKey; });
 
   boardShortcut("F8", "close/pause analysis board", function(t,e){ if (!e.shiftKey) { hideAnalysisBoard(); } });
+  boardShortcut("E8", "open/update analysis board", function(t,e){ showAnalysisBoard(e.shiftKey); }, true);
 
 
   function toggleShowEvent() {
@@ -865,62 +866,60 @@ a.variation {
     printGames();
   }
 
-function gup(name) {
-
-  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-  var regexS = "[\\?&]"+name+"=([^&#]*)";
-  // commented below to match first occurrence (to avoid users overruling setting)
-  // regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
-  var regex = new RegExp( regexS, "i" );
-  var results = regex.exec( window.location.href );
-  if (results !== null) { return decodeURIComponent(results[1]); }
-
-  // allows for short version of the URL parameters, for instance sC matches squareColor
-  var compact_name = name.charAt(0);
-  for (var i=1; i<name.length; i++) {
-    if (name.charAt(i).match(/[A-Z]/)) { compact_name = compact_name + name.charAt(i).toLowerCase(); }
-  }
-  name = compact_name;
-
-  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-  regexS = "[\\?&]"+name+"=([^&#]*)";
-  // commented below to match first occurrence (to avoid users overruling setting)
-  // regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
-  regex = new RegExp( regexS, "i" );
-
-  results = regex.exec( window.location.href );
-  if (results !== null) { return decodeURIComponent(results[1]); }
-
-  return "";
-}
-
-var thisEngineWin;
-function showAnalysisBoard(de) {
-  var theObj;
-  if (!showBoard) { return; }
-  thisEngineWin = showEngineAnalysisBoard(de);
-  if (thisEngineWin) {
-    disableEngine = de;
-    if (theObj = document.getElementById('GameAnalysisContainer')) {
-      theObj.style.width = "304px"; // defined as gameAnalysisContainer.width.open = gameAnalysisFrame.width + gameAnalysisFrame.marginLeft + body.padding
+  var thisEngineWin;
+  function showAnalysisBoard(de) {
+    var theObj;
+    if (!showBoard) { return; }
+    thisEngineWin = showEngineAnalysisBoard(de);
+    if (thisEngineWin) {
+      disableEngine = de;
+      if (theObj = document.getElementById('GameAnalysisContainer')) {
+        theObj.style.width = "304px"; // defined as gameAnalysisContainer.width.open = gameAnalysisFrame.width + gameAnalysisFrame.marginLeft + body.padding
+      }
+      showAnalysis = true;
     }
-    showAnalysis = true;
   }
-}
 
-function hideAnalysisBoard() {
-  var theObj;
-  if (theObj = document.getElementById('GameAnalysisContainer')) {
-    theObj.style.width = "40px"; // = gameAnalysisContainer.width.closed
+  function hideAnalysisBoard() {
+    var theObj;
+    if (theObj = document.getElementById('GameAnalysisContainer')) {
+      theObj.style.width = "40px"; // = gameAnalysisContainer.width.closed
+    }
+    if (typeof(thisEngineWin) != "undefined") {
+      if (typeof(thisEngineWin.StopBackgroundEngine) == "function") { thisEngineWin.StopBackgroundEngine(); }
+      if (typeof(thisEngineWin.autoUpdate) != "undefined") { thisEngineWin.autoUpdate = false; }
+    }
+    showAnalysis = false;
   }
-  if (typeof(thisEngineWin) != "undefined") {
-    if (typeof(thisEngineWin.StopBackgroundEngine) == "function") { thisEngineWin.StopBackgroundEngine(); }
-    if (typeof(thisEngineWin.autoUpdate) != "undefined") { thisEngineWin.autoUpdate = false; }
-  }
-  showAnalysis = false;
-}
 
-boardShortcut("E8", "open/update analysis board", function(t,e){ showAnalysisBoard(e.shiftKey); }, true);
+  function gup(name) {
+
+    name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+    var regexS = "[\\?&]"+name+"=([^&#]*)";
+    // commented below to match first occurrence (to avoid users overruling setting)
+    // regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
+    var regex = new RegExp( regexS, "i" );
+    var results = regex.exec( window.location.href );
+    if (results !== null) { return decodeURIComponent(results[1]); }
+
+    // allows for short version of the URL parameters, for instance sC matches squareColor
+    var compact_name = name.charAt(0);
+    for (var i=1; i<name.length; i++) {
+      if (name.charAt(i).match(/[A-Z]/)) { compact_name = compact_name + name.charAt(i).toLowerCase(); }
+    }
+    name = compact_name;
+
+    name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+    regexS = "[\\?&]"+name+"=([^&#]*)";
+    // commented below to match first occurrence (to avoid users overruling setting)
+    // regexS = regexS+"(?!.*"+regexS+")"; // matches the LAST occurrence
+    regex = new RegExp( regexS, "i" );
+
+    results = regex.exec( window.location.href );
+    if (results !== null) { return decodeURIComponent(results[1]); }
+
+    return "";
+  }
 
 </script>
 
