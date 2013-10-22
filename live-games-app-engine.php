@@ -106,20 +106,14 @@ $html = str_replace($oldText, $text, $html);
 $text = <<<END
 if (window.navigator.standalone) {
   window.open = function (winUrl, winTarget, winParam) {
-    //
-    // patch for iOS7
-    //
-    // if (winUrl) {
-    //   var a = document.createElement("a");
-    //   a.setAttribute("href", winUrl);
-    //   a.setAttribute("target", winTarget ? winTarget : "_blank");
-    //   var e = document.createEvent("HTMLEvents");
-    //   e.initEvent("click", true, true);
-    //   a.dispatchEvent(e);
-    // }
-    //
-    // end of patch for iOS7
-    //
+    if (winUrl) {
+      var a = document.createElement("a");
+      a.setAttribute("href", winUrl);
+      a.setAttribute("target", winTarget ? winTarget : "_blank");
+      var e = document.createEvent("HTMLEvents");
+      e.initEvent("click", true, true);
+      a.dispatchEvent(e);
+    }
     return null;
   };
 
