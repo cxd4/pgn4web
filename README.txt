@@ -494,6 +494,10 @@ The SWFObject javascript library (http://code.google.com/p/swfobject/) is
 released under the MIT License
 (http://www.opensource.org/licenses/mit-license.php).
 
+The ECO code (http://en.wikipedia.org/wiki/Encyclopaedia_of_Chess_Openings) for
+game opening classification is a trademark of the Chess Informant publishing
+company (http://www.chessinformant.rs).
+
 
 The above items remains subject to their original licenses (if any).
 
