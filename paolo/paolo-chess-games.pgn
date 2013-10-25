@@ -1,3 +1,23 @@
+[Event "Middlesex league"]
+[Site "London ENG"]
+[Date "2013.10.24"]
+[Round "?"]
+[White "Casaschi, Paolo"]
+[Black "Quinn, John"]
+[Result "1-0"]
+[ECO "B47"]
+[Opening "Sicilian"]
+[Variation "Taimanov (Bastrikov) variation"]
+
+1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nc6 5. Nc3 Qc7 6. g3 a6 7. a4 Nf6 8.
+Bg2 d6 9. O-O Bd7 10. Nb3 Be7 { D } 11. Kh1 Ne5 12. Qe2 O-O 13. Nd2 Rac8
+14. f4 Nc4 15. Re1 e5 16. f5 { D } 16... b5 17. axb5 axb5 18. Nxc4 Qxc4 19.
+Qxc4 Rxc4 20. Bf1 Rc7 21. Nxb5 Rxc2 22. Nc3 Ng4 { D } 23. h3 Nf2+ 24. Kg1
+d5 { D } 25. exd5 Bc5 26. Be3 Bxe3 27. Rxe3 Bxf5 28. g4 Bg6 29. b4 f5 30.
+Nd1 { D } 30... Ne4 31. Bd3 f4 32. Rxe4 Rd2 33. Nf2 Rxd3 34. Rxe5 Rg3+ 35.
+Kf1 Bd3+ 36. Nxd3 Rxd3 37. Ra7 Rf3+ 38. Kg2 Rg3+ 39. Kf2 Rc8 40. d6 Rc2+
+41. Re2 Rxe2+ 42. Kxe2 Re3+ 43. Kf2 Re8 44. b5 Rd8 45. b6 Rxd6 46. b7 1-0
+
 [Event "London league"]
 [Site "London ENG"]
 [Date "2013.10.17"]
