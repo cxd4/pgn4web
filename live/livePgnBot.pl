@@ -460,11 +460,11 @@ sub process_line {
     $autorelayEvent = $1;
     $autorelayEvent =~ s/[\[\]"]/'/g;
     $autorelayRound = "";
-    if ($autorelayEvent =~ /(.*)\s+Round\s+(\d+)\s+Game\s+(\d+)/) {
+    if ($autorelayEvent =~ /(.*)\bRound\s+(\d+)\s+Game\s+(\d+)/) {
       $autorelayRound = "$2.$3";
       $autorelayEvent = $1;
       $autorelayEvent =~ s/[\s-]+$//g;
-    } elsif ($autorelayEvent =~ /(.*)\s+(Round|Game)\s+(\d+)/) {
+    } elsif ($autorelayEvent =~ /(.*)\b(Round|Game)\s+(\d+)/) {
       $autorelayRound = $3;
       $autorelayEvent = $1;
       $autorelayEvent =~ s/[\s-]+$//g;
@@ -877,7 +877,7 @@ sub memory_purge_round {
   if ($PGN_MEMORY ne "") {
     $thisEvent =~ s/[\[\]"]/'/g;
     my $thisRound = "";
-    if ($thisEvent =~ /(.*)\s+(Round|Game)\s+(\d+)/) {
+    if ($thisEvent =~ /(.*)\b(Round|Game)\s+([\d.]+)/) {
       $thisRound = $3;
       $thisEvent = $1;
       $thisEvent =~ s/[\s-]+$//g;
