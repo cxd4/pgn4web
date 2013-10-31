@@ -591,7 +591,7 @@ function customFunctionOnPgnTextLoad() {
 function fixHeaderItem(tag, objectId, label) {
   var theObj = document.getElementById(objectId);
   if (theObj) {
-    var tagValue = tag ? customPgnHeaderTag(tag, objectId) : theObj.innerHTML;
+    var tagValue = simpleHtmlentitiesDecode(tag ? customPgnHeaderTag(tag, objectId) : theObj.innerHTML);
     if (tagValue) {
       theObj.title = label + ": " + tagValue;
       theObj.className = "leftRightSpacing";

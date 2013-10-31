@@ -103,7 +103,7 @@
     if (gameSite[currentGame]) { newTitle += '\u00a0 ' + gameSite[currentGame]; }
     if (gameEvent[currentGame]) { newTitle += '\u00a0 ' + gameEvent[currentGame]; }
     if (gameDate[currentGame]) { newTitle += '\u00a0 ' + gameDate[currentGame]; }
-    document.title = newTitle;
+    document.title = simpleHtmlentitiesDecode(newTitle);
   }
 
   function searchPlayer(name, FideId) {

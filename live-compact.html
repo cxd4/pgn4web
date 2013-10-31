@@ -120,17 +120,17 @@
     var ii, theObj, timeControl, gameTermination;
     var objectsToTitle = ["GameEvent", "GameSite", "GameDate", "GameWhite", "GameBlack"];
     for (ii in objectsToTitle) {
-      if (theObj = document.getElementById(objectsToTitle[ii])) { theObj.title = theObj.innerHTML; }
+      if (theObj = document.getElementById(objectsToTitle[ii])) { theObj.title = simpleHtmlentitiesDecode(theObj.innerHTML); }
     }
     if (timeControl = customPgnHeaderTag("TimeControl")) {
-      if (theObj = document.getElementById("GameWhiteClock")) { theObj.title = "timecontrol: " + timeControl; }
-      if (theObj = document.getElementById("GameBlackClock")) { theObj.title = "timecontrol: " + timeControl; }
+      if (theObj = document.getElementById("GameWhiteClock")) { theObj.title = simpleHtmlentitiesDecode("timecontrol: " + timeControl); }
+      if (theObj = document.getElementById("GameBlackClock")) { theObj.title = simpleHtmlentitiesDecode("timecontrol: " + timeControl); }
     } else {
       if (theObj = document.getElementById("GameWhiteClock")) { theObj.title = ""; }
       if (theObj = document.getElementById("GameBlackClock")) { theObj.title = ""; }
     }
     if (gameTermination = customPgnHeaderTag("Termination")) {
-      if (theObj = document.getElementById("GameResult")) { theObj.title = "termination: " + gameTermination; }
+      if (theObj = document.getElementById("GameResult")) { theObj.title = simpleHtmlentitiesDecode("termination: " + gameTermination); }
     } else {
       if (theObj = document.getElementById("GameResult")) { theObj.title = ""; }
     }

@@ -1067,7 +1067,7 @@ $pgnText
         for (var ii = 0; ii < headerId.length; ii++) {
             if (headerId[ii] === elementId) { break; }
         }
-        theObj.title = (ii < headerId.length ? headerLabel[ii] : elementId) + ": " + theObj.innerHTML;
+        theObj.title = simpleHtmlentitiesDecode((ii < headerId.length ? headerLabel[ii] : elementId) + ": " + theObj.innerHTML);
       }
    }
 
