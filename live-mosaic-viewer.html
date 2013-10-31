@@ -448,7 +448,7 @@ function updateBoard(thisBoardId) {
       if (startGame >= 0) { gameForBoard = (startGame + thisBoard) % numberOfGamesForDisplay; }
       else { gameForBoard = (2 * numberOfGamesForDisplay + startGame - thisBoard) % numberOfGamesForDisplay; }
       gameNum = unfilteredGames[gameForBoard];
-      thisPgnGame = pgnGameForBoard(gameNum);
+      thisPgnGame = simpleHtmlentitiesDecode(pgnGameForBoard(gameNum));
       thisFrameClass = "visibleFrame";
     } else {
       thisPgnGame = "";
