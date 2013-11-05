@@ -95,9 +95,7 @@ a:hover {
 </head>
 
 <body>
-
 <script type="text/javascript" src="libs/jscolor/jscolor.js"></script>
-
 <script src="pgn4web-server-config.js" type="text/javascript"></script>
 <script src="pgn4web.js" type="text/javascript"></script>
 
@@ -150,7 +148,9 @@ function shorten_url_with_bitly(bitly_login, bitly_apiKey) {
             bitly_link = xhr.responseText;
           }
         }
+        bitly_link = bitly_link.replace(/\s/g, "");
         if (bitly_link) {
+          document.getElementById("html_code").value = document.getElementById("html_code").value.replace(/src='.+?'/, "src='" + bitly_link + "'");
           document.getElementById("shorturl_link_pointer").innerHTML = bitly_link;
           document.getElementById("shorturl_link_pointer").href = bitly_link;
           document.getElementById("shorturl_link_pointer").target = "_blank";
