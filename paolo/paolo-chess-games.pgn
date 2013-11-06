@@ -1,3 +1,40 @@
+[Event "London league"]
+[Site "London ENG"]
+[Date "2013.11.06"]
+[Round "?"]
+[White "Casaschi, Paolo"]
+[Black "Johansson, Toni"]
+[Result "0-1"]
+[ECO "E70"]
+[Opening "King's Indian"]
+[Variation "Kramer system"]
+
+1. d4 Nf6 2. c4 g6 3. Nc3 Bg7 4. e4 d6 5. Nge2 O-O 6. Ng3 c5 7. d5 e6 8.
+Be2 exd5 9. exd5 Re8 10. Bf4 Na6 11. O-O Nc7 { D } 12. Qd2 a6 13. a4 Rb8
+14. a5 b5 15. axb6 Rxb6 16. Ra5 Bd7 { D } 17. Na2 { D } 17... Nfxd5 18.
+cxd5 Rxb2 19. Qd1 Nxd5 20. Bd2 Nf4 21. Bxa6 Bc6 22. f3 Nxg2 23. Ra3 Nh4 24.
+Be2 Bd4+ 25. Kh1 Qd7 26. Bg5 Nf5 27. Nxf5 Rexe2 28. Bf4 Qxf5 29. Nc1 Rec2
+30. Nd3 Qh3 31. Nxb2 Qg2# 0-1
+
+[Event "Middlesex league"]
+[Site "London ENG"]
+[Date "2013.11.05"]
+[Round "?"]
+[White "Casaschi, Paolo"]
+[Black "Bennett, Michael"]
+[Result "0-1"]
+[ECO "A21"]
+[Opening "English opening"]
+
+1. c4 e5 2. Nc3 d6 3. g3 f5 4. Bg2 Nf6 5. d3 Be7 6. Nf3 O-O 7. O-O Qe8 8.
+c5 Na6 9. b4 Bd8 10. cxd6 cxd6 11. Rb1 Nc7 12. d4 e4 13. Ng5 h6 14. Nh3 d5
+15. f3 g5 16. Qb3 Kh8 17. Bb2 { D } 17... f4 18. fxe4 dxe4 19. gxf4 Bxh3
+20. Bxh3 Qh5 { D } 21. Nd1 gxf4 22. Rxf4 Ncd5 23. Rf5 Qxe2 24. Rf1 Rg8+ 25.
+Kh1 Bc7 26. Nf2 e3 27. Qd1 Qxd1 28. Nxd1 e2 29. Re1 exd1=Q 30. Rbxd1 Rae8
+31. Bg2 Rxg2 32. Kxg2 Ne3+ 33. Rxe3 Rxe3 34. Rd2 Nd5 35. a3 Kg7 36. Rf2 Rd3
+37. Kf1 Rb3 38. Kg1 Bf4 39. Re2 Kf7 40. Kg2 Kg6 41. Kg1 Kf5 42. Kg2 Ne3+
+43. Kg1 Nc4 0-1
+
 [Event "Middlesex league"]
 [Site "London ENG"]
 [Date "2013.10.24"]
