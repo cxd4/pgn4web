@@ -1533,9 +1533,8 @@ sub process_master_command {
       }
     } elsif ($parameters ne "") {
       tell_operator("error: invalid $command parameter");
-    } else {
-      tell_operator("relay=$relayMode");
     }
+    tell_operator("relay=$relayMode");
     if (($relayMode == 1) && ($relayOnline == 0)) {
       tell_operator("warning: ics relay offline");
     }
