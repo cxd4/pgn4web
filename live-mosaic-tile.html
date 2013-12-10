@@ -149,15 +149,15 @@
     var theObj = document.getElementById("bottomContainer");
     if (theObj) {
       theObj.title = numberOfGames > 1 ? " game " + (currentGame+1) + " of " + numberOfGames + "  " : "";
-      addTagToTitle("event:", gameEvent[currentGame], theObj);
-      addTagToTitle("site:", gameSite[currentGame], theObj);
-      addTagToTitle("date:", gameDate[currentGame], theObj);
-      addTagToTitle("round:", gameRound[currentGame], theObj);
-      addTagToTitle("white:", gameWhite[currentGame], theObj);
-      addTagToTitle("black:", gameBlack[currentGame], theObj);
-      addTagToTitle("result:", gameResult[currentGame], theObj);
-      addTagToTitle("termination:", customPgnHeaderTag("Termination"), theObj);
-      addTagToTitle("timecontrol:", customPgnHeaderTag("TimeControl"), theObj);
+      addTagToTitle("event: ", gameEvent[currentGame], theObj);
+      addTagToTitle("site: ", gameSite[currentGame], theObj);
+      addTagToTitle("date: ", gameDate[currentGame], theObj);
+      addTagToTitle("round: ", gameRound[currentGame], theObj);
+      addTagToTitle("white: ", gameWhite[currentGame], theObj);
+      addTagToTitle("black: ", gameBlack[currentGame], theObj);
+      addTagToTitle("result: ", gameResult[currentGame], theObj);
+      addTagToTitle("termination: ", customPgnHeaderTag("Termination"), theObj);
+      addTagToTitle("timecontrol: ", customPgnHeaderTag("TimeControl"), theObj);
     }
 
     try {
