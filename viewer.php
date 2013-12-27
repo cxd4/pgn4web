@@ -2114,7 +2114,7 @@ function print_footer() {
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $startPosition, $goToView, $zipSupported;
 
-  if ($goToView) { $hashStatement = "goToHash('board');"; }
+  if ($goToView) { $hashStatement = "  goToHash('board');"; }
   else { $hashStatement = ""; }
 
   if (($pgnDebugInfo) != "") { $pgnDebugMessage = "warning: system: " . $pgnDebugInfo; }
@@ -2130,7 +2130,7 @@ function pgn4web_onload(e) {
   checkPgnFormTextSize();
   start_pgn4web();
   if ("$pgnDebugMessage".length > 0) { myAlert("$pgnDebugMessage", false, true); }
-  $hashStatement
+$hashStatement
 }
 
 </script>
