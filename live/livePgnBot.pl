@@ -929,6 +929,26 @@ sub memory_purge_game {
   return $purgedGame;
 }
 
+sub memory_rename_event {
+  my ($searchEvent, $replacementEvent) = @_;
+  my $renamedEvent = 0;
+
+  if ($PGN_MEMORY ne "") {
+    my $pattern;
+    my $replacement;
+    for (my $i=$#memory_games; $i>=0; $i--) {
+      $pattern = '\[Event "' . $searchEvent . '"\]';
+      $replacement = '[Event "' . $replacementEvent . '"]';
+      if ($memory_games[$i] =~ /$pattern/) {
+        $memory_games[$i] =~ s/$pattern/$replacement/;
+        $renamedEvent++;
+      }
+    }
+  }
+  if ($renamedEvent > 0) { log_terminal('debug: renamed memory event from "' . $searchEvent . '" to "'. $replacementEvent . '"'); }
+  return $renamedEvent;
+}
+
 sub memory_load {
   if ($PGN_MEMORY eq "") {
     tell_operator_and_log_terminal("error: memory load requires a valid memory file");
@@ -1042,6 +1062,7 @@ add_master_command ("memoryload", "memoryload [1] (to load PGN memroy data from 
 add_master_command ("memorymax", "memorymax [number] (to get/set the maximum number of games for the PGN memory data)");
 add_master_command ("memorypurgegame", "memorypurgegame [\"event\" \"round\" \"white\" \"black\"] (to purge a game from the PGN memory data)");
 add_master_command ("memorypurgeround", "memorypurgeround [\"event\" \"round\"] (to purge a round from the PGN memory data)");
+add_master_command ("memoryrenameevent", "memoryrenameevent [\"search\" \"replacement\"] (to rename an event in the PGN memory data)");
 add_master_command ("memoryselect", "memoryselect [regexp|\"\"] (to get/set the regular expression to select games for the PGN memory data)");
 add_master_command ("observe", "observe [game number list, such as: 12 34 56 ..] (to observe given games)");
 add_master_command ("prioritize", "prioritize [regexp|\"\"] (to get/set the regular expression to prioritize events/players from the PGN header during autorelay; might be overruled by ignore)");
@@ -1455,6 +1476,19 @@ sub process_master_command {
         tell_operator("purged memory round");
       } else {
         tell_operator("no memory round found for purge");
+      }
+    } elsif ($parameters eq "") {
+      tell_operator(detect_command_helptext($command));
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "memoryrenameevent") {
+    if ($parameters =~ /^\s*"(.+?)"\s*"(.+?)"\s*$/) {
+      if (memory_rename_event($1, $2) > 0) {
+        refresh_memory();
+        tell_operator("renamed event");
+      } else {
+        tell_operator("no memory event found for rename");
       }
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
