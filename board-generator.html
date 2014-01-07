@@ -1149,7 +1149,7 @@ function generate_html_code() {
   if (document.getElementById('backgroundColorHex').value == 'transparent') {
     html_code_string += " allowtransparency='true'";
   }
-  html_code_string += " src='" + iframeUrl + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>";
+  html_code_string += " src='" + iframeUrl.replace(/&/g, '&amp;') + "'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>";
 
   document.getElementById('html_code').value = html_code_string;
 

@@ -268,7 +268,7 @@ function updateBoardFrames(newMaxBoards) {
   if (theObj) {
     theObj.innerHTML = "";
     for (var board = 0; board < newMaxBoards; board++) {
-      theObj.innerHTML += "<iframe src='live-mosaic-tile.html?ut=t&rm=" + refreshMinutes + "' class='hiddenFrame' id='board" + nextBoardId + "' name='board" + nextBoardId + "' width='256' height='306' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>";
+      theObj.innerHTML += "<iframe src='live-mosaic-tile.html?ut=t&amp;rm=" + refreshMinutes + "' class='hiddenFrame' id='board" + nextBoardId + "' name='board" + nextBoardId + "' width='256' height='306' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>";
       boardId[board] = nextBoardId++;
     }
   }
