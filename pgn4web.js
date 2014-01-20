@@ -219,7 +219,6 @@ function pgn4web_handleKey(e) {
     case 36: // home
     case 92: // super
     case 93: // menu
-    case 188: // comma
       return true;
 
     case 27: // escape
@@ -273,6 +272,10 @@ function pgn4web_handleKey(e) {
     case 190: // dot
       if (e.shiftKey) { goToFirstChild(); }
       else { goToNextVariationSibling(); }
+      break;
+
+    case 188: // comma
+      GoToIrreversibleMove(e.shiftKey);
       break;
 
     case 85: // u
