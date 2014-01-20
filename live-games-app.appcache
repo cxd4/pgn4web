@@ -1,7 +1,7 @@
 CACHE MANIFEST
 
 # Live Games web application
-# version 2.80+0002
+# version 2.80+0003
 
 # pgn4web javascript chessboard
 # copyright (C) 2009-2014 Paolo Casaschi
@@ -37,6 +37,7 @@ pawn.ico
 pawn.png
 pawns.png
 pgn4web.js
+pgn4web-help.html
 
 
 NETWORK:
