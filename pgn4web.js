@@ -570,9 +570,9 @@ boardShortcut("B3", "jump to previous games decile", function(t,e){ if (currentG
 
 boardShortcut("C3", "load previous game", function(t,e){ Init(currentGame - 1); }, true);
 
-boardShortcut("D3", "load random game", function(t,e){ if (numberOfGames > 1) { Init(Math.floor(Math.random()*numberOfGames)); } }, true);
+boardShortcut("D3", "load random game", function(t,e){ if (e.shiftKey) { GoToIrreversibleMove(true); } else { if (numberOfGames > 1) { Init(Math.floor(Math.random()*numberOfGames)); } } }, true);
 
-boardShortcut("E3", "load random game at random position", function(t,e){ randomGameRandomPly(); }, true);
+boardShortcut("E3", "load random game at random position", function(t,e){ if (e.shiftKey) { GoToIrreversibleMove(false); } else { randomGameRandomPly(); } }, true);
 
 boardShortcut("F3", "load next game", function(t,e){ Init(currentGame + 1); }, true);
 
@@ -602,9 +602,9 @@ boardShortcut("B1", "", function(t,e){}, true); // see setB1C1F1G1...
 
 boardShortcut("C1", "", function(t,e){}, true); // see setB1C1F1G1...
 
-boardShortcut("D1", "move backward", function(t,e){ GoToMove(CurrentPly - 1); }, true);
+boardShortcut("D1", "move backward", function(t,e){ backButton(e); }, true);
 
-boardShortcut("E1", "move forward", function(t,e){ GoToMove(CurrentPly + 1); }, true);
+boardShortcut("E1", "move forward", function(t,e){ forwardButton(e); }, true);
 
 boardShortcut("F1", "", function(t,e){}, true); // see setB1C1F1G1...
 
@@ -1298,6 +1298,23 @@ loopCommonPredecessor:
     }
     MoveBackward(CurrentPly - backStart, true);
     MoveForward(thisPly - backStart, thisVar);
+  }
+}
+
+function GoToIrreversibleMove(backward) {
+  var edgePly = (backward ? StartPly + 1 : StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]);
+  var thisPly = CurrentPly + (backward ? -1 : 1);
+  if (!backward) {
+    var diff = edgePly - CurrentPly;
+    MoveForward(diff, CurrentVar, true);
+    MoveBackward(diff, true);
+  }
+  while (((backward) || (thisPly <= edgePly)) && ((!backward) || (thisPly >= edgePly))) {
+    if ((HistPieceId[1][thisPly - 1] != -1) || (HistType[0][thisPly - 1] == 6)) {
+      GoToMove(thisPly, CurrentVar);
+      return;
+    }
+    thisPly += (backward ? -1 : 1);
   }
 }
 
