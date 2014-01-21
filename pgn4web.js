@@ -1305,21 +1305,24 @@ loopCommonPredecessor:
 }
 
 function GoToIrreversibleMove(backward) {
-  var edgePly = (backward ? StartPly + 1 : StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar]);
-  var thisPly = CurrentPly + (backward ? -1 : 1);
-  if (!backward) {
-    var diff = edgePly - CurrentPly;
-    MoveForward(diff, CurrentVar, true);
-    MoveBackward(diff, true);
+  var thisPly, edgePly;
+  if (backward) {
+    edgePly = StartPly;
+  } else {
+    thisPly = CurrentPly;
+    MoveForward(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar] - thisPly, CurrentVar, true);
+    edgePly = CurrentPly + 1;
+    MoveBackward(CurrentPly - thisPly, true);
   }
-  while (((backward) || (thisPly <= edgePly)) && ((!backward) || (thisPly >= edgePly))) {
+  var incPly = backward ? -1 : 1;
+  for (thisPly = CurrentPly + incPly; (edgePly - thisPly) * incPly > 0; thisPly += incPly) {
     if ((HistPieceId[1][thisPly - 1] != -1) || (HistType[0][thisPly - 1] == 6)) {
       GoToMove(thisPly, CurrentVar);
-      return;
+      break;
     }
-    thisPly += (backward ? -1 : 1);
   }
 }
+
 
 function SetShortcutKeysEnabled(onOff) {
   shortcutKeysEnabled = onOff;
