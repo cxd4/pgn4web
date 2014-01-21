@@ -219,6 +219,7 @@ function pgn4web_handleKey(e) {
     case 36: // home
     case 92: // super
     case 93: // menu
+    case 188: // comma
       return true;
 
     case 27: // escape
@@ -272,10 +273,6 @@ function pgn4web_handleKey(e) {
     case 190: // dot
       if (e.shiftKey) { goToFirstChild(); }
       else { goToNextVariationSibling(); }
-      break;
-
-    case 188: // comma
-      GoToIrreversibleMove(e.shiftKey);
       break;
 
     case 85: // u
@@ -573,9 +570,9 @@ boardShortcut("B3", "jump to previous games decile", function(t,e){ if (currentG
 
 boardShortcut("C3", "load previous game", function(t,e){ Init(currentGame - 1); }, true);
 
-boardShortcut("D3", "load random game", function(t,e){ if (e.shiftKey) { GoToIrreversibleMove(true); } else { if (numberOfGames > 1) { Init(Math.floor(Math.random()*numberOfGames)); } } }, true);
+boardShortcut("D3", "load random game", function(t,e){ if (numberOfGames > 1) { Init(Math.floor(Math.random()*numberOfGames)); } }, true);
 
-boardShortcut("E3", "load random game at random position", function(t,e){ if (e.shiftKey) { GoToIrreversibleMove(false); } else { randomGameRandomPly(); } }, true);
+boardShortcut("E3", "load random game at random position", function(t,e){ randomGameRandomPly(); }, true);
 
 boardShortcut("F3", "load next game", function(t,e){ Init(currentGame + 1); }, true);
 
@@ -1301,25 +1298,6 @@ loopCommonPredecessor:
     }
     MoveBackward(CurrentPly - backStart, true);
     MoveForward(thisPly - backStart, thisVar);
-  }
-}
-
-function GoToIrreversibleMove(backward) {
-  var thisPly, edgePly;
-  if (backward) {
-    edgePly = StartPly;
-  } else {
-    thisPly = CurrentPly;
-    MoveForward(StartPlyVar[CurrentVar] + PlyNumberVar[CurrentVar] - thisPly, CurrentVar, true);
-    edgePly = CurrentPly + 1;
-    MoveBackward(CurrentPly - thisPly, true);
-  }
-  var incPly = backward ? -1 : 1;
-  for (thisPly = CurrentPly + incPly; (edgePly - thisPly) * incPly > 0; thisPly += incPly) {
-    if ((HistPieceId[1][thisPly - 1] != -1) || (HistType[0][thisPly - 1] == 6)) {
-      GoToMove(thisPly, CurrentVar);
-      break;
-    }
   }
 }
 
