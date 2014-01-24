@@ -124,6 +124,15 @@
 
   SetImagePath("images/alpha/24"); // just to avoid console errors
 
+  // disable FlipBoard functionality
+  var warnedFlipBoard = false;
+  function FlipBoard() {
+    if (!warnedFlipBoard) {
+      myAlert("warning: flip board functionality disabled", false, true);
+      warnedFlipBoard = true;
+    }
+  }
+
 </script>
 
 

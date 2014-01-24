@@ -100,9 +100,19 @@
 
 
   clearShortcutSquares("G", "8");
-  clearShortcutSquares("BCFG", "7");
+  clearShortcutSquares("BCEFG", "7");
   clearShortcutSquares("CDEF", "6");
   clearShortcutSquares("ABCDEFGH", "345");
+
+  // disable FlipBoard functionality, extending the warning to the parent container
+  var warnedFlipBoard = false;
+  function FlipBoard() {
+    if (!warnedFlipBoard) {
+      myAlert("warning: flip board functionality disabled", false, true);
+      warnedFlipBoard = true;
+      if (parent && parent.FlipBoard) { parent.FlipBoard(); }
+    }
+  }
 
   try {
     var pcscsfcf, cscs;
