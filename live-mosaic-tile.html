@@ -3,7 +3,7 @@
 
 <!--
   pgn4web javascript chessboard
-  copyright (C) 2009-2013 Paolo Casaschi
+  copyright (C) 2009-2014 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 -->
@@ -110,16 +110,16 @@
     if (!warnedFlipBoard) {
       myAlert("warning: flip board functionality disabled", false, true);
       warnedFlipBoard = true;
-      if (parent && parent.FlipBoard) { parent.FlipBoard(); }
+      if (parent && (parent !== window) && parent.FlipBoard) { parent.FlipBoard(); }
     }
   }
 
   try {
     var pcscsfcf, cscs;
-    if (parent && (pcscsfcf = parent.pgn4webClearShortCutSquaresForChildFrames)) {
+    if (parent && (parent !== window) && (pcscsfcf = parent.pgn4webClearShortCutSquaresForChildFrames)) {
       for (cscs in pcscsfcf) { clearShortcutSquares(pcscsfcf[cscs][0], pcscsfcf[cscs][1]); }
     }
-    if (parent && parent.displayPgnData && parent.savePgnData) {
+    if (parent && (parent !== window) && parent.displayPgnData && parent.savePgnData) {
       boardShortcut("D8", "show full PGN source data", function(t,e){ if (e.shiftKey) { parent.savePgnData(); } else { parent.displayPgnData(); } });
     }
   } catch(e) { myAlert("warning: failed accessing frame's parent for shortcut squares to clear", false); }
@@ -131,7 +131,7 @@
 
   function hideThisGame() {
     try {
-      if (parent && parent.pgn4webHideChildFrameGame) {
+      if (parent && (parent !== window) && parent.pgn4webHideChildFrameGame) {
         parent.pgn4webHideChildFrameGame(gameEvent[currentGame], gameSite[currentGame], gameDate[currentGame], gameRound[currentGame], gameWhite[currentGame], gameBlack[currentGame]);
       }
     } catch(e) { myAlert("error: failed accessing frame's parent for hiding game", true); }
@@ -171,7 +171,7 @@
     }
 
     try {
-      if (parent && parent.pgn4webHideChildFrameGame) {
+      if (parent && (parent !== window) && parent.pgn4webHideChildFrameGame) {
         if (parent.barePadding === "") {
           if (parent.pgn4webHideChildFrameGame(gameEvent[currentGame], gameSite[currentGame], gameDate[currentGame], gameRound[currentGame], gameWhite[currentGame], gameBlack[currentGame], true)) {
             boardShortcut("A6", "hide this game", function(t,e){ hideThisGame(); });
@@ -209,26 +209,26 @@
     return key;
   }
 
-  function customShortcutKey_Shift_0() { try { if (parent && parent.customShortcutKey_Shift_0) {parent.customShortcutKey_Shift_0(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
+  function customShortcutKey_Shift_0() { try { if (parent && (parent !== window) && parent.customShortcutKey_Shift_0) { parent.customShortcutKey_Shift_0(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
 
   // customShortcutKey_Shift_1 defined by fide-lookup.js
   // customShortcutKey_Shift_2 defined by fide-lookup.js
 
-  function customShortcutKey_Shift_3() { try { if (parent && parent.customShortcutKey_Shift_3) {parent.customShortcutKey_Shift_3(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
-  function customShortcutKey_Shift_4() { try { if (parent && parent.customShortcutKey_Shift_4) {parent.customShortcutKey_Shift_4(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
-  function customShortcutKey_Shift_5() { try { if (parent && parent.customShortcutKey_Shift_5) {parent.customShortcutKey_Shift_5(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
-  function customShortcutKey_Shift_6() { try { if (parent && parent.customShortcutKey_Shift_6) {parent.customShortcutKey_Shift_6(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
-  function customShortcutKey_Shift_7() { try { if (parent && parent.customShortcutKey_Shift_7) {parent.customShortcutKey_Shift_7(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
+  function customShortcutKey_Shift_3() { try { if (parent && (parent !== window) && parent.customShortcutKey_Shift_3) { parent.customShortcutKey_Shift_3(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
+  function customShortcutKey_Shift_4() { try { if (parent && (parent !== window) && parent.customShortcutKey_Shift_4) { parent.customShortcutKey_Shift_4(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
+  function customShortcutKey_Shift_5() { try { if (parent && (parent !== window) && parent.customShortcutKey_Shift_5) { parent.customShortcutKey_Shift_5(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
+  function customShortcutKey_Shift_6() { try { if (parent && (parent !== window) && parent.customShortcutKey_Shift_6) { parent.customShortcutKey_Shift_6(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
+  function customShortcutKey_Shift_7() { try { if (parent && (parent !== window) && parent.customShortcutKey_Shift_7) { parent.customShortcutKey_Shift_7(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
 
   // overwriting engine.js definitions of customShortcutKey_Shift_8 9 0
-  function customShortcutKey_Shift_8() { try { if (parent && parent.customShortcutKey_Shift_8) {parent.customShortcutKey_Shift_8(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
-  function customShortcutKey_Shift_9() { try { if (parent && parent.customShortcutKey_Shift_9) {parent.customShortcutKey_Shift_9(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
+  function customShortcutKey_Shift_8() { try { if (parent && (parent !== window) && parent.customShortcutKey_Shift_8) { parent.customShortcutKey_Shift_8(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
+  function customShortcutKey_Shift_9() { try { if (parent && (parent !== window) && parent.customShortcutKey_Shift_9) { parent.customShortcutKey_Shift_9(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
 
   function pgn4web_onload(e) {
     start_pgn4web();
     readyToReceivePgn = true;
     try {
-      if (parent && parent.updateBoard) {
+      if (parent && (parent !== window) && parent.updateBoard) {
         var boardId = parseInt(window.name.substr(5), 10);
         if (!isNaN(boardId)) { parent.updateBoard(boardId); }
         else { myAlert("warning: failed detecting board id", false); }
