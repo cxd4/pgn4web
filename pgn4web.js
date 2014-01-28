@@ -1332,7 +1332,7 @@ function SetInitialHalfmove(number_or_string, always) {
   alwaysInitialHalfmove = (always === true);
   if (number_or_string === undefined) { initialHalfmove = 0; return; }
   initialHalfmove = number_or_string;
-  if ((typeof number_or_string == "string") && (number_or_string.match(/^(start|end|random|comment)$/))) { return; }
+  if ((typeof number_or_string == "string") && (number_or_string.match(/^(start|end|random|comment|variation)$/))) { return; }
   if (isNaN(initialHalfmove = parseInt(initialHalfmove,10))) { initialHalfmove = 0; }
 }
 
