@@ -1330,10 +1330,7 @@ function SetAutoplayNextGame(onOff) {
 
 function SetInitialHalfmove(number_or_string, always) {
   alwaysInitialHalfmove = (always === true);
-  if (number_or_string === undefined) { initialHalfmove = 0; return; }
-  initialHalfmove = number_or_string;
-  if ((typeof number_or_string == "string") && (number_or_string.match(/^(start|end|random|comment|variation)$/))) { return; }
-  if (isNaN(initialHalfmove = parseInt(initialHalfmove,10))) { initialHalfmove = 0; }
+  initialHalfmove = typeof(number_or_string) == "undefined" ? 0 : number_or_string;
 }
 
 function SetInitialVariation(number) {
@@ -2101,22 +2098,22 @@ function GoToInitialHalfmove() {
 
   switch (initialHalfmove) {
     case "start":
-      GoToMove(0, iv);
+      GoToMove((StartPlyVar[iv] + (iv ? 1 : 0)), iv);
       break;
     case "end":
       GoToMove(StartPlyVar[iv] + PlyNumberVar[iv], iv);
       break;
     case "random":
-      GoToMove(StartPlyVar[iv] + Math.floor(Math.random()*(StartPlyVar[iv] + PlyNumberVar[iv])), iv);
+      GoToMove((StartPlyVar[iv] + (iv ? 1 : 0)) + Math.floor(Math.random()*(StartPlyVar[iv] + PlyNumberVar[iv])), iv);
       break;
     case "comment":
     case "variation":
-      GoToMove(0, iv);
+      GoToMove((StartPlyVar[iv] + (iv ? 1 : 0)), iv);
       MoveToNextComment(initialHalfmove == "variation");
       break;
     default:
       if (isNaN(initialHalfmove = parseInt(initialHalfmove, 10))) { initialHalfmove = 0; }
-      if (initialHalfmove < 0) { ih = Math.max(StartPlyVar[iv] + PlyNumberVar[iv] + 1 + initialHalfmove, 0); }
+      if (initialHalfmove < 0) { ih = Math.max(StartPlyVar[iv] + PlyNumberVar[iv] + 1 + initialHalfmove, StartPly); }
       else { ih = Math.min(initialHalfmove, StartPlyVar[iv] + PlyNumberVar[iv]); }
       GoToMove(ih, iv);
       break;
