@@ -198,9 +198,9 @@ function pgn4web_handleKey(e) {
 
   if (!e) { e = window.event; }
 
-  keycode = e.keyCode;
-
   if (e.altKey || e.ctrlKey || e.metaKey) { return true; }
+
+  keycode = e.keyCode;
 
   // shift-escape always enabled: toggle shortcut keys
   if (!shortcutKeysEnabled && !(keycode == 27 && e.shiftKey)) { return true; }
