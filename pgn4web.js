@@ -666,7 +666,7 @@ function replayPreviousMoves(numPlies) {
 }
 
 function detectJavascriptLocation(jsre) {
-  if (typeof(jsre) == "undefined") { jsre = new RegExp("(pgn4web|pgn4web-compacted)\.js$", ""); }
+  if (typeof(jsre) == "undefined") { jsre = new RegExp("pgn4web(|-compacted|\.min)\.js$", ""); }
   var e = document.getElementsByTagName("script");
   for (var i=0; i<e.length; i++) {
     if ((e[i].src) && (e[i].src.match(jsre))) {
@@ -677,7 +677,7 @@ function detectJavascriptLocation(jsre) {
 }
 
 function detectHelpLocation() {
-  return detectJavascriptLocation().replace(/(pgn4web|pgn4web-compacted)\.js/, "pgn4web-help.html");
+  return detectJavascriptLocation().replace(/pgn4web(|-compacted|\.min)\.js$/, "pgn4web-help.html");
 }
 
 function detectBaseLocation() {
