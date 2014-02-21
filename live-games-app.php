@@ -375,6 +375,20 @@ if (window.navigator.standalone) {
 // end of patch for iOS7
 //
 
+function GoToMove_forTouchEnd(thisPly) {
+  //
+  // patch for iOS7
+  //
+  if (window.navigator.standalone) {
+    setTimeout("GoToMove(" + thisPly + ");", 0);
+    return;
+  }
+  //
+  // end of patch for iOS7
+  //
+  GoToMove(thisPly);
+}
+
 function pgn4web_handleTouchEnd_HeaderContainer(e) {
   e.stopPropagation();
   var jj, deltaX, deltaY;
@@ -391,17 +405,7 @@ function pgn4web_handleTouchEnd_HeaderContainer(e) {
               showGameList();
             }
           } else if (Math.abs(deltaX) > 1.5 * Math.abs(deltaY)) { // horizontal left or right
-            //
-            // patch for iOS7
-            //
-            if (window.navigator.standalone) { setTimeout("GoToMove(" + (CurrentPly + sign(deltaX)) + ");", 0); }
-            else { GoToMove(CurrentPly + sign(deltaX)); }
-            //
-            // restore the following line when removing iOS7 patch
-            // GoToMove(CurrentPly + sign(deltaX));
-            //
-            // end of patch for iOS7
-            //
+            GoToMove_forTouchEnd(CurrentPly + sign(deltaX));
           }
         }
         pgn4webMaxTouches = 0;

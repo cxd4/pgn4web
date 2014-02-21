@@ -120,9 +120,42 @@ if (window.navigator.standalone) {
   simpleAddEvent(document.body, "touchmove", function(e) { e.preventDefault(); });
 }
 
+function clickedGameFlagToMove_forTouchEnd() {
+  if (clickedGameFlagToMove_forTouchEnd.theObj = document.getElementById("GameFlagToMove")) {
+    //
+    // patch for iOS7
+    //
+    if (window.navigator.standalone) {
+      setTimeout(function(){ clickedGameFlagToMove(clickedGameFlagToMove_forTouchEnd.theObj, { "shiftKey": false }); }, 0);
+      return;
+    }
+    //
+    // end of patch for iOS7
+    //
+    clickedGameFlagToMove(clickedGameFlagToMove_forTouchEnd.theObj, { "shiftKey": false });
+  }
+}
+
+function clickedGameMoves_forTouchEnd() {
+  if (clickedGameMoves_forTouchEnd.theObj = document.getElementById("GameMoves")) {
+    //
+    // patch for iOS7
+    //
+    if (window.navigator.standalone) {
+      setTimeout(function(){ clickedGameMoves(clickedGameMoves_forTouchEnd.theObj, { "shiftKey": false }); }, 0);
+      return;
+    }
+    //
+    // end of patch for iOS7
+    //
+    clickedGameMoves(clickedGameMoves_forTouchEnd.theObj, { "shiftKey": false });
+  }
+}
+
+
 function pgn4web_handleTouchEnd_body(e) {
   e.stopPropagation();
-  var jj, deltaX, deltaY, theObj;
+  var jj, deltaX, deltaY;
   for (var ii = 0; ii < e.changedTouches.length; ii++) {
     if ((jj = pgn4webOngoingTouchIndexById(e.changedTouches[ii].identifier)) != -1) {
       if (pgn4webOngoingTouches.length == 1) {
@@ -133,15 +166,11 @@ function pgn4web_handleTouchEnd_body(e) {
             if (deltaY > 0) { // vertical down
               if (!openerCheck()) { backToGames(); }
             } else { // vertical up
-              if (theObj = document.getElementById("GameFlagToMove")) {
-                clickedGameFlagToMove(theObj, { "shiftKey": false });
-              }
+              clickedGameFlagToMove_forTouchEnd();
             }
           } else if (Math.abs(deltaX) > 1.5 * Math.abs(deltaY)) {
             if (deltaX > 0) { // horizontal right
-              if (theObj = document.getElementById("GameMoves")) {
-                clickedGameMoves(theObj, { "shiftKey": false });
-              }
+              clickedGameMoves_forTouchEnd();
             } else { // horizontal left
               if (!openerCheck()) { backToGames(); }
             }
