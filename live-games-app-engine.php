@@ -120,6 +120,19 @@ if (window.navigator.standalone) {
   simpleAddEvent(document.body, "touchmove", function(e) { e.preventDefault(); });
 }
 
+//
+// patch for iOS7
+//
+if (window.navigator.standalone) {
+  window['defaultCustomFunctionOnTouch'] = window['customFunctionOnTouch'];
+  window['customFunctionOnTouch'] = function(deltaX, deltaY) {
+    setTimeout("defaultCustomFunctionOnTouch(" + deltaX + ", " + deltaY + ");", 0);
+  };
+}
+//
+// end of patch for iOS7
+//
+
 function clickedGameFlagToMove_forTouchEnd() {
   if (clickedGameFlagToMove_forTouchEnd.theObj = document.getElementById("GameFlagToMove")) {
     //
