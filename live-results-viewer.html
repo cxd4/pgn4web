@@ -89,12 +89,16 @@ h1.pageHeader {
   margin-left: 20px; /* defined as player.marginRight */
 }
 
+.round {
+  text-align: right;
+}
+
 .event {
-  width: 370px; /* = 2 * player.width + 2 * player.paddingLeft */
+  width: 420px; /* = defined as event.width */
 }
 
 .round {
-  width: 100px; /* defined as round.width */
+  width: 50px; /* defined as round.width */
 }
 
 .match {
@@ -102,7 +106,7 @@ h1.pageHeader {
 }
 
 .score {
-  width: 70px; /* = defined as score.width < round.width */
+  width: 70px; /* = defined as score.width */
 }
 
 .result {
@@ -653,7 +657,7 @@ a.variation {
         fixedRound = fixRound(gameRound[ggId]);
         currentEventRound = gameEvent[ggId] + fixedRound;
         if (showEvent && currentEventRound && (currentEventRound !== lastEventRound)) {
-          resultTable += '<div class="eventRound"' + (firstRow ? ' style="margin-top:0px;"' : '') + '><span class="event" title="' + gameEvent[ggId] + '">' + gameEvent[ggId] + '</span><span class="round" title="' + 'round ' + fixedRound + '">' + (fixedRound !== '' ? 'round ' + fixedRound : '') + '</span></div>';
+          resultTable += '<div class="eventRound"' + (firstRow ? ' style="margin-top:0px;"' : '') + '><span class="event" title="' + gameEvent[ggId] + '">' + gameEvent[ggId] + '</span><span class="round" title="' + 'round ' + fixedRound + '">' + fixedRound + '</span></div>';
           if (firstRow) { firstRow = false; }
           lastEventRound = currentEventRound;
           lastMatch = 0;
