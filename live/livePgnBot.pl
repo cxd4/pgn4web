@@ -1153,7 +1153,7 @@ sub process_master_command {
           log_terminal("info: archiveselect=$archiveSelectFilter");
           1;
         } or do {
-          tell_operator("error: invalid regular expression $parameters");
+          tell_operator("error: invalid regular expression: $parameters");
         };
       }
       tell_operator("archiveselect=$archiveSelectFilter");
@@ -1181,7 +1181,7 @@ sub process_master_command {
           }
           1;
         } or do {
-          tell_operator("error: invalid regular expression $parameters");
+          tell_operator("error: invalid regular expression: $parameters");
         };
       }
       tell_operator("autoprioritize=$autoPrioritize prioritize=$prioritizeFilter");
@@ -1375,7 +1375,7 @@ sub process_master_command {
           log_terminal("info: ignore=$ignoreFilter");
           1;
         } or do {
-          tell_operator("error: invalid regular expression $parameters");
+          tell_operator("error: invalid regular expression: $parameters");
         };
       }
       tell_operator("ignore=$ignoreFilter");
@@ -1456,12 +1456,30 @@ sub process_master_command {
     }
   } elsif ($command eq "memorypurgegame") {
     if ($parameters =~ /^\s*"(.*?)"\s*"(.*?)"\s*"(.*?)"\s*"(.*?)"\s*$/) {
-      if (memory_purge_game($1, $2, $3, $4) > 0) {
-        refresh_memory();
-        tell_operator("purged memory game");
-      } else {
-        tell_operator("no memory game found for purge");
-      }
+      my $thisEvent = $1;
+      my $thisRound = $2;
+      my $thisWhite = $3;
+      my $thisBlack = $4;
+      my $thisTest;
+      eval {
+        $thisTest = $thisEvent;
+        "test" =~ /$thisTest/;
+        $thisTest = $thisRound;
+        "test" =~ /$thisTest/;
+        $thisTest = $thisWhite;
+        "test" =~ /$thisTest/;
+        $thisTest = $thisBlack;
+        "test" =~ /$thisTest/;
+        if (memory_purge_game($thisEvent, $thisRound, $thisWhite, $thisBlack) > 0) {
+          refresh_memory();
+          tell_operator("purged memory game");
+        } else {
+          tell_operator("no memory game found for purge");
+        }
+        1;
+      } or do {
+        tell_operator("error: invalid regular expression: $thisTest");
+      };
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
     } else {
@@ -1469,14 +1487,27 @@ sub process_master_command {
     }
   } elsif ($command eq "memorypurgeround") {
     if ($parameters =~ /^\s*"(.*?)"\s*"(.*?)"\s*$/) {
-      my $forPurge = $1;
-      if ($2 ne "") { $forPurge .= " - Round $2"; }
-      if (memory_purge_round($forPurge) > 0) {
-        refresh_memory();
-        tell_operator("purged memory round");
-      } else {
-        tell_operator("no memory round found for purge");
-      }
+      my $thisEvent = $1;
+      my $thisRound = $2;
+      my $thisTest;
+      my $forPurge = $thisEvent;
+      eval {
+        $thisTest = $thisEvent;
+        "test" =~ /$thisTest/;
+        $thisTest = $thisRound;
+        "test" =~ /$thisTest/;
+        my $forPurge = $thisEvent;
+        if ($thisRound ne "") { $forPurge .= " - Round $thisRound"; }
+        if (memory_purge_round($forPurge) > 0) {
+          refresh_memory();
+          tell_operator("purged memory round");
+        } else {
+          tell_operator("no memory round found for purge");
+        }
+        1;
+      } or do {
+        tell_operator("error: invalid regular expression: $thisTest");
+      };
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
     } else {
@@ -1484,12 +1515,20 @@ sub process_master_command {
     }
   } elsif ($command eq "memoryrenameevent") {
     if ($parameters =~ /^\s*"(.+?)"\s*"(.+?)"\s*$/) {
-      if (memory_rename_event($1, $2) > 0) {
-        refresh_memory();
-        tell_operator("renamed event");
-      } else {
-        tell_operator("no memory event found for rename");
-      }
+      my $searchEvent = $1;
+      my $replacementEvent = $2;
+      eval {
+        "test" =~ /$searchEvent/;
+        if (memory_rename_event($searchEvent, $replacementEvent) > 0) {
+          refresh_memory();
+          tell_operator("renamed event");
+        } else {
+          tell_operator("no memory event found for rename");
+        }
+        1;
+      } or do {
+        tell_operator("error: invalid regular expression: $searchEvent");
+      };
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
     } else {
@@ -1505,7 +1544,7 @@ sub process_master_command {
           log_terminal("info: memoryselect=$memorySelectFilter");
           1;
         } or do {
-          tell_operator("error: invalid regular expression $parameters");
+          tell_operator("error: invalid regular expression: $parameters");
         };
       }
       tell_operator("memoryselect=$memorySelectFilter");
@@ -1533,7 +1572,7 @@ sub process_master_command {
           log_terminal("info: prioritize=$prioritizeFilter");
           1;
         } or do {
-          tell_operator("error: invalid regular expression $parameters");
+          tell_operator("error: invalid regular expression: $parameters");
         };
       }
       tell_operator("prioritize=$prioritizeFilter");
