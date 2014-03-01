@@ -941,6 +941,7 @@ sub memory_rename_event {
       $replacement = '[Event "' . $replacementEvent . '"]';
       if ($memory_games[$i] =~ /$pattern/) {
         $memory_games[$i] =~ s/$pattern/$replacement/;
+        $memory_games_sortkey[$i] =~ s/$pattern/$replacement/;
         $renamedEvent++;
       }
     }
