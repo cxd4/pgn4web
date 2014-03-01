@@ -624,7 +624,7 @@ function restoreShortcutKeysStatus() {}
 END;
 
   if ($presetURLsArray) {
-    print('  <td align="right" valign="middle">' . "\n" . '      <select id="urlFormSelect" class="formControl verticalMiddle" style="font-family:monospace; display:block; vertical-align:middle;" title="view games from remote URL: select the download URL from the preset options; please support the sites providing the PGN games downloads" onChange="this.blur(); urlFormSelectChange();">' . "\n" . '        <option value="header"> </option>' . "\n");
+    print('  <td align="right" valign="middle">' . "\n" . '      <select id="urlFormSelect" class="formControl verticalMiddle" style="font-family:monospace; display:block; vertical-align:middle; max-width:20ex;" title="view games from remote URL: select the download URL from the preset options; please support the sites providing the PGN games downloads" onChange="this.blur(); urlFormSelectChange();">' . "\n" . '        <option value="header"> </option>' . "\n");
     foreach($presetURLsArray as $value) {
       print('        <option value="' . $value['label'] . '">' . $value['label'] . '</option>' . "\n");
     }
