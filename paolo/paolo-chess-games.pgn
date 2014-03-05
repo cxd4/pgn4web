@@ -1,3 +1,40 @@
+[Event "Middlesex league"]
+[Site "London ENG"]
+[Date "2014.03.04"]
+[Round "?"]
+[White "Casaschi, Paolo"]
+[Black "White, Johnatan"]
+[Result "1-0"]
+[ECO "C42"]
+[Opening "Petrov"]
+[Variation "classical attack"]
+
+1. e4 e5 2. Nf3 Nf6 3. Nxe5 d6 4. Nf3 Nxe4 5. d4 d5 6. Be2 Be7 7. O-O O-O
+8. Nbd2 Bf5 9. c4 dxc4 10. Nxc4 Nd7 11. Ne3 Bg6 12. Qb3 Rb8 13. Rd1 c6 14.
+d5 { D } 14... c5 15. a4 Nd6 16. Nc4 Nxc4 17. Bxc4 Bd6 18. Be3 Qc7 19. h3
+a5 20. Rac1 b6 21. Be2 Bf4 { D } 22. d6 1-0
+
+[Event "London league"]
+[Site "London ENG"]
+[Date "2014.03.03"]
+[Round "?"]
+[White "Casaschi, Paolo"]
+[Black "Villiers, Thomas"]
+[Result "1/2-1/2"]
+[ECO "B10"]
+[Opening "Caro-Kann"]
+[Variation "Goldman (Spielmann) variation"]
+
+1. e4 c6 2. Nc3 d5 3. Qf3 d4 4. Bc4 Nf6 5. Nce2 Nbd7 6. Bb3 e5 7. d3 a5 8.
+a3 Nc5 9. Ba2 Qd6 10. Qg3 h5 { D } 11. Nf3 Ncd7 12. Ng5 h4 13. Qf3 Nb6 14.
+Bxf7+ Ke7 15. h3 c5 16. O-O Bd7 17. Re1 Rh6 18. Bd2 Be8 19. Bxe8 Kxe8 20.
+Qf5 g6 21. Qe6+ Qxe6 22. Nxe6 Rh7 23. Bg5 Nh5 24. f4 Kd7 25. Nxf8+ Rxf8 26.
+fxe5 Ke6 27. Bxh4 Kxe5 28. Rf1 Rhf7 29. Rxf7 Rxf7 30. Rf1 Rxf1+ 31. Kxf1
+Nd7 32. Kf2 Ng7 33. Bg3+ Kf6 34. Bc7 a4 35. Nf4 Ne6 36. Nxe6 Kxe6 37. g4 b5
+{ D } 38. c3 dxc3 39. bxc3 b4 40. cxb4 cxb4 41. Ba5 bxa3 42. d4 Nb6 43. Bc3
+a2 44. Ke2 a3 45. Kd2 Nc4+ 46. Kc2 g5 { D } 47. Kb3 Nd2+ 48. Kxa2 Nxe4 49.
+Be1 Kd5 50. Kxa3 Kxd4 1/2-1/2
+
 [Event "London league"]
 [Site "London ENG"]
 [Date "2014.01.29"]
