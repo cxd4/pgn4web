@@ -25,8 +25,13 @@ if (preg_match('/\?install(#|$)/i', $_SERVER['REQUEST_URI'], $matches)) {
 <html>
 <head>
 <title>Live Games web app installation</title>
+<style type="text/css">
+body { color: white; background: black; font-family: sans-serif; padding: 2em; }
+a { color: white; }
+li { padding-bottom: 1ex; }
+</style>
 </head>
-<body style="color: white; background: black; font-family: sans-serif; padding: 2em;">
+<body>
 <img style="float: right;" src="pawn.png" />
 <h1>Live Games web app installation</h1>
 END;
@@ -34,7 +39,7 @@ END;
   if ($platform == 'Android') {
     $html .= <<<END
 <ol>
-<li>open the <a id="webapplink" style="color: white;" href="" target="_blank">web application URL</a> on a new tab of the android browser</li>
+<li>open the <a id="webapplink" href="" target="_blank">web application URL</a> on a new tab of the android browser</li>
 <li>bookmark the URL</li>
 <li>open the bookmark list</li>
 <li>tap and hold the newly created bookmark and select "add shortcut to home" from the menu</li>
@@ -44,7 +49,7 @@ END;
   } else if ($platform == 'iOS') {
     $html .= <<<END
 <ol>
-<li>open the <a id="webapplink" style="color: white;" href="" target="_blank">web application URL</a> on a new page of the safari browser</li>
+<li>open the <a id="webapplink" href="" target="_blank">web application URL</a> on a new page of the safari browser</li>
 <li>tap on the action menu button at the bottom of the screen</li>
 <li>select the "add to home screen" action</li>
 <li>the pgn4web pawn application icon should appear on the home screen</li>
@@ -53,7 +58,7 @@ END;
   } else {
     $html .= <<<END
 <ol>
-<li>open the <a id="webapplink" style="color: white;" href="" target="_blank">web application URL</a> on a new page of the browser</li>
+<li>open the <a id="webapplink" href="" target="_blank">web application URL</a> on a new page of the browser</li>
 <li>bookmark the URL</li>
 <li>open the newly created bookmark and use the web application from the browser</a>
 <li>if the functionality is available from the browser, add the pgn4web pawn application icon to the desktop or to the home screen</li>
