@@ -10,33 +10,38 @@
 error_reporting(E_ALL | E_STRICT);
 
 
-if (preg_match('/\?(android|ios)(#|$)/i', $_SERVER['REQUEST_URI'], $matches)) {
-  $platform = strtolower($matches[1]);
-  if ($platform == 'ios') { $platform = 'iOS'; }
+if (preg_match('/\?install(#|$)/i', $_SERVER['REQUEST_URI'], $matches)) {
+  $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
+  if(strstr($ua, 'android')) {
+    $platform = 'Android';
+  } else if (strstr($ua, 'ipad') || strstr($ua, 'iphone') || strstr($ua, 'ipod')) {
+    $platform = 'iOS';
+  } else {
+    $platform = 'other';
+  }
 
   $html = <<<END
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>$platform web app installation</title>
+<title>Live Games web app installation</title>
 </head>
-<body style="color: white; background: black; font-family: sans-serif; padding: 1em;">
-<h1>$platform web app installation</h1>
+<body style="color: white; background: black; font-family: sans-serif; padding: 2em;">
+<img style="float: right;" src="pawn.png" />
+<h1>Live Games web app installation</h1>
 END;
 
-  if ($platform == 'android') {
+  if ($platform == 'Android') {
     $html .= <<<END
 <ol>
 <li>open the <a id="webapplink" style="color: white;" href="" target="_blank">web application URL</a> on a new tab of the android browser</li>
-<li>save the URL as bookmark</li>
+<li>bookmark the URL</li>
 <li>open the bookmark list</li>
 <li>tap and hold the newly created bookmark and select "add shortcut to home" from the menu</li>
 <li>the pgn4web pawn application icon should appear on the home screen</li>
 </ol>
 END;
-  }
-
-  if ($platform == 'iOS') {
+  } else if ($platform == 'iOS') {
     $html .= <<<END
 <ol>
 <li>open the <a id="webapplink" style="color: white;" href="" target="_blank">web application URL</a> on a new page of the safari browser</li>
@@ -45,13 +50,22 @@ END;
 <li>the pgn4web pawn application icon should appear on the home screen</li>
 </ol>
 END;
+  } else {
+    $html .= <<<END
+<ol>
+<li>open the <a id="webapplink" style="color: white;" href="" target="_blank">web application URL</a> on a new page of the browser</li>
+<li>bookmark the URL</li>
+<li>open the newly created bookmark and use the web application from the browser</a>
+<li>if the functionality is available from the browser, add the pgn4web pawn application icon to the desktop or to the home screen</li>
+</ol>
+END;
   }
 
   $html .= <<<END
 <script type="text/javascript">
 "use strict";
 var theObj = document.getElementById("webapplink");
-if (theObj) { theObj.href = location.href.replace(/\?$platform(#|$)/i, "$1"); }
+if (theObj) { theObj.href = location.href.replace(/\?install(#|$)/i, "$1"); }
 </script>
 </body>
 </html>
@@ -59,7 +73,7 @@ END;
 
   print $html;
   exit;
- 
+
 }
 
 
