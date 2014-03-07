@@ -28,7 +28,7 @@ if (preg_match('/\?install(#|$)/i', $_SERVER['REQUEST_URI'], $matches)) {
 <style type="text/css">
 body { color: white; background: black; font-family: sans-serif; padding: 2em; }
 a { color: white; }
-li { padding-bottom: 1ex; }
+li { line-height: 2em; }
 </style>
 </head>
 <body>
