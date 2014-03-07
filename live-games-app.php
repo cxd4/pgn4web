@@ -10,6 +10,59 @@
 error_reporting(E_ALL | E_STRICT);
 
 
+if (preg_match('/\?(android|ios)(#|$)/i', $_SERVER['REQUEST_URI'], $matches)) {
+  $platform = strtolower($matches[1]);
+  if ($platform == 'ios') { $platform = 'iOS'; }
+
+  $html = <<<END
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>$platform web app installation</title>
+</head>
+<body style="color: white; background: black; font-family: sans-serif; padding: 1em;">
+<h1>$platform web app installation</h1>
+END;
+
+  if ($platform == 'android') {
+    $html .= <<<END
+<ol>
+<li>open the <a id="webapplink" style="color: white;" href="" target="_blank">web application URL</a> on a new tab of the android browser</li>
+<li>save the URL as bookmark</li>
+<li>open the bookmark list</li>
+<li>tap and hold the newly created bookmark and select "add shortcut to home" from the menu</li>
+<li>the pgn4web pawn application icon should appear on the home screen</li>
+</ol>
+END;
+  }
+
+  if ($platform == 'iOS') {
+    $html .= <<<END
+<ol>
+<li>open the <a id="webapplink" style="color: white;" href="" target="_blank">web application URL</a> on a new page of the safari browser</li>
+<li>tap on the action menu button at the bottom of the screen</li>
+<li>select the "add to home screen" action</li>
+<li>the pgn4web pawn application icon should appear on the home screen</li>
+</ol>
+END;
+  }
+
+  $html .= <<<END
+<script type="text/javascript">
+"use strict";
+var theObj = document.getElementById("webapplink");
+if (theObj) { theObj.href = location.href.replace(/\?$platform(#|$)/i, "$1"); }
+</script>
+</body>
+</html>
+END;
+
+  print $html;
+  exit;
+ 
+}
+
+
 $html = @file_get_contents("dynamic-frame.html");
 
 
