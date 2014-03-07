@@ -10,6 +10,8 @@
 error_reporting(E_ALL | E_STRICT);
 
 
+$appName = 'Live Games';
+
 if (preg_match('/\?install(#|$)/i', $_SERVER['REQUEST_URI'], $matches)) {
   $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
   if(strstr($ua, 'android')) {
@@ -24,7 +26,7 @@ if (preg_match('/\?install(#|$)/i', $_SERVER['REQUEST_URI'], $matches)) {
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Live Games web application installation</title>
+<title>$appName web application installation</title>
 <style type="text/css">
 a { color: white; }
 body { color: white; background: black; font-family: sans-serif; padding: 2em; }
@@ -34,7 +36,7 @@ li { margin-bottom: 1em; }
 </head>
 <body>
 <img style="float: right;" src="pawn.png" />
-<h1>Live Games web application installation</h1>
+<h1>$appName web application installation</h1>
 END;
 
   if ($platform == 'Android') {
@@ -88,14 +90,15 @@ $html = @file_get_contents("dynamic-frame.html");
 
 
 function errorExit($errorNum) {
+  global $appName;
   $html = <<<END
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Live Games web application error</title>
+<title>$appName web application error</title>
 </head>
 <body style="color: white; background: black; font-family: sans-serif;">
-Live Games web application error: $errorNum
+$appName web application error: $errorNum
 </body>
 </html>
 END;
@@ -122,7 +125,7 @@ if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
 
 
-$text = "<title>Live Games</title>";
+$text = "<title>$appName</title>";
 $oldText = "<title>chess games</title>";
 $actionNum += 1;
 if (!strstr($html, $oldText)) { errorExit($actionNum); }

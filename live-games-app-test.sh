@@ -27,11 +27,11 @@ fi
 
 id=$1
 if [ -z "$id" ]; then
-  echo "usage: $0 id [pgn]"
+  echo "usage: $0 id [pgn] [name]"
   exit 1
 fi
-if [[ $id =~ [^a-zA-Z] ]]; then
-  echo "error: id must be only letters: $id"
+if [[ $id =~ [^a-zA-Z0-9] ]]; then
+  echo "error: id must be only letters and numbers: $id"
   exit 2
 fi
 
@@ -44,6 +44,12 @@ if [ ! -f "$pgn" ]; then
   exit 3
 fi
 
+name=$3
+if [[ $name =~ [^a-zA-Z0-9\ ] ]]; then
+  echo "error: name must be only letters, numbers and spaces: $name"
+  exit 3
+fi
+
 cp live-games-app.php "$pre-$id.php"
 sed -i.bak 's/live-games-app.appcache/'"$pre-$id.appcache"'/g' "$pre-$id.php"
 sed -i.bak 's/live-games-app-engine/'"$pre-eng-$id"'/g' "$pre-$id.php"
@@ -53,6 +59,9 @@ if [ $? -ne 0 ]; then
   echo "warning: pgnData assignement check failed"
 else
   sed -i.bak 's/'"$needle"'/'"$needle"' pgnData=\"'"$pre-$id.pgn"'\"\; SetPgnUrl(pgnData);/g' "$pre-$id.php"
+fi
+if [[ -n $name ]]; then
+  sed -i.bak 's/Live Games/'"$name"'/g' "$pre-$id.php"
 fi
 rm -f "$pre-$id.php.bak"
 
@@ -67,5 +76,5 @@ rm -f "$pre-$id.appcache.bak"
 rm -f "$pre-$id.pgn"
 ln -s $pgn "$pre-$id.pgn"
 
-echo "info: done $pre-$id.php with id=$id pgn=$pgn"
+echo "info: done $pre-$id.php with id=$id pgn=$pgn name=$name"
 
