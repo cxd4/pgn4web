@@ -24,16 +24,17 @@ if (preg_match('/\?install(#|$)/i', $_SERVER['REQUEST_URI'], $matches)) {
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Live Games web app installation</title>
+<title>Live Games web application installation</title>
 <style type="text/css">
-body { color: white; background: black; font-family: sans-serif; padding: 2em; }
 a { color: white; }
-li { line-height: 2em; }
+body { color: white; background: black; font-family: sans-serif; padding: 2em; }
+img { border-radius: 10%; }
+li { margin-bottom: 1em; }
 </style>
 </head>
 <body>
 <img style="float: right;" src="pawn.png" />
-<h1>Live Games web app installation</h1>
+<h1>Live Games web application installation</h1>
 END;
 
   if ($platform == 'Android') {
@@ -91,10 +92,10 @@ function errorExit($errorNum) {
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>web app error</title>
+<title>Live Games web application error</title>
 </head>
 <body style="color: white; background: black; font-family: sans-serif;">
-web app error: $errorNum
+Live Games web application error: $errorNum
 </body>
 </html>
 END;
@@ -213,7 +214,6 @@ $text = <<<END
     }
     appInitialized = true;
   }
-  document.title = titleString;
 END;
 $oldText = "<!-- AppCheck: customFunctionOnPgnTextLoad -->";
 $actionNum += 1;
@@ -251,12 +251,6 @@ $html = str_replace($oldText, $text, $html);
 
 
 $text = <<<END
-var titleString = "Live Games";
-thisRegExp = /(&|\?)(title|t)=([^&]*)(&|$)/i;
-if (thisParamString.match(thisRegExp) !== null) {
-  titleString = unescape(thisParamString.match(thisRegExp)[3]);
-}
-
 var appInitialized = false;
 
 var liveStatusTickerString = "";
