@@ -1472,7 +1472,7 @@ sub process_master_command {
         $thisTest = $thisBlack;
         "test" =~ /$thisTest/;
         if (memory_purge_game($thisEvent, $thisRound, $thisWhite, $thisBlack) > 0) {
-          refresh_memory();
+          refresh_memory($#games_num + 1);
           tell_operator("purged memory game");
         } else {
           tell_operator("no memory game found for purge");
@@ -1500,7 +1500,7 @@ sub process_master_command {
         my $forPurge = $thisEvent;
         if ($thisRound ne "") { $forPurge .= " - Round $thisRound"; }
         if (memory_purge_round($forPurge) > 0) {
-          refresh_memory();
+          refresh_memory($#games_num + 1);
           tell_operator("purged memory round");
         } else {
           tell_operator("no memory round found for purge");
@@ -1521,7 +1521,7 @@ sub process_master_command {
       eval {
         "test" =~ /$searchEvent/;
         if (memory_rename_event($searchEvent, $replacementEvent) > 0) {
-          refresh_memory();
+          refresh_memory($#games_num + 1);
           tell_operator("renamed event");
         } else {
           tell_operator("no memory event found for rename");
