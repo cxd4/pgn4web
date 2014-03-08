@@ -123,7 +123,9 @@ if (window.navigator.standalone) {
 //
 // patch for iOS7
 //
-if (window.navigator.standalone) {
+var iOS7patch = !!window.navigator.standalone;
+//
+if (iOS7patch) {
   window['defaultCustomFunctionOnTouch'] = window['customFunctionOnTouch'];
   window['customFunctionOnTouch'] = function(deltaX, deltaY) {
     setTimeout("defaultCustomFunctionOnTouch(" + deltaX + ", " + deltaY + ");", 0);
@@ -138,7 +140,7 @@ function clickedGameFlagToMove_forTouchEnd() {
     //
     // patch for iOS7
     //
-    if (window.navigator.standalone) {
+    if (iOS7patch) {
       setTimeout(function(){ clickedGameFlagToMove(clickedGameFlagToMove_forTouchEnd.theObj, { "shiftKey": false }); }, 0);
       return;
     }
@@ -154,7 +156,7 @@ function clickedGameMoves_forTouchEnd() {
     //
     // patch for iOS7
     //
-    if (window.navigator.standalone) {
+    if (iOS7patch) {
       setTimeout(function(){ clickedGameMoves(clickedGameMoves_forTouchEnd.theObj, { "shiftKey": false }); }, 0);
       return;
     }
@@ -207,7 +209,7 @@ function backToGames() {
   //
   // patch for iOS7
   //
-  if (window.navigator.standalone) {
+  if (iOS7patch) {
     if (localStorage["pgn4web_live_games_app_locationHref"]) {
       window.location.href = localStorage["pgn4web_live_games_app_locationHref"];
     }

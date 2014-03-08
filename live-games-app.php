@@ -435,7 +435,10 @@ function gameKey(event, site, date, round, white, black) {
 //
 // patch for iOS7
 //
-if (window.navigator.standalone) {
+//
+var iOS7patch = !!window.navigator.standalone;
+//
+if (iOS7patch) {
   window['defaultCustomFunctionOnTouch'] = window['customFunctionOnTouch'];
   window['customFunctionOnTouch'] = function(deltaX, deltaY) {
     setTimeout("defaultCustomFunctionOnTouch(" + deltaX + ", " + deltaY + ");", 0);
@@ -449,7 +452,7 @@ function GoToMove_forTouchEnd(thisPly) {
   //
   // patch for iOS7
   //
-  if (window.navigator.standalone) {
+  if (iOS7patch) {
     setTimeout("GoToMove(" + thisPly + ");", 0);
     return;
   }

@@ -8,7 +8,7 @@
 
 set +o posix
 
-pre="testapp"
+pre="lga"
 
 if [ "$1" == "--clean" ]; then
   if ls -1 "$pre"* 2> /dev/null; then
@@ -52,7 +52,7 @@ fi
 
 cp live-games-app.php "$pre-$id.php"
 sed -i.bak 's/live-games-app.appcache/'"$pre-$id.appcache"'/g' "$pre-$id.php"
-sed -i.bak 's/live-games-app-engine/'"$pre-eng-$id"'/g' "$pre-$id.php"
+sed -i.bak 's/live-games-app-engine/'"$pre-$id-engine"'/g' "$pre-$id.php"
 needle='var lsId = "pgn4web_live_games_app_";'
 grep -q "$needle" "$pre-$id.php"
 if [ $? -ne 0 ]; then
@@ -65,11 +65,11 @@ if [[ -n $name ]]; then
 fi
 rm -f "$pre-$id.php.bak"
 
-cp live-games-app-engine.php "$pre-eng-$id.php"
+cp live-games-app-engine.php "$pre-$id-engine.php"
 
 cp live-games-app.appcache "$pre-$id.appcache"
 sed -i.bak 's/live-games-app.php/'"$pre-$id.php"'/g' "$pre-$id.appcache"
-sed -i.bak 's/live-games-app-engine.php/'"$pre-eng-$id.php"'/g' "$pre-$id.appcache"
+sed -i.bak 's/live-games-app-engine.php/'"$pre-$id-engine.php"'/g' "$pre-$id.appcache"
 echo "# $(date)" >> "$pre-$id.appcache"
 rm -f "$pre-$id.appcache.bak"
 
