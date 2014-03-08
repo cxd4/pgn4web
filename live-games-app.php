@@ -64,7 +64,7 @@ END;
 <li>open the <a id="webapplink" href="" target="_blank">web application URL</a> on a new page of the browser</li>
 <li>bookmark the URL</li>
 <li>open the newly created bookmark and use the web application from the browser</a>
-<li>optionally, if available from the browser, use a command like "add site to start menu", "add site to start screen", "add site to apps", "create application shortcuts" or similar in order to add the pgn4web pawn application icon to the start menu, to the desktop or to the home screen</li>
+<li>optionally, if available from the browser, use a command like "add site to start menu", "add site to start screen", "add site to apps", "create application shortcuts", "add shortcut to home", "add to home screen" or similar in order to add the pgn4web pawn application icon to the start menu, to the desktop or to the home screen</li>
 </ol>
 END;
   }
