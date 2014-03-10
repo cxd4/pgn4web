@@ -247,13 +247,6 @@ if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
 
 
-$text = '<body onResize="myOnResize();" onLoad="setTimeout(\'myOnResize();\', 33);">'; # patch iphone landscape startup bug with placeholder game
-$oldText = '<body onResize="myOnResize();" onLoad="myOnResize();">';
-$actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
-$html = str_replace($oldText, $text, $html);
-
-
 $text = <<<END
 var appInitialized = false;
 
@@ -433,33 +426,7 @@ function gameKey(event, site, date, round, white, black) {
 }
 
 
-//
-// patch for iOS7
-//
-//
-var iOS7patch = !!window.navigator.standalone;
-//
-if (iOS7patch) {
-  window['defaultCustomFunctionOnTouch'] = window['customFunctionOnTouch'];
-  window['customFunctionOnTouch'] = function(deltaX, deltaY) {
-    setTimeout("defaultCustomFunctionOnTouch(" + deltaX + ", " + deltaY + ");", 0);
-  };
-}
-//
-// end of patch for iOS7
-//
-
 function GoToMove_forTouchEnd(thisPly) {
-  //
-  // patch for iOS7
-  //
-  if (iOS7patch) {
-    setTimeout("GoToMove(" + thisPly + ");", 0);
-    return;
-  }
-  //
-  // end of patch for iOS7
-  //
   GoToMove(thisPly);
 }
 

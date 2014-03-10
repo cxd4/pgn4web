@@ -120,49 +120,14 @@ if (window.navigator.standalone) {
   simpleAddEvent(document.body, "touchmove", function(e) { e.preventDefault(); });
 }
 
-//
-// patch for iOS7
-//
-var iOS7patch = !!window.navigator.standalone;
-//
-if (iOS7patch) {
-  window['defaultCustomFunctionOnTouch'] = window['customFunctionOnTouch'];
-  window['customFunctionOnTouch'] = function(deltaX, deltaY) {
-    setTimeout("defaultCustomFunctionOnTouch(" + deltaX + ", " + deltaY + ");", 0);
-  };
-}
-//
-// end of patch for iOS7
-//
-
 function clickedGameFlagToMove_forTouchEnd() {
   if (clickedGameFlagToMove_forTouchEnd.theObj = document.getElementById("GameFlagToMove")) {
-    //
-    // patch for iOS7
-    //
-    if (iOS7patch) {
-      setTimeout(function(){ clickedGameFlagToMove(clickedGameFlagToMove_forTouchEnd.theObj, { "shiftKey": false }); }, 0);
-      return;
-    }
-    //
-    // end of patch for iOS7
-    //
     clickedGameFlagToMove(clickedGameFlagToMove_forTouchEnd.theObj, { "shiftKey": false });
   }
 }
 
 function clickedGameMoves_forTouchEnd() {
   if (clickedGameMoves_forTouchEnd.theObj = document.getElementById("GameMoves")) {
-    //
-    // patch for iOS7
-    //
-    if (iOS7patch) {
-      setTimeout(function(){ clickedGameMoves(clickedGameMoves_forTouchEnd.theObj, { "shiftKey": false }); }, 0);
-      return;
-    }
-    //
-    // end of patch for iOS7
-    //
     clickedGameMoves(clickedGameMoves_forTouchEnd.theObj, { "shiftKey": false });
   }
 }
@@ -207,16 +172,16 @@ simpleAddEvent(document.body, "touchcancel", pgn4web_handleTouchCancel);
 
 function backToGames() {
   //
-  // patch for iOS7
+  // patch for iOS web apps
   //
-  if (iOS7patch) {
+  if (window.navigator.standalone) {
     if (localStorage["pgn4web_live_games_app_locationHref"]) {
       window.location.href = localStorage["pgn4web_live_games_app_locationHref"];
     }
     return;
   }
   //
-  // end of patch for iOS7
+  // end of patch for iOS web apps
   //
   window.history.back();
 }
