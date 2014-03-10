@@ -31,7 +31,7 @@ if (preg_match('/\?install(#|$)/i', $_SERVER['REQUEST_URI'], $matches)) {
 a { color: white; }
 body { color: white; background: black; font-family: sans-serif; padding: 2em; }
 li { margin-bottom: 1em; }
-.icon { float: right; border-radius: 10%; opacity: 0.5; transition: opacity 0.5s; }
+.icon { float: right; margin-left: 2em; border-radius: 10%; opacity: 0.5; transition: opacity 0.5s; }
 .icon:hover { opacity: 1; }
 </style>
 </head>
