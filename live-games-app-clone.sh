@@ -45,7 +45,7 @@ if [ ! -f "$pgn" ]; then
 fi
 
 name=$3
-if [[ $name =~ [^a-zA-Z0-9\ ] ]]; then
+if [[ $name =~ [^a-zA-Z0-9\ \':#-] ]]; then
   echo "error: name must be only letters, numbers and spaces: $name"
   exit 3
 fi
