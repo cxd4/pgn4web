@@ -171,18 +171,13 @@ simpleAddEvent(document.body, "touchleave", pgn4web_handleTouchEnd_body);
 simpleAddEvent(document.body, "touchcancel", pgn4web_handleTouchCancel);
 
 function backToGames() {
-  //
-  // patch for iOS web apps
-  //
+  // iOS web applications are not allowed to use window.history
   if (window.navigator.standalone) {
     if (localStorage["pgn4web_live_games_app_locationHref"]) {
       window.location.href = localStorage["pgn4web_live_games_app_locationHref"];
     }
     return;
   }
-  //
-  // end of patch for iOS web apps
-  //
   window.history.back();
 }
 
