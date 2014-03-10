@@ -30,12 +30,13 @@ if (preg_match('/\?install(#|$)/i', $_SERVER['REQUEST_URI'], $matches)) {
 <style type="text/css">
 a { color: white; }
 body { color: white; background: black; font-family: sans-serif; padding: 2em; }
-img { border-radius: 10%; }
 li { margin-bottom: 1em; }
+.icon { float: right; border-radius: 10%; opacity: 0.5; transition: opacity 0.5s; }
+.icon:hover { opacity: 1; }
 </style>
 </head>
 <body>
-<img style="float: right;" src="pawn.png" />
+<img class="icon" src="pawn.png" />
 <h1>$appName web application installation</h1>
 END;
 
