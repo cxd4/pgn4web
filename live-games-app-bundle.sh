@@ -1,9 +1,9 @@
 # pgn4web javascript chessboard
-# copyright (C) 2009-2013 Paolo Casaschi
+# copyright (C) 2009-2014 Paolo Casaschi
 # see README file and http://pgn4web.casaschi.net
 # for credits, license and more details
 
-# bash script to create a custom pgn4web package
+# bash script to create a custom live games web application bundle
 # run as "bash script.sh"
 
 set +o posix
@@ -26,8 +26,10 @@ if [ "$1" == "--clean" ]; then
 fi
 
 id=$1
-if [ -z "$id" ]; then
-  echo "usage: $0 id [pgn] [name]"
+if [ -z "$id" ] || [ "$id" == "--help" ]; then
+  echo "usage: $(basename $0) id [pgn] [name]"
+  echo "use --clean as first parameter to remove old bundles"
+  echo "please note: you can only deploy one bundle per domain (more bundles on the same domain would conflict on local storage)"
   exit 1
 fi
 if [[ $id =~ [^a-zA-Z0-9] ]]; then
