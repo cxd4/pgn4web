@@ -93,7 +93,7 @@ $html = str_replace($oldText, $text, $html);
 
 
 $text = <<<END
-      } else if (true) {
+      } else if (localStorage["pgn4web_live_games_app_locationHref"]) {
          theObj.innerHTML = "&crarr;";
          theObj.title = "close analysis board";
 END;
@@ -171,14 +171,11 @@ simpleAddEvent(document.body, "touchleave", pgn4web_handleTouchEnd_body);
 simpleAddEvent(document.body, "touchcancel", pgn4web_handleTouchCancel);
 
 function backToGames() {
-  // iOS web applications are not allowed to use window.history
-  if (window.navigator.standalone) {
-    if (localStorage["pgn4web_live_games_app_locationHref"]) {
-      window.location.href = localStorage["pgn4web_live_games_app_locationHref"];
-    }
-    return;
+  if (localStorage["pgn4web_live_games_app_locationHref"]) {
+    window.location.href = localStorage["pgn4web_live_games_app_locationHref"];
+  } else {
+    myAlert("warning: missing app location from local storage", false, true);
   }
-  window.history.back();
 }
 
 END;
