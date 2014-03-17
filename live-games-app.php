@@ -63,6 +63,7 @@ END;
     $html .= <<<END
 <ol id="openappOl" style="display: none;">
 <li>start the <a href="javascript:void(0);" onclick="installOpenWebApp();">web application installation script</a></li>
+<li>the pgn4web pawn application icon should appear on the start menu, on the desktop or on the home screen</li>
 </ol>
 <ol id="otherOl" style="display: none;">
 <li>open the <a id="webapplink" href="" target="_blank">web application URL</a> on a new page of the browser</li>
