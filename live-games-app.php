@@ -12,7 +12,7 @@ error_reporting(E_ALL | E_STRICT);
 
 $appName = 'Live Games';
 
-if (preg_match('/\?install(#|$)/i', $_SERVER['REQUEST_URI'], $matches)) {
+if (preg_match('/\?install(#|$)/', $_SERVER['REQUEST_URI'], $matches)) {
   $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
   if(strstr($ua, 'android')) {
     $platform = 'Android';
@@ -62,7 +62,7 @@ END;
   } else {
     $html .= <<<END
 <ol id="openappOl" style="display: none;">
-<li><a href="javascript:void(0);" onclick="installOpenWebApp();">click/tap to install the web application</a></li>
+<li>start the <a href="javascript:void(0);" onclick="installOpenWebApp();">web application installation script</a></li>
 </ol>
 <ol id="otherOl" style="display: none;">
 <li>open the <a id="webapplink" href="" target="_blank">web application URL</a> on a new page of the browser</li>
@@ -74,12 +74,12 @@ END;
 "use strict";
 document.getElementById((navigator && navigator.mozApps && navigator.mozApps.install) ? "openappOl" : "otherOl").style.display = "";
 function installOpenWebApp() {
-  var installOpenWebAppRequest = navigator.mozApps.install(location.href.replace(/\.php\?install.*/i, ".webapp"));
+  var installOpenWebAppRequest = navigator.mozApps.install(location.href.replace(/\.php\?install.*/, ".webapp"));
   installOpenWebAppRequest.onerror = function() {
-    if (this.error.name == "MULTIPLE_APPS_PER_ORIGIN_FORBIDDEN") {
-      alert("warning: web application already installed from this domain");
+    if ((this.error.name == "MULTIPLE_APPS_PER_ORIGIN_FORBIDDEN") || (this.error.name == "REINSTALL_FORBIDDEN")) {
+      alert("error: installation failed: web application already installed for this domain");
     } else {
-      alert("error: installation failed");
+      alert("error: web application installation failed");
     }
   };
 }
@@ -91,7 +91,7 @@ END;
 For more info see the <a href="https://code.google.com/p/pgn4web/wiki/WebApp_LiveGames" target="_blank">live games web application wiki page</a>
 <script type="text/javascript">
 "use strict";
-document.getElementById("webapplink").href = location.href.replace(/\?install(#|$)/i, "$1");
+document.getElementById("webapplink").href = location.href.replace(/\?install(#|$)/, "$1");
 </script>
 </body>
 </html>
