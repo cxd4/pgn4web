@@ -55,13 +55,7 @@ fi
 cp live-games-app.php "$pre-$id.php"
 sed -i.bak 's/live-games-app.appcache/'"$pre-$id.appcache"'/g' "$pre-$id.php"
 sed -i.bak 's/live-games-app-engine/'"$pre-$id-engine"'/g' "$pre-$id.php"
-needle='var lsId = "pgn4web_live_games_app_";'
-grep -q "$needle" "$pre-$id.php"
-if [ $? -ne 0 ]; then
-  echo "warning: pgnData assignement check failed"
-else
-  sed -i.bak 's/'"$needle"'/'"$needle"' pgnData=\"'"$pre-$id.pgn"'\"\; SetPgnUrl(pgnData);/g' "$pre-$id.php"
-fi
+sed -i.bak 's/live-games-app.pgn/'"$pre-$id.pgn"'/g' "$pre-$id.php"
 if [[ -n $name ]]; then
   sed -i.bak 's/Live Games/'"$name"'/g' "$pre-$id.php"
 fi

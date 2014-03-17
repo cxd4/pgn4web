@@ -172,6 +172,13 @@ if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
 
 
+$text = 'pgnData_default = "live-games-app.pgn";';
+$oldText = 'pgnData_default = "live/live.pgn";';
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
+
+
 $text = "";
 $oldText = "href='javascript:void(0);'";
 $actionNum += 1;
