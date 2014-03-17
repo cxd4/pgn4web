@@ -1,0 +1,15 @@
+{
+  "name": "Live Games",
+  "description": "Live Games",
+  "launch_path": "/live-games-app.php",
+  "fullscreen": "true",
+  "icons": {
+    "128": "/pawn+.png",
+    "60": "/pawn.png"
+  },
+  "developer": {
+    "name": "pgn4web project",
+    "url": "http://pgn4web.casaschi.net"
+  },
+  "pgn4web_notes": "copyright (C) 2009-2014 Paolo Casaschi; add to .htacess to serve *.webapp properly: 'AddType application/x-web-app-manifest+json .webapp'"
+}

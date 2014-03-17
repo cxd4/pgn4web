@@ -61,12 +61,29 @@ END;
 END;
   } else {
     $html .= <<<END
-<ol>
+<ol id="openappOl" style="display: none;">
+<li><a href="javascript:void(0);" onclick="installOpenWebApp();">click/tap to install the web application</a></li>
+</ol>
+<ol id="otherOl" style="display: none;">
 <li>open the <a id="webapplink" href="" target="_blank">web application URL</a> on a new page of the browser</li>
 <li>bookmark the URL</li>
 <li>open the newly created bookmark and use the web application from the browser</a>
 <li>optionally, if available from the browser, use a command like "add site to start menu", "add site to start screen", "add site to apps", "create application shortcuts", "add shortcut to home", "add to home screen" or similar in order to add the pgn4web pawn application icon to the start menu, to the desktop or to the home screen</li>
 </ol>
+<script type="text/javascript">
+"use strict";
+document.getElementById((navigator && navigator.mozApps && navigator.mozApps.install) ? "openappOl" : "otherOl").style.display = "";
+function installOpenWebApp() {
+  var installOpenWebAppRequest = navigator.mozApps.install(location.href.replace(/\.php\?install.*/i, ".webapp"));
+  installOpenWebAppRequest.onerror = function() {
+    if (this.error.name == "MULTIPLE_APPS_PER_ORIGIN_FORBIDDEN") {
+      alert("warning: web application already installed from this domain");
+    } else {
+      alert("error: installation failed");
+    }
+  };
+}
+</script>
 END;
   }
 
@@ -74,8 +91,7 @@ END;
 For more info see the <a href="https://code.google.com/p/pgn4web/wiki/WebApp_LiveGames" target="_blank">live games web application wiki page</a>
 <script type="text/javascript">
 "use strict";
-var theObj = document.getElementById("webapplink");
-if (theObj) { theObj.href = location.href.replace(/\?install(#|$)/i, "$1"); }
+document.getElementById("webapplink").href = location.href.replace(/\?install(#|$)/i, "$1");
 </script>
 </body>
 </html>

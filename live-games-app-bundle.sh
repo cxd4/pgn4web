@@ -69,6 +69,13 @@ sed -i.bak 's/live-games-app-engine.php/'"$pre-$id-engine.php"'/g' "$pre-$id.app
 echo "# $(date)" >> "$pre-$id.appcache"
 rm -f "$pre-$id.appcache.bak"
 
+cp live-games-app.webapp "$pre-$id.webapp"
+sed -i.bak 's/live-games-app.php/'"$pre-$id.php"'/g' "$pre-$id.webapp"
+if [[ -n $name ]]; then
+  sed -i.bak 's/Live Games/'"$name"'/g' "$pre-$id.webapp"
+fi
+rm -f "$pre-$id.webapp.bak"
+
 rm -f "$pre-$id.pgn"
 ln -s $pgn "$pre-$id.pgn"
 
