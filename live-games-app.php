@@ -129,7 +129,7 @@ $actionNum = 0;
 if (!$html) { errorExit($actionNum); }
 
 
-$text = '("?l=t&" + window.location.hash + "&pf=a&ct=wood&bch=000000&fch=FFEEDD&hch=996633&scf=t" + (window.navigator.standalone ? "&hc=t" : ""))';
+$text = '("?l=t&" + window.location.hash + "&pf=a&ct=wood&bch=000000&fch=FFEEDD&hch=996633&scf=t&hc=t")';
 $oldText = "window.location.search";
 $actionNum += 1;
 if (!strstr($html, $oldText)) { errorExit($actionNum); }
