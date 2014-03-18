@@ -804,6 +804,7 @@ var lastOrientation;
 var lastOrientationTimeout = null;
 simpleAddEvent(window, "orientationchange", function() {
   var theObj;
+  if (typeof(window.orientation) == "undefined") { return; }
   if (window.orientation === lastOrientation) { return; }
   var lastOrientationTimeoutString = "lastOrientationTimeout = null;";
   if (lastOrientationTimeout) {
