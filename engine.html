@@ -332,6 +332,8 @@ myInsertRule(mySheet, ".gameEval", "background: " + backgroundColorHex + ";");
 var oldSquareSizeCss;
 function myOnResize() {
 
+   if (!fixedPieceImageSize && oldSquareSizeCss) { return; }
+
    var sheet = document.styleSheets[1];
    var oldRules = myRulesLength(sheet);
 
@@ -397,7 +399,7 @@ function myOnResize() {
 SetImageType("png");
 SetHighlightOption(false);
 SetShortcutKeysEnabled(true);
-
+myOnResize();
 
 <!-- AppCheck: myOnOrientationchange -->
 
@@ -406,7 +408,7 @@ SetShortcutKeysEnabled(true);
 
 </head>
 
-<body onResize="myOnResize();" onLoad="myOnResize();">
+<body onResize="myOnResize();">
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
 <form style="display: none;"><textarea style="display: none;" id="pgnText">
