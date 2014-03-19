@@ -67,6 +67,9 @@ cp live-games-app.appcache "$pre-$id.appcache"
 sed -i.bak 's/live-games-app.php/'"$pre-$id.php"'/g' "$pre-$id.appcache"
 sed -i.bak 's/live-games-app-engine.php/'"$pre-$id-engine.php"'/g' "$pre-$id.appcache"
 echo "# $(date)" >> "$pre-$id.appcache"
+if [[ -n $name ]]; then
+  sed -i.bak 's/Live Games/'"$name"'/g' "$pre-$id.appcache"
+fi
 rm -f "$pre-$id.appcache.bak"
 
 cp live-games-app.webapp "$pre-$id.webapp"
