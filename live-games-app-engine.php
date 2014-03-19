@@ -60,21 +60,17 @@ $html = str_replace($oldText, $text, $html);
 $text = <<<END
 var lastOrientation;
 var lastOrientationTimeout = null;
-END;
-$oldText = "<!-- AppCheck: before myOnOrientationchange -->";
-$actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
-$html = str_replace($oldText, $text, $html);
-
-
-$text = <<<END
-   if (typeof(window.orientation) != "undefined") {
-      if (window.orientation === lastOrientation) { return; }
-      lastOrientation = window.orientation;
-
-      if (lastOrientationTimeout) { backToGames(); }
-      else { lastOrientationTimeout = setTimeout("lastOrientationTimeout = null;", 1800); }
-   }
+simpleAddEvent(window, "orientationchange", function() {
+  if (typeof(window.orientation) == "undefined") { return; }
+  if (window.orientation === lastOrientation) { return; }
+  var lastOrientationTimeoutString = "lastOrientationTimeout = null;";
+  if (lastOrientationTimeout) {
+    clearTimeout(lastOrientationTimeout);
+    backToGames();
+  }
+  lastOrientationTimeout = setTimeout(lastOrientationTimeoutString, 1800);
+  lastOrientation = window.orientation;
+});
 END;
 $oldText = "<!-- AppCheck: myOnOrientationchange -->";
 $actionNum += 1;
