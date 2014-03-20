@@ -89,7 +89,7 @@ END;
   }
 
   $html .= <<<END
-For more info see the <a href="https://code.google.com/p/pgn4web/wiki/WebApp_LiveGames" target="_blank">live games web application wiki page</a>
+The <a href="https://code.google.com/p/pgn4web/wiki/WebApp_LiveGames" target="_blank">live games web application wiki page</a> provides further information and a detailed usage tutorial.
 <script type="text/javascript">
 "use strict";
 document.getElementById("webapplink").href = location.href.replace(/\?install(#|$)/, "$1");
