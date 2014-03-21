@@ -59,7 +59,11 @@ sed -i.bak 's/live-games-app.pgn/'"$pre-$id.pgn"'/g' "$pre-$id.php"
 if [[ -n $name ]]; then
   sed -i.bak 's/Live Games/'"$name"'/g' "$pre-$id.php"
 fi
+sed -i.bak 's/enableLogging = false;/enableLogging = true;/g' "$pre-$id.php"
 rm -f "$pre-$id.php.bak"
+
+set TZ=UTC
+echo $(date +"%Y-%m-%d %H:%M:%S +") >> "$pre-$id.log"
 
 cp live-games-app-engine.php "$pre-$id-engine.php"
 

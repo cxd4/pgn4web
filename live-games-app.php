@@ -10,6 +10,9 @@
 error_reporting(E_ALL | E_STRICT);
 
 
+$enableLogging = false;
+
+
 $appName = 'Live Games';
 
 if (preg_match('/\?install(#|$)/', $_SERVER['REQUEST_URI'], $matches)) {
@@ -559,5 +562,13 @@ $html = str_replace($oldText, $text, $html);
 
 print $html;
 
+
+if ($enableLogging) {
+  $logentry = strftime("%Y-%m-%d %H:%M:%S") . sprintf("  %15s  ", $_SERVER['REMOTE_ADDR']) . $_SERVER['HTTP_USER_AGENT'] . "\n";
+  $logfile = preg_replace("/\.php$/", ".log", __FILE__);
+  $logfp = fopen($logfile, 'a');
+  fwrite($logfp, $logentry);
+  fclose($logfp);
+}
 
 ?>
