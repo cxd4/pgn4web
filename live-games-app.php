@@ -15,7 +15,7 @@ $enableLogging = false;
 
 $appName = 'Live Games';
 
-if (preg_match('/\?install(#|$)/', $_SERVER['REQUEST_URI'], $matches)) {
+if (isset($_SERVER['REQUEST_URI']) && preg_match('/\?install(#|$)/', $_SERVER['REQUEST_URI'], $matches)) {
   $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
   if(strstr($ua, 'android')) {
     $platform = 'Android';
@@ -78,14 +78,16 @@ END;
 "use strict";
 document.getElementById((navigator && navigator.mozApps && navigator.mozApps.install) ? "openappOl" : "otherOl").style.display = "";
 function installOpenWebApp() {
-  var installOpenWebAppRequest = navigator.mozApps.install(location.href.replace(/\.php\?install.*/, ".webapp"));
-  installOpenWebAppRequest.onerror = function() {
-    if ((this.error.name == "MULTIPLE_APPS_PER_ORIGIN_FORBIDDEN") || (this.error.name == "REINSTALL_FORBIDDEN")) {
-      alert("error: installation failed: web application already installed for this domain");
-    } else {
-      alert("error: web application installation failed");
-    }
-  };
+  try {
+    var installOpenWebAppRequest = navigator.mozApps.install(location.href.replace(/\.php\?install.*/, ".webapp"));
+    installOpenWebAppRequest.onerror = function() {
+      if ((this.error.name == "MULTIPLE_APPS_PER_ORIGIN_FORBIDDEN") || (this.error.name == "REINSTALL_FORBIDDEN")) {
+        alert("error: installation failed: web application already installed for this domain");
+      } else {
+        alert("error: web application installation failed");
+      }
+    };
+  } catch(e) { alert("error: web application installation not supported"); }
 }
 </script>
 END;
