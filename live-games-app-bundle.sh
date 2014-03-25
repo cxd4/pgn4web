@@ -55,6 +55,7 @@ fi
 cp live-games-app.php "$pre-$id.php"
 sed -i.bak 's/live-games-app.appcache/'"$pre-$id.appcache"'/g' "$pre-$id.php"
 sed -i.bak 's/live-games-app-engine/'"$pre-$id-engine"'/g' "$pre-$id.php"
+sed -i.bak 's/live-games-app-icon-\([0-9]\+\)x\([0-9]\+\).png/'"$pre-$id-icon-\1x\2.png"'/g' "$pre-$id.php"
 sed -i.bak 's/live-games-app.pgn/'"$pre-$id.pgn"'/g' "$pre-$id.php"
 if [[ -n $name ]]; then
   sed -i.bak 's/Live Games/'"$name"'/g' "$pre-$id.php"
@@ -66,10 +67,13 @@ set TZ=UTC
 echo $(date +"%Y-%m-%d %H:%M:%S +") >> "$pre-$id.log"
 
 cp live-games-app-engine.php "$pre-$id-engine.php"
+sed -i.bak 's/live-games-app-icon-\([0-9]\+\)x\([0-9]\+\).png/'"$pre-$id-icon-\1x\2.png"'/g' "$pre-$id-engine.php"
+rm -f "$pre-$id-engine.php.bak"
 
 cp live-games-app.appcache "$pre-$id.appcache"
 sed -i.bak 's/live-games-app.php/'"$pre-$id.php"'/g' "$pre-$id.appcache"
 sed -i.bak 's/live-games-app-engine.php/'"$pre-$id-engine.php"'/g' "$pre-$id.appcache"
+sed -i.bak 's/live-games-app-icon-\([0-9]\+\)x\([0-9]\+\).png/'"$pre-$id-icon-\1x\2.png"'/g' "$pre-$id.appcache"
 echo "# $(date)" >> "$pre-$id.appcache"
 if [[ -n $name ]]; then
   sed -i.bak 's/Live Games/'"$name"'/g' "$pre-$id.appcache"
@@ -78,10 +82,14 @@ rm -f "$pre-$id.appcache.bak"
 
 cp live-games-app.webapp "$pre-$id.webapp"
 sed -i.bak 's/live-games-app.php/'"$pre-$id.php"'/g' "$pre-$id.webapp"
+sed -i.bak 's/live-games-app-icon-\([0-9]\+\)x\([0-9]\+\).png/'"$pre-$id-icon-\1x\2.png"'/g' "$pre-$id.webapp"
 if [[ -n $name ]]; then
   sed -i.bak 's/Live Games/'"$name"'/g' "$pre-$id.webapp"
 fi
 rm -f "$pre-$id.webapp.bak"
+
+cp live-games-app-icon-60x60.png "$pre-$id-icon-60x60.png"
+cp live-games-app-icon-128x128.png "$pre-$id-icon-128x128.png"
 
 rm -f "$pre-$id.pgn"
 ln -s $pgn "$pre-$id.pgn"

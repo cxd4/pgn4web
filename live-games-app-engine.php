@@ -41,6 +41,13 @@ if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
 
 
+$text = "<title>Game Analysis</title>";
+$oldText = "<title>pgn4web analysis board</title>";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
+
+
 $text = <<<END
 <meta name="viewport" content="initial-scale=1, maximum-scale=1">
 END;
@@ -50,8 +57,8 @@ if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
 
 
-$text = "<title>Game Analysis</title>";
-$oldText = "<title>pgn4web analysis board</title>";
+$text = '<link rel="apple-touch-icon" href="live-games-app-icon-60x60.png" />';
+$oldText = '<link rel="apple-touch-icon" href="pawn.png" />';
 $actionNum += 1;
 if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);

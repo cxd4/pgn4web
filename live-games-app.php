@@ -39,7 +39,7 @@ li { margin-bottom: 1em; }
 </style>
 </head>
 <body>
-<img class="icon" src="pawn.png" />
+<img class="icon" src="live-games-app-icon-60x60.png" />
 <h1>$appName web application installation</h1>
 END;
 
@@ -189,6 +189,13 @@ window.open = function (winUrl, winTarget, winParam) {
 </script>
 END;
 $oldText = "<!-- AppCheck: meta -->";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
+
+
+$text = '<link rel="apple-touch-icon" href="live-games-app-icon-60x60.png" />';
+$oldText = '<link rel="apple-touch-icon" href="pawn.png" />';
 $actionNum += 1;
 if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
