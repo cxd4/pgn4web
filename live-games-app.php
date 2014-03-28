@@ -34,44 +34,44 @@ if (isset($_SERVER['REQUEST_URI']) && preg_match('/\?install(#|$)/', $_SERVER['R
 a { color: white; }
 body { color: white; background: black; font-family: sans-serif; padding: 2em; }
 li { margin-bottom: 1em; }
-.icon { float: right; margin-left: 2em; border-radius: 10%; opacity: 0.5; transition: opacity 0.3s; }
+.icon { float: right; margin-left: 2em; border-radius: 10%; opacity: 0; transition: opacity 1s 2s; }
 </style>
 </head>
 <body>
-<img id="appIcon" class="icon" src="live-games-app-icon-60x60.png" onMouseOver="appIconOpacity(1);" onMouseOut="appIconOpacity(0.5);" />
+<img id="webappIcon" class="icon" src="live-games-app-icon-60x60.png" />
 <h1>$appName web application installation</h1>
 END;
 
   if ($platform == 'Android') {
     $html .= <<<END
 <ol>
-<li>open the <a id="webapplink" href="" target="_blank">web application URL</a> on a new tab of the android browser</li>
+<li>open the <a id="webappLink" href="" target="_blank">web application URL</a> on a new tab of the android browser</li>
 <li>bookmark the URL</li>
 <li>open the bookmark list</li>
 <li>tap and hold the newly created bookmark and select "add shortcut to home" from the menu</li>
-<li>the <span onMouseOver="appIconOpacity(1);" onMouseOut="appIconOpacity(0.5);">web application icon</span> should appear on the home screen</li>
+<li>the web application icon should appear on the home screen</li>
 </ol>
 END;
   } else if ($platform == 'iOS') {
     $html .= <<<END
 <ol>
-<li>open the <a id="webapplink" href="" target="_blank">web application URL</a> on a new page of the safari browser</li>
+<li>open the <a id="webappLink" href="" target="_blank">web application URL</a> on a new page of the safari browser</li>
 <li>tap on the action menu button at the bottom of the screen</li>
 <li>select the "add to home screen" action</li>
-<li>the <span onMouseOver="appIconOpacity(1);" onMouseOut="appIconOpacity(0.5);">web application icon</span> should appear on the home screen</li>
+<li>the web application icon should appear on the home screen</li>
 </ol>
 END;
   } else {
     $html .= <<<END
 <ol id="openappOl" style="display: none;">
 <li>start the <a href="javascript:void(0);" onclick="installOpenWebApp();">web application installation script</a></li>
-<li>the <span onMouseOver="appIconOpacity(1);" onMouseOut="appIconOpacity(0.5);">web application icon</span> should appear on the start menu, on the desktop or on the home screen</li>
+<li>the web application icon should appear on the start menu, on the desktop or on the home screen</li>
 </ol>
 <ol id="otherOl" style="display: none;">
-<li>open the <a id="webapplink" href="" target="_blank">web application URL</a> on a new page of the browser</li>
+<li>open the <a id="webappLink" href="" target="_blank">web application URL</a> on a new page of the browser</li>
 <li>bookmark the URL</li>
 <li>open the newly created bookmark and use the web application from the browser</a>
-<li>optionally, if available from the browser, use a command like "add site to start menu", "add site to start screen", "add site to apps", "create application shortcuts", "add shortcut to home", "add to home screen" or similar in order to add the <span onMouseOver="appIconOpacity(1);" onMouseOut="appIconOpacity(0.5);">web application icon</span> to the start menu, to the desktop or to the home screen</li>
+<li>optionally, if available from the browser, use a command like "add site to start menu", "add site to start screen", "add site to apps", "create application shortcuts", "add shortcut to home", "add to home screen" or similar in order to add the web application icon to the start menu, to the desktop or to the home screen</li>
 </ol>
 <script type="text/javascript">
 "use strict";
@@ -96,8 +96,10 @@ END;
 The <a href="https://code.google.com/p/pgn4web/wiki/WebApp_LiveGames" target="_blank">live games web application wiki page</a> provides further information and a detailed usage tutorial.
 <script type="text/javascript">
 "use strict";
-document.getElementById("webapplink").href = location.href.replace(/\?install(#|$)/, "$1");
-function appIconOpacity(o) { document.getElementById("appIcon").style.opacity = o; }
+window.onload = function() {
+  document.getElementById("webappLink").href = location.href.replace(/\?install(#|$)/, "$1");
+  document.getElementById("webappIcon").style.opacity = 1;
+};
 </script>
 </body>
 </html>
