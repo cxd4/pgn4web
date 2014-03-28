@@ -575,7 +575,7 @@ $html = str_replace($oldText, $text, $html);
 print $html;
 
 
-if ($enableLogging) {
+if ($enableLogging && isset($_SERVER['REMOTE_ADDR']) && isset($_SERVER['HTTP_USER_AGENT'])) {
   $logentry = strftime("%Y-%m-%d %H:%M:%S") . sprintf("  %15s  ", $_SERVER['REMOTE_ADDR']) . $_SERVER['HTTP_USER_AGENT'] . "\n";
   $logfile = preg_replace("/\.php$/", ".log", __FILE__);
   $logfp = fopen($logfile, 'a');
