@@ -97,8 +97,7 @@ The <a href="https://code.google.com/p/pgn4web/wiki/WebApp_LiveGames" target="_b
 <script type="text/javascript">
 "use strict";
 window.onload = function() {
-  document.getElementById("webappLink").href = location.href.replace(/\?install(#|$)/, "$1");
-  document.getElementById("webappIconLink").href = location.href.replace(/\?install(#|$)/, "$1");
+  document.getElementById("webappIconLink").href = document.getElementById("webappLink").href = location.href.replace(/\?install(#|$)/, "$1");
   document.getElementById("webappIcon").style.opacity = 1;
 };
 </script>
