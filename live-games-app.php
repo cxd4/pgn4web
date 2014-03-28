@@ -34,11 +34,11 @@ if (isset($_SERVER['REQUEST_URI']) && preg_match('/\?install(#|$)/', $_SERVER['R
 a { color: white; }
 body { color: white; background: black; font-family: sans-serif; padding: 2em; }
 li { margin-bottom: 1em; }
-.icon { float: right; margin-left: 2em; border-radius: 10%; opacity: 0; transition: opacity 1s 2s; }
+.icon { float: right; margin-left: 2em; border: none; border-radius: 10%; opacity: 0; transition: opacity 1s 2s; }
 </style>
 </head>
 <body>
-<img id="webappIcon" class="icon" src="live-games-app-icon-60x60.png" />
+<a id="webappIconLink" href="" target="_blank"><img id="webappIcon" class="icon" src="live-games-app-icon-60x60.png" /></a>
 <h1>$appName web application installation</h1>
 END;
 
@@ -98,6 +98,7 @@ The <a href="https://code.google.com/p/pgn4web/wiki/WebApp_LiveGames" target="_b
 "use strict";
 window.onload = function() {
   document.getElementById("webappLink").href = location.href.replace(/\?install(#|$)/, "$1");
+  document.getElementById("webappIconLink").href = location.href.replace(/\?install(#|$)/, "$1");
   document.getElementById("webappIcon").style.opacity = 1;
 };
 </script>
