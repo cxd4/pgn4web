@@ -861,7 +861,8 @@ sub memory_add_pgnGame {
       my $newSortkey = $GAMES_event[$games_num[$i]];
       if ($GAMES_round[$games_num[$i]] ne "") {
         $newSortkey .= " + Round ";
-        if (length($GAMES_round[$games_num[$i]]) < 3) { $newSortkey .= substr("000", 0, length($GAMES_round[$games_num[$i]])); }
+        my $newSortkeyRoundLength = length($GAMES_round[$games_num[$i]]);
+        if ($newSortkeyRoundLength < 3) { $newSortkey .= substr("000", 0, 3 - $newSortkeyRoundLength); }
         $newSortkey .= $GAMES_round[$games_num[$i]];
       }
       unshift(@memory_games_sortkey, $newSortkey);
