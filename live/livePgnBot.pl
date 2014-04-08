@@ -1,6 +1,6 @@
 
 #  pgn4web javascript chessboard
-#  copyright (C) 2009-2013 Paolo Casaschi
+#  copyright (C) 2009-2014 Paolo Casaschi
 #  see README file and http://pgn4web.casaschi.net
 #  for credits, license and more details
 
@@ -861,7 +861,7 @@ sub memory_add_pgnGame {
       my $newSortkey = $GAMES_event[$games_num[$i]];
       if ($GAMES_round[$games_num[$i]] ne "") {
         $newSortkey .= " + Round ";
-        if (length($GAMES_round[$games_num[$i]]) == 1) { $newSortkey .= "0"; }
+        if (length($GAMES_round[$games_num[$i]]) < 3) { $newSortkey .= substr("000", 0, length($GAMES_round[$games_num[$i]])); }
         $newSortkey .= $GAMES_round[$games_num[$i]];
       }
       unshift(@memory_games_sortkey, $newSortkey);
