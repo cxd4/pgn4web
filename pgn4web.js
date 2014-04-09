@@ -1932,7 +1932,7 @@ function restartLiveBroadcast() {
 
 function checkLiveBroadcastStatus() {
   var theTitle, theObj, ii;
-  var tick = "&nbsp;" + (LiveBroadcastTicker % 2 ? "<>" : "><") + "&nbsp;";
+  var tick = "&nbsp;" + (LiveBroadcastTicker % 2 ? "&lt;&gt;" : "&gt;&lt;") + "&nbsp;";
 
   if (LiveBroadcastDelay === 0) { return; }
 
