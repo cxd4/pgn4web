@@ -521,7 +521,7 @@ function customFunctionOnPgnTextLoad() {
   }
 
   if (newMovesInShownGames) { liveBroadcastUpdateTicker++; }
-  document.title = liveBroadcastUpdateTicker + "." + LiveBroadcastStatusString.replace(/^(\d*)\D*(\d*)$/, "$1.$2") + " live broadcast" + (demoFlag ? " demo" : "");
+  document.title = liveBroadcastUpdateTicker + "." + LiveBroadcastGamesRunning + "." + numberOfGames + " live broadcast" + (demoFlag ? " demo" : "");
 
   if (theObj = document.getElementById("GameLiveStatusDemo")) { theObj.innerHTML = LiveBroadcastDemo ? "demo &nbsp; " : ""; }
 

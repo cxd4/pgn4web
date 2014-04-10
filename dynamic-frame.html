@@ -557,7 +557,7 @@ function customFunctionOnPgnTextLoad() {
       previousPlyNumber = PlyNumber;
       liveBroadcastUpdateTicker++;
     }
-    document.title = liveBroadcastUpdateTicker + "." + LiveBroadcastStatusString.replace(/^(\d*)\D*(\d*)$/, "$1.$2") + " live broadcast" + (demoFlag ? " demo" : "");
+    document.title = liveBroadcastUpdateTicker + "." + LiveBroadcastGamesRunning + "." + numberOfGames + " live broadcast" + (demoFlag ? " demo" : "");
   } else {
     if (noGamesLoaded) { document.title = alertNum ? "PGN data error" : "chess games viewer"; }
     else { document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s"); }
