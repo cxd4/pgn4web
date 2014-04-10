@@ -1941,7 +1941,6 @@ function checkLiveBroadcastStatus() {
     // no
     LiveBroadcastEnded = false;
     LiveBroadcastGamesRunning = 0;
-    LiveBroadcastStatusString = "0 " + tick + " 0";
     theTitle = "live broadcast yet to start";
   } else {
     // yes
@@ -1951,9 +1950,9 @@ function checkLiveBroadcastStatus() {
     }
     LiveBroadcastEnded = (lbgr === 0);
     LiveBroadcastGamesRunning = lbgr;
-    LiveBroadcastStatusString = lbgr + " " + tick + " " + numberOfGames;
     theTitle = LiveBroadcastEnded ? "live broadcast ended" : lbgr + " live game" + (lbgr > 1 ? "s" : "") + " out of " + numberOfGames;
   }
+  LiveBroadcastStatusString = LiveBroadcastGamesRunning + " " + tick + " " + numberOfGames;
 
   if (theObj = document.getElementById("GameLiveStatus")) {
     theObj.innerHTML = LiveBroadcastStatusString;
@@ -2599,7 +2598,7 @@ function LoadGameHeaders() {
         gameDemoLength[ii] = PlyNumber;
       }
       if (gameDemoMaxPly[ii] === undefined) { gameDemoMaxPly[ii] = 0; }
-      if (gameDemoMaxPly[ii] <= gameDemoLength[ii]) { gameResult[ii] = '*'; }
+      if ((gameDemoMaxPly[ii] <= gameDemoLength[ii]) && (gameDemoLength[ii] > 0)) { gameResult[ii] = '*'; }
     }
   }
   return;
