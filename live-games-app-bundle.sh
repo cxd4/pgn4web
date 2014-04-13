@@ -10,25 +10,31 @@ set +o posix
 
 pre="lga"
 
-if [ "$1" == "--clean" ]; then
-  if ls -1 "$pre"* 2> /dev/null; then
-    read -p "Delete the $pre* file listed above (type YES to proceed)? " -r
+if [ "$1" == "--delete" ] || [ "$1" == "-d" ]; then
+  id=$2
+  if [[ $id =~ [^a-zA-Z0-9] ]]; then
+    echo "error: id must be only letters and numbers: $id"
+    exit 2
+  fi
+  del="$pre-$id"*
+  if ls -1 $del 2> /dev/null; then
+    echo
+    read -p "Delete the $del file listed above (type YES to proceed)? " -r
     if [ "$REPLY" == "YES" ]; then
-      rm -f "$pre"*
-      echo "info: deleted $pre* files"
+      rm -f $del
+      echo "info: deleted $del files"
     else
-      echo "info: $pre* files not deleted"
+      echo "info: $del files not deleted"
     fi
   else
-    echo "info: $pre* files not found"
+    echo "info: $del files not found"
   fi
   exit 0
 fi
 
 id=$1
 if [ -z "$id" ] || [ "$id" == "--help" ]; then
-  echo "usage: $(basename $0) id [pgn] [name]"
-  echo "use --clean as first parameter to remove old bundles"
+  echo "usage: $(basename $0) [--delete] id [pgn] [name]"
   echo "please note: you can only deploy one bundle per domain (more bundles on the same domain would conflict on local storage)"
   exit 1
 fi
@@ -41,10 +47,10 @@ pgn=$2
 if [ -z "$pgn" ]; then
   pgn="live/live.pgn"
 fi
-if [ ! -f "$pgn" ]; then
-  echo "error: pgn file not found: $pgn"
-  exit 3
-fi
+# if [ ! -f "$pgn" ]; then
+#  echo "error: pgn file not found: $pgn"
+#  exit 3
+# fi
 
 name=$3
 if [[ $name =~ [^a-zA-Z0-9\ \'#-] ]]; then
