@@ -43,16 +43,21 @@ li { margin-bottom: 1em; }
 END;
 
   if ($platform == 'Android') {
+    if (!strstr($ua, 'chrome')) {
+      $html .= "Google chrome is the reccomended browser for the installation on iOS device:";
+    }
     $html .= <<<END
 <ol>
-<li>open the <a id="webappLink" href="" target="_blank">web application URL</a> on a new tab of the android browser</li>
-<li>bookmark the URL</li>
-<li>open the bookmark list</li>
-<li>tap and hold the newly created bookmark and select "add shortcut to home" from the menu</li>
+<li>open the <a id="webappLink" href="" target="_blank">web application URL</a> on a new tab of the google chrome browser</li>
+<li>tap on the menu button</li>
+<li>select the "add to home screen" action</li>
 <li>the web application icon should appear on the home screen</li>
 </ol>
 END;
   } else if ($platform == 'iOS') {
+    if (!strstr($ua, 'safari') || strstr($ua, 'crios')) {
+      $html .= "Safari is the reccomended browser for the installation on iOS devices:";
+    }
     $html .= <<<END
 <ol>
 <li>open the <a id="webappLink" href="" target="_blank">web application URL</a> on a new page of the safari browser</li>
