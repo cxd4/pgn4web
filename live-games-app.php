@@ -44,7 +44,7 @@ END;
 
   if ($platform == 'Android') {
     if (!strstr($ua, 'chrome')) {
-      $html .= "Google chrome is the reccomended browser for the installation on iOS device:";
+      $html .= "Google chrome is the reccomended browser for the installation on android devices:";
     }
     $html .= <<<END
 <ol>
