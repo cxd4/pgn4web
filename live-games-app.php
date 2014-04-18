@@ -61,7 +61,7 @@ END;
     $html .= <<<END
 <ol>
 <li>open the <a id="webappLink" href="" target="_blank">web application URL</a> on a new page of the safari browser</li>
-<li>tap on the action menu button at the bottom of the screen</li>
+<li>tap on the action menu button</li>
 <li>select the "add to home screen" action</li>
 <li>the web application icon should appear on the home screen</li>
 </ol>
