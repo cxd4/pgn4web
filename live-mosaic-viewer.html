@@ -242,7 +242,7 @@ a:hover {
 "use strict";
 
 function fixCSSforBackgroundColorHex() {
-  document.write("<style type='text/css'> body { background: #" + backgroundColorHex + "; } </style>");
+  document.body.style.backgroundColor = "#" + backgroundColorHex;
 }
 
 function fixCSSforHeadelessPage() {
