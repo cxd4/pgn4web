@@ -35,6 +35,7 @@
       " - refreshDemo = if set true sets live demo mode (default false)" + "\n\n" +
       " - headlessPage = if set true displays a page without heading (default false)" + "\n\n" +
       // " - barePadding = if not null, displays a page with given padding and without header/footer (default null)" + "\n\n" +
+      // " - backgroundColorHex = if not null and barePadding also not null, background color hex code, like FF0000 (default null)" + "\n\n" +
       " - help = true");
   }
 
@@ -114,13 +115,20 @@
     if ((headlessPageValue == "true") || (headlessPageValue == "t")) { headlessPage = true; }
   }
 
-  // undocumented feature
+  // undocumented features
+
   var barePadding = "";
   thisRegExp = /(&|\?)(barePadding|bp)=([^&]*)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
     barePadding = unescape(window.location.search.match(thisRegExp)[3]);
   }
   barePadding = barePadding.replace(/[^a-zA-Z0-9%\s]/g, "");
+
+  var backgroundColorHex = "";
+  thisRegExp = /(&|\?)(backgroundColorHex|bch)=([0-9A-Fa-f]{6})(&|$)/i;
+  if (window.location.search.match(thisRegExp) !== null) {
+    backgroundColorHex = unescape(window.location.search.match(thisRegExp)[3]);
+  }
 
   SetImagePath("images/alpha/24"); // just to avoid console errors
 
@@ -233,6 +241,10 @@ a:hover {
 <script type="text/javascript">
 "use strict";
 
+function fixCSSforBackgroundColorHex() {
+  document.write("<style type='text/css'> body { background: #" + backgroundColorHex + "; } </style>");
+}
+
 function fixCSSforHeadelessPage() {
   document.write("<style type='text/css'> body { color: #AAAAAA; } a { color: #AAAAAA; } a:hover { color: black; } .beforeBoards { margin-top: 10px; } </style>");
 }
@@ -287,7 +299,12 @@ function updateBoardFrames(newMaxBoards) {
 
 if (headlessPage || (barePadding !== "")) {
   fixCSSforHeadelessPage();
-  if (barePadding !== "") { fixCSSforBarePadding(); }
+  if (barePadding !== "") {
+    fixCSSforBarePadding();
+    if (backgroundColorHex !== "") {
+      fixCSSforBackgroundColorHex();
+    }
+  }
   else { printMenu(); }
 } else {
   printHeader();
