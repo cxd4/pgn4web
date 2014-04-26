@@ -737,7 +737,7 @@ function displayDebugInfo() {
     if (debugWin) {
       debugWin.document.open("text/html", "replace");
       debugWin.document.write("<html><head><title>pgn4web debug info</title>" +
-        "<link rel='shortcut icon' href='pawn.ico' /></head>" +
+        "<link rel='icon' sizes='16x16' href='pawn.ico' /></head>" +
         "<body>\n<pre>\n" + dbg1 + location.href + " " + dbg3 +
         "\n</pre>\n</body></html>");
       debugWin.document.close();
@@ -762,7 +762,7 @@ function displayPgnData(oneGameOnly) {
   pgnWin = window.open("", "pgn4web_pgn_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if (pgnWin) {
     var text = "<html><head><title>pgn4web PGN source</title>" +
-      "<link rel='shortcut icon' href='pawn.ico' /></head><body>\n<pre>\n";
+      "<link rel='icon' sizes='16x16' href='pawn.ico' /></head><body>\n<pre>\n";
     if (oneGameOnly) { text += fullPgnGame(currentGame) + "\n\n"; }
     else { for (var ii = 0; ii < numberOfGames; ++ii) { text += fullPgnGame(ii) + "\n\n"; } }
     text += "\n</pre>\n</body></html>";
@@ -862,7 +862,7 @@ function displayFenData(addGametext) {
   fenWin = window.open("", "pgn4web_fen_data", "resizable=yes,scrollbars=yes,toolbar=no,location=no,menubar=no,status=no");
   if (fenWin) {
     var text = "<html>" +
-      "<head><title>pgn4web FEN string</title><link rel='shortcut icon' href='pawn.ico' /></head>" +
+      "<head><title>pgn4web FEN string</title><link rel='icon' sizes='16x16' href='pawn.ico' /></head>" +
       "<body>\n<b><pre>\n\n" + thisFEN + "\n\n</pre></b>\n<hr>\n<pre>\n\n";
     if (addGametext) {
       text += "[Event \""  + ((CurrentVar ? "" : gameEvent[currentGame])  || "?") + "\"]\n" +

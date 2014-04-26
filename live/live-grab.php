@@ -2,7 +2,7 @@
 
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009-2013 Paolo Casaschi
+ *  copyright (C) 2009-2014 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
@@ -159,7 +159,7 @@ $pgnText = validate_pgnText(stripslashes(isset($_POST["pgnText"]) ? $_POST["pgnT
 
 <title>pgn4web live games grab</title>
 
-<link rel="shortcut icon" href="../pawn.ico" />
+<link rel="icon" sizes=“16x16” href="../pawn.ico" />
 
 <style type="text/css">
 

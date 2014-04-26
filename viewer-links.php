@@ -87,7 +87,7 @@ function print_links() {
     if (($numUrls = count($urls)) == 1) { print "<title>1 link</title>" . "\n"; }
     else { print "<title>$numUrls links</title>" . "\n"; }
 
-    print "<link rel='shortcut icon' href='pawn.ico' />" . "\n";
+    print "<link rel='icon' sizes='16x16' href='pawn.ico' />" . "\n";
     print "<style tyle='text/css'> body { font-family: sans-serif; padding: 1.75em; line-height: 1.5em; } a { color: black; text-decoration: none; } ol { color: $labelColor; } </style>" . "\n";
     print "<script type='text/javascript'> var viewerWin; </script>" . "\n";
 
