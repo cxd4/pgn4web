@@ -173,6 +173,8 @@ $text = <<<END
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="icon" sizes="128x128" href="live-games-app-icon-128x128.png">
+<link rel="apple-touch-icon" href="live-games-app-icon-60x60.png" />
 <script type="text/javascript">
 "use strict";
 window['defaultOpen'] = window.open;
@@ -196,13 +198,6 @@ window.open = function (winUrl, winTarget, winParam) {
 </script>
 END;
 $oldText = "<!-- AppCheck: meta -->";
-$actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
-$html = str_replace($oldText, $text, $html);
-
-
-$text = '<link rel="apple-touch-icon" href="live-games-app-icon-60x60.png" />';
-$oldText = '<link rel="apple-touch-icon" href="pawn.png" />';
 $actionNum += 1;
 if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);

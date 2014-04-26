@@ -1,7 +1,7 @@
 CACHE MANIFEST
 
 # Live Games web application
-# version 2.81+0017
+# version 2.81+0018
 
 # pgn4web javascript chessboard
 # copyright (C) 2009-2014 Paolo Casaschi
@@ -33,6 +33,7 @@ images/alpha/96/wr.png
 libs/garbochess/garbochess.js
 # live-games-app.php
 live-games-app-engine.php
+live-games-app-icon-128x128.png
 live-games-app-icon-60x60.png
 pawn.ico
 pgn4web.js

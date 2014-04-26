@@ -57,13 +57,6 @@ if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
 
 
-$text = '<link rel="apple-touch-icon" href="live-games-app-icon-60x60.png" />';
-$oldText = '<link rel="apple-touch-icon" href="pawn.png" />';
-$actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
-$html = str_replace($oldText, $text, $html);
-
-
 $text = <<<END
 var lastOrientation;
 var lastOrientationTimeout = null;

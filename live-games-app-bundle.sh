@@ -73,8 +73,6 @@ set TZ=UTC
 echo $(date +"%Y-%m-%d %H:%M:%S +") >> "$pre-$id.log"
 
 cp live-games-app-engine.php "$pre-$id-engine.php"
-sed -i.bak 's/live-games-app-icon-\([0-9]\+\)x\([0-9]\+\).png/'"$pre-$id-icon-\1x\2.png"'/g' "$pre-$id-engine.php"
-rm -f "$pre-$id-engine.php.bak"
 
 cp live-games-app.appcache "$pre-$id.appcache"
 sed -i.bak 's/live-games-app.php/'"$pre-$id.php"'/g' "$pre-$id.appcache"
