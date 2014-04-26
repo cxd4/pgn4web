@@ -74,7 +74,7 @@ print <<<END
 
 <title>pgn4web PGN encoder/decoder php example</title>
 
-<link rel="icon" sizes=“16x16” href="pawn.ico" />
+<link rel="icon" sizes="16x16" href="pawn.ico" />
 
 </head>
 

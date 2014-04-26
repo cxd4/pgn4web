@@ -374,7 +374,7 @@ body {
 
 </style>
 
-<link rel="icon" sizes=“16x16” href="pawn.ico" />
+<link rel="icon" sizes="16x16" href="pawn.ico" />
 
 <script src="pgn4web.js" type="text/javascript"></script>
 

@@ -58,6 +58,17 @@ $html = str_replace($oldText, $text, $html);
 
 
 $text = <<<END
+<link rel="icon" sizes="16x16" href="live-games-app-icon-16x16.ico">
+<link rel="icon" sizes="128x128" href="live-games-app-icon-128x128.png">
+<link rel="apple-touch-icon" href="live-games-app-icon-60x60.png" />
+END;
+$oldText = '<link rel="icon" sizes="16x16" href="pawn.ico" />';
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
+
+
+$text = <<<END
 var lastOrientation;
 var lastOrientationTimeout = null;
 simpleAddEvent(window, "orientationchange", function() {

@@ -159,7 +159,7 @@ $pgnText = validate_pgnText(stripslashes(isset($_POST["pgnText"]) ? $_POST["pgnT
 
 <title>pgn4web live games grab</title>
 
-<link rel="icon" sizes=“16x16” href="../pawn.ico" />
+<link rel="icon" sizes="16x16" href="../pawn.ico" />
 
 <style type="text/css">
 

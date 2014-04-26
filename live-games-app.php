@@ -173,6 +173,15 @@ $text = <<<END
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
+END;
+$oldText = "<!-- AppCheck: meta -->";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
+
+
+$text = <<<END
+<link rel="icon" sizes="16x16" href="live-games-app-icon-16x16.ico">
 <link rel="icon" sizes="128x128" href="live-games-app-icon-128x128.png">
 <link rel="apple-touch-icon" href="live-games-app-icon-60x60.png" />
 <script type="text/javascript">
@@ -197,7 +206,7 @@ window.open = function (winUrl, winTarget, winParam) {
 };
 </script>
 END;
-$oldText = "<!-- AppCheck: meta -->";
+$oldText = '<link rel="icon" sizes="16x16" href="pawn.ico" />';
 $actionNum += 1;
 if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
