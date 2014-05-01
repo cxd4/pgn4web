@@ -1638,14 +1638,14 @@ function fullPgnGame(gameNum) {
 
 function pgnGameFromPgnText(pgnText) {
 
-  var headMatch, prevHead, newHead, startNew, afterNew, lastOpen, checkedGame, validHead;
+  var newNumGames, headMatch, prevHead, newHead, startNew, afterNew, lastOpen, checkedGame, validHead;
 
   pgnText = simpleHtmlentities(fixCommonPgnMistakes(pgnText));
 
   // PGN standard: ignore lines starting with %
   pgnText = pgnText.replace(/(^|\n)%.*(\n|$)/g, "\n");
 
-  numberOfGames = 0;
+  newNumGames = 0;
   checkedGame = "";
   while (headMatch = pgnHeaderBlockRegExp.exec(pgnText)) {
     newHead = headMatch[0];
@@ -1655,8 +1655,8 @@ function pgnGameFromPgnText(pgnText) {
       checkedGame += pgnText.slice(0, startNew);
       validHead = ((lastOpen = checkedGame.lastIndexOf("{")) < 0) || (checkedGame.lastIndexOf("}")) > lastOpen;
       if (validHead) {
-        pgnHeader[numberOfGames] = prevHead;
-        pgnGame[numberOfGames++] = checkedGame;
+        pgnHeader[newNumGames] = prevHead;
+        pgnGame[newNumGames++] = checkedGame;
         checkedGame = "";
       } else {
         checkedGame += newHead;
@@ -1668,12 +1668,14 @@ function pgnGameFromPgnText(pgnText) {
     pgnText = pgnText.slice(afterNew);
   }
   if (prevHead) {
-    pgnHeader[numberOfGames] = prevHead;
+    pgnHeader[newNumGames] = prevHead;
     checkedGame += pgnText;
-    pgnGame[numberOfGames++] = checkedGame;
+    pgnGame[newNumGames++] = checkedGame;
   }
 
-  return (numberOfGames > 0);
+  if (newNumGames === 0) { return false; }
+  numberOfGames = newNumGames;
+  return true;
 }
 
 
@@ -1931,10 +1933,10 @@ function restartLiveBroadcast() {
 }
 
 function checkLiveBroadcastStatus() {
+  if (LiveBroadcastDelay === 0) { return; }
+
   var theTitle, theObj, ii;
   var tick = "&nbsp;" + (LiveBroadcastTicker % 2 ? "&lt;&gt;" : "&gt;&lt;") + "&nbsp;";
-
-  if (LiveBroadcastDelay === 0) { return; }
 
   // broadcast started yet?
   if (LiveBroadcastStarted === false || typeof(pgnHeader) == "undefined" || (numberOfGames == 1 && gameEvent[0] == LiveBroadcastPlaceholderEvent)) {
