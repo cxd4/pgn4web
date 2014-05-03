@@ -125,6 +125,9 @@ our $prioritizeFilter = "";
 our $autoPrioritize = "";
 our $autoPrioritizeFilter = "";
 
+our $eventAutocorrectRegexp = "";
+our $eventAutocorrectString = "";
+
 our @currentRounds = ();
 
 our $PGN_MEMORY = "";
@@ -469,6 +472,7 @@ sub process_line {
       $autorelayEvent = $1;
       $autorelayEvent =~ s/[\s-]+$//g;
     }
+    if ($eventAutocorrectRegexp) { $autorelayEvent =~ s/$eventAutocorrectRegexp/eval($eventAutocorrectString)/egi; }
     declareRelayOnline();
   } elsif ($line =~ /^:(\d+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)/) {
     my $thisGameNum = $1;
@@ -1048,6 +1052,7 @@ add_master_command ("config", "config (to get config info)");
 add_master_command ("date", "date [????.??.???|\"\"] (to get/set the PGN header tag date)");
 add_master_command ("empty", "empty [1] (to save empty PGN data as placeholder file)");
 add_master_command ("event", "event [string|\"\"] (to get/set the PGN header tag event)");
+add_master_command ("eventautocorrect", "eventautocorrect [/regexp/eval/|\"\"] (to get/set the regexp and the evalexp returning a string that correct event tags during autorelay)");
 add_master_command ("file", "file [filename.pgn] (to get/set the filename for live PGN data)");
 add_master_command ("follow", "follow [0|handle|/s|/b|/l] (to follow the user with given handle, /s for the best standard game, /b for the best blitz game, /l for the best lightning game, 0 to disable follow mode)");
 add_master_command ("forget", "forget [game number list, such as: 12 34 56 ..] (to eliminate given past games from PGN data)");
@@ -1212,7 +1217,7 @@ sub process_master_command {
       tell_operator("warning: ics relay offline");
     }
   } elsif ($command eq "config") {
-    tell_operator("config: max=$maxGamesNum file=$PGN_FILE archive=$PGN_ARCHIVE memory=$PGN_MEMORY memorymax=$memoryMaxGamesNum follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter autoprioritize=$autoPrioritize prioritize=$prioritizeFilter archiveselect=$archiveSelectFilter memoryselect=$memorySelectFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
+    tell_operator("config: max=$maxGamesNum file=$PGN_FILE archive=$PGN_ARCHIVE memory=$PGN_MEMORY memorymax=$memoryMaxGamesNum follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter autoprioritize=$autoPrioritize prioritize=$prioritizeFilter eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " archiveselect=$archiveSelectFilter memoryselect=$memorySelectFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
   } elsif ($command eq "date") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
@@ -1247,6 +1252,36 @@ sub process_master_command {
         $newGame_event = $parameters;
       }
       tell_operator("event=$newGame_event");
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "eventautocorrect") {
+    if ($parameters =~ /^(\/(.+?)\/(.*?)\/|"")?$/) {
+      eval {
+        if ($parameters ne "") {
+          if ($parameters eq "\"\"") {
+            $eventAutocorrectRegexp = "";
+            $eventAutocorrectString = "";
+          } else {
+            my $newEventAutocorrectRegexp = $2;
+            my $newEventAutocorrectString = $3;
+            my $newEventAutocorrectTest = "test";
+            $newEventAutocorrectTest =~ s/$newEventAutocorrectRegexp/eval($newEventAutocorrectString)/egi;
+            $eventAutocorrectRegexp = $newEventAutocorrectRegexp;
+            $eventAutocorrectString = $newEventAutocorrectString;
+            for my $thisGameNum (@games_num) {
+              $GAMES_event[$thisGameNum] =~ s/$eventAutocorrectRegexp/eval($eventAutocorrectString)/egi;
+            }
+            refresh_pgn();
+            refresh_memory();
+          }
+          log_terminal("info: eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : ""));
+        }
+        tell_operator("eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : ""));
+        1;
+      } or do {
+        tell_operator("error: invalid regular expression: $parameters");
+      };
     } else {
       tell_operator("error: invalid $command parameter");
     }
