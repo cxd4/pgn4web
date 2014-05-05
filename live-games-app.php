@@ -29,6 +29,7 @@ if (isset($_SERVER['REQUEST_URI']) && preg_match('/\?install(#|$)/', $_SERVER['R
 <!DOCTYPE HTML>
 <html>
 <head>
+<link rel="icon" sizes="16x16" href="live-games-app-icon-16x16.ico">
 <title>$appName web application installation</title>
 <style type="text/css">
 a { color: white; }
