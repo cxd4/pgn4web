@@ -128,6 +128,8 @@ our $autoPrioritizeFilter = "";
 our $eventAutocorrectRegexp = "";
 our $eventAutocorrectString = "";
 
+our $autorelayAlwaysEmpty = 1;
+
 our @currentRounds = ();
 
 our $PGN_MEMORY = "";
@@ -778,7 +780,7 @@ sub refresh_pgn {
     $pgn .= $newPgn;
   }
 
-  if (($pgn eq "") || ($autorelayMode == 1)) { # consider || (($autorelayMode == 1) && ($gameRunning == 0))
+  if (($pgn eq "") || (($autorelayMode == 1) && (($gameRunning == 0) || ($autorelayAlwaysEmpty == 1)))) {
     $pgn .= temp_pgn();
   }
 
@@ -1048,6 +1050,7 @@ add_master_command ("archive", "archive [filename.pgn] (to get/set the filename 
 add_master_command ("archiveselect", "archiveselect [regexp|\"\"] (to get/set the regular expression to select games for archiving PGN data)");
 add_master_command ("autoprioritize", "autoprioritize [regexp|\"\"] (to get/set the regular expression to prioritize entire events during autorelay; has precedence over prioritize)");
 add_master_command ("autorelay", "autorelay [0|1] (to automatically observe all relayed games)");
+add_master_command ("autorelayalwaysempty", "autorelayalwaysempty [0|1] (to always add an empty live game during autorelay)");
 add_master_command ("config", "config (to get config info)");
 add_master_command ("date", "date [????.??.???|\"\"] (to get/set the PGN header tag date)");
 add_master_command ("empty", "empty [1] (to save empty PGN data as placeholder file)");
@@ -1216,8 +1219,17 @@ sub process_master_command {
     if (($autorelayMode == 1) && ($relayOnline == 0)) {
       tell_operator("warning: ics relay offline");
     }
+  } elsif ($command eq "autorelayalwaysempty") {
+    if ($parameters =~ /^(0|1)$/) {
+      $autorelayAlwaysEmpty = ($parameters == 0) ? 0 : 1;
+      refresh_pgn();
+      refresh_memory();
+    } elsif ($parameters !~ /^\??$/) {
+      tell_operator("error: invalid $command parameter");
+    }
+    tell_operator("autorelayalwaysempty=$autorelayAlwaysEmpty");
   } elsif ($command eq "config") {
-    tell_operator("config: max=$maxGamesNum file=$PGN_FILE archive=$PGN_ARCHIVE memory=$PGN_MEMORY memorymax=$memoryMaxGamesNum follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter autoprioritize=$autoPrioritize prioritize=$prioritizeFilter eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " archiveselect=$archiveSelectFilter memoryselect=$memorySelectFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
+    tell_operator("config: max=$maxGamesNum file=$PGN_FILE archive=$PGN_ARCHIVE memory=$PGN_MEMORY memorymax=$memoryMaxGamesNum follow=$followMode relay=$relayMode autorelay=$autorelayMode autorelayalwaysempty=$autorelayAlwaysEmpty ignore=$ignoreFilter autoprioritize=$autoPrioritize prioritize=$prioritizeFilter eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " archiveselect=$archiveSelectFilter memoryselect=$memorySelectFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
   } elsif ($command eq "date") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
