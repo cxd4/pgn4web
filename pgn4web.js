@@ -1773,7 +1773,7 @@ function loadPgnCheckingLiveStatus(res) {
             LiveBroadcastFoundOldGame =
               (gameWhite[ii]==oldWhite) && (gameBlack[ii]==oldBlack) &&
               (gameEvent[ii]==oldEvent) && (gameRound[ii]==oldRound) &&
-              (gameSite[ii] ==oldSite ) && (gameDate[ii] ==oldDate );
+              (gameSite[ii] ==oldSite ); // && (gameDate[ii] ==oldDate );
             if (LiveBroadcastFoundOldGame) { break; }
           }
           if (LiveBroadcastFoundOldGame) { initialGame = ii + 1; }

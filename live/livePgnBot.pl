@@ -112,6 +112,9 @@ our $newGame_site = "";
 our $newGame_date = "";
 our $newGame_round = "";
 
+our $archive_date = "";
+our $memory_date = "";
+
 our $followMode = 0;
 our $followLast = "";
 our $relayMode = 0;
@@ -165,6 +168,8 @@ sub reset_games {
   $newGame_site = "";
   $newGame_date = "";
   $newGame_round = "";
+  $archive_date = "";
+  $memory_date = "";
   $followMode = 0;
   $followLast = "";
   $relayMode = 0;
@@ -814,6 +819,9 @@ sub archive_pgnGame {
   if ($PGN_ARCHIVE ne "") {
     my $pgn = save_pgnGame($i);
     if (($pgn ne "") && (($archiveSelectFilter eq "") || ($pgn =~ /$archiveSelectFilter/is))) {
+      if ($archive_date ne "") {
+        $pgn =~ s/\[Date "([^\[\]"]*)"\]/'[Date "' . strftime($archive_date, gmtime(time() + $timeOffset)) . '"]'/e;
+      }
       if (open(my $thisFile, ">>$PGN_ARCHIVE")) {
         print $thisFile $pgn;
         close($thisFile);
@@ -862,6 +870,9 @@ sub memory_add_pgnGame {
   if ($PGN_MEMORY ne "") {
     my $pgn = save_pgnGame($i);
     if (($memorySelectFilter eq "") || ($pgn =~ /$memorySelectFilter/is)) {
+      if ($memory_date ne "") {
+        $pgn =~ s/\[Date "([^\[\]"]*)"\]/'[Date "' . strftime($memory_date, gmtime(time() + $timeOffset)) . '"]'/e;
+      }
       if (($#memory_games + 1) >= $memoryMaxGamesNum) {
         pop(@memory_games);
         pop(@memory_games_sortkey);
@@ -1053,6 +1064,7 @@ sub add_master_command {
 }
 
 add_master_command ("archive", "archive [filename.pgn] (to get/set the filename for archiving PGN data)");
+add_master_command ("archivedate", "archivedate [strftime_string|\"\"] (to get/set the PGN header tag date for the PGN archive)");
 add_master_command ("archiveselect", "archiveselect [regexp|\"\"] (to get/set the regular expression to select games for archiving PGN data)");
 add_master_command ("autoprioritize", "autoprioritize [regexp|\"\"] (to get/set the regular expression to prioritize entire events during autorelay; has precedence over prioritize)");
 add_master_command ("autorelay", "autorelay [0|1] (to automatically observe all relayed games)");
@@ -1074,6 +1086,7 @@ add_master_command ("ignore", "ignore [regexp|\"\"] (to get/set the regular expr
 add_master_command ("log", "log [string] (to print a string on the log terminal)");
 add_master_command ("max", "max [number] (to get/set the maximum number of games for the PGN data)");
 add_master_command ("memory", "memory [filename.pgn] (to get/set the filename for the PGN memory data)");
+add_master_command ("memorydate", "memorydate [strftime_string|\"\"] (to get/set the PGN header tag date for the PGN memory date)");
 add_master_command ("memoryload", "memoryload [1] (to load PGN memroy data from memory file)");
 add_master_command ("memorymax", "memorymax [number] (to get/set the maximum number of games for the PGN memory data)");
 add_master_command ("memorypurgegame", "memorypurgegame [\"event\" \"round\" \"white\" \"black\"] (to purge a game from the PGN memory data)");
@@ -1159,6 +1172,16 @@ sub process_master_command {
     } else {
       tell_operator("error: invalid $command parameter");
     }
+  } elsif ($command eq "archivedate") {
+    if ($parameters =~ /^([^\[\]"]+|"")?$/) {
+      if ($parameters ne "") {
+        if ($parameters eq "\"\"") { $parameters = ""; }
+        $archive_date = $parameters;
+      }
+      tell_operator("archivedate=$archive_date");
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
   } elsif ($command eq "archiveselect") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
@@ -1235,7 +1258,7 @@ sub process_master_command {
     }
     tell_operator("autorelayalwaysempty=$autorelayAlwaysEmpty");
   } elsif ($command eq "config") {
-    tell_operator("config: max=$maxGamesNum file=$PGN_FILE archive=$PGN_ARCHIVE memory=$PGN_MEMORY memorymax=$memoryMaxGamesNum follow=$followMode relay=$relayMode autorelay=$autorelayMode autorelayalwaysempty=$autorelayAlwaysEmpty ignore=$ignoreFilter autoprioritize=$autoPrioritize prioritize=$prioritizeFilter eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " archiveselect=$archiveSelectFilter memoryselect=$memorySelectFilter event=$newGame_event site=$newGame_site date=$newGame_date round=$newGame_round heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
+    tell_operator("config: max=$maxGamesNum file=$PGN_FILE archive=$PGN_ARCHIVE memory=$PGN_MEMORY memorymax=$memoryMaxGamesNum follow=$followMode relay=$relayMode autorelay=$autorelayMode autorelayalwaysempty=$autorelayAlwaysEmpty ignore=$ignoreFilter autoprioritize=$autoPrioritize prioritize=$prioritizeFilter eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " archiveselect=$archiveSelectFilter memoryselect=$memorySelectFilter event=$newGame_event site=$newGame_site date=$newGame_date archivedate=$archive_date memorydate=$memory_date round=$newGame_round heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
   } elsif ($command eq "date") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
@@ -1485,6 +1508,16 @@ sub process_master_command {
         $fileInfoText .= sprintf(" permissions=%04o", $fileInfo[2] & 07777);
       }
       tell_operator($fileInfoText);
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "memorydate") {
+    if ($parameters =~ /^([^\[\]"]+|"")?$/) {
+      if ($parameters ne "") {
+        if ($parameters eq "\"\"") { $parameters = ""; }
+        $memory_date = $parameters;
+      }
+      tell_operator("memorydate=$memory_date");
     } else {
       tell_operator("error: invalid $command parameter");
     }
