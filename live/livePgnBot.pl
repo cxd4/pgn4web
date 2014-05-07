@@ -112,8 +112,8 @@ our $newGame_site = "";
 our $newGame_date = "";
 our $newGame_round = "";
 
-our $archive_date = "$1";
-our $memory_date = "$1";
+our $archive_date = "\$1";
+our $memory_date = "\$1";
 
 our $followMode = 0;
 our $followLast = "";
@@ -168,8 +168,8 @@ sub reset_games {
   $newGame_site = "";
   $newGame_date = "";
   $newGame_round = "";
-  $archive_date = "$1";
-  $memory_date = "$1";
+  $archive_date = "\$1";
+  $memory_date = "\$1";
   $followMode = 0;
   $followLast = "";
   $relayMode = 0;
