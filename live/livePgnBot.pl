@@ -994,9 +994,12 @@ sub memory_load {
           log_terminal("info: event mem: $memory_games_sortkey[$m]");
           push(@newSortkey, $memory_games_sortkey[$m]);
         }
-        $memory_games_sortkey[$m] =~ s/ - Round / + Round /;
-        if ($memory_games_sortkey[$m] =~ /^(.* Round )(\S)$/) { $memory_games_sortkey[$m] = $1 . "0" . $2; }
       }
+    }
+    for (my $m=$#memory_games_sortkey; $m>=0; $m--) {
+      $memory_games_sortkey[$m] =~ s/ - Round / + Round /;
+      if ($memory_games_sortkey[$m] =~ /^(.* Round )(\S)$/) { $memory_games_sortkey[$m] = $1 . "00" . $2; }
+      if ($memory_games_sortkey[$m] =~ /^(.* Round )(\S\S)$/) { $memory_games_sortkey[$m] = $1 . "0" . $2; }
     }
     log_terminal("debug: memory load: " . ($#memory_games + 1));
   }
