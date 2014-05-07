@@ -170,6 +170,9 @@ sub reset_games {
   $relayMode = 0;
   $autorelayMode = 0;
   @GAMES_autorelayRunning = ();
+  $eventAutocorrectRegexp = "";
+  $eventAutocorrectString = "";
+  $autorelayAlwaysEmpty = 1;
   $ignoreFilter = "";
   $prioritizeFilter = "";
   $autoPrioritize = "";
