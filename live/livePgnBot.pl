@@ -112,8 +112,8 @@ our $newGame_site = "";
 our $newGame_date = "";
 our $newGame_round = "";
 
-our $archive_date = "";
-our $memory_date = "";
+our $archive_date = "$1";
+our $memory_date = "$1";
 
 our $followMode = 0;
 our $followLast = "";
@@ -168,8 +168,8 @@ sub reset_games {
   $newGame_site = "";
   $newGame_date = "";
   $newGame_round = "";
-  $archive_date = "";
-  $memory_date = "";
+  $archive_date = "$1";
+  $memory_date = "$1";
   $followMode = 0;
   $followLast = "";
   $relayMode = 0;
@@ -819,9 +819,7 @@ sub archive_pgnGame {
   if ($PGN_ARCHIVE ne "") {
     my $pgn = save_pgnGame($i);
     if (($pgn ne "") && (($archiveSelectFilter eq "") || ($pgn =~ /$archiveSelectFilter/is))) {
-      if ($archive_date ne "") {
-        $pgn =~ s/\[Date "([^\[\]"]*)"\]/'[Date "' . strftime($archive_date, gmtime(time() + $timeOffset)) . '"]'/e;
-      }
+      $pgn =~ s/\[Date "([^\[\]"]*)"\]/'[Date "' . strftime($archive_date, gmtime(time() + $timeOffset)) . '"]'/e;
       if (open(my $thisFile, ">>$PGN_ARCHIVE")) {
         print $thisFile $pgn;
         close($thisFile);
@@ -870,9 +868,7 @@ sub memory_add_pgnGame {
   if ($PGN_MEMORY ne "") {
     my $pgn = save_pgnGame($i);
     if (($memorySelectFilter eq "") || ($pgn =~ /$memorySelectFilter/is)) {
-      if ($memory_date ne "") {
-        $pgn =~ s/\[Date "([^\[\]"]*)"\]/'[Date "' . strftime($memory_date, gmtime(time() + $timeOffset)) . '"]'/e;
-      }
+      $pgn =~ s/\[Date "([^\[\]"]*)"\]/'[Date "' . strftime($memory_date, gmtime(time() + $timeOffset)) . '"]'/e;
       if (($#memory_games + 1) >= $memoryMaxGamesNum) {
         pop(@memory_games);
         pop(@memory_games_sortkey);
