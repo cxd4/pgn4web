@@ -294,6 +294,13 @@ $actionNum += 1;
 if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
 
+$text = <<<END
+<div>&nbsp;<a onclick='searchPgnGame("\\\\[\\\\s*Date\\\\s*\\"live\\"\\\\]", event.shiftKey); this.blur();'><span id="GameSite" title="site"></span><span id="GameDate" title="date"></span></a>&nbsp;</div>
+END;
+$oldText = '<div>&nbsp;<span id="GameSite" title="site"></span><span id="GameDate" title="date"></span>&nbsp;</div>';
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum); }
+$html = str_replace($oldText, $text, $html);
 
 $text = <<<END
 var appInitialized = false;
