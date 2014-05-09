@@ -380,8 +380,14 @@ var lastGameLiveStatusExtraInfoRes = LOAD_PGN_FAIL;
 window['defaultCustomFunctionOnCheckLiveBroadcastStatus'] = window['customFunctionOnCheckLiveBroadcastStatus'];
 window['customFunctionOnCheckLiveBroadcastStatus'] = function() {
   defaultCustomFunctionOnCheckLiveBroadcastStatus();
+  fixGameLiveStatus();
   fixGameLiveStatusExtraInfo();
 };
+
+function fixGameLiveStatus() {
+  var theObj = document.getElementById("GameLiveStatus");
+  if (theObj && theObj.title) { theObj.title = theObj.title.replace(/live game/, "unfinished game"); }
+}
 
 function fixGameLiveStatusExtraInfo(res) {
   if (typeof(res) != "undefined") {
