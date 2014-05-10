@@ -460,7 +460,8 @@ engineWinParametersSeparator = "#?";
 
 boardShortcut("F8", "live games web application wiki", function(t,e){ window.open("https://code.google.com/p/pgn4web/wiki/WebApp_LiveGames", "pgn4web_webAppWiki"); });
 
-boardShortcut("G6", "search next date", function(t,e){ searchPgnGame('\\\\[\\\\s*Date\\\\s*"(?!' + fixRegExp(gameDate[currentGame]) + '"\\\\s*\\\\])', e.shiftKey); }, true);
+// boardShortcut("G6", "search next date", function(t,e){ searchPgnGame('\\\\[\\\\s*Date\\\\s*"(?!' + fixRegExp(gameDate[currentGame]) + '"\\\\s*\\\\])', e.shiftKey); }, true);
+boardShortcut("G6", "search next custom date", function(t,e){ searchPgnGame('\\\\[\\\\s*Date\\\\s*"[^"]*[a-z][^"]*"\\\\s*\\\\]', e.shiftKey); }, true);
 
 boardShortcut("H5", "reset live games web application", function(t,e){ if (confirm("Reset live games web application to default configuration?\\n\\nWarning: application settings customizations, games data and engine analysis data will be lost.")) { window.localStorage.clear(); window.location.reload(); } });
 
