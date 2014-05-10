@@ -377,7 +377,7 @@ sub log_terminal {
     $thisVerbosity = 2;
   }
   if ($thisVerbosity <= $verbosity) {
-    print(strftime("%Y-%m-%d %H:%M:%S UTC", gmtime(time() + $timeOffset)) . " " . $msg . "\n");
+    print(strftime("%Y-%m-%d %H:%M:%S", gmtime(time() + $timeOffset)) . " " . $msg . "\n");
   }
 }
 
@@ -1074,7 +1074,7 @@ add_master_command ("file", "file [filename.pgn] (to get/set the filename for li
 add_master_command ("follow", "follow [0|handle|/s|/b|/l] (to follow the user with given handle, /s for the best standard game, /b for the best blitz game, /l for the best lightning game, 0 to disable follow mode)");
 add_master_command ("forget", "forget [game number list, such as: 12 34 56 ..] (to eliminate given past games from PGN data)");
 add_master_command ("games", "games (to get list of observed games)");
-add_master_command ("heartbeat", "heartbeat [frequency offset] (to get/set the timing of heartbeat log messages, in UTC hours)");
+add_master_command ("heartbeat", "heartbeat [frequency offset] (to get/set the timing of heartbeat log messages, in hours)");
 add_master_command ("help", "help [command] (to get commands help)");
 add_master_command ("history", "history (to get history info)");
 add_master_command ("ics", "ics [server command] (to run a custom command on the ics server)");
@@ -1097,7 +1097,7 @@ add_master_command ("reset", "reset [1] (to reset observed/followed games list a
 add_master_command ("round", "round [string|\"\"] (to get/set the PGN header tag round)");
 add_master_command ("site", "site [string|\"\"] (to get/set the PGN header tag site)");
 add_master_command ("startup", "startup [command list, separated by semicolon] (to get/set startup commands file)");
-add_master_command ("timeoffset", "timeoffset [[+|-]seconds] (to get/set the offset correcting the UTC time value)");
+add_master_command ("timeoffset", "timeoffset [[+|-]seconds] (to get/set the offset correcting the time value from the UTC time used by default)");
 add_master_command ("verbosity", "verbosity [0-6] (to get/set log verbosity: 0=none, 1=alert, 2=error, 3=warning, 4=info, 5=debug, 6=fyi)");
 
 sub detect_command {
@@ -1155,7 +1155,7 @@ sub process_master_command {
       if ($PGN_ARCHIVE ne "") {
         my @fileInfo = stat($PGN_ARCHIVE);
         if (defined $fileInfo[9]) {
-          $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S UTC", gmtime($fileInfo[9]));
+          $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S", gmtime($fileInfo[9]));
         }
         if (defined $fileInfo[7]) {
           $fileInfoText .= " size=$fileInfo[7]";
@@ -1331,7 +1331,7 @@ sub process_master_command {
       log_terminal("info: $fileInfoText");
       my @fileInfo = stat($PGN_FILE);
       if (defined $fileInfo[9]) {
-        $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S UTC", gmtime($fileInfo[9]));
+        $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S", gmtime($fileInfo[9]));
       }
       if (defined $fileInfo[7]) {
         $fileInfoText .= " size=$fileInfo[7]";
@@ -1426,7 +1426,7 @@ sub process_master_command {
     if ($verbosity >= 5) {
       $thisInfo = sprintf("%s pgn=%d (p/h=%d) cmd=%d (c/h=%d) lines=%d (l/h=%d)", $thisInfo, $pgnWriteCount, $pgnWriteCount / $hourTime, $cmdRunCount, $cmdRunCount / $hourTime, $lineCount, $lineCount / $hourTime);
     }
-    $thisInfo = sprintf("%s %s", $thisInfo, strftime("now=%Y-%m-%d %H:%M:%S UTC", gmtime($starupTime + $secTime + $timeOffset)));
+    $thisInfo = sprintf("%s %s", $thisInfo, strftime("now=%Y-%m-%d %H:%M:%S", gmtime($starupTime + $secTime + $timeOffset)));
     tell_operator($thisInfo);
   } elsif ($command eq "ics") {
     if ($parameters !~ /^\??$/) {
@@ -1495,7 +1495,7 @@ sub process_master_command {
       log_terminal("info: $fileInfoText");
       my @fileInfo = stat($PGN_MEMORY);
       if (defined $fileInfo[9]) {
-        $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S UTC", gmtime($fileInfo[9]));
+        $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S", gmtime($fileInfo[9]));
       }
       if (defined $fileInfo[7]) {
         $fileInfoText .= " size=$fileInfo[7]";
