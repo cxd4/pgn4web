@@ -294,13 +294,6 @@ $actionNum += 1;
 if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
 
-$text = <<<END
-<div>&nbsp;<a onclick='searchPgnGame("\\\\[\\\\s*Date\\\\s*\\"live\\"\\\\]", event.shiftKey); this.blur();'><span id="GameSite" title="site"></span><span id="GameDate" title="date"></span></a>&nbsp;</div>
-END;
-$oldText = '<div>&nbsp;<span id="GameSite" title="site"></span><span id="GameDate" title="date"></span>&nbsp;</div>';
-$actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
-$html = str_replace($oldText, $text, $html);
 
 $text = <<<END
 var appInitialized = false;
@@ -380,14 +373,8 @@ var lastGameLiveStatusExtraInfoRes = LOAD_PGN_FAIL;
 window['defaultCustomFunctionOnCheckLiveBroadcastStatus'] = window['customFunctionOnCheckLiveBroadcastStatus'];
 window['customFunctionOnCheckLiveBroadcastStatus'] = function() {
   defaultCustomFunctionOnCheckLiveBroadcastStatus();
-  fixGameLiveStatus();
   fixGameLiveStatusExtraInfo();
 };
-
-function fixGameLiveStatus() {
-  var theObj = document.getElementById("GameLiveStatus");
-  if (theObj && theObj.title) { theObj.title = theObj.title.replace(/live game/, "unfinished game"); }
-}
 
 function fixGameLiveStatusExtraInfo(res) {
   if (typeof(res) != "undefined") {
@@ -473,7 +460,7 @@ engineWinParametersSeparator = "#?";
 
 boardShortcut("F8", "live games web application wiki", function(t,e){ window.open("https://code.google.com/p/pgn4web/wiki/WebApp_LiveGames", "pgn4web_webAppWiki"); });
 
-boardShortcut("G6", "search next live date", function(t,e){ searchPgnGame("\\\\[\\\\s*Date\\\\s*\\"live\\"\\\\]", e.shiftKey); });
+boardShortcut("G6", "search next date", function(t,e){ searchPgnGame('\\\\[\\\\s*Date\\\\s*"(?!' + fixRegExp(gameDate[currentGame]) + '"\\\\s*\\\\])', e.shiftKey); }, true);
 
 boardShortcut("H5", "reset live games web application", function(t,e){ if (confirm("Reset live games web application to default configuration?\\n\\nWarning: application settings customizations, games data and engine analysis data will be lost.")) { window.localStorage.clear(); window.location.reload(); } });
 
@@ -481,7 +468,7 @@ function gameKey(event, site, date, round, white, black) {
   var key = "";
   key += "[" + (typeof(event) == "string" ? event : "") + "]";
   key += "[" + (typeof(site) == "string" ? site : "") + "]";
-  key += "[" + (typeof(date) == "string" ? date : "") + "]";
+  // key += "[" + (typeof(date) == "string" ? date : "") + "]"; // keep consistent with LiveBroadcastFoundOldGame in pgn4web.js
   key += "[" + (typeof(round) == "string" ? round : "") + "]";
   key += "[" + (typeof(white) == "string" ? white : "") + "]";
   key += "[" + (typeof(black) == "string" ? black : "") + "]";
