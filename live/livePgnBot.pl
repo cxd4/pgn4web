@@ -482,7 +482,11 @@ sub process_line {
       $autorelayEvent = $1;
       $autorelayEvent =~ s/[\s-]+$//g;
     }
-    if ($eventAutocorrectRegexp) { $autorelayEvent =~ s/$eventAutocorrectRegexp/eval($eventAutocorrectString)/egi; }
+    if ($eventAutocorrectRegexp) {
+      $autorelayEvent =~ s/$eventAutocorrectRegexp/eval($eventAutocorrectString)/egi;
+      $autorelayEvent =~ s/\s+/ /g;
+      $autorelayEvent =~ s/^\s|\s$//g;
+    }
     declareRelayOnline();
   } elsif ($line =~ /^:(\d+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)/) {
     my $thisGameNum = $1;
