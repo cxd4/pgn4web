@@ -1312,6 +1312,8 @@ sub process_master_command {
             $eventAutocorrectString = $newEventAutocorrectString;
             for my $thisGameNum (@games_num) {
               $GAMES_event[$thisGameNum] =~ s/$eventAutocorrectRegexp/eval($eventAutocorrectString)/egi;
+              $GAMES_event[$thisGameNum] =~ s/\s+/ /g;
+              $GAMES_event[$thisGameNum] =~ s/^\s|\s$//g;
             }
             refresh_pgn();
             refresh_memory();
