@@ -1836,7 +1836,7 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 <option value="loop">loop</option>
 <option value="none">none</option>
 </select>
-<span class="labeltext">autoplay games</span>
+<label class="labeltext" for="autoplayMode">autoplay games</label>
 <span class="helptext">autoplay first
 <a id="autopplayMode_game" class="helplink" href="" onClick="if (!this.disabled) { document.board.autoplayMode.value = 'game'; } return false;">game</a>
 once, or
@@ -1854,7 +1854,7 @@ continiously, or autoplay
 <option value="10000">10 seconds</option>
 <option value="30000">30 seconds</option>
 </select>
-<span class="labeltext">autoplay delay</span>
+<label class="labeltext" for="delay">autoplay delay</label>
 <p></p>
 <br>
 
@@ -1863,11 +1863,11 @@ continiously, or autoplay
 <option value="last">last</option>
 <option value="random">random</option>
 </select>
-<span class="labeltext">initial game</span>
+<label class="labeltext" for="initialGame">initial game</label>
 <p></p>
 
 <input class="input" type="text" id="initialVariation" name="input" value="" size="12" onChange="validate_number(this, 'initial variation', initialVariation_default);">
-<span class="labeltext">initial variation</span>
+<label class="labeltext" for="initialVariation">initial variation</label>
 <span class="helptext">a number; applies only at the first game load; when
 <a id="initialVariation_blank" class="helplink" href="" onClick="if (!this.disabled) { document.board.initialVariation.value = ''; } return false;">blank</a>,
 defaults to the main variation</span>
@@ -1883,12 +1883,12 @@ defaults to the main variation</span>
         <option value="variation">variation</option>
         <option value="number">custom number</option>
 </select>
-<span class="labeltext">initial halfmove</span>
+<label class="labeltext" for="initialHalfmoveSelect">initial halfmove</label>
 <span class="helptext"><i>start, end, random and comment</i> settings apply at every game load, <i>custom number</i> only at the first load</span>
 <p></p>
 
 <input class="input" type="text" id="initialHalfmoveNumber" name="input" value="" size="12" onChange="javascript:setInitialHalfmove();">
-<span class="labeltext">initial halfmove number</span>
+<label class="labeltext" for="initialHalfmoveNumber">initial halfmove number</label>
 <span class="helptext">actual halfmove number when the setting above is
 <a id="initialHalfmove_customNumber" class="helplink" href="" onClick="if (!this.disabled) { document.board.initialHalfmoveSelect.value = 'number'; setInitialHalfmove(); } return false;">custom number</a>
 </span>
@@ -1898,7 +1898,7 @@ defaults to the main variation</span>
 <div style="height: 1em">&nbsp;</div>
 
 <input class="input" type="text" id="squareSize" name="input" value="" size="12" onChange="validate_ss_ps_hm(); update_suggested_iframe_dimensions();">
-<span class="labeltext">square size</span>
+<label class="labeltext" for="squareSize">square size</label>
 <span class="helptext">a number; must be larger than the piece size plus the highlight border if any</span>
 <p></p>
 
@@ -1946,7 +1946,7 @@ defaults to the main variation</span>
 <option value="144">144</option>
 <option value="300">300</option>
 </select>
-<span class="labeltext">piece size</span>
+<label class="labeltext" for="pieceSize">piece size</label>
 <span class="helptext">
 <a id="pieceSize_default" class="helplink" href="" onClick="if (!this.disabled) { document.board.pieceSize.value = 'default'; } return false;">default</a>
 selects piece size based on square size</span>
@@ -1959,7 +1959,7 @@ selects piece size based on square size</span>
 <option value="uscf">uscf</option>
 <option value="random">random</option>
 </select>
-<span class="labeltext">piece font</span>
+<label class="labeltext" for="pieceFont">piece font</label>
 <span class="helptext">
 <a id="pieceFont_default" class="helplink" href="" onClick="if (!this.disabled) { document.board.pieceFont.value = 'default'; } return false;">default</a>
 selects piece font based on piece size</span>
@@ -1967,19 +1967,19 @@ selects piece font based on piece size</span>
 <br>
 
 <input class="color {adjust:false} input" type="text" id="lightColorHex" name="input" value="" size="12" onChange="validate_color(this, 'light squares color', lightColorHex_default)">
-<span class="labeltext">light squares color</span>
+<label class="labeltext" for="lightColorHex">light squares color</label>
 <p></p>
 
 <input class="color {adjust:false} input" type="text" id="darkColorHex" name="input" value="" size="12" onChange="validate_color(this, 'dark squares color', darkColorHex_default)">
-<span class="labeltext">dark squares color</span>
+<label class="labeltext" for="darkColorHex">dark squares color</label>
 <p></p>
 
 <input class="color {adjust:false} input" type="text" id="boardBorderColorHex" name="input" value="" size="12" onChange="validate_color(this, 'board border color', boardBorderColorHex_default)">
-<span class="labeltext">board border color</span>
+<label class="labeltext" for="boardBorderColorHex">board border color</label>
 <p></p>
 
 <input class="color {adjust:false} input" type="text" id="boardShadowColorHex" name="input" value="" size="12" onChange="validate_boardShadowColorHex()">
-<span class="labeltext">board shadow color</span>
+<label class="labeltext" for="boardShadowColorHex">board shadow color</label>
 <span class="helptext">a color;
 <a id="boardShadowColor_transparent" class="helplink" href="" onClick="if (!this.disabled) { document.board.boardShadowColorHex.color.fromString('FFFFFF'); document.board.boardShadowColorHex.value = 'transparent'; } return false;">transparent</a>
 disables the shadow,
@@ -1993,11 +1993,11 @@ copies the board border color
 <option value="square" selected="selected">square</option>
 <option value="none">none</option>
 </select>
-<span class="labeltext">square highlight mode</span>
+<label class="labeltext" for="highlightMode">square highlight mode</label>
 <p></p>
 
 <input class="color {adjust:false} input" type="text" id="highlightColorHex" name="input" value="" size="12" onChange="validate_color(this, 'highlight squares color', highlightColorHex_default)">
-<span class="labeltext">highlight squares color</span>
+<label class="labeltext" for="highlightColorHex">highlight squares color</label>
 <p></p>
 <br>
 
@@ -2006,7 +2006,7 @@ copies the board border color
 <option value="standard">standard</option>
 <option value="custom">custom</option>
 </select>
-<span class="labeltext">how to show control buttons</span>
+<label class="labeltext" for="buttonsDisplay">how to show control buttons</label>
 <span class="helptext">browser's
 <a id="buttonsDisplay_standard" class="helplink" href="" onClick="if (!this.disabled) { document.board.buttonsDisplay.value = 'standard'; update_controls(); } return false;">standard</a>
 buttons, or
@@ -2017,18 +2017,18 @@ buttons</span>
 <p></p>
 
 <input class="color {adjust:false} input" type="text" id="controlBackgroundColorHex" name="input" value="" size="12" onChange="validate_color(this, 'control buttons background color', controlBackgroundColorHex_default); update_controls()">
-<span class="labeltext">custom control buttons background color</span>
+<label class="labeltext" for="controlBackgroundColorHex">custom control buttons background color</label>
 <p></p>
 
 <input class="color {adjust:false} input" type="text" id="controlTextColorHex" name="input" value="" size="12" onChange="validate_color(this, 'control buttons text color', controlTextColorHex_default)">
-<span class="labeltext">custom control buttons text color</span>
+<label class="labeltext" for="controlTextColorHex">custom control buttons text color</label>
 
 <div style="height: 3em">&nbsp;</div>
 <script type="text/javascript">print_menu("header_moves_options", 3, "header and moves options");</script>
 <div style="height: 1em">&nbsp;</div>
 
 <input class="input" type="text" id="textMargin" name="input" value="" size="12" onChange="validate_number(this, 'text margin', textMargin_default);">
-<span class="labeltext">text margin</span>
+<label class="labeltext" for="textMargin">text margin</label>
 <span class="helptext">a number; header/moves margin, nice to have when text overflows with scrollbars</span>
 <p></p>
 <br>
@@ -2040,16 +2040,16 @@ buttons</span>
 <option value="live">live</option>
 <option value="variations">variations</option>
 </select>
-<span class="labeltext"><b>how to show game header</b></span>
+<label class="labeltext" for="headerDisplay"><b>how to show game header</b></label>
 <p></p>
 
 <input class="input" type="text" id="fontHeaderSize" name="input" value="" size="12" onChange="validate_number_percentage(this, 'header font size', fontHeaderSize_default);">
-<span class="labeltext">header font size</span>
+<label class="labeltext" for="fontHeaderSize">header font size</label>
 <span class="helptext">a number</span>
 <p></p>
 
 <input class="color {adjust:false} input" type="text" id="fontHeaderColorHex" name="input" value="" size="12" onChange="validate_color(this, 'header font color', fontHeaderColorHex_default)">
-<span class="labeltext">header font color</span>
+<label class="labeltext" for="fontHeaderColorHex">header font color</label>
 <p></p>
 <br>
 
@@ -2059,21 +2059,21 @@ buttons</span>
 <option value="puzzle">puzzle</option>
 <option value="hidden">hidden</option>
 </select>
-<span class="labeltext"><b>how to show game moves</b></span>
+<label class="labeltext" for="movesDisplay"><b>how to show game moves</b></label>
 <span class="helptext">select a game moves display option or use <a id="movesDisplay_oneClickOptimizedPuzzleSetup" class="helplink" href="" onClick="if (!this.disabled) { oneClickPuzzleSetup(); update_controls(); } return false;">the one click optimized puzzle setup</a></span>
 <p></p>
 
 <input class="input" type="text" id="fontMovesSize" name="input" value="" size="12" onChange="validate_number_percentage(this, 'moves font size', fontMovesSize_default);">
-<span class="labeltext">moves font size</span>
+<label class="labeltext" for="fontMovesSize">moves font size</label>
 <span class="helptext">a number</span>
 <p></p>
 
 <input class="color {adjust:false} input" type="text" id="fontMovesColorHex" name="input" value="" size="12" onChange="validate_color(this, 'moves font color', fontMovesColorHex_default)">
-<span class="labeltext">moves font color</span>
+<label class="labeltext" for="fontMovesColorHex">moves font color</label>
 <p></p>
 
 <input class="color {adjust:false} input" type="text" id="highlightMoveColorHex" name="input" value="" size="12" onChange="validate_highlightMoveColorHex()">
-<span class="labeltext">highlight move color</span>
+<label class="labeltext" for="highlightMoveColorHex">highlight move color</label>
 <span class="helptext">a color;
 <a id="highlightMoveColor_background" class="helplink" href="" onClick="if (!this.disabled) { document.board.highlightMoveColorHex.color.fromString('FFFFFF'); document.board.highlightMoveColorHex.value = 'background'; } return false;">background</a>
 copies the background color</span>
@@ -2085,7 +2085,7 @@ copies the background color</span>
 <option value="newline">newline</option>
 <option value="hidden">hidden</option>
 </select>
-<span class="labeltext">how to show move comments and variations</span>
+<label class="labeltext" for="commentsDisplay">how to show move comments and variations</label>
 <span class="helptext">
 <a id="commentsDisplay_inline" class="helplink" href="" onClick="if (!this.disabled) { document.board.commentsDisplay.value = 'inline'; update_controls(); } return false;">inline</a>
 inbetween game moves, or on a
@@ -2096,28 +2096,28 @@ inbetween game moves, or on a
 <p></p>
 
 <input class="input" type="text" id="fontCommentsSize" name="input" value="" size="12" onChange="validate_fontCommentsSize();">
-<span class="labeltext">comments <span class="noExtendedOption">and variations </span>font size</span>
+<label class="labeltext" for="fontCommentsSize">comments <span class="noExtendedOption">and variations </span>font size</label>
 <span class="helptext">a number;
 <a id="fontCommentsSize_moves" class="helplink" href="" onClick="if (!this.disabled) { document.board.fontCommentsSize.value = 'moves'; } return false;">moves</a>
 copies the moves font size</span>
 <p></p>
 
 <input class="color {adjust:false} input" type="text" id="fontCommentsColorHex" name="input" value="" size="12" onChange="validate_color(this, 'comments font color', fontCommentsColorHex_default)">
-<span class="labeltext">comments <span class="noExtendedOption">and variations </span>font color</span>
+<label class="labeltext" for="fontCommentsColorHex">comments <span class="noExtendedOption">and variations </span>font color</label>
 
 <!-- hiding variations font size and color -->
 <span class="extendedOption">
 
 <p></p>
 <input class="input" type="text" id="fontVariationsSize" name="input" value="" size="12" onChange="validate_fontVariationsSize();">
-<span class="labeltext">variations font size</span>
+<label class="labeltext" for="fontVariationsSize">variations font size</label>
 <span class="helptext">a number;
 <a id="fontVariationsSize_comments" class="helplink" href="" onClick="if (!this.disabled) { document.board.fontVariationsSize.value = 'comments'; } return false;">comments</a>
 copies the comments font size</span>
 
 <p></p>
 <input class="color {adjust:false} input" type="text" id="fontVariationsColorHex" name="input" value="" size="12" onChange="validate_color(this, 'variations font color', fontVariationsColorHex_default)">
-<span class="labeltext">variations font color</span>
+<label class="labeltext" for="fontVariationsColorHex">variations font color</label>
 <span class="helptext">a number;
 <a id="fontVariationsColor_comments" class="helplink" href="" onClick="if (!this.disabled) { document.board.fontVariationsColorHex.color.fromString('FFFFFF'); document.board.fontVariationsColorHex.value = 'comments'; } return false;">comments</a>
 copies the comments font color</span>
@@ -2132,28 +2132,28 @@ copies the comments font color</span>
 <option value="t">horizontal</option>
 <option value="f" selected="selected">vertical</option>
 </select>
-<span class="labeltext">chessboard and header/moves layout</span>
+<label class="labeltext" for="horizontalLayout">chessboard and header/moves layout</label>
 <p></p>
 <br>
 
 <input class="input" type="text" id="frameHeight" name="input" value="" size="12" onChange="validate_frameHeight(); update_suggested_iframe_dimensions();">
-<span class="labeltext">iFrame height</span>
+<label class="labeltext" for="frameHeight">iFrame height</label>
 <span id="frameHeight_helpText" class="helptext"></span>
 <p></p>
 
 <input class="input" type="text" id="frameWidth" name="input" value="" size="12" onChange="validate_frameWidth(); update_suggested_iframe_dimensions();">
-<span class="labeltext">iFrame width</span>
+<label class="labeltext" for="frameWidth">iFrame width</label>
 <span id="frameWidth_helpText" class="helptext"></span>
 <p></p>
 
 <input class="input" type="text" id="framePadding" name="input" value="" size="12" onChange="validate_number(this, 'frame padding', framePadding_default); update_suggested_iframe_dimensions();">
-<span class="labeltext">iFrame padding</span>
+<label class="labeltext" for="framePadding">iFrame padding</label>
 <span class="helptext">a number; border padding around the iframe, included within the iFrame width value</span>
 <p></p>
 <br>
 
 <input class="color {adjust:false} input" type="text" id="backgroundColorHex" name="input" value="" size="12" onChange="validate_backgroundColorHex()">
-<span class="labeltext">background color</span>
+<label class="labeltext" for="backgroundColorHex">background color</label>
 <span class="helptext">a color;
 <a id="backgroundColor_transparent" class="helplink" href="" onClick="if (!this.disabled) { document.board.backgroundColorHex.color.fromString('FFFFFF'); document.board.backgroundColorHex.value = 'transparent'; } return false;">transparent</a>
 uses the parent's background color</span>
@@ -2163,7 +2163,7 @@ uses the parent's background color</span>
 <span class="extendedOption">
 
 <input class="color {adjust:false} input" type="text" id="previewBackgroundColorHex" name="input" value="" size="12" onChange="validate_color(this, 'preview background color', previewBackgroundColorHex_default)">
-<span class="labeltext">preview background color</span>
+<label class="labeltext" for="previewBackgroundColorHex">preview background color</label>
 <span class="helptext">not actually used in the HTML code, just for the preview</span>
 <p></p>
 
@@ -2178,21 +2178,21 @@ uses the parent's background color</span>
 <div style="height: 1em">&nbsp;</div>
 
 <input class="checkbox" type="checkbox" id="useTextarea" name="checkbox" onChange="validate_useTextarea(); update_controls();">
-<span class="labeltext">use HTML textarea</span>
+<label class="labeltext" for="useTextarea">use HTML textarea</label>
 <span class="helptext">normally
 <a id="useTextarea_disabled" class="helplink" href="" onClick="if (!this.disabled) { document.board.useTextarea.checked = false; update_controls(); } return false;">disabled</a>;
 use only for deployment on a page from the same domain as the <i>board URL</i></span>
 <p></p>
 
 <input class="checkbox" type="checkbox" id="encodePgn" name="checkbox">
-<span class="labeltext">encode PGN text</span>
+<label class="labeltext" for="encodePgn">encode PGN text</label>
 <span class="helptext">normally
 <a id="encodePgn_enabled" class="helplink" href="" onClick="if (!this.disabled) { document.board.encodePgn.checked = true; } return false;">enabled</a>
 </span>
 <p></p>
 
 <input class="input" type="text" id="boardUrl" name="boardUrl" value="" size="12">
-<span class="labeltext">board URL</span>
+<label class="labeltext" for="boardUrl">board URL</label>
 <span class="helptext">normally as
 <a id="boardUrl_default" class="helplink" href="" onClick="if (!this.disabled) { document.board.boardUrl.value = boardUrl_default; } return false;">default</a>
 unless <i>use HTML textarea</i> is enabled or for deployment on a page from a different domain</span>
