@@ -358,6 +358,18 @@ sub remove_game {
   return $thisGameIndex;
 }
 
+sub event_autocorrect {
+  my ($event) = @_;
+  if (($eventAutocorrectRegexp) && ($event =~ /$eventAutocorrectRegexp/i)) {
+    my $oldEvent = $event;
+    $event =~ s/$eventAutocorrectRegexp/eval($eventAutocorrectString)/egi;
+    $event =~ s/\s+/ /g;
+    $event =~ s/^\s|\s$//g;
+    log_terminal("debug: event autocorrected: \"$oldEvent\" --> \"$event\"");
+  }
+  return $event;
+}
+
 our $timeOffset = 0;
 sub log_terminal {
   if ($verbosity == 0) {
@@ -482,11 +494,7 @@ sub process_line {
       $autorelayEvent = $1;
       $autorelayEvent =~ s/[\s-]+$//g;
     }
-    if ($eventAutocorrectRegexp) {
-      $autorelayEvent =~ s/$eventAutocorrectRegexp/eval($eventAutocorrectString)/egi;
-      $autorelayEvent =~ s/\s+/ /g;
-      $autorelayEvent =~ s/^\s|\s$//g;
-    }
+    if ($eventAutocorrectRegexp) { $autorelayEvent = event_autocorrect($autorelayEvent); }
     declareRelayOnline();
   } elsif ($line =~ /^:(\d+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)/) {
     my $thisGameNum = $1;
@@ -1310,11 +1318,7 @@ sub process_master_command {
             $newEventAutocorrectTest =~ s/$newEventAutocorrectRegexp/eval($newEventAutocorrectString)/egi;
             $eventAutocorrectRegexp = $newEventAutocorrectRegexp;
             $eventAutocorrectString = $newEventAutocorrectString;
-            for my $thisGameNum (@games_num) {
-              $GAMES_event[$thisGameNum] =~ s/$eventAutocorrectRegexp/eval($eventAutocorrectString)/egi;
-              $GAMES_event[$thisGameNum] =~ s/\s+/ /g;
-              $GAMES_event[$thisGameNum] =~ s/^\s|\s$//g;
-            }
+            for my $thisGameNum (@games_num) { $GAMES_event[$thisGameNum] = event_autocorrect($GAMES_event[$thisGameNum]); }
             refresh_pgn();
             refresh_memory();
           }
