@@ -365,7 +365,7 @@ sub event_autocorrect {
     $event =~ s/$eventAutocorrectRegexp/eval($eventAutocorrectString)/egi;
     $event =~ s/\s+/ /g;
     $event =~ s/^\s|\s$//g;
-    log_terminal("debug: event autocorrected: \"$oldEvent\" --> \"$event\"");
+    log_terminal("debug: event autocorrected: \"$oldEvent\" \"$event\"");
   }
   return $event;
 }
