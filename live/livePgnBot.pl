@@ -485,15 +485,22 @@ sub process_line {
     $autorelayEvent = $1;
     $autorelayEvent =~ s/[\[\]"]/'/g;
     $autorelayRound = "";
-    if ($autorelayEvent =~ /(.*)\bRound\s+(\d+)\s+Game\s+(\d+)/) {
-      $autorelayRound = "$2.$3";
-      $autorelayEvent = $1;
-      $autorelayEvent =~ s/[\s-]+$//g;
-    } elsif ($autorelayEvent =~ /(.*)\b(Round|Game)\s+(\d+)/) {
-      $autorelayRound = $3;
-      $autorelayEvent = $1;
-      $autorelayEvent =~ s/[\s-]+$//g;
+    if ($autorelayEvent =~ /^(.*)\bGame\s+(\d+)\b(.*)$/) {
+      $autorelayRound = $2;
+      $autorelayEvent = $1 . " " . $3;
+    } elsif ($autorelayEvent =~ /^(.*)\bLast\s+Game\b(.*)$/) {
+      $autorelayRound = "?";
+      $autorelayEvent = $1 . " " . $2;
     }
+    if ($autorelayEvent =~ /^(.*)\bRound\s+(\d+)\b(.*)$/) {
+      $autorelayRound = $autorelayRound ne "" ? $2 . "." . $autorelayRound : $2;
+      $autorelayEvent = $1 . " " . $3;
+    } elsif ($autorelayEvent =~ /^(.*)\bLast\s+Round\b(.*)$/) {
+      $autorelayRound = $autorelayRound ne "" ? "?." . $autorelayRound : "?";
+      $autorelayEvent = $1 . " " . $2;
+    }
+    $autorelayEvent =~ s/^\s+|[\s-]+$//g;
+    $autorelayEvent =~ s/\s+/ /g;
     if ($eventAutocorrectRegexp) { $autorelayEvent = event_autocorrect($autorelayEvent); }
     declareRelayOnline();
   } elsif ($line =~ /^:(\d+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)/) {
@@ -889,8 +896,8 @@ sub memory_add_pgnGame {
       my $newSortkey = $GAMES_event[$games_num[$i]];
       if ($GAMES_round[$games_num[$i]] ne "") {
         $newSortkey .= " + Round ";
-        my $newSortkeyRoundLength = length($GAMES_round[$games_num[$i]]);
-        if ($newSortkeyRoundLength < 3) { $newSortkey .= substr("000", 0, 3 - $newSortkeyRoundLength); }
+        if ($GAMES_round[$games_num[$i]] =~ /\^d{2}(\.\d+)?$/) { $newSortkey .= "0"; }
+        elsif ($GAMES_round[$games_num[$i]] =~ /\^\d(\.\d+)?$/) { $newSortkey .= "00"; }
         $newSortkey .= $GAMES_round[$games_num[$i]];
       }
       unshift(@memory_games_sortkey, $newSortkey);
@@ -1020,8 +1027,8 @@ sub memory_load {
     }
     for (my $m=$#memory_games_sortkey; $m>=0; $m--) {
       $memory_games_sortkey[$m] =~ s/ - Round / + Round /;
-      if ($memory_games_sortkey[$m] =~ /^(.* Round )(\S)$/) { $memory_games_sortkey[$m] = $1 . "00" . $2; }
-      if ($memory_games_sortkey[$m] =~ /^(.* Round )(\S\S)$/) { $memory_games_sortkey[$m] = $1 . "0" . $2; }
+      if ($memory_games_sortkey[$m] =~ /^(.* Round )(\d{2}(\.\d+)?)$/) { $memory_games_sortkey[$m] = $1 . "0" . $2; }
+      elsif ($memory_games_sortkey[$m] =~ /^(.* Round )(\d(\.\d+)?)$/) { $memory_games_sortkey[$m] = $1 . "00" . $2; }
     }
     log_terminal("debug: memory load: " . ($#memory_games + 1));
   }
