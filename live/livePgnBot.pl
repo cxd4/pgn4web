@@ -906,6 +906,13 @@ sub memory_add_pgnGame {
   }
 }
 
+sub fixTagForPurge {
+  my ($thisTag) = @_;
+  $thisTag =~ s/[^\s\w\d?]/./g;
+  $thisTag =~ s/\?/\\\?/g;
+  return $thisTag;
+}
+
 sub memory_purge_round {
   my ($thisEvent) = @_;
   my $purgedRound = 0;
@@ -913,13 +920,13 @@ sub memory_purge_round {
   if ($PGN_MEMORY ne "") {
     $thisEvent =~ s/[\[\]"]/'/g;
     my $thisRound = "";
-    if ($thisEvent =~ /(.*)\b(Round|Game)\s+([\d.]+)/) {
-      $thisRound = $3;
+    if ($thisEvent =~ /(.*)\bRound\s+(.+)$/) {
+      $thisRound = $2;
       $thisEvent = $1;
       $thisEvent =~ s/[\s-]+$//g;
     }
-    $thisEvent =~ s/[^\s\w\d]/./g;
-    $thisRound =~ s/[^\s\w\d]/./g;
+    $thisEvent = fixTagForPurge($thisEvent);
+    $thisRound = fixTagForPurge($thisRound);
     my $pattern = '\[Event "' . $thisEvent . '"\].*\[Round "' . $thisRound . '"\]';
     my $logged = 0;
     for (my $i=$#memory_games; $i>=0; $i--) {
@@ -952,6 +959,10 @@ sub memory_purge_game {
       $thisWhite =~ s/(?<=.)([A-Z])/ $1/g;
       $thisBlack =~ s/(?<=.)([A-Z])/ $1/g;
     }
+    $thisEvent = fixTagForPurge($thisEvent);
+    $thisRound = fixTagForPurge($thisRound);
+    $thisWhite = fixTagForPurge($thisWhite);
+    $thisBlack = fixTagForPurge($thisBlack);
     my $pattern = '\[Event "' . $thisEvent . '"\].*\[Round "' . $thisRound . '"\].*\[White "' . $thisWhite . '"\].*\[Black "' . $thisBlack . '"\]';
     for (my $i=$#memory_games; $i>=0; $i--) {
       if ($memory_games[$i] =~ /$pattern/s) {
@@ -1557,30 +1568,12 @@ sub process_master_command {
     }
   } elsif ($command eq "memorypurgegame") {
     if ($parameters =~ /^\s*"(.*?)"\s*"(.*?)"\s*"(.*?)"\s*"(.*?)"\s*$/) {
-      my $thisEvent = $1;
-      my $thisRound = $2;
-      my $thisWhite = $3;
-      my $thisBlack = $4;
-      my $thisTest;
-      eval {
-        $thisTest = $thisEvent;
-        "test" =~ /$thisTest/;
-        $thisTest = $thisRound;
-        "test" =~ /$thisTest/;
-        $thisTest = $thisWhite;
-        "test" =~ /$thisTest/;
-        $thisTest = $thisBlack;
-        "test" =~ /$thisTest/;
-        if (memory_purge_game($thisEvent, $thisRound, $thisWhite, $thisBlack) > 0) {
-          refresh_memory($#games_num + 1);
-          tell_operator("purged memory game");
-        } else {
-          tell_operator("no memory game found for purge");
-        }
-        1;
-      } or do {
-        tell_operator("error: invalid regular expression: $thisTest");
-      };
+      if (memory_purge_game($1, $2, $3, $4) > 0) {
+        refresh_memory($#games_num + 1);
+        tell_operator("purged memory game");
+      } else {
+        tell_operator("no memory game found for purge");
+      }
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
     } else {
@@ -1590,25 +1583,14 @@ sub process_master_command {
     if ($parameters =~ /^\s*"(.*?)"\s*"(.*?)"\s*$/) {
       my $thisEvent = $1;
       my $thisRound = $2;
-      my $thisTest;
       my $forPurge = $thisEvent;
-      eval {
-        $thisTest = $thisEvent;
-        "test" =~ /$thisTest/;
-        $thisTest = $thisRound;
-        "test" =~ /$thisTest/;
-        my $forPurge = $thisEvent;
-        if ($thisRound ne "") { $forPurge .= " - Round $thisRound"; }
-        if (memory_purge_round($forPurge) > 0) {
-          refresh_memory($#games_num + 1);
-          tell_operator("purged memory round");
-        } else {
-          tell_operator("no memory round found for purge");
-        }
-        1;
-      } or do {
-        tell_operator("error: invalid regular expression: $thisTest");
-      };
+      if ($thisRound ne "") { $forPurge .= " - Round $thisRound"; }
+      if (memory_purge_round($forPurge) > 0) {
+        refresh_memory($#games_num + 1);
+        tell_operator("purged memory round");
+      } else {
+        tell_operator("no memory round found for purge");
+      }
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
     } else {
