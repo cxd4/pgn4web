@@ -895,7 +895,7 @@ sub memory_add_pgnGame {
       unshift(@memory_games, $pgn);
       my $newSortkey = $GAMES_event[$games_num[$i]];
       if ($GAMES_round[$games_num[$i]] ne "") {
-        $newSortkey .= " + Round ";
+        $newSortkey .= " - Round ";
         if ($GAMES_round[$games_num[$i]] =~ /\^d{2}(\.\d+)?$/) { $newSortkey .= "0"; }
         elsif ($GAMES_round[$games_num[$i]] =~ /\^\d(\.\d+)?$/) { $newSortkey .= "00"; }
         $newSortkey .= $GAMES_round[$games_num[$i]];
@@ -1037,7 +1037,6 @@ sub memory_load {
       }
     }
     for (my $m=$#memory_games_sortkey; $m>=0; $m--) {
-      $memory_games_sortkey[$m] =~ s/ - Round / + Round /;
       if ($memory_games_sortkey[$m] =~ /^(.* Round )(\d{2}(\.\d+)?)$/) { $memory_games_sortkey[$m] = $1 . "0" . $2; }
       elsif ($memory_games_sortkey[$m] =~ /^(.* Round )(\d(\.\d+)?)$/) { $memory_games_sortkey[$m] = $1 . "00" . $2; }
     }
