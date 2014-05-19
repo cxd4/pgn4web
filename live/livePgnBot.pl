@@ -1276,8 +1276,10 @@ sub process_master_command {
   } elsif ($command eq "autorelayalwaysempty") {
     if ($parameters =~ /^(0|1)$/) {
       $autorelayAlwaysEmpty = ($parameters == 0) ? 0 : 1;
-      refresh_pgn();
-      refresh_memory();
+      if ($autorelayMode == 1) {
+        refresh_pgn();
+        refresh_memory();
+      }
     } elsif ($parameters !~ /^\??$/) {
       tell_operator("error: invalid $command parameter");
     }
