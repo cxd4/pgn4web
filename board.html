@@ -1058,7 +1058,7 @@ function display_header_moves() {
                    "px; margin-right: 3%;'><span id=GameNextMove></span><span class='move'>&nbsp;</span></div>");
     document.write("</td><td align=right>");
     document.write("<div class='header headerLive' style='white-space: nowrap; margin-right: " + textMargin +
-                   "px; margin-left: 3%;'>&nbsp;<span id=GameLiveStatus></span></div>");
+                   "px; margin-left: 3%;'>&nbsp;<span id=GameLiveStatus onclick='refreshPgnSource();'></span></div>");
     document.write("</td></tr></table>");
   }
 
