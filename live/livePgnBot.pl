@@ -132,6 +132,9 @@ our $eventAutocorrectRegexp = "";
 our $eventAutocorrectString = "";
 
 our $autorelayAlwaysEmpty = 1;
+our $roundReverse = 0;
+our $roundReverseAgtB;
+our $roundReverseAltB;
 
 our @currentRounds = ();
 
@@ -779,6 +782,8 @@ sub refresh_pgn {
   my $pgn = "";
   $gameRunning = 0;
 
+  $roundReverseAgtB = $roundReverse ? -1 : 1;
+  $roundReverseAltB = -$roundReverseAgtB;
   my @ordered = sort {
     if (($autorelayMode == 1) && ($prioritizeFilter ne "")) {
       my $aPrioritized = (headerForFilter($GAMES_event[$games_num[$a]], $GAMES_round[$games_num[$a]], $games_white[$a], $games_black[$a]) =~ /$prioritizeFilter/i);
@@ -786,8 +791,8 @@ sub refresh_pgn {
       if ($aPrioritized && !$bPrioritized) { return -1; }
       if (!$aPrioritized && $bPrioritized) { return 1; }
     }
-    if (lc($GAMES_event[$games_num[$a]]) gt lc($GAMES_event[$games_num[$b]])) { return 1; }
-    if (lc($GAMES_event[$games_num[$a]]) lt lc($GAMES_event[$games_num[$b]])) { return -1; }
+    if (lc($GAMES_event[$games_num[$a]]) gt lc($GAMES_event[$games_num[$b]])) { return $roundReverseAgtB; }
+    if (lc($GAMES_event[$games_num[$a]]) lt lc($GAMES_event[$games_num[$b]])) { return $roundReverseAltB; }
     # my $aElo = 0;
     # if ($games_whiteElo[$a] =~ /^[0-9]+$/) { $aElo += $games_whiteElo[$a]; }
     # if ($games_blackElo[$a] =~ /^[0-9]+$/) { $aElo += $games_blackElo[$a]; }
@@ -860,9 +865,11 @@ sub refresh_memory {
     if ($memory_games_howmany > 0) {
       my @selected_memory_games = (0 .. ($memory_games_howmany - 1));
       if ($autorelayMode == 1) {
+        $roundReverseAgtB = $roundReverse ? -1 : 1;
+        $roundReverseAltB = -$roundReverseAgtB;
         @selected_memory_games = sort {
-          if (lc($memory_games_sortkey[$a]) gt lc($memory_games_sortkey[$b])) { return 1; }
-          if (lc($memory_games_sortkey[$a]) lt lc($memory_games_sortkey[$b])) { return -1; }
+          if (lc($memory_games_sortkey[$a]) gt lc($memory_games_sortkey[$b])) { return $roundReverseAgtB; }
+          if (lc($memory_games_sortkey[$a]) lt lc($memory_games_sortkey[$b])) { return $roundReverseAltB; }
           return $b <=> $a;
         } @selected_memory_games;
       }
@@ -1124,6 +1131,7 @@ add_master_command ("quit", "quit [number] (to quit from the ics server, returni
 add_master_command ("relay", "relay [0|game number list, such as: 12 34 56 ..] (to observe given games from an event relay, 0 to disable relay mode)");
 add_master_command ("reset", "reset [1] (to reset observed/followed games list and setting)");
 add_master_command ("round", "round [string|\"\"] (to get/set the PGN header tag round)");
+add_master_command ("roundreverse", "roundreverse [0|1] (to use reverse alphabetical ordering of rounds)");
 add_master_command ("site", "site [string|\"\"] (to get/set the PGN header tag site)");
 add_master_command ("startup", "startup [command list, separated by semicolon] (to get/set startup commands file)");
 add_master_command ("timeoffset", "timeoffset [[+|-]seconds] (to get/set the offset correcting the time value from the UTC time used by default)");
@@ -1285,7 +1293,7 @@ sub process_master_command {
     }
     tell_operator("autorelayalwaysempty=$autorelayAlwaysEmpty");
   } elsif ($command eq "config") {
-    tell_operator("config: max=$maxGamesNum file=$PGN_FILE archive=$PGN_ARCHIVE memory=$PGN_MEMORY memorymax=$memoryMaxGamesNum follow=$followMode relay=$relayMode autorelay=$autorelayMode autorelayalwaysempty=$autorelayAlwaysEmpty ignore=$ignoreFilter autoprioritize=$autoPrioritize prioritize=$prioritizeFilter eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " archiveselect=$archiveSelectFilter memoryselect=$memorySelectFilter event=$newGame_event site=$newGame_site date=$newGame_date archivedate=$archive_date memorydate=$memory_date round=$newGame_round heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
+    tell_operator("config: max=$maxGamesNum file=$PGN_FILE archive=$PGN_ARCHIVE memory=$PGN_MEMORY memorymax=$memoryMaxGamesNum follow=$followMode relay=$relayMode autorelay=$autorelayMode autorelayalwaysempty=$autorelayAlwaysEmpty ignore=$ignoreFilter autoprioritize=$autoPrioritize prioritize=$prioritizeFilter eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " archiveselect=$archiveSelectFilter memoryselect=$memorySelectFilter event=$newGame_event site=$newGame_site date=$newGame_date archivedate=$archive_date memorydate=$memory_date round=$newGame_round roundreverse=$roundReverse heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
   } elsif ($command eq "date") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
@@ -1714,6 +1722,15 @@ sub process_master_command {
     } else {
       tell_operator("error: invalid $command parameter");
     }
+  } elsif ($command eq "roundreverse") {
+    if ($parameters =~ /^(0|1)$/) {
+      $roundReverse = $parameters;
+      if ($#games_num > 0) { refresh_pgn(); }
+      refresh_memory();
+    } elsif ($parameters !~ /^\??$/) {
+      tell_operator("error: invalid $command parameter");
+    }
+    tell_operator("roundreverse=$roundReverse");
   } elsif ($command eq "site") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
