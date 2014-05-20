@@ -133,8 +133,8 @@ our $eventAutocorrectString = "";
 
 our $autorelayAlwaysEmpty = 1;
 our $roundReverse = 0;
-our $roundReverseAgtB;
-our $roundReverseAltB;
+our $roundReverseAgtB = $roundReverse ? -1 : 1;
+our $roundReverseAltB = -$roundReverseAgtB;
 
 our @currentRounds = ();
 
@@ -782,8 +782,6 @@ sub refresh_pgn {
   my $pgn = "";
   $gameRunning = 0;
 
-  $roundReverseAgtB = $roundReverse ? -1 : 1;
-  $roundReverseAltB = -$roundReverseAgtB;
   my @ordered = sort {
     if (($autorelayMode == 1) && ($prioritizeFilter ne "")) {
       my $aPrioritized = (headerForFilter($GAMES_event[$games_num[$a]], $GAMES_round[$games_num[$a]], $games_white[$a], $games_black[$a]) =~ /$prioritizeFilter/i);
@@ -865,8 +863,6 @@ sub refresh_memory {
     if ($memory_games_howmany > 0) {
       my @selected_memory_games = (0 .. ($memory_games_howmany - 1));
       if ($autorelayMode == 1) {
-        $roundReverseAgtB = $roundReverse ? -1 : 1;
-        $roundReverseAltB = -$roundReverseAgtB;
         @selected_memory_games = sort {
           if (lc($memory_games_sortkey[$a]) gt lc($memory_games_sortkey[$b])) { return $roundReverseAgtB; }
           if (lc($memory_games_sortkey[$a]) lt lc($memory_games_sortkey[$b])) { return $roundReverseAltB; }
@@ -1725,6 +1721,8 @@ sub process_master_command {
   } elsif ($command eq "roundreverse") {
     if ($parameters =~ /^(0|1)$/) {
       $roundReverse = $parameters;
+      $roundReverseAgtB = $roundReverse ? -1 : 1;
+      $roundReverseAltB = -$roundReverseAgtB;
       if ($#games_num > 0) { refresh_pgn(); }
       refresh_memory();
     } elsif ($parameters !~ /^\??$/) {
