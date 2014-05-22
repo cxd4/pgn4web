@@ -921,34 +921,22 @@ sub memory_add_pgnGame {
 
 sub fixTagForPurge {
   my ($thisTag) = @_;
-  $thisTag =~ s/[^\s\w\d?]/./g;
-  $thisTag =~ s/\?/\\\?/g;
+  $thisTag =~ s/[^\s\w\d]/./g;
   return $thisTag;
 }
 
 sub memory_purge_round {
-  my ($thisEvent) = @_;
+  my ($thisEventRound) = @_;
   my $purgedRound = 0;
 
   if ($PGN_MEMORY ne "") {
-    $thisEvent =~ s/[\[\]"]/'/g;
-    my $thisRound = "";
-    if ($thisEvent =~ /(.*)\bRound\s+(.+)$/) {
-      $thisRound = $2;
-      $thisRound =~ s/^0+([1-9])/$1/;
-      $thisEvent = $1;
-      $thisEvent =~ s/[\s-]+$//g;
-    }
-    $thisEvent = fixTagForPurge($thisEvent);
-    $thisRound = fixTagForPurge($thisRound);
-    my $pattern = '\[Event "' . $thisEvent . '"\].*\[Round "' . $thisRound . '"\]';
     my $logged = 0;
     for (my $i=$#memory_games; $i>=0; $i--) {
-      if ($memory_games[$i] =~ /$pattern/s) {
+      if ($thisEventRound eq $memory_games_sortkey[$i]) {
         @memory_games = @memory_games[0..($i-1), ($i+1)..$#memory_games];
         @memory_games_sortkey = @memory_games_sortkey[0..($i-1), ($i+1)..$#memory_games_sortkey];
         if ($logged == 0) {
-          log_terminal('debug: memory purged event: [Event "' . $thisEvent . '"][Round "' . $thisRound . '"]');
+          log_terminal('debug: memory purged event: ' . $thisEventRound);
           $logged = 1;
         }
         $purgedRound++;
@@ -973,13 +961,11 @@ sub memory_purge_game {
       $thisWhite =~ s/(?<=.)([A-Z])/ $1/g;
       $thisBlack =~ s/(?<=.)([A-Z])/ $1/g;
     }
-    $thisEvent = fixTagForPurge($thisEvent);
-    $thisRound = fixTagForPurge($thisRound);
     $thisWhite = fixTagForPurge($thisWhite);
     $thisBlack = fixTagForPurge($thisBlack);
-    my $pattern = '\[Event "' . $thisEvent . '"\].*\[Round "' . $thisRound . '"\].*\[White "' . $thisWhite . '"\].*\[Black "' . $thisBlack . '"\]';
+    my $pattern = '\[White "' . $thisWhite . '"\].*\[Black "' . $thisBlack . '"\]';
     for (my $i=$#memory_games; $i>=0; $i--) {
-      if ($memory_games[$i] =~ /$pattern/s) {
+      if ((eventRound($thisEvent, $thisRound) eq $memory_games_sortkey[$i]) && ($memory_games[$i] =~ /$pattern/s)) {
         @memory_games = @memory_games[0..($i-1), ($i+1)..$#memory_games];
         @memory_games_sortkey = @memory_games_sortkey[0..($i-1), ($i+1)..$#memory_games_sortkey];
         log_terminal('debug: memory purged game: [Event "' . $thisEvent . '"][Round "' . $thisRound . '"][White "' . $thisWhite . '"][Black "' . $thisBlack . '"]');
@@ -1599,11 +1585,7 @@ sub process_master_command {
     }
   } elsif ($command eq "memorypurgeround") {
     if ($parameters =~ /^\s*"(.*?)"\s*"(.*?)"\s*$/) {
-      my $thisEvent = $1;
-      my $thisRound = $2;
-      my $forPurge = $thisEvent;
-      if ($thisRound ne "") { $forPurge .= " - Round $thisRound"; }
-      if (memory_purge_round($forPurge) > 0) {
+      if (memory_purge_round(eventRound($1, $2)) > 0) {
         refresh_memory($#games_num + 1);
         tell_operator("purged memory round");
       } else {
