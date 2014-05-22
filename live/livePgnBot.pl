@@ -74,6 +74,7 @@ sub cmd_run {
 
 
 our $lastPgn = "";
+our $lastPgnNum = 0;
 
 our $maxGamesNumDefault = 30; # frechess.org limit
 our $maxGamesNum = $maxGamesNumDefault;
@@ -819,17 +820,19 @@ sub refresh_pgn {
     return $a <=> $b;
   } (0 .. ($maxGamesNum - 1));
 
-  my $lastPgnNum = 0;
+  my $newPgnNum = 0;
   my $newPgn;
   for (my $i=0; $i<$maxGamesNum; $i++) {
     $newPgn = save_pgnGame($ordered[$i]);
-    if ($newPgn ne "") { $lastPgnNum++; }
+    if ($newPgn ne "") { $newPgnNum++; }
     $pgn .= $newPgn;
   }
 
   if (($pgn eq "") || (($autorelayMode == 1) && (($gameRunning == 0) || ($autorelayAlwaysEmpty == 1)))) {
     $pgn .= temp_pgn();
+    $newPgnNum++;
   }
+  $lastPgnNum = $newPgnNum;
 
   if ($pgn ne $lastPgn) {
     if (open(my $thisFile, ">$PGN_FILE")) {
@@ -837,7 +840,7 @@ sub refresh_pgn {
       close($thisFile);
       $pgnWriteCount++;
       $lastPgn = $pgn;
-      refresh_memory($lastPgnNum);
+      refresh_memory();
     } else {
       log_terminal("error: failed writing $PGN_FILE");
     }
@@ -871,8 +874,6 @@ sub archive_pgnGame {
 }
 
 sub refresh_memory {
-  my ($lastPgnNum) = @_;
-
   if ($PGN_MEMORY ne "") {
     my $memoryPgn = $lastPgn;
     my $memory_games_howmany = $memoryMaxGamesNum - $lastPgnNum;
@@ -1293,13 +1294,14 @@ sub process_master_command {
   } elsif ($command eq "empty") {
     if ($parameters eq "1") {
       $lastPgn = temp_pgn();
+      $lastPgnNum = 1;
       if (open(my $thisFile, ">$PGN_FILE")) {
         print $thisFile $lastPgn;
         close($thisFile);
       } else {
         log_terminal("error: failed writing $PGN_FILE");
       }
-      if ($PGN_MEMORY ne "") { refresh_memory(0); }
+      if ($PGN_MEMORY ne "") { refresh_memory(); }
       log_terminal("info: saved empty PGN data as placeholder file");
       tell_operator("OK $command");
     } elsif ($parameters eq "") {
@@ -1573,7 +1575,7 @@ sub process_master_command {
   } elsif ($command eq "memorypurgegame") {
     if ($parameters =~ /^\s*"(.*?)"\s*"(.*?)"\s*"(.*?)"\s*"(.*?)"\s*$/) {
       if (memory_purge_game($1, $2, $3, $4) > 0) {
-        refresh_memory($#games_num + 1);
+        refresh_memory();
         tell_operator("purged memory game");
       } else {
         tell_operator("no memory game found for purge");
@@ -1586,7 +1588,7 @@ sub process_master_command {
   } elsif ($command eq "memorypurgeround") {
     if ($parameters =~ /^\s*"(.*?)"\s*"(.*?)"\s*$/) {
       if (memory_purge_round(eventRound($1, $2)) > 0) {
-        refresh_memory($#games_num + 1);
+        refresh_memory();
         tell_operator("purged memory round");
       } else {
         tell_operator("no memory round found for purge");
@@ -1603,7 +1605,7 @@ sub process_master_command {
       eval {
         "test" =~ /$searchEvent/;
         if (memory_rename_event($searchEvent, $replacementEvent) > 0) {
-          refresh_memory($#games_num + 1);
+          refresh_memory();
           tell_operator("renamed event");
         } else {
           tell_operator("no memory event found for rename");
