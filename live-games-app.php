@@ -174,6 +174,7 @@ $text = <<<END
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="application-name" content="$appName">
 END;
 $oldText = "<!-- AppCheck: meta -->";
 $actionNum += 1;
@@ -182,9 +183,11 @@ $html = str_replace($oldText, $text, $html);
 
 
 $text = <<<END
+<!-- DeploymentCheck: icons -->
 <link rel="icon" sizes="16x16" href="live-games-app-icon-16x16.ico">
 <link rel="icon" sizes="128x128" href="live-games-app-icon-128x128.png">
 <link rel="apple-touch-icon" href="live-games-app-icon-60x60.png" />
+<!-- end DeploymentCheck -->
 <script type="text/javascript">
 "use strict";
 window['defaultOpen'] = window.open;
