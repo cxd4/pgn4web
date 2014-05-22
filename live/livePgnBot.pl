@@ -1009,7 +1009,7 @@ sub memory_load {
     my $newRound;
     if (open(my $thisFile,  "<",  $PGN_MEMORY)) {
       my @lines = <$thisFile>;
-      @candidate_memory_games = (join("", @lines) =~ /((?:\[\s*\w+\s*"[^"]*"\s*\]\s*)+[^[]+)/g);
+      @candidate_memory_games = (join("", @lines) =~ /((?:\[\s*\w+\s*"[^"]*"\s*\]\s*)+(?:[^[]|\[%)+)/g);
       foreach (@candidate_memory_games) {
         if (($_ =~ /\[Result "(1-0|1\/2-1\/2|0-1)"\]/i) && (($memorySelectFilter eq "") || ($_ =~ /$memorySelectFilter/is))) {
           $newPgn = $_;
