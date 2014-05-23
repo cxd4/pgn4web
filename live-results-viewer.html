@@ -450,6 +450,9 @@ a.variation {
   var showEvent = true;
   if ((gup("showEvent") == "false") || (gup("showEvent") == "f")) { showEvent = false; }
 
+  var roundReverse = false;
+  if ((gup("roundReverse") == "true") || (gup("roundReverse") == "t")) { roundReverse = true; }
+
   var showTeams = true;
   if ((gup("showTeams") == "false") || (gup("showTeams") == "f")) { showTeams = false; }
 
@@ -484,6 +487,7 @@ a.variation {
       " - initialGame = " + iniGame + "; initial game to load, a number or first, last, random or a search string (default 1)" + "\n" +
       " - showBoard = " + showBoard + "; shows the chessboard (default true)" + "\n" +
       " - showEvent = " + showEvent + "; shows event information (default true)" + "\n" +
+      " - roundReverse = " + roundReverse + "; reverse round ordering (default false)" + "\n" +
       " - showTeams = " + showTeams + "; shows teams information (default true)" + "\n" +
       " - showPlayersInfo = " + showPlayersInfo + "; shows title/elo players information (default true)" + "\n" +
       " - showLastMoves = " + showLastMoves + "; shows last moves information (default false)" + "\n" +
@@ -627,7 +631,7 @@ a.variation {
     if (res !== 0) { return res; }
 
     res = myCompareRound(fixRound(gameRound[aa]), fixRound(gameRound[zz]));
-    if (res !== 0) { return res; }
+    if (res !== 0) { return roundReverse ? -res : res; }
 
     res = myCompare(gameMatch[aa], gameMatch[zz]);
     if (res !== 0) { return res; }
@@ -819,8 +823,9 @@ a.variation {
   }
 
   function customDebugInfo() {
-    return "showEvent=" + showEvent + " showTeams=" + showTeams + " showPlayersInfo=" + showPlayersInfo + " showLastMoves=" + showLastMoves + " showBoard=" + showBoard + " autoHighlightNewmoves=" + autoHighlightNewmoves + " autoSwitchNewgames=" + autoSwitchNewgames + " showAnalysis=" + showAnalysis;
+    return "se=" + b2s(showEvent) + " rr=" + b2s(roundReverse) + " st=" + b2s(showTeams) + " spi=" + b2s(showPlayersInfo) + " slm=" + b2s(showLastMoves) + " sb=" + b2s(showBoard) + " ahn=" + b2s(autoHighlightNewmoves) + " asn=" + b2s(autoSwitchNewgames) + " sa=" + b2s(showAnalysis);
   }
+  function b2s(b) { return b ? "t" : "f"; }
 
   // customShortcutKey_Shift_1 defined by fide-lookup.js
   // customShortcutKey_Shift_2 defined by fide-lookup.js
@@ -836,7 +841,7 @@ a.variation {
   function customShortcutKey_Shift_9() { showAnalysisBoard(false); }
   function customShortcutKey_Shift_0() { if (showAnalysis) { hideAnalysisBoard(); } else { showAnalysisBoard(disableEngine); } }
 
-  boardShortcut("F5", "toggle event information", function(t,e){ toggleShowEvent(); });
+  boardShortcut("F5", "toggle event information", function(t,e){ if (e.shiftKey) { toggleRoundReverse(); } else { toggleShowEvent(); } });
   boardShortcut("G5", "toggle teams information", function(t,e){ toggleShowTeams(); });
   boardShortcut("H5", "toggle title/elo players information", function(t,e){ toggleShowPlayersInfo(); });
   boardShortcut("G6", "toggle last moves information", function(t,e){ toggleShowLastMoves(); });
@@ -855,10 +860,16 @@ a.variation {
     printGames();
   }
 
+  function toggleRoundReverse() {
+    roundReverse = !roundReverse;
+    gameId.sort(sortGameId);
+    printGames();
+  }
+
   function toggleShowTeams() {
     showTeams = !showTeams;
     printGames();
-   }
+  }
 
   function toggleShowPlayersInfo() {
     showPlayersInfo = !showPlayersInfo;
