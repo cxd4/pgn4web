@@ -8,6 +8,10 @@
 # code based on Marcin Kasperski's tutorial availabale at
 # http://blog.mekk.waw.pl/series/how_to_write_fics_bot/
 
+# warning: this is experimental code, developed and tested only for
+# a very specific purpose within the pgn4web project; this is not
+# intended for general availability as part of the pgn4web project
+
 
 $| = 1;
 use strict;
@@ -1121,7 +1125,7 @@ add_master_command ("memorypurgeround", "memorypurgeround [\"event\" \"round\"] 
 add_master_command ("memoryrenameevent", "memoryrenameevent [\"search\" \"replacement\"] (to rename an event in the PGN memory data)");
 add_master_command ("memoryselect", "memoryselect [regexp|\"\"] (to get/set the regular expression to select games for the PGN memory data)");
 add_master_command ("observe", "observe [game number list, such as: 12 34 56 ..] (to observe given games)");
-add_master_command ("prioritize", "prioritize [regexp|\"\"] (to get/set the regular expression to prioritize events/players from the PGN header during autorelay; might be overruled by ignore)");
+add_master_command ("prioritize", "prioritize [regexp|\"\"] (to get/set the regular expression to prioritize events/players from the PGN header during autorelay; might be overridden by autoprioritize; might be overruled by ignore)");
 add_master_command ("quit", "quit [number] (to quit from the ics server, returning the given exit value)");
 add_master_command ("relay", "relay [0|game number list, such as: 12 34 56 ..] (to observe given games from an event relay, 0 to disable relay mode)");
 add_master_command ("reset", "reset [1] (to reset observed/followed games list and setting)");
@@ -1663,6 +1667,9 @@ sub process_master_command {
           }
           $reportedNotFoundNonPrioritizedGame = 0;
           log_terminal("info: prioritize=$prioritizeFilter");
+          if ($autoPrioritize ne "") {
+            tell_operator("warning: autoprioritize overrides the manually set prioritize regular expression");
+          }
           1;
         } or do {
           tell_operator("error: invalid regular expression: $parameters");
