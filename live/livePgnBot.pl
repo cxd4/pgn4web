@@ -240,8 +240,16 @@ sub save_game {
 
   my $thisGameIndex = find_gameIndex($newGame_num);
   if ($thisGameIndex < 0) {
+    my $thisHeaderForFilter = headerForFilter($autorelayMode ? $GAMES_event[$newGame_num] : $newGame_event, $autorelayMode ? $GAMES_round[$newGame_num] : $newGame_round, $newGame_white, $newGame_black);
     if ($#games_num + 1 >= $maxGamesNum) {
+      if (($autorelayMode == 1) && ($thisHeaderForFilter !~ /$prioritizeFilter/i)) {
+        log_terminal("debug: too many games for adding non prioritized game $thisHeaderForFilter");
+        cmd_run("unobserve $newGame_num");
+        return;
+      }
       if (remove_game(-1) < 0) {
+        log_terminal("debug: failed removing game for game $thisHeaderForFilter");
+        cmd_run("unobserve $newGame_num");
         return;
       }
     }
@@ -262,7 +270,7 @@ sub save_game {
       $GAMES_sortkey[$newGame_num] = eventRound($newGame_event, $newGame_round);
     }
     $gamesStartCount++;
-    log_terminal("debug: game new $newGame_num: " . headerForFilter($GAMES_event[$newGame_num], $GAMES_round[$newGame_num], $newGame_white, $newGame_black));
+    log_terminal("debug: game new $newGame_num: $thisHeaderForFilter");
     memory_purge_game($GAMES_event[$newGame_num], $GAMES_round[$newGame_num], $newGame_white, $newGame_black);
   } else {
     if (($games_white[$thisGameIndex] ne $newGame_white) || ($games_black[$thisGameIndex] ne $newGame_black) || ($games_whiteElo[$thisGameIndex] ne $newGame_whiteElo) || ($games_blackElo[$thisGameIndex] ne $newGame_blackElo)) {
