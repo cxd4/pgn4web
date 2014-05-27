@@ -170,7 +170,7 @@ h1.pageHeader {
 }
 
 .gameAnalysisContainer {
-  padding-top: 97px; /* = gameBoardContainer.paddingTop + 2 * (header.fontSize * header.lineHeight + header.paddingBottom) + boardTable.borderWidth = (20 + 2 * (11 * 1.4 + 22) + 2) */
+  padding-top: 118px; /* = gameBoardContainer.paddingTop + 2 * (header.height + header.paddingBottom) + boardTable.borderWidth = (20 + 2 * (16 + 32) + 2) */
   overflow: hidden;
   width: 40px; /* defined as gameAnalysisContainer.width.closed = body.padding */
   transition: width 1s linear;
@@ -301,7 +301,7 @@ a.variation {
 
 .header, .footer {
   font-size: 11px; /* defined as header.fontSize */
-  line-height: 1.4em; /* defined as header.lineHeight */
+  height: 16px; /* defined as header.height */
   white-space: nowrap;
   margin-left: 2px; /* = boardTable.borderWidth */
   margin-right: 2px; /* = boardTable.borderWidth */
@@ -309,11 +309,11 @@ a.variation {
 }
 
 .header {
-  margin-bottom: 22px; /* defined as header.marginBottom = 2 * header.fontSize */
+  margin-bottom: 32px; /* defined as header.marginBottom = 2 * header.height */
 }
 
 .footer {
-  margin-top: 22px; /* = 2 * header.fontSize */
+  margin-top: 32px; /* = 2 * header.height */
 }
 
 .gameEvent, .gameLiveStatus, .gameWhite, .gameWhiteClock, .gameBlackClock, .gameBlack {
