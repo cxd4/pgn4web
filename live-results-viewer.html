@@ -163,14 +163,14 @@ h1.pageHeader {
 
 .gameFloatingContainer {
   position: fixed;
-  right: 30px; /* defined as gameFloatingContainer.right */
-  top: 30px; /* = gameFloatingContainer.right */
+  right: 0; /* defined as gameFloatingContainer.right */
+  top: 30px; /* defined as gameFloatingContainer.top */
   white-space: nowrap;
   background-color: white;
 }
 
 .gameAnalysisContainer {
-  padding-top: 118px; /* = gameBoardContainer.paddingTop + 2 * (header.height + header.paddingBottom) + boardTable.borderWidth = (20 + 2 * (16 + 32) + 2) */
+  padding-top: 110px; /* = gameBoardContainer.paddingTop + 2 * (header.height + header.paddingBottom) + boardTable.borderWidth + gameBoard.paddingTop = (20 + 2 * (16 + 24) + 2 + 8) */
   overflow: hidden;
   width: 40px; /* defined as gameAnalysisContainer.width.closed = body.padding */
   transition: width 1s linear;
@@ -194,11 +194,17 @@ h1.pageHeader {
 }
 
 .gameBoardContainer {
-  width: 324px;
-  padding: 10px; /* defined as gameBoardContainer.padding = body.padding - gameFloatingContainer.right */
-  padding-top: 20px; /* defined as gameBoardContainer.paddingTop = 2 * gameBoardContainer.padding */
+  width: 324px; /* defined as gameBoardContainer.width */
+  padding-top: 20px; /* defined as gameBoardContainer.paddingTop */
+  padding-bottom: 10px; /* defined as gameBoardContainer.paddingBottom */
+  padding-right: 40px; /* = body.padding */
   padding-left: 0px;
   margin-bottom: 16px; /* = body.fontSize */
+}
+
+.gameBoard {
+  padding-top: 8px; /* defined as gameBoard.paddingTop = 0.5 * header.height */
+  padding-bottom: 8px; /* = gameBoard.paddingTop */
 }
 
 .whiteSquare,
@@ -309,11 +315,11 @@ a.variation {
 }
 
 .header {
-  margin-bottom: 32px; /* defined as header.marginBottom = 2 * header.height */
+  margin-bottom: 24px; /* defined as header.marginBottom = 1.5 * header.height */
 }
 
 .footer {
-  margin-top: 32px; /* = 2 * header.height */
+  margin-top: 24px; /* = 1.5 * header.height */
 }
 
 .gameEvent, .gameLiveStatus, .gameWhite, .gameWhiteClock, .gameBlackClock, .gameBlack {
@@ -447,6 +453,9 @@ a.variation {
   var showBoard = true;
   if ((gup("showBoard") == "false") || (gup("showBoard") == "f")) { showBoard = false; }
 
+  var adjustBoard = false;
+  if ((gup("adjustBoard") == "true") || (gup("adjustBoard") == "t")) { adjustBoard = true; }
+
   var showEvent = true;
   if ((gup("showEvent") == "false") || (gup("showEvent") == "f")) { showEvent = false; }
 
@@ -486,6 +495,7 @@ a.variation {
       " - refreshDemo = " + demoFlag + "; sets live demo mode (default false)" + "\n" +
       " - initialGame = " + iniGame + "; initial game to load, a number or first, last, random or a search string (default 1)" + "\n" +
       " - showBoard = " + showBoard + "; shows the chessboard (default true)" + "\n" +
+      " - adjustBoard = " + adjustBoard + "; dynamically adjusts the board position (default false)" + "\n" +
       " - showEvent = " + showEvent + "; shows event information (default true)" + "\n" +
       " - roundReverse = " + roundReverse + "; reverse round ordering (default false)" + "\n" +
       " - showTeams = " + showTeams + "; shows teams information (default true)" + "\n" +
@@ -823,7 +833,7 @@ a.variation {
   }
 
   function customDebugInfo() {
-    return "se=" + b2s(showEvent) + " rr=" + b2s(roundReverse) + " st=" + b2s(showTeams) + " spi=" + b2s(showPlayersInfo) + " slm=" + b2s(showLastMoves) + " sb=" + b2s(showBoard) + " ahn=" + b2s(autoHighlightNewmoves) + " asn=" + b2s(autoSwitchNewgames) + " sa=" + b2s(showAnalysis);
+    return "se=" + b2s(showEvent) + " rr=" + b2s(roundReverse) + " st=" + b2s(showTeams) + " spi=" + b2s(showPlayersInfo) + " slm=" + b2s(showLastMoves) + " sb=" + b2s(showBoard) + " ab=" + b2s(adjustBoard) + " ahn=" + b2s(autoHighlightNewmoves) + " asn=" + b2s(autoSwitchNewgames) + " sa=" + b2s(showAnalysis);
   }
   function b2s(b) { return b ? "t" : "f"; }
 
@@ -832,8 +842,8 @@ a.variation {
 
   function customShortcutKey_Shift_3() { searchGameWithNewMoves(true); }
   function customShortcutKey_Shift_4() { searchGameWithNewMoves(false); }
-  function customShortcutKey_Shift_5() { autoHighlightNewmoves = !autoHighlightNewmoves; }
-  function customShortcutKey_Shift_6() { autoSwitchNewgames = !autoSwitchNewgames; }
+  function customShortcutKey_Shift_5() { }
+  function customShortcutKey_Shift_6() { toggleAdjustBoard(); }
   function customShortcutKey_Shift_7() { toggleShowBoard(); }
 
   // overwriting engine.js definitions of customShortcutKey_Shift_8 9 0
@@ -895,6 +905,15 @@ a.variation {
     printGames();
   }
 
+  function toggleAdjustBoard() {
+    var theObj;
+    adjustBoard = !adjustBoard;
+    if (adjustBoard) { myOnResize(); }
+    else {
+      if (theObj = document.getElementById("GameFloatingContainer")) { theObj.style.marginRight = 0; }
+    }
+  }
+
   var thisEngineWin;
   function showAnalysisBoard(de) {
     var theObj;
@@ -954,7 +973,7 @@ a.variation {
 
 </head>
 
-<body>
+<body onResize="myOnResize();" onLoad="myOnResize();">
 
 <h1 class="pageHeader" id="pageHeader">pgn4web <a class="pageHeader" href="#games">live chess broadcast</a></h1>
 
@@ -967,7 +986,7 @@ a.variation {
 <div class="gameBoardContainer" id="GameBoardContainer">
 <div class="header"><span class="gameEvent" id="GameEvent">&nbsp;</span><a class="gameLiveStatus" id="GameLiveStatus" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();">&nbsp;</a></div>
 <div class="header"><a class="gameWhite" id="GameWhite" title="white player" href="javascript:void(0);" onclick="openFidePlayerUrl(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();"></a><span class="gameWhiteClock" id="GameWhiteClock" title="white clock"></span><span class="gameBlackClock" id="GameBlackClock" title="black clock"></span><a class="gameBlack" id="GameBlack" title="black player" href="javascript:void(0);" onclick="openFidePlayerUrl(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();"></a></div>
-<div id="GameBoard"></div>
+<div class="gameBoard" id="GameBoard"></div>
 <div class="footer"><span class="gameSideToMove"><img class="sideToMove sideToMoveHidden" id="SideToMove" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" title="side to move"/>&nbsp;</span><span class="gameText">&nbsp;<a id="GamePrevMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly - 1); this.blur();" title="previous moves"></a><a href="javascript:void(0);" onclick="SetHighlight(!highlightOption); this.blur();" style="font-weight: bold;" id="GameCurrMove" title="current move as shown on chessboard"></a><a id="GameNextMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly + 1); this.blur();" title="next moves"></a><span style="font-weight: bold;">&nbsp;</span></span><a class="gameResult" id="GameResult" href="javascript:void(0);" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); this.blur();" title="go to game end"></a></div>
 </div>
 </td></tr></table>
@@ -993,6 +1012,23 @@ a.variation {
   }
   if (theObj = document.getElementById("gamesAnchor")) {
     theObj.style.display = headlessPage ? "none" : "";
+  }
+
+  function myOnResize() {
+    if (!adjustBoard) { return false; }
+    var ww, wh;
+    if (window.innerWidth && window.innerHeight) { ww = window.innerWidth; wh = window.innerHeight; }
+    else if (document.documentElement && document.documentElement.clientWidth) { ww = document.documentElement.clientWidth; wh = document.documentElement.clientHeight; }
+    else if (document.body && document.body.clientWidth) { ww = document.body.clientWidth; wh = document.body.clientHeight; }
+    else { return false; }
+
+    var theObj = document.getElementById("GameFloatingContainer");
+    if (theObj) {
+      // targetMargin = 0.5 * (ww - 2 * body.padding - event.width - 2 * player.paddingLeft - round.width - player.marginRight - 12 * game.fontSize - gameBoardContainer.width - gameBoardContainer.paddingRight - gameFloatingContainer.right - extra);
+      var targetMargin = 0.5 * (ww - 40 - 420 - 2 * 5 - 50 - 20 - 324 - 12 * 14 - 40 - 0 - 40);
+      theObj.style.marginRight = targetMargin > 0 ? targetMargin + "px" : 0;
+      return true;
+    } else { return false; }
   }
 
 </script>
