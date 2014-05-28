@@ -1186,7 +1186,7 @@ function generate_html_code() {
 
   var html_code_status_string = "<table width='100%' cellspacing='0' cellpadding='0'><tr><td align='left' valign='top'>";
   if (iframeUrl.length <= iframeUrl_max) {
-    html_code_status_string += "<span class='helptext'>HTML code ready to cut and paste in your web page or blog</span>";
+    html_code_status_string += "<label class='helptext' for='html_code'>HTML code ready to cut and paste in your web page or blog</label>";
   } else {
     html_code_status_string += "<a class='helptext' style='color: red; font-weight: bold; text-decoration: none;' href='#pgn_form' onclick='if (confirm(\"board-generator error\\n\\nthe generated iFrame URL is \" + iframeUrl.length + \" chars long and exceeds the " + iframeUrl_max + " chars max URL length limit as enforced by some web browsers and by some web servers\\n\\neven if the chessboard looks properly in the preview window below, some users will not view the chessboard as intended\\n\\nthe URL length needs to be reduced within the allowed \" + iframeUrl_max + \" chars limit by shortening the input PGN data in the green textbox below and generating an updated iFrame URL\\n\\nclick OK to reach the green textbox with the PGN data to be shortened\")) { document.location.hash = \"#pgn_form\"; }; return false;' title='click here for more info'>error: " + iframeUrl.length + " chars URL exceeds " + iframeUrl_max + " chars limit, please shorten the PGN data; click here for more info</a>";
   }
@@ -1804,10 +1804,10 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 
 <div style="height: 1em">&nbsp;</div>
 
-<textarea id=pgnText class="textbox" style="background-color: #DDFFDD; scrollbar-base-color: #DDFFDD;" rows=15 onChange="update_pgnTextLength(); update_suggested_iframe_dimensions();"></textarea>
+<textarea id="pgnText" class="textbox" style="background-color: #DDFFDD; scrollbar-base-color: #DDFFDD;" rows=15 onChange="update_pgnTextLength(); update_suggested_iframe_dimensions();"></textarea>
 <table cellspacing="0" cellpadding="0" width="100%"><tr>
-<td align="left"><div class="helptext">enter PGN data</div></td>
-<td align="right"><div class="helptext" id="pgnTextLength"></div></td>
+<td align="left"><label class="helptext" for="pgnText">enter PGN data</label></td>
+<td align="right"><span class="helptext" id="pgnTextLength"></span></td>
 </tr></table>
 <p></p>
 
@@ -1820,7 +1820,7 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 <option value="reapply">- reapply last loaded template</option>
 <option value="random">- apply random template</option>
 </select>
-<span class="helptext">select from preset board generator settings templates</span>
+<label class="helptext" for="templatesList">select from preset board generator settings templates</label>
 <p></p>
 
 <a class="configtext" id="thisConfigBookmark" title=""><b>pgn4web board generator custom template link<span id="bookmarkCrc32" style="display: none;"></span></b></a>
