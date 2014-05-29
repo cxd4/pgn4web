@@ -376,13 +376,17 @@ a.variation {
   width: 50px; /* = gameWhiteClock.width */
 }
 
-.gameText {
-  width: 220px; /* = 8 * whiteSquare.width - 2 * gameWhiteClock.width */
-  text-align: center;
+.gameSideToMove {
+  text-align: left;
 }
 
 .gameResult {
   text-align: right;
+}
+
+.gameText {
+  width: 220px; /* = 8 * whiteSquare.width - 2 * gameWhiteClock.width */
+  text-align: center;
 }
 
 .sideToMove {
@@ -787,8 +791,8 @@ a.variation {
     }
 
     if (theObj = document.getElementById("GameDateCorrect")) {
-      theObj.innerHTML = (gameDate[currentGame] == "live") ? simpleHtmlentitiesDecode(gameDate[currentGame]) : "&nbsp;";
-      theObj.title = (gameDate[currentGame] == "live") ? simpleHtmlentitiesDecode("date: " + gameDate[currentGame]) : "";
+      theObj.innerHTML = (gameDate[currentGame] == "live") ? "live" : "&nbsp;";
+      theObj.title = (gameDate[currentGame] == "live") ? "date: live event" : "";
     }
 
     if (autoHighlightNewmoves) {
