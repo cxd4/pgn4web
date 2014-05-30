@@ -87,20 +87,13 @@
 
   function customFunctionOnCheckLiveBroadcastStatus() {
     var theObj = document.getElementById("GameLiveStatus");
-    if (theObj) {
-      theObj.innerHTML = ((numberOfGames === 1) && (PlyNumber === 0) && (!gameFEN[currentGame])) && (!gameWhite[currentGame]) && (!gameBlack[currentGame])? "" : theObj.title;
-    }
+    theObj.innerHTML = ((numberOfGames === 1) && (PlyNumber === 0) && (!gameFEN[currentGame])) && (!gameWhite[currentGame]) && (!gameBlack[currentGame]) ? "" : theObj.title;
+    document.getElementById("playersDetails").className = LiveBroadcastStarted ? "headerHighlighted" : "header";
+    document.getElementById("statusDetails").className = ((!LiveBroadcastStarted) || (LiveBroadcastEnded)) ? "headerHighlighted" : "header";
+    document.getElementById("additionalMessage").innerHTML = LiveBroadcastEnded ? (theObj.innerHTML ? ", " : "") + "click H6 for the next event" : "";
   }
 
   function customFunctionOnPgnTextLoad() {
-
-    document.getElementById("playersDetails").className =
-      LiveBroadcastStarted ? "headerHighlighted" : "header";
-    document.getElementById("statusDetails").className =
-      ((!LiveBroadcastStarted) || (LiveBroadcastEnded)) ? "headerHighlighted" : "header";
-    document.getElementById("additionalMessage").innerHTML =
-      LiveBroadcastEnded ? ", click H6 for the next event" : "";
-
     // cope with occasional failures to load the live PGN data
     if ((LiveBroadcastDelay !== 0) && (LiveBroadcastTicker > 0) && (!LiveBroadcastFoundOldGame)) {
       var thisCurrentGame = currentGame;
@@ -113,7 +106,6 @@
         GoToInitialHalfmove();
       }
     }
-
   }
 
   function customFunctionOnPgnGameLoad() {
