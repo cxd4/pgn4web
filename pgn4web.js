@@ -2827,7 +2827,7 @@ function startVar(isContinuation) {
   MoveCommentsVar[CurrentVar] = new Array();
   if (!isContinuation) {
     if (lastVarWithNoMoves[lastVarWithNoMoves.length - 1]) {
-      myAlert("warning: malformed PGN data in game " + (currentGame+1) + ": variant " + CurrentVar + " starting before parent", true);
+      myAlert("warning: malformed PGN data in game " + (currentGame+1) + ": variation " + CurrentVar + " starting before parent", true);
     } else {
       PlyNumber -= 1;
     }
