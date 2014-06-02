@@ -692,38 +692,35 @@ function detectBaseLocation() {
 var debugWin;
 function displayDebugInfo() {
   var theObj;
-  var base = detectBaseLocation();
-  var jsurl = detectJavascriptLocation();
+  var bu = detectBaseLocation();
+  var ju = detectJavascriptLocation();
   stopAlertPrompt();
-  var dbg1 = 'pgn4web: version=' + pgn4web_version + ' homepage=' + pgn4web_project_url + '\n\n' +
-    'HTMLURL: length=' + location.href.length + ' url=';
+  var dbg1 = 'pgn4web: version=' + pgn4web_version + ' homepage=' + pgn4web_project_url + '\n' +
+    '\nHTMLURL: length=' + location.href.length + ' url=';
   var dbg2 = location.href.length < 100 ? location.href : (location.href.substring(0,99) + '...');
-  var dbg3 = '\n' +
-    (base ? 'BASEURL: url=' + base + '\n' : '') +
-    (jsurl != 'pgn4web.js' ? 'JSURL: url=' + jsurl + '\n' : '');
+  var dbg3 = (bu ? '\nBASEURL: url=' + bu : '') + (ju != 'pgn4web.js' ? '\nJSURL: url=' + ju : '');
   if (pgnUrl) {
-    dbg3 += 'PGNURL: url=' + pgnUrl;
-  } else {
-    if (theObj = document.getElementById("pgnText")) {
-      dbg3 += 'PGNTEXT: length=' + (theObj.tagName.toLowerCase() == "textarea" ? theObj.value.length : "?");
-    }
+    dbg3 += '\nPGNURL: url=' + pgnUrl;
+  } else if (theObj = document.getElementById("pgnText")) {
+    dbg3 += '\nPGNTEXT: length=' + (theObj.tagName.toLowerCase() == 'textarea' ? theObj.value.length : '?');
   }
-  dbg3 += '\n\n' +
-    'GAME: current=' + (currentGame+1) + ' number=' + numberOfGames + '\n' +
-    'VARIATION: current=' + CurrentVar + ' number=' + (numberOfVars-1) + '\n' +
-    'PLY: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber + '\n' +
-    'AUTOPLAY: status=' + (isAutoPlayOn ? 'on' : 'off') + ' delay=' + Delay + 'ms' + ' next=' + autoplayNextGame +
-    '\n\n';
+  dbg3 += '\n' +
+    (numberOfGames > 1 ? '\nGAME: current=' + (currentGame+1) + ' number=' + numberOfGames : '') +
+    (numberOfVars > 1 ? '\nVARIATION: current=' + CurrentVar + ' number=' + (numberOfVars-1) : '') +
+    (PlyNumber > 0 ? '\nPLY: start=' + StartPly + ' current=' + CurrentPly + ' number=' + PlyNumber : '') +
+    '\nAUTOPLAY: status=' + (isAutoPlayOn ? 'on' : 'off') + ' delay=' + Delay + 'ms' + ' next=' + autoplayNextGame;
+  if ((typeof(gameVariant[currentGame]) !== "undefined") && (gameVariant[currentGame].match(/^\s*(|chess|normal|standard)\s*$/i) === null)) {
+    dbg3 += '\nVARIANT: ' + gameVariant[currentGame];
+  }
   if (LiveBroadcastDelay > 0) {
-    dbg3 += 'LIVEBROADCAST: status=' + liveStatusDebug() + ' ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime() +
-    '\n\n';
+    dbg3 += '\n\nLIVEBROADCAST: status=' + liveStatusDebug() + ' ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime();
   }
   if (typeof(engineWinCheck) == "function") {
-    dbg3 += "ANALYSIS: " + (engineWinCheck() ? "board=connected " + engineWin.customDebugInfo() : "board=disconnected") + "\n\n";
+    dbg3 += '\n\nANALYSIS: ' + (engineWinCheck() ? 'board=connected ' + engineWin.customDebugInfo() : 'board=disconnected');
   }
   var thisInfo = customDebugInfo();
-  if (thisInfo) { dbg3 += "CUSTOM: " + thisInfo + "\n\n"; }
-  dbg3 += 'ALERTLOG: fatalnew=' + fatalErrorNumSinceReset + ' new=' + alertNumSinceReset +
+  if (thisInfo) { dbg3 += '\n\nCUSTOM: ' + thisInfo; }
+  dbg3 += '\n\nALERTLOG: fatalnew=' + fatalErrorNumSinceReset + ' new=' + alertNumSinceReset +
     ' shown=' + Math.min(alertNum, alertLog.length) + ' total=' + alertNum + '\n--';
   if (alertNum > 0) {
     for (var ii = 0; ii<alertLog.length; ii++) {
