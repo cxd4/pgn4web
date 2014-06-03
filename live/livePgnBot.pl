@@ -1332,7 +1332,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "eventautocorrect") {
-    if ($parameters =~ /^(\/(.+?)\/(.*?)\/|"")?$/) {
+    if ($parameters =~ /^(\/([^\/]+)\/(.*)\/|"")?$/) {
       eval {
         if ($parameters ne "") {
           if ($parameters eq "\"\"") {
