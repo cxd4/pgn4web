@@ -90,15 +90,12 @@ h1.pageHeader {
   margin-left: 20px; /* = player.marginRight */
 }
 
-.round {
-  text-align: right;
-}
-
 .event {
   width: 420px; /* = defined as event.width */
 }
 
 .round {
+  text-align: right;
   width: 50px; /* defined as round.width */
 }
 
@@ -151,6 +148,10 @@ h1.pageHeader {
 
 .noNewMoves {
   visibility: hidden;
+}
+
+.lastMoves {
+  min-width: 180px; /* = player.width */
 }
 
 .gameLiveStatus2 {
@@ -705,7 +706,7 @@ a.variation {
           lastMoves = pgnGame[ggId].replace(/\n/g, " ").replace(/{.*?}|\$\d+/g, " ").replace(/[^\sa-wyzA-WYZ0-9.\/#-]+/g, "").replace(/\d+\.{2,}|1-0|0-1|1\/2-1\/2|\*/g, "").match(/((\b\d+\.?)?(\s*\S+)?(\s*\S+)|(\S+\s*)?(\b\d+\.?)?(\s*\S+))\s*$/);
           if (lastMoves) { lastMoves = lastMoves[0].replace(/\s\s+/g, " ").replace(/^\s+|\s+$/g, ""); }
         }
-        resultTable += '<div class="game" id="gameRow_' + ggId + '" onclick="selectGame(' + ggId + ');" style="' + ((showBoard && (ggId === oldSelectedGame)) ? 'font-weight:bold;' : '') + (firstRow ? 'margin-top:0px;' : '') + '"><span class="player"><span class="firstPlayer' + ((firstTeam && gameWhiteTeam[ggId] === firstTeam) ? ' firstTeamPlayer' : '') + ((secondTeam && gameWhiteTeam[ggId] === secondTeam) ? ' secondTeamPlayer' : '') + '" title="' + whitePlayer.replace(/&nbsp;/, ' ') + '">' + whitePlayer + '</span></span><span class="player"><span class="secondPlayer' + ((firstTeam && gameWhiteTeam[ggId] === firstTeam) ? ' firstTeamPlayer' : '') + ((secondTeam && gameBlackTeam[ggId] === secondTeam) ? ' secondTeamPlayer' : '') + '" title="' + blackPlayer.replace(/&nbsp;/, ' ') + '">' + blackPlayer + '</span></span><span class="result" title="' + gameResult[ggId] + '">' + gameResult[ggId] + '</span><span id="newMoves_' + ggId + '" class="' + (gameNewMoves[ggId] ? 'newMoves' : 'noNewMoves') + '" title="new moves received">*</span><span class="lastMoves" title="last moves">' + (lastMoves ? lastMoves : '')  + '</span></div>';
+        resultTable += '<div class="game" id="gameRow_' + ggId + '" style="' + ((showBoard && (ggId === oldSelectedGame)) ? 'font-weight:bold;' : '') + (firstRow ? 'margin-top:0px;' : '') + '"><span onclick="selectGame(' + ggId + ');"><span class="player"><span class="firstPlayer' + ((firstTeam && gameWhiteTeam[ggId] === firstTeam) ? ' firstTeamPlayer' : '') + ((secondTeam && gameWhiteTeam[ggId] === secondTeam) ? ' secondTeamPlayer' : '') + '" title="' + whitePlayer.replace(/&nbsp;/, ' ') + '">' + whitePlayer + '</span></span><span class="player"><span class="secondPlayer' + ((firstTeam && gameWhiteTeam[ggId] === firstTeam) ? ' firstTeamPlayer' : '') + ((secondTeam && gameBlackTeam[ggId] === secondTeam) ? ' secondTeamPlayer' : '') + '" title="' + blackPlayer.replace(/&nbsp;/, ' ') + '">' + blackPlayer + '</span></span><span class="result" title="' + gameResult[ggId] + '">' + gameResult[ggId] + '</span><span id="newMoves_' + ggId + '" class="' + (gameNewMoves[ggId] ? 'newMoves' : 'noNewMoves') + '" title="new moves received">*</span><span class="lastMoves"><span' + (lastMoves ? ' title="last moves">' + lastMoves : '>&nbsp;')  + '</span></span></span></div>';
         if (firstRow) { firstRow = false; }
       }
       theObj.innerHTML = resultTable;
