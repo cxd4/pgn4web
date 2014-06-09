@@ -847,7 +847,6 @@ sub refresh_pgn {
     $pgn .= placeholder_pgn();
     $newPgnNum++;
   }
-  $lastPgnNum = $newPgnNum;
 
   if ($pgn ne $lastPgn) {
     if (open(my $thisFile, ">$PGN_FILE")) {
@@ -855,6 +854,7 @@ sub refresh_pgn {
       close($thisFile);
       $pgnWriteCount++;
       $lastPgn = $pgn;
+      $lastPgnNum = $newPgnNum;
       refresh_memory();
     } else {
       log_terminal("error: failed writing $PGN_FILE");
@@ -1327,10 +1327,7 @@ sub process_master_command {
                 $eventAutocorrectChanges = 1;
               }
             }
-            if ($eventAutocorrectChanges == 1) {
-              refresh_pgn();
-              refresh_memory();
-            }
+            if ($eventAutocorrectChanges == 1) { refresh_pgn(); }
           }
           log_terminal("info: eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : ""));
         }
@@ -1647,7 +1644,6 @@ sub process_master_command {
     } elsif ($parameters eq "write") {
       $lastPgn = "% force updating after changing placeholdergame";
       refresh_pgn();
-      refresh_memory();
       tell_operator("PGN data written: placeholdergame=$placeholderGame");
     } elsif ($parameters eq "") {
       tell_operator("placeholdergame=$placeholderGame");
