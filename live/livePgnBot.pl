@@ -139,6 +139,7 @@ our $eventAutocorrectString = "";
 
 our $placeholderGame = "auto";
 our $placeholder_date = "";
+our $placeholder_result = "*";
 
 our $roundReverse = 0;
 our $roundReverseAgtB = $roundReverse ? -1 : 1;
@@ -191,6 +192,7 @@ sub reset_games {
   $eventAutocorrectString = "";
   $placeholderGame = "auto";
   $placeholder_date = "";
+  $placeholder_result = "*";
   $ignoreFilter = "";
   $prioritizeFilter = "";
   $autoPrioritize = "";
@@ -867,7 +869,7 @@ sub refresh_pgn {
 }
 
 sub placeholder_pgn {
-  return "[Event \"$newGame_event\"]\n" . "[Site \"$newGame_site\"]\n" . "[Date \"$placeholder_date\"]\n" . "[Round \"$newGame_round\"]\n" . "[White \"\"]\n" . "[Black \"\"]\n" . "[Result \"*\"]\n\n*\n\n";
+  return "[Event \"$newGame_event\"]\n" . "[Site \"$newGame_site\"]\n" . "[Date \"$placeholder_date\"]\n" . "[Round \"$newGame_round\"]\n" . "[White \"\"]\n" . "[Black \"\"]\n" . "[Result \"$placeholder_result\"]\n\n*\n\n";
 }
 
 sub archive_pgnGame {
@@ -1128,6 +1130,7 @@ add_master_command ("memoryselect", "memoryselect [regexp|\"\"] (to get/set the 
 add_master_command ("observe", "observe [game number list, such as: 12 34 56 ..] (to observe given games)");
 add_master_command ("placeholderdate", "placeholderdate [string|\"\"] (to get/set the PGN header tag date for the PGN placeholder game)");
 add_master_command ("placeholdergame", "placeholdergame [always|auto|never|write] (to get/set the PGN placeholder game behaviour during autorelay)");
+add_master_command ("placeholderresul", "placeholderresult [string|\"\"] (to get/set the PGN header tag result for the PGN placeholder game)");
 add_master_command ("prioritize", "prioritize [regexp|\"\"] (to get/set the regular expression to prioritize events/players from the PGN header during autorelay; might be overridden by autoprioritize; might be overruled by ignore)");
 add_master_command ("quit", "quit [number] (to quit from the ics server, returning the given exit value)");
 add_master_command ("relay", "relay [0|game number list, such as: 12 34 56 ..] (to observe given games from an event relay, 0 to disable relay mode)");
@@ -1284,7 +1287,7 @@ sub process_master_command {
       tell_operator("warning: ics relay offline");
     }
   } elsif ($command eq "config") {
-    tell_operator("config: max=$maxGamesNum file=$PGN_FILE archive=$PGN_ARCHIVE memory=$PGN_MEMORY memorymax=$memoryMaxGamesNum follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter autoprioritize=$autoPrioritize prioritize=$prioritizeFilter eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " placeholderdate=$placeholder_date placeholdergame=$placeholderGame archiveselect=$archiveSelectFilter memoryselect=$memorySelectFilter event=$newGame_event site=$newGame_site date=$newGame_date archivedate=$archive_date memorydate=$memory_date round=$newGame_round roundreverse=$roundReverse heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
+    tell_operator("config: max=$maxGamesNum file=$PGN_FILE archive=$PGN_ARCHIVE memory=$PGN_MEMORY memorymax=$memoryMaxGamesNum follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter autoprioritize=$autoPrioritize prioritize=$prioritizeFilter eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " placeholdergame=$placeholderGame placeholderdate=$placeholder_date placeholderresult=$placeholder_result archiveselect=$archiveSelectFilter memoryselect=$memorySelectFilter event=$newGame_event site=$newGame_site date=$newGame_date archivedate=$archive_date memorydate=$memory_date round=$newGame_round roundreverse=$roundReverse heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
   } elsif ($command eq "date") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
@@ -1647,6 +1650,16 @@ sub process_master_command {
       tell_operator("PGN data written: placeholdergame=$placeholderGame");
     } elsif ($parameters eq "") {
       tell_operator("placeholdergame=$placeholderGame");
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "placeholderresult") {
+    if ($parameters =~ /^([^\[\]"]+|"")?$/) {
+      if ($parameters ne "") {
+        if ($parameters eq "\"\"") { $parameters = ""; }
+        $placeholder_result = $parameters;
+      }
+      tell_operator("placeholderresult=$placeholder_result");
     } else {
       tell_operator("error: invalid $command parameter");
     }
