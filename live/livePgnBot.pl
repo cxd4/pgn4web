@@ -136,6 +136,7 @@ our $autoPrioritizeFilter = "";
 
 our $eventAutocorrectRegexp = "";
 our $eventAutocorrectString = "";
+our $roundAutocorrectString = "";
 
 our $placeholderGame = "auto";
 our $placeholder_date = "";
@@ -190,6 +191,7 @@ sub reset_games {
   @GAMES_autorelayRunning = ();
   $eventAutocorrectRegexp = "";
   $eventAutocorrectString = "";
+  $roundAutocorrectString = "";
   $placeholderGame = "auto";
   $placeholder_date = "";
   $placeholder_result = "*";
@@ -233,8 +235,8 @@ sub eventRound {
   my ($thisSortkey, $thisRound) = @_;
   if ($thisRound ne "") {
     $thisSortkey .= " - Round ";
-    if ($thisRound =~ /^\d{2}(\.\d+)*$/) { $thisSortkey .= "0"; }
-    elsif ($thisRound =~ /^\d(\.\d+)*$/) { $thisSortkey .= "00"; }
+    if ($thisRound =~ /^\d{2}(\.(\d+|\?))*$/) { $thisSortkey .= "0"; }
+    elsif ($thisRound =~ /^\d(\.(\d+|\?))*$/) { $thisSortkey .= "00"; }
     $thisSortkey .= $thisRound;
   }
   return $thisSortkey;
@@ -406,6 +408,18 @@ sub event_autocorrect {
   return $event;
 }
 
+sub round_autocorrect {
+  my ($event, $round) = @_;
+  if (($roundAutocorrectString) && ($round =~ /^\?(.*)$/)) {
+    my $oldRound = $1;
+    $round = $event;
+    $round =~ s/^(.*)$/eval($roundAutocorrectString)/egi;
+    $round .= $oldRound;
+    log_terminal("debug: round autocorrected: \"$event\" \"?$oldRound\" \"$round\"");
+  }
+  return $round;
+}
+
 our $timeOffset = 0;
 sub log_terminal {
   if ($verbosity == 0) {
@@ -538,6 +552,7 @@ sub process_line {
     $autorelayEvent =~ s/^\s+|[\s-]+$//g;
     $autorelayEvent =~ s/\s+/ /g;
     if ($eventAutocorrectRegexp) { $autorelayEvent = event_autocorrect($autorelayEvent); }
+    if ($roundAutocorrectString) { $autorelayRound = round_autocorrect($autorelayEvent, $autorelayRound); }
     declareRelayOnline();
   } elsif ($line =~ /^:(\d+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)/) {
     my $thisGameNum = $1;
@@ -1136,6 +1151,7 @@ add_master_command ("quit", "quit [number] (to quit from the ics server, returni
 add_master_command ("relay", "relay [0|game number list, such as: 12 34 56 ..] (to observe given games from an event relay, 0 to disable relay mode)");
 add_master_command ("reset", "reset [1] (to reset observed/followed games list and setting)");
 add_master_command ("round", "round [string|\"\"] (to get/set the PGN header tag round)");
+add_master_command ("roundautocorrect", "roundautocorrect [/eval/|\"\"] (to get/set the evalexp returning a string that corrects ?.* round tags during autorelay)");
 add_master_command ("roundreverse", "roundreverse [0|1] (to use reverse alphabetical ordering of rounds)");
 add_master_command ("site", "site [string|\"\"] (to get/set the PGN header tag site)");
 add_master_command ("startup", "startup [command list, separated by semicolon] (to get/set startup commands file)");
@@ -1287,7 +1303,7 @@ sub process_master_command {
       tell_operator("warning: ics relay offline");
     }
   } elsif ($command eq "config") {
-    tell_operator("config: max=$maxGamesNum file=$PGN_FILE archive=$PGN_ARCHIVE memory=$PGN_MEMORY memorymax=$memoryMaxGamesNum follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter autoprioritize=$autoPrioritize prioritize=$prioritizeFilter eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " placeholdergame=$placeholderGame placeholderdate=$placeholder_date placeholderresult=$placeholder_result archiveselect=$archiveSelectFilter memoryselect=$memorySelectFilter event=$newGame_event site=$newGame_site date=$newGame_date archivedate=$archive_date memorydate=$memory_date round=$newGame_round roundreverse=$roundReverse heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
+    tell_operator("config: max=$maxGamesNum file=$PGN_FILE archive=$PGN_ARCHIVE memory=$PGN_MEMORY memorymax=$memoryMaxGamesNum follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter autoprioritize=$autoPrioritize prioritize=$prioritizeFilter eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " roundautocorrect=" . ($roundAutocorrectString ? "/$roundAutocorrectString/" : "") . " placeholdergame=$placeholderGame placeholderdate=$placeholder_date placeholderresult=$placeholder_result archiveselect=$archiveSelectFilter memoryselect=$memorySelectFilter event=$newGame_event site=$newGame_site date=$newGame_date archivedate=$archive_date memorydate=$memory_date round=$newGame_round roundreverse=$roundReverse heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
   } elsif ($command eq "date") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
@@ -1735,6 +1751,37 @@ sub process_master_command {
         $newGame_round = $parameters;
       }
       tell_operator("round=$newGame_round");
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "roundautocorrect") {
+    if ($parameters =~ /^(\/(.*)\/|"")?$/) {
+      eval {
+        if ($parameters ne "") {
+          if ($parameters eq "\"\"") {
+            $roundAutocorrectString = "";
+          } else {
+            my $newRoundAutocorrectString = $2;
+            my $newRoundAutocorrectTest = "test";
+            $newRoundAutocorrectTest =~ s/^(.*)$/eval($newRoundAutocorrectString)/egi;
+            $roundAutocorrectString = $newRoundAutocorrectString;
+            my $roundAutocorrectChanges = 0;
+            for my $thisGameNum (@games_num) {
+              if ($GAMES_event[$thisGameNum] =~ /$eventAutocorrectRegexp/) {
+                $GAMES_round[$thisGameNum] = round_autocorrect($GAMES_event[$thisGameNum], $GAMES_round[$thisGameNum]);
+                $GAMES_sortkey[$thisGameNum] = eventRound($GAMES_event[$thisGameNum], $GAMES_round[$thisGameNum]);
+                $roundAutocorrectChanges = 1;
+              }
+            }
+            if ($roundAutocorrectChanges == 1) { refresh_pgn(); }
+          }
+          log_terminal("info: roundautocorrect=" . ($roundAutocorrectString ? "/$roundAutocorrectString/" : ""));
+        }
+        tell_operator("roundautocorrect=" . ($roundAutocorrectString ? "/$roundAutocorrectString/" : ""));
+        1;
+      } or do {
+        tell_operator("error: invalid eval expression: $parameters");
+      };
     } else {
       tell_operator("error: invalid $command parameter");
     }
