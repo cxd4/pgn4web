@@ -1149,28 +1149,28 @@ sub add_master_command {
   push (@master_commands_helptext, $helptext);
 }
 
-add_master_command ("archive", "archive [filename.pgn] (to get/set the filename for archiving PGN data)");
+add_master_command ("archivefile", "archivefile [filename.pgn] (to get/set the filename for archiving PGN data)");
 add_master_command ("archivedate", "archivedate [strftime_string|\"\"] (to get/set the PGN header tag date for the PGN archive)");
 add_master_command ("archiveselect", "archiveselect [regexp|\"\"] (to get/set the regular expression to select games for archiving PGN data)");
 add_master_command ("autoprioritize", "autoprioritize [regexp|\"\"] (to get/set the regular expression to prioritize entire events during autorelay; has precedence over prioritize)");
 add_master_command ("autorelay", "autorelay [0|1] (to automatically observe all relayed games)");
 add_master_command ("config", "config (to get config info)");
-add_master_command ("date", "date [????.??.???|\"\"] (to get/set the PGN header tag date)");
 # add_master_command ("evaluate", "evaluate [string] (to evaluate an arbitrary internal command: for debug use only)");
 add_master_command ("event", "event [string|\"\"] (to get/set the PGN header tag event)");
 add_master_command ("eventautocorrect", "eventautocorrect [/regexp/eval/|\"\"] (to get/set the regexp and the evalexp returning a string that correct event tags during autorelay)");
-add_master_command ("file", "file [filename.pgn] (to get/set the filename for live PGN data)");
 add_master_command ("follow", "follow [0|handle|/s|/b|/l] (to follow the user with given handle, /s for the best standard game, /b for the best blitz game, /l for the best lightning game, 0 to disable follow mode)");
-add_master_command ("forget", "forget [game number list, such as: 12 34 56 ..] (to eliminate given past games from PGN data)");
+add_master_command ("forget", "forget [game number list, such as: 12 34 56 ..] (to eliminate given past games from live PGN data)");
 add_master_command ("games", "games (to get list of observed games)");
 add_master_command ("heartbeat", "heartbeat [frequency offset] (to get/set the timing of heartbeat log messages, in hours)");
 add_master_command ("help", "help [command] (to get commands help)");
 add_master_command ("history", "history (to get history info)");
 add_master_command ("ics", "ics [server command] (to run a custom command on the ics server)");
 add_master_command ("ignore", "ignore [regexp|\"\"] (to get/set the regular expression to ignore events/players from the PGN header during autorelay; has precedence over prioritize; use ^(?:(?!regexp).)+\$ for negative lookup)");
+add_master_command ("livedate", "livedate [????.??.???|\"\"] (to get/set the PGN header tag date for live PGN data)");
+add_master_command ("livefile", "livefile [filename.pgn] (to get/set the filename for live PGN data)");
+add_master_command ("livemax", "max [number] (to get/set the maximum number of games for the live PGN data)");
 add_master_command ("log", "log [string] (to print a string on the log terminal)");
-add_master_command ("max", "max [number] (to get/set the maximum number of games for the PGN data)");
-add_master_command ("memory", "memory [filename.pgn] (to get/set the filename for the PGN memory data)");
+add_master_command ("memoryfile", "memoryfile [filename.pgn] (to get/set the filename for the PGN memory data)");
 add_master_command ("memorydate", "memorydate [strftime_string|\"\"] (to get/set the PGN header tag date for the PGN memory date)");
 add_master_command ("memoryload", "memoryload [1] (to load PGN memroy data from memory file)");
 add_master_command ("memorymax", "memorymax [number] (to get/set the maximum number of games for the PGN memory data)");
@@ -1182,7 +1182,7 @@ add_master_command ("memoryselect", "memoryselect [regexp|\"\"] (to get/set the 
 add_master_command ("observe", "observe [game number list, such as: 12 34 56 ..] (to observe given games)");
 add_master_command ("placeholderdate", "placeholderdate [string|\"\"] (to get/set the PGN header tag date for the PGN placeholder game)");
 add_master_command ("placeholdergame", "placeholdergame [always|auto|never|write] (to get/set the PGN placeholder game behaviour during autorelay)");
-add_master_command ("placeholderresul", "placeholderresult [string|\"\"] (to get/set the PGN header tag result for the PGN placeholder game)");
+add_master_command ("placeholderresult", "placeholderresult [string|\"\"] (to get/set the PGN header tag result for the PGN placeholder game)");
 add_master_command ("prioritize", "prioritize [regexp|\"\"] (to get/set the regular expression to prioritize events/players from the PGN header during autorelay; might be overridden by autoprioritize; might be overruled by ignore)");
 add_master_command ("quit", "quit [number] (to quit from the ics server, returning the given exit value)");
 add_master_command ("relay", "relay [0|game number list, such as: 12 34 56 ..] (to observe given games from an event relay, 0 to disable relay mode)");
@@ -1239,13 +1239,23 @@ sub process_master_command {
   if ($command eq "") {
   } elsif ($command =~ /^ambiguous command: /) {
     tell_operator("error: $command");
-  } elsif ($command eq "archive") {
+  } elsif ($command eq "archivedate") {
+    if ($parameters =~ /^([^\[\]"]+|"")?$/) {
+      if ($parameters ne "") {
+        if ($parameters eq "\"\"") { $parameters = ""; }
+        $archive_date = $parameters;
+      }
+      tell_operator("archivedate=$archive_date");
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "archivefile") {
     if ($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) { # for portability only a subset of filename chars is allowed
       if ($parameters ne "") {
         if ($parameters eq "\"\"") { $parameters = ""; }
         $PGN_ARCHIVE = $parameters;
       }
-      my $fileInfoText = "archive=$PGN_ARCHIVE";
+      my $fileInfoText = "archivefile=$PGN_ARCHIVE";
       log_terminal("info: $fileInfoText");
       if ($PGN_ARCHIVE ne "") {
         my @fileInfo = stat($PGN_ARCHIVE);
@@ -1260,16 +1270,6 @@ sub process_master_command {
         }
       }
       tell_operator($fileInfoText);
-    } else {
-      tell_operator("error: invalid $command parameter");
-    }
-  } elsif ($command eq "archivedate") {
-    if ($parameters =~ /^([^\[\]"]+|"")?$/) {
-      if ($parameters ne "") {
-        if ($parameters eq "\"\"") { $parameters = ""; }
-        $archive_date = $parameters;
-      }
-      tell_operator("archivedate=$archive_date");
     } else {
       tell_operator("error: invalid $command parameter");
     }
@@ -1340,17 +1340,8 @@ sub process_master_command {
       tell_operator("warning: ics relay offline");
     }
   } elsif ($command eq "config") {
-    tell_operator("config: max=$maxGamesNum file=$PGN_FILE archive=$PGN_ARCHIVE memory=$PGN_MEMORY memorymax=$memoryMaxGamesNum follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter autoprioritize=$autoPrioritize prioritize=$prioritizeFilter eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " roundautocorrect=" . ($roundAutocorrectRegexp ? "/$roundAutocorrectRegexp/$roundAutocorrectString/" : "") . " placeholdergame=$placeholderGame placeholderdate=$placeholder_date placeholderresult=$placeholder_result archiveselect=$archiveSelectFilter memoryselect=$memorySelectFilter event=$newGame_event site=$newGame_site date=$newGame_date archivedate=$archive_date memorydate=$memory_date round=$newGame_round roundreverse=$roundReverse heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
-  } elsif ($command eq "date") {
-    if ($parameters =~ /^([^\[\]"]+|"")?$/) {
-      if ($parameters ne "") {
-        if ($parameters eq "\"\"") { $parameters = ""; }
-        $newGame_date = $parameters;
-      }
-      tell_operator("date=$newGame_date");
-    } else {
-      tell_operator("error: invalid $command parameter");
-    }
+    tell_operator("config: livemax=$maxGamesNum livefile=$PGN_FILE livedate=$newGame_date memorymax=$memoryMaxGamesNum memoryfile=$PGN_MEMORY memorydate=$memory_date memoryselect=$memorySelectFilter archivefile=$PGN_ARCHIVE archivedate=$archive_date archiveselect=$archiveSelectFilter placeholdergame=$placeholderGame placeholderdate=$placeholder_date placeholderresult=$placeholder_result follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter prioritize=$prioritizeFilter autoprioritize=$autoPrioritize event=$newGame_event eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " round=$newGame_round roundautocorrect=" . ($roundAutocorrectRegexp ? "/$roundAutocorrectRegexp/$roundAutocorrectString/" : "") . " roundreverse=$roundReverse site=$newGame_site heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
+#
 #   } elsif ($command eq "evaluate") {
 #     if ($parameters ne "") {
 #       eval {
@@ -1363,6 +1354,7 @@ sub process_master_command {
 #     } else {
 #       tell_operator(detect_command_helptext($command));
 #     }
+#
   } elsif ($command eq "event") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
@@ -1404,27 +1396,6 @@ sub process_master_command {
       } or do {
         tell_operator("error: invalid regular expression: $parameters");
       };
-    } else {
-      tell_operator("error: invalid $command parameter");
-    }
-  } elsif ($command eq "file") {
-    if ($parameters =~ /^[\w\d\/\\.+=_-]*$/) { # for portability only a subset of filename chars is allowed
-      if ($parameters ne "") {
-        $PGN_FILE = $parameters;
-      }
-      my $fileInfoText = "file=$PGN_FILE";
-      log_terminal("info: $fileInfoText");
-      my @fileInfo = stat($PGN_FILE);
-      if (defined $fileInfo[9]) {
-        $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S", gmtime($fileInfo[9]));
-      }
-      if (defined $fileInfo[7]) {
-        $fileInfoText .= " size=$fileInfo[7]";
-      }
-      if (defined $fileInfo[2]) {
-        $fileInfoText .= sprintf(" permissions=%04o", $fileInfo[2] & 07777);
-      }
-      tell_operator($fileInfoText);
     } else {
       tell_operator("error: invalid $command parameter");
     }
@@ -1541,44 +1512,24 @@ sub process_master_command {
     } else {
       tell_operator("error: invalid $command parameter");
     }
-  } elsif ($command eq "log") {
-    if ($parameters ne "") {
-      log_terminal($parameters);
-    } else {
-      tell_operator(detect_command_helptext($command));
-    }
-  } elsif ($command eq "max") {
-    if ($parameters =~ /^([1-9]\d*)?$/) {
+  } elsif ($command eq "livedate") {
+    if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
-        if ($parameters > $maxGamesNumDefault) {
-          tell_operator_and_log_terminal("warning: max number of games set above frechess.org observe limit of $maxGamesNumDefault");
-        }
-        if ($parameters < $maxGamesNum) {
-          for (my $i=$parameters; $i<$maxGamesNum; $i++) {
-            if ($games_num[$i]) {
-              remove_game($games_num[$i]);
-            }
-          }
-        }
-        $maxGamesNum = $parameters;
+        if ($parameters eq "\"\"") { $parameters = ""; }
+        $newGame_date = $parameters;
       }
-      tell_operator("max=$maxGamesNum");
+      tell_operator("livedate=$newGame_date");
     } else {
       tell_operator("error: invalid $command parameter");
     }
-  } elsif ($command eq "memory") {
-    if ($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) { # for portability only a subset of filename chars is allowed
+  } elsif ($command eq "livefile") {
+    if ($parameters =~ /^[\w\d\/\\.+=_-]*$/) { # for portability only a subset of filename chars is allowed
       if ($parameters ne "") {
-        if ($parameters eq "\"\"") {
-           $parameters = "";
-           @memory_games = ();
-           @memory_games_sortkey = ();
-        }
-        $PGN_MEMORY = $parameters;
+        $PGN_FILE = $parameters;
       }
-      my $fileInfoText = "memory=$PGN_MEMORY";
+      my $fileInfoText = "livefile=$PGN_FILE";
       log_terminal("info: $fileInfoText");
-      my @fileInfo = stat($PGN_MEMORY);
+      my @fileInfo = stat($PGN_FILE);
       if (defined $fileInfo[9]) {
         $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S", gmtime($fileInfo[9]));
       }
@@ -1592,6 +1543,31 @@ sub process_master_command {
     } else {
       tell_operator("error: invalid $command parameter");
     }
+  } elsif ($command eq "livemax") {
+    if ($parameters =~ /^([1-9]\d*)?$/) {
+      if ($parameters ne "") {
+        if ($parameters > $maxGamesNumDefault) {
+          tell_operator_and_log_terminal("warning: max number of live games set above frechess.org observe limit of $maxGamesNumDefault");
+        }
+        if ($parameters < $maxGamesNum) {
+          for (my $i=$parameters; $i<$maxGamesNum; $i++) {
+            if ($games_num[$i]) {
+              remove_game($games_num[$i]);
+            }
+          }
+        }
+        $maxGamesNum = $parameters;
+      }
+      tell_operator("livemax=$maxGamesNum");
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "log") {
+    if ($parameters ne "") {
+      log_terminal($parameters);
+    } else {
+      tell_operator(detect_command_helptext($command));
+    }
   } elsif ($command eq "memorydate") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
@@ -1599,6 +1575,32 @@ sub process_master_command {
         $memory_date = $parameters;
       }
       tell_operator("memorydate=$memory_date");
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "memoryfile") {
+    if ($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) { # for portability only a subset of filename chars is allowed
+      if ($parameters ne "") {
+        if ($parameters eq "\"\"") {
+           $parameters = "";
+           @memory_games = ();
+           @memory_games_sortkey = ();
+        }
+        $PGN_MEMORY = $parameters;
+      }
+      my $fileInfoText = "memoryfile=$PGN_MEMORY";
+      log_terminal("info: $fileInfoText");
+      my @fileInfo = stat($PGN_MEMORY);
+      if (defined $fileInfo[9]) {
+        $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S", gmtime($fileInfo[9]));
+      }
+      if (defined $fileInfo[7]) {
+        $fileInfoText .= " size=$fileInfo[7]";
+      }
+      if (defined $fileInfo[2]) {
+        $fileInfoText .= sprintf(" permissions=%04o", $fileInfo[2] & 07777);
+      }
+      tell_operator($fileInfoText);
     } else {
       tell_operator("error: invalid $command parameter");
     }
