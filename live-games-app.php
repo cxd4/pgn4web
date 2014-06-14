@@ -386,14 +386,14 @@ function fixGameLiveStatusExtraInfo(res) {
   var newExtraText = "";
   if (LiveBroadcastDelay && LiveBroadcastDemo) { newExtraText += "<span title='this is a broadcast simulation'>demo</span>"; }
   if (lastGameLiveStatusExtraInfoRes === LOAD_PGN_FAIL) {
-    newExtraText += "<span style='margin-left:" + (1.75 + (newExtraText ? (1 / fontSizeRatio) : 0)) + "em;'";
+    newExtraText += "<span style='margin-left:" + (1.25 + (newExtraText ? (1 / fontSizeRatio) : 0)) + "em;'";
     newExtraText += " title='games from application cache'>";
     newExtraText += ((!localStorage[lsId + "lastGamesValidationTime"]) || ((new Date()).getTime() - localStorage[lsId + "lastGamesValidationTie"]) > 18000000) ? "X" : "&times;";
     newExtraText += "</span>";
     // 5h = 18000000ms
   }
   if (LiveBroadcastDelay && (LiveBroadcastPaused || LiveBroadcastEnded)) {
-    newExtraText += "<span style='margin-left:" + (1.75 + (newExtraText ? (1 / fontSizeRatio) : 0)) + "em;'";
+    newExtraText += "<span style='margin-left:" + (1.25 + (newExtraText ? (1 / fontSizeRatio) : 0)) + "em;'";
     if (LiveBroadcastEnded) {
       newExtraText += " onclick='refreshPgnSource(); this.blur();' title='live broadcast ended'>&dagger;</a>";
     } else {
