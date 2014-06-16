@@ -1037,7 +1037,7 @@ sub memory_rename_event {
       }
     }
   }
-  if ($renamedEvent > 0) { log_terminal('debug: renamed memory event from "' . $searchEvent . '" to "'. $replacementEvent . '"'); }
+  if ($renamedEvent > 0) { log_terminal('debug: renamed memory event: "' . $searchEvent . '" "'. $replacementEvent . '"'); }
   return $renamedEvent;
 }
 
@@ -1061,7 +1061,7 @@ sub memory_rename_round {
       }
     }
   }
-  if ($renamedRound > 0) { log_terminal('debug: renamed memory round from "' . $searchEvent . '" "' . $searchRound . '" to "'. $replacementRound . '"'); }
+  if ($renamedRound > 0) { log_terminal('debug: renamed memory round: "' . $searchEvent . '" "' . $searchRound . '" "'. $replacementRound . '"'); }
   return $renamedRound;
 }
 
