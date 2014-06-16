@@ -541,17 +541,17 @@ sub process_line {
     $autorelayEvent = $1;
     $autorelayEvent =~ s/[\[\]"]/'/g;
     $autorelayRound = "";
-    if ($autorelayEvent =~ /^(.*)\bGame\s+(\d+)\b(.*)$/) {
+    if ($autorelayEvent =~ /^(.*)\bGame\s+(\d+)\b(.*)$/i) {
       $autorelayRound = $2;
       $autorelayEvent = $1 . " " . $3;
-    } elsif ($autorelayEvent =~ /^(.*)\bLast\s+Game\b(.*)$/) {
+    } elsif ($autorelayEvent =~ /^(.*)\bLast\s+Game\b(.*)$/i) {
       $autorelayRound = "?";
       $autorelayEvent = $1 . " " . $2;
     }
-    if ($autorelayEvent =~ /^(.*)\bRound\s+(\d+)\b(.*)$/) {
+    if ($autorelayEvent =~ /^(.*)\bRound\s+(\d+)\b(.*)$/i) {
       $autorelayRound = $autorelayRound ne "" ? $2 . "." . $autorelayRound : $2;
       $autorelayEvent = $1 . " " . $3;
-    } elsif ($autorelayEvent =~ /^(.*)\bLast\s+Round\b(.*)$/) {
+    } elsif ($autorelayEvent =~ /^(.*)\bLast\s+Round\b(.*)$/i) {
       $autorelayRound = $autorelayRound ne "" ? "?." . $autorelayRound : "?";
       $autorelayEvent = $1 . " " . $2;
     }
