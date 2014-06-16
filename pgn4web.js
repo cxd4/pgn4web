@@ -926,7 +926,6 @@ var LiveBroadcastEnded = false;
 var LiveBroadcastPaused = false;
 var LiveBroadcastTicker = 0;
 var LiveBroadcastGamesRunning = 0;
-var LiveBroadcastStatusString = "";
 var LiveBroadcastLastModified = new Date(0); // default to epoch start
 var LiveBroadcastLastModifiedHeader = LiveBroadcastLastModified.toUTCString();
 var LiveBroadcastLastReceivedLocal = 'unavailable';
@@ -1933,7 +1932,7 @@ function checkLiveBroadcastStatus() {
   if (LiveBroadcastDelay === 0) { return; }
 
   var theTitle, theObj, ii;
-  var tick = "&nbsp;" + (LiveBroadcastTicker % 2 ? "&lt;&gt;" : "&gt;&lt;") + "&nbsp;";
+  var theHTML = "&nbsp;" + (LiveBroadcastTicker % 2 ? "&lt;&gt;" : "&gt;&lt;") + "&nbsp;";
 
   // broadcast started yet?
   if (LiveBroadcastStarted === false || typeof(pgnHeader) == "undefined" || (numberOfGames == 1 && gameEvent[0] == LiveBroadcastPlaceholderEvent)) {
@@ -1951,10 +1950,10 @@ function checkLiveBroadcastStatus() {
     LiveBroadcastGamesRunning = lbgr;
     theTitle = LiveBroadcastEnded ? "live broadcast ended" : lbgr + " live game" + (lbgr > 1 ? "s" : "") + " out of " + numberOfGames;
   }
-  LiveBroadcastStatusString = LiveBroadcastGamesRunning + " " + tick + " " + numberOfGames;
+  theHTML = LiveBroadcastGamesRunning + " " + theHTML + " " + numberOfGames;
 
   if (theObj = document.getElementById("GameLiveStatus")) {
-    theObj.innerHTML = LiveBroadcastStatusString;
+    theObj.innerHTML = theHTML;
     theObj.title = theTitle;
   }
 

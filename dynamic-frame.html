@@ -784,7 +784,7 @@ function meaningfulHeader(tagValue) {
 
 function gameTooltipInfo() {
   var str = " game " + (currentGame+1) + " of " + numberOfGames + "  ";
-  if (LiveBroadcastDelay > 0) { str += LiveBroadcastStatusString.replace(/^(\d*).*$/, "($1 live) "); }
+  if (LiveBroadcastDelay > 0) { str += "(" + LiveBroadcastGamesRunning + " live) "; }
   if (meaningfulHeader(gameEvent[currentGame])) { str+= "\n event: " + gameEvent[currentGame] + "  "; }
   if (meaningfulHeader(gameSite[currentGame])) { str+= "\n site: " + gameSite[currentGame] + "  "; }
   if (meaningfulHeader(gameDate[currentGame])) { str+= "\n date: " + gameDate[currentGame] + "  "; }
