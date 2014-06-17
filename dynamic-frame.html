@@ -770,7 +770,7 @@ if (LiveBroadcastDelay === 0) {
   boardShortcut("G6", "toggle initial halfmove", function(t,e){ toggleInitialHalfmove(e.shiftKey); });
 }
 
-if (window.parent !== window) {
+if ((window.parent !== window) && (!engineWinPrepareIdle)) {
   boardShortcut("H5", "show fullscreen chessboard", function(t,e){ showFullscreenChessboard(e.shiftKey); });
 }
 
