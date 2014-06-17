@@ -257,21 +257,10 @@ function printHeader() {
 }
 
 function printMenu() {
-  document.write("<div id='rightMenu' class='menuLine' style='text-align:right; float:right;'></div><div id='leftMenu' class='menuLine' style='text-align:left; float:left;'><span id='GameLiveStatusDemo' title='this is a simulation of the live broadcast functionality'></span><a id='GameLiveStatus' href='javascript:void(0);' style='display:none;' onclick='clickGameLiveStatus(); this.blur();'></a></div><div id='infoMessage' class='menuLine infoMessage'>chess games viewer: loading PGN data, please wait...</div>");
+  document.write("<div id='rightMenu' class='menuLine' style='text-align:right; float:right;'></div><div id='leftMenu' class='menuLine' style='text-align:left; float:left;'><span id='GameLiveStatusDemo' title='this is a simulation of the live broadcast functionality'></span><span id='GameLiveStatus' style='display:none;'></span></div><div id='infoMessage' class='menuLine infoMessage'>chess games viewer: loading PGN data, please wait...</div>");
 }
 
-var timeOfLastReplayPreviousMoves = 0;
-function clickGameLiveStatus() {
-  var thisTime = (new Date()).getTime();
-  if (thisTime - timeOfLastReplayPreviousMoves < 333) {
-    displayDebugInfo();
-  } else {
-    timeOfLastReplayPreviousMoves = thisTime;
-    replayPreviousMoves();
-  }
-}
-
-function replayPreviousMoves() {
+function replayLastMoves() {
   var showAll = LiveBroadcastEnded, wf, rpm;
   for (var thisBoard in boardId) {
     if ((wf = window.frames["board" + boardId[thisBoard]]) && (rpm = wf.replayPreviousMoves)) {
@@ -576,6 +565,7 @@ function updateMenu() {
         theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' class='commandLink' href='javascript:void(0);' onclick='refreshPgnSource();' title='Force games refresh" + (LiveBroadcastStarted ? ": last moves received on " + LiveBroadcastLastReceivedLocal : "") + "' onfocus='this.blur();'>&nbsp;f&nbsp;</a></span>";
       }
     }
+    theRightObject.innerHTML += "<span class='menuLink'><a class='commandLink' class='commandLink' href='javascript:void(0);' onclick='replayLastMoves();' title='replaY last moves' onfocus='this.blur();'>&nbsp;y&nbsp;</a></span>";
 
     if (theRightObject && (theLeftObject = document.getElementById("leftMenu"))) {
       theRightObject.style.minWidth = 0;

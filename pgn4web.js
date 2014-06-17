@@ -1916,10 +1916,13 @@ function LiveBroadcastLastModified_ServerTime() {
 }
 
 function pauseLiveBroadcast() {
-  if (LiveBroadcastDelay === 0) { return; }
+  if ((LiveBroadcastDelay === 0) || (LiveBroadcastPaused)) { return; }
   LiveBroadcastPaused = true;
   clearTimeout(LiveBroadcastInterval);
   LiveBroadcastInterval = null;
+  LiveBroadcastTicker--;
+  checkLiveBroadcastStatus();
+  LiveBroadcastTicker++;
 }
 
 function restartLiveBroadcast() {
@@ -1931,8 +1934,7 @@ function restartLiveBroadcast() {
 function checkLiveBroadcastStatus() {
   if (LiveBroadcastDelay === 0) { return; }
 
-  var theTitle, theObj, ii;
-  var theHTML = "&nbsp;" + (LiveBroadcastTicker % 2 ? "&lt;&gt;" : "&gt;&lt;") + "&nbsp;";
+  var theTitle, theHTML, theObj, ii;
 
   // broadcast started yet?
   if (LiveBroadcastStarted === false || typeof(pgnHeader) == "undefined" || (numberOfGames == 1 && gameEvent[0] == LiveBroadcastPlaceholderEvent)) {
@@ -1943,14 +1945,15 @@ function checkLiveBroadcastStatus() {
   } else {
     // yes
     var lbgr = 0;
-    for (ii=0; ii<numberOfGames; ii++) {
-      if (gameResult[ii].indexOf('*') >= 0) { lbgr++; }
-    }
+    for (ii=0; ii<numberOfGames; ii++) { if (gameResult[ii].indexOf('*') >= 0) { lbgr++; } }
     LiveBroadcastEnded = (lbgr === 0);
     LiveBroadcastGamesRunning = lbgr;
-    theTitle = LiveBroadcastEnded ? "live broadcast ended" : lbgr + " live game" + (lbgr > 1 ? "s" : "") + " out of " + numberOfGames;
+    theTitle = LiveBroadcastEnded ? "live broadcast ended" : LiveBroadcastPaused ? "live broadcast paused" : lbgr + " live game" + (lbgr > 1 ? "s" : "") + " out of " + numberOfGames;
   }
-  theHTML = LiveBroadcastGamesRunning + " " + theHTML + " " + numberOfGames;
+  theHTML = LiveBroadcastEnded ? "&dagger;" : LiveBroadcastPaused ? "+" : "=";
+  theHTML = (LiveBroadcastTicker % 4 === 0 ? theHTML : "&nbsp;") + (LiveBroadcastTicker % 2 === 1 ? theHTML : "&nbsp;") + (LiveBroadcastTicker % 4 === 2 ? theHTML : "&nbsp;");
+  theHTML = LiveBroadcastGamesRunning + "<span style='display:inline-block; min-width:3em; text-align:center;'>" + theHTML + "</span>" + numberOfGames;
+  theHTML = "<span onclick='" + (LiveBroadcastPaused ? "restartLiveBroadcast();" : "refreshPgnSource();") + " this.blur();'>" + theHTML + "</span>";
 
   if (theObj = document.getElementById("GameLiveStatus")) {
     theObj.innerHTML = theHTML;
