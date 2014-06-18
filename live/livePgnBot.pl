@@ -1867,7 +1867,7 @@ sub process_master_command {
       $roundReverse = $parameters;
       $roundReverseAgtB = $roundReverse ? -1 : 1;
       $roundReverseAltB = -$roundReverseAgtB;
-      if ($#games_num > 0) { refresh_pgn(); }
+      # if ($#games_num > 0) { refresh_pgn(); }
     } elsif ($parameters !~ /^\??$/) {
       tell_operator("error: invalid $command parameter");
     }
