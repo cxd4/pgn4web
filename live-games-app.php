@@ -387,6 +387,7 @@ function fixGameLiveStatusExtraInfo(res) {
   if (LiveBroadcastDelay && LiveBroadcastDemo) { newExtraText += "<span title='this is a broadcast simulation'>demo</span>"; }
   if (lastGameLiveStatusExtraInfoRes === LOAD_PGN_FAIL) {
     newExtraText += "<span style='margin-left:" + (1.5 / fontSizeRatio) + "em;'";
+    newExtraText += " onclick='refreshPgnSource(); this.blur();'";
     newExtraText += " title='games from application cache'>";
     newExtraText += ((!localStorage[lsId + "lastGamesValidationTime"]) || ((new Date()).getTime() - localStorage[lsId + "lastGamesValidationTie"]) > 18000000) ? "X" : "&times;";
     newExtraText += "</span>";
