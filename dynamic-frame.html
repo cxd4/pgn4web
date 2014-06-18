@@ -624,7 +624,7 @@ function customFunctionOnPgnGameLoad() {
   }
   updateBareShortcut();
   var theObj = document.getElementById("GameResult");
-  if ((theObj) && (theObj.innerHTML == "*")) { theObj.innerHTML = "&lowast;"; }
+  if (theObj) { theObj.innerHTML = theObj.innerHTML.replace(/\*/g, "&lowast;").replace(/(\d)-(\d)/g, "$1<span style='font-weight: normal;'>&nbsp;&dash;&nbsp</span>$2"); }
 
 <!-- AppCheck: customFunctionOnPgnGameLoad -->
 
