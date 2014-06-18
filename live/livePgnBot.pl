@@ -216,8 +216,7 @@ sub reset_games {
   @memory_games_sortkey = ();
   $memorySelectFilter = "";
 
-  log_terminal("debug: event/game all out");
-  refresh_pgn();
+  log_terminal("debug: event/game information and configuration reset");
 }
 
 sub headerForFilter {
@@ -1171,7 +1170,7 @@ add_master_command ("livefile", "livefile [filename.pgn] (to get/set the filenam
 add_master_command ("livemax", "max [number] (to get/set the maximum number of games for the live PGN data)");
 add_master_command ("log", "log [string] (to print a string on the log terminal)");
 add_master_command ("memoryfile", "memoryfile [filename.pgn] (to get/set the filename for the PGN memory data)");
-add_master_command ("memorydate", "memorydate [strftime_string|\"\"] (to get/set the PGN header tag date for the PGN memory date)");
+add_master_command ("memorydate", "memorydate [strftime_string|\"\"] (to get/set the PGN header tag date for the PGN memory data)");
 add_master_command ("memoryload", "memoryload [1] (to load PGN memroy data from memory file)");
 add_master_command ("memorymax", "memorymax [number] (to get/set the maximum number of games for the PGN memory data)");
 add_master_command ("memorypurgegame", "memorypurgegame [\"event\" \"round\" \"white\" \"black\"] (to purge a game from the PGN memory data)");
@@ -1181,12 +1180,12 @@ add_master_command ("memoryrenameround", "memoryrenameround [\"event\" \"search\
 add_master_command ("memoryselect", "memoryselect [regexp|\"\"] (to get/set the regular expression to select games for the PGN memory data)");
 add_master_command ("observe", "observe [game number list, such as: 12 34 56 ..] (to observe given games)");
 add_master_command ("placeholderdate", "placeholderdate [string|\"\"] (to get/set the PGN header tag date for the PGN placeholder game)");
-add_master_command ("placeholdergame", "placeholdergame [always|auto|never|write] (to get/set the PGN placeholder game behaviour during autorelay)");
+add_master_command ("placeholdergame", "placeholdergame [always|auto|never] (to get/set the PGN placeholder game behaviour during autorelay)");
 add_master_command ("placeholderresult", "placeholderresult [string|\"\"] (to get/set the PGN header tag result for the PGN placeholder game)");
 add_master_command ("prioritize", "prioritize [regexp|\"\"] (to get/set the regular expression to prioritize events/players from the PGN header during autorelay; might be overridden by autoprioritize; might be overruled by ignore)");
 add_master_command ("quit", "quit [number] (to quit from the ics server, returning the given exit value)");
 add_master_command ("relay", "relay [0|game number list, such as: 12 34 56 ..] (to observe given games from an event relay, 0 to disable relay mode)");
-add_master_command ("reset", "reset [1] (to reset observed/followed games list and setting)");
+add_master_command ("reset", "reset [!] (to reset observed/followed games list and setting)");
 add_master_command ("round", "round [string|\"\"] (to get/set the PGN header tag round)");
 add_master_command ("roundautocorrect", "roundautocorrect [/regexp/eval/|\"\"] (to get/set the regexp and the evalexp returning a string that correct round tags during autorelay)");
 add_master_command ("roundreverse", "roundreverse [0|1] (to use reverse alphabetical ordering of rounds)");
@@ -1194,6 +1193,7 @@ add_master_command ("site", "site [string|\"\"] (to get/set the PGN header tag s
 add_master_command ("startup", "startup [command list, separated by semicolon] (to get/set startup commands file)");
 add_master_command ("timeoffset", "timeoffset [[+|-]seconds] (to get/set the offset correcting the time value from the UTC time used by default)");
 add_master_command ("verbosity", "verbosity [0-6] (to get/set log verbosity: 0=none, 1=alert, 2=error, 3=warning, 4=info, 5=debug, 6=fyi)");
+add_master_command ("write", "write [!] (to force writing updated PGN data according to the latest configuration)");
 
 sub detect_command {
   my ($command) = @_;
@@ -1738,10 +1738,6 @@ sub process_master_command {
       $placeholderGame = $parameters;
       tell_operator("placeholdergame=$placeholderGame");
       log_terminal("info: placeholdergame=$placeholderGame");
-    } elsif ($parameters eq "write") {
-      $lastPgn = $lastPgnForce;
-      refresh_pgn();
-      tell_operator("PGN data written: placeholdergame=$placeholderGame");
     } elsif ($parameters eq "") {
       tell_operator("placeholdergame=$placeholderGame");
     } else {
@@ -1814,7 +1810,7 @@ sub process_master_command {
       tell_operator("warning: ics relay offline");
     }
   } elsif ($command eq "reset") {
-    if ($parameters eq "1") {
+    if ($parameters eq "!") {
       reset_games();
       tell_operator("OK $command");
     } elsif ($parameters eq "") {
@@ -1909,6 +1905,16 @@ sub process_master_command {
         $verbosity = $parameters;
       }
       tell_operator_and_log_terminal("alert: verbosity=$verbosity");
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "write") {
+    if ($parameters eq "!") {
+      $lastPgn = $lastPgnForce;
+      refresh_pgn();
+      tell_operator("OK $command");
+    } elsif ($parameters eq "") {
+      tell_operator(detect_command_helptext($command));
     } else {
       tell_operator("error: invalid $command parameter");
     }
