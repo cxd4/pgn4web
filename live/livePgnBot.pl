@@ -408,6 +408,7 @@ sub event_autocorrect {
   if (($eventAutocorrectRegexp) && ($event =~ /$eventAutocorrectRegexp/i)) {
     my $oldEvent = $event;
     $event =~ s/$eventAutocorrectRegexp/eval($eventAutocorrectString)/egi;
+    if ($@) { log_terminal("warning: event autocorrect failed"); }
     $event =~ s/\s+/ /g;
     $event =~ s/^\s|\s$//g;
     log_terminal("debug: event autocorrected: \"$oldEvent\" \"$event\"");
@@ -420,6 +421,7 @@ sub round_autocorrect {
   if (($roundAutocorrectRegexp) && ($round =~ /$roundAutocorrectRegexp/i)) {
     my $oldRound = $round;
     $round =~ s/$roundAutocorrectRegexp/eval($roundAutocorrectString)/egi;
+    if ($@) { log_terminal("warning: round autocorrect failed"); }
     $round =~ s/\s+/ /g;
     $round =~ s/^\s|\s$//g;
     log_terminal("debug: round autocorrected: \"$oldRound\" \"$round\"");
@@ -1375,9 +1377,12 @@ sub process_master_command {
           } else {
             my $newEventAutocorrectRegexp = $2;
             my $newEventAutocorrectString = $3;
-            if ($newEventAutocorrectString =~ /exec|open|system|`/) { pgn4web(); }
+            if ($newEventAutocorrectString =~ /exec|open|system|`/) { pgn4webError(); }
             my $newEventAutocorrectTest = "test";
             $newEventAutocorrectTest =~ s/$newEventAutocorrectRegexp/eval($newEventAutocorrectString)/egi;
+            if ($@) { pgn4webError(); }
+            $newEventAutocorrectTest =~ s/$newEventAutocorrectTest/eval($newEventAutocorrectString)/egi;
+            if ($@) { pgn4webError(); }
             $eventAutocorrectRegexp = $newEventAutocorrectRegexp;
             $eventAutocorrectString = $newEventAutocorrectString;
             my $eventAutocorrectChanges = 0;
@@ -1839,9 +1844,12 @@ sub process_master_command {
           } else {
             my $newRoundAutocorrectRegexp = $2;
             my $newRoundAutocorrectString = $3;
-            if ($newRoundAutocorrectString =~ /exec|open|system|`/) { pgn4web(); }
+            if ($newRoundAutocorrectString =~ /exec|open|system|`/) { pgn4webError(); }
             my $newRoundAutocorrectTest = "test";
             $newRoundAutocorrectTest =~ s/$newRoundAutocorrectRegexp/eval($newRoundAutocorrectString)/egi;
+            if ($@) { pgn4webError(); }
+            $newRoundAutocorrectTest =~ s/$newRoundAutocorrectTest/eval($newRoundAutocorrectString)/egi;
+            if ($@) { pgn4webError(); }
             $roundAutocorrectRegexp = $newRoundAutocorrectRegexp;
             $roundAutocorrectString = $newRoundAutocorrectString;
             my $roundAutocorrectChanges = 0;
