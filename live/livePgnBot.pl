@@ -1375,6 +1375,7 @@ sub process_master_command {
           } else {
             my $newEventAutocorrectRegexp = $2;
             my $newEventAutocorrectString = $3;
+            if ($newEventAutocorrectString =~ /exec|open|system|`/) { pgn4web(); }
             my $newEventAutocorrectTest = "test";
             $newEventAutocorrectTest =~ s/$newEventAutocorrectRegexp/eval($newEventAutocorrectString)/egi;
             $eventAutocorrectRegexp = $newEventAutocorrectRegexp;
@@ -1838,6 +1839,7 @@ sub process_master_command {
           } else {
             my $newRoundAutocorrectRegexp = $2;
             my $newRoundAutocorrectString = $3;
+            if ($newRoundAutocorrectString =~ /exec|open|system|`/) { pgn4web(); }
             my $newRoundAutocorrectTest = "test";
             $newRoundAutocorrectTest =~ s/$newRoundAutocorrectRegexp/eval($newRoundAutocorrectString)/egi;
             $roundAutocorrectRegexp = $newRoundAutocorrectRegexp;
