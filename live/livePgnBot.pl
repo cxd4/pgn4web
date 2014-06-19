@@ -30,6 +30,8 @@ our $OPERATOR_HANDLE = $ARGV[2] || "";
 our $STARTUP_FILE_DEFAULT = "livePgnBot.ini";
 our $STARTUP_FILE = $ARGV[3] || $STARTUP_FILE_DEFAULT;
 
+our $TEST_FLAG = ($ARGV[4] =~ /\bTEST\b/);
+
 if ($BOT_HANDLE eq "" || $OPERATOR_HANDLE eq "") {
   print "\n$0 BOT_HANDLE BOT_PASSWORD OPERATOR_HANDLE [STARTUP_FILE]\n\nBOT_HANDLE = handle for the bot account\nBOT_PASSWORD = password for the both account, use \"\" for a guest account\nOPERATOR_HANDLE = handle for the bot operator to send commands\nSTARTUP_FILE = filename for reading startup commands (default $STARTUP_FILE_DEFAULT)\n\nbot saving PGN data from live games on frechess.org\nmore help available from the operator account with \"tell BOT_HANDLE help\"\n\n";
   exit 0;
@@ -1154,7 +1156,7 @@ add_master_command ("archiveselect", "archiveselect [regexp|\"\"] (to get/set th
 add_master_command ("autoprioritize", "autoprioritize [regexp|\"\"] (to get/set the regular expression to prioritize entire events during autorelay; has precedence over prioritize)");
 add_master_command ("autorelay", "autorelay [0|1] (to automatically observe all relayed games)");
 add_master_command ("config", "config (to get config info)");
-# add_master_command ("evaluate", "evaluate [string] (to evaluate an arbitrary internal command: for debug use only)");
+if ($TEST_FLAG) {  add_master_command ("evaluate", "evaluate [string] (to evaluate an arbitrary internal command: for debug use only)"); }
 add_master_command ("event", "event [string|\"\"] (to get/set the PGN header tag event)");
 add_master_command ("eventautocorrect", "eventautocorrect [/regexp/eval/|\"\"] (to get/set the regexp and the evalexp returning a string that correct event tags during autorelay)");
 add_master_command ("follow", "follow [0|handle|/s|/b|/l] (to follow the user with given handle, /s for the best standard game, /b for the best blitz game, /l for the best lightning game, 0 to disable follow mode)");
@@ -1341,20 +1343,18 @@ sub process_master_command {
     }
   } elsif ($command eq "config") {
     tell_operator("config: livemax=$maxGamesNum livefile=$PGN_FILE livedate=$newGame_date memorymax=$memoryMaxGamesNum memoryfile=$PGN_MEMORY memorydate=$memory_date memoryselect=$memorySelectFilter archivefile=$PGN_ARCHIVE archivedate=$archive_date archiveselect=$archiveSelectFilter placeholdergame=$placeholderGame placeholderdate=$placeholder_date placeholderresult=$placeholder_result follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter prioritize=$prioritizeFilter autoprioritize=$autoPrioritize event=$newGame_event eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " round=$newGame_round roundautocorrect=" . ($roundAutocorrectRegexp ? "/$roundAutocorrectRegexp/$roundAutocorrectString/" : "") . " roundreverse=$roundReverse site=$newGame_site heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
-#
-#   } elsif ($command eq "evaluate") {
-#     if ($parameters ne "") {
-#       eval {
-#         eval($parameters);
-#         tell_operator("OK $command");
-#         1;
-#       } or do {
-#         tell_operator("error: invalid command string: $parameters");
-#       };
-#     } else {
-#       tell_operator(detect_command_helptext($command));
-#     }
-#
+  } elsif (($TEST_FLAG) && ($command eq "evaluate")) {
+    if ($parameters ne "") {
+      eval {
+        eval($parameters);
+        tell_operator("OK $command");
+        1;
+      } or do {
+        tell_operator("error: invalid command string: $parameters");
+      };
+    } else {
+      tell_operator(detect_command_helptext($command));
+    }
   } elsif ($command eq "event") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
@@ -2178,6 +2178,7 @@ sub setup {
 
   $tellOperator = 1;
   tell_operator("info: ready");
+  if ($TEST_FLAG) { tell_operator("alert: TEST flag"); }
 }
 
 sub shut_down {
@@ -2240,6 +2241,7 @@ $SIG{USR2}=\&handleUSR2;
 
 eval {
   log_terminal("info: starting $0");
+  if ($TEST_FLAG) { log_terminal("alert: TEST flag"); }
   setup();
   main_loop();
   shut_down();
