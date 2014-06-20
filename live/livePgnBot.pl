@@ -1162,7 +1162,6 @@ if ($TEST_FLAG) {  add_master_command ("evaluate", "evaluate [string] (to evalua
 add_master_command ("event", "event [string|\"\"] (to get/set the PGN header tag event)");
 add_master_command ("eventautocorrect", "eventautocorrect [/regexp/eval/|\"\"] (to get/set the regexp and the evalexp returning a string that correct event tags during autorelay)");
 add_master_command ("follow", "follow [0|handle|/s|/b|/l] (to follow the user with given handle, /s for the best standard game, /b for the best blitz game, /l for the best lightning game, 0 to disable follow mode)");
-add_master_command ("forget", "forget [game number list, such as: 12 34 56 ..] (to eliminate given past games from live PGN data)");
 add_master_command ("games", "games (to get list of observed games)");
 add_master_command ("heartbeat", "heartbeat [frequency offset] (to get/set the timing of heartbeat log messages, in hours)");
 add_master_command ("help", "help [command] (to get commands help)");
@@ -1172,6 +1171,7 @@ add_master_command ("ignore", "ignore [regexp|\"\"] (to get/set the regular expr
 add_master_command ("livedate", "livedate [????.??.???|\"\"] (to get/set the PGN header tag date for live PGN data)");
 add_master_command ("livefile", "livefile [filename.pgn] (to get/set the filename for live PGN data)");
 add_master_command ("livemax", "max [number] (to get/set the maximum number of games for the live PGN data)");
+add_master_command ("livepurgegames", "livepurgegames [game number list, such as: 12 34 56 ..] (to purge given past games from live PGN data)");
 add_master_command ("log", "log [string] (to print a string on the log terminal)");
 add_master_command ("memoryfile", "memoryfile [filename.pgn] (to get/set the filename for the PGN memory data)");
 add_master_command ("memorydate", "memorydate [strftime_string|\"\"] (to get/set the PGN header tag date for the PGN memory data)");
@@ -1428,22 +1428,6 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
     tell_operator("follow=$followMode last=$followLast");
-  } elsif ($command eq "forget") {
-    if ($parameters ne "") {
-      my @theseGames = split(" ", $parameters);
-      foreach (@theseGames) {
-        if ($_ =~ /\d+/) {
-          if (remove_game($_) < 0) {
-            tell_operator("error: game $_ not found");
-          }
-        } else {
-          tell_operator("error: invalid game $_");
-        }
-      }
-      tell_operator("OK $command");
-    } else {
-      tell_operator(detect_command_helptext($command));
-    }
   } elsif ($command eq "games") {
     my $roundsList = "";
     if ($autorelayMode == 1) {
@@ -1567,6 +1551,25 @@ sub process_master_command {
       tell_operator("livemax=$maxGamesNum");
     } else {
       tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "livepurgegames") {
+    if ($parameters ne "") {
+      if ($autorelayMode == 1) {
+        tell_operator("warning: using $command during autorelay");
+      }
+      my @theseGames = split(" ", $parameters);
+      foreach (@theseGames) {
+        if ($_ =~ /\d+/) {
+          if (remove_game($_) < 0) {
+            tell_operator("error: game $_ not found");
+          }
+        } else {
+          tell_operator("error: invalid game $_");
+        }
+      }
+      tell_operator("OK $command");
+    } else {
+      tell_operator(detect_command_helptext($command));
     }
   } elsif ($command eq "log") {
     if ($parameters ne "") {
