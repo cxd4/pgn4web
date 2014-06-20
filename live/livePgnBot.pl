@@ -157,6 +157,7 @@ our $memoryMaxGamesNum = $maxGamesNumDefault;
 our @memory_games = ();
 our @memory_games_sortkey = ();
 our $memorySelectFilter = "";
+our $memoryAutopurgeEvent = 0;
 
 sub reset_games {
   if ($PGN_ARCHIVE ne "") {
@@ -217,6 +218,7 @@ sub reset_games {
   @memory_games = ();
   @memory_games_sortkey = ();
   $memorySelectFilter = "";
+  $memoryAutopurgeEvent = 0;
 
   log_terminal("debug: event/game information and configuration reset");
 }
@@ -970,6 +972,27 @@ sub fixTagForPurge {
   return $thisTag;
 }
 
+sub memory_purge_event {
+  my ($thisEvent) = @_;
+  my $purgedEvent = 0;
+
+  if ($PGN_MEMORY ne "") {
+    my $logged = 0;
+    for (my $i=$#memory_games; $i>=0; $i--) {
+      if ($memory_games_sortkey[$i] =~ /^$thisEvent( - Round .+)?$/) {
+        @memory_games = @memory_games[0..($i-1), ($i+1)..$#memory_games];
+        @memory_games_sortkey = @memory_games_sortkey[0..($i-1), ($i+1)..$#memory_games_sortkey];
+        if ($logged == 0) {
+          log_terminal('debug: memory purged event: ' . $thisEvent);
+          $logged = 1;
+        }
+        $purgedEvent++;
+      }
+    }
+  }
+  return $purgedEvent;
+}
+
 sub memory_purge_round {
   my ($thisEventRound) = @_;
   my $purgedRound = 0;
@@ -981,7 +1004,7 @@ sub memory_purge_round {
         @memory_games = @memory_games[0..($i-1), ($i+1)..$#memory_games];
         @memory_games_sortkey = @memory_games_sortkey[0..($i-1), ($i+1)..$#memory_games_sortkey];
         if ($logged == 0) {
-          log_terminal('debug: memory purged event: ' . $thisEventRound);
+          log_terminal('debug: memory purged round: ' . $thisEventRound);
           $logged = 1;
         }
         $purgedRound++;
@@ -1114,7 +1137,7 @@ sub memory_load {
 
 sub log_rounds {
   my @newRounds = ();
-  my ($i, $thisRound);
+  my ($i, $thisRound, $thisEvent);
 
   foreach (@games_num) {
     if (defined $GAMES_event[$_]) {
@@ -1135,7 +1158,13 @@ sub log_rounds {
     unless ($_ ~~ @currentRounds) {
       log_terminal("info: event new: $_");
       $roundsStartCount++;
-      memory_purge_round($_);
+      if ($memoryAutopurgeEvent == 1) {
+        $thisEvent = $_;
+        $thisEvent =~ s/ - Round .+$//;
+        memory_purge_event($thisEvent);
+      } else {
+        memory_purge_round($_);
+      }
     }
   }
 
@@ -1173,11 +1202,13 @@ add_master_command ("livefile", "livefile [filename.pgn] (to get/set the filenam
 add_master_command ("livemax", "max [number] (to get/set the maximum number of games for the live PGN data)");
 add_master_command ("livepurgegames", "livepurgegames [game number list, such as: 12 34 56 ..] (to purge given past games from live PGN data)");
 add_master_command ("log", "log [string] (to print a string on the log terminal)");
+add_master_command ("memoryautopurgeevent", "memoryautopurgeevent [0|1] (to automatically purge new live events from the PGN memory data)");
 add_master_command ("memoryfile", "memoryfile [filename.pgn] (to get/set the filename for the PGN memory data)");
 add_master_command ("memorydate", "memorydate [strftime_string|\"\"] (to get/set the PGN header tag date for the PGN memory data)");
 add_master_command ("memoryload", "memoryload [1] (to load PGN memroy data from memory file)");
 add_master_command ("memorymax", "memorymax [number] (to get/set the maximum number of games for the PGN memory data)");
 add_master_command ("memorypurgegame", "memorypurgegame [\"event\" \"round\" \"white\" \"black\"] (to purge a game from the PGN memory data)");
+add_master_command ("memorypurgeevent", "memorypurgeevent [\"event\"] (to purge an event from the PGN memory data)");
 add_master_command ("memorypurgeround", "memorypurgeround [\"event\" \"round\"] (to purge a round from the PGN memory data)");
 add_master_command ("memoryrenameevent", "memoryrenameevent [\"search\" \"replacement\"] (to rename an event in the PGN memory data)");
 add_master_command ("memoryrenameround", "memoryrenameround [\"event\" \"search\" \"replacement\"] (to rename a round in the PGN memory data)");
@@ -1344,7 +1375,7 @@ sub process_master_command {
       tell_operator("warning: ics relay offline");
     }
   } elsif ($command eq "config") {
-    tell_operator("config: livemax=$maxGamesNum livefile=$PGN_FILE livedate=$newGame_date memorymax=$memoryMaxGamesNum memoryfile=$PGN_MEMORY memorydate=$memory_date memoryselect=$memorySelectFilter archivefile=$PGN_ARCHIVE archivedate=$archive_date archiveselect=$archiveSelectFilter placeholdergame=$placeholderGame placeholderdate=$placeholder_date placeholderresult=$placeholder_result follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter prioritize=$prioritizeFilter autoprioritize=$autoPrioritize event=$newGame_event eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " round=$newGame_round roundautocorrect=" . ($roundAutocorrectRegexp ? "/$roundAutocorrectRegexp/$roundAutocorrectString/" : "") . " roundreverse=$roundReverse site=$newGame_site heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
+    tell_operator("config: livemax=$maxGamesNum livefile=$PGN_FILE livedate=$newGame_date memorymax=$memoryMaxGamesNum memoryfile=$PGN_MEMORY memorydate=$memory_date memoryselect=$memorySelectFilter memoryautopurgeevent=$memoryAutopurgeEvent archivefile=$PGN_ARCHIVE archivedate=$archive_date archiveselect=$archiveSelectFilter placeholdergame=$placeholderGame placeholderdate=$placeholder_date placeholderresult=$placeholder_result follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter prioritize=$prioritizeFilter autoprioritize=$autoPrioritize event=$newGame_event eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " round=$newGame_round roundautocorrect=" . ($roundAutocorrectRegexp ? "/$roundAutocorrectRegexp/$roundAutocorrectString/" : "") . " roundreverse=$roundReverse site=$newGame_site heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
   } elsif (($TEST_FLAG) && ($command eq "evaluate")) {
     if ($parameters ne "") {
       eval {
@@ -1578,6 +1609,29 @@ sub process_master_command {
     } else {
       tell_operator(detect_command_helptext($command));
     }
+  } elsif ($command eq "memoryautopurgeevent") {
+    if ($parameters =~ /^(0|1)$/) {
+      $memoryAutopurgeEvent = $parameters;
+      my $purgedEvent = 0;
+      if ($memoryAutopurgeEvent == 1) {
+        my @theseEvents = ();
+        for (my $i=0; $i<$maxGamesNum; $i++) {
+          if ((defined $games_num[$i]) && (defined $GAMES_event[$games_num[$i]])) {
+            unless ($GAMES_event[$games_num[$i]] ~~ @theseEvents) {
+              $purgedEvent += memory_purge_event($GAMES_event[$games_num[$i]]);
+              push(@theseEvents, $GAMES_event[$games_num[$i]]);
+            }
+          }
+        }
+        if ($purgedEvent > 0) {
+          $lastPgn = $lastPgnForce;
+          refresh_pgn();
+        }
+      }
+    } elsif ($parameters !~ /^\??$/) {
+      tell_operator("error: invalid $command parameter");
+    }
+    tell_operator("memoryautopurgeevent=$memoryAutopurgeEvent");
   } elsif ($command eq "memorydate") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
@@ -1643,6 +1697,20 @@ sub process_master_command {
         tell_operator("purged memory game");
       } else {
         tell_operator("no memory game found for purge");
+      }
+    } elsif ($parameters eq "") {
+      tell_operator(detect_command_helptext($command));
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "memorypurgeevent") {
+    if ($parameters =~ /^\s*"(.*?)"\s*$/) {
+      if (memory_purge_event($1) > 0) {
+        $lastPgn = $lastPgnForce;
+        refresh_pgn();
+        tell_operator("purged memory event");
+      } else {
+        tell_operator("no memory event found for purge");
       }
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
