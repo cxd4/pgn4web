@@ -1463,6 +1463,7 @@ sub process_master_command {
       }
     } else {
       tell_operator("commands: " . join(", ", @master_commands));
+      tell_operator("info: non-beautified players names required");
     }
   } elsif ($command eq "history") {
     my $secTime = time() - $starupTime;
