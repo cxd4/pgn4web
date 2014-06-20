@@ -154,6 +154,7 @@ our @currentRounds = ();
 
 our $PGN_MEMORY = "";
 our $memoryMaxGamesNum = $maxGamesNumDefault;
+our $memoryMaxGamesNumBuffer = 2;
 our @memory_games = ();
 our @memory_games_sortkey = ();
 our $memorySelectFilter = "";
@@ -955,7 +956,7 @@ sub memory_add_pgnGame {
     my $pgn = save_pgnGame($i);
     if (($memorySelectFilter eq "") || ($pgn =~ /$memorySelectFilter/is)) {
       $pgn =~ s/\[Date "([^\[\]"]*)"\]/'[Date "' . strftime($memory_date, gmtime(time() + $timeOffset)) . '"]'/e;
-      if (($#memory_games + 1) >= $memoryMaxGamesNum) {
+      if (($#memory_games + 1) >= int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum)) {
         pop(@memory_games);
         pop(@memory_games_sortkey);
       }
@@ -1117,9 +1118,9 @@ sub memory_load {
     for (my $g=0; $g<=$#games_num; $g++) {
       memory_purge_game($GAMES_event[$games_num[$g]], $GAMES_round[$games_num[$g]], $games_white[$g], $games_black[$g]);
     }
-    if ($#memory_games > $memoryMaxGamesNum - 1) {
-      @memory_games = @memory_games[0..($memoryMaxGamesNum - 1)];
-      @memory_games_sortkey = @memory_games_sortkey[0..($memoryMaxGamesNum - 1)];
+    if ($#memory_games > int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum - 1)) {
+      @memory_games = @memory_games[0..int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum - 1)];
+      @memory_games_sortkey = @memory_games_sortkey[0..int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum - 1)];
     }
     if ($autorelayMode == 1) {
       my @newSortkey = ();
@@ -1569,7 +1570,7 @@ sub process_master_command {
     if ($parameters =~ /^([1-9]\d*)?$/) {
       if ($parameters ne "") {
         if ($parameters > $maxGamesNumDefault) {
-          tell_operator_and_log_terminal("warning: max number of live games set above frechess.org observe limit of $maxGamesNumDefault");
+          tell_operator_and_log_terminal("warning: max number of live games set above server observe limit of $maxGamesNumDefault");
         }
         if ($parameters < $maxGamesNum) {
           for (my $i=$parameters; $i<$maxGamesNum; $i++) {
@@ -1679,11 +1680,11 @@ sub process_master_command {
   } elsif ($command eq "memorymax") {
     if ($parameters =~ /^([1-9]\d*)?$/) {
       if ($parameters ne "") {
-        if ($parameters < $#memory_games + 1) {
-          @memory_games = @memory_games[0..($parameters - 1)];
-          @memory_games_sortkey = @memory_games_sortkey[0..($parameters - 1)];
-        }
         $memoryMaxGamesNum = $parameters;
+        if ($#memory_games > int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum - 1)) {
+          @memory_games = @memory_games[0..int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum - 1)];
+          @memory_games_sortkey = @memory_games_sortkey[0..int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum - 1)];
+        }
       }
       tell_operator("memorymax=$memoryMaxGamesNum");
     } else {
