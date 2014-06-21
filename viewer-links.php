@@ -18,6 +18,8 @@ $viewerUrlDefault = "viewer.php?pd=";
 $viewerUrl = get_param("viewerUrl", "vu", $viewerUrlDefault);
 $doubleEncodeLink = get_param("doubleEncodeLink", "del", "false");
 $doubleEncodeLink = (($doubleEncodeLink == "true") || ($doubleEncodeLink == "t"));
+$reverseSort = get_param("reverseSort", "rs", "false");
+$reverseSort = (($reverseSort == "true") || ($reverseSort == "t"));
 $headlessPage = get_param("headlessPage", "hp", "false");
 $headlessPage = (($headlessPage == "true") || ($headlessPage == "t"));
 $help = get_param("help", "h", "false");
@@ -75,12 +77,13 @@ function get_links($targetUrl, $depth) {
 }
 
 function print_links() {
-    global $urls, $targetUrl, $linkFilter, $frameDepth, $viewerUrl, $doubleEncodeLink, $headlessPage, $help, $actualFrameDepth;
+    global $urls, $reverseSort, $targetUrl, $linkFilter, $frameDepth, $viewerUrl, $doubleEncodeLink, $headlessPage, $help, $actualFrameDepth;
 
     $labelColor = "lightgray";
 
     $urls = array_unique($urls);
-    sort($urls);
+    if ($reverseSort) { rsort($urls); }
+    else { sort($urls); }
 
     print("<!DOCTYPE HTML>" . "\n" . "<html>" . "\n" . "<head>" . "\n");
 
@@ -100,6 +103,7 @@ function print_links() {
         print("frameDepth = maximum recursive depth to scan frames" . "\n");
         print("viewerUrl = viewer url to open links" . "\n");
         print("doubleEncodeLink = true|false" . "\n");
+        print("reverseSort = true|false" . "\n");
         print("headlessPage = true|false" . "\n");
         print("help = true" . "\n");
         print("\n");
