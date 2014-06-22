@@ -547,14 +547,20 @@ sub process_line {
     $autorelayEvent = $1;
     $autorelayEvent =~ s/[\[\]"]/'/g;
     $autorelayRound = "";
-    if ($autorelayEvent =~ /^(.*)\bGame\s+(\d+)\b(.*)$/i) {
+    if ($autorelayEvent =~ /(\b(Game\s+\d+|Last\s+Game)\b.*){2,}/i) {
+      $autorelayRound = "?";
+      $autorelayEvent =~ s/Game\s+\d+|Last\s+Game/ /g;
+    } elsif ($autorelayEvent =~ /^(.*)\bGame\s+(\d+)\b(.*)$/i) {
       $autorelayRound = $2;
       $autorelayEvent = $1 . " " . $3;
     } elsif ($autorelayEvent =~ /^(.*)\bLast\s+Game\b(.*)$/i) {
       $autorelayRound = "?";
       $autorelayEvent = $1 . " " . $2;
     }
-    if ($autorelayEvent =~ /^(.*)\bRound\s+(\d+)\b(.*)$/i) {
+    if ($autorelayEvent =~ /(\b(Round\s+\d+|Last\s+Round)\b.*){2,}/i) {
+      $autorelayRound = $autorelayRound ne "" ? "?." . $autorelayRound : "?";
+      $autorelayEvent =~ s/Round\s+\d+|Last\s+Round/ /g;
+    } elsif ($autorelayEvent =~ /^(.*)\bRound\s+(\d+)\b(.*)$/i) {
       $autorelayRound = $autorelayRound ne "" ? $2 . "." . $autorelayRound : $2;
       $autorelayEvent = $1 . " " . $3;
     } elsif ($autorelayEvent =~ /^(.*)\bLast\s+Round\b(.*)$/i) {
