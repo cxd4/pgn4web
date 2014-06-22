@@ -30,7 +30,8 @@ our $OPERATOR_HANDLE = $ARGV[2] || "";
 our $STARTUP_FILE_DEFAULT = "livePgnBot.ini";
 our $STARTUP_FILE = $ARGV[3] || $STARTUP_FILE_DEFAULT;
 
-our $TEST_FLAG = ($ARGV[4] =~ /\bTEST\b/);
+our $FLAGS = $ARGV[4] || "";
+our $TEST_FLAG = ($FLAGS =~ /\bTEST\b/);
 
 if ($BOT_HANDLE eq "" || $OPERATOR_HANDLE eq "") {
   print "\n$0 BOT_HANDLE BOT_PASSWORD OPERATOR_HANDLE [STARTUP_FILE]\n\nBOT_HANDLE = handle for the bot account\nBOT_PASSWORD = password for the both account, use \"\" for a guest account\nOPERATOR_HANDLE = handle for the bot operator to send commands\nSTARTUP_FILE = filename for reading startup commands (default $STARTUP_FILE_DEFAULT)\n\nbot saving PGN data from live games on frechess.org\nmore help available from the operator account with \"tell BOT_HANDLE help\"\n\n";
@@ -2267,7 +2268,7 @@ sub setup {
 
   $tellOperator = 1;
   tell_operator("info: ready");
-  if ($TEST_FLAG) { tell_operator("alert: TEST flag"); }
+  if ($FLAGS) { tell_operator("alert: flags: $FLAGS"); }
 }
 
 sub shut_down {
@@ -2330,7 +2331,7 @@ $SIG{USR2}=\&handleUSR2;
 
 eval {
   log_terminal("info: starting $0");
-  if ($TEST_FLAG) { log_terminal("alert: TEST flag"); }
+  if ($FLAGS) { log_terminal("alert: flags: $FLAGS"); }
   setup();
   main_loop();
   shut_down();
