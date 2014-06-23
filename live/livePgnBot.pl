@@ -894,14 +894,13 @@ sub refresh_pgn {
       $pgnWriteCount++;
       $lastPgn = $pgn;
       $lastPgnNum = $newPgnNum;
-      refresh_memory();
     } else {
       log_terminal("error: failed writing $PGN_FILE");
     }
-  }
-
-  if ($autorelayMode == 1) {
-    log_rounds();
+    if ($autorelayMode == 1) {
+      log_rounds();
+    }
+    refresh_memory();
   }
 }
 
