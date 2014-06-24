@@ -42,6 +42,8 @@ $headlessPage = strtolower(get_param("headlessPage", "hp", ""));
 $hideForm = strtolower(get_param("hideForm", "hf", ""));
 $hideFormCss = ($hideForm == "true") || ($hideForm == "t") ? "display:none;" : "";
 
+$forceEncodingFrom = get_param("forceEncodingFrom", "fef", "");
+
 $startPosition = '[Event ""] [Site ""] [Date ""] [Round ""] [White ""] [Black ""] [Result ""] ' . ((($hideForm == "true") || ($hideForm == "t")) ? '' : '{ please enter chess games in PGN format using the form at the top of the page }');
 
 
@@ -133,7 +135,7 @@ function http_response_header_isInvalid() {
 
 function get_pgn() {
 
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $forceEncodingFrom, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $startPosition, $goToView, $zipSupported;
   global $http_response_header_status, $http_response_header_last_modified;
 
@@ -290,11 +292,20 @@ function get_pgn() {
     return FALSE;
   }
 
+  $assumedEncoding = $forceEncodingFrom;
+  if ($assumedEncoding == "") {
+
 
 // DeploymentCheck: conversion for given URLs
 
 // end DeploymentCheck
 
+
+  }
+  if (($assumedEncoding != "") && (strtoupper($assumedEncoding) != "NONE")) {
+    // convert text encoding to UNICODE, for example from windows WINDOWS-1252 files
+    $pgnText = html_entity_decode(htmlentities($pgnText, ENT_QUOTES, $assumedEncoding), ENT_QUOTES , "UNICODE");
+  }
 
   $pgnText = str_replace(array("&", "<", ">"), array("&amp;", "&lt;", "&gt;"), $pgnText);
 
@@ -303,7 +314,7 @@ function get_pgn() {
 
 function check_tmpDir() {
 
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $forceEncodingFrom, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $startPosition, $goToView, $zipSupported;
 
   $unexpectedFiles = "";
@@ -435,7 +446,7 @@ END;
 
 function print_form() {
 
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $forceEncodingFrom, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $startPosition, $goToView, $zipSupported;
   global $headlessPage, $hideFormCss, $presetURLsArray;
 
@@ -615,6 +626,7 @@ function restoreShortcutKeysStatus() {}
     <td colspan="$formVariableColspan" width="100%" align="left" valign="middle">
       <input type="hidden" name="MAX_FILE_SIZE" value="$fileUploadLimitBytes">
       <input id="uploadFormFile" name="pgnFile" type="file" class="formControl borderBox" style="width:100%;" title="view games from local file: PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText" onClick="this.blur();">
+      <input type="hidden" name="forceEncodingFrom" value="$forceEncodingFrom">
     </td>
   </tr>
   </form>
@@ -626,6 +638,7 @@ function restoreShortcutKeysStatus() {}
     </td>
     <td width="100%" align="left" valign="middle">
       <input id="urlFormText" name="pgnUrl" type="text" class="formControl verticalMiddle borderBox" value="" style="width:100%;" onFocus="disableShortcutKeysAndStoreStatus();" onBlur="restoreShortcutKeysStatus();" title="view games from remote URL: PGN and ZIP files must be smaller than $fileUploadLimitText (form limit) and $fileUploadLimitIniText (server limit); $debugHelpText">
+      <input type="hidden" name="forceEncodingFrom" value="$forceEncodingFrom">
     </td>
 END;
 
@@ -677,7 +690,7 @@ END;
 
 function print_chessboard_one() {
 
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $forceEncodingFrom, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $startPosition, $goToView, $zipSupported;
   global $hideFormCss;
 
@@ -1394,7 +1407,7 @@ END;
 
 function print_chessboard_two() {
 
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $forceEncodingFrom, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $startPosition, $goToView, $zipSupported;
 
   print <<<END
@@ -2098,6 +2111,7 @@ function print_chessboard_two() {
       if (!annotationSupported) { dbg += "unavailable"; }
       else if (!analysisStarted) { dbg += "disabled"; }
       else { dbg += (g_backgroundEngine ? ( annotateInProgress ? ("automatedGame" + (annotateGameMulti ? "s" : "") + " annotationSeconds=" + getAnnotationSecondsFromLocalStorage()) : "pondering") : "idle") + " analysisSeconds=" + analysisSeconds + " topNodesPerSecond=" + num2string(g_topNodesPerSecond) + cacheDebugInfo(); }
+      if ("$forceEncodingFrom") { dbg += " forceEncodingFrom=$forceEncodingFrom"; }
       return dbg;
    }
 
@@ -2117,7 +2131,7 @@ END;
 
 function print_footer() {
 
-  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $tmpDir, $debugHelpText, $pgnDebugInfo;
+  global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $forceEncodingFrom, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $startPosition, $goToView, $zipSupported;
 
   if ($goToView) { $hashStatement = "  goToHash('board');"; }

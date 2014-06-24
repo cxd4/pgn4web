@@ -17,9 +17,9 @@
  */
 
 
-/* start of preset URLs */
+// Deployment check: preset URLs
 
-/* end of preset URLs */
+// end DeploymentCheck
 
 
 ?>
