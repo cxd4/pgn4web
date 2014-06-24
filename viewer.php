@@ -78,7 +78,9 @@ if (($pgnOnly == "true") || ($pgnOnly == "t")) {
 } else {
 
   header("content-type: text/html; charset=utf-8");
-  if (!($goToView = get_pgn())) {
+  if ($goToView = get_pgn()) {
+    $pgnText = str_replace(array("&", "<", ">"), array("&amp;", "&lt;", "&gt;"), $pgnText);
+  } else {
     $pgnText = preg_match("/^error:/", $pgnStatus) ? '[Event ""] [Site ""] [Date ""] [Round ""] [White ""] [Black ""] [Result ""] { error loading PGN data, click square A8 for more details }' : $startPosition;
   }
   print_header();
@@ -307,8 +309,6 @@ function get_pgn() {
     // convert text encoding to UNICODE, for example from windows WINDOWS-1252 files
     $pgnText = html_entity_decode(htmlentities($pgnText, ENT_QUOTES, $assumedEncoding), ENT_QUOTES , "UNICODE");
   }
-
-  $pgnText = str_replace(array("&", "<", ">"), array("&amp;", "&lt;", "&gt;"), $pgnText);
 
   return TRUE;
 }
