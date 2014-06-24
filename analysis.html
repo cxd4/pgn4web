@@ -87,11 +87,22 @@
   }
 
   function customFunctionOnPgnGameLoad() {
-    document.getElementById('GameNum').innerHTML = (currentGame + 1) + '.';
+    fixObjInnerHTML('GameEvent');
+    fixObjInnerHTML('GameSite');
+    fixObjInnerHTML('GameDate');
+    fixObjInnerHTML('GameWhite');
+    fixObjInnerHTML('GameBlack');
+    fixObjInnerHTML('GameResult');
+    document.getElementById('GameNum').innerHTML = (currentGame + 1);
+    fixObjInnerHTML('GameNum');
     customPgnHeaderTag('WhiteElo', 'GameWhiteElo');
+    fixObjInnerHTML('GameWhiteElo');
     customPgnHeaderTag('BlackElo', 'GameBlackElo');
+    fixObjInnerHTML('GameBlackElo');
     customPgnHeaderTag('ECO', 'GameECO');
+    fixObjInnerHTML('GameECO');
     customPgnHeaderTag('Annotator', 'GameAnnotator');
+    fixObjInnerHTML('GameAnnotator');
     if (document.getElementById('GameWhite').innerHTML && document.getElementById('GameWhiteElo').innerHTML) { document.getElementById('GameWhiteElo').style.marginLeft = '1ex'; }
     if (document.getElementById('GameBlack').innerHTML && document.getElementById('GameBlackElo').innerHTML) { document.getElementById('GameBlackElo').style.marginLeft = '1ex'; }
     if (document.getElementById('GameSite').innerHTML && document.getElementById('GameEvent').innerHTML) { document.getElementById('GameEvent').style.marginLeft = '1ex'; }
@@ -105,6 +116,14 @@
     if (gameEvent[currentGame]) { newTitle += '\u00a0 ' + gameEvent[currentGame]; }
     if (gameDate[currentGame]) { newTitle += '\u00a0 ' + gameDate[currentGame]; }
     document.title = simpleHtmlentitiesDecode(newTitle);
+  }
+
+  function fixObjInnerHTML(id) {
+    var theObj = document.getElementById(id);
+    if (theObj) {
+      theObj.innerHTML = theObj.innerHTML.replace(/\.?\?[.?]*/, "");
+      theObj.title = theObj.title.replace(/:.*$/, "") + ": " + theObj.innerHTML;
+    }
   }
 
   function searchPlayer(name, FideId) {
@@ -141,14 +160,14 @@
 <div class="boardheaderDiv" id="boardHeader">
 
 <table cellspacing=0 cellpadding=0 border=0><tr>
-<td><div class="headerLine gameNum" id="GameNum" title="game number">1.</div></td>
-<td><div class="headerLine gameECO" id="GameECO" title="opening"></div></td>
+<td><div class="headerLine gameNum"><span id="GameNum" title="game number">1</span>.</div></td>
+<td><div class="headerLine gameECO"><span id="GameECO" title="ECO opening code"></span></div></td>
 </tr></table>
 <div class="shortRowSpace">&nbsp;</div>
-<div class="headerLine" title="white player"><a id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();"></a><span id="GameWhiteElo"></span></div>
-<div class="headerLine" title="black player"><a id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();"></a><span id="GameBlackElo"></span></div>
+<div class="headerLine"><a id="GameWhite" title="white player" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();"></a><span id="GameWhiteElo" title="white player's Elo"></span></div>
+<div class="headerLine"><a id="GameBlack" title="black player" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();"></a><span id="GameBlackElo" title="black player's Elo"></span></div>
 <div class="shortRowSpace">&nbsp;</div>
-<div class="headerLine gameSiteEventDate" title="event details"><span id="GameSite"></span><span id="GameEvent"></span><span id="GameDate"></span></div>
+<div class="headerLine gameSiteEventDate"><span id="GameSite" title="site"></span><span id="GameEvent" title="event"></span><span id="GameDate" title="date"></span></div>
 <div class="shortRowSpace">&nbsp;</div>
 <div class="shortRowSpace">&nbsp;</div>
 <div id="GameBoard"></div>
