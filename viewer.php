@@ -176,6 +176,7 @@ function get_pgn() {
         $pgnUrlHandle = @fopen($pgnUrl, "rb", false, stream_context_create($pgnUrlOpts));
         if (!$pgnUrlHandle) {
           $pgnStatus = "error: failed to get $pgnUrl: file not found or server error";
+          if ((isset($tempZipName)) && ($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
           return FALSE;
         } else {
           $tempZipHandle = fopen($tempZipName, "wb");
@@ -187,7 +188,7 @@ function get_pgn() {
             $pgnSource = $tempZipName;
           } else {
             $pgnStatus = "error: failed to get $pgnUrl: " . (http_response_header_isInvalid() ? "server error: $http_response_header_status" : "file not found, file size exceeds $fileUploadLimitText form limit, $fileUploadLimitIniText server limit or server error");
-            if (($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
+            if ((isset($tempZipName)) && ($tempZipName) && (file_exists($tempZipName))) { unlink($tempZipName); }
             return FALSE;
           }
         }
