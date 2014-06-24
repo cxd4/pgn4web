@@ -290,6 +290,12 @@ function get_pgn() {
     return FALSE;
   }
 
+
+// DeploymentCheck: conversion for given URLs
+
+// end DeploymentCheck
+
+
   $pgnText = str_replace(array("&", "<", ">"), array("&amp;", "&lt;", "&gt;"), $pgnText);
 
   return TRUE;
