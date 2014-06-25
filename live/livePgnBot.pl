@@ -1211,7 +1211,7 @@ add_master_command ("livefile", "livefile [filename.pgn] (to get/set the filenam
 add_master_command ("livemax", "max [number] (to get/set the maximum number of games for the live PGN data)");
 add_master_command ("livepurgegames", "livepurgegames [game number list, such as: 12 34 56 ..] (to purge given past games from live PGN data)");
 add_master_command ("log", "log [string] (to print a string on the log terminal)");
-add_master_command ("memoryautopurgeevent", "memoryautopurgeevent [0|1] (to automatically purge new live events from the PGN memory data)");
+add_master_command ("memoryautopurgeevent", "memoryautopurgeevent [0|1|2] (to automatically purge new live events from the PGN memory data)");
 add_master_command ("memoryfile", "memoryfile [filename.pgn] (to get/set the filename for the PGN memory data)");
 add_master_command ("memorydate", "memorydate [strftime_string|\"\"] (to get/set the PGN header tag date for the PGN memory data)");
 add_master_command ("memoryload", "memoryload [1] (to load PGN memroy data from memory file)");
@@ -1627,9 +1627,10 @@ sub process_master_command {
         for (my $i=0; $i<$maxGamesNum; $i++) {
           if ((defined $games_num[$i]) && (defined $GAMES_event[$games_num[$i]])) {
             unless ($GAMES_event[$games_num[$i]] ~~ @theseEvents) {
-              if (($memoryAutopurgeEvent == 1) && (headerForFilter($GAMES_event[$games_num[$i]], "", "", "") =~ /$prioritizeFilter/i)) { next; }
-              $purgedEvent += memory_purge_event($GAMES_event[$games_num[$i]]);
-              push(@theseEvents, $GAMES_event[$games_num[$i]]);
+              if (($memoryAutopurgeEvent > 1) || (headerForFilter($GAMES_event[$games_num[$i]], "", "", "") !~ /$prioritizeFilter/i)) {
+                $purgedEvent += memory_purge_event($GAMES_event[$games_num[$i]]);
+                push(@theseEvents, $GAMES_event[$games_num[$i]]);
+              }
             }
           }
         }
