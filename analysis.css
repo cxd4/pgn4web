@@ -180,3 +180,14 @@ a.variation:hover {
   border-radius: 2px;
 }
 
+.helpLink {
+  position: absolute;
+  bottom: 0px;
+  right: 2px;
+  color: lightgray;
+}
+
+.helpLink:hover {
+  color: black;
+}
+
