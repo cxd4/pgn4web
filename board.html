@@ -160,10 +160,12 @@ var blockChessInformantNAGSymbols = ((movesDisplay != "figurine") && ((movesDisp
 
 <script src="pgn4web.js" type="text/javascript"></script>
 <script src="fonts/chess-informant-NAG-symbols.js" type="text/javascript"></script>
+<script id="engineScript" type="text/javascript"></script>
 
 <script src="pgn-decoder.js" type="text/javascript"></script>
 
 <script src="fide-lookup.js" type="text/javascript"></script>
+
 
 <!-- DeploymentCheck: google analytics code -->
 
@@ -182,6 +184,19 @@ var blockChessInformantNAGSymbols = ((movesDisplay != "figurine") && ((movesDisp
 
 <script type="text/javascript">
 "use strict";
+
+
+<!-- DeploymentCheck: enableEngine_default -->
+var enableEngine_default = "false";
+<!-- end DeploymentCheck -->
+
+
+// undocumented option
+var enableEngine = gup("enableEngine") || enableEngine_default;
+if ((enableEngine == "true")  || (enableEngine == "t")) {
+  var engineScriptObject = document.getElementById("engineScript");
+  if (engineScriptObject) { engineScriptObject.src = "engine.js"; }
+}
 
 function percentFixFromUrl(text) {
   text += ''; // makes sure text is a string
