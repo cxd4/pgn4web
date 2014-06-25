@@ -1165,13 +1165,15 @@ sub log_rounds {
     unless ($_ ~~ @currentRounds) {
       log_terminal("info: event new: $_");
       $roundsStartCount++;
-      if ($memoryAutopurgeEvent == 1) {
+      if ($memoryAutopurgeEvent > 0) {
         $thisEvent = $_;
         $thisEvent =~ s/ - Round .+$//;
-        memory_purge_event($thisEvent);
-      } else {
-        memory_purge_round($_);
+        if (($memoryAutopurgeEvent > 1) || (headerForFilter($thisEvent, "", "", "") !~ /$prioritizeFilter/i)) {
+          memory_purge_event($thisEvent);
+          next;
+        }
       }
+      memory_purge_round($_);
     }
   }
 
@@ -1617,14 +1619,15 @@ sub process_master_command {
       tell_operator(detect_command_helptext($command));
     }
   } elsif ($command eq "memoryautopurgeevent") {
-    if ($parameters =~ /^(0|1)$/) {
+    if ($parameters =~ /^(0|1|2)$/) {
       $memoryAutopurgeEvent = $parameters;
       my $purgedEvent = 0;
-      if ($memoryAutopurgeEvent == 1) {
+      if ($memoryAutopurgeEvent > 0) {
         my @theseEvents = ();
         for (my $i=0; $i<$maxGamesNum; $i++) {
           if ((defined $games_num[$i]) && (defined $GAMES_event[$games_num[$i]])) {
             unless ($GAMES_event[$games_num[$i]] ~~ @theseEvents) {
+              if (($memoryAutopurgeEvent == 1) && (headerForFilter($GAMES_event[$games_num[$i]], "", "", "") =~ /$prioritizeFilter/i)) { next; }
               $purgedEvent += memory_purge_event($GAMES_event[$games_num[$i]]);
               push(@theseEvents, $GAMES_event[$games_num[$i]]);
             }
