@@ -1427,7 +1427,7 @@ sub process_master_command {
             $eventAutocorrectString = $newEventAutocorrectString;
             my $eventAutocorrectChanges = 0;
             for my $thisGameNum (@games_num) {
-              if ($GAMES_event[$thisGameNum] =~ /$eventAutocorrectRegexp/) {
+              if ($GAMES_event[$thisGameNum] =~ /$eventAutocorrectRegexp/i) {
                 $GAMES_event[$thisGameNum] = event_autocorrect($GAMES_event[$thisGameNum]);
                 $GAMES_sortkey[$thisGameNum] = eventRound($GAMES_event[$thisGameNum], $GAMES_round[$thisGameNum]);
                 $eventAutocorrectChanges = 1;
@@ -1937,7 +1937,7 @@ sub process_master_command {
             $roundAutocorrectString = $newRoundAutocorrectString;
             my $roundAutocorrectChanges = 0;
             for my $thisGameNum (@games_num) {
-              if ($GAMES_round[$thisGameNum] =~ /$roundAutocorrectRegexp/) {
+              if ($GAMES_round[$thisGameNum] =~ /$roundAutocorrectRegexp/i) {
                 $GAMES_round[$thisGameNum] = round_autocorrect($GAMES_round[$thisGameNum]);
                 $GAMES_sortkey[$thisGameNum] = eventRound($GAMES_event[$thisGameNum], $GAMES_round[$thisGameNum]);
                 $roundAutocorrectChanges = 1;
