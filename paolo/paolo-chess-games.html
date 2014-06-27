@@ -105,7 +105,7 @@ function showAnalysisBoard(de) {
 function hideAnalysisBoard() {
    var theObj;
    if (theObj = document.getElementById('GameAnalysisCell')) {
-      theObj.style.display = 0;
+      theObj.style.display = "none";
    }
    if (typeof(thisEngineWin) != "undefined") {
       if (typeof(thisEngineWin.StopBackgroundEngine) == "function") { thisEngineWin.StopBackgroundEngine(); }
