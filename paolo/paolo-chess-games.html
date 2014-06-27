@@ -65,6 +65,13 @@ function customShortcutKey_Shift_3() {
    if (!gameBlack[currentGame].match(/casaschi/i)) { customShortcutKey_Shift_2(); }
 }
 
+function customFunctionOnPgnTextLoad() {
+  if (!customFunctionOnPgnTextLoad.alreadyRun) {
+    customFunctionOnPgnTextLoad.alreadyRun = true;
+    showEngineAnalysisBoard(true, true); // prepare analysis frame with an idle board
+  }
+}
+
 function customShortcutKey_Shift_5() {
    if (fnIndex > fnMin) { loadPrevGames(); }
 }
@@ -98,7 +105,7 @@ function showAnalysisBoard(de) {
 function hideAnalysisBoard() {
    var theObj;
    if (theObj = document.getElementById('GameAnalysisCell')) {
-      theObj.style.display = "none";
+      theObj.style.display = 0;
    }
    if (typeof(thisEngineWin) != "undefined") {
       if (typeof(thisEngineWin.StopBackgroundEngine) == "function") { thisEngineWin.StopBackgroundEngine(); }
@@ -148,7 +155,7 @@ boardShortcut("F8", "close/pause analysis board", function(t,e){ if (!e.shiftKey
 
 </tr><tr>
 
-<td id="GameAnalysisCell" style="display: none;" align="left" valign="top" style="padding: 0px;">
+<td id="GameAnalysisCell" align="left" valign="top" style="display:none;">
 <div class="gameAnalysisContainer" id="GameAnalysisContainer">
 <iframe class="gameAnalysisFrame" id="GameAnalysisFrame" name="pgn4webAnalysisBoardForPaolo" src="../blank.html" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">your web browser and/or your host do not support iframes as required</iframe>
 </div>
