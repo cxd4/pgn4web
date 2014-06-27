@@ -1389,6 +1389,7 @@ sub process_master_command {
     if ($parameters ne "") {
       eval {
         eval($parameters);
+        if ($@) { pgn4webError(); }
         tell_operator("OK $command");
         1;
       } or do {
