@@ -58,6 +58,7 @@ our $telnet;
 our $username;
 
 our $starupTime = time();
+our $timeOffset = 0;
 our $roundsStartCount = 0;
 our $gamesStartCount = 0;
 our $pgnWriteCount = 0;
@@ -286,7 +287,7 @@ sub save_game {
     if ($autorelayMode == 0) {
       $GAMES_event[$newGame_num] = $newGame_event;
       $GAMES_site[$newGame_num] = $newGame_site;
-      $GAMES_date[$newGame_num] = $newGame_date;
+      $GAMES_date[$newGame_num] = strftime($newGame_date, gmtime(time() + $timeOffset));
       $GAMES_round[$newGame_num] = $newGame_round;
       $GAMES_eco[$newGame_num] = "";
       $GAMES_sortkey[$newGame_num] = eventRound($newGame_event, $newGame_round);
@@ -433,7 +434,6 @@ sub round_autocorrect {
   return $round;
 }
 
-our $timeOffset = 0;
 sub log_terminal {
   if ($verbosity == 0) {
     return;
@@ -600,7 +600,7 @@ sub process_line {
       if ($autorelayMode == 1) {
         $GAMES_event[$thisGameNum] = $autorelayEvent;
         $GAMES_site[$thisGameNum] = $newGame_site;
-        $GAMES_date[$thisGameNum] = $newGame_date;
+        $GAMES_date[$thisGameNum] = strftime($newGame_date, gmtime(time() + $timeOffset));
         $GAMES_round[$thisGameNum] = $autorelayRound;
         $GAMES_eco[$thisGameNum] = $thisGameEco;
         $GAMES_sortkey[$thisGameNum] = eventRound($autorelayEvent, $autorelayRound);
@@ -905,7 +905,7 @@ sub refresh_pgn {
 }
 
 sub placeholder_pgn {
-  return "[Event \"$newGame_event\"]\n" . "[Site \"$newGame_site\"]\n" . "[Date \"$placeholder_date\"]\n" . "[Round \"$newGame_round\"]\n" . "[White \"\"]\n" . "[Black \"\"]\n" . "[Result \"$placeholder_result\"]\n\n*\n\n";
+  return "[Event \"$newGame_event\"]\n" . "[Site \"$newGame_site\"]\n" . "[Date \"" . strftime($placeholder_date, gmtime(time() + $timeOffset)) . "\"]\n" . "[Round \"$newGame_round\"]\n" . "[White \"\"]\n" . "[Black \"\"]\n" . "[Result \"$placeholder_result\"]\n\n*\n\n";
 }
 
 sub archive_pgnGame {
@@ -1206,7 +1206,7 @@ add_master_command ("help", "help [command] (to get commands help)");
 add_master_command ("history", "history (to get history info)");
 add_master_command ("ics", "ics [server command] (to run a custom command on the ics server)");
 add_master_command ("ignore", "ignore [regexp|\"\"] (to get/set the regular expression to ignore events/players from the PGN header during autorelay; has precedence over prioritize; use ^(?:(?!regexp).)+\$ for negative lookup)");
-add_master_command ("livedate", "livedate [????.??.???|\"\"] (to get/set the PGN header tag date for live PGN data)");
+add_master_command ("livedate", "livedate [strftime_string|\"\"] (to get/set the PGN header tag date for live PGN data)");
 add_master_command ("livefile", "livefile [filename.pgn] (to get/set the filename for live PGN data)");
 add_master_command ("livemax", "max [number] (to get/set the maximum number of games for the live PGN data)");
 add_master_command ("livepurgegames", "livepurgegames [game number list, such as: 12 34 56 ..] (to purge given past games from live PGN data)");
@@ -1223,7 +1223,7 @@ add_master_command ("memoryrenameevent", "memoryrenameevent [\"search\" \"replac
 add_master_command ("memoryrenameround", "memoryrenameround [\"event\" \"search\" \"replacement\"] (to rename a round in the PGN memory data)");
 add_master_command ("memoryselect", "memoryselect [regexp|\"\"] (to get/set the regular expression to select games for the PGN memory data)");
 add_master_command ("observe", "observe [game number list, such as: 12 34 56 ..] (to observe given games)");
-add_master_command ("placeholderdate", "placeholderdate [string|\"\"] (to get/set the PGN header tag date for the PGN placeholder game)");
+add_master_command ("placeholderdate", "placeholderdate [strftime_string|\"\"] (to get/set the PGN header tag date for the PGN placeholder game)");
 add_master_command ("placeholdergame", "placeholdergame [always|auto|never] (to get/set the PGN placeholder game behaviour during autorelay)");
 add_master_command ("placeholderresult", "placeholderresult [string|\"\"] (to get/set the PGN header tag result for the PGN placeholder game)");
 add_master_command ("prioritize", "prioritize [regexp|\"\"] (to get/set the regular expression to prioritize events/players from the PGN header during autorelay; might be overridden by autoprioritize; might be overruled by ignore)");
