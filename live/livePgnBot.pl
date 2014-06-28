@@ -18,6 +18,7 @@ use strict;
 use Net::Telnet;
 use File::Copy;
 use POSIX qw(strftime);
+use POSIX qw(tzset);
 
 our $FICS_HOST = "freechess.org";
 our $FICS_PORT = 5000;
@@ -57,8 +58,19 @@ our $LINE_WAIT_TIMEOUT = 60;
 our $telnet;
 our $username;
 
+sub setup_time {
+  $ENV{TZ} = 'UTC';
+  tzset();
+}
+
 our $starupTime = time();
 our $timeOffset = 0;
+
+sub o_gmtime {
+  my ($t) = @_;
+  return gmtime(($t || time()) + $timeOffset);
+}
+
 our $roundsStartCount = 0;
 our $gamesStartCount = 0;
 our $pgnWriteCount = 0;
@@ -287,7 +299,7 @@ sub save_game {
     if ($autorelayMode == 0) {
       $GAMES_event[$newGame_num] = $newGame_event;
       $GAMES_site[$newGame_num] = $newGame_site;
-      $GAMES_date[$newGame_num] = strftime($newGame_date, gmtime(time() + $timeOffset));
+      $GAMES_date[$newGame_num] = strftime($newGame_date, o_gmtime());
       $GAMES_round[$newGame_num] = $newGame_round;
       $GAMES_eco[$newGame_num] = "";
       $GAMES_sortkey[$newGame_num] = eventRound($newGame_event, $newGame_round);
@@ -452,7 +464,7 @@ sub log_terminal {
     $thisVerbosity = 2;
   }
   if ($thisVerbosity <= $verbosity) {
-    print(strftime("%Y-%m-%d %H:%M:%S", gmtime(time() + $timeOffset)) . " " . $msg . "\n");
+    print(strftime("%Y-%m-%d %H:%M:%S", o_gmtime()) . " " . $msg . "\n");
   }
 }
 
@@ -600,7 +612,7 @@ sub process_line {
       if ($autorelayMode == 1) {
         $GAMES_event[$thisGameNum] = $autorelayEvent;
         $GAMES_site[$thisGameNum] = $newGame_site;
-        $GAMES_date[$thisGameNum] = strftime($newGame_date, gmtime(time() + $timeOffset));
+        $GAMES_date[$thisGameNum] = strftime($newGame_date, o_gmtime());
         $GAMES_round[$thisGameNum] = $autorelayRound;
         $GAMES_eco[$thisGameNum] = $thisGameEco;
         $GAMES_sortkey[$thisGameNum] = eventRound($autorelayEvent, $autorelayRound);
@@ -905,7 +917,7 @@ sub refresh_pgn {
 }
 
 sub placeholder_pgn {
-  return "[Event \"$newGame_event\"]\n" . "[Site \"$newGame_site\"]\n" . "[Date \"" . strftime($placeholder_date, gmtime(time() + $timeOffset)) . "\"]\n" . "[Round \"$newGame_round\"]\n" . "[White \"\"]\n" . "[Black \"\"]\n" . "[Result \"$placeholder_result\"]\n\n*\n\n";
+  return "[Event \"$newGame_event\"]\n" . "[Site \"$newGame_site\"]\n" . "[Date \"" . strftime($placeholder_date, o_gmtime()) . "\"]\n" . "[Round \"$newGame_round\"]\n" . "[White \"\"]\n" . "[Black \"\"]\n" . "[Result \"$placeholder_result\"]\n\n*\n\n";
 }
 
 sub archive_pgnGame {
@@ -914,7 +926,7 @@ sub archive_pgnGame {
   if ($PGN_ARCHIVE ne "") {
     my $pgn = save_pgnGame($i);
     if (($pgn ne "") && (($archiveSelectFilter eq "") || ($pgn =~ /$archiveSelectFilter/is))) {
-      $pgn =~ s/\[Date "([^\[\]"]*)"\]/'[Date "' . strftime($archive_date, gmtime(time() + $timeOffset)) . '"]'/e;
+      $pgn =~ s/\[Date "([^\[\]"]*)"\]/'[Date "' . strftime($archive_date, o_gmtime()) . '"]'/e;
       if (open(my $thisFile, ">>$PGN_ARCHIVE")) {
         print $thisFile $pgn;
         close($thisFile);
@@ -961,7 +973,7 @@ sub memory_add_pgnGame {
   if ($PGN_MEMORY ne "") {
     my $pgn = save_pgnGame($i);
     if (($memorySelectFilter eq "") || ($pgn =~ /$memorySelectFilter/is)) {
-      $pgn =~ s/\[Date "([^\[\]"]*)"\]/'[Date "' . strftime($memory_date, gmtime(time() + $timeOffset)) . '"]'/e;
+      $pgn =~ s/\[Date "([^\[\]"]*)"\]/'[Date "' . strftime($memory_date, o_gmtime()) . '"]'/e;
       if (($#memory_games + 1) >= int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum)) {
         pop(@memory_games);
         pop(@memory_games_sortkey);
@@ -1304,7 +1316,7 @@ sub process_master_command {
       if ($PGN_ARCHIVE ne "") {
         my @fileInfo = stat($PGN_ARCHIVE);
         if (defined $fileInfo[9]) {
-          $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S", gmtime($fileInfo[9]));
+          $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S", o_gmtime($fileInfo[9]));
         }
         if (defined $fileInfo[7]) {
           $fileInfoText .= " size=$fileInfo[7]";
@@ -1514,7 +1526,7 @@ sub process_master_command {
     if ($verbosity >= 5) {
       $thisInfo = sprintf("%s pgn=%d (p/h=%d) cmd=%d (c/h=%d) lines=%d (l/h=%d)", $thisInfo, $pgnWriteCount, $pgnWriteCount / $hourTime, $cmdRunCount, $cmdRunCount / $hourTime, $lineCount, $lineCount / $hourTime);
     }
-    $thisInfo = sprintf("%s %s", $thisInfo, strftime("now=%Y-%m-%d %H:%M:%S", gmtime($starupTime + $secTime + $timeOffset)));
+    $thisInfo = sprintf("%s %s", $thisInfo, strftime("now=%Y-%m-%d %H:%M:%S", o_gmtime($starupTime + $secTime)));
     tell_operator($thisInfo);
   } elsif ($command eq "ics") {
     if ($parameters !~ /^\??$/) {
@@ -1563,7 +1575,7 @@ sub process_master_command {
       log_terminal("info: $fileInfoText");
       my @fileInfo = stat($PGN_FILE);
       if (defined $fileInfo[9]) {
-        $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S", gmtime($fileInfo[9]));
+        $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S", o_gmtime($fileInfo[9]));
       }
       if (defined $fileInfo[7]) {
         $fileInfoText .= " size=$fileInfo[7]";
@@ -1668,7 +1680,7 @@ sub process_master_command {
       log_terminal("info: $fileInfoText");
       my @fileInfo = stat($PGN_MEMORY);
       if (defined $fileInfo[9]) {
-        $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S", gmtime($fileInfo[9]));
+        $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S", o_gmtime($fileInfo[9]));
       }
       if (defined $fileInfo[7]) {
         $fileInfoText .= " size=$fileInfo[7]";
@@ -2240,22 +2252,24 @@ sub setup {
 
   $telnet->prompt("/^/");
 
-  cmd_run("iset nowrap 1");
   cmd_run("iset defprompt 1");
+  cmd_run("iset nowrap 1");
   cmd_run("iset startpos 1");
-  cmd_run("set width 240");
-  cmd_run("set height 240");
-  cmd_run("set echo 0");
   cmd_run("set bell 0");
-  cmd_run("set seek 0");
-  cmd_run("set shout 0");
+  cmd_run("set chanoff 1");
   cmd_run("set cshout 0");
+  cmd_run("set echo 0");
+  cmd_run("set height 240");
   cmd_run("set kibitz 0");
   cmd_run("set kiblevel 9000");
-  cmd_run("set chanoff 1");
   cmd_run("set open 0");
+  cmd_run("set ptime 0");
+  cmd_run("set seek 0");
+  cmd_run("set shout 0");
   cmd_run("set style 12");
   cmd_run("set tolerance 5");
+  cmd_run("set tzone UTC");
+  cmd_run("set width 240");
   log_terminal("debug: initialization done");
 
   my @startupCommands = read_startupCommands();
@@ -2334,6 +2348,7 @@ sub handleUSR2 {
 $SIG{USR2}=\&handleUSR2;
 
 eval {
+  setup_time();
   log_terminal("info: starting $0");
   if ($FLAGS) { log_terminal("alert: flags: $FLAGS"); }
   setup();
