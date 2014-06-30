@@ -787,6 +787,7 @@ a.variation {
     }
 
     if (theObj = document.getElementById("GameEvent")) {
+      theObj.innerHTML += " &nbsp; &nbsp; " + gameRound[currentGame];
       theObj.title = simpleHtmlentitiesDecode("event: " + gameEvent[currentGame] + (gameRound[currentGame] ? "   round: " + gameRound[currentGame] : "") + (gameDate[currentGame] ? "   date: " + gameDate[currentGame] : "") + (gameSite[currentGame] ? "   site: " + gameSite[currentGame] : ""));
     }
 
