@@ -87,13 +87,16 @@
   }
 
   function customFunctionOnPgnGameLoad() {
+    var theObj, theOther, theThird, theMatch;
+    if ((theObj = document.getElementById('GameEvent')) && (theMatch = gameRound[currentGame].match(/^\d+/))) { theObj.innerHTML += ' (' + theMatch[0] + ')'; }
     fixObjInnerHTML('GameEvent');
     fixObjInnerHTML('GameSite');
+    if (theObj = document.getElementById('GameDate')) { theObj.innerHTML = (theMatch = gameDate[currentGame].match(/^\d+/)) ? theMatch[0] : ''; }
     fixObjInnerHTML('GameDate');
     fixObjInnerHTML('GameWhite');
     fixObjInnerHTML('GameBlack');
     fixObjInnerHTML('GameResult');
-    document.getElementById('GameNum').innerHTML = (currentGame + 1);
+    if (theObj = document.getElementById('GameNum')) { theObj.innerHTML = (currentGame + 1); }
     fixObjInnerHTML('GameNum');
     customPgnHeaderTag('WhiteElo', 'GameWhiteElo');
     fixObjInnerHTML('GameWhiteElo');
@@ -103,10 +106,17 @@
     fixObjInnerHTML('GameECO');
     customPgnHeaderTag('Annotator', 'GameAnnotator');
     fixObjInnerHTML('GameAnnotator');
-    if (document.getElementById('GameWhite').innerHTML && document.getElementById('GameWhiteElo').innerHTML) { document.getElementById('GameWhiteElo').style.marginLeft = '1ex'; }
-    if (document.getElementById('GameBlack').innerHTML && document.getElementById('GameBlackElo').innerHTML) { document.getElementById('GameBlackElo').style.marginLeft = '1ex'; }
-    if (document.getElementById('GameSite').innerHTML && document.getElementById('GameEvent').innerHTML) { document.getElementById('GameEvent').style.marginLeft = '1ex'; }
-    if ((document.getElementById('GameSite').innerHTML || document.getElementById('GameEvent').innerHTML) && document.getElementById('GameDate').innerHTML) { document.getElementById('GameDate').style.marginLeft = '1ex'; }
+    theObj = document.getElementById('GameWhite');
+    theOther = document.getElementById('GameWhiteElo');
+    if (theObj && theObj.innerHTML && theOther && theOther.innerHTML) { theOther.style.marginLeft = '1ex'; }
+    theObj = document.getElementById('GameBlack');
+    theOther = document.getElementById('GameBlackElo');
+    if (theObj && theObj.innerHTML && theOther && theOther.innerHTML) { theOther.style.marginLeft = '1ex'; }
+    theObj = document.getElementById('GameSite');
+    theOther = document.getElementById('GameEvent');
+    if (theObj && theObj.innerHTML && theOther && theOther.innerHTML) { theOther.style.marginLeft = '1ex'; }
+    theThird = document.getElementById('GameDate');
+    if (((theObj && theObj.innerHTML) || (theOther && theOther.innerHTML)) && (theThird && theThird.innerHTML)) { theThird.style.marginLeft = '1ex'; }
 
     var newTitle = (currentGame + 1) + '.';
     newTitle += '\u00a0 ' + (gameWhite[currentGame] || '?');
@@ -121,7 +131,7 @@
   function fixObjInnerHTML(id) {
     var theObj = document.getElementById(id);
     if (theObj) {
-      theObj.innerHTML = theObj.innerHTML.replace(/\.?\?[.?]*/, "");
+      theObj.innerHTML = theObj.innerHTML.replace(/\.?\?[.?]*/, "").replace(/,(\w)/g, ", $1");
       theObj.title = theObj.title.replace(/:.*$/, "") + ": " + theObj.innerHTML;
     }
   }
