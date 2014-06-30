@@ -500,9 +500,14 @@ sub process_line {
   $line =~ s/^[\r\n ]+//;
   return unless $line;
 
-  if ($line =~ /^([^\s()]+)(\(\S+\))* tells you: \s*(\S+)\s*(.*)$/) {
+  if ($line =~ /^([^\s()]+)(?:\(\S+\))* tells you: \s*(.*)$/) {
     if ($1 eq $OPERATOR_HANDLE) {
-      process_master_command($3, $4);
+      my $thisTell = $2;
+      if ($thisTell =~ /^([^\s=]+)=?\s*(.*)$/) {
+        process_master_command($1, $2);
+      } else {
+        tell_operator("error: invalid tell: $thisTell");
+      }
     } else {
       log_terminal("fyi: ignoring tell from user $1");
     }
@@ -2276,7 +2281,7 @@ sub setup {
   foreach my $cmd (@startupCommands) {
     if ($cmd =~ /^\s*#/) {
       # skip comments
-    } elsif ($cmd =~ /^\s*(\S+)\s*(.*)$/) {
+    } elsif ($cmd =~ /^\s*([^\s=]+)=?\s*(.*)$/) {
       process_master_command($1, $2);
     } elsif ($cmd !~ /^\s*$/) {
       log_terminal("error: invalid startup command $cmd");
