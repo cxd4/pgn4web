@@ -94,7 +94,7 @@ sub cmd_run {
 
 our $lastPgn = "";
 our $lastPgnNum = 0;
-our $lastPgnForce = "% force updating PGN data and PGN memory data";
+our $lastPgnForce = "% force updating PGN data";
 
 our $maxGamesNumDefault = 30; # frechess.org limit
 our $maxGamesNum = $maxGamesNumDefault;
@@ -174,6 +174,9 @@ our @memory_games_sortkey = ();
 our $memorySelectFilter = "";
 our $memoryAutopurgeEvent = 0;
 
+our $PGN_TOP = "";
+our $topLast = $lastPgnForce;
+
 sub reset_games {
   if ($PGN_ARCHIVE ne "") {
     for my $thisGameNum (@games_num) {
@@ -234,6 +237,8 @@ sub reset_games {
   @memory_games_sortkey = ();
   $memorySelectFilter = "";
   $memoryAutopurgeEvent = 0;
+
+  $topLast = $lastPgnForce;
 
   log_terminal("debug: event/game information and configuration reset");
 }
@@ -918,6 +923,7 @@ sub refresh_pgn {
       log_rounds();
     }
     refresh_memory();
+    refresh_top();
   }
 }
 
@@ -941,6 +947,43 @@ sub archive_pgnGame {
       }
     }
   }
+}
+
+sub refresh_top {
+  if ($PGN_TOP ne "") {
+    my ($thisTop, $topPrioritized, $topElo, $thisPrioritized, $thisElo);
+
+    $thisTop = $topPrioritized = $topElo = -1;
+    for (my $g=0; $g<=$#games_num; $g++) {
+      if ($games_result[$g] eq "*") {
+        $thisPrioritized = (($autorelayMode == 1) && ($prioritizeFilter ne "") && (headerForFilter($GAMES_event[$games_num[$g]], $GAMES_round[$games_num[$g]], $games_white[$g], $games_black[$g]) =~ /$prioritizeFilter/i)) ? 1 : 0;
+        $thisElo = 0;
+        if ($games_whiteElo[$g] =~ /^[0-9]+$/) { $thisElo += $games_whiteElo[$g]; }
+        if ($games_blackElo[$g] =~ /^[0-9]+$/) { $thisElo += $games_blackElo[$g]; }
+        if (($thisPrioritized > $topPrioritized) || (($thisPrioritized == $topPrioritized) && ($thisElo > $topElo))) {
+          $thisTop = $g;
+          $topPrioritized = $thisPrioritized;
+          $topElo = $thisElo;
+        }
+      }
+    }
+
+    my $newTop = ($thisTop >= 0) ? save_pgnGame($thisTop) : placeholder_pgn();
+
+    if ($newTop ne $topLast) {
+      if (open(my $thisFile, ">$PGN_TOP")) {
+        print $thisFile $newTop;
+        close($thisFile);
+        $topLast = $newTop;
+      } else {
+        log_terminal("error: failed writing $PGN_TOP");
+      }
+    }
+  }
+}
+
+sub placeholder_pgn {
+  return "[Event \"$newGame_event\"]\n" . "[Site \"$newGame_site\"]\n" . "[Date \"" . strftime($placeholder_date, o_gmtime()) . "\"]\n" . "[Round \"$newGame_round\"]\n" . "[White \"\"]\n" . "[Black \"\"]\n" . "[Result \"$placeholder_result\"]\n\n*\n\n";
 }
 
 sub refresh_memory {
@@ -1229,8 +1272,8 @@ add_master_command ("livemax", "max [number] (to get/set the maximum number of g
 add_master_command ("livepurgegames", "livepurgegames [game number list, such as: 12 34 56 ..] (to purge given past games from live PGN data)");
 add_master_command ("log", "log [string] (to print a string on the log terminal)");
 add_master_command ("memoryautopurgeevent", "memoryautopurgeevent [0|1|2] (to automatically purge new live events from the PGN memory data)");
-add_master_command ("memoryfile", "memoryfile [filename.pgn] (to get/set the filename for the PGN memory data)");
 add_master_command ("memorydate", "memorydate [strftime_string|\"\"] (to get/set the PGN header tag date for the PGN memory data)");
+add_master_command ("memoryfile", "memoryfile [filename.pgn] (to get/set the filename for the PGN memory data)");
 add_master_command ("memoryload", "memoryload [1] (to load PGN memroy data from memory file)");
 add_master_command ("memorymax", "memorymax [number] (to get/set the maximum number of games for the PGN memory data)");
 add_master_command ("memorypurgegame", "memorypurgegame [\"event\" \"round\" \"white\" \"black\"] (to purge a game from the PGN memory data)");
@@ -1253,6 +1296,7 @@ add_master_command ("roundreverse", "roundreverse [0|1] (to use reverse alphabet
 add_master_command ("site", "site [string|\"\"] (to get/set the PGN header tag site)");
 add_master_command ("startup", "startup [command list, separated by semicolon] (to get/set startup commands file)");
 add_master_command ("timeoffset", "timeoffset [[+|-]seconds] (to get/set the offset correcting the time value from the UTC time used by default)");
+add_master_command ("topfile", "topfile [filename.pgn] (to get/set the filename for the top PGN data)");
 add_master_command ("verbosity", "verbosity [0-6] (to get/set log verbosity: 0=none, 1=alert, 2=error, 3=warning, 4=info, 5=debug, 6=fyi)");
 add_master_command ("write", "write [!] (to force writing updated PGN data according to the latest configuration)");
 
@@ -1401,7 +1445,7 @@ sub process_master_command {
       tell_operator("warning: ics relay offline");
     }
   } elsif ($command eq "config") {
-    tell_operator("config: livemax=$maxGamesNum livefile=$PGN_FILE livedate=$newGame_date memorymax=$memoryMaxGamesNum memoryfile=$PGN_MEMORY memorydate=$memory_date memoryselect=$memorySelectFilter memoryautopurgeevent=$memoryAutopurgeEvent archivefile=$PGN_ARCHIVE archivedate=$archive_date archiveselect=$archiveSelectFilter placeholdergame=$placeholderGame placeholderdate=$placeholder_date placeholderresult=$placeholder_result follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter prioritize=$prioritizeFilter autoprioritize=$autoPrioritize event=$newGame_event eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " round=$newGame_round roundautocorrect=" . ($roundAutocorrectRegexp ? "/$roundAutocorrectRegexp/$roundAutocorrectString/" : "") . " roundreverse=$roundReverse site=$newGame_site heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
+    tell_operator("config: livemax=$maxGamesNum livefile=$PGN_FILE livedate=$newGame_date memorymax=$memoryMaxGamesNum memoryfile=$PGN_MEMORY memorydate=$memory_date memoryselect=$memorySelectFilter memoryautopurgeevent=$memoryAutopurgeEvent topfile=$PGN_TOP archivefile=$PGN_ARCHIVE archivedate=$archive_date archiveselect=$archiveSelectFilter placeholdergame=$placeholderGame placeholderdate=$placeholder_date placeholderresult=$placeholder_result follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter prioritize=$prioritizeFilter autoprioritize=$autoPrioritize event=$newGame_event eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " round=$newGame_round roundautocorrect=" . ($roundAutocorrectRegexp ? "/$roundAutocorrectRegexp/$roundAutocorrectString/" : "") . " roundreverse=$roundReverse site=$newGame_site heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
   } elsif (($TEST_FLAG) && ($command eq "evaluate")) {
     if ($parameters ne "") {
       eval {
@@ -2016,6 +2060,31 @@ sub process_master_command {
         $verbosity = $parameters;
       }
       tell_operator_and_log_terminal("alert: verbosity=$verbosity");
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "topfile") {
+    if ($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) { # for portability only a subset of filename chars is allowed
+      if ($parameters ne "") {
+        if ($parameters eq "\"\"") {
+           $parameters = "";
+           $topLast = $lastPgnForce;
+        }
+        $PGN_TOP = $parameters;
+      }
+      my $fileInfoText = "topfile=$PGN_TOP";
+      log_terminal("info: $fileInfoText");
+      my @fileInfo = stat($PGN_TOP);
+      if (defined $fileInfo[9]) {
+        $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S", o_gmtime($fileInfo[9]));
+      }
+      if (defined $fileInfo[7]) {
+        $fileInfoText .= " size=$fileInfo[7]";
+      }
+      if (defined $fileInfo[2]) {
+        $fileInfoText .= sprintf(" permissions=%04o", $fileInfo[2] & 07777);
+      }
+      tell_operator($fileInfoText);
     } else {
       tell_operator("error: invalid $command parameter");
     }
