@@ -285,6 +285,19 @@ sub eventRound {
   return $thisSortkey;
 }
 
+sub cleanup_failed_save_game {
+  my ($gameNum) = @_;
+  if ($autorelayMode == 1) {
+    if (defined $GAMES_event[$gameNum]) { delete $GAMES_event[$gameNum]; }
+    if (defined $GAMES_site[$gameNum]) { delete $GAMES_site[$gameNum]; }
+    if (defined $GAMES_date[$gameNum]) { delete $GAMES_date[$gameNum]; }
+    if (defined $GAMES_round[$gameNum]) { delete $GAMES_round[$gameNum]; }
+    if (defined $GAMES_eco[$gameNum]) { delete $GAMES_eco[$gameNum]; }
+    if (defined $GAMES_sortkey[$gameNum]) { delete $GAMES_sortkey[$gameNum]; }
+    if (defined $GAMES_timeLeft[$gameNum]) { delete $GAMES_timeLeft[$gameNum]; }
+  }
+}
+
 sub save_game {
 
   if ($newGame_num < 0) {
@@ -298,17 +311,20 @@ sub save_game {
     if (($autorelayMode == 1) && (($ignoreFilter ne "") && ($thisHeaderForFilter =~ /$ignoreFilter/i))) {
       log_terminal("debug: save requested for ignored game $newGame_num: $thisHeaderForFilter");
       cmd_run("unobserve $newGame_num");
+      cleanup_failed_save_game($newGame_num);
       return;
     }
     if ($#games_num + 1 >= $maxGamesNum) {
       if (($autorelayMode == 1) && ($thisHeaderForFilter !~ /$prioritizeFilter/i)) {
         log_terminal("debug: too many games for adding non prioritized game $newGame_num: $thisHeaderForFilter");
         cmd_run("unobserve $newGame_num");
+        cleanup_failed_save_game($newGame_num);
         return;
       }
       if (remove_game(-1) < 0) {
         log_terminal("debug: failed removing game for new game $newGame_num: $thisHeaderForFilter");
         cmd_run("unobserve $newGame_num");
+        cleanup_failed_save_game($newGame_num);
         return;
       }
     }
