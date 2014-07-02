@@ -288,13 +288,13 @@ sub eventRound {
 sub cleanup_failed_save_game {
   my ($gameNum) = @_;
   if ($autorelayMode == 1) {
-    if (defined $GAMES_event[$gameNum]) { delete $GAMES_event[$gameNum]; }
-    if (defined $GAMES_site[$gameNum]) { delete $GAMES_site[$gameNum]; }
-    if (defined $GAMES_date[$gameNum]) { delete $GAMES_date[$gameNum]; }
-    if (defined $GAMES_round[$gameNum]) { delete $GAMES_round[$gameNum]; }
-    if (defined $GAMES_eco[$gameNum]) { delete $GAMES_eco[$gameNum]; }
-    if (defined $GAMES_sortkey[$gameNum]) { delete $GAMES_sortkey[$gameNum]; }
-    if (defined $GAMES_timeLeft[$gameNum]) { delete $GAMES_timeLeft[$gameNum]; }
+    delete $GAMES_event[$gameNum];
+    delete $GAMES_site[$gameNum];
+    delete $GAMES_date[$gameNum];
+    delete $GAMES_round[$gameNum];
+    delete $GAMES_eco[$gameNum];
+    delete $GAMES_sortkey[$gameNum];
+    delete $GAMES_timeLeft[$gameNum];
   }
 }
 
