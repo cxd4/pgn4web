@@ -35,8 +35,8 @@ our $FLAGS = $ARGV[4] || "";
 our $TEST_FLAG = ($FLAGS =~ /\bTEST\b/);
 
 if ($BOT_HANDLE eq "" || $OPERATOR_HANDLE eq "") {
-  print "\n$0 BOT_HANDLE BOT_PASSWORD OPERATOR_HANDLE [STARTUP_FILE]\n\nBOT_HANDLE = handle for the bot account\nBOT_PASSWORD = password for the both account, use \"\" for a guest account\nOPERATOR_HANDLE = handle for the bot operator to send commands\nSTARTUP_FILE = filename for reading startup commands (default $STARTUP_FILE_DEFAULT)\n\nbot saving PGN data from live games on frechess.org\nmore help available from the operator account with \"tell BOT_HANDLE help\"\n\n";
-  exit 0;
+  print("\n$0 BOT_HANDLE BOT_PASSWORD OPERATOR_HANDLE [STARTUP_FILE]\n\nBOT_HANDLE = handle for the bot account\nBOT_PASSWORD = password for the both account, use \"\" for a guest account\nOPERATOR_HANDLE = handle for the bot operator to send commands\nSTARTUP_FILE = filename for reading startup commands (default $STARTUP_FILE_DEFAULT)\n\nbot saving PGN data from live games on frechess.org\nmore help available from the operator account with \"tell BOT_HANDLE help\"\n\n");
+  exit(0);
 }
 
 
@@ -51,7 +51,7 @@ our $PROTECT_LOGOUT_FREQ = 45 * 60;
 our $CHECK_RELAY_FREQ = 3 * 60;
 our $CHECK_RELAY_MIN_LAG = 20;
 our $OPEN_TIMEOUT = 30;
-our $LINE_WAIT_TIMEOUT = 60;
+our $LINE_WAIT_TIMEOUT = 30;
 # $LINE_WAIT_TIMEOUT must be smaller than half of $PROTECT_LOGOUT_FREQ and $CHECK_RELAY_FREQ
 
 
@@ -175,19 +175,17 @@ our $memorySelectFilter = "";
 our $memoryAutopurgeEvent = 0;
 
 our $PGN_TOP = "";
-our $topLast = $lastPgnForce;
+our $lastTopPgn = $lastPgnForce;
 
-sub reset_games {
-  if ($PGN_ARCHIVE ne "") {
-    for my $thisGameNum (@games_num) {
-      archive_pgnGame($thisGameNum);
-    }
+
+sub reset_live {
+  for my $thisGameNum (@games_num) {
+    remove_game($thisGameNum);
   }
   cmd_run("follow");
   cmd_run("unobserve");
   $lastPgn = "";
   $lastPgnNum = 0;
-  $maxGamesNum = $maxGamesNumDefault;
   @games_num = ();
   @games_white = ();
   @games_black = ();
@@ -203,6 +201,27 @@ sub reset_games {
   @GAMES_eco = ();
   @GAMES_sortkey = ();
   @GAMES_timeLeft = ();
+  @GAMES_autorelayRunning = ();
+  @currentRounds = ();
+  $reportedNotFoundNonPrioritizedGame = 0;
+  $lastTopPgn = $lastPgnForce;
+  log_terminal("debug: live games reset");
+}
+
+sub reset_memory {
+  @memory_games = ();
+  @memory_games_sortkey = ();
+  log_terminal("debug: memory games reset");
+}
+
+
+sub reset_games {
+  reset_live();
+  reset_memory();
+}
+
+sub reset_config {
+  $maxGamesNum = $maxGamesNumDefault;
   $newGame_event = "";
   $newGame_site = "";
   $newGame_date = "";
@@ -213,7 +232,6 @@ sub reset_games {
   $followLast = "";
   $relayMode = 0;
   $autorelayMode = 0;
-  @GAMES_autorelayRunning = ();
   $eventAutocorrectRegexp = "";
   $eventAutocorrectString = "";
   $roundAutocorrectRegexp = "";
@@ -226,22 +244,18 @@ sub reset_games {
   $prioritizeFilter = "";
   $autoPrioritize = "";
   $autoPrioritizeFilter = "";
-  $reportedNotFoundNonPrioritizedGame = 0;
-
-  @currentRounds = ();
-
   $archiveSelectFilter = "";
-
   $memoryMaxGamesNum = $maxGamesNumDefault;
-  @memory_games = ();
-  @memory_games_sortkey = ();
   $memorySelectFilter = "";
   $memoryAutopurgeEvent = 0;
-
-  $topLast = $lastPgnForce;
-
-  log_terminal("debug: event/game information and configuration reset");
+  log_terminal("debug: configuration reset");
 }
+
+sub reset_all {
+  reset_games();
+  reset_config();
+}
+
 
 sub headerForFilter {
   my ($event, $round, $white, $black) = @_;
@@ -281,14 +295,19 @@ sub save_game {
   my $thisGameIndex = find_gameIndex($newGame_num);
   if ($thisGameIndex < 0) {
     my $thisHeaderForFilter = headerForFilter($autorelayMode ? $GAMES_event[$newGame_num] : $newGame_event, $autorelayMode ? $GAMES_round[$newGame_num] : $newGame_round, $newGame_white, $newGame_black);
+    if (($autorelayMode == 1) && (($ignoreFilter ne "") && ($thisHeaderForFilter =~ /$ignoreFilter/i))) {
+      log_terminal("debug: save requested for ignored game $newGame_num: $thisHeaderForFilter");
+      cmd_run("unobserve $newGame_num");
+      return;
+    }
     if ($#games_num + 1 >= $maxGamesNum) {
       if (($autorelayMode == 1) && ($thisHeaderForFilter !~ /$prioritizeFilter/i)) {
-        log_terminal("debug: too many games for adding non prioritized game $thisHeaderForFilter");
+        log_terminal("debug: too many games for adding non prioritized game $newGame_num: $thisHeaderForFilter");
         cmd_run("unobserve $newGame_num");
         return;
       }
       if (remove_game(-1) < 0) {
-        log_terminal("debug: failed removing game for game $thisHeaderForFilter");
+        log_terminal("debug: failed removing game for new game $newGame_num: $thisHeaderForFilter");
         cmd_run("unobserve $newGame_num");
         return;
       }
@@ -968,13 +987,13 @@ sub refresh_top {
       }
     }
 
-    my $newTop = ($thisTop >= 0) ? save_pgnGame($thisTop) : placeholder_pgn();
+    my $newTopPgn = ($thisTop >= 0) ? save_pgnGame($thisTop) : placeholder_pgn();
 
-    if ($newTop ne $topLast) {
+    if ($newTopPgn ne $lastTopPgn) {
       if (open(my $thisFile, ">$PGN_TOP")) {
-        print $thisFile $newTop;
+        print $thisFile $newTopPgn;
         close($thisFile);
-        $topLast = $newTop;
+        $lastTopPgn = $newTopPgn;
       } else {
         log_terminal("error: failed writing $PGN_TOP");
       }
@@ -1168,7 +1187,7 @@ sub memory_load {
     my $newPgn;
     my $newEvent;
     my $newRound;
-    if (open(my $thisFile,  "<",  $PGN_MEMORY)) {
+    if (open(my $thisFile, "<", $PGN_MEMORY)) {
       my @lines = <$thisFile>;
       @candidate_memory_games = (join("", @lines) =~ /((?:\[\s*\w+\s*"[^"]*"\s*\]\s*)+(?:[^[]|\[%)+)/g);
       foreach (@candidate_memory_games) {
@@ -1255,8 +1274,9 @@ add_master_command ("archivedate", "archivedate [strftime_string|\"\"] (to get/s
 add_master_command ("archiveselect", "archiveselect [regexp|\"\"] (to get/set the regular expression to select games for archiving PGN data)");
 add_master_command ("autoprioritize", "autoprioritize [regexp|\"\"] (to get/set the regular expression to prioritize entire events during autorelay; has precedence over prioritize)");
 add_master_command ("autorelay", "autorelay [0|1] (to automatically observe all relayed games)");
+add_master_command ("checkrelay", "checkrelay [!] (to check relayed games during relay and autorelay)");
 add_master_command ("config", "config (to get config info)");
-if ($TEST_FLAG) {  add_master_command ("evaluate", "evaluate [string] (to evaluate an arbitrary internal command: for debug use only)"); }
+if ($TEST_FLAG) { add_master_command ("evaluate", "evaluate [string] (to evaluate an arbitrary internal command: for debug use only)"); }
 add_master_command ("event", "event [string|\"\"] (to get/set the PGN header tag event)");
 add_master_command ("eventautocorrect", "eventautocorrect [/regexp/eval/|\"\"] (to get/set the regexp and the evalexp returning a string that correct event tags during autorelay)");
 add_master_command ("follow", "follow [0|handle|/s|/b|/l] (to follow the user with given handle, /s for the best standard game, /b for the best blitz game, /l for the best lightning game, 0 to disable follow mode)");
@@ -1289,7 +1309,7 @@ add_master_command ("placeholderresult", "placeholderresult [string|\"\"] (to ge
 add_master_command ("prioritize", "prioritize [regexp|\"\"] (to get/set the regular expression to prioritize events/players from the PGN header during autorelay; might be overridden by autoprioritize; might be overruled by ignore)");
 add_master_command ("quit", "quit [number] (to quit from the ics server, returning the given exit value)");
 add_master_command ("relay", "relay [0|game number list, such as: 12 34 56 ..] (to observe given games from an event relay, 0 to disable relay mode)");
-add_master_command ("reset", "reset [!] (to reset observed/followed games list and setting)");
+add_master_command ("reset", "reset [all|config|games|live|memory] (to reset games and configuration)");
 add_master_command ("round", "round [string|\"\"] (to get/set the PGN header tag round)");
 add_master_command ("roundautocorrect", "roundautocorrect [/regexp/eval/|\"\"] (to get/set the regexp and the evalexp returning a string that correct round tags during autorelay)");
 add_master_command ("roundreverse", "roundreverse [0|1] (to use reverse alphabetical ordering of rounds)");
@@ -1443,6 +1463,20 @@ sub process_master_command {
     tell_operator("autorelay=$autorelayMode");
     if (($autorelayMode == 1) && ($relayOnline == 0)) {
       tell_operator("warning: ics relay offline");
+    }
+  } elsif ($command eq "checkrelay") {
+    if ($parameters eq "!") {
+      if ($relayMode == 1) {
+        force_next_check_relay_time();
+        check_relay_results();
+        tell_operator("OK $command");
+      } else {
+        tell_operator("warning: checkrelay command while relayMode=$relayMode");
+      }
+    } elsif ($parameters eq "") {
+      tell_operator(detect_command_helptext($command));
+    } else {
+      tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "config") {
     tell_operator("config: livemax=$maxGamesNum livefile=$PGN_FILE livedate=$newGame_date memorymax=$memoryMaxGamesNum memoryfile=$PGN_MEMORY memorydate=$memory_date memoryselect=$memorySelectFilter memoryautopurgeevent=$memoryAutopurgeEvent topfile=$PGN_TOP archivefile=$PGN_ARCHIVE archivedate=$archive_date archiveselect=$archiveSelectFilter placeholdergame=$placeholderGame placeholderdate=$placeholder_date placeholderresult=$placeholder_result follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter prioritize=$prioritizeFilter autoprioritize=$autoPrioritize event=$newGame_event eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " round=$newGame_round roundautocorrect=" . ($roundAutocorrectRegexp ? "/$roundAutocorrectRegexp/$roundAutocorrectString/" : "") . " roundreverse=$roundReverse site=$newGame_site heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
@@ -1932,7 +1966,7 @@ sub process_master_command {
     if ($parameters =~ /^\d+$/) {
       tell_operator("OK $command($parameters)");
       log_terminal("info: quit with exit value $parameters");
-      cmd_run("quit");
+      # cmd_run("quit");
       exit($parameters);
     } elsif ($parameters =~ /^\??$/) {
       tell_operator(detect_command_helptext($command));
@@ -1961,8 +1995,12 @@ sub process_master_command {
       tell_operator("warning: ics relay offline");
     }
   } elsif ($command eq "reset") {
-    if ($parameters eq "!") {
-      reset_games();
+    if ($parameters =~ /^(all|config|games|live|memory)$/) {
+      if ($parameters eq "all") { reset_all(); }
+      elsif ($parameters eq "config") { reset_config(); }
+      elsif ($parameters eq "games") { reset_games(); }
+      elsif ($parameters eq "live") { reset_live(); }
+      elsif ($parameters eq "memory") { reset_memory(); }
       tell_operator("OK $command");
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
@@ -2068,7 +2106,7 @@ sub process_master_command {
       if ($parameters ne "") {
         if ($parameters eq "\"\"") {
            $parameters = "";
-           $topLast = $lastPgnForce;
+           $lastTopPgn = $lastPgnForce;
         }
         $PGN_TOP = $parameters;
       }
@@ -2156,7 +2194,8 @@ sub write_startupCommands {
   if (open(CMDFILE, ">" . $STARTUP_FILE)) {
     foreach my $cmd (@commandList) {
       $cmd =~ s/^\s*//;
-      print CMDFILE $cmd . "\n";
+      $cmd =~ s/\s*$/\n/;
+      print CMDFILE $cmd;
     }
     close(CMDFILE);
     log_terminal("info: startup commands file $STARTUP_FILE written");
@@ -2269,7 +2308,7 @@ sub setup {
   $telnet->errmode(sub {
     my $msg = shift;
     log_terminal("error: " . $msg);
-    exit 1;
+    exit(1);
   });
 
   $telnet->open(
@@ -2304,7 +2343,7 @@ sub setup {
       }
       if ($line =~ /("[^"]*" is a registered name|\S+ is already logged in)/) {
         log_terminal("error: failed login as $BOT_HANDLE: $1");
-        exit 1;
+        exit(1);
       }
       log_terminal("fyi: ignored line: $line\n");
     }
@@ -2318,7 +2357,7 @@ sub setup {
       $username = $1;
     } else {
       log_terminal("error: failed login as $BOT_HANDLE: $match");
-      exit 1;
+      exit(1);
     }
 
     log_terminal("debug: logged in as guest $username");
@@ -2374,7 +2413,7 @@ sub main_loop {
     return if $telnet->timed_out;
     my $msg = shift;
     log_terminal("error: " . $msg);
-    exit 1;
+    exit(1);
   });
 
   while (1) {
