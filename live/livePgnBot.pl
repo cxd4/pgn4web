@@ -175,7 +175,7 @@ our $memorySelectFilter = "";
 our $memoryAutopurgeEvent = 0;
 
 our $PGN_TOP = "";
-our $lastTopPgn = $lastPgnForce;
+our $lastTopPgn = "";
 
 
 sub reset_live {
@@ -970,7 +970,7 @@ sub archive_pgnGame {
 
 sub refresh_top {
   if ($PGN_TOP ne "") {
-    my ($thisTop, $topPrioritized, $topElo, $thisPrioritized, $thisElo);
+    my ($thisTop, $topPrioritized, $topElo, $thisPrioritized, $thisElo, $newTopPgn);
 
     $thisTop = $topPrioritized = $topElo = -1;
     for (my $g=0; $g<=$#games_num; $g++) {
@@ -987,9 +987,17 @@ sub refresh_top {
       }
     }
 
-    my $newTopPgn = ($thisTop >= 0) ? save_pgnGame($thisTop) : placeholder_pgn();
+    if ($thisTop >= 0) {
+      $newTopPgn = save_pgnGame($thisTop);
+      $newTopPgn =~ s/\[\s*Result\s+"([^"]*)"\s*\]/[Result "*"]/;
+    } elsif (($lastTopPgn eq "") && ($#memory_games >= 0)) {
+      $newTopPgn = $memory_games[0];
+      $newTopPgn =~ s/\[\s*Result\s+"([^"]*)"\s*\]/[Result "*"]/;
+    } else {
+      $newTopPgn = $lastTopPgn;
+    }
 
-    if ($newTopPgn ne $lastTopPgn) {
+    if (($newTopPgn ne "") && ($newTopPgn ne $lastTopPgn)) {
       if (open(my $thisFile, ">$PGN_TOP")) {
         print $thisFile $newTopPgn;
         close($thisFile);
@@ -999,10 +1007,6 @@ sub refresh_top {
       }
     }
   }
-}
-
-sub placeholder_pgn {
-  return "[Event \"$newGame_event\"]\n" . "[Site \"$newGame_site\"]\n" . "[Date \"" . strftime($placeholder_date, o_gmtime()) . "\"]\n" . "[Round \"$newGame_round\"]\n" . "[White \"\"]\n" . "[Black \"\"]\n" . "[Result \"$placeholder_result\"]\n\n*\n\n";
 }
 
 sub refresh_memory {
@@ -2106,7 +2110,7 @@ sub process_master_command {
       if ($parameters ne "") {
         if ($parameters eq "\"\"") {
            $parameters = "";
-           $lastTopPgn = $lastPgnForce;
+           $lastTopPgn = "";
         }
         $PGN_TOP = $parameters;
       }
