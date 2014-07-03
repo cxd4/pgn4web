@@ -28,6 +28,11 @@
 <script type="text/javascript">
   "use strict";
 
+  var pgn4web_engineWindowUrlParameters = "lch=FFFFFF&dch=DDDDDD&hch=AAAAAA&ctch=808080&ss=36&pf=m&fms=14&fcs=21&fpr=0";
+  var pgn4web_engineWindowTarget = "pgn4webAnalysisBoardForAnalysis";
+  var pgn4web_engineWindowHeight = "";
+  var pgn4web_engineWindowWidth = "";
+
   var thisRegExp;
 
   thisRegExp = /(&|\?)(help|h)=(true|t)(&|$)/i;
@@ -82,8 +87,22 @@
   // customShortcutKey_Shift_1 defined by fide-lookup.js
   // customShortcutKey_Shift_2 defined by fide-lookup.js
 
+  // overwriting engine.js definitions of customShortcutKey_Shift_8 9 0
+  function customShortcutKey_Shift_8() { showAnalysisBoard(true); }
+  function customShortcutKey_Shift_9() { showAnalysisBoard(false); }
+  function customShortcutKey_Shift_0() { showAnalysisBoard(); }
+
+  boardShortcut("F8", "close/pause analysis board", function(t,e){ if (!e.shiftKey) { hideAnalysisBoard(); } });
+  boardShortcut("E8", "open/update analysis board", function(t,e){ showAnalysisBoard(e.shiftKey); }, true);
+  boardShortcut("H5", "scroll moves text to current move", function(t,e){ autoScrollToCurrentMoveIfEnabled(); });
+
+  var firstCustomFunctionOnPgnTextLoad = true;
   function customFunctionOnPgnTextLoad() {
     myOnResize();
+    if (firstCustomFunctionOnPgnTextLoad) {
+      firstCustomFunctionOnPgnTextLoad = false;
+      showEngineAnalysisBoard(true, true); // prepare analysis frame with an idle board
+    }
   }
 
   function customFunctionOnPgnGameLoad() {
@@ -154,6 +173,42 @@
 
   enableAutoScrollToCurrentMove("GameTextResult");
 
+
+  var thisEngineWin;
+  var thisEngineWinShown = false;
+
+  function showAnalysisBoard(de) {
+    var theObj;
+    if ((thisEngineWin = showEngineAnalysisBoard(de)) && (!thisEngineWinShown)) {
+      if (theObj = document.getElementById('analysisHeader')) {
+        theObj.style.left = "451px"; // 436px boardheaderDiv.width + 15px gametextresultDiv.paddingLeft
+      }
+      if (theObj = document.getElementById('GameTextResult')) {
+        theObj.style.marginLeft = "769px"; // 451px analysisHeader.left + 288px analysisHeader.width + 30px padding
+      }
+      setTimeout(autoScrollToCurrentMoveIfEnabled, 2100);
+      thisEngineWinShown = true;
+    }
+  }
+
+  function hideAnalysisBoard() {
+    var theObj;
+    if (thisEngineWinShown) {
+      if (theObj = document.getElementById('analysisHeader')) {
+        theObj.style.left = "";
+      }
+      if (theObj = document.getElementById('GameTextResult')) {
+        theObj.style.marginLeft = "";
+      }
+      setTimeout(autoScrollToCurrentMoveIfEnabled, 2100);
+      thisEngineWinShown = false;
+    }
+    if (typeof(thisEngineWin) != "undefined") {
+      if (typeof(thisEngineWin.StopBackgroundEngine) == "function") { thisEngineWin.StopBackgroundEngine(); }
+      if (typeof(thisEngineWin.autoUpdate) != "undefined") { thisEngineWin.autoUpdate = false; }
+    }
+  }
+
 </script>
 
 </head>
@@ -166,6 +221,9 @@
 </textarea></form>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
+<div class="analysisheaderDiv" id="analysisHeader">
+<iframe class="gameAnalysisFrame" id="GameAnalysisFrame" name="pgn4webAnalysisBoardForAnalysis" src="./blank.html" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">your web browser and/or your host do not support iframes as required</iframe>
+</div>
 
 <div class="boardheaderDiv" id="boardHeader">
 <table cellspacing=0 cellpadding=0 border=0><tr>

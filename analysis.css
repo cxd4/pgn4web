@@ -5,10 +5,6 @@
  *  for credits, license and more details
  */
 
-/*
- *  display optimized for a 664px high frame
- */
-
 @import url("fonts/pgn4web-font-LiberationSans.css");
 @import url("fonts/pgn4web-font-ChessSansUsual.css");
 
@@ -35,6 +31,19 @@ div, span {
   font-family: 'pgn4web Liberation Sans', sans-serif; /* fixes IE9 body css issue */
 }
 
+.analysisheaderDiv {
+  position: absolute;
+  top: 0px;
+  left: 115px; /* 30px boardTable.paddingLeft + 376px boardTable.width - 3px boardTable.borderWidth - 288px gameAnalysisFrame.width */
+  transition: left 2s;
+}
+
+.gameAnalysisFrame {
+  width: 288px;
+  height: 380px;
+  margin-top: 222px; /* 210 header + 3 boardTable.borderWidth + 9 filling */
+}
+
 .boardheaderDiv {
   position: absolute;
   top: 0px;
@@ -48,9 +57,10 @@ div, span {
 }
 
 .gametextresultDiv {
-  padding-left: 30px;
+  padding-left: 15px;
   padding-right: 30px;
-  margin-left: 421px;
+  margin-left: 436px;
+  transition: margin-left 2s;
   margin-bottom: 30px;
   overflow-y: scroll;
   overflow-x: hidden;
