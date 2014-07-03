@@ -86,7 +86,7 @@ our $heartbeat_offset_hour = 5;
 
 sub cmd_run {
   my ($cmd) = @_;
-  log_terminal("debug: running ics command: $cmd");
+  log_terminal("debug: ics command input: $cmd");
   my $output = $telnet->cmd($cmd);
   $last_cmd_time = time();
   $cmdRunCount++;
@@ -1337,7 +1337,7 @@ add_master_command ("site", "site [string|\"\"] (to get/set the PGN header tag s
 add_master_command ("startup", "startup [command list, separated by semicolon] (to get/set startup commands file)");
 add_master_command ("timeoffset", "timeoffset [[+|-]seconds] (to get/set the offset correcting the time value from the UTC time used by default)");
 add_master_command ("topfile", "topfile [filename.pgn] (to get/set the filename for the top PGN data)");
-add_master_command ("verbosity", "verbosity [0-6] (to get/set log verbosity: 0=none, 1=alert, 2=error, 3=warning, 4=info, 5=debug, 6=fyi)");
+add_master_command ("verbosity", "verbosity [0-7] (to get/set log verbosity: 0=none, 1=alert, 2=error, 3=warning, 4=info, 5=debug, 6=fyi 7=output)");
 add_master_command ("write", "write [!] (to force writing updated PGN data according to the latest configuration)");
 
 sub detect_command {
@@ -2113,7 +2113,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "verbosity") {
-    if ($parameters =~ /^[0-6]?$/) {
+    if ($parameters =~ /^[0-7]?$/) {
       if ($parameters ne "") {
         $verbosity = $parameters;
       }
@@ -2441,6 +2441,7 @@ sub main_loop {
     if (($line) && ($line !~ /^$/)) {
       $line =~ s/[\r\n]*$//;
       $line =~ s/^[\r\n]*//;
+      if ($verbosity >= 7) { print(strftime("%Y-%m-%d %H:%M:%S", o_gmtime()) . " ics output: $line\n"); }
       process_line($line);
     }
 
