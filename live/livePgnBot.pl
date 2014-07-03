@@ -2440,8 +2440,8 @@ sub main_loop {
     my $line = $telnet->getline(Timeout => $LINE_WAIT_TIMEOUT);
     if (($line) && ($line !~ /^$/)) {
       $line =~ s/[\r\n]*$//;
-      $line =~ s/^[\r\n]*//;
-      if ($verbosity >= 7) { print(strftime("%Y-%m-%d %H:%M:%S", o_gmtime()) . " ics output: $line\n"); }
+      $line =~ s/^[\r\n]*//;                                  # same length as " debug: ics command input: "
+      if ($verbosity >= 7) { print(strftime("%Y-%m-%d %H:%M:%S", o_gmtime()) . " output: ics comms output: $line\n"); }
       process_line($line);
     }
 
