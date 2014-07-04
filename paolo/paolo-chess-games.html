@@ -116,7 +116,7 @@ function hideAnalysisBoard() {
 }
 
 if (!pgn4web_engineWindowDisableAnalysisBoard) {
-  boardShortcut("E8", "open/update analysis board", function(t,e){ showAnalysisBoard(e.shiftKey); }, true);
+  boardShortcut("E8", "open/update analysis board", function(t,e){ showAnalysisBoard(e.shiftKey); });
   boardShortcut("F8", "close/pause analysis board", function(t,e){ if (!e.shiftKey) { hideAnalysisBoard(); } });
 }
 

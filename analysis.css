@@ -49,6 +49,7 @@ div, span {
   top: 0px;
   left: 0px;
   padding: 30px;
+  width: 376px;
   overflow: hidden;
 }
 
@@ -73,7 +74,7 @@ div, span {
   line-height: 15px;
 }
 
-.gameLastMove {
+.gameLastMove, .gameNextMove {
   font-size: 14px;
   line-height: 20px;
   white-space: nowrap;

@@ -877,8 +877,8 @@ a.variation {
   boardShortcut("G7", "toggle autoswitch to games with new moves", function(t,e){ autoSwitchNewgames = !autoSwitchNewgames && !e.shiftKey; });
 
   if (!pgn4web_engineWindowDisableAnalysisBoard) {
+    boardShortcut("E8", "open/update analysis board", function(t,e){ showAnalysisBoard(e.shiftKey); });
     boardShortcut("F8", "close/pause analysis board", function(t,e){ if (!e.shiftKey) { hideAnalysisBoard(); } });
-    boardShortcut("E8", "open/update analysis board", function(t,e){ showAnalysisBoard(e.shiftKey); }, true);
   }
 
 

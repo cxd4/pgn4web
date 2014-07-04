@@ -42,6 +42,7 @@
           " - initialGame = first | last | random | a number | a search expression (default first)" + "\n" +
           " - initialVariation = a number (default 0)" + "\n" +
           " - initialHalfmove = start | end | random | comment | variation | a number (default start)" + "\n" +
+          " - hidePrevNext = true | false (default false)" + "\n" +
           " - help = true");
   }
 
@@ -73,6 +74,9 @@
     SetInitialHalfmove(unescape(window.location.search.match(thisRegExp)[3]), false);
   }
 
+  thisRegExp = /(&|\?)(hideLastNext|hln)=(true|t)(&|$)/i;
+  var hideLastNext = (window.location.search.match(thisRegExp) !== null);
+
   SetImagePath("images/merida/39");
   SetImageType("png");
   SetHighlightOption(true);
@@ -87,16 +91,19 @@
   // customShortcutKey_Shift_1 defined by fide-lookup.js
   // customShortcutKey_Shift_2 defined by fide-lookup.js
 
+  function customShortcutKey_Shift_3() { toggleHideLastNext(); }
+
   // overwriting engine.js definitions
   function customShortcutKey_Shift_8() { showAnalysisBoard(true); }
   function customShortcutKey_Shift_9() { showAnalysisBoard(false); }
   function customShortcutKey_Shift_0() { showAnalysisBoard(); }
 
   if (!pgn4web_engineWindowDisableAnalysisBoard) {
+    boardShortcut("E8", "open/update analysis board", function(t,e){ showAnalysisBoard(e.shiftKey); });
     boardShortcut("F8", "close/pause analysis board", function(t,e){ if (!e.shiftKey) { hideAnalysisBoard(); } });
-    boardShortcut("E8", "open/update analysis board", function(t,e){ showAnalysisBoard(e.shiftKey); }, true);
   }
 
+  boardShortcut("G6", "toggle hide last/next moves", function(t,e){ toggleHideLastNext(); });
   boardShortcut("H5", "scroll moves text to current move", function(t,e){ autoScrollToCurrentMoveIfEnabled(); });
 
   var firstCustomFunctionOnPgnTextLoad = true;
@@ -214,6 +221,14 @@
     }
   }
 
+  function toggleHideLastNext(hln) {
+    hideLastNext = (typeof(hln) == "undefined") ? !hideLastNext : hln;
+    var theObj = document.getElementById("GameLastNext");
+    if (theObj) {
+      theObj.style.display = hideLastNext ? "none" : "";
+    }
+  }
+
 </script>
 
 </head>
@@ -243,10 +258,16 @@
 <div class="shortRowSpace">&nbsp;</div>
 <div class="shortRowSpace">&nbsp;</div>
 <div id="GameBoard"></div>
+<div id="GameLastNext">
 <div class="shortRowSpace">&nbsp;</div>
 <div class="shortRowSpace">&nbsp;</div>
 <div class="gameLastMove">
 <span id="GameLastMove" title="last move"></span>&nbsp;&nbsp;<span id="GameLastVariations" title="last move alternatives"></span>&nbsp;
+</div>
+<div class="shortRowSpace">&nbsp;</div>
+<div class="gameNextMove">
+<span id="GameNextMove" title="next move"></span>&nbsp;&nbsp;<span id="GameNextVariations" title="next move alternatives"></span>&nbsp;
+</div>
 </div>
 </div>
 
@@ -259,6 +280,11 @@
 </div>
 
 <a class="helpLink" title="pgn4web help" href="javascript:void(0);" onclick="displayHelp(); this.blur();">?</a>
+
+<script type="text/javascript">
+  "use strict";
+  toggleHideLastNext(hideLastNext);
+</script>
 
 </body>
 
