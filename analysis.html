@@ -28,7 +28,7 @@
 <script type="text/javascript">
   "use strict";
 
-  var pgn4web_engineWindowUrlParameters = "lch=FFFFFF&dch=DDDDDD&hch=AAAAAA&ctch=808080&ss=36&pf=m&fms=14&fcs=21&fpr=0";
+  var pgn4web_engineWindowUrlParameters = "as=66&ss=36&ps=29&pf=m&fms=14&fcs=22&lch=FFFFFF&dch=DDDDDD&hch=AAAAAA&ctch=808080&fpr=0";
   var pgn4web_engineWindowTarget = "pgn4webAnalysisBoardForAnalysis";
   var pgn4web_engineWindowHeight = "";
   var pgn4web_engineWindowWidth = "";
@@ -42,7 +42,6 @@
           " - initialGame = first | last | random | a number | a search expression (default first)" + "\n" +
           " - initialVariation = a number (default 0)" + "\n" +
           " - initialHalfmove = start | end | random | comment | variation | a number (default start)" + "\n" +
-          // " - disableAnalysisBoard = true | false (default false)" + "\n" +
           " - help = true");
   }
 
@@ -74,9 +73,6 @@
     SetInitialHalfmove(unescape(window.location.search.match(thisRegExp)[3]), false);
   }
 
-  thisRegExp = /(&|\?)(disableAnalysisBoard|dab)=(true|t)(&|$)/i;
-  var disableAnalysisBoard = (window.location.search.match(thisRegExp) !== null);
-
   SetImagePath("images/merida/39");
   SetImageType("png");
   SetHighlightOption(true);
@@ -91,14 +87,12 @@
   // customShortcutKey_Shift_1 defined by fide-lookup.js
   // customShortcutKey_Shift_2 defined by fide-lookup.js
 
-  // overwriting engine.js definitions of customShortcutKey_Shift_8 9 0
+  // overwriting engine.js definitions
   function customShortcutKey_Shift_8() { showAnalysisBoard(true); }
   function customShortcutKey_Shift_9() { showAnalysisBoard(false); }
   function customShortcutKey_Shift_0() { showAnalysisBoard(); }
 
-  if (disableAnalysisBoard) {
-    clearShortcutSquares("EF", "8");
-  } else {
+  if (!pgn4web_engineWindowDisableAnalysisBoard) {
     boardShortcut("F8", "close/pause analysis board", function(t,e){ if (!e.shiftKey) { hideAnalysisBoard(); } });
     boardShortcut("E8", "open/update analysis board", function(t,e){ showAnalysisBoard(e.shiftKey); }, true);
   }
@@ -187,7 +181,7 @@
   var thisEngineWinShown = false;
 
   function showAnalysisBoard(de) {
-    if (disableAnalysisBoard) { return; }
+    if (pgn4web_engineWindowDisableAnalysisBoard) { return; }
     var theObj;
     if ((thisEngineWin = showEngineAnalysisBoard(de)) && (!thisEngineWinShown)) {
       if (theObj = document.getElementById('analysisHeader')) {
@@ -202,7 +196,7 @@
   }
 
   function hideAnalysisBoard() {
-    if (disableAnalysisBoard) { return; }
+    if (pgn4web_engineWindowDisableAnalysisBoard) { return; }
     var theObj;
     if (thisEngineWinShown) {
       if (theObj = document.getElementById('analysisHeader')) {

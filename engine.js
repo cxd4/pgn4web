@@ -5,19 +5,9 @@
  *  for credits, license and more details
  */
 
-if (typeof(pgn4web_engineWindowDisableAnalysisBoard) == "undefined") { var pgn4web_engineWindowDisableAnalysisBoard = false; }
-
-if (!pgn4web_engineWindowDisableAnalysisBoard) {
-  boardShortcut("A8", "pgn4web v" + pgn4web_version + " debug info", function(t,e){ if (e.shiftKey) { if (engineWinCheck()) { engineWin.displayDebugInfo(); } } else { displayDebugInfo(); } }, true);
-  boardShortcut("E8", "open/update analysis board", function(t,e){ showEngineAnalysisBoard(e.shiftKey); });
-  boardShortcut("F8", "close/pause analysis board", function(t,e){ if (engineWinCheck()) { if (e.shiftKey) { if ((engineWin.top === engineWin.self) && (engineWin.focus)) { engineWin.focus(); } } else { engineWin.StopBackgroundEngine(); if ((engineWin.top === engineWin.self) && (engineWin.close)) { engineWin.close(); } } } });
-
-  function customShortcutKey_Shift_8() { showEngineAnalysisBoard(true); }
-  function customShortcutKey_Shift_9() { showEngineAnalysisBoard(false); }
-  function customShortcutKey_Shift_0() { showEngineAnalysisBoard(); }
-}
-
 "use strict";
+
+if (typeof(pgn4web_engineWindowDisableAnalysisBoard) == "undefined") { var pgn4web_engineWindowDisableAnalysisBoard = false; }
 
 var pgn4web_engineWindowTarget = "pgn4webEngineAnalysisBoard";
 var pgn4web_engineWindowUrlParameters = "";
@@ -28,6 +18,7 @@ var pgn4web_engineWindowWidth = 30 * 10;
 // - all pages on the same site will use the same analysis board popup; if the analysis board is embedded as iframe within a page (see the live-results-viewer.html example) the pgn4web_engineWindowTarget variable should be customized in order to prevent conflicts
 // - if pgn4web_engineWindowUrlParameters is customized using the corresponding URL parameter of the main page, the value must be encoded with encodeURIComponent()
 
+if (typeof(thisRegExp) == "undefined") { var thisRegExp; }
 thisRegExp = /(&|\?)(engineWindowDisableAnalysisBoard|ewdab)=(true|t)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   pgn4web_engineWindowDisableAnalysisBoard = true;
@@ -48,6 +39,18 @@ thisRegExp = /(&|\?)(engineWindowWidth|eww)=([1-9][0-9]*)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   pgn4web_engineWindowWidth = parseInt(unescape(window.location.search.match(thisRegExp)[3]), 10);
 }
+
+
+if (!pgn4web_engineWindowDisableAnalysisBoard) {
+  boardShortcut("A8", "pgn4web v" + pgn4web_version + " debug info", function(t,e){ if (e.shiftKey) { if (engineWinCheck()) { engineWin.displayDebugInfo(); } } else { displayDebugInfo(); } }, true);
+  boardShortcut("E8", "open/update analysis board", function(t,e){ showEngineAnalysisBoard(e.shiftKey); });
+  boardShortcut("F8", "close/pause analysis board", function(t,e){ if (engineWinCheck()) { if (e.shiftKey) { if ((engineWin.top === engineWin.self) && (engineWin.focus)) { engineWin.focus(); } } else { engineWin.StopBackgroundEngine(); if ((engineWin.top === engineWin.self) && (engineWin.close)) { engineWin.close(); } } } });
+}
+
+function customShortcutKey_Shift_8() { showEngineAnalysisBoard(true); }
+function customShortcutKey_Shift_9() { showEngineAnalysisBoard(false); }
+function customShortcutKey_Shift_0() { showEngineAnalysisBoard(); }
+
 
 var pgn4web_engineWinSignature = Math.ceil(1073741822 * Math.random()); // from 1 to (2^30 -1) = 1073741823
 
