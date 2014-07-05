@@ -154,6 +154,21 @@ div, span {
   border-style: solid;
 }
 
+.selectControl {
+/* a "width" attribute here must use the !important flag to override default settings */
+  position: relative;
+  -webkit-appearance: none;
+  border-style: solid;
+  border-color: #AAAAAA;
+  border-width: 1px;
+  background: #FFFFFF;
+  color: gray;
+}
+
+.optionSelectControl {
+  color: black;
+}
+
 .move,
 .variation,
 .comment {

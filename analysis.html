@@ -43,6 +43,7 @@
           " - initialVariation = a number (default 0)" + "\n" +
           " - initialHalfmove = start | end | random | comment | variation | a number (default start)" + "\n" +
           " - showPrevNext = true | false (default false)" + "\n" +
+          " - showGamesList = true | false (default false)" + "\n" +
           " - help = true");
   }
 
@@ -77,6 +78,9 @@
   thisRegExp = /(&|\?)(showLastNext|sln)=(true|t)(&|$)/i;
   var showLastNext = (window.location.search.match(thisRegExp) !== null);
 
+  thisRegExp = /(&|\?)(showGamesList|sgl)=(true|t)(&|$)/i;
+  var showGamesList = (window.location.search.match(thisRegExp) !== null);
+
   SetImagePath("images/merida/39");
   SetImageType("png");
   SetHighlightOption(true);
@@ -92,6 +96,7 @@
   // customShortcutKey_Shift_2 defined by fide-lookup.js
 
   function customShortcutKey_Shift_3() { toggleLastNext(); }
+  function customShortcutKey_Shift_4() { toggleGamesList(); }
 
   // overwriting engine.js definitions
   function customShortcutKey_Shift_8() { showAnalysisBoard(true); }
@@ -104,6 +109,7 @@
   }
 
   boardShortcut("G6", "toggle last/next moves information", function(t,e){ toggleLastNext(); });
+  boardShortcut("F5", "toggle games list", function(t,e){ toggleGamesList(); });
   boardShortcut("H5", "scroll moves text to current move", function(t,e){ autoScrollToCurrentMoveIfEnabled(); });
 
   var firstCustomFunctionOnPgnTextLoad = true;
@@ -227,6 +233,17 @@
     if (theObj) {
       theObj.style.display = showLastNext ? "" : "none";
     }
+    if (theObj = document.getElementById("GameSelSelect")) {
+      theObj.style.top = showLastNext ? "0" : "30px";
+    }
+  }
+
+  function toggleGamesList(sgl) {
+    showGamesList = (typeof(sgl) == "undefined") ? !showGamesList : sgl;
+    var theObj = document.getElementById("GamesList");
+    if (theObj) {
+      theObj.style.display = showGamesList ? "" : "none";
+    }
   }
 
 </script>
@@ -269,6 +286,11 @@
 <span id="GameNextMove" title="next move"></span>&nbsp;&nbsp;<span id="GameNextVariations" title="next move alternatives"></span>&nbsp;
 </div>
 </div>
+<div class="gameList" id="GamesList" style="display: none;">
+<div class="shortRowSpace">&nbsp;</div>
+<div class="shortRowSpace">&nbsp;</div>
+<div id="GameSelector"></div>
+</div>
 </div>
 
 <div class="topSpacer">&nbsp;</div>
@@ -284,6 +306,7 @@
 <script type="text/javascript">
   "use strict";
   toggleLastNext(showLastNext);
+  toggleGamesList(showGamesList);
 </script>
 
 </body>
