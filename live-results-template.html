@@ -20,9 +20,7 @@
   "use strict";
 
   var pgnFile;
-  var pgnFile_default = detectBaseLocation() ?
-    location.protocol + "//" + location.hostname + location.pathname.replace(/\/[^\/]*$/, "/live/live.pgn") :
-    "live/live.pgn";
+  var pgnFile_default = "live/live.pgn";
   // accepts pgnData as alias for pgnFile for consistency with board.html
   if ((pgnFile = gup("pgnData")) === "") {
     if ((pgnFile = gup("pgnFile")) === "") {
@@ -116,7 +114,7 @@ function gup(name) {
 
 <pre id="results" style="font-size:16px;"></pre>
 
-<a id="GameLiveStatus" style="text-decoration:none; color:black;" href="javascript:void(0);" onclick="refreshPgnSource(); this.blur();"></a>
+<span id="GameLiveStatus"></span>
 
 </body>
 

@@ -15,7 +15,7 @@ var pgn4web_engineWindowHeight = 30 * 12; // window height/width corresponding t
 var pgn4web_engineWindowWidth = 30 * 10;
 
 // notes:
-// - all pages on the same site will use the same analysis board popup; if the analysis board is embedded as iframe within a page (see the live-results-viewer.html example) the pgn4web_engineWindowTarget variable should be customized in order to prevent conflicts
+// - all pages on the same site will use the same analysis board popup; if the analysis board is embedded as iframe within a page (see the live-results.html example) the pgn4web_engineWindowTarget variable should be customized in order to prevent conflicts
 // - if pgn4web_engineWindowUrlParameters is customized using the corresponding URL parameter of the main page, the value must be encoded with encodeURIComponent()
 
 if (typeof(thisRegExp) == "undefined") { var thisRegExp; }
