@@ -12,13 +12,6 @@
 "use strict";
 
 //
-// the email for the project, default = 'pgn4web@casaschi.net'
-// used by: home.html, board-generator.html and pgn4web.js
-//
-var pgn4web_project_email = 'pgn4web@casaschi.net';
-//
-
-//
 // the URL for the board widged to be used in the board-generator tool, default = full URL of local board.html file = pgn4web_board_url = location.protocol + "//" + location.hostname+location.pathname.substr(0, location.pathname.lastIndexOf("/")) + "/board.html";
 // used by: board-generator.html
 //
