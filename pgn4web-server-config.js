@@ -12,20 +12,6 @@
 "use strict";
 
 //
-// the email for the project, default = 'pgn4web@casaschi.net'
-// used by: home.html, board-generator.html and pgn4web.js
-//
-var pgn4web_project_email = 'pgn4web@casaschi.net';
-//
-
-//
-// the URL for the project's blog, default = 'http://pgn4web-blog.casaschi.net'
-// used by: home.html
-//
-var pgn4web_project_blog = 'http://pgn4web-blog.casaschi.net';
-//
-
-//
 // the URL for the board widged to be used in the board-generator tool, default = full URL of local board.html file = pgn4web_board_url = location.protocol + "//" + location.hostname+location.pathname.substr(0, location.pathname.lastIndexOf("/")) + "/board.html";
 // used by: board-generator.html
 //
@@ -53,17 +39,9 @@ var pgn4web_bitly_apiKey = "";
 
 //
 // pointer URL for the live games broadcast, default = '.'
-// used by: live.html, live-multi.html, live-mosaic.html
+// used by: flash-replacement.html, live-fullscreen.html, live.html, live-mosaic.html, live-results.html
 //
 var pgn4web_live_pointer_url = '.';
 // var pgn4web_live_pointer_url = 'http://pgn4web-live.casaschi.net';
-//
-
-//
-// the URL for the game viewer tool, default = 'demo.html?frame=pgn_form'
-// used by: home.html
-//
-var pgn4web_viewer_url = 'demo.html?frame=pgn_form';
-// var pgn4web_viewer_url = 'viewer.php';
 //
 

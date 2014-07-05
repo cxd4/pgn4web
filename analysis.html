@@ -42,7 +42,7 @@
           " - initialGame = first | last | random | a number | a search expression (default first)" + "\n" +
           " - initialVariation = a number (default 0)" + "\n" +
           " - initialHalfmove = start | end | random | comment | variation | a number (default start)" + "\n" +
-          " - hidePrevNext = true | false (default false)" + "\n" +
+          " - showPrevNext = true | false (default false)" + "\n" +
           " - help = true");
   }
 
@@ -74,8 +74,8 @@
     SetInitialHalfmove(unescape(window.location.search.match(thisRegExp)[3]), false);
   }
 
-  thisRegExp = /(&|\?)(hideLastNext|hln)=(true|t)(&|$)/i;
-  var hideLastNext = (window.location.search.match(thisRegExp) !== null);
+  thisRegExp = /(&|\?)(showLastNext|sln)=(true|t)(&|$)/i;
+  var showLastNext = (window.location.search.match(thisRegExp) !== null);
 
   SetImagePath("images/merida/39");
   SetImageType("png");
@@ -91,7 +91,7 @@
   // customShortcutKey_Shift_1 defined by fide-lookup.js
   // customShortcutKey_Shift_2 defined by fide-lookup.js
 
-  function customShortcutKey_Shift_3() { toggleHideLastNext(); }
+  function customShortcutKey_Shift_3() { toggleLastNext(); }
 
   // overwriting engine.js definitions
   function customShortcutKey_Shift_8() { showAnalysisBoard(true); }
@@ -103,7 +103,7 @@
     boardShortcut("F8", "close/pause analysis board", function(t,e){ if (!e.shiftKey) { hideAnalysisBoard(); } });
   }
 
-  boardShortcut("G6", "toggle hide last/next moves", function(t,e){ toggleHideLastNext(); });
+  boardShortcut("G6", "toggle last/next moves information", function(t,e){ toggleLastNext(); });
   boardShortcut("H5", "scroll moves text to current move", function(t,e){ autoScrollToCurrentMoveIfEnabled(); });
 
   var firstCustomFunctionOnPgnTextLoad = true;
@@ -221,11 +221,11 @@
     }
   }
 
-  function toggleHideLastNext(hln) {
-    hideLastNext = (typeof(hln) == "undefined") ? !hideLastNext : hln;
+  function toggleLastNext(sln) {
+    showLastNext = (typeof(sln) == "undefined") ? !showLastNext : sln;
     var theObj = document.getElementById("GameLastNext");
     if (theObj) {
-      theObj.style.display = hideLastNext ? "none" : "";
+      theObj.style.display = showLastNext ? "" : "none";
     }
   }
 
@@ -258,7 +258,7 @@
 <div class="shortRowSpace">&nbsp;</div>
 <div class="shortRowSpace">&nbsp;</div>
 <div id="GameBoard"></div>
-<div id="GameLastNext">
+<div id="GameLastNext" style="display: none;">
 <div class="shortRowSpace">&nbsp;</div>
 <div class="shortRowSpace">&nbsp;</div>
 <div class="gameLastMove">
@@ -283,7 +283,7 @@
 
 <script type="text/javascript">
   "use strict";
-  toggleHideLastNext(hideLastNext);
+  toggleLastNext(showLastNext);
 </script>
 
 </body>

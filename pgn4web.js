@@ -11,8 +11,7 @@ var pgn4web_version = '2.84+';
 
 var pgn4web_project_url = "http://pgn4web.casaschi.net";
 var pgn4web_project_author = "Paolo Casaschi";
-var pgn4web_project_email; // preassigned in pgn4web-server-config.js
-if (typeof(pgn4web_project_email) == "undefined") { pgn4web_project_email = "pgn4web@casaschi.net"; }
+var pgn4web_project_email = "pgn4web@casaschi.net";
 
 var helpWin;
 function displayHelp(section) {
