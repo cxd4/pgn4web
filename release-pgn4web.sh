@@ -35,7 +35,7 @@ zip -9r "$pgn4webFilename" "$pgn4webDirectory" -x *.svn/* -x "$pgn4webDirectory"
 if [ "$1" == "full" ]; then
   zip -9r "$pgn4webFilename" "$pgn4webDirectory"/live-games-app* "$pgn4webDirectory"/live/* -x *.svn/*
 else
-  zip -9r "$pgn4webFilename" "$pgn4webDirectory"/live/*.html "$pgn4webDirectory"/live/live-simulation.sh -x *.svn/*
+  zip -9r "$pgn4webFilename" "$pgn4webDirectory"/live/*.html "$pgn4webDirectory"/live/*.pgn "$pgn4webDirectory"/live/live-simulation.sh -x *.svn/*
 fi
 
 rm $pgn4webDirectory

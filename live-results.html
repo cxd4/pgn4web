@@ -462,8 +462,8 @@ a.variation {
   var showBoard = true;
   if ((gup("showBoard") == "false") || (gup("showBoard") == "f")) { showBoard = false; }
 
-  var adjustBoard = false;
-  if ((gup("adjustBoard") == "true") || (gup("adjustBoard") == "t")) { adjustBoard = true; }
+  var adjustBoard = true;
+  if ((gup("adjustBoard") == "false") || (gup("adjustBoard") == "f")) { adjustBoard = false; }
 
   var showEvent = true;
   if ((gup("showEvent") == "false") || (gup("showEvent") == "f")) { showEvent = false; }
@@ -504,7 +504,7 @@ a.variation {
       " - refreshDemo = " + demoFlag + "; sets live demo mode (default false)" + "\n" +
       " - initialGame = " + iniGame + "; initial game to load, a number or first, last, random or a search string (default 1)" + "\n" +
       " - showBoard = " + showBoard + "; shows the chessboard (default true)" + "\n" +
-      " - adjustBoard = " + adjustBoard + "; dynamically adjusts the board position (default false)" + "\n" +
+      " - adjustBoard = " + adjustBoard + "; dynamically adjusts the board position (default true)" + "\n" +
       " - showEvent = " + showEvent + "; shows event information (default true)" + "\n" +
       " - roundReverse = " + roundReverse + "; reverse round ordering (default false)" + "\n" +
       " - showTeams = " + showTeams + "; shows teams information (default true)" + "\n" +
