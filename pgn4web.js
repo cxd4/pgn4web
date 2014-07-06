@@ -3710,18 +3710,21 @@ function variationTextFromTag(variationTag, addHtmlTags) {
 
 var variationTextDepth, printedComment, printedVariation;
 function variationTextFromId(varId) {
-  var punctChars = ",.;:!?", thisComment;
+  var punctChars = ",.;:!?", startBasicNAG, thisComment;
 
   if (isNaN(varId) || varId < 0 || varId >= numberOfVars || typeof(StartPlyVar[varId]) == "undefined" || typeof(PlyNumberVar[varId]) == "undefined") {
     myAlert("error: issue parsing variation id " + varId + " in game " + (currentGame+1), true);
     return "";
   }
   var text = ++variationTextDepth ? ('<SPAN CLASS="variation">' + (printedVariation ? ' ' : '') + (variationTextDepth > 1 ? '(' : '[')) + '</SPAN>' : '';
+  if (commentsIntoMoveText && (startBasicNAG = basicNAGsMoveComment(StartPlyVar[varId], varId))) {
+    text += '<SPAN CLASS="' + (variationTextDepth ? "variation" : "move") + ' notranslate">' + startBasicNAG + ' </SPAN>';
+  }
   printedVariation = false;
   for (var ii = StartPlyVar[varId]; ii < StartPlyVar[varId] + PlyNumberVar[varId]; ii++) {
     printedComment = false;
     if (commentsIntoMoveText && (thisComment = strippedMoveComment(ii, varId, true))) {
-      if (commentsOnSeparateLines && variationTextDepth === 0 && ii > StartPlyVar[varId]) {
+      if (commentsOnSeparateLines && variationTextDepth === 0 && (ii > StartPlyVar[varId] || startBasicNAG)) {
         text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
       }
       if (printedVariation) { if (punctChars.indexOf(thisComment.charAt(0)) == -1) { text += '<SPAN CLASS="variation"> </SPAN>'; } }

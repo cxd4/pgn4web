@@ -120,8 +120,18 @@ d4 d5 *
 
 e4 e6 *
 
-[Event "Testing open comments and variations (this should generate an error)"]
+[Event "Testing a basic NAG before variation start"]
 [Round "14"]
+[SetUp "1"]
+[FEN "3k4/3P4/4K3/8/8/8/8/8 w - - 0 1"]
+
+$22 {this is a draw} 1. Kd6 ($22 1. Kf7 ($11 Kf6 Kd7) Kd7) ({ if only White
+could pass } 1. -- Kc7 ({ a simple win } $18 1.. Kc7 2. Ke7)) -- (* { also
+lost if Black passes} $18 2. Kc6 Ke7) 2. Kd5?? { this is a blunder } Kd7 $11
+Kd4 Kd6 Ke4 Ke6 *
+
+[Event "Testing open comments and variations (this should generate an error)"]
+[Round "?"]
 
 1. e4 e6 2. d4 d5 3. Nc3 (3.Nd2 Nf6 { open comment
 
