@@ -1380,7 +1380,7 @@ function HighlightLastMove() {
     if (commentsIntoMoveText) {
     variationTextDepth = CurrentVar === 0 ? 0 : 1;
     text = '<SPAN CLASS="comment">' +
-      strippedMoveComment(showThisMove+1, CurrentVar, true, CurrentPly === StartPlyVar[CurrentVar]).replace(/\sID="[^"]*"/g, '') +
+      strippedMoveComment(showThisMove+1, CurrentVar, true).replace(/\sID="[^"]*"/g, '') +
       '</SPAN>';
     } else { text = ''; }
     theObj.innerHTML = text;
@@ -3680,18 +3680,15 @@ function clickedBbtn(t,e) {
 }
 
 var basicNAGs = /^[\?!+#\s]+(\s|$)/;
-function strippedMoveComment(plyNum, varId, addHtmlTags, ignoreBasicNAGs) {
-  if (typeof(ignoreBasicNAGs) == "undefined") {
-    ignoreBasicNAGs = false;
-    if (typeof(addHtmlTags) == "undefined") {
-      addHtmlTags = false;
-      if (typeof(varId) == "undefined") {
-        varId = CurrentVar;
-      }
+function strippedMoveComment(plyNum, varId, addHtmlTags) {
+  if (typeof(addHtmlTags) == "undefined") {
+    addHtmlTags = false;
+    if (typeof(varId) == "undefined") {
+      varId = CurrentVar;
     }
   }
   if (!MoveCommentsVar[varId][plyNum]) { return ""; }
-  return fixCommentForDisplay(MoveCommentsVar[varId][plyNum]).replace(pgn4webVariationRegExpGlobal, function (m) { return variationTextFromTag(m, addHtmlTags); }).replace(/\[%[^\]]*\]\s*/g,'').replace(ignoreBasicNAGs ? '' : basicNAGs, '').replace(/^\s+$/,'');
+  return fixCommentForDisplay(MoveCommentsVar[varId][plyNum]).replace(pgn4webVariationRegExpGlobal, function (m) { return variationTextFromTag(m, addHtmlTags); }).replace(/\[%[^\]]*\]\s*/g,'').replace(plyNum === StartPlyVar[varId] ? '' : basicNAGs, '').replace(/^\s+$/,'');
 }
 
 function basicNAGsMoveComment(plyNum, varId) {
@@ -3727,7 +3724,7 @@ function variationTextFromId(varId) {
   printedVariation = false;
   for (var ii = StartPlyVar[varId]; ii < StartPlyVar[varId] + PlyNumberVar[varId]; ii++) {
     printedComment = false;
-    if (commentsIntoMoveText && (thisComment = strippedMoveComment(ii, varId, true, ii === StartPlyVar[varId]))) {
+    if (commentsIntoMoveText && (thisComment = strippedMoveComment(ii, varId, true))) {
       if (commentsOnSeparateLines && variationTextDepth === 0 && ii > StartPlyVar[varId]) {
         text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
       }
@@ -3744,7 +3741,7 @@ function variationTextFromId(varId) {
 
     text += printMoveText(ii, varId, (variationTextDepth > 0), ((printedComment) || (ii == StartPlyVar[varId])), true);
   }
-  if (commentsIntoMoveText && (thisComment = strippedMoveComment(StartPlyVar[varId] + PlyNumberVar[varId], varId, true, PlyNumberVar[varId] === 0))) {
+  if (commentsIntoMoveText && (thisComment = strippedMoveComment(StartPlyVar[varId] + PlyNumberVar[varId], varId, true))) {
     if (commentsOnSeparateLines && variationTextDepth === 0) {
       text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
     }
