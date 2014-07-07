@@ -3680,11 +3680,18 @@ function clickedBbtn(t,e) {
 }
 
 var basicNAGs = /^[\?!+#\s]+(\s|$)/;
-function strippedMoveComment(plyNum, varId, addHtmlTags) {
-  if (typeof(addHtmlTags) == "undefined") { addHtmlTags = false; }
-  if (typeof(varId) == "undefined") { varId = CurrentVar; }
+function strippedMoveComment(plyNum, varId, addHtmlTags, ignoreBasicNAGs) {
+  if (typeof(ignoreBasicNAGs) == "undefined") {
+    ignoreBasicNAGs = false;
+    if (typeof(addHtmlTags) == "undefined") {
+      addHtmlTags = false;
+      if (typeof(varId) == "undefined") {
+        varId = CurrentVar;
+      }
+    }
+  }
   if (!MoveCommentsVar[varId][plyNum]) { return ""; }
-  return fixCommentForDisplay(MoveCommentsVar[varId][plyNum]).replace(pgn4webVariationRegExpGlobal, function (m) { return variationTextFromTag(m, addHtmlTags); }).replace(/\[%[^\]]*\]\s*/g,'').replace(basicNAGs, '').replace(/^\s+$/,'');
+  return fixCommentForDisplay(MoveCommentsVar[varId][plyNum]).replace(pgn4webVariationRegExpGlobal, function (m) { return variationTextFromTag(m, addHtmlTags); }).replace(/\[%[^\]]*\]\s*/g,'').replace(ignoreBasicNAGs ? '' : basicNAGs, '').replace(/^\s+$/,'');
 }
 
 function basicNAGsMoveComment(plyNum, varId) {
@@ -3710,21 +3717,18 @@ function variationTextFromTag(variationTag, addHtmlTags) {
 
 var variationTextDepth, printedComment, printedVariation;
 function variationTextFromId(varId) {
-  var punctChars = ",.;:!?", startBasicNAG, thisComment;
+  var punctChars = ",.;:!?", thisComment;
 
   if (isNaN(varId) || varId < 0 || varId >= numberOfVars || typeof(StartPlyVar[varId]) == "undefined" || typeof(PlyNumberVar[varId]) == "undefined") {
     myAlert("error: issue parsing variation id " + varId + " in game " + (currentGame+1), true);
     return "";
   }
   var text = ++variationTextDepth ? ('<SPAN CLASS="variation">' + (printedVariation ? ' ' : '') + (variationTextDepth > 1 ? '(' : '[')) + '</SPAN>' : '';
-  if (commentsIntoMoveText && (startBasicNAG = basicNAGsMoveComment(StartPlyVar[varId], varId))) {
-    text += '<SPAN CLASS="' + (variationTextDepth ? "variation" : "move") + ' notranslate">' + startBasicNAG + ' </SPAN>';
-  }
   printedVariation = false;
   for (var ii = StartPlyVar[varId]; ii < StartPlyVar[varId] + PlyNumberVar[varId]; ii++) {
     printedComment = false;
-    if (commentsIntoMoveText && (thisComment = strippedMoveComment(ii, varId, true))) {
-      if (commentsOnSeparateLines && variationTextDepth === 0 && (ii > StartPlyVar[varId] || startBasicNAG)) {
+    if (commentsIntoMoveText && (thisComment = strippedMoveComment(ii, varId, true, (ii === StartPlyVar[varId])))) {
+      if (commentsOnSeparateLines && variationTextDepth === 0 && ii > StartPlyVar[varId]) {
         text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
       }
       if (printedVariation) { if (punctChars.indexOf(thisComment.charAt(0)) == -1) { text += '<SPAN CLASS="variation"> </SPAN>'; } }
