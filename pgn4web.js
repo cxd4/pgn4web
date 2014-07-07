@@ -1380,7 +1380,7 @@ function HighlightLastMove() {
     if (commentsIntoMoveText) {
     variationTextDepth = CurrentVar === 0 ? 0 : 1;
     text = '<SPAN CLASS="comment">' +
-      strippedMoveComment(showThisMove+1, CurrentVar, true).replace(/\sID="[^"]*"/g, '') +
+      strippedMoveComment(showThisMove+1, CurrentVar, true, CurrentPly === StartPlyVar[CurrentVar]).replace(/\sID="[^"]*"/g, '') +
       '</SPAN>';
     } else { text = ''; }
     theObj.innerHTML = text;
@@ -3727,7 +3727,7 @@ function variationTextFromId(varId) {
   printedVariation = false;
   for (var ii = StartPlyVar[varId]; ii < StartPlyVar[varId] + PlyNumberVar[varId]; ii++) {
     printedComment = false;
-    if (commentsIntoMoveText && (thisComment = strippedMoveComment(ii, varId, true, (ii === StartPlyVar[varId])))) {
+    if (commentsIntoMoveText && (thisComment = strippedMoveComment(ii, varId, true, ii === StartPlyVar[varId]))) {
       if (commentsOnSeparateLines && variationTextDepth === 0 && ii > StartPlyVar[varId]) {
         text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
       }
@@ -3744,7 +3744,7 @@ function variationTextFromId(varId) {
 
     text += printMoveText(ii, varId, (variationTextDepth > 0), ((printedComment) || (ii == StartPlyVar[varId])), true);
   }
-  if (commentsIntoMoveText && (thisComment = strippedMoveComment(StartPlyVar[varId] + PlyNumberVar[varId], varId, true))) {
+  if (commentsIntoMoveText && (thisComment = strippedMoveComment(StartPlyVar[varId] + PlyNumberVar[varId], varId, true, PlyNumberVar[varId] === 0))) {
     if (commentsOnSeparateLines && variationTextDepth === 0) {
       text += '<DIV CLASS="comment" STYLE="line-height: 33%;">&nbsp;</DIV>';
     }
