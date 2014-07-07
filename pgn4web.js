@@ -1477,13 +1477,9 @@ function HighlightLastMove() {
     if ((showThisMove >= StartPly) && Moves[showThisMove]) {
       text = printMoveText(showThisMove, CurrentVar, (CurrentVar !== 0), true, false);
     } else if (showThisMove === StartPly - 1) {
-      text = '';
-      var startBasicNAG = basicNAGsMoveComment(StartPlyVar[CurrentVar], CurrentVar);
-      if (commentsIntoMoveText && startBasicNAG) {
-        text += '<SPAN CLASS="move notranslate">' + startBasicNAG + ' </SPAN>';
-      }
-      var moveNum = (Math.floor((showThisMove+1)/2) + 1) + (((showThisMove+1) % 2) ? "..." : ".");
-      text += '<SPAN CLASS="move notranslate">' + moveNum + '</SPAN>';
+      text = '<SPAN CLASS="move notranslate">' +
+        (Math.floor((showThisMove+1)/2) + 1) + (((showThisMove+1) % 2) ? "..." : ".") +
+        '</SPAN>';
     } else { text = ''; }
     theObj.innerHTML = text;
   }
