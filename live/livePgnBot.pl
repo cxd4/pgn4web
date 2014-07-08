@@ -240,6 +240,9 @@ sub reset_config {
   $placeholder_date = "";
   $placeholder_result = "*";
   $placeholderPgnNum = "?";
+  $roundReverse = 0;
+  $roundReverseAgtB = $roundReverse ? -1 : 1;
+  $roundReverseAltB = -$roundReverseAgtB;
   $ignoreFilter = "";
   $prioritizeFilter = "";
   $autoPrioritize = "";
