@@ -278,13 +278,12 @@ sub find_gameIndex {
 }
 
 sub eventRound {
-  my ($thisSortkey, $thisRound) = @_;
-  if ($thisRound ne "") {
-    $thisSortkey .= " - Round ";
-    if ($thisRound =~ /^\d{2}(\.(\d+|\?))*$/) { $thisSortkey .= "0"; }
-    elsif ($thisRound =~ /^\d(\.(\d+|\?))*$/) { $thisSortkey .= "00"; }
-    $thisSortkey .= $thisRound;
-  }
+  my ($thisEvent, $thisRound) = @_;
+  my $thisSortkey .= "$thisEvent - Round ";
+  if ($thisRound =~ /^\d{2}(\D|$)/) { $thisSortkey .= "0"; }
+  elsif ($thisRound =~ /^\d(\D|$)/) { $thisSortkey .= "00"; }
+  elsif ($thisRound =~ /^(\D|$)/) { $thisSortkey .= ":"; }
+  $thisSortkey .= $thisRound;
   return $thisSortkey;
 }
 
