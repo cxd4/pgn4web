@@ -622,8 +622,8 @@ a.variation {
   function myCompareRound(AA, ZZ) {
     try {
       if (!AA && !ZZ) { return 0; }
-      if (AA && !ZZ) { return 1; }
-      if (!AA && ZZ) { return -1; }
+      if (AA && !ZZ) { return isNaN(parseInt(AA, 10)) ? 1 : -1; }
+      if (!AA && ZZ) { return isNaN(parseInt(ZZ, 10)) ? -1 : 1; }
       var AA_A = AA.split(".");
       var ZZ_Z = ZZ.split(".");
       var AA_a, ZZ_z;
