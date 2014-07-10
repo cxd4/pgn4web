@@ -279,12 +279,10 @@ sub find_gameIndex {
 
 sub eventRound {
   my ($thisEvent, $thisRound) = @_;
-  my $thisSortkey .= "$thisEvent - Round ";
-  if ($thisRound =~ /^\d{2}(\D|$)/) { $thisSortkey .= "0"; }
-  elsif ($thisRound =~ /^\d(\D|$)/) { $thisSortkey .= "00"; }
-  elsif ($thisRound =~ /^(\D|$)/) { $thisSortkey .= ":"; }
-  $thisSortkey .= $thisRound;
-  return $thisSortkey;
+  $thisRound =~ s/\b(\d)\b/00$1/g;
+  $thisRound =~ s/\b(\d\d)\b/0$1/g;
+  $thisRound =~ s/(^|\.)(?=[^\dr]|$)/$1r/g;
+  return "\"$thisEvent\" \"$thisRound\"";
 }
 
 sub cleanup_failed_save_game {
@@ -630,7 +628,7 @@ sub process_line {
     $autorelayEvent =~ s/^\s+|[\s-]+$//g;
     $autorelayEvent =~ s/\s+/ /g;
     if ($eventAutocorrectRegexp) { $autorelayEvent = event_autocorrect($autorelayEvent); }
-    if ($autorelayRound eq "") { $autorelayRound = "?"; }
+    if ($autorelayRound eq "") { $autorelayRound = "-"; }
     if ($roundAutocorrectRegexp) { $autorelayRound = round_autocorrect($autorelayRound); }
     declareRelayOnline();
   } elsif ($line =~ /^:(\d+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)/) {
@@ -1592,7 +1590,7 @@ sub process_master_command {
     if ($autorelayMode == 1) {
       $roundsList = " rounds(" . ($#currentRounds + 1) . ")=";
       if ($#currentRounds > -1) {
-        $roundsList .= "\"" . join("\", \"", (sort { lc($a) cmp lc($b) } @currentRounds)) . "\"";
+        $roundsList .= join(", ", (sort { lc($a) cmp lc($b) } @currentRounds)) . ";";
       }
     }
     my $memoryList = "";
