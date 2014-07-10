@@ -1949,7 +1949,7 @@ function checkLiveBroadcastStatus() {
     LiveBroadcastGamesRunning = lbgr;
     theTitle = LiveBroadcastEnded ? "live broadcast ended" : LiveBroadcastPaused ? "live broadcast paused" : lbgr + " live game" + (lbgr > 1 ? "s" : "") + " out of " + numberOfGames;
   }
-  theHTML = LiveBroadcastEnded ? "&dagger;" : LiveBroadcastPaused ? "+" : "=";
+  theHTML = LiveBroadcastEnded ? "#" : LiveBroadcastPaused ? "+" : "=";
   theHTML = (LiveBroadcastTicker % 4 === 0 ? theHTML : "&nbsp;") + (LiveBroadcastTicker % 2 === 1 ? theHTML : "&nbsp;") + (LiveBroadcastTicker % 4 === 2 ? theHTML : "&nbsp;");
   theHTML = LiveBroadcastGamesRunning + "<span style='display:inline-block; min-width:3em; text-align:center;'>" + theHTML + "</span>" + numberOfGames;
   theHTML = "<span onclick='" + (LiveBroadcastPaused ? "restartLiveBroadcast();" : "refreshPgnSource();") + " this.blur();'>" + theHTML + "</span>";

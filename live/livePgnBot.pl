@@ -614,7 +614,7 @@ sub process_line {
       $autorelayRound = $2;
       $autorelayEvent = $1 . " " . $3;
     } elsif ($autorelayEvent =~ /^(.*)\bLast\s+Game\b(.*)$/i) {
-      $autorelayRound = "?";
+      $autorelayRound = "#";
       $autorelayEvent = $1 . " " . $2;
     }
     if ($autorelayEvent =~ /(\b(Round\s+\d+|Last\s+Round)\b.*){2,}/i) {
@@ -624,12 +624,13 @@ sub process_line {
       $autorelayRound = $autorelayRound ne "" ? $2 . "." . $autorelayRound : $2;
       $autorelayEvent = $1 . " " . $3;
     } elsif ($autorelayEvent =~ /^(.*)\bLast\s+Round\b(.*)$/i) {
-      $autorelayRound = $autorelayRound ne "" ? "?." . $autorelayRound : "?";
+      $autorelayRound = $autorelayRound ne "" ? "#." . $autorelayRound : "#";
       $autorelayEvent = $1 . " " . $2;
     }
     $autorelayEvent =~ s/^\s+|[\s-]+$//g;
     $autorelayEvent =~ s/\s+/ /g;
     if ($eventAutocorrectRegexp) { $autorelayEvent = event_autocorrect($autorelayEvent); }
+    if ($autorelayRound eq "") { $autorelayRound = "?"; }
     if ($roundAutocorrectRegexp) { $autorelayRound = round_autocorrect($autorelayRound); }
     declareRelayOnline();
   } elsif ($line =~ /^:(\d+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)/) {
