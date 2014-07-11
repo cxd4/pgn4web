@@ -44,6 +44,7 @@
           " - initialHalfmove = start | end | random | comment | variation | a number (default start)" + "\n" +
           " - showPrevNext = true | false (default false)" + "\n" +
           " - showGamesList = true | false (default false)" + "\n" +
+          " - beautifyTags = true | false (default true)" + "\n" +
           " - help = true");
   }
 
@@ -81,6 +82,9 @@
   thisRegExp = /(&|\?)(showGamesList|sgl)=(true|t)(&|$)/i;
   var showGamesList = (window.location.search.match(thisRegExp) !== null);
 
+  thisRegExp = /(&|\?)(beautifyTags|bt)=(false|f)(&|$)/i;
+  var beautifyTags = (window.location.search.match(thisRegExp) === null);
+
   SetImagePath("images/merida/39");
   SetImageType("png");
   SetHighlightOption(true);
@@ -97,6 +101,7 @@
 
   function customShortcutKey_Shift_3() { toggleLastNext(); }
   function customShortcutKey_Shift_4() { toggleGamesList(); }
+  function customShortcutKey_Shift_5() { toggleBeautifyTags(); }
 
   // overwriting engine.js definitions
   function customShortcutKey_Shift_8() { showAnalysisBoard(true); }
@@ -154,20 +159,21 @@
     if (((theObj && theObj.innerHTML) || (theOther && theOther.innerHTML)) && (theThird && theThird.innerHTML)) { theThird.style.marginLeft = '1ex'; }
 
     var newTitle = (currentGame + 1) + '.';
-    newTitle += '\u00a0 ' + (gameWhite[currentGame] || '?');
-    newTitle += '\u00a0 ' + (gameBlack[currentGame] || '?');
-    newTitle += '\u00a0 ' + (gameResult[currentGame] || '?');
-    if (gameSite[currentGame]) { newTitle += '\u00a0 ' + gameSite[currentGame]; }
-    if (gameEvent[currentGame]) { newTitle += '\u00a0 ' + gameEvent[currentGame]; }
-    if (gameDate[currentGame]) { newTitle += '\u00a0 ' + gameDate[currentGame]; }
+    if ((theObj = document.getElementById('GameWhite')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
+    if ((theObj = document.getElementById('GameBlack')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
+    if ((theObj = document.getElementById('GameResult')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
+    if ((theObj = document.getElementById('GameSite')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
+    if ((theObj = document.getElementById('GameEvent')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
+    if ((theObj = document.getElementById('GameDate')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
     document.title = simpleHtmlentitiesDecode(newTitle);
+    if (theObj = document.getElementById('boardHeaderInfo')) { theObj.title = simpleHtmlentitiesDecode(newTitle.replace(/\u00a0 /g, "\n")); }
   }
 
   function fixObjInnerHTML(id) {
+    if (!beautifyTags) { return; }
     var theObj = document.getElementById(id);
     if (theObj) {
       theObj.innerHTML = theObj.innerHTML.replace(/\.?\?[.?]*/, "").replace(/,(\w)/g, ", $1");
-      theObj.title = theObj.title.replace(/:.*$/, "") + ": " + theObj.innerHTML;
     }
   }
 
@@ -246,6 +252,11 @@
     }
   }
 
+  function toggleBeautifyTags(bt) {
+    beautifyTags = (typeof(bt) == "undefined") ? !beautifyTags : bt;
+    Init(currentGame);
+  }
+
 </script>
 
 </head>
@@ -263,16 +274,18 @@
 </div>
 
 <div class="boardheaderDiv" id="boardHeader">
+<div id="boardHeaderInfo">
 <table cellspacing=0 cellpadding=0 border=0><tr>
-<td><div class="headerLine gameNum"><span id="GameNum" title="game number">1</span>.</div></td>
-<td><div class="headerLine gameECO"><span id="GameECO" title="ECO opening code"></span></div></td>
+<td><div class="headerLine gameNum"><span id="GameNum">1</span>.</div></td>
+<td><div class="headerLine gameECO"><span id="GameECO"></span></div></td>
 </tr></table>
 <div class="shortRowSpace">&nbsp;</div>
-<div class="headerLine"><a id="GameWhite" title="white player" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();"></a><span id="GameWhiteElo" title="white player's Elo"></span></div>
-<div class="headerLine"><a id="GameBlack" title="black player" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();"></a><span id="GameBlackElo" title="black player's Elo"></span></div>
+<div class="headerLine"><a id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();"></a><span id="GameWhiteElo"></span></div>
+<div class="headerLine"><a id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();"></a><span id="GameBlackElo"></span></div>
 <div class="shortRowSpace">&nbsp;</div>
-<div class="headerLine gameSiteEventDate"><span id="GameSite" title="site"></span><span id="GameEvent" title="event"></span><span id="GameDate" title="date"></span></div>
+<div class="headerLine gameSiteEventDate"><span id="GameSite"></span><span id="GameEvent"></span><span id="GameDate"></span></div>
 <div class="shortRowSpace">&nbsp;</div>
+</div>
 <div class="shortRowSpace">&nbsp;</div>
 <div id="GameBoard"></div>
 <div id="GameLastNext" style="display: none;">
@@ -297,8 +310,8 @@
 
 <div class="gametextresultDiv" id="GameTextResult">
 <div id="GameText"></div>
-<div class="gameAnnotator" id="GameAnnotator" title="annotator"></div>
-<div id="GameResult" title="result"></div>
+<div class="gameAnnotator" id="GameAnnotator"></div>
+<div id="GameResult"></div>
 </div>
 
 <a class="helpLink" title="pgn4web help" href="javascript:void(0);" onclick="displayHelp(); this.blur();">?</a>
