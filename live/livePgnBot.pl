@@ -1086,7 +1086,7 @@ sub memory_purge_event {
   if ($PGN_MEMORY ne "") {
     my $logged = 0;
     for (my $i=$#memory_games; $i>=0; $i--) {
-      if ($memory_games_sortkey[$i] =~ /^$thisEvent( - Round .+)?$/) {
+      if ($memory_games_sortkey[$i] =~ /^"$thisEvent" ".*"$/) {
         @memory_games = @memory_games[0..($i-1), ($i+1)..$#memory_games];
         @memory_games_sortkey = @memory_games_sortkey[0..($i-1), ($i+1)..$#memory_games_sortkey];
         if ($logged == 0) {
@@ -1214,10 +1214,14 @@ sub memory_load {
       foreach (@candidate_memory_games) {
         if (($_ =~ /\[Result "(1-0|1\/2-1\/2|0-1)"\]/i) && (($memorySelectFilter eq "") || ($_ =~ /$memorySelectFilter/is))) {
           $newPgn = $_;
-          unshift(@memory_games, $newPgn);
           if ($newPgn =~ /\[Event "([^"]+)"\]/i) { $newEvent = $1; } else { $newEvent = ""; }
           if ($newPgn =~ /\[Round "([^"]+)"\]/i) { $newRound = $1; } else { $newRound = ""; }
-          unshift(@memory_games_sortkey, eventRound($newEvent, $newRound));
+          if ($newEvent ne "") {
+            unshift(@memory_games, $newPgn);
+            unshift(@memory_games_sortkey, eventRound($newEvent, $newRound));
+          } else {
+            log_terminal("warning: memory load: skipped game with empty event");
+          }
         }
       }
     }
@@ -1267,7 +1271,7 @@ sub log_rounds {
       $roundsStartCount++;
       if ($memoryAutopurgeEvent > 0) {
         $thisEvent = $_;
-        $thisEvent =~ s/ - Round .+$//;
+        $thisEvent =~ s/^"(.*)" ".*"$/$1/;
         if (($memoryAutopurgeEvent > 1) || (headerForFilter($thisEvent, "", "", "") !~ /$prioritizeFilter/i)) {
           memory_purge_event($thisEvent);
           next;
@@ -1518,6 +1522,7 @@ sub process_master_command {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
         if ($parameters eq "\"\"") { $parameters = ""; }
+        $newGame_event =~ s/"/'/g;
         $newGame_event = $parameters;
       }
       tell_operator("event=$newGame_event");
@@ -2033,6 +2038,7 @@ sub process_master_command {
       if ($parameters ne "") {
         if ($parameters eq "\"\"") { $parameters = ""; }
         $newGame_round = $parameters;
+        $newGame_round =~ s/"/'/g;
       }
       tell_operator("round=$newGame_round");
     } else {
