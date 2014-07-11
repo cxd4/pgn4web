@@ -127,7 +127,7 @@
   }
 
   function customFunctionOnPgnGameLoad() {
-    var theObj, theOther, theThird, theMatch;
+    var theObj, theOther, theThird, theMatch, newTitle, newTitleBlock;
     if ((theObj = document.getElementById('GameEvent')) && (theMatch = gameRound[currentGame].match(/^\d+/))) { theObj.innerHTML += ' (' + theMatch[0] + ')'; }
     fixObjInnerHTML('GameEvent');
     fixObjInnerHTML('GameSite');
@@ -158,7 +158,7 @@
     theThird = document.getElementById('GameDate');
     if (((theObj && theObj.innerHTML) || (theOther && theOther.innerHTML)) && (theThird && theThird.innerHTML)) { theThird.style.marginLeft = '1ex'; }
 
-    var newTitle = (currentGame + 1) + '.';
+    newTitle = (currentGame + 1) + '.';
     if ((theObj = document.getElementById('GameWhite')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
     if ((theObj = document.getElementById('GameBlack')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
     if ((theObj = document.getElementById('GameResult')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
@@ -166,7 +166,25 @@
     if ((theObj = document.getElementById('GameEvent')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
     if ((theObj = document.getElementById('GameDate')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
     document.title = simpleHtmlentitiesDecode(newTitle);
-    if (theObj = document.getElementById('boardHeaderInfo')) { theObj.title = simpleHtmlentitiesDecode(newTitle.replace(/\u00a0 /g, "\n")); }
+
+    newTitle = (currentGame + 1) + '.';
+    newTitleBlock = '';
+    if ((theObj = document.getElementById('GameWhite')) && (theObj.innerHTML)) { newTitleBlock += theObj.innerHTML; }
+    if ((theObj = document.getElementById('GameWhiteElo')) && (theObj.innerHTML)) { newTitleBlock += (newTitleBlock ? '  ' : '') + theObj.innerHTML; }
+    if (newTitleBlock) { newTitle += '\n' + newTitleBlock; }
+    newTitleBlock = '';
+    if ((theObj = document.getElementById('GameBlack')) && (theObj.innerHTML)) { newTitleBlock += theObj.innerHTML; }
+    if ((theObj = document.getElementById('GameBlackElo')) && (theObj.innerHTML)) { newTitleBlock += (newTitleBlock ? '  ' : '') + theObj.innerHTML; }
+    if (newTitleBlock) { newTitle += '\n' + newTitleBlock; }
+    newTitleBlock = '';
+    if ((theObj = document.getElementById('GameSite')) && (theObj.innerHTML)) { newTitleBlock += theObj.innerHTML; }
+    if ((theObj = document.getElementById('GameEvent')) && (theObj.innerHTML)) { newTitleBlock += theObj.innerHTML; }
+    if ((theObj = document.getElementById('GameDate')) && (theObj.innerHTML)) { newTitleBlock += (newTitleBlock ? '  ' : '') + theObj.innerHTML; }
+    if (newTitleBlock) { newTitle += '\n' + newTitleBlock; }
+    newTitleBlock = '';
+    if ((theObj = document.getElementById('GameECO')) && (theObj.innerHTML)) { newTitleBlock += theObj.innerHTML; }
+    if (newTitleBlock) { newTitle += '\n' + newTitleBlock; }
+    if (theObj = document.getElementById('boardHeaderInfo')) { theObj.title = simpleHtmlentitiesDecode(newTitle); }
   }
 
   function fixObjInnerHTML(id) {
