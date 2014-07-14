@@ -585,7 +585,7 @@ a.variation {
       gameBlackElo[gg] = customPgnHeaderTag("BlackElo", null, gg);
       gameMatch[gg] = crc32(gameWhiteTeam[gg]) + crc32(gameBlackTeam[gg]);
       gameBoard[gg] = customPgnHeaderTag("Board", null, gg);
-      var thisCrc = (typeof(pgnHeader[gg]) == "string") ? (crc32(pgnHeader[gg].replace(/(^\s*|\s*$)/g, "")) % 65535) + 65535 : 0;
+      var thisCrc = (typeof(pgnHeader[gg]) == "string") ? (crc32((gameEvent[gg] + "," + gameSite[gg] + "," + gameRound[gg] + "," + gameWhite[gg] + "," + gameBlack[gg] + ";").replace(/(^\s*|\s*$)/g, "")) % 65535) + 65535 : 0;
       newGameLengthFromCrc[thisCrc] = LiveBroadcastDemo ? gameDemoMaxPly[gg] : pgnGame[gg].replace(/(^\s*|\s*$)/g, "").length;
       gameNewMoves[gg] = ((newGameLengthFromCrc[thisCrc] !== gameLengthFromCrc[thisCrc]) && (!LiveBroadcastEnded));
     }
