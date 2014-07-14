@@ -893,6 +893,7 @@ sub save_pgnGame {
     if ((defined $GAMES_eco[$games_num[$i]]) && ($GAMES_eco[$games_num[$i]] ne "")) {
       $thisPgn .= "[ECO \"" . $GAMES_eco[$games_num[$i]] . "\"]\n";
     }
+    $thisPgn .= "[LastModified \"" . strftime("%Y-%m-%d %H:%M:%S", o_gmtime()) . "\"]\n";
     $thisPgn .= $games_movesText[$i];
     $thisPgn .= "\n$GAMES_timeLeft[$games_num[$i]]";
     if ($games_result[$i] =~ /^[012\/\*-]+$/) {
@@ -1151,6 +1152,25 @@ sub memory_purge_game {
   return $purgedGame;
 }
 
+sub memory_correct_result {
+  my ($searchEvent, $searchRound, $searchWhite, $searchBlack, $searchResult, $replacementResult) = @_;
+  my $correctedResult = 0;
+
+  if ($PGN_MEMORY ne "") {
+    my $gamePattern = '\[Event "' . $searchEvent . '"\].*\[Round "' . $searchRound . '"\].*\[White "' . $searchWhite . '"\].*\[Black "' . $searchBlack . '"\]';
+    my $pattern = '\[Result "' . $searchResult . '"\]';
+    my $replacement = '[Result "' . $replacementResult . '"]';
+    for (my $i=$#memory_games; $i>=0; $i--) {
+      if (($memory_games[$i] =~ /$gamePattern/s) && ($memory_games[$i] =~ /$pattern/)) {
+        $memory_games[$i] =~ s/$pattern/$replacement/;
+        $correctedResult++;
+      }
+    }
+  }
+  if ($correctedResult > 0) { log_terminal('debug: corrected memory result: "' . $searchEvent . '" "' . $searchRound . '" "' . $searchWhite . '" "' . $searchBlack . '" "' . $searchResult . '" "' . $replacementResult . '"'); }
+  return $correctedResult;
+}
+
 sub memory_rename_event {
   my ($searchEvent, $replacementEvent) = @_;
   my $renamedEvent = 0;
@@ -1185,7 +1205,7 @@ sub memory_rename_round {
     my $thisEvent;
     my $thisRound;
     for (my $i=$#memory_games; $i>=0; $i--) {
-      if (($memory_games[$i] =~ /$pattern/) && ($memory_games[$i] =~ /$eventPattern/)) {
+      if (($memory_games[$i] =~ /$eventPattern/) && ($memory_games[$i] =~ /$pattern/)) {
         $memory_games[$i] =~ s/$pattern/$replacement/;
         if ($memory_games[$i] =~ /\[Event "([^"]+)"\]/i) { $thisEvent = $1; } else { $thisEvent = ""; }
         if ($memory_games[$i] =~ /\[Round "([^"]+)"\]/i) { $thisRound = $1; } else { $thisRound = ""; }
@@ -1205,25 +1225,33 @@ sub memory_load {
     my @candidate_memory_games = ();
     @memory_games = ();
     @memory_games_sortkey = ();
-    my $newPgn;
     my $newEvent;
-    my $newRound;
-    if (open(my $thisFile, "<", $PGN_MEMORY)) {
+    if (open(my $thisFile, "<", "$PGN_MEMORY")) {
       my @lines = <$thisFile>;
       @candidate_memory_games = (join("", @lines) =~ /((?:\[\s*\w+\s*"[^"]*"\s*\]\s*)+(?:[^[]|\[%)+)/g);
       foreach (@candidate_memory_games) {
         if (($_ =~ /\[Result "(1-0|1\/2-1\/2|0-1)"\]/i) && (($memorySelectFilter eq "") || ($_ =~ /$memorySelectFilter/is))) {
-          $newPgn = $_;
-          if ($newPgn =~ /\[Event "([^"]+)"\]/i) { $newEvent = $1; } else { $newEvent = ""; }
-          if ($newPgn =~ /\[Round "([^"]+)"\]/i) { $newRound = $1; } else { $newRound = ""; }
+          if ($_ =~ /\[Event "([^"]+)"\]/i) { $newEvent = $1; } else { $newEvent = ""; }
           if ($newEvent ne "") {
-            unshift(@memory_games, $newPgn);
-            unshift(@memory_games_sortkey, eventRound($newEvent, $newRound));
+            unshift(@memory_games, $_);
           } else {
             log_terminal("warning: memory load: skipped game with empty event");
           }
         }
       }
+    }
+    @memory_games = sort {
+      my $aLastModified;
+      my $bLastModified;
+      if ($a =~ /\[LastModified "([^"]+)"\]/i) { $aLastModified = $1; } else { $aLastModified = ""; }
+      if ($b =~ /\[LastModified "([^"]+)"\]/i) { $bLastModified = $1; } else { $bLastModified = ""; }
+      return $bLastModified cmp $aLastModified;
+    } @memory_games;
+    my $newRound;
+    foreach (@memory_games) {
+      if ($_ =~ /\[Event "([^"]+)"\]/i) { $newEvent = $1; } else { $newEvent = ""; }
+      if ($_ =~ /\[Round "([^"]+)"\]/i) { $newRound = $1; } else { $newRound = ""; }
+      push(@memory_games_sortkey, eventRound($newEvent, $newRound));
     }
     for (my $g=0; $g<=$#games_num; $g++) {
       memory_purge_game($GAMES_event[$games_num[$g]], $GAMES_round[$games_num[$g]], $games_white[$g], $games_black[$g]);
@@ -1317,6 +1345,7 @@ add_master_command ("livemax", "max [number] (to get/set the maximum number of g
 add_master_command ("livepurgegames", "livepurgegames [game number list, such as: 12 34 56 ..] (to purge given past games from live PGN data)");
 add_master_command ("log", "log [string] (to print a string on the log terminal)");
 add_master_command ("memoryautopurgeevent", "memoryautopurgeevent [0|1|2] (to automatically purge new live events from the PGN memory data)");
+add_master_command ("memorycorrectresult", "memorycorrectresult [\"event\" \"round\" \"white\" \"black\" \"search\" \"replacement\"] (to correct a result in the PGN memory data)");
 add_master_command ("memorydate", "memorydate [strftime_string|\"\"] (to get/set the PGN header tag date for the PGN memory data)");
 add_master_command ("memoryfile", "memoryfile [filename.pgn] (to get/set the filename for the PGN memory data)");
 add_master_command ("memoryload", "memoryload [1] (to load PGN memroy data from memory file)");
@@ -1428,6 +1457,7 @@ sub process_master_command {
       if ($parameters ne "") {
         eval {
           "test" =~ /$parameters/;
+          if ($@) { pgn4webError(); }
           if ($parameters eq "\"\"") { $parameters = ""; }
           $archiveSelectFilter = $parameters;
           log_terminal("info: archiveselect=$archiveSelectFilter");
@@ -1445,6 +1475,7 @@ sub process_master_command {
       if ($parameters ne "") {
         eval {
           "test" =~ /$parameters/;
+          if ($@) { pgn4webError(); }
           if ($parameters eq "\"\"") { $parameters = ""; }
           if ($parameters ne $autoPrioritize) {
             $short_relay_period = 1;
@@ -1649,6 +1680,7 @@ sub process_master_command {
       if ($parameters ne "") {
         eval {
           "test" =~ /$parameters/;
+          if ($@) { pgn4webError(); }
           if ($parameters eq "\"\"") { $parameters = ""; }
           $ignoreFilter = $parameters;
           if ($relayMode == 1) {
@@ -1775,6 +1807,41 @@ sub process_master_command {
     } else {
       tell_operator("error: invalid $command parameter");
     }
+  } elsif ($command eq "memorycorrectresult") {
+    if ($parameters =~ /^\s*"(.+?)"\s*"(.+?)"\s*"(.+?)"\s*"(.+?)"\s*"(.+?)"\s*"(.+?)"\s*$/) {
+      my $searchEvent = $1;
+      my $searchRound = $2;
+      my $searchWhite = $3;
+      my $searchBlack = $4;
+      my $searchResult = $5;
+      my $replacementResult = $6;
+      eval {
+        "test" =~ /$searchEvent/;
+        if ($@) { pgn4webError(); }
+        "test" =~ /$searchRound/;
+        if ($@) { pgn4webError(); }
+        "test" =~ /$searchWhite/;
+        if ($@) { pgn4webError(); }
+        "test" =~ /$searchBlack/;
+        if ($@) { pgn4webError(); }
+        "test" =~ /$searchResult/;
+        if ($@) { pgn4webError(); }
+        if (memory_correct_result($searchEvent, $searchRound, $searchWhite, $searchBlack, $searchResult, $replacementResult) > 0) {
+          $lastPgn = $lastPgnForce;
+          refresh_pgn();
+          tell_operator("corrected result");
+        } else {
+          tell_operator("no memory result found for correct");
+        }
+        1;
+      } or do {
+        tell_operator("error: invalid regular expression");
+      };
+    } elsif ($parameters eq "") {
+      tell_operator(detect_command_helptext($command));
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
   } elsif ($command eq "memoryfile") {
     if ($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) { # for portability only a subset of filename chars is allowed
       if ($parameters ne "") {
@@ -1870,6 +1937,7 @@ sub process_master_command {
       my $replacementEvent = $2;
       eval {
         "test" =~ /$searchEvent/;
+        if ($@) { pgn4webError(); }
         if (memory_rename_event($searchEvent, $replacementEvent) > 0) {
           $lastPgn = $lastPgnForce;
           refresh_pgn();
@@ -1893,7 +1961,9 @@ sub process_master_command {
       my $replacementRound = $3;
       eval {
         "test" =~ /$searchEvent/;
+        if ($@) { pgn4webError(); }
         "test" =~ /$searchRound/;
+        if ($@) { pgn4webError(); }
         if (memory_rename_round($searchEvent, $searchRound, $replacementRound) > 0) {
           $lastPgn = $lastPgnForce;
           refresh_pgn();
@@ -1915,6 +1985,7 @@ sub process_master_command {
       if ($parameters ne "") {
         eval {
           "test" =~ /$parameters/;
+          if ($@) { pgn4webError(); }
           if ($parameters eq "\"\"") { $parameters = ""; }
           $memorySelectFilter = $parameters;
           log_terminal("info: memoryselect=$memorySelectFilter");
@@ -1969,6 +2040,7 @@ sub process_master_command {
       if ($parameters ne "") {
         eval {
           "test" =~ /$parameters/;
+          if ($@) { pgn4webError(); }
           if ($parameters eq "\"\"") { $parameters = ""; }
           $prioritizeFilter = $parameters;
           if ($relayMode == 1) {
