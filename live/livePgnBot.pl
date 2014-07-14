@@ -66,9 +66,21 @@ sub setup_time {
 our $starupTime = time();
 our $timeOffset = 0;
 
+sub o_time() {
+  my ($t) = @_;
+  return ($t || time()) + $timeOffset;
+}
+
 sub o_gmtime {
   my ($t) = @_;
   return gmtime(($t || time()) + $timeOffset);
+}
+
+sub simpleStringCrc {
+  my ($s) = @_;
+  my $t = 0;
+  foreach (unpack("W*", $s)) { $t += $_ }
+  return $t % 1000;
 }
 
 our $roundsStartCount = 0;
@@ -119,6 +131,7 @@ our @GAMES_date = ();
 our @GAMES_round = ();
 our @GAMES_eco = ();
 our @GAMES_sortkey = ();
+our @GAMES_forgetTag = ();
 our @GAMES_timeLeft = ();
 
 our $newGame_num = -1;
@@ -200,6 +213,7 @@ sub reset_live {
   @GAMES_round = ();
   @GAMES_eco = ();
   @GAMES_sortkey = ();
+  @GAMES_forgetTag = ();
   @GAMES_timeLeft = ();
   @GAMES_autorelayRunning = ();
   @currentRounds = ();
@@ -294,6 +308,7 @@ sub cleanup_failed_save_game {
     delete $GAMES_round[$gameNum];
     delete $GAMES_eco[$gameNum];
     delete $GAMES_sortkey[$gameNum];
+    delete $GAMES_forgetTag[$gameNum];
     delete $GAMES_timeLeft[$gameNum];
   }
 }
@@ -343,6 +358,7 @@ sub save_game {
       $GAMES_round[$newGame_num] = $newGame_round;
       $GAMES_eco[$newGame_num] = "";
       $GAMES_sortkey[$newGame_num] = eventRound($newGame_event, $newGame_round);
+      $GAMES_forgetTag[$newGame_num] = sprintf("%012d%03d", o_time(),  simpleStringCrc($GAMES_sortkey[$newGame_num]));
     }
     $gamesStartCount++;
     log_terminal("debug: game new $newGame_num: $thisHeaderForFilter");
@@ -454,6 +470,7 @@ sub remove_game {
   delete $GAMES_round[$thisGameNum];
   delete $GAMES_eco[$thisGameNum];
   delete $GAMES_sortkey[$thisGameNum];
+  delete $GAMES_forgetTag[$thisGameNum];
   delete $GAMES_timeLeft[$thisGameNum];
   log_terminal("debug: game out $thisGameNum");
   refresh_pgn();
@@ -662,6 +679,7 @@ sub process_line {
         $GAMES_round[$thisGameNum] = $autorelayRound;
         $GAMES_eco[$thisGameNum] = $thisGameEco;
         $GAMES_sortkey[$thisGameNum] = eventRound($autorelayEvent, $autorelayRound);
+        $GAMES_forgetTag[$thisGameNum] = sprintf("%012d%03d", o_time(),  simpleStringCrc($GAMES_sortkey[$thisGameNum]));
         $GAMES_autorelayRunning[$thisGameNum] = 1;
         if (($autoPrioritize ne "") && ($thisHeaderForFilter =~ /$autoPrioritize/i)) {
           (my $autorelayEventFilter = $autorelayEvent) =~ s/[^\w\s-]/./g;
@@ -731,13 +749,14 @@ sub process_line {
       our $gameType = $1;
       if (!($gameType =~ /(standard|blitz|lightning|^Unrated untimed match,$)/)) {
         log_terminal("warning: unsupported game $newGame_num: $gameType");
-        delete $GAMES_timeLeft[$newGame_num];
         delete $GAMES_event[$newGame_num];
         delete $GAMES_site[$newGame_num];
         delete $GAMES_date[$newGame_num];
         delete $GAMES_round[$newGame_num];
         delete $GAMES_eco[$newGame_num];
         delete $GAMES_sortkey[$newGame_num];
+        delete $GAMES_forgetTag[$newGame_num];
+        delete $GAMES_timeLeft[$newGame_num];
         cmd_run("unobserve $newGame_num");
         tell_operator_and_log_terminal("debug: unsupported game $newGame_num: $gameType");
         reset_newGame();
@@ -839,7 +858,7 @@ sub save_pgnGame {
   my ($thisPgn, $thisResult, $thisWhite, $thisBlack, $thisWhiteTitle, $thisBlackTitle);
 
   $thisPgn = "";
-  if ((defined $games_num[$i]) && (defined $GAMES_event[$games_num[$i]]) && (defined $GAMES_site[$games_num[$i]]) && (defined $GAMES_date[$games_num[$i]]) && (defined $GAMES_round[$games_num[$i]]) && (defined $GAMES_eco[$games_num[$i]]) && (defined $GAMES_timeLeft[$games_num[$i]])) {
+  if ((defined $games_num[$i]) && (defined $GAMES_event[$games_num[$i]]) && (defined $GAMES_site[$games_num[$i]]) && (defined $GAMES_date[$games_num[$i]]) && (defined $GAMES_round[$games_num[$i]]) && (defined $GAMES_eco[$games_num[$i]]) && (defined $GAMES_forgetTag[$games_num[$i]]) && (defined $GAMES_timeLeft[$games_num[$i]])) {
 
     if (($followMode == 1) && ($i == 0)) {
       $thisResult = "*";
@@ -893,7 +912,7 @@ sub save_pgnGame {
     if ((defined $GAMES_eco[$games_num[$i]]) && ($GAMES_eco[$games_num[$i]] ne "")) {
       $thisPgn .= "[ECO \"" . $GAMES_eco[$games_num[$i]] . "\"]\n";
     }
-    $thisPgn .= "[LastModified \"" . strftime("%Y-%m-%d %H:%M:%S", o_gmtime()) . "\"]\n";
+    $thisPgn .= "[LivePgnBotTag \"" . $GAMES_forgetTag[$games_num[$i]] . "\"]\n";
     $thisPgn .= $games_movesText[$i];
     $thisPgn .= "\n$GAMES_timeLeft[$games_num[$i]]";
     if ($games_result[$i] =~ /^[012\/\*-]+$/) {
@@ -1241,11 +1260,9 @@ sub memory_load {
       }
     }
     @memory_games = sort {
-      my $aLastModified;
-      my $bLastModified;
-      if ($a =~ /\[LastModified "([^"]+)"\]/i) { $aLastModified = $1; } else { $aLastModified = ""; }
-      if ($b =~ /\[LastModified "([^"]+)"\]/i) { $bLastModified = $1; } else { $bLastModified = ""; }
-      return $bLastModified cmp $aLastModified;
+      my $aForgetTag = ($a =~ /\[LivePgnBotTag "([^"]+)"\]/i) ? $1 : "";
+      my $bForgetTag = ($b =~ /\[LivePgnBotTag "([^"]+)"\]/i) ? $1 : "";
+      return $bForgetTag cmp $aForgetTag;
     } @memory_games;
     my $newRound;
     foreach (@memory_games) {
