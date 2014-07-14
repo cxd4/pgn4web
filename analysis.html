@@ -108,14 +108,16 @@
   function customShortcutKey_Shift_9() { showAnalysisBoard(false); }
   function customShortcutKey_Shift_0() { showAnalysisBoard(); }
 
+  clearShortcutSquares("E", "7");
   if (!pgn4web_engineWindowDisableAnalysisBoard) {
     boardShortcut("E8", "open/update analysis board", function(t,e){ showAnalysisBoard(e.shiftKey); });
     boardShortcut("F8", "close/pause analysis board", function(t,e){ if (!e.shiftKey) { hideAnalysisBoard(); } });
   }
-
   boardShortcut("G6", "toggle last/next moves information", function(t,e){ toggleLastNext(); });
   boardShortcut("F5", "toggle games list", function(t,e){ toggleGamesList(); });
   boardShortcut("H5", "scroll moves text to current move", function(t,e){ autoScrollToCurrentMoveIfEnabled(); });
+
+  function FlipBoard() {}
 
   var firstCustomFunctionOnPgnTextLoad = true;
   function customFunctionOnPgnTextLoad() {
