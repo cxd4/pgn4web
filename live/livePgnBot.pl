@@ -1350,7 +1350,7 @@ if ($TEST_FLAG) { add_master_command ("evaluate", "evaluate [string] (to evaluat
 add_master_command ("event", "event [string|\"\"] (to get/set the PGN header tag event)");
 add_master_command ("eventautocorrect", "eventautocorrect [/regexp/eval/|\"\"] (to get/set the regexp and the evalexp returning a string that correct event tags during autorelay)");
 add_master_command ("follow", "follow [0|handle|/s|/b|/l] (to follow the user with given handle, /s for the best standard game, /b for the best blitz game, /l for the best lightning game, 0 to disable follow mode)");
-add_master_command ("games", "games (to get list of observed games)");
+add_master_command ("games", "games (to get games list)");
 add_master_command ("heartbeat", "heartbeat [frequency offset] (to get/set the timing of heartbeat log messages, in hours)");
 add_master_command ("help", "help [command] (to get commands help)");
 add_master_command ("history", "history (to get history info)");
@@ -1365,6 +1365,7 @@ add_master_command ("memoryautopurgeevent", "memoryautopurgeevent [0|1|2] (to au
 add_master_command ("memorycorrectresult", "memorycorrectresult [\"event\" \"round\" \"white\" \"black\" \"search\" \"replacement\"] (to correct a result in the PGN memory data)");
 add_master_command ("memorydate", "memorydate [strftime_string|\"\"] (to get/set the PGN header tag date for the PGN memory data)");
 add_master_command ("memoryfile", "memoryfile [filename.pgn] (to get/set the filename for the PGN memory data)");
+add_master_command ("memorygames", "memorygames (to get memory games list)");
 add_master_command ("memoryload", "memoryload [1] (to load PGN memroy data from memory file)");
 add_master_command ("memorymax", "memorymax [number] (to get/set the maximum number of games for the PGN memory data)");
 add_master_command ("memorypurgegame", "memorypurgegame [\"event\" \"round\" \"white\" \"black\"] (to purge a game from the PGN memory data)");
@@ -1885,6 +1886,15 @@ sub process_master_command {
     } else {
       tell_operator("error: invalid $command parameter");
     }
+  } elsif ($command eq "memorygames") {
+    my @memoryList = @memory_games;
+    my $memoryListRegexp = '\[Event "([^"]*)"\].*\[Round "([^"]*)"\].*\[White "([^"]*)"\].*\[Black "([^"]*)"\].*\[Result "([^"]*)"\].*';
+    foreach (@memoryList) {
+      if ($_ =~ /$memoryListRegexp/s) {
+        $_ =~ s/$memoryListRegexp/"$1" "$2" "$3" "$4" "$5"/s;
+      }
+    }
+    tell_operator("memorygames(" . ($#memory_games + 1) . "/$memoryMaxGamesNum)=" . join(", ", @memoryList) . ";");
   } elsif ($command eq "memoryload") {
     if ($parameters eq "1") {
       memory_load();
