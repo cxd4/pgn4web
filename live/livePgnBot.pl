@@ -1365,7 +1365,7 @@ add_master_command ("memoryautopurgeevent", "memoryautopurgeevent [0|1|2] (to au
 add_master_command ("memorycorrectresult", "memorycorrectresult [\"event\" \"round\" \"white\" \"black\" \"search\" \"replacement\"] (to correct a result in the PGN memory data)");
 add_master_command ("memorydate", "memorydate [strftime_string|\"\"] (to get/set the PGN header tag date for the PGN memory data)");
 add_master_command ("memoryfile", "memoryfile [filename.pgn] (to get/set the filename for the PGN memory data)");
-add_master_command ("memorygames", "memorygames (to get memory games list)");
+add_master_command ("memorylist", "memorylist [events|rounds|games] (to get memory events/rounds/games lists)");
 add_master_command ("memoryload", "memoryload [1] (to load PGN memroy data from memory file)");
 add_master_command ("memorymax", "memorymax [number] (to get/set the maximum number of games for the PGN memory data)");
 add_master_command ("memorypurgegame", "memorypurgegame [\"event\" \"round\" \"white\" \"black\"] (to purge a game from the PGN memory data)");
@@ -1886,15 +1886,37 @@ sub process_master_command {
     } else {
       tell_operator("error: invalid $command parameter");
     }
-  } elsif ($command eq "memorygames") {
-    my @memoryList = @memory_games;
-    my $memoryListRegexp = '\[Event "([^"]*)"\].*\[Round "([^"]*)"\].*\[White "([^"]*)"\].*\[Black "([^"]*)"\].*\[Result "([^"]*)"\].*';
-    foreach (@memoryList) {
-      if ($_ =~ /$memoryListRegexp/s) {
-        $_ =~ s/$memoryListRegexp/"$1" "$2" "$3" "$4" "$5"/s;
+  } elsif ($command eq "memorylist") {
+    if ($parameters =~ /^(events|rounds|games)$/) {
+      my $memoryListRegexp;
+      my $memoryListReplacement;
+      if ($parameters eq "events") {
+        $memoryListRegexp = '\[Event "([^"]*)"\].*';
+        $memoryListReplacement = '"\"$1\""';
+      } elsif ($parameters eq "rounds") {
+        $memoryListRegexp = '\[Event "([^"]*)"\].*\[Round "([^"]*)"\].*';
+        $memoryListReplacement = '"\"$1\" \"$2\""';
+      } elsif ($parameters eq "games") {
+        $memoryListRegexp = '\[Event "([^"]*)"\].*\[Round "([^"]*)"\].*\[White "([^"]*)"\].*\[Black "([^"]*)"\].*\[Result "([^"]*)"\].*';
+        $memoryListReplacement = '"\"$1\" \"$2\" \"$3\" \"$4\" \"$5\""';
       }
+      my @memoryList = @memory_games;
+      foreach (@memoryList) {
+        if ($_ =~ /$memoryListRegexp/s) {
+          $_ =~ s/$memoryListRegexp/$memoryListReplacement/ees;
+        }
+      }
+      for (my $ii = $#memoryList; $ii > 0; $ii--) {
+        if ($memoryList[$ii] eq $memoryList[$ii - 1]) {
+          @memoryList = @memoryList[0..($ii-1), ($ii+1)..$#memoryList];
+        }
+      }
+      tell_operator("memorylist: $parameters(" . ($#memory_games + 1) . "/$memoryMaxGamesNum)=" . ($#memoryList >= 0 ? join(", ", @memoryList) . ";" : ""));
+    } elsif ($parameters eq "") {
+      tell_operator(detect_command_helptext($command));
+    } else {
+      tell_operator("error: invalid $command parameter");
     }
-    tell_operator("memorygames(" . ($#memory_games + 1) . "/$memoryMaxGamesNum)=" . join(", ", @memoryList) . ";");
   } elsif ($command eq "memoryload") {
     if ($parameters eq "1") {
       memory_load();
