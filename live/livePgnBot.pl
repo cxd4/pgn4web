@@ -1273,9 +1273,9 @@ sub memory_load {
     for (my $g=0; $g<=$#games_num; $g++) {
       memory_purge_game($GAMES_event[$games_num[$g]], $GAMES_round[$games_num[$g]], $games_white[$g], $games_black[$g]);
     }
-    if ($#memory_games > int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum - 1)) {
-      @memory_games = @memory_games[0..int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum - 1)];
-      @memory_games_sortkey = @memory_games_sortkey[0..int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum - 1)];
+    if (($#memory_games + 1) > int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum)) {
+      @memory_games = @memory_games[0..(int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum) - 1)];
+      @memory_games_sortkey = @memory_games_sortkey[0..(int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum) - 1)];
     }
     if ($autorelayMode == 1) {
       my @newSortkey = ();
@@ -1649,7 +1649,7 @@ sub process_master_command {
     }
     my $memoryList = "";
     if ($PGN_MEMORY ne "") {
-      $memoryList = " memory(" . ($#memory_games + 1) . "/$memoryMaxGamesNum)";
+      $memoryList = " memory(" . ($#memory_games + 1) . "/$memoryMaxGamesNum/" . int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum) . ")";
     }
     tell_operator("games(" . ($#games_num + 1) . "/$maxGamesNum)=" . gameList() . $roundsList . " placeholder($placeholderPgnNum)" . $memoryList);
   } elsif ($command eq "heartbeat") {
@@ -1887,7 +1887,11 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "memorylist") {
-    if ($parameters =~ /^(events|rounds|games)$/) {
+    if ($parameters =~ /^(event|round|game)s?$/) {
+      $parameters = $1 . "s";
+      if ($PGN_MEMORY eq "") {
+        log_terminal("warning: PGN memory data disabled");
+      }
       my $memoryListRegexp;
       my $memoryListReplacement;
       if ($parameters eq "events") {
@@ -1911,7 +1915,7 @@ sub process_master_command {
           @memoryList = @memoryList[0..($ii-1), ($ii+1)..$#memoryList];
         }
       }
-      tell_operator("memorylist: $parameters(" . ($#memory_games + 1) . "/$memoryMaxGamesNum)=" . ($#memoryList >= 0 ? join(", ", @memoryList) . ";" : ""));
+      tell_operator("memorylist: $parameters(" . ($#memoryList + 1) . "/" . ($#memory_games + 1) . "/$memoryMaxGamesNum/" . int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum) .")=" . ($#memoryList >= 0 ? join(", ", @memoryList) . ";" : ""));
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
     } else {
@@ -1929,9 +1933,9 @@ sub process_master_command {
     if ($parameters =~ /^([1-9]\d*)?$/) {
       if ($parameters ne "") {
         $memoryMaxGamesNum = $parameters;
-        if ($#memory_games > int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum - 1)) {
-          @memory_games = @memory_games[0..int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum - 1)];
-          @memory_games_sortkey = @memory_games_sortkey[0..int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum - 1)];
+        if (($#memory_games + 1) > int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum)) {
+          @memory_games = @memory_games[0..(int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum) - 1)];
+          @memory_games_sortkey = @memory_games_sortkey[0..(int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum) - 1)];
         }
       }
       tell_operator("memorymax=$memoryMaxGamesNum");
