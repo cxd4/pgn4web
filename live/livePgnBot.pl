@@ -1350,7 +1350,7 @@ if ($TEST_FLAG) { add_master_command ("evaluate", "evaluate [string] (to evaluat
 add_master_command ("event", "event [string|\"\"] (to get/set the PGN header tag event)");
 add_master_command ("eventautocorrect", "eventautocorrect [/regexp/eval/|\"\"] (to get/set the regexp and the evalexp returning a string that correct event tags during autorelay)");
 add_master_command ("follow", "follow [0|handle|/s|/b|/l] (to follow the user with given handle, /s for the best standard game, /b for the best blitz game, /l for the best lightning game, 0 to disable follow mode)");
-add_master_command ("games", "games (to get games list)");
+add_master_command ("games", "games (to get games summary info)");
 add_master_command ("heartbeat", "heartbeat [frequency offset] (to get/set the timing of heartbeat log messages, in hours)");
 add_master_command ("help", "help [command] (to get commands help)");
 add_master_command ("history", "history (to get history info)");
@@ -1358,6 +1358,7 @@ add_master_command ("ics", "ics [server command] (to run a custom command on the
 add_master_command ("ignore", "ignore [regexp|\"\"] (to get/set the regular expression to ignore events/players from the PGN header during autorelay; has precedence over prioritize; use ^(?:(?!regexp).)+\$ for negative lookup)");
 add_master_command ("livedate", "livedate [strftime_string|\"\"] (to get/set the PGN header tag date for live PGN data)");
 add_master_command ("livefile", "livefile [filename.pgn] (to get/set the filename for live PGN data)");
+add_master_command ("livelist", "livelist [events|rounds|games] (to get live events/rounds/games lists)");
 add_master_command ("livemax", "max [number] (to get/set the maximum number of games for the live PGN data)");
 add_master_command ("livepurgegames", "livepurgegames [game number list, such as: 12 34 56 ..] (to purge given past games from live PGN data)");
 add_master_command ("log", "log [string] (to print a string on the log terminal)");
@@ -1746,6 +1747,29 @@ sub process_master_command {
     } else {
       tell_operator("error: invalid $command parameter");
     }
+  } elsif ($command eq "livelist") {
+    if ($parameters =~ /^(event|round|game)s?$/) {
+      $parameters = $1 . "s";
+      my @liveList = ();
+      my $liveListItem;
+      for (my $i = 0; $i <= $#games_num; $i++) {
+        $liveListItem = "\"" . $GAMES_event[$games_num[$i]] . "\"";
+        if (($parameters eq "rounds") || ($parameters eq "games")) {
+          $liveListItem .= " \"" . $GAMES_round[$games_num[$i]] . "\"";
+        }
+        if ($parameters eq "games") {
+          $liveListItem .= " \"" . $games_white[$i] . "\" \"" . $games_black[$i] . "\" \"" . $games_result[$i] . "\"";
+        }
+        unless ($liveListItem ~~ @liveList) {
+          push(@liveList, $liveListItem);
+        }
+      }
+      tell_operator("livelist: $parameters(" . ($#liveList + 1) . "/" . ($#games_num + 1) . "/$maxGamesNum)=" . ($#liveList >= 0 ? join(", ", @liveList) . ";" : ""));
+    } elsif ($parameters eq "") {
+      tell_operator(detect_command_helptext($command));
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
   } elsif ($command eq "livemax") {
     if ($parameters =~ /^([1-9]\d*)?$/) {
       if ($parameters ne "") {
@@ -1892,28 +1916,32 @@ sub process_master_command {
       if ($PGN_MEMORY eq "") {
         log_terminal("warning: PGN memory data disabled");
       }
-      my $memoryListRegexp;
-      my $memoryListReplacement;
-      if ($parameters eq "events") {
-        $memoryListRegexp = '\[Event "([^"]*)"\].*';
-        $memoryListReplacement = '"\"$1\""';
-      } elsif ($parameters eq "rounds") {
-        $memoryListRegexp = '\[Event "([^"]*)"\].*\[Round "([^"]*)"\].*';
-        $memoryListReplacement = '"\"$1\" \"$2\""';
-      } elsif ($parameters eq "games") {
-        $memoryListRegexp = '\[Event "([^"]*)"\].*\[Round "([^"]*)"\].*\[White "([^"]*)"\].*\[Black "([^"]*)"\].*\[Result "([^"]*)"\].*';
-        $memoryListReplacement = '"\"$1\" \"$2\" \"$3\" \"$4\" \"$5\""';
+      my $memoryListRegexp = '\[Event "([^"]*)"\].*';
+      my $memoryListReplacement = '"\"$1\"';
+      if (($parameters eq "rounds") || ($parameters eq "games")) {
+        $memoryListRegexp .= '\[Round "([^"]*)"\].*';
+        $memoryListReplacement .= ' \"$2\"';
       }
+      if ($parameters eq "games") {
+        $memoryListRegexp .= '\[White "([^"]*)"\].*\[Black "([^"]*)"\].*\[Result "([^"]*)"\].*';
+        $memoryListReplacement .= ' \"$3\" \"$4\" \"$5\"';
+      }
+      $memoryListReplacement .= '"';
       my @memoryList = @memory_games;
       foreach (@memoryList) {
         if ($_ =~ /$memoryListRegexp/s) {
           $_ =~ s/$memoryListRegexp/$memoryListReplacement/ees;
+        } else {
+          $_ = "";
         }
       }
-      for (my $ii = $#memoryList; $ii > 0; $ii--) {
-        if ($memoryList[$ii] eq $memoryList[$ii - 1]) {
-          @memoryList = @memoryList[0..($ii-1), ($ii+1)..$#memoryList];
+      for (my $i = $#memoryList; $i > 0; $i--) {
+        if (($memoryList[$i] eq $memoryList[$i - 1]) || ($memoryList[$i] eq "")) {
+          @memoryList = @memoryList[0..($i-1), ($i+1)..$#memoryList];
         }
+      }
+      if (($#memoryList + 1 > 0) && ($memoryList[0] eq "")) {
+        @memoryList = @memoryList[1..$#memoryList];
       }
       tell_operator("memorylist: $parameters(" . ($#memoryList + 1) . "/" . ($#memory_games + 1) . "/$memoryMaxGamesNum/" . int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum) .")=" . ($#memoryList >= 0 ? join(", ", @memoryList) . ";" : ""));
     } elsif ($parameters eq "") {
