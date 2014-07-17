@@ -67,7 +67,7 @@ a {
   -webkit-appearance: none;
   width: 450px !important;
   height: 23px;
-  color: #615F54;
+  color: #A19E8B;
   font-size: 13px;
   padding: 2px;
   border-style: solid;
@@ -78,6 +78,7 @@ a {
 }
 
 .optionSelectControl {
+  color: black;
   background-color: #EDE8D5;
 }
 
