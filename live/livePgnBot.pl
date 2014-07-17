@@ -1650,18 +1650,23 @@ sub process_master_command {
     }
     tell_operator("follow=$followMode last=$followLast");
   } elsif ($command eq "games") {
-    my $roundsList = "";
-    if ($autorelayMode == 1) {
-      $roundsList = " rounds(" . ($#currentRounds + 1) . ")=";
-      if ($#currentRounds > -1) {
-        $roundsList .= join(", ", (sort { lc($a) cmp lc($b) } @currentRounds)) . ";";
-      }
-    }
     my $memoryList = "";
     if ($PGN_MEMORY ne "") {
       $memoryList = " memory(" . ($#memory_games + 1) . "/$memoryMaxGamesNum/" . int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum) . ")";
     }
-    tell_operator("games(" . ($#games_num + 1) . "/$maxGamesNum)=" . gameList() . $roundsList . " placeholder($placeholderPgnNum)" . $memoryList);
+    my $gameList = "";
+    for (my $i=0; $i<=$#games_num; $i++) {
+      if (defined $games_num[$i]) {
+        if ($gameList ne "") { $gameList .= ", "; }
+        $gameList .= $games_num[$i];
+        if ($games_result[$i] eq "1-0") { $gameList .= "+"; }
+        elsif ($games_result[$i] eq "1/2-1/2") { $gameList .= "="; }
+        elsif ($games_result[$i] eq "0-1") { $gameList .= "-"; }
+        else { $gameList .= "*"; }
+      }
+    }
+    if ($gameList ne "") { $gameList .= ";"; }
+    tell_operator("games:$memoryList placeholder($placeholderPgnNum) liverounds(" . ($#currentRounds + 1) . ") livegames(" . ($#games_num + 1) . "/$maxGamesNum)=$gameList");
   } elsif ($command eq "heartbeat") {
     if (($parameters =~ /^(\d+(\.\d*)?)\s+(\d+(\.\d*)?)$/) && ($1 > 0) && ($3 < $1)) {
       $heartbeat_freq_hour = $1;
@@ -2359,21 +2364,6 @@ sub observe {
       tell_operator("error: invalid game $_");
     }
   }
-}
-
-sub gameList {
-  my $outputStr = "";
-  for (my $i=0; $i<=$#games_num; $i++) {
-    if (defined $games_num[$i]) {
-      if ($outputStr ne "") { $outputStr .= " "; }
-      $outputStr .= $games_num[$i];
-      if ($games_result[$i] eq "1-0") { $outputStr .= "+"; }
-      elsif ($games_result[$i] eq "1/2-1/2") { $outputStr .= "="; }
-      elsif ($games_result[$i] eq "0-1") { $outputStr .= "-"; }
-      else { $outputStr .= "*"; }
-    }
-  }
-  return $outputStr;
 }
 
 sub read_startupCommands {
