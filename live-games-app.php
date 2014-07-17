@@ -50,8 +50,7 @@ END;
     $html .= <<<END
 <ol>
 <li>open the <a id="webappLink" href="" target="_blank">web application URL</a> on a new tab of the google chrome browser</li>
-<li>tap on the menu button</li>
-<li>select the "add to home screen" action</li>
+<li>tap on the action overflow button and select the "add to home screen" action</li>
 <li>the web application icon should appear on the home screen</li>
 </ol>
 END;
