@@ -1657,15 +1657,13 @@ sub process_master_command {
     my $gameList = "";
     for (my $i=0; $i<=$#games_num; $i++) {
       if (defined $games_num[$i]) {
-        if ($gameList ne "") { $gameList .= ", "; }
-        $gameList .= $games_num[$i];
+        $gameList .= " $games_num[$i]";
         if ($games_result[$i] eq "1-0") { $gameList .= "+"; }
         elsif ($games_result[$i] eq "1/2-1/2") { $gameList .= "="; }
         elsif ($games_result[$i] eq "0-1") { $gameList .= "-"; }
         else { $gameList .= "*"; }
       }
     }
-    if ($gameList ne "") { $gameList .= ";"; }
     tell_operator("games:$memoryList placeholder($placeholderPgnNum) liverounds(" . ($#currentRounds + 1) . ") livegames(" . ($#games_num + 1) . "/$maxGamesNum)=$gameList");
   } elsif ($command eq "heartbeat") {
     if (($parameters =~ /^(\d+(\.\d*)?)\s+(\d+(\.\d*)?)$/) && ($1 > 0) && ($3 < $1)) {
@@ -1778,7 +1776,7 @@ sub process_master_command {
           push(@liveList, $liveListItem);
         }
       }
-      tell_operator("livelist: $parameters(" . ($#liveList + 1) . "/" . ($#games_num + 1) . "/$maxGamesNum)=" . ($#liveList >= 0 ? join(", ", @liveList) . ";" : ""));
+      tell_operator("livelist: $parameters(" . ($#liveList + 1) . "/" . ($#games_num + 1) . "/$maxGamesNum)= " . ($#liveList >= 0 ? join(", ", @liveList) . ";" : ""));
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
     } else {
@@ -1957,7 +1955,7 @@ sub process_master_command {
       if (($#memoryList + 1 > 0) && ($memoryList[0] eq "")) {
         @memoryList = @memoryList[1..$#memoryList];
       }
-      tell_operator("memorylist: $parameters(" . ($#memoryList + 1) . "/" . ($#memory_games + 1) . "/$memoryMaxGamesNum/" . int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum) .")=" . ($#memoryList >= 0 ? join(", ", @memoryList) . ";" : ""));
+      tell_operator("memorylist: $parameters(" . ($#memoryList + 1) . "/" . ($#memory_games + 1) . "/$memoryMaxGamesNum/" . int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum) .")= " . ($#memoryList >= 0 ? join(", ", @memoryList) . ";" : ""));
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
     } else {
@@ -2290,7 +2288,7 @@ sub process_master_command {
     }
     my $startupString = join("; ", read_startupCommands());
     $startupString =~ s/[\n\r]+//g;
-    tell_operator("startup($STARTUP_FILE)=$startupString");
+    tell_operator("startup($STARTUP_FILE)= $startupString");
   } elsif ($command eq "timeoffset") {
     if ($parameters =~ /^([+-]?\d+)?$/) {
       if ($parameters ne "") {
