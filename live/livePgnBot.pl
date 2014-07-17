@@ -162,6 +162,7 @@ our $ignoreFilter = "";
 our $prioritizeFilter = "";
 our $autoPrioritize = "";
 our $autoPrioritizeFilter = "";
+our $prioritizeOnly = 0;
 
 our $eventAutocorrectRegexp = "";
 our $eventAutocorrectString = "";
@@ -261,6 +262,7 @@ sub reset_config {
   $prioritizeFilter = "";
   $autoPrioritize = "";
   $autoPrioritizeFilter = "";
+  $prioritizeOnly = 0;
   $archiveSelectFilter = "";
   $memoryMaxGamesNum = $maxGamesNumDefault;
   $memorySelectFilter = "";
@@ -325,6 +327,12 @@ sub save_game {
     my $thisHeaderForFilter = headerForFilter($autorelayMode ? $GAMES_event[$newGame_num] : $newGame_event, $autorelayMode ? $GAMES_round[$newGame_num] : $newGame_round, $newGame_white, $newGame_black);
     if (($autorelayMode == 1) && (($ignoreFilter ne "") && ($thisHeaderForFilter =~ /$ignoreFilter/i))) {
       log_terminal("debug: save requested for ignored game $newGame_num: $thisHeaderForFilter");
+      cmd_run("unobserve $newGame_num");
+      cleanup_failed_save_game($newGame_num);
+      return;
+    }
+    if (($autorelayMode == 1) && ($prioritizeOnly == 1) && ($thisHeaderForFilter !~ /$prioritizeFilter/i)) {
+      log_terminal("debug: while prioritizeonly=$prioritizeOnly, save requested for non prioritized game $newGame_num: $thisHeaderForFilter");
       cmd_run("unobserve $newGame_num");
       cleanup_failed_save_game($newGame_num);
       return;
@@ -1380,6 +1388,7 @@ add_master_command ("placeholderdate", "placeholderdate [strftime_string|\"\"] (
 add_master_command ("placeholdergame", "placeholdergame [always|auto|never] (to get/set the PGN placeholder game behaviour during autorelay)");
 add_master_command ("placeholderresult", "placeholderresult [string|\"\"] (to get/set the PGN header tag result for the PGN placeholder game)");
 add_master_command ("prioritize", "prioritize [regexp|\"\"] (to get/set the regular expression to prioritize events/players from the PGN header during autorelay; might be overridden by autoprioritize; might be overruled by ignore)");
+add_master_command ("prioritizeonly", "prioritizeonly [0|1] (to get/set the prioritized games only mode during autorelay)");
 add_master_command ("quit", "quit [number] (to quit from the ics server, returning the given exit value)");
 add_master_command ("relay", "relay [0|game number list, such as: 12 34 56 ..] (to observe given games from an event relay, 0 to disable relay mode)");
 add_master_command ("reset", "reset [all|config|games|live|memory] (to reset games and configuration)");
@@ -1554,7 +1563,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "config") {
-    tell_operator("config: livemax=$maxGamesNum livefile=$PGN_FILE livedate=$newGame_date memorymax=$memoryMaxGamesNum memoryfile=$PGN_MEMORY memorydate=$memory_date memoryselect=$memorySelectFilter memoryautopurgeevent=$memoryAutopurgeEvent topfile=$PGN_TOP archivefile=$PGN_ARCHIVE archivedate=$archive_date archiveselect=$archiveSelectFilter placeholdergame=$placeholderGame placeholderdate=$placeholder_date placeholderresult=$placeholder_result follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter prioritize=$prioritizeFilter autoprioritize=$autoPrioritize event=$newGame_event eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " round=$newGame_round roundautocorrect=" . ($roundAutocorrectRegexp ? "/$roundAutocorrectRegexp/$roundAutocorrectString/" : "") . " roundreverse=$roundReverse site=$newGame_site heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
+    tell_operator("config: livemax=$maxGamesNum livefile=$PGN_FILE livedate=$newGame_date memorymax=$memoryMaxGamesNum memoryfile=$PGN_MEMORY memorydate=$memory_date memoryselect=$memorySelectFilter memoryautopurgeevent=$memoryAutopurgeEvent topfile=$PGN_TOP archivefile=$PGN_ARCHIVE archivedate=$archive_date archiveselect=$archiveSelectFilter placeholdergame=$placeholderGame placeholderdate=$placeholder_date placeholderresult=$placeholder_result follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter prioritize=$prioritizeFilter autoprioritize=$autoPrioritize prioritizeonly=$prioritizeOnly event=$newGame_event eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " round=$newGame_round roundautocorrect=" . ($roundAutocorrectRegexp ? "/$roundAutocorrectRegexp/$roundAutocorrectString/" : "") . " roundreverse=$roundReverse site=$newGame_site heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
   } elsif (($TEST_FLAG) && ($command eq "evaluate")) {
     if ($parameters ne "") {
       eval {
@@ -2141,6 +2150,21 @@ sub process_master_command {
     } else {
       tell_operator("error: invalid $command parameter");
     }
+  } elsif ($command eq "prioritizeonly") {
+    if ($parameters =~ /^(0|1)$/) {
+      if ($parameters != $prioritizeOnly) {
+        $prioritizeOnly = $parameters;
+        if ($relayMode == 1) {
+          force_next_check_relay_time();
+        }
+        if ($prioritizeOnly == 1) {
+          tell_operator_and_log_terminal("warning: prioritizeonly=$prioritizeOnly should be avoided and replaced by more efficient prioritize/ignore options");
+        }
+      }
+    } elsif ($parameters !~ /^\??$/) {
+      tell_operator("error: invalid $command parameter");
+    }
+    tell_operator("prioritizeonly=$prioritizeOnly");
   } elsif ($command eq "quit") {
     if ($parameters =~ /^\d+$/) {
       tell_operator("OK $command($parameters)");
