@@ -491,7 +491,6 @@ function fillGameList(force) {
         if (firstGame) { firstGame = false; } else { text += "<br/>"; }
         thisBold = ((parseInt(thisNum, 10) - 1) === currentGame);
         thisGameText = thisNum + (thisBold ? "." :  " ") + thesePlayers + "  " + thisEvent + thisRound + "  ";
-        thisGameText = thisGameText.replace(/\*/g, "&lowast;");
         thisGameTitle1 = gameWhite[thisNum - 1] || "";
         thisGameTitle1 += (thisGameTitle1 && gameBlack[thisNum - 1]) ? "    " : "";
         thisGameTitle1 += gameBlack[thisNum - 1] || "";
