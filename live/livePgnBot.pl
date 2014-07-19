@@ -1776,7 +1776,7 @@ sub process_master_command {
           push(@liveList, $liveListItem);
         }
       }
-      tell_operator("livelist: $parameters(" . ($#liveList + 1) . "/" . ($#games_num + 1) . "/$maxGamesNum)= " . ($#liveList >= 0 ? join(", ", @liveList) . ";" : ""));
+      tell_operator("livelist: $parameters(" . ($#liveList + 1) . "/" . ($#games_num + 1) . "/$maxGamesNum)=" . ($#liveList >= 0 ? " " . join(", ", @liveList) . ";" : ""));
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
     } else {
@@ -1955,7 +1955,7 @@ sub process_master_command {
       if (($#memoryList + 1 > 0) && ($memoryList[0] eq "")) {
         @memoryList = @memoryList[1..$#memoryList];
       }
-      tell_operator("memorylist: $parameters(" . ($#memoryList + 1) . "/" . ($#memory_games + 1) . "/$memoryMaxGamesNum/" . int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum) .")= " . ($#memoryList >= 0 ? join(", ", @memoryList) . ";" : ""));
+      tell_operator("memorylist: $parameters(" . ($#memoryList + 1) . "/" . ($#memory_games + 1) . "/$memoryMaxGamesNum/" . int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum) .")=" . ($#memoryList >= 0 ? " " . join(", ", @memoryList) . ";" : ""));
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
     } else {
