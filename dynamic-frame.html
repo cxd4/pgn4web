@@ -420,7 +420,7 @@ function myOnResize() {
   myInsertRule(sheet, ".gameLiveStatusExtraInfoLeft", horizontalLayout ? "display: none;" : "");
   myInsertRule(sheet, ".showGameListLink", "padding-right: " + squareSize + "px; padding-left: " + (horizontalLayout ? 0 : squareSize) + "px;");
   var gameListFontSize = Math.floor(Math.min((ww - framePadding * 2) / 30, (wh - framePadding * 2) / 24));
-  gameListLineHeight = Math.floor(1.4 * gameListFontSize);
+  gameListLineHeight = Math.floor(1.9 * gameListFontSize);
   var gameListPadding = Math.floor(gameListLineHeight / 2);
   gameListBodyHeight = gameListLineHeight * Math.floor((wh - 2 * framePadding - gameListLineHeight - 2.5 * gameListPadding) / gameListLineHeight) + 1;
   myInsertRule(sheet, ".gameList", "display: none; position: absolute; overflow: hidden; font-family: monospace; white-space: pre; font-size: " + gameListFontSize + "px; line-height: " + gameListLineHeight + "px;");
@@ -491,6 +491,7 @@ function fillGameList(force) {
         if (firstGame) { firstGame = false; } else { text += "<br/>"; }
         thisBold = ((parseInt(thisNum, 10) - 1) === currentGame);
         thisGameText = thisNum + (thisBold ? "." :  " ") + thesePlayers + "  " + thisEvent + thisRound + "  ";
+        thisGameText = thisGameText.replace(/\*/g, "&lowast;");
         thisGameTitle1 = gameWhite[thisNum - 1] || "";
         thisGameTitle1 += (thisGameTitle1 && gameBlack[thisNum - 1]) ? "    " : "";
         thisGameTitle1 += gameBlack[thisNum - 1] || "";

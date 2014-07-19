@@ -236,8 +236,8 @@ if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
 
 
-$text = "gameListLineHeight = Math.floor(2.1 * gameListFontSize);";
-$oldText = "gameListLineHeight = Math.floor(1.4 * gameListFontSize);";
+$text = "gameListLineHeight = Math.floor(2.2 * gameListFontSize);";
+$oldText = "gameListLineHeight = Math.floor(1.9 * gameListFontSize);";
 $actionNum += 1;
 if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
