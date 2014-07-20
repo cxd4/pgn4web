@@ -107,7 +107,7 @@ sub cmd_run {
 our $lastPgn = "";
 our $lastPgnNum = 0;
 our $lastPgnForce = "% force updating PGN data";
-our $lastPgnRefresh = "";
+our $lastPgnRefresh = 0;
 
 our $maxGamesNumDefault = 30; # frechess.org limit
 our $maxGamesNum = $maxGamesNumDefault;
@@ -201,7 +201,7 @@ sub reset_live {
   cmd_run("unobserve");
   $lastPgn = "";
   $lastPgnNum = 0;
-  $lastPgnRefresh = "";
+  $lastPgnRefresh = 0;
   @games_num = ();
   @games_white = ();
   @games_black = ();
@@ -976,7 +976,7 @@ sub refresh_pgn {
   }
 
   if ($pgn ne $lastPgn) {
-    $lastPgnRefresh = strftime("%Y-%m-%d %H:%M:%S", o_gmtime());
+    $lastPgnRefresh = time();
     if (open(my $thisFile, ">$PGN_FILE")) {
       print $thisFile $pgn;
       close($thisFile);
@@ -1700,8 +1700,8 @@ sub process_master_command {
     if ($verbosity >= 5) {
       $thisInfo = sprintf("%s pgn=%d (p/h=%d) cmd=%d (c/h=%d) lines=%d (l/h=%d)", $thisInfo, $pgnWriteCount, $pgnWriteCount / $hourTime, $cmdRunCount, $cmdRunCount / $hourTime, $lineCount, $lineCount / $hourTime);
     }
-    $thisInfo = sprintf("%s refresh=%s", $thisInfo, $lastPgnRefresh);
-    $thisInfo = sprintf("%s %s", $thisInfo, strftime("now=%Y-%m-%d %H:%M:%S", o_gmtime($starupTime + $secTime)));
+    $thisInfo = sprintf("%s pgn=%s", $thisInfo, $lastPgnRefresh ? strftime("%Y-%m-%d %H:%M:%S", o_gmtime($lastPgnRefresh)) : "?");
+    $thisInfo = sprintf("%s now=%s", $thisInfo, strftime("%Y-%m-%d %H:%M:%S", o_gmtime($starupTime + $secTime)));
     tell_operator($thisInfo);
   } elsif ($command eq "ics") {
     if ($parameters !~ /^\??$/) {
