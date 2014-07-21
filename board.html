@@ -572,21 +572,22 @@ function cleanPgnInput(pgnInput) {
 var newPgnId = gup("pgnId");
 var newPgnIdData;
 if (newPgnId !== "") {
-  if (parent && (parent !== window) && parent.document.getElementById(newPgnId)) {
-    var theParentObject = parent.document.getElementById(newPgnId);
-    if (theParentObject.tagName.toLowerCase() == "textarea") {
-      newPgnIdData = theParentObject.value;
-    } else { // backward compatibility with pgn4web older than 1.77 when the <span> technique was used for pgnText
-      newPgnIdData = theParentObject.innerHTML;
-      // fixes issue with some browser removing \n from innerHTML
-      if (newPgnIdData.indexOf('\n') < 0) { newPgnIdData = newPgnIdData.replace(/((\[[^\[\]]*\]\s*)+)/g, "\n$1\n"); }
-      // fixes issue with some browser replacing quotes with &quot;
-      if (newPgnIdData.indexOf('"') < 0) { newPgnIdData = newPgnIdData.replace(/(&quot;)/g, '"'); }
+  try {
+    if (parent && (parent !== window) && parent.document.getElementById(newPgnId)) {
+      var theParentObject = parent.document.getElementById(newPgnId);
+      if (theParentObject.tagName.toLowerCase() == "textarea") {
+        newPgnIdData = theParentObject.value;
+      } else { // backward compatibility with pgn4web older than 1.77 when the <span> technique was used for pgnText
+        newPgnIdData = theParentObject.innerHTML;
+        // fixes issue with some browser removing \n from innerHTML
+        if (newPgnIdData.indexOf('\n') < 0) { newPgnIdData = newPgnIdData.replace(/((\[[^\[\]]*\]\s*)+)/g, "\n$1\n"); }
+        // fixes issue with some browser replacing quotes with &quot;
+        if (newPgnIdData.indexOf('"') < 0) { newPgnIdData = newPgnIdData.replace(/(&quot;)/g, '"'); }
+      }
+      document.getElementById('pgnText').value = newPgnIdData = cleanPgnInput(newPgnIdData);
     }
-    document.getElementById('pgnText').value = newPgnIdData = cleanPgnInput(newPgnIdData);
-  }
-  if ( !parent || (parent === window) || !parent.document.getElementById(newPgnId) || !newPgnIdData ) {
-    myAlert("error: failed to get data from supplied pgnId=" + newPgnId + " (check parent is in the same domain).", true);
+  } catch(e) {
+    myAlert("error: failed to get data from supplied pgnId=" + newPgnId, true);
   }
 }
 
