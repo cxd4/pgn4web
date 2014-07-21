@@ -585,9 +585,11 @@ if (newPgnId !== "") {
         if (newPgnIdData.indexOf('"') < 0) { newPgnIdData = newPgnIdData.replace(/(&quot;)/g, '"'); }
       }
       document.getElementById('pgnText').value = newPgnIdData = cleanPgnInput(newPgnIdData);
+    } else {
+      myAlert("error: data not found for pgnId=" + newPgnId, true);
     }
   } catch(e) {
-    myAlert("error: failed to get data from supplied pgnId=" + newPgnId, true);
+    myAlert("error: data error for pgnId=" + newPgnId, true);
   }
 }
 
