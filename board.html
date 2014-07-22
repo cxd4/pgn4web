@@ -1385,8 +1385,15 @@ boardShortcut("G5", "toggle auto-scroll moves text to current move", function(t,
 // H5
 boardShortcut("H5", "scroll moves text to current move", function(t,e){ autoScrollToCurrentMove('headerMoves'); });
 
+// customShortcutKey_Shift_1 defined by fide-lookup.js
+// customShortcutKey_Shift_2 defined by fide-lookup.js
+
+function customShortcutKey_Shift_5() {
+  if (movesDisplay == "puzzle") { Init(currentGame); }
+}
+
 var boardGeneratorWin=null;
-function customShortcutKey_Shift_0() {
+function customShortcutKey_Shift_6() {
   if ((newPgnEncoded === "") && (newPgnText === "")) { return; }
   if (!window.location.href.match(/board\.html/)) { return; }
   if (boardGeneratorWin && !boardGeneratorWin.closed) { boardGeneratorWin.close(); }
@@ -1394,12 +1401,9 @@ function customShortcutKey_Shift_0() {
   if (boardGeneratorWin && window.focus) { boardGeneratorWin.focus(); }
 }
 
-// customShortcutKey_Shift_1 defined by fide-lookup.js
-// customShortcutKey_Shift_2 defined by fide-lookup.js
-
-function customShortcutKey_Shift_5() {
-  if (movesDisplay == "puzzle") { Init(currentGame); }
-}
+// customShortcutKey_Shift_8 defined by engine.js
+// customShortcutKey_Shift_9 defined by engine.js
+// customShortcutKey_Shift_0 defined by engine.js
 
 </script>
 
