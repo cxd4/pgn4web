@@ -63,7 +63,7 @@ sub setup_time {
   tzset();
 }
 
-our $starupTime = time();
+our $startupTime = time();
 our $timeOffset = 0;
 
 sub o_time() {
@@ -1776,15 +1776,15 @@ sub process_master_command {
       tell_operator("info: non-beautified players names required");
     }
   } elsif ($command eq "history") {
-    my $secTime = time() - $starupTime;
+    my $secTime = time() - $startupTime;
     my $hourTime = $secTime / 3600;
     my $dayTime = $hourTime / 24;
     my $thisInfo = sprintf("history: uptime=%s rounds=%d (r/d=%d) games=%d (g/d=%d)", sec2time($secTime), $roundsStartCount, $roundsStartCount / $dayTime, $gamesStartCount, $gamesStartCount / $dayTime);
     if ($verbosity >= 5) {
       $thisInfo = sprintf("%s pgn=%d (p/h=%d) cmd=%d (c/h=%d) lines=%d (l/h=%d)", $thisInfo, $pgnWriteCount, $pgnWriteCount / $hourTime, $cmdRunCount, $cmdRunCount / $hourTime, $lineCount, $lineCount / $hourTime);
     }
-    $thisInfo = sprintf("%s pgn=%s", $thisInfo, $lastPgnRefresh ? strftime("%Y-%m-%d %H:%M:%S", o_gmtime($lastPgnRefresh)) : "?");
-    $thisInfo = sprintf("%s now=%s", $thisInfo, strftime("%Y-%m-%d %H:%M:%S", o_gmtime($starupTime + $secTime)));
+    $thisInfo = sprintf("%s last=%s", $thisInfo, $lastPgnRefresh ? strftime("%Y-%m-%d %H:%M:%S", o_gmtime($lastPgnRefresh)) : "?");
+    $thisInfo = sprintf("%s now=%s", $thisInfo, strftime("%Y-%m-%d %H:%M:%S", o_gmtime($startupTime + $secTime)));
     tell_operator($thisInfo);
   } elsif ($command eq "ics") {
     if ($parameters !~ /^\??$/) {
@@ -2556,7 +2556,9 @@ update_heartbeat_time();
 
 sub heartbeat {
   if (time() + $timeOffset > $next_heartbeat_time) {
-    my $thisInfo = sprintf("info: heartbeat: uptime=%s rounds=%d/%d games=%d/%d/%d", sec2time(time() - $starupTime), ($#currentRounds + 1), $roundsStartCount, ($#games_num + 1), $maxGamesNum, $gamesStartCount);
+    my $thisInfo = sprintf("info: heartbeat: uptime=%s", sec2time(time() - $startupTime));
+    $thisInfo = sprintf("%s last=%s", $thisInfo, $lastPgnRefresh ? strftime("%Y-%m-%d %H:%M:%S", o_gmtime($lastPgnRefresh)) : "?");
+    $thisInfo = sprintf("%s rounds=%d/%d games=%d/%d/%d", $thisInfo, ($#currentRounds + 1), $roundsStartCount, ($#games_num + 1), $maxGamesNum, $gamesStartCount);
     if ($PGN_MEMORY ne "") {
       $thisInfo = sprintf("%s memory=%d/%d/%d", $thisInfo, ($#memory_games + 1), $memoryMaxGamesNum, int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum));
     }
