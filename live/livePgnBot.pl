@@ -134,6 +134,7 @@ our @GAMES_eco = ();
 our @GAMES_sortkey = ();
 our @GAMES_forgetTag = ();
 our @GAMES_timeLeft = ();
+our @GAMES_headerForFilter = ();
 
 our $newGame_num = -1;
 our $newGame_white;
@@ -164,6 +165,8 @@ our $prioritizeFilter = "";
 our $autoPrioritize = "";
 our $autoPrioritizeFilter = "";
 our $prioritizeOnly = 0;
+our $EloCheckThresholdMode = "none";
+our $EloCheckThresholdValue = 0;
 
 our $eventAutocorrectRegexp = "";
 our $eventAutocorrectString = "";
@@ -218,6 +221,7 @@ sub reset_live {
   @GAMES_sortkey = ();
   @GAMES_forgetTag = ();
   @GAMES_timeLeft = ();
+  @GAMES_headerForFilter = ();
   @GAMES_autorelayRunning = ();
   @currentRounds = ();
   $reportedNotFoundNonPrioritizedGame = 0;
@@ -265,6 +269,8 @@ sub reset_config {
   $autoPrioritize = "";
   $autoPrioritizeFilter = "";
   $prioritizeOnly = 0;
+  $EloCheckThresholdMode = "none";
+  $EloCheckThresholdValue = 0;
   $archiveSelectFilter = "";
   $memoryMaxGamesNum = $maxGamesNumDefault;
   $memorySelectFilter = "";
@@ -314,6 +320,7 @@ sub cleanup_failed_save_game {
     delete $GAMES_sortkey[$gameNum];
     delete $GAMES_forgetTag[$gameNum];
     delete $GAMES_timeLeft[$gameNum];
+    delete $GAMES_headerForFilter[$gameNum];
     delete $GAMES_autorelayRunning[$gameNum];
   }
 }
@@ -370,6 +377,7 @@ sub save_game {
       $GAMES_eco[$newGame_num] = "";
       $GAMES_sortkey[$newGame_num] = eventRound($newGame_event, $newGame_round);
       $GAMES_forgetTag[$newGame_num] = sprintf("%012d%03d", o_time(),  simpleStringCrc($GAMES_sortkey[$newGame_num]));
+      $GAMES_headerForFilter[$newGame_num] = headerForFilter($newGame_event, $newGame_round, $newGame_white, $newGame_black);
     }
     $gamesStartCount++;
     log_terminal("debug: game new $newGame_num: $thisHeaderForFilter");
@@ -483,6 +491,7 @@ sub remove_game {
   delete $GAMES_sortkey[$thisGameNum];
   delete $GAMES_forgetTag[$thisGameNum];
   delete $GAMES_timeLeft[$thisGameNum];
+  delete $GAMES_headerForFilter[$thisGameNum];
   log_terminal("debug: game out $thisGameNum");
   refresh_pgn();
   return $thisGameIndex;
@@ -694,6 +703,7 @@ sub process_line {
         $GAMES_eco[$thisGameNum] = $thisGameEco;
         $GAMES_sortkey[$thisGameNum] = eventRound($autorelayEvent, $autorelayRound);
         $GAMES_forgetTag[$thisGameNum] = sprintf("%012d%03d", o_time(),  simpleStringCrc($GAMES_sortkey[$thisGameNum]));
+        $GAMES_headerForFilter[$thisGameNum] = $thisHeaderForFilter;
         $GAMES_autorelayRunning[$thisGameNum] = 1;
         if (($autoPrioritize ne "") && ($thisHeaderForFilter =~ /$autoPrioritize/i)) {
           (my $autorelayEventFilter = $autorelayEvent) =~ s/[^\w\s-]/./g;
@@ -706,27 +716,54 @@ sub process_line {
           }
         }
         if (find_gameIndex($thisGameNum) == -1) {
-          if ($#games_num + 1 >= $maxGamesNum) {
+          cmd_run("games $thisGameNum");
+        }
+      }
+    }
+  } elsif ($line =~ /^\s*(\d+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+\[.*\].*$/) {
+    my $thisGameNum = $1;
+    my $thisWhiteElo = $2;
+    my $thisShortWhite = $3;
+    my $thisBlackElo = $4;
+    my $thisShortBlack = $5;
+    if ($autorelayMode == 1) {
+      if ((defined $GAMES_event[$thisGameNum]) && (defined $GAMES_site[$thisGameNum]) && (defined $GAMES_date[$thisGameNum]) && (defined $GAMES_round[$thisGameNum]) && (defined $GAMES_eco[$thisGameNum]) && (defined $GAMES_sortkey[$thisGameNum]) && (defined $GAMES_forgetTag[$thisGameNum]) && (defined $GAMES_headerForFilter[$thisGameNum])) {
+        if ($GAMES_headerForFilter[$thisGameNum] =~ /White\s+"$thisShortWhite.*Black\s+"$thisShortBlack/) {
+          if (Elo_check_select($thisWhiteElo, $thisBlackElo) == 1) {
+            if ($#games_num + 1 >= $maxGamesNum) {
+              if ($moreGamesThanMax == 0) {
+                log_terminal("debug: more relayed games than max=$maxGamesNum");
+                $moreGamesThanMax = 1;
+              }
+            }
             if ($moreGamesThanMax == 0) {
-              log_terminal("debug: more relayed games than max=$maxGamesNum");
-              $moreGamesThanMax = 1;
-            }
-          }
-          if ($moreGamesThanMax == 0) {
-            cmd_run("observe $thisGameNum");
-          } elsif (($prioritizeFilter ne "") && ($thisHeaderForFilter =~ /$prioritizeFilter/i)) {
-            if ($prioritizedGames == 0) {
-              log_terminal("debug: prioritized game $thisHeaderForFilter");
-              $prioritizedGames = 1;
-            }
-            if (remove_game(-1) != -1) {
               cmd_run("observe $thisGameNum");
+            } elsif (($prioritizeFilter ne "") && ($GAMES_headerForFilter[$thisGameNum] =~ /$prioritizeFilter/i)) {
+              if ($prioritizedGames == 0) {
+                log_terminal("debug: prioritized game $GAMES_headerForFilter[$thisGameNum]");
+                $prioritizedGames = 1;
+              }
+              if (remove_game(-1) != -1) {
+                cmd_run("observe $thisGameNum");
+              } else {
+                cleanup_failed_save_game($thisGameNum);
+              }
             } else {
               cleanup_failed_save_game($thisGameNum);
             }
+          } else {
+            log_terminal("debug: skipped Elo game $thisGameNum " . $GAMES_headerForFilter[$thisGameNum] . "[WhiteElo \"$thisWhiteElo\"][BlackElo \"$thisBlackElo\"]");
+            cleanup_failed_save_game($thisGameNum);
           }
+        } else {
+          log_terminal("debug: game $thisGameNum mismatch when checking Elo");
+          cleanup_failed_save_game($thisGameNum);
         }
+      } else {
+        log_terminal("debug: Elo check: game $thisGameNum not found");
       }
+    } else {
+      log_terminal("debug: Elo check while autorelayMode=$autorelayMode");
     }
   } elsif ($line =~ /^Game \d+: Game clock paused\.$/) {
     if ($relayMode == 1) {
@@ -850,6 +887,26 @@ sub sec2time {
   } else {
     log_terminal("error: sec2time($t)");
     return 0;
+  }
+}
+
+
+sub Elo_check_select {
+  my ($thisWhiteElo, $thisBlackElo) = @_;
+  if ($EloCheckThresholdMode =~ /^(average|both|either)$/) {
+    $thisWhiteElo =~ s/\D//g;
+    if ($thisWhiteElo eq "") { $thisWhiteElo = 0; }
+    $thisBlackElo =~ s/\D//g;
+    if ($thisBlackElo eq "") { $thisBlackElo = 0; }
+    if ($EloCheckThresholdMode eq "average") {
+      return (($thisWhiteElo + $thisBlackElo) >= (2 * $EloCheckThresholdValue)) ? 1 : 0;
+    } elsif ($EloCheckThresholdMode eq "both") {
+      return (($thisWhiteElo >= $EloCheckThresholdValue) && ($thisBlackElo >= $EloCheckThresholdValue)) ? 1 : 0;
+    } elsif ($EloCheckThresholdMode eq "either") {
+      return (($thisWhiteElo >= $EloCheckThresholdValue) || ($thisBlackElo >= $EloCheckThresholdValue)) ? 1 : 0;
+    }
+  } else {
+    return 1;
   }
 }
 
@@ -1351,6 +1408,7 @@ add_master_command ("autorelay", "autorelay [0|1] (to automatically observe all 
 add_master_command ("checkrelay", "checkrelay [!] (to check relayed games during relay and autorelay)");
 add_master_command ("config", "config (to get config info)");
 if ($TEST_FLAG) { add_master_command ("evaluate", "evaluate [string] (to evaluate an arbitrary internal command: for debug use only)"); }
+add_master_command ("elothreshold", "elothreshold [(average|both|either|none):number|\"\"] (to get/set the Elo threshold filter during autorelay; has precedence over prioritize)");
 add_master_command ("event", "event [string|\"\"] (to get/set the PGN header tag event)");
 add_master_command ("eventautocorrect", "eventautocorrect [/regexp/eval/|\"\"] (to get/set the regexp and the evalexp returning a string that correct event tags during autorelay)");
 add_master_command ("follow", "follow [0|handle|/s|/b|/l] (to follow the user with given handle, /s for the best standard game, /b for the best blitz game, /l for the best lightning game, 0 to disable follow mode)");
@@ -1559,7 +1617,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "config") {
-    tell_operator("config: livemax=$maxGamesNum livefile=$PGN_FILE livedate=$newGame_date memorymax=$memoryMaxGamesNum memoryfile=$PGN_MEMORY memorydate=$memory_date memoryselect=$memorySelectFilter memoryautopurgeevent=$memoryAutopurgeEvent topfile=$PGN_TOP archivefile=$PGN_ARCHIVE archivedate=$archive_date archiveselect=$archiveSelectFilter placeholdergame=$placeholderGame placeholderdate=$placeholder_date placeholderresult=$placeholder_result follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter prioritize=$prioritizeFilter autoprioritize=$autoPrioritize prioritizeonly=$prioritizeOnly event=$newGame_event eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " round=$newGame_round roundautocorrect=" . ($roundAutocorrectRegexp ? "/$roundAutocorrectRegexp/$roundAutocorrectString/" : "") . " roundreverse=$roundReverse site=$newGame_site heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
+    tell_operator("config: livemax=$maxGamesNum livefile=$PGN_FILE livedate=$newGame_date memorymax=$memoryMaxGamesNum memoryfile=$PGN_MEMORY memorydate=$memory_date memoryselect=$memorySelectFilter memoryautopurgeevent=$memoryAutopurgeEvent topfile=$PGN_TOP archivefile=$PGN_ARCHIVE archivedate=$archive_date archiveselect=$archiveSelectFilter placeholdergame=$placeholderGame placeholderdate=$placeholder_date placeholderresult=$placeholder_result follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter elothreshold=$EloCheckThresholdMode:$EloCheckThresholdValue prioritize=$prioritizeFilter autoprioritize=$autoPrioritize prioritizeonly=$prioritizeOnly event=$newGame_event eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " round=$newGame_round roundautocorrect=" . ($roundAutocorrectRegexp ? "/$roundAutocorrectRegexp/$roundAutocorrectString/" : "") . " roundreverse=$roundReverse site=$newGame_site heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
   } elsif (($TEST_FLAG) && ($command eq "evaluate")) {
     if ($parameters ne "") {
       eval {
@@ -1572,6 +1630,35 @@ sub process_master_command {
       };
     } else {
       tell_operator(detect_command_helptext($command));
+    }
+  } elsif ($command eq "elothreshold") {
+    if ($parameters =~ /^((average|both|either|none):(\d+)|none|""|)$/) {
+      if ($parameters ne "") {
+        if ($2 ne "") {
+          $EloCheckThresholdMode = $2;
+          $EloCheckThresholdValue = $3;
+        } elsif (($1 eq "none") || ($1 eq "\"\"")) {
+          $EloCheckThresholdMode = "none";
+        }
+        if ($EloCheckThresholdMode eq "none") {
+          $EloCheckThresholdValue = 0;
+        } else {
+          if ($autorelayMode == 1) {
+            for (my $i=$#games_num; $i>=0; $i--) {
+              if ((defined $games_num[$i])  && (defined $games_whiteElo[$i]) && (defined $games_blackElo[$i])) {
+                if (Elo_check_select($games_whiteElo[$i], $games_blackElo[$i]) == 0) {
+                  remove_game($games_num[$i]);
+                }
+              }
+            }
+            force_next_check_relay_time();
+          }
+        }
+        log_terminal("info: elothreshold=$EloCheckThresholdMode:$EloCheckThresholdValue");
+      }
+      tell_operator("elothreshold=$EloCheckThresholdMode:$EloCheckThresholdValue");
+    } else {
+      tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "event") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
