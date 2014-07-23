@@ -314,6 +314,7 @@ sub cleanup_failed_save_game {
     delete $GAMES_sortkey[$gameNum];
     delete $GAMES_forgetTag[$gameNum];
     delete $GAMES_timeLeft[$gameNum];
+    delete $GAMES_autorelayRunning[$gameNum];
   }
 }
 
@@ -664,25 +665,28 @@ sub process_line {
     my $thisGameBlack = $3;
     my $thisGameResult = $4;
     my $thisGameEco = $5;
-    my $thisHeaderForFilter = headerForFilter($autorelayEvent, $autorelayRound, $thisGameWhite, $thisGameBlack);
-    if (($autorelayMode == 1) && ((($ignoreFilter ne "") && ($thisHeaderForFilter =~ /$ignoreFilter/i)) || ($thisGameResult eq "abort"))) {
-      my $skipReason;
-      if ($thisGameResult eq "abort") {
-        $skipReason = "aborted";
-      } else {
-        $skipReason = "ignored";
-      }
-      if (find_gameIndex($thisGameNum) != -1) {
-        if (remove_game($thisGameNum) != -1) {
-          $moreGamesThanMax = 0;
-          $prioritizedGames = 0;
+    if ((find_gameIndex($thisGameNum) != -1) && ($thisGameResult ne "*")) {
+      save_result($thisGameNum, $thisGameResult, 0); # from relay list
+    }
+    if ($autorelayMode == 1) {
+      my $thisHeaderForFilter = headerForFilter($autorelayEvent, $autorelayRound, $thisGameWhite, $thisGameBlack);
+      if ((($ignoreFilter ne "") && ($thisHeaderForFilter =~ /$ignoreFilter/i)) || ($thisGameResult eq "abort")) {
+        my $skipReason;
+        if ($thisGameResult eq "abort") {
+          $skipReason = "aborted";
+        } else {
+          $skipReason = "ignored";
         }
-        log_terminal("debug: removed $skipReason game $thisGameNum $thisHeaderForFilter");
+        if (find_gameIndex($thisGameNum) != -1) {
+          if (remove_game($thisGameNum) != -1) {
+            $moreGamesThanMax = 0;
+            $prioritizedGames = 0;
+          }
+          log_terminal("debug: removed $skipReason game $thisGameNum $thisHeaderForFilter");
+        } else {
+          log_terminal("debug: skipped $skipReason game $thisGameNum $thisHeaderForFilter");
+        }
       } else {
-        log_terminal("debug: skipped $skipReason game $thisGameNum $thisHeaderForFilter");
-      }
-    } else {
-      if ($autorelayMode == 1) {
         $GAMES_event[$thisGameNum] = $autorelayEvent;
         $GAMES_site[$thisGameNum] = $newGame_site;
         $GAMES_date[$thisGameNum] = strftime($newGame_date, o_gmtime());
@@ -701,13 +705,7 @@ sub process_line {
             }
           }
         }
-      }
-      if (find_gameIndex($thisGameNum) != -1) {
-        if ($thisGameResult ne "*") {
-          save_result($thisGameNum, $thisGameResult, 0); # from relay list
-        }
-      } else {
-        if ($autorelayMode == 1) {
+        if (find_gameIndex($thisGameNum) == -1) {
           if ($#games_num + 1 >= $maxGamesNum) {
             if ($moreGamesThanMax == 0) {
               log_terminal("debug: more relayed games than max=$maxGamesNum");
@@ -723,6 +721,8 @@ sub process_line {
             }
             if (remove_game(-1) != -1) {
               cmd_run("observe $thisGameNum");
+            } else {
+              cleanup_failed_save_game($thisGameNum);
             }
           }
         }
@@ -759,14 +759,7 @@ sub process_line {
       our $gameType = $1;
       if (!($gameType =~ /(standard|blitz|lightning|^Unrated untimed match,$)/)) {
         log_terminal("warning: unsupported game $newGame_num: $gameType");
-        delete $GAMES_event[$newGame_num];
-        delete $GAMES_site[$newGame_num];
-        delete $GAMES_date[$newGame_num];
-        delete $GAMES_round[$newGame_num];
-        delete $GAMES_eco[$newGame_num];
-        delete $GAMES_sortkey[$newGame_num];
-        delete $GAMES_forgetTag[$newGame_num];
-        delete $GAMES_timeLeft[$newGame_num];
+        cleanup_failed_save_game($newGame_num);
         cmd_run("unobserve $newGame_num");
         tell_operator_and_log_terminal("debug: unsupported game $newGame_num: $gameType");
         reset_newGame();
