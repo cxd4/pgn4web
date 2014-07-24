@@ -1663,7 +1663,7 @@ sub process_master_command {
       tell_operator(detect_command_helptext($command));
     }
   } elsif ($command eq "eloautoprioritize") {
-    if (($parameters eq "\"\"") || ($parameters !~ /\$(?!(white|black|min|max|avg)Elo)|["'`]|^$/)) {
+    if (($parameters eq "\"\"") || ($parameters !~ /\$(?!(white|black|min|max|avg)Elo)|[@#"'`{}\[\]]|^$/)) {
       if ($parameters eq "\"\"") {
         $parameters = "";
       }
@@ -1691,7 +1691,7 @@ sub process_master_command {
     }
     tell_operator("eloautoprioritize=$EloAutoprioritizeString prioritize=$prioritizeFilter");
   } elsif ($command eq "eloignore") {
-    if (($parameters eq "\"\"") || ($parameters !~ /\$(?!(white|black|min|max|avg)Elo)|["'`]|^$/)) {
+    if (($parameters eq "\"\"") || ($parameters !~ /\$(?!(white|black|min|max|avg)Elo)|[@#"'`{}\[\]]|^$/)) {
       if ($parameters eq "\"\"") {
         $parameters = "";
       }
