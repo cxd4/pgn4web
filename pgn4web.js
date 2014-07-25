@@ -3000,13 +3000,17 @@ function ParsePGNGameString(gameString) {
         closeVar();
         break;
 
-      case '&': // nullmove "<>" became "&lt;&gt;"
-        if (ss.substr(start, 8) == "&lt;&gt;") {
-          ss = ss.slice(0, start) + "     -- " + ss.slice(start + 8);
-          start += 4;
-          break;
-        }
-        // dont add "break;"
+//
+// patch this to add support for <> nullmoves (1 of 2)
+//
+//      case '&': // nullmove "<>" became "&lt;&gt;"
+//        if (ss.substr(start, 8) == "&lt;&gt;") {
+//          ss = ss.slice(0, start) + "     -- " + ss.slice(start + 8);
+//          start += 4;
+//          break;
+//        }
+//        // dont add "break;"
+//
 
       default:
 
@@ -3034,6 +3038,11 @@ function ParsePGNGameString(gameString) {
 
         if ((end = start + ss.substr(start).search(/[\s${;!?()]/)) < start) { end = ss.length; }
         move = ss.substring(start,end);
+//
+// patch this to add support for <> nullmoves (2 of 2)
+//
+//        if ((move == "&lt") && (ss.substring(end,end+5) == ";&gt;")) { move = "--"; end += 5; } // nullmove "<>" became "&lt;&gt;"
+//
         MovesVar[CurrentVar][StartPly+PlyNumber] = CleanMove(move);
         lastVarWithNoMoves[lastVarWithNoMoves.length - 1] = false;
         if (ss.charAt(end) == ' ') { start = end; }
