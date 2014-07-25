@@ -19,6 +19,7 @@ use Net::Telnet;
 use File::Copy;
 use POSIX qw(strftime);
 use POSIX qw(tzset);
+use Safe;
 
 our $FICS_HOST = "freechess.org";
 our $FICS_PORT = 5000;
@@ -165,13 +166,21 @@ our $prioritizeFilter = "";
 our $autoPrioritize = "";
 our $autoPrioritizeFilter = "";
 our $prioritizeOnly = 0;
+
 our $EloIgnoreString = "";
 our $EloAutoprioritizeString = "";
+our $safevalElo = new Safe;
+$safevalElo->share($EloIgnoreString, $EloAutoprioritizeString);
 
 our $eventAutocorrectRegexp = "";
 our $eventAutocorrectString = "";
+our $safevalEvent = new Safe;
+$safevalEvent->share($eventAutocorrectString);
+
 our $roundAutocorrectRegexp = "";
 our $roundAutocorrectString = "";
+our $safevalRound = new Safe;
+$safevalRound->share($roundAutocorrectString);
 
 our $placeholderGame = "auto";
 our $placeholder_date = "";
@@ -501,7 +510,7 @@ sub event_autocorrect {
   my ($event) = @_;
   if (($eventAutocorrectRegexp) && ($event =~ /$eventAutocorrectRegexp/i)) {
     my $oldEvent = $event;
-    $event =~ s/$eventAutocorrectRegexp/eval($eventAutocorrectString)/egi;
+    $event =~ s/$eventAutocorrectRegexp/$safevalEvent->reval($eventAutocorrectString)/egi;
     if ($@) { log_terminal("warning: event autocorrect failed"); }
     $event =~ s/\s+/ /g;
     $event =~ s/^\s|\s$//g;
@@ -511,10 +520,11 @@ sub event_autocorrect {
 }
 
 sub round_autocorrect {
-  my ($round) = @_;
+  my ($round, $event) = @_;
   if (($roundAutocorrectRegexp) && ($round =~ /$roundAutocorrectRegexp/i)) {
     my $oldRound = $round;
-    $round =~ s/$roundAutocorrectRegexp/eval($roundAutocorrectString)/egi;
+    ${$safevalRound->varglob("event")} = $event;
+    $round =~ s/$roundAutocorrectRegexp/$safevalRound->reval($roundAutocorrectString)/egi;
     if ($@) { log_terminal("warning: round autocorrect failed"); }
     $round =~ s/\s+/ /g;
     $round =~ s/^\s|\s$//g;
@@ -666,7 +676,7 @@ sub process_line {
     $autorelayEvent =~ s/\s+/ /g;
     if ($eventAutocorrectRegexp) { $autorelayEvent = event_autocorrect($autorelayEvent); }
     if ($autorelayRound eq "") { $autorelayRound = "-"; }
-    if ($roundAutocorrectRegexp) { $autorelayRound = round_autocorrect($autorelayRound); }
+    if ($roundAutocorrectRegexp) { $autorelayRound = round_autocorrect($autorelayRound, $autorelayEvent); }
     declareRelayOnline();
   } elsif ($line =~ /^:(\d+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)/) {
     my $thisGameNum = $1;
@@ -901,19 +911,25 @@ sub autoprioritize_add_event {
   }
 }
 
-sub Elo_eval_ignore {
+
+sub update_safevalElo {
   my ($whiteElo, $blackElo) = @_;
   $whiteElo =~ s/\D//g;
   if ($whiteElo eq "") { $whiteElo = 0; }
   $blackElo =~ s/\D//g;
   if ($blackElo eq "") { $blackElo = 0; }
-  my $minElo = $whiteElo < $blackElo ? $whiteElo : $blackElo;
-  my $maxElo = $whiteElo > $blackElo ? $whiteElo : $blackElo;
-  my $avgElo = ($whiteElo + $blackElo) / 2;
+  ${$safevalElo->varglob("minElo")} = $whiteElo < $blackElo ? $whiteElo : $blackElo;
+  ${$safevalElo->varglob("maxElo")} = $whiteElo > $blackElo ? $whiteElo : $blackElo;
+  ${$safevalElo->varglob("avgElo")} = ($whiteElo + $blackElo) / 2;
+}
+
+sub Elo_eval_ignore {
+  my ($whiteElo, $blackElo) = @_;
   if ($EloIgnoreString eq "") {
     return 0;
   } else {
-    my $retVal = eval($EloIgnoreString);
+    update_safevalElo($whiteElo, $blackElo);
+    my $retVal = $safevalElo->reval($EloIgnoreString);
     if ($@) {
       log_terminal("error: invalid eloignore=$EloIgnoreString");
       $retVal = 0;
@@ -924,17 +940,11 @@ sub Elo_eval_ignore {
 
 sub Elo_eval_autoprioritize {
   my ($whiteElo, $blackElo) = @_;
-  $whiteElo =~ s/\D//g;
-  if ($whiteElo eq "") { $whiteElo = 0; }
-  $blackElo =~ s/\D//g;
-  if ($blackElo eq "") { $blackElo = 0; }
-  my $minElo = $whiteElo < $blackElo ? $whiteElo : $blackElo;
-  my $maxElo = $whiteElo > $blackElo ? $whiteElo : $blackElo;
-  my $avgElo = ($whiteElo + $blackElo) / 2;
   if ($EloAutoprioritizeString eq "") {
     return 0;
   } else {
-    my $retVal = eval($EloAutoprioritizeString);
+    update_safevalElo($whiteElo, $blackElo);
+    my $retVal = $safevalElo->reval($EloAutoprioritizeString);
     if ($@) {
       log_terminal("error: invalid eloautoprioritize=$EloAutoprioritizeString");
       $retVal = 0;
@@ -1440,11 +1450,11 @@ add_master_command ("autoprioritize", "autoprioritize [regexp|\"\"] (to get/set 
 add_master_command ("autorelay", "autorelay [0|1] (to automatically observe all relayed games)");
 add_master_command ("checkrelay", "checkrelay [!] (to check relayed games during relay and autorelay)");
 add_master_command ("config", "config (to get config info)");
-if ($TEST_FLAG) { add_master_command ("evaluate", "evaluate [string] (to evaluate an arbitrary internal command: for debug use only)"); }
+if ($TEST_FLAG) { add_master_command ("evaluate", "evaluate [evalexp] (to evaluate an arbitrary internal command: for debug use only)"); }
 add_master_command ("eloautoprioritize", "eloautoprioritize [evalexp|\"\"] (to get/set the eval expression returning 1|0 from \$minElo, \$maxElo and \$avgElo to prioritize entire events during autorelay; has precedence over prioritize)");
 add_master_command ("eloignore", "eloignore [evalexp|\"\"] (to get/set the eval expression returning 1|0 from \$minElo, \$maxElo and \$avgElo to ignore games during autorelay; has precedence over prioritize)");
 add_master_command ("event", "event [string|\"\"] (to get/set the PGN header tag event)");
-add_master_command ("eventautocorrect", "eventautocorrect [/regexp/evalexp/|\"\"] (to get/set the regular expression and the eval expression returning a string that correct event tags during autorelay)");
+add_master_command ("eventautocorrect", "eventautocorrect [/regexp/evalexp/|\"\"] (to get/set the regular expression and the eval expression returning a string that corrects event tags during autorelay)");
 add_master_command ("follow", "follow [0|handle|/s|/b|/l] (to follow the user with given handle, /s for the best standard game, /b for the best blitz game, /l for the best lightning game, 0 to disable follow mode)");
 add_master_command ("games", "games (to get games summary info)");
 add_master_command ("heartbeat", "heartbeat [frequency offset] (to get/set the timing of heartbeat log messages, in hours)");
@@ -1481,7 +1491,7 @@ add_master_command ("quit", "quit [number] (to quit from the ics server, returni
 add_master_command ("relay", "relay [0|game number list, such as: 12 34 56 ..] (to observe given games from an event relay, 0 to disable relay mode)");
 add_master_command ("reset", "reset [all|config|games|live|memory] (to reset games and configuration)");
 add_master_command ("round", "round [string|\"\"] (to get/set the PGN header tag round)");
-add_master_command ("roundautocorrect", "roundautocorrect [/regexp/evalexp/|\"\"] (to get/set the regular expression and the eval expression returning a string that correct round tags during autorelay)");
+add_master_command ("roundautocorrect", "roundautocorrect [/regexp/evalexp/|\"\"] (to get/set the regular expression and the eval expression returning a string from \$event that corrects round tags during autorelay)");
 add_master_command ("roundreverse", "roundreverse [0|1] (to use reverse alphabetical ordering of rounds)");
 add_master_command ("site", "site [string|\"\"] (to get/set the PGN header tag site)");
 add_master_command ("startup", "startup [command list, separated by semicolon] (to get/set startup commands file)");
@@ -1663,68 +1673,64 @@ sub process_master_command {
       tell_operator(detect_command_helptext($command));
     }
   } elsif ($command eq "eloautoprioritize") {
-    (my $checkParameters = $parameters) =~ s/\$(white|black|min|max|avg)Elo\b//g;
-    if (($parameters ne "") && ($checkParameters !~ /[a-z_@\$]/i)) {
-      if ($parameters eq "\"\"") {
-        $parameters = "";
-      }
-      my $whiteElo = 2000;
-      my $blackElo = 0;
-      my $minElo = $whiteElo < $blackElo ? $whiteElo : $blackElo;
-      my $maxElo = $whiteElo > $blackElo ? $whiteElo : $blackElo;
-      my $avgElo = ($whiteElo + $blackElo) / 2;
-      my $test = eval($parameters);
-      if ($@) {
-        tell_operator("error: invalid $command parameter");
-      } else {
-        if (($parameters ne $EloAutoprioritizeString) && ($relayMode == 1)) {
+    eval {
+      my $oldEloAutoprioritizeString = $EloAutoprioritizeString;
+      if ($parameters ne "") {
+        if ($parameters eq "\"\"") {
+          $EloAutoprioritizeString = "";
+        } else {
+          if ($parameters =~ /\$(?!(min|max|avg)Elo\b)/) { pgn4webError(); }
+          update_safevalElo(2000, 0);
+          my $test = $safevalElo->reval($parameters);
+          if ($@) { pgn4webError(); }
+          $EloAutoprioritizeString = $parameters;
+        }
+        if (($EloAutoprioritizeString ne $oldEloAutoprioritizeString) && ($relayMode == 1)) {
           force_next_check_relay_time($CHECK_RELAY_MIN_LAG);
         }
-        $EloAutoprioritizeString = $parameters;
+        if ($autoPrioritize ne "") {
+          log_terminal("info: eloautoprioritize=$EloAutoprioritizeString prioritize=$prioritizeFilter");
+        } else {
+          log_terminal("info: eloautoprioritize=$EloAutoprioritizeString");
+        }
       }
-      if ($autoPrioritize ne "") {
-        log_terminal("info: eloautoprioritize=$EloAutoprioritizeString prioritize=$prioritizeFilter");
-      } else {
-        log_terminal("info: eloautoprioritize=$EloAutoprioritizeString");
-      }
-    } elsif ($parameters ne "") {
-      tell_operator("error: invalid $command parameter");
-    }
-    tell_operator("eloautoprioritize=$EloAutoprioritizeString prioritize=$prioritizeFilter");
+      tell_operator("eloautoprioritize=$EloAutoprioritizeString prioritize=$prioritizeFilter");
+      1;
+    } or do {
+      tell_operator("error: invalid regular expression: $parameters");
+    };
   } elsif ($command eq "eloignore") {
-    (my $checkParameters = $parameters) =~ s/\$(white|black|min|max|avg)Elo\b//g;
-    if (($parameters ne "") && ($checkParameters !~ /[a-z_@\$]/i)) {
-      if ($parameters eq "\"\"") {
-        $parameters = "";
-      }
-      my $whiteElo = 2000;
-      my $blackElo = 0;
-      my $minElo = $whiteElo < $blackElo ? $whiteElo : $blackElo;
-      my $maxElo = $whiteElo > $blackElo ? $whiteElo : $blackElo;
-      my $avgElo = ($whiteElo + $blackElo) / 2;
-      my $test = eval($parameters);
-      if ($@) {
-        tell_operator("error: invalid $command parameter");
-      } else {
-        if (($parameters ne $EloIgnoreString) && ($relayMode == 1)) {
-          force_next_check_relay_time($CHECK_RELAY_MIN_LAG);
+    eval {
+      my $oldEloIgnoreString = $EloIgnoreString;
+      if ($parameters ne "") {
+        if ($parameters eq "\"\"") {
+          $EloIgnoreString = "";
+        } else {
+          if ($parameters =~ /\$(?!(min|max|avg)Elo\b)/) { pgn4webError(); }
+          update_safevalElo(2000, 0);
+          my $test = $safevalElo->reval($parameters);
+          if ($@) { pgn4webError(); }
+          $EloIgnoreString = $parameters;
         }
-        $EloIgnoreString = $parameters;
-        if ($autorelayMode == 1) {
-          for (my $i=$#games_num; $i>=0; $i--) {
-            if ((defined $games_num[$i])  && (defined $games_whiteElo[$i]) && (defined $games_blackElo[$i])) {
-              if (Elo_eval_ignore($games_whiteElo[$i], $games_blackElo[$i]) == 1) {
-                remove_game($games_num[$i]);
+        if (($EloIgnoreString ne $oldEloIgnoreString) && ($relayMode == 1)) {
+          if ($autorelayMode == 1) {
+            for (my $i=$#games_num; $i>=0; $i--) {
+              if ((defined $games_num[$i])  && (defined $games_whiteElo[$i]) && (defined $games_blackElo[$i])) {
+                if (Elo_eval_ignore($games_whiteElo[$i], $games_blackElo[$i]) == 1) {
+                  remove_game($games_num[$i]);
+                }
               }
             }
           }
+          force_next_check_relay_time($CHECK_RELAY_MIN_LAG);
         }
+        log_terminal("info: eloignore=$EloIgnoreString");
       }
-      log_terminal("info: eloignore=$EloIgnoreString");
-    } elsif ($parameters ne "") {
-      tell_operator("error: invalid $command parameter");
-    }
-    tell_operator("eloignore=$EloIgnoreString");
+      tell_operator("info: eloignore=$EloIgnoreString");
+      1;
+    } or do {
+      tell_operator("error: invalid regular expression: $parameters");
+    };
   } elsif ($command eq "event") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
@@ -1746,11 +1752,11 @@ sub process_master_command {
           } else {
             my $newEventAutocorrectRegexp = $2;
             my $newEventAutocorrectString = $3;
-            if ($newEventAutocorrectString =~ /exec|open|system|`/) { pgn4webError(); }
+            if ($newEventAutocorrectString =~ /\$(?!([`&'\d+-]))/) { pgn4webError(); }
             my $newEventAutocorrectTest = "test";
-            $newEventAutocorrectTest =~ s/$newEventAutocorrectRegexp/eval($newEventAutocorrectString)/egi;
+            $newEventAutocorrectTest =~ s/$newEventAutocorrectRegexp/$safevalEvent->reval($newEventAutocorrectString)/egi;
             if ($@) { pgn4webError(); }
-            $newEventAutocorrectTest =~ s/$newEventAutocorrectTest/eval($newEventAutocorrectString)/egi;
+            $newEventAutocorrectTest =~ s/$newEventAutocorrectTest/$safevalEvent->reval($newEventAutocorrectString)/egi;
             if ($@) { pgn4webError(); }
             $eventAutocorrectRegexp = $newEventAutocorrectRegexp;
             $eventAutocorrectString = $newEventAutocorrectString;
@@ -2374,18 +2380,19 @@ sub process_master_command {
           } else {
             my $newRoundAutocorrectRegexp = $2;
             my $newRoundAutocorrectString = $3;
-            if ($newRoundAutocorrectString =~ /exec|open|system|`/) { pgn4webError(); }
+            if ($newRoundAutocorrectString =~ /\$(?!([`&'\d+-]|event\b))/) { pgn4webError(); }
             my $newRoundAutocorrectTest = "test";
-            $newRoundAutocorrectTest =~ s/$newRoundAutocorrectRegexp/eval($newRoundAutocorrectString)/egi;
+            ${$safevalRound->varglob("event")} = "Test Event";
+            $newRoundAutocorrectTest =~ s/$newRoundAutocorrectRegexp/$safevalRound->reval($newRoundAutocorrectString)/egi;
             if ($@) { pgn4webError(); }
-            $newRoundAutocorrectTest =~ s/$newRoundAutocorrectTest/eval($newRoundAutocorrectString)/egi;
+            $newRoundAutocorrectTest =~ s/$newRoundAutocorrectTest/$safevalRound->reval($newRoundAutocorrectString)/egi;
             if ($@) { pgn4webError(); }
             $roundAutocorrectRegexp = $newRoundAutocorrectRegexp;
             $roundAutocorrectString = $newRoundAutocorrectString;
             my $roundAutocorrectChanges = 0;
             for my $thisGameNum (@games_num) {
               if ($GAMES_round[$thisGameNum] =~ /$roundAutocorrectRegexp/i) {
-                $GAMES_round[$thisGameNum] = round_autocorrect($GAMES_round[$thisGameNum]);
+                $GAMES_round[$thisGameNum] = round_autocorrect($GAMES_round[$thisGameNum], $GAMES_event[$thisGameNum]);
                 $GAMES_sortkey[$thisGameNum] = eventRound($GAMES_event[$thisGameNum], $GAMES_round[$thisGameNum]);
                 $roundAutocorrectChanges = 1;
               }
