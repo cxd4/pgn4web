@@ -1679,7 +1679,6 @@ sub process_master_command {
         if ($parameters eq "\"\"") {
           $EloAutoprioritizeString = "";
         } else {
-          if ($parameters =~ /\$(?!(min|max|avg)Elo\b)/) { pgn4webError(); }
           update_safevalElo(2000, 0);
           my $test = $safevalElo->reval($parameters);
           if ($@) { pgn4webError(); }
@@ -1706,7 +1705,6 @@ sub process_master_command {
         if ($parameters eq "\"\"") {
           $EloIgnoreString = "";
         } else {
-          if ($parameters =~ /\$(?!(min|max|avg)Elo\b)/) { pgn4webError(); }
           update_safevalElo(2000, 0);
           my $test = $safevalElo->reval($parameters);
           if ($@) { pgn4webError(); }
@@ -1752,7 +1750,6 @@ sub process_master_command {
           } else {
             my $newEventAutocorrectRegexp = $2;
             my $newEventAutocorrectString = $3;
-            if ($newEventAutocorrectString =~ /\$(?!([`&'\d+-]))/) { pgn4webError(); }
             my $newEventAutocorrectTest = "test";
             $newEventAutocorrectTest =~ s/$newEventAutocorrectRegexp/$safevalEvent->reval($newEventAutocorrectString)/egi;
             if ($@) { pgn4webError(); }
@@ -2380,7 +2377,6 @@ sub process_master_command {
           } else {
             my $newRoundAutocorrectRegexp = $2;
             my $newRoundAutocorrectString = $3;
-            if ($newRoundAutocorrectString =~ /\$(?!([`&'\d+-]|event\b))/) { pgn4webError(); }
             my $newRoundAutocorrectTest = "test";
             ${$safevalRound->varglob("event")} = "Test Event";
             $newRoundAutocorrectTest =~ s/$newRoundAutocorrectRegexp/$safevalRound->reval($newRoundAutocorrectString)/egi;
