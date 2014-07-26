@@ -41,7 +41,7 @@ if ($BOT_HANDLE eq "" || $OPERATOR_HANDLE eq "") {
 }
 
 
-our $PGN_FILE = "live.pgn";
+our $PGN_FILE = "";
 
 our $PGN_ARCHIVE = "";
 our $archiveSelectFilter = "";
@@ -1069,15 +1069,17 @@ sub refresh_pgn {
   }
 
   if ($pgn ne $lastPgn) {
+    $lastPgn = $pgn;
+    $lastPgnNum = $newPgnNum;
     $lastPgnRefresh = time();
-    if (open(my $thisFile, ">$PGN_FILE")) {
-      print $thisFile $pgn;
-      close($thisFile);
-      $pgnWriteCount++;
-      $lastPgn = $pgn;
-      $lastPgnNum = $newPgnNum;
-    } else {
-      log_terminal("error: failed writing $PGN_FILE");
+    $pgnWriteCount++;
+    if ($PGN_FILE ne "") {
+      if (open(my $thisFile, ">$PGN_FILE")) {
+        print $thisFile $pgn;
+        close($thisFile);
+      } else {
+        log_terminal("error: failed writing $PGN_FILE");
+      }
     }
     if ($autorelayMode == 1) {
       log_rounds();
@@ -1559,22 +1561,10 @@ sub process_master_command {
       if ($parameters ne "") {
         if ($parameters eq "\"\"") { $parameters = ""; }
         $PGN_ARCHIVE = $parameters;
+        log_terminal("info: archivefile=$PGN_ARCHIVE");
       }
-      my $fileInfoText = "archivefile=$PGN_ARCHIVE";
-      log_terminal("info: $fileInfoText");
-      if ($PGN_ARCHIVE ne "") {
-        my @fileInfo = stat($PGN_ARCHIVE);
-        if (defined $fileInfo[9]) {
-          $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S", o_gmtime($fileInfo[9]));
-        }
-        if (defined $fileInfo[7]) {
-          $fileInfoText .= " size=$fileInfo[7]";
-        }
-        if (defined $fileInfo[2]) {
-          $fileInfoText .= sprintf(" permissions=%04o", $fileInfo[2] & 07777);
-        }
-      }
-      tell_operator($fileInfoText);
+      tell_operator("archivefile=$PGN_ARCHIVE" . fileInfo($PGN_ARCHIVE));
+      check_pgn_files();
     } else {
       tell_operator("error: invalid $command parameter");
     }
@@ -1659,6 +1649,7 @@ sub process_master_command {
     }
   } elsif ($command eq "config") {
     tell_operator("config: livemax=$maxGamesNum livefile=$PGN_FILE livedate=$newGame_date memorymax=$memoryMaxGamesNum memoryfile=$PGN_MEMORY memorydate=$memory_date memoryselect=$memorySelectFilter memoryautopurgeevent=$memoryAutopurgeEvent topfile=$PGN_TOP archivefile=$PGN_ARCHIVE archivedate=$archive_date archiveselect=$archiveSelectFilter placeholdergame=$placeholderGame placeholderdate=$placeholder_date placeholderresult=$placeholder_result follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter eloignore=$EloIgnoreString eloautoprioritize=$EloAutoprioritizeString prioritize=$prioritizeFilter autoprioritize=$autoPrioritize prioritizeonly=$prioritizeOnly event=$newGame_event eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " round=$newGame_round roundautocorrect=" . ($roundAutocorrectRegexp ? "/$roundAutocorrectRegexp/$roundAutocorrectString/" : "") . " roundreverse=$roundReverse site=$newGame_site heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
+    check_pgn_files();
   } elsif (($TEST_FLAG) && ($command eq "evaluate")) {
     if ($parameters ne "") {
       eval {
@@ -1882,23 +1873,14 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "livefile") {
-    if ($parameters =~ /^[\w\d\/\\.+=_-]*$/) { # for portability only a subset of filename chars is allowed
+    if ($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) { # for portability only a subset of filename chars is allowed
       if ($parameters ne "") {
+        if ($parameters eq "\"\"") { $parameters = ""; }
         $PGN_FILE = $parameters;
+        log_terminal("info: livefile=$PGN_FILE");
       }
-      my $fileInfoText = "livefile=$PGN_FILE";
-      log_terminal("info: $fileInfoText");
-      my @fileInfo = stat($PGN_FILE);
-      if (defined $fileInfo[9]) {
-        $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S", o_gmtime($fileInfo[9]));
-      }
-      if (defined $fileInfo[7]) {
-        $fileInfoText .= " size=$fileInfo[7]";
-      }
-      if (defined $fileInfo[2]) {
-        $fileInfoText .= sprintf(" permissions=%04o", $fileInfo[2] & 07777);
-      }
-      tell_operator($fileInfoText);
+      tell_operator("livefile=$PGN_FILE" . fileInfo($PGN_FILE));
+      check_pgn_files();
     } else {
       tell_operator("error: invalid $command parameter");
     }
@@ -2048,20 +2030,10 @@ sub process_master_command {
            @memory_games_sortkey = ();
         }
         $PGN_MEMORY = $parameters;
+        log_terminal("info: memoryfile=$PGN_MEMORY");
       }
-      my $fileInfoText = "memoryfile=$PGN_MEMORY";
-      log_terminal("info: $fileInfoText");
-      my @fileInfo = stat($PGN_MEMORY);
-      if (defined $fileInfo[9]) {
-        $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S", o_gmtime($fileInfo[9]));
-      }
-      if (defined $fileInfo[7]) {
-        $fileInfoText .= " size=$fileInfo[7]";
-      }
-      if (defined $fileInfo[2]) {
-        $fileInfoText .= sprintf(" permissions=%04o", $fileInfo[2] & 07777);
-      }
-      tell_operator($fileInfoText);
+      tell_operator("memoryfile=$PGN_MEMORY" . fileInfo($PGN_MEMORY));
+      check_pgn_files();
     } else {
       tell_operator("error: invalid $command parameter");
     }
@@ -2442,15 +2414,6 @@ sub process_master_command {
     } else {
       tell_operator("error: invalid $command parameter");
     }
-  } elsif ($command eq "verbosity") {
-    if ($parameters =~ /^[0-7]?$/) {
-      if ($parameters ne "") {
-        $verbosity = $parameters;
-      }
-      tell_operator_and_log_terminal("alert: verbosity=$verbosity");
-    } else {
-      tell_operator("error: invalid $command parameter");
-    }
   } elsif ($command eq "topfile") {
     if ($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) { # for portability only a subset of filename chars is allowed
       if ($parameters ne "") {
@@ -2459,20 +2422,19 @@ sub process_master_command {
            $lastTopPgn = "";
         }
         $PGN_TOP = $parameters;
+        log_terminal("info: topfile=$PGN_TOP");
       }
-      my $fileInfoText = "topfile=$PGN_TOP";
-      log_terminal("info: $fileInfoText");
-      my @fileInfo = stat($PGN_TOP);
-      if (defined $fileInfo[9]) {
-        $fileInfoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S", o_gmtime($fileInfo[9]));
+      tell_operator("topfile=$PGN_TOP" . fileInfo($PGN_TOP));
+      check_pgn_files();
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "verbosity") {
+    if ($parameters =~ /^[0-7]?$/) {
+      if ($parameters ne "") {
+        $verbosity = $parameters;
       }
-      if (defined $fileInfo[7]) {
-        $fileInfoText .= " size=$fileInfo[7]";
-      }
-      if (defined $fileInfo[2]) {
-        $fileInfoText .= sprintf(" permissions=%04o", $fileInfo[2] & 07777);
-      }
-      tell_operator($fileInfoText);
+      tell_operator_and_log_terminal("alert: verbosity=$verbosity");
     } else {
       tell_operator("error: invalid $command parameter");
     }
@@ -2504,6 +2466,30 @@ sub observe {
     } else {
       tell_operator("error: invalid game $_");
     }
+  }
+}
+
+sub fileInfo {
+  my ($filename) = @_;
+  my $infoText = "";
+  if ($filename ne "") {
+     my @info = stat($filename);
+     if (defined $info[9]) {
+       $infoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S", o_gmtime($info[9]));
+     }
+     if (defined $info[7]) {
+       $infoText .= " size=$info[7]";
+     }
+     if (defined $info[2]) {
+       $infoText .= sprintf(" permissions=%04o", $info[2] & 07777);
+     }
+  }
+  return $infoText;
+}
+
+sub check_pgn_files {
+  if (($PGN_FILE eq "") && ($PGN_MEMORY eq "") && ($PGN_TOP eq "") && ($PGN_ARCHIVE eq "")) {
+    tell_operator_and_log_terminal("warning: all output files disabled");
   }
 }
 
@@ -2745,6 +2731,7 @@ sub setup {
   $tellOperator = 1;
   tell_operator("info: ready");
   if ($FLAGS) { tell_operator("alert: flags: $FLAGS"); }
+  check_pgn_files();
 }
 
 sub shut_down {
