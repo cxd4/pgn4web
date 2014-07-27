@@ -318,9 +318,10 @@ sub eventRound {
   return "\"$thisEvent\" \"$thisRound\"";
 }
 
-sub clean_eventRound {
+# sprintf_eventRound is for output display only, since in some unexpected occurrences it might not reverse accurately eventRound
+sub sprintf_eventRound {
   my ($thisEventRound) = @_;
-  $thisEventRound =~ s/([".])(0+|r)(?=[^".])/$1/g;
+  $thisEventRound =~ s/([".])(0+(?=\d+[".])|r)/$1/g;
   return $thisEventRound;
 }
 
@@ -1243,7 +1244,7 @@ sub memory_purge_round {
         @memory_games = @memory_games[0..($i-1), ($i+1)..$#memory_games];
         @memory_games_sortkey = @memory_games_sortkey[0..($i-1), ($i+1)..$#memory_games_sortkey];
         if ($logged == 0) {
-          log_terminal('debug: memory purged round: ' . $thisEventRound);
+          log_terminal('debug: memory purged round: ' . sprintf_eventRound($thisEventRound));
           $logged = 1;
         }
         $purgedRound++;
@@ -1393,7 +1394,7 @@ sub memory_load {
       my @newSortkey = ();
       for (my $m=$#memory_games_sortkey; $m>=0; $m--) {
         unless ($memory_games_sortkey[$m] ~~ @newSortkey) {
-          log_terminal("info: event mem: "  . clean_eventRound($memory_games_sortkey[$m]));
+          log_terminal("info: event mem: "  . sprintf_eventRound($memory_games_sortkey[$m]));
           push(@newSortkey, $memory_games_sortkey[$m]);
         }
       }
@@ -1418,13 +1419,13 @@ sub log_rounds {
 
   foreach (@currentRounds) {
     unless ($_ ~~ @newRounds) {
-      log_terminal("info: event out: " . clean_eventRound($_));
+      log_terminal("info: event out: " . sprintf_eventRound($_));
     }
   }
 
   foreach (@newRounds) {
     unless ($_ ~~ @currentRounds) {
-      log_terminal("info: event new: " . clean_eventRound($_));
+      log_terminal("info: event new: " . sprintf_eventRound($_));
       $roundsStartCount++;
       if ($memoryAutopurgeEvent > 0) {
         $thisEvent = $_;
