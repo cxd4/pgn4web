@@ -318,6 +318,12 @@ sub eventRound {
   return "\"$thisEvent\" \"$thisRound\"";
 }
 
+sub clean_eventRound {
+  my ($thisEventRound) = @_;
+  $thisEventRound =~ s/([".])(0+|r)(?=[^".])/$1/g;
+  return $thisEventRound;
+}
+
 sub cleanup_failed_save_game {
   my ($gameNum) = @_;
   if ($autorelayMode == 1) {
@@ -1387,7 +1393,7 @@ sub memory_load {
       my @newSortkey = ();
       for (my $m=$#memory_games_sortkey; $m>=0; $m--) {
         unless ($memory_games_sortkey[$m] ~~ @newSortkey) {
-          log_terminal("info: event mem: $memory_games_sortkey[$m]");
+          log_terminal("info: event mem: "  . clean_eventRound($memory_games_sortkey[$m]));
           push(@newSortkey, $memory_games_sortkey[$m]);
         }
       }
@@ -1412,13 +1418,13 @@ sub log_rounds {
 
   foreach (@currentRounds) {
     unless ($_ ~~ @newRounds) {
-      log_terminal("info: event out: $_");
+      log_terminal("info: event out: " . clean_eventRound($_));
     }
   }
 
   foreach (@newRounds) {
     unless ($_ ~~ @currentRounds) {
-      log_terminal("info: event new: $_");
+      log_terminal("info: event new: " . clean_eventRound($_));
       $roundsStartCount++;
       if ($memoryAutopurgeEvent > 0) {
         $thisEvent = $_;
