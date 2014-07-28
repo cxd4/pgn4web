@@ -770,7 +770,7 @@ sub process_line {
               cleanup_failed_save_game($thisGameNum);
             }
           } else {
-            log_terminal("debug: skipped Elo game $thisGameNum " . $GAMES_headerForFilter[$thisGameNum] . "[WhiteElo \"$thisWhiteElo\"][BlackElo \"$thisBlackElo\"]");
+            log_terminal("debug: skipped ignored game $thisGameNum " . $GAMES_headerForFilter[$thisGameNum] . "[WhiteElo \"$thisWhiteElo\"][BlackElo \"$thisBlackElo\"]");
             cleanup_failed_save_game($thisGameNum);
           }
         } else {
@@ -778,7 +778,7 @@ sub process_line {
           cleanup_failed_save_game($thisGameNum);
         }
       } else {
-        log_terminal("debug: Elo check: game $thisGameNum not found");
+        log_terminal("debug: missing game $thisGameNum when checking Elo");
       }
     } else {
       log_terminal("debug: Elo check while autorelayMode=$autorelayMode");
@@ -2017,7 +2017,7 @@ sub process_master_command {
           refresh_pgn();
           tell_operator("corrected result");
         } else {
-          tell_operator("no memory result found for correct");
+          tell_operator("memory result not found for correct");
         }
         1;
       } or do {
@@ -2111,7 +2111,7 @@ sub process_master_command {
         refresh_pgn();
         tell_operator("purged memory game");
       } else {
-        tell_operator("no memory game found for purge");
+        tell_operator("memory game not found for purge");
       }
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
@@ -2125,7 +2125,7 @@ sub process_master_command {
         refresh_pgn();
         tell_operator("purged memory event");
       } else {
-        tell_operator("no memory event found for purge");
+        tell_operator("memory event not found for purge");
       }
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
@@ -2139,7 +2139,7 @@ sub process_master_command {
         refresh_pgn();
         tell_operator("purged memory round");
       } else {
-        tell_operator("no memory round found for purge");
+        tell_operator("memory round not found for purge");
       }
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
@@ -2158,7 +2158,7 @@ sub process_master_command {
           refresh_pgn();
           tell_operator("renamed event");
         } else {
-          tell_operator("no memory event found for rename");
+          tell_operator("memory event not found for rename");
         }
         1;
       } or do {
@@ -2184,7 +2184,7 @@ sub process_master_command {
           refresh_pgn();
           tell_operator("renamed round");
         } else {
-          tell_operator("no memory round found for rename");
+          tell_operator("memory round not found for rename");
         }
         1;
       } or do {
