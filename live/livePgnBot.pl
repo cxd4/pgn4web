@@ -1655,7 +1655,30 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "config") {
-    tell_operator("config: livemax=$maxGamesNum livefile=$PGN_FILE livedate=$newGame_date memorymax=$memoryMaxGamesNum memoryfile=$PGN_MEMORY memorydate=$memory_date memoryselect=$memorySelectFilter memoryautopurgeevent=$memoryAutopurgeEvent topfile=$PGN_TOP archivefile=$PGN_ARCHIVE archivedate=$archive_date archiveselect=$archiveSelectFilter placeholdergame=$placeholderGame placeholderdate=$placeholder_date placeholderresult=$placeholder_result follow=$followMode relay=$relayMode autorelay=$autorelayMode ignore=$ignoreFilter eloignore=$EloIgnoreString eloautoprioritize=$EloAutoprioritizeString prioritize=$prioritizeFilter autoprioritize=$autoPrioritize prioritizeonly=$prioritizeOnly event=$newGame_event eventautocorrect=" . ($eventAutocorrectRegexp ? "/$eventAutocorrectRegexp/$eventAutocorrectString/" : "") . " round=$newGame_round roundautocorrect=" . ($roundAutocorrectRegexp ? "/$roundAutocorrectRegexp/$roundAutocorrectString/" : "") . " roundreverse=$roundReverse site=$newGame_site heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour timeoffset=$timeOffset verbosity=$verbosity");
+    my $cfg = "config:";
+    $cfg .= " livefile=$PGN_FILE livemax=$maxGamesNum livedate=$newGame_date";
+    $cfg .= " topfile=$PGN_TOP";
+    $cfg .= " memoryfile=$PGN_MEMORY";
+    if ($PGN_MEMORY ne "") { $cfg .= " memorymax=$memoryMaxGamesNum memorydate=$memory_date memoryselect=$memorySelectFilter memoryautopurgeevent=$memoryAutopurgeEvent"; }
+    $cfg .= " archivefile=$PGN_ARCHIVE";
+    if ($PGN_ARCHIVE ne "") { $cfg .= " archivedate=$archive_date archiveselect=$archiveSelectFilter"; }
+    $cfg .= " placeholdergame=$placeholderGame";
+    if ($placeholderGame ne "never") { $cfg .= " placeholderdate=$placeholder_date placeholderresult=$placeholder_result"; }
+    $cfg .= " follow=$followMode";
+    $cfg .= " relay=$relayMode";
+    if ($relayMode == 1) { $cfg .= " autorelay=$autorelayMode";
+      if ($autorelayMode == 1) { $cfg .= " ignore=$ignoreFilter eloignore=$EloIgnoreString prioritize=$prioritizeFilter autoprioritize=$autoPrioritize eloautoprioritize=$EloAutoprioritizeString prioritizeonly=$prioritizeOnly"; }
+    }
+    $cfg .= " event=$newGame_event eventautocorrect=";
+    if ($eventAutocorrectRegexp ne "") { $cfg .= "/$eventAutocorrectRegexp/$eventAutocorrectString/"; }
+    $cfg .= " round=$newGame_round roundautocorrect=";
+    if ($roundAutocorrectRegexp ne "") { $cfg .= "/$roundAutocorrectRegexp/$roundAutocorrectString/"; }
+    $cfg .= " roundreverse=$roundReverse";
+    $cfg .= " site=$newGame_site";
+    $cfg .= " heartbeat=$heartbeat_freq_hour/$heartbeat_offset_hour";
+    $cfg .= " timeoffset=$timeOffset";
+    $cfg .= " verbosity=$verbosity";
+    tell_operator($cfg);
     check_pgn_files();
   } elsif (($TEST_FLAG) && ($command eq "evaluate")) {
     if ($parameters ne "") {
