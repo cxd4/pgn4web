@@ -363,7 +363,8 @@ function myOnResize() {
     horizontalLayout = (squareSize_H >= squareSize_V);
     squareSize = horizontalLayout ? squareSize_H : squareSize_V;
   }
-  var framePadding = framePaddingRatio * squareSize;
+  var framePadding = Math.floor(framePaddingRatio * squareSize);
+  squareSize = Math.floor(squareSize);
   var bodyHeight = wh - 2 * framePadding;
   var lineHeight;
   if (horizontalLayout) {
@@ -387,28 +388,28 @@ function myOnResize() {
   myInsertRule(sheet, "body", "-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; -o-user-select: none; user-select: none; -webkit-text-size-adjust: none; -moz-text-size-adjust: none; -ms-text-size-adjust: none; -o-text-size-adjust: none; text-size-adjust: none; -webkit-touch-callout: none; height: " + bodyHeight + "px; padding: 0px; margin: " + framePadding + "px; white-space: nowrap; overflow: hidden; color: #" + fontColorHex + "; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;");
   myInsertRule(sheet, "a", "text-decoration: none; color: #" + fontColorHex + ";");
   if (bare) {
-    if (horizontalLayout) { myInsertRule(sheet, ".boardTable", "margin-left: " + ((ww - 2 * framePadding - 8 * squareSize) / 2) + "px;"); }
-    else { myInsertRule(sheet, ".boardTable", "margin-top: " + ((wh - 2 * framePadding - 8 * squareSize) / 2) + "px;"); }
+    if (horizontalLayout) { myInsertRule(sheet, ".boardTable", "margin-left: " + Math.floor((ww - 2 * framePadding - 8 * squareSize) / 2) + "px;"); }
+    else { myInsertRule(sheet, ".boardTable", "margin-top: " + Math.floor((wh - 2 * framePadding - 8 * squareSize) / 2) + "px;"); }
   } else {
-    if (horizontalLayout) { myInsertRule(sheet, ".boardTable", "float: left;" + (horizontalCentered ? " margin-top: " + ((wh - 2 * framePadding - 8 * squareSize) / 2) + "px;" : "")); }
-    else { myInsertRule(sheet, ".boardTable", "margin-left: " + ((ww - 2 * framePadding - 8 * squareSize) / 2) + "px;"); }
+    if (horizontalLayout) { myInsertRule(sheet, ".boardTable", "float: left;" + (horizontalCentered ? " margin-top: " + Math.floor((wh - 2 * framePadding - 8 * squareSize) / 2) + "px;" : "")); }
+    else { myInsertRule(sheet, ".boardTable", "margin-left: " + Math.floor((ww - 2 * framePadding - 8 * squareSize) / 2) + "px;"); }
   }
   myInsertRule(sheet, ".pieceImage", "width:" + pieceSize + "px; height:" + pieceSize + "px;");
   myInsertRule(sheet, ".whiteSquare", "width:" + bareSquareSize + "px; height:" + bareSquareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + lightColorHex + "; border-color: #" + lightColorHex + ";");
   myInsertRule(sheet, ".blackSquare", "width:" + bareSquareSize + "px; height:" + bareSquareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + darkColorHex + "; border-color: #" + darkColorHex + ";");
   myInsertRule(sheet, ".highlightWhiteSquare", "width:" + bareSquareSize + "px; height:" + bareSquareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + lightColorHex + "; border-color: #" + (highlightColorHex ? highlightColorHex : lightColorHex) + ";");
   myInsertRule(sheet, ".highlightBlackSquare", "width:" + bareSquareSize + "px; height:" + bareSquareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + darkColorHex + "; border-color: #" + (highlightColorHex ? highlightColorHex : darkColorHex) + ";");
-  myInsertRule(sheet, ".headerContainer", "width: " + headerContainerWidth + "px; white-space: nowrap; overflow: hidden;" + (horizontalLayout ? " float: right; text-align: left;" + (horizontalCentered ? " margin-top: " + ((wh - 2 * framePadding - 8 * squareSize) / 2) + "px;" : "") : " text-align: center;"));
+  myInsertRule(sheet, ".headerContainer", "width: " + headerContainerWidth + "px; white-space: nowrap; overflow: hidden;" + (horizontalLayout ? " float: right; text-align: left;" + (horizontalCentered ? " margin-top: " + Math.floor((wh - 2 * framePadding - 8 * squareSize) / 2) + "px;" : "") : " text-align: center;"));
   if (LiveBroadcastDelay > 0) {
     myInsertRule(sheet, ".gameButtons", "display: none;");
   } else {
     myInsertRule(sheet, ".liveStatusLine", "display: none;");
     if (horizontalLayout) { myInsertRule(sheet, ".gameButtons", "width: " + (headerContainerWidth - lineHeight) + "px; " + "text-align: left;"); }
-    var buttonCss = "margin: 0px; padding: 0px; width: " + (3 * lineHeight / 2) + "px !important; height: " + lineHeight + "px; color: #" + fontColorHex + "; border-style: none; -webkit-appearance: none; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;";
+    var buttonCss = "margin: 0px; padding: 0px; width: " + Math.floor(3 * lineHeight / 2) + "px !important; height: " + lineHeight + "px; color: #" + fontColorHex + "; border-style: none; -webkit-appearance: none; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;";
     myInsertRule(sheet, ".buttonControl", buttonCss);
     myInsertRule(sheet, ".buttonControlPlay", buttonCss);
     myInsertRule(sheet, ".buttonControlStop", buttonCss);
-    myInsertRule(sheet, ".buttonControlSpace", "margin: 0px; padding: 0px; width: " + (lineHeight / 4) + "px !important;");
+    myInsertRule(sheet, ".buttonControlSpace", "margin: 0px; padding: 0px; width: " + Math.floor(lineHeight / 4) + "px !important;");
   }
   myInsertRule(sheet, ".colorFlag", "height: 0.8ex; width: 0.8ex; border-width: 1px; border-color: #" + fontColorHex + "; border-style: solid; margin-bottom: 0.2ex; margin-left: " + Math.floor(5 * lineHeight / 9) + "px; margin-right:" + Math.floor(5 * lineHeight / 9) + "px;");
   myInsertRule(sheet, ".leftRightSpacing", "margin-left: " + Math.floor(lineHeight / 2) + "px; margin-right: " + Math.floor(lineHeight / 2) + "px;");
@@ -445,7 +446,7 @@ function myOnResize() {
     fixECO();
   }
 
-  dynamicFrameDebugString = "fw=" + ww + " fh=" + wh + " fp=" + Math.round(framePadding*100)/100 + " fs=" + fontSize + " ss=" + Math.round(squareSize*100)/100 + " sb=" + squareBorderWidth + " ps=" + pieceSize + " pbs=" + pieceBaseSize;
+  dynamicFrameDebugString = "fw=" + ww + " fh=" + wh + " fp=" + framePadding + " fs=" + fontSize + " ss=" + squareSize + " sb=" + squareBorderWidth + " ps=" + pieceSize + " pbs=" + pieceBaseSize;
 
   return pieceSize;
 }
@@ -624,7 +625,7 @@ function customFunctionOnPgnGameLoad() {
   }
   updateBareShortcut();
   var theObj = document.getElementById("GameResult");
-  if (theObj) { theObj.innerHTML = theObj.innerHTML.replace(/\*/g, "&lowast;").replace(/(\d)-(\d)/g, "$1<span style='font-weight: normal;'>&nbsp;&dash;&nbsp</span>$2"); }
+  if (theObj) { theObj.innerHTML = theObj.innerHTML.replace(/\*/g, "&lowast;").replace(/(\d)-(\d)/g, "$1<span style='font-weight: normal;'>&nbsp;-&nbsp</span>$2"); }
 
 <!-- AppCheck: customFunctionOnPgnGameLoad -->
 
