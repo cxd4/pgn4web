@@ -167,6 +167,7 @@ div, span {
   border-style: solid;
   border-color: #AAAAAA;
   border-width: 1px;
+  border-radius: 0;
   background: #FFFFFF;
   color: gray;
 }

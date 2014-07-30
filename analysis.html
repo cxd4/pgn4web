@@ -108,14 +108,16 @@
   function customShortcutKey_Shift_9() { showAnalysisBoard(false); }
   function customShortcutKey_Shift_0() { showAnalysisBoard(); }
 
-  clearShortcutSquares("E", "7");
   if (!pgn4web_engineWindowDisableAnalysisBoard) {
     boardShortcut("E8", "open/update analysis board", function(t,e){ showAnalysisBoard(e.shiftKey); });
     boardShortcut("F8", "close/pause analysis board", function(t,e){ if (!e.shiftKey) { hideAnalysisBoard(); } });
   }
-  boardShortcut("G6", "toggle last/next moves information", function(t,e){ toggleLastNext(); });
+  boardShortcut("E7", "toggle last/next moves information", function(t,e){ toggleLastNext(); });
+  boardShortcut("G7", "scroll moves text to top", function(t,e){ document.getElementById("GameTextResult").scrollTop = 0; });
+  boardShortcut("G6", "scroll moves text to current move", function(t,e){ autoScrollToCurrentMoveIfEnabled(); });
   boardShortcut("F5", "toggle games list", function(t,e){ toggleGamesList(); });
-  boardShortcut("H5", "scroll moves text to current move", function(t,e){ autoScrollToCurrentMoveIfEnabled(); });
+  boardShortcut("G5", "scroll moves text to bottom", function(t,e){ document.getElementById("GameTextResult").scrollTop = document.getElementById("GameTextResult").scrollHeight; });
+  boardShortcut("H5", "search next annotator", function(t,e){ searchAnnotator(e.shiftKey); });
 
   function FlipBoard() {}
 
@@ -199,6 +201,12 @@
 
   function searchPlayer(name, FideId) {
     if (typeof(openFidePlayerUrl) == "function") { openFidePlayerUrl(name, FideId); }
+  }
+
+  function searchAnnotator(same) {
+    var fixedAnnotator = fixRegExp(customPgnHeaderTag("Annotator"));
+    searchPgnGame(same ? '\\[\\s*Annotator\\s*"' + fixedAnnotator + '"\\s*\\]' : '\\[\\s*Annotator\\s*"(?!' + fixedAnnotator + '"\\s*\\])', false);
+    document.getElementById("GameTextResult").scrollTop = document.getElementById("GameTextResult").scrollHeight;
   }
 
   function myOnResize() {
@@ -330,7 +338,7 @@
 
 <div class="gametextresultDiv" id="GameTextResult">
 <div id="GameText"></div>
-<div class="gameAnnotator" id="GameAnnotator"></div>
+<a class="gameAnnotator" id="GameAnnotator" href="javascript:void(0);" onclick="searchAnnotator(!event.shiftKey); this.blur();"></a>
 <div id="GameResult"></div>
 </div>
 
