@@ -485,9 +485,9 @@ var debugShortcutSquare = "A8";
 
 boardShortcut("A8", "pgn4web v" + pgn4web_version + " debug info", function(t,e){ displayDebugInfo(); }, true);
 
-boardShortcut("B8", "show this position FEN string", function(t,e){ displayFenData(); }, true);
+boardShortcut("B8", "show current position FEN string", function(t,e){ displayFenData(); }, true);
 
-boardShortcut("C8", "show this game PGN source data", function(t,e){ if (e.shiftKey) { savePgnData(true); } else { displayPgnData(true); } }, true);
+boardShortcut("C8", "show current game PGN source data", function(t,e){ if (e.shiftKey) { savePgnData(true); } else { displayPgnData(true); } }, true);
 
 boardShortcut("D8", "show full PGN source data", function(t,e){ if (e.shiftKey) { savePgnData(); } else { displayPgnData(); } }, true);
 
@@ -632,8 +632,8 @@ setB1C1F1G1boardShortcuts();
 
 function setB1C1F1G1boardShortcuts() {
   if (commentsIntoMoveText && GameHasComments) {
-    if (boardIsDefault("B1")) { boardShortcut("B1", "go to previous comment or variation", function(t,e){ if (e.shiftKey) { GoToMove(CurrentPly - 10); } else { MoveToPrevComment(); } }, true); }
-    if (boardIsDefault("G1")) { boardShortcut("G1", "go to next comment or variation", function(t,e){ if (e.shiftKey) { GoToMove(CurrentPly + 10); } else { MoveToNextComment(); } }, true); }
+    if (boardIsDefault("B1")) { boardShortcut("B1", "find previous comment or variation", function(t,e){ if (e.shiftKey) { GoToMove(CurrentPly - 10); } else { MoveToPrevComment(); } }, true); }
+    if (boardIsDefault("G1")) { boardShortcut("G1", "find next comment or variation", function(t,e){ if (e.shiftKey) { GoToMove(CurrentPly + 10); } else { MoveToNextComment(); } }, true); }
   } else {
     if (boardIsDefault("B1")) { boardShortcut("B1", "move 10 half-moves backward", function(t,e){ GoToMove(CurrentPly - 10); }, true); }
     if (boardIsDefault("G1")) { boardShortcut("G1", "move 10 half-moves forward", function(t,e){ GoToMove(CurrentPly + 10); }, true); }

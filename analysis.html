@@ -113,11 +113,12 @@
     boardShortcut("F8", "close/pause analysis board", function(t,e){ if (!e.shiftKey) { hideAnalysisBoard(); } });
   }
   boardShortcut("E7", "toggle last/next moves information", function(t,e){ toggleLastNext(); });
-  boardShortcut("G7", "scroll moves text to top", function(t,e){ document.getElementById("GameTextResult").scrollTop = 0; });
-  boardShortcut("G6", "scroll moves text to current move", function(t,e){ autoScrollToCurrentMoveIfEnabled(); });
+  boardShortcut("G7", "toggle show comments on separate lines", function(t,e){ if (e.shiftKey) { SetCommentsIntoMoveText(!commentsIntoMoveText); } else { SetCommentsOnSeparateLines(!commentsOnSeparateLines); } var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar); });
+  boardShortcut("G6", "search next annotator", function(t,e){ searchAnnotator(e.shiftKey); });
+  boardShortcut("H6", "scroll moves text to top", function(t,e){ document.getElementById("GameTextResult").scrollTop = 0; });
   boardShortcut("F5", "toggle games list", function(t,e){ toggleGamesList(); });
-  boardShortcut("G5", "scroll moves text to bottom", function(t,e){ document.getElementById("GameTextResult").scrollTop = document.getElementById("GameTextResult").scrollHeight; });
-  boardShortcut("H5", "search next annotator", function(t,e){ searchAnnotator(e.shiftKey); });
+  boardShortcut("G5", "scroll moves text to current move", function(t,e){ autoScrollToCurrentMoveIfEnabled(); });
+  boardShortcut("H5", "scroll moves text to bottom", function(t,e){ document.getElementById("GameTextResult").scrollTop = document.getElementById("GameTextResult").scrollHeight; });
 
   function FlipBoard() {}
 
@@ -338,6 +339,7 @@
 
 <div class="gametextresultDiv" id="GameTextResult">
 <div id="GameText"></div>
+<div class="comment" style="line-height: 33%;">&nbsp;</div>
 <a class="gameAnnotator" id="GameAnnotator" href="javascript:void(0);" onclick="searchAnnotator(!event.shiftKey); this.blur();"></a>
 <div id="GameResult"></div>
 </div>
