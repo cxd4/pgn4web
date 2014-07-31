@@ -2645,25 +2645,25 @@ sub h_info {
   my $secTime = time() - $startupTime;
   my $hourTime = $secTime / 3600;
   my $dayTime = $hourTime / 24;
-  my $thisInfo .= sprintf("rounds=%d/%d (r/d=%d)", ($#currentRounds + 1), $roundsStartCount, $roundsStartCount / $dayTime);
-  $thisInfo .= sprintf(" games=%d/%d/%d (g/d=%d)", ($#games_num + 1), $maxGamesNum, $gamesStartCount, $gamesStartCount / $dayTime);
+  my $thisInfo .= sprintf("rounds=%d/%d r/d=%d", ($#currentRounds + 1), $roundsStartCount, $roundsStartCount / $dayTime);
+  $thisInfo .= sprintf(" games=%d/%d/%d g/d=%d", ($#games_num + 1), $maxGamesNum, $gamesStartCount, $gamesStartCount / $dayTime);
   if ($PGN_MEMORY ne "") {
     $thisInfo .= sprintf(" memory=%d/%d/%d", ($#memory_games + 1), $memoryMaxGamesNum, int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum));
   }
   if ($verbosity >= 5) {
-    $thisInfo .= sprintf(" pgn=%d (p/h=%d) cmd=%d (c/h=%d) lines=%d (l/h=%d)", $pgnWriteCount, $pgnWriteCount / $hourTime, $cmdRunCount, $cmdRunCount / $hourTime, $lineCount, $lineCount / $hourTime);
-    $thisInfo .= sprintf(" mem=%lu", mem_usage());
+    $thisInfo .= sprintf(" pgn=%d p/h=%d cmd=%d c/h=%d lines=%d l/h=%d", $pgnWriteCount, $pgnWriteCount / $hourTime, $cmdRunCount, $cmdRunCount / $hourTime, $lineCount, $lineCount / $hourTime);
+    $thisInfo .= " sys=" . sys_info();
   }
   $thisInfo .= sprintf(" last=%s", $lastPgnRefresh ? strftime("%Y-%m-%d %H:%M:%S", o_gmtime($lastPgnRefresh)) : "?");
   $thisInfo .= sprintf(" now=%s uptime=%s", strftime("%Y-%m-%d %H:%M:%S", o_gmtime($startupTime + $secTime)), sec2time($secTime));
   return $thisInfo;
 }
 
-sub mem_usage {
+sub sys_info {
   open(STAT, "</proc/$$/stat") or return "?";
   my @stat = split(/\s+/, <STAT>);
   close(STAT);
-  return $stat[22];
+  return $stat[3] . "/" . $stat[0] . "/" . $stat[22] . "/" . $stat[23];
 }
 
 
