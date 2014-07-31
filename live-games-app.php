@@ -30,7 +30,7 @@ if (isset($_SERVER['REQUEST_URI']) && preg_match('/\?install(#|$)/', $_SERVER['R
 <html>
 <head>
 <link rel="icon" sizes="16x16" href="live-games-app-icon-16x16.ico">
-<title>$appName web application installation</title>
+<title>$appName app installation</title>
 <style type="text/css">
 a { color: white; }
 body { color: white; background: black; font-family: sans-serif; padding: 2em; }
@@ -39,8 +39,8 @@ li { margin-bottom: 1em; }
 </style>
 </head>
 <body>
-<a id="webappIconLink" href="" target="_blank"><img id="webappIcon" class="icon" src="live-games-app-icon-60x60.png" /></a>
-<h1>$appName web application installation</h1>
+<a id="appIconLink" href="" target="_blank"><img id="appIcon" class="icon" src="live-games-app-icon-60x60.png" /></a>
+<h1>$appName app installation</h1>
 END;
 
   if ($platform == 'Android') {
@@ -49,9 +49,9 @@ END;
     }
     $html .= <<<END
 <ol>
-<li>open the <a id="webappLink" href="" target="_blank">web application URL</a> on a new tab of the google chrome browser</li>
+<li>open the <a id="appLink" href="" target="_blank">app URL</a> on a new tab of the google chrome browser</li>
 <li>tap on the action overflow button and select the "add to home screen" action</li>
-<li>the web application icon should appear on the home screen</li>
+<li>the app icon should appear on the home screen</li>
 </ol>
 END;
   } else if ($platform == 'iOS') {
@@ -60,23 +60,23 @@ END;
     }
     $html .= <<<END
 <ol>
-<li>open the <a id="webappLink" href="" target="_blank">web application URL</a> on a new page of the safari browser</li>
+<li>open the <a id="appLink" href="" target="_blank">app URL</a> on a new page of the safari browser</li>
 <li>tap on the action menu button</li>
 <li>select the "add to home screen" action</li>
-<li>the web application icon should appear on the home screen</li>
+<li>the app icon should appear on the home screen</li>
 </ol>
 END;
   } else {
     $html .= <<<END
 <ol id="openappOl" style="display: none;">
-<li>start the <a href="javascript:void(0);" onclick="installOpenWebApp();">web application installation script</a></li>
-<li>the web application icon should appear on the start menu, on the desktop or on the home screen</li>
+<li>start the <a href="javascript:void(0);" onclick="installOpenWebApp();">app installation script</a></li>
+<li>the app icon should appear on the start menu, on the desktop or on the home screen</li>
 </ol>
 <ol id="otherOl" style="display: none;">
-<li>open the <a id="webappLink" href="" target="_blank">web application URL</a> on a new page of the browser</li>
+<li>open the <a id="appLink" href="" target="_blank">app URL</a> on a new page of the browser</li>
 <li>bookmark the URL</li>
-<li>open the newly created bookmark and use the web application from the browser</a>
-<li>optionally, if available from the browser, use a command like "add site to start menu", "add site to start screen", "add site to apps", "create application shortcuts", "add shortcut to home", "add to home screen" or similar in order to add the web application icon to the start menu, to the desktop or to the home screen</li>
+<li>open the newly created bookmark and start the app from the browser</a>
+<li>optionally, if available from the browser, use a command like "add site to start menu", "add site to start screen", "add site to apps", "create application shortcuts", "add shortcut to home", "add to home screen" or similar in order to add the app icon to the start menu, to the desktop or to the home screen</li>
 </ol>
 <script type="text/javascript">
 "use strict";
@@ -86,24 +86,24 @@ function installOpenWebApp() {
     var installOpenWebAppRequest = navigator.mozApps.install(location.href.replace(/\.php\?install.*/, ".webapp"));
     installOpenWebAppRequest.onerror = function() {
       if ((this.error.name == "MULTIPLE_APPS_PER_ORIGIN_FORBIDDEN") || (this.error.name == "REINSTALL_FORBIDDEN")) {
-        alert("error: installation failed: web application already installed for this domain");
+        alert("error: installation failed: app already installed for this domain");
       } else {
-        alert("error: web application installation failed");
+        alert("error: app installation failed");
       }
     };
-  } catch(e) { alert("error: web application installation not supported"); }
+  } catch(e) { alert("error: app installation not supported"); }
 }
 </script>
 END;
   }
 
   $html .= <<<END
-The <a href="https://code.google.com/p/pgn4web/wiki/WebApp_LiveGames" target="_blank">live games web application wiki page</a> provides further information and a detailed usage tutorial.
+The <a href="https://code.google.com/p/pgn4web/wiki/App_LiveGames" target="_blank">app user guide</a> provides further information and a detailed usage tutorial.
 <script type="text/javascript">
 "use strict";
 window.onload = function() {
-  document.getElementById("webappIconLink").href = document.getElementById("webappLink").href = location.href.replace(/\?install(#|$)/, "$1");
-  document.getElementById("webappIcon").style.opacity = 1;
+  document.getElementById("appIconLink").href = document.getElementById("appLink").href = location.href.replace(/\?install(#|$)/, "$1");
+  document.getElementById("appIcon").style.opacity = 1;
 };
 </script>
 </body>
@@ -125,10 +125,10 @@ function errorExit($errorNum) {
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>$appName web application error</title>
+<title>$appName app error</title>
 </head>
 <body style="color: white; background: black; font-family: sans-serif;">
-$appName web application error: $errorNum
+$appName app error: $errorNum
 </body>
 </html>
 END;
@@ -387,7 +387,7 @@ function fixGameLiveStatusExtraInfo(res) {
   if (lastGameLiveStatusExtraInfoRes === LOAD_PGN_FAIL) {
     newExtraText += "<span style='margin-left:" + (1.5 / fontSizeRatio) + "em;'";
     newExtraText += " onclick='refreshPgnSource(); this.blur();'";
-    newExtraText += " title='games from application cache'>";
+    newExtraText += " title='games from app cache'>";
     newExtraText += ((!localStorage[lsId + "lastGamesValidationTime"]) || ((new Date()).getTime() - localStorage[lsId + "lastGamesValidationTie"]) > 18000000) ? "X" : "&times;";
     newExtraText += "</span>";
     // 5h = 18000000ms
@@ -422,7 +422,7 @@ window['loadPgnFromPgnUrl'] = function(pgnUrl) {
   if (!appInitialized) {
     var theObj = document.getElementById("GameLiveStatusExtraInfoRight");
     if (theObj) { theObj.style.visibility = "visible"; }
-    var initialPgnGames = localStorage[lsId + "lastGamesPgnText"] || '[Event "please wait..."]\\n[Site "live games app"]\\n[Date "startup"]\\n[Round ""]\\n[White ""]\\n[Black ""]\\n[Result "*"]\\n';
+    var initialPgnGames = localStorage[lsId + "lastGamesPgnText"] || '[Event "$appName"]\\n[Site "app startup"]\\n[Date "please wait..."]\\n[Round ""]\\n[White ""]\\n[Black ""]\\n[Result "*"]\\n';
     if (!pgnGameFromPgnText(initialPgnGames)) {
       myAlert("error: invalid games cache");
     } else {
@@ -451,9 +451,9 @@ function detectEngineLocation() {
 
 engineWinParametersSeparator = "#?";
 
-boardShortcut(debugShortcutSquare, "about", function(t,e){ if (e.shiftKey || confirm("$appName web application\\nfrom the pgn4web project\\n\\nclick OK for debug info")) { displayDebugInfo(); } });
+boardShortcut(debugShortcutSquare, "about", function(t,e){ if (e.shiftKey || confirm("$appName\\napp from the pgn4web project\\n\\nclick OK for debug info")) { displayDebugInfo(); } });
 
-boardShortcut("F8", "live games web application wiki", function(t,e){ window.open("https://code.google.com/p/pgn4web/wiki/WebApp_LiveGames", "pgn4web_webAppWiki"); });
+boardShortcut("F8", "app user guide", function(t,e){ window.open("https://code.google.com/p/pgn4web/wiki/App_LiveGames", "pgn4web_webAppWiki"); });
 
 if (LiveBroadcastDelay > 0) {
   boardShortcut("G6", "search next live date", function(t,e){ searchPgnGame('\\\\[\\\\s*Date\\\\s*"[^"]*live[^"]*"\\\\s*\\\\]', e.shiftKey); }, true);
@@ -461,7 +461,7 @@ if (LiveBroadcastDelay > 0) {
   boardShortcut("G6", "search next date", function(t,e){ searchPgnGame('\\\\[\\\\s*Date\\\\s*"(?!' + fixRegExp(gameDate[currentGame]) + '"\\\\s*\\\\])', e.shiftKey); }, true);
 }
 
-boardShortcut("H5", "reset live games web application", function(t,e){ if (confirm("Reset live games web application to default configuration?\\n\\nWarning: application settings customizations, games data and engine analysis data will be lost.")) { window.localStorage.clear(); window.location.reload(); } });
+boardShortcut("H5", "reset app", function(t,e){ if (confirm("Reset app to default configuration?\\n\\nWarning: settings customizations, games data and engine analysis data will be lost.")) { window.localStorage.clear(); window.location.reload(); } });
 
 function gameKey(event, site, date, round, white, black) {
   var key = "";

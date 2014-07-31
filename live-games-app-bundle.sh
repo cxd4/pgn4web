@@ -3,7 +3,7 @@
 # see README file and http://pgn4web.casaschi.net
 # for credits, license and more details
 
-# bash script to create a custom live games web application bundle
+# bash script to create a custom live games app bundle
 # run as "bash script.sh"
 
 set +o posix

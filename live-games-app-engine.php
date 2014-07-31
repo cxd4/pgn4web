@@ -18,10 +18,10 @@ function errorExit($errorNum) {
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>web app error</title>
+<title>app error</title>
 </head>
 <body style="color: white; background: black; font-family: sans-serif;">
-web app error: $errorNum
+app error: $errorNum
 </body>
 </html>
 END;
