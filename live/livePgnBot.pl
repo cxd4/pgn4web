@@ -2652,10 +2652,18 @@ sub h_info {
   }
   if ($verbosity >= 5) {
     $thisInfo .= sprintf(" pgn=%d (p/h=%d) cmd=%d (c/h=%d) lines=%d (l/h=%d)", $pgnWriteCount, $pgnWriteCount / $hourTime, $cmdRunCount, $cmdRunCount / $hourTime, $lineCount, $lineCount / $hourTime);
+    $thisInfo .= sprintf(" mem=%lu", mem_usage());
   }
   $thisInfo .= sprintf(" last=%s", $lastPgnRefresh ? strftime("%Y-%m-%d %H:%M:%S", o_gmtime($lastPgnRefresh)) : "?");
   $thisInfo .= sprintf(" now=%s uptime=%s", strftime("%Y-%m-%d %H:%M:%S", o_gmtime($startupTime + $secTime)), sec2time($secTime));
   return $thisInfo;
+}
+
+sub mem_usage {
+  open(STAT, "</proc/$$/stat") or return "?";
+  my @stat = split(/\s+/, <STAT>);
+  close(STAT);
+  return $stat[22];
 }
 
 
