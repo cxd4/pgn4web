@@ -30,7 +30,7 @@ if (isset($_SERVER['REQUEST_URI']) && preg_match('/\?install(#|$)/', $_SERVER['R
 <html>
 <head>
 <link rel="icon" sizes="16x16" href="live-games-app-icon-16x16.ico">
-<title>$appName app installation</title>
+<title>$appName</title>
 <style type="text/css">
 a { color: white; }
 body { color: white; background: black; font-family: sans-serif; padding: 2em; }
@@ -40,26 +40,27 @@ li { margin-bottom: 1em; }
 </head>
 <body>
 <a id="appIconLink" href="" target="_blank"><img id="appIcon" class="icon" src="live-games-app-icon-60x60.png" /></a>
-<h1>$appName app installation</h1>
+<h1>$appName</h1>
+App installation:
 END;
 
   if ($platform == 'Android') {
+    $html .= "<ol>";
     if (!strstr($ua, 'chrome')) {
-      $html .= "Google chrome is the reccomended browser for the installation on android devices:";
+      $html .= "<li>google chrome is the reccomended browser for the installation on android devices</li>";
     }
     $html .= <<<END
-<ol>
 <li>open the <a id="appLink" href="" target="_blank">app URL</a> on a new tab of the google chrome browser</li>
 <li>tap on the action overflow button and select the "add to home screen" action</li>
 <li>the app icon should appear on the home screen</li>
 </ol>
 END;
   } else if ($platform == 'iOS') {
+    $html .= "<ol>";
     if (!strstr($ua, 'safari') || strstr($ua, 'crios')) {
-      $html .= "Safari is the reccomended browser for the installation on iOS devices:";
+      $html .= "<li>safari is the reccomended browser for the installation on iOS devices</li>";
     }
     $html .= <<<END
-<ol>
 <li>open the <a id="appLink" href="" target="_blank">app URL</a> on a new page of the safari browser</li>
 <li>tap on the action menu button</li>
 <li>select the "add to home screen" action</li>
@@ -125,7 +126,7 @@ function errorExit($errorNum) {
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>$appName app error</title>
+<title>$appName</title>
 </head>
 <body style="color: white; background: black; font-family: sans-serif;">
 $appName app error: $errorNum
@@ -461,7 +462,7 @@ if (LiveBroadcastDelay > 0) {
   boardShortcut("G6", "search next date", function(t,e){ searchPgnGame('\\\\[\\\\s*Date\\\\s*"(?!' + fixRegExp(gameDate[currentGame]) + '"\\\\s*\\\\])', e.shiftKey); }, true);
 }
 
-boardShortcut("H5", "reset app", function(t,e){ if (confirm("Reset app to default configuration?\\n\\nWarning: settings customizations, games data and engine analysis data will be lost.")) { window.localStorage.clear(); window.location.reload(); } });
+boardShortcut("H5", "reset app", function(t,e){ if (confirm("Reset app?\\n\\nWarning: settings customizations, games data and engine analysis data will be lost.")) { window.localStorage.clear(); window.location.reload(); } });
 
 function gameKey(event, site, date, round, white, black) {
   var key = "";
