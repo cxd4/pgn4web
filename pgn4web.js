@@ -2044,9 +2044,9 @@ function createBoard() {
 
   var theObj = document.getElementById("GameBoard");
   if (theObj) {
-    theObj.innerHTML = '<DIV STYLE="font-size: small; font-family: sans-serif; ' +
-      'padding: 10px; text-align: center;">' +
-      '...loading PGN data<br />please wait...</DIV>';
+    theObj.innerHTML = '<DIV TITLE="loading PGN data: please wait" ' +
+      'STYLE="font-family: sans-serif; padding: 2em; text-align: center;"' +
+      '>.&nbsp;.&nbsp;.</DIV>';
   }
 
   if (pgnUrl) {
