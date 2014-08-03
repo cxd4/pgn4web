@@ -2041,13 +2041,6 @@ function loadPgnFromTextarea(textareaId) {
 }
 
 function createBoard() {
-
-  var theObj = document.getElementById("GameBoard");
-  if (theObj) {
-    theObj.innerHTML = '<DIV ' +
-      'STYLE="font-family: sans-serif; padding: 3ex; text-align: center;"' +
-      '>&middot;&nbsp;&middot;&nbsp;&middot;</DIV>';
-  }
   if (pgnUrl) {
     loadPgnFromPgnUrl(pgnUrl);
   } else if ( document.getElementById("pgnText") ) {
