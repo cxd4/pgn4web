@@ -442,7 +442,7 @@ a.variation {
     refreshMinutes = 1;
   } else {
     var testMinutes = refreshMinutes + "";
-    if ((testMinutes.match(/[^0-9\.]/)) || (refreshMinutes === 0)) {
+    if (testMinutes.match(/[^0-9\.]/)) {
       if (alertFlag) {
         alert("ERROR: refreshMinutes parameter must be a positive number.\n" +
         "Supplied " + testMinutes + "; defaulting to 1.");
@@ -531,7 +531,7 @@ a.variation {
   SetInitialVariation(0);
   SetInitialGame(delayIniGame ? "first" : iniGame);
   SetShortcutKeysEnabled(showBoard);
-  SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, true);
+  if (refreshMinutes !== 0) { SetLiveBroadcast(refreshMinutes, alertFlag, demoFlag, true); }
 
   function customFunctionOnCheckLiveBroadcastStatus() {
     var theObj, theObjFrom, theObjTo;
@@ -587,7 +587,7 @@ a.variation {
       gameBoard[gg] = customPgnHeaderTag("Board", null, gg);
       var thisCrc = (typeof(pgnHeader[gg]) == "string") ? (crc32((gameEvent[gg] + "," + gameSite[gg] + "," + gameRound[gg] + "," + gameWhite[gg] + "," + gameBlack[gg] + ";").replace(/(^\s*|\s*$)/g, "")) % 65535) + 65535 : 0;
       newGameLengthFromCrc[thisCrc] = LiveBroadcastDemo ? gameDemoMaxPly[gg] : pgnGame[gg].replace(/(^\s*|\s*$)/g, "").length;
-      gameNewMoves[gg] = ((newGameLengthFromCrc[thisCrc] !== gameLengthFromCrc[thisCrc]) && (!LiveBroadcastEnded));
+      gameNewMoves[gg] = ((newGameLengthFromCrc[thisCrc] !== gameLengthFromCrc[thisCrc]) && (LiveBroadcastStarted) && (!LiveBroadcastEnded));
     }
     gameLengthFromCrc = newGameLengthFromCrc.splice(0, newGameLengthFromCrc.length);
     gameId.sort(sortGameId);
@@ -1002,7 +1002,7 @@ a.variation {
 </div>
 </td><td align="left">
 <div class="gameBoardContainer" id="GameBoardContainer">
-<div class="header"><span class="gameEvent" id="GameEvent">&nbsp;</span><span class="gameLiveStatus" id="GameLiveStatus">&nbsp;</span></div>
+<div class="header"><span class="gameEvent" id="GameEvent">&nbsp;</span><span class="gameLiveStatus" id="GameLiveStatus"></span></div>
 <div class="header"><a class="gameWhite" id="GameWhite" title="white player" href="javascript:void(0);" onclick="openFidePlayerUrl(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();"></a><span class="gameWhiteClock" id="GameWhiteClock" title="white clock"></span><span class="gameBlackClock" id="GameBlackClock" title="black clock"></span><a class="gameBlack" id="GameBlack" title="black player" href="javascript:void(0);" onclick="openFidePlayerUrl(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();"></a></div>
 <div class="gameBoard" id="GameBoard"></div>
 <div class="footer"><span class="gameSideToMove"><img class="sideToMove sideToMoveHidden" id="SideToMove" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC" title="side to move"/>&nbsp;</span><span class="gameText">&nbsp;<a id="GamePrevMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly - 1); this.blur();" title="previous moves"></a><a href="javascript:void(0);" onclick="SetHighlight(!highlightOption); this.blur();" style="font-weight: bold;" id="GameCurrMove" title="current move as shown on chessboard"></a><a id="GameNextMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly + 1); this.blur();" title="next moves"></a><span style="font-weight: bold;">&nbsp;</span></span><a class="gameResult" id="GameResult" href="javascript:void(0);" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); this.blur();" title="go to game end"></a></div>
