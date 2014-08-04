@@ -41,7 +41,7 @@ if ($BOT_HANDLE eq "" || $OPERATOR_HANDLE eq "") {
 }
 
 
-our $PGN_FILE = "";
+our $PGN_LIVE = "";
 
 our $PGN_ARCHIVE = "";
 our $archiveSelectFilter = "";
@@ -1080,12 +1080,13 @@ sub refresh_pgn {
     $lastPgnNum = $newPgnNum;
     $lastPgnRefresh = time();
     $pgnWriteCount++;
-    if ($PGN_FILE ne "") {
-      if (open(my $thisFile, ">$PGN_FILE")) {
+    if ($PGN_LIVE ne "") {
+      if (open(my $thisFile, ">$PGN_LIVE")) {
+        $pgn =~ s/\[LivePgnBotTag "\d*"\]\n//g;
         print $thisFile $pgn;
         close($thisFile);
       } else {
-        log_terminal("error: failed writing $PGN_FILE");
+        log_terminal("error: failed writing $PGN_LIVE");
       }
     }
     if ($autorelayMode == 1) {
@@ -1107,6 +1108,7 @@ sub archive_pgnGame {
     my $pgn = save_pgnGame($i);
     if (($pgn ne "") && (($archiveSelectFilter eq "") || ($pgn =~ /$archiveSelectFilter/is))) {
       $pgn =~ s/\[Date "([^\[\]"]*)"\]/'[Date "' . strftime($archive_date, o_gmtime()) . '"]'/e;
+      $pgn =~ s/\[LivePgnBotTag "\d*"\]\n//g;
       if (open(my $thisFile, ">>$PGN_ARCHIVE")) {
         print $thisFile $pgn;
         close($thisFile);
@@ -1656,7 +1658,7 @@ sub process_master_command {
     }
   } elsif ($command eq "config") {
     my $cfg = "config:";
-    $cfg .= " livefile=$PGN_FILE livemax=$maxGamesNum livedate=$newGame_date";
+    $cfg .= " livefile=$PGN_LIVE livemax=$maxGamesNum livedate=$newGame_date";
     $cfg .= " topfile=$PGN_TOP";
     $cfg .= " memoryfile=$PGN_MEMORY";
     if ($PGN_MEMORY ne "") { $cfg .= " memorymax=$memoryMaxGamesNum memorydate=$memory_date memoryselect=$memorySelectFilter memoryautopurgeevent=$memoryAutopurgeEvent"; }
@@ -1906,10 +1908,10 @@ sub process_master_command {
     if ($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) { # for portability only a subset of filename chars is allowed
       if ($parameters ne "") {
         if ($parameters eq "\"\"") { $parameters = ""; }
-        $PGN_FILE = $parameters;
-        log_terminal("info: livefile=$PGN_FILE");
+        $PGN_LIVE = $parameters;
+        log_terminal("info: livefile=$PGN_LIVE");
       }
-      tell_operator("livefile=$PGN_FILE" . fileInfo($PGN_FILE));
+      tell_operator("livefile=$PGN_LIVE" . fileInfo($PGN_LIVE));
       check_pgn_files();
     } else {
       tell_operator("error: invalid $command parameter");
@@ -2518,7 +2520,7 @@ sub fileInfo {
 }
 
 sub check_pgn_files {
-  if (($PGN_FILE eq "") && ($PGN_MEMORY eq "") && ($PGN_TOP eq "") && ($PGN_ARCHIVE eq "")) {
+  if (($PGN_LIVE eq "") && ($PGN_MEMORY eq "") && ($PGN_TOP eq "") && ($PGN_ARCHIVE eq "")) {
     tell_operator_and_log_terminal("warning: all output files disabled");
   }
 }
