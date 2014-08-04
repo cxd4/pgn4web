@@ -357,7 +357,7 @@ sub save_game {
       cleanup_failed_save_game($newGame_num);
       return;
     }
-    if (($autorelayMode == 1) && ($prioritizeOnly == 1) && ($thisHeaderForFilter !~ /$prioritizeFilter/i)) {
+    if (($autorelayMode == 1) && ($prioritizeOnly == 1) && (($prioritizeFilter eq "") || ($thisHeaderForFilter !~ /$prioritizeFilter/i))) {
       log_terminal("debug: while prioritizeonly=$prioritizeOnly, save requested for non prioritized game $newGame_num: $thisHeaderForFilter");
       cmd_run("unobserve $newGame_num");
       cleanup_failed_save_game($newGame_num);
