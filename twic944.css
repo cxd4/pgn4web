@@ -137,3 +137,8 @@ a.variation {
   color: gray;
 }
 
+.wait {
+  color: gray;
+  white-space: nowrap;
+}
+
