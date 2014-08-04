@@ -1022,7 +1022,7 @@ sub save_pgnGame {
     if ((defined $GAMES_eco[$games_num[$i]]) && ($GAMES_eco[$games_num[$i]] ne "")) {
       $thisPgn .= "[ECO \"" . $GAMES_eco[$games_num[$i]] . "\"]\n";
     }
-    $thisPgn .= "[LivePgnBotTag \"" . $GAMES_forgetTag[$games_num[$i]] . "\"]\n";
+    $thisPgn .= "[LivePgnBotM \"" . $GAMES_forgetTag[$games_num[$i]] . "\"]\n";
     $thisPgn .= $games_movesText[$i];
     $thisPgn .= "\n$GAMES_timeLeft[$games_num[$i]]";
     if ($games_result[$i] =~ /^[012\/\*-]+$/) {
@@ -1082,7 +1082,7 @@ sub refresh_pgn {
     $pgnWriteCount++;
     if ($PGN_LIVE ne "") {
       if (open(my $thisFile, ">$PGN_LIVE")) {
-        $pgn =~ s/\[LivePgnBotTag "\d*"\]\n//g;
+        $pgn =~ s/\[LivePgnBotM "\d*"\]\n//g;
         print $thisFile $pgn;
         close($thisFile);
       } else {
@@ -1108,7 +1108,7 @@ sub archive_pgnGame {
     my $pgn = save_pgnGame($i);
     if (($pgn ne "") && (($archiveSelectFilter eq "") || ($pgn =~ /$archiveSelectFilter/is))) {
       $pgn =~ s/\[Date "([^\[\]"]*)"\]/'[Date "' . strftime($archive_date, o_gmtime()) . '"]'/e;
-      $pgn =~ s/\[LivePgnBotTag "\d*"\]\n//g;
+      $pgn =~ s/\[LivePgnBotM "\d*"\]\n//g;
       if (open(my $thisFile, ">>$PGN_ARCHIVE")) {
         print $thisFile $pgn;
         close($thisFile);
@@ -1375,8 +1375,8 @@ sub memory_load {
       }
     }
     @memory_games = sort {
-      my $aForgetTag = ($a =~ /\[LivePgnBotTag "([^"]+)"\]/i) ? $1 : "";
-      my $bForgetTag = ($b =~ /\[LivePgnBotTag "([^"]+)"\]/i) ? $1 : "";
+      my $aForgetTag = ($a =~ /\[LivePgnBotM "([^"]+)"\]/i) ? $1 : "";
+      my $bForgetTag = ($b =~ /\[LivePgnBotM "([^"]+)"\]/i) ? $1 : "";
       return $bForgetTag cmp $aForgetTag;
     } @memory_games;
     my $newRound;
