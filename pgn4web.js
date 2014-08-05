@@ -489,7 +489,7 @@ boardShortcut("B8", "show current position FEN string", function(t,e){ displayFe
 
 boardShortcut("C8", "show current game PGN source data", function(t,e){ if (e.shiftKey) { savePgnData(true); } else { displayPgnData(true); } }, true);
 
-boardShortcut("D8", "show full PGN source data", function(t,e){ if (e.shiftKey) { savePgnData(); } else { displayPgnData(); } }, true);
+boardShortcut("D8", "show all games PGN source data", function(t,e){ if (e.shiftKey) { savePgnData(); } else { displayPgnData(); } }, true);
 
 boardShortcut("E8", "search help", function(t,e){ displayHelp("search_tool"); }, true);
 
