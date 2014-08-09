@@ -1081,7 +1081,7 @@ sub refresh_pgn {
     $lastPgnRefresh = time();
     $pgnWriteCount++;
     if ($PGN_LIVE ne "") {
-      if (open(my $thisFile, ">$PGN_LIVE")) {
+      if (open(my $thisFile, ">", $PGN_LIVE)) {
         $pgn =~ s/\[LivePgnBotM "\d*"\]\n//g;
         print $thisFile $pgn;
         close($thisFile);
@@ -1109,7 +1109,7 @@ sub archive_pgnGame {
     if (($pgn ne "") && (($archiveSelectFilter eq "") || ($pgn =~ /$archiveSelectFilter/is))) {
       $pgn =~ s/\[Date "([^\[\]"]*)"\]/'[Date "' . strftime($archive_date, o_gmtime()) . '"]'/e;
       $pgn =~ s/\[LivePgnBotM "\d*"\]\n//g;
-      if (open(my $thisFile, ">>$PGN_ARCHIVE")) {
+      if (open(my $thisFile, ">>", $PGN_ARCHIVE)) {
         print $thisFile $pgn;
         close($thisFile);
         log_terminal("debug: archive add game $games_num[$i]: " . headerForFilter($GAMES_event[$games_num[$i]], $GAMES_round[$games_num[$i]], $games_white[$i], $games_black[$i]));
@@ -1150,7 +1150,7 @@ sub refresh_top {
     }
 
     if (($newTopPgn ne "") && ($newTopPgn ne $lastTopPgn)) {
-      if (open(my $thisFile, ">$PGN_TOP")) {
+      if (open(my $thisFile, ">", $PGN_TOP)) {
         print $thisFile $newTopPgn;
         close($thisFile);
         $lastTopPgn = $newTopPgn;
@@ -1180,7 +1180,7 @@ sub refresh_memory {
       }
     }
     if ($memoryPgn ne "") {
-      if (open(my $thisFile, ">$PGN_MEMORY")) {
+      if (open(my $thisFile, ">", $PGN_MEMORY)) {
         print $thisFile $memoryPgn;
         close($thisFile);
       } else {
@@ -1360,7 +1360,7 @@ sub memory_load {
     @memory_games = ();
     @memory_games_sortkey = ();
     my $newEvent;
-    if (open(my $thisFile, "<", "$PGN_MEMORY")) {
+    if (open(my $thisFile, "<", $PGN_MEMORY)) {
       my @lines = <$thisFile>;
       @candidate_memory_games = (join("", @lines) =~ /((?:\[\s*\w+\s*"[^"]*"\s*\]\s*)+(?:[^[]|\[%)+)/g);
       foreach (@candidate_memory_games) {
@@ -2527,7 +2527,7 @@ sub check_pgn_files {
 
 sub read_startupCommands {
   my @commandList = ();
-  if (open(CMDFILE, "<" . $STARTUP_FILE)) {
+  if (open(CMDFILE, "<" , $STARTUP_FILE)) {
     @commandList = <CMDFILE>;
     close(CMDFILE);
   } else {
@@ -2544,7 +2544,7 @@ sub write_startupCommands {
     return;
   }
 
-  if (open(CMDFILE, ">" . $STARTUP_FILE)) {
+  if (open(CMDFILE, ">" , $STARTUP_FILE)) {
     foreach my $cmd (@commandList) {
       $cmd =~ s/^\s*//;
       $cmd =~ s/\s*$/\n/;
@@ -2662,7 +2662,7 @@ sub h_info {
 }
 
 sub sys_info {
-  open(STAT, "</proc/$$/stat") or return "?";
+  open(STAT, "<", "/proc/$$/stat") or return "?";
   my @stat = split(/\s+/, <STAT>);
   close(STAT);
   return $stat[3] . "/" . $stat[0] . "/" . $stat[22] . "/" . $stat[23];
