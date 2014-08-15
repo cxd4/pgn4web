@@ -570,6 +570,13 @@ if (touchEventEnabled) {
     simpleAddEvent(theObj, "touchstart", pgn4web_handleTouchStart_scroll);
     simpleAddEvent(theObj, "touchmove", pgn4web_handleTouchMove_scroll);
   }
+
+  if (!pgn4web_engineWindowDisableAnalysisBoard) {
+    touchGestures_helpActions =  touchGestures_helpActions.concat([ "header top-down swipe" ]);
+    touchGestures_helpText = touchGestures_helpText.concat([ "open/update analysis board" ]);
+  }
+  touchGestures_helpActions =  touchGestures_helpActions.concat([ "header bottom-up swipe", "header left-right swipe", "header right-left swipe" ]);
+  touchGestures_helpText = touchGestures_helpText.concat([ "toggle game list", "move forward", "move backward" ]);
 }
 
 simpleAddEvent(window.applicationCache, "updateready", function(e) {

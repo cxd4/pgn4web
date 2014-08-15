@@ -171,11 +171,16 @@ function pgn4web_handleTouchEnd_body(e) {
   clearSelectedText();
 }
 
-simpleAddEvent(document.body, "touchstart", pgn4web_handleTouchStart);
-simpleAddEvent(document.body, "touchmove", pgn4web_handleTouchMove);
-simpleAddEvent(document.body, "touchend", pgn4web_handleTouchEnd_body);
-simpleAddEvent(document.body, "touchleave", pgn4web_handleTouchEnd_body);
-simpleAddEvent(document.body, "touchcancel", pgn4web_handleTouchCancel);
+if (touchEventEnabled) {
+  simpleAddEvent(document.body, "touchstart", pgn4web_handleTouchStart);
+  simpleAddEvent(document.body, "touchmove", pgn4web_handleTouchMove);
+  simpleAddEvent(document.body, "touchend", pgn4web_handleTouchEnd_body);
+  simpleAddEvent(document.body, "touchleave", pgn4web_handleTouchEnd_body);
+  simpleAddEvent(document.body, "touchcancel", pgn4web_handleTouchCancel);
+
+  touchGestures_helpActions =  touchGestures_helpActions.concat([ "header top-down swipe", "header bottom-up swipe", "header left-right swipe", "header right-left swipe" ]);
+  touchGestures_helpText = touchGestures_helpText.concat([ "close analysis board and return to game", "switch side to move", "play engine's move", "close analysis board and return to game" ]);
+}
 
 function backToGames() {
   if (localStorage["pgn4web_live_games_app_locationHref"]) {

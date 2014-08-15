@@ -4110,6 +4110,9 @@ function customFunctionOnTouch(deltaX, deltaY) {
   }
 }
 
+var touchGestures_helpActions = [ "chessboard top-down swipe", "chessboard bottom-up swipe", "chessboard left-right swipe", "chessboard right-left swipe" ];
+var touchGestures_helpText = [ "load next game, cycling through", "load previous game, cyclig through", "start autoplay; if autoplay already active: go to variation end or to game end", "stop autoplay; if autoplay not active: go to variation start, then to parent variation, then to game start; if at last move of live broadcast: replay up to 6 previous half-moves, then autoplay forward" ];
+
 var touchEventEnabled = true;
 function SetTouchEventEnabled(onOff) {
   touchEventEnabled = onOff;

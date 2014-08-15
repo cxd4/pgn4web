@@ -1091,6 +1091,14 @@ a.variation {
       simpleAddEvent(theObj, "touchleave", pgn4web_handleTouchEnd_FloatingContainer);
       simpleAddEvent(theObj, "touchcancel", pgn4web_handleTouchCancel);
     }
+    if (LiveBroadcastDelay > 0) {
+      touchGestures_helpActions =  touchGestures_helpActions.concat([ "header vertical swipe" ]);
+      touchGestures_helpText = touchGestures_helpText.concat([ "force live broadcast games refresh" ]);
+    }
+    if (!pgn4web_engineWindowDisableAnalysisBoard) {
+      touchGestures_helpActions =  touchGestures_helpActions.concat([ "header left-right swipe", "header right-left swipe" ]);
+      touchGestures_helpText = touchGestures_helpText.concat([ "close/pause analysis board", "open/update analysis board" ]);
+    }
   }
 
 </script>

@@ -125,19 +125,19 @@ if (opener && (typeof(opener.touchEventEnabled) != "undefined")) {
 
 var touchGestures_helpIntro, touchGestures_helpActions, touchGestures_helpText;
 if (touchGesturesSupported) {
-  touchGestures_helpIntro = "The user can interact with the pgn4web chessboard using touch gestures across the chessboard:";
+  touchGestures_helpIntro = "The user can interact with the chessboard using touch gestures:";
   if (opener && (typeof(opener.touchGestures_helpActions) != "undefined")) {
     touchGestures_helpActions = opener.touchGestures_helpActions;
   } else {
-    touchGestures_helpActions = [ "top-down swipe", "bottom-up swipe", "left-right swipe", "right-left swipe" ];
+    touchGestures_helpActions = [ "touch gestures info not available from the opener window" ];
   }
   if (opener && (typeof(opener.touchGestures_helpText) != "undefined")) {
     touchGestures_helpText = opener.touchGestures_helpText;
   } else {
-    touchGestures_helpText = [ "load next game, cycling through", "load previous game, cyclig through", "start autoplay; if autoplay already active: go to variation end or to game end", "stop autoplay; if autoplay not active: go to variation start, then to parent variation, then to game start; if at last move of live broadcast: replay up to 6 previous half-moves, then autoplay forward" ];
+    touchGestures_helpText = [ "" ];
   }
 } else {
-  touchGestures_helpIntro = "Touch gestures not available.<p></p>When enabled on supported touchscreen devices, touch gestures can be used to interact with the chessboard using swipe gestures across the chessboard.";
+  touchGestures_helpIntro = "Touch gestures not available.<p></p>When enabled on supported touchscreen devices, touch gestures can be used to interact with the chessboard using swipe gestures.";
   touchGestures_helpActions = [];
   touchGestures_helpText = [];
 }
