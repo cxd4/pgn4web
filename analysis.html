@@ -400,10 +400,10 @@
       simpleAddEvent(theObj, "touchleave", pgn4web_handleTouchEnd_Header);
       simpleAddEvent(theObj, "touchcancel", pgn4web_handleTouchCancel);
     }
-    touchGestures_helpActions =  touchGestures_helpActions.concat([ "header vertical swipe" ]);
+    touchGestures_helpActions =  touchGestures_helpActions.concat([ "game header vertical swipe" ]);
     touchGestures_helpText = touchGestures_helpText.concat([ "toggle show comments in game text" ]);
     if (!pgn4web_engineWindowDisableAnalysisBoard) {
-      touchGestures_helpActions =  touchGestures_helpActions.concat([ "header left-right swipe", "header right-left swipe" ]);
+      touchGestures_helpActions =  touchGestures_helpActions.concat([ "game header left-right swipe", "game header right-left swipe" ]);
       touchGestures_helpText = touchGestures_helpText.concat([ "open/update analysis board", "close/pause analysis board" ]);
     }
   }
