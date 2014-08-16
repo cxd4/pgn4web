@@ -572,11 +572,11 @@ if (touchEventEnabled) {
   }
 
   if (!pgn4web_engineWindowDisableAnalysisBoard) {
-    touchGestures_helpActions =  touchGestures_helpActions.concat([ "header top-down swipe" ]);
+    touchGestures_helpActions =  touchGestures_helpActions.concat([ "game info top-down swipe" ]);
     touchGestures_helpText = touchGestures_helpText.concat([ "open/update analysis board" ]);
   }
-  touchGestures_helpActions =  touchGestures_helpActions.concat([ "header bottom-up swipe", "header left-right swipe", "header right-left swipe" ]);
-  touchGestures_helpText = touchGestures_helpText.concat([ "toggle game list", "move forward", "move backward" ]);
+  touchGestures_helpActions =  touchGestures_helpActions.concat([ "game info bottom-up swipe", "game info left-right swipe", "game info right-left swipe", "games list header horizontal swipe", "games list swipe" ]);
+  touchGestures_helpText = touchGestures_helpText.concat([ "show games list", "move forward", "move backward", "return to game", "scroll the games list" ]);
 }
 
 simpleAddEvent(window.applicationCache, "updateready", function(e) {
