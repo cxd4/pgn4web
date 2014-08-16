@@ -178,8 +178,8 @@ if (touchEventEnabled) {
   simpleAddEvent(document.body, "touchleave", pgn4web_handleTouchEnd_body);
   simpleAddEvent(document.body, "touchcancel", pgn4web_handleTouchCancel);
 
-  touchGestures_helpActions =  touchGestures_helpActions.concat([ "analysis info top-down swipe", "analysis info bottom-up swipe", "analysis info left-right swipe", "analysis info right-left swipe" ]);
-  touchGestures_helpText = touchGestures_helpText.concat([ "close analysis board and return to game", "switch side to move", "play engine move", "close analysis board and return to game" ]);
+  touchGestures_helpActions =  touchGestures_helpActions.concat([ "&nbsp;", "analysis info top-down swipe", "analysis info bottom-up swipe", "analysis info left-right swipe", "analysis info right-left swipe" ]);
+  touchGestures_helpText = touchGestures_helpText.concat([ "", "close analysis board and return to game", "switch side to move", "play engine move", "close analysis board and return to game" ]);
 }
 
 function backToGames() {

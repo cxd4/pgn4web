@@ -571,12 +571,14 @@ if (touchEventEnabled) {
     simpleAddEvent(theObj, "touchmove", pgn4web_handleTouchMove_scroll);
   }
 
+  touchGestures_helpActions =  touchGestures_helpActions.concat([ "&nbsp;" ]);
+  touchGestures_helpText = touchGestures_helpText.concat([ "" ]);
   if (!pgn4web_engineWindowDisableAnalysisBoard) {
     touchGestures_helpActions =  touchGestures_helpActions.concat([ "game info top-down swipe" ]);
     touchGestures_helpText = touchGestures_helpText.concat([ "open/update analysis board" ]);
   }
-  touchGestures_helpActions =  touchGestures_helpActions.concat([ "game info bottom-up swipe", "game info left-right swipe", "game info right-left swipe", "games list header horizontal swipe", "games list swipe" ]);
-  touchGestures_helpText = touchGestures_helpText.concat([ "show games list", "move forward", "move backward", "return to game", "scroll the games list" ]);
+  touchGestures_helpActions =  touchGestures_helpActions.concat([ "game info bottom-up swipe", "game info left-right swipe", "game info right-left swipe", "&nbsp;", "games list header horizontal swipe", "games list swipe" ]);
+  touchGestures_helpText = touchGestures_helpText.concat([ "show games list", "move forward", "move backward", "", "return to game", "scroll the games list" ]);
 }
 
 simpleAddEvent(window.applicationCache, "updateready", function(e) {
