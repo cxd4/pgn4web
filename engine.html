@@ -1076,16 +1076,18 @@ function detectClick(t,e) {
    var thisColChar = "abcdefgh".charAt(thisCol);
    var thisRow = IsRotated ? matches[2] : 7 - matches[2];
    var thisRowChar = "12345678".charAt(thisRow);
-   if (doubleclickH8Timeout) {
-     clearTimeout(doubleclickH8Timeout);
-     doubleclickH8Timeout = null;
-     if ((thisColChar == "h") && (thisRowChar == "8")) {
-       displayHelp();
-       return;
-     }
-   }
-   if ((thisColChar == "h") && (thisRowChar == "8")) {
-     doubleclickH8Timeout = setTimeout('doubleclickH8Timeout = null;', 333);
+   if (e !== null) {
+      if (doubleclickH8Timeout !== null) {
+         clearTimeout(doubleclickH8Timeout);
+         doubleclickH8Timeout = null;
+         if ((thisColChar == "h") && (thisRowChar == "8")) {
+            displayHelp();
+            return;
+         }
+      }
+      if ((thisColChar == "h") && (thisRowChar == "8")) {
+         doubleclickH8Timeout = setTimeout('doubleclickH8Timeout = null;', 333);
+      }
    }
    if (clickFromCol !== "") {
       var thisCurrentPly = CurrentPly;
