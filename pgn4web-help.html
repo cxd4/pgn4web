@@ -106,7 +106,7 @@ function print_help_row (one, two) {
 function updateVersion() {
   if (opener && (typeof(opener.pgn4web_version) != "undefined")) {
     var theObj = document.getElementById("versionInfo");
-    if (theObj) { theObj.innerHTML = '<p></p>This is <a href="http://pgn4web.casaschi.net" target="_blank">pgn4web</a> v' + opener.pgn4web_version + ' within ' + opener.location.href; }
+    if (theObj) { theObj.innerHTML = '<p></p><div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">This is <a href="http://pgn4web.casaschi.net" target="_blank">pgn4web</a> v' + opener.pgn4web_version + ' within <a href="' + opener.location.href + '" target="_blank">' + opener.location.href + '</a></div>'; }
   }
 }
 
