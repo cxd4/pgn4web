@@ -56,7 +56,7 @@ Limitations:
 
 Bugs:
 - no major issue at the moment of writing, please check the project
-  issues tracker at http://code.google.com/p/pgn4web/issues/list
+  issues tracker at https://code.google.com/p/pgn4web/issues/list
 
 User feedback:
 Please email the pgn4web project (pgn4web@casaschi.net) your feedback,
@@ -388,7 +388,7 @@ with Google Chrome should work properly.
 Note about Internet Explorer v7 and above: under some circumstances you might
 experience problems when testing HTML pages from your local computer while
 developing your site. If this happens to you, read notes at
-http://code.google.com/p/pgn4web/issues/detail?id=23
+https://code.google.com/p/pgn4web/issues/detail?id=23
 
 
 PGN STANDARD SUPPORT
@@ -490,7 +490,7 @@ The jscolor javascript code is maintained by Honza Odvarko
 (http://www.gnu.org/copyleft/lesser.html)
 See http://jscolor.com/
 
-The SWFObject javascript library (http://code.google.com/p/swfobject/) is
+The SWFObject javascript library (https://code.google.com/p/swfobject/) is
 released under the MIT License
 (http://www.opensource.org/licenses/mit-license.php).
 
