@@ -305,7 +305,7 @@ var liveStatusTickerString = "";
 
 var lsId = "pgn4web_live_games_app_";
 
-var storageId = "3";
+var storageId = "4";
 if ((localStorage[lsId + "storageId"] !== storageId) || (localStorage[lsId + "locationHref"] !== window.location.href)) {
   window.localStorage.clear();
   localStorage[lsId + "storageId"] = storageId;

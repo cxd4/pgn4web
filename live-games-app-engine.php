@@ -127,6 +127,21 @@ if (window.navigator.standalone) {
   simpleAddEvent(document.body, "touchmove", function(e) { e.preventDefault(); });
 }
 
+var lsId = "pgn4web_live_games_app_";
+
+
+window['defaultClickedGameEval'] = window['clickedGameEval'];
+window['clickedGameEval'] = function(t,e) {
+  defaultClickedGameEval(t,e);
+  if (!e.shiftKey) {
+    localStorage[lsId + "disableEngine"] = disableEngine;
+  }
+};
+if (typeof(localStorage[lsId + "disableEngine"]) == "string") {
+  disableEngine = (localStorage[lsId + "disableEngine"] == "true");
+}
+
+
 function clickedGameFlagToMove_forTouchEnd() {
   if (clickedGameFlagToMove_forTouchEnd.theObj = document.getElementById("GameFlagToMove")) {
     clickedGameFlagToMove(clickedGameFlagToMove_forTouchEnd.theObj, { "shiftKey": false });
