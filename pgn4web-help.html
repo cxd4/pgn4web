@@ -76,13 +76,25 @@ a.headingSelected:hover {
 }
 
 .footer {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   font-size: 13px;
   color: #C0C0C0;
   margin-top: 32px;
+  text-align: right;
+  clear: both;
 }
+
+.footerLeft {
+  float: left;
+  padding-right: 32px;
+}
+
+.footerRight {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 
 </style>
 
@@ -116,7 +128,7 @@ function print_help_row (one, two) {
 function updateFooter() {
   if (opener && (typeof(opener.pgn4web_version) != "undefined")) {
     var theObj = document.getElementById("footer");
-    if (theObj) { theObj.innerHTML = '<div class="footer"><a href="http://pgn4web.casaschi.net" target="_blank">pgn4web</a>&nbsp;' + opener.pgn4web_version + '&nbsp;&nbsp;&nbsp;<a href="' + opener.location.href + '" target="_blank">' + opener.location.href + '</a></div>'; }
+    if (theObj) { theObj.innerHTML = '<div class="footer"><div class="footerLeft"><a href="http://pgn4web.casaschi.net" target="_blank">pgn4web</a>&nbsp;' + opener.pgn4web_version + '</div><a class="footerRight" href="' + opener.location.href + '" target="_blank">' + opener.location.href + '</a></div>'; }
   }
 }
 
