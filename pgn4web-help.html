@@ -18,6 +18,16 @@ html,
 body {
   margin: 0px;
   padding: 0px;
+}
+
+body {
+  font-size: 16px;
+  font-family: sans-serif;
+  color: black;
+  background: white;
+  padding: 32px;
+  text-align: justify;
+  overflow-y: scroll;
   -webkit-text-size-adjust: 100%;
   -moz-text-size-adjust: none;
   -ms-text-size-adjust: 100%;
@@ -25,17 +35,8 @@ body {
   text-size-adjust: 100%;
 }
 
-body {
-  font-family: sans-serif;
-  color: black;
-  background: white;
-  padding: 1.75em;
-  text-align: justify;
-  overflow-y: scroll;
-}
-
 a {
-  color: black;
+  color: inherit;
   text-decoration: none;
 }
 
@@ -45,9 +46,9 @@ a:hover {
 
 a.heading, a.headingSelected {
   margin: 30px;
-  line-height: 1.5em;
+  line-height: 30px;
+  font-size: 20px;
   font-weight: bold;
-  font-size: 125%;
 }
 
 a.heading {
@@ -72,6 +73,15 @@ a.headingSelected:hover {
   padding-right: 50px;
   padding-top: 10px;
   padding-bottom: 2px;
+}
+
+.footer {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+  color: #C0C0C0;
+  margin-top: 32px;
 }
 
 </style>
@@ -103,10 +113,10 @@ function print_help_row (one, two) {
   document.write("<tr><td style='text-align:left; vertical-align:top; padding-left:40px; white-space:nowrap;'>" + one + "</td><td style='text-align:left; vertical-align:top; padding-left:20px'>" + two + "</td></tr>");
 }
 
-function updateVersion() {
+function updateFooter() {
   if (opener && (typeof(opener.pgn4web_version) != "undefined")) {
-    var theObj = document.getElementById("versionInfo");
-    if (theObj) { theObj.innerHTML = '<p></p><div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">This is <a href="http://pgn4web.casaschi.net" target="_blank">pgn4web</a> v' + opener.pgn4web_version + ' within <a href="' + opener.location.href + '" target="_blank">' + opener.location.href + '</a></div>'; }
+    var theObj = document.getElementById("footer");
+    if (theObj) { theObj.innerHTML = '<div class="footer"><a href="http://pgn4web.casaschi.net" target="_blank">pgn4web</a>&nbsp;' + opener.pgn4web_version + '&nbsp;&nbsp;&nbsp;<a href="' + opener.location.href + '" target="_blank">' + opener.location.href + '</a></div>'; }
   }
 }
 
@@ -249,9 +259,9 @@ print_help_row("&nbsp;", "");
 document.write("</table>");
 
 if (opener && (typeof(opener.shortcutKeysEnabled) != "undefined")) {
-  document.write('Shortcut keys currently ' + (opener.shortcutKeysEnabled ? "enabled, disable" : "disabled, enable") + ' in the chessboard with shift+escape or clicking the associated <a href="javascript:void(0);" onclick="showSection(\'shortcut_squares\');">shortcut square</a>.\n');
+  document.write('Shortcut keys currently ' + (opener.shortcutKeysEnabled ? "enabled, disable" : "disabled, enable") + ' with shift+escape or with the associated <a href="javascript:void(0);" onclick="showSection(\'shortcut_squares\');">shortcut square</a>.\n');
 } else {
-  document.write('Shortcut keys info not available from the opener window, please check about shortcut keys in the chessboard with shift+escape or clicking the associated <a href="javascript:void(0);" onclick="showSection(\'shortcut_squares\');">shortcut square</a>.\n');
+  document.write('Shortcut keys info not available from the opener window, please check about shortcut keys with shift+escape or with the associated <a href="javascript:void(0);" onclick="showSection(\'shortcut_squares\');">shortcut square</a>.\n');
 }
 
 </script>
@@ -286,6 +296,24 @@ if (opener && (typeof(opener.boardTitle) != "undefined")) {
   document.write("Squares labeled assuming " + colorAtTheBottom + " on bottom.");
 } else {
   document.write("shortcut squares info not available from the opener window, please hover the mouse pointer on each square of the chessboard to check for their shortcut action.");
+}
+</script>
+
+</div>
+
+
+<div id="touch_gestures_section" class="section">
+
+<script type="text/javascript">
+"use strict";
+document.write(touchGestures_helpIntro);
+if (touchGestures_helpActions.length > 0) {
+  document.write("<table style='padding:0px;' border='0'>");
+  print_help_row("&nbsp;", "");
+  for (var ii = 0; ii < touchGestures_helpActions.length; ii++) {
+    print_help_row(touchGestures_helpActions[ii], touchGestures_helpText[ii]);
+  }
+  document.write("</table>");
 }
 </script>
 
@@ -422,30 +450,16 @@ The chess informant symbols font is used with permission from <a href="http://ww
 Some functionality of specific applications of pgn4web or specific demo pages depends on third party javascript libraries, each stored in a separate subfolder with the associated credits and license information.
 <p></p>
 Remaining pgn4web code is copyright (C) 2009-2014 <a href="mailto:pgn4web@casaschi.net">Paolo Casaschi</a> and licensed under the terms of <a href="license-gpl-2.0.txt" target="_blank">the GNU General Public License version 2</a> as published by <a href="http://www.fsf.org" target="_blank">the Free Software Foundation</a>; either <a href="license-gpl-2.0.txt" target="_blank">version 2 of the License</a>, or (at your option) any later version.
-<span id="versionInfo"></span>
 </div>
 
 
-<div id="touch_gestures_section" class="section">
-
-<script type="text/javascript">
-"use strict";
-document.write(touchGestures_helpIntro);
-document.write("<table style='padding:0px;' border='0'>");
-print_help_row("&nbsp;", "");
-for (var ii = 0; ii < touchGestures_helpActions.length; ii++) {
-  print_help_row(touchGestures_helpActions[ii], touchGestures_helpText[ii]);
-}
-document.write("</table>");
-</script>
-
-</div>
+<span id="footer"></span>
 
 
 <script type="text/javascript">
 "use strict";
 showSection(location.search.substr(1));
-updateVersion();
+updateFooter();
 </script>
 
 </body>
