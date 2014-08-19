@@ -1921,6 +1921,10 @@ sub process_master_command {
       $parameters = $1 . "s";
       my @liveList = ();
       my $liveListItem;
+      my $minElo = 99999;
+      my $maxElo = 0;
+      my $totElo = 0;
+      my $numElo = 0;
       for (my $i = 0; $i <= $#games_num; $i++) {
         $liveListItem = "\"" . $GAMES_event[$games_num[$i]] . "\"";
         if (($parameters eq "rounds") || ($parameters eq "games")) {
@@ -1929,11 +1933,23 @@ sub process_master_command {
         if ($parameters eq "games") {
           $liveListItem .= " \"" . $games_white[$i] . "\" \"" . $games_black[$i] . "\" \"" . $games_result[$i] . "\"";
         }
+        if ($games_whiteElo[$i] ne "") {
+          if ($games_whiteElo[$i] < $minElo) { $minElo = $games_whiteElo[$i]; }
+          if ($games_whiteElo[$i] > $maxElo) { $maxElo = $games_whiteElo[$i]; }
+          $totElo += $games_whiteElo[$i];
+          $numElo++;
+        }
+        if ($games_blackElo[$i] ne "") {
+          if ($games_blackElo[$i] < $minElo) { $minElo = $games_blackElo[$i]; }
+          if ($games_blackElo[$i] > $maxElo) { $maxElo = $games_blackElo[$i]; }
+          $totElo += $games_blackElo[$i];
+          $numElo++;
+        }
         unless ($liveListItem ~~ @liveList) {
           push(@liveList, $liveListItem);
         }
       }
-      tell_operator("livelist: $parameters(" . ($#liveList + 1) . "/" . ($#games_num + 1) . "/$maxGamesNum)" . ($#liveList >= 0 ? " " . join(", ", @liveList) . ";" : ""));
+      tell_operator("livelist: $parameters(" . ($#liveList + 1) . "/" . ($#games_num + 1) . "/$maxGamesNum)" . ($numElo > 0 ? sprintf(" elo(%d/%d/%d)", $minElo, $totElo/$numElo, $maxElo) : "") . ($#liveList >= 0 ? " " . join(", ", @liveList) . ";" : ""));
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
     } else {
