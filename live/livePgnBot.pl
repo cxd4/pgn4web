@@ -2335,6 +2335,8 @@ sub process_master_command {
     if ($parameters =~ /^\d+$/) {
       tell_operator("OK $command($parameters)");
       log_terminal("info: quit with exit value $parameters");
+      $memoryMaxGamesNum = int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum);
+      refresh_memory();
       # cmd_run("quit");
       exit($parameters);
     } elsif ($parameters =~ /^\??$/) {
