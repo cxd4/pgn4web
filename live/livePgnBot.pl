@@ -37,7 +37,7 @@ our $TEST_FLAG = ($FLAGS =~ /\bTEST\b/);
 
 if ($BOT_HANDLE eq "" || $OPERATOR_HANDLE eq "") {
   print("\n$0 BOT_HANDLE BOT_PASSWORD OPERATOR_HANDLE [STARTUP_FILE]\n\nBOT_HANDLE = handle for the bot account\nBOT_PASSWORD = password for the both account, use \"\" for a guest account\nOPERATOR_HANDLE = handle for the bot operator to send commands\nSTARTUP_FILE = filename for reading startup commands (default $STARTUP_FILE_DEFAULT)\n\nbot saving PGN data from live games on frechess.org\nmore help available from the operator account with \"tell BOT_HANDLE help\"\n\n");
-  exit(0);
+  myExit(0);
 }
 
 
@@ -2335,10 +2335,8 @@ sub process_master_command {
     if ($parameters =~ /^\d+$/) {
       tell_operator("OK $command($parameters)");
       log_terminal("info: quit with exit value $parameters");
-      $memoryMaxGamesNum = int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum);
-      refresh_memory();
       # cmd_run("quit");
-      exit($parameters);
+      myExit($parameters);
     } elsif ($parameters =~ /^\??$/) {
       tell_operator(detect_command_helptext($command));
     } else {
@@ -2697,7 +2695,7 @@ sub setup {
   $telnet->errmode(sub {
     my $msg = shift;
     log_terminal("error: " . $msg);
-    exit(1);
+    myExit(1);
   });
 
   $telnet->open(
@@ -2732,7 +2730,7 @@ sub setup {
       }
       if ($line =~ /("[^"]*" is a registered name|\S+ is already logged in)/) {
         log_terminal("error: failed login as $BOT_HANDLE: $1");
-        exit(1);
+        myExit(1);
       }
       log_terminal("fyi: ignored line: $line\n");
     }
@@ -2746,7 +2744,7 @@ sub setup {
       $username = $1;
     } else {
       log_terminal("error: failed login as $BOT_HANDLE: $match");
-      exit(1);
+      myExit(1);
     }
 
     log_terminal("debug: logged in as guest $username");
@@ -2803,7 +2801,7 @@ sub main_loop {
     return if $telnet->timed_out;
     my $msg = shift;
     log_terminal("error: " . $msg);
-    exit(1);
+    myExit(1);
   });
 
   while (1) {
@@ -2823,33 +2821,40 @@ sub main_loop {
 
 sub handleTERM {
   log_terminal("warning: received TERM signal");
-  exit(0);
+  myExit(0);
 }
 $SIG{TERM}=\&handleTERM;
 
 sub handleHUP {
   log_terminal("warning: received HUP signal");
-  exit(0);
+  myExit(0);
 }
 $SIG{HUP}=\&handleHUP;
 
 sub handleINT {
   log_terminal("warning: received INT signal");
-  exit(1);
+  myExit(1);
 }
 $SIG{INT}=\&handleINT;
 
 sub handleUSR1 {
   log_terminal("warning: received USR1 signal");
-  exit(2);
+  myExit(2);
 }
 $SIG{USR1}=\&handleUSR1;
 
 sub handleUSR2 {
   log_terminal("warning: received USR2 signal");
-  exit(3);
+  myExit(3);
 }
 $SIG{USR2}=\&handleUSR2;
+
+sub myExit {
+  my ($exitVal) = @_;
+  $memoryMaxGamesNum = int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum);
+  refresh_memory();
+  exit($exitVal);
+}
 
 eval {
   setup_time();
@@ -2858,10 +2863,10 @@ eval {
   setup();
   main_loop();
   shut_down();
-  exit(1);
+  myExit(1);
 };
 if ($@) {
   log_terminal("error: failed: $@");
-  exit(1);
+  myExit(1);
 }
 
