@@ -415,13 +415,13 @@ a {
 <center>
 
 <div id="topContainer" class="topContainer">
-<div class="leftHeaderItem"><a class="flagMoves" href="javascript:void(0);" onclick="if (isAutoPlayOn) { GoToMove(StartPly + PlyNumber); } else { GoToMove(CurrentPly + 1); SetAutoPlay(true); }"><span id="topFlag"></span><span style="display:none;" id="topMoreMoves" title="click here for more available moves">...</span></a><a href="javascript:void(0);" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(IsRotated ? gameWhite[currentGame] : gameBlack[currentGame], customPgnHeaderTag(IsRotated ? 'WhiteFideId' : 'BlackFideId')); } this.blur();" id="topPlayer" class="notranslate"></a>&nbsp;</div><div class="rightHeaderItem">&nbsp;<a href="javascript:void(0);" onclick="replayPreviousMoves(1);"><span id="topClock"></span><span id="topResult"></span></a></div>
+<div class="leftHeaderItem"><a class="flagMoves" href="javascript:void(0);" onclick="GoToMove(StartPly + PlyNumber);"><span id="topFlag"></span><span style="display:none;" id="topMoreMoves" title="go to game end">...</span></a><a href="javascript:void(0);" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(IsRotated ? gameWhite[currentGame] : gameBlack[currentGame], customPgnHeaderTag(IsRotated ? 'WhiteFideId' : 'BlackFideId')); } this.blur();" id="topPlayer" class="notranslate"></a>&nbsp;</div><div class="rightHeaderItem">&nbsp;<a href="javascript:void(0);" onclick="replayPreviousMoves(1);"><span id="topClock"></span><span id="topResult"></span></a></div>
 </div>
 
 <div id="GameBoard"></div>
 
 <div id="bottomContainer" class="bottomContainer">
-<div class="leftHeaderItem"><a class="flagMoves" href="javascript:void(0);" onclick="if (isAutoPlayOn) { GoToMove(StartPly + PlyNumber); } else { GoToMove(CurrentPly + 1); SetAutoPlay(true); }"><span id="bottomFlag"></span><span style="display:none;" id="bottomMoreMoves" title="click here for more available moves">...</span></a><a href="javascript:void(0);" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(IsRotated ? gameBlack[currentGame] : gameWhite[currentGame], customPgnHeaderTag(IsRotated ? 'BlackFideId' : 'WhiteFideId')); } this.blur();" id="bottomPlayer" class="notranslate"></a>&nbsp;</div><div class="rightHeaderItem">&nbsp;<a href="javascript:void(0);" onclick="replayPreviousMoves(1);"><span id="bottomClock"></span><span id="bottomResult"></span></a></div>
+<div class="leftHeaderItem"><a class="flagMoves" href="javascript:void(0);" onclick="GoToMove(StartPly + PlyNumber);"><span id="bottomFlag"></span><span style="display:none;" id="bottomMoreMoves" title="go to game end">...</span></a><a href="javascript:void(0);" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(IsRotated ? gameBlack[currentGame] : gameWhite[currentGame], customPgnHeaderTag(IsRotated ? 'BlackFideId' : 'WhiteFideId')); } this.blur();" id="bottomPlayer" class="notranslate"></a>&nbsp;</div><div class="rightHeaderItem">&nbsp;<a href="javascript:void(0);" onclick="replayPreviousMoves(1);"><span id="bottomClock"></span><span id="bottomResult"></span></a></div>
 </div>
 
 </center>
