@@ -72,14 +72,21 @@
     iniGame = unescape(window.location.search.match(thisRegExp)[3]);
   }
 
+  thisRegExp = /(&|\?)(flipBoard|fb)=([^&]*)(&|$)/i;
+  if (window.location.search.match(thisRegExp) !== null) {
+    var flipBoardValue = unescape(window.location.search.match(thisRegExp)[3]);
+    if ((flipBoardValue == "true") || (flipBoardValue == "t")) { IsRotated = true; }
+  }
+
   thisRegExp = /(&|\?)(help|h)=(true|t)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
-    alert("pgn4web live-mosaic-tile.html parameters" + "\n" +
+    alert("pgn4web live-mosaic-stone.html parameters" + "\n" +
       " - useTextarea = " + useTextarea + "; if set true uses textarea as PGN input (default false = use pgnData)" + "\n" +
       " - pgnData = " + pgnFile + "; PGN file to load (default " + pgnFile_default + ")" + "\n" +
       " - refreshMinutes = " + refreshMinutes + "; refresh interval in minutes, decimals allowed (default " + refreshMinutes_default + ")" + "\n" +
       " - refreshDemo = " + demoFlag + "; sets live demo mode (default false)" + "\n" +
       " - initialGame = " + iniGame + "; initial game number or search string" + "\n" +
+      " - flipBoard = " + IsRotated + "; if true the chessboard is flipped" + "\n" +
       " - help = true");
   }
 
@@ -152,10 +159,23 @@
 
   }
 
-  var old_gameKey = "";
-  var old_PlyNumber = -1;
   function customFunctionOnPgnGameLoad() {
-    var theObj = document.getElementById("bottomContainer");
+    var theObj;
+
+    if (theObj = document.getElementById("GameWhiteClock")) { theObj.style.display = (gameResult[currentGame] == "*") ? "" : "none"; }
+    if (theObj = document.getElementById("GameWhiteResult")) {
+      if (gameResult[currentGame] == "1/2-1/2") { theObj.innerHTML = "&frac12;"; }
+      else if (gameResult[currentGame] == "1-0") { theObj.innerHTML = "1"; }
+      else if (gameResult[currentGame] == "0-1") { theObj.innerHTML = "0"; }
+    }
+    if (theObj = document.getElementById("GameBlackClock")) { theObj.style.display = (gameResult[currentGame] == "*") ? "" : "none"; }
+    if (theObj = document.getElementById("GameBlackResult")) {
+      if (gameResult[currentGame] == "1/2-1/2") { theObj.innerHTML = "&frac12;"; }
+      else if (gameResult[currentGame] == "1-0") { theObj.innerHTML = "0"; }
+      else if (gameResult[currentGame] == "0-1") { theObj.innerHTML = "1"; }
+    }
+
+    theObj = document.getElementById("topContainer");
     if (theObj) {
       theObj.title = numberOfGames > 1 ? " game " + (currentGame+1) + " of " + numberOfGames + "  " : "";
       addTagToTitle("event: ", gameEvent[currentGame], theObj);
@@ -163,10 +183,14 @@
       addTagToTitle("date: ", gameDate[currentGame], theObj);
       addTagToTitle("round: ", gameRound[currentGame], theObj);
       addTagToTitle("white: ", gameWhite[currentGame], theObj);
+      addTagToTitle("white team: ", customPgnHeaderTag("WhiteTeam"), theObj);
       addTagToTitle("black: ", gameBlack[currentGame], theObj);
+      addTagToTitle("black team: ", customPgnHeaderTag("BlackTeam"), theObj);
       addTagToTitle("result: ", gameResult[currentGame], theObj);
       addTagToTitle("termination: ", customPgnHeaderTag("Termination"), theObj);
       addTagToTitle("timecontrol: ", customPgnHeaderTag("TimeControl"), theObj);
+      var theOther = document.getElementById("bottomContainer");
+      if (theOther) { theOther.title = theObj.title; }
     }
 
     try {
@@ -180,32 +204,14 @@
         }
       }
     } catch(e) { myAlert("warning: failed accessing frame's parent for hiding game option", false); }
-
-    var this_gameKey = gameKey(gameEvent[currentGame], gameSite[currentGame], gameDate[currentGame], gameRound[currentGame], gameWhite[currentGame], gameBlack[currentGame]);
-    newMovesFlag((old_gameKey === this_gameKey) && (old_PlyNumber !== PlyNumber));
-    old_gameKey = this_gameKey;
-    old_PlyNumber = PlyNumber;
   }
 
-  var newMovesFlagTimeout = null;
-  function newMovesFlag(onOff) {
-    if (newMovesFlagTimeout) {
-      clearTimeout(newMovesFlagTimeout);
-      newMovesFlagTimeout = null;
-    }
-    var theObj = document.getElementById("GameNewMoves");
-    if (theObj) { theObj.innerHTML = onOff ? "^" : ""; }
-    if (onOff) { newMovesFlagTimeout = setTimeout("newMovesFlag(false);", refreshMinutes * 60000 + 2000); }
-  }
-
-  function gameKey(event, site, date, round, white, black) {
-    var key = "";
-    key += "[" + (typeof(event) == "string" ? event : "") + "]";
-    key += "[" + (typeof(site) == "string" ? site : "") + "]";
-    key += "[" + (typeof(round) == "string" ? round : "") + "]";
-    key += "[" + (typeof(white) == "string" ? white : "") + "]";
-    key += "[" + (typeof(black) == "string" ? black : "") + "]";
-    return key;
+  function customFunctionOnMove() {
+    var theObj;
+    if (theObj = document.getElementById("GameWhiteFlag")) { theObj.style.display = (CurrentPly % 2) ? "none" : ""; }
+    if (theObj = document.getElementById("GameWhiteMoreMoves")) { theObj.style.display = ((CurrentPly % 2) && (CurrentPly < StartPly + PlyNumber)) ? "inline" : "none"; }
+    if (theObj = document.getElementById("GameBlackFlag")) { theObj.style.display = (CurrentPly % 2 === 0) ? "none" : ""; }
+    if (theObj = document.getElementById("GameBlackMoreMoves")) { theObj.style.display = ((CurrentPly % 2 === 0)  && (CurrentPly < StartPly + PlyNumber)) ? "inline" : "none"; }
   }
 
   function customShortcutKey_Shift_0() { try { if (parent && (parent !== window) && parent.customShortcutKey_Shift_0) { parent.customShortcutKey_Shift_0(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
@@ -224,6 +230,24 @@
   function customShortcutKey_Shift_9() { try { if (parent && (parent !== window) && parent.customShortcutKey_Shift_9) { parent.customShortcutKey_Shift_9(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
 
   function pgn4web_onload(e) {
+    var theObj;
+    if (theObj = document.getElementById("topPlayer")) { theObj.id = IsRotated ? "GameWhite" : "GameBlack"; }
+    if (theObj = document.getElementById("bottomPlayer")) { theObj.id = IsRotated ? "GameBlack" : "GameWhite"; }
+    if (theObj = document.getElementById("topClock")) { theObj.id = IsRotated ? "GameWhiteClock" : "GameBlackClock"; }
+    if (theObj = document.getElementById("bottomClock")) { theObj.id = IsRotated ? "GameBlackClock" : "GameWhiteClock"; }
+    if (theObj = document.getElementById("topResult")) { theObj.id = IsRotated ? "GameWhiteResult" : "GameBlackResult"; }
+    if (theObj = document.getElementById("bottomResult")) { theObj.id = IsRotated ? "GameBlackResult" : "GameWhiteResult"; }
+    if (theObj = document.getElementById("topFlag")) {
+      theObj.className = IsRotated ? "whiteFlag" : "blackFlag";
+      theObj.id = IsRotated ? "GameWhiteFlag" : "GameBlackFlag";
+    }
+    if (theObj = document.getElementById("bottomFlag")) {
+      theObj.className = IsRotated ? "blackFlag" : "whiteFlag";
+      theObj.id = IsRotated ? "GameBlackFlag" : "GameWhiteFlag";
+    }
+    if (theObj = document.getElementById("topMoreMoves")) { theObj.id = IsRotated ? "GameWhiteMoreMoves" : "GameBlackMoreMoves"; }
+    if (theObj = document.getElementById("bottomMoreMoves")) { theObj.id = IsRotated ? "GameBlackMoreMoves" : "GameWhiteMoreMoves"; }
+
     start_pgn4web();
     readyToReceivePgn = true;
     try {
@@ -262,8 +286,9 @@ body {
   background: transparent;
   color: black;
   font-family: 'pgn4web Liberation Sans', sans-serif;
-  font-size: 12px;
   font-weight: bold;
+  font-size: 14px;
+  line-height: 19px;
   padding: 13px;
 }
 
@@ -320,26 +345,56 @@ a {
 .comment {
 }
 
+.topContainer {
+  display: inline-block;
+  width: 224px;
+  margin-bottom: 11px;
+}
+
 .bottomContainer {
-  width: 230px;
-  margin-top: 10px;
+  display: inline-block;
+  width: 224px;
+  margin-top: 13px;
 }
 
 .leftHeaderItem,
 .rightHeaderItem {
   white-space: nowrap;
   overflow: hidden;
-  width: 103px;
 }
 
 .leftHeaderItem {
+  clear: both;
   float: left;
+  width: 154px;
   text-align: left;
 }
 
 .rightHeaderItem {
   float: right;
+  width: 64px;
   text-align: right;
+}
+
+.flagMoves {
+  display: inline-block;
+  width: 28px;
+}
+
+.whiteFlag,
+.blackFlag {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border: solid 1px black;
+}
+
+.whiteFlag {
+  background: white;
+}
+
+.blackFlag {
+  background: black;
 }
 
 </style>
@@ -359,20 +414,14 @@ a {
 
 <center>
 
+<div id="topContainer" class="topContainer">
+<div class="leftHeaderItem"><a class="flagMoves" href="javascript:void(0);" onclick="if (isAutoPlayOn) { GoToMove(StartPly + PlyNumber); } else { GoToMove(CurrentPly + 1); SetAutoPlay(true); }"><span id="topFlag"></span><span style="display:none;" id="topMoreMoves" title="click here for more available moves">...</span></a><a href="javascript:void(0);" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(IsRotated ? gameWhite[currentGame] : gameBlack[currentGame], customPgnHeaderTag(IsRotated ? 'WhiteFideId' : 'BlackFideId')); } this.blur();" id="topPlayer" class="notranslate"></a>&nbsp;</div><div class="rightHeaderItem">&nbsp;<a href="javascript:void(0);" onclick="replayPreviousMoves(1);"><span id="topClock"></span><span id="topResult"></span></a></div>
+</div>
+
 <div id="GameBoard"></div>
 
 <div id="bottomContainer" class="bottomContainer">
-
-<div class="leftHeaderItem"><span id="GameLastMove"></span>&nbsp;</div>
-<div class="rightHeaderItem">&nbsp;<span id="GameNextMove"></span></div>
-<div>&nbsp;<a href="javascript:void(0);" onclick="newMovesFlag(false); this.blur();" title="new moves received" id="GameNewMoves"></a>&nbsp;</div>
-
-<div class="leftHeaderItem"><a href="javascript:void(0);" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(gameWhite[currentGame], customPgnHeaderTag('WhiteFideId')); } this.blur();" id="GameWhite" class="notranslate"></a>&nbsp;</div>
-<div class="rightHeaderItem">&nbsp;<a href="javascript:void(0);" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(gameBlack[currentGame], customPgnHeaderTag('BlackFideId')); } this.blur();" id="GameBlack" class="notranslate"></a></div>
-
-<div class="leftHeaderItem"><span id="GameWhiteClock"></span>&nbsp;</div>
-<div class="rightHeaderItem">&nbsp;<span id="GameBlackClock"></span></div>
-
+<div class="leftHeaderItem"><a class="flagMoves" href="javascript:void(0);" onclick="if (isAutoPlayOn) { GoToMove(StartPly + PlyNumber); } else { GoToMove(CurrentPly + 1); SetAutoPlay(true); }"><span id="bottomFlag"></span><span style="display:none;" id="bottomMoreMoves" title="click here for more available moves">...</span></a><a href="javascript:void(0);" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(IsRotated ? gameBlack[currentGame] : gameWhite[currentGame], customPgnHeaderTag(IsRotated ? 'BlackFideId' : 'WhiteFideId')); } this.blur();" id="bottomPlayer" class="notranslate"></a>&nbsp;</div><div class="rightHeaderItem">&nbsp;<a href="javascript:void(0);" onclick="replayPreviousMoves(1);"><span id="bottomClock"></span><span id="bottomResult"></span></a></div>
 </div>
 
 </center>

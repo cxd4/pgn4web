@@ -23,6 +23,8 @@
   var maxBoards_default = 8;
   var displayGame_default = 1;
   var refreshMinutes_default = 1;
+  var boardTool_default = "tile";
+  var flipBoards_default = "none";
 
   var thisRegExp = /(&|\?)(help|h)=(true|t)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
@@ -33,6 +35,8 @@
       " - refreshMinutes = live broadcast delay (default " + refreshMinutes_default + ")" + "\n\n" +
       " - refreshDemo = if set true sets live demo mode (default false)" + "\n\n" +
       " - headlessPage = if set true displays a page without heading (default false)" + "\n\n" +
+      " - boardTool = tile|stone (default " + boardTool_default + ")" + "\n\n" +
+      " - flipBoards = none|even|odd|all (default " + flipBoards_default + ", only applicable to boardTool=stone)" + "\n\n" +
       // " - barePadding = if not null, displays a page with given padding and without header/footer (default null)" + "\n\n" +
       // " - backgroundColorHex = if not null and barePadding also not null, background color hex code, like FF0000 (default null)" + "\n\n" +
       " - help = true");
@@ -112,6 +116,26 @@
   if (window.location.search.match(thisRegExp) !== null) {
     var headlessPageValue = unescape(window.location.search.match(thisRegExp)[3]);
     if ((headlessPageValue == "true") || (headlessPageValue == "t")) { headlessPage = true; }
+  }
+
+  var boardTool = boardTool_default;
+  thisRegExp = /(&|\?)(boardTool|bt)=(tile|t|stone|s)(&|$)/i;
+  if (window.location.search.match(thisRegExp) !== null) {
+    boardTool = unescape(window.location.search.match(thisRegExp)[3]);
+    if (boardTool == "t") { boardTool = "tile"; }
+    if (boardTool == "s") { boardTool = "stone"; }
+  }
+  var boardToolFrameHeight = (boardTool == "tile") ? 306 : 318;
+  var boardToolFrameWidth = 256;
+
+  var flipBoards = flipBoards_default;
+  thisRegExp = /(&|\?)(flipBoards|fb)=(none|n|even|e|odd|o|all|a)(&|$)/i;
+  if (window.location.search.match(thisRegExp) !== null) {
+    flipBoards = unescape(window.location.search.match(thisRegExp)[3]);
+    if (flipBoards == "n") { flipBoards = "none"; }
+    if (flipBoards == "e") { flipBoards = "even"; }
+    if (flipBoards == "o") { flipBoards = "odd"; }
+    if (flipBoards == "a") { flipBoards = "all"; }
   }
 
   // undocumented features
@@ -210,8 +234,6 @@ a:hover {
 
 .hiddenFrame,
 .visibleFrame {
-  width: 256px;
-  height: 306px;
   margin-left: 20px;
   margin-right: 20px;
   margin-top: 15px;
@@ -276,8 +298,10 @@ function updateBoardFrames(newMaxBoards) {
   var theObj = document.getElementById("boardFrames");
   if (theObj) {
     theObj.innerHTML = "";
+    var flipBoardFlag;
     for (var board = 0; board < newMaxBoards; board++) {
-      theObj.innerHTML += "<iframe src='live-mosaic-tile.html?ut=t&amp;rm=" + refreshMinutes + "' class='hiddenFrame' id='board" + nextBoardId + "' name='board" + nextBoardId + "' width='256' height='306' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>";
+      flipBoardFlag = (((flipBoards == "even") && (board % 2 === 1)) || ((flipBoards == "odd") && (board % 2 === 0)) || (flipBoards == "all"));
+      theObj.innerHTML += "<iframe src='live-mosaic-" + boardTool + ".html?ut=t&amp;rm=" + refreshMinutes + (flipBoardFlag ? "&fb=t" : "") + "' class='hiddenFrame' id='board" + nextBoardId + "' name='board" + nextBoardId + "' width='" + boardToolFrameWidth + "' height='" + boardToolFrameHeight + "' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'>your web browser and/or your host do not support iframes as required to display the chessboard</iframe>";
       boardId[board] = nextBoardId++;
     }
   }
