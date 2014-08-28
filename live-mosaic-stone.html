@@ -322,11 +322,10 @@ body {
 
 body {
   background: transparent;
-  color: #333333;
+  color: black;
   font-family: 'pgn4web Liberation Sans', sans-serif;
   font-weight: bold;
-  font-size: 14px;
-  line-height: 18px;
+  font-size: 13px;
   padding: 13px;
 }
 
@@ -390,11 +389,11 @@ a {
 }
 
 .topContainer {
-  margin-bottom: 13px;
+  margin-bottom: 11px;
 }
 
 .bottomContainer {
-  margin-top: 16px;
+  margin-top: 13px;
 }
 
 .leftHeaderItem,
@@ -424,9 +423,9 @@ a {
 .whiteFlag,
 .blackFlag {
   display: inline-block;
-  width: 6px;
-  height: 6px;
-  border: solid 2px #333333;
+  width: 5px;
+  height: 5px;
+  border: solid 2px black;
 }
 
 .whiteFlag {
@@ -434,7 +433,7 @@ a {
 }
 
 .blackFlag {
-  background: #333333;
+  background: black;
 }
 
 </style>
@@ -455,13 +454,13 @@ a {
 <center>
 
 <div id="topContainer" class="topContainer">
-<div class="leftHeaderItem"><a class="flagMoves" href="javascript:void(0);" onclick="GoToMove(StartPly + PlyNumber);"><span id="topFlag"></span><span style="display:none;" id="topMoreMoves" title="go to game end">&raquo;</span></a><a href="javascript:void(0);" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(IsRotated ? gameWhite[currentGame] : gameBlack[currentGame], customPgnHeaderTag(IsRotated ? 'WhiteFideId' : 'BlackFideId')); } this.blur();" id="topPlayer" class="notranslate"></a>&nbsp;</div><div class="rightHeaderItem">&nbsp;<a href="javascript:void(0);" onclick="replayPreviousMoves(1);"><span id="topClock"></span><span id="topResult"></span></a></div>
+<div class="leftHeaderItem"><a class="flagMoves" href="javascript:void(0);" onclick="GoToMove(StartPly + PlyNumber);"><span id="topFlag"></span><span style="display:none;" id="topMoreMoves" title="go to game end">&raquo;</span></a><a id="topPlayer" class="notranslate" href="javascript:void(0);" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(IsRotated ? gameWhite[currentGame] : gameBlack[currentGame], customPgnHeaderTag(IsRotated ? 'WhiteFideId' : 'BlackFideId')); } this.blur();"></a>&nbsp;</div><div class="rightHeaderItem">&nbsp;<a href="javascript:void(0);" onclick="replayPreviousMoves(1);"><span id="topClock"></span><span id="topResult"></span></a></div>
 </div>
 
 <div id="GameBoard"></div>
 
 <div id="bottomContainer" class="bottomContainer">
-<div class="leftHeaderItem"><a class="flagMoves" href="javascript:void(0);" onclick="GoToMove(StartPly + PlyNumber);"><span id="bottomFlag"></span><span style="display:none;" id="bottomMoreMoves" title="go to game end">&raquo;</span></a><a href="javascript:void(0);" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(IsRotated ? gameBlack[currentGame] : gameWhite[currentGame], customPgnHeaderTag(IsRotated ? 'BlackFideId' : 'WhiteFideId')); } this.blur();" id="bottomPlayer" class="notranslate"></a>&nbsp;</div><div class="rightHeaderItem">&nbsp;<a href="javascript:void(0);" onclick="replayPreviousMoves(1);"><span id="bottomClock"></span><span id="bottomResult"></span></a></div>
+<div class="leftHeaderItem"><a class="flagMoves" href="javascript:void(0);" onclick="GoToMove(StartPly + PlyNumber);"><span id="bottomFlag"></span><span style="display:none;" id="bottomMoreMoves" title="go to game end">&raquo;</span></a><a id="bottomPlayer" class="notranslate" href="javascript:void(0);" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(IsRotated ? gameBlack[currentGame] : gameWhite[currentGame], customPgnHeaderTag(IsRotated ? 'BlackFideId' : 'WhiteFideId')); } this.blur();"></a>&nbsp;</div><div class="rightHeaderItem">&nbsp;<a href="javascript:void(0);" onclick="replayPreviousMoves(1);"><span id="bottomClock"></span><span id="bottomResult"></span></a></div>
 </div>
 
 </center>
