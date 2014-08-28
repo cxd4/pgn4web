@@ -1432,7 +1432,7 @@ sub log_rounds {
       if ($memoryAutopurgeEvent > 0) {
         $thisEvent = $_;
         $thisEvent =~ s/^"(.*)" ".*"$/$1/;
-        if (($memoryAutopurgeEvent > 1) || (headerForFilter($thisEvent, "", "", "") !~ /$prioritizeFilter/i)) {
+        if (($memoryAutopurgeEvent > 1) || ((headerForFilter($thisEvent, "", "", "") !~ /$prioritizeFilter/i) && (headerForFilter($thisEvent, "", "", "") !~ /$autoPrioritizeFilter/i))) {
           memory_purge_event($thisEvent);
           next;
         }
@@ -2008,7 +2008,7 @@ sub process_master_command {
         for (my $i=0; $i<$maxGamesNum; $i++) {
           if ((defined $games_num[$i]) && (defined $GAMES_event[$games_num[$i]])) {
             unless ($GAMES_event[$games_num[$i]] ~~ @theseEvents) {
-              if (($memoryAutopurgeEvent > 1) || (headerForFilter($GAMES_event[$games_num[$i]], "", "", "") !~ /$prioritizeFilter/i)) {
+              if (($memoryAutopurgeEvent > 1) || ((headerForFilter($GAMES_event[$games_num[$i]], "", "", "") !~ /$prioritizeFilter/i) && (headerForFilter($GAMES_event[$games_num[$i]], "", "", "") !~ /$autoPrioritizeFilter/i))) {
                 $purgedEvent += memory_purge_event($GAMES_event[$games_num[$i]]);
                 push(@theseEvents, $GAMES_event[$games_num[$i]]);
               }
