@@ -209,8 +209,8 @@
     var gotNewMoves = ((old_gameKey === this_gameKey) && (old_PlyNumber !== PlyNumber));
     if (gotNewMoves) {
       fixFlagMoreMoves(true);
-      if (fixFlagMoreMovesTimeout) { clearTimeout(fixFlagMoreMovesTimeout); }
-      fixFlagMoreMovesTimeout = setTimeout("fixFlagMoreMoves(false);", 0.5 * Delay);
+      if (newMovesFlagTimeout) { clearTimeout(newMovesFlagTimeout); }
+      newMovesFlagTimeout = setTimeout("fixFlagMoreMoves(false);", 0.5 * Delay);
     }
     old_gameKey = this_gameKey;
     old_PlyNumber = PlyNumber;
@@ -218,16 +218,16 @@
   }
   var old_gameKey = "";
   var old_PlyNumber = -1;
-  var fixFlagMoreMovesTimeout = null;
+  var newMovesFlagTimeout = null;
 
   function customFunctionOnMove() {
     fixFlagMoreMoves(false);
   }
 
   function fixFlagMoreMoves(gotNewMoves) {
-    if (fixFlagMoreMovesTimeout) {
-      clearTimeout(fixFlagMoreMovesTimeout);
-      fixFlagMoreMovesTimeout = null;
+    if (newMovesFlagTimeout) {
+      clearTimeout(newMovesFlagTimeout);
+      newMovesFlagTimeout = null;
     }
     var theObj;
     if (theObj = document.getElementById("GameWhiteFlag")) { theObj.style.display = (CurrentPly % 2) ? "none" : ""; }
