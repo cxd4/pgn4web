@@ -204,14 +204,46 @@
         }
       }
     } catch(e) { myAlert("warning: failed accessing frame's parent for hiding game option", false); }
+
+    var this_gameKey = gameKey(gameEvent[currentGame], gameSite[currentGame], gameDate[currentGame], gameRound[currentGame], gameWhite[currentGame], gameBlack[currentGame]);
+    var gotNewMoves = ((old_gameKey === this_gameKey) && (old_PlyNumber !== PlyNumber));
+    if (gotNewMoves) {
+      fixFlagMoreMoves(true);
+      if (fixFlagMoreMovesTimeout) { clearTimeout(fixFlagMoreMovesTimeout); }
+      fixFlagMoreMovesTimeout = setTimeout("fixFlagMoreMoves(false);", 0.5 * Delay);
+    }
+    old_gameKey = this_gameKey;
+    old_PlyNumber = PlyNumber;
+
   }
+  var old_gameKey = "";
+  var old_PlyNumber = -1;
+  var fixFlagMoreMovesTimeout = null;
 
   function customFunctionOnMove() {
+    fixFlagMoreMoves(false);
+  }
+
+  function fixFlagMoreMoves(gotNewMoves) {
+    if (fixFlagMoreMovesTimeout) {
+      clearTimeout(fixFlagMoreMovesTimeout);
+      fixFlagMoreMovesTimeout = null;
+    }
     var theObj;
     if (theObj = document.getElementById("GameWhiteFlag")) { theObj.style.display = (CurrentPly % 2) ? "none" : ""; }
-    if (theObj = document.getElementById("GameWhiteMoreMoves")) { theObj.style.display = ((CurrentPly % 2) && (CurrentPly < StartPly + PlyNumber)) ? "inline" : "none"; }
+    if (theObj = document.getElementById("GameWhiteMoreMoves")) { theObj.style.display = ((CurrentPly % 2) && ((CurrentPly < StartPly + PlyNumber) || (gotNewMoves))) ? "inline" : "none"; }
     if (theObj = document.getElementById("GameBlackFlag")) { theObj.style.display = (CurrentPly % 2 === 0) ? "none" : ""; }
-    if (theObj = document.getElementById("GameBlackMoreMoves")) { theObj.style.display = ((CurrentPly % 2 === 0)  && (CurrentPly < StartPly + PlyNumber)) ? "inline" : "none"; }
+    if (theObj = document.getElementById("GameBlackMoreMoves")) { theObj.style.display = ((CurrentPly % 2 === 0)  && ((CurrentPly < StartPly + PlyNumber) || (gotNewMoves))) ? "inline" : "none"; }
+  }
+
+  function gameKey(event, site, date, round, white, black) {
+    var key = "";
+    key += "[" + (typeof(event) == "string" ? event : "") + "]";
+    key += "[" + (typeof(site) == "string" ? site : "") + "]";
+    key += "[" + (typeof(round) == "string" ? round : "") + "]";
+    key += "[" + (typeof(white) == "string" ? white : "") + "]";
+    key += "[" + (typeof(black) == "string" ? black : "") + "]";
+    return key;
   }
 
   function customShortcutKey_Shift_0() { try { if (parent && (parent !== window) && parent.customShortcutKey_Shift_0) { parent.customShortcutKey_Shift_0(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
