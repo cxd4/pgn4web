@@ -36,7 +36,7 @@
       " - refreshDemo = if set true sets live demo mode (default false)" + "\n\n" +
       " - headlessPage = if set true displays a page without heading (default false)" + "\n\n" +
       " - boardTool = tile|stone (default " + boardTool_default + ")" + "\n\n" +
-      " - flipBoards = none|even|odd|all (default " + flipBoards_default + ", only applicable to boardTool=stone)" + "\n\n" +
+      " - flipBoards = none|even|odd|all (default " + flipBoards_default + ", ignored unless boardTool=stone)" + "\n\n" +
       // " - barePadding = if not null, displays a page with given padding and without header/footer (default null)" + "\n\n" +
       // " - backgroundColorHex = if not null and barePadding also not null, background color hex code, like FF0000 (default null)" + "\n\n" +
       " - help = true");
@@ -125,7 +125,7 @@
     if (boardTool == "t") { boardTool = "tile"; }
     if (boardTool == "s") { boardTool = "stone"; }
   }
-  var boardToolFrameHeight = (boardTool == "tile") ? 306 : 318;
+  var boardToolFrameHeight = (boardTool == "tile") ? 306 : 326;
   var boardToolFrameWidth = 256;
 
   var flipBoards = flipBoards_default;
@@ -136,6 +136,9 @@
     if (flipBoards == "e") { flipBoards = "even"; }
     if (flipBoards == "o") { flipBoards = "odd"; }
     if (flipBoards == "a") { flipBoards = "all"; }
+  }
+  if ((flipBoards != "none") && (boardTool != "stone")) {
+    myAlert("warning: flipBoards=" + flipBoards + " ignored for boardTool=" + boardTool, false, true);
   }
 
   // undocumented features
@@ -203,8 +206,8 @@ a:hover {
 .beforeBoards {
   display: inline-block;
   text-align: right;
-  margin-top: 5px;
-  height: 20px;
+  margin-top: 10px;
+  height: 15px;
   width: 100%;
   overflow: hidden;
 }
