@@ -208,6 +208,10 @@
     return key;
   }
 
+  function replayPreviousMovesMosaic(force) {
+    if (force || newMovesFlagTimeout) { replayPreviousMoves(1); }
+  }
+
   function customShortcutKey_Shift_0() { try { if (parent && (parent !== window) && parent.customShortcutKey_Shift_0) { parent.customShortcutKey_Shift_0(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
 
   // customShortcutKey_Shift_1 defined by fide-lookup.js

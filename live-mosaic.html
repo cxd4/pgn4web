@@ -286,10 +286,10 @@ function printMenu() {
 }
 
 function replayLastMoves() {
-  var showAll = LiveBroadcastEnded, wf, rpm;
+  var wf, rpmm;
   for (var thisBoard in boardId) {
-    if ((wf = window.frames["board" + boardId[thisBoard]]) && (rpm = wf.replayPreviousMoves)) {
-      if (showAll || wf.newMovesFlagTimeout) { rpm(1); }
+    if ((wf = window.frames["board" + boardId[thisBoard]]) && (rpmm = wf.replayPreviousMovesMosaic)) {
+      rpmm(LiveBroadcastEnded);
     }
   }
 }
