@@ -365,6 +365,7 @@ body {
 }
 
 .sidetomoveBox {
+  display: inline-block;
   width: $sidetomoveWidthCss;
   height: $sidetomoveHeightCss;
   border-style: solid;
@@ -417,7 +418,7 @@ function customFunctionOnMove() {
   var res, outcome;
 
   if (CurrentPly == StartPly) {
-    document.getElementById("leftButtonLink").innerHTML = "<img class='sidetomoveBox' style='background-color:" + (CurrentPly % 2 ? "black" : "white" ) + ";' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoEAYAAADcbmQuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAMAAwADAGp0HVAAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAKAAAACgAo3CU+AAAACNJREFUaN7twQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAPBjIoAAFxtd2pAAAAAElFTkSuQmCC'>";
+    document.getElementById("leftButtonLink").innerHTML = "<span class='sidetomoveBox' style='background-color:" + (CurrentPly % 2 ? "black" : "white" ) + ";'></span>";
     document.getElementById("leftButton").title = ((CurrentPly % 2) ? "Black" : "White") + " to play: find the best move";
   } else {
     document.getElementById("leftButtonLink").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&lt;&nbsp;&nbsp;&nbsp;&nbsp;";

@@ -123,8 +123,14 @@
     swapId("GameWhite", "GameBlack");
     swapId("GameWhiteMoreMoves", "GameBlackMoreMoves");
     swapId("GameWhiteFlag", "GameBlackFlag");
-    if (theObj = document.getElementById("GameWhiteFlag")) { theObj.className = "whiteFlag"; }
-    if (theObj = document.getElementById("GameBlackFlag")) { theObj.className = "blackFlag"; }
+    if (theObj = document.getElementById("GameWhiteFlag")) {
+      theObj.className = "whiteFlag";
+      theObj.title = "white to move";
+    }
+    if (theObj = document.getElementById("GameBlackFlag")) {
+      theObj.className = "blackFlag";
+      theObj.title = "black to move";
+    }
     defaultFlipBoard();
   };
 
@@ -446,13 +452,13 @@ a {
 <center>
 
 <div id="topContainer" class="topContainer">
-<div class="leftHeaderItem"><a class="flagMoves" href="javascript:void(0);" onclick="GoToMove(StartPly + PlyNumber);"><span id="GameBlackFlag" class="blackFlag"></span><span style="display:none;" id="GameBlackMoreMoves" title="go to game end">&raquo;</span></a><a id="GameBlack" class="notranslate" href="javascript:void(0);" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(IsRotated ? gameWhite[currentGame] : gameBlack[currentGame], customPgnHeaderTag(IsRotated ? 'WhiteFideId' : 'BlackFideId')); } this.blur();"></a>&nbsp;</div><div class="rightHeaderItem">&nbsp;<a href="javascript:void(0);" onclick="replayPreviousMoves(1);"><span id="GameBlackClock"></span><span id="GameBlackResult"></span></a></div>
+<div class="leftHeaderItem"><a class="flagMoves" href="javascript:void(0);" onclick="GoToMove(StartPly + PlyNumber);"><span id="GameBlackFlag" class="blackFlag" title="black to move"></span><span style="display:none;" id="GameBlackMoreMoves" title="go to game end">&raquo;</span></a><a id="GameBlack" class="notranslate" href="javascript:void(0);" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(IsRotated ? gameWhite[currentGame] : gameBlack[currentGame], customPgnHeaderTag(IsRotated ? 'WhiteFideId' : 'BlackFideId')); } this.blur();"></a>&nbsp;</div><div class="rightHeaderItem">&nbsp;<a href="javascript:void(0);" onclick="replayPreviousMoves(1);"><span id="GameBlackClock"></span><span id="GameBlackResult"></span></a></div>
 </div>
 
 <div id="GameBoard"></div>
 
 <div id="bottomContainer" class="bottomContainer">
-<div class="leftHeaderItem"><a class="flagMoves" href="javascript:void(0);" onclick="GoToMove(StartPly + PlyNumber);"><span id="GameWhiteFlag" class="whiteFlag"></span><span style="display:none;" id="GameWhiteMoreMoves" title="go to game end">&raquo;</span></a><a id="GameWhite" class="notranslate" href="javascript:void(0);" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(IsRotated ? gameBlack[currentGame] : gameWhite[currentGame], customPgnHeaderTag(IsRotated ? 'BlackFideId' : 'WhiteFideId')); } this.blur();"></a>&nbsp;</div><div class="rightHeaderItem">&nbsp;<a href="javascript:void(0);" onclick="replayPreviousMoves(1);"><span id="GameWhiteClock"></span><span id="GameWhiteResult"></span></a></div>
+<div class="leftHeaderItem"><a class="flagMoves" href="javascript:void(0);" onclick="GoToMove(StartPly + PlyNumber);"><span id="GameWhiteFlag" class="whiteFlag" title="white to move"></span><span style="display:none;" id="GameWhiteMoreMoves" title="go to game end">&raquo;</span></a><a id="GameWhite" class="notranslate" href="javascript:void(0);" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(IsRotated ? gameBlack[currentGame] : gameWhite[currentGame], customPgnHeaderTag(IsRotated ? 'BlackFideId' : 'WhiteFideId')); } this.blur();"></a>&nbsp;</div><div class="rightHeaderItem">&nbsp;<a href="javascript:void(0);" onclick="replayPreviousMoves(1);"><span id="GameWhiteClock"></span><span id="GameWhiteResult"></span></a></div>
 </div>
 
 </center>
