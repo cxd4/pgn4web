@@ -72,12 +72,6 @@
     iniGame = unescape(window.location.search.match(thisRegExp)[3]);
   }
 
-  thisRegExp = /(&|\?)(flipBoard|fb)=([^&]*)(&|$)/i;
-  if (window.location.search.match(thisRegExp) !== null) {
-    var flipBoardValue = unescape(window.location.search.match(thisRegExp)[3]);
-    if ((flipBoardValue == "true") || (flipBoardValue == "t")) { IsRotated = true; }
-  }
-
   thisRegExp = /(&|\?)(help|h)=(true|t)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
     alert("pgn4web live-mosaic-stone.html parameters" + "\n" +
@@ -86,7 +80,6 @@
       " - refreshMinutes = " + refreshMinutes + "; refresh interval in minutes, decimals allowed (default " + refreshMinutes_default + ")" + "\n" +
       " - refreshDemo = " + demoFlag + "; sets live demo mode (default false)" + "\n" +
       " - initialGame = " + iniGame + "; initial game number or search string" + "\n" +
-      " - flipBoard = " + IsRotated + "; if true the chessboard is flipped" + "\n" +
       " - help = true");
   }
 
@@ -110,15 +103,31 @@
   clearShortcutSquares("CDEF", "6");
   clearShortcutSquares("ABCDEFGH", "345");
 
-  // disable FlipBoard functionality, extending the warning to the parent container
-  var warnedFlipBoard = false;
-  function FlipBoard() {
-    if (!warnedFlipBoard) {
-      myAlert("warning: flip board functionality disabled", false, true);
-      warnedFlipBoard = true;
-      if (parent && (parent !== window) && parent.FlipBoard) { parent.FlipBoard(); }
-    }
+
+  function swapId(id_A, id_B) {
+    var id_saved;
+    var obj_A = document.getElementById(id_A);
+    if (!obj_A) { return; }
+    var obj_B = document.getElementById(id_B);
+    if (!obj_B) { return; }
+    id_saved = obj_A.id;
+    obj_A.id = obj_B.id;
+    obj_B.id = id_saved;
   }
+
+  window['defaultFlipBoard'] = window['FlipBoard'];
+  window['FlipBoard'] = function() {
+    var theObj;
+    swapId("GameWhiteResult", "GameBlackResult");
+    swapId("GameWhiteClock", "GameBlackClock");
+    swapId("GameWhite", "GameBlack");
+    swapId("GameWhiteMoreMoves", "GameBlackMoreMoves");
+    swapId("GameWhiteFlag", "GameBlackFlag");
+    if (theObj = document.getElementById("GameWhiteFlag")) { theObj.className = "whiteFlag"; }
+    if (theObj = document.getElementById("GameBlackFlag")) { theObj.className = "blackFlag"; }
+    defaultFlipBoard();
+  };
+
 
   try {
     var pcscsfcf, cscs;
@@ -268,24 +277,6 @@
   function customShortcutKey_Shift_9() { try { if (parent && (parent !== window) && parent.customShortcutKey_Shift_9) { parent.customShortcutKey_Shift_9(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
 
   function pgn4web_onload(e) {
-    var theObj;
-    if (theObj = document.getElementById("topPlayer")) { theObj.id = IsRotated ? "GameWhite" : "GameBlack"; }
-    if (theObj = document.getElementById("bottomPlayer")) { theObj.id = IsRotated ? "GameBlack" : "GameWhite"; }
-    if (theObj = document.getElementById("topClock")) { theObj.id = IsRotated ? "GameWhiteClock" : "GameBlackClock"; }
-    if (theObj = document.getElementById("bottomClock")) { theObj.id = IsRotated ? "GameBlackClock" : "GameWhiteClock"; }
-    if (theObj = document.getElementById("topResult")) { theObj.id = IsRotated ? "GameWhiteResult" : "GameBlackResult"; }
-    if (theObj = document.getElementById("bottomResult")) { theObj.id = IsRotated ? "GameBlackResult" : "GameWhiteResult"; }
-    if (theObj = document.getElementById("topFlag")) {
-      theObj.className = IsRotated ? "whiteFlag" : "blackFlag";
-      theObj.id = IsRotated ? "GameWhiteFlag" : "GameBlackFlag";
-    }
-    if (theObj = document.getElementById("bottomFlag")) {
-      theObj.className = IsRotated ? "blackFlag" : "whiteFlag";
-      theObj.id = IsRotated ? "GameBlackFlag" : "GameWhiteFlag";
-    }
-    if (theObj = document.getElementById("topMoreMoves")) { theObj.id = IsRotated ? "GameWhiteMoreMoves" : "GameBlackMoreMoves"; }
-    if (theObj = document.getElementById("bottomMoreMoves")) { theObj.id = IsRotated ? "GameBlackMoreMoves" : "GameWhiteMoreMoves"; }
-
     start_pgn4web();
     readyToReceivePgn = true;
     try {
@@ -326,6 +317,7 @@ body {
   font-family: 'pgn4web Liberation Sans', sans-serif;
   font-weight: bold;
   font-size: 13px;
+  line-height: 17px;
   padding: 13px;
 }
 
@@ -393,7 +385,7 @@ a {
 }
 
 .bottomContainer {
-  margin-top: 13px;
+  margin-top: 15px;
 }
 
 .leftHeaderItem,
@@ -454,13 +446,13 @@ a {
 <center>
 
 <div id="topContainer" class="topContainer">
-<div class="leftHeaderItem"><a class="flagMoves" href="javascript:void(0);" onclick="GoToMove(StartPly + PlyNumber);"><span id="topFlag"></span><span style="display:none;" id="topMoreMoves" title="go to game end">&raquo;</span></a><a id="topPlayer" class="notranslate" href="javascript:void(0);" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(IsRotated ? gameWhite[currentGame] : gameBlack[currentGame], customPgnHeaderTag(IsRotated ? 'WhiteFideId' : 'BlackFideId')); } this.blur();"></a>&nbsp;</div><div class="rightHeaderItem">&nbsp;<a href="javascript:void(0);" onclick="replayPreviousMoves(1);"><span id="topClock"></span><span id="topResult"></span></a></div>
+<div class="leftHeaderItem"><a class="flagMoves" href="javascript:void(0);" onclick="GoToMove(StartPly + PlyNumber);"><span id="GameBlackFlag" class="blackFlag"></span><span style="display:none;" id="GameBlackMoreMoves" title="go to game end">&raquo;</span></a><a id="GameBlack" class="notranslate" href="javascript:void(0);" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(IsRotated ? gameWhite[currentGame] : gameBlack[currentGame], customPgnHeaderTag(IsRotated ? 'WhiteFideId' : 'BlackFideId')); } this.blur();"></a>&nbsp;</div><div class="rightHeaderItem">&nbsp;<a href="javascript:void(0);" onclick="replayPreviousMoves(1);"><span id="GameBlackClock"></span><span id="GameBlackResult"></span></a></div>
 </div>
 
 <div id="GameBoard"></div>
 
 <div id="bottomContainer" class="bottomContainer">
-<div class="leftHeaderItem"><a class="flagMoves" href="javascript:void(0);" onclick="GoToMove(StartPly + PlyNumber);"><span id="bottomFlag"></span><span style="display:none;" id="bottomMoreMoves" title="go to game end">&raquo;</span></a><a id="bottomPlayer" class="notranslate" href="javascript:void(0);" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(IsRotated ? gameBlack[currentGame] : gameWhite[currentGame], customPgnHeaderTag(IsRotated ? 'BlackFideId' : 'WhiteFideId')); } this.blur();"></a>&nbsp;</div><div class="rightHeaderItem">&nbsp;<a href="javascript:void(0);" onclick="replayPreviousMoves(1);"><span id="bottomClock"></span><span id="bottomResult"></span></a></div>
+<div class="leftHeaderItem"><a class="flagMoves" href="javascript:void(0);" onclick="GoToMove(StartPly + PlyNumber);"><span id="GameWhiteFlag" class="whiteFlag"></span><span style="display:none;" id="GameWhiteMoreMoves" title="go to game end">&raquo;</span></a><a id="GameWhite" class="notranslate" href="javascript:void(0);" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(IsRotated ? gameBlack[currentGame] : gameWhite[currentGame], customPgnHeaderTag(IsRotated ? 'BlackFideId' : 'WhiteFideId')); } this.blur();"></a>&nbsp;</div><div class="rightHeaderItem">&nbsp;<a href="javascript:void(0);" onclick="replayPreviousMoves(1);"><span id="GameWhiteClock"></span><span id="GameWhiteResult"></span></a></div>
 </div>
 
 </center>

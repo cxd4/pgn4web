@@ -103,16 +103,6 @@
   clearShortcutSquares("CDEF", "6");
   clearShortcutSquares("ABCDEFGH", "345");
 
-  // disable FlipBoard functionality, extending the warning to the parent container
-  var warnedFlipBoard = false;
-  function FlipBoard() {
-    if (!warnedFlipBoard) {
-      myAlert("warning: flip board functionality disabled", false, true);
-      warnedFlipBoard = true;
-      if (parent && (parent !== window) && parent.FlipBoard) { parent.FlipBoard(); }
-    }
-  }
-
   try {
     var pcscsfcf, cscs;
     if (parent && (parent !== window) && (pcscsfcf = parent.pgn4webClearShortCutSquaresForChildFrames)) {
