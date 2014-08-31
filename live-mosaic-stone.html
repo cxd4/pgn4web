@@ -120,15 +120,13 @@
     var theObj;
     swapId("GameWhiteResult", "GameBlackResult");
     swapId("GameWhiteClock", "GameBlackClock");
+    if (theObj = document.getElementById("GameWhiteClock")) { theObj.title = "white clock"; }
+    if (theObj = document.getElementById("GameBlackClock")) { theObj.title = "black clock"; }
     swapId("GameWhite", "GameBlack");
-    swapId("GameWhiteMoreMoves", "GameBlackMoreMoves");
+    swapId("GameWhiteMoveNum", "GameBlackMoveNum");
     swapId("GameWhiteFlag", "GameBlackFlag");
-    if (theObj = document.getElementById("GameWhiteFlag")) {
-      theObj.className = "whiteFlag";
-    }
-    if (theObj = document.getElementById("GameBlackFlag")) {
-      theObj.className = "blackFlag";
-    }
+    if (theObj = document.getElementById("GameWhiteFlag")) { theObj.className = "whiteFlag"; }
+    if (theObj = document.getElementById("GameBlackFlag")) { theObj.className = "blackFlag"; }
     defaultFlipBoard();
   };
 
@@ -181,6 +179,7 @@
       else if (gameResult[currentGame] == "1-0") { theObj.innerHTML = "1"; }
       else if (gameResult[currentGame] == "0-1") { theObj.innerHTML = "0"; }
       else { theObj.innerHTML = ""; }
+      theObj.style.display = theObj.innerHTML ? "" : "none";
     }
     if (theObj = document.getElementById("GameBlackClock")) { theObj.style.display = (gameResult[currentGame] == "*") ? "" : "none"; }
     if (theObj = document.getElementById("GameBlackResult")) {
@@ -188,6 +187,20 @@
       else if (gameResult[currentGame] == "1-0") { theObj.innerHTML = "0"; }
       else if (gameResult[currentGame] == "0-1") { theObj.innerHTML = "1"; }
       else { theObj.innerHTML = ""; }
+      theObj.style.display = theObj.innerHTML ? "" : "none";
+    }
+
+    if (theObj = document.getElementById("topLeftHeaderItem")) {
+      theObj.style.width = (gameResult[currentGame] == "*") ? "" : "161px";
+    }
+    if (theObj = document.getElementById("topRightHeaderItem")) {
+      theObj.style.width = (gameResult[currentGame] == "*") ? "" : "28px";
+    }
+    if (theObj = document.getElementById("bottomLeftHeaderItem")) {
+      theObj.style.width = (gameResult[currentGame] == "*") ? "" : "161px";
+    }
+    if (theObj = document.getElementById("bottomRightHeaderItem")) {
+      theObj.style.width = (gameResult[currentGame] == "*") ? "" : "28px";
     }
 
     theObj = document.getElementById("topContainer");
@@ -219,49 +232,41 @@
         }
       }
     } catch(e) { myAlert("warning: failed accessing frame's parent for hiding game option", false); }
-
-    var this_gameKey = gameKey(gameEvent[currentGame], gameSite[currentGame], gameDate[currentGame], gameRound[currentGame], gameWhite[currentGame], gameBlack[currentGame]);
-    var gotNewMoves = ((old_gameKey === this_gameKey) && (old_PlyNumber !== PlyNumber));
-    if (gotNewMoves) {
-      fixFlagMoreMoves(true);
-      if (flagAndMoreMovesTimeout) { clearTimeout(flagAndMoreMovesTimeout); }
-      flagAndMoreMovesTimeout = setTimeout("fixFlagMoreMoves(false);", 0.5 * Delay);
-    }
-    old_gameKey = this_gameKey;
-    old_PlyNumber = PlyNumber;
-
   }
-  var old_gameKey = "";
-  var old_PlyNumber = -1;
-  var flagAndMoreMovesTimeout = null;
 
   function customFunctionOnMove() {
-    fixFlagMoreMoves(false);
-  }
-
-  function fixFlagMoreMoves(gotNewMoves) {
-    if (flagAndMoreMovesTimeout) {
-      clearTimeout(flagAndMoreMovesTimeout);
-      flagAndMoreMovesTimeout = null;
-    }
-    var theObj, whiteLastMove = "", blackLastMove = "";
-    if (CurrentPly > 0) {
-      if (CurrentPly % 2) { whiteLastMove = " after " + ((CurrentPly + 1) / 2) + ". " + Moves[CurrentPly - 1]; }
-      else { blackLastMove = " after " + (CurrentPly / 2) + "... " + Moves[CurrentPly - 1]; }
-    }
+    var theObj;
     if (theObj = document.getElementById("GameWhiteFlag")) {
       theObj.style.display = (CurrentPly % 2) ? "none" : "";
-      theObj.title = "white to move" + blackLastMove;
+      theObj.title = "white to move";
     }
-    if (theObj = document.getElementById("GameWhiteMoreMoves")) {
-      theObj.style.display = ((CurrentPly % 2) && ((CurrentPly < StartPly + PlyNumber) || (gotNewMoves))) ? "inline" : "none";
+    if (theObj = document.getElementById("GameWhiteMoveNum")) {
+      theObj.style.display = (CurrentPly % 2) ? "inline" : "none";
+      if ((CurrentPly > 0) && (gameResult[currentGame] == "*") && ((document.getElementById("GameWhiteClock") && document.getElementById("GameWhiteClock").innerHTML) || (document.getElementById("GameBlackClock") && document.getElementById("GameBlackClock").innerHTML))) {
+        theObj.innerHTML = Math.floor((CurrentPly + 1 ) / 2);
+        theObj.title = "move " + Math.floor((CurrentPly + 1 ) / 2);
+      } else { theObj.innerHTML = theObj.title = ""; }
+      if (CurrentPly < StartPly + PlyNumber) {
+        theObj.innerHTML = "." + theObj.innerHTML;
+        if (theObj.title) { theObj.title += " of " + Math.floor((StartPly + PlyNumber + 1 ) / 2); }
+        else { theObj.title += "more moves available"; }
+      }
     }
     if (theObj = document.getElementById("GameBlackFlag")) {
       theObj.style.display = (CurrentPly % 2 === 0) ? "none" : "";
-      theObj.title = "black to move" + whiteLastMove;
+      theObj.title = "black to move";
     }
-    if (theObj = document.getElementById("GameBlackMoreMoves")) {
-      theObj.style.display = ((CurrentPly % 2 === 0)  && ((CurrentPly < StartPly + PlyNumber) || (gotNewMoves))) ? "inline" : "none";
+    if (theObj = document.getElementById("GameBlackMoveNum")) {
+      theObj.style.display = (CurrentPly % 2 === 0) ? "inline" : "none";
+      if ((CurrentPly > 0) && (gameResult[currentGame] == "*") && ((document.getElementById("GameWhiteClock") && document.getElementById("GameWhiteClock").innerHTML) || (document.getElementById("GameBlackClock") && document.getElementById("GameBlackClock").innerHTML))) {
+        theObj.innerHTML = Math.floor((CurrentPly + 1 ) / 2);
+        theObj.title = "move " + Math.floor((CurrentPly + 1 ) / 2);
+      } else { theObj.innerHTML = theObj.title = ""; }
+      if (CurrentPly < StartPly + PlyNumber) {
+        theObj.innerHTML = "." + theObj.innerHTML;
+        if (theObj.title) { theObj.title += " of " + Math.floor((StartPly + PlyNumber + 1 ) / 2); }
+        else { theObj.title += "more moves available"; }
+      }
     }
   }
 
@@ -415,16 +420,17 @@ a {
 .leftHeaderItem {
   clear: both;
   float: left;
-  width: 154px;
+  width: 133px;
   text-align: left;
 }
 
 .rightHeaderItem {
   float: right;
-  width: 64px;
+  width: 84px;
   text-align: right;
 }
 
+.gameResult,
 .flagMoves {
   display: inline-block;
   width: 28px;
@@ -433,8 +439,8 @@ a {
 .whiteFlag,
 .blackFlag {
   display: inline-block;
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
   border: solid 2px black;
 }
 
@@ -464,13 +470,13 @@ a {
 <center>
 
 <div id="topContainer" class="topContainer">
-<div class="leftHeaderItem"><a class="flagMoves" href="javascript:void(0);" onclick="GoToMove(StartPly + PlyNumber);"><span id="GameBlackFlag" class="blackFlag"></span><span style="display:none;" id="GameBlackMoreMoves" title="go to game end">&raquo;</span></a><a id="GameBlack" class="notranslate" href="javascript:void(0);" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(IsRotated ? gameWhite[currentGame] : gameBlack[currentGame], customPgnHeaderTag(IsRotated ? 'WhiteFideId' : 'BlackFideId')); } this.blur();"></a>&nbsp;</div><div class="rightHeaderItem">&nbsp;<a href="javascript:void(0);" onclick="replayPreviousMoves(1);"><span id="GameBlackClock"></span><span id="GameBlackResult"></span></a></div>
+<div id="topLeftHeaderItem" class="leftHeaderItem"><span id="GameBlackResult" class="gameResult"></span><span id="GameBlack" class="notranslate" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(IsRotated ? gameWhite[currentGame] : gameBlack[currentGame], customPgnHeaderTag(IsRotated ? 'WhiteFideId' : 'BlackFideId')); } this.blur();"></span></div><div id="topRightHeaderItem" class="rightHeaderItem"><span id="GameBlackClock" title="black clock"></span><span class="flagMoves" onclick="SetAutoplayDelayAndStart(Delay);"><span id="GameBlackFlag" class="blackFlag"></span><span style="display:none;" id="GameBlackMoveNum"></span></span></div>
 </div>
 
 <div id="GameBoard"></div>
 
 <div id="bottomContainer" class="bottomContainer">
-<div class="leftHeaderItem"><a class="flagMoves" href="javascript:void(0);" onclick="GoToMove(StartPly + PlyNumber);"><span id="GameWhiteFlag" class="whiteFlag"></span><span style="display:none;" id="GameWhiteMoreMoves" title="go to game end">&raquo;</span></a><a id="GameWhite" class="notranslate" href="javascript:void(0);" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(IsRotated ? gameBlack[currentGame] : gameWhite[currentGame], customPgnHeaderTag(IsRotated ? 'BlackFideId' : 'WhiteFideId')); } this.blur();"></a>&nbsp;</div><div class="rightHeaderItem">&nbsp;<a href="javascript:void(0);" onclick="replayPreviousMoves(1);"><span id="GameWhiteClock"></span><span id="GameWhiteResult"></span></a></div>
+<div id="bottomLeftHeaderItem" class="leftHeaderItem"><span id="GameWhiteResult" class="gameResult"></span><span id="GameWhite" class="notranslate" onclick="if (typeof(openFidePlayerUrl) == 'function') { openFidePlayerUrl(IsRotated ? gameBlack[currentGame] : gameWhite[currentGame], customPgnHeaderTag(IsRotated ? 'BlackFideId' : 'WhiteFideId')); } this.blur();"></span></div><div id="bottomRightHeaderItem" class="rightHeaderItem"><span id="GameWhiteClock" title="white clock"></span><span class="flagMoves" onclick="SetAutoplayDelayAndStart(Delay);"><span id="GameWhiteFlag" class="whiteFlag"></span><span style="display:none;" id="GameWhiteMoveNum"></span></span></div>
 </div>
 
 </center>
