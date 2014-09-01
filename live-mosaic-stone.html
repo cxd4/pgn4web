@@ -155,7 +155,6 @@
   }
 
   function customFunctionOnPgnTextLoad() {
-
     var thisCurrentGame = currentGame;
 
     // force reloading iniGame each time
@@ -236,6 +235,7 @@
 
   function customFunctionOnMove() {
     var theObj;
+
     if (theObj = document.getElementById("GameWhiteFlag")) {
       theObj.style.display = (CurrentPly % 2) ? "none" : "";
       theObj.title = "white to move";
@@ -247,7 +247,7 @@
         theObj.title = "move " + Math.floor((CurrentPly + 1 ) / 2);
       } else { theObj.innerHTML = theObj.title = ""; }
       if (CurrentPly < StartPly + PlyNumber) {
-        theObj.innerHTML = "." + theObj.innerHTML;
+        theObj.innerHTML = theObj.innerHTML ? "." + theObj.innerHTML : "&middot;";
         if (theObj.title) { theObj.title += " of " + Math.floor((StartPly + PlyNumber + 1 ) / 2); }
         else { theObj.title += "more moves available"; }
       }
@@ -263,7 +263,7 @@
         theObj.title = "move " + Math.floor((CurrentPly + 1 ) / 2);
       } else { theObj.innerHTML = theObj.title = ""; }
       if (CurrentPly < StartPly + PlyNumber) {
-        theObj.innerHTML = "." + theObj.innerHTML;
+        theObj.innerHTML = theObj.innerHTML ? "." + theObj.innerHTML : "&middot;";
         if (theObj.title) { theObj.title += " of " + Math.floor((StartPly + PlyNumber + 1 ) / 2); }
         else { theObj.title += "more moves available"; }
       }
