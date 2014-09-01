@@ -101,6 +101,8 @@ pgn4web demo site
 
 <a class="linklist" id="debug" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="board.html?am=l&amp;d=3000&amp;ss=36&amp;ps=d&amp;pf=d&amp;lcs=YeiP&amp;dcs=Qcij&amp;bbcs=D91v&amp;bscs=Lb2$&amp;hm=n&amp;hcs=Udiz&amp;bd=h&amp;hd=j&amp;md=f&amp;tm=0&amp;fhcs=$$$$&amp;fhs=16&amp;fmcs=$$$$&amp;fccs=v71$&amp;hmcs=Qcij&amp;fms=16&amp;fcs=m&amp;cd=n&amp;bcs=____&amp;fp=18&amp;hl=t&amp;fh=330&amp;fw=660&amp;pe=520$A_e0G3vgZt82XAeAsL4AVvs$ZZaxf5uL5kaKo0IxBHl3M0dgK1LKQNH3ueKCLtwmVLpw7HXh3HKeSvNFrlZqMzg9Pjt7_uIutuqw_BN_OTC_N9o0F0Plt7Z84KDu3avM0_4CxgW7yVPou8veUoK33Q4ca4zKUTcnz1eOM7HX5uqyZt2l8$ZZaxf5uL5kaKo0IxBHl3M0dgK3qPHaYrG06OWUX6DkZH5Dhae3waaOYTbFC4KBXo3hI46xeSWmSCRTuUHKXZ8_XxBfpvs4CxexgqV6M1TbfuMoTztN7ZI5mNn2Zl3M4ca4zKUTcnz1eOM7OEnp6YCLokd$OZ$NEsW7cHjQzHVl5viUkGcvUEkXRqIRWrOsJSqnqHqdcHmBcC5QVYtK5KmGOqDLiDfSn6XmdwRqftwh31BHl4ZJkvyUYXZ2P9_l2j84CxfAAUZX5kixSOtbx8lxyM6WYGWOWreXRmZu3_Zgi7cfdxOM6M7IY2Twr57eTHXheo3ulyaUb0_$0">debug</a>
 
+<a class="linklist" id="euroteams" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="live-results.html?headlessPage=true&amp;showLastMoves=true&amp;pgnData=euroteams2011.pgn&amp;refreshMinutes=0">euroteams</a>
+
 <a class="linklist" id="huebner" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="analysis.html?ewdab=t&amp;ig=3&amp;iv=3&amp;ih=32&amp;pd=chess-informant-sample.pgn">huebner</a>
 
 <a class="linklist" id="kk" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="mini.html">kk</a>
@@ -145,7 +147,7 @@ pgn4web demo site
 
 <p></p>
 <center>
-<iframe id="pgnframe" name="pgnframe" frameborder='0' height="2000" width="100%" scrolling="no" marginheight="0" marginwidth="0">your browser does not support the required iframe functionality</iframe>
+<iframe id="pgnframe" name="pgnframe" frameborder="0" height="2000" width="100%" marginheight="0" marginwidth="0">your browser does not support the required iframe functionality</iframe>
 </center>
 
 <script type="text/javascript">
@@ -171,6 +173,12 @@ function select_frame(new_frame) {
     var new_frame_boxShadow = "";
 
     switch (new_frame) {
+      case "euroteams":
+        new_frame_width = "1100px";
+        new_frame_height = "550px";
+        new_frame_border = "solid 10px transparent";
+        new_frame_boxShadow = "0px 0px 3px #B0B8AE";
+        break;
       case "huebner":
         new_frame_height = "622px";
         break;
@@ -223,7 +231,7 @@ function select_frame(new_frame) {
         break;
       case "tilburg_live":
         new_frame_width = "480px";
-        new_frame_height = "360px";
+        new_frame_height = "363px";
         new_frame_border = "solid 30px #EDE8D5";
         new_frame_borderRadius = "15px";
         new_frame_boxShadow = "0px 0px 20px #663300";
