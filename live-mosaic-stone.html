@@ -22,6 +22,9 @@
 <script type="text/javascript">
   "use strict";
 
+  // set hideFinishedGamesClocks to true/false to hide/show the clocks of finished games
+  var hideFinishedGamesClocks = false;
+
   var thisRegExp;
 
   var readyToReceivePgn = false;
@@ -172,7 +175,6 @@
   function customFunctionOnPgnGameLoad() {
     var theObj;
 
-    if (theObj = document.getElementById("GameWhiteClock")) { theObj.style.display = (gameResult[currentGame] == "*") ? "" : "none"; }
     if (theObj = document.getElementById("GameWhiteResult")) {
       if (gameResult[currentGame] == "1/2-1/2") { theObj.innerHTML = "&frac12;"; }
       else if (gameResult[currentGame] == "1-0") { theObj.innerHTML = "1"; }
@@ -180,26 +182,12 @@
       else { theObj.innerHTML = ""; }
       theObj.style.display = theObj.innerHTML ? "" : "none";
     }
-    if (theObj = document.getElementById("GameBlackClock")) { theObj.style.display = (gameResult[currentGame] == "*") ? "" : "none"; }
     if (theObj = document.getElementById("GameBlackResult")) {
       if (gameResult[currentGame] == "1/2-1/2") { theObj.innerHTML = "&frac12;"; }
       else if (gameResult[currentGame] == "1-0") { theObj.innerHTML = "0"; }
       else if (gameResult[currentGame] == "0-1") { theObj.innerHTML = "1"; }
       else { theObj.innerHTML = ""; }
       theObj.style.display = theObj.innerHTML ? "" : "none";
-    }
-
-    if (theObj = document.getElementById("topLeftHeaderItem")) {
-      theObj.style.width = (gameResult[currentGame] == "*") ? "" : "161px";
-    }
-    if (theObj = document.getElementById("topRightHeaderItem")) {
-      theObj.style.width = (gameResult[currentGame] == "*") ? "" : "28px";
-    }
-    if (theObj = document.getElementById("bottomLeftHeaderItem")) {
-      theObj.style.width = (gameResult[currentGame] == "*") ? "" : "161px";
-    }
-    if (theObj = document.getElementById("bottomRightHeaderItem")) {
-      theObj.style.width = (gameResult[currentGame] == "*") ? "" : "28px";
     }
 
     theObj = document.getElementById("topContainer");
@@ -234,7 +222,17 @@
   }
 
   function customFunctionOnMove() {
-    var theObj;
+    var theObj, hideClocks = ((hideFinishedGamesClocks) && (gameResult[currentGame] != "*"));
+
+    if (theObj = document.getElementById("GameWhiteClock")) { hideClocks = hideClocks || !theObj.innerHTML; }
+    if (theObj = document.getElementById("GameBlackClock")) { hideClocks = hideClocks || !theObj.innerHTML; }
+
+    if (theObj = document.getElementById("GameWhiteClock")) { theObj.style.display = hideClocks ? "none" : ""; }
+    if (theObj = document.getElementById("GameBlackClock")) { theObj.style.display = hideClocks ? "none" : ""; }
+    if (theObj = document.getElementById("topLeftHeaderItem")) { theObj.style.width = hideClocks ? "196px" : ""; }
+    if (theObj = document.getElementById("topRightHeaderItem")) { theObj.style.width = hideClocks ? "28px" : ""; }
+    if (theObj = document.getElementById("bottomLeftHeaderItem")) { theObj.style.width = hideClocks ? "196px" : ""; }
+    if (theObj = document.getElementById("bottomRightHeaderItem")) { theObj.style.width = hideClocks ? "28px" : ""; }
 
     if (theObj = document.getElementById("GameWhiteFlag")) {
       theObj.style.display = (CurrentPly % 2) ? "none" : "";
@@ -242,7 +240,7 @@
     }
     if (theObj = document.getElementById("GameWhiteMoveNum")) {
       theObj.style.display = (CurrentPly % 2) ? "inline" : "none";
-      if ((CurrentPly > 0) && (gameResult[currentGame] == "*") && ((document.getElementById("GameWhiteClock") && document.getElementById("GameWhiteClock").innerHTML) || (document.getElementById("GameBlackClock") && document.getElementById("GameBlackClock").innerHTML))) {
+      if ((CurrentPly > 0) && (!hideClocks)) {
         theObj.innerHTML = Math.floor((CurrentPly + 1 ) / 2);
         theObj.title = "move " + Math.floor((CurrentPly + 1 ) / 2);
       } else { theObj.innerHTML = theObj.title = ""; }
@@ -258,7 +256,7 @@
     }
     if (theObj = document.getElementById("GameBlackMoveNum")) {
       theObj.style.display = (CurrentPly % 2 === 0) ? "inline" : "none";
-      if ((CurrentPly > 0) && (gameResult[currentGame] == "*") && ((document.getElementById("GameWhiteClock") && document.getElementById("GameWhiteClock").innerHTML) || (document.getElementById("GameBlackClock") && document.getElementById("GameBlackClock").innerHTML))) {
+      if ((CurrentPly > 0) && (!hideClocks)) {
         theObj.innerHTML = Math.floor((CurrentPly + 1 ) / 2);
         theObj.title = "move " + Math.floor((CurrentPly + 1 ) / 2);
       } else { theObj.innerHTML = theObj.title = ""; }
@@ -415,18 +413,19 @@ a {
 .rightHeaderItem {
   white-space: nowrap;
   overflow: hidden;
+  /* text-overflow: ellipsis; */
 }
 
 .leftHeaderItem {
   clear: both;
   float: left;
-  width: 133px;
+  width: 140px;
   text-align: left;
 }
 
 .rightHeaderItem {
   float: right;
-  width: 84px;
+  width: 77px;
   text-align: right;
 }
 
