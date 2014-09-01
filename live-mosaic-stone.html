@@ -22,9 +22,6 @@
 <script type="text/javascript">
   "use strict";
 
-  // set hideFinishedGamesClocks to true/false to hide/show the clocks of finished games
-  var hideFinishedGamesClocks = false;
-
   var thisRegExp;
 
   var readyToReceivePgn = false;
@@ -74,6 +71,9 @@
   if (window.location.search.match(thisRegExp) !== null) {
     iniGame = unescape(window.location.search.match(thisRegExp)[3]);
   }
+
+  // set hideFinishedGamesClocks to true/false to hide/show the clocks of finished games
+  var hideFinishedGamesClocks = false;
 
   thisRegExp = /(&|\?)(help|h)=(true|t)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {

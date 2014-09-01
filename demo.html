@@ -101,8 +101,6 @@ pgn4web demo site
 
 <a class="linklist" id="debug" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="board.html?am=l&amp;d=3000&amp;ss=36&amp;ps=d&amp;pf=d&amp;lcs=YeiP&amp;dcs=Qcij&amp;bbcs=D91v&amp;bscs=Lb2$&amp;hm=n&amp;hcs=Udiz&amp;bd=h&amp;hd=j&amp;md=f&amp;tm=0&amp;fhcs=$$$$&amp;fhs=16&amp;fmcs=$$$$&amp;fccs=v71$&amp;hmcs=Qcij&amp;fms=16&amp;fcs=m&amp;cd=n&amp;bcs=____&amp;fp=18&amp;hl=t&amp;fh=330&amp;fw=660&amp;pe=520$A_e0G3vgZt82XAeAsL4AVvs$ZZaxf5uL5kaKo0IxBHl3M0dgK1LKQNH3ueKCLtwmVLpw7HXh3HKeSvNFrlZqMzg9Pjt7_uIutuqw_BN_OTC_N9o0F0Plt7Z84KDu3avM0_4CxgW7yVPou8veUoK33Q4ca4zKUTcnz1eOM7HX5uqyZt2l8$ZZaxf5uL5kaKo0IxBHl3M0dgK3qPHaYrG06OWUX6DkZH5Dhae3waaOYTbFC4KBXo3hI46xeSWmSCRTuUHKXZ8_XxBfpvs4CxexgqV6M1TbfuMoTztN7ZI5mNn2Zl3M4ca4zKUTcnz1eOM7OEnp6YCLokd$OZ$NEsW7cHjQzHVl5viUkGcvUEkXRqIRWrOsJSqnqHqdcHmBcC5QVYtK5KmGOqDLiDfSn6XmdwRqftwh31BHl4ZJkvyUYXZ2P9_l2j84CxfAAUZX5kixSOtbx8lxyM6WYGWOWreXRmZu3_Zgi7cfdxOM6M7IY2Twr57eTHXheo3ulyaUb0_$0">debug</a>
 
-<a class="linklist" id="euroteams_live" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="live-mosaic.html?barePadding=0&pgnData=euroteams2011.pgn&amp;boardTool=stone&amp;flipBoards=even&amp;displayGame=1&amp;maxBoards=8&amp;refreshMinutes=0.1&amp;refreshDemo=true">euroteams live</a>
-
 <a class="linklist" id="huebner" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="analysis.html?ewdab=t&amp;ig=3&amp;iv=3&amp;ih=32&amp;pd=chess-informant-sample.pgn">huebner</a>
 
 <a class="linklist" id="kk" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="mini.html">kk</a>
@@ -112,6 +110,8 @@ pgn4web demo site
 <a class="linklist" id="london" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="lon09r5.html">london</a>
 
 <a class="linklist" id="morphy" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="widget.html">morphy</a>
+
+<a class="linklist" id="olympiad_live" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="live-mosaic.html?barePadding=0&pgnData=oly14r11.pgn&amp;boardTool=stone&amp;flipBoards=even&amp;hideFinishedGamesClocks=true&amp;displayGame=1&amp;maxBoards=8&amp;refreshMinutes=0.1&amp;refreshDemo=true&amp;demoPly=1,1,1,1,1,1,1,1,1,1,1,1">olympiad live</a>
 
 <a class="linklist" id="pgn_collection" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="collection-example.html">pgn collection</a>
 
@@ -171,10 +171,6 @@ function select_frame(new_frame) {
     var new_frame_boxShadow = "";
 
     switch (new_frame) {
-      case "euroteams_live":
-        new_frame_width = "1184px"; // (256 + 40) * 4
-        new_frame_height = "691px"; // (318 + 20) * 2 + 15
-        break;
       case "huebner":
         new_frame_height = "622px";
         break;
@@ -183,6 +179,10 @@ function select_frame(new_frame) {
         break;
       case "kk":
         new_frame_height = "450px";
+        break;
+      case "olympiad_live":
+        new_frame_width = "1184px"; // (256 + 40) * 4
+        new_frame_height = "691px"; // (318 + 20) * 2 + 15
         break;
       case "pgn_collection":
         new_frame_height = "2000px";
@@ -249,7 +249,7 @@ function select_frame(new_frame) {
 }
 
 function random_frame() {
-  var random_selection = ["chess960", "chess960", "euroteams_live", "euroteams_live", "huebner", "huebner", "kramnik", "kramnik", "kk", "kk", "kk", "kk", "kk", "london", "london", "morphy", "morphy", "puzzles", "puzzles", "tallinn_live_dynamic", "tallinn_live_dynamic", "tallinn_live_dynamic", "tallinn_live_mosaic", "tallinn_live_mosaic", "tallinn_live_widget", "tilburg_replay", "tilburg_replay", "tilburg_live", "video", "youtube", "youtube"];
+  var random_selection = ["chess960", "chess960", "huebner", "huebner", "kramnik", "kramnik", "kk", "kk", "kk", "kk", "kk", "london", "london", "morphy", "morphy", "olympiad_live", "olympiad_live", "puzzles", "puzzles", "tallinn_live_dynamic", "tallinn_live_dynamic", "tallinn_live_dynamic", "tallinn_live_mosaic", "tallinn_live_mosaic", "tallinn_live_widget", "tilburg_replay", "tilburg_replay", "tilburg_live", "video", "youtube", "youtube"];
   return random_selection[Math.floor(random_selection.length * Math.random())];
 }
 

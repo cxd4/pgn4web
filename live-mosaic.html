@@ -35,9 +35,10 @@
       " - refreshMinutes = live broadcast delay (default " + refreshMinutes_default + ")" + "\n\n" +
       " - refreshDemo = if set true sets live demo mode (default false)" + "\n\n" +
       // " - demoPly = comma separated list of starting plies for each of the live demo games (default blank)" + "\n\n" +
-      " - headlessPage = if set true displays a page without heading (default false)" + "\n\n" +
       " - boardTool = tile|stone (default " + boardTool_default + ")" + "\n\n" +
       " - flipBoards = none|even|odd|all (default " + flipBoards_default + ")" + "\n\n" +
+      " - hideFinishedGamesClocks = if set treu hides clocks for finished games (default false)" + "\n\n" +
+      " - headlessPage = if set true displays a page without heading (default false)" + "\n\n" +
       // " - barePadding = if not null, displays a page with given padding and without header/footer (default null)" + "\n\n" +
       // " - backgroundColorHex = if not null and barePadding also not null, background color hex code, like FF0000 (default null)" + "\n\n" +
       " - help = true");
@@ -112,13 +113,6 @@
     return true;
   }
 
-  var headlessPage = false;
-  thisRegExp = /(&|\?)(headlessPage|hp)=([^&]*)(&|$)/i;
-  if (window.location.search.match(thisRegExp) !== null) {
-    var headlessPageValue = unescape(window.location.search.match(thisRegExp)[3]);
-    if ((headlessPageValue == "true") || (headlessPageValue == "t")) { headlessPage = true; }
-  }
-
   var boardTool = boardTool_default;
   thisRegExp = /(&|\?)(boardTool|bt)=(tile|t|stone|s)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
@@ -137,6 +131,20 @@
     if (flipBoards == "e") { flipBoards = "even"; }
     if (flipBoards == "o") { flipBoards = "odd"; }
     if (flipBoards == "a") { flipBoards = "all"; }
+  }
+
+  var hideFinishedGamesClocks = false;
+  thisRegExp = /(&|\?)(hideFinishedGamesClocks|hfgc)=([^&]*)(&|$)/i;
+  if (window.location.search.match(thisRegExp) !== null) {
+    var hideFinishedGamesClocksValue = unescape(window.location.search.match(thisRegExp)[3]);
+    if ((hideFinishedGamesClocksValue == "true") || (hideFinishedGamesClocksValue == "t")) { hideFinishedGamesClocks = true; }
+  }
+
+  var headlessPage = false;
+  thisRegExp = /(&|\?)(headlessPage|hp)=([^&]*)(&|$)/i;
+  if (window.location.search.match(thisRegExp) !== null) {
+    var headlessPageValue = unescape(window.location.search.match(thisRegExp)[3]);
+    if ((headlessPageValue == "true") || (headlessPageValue == "t")) { headlessPage = true; }
   }
 
   // undocumented features
@@ -496,6 +504,7 @@ function updateBoard(thisBoardId) {
         window.frames["board" + thisBoardId].pauseLiveBroadcast();
         window.frames["board" + thisBoardId].document.getElementById("pgnText").value = thisPgnGame;
         if (thisFlipped !== window.frames["board" + thisBoardId].IsRotated) { window.frames["board" + thisBoardId].FlipBoard(); }
+        window.frames["board" + thisBoardId].hideFinishedGamesClocks = hideFinishedGamesClocks;
         window.frames["board" + thisBoardId].refreshPgnSource();
         window.frames["board" + thisBoardId].clearShortcutSquares("A","8");
       }

@@ -72,6 +72,9 @@
     iniGame = unescape(window.location.search.match(thisRegExp)[3]);
   }
 
+  // set hideFinishedGamesClocks to true/false to hide/show the clocks of finished games
+  var hideFinishedGamesClocks = true;
+
   thisRegExp = /(&|\?)(help|h)=(true|t)(&|$)/i;
   if (window.location.search.match(thisRegExp) !== null) {
     alert("pgn4web live-mosaic-tile.html parameters" + "\n" +
@@ -144,7 +147,14 @@
   var old_gameKey = "";
   var old_PlyNumber = -1;
   function customFunctionOnPgnGameLoad() {
-    var theObj = document.getElementById("bottomContainer");
+    var theObj;
+
+    theObj = document.getElementById("GameWhiteClock");
+    if (theObj) { theObj.style.visibility = ((hideFinishedGamesClocks) && (gameResult[currentGame] != "*")) ? "hidden" : ""; }
+    theObj = document.getElementById("GameBlackClock");
+    if (theObj) { theObj.style.visibility = ((hideFinishedGamesClocks) && (gameResult[currentGame] != "*")) ? "hidden" : ""; }
+
+    theObj = document.getElementById("bottomContainer");
     if (theObj) {
       theObj.title = numberOfGames > 1 ? " game " + (currentGame+1) + " of " + numberOfGames + "  " : "";
       addTagToTitle("event: ", gameEvent[currentGame], theObj);
