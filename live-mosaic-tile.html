@@ -226,27 +226,28 @@
   function customShortcutKey_Shift_8() { try { if (parent && (parent !== window) && parent.customShortcutKey_Shift_8) { parent.customShortcutKey_Shift_8(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
   function customShortcutKey_Shift_9() { try { if (parent && (parent !== window) && parent.customShortcutKey_Shift_9) { parent.customShortcutKey_Shift_9(); } } catch(e) { myAlert("error: failed accessing frame's parent custom shortcut key function"); } }
 
+
   function pgn4web_onload(e) {
     start_pgn4web();
     readyToReceivePgn = true;
     try {
-      if (parent && (parent !== window) && parent.readyToSendPgn) {
-        var boardId = parseInt(window.name.substr(5), 10);
-        if (!isNaN(boardId)) { parent.updateBoard(boardId); }
-        else { myAlert("warning: failed detecting board id", false); }
-      } // else { myAlert("warning: parent not available or not ready", false); }
-    } catch(e) { myAlert("warning: failed forcing board update from frame's parent", false); }
-    try {
-      if (parent && (parent !== window) && parent.document.body.style.backgroundColor) {
-        var RGB;
-        if (RGB = parent.document.body.style.backgroundColor.match(/^rgb\((\d+), (\d+), (\d+)\)$/)) {
-          // RGB to Luma conversion: Photometric/digital ITU-R
-          if ((0.2126 * parseInt(RGB[1],10) + 0.7152 * parseInt(RGB[2],10) + 0.0722 * parseInt(RGB[3],10)) < (256 * 0.45)) {
-            document.body.style.color = "white";
+      if (parent && (parent !== window)) {
+        if (parent.readyToSendPgn) {
+          var boardId = parseInt(window.name.substr(5), 10);
+          if (!isNaN(boardId)) { parent.updateBoard(boardId); }
+          else { myAlert("warning: failed detecting board id", false); }
+        }
+        if (parent.document.body.style.backgroundColor) {
+          var RGB;
+          if (RGB = parent.document.body.style.backgroundColor.match(/^rgb\((\d+), (\d+), (\d+)\)$/)) {
+            // RGB to Luma conversion: Photometric/digital ITU-R
+            if ((0.2126 * parseInt(RGB[1],10) + 0.7152 * parseInt(RGB[2],10) + 0.0722 * parseInt(RGB[3],10)) < (256 * 0.45)) {
+              document.body.style.color = "white";
+            }
           }
         }
-      }
-    } catch(e) { myAlert("warning: error setting text color from parent background", false); }
+      } else { myAlert("warning: parent not avalable", false); }
+    } catch(e) { myAlert("warning: failed accessing parent", false); }
   }
 
 </script>
