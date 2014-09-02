@@ -301,11 +301,11 @@
     start_pgn4web();
     readyToReceivePgn = true;
     try {
-      if (parent && (parent !== window) && parent.readyToSendPgn && parent.updateBoard) {
+      if (parent && (parent !== window) && parent.readyToSendPgn) {
         var boardId = parseInt(window.name.substr(5), 10);
         if (!isNaN(boardId)) { parent.updateBoard(boardId); }
         else { myAlert("warning: failed detecting board id", false); }
-      } else { myAlert("warning: parent not avalable or not ready", false); }
+      } // else { myAlert("warning: parent not avalable or not ready", false); }
     } catch(e) { myAlert("warning: failed forcing board update from frame's parent", false); }
     try {
       if (parent && (parent !== window) && parent.document.body.style.backgroundColor) {

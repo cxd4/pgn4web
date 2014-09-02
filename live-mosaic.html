@@ -509,7 +509,7 @@ function updateBoard(thisBoardId) {
         window.frames["board" + thisBoardId].hideFinishedGamesClocks = hideFinishedGamesClocks;
         window.frames["board" + thisBoardId].refreshPgnSource();
         window.frames["board" + thisBoardId].clearShortcutSquares("A","8");
-      } else { myAlert("warning: board #" + thisBoard + " not ready"); }
+      } // else { myAlert("warning: board #" + thisBoard + " not ready"); }
     } catch(e) { myAlert("error: failed accessing iframe for board #" + thisBoard, true); }
     thisFrame.className = thisFrameClass;
   }
