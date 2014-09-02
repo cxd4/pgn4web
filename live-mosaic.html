@@ -19,6 +19,8 @@
 <script type="text/javascript">
   "use strict";
 
+  var readyToSendPgn = false;
+
   var pgnData_default = "live/live.pgn";
   var maxBoards_default = 8;
   var displayGame_default = 1;
@@ -507,7 +509,7 @@ function updateBoard(thisBoardId) {
         window.frames["board" + thisBoardId].hideFinishedGamesClocks = hideFinishedGamesClocks;
         window.frames["board" + thisBoardId].refreshPgnSource();
         window.frames["board" + thisBoardId].clearShortcutSquares("A","8");
-      }
+      } else { myAlert("warning: board #" + thisBoard + " not ready"); }
     } catch(e) { myAlert("error: failed accessing iframe for board #" + thisBoard, true); }
     thisFrame.className = thisFrameClass;
   }
@@ -534,6 +536,7 @@ function customFunctionOnPgnTextLoad() {
   }
   numberOfGamesForDisplay = unfilteredGames.length;
 
+  readyToSendPgn = true;
   for (var board = 0; board < maxBoards; board++) {
     if ((g = updateBoard(boardId[board])) != -1) {
       if (board === 0) { firstBoardDisplayGame = displayGame >=0 ? g + 1 : numberOfGames - g; }
