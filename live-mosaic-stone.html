@@ -247,7 +247,7 @@
       if (CurrentPly < StartPly + PlyNumber) {
         theObj.innerHTML = theObj.innerHTML ? "." + theObj.innerHTML : "&middot;";
         if (theObj.title) { theObj.title += " of " + Math.floor((StartPly + PlyNumber + 1 ) / 2); }
-        else { theObj.title += "more moves available"; }
+        else { theObj.title += "autoplay next moves"; }
       }
     }
     if (theObj = document.getElementById("GameBlackFlag")) {
@@ -263,7 +263,7 @@
       if (CurrentPly < StartPly + PlyNumber) {
         theObj.innerHTML = theObj.innerHTML ? "." + theObj.innerHTML : "&middot;";
         if (theObj.title) { theObj.title += " of " + Math.floor((StartPly + PlyNumber + 1 ) / 2); }
-        else { theObj.title += "more moves available"; }
+        else { theObj.title += "autoplay next moves"; }
       }
     }
   }
