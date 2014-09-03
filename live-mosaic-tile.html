@@ -242,7 +242,9 @@
           if (RGB = parent.document.body.style.backgroundColor.match(/^rgb\((\d+), (\d+), (\d+)\)$/)) {
             // RGB to Luma conversion: Photometric/digital ITU-R
             if ((0.2126 * parseInt(RGB[1],10) + 0.7152 * parseInt(RGB[2],10) + 0.0722 * parseInt(RGB[3],10)) < (256 * 0.45)) {
-              document.body.style.color = "white";
+              if (theObj = document.body) { theObj.style.color = "white"; }
+              if (theObj = document.getElementById("GameWhiteFlag")) { theObj.style.borderColor = "white"; }
+              if (theObj = document.getElementById("GameBlackFlag")) { theObj.style.borderColor = "white"; }
             }
           }
         }
@@ -355,7 +357,6 @@ a {
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
 <form style="display: none;"><textarea style="display: none;" id="pgnText">
 
-[Event "loading PGN data, please wait..."]
 [Result "*"]
 
 </textarea></form>

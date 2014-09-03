@@ -276,7 +276,7 @@ function fixCSSforHeadelessPage() {
 }
 
 function fixCSSforBarePadding() {
-  document.write("<style type='text/css'> body { padding: " + barePadding + "; } .beforeBoards, .afterBoards { display: none; } </style>");
+  document.write("<style type='text/css'> body { padding: " + barePadding + "; } .beforeBoards, .afterBoards { display: none; } .menuLine { height: 0; visibility: hidden; } </style>");
 }
 
 function printHeader() {
@@ -320,10 +320,8 @@ if (headlessPage || (barePadding !== "")) {
       fixCSSforBackgroundColorHex();
     }
   }
-  else { printMenu(); }
-} else {
-  printHeader();
 }
+printMenu();
 
 </script>
 
@@ -336,7 +334,6 @@ if (headlessPage || (barePadding !== "")) {
 <script type="text/javascript">
 "use strict";
 
-updateBoardFrames(maxBoards);
 
 if (!headlessPage && (barePadding === "")) { printMenu(); }
 
@@ -516,6 +513,7 @@ function updateBoard(thisBoardId) {
   return gameNum;
 }
 
+var firstLoadNewBoards = true;
 var firstLoadPgnText = true;
 var liveBroadcastUpdateTicker = 0;
 var previousPgnGameLength = new Array();
@@ -523,6 +521,7 @@ var previousPgnGameLength = new Array();
 function customFunctionOnPgnTextLoad() {
   var theObj;
 
+  if (firstLoadNewBoards) { newBoards(maxBoards); }
   if (firstLoadPgnText) { firstGame = firstFromDisplayGame(displayGame); }
 
   unfilteredGames = new Array();
@@ -537,19 +536,21 @@ function customFunctionOnPgnTextLoad() {
   numberOfGamesForDisplay = unfilteredGames.length;
 
   readyToSendPgn = true;
-  for (var board = 0; board < maxBoards; board++) {
-    if ((g = updateBoard(boardId[board])) != -1) {
-      if (board === 0) { firstBoardDisplayGame = displayGame >=0 ? g + 1 : numberOfGames - g; }
-      var found_g = false; for (var f in unfilteredGames) { if (unfilteredGames[f] === g) { found_g = true; break; } }
-      if (found_g) {
-        var currentPgnGameLength;
-        if (LiveBroadcastDemo) {
-          currentPgnGameLength = gameDemoMaxPly[g] > gameDemoLength[g] ? gameDemoLength[g] + 1 : gameDemoMaxPly[g];
-        } else {
-          currentPgnGameLength = pgnGame[g].replace(/{[^}]*}/g, " ").replace(/\([^)]*\)/g, " ").length;
+  if (!firstLoadNewBoards) {
+    for (var board = 0; board < maxBoards; board++) {
+      if ((g = updateBoard(boardId[board])) != -1) {
+        if (board === 0) { firstBoardDisplayGame = displayGame >=0 ? g + 1 : numberOfGames - g; }
+        var found_g = false; for (var f in unfilteredGames) { if (unfilteredGames[f] === g) { found_g = true; break; } }
+        if (found_g) {
+          var currentPgnGameLength;
+          if (LiveBroadcastDemo) {
+            currentPgnGameLength = gameDemoMaxPly[g] > gameDemoLength[g] ? gameDemoLength[g] + 1 : gameDemoMaxPly[g];
+          } else {
+            currentPgnGameLength = pgnGame[g].replace(/{[^}]*}/g, " ").replace(/\([^)]*\)/g, " ").length;
+          }
+          newMovesInShownGames = newMovesInShownGames || (typeof(previousPgnGameLength[g]) == "undefined") || (previousPgnGameLength[g] !== currentPgnGameLength);
+          previousPgnGameLength[g] = currentPgnGameLength;
         }
-        newMovesInShownGames = newMovesInShownGames || (typeof(previousPgnGameLength[g]) == "undefined") || (previousPgnGameLength[g] !== currentPgnGameLength);
-        previousPgnGameLength[g] = currentPgnGameLength;
       }
     }
   }
@@ -568,6 +569,7 @@ function customFunctionOnPgnTextLoad() {
 
   updateMenu();
 
+  if (firstLoadNewBoards) { firstLoadNewBoards = false; }
   if (firstLoadPgnText) { firstLoadPgnText = false; }
 }
 
