@@ -51,6 +51,8 @@ our $verbosity = 4; # info
 our $PROTECT_LOGOUT_FREQ = 45 * 60;
 our $CHECK_RELAY_FREQ = 3 * 60;
 our $CHECK_RELAY_MIN_LAG = 20;
+our $MEMORY_LOAD_CHECK_FREQ = 3 * $CHECK_RELAY_FREQ;
+
 our $OPEN_TIMEOUT = 30;
 our $LINE_WAIT_TIMEOUT = 30;
 # $LINE_WAIT_TIMEOUT must be smaller than half of $PROTECT_LOGOUT_FREQ and $CHECK_RELAY_FREQ
@@ -1161,6 +1163,7 @@ sub refresh_top {
   }
 }
 
+
 sub refresh_memory {
   if ($PGN_MEMORY ne "") {
     my $memoryPgn = $lastPgn;
@@ -1352,6 +1355,8 @@ sub memory_rename_round {
   return $renamedRound;
 }
 
+our $memory_load_time = -1;
+
 sub memory_load {
   if ($PGN_MEMORY eq "") {
     tell_operator_and_log_terminal("error: memory load requires a valid memory file");
@@ -1401,7 +1406,18 @@ sub memory_load {
         }
       }
     }
+    $memory_load_time = time();
     log_terminal("debug: memory load: " . ($#memory_games + 1));
+  }
+}
+
+sub memory_load_check {
+  if (($memory_load_time >= 0) && ($PGN_MEMORY ne "") && (time() - $memory_load_time > $MEMORY_LOAD_CHECK_FREQ)) {
+    if (($lastPgnNum == 0) && ($#memory_games + 1 > $memoryMaxGamesNum)) {
+      refresh_pgn();
+      log_terminal("debug: pgn refresh after load");
+    }
+    $memory_load_time = -1;
   }
 }
 
@@ -2814,6 +2830,7 @@ sub main_loop {
     }
 
     ensure_alive();
+    memory_load_check();
     check_relay_results();
     heartbeat();
   }
@@ -2850,9 +2867,12 @@ sub handleUSR2 {
 $SIG{USR2}=\&handleUSR2;
 
 sub myExit {
-  my ($exitVal) = @_;
-  $memoryMaxGamesNum = int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum);
-  refresh_memory();
+  my ($exitVal) = @_;                                      # 2 = memoryGamesCardinality + potentialPlaceholderGame
+  if (($PGN_MEMORY ne "") && ($lastPgnNum + $#memory_games + 2 > $memoryMaxGamesNum)) {
+    $memoryMaxGamesNum = int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum);
+    refresh_pgn();
+    log_terminal("debug: pgn refresh before exit");
+  }
   exit($exitVal);
 }
 
