@@ -1065,8 +1065,10 @@ sub refresh_pgn {
   my $newPgn;
   for (my $i=0; $i<$maxGamesNum; $i++) {
     $newPgn = save_pgnGame($ordered[$i]);
-    if ($newPgn ne "") { $newPgnNum++; }
-    $pgn .= $newPgn;
+    if ($newPgn ne "") {
+      $pgn .= $newPgn;
+      $newPgnNum++;
+    }
   }
 
   if (($placeholderGame eq "always") || (($placeholderGame eq "auto") && ($gameRunning == 0))) {
@@ -1096,6 +1098,9 @@ sub refresh_pgn {
     }
     refresh_memory();
     refresh_top();
+    return 1;
+  } else {
+    return 0;
   }
 }
 
@@ -1414,7 +1419,7 @@ sub memory_load {
 sub memory_load_check {
   if (($memory_load_time >= 0) && ($PGN_MEMORY ne "") && (time() - $memory_load_time > $MEMORY_LOAD_CHECK_FREQ)) {
     if (($lastPgnNum == 0) && ($#memory_games + 1 > $memoryMaxGamesNum)) {
-      refresh_pgn();
+      if (refresh_pgn() == 0) { refresh_memory(); }
       log_terminal("debug: pgn refresh after load");
     }
     $memory_load_time = -1;
@@ -2870,7 +2875,7 @@ sub myExit {
   my ($exitVal) = @_;                                      # 2 = memoryGamesCardinality + potentialPlaceholderGame
   if (($PGN_MEMORY ne "") && ($lastPgnNum + $#memory_games + 2 > $memoryMaxGamesNum)) {
     $memoryMaxGamesNum = int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum);
-    refresh_pgn();
+    if (refresh_pgn() == 0) { refresh_memory(); }
     log_terminal("debug: pgn refresh before exit");
   }
   exit($exitVal);
