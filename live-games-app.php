@@ -423,7 +423,7 @@ window['loadPgnFromPgnUrl'] = function(pgnUrl) {
   if (!appInitialized) {
     var theObj = document.getElementById("GameLiveStatusExtraInfoRight");
     if (theObj) { theObj.style.visibility = "visible"; }
-    var initialPgnGames = localStorage[lsId + "lastGamesPgnText"] || '[Event "$appName"]\\n[Site "...app startup..."]\\n[Date ""]\\n[Round ""]\\n[White ""]\\n[Black ""]\\n[Result "*"]\\n';
+    var initialPgnGames = localStorage[lsId + "lastGamesPgnText"] || '[Event "$appName"]\\n[Result "*"]\\n';
     if (!pgnGameFromPgnText(initialPgnGames)) {
       myAlert("error: invalid games cache");
     } else {
@@ -462,7 +462,7 @@ if (LiveBroadcastDelay > 0) {
   boardShortcut("G6", "search next date", function(t,e){ searchPgnGame('\\\\[\\\\s*Date\\\\s*"(?!' + fixRegExp(gameDate[currentGame]) + '"\\\\s*\\\\])', e.shiftKey); }, true);
 }
 
-boardShortcut("H5", "reset app", function(t,e){ if (confirm("Reset app?\\n\\nWarning: customized settings, games data and engine analysis data will be lost.")) { window.localStorage.clear(); window.location.reload(); } });
+boardShortcut("H5", "app reset", function(t,e){ if (confirm("App reset ?\\n\\nWarning: customized settings, games data and engine analysis data will be lost.")) { window.localStorage.clear(); window.location.reload(); } });
 
 function gameKey(event, site, date, round, white, black) {
   var key = "";
