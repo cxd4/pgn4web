@@ -137,7 +137,7 @@ a.variation {
   color: gray;
 }
 
-.wait {
+.loading {
   color: gray;
   white-space: nowrap;
 }

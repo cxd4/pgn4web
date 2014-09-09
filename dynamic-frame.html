@@ -559,7 +559,7 @@ function customFunctionOnPgnTextLoad() {
     }
     document.title = liveBroadcastUpdateTicker + "." + LiveBroadcastGamesRunning + "." + numberOfGames + " live broadcast" + (demoFlag ? " demo" : "");
   } else {
-    if (noGamesLoaded) { document.title = alertNum ? "PGN data error" : "chess games viewer"; }
+    if (noGamesLoaded) { document.title = alertNum ? "PGN data error" : "chess games"; }
     else { document.title = numberOfGames + " game" + (numberOfGames == 1 ? "" : "s"); }
   }
 
