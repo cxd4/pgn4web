@@ -423,7 +423,7 @@ window['loadPgnFromPgnUrl'] = function(pgnUrl) {
   if (!appInitialized) {
     var theObj = document.getElementById("GameLiveStatusExtraInfoRight");
     if (theObj) { theObj.style.visibility = "visible"; }
-    var initialPgnGames = localStorage[lsId + "lastGamesPgnText"] || '[Event "$appName"]\\n[Site "app startup..."]\\n[Date ""]\\n[Round ""]\\n[White ""]\\n[Black ""]\\n[Result "*"]\\n';
+    var initialPgnGames = localStorage[lsId + "lastGamesPgnText"] || '[Event "$appName"]\\n[Site "...app startup..."]\\n[Date ""]\\n[Round ""]\\n[White ""]\\n[Black ""]\\n[Result "*"]\\n';
     if (!pgnGameFromPgnText(initialPgnGames)) {
       myAlert("error: invalid games cache");
     } else {
