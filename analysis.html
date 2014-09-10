@@ -44,7 +44,6 @@
           " - initialHalfmove = start | end | random | comment | variation | a number (default start)" + "\n" +
           " - showLastNext = true | false (default false)" + "\n" +
           " - showGamesList = true | false (default false)" + "\n" +
-          " - beautifyTags = true | false (default true)" + "\n" +
           " - help = true");
   }
 
@@ -82,13 +81,10 @@
   thisRegExp = /(&|\?)(showGamesList|sgl)=(true|t)(&|$)/i;
   var showGamesList = (window.location.search.match(thisRegExp) !== null);
 
-  thisRegExp = /(&|\?)(beautifyTags|bt)=(false|f)(&|$)/i;
-  var beautifyTags = (window.location.search.match(thisRegExp) === null);
-
   SetImagePath("images/merida/39");
   SetImageType("png");
   SetHighlightOption(true);
-  SetGameSelectorOptions(null, true, 12, 12, 2, 15, 15, 3, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
+  SetGameSelectorOptions(null, true, 15, 15, 3, 15, 15, 3, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
   SetCommentsIntoMoveText(true);
   SetCommentsOnSeparateLines(false);
   SetAutoplayDelay(1000); // milliseconds
@@ -101,7 +97,7 @@
 
   function customShortcutKey_Shift_3() { toggleLastNext(); }
   function customShortcutKey_Shift_4() { toggleGamesList(); }
-  function customShortcutKey_Shift_5() { toggleBeautifyTags(); }
+  function customShortcutKey_Shift_5() { alert(currentGameInfo); }
 
   // overwriting engine.js definitions
   function customShortcutKey_Shift_8() { showAnalysisBoard(true); }
@@ -114,10 +110,12 @@
   }
   boardShortcut("E7", "toggle last/next moves information", function(t,e){ toggleLastNext(); });
   boardShortcut("G7", "toggle show comments on separate lines", function(t,e){ if (e.shiftKey) { SetCommentsIntoMoveText(!commentsIntoMoveText); } else { SetCommentsOnSeparateLines(!commentsOnSeparateLines); } var oldPly = CurrentPly; var oldVar = CurrentVar; Init(); GoToMove(oldPly, oldVar); });
-  boardShortcut("G6", "search next annotator", function(t,e){ searchAnnotator(e.shiftKey); });
+  boardShortcut("A6", "search previous annotator", function(t,e){ searchAnnotator(e.shiftKey, true); });
+  boardShortcut("B6", "search next annotator", function(t,e){ searchAnnotator(e.shiftKey, false); });
+  boardShortcut("G6", "scroll moves text to current move", function(t,e){ autoScrollToCurrentMoveIfEnabled(); });
   boardShortcut("H6", "scroll moves text to top", function(t,e){ document.getElementById("GameTextResult").scrollTop = 0; });
   boardShortcut("F5", "toggle games list", function(t,e){ toggleGamesList(); });
-  boardShortcut("G5", "scroll moves text to current move", function(t,e){ autoScrollToCurrentMoveIfEnabled(); });
+  boardShortcut("G5", "game info", function(t,e){ alert(currentGameInfo); });
   boardShortcut("H5", "scroll moves text to bottom", function(t,e){ document.getElementById("GameTextResult").scrollTop = document.getElementById("GameTextResult").scrollHeight; });
 
   function FlipBoard() {}
@@ -131,13 +129,19 @@
     }
   }
 
+  var currentGameInfo = '';
+
   function customFunctionOnPgnGameLoad() {
-    var theObj, theOther, theThird, theMatch, newTitle, newTitleBlock;
-    if ((theObj = document.getElementById('GameEvent')) && (theMatch = gameRound[currentGame].match(/^\d+/))) { theObj.innerHTML += ' (' + theMatch[0] + ')'; }
-    fixObjInnerHTML('GameEvent');
-    fixObjInnerHTML('GameSite');
-    if (theObj = document.getElementById('GameDate')) { theObj.innerHTML = (theMatch = gameDate[currentGame].match(/^\d+/)) ? theMatch[0] : ''; }
-    fixObjInnerHTML('GameDate');
+    var theObj, theOther, newTitle;
+    if (theObj = document.getElementById('GameSiteEvent')) {
+      theObj.innerHTML = gameSite[currentGame];
+      fixSiteInnerHTML('GameSiteEvent');
+      if (theObj.innerHTML === "") {
+        theObj.innerHTML = gameEvent[currentGame];
+        fixObjInnerHTML('GameSiteEvent');
+      }
+    }
+    fixDateInnerHTML('GameDate');
     fixObjInnerHTML('GameWhite');
     fixObjInnerHTML('GameBlack');
     fixObjInnerHTML('GameResult');
@@ -153,58 +157,56 @@
     fixObjInnerHTML('GameAnnotator');
     theObj = document.getElementById('GameWhite');
     theOther = document.getElementById('GameWhiteElo');
-    if (theObj && theObj.innerHTML && theOther && theOther.innerHTML) { theOther.style.marginLeft = '1ex'; }
+    theOther.style.marginLeft = (theObj && theObj.innerHTML && theOther && theOther.innerHTML) ? '1.2ex' : '';
     theObj = document.getElementById('GameBlack');
     theOther = document.getElementById('GameBlackElo');
-    if (theObj && theObj.innerHTML && theOther && theOther.innerHTML) { theOther.style.marginLeft = '1ex'; }
-    theObj = document.getElementById('GameSite');
-    theOther = document.getElementById('GameEvent');
-    if (theObj && theObj.innerHTML && theOther && theOther.innerHTML) { theOther.style.marginLeft = '1ex'; }
-    theThird = document.getElementById('GameDate');
-    if (((theObj && theObj.innerHTML) || (theOther && theOther.innerHTML)) && (theThird && theThird.innerHTML)) { theThird.style.marginLeft = '1ex'; }
+    theOther.style.marginLeft = (theObj && theObj.innerHTML && theOther && theOther.innerHTML) ? '1.2ex' : '';
+    theObj = document.getElementById('GameSiteEvent');
+    theOther = document.getElementById('GameDate');
+    theOther.style.marginLeft = (theObj && theObj.innerHTML && theOther && theOther.innerHTML) ? '1.2ex' : '';
 
     newTitle = (currentGame + 1) + '.';
     if ((theObj = document.getElementById('GameWhite')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
     if ((theObj = document.getElementById('GameBlack')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
     if ((theObj = document.getElementById('GameResult')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
-    if ((theObj = document.getElementById('GameSite')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
-    if ((theObj = document.getElementById('GameEvent')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
+    if ((theObj = document.getElementById('GameSiteEvent')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
     if ((theObj = document.getElementById('GameDate')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
     document.title = simpleHtmlentitiesDecode(newTitle);
 
     newTitle = (currentGame + 1) + '.';
-    newTitleBlock = '';
-    if ((theObj = document.getElementById('GameWhite')) && (theObj.innerHTML)) { newTitleBlock += theObj.innerHTML; }
-    if ((theObj = document.getElementById('GameWhiteElo')) && (theObj.innerHTML)) { newTitleBlock += (newTitleBlock ? '  ' : '') + theObj.innerHTML; }
-    if (newTitleBlock) { newTitle += '\n' + newTitleBlock; }
-    newTitleBlock = '';
-    if ((theObj = document.getElementById('GameBlack')) && (theObj.innerHTML)) { newTitleBlock += theObj.innerHTML; }
-    if ((theObj = document.getElementById('GameBlackElo')) && (theObj.innerHTML)) { newTitleBlock += (newTitleBlock ? '  ' : '') + theObj.innerHTML; }
-    if (newTitleBlock) { newTitle += '\n' + newTitleBlock; }
-    newTitleBlock = '';
-    if ((theObj = document.getElementById('GameSite')) && (theObj.innerHTML)) { newTitleBlock += theObj.innerHTML; }
-    if ((theObj = document.getElementById('GameEvent')) && (theObj.innerHTML)) { newTitleBlock += (newTitleBlock ? '  ' : '') + theObj.innerHTML; }
-    if ((theObj = document.getElementById('GameDate')) && (theObj.innerHTML)) { newTitleBlock += (newTitleBlock ? '  ' : '') + theObj.innerHTML; }
-    if (newTitleBlock) { newTitle += '\n' + newTitleBlock; }
-    newTitleBlock = '';
-    if ((theObj = document.getElementById('GameECO')) && (theObj.innerHTML)) { newTitleBlock += theObj.innerHTML; }
-    if (newTitleBlock) { newTitle += '\n' + newTitleBlock; }
+    if (gameEvent[currentGame]) { newTitle += '\nevent: ' + gameEvent[currentGame]; }
+    if (gameSite[currentGame]) { newTitle += '\nsite: ' + gameSite[currentGame]; }
+    if (gameDate[currentGame]) { newTitle += '\ndate: ' + gameDate[currentGame]; }
+    if (gameRound[currentGame]) { newTitle += '\nround: ' + gameRound[currentGame]; }
+    if (gameWhite[currentGame]) { newTitle += '\nwhite: ' + gameWhite[currentGame]; }
+    if (gameBlack[currentGame]) { newTitle += '\nblack: ' + gameBlack[currentGame]; }
+    if (gameResult[currentGame]) { newTitle += '\nresult: ' + gameResult[currentGame]; }
     if (theObj = document.getElementById('boardHeaderInfo')) { theObj.title = simpleHtmlentitiesDecode(newTitle); }
+    currentGameInfo = newTitle;
   }
 
   function fixObjInnerHTML(id) {
-    if (!beautifyTags) { return; }
     var theObj = document.getElementById(id);
     if (theObj) { theObj.innerHTML = theObj.innerHTML.replace(/\.?\?[.?]*/, "").replace(/,(\w)/g, ", $1"); }
+  }
+
+  function fixDateInnerHTML(id) {
+    var theObj = document.getElementById(id);
+    if (theObj) { theObj.innerHTML = theObj.innerHTML.replace(/\.?\?[.?]*/, "").replace(/,(\w)/g, ", $1").replace(/^\s*(\d+)\D.*$/, "$1"); }
+  }
+
+  function fixSiteInnerHTML(id) {
+    var theObj = document.getElementById(id);
+    if (theObj) { theObj.innerHTML = theObj.innerHTML.replace(/\.?\?[.?]*/, "").replace(/,(\w)/g, ", $1").replace(/\s[A-Z]{3}$/, ""); }
   }
 
   function searchPlayer(name, FideId) {
     if (typeof(openFidePlayerUrl) == "function") { openFidePlayerUrl(name, FideId); }
   }
 
-  function searchAnnotator(same) {
+  function searchAnnotator(same, backward) {
     var fixedAnnotator = fixRegExp(customPgnHeaderTag("Annotator"));
-    searchPgnGame(same ? '\\[\\s*Annotator\\s*"' + fixedAnnotator + '"\\s*\\]' : '\\[\\s*Annotator\\s*"(?!' + fixedAnnotator + '"\\s*\\])', false);
+    searchPgnGame(same ? '\\[\\s*Annotator\\s*"' + fixedAnnotator + '"\\s*\\]' : '\\[\\s*Annotator\\s*"(?!' + fixedAnnotator + '"\\s*\\])', backward);
     document.getElementById("GameTextResult").scrollTop = document.getElementById("GameTextResult").scrollHeight;
   }
 
@@ -279,11 +281,6 @@
     }
   }
 
-  function toggleBeautifyTags(bt) {
-    beautifyTags = (typeof(bt) == "undefined") ? !beautifyTags : bt;
-    Init(currentGame);
-  }
-
 </script>
 
 </head>
@@ -310,7 +307,7 @@
 <div class="headerLine"><a id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();"></a><span id="GameWhiteElo"></span></div>
 <div class="headerLine"><a id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();"></a><span id="GameBlackElo"></span></div>
 <div class="shortRowSpace">&nbsp;</div>
-<div class="headerLine gameSiteEventDate"><span id="GameSite"></span><span id="GameEvent"></span><span id="GameDate"></span></div>
+<div class="headerLine gameSiteEventDate"><span id="GameSiteEvent"></span><span id="GameDate"></span></div>
 <div class="shortRowSpace">&nbsp;</div>
 </div>
 <div class="shortRowSpace">&nbsp;</div>
@@ -338,7 +335,7 @@
 <div class="gametextresultDiv" id="GameTextResult">
 <div id="GameText"></div>
 <div class="comment" style="line-height: 33%;">&nbsp;</div>
-<a class="gameAnnotator" id="GameAnnotator" href="javascript:void(0);" onclick="searchAnnotator(!event.shiftKey); this.blur();"></a>
+<a class="gameAnnotator" id="GameAnnotator" href="javascript:void(0);" onclick="searchAnnotator(!event.shiftKey, false); this.blur();"></a>
 <div id="GameResult"></div>
 </div>
 
