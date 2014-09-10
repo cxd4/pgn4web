@@ -462,7 +462,7 @@ if (LiveBroadcastDelay > 0) {
   boardShortcut("G6", "search next date", function(t,e){ searchPgnGame('\\\\[\\\\s*Date\\\\s*"(?!' + fixRegExp(gameDate[currentGame]) + '"\\\\s*\\\\])', e.shiftKey); }, true);
 }
 
-boardShortcut("H5", "app reset", function(t,e){ if (confirm("App reset ?\\n\\nWarning: customized settings, games data and engine analysis data will be lost.")) { window.localStorage.clear(); window.location.reload(); } });
+boardShortcut("H5", "app reset", function(t,e){ if (confirm("App reset?\\n\\nWarning: customized settings, games data and engine analysis data will be lost.")) { window.localStorage.clear(); window.location.reload(); } });
 
 function gameKey(event, site, date, round, white, black) {
   var key = "";
