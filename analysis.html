@@ -183,7 +183,7 @@
     if (newTitleBlock) { newTitle += '\n' + newTitleBlock; }
     newTitleBlock = '';
     if ((theObj = document.getElementById('GameSite')) && (theObj.innerHTML)) { newTitleBlock += theObj.innerHTML; }
-    if ((theObj = document.getElementById('GameEvent')) && (theObj.innerHTML)) { newTitleBlock += theObj.innerHTML; }
+    if ((theObj = document.getElementById('GameEvent')) && (theObj.innerHTML)) { newTitleBlock += (newTitleBlock ? '  ' : '') + theObj.innerHTML; }
     if ((theObj = document.getElementById('GameDate')) && (theObj.innerHTML)) { newTitleBlock += (newTitleBlock ? '  ' : '') + theObj.innerHTML; }
     if (newTitleBlock) { newTitle += '\n' + newTitleBlock; }
     newTitleBlock = '';
@@ -195,9 +195,7 @@
   function fixObjInnerHTML(id) {
     if (!beautifyTags) { return; }
     var theObj = document.getElementById(id);
-    if (theObj) {
-      theObj.innerHTML = theObj.innerHTML.replace(/\.?\?[.?]*/, "").replace(/,(\w)/g, ", $1");
-    }
+    if (theObj) { theObj.innerHTML = theObj.innerHTML.replace(/\.?\?[.?]*/, "").replace(/,(\w)/g, ", $1"); }
   }
 
   function searchPlayer(name, FideId) {

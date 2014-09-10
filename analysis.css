@@ -62,6 +62,7 @@ div, span {
   font-size: 22px;
   line-height: 30px;
   text-align: center;
+  text-overflow: ellipsis;
 }
 
 .gameNum {
