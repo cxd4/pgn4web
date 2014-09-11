@@ -126,10 +126,6 @@
     if (firstCustomFunctionOnPgnTextLoad) {
       firstCustomFunctionOnPgnTextLoad = false;
       showEngineAnalysisBoard(true, true); // prepare analysis frame with an idle board
-      if ((gameVariant[currentGame] && !gameVariant[currentGame].match(/^\s*(|chess|normal|standard)\s*$/i)) && (alertNumSinceReset == 1) && (alertLog[alertLast].match(/^warning: analysis board unavailable/))) {
-        resetAlert();
-        warnedAboutUnsupportedVariation = "";
-      }
     }
   }
 

@@ -67,7 +67,7 @@ var warnedAboutUnsupportedVariation = "";
 
 function showEngineAnalysisBoard(engineDisabled, startFen) {
   if (pgn4web_engineWindowDisableAnalysisBoard) { return null; }
-  if ((typeof(gameVariant[currentGame]) == "undefined") || (gameVariant[currentGame].match(/^\s*(|chess|normal|standard)\s*$/i) !== null)) {
+  if ((typeof(gameVariant[currentGame]) == "undefined") || (gameVariant[currentGame].match(/^\s*(|chess|normal|standard)\s*$/i) !== null) || (startFen)) {
     warnedAboutUnsupportedVariation = "";
     engineWinLastFen = startFen ? FenStringStart : CurrentFEN();
     var doneAccessingDOM = false;
