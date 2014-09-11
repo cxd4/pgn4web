@@ -126,6 +126,10 @@
     if (firstCustomFunctionOnPgnTextLoad) {
       firstCustomFunctionOnPgnTextLoad = false;
       showEngineAnalysisBoard(true, true); // prepare analysis frame with an idle board
+      if ((gameVariant[currentGame] && !gameVariant[currentGame].match(/^\s*(|chess|normal|standard)\s*$/i)) && (alertNumSinceReset == 1) && (alertLog[alertLast].match(/^warning: analysis board unavailable/))) {
+        resetAlert();
+        warnedAboutUnsupportedVariation = "";
+      }
     }
   }
 
@@ -173,14 +177,14 @@
     if ((theObj = document.getElementById('GameDate')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
     document.title = simpleHtmlentitiesDecode(newTitle);
 
-    newTitle = (currentGame + 1) + '.';
-    if (gameEvent[currentGame]) { newTitle += '\nevent: ' + gameEvent[currentGame]; }
-    if (gameSite[currentGame]) { newTitle += '\nsite: ' + gameSite[currentGame]; }
-    if (gameDate[currentGame]) { newTitle += '\ndate: ' + gameDate[currentGame]; }
-    if (gameRound[currentGame]) { newTitle += '\nround: ' + gameRound[currentGame]; }
-    if (gameWhite[currentGame]) { newTitle += '\nwhite: ' + gameWhite[currentGame]; }
-    if (gameBlack[currentGame]) { newTitle += '\nblack: ' + gameBlack[currentGame]; }
-    if (gameResult[currentGame]) { newTitle += '\nresult: ' + gameResult[currentGame]; }
+    newTitle = 'game:   \u0009 ' + (currentGame + 1) + ' of ' + numberOfGames;
+    if (gameEvent[currentGame])  { newTitle += '\nevent:  \u0009 ' + gameEvent[currentGame]; }
+    if (gameSite[currentGame])   { newTitle += '\nsite:   \u0009 ' + gameSite[currentGame]; }
+    if (gameDate[currentGame])   { newTitle += '\ndate:   \u0009 ' + gameDate[currentGame]; }
+    if (gameRound[currentGame])  { newTitle += '\nround:  \u0009 ' + gameRound[currentGame]; }
+    if (gameWhite[currentGame])  { newTitle += '\nwhite:  \u0009 ' + gameWhite[currentGame]; }
+    if (gameBlack[currentGame])  { newTitle += '\nblack:  \u0009 ' + gameBlack[currentGame]; }
+    if (gameResult[currentGame]) { newTitle += '\nresult: \u0009 ' + gameResult[currentGame]; }
     if (theObj = document.getElementById('boardHeaderInfo')) { theObj.title = simpleHtmlentitiesDecode(newTitle); }
     currentGameInfo = newTitle;
   }
@@ -232,6 +236,7 @@
     if (pgn4web_engineWindowDisableAnalysisBoard) { return; }
     var theObj;
     if ((thisEngineWin = showEngineAnalysisBoard(de)) && (!thisEngineWinShown)) {
+      if (theObj = document.getElementById("GameAnalysisFrame")) { theObj.style.visibility = ""; }
       if (theObj = document.getElementById('analysisHeader')) {
         theObj.style.left = "451px"; // 436px boardheaderDiv.width + 15px gametextresultDiv.paddingLeft
       }
@@ -294,7 +299,7 @@
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
 
 <div class="analysisheaderDiv" id="analysisHeader">
-<iframe class="gameAnalysisFrame" id="GameAnalysisFrame" name="pgn4webAnalysisBoardForAnalysis" src="./blank.html" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">your web browser and/or your host do not support iframes as required</iframe>
+<iframe class="gameAnalysisFrame" style="visibility: hidden;" id="GameAnalysisFrame" name="pgn4webAnalysisBoardForAnalysis" src="./blank.html" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">your web browser and/or your host do not support iframes as required</iframe>
 </div>
 
 <div class="boardheaderDiv" id="boardHeader">

@@ -76,7 +76,6 @@ div, span {
 }
 
 .gameSiteEventDate {
-  font-style: italic;
   font-weight: normal;
 }
 
@@ -117,7 +116,7 @@ div, span {
 
 .gameAnnotator {
   float: right;
-  font-style: italic;
+  color: gray;
 }
 
 .boardTable {
