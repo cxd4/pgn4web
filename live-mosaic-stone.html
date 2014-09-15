@@ -240,14 +240,11 @@
     }
     if (theObj = document.getElementById("GameWhiteMoveNum")) {
       theObj.style.display = (CurrentPly % 2) ? "inline" : "none";
-      if ((CurrentPly > 0) && (!hideClocks)) {
-        theObj.innerHTML = Math.floor((CurrentPly + 1 ) / 2);
-        theObj.title = "move " + Math.floor((CurrentPly + 1 ) / 2);
-      } else { theObj.innerHTML = theObj.title = ""; }
+      theObj.innerHTML = ((CurrentPly > 0) && (!hideClocks)) ? Math.floor((CurrentPly + 1 ) / 2) : "";
+      theObj.title = (CurrentPly > StartPly) ? Math.floor((CurrentPly + 1) / 2) + ". " + Moves[CurrentPly - 1] : "";
       if (CurrentPly < StartPly + PlyNumber) {
         theObj.innerHTML = theObj.innerHTML ? "." + theObj.innerHTML : "&middot;";
-        if (theObj.title) { theObj.title += " of " + Math.floor((StartPly + PlyNumber + 1 ) / 2); }
-        else { theObj.title += "autoplay next moves"; }
+        theObj.title += (theObj.title ? " " : "") + "...";
       }
     }
     if (theObj = document.getElementById("GameBlackFlag")) {
@@ -256,14 +253,11 @@
     }
     if (theObj = document.getElementById("GameBlackMoveNum")) {
       theObj.style.display = (CurrentPly % 2 === 0) ? "inline" : "none";
-      if ((CurrentPly > 0) && (!hideClocks)) {
-        theObj.innerHTML = Math.floor((CurrentPly + 1 ) / 2);
-        theObj.title = "move " + Math.floor((CurrentPly + 1 ) / 2);
-      } else { theObj.innerHTML = theObj.title = ""; }
+      theObj.innerHTML = ((CurrentPly > 0) && (!hideClocks)) ? Math.floor((CurrentPly + 1 ) / 2) : "";
+      theObj.title = (CurrentPly > StartPly) ? Math.floor((CurrentPly + 1) / 2) + "... " + Moves[CurrentPly - 1] : "";
       if (CurrentPly < StartPly + PlyNumber) {
         theObj.innerHTML = theObj.innerHTML ? "." + theObj.innerHTML : "&middot;";
-        if (theObj.title) { theObj.title += " of " + Math.floor((StartPly + PlyNumber + 1 ) / 2); }
-        else { theObj.title += "autoplay next moves"; }
+        theObj.title += (theObj.title ? " " : "") + "...";
       }
     }
   }
