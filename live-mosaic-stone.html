@@ -247,6 +247,7 @@
         theObj.title += (theObj.title ? " " : "") + "...";
       }
       if (!theObj.innerHTML) { theObj.innerHTML = "&nbsp;&nbsp;"; }
+      if (!theObj.title) { theObj.title = ":"; }
     }
     if (theObj = document.getElementById("GameBlackFlag")) {
       theObj.style.display = (CurrentPly % 2 === 0) ? "none" : "";
@@ -261,6 +262,7 @@
         theObj.title += (theObj.title ? " " : "") + "...";
       }
       if (!theObj.innerHTML) { theObj.innerHTML = "&nbsp;&nbsp;"; }
+      if (!theObj.title) { theObj.title = ":"; }
     }
   }
 
