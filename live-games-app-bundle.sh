@@ -34,7 +34,7 @@ fi
 
 id=$1
 if [ -z "$id" ] || [ "$id" == "--help" ]; then
-  echo "usage: $(basename $0) [--delete] id [pgn] [name]"
+  echo "usage: $(basename $0) [--delete] id [pgn] [name] [appopt] [engopt]"
   echo "please note: you can only deploy one bundle per domain (more bundles on the same domain would conflict on local storage)"
   exit 1
 fi
@@ -55,7 +55,27 @@ fi
 name=$3
 if [[ $name =~ [^a-zA-Z0-9\ \'#-] ]]; then
   echo "error: name must be only letters, numbers and spaces: $name"
-  exit 3
+  exit 4
+fi
+
+appopt=$4
+if [[ $appopt != \&* ]]; then
+  echo "error: appopt must start with ampersand: $appopt"
+  exit 5
+fi
+if [[ $appopt =~ [^a-zA-Z0-9.\&=] ]]; then
+  echo "error: appopt must be only letters, numbers, dot, ampersand and equal: $appopt"
+  exit 5
+fi
+
+engopt=$5
+if [[ $engopt != \&* ]]; then
+  echo "error: appopt must start with ampersand: $engopt"
+  exit 6
+fi
+if [[ $engopt =~ [^a-zA-Z0-9.\&=] ]]; then
+  echo "error: engopt must be only letters, numbers, dot, ampersand and equal: $engopt"
+  exit 6
 fi
 
 cp live-games-app.php "$pre-$id.php"
@@ -66,6 +86,9 @@ sed -i.bak 's/live-games-app.pgn/'"$pre-$id.pgn"'/g' "$pre-$id.php"
 if [[ -n $name ]]; then
   sed -i.bak 's/Live Games/'"$name"'/g' "$pre-$id.php"
 fi
+if [[ -n $appopt ]]; then
+  sed -i.bak "s/\(\&pf=a' . '\)[^']*\('\)/\1${appopt//&/\\&}\2/g" "$pre-$id.php"
+fi
 # sed -i.bak 's/enableLogging = false;/enableLogging = true;/g' "$pre-$id.php"
 # set TZ=UTC
 # echo $(date +"%Y-%m-%d %H:%M:%S +") >> "$pre-$id.log"
@@ -73,6 +96,9 @@ rm -f "$pre-$id.php.bak"
 
 cp live-games-app-engine.php "$pre-$id-engine.php"
 sed -i.bak 's/live-games-app-icon-\([0-9]\+\)x\([0-9]\+\).\(png\|ico\)/'"$pre-$id-icon-\1x\2.\3"'/g' "$pre-$id-engine.php"
+if [[ -n $engopt ]]; then
+  sed -i.bak "s/\(\&pf=a' . '\)[^']*\('\)/\1${engopt//&/\\&}\2/g" "$pre-$id-engine.php"
+fi
 rm -f "$pre-$id-engine.php.bak"
 
 cp live-games-app.appcache "$pre-$id.appcache"
