@@ -394,7 +394,7 @@ sub save_game {
       $GAMES_round[$newGame_num] = $newGame_round;
       $GAMES_eco[$newGame_num] = "";
       $GAMES_sortkey[$newGame_num] = eventRound($newGame_event, $newGame_round);
-      $GAMES_forgetTag[$newGame_num] = sprintf("%012d%03d", o_time(),  simpleStringCrc($GAMES_sortkey[$newGame_num]));
+      $GAMES_forgetTag[$newGame_num] = sprintf("%012d%03d", o_time(), simpleStringCrc($GAMES_sortkey[$newGame_num]));
       $GAMES_headerForFilter[$newGame_num] = headerForFilter($newGame_event, $newGame_round, $newGame_white, $newGame_black);
     }
     $gamesStartCount++;
@@ -671,6 +671,16 @@ sub process_line {
       $autorelayRound = "#";
       $autorelayEvent = $1 . " " . $2;
     }
+    if ($autorelayEvent =~ /(\b(Match\s+\d+|Last\s+Match)\b.*){2,}/i) {
+      $autorelayRound = $autorelayRound ne "" ? "?." . $autorelayRound : "?";
+      $autorelayEvent =~ s/Match\s+\d+|Last\s+Match/ /g;
+    } elsif ($autorelayEvent =~ /^(.*)\bMatch\s+(\d+)\b(.*)$/i) {
+      $autorelayRound = $autorelayRound ne "" ? $2 . "." . $autorelayRound : $2;
+      $autorelayEvent = $1 . " " . $3;
+    } elsif ($autorelayEvent =~ /^(.*)\bLast\s+Match\b(.*)$/i) {
+      $autorelayRound = $autorelayRound ne "" ? "#." . $autorelayRound : "#";
+      $autorelayEvent = $1 . " " . $2;
+    }
     if ($autorelayEvent =~ /(\b(Round\s+\d+|Last\s+Round)\b.*){2,}/i) {
       $autorelayRound = $autorelayRound ne "" ? "?." . $autorelayRound : "?";
       $autorelayEvent =~ s/Round\s+\d+|Last\s+Round/ /g;
@@ -721,7 +731,7 @@ sub process_line {
         $GAMES_round[$thisGameNum] = $autorelayRound;
         $GAMES_eco[$thisGameNum] = $thisGameEco;
         $GAMES_sortkey[$thisGameNum] = eventRound($autorelayEvent, $autorelayRound);
-        $GAMES_forgetTag[$thisGameNum] = sprintf("%012d%03d", o_time(),  simpleStringCrc($GAMES_sortkey[$thisGameNum]));
+        $GAMES_forgetTag[$thisGameNum] = sprintf("%012d%03d", o_time(), simpleStringCrc($GAMES_sortkey[$thisGameNum]));
         $GAMES_headerForFilter[$thisGameNum] = $thisHeaderForFilter;
         $GAMES_autorelayRunning[$thisGameNum] = 1;
         if (($autoPrioritize ne "") && ($thisHeaderForFilter =~ /$autoPrioritize/i)) {
@@ -1406,7 +1416,7 @@ sub memory_load {
       my @newSortkey = ();
       for (my $m=$#memory_games_sortkey; $m>=0; $m--) {
         unless ($memory_games_sortkey[$m] ~~ @newSortkey) {
-          log_terminal("info: event mem: "  . sprintf_eventRound($memory_games_sortkey[$m]));
+          log_terminal("info: event mem: " . sprintf_eventRound($memory_games_sortkey[$m]));
           push(@newSortkey, $memory_games_sortkey[$m]);
         }
       }
@@ -1757,7 +1767,7 @@ sub process_master_command {
         if (($EloIgnoreString ne $oldEloIgnoreString) && ($relayMode == 1)) {
           if ($autorelayMode == 1) {
             for (my $i=$#games_num; $i>=0; $i--) {
-              if ((defined $games_num[$i])  && (defined $games_whiteElo[$i]) && (defined $games_blackElo[$i])) {
+              if ((defined $games_num[$i]) && (defined $games_whiteElo[$i]) && (defined $games_blackElo[$i])) {
                 if (Elo_eval_ignore($games_whiteElo[$i], $games_blackElo[$i]) == 1) {
                   remove_game($games_num[$i]);
                 }
