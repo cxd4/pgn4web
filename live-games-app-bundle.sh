@@ -59,23 +59,27 @@ if [[ $name =~ [^a-zA-Z0-9\ \'#-] ]]; then
 fi
 
 appopt=$4
-if [[ $appopt != \&* ]]; then
-  echo "error: appopt must start with ampersand: $appopt"
-  exit 5
-fi
-if [[ $appopt =~ [^a-zA-Z0-9.\&=] ]]; then
-  echo "error: appopt must be only letters, numbers, dot, ampersand and equal: $appopt"
-  exit 5
+if [[ -n $appopt ]]; then
+  if [[ $appopt != \&* ]]; then
+    echo "error: appopt must start with ampersand: $appopt"
+    exit 5
+  fi
+  if [[ $appopt =~ [^a-zA-Z0-9.\&=] ]]; then
+    echo "error: appopt must be only letters, numbers, dot, ampersand and equal: $appopt"
+    exit 5
+  fi
 fi
 
 engopt=$5
-if [[ $engopt != \&* ]]; then
-  echo "error: appopt must start with ampersand: $engopt"
-  exit 6
-fi
-if [[ $engopt =~ [^a-zA-Z0-9.\&=] ]]; then
-  echo "error: engopt must be only letters, numbers, dot, ampersand and equal: $engopt"
-  exit 6
+if [[ -n $engopt ]]; then
+  if [[ $engopt != \&* ]]; then
+    echo "error: engopt must start with ampersand: $engopt"
+    exit 6
+  fi
+  if [[ $engopt =~ [^a-zA-Z0-9.\&=] ]]; then
+    echo "error: engopt must be only letters, numbers, dot, ampersand and equal: $engopt"
+    exit 6
+  fi
 fi
 
 cp live-games-app.php "$pre-$id.php"
