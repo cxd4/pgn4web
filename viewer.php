@@ -367,7 +367,7 @@ function print_header() {
 
 <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
 
-<meta name="viewport" content="width=800, minimal-ui">
+<meta name="viewport" content="width=800">
 <link rel="icon" sizes="16x16" href="pawn.ico" />
 <title>pgn4web games viewer</title>
 
