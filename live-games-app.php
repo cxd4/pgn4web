@@ -581,8 +581,8 @@ if (touchEventEnabled) {
     touchGestures_helpActions =  touchGestures_helpActions.concat([ "game info top-down swipe" ]);
     touchGestures_helpText = touchGestures_helpText.concat([ "open/update analysis board" ]);
   }
-  touchGestures_helpActions =  touchGestures_helpActions.concat([ "game info bottom-up swipe", "game info left-right swipe", "game info right-left swipe", "&nbsp;", "games list header left-right swipe", "games list header right-left swipe", "games list swipe" ]);
-  touchGestures_helpText = touchGestures_helpText.concat([ "show games list", "move forward", "move backward", "", "games list horizontal scroll", "return to game", "games list vertical scroll" ]);
+  touchGestures_helpActions =  touchGestures_helpActions.concat([ "game info bottom-up swipe", "game info left-right swipe", "game info right-left swipe", "&nbsp;", "games list swipe", "games list header left-right swipe", "games list header right-left swipe" ]);
+  touchGestures_helpText = touchGestures_helpText.concat([ "show games list", "move forward", "move backward", "", "games list vertical scroll", "games list horizontal scroll", "return to game"  ]);
 }
 
 simpleAddEvent(window.applicationCache, "updateready", function(e) {
