@@ -251,7 +251,7 @@ if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
 
 
-$text = 'myInsertRule(sheet, ".gameListBodyItems", "min-height: " + (gameListBodyHeight + (window.navigator.standalone ? 2 : 0)) + "px; min-width: " + (ww - 2 * framePadding) + "px;");';
+$text = 'myInsertRule(sheet, ".gameListBodyItems", "min-height: " + (gameListBodyHeight + (window.navigator.standalone ? 2 : 0)) + "px; min-width: " + (ww - 2 * framePadding + (window.navigator.standalone ? 1 : 0)) + "px;");';
 $oldText = 'myInsertRule(sheet, ".gameListBodyItems", "min-height: " + gameListBodyHeight + "px; min-width: " + (ww - 2 * framePadding) + "px;");';
 $actionNum += 1;
 if (!strstr($html, $oldText)) { errorExit($actionNum); }
