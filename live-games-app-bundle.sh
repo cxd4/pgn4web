@@ -100,6 +100,9 @@ rm -f "$pre-$id.php.bak"
 
 cp live-games-app-engine.php "$pre-$id-engine.php"
 sed -i.bak 's/live-games-app-icon-\([0-9]\+\)x\([0-9]\+\).\(png\|ico\)/'"$pre-$id-icon-\1x\2.\3"'/g' "$pre-$id-engine.php"
+if [[ -n $name ]]; then
+  sed -i.bak 's/Live Games/'"$name"'/g' "$pre-$id-engine.php"
+fi
 if [[ -n $engopt ]]; then
   sed -i.bak "s/\(\&pf=a' . '\)[^']*\('\)/\1${engopt//&/\\&}\2/g" "$pre-$id-engine.php"
 fi

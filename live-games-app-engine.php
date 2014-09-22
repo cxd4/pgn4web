@@ -41,7 +41,7 @@ if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
 
 
-$text = "<title>Game Analysis</title>";
+$text = "<title>Live Games</title>";
 $oldText = "<title>pgn4web analysis board</title>";
 $actionNum += 1;
 if (!strstr($html, $oldText)) { errorExit($actionNum); }
