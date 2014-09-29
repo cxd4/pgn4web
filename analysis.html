@@ -85,7 +85,7 @@
   SetImageType("png");
   SetHighlightOption(true);
   SetGameSelectorOptions(null, true, 15, 15, 3, 15, 15, 3, 10); // (head, num, chEvent, chSite, chRound, chWhite, chBlack, chResult, chDate);
-  SetCommentsIntoMoveText(true);
+  SetCommentsIntoMoveText(true); // if changing this line, set accordingly the visibility of object with ID = "GameAnnotator"
   SetCommentsOnSeparateLines(false);
   SetAutoplayDelay(1000); // milliseconds
   SetAutostartAutoplay(false);
@@ -120,6 +120,13 @@
 
   function FlipBoard() {}
 
+  window['defaultSetCommentsIntoMoveText'] = window['SetCommentsIntoMoveText'];
+  window['SetCommentsIntoMoveText'] = function(onOff) {
+    defaultSetCommentsIntoMoveText(onOff);
+    var theObj = document.getElementById("GameAnnotator");
+    if (theObj) { theObj.style.display = onOff ? "" : "none"; }
+  };
+
   var firstCustomFunctionOnPgnTextLoad = true;
   function customFunctionOnPgnTextLoad() {
     myOnResize();
@@ -132,7 +139,7 @@
   var currentGameInfo = '';
 
   function customFunctionOnPgnGameLoad() {
-    var theObj, theOther, newTitle;
+    var theObj, theOther, whiteElo, blackElo, eco, annotator, newTitle;
     if (theObj = document.getElementById('GameSiteEvent')) {
       theObj.innerHTML = gameSite[currentGame];
       fixSiteInnerHTML('GameSiteEvent');
@@ -147,13 +154,13 @@
     fixObjInnerHTML('GameResult');
     if (theObj = document.getElementById('GameNum')) { theObj.innerHTML = (currentGame + 1); }
     fixObjInnerHTML('GameNum');
-    customPgnHeaderTag('WhiteElo', 'GameWhiteElo');
+    whiteElo = customPgnHeaderTag('WhiteElo', 'GameWhiteElo');
     fixObjInnerHTML('GameWhiteElo');
-    customPgnHeaderTag('BlackElo', 'GameBlackElo');
+    blackElo = customPgnHeaderTag('BlackElo', 'GameBlackElo');
     fixObjInnerHTML('GameBlackElo');
-    customPgnHeaderTag('ECO', 'GameECO');
+    eco = customPgnHeaderTag('ECO', 'GameECO');
     fixObjInnerHTML('GameECO');
-    customPgnHeaderTag('Annotator', 'GameAnnotator');
+    annotator = customPgnHeaderTag('Annotator', 'GameAnnotator');
     fixObjInnerHTML('GameAnnotator');
     theObj = document.getElementById('GameWhite');
     theOther = document.getElementById('GameWhiteElo');
@@ -178,9 +185,17 @@
     if (gameSite[currentGame])   { newTitle += '\nsite:   \u0009 ' + gameSite[currentGame]; }
     if (gameDate[currentGame])   { newTitle += '\ndate:   \u0009 ' + gameDate[currentGame]; }
     if (gameRound[currentGame])  { newTitle += '\nround:  \u0009 ' + gameRound[currentGame]; }
-    if (gameWhite[currentGame])  { newTitle += '\nwhite:  \u0009 ' + gameWhite[currentGame]; }
-    if (gameBlack[currentGame])  { newTitle += '\nblack:  \u0009 ' + gameBlack[currentGame]; }
+    if (gameWhite[currentGame])  {
+      newTitle += '\nwhite:  \u0009 ' + gameWhite[currentGame];
+      if (whiteElo) { newTitle += '   ' + whiteElo; }
+    }
+    if (gameBlack[currentGame])  {
+      newTitle += '\nblack:  \u0009 ' + gameBlack[currentGame];
+      if (blackElo) { newTitle += '   ' + blackElo; }
+    }
     if (gameResult[currentGame]) { newTitle += '\nresult: \u0009 ' + gameResult[currentGame]; }
+    if (eco) { newTitle += '\neco: \u0009 ' + eco; }
+    if (annotator) { newTitle += '\nnotes: \u0009 ' + annotator; }
     if (newTitle) { newTitle = '\n' + newTitle; }
     newTitle = 'game ' + (currentGame + 1) + ' of ' + numberOfGames + newTitle;
     if (theObj = document.getElementById('boardHeaderInfo')) { theObj.title = simpleHtmlentitiesDecode(newTitle); }
