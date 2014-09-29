@@ -102,7 +102,7 @@ within a hidden FORM/TEXTAREA statement with the ID pgnText:
 
 Example:
 
-  <script type="text/javascript>
+  <script type="text/javascript">
     "use strict";
 
     SetPgnUrl("yourpath/yourfile.pgn"); // if set, this has precedence over the inline PGN in the HTML file
