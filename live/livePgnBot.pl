@@ -674,15 +674,15 @@ sub process_line {
       $autorelayRound = "#";
       $autorelayEvent = $1 . " " . $2;
     }
-    if ($autorelayEvent =~ /(\b(Match(up)?\s+\d+|Last\s+Match(up)?)\b.*){2,}/i) {
+    if ($autorelayEvent =~ /(\b(Matchup\s+\d+|Last\s+Matchup)\b.*){2,}/i) {
       $autorelayRound = $autorelayRound ne "" ? "?." . $autorelayRound : "?";
-      $autorelayEvent =~ s/Match(up?)\s+\d+|Last\s+Match(up)?/ /g;
-    } elsif ($autorelayEvent =~ /^(.*)\bMatch(up)?\s+(\d+)\b(.*)$/i) {
-      $autorelayRound = $autorelayRound ne "" ? $3 . "." . $autorelayRound : $3;
-      $autorelayEvent = $1 . " " . $4;
-    } elsif ($autorelayEvent =~ /^(.*)\bLast\s+Match(up)?\b(.*)$/i) {
-      $autorelayRound = $autorelayRound ne "" ? "#." . $autorelayRound : "#";
+      $autorelayEvent =~ s/Matchup\s+\d+|Last\s+Matchup/ /g;
+    } elsif ($autorelayEvent =~ /^(.*)\bMatchup\s+(\d+)\b(.*)$/i) {
+      $autorelayRound = $autorelayRound ne "" ? $2 . "." . $autorelayRound : $2;
       $autorelayEvent = $1 . " " . $3;
+    } elsif ($autorelayEvent =~ /^(.*)\bLast\s+Matchup\b(.*)$/i) {
+      $autorelayRound = $autorelayRound ne "" ? "#." . $autorelayRound : "#";
+      $autorelayEvent = $1 . " " . $2;
     }
     if ($autorelayEvent =~ /(\b(Round\s+\d+|Last\s+Round)\b.*){2,}/i) {
       $autorelayRound = $autorelayRound ne "" ? "?." . $autorelayRound : "?";
