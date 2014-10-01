@@ -664,36 +664,9 @@ sub process_line {
     $autorelayEvent = $1;
     $autorelayEvent =~ s/[\[\]"]/'/g;
     $autorelayRound = "";
-    if ($autorelayEvent =~ /(\b(Game\s+\d+|Last\s+Game)\b.*){2,}/i) {
-      $autorelayRound = "?";
-      $autorelayEvent =~ s/Game\s+\d+|Last\s+Game/ /g;
-    } elsif ($autorelayEvent =~ /^(.*)\bGame\s+(\d+)\b(.*)$/i) {
-      $autorelayRound = $2;
-      $autorelayEvent = $1 . " " . $3;
-    } elsif ($autorelayEvent =~ /^(.*)\bLast\s+Game\b(.*)$/i) {
-      $autorelayRound = "#";
-      $autorelayEvent = $1 . " " . $2;
-    }
-    if ($autorelayEvent =~ /(\b(Matchup\s+\d+|Last\s+Matchup)\b.*){2,}/i) {
-      $autorelayRound = $autorelayRound ne "" ? "?." . $autorelayRound : "?";
-      $autorelayEvent =~ s/Matchup\s+\d+|Last\s+Matchup/ /g;
-    } elsif ($autorelayEvent =~ /^(.*)\bMatchup\s+(\d+)\b(.*)$/i) {
-      $autorelayRound = $autorelayRound ne "" ? $2 . "." . $autorelayRound : $2;
-      $autorelayEvent = $1 . " " . $3;
-    } elsif ($autorelayEvent =~ /^(.*)\bLast\s+Matchup\b(.*)$/i) {
-      $autorelayRound = $autorelayRound ne "" ? "#." . $autorelayRound : "#";
-      $autorelayEvent = $1 . " " . $2;
-    }
-    if ($autorelayEvent =~ /(\b(Round\s+\d+|Last\s+Round)\b.*){2,}/i) {
-      $autorelayRound = $autorelayRound ne "" ? "?." . $autorelayRound : "?";
-      $autorelayEvent =~ s/Round\s+\d+|Last\s+Round/ /g;
-    } elsif ($autorelayEvent =~ /^(.*)\bRound\s+(\d+)\b(.*)$/i) {
-      $autorelayRound = $autorelayRound ne "" ? $2 . "." . $autorelayRound : $2;
-      $autorelayEvent = $1 . " " . $3;
-    } elsif ($autorelayEvent =~ /^(.*)\bLast\s+Round\b(.*)$/i) {
-      $autorelayRound = $autorelayRound ne "" ? "#." . $autorelayRound : "#";
-      $autorelayEvent = $1 . " " . $2;
-    }
+    fixRoundEvent($autorelayEvent, $autorelayRound, "Game");
+    fixRoundEvent($autorelayEvent, $autorelayRound, "Matchup");
+    fixRoundEvent($autorelayEvent, $autorelayRound, "Round");
     $autorelayEvent =~ s/^\s+|[\s-]+$//g;
     $autorelayEvent =~ s/\s+/ /g;
     if ($eventAutocorrectRegexp) { $autorelayEvent = event_autocorrect($autorelayEvent); }
@@ -846,6 +819,24 @@ sub process_line {
     }
   }
   $lineCount++;
+}
+
+sub fixRoundEvent() {
+  my $event = $_[0];
+  my $round = $_[1];
+  my $tag = $_[2];
+  if ($event =~ /(\b($tag\s+[0-9a-z]+|Last\s+$tag)\b.*){2,}/i) {
+    $round = $round ne "" ? "?." . $round : "?";
+    $event =~ s/$tag\s+\d+|Last\s+$tag/ /g;
+  } elsif ($event =~ /^(.*)\b$tag\s+([0-9a-z]+)\b(.*)$/i) {
+    $round = $round ne "" ? $2 . "." . $round : $2;
+    $event = $1 . " " . $3;
+  } elsif ($event =~ /^(.*)\bLast\s+$tag\b(.*)$/i) {
+    $round = $round ne "" ? "#." . $round : "#";
+    $event = $1 . " " . $2;
+  }
+  $_[0] = $event;
+  $_[1] = $round;
 }
 
 sub process_newGame() {
