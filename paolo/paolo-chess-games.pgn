@@ -1,3 +1,22 @@
+[Event "London league"]
+[Site "London ENG"]
+[Date "2014.10.01"]
+[Round "?"]
+[White "Casaschi, Paolo"]
+[Black "Bowmer, Kevin"]
+[Result "1-0"]
+[ECO "B97"]
+[Opening "Sicilian"]
+[Variation "Najdorf, 7...Qb6"]
+
+1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6 6. Bg5 e6 7. f4 Qb6 8.
+Nb3 Nbd7 9. Qd2 Be7 10. O-O-O Qc7 11. Nd4 h6 12. Bxf6 Nxf6 13. Kb1 b5 14.
+Bd3 Bb7 15. e5 dxe5 16. Nxe6 fxe6 17. Bg6+ Kf8 18. Qe2 e4 19. g4 Qxf4 20.
+Rdf1 Qe5 21. h4 e3 22. Rhg1 Rd8 23. Bd3 g5 24. Nd1 Kg8 25. Nxe3 Bc5 26. Rg3
+Qxg3 27. Nf5 exf5 { D } 28. Qe6+ Kg7 29. Qxf5 Rd6 30. Qxc5 Rhd8 31. hxg5
+hxg5 32. Qxg5+ Kf7 33. Qg6+ Ke7 34. Qg7+ Ke6 35. Rxf6+ Kd5 36. Rf5+ Kc6 37.
+Be4+ Kb6 38. Qxb7+ Ka5 39. a3 1-0
+
 [Event "Middlesex league"]
 [Site "London ENG"]
 [Date "2014.06.26"]
