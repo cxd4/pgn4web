@@ -188,6 +188,7 @@ our $safevalRound = new Safe;
 $safevalRound->share($roundAutocorrectString);
 
 our $placeholderGame = "auto";
+our $placeholder_site = "";
 our $placeholder_date = "";
 our $placeholder_result = "*";
 our $placeholderPgnNum = "?";
@@ -273,6 +274,7 @@ sub reset_config {
   $roundAutocorrectString = "";
   $placeholderGame = "auto";
   $placeholder_date = "";
+  $placeholder_site = "";
   $placeholder_result = "*";
   $placeholderPgnNum = "?";
   $roundReverse = 0;
@@ -1109,7 +1111,7 @@ sub refresh_pgn {
 }
 
 sub placeholder_pgn {
-  return "[Event \"$newGame_event\"]\n" . "[Site \"$newGame_site\"]\n" . "[Date \"" . strftime($placeholder_date, o_gmtime()) . "\"]\n" . "[Round \"$newGame_round\"]\n" . "[White \"\"]\n" . "[Black \"\"]\n" . "[Result \"$placeholder_result\"]\n\n*\n\n";
+  return "[Event \"$newGame_event\"]\n" . "[Site \"$placeholder_site\"]\n" . "[Date \"" . strftime($placeholder_date, o_gmtime()) . "\"]\n" . "[Round \"$newGame_round\"]\n" . "[White \"\"]\n" . "[Black \"\"]\n" . "[Result \"$placeholder_result\"]\n\n*\n\n";
 }
 
 sub archive_pgnGame {
@@ -1519,6 +1521,7 @@ add_master_command ("observe", "observe [game number list, such as: 12 34 56 ..]
 add_master_command ("placeholderdate", "placeholderdate [strftime_string|\"\"] (to get/set the PGN header tag date for the PGN placeholder game)");
 add_master_command ("placeholdergame", "placeholdergame [always|auto|never] (to get/set the PGN placeholder game behaviour during autorelay)");
 add_master_command ("placeholderresult", "placeholderresult [string|\"\"] (to get/set the PGN header tag result for the PGN placeholder game)");
+add_master_command ("placeholdersite", "placeholdersite [string|\"\"] (to get/set the PGN header tag site for the PGN placeholder game)");
 add_master_command ("prioritize", "prioritize [regexp|\"\"] (to get/set the regular expression to prioritize events/players from the PGN header during autorelay; might be overridden by autoprioritize; might be overruled by ignore)");
 add_master_command ("prioritizeonly", "prioritizeonly [0|1] (to get/set the prioritized games only mode during autorelay)");
 add_master_command ("quit", "quit [number] (to quit from the ics server, returning the given exit value)");
@@ -1699,6 +1702,7 @@ sub process_master_command {
     }
     if ($placeholderGame ne "auto" || $parameters eq "!") { $cfg .= " placeholdergame=$placeholderGame"; }
     if ($placeholderGame ne "never" || $parameters eq "!") {
+      if ($placeholder_site ne "" || $parameters eq "!") { $cfg .= " placeholdersite=$placeholder_site"; }
       if ($placeholder_date ne "" || $parameters eq "!") { $cfg .= " placeholderdate=$placeholder_date"; }
       if ($placeholder_result ne "*" || $parameters eq "!") { $cfg .= " placeholderresult=$placeholder_result"; }
     }
@@ -2330,6 +2334,16 @@ sub process_master_command {
         $placeholder_result = $parameters;
       }
       tell_operator("placeholderresult=$placeholder_result");
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "placeholdersite") {
+    if ($parameters =~ /^([^\[\]"]+|"")?$/) {
+      if ($parameters ne "") {
+        if ($parameters eq "\"\"") { $parameters = ""; }
+        $placeholder_site = $parameters;
+      }
+      tell_operator("placeholdersite=$placeholder_site");
     } else {
       tell_operator("error: invalid $command parameter");
     }
