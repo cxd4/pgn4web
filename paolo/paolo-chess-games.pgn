@@ -1,5 +1,20 @@
 [Event "London league"]
 [Site "London ENG"]
+[Date "2014.10.22"]
+[Round "?"]
+[White "Johnstone, Mark"]
+[Black "Casaschi, Paolo"]
+[Result "1/2-1/2"]
+[ECO "A04"]
+[Opening "Reti opening"]
+
+1. Nf3 c5 2. c4 b6 3. g3 Bb7 4. Bg2 Nf6 5. O-O g6 6. Nc3 Bg7 7. d3 O-O 8.
+e4 Na6 9. Rb1 d6 10. a3 Nc7 11. Qc2 a6 12. b4 Rb8 13. bxc5 bxc5 14. Bd2 Bc6
+15. Rxb8 Qxb8 16. Rb1 Qa7 17. Nd5 { D } 17... Bxd5 18. exd5 Rb8 19. Rb3 Nd7
+20. Ba5 Ne8 21. Bh3 Nef6 22. Qb1 Rxb3 23. Qxb3 h6 24. Kf1 1/2-1/2
+
+[Event "London league"]
+[Site "London ENG"]
 [Date "2014.10.01"]
 [Round "?"]
 [White "Casaschi, Paolo"]
