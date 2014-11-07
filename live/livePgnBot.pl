@@ -80,6 +80,8 @@ sub o_gmtime {
   return gmtime(($t || time()) + $timeOffset);
 }
 
+our $strftimeFormat = "%Y.%m.%d.%H.%M.%S";
+
 sub simpleStringCrc {
   my ($s) = @_;
   my $t = 0;
@@ -565,7 +567,7 @@ sub log_terminal {
     $thisVerbosity = 2;
   }
   if ($thisVerbosity <= $verbosity) {
-    print(strftime("%Y-%m-%d %H:%M:%S", o_gmtime()) . " " . $msg . "\n");
+    print(strftime($strftimeFormat, o_gmtime()) . " " . $msg . "\n");
   }
 }
 
@@ -875,11 +877,11 @@ sub reset_newGame() {
 sub time2sec {
   my ($t) = @_;
 
-  if ($t =~ /^(\d+):(\d+):(\d+):(\d+)$/) {
+  if ($t =~ /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/) {
     return 86400 * $1 + $2 * 3600 + $3 * 60 + $4;
-  } elsif ($t =~ /^(\d+):(\d+):(\d+)$/) {
+  } elsif ($t =~ /^(\d+)\.(\d+)\.(\d+)$/) {
     return $1 * 3600 + $2 * 60 + $3;
-  } elsif ($t =~ /^(\d+):(\d+)$/) {
+  } elsif ($t =~ /^(\d+)\.(\d+)$/) {
     return $1* 60 + $2;
   } elsif ($t =~ /^\d+$/) {
     return $1;
@@ -900,13 +902,13 @@ sub sec2time {
     $t = ($t - $min) / 60;
     $hr = $t % 24;
     if ($t < 24) {
-      return sprintf("%d:%02d:%02d", $hr, $min, $sec);
+      return sprintf("%d.%02d.%02d", $hr, $min, $sec);
     } else {
       $day = ($t - $hr) / 24;
-      return sprintf("%d:%02d:%02d:%02d", $day, $hr, $min, $sec);
+      return sprintf("%d.%02d.%02d.%02d", $day, $hr, $min, $sec);
     }
   } elsif ($t =~ /^-/) {
-    return "0:00:00";
+    return "0.00.00";
   } else {
     log_terminal("error: sec2time($t)");
     return 0;
@@ -2579,7 +2581,7 @@ sub fileInfo {
   if ($filename ne "") {
      my @info = stat($filename);
      if (defined $info[9]) {
-       $infoText .= " modified=" . strftime("%Y-%m-%d %H:%M:%S", o_gmtime($info[9]));
+       $infoText .= " modified=" . strftime($strftimeFormat, o_gmtime($info[9]));
      }
      if (defined $info[7]) {
        $infoText .= " size=$info[7]";
@@ -2728,8 +2730,8 @@ sub h_info {
     $thisInfo .= sprintf(" pgn=%d p/h=%d cmd=%d c/h=%d lines=%d l/h=%d", $pgnWriteCount, $pgnWriteCount / $hourTime, $cmdRunCount, $cmdRunCount / $hourTime, $lineCount, $lineCount / $hourTime);
     $thisInfo .= " sys=" . sys_info();
   }
-  $thisInfo .= sprintf(" last=%s", $lastPgnRefresh ? strftime("%Y-%m-%d %H:%M:%S", o_gmtime($lastPgnRefresh)) : "?");
-  $thisInfo .= sprintf(" now=%s uptime=%s", strftime("%Y-%m-%d %H:%M:%S", o_gmtime($startupTime + $secTime)), sec2time($secTime));
+  $thisInfo .= sprintf(" last=%s", $lastPgnRefresh ? strftime($strftimeFormat, o_gmtime($lastPgnRefresh)) : "?");
+  $thisInfo .= sprintf(" now=%s uptime=%s", strftime($strftimeFormat, o_gmtime($startupTime + $secTime)), sec2time($secTime));
   return $thisInfo;
 }
 
@@ -2865,7 +2867,7 @@ sub main_loop {
     if (($line) && ($line !~ /^$/)) {
       $line =~ s/[\r\n]*$//;
       $line =~ s/^[\r\n]*//;                                  # same length as " debug: ics command input: "
-      if ($verbosity >= 7) { print(strftime("%Y-%m-%d %H:%M:%S", o_gmtime()) . " output: ics comms output: $line\n"); }
+      if ($verbosity >= 7) { print(strftime($strftimeFormat, o_gmtime()) . " output: ics comms output: $line\n"); }
       process_line($line);
     }
 
