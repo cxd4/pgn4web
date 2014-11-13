@@ -1,5 +1,22 @@
 [Event "London league"]
 [Site "London ENG"]
+[Date "2014.11.12"]
+[Round "?"]
+[White "Casaschi, Paolo"]
+[Black "Ledger, Stephen"]
+[Result "1/2-1/2"]
+[ECO "B33"]
+[Opening "Sicilian"]
+[Variation "Pelikan, Chelyabinsk variation"]
+
+1. e4 c5 2. Nf3 Nc6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 e5 6. Ndb5 d6 7. Bg5 a6
+8. Na3 b5 9. Nd5 Be7 10. Bxf6 Bxf6 11. c3 O-O 12. Nc2 Bg5 13. a4 bxa4 14.
+Rxa4 a5 { D } 15. Be2 Rb8 16. b4 axb4 17. cxb4 Be6 18. b5 Ne7 { D } 19.
+Ncb4 Bd7 20. Nxe7+ Bxe7 { D } 21. Nc6 Bxc6 22. bxc6 Qb6 23. Ra6 Qb4+ 24.
+Qd2 Qb1+ 25. Qd1 Qb4+ 26. Qd2 1/2-1/2
+
+[Event "London league"]
+[Site "London ENG"]
 [Date "2014.10.22"]
 [Round "?"]
 [White "Johnstone, Mark"]
