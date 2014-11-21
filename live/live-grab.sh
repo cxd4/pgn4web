@@ -55,7 +55,7 @@ then
       echo "ERROR: missing awk"
    fi
 
-   pgn4web_scan=$(ps -U $USER -w -o pid,command | sed -e 's/\--no-shell-check\>/ /g' | awk 'BEGIN {c=0} $3=="live-grab.sh" {printf("pgn4web_pid[%d]=\"%s\";pgn4web_log[%d]=\"%s\".log;",c,$1,c,$5); c++}')
+   pgn4web_scan=$(ps -U $USER -w -o pid,command | sed -e 's/\--no-shell-check\>/ /g' | awk 'BEGIN {c=0} ($3=="live-grab.sh" && $4!="--check") {printf("pgn4web_pid[%d]=\"%s\";pgn4web_log[%d]=\"%s\".log;",c,$1,c,$5); c++}')
 
    eval $pgn4web_scan
 
