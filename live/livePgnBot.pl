@@ -80,7 +80,8 @@ sub o_gmtime {
   return gmtime(($t || time()) + $timeOffset);
 }
 
-our $strftimeFormat = "%Y.%m.%d.%H.%M.%S";
+our $timeFormatDiv = ".";
+our $strftimeFormat = "%Y" . $timeFormatDiv . "%m" . $timeFormatDiv . "%d" . $timeFormatDiv . "%H" . $timeFormatDiv . "%M" . $timeFormatDiv . "%S";
 
 sub simpleStringCrc {
   my ($s) = @_;
@@ -625,7 +626,7 @@ sub process_line {
     my $thisPM = $29; # PreviousMove
     my $thisGI = find_gameIndex($thisGN);
     if (($thisGI < 0) || (($thisW eq $games_white[$thisGI]) && ($thisB eq $games_black[$thisGI]))) {
-      $GAMES_timeLeft[$thisGN] = "{ White Time: " . sec2time($thisWC) . " Black Time: " . sec2time($thisBC) . " }";
+      $GAMES_timeLeft[$thisGN] = "{ White Time: " . sec2time($thisWC, ":") . " Black Time: " . sec2time($thisBC, ":") . " }";
       my $thisPlyNum;
       if ($thisNC eq "B") {
         $thisPlyNum = (2 * $thisNN) - 1;
@@ -892,7 +893,7 @@ sub time2sec {
 }
 
 sub sec2time {
-  my ($t) = @_;
+  my ($t, $div) = @_;
   my ($sec, $min, $hr, $day);
 
   if ($t =~ /^\d+$/) {
@@ -902,15 +903,15 @@ sub sec2time {
     $t = ($t - $min) / 60;
     $hr = $t % 24;
     if ($t < 24) {
-      return sprintf("%d.%02d.%02d", $hr, $min, $sec);
+      return sprintf("%d%s%02d%s%02d", $hr, $div, $min, $div, $sec);
     } else {
       $day = ($t - $hr) / 24;
-      return sprintf("%d.%02d.%02d.%02d", $day, $hr, $min, $sec);
+      return sprintf("%d%s%02d%s%02d%s%02d", $day, $div, $hr, $div, $min, $div, $sec);
     }
   } elsif ($t =~ /^-/) {
-    return "0.00.00";
+    return sprintf("%d%s%02d%s%02d", 0, $div, 0, $div, 0);
   } else {
-    log_terminal("error: sec2time($t)");
+    log_terminal("error: sec2time($t, $div)");
     return 0;
   }
 }
@@ -2731,7 +2732,7 @@ sub h_info {
     $thisInfo .= " sys=" . sys_info();
   }
   $thisInfo .= sprintf(" last=%s", $lastPgnRefresh ? strftime($strftimeFormat, o_gmtime($lastPgnRefresh)) : "?");
-  $thisInfo .= sprintf(" now=%s uptime=%s", strftime($strftimeFormat, o_gmtime($startupTime + $secTime)), sec2time($secTime));
+  $thisInfo .= sprintf(" now=%s uptime=%s", strftime($strftimeFormat, o_gmtime($startupTime + $secTime)), sec2time($secTime, $timeFormatDiv));
   return $thisInfo;
 }
 
