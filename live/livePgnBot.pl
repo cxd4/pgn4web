@@ -1608,7 +1608,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "archiveselect") {
-    if ($parameters =~ /^([^\[\]"]+|"")?$/) {
+    if ($parameters =~ /^([^\[\]]*)$/) {
       if ($parameters ne "") {
         eval {
           "test" =~ /$parameters/;
@@ -1626,7 +1626,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "autoprioritize") {
-    if ($parameters =~ /^([^\[\]"]+|"")?$/) {
+    if ($parameters =~ /^([^\[\]]*)$/) {
       if ($parameters ne "") {
         eval {
           "test" =~ /$parameters/;
@@ -1925,7 +1925,7 @@ sub process_master_command {
       tell_operator(detect_command_helptext($command));
     }
   } elsif ($command eq "ignore") {
-    if ($parameters =~ /^([^\[\]"]+|"")?$/) {
+    if ($parameters =~ /^([^\[\]]*)$/) {
       if ($parameters ne "") {
         eval {
           "test" =~ /$parameters/;
@@ -2287,7 +2287,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "memoryselect") {
-    if ($parameters =~ /^([^\[\]"]+|"")?$/) {
+    if ($parameters =~ /^([^\[\]]*)$/) {
       if ($parameters ne "") {
         eval {
           "test" =~ /$parameters/;
@@ -2352,7 +2352,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "prioritize") {
-    if ($parameters =~ /^([^\[\]"]+|"")?$/) {
+    if ($parameters =~ /^([^\[\]]*)$/) {
       if ($parameters ne "") {
         eval {
           "test" =~ /$parameters/;
