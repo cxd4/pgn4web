@@ -784,8 +784,10 @@ a.variation {
     }
 
     if (theObj = document.getElementById("GameEvent")) {
-      theObj.innerHTML += " &nbsp; &nbsp; " + gameRound[currentGame];
-      theObj.title = simpleHtmlentitiesDecode("event: " + gameEvent[currentGame] + (gameSite[currentGame] ? "\nsite: " + gameSite[currentGame] : "") + (gameDate[currentGame] ? "\ndate: " + gameDate[currentGame] : "") + (gameRound[currentGame] ? "\nround: " + gameRound[currentGame] : ""));
+      if (theObj.innerHTML == gameEvent[currentGame]) {
+        theObj.innerHTML += " &nbsp; &nbsp; " + gameRound[currentGame];
+        theObj.title = simpleHtmlentitiesDecode("event: " + gameEvent[currentGame] + (gameSite[currentGame] ? "\nsite: " + gameSite[currentGame] : "") + (gameDate[currentGame] ? "\ndate: " + gameDate[currentGame] : "") + (gameRound[currentGame] ? "\nround: " + gameRound[currentGame] : ""));
+      }
       if (refreshMinutes === 0) {
         var theOther = document.getElementById("GameDate");
         if (theOther) { theOther.title = theObj.title; }
