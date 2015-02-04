@@ -1,3 +1,21 @@
+[Event "Middlesex league"]
+[Site "London ENG"]
+[Date "2015.02.03"]
+[Round "?"]
+[White "Hill, Daniel"]
+[Black "Casaschi, Paolo"]
+[Result "1-0"]
+[ECO "C02"]
+[Opening "French"]
+[Variation "advance, Wade variation"]
+
+1. e4 e6 2. d4 d5 3. e5 c5 4. c3 Qb6 5. Nf3 Bd7 6. Be2 Bb5 7. c4 Bxc4 8.
+Bxc4 Qb4+ 9. Nbd2 dxc4 10. Qc2 Nc6 11. O-O cxd4 12. Nxc4 Qc5 13. b3 Nh6 14.
+Bxh6 gxh6 15. Qe4 Rd8 16. Rac1 Qd5 17. Qf4 Rg8 18. Rfd1 Be7 19. Ne3 { D }
+19... Qd7 20. Qxh6 Ba3 21. Qxh7 Bxc1 22. Qxg8+ Ke7 23. Qg5+ Ke8 24. Rxc1
+dxe3 25. Qxe3 Qe7 26. h4 Rd5 27. h5 Qf8 28. h6 Qh8 29. Qg5 Kf8 30. b4 a6
+31. a4 f6 32. Qg6 Rd7 33. exf6 Rh7 34. Ng5 Rxh6 35. Nxe6# 1-0
+
 [Event "London league"]
 [Site "London ENG"]
 [Date "2015.01.26"]
