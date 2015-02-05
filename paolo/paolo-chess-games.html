@@ -120,6 +120,28 @@ if (!pgn4web_engineWindowDisableAnalysisBoard) {
   boardShortcut("F8", "close/pause analysis board", function(t,e){ if (!e.shiftKey) { hideAnalysisBoard(); } });
 }
 
+
+function getSearchPgnExpressionFromLocalStorage() {
+  var se;
+  try { se = localStorage.getItem("pgn4web_paoloChessGames_lastSearchExpression"); }
+  catch(e) { se = ""; }
+  return se === null ? "" : se;
+}
+
+function setSearchPgnExpressionToLocalStorage(se) {
+  try { localStorage.setItem("pgn4web_paoloChessGames_lastSearchExpression", se); }
+  catch(e) { return false; }
+  return true;
+}
+
+lastSearchPgnExpression = getSearchPgnExpressionFromLocalStorage();
+
+window['defaultSearchPgnGame'] = window['searchPgnGame'];
+window['searchPgnGame'] = function(searchExpression, backward) {
+  defaultSearchPgnGame(searchExpression, backward);
+  setSearchPgnExpressionToLocalStorage(lastSearchPgnExpression);
+};
+
 </script>
 
 </head>
