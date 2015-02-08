@@ -456,7 +456,7 @@ sub remove_game {
     } else {
       $thisGameIndex = 0;
       my $foundNonPrioritizedGame = 0;
-      for (my $i=0; ($i<=$#games_num) && ($foundNonPrioritizedGame==0); $i++) {
+      for (my $i=$#games_num; ($i>=0) && ($foundNonPrioritizedGame==0); $i--) {
         if ((defined $games_num[$i]) && ($games_num[$i] ne "") && (headerForFilter($GAMES_event[$games_num[$i]], $GAMES_round[$games_num[$i]], $games_white[$i], $games_black[$i]) !~ /$prioritizeFilter/i)) {
           $thisGameIndex = $i;
           $foundNonPrioritizedGame = 1;
