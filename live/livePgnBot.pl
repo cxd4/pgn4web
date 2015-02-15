@@ -531,6 +531,7 @@ sub event_autocorrect {
     if ($@) { log_terminal("warning: event autocorrect failed"); }
     $event =~ s/\s+/ /g;
     $event =~ s/^\s|\s$//g;
+    if ($event eq "") { $event = "?"; }
     log_terminal("debug: event autocorrected: \"$oldEvent\" \"$event\"");
   }
   return $event;
@@ -545,6 +546,7 @@ sub round_autocorrect {
     if ($@) { log_terminal("warning: round autocorrect failed"); }
     $round =~ s/\s+/ /g;
     $round =~ s/^\s|\s$//g;
+    if ($round eq "") { $round = "?"; }
     log_terminal("debug: round autocorrected: \"$oldRound\" \"$round\"");
   }
   return $round;
@@ -1460,12 +1462,14 @@ sub log_rounds {
     unless ($_ ~~ @currentRounds) {
       log_terminal("info: event new: " . sprintf_eventRound($_));
       $roundsStartCount++;
-      if ($memoryAutopurgeEvent == 1) {
-        $thisEvent = $_;
-        $thisEvent =~ s/^"(.*)" ".*"$/$1/;
-        memory_purge_event($thisEvent);
-      } else {
-        memory_purge_round($_);
+      $thisEvent = $thisRound = $_;
+      $thisEvent =~ s/^"(.*)" ".*"$/$1/;
+      if (($thisEvent ne "") && ($thisEvent ne "?") && ($thisEvent ne "-")) {
+        if ($memoryAutopurgeEvent == 1) {
+          memory_purge_event($thisEvent);
+        } else {
+          memory_purge_round($thisRound);
+        }
       }
     }
   }
