@@ -924,11 +924,9 @@ sub autoprioritize_add_event {
   (my $autorelayEventFilter = $thisEvent) =~ s/[^\w\s-]/./g;
   $autorelayEventFilter = "\"" . $autorelayEventFilter . "\"";
   if ($autoPrioritizeFilter !~ /(\||^)$autorelayEventFilter(\||$)/) {
-    if ($autoPrioritizeFilter eq "") {
-      $autoPrioritizeFilter = $autorelayEventFilter;
-    } else {
-      $autoPrioritizeFilter .= "|" . $autorelayEventFilter;
-    }
+    my @autoPrioritizeFilterArray = split("\\|", $autoPrioritizeFilter);
+    push(@autoPrioritizeFilterArray, $autorelayEventFilter);
+    $autoPrioritizeFilter = join("|", sort(@autoPrioritizeFilterArray));
   }
 }
 
