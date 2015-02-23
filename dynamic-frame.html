@@ -520,6 +520,7 @@ function fillGameList(force) {
         thisResult = gameResult[thisNum];
         if (thisResult == "1/2-1/2") { thisResult = "1/2"; }
         else if (thisResult.length > 3) { thisResult = "?"; }
+        else if (thisResult == "*") { thisResult = "&lowast;"; }
         text += "<td align='center' class='gameListBodyItemsResultCell'><div class='gameListBodyItemsResult'>" + thisResult + "</div></td>";
         text += "<td>" + gameEvent[thisNum] + (gameRound[thisNum] ? " &nbsp;&nbsp;-&nbsp;&nbsp; " : "") + gameRound[thisNum] + ((gameEvent[thisNum] + gameRound[thisNum]) ? " &nbsp;&nbsp;" : "") + "</td>";
         text += "</tr>";
