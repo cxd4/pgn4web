@@ -420,7 +420,9 @@ function myOnResize() {
   }
   myInsertRule(sheet, ".gameLiveStatusExtraInfoLeft", horizontalLayout ? "display: none;" : "");
   myInsertRule(sheet, ".showGameListLink", "padding-right: " + squareSize + "px; padding-left: " + (horizontalLayout ? 0 : squareSize) + "px;");
-  var gameListFontSize = Math.floor(Math.min((ww - framePadding * 2) / 30, (wh - framePadding * 2) / 24));
+  var gameListFontHorizontalRatio = 28;
+  var gameListFontVerticalRatio = 24;
+  var gameListFontSize = Math.floor(Math.min((ww - framePadding * 2) / gameListFontHorizontalRatio, (wh - framePadding * 2) / gameListFontVerticalRatio));
   gameListLineHeight = Math.floor(1.9 * gameListFontSize);
   var gameListPadding = Math.floor(gameListLineHeight / 2);
   gameListBodyHeight = gameListLineHeight * Math.floor((wh - 2 * framePadding - gameListLineHeight - 2.5 * gameListPadding) / gameListLineHeight) + 1;
@@ -428,10 +430,13 @@ function myOnResize() {
   myInsertRule(sheet, ".gameListHeader", "overflow: hidden; width: " + (ww - 2 * framePadding) + "px; padding-top: " + gameListPadding + "px; padding-bottom: " + gameListPadding + "px;");
   myInsertRule(sheet, ".gameListBody", "height: " + gameListBodyHeight + "px; width: " + (ww - 2 * framePadding) + "px; overflow-x: hidden; overflow-y: auto; scrollbar-base-color: #" + backgroundColorHex + "; -webkit-overflow-scrolling: touch; overflow-scrolling: touch;");
   myInsertRule(sheet, ".gameListBodyItems", "min-height: " + gameListBodyHeight + "px; min-width: " + (ww - 2 * framePadding) + "px;");
-  myInsertRule(sheet, ".gameListBodyItemsNum", "margin-left:2ex;");
-  myInsertRule(sheet, ".gameListBodyItemsNumdot", "overflow: hidden; width: 2ex;");
-  myInsertRule(sheet, ".gameListBodyItemsPlayer", "overflow: hidden; width: 15ex; margin-left:2ex; margin-right:2ex;");
-  myInsertRule(sheet, ".gameListBodyItemsResult", "overflow: hidden; width: 4ex; margin-left:2ex; margin-right:4ex;");
+  var gameListMarginSpacing = Math.floor((gameListFontSize * gameListFontHorizontalRatio) * (7 / 32) / 8);
+  var gameListPlayerSpacing = Math.floor((gameListFontSize * gameListFontHorizontalRatio) * (9 / 32));
+  myInsertRule(sheet, ".gameListBodyItemsNum", "margin-left:" + gameListMarginSpacing + "px;");
+  myInsertRule(sheet, ".gameListBodyItemsNumdot", "overflow: hidden; width:" + gameListMarginSpacing + "px;");
+  myInsertRule(sheet, ".gameListBodyItemsPlayer", "overflow: hidden; width: " + gameListPlayerSpacing + "px; margin-left:" + gameListMarginSpacing + "px; margin-right:" + gameListMarginSpacing + "px;");
+  myInsertRule(sheet, ".gameListBodyItemsResult", "overflow: hidden; width: 4ex; margin-left:" + gameListMarginSpacing + "px; margin-right:" + gameListMarginSpacing + "px;");
+  myInsertRule(sheet, ".gameListBodyItemsEventRound", "margin-left:" + gameListMarginSpacing + "px; margin-right:" + gameListMarginSpacing + "px;");
 
   for (var ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
 
@@ -517,7 +522,9 @@ function fillGameList(force) {
         else if (thisResult.length > 3) { thisResult = "?"; }
         else if (thisResult == "*") { thisResult = "&lowast;"; }
         text += "<td align='center'><div class='gameListBodyItemsResult'>" + thisResult + "</div></td>";
-        text += "<td>" + gameEvent[thisNum] + (gameRound[thisNum] ? " &nbsp;&nbsp;-&nbsp;&nbsp; " : "") + gameRound[thisNum] + ((gameEvent[thisNum] + gameRound[thisNum]) ? " &nbsp;&nbsp;" : "") + "</td>";
+        if (gameEvent[thisNum] || gameRound[thisNum]) {
+          text += "<td><div class='gameListBodyItemsEventRound'>" + gameEvent[thisNum] + ((gameEvent[thisNum] && gameRound[thisNum]) ? " &nbsp;&nbsp;-&nbsp;&nbsp; " : "") + gameRound[thisNum] + "</div></td>";
+        }
         text += "</tr>";
       }
       text += "</table>";
