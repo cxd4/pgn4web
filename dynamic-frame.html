@@ -433,9 +433,9 @@ function myOnResize() {
   var gameListMarginSpacing = Math.floor((gameListFontSize * gameListFontHorizontalRatio) * (7 / 32) / 8);
   var gameListPlayerSpacing = Math.floor((gameListFontSize * gameListFontHorizontalRatio) * (9 / 32));
   myInsertRule(sheet, ".gameListBodyItemsNum", "margin-left: " + gameListMarginSpacing + "px;");
-  myInsertRule(sheet, ".gameListBodyItemsNumdot", "overflow: hidden; width: " + gameListMarginSpacing + "px;");
+  myInsertRule(sheet, ".gameListBodyItemsNumdot", "min-width: " + gameListMarginSpacing + "px;");
   myInsertRule(sheet, ".gameListBodyItemsPlayer", "overflow: hidden; width: " + gameListPlayerSpacing + "px; margin-left: " + gameListMarginSpacing + "px; margin-right: " + gameListMarginSpacing + "px;");
-  myInsertRule(sheet, ".gameListBodyItemsResult", "overflow: hidden; width: 4ex; margin-left: " + gameListMarginSpacing + "px; margin-right: " + gameListMarginSpacing + "px;");
+  myInsertRule(sheet, ".gameListBodyItemsResult", "min-width: 4ex; margin-left: " + gameListMarginSpacing + "px; margin-right: " + gameListMarginSpacing + "px;");
   myInsertRule(sheet, ".gameListBodyItemsEventRound", "margin-left: " + gameListMarginSpacing + "px; margin-right: " + gameListMarginSpacing + "px;");
 
   for (var ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
