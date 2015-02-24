@@ -428,15 +428,10 @@ function myOnResize() {
   myInsertRule(sheet, ".gameListHeader", "overflow: hidden; width: " + (ww - 2 * framePadding) + "px; padding-top: " + gameListPadding + "px; padding-bottom: " + gameListPadding + "px;");
   myInsertRule(sheet, ".gameListBody", "height: " + gameListBodyHeight + "px; width: " + (ww - 2 * framePadding) + "px; overflow-x: hidden; overflow-y: auto; scrollbar-base-color: #" + backgroundColorHex + "; -webkit-overflow-scrolling: touch; overflow-scrolling: touch;");
   myInsertRule(sheet, ".gameListBodyItems", "min-height: " + gameListBodyHeight + "px; min-width: " + (ww - 2 * framePadding) + "px;");
-  var numLogPlus = Math.floor(Math.log(numberOfGames) / Math.LN10) + 2;
-  myInsertRule(sheet, ".gameListBodyItemsNum", "overflow: hidden; width: " + numLogPlus + "ex; margin-left:1ex;");
-  myInsertRule(sheet, ".gameListBodyItemsNumCell", "width: " + (numLogPlus + 1) + "ex;");
-  myInsertRule(sheet, ".gameListBodyItemsNumdot", "overflow: hidden; width: 1ex;");
-  myInsertRule(sheet, ".gameListBodyItemsNumdotCell", "width: 1ex;");
+  myInsertRule(sheet, ".gameListBodyItemsNum", "margin-left:2ex;");
+  myInsertRule(sheet, ".gameListBodyItemsNumdot", "overflow: hidden; width: 2ex;");
   myInsertRule(sheet, ".gameListBodyItemsPlayer", "overflow: hidden; width: 15ex; margin-left:2ex; margin-right:2ex;");
-  myInsertRule(sheet, ".gameListBodyItemsPlayerCell", "width: 16ex;");
-  myInsertRule(sheet, ".gameListBodyItemsResult", "overflow: hidden; width: 4ex; margin-right:4ex;");
-  myInsertRule(sheet, ".gameListBodyItemsResultCell", "width: 7ex;");
+  myInsertRule(sheet, ".gameListBodyItemsResult", "overflow: hidden; width: 4ex; margin-left:2ex; margin-right:4ex;");
 
   for (var ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
 
@@ -487,20 +482,20 @@ function fillGameList(force) {
     if (theObj = document.getElementById("GameListHeader")) {
       text = "";
       text += "<table width='100%' cellspacing='0' cellpadding='0' border='0'><tr>";
-      text += "<td width='15%' align='center'><a href='javascript:void(0);' onclick='selectGameList(-1);' title='back to chessboard'>&nbsp; &crarr; &nbsp;</a></td>";
-      text += "<td width='14%' align='center'><a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = 0; theObj.scrollLeft = 0; } this.blur();' title='scroll to first page'>&nbsp; &lt;&lt; &nbsp;</a></td>";
+      text += "<td width='14%' align='center'><a href='javascript:void(0);' onclick='selectGameList(-1);' title='back to chessboard'>&nbsp; &crarr; &nbsp;</a></td>";
+      text += "<td width='15%' align='center'><a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = 0; theObj.scrollLeft = 0; } this.blur();' title='scroll to first page'>&nbsp; &lt;&lt; &nbsp;</a></td>";
       text += "<td width='14%' align='center'><a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (Math.ceil(theObj.scrollTop / gameListLineHeight) - Math.floor(gameListBodyHeight / gameListLineHeight)); theObj.scrollLeft = 0; } this.blur();' title='scroll to previous page'>&nbsp; &lt; &nbsp;</a></td>";
       text += "<td width='14%' align='center'><a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (currentGame ? currentGame - 1 : 0); theObj.scrollLeft = 0; } this.blur();' title='scroll to current game'>&nbsp; &middot; &nbsp;</a></td>";
       text += "<td width='14%' align='center'><a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (Math.ceil(theObj.scrollTop / gameListLineHeight) + Math.floor(gameListBodyHeight / gameListLineHeight)); theObj.scrollLeft = 0; } this.blur();' title='scroll to next page'>&nbsp; &gt; &nbsp;</a></td>";
-      text += "<td width='14%' align='center'><a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = theObj.scrollHeight; theObj.scrollLeft = 0; } this.blur();' title='scroll to last page'>&nbsp; &gt;&gt; &nbsp;</a></td>";
-      text += "<td width='15%' align='center'><a href='javascript:void(0);' onclick='toggleGameListHorizontalScroll(); this.blur();' title='horizontal scroll'>&nbsp; &middot; &nbsp;</a></td>";
+      text += "<td width='15%' align='center'><a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = theObj.scrollHeight; theObj.scrollLeft = 0; } this.blur();' title='scroll to last page'>&nbsp; &gt;&gt; &nbsp;</a></td>";
+      text += "<td width='14%' align='center'><a href='javascript:void(0);' onclick='toggleGameListHorizontalScroll(); this.blur();' title='horizontal scroll'>&nbsp; &middot; &nbsp;</a></td>";
       text += "<tr></table>";
       theObj.innerHTML = text;
     }
     if (theObj = document.getElementById("GameListBodyItems")) {
       var thisNum, thisResult, thisGameTitle1, thisGameTitle2;
       text = "";
-      text += "<table style='min-width:100%;' cellspacing='0' cellpadding='0' border='0'>";
+      text += "<table cellspacing='0' cellpadding='0' border='0'>";
       for (thisNum = 0; thisNum < numberOfGames; thisNum++) {
         thisGameTitle1 = gameWhite[thisNum] || "";
         thisGameTitle1 += (thisGameTitle1 && gameBlack[thisNum]) ? "    " : "";
@@ -513,19 +508,19 @@ function fillGameList(force) {
         thisGameTitle2 += gameRound[thisNum] || "";
         if (thisGameTitle2) { thisGameTitle2 = " " + thisGameTitle2 + " "; }
         text += "<tr href='javascript:void(0);' onclick='selectGameList(" + thisNum + ");' title='" + thisGameTitle1 + (thisGameTitle1 && thisGameTitle2 ? "\n" : "") + thisGameTitle2 + "'>";
-        text += "<td align='right' class='gameListBodyItemsNumCell'><div class='gameListBodyItemsNum'>" + (thisNum + 1) + "</div></td>";
-        text += "<td class='gameListBodyItemsNumdotCell'><div class='gameListBodyItemsNumdot'>" + (thisNum === currentGame ? "." : "") + "</div></td>";
-        text += "<td class='gameListBodyItemsPlayerCell'><div class='gameListBodyItemsPlayer'>" + gameWhite[thisNum] + "</div></td>";
-        text += "<td class='gameListBodyItemsPlayerCell'><div class='gameListBodyItemsPlayer'>" + gameBlack[thisNum] + "</div></td>";
+        text += "<td align='right'><div class='gameListBodyItemsNum'>" + (thisNum + 1) + "</div></td>";
+        text += "<td><div class='gameListBodyItemsNumdot'>" + (thisNum === currentGame ? "." : "") + "</div></td>";
+        text += "<td><div class='gameListBodyItemsPlayer'>" + gameWhite[thisNum] + "</div></td>";
+        text += "<td><div class='gameListBodyItemsPlayer'>" + gameBlack[thisNum] + "</div></td>";
         thisResult = gameResult[thisNum];
         if (thisResult == "1/2-1/2") { thisResult = "1/2"; }
         else if (thisResult.length > 3) { thisResult = "?"; }
         else if (thisResult == "*") { thisResult = "&lowast;"; }
-        text += "<td align='center' class='gameListBodyItemsResultCell'><div class='gameListBodyItemsResult'>" + thisResult + "</div></td>";
+        text += "<td align='center'><div class='gameListBodyItemsResult'>" + thisResult + "</div></td>";
         text += "<td>" + gameEvent[thisNum] + (gameRound[thisNum] ? " &nbsp;&nbsp;-&nbsp;&nbsp; " : "") + gameRound[thisNum] + ((gameEvent[thisNum] + gameRound[thisNum]) ? " &nbsp;&nbsp;" : "") + "</td>";
         text += "</tr>";
-        text += "</tr>";
       }
+      text += "</table>";
       theObj.innerHTML = text;
     }
   }
