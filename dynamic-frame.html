@@ -394,11 +394,11 @@ function myOnResize() {
     if (horizontalLayout) { myInsertRule(sheet, ".boardTable", "float: left;" + (horizontalCentered ? " margin-top: " + Math.floor((wh - 2 * framePadding - 8 * squareSize) / 2) + "px;" : "")); }
     else { myInsertRule(sheet, ".boardTable", "margin-left: " + Math.floor((ww - 2 * framePadding - 8 * squareSize) / 2) + "px;"); }
   }
-  myInsertRule(sheet, ".pieceImage", "width:" + pieceSize + "px; height:" + pieceSize + "px;");
-  myInsertRule(sheet, ".whiteSquare", "width:" + bareSquareSize + "px; height:" + bareSquareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + lightColorHex + "; border-color: #" + lightColorHex + ";");
-  myInsertRule(sheet, ".blackSquare", "width:" + bareSquareSize + "px; height:" + bareSquareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + darkColorHex + "; border-color: #" + darkColorHex + ";");
-  myInsertRule(sheet, ".highlightWhiteSquare", "width:" + bareSquareSize + "px; height:" + bareSquareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + lightColorHex + "; border-color: #" + (highlightColorHex ? highlightColorHex : lightColorHex) + ";");
-  myInsertRule(sheet, ".highlightBlackSquare", "width:" + bareSquareSize + "px; height:" + bareSquareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + darkColorHex + "; border-color: #" + (highlightColorHex ? highlightColorHex : darkColorHex) + ";");
+  myInsertRule(sheet, ".pieceImage", "width: " + pieceSize + "px; height: " + pieceSize + "px;");
+  myInsertRule(sheet, ".whiteSquare", "width: " + bareSquareSize + "px; height: " + bareSquareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + lightColorHex + "; border-color: #" + lightColorHex + ";");
+  myInsertRule(sheet, ".blackSquare", "width: " + bareSquareSize + "px; height: " + bareSquareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + darkColorHex + "; border-color: #" + darkColorHex + ";");
+  myInsertRule(sheet, ".highlightWhiteSquare", "width: " + bareSquareSize + "px; height: " + bareSquareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + lightColorHex + "; border-color: #" + (highlightColorHex ? highlightColorHex : lightColorHex) + ";");
+  myInsertRule(sheet, ".highlightBlackSquare", "width: " + bareSquareSize + "px; height: " + bareSquareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + darkColorHex + "; border-color: #" + (highlightColorHex ? highlightColorHex : darkColorHex) + ";");
   myInsertRule(sheet, ".headerContainer", "width: " + headerContainerWidth + "px; white-space: nowrap; overflow: hidden;" + (horizontalLayout ? " float: right; text-align: left;" + (horizontalCentered ? " margin-top: " + Math.floor((wh - 2 * framePadding - 8 * squareSize) / 2) + "px;" : "") : " text-align: center;"));
   if (LiveBroadcastDelay > 0) {
     myInsertRule(sheet, ".gameButtons", "display: none;");
@@ -411,7 +411,7 @@ function myOnResize() {
     myInsertRule(sheet, ".buttonControlStop", buttonCss);
     myInsertRule(sheet, ".buttonControlSpace", "margin: 0px; padding: 0px; width: " + Math.floor(lineHeight / 4) + "px !important;");
   }
-  myInsertRule(sheet, ".colorFlag", "height: " + Math.floor(0.45 * fontSize) + "px; width: " + Math.floor(0.45 * fontSize) + "px; border-width: 1px; border-color: #" + fontColorHex + "; border-style: solid; margin-bottom: " + Math.floor(0.1 * fontSize) + "px; margin-left: " + Math.floor(5 * lineHeight / 9) + "px; margin-right:" + Math.floor(5 * lineHeight / 9) + "px;");
+  myInsertRule(sheet, ".colorFlag", "height: " + Math.floor(0.45 * fontSize) + "px; width: " + Math.floor(0.45 * fontSize) + "px; border-width: 1px; border-color: #" + fontColorHex + "; border-style: solid; margin-bottom: " + Math.floor(0.1 * fontSize) + "px; margin-left: " + Math.floor(5 * lineHeight / 9) + "px; margin-right: " + Math.floor(5 * lineHeight / 9) + "px;");
   myInsertRule(sheet, ".leftRightSpacing", "margin-left: " + Math.floor(lineHeight / 2) + "px; margin-right: " + Math.floor(lineHeight / 2) + "px;");
   if (!horizontalLayout) {
     var variableSpacerLineHeight = Math.floor(Math.min((wh - framePadding * 2 - squareSize * 8 - lineHeight * 11) / 6, lineHeight / 2));
@@ -432,11 +432,11 @@ function myOnResize() {
   myInsertRule(sheet, ".gameListBodyItems", "min-height: " + gameListBodyHeight + "px; min-width: " + (ww - 2 * framePadding) + "px;");
   var gameListMarginSpacing = Math.floor((gameListFontSize * gameListFontHorizontalRatio) * (7 / 32) / 8);
   var gameListPlayerSpacing = Math.floor((gameListFontSize * gameListFontHorizontalRatio) * (9 / 32));
-  myInsertRule(sheet, ".gameListBodyItemsNum", "margin-left:" + gameListMarginSpacing + "px;");
-  myInsertRule(sheet, ".gameListBodyItemsNumdot", "overflow: hidden; width:" + gameListMarginSpacing + "px;");
-  myInsertRule(sheet, ".gameListBodyItemsPlayer", "overflow: hidden; width: " + gameListPlayerSpacing + "px; margin-left:" + gameListMarginSpacing + "px; margin-right:" + gameListMarginSpacing + "px;");
-  myInsertRule(sheet, ".gameListBodyItemsResult", "overflow: hidden; width: 4ex; margin-left:" + gameListMarginSpacing + "px; margin-right:" + gameListMarginSpacing + "px;");
-  myInsertRule(sheet, ".gameListBodyItemsEventRound", "margin-left:" + gameListMarginSpacing + "px; margin-right:" + gameListMarginSpacing + "px;");
+  myInsertRule(sheet, ".gameListBodyItemsNum", "margin-left: " + gameListMarginSpacing + "px;");
+  myInsertRule(sheet, ".gameListBodyItemsNumdot", "overflow: hidden; width: " + gameListMarginSpacing + "px;");
+  myInsertRule(sheet, ".gameListBodyItemsPlayer", "overflow: hidden; width: " + gameListPlayerSpacing + "px; margin-left: " + gameListMarginSpacing + "px; margin-right: " + gameListMarginSpacing + "px;");
+  myInsertRule(sheet, ".gameListBodyItemsResult", "overflow: hidden; width: 4ex; margin-left: " + gameListMarginSpacing + "px; margin-right: " + gameListMarginSpacing + "px;");
+  myInsertRule(sheet, ".gameListBodyItemsEventRound", "margin-left: " + gameListMarginSpacing + "px; margin-right: " + gameListMarginSpacing + "px;");
 
   for (var ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
 
