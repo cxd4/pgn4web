@@ -517,10 +517,14 @@ function fillGameList(force) {
         text += "<td><div class='gameListBodyItemsNumdot'>" + (thisNum === currentGame ? "." : "") + "</div></td>";
         text += "<td><div class='gameListBodyItemsPlayer'>" + gameWhite[thisNum] + "</div></td>";
         text += "<td><div class='gameListBodyItemsPlayer'>" + gameBlack[thisNum] + "</div></td>";
-        thisResult = gameResult[thisNum];
-        if (thisResult == "1/2-1/2") { thisResult = "1/2"; }
-        else if (thisResult.length > 3) { thisResult = "?"; }
-        else if (thisResult == "*") { thisResult = "&lowast;"; }
+        if ((gameWhite[thisNum] !== "") || (gameBlack[thisNum] !== "") || (gameResult[thisNum] != "*")) {
+          thisResult = gameResult[thisNum];
+          if (thisResult == "1/2-1/2") { thisResult = "1/2"; }
+          else if (thisResult.length > 3) { thisResult = "?"; }
+          else if (thisResult == "*") { thisResult = "&lowast;"; }
+        } else {
+          thisResult = "";
+        }
         text += "<td align='center'><div class='gameListBodyItemsResult'>" + thisResult + "</div></td>";
         if (gameEvent[thisNum] || gameRound[thisNum]) {
           text += "<td><div class='gameListBodyItemsEventRound'>" + gameEvent[thisNum] + ((gameEvent[thisNum] && gameRound[thisNum]) ? " &nbsp;&nbsp;-&nbsp;&nbsp; " : "") + gameRound[thisNum] + "</div></td>";
