@@ -488,11 +488,11 @@ function fillGameList(force) {
       text = "";
       text += "<table width='100%' cellspacing='0' cellpadding='0' border='0'><tr>";
       text += "<td width='14%' align='center'><a href='javascript:void(0);' onclick='selectGameList(-1);' title='back to chessboard'>&nbsp; &crarr; &nbsp;</a></td>";
-      text += "<td width='15%' align='center'><a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = 0; theObj.scrollLeft = 0; } this.blur();' title='scroll to first page'>&nbsp; &lt;&lt; &nbsp;</a></td>";
-      text += "<td width='14%' align='center'><a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (Math.ceil(theObj.scrollTop / gameListLineHeight) - Math.floor(gameListBodyHeight / gameListLineHeight)); theObj.scrollLeft = 0; } this.blur();' title='scroll to previous page'>&nbsp; &lt; &nbsp;</a></td>";
-      text += "<td width='14%' align='center'><a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (currentGame ? currentGame - 1 : 0); theObj.scrollLeft = 0; } this.blur();' title='scroll to current game'>&nbsp; &middot; &nbsp;</a></td>";
-      text += "<td width='14%' align='center'><a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = gameListLineHeight * (Math.ceil(theObj.scrollTop / gameListLineHeight) + Math.floor(gameListBodyHeight / gameListLineHeight)); theObj.scrollLeft = 0; } this.blur();' title='scroll to next page'>&nbsp; &gt; &nbsp;</a></td>";
-      text += "<td width='15%' align='center'><a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { theObj.scrollTop = theObj.scrollHeight; theObj.scrollLeft = 0; } this.blur();' title='scroll to last page'>&nbsp; &gt;&gt; &nbsp;</a></td>";
+      text += "<td width='15%' align='center'><a href='javascript:void(0);' onclick='autoscrollGameListBody(0); this.blur();' title='scroll to first page'>&nbsp; &lt;&lt; &nbsp;</a></td>";
+      text += "<td width='14%' align='center'><a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { autoscrollGameListBody(Math.ceil(theObj.scrollTop / gameListLineHeight) - Math.floor(gameListBodyHeight / gameListLineHeight)); } this.blur();' title='scroll to previous page'>&nbsp; &lt; &nbsp;</a></td>";
+      text += "<td width='14%' align='center'><a href='javascript:void(0);' onclick='autoscrollGameListBody(currentGame - 1); this.blur();' title='scroll to current game'>&nbsp; &middot; &nbsp;</a></td>";
+      text += "<td width='14%' align='center'><a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { autoscrollGameListBody(Math.floor(theObj.scrollTop / gameListLineHeight) + Math.floor(gameListBodyHeight / gameListLineHeight)); } this.blur();' title='scroll to next page'>&nbsp; &gt; &nbsp;</a></td>";
+      text += "<td width='15%' align='center'><a href='javascript:void(0);' onclick='autoscrollGameListBody(numberOfGames); this.blur();' title='scroll to last page'>&nbsp; &gt;&gt; &nbsp;</a></td>";
       text += "<td width='14%' align='center'><a href='javascript:void(0);' onclick='toggleGameListHorizontalScroll(); this.blur();' title='horizontal scroll'>&nbsp; &middot; &nbsp;</a></td>";
       text += "<tr></table>";
       theObj.innerHTML = text;
@@ -535,8 +535,14 @@ function fillGameList(force) {
       theObj.innerHTML = text;
     }
   }
-  if (force && (theObj = document.getElementById("GameListBody"))) {
-    setTimeout("document.getElementById('GameListBody').scrollTop = (currentGame -  1) * gameListLineHeight; document.getElementById('GameListBody').scrollLeft = 0;", 111);
+  if (force) { setTimeout("autoscrollGameListBody(currentGame - 1);", 111); }
+}
+
+function autoscrollGameListBody(thisGame) {
+  var theObj = document.getElementById("GameListBody");
+  if (theObj) {
+    theObj.scrollLeft = 0;
+    theObj.scrollTop = thisGame * gameListLineHeight;
   }
 }
 
@@ -838,11 +844,7 @@ simpleAddEvent(window, "orientationchange", function() {
     clearTimeout(lastOrientationTimeout);
     if ((theObj = document.getElementById("GameList")) && (theObj.style.display)) { selectGameList(-1); }
     lastOrientationTimeoutString += " refreshPgnSource();";
-  } else {
-    if (theObj = document.getElementById("GameListBody")) {
-      setTimeout("document.getElementById('GameListBody').scrollTop = (currentGame -  1) * gameListLineHeight; document.getElementById('GameListBody').scrollLeft = 0;", 111);
-    }
-  }
+  } else { autoscrollGameListBody(currentGame - 1); }
   lastOrientationTimeout = setTimeout(lastOrientationTimeoutString, 1800);
   lastOrientation = window.orientation;
 });
