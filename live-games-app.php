@@ -251,14 +251,8 @@ if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
 
 
-$text = 'if (force && !window.navigator.standalone) { setTimeout("autoscrollGameListBody(currentGame - 1);", 111); } // cope with iOS bug';
-$oldText = 'if (force) { setTimeout("autoscrollGameListBody(currentGame - 1);", 111); }';
-$actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
-$html = str_replace($oldText, $text, $html);
-
-$text = '} else { if (!window.navigator.standalone) { autoscrollGameListBody(currentGame - 1); } } // cope with iOS bug';
-$oldText = '} else { autoscrollGameListBody(currentGame - 1); }';
+$text = 'if (!window.navigator.standalone || numberOfGames <= 32) { setTimeout("autoscrollGameListBody(currentGame - 1);", 111); } // cope with iOS bug';
+$oldText = 'setTimeout("autoscrollGameListBody(currentGame - 1);", 111);';
 $actionNum += 1;
 if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);

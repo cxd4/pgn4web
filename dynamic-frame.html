@@ -535,7 +535,9 @@ function fillGameList(force) {
       theObj.innerHTML = text;
     }
   }
-  if (force) { setTimeout("autoscrollGameListBody(currentGame - 1);", 111); }
+  if (force) {
+    setTimeout("autoscrollGameListBody(currentGame - 1);", 111);
+  }
 }
 
 function autoscrollGameListBody(thisGame) {
@@ -844,7 +846,9 @@ simpleAddEvent(window, "orientationchange", function() {
     clearTimeout(lastOrientationTimeout);
     if ((theObj = document.getElementById("GameList")) && (theObj.style.display)) { selectGameList(-1); }
     lastOrientationTimeoutString += " refreshPgnSource();";
-  } else { autoscrollGameListBody(currentGame - 1); }
+  } else {
+    setTimeout("autoscrollGameListBody(currentGame - 1);", 111);
+  }
   lastOrientationTimeout = setTimeout(lastOrientationTimeoutString, 1800);
   lastOrientation = window.orientation;
 });
