@@ -1,3 +1,22 @@
+[Event "London league"]
+[Site "London ENG"]
+[Date "2015.02.25"]
+[Round "?"]
+[White "Emms, John"]
+[Black "Casaschi, Paolo"]
+[Result "1-0"]
+[ECO "C06"]
+[Opening "French"]
+[Variation "Tarrasch, closed variation, main line"]
+
+1. e4 e6 2. d4 d5 3. Nd2 Nf6 4. Bd3 c5 5. e5 Nfd7 6. c3 Nc6 7. Ne2 cxd4 8.
+cxd4 f6 9. exf6 Nxf6 10. Nf3 Bd6 11. O-O Qc7 12. Bd2 O-O 13. Rc1 Qb6 14.
+Bc3 Bd7 15. Ng3 { D } 15... Bf4 16. Rc2 Nb4 17. Bxb4 Qxb4 18. Ne5 Ba4 19.
+b3 Be8 20. Re1 Qb6 21. Rce2 Rc8 22. Rc2 Rd8 23. Qa1 a6 24. Qb2 Qa5 25. b4
+Qb6 26. Ne2 Bh6 27. Ng3 Bf4 28. a3 Ba4 29. Rc5 { D } 29... Nd7 30. Nxd7 { D
+} 30... Bxd7 31. Qc2 h6 32. Qd1 Bxg3 33. hxg3 Qd6 34. Bb1 Rf6 35. Qd3 Be8
+36. Qh7+ Kf7 37. Rec1 Bd7 1-0
+
 [Event "Middlesex league"]
 [Site "London ENG"]
 [Date "2015.02.03"]
