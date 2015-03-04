@@ -7,7 +7,7 @@
 
 "use strict";
 
-var pgn4web_version = '2.90';
+var pgn4web_version = '2.90+';
 
 var pgn4web_project_url = "http://pgn4web.casaschi.net";
 var pgn4web_project_author = "Paolo Casaschi";
