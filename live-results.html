@@ -128,6 +128,7 @@ h1.pageHeader {
   font-weight: normal;
   margin-top: 0px;
   margin-bottom: 0px;
+  cursor: pointer;
 }
 
 .secondTeam, .secondTeamPlayer {
@@ -230,6 +231,7 @@ h1.pageHeader {
 .pieceImage {
   width: 32px; /* defined as pieceImage.width < whiteSquare.bareWidth */
   height: 32px; /* = pieceImage.width */
+  cursor: pointer;
 }
 
 .whiteSquare,
@@ -336,6 +338,7 @@ a.variation {
 
 .gameDateAdjusted {
   width: 80px; /* = 2 * whiteSquare.width */
+  cursor: pointer;
 }
 
 .gameLiveStatus {
@@ -348,6 +351,7 @@ a.variation {
   width: 80px; /* = 2 * whiteSquare.width */
   text-decoration: none;
   color: black;
+  cursor: pointer;
 }
 
 .gameWhiteClock, .gameBlackClock {
@@ -380,6 +384,7 @@ a.variation {
 
 .gameResult {
   text-align: right;
+  cursor: pointer;
 }
 
 .gameText {
@@ -1006,11 +1011,11 @@ a.variation {
 </div>
 </td><td align="left">
 <div class="gameBoardContainer" id="GameBoardContainer">
-<div class="header"><span class="gameEvent" id="GameEvent">&nbsp;</span><span class="gameLiveStatus"><span style="display: none;" id="GameDate"></span><span id="GameLiveStatus"></span></span></div>
-<div class="header"><a class="gameWhite" id="GameWhite" title="white player" href="javascript:void(0);" onclick="openFidePlayerUrl(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();"></a><span class="gameWhiteClock" id="GameWhiteClock" title="white clock"></span><span class="gameBlackClock" id="GameBlackClock" title="black clock"></span><a class="gameBlack" id="GameBlack" title="black player" href="javascript:void(0);" onclick="openFidePlayerUrl(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();"></a></div>
+<div class="header"><span class="gameEvent" id="GameEvent">&nbsp;</span><span class="gameLiveStatus"><span style="display: none;" id="GameDate"></span><span id="GameLiveStatus" style="cursor:pointer;"></span></span></div>
+<div class="header"><span class="gameWhite" id="GameWhite" title="white player" onclick="openFidePlayerUrl(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();"></span><span class="gameWhiteClock" id="GameWhiteClock" title="white clock"></span><span class="gameBlackClock" id="GameBlackClock" title="black clock"></span><span class="gameBlack" id="GameBlack" title="black player" onclick="openFidePlayerUrl(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();"></span></div>
 <div class="gameBoard" id="GameBoard"></div>
-<div class="footer"><span class="gameSideToMove"><span class="sideToMove sideToMoveHidden" id="SideToMove" title="side to move"></span>&nbsp;</span><span class="gameText">&nbsp;<a id="GamePrevMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly - 1); this.blur();" title="previous moves"></a><a href="javascript:void(0);" onclick="SetHighlight(!highlightOption); this.blur();" style="font-weight: bold;" id="GameCurrMove" title="current move as shown on chessboard"></a><a id="GameNextMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly + 1); this.blur();" title="next moves"></a><span style="font-weight: bold;">&nbsp;</span></span><a class="gameResult" id="GameResult" href="javascript:void(0);" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); this.blur();" title="go to game end"></a></div>
-<div class="footer"><a class="gameDateAdjusted" id="GameDateAdjusted" href="javascript:void(0);" onclick='searchPgnGame("\\[\\s*Date\\s*\"[^\"]*live[^\"]*\"\\s*\\]", event.shiftKey);'></a></div>
+<div class="footer"><span class="gameSideToMove"><span class="sideToMove sideToMoveHidden" id="SideToMove" title="side to move"></span>&nbsp;</span><span class="gameText">&nbsp;<span id="GamePrevMoves" style="cursor:pointer;" onclick="GoToMove(CurrentPly - 1); this.blur();" title="previous moves"></span><span id="GameCurrMove" style="font-weight: bold; cursor:pointer;" onclick="SetHighlight(!highlightOption); this.blur();" title="current move as shown on chessboard"></span><span id="GameNextMoves" style="cursor:pointer;" onclick="GoToMove(CurrentPly + 1); this.blur();" title="next moves"></span><span style="font-weight: bold;">&nbsp;</span></span><span class="gameResult" id="GameResult" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); this.blur();" title="go to game end"></span></div>
+<div class="footer"><span class="gameDateAdjusted" id="GameDateAdjusted" onclick='searchPgnGame("\\[\\s*Date\\s*\"[^\"]*live[^\"]*\"\\s*\\]", event.shiftKey);'></span></div>
 </div>
 </td></tr></table>
 
