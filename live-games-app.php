@@ -223,20 +223,6 @@ if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
 
 
-$text = "";
-$oldText = "href='javascript:void(0);'";
-$actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
-$html = str_replace($oldText, $text, $html);
-
-
-$text = "";
-$oldText = 'href="javascript:void(0);"';
-$actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
-$html = str_replace($oldText, $text, $html);
-
-
 $text = "gameListLineHeight = Math.floor(2.3 * gameListFontSize);";
 $oldText = "gameListLineHeight = Math.floor(1.9 * gameListFontSize);";
 $actionNum += 1;
@@ -400,7 +386,7 @@ function fixGameLiveStatusExtraInfo(res) {
   var newExtraText = "";
   if (LiveBroadcastDelay && LiveBroadcastDemo) { newExtraText += "<span title='this is a broadcast simulation'>demo</span>"; }
   if (lastGameLiveStatusExtraInfoRes === LOAD_PGN_FAIL) {
-    newExtraText += "<span style='margin-left:" + (1.5 / fontSizeRatio) + "em;'";
+    newExtraText += "<span style='cursor:pointer; margin-left:" + (1.5 / fontSizeRatio) + "em;'";
     newExtraText += " onclick='refreshPgnSource(); this.blur();'";
     newExtraText += " title='games from app cache'>";
     newExtraText += ((!localStorage[lsId + "lastGamesValidationTime"]) || ((new Date()).getTime() - localStorage[lsId + "lastGamesValidationTie"]) > 18000000) ? "X" : "&times;";

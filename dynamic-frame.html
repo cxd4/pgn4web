@@ -394,7 +394,7 @@ function myOnResize() {
     if (horizontalLayout) { myInsertRule(sheet, ".boardTable", "float: left;" + (horizontalCentered ? " margin-top: " + Math.floor((wh - 2 * framePadding - 8 * squareSize) / 2) + "px;" : "")); }
     else { myInsertRule(sheet, ".boardTable", "margin-left: " + Math.floor((ww - 2 * framePadding - 8 * squareSize) / 2) + "px;"); }
   }
-  myInsertRule(sheet, ".pieceImage", "width: " + pieceSize + "px; height: " + pieceSize + "px;");
+  myInsertRule(sheet, ".pieceImage", "cursor: pointer; width: " + pieceSize + "px; height: " + pieceSize + "px;");
   myInsertRule(sheet, ".whiteSquare", "width: " + bareSquareSize + "px; height: " + bareSquareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + lightColorHex + "; border-color: #" + lightColorHex + ";");
   myInsertRule(sheet, ".blackSquare", "width: " + bareSquareSize + "px; height: " + bareSquareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + darkColorHex + "; border-color: #" + darkColorHex + ";");
   myInsertRule(sheet, ".highlightWhiteSquare", "width: " + bareSquareSize + "px; height: " + bareSquareSize + "px; border-style: solid; border-width: " + squareBorderWidth + "px;" + "background-color: #" + lightColorHex + "; border-color: #" + (highlightColorHex ? highlightColorHex : lightColorHex) + ";");
@@ -405,7 +405,7 @@ function myOnResize() {
   } else {
     myInsertRule(sheet, ".liveStatusLine", "display: none;");
     if (horizontalLayout) { myInsertRule(sheet, ".gameButtons", "width: " + (headerContainerWidth - lineHeight) + "px; " + "text-align: left;"); }
-    var buttonCss = "margin: 0px; padding: 0px; width: " + Math.floor(3 * lineHeight / 2) + "px !important; height: " + lineHeight + "px; color: #" + fontColorHex + "; border-style: none; -webkit-appearance: none; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;";
+    var buttonCss = "cursor: pointer; margin: 0px; padding: 0px; width: " + Math.floor(3 * lineHeight / 2) + "px !important; height: " + lineHeight + "px; color: #" + fontColorHex + "; border-style: none; -webkit-appearance: none; background-color: #" + backgroundColorHex + "; font-family: sans-serif; line-height: " + lineHeight + "px; font-size: " + fontSize + "px;";
     myInsertRule(sheet, ".buttonControl", buttonCss);
     myInsertRule(sheet, ".buttonControlPlay", buttonCss);
     myInsertRule(sheet, ".buttonControlStop", buttonCss);
@@ -487,13 +487,13 @@ function fillGameList(force) {
     if (theObj = document.getElementById("GameListHeader")) {
       text = "";
       text += "<table width='100%' cellspacing='0' cellpadding='0' border='0'><tr>";
-      text += "<td width='14%' align='center'><a href='javascript:void(0);' onclick='selectGameList(-1);' title='back to chessboard'>&nbsp; &crarr; &nbsp;</a></td>";
-      text += "<td width='15%' align='center'><a href='javascript:void(0);' onclick='autoscrollGameListBody(0); this.blur();' title='scroll to first page'>&nbsp; &lt;&lt; &nbsp;</a></td>";
-      text += "<td width='14%' align='center'><a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { autoscrollGameListBody(Math.ceil(theObj.scrollTop / gameListLineHeight) - Math.floor(gameListBodyHeight / gameListLineHeight)); } this.blur();' title='scroll to previous page'>&nbsp; &lt; &nbsp;</a></td>";
-      text += "<td width='14%' align='center'><a href='javascript:void(0);' onclick='autoscrollGameListBody(currentGame - 1); this.blur();' title='scroll to current game'>&nbsp; &middot; &nbsp;</a></td>";
-      text += "<td width='14%' align='center'><a href='javascript:void(0);' onclick='if (theObj = document.getElementById(\"GameListBody\")) { autoscrollGameListBody(Math.floor(theObj.scrollTop / gameListLineHeight) + Math.floor(gameListBodyHeight / gameListLineHeight)); } this.blur();' title='scroll to next page'>&nbsp; &gt; &nbsp;</a></td>";
-      text += "<td width='15%' align='center'><a href='javascript:void(0);' onclick='autoscrollGameListBody(numberOfGames); this.blur();' title='scroll to last page'>&nbsp; &gt;&gt; &nbsp;</a></td>";
-      text += "<td width='14%' align='center'><a href='javascript:void(0);' onclick='toggleGameListHorizontalScroll(); this.blur();' title='horizontal scroll'>&nbsp; &middot; &nbsp;</a></td>";
+      text += "<td width='14%' align='center'><span style='cursor:pointer;' onclick='selectGameList(-1);' title='back to chessboard'>&nbsp; &crarr; &nbsp;</span></td>";
+      text += "<td width='15%' align='center'><span style='cursor:pointer;' onclick='autoscrollGameListBody(0); this.blur();' title='scroll to first page'>&nbsp; &lt;&lt; &nbsp;</span></td>";
+      text += "<td width='14%' align='center'><span style='cursor:pointer;' onclick='if (theObj = document.getElementById(\"GameListBody\")) { autoscrollGameListBody(Math.ceil(theObj.scrollTop / gameListLineHeight) - Math.floor(gameListBodyHeight / gameListLineHeight)); } this.blur();' title='scroll to previous page'>&nbsp; &lt; &nbsp;</span></td>";
+      text += "<td width='14%' align='center'><span style='cursor:pointer;' onclick='autoscrollGameListBody(currentGame - 1); this.blur();' title='scroll to current game'>&nbsp; &middot; &nbsp;</span></td>";
+      text += "<td width='14%' align='center'><span style='cursor:pointer;' onclick='if (theObj = document.getElementById(\"GameListBody\")) { autoscrollGameListBody(Math.floor(theObj.scrollTop / gameListLineHeight) + Math.floor(gameListBodyHeight / gameListLineHeight)); } this.blur();' title='scroll to next page'>&nbsp; &gt; &nbsp;</span></td>";
+      text += "<td width='15%' align='center'><span style='cursor:pointer;' onclick='autoscrollGameListBody(numberOfGames); this.blur();' title='scroll to last page'>&nbsp; &gt;&gt; &nbsp;</span></td>";
+      text += "<td width='14%' align='center'><span style='cursor:pointer;' onclick='toggleGameListHorizontalScroll(); this.blur();' title='horizontal scroll'>&nbsp; &middot; &nbsp;</span></td>";
       text += "<tr></table>";
       theObj.innerHTML = text;
     }
@@ -512,7 +512,7 @@ function fillGameList(force) {
         thisGameTitle2 += (thisGameTitle2 && gameRound[thisNum]) ? "  -  " : "";
         thisGameTitle2 += gameRound[thisNum] || "";
         if (thisGameTitle2) { thisGameTitle2 = " " + thisGameTitle2 + " "; }
-        text += "<tr href='javascript:void(0);' onclick='selectGameList(" + thisNum + ");' title='" + thisGameTitle1 + (thisGameTitle1 && thisGameTitle2 ? "\n" : "") + thisGameTitle2 + "'>";
+        text += "<tr style='cursor:pointer;' onclick='selectGameList(" + thisNum + ");' title='" + thisGameTitle1 + (thisGameTitle1 && thisGameTitle2 ? "\n" : "") + thisGameTitle2 + "'>";
         text += "<td align='right'><div class='gameListBodyItemsNum'>" + (thisNum + 1) + "</div></td>";
         text += "<td><div class='gameListBodyItemsNumdot'>" + (thisNum === currentGame ? "." : "") + "</div></td>";
         text += "<td align='right'><div class='gameListBodyItemsPlayer'>" + gameWhite[thisNum] + "</div></td>";
@@ -655,7 +655,7 @@ function customFunctionOnPgnGameLoad() {
   }
   updateBareShortcut();
   var theObj = document.getElementById("GameResult");
-  if (theObj) { theObj.innerHTML = theObj.innerHTML.replace(/\*/g, "&lowast;").replace(/(\d)-(\d)/g, "$1<span style='font-weight: normal;'>&nbsp;-&nbsp</span>$2"); }
+  if (theObj) { theObj.innerHTML = theObj.innerHTML.replace(/\*/g, "&lowast;").replace(/(\d)-(\d)/g, "$1<span style='font-weight:normal;'>&nbsp;-&nbsp</span>$2"); }
 
   var livePlaceholderDetected = (LiveBroadcastDelay > 0) && (PlyNumber === 0) && (StartPly === 0) && (!gameWhite[currentGame]) && (!gameBlack[currentGame]) && (!gameFEN[currentGame]);
   if (theObj = document.getElementById("GameResultLine")) { theObj.style.display = livePlaceholderDetected ? "none" : ""; }
@@ -860,7 +860,7 @@ simpleAddEvent(window, "orientationchange", function() {
 <body onResize="myOnResize();" onLoad="myOnResize();">
 
 <!-- paste your PGN below and make sure you dont specify an external source with SetPgnUrl() -->
-<form style="display: none;"><textarea style="display: none;" id="pgnText">
+<form style="display:none;"><textarea style="display:none;" id="pgnText">
 
 </textarea></form>
 <!-- paste your PGN above and make sure you dont specify an external source with SetPgnUrl() -->
@@ -871,24 +871,24 @@ simpleAddEvent(window, "orientationchange", function() {
 
 <div id="GameBoard"></div>
 
-<div class="headerContainer" id="HeaderContainer">
+<div id="HeaderContainer" class="headerContainer">
 <div class="firstVariableSpacer">&nbsp;</div>
 <div>&nbsp;<span id="GameSite" title="site"></span><span id="GameDate" title="date"></span>&nbsp;</div>
-<div>&nbsp;<a href="javascript:void(0);" onclick="searchNextEventRound(event.shiftKey); this.blur();"><span id="GameEvent" title="event"></span><span id="GameSection" title="section"></span><span id="GameStage" title="stage"></span><span id="GameRound" title="round"></span></a>&nbsp;</div>
+<div>&nbsp;<span style="cursor:pointer;" onclick="searchNextEventRound(event.shiftKey); this.blur();"><span id="GameEvent" title="event"></span><span id="GameSection" title="section"></span><span id="GameStage" title="stage"></span><span id="GameRound" title="round"></span></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
-<div>&nbsp;<span id="GameWhiteClockLine"><span style="display:inline-block;" title="white to move"><span class="colorFlag" style="background:white; display:none;" id="whiteColorFlag"></span></span><a id="GameWhiteClock" href="javascript:void(0);" onclick="if (!showColorFlag) { toggleColorFlag(); setTimeout('if (showColorFlag) { toggleColorFlag(); }', 1111); } this.blur();" title="white clock"></a><span style="display:inline-block;"><span class="colorFlag" style="background:white; display:none;" id="whiteColorFlagFiller"></span></span></span>&nbsp;</div>
-<div>&nbsp;<a style="font-weight: bold;" id="GameWhite" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();" title="white player"></a><span id="GameWhiteTitle" title="white title"></span><span id="GameWhiteElo" title="white elo"></span><span id="GameWhiteTeam" title="white team"></span><span style="font-weight: bold;">&nbsp;</span></div>
-<div>&nbsp;<a style="font-weight:bold;" id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();" title="black player"></a><span id="GameBlackTitle" title="black title"></span><span id="GameBlackElo" title="black elo"></span><span id="GameBlackTeam" title="black team"></span><span style="font-weight: bold;">&nbsp;</span></div>
-<div>&nbsp;<span id="GameBlackClockLine"><span style="display:inline-block;" title="black to move"><span class="colorFlag" style="background:black; display:none;" id="blackColorFlag"></span></span><a id="GameBlackClock" href="javascript:void(0);" onclick="if (!showColorFlag) { toggleColorFlag(); setTimeout('if (showColorFlag) { toggleColorFlag(); }', 1111); } this.blur();" title="black clock"></a><span style="display:inline-block;"><span class="colorFlag" style="background:black; display:none;" id="blackColorFlagFiller"></span></span></span>&nbsp;</div>
+<div>&nbsp;<span id="GameWhiteClockLine"><span style="display:inline-block;" title="white to move"><span class="colorFlag" style="background:white; display:none;" id="whiteColorFlag"></span></span><span id="GameWhiteClock" style="cursor:pointer;" onclick="if (!showColorFlag) { toggleColorFlag(); setTimeout('if (showColorFlag) { toggleColorFlag(); }', 1111); } this.blur();" title="white clock"></span><span style="display:inline-block;"><span class="colorFlag" style="background:white; display:none;" id="whiteColorFlagFiller"></span></span></span>&nbsp;</div>
+<div>&nbsp;<span id="GameWhite" style="font-weight:bold; cursor:pointer;" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();" title="white player"></span><span id="GameWhiteTitle" title="white title"></span><span id="GameWhiteElo" title="white elo"></span><span id="GameWhiteTeam" title="white team"></span><span style="font-weight:bold;">&nbsp;</span></div>
+<div>&nbsp;<span id="GameBlack" style="font-weight:bold; cursor:pointer;" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();" title="black player"></span><span id="GameBlackTitle" title="black title"></span><span id="GameBlackElo" title="black elo"></span><span id="GameBlackTeam" title="black team"></span><span style="font-weight:bold;">&nbsp;</span></div>
+<div>&nbsp;<span id="GameBlackClockLine"><span style="display:inline-block;" title="black to move"><span class="colorFlag" style="background:black; display:none;" id="blackColorFlag"></span></span><span id="GameBlackClock" style="cursor:pointer;" onclick="if (!showColorFlag) { toggleColorFlag(); setTimeout('if (showColorFlag) { toggleColorFlag(); }', 1111); } this.blur();" title="black clock"></span><span style="display:inline-block;"><span class="colorFlag" style="background:black; display:none;" id="blackColorFlagFiller"></span></span></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
-<div>&nbsp;<span id="GameResultLine"><span style="visibility:hidden; padding-right:2.5em;" id="GameECOFiller"></span><a style="font-weight: bold;" id="GameResult" href="javascript:void(0);" onclick="if (!showEco) { toggleShowEco(); setTimeout('if (showEco) { toggleShowEco(); }', 1111); } this.blur();" title="result"></a><span style="padding-left:2.5em;" id="GameECO"></span></span><span style="font-weight: bold;">&nbsp;</span></div>
+<div>&nbsp;<span id="GameResultLine"><span id="GameECOFiller" style="visibility:hidden; padding-right:2.5em;"></span><span id="GameResult" style="font-weight:bold; cursor:pointer;" onclick="if (!showEco) { toggleShowEco(); setTimeout('if (showEco) { toggleShowEco(); }', 1111); } this.blur();" title="result"></span><span style="padding-left:2.5em;" id="GameECO"></span></span><span style="font-weight:bold;">&nbsp;</span></div>
 <div class="variableSpacer">&nbsp;</div>
-<div class="leftRightSpacing">&nbsp;<a id="GamePrevMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly - 1); this.blur();" title="previous moves"></a><a style="font-weight: bold;" id="GameCurrMove" href="javascript:void(0);" onclick="if (!highlightOption) { SetHighlight(!highlightOption); setTimeout('if (highlightOption) { SetHighlight(!highlightOption); }', 1111); } this.blur();" title="current move as shown on chessboard"></a><a id="GameNextMoves" href="javascript:void(0);" onclick="GoToMove(CurrentPly + 1); this.blur();" title="next moves"></a><span style="font-weight: bold;">&nbsp;</span></div>
+<div class="leftRightSpacing">&nbsp;<span id="GamePrevMoves" style="cursor:pointer;" onclick="GoToMove(CurrentPly - 1); this.blur();" title="previous moves"></span><span id="GameCurrMove" style="font-weight:bold; cursor:pointer;" onclick="if (!highlightOption) { SetHighlight(!highlightOption); setTimeout('if (highlightOption) { SetHighlight(!highlightOption); }', 1111); } this.blur();" title="current move as shown on chessboard"></span><span id="GameNextMoves" style="cursor:pointer;" onclick="GoToMove(CurrentPly + 1); this.blur();" title="next moves"></span><span style="font-weight:bold;">&nbsp;</span></div>
 <div class="variableSpacer">&nbsp;</div>
-<center><div class="leftRightSpacing gameButtons" id="GameButtons"></div></center>
-<div class="liveStatusLine">&nbsp;<span id="GameLiveStatusExtraInfoLeft" class="leftRightSpacing gameLiveStatusExtraInfoLeft" style="visibility: hidden;"></span><span id="GameLiveStatus" class="leftRightSpacing"></span><span id="GameLiveStatusExtraInfoRight" class="leftRightSpacing" style="visibility: hidden;"></span>&nbsp;</div>
+<center><div id="GameButtons" class="leftRightSpacing gameButtons"></div></center>
+<div class="liveStatusLine">&nbsp;<span id="GameLiveStatusExtraInfoLeft" class="leftRightSpacing gameLiveStatusExtraInfoLeft" style="visibility:hidden;"></span><span id="GameLiveStatus" class="leftRightSpacing" style="cursor:pointer;"></span><span id="GameLiveStatusExtraInfoRight" class="leftRightSpacing" style="visibility:hidden;"></span>&nbsp;</div>
 <div class="variableSpacer">&nbsp;</div>
-<div class="leftRightSpacing" style="visibility: hidden;" id="ShowGameList">&nbsp;<a class="showGameListLink" id="ShowGameListLink" href="javascript:void(0);" onclick="showGameList();"></a>&nbsp;</div>
+<div id="ShowGameList" class="leftRightSpacing" style="visibility:hidden;">&nbsp;<span id="ShowGameListLink" class="showGameListLink" style="cursor:pointer;" onclick="showGameList();"></span>&nbsp;</div>
 </div>
 
 <script type="text/javascript">
