@@ -54,7 +54,7 @@ Limitations:
 
 Bugs:
 - no major issue at the moment of writing, please check the project
-  issues tracker at https://code.google.com/p/pgn4web/issues/list
+  issues tracker at https://sourceforge.net/p/pgn4web/tickets/
 
 User feedback:
 Please email the pgn4web project (pgn4web@casaschi.net) your feedback,
@@ -386,7 +386,7 @@ with Google Chrome should work properly.
 Note about Internet Explorer v7 and above: under some circumstances you might
 experience problems when testing HTML pages from your local computer while
 developing your site. If this happens to you, read notes at
-https://code.google.com/p/pgn4web/issues/detail?id=23
+https://sourceforge.net/p/pgn4web/tickets/23/
 
 
 PGN STANDARD SUPPORT

@@ -2,7 +2,7 @@
 
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009-2014 Paolo Casaschi
+ *  copyright (C) 2009-2015 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
@@ -25,7 +25,7 @@ if ($referrerHost) {
 <head>
 </head>
 <body style="padding:10px; font-size:x-small; font-family:sans-serif;">
-<p style="font-weight:bold;">pgn4web chess puzzler: warning</p><p>Your site generates a substantial load on the pgn4web chess puzzler server. Please install the pgn4web chess puzzler on your own server following these <a href="https://code.google.com/p/pgn4web/wiki/ServiceAvailability#Use_on_a_professional_site" target="_blank">instructions</a>. Sorry for any inconvenience, previous attempts contacting your site's administrators were unsuccessful.</p><p>Click <a href="$thisPage">here</a> to view the pgn4web chess puzzler.</p>
+<p style="font-weight:bold;">pgn4web chess puzzler: warning</p><p>Your site generates a substantial load on the pgn4web chess puzzler server. Please install the pgn4web chess puzzler on your own server following these <a href="https://sourceforge.net/p/pgn4web/wiki/ServiceAvailability/" target="_blank">instructions</a>. Sorry for any inconvenience, previous attempts contacting your site's administrators were unsuccessful.</p><p>Click <a href="$thisPage">here</a> to view the pgn4web chess puzzler.</p>
 </body>
 </html>
 END;
@@ -391,7 +391,7 @@ function displayPuzzlerHelp() {
   puzzlerHelp += "- show the puzzler's solution step by step on the chessboard by clicking the > button below the chessboard's right side" + "\\n\\n";
   puzzlerHelp += "- step backwards one move by clicking the < button below the chessboard's left side" + "\\n\\n";
   puzzlerHelp += "click OK for more information, including how to add the chess puzzler to a website or blog";
-  if (confirm(puzzlerHelp)) { window.open("https://code.google.com/p/pgn4web/wiki/Example_Puzzler", "_blank"); }
+  if (confirm(puzzlerHelp)) { window.open("https://sourceforge.net/p/pgn4web/wiki/Example_Puzzler/", "_blank"); }
 }
 
 boardShortcut("F8", "chess puzzler help", function(t,e){ displayPuzzlerHelp(); });
