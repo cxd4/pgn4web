@@ -99,7 +99,7 @@ END;
   }
 
   $html .= <<<END
-The <a href="https://sourceforge.net/p/pgn4web/wiki/App_LiveGames/" target="_blank">app user guide</a> provides further information and a detailed usage tutorial.
+The <a href="http://pgn4web-project.casaschi.net/wiki/App_LiveGames/" target="_blank">app user guide</a> provides further information and a detailed usage tutorial.
 <script type="text/javascript">
 "use strict";
 window.onload = function() {
@@ -454,7 +454,7 @@ engineWinParametersSeparator = "#?";
 
 boardShortcut(debugShortcutSquare, "about", function(t,e){ if (e.shiftKey || confirm("$appName\\napp from the pgn4web project\\n\\nclick OK for debug info")) { displayDebugInfo(); } });
 
-boardShortcut("F8", "app user guide", function(t,e){ window.open("https://sourceforge.net/p/pgn4web/wiki/App_LiveGames/", "pgn4web_webAppWiki"); });
+boardShortcut("F8", "app user guide", function(t,e){ window.open("http://pgn4web-project.casaschi.net/wiki/App_LiveGames/", "pgn4web_webAppWiki"); });
 
 if (LiveBroadcastDelay > 0) {
   boardShortcut("G6", "search next live date", function(t,e){ searchPgnGame('\\\\[\\\\s*Date\\\\s*"[^"]*live[^"]*"\\\\s*\\\\]', e.shiftKey); }, true);
