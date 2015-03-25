@@ -45,6 +45,7 @@ Features:
   http://pgn4web-board-generator.casaschi.net
 - integrates with popular web platforms and services such as blogger, drupal,
   google sites, joomla, mediawiki, phpBB, wordpress.org and many others.
+- supports puzzles presentation modes
 - integrates with HTML5 video and YouTube video
 - supports Chess960 (a.k.a. Fischer random chess) games
 
