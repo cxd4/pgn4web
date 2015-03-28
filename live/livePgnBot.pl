@@ -180,13 +180,15 @@ our $EloAutoprioritizeString = "";
 our $safevalElo = new Safe;
 $safevalElo->share($EloIgnoreString, $EloAutoprioritizeString);
 
+our $eventroundAutoprecorrectRegexp = "";
+our $eventroundAutoprecorrectString = "";
+our $safevalEventround = new Safe;
+$safevalEventround->share($eventroundAutoprecorrectString);
+
 our $eventAutocorrectRegexp = "";
 our $eventAutocorrectString = "";
-our $eventAutoprecorrectRegexp = "";
-our $eventAutoprecorrectString = "";
 our $safevalEvent = new Safe;
 $safevalEvent->share($eventAutocorrectString);
-$safevalEvent->share($eventAutoprecorrectString);
 
 our $roundAutocorrectRegexp = "";
 our $roundAutocorrectString = "";
@@ -274,10 +276,10 @@ sub reset_config {
   $followLast = "";
   $relayMode = 0;
   $autorelayMode = 0;
+  $eventroundAutoprecorrectRegexp = "";
+  $eventroundAutoprecorrectString = "";
   $eventAutocorrectRegexp = "";
   $eventAutocorrectString = "";
-  $eventAutoprecorrectRegexp = "";
-  $eventAutoprecorrectString = "";
   $roundAutocorrectRegexp = "";
   $roundAutocorrectString = "";
   $placeholderGame = "auto";
@@ -528,16 +530,25 @@ sub remove_game {
   return $thisGameIndex;
 }
 
+sub eventround_autoprecorrect {
+  my ($eventround) = @_;
+  my $oldEventround = $eventround;
+  if (($eventroundAutoprecorrectRegexp) && ($eventround =~ /$eventroundAutoprecorrectRegexp/i)) {
+    $eventround =~ s/$eventroundAutoprecorrectRegexp/$safevalEventround->reval($eventroundAutoprecorrectString)/egi;
+    if ($@) { log_terminal("warning: eventround autoprecorrect failed"); }
+    $eventround =~ s/\s+/ /g;
+    $eventround =~ s/^\s|\s$//g;
+    if ($eventround eq "") { $eventround = "?"; }
+  }
+  if ($eventround ne $oldEventround) {
+    log_terminal("debug: eventround autoprecorrected: \"$oldEventround\" \"$eventround\"");
+  }
+  return $eventround;
+}
+
 sub event_autocorrect {
   my ($event) = @_;
   my $oldEvent = $event;
-  if (($eventAutoprecorrectRegexp) && ($event =~ /$eventAutoprecorrectRegexp/i)) {
-    $event =~ s/$eventAutoprecorrectRegexp/$safevalEvent->reval($eventAutoprecorrectString)/egi;
-    if ($@) { log_terminal("warning: event autoprecorrect failed"); }
-    $event =~ s/\s+/ /g;
-    $event =~ s/^\s|\s$//g;
-    if ($event eq "") { $event = "?"; }
-  }
   if (($eventAutocorrectRegexp) && ($event =~ /$eventAutocorrectRegexp/i)) {
     $event =~ s/$eventAutocorrectRegexp/$safevalEvent->reval($eventAutocorrectString)/egi;
     if ($@) { log_terminal("warning: event autocorrect failed"); }
@@ -687,12 +698,13 @@ sub process_line {
     $autorelayEvent = $1;
     $autorelayEvent =~ s/[\[\]"]/'/g;
     $autorelayRound = "";
+    if ($eventroundAutoprecorrectRegexp) { $autorelayEvent = eventround_autoprecorrect($autorelayEvent); }
     fixRoundEvent($autorelayEvent, $autorelayRound, "Game");
     fixRoundEvent($autorelayEvent, $autorelayRound, "Matchup");
     fixRoundEvent($autorelayEvent, $autorelayRound, "Round");
     $autorelayEvent =~ s/^\s+|[\s-]+$//g;
     $autorelayEvent =~ s/\s+/ /g;
-    if ($eventAutocorrectRegexp || $eventAutoprecorrectRegexp) { $autorelayEvent = event_autocorrect($autorelayEvent); }
+    if ($eventAutocorrectRegexp) { $autorelayEvent = event_autocorrect($autorelayEvent); }
     if ($autorelayRound eq "") { $autorelayRound = "-"; }
     if ($roundAutocorrectRegexp) { $autorelayRound = round_autocorrect($autorelayRound, $autorelayEvent); }
     declareRelayOnline();
@@ -1513,7 +1525,7 @@ add_master_command ("eloautoprioritize", "eloautoprioritize [evalexp|\"\"] (to g
 add_master_command ("eloignore", "eloignore [evalexp|\"\"] (to get/set the eval expression returning 1|0 from \$minElo, \$maxElo and \$avgElo to ignore games during autorelay; has precedence over prioritize)");
 add_master_command ("event", "event [string|\"\"] (to get/set the PGN header tag event)");
 add_master_command ("eventautocorrect", "eventautocorrect [/regexp/evalexp/|\"\"] (to get/set the regular expression and the eval expression returning a string that corrects event tags during autorelay)");
-add_master_command ("eventautoprecorrect", "eventautocorrect [/regexp/evalexp/|\"\"] (to get/set the regular expression and the eval expression returning a string that precorrects event tags during autorelay)");
+add_master_command ("eventroundautoprecorrect", "eventroundautoprecorrect [/regexp/evalexp/|\"\"] (to get/set the regular expression and the eval expression returning a string that precorrects eventround tags during autorelay)");
 add_master_command ("follow", "follow [0|handle|/s|/b|/l] (to follow the user with given handle, /s for the best standard game, /b for the best blitz game, /l for the best lightning game, 0 to disable follow mode)");
 add_master_command ("games", "games (to get games summary info)");
 add_master_command ("heartbeat", "heartbeat [frequency offset] (to get/set the timing of heartbeat log messages, in hours)");
@@ -1743,7 +1755,7 @@ sub process_master_command {
       }
     }
     if ($newGame_event ne "" || $parameters eq "!") { $cfg .= " event=$newGame_event"; }
-    if ($eventAutoprecorrectRegexp ne "" || $parameters eq "!") { $cfg .= " eventautoprecorrect=/$eventAutoprecorrectRegexp/$eventAutoprecorrectString/"; }
+    if ($eventroundAutoprecorrectRegexp ne "" || $parameters eq "!") { $cfg .= " eventroundautoprecorrect=/$eventroundAutoprecorrectRegexp/$eventroundAutoprecorrectString/"; }
     if ($eventAutocorrectRegexp ne "" || $parameters eq "!") { $cfg .= " eventautocorrect=/$eventAutocorrectRegexp/$eventAutocorrectString/"; }
     if ($newGame_round ne "" || $parameters eq "!") { $cfg .= " round=$newGame_round"; }
     if ($roundAutocorrectRegexp ne "" || $parameters eq "!") { $cfg .= " roundautocorrect=/$roundAutocorrectRegexp/$roundAutocorrectString/"; }
@@ -1866,30 +1878,30 @@ sub process_master_command {
     } else {
       tell_operator("error: invalid $command parameter");
     }
-  } elsif ($command eq "eventautoprecorrect") {
+  } elsif ($command eq "eventroundautoprecorrect") {
     if ($parameters =~ /^(\/([^\/]+)\/(.*)\/|"")?$/) {
       eval {
         if ($parameters ne "") {
           if ($parameters eq "\"\"") {
-            $eventAutoprecorrectRegexp = "";
-            $eventAutoprecorrectString = "";
+            $eventroundAutoprecorrectRegexp = "";
+            $eventroundAutoprecorrectString = "";
           } else {
-            my $newEventAutoprecorrectRegexp = $2;
-            my $newEventAutoprecorrectString = $3;
-            my $newEventAutoprecorrectTest = "test";
-            $newEventAutoprecorrectTest =~ s/$newEventAutoprecorrectRegexp/$safevalEvent->reval($newEventAutoprecorrectString)/egi;
+            my $newEventroundAutoprecorrectRegexp = $2;
+            my $newEventroundAutoprecorrectString = $3;
+            my $newEventroundAutoprecorrectTest = "test";
+            $newEventroundAutoprecorrectTest =~ s/$newEventroundAutoprecorrectRegexp/$safevalEventround->reval($newEventroundAutoprecorrectString)/egi;
             if ($@) { pgn4webError(); }
-            $newEventAutoprecorrectTest =~ s/$newEventAutoprecorrectTest/$safevalEvent->reval($newEventAutoprecorrectString)/egi;
+            $newEventroundAutoprecorrectTest =~ s/$newEventroundAutoprecorrectTest/$safevalEventround->reval($newEventroundAutoprecorrectString)/egi;
             if ($@) { pgn4webError(); }
-            $eventAutoprecorrectRegexp = $newEventAutoprecorrectRegexp;
-            $eventAutoprecorrectString = $newEventAutoprecorrectString;
+            $eventroundAutoprecorrectRegexp = $newEventroundAutoprecorrectRegexp;
+            $eventroundAutoprecorrectString = $newEventroundAutoprecorrectString;
           }
-          log_terminal("info: eventautoprecorrect=" . ($eventAutoprecorrectRegexp ? "/$eventAutoprecorrectRegexp/$eventAutoprecorrectString/" : ""));
+          log_terminal("info: eventroundautoprecorrect=" . ($eventroundAutoprecorrectRegexp ? "/$eventroundAutoprecorrectRegexp/$eventroundAutoprecorrectString/" : ""));
           if ($autorelayMode == 1) {
             force_next_check_relay_time();
           }
         }
-        tell_operator("eventautoprecorrect=" . ($eventAutoprecorrectRegexp ? "/$eventAutoprecorrectRegexp/$eventAutoprecorrectString/" : ""));
+        tell_operator("eventroundautoprecorrect=" . ($eventroundAutoprecorrectRegexp ? "/$eventroundAutoprecorrectRegexp/$eventroundAutoprecorrectString/" : ""));
         1;
       } or do {
         tell_operator("error: invalid regular expression: $parameters");
