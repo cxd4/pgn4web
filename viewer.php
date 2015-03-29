@@ -21,7 +21,7 @@ error_reporting(E_ALL | E_STRICT);
 
 $pgnDebugInfo = "";
 
-$tmpDir = "viewer";
+$tmpDir = "php://temp";
 $fileUploadLimitBytes = 4194304;
 $fileUploadLimitText = round(($fileUploadLimitBytes / 1048576), 0) . "MB";
 $fileUploadLimitIniText = ini_get("upload_max_filesize");
