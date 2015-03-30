@@ -1,5 +1,26 @@
 [Event "London league"]
 [Site "London ENG"]
+[Date "2015-03-30"]
+[Round "?"]
+[White "Casaschi, Paolo"]
+[Black "Merriman, John"]
+[Result "0-1"]
+[ECO "E06"]
+[Opening "Catalan"]
+[Variation "closed, 5.Nf3"]
+
+1. d4 e6 2. c4 d5 3. Nf3 Nf6 4. g3 Be7 5. Bg2 O-O 6. O-O c6 7. Qc2 b6 8.
+Rd1 Ba6 9. Nbd2 Nbd7 10. b3 Rc8 11. e4 c5 { D } 12. e5 Ne8 13. cxd5 exd5
+14. Qf5 g6 15. Qf4 Ng7 16. Bb2 f6 17. Qg4 f5 18. Qh3 Bb7 19. Ne1 Ne6 20. f4
+Nxd4 21. Bxd4 cxd4 22. Ndf3 Nc5 23. Nxd4 b5 { D } 24. Bf3 Qb6 25. Qf1 Ne6
+26. Qf2 Nxd4 27. Rxd4 Bc5 28. Rad1 Bxd4 29. Qxd4 Qxd4+ 30. Rxd4 Rfd8 31.
+Kf2 Kf7 32. Ke2 Rc1 33. Nd3 Rc2+ 34. Ke3 Rxa2 35. Nc5 Bc6 36. h4 a5 37. h5
+Rc2 38. hxg6+ hxg6 39. Nd3 Rc3 40. Bd1 b4 41. Kf2 Rh8 42. Ne1 Rh2+ 43. Ng2
+Ke7 44. g4 fxg4 45. Kg1 g3 46. Ne1 Rb2 47. Nf3 Rc1 48. Kf1 g2+ 49. Ke1 Rxb3
+0-1
+
+[Event "London league"]
+[Site "London ENG"]
 [Date "2015.02.25"]
 [Round "?"]
 [White "Emms, John"]
