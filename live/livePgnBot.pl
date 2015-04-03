@@ -708,7 +708,7 @@ sub process_line {
     if ($autorelayRound eq "") { $autorelayRound = "-"; }
     if ($roundAutocorrectRegexp) { $autorelayRound = round_autocorrect($autorelayRound, $autorelayEvent); }
     declareRelayOnline();
-  } elsif ($line =~ /^:(\d+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)/) {
+  } elsif ($line =~ /^:(\d+)\s*(\S+)\s+(\S+)\s+(\S+)\s+(\S+)/) {
     my $thisGameNum = $1;
     my $thisGameWhite = $2;
     my $thisGameBlack = $3;
