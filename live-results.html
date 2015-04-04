@@ -856,9 +856,9 @@ a.variation {
   }
 
   function customDebugInfo() {
-    return "se=" + b2s(showEvent) + " rr=" + b2s(roundReverse) + " st=" + b2s(showTeams) + " spi=" + b2s(showPlayersInfo) + " slm=" + b2s(showLastMoves) + " sb=" + b2s(showBoard) + " ab=" + b2s(adjustBoard) + " ahn=" + b2s(autoHighlightNewmoves) + " asn=" + b2s(autoSwitchNewgames) + " sa=" + b2s(showAnalysis);
+    return "autoHighlightNewmoves=" + b2s(autoHighlightNewmoves) + " autoSwitchNewgames=" + b2s(autoSwitchNewgames) + " roundReverse=" + b2s(roundReverse);
   }
-  function b2s(b) { return b ? "t" : "f"; }
+  function b2s(b) { return b ? "true" : "false"; }
 
   // customShortcutKey_Shift_1 defined by fide-lookup.js
   // customShortcutKey_Shift_2 defined by fide-lookup.js
