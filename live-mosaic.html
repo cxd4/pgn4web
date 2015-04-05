@@ -610,8 +610,8 @@ function updateMenu() {
     if (theRightObject && (theLeftObject = document.getElementById("leftMenu"))) {
       theRightObject.style.minWidth = 0;
       theLeftObject.style.minWidth = 0;
-      theRightObject.style.minWidth = theLeftObject.offsetWidth;
-      theLeftObject.style.minWidth = theRightObject.offsetWidth;
+      theRightObject.style.minWidth = theLeftObject.offsetWidth + "px";
+      theLeftObject.style.minWidth = theRightObject.offsetWidth + "px";
     }
   }
 
