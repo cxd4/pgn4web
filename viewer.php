@@ -318,20 +318,25 @@ function check_tmpDir() {
   global $pgnText, $pgnTextbox, $pgnUrl, $pgnFileName, $pgnFileSize, $pgnStatus, $forceEncodingFrom, $tmpDir, $debugHelpText, $pgnDebugInfo;
   global $fileUploadLimitIniText, $fileUploadLimitText, $fileUploadLimitBytes, $startPosition, $goToView, $zipSupported;
 
+  if (preg_match("/^[a-zA-Z]+:\/\/.+/", $tmpDir)) { return; }
+
   $unexpectedFiles = "";
-  $tmpDirHandle = opendir($tmpDir);
-  while($entryName = readdir($tmpDirHandle)) {
-    if (($entryName !== ".") && ($entryName !== "..") && ($entryName !== "index.html")) {
-      if ((time() - filemtime($tmpDir . "/" . $entryName)) > 3600) {
-        $unexpectedFiles = $unexpectedFiles . " " . $entryName;
+  if ($tmpDirHandle = opendir($tmpDir)) {
+    while($entryName = readdir($tmpDirHandle)) {
+      if (($entryName !== ".") && ($entryName !== "..") && ($entryName !== "index.html")) {
+        if ((time() - filemtime($tmpDir . "/" . $entryName)) > 3600) {
+          $unexpectedFiles = $unexpectedFiles . " " . $entryName;
+        }
       }
     }
+    closedir($tmpDirHandle);
+    if ($unexpectedFiles) {
+      $pgnDebugInfo = $pgnDebugInfo . "\\n" . "clean temporary directory " . $tmpDir . ":" . $unexpectedFiles;
+    }
+  } else {
+      $pgnDebugInfo = $pgnDebugInfo . "\\n" . "failed opening temporary directory " . $tmpDir;
   }
-  closedir($tmpDirHandle);
 
-  if ($unexpectedFiles) {
-    $pgnDebugInfo = $pgnDebugInfo . "\\n" . "clean temporary directory " . $tmpDir . ":" . $unexpectedFiles;
-  }
 }
 
 function print_menu($item) {
