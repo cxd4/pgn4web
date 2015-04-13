@@ -290,9 +290,6 @@
     if (theObj) {
       theObj.style.display = showLastNext ? "" : "none";
     }
-    if (theObj = document.getElementById("GameSelector")) {
-      theObj.style.top = showLastNext ? "0" : "30px";
-    }
   }
 
   function toggleGamesList(sgl) {
@@ -320,7 +317,7 @@
 </div>
 
 <div class="boardheaderDiv" id="boardHeader">
-<div id="boardHeaderInfo">
+<div class="boardHeaderInfo" id="boardHeaderInfo">
 <table cellspacing=0 cellpadding=0 border=0><tr>
 <td><div class="headerLine gameNum"><span id="GameNum">1</span>.</div></td>
 <td><div class="headerLine gameECO"><span id="GameECO"></span></div></td>
@@ -330,13 +327,9 @@
 <div class="headerLine"><a id="GameBlack" href="javascript:void(0);" onclick="searchPlayer(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();"></a><span id="GameBlackElo"></span></div>
 <div class="shortRowSpace">&nbsp;</div>
 <div class="headerLine gameSiteEventDate"><span id="GameSiteEvent"></span><span id="GameDate"></span></div>
-<div class="shortRowSpace">&nbsp;</div>
 </div>
-<div class="shortRowSpace">&nbsp;</div>
-<div id="GameBoard"></div>
-<div id="GameLastNext" style="display: none;">
-<div class="shortRowSpace">&nbsp;</div>
-<div class="shortRowSpace">&nbsp;</div>
+<div class="gameBoard" id="GameBoard"></div>
+<div class="gameLastNext" id="GameLastNext" style="display: none;">
 <div class="gameLastMove">
 <span id="GameLastMove" title="last move"></span>&nbsp;&nbsp;<span id="GameLastVariations" title="last move alternatives"></span>&nbsp;
 </div>
@@ -346,8 +339,6 @@
 </div>
 </div>
 <div class="gamesList" id="GamesList" style="display: none;">
-<div class="shortRowSpace">&nbsp;</div>
-<div class="shortRowSpace">&nbsp;</div>
 <div class="gameSelector" id="GameSelector"></div>
 </div>
 </div>
