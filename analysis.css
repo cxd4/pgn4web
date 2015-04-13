@@ -1,6 +1,6 @@
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009-2014 Paolo Casaschi
+ *  copyright (C) 2009-2015 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
@@ -184,11 +184,8 @@ div, span {
 .selectControl {
 /* a "width" attribute here must use the !important flag to override default settings */
   -webkit-appearance: none;
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 0;
-  border-color: #F4F4F4;
-  background: #F4F4F4;
+  -moz-appearance: none;
+  border-style: none;
   color: gray;
 }
 

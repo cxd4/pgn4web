@@ -1,6 +1,6 @@
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009-2013 Paolo Casaschi
+ *  copyright (C) 2009-2015 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
@@ -25,6 +25,7 @@ a {
 }
 
 input, select {
+  -moz-appearance: none;
   -webkit-appearance: none;
   border-radius: 0px;
   color: #909090;

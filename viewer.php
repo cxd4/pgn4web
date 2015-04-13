@@ -2,7 +2,7 @@
 
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009-2014 Paolo Casaschi
+ *  copyright (C) 2009-2015 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
@@ -772,6 +772,7 @@ function print_chessboard_one() {
   font-family: 'pgn4web ChessSansUsual', 'pgn4web Liberation Sans', sans-serif;
   font-size: 1em;
   color: #B0B0B0;
+  -moz-appearance: none;
   -webkit-appearance: none;
   border: none;
   background: transparent;
