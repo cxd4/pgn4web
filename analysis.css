@@ -187,6 +187,7 @@ div, span {
   -moz-appearance: none;
   border-style: none;
   color: gray;
+  background-color: white;
 }
 
 .optionSelectControl {
