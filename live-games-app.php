@@ -386,12 +386,15 @@ function fixGameLiveStatusExtraInfo(res) {
   var newExtraText = "";
   if (LiveBroadcastDelay && LiveBroadcastDemo) { newExtraText += "<span title='this is a broadcast simulation'>demo</span>"; }
   if (lastGameLiveStatusExtraInfoRes === LOAD_PGN_FAIL) {
-    newExtraText += "<span style='cursor:pointer; margin-left:" + (1.5 / fontSizeRatio) + "em;'";
-    newExtraText += " onclick='refreshPgnSource(); this.blur();'";
-    newExtraText += " title='games from app cache'>";
-    newExtraText += ((!localStorage[lsId + "lastGamesValidationTime"]) || ((new Date()).getTime() - localStorage[lsId + "lastGamesValidationTie"]) > 18000000) ? "X" : "&times;";
-    newExtraText += "</span>";
-    // 5h = 18000000ms
+    if ((!localStorage[lsId + "lastGamesValidationTime"]) || ((new Date()).getTime() - localStorage[lsId + "lastGamesValidationTime"]) > (LiveBroadcastDelay * 60000)) {
+      // 1m = 60000ms
+      newExtraText += "<span style='cursor:pointer; margin-left:" + (1.5 / fontSizeRatio) + "em;'";
+      newExtraText += " onclick='refreshPgnSource(); this.blur();'";
+      newExtraText += " title='games from app cache'>";
+      newExtraText += ((!localStorage[lsId + "lastGamesValidationTime"]) || ((new Date()).getTime() - localStorage[lsId + "lastGamesValidationTime"]) > 18000000) ? "X" : "&times;";
+      // 5h = 18000000ms
+      newExtraText += "</span>";
+    }
   }
   var theObj = document.getElementById("GameLiveStatusExtraInfoRight");
   if (theObj) {
