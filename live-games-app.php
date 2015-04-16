@@ -171,6 +171,7 @@ $html = str_replace($oldText, $text, $html);
 
 
 $text = <<<END
+<link rel="manifest" href="live-games-app.json">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -387,12 +388,12 @@ function fixGameLiveStatusExtraInfo(res) {
   if (LiveBroadcastDelay && LiveBroadcastDemo) { newExtraText += "<span title='this is a broadcast simulation'>demo</span>"; }
   if (lastGameLiveStatusExtraInfoRes === LOAD_PGN_FAIL) {
     if ((!localStorage[lsId + "lastGamesValidationTime"]) || ((new Date()).getTime() - localStorage[lsId + "lastGamesValidationTime"]) > (LiveBroadcastDelay * 60000)) {
-      // 1m = 60000ms
+      // 1m = 60000ms = live broadcast delay unit
       newExtraText += "<span style='cursor:pointer; margin-left:" + (1.5 / fontSizeRatio) + "em;'";
       newExtraText += " onclick='refreshPgnSource(); this.blur();'";
       newExtraText += " title='games from app cache'>";
-      newExtraText += ((!localStorage[lsId + "lastGamesValidationTime"]) || ((new Date()).getTime() - localStorage[lsId + "lastGamesValidationTime"]) > 18000000) ? "X" : "&times;";
-      // 5h = 18000000ms
+      newExtraText += ((!localStorage[lsId + "lastGamesValidationTime"]) || ((new Date()).getTime() - localStorage[lsId + "lastGamesValidationTime"]) > 21600000) ? "X" : "&times;";
+      // 6h = 21600000ms ~ live event duration
       newExtraText += "</span>";
     }
   }

@@ -118,6 +118,14 @@ if [[ -n $name ]]; then
 fi
 rm -f "$pre-$id.appcache.bak"
 
+cp live-games-app.json "$pre-$id.json"
+sed -i.bak 's/live-games-app.php/'"$pre-$id.php"'/g' "$pre-$id.json"
+sed -i.bak 's/live-games-app-icon-\([0-9]\+\)x\([0-9]\+\).\(png\|ico\)/'"$pre-$id-icon-\1x\2.\3"'/g' "$pre-$id.json"
+if [[ -n $name ]]; then
+  sed -i.bak 's/Live Games/'"$name"'/g' "$pre-$id.json"
+fi
+rm -f "$pre-$id.json.bak"
+
 cp live-games-app.webapp "$pre-$id.webapp"
 sed -i.bak 's/live-games-app.php/'"$pre-$id.php"'/g' "$pre-$id.webapp"
 sed -i.bak 's/live-games-app-icon-\([0-9]\+\)x\([0-9]\+\).\(png\|ico\)/'"$pre-$id-icon-\1x\2.\3"'/g' "$pre-$id.webapp"
