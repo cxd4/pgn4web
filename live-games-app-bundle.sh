@@ -1,5 +1,5 @@
 # pgn4web javascript chessboard
-# copyright (C) 2009-2014 Paolo Casaschi
+# copyright (C) 2009-2015 Paolo Casaschi
 # see README file and http://pgn4web.casaschi.net
 # for credits, license and more details
 
@@ -84,6 +84,7 @@ fi
 
 cp live-games-app.php "$pre-$id.php"
 sed -i.bak 's/live-games-app.appcache/'"$pre-$id.appcache"'/g' "$pre-$id.php"
+sed -i.bak 's/live-games-app.json/'"$pre-$id.json"'/g' "$pre-$id.php"
 sed -i.bak 's/live-games-app-engine/'"$pre-$id-engine"'/g' "$pre-$id.php"
 sed -i.bak 's/live-games-app-icon-\([0-9]\+\)x\([0-9]\+\).\(png\|ico\)/'"$pre-$id-icon-\1x\2.\3"'/g' "$pre-$id.php"
 sed -i.bak 's/live-games-app.pgn/'"$pre-$id.pgn"'/g' "$pre-$id.php"
