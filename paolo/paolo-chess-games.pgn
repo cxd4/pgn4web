@@ -1,3 +1,40 @@
+[Event "Middlesex league"]
+[Site "London ENG"]
+[Date "28 Apr 2015"]
+[Round "?"]
+[White "Casaschi, Paolo"]
+[Black "Willmoth, Robert"]
+[Result "0-1"]
+[ECO "B07"]
+[Opening "Pirc"]
+[Variation "Ufimtsev-Pytel variation"]
+
+1. e4 d6 2. d4 Nf6 3. Nc3 c6 4. Be3 Nbd7 5. f3 Qb6 { D } 6. Qd2 Qxb2 7. Rb1
+Qa3 8. Bc4 b5 { D } 9. Bxb5 cxb5 10. Nxb5 Qxa2 11. Qb4 { D } 11... Rb8 12.
+Rb2 Qa1+ 13. Rb1 Rxb5 14. Qxb5 Qc3+ 15. Kf2 e6 16. Ne2 Qc7 { D } 17. Rb3
+Be7 18. Rc3 Qd8 19. h4 O-O 20. h5 a6 21. Qb2 h6 22. g4 { D } 22... Nh7 23.
+Ng3 Bh4 24. Kg2 Bxg3 25. Kxg3 f5 26. Qb3 Kh8 { D } 27. Qxe6 Ndf6 28. Rxc8
+Qxc8 29. gxf5 Qc3 30. Qb3 Qxb3 31. cxb3 Rb8 32. Ra1 Rxb3 33. Kf2 Rb2+ 34.
+Kf1 Ne8 35. Rxa6 Rb8 36. e5 Rd8 { D } 37. f6 gxf6 38. Bxh6 f5 39. Ke2 dxe5
+40. dxe5 Nc7 41. Rd6 Re8 42. Ke3 Ne6 43. Ra6 Kg8 44. f4 { D } 44... Nhf8
+45. Rd6 0-1
+
+[Event "London league"]
+[Site "London ENG"]
+[Date "2015-04-27"]
+[Round "?"]
+[White "Goodwin, Dominic"]
+[Black "Casaschi, Paolo"]
+[Result "1/2-1/2"]
+[ECO "D31"]
+[Opening "QGD"]
+[Variation "Charousek (Petrosian) variation"]
+
+1. d4 d5 2. c4 e6 3. Nc3 Be7 4. cxd5 exd5 5. Bf4 c6 6. e3 Nf6 7. Bd3 O-O 8.
+Qc2 Na6 9. a3 Nc7 10. Nf3 Ne6 11. Bg3 g6 12. h3 Ng7 13. O-O { D } 13... Bf5
+14. b4 Bxd3 15. Qxd3 a6 16. Ne5 Nf5 17. Bf4 Nd7 18. Nxd7 Qxd7 19. Na4 Qd8
+20. Rac1 Bd6 21. Bxd6 Nxd6 22. Nc5 Re8 23. Qb3 1/2-1/2
+
 [Event "London league"]
 [Site "London ENG"]
 [Date "2015-03-30"]
