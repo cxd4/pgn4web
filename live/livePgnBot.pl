@@ -2030,6 +2030,7 @@ sub process_master_command {
       $parameters = $1 . "s";
       my @liveList = ();
       my $liveListItem;
+      my $liveListCount;
       my $minElo = 99999;
       my $maxElo = 0;
       my $totElo = 0;
@@ -2054,8 +2055,18 @@ sub process_master_command {
           $totElo += $games_blackElo[$i];
           $numElo++;
         }
-        unless ($liveListItem ~~ @liveList) {
-          push(@liveList, $liveListItem);
+        push(@liveList, $liveListItem);
+      }
+      $liveListCount = 1;
+      if (($parameters eq "events") || ($parameters eq "rounds")) {
+        for (my $i = $#liveList; $i >= 0; $i--) {
+          if (($i > 0) && ($liveList[$i] eq $liveList[$i - 1])) {
+            $liveListCount++;
+            @liveList = @liveList[0..($i-1), ($i+1)..$#liveList];
+          } else {
+            $liveList[$i] .= " (" . $liveListCount . ")";
+            $liveListCount = 1;
+          }
         }
       }
       tell_operator("livelist: $parameters(" . ($#liveList + 1) . "/" . ($#games_num + 1) . "/$maxGamesNum)" . ($numElo > 0 ? sprintf(" elo(%d/%d/%d)", $minElo, $totElo/$numElo, $maxElo) : "") . ($#liveList >= 0 ? " " . join(", ", @liveList) . ";" : ""));
@@ -2217,13 +2228,17 @@ sub process_master_command {
           $_ = "";
         }
       }
-      for (my $i = $#memoryList; $i > 0; $i--) {
-        if (($memoryList[$i] eq $memoryList[$i - 1]) || ($memoryList[$i] eq "")) {
-          @memoryList = @memoryList[0..($i-1), ($i+1)..$#memoryList];
+      my $memoryListCount = 1;
+      if (($parameters eq "events") || ($parameters eq "rounds")) {
+        for (my $i = $#memoryList; $i >= 0; $i--) {
+          if (($i > 0) && ($memoryList[$i] eq $memoryList[$i - 1])) {
+            $memoryListCount++;
+            @memoryList = @memoryList[0..($i-1), ($i+1)..$#memoryList];
+          } else {
+            $memoryList[$i] .= " (" . $memoryListCount . ")";
+            $memoryListCount = 1;
+          }
         }
-      }
-      if (($#memoryList + 1 > 0) && ($memoryList[0] eq "")) {
-        @memoryList = @memoryList[1..$#memoryList];
       }
       tell_operator("memorylist: $parameters(" . ($#memoryList + 1) . "/" . ($#memory_games + 1) . "/$memoryMaxGamesNum/" . int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum) .")" . ($#memoryList >= 0 ? " " . join(", ", @memoryList) . ";" : ""));
     } elsif ($parameters eq "") {
