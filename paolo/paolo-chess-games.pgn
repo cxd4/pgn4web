@@ -1,5 +1,24 @@
 [Event "Middlesex league"]
 [Site "London ENG"]
+[Date "2015.05.07"]
+[Round "?"]
+[White "Butt, ODR"]
+[Black "Casaschi, Paolo"]
+[Result "1/2-1/2"]
+[ECO "C05"]
+[Opening "French"]
+[Variation "Tarrasch, closed variation"]
+
+1. e4 e6 2. d4 d5 3. Nd2 Nf6 4. e5 Nfd7 5. Bd3 c5 6. c3 Nc6 7. Ndf3 { D }
+7... Qb6 8. Ne2 cxd4 9. cxd4 Bb4+ 10. Bd2 Bxd2+ 11. Qxd2 Qb4 12. O-O Qxd2
+13. Nxd2 Nb4 14. Bb1 Nb6 15. a3 Nc6 16. Bd3 Bd7 17. Rac1 Ke7 18. f4 g6 19.
+Kf2 Rac8 20. Ke3 a6 21. Rc2 Na7 22. Rfc1 Rhd8 { D } 23. Rc7 Nc4+ 24. Nxc4
+Rxc7 25. Nd6 Rxc1 26. Nxc1 Rb8 27. g4 { D } 27... Bb5 28. Nxb5 Nxb5 29. Nb3
+Na7 30. Nc5 a5 31. f5 { D } 31... b6 32. f6+ Ke8 33. Na4 Kd7 34. Nc3 b5 35.
+Ne2 b4 36. a4 Rh8 37. b3 Rc8 38. Kd2 { $136 } 1/2-1/2
+
+[Event "Middlesex league"]
+[Site "London ENG"]
 [Date "28 Apr 2015"]
 [Round "?"]
 [White "Casaschi, Paolo"]
@@ -17,7 +36,7 @@ Ng3 Bh4 24. Kg2 Bxg3 25. Kxg3 f5 26. Qb3 Kh8 { D } 27. Qxe6 Ndf6 28. Rxc8
 Qxc8 29. gxf5 Qc3 30. Qb3 Qxb3 31. cxb3 Rb8 32. Ra1 Rxb3 33. Kf2 Rb2+ 34.
 Kf1 Ne8 35. Rxa6 Rb8 36. e5 Rd8 { D } 37. f6 gxf6 38. Bxh6 f5 39. Ke2 dxe5
 40. dxe5 Nc7 41. Rd6 Re8 42. Ke3 Ne6 43. Ra6 Kg8 44. f4 { D } 44... Nhf8
-45. Rd6 0-1
+45. Rd6 $136 $190 0-1
 
 [Event "London league"]
 [Site "London ENG"]
