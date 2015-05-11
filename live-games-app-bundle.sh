@@ -34,7 +34,7 @@ fi
 
 id=$1
 if [ -z "$id" ] || [ "$id" == "--help" ]; then
-  echo "usage: $(basename $0) [--delete] id [pgn] [name] [appopt] [engopt]"
+  echo "usage: $(basename $0) [--delete] id [pgn] [name] [appopt] [engopt] [userguide]"
   echo "please note: you can only deploy one bundle per domain (more bundles on the same domain would conflict on local storage)"
   exit 1
 fi
@@ -82,6 +82,8 @@ if [[ -n $engopt ]]; then
   fi
 fi
 
+userguide=$6
+
 cp live-games-app.php "$pre-$id.php"
 sed -i.bak 's/live-games-app.appcache/'"$pre-$id.appcache"'/g' "$pre-$id.php"
 sed -i.bak 's/live-games-app.json/'"$pre-$id.json"'/g' "$pre-$id.php"
@@ -89,10 +91,15 @@ sed -i.bak 's/live-games-app-engine/'"$pre-$id-engine"'/g' "$pre-$id.php"
 sed -i.bak 's/live-games-app-icon-\([0-9]\+\)x\([0-9]\+\).\(png\|ico\)/'"$pre-$id-icon-\1x\2.\3"'/g' "$pre-$id.php"
 sed -i.bak 's/live-games-app.pgn/'"$pre-$id.pgn"'/g' "$pre-$id.php"
 if [[ -n $name ]]; then
-  sed -i.bak 's/Live Games/'"$name"'/g' "$pre-$id.php"
+  nameescaped=$(echo $name | sed -e 's/[\/&]/\\&/g')
+  sed -i.bak "s/^\(\$appName = '\).*\(';$\)/\1$nameescaped\2/g" "$pre-$id.php"
 fi
 if [[ -n $appopt ]]; then
   sed -i.bak "s/\(\&pf=a' . '\)[^']*\('\)/\1${appopt//&/\\&}\2/g" "$pre-$id.php"
+fi
+if [[ -n $userguide ]]; then
+  userguideescaped=$(echo $userguide | sed -e 's/[\/&]/\\&/g')
+  sed -i.bak "s/^\(\$appUserGuide = '\).*\(';$\)/\1$userguideescaped\2/g" "$pre-$id.php"
 fi
 # sed -i.bak 's/enableLogging = false;/enableLogging = true;/g' "$pre-$id.php"
 # set TZ=UTC
@@ -102,7 +109,8 @@ rm -f "$pre-$id.php.bak"
 cp live-games-app-engine.php "$pre-$id-engine.php"
 sed -i.bak 's/live-games-app-icon-\([0-9]\+\)x\([0-9]\+\).\(png\|ico\)/'"$pre-$id-icon-\1x\2.\3"'/g' "$pre-$id-engine.php"
 if [[ -n $name ]]; then
-  sed -i.bak 's/Live Games/'"$name"'/g' "$pre-$id-engine.php"
+  nameescaped=$(echo $name | sed -e 's/[\/&]/\\&/g')
+  sed -i.bak "s/^\(\$appName = '\).*\(';$\)/\1$nameescaped\2/g" "$pre-$id-engine.php"
 fi
 if [[ -n $engopt ]]; then
   sed -i.bak "s/\(\&pf=a' . '\)[^']*\('\)/\1${engopt//&/\\&}\2/g" "$pre-$id-engine.php"
@@ -142,5 +150,24 @@ cp live-games-app-icon-60x60.png "$pre-$id-icon-60x60.png"
 rm -f "$pre-$id.pgn"
 ln -s $pgn "$pre-$id.pgn"
 
-echo "info: done $pre-$id.php with id=$id pgn=$pgn name=$name"
+echo -en "info: done $pre-$id.php with id=\"$id\""
+if [[ -n $pgn ]]; then
+  echo -n " pgn=\"$pgn\""
+fi
+if [[ -n $name ]]; then
+  echo -n " name=\"$name\""
+fi
+if [[ -n $appopt ]]; then
+  echo -n " appopt=\"$appopt\""
+fi
+if [[ -n $appopt ]]; then
+  echo -n " appopt=\"$appopt\""
+fi
+if [[ -n $engopt ]]; then
+  echo -n " engopt=\"$engopt\""
+fi
+if [[ -n $userguide ]]; then
+  echo -n " userguide=\"$userguide\""
+fi
+echo
 

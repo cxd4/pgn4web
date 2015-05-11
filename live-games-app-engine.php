@@ -10,6 +10,9 @@
 error_reporting(E_ALL | E_STRICT);
 
 
+$appName = 'Live Games';
+
+
 $html = @file_get_contents("engine.html");
 
 
@@ -41,7 +44,7 @@ if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
 
 
-$text = "<title>Live Games</title>";
+$text = "<title>$appName</title>";
 $oldText = "<title>pgn4web analysis board</title>";
 $actionNum += 1;
 if (!strstr($html, $oldText)) { errorExit($actionNum); }

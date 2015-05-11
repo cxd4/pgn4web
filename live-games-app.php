@@ -15,6 +15,8 @@ $enableLogging = false;
 
 $appName = 'Live Games';
 
+$appUserGuide = 'http://pgn4web-project.casaschi.net/wiki/App_LiveGames/';
+
 if (isset($_SERVER['REQUEST_URI']) && preg_match('/\?install(#|$)/', $_SERVER['REQUEST_URI'], $matches)) {
   $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
   if(strstr($ua, 'android')) {
@@ -99,7 +101,7 @@ END;
   }
 
   $html .= <<<END
-The <a href="http://pgn4web-project.casaschi.net/wiki/App_LiveGames/" target="_blank">app user guide</a> provides a detailed usage tutorial and further information: from the app, click/tap square F8 to open the <a href="http://pgn4web-project.casaschi.net/wiki/App_LiveGames/" target="_blank">app user guide</a>.
+The <a href="$appUserGuide" target="_blank">app user guide</a> provides a detailed usage tutorial and further information: from the app, click/tap square F8 to open the <a href="$appUserGuide" target="_blank">app user guide</a>.
 <script type="text/javascript">
 "use strict";
 window.onload = function() {
@@ -458,7 +460,7 @@ engineWinParametersSeparator = "#?";
 
 boardShortcut(debugShortcutSquare, "about", function(t,e){ if (e.shiftKey || confirm("$appName\\napp from the pgn4web project\\n\\nclick OK for debug info")) { displayDebugInfo(); } });
 
-boardShortcut("F8", "app user guide", function(t,e){ window.open("http://pgn4web-project.casaschi.net/wiki/App_LiveGames/", "pgn4web_webAppWiki"); });
+boardShortcut("F8", "app user guide", function(t,e){ window.open("$appUserGuide", "pgn4web_webAppUserGuide"); });
 
 if (LiveBroadcastDelay > 0) {
   boardShortcut("G6", "search next live date", function(t,e){ searchPgnGame('\\\\[\\\\s*Date\\\\s*"[^"]*live[^"]*"\\\\s*\\\\]', e.shiftKey); }, true);
