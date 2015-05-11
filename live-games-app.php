@@ -99,7 +99,7 @@ END;
   }
 
   $html .= <<<END
-The <a href="http://pgn4web-project.casaschi.net/wiki/App_LiveGames/" target="_blank">app user guide</a> provides further information and a detailed usage tutorial.
+The <a href="http://pgn4web-project.casaschi.net/wiki/App_LiveGames/" target="_blank">app user guide</a> provides a detailed usage tutorial and further information: from the app, click/tap square F8 to open the <a href="http://pgn4web-project.casaschi.net/wiki/App_LiveGames/" target="_blank">app user guide</a>.
 <script type="text/javascript">
 "use strict";
 window.onload = function() {
