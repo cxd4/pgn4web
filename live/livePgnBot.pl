@@ -704,8 +704,8 @@ sub process_line {
     fixRoundEvent($autorelayEvent, $autorelayRound, "Round");
     $autorelayEvent =~ s/^\s+|[\s-]+$//g;
     $autorelayEvent =~ s/\s+/ /g;
-    $autorelayEvent =~ s/^(.*)$/\u$1/;
     if ($eventAutocorrectRegexp) { $autorelayEvent = event_autocorrect($autorelayEvent); }
+    $autorelayEvent =~ s/^(.*)$/\u$1/; # event first letter to uppercase
     if ($autorelayRound eq "") { $autorelayRound = "-"; }
     if ($roundAutocorrectRegexp) { $autorelayRound = round_autocorrect($autorelayRound, $autorelayEvent); }
     declareRelayOnline();
