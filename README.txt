@@ -46,7 +46,7 @@ Features:
 - integrates with popular web platforms and services such as blogger, drupal,
   google sites, joomla, mediawiki, phpBB, wordpress.org and many others.
 - supports puzzles presentation modes
-- integrates with HTML5 video and YouTube video
+- integrates with HTML5 video
 - supports Chess960 (a.k.a. Fischer random chess) games
 
 Limitations:
@@ -488,10 +488,6 @@ The jscolor javascript code is maintained by Honza Odvarko
 (http://odvarko.cz/) and released under the GNU Lesser General Public License
 (http://www.gnu.org/copyleft/lesser.html)
 See http://jscolor.com/
-
-The SWFObject javascript library (https://code.google.com/p/swfobject/) is
-released under the MIT License
-(http://www.opensource.org/licenses/mit-license.php).
 
 The ECO code (http://en.wikipedia.org/wiki/Encyclopaedia_of_Chess_Openings) for
 game opening classification is a trademark of the Chess Informant publishing
