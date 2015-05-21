@@ -134,7 +134,7 @@ pgn4web demo site
 
 <a class="linklist" id="twic" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="twic944.html">twic</a>
 
-<a class="linklist" id="video" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="video.html?pgnData=CarlsenSvidler2010.pgn&amp;videoUrl=http://go.casaschi.net/pgn4web-demo-video-ogg-file&amp;videoWidth=480&amp;videoHeight=270&amp;videoLoop=true">video</a>
+<a class="linklist" id="video" target="pgnframe" onclick="return select_frame(this.id);" onfocus="this.blur();" href="video.html?pgnData=carlsensvidler.pgn&amp;videoUrl=http://go.casaschi.net/pgn4web-demo-video-ogg-file&amp;videoWidth=480&amp;videoHeight=270&amp;videoLoop=true">video</a>
 
 </td></tr></tbody></table>
 
@@ -253,7 +253,7 @@ function select_frame(new_frame) {
 }
 
 function random_frame() {
-  var random_selection = ["chess960", "chess960", "huebner", "huebner", "kramnik", "kramnik", "kk", "kk", "kk", "kk", "kk", "london", "london", "morphy", "morphy", "olympiad_live", "olympiad_live", "puzzles", "puzzles", "tallinn_live_dynamic", "tallinn_live_dynamic", "tallinn_live_dynamic", "tallinn_live_mosaic", "tallinn_live_mosaic", "tallinn_live_widget", "tilburg_replay", "tilburg_replay", "tilburg_live", "video", "video", "video"];
+  var random_selection = ["chess960", "chess960", "huebner", "huebner", "huebner", "huebner", "euroteams", "euroteams", "kk", "kk", "kk", "kk", "kramnik", "kramnik", "london", "london", "morphy", "morphy", "olympiad_live", "olympiad_live", "olympiad_live", "olympiad_live", "puzzles", "puzzles", "tallinn_live_dynamic", "tallinn_live_dynamic", "tallinn_live_dynamic", "tallinn_live_dynamic", "tallinn_live_mosaic", "tallinn_live_mosaic", "tallinn_live_widget", "tallinn_live_widget", "tilburg_replay", "tilburg_replay", "tilburg_live", "tilburg_live", "video", "video"];
   return random_selection[Math.floor(random_selection.length * Math.random())];
 }
 
