@@ -42,8 +42,8 @@ Features:
 - uses figurine fonts for chess moves and chess informant style symbols for
   comments and annotations
 - provides a chess viewer web service, see http://pgn4web-viewer.casaschi.net
-- provides a board generator tool for adding chess games to websites and blogs
-  without any html/javascript coding, see
+- provides a board generator web service for adding chess games to websites and
+  blogs without any html/javascript coding, see
   http://pgn4web-board-generator.casaschi.net
 - integrates with popular web platforms and services such as blogger, drupal,
   google sites, joomla, mediawiki, phpBB, wordpress.org and many others.
