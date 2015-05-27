@@ -1446,7 +1446,7 @@ sub memory_load {
       my @newSortkey = ();
       for (my $m=$#memory_games_sortkey; $m>=0; $m--) {
         unless ($memory_games_sortkey[$m] ~~ @newSortkey) {
-          log_terminal("info: event mem: " . sprintf_eventRound($memory_games_sortkey[$m]));
+          log_terminal("info: mem: " . sprintf_eventRound($memory_games_sortkey[$m]));
           push(@newSortkey, $memory_games_sortkey[$m]);
         }
       }
@@ -1482,13 +1482,13 @@ sub log_rounds {
 
   foreach (@currentRounds) {
     unless ($_ ~~ @newRounds) {
-      log_terminal("info: event out: " . sprintf_eventRound($_));
+      log_terminal("info: out: " . sprintf_eventRound($_));
     }
   }
 
   foreach (@newRounds) {
     unless ($_ ~~ @currentRounds) {
-      log_terminal("info: event new: " . sprintf_eventRound($_));
+      log_terminal("info: new: " . sprintf_eventRound($_));
       $roundsStartCount++;
       $thisEvent = $thisRound = $_;
       $thisEvent =~ s/^"(.*)" ".*"$/$1/;
