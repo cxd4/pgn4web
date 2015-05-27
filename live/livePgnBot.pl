@@ -818,6 +818,7 @@ sub process_line {
     if (($autorelayMode == 1) && ($#games_num < 0)) {
       force_next_check_relay_time();
     }
+  } elsif ($line =~ /^(Local time|Server time|GMT)\s+-/) {
   } elsif ($newGame_num < 0) {
     if ($line =~ /^Movelist for game (\d+):/) {
       reset_newGame();
@@ -2764,6 +2765,7 @@ sub force_next_check_relay_time {
 sub ensure_alive {
   if (time() - $last_cmd_time > $PROTECT_LOGOUT_FREQ) {
     cmd_run("date");
+    tell_operator_and_log_terminal("debug: keepalive issued");
   }
 }
 
@@ -2935,14 +2937,14 @@ sub main_loop {
     my $line = $telnet->getline(Timeout => $LINE_WAIT_TIMEOUT);
     if (($line) && ($line !~ /^$/)) {
       $line =~ s/[\r\n]*$//;
-      $line =~ s/^[\r\n]*//;                                  # same length as " debug: ics command input: "
+      $line =~ s/^[\r\n]*//;                              # same length as " debug: ics command input: "
       if ($verbosity >= 7) { print(strftime($strftimeFormat, o_gmtime()) . " output: ics comms output: $line\n"); }
       process_line($line);
     }
 
     ensure_alive();
-    memory_load_check();
     check_relay_results();
+    memory_load_check();
     heartbeat();
   }
 }
