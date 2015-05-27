@@ -1226,9 +1226,9 @@ Nh6 1-0
 
 [Result "1-0"]
 [SetUp "1"]
-[FEN "4k3/5b1R/5pp1/p3n3/1p2BB1P/5PK1/r5P1/8 w - - 0 1"]
+[FEN "1r6/p1kb1p1p/3p2p1/PP4P1/1R6/4P1KP/5PB1/8 w - - 3 37"]
 
-1. Bxe5 fxe5 2. Rxf7 Kxf7 3. Bd5+ Kf6 4. Bxa2 1-0
+37. b6 axb6 38. a6 1-0
 
 [Result "1-0"]
 [SetUp "1"]
