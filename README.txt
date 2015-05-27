@@ -11,11 +11,11 @@ PGN4WEB: javascript chess games viewer for websites, blogs and live broadcasts.
 
 ABOUT
 
-pgn4web is a software package providing a chess games viewer for websites or
-blogsites; pgn4web provides a variety of online web services, including a chess
-viewer and a board generator tool for adding chess games to websites and blogs
-without any html/javascript coding; pgn4web integrates with several popular web
-platforms and services.
+pgn4web is a software package providing a chess games viewer for websites and
+blogsites, including live games broadcast support; pgn4web provides a variety
+of online web services, including a chess viewer and a board generator tool for
+adding chess games to websites and blogs without any coding; pgn4web integrates
+with several popular web platforms and services.
 
 ***
 *** THIS README FILE IS A SUMMARY OF THE PGN4WEB DOCUMENTATION
@@ -29,7 +29,7 @@ Contact email: pgn4web@casaschi.net
 
 Features:
 - display chess games form PGN files on websites and blogs
-- supports live broadcasts of chess games
+- supports live broadcasts of chess games with automatic refresh of remote PGNs
 - interactive browsing of game variations and comments
 - shortcut keys for navigating through the game, for selecting games and much
   more; uses chessboard squares as input buttons; on supported touchscreen
@@ -43,8 +43,7 @@ Features:
   comments and annotations
 - provides a chess viewer web service, see http://pgn4web-viewer.casaschi.net
 - provides a board generator web service for adding chess games to websites and
-  blogs without any html/javascript coding, see
-  http://pgn4web-board-generator.casaschi.net
+  blogs without any coding, see http://pgn4web-board-generator.casaschi.net
 - integrates with popular web platforms and services such as blogger, drupal,
   google sites, joomla, mediawiki, phpBB, wordpress.org and many others.
 - supports puzzles presentation modes
