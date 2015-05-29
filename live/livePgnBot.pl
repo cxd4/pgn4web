@@ -94,7 +94,9 @@ our $roundsStartCount = 0;
 our $gamesStartCount = 0;
 our $pgnWriteCount = 0;
 our $cmdRunCount = 0;
+our $outBytes = 0;
 our $lineCount = 0;
+our $inBytes = 0;
 
 our $last_cmd_time = 0;
 our $last_check_relay_time = 0;
@@ -107,6 +109,7 @@ our $heartbeat_offset_hour = $heartbeat_offset_hour_default;
 
 sub cmd_run {
   my ($cmd) = @_;
+  $outBytes += length($cmd);
   log_terminal("debug: ics command input: $cmd");
   my $output = $telnet->cmd($cmd);
   $last_cmd_time = time();
@@ -628,6 +631,8 @@ sub tell_operator {
 
 sub process_line {
   my ($line) = @_;
+
+  $inBytes += length($line);
 
   $line =~ s/[\r\n ]+$//;
   $line =~ s/^[\r\n ]+//;
@@ -2798,7 +2803,7 @@ sub h_info {
     $thisInfo .= sprintf(" memory=%d/%d/%d", ($#memory_games + 1), $memoryMaxGamesNum, int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum));
   }
   if ($verbosity >= 5) {
-    $thisInfo .= sprintf(" pgn=%d p/h=%d cmd=%d c/h=%d lines=%d l/h=%d", $pgnWriteCount, $pgnWriteCount / $hourTime, $cmdRunCount, $cmdRunCount / $hourTime, $lineCount, $lineCount / $hourTime);
+    $thisInfo .= sprintf(" pgn=%d p/h=%d cmd=%d c/h=%d lines=%d l/h=%d iM=%d i/d=%d oM=%d o/d=%d", $pgnWriteCount, $pgnWriteCount / $hourTime, $cmdRunCount, $cmdRunCount / $hourTime, $lineCount, $lineCount / $hourTime, $inBytes / 1000000,  $inBytes / 1000000 / $dayTime, $outBytes / 1000000, $outBytes / 1000000 / $dayTime);
     $thisInfo .= " sys=" . sys_info();
   }
   $thisInfo .= sprintf(" last=%s", $lastPgnRefresh ? strftime($strftimeFormat, o_gmtime($lastPgnRefresh)) : "?");
@@ -2810,7 +2815,7 @@ sub sys_info {
   open(STAT, "<", "/proc/$$/stat") or return "?";
   my @stat = split(/\s+/, <STAT>);
   close(STAT);
-  return $stat[3] . "/" . $stat[0] . "/" . $stat[22] . "/" . $stat[23];
+  return "ppid:" . $stat[3] . "/pid:" . $stat[0] . "/vsize:" . $stat[22] . "/rss:" . $stat[23];
 }
 
 
