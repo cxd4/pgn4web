@@ -587,7 +587,7 @@ sub log_terminal {
     return;
   }
   my ($msg) = @_;
-  my $thisVerbosity = 1; # defaulting to alert
+  my $thisVerbosity;
   if ($msg =~ /^fyi:/) {
     $thisVerbosity = 6;
   } elsif ($msg =~ /^debug:/) {
@@ -598,6 +598,8 @@ sub log_terminal {
     $thisVerbosity = 3;
   } elsif ($msg =~ /^error:/) {
     $thisVerbosity = 2;
+  } else { # defaulting to alert
+    $thisVerbosity = 1;
   }
   if ($thisVerbosity <= $verbosity) {
     print(strftime($strftimeFormat, o_gmtime()) . " " . $msg . "\n");
@@ -647,7 +649,7 @@ sub process_line {
         tell_operator("error: invalid tell: $thisTell");
       }
     } else {
-      log_terminal("fyi: ignoring tell from user $1");
+      log_terminal("fyi: ignoring tell from user $1: $2");
     }
   } elsif ($line =~ /^<12> (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+) (\S+)/) {
     my $thisNC = $9; # Next move Color
@@ -2780,7 +2782,7 @@ update_heartbeat_time();
 
 sub heartbeat {
   if (time() + $timeOffset > $next_heartbeat_time) {
-    tell_operator_and_log_terminal("heartbeat: " . h_info());
+    tell_operator_and_log_terminal("alert: heartbeat: " . h_info());
     update_heartbeat_time();
   }
 }
