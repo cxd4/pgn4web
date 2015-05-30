@@ -1547,7 +1547,7 @@ add_master_command ("livefile", "livefile [filename.pgn] (to get/set the filenam
 add_master_command ("livelist", "livelist [events|rounds|games] (to get live events/rounds/games lists)");
 add_master_command ("livemax", "max [number] (to get/set the maximum number of games for the live PGN data)");
 add_master_command ("livepurgegames", "livepurgegames [game number list, such as: 12 34 56 ..] (to purge given past games from live PGN data)");
-add_master_command ("log", "log [string] (to print a string on the log terminal)");
+add_master_command ("log", "log [[alert|error|warning|info|debug|fyi]: string] (to print a string on the log terminal)");
 add_master_command ("memoryautopurgeevent", "memoryautopurgeevent [0|1] (to automatically purge new live events from the PGN memory data)");
 add_master_command ("memorycorrectresult", "memorycorrectresult [\"event\" \"round\" \"white\" \"black\" \"search\" \"replacement\"] (to correct a result in the PGN memory data)");
 add_master_command ("memorydate", "memorydate [strftime_string|\"\"] (to get/set the PGN header tag date for the PGN memory data)");
@@ -1578,7 +1578,7 @@ add_master_command ("site", "site [string|\"\"] (to get/set the PGN header tag s
 add_master_command ("startup", "startup [command list, separated by semicolon] (to get/set startup commands file)");
 add_master_command ("timeoffset", "timeoffset [[+|-]seconds] (to get/set the offset correcting the time value from the UTC time used by default)");
 add_master_command ("topfile", "topfile [filename.pgn] (to get/set the filename for the top PGN data)");
-add_master_command ("verbosity", "verbosity [0-7] (to get/set log verbosity: 0=none, 1=alert, 2=error, 3=warning, 4=info, 5=debug, 6=fyi 7=output)");
+add_master_command ("verbosity", "verbosity [0-7] (to get/set log verbosity: 0=none, 1=alert, 2=error, 3=warning, 4=info, 5=debug, 6=fyi 7=all)");
 add_master_command ("write", "write [!] (to force writing updated PGN data according to the latest configuration)");
 
 sub detect_command {
@@ -2124,7 +2124,12 @@ sub process_master_command {
     }
   } elsif ($command eq "log") {
     if ($parameters ne "") {
-      log_terminal($parameters);
+      if ($parameters =~ /^(alert|error|warning|info|debug|fyi): .+/) {
+        log_terminal($parameters);
+        tell_operator("OK $command");
+      } else {
+        tell_operator("error: invalid $command parameter");
+      }
     } else {
       tell_operator(detect_command_helptext($command));
     }
@@ -2998,7 +3003,7 @@ sub myExit {
 
 eval {
   setup_time();
-  log_terminal("info: starting $0");
+  log_terminal("alert: starting $0");
   if ($FLAGS) { log_terminal("alert: flags: $FLAGS"); }
   setup();
   main_loop();
