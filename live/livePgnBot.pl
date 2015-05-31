@@ -1539,7 +1539,7 @@ add_master_command ("follow", "follow [0|handle|/s|/b|/l] (to follow the user wi
 add_master_command ("games", "games (to get games summary info)");
 add_master_command ("heartbeat", "heartbeat [frequency offset] (to get/set the timing of heartbeat log messages, in hours)");
 add_master_command ("help", "help [command] (to get commands help)");
-add_master_command ("history", "history (to get history info)");
+add_master_command ("history", "history [compact|extended] (to get history info)");
 add_master_command ("ics", "ics [server command] (to run a custom command on the ics server)");
 add_master_command ("ignore", "ignore [regexp|\"\"] (to get/set the regular expression to ignore events/players from the PGN header during autorelay; has precedence over prioritize; use ^(?:(?!regexp).)+\$ for negative lookup)");
 add_master_command ("livedate", "livedate [strftime_string|\"\"] (to get/set the PGN header tag date for live PGN data)");
@@ -1982,7 +1982,11 @@ sub process_master_command {
       tell_operator("info: non-beautified players names required");
     }
   } elsif ($command eq "history") {
-    tell_operator("history: " . h_info());
+    if ($parameters =~ /^(compact|extended|)$/) {
+      tell_operator("history: " . h_info($parameters));
+    } else {
+      tell_operator(detect_command_helptext($command));
+    }
   } elsif ($command eq "ics") {
     if ($parameters !~ /^\??$/) {
       cmd_run($parameters);
@@ -2787,7 +2791,7 @@ update_heartbeat_time();
 
 sub heartbeat {
   if (time() + $timeOffset > $next_heartbeat_time) {
-    tell_operator_and_log_terminal("alert: heartbeat: " . h_info());
+    tell_operator_and_log_terminal("alert: heartbeat: " . h_info(""));
     update_heartbeat_time();
   }
 }
@@ -2801,6 +2805,10 @@ sub update_heartbeat_time {
 }
 
 sub h_info {
+  my ($mode) = @_;
+  if ($mode eq "") {
+    $mode = $verbosity < 5 ? "compact" : "extended";
+  }
   my $secTime = time() - $startupTime;
   my $hourTime = $secTime / 3600;
   my $dayTime = $hourTime / 24;
@@ -2809,7 +2817,7 @@ sub h_info {
   if ($PGN_MEMORY ne "") {
     $thisInfo .= sprintf(" memory=%d/%d/%d", ($#memory_games + 1), $memoryMaxGamesNum, int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum));
   }
-  if ($verbosity >= 5) {
+  if ($mode eq "extended") {
     $thisInfo .= sprintf(" pgn=%d p/h=%d cmd=%d c/h=%d lines=%d l/h=%d iM=%d i/d=%d oM=%d o/d=%d", $pgnWriteCount, $pgnWriteCount / $hourTime, $cmdRunCount, $cmdRunCount / $hourTime, $lineCount, $lineCount / $hourTime, $inBytes / 1000000,  $inBytes / 1000000 / $dayTime, $outBytes / 1000000, $outBytes / 1000000 / $dayTime);
     $thisInfo .= " sys=" . sys_info();
   }
