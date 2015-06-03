@@ -193,6 +193,7 @@ $text = <<<END
 <!-- end DeploymentCheck -->
 <script type="text/javascript">
 "use strict";
+document.addEventListener("contextmenu", function(e){ e.preventDefault(); }, false);
 window['defaultOpen'] = window.open;
 window.open = function (winUrl, winTarget, winParam) {
   if ((winUrl) && (winUrl.match(/(^|\/)live-games-app-engine\.php/))) {
@@ -595,6 +596,8 @@ simpleAddEvent(window.applicationCache, "updateready", function(e) {
   window.applicationCache.swapCache();
   window.location.reload();
 });
+
+simpleAddEvent(document, "contextmenu", function(e){ e.preventDefault(); });
 END;
 $oldText = "<!-- AppCheck: footer -->";
 $actionNum += 1;

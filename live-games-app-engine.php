@@ -208,6 +208,7 @@ function backToGames() {
   }
 }
 
+simpleAddEvent(document, "contextmenu", function(e){ e.preventDefault(); });
 END;
 $oldText = "<!-- AppCheck: footer -->";
 $actionNum += 1;
