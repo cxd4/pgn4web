@@ -108,6 +108,7 @@ window.onload = function() {
   document.getElementById("appIconLink").href = document.getElementById("appLink").href = location.href.replace(/\?install(#|$)/, "$1");
   document.getElementById("appIcon").style.opacity = 1;
 };
+document.addEventListener("contextmenu", function(e){ e.preventDefault(); }, false);
 </script>
 </body>
 </html>
@@ -193,7 +194,6 @@ $text = <<<END
 <!-- end DeploymentCheck -->
 <script type="text/javascript">
 "use strict";
-document.addEventListener("contextmenu", function(e){ e.preventDefault(); }, false);
 window['defaultOpen'] = window.open;
 window.open = function (winUrl, winTarget, winParam) {
   if ((winUrl) && (winUrl.match(/(^|\/)live-games-app-engine\.php/))) {
