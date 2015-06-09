@@ -1553,7 +1553,7 @@ add_master_command ("memorycorrectresult", "memorycorrectresult [\"event\" \"rou
 add_master_command ("memorydate", "memorydate [strftime_string|\"\"] (to get/set the PGN header tag date for the PGN memory data)");
 add_master_command ("memoryfile", "memoryfile [filename.pgn] (to get/set the filename for the PGN memory data)");
 add_master_command ("memorylist", "memorylist [events|rounds|games] (to get memory events/rounds/games lists)");
-add_master_command ("memoryload", "memoryload [1] (to load PGN memroy data from memory file)");
+add_master_command ("memoryload", "memoryload [!] (to load PGN memroy data from memory file)");
 add_master_command ("memorymax", "memorymax [number] (to get/set the maximum number of games for the PGN memory data)");
 add_master_command ("memorypurgegame", "memorypurgegame [\"event\" \"round\" \"white\" \"black\"] (to purge a game from the PGN memory data)");
 add_master_command ("memorypurgeevent", "memorypurgeevent [\"event\"] (to purge an event from the PGN memory data)");
@@ -2265,7 +2265,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "memoryload") {
-    if ($parameters eq "1") {
+    if ($parameters eq "!") {
       memory_load();
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
