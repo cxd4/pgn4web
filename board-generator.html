@@ -800,10 +800,21 @@ function set_defaults() {
 
   generate_html_code();
   update_controls();
+  update_help();
 }
 
 function reset_form() {
   if (confirm("do you really want to reset the board generator to the default values?\nAll your settings including the PGN text might be lost!")) { set_defaults(); }
+}
+
+function update_help() {
+  var theObj;
+  if (theObj = document.getElementById("help_pgn_short")) {
+    theObj.style.display = document.board.useTextarea.checked ? "none" : "";
+  }
+  if (theObj = document.getElementById("help_pgn_compressed")) {
+    theObj.style.display = (document.board.useTextarea.checked || !document.board.encodePgn.checked) ? "none" : "";
+  }
 }
 
 function update_controls() {
@@ -1698,8 +1709,8 @@ pgn4web board generator
 <li>
 <a href=#pgn_form><b>enter your PGN text</b> in the green textbox below</a>
   <ul type="square">
-  <li>keep PGN data short: due to a limitation of web browsers and web servers with the URL length, only short PGN texts are allowed, usually up to four games without comments; an error message shows when the max URL length limit is exceeded, in case try removing unnecessary header tags and comments/variations or try reducing the number of games per chessboard</li>
-  <li>by default the PGN data is compressed and encoded, with characters outside the 255 characters ascii set rejected and replaced with stars "*"; this might affect some non English text and names</li>
+  <li id="help_pgn_short">keep PGN data short: due to a limitation of web browsers and web servers with the URL length, only short PGN texts are allowed, usually up to four games without comments; an error message shows when the max URL length limit is exceeded, in case try removing unnecessary header tags and comments/variations or try reducing the number of games per chessboard</li>
+  <li id="help_pgn_compressed">the PGN data is compressed and encoded, with characters outside the 255 characters ascii set rejected and replaced with stars "*"; this might affect some non English text and names</li>
   <li>in case of errors in the supplied PGN data, a chessboard square starts flashing to signal the exception; detailed debug information is available clicking on the flashing chessboard square</li>
   </ul>
 </li>
@@ -2177,14 +2188,14 @@ uses the parent's background color</span>
 <script type="text/javascript">print_menu("url_options", 3, "URL options");</script>
 <div style="height: 1em">&nbsp;</div>
 
-<input class="checkbox" type="checkbox" id="useTextarea" name="checkbox" onChange="validate_useTextarea(); update_controls();">
+<input class="checkbox" type="checkbox" id="useTextarea" name="checkbox" onChange="validate_useTextarea(); update_controls(); update_help();">
 <label class="labeltext" for="useTextarea">use HTML textarea</label>
 <span class="helptext">normally
 <a id="useTextarea_disabled" class="helplink" href="" onClick="if (!this.disabled) { document.board.useTextarea.checked = false; update_controls(); } return false;">disabled</a>;
 use only for deployment on a page from the same domain as the <i>board URL</i></span>
 <p></p>
 
-<input class="checkbox" type="checkbox" id="encodePgn" name="checkbox">
+<input class="checkbox" type="checkbox" id="encodePgn" name="checkbox" onChange="update_help();">
 <label class="labeltext" for="encodePgn">encode PGN text</label>
 <span class="helptext">normally
 <a id="encodePgn_enabled" class="helplink" href="" onClick="if (!this.disabled) { document.board.encodePgn.checked = true; } return false;">enabled</a>

@@ -1,3 +1,4 @@
+/*jsl:ignoreall*/
 /**
  * jscolor, JavaScript Color Picker
  *
