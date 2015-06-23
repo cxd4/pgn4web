@@ -432,6 +432,9 @@ sub save_game {
     }
   }
   refresh_pgn();
+  if ($autorelayMode == 1) {
+    log_rounds();
+  }
 }
 
 sub myAdd {
@@ -532,6 +535,9 @@ sub remove_game {
   delete $GAMES_headerForFilter[$thisGameNum];
   log_terminal("debug: game out $thisGameNum");
   refresh_pgn();
+  if ($autorelayMode == 1) {
+    log_rounds();
+  }
   return $thisGameIndex;
 }
 
@@ -1142,9 +1148,9 @@ sub refresh_pgn {
         log_terminal("error: failed writing $PGN_LIVE");
       }
     }
-    if ($autorelayMode == 1) {
-      log_rounds();
-    }
+    # if ($autorelayMode == 1) {
+    #  log_rounds(); # moved to save_game() and remove_game()
+    # }
     refresh_memory();
     refresh_top();
     return 1;
