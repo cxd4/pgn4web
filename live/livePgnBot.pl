@@ -209,6 +209,7 @@ our $roundReverseAgtB = $roundReverse ? -1 : 1;
 our $roundReverseAltB = -$roundReverseAgtB;
 
 our @currentRounds = ();
+our $currentRoundsJoined = "";
 
 our $PGN_MEMORY = "";
 our $memoryMaxGamesNum = $maxGamesNumDefault;
@@ -250,6 +251,7 @@ sub reset_live {
   @GAMES_headerForFilter = ();
   @GAMES_autorelayRunning = ();
   @currentRounds = ();
+  $currentRoundsJoined = "";
   $reportedNotFoundNonPrioritizedGame = 0;
   $lastTopPgn = $lastPgnForce;
   log_terminal("debug: live games reset");
@@ -1487,29 +1489,31 @@ sub log_rounds {
     }
   }
 
-  foreach (@currentRounds) {
-    unless ($_ ~~ @newRounds) {
-      log_terminal("info: out: " . sprintf_eventRound($_));
+  my $newRoundsJoined = join(":", @newRounds);
+  if ($newRoundsJoined ne $currentRoundsJoined) {
+    foreach (@currentRounds) {
+      unless ($_ ~~ @newRounds) {
+        log_terminal("info: out: " . sprintf_eventRound($_));
+      }
     }
-  }
-
-  foreach (@newRounds) {
-    unless ($_ ~~ @currentRounds) {
-      log_terminal("info: new: " . sprintf_eventRound($_));
-      $roundsStartCount++;
-      $thisEvent = $thisRound = $_;
-      $thisEvent =~ s/^"(.*)" ".*"$/$1/;
-      if (($thisEvent ne "") && ($thisEvent ne "?") && ($thisEvent ne "-")) {
-        if ($memoryAutopurgeEvent == 1) {
-          memory_purge_event($thisEvent);
-        } else {
-          memory_purge_round($thisRound);
+    foreach (@newRounds) {
+      unless ($_ ~~ @currentRounds) {
+        log_terminal("info: new: " . sprintf_eventRound($_));
+        $roundsStartCount++;
+        $thisEvent = $thisRound = $_;
+        $thisEvent =~ s/^"(.*)" ".*"$/$1/;
+        if (($thisEvent ne "") && ($thisEvent ne "?") && ($thisEvent ne "-")) {
+          if ($memoryAutopurgeEvent == 1) {
+            memory_purge_event($thisEvent);
+          } else {
+            memory_purge_round($thisRound);
+          }
         }
       }
     }
+    @currentRounds = @newRounds;
+    $currentRoundsJoined = $newRoundsJoined;
   }
-
-  @currentRounds = @newRounds;
 }
 
 
