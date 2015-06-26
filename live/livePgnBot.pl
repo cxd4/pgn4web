@@ -2092,7 +2092,7 @@ sub process_master_command {
           }
         }
       }
-      tell_operator("livelist: $parameters(" . ($#liveList + 1) . "/" . ($#games_num + 1) . "/$maxGamesNum)" . ($numElo > 0 ? sprintf(" elo(%d/%d/%d)", $minElo, $totElo/$numElo, $maxElo) : "") . ($#liveList >= 0 ? " " . join(", ", @liveList) . ";" : ""));
+      tell_operator("livelist: $parameters(" . ($#liveList + 1) . ($parameters eq "games" ? "/" : ") games(") . ($#games_num + 1) . "/$maxGamesNum)" . ($numElo > 0 ? sprintf(" elo(%d/%d/%d)", $minElo, $totElo/$numElo, $maxElo) : "") . ($#liveList >= 0 ? " " . join(", ", @liveList) . ";" : ""));
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
     } else {
@@ -2268,7 +2268,7 @@ sub process_master_command {
           }
         }
       }
-      tell_operator("memorylist: $parameters(" . ($#memoryList + 1) . "/" . ($#memory_games + 1) . "/$memoryMaxGamesNum/" . int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum) .")" . ($#memoryList >= 0 ? " " . join(", ", @memoryList) . ";" : ""));
+      tell_operator("memorylist: $parameters(" . ($#memoryList + 1) . ($parameters eq "games" ? "/" : ") games(") . ($#memory_games + 1) . "/$memoryMaxGamesNum/" . int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum) .")" . ($#memoryList >= 0 ? " " . join(", ", @memoryList) . ";" : ""));
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
     } else {
