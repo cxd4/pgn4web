@@ -2848,7 +2848,7 @@ sub num2str {
   my @div = (1, 1000, 1000000, 1000000000, 1000000000000);
   my @suf = ("", "K", "M", "G", "T");
   my $i;
-  for ($i = $#div; ($i >= 0) && ($num < $div[$i]); $i--) { }
+  for ($i = $#div; ($i > 0) && ($num < $div[$i]); $i--) { }
   if ($dec ne "") { return sprintf("%." . $dec . "f" . $suf[$i], $num / $div[$i]); }
   else { return sprintf("%d" . $suf[$i], $num / $div[$i]); }
 }
