@@ -2822,13 +2822,13 @@ sub h_info {
   my $secTime = time() - $startupTime;
   my $hourTime = $secTime / 3600;
   my $dayTime = $hourTime / 24;
-  my $thisInfo .= sprintf("rounds=%d/%d r/d=%d", ($#currentRounds + 1), $roundsStartCount, $roundsStartCount / $dayTime);
-  $thisInfo .= sprintf(" games=%d/%d/%d g/d=%d", ($#games_num + 1), $maxGamesNum, $gamesStartCount, $gamesStartCount / $dayTime);
+  my $thisInfo .= sprintf("rounds=%s/%s r/d=%s", num2str($#currentRounds + 1), num2str($roundsStartCount), num2str($roundsStartCount / $dayTime));
+  $thisInfo .= sprintf(" games=%s/%s/%s g/d=%s", num2str($#games_num + 1), num2str($maxGamesNum), num2str($gamesStartCount), num2str($gamesStartCount / $dayTime));
   if ($PGN_MEMORY ne "") {
-    $thisInfo .= sprintf(" memory=%d/%d/%d", ($#memory_games + 1), $memoryMaxGamesNum, int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum));
+    $thisInfo .= sprintf(" memory=%s/%s/%s", num2str($#memory_games + 1), num2str($memoryMaxGamesNum), num2str($memoryMaxGamesNumBuffer * $memoryMaxGamesNum));
   }
   if ($mode eq "extended") {
-    $thisInfo .= sprintf(" pgn=%d p/h=%d cmd=%d c/h=%d lines=%d l/h=%d iM=%d i/d=%d oM=%d o/d=%d", $pgnWriteCount, $pgnWriteCount / $hourTime, $cmdRunCount, $cmdRunCount / $hourTime, $lineCount, $lineCount / $hourTime, $inBytes / 1000000,  $inBytes / 1000000 / $dayTime, $outBytes / 1000000, $outBytes / 1000000 / $dayTime);
+    $thisInfo .= sprintf(" pgn=%s p/h=%s cmd=%s c/h=%s lines=%s l/h=%s i=%s i/d=%s o=%s o/d=%s", num2str($pgnWriteCount), num2str($pgnWriteCount / $hourTime), num2str($cmdRunCount), num2str($cmdRunCount / $hourTime), num2str($lineCount), num2str($lineCount / $hourTime), num2str($inBytes),  num2str($inBytes / $dayTime), num2str($outBytes), num2str($outBytes / $dayTime));
     $thisInfo .= " sys=" . sys_info();
   }
   $thisInfo .= sprintf(" last=%s", $lastPgnRefresh ? strftime($strftimeFormat, o_gmtime($lastPgnRefresh)) : "?");
@@ -2840,7 +2840,17 @@ sub sys_info {
   open(STAT, "<", "/proc/$$/stat") or return "?";
   my @stat = split(/\s+/, <STAT>);
   close(STAT);
-  return "ppid:" . $stat[3] . "/pid:" . $stat[0] . "/vsize:" . $stat[22] . "/rss:" . $stat[23];
+  return "ppid:" . $stat[3] . "/pid:" . $stat[0] . "/vsize:" . num2str($stat[22]) . "/rss:" . num2str($stat[23]);
+}
+
+sub num2str {
+  my ($num, $dec) = @_;
+  my @div = (1, 1000, 1000000, 1000000000, 1000000000000);
+  my @suf = ("", "K", "M", "G", "T");
+  my $i;
+  for ($i = $#div; ($i >= 0) && ($num < $div[$i]); $i--) { }
+  if ($dec ne "") { return sprintf("%." . $dec . "f" . $suf[$i], $num / $div[$i]); }
+  else { return sprintf("%d" . $suf[$i], $num / $div[$i]); }
 }
 
 
