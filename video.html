@@ -150,6 +150,7 @@ if (videoHelp) {
   document.write(" - videoAutoplay = if set true video autoplays at page load; default true\n");
   document.write(" - videoLoop = if set true video loops; default false\n");
   document.write(" - horizontalLayout = if set true the chessboard is next to the video, otherwise underneath; default true\n");
+  document.write(" - headerDisplay = if set true game header info is shown; default true\n");
   document.write("\n");
   document.write(" - setupVideotimes = if set true, setup special mode to add video times info to the PGN data; default false\n");
   document.write(" - testVideotimes = if set true, detects missing/wrong video times info in the PGN data; default false\n");
@@ -164,6 +165,7 @@ if (videoHelp) {
 }
 
 var horizontalLayout = ((gup("horizontalLayout") != "false") && (gup("hl") != "f"));
+var headerDisplay = ((gup("headerDisplay") != "false") && (gup("hd") != "f"));
 
 </script>
 
@@ -171,12 +173,7 @@ var horizontalLayout = ((gup("horizontalLayout") != "false") && (gup("hl") != "f
 
 <table>
 
-<script type="text/javascript">
-"use strict";
-
-if (!horizontalLayout) { document.write('<tr><td height="20"></td></tr>'); }
-
-</script>
+<tr><td height="20"></td></tr>
 
 <tr><td>
 
@@ -199,12 +196,12 @@ else { document.write('</tr><tr><td height="20"></td></tr><tr>'); }
 <td align="center">
 
 <div class="boardBox">
-<div style="margin-bottom:1em;">
+<div id="GameBlackHeader" style="margin-bottom:1em;">
 <div id="GameBlackClock" style="float:right;"></div>
 <span id="GameBlack"></span>&nbsp;
 </div>
 <div id="GameBoard"><div style="width:272px; height:272px;"></div></div>
-<div style="margin-top:1em;">
+<div id="GameWhiteHeader" style="margin-top:1em;">
 <div id="GameWhiteClock" style="float:right;"></div>
 <span id="GameWhite"></span>&nbsp;
 </div>
@@ -254,6 +251,13 @@ else { document.write('</tr><tr><td height="20"></td></tr><tr>'); }
 <script type="text/javascript">
 "use strict";
 
+var theObj;
+
+if (!headerDisplay) {
+  if (theObj = document.getElementById("GameBlackHeader")) { theObj.style.display = "none"; }
+  if (theObj = document.getElementById("GameWhiteHeader")) { theObj.style.display = "none"; }
+}
+
 // accepts pgnData as alias for pgnFile for consistency with board.html
 var pgnFile;
 if ((pgnFile = gup("pgnData")) === "") {
@@ -284,8 +288,6 @@ document.getElementById("setupBox").style.display = setupVideotimes ? "inline" :
 
 
 var paramError = "";
-
-var theObj;
 
 if (theObj = document.getElementById("videoBox")) {
   if (videoWidth) { theObj.style.width = videoWidth + "px"; }
@@ -385,6 +387,7 @@ function findIndexInOrderedArray(target, arrayValues, arrayFirst, arrayLast, pre
   if (previous < arrayFirst) { previous = arrayFirst; }
   if (previous > arrayLast ) { previous = arrayLast ; }
   var found = previous;
+  /*jsl:ignore*/
   if ((previous > arrayFirst) && (target < arrayValues[previous])) {
     for (var index=previous; (index>arrayFirst) && (target < arrayValues[index]); index--) {}
     found = index;
@@ -392,6 +395,7 @@ function findIndexInOrderedArray(target, arrayValues, arrayFirst, arrayLast, pre
     for (index=previous; (index<arrayLast) && (target > arrayValues[index+1]); index++) {}
     found = index;
   }
+  /*jsl:end*/
   return found;
 }
 
