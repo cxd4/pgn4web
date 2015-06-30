@@ -210,6 +210,8 @@
       addTagToTitle("result:  ", gameResult[currentGame], theObj);
       addTagToTitle("termination:  ", customPgnHeaderTag("Termination"), theObj);
       addTagToTitle("timecontrol:  ", customPgnHeaderTag("TimeControl"), theObj);
+      var theOther = document.getElementById("bottomContainer");
+      if (theOther) { theOther.title = theObj.title; }
     }
 
     try {
