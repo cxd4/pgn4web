@@ -173,29 +173,29 @@
     theOther.style.marginLeft = (theObj && theObj.innerHTML && theOther && theOther.innerHTML) ? '1.2ex' : '';
 
     newTitle = (currentGame + 1) + '.';
-    if ((theObj = document.getElementById('GameWhite')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
-    if ((theObj = document.getElementById('GameBlack')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
-    if ((theObj = document.getElementById('GameResult')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
-    if ((theObj = document.getElementById('GameSiteEvent')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
-    if ((theObj = document.getElementById('GameDate')) && (theObj.innerHTML)) { newTitle += '\u00a0 ' + theObj.innerHTML; }
+    if ((theObj = document.getElementById('GameWhite')) && (theObj.innerHTML)) { newTitle += '  ' + theObj.innerHTML; }
+    if ((theObj = document.getElementById('GameBlack')) && (theObj.innerHTML)) { newTitle += '  ' + theObj.innerHTML; }
+    if ((theObj = document.getElementById('GameResult')) && (theObj.innerHTML)) { newTitle += '  ' + theObj.innerHTML; }
+    if ((theObj = document.getElementById('GameSiteEvent')) && (theObj.innerHTML)) { newTitle += '  ' + theObj.innerHTML; }
+    if ((theObj = document.getElementById('GameDate')) && (theObj.innerHTML)) { newTitle += '  ' + theObj.innerHTML; }
     document.title = simpleHtmlentitiesDecode(newTitle);
 
     newTitle = '';
-    if (gameEvent[currentGame])  { newTitle += '\nevent:  \u0009 ' + gameEvent[currentGame]; }
-    if (gameSite[currentGame])   { newTitle += '\nsite:   \u0009 ' + gameSite[currentGame]; }
-    if (gameDate[currentGame])   { newTitle += '\ndate:   \u0009 ' + gameDate[currentGame]; }
-    if (gameRound[currentGame])  { newTitle += '\nround:  \u0009 ' + gameRound[currentGame]; }
+    if (gameEvent[currentGame])  { newTitle += '\nevent:  ' + gameEvent[currentGame]; }
+    if (gameSite[currentGame])   { newTitle += '\nsite:  ' + gameSite[currentGame]; }
+    if (gameDate[currentGame])   { newTitle += '\ndate:  ' + gameDate[currentGame]; }
+    if (gameRound[currentGame])  { newTitle += '\nround:  ' + gameRound[currentGame]; }
     if (gameWhite[currentGame])  {
-      newTitle += '\nwhite:  \u0009 ' + gameWhite[currentGame];
-      if (whiteElo) { newTitle += '   ' + whiteElo; }
+      newTitle += '\nwhite:  ' + gameWhite[currentGame];
+      if (whiteElo) { newTitle += '  ' + whiteElo; }
     }
     if (gameBlack[currentGame])  {
-      newTitle += '\nblack:  \u0009 ' + gameBlack[currentGame];
-      if (blackElo) { newTitle += '   ' + blackElo; }
+      newTitle += '\nblack:  ' + gameBlack[currentGame];
+      if (blackElo) { newTitle += '  ' + blackElo; }
     }
-    if (gameResult[currentGame]) { newTitle += '\nresult: \u0009 ' + gameResult[currentGame]; }
-    if (eco) { newTitle += '\neco: \u0009 ' + eco; }
-    if (annotator) { newTitle += '\nnotes: \u0009 ' + annotator; }
+    if (gameResult[currentGame]) { newTitle += '\nresult:  ' + gameResult[currentGame]; }
+    if (eco) { newTitle += '\neco:  ' + eco; }
+    if (annotator) { newTitle += '\nnotes:  ' + annotator; }
     if (newTitle) { newTitle = '\n' + newTitle; }
     newTitle = 'game ' + (currentGame + 1) + ' of ' + numberOfGames + newTitle;
     if (theObj = document.getElementById('boardHeaderInfo')) { theObj.title = simpleHtmlentitiesDecode(newTitle); }

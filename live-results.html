@@ -3,7 +3,7 @@
 
 <!--
   pgn4web javascript chessboard
-  copyright (C) 2009-2014 Paolo Casaschi
+  copyright (C) 2009-2015 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 -->
@@ -790,20 +790,20 @@ a.variation {
     if (theObj = document.getElementById("GameWhite")) {
       var whiteTitle = customPgnHeaderTag("WhiteTitle");
       var whiteElo = customPgnHeaderTag("WhiteElo");
-      theObj.title = simpleHtmlentitiesDecode("white player:   " + gameWhite[currentGame] + (showPlayersInfo ? (whiteTitle ? "   " + whiteTitle : "") + (whiteElo ? "   " + whiteElo : "") : ""));
+      theObj.title = simpleHtmlentitiesDecode("white player:  " + gameWhite[currentGame] + (showPlayersInfo ? (whiteTitle ? "  " + whiteTitle : "") + (whiteElo ? "  " + whiteElo : "") : ""));
       if (theObj.innerHTML === "") { theObj.innerHTML = "&nbsp;"; }
     }
     if (theObj = document.getElementById("GameBlack")) {
       var blackTitle = customPgnHeaderTag("BlackTitle");
       var blackElo = customPgnHeaderTag("BlackElo");
-      theObj.title = simpleHtmlentitiesDecode("black player:   " + gameBlack[currentGame] + (showPlayersInfo ? (blackTitle ? "   " + blackTitle : "") + (blackElo ? "   " + blackElo : "") : ""));
+      theObj.title = simpleHtmlentitiesDecode("black player:  " + gameBlack[currentGame] + (showPlayersInfo ? (blackTitle ? "  " + blackTitle : "") + (blackElo ? "  " + blackElo : "") : ""));
       if (theObj.innerHTML === "") { theObj.innerHTML = "&nbsp;"; }
     }
 
     if (theObj = document.getElementById("GameEvent")) {
       if (theObj.innerHTML == gameEvent[currentGame]) {
         theObj.innerHTML += " &nbsp; &nbsp; " + gameRound[currentGame];
-        theObj.title = simpleHtmlentitiesDecode("event: " + gameEvent[currentGame] + (gameSite[currentGame] ? "\nsite: " + gameSite[currentGame] : "") + (gameDate[currentGame] ? "\ndate: " + gameDate[currentGame] : "") + (gameRound[currentGame] ? "\nround: " + gameRound[currentGame] : ""));
+        theObj.title = simpleHtmlentitiesDecode("event:  " + gameEvent[currentGame] + (gameSite[currentGame] ? "\nsite:  " + gameSite[currentGame] : "") + (gameDate[currentGame] ? "\ndate:  " + gameDate[currentGame] : "") + (gameRound[currentGame] ? "\nround:  " + gameRound[currentGame] : ""));
       }
       if (refreshMinutes === 0) {
         var theOther = document.getElementById("GameDate");

@@ -118,7 +118,7 @@
 
   function addTagToTitle(tagLabel, tagValue, object) {
     if (!tagValue || tagValue[1] == "?" || !object) { return; }
-    object.title += ((object.title && tagLabel) ? "\n " : " ") + simpleHtmlentitiesDecode(tagLabel + tagValue) + " ";
+    object.title += ((object.title && tagLabel) ? "\n" : "  ") + simpleHtmlentitiesDecode(tagLabel + tagValue);
   }
 
   function hideThisGame() {
