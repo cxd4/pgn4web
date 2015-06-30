@@ -157,23 +157,23 @@
     theObj = document.getElementById("bottomContainer");
     if (theObj) {
       theObj.title = numberOfGames > 1 ? " game " + (currentGame+1) + " of " + numberOfGames + "  " : "";
-      addTagToTitle("event: ", gameEvent[currentGame], theObj);
+      addTagToTitle("event:  ", gameEvent[currentGame], theObj);
       addTagToTitle("", customPgnHeaderTag("Section"), theObj);
       addTagToTitle("", customPgnHeaderTag("Stage"), theObj);
-      addTagToTitle("site: ", gameSite[currentGame], theObj);
-      addTagToTitle("date: ", gameDate[currentGame], theObj);
-      addTagToTitle("round: ", gameRound[currentGame], theObj);
-      addTagToTitle("white: ", gameWhite[currentGame], theObj);
+      addTagToTitle("site:  ", gameSite[currentGame], theObj);
+      addTagToTitle("date:  ", gameDate[currentGame], theObj);
+      addTagToTitle("round:  ", gameRound[currentGame], theObj);
+      addTagToTitle("white:  ", gameWhite[currentGame], theObj);
       addTagToTitle("", customPgnHeaderTag("WhiteTitle"), theObj);
       addTagToTitle("", customPgnHeaderTag("WhiteElo"), theObj);
       addTagToTitle("", customPgnHeaderTag("WhiteTeam"), theObj);
-      addTagToTitle("black: ", gameBlack[currentGame], theObj);
+      addTagToTitle("black:  ", gameBlack[currentGame], theObj);
       addTagToTitle("", customPgnHeaderTag("BlackTitle"), theObj);
       addTagToTitle("", customPgnHeaderTag("BlackElo"), theObj);
       addTagToTitle("", customPgnHeaderTag("BlackTeam"), theObj);
-      addTagToTitle("result: ", gameResult[currentGame], theObj);
-      addTagToTitle("termination: ", customPgnHeaderTag("Termination"), theObj);
-      addTagToTitle("timecontrol: ", customPgnHeaderTag("TimeControl"), theObj);
+      addTagToTitle("result:  ", gameResult[currentGame], theObj);
+      addTagToTitle("termination:  ", customPgnHeaderTag("Termination"), theObj);
+      addTagToTitle("timecontrol:  ", customPgnHeaderTag("TimeControl"), theObj);
     }
 
     try {
