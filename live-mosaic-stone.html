@@ -3,7 +3,7 @@
 
 <!--
   pgn4web javascript chessboard
-  copyright (C) 2009-2014 Paolo Casaschi
+  copyright (C) 2009-2015 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 -->
@@ -146,7 +146,7 @@
 
   function addTagToTitle(tagLabel, tagValue, object) {
     if (!tagValue || tagValue[1] == "?" || !object) { return; }
-    object.title += (object.title ? "\n " : " ") + simpleHtmlentitiesDecode(tagLabel + tagValue) + "  ";
+    object.title += ((object.title && tagLabel) ? "\n " : " ") + simpleHtmlentitiesDecode(tagLabel + tagValue) + " ";
   }
 
   function hideThisGame() {
@@ -194,18 +194,22 @@
     if (theObj) {
       theObj.title = numberOfGames > 1 ? " game " + (currentGame+1) + " of " + numberOfGames + "  " : "";
       addTagToTitle("event: ", gameEvent[currentGame], theObj);
+      addTagToTitle("", customPgnHeaderTag("Section"), theObj);
+      addTagToTitle("", customPgnHeaderTag("Stage"), theObj);
       addTagToTitle("site: ", gameSite[currentGame], theObj);
       addTagToTitle("date: ", gameDate[currentGame], theObj);
       addTagToTitle("round: ", gameRound[currentGame], theObj);
       addTagToTitle("white: ", gameWhite[currentGame], theObj);
-      addTagToTitle("white team: ", customPgnHeaderTag("WhiteTeam"), theObj);
+      addTagToTitle("", customPgnHeaderTag("WhiteTitle"), theObj);
+      addTagToTitle("", customPgnHeaderTag("WhiteElo"), theObj);
+      addTagToTitle("", customPgnHeaderTag("WhiteTeam"), theObj);
       addTagToTitle("black: ", gameBlack[currentGame], theObj);
-      addTagToTitle("black team: ", customPgnHeaderTag("BlackTeam"), theObj);
+      addTagToTitle("", customPgnHeaderTag("BlackTitle"), theObj);
+      addTagToTitle("", customPgnHeaderTag("BlackElo"), theObj);
+      addTagToTitle("", customPgnHeaderTag("BlackTeam"), theObj);
       addTagToTitle("result: ", gameResult[currentGame], theObj);
       addTagToTitle("termination: ", customPgnHeaderTag("Termination"), theObj);
       addTagToTitle("timecontrol: ", customPgnHeaderTag("TimeControl"), theObj);
-      var theOther = document.getElementById("bottomContainer");
-      if (theOther) { theOther.title = theObj.title; }
     }
 
     try {

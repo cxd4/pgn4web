@@ -819,15 +819,24 @@ function meaningfulHeader(tagValue) {
 }
 
 function gameTooltipInfo() {
-  var str = " game " + (currentGame+1) + " of " + numberOfGames + "  ";
-  if (LiveBroadcastDelay > 0) { str += "(" + LiveBroadcastGamesRunning + " live) "; }
-  if (meaningfulHeader(gameEvent[currentGame])) { str+= "\n event: " + gameEvent[currentGame] + "  "; }
-  if (meaningfulHeader(gameSite[currentGame])) { str+= "\n site: " + gameSite[currentGame] + "  "; }
-  if (meaningfulHeader(gameDate[currentGame])) { str+= "\n date: " + gameDate[currentGame] + "  "; }
-  if (meaningfulHeader(gameRound[currentGame])) { str+= "\n round: " + gameRound[currentGame] + "  "; }
-  if (meaningfulHeader(gameWhite[currentGame])) { str+= "\n white: " + gameWhite[currentGame] + "  "; }
-  if (meaningfulHeader(gameBlack[currentGame])) { str+= "\n black: " + gameBlack[currentGame] + "  "; }
-  if (meaningfulHeader(gameResult[currentGame])) { str+= "\n result: " + gameResult[currentGame] + "  "; }
+  var headerValue;
+  var str = " game " + (currentGame+1) + " of " + numberOfGames + " ";
+  if (LiveBroadcastDelay > 0) { str += ", " + LiveBroadcastGamesRunning + " live "; }
+  if (meaningfulHeader(gameEvent[currentGame])) { str+= "\n event: " + gameEvent[currentGame] + " "; }
+  if (meaningfulHeader(headerValue = customPgnHeaderTag("Section"))) { str+= " " + headerValue + " "; }
+  if (meaningfulHeader(headerValue = customPgnHeaderTag("Stage"))) { str+= " " + headerValue + " "; }
+  if (meaningfulHeader(gameSite[currentGame])) { str+= "\n site: " + gameSite[currentGame] + " "; }
+  if (meaningfulHeader(gameDate[currentGame])) { str+= "\n date: " + gameDate[currentGame] + " "; }
+  if (meaningfulHeader(gameRound[currentGame])) { str+= "\n round: " + gameRound[currentGame] + " "; }
+  if (meaningfulHeader(gameWhite[currentGame])) { str+= "\n white: " + gameWhite[currentGame] + " "; }
+  if (meaningfulHeader(headerValue = customPgnHeaderTag("WhiteTitle"))) { str+= " " + headerValue + " "; }
+  if (meaningfulHeader(headerValue = customPgnHeaderTag("WhiteElo"))) { str+= " " + headerValue + " "; }
+  if (meaningfulHeader(headerValue = customPgnHeaderTag("WhiteTeam"))) { str+= " " + headerValue + " "; }
+  if (meaningfulHeader(gameBlack[currentGame])) { str+= "\n black: " + gameBlack[currentGame] + " "; }
+  if (meaningfulHeader(headerValue = customPgnHeaderTag("BlackTitle"))) { str+= " " + headerValue + " "; }
+  if (meaningfulHeader(headerValue = customPgnHeaderTag("BlackElo"))) { str+= " " + headerValue + " "; }
+  if (meaningfulHeader(headerValue = customPgnHeaderTag("BlackTeam"))) { str+= " " + headerValue + " "; }
+  if (meaningfulHeader(gameResult[currentGame])) { str+= "\n result: " + gameResult[currentGame] + " "; }
   return str;
 }
 
