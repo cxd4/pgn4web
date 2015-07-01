@@ -146,7 +146,7 @@
 
   function addTagToTitle(tagLabel, tagValue, object) {
     if (!tagValue || tagValue[1] == "?" || !object) { return; }
-    object.title += ((object.title && tagLabel) ? "\n" : "  ") + simpleHtmlentitiesDecode(tagLabel + tagValue);
+    object.title += ((object.title && tagLabel) ? "\n" : (object.title ? "  " : "")) + simpleHtmlentitiesDecode(tagLabel + tagValue);
   }
 
   function hideThisGame() {
@@ -192,7 +192,7 @@
 
     theObj = document.getElementById("topContainer");
     if (theObj) {
-      theObj.title = numberOfGames > 1 ? " game " + (currentGame+1) + " of " + numberOfGames + "  " : "";
+      theObj.title = numberOfGames > 1 ? "game " + (currentGame+1) + " of " + numberOfGames : "";
       addTagToTitle("event:  ", gameEvent[currentGame], theObj);
       addTagToTitle("", customPgnHeaderTag("Section"), theObj);
       addTagToTitle("", customPgnHeaderTag("Stage"), theObj);
