@@ -2844,13 +2844,14 @@ sub sys_info {
 }
 
 sub num2str {
-  my ($num, $dec) = @_;
-  my @div = (1, 1000, 1000000, 1000000000, 1000000000000);
-  my @suf = ("", "K", "M", "G", "T");
-  my $i;
-  for ($i = $#div; ($i > 0) && ($num < $div[$i]); $i--) { }
-  if ($dec ne "") { return sprintf("%." . $dec . "f" . $suf[$i], $num / $div[$i]); }
-  else { return sprintf("%d" . $suf[$i], $num / $div[$i]); }
+  my ($num) = @_;
+  my @units = ("", "K", "M", "G", "T");
+  my $round;
+  foreach my $unit (@units) {
+    if (($round = int($num + 0.5)) < 1000) { return $round . $unit; }
+    else { $num = $num / 1000; }
+  }
+  return $round . $units[$#units];
 }
 
 
