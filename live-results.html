@@ -790,13 +790,15 @@ a.variation {
     if (theObj = document.getElementById("GameWhite")) {
       var whiteTitle = customPgnHeaderTag("WhiteTitle");
       var whiteElo = customPgnHeaderTag("WhiteElo");
-      theObj.title = simpleHtmlentitiesDecode("white player:  " + gameWhite[currentGame] + (showPlayersInfo ? (whiteTitle ? "  " + whiteTitle : "") + (whiteElo ? "  " + whiteElo : "") : ""));
+      var whiteTeam = customPgnHeaderTag("WhiteTeam");
+      theObj.title = simpleHtmlentitiesDecode("white player:  " + gameWhite[currentGame] + (showPlayersInfo ? (whiteTitle ? "  " + whiteTitle : "") + (whiteElo ? "  " + whiteElo : "") + (whiteTeam ? "  " + whiteTeam : "") : ""));
       if (theObj.innerHTML === "") { theObj.innerHTML = "&nbsp;"; }
     }
     if (theObj = document.getElementById("GameBlack")) {
       var blackTitle = customPgnHeaderTag("BlackTitle");
       var blackElo = customPgnHeaderTag("BlackElo");
-      theObj.title = simpleHtmlentitiesDecode("black player:  " + gameBlack[currentGame] + (showPlayersInfo ? (blackTitle ? "  " + blackTitle : "") + (blackElo ? "  " + blackElo : "") : ""));
+      var blackTeam = customPgnHeaderTag("BlackTeam");
+      theObj.title = simpleHtmlentitiesDecode("black player:  " + gameBlack[currentGame] + (showPlayersInfo ? (blackTitle ? "  " + blackTitle : "") + (blackElo ? "  " + blackElo : "") + (blackTeam ? "  " + blackTeam : "") : ""));
       if (theObj.innerHTML === "") { theObj.innerHTML = "&nbsp;"; }
     }
 
