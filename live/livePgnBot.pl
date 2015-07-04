@@ -1537,6 +1537,8 @@ add_master_command ("archivedate", "archivedate [strftime_string|\"\"] (to get/s
 add_master_command ("archiveselect", "archiveselect [regexp|\"\"] (to get/set the regular expression to select games for archiving PGN data)");
 add_master_command ("autoprioritize", "autoprioritize [regexp|\"\"] (to get/set the regular expression to prioritize entire events during autorelay; has precedence over prioritize)");
 add_master_command ("autorelay", "autorelay [0|1] (to automatically observe all relayed games)");
+add_master_command ("batchrun", "batchrun [filename.ini] (to execute commands from batch file)");
+add_master_command ("batchshow", "batchshow [filename.ini] (to show commands from batch file; long batch files content might be truncated)");
 add_master_command ("checkrelay", "checkrelay [!] (to check relayed games during relay and autorelay)");
 add_master_command ("config", "config [!] (to get config info)");
 if ($TEST_FLAG) { add_master_command ("evaluate", "evaluate [evalexp] (to evaluate an arbitrary internal command: for debug use only)"); }
@@ -1585,7 +1587,6 @@ add_master_command ("round", "round [string|\"\"] (to get/set the PGN header tag
 add_master_command ("roundautocorrect", "roundautocorrect [/regexp/evalexp/|\"\"] (to get/set the regular expression and the eval expression returning a string from \$event that corrects round tags during autorelay)");
 add_master_command ("roundreverse", "roundreverse [0|1] (to use reverse alphabetical ordering of rounds)");
 add_master_command ("site", "site [string|\"\"] (to get/set the PGN header tag site)");
-add_master_command ("startup", "startup [command list, separated by semicolon] (to get/set startup commands file)");
 add_master_command ("timeoffset", "timeoffset [[+|-]seconds] (to get/set the offset correcting the time value from the UTC time used by default)");
 add_master_command ("topfile", "topfile [filename.pgn] (to get/set the filename for the top PGN data)");
 add_master_command ("verbosity", "verbosity [0-7] (to get/set log verbosity: 0=none, 1=alert, 2=error, 3=warning, 4=info, 5=debug, 6=fyi 7=all)");
@@ -1721,6 +1722,28 @@ sub process_master_command {
     tell_operator("autorelay=$autorelayMode");
     if (($autorelayMode == 1) && ($relayOnline == 0)) {
       tell_operator("warning: ics relay offline");
+    }
+  } elsif ($command eq "batchrun") {
+    if ($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) { # for portability only a subset of filename chars is allowed
+      if ($parameters ne "") {
+        batch_run($parameters);
+        tell_operator("OK $command");
+      } else {
+        tell_operator(detect_command_helptext($command));
+      }
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "batchshow") {
+    if ($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) { # for portability only a subset of filename chars is allowed
+      if ($parameters ne "") {
+        batch_show($parameters);
+        tell_operator("OK $command");
+      } else {
+        tell_operator(detect_command_helptext($command));
+      }
+    } else {
+      tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "checkrelay") {
     if ($parameters eq "!") {
@@ -2599,13 +2622,6 @@ sub process_master_command {
     } else {
       tell_operator("error: invalid $command parameter");
     }
-  } elsif ($command eq "startup") {
-    if ($parameters) {
-      write_startupCommands(split(";", $parameters));
-    }
-    my $startupString = join("; ", read_startupCommands());
-    $startupString =~ s/[\n\r]+//g;
-    tell_operator("startup($STARTUP_FILE) $startupString");
   } elsif ($command eq "timeoffset") {
     if ($parameters =~ /^([+-]?\d+)?$/) {
       if ($parameters ne "") {
@@ -2695,36 +2711,58 @@ sub check_pgn_files {
   }
 }
 
-sub read_startupCommands {
+sub batch_commands {
+  my ($batchfile) = @_;
   my @commandList = ();
-  if (open(CMDFILE, "<" , $STARTUP_FILE)) {
-    @commandList = <CMDFILE>;
-    close(CMDFILE);
+  if ($batchfile =~ /^[\w\d\/\\.+=_-]+$/) { # for portability only a subset of filename chars is allowed
+    if (open(BATCHFILE, "<" , $batchfile)) {
+      @commandList = <BATCHFILE>;
+      close(BATCHFILE);
+    } else {
+      tell_operator_and_log_terminal("error: failed reading $batchfile");
+    }
   } else {
-    log_terminal("error: failed reading $STARTUP_FILE");
+    tell_operator_and_log_terminal("error: invalid batch filename: $batchfile");
   }
   return @commandList;
 }
 
-sub write_startupCommands {
-  my @commandList = @_;
+sub batch_show {
+  my ($batchfile) = @_;
+  my @commandList = batch_commands($batchfile);
+  my $commandString = join("; ", @commandList) . ";";
+  $commandString =~ s/[\r\n]//g;
+  if ($commandString ne "") {
+    tell_operator("info: batch " . $batchfile . " (" . ($#commandList + 1) . "): " . $commandString);
+  }
+}
 
-  if (!copy("$STARTUP_FILE", "$STARTUP_FILE" . ".bak")) {
-    tell_operator_and_log_terminal("error: failed backup, startup commands file $STARTUP_FILE not updated");
+our $batch_stack_threshold = 2; # max nexted batches simultaneously running
+our @batch_stack = ();
+sub batch_run {
+  my ($batchfile) = @_;
+  if (($#batch_stack + 1) >= $batch_stack_threshold) {
+    tell_operator_and_log_terminal("alert: nested batch threshold exceeded");
     return;
   }
-
-  if (open(CMDFILE, ">" , $STARTUP_FILE)) {
-    foreach my $cmd (@commandList) {
-      $cmd =~ s/^\s*//;
-      $cmd =~ s/\s*$/\n/;
-      print CMDFILE $cmd;
-    }
-    close(CMDFILE);
-    log_terminal("info: startup commands file $STARTUP_FILE written");
-  } else {
-    tell_operator_and_log_terminal("error: failed writing $STARTUP_FILE");
+  if ($batchfile ~~ @batch_stack) {
+    tell_operator_and_log_terminal("alert: recursive reference to batch $batchfile");
+    return;
   }
+  push(@batch_stack, $batchfile);
+  log_terminal("debug: batch run(" . ($#batch_stack + 1) . "): $batchfile");
+  my @commandList = batch_commands($batchfile);
+  foreach my $cmd (@commandList) {
+    if ($cmd =~ /^\s*#/) {
+      # skip comments
+    } elsif ($cmd =~ /^\s*([^\s=]+)=?\s*(.*)$/) {
+      process_master_command($1, $2);
+    } elsif ($cmd !~ /^\s*$/) {
+      log_terminal("error: invalid startup command $cmd");
+    }
+  }
+  log_terminal("debug: batch end(" . ($#batch_stack + 1) . "): $batchfile");
+  pop(@batch_stack);
 }
 
 
@@ -2942,17 +2980,7 @@ sub setup {
   cmd_run("set width 240");
   log_terminal("debug: initialization done");
 
-  my @startupCommands = read_startupCommands();
-  foreach my $cmd (@startupCommands) {
-    if ($cmd =~ /^\s*#/) {
-      # skip comments
-    } elsif ($cmd =~ /^\s*([^\s=]+)=?\s*(.*)$/) {
-      process_master_command($1, $2);
-    } elsif ($cmd !~ /^\s*$/) {
-      log_terminal("error: invalid startup command $cmd");
-    }
-  }
-  log_terminal("debug: startup commands done");
+  batch_run($STARTUP_FILE);
 
   $tellOperator = 1;
   tell_operator("info: ready");
