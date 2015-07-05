@@ -36,7 +36,7 @@ our $FLAGS = $ARGV[4] || "";
 our $TEST_FLAG = ($FLAGS =~ /\bTEST\b/);
 
 if ($BOT_HANDLE eq "" || $OPERATOR_HANDLE eq "") {
-  print("\n$0 BOT_HANDLE BOT_PASSWORD OPERATOR_HANDLE [STARTUP_BATCHFILE]\n\nBOT_HANDLE = bot account handle\nBOT_PASSWORD = bot account password, use \"\" for a guest account\nOPERATOR_HANDLE = bot operator handle\nSTARTUP_BATCHFILE = startup commands batch file (default livePgnBot.ini)\n\nbot saving PGN data from live games on $FICS_HOST\nmore help available from the operator account with \"tell BOT_HANDLE help\"\n\n");
+  print("\n$0 BOT_HANDLE BOT_PASSWORD OPERATOR_HANDLE [STARTUP_BATCHFILE]\n\nBOT_HANDLE = bot account handle\nBOT_PASSWORD = bot account password, use \"\" for a guest account\nOPERATOR_HANDLE = bot operator handle\nSTARTUP_BATCHFILE = startup commands batch filename (default livePgnBot.ini)\n\nbot saving PGN data from live games on $FICS_HOST\nmore help available from the operator account with \"tell BOT_HANDLE help\"\n\n");
   myExit(0);
 }
 
@@ -1537,8 +1537,8 @@ add_master_command ("archivedate", "archivedate [strftime_string|\"\"] (to get/s
 add_master_command ("archiveselect", "archiveselect [regexp|\"\"] (to get/set the regular expression to select games for archiving PGN data)");
 add_master_command ("autoprioritize", "autoprioritize [regexp|\"\"] (to get/set the regular expression to prioritize entire events during autorelay; has precedence over prioritize)");
 add_master_command ("autorelay", "autorelay [0|1] (to automatically observe all relayed games)");
-add_master_command ("batchlist", "batchlist [filename.ini] (to list commands from batch file; long batch files content might be truncated)");
-add_master_command ("batchrun", "batchrun [filename.ini] (to execute commands from batch file)");
+add_master_command ("batchlist", "batchlist [filename.ini] (to list commands from a batch file; long listings might be truncated)");
+add_master_command ("batchrun", "batchrun [filename.ini] (to execute commands from a batch file)");
 add_master_command ("checkrelay", "checkrelay [!] (to check relayed games during relay and autorelay)");
 add_master_command ("config", "config [!] (to get config info)");
 if ($TEST_FLAG) { add_master_command ("evaluate", "evaluate [evalexp] (to evaluate an arbitrary internal command: for debug use only)"); }
@@ -2721,7 +2721,7 @@ sub batch_commands {
       @commandList = <BATCHFILE>;
       close(BATCHFILE);
     } else {
-      tell_operator_and_log_terminal("error: failed reading $batchfile");
+      tell_operator_and_log_terminal("error: failed reading batch file: $batchfile");
     }
   } else {
     tell_operator_and_log_terminal("error: invalid batch filename: $batchfile");
@@ -2735,7 +2735,7 @@ sub batch_list {
   my $commandString = join("; ", @commandList);
   $commandString =~ s/[\r\n]//g;
   if ($commandString ne "") {
-    tell_operator("info: batch " . $batchfile . " (" . ($#commandList + 1) . "): " . $commandString . ";");
+    tell_operator("info: batch file " . $batchfile . " (" . ($#commandList + 1) . "): " . $commandString . ";");
     return 1;
   }
   return 0;
@@ -2750,7 +2750,7 @@ sub batch_run {
     return 0;
   }
   if ($batchfile ~~ @batch_stack) {
-    tell_operator_and_log_terminal("alert: recursive reference to batch $batchfile");
+    tell_operator_and_log_terminal("alert: recursive reference to batch file: $batchfile");
     return 0;
   }
   push(@batch_stack, $batchfile);
@@ -2762,7 +2762,7 @@ sub batch_run {
     } elsif ($cmd =~ /^\s*([^\s=]+)=?\s*(.*)$/) {
       process_master_command($1, $2);
     } elsif ($cmd !~ /^\s*$/) {
-      log_terminal("error: batch $batchfile: invalid command $cmd");
+      log_terminal("error: batch $batchfile: invalid command: $cmd");
     }
   }
   log_terminal("debug: batch end(" . ($#batch_stack + 1) . "): $batchfile");
