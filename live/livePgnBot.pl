@@ -2883,7 +2883,7 @@ sub sys_info {
   open(STAT, "<", "/proc/$$/stat") or return "?";
   my @stat = split(/\s+/, <STAT>);
   close(STAT);
-  return "ppid:" . $stat[3] . "/pid:" . $stat[0] . "/vsize:" . num2str($stat[22]) . "/rss:" . num2str($stat[23]);
+  return "ppid:" . $stat[3] . "/pid:" . $stat[0] . "/vsize:" . num2str($stat[22]);
 }
 
 sub num2str {
@@ -2891,10 +2891,10 @@ sub num2str {
   my @units = ("", "K", "M", "G", "T");
   my $round;
   foreach my $unit (@units) {
-    if (($round = int($num + 0.5)) < 1000) { return $round . $unit; }
+    $round = int($num + 0.5);
+    if (($round < 1000) || ($unit eq $units[$#units])) { return $round . $unit; }
     else { $num = $num / 1000; }
   }
-  return $round . $units[$#units];
 }
 
 
