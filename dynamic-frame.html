@@ -430,12 +430,11 @@ function myOnResize() {
   myInsertRule(sheet, ".gameListHeader", "overflow: hidden; width: " + (ww - 2 * framePadding) + "px; padding-top: " + gameListPadding + "px; padding-bottom: " + gameListPadding + "px;");
   myInsertRule(sheet, ".gameListBody", "height: " + gameListBodyHeight + "px; width: " + (ww - 2 * framePadding) + "px; overflow-x: hidden; overflow-y: auto; scrollbar-base-color: #" + backgroundColorHex + "; -webkit-overflow-scrolling: touch; overflow-scrolling: touch;");
   myInsertRule(sheet, ".gameListBodyItems", "");
-  var gameListMarginSpacing = Math.floor((gameListFontSize * gameListFontHorizontalRatio) * (7 / 32) / 8);
+  var gameListMarginSpacing = Math.floor((gameListFontSize * gameListFontHorizontalRatio) * (7 / 32) / 6);
   var gameListPlayerSpacing = Math.floor((gameListFontSize * gameListFontHorizontalRatio) * (9 / 32));
-  myInsertRule(sheet, ".gameListBodyItemsNum", "margin-left: " + gameListMarginSpacing + "px;");
-  myInsertRule(sheet, ".gameListBodyItemsNumdot", "min-width: " + (2 * gameListMarginSpacing) + "px;");
+  myInsertRule(sheet, ".gameListBodyItemsDot", "text-align: center; min-width: " + (2 * gameListMarginSpacing) + "px;");
   myInsertRule(sheet, ".gameListBodyItemsPlayer", "overflow: hidden; width: " + gameListPlayerSpacing + "px; margin-left: " + gameListMarginSpacing + "px; margin-right: " + gameListMarginSpacing + "px;");
-  myInsertRule(sheet, ".gameListBodyItemsResult", "min-width: 4ex; margin-left: 0px; margin-right: 0px;");
+  myInsertRule(sheet, ".gameListBodyItemsResult", "text-align: center; min-width: 4ex; margin-left: 0px; margin-right: 0px;");
   myInsertRule(sheet, ".gameListBodyItemsEventRound", "margin-left: " + (2 * gameListMarginSpacing) + "px; margin-right: " + gameListMarginSpacing + "px;");
 
   for (var ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
@@ -513,8 +512,7 @@ function fillGameList(force) {
         thisGameTitle2 += gameRound[thisNum] || "";
         if (thisGameTitle2) { thisGameTitle2 = " " + thisGameTitle2 + " "; }
         text += "<tr style='cursor:pointer;' onclick='selectGameList(" + thisNum + ");' title='" + thisGameTitle1 + (thisGameTitle1 && thisGameTitle2 ? "\n" : "") + thisGameTitle2 + "'>";
-        text += "<td align='right'><div class='gameListBodyItemsNum'>" + (thisNum + 1) + "</div></td>";
-        text += "<td><div class='gameListBodyItemsNumdot'>" + (thisNum === currentGame ? "." : "") + "</div></td>";
+        text += "<td><div class='gameListBodyItemsDot'>" + (thisNum === currentGame ? "&middot;" : "") + "</div></td>";
         text += "<td align='right'><div class='gameListBodyItemsPlayer'>" + gameWhite[thisNum] + "</div></td>";
         if ((gameWhite[thisNum] !== "") || (gameBlack[thisNum] !== "") || (gameResult[thisNum] != "*")) {
           thisResult = gameResult[thisNum];
@@ -524,7 +522,7 @@ function fillGameList(force) {
         } else {
           thisResult = "";
         }
-        text += "<td align='center'><div class='gameListBodyItemsResult'>" + thisResult + "</div></td>";
+        text += "<td><div class='gameListBodyItemsResult'>" + thisResult + "</div></td>";
         text += "<td><div class='gameListBodyItemsPlayer'>" + gameBlack[thisNum] + "</div></td>";
         if (gameEvent[thisNum] || gameRound[thisNum]) {
           text += "<td><div class='gameListBodyItemsEventRound'>" + gameEvent[thisNum] + ((gameEvent[thisNum] && gameRound[thisNum]) ? " &nbsp;&nbsp;-&nbsp;&nbsp; " : "") + gameRound[thisNum] + "</div></td>";
