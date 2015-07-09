@@ -432,7 +432,7 @@ function myOnResize() {
   myInsertRule(sheet, ".gameListBodyItems", "");
   var gameListMarginSpacing = Math.floor((gameListFontSize * gameListFontHorizontalRatio) * (7 / 32) / 6);
   var gameListPlayerSpacing = Math.floor((gameListFontSize * gameListFontHorizontalRatio) * (9 / 32));
-  myInsertRule(sheet, ".gameListBodyItemsDot", "text-align: center; min-width: " + (2 * gameListMarginSpacing) + "px;");
+  myInsertRule(sheet, ".gameListBodyItemsDot", "text-align: center; margin-left: " + gameListMarginSpacing + "px; margin-right: " + gameListMarginSpacing + "px;");
   myInsertRule(sheet, ".gameListBodyItemsPlayer", "overflow: hidden; width: " + gameListPlayerSpacing + "px; margin-left: " + gameListMarginSpacing + "px; margin-right: " + gameListMarginSpacing + "px;");
   myInsertRule(sheet, ".gameListBodyItemsResult", "text-align: center; min-width: 4ex; margin-left: 0px; margin-right: 0px;");
   myInsertRule(sheet, ".gameListBodyItemsEventRound", "margin-left: " + (2 * gameListMarginSpacing) + "px; margin-right: " + gameListMarginSpacing + "px;");
