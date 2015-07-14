@@ -866,7 +866,7 @@ simpleAddEvent(window, "orientationchange", function() {
 
 <div style="display:none;" id="GameSelector"></div>
 
-<div class="gameList" id="GameList">
+<div class="gameList" style="display:none;" id="GameList">
 <div class="gameListHeader" id="GameListHeader"><div class="gameListHeaderItem"><span class="gameListHeaderButton" onclick="selectGameList(-1);" title="back to chessboard">&crarr;</span></div><div class="gameListHeaderItem"><span class="gameListHeaderButton" onclick="autoscrollGameListBody(0); this.blur();" title="scroll to first page">&lt;&lt;</span></div><div class="gameListHeaderItem"><span class="gameListHeaderButton" onclick="if (theObj = document.getElementById('GameListBody')) { autoscrollGameListBody(Math.ceil(theObj.scrollTop / gameListLineHeight) - Math.floor(gameListBodyHeight / gameListLineHeight)); } this.blur();" title="scroll to previous page">&lt;</span></div><div class="gameListHeaderItem"><span class="gameListHeaderButton" onclick="autoscrollGameListBody(currentGame - 1); this.blur();" title="scroll to current game">&middot;</span></div><div class="gameListHeaderItem"><span class="gameListHeaderButton" onclick="if (theObj = document.getElementById('GameListBody')) { autoscrollGameListBody(Math.floor(theObj.scrollTop / gameListLineHeight) + Math.floor(gameListBodyHeight / gameListLineHeight)); } this.blur();" title="scroll to next page">&gt;</span></div><div class="gameListHeaderItem"><span class="gameListHeaderButton" onclick="autoscrollGameListBody(numberOfGames); this.blur();" title="scroll to last page">&gt;&gt;</span></div><div class="gameListHeaderItem"><span class="gameListHeaderButton" onclick="toggleGameListHorizontalScroll(); this.blur();" title="horizontal scroll">&middot;</span></div></div>
 <div class="gameListBody" id="GameListBody"><div class="gameListBodyItems" id="GameListBodyItems"></div></div>
 </div>
@@ -896,8 +896,10 @@ simpleAddEvent(window, "orientationchange", function() {
 <script type="text/javascript">
 "use strict";
 
+var theObj;
+
 if (LiveBroadcastDelay && LiveBroadcastDemo) {
-  var theObj = document.getElementById("GameLiveStatusExtraInfoRight");
+  theObj = document.getElementById("GameLiveStatusExtraInfoRight");
   if (theObj) {
     theObj.innerHTML = "demo";
     theObj.title = "this is a broadcast simulation";
