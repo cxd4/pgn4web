@@ -495,11 +495,8 @@ a.variation {
   var showLastMoves = false;
   if ((gup("showLastMoves") == "true") || (gup("showLastMoves") == "t")) { showLastMoves = true; }
 
-  var autoHighlightNewmoves = true;
-  if ((gup("autoHighlightNewmoves") == "false") || (gup("autoHighlightNewmoves") == "f")) { autoHighlightNewmoves = false; }
-
-  var autoSwitchNewmoves = false;
-  if ((gup("autoSwitchNewmoves") == "true") || (gup("autoSwitchNewmoves") == "t")) { autoSwitchNewmoves = true; }
+  var highlightMode = false;
+  if ((gup("highlightMode") == "true") || (gup("highlightMoves") == "t") || (gup("highlightMode") == "border") || (gup("highlightMoves") == "b")) { highlightMode = true; }
 
   var showAnalysis = false; // does not fit the design to allow this as URL parameter
 
@@ -525,8 +522,7 @@ a.variation {
       " - showTeams = " + showTeams + "; shows teams information (default true)" + "\n" +
       " - showPlayersInfo = " + showPlayersInfo + "; shows title/elo players information (default true)" + "\n" +
       " - showLastMoves = " + showLastMoves + "; shows last moves information (default false)" + "\n" +
-      " - autoHighlightNewmoves = " + autoHighlightNewmoves + "; automatically highlights new moves (default true)" + "\n" +
-      " - autoSwitchNewmoves = " + autoSwitchNewmoves + "; automatically switches to games with new moves (default false)" + "\n" +
+      " - highlightMode = " + highlightMode + "; highlight moves (default false)" + "\n" +
       " - autoUpdateAnalysis = " + autoUpdateAnalysis + "; automatically updates analysis board from main board (default false)" + "\n" +
       " - headlessPage = " + headlessPage + "; displays a page without heading (default false)" + "\n" +
       " - help = true" + "\n\n" +
@@ -536,7 +532,7 @@ a.variation {
   SetPgnUrl(pgnFile);
   SetImagePath ("images/alpha/32");
   SetImageType("png");
-  SetHighlightOption(false);
+  SetHighlightOption(highlightMode);
   SetCommentsIntoMoveText(false);
   SetCommentsOnSeparateLines(false);
   SetAutoplayDelay(1000);
@@ -560,7 +556,6 @@ a.variation {
       }
     }
     gameNewMoves = new Array();
-    SetHighlight(false);
   }
 
   var gameId;
@@ -574,7 +569,8 @@ a.variation {
   var gameBoard;
   var newGameLengthFromCrc = new Array();
   var gameLengthFromCrc = new Array();
-  var gameNewMoves;
+  var gameNewMoves = new Array();
+  var lastStartPlyPlusPlyNumber = 0;
   var firstCustomFunctionOnPgnTextLoad = true;
   function customFunctionOnPgnTextLoad() {
     var theObj;
@@ -608,21 +604,18 @@ a.variation {
     gameId.sort(sortGameId);
 
     printGames();
-    if (autoHighlightNewmoves) {
-      SetHighlight((typeof(gameNewMoves) != "undefined") && (typeof(gameNewMoves[currentGame]) != "undefined") && (gameNewMoves[currentGame]));
-    }
 
     if ((LiveBroadcastTicker < 2) && delayIniGame) {
       Init(typeof(gameId[iniGame - 1]) != "undefined" ? gameId[iniGame - 1] : "0");
     }
-
-    if (autoSwitchNewmoves && ((typeof(gameNewMoves) == "undefined") || (!gameNewMoves[currentGame]))) { searchGameWithNewMoves(false); }
 
     if (firstCustomFunctionOnPgnTextLoad) {
       firstCustomFunctionOnPgnTextLoad = false;
       if (theObj = document.getElementById("SideToMove")) { theObj.className = "sideToMove"; }
       showEngineAnalysisBoard(disableEngine, true); // prepare analysis frame with an idle board
     }
+
+    lastStartPlyPlusPlyNumber = (StartPly + PlyNumber);
   }
 
   function myCompare(AA, ZZ) {
@@ -817,10 +810,6 @@ a.variation {
       theObj.innerHTML = (gameDate[currentGame].match(/live/i)) ? "live" : "&nbsp;";
       theObj.title = (gameDate[currentGame].match(/live/i)) ? "live event" : "";
     }
-
-    if (autoHighlightNewmoves) {
-      SetHighlight((typeof(gameNewMoves) != "undefined") && (typeof(gameNewMoves[currentGame]) != "undefined") && (gameNewMoves[currentGame]));
-    }
   }
 
   function customFunctionOnMove() {
@@ -864,13 +853,13 @@ a.variation {
 
     var indexIncrement = backward ? -1 : 1;
     for (var thisIndex = (thisGameIndex + indexIncrement + gameId.length) % gameId.length; thisIndex !== thisGameIndex; thisIndex = (thisIndex + indexIncrement + gameId.length) % gameId.length) {
-      if (gameNewMoves[gameId[thisIndex]]) { break; }
+      if ((typeof(gameNewMoves[gameId[thisIndex]]) != "undefined") && (gameNewMoves[gameId[thisIndex]])) { break; }
     }
     if (thisIndex !== thisGameIndex) { Init(gameId[thisIndex]); }
   }
 
   function customDebugInfo() {
-    return (LiveBroadcastDelay > 0 ? "autoHighlightNewmoves=" + b2s(autoHighlightNewmoves) + " autoSwitchNewmoves=" + b2s(autoSwitchNewmoves) + " " : "") + "roundReverse=" + b2s(roundReverse);
+    return "roundReverse=" + b2s(roundReverse);
   }
   function b2s(b) { return b ? "true" : "false"; }
 
@@ -896,11 +885,8 @@ a.variation {
   if (LiveBroadcastDelay > 0) {
     boardShortcut("B7", "search previous game with new moves", function(t,e){ searchGameWithNewMoves(true); });
     boardShortcut("C7", "search next game with new moves", function(t,e){ searchGameWithNewMoves(false); });
-    boardShortcut("F7", "toggle autohighlight new moves", function(t,e){ autoHighlightNewmoves = !autoHighlightNewmoves && !e.shiftKey; });
-    boardShortcut("G7", "toggle autoswitch to games with new moves", function(t,e){ autoSwitchNewmoves = !autoSwitchNewmoves && !e.shiftKey; });
-  } else {
-    clearShortcutSquares("F", "7");
   }
+  clearShortcutSquares("F", "7");
 
   if (!pgn4web_engineWindowDisableAnalysisBoard) {
     boardShortcut("E8", "open/update analysis board", function(t,e){ showAnalysisBoard(e.shiftKey); });

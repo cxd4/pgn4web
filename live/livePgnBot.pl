@@ -198,7 +198,7 @@ our $roundAutocorrectString = "";
 our $safevalRound = new Safe;
 $safevalRound->share($roundAutocorrectString);
 
-our $placeholderGame = "auto";
+our $placeholderGame = "smart";
 our $placeholder_site = "";
 our $placeholder_date = "";
 our $placeholder_result = "*";
@@ -287,7 +287,7 @@ sub reset_config {
   $eventAutocorrectString = "";
   $roundAutocorrectRegexp = "";
   $roundAutocorrectString = "";
-  $placeholderGame = "auto";
+  $placeholderGame = "smart";
   $placeholder_date = "";
   $placeholder_site = "";
   $placeholder_result = "*";
@@ -1126,7 +1126,7 @@ sub refresh_pgn {
     }
   }
 
-  if (($placeholderGame eq "always") || (($placeholderGame eq "auto") && ($gameRunning == 0))) {
+  if (($placeholderGame eq "always") || (($placeholderGame eq "smart") && ($gameRunning == 0))) {
     $pgn .= placeholder_pgn();
     $placeholderPgnNum = 1;
     $newPgnNum++;
@@ -1148,9 +1148,6 @@ sub refresh_pgn {
         log_terminal("error: failed writing $PGN_LIVE");
       }
     }
-    # if ($autorelayMode == 1) {
-    #  log_rounds(); # moved to save_game() and remove_game()
-    # }
     refresh_memory();
     refresh_top();
     return 1;
@@ -1349,28 +1346,9 @@ sub memory_purge_game {
   return $purgedGame;
 }
 
-sub memory_correct_result {
-  my ($searchEvent, $searchRound, $searchWhite, $searchBlack, $searchResult, $replacementResult) = @_;
-  my $correctedResult = 0;
-
-  if ($PGN_MEMORY ne "") {
-    my $gamePattern = '\[Event "' . $searchEvent . '"\].*\[Round "' . $searchRound . '"\].*\[White "' . $searchWhite . '"\].*\[Black "' . $searchBlack . '"\]';
-    my $pattern = '\[Result "' . $searchResult . '"\]';
-    my $replacement = '[Result "' . $replacementResult . '"]';
-    for (my $i=$#memory_games; $i>=0; $i--) {
-      if (($memory_games[$i] =~ /$gamePattern/s) && ($memory_games[$i] =~ /$pattern/)) {
-        $memory_games[$i] =~ s/$pattern/$replacement/;
-        $correctedResult++;
-      }
-    }
-  }
-  if ($correctedResult > 0) { log_terminal('debug: corrected memory result: "' . $searchEvent . '" "' . $searchRound . '" "' . $searchWhite . '" "' . $searchBlack . '" "' . $searchResult . '" "' . $replacementResult . '"'); }
-  return $correctedResult;
-}
-
-sub memory_rename_event {
+sub memory_replace_event {
   my ($searchEvent, $replacementEvent) = @_;
-  my $renamedEvent = 0;
+  my $replacedEvent = 0;
 
   if ($PGN_MEMORY ne "") {
     my $pattern = '\[Event "' . $searchEvent . '"\]';
@@ -1383,17 +1361,36 @@ sub memory_rename_event {
         if ($memory_games[$i] =~ /\[Event "([^"]+)"\]/i) { $thisEvent = $1; } else { $thisEvent = ""; }
         if ($memory_games[$i] =~ /\[Round "([^"]+)"\]/i) { $thisRound = $1; } else { $thisRound = ""; }
         $memory_games_sortkey[$i] = eventRound($thisEvent, $thisRound);
-        $renamedEvent++;
+        $replacedEvent++;
       }
     }
   }
-  if ($renamedEvent > 0) { log_terminal('debug: renamed memory event: "' . $searchEvent . '" "'. $replacementEvent . '"'); }
-  return $renamedEvent;
+  if ($replacedEvent > 0) { log_terminal('debug: replaced memory event: "' . $searchEvent . '" "'. $replacementEvent . '"'); }
+  return $replacedEvent;
 }
 
-sub memory_rename_round {
+sub memory_replace_result {
+  my ($searchEvent, $searchRound, $searchWhite, $searchBlack, $searchResult, $replacementResult) = @_;
+  my $replacedResult = 0;
+
+  if ($PGN_MEMORY ne "") {
+    my $gamePattern = '\[Event "' . $searchEvent . '"\].*\[Round "' . $searchRound . '"\].*\[White "' . $searchWhite . '"\].*\[Black "' . $searchBlack . '"\]';
+    my $pattern = '\[Result "' . $searchResult . '"\]';
+    my $replacement = '[Result "' . $replacementResult . '"]';
+    for (my $i=$#memory_games; $i>=0; $i--) {
+      if (($memory_games[$i] =~ /$gamePattern/s) && ($memory_games[$i] =~ /$pattern/)) {
+        $memory_games[$i] =~ s/$pattern/$replacement/;
+        $replacedResult++;
+      }
+    }
+  }
+  if ($replacedResult > 0) { log_terminal('debug: replaced memory result: "' . $searchEvent . '" "' . $searchRound . '" "' . $searchWhite . '" "' . $searchBlack . '" "' . $searchResult . '" "' . $replacementResult . '"'); }
+  return $replacedResult;
+}
+
+sub memory_replace_round {
   my ($searchEvent, $searchRound, $replacementRound) = @_;
-  my $renamedRound = 0;
+  my $replacedRound = 0;
 
   if ($PGN_MEMORY ne "") {
     my $eventPattern = '\[Event "' . $searchEvent . '"\]';
@@ -1407,12 +1404,12 @@ sub memory_rename_round {
         if ($memory_games[$i] =~ /\[Event "([^"]+)"\]/i) { $thisEvent = $1; } else { $thisEvent = ""; }
         if ($memory_games[$i] =~ /\[Round "([^"]+)"\]/i) { $thisRound = $1; } else { $thisRound = ""; }
         $memory_games_sortkey[$i] = eventRound($thisEvent, $thisRound);
-        $renamedRound++;
+        $replacedRound++;
       }
     }
   }
-  if ($renamedRound > 0) { log_terminal('debug: renamed memory round: "' . $searchEvent . '" "' . $searchRound . '" "'. $replacementRound . '"'); }
-  return $renamedRound;
+  if ($replacedRound > 0) { log_terminal('debug: replaced memory round: "' . $searchEvent . '" "' . $searchRound . '" "'. $replacementRound . '"'); }
+  return $replacedRound;
 }
 
 our $memory_load_time = -1;
@@ -1532,65 +1529,65 @@ sub add_master_command {
   push (@master_commands_helptext, $helptext);
 }
 
-add_master_command ("archivefile", "archivefile [filename.pgn] (to get/set the filename for archiving PGN data)");
-add_master_command ("archivedate", "archivedate [strftime_string|\"\"] (to get/set the PGN header tag date for the PGN archive)");
-add_master_command ("archiveselect", "archiveselect [regexp|\"\"] (to get/set the regular expression to select games for archiving PGN data)");
-add_master_command ("autoprioritize", "autoprioritize [regexp|\"\"] (to get/set the regular expression to prioritize entire events during autorelay; has precedence over prioritize)");
-add_master_command ("autorelay", "autorelay [0|1] (to automatically observe all relayed games)");
-add_master_command ("batchlist", "batchlist [filename.ini] (to list commands from a batch file; long listings might be truncated)");
-add_master_command ("batchrun", "batchrun [filename.ini] (to execute commands from a batch file)");
-add_master_command ("checkrelay", "checkrelay [!] (to check relayed games during relay and autorelay)");
-add_master_command ("config", "config [!] (to get config info)");
-if ($TEST_FLAG) { add_master_command ("evaluate", "evaluate [evalexp] (to evaluate an arbitrary internal command: for debug use only)"); }
-add_master_command ("eloautoprioritize", "eloautoprioritize [evalexp|\"\"] (to get/set the eval expression returning 1|0 from \$minElo, \$maxElo and \$avgElo to prioritize entire events during autorelay; has precedence over prioritize)");
-add_master_command ("eloignore", "eloignore [evalexp|\"\"] (to get/set the eval expression returning 1|0 from \$minElo, \$maxElo and \$avgElo to ignore games during autorelay; has precedence over prioritize)");
-add_master_command ("event", "event [string|\"\"] (to get/set the PGN header tag event)");
-add_master_command ("eventautocorrect", "eventautocorrect [/regexp/evalexp/|\"\"] (to get/set the regular expression and the eval expression returning a string that corrects event tags during autorelay)");
-add_master_command ("eventroundautoprecorrect", "eventroundautoprecorrect [/regexp/evalexp/|\"\"] (to get/set the regular expression and the eval expression returning a string that precorrects eventround tags during autorelay)");
-add_master_command ("follow", "follow [0|handle|/s|/b|/l] (to follow the user with given handle, /s for the best standard game, /b for the best blitz game, /l for the best lightning game, 0 to disable follow mode)");
-add_master_command ("games", "games (to get games summary info)");
-add_master_command ("heartbeat", "heartbeat [frequency offset] (to get/set the timing of heartbeat log messages, in hours)");
-add_master_command ("help", "help [command] (to get commands help)");
-add_master_command ("history", "history [compact|extended] (to get history info)");
-add_master_command ("ics", "ics [server command] (to run a custom command on the ics server)");
-add_master_command ("ignore", "ignore [regexp|\"\"] (to get/set the regular expression to ignore events/players from the PGN header during autorelay; has precedence over prioritize; use ^(?:(?!regexp).)+\$ for negative lookup)");
-add_master_command ("livedate", "livedate [strftime_string|\"\"] (to get/set the PGN header tag date for live PGN data)");
-add_master_command ("livefile", "livefile [filename.pgn] (to get/set the filename for live PGN data)");
-add_master_command ("livelist", "livelist [events|rounds|games] (to get live events/rounds/games lists)");
-add_master_command ("livemax", "max [number] (to get/set the maximum number of games for the live PGN data)");
-add_master_command ("livepurgegames", "livepurgegames [game number list, such as: 12 34 56 ..] (to purge given past games from live PGN data)");
-add_master_command ("log", "log [[alert|error|warning|info|debug|fyi]: string] (to print a string on the log terminal)");
-add_master_command ("memoryautopurgeevent", "memoryautopurgeevent [0|1] (to automatically purge new live events from the PGN memory data)");
-add_master_command ("memorycorrectresult", "memorycorrectresult [\"event\" \"round\" \"white\" \"black\" \"search\" \"replacement\"] (to correct a result in the PGN memory data)");
-add_master_command ("memorydate", "memorydate [strftime_string|\"\"] (to get/set the PGN header tag date for the PGN memory data)");
-add_master_command ("memoryfile", "memoryfile [filename.pgn] (to get/set the filename for the PGN memory data)");
-add_master_command ("memorylist", "memorylist [events|rounds|games] (to get memory events/rounds/games lists)");
-add_master_command ("memoryload", "memoryload [!] (to load PGN memroy data from memory file)");
-add_master_command ("memorymax", "memorymax [number] (to get/set the maximum number of games for the PGN memory data)");
-add_master_command ("memorypurgegame", "memorypurgegame [\"event\" \"round\" \"white\" \"black\"] (to purge a game from the PGN memory data)");
-add_master_command ("memorypurgeevent", "memorypurgeevent [\"event\"] (to purge an event from the PGN memory data)");
-add_master_command ("memorypurgeround", "memorypurgeround [\"event\" \"round\"] (to purge a round from the PGN memory data)");
-add_master_command ("memoryrenameevent", "memoryrenameevent [\"search\" \"replacement\"] (to rename an event in the PGN memory data)");
-add_master_command ("memoryrenameround", "memoryrenameround [\"event\" \"search\" \"replacement\"] (to rename a round in the PGN memory data)");
-add_master_command ("memoryselect", "memoryselect [regexp|\"\"] (to get/set the regular expression to select games for the PGN memory data)");
-add_master_command ("observe", "observe [game number list, such as: 12 34 56 ..] (to observe given games)");
-add_master_command ("placeholderdate", "placeholderdate [strftime_string|\"\"] (to get/set the PGN header tag date for the PGN placeholder game)");
-add_master_command ("placeholdergame", "placeholdergame [always|auto|never] (to get/set the PGN placeholder game behaviour during autorelay)");
-add_master_command ("placeholderresult", "placeholderresult [string|\"\"] (to get/set the PGN header tag result for the PGN placeholder game)");
-add_master_command ("placeholdersite", "placeholdersite [string|\"\"] (to get/set the PGN header tag site for the PGN placeholder game)");
-add_master_command ("prioritize", "prioritize [regexp|\"\"] (to get/set the regular expression to prioritize events/players from the PGN header during autorelay; might be overridden by autoprioritize; might be overruled by ignore)");
-add_master_command ("prioritizeonly", "prioritizeonly [0|1] (to get/set the prioritized games only mode during autorelay)");
-add_master_command ("quit", "quit [number] (to quit from the ics server, returning the given exit value)");
-add_master_command ("relay", "relay [0|game number list, such as: 12 34 56 ..] (to observe given games from an event relay, 0 to disable relay mode)");
-add_master_command ("reset", "reset [all|config|games|live|memory] (to reset games and configuration)");
-add_master_command ("round", "round [string|\"\"] (to get/set the PGN header tag round)");
-add_master_command ("roundautocorrect", "roundautocorrect [/regexp/evalexp/|\"\"] (to get/set the regular expression and the eval expression returning a string from \$event that corrects round tags during autorelay)");
-add_master_command ("roundreverse", "roundreverse [0|1] (to use reverse alphabetical ordering of rounds)");
-add_master_command ("site", "site [string|\"\"] (to get/set the PGN header tag site)");
-add_master_command ("timeoffset", "timeoffset [[+|-]seconds] (to get/set the offset correcting the time value from the UTC time used by default)");
-add_master_command ("topfile", "topfile [filename.pgn] (to get/set the filename for the top PGN data)");
-add_master_command ("verbosity", "verbosity [0-7] (to get/set log verbosity: 0=none, 1=alert, 2=error, 3=warning, 4=info, 5=debug, 6=fyi 7=all)");
-add_master_command ("write", "write [!] (to force writing updated PGN data according to the latest configuration)");
+add_master_command ("archivefile", "[filename.pgn] (to get/set the filename for archiving PGN data)");
+add_master_command ("archivedate", "[strftime_string|\"\"] (to get/set the PGN header tag date for the PGN archive)");
+add_master_command ("archiveselect", "[regexp|\"\"] (to get/set the regular expression to select games for archiving PGN data)");
+add_master_command ("autoprioritize", "[regexp|\"\"] (to get/set the regular expression to prioritize entire events during autorelay; has precedence over prioritize)");
+add_master_command ("autorelay", "[0|1] (to automatically observe all relayed games)");
+add_master_command ("batchlist", "[filename.ini [delay_sec]] (to list commands from a batch file; long listings might be truncated unless enough delay seconds are allowed)");
+add_master_command ("batchrun", "[filename.ini] (to execute commands from a batch file)");
+add_master_command ("checkrelay", "[!] (to check relayed games during relay and autorelay)");
+add_master_command ("config", "[!] (to get config info)");
+if ($TEST_FLAG) { add_master_command ("evaluate", "[evalexp] (to evaluate an arbitrary internal command: for debug use only)"); }
+add_master_command ("eloautoprioritize", "[evalexp|\"\"] (to get/set the eval expression returning 1|0 from \$minElo, \$maxElo and \$avgElo to prioritize entire events during autorelay; has precedence over prioritize)");
+add_master_command ("eloignore", "[evalexp|\"\"] (to get/set the eval expression returning 1|0 from \$minElo, \$maxElo and \$avgElo to ignore games during autorelay; has precedence over prioritize)");
+add_master_command ("event", "[string|\"\"] (to get/set the PGN header tag event)");
+add_master_command ("eventautocorrect", "[/regexp/evalexp/|\"\"] (to get/set the regular expression and the eval expression returning a string that corrects event tags during autorelay)");
+add_master_command ("eventroundautoprecorrect", "[/regexp/evalexp/|\"\"] (to get/set the regular expression and the eval expression returning a string that precorrects eventround tags during autorelay)");
+add_master_command ("follow", "[0|handle|/s|/b|/l] (to follow the user with given handle, /s for the best standard game, /b for the best blitz game, /l for the best lightning game, 0 to disable follow mode)");
+add_master_command ("games", "(to get games summary info)");
+add_master_command ("heartbeat", "[frequency offset] (to get/set the timing of heartbeat log messages, in hours)");
+add_master_command ("help", "[command] (to get commands help)");
+add_master_command ("history", "[compact|extended] (to get history info)");
+add_master_command ("ics", "[server command] (to run a custom command on the ics server)");
+add_master_command ("ignore", "[regexp|\"\"] (to get/set the regular expression to ignore events/players from the PGN header during autorelay; has precedence over prioritize; use ^(?:(?!regexp).)+\$ for negative lookup)");
+add_master_command ("livedate", "[strftime_string|\"\"] (to get/set the PGN header tag date for live PGN data)");
+add_master_command ("livefile", "[filename.pgn] (to get/set the filename for live PGN data)");
+add_master_command ("livelist", "[events|rounds|games] (to get live events/rounds/games lists)");
+add_master_command ("livemax", "[number] (to get/set the maximum number of games for the live PGN data)");
+add_master_command ("livepurgegames", "[game number list, such as: 12 34 56 ..] (to purge given past games from live PGN data)");
+add_master_command ("log", "[[alert|error|warning|info|debug|fyi]: string] (to print a string on the log terminal)");
+add_master_command ("memoryautopurgeevent", "[0|1] (to automatically purge new live events from the PGN memory data)");
+add_master_command ("memorydate", "[strftime_string|\"\"] (to get/set the PGN header tag date for the PGN memory data)");
+add_master_command ("memoryfile", "[filename.pgn] (to get/set the filename for the PGN memory data)");
+add_master_command ("memorylist", "[events|rounds|games] (to get memory events/rounds/games lists)");
+add_master_command ("memoryload", "[!] (to load PGN memroy data from memory file)");
+add_master_command ("memorymax", "[number] (to get/set the maximum number of games for the PGN memory data)");
+add_master_command ("memorypurgegame", "[\"event\" \"round\" \"white\" \"black\"] (to purge a game from the PGN memory data)");
+add_master_command ("memorypurgeevent", "[\"event\"] (to purge an event from the PGN memory data)");
+add_master_command ("memorypurgeround", "[\"event\" \"round\"] (to purge a round from the PGN memory data)");
+add_master_command ("memoryreplaceevent", "[\"search\" \"replacement\"] (to search and replace an event in the PGN memory data)");
+add_master_command ("memoryreplaceresult", "[\"event\" \"round\" \"white\" \"black\" \"search\" \"replacement\"] (to search and replace a result in the PGN memory data)");
+add_master_command ("memoryreplaceround", "[\"event\" \"search\" \"replacement\"] (to search and replace a round in the PGN memory data)");
+add_master_command ("memoryselect", "[regexp|\"\"] (to get/set the regular expression to select games for the PGN memory data)");
+add_master_command ("observe", "[game number list, such as: 12 34 56 ..] (to observe given games)");
+add_master_command ("placeholderdate", "[strftime_string|\"\"] (to get/set the PGN header tag date for the PGN placeholder game)");
+add_master_command ("placeholdergame", "[always|never|smart] (to get/set the PGN placeholder game behaviour during autorelay)");
+add_master_command ("placeholderresult", "[string|\"\"] (to get/set the PGN header tag result for the PGN placeholder game)");
+add_master_command ("placeholdersite", "[string|\"\"] (to get/set the PGN header tag site for the PGN placeholder game)");
+add_master_command ("prioritize", "[regexp|\"\"] (to get/set the regular expression to prioritize events/players from the PGN header during autorelay; might be overridden by autoprioritize; might be overruled by ignore)");
+add_master_command ("prioritizeonly", "[0|1] (to get/set the prioritized games only mode during autorelay)");
+add_master_command ("quit", "[number] (to quit from the ics server, returning the given exit value)");
+add_master_command ("relay", "[0|game number list, such as: 12 34 56 ..] (to observe given games from an event relay, 0 to disable relay mode)");
+add_master_command ("reset", "[all|config|games|live|memory] (to reset games and configuration)");
+add_master_command ("round", "[string|\"\"] (to get/set the PGN header tag round)");
+add_master_command ("roundautocorrect", "[/regexp/evalexp/|\"\"] (to get/set the regular expression and the eval expression returning a string from \$event that corrects round tags during autorelay)");
+add_master_command ("roundreverse", "[0|1] (to use reverse alphabetical ordering of rounds)");
+add_master_command ("site", "[string|\"\"] (to get/set the PGN header tag site)");
+add_master_command ("timeoffset", "[[+|-]seconds] (to get/set the offset correcting the time value from the UTC time used by default)");
+add_master_command ("topfile", "[filename.pgn] (to get/set the filename for the top PGN data)");
+add_master_command ("verbosity", "[0-7] (to get/set log verbosity: 0=none, 1=alert, 2=error, 3=warning, 4=info, 5=debug, 6=fyi 7=all)");
+add_master_command ("write", "[!] (to force writing updated PGN data according to the latest configuration)");
 
 sub detect_command {
   my ($command) = @_;
@@ -1622,7 +1619,7 @@ sub detect_command_helptext {
   }
   for (my $i=0; $i<=$#master_commands; $i++) {
     if ($master_commands[$i] eq $detectedCommand) {
-      return $master_commands_helptext[$i];
+      return "$detectedCommand $master_commands_helptext[$i]";
     }
   }
   return "invalid command";
@@ -1684,7 +1681,7 @@ sub process_master_command {
           if ($@) { pgn4webError(); }
           if ($parameters eq "\"\"") { $parameters = ""; }
           if (($parameters ne $autoPrioritize) && ($relayMode == 1)) {
-            force_next_check_relay_time($CHECK_RELAY_MIN_LAG);
+            force_next_check_relay_time();
           }
           $autoPrioritize = $parameters;
           $reportedNotFoundNonPrioritizedGame = 0;
@@ -1711,7 +1708,7 @@ sub process_master_command {
         if ($followMode == 0) {
           $autorelayMode = 1;
           $relayMode = 1;
-          force_next_check_relay_time($CHECK_RELAY_MIN_LAG);
+          force_next_check_relay_time();
         } else {
           tell_operator("error: disable follow before activating autorelay");
         }
@@ -1724,9 +1721,9 @@ sub process_master_command {
       tell_operator("warning: ics relay offline");
     }
   } elsif ($command eq "batchlist") {
-    if ($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) { # for portability only a subset of filename chars is allowed
-      if ($parameters ne "") {
-        if (batch_list($parameters)) {
+    if ($parameters =~ /^([\w\d\/\\.+=_-]*|"")( \d+)?$/) { # for portability only a subset of filename chars is allowed
+      if ($parameters =~ /^(\S+)( (\d+))?/) {
+        if (batch_list($1, $3)) {
           tell_operator("OK $command");
         }
       } else {
@@ -1750,9 +1747,7 @@ sub process_master_command {
   } elsif ($command eq "checkrelay") {
     if ($parameters eq "!") {
       if ($relayMode == 1) {
-        force_next_check_relay_time();
-        # check_relay_results();
-        tell_operator("OK $command");
+        tell_operator("OK $command" . (force_next_check_relay_time() ? "" : " delay"));
       } else {
         tell_operator("warning: checkrelay command while relayMode=$relayMode");
       }
@@ -1779,7 +1774,7 @@ sub process_master_command {
       if ($archive_date ne "" || $parameters eq "!") { $cfg .= " archivedate=$archive_date"; }
       if ($archiveSelectFilter ne "" || $parameters eq "!") { $cfg .= " archiveselect=$archiveSelectFilter"; }
     }
-    if ($placeholderGame ne "auto" || $parameters eq "!") { $cfg .= " placeholdergame=$placeholderGame"; }
+    if ($placeholderGame ne "smart" || $parameters eq "!") { $cfg .= " placeholdergame=$placeholderGame"; }
     if ($placeholderGame ne "never" || $parameters eq "!") {
       if ($placeholder_site ne "" || $parameters eq "!") { $cfg .= " placeholdersite=$placeholder_site"; }
       if ($placeholder_date ne "" || $parameters eq "!") { $cfg .= " placeholderdate=$placeholder_date"; }
@@ -1810,6 +1805,7 @@ sub process_master_command {
     if ($verbosity != $verbosity_default || $parameters eq "!") { $cfg .= " verbosity=$verbosity"; }
     tell_operator($cfg);
     check_pgn_files();
+    tell_operator("OK $command");
   } elsif (($TEST_FLAG) && ($command eq "evaluate")) {
     if ($parameters ne "") {
       eval {
@@ -1836,7 +1832,7 @@ sub process_master_command {
           $EloAutoprioritizeString = $parameters;
         }
         if (($EloAutoprioritizeString ne $oldEloAutoprioritizeString) && ($relayMode == 1)) {
-          force_next_check_relay_time($CHECK_RELAY_MIN_LAG);
+          force_next_check_relay_time();
         }
         if ($autoPrioritize ne "") {
           log_terminal("info: eloautoprioritize=$EloAutoprioritizeString prioritize=$prioritizeFilter");
@@ -1871,7 +1867,7 @@ sub process_master_command {
               }
             }
           }
-          force_next_check_relay_time($CHECK_RELAY_MIN_LAG);
+          force_next_check_relay_time();
         }
         log_terminal("info: eloignore=$EloIgnoreString");
       }
@@ -2013,10 +2009,12 @@ sub process_master_command {
         }
       }
     } else {
-      tell_operator("commands: " . join(", ", @master_commands));
+      tell_operator("commands: " . join(" ", @master_commands));
       tell_operator("info: non-beautified players names required");
     }
   } elsif ($command eq "history") {
+    if ($parameters eq "c") { $parameters = "compact"; }
+    if ($parameters eq "e") { $parameters = "extended"; }
     if ($parameters =~ /^(compact|extended|)$/) {
       tell_operator("history: " . h_info($parameters));
     } else {
@@ -2038,7 +2036,7 @@ sub process_master_command {
           if ($parameters eq "\"\"") { $parameters = ""; }
           $ignoreFilter = $parameters;
           if ($relayMode == 1) {
-            force_next_check_relay_time($CHECK_RELAY_MIN_LAG);
+            force_next_check_relay_time();
           }
           $reportedNotFoundNonPrioritizedGame = 0;
           log_terminal("info: ignore=$ignoreFilter");
@@ -2074,6 +2072,9 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "livelist") {
+    if ($parameters eq "e") { $parameters = "events"; }
+    if ($parameters eq "r") { $parameters = "rounds"; }
+    if ($parameters eq "g") { $parameters = "games"; }
     if ($parameters =~ /^(event|round|game)s?$/) {
       $parameters = $1 . "s";
       my @liveList = ();
@@ -2106,18 +2107,16 @@ sub process_master_command {
         push(@liveList, $liveListItem);
       }
       $liveListCount = 1;
-      if (($parameters eq "events") || ($parameters eq "rounds")) {
-        for (my $i = $#liveList; $i >= 0; $i--) {
-          if (($i > 0) && ($liveList[$i] eq $liveList[$i - 1])) {
-            $liveListCount++;
-            @liveList = @liveList[0..($i-1), ($i+1)..$#liveList];
-          } else {
-            $liveList[$i] .= " (" . $liveListCount . ")";
-            $liveListCount = 1;
-          }
+      for (my $i = $#liveList; $i >= 0; $i--) {
+        if (($i > 0) && ($liveList[$i] eq $liveList[$i - 1])) {
+          $liveListCount++;
+          @liveList = @liveList[0..($i-1), ($i+1)..$#liveList];
+        } else {
+          $liveList[$i] .= " (" . $liveListCount . ")";
+          $liveListCount = 1;
         }
       }
-      tell_operator("livelist: $parameters(" . ($#liveList + 1) . ($parameters eq "games" ? "/" : ") games(") . ($#games_num + 1) . "/$maxGamesNum)" . ($numElo > 0 ? sprintf(" elo(%d/%d/%d)", $minElo, $totElo/$numElo, $maxElo) : "") . ($#liveList >= 0 ? " " . join(", ", @liveList) . ";" : ""));
+      tell_operator("livelist: $parameters(" . ($#liveList + 1) . ($parameters eq "games" ? "/" : ") games(") . ($#games_num + 1) . "/$maxGamesNum)" . ($numElo > 0 ? sprintf(" elo(%d/%d/%d)", $minElo, $totElo/$numElo, $maxElo) : "") . ($#liveList >= 0 ? " " . join(" ", @liveList) : ""));
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
     } else {
@@ -2162,6 +2161,12 @@ sub process_master_command {
       tell_operator(detect_command_helptext($command));
     }
   } elsif ($command eq "log") {
+    $parameters =~ s/^a:/alert:/;
+    $parameters =~ s/^e:/error:/;
+    $parameters =~ s/^w:/warning:/;
+    $parameters =~ s/^i:/info:/;
+    $parameters =~ s/^d:/debug:/;
+    $parameters =~ s/^f:/fyi:/;
     if ($parameters ne "") {
       if ($parameters =~ /^(alert|error|warning|info|debug|fyi): .+/) {
         log_terminal($parameters);
@@ -2205,41 +2210,6 @@ sub process_master_command {
     } else {
       tell_operator("error: invalid $command parameter");
     }
-  } elsif ($command eq "memorycorrectresult") {
-    if ($parameters =~ /^\s*"(.+?)"\s*"(.+?)"\s*"(.+?)"\s*"(.+?)"\s*"(.+?)"\s*"(.+?)"\s*$/) {
-      my $searchEvent = $1;
-      my $searchRound = $2;
-      my $searchWhite = $3;
-      my $searchBlack = $4;
-      my $searchResult = $5;
-      my $replacementResult = $6;
-      eval {
-        "test" =~ /$searchEvent/;
-        if ($@) { pgn4webError(); }
-        "test" =~ /$searchRound/;
-        if ($@) { pgn4webError(); }
-        "test" =~ /$searchWhite/;
-        if ($@) { pgn4webError(); }
-        "test" =~ /$searchBlack/;
-        if ($@) { pgn4webError(); }
-        "test" =~ /$searchResult/;
-        if ($@) { pgn4webError(); }
-        if (memory_correct_result($searchEvent, $searchRound, $searchWhite, $searchBlack, $searchResult, $replacementResult) > 0) {
-          $lastPgn = $lastPgnForce;
-          refresh_pgn();
-          tell_operator("corrected result");
-        } else {
-          tell_operator("memory result not found for correct");
-        }
-        1;
-      } or do {
-        tell_operator("error: invalid regular expression");
-      };
-    } elsif ($parameters eq "") {
-      tell_operator(detect_command_helptext($command));
-    } else {
-      tell_operator("error: invalid $command parameter");
-    }
   } elsif ($command eq "memoryfile") {
     if ($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) { # for portability only a subset of filename chars is allowed
       if ($parameters ne "") {
@@ -2257,6 +2227,9 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "memorylist") {
+    if ($parameters eq "e") { $parameters = "events"; }
+    if ($parameters eq "r") { $parameters = "rounds"; }
+    if ($parameters eq "g") { $parameters = "games"; }
     if ($parameters =~ /^(event|round|game)s?$/) {
       $parameters = $1 . "s";
       if ($PGN_MEMORY eq "") {
@@ -2282,18 +2255,16 @@ sub process_master_command {
         }
       }
       my $memoryListCount = 1;
-      if (($parameters eq "events") || ($parameters eq "rounds")) {
-        for (my $i = $#memoryList; $i >= 0; $i--) {
-          if (($i > 0) && ($memoryList[$i] eq $memoryList[$i - 1])) {
-            $memoryListCount++;
-            @memoryList = @memoryList[0..($i-1), ($i+1)..$#memoryList];
-          } else {
-            $memoryList[$i] .= " (" . $memoryListCount . ")";
-            $memoryListCount = 1;
-          }
+      for (my $i = $#memoryList; $i >= 0; $i--) {
+        if (($i > 0) && ($memoryList[$i] eq $memoryList[$i - 1])) {
+          $memoryListCount++;
+          @memoryList = @memoryList[0..($i-1), ($i+1)..$#memoryList];
+        } else {
+          $memoryList[$i] .= " (" . $memoryListCount . ")";
+          $memoryListCount = 1;
         }
       }
-      tell_operator("memorylist: $parameters(" . ($#memoryList + 1) . ($parameters eq "games" ? "/" : ") games(") . ($#memory_games + 1) . "/$memoryMaxGamesNum/" . int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum) .")" . ($#memoryList >= 0 ? " " . join(", ", @memoryList) . ";" : ""));
+      tell_operator("memorylist: $parameters(" . ($#memoryList + 1) . ($parameters eq "games" ? "/" : ") games(") . ($#memory_games + 1) . "/$memoryMaxGamesNum/" . int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum) .")" . ($#memoryList >= 0 ? " " . join(" ", @memoryList) : ""));
     } elsif ($parameters eq "") {
       tell_operator(detect_command_helptext($command));
     } else {
@@ -2362,19 +2333,19 @@ sub process_master_command {
     } else {
       tell_operator("error: invalid $command parameter");
     }
-  } elsif ($command eq "memoryrenameevent") {
+  } elsif ($command eq "memoryreplaceevent") {
     if ($parameters =~ /^\s*"(.+?)"\s*"(.+?)"\s*$/) {
       my $searchEvent = $1;
       my $replacementEvent = $2;
       eval {
         "test" =~ /$searchEvent/;
         if ($@) { pgn4webError(); }
-        if (memory_rename_event($searchEvent, $replacementEvent) > 0) {
+        if (memory_replace_event($searchEvent, $replacementEvent) > 0) {
           $lastPgn = $lastPgnForce;
           refresh_pgn();
-          tell_operator("renamed event");
+          tell_operator("OK $command");
         } else {
-          tell_operator("memory event not found for rename");
+          tell_operator("$command: search and replace failed");
         }
         1;
       } or do {
@@ -2385,7 +2356,42 @@ sub process_master_command {
     } else {
       tell_operator("error: invalid $command parameter");
     }
-  } elsif ($command eq "memoryrenameround") {
+  } elsif ($command eq "memoryreplaceresult") {
+    if ($parameters =~ /^\s*"(.+?)"\s*"(.+?)"\s*"(.+?)"\s*"(.+?)"\s*"(.+?)"\s*"(.+?)"\s*$/) {
+      my $searchEvent = $1;
+      my $searchRound = $2;
+      my $searchWhite = $3;
+      my $searchBlack = $4;
+      my $searchResult = $5;
+      my $replacementResult = $6;
+      eval {
+        "test" =~ /$searchEvent/;
+        if ($@) { pgn4webError(); }
+        "test" =~ /$searchRound/;
+        if ($@) { pgn4webError(); }
+        "test" =~ /$searchWhite/;
+        if ($@) { pgn4webError(); }
+        "test" =~ /$searchBlack/;
+        if ($@) { pgn4webError(); }
+        "test" =~ /$searchResult/;
+        if ($@) { pgn4webError(); }
+        if (memory_replace_result($searchEvent, $searchRound, $searchWhite, $searchBlack, $searchResult, $replacementResult) > 0) {
+          $lastPgn = $lastPgnForce;
+          refresh_pgn();
+          tell_operator("OK $command");
+        } else {
+          tell_operator("$command: search and replace failed");
+        }
+        1;
+      } or do {
+        tell_operator("error: invalid regular expression");
+      };
+    } elsif ($parameters eq "") {
+      tell_operator(detect_command_helptext($command));
+    } else {
+      tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "memoryreplaceround") {
     if ($parameters =~ /^\s*"(.+?)"\s*"(.+?)"\s*"(.+?)"\s*$/) {
       my $searchEvent = $1;
       my $searchRound = $2;
@@ -2395,12 +2401,12 @@ sub process_master_command {
         if ($@) { pgn4webError(); }
         "test" =~ /$searchRound/;
         if ($@) { pgn4webError(); }
-        if (memory_rename_round($searchEvent, $searchRound, $replacementRound) > 0) {
+        if (memory_replace_round($searchEvent, $searchRound, $replacementRound) > 0) {
           $lastPgn = $lastPgnForce;
           refresh_pgn();
-          tell_operator("renamed round");
+          tell_operator("OK $command");
         } else {
-          tell_operator("memory round not found for rename");
+          tell_operator("$command: search and replace failed");
         }
         1;
       } or do {
@@ -2447,7 +2453,10 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "placeholdergame") {
-    if (($parameters eq "always") || ($parameters eq "auto") || ($parameters eq "never")) {
+    if ($parameters eq "a") { $parameters = "always"; }
+    if ($parameters eq "n") { $parameters = "never"; }
+    if ($parameters eq "s") { $parameters = "smart"; }
+    if (($parameters eq "always") || ($parameters eq "never") || ($parameters eq "smart")) {
       $placeholderGame = $parameters;
       tell_operator("placeholdergame=$placeholderGame");
       log_terminal("info: placeholdergame=$placeholderGame");
@@ -2485,7 +2494,7 @@ sub process_master_command {
           if ($parameters eq "\"\"") { $parameters = ""; }
           $prioritizeFilter = $parameters;
           if ($relayMode == 1) {
-            force_next_check_relay_time($CHECK_RELAY_MIN_LAG);
+            force_next_check_relay_time();
           }
           $reportedNotFoundNonPrioritizedGame = 0;
           log_terminal("info: prioritize=$prioritizeFilter");
@@ -2506,7 +2515,7 @@ sub process_master_command {
       if ($parameters != $prioritizeOnly) {
         $prioritizeOnly = $parameters;
         if ($relayMode == 1) {
-          force_next_check_relay_time($CHECK_RELAY_MIN_LAG);
+          force_next_check_relay_time();
         }
         if ($prioritizeOnly == 1) {
           tell_operator_and_log_terminal("warning: prioritizeonly=$prioritizeOnly should be avoided and replaced by more efficient prioritize/ignore options");
@@ -2549,6 +2558,11 @@ sub process_master_command {
       tell_operator("warning: ics relay offline");
     }
   } elsif ($command eq "reset") {
+    if ($parameters eq "a") { $parameters = "all"; }
+    if ($parameters eq "c") { $parameters = "config"; }
+    if ($parameters eq "g") { $parameters = "games"; }
+    if ($parameters eq "l") { $parameters = "live"; }
+    if ($parameters eq "m") { $parameters = "memory"; }
     if ($parameters =~ /^(all|config|games|live|memory)$/) {
       if ($parameters eq "all") { reset_all(); }
       elsif ($parameters eq "config") { reset_config(); }
@@ -2716,6 +2730,7 @@ sub check_pgn_files {
 sub batch_commands {
   my ($batchfile) = @_;
   my @commandList = ();
+  my $maxCommandlistLength = 100;
   if ($batchfile =~ /^[\w\d\/\\.+=_-]+$/) { # for portability only a subset of filename chars is allowed
     if (open(BATCHFILE, "<" , $batchfile)) {
       @commandList = <BATCHFILE>;
@@ -2726,19 +2741,33 @@ sub batch_commands {
   } else {
     tell_operator_and_log_terminal("error: invalid batch filename: $batchfile");
   }
+  for (my $i=$#commandList; $i>=0; $i--) {
+    $commandList[$i] =~ s/[\r\n]//g;
+    if ($commandList[$i] =~ /^\s*(#|$)/) { @commandList = @commandList[0..($i-1), ($i+1)..$#commandList]; }
+  }
+  if ($#commandList >= $maxCommandlistLength) {
+    tell_operator_and_log_terminal("error: batch commands length=" . ($#commandList + 1) . " > maxCommandlistLength=" . $maxCommandlistLength);
+    @commandList = ();
+  }
   return @commandList;
 }
 
 sub batch_list {
-  my ($batchfile) = @_;
-  my @commandList = batch_commands($batchfile);
-  my $commandString = join("; ", @commandList);
-  $commandString =~ s/[\r\n]//g;
-  if ($commandString ne "") {
-    tell_operator("info: batch file " . $batchfile . " (" . ($#commandList + 1) . "): " . $commandString . ";");
-    return 1;
+  my ($batchfile, $delay) = @_;
+  my $maxDelay = 3;
+  if (($delay ne "") && ($delay > $maxDelay)) {
+    tell_operator("error: batch list delay=" . $delay . " > maxDelay=" . $maxDelay);
+    return 0;
   }
-  return 0;
+  my @commandList = batch_commands($batchfile);
+  if ($#commandList >= 0) {
+    tell_operator("info: batch file " . $batchfile . " (" . ($#commandList + 1) . ")");
+    for (my $i=0; $i<=$#commandList; $i++) {
+      tell_operator("info: batch(" . ($i + 1) . ") " . $commandList[$i]);
+      if ($delay) { sleep($delay); }
+    }
+  }
+  return 1;
 }
 
 our $batch_stack_threshold = 2; # max nexted batches simultaneously running
@@ -2754,8 +2783,8 @@ sub batch_run {
     return 0;
   }
   push(@batch_stack, $batchfile);
-  log_terminal("debug: batch run(" . ($#batch_stack + 1) . "): $batchfile");
   my @commandList = batch_commands($batchfile);
+  log_terminal("debug: batch run(" . ($#batch_stack + 1) . "): $batchfile");
   foreach my $cmd (@commandList) {
     if ($cmd =~ /^\s*#/) {
       # skip comments
@@ -2820,15 +2849,25 @@ sub check_relay_results {
         remove_game($thisGameNum);
       }
       @GAMES_autorelayRunning = ();
+      log_rounds();
     }
   }
 }
 
 sub force_next_check_relay_time {
-  my ($delay) = @_;
-  if ($delay eq "") { $delay = -1; }
-  $next_check_relay_time = time() + $delay;
+  my $delay = -1;
+  my $now = time();
+  my $retVal = 1;
+  if ($now - $last_check_relay_time < $CHECK_RELAY_MIN_LAG) {
+    $delay = $CHECK_RELAY_MIN_LAG;
+    log_terminal("debug: added delay when forcing next check relay time");
+    $retVal = 0;
+  }
+  if ($now + $delay < $next_check_relay_time) {
+    $next_check_relay_time = $now + $delay;
+  }
   $short_relay_period = 1;
+  return $retVal;
 }
 
 sub ensure_alive {
