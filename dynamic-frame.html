@@ -729,15 +729,11 @@ function customShortcutKey_Shift_2() {
 }
 
 function customShortcutKey_Shift_3() {
-  showGameList();
-}
-
-function customShortcutKey_Shift_4() {
   toggleBareChessboard();
 }
 
 var showFullscreenChessboardTimeout = null;
-function customShortcutKey_Shift_5() {
+function customShortcutKey_Shift_4() {
   if (showFullscreenChessboardTimeout) {
     clearTimeout(showFullscreenChessboardTimeout);
     showFullscreenChessboardTimeout = null;
@@ -745,6 +741,10 @@ function customShortcutKey_Shift_5() {
   } else {
     showFullscreenChessboardTimeout = setTimeout("showFullscreenChessboardTimeout = false; showFullscreenChessboard(false);", 333);
   }
+}
+
+function customShortcutKey_Shift_5() {
+  SetHighlight(!highlightOption);
 }
 
 function customShortcutKey_Shift_6() {
