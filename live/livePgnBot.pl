@@ -2442,8 +2442,12 @@ sub process_master_command {
     }
   } elsif ($command eq "observe") {
     if ($parameters ne "") {
-      observe($parameters);
-      tell_operator("OK $command");
+      if ($autorelayMode == 0) {
+        observe($parameters);
+        tell_operator("OK $command");
+      } else {
+        tell_operator("error: $command diabled during autorelay");
+      }
     } else {
       tell_operator(detect_command_helptext($command));
     }
