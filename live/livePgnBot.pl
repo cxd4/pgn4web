@@ -1628,6 +1628,11 @@ sub detect_command_helptext {
 sub process_master_command {
   my ($command, $parameters) = @_;
 
+  if ($command =~ /[^a-z]/i) {
+    tell_operator("error: invalid command: $command $parameters");
+    return;
+  }
+
   $command = detect_command($command);
 
   if ($command eq "") {
