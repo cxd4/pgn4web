@@ -425,7 +425,7 @@ function myOnResize() {
   var gameListFontSize = Math.floor(Math.min((ww - framePadding * 2) / gameListFontHorizontalRatio, (wh - framePadding * 2) / gameListFontVerticalRatio));
   gameListLineHeight = Math.floor(1.9 * gameListFontSize);
   var gameListPadding = Math.floor(gameListLineHeight / 2);
-  gameListBodyHeight = gameListLineHeight * Math.floor((wh - 2 * framePadding - gameListLineHeight - 2.5 * gameListPadding) / gameListLineHeight) + 1;
+  gameListBodyHeight = gameListLineHeight * Math.floor((wh - 2 * framePadding - gameListLineHeight - 2.5 * gameListPadding) / gameListLineHeight);
   myInsertRule(sheet, ".gameList", "display: none; position: absolute; overflow: hidden; font-size: " + gameListFontSize + "px; line-height: " + gameListLineHeight + "px;");
   myInsertRule(sheet, ".gameListHeader", "overflow: hidden; height: " + gameListLineHeight + "px; width: " + (ww - 2 * framePadding) + "px; padding-top: " + gameListPadding + "px; padding-bottom: " + gameListPadding + "px;");
   myInsertRule(sheet, ".gameListHeaderItem", "display: inline-block; overflow: hidden; text-align: center; width: " + ((ww - 2 * framePadding) / 7) + "px;");
