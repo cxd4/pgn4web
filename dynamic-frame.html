@@ -431,7 +431,7 @@ function myOnResize() {
   myInsertRule(sheet, ".gameListHeaderItem", "display: inline-block; overflow: hidden; text-align: center; width: " + ((ww - 2 * framePadding) / 7) + "px;");
   myInsertRule(sheet, ".gameListHeaderButton", "cursor: pointer; display: inline-block; min-width: " + ((ww - 2 * framePadding) / 14) + "px;");
   myInsertRule(sheet, ".gameListBody", "height: " + gameListBodyHeight + "px; width: " + (ww - 2 * framePadding) + "px; overflow-x: hidden; overflow-y: auto; scrollbar-base-color: #" + backgroundColorHex + "; -webkit-overflow-scrolling: touch; overflow-scrolling: touch;");
-  myInsertRule(sheet, ".gameListBodyItems", "overflow:hidden; height: " + (gameListLineHeight * numberOfGames) + "px;");
+  myInsertRule(sheet, ".gameListBodyItems", "");
   var gameListMarginSpacing = Math.floor((gameListFontSize * gameListFontHorizontalRatio) * (6 / 32) / 5);
   var gameListPlayerSpacing = Math.floor((gameListFontSize * gameListFontHorizontalRatio) * (9 / 32));
   myInsertRule(sheet, ".gameListBodyItemsLine", "cursor: pointer; height: " + gameListLineHeight + "px;");
