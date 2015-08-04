@@ -128,7 +128,7 @@ function errorExit($errorNum, $errorInfo) {
   $errorInfo = htmlentities(substr($errorInfo, 0, 40));
   $html = <<<END
 <!DOCTYPE HTML>
-<html>
+<html manifest="live-games-app.appcache">
 <head>
 <title>$appName</title>
 </head>
@@ -143,7 +143,7 @@ END;
 
 
 $actionNum = 0;
-if (!$html) { errorExit($actionNum, "base file not found"); }
+if (!$html) { errorExit($actionNum, "source file not found"); }
 
 
 $text = "('?l=t&' + window.location.hash + '&scf=t&hc=t&pf=a' + '&ct=wood&bch=000000&fch=FFEEDD&hch=996633')";
