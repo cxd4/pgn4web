@@ -500,7 +500,6 @@ function fillGameList(force) {
         thisGameTitle2 =  gameEvent[thisNum] || "";
         thisGameTitle2 += (thisGameTitle2 && gameRound[thisNum]) ? "   " : "";
         thisGameTitle2 += gameRound[thisNum] || "";
-        if (thisGameTitle2) { thisGameTitle2 = " " + thisGameTitle2 + " "; }
         text += "<tr class='gameListRow" + (currentGame === thisNum ? " gameListRowSelected" : "") + "' onclick='selectGameList(" + thisNum + ");' title='" + thisGameTitle1 + (thisGameTitle1 && thisGameTitle2 ? "\n" : "") + thisGameTitle2 + "'>";
         text += "<td><div class='gameListBodyItemsPlayer gameListBodyItemsPlayerWhite'>" + gameWhite[thisNum] + "</div></td>";
         if ((gameWhite[thisNum] !== "") || (gameBlack[thisNum] !== "") || (gameResult[thisNum] != "*")) {
