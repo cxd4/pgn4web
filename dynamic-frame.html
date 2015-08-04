@@ -434,12 +434,13 @@ function myOnResize() {
   myInsertRule(sheet, ".gameListBodyItems", "");
   var gameListMarginSpacing = Math.floor((gameListFontSize * gameListFontHorizontalRatio) * (6 / 32) / 5);
   var gameListPlayerSpacing = Math.floor((gameListFontSize * gameListFontHorizontalRatio) * (9 / 32));
-  myInsertRule(sheet, ".gameListBodyItemsLine", "cursor: pointer; height: " + gameListLineHeight + "px;");
-  myInsertRule(sheet, ".gameListBodyItemsPlayer", "display: inline-block; vertical-align: bottom; overflow: hidden; width: " + gameListPlayerSpacing + "px; margin-left: " + gameListMarginSpacing + "px; margin-right: " + gameListMarginSpacing + "px;");
+  myInsertRule(sheet, ".gameListRow", "cursor: pointer;");
+  myInsertRule(sheet, ".gameListRowSelected", "color: #" + backgroundColorHex + "; background-color: #" + fontColorHex + ";");
+  myInsertRule(sheet, ".gameListBodyItemsPlayer", "overflow: hidden; width: " + gameListPlayerSpacing + "px; margin-left: " + gameListMarginSpacing + "px; margin-right: " + gameListMarginSpacing + "px;");
   myInsertRule(sheet, ".gameListBodyItemsPlayerWhite", "text-align: right; margin-left: " + (2 * gameListMarginSpacing) + "px;");
   myInsertRule(sheet, ".gameListBodyItemsPlayerBlack", "");
-  myInsertRule(sheet, ".gameListBodyItemsResult", "display: inline-block; vertical-align: bottom; text-align: center; width: 5ex;");
-  myInsertRule(sheet, ".gameListBodyItemsEventRound", "display: inline-block; vertical-align: bottom; margin-left: " + (2 * gameListMarginSpacing) + "px; margin-right: " + gameListMarginSpacing + "px;");
+  myInsertRule(sheet, ".gameListBodyItemsResult", "text-align: center; min-width: 5ex; margin-left: 0px; margin-right: 0px;");
+  myInsertRule(sheet, ".gameListBodyItemsEventRound", "margin-left: " + (2 * gameListMarginSpacing) + "px; margin-right: " + gameListMarginSpacing + "px;");
 
   for (var ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
 
@@ -487,10 +488,9 @@ function fillGameList(force) {
     currentGameLast = currentGame;
     textSelectOptionsLast = textSelectOptions;
     force = true;
-    var text;
     if (theObj = document.getElementById("GameListBodyItems")) {
       var thisNum, thisResult, thisGameTitle1, thisGameTitle2;
-      text = "";
+      var text = "<table width='100%' cellspacing='0' cellpadding='0' border='0'>";
       for (thisNum = 0; thisNum < numberOfGames; thisNum++) {
         thisGameTitle1 = gameWhite[thisNum] || "";
         thisGameTitle1 += (thisGameTitle1 && gameBlack[thisNum]) ? "   " : "";
@@ -500,9 +500,9 @@ function fillGameList(force) {
         thisGameTitle2 =  gameEvent[thisNum] || "";
         thisGameTitle2 += (thisGameTitle2 && gameRound[thisNum]) ? "   " : "";
         thisGameTitle2 += gameRound[thisNum] || "";
-        text += "<div class='gameListBodyItemsLine' onclick='selectGameList(" + thisNum + ");' title='" + thisGameTitle1 + (thisGameTitle1 && thisGameTitle2 ? "\n" : "") + thisGameTitle2 + "'>";
-        if (thisNum === currentGame) { text += "<b>"; }
-        text += "<span class='gameListBodyItemsPlayer gameListBodyItemsPlayerWhite'>" + gameWhite[thisNum] + "</span>";
+        if (thisGameTitle2) { thisGameTitle2 = " " + thisGameTitle2 + " "; }
+        text += "<tr class='gameListRow" + (currentGame === thisNum ? " gameListRowSelected" : "") + "' onclick='selectGameList(" + thisNum + ");' title='" + thisGameTitle1 + (thisGameTitle1 && thisGameTitle2 ? "\n" : "") + thisGameTitle2 + "'>";
+        text += "<td><div class='gameListBodyItemsPlayer gameListBodyItemsPlayerWhite'>" + gameWhite[thisNum] + "</div></td>";
         if ((gameWhite[thisNum] !== "") || (gameBlack[thisNum] !== "") || (gameResult[thisNum] != "*")) {
           thisResult = gameResult[thisNum];
           if (thisResult == "1/2-1/2") { thisResult = "1/2"; }
@@ -511,14 +511,15 @@ function fillGameList(force) {
         } else {
           thisResult = "";
         }
-        text += "<span class='gameListBodyItemsResult'>" + thisResult + "</span>";
-        text += "<span class='gameListBodyItemsPlayer gameListBodyItemsPlayerBlack'>" + gameBlack[thisNum] + "</span>";
-        if (thisNum === currentGame) { text += "</b>"; }
+        text += "<td><div class='gameListBodyItemsResult'>" + thisResult + "</div></td>";
+        text += "<td><div class='gameListBodyItemsPlayer gameListBodyItemsPlayerBlack'>" + gameBlack[thisNum] + "</div></td>";
+        text += "<td width='100%'>";
         if (gameEvent[thisNum] || gameRound[thisNum]) {
-          text += "<span class='gameListBodyItemsEventRound'>" + gameEvent[thisNum] + ((gameEvent[thisNum] && gameRound[thisNum]) ? " &nbsp;&nbsp;&nbsp;&nbsp; " : "") + gameRound[thisNum] + "</span>";
+          text += "<div class='gameListBodyItemsEventRound'>" + gameEvent[thisNum] + ((gameEvent[thisNum] && gameRound[thisNum]) ? " &nbsp;&nbsp;&nbsp;&nbsp; " : "") + gameRound[thisNum] + "</div>";
         }
-        text += "</div>";
+        text += "</td></tr>";
       }
+      text += "</table>";
       theObj.innerHTML = text;
     }
   }
@@ -899,8 +900,7 @@ simpleAddEvent(window, "orientationchange", function() {
 var theObj;
 
 if (LiveBroadcastDelay && LiveBroadcastDemo) {
-  theObj = document.getElementById("GameLiveStatusExtraInfoRight");
-  if (theObj) {
+  if (theObj = document.getElementById("GameLiveStatusExtraInfoRight")) {
     theObj.innerHTML = "demo";
     theObj.title = "this is a broadcast simulation";
     theObj.style.visibility = "visible";
