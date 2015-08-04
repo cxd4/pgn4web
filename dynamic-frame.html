@@ -425,7 +425,7 @@ function myOnResize() {
   var gameListFontSize = Math.floor(Math.min((ww - framePadding * 2) / gameListFontHorizontalRatio, (wh - framePadding * 2) / gameListFontVerticalRatio));
   gameListLineHeight = Math.floor(1.9 * gameListFontSize);
   var gameListPadding = Math.floor(gameListLineHeight / 2);
-  gameListBodyHeight = gameListLineHeight * Math.floor((wh - 2 * framePadding - gameListLineHeight - 2.5 * gameListPadding) / gameListLineHeight) + 1;
+  gameListBodyHeight = gameListLineHeight * Math.floor((wh - 2 * framePadding - gameListLineHeight - 2.5 * gameListPadding) / gameListLineHeight);
   myInsertRule(sheet, ".gameList", "display: none; position: absolute; overflow: hidden; font-size: " + gameListFontSize + "px; line-height: " + gameListLineHeight + "px;");
   myInsertRule(sheet, ".gameListHeader", "overflow: hidden; height: " + gameListLineHeight + "px; width: " + (ww - 2 * framePadding) + "px; padding-top: " + gameListPadding + "px; padding-bottom: " + gameListPadding + "px;");
   myInsertRule(sheet, ".gameListHeaderItem", "display: inline-block; overflow: hidden; text-align: center; width: " + ((ww - 2 * framePadding) / 7) + "px;");
@@ -435,11 +435,11 @@ function myOnResize() {
   var gameListMarginSpacing = Math.floor((gameListFontSize * gameListFontHorizontalRatio) * (6 / 32) / 5);
   var gameListPlayerSpacing = Math.floor((gameListFontSize * gameListFontHorizontalRatio) * (9 / 32));
   myInsertRule(sheet, ".gameListBodyItemsLine", "cursor: pointer; height: " + gameListLineHeight + "px;");
-  myInsertRule(sheet, ".gameListBodyItemsPlayer", "display: inline-block; vertical-align: middle; overflow: hidden; width: " + gameListPlayerSpacing + "px; margin-left: " + gameListMarginSpacing + "px; margin-right: " + gameListMarginSpacing + "px;");
+  myInsertRule(sheet, ".gameListBodyItemsPlayer", "display: inline-block; vertical-align: bottom; overflow: hidden; width: " + gameListPlayerSpacing + "px; margin-left: " + gameListMarginSpacing + "px; margin-right: " + gameListMarginSpacing + "px;");
   myInsertRule(sheet, ".gameListBodyItemsPlayerWhite", "text-align: right; margin-left: " + (2 * gameListMarginSpacing) + "px;");
   myInsertRule(sheet, ".gameListBodyItemsPlayerBlack", "");
-  myInsertRule(sheet, ".gameListBodyItemsResult", "display: inline-block; vertical-align: middle; text-align: center; width: 5ex;");
-  myInsertRule(sheet, ".gameListBodyItemsEventRound", "display: inline-block; vertical-align: middle; margin-left: " + (2 * gameListMarginSpacing) + "px; margin-right: " + gameListMarginSpacing + "px;");
+  myInsertRule(sheet, ".gameListBodyItemsResult", "display: inline-block; vertical-align: bottom; text-align: center; width: 5ex;");
+  myInsertRule(sheet, ".gameListBodyItemsEventRound", "display: inline-block; vertical-align: bottom; margin-left: " + (2 * gameListMarginSpacing) + "px; margin-right: " + gameListMarginSpacing + "px;");
 
   for (var ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
 
@@ -867,7 +867,7 @@ simpleAddEvent(window, "orientationchange", function() {
 <div style="display:none;" id="GameSelector"></div>
 
 <div class="gameList" style="display:none;" id="GameList">
-<div class="gameListHeader" id="GameListHeader"><div class="gameListHeaderItem"><span class="gameListHeaderButton" onclick="selectGameList(-1);" title="back to chessboard">&crarr;</span></div><div class="gameListHeaderItem"><span class="gameListHeaderButton" onclick="autoscrollGameListBody(0); this.blur();" title="scroll to first page">&lt;&lt;</span></div><div class="gameListHeaderItem"><span class="gameListHeaderButton" onclick="if (theObj = document.getElementById('GameListBody')) { autoscrollGameListBody(Math.ceil(theObj.scrollTop / gameListLineHeight) - Math.floor(gameListBodyHeight / gameListLineHeight)); } this.blur();" title="scroll to previous page">&lt;</span></div><div class="gameListHeaderItem"><span class="gameListHeaderButton" onclick="autoscrollGameListBody(currentGame - 1); this.blur();" title="scroll to current game">&middot;</span></div><div class="gameListHeaderItem"><span class="gameListHeaderButton" onclick="if (theObj = document.getElementById('GameListBody')) { autoscrollGameListBody(Math.floor(theObj.scrollTop / gameListLineHeight) + Math.floor(gameListBodyHeight / gameListLineHeight)); } this.blur();" title="scroll to next page">&gt;</span></div><div class="gameListHeaderItem"><span class="gameListHeaderButton" onclick="autoscrollGameListBody(numberOfGames); this.blur();" title="scroll to last page">&gt;&gt;</span></div><div class="gameListHeaderItem"><span class="gameListHeaderButton" onclick="toggleGameListHorizontalScroll(); this.blur();" title="horizontal scroll">&middot;</span></div></div>
+<div class="gameListHeader" id="GameListHeader"><div class="gameListHeaderItem"><span class="gameListHeaderButton" onclick="selectGameList(-1);" title="back to chessboard">&crarr;</span></div><div class="gameListHeaderItem"><span class="gameListHeaderButton" onclick="autoscrollGameListBody(0); this.blur();" title="scroll to first page">&lt;&lt;</span></div><div class="gameListHeaderItem"><span class="gameListHeaderButton" onclick="if (theObj = document.getElementById('GameListBody')) { autoscrollGameListBody(Math.floor(theObj.scrollTop / gameListLineHeight) - Math.floor(gameListBodyHeight / gameListLineHeight)); } this.blur();" title="scroll to previous page">&lt;</span></div><div class="gameListHeaderItem"><span class="gameListHeaderButton" onclick="autoscrollGameListBody(currentGame - 1); this.blur();" title="scroll to current game">&middot;</span></div><div class="gameListHeaderItem"><span class="gameListHeaderButton" onclick="if (theObj = document.getElementById('GameListBody')) { autoscrollGameListBody(Math.floor(theObj.scrollTop / gameListLineHeight) + Math.floor(gameListBodyHeight / gameListLineHeight)); } this.blur();" title="scroll to next page">&gt;</span></div><div class="gameListHeaderItem"><span class="gameListHeaderButton" onclick="autoscrollGameListBody(numberOfGames); this.blur();" title="scroll to last page">&gt;&gt;</span></div><div class="gameListHeaderItem"><span class="gameListHeaderButton" onclick="toggleGameListHorizontalScroll(); this.blur();" title="horizontal scroll">&middot;</span></div></div>
 <div class="gameListBody" id="GameListBody"><div class="gameListBodyItems" id="GameListBodyItems"></div></div>
 </div>
 
