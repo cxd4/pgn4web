@@ -585,7 +585,7 @@ function clickedGameShowFen(t, e) {
 }
 
 function pgn4web_handleKey(e) {
-  var keycode, colRow, colRowList;
+  var keycode, colRow, colRowList, theObj;
 
   if (!e) { e = window.event; }
 
@@ -632,8 +632,22 @@ function pgn4web_handleKey(e) {
       endButton(e);
       break;
 
+    case 32: // space
+      if (theObj = document.getElementById("GameMoves")) {
+        clickedGameMoves(theObj, {shiftKey: false});
+      }
+      break;
+
     case 70: // f
       clickedGameFlagToMove(null, {shiftKey: false});
+      break;
+
+    case 82: // r
+      setDisableEngine(true);
+      break;
+
+    case 89: // y
+      setDisableEngine(false);
       break;
 
     default:
