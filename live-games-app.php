@@ -123,8 +123,9 @@ END;
 $html = @file_get_contents("dynamic-frame.html");
 
 
-function errorExit($errorNum) {
+function errorExit($errorNum, $errorInfo) {
   global $appName;
+  $errorInfo = htmlentities(substr($errorInfo, 0, 40));
   $html = <<<END
 <!DOCTYPE HTML>
 <html>
@@ -132,7 +133,7 @@ function errorExit($errorNum) {
 <title>$appName</title>
 </head>
 <body style="color: white; background: black; font-family: sans-serif;">
-$appName app error: $errorNum
+$appName app error: $errorNum: $errorInfo
 </body>
 </html>
 END;
@@ -142,34 +143,34 @@ END;
 
 
 $actionNum = 0;
-if (!$html) { errorExit($actionNum); }
+if (!$html) { errorExit($actionNum, "base file not found"); }
 
 
 $text = "('?l=t&' + window.location.hash + '&scf=t&hc=t&pf=a' + '&ct=wood&bch=000000&fch=FFEEDD&hch=996633')";
 $oldText = "window.location.search";
 $actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
 $text = '<html manifest="live-games-app.appcache">';
 $oldText = "<html>";
 $actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
 $text = "<title>$appName</title>";
 $oldText = "<title>chess games</title>";
 $actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
 $text = "liveStatusTickerString";
 $oldText = "document.title";
 $actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
@@ -182,7 +183,7 @@ $text = <<<END
 END;
 $oldText = "<!-- AppCheck: meta -->";
 $actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
@@ -216,42 +217,42 @@ window.open = function (winUrl, winTarget, winParam) {
 END;
 $oldText = '<link rel="icon" sizes="16x16" href="pawn.ico" />';
 $actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
 $text = 'pgnData_default = "live-games-app.pgn";';
 $oldText = 'pgnData_default = "live/live.pgn";';
 $actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
 $text = "gameListLineHeight = Math.floor(2.3 * gameListFontSize);";
 $oldText = "gameListLineHeight = Math.floor(1.9 * gameListFontSize);";
 $actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
 $text = 'myInsertRule(sheet, ".gameListBody", "height: " + gameListBodyHeight + "px; width: " + (ww - 2 * framePadding) + "px; overflow-x: " + (window.navigator.standalone ? "auto" : "hidden") + "; overflow-y: auto; scrollbar-base-color: #" + backgroundColorHex + "; -webkit-overflow-scrolling: touch; overflow-scrolling: touch;");';
 $oldText = 'myInsertRule(sheet, ".gameListBody", "height: " + gameListBodyHeight + "px; width: " + (ww - 2 * framePadding) + "px; overflow-x: hidden; overflow-y: auto; scrollbar-base-color: #" + backgroundColorHex + "; -webkit-overflow-scrolling: touch; overflow-scrolling: touch;");';
 $actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
 $text = 'myInsertRule(sheet, ".gameListBodyItems", window.navigator.standalone ? "min-height: " + (gameListBodyHeight + 2) + "px; min-width: " + (ww - 2 * framePadding + 1) + "px;" : "");';
 $oldText = 'myInsertRule(sheet, ".gameListBodyItems", "");';
 $actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
 $text = 'setTimeout("autoscrollGameListBody(-1); if (window.navigator.standalone) { myOnResize(); }", 111); // cope with iOS bug';
 $oldText = 'setTimeout("autoscrollGameListBody(-1);", 111);';
 $actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
@@ -276,7 +277,7 @@ $text = <<<END
 END;
 $oldText = "<!-- AppCheck: customFunctionOnPgnTextLoad -->";
 $actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
@@ -285,7 +286,7 @@ $text = <<<END
 END;
 $oldText = "<!-- AppCheck: customFunctionOnPgnGameLoad -->";
 $actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
@@ -298,7 +299,7 @@ $text = <<<END
 END;
 $oldText = "<!-- AppCheck: customFunctionOnMove -->";
 $actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
@@ -601,7 +602,7 @@ simpleAddEvent(document, "contextmenu", function(e){ e.preventDefault(); });
 END;
 $oldText = "<!-- AppCheck: footer -->";
 $actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 

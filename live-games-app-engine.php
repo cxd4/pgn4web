@@ -2,7 +2,7 @@
 
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009-2014 Paolo Casaschi
+ *  copyright (C) 2009-2015 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
@@ -16,15 +16,17 @@ $appName = 'Live Games';
 $html = @file_get_contents("engine.html");
 
 
-function errorExit($errorNum) {
+function errorExit($errorNum, $errorInfo) {
+  global $appName;
+  $errorInfo = htmlentities(substr($errorInfo, 0, 40));
   $html = <<<END
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>app error</title>
+<title>$appName</title>
 </head>
 <body style="color: white; background: black; font-family: sans-serif;">
-app error: $errorNum
+$appName app error: $errorNum: $errorInfo
 </body>
 </html>
 END;
@@ -34,20 +36,20 @@ END;
 
 
 $actionNum = 0;
-if (!$html) { errorExit($actionNum); }
+if (!$html) { errorExit($actionNum, "source file not found"); }
 
 
 $text = "var thisParamString = (window.location.search || window.location.hash) + '&els=t&fpis=96&pf=a' + '&lch=FFCC99&dch=CC9966&bch=000000&hch=996633&fmch=FFEEDD&ctch=FFEEDD&fpr=0.5';";
 $oldText = "var thisParamString = window.location.search || window.location.hash;";
 $actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
 $text = "<title>$appName</title>";
 $oldText = "<title>pgn4web analysis board</title>";
 $actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
@@ -56,7 +58,7 @@ $text = <<<END
 END;
 $oldText = "<!-- AppCheck: meta -->";
 $actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
@@ -67,7 +69,7 @@ $text = <<<END
 END;
 $oldText = '<link rel="icon" sizes="16x16" href="pawn.ico" />';
 $actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
@@ -88,7 +90,7 @@ simpleAddEvent(window, "orientationchange", function() {
 END;
 $oldText = "<!-- AppCheck: myOnOrientationchange -->";
 $actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
@@ -98,7 +100,7 @@ $text = <<<END
 END;
 $oldText = "<!-- AppCheck: clickedGameAutoUpdateFlag -->";
 $actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
@@ -109,7 +111,7 @@ $text = <<<END
 END;
 $oldText = "<!-- AppCheck: updateGameAutoUpdateFlag -->";
 $actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
@@ -212,7 +214,7 @@ simpleAddEvent(document, "contextmenu", function(e){ e.preventDefault(); });
 END;
 $oldText = "<!-- AppCheck: footer -->";
 $actionNum += 1;
-if (!strstr($html, $oldText)) { errorExit($actionNum); }
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
