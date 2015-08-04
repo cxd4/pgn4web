@@ -248,8 +248,8 @@ if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
 
 
-$text = 'setTimeout("autoscrollGameListBody(currentGame - 1); if (window.navigator.standalone) { myOnResize(); }", 111); // cope with iOS bug';
-$oldText = 'setTimeout("autoscrollGameListBody(currentGame - 1);", 111);';
+$text = 'setTimeout("autoscrollGameListBody(-1); if (window.navigator.standalone) { myOnResize(); }", 111); // cope with iOS bug';
+$oldText = 'setTimeout("autoscrollGameListBody(-1);", 111);';
 $actionNum += 1;
 if (!strstr($html, $oldText)) { errorExit($actionNum); }
 $html = str_replace($oldText, $text, $html);
