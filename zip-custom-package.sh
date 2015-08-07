@@ -28,7 +28,7 @@ case "$1" in
 
 esac
 
-pgn4webVer=$(grep "var pgn4web_version = " pgn4web.js | awk -F "\'" '{print$2}')
+pgn4webVer=$(grep "var pgn4web_version = " pgn4web.js | awk -F "'" '{print$2}')
 
 pgn4webPackageFilename="pgn4web-$pgn4webVer-$1.zip"
 
