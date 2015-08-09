@@ -202,12 +202,13 @@ if ((pieceFont == "igorsvg") || (pieceFont == "svgchess") || (pieceFont == "tile
 }
 
 var colorTheme = theme[colorTheme_indexDefault][0];
-thisRegExp = /(&|\?)(colorTheme|ct)=([\w]*)(&|$)/i;
+thisRegExp = /(&|\?)(colorTheme|ct)=([\w]*|[\d]+)(&|$)/i;
 if (thisParamString.match(thisRegExp) !== null) {
   colorTheme = unescape(thisParamString.match(thisRegExp)[3]);
 }
 var colorTheme_index = colorTheme_indexDefault;
 if (colorTheme == "random") { colorTheme_index = Math.floor(theme.length * Math.random()); }
+else if (colorTheme.match(/^\d+$/) && colorTheme < theme.length) { colorTheme_index = colorTheme; colorTheme = theme[colorTheme_index][0]; }
 else { for (ii = 0; ii < theme.length; ii++) { if (theme[ii][0] === colorTheme) { colorTheme_index = ii; break; } } }
 
 var fontColorHex_default = theme[colorTheme_index][1];
