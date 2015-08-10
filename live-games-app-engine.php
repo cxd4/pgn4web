@@ -39,7 +39,7 @@ $actionNum = 0;
 if (!$html) { errorExit($actionNum, "source file not found"); }
 
 
-$text = "var thisParamString = (window.location.search || window.location.hash) + '&els=t&fpis=96&pf=a' + '&lch=FFCC99&dch=CC9966&bch=000000&hch=996633&fmch=FFEEDD&ctch=FFEEDD&fpr=0.5';";
+$text = "var thisParamString = (window.location.search || window.location.hash) + '&els=t&fpis=96&pf=a' + '&lch=FFCC99&dch=CC9966&hch=996633&bch=000000&fmch=FFEEDD&ctch=FFEEDD&fpr=0.5';";
 $oldText = "var thisParamString = window.location.search || window.location.hash;";
 $actionNum += 1;
 if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }

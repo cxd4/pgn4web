@@ -146,7 +146,7 @@ $actionNum = 0;
 if (!$html) { errorExit($actionNum, "source file not found"); }
 
 
-$text = "('?l=t&' + window.location.hash + '&scf=t&hc=t&pf=a' + '&ct=wood&bch=000000&fch=FFEEDD&hch=996633')";
+$text = "('?l=t&' + window.location.hash + '&scf=t&hc=t&pf=a' + '&lch=FFCC99&dch=CC9966&hch=996633&bch=000000&fch=FFEEDD')";
 $oldText = "window.location.search";
 $actionNum += 1;
 if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
