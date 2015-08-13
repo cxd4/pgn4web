@@ -1848,27 +1848,17 @@ function loadPgnFromPgnUrl(pgnUrl) {
 
   LiveBroadcastLastRefreshedLocal = (new Date()).toLocaleString();
 
-  var http_request = false;
-  if (window.XMLHttpRequest) {
-    http_request = new XMLHttpRequest();
+  try {
+    var http_request = new XMLHttpRequest();
     if (http_request.overrideMimeType) {
       // patch: pgn encoding: amend the following line to match the expected encoding of the PGN file if charachters beyond the basic 128 ascii set are not displayed correctly
       http_request.overrideMimeType("text/plain"); // this assumes the PGN file is encoded as unicode UTF-8
       // http_request.overrideMimeType("text/plain; charset=ISO-8859-15"); // this has been reported to work with some files created by the DGT live boards software
       // http_request.overrideMimeType("text/plain; charset=x-user-defined"); // this works with a binary file, such as a zipfile, but would need further processing
     }
-  } else if (window.ActiveXObject) { // IE
-    try { http_request = new ActiveXObject("Msxml2.XMLHTTP"); }
-    catch(e) {
-      try { http_request = new ActiveXObject("Microsoft.XMLHTTP"); }
-      catch(e) {
-        myAlert('error: XMLHttpRequest unavailable for PGN URL\n' + pgnUrl, true);
-        return false;
-      }
-    }
-  }
-  if (!http_request) {
+  } catch(e) {
     myAlert('error: failed creating XMLHttpRequest for PGN URL\n' + pgnUrl, true);
+    loadPgnCheckingLiveStatus(LOAD_PGN_FAIL);
     return false;
   }
 
