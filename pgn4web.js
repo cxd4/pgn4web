@@ -1852,7 +1852,7 @@ function loadPgnFromPgnUrl(pgnUrl) {
   if (window.XMLHttpRequest) {
     http_request = new XMLHttpRequest();
     if (http_request.overrideMimeType) {
-      // patch: amend the following line to match the expected encoding of the PGN file if charachters beyond the basic 128 ascii set are not displayed correctly
+      // patch: pgn encoding: amend the following line to match the expected encoding of the PGN file if charachters beyond the basic 128 ascii set are not displayed correctly
       http_request.overrideMimeType("text/plain"); // this assumes the PGN file is encoded as unicode UTF-8
       // http_request.overrideMimeType("text/plain; charset=ISO-8859-15"); // this has been reported to work with some files created by the DGT live boards software
       // http_request.overrideMimeType("text/plain; charset=x-user-defined"); // this works with a binary file, such as a zipfile, but would need further processing

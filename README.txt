@@ -427,6 +427,14 @@ supports continuations (defined as variations where the last move played
 before the variation is not taken back prior to the start of the variation
 moves) in the "(*" notation, such as in 1. e4 (* 1... d5 2. exd5) e5
 
+Special characters, such as symbols and accented letters, can appear in PGN
+files as comments or as part of the header values; in order for pgn4web to
+display those characters correctly, the PGN file should be saved in unicode
+UTF-8 format.
+If you are forced to use PGN files encoded in a different format, you might
+try patching manually the pgn4web.js, search for "// patch: pgn encoding" and
+follow instructions.
+
 Please email me for review any PGN file that pgn4web fails parsing correctly.
 
 
