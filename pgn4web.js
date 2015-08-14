@@ -1258,7 +1258,7 @@ function CheckClearWay(thisPiece) {
 }
 
 function CleanMove(move) {
-  move = move.replace(/[^a-wyzA-WYZ0-9#-]*/g, ''); // patch: remove/add '+' 'x' '=' chars for full chess informant style or pgn style for the game text
+  move = move.replace(/[^a-wyzA-WYZ0-9#-]*/g, ''); // patch: pgn notation: remove/add '+' 'x' '=' chars for full chess informant style or pgn style for the game text
   if (move.match(/^[Oo0]/)) { move = move.replace(/[o0]/g, 'O').replace(/O(?=O)/g, 'O-'); }
   move = move.replace(/ep/i, '');
   return move;

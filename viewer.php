@@ -1911,7 +1911,7 @@ function print_chessboard_two() {
                      g_nodes = parseInt(matches[3], 10);
                      var nodesPerSecond = parseInt(matches[4], 10);
                      g_topNodesPerSecond = Math.max(nodesPerSecond, g_topNodesPerSecond);
-                     g_pv = matches[5].replace(/(^\s+|\s*[x+=]|\s+$)/g, "").replace(/\s*stalemate/, "=").replace(/\s*checkmate/, "#"); // patch: remove/add '+' 'x' '=' chars for full chess informant style or pgn style for the game text
+                     g_pv = matches[5].replace(/(^\s+|\s*[x+=]|\s+$)/g, "").replace(/\s*stalemate/, "=").replace(/\s*checkmate/, "#"); // patch: pgn notation: remove/add '+' 'x' '=' chars for full chess informant style or pgn style for the game text
                      if (searchMeaningful()) {
                         validateSearchWithCache();
                         if ((typeof(fenPositionsDepth[CurrentPly]) == "undefined") || (g_depth > fenPositionsDepth[CurrentPly])) {
