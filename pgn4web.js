@@ -1692,7 +1692,7 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
   if (this_http_request_id < http_request_last_processed_id) { return; }
   else { http_request_last_processed_id = this_http_request_id; }
 
-  if ((this_http_request.status == 200) || (this_http_request.status === 0) || (this_http_request.status == 304)) {
+  if ((this_http_request.status == 200) || (this_http_request.status == 304)) {
 
     if (this_http_request.status == 304) {
       if (LiveBroadcastDelay > 0) {
@@ -1700,13 +1700,6 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
       } else {
         myAlert('error: unmodified PGN URL when not in live mode');
       }
-
-// patch Opera's bug: failure reporting 304 status (up to Opera v12)
-    } else if (window.opera && (!this_http_request.responseText) && (this_http_request.status === 0)) {
-      this_http_request.abort();
-      res = LOAD_PGN_UNMODIFIED;
-// end of patch
-
     } else if (!this_http_request.responseText) {
       myAlert('error: no data received from PGN URL\n' + pgnUrl, true);
     } else if (!pgnGameFromHttpRequest(this_http_request.responseText)) {
