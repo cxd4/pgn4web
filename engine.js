@@ -1,6 +1,6 @@
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009-2014 Paolo Casaschi
+ *  copyright (C) 2009-2015 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
@@ -89,7 +89,7 @@ function showEngineAnalysisBoard(engineDisabled, startFen) {
       if (pgn4web_engineWindowWidth) { options = "width=" + pgn4web_engineWindowWidth + "," + options; }
       engineWin = window.open(detectEngineLocation() + engineWinParametersSeparator + parameters, pgn4web_engineWindowTarget, options);
 
-      // note bug with IE and Opera failing to set window.opener at this point, resulting in no autoUpdate possible and no update from the engine window possible
+      // bugfix: IE and Opera fail to set window.opener at this point, resulting in no autoUpdate possible and no update from the engine window possible; no fix available
     }
     if ((engineWinCheck(true)) && (engineWin.top === engineWin.self) && (window.focus)) { engineWin.focus(); }
     return engineWin;

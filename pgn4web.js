@@ -59,7 +59,7 @@ function customPgnCommentTag(customTag, htmlElementId, plyNum, varId) {
 
 function simpleAddEvent(obj, evt, cbk) {
   if (obj.addEventListener) { obj.addEventListener(evt, cbk, false); }
-  else if (obj.attachEvent) { obj.attachEvent("on" + evt, cbk); } // IE8-
+  else if (obj.attachEvent) { obj.attachEvent("on" + evt, cbk); } // bugfix: IE8 and below specific
 }
 
 simpleAddEvent(document, "keydown", pgn4web_handleKey_event);
@@ -994,7 +994,7 @@ var HistNull = new Array();
 HistNull[0] = 0;
 
 var FenPieceName = "KQRBNP";
-var PieceCode = FenPieceName.split(""); // IE needs array for [index]
+var PieceCode = FenPieceName.split(""); // bugfix: IE needs array for [index]
 var FenStringStart = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 var columnsLetters = "ABCDEFGH";
 var InitialHalfMoveClock = 0;
@@ -3460,7 +3460,7 @@ function PrintHTML() {
   if (theObj = document.getElementById("GameSelector")) {
     if (firstStart) { textSelectOptions=''; }
     if (numberOfGames < 2) {
-      // theObj.innerHTML = ''; // replaced with code below to cope with IE bug
+      // theObj.innerHTML = ''; // bugfix: replaced with code below to cope with IE issue
       while (theObj.firstChild) { theObj.removeChild(theObj.firstChild); }
       textSelectOptions = '';
     } else {
@@ -3576,7 +3576,7 @@ function PrintHTML() {
 
   if ((theObj = document.getElementById("GameSearch")) && firstStart) {
     if (numberOfGames < 2) {
-      // theObj.innerHTML = ''; // replaced with code below to cope with IE bug
+      // theObj.innerHTML = ''; // bugfix: replaced with code below to cope with IE issue
       while (theObj.firstChild) { theObj.removeChild(theObj.firstChild); }
     } else {
       text = '<FORM ID="searchPgnForm" STYLE="display: inline;" ' +
@@ -3588,7 +3588,7 @@ function PrintHTML() {
         '<INPUT ID="searchPgnExpression" CLASS="searchPgnExpression" ' +
         'TITLE="find games matching the search string (regular expression)" ' +
         'TYPE="input" VALUE="" STYLE="display: inline; box-sizing: border-box; ' +
-        '-moz-box-sizing: border-box; -webkit-box-sizing: border-box;'; // remove when non-prefixed option supported by firefox and safari
+        '-moz-box-sizing: border-box; -webkit-box-sizing: border-box;';
       if (tableSize > 0) { text += 'width: ' + (3*tableSize/4) + 'px; '; }
       text += '" ONFOCUS="disableShortcutKeysAndStoreStatus();" ONBLUR="restoreShortcutKeysStatus();">';
       text += '</FORM>';

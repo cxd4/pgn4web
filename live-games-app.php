@@ -249,7 +249,7 @@ if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
-$text = 'setTimeout("autoscrollGameListBody(-1); if (window.navigator.standalone) { myOnResize(); }", 111); // cope with iOS bug';
+$text = 'setTimeout("autoscrollGameListBody(-1); if (window.navigator.standalone) { myOnResize(); }", 111); // bugfix: iOS issue with game list display';
 $oldText = 'setTimeout("autoscrollGameListBody(-1);", 111);';
 $actionNum += 1;
 if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }

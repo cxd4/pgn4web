@@ -417,8 +417,8 @@ a {
 
 .borderBox {
   box-sizing: border-box;
-  -moz-box-sizing: border-box; /* remove when non-prefixed option supported by firefox */
-  -webkit-box-sizing: border-box; /* remove when non-prefixed option supported by safari */
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 
 .textboxAppearance {
