@@ -447,18 +447,24 @@ sub myAdd {
 }
 
 sub save_result {
-  my ($thisGameNum, $thisResult, $logMissing) = @_;
+  my ($thisGameNum, $thisResult, $thisWhite, $thisBlack, $logMissing) = @_;
 
   my $thisGameIndex = find_gameIndex($thisGameNum);
   if ($thisGameIndex < 0) {
     if ($logMissing == 1) {
       log_terminal("error: missing game $thisGameNum when saving result");
     }
+    return 0;
+  } elsif ((! defined $games_white[$thisGameIndex]) || ($games_white[$thisGameIndex] ne $thisWhite) && (! defined $games_black[$thisGameIndex]) || ($games_black[$thisGameIndex] ne $thisBlack)) {
+    log_terminal("debug: game $thisGameNum mismatch when saving result");
+    return -1;
   } elsif ((! defined $games_result[$thisGameIndex]) || ($thisResult ne $games_result[$thisGameIndex])) {
     log_terminal("debug: game $thisGameNum result: $thisResult");
     $games_result[$thisGameIndex] = $thisResult;
     refresh_pgn();
+    return 22;
   }
+  return 1;
 }
 
 sub remove_game {
@@ -707,8 +713,8 @@ sub process_line {
     } else {
       log_terminal("debug: game $thisGN mismatch when receiving");
     }
-  } elsif ($line =~ /^{Game (\d+) [^}]*} (\S+)/) {
-    save_result($1, $2, 1); # from observed game
+  } elsif ($line =~ /^{Game (\d+) \((\S+) \S+ (\S+)\) [^}]*} (\S+)/) {
+    save_result($1, $4, $2. $3, 1); # from observed game
   } elsif ($line =~ /^:There .* in the (.*)/) {
     $autorelayEvent = $1;
     $autorelayEvent =~ s/[\[\]"]/'/g;
@@ -733,11 +739,8 @@ sub process_line {
     my $thisGameMismatch = 0;
     my $thisGameIndex = find_gameIndex($thisGameNum);
     if (($thisGameIndex != -1) && ($thisGameResult ne "*")) {
-      if ((defined $games_white[$thisGameIndex]) && (index($games_white[$thisGameIndex], $thisGameWhite) == 0) && (defined $games_black[$thisGameIndex]) && (index($games_black[$thisGameIndex], $thisGameBlack) == 0)) {
-        save_result($thisGameNum, $thisGameResult, 0); # from relay list
-      } else {
+      if (save_result($thisGameNum, $thisGameResult, $thisGameWhite, $thisGameBlack, 0) == -1) { # from relay list
         $thisGameMismatch = 1;
-        log_terminal("debug: game $thisGameNum mismatch when saving result from relay");
       }
     }
     if (($autorelayMode == 1) && ($thisGameMismatch == 0)) {
@@ -749,7 +752,7 @@ sub process_line {
         } else {
           $skipReason = "ignored";
         }
-        if (find_gameIndex($thisGameNum) != -1) {
+        if ($thisGameIndex != -1) {
           if (remove_game($thisGameNum) != -1) {
             $moreGamesThanMax = 0;
             $prioritizedGames = 0;
@@ -771,7 +774,6 @@ sub process_line {
         if (($autoPrioritize ne "") && ($thisHeaderForFilter =~ /$autoPrioritize/i)) {
           autoprioritize_add_event($autorelayEvent);
         }
-        my $thisGameIndex = find_gameIndex($thisGameNum);
         if ($thisGameIndex == -1) {
           cmd_run("games $thisGameNum");
         } else {
