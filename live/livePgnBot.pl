@@ -730,10 +730,17 @@ sub process_line {
     my $thisGameBlack = $3;
     my $thisGameResult = $4;
     my $thisGameEco = $5;
-    if ((find_gameIndex($thisGameNum) != -1) && ($thisGameResult ne "*")) {
-      save_result($thisGameNum, $thisGameResult, 0); # from relay list
+    my $thisGameMismatch = 0;
+    my $thisGameIndex = find_gameIndex($thisGameNum);
+    if (($thisGameIndex != -1) && ($thisGameResult ne "*")) {
+      if ((defined $games_white[$thisGameIndex]) && (index($games_white[$thisGameIndex], $thisGameWhite) == 0) && (defined $games_black[$thisGameIndex]) && (index($games_black[$thisGameIndex], $thisGameBlack) == 0)) {
+        save_result($thisGameNum, $thisGameResult, 0); # from relay list
+      } else {
+        $thisGameMismatch = 1;
+        log_terminal("debug: game $thisGameNum mismatch when saving result from relay");
+      }
     }
-    if ($autorelayMode == 1) {
+    if (($autorelayMode == 1) && ($thisGameMismatch == 0)) {
       my $thisHeaderForFilter = headerForFilter($autorelayEvent, $autorelayRound, $thisGameWhite, $thisGameBlack);
       if ((($ignoreFilter ne "") && ($thisHeaderForFilter =~ /$ignoreFilter/i)) || ($thisGameResult eq "abort")) {
         my $skipReason;
