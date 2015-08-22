@@ -208,7 +208,7 @@ if (thisParamString.match(thisRegExp) !== null) {
 }
 var colorTheme_index = colorTheme_indexDefault;
 if (colorTheme == "random") { colorTheme_index = Math.floor(theme.length * Math.random()); }
-else if (colorTheme.match(/^\d+$/) && parseInt(colorTheme, 10) < theme.length) { colorTheme_index = parseInt(colorTheme, 10); colorTheme = theme[colorTheme_index][0]; }
+else if (colorTheme.match(/^\d+$/)) { colorTheme_index = parseInt(colorTheme, 10) % theme.length; colorTheme = theme[colorTheme_index][0]; }
 else { for (ii = 0; ii < theme.length; ii++) { if (theme[ii][0] === colorTheme) { colorTheme_index = ii; break; } } }
 
 var fontColorHex_default = theme[colorTheme_index][1];
