@@ -442,7 +442,7 @@ function myOnResize() {
   myInsertRule(sheet, ".gameListBodyItemsPlayerWhite", "text-align: right; margin-left: " + (2 * gameListMarginSpacing) + "px;");
   myInsertRule(sheet, ".gameListBodyItemsPlayerBlack", "");
   myInsertRule(sheet, ".gameListBodyItemsResult", "text-align: center; min-width: 5ex; margin-left: 0px; margin-right: 0px;");
-  myInsertRule(sheet, ".gameListBodyItemsEventRound", "margin-left: " + (2 * gameListMarginSpacing) + "px; margin-right: " + gameListMarginSpacing + "px;");
+  myInsertRule(sheet, ".gameListBodyItemsEventRound", "margin-left: " + (2 * gameListMarginSpacing) + "px; margin-right: " + (2 * gameListMarginSpacing) + "px;");
 
   for (var ii = 0; ii < oldRules; ii++) { myDeleteRule(sheet, 0); }
 
