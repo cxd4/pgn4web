@@ -105,6 +105,17 @@ $html = str_replace($oldText, $text, $html);
 
 
 $text = <<<END
+    case 48: // 0
+      if (e.shiftKey) { backToGames(); }
+      break;
+END;
+$oldText = "<!-- AppCheck: pgn4web_handleKey -->";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
+$html = str_replace($oldText, $text, $html);
+
+
+$text = <<<END
       } else if (localStorage["pgn4web_live_games_app_locationHref"]) {
          theObj.innerHTML = "&crarr;";
          theObj.title = "close analysis board";
@@ -171,7 +182,7 @@ function pgn4web_handleTouchEnd_body(e) {
         if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) >= 13) {
           if (Math.abs(deltaY) > 1.5 * Math.abs(deltaX)) {
             if (deltaY > 0) { // vertical down
-              if (!openerCheck()) { backToGames(); }
+              backToGames();
             } else { // vertical up
               clickedGameFlagToMove_forTouchEnd();
             }
@@ -179,7 +190,7 @@ function pgn4web_handleTouchEnd_body(e) {
             if (deltaX > 0) { // horizontal right
               clickedGameMoves_forTouchEnd();
             } else { // horizontal left
-              if (!openerCheck()) { backToGames(); }
+              backToGames();
             }
           }
         }

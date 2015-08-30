@@ -597,6 +597,12 @@ function pgn4web_handleKey(e) {
 
   switch (keycode) {
 
+    case 32: // space
+      if (theObj = document.getElementById("GameMoves")) {
+        clickedGameMoves(theObj, {shiftKey: false});
+      }
+      break;
+
     case 189: // dash
       if (colRowList = prompt("Enter shortcut square coordinates to click:", "")) {
         colRowList = colRowList.toUpperCase().replace(/[^A-Z0-9]/g,"");
@@ -632,15 +638,7 @@ function pgn4web_handleKey(e) {
       endButton(e);
       break;
 
-    case 32: // space
-      if (theObj = document.getElementById("GameMoves")) {
-        clickedGameMoves(theObj, {shiftKey: false});
-      }
-      break;
-
-    case 70: // f
-      clickedGameFlagToMove(null, {shiftKey: false});
-      break;
+<!-- AppCheck: pgn4web_handleKey -->
 
     case 82: // r
       setDisableEngine(true);
@@ -648,6 +646,10 @@ function pgn4web_handleKey(e) {
 
     case 89: // y
       setDisableEngine(false);
+      break;
+
+    case 70: // f
+      clickedGameFlagToMove(null, {shiftKey: false});
       break;
 
     default:
