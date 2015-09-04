@@ -150,7 +150,7 @@ iframe support required to display the chess puzzler
 <div class="menu_heading"><a href="http://pgn4web-project.casaschi.net/wiki/ServiceAvailability/">online&nbsp;services</a></div>
 <div class="menu_item"><a id="board_generator_link" title="online service adding an interactive chessboard to your website or your blog" href=".">board&nbsp;generator</a></div>
 <div class="menu_item"><a title="online service for viewing chess games from *.PGN files, from links to *.PGN URLs and from PGN text" href="viewer.php">games&nbsp;viewer</a></div>
-<div class="menu_item"><a id="live_link" title="online service broadcasting live games from current chess events" href=".">live&nbsp;broadcast</a><br/><a id="live_analysis_link" class="menu_subitem" title="live broadcast analysis view" href=".">analysis&nbsp;view</a><br/><a id="live_fullscreen_link" class="menu_subitem" title="live broadcast fullscreen view" href=".">fullscreen&nbsp;view</a><br/><a id="live_mosaic_link" class="menu_subitem" title="live broadcast mosaic view with multiple chessboards" href=".">mosaic&nbsp;view</a><br/><a id="live_results_link" class="menu_subitem" title="live broadcast results view" href=".">results&nbsp;view</a></div>
+<div class="menu_item"><a id="live_link" title="online service broadcasting live games from current chess events" href="live.html" onclick="location.href = liveLinks[Math.floor(liveLinks.length * Math.random())]; return false;">live&nbsp;broadcast</a><br/><a id="live_analysis_link" class="menu_subitem" title="live broadcast analysis view" href=".">analysis&nbsp;view</a><br/><a id="live_fullscreen_link" class="menu_subitem" title="live broadcast fullscreen view" href=".">fullscreen&nbsp;view</a><br/><a id="live_mosaic_link" class="menu_subitem" title="live broadcast mosaic view with multiple chessboards" href=".">mosaic&nbsp;view</a><br/><a id="live_results_link" class="menu_subitem" title="live broadcast results view" href=".">results&nbsp;view</a></div>
 <div class="menu_heading"><a href="http://pgn4web-project.casaschi.net/">software</a></div>
 <div class="menu_item"><a href="demo.html">demo</a></div>
 <div class="menu_item"><a href="http://pgn4web-downloads.casaschi.net">downloads</a></div>
@@ -195,7 +195,6 @@ if (theObj = document.getElementById("live_analysis_link")) { liveLinks.push(the
 if (theObj = document.getElementById("live_fullscreen_link")) { liveLinks.push(theObj.href = pgn4web_live_pointer_url + "/live-fullscreen.html?scf=t"); }
 if (theObj = document.getElementById("live_mosaic_link")) { liveLinks.push(theObj.href = pgn4web_live_pointer_url + "/live-mosaic.html"); }
 if (theObj = document.getElementById("live_results_link")) { liveLinks.push(theObj.href = pgn4web_live_pointer_url + "/live-results.html"); }
-if (theObj = document.getElementById("live_link")) { theObj.href = liveLinks[Math.floor(liveLinks.length * Math.random())]; }
 
 if (theObj = document.getElementById("email_link")) { theObj.href = "mailto:" + pgn4web_project_email; }
 
