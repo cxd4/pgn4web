@@ -68,6 +68,11 @@ pgn4web chess live broadcast
 
 var thisRegExp, theObj;
 
+thisRegExp = /(&|\?)(h|help)=(t|true)(&|$)/i;
+if (window.location.search.match(thisRegExp) !== null) {
+  alert("pgn4web live.html shows a randomly selected live games page");
+}
+
 thisRegExp = /(&|\?)(hp|headlessPage)=(t|true)(&|$)/i;
 if (window.location.search.match(thisRegExp) !== null) {
   if (theObj = document.getElementById("headRow")) {

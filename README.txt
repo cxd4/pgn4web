@@ -287,26 +287,24 @@ accurate testing.
 Alternatively, for a more realistic simulation, the bash shell script
 live-simulation.sh slowly updates the live.pgn file, simulating a real event.
 
-The easiest way to setup a live broadcast is to use the live-compact.html file.
-The HTML file accepts these parameters:
- - pgnFile = PGN file to load (default live.pgn)
- - initialGame = initial game, a number or first, last, random (default 1)
+To setup a live broadcast please use any of the live*.html files.
+The live*.html files typically accept these parameters:
+ - pgnData = PGN file to load (default live.pgn)
  - refreshMinutes = refresh interval in minutes, decimals allowed (default 1)
- - demo = if set true, sets live demo mode (default false)
+ - refreshDemo = if set true, sets live demo mode
+ - help = if set true, shows additional help information
+
 For instance, make sure that the file myGames.pgn on your server is periodically
 refreshed with the live games, then add the following iframe to your page:
 <iframe frameborder=0 width=480 height=360
-        src=live-compact.html?pgnFile=myGames.pgn>
+        src=live-compact.html?pgnData=myGames.pgn>
 </iframe>
-Of course live-compact.html can be edited to customize colors, layout and every
-detail.
 
-The live-mosaic.html file has been designed in a similar way, while offering
-a layout with multiple live boards on the same page.
+Each live*.html file is customized to a different purpose and provides
+specific configuration parameters.
 
-http://pgn4web.casaschi.net/live/live.html and
-http://pgn4web.casaschi.net/live/live-mosaic.html will occasionally broadcast
-live major chess events.
+http://pgn4web-live.casaschi.net will occasionally broadcast live major chess
+events.
 
 
 CUSTOMIZATION FUNCTIONS
