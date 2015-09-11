@@ -187,6 +187,20 @@ if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
 $html = str_replace($oldText, $text, $html);
 
 
+$text = '<link href="fonts/pgn4web-font-LiberationSans.css" type="text/css" rel="stylesheet" />';
+$oldText = "<!-- AppCheck: fonts -->";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
+$html = str_replace($oldText, $text, $html);
+
+
+$text = "font-family: 'pgn4web Liberation Sans', sans-serif";
+$oldText = "font-family: sans-serif";
+$actionNum += 1;
+if (!strstr($html, $oldText)) { errorExit($actionNum, $oldText); }
+$html = str_replace($oldText, $text, $html);
+
+
 $text = <<<END
 <!-- DeploymentCheck: icons -->
 <link rel="icon" sizes="16x16" href="live-games-app-icon-16x16.ico">

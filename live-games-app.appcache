@@ -1,7 +1,7 @@
 CACHE MANIFEST
 
 # Live Games app
-# version 2.95+0000
+# version 2.95+0002
 
 # pgn4web javascript chessboard
 # copyright (C) 2009-2015 Paolo Casaschi
@@ -13,10 +13,19 @@ engine.js
 fide-lookup.js
 fonts/chess-informant-NAG-symbols.js
 fonts/pgn4web-font-ChessInformantReader.css
+fonts/pgn4web-font-LiberationSans.css
 fonts/ChessInformantReader.eot
 fonts/ChessInformantReader.svg
 fonts/ChessInformantReader.ttf
 fonts/ChessInformantReader.woff
+fonts/LiberationSans-Bold.eot
+fonts/LiberationSans-Bold.svg
+fonts/LiberationSans-Bold.ttf
+fonts/LiberationSans-Bold.woff
+fonts/LiberationSans-Regular.eot
+fonts/LiberationSans-Regular.svg
+fonts/LiberationSans-Regular.ttf
+fonts/LiberationSans-Regular.woff
 images/alpha/96/bb.png
 images/alpha/96/bk.png
 images/alpha/96/bn.png
