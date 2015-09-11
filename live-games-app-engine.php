@@ -131,7 +131,7 @@ $html = str_replace($oldText, $text, $html);
 
 $text = <<<END
       } else if (localStorage["pgn4web_live_games_app_locationHref"]) {
-         theObj.innerHTML = "&lt;&lt;&lt;";
+         theObj.innerHTML = "&lt;=";
          theObj.title = "close analysis board";
 END;
 $oldText = "<!-- AppCheck: updateGameAutoUpdateFlag -->";
