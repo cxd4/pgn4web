@@ -2348,7 +2348,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "memoryreplaceevent") {
-    if ($parameters =~ /^\s*"(.+?)"\s*"(.+?)"\s*$/) {
+    if ($parameters =~ /^\s*"([^"]*)"\s*"([^"]*)"\s*$/) {
       my $searchEvent = $1;
       my $replacementEvent = $2;
       eval {
@@ -2371,7 +2371,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "memoryreplaceresult") {
-    if ($parameters =~ /^\s*"(.+?)"\s*"(.+?)"\s*"(.+?)"\s*"(.+?)"\s*"(.+?)"\s*"(.+?)"\s*$/) {
+    if ($parameters =~ /^\s*"([^"]*)"\s*"([^"]*)"\s*"([^"]*)"\s*"([^"]*)"\s*"([^"]*)"\s*"([^"]*)"\s*$/) {
       my $searchEvent = $1;
       my $searchRound = $2;
       my $searchWhite = $3;
@@ -2406,7 +2406,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "memoryreplaceround") {
-    if ($parameters =~ /^\s*"(.+?)"\s*"(.+?)"\s*"(.+?)"\s*$/) {
+    if ($parameters =~ /^\s*"([^"]*)"\s*"([^"]*)"\s*"([^"]*)"\s*$/) {
       my $searchEvent = $1;
       my $searchRound = $2;
       my $replacementRound = $3;
