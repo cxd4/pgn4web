@@ -2306,7 +2306,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "memorypurgegame") {
-    if ($parameters =~ /^\s*"(.*?)"\s*"(.*?)"\s*"(.*?)"\s*"(.*?)"\s*$/) {
+    if ($parameters =~ /^\s*"([^"]*)"\s*"([^"]*)"\s*"([^"]*)"\s*"([^"]*)"\s*$/) {
       if (memory_purge_game($1, $2, $3, $4) > 0) {
         $lastPgn = $lastPgnForce;
         refresh_pgn();
@@ -2320,7 +2320,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "memorypurgeevent") {
-    if ($parameters =~ /^\s*"(.*?)"\s*$/) {
+    if ($parameters =~ /^\s*"([^"]*)"\s*$/) {
       if (memory_purge_event($1) > 0) {
         $lastPgn = $lastPgnForce;
         refresh_pgn();
@@ -2334,7 +2334,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "memorypurgeround") {
-    if ($parameters =~ /^\s*"(.*?)"\s*"(.*?)"\s*$/) {
+    if ($parameters =~ /^\s*"([^"]*)"\s*"([^"]*)"\s*$/) {
       if (memory_purge_round(eventRound($1, $2)) > 0) {
         $lastPgn = $lastPgnForce;
         refresh_pgn();
