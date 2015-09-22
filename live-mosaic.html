@@ -724,6 +724,15 @@ function customShortcutKey_Shift_8() {
   newBoards(maxBoards_default);
 }
 
+function pgn4web_onload(e) {
+  start_pgn4web();
+  if (location.hash) {
+    var oldHash = location.hash;
+    location.hash = "";
+    setTimeout("location.hash = '" + oldHash + "';", 111 * maxBoards);
+  }
+}
+
 </script>
 
 </body>
