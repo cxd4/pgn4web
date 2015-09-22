@@ -726,11 +726,7 @@ function customShortcutKey_Shift_8() {
 
 function pgn4web_onload(e) {
   start_pgn4web();
-  if (location.hash) {
-    var oldHash = location.hash;
-    location.hash = "";
-    setTimeout("location.hash = '" + oldHash + "';", 333 * maxBoards);
-  }
+  if (location.hash) { setTimeout("goToHash('" + location.hash + "');", 333 * maxBoards); }
 }
 
 </script>
