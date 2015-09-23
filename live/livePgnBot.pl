@@ -82,6 +82,7 @@ sub o_gmtime {
 
 our $timeFormatDiv = ".";
 our $strftimeFormat = "%Y" . $timeFormatDiv . "%m" . $timeFormatDiv . "%d" . $timeFormatDiv . "%H" . $timeFormatDiv . "%M" . $timeFormatDiv . "%S";
+our $strftimeFormatShort = "%H" . $timeFormatDiv . "%M" . $timeFormatDiv . "%S";
 
 sub simpleStringCrc {
   my ($s) = @_;
@@ -2930,8 +2931,11 @@ sub h_info {
   if ($mode eq "extended") {
     $thisInfo .= sprintf(" pgn=%s p/h=%s cmd=%s c/h=%s lines=%s l/h=%s i=%s i/d=%s o=%s o/d=%s", num2str($pgnWriteCount), num2str($pgnWriteCount / $hourTime), num2str($cmdRunCount), num2str($cmdRunCount / $hourTime), num2str($lineCount), num2str($lineCount / $hourTime), num2str($inBytes),  num2str($inBytes / $dayTime), num2str($outBytes), num2str($outBytes / $dayTime));
     $thisInfo .= " sys=" . sys_info();
+    if ($relayMode == 1) {
+      $thisInfo .= sprintf(" lastrelay=%s nextrelay=%s", strftime($strftimeFormatShort, o_gmtime($last_check_relay_time)), strftime($strftimeFormatShort, o_gmtime($next_check_relay_time)));
+    }
   }
-  $thisInfo .= sprintf(" last=%s", $lastPgnRefresh ? strftime($strftimeFormat, o_gmtime($lastPgnRefresh)) : "?");
+  $thisInfo .= sprintf(" lastpgn=%s", $lastPgnRefresh ? strftime($strftimeFormatShort, o_gmtime($lastPgnRefresh)) : "?");
   $thisInfo .= sprintf(" now=%s uptime=%s", strftime($strftimeFormat, o_gmtime($startupTime + $secTime)), sec2time($secTime, $timeFormatDiv));
   return $thisInfo;
 }
