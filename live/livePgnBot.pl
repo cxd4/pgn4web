@@ -82,7 +82,6 @@ sub o_gmtime {
 
 our $timeFormatDiv = ".";
 our $strftimeFormat = "%Y" . $timeFormatDiv . "%m" . $timeFormatDiv . "%d" . $timeFormatDiv . "%H" . $timeFormatDiv . "%M" . $timeFormatDiv . "%S";
-our $strftimeFormatShort = "%H" . $timeFormatDiv . "%M" . $timeFormatDiv . "%S";
 
 sub simpleStringCrc {
   my ($s) = @_;
@@ -2920,7 +2919,8 @@ sub h_info {
   if ($mode eq "") {
     $mode = $verbosity < 5 ? "compact" : "extended";
   }
-  my $secTime = time() - $startupTime;
+  my $nowTime = time();
+  my $secTime = $nowTime - $startupTime;
   my $hourTime = $secTime / 3600;
   my $dayTime = $hourTime / 24;
   my $thisInfo .= sprintf("rounds=%s/%s r/d=%s", num2str($#currentRounds + 1), num2str($roundsStartCount), num2str($roundsStartCount / $dayTime));
@@ -2932,11 +2932,11 @@ sub h_info {
     $thisInfo .= sprintf(" pgn=%s p/h=%s cmd=%s c/h=%s lines=%s l/h=%s i=%s i/d=%s o=%s o/d=%s", num2str($pgnWriteCount), num2str($pgnWriteCount / $hourTime), num2str($cmdRunCount), num2str($cmdRunCount / $hourTime), num2str($lineCount), num2str($lineCount / $hourTime), num2str($inBytes),  num2str($inBytes / $dayTime), num2str($outBytes), num2str($outBytes / $dayTime));
     $thisInfo .= " sys=" . sys_info();
     if ($relayMode == 1) {
-      $thisInfo .= sprintf(" lastrelay=%s nextrelay=%s", strftime($strftimeFormatShort, o_gmtime($last_check_relay_time)), strftime($strftimeFormatShort, o_gmtime($next_check_relay_time)));
+      $thisInfo .= sprintf(" relay=%s/%s", num2str($nowTime - $last_check_relay_time), num2str($next_check_relay_time - $nowTime));
     }
   }
-  $thisInfo .= sprintf(" lastpgn=%s", $lastPgnRefresh ? strftime($strftimeFormatShort, o_gmtime($lastPgnRefresh)) : "?");
-  $thisInfo .= sprintf(" now=%s uptime=%s", strftime($strftimeFormat, o_gmtime($startupTime + $secTime)), sec2time($secTime, $timeFormatDiv));
+  $thisInfo .= sprintf(" pgn=%s", $lastPgnRefresh ? strftime($strftimeFormat, o_gmtime($lastPgnRefresh)) : "?");
+  $thisInfo .= sprintf(" now=%s uptime=%s", strftime($strftimeFormat, o_gmtime($nowTime)), sec2time($secTime, $timeFormatDiv));
   return $thisInfo;
 }
 
@@ -2944,7 +2944,7 @@ sub sys_info {
   open(STAT, "<", "/proc/$$/stat") or return "?";
   my @stat = split(/\s+/, <STAT>);
   close(STAT);
-  return "ppid:" . $stat[3] . "/pid:" . $stat[0] . "/vsize:" . num2str($stat[22]);
+  return "ppid:" . $stat[3] . ";pid:" . $stat[0] . ";vsize:" . num2str($stat[22]);
 }
 
 sub num2str {
