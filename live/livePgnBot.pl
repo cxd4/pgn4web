@@ -723,6 +723,8 @@ sub process_line {
     fixRoundEvent($autorelayEvent, $autorelayRound, "Game");
     fixRoundEvent($autorelayEvent, $autorelayRound, "Matchup");
     fixRoundEvent($autorelayEvent, $autorelayRound, "Round");
+    fixRoundEvent($autorelayEvent, $autorelayRound, "Stage");
+    fixRoundEvent($autorelayEvent, $autorelayRound, "Section");
     $autorelayEvent =~ s/^\s+|[\s-]+$//g;
     $autorelayEvent =~ s/\s+/ /g;
     if ($eventAutocorrectRegexp) { $autorelayEvent = event_autocorrect($autorelayEvent); }
