@@ -135,7 +135,7 @@
               theObj.style.height = frameHeight + "px";
               theObj.width = frameWidth;
               theObj.style.width = frameWidth + "px";
-              theObj.src = "http://go.casaschi.net/pgn4web-puzzler?" +
+              theObj.src = "http://pgn4web.casaschi.net/puzzler.php?" +
                 "pf=hash" +
                 "&ss=" + squareSize +
                 "&lch=" + lightColorHex[colorScheme] +
