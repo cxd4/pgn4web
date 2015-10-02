@@ -888,13 +888,13 @@ sub fixRoundEvent() {
   my $event = $_[0];
   my $round = $_[1];
   my $tag = $_[2];
-  if ($event =~ /(\b($tag\s*[0-9a-z]+|Last\s*$tag)\b.*){2,}/i) {
+  if ($event =~ /(\b($tag\s*[0-9a-z]+|(?:Final|Last)\s*$tag)\b.*){2,}/i) {
     $round = $round ne "" ? "?." . $round : "?";
-    $event =~ s/\b($tag\s*[0-9a-z]+|Last\s*$tag)\b/ /ig;
+    $event =~ s/\b($tag\s*[0-9a-z]+|(?:Final|Last)\s*$tag)\b/ /ig;
   } elsif ($event =~ /^(.*)\b$tag\s*([0-9a-z]+)\b(.*)$/i) {
     $round = $round ne "" ? $2 . "." . $round : $2;
     $event = $1 . " " . $3;
-  } elsif ($event =~ /^(.*)\bLast\s*$tag\b(.*)$/i) {
+  } elsif ($event =~ /^(.*)\b(?:Final|Last)\s*$tag\b(.*)$/i) {
     $round = $round ne "" ? "#." . $round : "#";
     $event = $1 . " " . $2;
   }
