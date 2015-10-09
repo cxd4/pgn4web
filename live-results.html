@@ -855,6 +855,10 @@ a.variation {
     if (thisIndex !== thisGameIndex) { Init(gameId[thisIndex]); }
   }
 
+  function searchLiveGame(backward) {
+    searchPgnGame("\\[\\s*Date\\s*\"[^\"]*live[^\"]*\"\\s*\\]", backward);
+  }
+
   function customDebugInfo() {
     return "roundReverse=" + b2s(roundReverse);
   }
@@ -863,9 +867,9 @@ a.variation {
   // customShortcutKey_Shift_1 defined by fide-lookup.js
   // customShortcutKey_Shift_2 defined by fide-lookup.js
 
-  function customShortcutKey_Shift_3() { searchGameWithNewMoves(true); }
-  function customShortcutKey_Shift_4() { searchGameWithNewMoves(false); }
-  function customShortcutKey_Shift_5() { }
+  function customShortcutKey_Shift_3() { searchGameWithNewMoves(false); }
+  function customShortcutKey_Shift_4() { searchLiveGame(false); }
+  function customShortcutKey_Shift_5() { toggleShowLastMoves(); }
   function customShortcutKey_Shift_6() { toggleAdjustBoard(); }
   function customShortcutKey_Shift_7() { toggleShowBoard(); }
 
@@ -1016,7 +1020,7 @@ a.variation {
 <div class="header"><span class="gameWhite" id="GameWhite" title="white player" onclick="openFidePlayerUrl(this.innerHTML, customPgnHeaderTag('WhiteFideId')); this.blur();"></span><span class="gameWhiteClock" id="GameWhiteClock" title="white clock"></span><span class="gameBlackClock" id="GameBlackClock" title="black clock"></span><span class="gameBlack" id="GameBlack" title="black player" onclick="openFidePlayerUrl(this.innerHTML, customPgnHeaderTag('BlackFideId')); this.blur();"></span></div>
 <div class="gameBoard" id="GameBoard"></div>
 <div class="footer"><span class="gameSideToMove"><span class="sideToMove sideToMoveHidden" id="SideToMove" title="side to move"></span>&nbsp;</span><span class="gameText">&nbsp;<span id="GamePrevMoves" style="cursor:pointer;" onclick="GoToMove(CurrentPly - 1); this.blur();" title="previous moves"></span><span id="GameCurrMove" style="font-weight: bold; cursor:pointer;" onclick="SetHighlight(!highlightOption); this.blur();" title="current move as shown on chessboard"></span><span id="GameNextMoves" style="cursor:pointer;" onclick="GoToMove(CurrentPly + 1); this.blur();" title="next moves"></span><span style="font-weight: bold;">&nbsp;</span></span><span class="gameResult" id="GameResult" onclick="GoToMove(StartPlyVar[0] + PlyNumberVar[0], 0); this.blur();" title="go to game end"></span></div>
-<div class="footer"><span class="gameDateAdjusted" id="GameDateAdjusted" onclick='searchPgnGame("\\[\\s*Date\\s*\"[^\"]*live[^\"]*\"\\s*\\]", event.shiftKey);'></span></div>
+<div class="footer"><span class="gameDateAdjusted" id="GameDateAdjusted" onclick="function searchLiveGame(event.shiftKey);"></span></div>
 </div>
 </td></tr></table>
 
