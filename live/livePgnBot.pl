@@ -717,6 +717,7 @@ sub process_line {
     save_result($1, $4, $2. $3, 1); # from observed game
   } elsif ($line =~ /^:There .* in the (.*)/) {
     $autorelayEvent = $1;
+    $autorelayEvent =~ s/([\w']+)/\u\L$1/g; # capitalize words in autorelay event string
     $autorelayEvent =~ s/[\[\]"]/'/g;
     $autorelayRound = "";
     if ($eventroundAutoprecorrectRegexp) { $autorelayEvent = eventround_autoprecorrect($autorelayEvent); }
@@ -1061,7 +1062,7 @@ sub save_pgnGame {
       $thisBlack = $games_black[$i];
     }
     if ($relayMode == 1) {
-      $thisWhite =~ s/(?<=.)([A-Z])/ $1/g;
+      $thisWhite =~ s/(?<=.)([A-Z])/ $1/g; # separate with space each capitalized word in relay player strings
       $thisBlack =~ s/(?<=.)([A-Z])/ $1/g;
     }
     if (($followMode == 1) && ($thisResult eq "*")) {
