@@ -717,7 +717,7 @@ sub process_line {
     save_result($1, $4, $2. $3, 1); # from observed game
   } elsif ($line =~ /^:There .* in the (.*)/) {
     $autorelayEvent = $1;
-    $autorelayEvent =~ s/([a-z]+('s\b)?)/\u$1/ig; # capitalize words in autorelay event string, allowing for "Example's"
+    # $autorelayEvent =~ s/([a-z]+('s\b)?)/\u$1/ig; # capitalize words in autorelay event string, allowing for "Example's"
     $autorelayEvent =~ s/[\[\]"]/'/g;
     $autorelayRound = "";
     if ($eventroundAutoprecorrectRegexp) { $autorelayEvent = eventround_autoprecorrect($autorelayEvent); }
