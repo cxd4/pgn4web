@@ -1,3 +1,20 @@
+[Event "London league"]
+[Site "London ENG"]
+[Date "2015.10.14"]
+[Round "?"]
+[White "Topal, Mahir Onat"]
+[Black "Casaschi, Paolo"]
+[Result "1/2-1/2"]
+[ECO "A52"]
+[Opening "Budapest"]
+[Variation "Adler variation"]
+
+1. d4 Nf6 2. c4 e5 3. dxe5 Ng4 4. Nf3 Bc5 5. e3 Nc6 6. Be2 O-O 7. O-O Ngxe5
+8. Nc3 a5 9. b3 Re8 10. Bb2 Nxf3+ 11. Bxf3 Ne5 12. Bd5 { D } 12... Qh4 13.
+Ne4 Ba7 14. Bxe5 Rxe5 15. Qf3 Qh5 16. Qg3 Qf5 17. Rad1 { D } 17... d6 18.
+Nc3 Qf6 19. Nb5 Bb6 20. Bf3 Rg5 21. Qf4 Rf5 22. Qe4 Re5 23. Qf4 Rf5 24. Qe4
+1/2-1/2
+
 [Event "Middlesex league"]
 [Site "London ENG"]
 [Date "2015.05.07"]
