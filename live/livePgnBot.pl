@@ -70,7 +70,7 @@ sub setup_time {
 our $startupTime = time();
 our $timeOffset = 0;
 
-sub o_time() {
+sub o_time {
   my ($t) = @_;
   return ($t || time()) + $timeOffset;
 }
@@ -717,21 +717,8 @@ sub process_line {
     save_result($1, $4, $2. $3, 1); # from observed game
   } elsif ($line =~ /^:There .* in the (.*)/) {
     $autorelayEvent = $1;
-    # $autorelayEvent =~ s/([a-z]+('s\b)?)/\u$1/ig; # capitalize words in autorelay event string, allowing for "Example's"
-    $autorelayEvent =~ s/[\[\]"]/'/g;
     $autorelayRound = "";
-    if ($eventroundAutoprecorrectRegexp) { $autorelayEvent = eventround_autoprecorrect($autorelayEvent); }
-    fixRoundEvent($autorelayEvent, $autorelayRound, "Game");
-    fixRoundEvent($autorelayEvent, $autorelayRound, "Matchup");
-    fixRoundEvent($autorelayEvent, $autorelayRound, "Round");
-    fixRoundEvent($autorelayEvent, $autorelayRound, "Stage");
-    fixRoundEvent($autorelayEvent, $autorelayRound, "Section");
-    $autorelayEvent =~ s/^\s+|[\s-]+$//g;
-    $autorelayEvent =~ s/\s+/ /g;
-    if ($eventAutocorrectRegexp) { $autorelayEvent = event_autocorrect($autorelayEvent); }
-    $autorelayEvent =~ s/^(.*)$/\u$1/; # event first letter to uppercase
-    if ($autorelayRound eq "") { $autorelayRound = "-"; }
-    if ($roundAutocorrectRegexp) { $autorelayRound = round_autocorrect($autorelayRound, $autorelayEvent); }
+    fixEventRound($autorelayEvent, $autorelayRound);
     declareRelayOnline();
   } elsif ($line =~ /^:(\d+)\s*(\S+)\s+(\S+)\s+(\S+)\s+(\S+)/) {
     my $thisGameNum = $1;
@@ -885,7 +872,28 @@ sub process_line {
   $lineCount++;
 }
 
-sub fixRoundEvent() {
+sub fixEventRound {
+  my $event = $_[0];
+  my $round = $_[1];
+  # $event =~ s/([a-z]+('s\b)?)/\u$1/ig; # capitalize words in event string, allowing for "Example's"
+  $event =~ s/[\[\]"]/'/g;
+  if ($eventroundAutoprecorrectRegexp) { $event = eventround_autoprecorrect($event); }
+  fixRoundEvent($event, $round, "Game");
+  fixRoundEvent($event, $round, "Matchup");
+  fixRoundEvent($event, $round, "Round");
+  fixRoundEvent($event, $round, "Stage");
+  fixRoundEvent($event, $round, "Section");
+  $event =~ s/^\s+|[\s-]+$//g;
+  $event =~ s/\s+/ /g;
+  if ($eventAutocorrectRegexp) { $event = event_autocorrect($event); }
+  $event =~ s/^(.*)$/\u$1/; # event first letter to uppercase
+  if ($round eq "") { $round = "-"; }
+  if ($roundAutocorrectRegexp) { $autorelayRound = round_autocorrect($round, $event); }
+  $_[0] = $event;
+  $_[1] = $round;
+}
+
+sub fixRoundEvent {
   my $event = $_[0];
   my $round = $_[1];
   my $tag = $_[2];
@@ -903,7 +911,7 @@ sub fixRoundEvent() {
   $_[1] = $round;
 }
 
-sub process_newGame() {
+sub process_newGame {
   my ($moveNum, $i);
 
   $newGame_movesText = "";
@@ -924,7 +932,7 @@ sub process_newGame() {
   reset_newGame();
 }
 
-sub reset_newGame() {
+sub reset_newGame {
   $newGame_num = -1;
   $newGame_white = "";
   $newGame_black = "";
@@ -1556,6 +1564,7 @@ add_master_command ("eloignore", "[evalexp|\"\"] (to get/set the eval expression
 add_master_command ("event", "[string|\"\"] (to get/set the PGN header tag event)");
 add_master_command ("eventautocorrect", "[/regexp/evalexp/|\"\"] (to get/set the regular expression and the eval expression returning a string that corrects event tags during autorelay)");
 add_master_command ("eventroundautoprecorrect", "[/regexp/evalexp/|\"\"] (to get/set the regular expression and the eval expression returning a string that precorrects eventround tags during autorelay)");
+add_master_command ("eventroundcorrecttest", "[string] (to test the event and round autocorrect rules on the provided string)");
 add_master_command ("follow", "[0|handle|/s|/b|/l] (to follow the user with given handle, /s for the best standard game, /b for the best blitz game, /l for the best lightning game, 0 to disable follow mode)");
 add_master_command ("games", "(to get games summary info)");
 add_master_command ("heartbeat", "[frequency offset] (to get/set the timing of heartbeat log messages, in hours)");
@@ -1965,6 +1974,15 @@ sub process_master_command {
       };
     } else {
       tell_operator("error: invalid $command parameter");
+    }
+  } elsif ($command eq "eventroundcorrecttest") {
+    if ($parameters ne "") {
+      my $testEvent = $parameters;
+      my $testRound = "";
+      fixEventRound($testEvent, $testRound);
+      tell_operator("eventroundcorrecttest=$parameters/$testEvent/$testRound");
+    } else {
+      tell_operator(detect_command_helptext($command));
     }
   } elsif ($command eq "follow") {
     if ($parameters =~ /^([a-zA-Z]+$|\/s|\/b|\/l)/) {
@@ -2821,14 +2839,14 @@ sub batch_run {
 }
 
 
-sub declareRelayOffline() {
+sub declareRelayOffline {
   if ($relayOnline == 1) {
     $relayOnline = 0;
     tell_operator_and_log_terminal("warning: ics relay offline");
   }
 }
 
-sub declareRelayOnline() {
+sub declareRelayOnline {
   if ($relayOnline == 0) {
     $relayOnline = 1;
     tell_operator_and_log_terminal("warning: ics relay back online");
