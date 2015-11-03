@@ -1670,7 +1670,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "archivefile") {
-    if (($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) && ($parameters !~ /^\/|\.{2,}/)) { # for portability only a subset of filename chars is allowed
+    if (($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) && ($parameters !~ /^(\/|\\)|\.{2,}/)) { # for portability and security only a subset of filename chars is allowed
       if ($parameters ne "") {
         if ($parameters eq "\"\"") { $parameters = ""; }
         $PGN_ARCHIVE = $parameters;
@@ -1747,7 +1747,7 @@ sub process_master_command {
       tell_operator("warning: ics relay offline");
     }
   } elsif ($command eq "batchlist") {
-    if (($parameters =~ /^([\w\d\/\\.+=_-]*|"")( \d+)?$/) && ($parameters !~ /^\/|\.{2,}/)) { # for portability only a subset of filename chars is allowed
+    if (($parameters =~ /^([\w\d\/\\.+=_-]*|"")( \d+)?$/) && ($parameters !~ /^(\/|\\)|\.{2,}/)) { # for portability and security only a subset of filename chars is allowed
       if ($parameters =~ /^(\S+)( (\d+))?/) {
         if (batch_list($1, $3)) {
           tell_operator("OK $command");
@@ -1759,7 +1759,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "batchrun") {
-    if (($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) && ($parameters !~ /^\/|\.{2,}/)) { # for portability only a subset of filename chars is allowed
+    if (($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) && ($parameters !~ /^(\/|\\)|\.{2,}/)) { # for portability and security only a subset of filename chars is allowed
       if ($parameters ne "") {
         if (batch_run($parameters)) {
           tell_operator("OK $command");
@@ -2095,7 +2095,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "livefile") {
-    if (($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) && ($parameters !~ /^\/|\.{2,}/)) { # for portability only a subset of filename chars is allowed
+    if (($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) && ($parameters !~ /^(\/|\\)|\.{2,}/)) { # for portability and security only a subset of filename chars is allowed
       if ($parameters ne "") {
         if ($parameters eq "\"\"") { $parameters = ""; }
         $PGN_LIVE = $parameters;
@@ -2246,7 +2246,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "memoryfile") {
-    if (($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) && ($parameters !~ /^\/|\.{2,}/)) { # for portability only a subset of filename chars is allowed
+    if (($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) && ($parameters !~ /^(\/|\\)|\.{2,}/)) { # for portability and security only a subset of filename chars is allowed
       if ($parameters ne "") {
         if ($parameters eq "\"\"") {
            $parameters = "";
@@ -2688,7 +2688,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "topfile") {
-    if (($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) && ($parameters !~ /^\/|\.{2,}/)) { # for portability only a subset of filename chars is allowed
+    if (($parameters =~ /^([\w\d\/\\.+=_-]*|"")$/) && ($parameters !~ /^(\/|\\)|\.{2,}/)) { # for portability and security only a subset of filename chars is allowed
       if ($parameters ne "") {
         if ($parameters eq "\"\"") {
            $parameters = "";
@@ -2770,7 +2770,7 @@ sub batch_commands {
   my ($batchfile) = @_;
   my @commandList = ();
   my $maxCommandlistLength = 100;
-  if (($batchfile =~ /^[\w\d\/\\.+=_-]+$/) && ($batchfile !~ /^\/|\.{2,}/)) { # for portability only a subset of filename chars is allowed
+  if (($batchfile =~ /^[\w\d\/\\.+=_-]+$/) && ($batchfile !~ /^(\/|\\)|\.{2,}/)) { # for portability and security only a subset of filename chars is allowed
     if (open(BATCHFILE, "<" , $batchfile)) {
       @commandList = <BATCHFILE>;
       close(BATCHFILE);
@@ -2793,7 +2793,7 @@ sub batch_commands {
 
 sub batch_list {
   my ($batchfile, $delay) = @_;
-  if (($batchfile =~ /^[\w\d\/\\.+=_-]+$/) && ($batchfile !~ /^\/|\.{2,}/)) { # for portability only a subset of filename chars is allowed
+  if (($batchfile =~ /^[\w\d\/\\.+=_-]+$/) && ($batchfile !~ /^(\/|\\)|\.{2,}/)) { # for portability and security only a subset of filename chars is allowed
     my $maxDelay = 3;
     if (($delay ne "") && ($delay > $maxDelay)) {
       tell_operator("error: batch list delay=" . $delay . " > maxDelay=" . $maxDelay);
