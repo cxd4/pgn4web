@@ -50,7 +50,6 @@ Kg2 Qc2 32. Rgf1 Qxe2+ 33. R1f2 Qe4 34. Kg1 Qb1+ 35. Kg2 Qe4 36. Kg1 Qb1+
 [WhiteElo "1499"]
 [ECO "C00"]
 [Opening "French defence"]
-[EventDate "2005.08.01"]
 
 1. e4 e6 2. Nc3 d5 3. d3 Nf6 4. Be2 { D } 4... d4 5. Nb1 e5 6. Nf3 Bd6 7.
 Bg5 Nc6 8. O-O Be6 9. a3 h6 10. Bh4 Qe7 11. c4 a5 12. Qc2 g5 13. Bg3 Nd7
@@ -387,7 +386,7 @@ Kg7 37. Kc1 Kg8 38. Kb2 Kg7 39. Kb1 1/2-1/2
 
 [Event "Club game"]
 [Site "Tortona ITA"]
-[Date "1982-10-30"]
+[Date "1982.10.30"]
 [Round "?"]
 [White "Petti, Antonio"]
 [Black "Casaschi, Paolo"]

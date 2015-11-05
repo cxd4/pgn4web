@@ -1,3 +1,24 @@
+[Event "London league"]
+[Site "London ENG"]
+[Date "2015.11.04"]
+[Round "?"]
+[White "Lewis, Alex"]
+[Black "Casaschi, Paolo"]
+[Result "0-1"]
+[ECO "B02"]
+[Opening "Alekhine's defence"]
+[Variation "Maroczy variation"]
+
+1. e4 Nf6 2. d3 { D } 2... d6 3. g3 g6 4. Bg2 Bg7 5. c4 c5 6. Nc3 O-O 7.
+Nge2 Nc6 8. O-O Rb8 9. f4 a6 10. a4 Bd7 11. h3 Ne8 12. Be3 Nc7 { D } 13. d4
+cxd4 14. Nxd4 Nxd4 15. Bxd4 Bxd4+ 16. Qxd4 b5 17. axb5 axb5 18. cxb5 Nxb5
+19. Nxb5 Bxb5 20. Rfc1 Re8 { D } 21. e5 dxe5 22. Qxe5 Qb6+ 23. Qc5 { D }
+23... e5 24. Qxb6 Rxb6 { D } 25. Re1 exf4 26. Rxe8+ Bxe8 27. Ra8 Kf8 28.
+gxf4 Rxb2 29. Bc6 Re2 30. Kf1 Re6 31. Bb5 f5 32. Kf2 Re7 33. h4 Kf7 34.
+Bxe8+ Rxe8 { D } 35. Ra4 { (=) } 35... Re7 36. Kf3 Kg7 37. Rb4 Kh6 38. Rb3
+Ra7 39. Kg3 { D } 39... Ra1 40. Kg2 Kh5 41. Rb7 Kxh4 42. Rxh7+ Kg4 43. Rg7
+Ra2+ 44. Kg1 Ra6 0-1
+
 [Event "Middlesex league"]
 [Site "London ENG"]
 [Date "2015.10.20"]
@@ -50,7 +71,7 @@ Ne2 b4 36. a4 Rh8 37. b3 Rc8 38. Kd2 { $136 } 1/2-1/2
 
 [Event "Middlesex league"]
 [Site "London ENG"]
-[Date "28 Apr 2015"]
+[Date "2015.04.28"]
 [Round "?"]
 [White "Casaschi, Paolo"]
 [Black "Willmoth, Robert"]
@@ -71,7 +92,7 @@ Kf1 Ne8 35. Rxa6 Rb8 36. e5 Rd8 { D } 37. f6 gxf6 38. Bxh6 f5 39. Ke2 dxe5
 
 [Event "London league"]
 [Site "London ENG"]
-[Date "2015-04-27"]
+[Date "2015.04.27"]
 [Round "?"]
 [White "Goodwin, Dominic"]
 [Black "Casaschi, Paolo"]
@@ -87,7 +108,7 @@ Qc2 Na6 9. a3 Nc7 10. Nf3 Ne6 11. Bg3 g6 12. h3 Ng7 13. O-O { D } 13... Bf5
 
 [Event "London league"]
 [Site "London ENG"]
-[Date "2015-03-30"]
+[Date "2015.03.30"]
 [Round "?"]
 [White "Casaschi, Paolo"]
 [Black "Merriman, John"]
