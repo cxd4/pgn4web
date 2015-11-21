@@ -490,7 +490,10 @@ sub remove_game {
         }
         return -1;
       } else {
-        $reportedNotFoundNonPrioritizedGame = 0;
+        if ($reportedNotFoundNonPrioritizedGame == 1) {
+          log_terminal("warning: too many prioritized games no more");
+          $reportedNotFoundNonPrioritizedGame = 0;
+        }
       }
     }
     if ((defined $games_num[$thisGameIndex]) && ($games_num[$thisGameIndex] ne "")) {
