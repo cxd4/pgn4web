@@ -490,10 +490,7 @@ sub remove_game {
         }
         return -1;
       } else {
-        if ($reportedNotFoundNonPrioritizedGame == 1) {
-          log_terminal("warning: too many prioritized games no more");
-          $reportedNotFoundNonPrioritizedGame = 0;
-        }
+        $reportedNotFoundNonPrioritizedGame = 0;
       }
     }
     if ((defined $games_num[$thisGameIndex]) && ($games_num[$thisGameIndex] ne "")) {
@@ -1898,6 +1895,7 @@ sub process_master_command {
           }
           force_next_check_relay_time();
         }
+        $reportedNotFoundNonPrioritizedGame = 0;
         log_terminal("info: eloignore=$EloIgnoreString");
       }
       tell_operator("info: eloignore=$EloIgnoreString");
@@ -2897,6 +2895,9 @@ sub check_relay_results {
       }
       @GAMES_autorelayRunning = ();
       log_rounds();
+      if ($#games_num + 1 < $maxGamesNum) {
+        $reportedNotFoundNonPrioritizedGame = 0;
+      }
     }
   }
 }
