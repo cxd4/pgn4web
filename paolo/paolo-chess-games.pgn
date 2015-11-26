@@ -1,6 +1,26 @@
 [Event "London league"]
 [Site "London ENG"]
-[Date "12 Nov 2015"]
+[Date "2015.11.25"]
+[Round "?"]
+[White "Casaschi, Paolo"]
+[Black "Ledger, Stephen"]
+[Result "1-0"]
+[ECO "A31"]
+[Opening "English"]
+[Variation "symmetrical, Benoni formation"]
+
+1. d4 Nf6 2. c4 c5 3. Nf3 cxd4 4. Nxd4 e5 5. Nb5 d5 6. cxd5 Bc5 7. Qc2 Qa5+
+8. Bd2 Qxb5 9. e3 Qb6 10. b4 Nbd7 11. bxc5 Qxc5 12. Qxc5 Nxc5 13. Bb4 { D }
+13... b6 14. Nc3 Bf5 15. f3 Nd3+ 16. Bxd3 Bxd3 17. e4 Rc8 18. Kd2 Bc4 19.
+a4 Kd7 20. Rhc1 Ne8 21. Nb5 a5 { D } 22. Na3 Ba6 23. Bc3 Nd6 24. Bxe5 f6
+25. Bxd6 Kxd6 26. Rab1 Rxc1 27. Rxc1 Rb8 28. Rc6+ Kd7 29. Nc4 Bxc4 30. Rxc4
+b5 31. axb5 Rxb5 32. Kc2 f5 33. Kd3 fxe4+ 34. fxe4 Kd6 35. Rc6+ Ke5 36.
+Re6+ Kf4 37. d6 Rb8 38. Re7 a4 39. d7 a3 40. Re8 a2 41. Rxb8 a1=Q 42. d8=Q
+Qd1+ 43. Kc4 1-0
+
+[Event "London league"]
+[Site "London ENG"]
+[Date "2015.11.12"]
 [Round "?"]
 [White "Casaschi, Paolo"]
 [Black "Reuben, Stewart"]
