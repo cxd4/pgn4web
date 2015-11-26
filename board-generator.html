@@ -1817,7 +1817,7 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 
 <textarea id="pgnText" class="textbox" style="background-color: #DDFFDD; scrollbar-base-color: #DDFFDD;" rows=15 onChange="update_pgnTextLength(); update_suggested_iframe_dimensions();"></textarea>
 <table cellspacing="0" cellpadding="0" width="100%"><tr>
-<td align="left"><label class="helptext" for="pgnText">enter PGN data</label></td>
+<td align="left"><label class="helptext" for="pgnText">enter PGN data and optionally <a class="helplink" href="" onClick="if (event.shiftKey) { pgnTextStripUndo(); } else { stripPgnText(); } return false;">strip PGN data</a></label></td>
 <td align="right"><span class="helptext" id="pgnTextLength"></span></td>
 </tr></table>
 <p></p>
@@ -2231,6 +2231,64 @@ checkboxWidth = document.getElementById('hiddenCheckbox').offsetWidth;
 theObj = document.getElementsByName('checkbox');
 for (ii = 0; ii < theObj.length; ii++) {
   theObj[ii].style.marginLeft += (inputWidth - checkboxWidth + 22) + 'px';
+}
+
+
+var pgnTextStripUndoValue;
+
+function stripPgnText() {
+  var theObj = document.getElementById("pgnText");
+  if (theObj) {
+    pgnHeader = new Array();
+    pgnGame = new Array();
+    numberOfGames = -1;
+    pgnGameFromPgnText(theObj.value);
+    if (pgnGame.length === 0) {
+      pgnHeader[0] = "";
+      pgnGame[0] = theObj.value;
+      numberOfGames = 1;
+    }
+    var strippedPgnText = "", strippedtGame, strippedGameTokens, separator, lineLength, ii, jj;
+    for (ii = 0; ii < pgnGame.length; ii++) {
+      strippedPgnText += pgnHeader[ii].replace(/\[\w+\s*""\s*\][\n\r\s]+/g, "").replace(/(^[\n\r\s]+|[\n\r\s]+$)/g, "") + "\n\n";
+      strippedGame = pgnGame[ii].replace(/[\n\r]+/g, " ");
+      strippedGame = strippedGame.replace(/\b\d+\.+/g, " ");
+      strippedGame = strippedGame.replace(/(\w)\+(\W)/g, "$1$2");
+      strippedGame = strippedGame.replace(/(\w)(x|:)([a-h][1-8])\b/g, "$1$3");
+      strippedGame = strippedGame.replace(/([a-h][18])=([A-Z])/g, "$1$2");
+      strippedGame = strippedGame.replace(/\s+([})])/g, "$1").replace(/([{(])\s+/g, "$1");
+      strippedGame = strippedGame.replace(/\s{2,}/g, " ");
+      strippedGame = strippedGame.replace(/(^\s+|\s+$)/g, "");
+      strippedGameTokens = strippedGame.split(" ");
+      lineLength = 0;
+      for (jj = 0; jj < strippedGameTokens.length; jj++) {
+        separator = lineLength ? " " : "";
+        if (lineLength + separator.length + strippedGameTokens[jj].length < 80) {
+          strippedPgnText += separator + strippedGameTokens[jj];
+          lineLength += separator.length + strippedGameTokens[jj].length;
+        } else {
+          strippedPgnText += "\n" + strippedGameTokens[jj];
+          lineLength = strippedGameTokens[jj].length;
+        }
+      }
+      strippedPgnText += "\n\n";
+    }
+    strippedPgnText = strippedPgnText.replace(/(^[\n\r\s]+|[\n\r\s]+$)/g, "");
+    if (strippedPgnText != theObj.value) {
+      pgnTextStripUndoValue = theObj.value;
+      theObj.value = strippedPgnText;
+      update_pgnTextLength();
+    }
+  }
+}
+
+function pgnTextStripUndo() {
+  var theObj = document.getElementById("pgnText");
+  if (theObj && pgnTextStripUndoValue) {
+    theObj.value = pgnTextStripUndoValue;
+    update_pgnTextLength();
+    pgnTextStripUndoValue = "";
+  }
 }
 
 </script>
