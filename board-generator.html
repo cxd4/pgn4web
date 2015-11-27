@@ -1817,7 +1817,7 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 
 <textarea id="pgnText" class="textbox" style="background-color: #DDFFDD; scrollbar-base-color: #DDFFDD;" rows=15 onChange="update_pgnTextLength(); update_suggested_iframe_dimensions();"></textarea>
 <table cellspacing="0" cellpadding="0" width="100%"><tr>
-<td align="left"><label class="helptext" for="pgnText">enter PGN data and optionally <a class="helplink" href="" onClick="if (event.shiftKey) { pgnTextStripUndo(); } else { stripPgnText(); } return false;">strip PGN data</a></label></td>
+<td align="left"><label class="helptext" for="pgnText">enter PGN data and optionally <a class="helplink" href="" onClick="if (event.shiftKey) { if (pgnTextStripUndoValue) { if (confirm('Undo last PGN data strip?\n\nCurrent PGN data will be lost.')) { pgnTextStripUndo(); } } else { alert('Undo data unavailable.'); } } else if (confirm(event.ctrlKey ? 'Format PGN data?' : 'Strip PGN data?\n\nStripping PGN data will reduce the data size; the resulting data however will not be strictly compliant to the PGN standard, allthough pgn4web should still display the chessboard correctly. The last PGN data strip operation can be undone by shift-clicking this same command.')) { stripPgnText(event.ctrlKey); } return false;">strip PGN data</a></label></td>
 <td align="right"><span class="helptext" id="pgnTextLength"></span></td>
 </tr></table>
 <p></p>
@@ -2236,7 +2236,7 @@ for (ii = 0; ii < theObj.length; ii++) {
 
 var pgnTextStripUndoValue;
 
-function stripPgnText() {
+function stripPgnText(formatOnly) {
   var theObj = document.getElementById("pgnText");
   if (theObj) {
     pgnHeader = new Array();
@@ -2248,14 +2248,23 @@ function stripPgnText() {
       pgnGame[0] = theObj.value;
       numberOfGames = 1;
     }
-    var strippedPgnText = "", strippedtGame, strippedGameTokens, separator, lineLength, ii, jj;
+    var strippedPgnText = "", strippedHeader, strippedtGame, strippedGameTokens, separator, lineLength, ii, jj;
     for (ii = 0; ii < pgnGame.length; ii++) {
-      strippedPgnText += pgnHeader[ii].replace(/\[\w+\s*""\s*\][\n\r\s]+/g, "").replace(/(^[\n\r\s]+|[\n\r\s]+$)/g, "") + "\n\n";
+      if (formatOnly) {
+        strippedHeader = pgnHeader[ii].replace(/(^[\n\r\s]+|[\n\r\s]+$)/g, "");
+      } else {
+        strippedHeader = pgnHeader[ii].replace(/\[\w+\s*""\s*\][\n\r\s]+/g, "").replace(/(^[\n\r\s]+|[\n\r\s]+$)/g, "");
+        if (strippedHeader === "") { strippedHeader = '[X""]'; }
+      }
+      strippedPgnText += strippedHeader + "\n\n";
       strippedGame = pgnGame[ii].replace(/[\n\r]+/g, " ");
-      strippedGame = strippedGame.replace(/\b\d+\.+/g, " ");
-      strippedGame = strippedGame.replace(/(\w)\+(\W)/g, "$1$2");
-      strippedGame = strippedGame.replace(/(\w)(x|:)([a-h][1-8])\b/g, "$1$3");
-      strippedGame = strippedGame.replace(/([a-h][18])=([A-Z])/g, "$1$2");
+      if (!formatOnly) {
+        strippedGame = strippedGame.replace(/\b\d+\.+/g, " ");
+        strippedGame = strippedGame.replace(/(\w)[+#](\W)/g, "$1$2");
+        strippedGame = strippedGame.replace(/(\w)(x|:)([a-h][1-8])\b/g, "$1$3");
+        strippedGame = strippedGame.replace(/([a-h][18])=([A-Z])/g, "$1$2");
+        strippedGame = strippedGame.replace(/([36])ep\b/g, "$1");
+      }
       strippedGame = strippedGame.replace(/\s+([})])/g, "$1").replace(/([{(])\s+/g, "$1");
       strippedGame = strippedGame.replace(/\s{2,}/g, " ");
       strippedGame = strippedGame.replace(/(^\s+|\s+$)/g, "");
@@ -2272,6 +2281,9 @@ function stripPgnText() {
         }
       }
       strippedPgnText += "\n\n";
+      if (!formatOnly) {
+        if (numberOfGames == 1) { strippedPgnText = strippedPgnText.replace(/\[X""\][\n\r\s]*/g, ""); }
+      }
     }
     strippedPgnText = strippedPgnText.replace(/(^[\n\r\s]+|[\n\r\s]+$)/g, "");
     if (strippedPgnText != theObj.value) {
@@ -2279,7 +2291,9 @@ function stripPgnText() {
       theObj.value = strippedPgnText;
       update_pgnTextLength();
     }
+    return true;
   }
+  return false;
 }
 
 function pgnTextStripUndo() {
@@ -2288,7 +2302,9 @@ function pgnTextStripUndo() {
     theObj.value = pgnTextStripUndoValue;
     update_pgnTextLength();
     pgnTextStripUndoValue = "";
+    return true;
   }
+  return false;
 }
 
 </script>
