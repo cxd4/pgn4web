@@ -2248,12 +2248,17 @@ function stripPgnText(formatOnly) {
       pgnGame[0] = theObj.value;
       numberOfGames = 1;
     }
-    var strippedPgnText = "", strippedHeader, strippedtGame, strippedGameTokens, separator, lineLength, ii, jj;
+    var strippedPgnText = "", strippedHeader, strippedGame, strippedGameTokens, theMatch, theRegex, separator, lineLength, ii, jj;
     for (ii = 0; ii < pgnGame.length; ii++) {
-      if (formatOnly) {
-        strippedHeader = pgnHeader[ii].replace(/(^[\n\r\s]+|[\n\r\s]+$)/g, "");
-      } else {
-        strippedHeader = pgnHeader[ii].replace(/\[\w+\s*""\s*\][\n\r\s]+/g, "").replace(/(^[\n\r\s]+|[\n\r\s]+$)/g, "");
+      strippedHeader = pgnHeader[ii].replace(/[\n\r]+/g, " ");
+      if (!formatOnly) {
+        strippedHeader = strippedHeader.replace(/\[\s*\w+\s*""\s*\]/g, "");
+      }
+      strippedHeader = strippedHeader.replace(/\s+\]/g, "]").replace(/\[\s+/g, "[");
+      strippedHeader = strippedHeader.replace(/\s{2,}/g, " ");
+      strippedHeader = strippedHeader.replace(/(^\s+|\s+$)/g, "");
+      strippedHeader = strippedHeader.replace(/\]\s*\[/g, "]\n[");
+      if (!formatOnly) {
         if (strippedHeader === "") { strippedHeader = '[X""]'; }
       }
       strippedPgnText += strippedHeader + "\n\n";
@@ -2264,6 +2269,10 @@ function stripPgnText(formatOnly) {
         strippedGame = strippedGame.replace(/(\w)(x|:)([a-h][1-8])\b/g, "$1$3");
         strippedGame = strippedGame.replace(/([a-h][18])=([A-Z])/g, "$1$2");
         strippedGame = strippedGame.replace(/([36])ep\b/g, "$1");
+        if (theMatch = strippedHeader.match(/\[\s*Result\s+"([^"]+)"\s*\]/)) {
+          theRegex = new RegExp(theMatch[1] + "\s*$", "");
+          strippedGame = strippedGame.replace(theRegex, "");
+        }
       }
       strippedGame = strippedGame.replace(/\s+([})])/g, "$1").replace(/([{(])\s+/g, "$1");
       strippedGame = strippedGame.replace(/\s{2,}/g, " ");
